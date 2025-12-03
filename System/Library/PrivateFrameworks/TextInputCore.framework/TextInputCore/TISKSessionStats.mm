@@ -1,45 +1,45 @@
 @interface TISKSessionStats
-- (BOOL)isEqual:(id)a3;
-- (TISKSessionStats)initWithCoder:(id)a3;
-- (id)_roundDownToNearestHalfHour:(id)a3;
-- (id)_roundUpToNearestHalfHour:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TISKSessionStats)initWithCoder:(id)coder;
+- (id)_roundDownToNearestHalfHour:(id)hour;
+- (id)_roundUpToNearestHalfHour:(id)hour;
 - (id)_roundedSessionInterval;
-- (id)counter:(id)a3;
-- (id)description:(BOOL)a3;
+- (id)counter:(id)counter;
+- (id)description:(BOOL)description;
 - (id)generateDataForSR;
-- (id)init:(id)a3 endDate:(id)a4 identifier:(id)a5 version:(id)a6 inputMode:(id)a7 sessionIds:(id)a8 layout:(id)a9;
-- (id)samples:(id)a3;
-- (id)samples:(id)a3 withPosition:(unint64_t)a4;
-- (void)addSample:(id)a3 forKey:(id)a4;
-- (void)addSample:(id)a3 forKey:(id)a4 withPosition:(unint64_t)a5;
-- (void)addToDurationForRateMetric:(double)a3 forKey:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)init:(id)init endDate:(id)date identifier:(id)identifier version:(id)version inputMode:(id)mode sessionIds:(id)ids layout:(id)layout;
+- (id)samples:(id)samples;
+- (id)samples:(id)samples withPosition:(unint64_t)position;
+- (void)addSample:(id)sample forKey:(id)key;
+- (void)addSample:(id)sample forKey:(id)key withPosition:(unint64_t)position;
+- (void)addToDurationForRateMetric:(double)metric forKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 - (void)haltTypingTimer;
-- (void)haltTypingTimerWithEvent:(id)a3;
-- (void)merge:(id)a3;
+- (void)haltTypingTimerWithEvent:(id)event;
+- (void)merge:(id)merge;
 - (void)setup;
 @end
 
 @implementation TISKSessionStats
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   keyedMetrics = self->_keyedMetrics;
-  v5 = a3;
-  [v5 encodeObject:keyedMetrics forKey:@"MetricSampleDictionary"];
-  [v5 encodeObject:self->_startTime forKey:@"StartDateKey"];
-  [v5 encodeObject:self->_endTime forKey:@"EndDateKey"];
-  [v5 encodeObject:self->_identifier forKey:@"IdentifierKey"];
-  [v5 encodeObject:self->_version forKey:@"VersionKey"];
-  [v5 encodeObject:self->_inputMode forKey:@"InputModeKey"];
-  [v5 encodeObject:self->_sessionIds forKey:@"SessionIdsKey"];
-  [v5 encodeObject:self->_layout forKey:@"LayoutKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:keyedMetrics forKey:@"MetricSampleDictionary"];
+  [coderCopy encodeObject:self->_startTime forKey:@"StartDateKey"];
+  [coderCopy encodeObject:self->_endTime forKey:@"EndDateKey"];
+  [coderCopy encodeObject:self->_identifier forKey:@"IdentifierKey"];
+  [coderCopy encodeObject:self->_version forKey:@"VersionKey"];
+  [coderCopy encodeObject:self->_inputMode forKey:@"InputModeKey"];
+  [coderCopy encodeObject:self->_sessionIds forKey:@"SessionIdsKey"];
+  [coderCopy encodeObject:self->_layout forKey:@"LayoutKey"];
 }
 
-- (TISKSessionStats)initWithCoder:(id)a3
+- (TISKSessionStats)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
@@ -50,35 +50,35 @@
   v13 = MEMORY[0x277CBEB98];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v5 decodeObjectOfClasses:v12 forKey:@"MetricSampleDictionary"];
+  v16 = [coderCopy decodeObjectOfClasses:v12 forKey:@"MetricSampleDictionary"];
   keyedMetrics = self->_keyedMetrics;
   self->_keyedMetrics = v16;
 
-  v18 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"StartDateKey"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StartDateKey"];
   startTime = self->_startTime;
   self->_startTime = v18;
 
-  v20 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"EndDateKey"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EndDateKey"];
   endTime = self->_endTime;
   self->_endTime = v20;
 
-  v22 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"IdentifierKey"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IdentifierKey"];
   identifier = self->_identifier;
   self->_identifier = v22;
 
-  v24 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"VersionKey"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VersionKey"];
   version = self->_version;
   self->_version = v24;
 
-  v26 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"InputModeKey"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"InputModeKey"];
   inputMode = self->_inputMode;
   self->_inputMode = v26;
 
-  v28 = [v5 decodeObjectOfClasses:v15 forKey:@"SessionIdsKey"];
+  v28 = [coderCopy decodeObjectOfClasses:v15 forKey:@"SessionIdsKey"];
   sessionIds = self->_sessionIds;
   self->_sessionIds = v28;
 
-  v30 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"LayoutKey"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LayoutKey"];
 
   layout = self->_layout;
   self->_layout = v30;
@@ -309,8 +309,8 @@ LABEL_60:
     v40 = v39;
     _Block_object_dispose(&v72, 8);
     v41 = [v39 alloc];
-    v42 = [(TISKSessionStats *)self _roundedSessionInterval];
-    v67 = [v41 initWithInterval:v42 metaInformation:v38];
+    _roundedSessionInterval = [(TISKSessionStats *)self _roundedSessionInterval];
+    v67 = [v41 initWithInterval:_roundedSessionInterval metaInformation:v38];
 
     v70 = 0u;
     v71 = 0u;
@@ -337,39 +337,39 @@ LABEL_60:
           v46 = *(*(&v68 + 1) + 8 * i);
 
           keyedMetrics = self->_keyedMetrics;
-          v51 = [v46 metricName];
-          v52 = [(NSMutableDictionary *)keyedMetrics objectForKey:v51];
+          metricName = [v46 metricName];
+          v52 = [(NSMutableDictionary *)keyedMetrics objectForKey:metricName];
 
           if (v52)
           {
-            v53 = [v46 metricType];
-            if (v53 > 1)
+            metricType = [v46 metricType];
+            if (metricType > 1)
             {
-              if (v53 == 2)
+              if (metricType == 2)
               {
-                v54 = [v52 rate];
-                [v54 doubleValue];
+                rate = [v52 rate];
+                [rate doubleValue];
                 if (v58 == 0.0)
                 {
                   goto LABEL_49;
                 }
 
-                v55 = [v67 mutableScalarMetrics];
+                mutableScalarMetrics = [v67 mutableScalarMetrics];
 LABEL_47:
-                v57 = v55;
-                v59 = [v46 metricName];
-                [v57 setObject:v54 forKey:v59];
+                metricName3 = mutableScalarMetrics;
+                metricName2 = [v46 metricName];
+                [metricName3 setObject:rate forKey:metricName2];
 
 LABEL_48:
                 goto LABEL_49;
               }
 
-              if (v53 == 3 && ([v52 isEmpty] & 1) == 0)
+              if (metricType == 3 && ([v52 isEmpty] & 1) == 0)
               {
-                v54 = [v52 generateDataForSR:v46];
-                if (v54)
+                rate = [v52 generateDataForSR:v46];
+                if (rate)
                 {
-                  v55 = [v67 mutablePositionalMetrics];
+                  mutableScalarMetrics = [v67 mutablePositionalMetrics];
                   goto LABEL_47;
                 }
 
@@ -379,7 +379,7 @@ LABEL_49:
 
             else
             {
-              if (!v53)
+              if (!metricType)
               {
                 [v52 doubleValue];
                 if (v56 == 0.0)
@@ -387,18 +387,18 @@ LABEL_49:
                   goto LABEL_50;
                 }
 
-                v54 = [v67 mutableScalarMetrics];
-                v57 = [v46 metricName];
-                [v54 setObject:v52 forKey:v57];
+                rate = [v67 mutableScalarMetrics];
+                metricName3 = [v46 metricName];
+                [rate setObject:v52 forKey:metricName3];
                 goto LABEL_48;
               }
 
-              if (v53 == 1 && ([v52 isEmpty] & 1) == 0)
+              if (metricType == 1 && ([v52 isEmpty] & 1) == 0)
               {
-                v54 = [v52 generateDataForSR:v46];
-                if (v54)
+                rate = [v52 generateDataForSR:v46];
+                if (rate)
                 {
-                  v55 = [v67 mutableProbabilityMetrics];
+                  mutableScalarMetrics = [v67 mutableProbabilityMetrics];
                   goto LABEL_47;
                 }
 
@@ -456,12 +456,12 @@ LABEL_50:
   return v6;
 }
 
-- (id)_roundDownToNearestHalfHour:(id)a3
+- (id)_roundDownToNearestHalfHour:(id)hour
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:252 fromDate:v4];
+  hourCopy = hour;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:252 fromDate:hourCopy];
 
   if ([v6 minute] >= 30)
   {
@@ -475,17 +475,17 @@ LABEL_50:
 
   [v6 setMinute:v7];
   [v6 setSecond:0];
-  v8 = [v5 dateFromComponents:v6];
+  v8 = [currentCalendar dateFromComponents:v6];
 
   return v8;
 }
 
-- (id)_roundUpToNearestHalfHour:(id)a3
+- (id)_roundUpToNearestHalfHour:(id)hour
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:252 fromDate:v4];
+  hourCopy = hour;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:252 fromDate:hourCopy];
 
   if ([v6 minute] >= 30)
   {
@@ -499,14 +499,14 @@ LABEL_50:
 
   [v6 setMinute:v7];
   [v6 setSecond:0];
-  v8 = [v5 dateFromComponents:v6];
+  v8 = [currentCalendar dateFromComponents:v6];
 
   return v8;
 }
 
-- (id)description:(BOOL)a3
+- (id)description:(BOOL)description
 {
-  v18 = a3;
+  descriptionCopy = description;
   v26 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAB68];
   v24.receiver = self;
@@ -568,7 +568,7 @@ LABEL_50:
               goto LABEL_16;
             }
 
-            v14 = [v12 description:v18];
+            v14 = [v12 description:descriptionCopy];
           }
         }
 
@@ -590,54 +590,54 @@ LABEL_16:
   return v6;
 }
 
-- (id)samples:(id)a3 withPosition:(unint64_t)a4
+- (id)samples:(id)samples withPosition:(unint64_t)position
 {
-  v5 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:samples];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    if ([v6 size] <= a4)
+    if ([v6 size] <= position)
     {
-      v9 = 0;
+      samples = 0;
     }
 
     else
     {
-      v7 = [v6 positionalMetricSample];
-      v8 = [v7 objectAtIndex:a4];
-      v9 = [v8 samples];
+      positionalMetricSample = [v6 positionalMetricSample];
+      v8 = [positionalMetricSample objectAtIndex:position];
+      samples = [v8 samples];
     }
   }
 
   else
   {
-    v9 = 0;
+    samples = 0;
   }
 
-  return v9;
+  return samples;
 }
 
-- (id)samples:(id)a3
+- (id)samples:(id)samples
 {
-  v3 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:samples];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 samples];
+    samples = [v3 samples];
   }
 
   else
   {
-    v4 = 0;
+    samples = 0;
   }
 
-  return v4;
+  return samples;
 }
 
-- (id)counter:(id)a3
+- (id)counter:(id)counter
 {
-  v3 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:counter];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -652,25 +652,25 @@ LABEL_16:
   return v4;
 }
 
-- (void)addToDurationForRateMetric:(double)a3 forKey:(id)a4
+- (void)addToDurationForRateMetric:(double)metric forKey:(id)key
 {
-  v5 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:a4];
+  v5 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 addToDuration:a3];
+    [v5 addToDuration:metric];
   }
 }
 
-- (void)addSample:(id)a3 forKey:(id)a4
+- (void)addSample:(id)sample forKey:(id)key
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:v6];
+  sampleCopy = sample;
+  keyCopy = key;
+  v7 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 addSample:v15];
+    [v7 addSample:sampleCopy];
   }
 
   else
@@ -682,62 +682,62 @@ LABEL_16:
       v9 = MEMORY[0x277CCABB0];
       [v7 floatValue];
       v11 = v10;
-      [v15 floatValue];
+      [sampleCopy floatValue];
       *&v13 = v11 + v12;
       v14 = [v9 numberWithFloat:v13];
-      [(NSMutableDictionary *)keyedMetrics setObject:v14 forKey:v6];
+      [(NSMutableDictionary *)keyedMetrics setObject:v14 forKey:keyCopy];
     }
   }
 
   self->_isEmpty = 0;
 }
 
-- (void)addSample:(id)a3 forKey:(id)a4 withPosition:(unint64_t)a5
+- (void)addSample:(id)sample forKey:(id)key withPosition:(unint64_t)position
 {
-  v9 = a3;
-  v8 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:a4];
+  sampleCopy = sample;
+  v8 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 addSample:v9 withPosition:a5];
+    [v8 addSample:sampleCopy withPosition:position];
   }
 
   self->_isEmpty = 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
     startTime = self->_startTime;
-    v7 = [(TISKSessionStats *)v4 startTime];
-    if ([(NSDate *)startTime isEqual:v7])
+    startTime = [(TISKSessionStats *)equalCopy startTime];
+    if ([(NSDate *)startTime isEqual:startTime])
     {
       endTime = self->_endTime;
-      v9 = [(TISKSessionStats *)v5 endTime];
-      if (([(NSDate *)endTime isEqual:v9]& 1) != 0)
+      endTime = [(TISKSessionStats *)v5 endTime];
+      if (([(NSDate *)endTime isEqual:endTime]& 1) != 0)
       {
         layout = self->_layout;
-        v11 = [(TISKSessionStats *)v5 layout];
-        if (([(TIKeyboardLayout *)layout isEqual:v11]& 1) != 0)
+        layout = [(TISKSessionStats *)v5 layout];
+        if (([(TIKeyboardLayout *)layout isEqual:layout]& 1) != 0)
         {
           version = self->_version;
-          v13 = [(TISKSessionStats *)v5 version];
-          if ([(NSString *)version isEqual:v13])
+          version = [(TISKSessionStats *)v5 version];
+          if ([(NSString *)version isEqual:version])
           {
             identifier = self->_identifier;
-            v15 = [(TISKSessionStats *)v5 identifier];
-            if ([(NSString *)identifier isEqual:v15])
+            identifier = [(TISKSessionStats *)v5 identifier];
+            if ([(NSString *)identifier isEqual:identifier])
             {
               inputMode = self->_inputMode;
-              v17 = [(TISKSessionStats *)v5 inputMode];
-              if ([(NSString *)inputMode isEqual:v17])
+              inputMode = [(TISKSessionStats *)v5 inputMode];
+              if ([(NSString *)inputMode isEqual:inputMode])
               {
                 sessionIds = self->_sessionIds;
-                v19 = [(TISKSessionStats *)v5 sessionIds];
-                LODWORD(sessionIds) = [(NSMutableArray *)sessionIds isEqual:v19];
+                sessionIds = [(TISKSessionStats *)v5 sessionIds];
+                LODWORD(sessionIds) = [(NSMutableArray *)sessionIds isEqual:sessionIds];
 
                 if (!sessionIds)
                 {
@@ -746,8 +746,8 @@ LABEL_16:
                 }
 
                 keyedMetrics = self->_keyedMetrics;
-                v7 = [(TISKSessionStats *)v5 keyedMetrics];
-                v21 = [(NSMutableDictionary *)keyedMetrics isEqual:v7];
+                startTime = [(TISKSessionStats *)v5 keyedMetrics];
+                v21 = [(NSMutableDictionary *)keyedMetrics isEqual:startTime];
                 goto LABEL_17;
               }
             }
@@ -768,12 +768,12 @@ LABEL_18:
   return v21;
 }
 
-- (void)merge:(id)a3
+- (void)merge:(id)merge
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 isEmpty] & 1) != 0)
+  mergeCopy = merge;
+  v5 = mergeCopy;
+  if (!mergeCopy || ([mergeCopy isEmpty] & 1) != 0)
   {
     goto LABEL_36;
   }
@@ -782,10 +782,10 @@ LABEL_18:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v6 = [v5 keyedMetrics];
-  v7 = [v6 allKeys];
+  keyedMetrics = [v5 keyedMetrics];
+  allKeys = [keyedMetrics allKeys];
 
-  v39 = [v7 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  v39 = [allKeys countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (!v39)
   {
     goto LABEL_30;
@@ -800,13 +800,13 @@ LABEL_18:
     {
       if (*v41 != v8)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allKeys);
       }
 
       v10 = *(*(&v40 + 1) + 8 * v9);
       v11 = [(NSMutableDictionary *)self->_keyedMetrics objectForKey:v10];
-      v12 = [v5 keyedMetrics];
-      v13 = [v12 objectForKey:v10];
+      keyedMetrics2 = [v5 keyedMetrics];
+      v13 = [keyedMetrics2 objectForKey:v10];
 
       if (!v11)
       {
@@ -822,7 +822,7 @@ LABEL_18:
         if (objc_opt_isKindOfClass())
         {
           keyedMetrics = self->_keyedMetrics;
-          v15 = v7;
+          v15 = allKeys;
           v16 = MEMORY[0x277CCABB0];
           [v11 floatValue];
           v18 = v17;
@@ -830,7 +830,7 @@ LABEL_18:
           v20 = [v16 numberWithInteger:(v18 + v19)];
           [(NSMutableDictionary *)keyedMetrics setObject:v20 forKey:v10];
 
-          v7 = v15;
+          allKeys = v15;
           v8 = v38;
           goto LABEL_25;
         }
@@ -843,14 +843,14 @@ LABEL_18:
 
 LABEL_28:
         v36 = MEMORY[0x277CCACA8];
-        v37 = v7;
+        v37 = allKeys;
         v22 = objc_opt_class();
         v23 = [v36 stringWithFormat:@"%s [SensorKit] otherObject has different class: %@ than ownObject: %@ for key: %@", "-[TISKSessionStats merge:]", v22, objc_opt_class(), v10];
         *buf = 138412290;
         v45 = v23;
         _os_log_error_impl(&dword_22CA55000, v21, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
 
-        v7 = v37;
+        allKeys = v37;
 LABEL_17:
 
         goto LABEL_25;
@@ -919,36 +919,36 @@ LABEL_25:
     }
 
     while (v39 != v9);
-    v24 = [v7 countByEnumeratingWithState:&v40 objects:v46 count:16];
+    v24 = [allKeys countByEnumeratingWithState:&v40 objects:v46 count:16];
     v39 = v24;
   }
 
   while (v24);
 LABEL_30:
 
-  v25 = [v5 startTime];
-  v26 = [v25 compare:self->_startTime];
+  startTime = [v5 startTime];
+  v26 = [startTime compare:self->_startTime];
 
   if (v26 == -1)
   {
-    v27 = [v5 startTime];
+    startTime2 = [v5 startTime];
     startTime = self->_startTime;
-    self->_startTime = v27;
+    self->_startTime = startTime2;
   }
 
-  v29 = [v5 endTime];
-  v30 = [v29 compare:self->_endTime];
+  endTime = [v5 endTime];
+  v30 = [endTime compare:self->_endTime];
 
   if (v30 == 1)
   {
-    v31 = [v5 endTime];
+    endTime2 = [v5 endTime];
     endTime = self->_endTime;
-    self->_endTime = v31;
+    self->_endTime = endTime2;
   }
 
   sessionIds = self->_sessionIds;
-  v34 = [v5 sessionIds];
-  [(NSMutableArray *)sessionIds addObjectsFromArray:v34];
+  sessionIds = [v5 sessionIds];
+  [(NSMutableArray *)sessionIds addObjectsFromArray:sessionIds];
 
   self->_isEmpty = 0;
 LABEL_36:
@@ -982,32 +982,32 @@ LABEL_36:
 
         v6 = *(*(&v17 + 1) + 8 * i);
 
-        v10 = [v6 metricType];
-        if (v10 > 1)
+        metricType = [v6 metricType];
+        if (metricType > 1)
         {
-          if (v10 == 2)
+          if (metricType == 2)
           {
             keyedMetrics = self->_keyedMetrics;
             v12 = TISKRateMetricSample;
 LABEL_15:
-            v13 = [(__objc2_class *)v12 makeMetric];
+            makeMetric = [(__objc2_class *)v12 makeMetric];
             goto LABEL_16;
           }
 
-          if (v10 != 3)
+          if (metricType != 3)
           {
             continue;
           }
 
           keyedMetrics = self->_keyedMetrics;
-          v13 = +[TISKPositionalMetricSample makeMetric:](TISKPositionalMetricSample, "makeMetric:", [v6 positionalSize]);
+          makeMetric = +[TISKPositionalMetricSample makeMetric:](TISKPositionalMetricSample, "makeMetric:", [v6 positionalSize]);
         }
 
         else
         {
-          if (v10)
+          if (metricType)
           {
-            if (v10 != 1)
+            if (metricType != 1)
             {
               continue;
             }
@@ -1018,13 +1018,13 @@ LABEL_15:
           }
 
           keyedMetrics = self->_keyedMetrics;
-          v13 = [MEMORY[0x277CCABB0] numberWithFloat:0.0];
+          makeMetric = [MEMORY[0x277CCABB0] numberWithFloat:0.0];
         }
 
 LABEL_16:
-        v14 = v13;
-        v15 = [v6 metricName];
-        [(NSMutableDictionary *)keyedMetrics setObject:v14 forKey:v15];
+        v14 = makeMetric;
+        metricName = [v6 metricName];
+        [(NSMutableDictionary *)keyedMetrics setObject:v14 forKey:metricName];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -1046,11 +1046,11 @@ LABEL_16:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)haltTypingTimerWithEvent:(id)a3
+- (void)haltTypingTimerWithEvent:(id)event
 {
   if (self->_startTimerEvent)
   {
-    [a3 touchUpTimestamp];
+    [event touchUpTimestamp];
     v5 = v4;
     [(TISKEvent *)self->_startTimerEvent touchDownTimestamp];
     v7 = v5 - v6;
@@ -1067,37 +1067,37 @@ LABEL_16:
   }
 }
 
-- (id)init:(id)a3 endDate:(id)a4 identifier:(id)a5 version:(id)a6 inputMode:(id)a7 sessionIds:(id)a8 layout:(id)a9
+- (id)init:(id)init endDate:(id)date identifier:(id)identifier version:(id)version inputMode:(id)mode sessionIds:(id)ids layout:(id)layout
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  initCopy = init;
+  dateCopy = date;
+  identifierCopy = identifier;
+  versionCopy = version;
+  modeCopy = mode;
+  idsCopy = ids;
+  layoutCopy = layout;
   v30.receiver = self;
   v30.super_class = TISKSessionStats;
   v19 = [(TISKSessionStats *)&v30 init];
   if (v19)
   {
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     keyedMetrics = v19->_keyedMetrics;
-    v19->_keyedMetrics = v20;
+    v19->_keyedMetrics = dictionary;
 
-    objc_storeStrong(&v19->_startTime, a3);
-    objc_storeStrong(&v19->_endTime, a4);
+    objc_storeStrong(&v19->_startTime, init);
+    objc_storeStrong(&v19->_endTime, date);
     startTimerEvent = v19->_startTimerEvent;
     v19->_startTimerEvent = 0;
 
-    objc_storeStrong(&v19->_identifier, a5);
-    objc_storeStrong(&v19->_version, a6);
-    objc_storeStrong(&v19->_inputMode, a7);
-    v23 = [v17 mutableCopy];
+    objc_storeStrong(&v19->_identifier, identifier);
+    objc_storeStrong(&v19->_version, version);
+    objc_storeStrong(&v19->_inputMode, mode);
+    v23 = [idsCopy mutableCopy];
     sessionIds = v19->_sessionIds;
     v19->_sessionIds = v23;
 
-    objc_storeStrong(&v19->_layout, a9);
+    objc_storeStrong(&v19->_layout, layout);
     v19->_isEmpty = 1;
     [(TISKSessionStats *)v19 setup];
   }

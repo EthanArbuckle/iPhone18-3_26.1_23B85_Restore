@@ -1,12 +1,12 @@
 @interface CreateTimerIntentHandlerSingle
 - (_TtC21SiriTimeTimerInternal30CreateTimerIntentHandlerSingle)init;
-- (void)confirmCreateTimer:(id)a3 completion:(id)a4;
-- (void)handleCreateTimer:(id)a3 completion:(id)a4;
-- (void)resolveAllAvailableTargetsForCreateTimer:(CreateTimerIntent *)a3 withCompletion:(id)a4;
-- (void)resolveAssociatedDeviceTargetForCreateTimer:(CreateTimerIntent *)a3 withCompletion:(id)a4;
-- (void)resolveDurationNumberForCreateTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveLabelForCreateTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveTypeForCreateTimer:(id)a3 withCompletion:(id)a4;
+- (void)confirmCreateTimer:(id)timer completion:(id)completion;
+- (void)handleCreateTimer:(id)timer completion:(id)completion;
+- (void)resolveAllAvailableTargetsForCreateTimer:(CreateTimerIntent *)timer withCompletion:(id)completion;
+- (void)resolveAssociatedDeviceTargetForCreateTimer:(CreateTimerIntent *)timer withCompletion:(id)completion;
+- (void)resolveDurationNumberForCreateTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveLabelForCreateTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveTypeForCreateTimer:(id)timer withCompletion:(id)completion;
 @end
 
 @implementation CreateTimerIntentHandlerSingle
@@ -28,57 +28,57 @@
   return v4;
 }
 
-- (void)handleCreateTimer:(id)a3 completion:(id)a4
+- (void)handleCreateTimer:(id)timer completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_269379E98(v7, v8, v6);
+  timerCopy = timer;
+  selfCopy = self;
+  sub_269379E98(timerCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)resolveDurationNumberForCreateTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveDurationNumberForCreateTimer:(id)timer withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_26937A4A4(v7, v6);
+  timerCopy = timer;
+  selfCopy = self;
+  sub_26937A4A4(timerCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)resolveLabelForCreateTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveLabelForCreateTimer:(id)timer withCompletion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   sub_2693608D8(0, &qword_280E261C8, 0x277CD4190);
-  v5 = [swift_getObjCClassFromMetadata() notRequired];
-  v4[2](v4, v5);
+  notRequired = [swift_getObjCClassFromMetadata() notRequired];
+  v4[2](v4, notRequired);
   _Block_release(v4);
 }
 
-- (void)resolveTypeForCreateTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveTypeForCreateTimer:(id)timer withCompletion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   type metadata accessor for SiriTimerTypeResolutionResult();
-  v6 = a3;
-  v7 = sub_2693B0080([v6 type]);
+  timerCopy = timer;
+  v7 = sub_2693B0080([timerCopy type]);
   v5[2](v5, v7);
 
   _Block_release(v5);
 }
 
-- (void)resolveAssociatedDeviceTargetForCreateTimer:(CreateTimerIntent *)a3 withCompletion:(id)a4
+- (void)resolveAssociatedDeviceTargetForCreateTimer:(CreateTimerIntent *)timer withCompletion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_28030CE78, "\nY");
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = timer;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2693B3920();
@@ -93,20 +93,20 @@
   v15[3] = 0;
   v15[4] = &unk_2693B6530;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  timerCopy = timer;
+  selfCopy = self;
   sub_2693A6BC4(0, 0, v10, &unk_2693B6538, v15);
 }
 
-- (void)resolveAllAvailableTargetsForCreateTimer:(CreateTimerIntent *)a3 withCompletion:(id)a4
+- (void)resolveAllAvailableTargetsForCreateTimer:(CreateTimerIntent *)timer withCompletion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_28030CE78, "\nY");
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = timer;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2693B3920();
@@ -121,18 +121,18 @@
   v15[3] = 0;
   v15[4] = &unk_2693B5700;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  timerCopy = timer;
+  selfCopy = self;
   sub_2693A6BC4(0, 0, v10, &unk_2693B5530, v15);
 }
 
-- (void)confirmCreateTimer:(id)a3 completion:(id)a4
+- (void)confirmCreateTimer:(id)timer completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_26937A678(v8, v6);
+  timerCopy = timer;
+  selfCopy = self;
+  sub_26937A678(selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

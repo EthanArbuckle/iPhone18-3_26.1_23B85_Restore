@@ -1,6 +1,6 @@
 @interface PKSelectionGestureView
 - (PKSelectionController)selectionController;
-- (PKSelectionGestureView)initWithFrame:(CGRect)a3 selectionController:(id)a4;
+- (PKSelectionGestureView)initWithFrame:(CGRect)frame selectionController:(id)controller;
 - (void)didMoveToWindow;
 @end
 
@@ -8,11 +8,11 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(PKSelectionGestureView *)self window];
+  window = [(PKSelectionGestureView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v8 = [(PKSelectionGestureView *)self selectionInteraction];
+    selectionInteraction = [(PKSelectionGestureView *)self selectionInteraction];
     WeakRetained = objc_loadWeakRetained(&self->_selectionController);
     v5 = WeakRetained;
     if (WeakRetained)
@@ -26,25 +26,25 @@
     }
 
     v7 = [v6 ink];
-    [v8 _updateAllowedTouchTypesForSelectedInk:v7];
+    [selectionInteraction _updateAllowedTouchTypesForSelectedInk:v7];
   }
 }
 
-- (PKSelectionGestureView)initWithFrame:(CGRect)a3 selectionController:(id)a4
+- (PKSelectionGestureView)initWithFrame:(CGRect)frame selectionController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = PKSelectionGestureView;
-  v10 = [(PKSelectionGestureView *)&v15 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(PKSelectionGestureView *)&v15 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeWeak(&v10->_selectionController, v9);
-    v12 = [[PKSelectionInteraction alloc] initWithSelectionController:v9];
+    objc_storeWeak(&height->_selectionController, controllerCopy);
+    v12 = [[PKSelectionInteraction alloc] initWithSelectionController:controllerCopy];
     selectionInteraction = v11->_selectionInteraction;
     v11->_selectionInteraction = v12;
 

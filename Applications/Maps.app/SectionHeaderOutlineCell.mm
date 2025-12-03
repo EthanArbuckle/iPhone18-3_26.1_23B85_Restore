@@ -1,21 +1,21 @@
 @interface SectionHeaderOutlineCell
-- (void)_accessoryButtonTapped:(id)a3;
+- (void)_accessoryButtonTapped:(id)tapped;
 - (void)_updateAccessoryConfigurations;
-- (void)_updateFromModel:(BOOL)a3;
-- (void)setCellModel:(id)a3;
-- (void)setHovering:(BOOL)a3;
+- (void)_updateFromModel:(BOOL)model;
+- (void)setCellModel:(id)model;
+- (void)setHovering:(BOOL)hovering;
 - (void)updateBackgroundStyle;
 @end
 
 @implementation SectionHeaderOutlineCell
 
-- (void)_accessoryButtonTapped:(id)a3
+- (void)_accessoryButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v6 = [v4 delegate];
-  v5 = [v4 accessoryType];
+  tappedCopy = tapped;
+  delegate = [tappedCopy delegate];
+  accessoryType = [tappedCopy accessoryType];
 
-  [v6 sectionHeaderOutlineCell:self accessoryTypeTapped:v5];
+  [delegate sectionHeaderOutlineCell:self accessoryTypeTapped:accessoryType];
 }
 
 - (void)_updateAccessoryConfigurations
@@ -25,8 +25,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(SectionHeaderOutlineCellModel *)self->_cellModel accessoryModels];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  accessoryModels = [(SectionHeaderOutlineCellModel *)self->_cellModel accessoryModels];
+  v5 = [accessoryModels countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -36,17 +36,17 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accessoryModels);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 visibility];
-        if (!v9 || v9 == 1 && [(SidebarOutlineCell *)self isHovering])
+        visibility = [v8 visibility];
+        if (!visibility || visibility == 1 && [(SidebarOutlineCell *)self isHovering])
         {
-          v10 = [v8 accessoryType];
-          if ((v10 - 2) >= 2)
+          accessoryType = [v8 accessoryType];
+          if ((accessoryType - 2) >= 2)
           {
-            if (v10 == 1)
+            if (accessoryType == 1)
             {
               v11 = [v8 createAccessoryConfigurationWithActionHandler:0];
               if (v11)
@@ -79,7 +79,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [accessoryModels countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -94,73 +94,73 @@ LABEL_14:
   [(SectionHeaderOutlineCell *)self setBackgroundConfiguration:v3];
 }
 
-- (void)setHovering:(BOOL)a3
+- (void)setHovering:(BOOL)hovering
 {
   v4.receiver = self;
   v4.super_class = SectionHeaderOutlineCell;
-  [(SidebarOutlineCell *)&v4 setHovering:a3];
+  [(SidebarOutlineCell *)&v4 setHovering:hovering];
   [(SectionHeaderOutlineCell *)self _updateAccessoryConfigurations];
 }
 
-- (void)_updateFromModel:(BOOL)a3
+- (void)_updateFromModel:(BOOL)model
 {
-  v3 = a3;
+  modelCopy = model;
   v13 = +[UIListContentConfiguration headerConfiguration];
   [v13 directionalLayoutMargins];
   v6 = v5;
   [v13 directionalLayoutMargins];
   [v13 setDirectionalLayoutMargins:{v6, 0.0}];
-  v7 = [(SectionHeaderOutlineCellModel *)self->_cellModel title];
-  [v13 setText:v7];
+  title = [(SectionHeaderOutlineCellModel *)self->_cellModel title];
+  [v13 setText:title];
 
   [(SectionHeaderOutlineCell *)self setContentConfiguration:v13];
-  v8 = [(SidebarOutlineCell *)self axSectionIdentifier];
-  if ([v8 length])
+  axSectionIdentifier = [(SidebarOutlineCell *)self axSectionIdentifier];
+  if ([axSectionIdentifier length])
   {
-    v9 = [(SidebarOutlineCell *)self axSectionIdentifier];
+    axSectionIdentifier2 = [(SidebarOutlineCell *)self axSectionIdentifier];
   }
 
   else
   {
-    v9 = &stru_1016631F0;
+    axSectionIdentifier2 = &stru_1016631F0;
   }
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [(__CFString *)v9 stringByAppendingString:v11];
+  v12 = [(__CFString *)axSectionIdentifier2 stringByAppendingString:v11];
   [(SectionHeaderOutlineCell *)self setAccessibilityIdentifier:v12];
 
-  if (v3)
+  if (modelCopy)
   {
     [(SectionHeaderOutlineCell *)self _updateAccessoryConfigurations];
   }
 }
 
-- (void)setCellModel:(id)a3
+- (void)setCellModel:(id)model
 {
-  v10 = a3;
-  v5 = [(SectionHeaderOutlineCellModel *)v10 accessoryModels];
-  v6 = [(SectionHeaderOutlineCellModel *)self->_cellModel accessoryModels];
-  if (v5 == v6)
+  modelCopy = model;
+  accessoryModels = [(SectionHeaderOutlineCellModel *)modelCopy accessoryModels];
+  accessoryModels2 = [(SectionHeaderOutlineCellModel *)self->_cellModel accessoryModels];
+  if (accessoryModels == accessoryModels2)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v5 isEqual:v6] ^ 1;
+    v7 = [accessoryModels isEqual:accessoryModels2] ^ 1;
   }
 
-  v8 = v10;
-  if (self->_cellModel != v10)
+  v8 = modelCopy;
+  if (self->_cellModel != modelCopy)
   {
-    v9 = [(SectionHeaderOutlineCellModel *)v10 isEqual:?];
-    v8 = v10;
+    v9 = [(SectionHeaderOutlineCellModel *)modelCopy isEqual:?];
+    v8 = modelCopy;
     if ((v9 & 1) == 0)
     {
-      objc_storeStrong(&self->_cellModel, a3);
+      objc_storeStrong(&self->_cellModel, model);
       [(SectionHeaderOutlineCell *)self _updateFromModel:v7];
-      v8 = v10;
+      v8 = modelCopy;
     }
   }
 }

@@ -1,12 +1,12 @@
 @interface FMDCoreAccessoriesCache
-- (BOOL)isCachedAccessoryWithUUID:(id)a3;
+- (BOOL)isCachedAccessoryWithUUID:(id)d;
 - (FMDCoreAccessoriesCache)init;
 - (id)accessoriesRawInfo;
-- (id)getAccessoryWithUUID:(id)a3;
-- (void)_cleanupDuplicationsOfAccessoryWithSerialNumber:(id)a3 currentAccessoryUUID:(id)a4;
-- (void)accessoryDidUpdateWithUUID:(id)a3;
-- (void)deleteAccessoryWithUUID:(id)a3;
-- (void)saveAccessory:(id)a3 withUUID:(id)a4;
+- (id)getAccessoryWithUUID:(id)d;
+- (void)_cleanupDuplicationsOfAccessoryWithSerialNumber:(id)number currentAccessoryUUID:(id)d;
+- (void)accessoryDidUpdateWithUUID:(id)d;
+- (void)deleteAccessoryWithUUID:(id)d;
+- (void)saveAccessory:(id)accessory withUUID:(id)d;
 @end
 
 @implementation FMDCoreAccessoriesCache
@@ -28,62 +28,62 @@
 
 - (id)accessoriesRawInfo
 {
-  v2 = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
-  v3 = [v2 copy];
+  accessoryRawInfo = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
+  v3 = [accessoryRawInfo copy];
 
   return v3;
 }
 
-- (id)getAccessoryWithUUID:(id)a3
+- (id)getAccessoryWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  accessoryRawInfo = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
+  v6 = [accessoryRawInfo objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (BOOL)isCachedAccessoryWithUUID:(id)a3
+- (BOOL)isCachedAccessoryWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  accessoryRawInfo = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
+  v6 = [accessoryRawInfo objectForKeyedSubscript:dCopy];
 
   return v6 != 0;
 }
 
-- (void)saveAccessory:(id)a3 withUUID:(id)a4
+- (void)saveAccessory:(id)accessory withUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 serialNumber];
-  [(FMDCoreAccessoriesCache *)self _cleanupDuplicationsOfAccessoryWithSerialNumber:v8 currentAccessoryUUID:v6];
+  dCopy = d;
+  accessoryCopy = accessory;
+  serialNumber = [accessoryCopy serialNumber];
+  [(FMDCoreAccessoriesCache *)self _cleanupDuplicationsOfAccessoryWithSerialNumber:serialNumber currentAccessoryUUID:dCopy];
 
-  v9 = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
-  [v9 setObject:v7 forKeyedSubscript:v6];
+  accessoryRawInfo = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
+  [accessoryRawInfo setObject:accessoryCopy forKeyedSubscript:dCopy];
 }
 
-- (void)accessoryDidUpdateWithUUID:(id)a3
+- (void)accessoryDidUpdateWithUUID:(id)d
 {
-  v4 = a3;
-  v7 = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
-  v5 = [v7 objectForKeyedSubscript:v4];
-  v6 = [v5 serialNumber];
-  [(FMDCoreAccessoriesCache *)self _cleanupDuplicationsOfAccessoryWithSerialNumber:v6 currentAccessoryUUID:v4];
+  dCopy = d;
+  accessoryRawInfo = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
+  v5 = [accessoryRawInfo objectForKeyedSubscript:dCopy];
+  serialNumber = [v5 serialNumber];
+  [(FMDCoreAccessoriesCache *)self _cleanupDuplicationsOfAccessoryWithSerialNumber:serialNumber currentAccessoryUUID:dCopy];
 }
 
-- (void)deleteAccessoryWithUUID:(id)a3
+- (void)deleteAccessoryWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
-  [v5 removeObjectForKey:v4];
+  dCopy = d;
+  accessoryRawInfo = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
+  [accessoryRawInfo removeObjectForKey:dCopy];
 }
 
-- (void)_cleanupDuplicationsOfAccessoryWithSerialNumber:(id)a3 currentAccessoryUUID:(id)a4
+- (void)_cleanupDuplicationsOfAccessoryWithSerialNumber:(id)number currentAccessoryUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 length])
+  numberCopy = number;
+  dCopy = d;
+  if (numberCopy && [numberCopy length])
   {
     v17 = 0;
     v18 = &v17;
@@ -91,16 +91,16 @@
     v20 = sub_100001D34;
     v21 = sub_100001D44;
     v22 = objc_opt_new();
-    v8 = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
+    accessoryRawInfo = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100001D4C;
     v13[3] = &unk_100038640;
-    v9 = v6;
+    v9 = numberCopy;
     v14 = v9;
-    v15 = v7;
+    v15 = dCopy;
     v16 = &v17;
-    [v8 enumerateKeysAndObjectsUsingBlock:v13];
+    [accessoryRawInfo enumerateKeysAndObjectsUsingBlock:v13];
 
     if ([v18[5] count])
     {
@@ -116,8 +116,8 @@
       }
     }
 
-    v12 = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
-    [v12 removeObjectsForKeys:v18[5]];
+    accessoryRawInfo2 = [(FMDCoreAccessoriesCache *)self accessoryRawInfo];
+    [accessoryRawInfo2 removeObjectsForKeys:v18[5]];
 
     _Block_object_dispose(&v17, 8);
   }

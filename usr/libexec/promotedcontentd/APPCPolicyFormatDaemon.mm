@@ -1,19 +1,19 @@
 @interface APPCPolicyFormatDaemon
-+ (BOOL)storeAdPolicies:(id)a3;
++ (BOOL)storeAdPolicies:(id)policies;
 + (id)adPolicies;
 @end
 
 @implementation APPCPolicyFormatDaemon
 
-+ (BOOL)storeAdPolicies:(id)a3
++ (BOOL)storeAdPolicies:(id)policies
 {
-  v3 = a3;
+  policiesCopy = policies;
   v4 = [[APStorageManager alloc] initWithPathPrefix:@"a/p/"];
-  if ([v3 count])
+  if ([policiesCopy count])
   {
     v9 = 0;
     v5 = &v9;
-    [v4 storeObject:v3 atPath:@"APAdPolicy" error:&v9];
+    [v4 storeObject:policiesCopy atPath:@"APAdPolicy" error:&v9];
   }
 
   else

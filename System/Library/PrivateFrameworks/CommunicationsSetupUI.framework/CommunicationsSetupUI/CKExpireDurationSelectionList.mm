@@ -1,7 +1,7 @@
 @interface CKExpireDurationSelectionList
 - (id)specifiers;
 - (void)_updateFooterText;
-- (void)listItemSelected:(id)a3;
+- (void)listItemSelected:(id)selected;
 @end
 
 @implementation CKExpireDurationSelectionList
@@ -15,8 +15,8 @@
     v5 = MEMORY[0x277CBEB18];
     v14.receiver = self;
     v14.super_class = CKExpireDurationSelectionList;
-    v6 = [(PSListItemsController *)&v14 specifiers];
-    v7 = [v5 arrayWithArray:v6];
+    specifiers = [(PSListItemsController *)&v14 specifiers];
+    v7 = [v5 arrayWithArray:specifiers];
 
     v8 = +[CKSettingsMessagesController currentKeepMessages];
     if ([v8 integerValue] == 30)
@@ -53,20 +53,20 @@
   return v4;
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
   v4.receiver = self;
   v4.super_class = CKExpireDurationSelectionList;
-  [(PSListItemsController *)&v4 listItemSelected:a3];
+  [(PSListItemsController *)&v4 listItemSelected:selected];
   [(CKExpireDurationSelectionList *)self _updateFooterText];
 }
 
 - (void)_updateFooterText
 {
-  v4 = [(CKExpireDurationSelectionList *)self expireDescription];
-  v3 = [(CKExpireDurationSelectionList *)self _groupSpecifier];
-  [v3 setProperty:v4 forKey:*MEMORY[0x277D3FF88]];
-  [(CKExpireDurationSelectionList *)self reloadSpecifier:v3];
+  expireDescription = [(CKExpireDurationSelectionList *)self expireDescription];
+  _groupSpecifier = [(CKExpireDurationSelectionList *)self _groupSpecifier];
+  [_groupSpecifier setProperty:expireDescription forKey:*MEMORY[0x277D3FF88]];
+  [(CKExpireDurationSelectionList *)self reloadSpecifier:_groupSpecifier];
 }
 
 @end

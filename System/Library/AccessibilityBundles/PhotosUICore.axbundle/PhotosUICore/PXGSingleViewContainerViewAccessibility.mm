@@ -11,27 +11,27 @@
 
 - (id)_axContentViewLabel
 {
-  v2 = [(PXGSingleViewContainerViewAccessibility *)self _axContentView];
-  v3 = [v2 accessibilityLabel];
+  _axContentView = [(PXGSingleViewContainerViewAccessibility *)self _axContentView];
+  accessibilityLabel = [_axContentView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(PXGSingleViewContainerViewAccessibility *)self _axContentView];
-  v3 = [v2 accessibilityValue];
+  _axContentView = [(PXGSingleViewContainerViewAccessibility *)self _axContentView];
+  accessibilityValue = [_axContentView accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(PXGSingleViewContainerViewAccessibility *)self _axContentViewLabel];
-  v3 = v2;
-  if (v2)
+  _axContentViewLabel = [(PXGSingleViewContainerViewAccessibility *)self _axContentViewLabel];
+  v3 = _axContentViewLabel;
+  if (_axContentViewLabel)
   {
-    v4 = [v2 length] != 0;
+    v4 = [_axContentViewLabel length] != 0;
   }
 
   else
@@ -44,26 +44,26 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v2 = [(PXGSingleViewContainerViewAccessibility *)self _axContentView];
-  v3 = [v2 _accessibilitySupplementaryFooterViews];
+  _axContentView = [(PXGSingleViewContainerViewAccessibility *)self _axContentView];
+  _accessibilitySupplementaryFooterViews = [_axContentView _accessibilitySupplementaryFooterViews];
 
-  return v3;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 - (id)accessibilityCustomRotors
 {
-  v2 = [(PXGSingleViewContainerViewAccessibility *)self _axContentView];
-  v3 = [v2 accessibilityCustomRotors];
+  _axContentView = [(PXGSingleViewContainerViewAccessibility *)self _axContentView];
+  accessibilityCustomRotors = [_axContentView accessibilityCustomRotors];
 
-  return v3;
+  return accessibilityCustomRotors;
 }
 
 - (id)automationElements
 {
-  v2 = [(PXGSingleViewContainerViewAccessibility *)self _axContentView];
-  v3 = [v2 automationElements];
+  _axContentView = [(PXGSingleViewContainerViewAccessibility *)self _axContentView];
+  automationElements = [_axContentView automationElements];
 
-  return v3;
+  return automationElements;
 }
 
 @end

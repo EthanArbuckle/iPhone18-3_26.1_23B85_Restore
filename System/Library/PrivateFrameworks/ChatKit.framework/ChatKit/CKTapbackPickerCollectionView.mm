@@ -1,13 +1,13 @@
 @interface CKTapbackPickerCollectionView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CGPoint)contentOffset;
-- (CKTapbackPickerCollectionView)initWithCoder:(id)a3;
-- (void)setContentOffset:(CGPoint)a3;
+- (CKTapbackPickerCollectionView)initWithCoder:(id)coder;
+- (void)setContentOffset:(CGPoint)offset;
 @end
 
 @implementation CKTapbackPickerCollectionView
 
-- (CKTapbackPickerCollectionView)initWithCoder:(id)a3
+- (CKTapbackPickerCollectionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR___CKTapbackPickerCollectionView_scrollDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -25,9 +25,9 @@
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_190D56F10();
     v6 = v5;
@@ -39,7 +39,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_190CF0BA0(v4, v6);
 
   return v8 & 1;
@@ -55,10 +55,10 @@
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for TapbackPickerCollectionView();
   v5 = v9.receiver;

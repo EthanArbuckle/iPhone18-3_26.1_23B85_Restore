@@ -1,26 +1,26 @@
 @interface HKNanoRegistryPairingAndSwitchingNotificationDataSource
-- (HKNanoRegistryPairingAndSwitchingNotificationDataSource)initWithPairedDeviceRegistry:(id)a3;
+- (HKNanoRegistryPairingAndSwitchingNotificationDataSource)initWithPairedDeviceRegistry:(id)registry;
 - (NRPairedDeviceRegistry)pairedDeviceRegistry;
 - (id)_pairingChangeNotifications;
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4;
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle;
 - (void)_pairingChangeNotifications;
-- (void)registerObserverForDevicePairingChanges:(id)a3 block:(id)a4;
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4;
-- (void)unregisterObserverForDevicePairingChanges:(id)a3;
+- (void)registerObserverForDevicePairingChanges:(id)changes block:(id)block;
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key;
+- (void)unregisterObserverForDevicePairingChanges:(id)changes;
 @end
 
 @implementation HKNanoRegistryPairingAndSwitchingNotificationDataSource
 
-- (HKNanoRegistryPairingAndSwitchingNotificationDataSource)initWithPairedDeviceRegistry:(id)a3
+- (HKNanoRegistryPairingAndSwitchingNotificationDataSource)initWithPairedDeviceRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v9.receiver = self;
   v9.super_class = HKNanoRegistryPairingAndSwitchingNotificationDataSource;
   v6 = [(HKObserverBridge *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pairedDeviceRegistry, a3);
+    objc_storeStrong(&v6->_pairedDeviceRegistry, registry);
   }
 
   return v7;
@@ -31,7 +31,7 @@
   pairedDeviceRegistry = self->_pairedDeviceRegistry;
   if (pairedDeviceRegistry)
   {
-    v3 = pairedDeviceRegistry;
+    sharedInstance = pairedDeviceRegistry;
   }
 
   else
@@ -54,38 +54,38 @@
 
     v5 = v4;
     _Block_object_dispose(&v8, 8);
-    v3 = [v4 sharedInstance];
+    sharedInstance = [v4 sharedInstance];
   }
 
-  return v3;
+  return sharedInstance;
 }
 
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKNanoRegistryPairingAndSwitchingNotificationDataSource *)self _notificationCenter];
-  v9 = [(HKNanoRegistryPairingAndSwitchingNotificationDataSource *)self pairedDeviceRegistry];
+  keyCopy = key;
+  handleCopy = handle;
+  _notificationCenter = [(HKNanoRegistryPairingAndSwitchingNotificationDataSource *)self _notificationCenter];
+  pairedDeviceRegistry = [(HKNanoRegistryPairingAndSwitchingNotificationDataSource *)self pairedDeviceRegistry];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __103__HKNanoRegistryPairingAndSwitchingNotificationDataSource_makeAndRegisterBridgedObserverForKey_handle___block_invoke;
   v14[3] = &unk_1E737B420;
-  v15 = v7;
-  v16 = v6;
-  v10 = v6;
-  v11 = v7;
-  v12 = [v8 addObserverForName:v10 object:v9 queue:0 usingBlock:v14];
+  v15 = handleCopy;
+  v16 = keyCopy;
+  v10 = keyCopy;
+  v11 = handleCopy;
+  v12 = [_notificationCenter addObserverForName:v10 object:pairedDeviceRegistry queue:0 usingBlock:v14];
 
   return v12;
 }
 
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HKNanoRegistryPairingAndSwitchingNotificationDataSource *)self _notificationCenter];
-  v8 = [(HKNanoRegistryPairingAndSwitchingNotificationDataSource *)self pairedDeviceRegistry];
-  [v9 removeObserver:v7 name:v6 object:v8];
+  keyCopy = key;
+  observerCopy = observer;
+  _notificationCenter = [(HKNanoRegistryPairingAndSwitchingNotificationDataSource *)self _notificationCenter];
+  pairedDeviceRegistry = [(HKNanoRegistryPairingAndSwitchingNotificationDataSource *)self pairedDeviceRegistry];
+  [_notificationCenter removeObserver:observerCopy name:keyCopy object:pairedDeviceRegistry];
 }
 
 - (id)_pairingChangeNotifications
@@ -162,11 +162,11 @@
   return v12;
 }
 
-- (void)registerObserverForDevicePairingChanges:(id)a3 block:(id)a4
+- (void)registerObserverForDevicePairingChanges:(id)changes block:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -192,8 +192,8 @@
         v15[1] = 3221225472;
         v15[2] = __105__HKNanoRegistryPairingAndSwitchingNotificationDataSource_registerObserverForDevicePairingChanges_block___block_invoke;
         v15[3] = &unk_1E737B448;
-        v16 = v7;
-        [(HKObserverBridge *)self registerObserver:v6 forKey:v12 newValueHandler:v15];
+        v16 = blockCopy;
+        [(HKObserverBridge *)self registerObserver:changesCopy forKey:v12 newValueHandler:v15];
 
         ++v11;
       }
@@ -208,16 +208,16 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterObserverForDevicePairingChanges:(id)a3
+- (void)unregisterObserverForDevicePairingChanges:(id)changes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changesCopy = changes;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HKNanoRegistryPairingAndSwitchingNotificationDataSource *)self _pairingChangeNotifications];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _pairingChangeNotifications = [(HKNanoRegistryPairingAndSwitchingNotificationDataSource *)self _pairingChangeNotifications];
+  v6 = [_pairingChangeNotifications countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -229,14 +229,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_pairingChangeNotifications);
         }
 
-        [(HKObserverBridge *)self unregisterObserver:v4 forKey:*(*(&v11 + 1) + 8 * v9++)];
+        [(HKObserverBridge *)self unregisterObserver:changesCopy forKey:*(*(&v11 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [_pairingChangeNotifications countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -247,9 +247,9 @@
 
 - (void)_pairingChangeNotifications
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRPairedDeviceRegistryDeviceIsSetupNotification(void)"];
-  [v0 handleFailureInFunction:v1 file:@"HKNanoRegistryPairingAndSwitchingNotificationDataSource.m" lineNumber:23 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"HKNanoRegistryPairingAndSwitchingNotificationDataSource.m" lineNumber:23 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

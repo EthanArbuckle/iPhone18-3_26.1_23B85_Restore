@@ -1,26 +1,26 @@
 @interface SBBiometricMonitorTestRecipeDummyDataSource
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)cycleState;
 @end
 
 @implementation SBBiometricMonitorTestRecipeDummyDataSource
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSMutableSet *)observers addObject:v4];
+  [(NSMutableSet *)observers addObject:observerCopy];
 }
 
 - (void)cycleState

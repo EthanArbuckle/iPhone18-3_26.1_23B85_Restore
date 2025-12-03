@@ -1,28 +1,28 @@
 @interface TSTTableDataCommentStorage
-- (BOOL)isEqual:(id)a3;
-- (id)initObjectWithCommentStorage:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)initObjectWithCommentStorage:(id)storage;
 - (void)dealloc;
 @end
 
 @implementation TSTTableDataCommentStorage
 
-- (id)initObjectWithCommentStorage:(id)a3
+- (id)initObjectWithCommentStorage:(id)storage
 {
   v6.receiver = self;
   v6.super_class = TSTTableDataCommentStorage;
   v4 = [(TSTTableDataCommentStorage *)&v6 init];
   if (v4)
   {
-    v4->mCommentStorage = a3;
+    v4->mCommentStorage = storage;
     v4->super.mRefCount = 1;
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -34,7 +34,7 @@
   }
 
   mCommentStorage = self->mCommentStorage;
-  v6 = *(a3 + 2);
+  v6 = *(equal + 2);
 
   return [(TSDCommentStorage *)mCommentStorage isEqual:v6];
 }

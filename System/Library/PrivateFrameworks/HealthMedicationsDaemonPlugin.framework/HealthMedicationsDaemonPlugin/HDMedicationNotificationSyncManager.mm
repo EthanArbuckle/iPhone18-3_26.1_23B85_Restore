@@ -1,62 +1,62 @@
 @interface HDMedicationNotificationSyncManager
 - (BOOL)_clearMemoryCache;
-- (BOOL)_shouldSendHoldInstructionForNewDoseEvent:(id)a3;
-- (BOOL)_shouldSendHoldInstructionForOldScheduleItem:(id)a3 compareWithNewScheduleItem:(id)a4;
+- (BOOL)_shouldSendHoldInstructionForNewDoseEvent:(id)event;
+- (BOOL)_shouldSendHoldInstructionForOldScheduleItem:(id)item compareWithNewScheduleItem:(id)scheduleItem;
 - (HDMedicationNotificationSyncManager)init;
-- (HDMedicationNotificationSyncManager)initWithProfileExtension:(id)a3;
-- (HDMedicationNotificationSyncManager)initWithProfileExtension:(id)a3 notificationSyncClient:(id)a4;
-- (id)_fetchAllScheduleItemsWithTransaction:(uint64_t)a3 error:;
-- (id)_getAndReleaseCachedScheduleItemsForSchedules:(uint64_t)a1;
-- (int64_t)isScheduleItemOnHold:(id)a3 errorOut:(id *)a4;
-- (uint64_t)_hasNotificationRecentlyBroadcastedForScheduleItemIdentifier:(uint64_t)a1;
-- (void)_broadcastNotificationSchedule:(uint64_t)a1 withOldScheduleItem:(void *)a2 andNewScheduleItem:(void *)a3;
-- (void)_cacheScheduleItems:(void *)a3 forSchedules:;
-- (void)_didRescheduleLocalSchedules:(void *)a3 transaction:;
+- (HDMedicationNotificationSyncManager)initWithProfileExtension:(id)extension;
+- (HDMedicationNotificationSyncManager)initWithProfileExtension:(id)extension notificationSyncClient:(id)client;
+- (id)_fetchAllScheduleItemsWithTransaction:(uint64_t)transaction error:;
+- (id)_getAndReleaseCachedScheduleItemsForSchedules:(uint64_t)schedules;
+- (int64_t)isScheduleItemOnHold:(id)hold errorOut:(id *)out;
+- (uint64_t)_hasNotificationRecentlyBroadcastedForScheduleItemIdentifier:(uint64_t)identifier;
+- (void)_broadcastNotificationSchedule:(uint64_t)schedule withOldScheduleItem:(void *)item andNewScheduleItem:(void *)scheduleItem;
+- (void)_cacheScheduleItems:(void *)items forSchedules:;
+- (void)_didRescheduleLocalSchedules:(void *)schedules transaction:;
 - (void)_handleDismissInstructions;
 - (void)_handleHoldInstructions;
-- (void)_handleScheduleItemsChangeForSchedule:(id)a3 withOldScheduleItems:(id)a4 andNewScheduleItems:(id)a5;
-- (void)_updateNotificationSentTimeForScheduleItemIdentifier:(uint64_t)a1;
-- (void)_willRescheduleLocalSchedules:(void *)a3 transaction:;
-- (void)doseEventsAdded:(id)a3;
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4;
-- (void)scheduleManager:(id)a3 transaction:(id)a4 didReschedule:(id)a5;
-- (void)scheduleManager:(id)a3 transaction:(id)a4 willReschedule:(id)a5;
+- (void)_handleScheduleItemsChangeForSchedule:(id)schedule withOldScheduleItems:(id)items andNewScheduleItems:(id)scheduleItems;
+- (void)_updateNotificationSentTimeForScheduleItemIdentifier:(uint64_t)identifier;
+- (void)_willRescheduleLocalSchedules:(void *)schedules transaction:;
+- (void)doseEventsAdded:(id)added;
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action;
+- (void)scheduleManager:(id)manager transaction:(id)transaction didReschedule:(id)reschedule;
+- (void)scheduleManager:(id)manager transaction:(id)transaction willReschedule:(id)reschedule;
 @end
 
 @implementation HDMedicationNotificationSyncManager
 
-- (HDMedicationNotificationSyncManager)initWithProfileExtension:(id)a3
+- (HDMedicationNotificationSyncManager)initWithProfileExtension:(id)extension
 {
   v4 = MEMORY[0x277D107B8];
-  v5 = a3;
+  extensionCopy = extension;
   v6 = [v4 alloc];
-  v7 = [v5 profile];
+  profile = [extensionCopy profile];
   v8 = *MEMORY[0x277CCE3D8];
   v9 = HKCreateSerialDispatchQueue();
-  v10 = [v6 initWithProfile:v7 clientIdentifier:v8 queue:v9];
+  v10 = [v6 initWithProfile:profile clientIdentifier:v8 queue:v9];
 
-  v11 = [(HDMedicationNotificationSyncManager *)self initWithProfileExtension:v5 notificationSyncClient:v10];
+  v11 = [(HDMedicationNotificationSyncManager *)self initWithProfileExtension:extensionCopy notificationSyncClient:v10];
   return v11;
 }
 
-- (HDMedicationNotificationSyncManager)initWithProfileExtension:(id)a3 notificationSyncClient:(id)a4
+- (HDMedicationNotificationSyncManager)initWithProfileExtension:(id)extension notificationSyncClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  extensionCopy = extension;
+  clientCopy = client;
   v22.receiver = self;
   v22.super_class = HDMedicationNotificationSyncManager;
   v8 = [(HDMedicationNotificationSyncManager *)&v22 init];
   if (v8)
   {
-    v9 = [v6 profile];
-    objc_storeWeak(&v8->_profile, v9);
+    profile = [extensionCopy profile];
+    objc_storeWeak(&v8->_profile, profile);
 
-    objc_storeStrong(&v8->_notificationSyncClient, a4);
+    objc_storeStrong(&v8->_notificationSyncClient, client);
     [(HDNotificationSyncClient *)v8->_notificationSyncClient setDelegate:v8];
     WeakRetained = objc_loadWeakRetained(&v8->_profile);
-    v11 = [WeakRetained notificationManager];
+    notificationManager = [WeakRetained notificationManager];
     notificationManager = v8->_notificationManager;
-    v8->_notificationManager = v11;
+    v8->_notificationManager = notificationManager;
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     scheduleDict = v8->_scheduleDict;
@@ -68,12 +68,12 @@
 
     *&v8->_scheduleDictLock._os_unfair_lock_opaque = 0;
     v17 = objc_loadWeakRetained(&v8->_profile);
-    v18 = [v17 syncIdentityManager];
+    syncIdentityManager = [v17 syncIdentityManager];
     syncIdentityManager = v8->_syncIdentityManager;
-    v8->_syncIdentityManager = v18;
+    v8->_syncIdentityManager = syncIdentityManager;
 
-    v20 = [v6 medicationScheduleManager];
-    [v20 registerSynchronousObserver:v8];
+    medicationScheduleManager = [extensionCopy medicationScheduleManager];
+    [medicationScheduleManager registerSynchronousObserver:v8];
   }
 
   return v8;
@@ -89,10 +89,10 @@
   return 0;
 }
 
-- (int64_t)isScheduleItemOnHold:(id)a3 errorOut:(id *)a4
+- (int64_t)isScheduleItemOnHold:(id)hold errorOut:(id *)out
 {
-  v6 = a3;
-  v7 = [(HDNotificationSyncClient *)self->_notificationSyncClient notificationHoldInstructionsWithError:a4];
+  holdCopy = hold;
+  v7 = [(HDNotificationSyncClient *)self->_notificationSyncClient notificationHoldInstructionsWithError:out];
   _HKInitializeLogging();
   v8 = HKLogMedication();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -108,7 +108,7 @@
 
   if (v7)
   {
-    v11 = [MEMORY[0x277CCD6C0] categoryIdentifierFromScheduleItemIdentifier:v6];
+    v11 = [MEMORY[0x277CCD6C0] categoryIdentifierFromScheduleItemIdentifier:holdCopy];
     if ([v7 containsObject:v11])
     {
       v12 = 1;
@@ -128,11 +128,11 @@
   return v12;
 }
 
-- (void)scheduleManager:(id)a3 transaction:(id)a4 willReschedule:(id)a5
+- (void)scheduleManager:(id)manager transaction:(id)transaction willReschedule:(id)reschedule
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
+  rescheduleCopy = reschedule;
+  transactionCopy = transaction;
   _HKInitializeLogging();
   v9 = HKLogMedication();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -142,19 +142,19 @@
     v13 = 138543618;
     v14 = v10;
     v15 = 2048;
-    v16 = [v7 count];
+    v16 = [rescheduleCopy count];
     _os_log_impl(&dword_25181C000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Will reschedule for %ld local schedules", &v13, 0x16u);
   }
 
-  [(HDMedicationNotificationSyncManager *)self _willRescheduleLocalSchedules:v7 transaction:v8];
+  [(HDMedicationNotificationSyncManager *)self _willRescheduleLocalSchedules:rescheduleCopy transaction:transactionCopy];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleManager:(id)a3 transaction:(id)a4 didReschedule:(id)a5
+- (void)scheduleManager:(id)manager transaction:(id)transaction didReschedule:(id)reschedule
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
+  rescheduleCopy = reschedule;
+  transactionCopy = transaction;
   _HKInitializeLogging();
   v9 = HKLogMedication();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -164,11 +164,11 @@
     v13 = 138543618;
     v14 = v10;
     v15 = 2048;
-    v16 = [v7 count];
+    v16 = [rescheduleCopy count];
     _os_log_impl(&dword_25181C000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Did reschedule for %ld local schedules", &v13, 0x16u);
   }
 
-  [(HDMedicationNotificationSyncManager *)self _didRescheduleLocalSchedules:v7 transaction:v8];
+  [(HDMedicationNotificationSyncManager *)self _didRescheduleLocalSchedules:rescheduleCopy transaction:transactionCopy];
   v12 = *MEMORY[0x277D85DE8];
 }
 
@@ -246,21 +246,21 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
   return 1;
 }
 
-- (void)_handleScheduleItemsChangeForSchedule:(id)a3 withOldScheduleItems:(id)a4 andNewScheduleItems:(id)a5
+- (void)_handleScheduleItemsChangeForSchedule:(id)schedule withOldScheduleItems:(id)items andNewScheduleItems:(id)scheduleItems
 {
   v44 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 count])
+  scheduleCopy = schedule;
+  itemsCopy = items;
+  scheduleItemsCopy = scheduleItems;
+  if ([itemsCopy count])
   {
     v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v30 = v8;
-    v10 = v8;
+    v30 = itemsCopy;
+    v10 = itemsCopy;
     v11 = [v10 countByEnumeratingWithState:&v33 objects:v43 count:16];
     if (v11)
     {
@@ -278,7 +278,7 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
 
           v15 = *(*(&v33 + 1) + 8 * v14);
           v16 = [v10 objectForKeyedSubscript:v15];
-          v17 = [v9 objectForKeyedSubscript:v15];
+          v17 = [scheduleItemsCopy objectForKeyedSubscript:v15];
           if (!v17)
           {
             [v32 addObject:v15];
@@ -286,7 +286,7 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
 
           if ([(HDMedicationNotificationSyncManager *)self _shouldSendHoldInstructionForOldScheduleItem:v16 compareWithNewScheduleItem:v17])
           {
-            [HDMedicationNotificationSyncManager _broadcastNotificationSchedule:v31 withOldScheduleItem:v16 andNewScheduleItem:?];
+            [HDMedicationNotificationSyncManager _broadcastNotificationSchedule:scheduleCopy withOldScheduleItem:v16 andNewScheduleItem:?];
           }
 
           else
@@ -302,7 +302,7 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
               {
                 v21 = objc_opt_class();
                 *buf = 138543874;
-                v38 = v21;
+                selfCopy = v21;
                 v39 = 2114;
                 v40 = v16;
                 v41 = 2114;
@@ -332,7 +332,7 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v38 = self;
+        selfCopy = self;
         v39 = 2112;
         v40 = v32;
         _os_log_impl(&dword_25181C000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removing delivered notifications from local device for scheduleItemIdentifiers: %@", buf, 0x16u);
@@ -341,7 +341,7 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
       [(HDNotificationManager *)self->_notificationManager removeDeliveredNotificationsForScheduleItemIdentifiers:v32];
     }
 
-    v8 = v30;
+    itemsCopy = v30;
   }
 
   else
@@ -352,11 +352,11 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
     {
       v26 = objc_opt_class();
       v27 = v26;
-      v28 = [v31 UUID];
+      uUID = [scheduleCopy UUID];
       *buf = 138543618;
-      v38 = v26;
+      selfCopy = v26;
       v39 = 2114;
-      v40 = v28;
+      v40 = uUID;
       _os_log_impl(&dword_25181C000, v24, OS_LOG_TYPE_DEFAULT, "[%{public}@] oldItems is empty. scheduleUUID=[%{public}@]", buf, 0x16u);
     }
   }
@@ -375,10 +375,10 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
   return 1;
 }
 
-- (void)doseEventsAdded:(id)a3
+- (void)doseEventsAdded:(id)added
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addedCopy = added;
   _HKInitializeLogging();
   v5 = HKLogMedication();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -388,7 +388,7 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
     *buf = 138543618;
     v42 = v6;
     v43 = 2048;
-    v44 = [v4 count];
+    v44 = [addedCopy count];
     _os_log_impl(&dword_25181C000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] New HKMedicationDoseEvents are added. Count: %lu", buf, 0x16u);
   }
 
@@ -396,7 +396,7 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v4;
+  obj = addedCopy;
   v8 = [obj countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (v8)
   {
@@ -419,12 +419,12 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
         if ([(HDMedicationNotificationSyncManager *)self _shouldSendHoldInstructionForNewDoseEvent:v13, v33])
         {
           v14 = objc_alloc(MEMORY[0x277CCD6C0]);
-          v15 = [v13 scheduleItemIdentifier];
-          v16 = [v14 initWithAction:2 scheduleItemIdentifier:v15];
+          scheduleItemIdentifier = [v13 scheduleItemIdentifier];
+          v16 = [v14 initWithAction:2 scheduleItemIdentifier:scheduleItemIdentifier];
 
           v17 = objc_alloc(MEMORY[0x277D107A8]);
-          v18 = [v13 UUID];
-          v19 = [v17 initWithUUID:v18];
+          uUID = [v13 UUID];
+          v19 = [v17 initWithUUID:uUID];
 
           _HKInitializeLogging();
           v20 = HKLogMedication();
@@ -432,11 +432,11 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
           {
             v21 = objc_opt_class();
             v22 = v21;
-            v23 = [v16 categoryIdentifier];
+            categoryIdentifier = [v16 categoryIdentifier];
             *buf = 138543618;
             v42 = v21;
             v43 = 2114;
-            v44 = v23;
+            v44 = categoryIdentifier;
 
             v11 = v34;
           }
@@ -447,23 +447,23 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
           v26 = v36;
           if (v25)
           {
-            v27 = [v13 scheduleItemIdentifier];
-            [(HDMedicationNotificationSyncManager *)self _updateNotificationSentTimeForScheduleItemIdentifier:v27];
+            scheduleItemIdentifier2 = [v13 scheduleItemIdentifier];
+            [(HDMedicationNotificationSyncManager *)self _updateNotificationSentTimeForScheduleItemIdentifier:scheduleItemIdentifier2];
           }
 
           else
           {
             _HKInitializeLogging();
-            v27 = HKLogMedication();
-            if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+            scheduleItemIdentifier2 = HKLogMedication();
+            if (os_log_type_enabled(scheduleItemIdentifier2, OS_LOG_TYPE_ERROR))
             {
               v28 = objc_opt_class();
               v29 = v28;
-              v30 = [v13 scheduleItemIdentifier];
+              scheduleItemIdentifier3 = [v13 scheduleItemIdentifier];
               *buf = v33;
               v42 = v28;
               v43 = 2114;
-              v44 = v30;
+              v44 = scheduleItemIdentifier3;
               v45 = 2114;
               v46 = v26;
 
@@ -486,10 +486,10 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action
 {
-  v6 = a3;
-  switch(a4)
+  clientCopy = client;
+  switch(action)
   {
     case 3:
       _HKInitializeLogging();
@@ -509,18 +509,18 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
   }
 }
 
-- (void)_willRescheduleLocalSchedules:(void *)a3 transaction:
+- (void)_willRescheduleLocalSchedules:(void *)schedules transaction:
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v14 = 0;
-    v6 = [(HDMedicationNotificationSyncManager *)a1 _fetchAllScheduleItemsWithTransaction:a3 error:&v14];
+    v6 = [(HDMedicationNotificationSyncManager *)self _fetchAllScheduleItemsWithTransaction:schedules error:&v14];
     v7 = v14;
     if (v6)
     {
-      [(HDMedicationNotificationSyncManager *)a1 _cacheScheduleItems:v6 forSchedules:v5];
+      [(HDMedicationNotificationSyncManager *)self _cacheScheduleItems:v6 forSchedules:v5];
     }
 
     else
@@ -543,16 +543,16 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didRescheduleLocalSchedules:(void *)a3 transaction:
+- (void)_didRescheduleLocalSchedules:(void *)schedules transaction:
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  schedulesCopy = schedules;
+  if (self)
   {
-    v7 = [(HDMedicationNotificationSyncManager *)a1 _getAndReleaseCachedScheduleItemsForSchedules:v5];
+    v7 = [(HDMedicationNotificationSyncManager *)self _getAndReleaseCachedScheduleItemsForSchedules:v5];
     v23 = 0;
-    v8 = [(HDMedicationNotificationSyncManager *)a1 _fetchAllScheduleItemsWithTransaction:v6 error:&v23];
+    v8 = [(HDMedicationNotificationSyncManager *)self _fetchAllScheduleItemsWithTransaction:schedulesCopy error:&v23];
     v9 = v23;
     if (v8)
     {
@@ -562,9 +562,9 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
       v18 = &unk_2796CDE38;
       v19 = v5;
       v20 = v7;
-      v21 = a1;
+      selfCopy = self;
       v22 = v8;
-      [v6 onCommit:v15 orRollback:0];
+      [schedulesCopy onCommit:v15 orRollback:0];
 
       v10 = v19;
     }
@@ -589,9 +589,9 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchAllScheduleItemsWithTransaction:(uint64_t)a3 error:
+- (id)_fetchAllScheduleItemsWithTransaction:(uint64_t)transaction error:
 {
-  if (a1)
+  if (self)
   {
     v4 = MEMORY[0x277CBEB38];
     v5 = a2;
@@ -602,9 +602,9 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
     v15 = &unk_2796CD618;
     v16 = v7;
     v8 = v7;
-    LODWORD(a3) = [HDMedicationScheduleItemEntity enumerateItemsWithPredicate:0 orderingTerms:0 transaction:v5 error:a3 enumerationHandler:v12];
+    LODWORD(transaction) = [HDMedicationScheduleItemEntity enumerateItemsWithPredicate:0 orderingTerms:0 transaction:v5 error:transaction enumerationHandler:v12];
 
-    if (a3)
+    if (transaction)
     {
       v9 = v8;
     }
@@ -625,20 +625,20 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
   return v10;
 }
 
-- (void)_cacheScheduleItems:(void *)a3 forSchedules:
+- (void)_cacheScheduleItems:(void *)items forSchedules:
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  itemsCopy = items;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 24));
-    [*(a1 + 8) removeAllObjects];
+    os_unfair_lock_lock((self + 24));
+    [*(self + 8) removeAllObjects];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v6;
+    v7 = itemsCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -654,10 +654,10 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
             objc_enumerationMutation(v7);
           }
 
-          v12 = *(a1 + 8);
-          v13 = [*(*(&v16 + 1) + 8 * v11) UUID];
-          v14 = [v13 UUIDString];
-          [v12 setObject:v5 forKeyedSubscript:v14];
+          v12 = *(self + 8);
+          uUID = [*(*(&v16 + 1) + 8 * v11) UUID];
+          uUIDString = [uUID UUIDString];
+          [v12 setObject:v5 forKeyedSubscript:uUIDString];
 
           ++v11;
         }
@@ -669,20 +669,20 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
       while (v9);
     }
 
-    os_unfair_lock_unlock((a1 + 24));
+    os_unfair_lock_unlock((self + 24));
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getAndReleaseCachedScheduleItemsForSchedules:(uint64_t)a1
+- (id)_getAndReleaseCachedScheduleItemsForSchedules:(uint64_t)schedules
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (schedules)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    os_unfair_lock_lock((a1 + 24));
+    os_unfair_lock_lock((schedules + 24));
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
@@ -702,11 +702,11 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) UUID];
-          v11 = [v10 UUIDString];
+          uUID = [*(*(&v15 + 1) + 8 * i) UUID];
+          uUIDString = [uUID UUIDString];
 
-          v12 = [*(a1 + 8) objectForKeyedSubscript:v11];
-          [v4 setObject:v12 forKeyedSubscript:v11];
+          v12 = [*(schedules + 8) objectForKeyedSubscript:uUIDString];
+          [v4 setObject:v12 forKeyedSubscript:uUIDString];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -715,8 +715,8 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
       while (v7);
     }
 
-    [*(a1 + 8) removeAllObjects];
-    os_unfair_lock_unlock((a1 + 24));
+    [*(schedules + 8) removeAllObjects];
+    os_unfair_lock_unlock((schedules + 24));
   }
 
   else
@@ -729,62 +729,62 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
   return v4;
 }
 
-- (void)_broadcastNotificationSchedule:(uint64_t)a1 withOldScheduleItem:(void *)a2 andNewScheduleItem:(void *)a3
+- (void)_broadcastNotificationSchedule:(uint64_t)schedule withOldScheduleItem:(void *)item andNewScheduleItem:(void *)scheduleItem
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  scheduleItemCopy = scheduleItem;
+  if (schedule)
   {
     v6 = MEMORY[0x277CCD6C0];
-    v7 = a2;
+    itemCopy = item;
     v8 = [v6 alloc];
-    v9 = [v5 identifier];
-    v10 = [v8 initWithAction:2 scheduleItemIdentifier:v9];
+    identifier = [scheduleItemCopy identifier];
+    v10 = [v8 initWithAction:2 scheduleItemIdentifier:identifier];
 
     v11 = MEMORY[0x277CBEAA8];
-    [v7 creationTimestamp];
+    [itemCopy creationTimestamp];
     v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
     v13 = [HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria alloc];
-    v14 = [v7 UUID];
+    uUID = [itemCopy UUID];
 
-    v15 = [(HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria *)v13 initWithUUID:v14 modificationDate:v12];
+    v15 = [(HDNotificationInstructionModifiedMedicationScheduleNotInDatabaseCriteria *)v13 initWithUUID:uUID modificationDate:v12];
     _HKInitializeLogging();
     v16 = HKLogMedication();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_opt_class();
       v18 = v17;
-      v19 = [v10 categoryIdentifier];
-      v20 = [v10 expirationDate];
+      categoryIdentifier = [v10 categoryIdentifier];
+      expirationDate = [v10 expirationDate];
       *buf = 138544130;
       v40 = v17;
       OUTLINED_FUNCTION_1_5();
-      v41 = v19;
+      v41 = categoryIdentifier;
       v42 = v21;
       v43 = v22;
       v44 = v21;
       v45 = v12;
     }
 
-    v23 = *(a1 + 56);
+    v23 = *(schedule + 56);
     v38 = 0;
     v24 = [v23 sendNotificationInstruction:v10 criteria:v15 error:&v38];
     v25 = v38;
     if (v24)
     {
-      v26 = [v5 identifier];
-      [(HDMedicationNotificationSyncManager *)a1 _updateNotificationSentTimeForScheduleItemIdentifier:v26];
+      identifier2 = [scheduleItemCopy identifier];
+      [(HDMedicationNotificationSyncManager *)schedule _updateNotificationSentTimeForScheduleItemIdentifier:identifier2];
     }
 
     else
     {
       _HKInitializeLogging();
-      v26 = HKLogMedication();
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      identifier2 = HKLogMedication();
+      if (os_log_type_enabled(identifier2, OS_LOG_TYPE_ERROR))
       {
         v33 = objc_opt_class();
         v34 = v33;
-        v35 = [v5 identifier];
+        identifier3 = [scheduleItemCopy identifier];
         *buf = 138543874;
         v40 = v33;
         OUTLINED_FUNCTION_1_5();
@@ -800,7 +800,7 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
     {
       v28 = objc_opt_class();
       v29 = v28;
-      v30 = [v10 categoryIdentifier];
+      categoryIdentifier2 = [v10 categoryIdentifier];
       *buf = 138543618;
       v40 = v28;
       OUTLINED_FUNCTION_1_5();
@@ -811,33 +811,33 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateNotificationSentTimeForScheduleItemIdentifier:(uint64_t)a1
+- (void)_updateNotificationSentTimeForScheduleItemIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 28));
+    os_unfair_lock_lock((identifier + 28));
     v4 = MEMORY[0x277CCABB0];
     v5 = [MEMORY[0x277CBEAA8] now];
     [v5 timeIntervalSinceReferenceDate];
     v6 = [v4 numberWithDouble:?];
 
-    [*(a1 + 16) setObject:v6 forKeyedSubscript:v3];
-    os_unfair_lock_unlock((a1 + 28));
+    [*(identifier + 16) setObject:v6 forKeyedSubscript:v3];
+    os_unfair_lock_unlock((identifier + 28));
   }
 }
 
-- (uint64_t)_hasNotificationRecentlyBroadcastedForScheduleItemIdentifier:(uint64_t)a1
+- (uint64_t)_hasNotificationRecentlyBroadcastedForScheduleItemIdentifier:(uint64_t)identifier
 {
   v3 = a2;
-  if (!a1)
+  if (!identifier)
   {
     v10 = 0;
     goto LABEL_8;
   }
 
-  os_unfair_lock_lock((a1 + 28));
-  v4 = [*(a1 + 16) objectForKeyedSubscript:v3];
+  os_unfair_lock_lock((identifier + 28));
+  v4 = [*(identifier + 16) objectForKeyedSubscript:v3];
   if (!v4)
   {
     goto LABEL_6;
@@ -851,7 +851,7 @@ uint64_t __83__HDMedicationNotificationSyncManager__fetchAllScheduleItemsWithTra
 
   if (v9 >= 5.0)
   {
-    [*(a1 + 16) removeObjectForKey:v3];
+    [*(identifier + 16) removeObjectForKey:v3];
 LABEL_6:
     v10 = 0;
     goto LABEL_7;
@@ -859,18 +859,18 @@ LABEL_6:
 
   v10 = 1;
 LABEL_7:
-  os_unfair_lock_unlock((a1 + 28));
+  os_unfair_lock_unlock((identifier + 28));
 
 LABEL_8:
   return v10;
 }
 
-- (BOOL)_shouldSendHoldInstructionForOldScheduleItem:(id)a3 compareWithNewScheduleItem:(id)a4
+- (BOOL)_shouldSendHoldInstructionForOldScheduleItem:(id)item compareWithNewScheduleItem:(id)scheduleItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  LOBYTE(self) = [(HDMedicationNotificationSyncManager *)self _hasNotificationRecentlyBroadcastedForScheduleItemIdentifier:v8];
+  itemCopy = item;
+  scheduleItemCopy = scheduleItem;
+  identifier = [itemCopy identifier];
+  LOBYTE(self) = [(HDMedicationNotificationSyncManager *)self _hasNotificationRecentlyBroadcastedForScheduleItemIdentifier:identifier];
 
   if (self)
   {
@@ -883,28 +883,28 @@ LABEL_8:
     v11 = [MEMORY[0x277CBEAA8] now];
     v12 = [v10 instructionExpirationDateForDate:v11];
 
-    v13 = [v6 scheduledDateTime];
-    v14 = [v12 hk_isBeforeDate:v13];
+    scheduledDateTime = [itemCopy scheduledDateTime];
+    v14 = [v12 hk_isBeforeDate:scheduledDateTime];
 
     if (v14)
     {
       LOBYTE(v9) = 0;
     }
 
-    else if (v7)
+    else if (scheduleItemCopy)
     {
-      v15 = [v6 doses];
-      v16 = [v15 count];
-      v17 = [v7 doses];
-      if (v16 <= [v17 count])
+      doses = [itemCopy doses];
+      v16 = [doses count];
+      doses2 = [scheduleItemCopy doses];
+      if (v16 <= [doses2 count])
       {
-        v18 = [v6 doses];
-        v19 = [v7 doses];
-        if ([v18 hk_containsObjectsInArray:v19])
+        doses3 = [itemCopy doses];
+        doses4 = [scheduleItemCopy doses];
+        if ([doses3 hk_containsObjectsInArray:doses4])
         {
-          v20 = [v6 scheduledDateTime];
-          v21 = [v7 scheduledDateTime];
-          v9 = [v20 isEqual:v21] ^ 1;
+          scheduledDateTime2 = [itemCopy scheduledDateTime];
+          scheduledDateTime3 = [scheduleItemCopy scheduledDateTime];
+          v9 = [scheduledDateTime2 isEqual:scheduledDateTime3] ^ 1;
         }
 
         else
@@ -928,11 +928,11 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)_shouldSendHoldInstructionForNewDoseEvent:(id)a3
+- (BOOL)_shouldSendHoldInstructionForNewDoseEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 scheduleItemIdentifier];
-  v6 = [(HDMedicationNotificationSyncManager *)self _hasNotificationRecentlyBroadcastedForScheduleItemIdentifier:v5];
+  eventCopy = event;
+  scheduleItemIdentifier = [eventCopy scheduleItemIdentifier];
+  v6 = [(HDMedicationNotificationSyncManager *)self _hasNotificationRecentlyBroadcastedForScheduleItemIdentifier:scheduleItemIdentifier];
 
   if (v6)
   {
@@ -941,14 +941,14 @@ LABEL_8:
 
   else
   {
-    v8 = [v4 scheduleItemIdentifier];
-    if (v8 && ([v4 logStatus] == 4 || objc_msgSend(v4, "logStatus") == 5) && objc_msgSend(v4, "logOrigin") == 2)
+    scheduleItemIdentifier2 = [eventCopy scheduleItemIdentifier];
+    if (scheduleItemIdentifier2 && ([eventCopy logStatus] == 4 || objc_msgSend(eventCopy, "logStatus") == 5) && objc_msgSend(eventCopy, "logOrigin") == 2)
     {
-      v9 = [v4 hd_dataOriginProvenance];
-      v10 = [v9 syncIdentity];
-      v11 = [(HDSyncIdentityManager *)self->_syncIdentityManager currentSyncIdentity];
-      v12 = [v11 entity];
-      v7 = v10 == [v12 persistentID];
+      hd_dataOriginProvenance = [eventCopy hd_dataOriginProvenance];
+      syncIdentity = [hd_dataOriginProvenance syncIdentity];
+      currentSyncIdentity = [(HDSyncIdentityManager *)self->_syncIdentityManager currentSyncIdentity];
+      entity = [currentSyncIdentity entity];
+      v7 = syncIdentity == [entity persistentID];
     }
 
     else
@@ -963,44 +963,44 @@ LABEL_8:
 - (void)_handleDismissInstructions
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v2 = HKLogMedication();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v28 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_25181C000, v2, OS_LOG_TYPE_DEFAULT, "[%{public}@] Handling dismiss instructions", buf, 0xCu);
     }
 
-    v3 = *(a1 + 56);
+    v3 = *(self + 56);
     v25 = 0;
     v4 = [v3 pendingNotificationDismissInstructionsWithError:&v25];
     v5 = v25;
     if (v4)
     {
       v6 = MEMORY[0x277CCD6C0];
-      v7 = [v4 categoryIdentifiers];
-      v8 = [v6 scheduleItemIdentifiersFromCategoryIdentifiers:v7];
+      categoryIdentifiers = [v4 categoryIdentifiers];
+      v8 = [v6 scheduleItemIdentifiersFromCategoryIdentifiers:categoryIdentifiers];
 
       if ([v8 count])
       {
-        [*(a1 + 48) removeDeliveredNotificationsForScheduleItemIdentifiers:v8];
+        [*(self + 48) removeDeliveredNotificationsForScheduleItemIdentifiers:v8];
       }
 
-      v9 = [v4 categoryIdentifiers];
-      v10 = [v9 hk_containsObjectPassingTest:&__block_literal_global_9];
+      categoryIdentifiers2 = [v4 categoryIdentifiers];
+      v10 = [categoryIdentifiers2 hk_containsObjectPassingTest:&__block_literal_global_9];
 
       if (v10)
       {
-        v11 = *(a1 + 48);
+        v11 = *(self + 48);
         v26 = *MEMORY[0x277D11400];
         v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
         [v11 removeDeliveredNotificationsForScheduleItemIdentifiers:v12];
       }
 
-      v13 = *(a1 + 56);
+      v13 = *(self + 56);
       v24 = v5;
       v14 = [v13 markPendingNotificationInstructionsAsProcessed:v4 error:&v24];
       v15 = v24;
@@ -1043,25 +1043,25 @@ LABEL_8:
 - (void)_handleHoldInstructions
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v2 = HKLogMedication();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_25181C000, v2, OS_LOG_TYPE_DEFAULT, "[%{public}@] Handling hold instructions", buf, 0xCu);
     }
 
-    v3 = *(a1 + 56);
+    v3 = *(self + 56);
     v12 = 0;
     v4 = [v3 notificationHoldInstructionsWithError:&v12];
     v5 = v12;
     if (v4)
     {
       v6 = [MEMORY[0x277CCD6C0] scheduleItemIdentifiersFromCategoryIdentifiers:v4];
-      [*(a1 + 48) removeDeliveredNotificationsForScheduleItemIdentifiers:v6];
+      [*(self + 48) removeDeliveredNotificationsForScheduleItemIdentifiers:v6];
     }
 
     else
@@ -1072,7 +1072,7 @@ LABEL_8:
       {
         v8 = objc_opt_class();
         *buf = 138543618;
-        v14 = v8;
+        selfCopy = v8;
         OUTLINED_FUNCTION_1_5();
         v15 = v5;
         v10 = v9;

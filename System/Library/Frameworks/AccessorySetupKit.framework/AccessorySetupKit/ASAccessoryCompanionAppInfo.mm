@@ -1,30 +1,30 @@
 @interface ASAccessoryCompanionAppInfo
-- (ASAccessoryCompanionAppInfo)initWithBundleID:(id)a3;
+- (ASAccessoryCompanionAppInfo)initWithBundleID:(id)d;
 @end
 
 @implementation ASAccessoryCompanionAppInfo
 
-- (ASAccessoryCompanionAppInfo)initWithBundleID:(id)a3
+- (ASAccessoryCompanionAppInfo)initWithBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v24.receiver = self;
   v24.super_class = ASAccessoryCompanionAppInfo;
   v6 = [(ASAccessoryCompanionAppInfo *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleID, a3);
-    v8 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v5 allowPlaceholder:1 error:0];
-    v9 = [v8 localizedName];
+    objc_storeStrong(&v6->_bundleID, d);
+    v8 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:1 error:0];
+    localizedName = [v8 localizedName];
     name = v7->_name;
-    v7->_name = v9;
+    v7->_name = localizedName;
 
-    v11 = [v8 iTunesMetadata];
-    v12 = [v11 artistName];
-    v13 = v12;
-    if (v12)
+    iTunesMetadata = [v8 iTunesMetadata];
+    artistName = [iTunesMetadata artistName];
+    v13 = artistName;
+    if (artistName)
     {
-      v14 = v12;
+      v14 = artistName;
     }
 
     else
@@ -34,7 +34,7 @@
 
     objc_storeStrong(&v7->_publisherName, v14);
 
-    v15 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithBundleIdentifier:v5];
+    v15 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithBundleIdentifier:dCopy];
     v16 = [MEMORY[0x277D1B1C8] imageDescriptorNamed:*MEMORY[0x277D1B228]];
     v17 = [v15 imageForDescriptor:v16];
     v18 = v17;

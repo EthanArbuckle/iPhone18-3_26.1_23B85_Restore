@@ -1,18 +1,18 @@
 @interface GuidesHomeLogicController
-- (GuidesHomeLogicController)initWithGuidesHomeResult:(id)a3 maxWidth:(double)a4 traitEnvironment:(id)a5 guideFetcher:(id)a6 guideConsumer:(id)a7 guideLocation:(id)a8;
+- (GuidesHomeLogicController)initWithGuidesHomeResult:(id)result maxWidth:(double)width traitEnvironment:(id)environment guideFetcher:(id)fetcher guideConsumer:(id)consumer guideLocation:(id)location;
 - (MKPlaceBatchConsumer)guideConsumer;
 - (MKPlaceBatchFetcher)guideFetcher;
 - (id)allSections;
-- (id)filterValueAtIndex:(unint64_t)a3;
-- (id)itemsForSectionAtIndex:(unint64_t)a3;
-- (id)routeToSelectedGuidesHomeFilterAtIndexPath:(id)a3;
-- (id)sectionAtIndex:(unint64_t)a3;
+- (id)filterValueAtIndex:(unint64_t)index;
+- (id)itemsForSectionAtIndex:(unint64_t)index;
+- (id)routeToSelectedGuidesHomeFilterAtIndexPath:(id)path;
+- (id)sectionAtIndex:(unint64_t)index;
 - (id)selectedFilterIndexPath;
-- (void)appendBatchOfCollections:(id)a3;
+- (void)appendBatchOfCollections:(id)collections;
 - (void)initializeFonts;
-- (void)initializeSectionsUsingMaxWidth:(double)a3 traitEnvironment:(id)a4;
-- (void)updateFilteredCollectionsFromResults:(id)a3 collectionIds:(id)a4;
-- (void)willDisplayCellAtIndexpath:(id)a3;
+- (void)initializeSectionsUsingMaxWidth:(double)width traitEnvironment:(id)environment;
+- (void)updateFilteredCollectionsFromResults:(id)results collectionIds:(id)ids;
+- (void)willDisplayCellAtIndexpath:(id)indexpath;
 @end
 
 @implementation GuidesHomeLogicController
@@ -31,19 +31,19 @@
   return WeakRetained;
 }
 
-- (id)routeToSelectedGuidesHomeFilterAtIndexPath:(id)a3
+- (id)routeToSelectedGuidesHomeFilterAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(GuidesHomeLogicController *)self filterLogicController];
-  v6 = [v5 routeToSelectedGuidesHomeFilterAtIndexPath:v4];
+  pathCopy = path;
+  filterLogicController = [(GuidesHomeLogicController *)self filterLogicController];
+  v6 = [filterLogicController routeToSelectedGuidesHomeFilterAtIndexPath:pathCopy];
 
-  if (v4)
+  if (pathCopy)
   {
     v7 = [GuidesHomeSection alloc];
     [(GuidesHomeLogicController *)self maxWidth];
     v9 = v8;
-    v10 = [(GuidesHomeLogicController *)self traitEnvironment];
-    v11 = [(GuidesHomeSection *)v7 initWithSectionKind:7 usingMaxWidth:v10 usingTraitEnvironment:1 count:v9];
+    traitEnvironment = [(GuidesHomeLogicController *)self traitEnvironment];
+    v11 = [(GuidesHomeSection *)v7 initWithSectionKind:7 usingMaxWidth:traitEnvironment usingTraitEnvironment:1 count:v9];
     [(GuidesHomeLogicController *)self setLoadingSection:v11];
   }
 
@@ -55,23 +55,23 @@
 
   [(GuidesHomeLogicController *)self maxWidth];
   v13 = v12;
-  v14 = [(GuidesHomeLogicController *)self traitEnvironment];
-  [(GuidesHomeLogicController *)self initializeSectionsUsingMaxWidth:v14 traitEnvironment:v13];
+  traitEnvironment2 = [(GuidesHomeLogicController *)self traitEnvironment];
+  [(GuidesHomeLogicController *)self initializeSectionsUsingMaxWidth:traitEnvironment2 traitEnvironment:v13];
 
   return v6;
 }
 
 - (id)selectedFilterIndexPath
 {
-  v2 = [(GuidesHomeLogicController *)self filterLogicController];
-  v3 = [v2 selectedFilterIndexPath];
+  filterLogicController = [(GuidesHomeLogicController *)self filterLogicController];
+  selectedFilterIndexPath = [filterLogicController selectedFilterIndexPath];
 
-  return v3;
+  return selectedFilterIndexPath;
 }
 
-- (void)initializeSectionsUsingMaxWidth:(double)a3 traitEnvironment:(id)a4
+- (void)initializeSectionsUsingMaxWidth:(double)width traitEnvironment:(id)environment
 {
-  v6 = a4;
+  environmentCopy = environment;
   v7 = objc_alloc_init(NSMutableArray);
   sections = self->_sections;
   self->_sections = v7;
@@ -84,122 +84,122 @@
   compactCollectionLogicControllers = self->_compactCollectionLogicControllers;
   self->_compactCollectionLogicControllers = v11;
 
-  v13 = [(GuidesHomeLogicController *)self result];
-  v14 = [v13 featuredGuidesSection];
-  v15 = [v14 featuredGuides];
-  v16 = [v15 firstObject];
-  v17 = [v16 collection];
+  result = [(GuidesHomeLogicController *)self result];
+  featuredGuidesSection = [result featuredGuidesSection];
+  featuredGuides = [featuredGuidesSection featuredGuides];
+  firstObject = [featuredGuides firstObject];
+  collection = [firstObject collection];
 
-  if (v17)
+  if (collection)
   {
-    v18 = [[GuidesHomeSection alloc] initWithSectionKind:0 usingMaxWidth:v6 usingTraitEnvironment:1 count:a3];
+    v18 = [[GuidesHomeSection alloc] initWithSectionKind:0 usingMaxWidth:environmentCopy usingTraitEnvironment:1 count:width];
     v19 = [GuidesHomeHeaderViewModel alloc];
-    v20 = [(GuidesHomeLogicController *)self guideLocation];
-    v21 = [(GuidesHomeLogicController *)self result];
-    v22 = [v21 featuredGuidesSection];
-    v23 = [v22 title];
-    v24 = [(GuidesHomeHeaderViewModel *)v19 initWithGuideLocation:v20 featuredGuide:v17 sectionTitle:v23];
+    guideLocation = [(GuidesHomeLogicController *)self guideLocation];
+    result2 = [(GuidesHomeLogicController *)self result];
+    featuredGuidesSection2 = [result2 featuredGuidesSection];
+    title = [featuredGuidesSection2 title];
+    v24 = [(GuidesHomeHeaderViewModel *)v19 initWithGuideLocation:guideLocation featuredGuide:collection sectionTitle:title];
     [(GuidesHomeLogicController *)self setFeaturedGuideViewModel:v24];
 
-    v25 = [(GuidesHomeLogicController *)self sections];
-    [v25 addObject:v18];
+    sections = [(GuidesHomeLogicController *)self sections];
+    [sections addObject:v18];
   }
 
-  v26 = [(GuidesHomeLogicController *)self result];
-  v27 = [v26 filtersSection];
+  result3 = [(GuidesHomeLogicController *)self result];
+  filtersSection = [result3 filtersSection];
 
-  if (v27)
+  if (filtersSection)
   {
-    v28 = [v27 filters];
-    if (![v28 count])
+    filters = [filtersSection filters];
+    if (![filters count])
     {
-      v36 = sub_1007982D8();
-      if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+      loadingSection2 = sub_1007982D8();
+      if (os_log_type_enabled(loadingSection2, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "Guides Home section for Filters couldn't build any objects to display in section", buf, 2u);
+        _os_log_impl(&_mh_execute_header, loadingSection2, OS_LOG_TYPE_ERROR, "Guides Home section for Filters couldn't build any objects to display in section", buf, 2u);
       }
 
       goto LABEL_8;
     }
 
     v29 = [CollectionsFilterLogicController alloc];
-    v30 = [(GuidesHomeLogicController *)self selectedFilterIndexPath];
-    v31 = [(CollectionsFilterLogicController *)v29 initForGuidesHomeViewUsingFilters:v28 withSelectedFilterIndexPath:v30 traitEnvironment:v6];
+    selectedFilterIndexPath = [(GuidesHomeLogicController *)self selectedFilterIndexPath];
+    v31 = [(CollectionsFilterLogicController *)v29 initForGuidesHomeViewUsingFilters:filters withSelectedFilterIndexPath:selectedFilterIndexPath traitEnvironment:environmentCopy];
     [(GuidesHomeLogicController *)self setFilterLogicController:v31];
 
-    v32 = -[GuidesHomeSection initWithSectionKind:usingMaxWidth:usingTraitEnvironment:count:]([GuidesHomeSection alloc], "initWithSectionKind:usingMaxWidth:usingTraitEnvironment:count:", 1, v6, [v28 count], a3);
-    v33 = [v27 title];
-    [(GuidesHomeSection *)v32 setSectionTitle:v33];
+    v32 = -[GuidesHomeSection initWithSectionKind:usingMaxWidth:usingTraitEnvironment:count:]([GuidesHomeSection alloc], "initWithSectionKind:usingMaxWidth:usingTraitEnvironment:count:", 1, environmentCopy, [filters count], width);
+    title2 = [filtersSection title];
+    [(GuidesHomeSection *)v32 setSectionTitle:title2];
 
-    v34 = [(GuidesHomeLogicController *)self sections];
-    [v34 addObject:v32];
+    sections2 = [(GuidesHomeLogicController *)self sections];
+    [sections2 addObject:v32];
   }
 
-  v35 = [(GuidesHomeLogicController *)self loadingSection];
+  loadingSection = [(GuidesHomeLogicController *)self loadingSection];
 
-  if (v35)
+  if (loadingSection)
   {
-    v28 = [(GuidesHomeLogicController *)self sections];
-    v36 = [(GuidesHomeLogicController *)self loadingSection];
-    [v28 addObject:v36];
+    filters = [(GuidesHomeLogicController *)self sections];
+    loadingSection2 = [(GuidesHomeLogicController *)self loadingSection];
+    [filters addObject:loadingSection2];
 LABEL_8:
 
     goto LABEL_11;
   }
 
-  v37 = [(GuidesHomeLogicController *)self filteredGuidesSection];
+  filteredGuidesSection = [(GuidesHomeLogicController *)self filteredGuidesSection];
 
-  if (!v37)
+  if (!filteredGuidesSection)
   {
-    v49 = [(GuidesHomeLogicController *)self result];
-    v50 = [v49 repeatableSections];
+    result4 = [(GuidesHomeLogicController *)self result];
+    repeatableSections = [result4 repeatableSections];
     v51[0] = _NSConcreteStackBlock;
     v51[1] = 3221225472;
     v51[2] = sub_100B882C4;
     v51[3] = &unk_10163B940;
-    v54 = a3;
-    v52 = v6;
-    v53 = self;
-    [v50 enumerateObjectsUsingBlock:v51];
+    widthCopy = width;
+    v52 = environmentCopy;
+    selfCopy = self;
+    [repeatableSections enumerateObjectsUsingBlock:v51];
 
     goto LABEL_12;
   }
 
   v38 = [MKPlaceCollectionsLogicController alloc];
-  v39 = [(GuidesHomeLogicController *)self recentCollectionFromCollectionResults];
-  v40 = [(GuidesHomeLogicController *)self batchCollectionIds];
-  v41 = [(GuidesHomeLogicController *)self guideFetcher];
-  v42 = [(GuidesHomeLogicController *)self guideConsumer];
+  recentCollectionFromCollectionResults = [(GuidesHomeLogicController *)self recentCollectionFromCollectionResults];
+  batchCollectionIds = [(GuidesHomeLogicController *)self batchCollectionIds];
+  guideFetcher = [(GuidesHomeLogicController *)self guideFetcher];
+  guideConsumer = [(GuidesHomeLogicController *)self guideConsumer];
   v43 = +[CuratedCollectionSyncManager sharedManager];
-  v28 = [v38 initWithCollectionView:0 withPlaceCollections:v39 usingCollectionIds:v40 usingCollectionFetcher:v41 usingGuideConsumer:v42 usingSyncCoordinator:v43 inContext:9 usingBatchSize:10];
+  filters = [v38 initWithCollectionView:0 withPlaceCollections:recentCollectionFromCollectionResults usingCollectionIds:batchCollectionIds usingCollectionFetcher:guideFetcher usingGuideConsumer:guideConsumer usingSyncCoordinator:v43 inContext:9 usingBatchSize:10];
 
-  v44 = [(GuidesHomeLogicController *)self collectionLogicControllers];
-  v45 = [(GuidesHomeLogicController *)self filteredGuidesSection];
-  v46 = [v45 sectionIdentifier];
-  [v44 setObject:v28 forKey:v46];
+  collectionLogicControllers = [(GuidesHomeLogicController *)self collectionLogicControllers];
+  filteredGuidesSection2 = [(GuidesHomeLogicController *)self filteredGuidesSection];
+  sectionIdentifier = [filteredGuidesSection2 sectionIdentifier];
+  [collectionLogicControllers setObject:filters forKey:sectionIdentifier];
 
-  v47 = [(GuidesHomeLogicController *)self sections];
-  v48 = [(GuidesHomeLogicController *)self filteredGuidesSection];
-  [v47 addObject:v48];
+  sections3 = [(GuidesHomeLogicController *)self sections];
+  filteredGuidesSection3 = [(GuidesHomeLogicController *)self filteredGuidesSection];
+  [sections3 addObject:filteredGuidesSection3];
 
 LABEL_11:
 LABEL_12:
 }
 
-- (id)itemsForSectionAtIndex:(unint64_t)a3
+- (id)itemsForSectionAtIndex:(unint64_t)index
 {
-  v5 = [(GuidesHomeLogicController *)self sections];
-  v6 = [v5 count];
+  sections = [(GuidesHomeLogicController *)self sections];
+  v6 = [sections count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
-    v7 = &__NSArray0__struct;
+    sections2 = &__NSArray0__struct;
     goto LABEL_29;
   }
 
-  v7 = [(GuidesHomeLogicController *)self sections];
-  v8 = [v7 objectAtIndex:a3];
+  sections2 = [(GuidesHomeLogicController *)self sections];
+  v8 = [sections2 objectAtIndex:index];
 
   if (!v8)
   {
@@ -210,16 +210,16 @@ LABEL_10:
 
     if (v11)
     {
-      v9 = [(GuidesHomeLogicController *)self featuredGuideViewModel];
-      v29 = v9;
+      featuredGuideViewModel = [(GuidesHomeLogicController *)self featuredGuideViewModel];
+      v29 = featuredGuideViewModel;
       v12 = &v29;
 LABEL_12:
-      v10 = [NSArray arrayWithObjects:v12 count:1];
+      filterViewModels = [NSArray arrayWithObjects:v12 count:1];
       goto LABEL_13;
     }
 
 LABEL_27:
-    v7 = &__NSArray0__struct;
+    sections2 = &__NSArray0__struct;
     goto LABEL_28;
   }
 
@@ -236,8 +236,8 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v9 = +[MKCollectionBatchCell reuseIdentifier];
-        v28 = v9;
+        featuredGuideViewModel = +[MKCollectionBatchCell reuseIdentifier];
+        v28 = featuredGuideViewModel;
         v12 = &v28;
         goto LABEL_12;
       }
@@ -245,7 +245,7 @@ LABEL_27:
 
     else if (v27 != 4)
     {
-      v7 = [(GuidesHomeLogicController *)self publishers];
+      sections2 = [(GuidesHomeLogicController *)self publishers];
       goto LABEL_28;
     }
 
@@ -256,40 +256,40 @@ LABEL_27:
   {
     if (v27 == 2)
     {
-      v20 = [(GuidesHomeLogicController *)self compactCollectionLogicControllers];
-      v21 = [v8 sectionIdentifier];
-      v22 = [v20 objectForKey:v21];
+      compactCollectionLogicControllers = [(GuidesHomeLogicController *)self compactCollectionLogicControllers];
+      sectionIdentifier = [v8 sectionIdentifier];
+      v22 = [compactCollectionLogicControllers objectForKey:sectionIdentifier];
 
       if (!v22)
       {
         goto LABEL_27;
       }
 
-      v23 = [(GuidesHomeLogicController *)self compactCollectionLogicControllers];
-      v24 = [v8 sectionIdentifier];
-      v18 = [v23 objectForKey:v24];
+      compactCollectionLogicControllers2 = [(GuidesHomeLogicController *)self compactCollectionLogicControllers];
+      sectionIdentifier2 = [v8 sectionIdentifier];
+      v18 = [compactCollectionLogicControllers2 objectForKey:sectionIdentifier2];
 
-      v19 = [v18 compactCollectionsInSection:0];
+      collections = [v18 compactCollectionsInSection:0];
       goto LABEL_26;
     }
 
 LABEL_22:
-    v13 = [(GuidesHomeLogicController *)self collectionLogicControllers];
-    v14 = [v8 sectionIdentifier];
-    v15 = [v13 objectForKey:v14];
+    collectionLogicControllers = [(GuidesHomeLogicController *)self collectionLogicControllers];
+    sectionIdentifier3 = [v8 sectionIdentifier];
+    v15 = [collectionLogicControllers objectForKey:sectionIdentifier3];
 
     if (!v15)
     {
       goto LABEL_27;
     }
 
-    v16 = [(GuidesHomeLogicController *)self collectionLogicControllers];
-    v17 = [v8 sectionIdentifier];
-    v18 = [v16 objectForKey:v17];
+    collectionLogicControllers2 = [(GuidesHomeLogicController *)self collectionLogicControllers];
+    sectionIdentifier4 = [v8 sectionIdentifier];
+    v18 = [collectionLogicControllers2 objectForKey:sectionIdentifier4];
 
-    v19 = [v18 collections];
+    collections = [v18 collections];
 LABEL_26:
-    v7 = v19;
+    sections2 = collections;
 
     goto LABEL_28;
   }
@@ -301,52 +301,52 @@ LABEL_26:
 
   if (v27 == 1)
   {
-    v9 = [(GuidesHomeLogicController *)self filterLogicController];
-    v10 = [v9 filterViewModels];
+    featuredGuideViewModel = [(GuidesHomeLogicController *)self filterLogicController];
+    filterViewModels = [featuredGuideViewModel filterViewModels];
 LABEL_13:
-    v7 = v10;
+    sections2 = filterViewModels;
   }
 
 LABEL_28:
 
 LABEL_29:
 
-  return v7;
+  return sections2;
 }
 
-- (id)filterValueAtIndex:(unint64_t)a3
+- (id)filterValueAtIndex:(unint64_t)index
 {
-  v4 = [(GuidesHomeLogicController *)self filterLogicController];
-  v5 = [v4 filterViewModels];
+  filterLogicController = [(GuidesHomeLogicController *)self filterLogicController];
+  filterViewModels = [filterLogicController filterViewModels];
 
-  if ([v5 count] <= a3)
+  if ([filterViewModels count] <= index)
   {
-    v7 = 0;
+    filterTitle = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:a3];
-    v7 = [v6 filterTitle];
+    v6 = [filterViewModels objectAtIndex:index];
+    filterTitle = [v6 filterTitle];
   }
 
-  return v7;
+  return filterTitle;
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
-  v5 = [(GuidesHomeLogicController *)self sections];
-  v6 = [v5 count];
+  sections = [(GuidesHomeLogicController *)self sections];
+  v6 = [sections count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(GuidesHomeLogicController *)self sections];
-    v8 = [v7 objectAtIndex:a3];
+    sections2 = [(GuidesHomeLogicController *)self sections];
+    v8 = [sections2 objectAtIndex:index];
   }
 
   return v8;
@@ -354,47 +354,47 @@ LABEL_29:
 
 - (id)allSections
 {
-  v2 = [(GuidesHomeLogicController *)self sections];
-  v3 = [v2 copy];
+  sections = [(GuidesHomeLogicController *)self sections];
+  v3 = [sections copy];
 
   return v3;
 }
 
-- (void)appendBatchOfCollections:(id)a3
+- (void)appendBatchOfCollections:(id)collections
 {
-  v9 = a3;
-  v4 = [(GuidesHomeLogicController *)self filteredGuidesSection];
+  collectionsCopy = collections;
+  filteredGuidesSection = [(GuidesHomeLogicController *)self filteredGuidesSection];
 
-  if (v4)
+  if (filteredGuidesSection)
   {
-    v5 = [(GuidesHomeLogicController *)self collectionLogicControllers];
-    v6 = [(GuidesHomeLogicController *)self filteredGuidesSection];
-    v7 = [v6 sectionIdentifier];
-    v8 = [v5 objectForKey:v7];
+    collectionLogicControllers = [(GuidesHomeLogicController *)self collectionLogicControllers];
+    filteredGuidesSection2 = [(GuidesHomeLogicController *)self filteredGuidesSection];
+    sectionIdentifier = [filteredGuidesSection2 sectionIdentifier];
+    v8 = [collectionLogicControllers objectForKey:sectionIdentifier];
 
-    [v8 appendBatchOfCollections:v9];
+    [v8 appendBatchOfCollections:collectionsCopy];
   }
 }
 
-- (void)updateFilteredCollectionsFromResults:(id)a3 collectionIds:(id)a4
+- (void)updateFilteredCollectionsFromResults:(id)results collectionIds:(id)ids
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  resultsCopy = results;
+  idsCopy = ids;
+  if (!resultsCopy)
   {
     [(GuidesHomeLogicController *)self setRecentCollectionFromCollectionResults:0];
-    [(GuidesHomeLogicController *)self setBatchCollectionIds:v7];
+    [(GuidesHomeLogicController *)self setBatchCollectionIds:idsCopy];
     [(GuidesHomeLogicController *)self setFilteredGuidesSection:0];
     [(GuidesHomeLogicController *)self maxWidth];
     v22 = v21;
-    v16 = [(GuidesHomeLogicController *)self traitEnvironment];
-    [(GuidesHomeLogicController *)self initializeSectionsUsingMaxWidth:v16 traitEnvironment:v22];
+    traitEnvironment = [(GuidesHomeLogicController *)self traitEnvironment];
+    [(GuidesHomeLogicController *)self initializeSectionsUsingMaxWidth:traitEnvironment traitEnvironment:v22];
     goto LABEL_7;
   }
 
-  v8 = [(GuidesHomeLogicController *)self filteredGuidesSection];
+  filteredGuidesSection = [(GuidesHomeLogicController *)self filteredGuidesSection];
 
-  if (v8)
+  if (filteredGuidesSection)
   {
 LABEL_5:
     [(GuidesHomeLogicController *)self setLoadingSection:0];
@@ -403,28 +403,28 @@ LABEL_5:
     v24[2] = sub_100B893B4;
     v24[3] = &unk_10165D7E0;
     v25 = objc_alloc_init(NSMutableArray);
-    v16 = v25;
-    [v6 enumerateObjectsUsingBlock:v24];
-    v17 = [v16 copy];
+    traitEnvironment = v25;
+    [resultsCopy enumerateObjectsUsingBlock:v24];
+    v17 = [traitEnvironment copy];
     [(GuidesHomeLogicController *)self setRecentCollectionFromCollectionResults:v17];
 
-    [(GuidesHomeLogicController *)self setBatchCollectionIds:v7];
+    [(GuidesHomeLogicController *)self setBatchCollectionIds:idsCopy];
     [(GuidesHomeLogicController *)self maxWidth];
     v19 = v18;
-    v20 = [(GuidesHomeLogicController *)self traitEnvironment];
-    [(GuidesHomeLogicController *)self initializeSectionsUsingMaxWidth:v20 traitEnvironment:v19];
+    traitEnvironment2 = [(GuidesHomeLogicController *)self traitEnvironment];
+    [(GuidesHomeLogicController *)self initializeSectionsUsingMaxWidth:traitEnvironment2 traitEnvironment:v19];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v6 count])
+  if ([resultsCopy count])
   {
     v9 = [GuidesHomeSection alloc];
     [(GuidesHomeLogicController *)self maxWidth];
     v11 = v10;
-    v12 = [(GuidesHomeLogicController *)self traitEnvironment];
-    v13 = -[GuidesHomeSection initWithSectionKind:usingMaxWidth:usingTraitEnvironment:count:](v9, "initWithSectionKind:usingMaxWidth:usingTraitEnvironment:count:", 6, v12, [v6 count], v11);
+    traitEnvironment3 = [(GuidesHomeLogicController *)self traitEnvironment];
+    v13 = -[GuidesHomeSection initWithSectionKind:usingMaxWidth:usingTraitEnvironment:count:](v9, "initWithSectionKind:usingMaxWidth:usingTraitEnvironment:count:", 6, traitEnvironment3, [resultsCopy count], v11);
     [(GuidesHomeLogicController *)self setFilteredGuidesSection:v13];
 
     v14 = objc_alloc_init(NSArray);
@@ -446,17 +446,17 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)willDisplayCellAtIndexpath:(id)a3
+- (void)willDisplayCellAtIndexpath:(id)indexpath
 {
-  v8 = a3;
-  v4 = -[GuidesHomeLogicController sectionAtIndex:](self, "sectionAtIndex:", [v8 section]);
+  indexpathCopy = indexpath;
+  v4 = -[GuidesHomeLogicController sectionAtIndex:](self, "sectionAtIndex:", [indexpathCopy section]);
   if ([v4 kind] == 6)
   {
-    v5 = [(GuidesHomeLogicController *)self collectionLogicControllers];
-    v6 = [v4 sectionIdentifier];
-    v7 = [v5 objectForKey:v6];
+    collectionLogicControllers = [(GuidesHomeLogicController *)self collectionLogicControllers];
+    sectionIdentifier = [v4 sectionIdentifier];
+    v7 = [collectionLogicControllers objectForKey:sectionIdentifier];
 
-    [v7 willDisplayCellAtIndexpath:v8];
+    [v7 willDisplayCellAtIndexpath:indexpathCopy];
   }
 }
 
@@ -470,27 +470,27 @@ LABEL_8:
   [(GuidesHomeLogicController *)self setTitleFont:CopyOfSystemUIFontWithGrade];
 }
 
-- (GuidesHomeLogicController)initWithGuidesHomeResult:(id)a3 maxWidth:(double)a4 traitEnvironment:(id)a5 guideFetcher:(id)a6 guideConsumer:(id)a7 guideLocation:(id)a8
+- (GuidesHomeLogicController)initWithGuidesHomeResult:(id)result maxWidth:(double)width traitEnvironment:(id)environment guideFetcher:(id)fetcher guideConsumer:(id)consumer guideLocation:(id)location
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  resultCopy = result;
+  environmentCopy = environment;
+  fetcherCopy = fetcher;
+  consumerCopy = consumer;
+  locationCopy = location;
   v23.receiver = self;
   v23.super_class = GuidesHomeLogicController;
   v20 = [(GuidesHomeLogicController *)&v23 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_result, a3);
-    v21->_maxWidth = a4;
-    objc_storeStrong(&v21->_traitEnvironment, a5);
-    objc_storeWeak(&v21->_guideFetcher, v17);
-    objc_storeWeak(&v21->_guideConsumer, v18);
-    objc_storeStrong(&v21->_guideLocation, a8);
+    objc_storeStrong(&v20->_result, result);
+    v21->_maxWidth = width;
+    objc_storeStrong(&v21->_traitEnvironment, environment);
+    objc_storeWeak(&v21->_guideFetcher, fetcherCopy);
+    objc_storeWeak(&v21->_guideConsumer, consumerCopy);
+    objc_storeStrong(&v21->_guideLocation, location);
     [(GuidesHomeLogicController *)v21 initializeFonts];
-    [(GuidesHomeLogicController *)v21 initializeSectionsUsingMaxWidth:v16 traitEnvironment:a4];
+    [(GuidesHomeLogicController *)v21 initializeSectionsUsingMaxWidth:environmentCopy traitEnvironment:width];
   }
 
   return v21;

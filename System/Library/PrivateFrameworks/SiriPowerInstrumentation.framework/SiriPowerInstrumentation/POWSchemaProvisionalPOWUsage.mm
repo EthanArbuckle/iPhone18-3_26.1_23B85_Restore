@@ -1,19 +1,19 @@
 @interface POWSchemaProvisionalPOWUsage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POWSchemaProvisionalPOWUsage)initWithDictionary:(id)a3;
-- (POWSchemaProvisionalPOWUsage)initWithJSON:(id)a3;
+- (POWSchemaProvisionalPOWUsage)initWithDictionary:(id)dictionary;
+- (POWSchemaProvisionalPOWUsage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setHasContext:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasContext:(BOOL)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POWSchemaProvisionalPOWUsage
 
-- (void)setHasContext:(BOOL)a3
+- (void)setHasContext:(BOOL)context
 {
-  if (a3)
+  if (context)
   {
     v3 = 2;
   }
@@ -26,20 +26,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     process = self->_process;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(POWSchemaProvisionalPOWUsage *)self processUsage];
+  processUsage = [(POWSchemaProvisionalPOWUsage *)self processUsage];
 
-  if (v5)
+  if (processUsage)
   {
-    v6 = [(POWSchemaProvisionalPOWUsage *)self processUsage];
+    processUsage2 = [(POWSchemaProvisionalPOWUsage *)self processUsage];
     PBDataWriterWriteSubmessage();
   }
 
@@ -50,15 +50,15 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((v4[28] & 1) != (*&self->_has & 1))
+  if ((equalCopy[28] & 1) != (*&self->_has & 1))
   {
     goto LABEL_15;
   }
@@ -66,16 +66,16 @@
   if (*&self->_has)
   {
     process = self->_process;
-    if (process != [v4 process])
+    if (process != [equalCopy process])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(POWSchemaProvisionalPOWUsage *)self processUsage];
-  v7 = [v4 processUsage];
-  v8 = v7;
-  if ((v6 != 0) == (v7 == 0))
+  processUsage = [(POWSchemaProvisionalPOWUsage *)self processUsage];
+  processUsage2 = [equalCopy processUsage];
+  v8 = processUsage2;
+  if ((processUsage != 0) == (processUsage2 == 0))
   {
 
 LABEL_15:
@@ -83,13 +83,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [(POWSchemaProvisionalPOWUsage *)self processUsage];
-  if (v9)
+  processUsage3 = [(POWSchemaProvisionalPOWUsage *)self processUsage];
+  if (processUsage3)
   {
-    v10 = v9;
-    v11 = [(POWSchemaProvisionalPOWUsage *)self processUsage];
-    v12 = [v4 processUsage];
-    v13 = [v11 isEqual:v12];
+    v10 = processUsage3;
+    processUsage4 = [(POWSchemaProvisionalPOWUsage *)self processUsage];
+    processUsage5 = [equalCopy processUsage];
+    v13 = [processUsage4 isEqual:processUsage5];
 
     if (!v13)
     {
@@ -102,7 +102,7 @@ LABEL_15:
   }
 
   has = self->_has;
-  if (((v4[28] ^ *&has) & 2) != 0)
+  if (((equalCopy[28] ^ *&has) & 2) != 0)
   {
     goto LABEL_15;
   }
@@ -110,7 +110,7 @@ LABEL_15:
   if ((*&has & 2) != 0)
   {
     context = self->_context;
-    if (context != [v4 context])
+    if (context != [equalCopy context])
     {
       goto LABEL_15;
     }
@@ -150,7 +150,7 @@ LABEL_16:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -165,7 +165,7 @@ LABEL_16:
       v6 = off_279C44BF8[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"context"];
+    [dictionary setObject:v6 forKeyedSubscript:@"context"];
     has = self->_has;
   }
 
@@ -182,36 +182,36 @@ LABEL_16:
       v8 = off_279C44D88[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"process"];
+    [dictionary setObject:v8 forKeyedSubscript:@"process"];
   }
 
   if (self->_processUsage)
   {
-    v9 = [(POWSchemaProvisionalPOWUsage *)self processUsage];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    processUsage = [(POWSchemaProvisionalPOWUsage *)self processUsage];
+    dictionaryRepresentation = [processUsage dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"processUsage"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"processUsage"];
     }
 
     else
     {
-      v11 = [MEMORY[0x277CBEB68] null];
-      [v3 setObject:v11 forKeyedSubscript:@"processUsage"];
+      null = [MEMORY[0x277CBEB68] null];
+      [dictionary setObject:null forKeyedSubscript:@"processUsage"];
     }
   }
 
-  [(POWSchemaProvisionalPOWUsage *)self willProduceDictionaryRepresentation:v3];
+  [(POWSchemaProvisionalPOWUsage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POWSchemaProvisionalPOWUsage *)self dictionaryRepresentation];
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POWSchemaProvisionalPOWUsage *)self dictionaryRepresentation];
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -222,40 +222,40 @@ LABEL_16:
   return v3;
 }
 
-- (POWSchemaProvisionalPOWUsage)initWithJSON:(id)a3
+- (POWSchemaProvisionalPOWUsage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POWSchemaProvisionalPOWUsage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (POWSchemaProvisionalPOWUsage)initWithDictionary:(id)a3
+- (POWSchemaProvisionalPOWUsage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = POWSchemaProvisionalPOWUsage;
   v5 = [(POWSchemaProvisionalPOWUsage *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"process"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"process"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POWSchemaProvisionalPOWUsage setProcess:](v5, "setProcess:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"processUsage"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"processUsage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -263,7 +263,7 @@ LABEL_16:
       [(POWSchemaProvisionalPOWUsage *)v5 setProcessUsage:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"context"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"context"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

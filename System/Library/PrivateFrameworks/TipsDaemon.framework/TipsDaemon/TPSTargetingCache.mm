@@ -1,7 +1,7 @@
 @interface TPSTargetingCache
 - (TPSTargetingCache)init;
-- (int64_t)cacheResultForIdentifier:(id)a3;
-- (void)addCacheResult:(int64_t)a3 forIdentifier:(id)a4;
+- (int64_t)cacheResultForIdentifier:(id)identifier;
+- (void)addCacheResult:(int64_t)result forIdentifier:(id)identifier;
 - (void)reset;
 @end
 
@@ -27,20 +27,20 @@
   return v2;
 }
 
-- (void)addCacheResult:(int64_t)a3 forIdentifier:(id)a4
+- (void)addCacheResult:(int64_t)result forIdentifier:(id)identifier
 {
-  v6 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v7 = [(TPSTargetingCache *)self syncQueue];
+    syncQueue = [(TPSTargetingCache *)self syncQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__TPSTargetingCache_addCacheResult_forIdentifier___block_invoke;
     block[3] = &unk_2789B0E88;
-    v10 = self;
-    v11 = a3;
-    v9 = v6;
-    dispatch_async(v7, block);
+    selfCopy = self;
+    resultCopy = result;
+    v9 = identifierCopy;
+    dispatch_async(syncQueue, block);
   }
 }
 
@@ -57,24 +57,24 @@ void __50__TPSTargetingCache_addCacheResult_forIdentifier___block_invoke(uint64_
   [v4 setObject:v3 forKeyedSubscript:*(a1 + 32)];
 }
 
-- (int64_t)cacheResultForIdentifier:(id)a3
+- (int64_t)cacheResultForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = -1;
-  if ([v4 length])
+  if ([identifierCopy length])
   {
-    v5 = [(TPSTargetingCache *)self syncQueue];
+    syncQueue = [(TPSTargetingCache *)self syncQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__TPSTargetingCache_cacheResultForIdentifier___block_invoke;
     block[3] = &unk_2789B0E60;
     block[4] = self;
-    v9 = v4;
+    v9 = identifierCopy;
     v10 = &v11;
-    dispatch_sync(v5, block);
+    dispatch_sync(syncQueue, block);
   }
 
   v6 = v12[3];

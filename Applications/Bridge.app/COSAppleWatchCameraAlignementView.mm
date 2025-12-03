@@ -1,26 +1,26 @@
 @interface COSAppleWatchCameraAlignementView
-- (CGRect)frameForPhoneBackgroundViewForRestingPosition:(BOOL)a3;
-- (CGRect)frameForPhoneViewForRestingPosition:(BOOL)a3;
-- (CGRect)frameForWatchViewForRestingPosition:(BOOL)a3;
+- (CGRect)frameForPhoneBackgroundViewForRestingPosition:(BOOL)position;
+- (CGRect)frameForPhoneViewForRestingPosition:(BOOL)position;
+- (CGRect)frameForWatchViewForRestingPosition:(BOOL)position;
 - (CGSize)intrinsicContentSize;
 - (CGSize)phoneAssetSize;
 - (CGSize)watchAssetSize;
-- (COSAppleWatchCameraAlignementView)initWithFrame:(CGRect)a3;
+- (COSAppleWatchCameraAlignementView)initWithFrame:(CGRect)frame;
 - (void)layoutForLiftedPhone;
 - (void)layoutForOpticalPairing;
 - (void)layoutInRestingPosition;
 - (void)pickUpDevicesAnimation;
 - (void)restDevicesAnimation;
-- (void)setAnimationsEnabled:(BOOL)a3;
+- (void)setAnimationsEnabled:(BOOL)enabled;
 @end
 
 @implementation COSAppleWatchCameraAlignementView
 
-- (COSAppleWatchCameraAlignementView)initWithFrame:(CGRect)a3
+- (COSAppleWatchCameraAlignementView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = COSAppleWatchCameraAlignementView;
-  v3 = [(COSAppleWatchCameraAlignementView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSAppleWatchCameraAlignementView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIImageSymbolConfiguration configurationWithWeight:2];
@@ -45,8 +45,8 @@
     phoneBG = v3->_phoneBG;
     v3->_phoneBG = v14;
 
-    v16 = [(UIView *)v3->_phoneBG layer];
-    [v16 setCornerRadius:20.0];
+    layer = [(UIView *)v3->_phoneBG layer];
+    [layer setCornerRadius:20.0];
 
     v17 = v3->_phoneBG;
     v18 = [UIColor colorWithWhite:0.0 alpha:0.45];
@@ -74,9 +74,9 @@
   return v3;
 }
 
-- (CGRect)frameForPhoneBackgroundViewForRestingPosition:(BOOL)a3
+- (CGRect)frameForPhoneBackgroundViewForRestingPosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 220.0;
   }
@@ -86,7 +86,7 @@
     v3 = 260.0;
   }
 
-  if (a3)
+  if (position)
   {
     v4 = 123.0;
   }
@@ -97,13 +97,13 @@
   }
 
   v5 = 27.0;
-  if (!a3)
+  if (!position)
   {
     v5 = 30.0;
   }
 
   v6 = 60.0;
-  if (a3)
+  if (position)
   {
     v6 = 57.0;
   }
@@ -115,10 +115,10 @@
   return result;
 }
 
-- (CGRect)frameForPhoneViewForRestingPosition:(BOOL)a3
+- (CGRect)frameForPhoneViewForRestingPosition:(BOOL)position
 {
   v3 = 212.5;
-  if (a3)
+  if (position)
   {
     v4 = self->_phoneAssetSize.height * 212.5 / self->_phoneAssetSize.width;
   }
@@ -129,13 +129,13 @@
   }
 
   v5 = 63.0;
-  if (a3)
+  if (position)
   {
     v5 = 77.0;
   }
 
   v6 = 0.0;
-  if (a3)
+  if (position)
   {
     v6 = 15.0;
   }
@@ -152,26 +152,26 @@
   return result;
 }
 
-- (CGRect)frameForWatchViewForRestingPosition:(BOOL)a3
+- (CGRect)frameForWatchViewForRestingPosition:(BOOL)position
 {
   v3 = 95.0;
   width = self->_watchAssetSize.width;
   height = self->_watchAssetSize.height;
   v6 = height * 95.0 / width;
   v7 = height * 74.0 / width;
-  if (!a3)
+  if (!position)
   {
     v6 = v7;
   }
 
   v8 = 74.5;
-  if (a3)
+  if (position)
   {
     v8 = 10.0;
   }
 
   v9 = 90.0;
-  if (a3)
+  if (position)
   {
     v9 = 87.0;
   }
@@ -193,8 +193,8 @@
   phoneBG = self->_phoneBG;
   [(COSAppleWatchCameraAlignementView *)self frameForPhoneBackgroundViewForRestingPosition:0];
   [(UIView *)phoneBG setFrame:?];
-  v4 = [(UIView *)self->_phoneBG layer];
-  [v4 setCornerRadius:30.0];
+  layer = [(UIView *)self->_phoneBG layer];
+  [layer setCornerRadius:30.0];
 
   phoneCompositeView = self->_phoneCompositeView;
   [(COSAppleWatchCameraAlignementView *)self frameForPhoneViewForRestingPosition:0];
@@ -207,8 +207,8 @@
   phoneBG = self->_phoneBG;
   [(COSAppleWatchCameraAlignementView *)self frameForPhoneBackgroundViewForRestingPosition:1];
   [(UIView *)phoneBG setFrame:?];
-  v4 = [(UIView *)self->_phoneBG layer];
-  [v4 setCornerRadius:20.0];
+  layer = [(UIView *)self->_phoneBG layer];
+  [layer setCornerRadius:20.0];
 
   phoneCompositeView = self->_phoneCompositeView;
   [(COSAppleWatchCameraAlignementView *)self frameForPhoneViewForRestingPosition:1];
@@ -239,14 +239,14 @@
   return result;
 }
 
-- (void)setAnimationsEnabled:(BOOL)a3
+- (void)setAnimationsEnabled:(BOOL)enabled
 {
-  if (a3 && !self->_animationsEnabled)
+  if (enabled && !self->_animationsEnabled)
   {
     [(COSAppleWatchCameraAlignementView *)self pickUpDevicesAnimation];
   }
 
-  self->_animationsEnabled = a3;
+  self->_animationsEnabled = enabled;
 }
 
 - (void)pickUpDevicesAnimation

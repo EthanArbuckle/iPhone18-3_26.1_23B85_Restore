@@ -1,27 +1,27 @@
 @interface TISKPathEvent
 - (BOOL)isMissingATouch;
-- (double)countPathPauses:(id)a3;
-- (void)reportInterKeyTiming:(id)a3 previousEvent:(id)a4;
-- (void)reportToSession:(id)a3;
+- (double)countPathPauses:(id)pauses;
+- (void)reportInterKeyTiming:(id)timing previousEvent:(id)event;
+- (void)reportToSession:(id)session;
 @end
 
 @implementation TISKPathEvent
 
-- (void)reportInterKeyTiming:(id)a3 previousEvent:(id)a4
+- (void)reportInterKeyTiming:(id)timing previousEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  timingCopy = timing;
+  eventCopy = event;
+  if (eventCopy)
   {
     v19.receiver = self;
     v19.super_class = TISKPathEvent;
-    [(TISKEvent *)&v19 reportInterKeyTiming:v6 previousEvent:v7];
+    [(TISKEvent *)&v19 reportInterKeyTiming:timingCopy previousEvent:eventCopy];
     [(TISKEvent *)self touchDownTimestamp];
     v9 = v8;
-    [v7 touchDownTimestamp];
+    [eventCopy touchDownTimestamp];
     v11 = v9 - v10;
-    v12 = [v7 type];
-    switch(v12)
+    type = [eventCopy type];
+    switch(type)
     {
       case 2:
         v17 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
@@ -35,37 +35,37 @@
         v13 = MEMORY[0x277CCABB0];
         [(TISKEvent *)self touchDownTimestamp];
         v15 = v14;
-        [v7 touchUpTimestamp];
+        [eventCopy touchUpTimestamp];
         v17 = [v13 numberWithDouble:v15 - v16];
         v18 = &kTISKPathToPathMetric;
 LABEL_8:
-        [v6 addSample:v17 forKey:*v18];
+        [timingCopy addSample:v17 forKey:*v18];
 
         break;
     }
   }
 }
 
-- (void)reportToSession:(id)a3
+- (void)reportToSession:(id)session
 {
-  v18 = a3;
+  sessionCopy = session;
   if ([(TISKEvent *)self isValidCandidate:self->_candidate])
   {
-    [v18 addSample:&unk_28400BF10 forKey:kTISKNumberOfWordsCounter];
-    [v18 addSample:&unk_28400BF10 forKey:kTISKNumberOfPaths];
+    [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfWordsCounter];
+    [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfPaths];
     [(TISKEvent *)self touchUpTimestamp];
     v5 = v4;
     [(TISKEvent *)self touchDownTimestamp];
     v7 = v5 - v6;
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
-    [v18 addSample:v8 forKey:kTISKTotalPathTime];
+    [sessionCopy addSample:v8 forKey:kTISKTotalPathTime];
 
     if (v7 > 0.0)
     {
       v9 = [(NSString *)self->_candidateString length];
-      [v18 addToCounterForRateMetric:v9 forKey:kTISKPathTypingSpeed];
-      [v18 addToDurationForRateMetric:kTISKPathTypingSpeed forKey:v7];
-      [v18 addToDurationForRateMetric:kTISKTapTypingSpeed forKey:-v7];
+      [sessionCopy addToCounterForRateMetric:v9 forKey:kTISKPathTypingSpeed];
+      [sessionCopy addToDurationForRateMetric:kTISKPathTypingSpeed forKey:v7];
+      [sessionCopy addToDurationForRateMetric:kTISKTapTypingSpeed forKey:-v7];
     }
 
     if (v7 > 2.0)
@@ -74,7 +74,7 @@ LABEL_8:
       if (v10 > 0.0)
       {
         v11 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-        [v18 addSample:v11 forKey:kTISKMidPathPause];
+        [sessionCopy addSample:v11 forKey:kTISKMidPathPause];
       }
     }
 
@@ -82,7 +82,7 @@ LABEL_8:
     v13 = [(TISKEvent *)self tap];
     [v13 totalTapDistance];
     v14 = [v12 numberWithDouble:?];
-    [v18 addSample:v14 forKey:kTISKTotalPathLength];
+    [sessionCopy addSample:v14 forKey:kTISKTotalPathLength];
 
     candidate = self->_candidate;
     objc_opt_class();
@@ -92,18 +92,18 @@ LABEL_8:
       if (v16 > 0.0)
       {
         v17 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-        [v18 addSample:v17 forKey:kTISKPathErrorDistanceMetric];
+        [sessionCopy addSample:v17 forKey:kTISKPathErrorDistanceMetric];
       }
     }
   }
 }
 
-- (double)countPathPauses:(id)a3
+- (double)countPathPauses:(id)pauses
 {
-  v3 = a3;
-  if ([v3 count] >= 4)
+  pausesCopy = pauses;
+  if ([pausesCopy count] >= 4)
   {
-    v5 = [v3 count] - 3;
+    v5 = [pausesCopy count] - 3;
     v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:v5];
     if (v5)
     {
@@ -111,8 +111,8 @@ LABEL_8:
       do
       {
         v8 = MEMORY[0x277CCABB0];
-        v9 = [v3 objectAtIndexedSubscript:v7];
-        v10 = [v3 objectAtIndexedSubscript:++v7];
+        v9 = [pausesCopy objectAtIndexedSubscript:v7];
+        v10 = [pausesCopy objectAtIndexedSubscript:++v7];
         v11 = v9;
         [v10 location];
         v13 = v12;
@@ -140,7 +140,7 @@ LABEL_8:
     v4 = MEMORY[0x277CBEBF8];
   }
 
-  v22 = v3;
+  v22 = pausesCopy;
   if ([v22 count] >= 4)
   {
     v24 = [v22 count] - 3;
@@ -226,9 +226,9 @@ LABEL_8:
   if (v3)
   {
     v4 = [(TISKEvent *)self tap];
-    v5 = [v4 isDownUpTap];
+    isDownUpTap = [v4 isDownUpTap];
 
-    v6 = v5 ^ 1;
+    v6 = isDownUpTap ^ 1;
   }
 
   else

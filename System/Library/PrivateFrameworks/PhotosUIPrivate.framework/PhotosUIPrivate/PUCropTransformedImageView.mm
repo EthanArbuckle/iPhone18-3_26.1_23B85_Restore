@@ -5,8 +5,8 @@
 - (CGRect)cropRect;
 - (CGSize)imageSize;
 - (PUCropTransformedImageViewDelegate)delegate;
-- (void)_setTracking:(BOOL)a3;
-- (void)setImage:(id)a3;
+- (void)_setTracking:(BOOL)tracking;
+- (void)setImage:(id)image;
 @end
 
 @implementation PUCropTransformedImageView
@@ -89,29 +89,29 @@
   return result;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = self;
-  objc_storeStrong(&self->_image, a3);
-  v5 = a3;
-  v4 = (v4 + 488);
-  [v5 size];
+  selfCopy = self;
+  objc_storeStrong(&self->_image, image);
+  imageCopy = image;
+  selfCopy = (selfCopy + 488);
+  [imageCopy size];
   v7 = v6;
   v9 = v8;
 
-  v4->super.super.super.isa = v7;
-  *&v4->super.super._responderFlags = v9;
+  selfCopy->super.super.super.isa = v7;
+  *&selfCopy->super.super._responderFlags = v9;
 }
 
-- (void)_setTracking:(BOOL)a3
+- (void)_setTracking:(BOOL)tracking
 {
-  v3 = a3;
-  if ([(PUCropTransformedImageView *)self isTracking]!= a3)
+  trackingCopy = tracking;
+  if ([(PUCropTransformedImageView *)self isTracking]!= tracking)
   {
-    if (v3)
+    if (trackingCopy)
     {
-      v5 = [(PUCropTransformedImageView *)self delegate];
-      [v5 cropTransformedImageViewWillBeginTracking:self];
+      delegate = [(PUCropTransformedImageView *)self delegate];
+      [delegate cropTransformedImageViewWillBeginTracking:self];
 
       self->_tracking = 1;
     }
@@ -119,8 +119,8 @@
     else
     {
       self->_tracking = 0;
-      v6 = [(PUCropTransformedImageView *)self delegate];
-      [v6 cropTransformedImageViewDidEndTracking:self];
+      delegate2 = [(PUCropTransformedImageView *)self delegate];
+      [delegate2 cropTransformedImageViewDidEndTracking:self];
     }
   }
 }

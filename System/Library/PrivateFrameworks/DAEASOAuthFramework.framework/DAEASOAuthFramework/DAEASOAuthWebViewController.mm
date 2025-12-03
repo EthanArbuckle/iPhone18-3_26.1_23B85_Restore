@@ -1,84 +1,84 @@
 @interface DAEASOAuthWebViewController
-+ (void)_presentAlertWithAlertParameters:(id)a3;
++ (void)_presentAlertWithAlertParameters:(id)parameters;
 + (void)presentInternetOfflineError;
 + (void)presentSSLError;
 + (void)presentUsernameMismatchAlert;
-- (DAEASOAuthWebViewController)initWithAccount:(id)a3 accountStore:(id)a4 authURI:(id)a5 accountType:(unint64_t)a6 userName:(id)a7 accountDescription:(id)a8 isFirstTimeSetup:(BOOL)a9 presentationBlock:(id)a10;
-- (DAEASOAuthWebViewController)initWithAccount:(id)a3 isFirstTimeSetup:(BOOL)a4 accountStore:(id)a5 presentationBlock:(id)a6;
-- (DAEASOAuthWebViewController)initWithAccountDescription:(id)a3 presentationBlock:(id)a4;
-- (DAEASOAuthWebViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_commonInitializationWithAccount:(id)a3 accountStore:(id)a4 username:(id)a5 accountDescription:(id)a6 presentationBlock:(id)a7;
+- (DAEASOAuthWebViewController)initWithAccount:(id)account accountStore:(id)store authURI:(id)i accountType:(unint64_t)type userName:(id)name accountDescription:(id)description isFirstTimeSetup:(BOOL)setup presentationBlock:(id)self0;
+- (DAEASOAuthWebViewController)initWithAccount:(id)account isFirstTimeSetup:(BOOL)setup accountStore:(id)store presentationBlock:(id)block;
+- (DAEASOAuthWebViewController)initWithAccountDescription:(id)description presentationBlock:(id)block;
+- (DAEASOAuthWebViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_commonInitializationWithAccount:(id)account accountStore:(id)store username:(id)username accountDescription:(id)description presentationBlock:(id)block;
 - (void)_didInstantiateRemoteViewController;
-- (void)_dismissAndCompleteWithIdentity:(id)a3 error:(id)a4 extensionCompletion:(id)a5;
-- (void)_extensionRequestDidCompleteWithTokens:(id)a3 extensionCompletion:(id)a4;
+- (void)_dismissAndCompleteWithIdentity:(id)identity error:(id)error extensionCompletion:(id)completion;
+- (void)_extensionRequestDidCompleteWithTokens:(id)tokens extensionCompletion:(id)completion;
 - (void)loadView;
 @end
 
 @implementation DAEASOAuthWebViewController
 
-- (DAEASOAuthWebViewController)initWithAccountDescription:(id)a3 presentationBlock:(id)a4
+- (DAEASOAuthWebViewController)initWithAccountDescription:(id)description presentationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = DAEASOAuthWebViewController;
   v8 = [(DAEASOAuthWebViewController *)&v11 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    [(DAEASOAuthWebViewController *)v8 _commonInitializationWithAccount:0 accountStore:0 username:0 accountDescription:v6 presentationBlock:v7];
+    [(DAEASOAuthWebViewController *)v8 _commonInitializationWithAccount:0 accountStore:0 username:0 accountDescription:descriptionCopy presentationBlock:blockCopy];
   }
 
   return v9;
 }
 
-- (DAEASOAuthWebViewController)initWithAccount:(id)a3 isFirstTimeSetup:(BOOL)a4 accountStore:(id)a5 presentationBlock:(id)a6
+- (DAEASOAuthWebViewController)initWithAccount:(id)account isFirstTimeSetup:(BOOL)setup accountStore:(id)store presentationBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  accountCopy = account;
+  storeCopy = store;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = DAEASOAuthWebViewController;
   v13 = [(DAEASOAuthWebViewController *)&v17 initWithNibName:0 bundle:0];
   v14 = v13;
   if (v13)
   {
-    v13->_isFirstTimeSetup = a4;
-    v15 = [v10 accountDescription];
-    [(DAEASOAuthWebViewController *)v14 _commonInitializationWithAccount:v10 accountStore:v11 username:0 accountDescription:v15 presentationBlock:v12];
+    v13->_isFirstTimeSetup = setup;
+    accountDescription = [accountCopy accountDescription];
+    [(DAEASOAuthWebViewController *)v14 _commonInitializationWithAccount:accountCopy accountStore:storeCopy username:0 accountDescription:accountDescription presentationBlock:blockCopy];
   }
 
   return v14;
 }
 
-- (DAEASOAuthWebViewController)initWithAccount:(id)a3 accountStore:(id)a4 authURI:(id)a5 accountType:(unint64_t)a6 userName:(id)a7 accountDescription:(id)a8 isFirstTimeSetup:(BOOL)a9 presentationBlock:(id)a10
+- (DAEASOAuthWebViewController)initWithAccount:(id)account accountStore:(id)store authURI:(id)i accountType:(unint64_t)type userName:(id)name accountDescription:(id)description isFirstTimeSetup:(BOOL)setup presentationBlock:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
+  accountCopy = account;
+  storeCopy = store;
+  iCopy = i;
+  nameCopy = name;
+  descriptionCopy = description;
+  blockCopy = block;
   v25.receiver = self;
   v25.super_class = DAEASOAuthWebViewController;
   v22 = [(DAEASOAuthWebViewController *)&v25 initWithNibName:0 bundle:0];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_authURI, a5);
-    v23->_oauthType = a6;
-    v23->_isFirstTimeSetup = a9;
-    [(DAEASOAuthWebViewController *)v23 _commonInitializationWithAccount:v16 accountStore:v17 username:v19 accountDescription:v20 presentationBlock:v21];
+    objc_storeStrong(&v22->_authURI, i);
+    v23->_oauthType = type;
+    v23->_isFirstTimeSetup = setup;
+    [(DAEASOAuthWebViewController *)v23 _commonInitializationWithAccount:accountCopy accountStore:storeCopy username:nameCopy accountDescription:descriptionCopy presentationBlock:blockCopy];
   }
 
   return v23;
 }
 
-- (DAEASOAuthWebViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (DAEASOAuthWebViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = DAEASOAuthWebViewController;
-  v4 = [(DAEASOAuthWebViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(DAEASOAuthWebViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -88,17 +88,17 @@
   return v5;
 }
 
-- (void)_commonInitializationWithAccount:(id)a3 accountStore:(id)a4 username:(id)a5 accountDescription:(id)a6 presentationBlock:(id)a7
+- (void)_commonInitializationWithAccount:(id)account accountStore:(id)store username:(id)username accountDescription:(id)description presentationBlock:(id)block
 {
   v64 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v50 = a4;
-  v14 = a5;
-  v15 = a6;
-  v51 = a7;
-  objc_storeStrong(&self->_account, a3);
-  objc_storeStrong(&self->_accountStore, a4);
-  v16 = MEMORY[0x24C1BC830](v51);
+  accountCopy = account;
+  storeCopy = store;
+  usernameCopy = username;
+  descriptionCopy = description;
+  blockCopy = block;
+  objc_storeStrong(&self->_account, account);
+  objc_storeStrong(&self->_accountStore, store);
+  v16 = MEMORY[0x24C1BC830](blockCopy);
   presentationBlock = self->_presentationBlock;
   self->_presentationBlock = v16;
 
@@ -144,24 +144,24 @@
   v53[3] = &unk_278EE0870;
   objc_copyWeak(&v54, &location);
   [(NSExtension *)self->_extension set_requestPostCompletionBlockWithItems:v53];
-  if (v13)
+  if (accountCopy)
   {
-    v26 = [v13 accountDescription];
+    accountDescription = [accountCopy accountDescription];
 
-    v15 = v26;
+    descriptionCopy = accountDescription;
   }
 
-  if (!v15)
+  if (!descriptionCopy)
   {
     if (_os_feature_enabled_impl())
     {
-      v27 = [v13 username];
-      v15 = ACUIDescriptionFromEmailAddress();
+      username = [accountCopy username];
+      descriptionCopy = ACUIDescriptionFromEmailAddress();
     }
 
     else
     {
-      v15 = @"Outlook";
+      descriptionCopy = @"Outlook";
     }
   }
 
@@ -169,23 +169,23 @@
   if (os_log_type_enabled(v28, v24))
   {
     *buf = 138412546;
-    v61 = v15;
+    v61 = descriptionCopy;
     v62 = 2112;
-    v63 = v14;
+    v63 = usernameCopy;
     _os_log_impl(&dword_247E05000, v28, v24, "DAEASOAuthWebViewController initializing for description %@ username %@", buf, 0x16u);
   }
 
   v29 = objc_alloc_init(MEMORY[0x277CCA9D8]);
-  v30 = [MEMORY[0x277CBEB38] dictionaryWithObject:v15 forKey:@"description"];
-  if (v13)
+  v30 = [MEMORY[0x277CBEB38] dictionaryWithObject:descriptionCopy forKey:@"description"];
+  if (accountCopy)
   {
-    v31 = [v13 identifier];
-    v32 = v31 == 0;
+    identifier = [accountCopy identifier];
+    v32 = identifier == 0;
 
     if (!v32)
     {
-      v33 = [v13 identifier];
-      v34 = [v33 copy];
+      identifier2 = [accountCopy identifier];
+      v34 = [identifier2 copy];
       [v30 setObject:v34 forKeyedSubscript:@"accountId"];
     }
   }
@@ -206,22 +206,22 @@
   {
   }
 
-  v37 = v14;
-  if (!v14)
+  username3 = usernameCopy;
+  if (!usernameCopy)
   {
-    v38 = [v13 username];
-    v39 = v38 == 0;
+    username2 = [accountCopy username];
+    v39 = username2 == 0;
 
     if (v39)
     {
       goto LABEL_28;
     }
 
-    v37 = [v13 username];
+    username3 = [accountCopy username];
   }
 
-  [v30 setObject:v37 forKeyedSubscript:@"username"];
-  if (!v14)
+  [v30 setObject:username3 forKeyedSubscript:@"username"];
+  if (!usernameCopy)
   {
   }
 
@@ -407,38 +407,38 @@ void __123__DAEASOAuthWebViewController__commonInitializationWithAccount_account
   {
     [(UIViewController *)v4 willMoveToParentViewController:self];
     [(DAEASOAuthWebViewController *)self addChildViewController:self->_serviceViewController];
-    v5 = [(DAEASOAuthWebViewController *)self view];
-    v6 = [(UIViewController *)self->_serviceViewController view];
-    [v5 addSubview:v6];
+    view = [(DAEASOAuthWebViewController *)self view];
+    view2 = [(UIViewController *)self->_serviceViewController view];
+    [view addSubview:view2];
 
-    v7 = [(DAEASOAuthWebViewController *)self view];
-    v8 = [(UIViewController *)self->_serviceViewController view];
-    [v7 bringSubviewToFront:v8];
+    view3 = [(DAEASOAuthWebViewController *)self view];
+    view4 = [(UIViewController *)self->_serviceViewController view];
+    [view3 bringSubviewToFront:view4];
 
     [(UIViewController *)self->_serviceViewController didMoveToParentViewController:self];
-    v9 = [(UIViewController *)self->_serviceViewController view];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view5 = [(UIViewController *)self->_serviceViewController view];
+    [view5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v11 = MEMORY[0x277CCAAD0];
     v28 = @"serviceView";
-    v12 = [(UIViewController *)self->_serviceViewController view];
-    v29[0] = v12;
+    view6 = [(UIViewController *)self->_serviceViewController view];
+    v29[0] = view6;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v14 = [v11 constraintsWithVisualFormat:@"H:|[serviceView]|" options:0 metrics:0 views:v13];
     [v10 addObjectsFromArray:v14];
 
     v15 = MEMORY[0x277CCAAD0];
     v26 = @"serviceView";
-    v16 = [(UIViewController *)self->_serviceViewController view];
-    v27 = v16;
+    view7 = [(UIViewController *)self->_serviceViewController view];
+    v27 = view7;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v18 = [v15 constraintsWithVisualFormat:@"V:|[serviceView]|" options:0 metrics:0 views:v17];
     [v10 addObjectsFromArray:v18];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v10];
-    v19 = [(DAEASOAuthWebViewController *)self view];
-    [v19 setNeedsLayout];
+    view8 = [(DAEASOAuthWebViewController *)self view];
+    [view8 setNeedsLayout];
 
     presentationBlock = self->_presentationBlock;
     if (presentationBlock)
@@ -469,24 +469,24 @@ void __66__DAEASOAuthWebViewController__didInstantiateRemoteViewController__bloc
   v6.receiver = self;
   v6.super_class = DAEASOAuthWebViewController;
   [(DAEASOAuthWebViewController *)&v6 loadView];
-  v3 = [(DAEASOAuthWebViewController *)self view];
-  [v3 setOpaque:0];
+  view = [(DAEASOAuthWebViewController *)self view];
+  [view setOpaque:0];
 
-  v4 = [MEMORY[0x277D75348] clearColor];
-  v5 = [(DAEASOAuthWebViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view2 = [(DAEASOAuthWebViewController *)self view];
+  [view2 setBackgroundColor:clearColor];
 }
 
-- (void)_extensionRequestDidCompleteWithTokens:(id)a3 extensionCompletion:(id)a4
+- (void)_extensionRequestDidCompleteWithTokens:(id)tokens extensionCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
+  completionCopy = completion;
+  v8 = completionCopy;
   self->_extensionRequestDidComplete = 1;
-  if (a3)
+  if (tokens)
   {
-    v9 = [a3 objectAtIndexedSubscript:0];
-    v10 = [v9 attachments];
-    v11 = [v10 objectAtIndexedSubscript:0];
+    v9 = [tokens objectAtIndexedSubscript:0];
+    attachments = [v9 attachments];
+    v11 = [attachments objectAtIndexedSubscript:0];
 
     v12 = dispatch_get_global_queue(25, 0);
     v14[0] = MEMORY[0x277D85DD0];
@@ -494,7 +494,7 @@ void __66__DAEASOAuthWebViewController__didInstantiateRemoteViewController__bloc
     v14[2] = __90__DAEASOAuthWebViewController__extensionRequestDidCompleteWithTokens_extensionCompletion___block_invoke_2;
     v14[3] = &unk_278EE0960;
     v15 = v11;
-    v16 = self;
+    selfCopy = self;
     v18 = a2;
     v17 = v8;
     v13 = v11;
@@ -508,7 +508,7 @@ void __66__DAEASOAuthWebViewController__didInstantiateRemoteViewController__bloc
     block[2] = __90__DAEASOAuthWebViewController__extensionRequestDidCompleteWithTokens_extensionCompletion___block_invoke;
     block[3] = &unk_278EE06F8;
     block[4] = self;
-    v20 = v7;
+    v20 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -889,11 +889,11 @@ void __90__DAEASOAuthWebViewController__extensionRequestDidCompleteWithTokens_ex
   [*(a1 + 96) _dismissAndCompleteWithIdentity:v2 error:*(*(*(a1 + 120) + 8) + 40) extensionCompletion:*(a1 + 104)];
 }
 
-- (void)_dismissAndCompleteWithIdentity:(id)a3 error:(id)a4 extensionCompletion:(id)a5
+- (void)_dismissAndCompleteWithIdentity:(id)identity error:(id)error extensionCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identityCopy = identity;
+  errorCopy = error;
+  completionCopy = completion;
   v11 = DALoggingwithCategory();
   v12 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v11, v12))
@@ -902,19 +902,19 @@ void __90__DAEASOAuthWebViewController__extensionRequestDidCompleteWithTokens_ex
     _os_log_impl(&dword_247E05000, v11, v12, "DAEASOAuthWebViewController will dismiss", buf, 2u);
   }
 
-  v13 = [(DAEASOAuthWebViewController *)self presentingViewController];
+  presentingViewController = [(DAEASOAuthWebViewController *)self presentingViewController];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __89__DAEASOAuthWebViewController__dismissAndCompleteWithIdentity_error_extensionCompletion___block_invoke;
   v17[3] = &unk_278EE0988;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v14 = v9;
-  v15 = v8;
-  v16 = v10;
-  [v13 dismissViewControllerAnimated:1 completion:v17];
+  v18 = identityCopy;
+  v19 = errorCopy;
+  v20 = completionCopy;
+  v14 = errorCopy;
+  v15 = identityCopy;
+  v16 = completionCopy;
+  [presentingViewController dismissViewControllerAnimated:1 completion:v17];
 }
 
 void __89__DAEASOAuthWebViewController__dismissAndCompleteWithIdentity_error_extensionCompletion___block_invoke(void *a1)
@@ -956,7 +956,7 @@ void __89__DAEASOAuthWebViewController__dismissAndCompleteWithIdentity_error_ext
   v9 = [v8 localizedStringForKey:@"HOTMAIL_EMAIL_MISMATCH_OK" value:&stru_2859ED5C8 table:@"EASOAuthSupport"];
   v12 = [v11 dictionaryWithObjectsAndKeys:{v3, v4, v6, v7, v9, *MEMORY[0x277CBF1E8], 0}];
 
-  [a1 _presentAlertWithAlertParameters:v12];
+  [self _presentAlertWithAlertParameters:v12];
 }
 
 + (void)presentInternetOfflineError
@@ -976,7 +976,7 @@ void __89__DAEASOAuthWebViewController__dismissAndCompleteWithIdentity_error_ext
   v12[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:3];
 
-  [a1 _presentAlertWithAlertParameters:v9];
+  [self _presentAlertWithAlertParameters:v9];
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -997,16 +997,16 @@ void __89__DAEASOAuthWebViewController__dismissAndCompleteWithIdentity_error_ext
   v12[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:3];
 
-  [a1 _presentAlertWithAlertParameters:v9];
+  [self _presentAlertWithAlertParameters:v9];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_presentAlertWithAlertParameters:(id)a3
++ (void)_presentAlertWithAlertParameters:(id)parameters
 {
   v5 = 0;
   v6 = &v5;
   v7 = 0x2020000000;
-  v8 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], 0.0, 0, 0, a3);
+  v8 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], 0.0, 0, 0, parameters);
   if (v6[3])
   {
     v3 = dispatch_get_global_queue(25, 0);

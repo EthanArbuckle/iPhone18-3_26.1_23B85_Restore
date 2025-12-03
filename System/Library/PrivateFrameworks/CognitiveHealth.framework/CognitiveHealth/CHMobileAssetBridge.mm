@@ -1,28 +1,28 @@
 @interface CHMobileAssetBridge
-- (void)autoAssetAvailableForUseForAssetType:(id)a3 assetSpecifier:(id)a4 completion:(id)a5;
-- (void)autoAssetEndAllLocksForAssetType:(id)a3 assetSpecifier:(id)a4 completion:(id)a5;
-- (void)autoAssetEndLockContentForAssetType:(id)a3 assetSpecifier:(id)a4 endLockReason:(id)a5 completion:(id)a6;
-- (void)autoAssetInterestInContentForAssetType:(id)a3 assetSpecifier:(id)a4 completion:(id)a5;
-- (void)autoAssetLockContentForAssetType:(id)a3 assetSpecifier:(id)a4 lockReason:(id)a5 completion:(id)a6;
+- (void)autoAssetAvailableForUseForAssetType:(id)type assetSpecifier:(id)specifier completion:(id)completion;
+- (void)autoAssetEndAllLocksForAssetType:(id)type assetSpecifier:(id)specifier completion:(id)completion;
+- (void)autoAssetEndLockContentForAssetType:(id)type assetSpecifier:(id)specifier endLockReason:(id)reason completion:(id)completion;
+- (void)autoAssetInterestInContentForAssetType:(id)type assetSpecifier:(id)specifier completion:(id)completion;
+- (void)autoAssetLockContentForAssetType:(id)type assetSpecifier:(id)specifier lockReason:(id)reason completion:(id)completion;
 @end
 
 @implementation CHMobileAssetBridge
 
-- (void)autoAssetEndAllLocksForAssetType:(id)a3 assetSpecifier:(id)a4 completion:(id)a5
+- (void)autoAssetEndAllLocksForAssetType:(id)type assetSpecifier:(id)specifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  NSLog(&cfstr_AttemptingEndi_0.isa, v9, v8);
-  v10 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:v9 withAssetSpecifier:v8];
+  completionCopy = completion;
+  specifierCopy = specifier;
+  typeCopy = type;
+  NSLog(&cfstr_AttemptingEndi_0.isa, typeCopy, specifierCopy);
+  v10 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:typeCopy withAssetSpecifier:specifierCopy];
 
   v11 = MEMORY[0x277D289E0];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__CHMobileAssetBridge_autoAssetEndAllLocksForAssetType_assetSpecifier_completion___block_invoke;
   v13[3] = &unk_278DE4F48;
-  v14 = v7;
-  v12 = v7;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [v11 endAllPreviousLocksOfSelector:v10 forClientName:@"CognitiveHealth" completion:v13];
 }
 
@@ -44,14 +44,14 @@ void __82__CHMobileAssetBridge_autoAssetEndAllLocksForAssetType_assetSpecifier_c
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)autoAssetEndLockContentForAssetType:(id)a3 assetSpecifier:(id)a4 endLockReason:(id)a5 completion:(id)a6
+- (void)autoAssetEndLockContentForAssetType:(id)type assetSpecifier:(id)specifier endLockReason:(id)reason completion:(id)completion
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  NSLog(&cfstr_AttemptingEndi.isa, v9, v12, v11);
-  v13 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:v12 withAssetSpecifier:v11];
+  reasonCopy = reason;
+  completionCopy = completion;
+  specifierCopy = specifier;
+  typeCopy = type;
+  NSLog(&cfstr_AttemptingEndi.isa, reasonCopy, typeCopy, specifierCopy);
+  v13 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:typeCopy withAssetSpecifier:specifierCopy];
 
   v19 = 0;
   v14 = [objc_alloc(MEMORY[0x277D289E0]) initForClientName:@"CognitiveHealth" selectingAsset:v13 error:&v19];
@@ -60,7 +60,7 @@ void __82__CHMobileAssetBridge_autoAssetEndAllLocksForAssetType_assetSpecifier_c
   if (v15)
   {
     NSLog(&cfstr_ErrorCreatingA.isa, v15);
-    v10[2](v10, v16);
+    completionCopy[2](completionCopy, v16);
   }
 
   else
@@ -69,8 +69,8 @@ void __82__CHMobileAssetBridge_autoAssetEndAllLocksForAssetType_assetSpecifier_c
     v17[1] = 3221225472;
     v17[2] = __99__CHMobileAssetBridge_autoAssetEndLockContentForAssetType_assetSpecifier_endLockReason_completion___block_invoke;
     v17[3] = &unk_278DE4F48;
-    v18 = v10;
-    [v14 endLockUsage:v9 completion:v17];
+    v18 = completionCopy;
+    [v14 endLockUsage:reasonCopy completion:v17];
   }
 }
 
@@ -92,14 +92,14 @@ void __99__CHMobileAssetBridge_autoAssetEndLockContentForAssetType_assetSpecifie
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)autoAssetLockContentForAssetType:(id)a3 assetSpecifier:(id)a4 lockReason:(id)a5 completion:(id)a6
+- (void)autoAssetLockContentForAssetType:(id)type assetSpecifier:(id)specifier lockReason:(id)reason completion:(id)completion
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  NSLog(&cfstr_AttemptingLock.isa, v9, v12, v11);
-  v13 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:v12 withAssetSpecifier:v11];
+  reasonCopy = reason;
+  completionCopy = completion;
+  specifierCopy = specifier;
+  typeCopy = type;
+  NSLog(&cfstr_AttemptingLock.isa, reasonCopy, typeCopy, specifierCopy);
+  v13 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:typeCopy withAssetSpecifier:specifierCopy];
 
   v20 = 0;
   v14 = [objc_alloc(MEMORY[0x277D289E0]) initForClientName:@"CognitiveHealth" selectingAsset:v13 error:&v20];
@@ -108,8 +108,8 @@ void __99__CHMobileAssetBridge_autoAssetEndLockContentForAssetType_assetSpecifie
   {
     v16 = v15;
     NSLog(&cfstr_ErrorCreatingA.isa, v15);
-    v17 = [MEMORY[0x277CBEA60] array];
-    v10[2](v10, 0, v17, v16);
+    array = [MEMORY[0x277CBEA60] array];
+    completionCopy[2](completionCopy, 0, array, v16);
   }
 
   else
@@ -118,9 +118,9 @@ void __99__CHMobileAssetBridge_autoAssetEndLockContentForAssetType_assetSpecifie
     v18[1] = 3221225472;
     v18[2] = __93__CHMobileAssetBridge_autoAssetLockContentForAssetType_assetSpecifier_lockReason_completion___block_invoke;
     v18[3] = &unk_278DE4F70;
-    v19 = v10;
-    [v14 lockContent:v9 withTimeout:-2 completion:v18];
-    v17 = 0;
+    v19 = completionCopy;
+    [v14 lockContent:reasonCopy withTimeout:-2 completion:v18];
+    array = 0;
     v16 = v19;
   }
 }
@@ -230,13 +230,13 @@ void __93__CHMobileAssetBridge_autoAssetLockContentForAssetType_assetSpecifier_l
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)autoAssetInterestInContentForAssetType:(id)a3 assetSpecifier:(id)a4 completion:(id)a5
+- (void)autoAssetInterestInContentForAssetType:(id)type assetSpecifier:(id)specifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  NSLog(&cfstr_InterestInCont.isa, v9, v8);
-  v10 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:v9 withAssetSpecifier:v8];
+  completionCopy = completion;
+  specifierCopy = specifier;
+  typeCopy = type;
+  NSLog(&cfstr_InterestInCont.isa, typeCopy, specifierCopy);
+  v10 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:typeCopy withAssetSpecifier:specifierCopy];
 
   v16 = 0;
   v11 = [objc_alloc(MEMORY[0x277D289E0]) initForClientName:@"CognitiveHealth" selectingAsset:v10 error:&v16];
@@ -245,7 +245,7 @@ void __93__CHMobileAssetBridge_autoAssetLockContentForAssetType_assetSpecifier_l
   if (v12)
   {
     NSLog(&cfstr_ErrorCreatingA.isa, v12);
-    v7[2](v7, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
   else
@@ -254,7 +254,7 @@ void __93__CHMobileAssetBridge_autoAssetLockContentForAssetType_assetSpecifier_l
     v14[1] = 3221225472;
     v14[2] = __88__CHMobileAssetBridge_autoAssetInterestInContentForAssetType_assetSpecifier_completion___block_invoke;
     v14[3] = &unk_278DE4F48;
-    v15 = v7;
+    v15 = completionCopy;
     [v11 interestInContent:@"Download Custom Categories file" completion:v14];
   }
 }
@@ -277,13 +277,13 @@ void __88__CHMobileAssetBridge_autoAssetInterestInContentForAssetType_assetSpeci
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)autoAssetAvailableForUseForAssetType:(id)a3 assetSpecifier:(id)a4 completion:(id)a5
+- (void)autoAssetAvailableForUseForAssetType:(id)type assetSpecifier:(id)specifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  NSLog(&cfstr_AttemptingToGe.isa, v9, v8);
-  v10 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:v9 withAssetSpecifier:v8];
+  completionCopy = completion;
+  specifierCopy = specifier;
+  typeCopy = type;
+  NSLog(&cfstr_AttemptingToGe.isa, typeCopy, specifierCopy);
+  v10 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:typeCopy withAssetSpecifier:specifierCopy];
 
   v17 = 0;
   v11 = [objc_alloc(MEMORY[0x277D289E0]) initForClientName:@"CognitiveHealth" selectingAsset:v10 error:&v17];
@@ -292,15 +292,15 @@ void __88__CHMobileAssetBridge_autoAssetInterestInContentForAssetType_assetSpeci
   if (v12)
   {
     NSLog(&cfstr_ErrrorCreating.isa, v12);
-    v7[2](v7, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __86__CHMobileAssetBridge_autoAssetAvailableForUseForAssetType_assetSpecifier_completion___block_invoke;
   v15[3] = &unk_278DE4F20;
-  v16 = v7;
-  v14 = v7;
+  v16 = completionCopy;
+  v14 = completionCopy;
   [v11 currentStatus:v15];
 }
 

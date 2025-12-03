@@ -1,35 +1,35 @@
 @interface NSPPrivacyProxySignedConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAlgorithm:(id)a3;
+- (int)StringAsAlgorithm:(id)algorithm;
 - (int)algorithm;
 - (unint64_t)hash;
-- (void)addCertificates:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCertificates:(id)certificates;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxySignedConfiguration
 
-- (void)addCertificates:(id)a3
+- (void)addCertificates:(id)certificates
 {
-  v4 = a3;
+  certificatesCopy = certificates;
   certificates = self->_certificates;
-  v8 = v4;
+  v8 = certificatesCopy;
   if (!certificates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_certificates;
     self->_certificates = v6;
 
-    v4 = v8;
+    certificatesCopy = v8;
     certificates = self->_certificates;
   }
 
-  [(NSMutableArray *)certificates addObject:v4];
+  [(NSMutableArray *)certificates addObject:certificatesCopy];
 }
 
 - (int)algorithm
@@ -45,17 +45,17 @@
   }
 }
 
-- (int)StringAsAlgorithm:(id)a3
+- (int)StringAsAlgorithm:(id)algorithm
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  algorithmCopy = algorithm;
+  if ([algorithmCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"ECDSA_SHA256"];
+    v4 = [algorithmCopy isEqualToString:@"ECDSA_SHA256"];
   }
 
   return v4;
@@ -67,32 +67,32 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxySignedConfiguration;
   v4 = [(NSPPrivacyProxySignedConfiguration *)&v8 description];
-  v5 = [(NSPPrivacyProxySignedConfiguration *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxySignedConfiguration *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   configuration = self->_configuration;
   if (configuration)
   {
-    v5 = [(NSPPrivacyProxyConfiguration *)configuration dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"configuration"];
+    dictionaryRepresentation = [(NSPPrivacyProxyConfiguration *)configuration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"configuration"];
   }
 
   signature = self->_signature;
   if (signature)
   {
-    [v3 setObject:signature forKey:@"signature"];
+    [dictionary setObject:signature forKey:@"signature"];
   }
 
   certificates = self->_certificates;
   if (certificates)
   {
-    [v3 setObject:certificates forKey:@"certificates"];
+    [dictionary setObject:certificates forKey:@"certificates"];
   }
 
   if (*&self->_has)
@@ -116,22 +116,22 @@
       v9 = @"UNKNOWN";
     }
 
-    [v3 setObject:v9 forKey:@"algorithm"];
+    [dictionary setObject:v9 forKey:@"algorithm"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_configuration)
   {
     __assert_rtn("[NSPPrivacyProxySignedConfiguration writeTo:]", "NSPPrivacyProxySignedConfiguration.m", 187, "self->_configuration != nil");
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   if (!self->_signature)
   {
@@ -180,42 +180,42 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setConfiguration:self->_configuration];
-  [v8 setSignature:self->_signature];
+  toCopy = to;
+  [toCopy setConfiguration:self->_configuration];
+  [toCopy setSignature:self->_signature];
   if ([(NSPPrivacyProxySignedConfiguration *)self certificatesCount])
   {
-    [v8 clearCertificates];
-    v4 = [(NSPPrivacyProxySignedConfiguration *)self certificatesCount];
-    if (v4)
+    [toCopy clearCertificates];
+    certificatesCount = [(NSPPrivacyProxySignedConfiguration *)self certificatesCount];
+    if (certificatesCount)
     {
-      v5 = v4;
+      v5 = certificatesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NSPPrivacyProxySignedConfiguration *)self certificatesAtIndex:i];
-        [v8 addCertificates:v7];
+        [toCopy addCertificates:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 2) = self->_algorithm;
-    *(v8 + 40) |= 1u;
+    *(toCopy + 2) = self->_algorithm;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSPPrivacyProxyConfiguration *)self->_configuration copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSPPrivacyProxyConfiguration *)self->_configuration copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSData *)self->_signature copyWithZone:a3];
+  v8 = [(NSData *)self->_signature copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -239,7 +239,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addCertificates:v15];
 
         ++v14;
@@ -262,16 +262,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   configuration = self->_configuration;
-  if (configuration | *(v4 + 3))
+  if (configuration | *(equalCopy + 3))
   {
     if (![(NSPPrivacyProxyConfiguration *)configuration isEqual:?])
     {
@@ -280,7 +280,7 @@
   }
 
   signature = self->_signature;
-  if (signature | *(v4 + 4))
+  if (signature | *(equalCopy + 4))
   {
     if (![(NSData *)signature isEqual:?])
     {
@@ -289,7 +289,7 @@
   }
 
   certificates = self->_certificates;
-  if (certificates | *(v4 + 2))
+  if (certificates | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)certificates isEqual:?])
     {
@@ -297,10 +297,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_algorithm == *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_algorithm == *(equalCopy + 2))
     {
       v8 = 1;
       goto LABEL_13;
@@ -333,12 +333,12 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   configuration = self->_configuration;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (configuration)
   {
     if (v6)
@@ -352,7 +352,7 @@ LABEL_13:
     [(NSPPrivacyProxySignedConfiguration *)self setConfiguration:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NSPPrivacyProxySignedConfiguration *)self setSignature:?];
   }
@@ -361,7 +361,7 @@ LABEL_13:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -385,9 +385,9 @@ LABEL_13:
     while (v9);
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_algorithm = *(v4 + 2);
+    self->_algorithm = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

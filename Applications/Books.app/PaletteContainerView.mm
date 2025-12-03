@@ -1,6 +1,6 @@
 @interface PaletteContainerView
 - (NSArray)interactions;
-- (_TtC5Books20PaletteContainerView)initWithFrame:(CGRect)a3;
+- (_TtC5Books20PaletteContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -9,7 +9,7 @@
 - (NSArray)interactions
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books20PaletteContainerView_containerView);
-  v3 = self;
+  selfCopy = self;
   isa = [v2 interactions];
   if (!isa)
   {
@@ -23,11 +23,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100283370();
 }
 
-- (_TtC5Books20PaletteContainerView)initWithFrame:(CGRect)a3
+- (_TtC5Books20PaletteContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

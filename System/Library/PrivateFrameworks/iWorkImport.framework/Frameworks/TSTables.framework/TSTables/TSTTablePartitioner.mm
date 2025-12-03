@@ -1,30 +1,30 @@
 @interface TSTTablePartitioner
-- (BOOL)didHint:(id)a3 syncWithNextHint:(id)a4 horizontally:(BOOL)a5;
-- (BOOL)p_didFinishPartitioningHint:(id)a3 horizontally:(BOOL)a4;
-- (BOOL)shouldReuseLayout:(id)a3 forSize:(CGSize)a4 parentLayout:(id)a5 hint:(id)a6;
+- (BOOL)didHint:(id)hint syncWithNextHint:(id)nextHint horizontally:(BOOL)horizontally;
+- (BOOL)p_didFinishPartitioningHint:(id)hint horizontally:(BOOL)horizontally;
+- (BOOL)shouldReuseLayout:(id)layout forSize:(CGSize)size parentLayout:(id)parentLayout hint:(id)hint;
 - (CGRect)totalPartitionFrame;
 - (CGSize)scaleToFit;
 - (TSTLayout)scaledLayout;
 - (TSTTableInfo)tableInfo;
-- (TSTTablePartitioner)initWithInfo:(id)a3;
-- (TSUCellRect)calculateCellRangeForNextPartition:(unsigned __int16)a3 nextPartitionRange:(TSUCellRect)a4 additionalHeightForCaption:(double)a5 availableSizeRemaining:(CGSize)a6 previousHint:(id)a7;
-- (TSUCellRect)measureCellRangeForNextPartitionOfSize:(CGSize)a3 previousHint:(id)a4 horizontally:(BOOL)a5;
-- (id)hintCacheKeyForHint:(id)a3;
-- (id)hintCacheKeyForPartitioningPass:(id)a3 andHintID:(TSUCellCoord)a4;
-- (id)hintForLayout:(id)a3;
-- (id)layoutForHint:(id)a3 parentLayout:(id)a4;
-- (id)nextHintForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7;
-- (id)nextLayoutForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7;
-- (id)partitioningPassForFirstPartitionSize:(CGSize)a3;
-- (id)partitioningPassForHint:(id)a3 withPreviousHint:(id)a4;
+- (TSTTablePartitioner)initWithInfo:(id)info;
+- (TSUCellRect)calculateCellRangeForNextPartition:(unsigned __int16)partition nextPartitionRange:(TSUCellRect)range additionalHeightForCaption:(double)caption availableSizeRemaining:(CGSize)remaining previousHint:(id)hint;
+- (TSUCellRect)measureCellRangeForNextPartitionOfSize:(CGSize)size previousHint:(id)hint horizontally:(BOOL)horizontally;
+- (id)hintCacheKeyForHint:(id)hint;
+- (id)hintCacheKeyForPartitioningPass:(id)pass andHintID:(TSUCellCoord)d;
+- (id)hintForLayout:(id)layout;
+- (id)layoutForHint:(id)hint parentLayout:(id)layout;
+- (id)nextHintForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished;
+- (id)nextLayoutForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished;
+- (id)partitioningPassForFirstPartitionSize:(CGSize)size;
+- (id)partitioningPassForHint:(id)hint withPreviousHint:(id)previousHint;
 - (void)validateScaledLayout;
 @end
 
 @implementation TSTTablePartitioner
 
-- (TSTTablePartitioner)initWithInfo:(id)a3
+- (TSTTablePartitioner)initWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -84,21 +84,21 @@
   objc_msgSend_validate(v9, v5, v6, v7, v8);
 }
 
-- (TSUCellRect)measureCellRangeForNextPartitionOfSize:(CGSize)a3 previousHint:(id)a4 horizontally:(BOOL)a5
+- (TSUCellRect)measureCellRangeForNextPartitionOfSize:(CGSize)size previousHint:(id)hint horizontally:(BOOL)horizontally
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
+  horizontallyCopy = horizontally;
+  height = size.height;
+  width = size.width;
+  hintCopy = hint;
   v174 = objc_msgSend_scaledLayout(self, v10, v11, v12, v13);
   v18 = objc_msgSend_tableInfo(self, v14, v15, v16, v17);
   v23 = objc_msgSend_layoutEngine(v18, v19, v20, v21, v22);
 
   objc_msgSend_validateScaledLayout(self, v24, v25, v26, v27);
-  v173 = v9;
-  if (v9)
+  v173 = hintCopy;
+  if (hintCopy)
   {
-    v32 = objc_msgSend_cellRange(v9, v28, v29, v30, v31);
+    v32 = objc_msgSend_cellRange(hintCopy, v28, v29, v30, v31);
     if (v32 == 0x7FFFFFFF || (v32 & 0xFFFF00000000) == 0x7FFF00000000 || !(v33 >> 32) || !v33)
     {
       v37 = MEMORY[0x277D81150];
@@ -109,10 +109,10 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v44, v45, v46, v47);
     }
 
-    v48 = objc_msgSend_cellRange(v9, v33, v34, v35, v36);
+    v48 = objc_msgSend_cellRange(hintCopy, v33, v34, v35, v36);
     tableIsLTR = self->_tableIsLTR;
     layoutIsLTR = self->_layoutIsLTR;
-    if (v5)
+    if (horizontallyCopy)
     {
       if (tableIsLTR == layoutIsLTR)
       {
@@ -125,11 +125,11 @@
       }
 
       v56 = v55 + WORD2(v48);
-      v176 = objc_msgSend_cellRange(v9, v49, v50, v51, v52);
-      objc_msgSend_maximumSize(v9, v57, v58, v59, v60);
+      v176 = objc_msgSend_cellRange(hintCopy, v49, v50, v51, v52);
+      objc_msgSend_maximumSize(hintCopy, v57, v58, v59, v60);
       if (height == v61)
       {
-        objc_msgSend_cellRange(v9, v28, v29, v30, v31);
+        objc_msgSend_cellRange(hintCopy, v28, v29, v30, v31);
         v175 = v28 & 0xFFFFFFFF00000000;
       }
 
@@ -155,7 +155,7 @@
       }
 
       LOWORD(v62) = v63 + WORD2(v48);
-      v64 = objc_msgSend_cellRange(v9, v49, v50, v51, v52);
+      v64 = objc_msgSend_cellRange(hintCopy, v49, v50, v51, v52);
       if (v65 >> 32)
       {
         v69 = v64 == 0x7FFFFFFF;
@@ -173,11 +173,11 @@
       }
 
       v176 = v70;
-      v172 = objc_msgSend_cellRange(v9, v65, v66, v67, v68) >> 32;
-      objc_msgSend_maximumSize(v9, v71, v72, v73, v74);
+      v172 = objc_msgSend_cellRange(hintCopy, v65, v66, v67, v68) >> 32;
+      objc_msgSend_maximumSize(hintCopy, v71, v72, v73, v74);
       if (width == v75)
       {
-        objc_msgSend_cellRange(v9, v28, v29, v30, v31);
+        objc_msgSend_cellRange(hintCopy, v28, v29, v30, v31);
         v175 = v28;
       }
 
@@ -321,14 +321,14 @@ LABEL_49:
   return result;
 }
 
-- (TSUCellRect)calculateCellRangeForNextPartition:(unsigned __int16)a3 nextPartitionRange:(TSUCellRect)a4 additionalHeightForCaption:(double)a5 availableSizeRemaining:(CGSize)a6 previousHint:(id)a7
+- (TSUCellRect)calculateCellRangeForNextPartition:(unsigned __int16)partition nextPartitionRange:(TSUCellRect)range additionalHeightForCaption:(double)caption availableSizeRemaining:(CGSize)remaining previousHint:(id)hint
 {
-  height = a6.height;
-  width = a6.width;
-  size = a4.size;
-  origin = a4.origin;
-  v9 = a3;
-  v11 = objc_msgSend_scaledLayout(self, a2, a3, *&a4.origin, *&a4.size);
+  height = remaining.height;
+  width = remaining.width;
+  size = range.size;
+  origin = range.origin;
+  partitionCopy = partition;
+  v11 = objc_msgSend_scaledLayout(self, a2, partition, *&range.origin, *&range.size);
   v16 = objc_msgSend_tableInfo(self, v12, v13, v14, v15);
   v21 = objc_msgSend_layoutEngine(v16, v17, v18, v19, v20);
 
@@ -345,7 +345,7 @@ LABEL_49:
   v62 = objc_msgSend_tableInfo(self, v58, v59, v60, v61);
   v67 = objc_msgSend_repeatingHeaderColumnsEnabled(v62, v63, v64, v65, v66);
 
-  v68 = sub_2211BBE60(v11, origin.row | (v9 << 32), 0x100000001uLL);
+  v68 = sub_2211BBE60(v11, origin.row | (partitionCopy << 32), 0x100000001uLL);
   v70 = v69;
   v72 = v71;
   rect = v73;
@@ -371,7 +371,7 @@ LABEL_49:
       v170.origin.y = v76;
       v170.size.width = v78;
       v170.size.height = v80;
-      if (CGRectGetMaxY(v170) + a5 > height + v70)
+      if (CGRectGetMaxY(v170) + caption > height + v70)
       {
         v171.origin.x = v74;
         v171.origin.y = v76;
@@ -397,7 +397,7 @@ LABEL_49:
       v88 = v88 - v94;
       v95 = sub_2211BB390(v11, v88, v70 + height);
       row = v95;
-      if ((v95 & 0xFFFF00000000) != 0x7FFF00000000 || a7 != 0)
+      if ((v95 & 0xFFFF00000000) != 0x7FFF00000000 || hint != 0)
       {
         LOWORD(v91) = WORD2(v95);
       }
@@ -420,7 +420,7 @@ LABEL_49:
       v175.size.height = rect;
       if (CGRectGetMaxX(v175) >= v88)
       {
-        LOWORD(v91) = v9;
+        LOWORD(v91) = partitionCopy;
       }
     }
 
@@ -467,7 +467,7 @@ LABEL_43:
     v99 = v99 + v104;
     v105 = sub_2211BB390(v11, v99, v100);
     row = v105;
-    if ((v105 & 0xFFFF00000000) != 0x7FFF00000000 || a7 != 0)
+    if ((v105 & 0xFFFF00000000) != 0x7FFF00000000 || hint != 0)
     {
       LOWORD(v91) = WORD2(v105);
     }
@@ -490,7 +490,7 @@ LABEL_43:
     v179.size.height = rect;
     if (CGRectGetMinX(v179) <= v99)
     {
-      LOWORD(v91) = v9;
+      LOWORD(v91) = partitionCopy;
     }
   }
 
@@ -523,24 +523,24 @@ LABEL_44:
 
   tableIsLTR = self->_tableIsLTR;
   layoutIsLTR = self->_layoutIsLTR;
-  if (v9 <= v91)
+  if (partitionCopy <= v91)
   {
     v114 = v91;
   }
 
   else
   {
-    v114 = v9;
+    v114 = partitionCopy;
   }
 
-  if (v9 >= v91)
+  if (partitionCopy >= v91)
   {
     v115 = v91;
   }
 
   else
   {
-    v115 = v9;
+    v115 = partitionCopy;
   }
 
   if (tableIsLTR == layoutIsLTR || v91 == 0x7FFF)
@@ -573,7 +573,7 @@ LABEL_44:
     else
     {
       LOWORD(v87) = 0;
-      v118 = (v9 | v118 & 0xFFFFFFFF00000000) + 1;
+      v118 = (partitionCopy | v118 & 0xFFFFFFFF00000000) + 1;
     }
   }
 
@@ -673,10 +673,10 @@ LABEL_97:
 
     v135 = self->_tableIsLTR;
     v136 = self->_layoutIsLTR;
-    LODWORD(v137) = v9 - v117;
+    LODWORD(v137) = partitionCopy - v117;
     if (v135 == v136)
     {
-      v137 = v117 - v9;
+      v137 = v117 - partitionCopy;
     }
 
     else
@@ -751,17 +751,17 @@ LABEL_119:
   return result;
 }
 
-- (id)nextHintForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7
+- (id)nextHintForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished
 {
-  v7 = a6;
-  height = a3.height;
-  width = a3.width;
-  v12 = a4;
-  v13 = a5;
+  horizontallyCopy = horizontally;
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
+  hintCopy = hint;
   objc_opt_class();
   v14 = TSUDynamicCast();
 
-  if (v13 && !v14)
+  if (hintCopy && !v14)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSTTablePartitioner nextHintForSize:parentLayout:previousHint:horizontally:outFinished:]", v17, v18);
@@ -792,7 +792,7 @@ LABEL_119:
 
   if (v14)
   {
-    if (objc_msgSend_p_didFinishPartitioningHint_horizontally_(self, v31, v14, v7, v34))
+    if (objc_msgSend_p_didFinishPartitioningHint_horizontally_(self, v31, v14, horizontallyCopy, v34))
     {
       v58 = 0;
       goto LABEL_56;
@@ -801,7 +801,7 @@ LABEL_119:
     v60 = objc_msgSend_cacheHintID(v14, v54, v55, v56, v57);
     v59 = v60;
     v269 = HIWORD(v60);
-    if (v7)
+    if (horizontallyCopy)
     {
       LOWORD(v271) = WORD2(v60) + 1;
     }
@@ -820,7 +820,7 @@ LABEL_119:
     v59 = 0;
   }
 
-  v61 = objc_msgSend_rootLayout(v12, v31, v32, v33, v34);
+  v61 = objc_msgSend_rootLayout(layoutCopy, v31, v32, v33, v34);
   v66 = objc_msgSend_layoutController(v61, v62, v63, v64, v65);
   v71 = objc_msgSend_canvas(v66, v67, v68, v69, v70);
 
@@ -859,13 +859,13 @@ LABEL_119:
         objc_msgSend_tableInfo(self, v184, v185, v186, v187);
         v267 = v59;
         v188 = v76;
-        v190 = v189 = v7;
+        v190 = v189 = horizontallyCopy;
         v195 = objc_msgSend_geometry(v190, v191, v192, v193, v194);
         objc_msgSend_size(v195, v196, v197, v198, v199);
         v201 = v200;
         v203 = v202;
 
-        v7 = v189;
+        horizontallyCopy = v189;
         v76 = v188;
         v59 = v267;
 
@@ -914,8 +914,8 @@ LABEL_119:
   }
 
 LABEL_35:
-  v270 = v7;
-  PartitionOfSize_previousHint_horizontally = objc_msgSend_measureCellRangeForNextPartitionOfSize_previousHint_horizontally_(self, v112, v14, v7, v115, width, height);
+  v270 = horizontallyCopy;
+  PartitionOfSize_previousHint_horizontally = objc_msgSend_measureCellRangeForNextPartitionOfSize_previousHint_horizontally_(self, v112, v14, horizontallyCopy, v115, width, height);
   v209 = PartitionOfSize_previousHint_horizontally;
   v210 = v205;
   if (HIDWORD(v205))
@@ -951,7 +951,7 @@ LABEL_35:
       v222 = 1;
     }
 
-    v223 = self;
+    selfCopy = self;
     v224 = v14;
     v225 = v71;
     if (v222)
@@ -964,16 +964,16 @@ LABEL_35:
       v226 = v210 + WORD2(v209) - 1;
     }
 
-    p_isa = &v223->super.isa;
+    p_isa = &selfCopy->super.isa;
     v268 = v59;
-    v227 = objc_msgSend_tableInfo(v223, v218, v219, v220, v221);
-    v232 = v12;
+    v227 = objc_msgSend_tableInfo(selfCopy, v218, v219, v220, v221);
+    v232 = layoutCopy;
     v233 = objc_msgSend_numberOfColumns(v227, v228, v229, v230, v231);
 
     v234 = v233 >= v226;
     v71 = v225;
     v14 = v224;
-    v12 = v232;
+    layoutCopy = v232;
     if (v234)
     {
       v236 = objc_loadWeakRetained(p_isa + 3);
@@ -988,9 +988,9 @@ LABEL_35:
       v259 = objc_msgSend_partitioningPassForHint_withPreviousHint_(p_isa, v257, v272, v224, v258);
       objc_msgSend_setPartitioningPass_(v272, v260, v259, v261, v262);
 
-      if (a7)
+      if (finished)
       {
-        *a7 = objc_msgSend_p_didFinishPartitioningHint_horizontally_(p_isa, v263, v272, v270, v264);
+        *finished = objc_msgSend_p_didFinishPartitioningHint_horizontally_(p_isa, v263, v272, v270, v264);
       }
 
       v58 = v272;
@@ -1004,9 +1004,9 @@ LABEL_35:
 
   v235 = v272;
   v58 = 0;
-  if (a7)
+  if (finished)
   {
-    *a7 = 1;
+    *finished = 1;
   }
 
 LABEL_55:
@@ -1016,16 +1016,16 @@ LABEL_56:
   return v58;
 }
 
-- (id)nextLayoutForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7
+- (id)nextLayoutForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished
 {
-  v8 = a6;
-  height = a3.height;
-  width = a3.width;
-  v13 = a4;
-  v17 = objc_msgSend_nextHintForSize_parentLayout_previousHint_horizontally_outFinished_(self, v14, v13, a5, v8, a7, width, height);
+  horizontallyCopy = horizontally;
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
+  v17 = objc_msgSend_nextHintForSize_parentLayout_previousHint_horizontally_outFinished_(self, v14, layoutCopy, hint, horizontallyCopy, finished, width, height);
   if (v17)
   {
-    v18 = objc_msgSend_layoutForHint_parentLayout_(self, v15, v17, v13, v16);
+    v18 = objc_msgSend_layoutForHint_parentLayout_(self, v15, v17, layoutCopy, v16);
   }
 
   else
@@ -1036,10 +1036,10 @@ LABEL_56:
   return v18;
 }
 
-- (id)layoutForHint:(id)a3 parentLayout:(id)a4
+- (id)layoutForHint:(id)hint parentLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  hintCopy = hint;
+  layoutCopy = layout;
   objc_opt_class();
   v12 = TSUDynamicCast();
   if (!v12)
@@ -1048,7 +1048,7 @@ LABEL_56:
     goto LABEL_86;
   }
 
-  v13 = objc_msgSend_rootLayout(v7, v8, v9, v10, v11);
+  v13 = objc_msgSend_rootLayout(layoutCopy, v8, v9, v10, v11);
   v18 = objc_msgSend_layoutController(v13, v14, v15, v16, v17);
   v23 = objc_msgSend_canvas(v18, v19, v20, v21, v22);
 
@@ -1065,7 +1065,7 @@ LABEL_56:
   }
 
   v31 = v12;
-  v35 = objc_msgSend_hintCacheKeyForHint_(self, v32, v6, v33, v34);
+  v35 = objc_msgSend_hintCacheKeyForHint_(self, v32, hintCopy, v33, v34);
   v39 = objc_msgSend_objectForKey_(v28, v36, v35, v37, v38);
 
   v44 = objc_msgSend_layout(v39, v40, v41, v42, v43);
@@ -1085,7 +1085,7 @@ LABEL_56:
       v58 = v57;
       v60 = v59;
       objc_msgSend_maximumSize(v31, v61, v62, v63, v64);
-      if (objc_msgSend_shouldReuseLayout_forSize_parentLayout_hint_(self, v65, v49, v7, v31))
+      if (objc_msgSend_shouldReuseLayout_forSize_parentLayout_hint_(self, v65, v49, layoutCopy, v31))
       {
         v66 = 1;
         goto LABEL_18;
@@ -1093,8 +1093,8 @@ LABEL_56:
 
       v152 = v56;
       v67 = v12;
-      v68 = v7;
-      v69 = v6;
+      v68 = layoutCopy;
+      v69 = hintCopy;
       objc_msgSend_setLayout_(v31, v45, 0, v47, v48);
 
       goto LABEL_17;
@@ -1102,8 +1102,8 @@ LABEL_56:
 
     v152 = v55;
     v67 = v12;
-    v68 = v7;
-    v69 = v6;
+    v68 = layoutCopy;
+    v69 = hintCopy;
     v58 = 1.0;
   }
 
@@ -1123,8 +1123,8 @@ LABEL_56:
 
     v152 = 0x7FFF7FFFFFFFLL;
     v67 = v12;
-    v68 = v7;
-    v69 = v6;
+    v68 = layoutCopy;
+    v69 = hintCopy;
     v156 = 0;
     v157 = 0x7FFF7FFFFFFFLL;
   }
@@ -1137,8 +1137,8 @@ LABEL_17:
   v49 = objc_msgSend_initWithInfo_layoutHint_(v75, v77, WeakRetained, v31, v78);
 
   v66 = 0;
-  v6 = v69;
-  v7 = v68;
+  hintCopy = v69;
+  layoutCopy = v68;
   v12 = v67;
   v56 = v152;
 LABEL_18:
@@ -1171,7 +1171,7 @@ LABEL_82:
       goto LABEL_82;
     }
 
-    v151 = v6;
+    v151 = hintCopy;
     v103 = v56 & 0xFFFF00000000;
     if (v56 != 0x7FFFFFFF && v103 == 0x7FFF00000000)
     {
@@ -1317,7 +1317,7 @@ LABEL_82:
       v123 = 1;
     }
 
-    v6 = v151;
+    hintCopy = v151;
     v124 = v150;
     if (v150 >= v118)
     {
@@ -1374,11 +1374,11 @@ LABEL_86:
   return v49;
 }
 
-- (BOOL)didHint:(id)a3 syncWithNextHint:(id)a4 horizontally:(BOOL)a5
+- (BOOL)didHint:(id)hint syncWithNextHint:(id)nextHint horizontally:(BOOL)horizontally
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  horizontallyCopy = horizontally;
+  nextHintCopy = nextHint;
+  hintCopy = hint;
   objc_opt_class();
   v9 = TSUDynamicCast();
 
@@ -1403,7 +1403,7 @@ LABEL_6:
   }
 
   v38 = objc_msgSend_cellRange(v9, v32, v33, v34, v35);
-  if (!v5)
+  if (!horizontallyCopy)
   {
     if (v39 >> 32)
     {
@@ -1605,14 +1605,14 @@ LABEL_7:
   return v36;
 }
 
-- (BOOL)p_didFinishPartitioningHint:(id)a3 horizontally:(BOOL)a4
+- (BOOL)p_didFinishPartitioningHint:(id)hint horizontally:(BOOL)horizontally
 {
-  v4 = a4;
-  v6 = a3;
+  horizontallyCopy = horizontally;
+  hintCopy = hint;
   v11 = objc_msgSend_tableInfo(self, v7, v8, v9, v10);
   v16 = objc_msgSend_layoutEngine(v11, v12, v13, v14, v15);
 
-  if (!v6)
+  if (!hintCopy)
   {
     v39 = 0;
     goto LABEL_61;
@@ -1620,9 +1620,9 @@ LABEL_7:
 
   v21 = objc_msgSend_cellRange(v16, v17, v18, v19, v20);
   v23 = v22;
-  v24 = sub_2213A2A30(v16, v6);
+  v24 = sub_2213A2A30(v16, hintCopy);
   v28 = v25;
-  if (!v4)
+  if (!horizontallyCopy)
   {
     if (HIDWORD(v23))
     {
@@ -1814,9 +1814,9 @@ LABEL_61:
   return v39;
 }
 
-- (id)hintForLayout:(id)a3
+- (id)hintForLayout:(id)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   objc_opt_class();
   v4 = TSUDynamicCast();
 
@@ -1833,17 +1833,17 @@ LABEL_61:
   return v9;
 }
 
-- (BOOL)shouldReuseLayout:(id)a3 forSize:(CGSize)a4 parentLayout:(id)a5 hint:(id)a6
+- (BOOL)shouldReuseLayout:(id)layout forSize:(CGSize)size parentLayout:(id)parentLayout hint:(id)hint
 {
-  v7 = a3;
-  v12 = a5;
-  if (v12)
+  layoutCopy = layout;
+  parentLayoutCopy = parentLayout;
+  if (parentLayoutCopy)
   {
-    v17 = objc_msgSend_parent(v7, v8, v9, v10, v11);
+    v17 = objc_msgSend_parent(layoutCopy, v8, v9, v10, v11);
     if (v17)
     {
-      v18 = objc_msgSend_parent(v7, v13, v14, v15, v16);
-      v19 = v18 == v12;
+      v18 = objc_msgSend_parent(layoutCopy, v13, v14, v15, v16);
+      v19 = v18 == parentLayoutCopy;
     }
 
     else
@@ -1910,11 +1910,11 @@ LABEL_61:
   return result;
 }
 
-- (id)partitioningPassForFirstPartitionSize:(CGSize)a3
+- (id)partitioningPassForFirstPartitionSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width == *MEMORY[0x277CBF3A8] && a3.height == *(MEMORY[0x277CBF3A8] + 8))
+  height = size.height;
+  width = size.width;
+  if (size.width == *MEMORY[0x277CBF3A8] && size.height == *(MEMORY[0x277CBF3A8] + 8))
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTablePartitioner partitioningPassForFirstPartitionSize:]", v3, v4);
@@ -1945,18 +1945,18 @@ LABEL_61:
   return v25;
 }
 
-- (id)partitioningPassForHint:(id)a3 withPreviousHint:(id)a4
+- (id)partitioningPassForHint:(id)hint withPreviousHint:(id)previousHint
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_cacheHintID(v6, v8, v9, v10, v11);
-  if (v7 && (v12 & 0xFFFFFFFFFFFFLL) != 0)
+  hintCopy = hint;
+  previousHintCopy = previousHint;
+  v12 = objc_msgSend_cacheHintID(hintCopy, v8, v9, v10, v11);
+  if (previousHintCopy && (v12 & 0xFFFFFFFFFFFFLL) != 0)
   {
-    v17 = objc_msgSend_partitioningPass(v7, v13, v14, v15, v16);
+    v17 = objc_msgSend_partitioningPass(previousHintCopy, v13, v14, v15, v16);
 
     if (v17)
     {
-      objc_msgSend_partitioningPass(v7, v18, v19, v20, v21);
+      objc_msgSend_partitioningPass(previousHintCopy, v18, v19, v20, v21);
     }
 
     else
@@ -1968,7 +1968,7 @@ LABEL_61:
 
   else
   {
-    objc_msgSend_maximumSize(v6, v13, v14, v15, v16);
+    objc_msgSend_maximumSize(hintCopy, v13, v14, v15, v16);
     v22 = objc_msgSend_partitioningPassForFirstPartitionSize_(self, v23, v24, v25, v26);
   }
 
@@ -1977,21 +1977,21 @@ LABEL_61:
   return v27;
 }
 
-- (id)hintCacheKeyForPartitioningPass:(id)a3 andHintID:(TSUCellCoord)a4
+- (id)hintCacheKeyForPartitioningPass:(id)pass andHintID:(TSUCellCoord)d
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  passCopy = pass;
   v6 = NSStringFromTSUCellCoord();
-  v10 = objc_msgSend_stringWithFormat_(v4, v7, @"(%@,%@)", v8, v9, v5, v6);
+  v10 = objc_msgSend_stringWithFormat_(v4, v7, @"(%@,%@)", v8, v9, passCopy, v6);
 
   return v10;
 }
 
-- (id)hintCacheKeyForHint:(id)a3
+- (id)hintCacheKeyForHint:(id)hint
 {
-  v4 = a3;
-  v9 = objc_msgSend_partitioningPass(v4, v5, v6, v7, v8);
-  v14 = objc_msgSend_cacheHintID(v4, v10, v11, v12, v13);
+  hintCopy = hint;
+  v9 = objc_msgSend_partitioningPass(hintCopy, v5, v6, v7, v8);
+  v14 = objc_msgSend_cacheHintID(hintCopy, v10, v11, v12, v13);
 
   v17 = objc_msgSend_hintCacheKeyForPartitioningPass_andHintID_(self, v15, v9, v14, v16);
 

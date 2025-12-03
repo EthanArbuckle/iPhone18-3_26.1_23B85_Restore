@@ -1,34 +1,34 @@
 @interface CellularNrScgRemoval
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSdmTriggerCause:(id)a3;
+- (int)StringAsSdmTriggerCause:(id)cause;
 - (int)sdmTriggerCause;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBandInd:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasIsDueToSdm:(BOOL)a3;
-- (void)setHasNumBeamFailure:(BOOL)a3;
-- (void)setHasNumBeamRecovery:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)setHasResult:(BOOL)a3;
-- (void)setHasRxBeamSwitch:(BOOL)a3;
-- (void)setHasSdmTriggerCause:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTxBeamSwitch:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBandInd:(BOOL)ind;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasIsDueToSdm:(BOOL)sdm;
+- (void)setHasNumBeamFailure:(BOOL)failure;
+- (void)setHasNumBeamRecovery:(BOOL)recovery;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasReason:(BOOL)reason;
+- (void)setHasResult:(BOOL)result;
+- (void)setHasRxBeamSwitch:(BOOL)switch;
+- (void)setHasSdmTriggerCause:(BOOL)cause;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTxBeamSwitch:(BOOL)switch;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularNrScgRemoval
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 128;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasResult:(BOOL)a3
+- (void)setHasResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 256;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasNumBeamFailure:(BOOL)a3
+- (void)setHasNumBeamFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 8;
   }
@@ -86,9 +86,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumBeamRecovery:(BOOL)a3
+- (void)setHasNumBeamRecovery:(BOOL)recovery
 {
-  if (a3)
+  if (recovery)
   {
     v3 = 16;
   }
@@ -101,9 +101,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRxBeamSwitch:(BOOL)a3
+- (void)setHasRxBeamSwitch:(BOOL)switch
 {
-  if (a3)
+  if (switch)
   {
     v3 = 512;
   }
@@ -116,9 +116,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasTxBeamSwitch:(BOOL)a3
+- (void)setHasTxBeamSwitch:(BOOL)switch
 {
-  if (a3)
+  if (switch)
   {
     v3 = 4096;
   }
@@ -131,9 +131,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasBandInd:(BOOL)a3
+- (void)setHasBandInd:(BOOL)ind
 {
-  if (a3)
+  if (ind)
   {
     v3 = 2;
   }
@@ -146,9 +146,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2048;
   }
@@ -161,9 +161,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 32;
   }
@@ -176,9 +176,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 64;
   }
@@ -191,9 +191,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsDueToSdm:(BOOL)a3
+- (void)setHasIsDueToSdm:(BOOL)sdm
 {
-  if (a3)
+  if (sdm)
   {
     v3 = 0x2000;
   }
@@ -219,9 +219,9 @@
   }
 }
 
-- (void)setHasSdmTriggerCause:(BOOL)a3
+- (void)setHasSdmTriggerCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 1024;
   }
@@ -234,65 +234,65 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (int)StringAsSdmTriggerCause:(id)a3
+- (int)StringAsSdmTriggerCause:(id)cause
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_NONE"])
+  causeCopy = cause;
+  if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_AP_SLEEP"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_AP_SLEEP"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_CELLULAR_DATA"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_CELLULAR_DATA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_POOR"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_WIFI_POOR"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_VOIP_CALL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_VOIP_CALL"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_COREMEDIA_STALL"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_COREMEDIA_STALL"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SCREEN_STATUS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SCREEN_STATUS"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_SYMPTOMS_RECOMM"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_SYMPTOMS_RECOMM"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_UI_SWITCH"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_UI_SWITCH"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_RLGS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_RLGS"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_PHS"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_PHS"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SDM_TRIGGER_CAUSE_MAX"])
+  else if ([causeCopy isEqualToString:@"SDM_TRIGGER_CAUSE_MAX"])
   {
     v4 = 11;
   }
@@ -310,8 +310,8 @@
   v7.receiver = self;
   v7.super_class = CellularNrScgRemoval;
   v3 = [(CellularNrScgRemoval *)&v7 description];
-  v4 = [(CellularNrScgRemoval *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularNrScgRemoval *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -532,9 +532,9 @@ LABEL_14:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -728,14 +728,14 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -754,8 +754,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 13) = self->_reason;
-  *(v4 + 40) |= 0x80u;
+  *(toCopy + 13) = self->_reason;
+  *(toCopy + 40) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -769,8 +769,8 @@ LABEL_4:
   }
 
 LABEL_24:
-  *(v4 + 14) = self->_result;
-  *(v4 + 40) |= 0x100u;
+  *(toCopy + 14) = self->_result;
+  *(toCopy + 40) |= 0x100u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -784,8 +784,8 @@ LABEL_5:
   }
 
 LABEL_25:
-  *(v4 + 5) = self->_duration;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 5) = self->_duration;
+  *(toCopy + 40) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -799,8 +799,8 @@ LABEL_6:
   }
 
 LABEL_26:
-  *(v4 + 6) = self->_numBeamFailure;
-  *(v4 + 40) |= 8u;
+  *(toCopy + 6) = self->_numBeamFailure;
+  *(toCopy + 40) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -814,8 +814,8 @@ LABEL_7:
   }
 
 LABEL_27:
-  *(v4 + 7) = self->_numBeamRecovery;
-  *(v4 + 40) |= 0x10u;
+  *(toCopy + 7) = self->_numBeamRecovery;
+  *(toCopy + 40) |= 0x10u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -829,8 +829,8 @@ LABEL_8:
   }
 
 LABEL_28:
-  *(v4 + 15) = self->_rxBeamSwitch;
-  *(v4 + 40) |= 0x200u;
+  *(toCopy + 15) = self->_rxBeamSwitch;
+  *(toCopy + 40) |= 0x200u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -844,8 +844,8 @@ LABEL_9:
   }
 
 LABEL_29:
-  *(v4 + 18) = self->_txBeamSwitch;
-  *(v4 + 40) |= 0x1000u;
+  *(toCopy + 18) = self->_txBeamSwitch;
+  *(toCopy + 40) |= 0x1000u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -859,8 +859,8 @@ LABEL_10:
   }
 
 LABEL_30:
-  *(v4 + 4) = self->_bandInd;
-  *(v4 + 40) |= 2u;
+  *(toCopy + 4) = self->_bandInd;
+  *(toCopy + 40) |= 2u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -874,28 +874,28 @@ LABEL_11:
   }
 
 LABEL_31:
-  *(v4 + 8) = self->_numSubs;
-  *(v4 + 40) |= 0x20u;
+  *(toCopy + 8) = self->_numSubs;
+  *(toCopy + 40) |= 0x20u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_12:
-    *(v4 + 12) = self->_psPref;
-    *(v4 + 40) |= 0x40u;
+    *(toCopy + 12) = self->_psPref;
+    *(toCopy + 40) |= 0x40u;
   }
 
 LABEL_13:
   if (self->_plmn)
   {
-    v7 = v4;
-    [v4 setPlmn:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setPlmn:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x800) != 0)
   {
-    *(v4 + 17) = self->_subsId;
-    *(v4 + 40) |= 0x800u;
+    *(toCopy + 17) = self->_subsId;
+    *(toCopy + 40) |= 0x800u;
     v6 = self->_has;
     if ((v6 & 0x2000) == 0)
     {
@@ -914,21 +914,21 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *(v4 + 76) = self->_isDueToSdm;
-  *(v4 + 40) |= 0x2000u;
+  *(toCopy + 76) = self->_isDueToSdm;
+  *(toCopy + 40) |= 0x2000u;
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_18:
-    *(v4 + 16) = self->_sdmTriggerCause;
-    *(v4 + 40) |= 0x400u;
+    *(toCopy + 16) = self->_sdmTriggerCause;
+    *(toCopy + 40) |= 0x400u;
   }
 
 LABEL_19:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -1083,7 +1083,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  v8 = [(NSData *)self->_plmn copyWithZone:a3];
+  v8 = [(NSData *)self->_plmn copyWithZone:zone];
   v9 = v6[5];
   v6[5] = v8;
 
@@ -1125,19 +1125,19 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_77;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_77;
     }
@@ -1150,7 +1150,7 @@ LABEL_16:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_reason != *(v4 + 13))
+    if ((v6 & 0x80) == 0 || self->_reason != *(equalCopy + 13))
     {
       goto LABEL_77;
     }
@@ -1163,20 +1163,20 @@ LABEL_16:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 40) & 0x100) == 0 || self->_result != *(v4 + 14))
+    if ((*(equalCopy + 40) & 0x100) == 0 || self->_result != *(equalCopy + 14))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 40) & 0x100) != 0)
+  else if ((*(equalCopy + 40) & 0x100) != 0)
   {
     goto LABEL_77;
   }
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_duration != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_duration != *(equalCopy + 5))
     {
       goto LABEL_77;
     }
@@ -1189,7 +1189,7 @@ LABEL_16:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_numBeamFailure != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_numBeamFailure != *(equalCopy + 6))
     {
       goto LABEL_77;
     }
@@ -1202,7 +1202,7 @@ LABEL_16:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_numBeamRecovery != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_numBeamRecovery != *(equalCopy + 7))
     {
       goto LABEL_77;
     }
@@ -1215,33 +1215,33 @@ LABEL_16:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 40) & 0x200) == 0 || self->_rxBeamSwitch != *(v4 + 15))
+    if ((*(equalCopy + 40) & 0x200) == 0 || self->_rxBeamSwitch != *(equalCopy + 15))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 40) & 0x200) != 0)
+  else if ((*(equalCopy + 40) & 0x200) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 40) & 0x1000) == 0 || self->_txBeamSwitch != *(v4 + 18))
+    if ((*(equalCopy + 40) & 0x1000) == 0 || self->_txBeamSwitch != *(equalCopy + 18))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 40) & 0x1000) != 0)
+  else if ((*(equalCopy + 40) & 0x1000) != 0)
   {
     goto LABEL_77;
   }
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_bandInd != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_bandInd != *(equalCopy + 4))
     {
       goto LABEL_77;
     }
@@ -1254,7 +1254,7 @@ LABEL_16:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_numSubs != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_numSubs != *(equalCopy + 8))
     {
       goto LABEL_77;
     }
@@ -1267,7 +1267,7 @@ LABEL_16:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_psPref != *(v4 + 12))
+    if ((v6 & 0x40) == 0 || self->_psPref != *(equalCopy + 12))
     {
       goto LABEL_77;
     }
@@ -1279,7 +1279,7 @@ LABEL_16:
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 5))
+  if (plmn | *(equalCopy + 5))
   {
     if (![(NSData *)plmn isEqual:?])
     {
@@ -1291,20 +1291,20 @@ LABEL_16:
 
   if ((has & 0x800) != 0)
   {
-    if ((*(v4 + 40) & 0x800) == 0 || self->_subsId != *(v4 + 17))
+    if ((*(equalCopy + 40) & 0x800) == 0 || self->_subsId != *(equalCopy + 17))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 40) & 0x800) != 0)
+  else if ((*(equalCopy + 40) & 0x800) != 0)
   {
     goto LABEL_77;
   }
 
   if ((has & 0x2000) == 0)
   {
-    if ((*(v4 + 40) & 0x2000) == 0)
+    if ((*(equalCopy + 40) & 0x2000) == 0)
     {
       goto LABEL_67;
     }
@@ -1314,21 +1314,21 @@ LABEL_77:
     goto LABEL_78;
   }
 
-  if ((*(v4 + 40) & 0x2000) == 0)
+  if ((*(equalCopy + 40) & 0x2000) == 0)
   {
     goto LABEL_77;
   }
 
-  v9 = *(v4 + 76);
+  v9 = *(equalCopy + 76);
   if (self->_isDueToSdm)
   {
-    if ((*(v4 + 76) & 1) == 0)
+    if ((*(equalCopy + 76) & 1) == 0)
     {
       goto LABEL_77;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_77;
   }
@@ -1336,7 +1336,7 @@ LABEL_77:
 LABEL_67:
   if ((has & 0x400) != 0)
   {
-    if ((*(v4 + 40) & 0x400) == 0 || self->_sdmTriggerCause != *(v4 + 16))
+    if ((*(equalCopy + 40) & 0x400) == 0 || self->_sdmTriggerCause != *(equalCopy + 16))
     {
       goto LABEL_77;
     }
@@ -1346,7 +1346,7 @@ LABEL_67:
 
   else
   {
-    v8 = (*(v4 + 40) & 0x400) == 0;
+    v8 = (*(equalCopy + 40) & 0x400) == 0;
   }
 
 LABEL_78:
@@ -1544,15 +1544,15 @@ LABEL_27:
   return v19 ^ v20 ^ v18 ^ v17 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v12 ^ v13 ^ v14 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 0x80) == 0)
     {
 LABEL_3:
@@ -1570,9 +1570,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_reason = *(v4 + 13);
+  self->_reason = *(fromCopy + 13);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x100) == 0)
   {
 LABEL_4:
@@ -1585,9 +1585,9 @@ LABEL_4:
   }
 
 LABEL_24:
-  self->_result = *(v4 + 14);
+  self->_result = *(fromCopy + 14);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -1600,9 +1600,9 @@ LABEL_5:
   }
 
 LABEL_25:
-  self->_duration = *(v4 + 5);
+  self->_duration = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -1615,9 +1615,9 @@ LABEL_6:
   }
 
 LABEL_26:
-  self->_numBeamFailure = *(v4 + 6);
+  self->_numBeamFailure = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x10) == 0)
   {
 LABEL_7:
@@ -1630,9 +1630,9 @@ LABEL_7:
   }
 
 LABEL_27:
-  self->_numBeamRecovery = *(v4 + 7);
+  self->_numBeamRecovery = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x200) == 0)
   {
 LABEL_8:
@@ -1645,9 +1645,9 @@ LABEL_8:
   }
 
 LABEL_28:
-  self->_rxBeamSwitch = *(v4 + 15);
+  self->_rxBeamSwitch = *(fromCopy + 15);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_9:
@@ -1660,9 +1660,9 @@ LABEL_9:
   }
 
 LABEL_29:
-  self->_txBeamSwitch = *(v4 + 18);
+  self->_txBeamSwitch = *(fromCopy + 18);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) == 0)
   {
 LABEL_10:
@@ -1675,9 +1675,9 @@ LABEL_10:
   }
 
 LABEL_30:
-  self->_bandInd = *(v4 + 4);
+  self->_bandInd = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x20) == 0)
   {
 LABEL_11:
@@ -1690,29 +1690,29 @@ LABEL_11:
   }
 
 LABEL_31:
-  self->_numSubs = *(v4 + 8);
+  self->_numSubs = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 40) & 0x40) != 0)
+  if ((*(fromCopy + 40) & 0x40) != 0)
   {
 LABEL_12:
-    self->_psPref = *(v4 + 12);
+    self->_psPref = *(fromCopy + 12);
     *&self->_has |= 0x40u;
   }
 
 LABEL_13:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
-    v7 = v4;
+    v7 = fromCopy;
     [(CellularNrScgRemoval *)self setPlmn:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(fromCopy + 40);
   if ((v6 & 0x800) != 0)
   {
-    self->_subsId = *(v4 + 17);
+    self->_subsId = *(fromCopy + 17);
     *&self->_has |= 0x800u;
-    v6 = *(v4 + 40);
+    v6 = *(fromCopy + 40);
     if ((v6 & 0x2000) == 0)
     {
 LABEL_17:
@@ -1725,17 +1725,17 @@ LABEL_17:
     }
   }
 
-  else if ((*(v4 + 40) & 0x2000) == 0)
+  else if ((*(fromCopy + 40) & 0x2000) == 0)
   {
     goto LABEL_17;
   }
 
-  self->_isDueToSdm = *(v4 + 76);
+  self->_isDueToSdm = *(fromCopy + 76);
   *&self->_has |= 0x2000u;
-  if ((*(v4 + 40) & 0x400) != 0)
+  if ((*(fromCopy + 40) & 0x400) != 0)
   {
 LABEL_18:
-    self->_sdmTriggerCause = *(v4 + 16);
+    self->_sdmTriggerCause = *(fromCopy + 16);
     *&self->_has |= 0x400u;
   }
 

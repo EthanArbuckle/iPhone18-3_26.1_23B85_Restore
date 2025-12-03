@@ -3,19 +3,19 @@
 - (BOOL)isWiFiEnabled;
 - (CPNetworkObserver)init;
 - (void)_networkObserversInitialize;
-- (void)_networkReachableCallBack:(unsigned int)a3;
-- (void)_networkReachableFirstCallBack:(id)a3;
-- (void)_wifiCallBack:(unsigned int)a3;
-- (void)_wifiFirstCallBack:(id)a3;
+- (void)_networkReachableCallBack:(unsigned int)back;
+- (void)_networkReachableFirstCallBack:(id)back;
+- (void)_wifiCallBack:(unsigned int)back;
+- (void)_wifiFirstCallBack:(id)back;
 - (void)_wifiObserversInitialize;
-- (void)addNetworkReachableObserver:(id)a3 selector:(SEL)a4;
-- (void)addObserver:(id)a3 selector:(SEL)a4 forHostname:(id)a5;
-- (void)addWiFiObserver:(id)a3 selector:(SEL)a4;
+- (void)addNetworkReachableObserver:(id)observer selector:(SEL)selector;
+- (void)addObserver:(id)observer selector:(SEL)selector forHostname:(id)hostname;
+- (void)addWiFiObserver:(id)observer selector:(SEL)selector;
 - (void)dealloc;
-- (void)removeNetworkReachableObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 forHostname:(id)a4;
-- (void)removeWiFiObserver:(id)a3;
+- (void)removeNetworkReachableObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer forHostname:(id)hostname;
+- (void)removeWiFiObserver:(id)observer;
 @end
 
 @implementation CPNetworkObserver
@@ -78,7 +78,7 @@
   [(CPNetworkObserver *)&v12 dealloc];
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4 forHostname:(id)a5
+- (void)addObserver:(id)observer selector:(SEL)selector forHostname:(id)hostname
 {
   [(NSLock *)self->_lock lock];
   reachabilityRequests = self->_reachabilityRequests;
@@ -88,20 +88,20 @@
     self->_reachabilityRequests = reachabilityRequests;
   }
 
-  v10 = [(NSMutableDictionary *)reachabilityRequests objectForKey:a5];
+  v10 = [(NSMutableDictionary *)reachabilityRequests objectForKey:hostname];
   if (!v10)
   {
-    v10 = [[_ReachabilityRequest alloc] initWithHostname:a5];
+    v10 = [[_ReachabilityRequest alloc] initWithHostname:hostname];
     [(NSMutableDictionary *)self->_reachabilityRequests setObject:v10 forKey:[(_ReachabilityRequest *)v10 hostname]];
   }
 
-  [(_ReachabilityRequest *)v10 addObserver:a3 selector:a4];
+  [(_ReachabilityRequest *)v10 addObserver:observer selector:selector];
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v17 = *MEMORY[0x1E69E9840];
   [(NSLock *)self->_lock lock];
@@ -112,13 +112,13 @@
     self->_reachabilityRequests = reachabilityRequests;
   }
 
-  v6 = [(NSMutableDictionary *)reachabilityRequests allKeys];
+  allKeys = [(NSMutableDictionary *)reachabilityRequests allKeys];
   [(NSLock *)self->_lock unlock];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -130,14 +130,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
-        [(CPNetworkObserver *)self removeObserver:a3 forHostname:*(*(&v12 + 1) + 8 * v10++)];
+        [(CPNetworkObserver *)self removeObserver:observer forHostname:*(*(&v12 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -146,7 +146,7 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3 forHostname:(id)a4
+- (void)removeObserver:(id)observer forHostname:(id)hostname
 {
   [(NSLock *)self->_lock lock];
   reachabilityRequests = self->_reachabilityRequests;
@@ -156,11 +156,11 @@
     self->_reachabilityRequests = reachabilityRequests;
   }
 
-  v8 = [(NSMutableDictionary *)reachabilityRequests objectForKey:a4];
+  v8 = [(NSMutableDictionary *)reachabilityRequests objectForKey:hostname];
   if (v8)
   {
     v9 = v8;
-    [v8 removeObserver:a3];
+    [v8 removeObserver:observer];
     if (([v9 hasObservers] & 1) == 0)
     {
       -[NSMutableDictionary removeObjectForKey:](self->_reachabilityRequests, "removeObjectForKey:", [v9 hostname]);
@@ -193,9 +193,9 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_networkReachableCallBack:(unsigned int)a3
+- (void)_networkReachableCallBack:(unsigned int)back
 {
-  if ((a3 & 2) != 0 && (self->_networkReachability & 2) != 0)
+  if ((back & 2) != 0 && (self->_networkReachability & 2) != 0)
   {
     v4 = &v14;
     v13[0] = 0;
@@ -209,8 +209,8 @@
   }
 
   v6 = 0;
-  self->_networkReachability = a3;
-  *v4 = (a3 & 2) >> 1;
+  self->_networkReachability = back;
+  *v4 = (back & 2) >> 1;
   v7 = *MEMORY[0x1E695E480];
   do
   {
@@ -247,9 +247,9 @@
   while (v5 != v6);
 }
 
-- (void)_networkReachableFirstCallBack:(id)a3
+- (void)_networkReachableFirstCallBack:(id)back
 {
-  v4 = *[a3 bytes];
+  v4 = *[back bytes];
 
   [(CPNetworkObserver *)self _networkReachableCallBack:v4];
 }
@@ -267,7 +267,7 @@
   return networkReachable;
 }
 
-- (void)addNetworkReachableObserver:(id)a3 selector:(SEL)a4
+- (void)addNetworkReachableObserver:(id)observer selector:(SEL)selector
 {
   [(NSLock *)self->_lock lock];
   networkObservers = self->_networkObservers;
@@ -277,13 +277,13 @@
     networkObservers = self->_networkObservers;
   }
 
-  CFDictionaryAddValue(networkObservers, a3, a4);
+  CFDictionaryAddValue(networkObservers, observer, selector);
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)removeNetworkReachableObserver:(id)a3
+- (void)removeNetworkReachableObserver:(id)observer
 {
   [(NSLock *)self->_lock lock];
   networkObservers = self->_networkObservers;
@@ -293,7 +293,7 @@
     networkObservers = self->_networkObservers;
   }
 
-  CFDictionaryRemoveValue(networkObservers, a3);
+  CFDictionaryRemoveValue(networkObservers, observer);
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
@@ -331,9 +331,9 @@
   -[CPNetworkObserver performSelectorOnMainThread:withObject:waitUntilDone:](self, "performSelectorOnMainThread:withObject:waitUntilDone:", sel__wifiFirstCallBack_, [MEMORY[0x1E695DEF0] dataWithBytes:&v11 length:4], 0);
 }
 
-- (void)_wifiCallBack:(unsigned int)a3
+- (void)_wifiCallBack:(unsigned int)back
 {
-  if (a3)
+  if (back)
   {
     IsSettingEnabled = _WiFiIsSettingEnabled(self->_wifiPreferences);
     v5 = IsSettingEnabled;
@@ -368,9 +368,9 @@
   }
 }
 
-- (void)_wifiFirstCallBack:(id)a3
+- (void)_wifiFirstCallBack:(id)back
 {
-  v4 = *[a3 bytes];
+  v4 = *[back bytes];
 
   [(CPNetworkObserver *)self _wifiCallBack:v4];
 }
@@ -388,7 +388,7 @@
   return wifiEnabled;
 }
 
-- (void)addWiFiObserver:(id)a3 selector:(SEL)a4
+- (void)addWiFiObserver:(id)observer selector:(SEL)selector
 {
   [(NSLock *)self->_lock lock];
   wifiObservers = self->_wifiObservers;
@@ -398,13 +398,13 @@
     wifiObservers = self->_wifiObservers;
   }
 
-  CFDictionaryAddValue(wifiObservers, a3, a4);
+  CFDictionaryAddValue(wifiObservers, observer, selector);
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)removeWiFiObserver:(id)a3
+- (void)removeWiFiObserver:(id)observer
 {
   [(NSLock *)self->_lock lock];
   wifiObservers = self->_wifiObservers;
@@ -414,7 +414,7 @@
     wifiObservers = self->_wifiObservers;
   }
 
-  CFDictionaryRemoveValue(wifiObservers, a3);
+  CFDictionaryRemoveValue(wifiObservers, observer);
   lock = self->_lock;
 
   [(NSLock *)lock unlock];

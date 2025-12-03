@@ -1,44 +1,44 @@
 @interface CUIKEditingManager
-- (BOOL)_changesExistForObject:(id)a3;
-- (BOOL)_closeEditingContext:(id)a3 action:(unint64_t)a4 condition:(unint64_t)a5 shouldClose:(BOOL *)a6;
-- (BOOL)_commitChangesForContext:(id)a3 forceCommit:(BOOL)a4 shouldClose:(BOOL *)a5;
-- (BOOL)_objectsSupportEditingContexts:(id)a3;
-- (BOOL)isHidden:(id)a3;
-- (CUIKEditingManager)initWithEventStore:(id)a3;
+- (BOOL)_changesExistForObject:(id)object;
+- (BOOL)_closeEditingContext:(id)context action:(unint64_t)action condition:(unint64_t)condition shouldClose:(BOOL *)close;
+- (BOOL)_commitChangesForContext:(id)context forceCommit:(BOOL)commit shouldClose:(BOOL *)close;
+- (BOOL)_objectsSupportEditingContexts:(id)contexts;
+- (BOOL)isHidden:(id)hidden;
+- (CUIKEditingManager)initWithEventStore:(id)store;
 - (EKEventStore)eventStore;
 - (id)_allOpenEditingContexts;
-- (id)_liveEditedObjectsMatchingPredicate:(id)a3 notInSet:(id)a4;
-- (id)_objectsWithLiveEdits:(id)a3 matchingPredicate:(id)a4;
-- (id)_openEditingContextWithObjects:(id)a3 interfaceType:(unint64_t)a4 observer:(id)a5;
+- (id)_liveEditedObjectsMatchingPredicate:(id)predicate notInSet:(id)set;
+- (id)_objectsWithLiveEdits:(id)edits matchingPredicate:(id)predicate;
+- (id)_openEditingContextWithObjects:(id)objects interfaceType:(unint64_t)type observer:(id)observer;
 - (id)changedObjectsCopy;
-- (id)eventWithAlias:(id)a3;
-- (id)eventWithIdentifier:(id)a3;
-- (id)eventsMatchingPredicate:(id)a3;
-- (id)eventsWithExternalIdentifier:(id)a3;
-- (id)eventsWithIdentifiers:(id)a3;
-- (id)openEditingContextWithObject:(id)a3 interfaceType:(unint64_t)a4 observer:(id)a5;
-- (id)openEditingContextWithObjects:(id)a3 interfaceType:(unint64_t)a4 observer:(id)a5;
-- (id)remindersMatchingPredicate:(id)a3;
-- (id)remindersWithExternalIdentifier:(id)a3;
-- (void)_addContextToNewOrExistingGroup:(id)a3;
-- (void)addAlias:(id)a3 eventIdentifier:(id)a4;
-- (void)applyLiveChangesToObject:(id)a3;
-- (void)applyLiveChangesToObjects:(id)a3;
+- (id)eventWithAlias:(id)alias;
+- (id)eventWithIdentifier:(id)identifier;
+- (id)eventsMatchingPredicate:(id)predicate;
+- (id)eventsWithExternalIdentifier:(id)identifier;
+- (id)eventsWithIdentifiers:(id)identifiers;
+- (id)openEditingContextWithObject:(id)object interfaceType:(unint64_t)type observer:(id)observer;
+- (id)openEditingContextWithObjects:(id)objects interfaceType:(unint64_t)type observer:(id)observer;
+- (id)remindersMatchingPredicate:(id)predicate;
+- (id)remindersWithExternalIdentifier:(id)identifier;
+- (void)_addContextToNewOrExistingGroup:(id)group;
+- (void)addAlias:(id)alias eventIdentifier:(id)identifier;
+- (void)applyLiveChangesToObject:(id)object;
+- (void)applyLiveChangesToObjects:(id)objects;
 - (void)clearAllLiveChanges;
-- (void)clearLiveChangesForObjects:(id)a3;
-- (void)fetchEventsMatchingPredicate:(id)a3 completion:(id)a4;
-- (void)fetchRemindersMatchingPredicate:(id)a3 completion:(id)a4;
-- (void)hide:(id)a3;
-- (void)partialSaveObject:(id)a3;
-- (void)performWithLock:(id)a3;
-- (void)unhide:(id)a3;
+- (void)clearLiveChangesForObjects:(id)objects;
+- (void)fetchEventsMatchingPredicate:(id)predicate completion:(id)completion;
+- (void)fetchRemindersMatchingPredicate:(id)predicate completion:(id)completion;
+- (void)hide:(id)hide;
+- (void)partialSaveObject:(id)object;
+- (void)performWithLock:(id)lock;
+- (void)unhide:(id)unhide;
 @end
 
 @implementation CUIKEditingManager
 
-- (CUIKEditingManager)initWithEventStore:(id)a3
+- (CUIKEditingManager)initWithEventStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = CUIKEditingManager;
   v5 = [(CUIKEditingManager *)&v17 init];
@@ -46,7 +46,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v5->_eventStore, v4);
+    objc_storeWeak(&v5->_eventStore, storeCopy);
     v7 = objc_opt_new();
     changeListener = v6->_changeListener;
     v6->_changeListener = v7;
@@ -69,18 +69,18 @@
   return v6;
 }
 
-- (id)openEditingContextWithObject:(id)a3 interfaceType:(unint64_t)a4 observer:(id)a5
+- (id)openEditingContextWithObject:(id)object interfaceType:(unint64_t)type observer:(id)observer
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (object)
   {
-    v14 = a3;
+    objectCopy = object;
     v8 = MEMORY[0x1E695DEC8];
-    v9 = a5;
-    v10 = a3;
-    v11 = [v8 arrayWithObjects:&v14 count:1];
+    observerCopy = observer;
+    objectCopy2 = object;
+    v11 = [v8 arrayWithObjects:&objectCopy count:1];
 
-    v12 = [(CUIKEditingManager *)self openEditingContextWithObjects:v11 interfaceType:a4 observer:v9, v14, v15];
+    v12 = [(CUIKEditingManager *)self openEditingContextWithObjects:v11 interfaceType:type observer:observerCopy, objectCopy, v15];
   }
 
   else
@@ -91,17 +91,17 @@
   return v12;
 }
 
-- (id)openEditingContextWithObjects:(id)a3 interfaceType:(unint64_t)a4 observer:(id)a5
+- (id)openEditingContextWithObjects:(id)objects interfaceType:(unint64_t)type observer:(id)observer
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (![(CUIKEditingManager *)self _objectsSupportEditingContexts:v8])
+  objectsCopy = objects;
+  observerCopy = observer;
+  if (![(CUIKEditingManager *)self _objectsSupportEditingContexts:objectsCopy])
   {
     v12 = MEMORY[0x1E695DF30];
     v13 = *MEMORY[0x1E695D940];
     v17 = @"Objects";
-    v18[0] = v8;
+    v18[0] = objectsCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v15 = [v12 exceptionWithName:v13 reason:@"Editing Contexts not supported for all objects." userInfo:v14];
     v16 = v15;
@@ -109,20 +109,20 @@
     objc_exception_throw(v15);
   }
 
-  v10 = [(CUIKEditingManager *)self _openEditingContextWithObjects:v8 interfaceType:a4 observer:v9];
+  v10 = [(CUIKEditingManager *)self _openEditingContextWithObjects:objectsCopy interfaceType:type observer:observerCopy];
 
   return v10;
 }
 
-- (BOOL)_objectsSupportEditingContexts:(id)a3
+- (BOOL)_objectsSupportEditingContexts:(id)contexts
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  contextsCopy = contexts;
+  v4 = [contextsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -133,7 +133,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(contextsCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -153,7 +153,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [contextsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -169,17 +169,17 @@ LABEL_14:
   return v9;
 }
 
-- (id)_openEditingContextWithObjects:(id)a3 interfaceType:(unint64_t)a4 observer:(id)a5
+- (id)_openEditingContextWithObjects:(id)objects interfaceType:(unint64_t)type observer:(id)observer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  objectsCopy = objects;
+  observerCopy = observer;
+  if ([objectsCopy count])
   {
-    v10 = [[CUIKEditingContext alloc] initWithObjects:v8 interfaceType:a4 observer:v9];
+    v10 = [[CUIKEditingContext alloc] initWithObjects:objectsCopy interfaceType:type observer:observerCopy];
     [(CUIKEditingContext *)v10 setEditingManager:self];
-    v11 = [(CUIKEditingManager *)self changeListener];
-    [v11 registerDelegate:v10];
+    changeListener = [(CUIKEditingManager *)self changeListener];
+    [changeListener registerDelegate:v10];
 
     [(CUIKEditingManager *)self _addContextToNewOrExistingGroup:v10];
   }
@@ -192,7 +192,7 @@ LABEL_14:
   v12 = +[CUIKLogSubsystem editingContext];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v8 valueForKey:@"specificIdentifier"];
+    v13 = [objectsCopy valueForKey:@"specificIdentifier"];
     v15 = 134218242;
     v16 = v10;
     v17 = 2112;
@@ -203,13 +203,13 @@ LABEL_14:
   return v10;
 }
 
-- (void)_addContextToNewOrExistingGroup:(id)a3
+- (void)_addContextToNewOrExistingGroup:(id)group
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CUIKEditingManager *)self editingContextGroups];
+  groupCopy = group;
+  editingContextGroups = [(CUIKEditingManager *)self editingContextGroups];
 
-  if (!v5)
+  if (!editingContextGroups)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
     [(CUIKEditingManager *)self setEditingContextGroups:v6];
@@ -219,8 +219,8 @@ LABEL_14:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(CUIKEditingManager *)self editingContextGroups];
-  v8 = [(CUIKObjectGroup *)v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  editingContextGroups2 = [(CUIKEditingManager *)self editingContextGroups];
+  v8 = [(CUIKObjectGroup *)editingContextGroups2 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -231,22 +231,22 @@ LABEL_14:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(editingContextGroups2);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 objectGroup];
-        v14 = [v4 objectsBeingEdited];
-        v15 = [(CUIKEditingContextGroup *)v13 objectsBelongInGroup:v14];
+        objectGroup = [v12 objectGroup];
+        objectsBeingEdited = [groupCopy objectsBeingEdited];
+        v15 = [(CUIKEditingContextGroup *)objectGroup objectsBelongInGroup:objectsBeingEdited];
 
         if (v15)
         {
-          [v12 addContext:v4];
+          [v12 addContext:groupCopy];
           goto LABEL_13;
         }
       }
 
-      v9 = [(CUIKObjectGroup *)v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [(CUIKObjectGroup *)editingContextGroups2 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v9)
       {
         continue;
@@ -257,42 +257,42 @@ LABEL_14:
   }
 
   v16 = [CUIKObjectGroup alloc];
-  v17 = [v4 objectsBeingEdited];
-  v7 = [(CUIKObjectGroup *)v16 initWithObjects:v17];
+  objectsBeingEdited2 = [groupCopy objectsBeingEdited];
+  editingContextGroups2 = [(CUIKObjectGroup *)v16 initWithObjects:objectsBeingEdited2];
 
-  v13 = [[CUIKEditingContextGroup alloc] initWithObjectGroup:v7];
-  v18 = [(CUIKEditingManager *)self eventStore];
-  [(CUIKEditingContextGroup *)v13 setEventStore:v18];
+  objectGroup = [[CUIKEditingContextGroup alloc] initWithObjectGroup:editingContextGroups2];
+  eventStore = [(CUIKEditingManager *)self eventStore];
+  [(CUIKEditingContextGroup *)objectGroup setEventStore:eventStore];
 
-  [(CUIKEditingContextGroup *)v13 addContext:v4];
-  v19 = [(CUIKEditingManager *)self editingContextGroups];
-  [v19 addObject:v13];
+  [(CUIKEditingContextGroup *)objectGroup addContext:groupCopy];
+  editingContextGroups3 = [(CUIKEditingManager *)self editingContextGroups];
+  [editingContextGroups3 addObject:objectGroup];
 
 LABEL_13:
 }
 
-- (void)partialSaveObject:(id)a3
+- (void)partialSaveObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = +[CUIKLogSubsystem editingContext];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [CUIKEditingManager partialSaveObject:v4];
+    [CUIKEditingManager partialSaveObject:objectCopy];
   }
 
-  v6 = [v4 specificIdentifier];
-  if (v6)
+  specificIdentifier = [objectCopy specificIdentifier];
+  if (specificIdentifier)
   {
-    v7 = [v4 changeSet];
+    changeSet = [objectCopy changeSet];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __40__CUIKEditingManager_partialSaveObject___block_invoke;
     v9[3] = &unk_1E839AE50;
     v9[4] = self;
-    v10 = v6;
-    v11 = v4;
-    v12 = v7;
-    v8 = v7;
+    v10 = specificIdentifier;
+    v11 = objectCopy;
+    v12 = changeSet;
+    v8 = changeSet;
     [(CUIKEditingManager *)self performWithLock:v9];
   }
 
@@ -346,13 +346,13 @@ LABEL_6:
   return MEMORY[0x1EEE66BB8](v7, v3);
 }
 
-- (void)applyLiveChangesToObject:(id)a3
+- (void)applyLiveChangesToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = +[CUIKLogSubsystem editingContext];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [CUIKEditingManager applyLiveChangesToObject:v4];
+    [CUIKEditingManager applyLiveChangesToObject:objectCopy];
   }
 
   v7[0] = MEMORY[0x1E69E9820];
@@ -360,8 +360,8 @@ LABEL_6:
   v7[2] = __47__CUIKEditingManager_applyLiveChangesToObject___block_invoke;
   v7[3] = &unk_1E8399B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   [(CUIKEditingManager *)self performWithLock:v7];
 }
 
@@ -379,15 +379,15 @@ void __47__CUIKEditingManager_applyLiveChangesToObject___block_invoke(uint64_t a
   }
 }
 
-- (void)applyLiveChangesToObjects:(id)a3
+- (void)applyLiveChangesToObjects:(id)objects
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectsCopy = objects;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [objectsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -399,36 +399,36 @@ void __47__CUIKEditingManager_applyLiveChangesToObject___block_invoke(uint64_t a
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectsCopy);
         }
 
         [(CUIKEditingManager *)self applyLiveChangesToObject:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [objectsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)clearLiveChangesForObjects:(id)a3
+- (void)clearLiveChangesForObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v5 = +[CUIKLogSubsystem editingContext];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [CUIKEditingManager clearLiveChangesForObjects:v4];
+    [CUIKEditingManager clearLiveChangesForObjects:objectsCopy];
   }
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__CUIKEditingManager_clearLiveChangesForObjects___block_invoke;
   v7[3] = &unk_1E8399B60;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = objectsCopy;
+  selfCopy = self;
+  v6 = objectsCopy;
   [(CUIKEditingManager *)self performWithLock:v7];
 }
 
@@ -590,18 +590,18 @@ void __40__CUIKEditingManager_changedObjectsCopy__block_invoke(uint64_t a1)
   *(v14 + 40) = v4;
 }
 
-- (id)_objectsWithLiveEdits:(id)a3 matchingPredicate:(id)a4
+- (id)_objectsWithLiveEdits:(id)edits matchingPredicate:(id)predicate
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  editsCopy = edits;
+  predicateCopy = predicate;
+  array = [MEMORY[0x1E695DF70] array];
   v9 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v6;
+  v10 = editsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -620,16 +620,16 @@ void __40__CUIKEditingManager_changedObjectsCopy__block_invoke(uint64_t a1)
         if ([(CUIKEditingManager *)self _changesExistForObject:v15, v19])
         {
           [(CUIKEditingManager *)self applyLiveChangesToObject:v15];
-          v16 = [v15 specificIdentifier];
-          [v9 addObject:v16];
+          specificIdentifier = [v15 specificIdentifier];
+          [v9 addObject:specificIdentifier];
 
-          if (([v15 isDeleted] & 1) != 0 || -[CUIKEditingManager isHidden:](self, "isHidden:", v15) || v7 && !objc_msgSend(v7, "evaluateWithObject:", v15))
+          if (([v15 isDeleted] & 1) != 0 || -[CUIKEditingManager isHidden:](self, "isHidden:", v15) || predicateCopy && !objc_msgSend(predicateCopy, "evaluateWithObject:", v15))
           {
             continue;
           }
         }
 
-        [v8 addObject:v15];
+        [array addObject:v15];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -638,41 +638,41 @@ void __40__CUIKEditingManager_changedObjectsCopy__block_invoke(uint64_t a1)
     while (v12);
   }
 
-  if (v7)
+  if (predicateCopy)
   {
-    v17 = [(CUIKEditingManager *)self _liveEditedObjectsMatchingPredicate:v7 notInSet:v9];
+    v17 = [(CUIKEditingManager *)self _liveEditedObjectsMatchingPredicate:predicateCopy notInSet:v9];
     if ([v17 count])
     {
-      [v8 addObjectsFromArray:v17];
+      [array addObjectsFromArray:v17];
     }
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_liveEditedObjectsMatchingPredicate:(id)a3 notInSet:(id)a4
+- (id)_liveEditedObjectsMatchingPredicate:(id)predicate notInSet:(id)set
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  predicateCopy = predicate;
+  setCopy = set;
+  array = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__CUIKEditingManager__liveEditedObjectsMatchingPredicate_notInSet___block_invoke;
   aBlock[3] = &unk_1E839AEA0;
-  v20 = v7;
+  v20 = setCopy;
   v26 = v20;
-  v9 = v6;
+  v9 = predicateCopy;
   v27 = v9;
-  v10 = v8;
+  v10 = array;
   v28 = v10;
   v11 = _Block_copy(aBlock);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [(CUIKEditingManager *)self changedObjectsCopy];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  changedObjectsCopy = [(CUIKEditingManager *)self changedObjectsCopy];
+  v13 = [changedObjectsCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v13)
   {
     v14 = v13;
@@ -684,7 +684,7 @@ void __40__CUIKEditingManager_changedObjectsCopy__block_invoke(uint64_t a1)
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(changedObjectsCopy);
         }
 
         v17 = *(*(&v21 + 1) + 8 * v16);
@@ -698,7 +698,7 @@ void __40__CUIKEditingManager_changedObjectsCopy__block_invoke(uint64_t a1)
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v14 = [changedObjectsCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v14);
@@ -734,11 +734,11 @@ void __67__CUIKEditingManager__liveEditedObjectsMatchingPredicate_notInSet___blo
   }
 }
 
-- (BOOL)_changesExistForObject:(id)a3
+- (BOOL)_changesExistForObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 specificIdentifier];
-  v6 = [v4 uniqueIdentifier];
+  objectCopy = object;
+  specificIdentifier = [objectCopy specificIdentifier];
+  uniqueIdentifier = [objectCopy uniqueIdentifier];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -749,9 +749,9 @@ void __67__CUIKEditingManager__liveEditedObjectsMatchingPredicate_notInSet___blo
   v10[3] = &unk_1E839AEC8;
   v13 = &v14;
   v10[4] = self;
-  v7 = v5;
+  v7 = specificIdentifier;
   v11 = v7;
-  v8 = v6;
+  v8 = uniqueIdentifier;
   v12 = v8;
   [(CUIKEditingManager *)self performWithLock:v10];
   LOBYTE(self) = *(v15 + 24);
@@ -777,32 +777,32 @@ void __45__CUIKEditingManager__changesExistForObject___block_invoke(uint64_t a1)
   *(*(*(a1 + 56) + 8) + 24) = v3;
 }
 
-- (id)eventsMatchingPredicate:(id)a3
+- (id)eventsMatchingPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(CUIKEditingManager *)self eventStore];
-  v6 = [v5 eventsMatchingPredicate:v4];
+  predicateCopy = predicate;
+  eventStore = [(CUIKEditingManager *)self eventStore];
+  v6 = [eventStore eventsMatchingPredicate:predicateCopy];
 
-  v7 = [(CUIKEditingManager *)self _objectsWithLiveEdits:v6 matchingPredicate:v4];
+  v7 = [(CUIKEditingManager *)self _objectsWithLiveEdits:v6 matchingPredicate:predicateCopy];
 
   return v7;
 }
 
-- (void)fetchEventsMatchingPredicate:(id)a3 completion:(id)a4
+- (void)fetchEventsMatchingPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CUIKEditingManager *)self eventStore];
+  predicateCopy = predicate;
+  completionCopy = completion;
+  eventStore = [(CUIKEditingManager *)self eventStore];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__CUIKEditingManager_fetchEventsMatchingPredicate_completion___block_invoke;
   v12[3] = &unk_1E839AEF0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 fetchEventsMatchingPredicate:v10 resultHandler:v12];
+  v13 = predicateCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = predicateCopy;
+  v11 = [eventStore fetchEventsMatchingPredicate:v10 resultHandler:v12];
 }
 
 uint64_t __62__CUIKEditingManager_fetchEventsMatchingPredicate_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -819,15 +819,15 @@ uint64_t __62__CUIKEditingManager_fetchEventsMatchingPredicate_completion___bloc
   return MEMORY[0x1EEE66BB8](v4, v3);
 }
 
-- (id)eventWithIdentifier:(id)a3
+- (id)eventWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CUIKEditingManager *)self eventStore];
-  v6 = [v5 eventWithIdentifier:v4];
+  identifierCopy = identifier;
+  eventStore = [(CUIKEditingManager *)self eventStore];
+  v6 = [eventStore eventWithIdentifier:identifierCopy];
 
   if (!v6)
   {
-    v6 = [(CUIKEditingManager *)self eventWithAlias:v4];
+    v6 = [(CUIKEditingManager *)self eventWithAlias:identifierCopy];
   }
 
   [(CUIKEditingManager *)self applyLiveChangesToObject:v6];
@@ -835,16 +835,16 @@ uint64_t __62__CUIKEditingManager_fetchEventsMatchingPredicate_completion___bloc
   return v6;
 }
 
-- (id)eventsWithIdentifiers:(id)a3
+- (id)eventsWithIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  identifiersCopy = identifiers;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -878,12 +878,12 @@ uint64_t __62__CUIKEditingManager_fetchEventsMatchingPredicate_completion___bloc
   return v12;
 }
 
-- (id)eventsWithExternalIdentifier:(id)a3
+- (id)eventsWithExternalIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CUIKEditingManager *)self eventStore];
-  v6 = [v5 calendarItemsWithExternalIdentifier:v4];
+  identifierCopy = identifier;
+  eventStore = [(CUIKEditingManager *)self eventStore];
+  v6 = [eventStore calendarItemsWithExternalIdentifier:identifierCopy];
 
   v7 = objc_opt_new();
   v15 = 0u;
@@ -924,9 +924,9 @@ uint64_t __62__CUIKEditingManager_fetchEventsMatchingPredicate_completion___bloc
   return v7;
 }
 
-- (void)hide:(id)a3
+- (void)hide:(id)hide
 {
-  v4 = [a3 valueForKey:@"uniqueIdentifier"];
+  v4 = [hide valueForKey:@"uniqueIdentifier"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__CUIKEditingManager_hide___block_invoke;
@@ -937,15 +937,15 @@ uint64_t __62__CUIKEditingManager_fetchEventsMatchingPredicate_completion___bloc
   [(CUIKEditingManager *)self performWithLock:v6];
 }
 
-- (void)unhide:(id)a3
+- (void)unhide:(id)unhide
 {
-  v4 = [a3 valueForKey:@"uniqueIdentifier"];
+  v4 = [unhide valueForKey:@"uniqueIdentifier"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __29__CUIKEditingManager_unhide___block_invoke;
   v6[3] = &unk_1E8399B60;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(CUIKEditingManager *)self performWithLock:v6];
 }
@@ -984,16 +984,16 @@ void __29__CUIKEditingManager_unhide___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)isHidden:(id)a3
+- (BOOL)isHidden:(id)hidden
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [v4 uniqueIdentifier];
-  v6 = v5;
-  if (v5)
+  uniqueIdentifier = [hiddenCopy uniqueIdentifier];
+  v6 = uniqueIdentifier;
+  if (uniqueIdentifier)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -1001,7 +1001,7 @@ void __29__CUIKEditingManager_unhide___block_invoke(uint64_t a1)
     v9[3] = &unk_1E839A710;
     v11 = &v12;
     v9[4] = self;
-    v10 = v5;
+    v10 = uniqueIdentifier;
     [(CUIKEditingManager *)self performWithLock:v9];
   }
 
@@ -1018,19 +1018,19 @@ uint64_t __31__CUIKEditingManager_isHidden___block_invoke(void *a1)
   return result;
 }
 
-- (void)addAlias:(id)a3 eventIdentifier:(id)a4
+- (void)addAlias:(id)alias eventIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  aliasCopy = alias;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__CUIKEditingManager_addAlias_eventIdentifier___block_invoke;
   v10[3] = &unk_1E839A260;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = aliasCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = aliasCopy;
   [(CUIKEditingManager *)self performWithLock:v10];
 }
 
@@ -1053,11 +1053,11 @@ uint64_t __47__CUIKEditingManager_addAlias_eventIdentifier___block_invoke(void *
   return [v2 setObject:v6 forKeyedSubscript:v7];
 }
 
-- (id)eventWithAlias:(id)a3
+- (id)eventWithAlias:(id)alias
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E6966AC8] recurrenceIdentifierWithString:v4];
-  v6 = [v5 localUID];
+  aliasCopy = alias;
+  v5 = [MEMORY[0x1E6966AC8] recurrenceIdentifierWithString:aliasCopy];
+  localUID = [v5 localUID];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1070,26 +1070,26 @@ uint64_t __47__CUIKEditingManager_addAlias_eventIdentifier___block_invoke(void *
   v21[3] = &unk_1E839A710;
   v23 = &v24;
   v21[4] = self;
-  v7 = v6;
+  v7 = localUID;
   v22 = v7;
   [(CUIKEditingManager *)self performWithLock:v21];
   if (v25[5])
   {
-    v8 = [(CUIKEditingManager *)self eventStore];
-    v9 = [v8 eventWithIdentifier:v25[5]];
+    eventStore = [(CUIKEditingManager *)self eventStore];
+    v9 = [eventStore eventWithIdentifier:v25[5]];
 
     if (v9)
     {
-      v10 = [v5 recurrenceDate];
-      if (v10)
+      recurrenceDate = [v5 recurrenceDate];
+      if (recurrenceDate)
       {
         v11 = MEMORY[0x1E6966AC8];
-        v12 = [v9 UUID];
-        v13 = [v5 recurrenceDate];
-        v14 = [v11 recurrenceIdentifierWithLocalUID:v12 recurrenceDate:v13];
+        uUID = [v9 UUID];
+        recurrenceDate2 = [v5 recurrenceDate];
+        v14 = [v11 recurrenceIdentifierWithLocalUID:uUID recurrenceDate:recurrenceDate2];
 
-        v15 = [(CUIKEditingManager *)self eventStore];
-        v16 = [v15 eventWithRecurrenceIdentifier:v14];
+        eventStore2 = [(CUIKEditingManager *)self eventStore];
+        v16 = [eventStore2 eventWithRecurrenceIdentifier:v14];
 
         v9 = v16;
       }
@@ -1154,32 +1154,32 @@ void __37__CUIKEditingManager_eventWithAlias___block_invoke_3(void *a1)
   }
 }
 
-- (id)remindersMatchingPredicate:(id)a3
+- (id)remindersMatchingPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(CUIKEditingManager *)self eventStore];
-  v6 = [v5 remindersMatchingPredicate:v4];
+  predicateCopy = predicate;
+  eventStore = [(CUIKEditingManager *)self eventStore];
+  v6 = [eventStore remindersMatchingPredicate:predicateCopy];
 
-  v7 = [(CUIKEditingManager *)self _objectsWithLiveEdits:v6 matchingPredicate:v4];
+  v7 = [(CUIKEditingManager *)self _objectsWithLiveEdits:v6 matchingPredicate:predicateCopy];
 
   return v7;
 }
 
-- (void)fetchRemindersMatchingPredicate:(id)a3 completion:(id)a4
+- (void)fetchRemindersMatchingPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CUIKEditingManager *)self eventStore];
+  predicateCopy = predicate;
+  completionCopy = completion;
+  eventStore = [(CUIKEditingManager *)self eventStore];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__CUIKEditingManager_fetchRemindersMatchingPredicate_completion___block_invoke;
   v12[3] = &unk_1E839AEF0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 fetchRemindersMatchingPredicate:v10 completion:v12];
+  v13 = predicateCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = predicateCopy;
+  v11 = [eventStore fetchRemindersMatchingPredicate:v10 completion:v12];
 }
 
 uint64_t __65__CUIKEditingManager_fetchRemindersMatchingPredicate_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1196,12 +1196,12 @@ uint64_t __65__CUIKEditingManager_fetchRemindersMatchingPredicate_completion___b
   return MEMORY[0x1EEE66BB8](v4, v3);
 }
 
-- (id)remindersWithExternalIdentifier:(id)a3
+- (id)remindersWithExternalIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CUIKEditingManager *)self eventStore];
-  v6 = [v5 calendarItemsWithExternalIdentifier:v4];
+  identifierCopy = identifier;
+  eventStore = [(CUIKEditingManager *)self eventStore];
+  v6 = [eventStore calendarItemsWithExternalIdentifier:identifierCopy];
 
   v7 = objc_opt_new();
   v15 = 0u;
@@ -1242,21 +1242,21 @@ uint64_t __65__CUIKEditingManager_fetchRemindersMatchingPredicate_completion___b
   return v7;
 }
 
-- (BOOL)_closeEditingContext:(id)a3 action:(unint64_t)a4 condition:(unint64_t)a5 shouldClose:(BOOL *)a6
+- (BOOL)_closeEditingContext:(id)context action:(unint64_t)action condition:(unint64_t)condition shouldClose:(BOOL *)close
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
-  if (!v10)
+  contextCopy = context;
+  v11 = contextCopy;
+  if (!contextCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"editing context is nil"];
     v19 = 0;
     goto LABEL_27;
   }
 
-  v12 = [v10 group];
+  group = [contextCopy group];
   v25 = 1;
-  v13 = [v12 activeEditingContextsExcludingContext:v11];
+  v13 = [group activeEditingContextsExcludingContext:v11];
   v14 = [v13 count];
 
   v15 = +[CUIKLogSubsystem editingContext];
@@ -1264,17 +1264,17 @@ uint64_t __65__CUIKEditingManager_fetchRemindersMatchingPredicate_completion___b
   {
     v16 = @"unknown";
     v17 = @"unknown";
-    if (a4 <= 2)
+    if (action <= 2)
     {
-      v17 = off_1E839AF38[a4];
+      v17 = off_1E839AF38[action];
     }
 
-    if (a5 == 1)
+    if (condition == 1)
     {
       v16 = @"lastOnly";
     }
 
-    if (!a5)
+    if (!condition)
     {
       v16 = @"always";
     }
@@ -1291,18 +1291,18 @@ uint64_t __65__CUIKEditingManager_fetchRemindersMatchingPredicate_completion___b
     _os_log_impl(&dword_1CAB19000, v15, OS_LOG_TYPE_DEFAULT, "Closing context %p.  action=%{public}@; condition = %{public}@; Other active contexts? %lu", buf, 0x2Au);
   }
 
-  if (!a5 || !v14)
+  if (!condition || !v14)
   {
-    if (a4 == 2)
+    if (action == 2)
     {
       [v11 revert:0];
     }
 
-    else if (a4 == 1)
+    else if (action == 1)
     {
-      v19 = [(CUIKEditingManager *)self _commitChangesForContext:v11 forceCommit:a5 == 0 shouldClose:&v25];
+      v19 = [(CUIKEditingManager *)self _commitChangesForContext:v11 forceCommit:condition == 0 shouldClose:&v25];
       v20 = v25;
-      if (!a6)
+      if (!close)
       {
 LABEL_21:
         if (!v20)
@@ -1314,13 +1314,13 @@ LABEL_21:
       }
 
 LABEL_20:
-      *a6 = v20;
+      *close = v20;
       goto LABEL_21;
     }
 
     v20 = 1;
     v19 = 1;
-    if (!a6)
+    if (!close)
     {
       goto LABEL_21;
     }
@@ -1330,17 +1330,17 @@ LABEL_20:
 
   v19 = 1;
 LABEL_22:
-  [v12 removeContext:v11];
+  [group removeContext:v11];
 LABEL_23:
-  if (v12)
+  if (group)
   {
-    v21 = [v12 openContexts];
-    v22 = [v21 count];
+    openContexts = [group openContexts];
+    v22 = [openContexts count];
 
     if (!v22)
     {
-      v23 = [(CUIKEditingManager *)self editingContextGroups];
-      [v23 removeObject:v12];
+      editingContextGroups = [(CUIKEditingManager *)self editingContextGroups];
+      [editingContextGroups removeObject:group];
     }
   }
 
@@ -1348,12 +1348,12 @@ LABEL_27:
   return v19;
 }
 
-- (BOOL)_commitChangesForContext:(id)a3 forceCommit:(BOOL)a4 shouldClose:(BOOL *)a5
+- (BOOL)_commitChangesForContext:(id)context forceCommit:(BOOL)commit shouldClose:(BOOL *)close
 {
-  v6 = a4;
+  commitCopy = commit;
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!v8)
+  contextCopy = context;
+  if (!contextCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"editing context is nil"];
 LABEL_9:
@@ -1365,13 +1365,13 @@ LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 134218240;
-    v20 = v8;
+    v20 = contextCopy;
     v21 = 1024;
-    v22 = v6;
+    v22 = commitCopy;
     _os_log_impl(&dword_1CAB19000, v9, OS_LOG_TYPE_DEFAULT, "Committing changes in context %p.  Force commit? %d", &v19, 0x12u);
   }
 
-  if (![v8 _prepareForCommitWithDecision:v6 shouldClose:a5])
+  if (![contextCopy _prepareForCommitWithDecision:commitCopy shouldClose:close])
   {
     goto LABEL_9;
   }
@@ -1380,19 +1380,19 @@ LABEL_9:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 134217984;
-    v20 = v8;
+    v20 = contextCopy;
     _os_log_impl(&dword_1CAB19000, v10, OS_LOG_TYPE_DEFAULT, "Actually committing changes in context %p", &v19, 0xCu);
   }
 
-  v11 = [(CUIKEditingManager *)self eventStore];
-  v12 = [v8 group];
-  v13 = [v12 objectsToCommit];
-  v14 = [v11 commitObjects:v13 error:0];
+  eventStore = [(CUIKEditingManager *)self eventStore];
+  group = [contextCopy group];
+  objectsToCommit = [group objectsToCommit];
+  v14 = [eventStore commitObjects:objectsToCommit error:0];
 
-  v15 = [v8 group];
-  v16 = [v15 objectsToCommit];
-  v17 = [v16 allObjects];
-  [(CUIKEditingManager *)self clearLiveChangesForObjects:v17];
+  group2 = [contextCopy group];
+  objectsToCommit2 = [group2 objectsToCommit];
+  allObjects = [objectsToCommit2 allObjects];
+  [(CUIKEditingManager *)self clearLiveChangesForObjects:allObjects];
 
 LABEL_10:
   return v14;
@@ -1406,8 +1406,8 @@ LABEL_10:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CUIKEditingManager *)self editingContextGroups];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  editingContextGroups = [(CUIKEditingManager *)self editingContextGroups];
+  v5 = [editingContextGroups countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1418,29 +1418,29 @@ LABEL_10:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(editingContextGroups);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) openContexts];
-        [v3 unionSet:v9];
+        openContexts = [*(*(&v12 + 1) + 8 * i) openContexts];
+        [v3 unionSet:openContexts];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [editingContextGroups countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v10;
+  return allObjects;
 }
 
-- (void)performWithLock:(id)a3
+- (void)performWithLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2]();
+  lockCopy[2]();
   os_unfair_lock_unlock(&self->_lock);
 }
 

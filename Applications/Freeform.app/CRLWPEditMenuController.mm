@@ -1,21 +1,21 @@
 @interface CRLWPEditMenuController
 - (_TtC8Freeform23CRLWPEditMenuController)init;
 - (void)hide;
-- (void)showMenuOn:(id)a3;
+- (void)showMenuOn:(id)on;
 @end
 
 @implementation CRLWPEditMenuController
 
-- (void)showMenuOn:(id)a3
+- (void)showMenuOn:(id)on
 {
-  v4 = a3;
-  v5 = self;
-  sub_10127F7CC(v4);
+  onCopy = on;
+  selfCopy = self;
+  sub_10127F7CC(onCopy);
 }
 
 - (void)hide
 {
-  v2 = self;
+  selfCopy = self;
   sub_10127F918();
 }
 

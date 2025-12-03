@@ -1,22 +1,22 @@
 @interface WFSelectContactsActionUIKitUserInterface
-- (BOOL)respondsToSelector:(SEL)a3;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContacts:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)finishWithContacts:(id)a3 error:(id)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
+- (void)contactPicker:(id)picker didSelectContacts:(id)contacts;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)finishWithContacts:(id)contacts error:(id)error;
 @end
 
 @implementation WFSelectContactsActionUIKitUserInterface
 
-- (void)contactPicker:(id)a3 didSelectContacts:(id)a4
+- (void)contactPicker:(id)picker didSelectContacts:(id)contacts
 {
-  v5 = [a4 if_map:&__block_literal_global_5645];
+  v5 = [contacts if_map:&__block_literal_global_5645];
   [(WFSelectContactsActionUIKitUserInterface *)self finishWithContacts:v5 error:0];
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v5 = WFContactFromCNContactProperty();
@@ -27,20 +27,20 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CFC278] contactWithCNContact:a4];
+  v5 = [MEMORY[0x277CFC278] contactWithCNContact:contact];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(WFSelectContactsActionUIKitUserInterface *)self contactProperties];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  contactProperties = [(WFSelectContactsActionUIKitUserInterface *)self contactProperties];
+  v7 = [contactProperties countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
-    v18 = self;
+    selfCopy = self;
     v9 = *v20;
     while (2)
     {
@@ -48,25 +48,25 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(contactProperties);
         }
 
         v24 = *(*(&v19 + 1) + 8 * i);
         v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
         v12 = WFContactPropertyIDsFromActionProperties();
-        v13 = [v12 firstObject];
-        v14 = [v13 intValue];
+        firstObject = [v12 firstObject];
+        intValue = [firstObject intValue];
 
-        if ([v5 hasValueForPropertyID:v14])
+        if ([v5 hasValueForPropertyID:intValue])
         {
-          v15 = [v5 contactWithPropertyID:v14 multivalueIndex:0];
+          v15 = [v5 contactWithPropertyID:intValue multivalueIndex:0];
 
           v5 = v15;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v8 = [contactProperties countByEnumeratingWithState:&v19 objects:v25 count:16];
       if (v8)
       {
         continue;
@@ -76,7 +76,7 @@
     }
 
 LABEL_11:
-    self = v18;
+    self = selfCopy;
   }
 
   v23 = v5;
@@ -86,52 +86,52 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v4 = [MEMORY[0x277CCA9B8] userCancelledError];
-  [(WFSelectContactsActionUIKitUserInterface *)self finishWithContacts:0 error:v4];
+  userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+  [(WFSelectContactsActionUIKitUserInterface *)self finishWithContacts:0 error:userCancelledError];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v5 = sel_contactPicker_didSelectContacts_ == a3 || sel_contactPicker_didSelectContactProperties_ == a3;
+  v5 = sel_contactPicker_didSelectContacts_ == selector || sel_contactPicker_didSelectContactProperties_ == selector;
   if (!v5 || (v6 = [(WFSelectContactsActionUIKitUserInterface *)self selectMultiple]))
   {
     v8.receiver = self;
     v8.super_class = WFSelectContactsActionUIKitUserInterface;
-    LOBYTE(v6) = [(WFSelectContactsActionUIKitUserInterface *)&v8 respondsToSelector:a3];
+    LOBYTE(v6) = [(WFSelectContactsActionUIKitUserInterface *)&v8 respondsToSelector:selector];
   }
 
   return v6;
 }
 
-- (void)finishWithContacts:(id)a3 error:(id)a4
+- (void)finishWithContacts:(id)contacts error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFSelectContactsActionUIKitUserInterface *)self completionHandler];
+  contactsCopy = contacts;
+  errorCopy = error;
+  completionHandler = [(WFSelectContactsActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFSelectContactsActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFSelectContactsActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, contactsCopy, errorCopy);
   }
 
   [(WFSelectContactsActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__WFSelectContactsActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFSelectContactsActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 

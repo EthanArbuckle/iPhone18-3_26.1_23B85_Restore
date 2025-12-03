@@ -1,10 +1,10 @@
 @interface PowerUIWalletSignalMonitor
-+ (PowerUIWalletSignalMonitor)monitorWithDelegate:(id)a3;
++ (PowerUIWalletSignalMonitor)monitorWithDelegate:(id)delegate;
 + (id)wallet;
-- (PowerUIWalletSignalMonitor)initWithDelegate:(id)a3;
+- (PowerUIWalletSignalMonitor)initWithDelegate:(id)delegate;
 - (id)detectedSignals;
 - (id)requiredFullChargeDate;
-- (void)sourceInformationChangedNotification:(id)a3;
+- (void)sourceInformationChangedNotification:(id)notification;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (PowerUIWalletSignalMonitor)initWithDelegate:(id)a3
+- (PowerUIWalletSignalMonitor)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = PowerUIWalletSignalMonitor;
   v6 = [(PowerUIWalletSignalMonitor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v8 = os_log_create("com.apple.powerui.smartcharging", "signals");
     log = v7->_log;
     v7->_log = v8;
@@ -44,10 +44,10 @@
   return v7;
 }
 
-+ (PowerUIWalletSignalMonitor)monitorWithDelegate:(id)a3
++ (PowerUIWalletSignalMonitor)monitorWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDelegate:v4];
+  delegateCopy = delegate;
+  v5 = [[self alloc] initWithDelegate:delegateCopy];
 
   return v5;
 }
@@ -55,14 +55,14 @@
 - (void)startMonitoring
 {
   v3 = +[PowerUIWalletSignalMonitor wallet];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_sourceInformationChangedNotification_ name:*MEMORY[0x277D386D8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_sourceInformationChangedNotification_ name:*MEMORY[0x277D386D8] object:0];
 }
 
-- (void)sourceInformationChangedNotification:(id)a3
+- (void)sourceInformationChangedNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -130,8 +130,8 @@ void __67__PowerUIWalletSignalMonitor_sourceInformationChangedNotification___blo
     dispatch_source_set_timer(waitForFinalChangeTimer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D386D8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D386D8] object:0];
 }
 
 - (id)requiredFullChargeDate
@@ -152,7 +152,7 @@ void __67__PowerUIWalletSignalMonitor_sourceInformationChangedNotification___blo
         _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "wallet monitor currently disabled", buf, 2u);
       }
 
-      v13 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
       goto LABEL_49;
     }
 
@@ -186,18 +186,18 @@ void __67__PowerUIWalletSignalMonitor_sourceInformationChangedNotification___blo
 
   [PowerUISmartChargeUtilities setNumber:v11 forPreferenceKey:@"WMQAttempts" inDomain:@"com.apple.smartcharging.topoffprotection"];
   v14 = [PowerUISmartChargeUtilities numberForPreferenceKey:@"WMQSuccesses" inDomain:@"com.apple.smartcharging.topoffprotection"];
-  v15 = [v11 unsignedIntValue];
+  unsignedIntValue = [v11 unsignedIntValue];
   if (v14)
   {
-    v16 = [v14 unsignedIntValue];
+    unsignedIntValue2 = [v14 unsignedIntValue];
   }
 
   else
   {
-    v16 = 0;
+    unsignedIntValue2 = 0;
   }
 
-  if ((v15 - v16) < 5)
+  if ((unsignedIntValue - unsignedIntValue2) < 5)
   {
     v57 = v11;
     v58 = v5;
@@ -206,7 +206,7 @@ void __67__PowerUIWalletSignalMonitor_sourceInformationChangedNotification___blo
     v19 = +[PowerUIWalletSignalMonitor wallet];
     v20 = [v19 passesOfStyles:16];
 
-    v53 = self;
+    selfCopy = self;
     v21 = self->_log;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
@@ -217,10 +217,10 @@ void __67__PowerUIWalletSignalMonitor_sourceInformationChangedNotification___blo
       _os_log_impl(&dword_21B766000, v22, OS_LOG_TYPE_DEFAULT, "Found %lu passes", buf, 0xCu);
     }
 
-    v24 = [MEMORY[0x277CBEAA8] date];
-    v25 = [v24 dateByAddingTimeInterval:-10800.0];
-    v56 = v24;
-    v26 = [v24 dateByAddingTimeInterval:86400.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v25 = [date dateByAddingTimeInterval:-10800.0];
+    v56 = date;
+    v26 = [date dateByAddingTimeInterval:86400.0];
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
@@ -249,8 +249,8 @@ void __67__PowerUIWalletSignalMonitor_sourceInformationChangedNotification___blo
           v62 = 0u;
           v63 = 0u;
           v51 = v30;
-          v31 = [v30 relevantDates];
-          v32 = [v31 countByEnumeratingWithState:&v60 objects:v72 count:16];
+          relevantDates = [v30 relevantDates];
+          v32 = [relevantDates countByEnumeratingWithState:&v60 objects:v72 count:16];
           if (v32)
           {
             v33 = v32;
@@ -261,38 +261,38 @@ void __67__PowerUIWalletSignalMonitor_sourceInformationChangedNotification___blo
               {
                 if (*v61 != v34)
                 {
-                  objc_enumerationMutation(v31);
+                  objc_enumerationMutation(relevantDates);
                 }
 
                 v36 = *(*(&v60 + 1) + 8 * i);
-                v37 = [v36 date];
-                [v37 timeIntervalSinceDate:v25];
+                date2 = [v36 date];
+                [date2 timeIntervalSinceDate:v25];
                 if (v38 < 0.0)
                 {
                 }
 
                 else
                 {
-                  v39 = [v36 date];
-                  [v39 timeIntervalSinceDate:v26];
+                  date3 = [v36 date];
+                  [date3 timeIntervalSinceDate:v26];
                   v41 = v40;
 
                   if (v41 <= 0.0)
                   {
-                    v43 = v53->_log;
+                    v43 = selfCopy->_log;
                     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
                     {
                       v45 = v43;
-                      v46 = [v51 localizedName];
-                      v47 = [v36 date];
+                      localizedName = [v51 localizedName];
+                      date4 = [v36 date];
                       *buf = 138412546;
-                      v69 = v46;
+                      v69 = localizedName;
                       v70 = 2112;
-                      v71 = v47;
+                      v71 = date4;
                       _os_log_impl(&dword_21B766000, v45, OS_LOG_TYPE_DEFAULT, "Found pass, forcing immediate charge: %@, %@", buf, 0x16u);
                     }
 
-                    v13 = [MEMORY[0x277CBEAA8] distantPast];
+                    distantFuture = [MEMORY[0x277CBEAA8] distantPast];
 
                     v27 = v54;
                     v14 = v55;
@@ -301,7 +301,7 @@ void __67__PowerUIWalletSignalMonitor_sourceInformationChangedNotification___blo
                 }
               }
 
-              v33 = [v31 countByEnumeratingWithState:&v60 objects:v72 count:16];
+              v33 = [relevantDates countByEnumeratingWithState:&v60 objects:v72 count:16];
               if (v33)
               {
                 continue;
@@ -338,7 +338,7 @@ void __67__PowerUIWalletSignalMonitor_sourceInformationChangedNotification___blo
     }
 
     [PowerUISmartChargeUtilities setNumber:v14 forPreferenceKey:@"WMQSuccesses" inDomain:@"com.apple.smartcharging.topoffprotection"];
-    v13 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
 LABEL_47:
 
     v5 = v58;
@@ -358,20 +358,20 @@ LABEL_47:
     v18 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:604800.0];
     [PowerUISmartChargeUtilities setDate:v18 forPreferenceKey:@"WMQDisabledUntil" inDomain:@"com.apple.smartcharging.topoffprotection"];
 
-    v13 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
 LABEL_49:
   v48 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return distantFuture;
 }
 
 - (id)detectedSignals
 {
-  v2 = [(PowerUIWalletSignalMonitor *)self requiredFullChargeDate];
-  v3 = [MEMORY[0x277CBEAA8] distantFuture];
-  v4 = [v2 isEqualToDate:v3];
+  requiredFullChargeDate = [(PowerUIWalletSignalMonitor *)self requiredFullChargeDate];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v4 = [requiredFullChargeDate isEqualToDate:distantFuture];
 
   if (v4)
   {
@@ -380,7 +380,7 @@ LABEL_49:
 
   else
   {
-    [MEMORY[0x277CBEA60] arrayWithObject:v2];
+    [MEMORY[0x277CBEA60] arrayWithObject:requiredFullChargeDate];
   }
   v5 = ;
 

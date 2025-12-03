@@ -1,27 +1,27 @@
 @interface USBCThunderboltFirmwareUpdater
 - (id)DeviceFirmwareVersionString;
 - (id)DeviceSerialNumber;
-- (id)DeviceVIDDID:(unsigned int *)a3 andDid:(unsigned int *)a4 andUid:(id *)a5;
-- (id)RetrieveA115SerialNumber:(char *)a3;
-- (id)RetrieveAceFirmwareVersion:(char *)a3;
-- (id)applyFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
-- (id)finishFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
-- (id)prepareFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
-- (id)validateDevice:(id)a3 withFirmware:(id)a4;
-- (id)validateFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
+- (id)DeviceVIDDID:(unsigned int *)d andDid:(unsigned int *)did andUid:(id *)uid;
+- (id)RetrieveA115SerialNumber:(char *)number;
+- (id)RetrieveAceFirmwareVersion:(char *)version;
+- (id)applyFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
+- (id)finishFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
+- (id)prepareFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
+- (id)validateDevice:(id)device withFirmware:(id)firmware;
+- (id)validateFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
 - (id)validateThunderboltSwitch;
 - (unsigned)DeviceFirmwareVersion;
-- (unsigned)FirmwareFileVersion:(id)a3 firmware:(id *)a4 isSecure:(BOOL *)a5 andSignature:(id *)a6;
+- (unsigned)FirmwareFileVersion:(id)version firmware:(id *)firmware isSecure:(BOOL *)secure andSignature:(id *)signature;
 @end
 
 @implementation USBCThunderboltFirmwareUpdater
 
-- (unsigned)FirmwareFileVersion:(id)a3 firmware:(id *)a4 isSecure:(BOOL *)a5 andSignature:(id *)a6
+- (unsigned)FirmwareFileVersion:(id)version firmware:(id *)firmware isSecure:(BOOL *)secure andSignature:(id *)signature
 {
-  v9 = a3;
-  v10 = [v9 length];
+  versionCopy = version;
+  v10 = [versionCopy length];
   v11 = malloc_type_malloc(v10, 0xE5C66A55uLL);
-  [v9 getBytes:v11 length:v10];
+  [versionCopy getBytes:v11 length:v10];
   v12 = *v11;
   if (*v11 == -1394606079)
   {
@@ -52,7 +52,7 @@
     v14 = (v11 + v13);
   }
 
-  v32 = a6;
+  signatureCopy = signature;
   if (v13 >= v10)
   {
     delegate = self->super._delegate;
@@ -127,19 +127,19 @@ LABEL_27:
 
   [(FudPluginDelegate *)self->super._delegate log:7 format:@"    signedBinary: %@", v27];
   [(FudPluginDelegate *)self->super._delegate log:7 format:@"    fwVersion: %u (0x%X)", v15, v15];
-  if (a4)
+  if (firmware)
   {
-    *a4 = [v9 subdataWithRange:{v13, v22}];
+    *firmware = [versionCopy subdataWithRange:{v13, v22}];
   }
 
-  if (a5)
+  if (secure)
   {
-    *a5 = v31;
+    *secure = v31;
   }
 
-  if (v32)
+  if (signatureCopy)
   {
-    v28 = [v9 length];
+    v28 = [versionCopy length];
     if ((v22 - v17) < 0x100)
     {
       v29 = 0;
@@ -147,10 +147,10 @@ LABEL_27:
 
     else
     {
-      v29 = [v9 subdataWithRange:{v28 - 256, 256}];
+      v29 = [versionCopy subdataWithRange:{v28 - 256, 256}];
     }
 
-    *v32 = v29;
+    *signatureCopy = v29;
   }
 
 LABEL_38:
@@ -158,7 +158,7 @@ LABEL_38:
   return v15;
 }
 
-- (id)RetrieveAceFirmwareVersion:(char *)a3
+- (id)RetrieveAceFirmwareVersion:(char *)version
 {
   v14 = 4;
   v15 = 0;
@@ -179,7 +179,7 @@ LABEL_10:
       v6 = HIWORD(v15);
       v7 = BYTE1(v15);
       v8 = v15;
-      sprintf(a3, "%X.%X.%X", HIWORD(v15), BYTE1(v15), v15);
+      sprintf(version, "%X.%X.%X", HIWORD(v15), BYTE1(v15), v15);
       v9 = 0;
       self->super._firmwareVersion = (v7 << 8) | (v6 << 16) | v8;
       goto LABEL_7;
@@ -206,7 +206,7 @@ LABEL_7:
   return v9;
 }
 
-- (id)RetrieveA115SerialNumber:(char *)a3
+- (id)RetrieveA115SerialNumber:(char *)number
 {
   v10 = 0u;
   v11 = 0u;
@@ -221,8 +221,8 @@ LABEL_7:
 
   else
   {
-    *a3 = v10;
-    *(a3 + 8) = v11;
+    *number = v10;
+    *(number + 8) = v11;
   }
 
   return v5;
@@ -259,7 +259,7 @@ LABEL_7:
 
 - (id)validateThunderboltSwitch
 {
-  v2 = self;
+  selfCopy = self;
   parent = 0;
   v43 = 0;
   v42 = 0;
@@ -271,7 +271,7 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v36 = v2;
+  v36 = selfCopy;
   while (1)
   {
     if (IOObjectConformsTo(parent, "IOThunderboltPort"))
@@ -311,11 +311,11 @@ LABEL_7:
     v5 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:8962 userInfo:v13];
 
 LABEL_15:
-    v7 = [v3[126] dictionary];
-    v8 = v7;
+    dictionary = [v3[126] dictionary];
+    v8 = dictionary;
     if (v5)
     {
-      [v7 setObject:v5 forKeyedSubscript:@"Previous Error Response"];
+      [dictionary setObject:v5 forKeyedSubscript:@"Previous Error Response"];
     }
 
     [v8 setObject:@"No USB-C switch?" forKeyedSubscript:@"Notes"];
@@ -325,7 +325,7 @@ LABEL_15:
 
   v4 = &IOCreatePlugInInterfaceForService_ptr;
   v3 = &IOCreatePlugInInterfaceForService_ptr;
-  if (v2->super._pdControllers || (+[PDController knownPDControllers], v14 = objc_claimAutoreleasedReturnValue(), pdControllers = v2->super._pdControllers, v2->super._pdControllers = v14, pdControllers, v2->super._pdControllers))
+  if (selfCopy->super._pdControllers || (+[PDController knownPDControllers], v14 = objc_claimAutoreleasedReturnValue(), pdControllers = selfCopy->super._pdControllers, selfCopy->super._pdControllers = v14, pdControllers, selfCopy->super._pdControllers))
   {
     v16 = +[AppleHPMUserClientManager sharedInstance];
     if (v16)
@@ -338,7 +338,7 @@ LABEL_15:
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v17 = v2->super._pdControllers;
+        v17 = selfCopy->super._pdControllers;
         v18 = [(NSArray *)v17 countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v18)
         {
@@ -357,10 +357,10 @@ LABEL_15:
               pdController = [v22 userClient];
               if (pdController == v5)
               {
-                v24 = [v22 address];
+                address = [v22 address];
                 v25 = v43;
 
-                if (v24 != v25)
+                if (address != v25)
                 {
                   continue;
                 }
@@ -377,7 +377,7 @@ LABEL_15:
           while (v19);
         }
 
-        v2 = v36;
+        selfCopy = v36;
         v4 = &IOCreatePlugInInterfaceForService_ptr;
         v3 = &IOCreatePlugInInterfaceForService_ptr;
         if (v36->super._pdController)
@@ -465,22 +465,22 @@ LABEL_19:
 
   if (v9)
   {
-    v10 = [v3[126] dictionary];
-    [v10 setObject:v9 forKeyedSubscript:@"Previous Error Response"];
-    v11 = [v4[107] errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:8960 userInfo:v10];
+    dictionary2 = [v3[126] dictionary];
+    [dictionary2 setObject:v9 forKeyedSubscript:@"Previous Error Response"];
+    v11 = [v4[107] errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:8960 userInfo:dictionary2];
 
 LABEL_21:
     goto LABEL_24;
   }
 
-  v2->super._route = v42;
-  v2->super._rid = HIBYTE(v43);
-  v2->super._address = v43;
-  if (!v2->super._pdAccess)
+  selfCopy->super._route = v42;
+  selfCopy->super._rid = HIBYTE(v43);
+  selfCopy->super._address = v43;
+  if (!selfCopy->super._pdAccess)
   {
-    v10 = [v3[126] dictionary];
-    [v10 setObject:@"_pdAccess == nil" forKeyedSubscript:@"Notes"];
-    v11 = [v4[107] errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:8960 userInfo:v10];
+    dictionary2 = [v3[126] dictionary];
+    [dictionary2 setObject:@"_pdAccess == nil" forKeyedSubscript:@"Notes"];
+    v11 = [v4[107] errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:8960 userInfo:dictionary2];
     goto LABEL_21;
   }
 
@@ -490,30 +490,30 @@ LABEL_24:
   return v11;
 }
 
-- (id)validateDevice:(id)a3 withFirmware:(id)a4
+- (id)validateDevice:(id)device withFirmware:(id)firmware
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  firmwareCopy = firmware;
   v18 = 0;
   if (!self->super._hardwareProperties)
   {
-    objc_storeStrong(&self->super._hardwareProperties, a3);
+    objc_storeStrong(&self->super._hardwareProperties, device);
   }
 
   if (!self->super._firmwareAssetProperties)
   {
-    objc_storeStrong(&self->super._firmwareAssetProperties, a4);
+    objc_storeStrong(&self->super._firmwareAssetProperties, firmware);
   }
 
-  v9 = [(USBCThunderboltFirmwareUpdater *)self validateThunderboltSwitch];
-  if (v9)
+  validateThunderboltSwitch = [(USBCThunderboltFirmwareUpdater *)self validateThunderboltSwitch];
+  if (validateThunderboltSwitch)
   {
-    v10 = v9;
+    v10 = validateThunderboltSwitch;
     v11 = 0;
 LABEL_11:
-    v14 = +[NSMutableDictionary dictionary];
-    [v14 setObject:v10 forKeyedSubscript:@"Previous Error Response"];
-    v15 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:8448 userInfo:v14];
+    deviceFirmwareVersionString = +[NSMutableDictionary dictionary];
+    [deviceFirmwareVersionString setObject:v10 forKeyedSubscript:@"Previous Error Response"];
+    v15 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:8448 userInfo:deviceFirmwareVersionString];
 
     goto LABEL_13;
   }
@@ -546,37 +546,37 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v14 = [(USBCThunderboltFirmwareUpdater *)self DeviceFirmwareVersionString];
+  deviceFirmwareVersionString = [(USBCThunderboltFirmwareUpdater *)self DeviceFirmwareVersionString];
   v15 = 0;
 LABEL_13:
 
   return v15;
 }
 
-- (id)validateFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)validateFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  v10 = a3;
-  v11 = a4;
+  firmwareCopy = firmware;
+  hardwareCopy = hardware;
   v12 = a5;
-  v51 = a6;
-  v54 = 0;
+  progressCopy = progress;
+  bOOLValue = 0;
   v13 = [v12 objectForKeyedSubscript:@"Firmware Asset Version"];
   v14 = [v12 objectForKeyedSubscript:@"Firmware Asset Is Secure"];
   v15 = [v12 objectForKeyedSubscript:@"Firmware Asset File"];
   v16 = [v12 objectForKeyedSubscript:@"Firmware Asset Payload"];
   v17 = [v12 objectForKeyedSubscript:@"Firmware Asset Signature"];
   v18 = v17;
-  v49 = v10;
-  v50 = v11;
+  v49 = firmwareCopy;
+  v50 = hardwareCopy;
   v48 = v15;
   if (v15)
   {
     if (v16 && v17 && v14 && v13)
     {
       v46 = v13;
-      v19 = [v13 unsignedLongValue];
+      unsignedLongValue = [v13 unsignedLongValue];
       v47 = v14;
-      v54 = [v14 BOOLValue];
+      bOOLValue = [v14 BOOLValue];
       v20 = [v12 objectForKeyedSubscript:@"Firmware Asset Payload"];
 
       v21 = [v12 objectForKeyedSubscript:@"Firmware Asset Signature"];
@@ -589,16 +589,16 @@ LABEL_13:
     {
       v52 = v17;
       v53 = v16;
-      v19 = [(USBCThunderboltFirmwareUpdater *)self FirmwareFileVersion:v15 firmware:&v53 isSecure:&v54 andSignature:&v52];
+      unsignedLongValue = [(USBCThunderboltFirmwareUpdater *)self FirmwareFileVersion:v15 firmware:&v53 isSecure:&bOOLValue andSignature:&v52];
       v25 = v53;
 
       v26 = v13;
       v27 = v52;
 
-      v28 = [NSNumber numberWithUnsignedLong:v19];
+      v28 = [NSNumber numberWithUnsignedLong:unsignedLongValue];
 
       [v12 setObject:v28 forKeyedSubscript:@"Firmware Asset Version"];
-      v29 = [NSNumber numberWithBool:v54];
+      v29 = [NSNumber numberWithBool:bOOLValue];
 
       [v12 setObject:v29 forKeyedSubscript:@"Firmware Asset Is Secure"];
       [v12 setObject:v25 forKeyedSubscript:@"Firmware Asset Payload"];
@@ -607,14 +607,14 @@ LABEL_13:
       v16 = v25;
       v46 = v28;
       v47 = v29;
-      v11 = v50;
+      hardwareCopy = v50;
     }
 
-    v30 = [v11 objectForKeyedSubscript:@"Hardware Installed firmware version"];
+    v30 = [hardwareCopy objectForKeyedSubscript:@"Hardware Installed firmware version"];
     v24 = v30;
     if (v30)
     {
-      v31 = [v30 unsignedLongValue];
+      unsignedLongValue2 = [v30 unsignedLongValue];
       if (!v16)
       {
         goto LABEL_17;
@@ -623,9 +623,9 @@ LABEL_13:
 
     else
     {
-      v31 = [(USBCThunderboltFirmwareUpdater *)self DeviceFirmwareVersion];
-      v32 = [NSNumber numberWithUnsignedLong:v31];
-      [v11 setObject:v32 forKeyedSubscript:@"Hardware Installed firmware version"];
+      unsignedLongValue2 = [(USBCThunderboltFirmwareUpdater *)self DeviceFirmwareVersion];
+      v32 = [NSNumber numberWithUnsignedLong:unsignedLongValue2];
+      [hardwareCopy setObject:v32 forKeyedSubscript:@"Hardware Installed firmware version"];
 
       if (!v16)
       {
@@ -633,17 +633,17 @@ LABEL_13:
       }
     }
 
-    if (v54 != 1 || [v18 length])
+    if (bOOLValue != 1 || [v18 length])
     {
-      if (v31 < (v19 & 0x7FFFFF))
+      if (unsignedLongValue2 < (unsignedLongValue & 0x7FFFFF))
       {
-        v33 = [v11 objectForKeyedSubscript:@"Hardware Device Class"];
+        v33 = [hardwareCopy objectForKeyedSubscript:@"Hardware Device Class"];
         delegate = self->super._delegate;
-        v34 = [(USBCThunderboltFirmwareUpdater *)self DeviceSerialNumber];
-        v35 = [(USBCThunderboltFirmwareUpdater *)self DeviceFirmwareVersionString];
-        v36 = [(USBCFirmwareUpdater *)self FirmwareFileVersionString:v19];
+        deviceSerialNumber = [(USBCThunderboltFirmwareUpdater *)self DeviceSerialNumber];
+        deviceFirmwareVersionString = [(USBCThunderboltFirmwareUpdater *)self DeviceFirmwareVersionString];
+        v36 = [(USBCFirmwareUpdater *)self FirmwareFileVersionString:unsignedLongValue];
         v37 = 1;
-        [(FudPluginDelegate *)delegate log:1 format:@"%@ with S/N %@ is in need of an update.  Installed firmware version %@ will be replaced with %@", v33, v34, v35, v36];
+        [(FudPluginDelegate *)delegate log:1 format:@"%@ with S/N %@ is in need of an update.  Installed firmware version %@ will be replaced with %@", v33, deviceSerialNumber, deviceFirmwareVersionString, v36];
 
         v23 = 0;
         goto LABEL_21;
@@ -673,18 +673,18 @@ LABEL_19:
 
   v24 = 0;
 LABEL_20:
-  v33 = [v11 objectForKeyedSubscript:@"Hardware Device Class"];
+  v33 = [hardwareCopy objectForKeyedSubscript:@"Hardware Device Class"];
   v40 = self->super._delegate;
-  v34 = [(USBCThunderboltFirmwareUpdater *)self DeviceSerialNumber];
-  v35 = [(USBCThunderboltFirmwareUpdater *)self DeviceFirmwareVersionString];
-  [(FudPluginDelegate *)v40 log:1 format:@"%@ with S/N %@ is up to date.  Installed firmware version is %@", v33, v34, v35];
+  deviceSerialNumber = [(USBCThunderboltFirmwareUpdater *)self DeviceSerialNumber];
+  deviceFirmwareVersionString = [(USBCThunderboltFirmwareUpdater *)self DeviceFirmwareVersionString];
+  [(FudPluginDelegate *)v40 log:1 format:@"%@ with S/N %@ is up to date.  Installed firmware version is %@", v33, deviceSerialNumber, deviceFirmwareVersionString];
   v37 = 0;
 LABEL_21:
-  v41 = v51;
+  v41 = progressCopy;
 
-  if (v51)
+  if (progressCopy)
   {
-    (*(v51 + 2))(v51, 100.0);
+    (*(progressCopy + 2))(progressCopy, 100.0);
   }
 
   if (v23)
@@ -693,7 +693,7 @@ LABEL_21:
     [v42 setObject:v23 forKeyedSubscript:@"Previous Error Response"];
     v43 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:12292 userInfo:v42];
 
-    v41 = v51;
+    v41 = progressCopy;
     if (!v49)
     {
       goto LABEL_26;
@@ -714,15 +714,15 @@ LABEL_26:
   return v43;
 }
 
-- (id)prepareFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)prepareFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  v8 = a3;
-  v9 = a6;
+  firmwareCopy = firmware;
+  progressCopy = progress;
   v10 = MGCopyAnswer();
   v11 = 0;
   if (([v10 containsString:@"arm"] & 1) == 0)
   {
-    v29 = v8;
+    v29 = firmwareCopy;
     v11 = [[NSMutableDictionary alloc] initWithCapacity:5];
     if (!v11)
     {
@@ -740,7 +740,7 @@ LABEL_26:
       [v11 setObject:v15 forKeyedSubscript:@"BlessSettings"];
     }
 
-    v27 = self;
+    selfCopy = self;
     v16 = objc_alloc_init(NSMutableString);
     v30 = 0u;
     v31 = 0u;
@@ -791,39 +791,39 @@ LABEL_26:
       while (v19);
     }
 
-    self = v27;
-    [(FudPluginDelegate *)v27->super._delegate log:7 format:@"Bless Invocation string: %@", v16];
+    self = selfCopy;
+    [(FudPluginDelegate *)selfCopy->super._delegate log:7 format:@"Bless Invocation string: %@", v16];
 
     v10 = v28;
-    v8 = v29;
+    firmwareCopy = v29;
   }
 
-  if (v9)
+  if (progressCopy)
   {
-    v9[2](v9, 100.0);
+    progressCopy[2](progressCopy, 100.0);
   }
 
-  if (v8)
+  if (firmwareCopy)
   {
     [(FudPluginDelegate *)self->super._delegate log:7 format:@"Info Dict: %@", v11];
-    v8[2](v8, v11, 0);
+    firmwareCopy[2](firmwareCopy, v11, 0);
   }
 
   return 0;
 }
 
-- (id)finishFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)finishFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  firmwareCopy = firmware;
+  hardwareCopy = hardware;
+  progressCopy = progress;
   [(FudPluginDelegate *)self->super._delegate log:7 format:@"-=-=-=-=-=-=-=-=-=-=- Completing Update Operation -=-=-=-=-=-=-=-=-=-=-=-=-=-=-"];
   if (self->super._updaterOperational)
   {
-    v12 = v10;
-    if (v11)
+    v12 = hardwareCopy;
+    if (progressCopy)
     {
-      v11[2](v11, 50.0);
+      progressCopy[2](progressCopy, 50.0);
     }
 
     v13 = 0;
@@ -835,10 +835,10 @@ LABEL_26:
     [v14 setObject:@"Update Aborted at start of finish" forKeyedSubscript:@"Notes"];
     v15 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13312 userInfo:v14];
     delegate = self->super._delegate;
-    v12 = v10;
-    v17 = [v10 objectForKeyedSubscript:@"Hardware Device Class"];
-    v18 = [(USBCThunderboltFirmwareUpdater *)self DeviceSerialNumber];
-    [(FudPluginDelegate *)delegate log:1 format:@"%@ with S/N %@ - Update aborted", v17, v18];
+    v12 = hardwareCopy;
+    v17 = [hardwareCopy objectForKeyedSubscript:@"Hardware Device Class"];
+    deviceSerialNumber = [(USBCThunderboltFirmwareUpdater *)self DeviceSerialNumber];
+    [(FudPluginDelegate *)delegate log:1 format:@"%@ with S/N %@ - Update aborted", v17, deviceSerialNumber];
 
     v13 = v15;
     v19 = [(USBCFirmwareUpdater *)self ExitUpdateMode:0];
@@ -851,8 +851,8 @@ LABEL_26:
   {
     v42 = v20;
     v43 = v13;
-    v44 = v11;
-    v45 = v9;
+    v44 = progressCopy;
+    v45 = firmwareCopy;
     v21 = [NSMutableDictionary dictionaryWithCapacity:1];
     v22 = [(USBCFirmwareUpdater *)self BlessArgumentsWithRemoteReset:0];
     if (v22)
@@ -916,9 +916,9 @@ LABEL_26:
     }
 
     [(FudPluginDelegate *)self->super._delegate log:7 format:@"Bless Invocation: %@", v26];
-    v9 = v45;
+    firmwareCopy = v45;
     v13 = v43;
-    v11 = v44;
+    progressCopy = v44;
     v20 = v42;
   }
 
@@ -930,9 +930,9 @@ LABEL_26:
   v47[4] = self;
   v37 = [(USBCPDAccess *)pdAccess ExitUpdateMode:v47 remoteReset:0];
   [(FudPluginDelegate *)self->super._delegate log:7 format:@"Past 'Gaid' calls"];
-  if (v11)
+  if (progressCopy)
   {
-    v11[2](v11, 100.0);
+    progressCopy[2](progressCopy, 100.0);
   }
 
   if (v13)
@@ -948,10 +948,10 @@ LABEL_26:
   }
 
   v40 = self->super._delegate;
-  if (v9)
+  if (firmwareCopy)
   {
     [(FudPluginDelegate *)v40 log:7 format:@"Info Dict: %@", v46];
-    v9[2](v9, v46, v39);
+    firmwareCopy[2](firmwareCopy, v46, v39);
   }
 
   else
@@ -1001,7 +1001,7 @@ LABEL_26:
   return v9;
 }
 
-- (id)DeviceVIDDID:(unsigned int *)a3 andDid:(unsigned int *)a4 andUid:(id *)a5
+- (id)DeviceVIDDID:(unsigned int *)d andDid:(unsigned int *)did andUid:(id *)uid
 {
   memset(v29, 0, sizeof(v29));
   v27 = 32;
@@ -1017,20 +1017,20 @@ LABEL_26:
   v9 = [(NSMutableDictionary *)self->super._hardwareProperties objectForKeyedSubscript:@"Hardware VID"];
   if (v9 && (v10 = v9, [(NSMutableDictionary *)self->super._hardwareProperties objectForKeyedSubscript:@"Hardware DID"], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
-    if (a3)
+    if (d)
     {
       v12 = [(NSMutableDictionary *)self->super._hardwareProperties objectForKeyedSubscript:@"Hardware VID"];
-      *a3 = [v12 unsignedLongValue];
+      *d = [v12 unsignedLongValue];
     }
 
-    if (a4)
+    if (did)
     {
       v13 = [(NSMutableDictionary *)self->super._hardwareProperties objectForKeyedSubscript:@"Hardware DID"];
-      *a4 = [v13 unsignedLongValue];
+      *did = [v13 unsignedLongValue];
     }
 
     v14 = 0;
-    if (!a5)
+    if (!uid)
     {
       goto LABEL_15;
     }
@@ -1041,7 +1041,7 @@ LABEL_26:
     v14 = [(USBCPDAccess *)self->super._pdAccess LocalIECSReadReg:v29 bufferLength:32 registerAddress:72 returnedBufferLength:&v27];
     if (v14)
     {
-      if (!a5)
+      if (!uid)
       {
         goto LABEL_15;
       }
@@ -1058,18 +1058,18 @@ LABEL_26:
       v25 = [NSNumber numberWithUnsignedLong:v23];
       [(NSMutableDictionary *)self->super._hardwareProperties setObject:v25 forKeyedSubscript:@"Hardware DID"];
 
-      if (a3)
+      if (d)
       {
-        *a3 = v22;
+        *d = v22;
       }
 
       v14 = 0;
-      if (a4)
+      if (did)
       {
-        *a4 = v23;
+        *did = v23;
       }
 
-      if (!a5)
+      if (!uid)
       {
 LABEL_15:
         if (!v14)
@@ -1089,7 +1089,7 @@ LABEL_16:
   if (v15)
   {
     v16 = [(NSMutableDictionary *)self->super._hardwareProperties objectForKeyedSubscript:@"Hardware UID"];
-    *a5 = [v16 copy];
+    *uid = [v16 copy];
 
     goto LABEL_15;
   }
@@ -1102,7 +1102,7 @@ LABEL_16:
   {
     [(FudPluginDelegate *)delegate log:7 format:@"%s - UUID: %02X%02X%02X%02X-%02X%02X-%02X%02X-%02X%02X%02X%02X%02X%02X%02X%02X", "[USBCThunderboltFirmwareUpdater DeviceVIDDID:andDid:andUid:]", v28[0], v28[1], v28[2], v28[3], v28[4], v28[5], v28[6], v28[7], v28[8], v28[9], v28[10], v28[11], v28[12], v28[13], v28[14], v28[15]];
     v26 = [[NSData alloc] initWithBytes:v28 length:16];
-    *a5 = v26;
+    *uid = v26;
     v20 = [v26 copy];
     [(NSMutableDictionary *)self->super._hardwareProperties setObject:v20 forKeyedSubscript:@"Hardware UID"];
     v17 = 0;
@@ -1122,51 +1122,51 @@ LABEL_21:
   return v17;
 }
 
-- (id)applyFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)applyFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  v10 = a3;
-  v235 = a4;
+  firmwareCopy = firmware;
+  hardwareCopy = hardware;
   v11 = a5;
-  v234 = a6;
+  progressCopy = progress;
   memset(v238, 0, sizeof(v238));
   v237 = 4;
   v12 = [v11 objectForKeyedSubscript:@"Firmware Asset Is Secure"];
   v13 = [v11 objectForKeyedSubscript:@"Firmware Asset File"];
   v233 = [v11 objectForKeyedSubscript:@"Firmware Asset Payload"];
   v232 = [v11 objectForKeyedSubscript:@"Firmware Asset Signature"];
-  v14 = &FUDUpdaterErrorDomain;
+  deviceSerialNumber = &FUDUpdaterErrorDomain;
   v15 = &OBJC_IVAR___USBCFirmwareUpdater__delegate;
   v230 = v12;
-  v231 = v10;
+  v231 = firmwareCopy;
   v229 = v13;
   if (!v13)
   {
     v35 = +[NSMutableDictionary dictionary];
     [v35 setObject:@"Firmware file was missing" forKeyedSubscript:@"Notes"];
-    v34 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:10496 userInfo:v35];
+    0x64570000u = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:10496 userInfo:v35];
 
     goto LABEL_9;
   }
 
-  v16 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
   if (!self->super._updaterOperational)
   {
     v30 = +[NSMutableDictionary dictionary];
     [v30 setObject:@"Update Aborted before it began" forKeyedSubscript:@"Notes"];
-    v34 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13312 userInfo:v30];
+    0x64570000u = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13312 userInfo:v30];
     delegate = self->super._delegate;
-    v43 = [sub_10000FB50(v34 v37];
-    v14 = [(USBCThunderboltFirmwareUpdater *)self DeviceSerialNumber];
-    [(FudPluginDelegate *)delegate log:1 format:@"%@ with S/N %@ - Update aborted", v43, v14];
+    v43 = [sub_10000FB50(0x64570000u v37];
+    deviceSerialNumber = [(USBCThunderboltFirmwareUpdater *)self DeviceSerialNumber];
+    [(FudPluginDelegate *)delegate log:1 format:@"%@ with S/N %@ - Update aborted", v43, deviceSerialNumber];
 
 LABEL_11:
     v44 = [(USBCFirmwareUpdater *)self ExitUpdateMode:0];
     goto LABEL_12;
   }
 
-  HIDWORD(v221) = v16;
+  HIDWORD(v221) = bOOLValue;
   v23 = self->super._delegate;
-  [sub_10000FB50(v16 v17];
+  [sub_10000FB50(bOOLValue v17];
   objc_claimAutoreleasedReturnValue();
   [sub_10000FB14() DeviceSerialNumber];
   objc_claimAutoreleasedReturnValue();
@@ -1178,7 +1178,7 @@ LABEL_11:
   v24 = [(USBCPDAccess *)self->super._pdAccess EnterUpdateMode:0];
   if (v24 || (-[FudPluginDelegate log:format:](self->super._delegate, "log:format:", 7, @"-=-=-=-=-=-=-=-= Sending Firmware Update Start Command =-=-=-=-=-=-=-=-=-=-=-=-"), v25 = sub_10000FB44(), [v25 RemoteExecuteCommand:v26 | 0x69570000u], (v24 = objc_claimAutoreleasedReturnValue()) != 0) || (v237 = 4, objc_msgSend(sub_10000FAE0(), "RemoteIECSReadReg:bufferLength:registerAddress:returnedBufferLength:"), (v24 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v34 = v24;
+    0x64570000u = v24;
     goto LABEL_13;
   }
 
@@ -1197,14 +1197,14 @@ LABEL_11:
     v33 = [v32 stringWithFormat:@"SFWi Command returned: %02X%02X%02X%02X"];
     [v30 setObject:v33 forKeyedSubscript:@"Notes"];
 
-    v34 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:10752 userInfo:v30];
+    0x64570000u = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:10752 userInfo:v30];
 LABEL_12:
 
     goto LABEL_13;
   }
 
   [(FudPluginDelegate *)v27 log:7 format:@"Flash process successfully initiated..."];
-  v14 = BYTE2(v238[0]) & ((BYTE2(v238[0]) & 6) != 0);
+  deviceSerialNumber = BYTE2(v238[0]) & ((BYTE2(v238[0]) & 6) != 0);
   v49 = @"NO";
   if ((BYTE2(v238[0]) & ((BYTE2(v238[0]) & 6) != 0)) != 0)
   {
@@ -1230,8 +1230,8 @@ LABEL_12:
   }
 
   [(FudPluginDelegate *)self->super._delegate log:7 format:@"    legacy deviceIsSecureUpdateCapable: %@\n", v52];
-  v53 = ((v238[0] & 0x30000) == 0) ^ v14 & v51;
-  if ((v14 & v51) != 0)
+  v53 = ((v238[0] & 0x30000) == 0) ^ deviceSerialNumber & v51;
+  if ((deviceSerialNumber & v51) != 0)
   {
     v54 = @"YES";
   }
@@ -1261,10 +1261,10 @@ LABEL_12:
     goto LABEL_39;
   }
 
-  if (v234)
+  if (progressCopy)
   {
     v56 = 5.0;
-    v234[2](5.0);
+    progressCopy[2](5.0);
   }
 
   else
@@ -1272,7 +1272,7 @@ LABEL_12:
     v56 = 0.0;
   }
 
-  v15 = v235;
+  v15 = hardwareCopy;
   v59 = [(FudPluginDelegate *)self->super._delegate log:7 format:@"-=-=-=-=-=-=-=-=-=-=-=- Sending Firmware Payload =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"];
   sub_10000FB08(v59, v60, v61, v62, v63, v64, v65, v66, v179, v184, v190, v194, v198, v202, v206, v210, v214, v218, v222, v226);
   if (v67 != 1)
@@ -1282,7 +1282,7 @@ LABEL_12:
     v98 = @"Update Aborted before payload xmit";
 LABEL_74:
     [v97 setObject:v98 forKeyedSubscript:@"Notes"];
-    v34 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13312 userInfo:v30];
+    0x64570000u = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13312 userInfo:v30];
     v99 = self->super._delegate;
     [v15 objectForKeyedSubscript:@"Hardware Device Class"];
     objc_claimAutoreleasedReturnValue();
@@ -1295,13 +1295,13 @@ LABEL_74:
   }
 
   HIDWORD(v215) = BYTE2(v238[0]) & ((BYTE2(v238[0]) & 6) != 0);
-  v14 = 0;
-  v219 = (v234 + 2);
+  deviceSerialNumber = 0;
+  v219 = (progressCopy + 2);
   do
   {
     v49 = v233;
     v68 = [v233 length];
-    if (v68 <= v14)
+    if (v68 <= deviceSerialNumber)
     {
       sub_10000FB08(v68, v69, v70, v71, v72, v73, v74, v75, v180, v186, v191, v195, v199, v203, v207, v211, v215, v219, v223, v227);
       if ((v100 & 1) == 0)
@@ -1317,19 +1317,19 @@ LABEL_80:
       [(FudPluginDelegate *)self->super._delegate log:7 format:@"******** ERROR: Data size did not match what the micro was expecting"];
       [(FudPluginDelegate *)self->super._delegate log:7 format:@"    SFWd_cmd Command returned: %02X%02X%02X%02X %02X%02X%02X%02X", LOBYTE(v238[0]), BYTE1(v238[0]), BYTE2(v238[0]), BYTE3(v238[0]), BYTE4(v238[0]), BYTE5(v238[0]), BYTE6(v238[0]), BYTE7(v238[0])];
       v101 = +[NSMutableDictionary dictionary];
-      v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Data size did not match what the micro was expecting.  Sent = 0x%X.  Expected = 0x%lX", v14, [v233 length]);
-      [v101 setObject:v14 forKeyedSubscript:@"Notes"];
+      deviceSerialNumber = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Data size did not match what the micro was expecting.  Sent = 0x%X.  Expected = 0x%lX", deviceSerialNumber, [v233 length]);
+      [v101 setObject:deviceSerialNumber forKeyedSubscript:@"Notes"];
 
       v103 = 11009;
 LABEL_81:
-      v34 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:v103 userInfo:v101];
+      0x64570000u = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:v103 userInfo:v101];
 
       goto LABEL_13;
     }
 
-    if ([v233 length] - v14 <= 0x40)
+    if ([v233 length] - deviceSerialNumber <= 0x40)
     {
-      v76 = [v233 length] - v14;
+      v76 = [v233 length] - deviceSerialNumber;
     }
 
     else
@@ -1337,8 +1337,8 @@ LABEL_81:
       v76 = 64;
     }
 
-    [v233 getBytes:v238 range:{v14, v76}];
-    v34 = 0;
+    [v233 getBytes:v238 range:{deviceSerialNumber, v76}];
+    0x64570000u = 0;
     v77 = -3;
     while (1)
     {
@@ -1349,12 +1349,12 @@ LABEL_81:
         break;
       }
 
-      v34 = [sub_10000FAF8() DeviceInAlternateMode:?];
+      0x64570000u = [sub_10000FAF8() DeviceInAlternateMode:?];
 
-      if (!v34 && (v236 & 1) == 0)
+      if (!0x64570000u && (v236 & 1) == 0)
       {
 LABEL_127:
-        v34 = 0;
+        0x64570000u = 0;
         goto LABEL_9;
       }
 
@@ -1362,8 +1362,8 @@ LABEL_127:
       if (v87)
       {
 LABEL_61:
-        v15 = v235;
-        if (v34)
+        v15 = hardwareCopy;
+        if (0x64570000u)
         {
           goto LABEL_13;
         }
@@ -1374,8 +1374,8 @@ LABEL_61:
     }
 
     v88 = sub_10000FB44();
-    v34 = [v88 RemoteExecuteCommand:v89 | 0x64570000u];
-    if (v34)
+    0x64570000u = [v88 RemoteExecuteCommand:v89 | 0x64570000u];
+    if (0x64570000u)
     {
       goto LABEL_9;
     }
@@ -1391,9 +1391,9 @@ LABEL_61:
         break;
       }
 
-      v34 = [sub_10000FAF8() DeviceInAlternateMode:?];
+      0x64570000u = [sub_10000FAF8() DeviceInAlternateMode:?];
 
-      if (!v34 && (v236 & 1) == 0)
+      if (!0x64570000u && (v236 & 1) == 0)
       {
         goto LABEL_127;
       }
@@ -1420,13 +1420,13 @@ LABEL_61:
       }
 
       v79 = [(FudPluginDelegate *)self->super._delegate log:7 format:@"    - isMoreDataExpected: %@", v96];
-      v15 = v235;
+      v15 = hardwareCopy;
       if ((v238[0] & 0xF) != 0)
       {
         v101 = +[NSMutableDictionary dictionary];
         sub_10000FAC4();
-        v14 = [v102 stringWithFormat:@"SFWd_cmd Command returned: %02X%02X%02X%02X"];
-        [v101 setObject:v14 forKeyedSubscript:@"Notes"];
+        deviceSerialNumber = [v102 stringWithFormat:@"SFWd_cmd Command returned: %02X%02X%02X%02X"];
+        [v101 setObject:deviceSerialNumber forKeyedSubscript:@"Notes"];
 
         v103 = 11008;
         goto LABEL_81;
@@ -1435,17 +1435,17 @@ LABEL_61:
 
     else
     {
-      v15 = v235;
+      v15 = hardwareCopy;
     }
 
 LABEL_63:
-    if (v234)
+    if (progressCopy)
     {
       v56 = v56 + v76 * 100.0 / [v233 length] * 0.9;
-      v79 = (v234[2])(v234, v56);
+      v79 = (progressCopy[2])(progressCopy, v56);
     }
 
-    v14 = (v76 + v14);
+    deviceSerialNumber = (v76 + deviceSerialNumber);
     sub_10000FB08(v79, v80, v81, v82, v83, v84, v85, v86, v180, v186, v191, v195, v199, v203, v207, v211, v215, v219, v223, v227);
   }
 
@@ -1455,7 +1455,7 @@ LABEL_63:
     goto LABEL_82;
   }
 
-  if ((v49 & 1) != 0 || [v233 length] > v14)
+  if ((v49 & 1) != 0 || [v233 length] > deviceSerialNumber)
   {
     goto LABEL_80;
   }
@@ -1464,10 +1464,10 @@ LABEL_63:
   v181 = [v233 length];
   v187 = [v233 length];
   [v49 log:7 format:@"Firmware data length was: %lu bytes (0x%lX)"];
-  if (v234)
+  if (progressCopy)
   {
     v56 = 95.0;
-    v234[2](95.0);
+    progressCopy[2](95.0);
   }
 
   usleep(0xC350u);
@@ -1484,17 +1484,17 @@ LABEL_63:
     }
 
     v153 = sub_10000FB44();
-    v134 = [v153 RemoteExecuteCommand:v154 | 0x75570000u];
-    if (v134)
+    0x75570000u = [v153 RemoteExecuteCommand:v154 | 0x75570000u];
+    if (0x75570000u)
     {
 LABEL_143:
-      v34 = v134;
+      0x64570000u = 0x75570000u;
       goto LABEL_9;
     }
 
     v113 = 0;
     v155 = -3;
-    v14 = 4;
+    deviceSerialNumber = 4;
     while (1)
     {
       v237 = 4;
@@ -1532,7 +1532,7 @@ LABEL_134:
       sub_10000FB38();
       sub_10000FB20();
 
-      v34 = v113;
+      0x64570000u = v113;
       goto LABEL_13;
     }
 
@@ -1542,12 +1542,12 @@ LABEL_134:
     [v167 log:7 format:@"    SFWu_cmd returned: %02X%02X%02X%02X"];
     v57 = +[NSMutableDictionary dictionary];
     sub_10000FAC4();
-    v14 = [v168 stringWithFormat:@"SFWu_cmd Command returned: %02X%02X%02X%02X"];
-    [v57 setObject:v14 forKeyedSubscript:@"Notes"];
+    deviceSerialNumber = [v168 stringWithFormat:@"SFWu_cmd Command returned: %02X%02X%02X%02X"];
+    [v57 setObject:deviceSerialNumber forKeyedSubscript:@"Notes"];
 
     v58 = 11776;
 LABEL_39:
-    v34 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:v58 userInfo:v57];
+    0x64570000u = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:v58 userInfo:v57];
 
     goto LABEL_9;
   }
@@ -1561,12 +1561,12 @@ LABEL_39:
   }
 
   v113 = 0;
-  v14 = 0;
+  deviceSerialNumber = 0;
   while (2)
   {
     v15 = v232;
     v114 = [v232 length];
-    if (v114 <= v14)
+    if (v114 <= deviceSerialNumber)
     {
       sub_10000FB08(v114, v115, v116, v117, v118, v119, v120, v121, v182, v188, v192, v196, v200, v204, v208, v212, v216, v220, v224, v228);
       if (v170)
@@ -1577,7 +1577,7 @@ LABEL_39:
 LABEL_130:
       v156 = +[NSMutableDictionary dictionary];
       [v156 setObject:@"Update Aborted during signature xmit" forKeyedSubscript:@"Notes"];
-      v34 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13312 userInfo:v156];
+      0x64570000u = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13312 userInfo:v156];
 
       v157 = self->super._delegate;
       [sub_10000FB50(v158 v159];
@@ -1591,9 +1591,9 @@ LABEL_130:
       goto LABEL_13;
     }
 
-    if ([v232 length] - v14 <= 0x40)
+    if ([v232 length] - deviceSerialNumber <= 0x40)
     {
-      v122 = [v232 length] - v14;
+      v122 = [v232 length] - deviceSerialNumber;
     }
 
     else
@@ -1601,7 +1601,7 @@ LABEL_130:
       v122 = 64;
     }
 
-    [v232 getBytes:v238 range:{v14, v122}];
+    [v232 getBytes:v238 range:{deviceSerialNumber, v122}];
     v123 = -3;
     while (1)
     {
@@ -1629,8 +1629,8 @@ LABEL_130:
 
     HIDWORD(v224) = v122;
     v132 = sub_10000FB44();
-    v134 = [v132 RemoteExecuteCommand:v133 | 0x73570000u];
-    if (v134)
+    0x75570000u = [v132 RemoteExecuteCommand:v133 | 0x73570000u];
+    if (0x75570000u)
     {
       goto LABEL_143;
     }
@@ -1683,13 +1683,13 @@ LABEL_110:
     }
 
 LABEL_111:
-    if (v234)
+    if (progressCopy)
     {
       v56 = v56 + v122 * 100.0 / [v232 length] * 0.05;
-      v124 = (v234[2])(v56);
+      v124 = (progressCopy[2])(v56);
     }
 
-    v14 = (v122 + v14);
+    deviceSerialNumber = (v122 + deviceSerialNumber);
     sub_10000FB08(v124, v125, v126, v127, v128, v129, v130, v131, v182, v188, v192, v196, v200, v204, v208, v212, v216, v220, v224, v228);
     if (v15 & v136)
     {
@@ -1707,7 +1707,7 @@ LABEL_111:
   if ((v15 & 1) == 0)
   {
     v137 = [v232 length];
-    if (v137 <= v14)
+    if (v137 <= deviceSerialNumber)
     {
       goto LABEL_134;
     }
@@ -1722,30 +1722,30 @@ LABEL_136:
     [v171 setObject:v113 forKeyedSubscript:@"Previous Error Response"];
   }
 
-  +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Signature size did not match what the micro was expecting.  Sent = 0x%X.  Expected = 0x%lX", v14, [v232 length]);
+  +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Signature size did not match what the micro was expecting.  Sent = 0x%X.  Expected = 0x%lX", deviceSerialNumber, [v232 length]);
   v177 = LABEL_142:;
   [v172 setObject:v177 forKeyedSubscript:@"Notes"];
 
-  v34 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:11264 userInfo:v172];
+  0x64570000u = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:11264 userInfo:v172];
 
 LABEL_9:
-  v15 = v235;
+  v15 = hardwareCopy;
 LABEL_13:
-  if (v234)
+  if (progressCopy)
   {
-    (v234[2])(v234, 100.0);
+    (progressCopy[2])(progressCopy, 100.0);
   }
 
-  if (v34)
+  if (0x64570000u)
   {
     v45 = +[NSMutableDictionary dictionary];
-    [v45 setObject:v34 forKeyedSubscript:@"Previous Error Response"];
+    [v45 setObject:0x64570000u forKeyedSubscript:@"Previous Error Response"];
     v46 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:10496 userInfo:v45];
 
     v47 = self->super._delegate;
     [v15 objectForKeyedSubscript:@"Hardware Device Class"];
     objc_claimAutoreleasedReturnValue();
-    v185 = [sub_10000FB14() DeviceSerialNumber];
+    deviceSerialNumber2 = [sub_10000FB14() DeviceSerialNumber];
     sub_10000FB20();
   }
 

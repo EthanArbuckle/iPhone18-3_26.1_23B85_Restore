@@ -1,11 +1,11 @@
 @interface NSXPCListenerEndpoint
 - (NSXPCListenerEndpoint)init;
-- (NSXPCListenerEndpoint)initWithCoder:(id)a3;
+- (NSXPCListenerEndpoint)initWithCoder:(id)coder;
 - (id)_endpoint;
-- (id)_initWithConnection:(id)a3;
-- (void)_setEndpoint:(id)a3;
+- (id)_initWithConnection:(id)connection;
+- (void)_setEndpoint:(id)endpoint;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSXPCListenerEndpoint
@@ -48,18 +48,18 @@
   return result;
 }
 
-- (id)_initWithConnection:(id)a3
+- (id)_initWithConnection:(id)connection
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSXPCListenerEndpoint;
   v4 = [(NSXPCListenerEndpoint *)&v6 init];
-  v4->_endpoint = xpc_endpoint_create(a3);
+  v4->_endpoint = xpc_endpoint_create(connection);
   v4->_lock._os_unfair_lock_opaque = 0;
   return v4;
 }
 
-- (NSXPCListenerEndpoint)initWithCoder:(id)a3
+- (NSXPCListenerEndpoint)initWithCoder:(id)coder
 {
   v11 = *MEMORY[0x1E69E9840];
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -71,7 +71,7 @@
   v10.receiver = self;
   v10.super_class = NSXPCListenerEndpoint;
   v6 = [(NSXPCListenerEndpoint *)&v10 init];
-  v7 = [a3 decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"ep"];
+  v7 = [coder decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"ep"];
   v6->_endpoint = v7;
   v6->_lock._os_unfair_lock_opaque = 0;
   if (v7)
@@ -82,7 +82,7 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -90,14 +90,14 @@
     objc_exception_throw(v6);
   }
 
-  [a3 encodeXPCObject:-[NSXPCListenerEndpoint _endpoint](self forKey:{"_endpoint"), @"ep"}];
+  [coder encodeXPCObject:-[NSXPCListenerEndpoint _endpoint](self forKey:{"_endpoint"), @"ep"}];
 }
 
-- (void)_setEndpoint:(id)a3
+- (void)_setEndpoint:(id)endpoint
 {
   os_unfair_lock_lock_with_options();
   endpoint = self->_endpoint;
-  self->_endpoint = xpc_retain(a3);
+  self->_endpoint = xpc_retain(endpoint);
   if (endpoint)
   {
     xpc_release(endpoint);

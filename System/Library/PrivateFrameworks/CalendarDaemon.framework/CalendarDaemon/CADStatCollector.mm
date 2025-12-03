@@ -9,7 +9,7 @@
 
 + (BOOL)enabled
 {
-  v2 = [a1 eventName];
+  eventName = [self eventName];
   IsEventUsed = CalAnalyticsIsEventUsed();
 
   return IsEventUsed;
@@ -17,7 +17,7 @@
 
 - (BOOL)enabled
 {
-  v2 = [(CADStatCollector *)self eventName];
+  eventName = [(CADStatCollector *)self eventName];
   IsEventUsed = CalAnalyticsIsEventUsed();
 
   return IsEventUsed;

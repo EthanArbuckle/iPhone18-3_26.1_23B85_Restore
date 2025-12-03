@@ -1,34 +1,34 @@
 @interface PXCloudPhotoWelcomeViewController
 - (PXCloudPhotoWelcomeViewController)initWithDefaultTitle;
-- (PXCloudPhotoWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (PXCloudPhotoWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_cloudPhotoWelcomeViewGoButtonTapped:(id)a3;
-- (void)_cloudPhotoWelcomeViewLearnMoreTapped:(id)a3;
-- (void)_cloudPhotoWelcomeViewNotNowButtonTapped:(id)a3;
-- (void)_continueWithoutStoragePurchase:(id)a3;
+- (PXCloudPhotoWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (PXCloudPhotoWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_cloudPhotoWelcomeViewGoButtonTapped:(id)tapped;
+- (void)_cloudPhotoWelcomeViewLearnMoreTapped:(id)tapped;
+- (void)_cloudPhotoWelcomeViewNotNowButtonTapped:(id)tapped;
+- (void)_continueWithoutStoragePurchase:(id)purchase;
 - (void)_enableCloudPhotoLibrary;
 - (void)_enableCloudPhotoLibraryWithoutCheck;
-- (void)_handleEnableError:(id)a3;
-- (void)_setButtonsEnabled:(BOOL)a3;
+- (void)_handleEnableError:(id)error;
+- (void)_setButtonsEnabled:(BOOL)enabled;
 - (void)_updateCurrentActivity;
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4;
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4;
-- (void)manager:(id)a3 willPresentViewController:(id)a4;
-- (void)managerDidCancel:(id)a3;
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success;
+- (void)manager:(id)manager loadDidFailWithError:(id)error;
+- (void)manager:(id)manager willPresentViewController:(id)controller;
+- (void)managerDidCancel:(id)cancel;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PXCloudPhotoWelcomeViewController
 
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __79__PXCloudPhotoWelcomeViewController_genericTermsRemoteUI_didFinishWithSuccess___block_invoke;
   v4[3] = &unk_1E7749428;
-  v5 = a4;
+  successCopy = success;
   v4[4] = self;
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
@@ -48,7 +48,7 @@ uint64_t __79__PXCloudPhotoWelcomeViewController_genericTermsRemoteUI_didFinishW
   }
 }
 
-- (void)managerDidCancel:(id)a3
+- (void)managerDidCancel:(id)cancel
 {
   v4 = PLUIGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -65,25 +65,25 @@ uint64_t __79__PXCloudPhotoWelcomeViewController_genericTermsRemoteUI_didFinishW
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4
+- (void)manager:(id)manager loadDidFailWithError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = PLUIGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = errorCopy;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_ERROR, "PXCloudPhotoWelcomeViewController: Loading of Up-sell workflow failed with an error: %@", &v7, 0xCu);
   }
 
   [(PXCloudPhotoWelcomeViewController *)self _setButtonsEnabled:1];
 }
 
-- (void)manager:(id)a3 willPresentViewController:(id)a4
+- (void)manager:(id)manager willPresentViewController:(id)controller
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  controllerCopy = controller;
   v6 = PLUIGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -92,11 +92,11 @@ uint64_t __79__PXCloudPhotoWelcomeViewController_genericTermsRemoteUI_didFinishW
   }
 
   v7 = PXLocalizedStringFromTable(@"ICLOUDPHOTOS_UPGRADE_STORAGE_TITLE", @"PhotosUICore");
-  [v5 setTitle:v7];
+  [controllerCopy setTitle:v7];
 
   if ([(PXCloudPhotoWelcomeViewController *)self _requireStorageUpgrade])
   {
-    [v5 px_removeFooterToolbar];
+    [controllerCopy px_removeFooterToolbar];
   }
 
   else
@@ -110,20 +110,20 @@ uint64_t __79__PXCloudPhotoWelcomeViewController_genericTermsRemoteUI_didFinishW
     v14[1] = v11;
     v14[2] = v8;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
-    [v5 px_insertFooterToolbarWithItems:v12];
+    [controllerCopy px_insertFooterToolbarWithItems:v12];
   }
 }
 
-- (void)_setButtonsEnabled:(BOOL)a3
+- (void)_setButtonsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(PXCloudPhotoWelcomeViewController *)self _buttons];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _buttons = [(PXCloudPhotoWelcomeViewController *)self _buttons];
+  v5 = [_buttons countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -135,30 +135,30 @@ uint64_t __79__PXCloudPhotoWelcomeViewController_genericTermsRemoteUI_didFinishW
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_buttons);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setEnabled:v3];
+        [*(*(&v9 + 1) + 8 * v8++) setEnabled:enabledCopy];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_buttons countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_handleEnableError:(id)a3
+- (void)_handleEnableError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__PXCloudPhotoWelcomeViewController__handleEnableError___block_invoke;
   v6[3] = &unk_1E774C620;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = errorCopy;
+  selfCopy = self;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -333,8 +333,8 @@ uint64_t __73__PXCloudPhotoWelcomeViewController__enableCloudPhotoLibraryWithout
 - (void)_enableCloudPhotoLibrary
 {
   [(PXCloudPhotoWelcomeViewController *)self _setButtonsEnabled:0];
-  v2 = [MEMORY[0x1E69BE248] pl_sharedAccountStore];
-  v3 = [v2 cachedPrimaryAppleAccount];
+  pl_sharedAccountStore = [MEMORY[0x1E69BE248] pl_sharedAccountStore];
+  cachedPrimaryAppleAccount = [pl_sharedAccountStore cachedPrimaryAppleAccount];
 
   PLCanEnableCloudPhotoLibraryForAccount();
 }
@@ -355,37 +355,37 @@ void __61__PXCloudPhotoWelcomeViewController__enableCloudPhotoLibrary__block_inv
   }
 }
 
-- (void)_cloudPhotoWelcomeViewLearnMoreTapped:(id)a3
+- (void)_cloudPhotoWelcomeViewLearnMoreTapped:(id)tapped
 {
   v4 = [MEMORY[0x1E695DFF8] URLWithString:@"https://www.apple.com/ios/photos/"];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v3 openURL:v4 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] openURL:v4 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
-- (void)_cloudPhotoWelcomeViewNotNowButtonTapped:(id)a3
+- (void)_cloudPhotoWelcomeViewNotNowButtonTapped:(id)tapped
 {
   PLRecordLibrarySizeWithReason();
 
   [(PXCloudPhotoWelcomeViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_cloudPhotoWelcomeViewGoButtonTapped:(id)a3
+- (void)_cloudPhotoWelcomeViewGoButtonTapped:(id)tapped
 {
   PLRecordLibrarySizeWithReason();
   [(PXCloudPhotoWelcomeViewController *)self _setButtonsEnabled:0];
-  v4 = [MEMORY[0x1E69BE670] systemPhotoLibrary];
-  v5 = [v4 iTunesSyncedContentInfo];
+  systemPhotoLibrary = [MEMORY[0x1E69BE670] systemPhotoLibrary];
+  iTunesSyncedContentInfo = [systemPhotoLibrary iTunesSyncedContentInfo];
 
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69BE988]];
-  v7 = [v6 integerValue];
+  v6 = [iTunesSyncedContentInfo objectForKeyedSubscript:*MEMORY[0x1E69BE988]];
+  integerValue = [v6 integerValue];
 
-  if (v7)
+  if (integerValue)
   {
-    v8 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69BE998]];
-    v9 = [v8 BOOLValue];
+    v8 = [iTunesSyncedContentInfo objectForKeyedSubscript:*MEMORY[0x1E69BE998]];
+    bOOLValue = [v8 BOOLValue];
 
-    v10 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69BE990]];
-    v11 = [v10 BOOLValue];
+    v10 = [iTunesSyncedContentInfo objectForKeyedSubscript:*MEMORY[0x1E69BE990]];
+    bOOLValue2 = [v10 BOOLValue];
 
     v13[4] = self;
     v14[0] = MEMORY[0x1E69E9820];
@@ -397,7 +397,7 @@ void __61__PXCloudPhotoWelcomeViewController__enableCloudPhotoLibrary__block_inv
     v13[1] = 3221225472;
     v13[2] = __74__PXCloudPhotoWelcomeViewController__cloudPhotoWelcomeViewGoButtonTapped___block_invoke_4;
     v13[3] = &unk_1E774C648;
-    v12 = [MEMORY[0x1E69DC650] px_deleteITunesContentAlertWithAssetCount:v7 includesPhotos:v11 includesVideos:v9 actionHandler:v14 cancelHandler:v13];
+    v12 = [MEMORY[0x1E69DC650] px_deleteITunesContentAlertWithAssetCount:integerValue includesPhotos:bOOLValue2 includesVideos:bOOLValue actionHandler:v14 cancelHandler:v13];
     [(PXCloudPhotoWelcomeViewController *)self presentViewController:v12 animated:1 completion:0];
   }
 
@@ -442,11 +442,11 @@ uint64_t __74__PXCloudPhotoWelcomeViewController__cloudPhotoWelcomeViewGoButtonT
   return result;
 }
 
-- (void)_continueWithoutStoragePurchase:(id)a3
+- (void)_continueWithoutStoragePurchase:(id)purchase
 {
   [(PXCloudPhotoWelcomeViewController *)self _setEnableOnAppear:1];
-  v4 = [(PXCloudPhotoWelcomeViewController *)self _offersManager];
-  [v4 cancelLoad];
+  _offersManager = [(PXCloudPhotoWelcomeViewController *)self _offersManager];
+  [_offersManager cancelLoad];
 }
 
 - (void)_updateCurrentActivity
@@ -465,9 +465,9 @@ uint64_t __74__PXCloudPhotoWelcomeViewController__cloudPhotoWelcomeViewGoButtonT
   }
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2050000000;
@@ -486,7 +486,7 @@ uint64_t __74__PXCloudPhotoWelcomeViewController__cloudPhotoWelcomeViewGoButtonT
 
   v6 = v5;
   _Block_object_dispose(&v19, 8);
-  v7 = [v5 sharedConnection];
+  sharedConnection = [v5 sharedConnection];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -509,7 +509,7 @@ uint64_t __74__PXCloudPhotoWelcomeViewController__cloudPhotoWelcomeViewGoButtonT
   _Block_object_dispose(&v19, 8);
   if (v8)
   {
-    v11 = [v7 BOOLRestrictionForFeature:*v8];
+    v11 = [sharedConnection BOOLRestrictionForFeature:*v8];
 
     if (v11 == 2)
     {
@@ -519,19 +519,19 @@ uint64_t __74__PXCloudPhotoWelcomeViewController__cloudPhotoWelcomeViewGoButtonT
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMCFeatureCloudPhotoLibraryAllowed(void)"];
-    [v12 handleFailureInFunction:v13 file:@"PXCloudPhotoWelcomeViewController.m" lineNumber:58 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v13 file:@"PXCloudPhotoWelcomeViewController.m" lineNumber:58 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PXCloudPhotoWelcomeViewController;
-  [(PXCloudPhotoWelcomeViewController *)&v4 viewWillAppear:a3];
+  [(PXCloudPhotoWelcomeViewController *)&v4 viewWillAppear:appear];
   [(PXCloudPhotoWelcomeViewController *)self _updateCurrentActivity];
 }
 
@@ -540,8 +540,8 @@ uint64_t __74__PXCloudPhotoWelcomeViewController__cloudPhotoWelcomeViewGoButtonT
   v4.receiver = self;
   v4.super_class = PXCloudPhotoWelcomeViewController;
   [(OBBaseWelcomeController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
 }
 
 - (PXCloudPhotoWelcomeViewController)initWithDefaultTitle
@@ -555,9 +555,9 @@ uint64_t __74__PXCloudPhotoWelcomeViewController__cloudPhotoWelcomeViewGoButtonT
 
   v8 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:60.0 scale:{60.0, 2.0}];
   v9 = [v7 prepareImageForDescriptor:v8];
-  v10 = [v9 CGImage];
+  cGImage = [v9 CGImage];
 
-  v11 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v10 scale:0 orientation:2.0];
+  v11 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:cGImage scale:0 orientation:2.0];
   v31.receiver = self;
   v31.super_class = PXCloudPhotoWelcomeViewController;
   v12 = [(PXCloudPhotoWelcomeViewController *)&v31 initWithTitle:v3 detailText:v4 icon:v11 contentLayout:2];
@@ -565,42 +565,42 @@ uint64_t __74__PXCloudPhotoWelcomeViewController__cloudPhotoWelcomeViewGoButtonT
   {
     v30 = v7;
     v28 = PXLocalizedStringFromTable(@"CLOUD_PHOTOS_WELCOME_LEARN_MORE", @"PhotosUICore");
-    v13 = [MEMORY[0x1E69B7D20] accessoryButton];
-    [v13 setTitle:v28 forState:0];
-    [v13 addTarget:v12 action:sel__cloudPhotoWelcomeViewLearnMoreTapped_ forControlEvents:0x2000];
-    v14 = [(PXCloudPhotoWelcomeViewController *)v12 headerView];
-    [v14 addAccessoryButton:v13];
+    accessoryButton = [MEMORY[0x1E69B7D20] accessoryButton];
+    [accessoryButton setTitle:v28 forState:0];
+    [accessoryButton addTarget:v12 action:sel__cloudPhotoWelcomeViewLearnMoreTapped_ forControlEvents:0x2000];
+    headerView = [(PXCloudPhotoWelcomeViewController *)v12 headerView];
+    [headerView addAccessoryButton:accessoryButton];
 
-    v15 = [(PXCloudPhotoWelcomeViewController *)v12 buttonTray];
+    buttonTray = [(PXCloudPhotoWelcomeViewController *)v12 buttonTray];
     v16 = PXLocalizedStringFromTable(@"ICLOUD_PHOTOS_WELCOME_FINE_PRINT", @"PhotosUICore");
-    [v15 setCaptionText:v16];
+    [buttonTray setCaptionText:v16];
 
     v17 = PXLocalizedStringFromTable(@"CLOUD_PHOTOS_WELCOME_GO_BUTTON", @"PhotosUICore");
-    v18 = [MEMORY[0x1E69B7D00] boldButton];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v18 setTitle:v17 forState:0];
-    [v18 addTarget:v12 action:sel__cloudPhotoWelcomeViewGoButtonTapped_ forControlEvents:0x2000];
+    boldButton = [MEMORY[0x1E69B7D00] boldButton];
+    [boldButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    [boldButton setTitle:v17 forState:0];
+    [boldButton addTarget:v12 action:sel__cloudPhotoWelcomeViewGoButtonTapped_ forControlEvents:0x2000];
     [(PXCloudPhotoWelcomeViewController *)v12 buttonTray];
     v29 = v8;
     v19 = v4;
     v21 = v20 = v3;
-    [v21 addButton:v18];
+    [v21 addButton:boldButton];
 
     v22 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\r" modifierFlags:0 action:sel__cloudPhotoWelcomeViewGoButtonTapped_];
     [(PXCloudPhotoWelcomeViewController *)v12 addKeyCommand:v22];
 
     v23 = PXLocalizedStringFromTable(@"ICLOUD_PHOTOS_WELCOME_NOT_NOW", @"PhotosUICore");
-    v24 = [MEMORY[0x1E69B7D38] linkButton];
-    [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v24 setTitle:v23 forState:0];
-    [v24 addTarget:v12 action:sel__cloudPhotoWelcomeViewNotNowButtonTapped_ forControlEvents:0x2000];
-    v25 = [(PXCloudPhotoWelcomeViewController *)v12 buttonTray];
-    [v25 addButton:v24];
+    linkButton = [MEMORY[0x1E69B7D38] linkButton];
+    [linkButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    [linkButton setTitle:v23 forState:0];
+    [linkButton addTarget:v12 action:sel__cloudPhotoWelcomeViewNotNowButtonTapped_ forControlEvents:0x2000];
+    buttonTray2 = [(PXCloudPhotoWelcomeViewController *)v12 buttonTray];
+    [buttonTray2 addButton:linkButton];
 
     [(PXCloudPhotoWelcomeViewController *)v12 setModalInPresentation:1];
-    v32[0] = v13;
-    v32[1] = v18;
-    v32[2] = v24;
+    v32[0] = accessoryButton;
+    v32[1] = boldButton;
+    v32[2] = linkButton;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:3];
     [(PXCloudPhotoWelcomeViewController *)v12 _setButtons:v26];
 
@@ -614,24 +614,24 @@ uint64_t __74__PXCloudPhotoWelcomeViewController__cloudPhotoWelcomeViewGoButtonT
   return v12;
 }
 
-- (PXCloudPhotoWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (PXCloudPhotoWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"PXCloudPhotoWelcomeViewController.m" lineNumber:88 description:{@"%s is not available as initializer", "-[PXCloudPhotoWelcomeViewController initWithTitle:detailText:icon:contentLayout:]"}];
+  titleCopy = title;
+  textCopy = text;
+  iconCopy = icon;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCloudPhotoWelcomeViewController.m" lineNumber:88 description:{@"%s is not available as initializer", "-[PXCloudPhotoWelcomeViewController initWithTitle:detailText:icon:contentLayout:]"}];
 
   abort();
 }
 
-- (PXCloudPhotoWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (PXCloudPhotoWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"PXCloudPhotoWelcomeViewController.m" lineNumber:84 description:{@"%s is not available as initializer", "-[PXCloudPhotoWelcomeViewController initWithTitle:detailText:icon:]"}];
+  titleCopy = title;
+  textCopy = text;
+  iconCopy = icon;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCloudPhotoWelcomeViewController.m" lineNumber:84 description:{@"%s is not available as initializer", "-[PXCloudPhotoWelcomeViewController initWithTitle:detailText:icon:]"}];
 
   abort();
 }

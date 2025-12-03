@@ -1,14 +1,14 @@
 @interface ACCObjCType
-+ (id)typeForEncoding:(const char *)a3;
-+ (id)typeForValue:(id)a3;
-- (ACCObjCType)initWithCode:(int64_t)a3 encoding:(id)a4 name:(id)a5 className:(id)a6 size:(unint64_t)a7 flags:(unint64_t)a8;
-- (id)objectWithBytes:(const void *)a3;
-- (void)getBytes:(void *)a3 forObject:(id)a4;
++ (id)typeForEncoding:(const char *)encoding;
++ (id)typeForValue:(id)value;
+- (ACCObjCType)initWithCode:(int64_t)code encoding:(id)encoding name:(id)name className:(id)className size:(unint64_t)size flags:(unint64_t)flags;
+- (id)objectWithBytes:(const void *)bytes;
+- (void)getBytes:(void *)bytes forObject:(id)object;
 @end
 
 @implementation ACCObjCType
 
-+ (id)typeForEncoding:(const char *)a3
++ (id)typeForEncoding:(const char *)encoding
 {
   v4 = [NSString stringWithUTF8String:?];
   if (typeForEncoding__once != -1)
@@ -16,12 +16,12 @@
     +[ACCObjCType typeForEncoding:];
   }
 
-  v5 = *a3;
+  v5 = *encoding;
   if (v5 <= 0x5A)
   {
-    if (*a3 <= 0x41u)
+    if (*encoding <= 0x41u)
     {
-      if (*a3 <= 0x29u)
+      if (*encoding <= 0x29u)
       {
         if (v5 != 35)
         {
@@ -71,7 +71,7 @@
       }
     }
 
-    else if (*a3 > 0x4Bu)
+    else if (*encoding > 0x4Bu)
     {
       switch(v5)
       {
@@ -116,9 +116,9 @@
     goto LABEL_63;
   }
 
-  if (*a3 > 0x68u)
+  if (*encoding > 0x68u)
   {
-    if (*a3 > 0x72u)
+    if (*encoding > 0x72u)
     {
       switch(v5)
       {
@@ -170,7 +170,7 @@ LABEL_63:
     goto LABEL_64;
   }
 
-  if (*a3 > 0x62u)
+  if (*encoding > 0x62u)
   {
     switch(v5)
     {
@@ -272,81 +272,81 @@ void __31__ACCObjCType_typeForEncoding___block_invoke(id a1)
   _ACCObjCTypesByCode = v11;
 }
 
-+ (id)typeForValue:(id)a3
++ (id)typeForValue:(id)value
 {
-  v3 = [a3 objCType];
+  objCType = [value objCType];
 
-  return [ACCObjCType typeForEncoding:v3];
+  return [ACCObjCType typeForEncoding:objCType];
 }
 
-- (ACCObjCType)initWithCode:(int64_t)a3 encoding:(id)a4 name:(id)a5 className:(id)a6 size:(unint64_t)a7 flags:(unint64_t)a8
+- (ACCObjCType)initWithCode:(int64_t)code encoding:(id)encoding name:(id)name className:(id)className size:(unint64_t)size flags:(unint64_t)flags
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  encodingCopy = encoding;
+  nameCopy = name;
+  classNameCopy = className;
   v21.receiver = self;
   v21.super_class = ACCObjCType;
   v18 = [(ACCObjCType *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    v18->_code = a3;
-    objc_storeStrong(&v18->_encoding, a4);
-    objc_storeStrong(&v19->_name, a5);
-    objc_storeStrong(&v19->_className, a6);
-    v19->_size = a7;
-    v19->_flags = a8;
+    v18->_code = code;
+    objc_storeStrong(&v18->_encoding, encoding);
+    objc_storeStrong(&v19->_name, name);
+    objc_storeStrong(&v19->_className, className);
+    v19->_size = size;
+    v19->_flags = flags;
   }
 
   return v19;
 }
 
-- (id)objectWithBytes:(const void *)a3
+- (id)objectWithBytes:(const void *)bytes
 {
   switch(self->_code)
   {
     case 0:
-      v4 = [NSNumber numberWithChar:*a3];
+      v4 = [NSNumber numberWithChar:*bytes];
       break;
     case 1:
-      v4 = [NSNumber numberWithShort:*a3];
+      v4 = [NSNumber numberWithShort:*bytes];
       break;
     case 2:
-      v4 = [NSNumber numberWithInt:*a3];
+      v4 = [NSNumber numberWithInt:*bytes];
       break;
     case 3:
-      v4 = [NSNumber numberWithLong:*a3];
+      v4 = [NSNumber numberWithLong:*bytes];
       break;
     case 4:
-      v4 = [NSNumber numberWithLongLong:*a3];
+      v4 = [NSNumber numberWithLongLong:*bytes];
       break;
     case 5:
-      v4 = [NSNumber numberWithUnsignedChar:*a3];
+      v4 = [NSNumber numberWithUnsignedChar:*bytes];
       break;
     case 6:
-      v4 = [NSNumber numberWithUnsignedShort:*a3];
+      v4 = [NSNumber numberWithUnsignedShort:*bytes];
       break;
     case 7:
-      v4 = [NSNumber numberWithUnsignedInt:*a3];
+      v4 = [NSNumber numberWithUnsignedInt:*bytes];
       break;
     case 8:
-      v4 = [NSNumber numberWithUnsignedLong:*a3];
+      v4 = [NSNumber numberWithUnsignedLong:*bytes];
       break;
     case 9:
-      v4 = [NSNumber numberWithUnsignedLongLong:*a3];
+      v4 = [NSNumber numberWithUnsignedLongLong:*bytes];
       break;
     case 0xALL:
-      LODWORD(v3) = *a3;
+      LODWORD(v3) = *bytes;
       v4 = [NSNumber numberWithFloat:v3];
       break;
     case 0xBLL:
-      v4 = [NSNumber numberWithDouble:*a3];
+      v4 = [NSNumber numberWithDouble:*bytes];
       break;
     case 0xCLL:
-      v4 = [NSNumber numberWithBool:*a3];
+      v4 = [NSNumber numberWithBool:*bytes];
       break;
     case 0xFLL:
-      v4 = *a3;
+      v4 = *bytes;
       break;
     default:
       [NSException raise:NSInternalInconsistencyException format:@"For class %@, Unsupported boxing type: %@", self->_className, self->_name];
@@ -357,13 +357,13 @@ void __31__ACCObjCType_typeForEncoding___block_invoke(id a1)
   return v4;
 }
 
-- (void)getBytes:(void *)a3 forObject:(id)a4
+- (void)getBytes:(void *)bytes forObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 getValue:a3];
+    [objectCopy getValue:bytes];
   }
 
   else

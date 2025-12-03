@@ -1,11 +1,11 @@
 @interface HDUserDomainConceptLinkEntity
-+ (BOOL)addPropertyDataToCodable:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)insertDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)retrieveDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 mutableUserDomainConceptProperties:(id)a5 transaction:(id)a6 error:(id *)a7;
-+ (BOOL)unitTesting_enumerateConceptLinksWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)willDeleteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 syncProvenance:(int64_t)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8;
++ (BOOL)addPropertyDataToCodable:(id)codable userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)insertDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)retrieveDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d mutableUserDomainConceptProperties:(id)properties transaction:(id)transaction error:(id *)error;
++ (BOOL)unitTesting_enumerateConceptLinksWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)willDeleteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d syncProvenance:(int64_t)provenance profile:(id)profile transaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
-+ (uint64_t)_enumerateConceptLinkRowsWithUserDomainConceptID:(void *)a3 transaction:(uint64_t)a4 error:(void *)a5 enumerationHandler:;
++ (uint64_t)_enumerateConceptLinkRowsWithUserDomainConceptID:(void *)d transaction:(uint64_t)transaction error:(void *)error enumerationHandler:;
 @end
 
 @implementation HDUserDomainConceptLinkEntity
@@ -23,21 +23,21 @@
   return v3;
 }
 
-+ (BOOL)insertDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [a5 protectedDatabase];
+  conceptCopy = concept;
+  protectedDatabase = [transaction protectedDatabase];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = [v9 linkCollection];
+  obj = [conceptCopy linkCollection];
   v11 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
-    v19 = v9;
+    v19 = conceptCopy;
     v13 = *v23;
     while (2)
     {
@@ -54,8 +54,8 @@
         v21[2] = __102__HDUserDomainConceptLinkEntity_insertDataForUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2;
         v21[3] = &unk_278613B58;
         v21[4] = v15;
-        v21[5] = a4;
-        if (![v10 executeCachedStatementForKey:&insertDataForUserDomainConcept_userDomainConceptID_transaction_error__statementKey error:a6 SQLGenerator:&__block_literal_global_55 bindingHandler:v21 enumerationHandler:{0, v19}])
+        v21[5] = d;
+        if (![protectedDatabase executeCachedStatementForKey:&insertDataForUserDomainConcept_userDomainConceptID_transaction_error__statementKey error:error SQLGenerator:&__block_literal_global_55 bindingHandler:v21 enumerationHandler:{0, v19}])
         {
           v16 = 0;
           goto LABEL_11;
@@ -73,7 +73,7 @@
 
     v16 = 1;
 LABEL_11:
-    v9 = v19;
+    conceptCopy = v19;
   }
 
   else
@@ -96,13 +96,13 @@ void __102__HDUserDomainConceptLinkEntity_insertDataForUserDomainConcept_userDom
   HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)retrieveDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 mutableUserDomainConceptProperties:(id)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)retrieveDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d mutableUserDomainConceptProperties:(id)properties transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 linkCollection];
+  conceptCopy = concept;
+  transactionCopy = transaction;
+  linkCollection = [conceptCopy linkCollection];
 
-  if (v12)
+  if (linkCollection)
   {
     LOBYTE(v13) = 1;
   }
@@ -117,7 +117,7 @@ void __102__HDUserDomainConceptLinkEntity_insertDataForUserDomainConcept_userDom
     v15 = v14;
     v26 = v15;
     v16 = &v22;
-    v17 = v11;
+    v17 = transactionCopy;
     v18 = objc_opt_self();
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -125,7 +125,7 @@ void __102__HDUserDomainConceptLinkEntity_insertDataForUserDomainConcept_userDom
     v27[3] = &unk_278613B30;
     v28 = v16;
     v19 = v16;
-    v13 = [(HDUserDomainConceptLinkEntity *)v18 _enumerateConceptLinkRowsWithUserDomainConceptID:a4 transaction:v17 error:a7 enumerationHandler:v27];
+    v13 = [(HDUserDomainConceptLinkEntity *)v18 _enumerateConceptLinkRowsWithUserDomainConceptID:d transaction:v17 error:error enumerationHandler:v27];
 
     if (v13)
     {
@@ -139,26 +139,26 @@ void __102__HDUserDomainConceptLinkEntity_insertDataForUserDomainConcept_userDom
         v20 = 0;
       }
 
-      [v10 _setLinkCollection:v20];
+      [conceptCopy _setLinkCollection:v20];
     }
   }
 
   return v13;
 }
 
-+ (BOOL)willDeleteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 syncProvenance:(int64_t)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8
++ (BOOL)willDeleteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d syncProvenance:(int64_t)provenance profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = [a7 protectedDatabase];
+  conceptCopy = concept;
+  protectedDatabase = [transaction protectedDatabase];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __122__HDUserDomainConceptLinkEntity_willDeleteUserDomainConcept_userDomainConceptID_syncProvenance_profile_transaction_error___block_invoke_2;
   v14[3] = &unk_278614860;
-  v15 = v10;
-  v12 = v10;
-  LOBYTE(a8) = [v11 executeCachedStatementForKey:&willDeleteUserDomainConcept_userDomainConceptID_syncProvenance_profile_transaction_error__statementKey error:a8 SQLGenerator:&__block_literal_global_329 bindingHandler:v14 enumerationHandler:0];
+  v15 = conceptCopy;
+  v12 = conceptCopy;
+  LOBYTE(error) = [protectedDatabase executeCachedStatementForKey:&willDeleteUserDomainConcept_userDomainConceptID_syncProvenance_profile_transaction_error__statementKey error:error SQLGenerator:&__block_literal_global_329 bindingHandler:v14 enumerationHandler:0];
 
-  return a8;
+  return error;
 }
 
 void __122__HDUserDomainConceptLinkEntity_willDeleteUserDomainConcept_userDomainConceptID_syncProvenance_profile_transaction_error___block_invoke_2(uint64_t a1)
@@ -167,18 +167,18 @@ void __122__HDUserDomainConceptLinkEntity_willDeleteUserDomainConcept_userDomain
   HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)addPropertyDataToCodable:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)addPropertyDataToCodable:(id)codable userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
+  codableCopy = codable;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __96__HDUserDomainConceptLinkEntity_addPropertyDataToCodable_userDomainConceptID_transaction_error___block_invoke;
   v13[3] = &unk_278614098;
-  v14 = v10;
-  v11 = v10;
-  LOBYTE(a6) = [(HDUserDomainConceptLinkEntity *)a1 _enumerateConceptLinkRowsWithUserDomainConceptID:a4 transaction:a5 error:a6 enumerationHandler:v13];
+  v14 = codableCopy;
+  v11 = codableCopy;
+  LOBYTE(error) = [(HDUserDomainConceptLinkEntity *)self _enumerateConceptLinkRowsWithUserDomainConceptID:d transaction:transaction error:error enumerationHandler:v13];
 
-  return a6;
+  return error;
 }
 
 uint64_t __96__HDUserDomainConceptLinkEntity_addPropertyDataToCodable_userDomainConceptID_transaction_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -193,39 +193,39 @@ uint64_t __96__HDUserDomainConceptLinkEntity_addPropertyDataToCodable_userDomain
   return 1;
 }
 
-+ (uint64_t)_enumerateConceptLinkRowsWithUserDomainConceptID:(void *)a3 transaction:(uint64_t)a4 error:(void *)a5 enumerationHandler:
++ (uint64_t)_enumerateConceptLinkRowsWithUserDomainConceptID:(void *)d transaction:(uint64_t)transaction error:(void *)error enumerationHandler:
 {
-  v8 = a5;
-  v9 = a3;
+  errorCopy = error;
+  dCopy = d;
   objc_opt_self();
-  v10 = [v9 protectedDatabase];
+  protectedDatabase = [dCopy protectedDatabase];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __119__HDUserDomainConceptLinkEntity__enumerateConceptLinkRowsWithUserDomainConceptID_transaction_error_enumerationHandler___block_invoke_2;
   v13[3] = &__block_descriptor_40_e23_v16__0__sqlite3_stmt__8l;
   v13[4] = a2;
-  v11 = [v10 executeCachedStatementForKey:&_enumerateConceptLinkRowsWithUserDomainConceptID_transaction_error_enumerationHandler__statementKey error:a4 SQLGenerator:&__block_literal_global_344 bindingHandler:v13 enumerationHandler:v8];
+  v11 = [protectedDatabase executeCachedStatementForKey:&_enumerateConceptLinkRowsWithUserDomainConceptID_transaction_error_enumerationHandler__statementKey error:transaction SQLGenerator:&__block_literal_global_344 bindingHandler:v13 enumerationHandler:errorCopy];
 
   return v11;
 }
 
-+ (BOOL)unitTesting_enumerateConceptLinksWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)unitTesting_enumerateConceptLinksWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [a4 databaseForEntityClass:a1];
-  v13 = [a1 queryWithDatabase:v12 predicate:v11];
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  v12 = [transaction databaseForEntityClass:self];
+  v13 = [self queryWithDatabase:v12 predicate:predicateCopy];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __117__HDUserDomainConceptLinkEntity_unitTesting_enumerateConceptLinksWithPredicate_transaction_error_enumerationHandler___block_invoke;
   v16[3] = &unk_278616A78;
-  v17 = v10;
-  v14 = v10;
-  LOBYTE(a5) = [v13 enumeratePersistentIDsAndProperties:&unk_283CAE9F8 error:a5 enumerationHandler:v16];
+  v17 = handlerCopy;
+  v14 = handlerCopy;
+  LOBYTE(error) = [v13 enumeratePersistentIDsAndProperties:&unk_283CAE9F8 error:error enumerationHandler:v16];
 
-  return a5;
+  return error;
 }
 
 uint64_t __117__HDUserDomainConceptLinkEntity_unitTesting_enumerateConceptLinksWithPredicate_transaction_error_enumerationHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)

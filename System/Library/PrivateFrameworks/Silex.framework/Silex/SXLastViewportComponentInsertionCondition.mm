@@ -1,17 +1,17 @@
 @interface SXLastViewportComponentInsertionCondition
-- (BOOL)validateMarker:(id)a3 componentTraits:(unint64_t)a4 layoutProvider:(id)a5;
+- (BOOL)validateMarker:(id)marker componentTraits:(unint64_t)traits layoutProvider:(id)provider;
 @end
 
 @implementation SXLastViewportComponentInsertionCondition
 
-- (BOOL)validateMarker:(id)a3 componentTraits:(unint64_t)a4 layoutProvider:(id)a5
+- (BOOL)validateMarker:(id)marker componentTraits:(unint64_t)traits layoutProvider:(id)provider
 {
-  v6 = a5;
-  [a3 approximateLocation];
+  providerCopy = provider;
+  [marker approximateLocation];
   v8 = v7;
-  [v6 documentSize];
+  [providerCopy documentSize];
   v10 = v9;
-  [v6 viewportSize];
+  [providerCopy viewportSize];
   v12 = v11;
 
   return v8 < v10 - v12;

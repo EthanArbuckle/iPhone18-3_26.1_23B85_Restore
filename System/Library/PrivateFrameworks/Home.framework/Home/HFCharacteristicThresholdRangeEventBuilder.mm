@@ -1,90 +1,90 @@
 @interface HFCharacteristicThresholdRangeEventBuilder
-+ (BOOL)_wouldFireForValue:(id)a3 thresholdRange:(id)a4 characteristic:(id)a5;
-- (BOOL)hf_wouldFireForValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)wouldFireForCharacteristic:(id)a3 value:(id)a4;
-- (HFCharacteristicThresholdRangeEventBuilder)initWithCharacteristic:(id)a3 thresholdRange:(id)a4;
-- (HFCharacteristicThresholdRangeEventBuilder)initWithEvent:(id)a3;
++ (BOOL)_wouldFireForValue:(id)value thresholdRange:(id)range characteristic:(id)characteristic;
+- (BOOL)hf_wouldFireForValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)wouldFireForCharacteristic:(id)characteristic value:(id)value;
+- (HFCharacteristicThresholdRangeEventBuilder)initWithCharacteristic:(id)characteristic thresholdRange:(id)range;
+- (HFCharacteristicThresholdRangeEventBuilder)initWithEvent:(id)event;
 - (id)buildNewEventsFromCurrentState;
-- (id)compareToObject:(id)a3;
+- (id)compareToObject:(id)object;
 - (id)comparisonKey;
-- (id)naturalLanguageNameWithOptions:(id)a3;
+- (id)naturalLanguageNameWithOptions:(id)options;
 - (id)triggeringValues;
 - (unint64_t)hash;
-- (void)copyValuesFromCharacteristicEventBuilder:(id)a3;
+- (void)copyValuesFromCharacteristicEventBuilder:(id)builder;
 @end
 
 @implementation HFCharacteristicThresholdRangeEventBuilder
 
-- (HFCharacteristicThresholdRangeEventBuilder)initWithEvent:(id)a3
+- (HFCharacteristicThresholdRangeEventBuilder)initWithEvent:(id)event
 {
-  v5 = a3;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  eventCopy = event;
+  if (eventCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HFCharacteristicEventBuilder.m" lineNumber:241 description:{@"Event must be characteristic threshold range event: %@", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicEventBuilder.m" lineNumber:241 description:{@"Event must be characteristic threshold range event: %@", eventCopy}];
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = HFCharacteristicThresholdRangeEventBuilder;
-    v6 = [(HFCharacteristicEventBuilder *)&v12 _initWithEvent:v5];
+    v6 = [(HFCharacteristicEventBuilder *)&v12 _initWithEvent:eventCopy];
     if (v6)
     {
-      v7 = [v5 thresholdRange];
+      thresholdRange = [eventCopy thresholdRange];
       v8 = v6[3];
-      v6[3] = v7;
+      v6[3] = thresholdRange;
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (HFCharacteristicThresholdRangeEventBuilder)initWithCharacteristic:(id)a3 thresholdRange:(id)a4
+- (HFCharacteristicThresholdRangeEventBuilder)initWithCharacteristic:(id)characteristic thresholdRange:(id)range
 {
-  v7 = a4;
+  rangeCopy = range;
   v11.receiver = self;
   v11.super_class = HFCharacteristicThresholdRangeEventBuilder;
-  v8 = [(HFCharacteristicEventBuilder *)&v11 _initWithCharacteristic:a3];
+  v8 = [(HFCharacteristicEventBuilder *)&v11 _initWithCharacteristic:characteristic];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 3, a4);
+    objc_storeStrong(v8 + 3, range);
   }
 
   return v9;
 }
 
-- (BOOL)hf_wouldFireForValue:(id)a3
+- (BOOL)hf_wouldFireForValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_opt_class();
-  v6 = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
-  v7 = [(HFCharacteristicEventBuilder *)self characteristic];
-  LOBYTE(v5) = [v5 _wouldFireForValue:v4 thresholdRange:v6 characteristic:v7];
+  thresholdRange = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
+  characteristic = [(HFCharacteristicEventBuilder *)self characteristic];
+  LOBYTE(v5) = [v5 _wouldFireForValue:valueCopy thresholdRange:thresholdRange characteristic:characteristic];
 
   return v5;
 }
 
 - (id)triggeringValues
 {
-  v3 = [(HFCharacteristicEventBuilder *)self characteristic];
-  v4 = [v3 metadata];
+  characteristic = [(HFCharacteristicEventBuilder *)self characteristic];
+  metadata = [characteristic metadata];
 
   v5 = MEMORY[0x277CBEB98];
-  v6 = [v4 validValues];
+  validValues = [metadata validValues];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__HFCharacteristicThresholdRangeEventBuilder_triggeringValues__block_invoke;
   v10[3] = &unk_277DF3770;
   v10[4] = self;
-  v7 = [v6 na_filter:v10];
+  v7 = [validValues na_filter:v10];
   v8 = [v5 setWithArray:v7];
 
   return v8;
@@ -130,16 +130,16 @@ uint64_t __62__HFCharacteristicThresholdRangeEventBuilder_triggeringValues__bloc
   return v11 & v19;
 }
 
-- (BOOL)wouldFireForCharacteristic:(id)a3 value:(id)a4
+- (BOOL)wouldFireForCharacteristic:(id)characteristic value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFCharacteristicEventBuilder *)self characteristic];
-  v9 = [v7 isEqual:v8];
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  characteristic = [(HFCharacteristicEventBuilder *)self characteristic];
+  v9 = [characteristicCopy isEqual:characteristic];
 
   if (v9)
   {
-    v10 = [(HFCharacteristicThresholdRangeEventBuilder *)self hf_wouldFireForValue:v6];
+    v10 = [(HFCharacteristicThresholdRangeEventBuilder *)self hf_wouldFireForValue:valueCopy];
   }
 
   else
@@ -155,23 +155,23 @@ uint64_t __62__HFCharacteristicThresholdRangeEventBuilder_triggeringValues__bloc
   v3 = MEMORY[0x277CCACA8];
   v10.receiver = self;
   v10.super_class = HFCharacteristicThresholdRangeEventBuilder;
-  v4 = [(HFEventBuilder *)&v10 comparisonKey];
-  v5 = [(HFCharacteristicEventBuilder *)self characteristic];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
-  v8 = [v3 stringWithFormat:@"%@-%@:%@", v4, v6, v7];
+  comparisonKey = [(HFEventBuilder *)&v10 comparisonKey];
+  characteristic = [(HFCharacteristicEventBuilder *)self characteristic];
+  uniqueIdentifier = [characteristic uniqueIdentifier];
+  thresholdRange = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
+  v8 = [v3 stringWithFormat:@"%@-%@:%@", comparisonKey, uniqueIdentifier, thresholdRange];
 
   return v8;
 }
 
-- (void)copyValuesFromCharacteristicEventBuilder:(id)a3
+- (void)copyValuesFromCharacteristicEventBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v10.receiver = self;
   v10.super_class = HFCharacteristicThresholdRangeEventBuilder;
-  [(HFCharacteristicEventBuilder *)&v10 copyValuesFromCharacteristicEventBuilder:v4];
+  [(HFCharacteristicEventBuilder *)&v10 copyValuesFromCharacteristicEventBuilder:builderCopy];
   objc_opt_class();
-  v5 = v4;
+  v5 = builderCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -186,42 +186,42 @@ uint64_t __62__HFCharacteristicThresholdRangeEventBuilder_triggeringValues__bloc
 
   if (v7)
   {
-    v8 = [v7 thresholdRange];
+    thresholdRange = [v7 thresholdRange];
     thresholdRange = self->_thresholdRange;
-    self->_thresholdRange = v8;
+    self->_thresholdRange = thresholdRange;
   }
 }
 
 - (id)buildNewEventsFromCurrentState
 {
   v3 = objc_alloc(MEMORY[0x277CD19A0]);
-  v4 = [(HFCharacteristicEventBuilder *)self characteristic];
-  v5 = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
-  v6 = [v3 initWithCharacteristic:v4 thresholdRange:v5];
+  characteristic = [(HFCharacteristicEventBuilder *)self characteristic];
+  thresholdRange = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
+  v6 = [v3 initWithCharacteristic:characteristic thresholdRange:thresholdRange];
 
   v7 = [MEMORY[0x277CBEB98] setWithObject:v6];
 
   return v7;
 }
 
-- (id)naturalLanguageNameWithOptions:(id)a3
+- (id)naturalLanguageNameWithOptions:(id)options
 {
   v4 = MEMORY[0x277CD19F8];
   v5 = MEMORY[0x277CBEB98];
-  v6 = a3;
-  v7 = [(HFCharacteristicEventBuilder *)self characteristic];
-  v8 = [v5 setWithObject:v7];
-  v9 = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
-  v10 = [v4 hf_naturalLanguageNameWithOptions:v6 characteristics:v8 triggerValue:v9];
+  optionsCopy = options;
+  characteristic = [(HFCharacteristicEventBuilder *)self characteristic];
+  v8 = [v5 setWithObject:characteristic];
+  thresholdRange = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
+  v10 = [v4 hf_naturalLanguageNameWithOptions:optionsCopy characteristics:v8 triggerValue:thresholdRange];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -246,18 +246,18 @@ uint64_t __62__HFCharacteristicThresholdRangeEventBuilder_triggeringValues__bloc
     v8 = 0;
     if ([(HFCharacteristicEventBuilder *)&v25 isEqual:v5]&& v7)
     {
-      v9 = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
-      v10 = [v9 minValue];
-      v11 = [(HFCharacteristicThresholdRangeEventBuilder *)v7 thresholdRange];
-      v12 = [v11 minValue];
-      v13 = v10;
-      v14 = v12;
+      thresholdRange = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
+      minValue = [thresholdRange minValue];
+      thresholdRange2 = [(HFCharacteristicThresholdRangeEventBuilder *)v7 thresholdRange];
+      minValue2 = [thresholdRange2 minValue];
+      v13 = minValue;
+      v14 = minValue2;
       v15 = v14;
       if (v13 == v14)
       {
         v8 = 1;
         v17 = v14;
-        v18 = v13;
+        thresholdRange3 = v13;
       }
 
       else
@@ -279,13 +279,13 @@ LABEL_21:
         {
         }
 
-        v24 = v9;
-        v18 = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
-        v19 = [v18 maxValue];
-        v20 = [(HFCharacteristicThresholdRangeEventBuilder *)v7 thresholdRange];
-        v21 = [v20 maxValue];
-        v17 = v19;
-        v22 = v21;
+        v24 = thresholdRange;
+        thresholdRange3 = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
+        maxValue = [thresholdRange3 maxValue];
+        thresholdRange4 = [(HFCharacteristicThresholdRangeEventBuilder *)v7 thresholdRange];
+        maxValue2 = [thresholdRange4 maxValue];
+        v17 = maxValue;
+        v22 = maxValue2;
         if (v17 == v22)
         {
           v8 = 1;
@@ -301,7 +301,7 @@ LABEL_21:
           v8 = 0;
         }
 
-        v9 = v24;
+        thresholdRange = v24;
       }
 
       goto LABEL_21;
@@ -318,27 +318,27 @@ LABEL_22:
   v7.receiver = self;
   v7.super_class = HFCharacteristicThresholdRangeEventBuilder;
   v3 = [(HFCharacteristicEventBuilder *)&v7 hash];
-  v4 = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
-  v5 = [v4 hash];
+  thresholdRange = [(HFCharacteristicThresholdRangeEventBuilder *)self thresholdRange];
+  v5 = [thresholdRange hash];
 
   return v5 ^ v3;
 }
 
-+ (BOOL)_wouldFireForValue:(id)a3 thresholdRange:(id)a4 characteristic:(id)a5
++ (BOOL)_wouldFireForValue:(id)value thresholdRange:(id)range characteristic:(id)characteristic
 {
-  v7 = a4;
-  if (a3)
+  rangeCopy = range;
+  if (value)
   {
-    v8 = a3;
-    v9 = [a5 metadata];
-    v10 = [v9 hf_valueRoundedToNearestStepValue:v8];
+    valueCopy = value;
+    metadata = [characteristic metadata];
+    v10 = [metadata hf_valueRoundedToNearestStepValue:valueCopy];
 
-    v11 = [v7 minValue];
+    minValue = [rangeCopy minValue];
 
-    if (v11)
+    if (minValue)
     {
-      v12 = [v7 minValue];
-      v13 = [v9 hf_valueRoundedToNearestStepValue:v12];
+      minValue2 = [rangeCopy minValue];
+      v13 = [metadata hf_valueRoundedToNearestStepValue:minValue2];
 
       [v10 doubleValue];
       v15 = v14;
@@ -351,15 +351,15 @@ LABEL_22:
       }
     }
 
-    v18 = [v7 maxValue];
+    maxValue = [rangeCopy maxValue];
 
-    if (!v18)
+    if (!maxValue)
     {
       goto LABEL_6;
     }
 
-    v19 = [v7 maxValue];
-    v20 = [v9 hf_valueRoundedToNearestStepValue:v19];
+    maxValue2 = [rangeCopy maxValue];
+    v20 = [metadata hf_valueRoundedToNearestStepValue:maxValue2];
 
     [v10 doubleValue];
     v22 = v21;
@@ -387,12 +387,12 @@ LABEL_6:
   return v25;
 }
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = HFCharacteristicThresholdRangeEventBuilder;
-  v5 = [(HFEventBuilder *)&v12 compareToObject:v4];
+  v5 = [(HFEventBuilder *)&v12 compareToObject:objectCopy];
   if (([v5 containsCriticalDifference] & 1) == 0)
   {
     v10[0] = MEMORY[0x277D85DD0];
@@ -400,7 +400,7 @@ LABEL_6:
     v10[2] = __74__HFCharacteristicThresholdRangeEventBuilder_Comparison__compareToObject___block_invoke;
     v10[3] = &unk_277DF6EF8;
     v10[4] = self;
-    v6 = v4;
+    v6 = objectCopy;
     v11 = v6;
 
     v8[0] = MEMORY[0x277D85DD0];

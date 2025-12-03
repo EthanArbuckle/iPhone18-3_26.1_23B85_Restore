@@ -1,36 +1,36 @@
 @interface APSKStreamAudio
-- (APSKStreamAudio)initWithAudioDescription:(const AudioStreamBasicDescription *)a3 delegate:(id)a4 delegateQueue:(id)a5 options:(id)a6;
+- (APSKStreamAudio)initWithAudioDescription:(const AudioStreamBasicDescription *)description delegate:(id)delegate delegateQueue:(id)queue options:(id)options;
 - (BOOL)active;
 - (BOOL)useVideoLatency;
 - (id)enqueueAudioDataBlock;
-- (int)enqueueAudioData:(id)a3;
-- (void)setAudioSender:(id)a3;
-- (void)setUseVideoLatency:(BOOL)a3;
+- (int)enqueueAudioData:(id)data;
+- (void)setAudioSender:(id)sender;
+- (void)setUseVideoLatency:(BOOL)latency;
 @end
 
 @implementation APSKStreamAudio
 
-- (APSKStreamAudio)initWithAudioDescription:(const AudioStreamBasicDescription *)a3 delegate:(id)a4 delegateQueue:(id)a5 options:(id)a6
+- (APSKStreamAudio)initWithAudioDescription:(const AudioStreamBasicDescription *)description delegate:(id)delegate delegateQueue:(id)queue options:(id)options
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  optionsCopy = options;
   v29.receiver = self;
   v29.super_class = APSKStreamAudio;
   v13 = [(APSKStreamAudio *)&v29 init];
   v14 = v13;
   if (v13)
   {
-    if (a3->mFormatID == 1819304813 && a3->mSampleRate > 0.0 && a3->mBytesPerPacket)
+    if (description->mFormatID == 1819304813 && description->mSampleRate > 0.0 && description->mBytesPerPacket)
     {
-      v15 = *&a3->mSampleRate;
-      v16 = *&a3->mBytesPerPacket;
-      *(v13 + 5) = *&a3->mBitsPerChannel;
+      v15 = *&description->mSampleRate;
+      v16 = *&description->mBytesPerPacket;
+      *(v13 + 5) = *&description->mBitsPerChannel;
       *(v13 + 24) = v16;
       *(v13 + 8) = v15;
-      objc_storeWeak(v13 + 6, v10);
-      objc_storeStrong(v14 + 7, a5);
-      objc_storeStrong(v14 + 9, a6);
+      objc_storeWeak(v13 + 6, delegateCopy);
+      objc_storeStrong(v14 + 7, queue);
+      objc_storeStrong(v14 + 9, options);
       objc_storeWeak(v14 + 10, 0);
       *(v14 + 44) = 0;
       v17 = dispatch_queue_create("com.apple.apskstreamaudio.stateq", 0);
@@ -114,9 +114,9 @@ LABEL_18:
   return v27;
 }
 
-- (int)enqueueAudioData:(id)a3
+- (int)enqueueAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -134,7 +134,7 @@ LABEL_18:
   v6 = v14[5];
   if (v6)
   {
-    v7 = [v6 sendAudioData:v4];
+    v7 = [v6 sendAudioData:dataCopy];
     if (v7)
     {
       v8 = self->_queue;
@@ -306,7 +306,7 @@ void __25__APSKStreamAudio_active__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setUseVideoLatency:(BOOL)a3
+- (void)setUseVideoLatency:(BOOL)latency
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -314,7 +314,7 @@ void __25__APSKStreamAudio_active__block_invoke(uint64_t a1)
   v4[2] = __38__APSKStreamAudio_setUseVideoLatency___block_invoke;
   v4[3] = &unk_278C65E38;
   v4[4] = self;
-  v5 = a3;
+  latencyCopy = latency;
   dispatch_sync(queue, v4);
 }
 
@@ -330,17 +330,17 @@ void __25__APSKStreamAudio_active__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setAudioSender:(id)a3
+- (void)setAudioSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__APSKStreamAudio_setAudioSender___block_invoke;
   v7[3] = &unk_278C65990;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = senderCopy;
+  selfCopy = self;
+  v6 = senderCopy;
   dispatch_sync(queue, v7);
 }
 

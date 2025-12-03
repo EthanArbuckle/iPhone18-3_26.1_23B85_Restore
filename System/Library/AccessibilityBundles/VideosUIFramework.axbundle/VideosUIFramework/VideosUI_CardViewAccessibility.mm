@@ -1,13 +1,13 @@
 @interface VideosUI_CardViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axDownloadButtonPressed:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axDownloadButtonPressed:(id)pressed;
 - (id)accessibilityAttributedValue;
 - (id)accessibilityCustomActions;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
 - (id)automationElements;
-- (int64_t)_axCompareStyle:(int64_t)a3 toStyle:(int64_t)a4;
+- (int64_t)_axCompareStyle:(int64_t)style toStyle:(int64_t)toStyle;
 - (unint64_t)_accessibilityDownloadState;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -15,29 +15,29 @@
 
 @implementation VideosUI_CardViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVProgressView"];
-  [v3 validateClass:@"VideosUI.CardView" hasSwiftField:@"labelViews" withSwiftType:"Optional<Array<VUILabel>>"];
-  [v3 validateClass:@"VideosUI.CardView" hasSwiftField:@"imageView" withSwiftType:"Optional<UIImageView>"];
-  [v3 validateClass:@"VideosUI.CardView" hasSwiftField:@"appImageView" withSwiftType:"Optional<UIImageView>"];
-  [v3 validateClass:@"VideosUI.CardView" hasSwiftField:@"overlayView" withSwiftType:"Optional<UIView>"];
-  [v3 validateClass:@"VUIBadgeViewWrapper" hasProperty:@"badgeElement" withType:"@"];
-  [v3 validateClass:@"IKImageElement" hasProperty:@"url" withType:"@"];
-  [v3 validateClass:@"VUITextLayout" hasInstanceMethod:@"textStyle" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"VUILabel" hasInstanceMethod:@"textLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIPlaybackManager"];
-  [v3 validateClass:@"VUIPlaybackManager" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIPlaybackManager" hasInstanceMethod:@"multiviewPlayerCount" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"VUIPlaybackManager" hasInstanceMethod:@"maxMultiviewPlayerCount" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"VideosUI.UnifiedOverlayView" hasSwiftField:@"isLockupSelected" withSwiftType:"Bool"];
-  [v3 validateClass:@"VUIDownloadButton"];
-  [v3 validateClass:@"VideosUI.ContextMenuButton"];
-  [v3 validateClass:@"VideosUI.CardCollectionViewCell"];
-  [v3 validateClass:@"VideosUI.CardView" hasSwiftField:@"button" withSwiftType:"Optional<UIControl>"];
-  [v3 validateClass:@"VUIDownloadButton" hasProperty:@"viewModel" withType:"@"];
-  [v3 validateClass:@"VUIDownloadButtonViewModel" hasProperty:@"downloadState" withType:"Q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVProgressView"];
+  [validationsCopy validateClass:@"VideosUI.CardView" hasSwiftField:@"labelViews" withSwiftType:"Optional<Array<VUILabel>>"];
+  [validationsCopy validateClass:@"VideosUI.CardView" hasSwiftField:@"imageView" withSwiftType:"Optional<UIImageView>"];
+  [validationsCopy validateClass:@"VideosUI.CardView" hasSwiftField:@"appImageView" withSwiftType:"Optional<UIImageView>"];
+  [validationsCopy validateClass:@"VideosUI.CardView" hasSwiftField:@"overlayView" withSwiftType:"Optional<UIView>"];
+  [validationsCopy validateClass:@"VUIBadgeViewWrapper" hasProperty:@"badgeElement" withType:"@"];
+  [validationsCopy validateClass:@"IKImageElement" hasProperty:@"url" withType:"@"];
+  [validationsCopy validateClass:@"VUITextLayout" hasInstanceMethod:@"textStyle" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"VUILabel" hasInstanceMethod:@"textLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIPlaybackManager"];
+  [validationsCopy validateClass:@"VUIPlaybackManager" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIPlaybackManager" hasInstanceMethod:@"multiviewPlayerCount" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"VUIPlaybackManager" hasInstanceMethod:@"maxMultiviewPlayerCount" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"VideosUI.UnifiedOverlayView" hasSwiftField:@"isLockupSelected" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"VUIDownloadButton"];
+  [validationsCopy validateClass:@"VideosUI.ContextMenuButton"];
+  [validationsCopy validateClass:@"VideosUI.CardCollectionViewCell"];
+  [validationsCopy validateClass:@"VideosUI.CardView" hasSwiftField:@"button" withSwiftType:"Optional<UIControl>"];
+  [validationsCopy validateClass:@"VUIDownloadButton" hasProperty:@"viewModel" withType:"@"];
+  [validationsCopy validateClass:@"VUIDownloadButtonViewModel" hasProperty:@"downloadState" withType:"Q"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -84,50 +84,50 @@
 {
   v8.receiver = self;
   v8.super_class = VideosUI_CardViewAccessibility;
-  v3 = [(VideosUI_CardViewAccessibility *)&v8 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(VideosUI_CardViewAccessibility *)&v8 automationElements];
+  v4 = [automationElements mutableCopy];
   if (v4)
   {
-    v5 = v4;
+    array = v4;
   }
 
   else
   {
-    v5 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
 
-    if (!v5)
+    if (!array)
     {
-      v5 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
     }
   }
 
   v6 = [(VideosUI_CardViewAccessibility *)self safeSwiftValueForKey:@"button"];
-  [v5 axSafelyAddObject:v6];
+  [array axSafelyAddObject:v6];
 
-  return v5;
+  return array;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(VideosUI_CardViewAccessibility *)self safeSwiftValueForKey:@"button"];
   MEMORY[0x29ED3FF70](@"VUIDownloadButton");
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(VideosUI_CardViewAccessibility *)self _accessibilityDownloadState];
-    if (v5 > 4)
+    _accessibilityDownloadState = [(VideosUI_CardViewAccessibility *)self _accessibilityDownloadState];
+    if (_accessibilityDownloadState > 4)
     {
       v6 = @"download.button.stop.action";
     }
 
     else
     {
-      v6 = off_29F31C1B8[v5];
+      v6 = off_29F31C1B8[_accessibilityDownloadState];
     }
 
     v7 = accessibilityLocalizedString(v6);
     v8 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v7 target:self selector:sel__axDownloadButtonPressed_];
-    [v3 axSafelyAddObject:v8];
+    [array axSafelyAddObject:v8];
   }
 
   MEMORY[0x29ED3FF70](@"VideosUI.ContextMenuButton");
@@ -142,22 +142,22 @@
     v28[3] = &unk_29F31C0A8;
     objc_copyWeak(&v29, &location);
     v11 = [v10 initWithName:v9 actionHandler:v28];
-    [v3 axSafelyAddObject:v11];
+    [array axSafelyAddObject:v11];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);
   }
 
   v12 = [(VideosUI_CardViewAccessibility *)self safeSwiftArrayForKey:@"labelViews"];
-  v13 = [v12 lastObject];
+  lastObject = [v12 lastObject];
 
   v14 = accessibilityLocalizedString(@"tv.details");
   v15 = [(VideosUI_CardViewAccessibility *)self _accessibilityAncestorIsKindOf:MEMORY[0x29ED3FF70](@"VideosUI.CardCollectionViewCell")];
   if (v15)
   {
     v16 = v15;
-    v17 = [v13 accessibilityLabel];
-    v18 = [v17 isEqual:v14];
+    accessibilityLabel = [lastObject accessibilityLabel];
+    v18 = [accessibilityLabel isEqual:v14];
 
     if (v18)
     {
@@ -170,16 +170,16 @@
       v24 = v22 + (v22 - v23) * 0.5;
       v25 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v14 actionHandler:&__block_literal_global_406];
       [v25 setActivationPoint:{v20, v24}];
-      [v3 axSafelyAddObject:v25];
+      [array axSafelyAddObject:v25];
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)_axDownloadButtonPressed:(id)a3
+- (BOOL)_axDownloadButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   objc_opt_class();
   v5 = [(VideosUI_CardViewAccessibility *)self safeSwiftValueForKey:@"button"];
   v6 = __UIAccessibilityCastAsClass();
@@ -197,30 +197,30 @@
   return v4;
 }
 
-- (int64_t)_axCompareStyle:(int64_t)a3 toStyle:(int64_t)a4
+- (int64_t)_axCompareStyle:(int64_t)style toStyle:(int64_t)toStyle
 {
-  if (a3 > 0x12 || ((1 << a3) & 0x401C0) == 0)
+  if (style > 0x12 || ((1 << style) & 0x401C0) == 0)
   {
     goto LABEL_38;
   }
 
   result = 1;
-  if (a4 > 0x12 || ((1 << a4) & 0x401C0) == 0)
+  if (toStyle > 0x12 || ((1 << toStyle) & 0x401C0) == 0)
   {
     return result;
   }
 
-  if (((1 << a3) & 0x401C0) == 0)
+  if (((1 << style) & 0x401C0) == 0)
   {
 LABEL_38:
-    if (a4 <= 0x12 && ((1 << a4) & 0x401C0) != 0)
+    if (toStyle <= 0x12 && ((1 << toStyle) & 0x401C0) != 0)
     {
       return -1;
     }
 
-    if (a3 <= 5)
+    if (style <= 5)
     {
-      if (a4 >= 6)
+      if (toStyle >= 6)
       {
         return 1;
       }
@@ -228,14 +228,14 @@ LABEL_38:
       goto LABEL_15;
     }
 
-    if (a4 < 6)
+    if (toStyle < 6)
     {
       return -1;
     }
   }
 
-  v5 = a4 - 9;
-  if ((a3 - 9) <= 2)
+  v5 = toStyle - 9;
+  if ((style - 9) <= 2)
   {
     if (v5 >= 3)
     {
@@ -251,9 +251,9 @@ LABEL_38:
   }
 
 LABEL_15:
-  if (a3 == 20 || a3 == 14)
+  if (style == 20 || style == 14)
   {
-    if (a4 != 14 && a4 != 20)
+    if (toStyle != 14 && toStyle != 20)
     {
       return -1;
     }
@@ -262,18 +262,18 @@ LABEL_15:
   else
   {
     result = 1;
-    if (a4 == 14 || a4 == 20)
+    if (toStyle == 14 || toStyle == 20)
     {
       return result;
     }
   }
 
-  if (a3 != 19 && a3 != 13)
+  if (style != 19 && style != 13)
   {
-    return a4 == 19 || a4 == 13;
+    return toStyle == 19 || toStyle == 13;
   }
 
-  v7 = a4 != 19 && a4 != 13;
+  v7 = toStyle != 19 && toStyle != 13;
   return v7 << 63 >> 63;
 }
 
@@ -327,7 +327,7 @@ LABEL_15:
         }
 
         v15 = v14;
-        v37 = [v14 accessibilityLabel];
+        accessibilityLabel = [v14 accessibilityLabel];
         v9 = __UIAXStringForVariables();
 
         ++v11;
@@ -335,7 +335,7 @@ LABEL_15:
       }
 
       while (v8 != v11);
-      v8 = [obj countByEnumeratingWithState:&v48 objects:v55 count:{16, v37, @"__AXStringForVariablesSentinel"}];
+      v8 = [obj countByEnumeratingWithState:&v48 objects:v55 count:{16, accessibilityLabel, @"__AXStringForVariablesSentinel"}];
     }
 
     while (v8);
@@ -355,14 +355,14 @@ LABEL_15:
   {
     v17 = [(VideosUI_CardViewAccessibility *)self safeSwiftValueForKey:@"imageView"];
     v18 = [(VideosUI_CardViewAccessibility *)self safeSwiftValueForKey:@"appImageView"];
-    v19 = [v17 accessibilityLabel];
-    v20 = [v18 accessibilityLabel];
+    accessibilityLabel2 = [v17 accessibilityLabel];
+    accessibilityLabel3 = [v18 accessibilityLabel];
     v16 = v41;
     v21 = [v41 safeValueForKey:@"titleLabel"];
-    v39 = [v21 accessibilityLabel];
+    accessibilityLabel4 = [v21 accessibilityLabel];
     v40 = @"__AXStringForVariablesSentinel";
-    v36 = v19;
-    v38 = v20;
+    accessibilityLabel5 = accessibilityLabel2;
+    v38 = accessibilityLabel3;
     v22 = __UIAXStringForVariables();
 
     v9 = v22;
@@ -371,7 +371,7 @@ LABEL_15:
   MEMORY[0x29ED3FF70](@"VideosUI.UnifiedOverlayView");
   if (objc_opt_isKindOfClass())
   {
-    v36 = [v16 accessibilityLabel];
+    accessibilityLabel5 = [v16 accessibilityLabel];
     v38 = @"__AXStringForVariablesSentinel";
     v23 = __UIAXStringForVariables();
 
@@ -400,13 +400,13 @@ LABEL_15:
           }
 
           v28 = *(*(&v44 + 1) + 8 * i);
-          v29 = [MEMORY[0x29EDBDDF0] sharedInstance];
+          mEMORY[0x29EDBDDF0] = [MEMORY[0x29EDBDDF0] sharedInstance];
           v30 = [v28 safeValueForKeyPath:@"badgeElement.url"];
-          v31 = [v29 accessibilityIdentifierForResourceURL:v30];
+          v31 = [mEMORY[0x29EDBDDF0] accessibilityIdentifierForResourceURL:v30];
 
           if (([v31 isEqualToString:@"Badge-Play"] & 1) == 0)
           {
-            v36 = v31;
+            accessibilityLabel5 = v31;
             v38 = @"__AXStringForVariablesSentinel";
             v32 = __UIAXStringForVariables();
 
@@ -434,16 +434,16 @@ LABEL_15:
   v3 = MEMORY[0x29EDB8E20];
   v10.receiver = self;
   v10.super_class = VideosUI_CardViewAccessibility;
-  v4 = [(VideosUI_CardViewAccessibility *)&v10 accessibilityUserInputLabels];
-  v5 = [v3 setWithArray:v4];
+  accessibilityUserInputLabels = [(VideosUI_CardViewAccessibility *)&v10 accessibilityUserInputLabels];
+  v5 = [v3 setWithArray:accessibilityUserInputLabels];
 
   v6 = [(VideosUI_CardViewAccessibility *)self safeSwiftArrayForKey:@"labelViews"];
   v7 = [v6 ax_filteredArrayUsingBlock:&__block_literal_global_431_0];
   [v5 axSafelyAddObjectsFromArray:v7];
 
-  v8 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
 - (id)accessibilityAttributedValue
@@ -451,10 +451,10 @@ LABEL_15:
   v31[1] = *MEMORY[0x29EDCA608];
   v3 = objc_alloc_init(MEMORY[0x29EDBA038]);
   v4 = [(VideosUI_CardViewAccessibility *)self _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_437_0];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 accessibilityLabel];
-  v26 = [v5 accessibilityValue];
+  accessibilityLabel = [firstObject accessibilityLabel];
+  accessibilityValue = [firstObject accessibilityValue];
   v7 = __UIAXStringForVariables();
 
   if ([v7 length])
@@ -471,8 +471,8 @@ LABEL_15:
   MEMORY[0x29ED3FF70](@"VUIDownloadButton");
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 accessibilityLabel];
-    v28 = [v9 accessibilityValue];
+    accessibilityLabel2 = [v9 accessibilityLabel];
+    accessibilityValue2 = [v9 accessibilityValue];
     v11 = __UIAXStringForVariables();
 
     if ([v11 length])
@@ -487,15 +487,15 @@ LABEL_15:
 
   v13 = [(VideosUI_CardViewAccessibility *)self safeSwiftValueForKey:@"overlayView", v27, v29];
   v14 = [v13 safeValueForKey:@"textLabel"];
-  v15 = [v14 accessibilityLabel];
+  accessibilityLabel3 = [v14 accessibilityLabel];
 
-  if ([v15 length])
+  if ([accessibilityLabel3 length])
   {
     v16 = objc_alloc(MEMORY[0x29EDB9F30]);
     v30 = *MEMORY[0x29EDBD8B0];
     v31[0] = MEMORY[0x29EDB8EB0];
     v17 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-    v18 = [v16 initWithString:v15 attributes:v17];
+    v18 = [v16 initWithString:accessibilityLabel3 attributes:v17];
 
     v19 = accessibilityLocalizedString(@"playback.time.remaining");
     v20 = __UIAXStringForVariables();
@@ -548,9 +548,9 @@ LABEL_15:
     abort();
   }
 
-  v6 = [v5 _accessibilityViewController];
+  _accessibilityViewController = [v5 _accessibilityViewController];
 
-  if (!v6)
+  if (!_accessibilityViewController)
   {
     goto LABEL_5;
   }
@@ -563,15 +563,15 @@ LABEL_15:
 LABEL_5:
     v11.receiver = self;
     v11.super_class = VideosUI_CardViewAccessibility;
-    v9 = [(VideosUI_CardViewAccessibility *)&v11 accessibilityHint];
+    accessibilityHint = [(VideosUI_CardViewAccessibility *)&v11 accessibilityHint];
     goto LABEL_7;
   }
 
-  v9 = accessibilityLocalizedString(@"multiview.hint.max.cells.reached");
+  accessibilityHint = accessibilityLocalizedString(@"multiview.hint.max.cells.reached");
 
 LABEL_7:
 
-  return v9;
+  return accessibilityHint;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface AREnvironmentProbeUpdate
 - (AREnvironmentProbeManager)manager;
 - (AREnvironmentProbeUpdate)init;
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6;
-- (void)updateAddedProbeAnchors:(id)a3 updatedProbeAnchors:(id)a4 removedProbeAnchors:(id)a5;
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove;
+- (void)updateAddedProbeAnchors:(id)anchors updatedProbeAnchors:(id)probeAnchors removedProbeAnchors:(id)removedProbeAnchors;
 @end
 
 @implementation AREnvironmentProbeUpdate
@@ -20,21 +20,21 @@
   return result;
 }
 
-- (void)updateAddedProbeAnchors:(id)a3 updatedProbeAnchors:(id)a4 removedProbeAnchors:(id)a5
+- (void)updateAddedProbeAnchors:(id)anchors updatedProbeAnchors:(id)probeAnchors removedProbeAnchors:(id)removedProbeAnchors
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
+  anchorsCopy = anchors;
+  probeAnchorsCopy = probeAnchors;
+  removedProbeAnchorsCopy = removedProbeAnchors;
   os_unfair_lock_lock_with_options();
   addedProbeAnchors = self->_addedProbeAnchors;
   if (addedProbeAnchors)
   {
-    v11 = [(NSArray *)addedProbeAnchors arrayByAddingObjectsFromArray:v19];
+    v11 = [(NSArray *)addedProbeAnchors arrayByAddingObjectsFromArray:anchorsCopy];
   }
 
   else
   {
-    v11 = [v19 copy];
+    v11 = [anchorsCopy copy];
   }
 
   v12 = self->_addedProbeAnchors;
@@ -43,12 +43,12 @@
   updatedProbeAnchors = self->_updatedProbeAnchors;
   if (updatedProbeAnchors)
   {
-    v14 = [(NSArray *)updatedProbeAnchors arrayByAddingObjectsFromArray:v8];
+    v14 = [(NSArray *)updatedProbeAnchors arrayByAddingObjectsFromArray:probeAnchorsCopy];
   }
 
   else
   {
-    v14 = [v8 copy];
+    v14 = [probeAnchorsCopy copy];
   }
 
   v15 = self->_updatedProbeAnchors;
@@ -57,12 +57,12 @@
   removedProbeAnchors = self->_removedProbeAnchors;
   if (removedProbeAnchors)
   {
-    v17 = [(NSArray *)removedProbeAnchors arrayByAddingObjectsFromArray:v9];
+    v17 = [(NSArray *)removedProbeAnchors arrayByAddingObjectsFromArray:removedProbeAnchorsCopy];
   }
 
   else
   {
-    v17 = [v9 copy];
+    v17 = [removedProbeAnchorsCopy copy];
   }
 
   v18 = self->_removedProbeAnchors;
@@ -71,25 +71,25 @@
   os_unfair_lock_unlock(&self->_probeAnchorsLock);
 }
 
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove
 {
   v74 = *MEMORY[0x1E69E9840];
   v51 = a11;
   v14 = a12;
   os_unfair_lock_lock_with_options();
-  v15 = *(a1 + 16);
-  v16 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  v15 = *(self + 16);
+  v16 = *(self + 16);
+  *(self + 16) = 0;
 
-  v50 = *(a1 + 24);
-  v17 = *(a1 + 24);
-  *(a1 + 24) = 0;
+  v50 = *(self + 24);
+  v17 = *(self + 24);
+  *(self + 24) = 0;
 
-  v18 = *(a1 + 32);
-  v19 = *(a1 + 32);
-  *(a1 + 32) = 0;
+  v18 = *(self + 32);
+  v19 = *(self + 32);
+  *(self + 32) = 0;
 
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((self + 8));
   v47 = v14;
   v48 = v18;
   [v14 addObjectsFromArray:{v18, v15}];
@@ -110,8 +110,8 @@
     [v23 addObjectsFromArray:v15];
   }
 
-  v24 = [a1 manager];
-  [v24 _updateProbesFromExistingAnchors:v23];
+  manager = [self manager];
+  [manager _updateProbesFromExistingAnchors:v23];
 
   v25 = objc_opt_new();
   v62 = 0u;
@@ -141,7 +141,7 @@
         v67 = v35;
         do
         {
-          *(&v68 + v31) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a6, COERCE_FLOAT(*(&v64 + v31))), a7, *(&v64 + v31), 1), a8, *(&v64 + v31), 2), a9, *(&v64 + v31), 3);
+          *(&v68 + v31) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(remove, COERCE_FLOAT(*(&v64 + v31))), a7, *(&v64 + v31), 1), a8, *(&v64 + v31), 2), a9, *(&v64 + v31), 3);
           v31 += 16;
         }
 
@@ -183,7 +183,7 @@
         v67 = v45;
         do
         {
-          *(&v68 + v41) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a6, COERCE_FLOAT(*(&v64 + v41))), a7, *(&v64 + v41), 1), a8, *(&v64 + v41), 2), a9, *(&v64 + v41), 3);
+          *(&v68 + v41) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(remove, COERCE_FLOAT(*(&v64 + v41))), a7, *(&v64 + v41), 1), a8, *(&v64 + v41), 2), a9, *(&v64 + v41), 3);
           v41 += 16;
         }
 

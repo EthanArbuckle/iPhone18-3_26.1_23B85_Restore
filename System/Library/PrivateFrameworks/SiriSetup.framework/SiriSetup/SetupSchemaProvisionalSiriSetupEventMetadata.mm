@@ -1,38 +1,38 @@
 @interface SetupSchemaProvisionalSiriSetupEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SetupSchemaProvisionalSiriSetupEventMetadata)initWithDictionary:(id)a3;
-- (SetupSchemaProvisionalSiriSetupEventMetadata)initWithJSON:(id)a3;
+- (SetupSchemaProvisionalSiriSetupEventMetadata)initWithDictionary:(id)dictionary;
+- (SetupSchemaProvisionalSiriSetupEventMetadata)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SetupSchemaProvisionalSiriSetupEventMetadata
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
+  toCopy = to;
+  setupId = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
 
-  if (v4)
+  if (setupId)
   {
-    v5 = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
+    setupId2 = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
-    v6 = [v4 setupId];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    setupId = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
+    setupId2 = [equalCopy setupId];
+    v7 = setupId2;
+    if ((setupId != 0) != (setupId2 == 0))
     {
-      v8 = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
-      if (!v8)
+      setupId3 = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
+      if (!setupId3)
       {
 
 LABEL_10:
@@ -40,10 +40,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
-      v11 = [v4 setupId];
-      v12 = [v10 isEqual:v11];
+      v9 = setupId3;
+      setupId4 = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
+      setupId5 = [equalCopy setupId];
+      v12 = [setupId4 isEqual:setupId5];
 
       if (v12)
       {
@@ -64,34 +64,34 @@ LABEL_8:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (self->_setupId)
   {
-    v4 = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    setupId = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self setupId];
+    dictionaryRepresentation = [setupId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"setupId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"setupId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x277CBEB68] null];
-      [v3 setObject:v6 forKeyedSubscript:@"setupId"];
+      null = [MEMORY[0x277CBEB68] null];
+      [dictionary setObject:null forKeyedSubscript:@"setupId"];
     }
   }
 
-  [(SetupSchemaProvisionalSiriSetupEventMetadata *)self willProduceDictionaryRepresentation:v3];
+  [(SetupSchemaProvisionalSiriSetupEventMetadata *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,33 +102,33 @@ LABEL_8:
   return v3;
 }
 
-- (SetupSchemaProvisionalSiriSetupEventMetadata)initWithJSON:(id)a3
+- (SetupSchemaProvisionalSiriSetupEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SetupSchemaProvisionalSiriSetupEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (SetupSchemaProvisionalSiriSetupEventMetadata)initWithDictionary:(id)a3
+- (SetupSchemaProvisionalSiriSetupEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SetupSchemaProvisionalSiriSetupEventMetadata;
   v5 = [(SetupSchemaProvisionalSiriSetupEventMetadata *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"setupId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"setupId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

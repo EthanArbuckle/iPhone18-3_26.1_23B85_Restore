@@ -4,8 +4,8 @@
 - (BOOL)isScreenShared;
 - (DNDSAuxiliaryStateMonitor)init;
 - (void)dealloc;
-- (void)setScreenMirrored:(BOOL)a3;
-- (void)setScreenShared:(BOOL)a3;
+- (void)setScreenMirrored:(BOOL)mirrored;
+- (void)setScreenShared:(BOOL)shared;
 @end
 
 @implementation DNDSAuxiliaryStateMonitor
@@ -74,7 +74,7 @@
   return v3;
 }
 
-- (void)setScreenShared:(BOOL)a3
+- (void)setScreenShared:(BOOL)shared
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -82,7 +82,7 @@
   v4[2] = __45__DNDSAuxiliaryStateMonitor_setScreenShared___block_invoke;
   v4[3] = &unk_278F8B318;
   v4[4] = self;
-  v5 = a3;
+  sharedCopy = shared;
   dispatch_sync(queue, v4);
 }
 
@@ -105,7 +105,7 @@
   return v3;
 }
 
-- (void)setScreenMirrored:(BOOL)a3
+- (void)setScreenMirrored:(BOOL)mirrored
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -113,7 +113,7 @@
   v4[2] = __47__DNDSAuxiliaryStateMonitor_setScreenMirrored___block_invoke;
   v4[3] = &unk_278F8B318;
   v4[4] = self;
-  v5 = a3;
+  mirroredCopy = mirrored;
   dispatch_sync(queue, v4);
 }
 

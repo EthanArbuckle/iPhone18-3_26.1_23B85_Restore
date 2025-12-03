@@ -1,18 +1,18 @@
 @interface TRIPBStruct
-+ (id)mlr_structWithDictionary:(id)a3;
++ (id)mlr_structWithDictionary:(id)dictionary;
 @end
 
 @implementation TRIPBStruct
 
-+ (id)mlr_structWithDictionary:(id)a3
++ (id)mlr_structWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -30,8 +30,8 @@
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [v5 objectForKeyedSubscript:{v10, v15}];
         v12 = [TRIPBValue mlr_valueWithObject:v11];
-        v13 = [v4 fields];
-        [v13 setObject:v12 forKeyedSubscript:v10];
+        fields = [v4 fields];
+        [fields setObject:v12 forKeyedSubscript:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];

@@ -1,14 +1,14 @@
 @interface SKGEmailEdge
-+ (id)edgeFromEmail:(id)a3 toNode:(id)a4;
++ (id)edgeFromEmail:(id)email toNode:(id)node;
 @end
 
 @implementation SKGEmailEdge
 
-+ (id)edgeFromEmail:(id)a3 toNode:(id)a4
++ (id)edgeFromEmail:(id)email toNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(SKGEdge *)[SKGEmailEdge alloc] initWithSourceNode:v5 targetNode:v6];
+  emailCopy = email;
+  nodeCopy = node;
+  v7 = [(SKGEdge *)[SKGEmailEdge alloc] initWithSourceNode:emailCopy targetNode:nodeCopy];
 
   return v7;
 }

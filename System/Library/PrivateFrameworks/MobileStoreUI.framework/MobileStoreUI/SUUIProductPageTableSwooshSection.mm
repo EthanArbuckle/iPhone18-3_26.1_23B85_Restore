@@ -1,32 +1,32 @@
 @interface SUUIProductPageTableSwooshSection
 - (SUUIColorScheme)colorScheme;
-- (SUUIProductPageTableSwooshSection)initWithItems:(id)a3 title:(id)a4;
-- (SUUIProductPageTableSwooshSection)initWithLockups:(id)a3 title:(id)a4;
+- (SUUIProductPageTableSwooshSection)initWithItems:(id)items title:(id)title;
+- (SUUIProductPageTableSwooshSection)initWithLockups:(id)lockups title:(id)title;
 - (id)_artworkLoader;
 - (id)_missingItemLoader;
 - (id)_swooshViewController;
-- (id)headerViewForTableView:(id)a3;
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4;
+- (id)headerViewForTableView:(id)view;
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index;
 - (void)dealloc;
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5;
-- (void)setColorScheme:(id)a3;
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4;
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers;
+- (void)setColorScheme:(id)scheme;
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index;
 @end
 
 @implementation SUUIProductPageTableSwooshSection
 
-- (SUUIProductPageTableSwooshSection)initWithItems:(id)a3 title:(id)a4
+- (SUUIProductPageTableSwooshSection)initWithItems:(id)items title:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  titleCopy = title;
   v13.receiver = self;
   v13.super_class = SUUIProductPageTableSwooshSection;
   v8 = [(SUUIProductPageTableSwooshSection *)&v13 init];
   if (v8)
   {
     v9 = objc_alloc_init(SUUIItemList);
-    [(SUUIItemList *)v9 setItems:v6];
-    [(SUUIItemList *)v9 setTitle:v7];
+    [(SUUIItemList *)v9 setItems:itemsCopy];
+    [(SUUIItemList *)v9 setTitle:titleCopy];
     v10 = [[SUUISwooshPageComponent alloc] initWithItemList:v9];
     swooshComponent = v8->_swooshComponent;
     v8->_swooshComponent = v10;
@@ -35,16 +35,16 @@
   return v8;
 }
 
-- (SUUIProductPageTableSwooshSection)initWithLockups:(id)a3 title:(id)a4
+- (SUUIProductPageTableSwooshSection)initWithLockups:(id)lockups title:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  lockupsCopy = lockups;
+  titleCopy = title;
   v12.receiver = self;
   v12.super_class = SUUIProductPageTableSwooshSection;
   v8 = [(SUUIProductPageTableSwooshSection *)&v12 init];
   if (v8)
   {
-    v9 = [[SUUISwooshPageComponent alloc] initWithLockups:v6 swooshType:0 title:v7];
+    v9 = [[SUUISwooshPageComponent alloc] initWithLockups:lockupsCopy swooshType:0 title:titleCopy];
     swooshComponent = v8->_swooshComponent;
     v8->_swooshComponent = v9;
   }
@@ -63,86 +63,86 @@
 
 - (SUUIColorScheme)colorScheme
 {
-  v2 = [(SUUIProductPageTableSwooshSection *)self _swooshViewController];
-  v3 = [v2 colorScheme];
+  _swooshViewController = [(SUUIProductPageTableSwooshSection *)self _swooshViewController];
+  colorScheme = [_swooshViewController colorScheme];
 
-  return v3;
+  return colorScheme;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = [(SUUIProductPageTableSwooshSection *)self _swooshViewController];
-  [v5 setColorScheme:v4];
+  schemeCopy = scheme;
+  _swooshViewController = [(SUUIProductPageTableSwooshSection *)self _swooshViewController];
+  [_swooshViewController setColorScheme:schemeCopy];
 }
 
-- (id)headerViewForTableView:(id)a3
+- (id)headerViewForTableView:(id)view
 {
   if (!self->_missingItemLoader && [(SUUISwooshPageComponent *)self->_swooshComponent isMissingItemData])
   {
-    v4 = [(SUUIProductPageTableSwooshSection *)self _missingItemLoader];
-    [v4 loadItemsForPageComponent:self->_swooshComponent startIndex:0 reason:1];
+    _missingItemLoader = [(SUUIProductPageTableSwooshSection *)self _missingItemLoader];
+    [_missingItemLoader loadItemsForPageComponent:self->_swooshComponent startIndex:0 reason:1];
   }
 
-  v5 = [(SUUIProductPageTableSwooshSection *)self _swooshViewController];
-  v6 = [v5 view];
+  _swooshViewController = [(SUUIProductPageTableSwooshSection *)self _swooshViewController];
+  view = [_swooshViewController view];
 
-  return v6;
+  return view;
 }
 
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers
 {
-  v10 = a4;
-  if ([v10 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v6 = [(SUUISwooshPageComponent *)self->_swooshComponent _updateLockupItemsWithItems:v10];
+    v6 = [(SUUISwooshPageComponent *)self->_swooshComponent _updateLockupItemsWithItems:itemsCopy];
     swooshViewController = self->_swooshViewController;
-    v8 = [(SUUISwooshPageComponent *)self->_swooshComponent lockups];
-    [(SUUILockupSwooshViewController *)swooshViewController setLockups:v8];
+    lockups = [(SUUISwooshPageComponent *)self->_swooshComponent lockups];
+    [(SUUILockupSwooshViewController *)swooshViewController setLockups:lockups];
 
-    v9 = [(SUUIProductPageTableSwooshSection *)self _artworkLoader];
-    [v9 loadImagesForNextPageWithReason:0];
+    _artworkLoader = [(SUUIProductPageTableSwooshSection *)self _artworkLoader];
+    [_artworkLoader loadImagesForNextPageWithReason:0];
   }
 }
 
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index
 {
   if (self->_actionBlock)
   {
-    v6 = [a3 lockups];
-    v9 = [v6 objectAtIndex:a4];
+    lockups = [swoosh lockups];
+    v9 = [lockups objectAtIndex:index];
 
     actionBlock = self->_actionBlock;
-    v8 = [v9 item];
-    actionBlock[2](actionBlock, v8);
+    item = [v9 item];
+    actionBlock[2](actionBlock, item);
   }
 }
 
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(SUUIProductPageTableSwooshSection *)self _artworkLoader];
-  v8 = [v6 lockups];
+  swooshCopy = swoosh;
+  _artworkLoader = [(SUUIProductPageTableSwooshSection *)self _artworkLoader];
+  lockups = [swooshCopy lockups];
 
-  v9 = [v8 objectAtIndex:a4];
+  v9 = [lockups objectAtIndex:index];
 
-  v10 = [v9 item];
-  if (v10)
+  item = [v9 item];
+  if (item)
   {
-    v11 = [v7 cachedImageForItem:v10];
+    v11 = [_artworkLoader cachedImageForItem:item];
     if (v11)
     {
       goto LABEL_6;
     }
 
-    [v7 loadImageForItem:v10 reason:1];
-    v12 = v7;
-    v13 = v10;
+    [_artworkLoader loadImageForItem:item reason:1];
+    v12 = _artworkLoader;
+    v13 = item;
   }
 
   else
   {
-    v12 = v7;
+    v12 = _artworkLoader;
     v13 = 0;
   }
 
@@ -158,9 +158,9 @@ LABEL_6:
   if (!artworkLoader)
   {
     v4 = [SUUILockupSwooshArtworkLoader alloc];
-    v5 = [(SUUIProductPageTableSwooshSection *)self resourceLoader];
-    v6 = [(SUUIProductPageTableSwooshSection *)self _swooshViewController];
-    v7 = [(SUUILockupSwooshArtworkLoader *)v4 initWithArtworkLoader:v5 swoosh:v6];
+    resourceLoader = [(SUUIProductPageTableSwooshSection *)self resourceLoader];
+    _swooshViewController = [(SUUIProductPageTableSwooshSection *)self _swooshViewController];
+    v7 = [(SUUILockupSwooshArtworkLoader *)v4 initWithArtworkLoader:resourceLoader swoosh:_swooshViewController];
     v8 = self->_artworkLoader;
     self->_artworkLoader = v7;
 
@@ -176,8 +176,8 @@ LABEL_6:
   if (!missingItemLoader)
   {
     v4 = [SUUIMissingItemLoader alloc];
-    v5 = [(SUUIProductPageTableSwooshSection *)self resourceLoader];
-    v6 = [(SUUIMissingItemLoader *)v4 initWithResourceLoader:v5];
+    resourceLoader = [(SUUIProductPageTableSwooshSection *)self resourceLoader];
+    v6 = [(SUUIMissingItemLoader *)v4 initWithResourceLoader:resourceLoader];
     v7 = self->_missingItemLoader;
     self->_missingItemLoader = v6;
 
@@ -198,14 +198,14 @@ LABEL_6:
     self->_swooshViewController = v4;
 
     v6 = self->_swooshViewController;
-    v7 = [(SUUIProductPageTableSection *)self clientContext];
-    [(SUUILockupSwooshViewController *)v6 setClientContext:v7];
+    clientContext = [(SUUIProductPageTableSection *)self clientContext];
+    [(SUUILockupSwooshViewController *)v6 setClientContext:clientContext];
 
     [(SUUILockupSwooshViewController *)self->_swooshViewController setDelegate:self];
     v8 = self->_swooshViewController;
-    v9 = [(SUUILockupSwooshViewController *)v8 artworkContext];
-    v10 = [v9 iconConsumer];
-    [v10 imageSize];
+    artworkContext = [(SUUILockupSwooshViewController *)v8 artworkContext];
+    iconConsumer = [artworkContext iconConsumer];
+    [iconConsumer imageSize];
     [(SUUILockupSwooshViewController *)v8 _setExpectedImageSize:?];
 
     swooshViewController = self->_swooshViewController;

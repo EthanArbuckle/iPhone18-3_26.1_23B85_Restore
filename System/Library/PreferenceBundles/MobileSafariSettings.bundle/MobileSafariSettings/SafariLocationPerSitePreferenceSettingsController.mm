@@ -22,10 +22,10 @@
 
 - (id)preference
 {
-  v2 = [(SafariLocationPerSitePreferenceSettingsController *)self preferenceManager];
-  v3 = [v2 geolocationPreference];
+  preferenceManager = [(SafariLocationPerSitePreferenceSettingsController *)self preferenceManager];
+  geolocationPreference = [preferenceManager geolocationPreference];
 
-  return v3;
+  return geolocationPreference;
 }
 
 @end

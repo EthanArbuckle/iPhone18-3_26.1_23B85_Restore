@@ -3,62 +3,62 @@
 - (BOOL)isRunningWithExternalUI;
 - (BOOL)isRunningWithSiriUI;
 - (BOOL)isRunningWithToolKitClient;
-- (BOOL)performSiriRequest:(id)a3 completionHandler:(id)a4;
-- (BOOL)shouldHandleAlertAsSiriDialog:(id)a3;
-- (WFDialogTransformer)initWithWorkflow:(id)a3 userInterfacePresenter:(id)a4 runSource:(id)a5 runningContext:(id)a6;
+- (BOOL)performSiriRequest:(id)request completionHandler:(id)handler;
+- (BOOL)shouldHandleAlertAsSiriDialog:(id)dialog;
+- (WFDialogTransformer)initWithWorkflow:(id)workflow userInterfacePresenter:(id)presenter runSource:(id)source runningContext:(id)context;
 - (WFDialogTransformerDelegate)delegate;
-- (id)attributionAllowingAction:(BOOL)a3;
+- (id)attributionAllowingAction:(BOOL)action;
 - (id)attributionIcon;
 - (id)attributionTitle;
 - (id)privacyAttribution;
 - (id)shortcutsAppAttribution;
 - (id)standaloneActionAttribution;
 - (id)workflowName;
-- (void)action:(id)a3 provideInputForParameters:(id)a4 withDefaultStates:(id)a5 prompts:(id)a6 completionHandler:(id)a7;
-- (void)cleanupListDialogRequestIfNeeded:(id)a3;
-- (void)configureIntent:(id)a3;
-- (void)configureSmartPromptIntent:(id)a3 withConfiguration:(id)a4;
-- (void)didFinishActionWithIdentifier:(id)a3;
-- (void)didStartActionWithIdentifier:(id)a3;
-- (void)dismissPresentedContentWithCompletionHandler:(id)a3;
-- (void)executeSmartPromptIntentWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)handleAlertAsSiriDialog:(id)a3;
-- (void)handleAlertWithDatePicker:(id)a3;
-- (void)handleAlertWithMultipleButtons:(id)a3;
-- (void)handleAlertWithTextField:(id)a3;
-- (void)handleAppProtectionRequestWithBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)handleDialogRequest:(id)a3 completionHandler:(id)a4;
-- (void)handleSimpleAlert:(id)a3;
-- (void)handleUIRequestResponse:(id)a3 error:(id)a4 forRequest:(id)a5 shouldFailoverToLocalUI:(BOOL)a6 completionHandler:(id)a7;
-- (void)openAppWithBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)openURL:(id)a3 withBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)prepareListDialogRequestIfNeeded:(id)a3 completionHandler:(id)a4;
-- (void)presentAlert:(id)a3;
-- (void)presentAlertWithSmartPromptConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)requestActionInterfacePresentationForActionClassName:(id)a3 classNamesByType:(id)a4 completionHandler:(id)a5;
-- (void)requestAuthorizationWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)requestFileAccessForURLs:(id)a3 workflowName:(id)a4 workflowID:(id)a5 completionHandler:(id)a6;
-- (void)resolveDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)sequentialParameterInputProvider:(id)a3 didAdvanceToParameter:(id)a4 action:(id)a5 defaultState:(id)a6 prompt:(id)a7 linkDialog:(id)a8 completion:(id)a9;
-- (void)sequentialParameterInputProvider:(id)a3 didFinishWithInputtedStates:(id)a4 responseContext:(id)a5;
-- (void)sequentialParameterInputProviderDidCancel:(id)a3 responseContext:(id)a4;
-- (void)setWorkflow:(id)a3;
-- (void)shouldRunFollowUpActionWithBundleIdentifier:(id)a3 actionIdentifier:(id)a4 parameterValues:(id)a5 encodedToolInvocation:(id)a6 showOutputActionOptions:(unint64_t)a7 completionHandler:(id)a8;
-- (void)showAskParameterDialogForParameter:(id)a3 action:(id)a4 defaultState:(id)a5 prompt:(id)a6 completion:(id)a7;
-- (void)showChronoControlOfType:(unint64_t)a3 identity:(id)a4 completionHandler:(id)a5;
-- (void)showConfirmInteraction:(id)a3 prompt:(id)a4 requireAuthentication:(BOOL)a5 completionHandler:(id)a6;
-- (void)showDialogRequest:(id)a3 completionHandler:(id)a4;
-- (void)showHandleInteraction:(id)a3 prompt:(id)a4 completionHandler:(id)a5;
-- (void)showLinkActionConfirmationWithActionMetadata:(id)a3 showPrompt:(BOOL)a4 dialog:(id)a5 dialogString:(id)a6 viewSnippet:(id)a7 snippetAction:(id)a8 encodedSnippetActionToolInvocation:(id)a9 confirmationActionName:(id)a10 isContinueInAppRequest:(BOOL)a11 systemStyle:(id)a12 completionHandler:(id)a13;
-- (void)showLinkChoice:(id)a3 dialog:(id)a4 completionHandler:(id)a5;
-- (void)showLinkParameterConfirmationWithActionMetadata:(id)a3 dialog:(id)a4 dialogString:(id)a5 viewSnippet:(id)a6 parameterValue:(id)a7 completionHandler:(id)a8;
-- (void)showLinkResult:(id)a3 dialog:(id)a4 encodedSnippetActionToolInvocation:(id)a5 completionHandler:(id)a6;
-- (void)showPreviewForContentCollection:(id)a3 completionHandler:(id)a4;
-- (void)showSnippetLinkAction:(id)a3 encodedSnippetActionToolInvocation:(id)a4 completionHandler:(id)a5;
-- (void)stopWithError:(id)a3;
-- (void)swapExternalUIPresenterWithPresenter:(id)a3;
-- (void)updateSmartPromptsWithConfiguration:(id)a3 resultCode:(unint64_t)a4 error:(id *)a5;
-- (void)willBeginExecutingShortcutStep:(id)a3;
+- (void)action:(id)action provideInputForParameters:(id)parameters withDefaultStates:(id)states prompts:(id)prompts completionHandler:(id)handler;
+- (void)cleanupListDialogRequestIfNeeded:(id)needed;
+- (void)configureIntent:(id)intent;
+- (void)configureSmartPromptIntent:(id)intent withConfiguration:(id)configuration;
+- (void)didFinishActionWithIdentifier:(id)identifier;
+- (void)didStartActionWithIdentifier:(id)identifier;
+- (void)dismissPresentedContentWithCompletionHandler:(id)handler;
+- (void)executeSmartPromptIntentWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)handleAlertAsSiriDialog:(id)dialog;
+- (void)handleAlertWithDatePicker:(id)picker;
+- (void)handleAlertWithMultipleButtons:(id)buttons;
+- (void)handleAlertWithTextField:(id)field;
+- (void)handleAppProtectionRequestWithBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)handleDialogRequest:(id)request completionHandler:(id)handler;
+- (void)handleSimpleAlert:(id)alert;
+- (void)handleUIRequestResponse:(id)response error:(id)error forRequest:(id)request shouldFailoverToLocalUI:(BOOL)i completionHandler:(id)handler;
+- (void)openAppWithBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)openURL:(id)l withBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)prepareListDialogRequestIfNeeded:(id)needed completionHandler:(id)handler;
+- (void)presentAlert:(id)alert;
+- (void)presentAlertWithSmartPromptConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)requestActionInterfacePresentationForActionClassName:(id)name classNamesByType:(id)type completionHandler:(id)handler;
+- (void)requestAuthorizationWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)requestFileAccessForURLs:(id)ls workflowName:(id)name workflowID:(id)d completionHandler:(id)handler;
+- (void)resolveDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)sequentialParameterInputProvider:(id)provider didAdvanceToParameter:(id)parameter action:(id)action defaultState:(id)state prompt:(id)prompt linkDialog:(id)dialog completion:(id)completion;
+- (void)sequentialParameterInputProvider:(id)provider didFinishWithInputtedStates:(id)states responseContext:(id)context;
+- (void)sequentialParameterInputProviderDidCancel:(id)cancel responseContext:(id)context;
+- (void)setWorkflow:(id)workflow;
+- (void)shouldRunFollowUpActionWithBundleIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier parameterValues:(id)values encodedToolInvocation:(id)invocation showOutputActionOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)showAskParameterDialogForParameter:(id)parameter action:(id)action defaultState:(id)state prompt:(id)prompt completion:(id)completion;
+- (void)showChronoControlOfType:(unint64_t)type identity:(id)identity completionHandler:(id)handler;
+- (void)showConfirmInteraction:(id)interaction prompt:(id)prompt requireAuthentication:(BOOL)authentication completionHandler:(id)handler;
+- (void)showDialogRequest:(id)request completionHandler:(id)handler;
+- (void)showHandleInteraction:(id)interaction prompt:(id)prompt completionHandler:(id)handler;
+- (void)showLinkActionConfirmationWithActionMetadata:(id)metadata showPrompt:(BOOL)prompt dialog:(id)dialog dialogString:(id)string viewSnippet:(id)snippet snippetAction:(id)action encodedSnippetActionToolInvocation:(id)invocation confirmationActionName:(id)self0 isContinueInAppRequest:(BOOL)self1 systemStyle:(id)self2 completionHandler:(id)self3;
+- (void)showLinkChoice:(id)choice dialog:(id)dialog completionHandler:(id)handler;
+- (void)showLinkParameterConfirmationWithActionMetadata:(id)metadata dialog:(id)dialog dialogString:(id)string viewSnippet:(id)snippet parameterValue:(id)value completionHandler:(id)handler;
+- (void)showLinkResult:(id)result dialog:(id)dialog encodedSnippetActionToolInvocation:(id)invocation completionHandler:(id)handler;
+- (void)showPreviewForContentCollection:(id)collection completionHandler:(id)handler;
+- (void)showSnippetLinkAction:(id)action encodedSnippetActionToolInvocation:(id)invocation completionHandler:(id)handler;
+- (void)stopWithError:(id)error;
+- (void)swapExternalUIPresenterWithPresenter:(id)presenter;
+- (void)updateSmartPromptsWithConfiguration:(id)configuration resultCode:(unint64_t)code error:(id *)error;
+- (void)willBeginExecutingShortcutStep:(id)step;
 - (void)workflowWillBegin;
 @end
 
@@ -84,24 +84,24 @@
 
 - (BOOL)isRunningWithExternalUI
 {
-  v2 = [(WFDialogTransformer *)self externalUIPresenter];
-  v3 = v2 != 0;
+  externalUIPresenter = [(WFDialogTransformer *)self externalUIPresenter];
+  v3 = externalUIPresenter != 0;
 
   return v3;
 }
 
 - (void)workflowWillBegin
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(WFDialogTransformer *)self setWorkflowStartTime:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(WFDialogTransformer *)self setWorkflowStartTime:date];
 
   if ([(WFDialogTransformer *)self isRunningWithExternalUI])
   {
-    v7 = [(WFDialogTransformer *)self externalUIPresenter];
+    externalUIPresenter = [(WFDialogTransformer *)self externalUIPresenter];
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(WFWorkflow *)self->_workflow actions];
-    v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
-    [v7 willBeginExecutingShortcutWithActionCount:v6];
+    actions = [(WFWorkflow *)self->_workflow actions];
+    v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(actions, "count")}];
+    [externalUIPresenter willBeginExecutingShortcutWithActionCount:v6];
   }
 }
 
@@ -112,22 +112,22 @@
   return WeakRetained;
 }
 
-- (void)shouldRunFollowUpActionWithBundleIdentifier:(id)a3 actionIdentifier:(id)a4 parameterValues:(id)a5 encodedToolInvocation:(id)a6 showOutputActionOptions:(unint64_t)a7 completionHandler:(id)a8
+- (void)shouldRunFollowUpActionWithBundleIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier parameterValues:(id)values encodedToolInvocation:(id)invocation showOutputActionOptions:(unint64_t)options completionHandler:(id)handler
 {
-  v14 = a8;
+  handlerCopy = handler;
   v15 = MEMORY[0x1E69E0B00];
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[v15 alloc] initWithBundleIdentifier:v19 actionIdentifier:v18 parameterValues:v17 showOutputActionOptions:a7 encodedToolInvocation:v16];
+  invocationCopy = invocation;
+  valuesCopy = values;
+  actionIdentifierCopy = actionIdentifier;
+  identifierCopy = identifier;
+  v20 = [[v15 alloc] initWithBundleIdentifier:identifierCopy actionIdentifier:actionIdentifierCopy parameterValues:valuesCopy showOutputActionOptions:options encodedToolInvocation:invocationCopy];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __164__WFDialogTransformer_shouldRunFollowUpActionWithBundleIdentifier_actionIdentifier_parameterValues_encodedToolInvocation_showOutputActionOptions_completionHandler___block_invoke;
   v22[3] = &unk_1E8377410;
-  v23 = v14;
-  v21 = v14;
+  v23 = handlerCopy;
+  v21 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v20 completionHandler:v22];
 }
 
@@ -161,19 +161,19 @@ void __164__WFDialogTransformer_shouldRunFollowUpActionWithBundleIdentifier_acti
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAppProtectionRequestWithBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)handleAppProtectionRequestWithBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x1E69E0978];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithAppBundleIdentifier:v8];
+  identifierCopy = identifier;
+  v9 = [[v7 alloc] initWithAppBundleIdentifier:identifierCopy];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__WFDialogTransformer_handleAppProtectionRequestWithBundleIdentifier_completionHandler___block_invoke;
   v11[3] = &unk_1E8377410;
-  v12 = v6;
-  v10 = v6;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v9 completionHandler:v11];
 }
 
@@ -235,47 +235,47 @@ LABEL_13:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)willBeginExecutingShortcutStep:(id)a3
+- (void)willBeginExecutingShortcutStep:(id)step
 {
   externalUIPresenter = self->_externalUIPresenter;
   if (externalUIPresenter)
   {
-    [(WFExternalUIPresenter *)externalUIPresenter willBeginExecutingShortcutStep:a3];
+    [(WFExternalUIPresenter *)externalUIPresenter willBeginExecutingShortcutStep:step];
   }
 }
 
 - (BOOL)isRunningWithSiriUI
 {
-  v3 = [(WFDialogTransformer *)self isRunningWithExternalUI];
-  if (v3)
+  isRunningWithExternalUI = [(WFDialogTransformer *)self isRunningWithExternalUI];
+  if (isRunningWithExternalUI)
   {
-    v4 = [(WFDialogTransformer *)self runningContext];
-    v5 = [v4 shouldForwardSiriActionRequests];
+    runningContext = [(WFDialogTransformer *)self runningContext];
+    shouldForwardSiriActionRequests = [runningContext shouldForwardSiriActionRequests];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isRunningWithExternalUI) = shouldForwardSiriActionRequests;
   }
 
-  return v3;
+  return isRunningWithExternalUI;
 }
 
 - (BOOL)isRunningWithToolKitClient
 {
-  v3 = [(WFDialogTransformer *)self isRunningWithExternalUI];
-  if (v3)
+  isRunningWithExternalUI = [(WFDialogTransformer *)self isRunningWithExternalUI];
+  if (isRunningWithExternalUI)
   {
-    v4 = [(WFDialogTransformer *)self runningContext];
-    v5 = [v4 isStepwise];
+    runningContext = [(WFDialogTransformer *)self runningContext];
+    isStepwise = [runningContext isStepwise];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isRunningWithExternalUI) = isStepwise;
   }
 
-  return v3;
+  return isRunningWithExternalUI;
 }
 
-- (void)didFinishActionWithIdentifier:(id)a3
+- (void)didFinishActionWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = getWFWorkflowExecutionLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -287,7 +287,7 @@ LABEL_13:
   externalUIPresenter = self->_externalUIPresenter;
   if (externalUIPresenter)
   {
-    [(WFExternalUIPresenter *)externalUIPresenter didFinishActionWithIdentifier:v4];
+    [(WFExternalUIPresenter *)externalUIPresenter didFinishActionWithIdentifier:identifierCopy];
   }
 
   else
@@ -304,10 +304,10 @@ LABEL_13:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didStartActionWithIdentifier:(id)a3
+- (void)didStartActionWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = getWFWorkflowExecutionLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -319,7 +319,7 @@ LABEL_13:
   externalUIPresenter = self->_externalUIPresenter;
   if (externalUIPresenter)
   {
-    [(WFExternalUIPresenter *)externalUIPresenter didStartActionWithIdentifier:v4];
+    [(WFExternalUIPresenter *)externalUIPresenter didStartActionWithIdentifier:identifierCopy];
   }
 
   else
@@ -336,11 +336,11 @@ LABEL_13:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)performSiriRequest:(id)a3 completionHandler:(id)a4
+- (BOOL)performSiriRequest:(id)request completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = getWFWorkflowExecutionLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -355,7 +355,7 @@ LABEL_13:
   externalUIPresenter = self->_externalUIPresenter;
   if (externalUIPresenter)
   {
-    [(WFExternalUIPresenter *)externalUIPresenter performSiriRequest:v6 completionHandler:v7];
+    [(WFExternalUIPresenter *)externalUIPresenter performSiriRequest:requestCopy completionHandler:handlerCopy];
   }
 
   else
@@ -373,29 +373,29 @@ LABEL_13:
   return externalUIPresenter != 0;
 }
 
-- (void)configureIntent:(id)a3
+- (void)configureIntent:(id)intent
 {
-  v14 = a3;
-  v4 = [(WFDialogTransformer *)self siriOptions];
-  v5 = v4;
-  if (v4)
+  intentCopy = intent;
+  siriOptions = [(WFDialogTransformer *)self siriOptions];
+  v5 = siriOptions;
+  if (siriOptions)
   {
-    [v14 _setExecutionContext:{objc_msgSend(v4, "executionContext")}];
-    [v14 wf_updateIdiomIfNeeded:{objc_msgSend(v5, "currentDeviceIdiom")}];
-    v6 = [v5 originatingDeviceIDSIdentifier];
-    [v14 _setOriginatingDeviceIdsIdentifier:v6];
+    [intentCopy _setExecutionContext:{objc_msgSend(siriOptions, "executionContext")}];
+    [intentCopy wf_updateIdiomIfNeeded:{objc_msgSend(v5, "currentDeviceIdiom")}];
+    originatingDeviceIDSIdentifier = [v5 originatingDeviceIDSIdentifier];
+    [intentCopy _setOriginatingDeviceIdsIdentifier:originatingDeviceIDSIdentifier];
 
-    v7 = [v5 originatingDeviceRapportEffectiveIdentifier];
-    [v14 _setOriginatingDeviceRapportEffectiveIdentifier:v7];
+    originatingDeviceRapportEffectiveIdentifier = [v5 originatingDeviceRapportEffectiveIdentifier];
+    [intentCopy _setOriginatingDeviceRapportEffectiveIdentifier:originatingDeviceRapportEffectiveIdentifier];
 
-    v8 = [v5 originatingDeviceRapportMediaSystemIdentifier];
-    [v14 _setOriginatingDeviceRapportMediaSystemIdentifier:v8];
+    originatingDeviceRapportMediaSystemIdentifier = [v5 originatingDeviceRapportMediaSystemIdentifier];
+    [intentCopy _setOriginatingDeviceRapportMediaSystemIdentifier:originatingDeviceRapportMediaSystemIdentifier];
 
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isOwnedByCurrentUser")}];
-    [v14 _setIsOwnedByCurrentUser:v9];
+    [intentCopy _setIsOwnedByCurrentUser:v9];
 
-    v10 = [(WFDialogTransformer *)self airPlayRouteIDs];
-    if (![v10 count])
+    airPlayRouteIDs = [(WFDialogTransformer *)self airPlayRouteIDs];
+    if (![airPlayRouteIDs count])
     {
 LABEL_8:
 
@@ -408,19 +408,19 @@ LABEL_8:
       goto LABEL_6;
     }
 
-    v11 = [v14 launchId];
-    if ([v11 hasPrefix:@"com.apple."])
+    launchId = [intentCopy launchId];
+    if ([launchId hasPrefix:@"com.apple."])
     {
 
 LABEL_6:
 LABEL_7:
-      v10 = [(WFDialogTransformer *)self airPlayRouteIDs];
-      [v14 _setAirPlayRouteIds:v10];
+      airPlayRouteIDs = [(WFDialogTransformer *)self airPlayRouteIDs];
+      [intentCopy _setAirPlayRouteIds:airPlayRouteIDs];
       goto LABEL_8;
     }
 
-    v12 = [v14 extensionBundleId];
-    v13 = [v12 hasPrefix:@"com.apple."];
+    extensionBundleId = [intentCopy extensionBundleId];
+    v13 = [extensionBundleId hasPrefix:@"com.apple."];
 
     if (v13)
     {
@@ -431,15 +431,15 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)openURL:(id)a3 withBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)openURL:(id)l withBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (![(WFDialogTransformer *)self isRunningWithSiriUI])
   {
-    if (v9)
+    if (identifierCopy)
     {
       v13 = getWFDialogLogObject();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -447,9 +447,9 @@ LABEL_9:
         *buf = 136315650;
         v21 = "[WFDialogTransformer openURL:withBundleIdentifier:completionHandler:]";
         v22 = 2112;
-        v23 = v8;
+        v23 = lCopy;
         v24 = 2112;
-        v25 = v9;
+        v25 = identifierCopy;
         v14 = "%s Dialog transformer only supports showing web pages -- but it was asked to open a URL (%@) with an app (bundle ID %@)";
         v15 = v13;
         v16 = 32;
@@ -463,7 +463,7 @@ LABEL_11:
       if (WFURLIsWebPage())
       {
 LABEL_13:
-        (*(v10 + 2))(v10, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0);
         goto LABEL_14;
       }
 
@@ -473,7 +473,7 @@ LABEL_13:
         *buf = 136315394;
         v21 = "[WFDialogTransformer openURL:withBundleIdentifier:completionHandler:]";
         v22 = 2112;
-        v23 = v8;
+        v23 = lCopy;
         v14 = "%s Dialog transformer only supports opening web pages -- but it was asked to open a non-webpage URL %@";
         v15 = v13;
         v16 = 22;
@@ -492,12 +492,12 @@ LABEL_13:
     _os_log_impl(&dword_1CA256000, v11, OS_LOG_TYPE_DEFAULT, "%s Sending open URL interaction to Siri", buf, 0xCu);
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E69E0CF8]) initWithURL:v8 andBundleIdentifier:v9];
+  v12 = [objc_alloc(MEMORY[0x1E69E0CF8]) initWithURL:lCopy andBundleIdentifier:identifierCopy];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __70__WFDialogTransformer_openURL_withBundleIdentifier_completionHandler___block_invoke;
   v18[3] = &unk_1E8377500;
-  v19 = v10;
+  v19 = handlerCopy;
   [(WFDialogTransformer *)self performSiriRequest:v12 completionHandler:v18];
 
 LABEL_14:
@@ -560,26 +560,26 @@ void __70__WFDialogTransformer_openURL_withBundleIdentifier_completionHandler___
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)openAppWithBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)openAppWithBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!identifierCopy)
   {
-    v6 = *MEMORY[0x1E69E0F60];
+    identifierCopy = *MEMORY[0x1E69E0F60];
   }
 
-  v8 = [(WFDialogTransformer *)self currentAction];
-  v9 = [v8 userInterface];
-  [v9 applicationWillLaunchInForeground];
+  currentAction = [(WFDialogTransformer *)self currentAction];
+  userInterface = [currentAction userInterface];
+  [userInterface applicationWillLaunchInForeground];
 
   v10 = objc_opt_new();
   [v10 setObject:&unk_1F4A9A498 forKey:*MEMORY[0x1E699F930]];
-  v11 = [(WFDialogTransformer *)self currentAction];
-  v12 = [v11 userInterface];
-  v13 = [v12 progressIsPersistentInSystemAperture];
+  currentAction2 = [(WFDialogTransformer *)self currentAction];
+  userInterface2 = [currentAction2 userInterface];
+  progressIsPersistentInSystemAperture = [userInterface2 progressIsPersistentInSystemAperture];
 
-  if (v13)
+  if (progressIsPersistentInSystemAperture)
   {
     [v10 setObject:*MEMORY[0x1E69D4428] forKey:*MEMORY[0x1E699F940]];
   }
@@ -587,21 +587,21 @@ void __70__WFDialogTransformer_openURL_withBundleIdentifier_completionHandler___
   v14 = +[WFAssistantServicesWrapper isPersistentSiriAvailable];
   v15 = objc_alloc(MEMORY[0x1E6996CA0]);
   v16 = [v10 copy];
-  v17 = [v15 initWithBundleIdentifier:v6 options:v16 URL:0 userActivity:0 retainsSiri:v14];
+  v17 = [v15 initWithBundleIdentifier:identifierCopy options:v16 URL:0 userActivity:0 retainsSiri:v14];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __69__WFDialogTransformer_openAppWithBundleIdentifier_completionHandler___block_invoke;
   v19[3] = &unk_1E837F0F0;
-  v20 = v7;
-  v18 = v7;
+  v20 = handlerCopy;
+  v18 = handlerCopy;
   [v17 performWithCompletionHandler:v19];
 }
 
-- (void)resolveDescriptor:(id)a3 completionHandler:(id)a4
+- (void)resolveDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [WFAppPickerParameter alloc];
   v7 = [WFParameterDefinition alloc];
   v19 = @"AppSearchType";
@@ -610,18 +610,18 @@ void __70__WFDialogTransformer_openURL_withBundleIdentifier_completionHandler___
   v9 = [(WFParameterDefinition *)v7 initWithDictionary:v8];
   v10 = [(WFAppPickerParameter *)v6 initWithDefinition:v9];
 
-  v11 = [(WFDialogTransformer *)self attribution];
-  v12 = [(WFParameter *)v10 localizedPrompt];
+  attribution = [(WFDialogTransformer *)self attribution];
+  localizedPrompt = [(WFParameter *)v10 localizedPrompt];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __59__WFDialogTransformer_resolveDescriptor_completionHandler___block_invoke;
   v16[3] = &unk_1E83774D8;
   v16[4] = self;
   v17 = v10;
-  v18 = v5;
-  v13 = v5;
+  v18 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v10;
-  [(WFDynamicEnumerationParameter *)v14 createDialogRequestWithAttribution:v11 defaultState:0 prompt:v12 completionHandler:v16];
+  [(WFDynamicEnumerationParameter *)v14 createDialogRequestWithAttribution:attribution defaultState:0 prompt:localizedPrompt completionHandler:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -667,47 +667,47 @@ void __59__WFDialogTransformer_resolveDescriptor_completionHandler___block_invok
   (*(v5 + 16))(v5, v6);
 }
 
-- (void)dismissPresentedContentWithCompletionHandler:(id)a3
+- (void)dismissPresentedContentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFDialogTransformer *)self userInterfacePresenter];
+  handlerCopy = handler;
+  userInterfacePresenter = [(WFDialogTransformer *)self userInterfacePresenter];
 
-  if (v5)
+  if (userInterfacePresenter)
   {
-    v6 = [(WFDialogTransformer *)self userInterfacePresenter];
-    v7 = [(WFDialogTransformer *)self runningContext];
+    userInterfacePresenter2 = [(WFDialogTransformer *)self userInterfacePresenter];
+    runningContext = [(WFDialogTransformer *)self runningContext];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __68__WFDialogTransformer_dismissPresentedContentWithCompletionHandler___block_invoke;
     v8[3] = &unk_1E837BE38;
-    v9 = v4;
-    [v6 dismissPresentedContentForRunningContext:v7 completionHandler:v8];
+    v9 = handlerCopy;
+    [userInterfacePresenter2 dismissPresentedContentForRunningContext:runningContext completionHandler:v8];
   }
 
   else
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)requestActionInterfacePresentationForActionClassName:(id)a3 classNamesByType:(id)a4 completionHandler:(id)a5
+- (void)requestActionInterfacePresentationForActionClassName:(id)name classNamesByType:(id)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
+  typeCopy = type;
   v11 = [WFShowActionInterfaceDialogRequest alloc];
-  v12 = [(WFDialogTransformer *)self attribution];
-  v13 = [(WFShowActionInterfaceDialogRequest *)v11 initWithActionClassName:v8 classNamesByType:v10 attribution:v12];
+  attribution = [(WFDialogTransformer *)self attribution];
+  v13 = [(WFShowActionInterfaceDialogRequest *)v11 initWithActionClassName:nameCopy classNamesByType:typeCopy attribution:attribution];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __111__WFDialogTransformer_requestActionInterfacePresentationForActionClassName_classNamesByType_completionHandler___block_invoke;
   v16[3] = &unk_1E83772C8;
-  v18 = self;
-  v19 = v9;
-  v17 = v8;
-  v14 = v8;
-  v15 = v9;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v17 = nameCopy;
+  v14 = nameCopy;
+  v15 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v13 completionHandler:v16];
 }
 
@@ -965,19 +965,19 @@ void __77__WFDialogTransformer_getEnvironmentForLinkViewSnippetWithDialog_comple
   (*(v4 + 16))(v4, v7);
 }
 
-- (void)presentAlertWithSmartPromptConfiguration:(id)a3 completionHandler:(id)a4
+- (void)presentAlertWithSmartPromptConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFDialogTransformer *)self privacyAttribution];
-  v9 = [v7 authorizationDialogRequestWithAttribution:v8];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  privacyAttribution = [(WFDialogTransformer *)self privacyAttribution];
+  v9 = [configurationCopy authorizationDialogRequestWithAttribution:privacyAttribution];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __82__WFDialogTransformer_presentAlertWithSmartPromptConfiguration_completionHandler___block_invoke;
   v11[3] = &unk_1E8377410;
-  v12 = v6;
-  v10 = v6;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v9 completionHandler:v11];
 }
 
@@ -1010,42 +1010,42 @@ void __82__WFDialogTransformer_presentAlertWithSmartPromptConfiguration_completi
   (*(v5 + 16))(v5, v6);
 }
 
-- (void)showChronoControlOfType:(unint64_t)a3 identity:(id)a4 completionHandler:(id)a5
+- (void)showChronoControlOfType:(unint64_t)type identity:(id)identity completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x1E69E09D8];
-  v10 = a4;
+  identityCopy = identity;
   v11 = [v9 alloc];
-  v12 = [(WFDialogTransformer *)self attribution];
-  v13 = [v11 initWithControlType:a3 identity:v10 attribution:v12];
+  attribution = [(WFDialogTransformer *)self attribution];
+  v13 = [v11 initWithControlType:type identity:identityCopy attribution:attribution];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__WFDialogTransformer_showChronoControlOfType_identity_completionHandler___block_invoke;
   v15[3] = &unk_1E8377410;
-  v16 = v8;
-  v14 = v8;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v13 completionHandler:v15];
 }
 
-- (void)showLinkChoice:(id)a3 dialog:(id)a4 completionHandler:(id)a5
+- (void)showLinkChoice:(id)choice dialog:(id)dialog completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 dialog];
+  choiceCopy = choice;
+  dialogCopy = dialog;
+  handlerCopy = handler;
+  dialog = [choiceCopy dialog];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__WFDialogTransformer_showLinkChoice_dialog_completionHandler___block_invoke;
   v15[3] = &unk_1E8377488;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 getResultWithCompletionHandler:v15];
+  v16 = choiceCopy;
+  selfCopy = self;
+  v18 = dialogCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dialogCopy;
+  v14 = choiceCopy;
+  [dialog getResultWithCompletionHandler:v15];
 }
 
 void __63__WFDialogTransformer_showLinkChoice_dialog_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1101,21 +1101,21 @@ void __63__WFDialogTransformer_showLinkChoice_dialog_completionHandler___block_i
   (*(v5 + 16))(v5, v6, v8);
 }
 
-- (void)showSnippetLinkAction:(id)a3 encodedSnippetActionToolInvocation:(id)a4 completionHandler:(id)a5
+- (void)showSnippetLinkAction:(id)action encodedSnippetActionToolInvocation:(id)invocation completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  invocationCopy = invocation;
+  actionCopy = action;
   v11 = [WFLinkSnippetActionDialogRequest alloc];
-  v12 = [(WFDialogTransformer *)self attribution];
-  v13 = [(WFLinkSnippetActionDialogRequest *)v11 initWithSnippetAction:v10 attribution:v12 encodedSnippetActionToolInvocation:v9];
+  attribution = [(WFDialogTransformer *)self attribution];
+  v13 = [(WFLinkSnippetActionDialogRequest *)v11 initWithSnippetAction:actionCopy attribution:attribution encodedSnippetActionToolInvocation:invocationCopy];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __98__WFDialogTransformer_showSnippetLinkAction_encodedSnippetActionToolInvocation_completionHandler___block_invoke;
   v15[3] = &unk_1E8377410;
-  v16 = v8;
-  v14 = v8;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v13 completionHandler:v15];
 }
 
@@ -1150,23 +1150,23 @@ void __98__WFDialogTransformer_showSnippetLinkAction_encodedSnippetActionToolInv
   (*(v5 + 16))(v5, v6, v8);
 }
 
-- (void)showLinkResult:(id)a3 dialog:(id)a4 encodedSnippetActionToolInvocation:(id)a5 completionHandler:(id)a6
+- (void)showLinkResult:(id)result dialog:(id)dialog encodedSnippetActionToolInvocation:(id)invocation completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  invocationCopy = invocation;
+  dialogCopy = dialog;
+  resultCopy = result;
   v14 = [WFLinkResultDialogRequest alloc];
-  v15 = [(WFDialogTransformer *)self attribution];
-  v16 = [(WFLinkResultDialogRequest *)v14 initWithSuccessResult:v13 attribution:v15 encodedSnippetActionToolInvocation:v11];
+  attribution = [(WFDialogTransformer *)self attribution];
+  v16 = [(WFLinkResultDialogRequest *)v14 initWithSuccessResult:resultCopy attribution:attribution encodedSnippetActionToolInvocation:invocationCopy];
 
-  [(WFDialogRequest *)v16 setLinkDialog:v12];
+  [(WFDialogRequest *)v16 setLinkDialog:dialogCopy];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __98__WFDialogTransformer_showLinkResult_dialog_encodedSnippetActionToolInvocation_completionHandler___block_invoke;
   v18[3] = &unk_1E8377410;
-  v19 = v10;
-  v17 = v10;
+  v19 = handlerCopy;
+  v17 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v16 completionHandler:v18];
 }
 
@@ -1201,31 +1201,31 @@ void __98__WFDialogTransformer_showLinkResult_dialog_encodedSnippetActionToolInv
   (*(v5 + 16))(v5, v6, v8);
 }
 
-- (void)showLinkParameterConfirmationWithActionMetadata:(id)a3 dialog:(id)a4 dialogString:(id)a5 viewSnippet:(id)a6 parameterValue:(id)a7 completionHandler:(id)a8
+- (void)showLinkParameterConfirmationWithActionMetadata:(id)metadata dialog:(id)dialog dialogString:(id)string viewSnippet:(id)snippet parameterValue:(id)value completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  metadataCopy = metadata;
+  dialogCopy = dialog;
+  stringCopy = string;
+  snippetCopy = snippet;
+  valueCopy = value;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __136__WFDialogTransformer_showLinkParameterConfirmationWithActionMetadata_dialog_dialogString_viewSnippet_parameterValue_completionHandler___block_invoke;
   block[3] = &unk_1E8377460;
-  v27 = v18;
-  v28 = v14;
-  v29 = v16;
-  v30 = v17;
-  v31 = self;
-  v32 = v15;
-  v33 = v19;
-  v20 = v19;
-  v21 = v15;
-  v22 = v17;
-  v23 = v16;
-  v24 = v14;
-  v25 = v18;
+  v27 = valueCopy;
+  v28 = metadataCopy;
+  v29 = stringCopy;
+  v30 = snippetCopy;
+  selfCopy = self;
+  v32 = dialogCopy;
+  v33 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = dialogCopy;
+  v22 = snippetCopy;
+  v23 = stringCopy;
+  v24 = metadataCopy;
+  v25 = valueCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1306,39 +1306,39 @@ void __136__WFDialogTransformer_showLinkParameterConfirmationWithActionMetadata_
   (*(v5 + 16))(v5, v6, v8);
 }
 
-- (void)showLinkActionConfirmationWithActionMetadata:(id)a3 showPrompt:(BOOL)a4 dialog:(id)a5 dialogString:(id)a6 viewSnippet:(id)a7 snippetAction:(id)a8 encodedSnippetActionToolInvocation:(id)a9 confirmationActionName:(id)a10 isContinueInAppRequest:(BOOL)a11 systemStyle:(id)a12 completionHandler:(id)a13
+- (void)showLinkActionConfirmationWithActionMetadata:(id)metadata showPrompt:(BOOL)prompt dialog:(id)dialog dialogString:(id)string viewSnippet:(id)snippet snippetAction:(id)action encodedSnippetActionToolInvocation:(id)invocation confirmationActionName:(id)self0 isContinueInAppRequest:(BOOL)self1 systemStyle:(id)self2 completionHandler:(id)self3
 {
-  v36 = a4;
-  v37 = a13;
-  v33 = a12;
-  v18 = a10;
-  v34 = a9;
-  v32 = a8;
-  v19 = a7;
-  v20 = a6;
-  v35 = a5;
-  v21 = a3;
-  v22 = [v18 acceptLabel];
-  v23 = [v22 localizedStringForLocaleIdentifier:0];
+  promptCopy = prompt;
+  handlerCopy = handler;
+  styleCopy = style;
+  nameCopy = name;
+  invocationCopy = invocation;
+  actionCopy = action;
+  snippetCopy = snippet;
+  stringCopy = string;
+  dialogCopy = dialog;
+  metadataCopy = metadata;
+  acceptLabel = [nameCopy acceptLabel];
+  v23 = [acceptLabel localizedStringForLocaleIdentifier:0];
 
-  v24 = [v18 denyLabel];
-  v25 = [v24 localizedStringForLocaleIdentifier:0];
+  denyLabel = [nameCopy denyLabel];
+  v25 = [denyLabel localizedStringForLocaleIdentifier:0];
 
   v26 = objc_alloc(MEMORY[0x1E69E0BB0]);
-  v27 = [(WFDialogTransformer *)self attribution];
-  LOBYTE(a6) = [v18 destructive];
+  attribution = [(WFDialogTransformer *)self attribution];
+  LOBYTE(string) = [nameCopy destructive];
 
-  LOBYTE(v31) = a6;
-  LOBYTE(v30) = a11;
-  v28 = [v26 initWithActionMetadata:v21 showPrompt:v36 dialogString:v20 viewSnippet:v19 snippetAction:v32 encodedSnippetActionToolInvocation:v34 yesText:v23 noText:v25 attribution:v27 parameterInfo:0 isContinueInAppRequest:v30 systemStyle:v33 destructive:v31];
+  LOBYTE(v31) = string;
+  LOBYTE(v30) = request;
+  v28 = [v26 initWithActionMetadata:metadataCopy showPrompt:promptCopy dialogString:stringCopy viewSnippet:snippetCopy snippetAction:actionCopy encodedSnippetActionToolInvocation:invocationCopy yesText:v23 noText:v25 attribution:attribution parameterInfo:0 isContinueInAppRequest:v30 systemStyle:styleCopy destructive:v31];
 
-  [v28 setLinkDialog:v35];
+  [v28 setLinkDialog:dialogCopy];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __236__WFDialogTransformer_showLinkActionConfirmationWithActionMetadata_showPrompt_dialog_dialogString_viewSnippet_snippetAction_encodedSnippetActionToolInvocation_confirmationActionName_isContinueInAppRequest_systemStyle_completionHandler___block_invoke;
   v39[3] = &unk_1E8377410;
-  v40 = v37;
-  v29 = v37;
+  v40 = handlerCopy;
+  v29 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v28 completionHandler:v39];
 }
 
@@ -1374,20 +1374,20 @@ void __236__WFDialogTransformer_showLinkActionConfirmationWithActionMetadata_sho
   (*(v5 + 16))(v5, v6, v7, v9);
 }
 
-- (void)showPreviewForContentCollection:(id)a3 completionHandler:(id)a4
+- (void)showPreviewForContentCollection:(id)collection completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  collectionCopy = collection;
   v8 = [WFShowContentDialogRequest alloc];
-  v9 = [(WFDialogTransformer *)self attribution];
-  v10 = [(WFShowContentDialogRequest *)v8 initWithContentCollection:v7 attribution:v9 prompt:0];
+  attribution = [(WFDialogTransformer *)self attribution];
+  v10 = [(WFShowContentDialogRequest *)v8 initWithContentCollection:collectionCopy attribution:attribution prompt:0];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__WFDialogTransformer_showPreviewForContentCollection_completionHandler___block_invoke;
   v12[3] = &unk_1E8377410;
-  v13 = v6;
-  v11 = v6;
+  v13 = handlerCopy;
+  v11 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v10 completionHandler:v12];
 }
 
@@ -1400,20 +1400,20 @@ uint64_t __73__WFDialogTransformer_showPreviewForContentCollection_completionHan
   return v4(v2, v3);
 }
 
-- (void)showHandleInteraction:(id)a3 prompt:(id)a4 completionHandler:(id)a5
+- (void)showHandleInteraction:(id)interaction prompt:(id)prompt completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x1E69E0B20];
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v9 alloc] initWithInteraction:v11 prompt:v10];
+  promptCopy = prompt;
+  interactionCopy = interaction;
+  v12 = [[v9 alloc] initWithInteraction:interactionCopy prompt:promptCopy];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__WFDialogTransformer_showHandleInteraction_prompt_completionHandler___block_invoke;
   v14[3] = &unk_1E8377410;
-  v15 = v8;
-  v13 = v8;
+  v15 = handlerCopy;
+  v13 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v12 completionHandler:v14];
 }
 
@@ -1434,20 +1434,20 @@ void __70__WFDialogTransformer_showHandleInteraction_prompt_completionHandler___
   }
 }
 
-- (void)showConfirmInteraction:(id)a3 prompt:(id)a4 requireAuthentication:(BOOL)a5 completionHandler:(id)a6
+- (void)showConfirmInteraction:(id)interaction prompt:(id)prompt requireAuthentication:(BOOL)authentication completionHandler:(id)handler
 {
-  v9 = a6;
+  handlerCopy = handler;
   v10 = MEMORY[0x1E69E0A18];
-  v11 = a4;
-  v12 = a3;
-  v13 = [[v10 alloc] initWithInteraction:v12 prompt:v11];
+  promptCopy = prompt;
+  interactionCopy = interaction;
+  v13 = [[v10 alloc] initWithInteraction:interactionCopy prompt:promptCopy];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93__WFDialogTransformer_showConfirmInteraction_prompt_requireAuthentication_completionHandler___block_invoke;
   v15[3] = &unk_1E8377410;
-  v16 = v9;
-  v14 = v9;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v13 completionHandler:v15];
 }
 
@@ -1469,16 +1469,16 @@ void __93__WFDialogTransformer_showConfirmInteraction_prompt_requireAuthenticati
   }
 }
 
-- (void)sequentialParameterInputProviderDidCancel:(id)a3 responseContext:(id)a4
+- (void)sequentialParameterInputProviderDidCancel:(id)cancel responseContext:(id)context
 {
-  v10 = a4;
-  v5 = [(WFDialogTransformer *)self parameterInputCompletionHandler];
+  contextCopy = context;
+  parameterInputCompletionHandler = [(WFDialogTransformer *)self parameterInputCompletionHandler];
 
-  if (v5)
+  if (parameterInputCompletionHandler)
   {
-    v6 = [(WFDialogTransformer *)self parameterInputCompletionHandler];
-    v7 = [MEMORY[0x1E696ABC0] userCancelledError];
-    (v6)[2](v6, 0, v7, v10);
+    parameterInputCompletionHandler2 = [(WFDialogTransformer *)self parameterInputCompletionHandler];
+    userCancelledError = [MEMORY[0x1E696ABC0] userCancelledError];
+    (parameterInputCompletionHandler2)[2](parameterInputCompletionHandler2, 0, userCancelledError, contextCopy);
 
     parameterInputProvider = self->_parameterInputProvider;
     self->_parameterInputProvider = 0;
@@ -1488,16 +1488,16 @@ void __93__WFDialogTransformer_showConfirmInteraction_prompt_requireAuthenticati
   }
 }
 
-- (void)sequentialParameterInputProvider:(id)a3 didFinishWithInputtedStates:(id)a4 responseContext:(id)a5
+- (void)sequentialParameterInputProvider:(id)provider didFinishWithInputtedStates:(id)states responseContext:(id)context
 {
-  v12 = a4;
-  v7 = a5;
-  v8 = [(WFDialogTransformer *)self parameterInputCompletionHandler];
+  statesCopy = states;
+  contextCopy = context;
+  parameterInputCompletionHandler = [(WFDialogTransformer *)self parameterInputCompletionHandler];
 
-  if (v8)
+  if (parameterInputCompletionHandler)
   {
-    v9 = [(WFDialogTransformer *)self parameterInputCompletionHandler];
-    (v9)[2](v9, v12, 0, v7);
+    parameterInputCompletionHandler2 = [(WFDialogTransformer *)self parameterInputCompletionHandler];
+    (parameterInputCompletionHandler2)[2](parameterInputCompletionHandler2, statesCopy, 0, contextCopy);
 
     parameterInputProvider = self->_parameterInputProvider;
     self->_parameterInputProvider = 0;
@@ -1507,39 +1507,39 @@ void __93__WFDialogTransformer_showConfirmInteraction_prompt_requireAuthenticati
   }
 }
 
-- (void)showAskParameterDialogForParameter:(id)a3 action:(id)a4 defaultState:(id)a5 prompt:(id)a6 completion:(id)a7
+- (void)showAskParameterDialogForParameter:(id)parameter action:(id)action defaultState:(id)state prompt:(id)prompt completion:(id)completion
 {
   v77 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(WFDialogTransformer *)self allowedParameterClasses];
-  if ([v17 count])
+  parameterCopy = parameter;
+  actionCopy = action;
+  stateCopy = state;
+  promptCopy = prompt;
+  completionCopy = completion;
+  allowedParameterClasses = [(WFDialogTransformer *)self allowedParameterClasses];
+  if ([allowedParameterClasses count])
   {
-    v18 = [(WFDialogTransformer *)self allowedParameterClasses];
-    v19 = [v18 containsObject:objc_opt_class()];
+    allowedParameterClasses2 = [(WFDialogTransformer *)self allowedParameterClasses];
+    v19 = [allowedParameterClasses2 containsObject:objc_opt_class()];
 
     if ((v19 & 1) == 0)
     {
-      v20 = [(WFDialogTransformer *)self parameterInputCompletionHandler];
+      parameterInputCompletionHandler = [(WFDialogTransformer *)self parameterInputCompletionHandler];
       [(WFDialogTransformer *)self setParameterInputCompletionHandler:0];
-      if (v20)
+      if (parameterInputCompletionHandler)
       {
-        v21 = v15;
-        v22 = v13;
+        v21 = promptCopy;
+        v22 = actionCopy;
         v23 = MEMORY[0x1E696ABC0];
-        v24 = [v12 localizedLabel];
-        v25 = [MEMORY[0x1E69E0A90] currentDevice];
-        v26 = [v23 wf_unsupportedParameterErrorWithParameterName:v24 errorType:@"NotAvailableOnSpecifiedPlatform" platformIdiom:{objc_msgSend(v25, "idiom")}];
+        localizedLabel = [parameterCopy localizedLabel];
+        currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+        v26 = [v23 wf_unsupportedParameterErrorWithParameterName:localizedLabel errorType:@"NotAvailableOnSpecifiedPlatform" platformIdiom:{objc_msgSend(currentDevice, "idiom")}];
 
-        (v20)[2](v20, 0, v26, 0);
-        v13 = v22;
-        v15 = v21;
+        (parameterInputCompletionHandler)[2](parameterInputCompletionHandler, 0, v26, 0);
+        actionCopy = v22;
+        promptCopy = v21;
       }
 
-      (*(v16 + 2))(v16, 1, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0, 0);
 
       goto LABEL_23;
     }
@@ -1549,23 +1549,23 @@ void __93__WFDialogTransformer_showConfirmInteraction_prompt_requireAuthenticati
   {
   }
 
-  v60 = self;
-  v57 = v16;
-  v58 = v15;
+  selfCopy = self;
+  v57 = completionCopy;
+  v58 = promptCopy;
   v27 = objc_opt_new();
-  v59 = v14;
-  v28 = [v14 serializedRepresentation];
-  v29 = [v12 key];
+  v59 = stateCopy;
+  serializedRepresentation = [stateCopy serializedRepresentation];
+  v29 = [parameterCopy key];
   v61 = v27;
-  [v27 if_setObjectIfNonNil:v28 forKey:v29];
+  [v27 if_setObjectIfNonNil:serializedRepresentation forKey:v29];
 
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v30 = v13;
-  v31 = [v13 parameters];
-  v32 = [v31 countByEnumeratingWithState:&v66 objects:v76 count:16];
+  v30 = actionCopy;
+  parameters = [actionCopy parameters];
+  v32 = [parameters countByEnumeratingWithState:&v66 objects:v76 count:16];
   if (v32)
   {
     v33 = v32;
@@ -1576,12 +1576,12 @@ void __93__WFDialogTransformer_showConfirmInteraction_prompt_requireAuthenticati
       {
         if (*v67 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(parameters);
         }
 
         v36 = *(*(&v66 + 1) + 8 * i);
         v37 = [v36 key];
-        v38 = [v12 key];
+        v38 = [parameterCopy key];
         v39 = [v37 isEqualToString:v38];
 
         if ((v39 & 1) == 0)
@@ -1589,44 +1589,44 @@ void __93__WFDialogTransformer_showConfirmInteraction_prompt_requireAuthenticati
           v40 = [v36 key];
           v41 = [v30 parameterStateForKey:v40 fallingBackToDefaultValue:0];
 
-          v42 = [v41 serializedRepresentation];
+          serializedRepresentation2 = [v41 serializedRepresentation];
           v43 = [v36 key];
-          [v61 if_setObjectIfNonNil:v42 forKey:v43];
+          [v61 if_setObjectIfNonNil:serializedRepresentation2 forKey:v43];
         }
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v66 objects:v76 count:16];
+      v33 = [parameters countByEnumeratingWithState:&v66 objects:v76 count:16];
     }
 
     while (v33);
   }
 
-  v44 = [MEMORY[0x1E69E09A0] dialogComponentStyleForParameter:v12];
-  v45 = [MEMORY[0x1E69E0AA0] doneButton];
-  v13 = v30;
-  v46 = [v30 identifier];
-  if (![v46 isEqualToString:@"is.workflow.actions.timer.start"])
+  v44 = [MEMORY[0x1E69E09A0] dialogComponentStyleForParameter:parameterCopy];
+  doneButton = [MEMORY[0x1E69E0AA0] doneButton];
+  actionCopy = v30;
+  identifier = [v30 identifier];
+  if (![identifier isEqualToString:@"is.workflow.actions.timer.start"])
   {
     goto LABEL_19;
   }
 
-  v47 = [(WFDialogTransformer *)v60 runningContext];
-  v48 = [v47 workflowIdentifier];
+  runningContext = [(WFDialogTransformer *)selfCopy runningContext];
+  workflowIdentifier = [runningContext workflowIdentifier];
 
-  if (!v48)
+  if (!workflowIdentifier)
   {
     [MEMORY[0x1E69E0AA0] startButton];
-    v45 = v46 = v45;
+    doneButton = identifier = doneButton;
 LABEL_19:
   }
 
   v49 = objc_alloc(MEMORY[0x1E69E09A0]);
-  v50 = [v30 identifier];
-  v51 = [v12 key];
-  v52 = [(WFDialogTransformer *)v60 attribution];
+  identifier2 = [v30 identifier];
+  v51 = [parameterCopy key];
+  attribution = [(WFDialogTransformer *)selfCopy attribution];
   LOBYTE(v56) = 1;
-  v15 = v58;
-  v53 = [v49 initWithActionIdentifier:v50 parameterKey:v51 serializedParameterStates:v61 style:v44 attribution:v52 prompt:v58 doneButton:v45 focusImmediatelyWhenPresented:v56];
+  promptCopy = v58;
+  v53 = [v49 initWithActionIdentifier:identifier2 parameterKey:v51 serializedParameterStates:v61 style:v44 attribution:attribution prompt:v58 doneButton:doneButton focusImmediatelyWhenPresented:v56];
 
   v54 = getWFDialogLogObject();
   if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
@@ -1634,7 +1634,7 @@ LABEL_19:
     *buf = 136315650;
     v71 = "[WFDialogTransformer showAskParameterDialogForParameter:action:defaultState:prompt:completion:]";
     v72 = 2112;
-    v73 = v12;
+    v73 = parameterCopy;
     v74 = 2112;
     v75 = v53;
     _os_log_impl(&dword_1CA256000, v54, OS_LOG_TYPE_DEFAULT, "%s %@ created %@", buf, 0x20u);
@@ -1644,13 +1644,13 @@ LABEL_19:
   v62[1] = 3221225472;
   v62[2] = __96__WFDialogTransformer_showAskParameterDialogForParameter_action_defaultState_prompt_completion___block_invoke;
   v62[3] = &unk_1E83773E8;
-  v16 = v57;
+  completionCopy = v57;
   v65 = v57;
   v63 = v30;
-  v64 = v12;
-  [(WFDialogTransformer *)v60 handleDialogRequest:v53 completionHandler:v62];
+  v64 = parameterCopy;
+  [(WFDialogTransformer *)selfCopy handleDialogRequest:v53 completionHandler:v62];
 
-  v14 = v59;
+  stateCopy = v59;
 LABEL_23:
 
   v55 = *MEMORY[0x1E69E9840];
@@ -1728,52 +1728,52 @@ void __96__WFDialogTransformer_showAskParameterDialogForParameter_action_default
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sequentialParameterInputProvider:(id)a3 didAdvanceToParameter:(id)a4 action:(id)a5 defaultState:(id)a6 prompt:(id)a7 linkDialog:(id)a8 completion:(id)a9
+- (void)sequentialParameterInputProvider:(id)provider didAdvanceToParameter:(id)parameter action:(id)action defaultState:(id)state prompt:(id)prompt linkDialog:(id)dialog completion:(id)completion
 {
   v63 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = [(WFDialogTransformer *)self runningContext];
-  v21 = [v20 workflowIdentifier];
-  v43 = v17;
-  if (v21)
+  parameterCopy = parameter;
+  actionCopy = action;
+  stateCopy = state;
+  promptCopy = prompt;
+  dialogCopy = dialog;
+  completionCopy = completion;
+  runningContext = [(WFDialogTransformer *)self runningContext];
+  workflowIdentifier = [runningContext workflowIdentifier];
+  v43 = promptCopy;
+  if (workflowIdentifier)
   {
 
     goto LABEL_3;
   }
 
-  v24 = [v15 identifier];
-  if ([v24 isEqualToString:@"com.apple.mobiletimer-framework.MobileTimerIntents.MTCreateAlarmIntent"])
+  identifier = [actionCopy identifier];
+  if ([identifier isEqualToString:@"com.apple.mobiletimer-framework.MobileTimerIntents.MTCreateAlarmIntent"])
   {
   }
 
   else
   {
-    [v15 identifier];
+    [actionCopy identifier];
     v26 = v25 = self;
     v27 = [v26 isEqualToString:@"is.workflow.actions.timer.start"];
 
     self = v25;
-    v17 = v43;
+    promptCopy = v43;
     if ((v27 & 1) == 0)
     {
 LABEL_3:
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && !v17)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && !promptCopy)
       {
-        v22 = [v14 localizedPrompt];
+        localizedPrompt = [parameterCopy localizedPrompt];
       }
 
       else
       {
-        v22 = v17;
+        localizedPrompt = promptCopy;
       }
 
-      v23 = v22;
+      v23 = localizedPrompt;
       goto LABEL_11;
     }
   }
@@ -1784,19 +1784,19 @@ LABEL_11:
   aBlock[1] = 3221225472;
   aBlock[2] = __127__WFDialogTransformer_sequentialParameterInputProvider_didAdvanceToParameter_action_defaultState_prompt_linkDialog_completion___block_invoke;
   aBlock[3] = &unk_1E8377460;
-  v42 = self;
+  selfCopy = self;
   aBlock[4] = self;
-  v28 = v14;
+  v28 = parameterCopy;
   v51 = v28;
   v29 = v23;
   v52 = v29;
-  v30 = v18;
+  v30 = dialogCopy;
   v53 = v30;
-  v31 = v19;
+  v31 = completionCopy;
   v56 = v31;
-  v32 = v15;
+  v32 = actionCopy;
   v54 = v32;
-  v33 = v16;
+  v33 = stateCopy;
   v55 = v33;
   v34 = _Block_copy(aBlock);
   v35 = [v28 key];
@@ -1807,12 +1807,12 @@ LABEL_11:
     v37 = getWFDialogLogObject();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [v32 identifier];
+      identifier2 = [v32 identifier];
       v39 = [v28 key];
       *buf = 136315650;
       v58 = "[WFDialogTransformer sequentialParameterInputProvider:didAdvanceToParameter:action:defaultState:prompt:linkDialog:completion:]";
       v59 = 2112;
-      v60 = v38;
+      v60 = identifier2;
       v61 = 2112;
       v62 = v39;
       _os_log_impl(&dword_1CA256000, v37, OS_LOG_TYPE_DEFAULT, "%s Consulting top hits for entity items for action: %@, parameter: %@", buf, 0x20u);
@@ -1825,7 +1825,7 @@ LABEL_11:
     v44[3] = &unk_1E83773B8;
     v45 = v32;
     v46 = v28;
-    v47 = v42;
+    v47 = selfCopy;
     v48 = v34;
     v49 = v31;
     [v45 fetchSuggestedEntitiesForParameterWithKey:v40 completionHandler:v44];
@@ -2238,20 +2238,20 @@ void __127__WFDialogTransformer_sequentialParameterInputProvider_didAdvanceToPar
   }
 }
 
-- (void)action:(id)a3 provideInputForParameters:(id)a4 withDefaultStates:(id)a5 prompts:(id)a6 completionHandler:(id)a7
+- (void)action:(id)action provideInputForParameters:(id)parameters withDefaultStates:(id)states prompts:(id)prompts completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  actionCopy = action;
+  parametersCopy = parameters;
+  statesCopy = states;
+  promptsCopy = prompts;
+  handlerCopy = handler;
   if (![(WFDialogTransformer *)self isRunningWithSiriUI])
   {
     goto LABEL_15;
   }
 
-  v17 = v12;
+  v17 = actionCopy;
   if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -2264,24 +2264,24 @@ void __127__WFDialogTransformer_sequentialParameterInputProvider_didAdvanceToPar
 LABEL_14:
 
 LABEL_15:
-    [(WFDialogTransformer *)self setParameterInputCompletionHandler:v16];
+    [(WFDialogTransformer *)self setParameterInputCompletionHandler:handlerCopy];
     v27 = [[WFSequentialParameterInputProvider alloc] initWithDelegate:self];
-    [(WFSequentialParameterInputProvider *)v27 startWithAction:v12 parameters:v13 defaultStates:v14 prompts:v15];
+    [(WFSequentialParameterInputProvider *)v27 startWithAction:actionCopy parameters:parametersCopy defaultStates:statesCopy prompts:promptsCopy];
     parameterInputProvider = self->_parameterInputProvider;
     self->_parameterInputProvider = v27;
 
     goto LABEL_16;
   }
 
-  v30 = v14;
-  v32 = v12;
+  v30 = statesCopy;
+  v32 = actionCopy;
   v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v31 = v13;
-  v19 = v13;
+  v31 = parametersCopy;
+  v19 = parametersCopy;
   v20 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v20)
   {
@@ -2308,37 +2308,37 @@ LABEL_15:
     while (v21);
   }
 
-  (*(v16 + 2))(v16, v18, 0, 0);
-  v13 = v31;
-  v12 = v32;
-  v14 = v30;
+  (*(handlerCopy + 2))(handlerCopy, v18, 0, 0);
+  parametersCopy = v31;
+  actionCopy = v32;
+  statesCopy = v30;
 LABEL_16:
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAlertAsSiriDialog:(id)a3
+- (void)handleAlertAsSiriDialog:(id)dialog
 {
-  v5 = a3;
-  v6 = [v5 title];
-  v7 = [v5 message];
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  dialogCopy = dialog;
+  title = [dialogCopy title];
+  message = [dialogCopy message];
+  if ([title length] && objc_msgSend(message, "length"))
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\n%@", v6, v7];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n\n%@", title, message];
 LABEL_8:
     v9 = v8;
     goto LABEL_9;
   }
 
-  if ([v6 length])
+  if ([title length])
   {
-    v8 = v6;
+    v8 = title;
     goto LABEL_8;
   }
 
-  if ([v7 length])
+  if ([message length])
   {
-    v8 = v7;
+    v8 = message;
     goto LABEL_8;
   }
 
@@ -2346,8 +2346,8 @@ LABEL_8:
 LABEL_9:
   if (!self->_externalUIPresenter)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFDialogTransformer.m" lineNumber:916 description:@"Siri UI presenter must be non-nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDialogTransformer.m" lineNumber:916 description:@"Siri UI presenter must be non-nil"];
   }
 
   v10 = [objc_alloc(MEMORY[0x1E69E0D18]) initWithUtterance:v9];
@@ -2355,8 +2355,8 @@ LABEL_9:
   v13[1] = 3221225472;
   v13[2] = __47__WFDialogTransformer_handleAlertAsSiriDialog___block_invoke;
   v13[3] = &unk_1E8377278;
-  v14 = v5;
-  v11 = v5;
+  v14 = dialogCopy;
+  v11 = dialogCopy;
   [(WFDialogTransformer *)self performSiriRequest:v10 completionHandler:v13];
 }
 
@@ -2374,13 +2374,13 @@ void __47__WFDialogTransformer_handleAlertAsSiriDialog___block_invoke(uint64_t a
   }
 }
 
-- (BOOL)shouldHandleAlertAsSiriDialog:(id)a3
+- (BOOL)shouldHandleAlertAsSiriDialog:(id)dialog
 {
-  v4 = a3;
+  dialogCopy = dialog;
   if ([(WFDialogTransformer *)self isRunningWithSiriUI])
   {
-    v5 = [v4 buttons];
-    if ([v5 count] == 1)
+    buttons = [dialogCopy buttons];
+    if ([buttons count] == 1)
     {
       objc_opt_class();
       v6 = objc_opt_isKindOfClass() ^ 1;
@@ -2400,16 +2400,16 @@ void __47__WFDialogTransformer_handleAlertAsSiriDialog___block_invoke(uint64_t a
   return v6 & 1;
 }
 
-- (void)handleAlertWithMultipleButtons:(id)a3
+- (void)handleAlertWithMultipleButtons:(id)buttons
 {
   v78 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  buttonsCopy = buttons;
   v48 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = MEMORY[0x1E6996D28];
-  v47 = v3;
-  v6 = [v3 buttons];
-  [v5 processContentAlertButtonSubtitles:v6];
+  v47 = buttonsCopy;
+  buttons = [buttonsCopy buttons];
+  [v5 processContentAlertButtonSubtitles:buttons];
 
   v73 = 0;
   v74 = &v73;
@@ -2432,8 +2432,8 @@ void __47__WFDialogTransformer_handleAlertAsSiriDialog___block_invoke(uint64_t a
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v7 = [v3 buttons];
-  v8 = [v7 countByEnumeratingWithState:&v57 objects:v77 count:16];
+  buttons2 = [buttonsCopy buttons];
+  v8 = [buttons2 countByEnumeratingWithState:&v57 objects:v77 count:16];
   if (v8)
   {
     v9 = *v58;
@@ -2443,7 +2443,7 @@ void __47__WFDialogTransformer_handleAlertAsSiriDialog___block_invoke(uint64_t a
       {
         if (*v58 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(buttons2);
         }
 
         v11 = *(*(&v57 + 1) + 8 * i);
@@ -2467,15 +2467,15 @@ void __47__WFDialogTransformer_handleAlertAsSiriDialog___block_invoke(uint64_t a
             v14 = v17;
             if (isKindOfClass)
             {
-              v18 = [v17 contentItem];
+              contentItem = [v17 contentItem];
               if ([v14 stickySelection])
               {
                 *(v74 + 24) = 1;
               }
 
               v19 = [WFDialogContentListItem alloc];
-              v20 = [v18 blockingEncodedTypedValue];
-              v21 = -[WFDialogContentListItem initWithContentItem:encodedTypedValue:selected:hideSubtitle:](v19, "initWithContentItem:encodedTypedValue:selected:hideSubtitle:", v18, v20, [v14 isSelected], objc_msgSend(v14, "hideSubtitle"));
+              blockingEncodedTypedValue = [contentItem blockingEncodedTypedValue];
+              v21 = -[WFDialogContentListItem initWithContentItem:encodedTypedValue:selected:hideSubtitle:](v19, "initWithContentItem:encodedTypedValue:selected:hideSubtitle:", contentItem, blockingEncodedTypedValue, [v14 isSelected], objc_msgSend(v14, "hideSubtitle"));
 
               [v4 addObject:v21];
               [v48 setObject:v14 forKey:v21];
@@ -2495,15 +2495,15 @@ void __47__WFDialogTransformer_handleAlertAsSiriDialog___block_invoke(uint64_t a
               }
 
               v23 = objc_alloc(MEMORY[0x1E6996E88]);
-              v24 = [v14 title];
-              v25 = [v14 subtitle];
-              v26 = [v14 image];
-              v27 = [v23 initWithTitle:v24 subtitle:v25 image:v26];
+              title = [v14 title];
+              subtitle = [v14 subtitle];
+              image = [v14 image];
+              v27 = [v23 initWithTitle:title subtitle:subtitle image:image];
 
               v28 = [MEMORY[0x1E6996E80] itemWithObject:v27];
               v29 = [WFDialogContentListItem alloc];
-              v30 = [v28 blockingEncodedTypedValue];
-              v31 = -[WFDialogContentListItem initWithContentItem:encodedTypedValue:selected:serializedPossibleState:](v29, "initWithContentItem:encodedTypedValue:selected:serializedPossibleState:", v28, v30, [v14 isSelected], 0);
+              blockingEncodedTypedValue2 = [v28 blockingEncodedTypedValue];
+              v31 = -[WFDialogContentListItem initWithContentItem:encodedTypedValue:selected:serializedPossibleState:](v29, "initWithContentItem:encodedTypedValue:selected:serializedPossibleState:", v28, blockingEncodedTypedValue2, [v14 isSelected], 0);
 
               [v4 addObject:v31];
               [v48 setObject:v14 forKey:v31];
@@ -2528,13 +2528,13 @@ void __47__WFDialogTransformer_handleAlertAsSiriDialog___block_invoke(uint64_t a
           else
           {
             v34 = objc_alloc(MEMORY[0x1E6996E88]);
-            v35 = [v15 title];
-            v14 = [v34 initWithTitle:v35 subtitle:0 image:0];
+            title2 = [v15 title];
+            v14 = [v34 initWithTitle:title2 subtitle:0 image:0];
 
             v36 = [MEMORY[0x1E6996E80] itemWithObject:v14];
             v37 = [WFDialogContentListItem alloc];
-            v38 = [v36 blockingEncodedTypedValue];
-            v39 = [(WFDialogContentListItem *)v37 initWithContentItem:v36 encodedTypedValue:v38 selected:0 hideSubtitle:0];
+            blockingEncodedTypedValue3 = [v36 blockingEncodedTypedValue];
+            v39 = [(WFDialogContentListItem *)v37 initWithContentItem:v36 encodedTypedValue:blockingEncodedTypedValue3 selected:0 hideSubtitle:0];
 
             [v4 addObject:v39];
             [v48 setObject:v15 forKey:v39];
@@ -2544,7 +2544,7 @@ void __47__WFDialogTransformer_handleAlertAsSiriDialog___block_invoke(uint64_t a
 LABEL_22:
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v57 objects:v77 count:16];
+      v8 = [buttons2 countByEnumeratingWithState:&v57 objects:v77 count:16];
     }
 
     while (v8);
@@ -2559,7 +2559,7 @@ LABEL_22:
   v51 = v47;
   v54 = &v73;
   v55 = &v67;
-  v52 = self;
+  selfCopy = self;
   v53 = v48;
   v56 = &v61;
   v41 = v48;
@@ -2735,16 +2735,16 @@ LABEL_31:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAlertWithDatePicker:(id)a3
+- (void)handleAlertWithDatePicker:(id)picker
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pickerCopy = picker;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = [v3 buttons];
-  v5 = [v4 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  buttons = [pickerCopy buttons];
+  v5 = [buttons countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2757,7 +2757,7 @@ LABEL_31:
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttons);
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
@@ -2786,7 +2786,7 @@ LABEL_31:
         v8 = v13;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v6 = [buttons countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (!v6)
       {
         goto LABEL_15;
@@ -2799,22 +2799,22 @@ LABEL_31:
 LABEL_15:
 
   v15 = objc_alloc(MEMORY[0x1E69E0B70]);
-  v16 = [v3 datePickerConfiguration];
-  v17 = [v3 message];
-  v18 = [(WFDialogTransformer *)self attribution];
-  v19 = [v3 title];
-  v20 = [v15 initWithDatePickerConfiguration:v16 message:v17 attribution:v18 prompt:v19];
+  datePickerConfiguration = [pickerCopy datePickerConfiguration];
+  message = [pickerCopy message];
+  attribution = [(WFDialogTransformer *)self attribution];
+  title = [pickerCopy title];
+  v20 = [v15 initWithDatePickerConfiguration:datePickerConfiguration message:message attribution:attribution prompt:title];
 
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __49__WFDialogTransformer_handleAlertWithDatePicker___block_invoke;
   v26[3] = &unk_1E8377200;
   v27 = v7;
-  v28 = self;
-  v29 = v3;
+  selfCopy = self;
+  v29 = pickerCopy;
   v30 = v8;
   v21 = v8;
-  v22 = v3;
+  v22 = pickerCopy;
   v23 = v7;
   [(WFDialogTransformer *)self handleDialogRequest:v20 completionHandler:v26];
 
@@ -2864,16 +2864,16 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)handleAlertWithTextField:(id)a3
+- (void)handleAlertWithTextField:(id)field
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  fieldCopy = field;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = [v3 buttons];
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  buttons = [fieldCopy buttons];
+  v5 = [buttons countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2886,7 +2886,7 @@ LABEL_10:
       {
         if (*v33 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttons);
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
@@ -2915,7 +2915,7 @@ LABEL_10:
         v8 = v13;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v6 = [buttons countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (!v6)
       {
         goto LABEL_15;
@@ -2928,23 +2928,23 @@ LABEL_10:
 LABEL_15:
 
   v15 = objc_alloc(MEMORY[0x1E69E0B80]);
-  v16 = [v3 textFieldConfiguration];
-  v17 = [v3 message];
-  v18 = [(WFDialogTransformer *)self attribution];
-  v19 = [v3 title];
-  v20 = [v3 associatedParameterKey];
-  v21 = [v15 initWithTextFieldConfiguration:v16 message:v17 attribution:v18 prompt:v19 parameterKey:v20];
+  textFieldConfiguration = [fieldCopy textFieldConfiguration];
+  message = [fieldCopy message];
+  attribution = [(WFDialogTransformer *)self attribution];
+  title = [fieldCopy title];
+  associatedParameterKey = [fieldCopy associatedParameterKey];
+  v21 = [v15 initWithTextFieldConfiguration:textFieldConfiguration message:message attribution:attribution prompt:title parameterKey:associatedParameterKey];
 
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __48__WFDialogTransformer_handleAlertWithTextField___block_invoke;
   v27[3] = &unk_1E83771D8;
   v28 = v7;
-  v29 = self;
-  v30 = v3;
+  selfCopy = self;
+  v30 = fieldCopy;
   v31 = v8;
   v22 = v8;
-  v23 = v3;
+  v23 = fieldCopy;
   v24 = v7;
   [(WFDialogTransformer *)self handleDialogRequest:v21 completionHandler:v27];
 
@@ -3016,16 +3016,16 @@ LABEL_15:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleSimpleAlert:(id)a3
+- (void)handleSimpleAlert:(id)alert
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  alertCopy = alert;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v5 = [v4 buttons];
-  v6 = [v5 countByEnumeratingWithState:&v47 objects:v51 count:16];
+  buttons = [alertCopy buttons];
+  v6 = [buttons countByEnumeratingWithState:&v47 objects:v51 count:16];
   v7 = 0x1E69E0000;
   if (!v6)
   {
@@ -3038,8 +3038,8 @@ LABEL_16:
   }
 
   v8 = v6;
-  v40 = v4;
-  v9 = self;
+  v40 = alertCopy;
+  selfCopy = self;
   v10 = 0;
   v11 = 0;
   v12 = *v48;
@@ -3049,7 +3049,7 @@ LABEL_16:
     {
       if (*v48 != v12)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(buttons);
       }
 
       v14 = *(*(&v47 + 1) + 8 * i);
@@ -3078,7 +3078,7 @@ LABEL_16:
       v11 = v16;
     }
 
-    v8 = [v5 countByEnumeratingWithState:&v47 objects:v51 count:16];
+    v8 = [buttons countByEnumeratingWithState:&v47 objects:v51 count:16];
   }
 
   while (v8);
@@ -3087,16 +3087,16 @@ LABEL_16:
   {
     v7 = 0x1E69E0000uLL;
     v18 = objc_alloc(MEMORY[0x1E69E0AA0]);
-    v5 = [v10 title];
-    v42 = [v18 initWithTitle:v5 style:1];
-    self = v9;
-    v4 = v40;
+    buttons = [v10 title];
+    v42 = [v18 initWithTitle:buttons style:1];
+    self = selfCopy;
+    alertCopy = v40;
     goto LABEL_16;
   }
 
   v42 = 0;
-  self = v9;
-  v4 = v40;
+  self = selfCopy;
+  alertCopy = v40;
   v7 = 0x1E69E0000uLL;
 LABEL_18:
   v19 = *(v7 + 2720);
@@ -3105,14 +3105,14 @@ LABEL_18:
     v20 = [v19 alloc];
     [v11 title];
     v22 = v21 = self;
-    v23 = [v20 initWithTitle:v22 style:{2 * (objc_msgSend(v11, "style") != 0)}];
+    okButton = [v20 initWithTitle:v22 style:{2 * (objc_msgSend(v11, "style") != 0)}];
 
     self = v21;
   }
 
   else
   {
-    v23 = [(objc_class *)v19 okButton];
+    okButton = [(objc_class *)v19 okButton];
   }
 
   objc_opt_class();
@@ -3125,7 +3125,7 @@ LABEL_18:
 
   v26 = *v25;
   v27 = objc_opt_class();
-  v28 = v4;
+  v28 = alertCopy;
   if (!v28 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -3133,32 +3133,32 @@ LABEL_18:
     goto LABEL_28;
   }
 
-  v29 = [v28 attribution];
+  attribution = [v28 attribution];
   v30 = v28;
-  if (!v29)
+  if (!attribution)
   {
 LABEL_28:
     v41 = v30;
-    v32 = [(WFDialogTransformer *)self attribution];
+    attribution2 = [(WFDialogTransformer *)self attribution];
     goto LABEL_29;
   }
 
-  v31 = v29;
-  v32 = [v28 attribution];
+  v31 = attribution;
+  attribution2 = [v28 attribution];
 
   v41 = v28;
 LABEL_29:
   v33 = [v27 alloc];
-  v34 = [v28 title];
-  v35 = [v28 message];
-  v36 = [v33 initWithPrompt:v34 message:v35 okButton:v23 cancelButton:v42 attribution:v32];
+  title = [v28 title];
+  message = [v28 message];
+  v36 = [v33 initWithPrompt:title message:message okButton:okButton cancelButton:v42 attribution:attribution2];
 
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __41__WFDialogTransformer_handleSimpleAlert___block_invoke;
   v43[3] = &unk_1E83771B0;
   v44 = v10;
-  v45 = self;
+  selfCopy2 = self;
   v46 = v11;
   v37 = v11;
   v38 = v10;
@@ -3205,58 +3205,58 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)presentAlert:(id)a3
+- (void)presentAlert:(id)alert
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  alertCopy = alert;
   v5 = getWFDialogLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[WFDialogTransformer presentAlert:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = alertCopy;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_DEFAULT, "%s Transforming alert %@ into WFDialogRequest", &v13, 0x16u);
   }
 
-  v6 = [v4 textFieldConfiguration];
+  textFieldConfiguration = [alertCopy textFieldConfiguration];
 
-  if (v6)
+  if (textFieldConfiguration)
   {
-    [(WFDialogTransformer *)self handleAlertWithTextField:v4];
+    [(WFDialogTransformer *)self handleAlertWithTextField:alertCopy];
     goto LABEL_12;
   }
 
-  v7 = [v4 datePickerConfiguration];
+  datePickerConfiguration = [alertCopy datePickerConfiguration];
 
-  if (v7)
+  if (datePickerConfiguration)
   {
-    [(WFDialogTransformer *)self handleAlertWithDatePicker:v4];
+    [(WFDialogTransformer *)self handleAlertWithDatePicker:alertCopy];
     goto LABEL_12;
   }
 
-  v8 = [v4 buttons];
-  if ([v8 count] > 2)
+  buttons = [alertCopy buttons];
+  if ([buttons count] > 2)
   {
     goto LABEL_10;
   }
 
-  v9 = [v4 buttons];
-  v10 = [v9 if_objectsOfClass:objc_opt_class()];
+  buttons2 = [alertCopy buttons];
+  v10 = [buttons2 if_objectsOfClass:objc_opt_class()];
   if ([v10 count])
   {
 
 LABEL_10:
 LABEL_11:
-    [(WFDialogTransformer *)self handleAlertWithMultipleButtons:v4];
+    [(WFDialogTransformer *)self handleAlertWithMultipleButtons:alertCopy];
     goto LABEL_12;
   }
 
   if ([(WFDialogTransformer *)self isRunningWithToolKitClient])
   {
-    v12 = [(WFDialogTransformer *)self isRunningFromSpotlight];
+    isRunningFromSpotlight = [(WFDialogTransformer *)self isRunningFromSpotlight];
 
-    if (!v12)
+    if (!isRunningFromSpotlight)
     {
       goto LABEL_11;
     }
@@ -3266,14 +3266,14 @@ LABEL_11:
   {
   }
 
-  if ([(WFDialogTransformer *)self shouldHandleAlertAsSiriDialog:v4])
+  if ([(WFDialogTransformer *)self shouldHandleAlertAsSiriDialog:alertCopy])
   {
-    [(WFDialogTransformer *)self handleAlertAsSiriDialog:v4];
+    [(WFDialogTransformer *)self handleAlertAsSiriDialog:alertCopy];
   }
 
   else
   {
-    [(WFDialogTransformer *)self handleSimpleAlert:v4];
+    [(WFDialogTransformer *)self handleSimpleAlert:alertCopy];
   }
 
 LABEL_12:
@@ -3281,24 +3281,24 @@ LABEL_12:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)swapExternalUIPresenterWithPresenter:(id)a3
+- (void)swapExternalUIPresenterWithPresenter:(id)presenter
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  presenterCopy = presenter;
   if ([(WFDialogTransformer *)self isRunningWithSiriUI])
   {
-    v6 = [(WFDialogTransformer *)self parameterInputProvider];
+    parameterInputProvider = [(WFDialogTransformer *)self parameterInputProvider];
 
-    if (v6)
+    if (parameterInputProvider)
     {
-      v7 = [(WFDialogTransformer *)self parameterInputProvider];
-      [v7 persistInFlightParameters];
+      parameterInputProvider2 = [(WFDialogTransformer *)self parameterInputProvider];
+      [parameterInputProvider2 persistInFlightParameters];
     }
 
     externalUIPresenter = self->_externalUIPresenter;
     self->_externalUIPresenter = 0;
 
-    objc_storeStrong(&self->_userInterfacePresenter, a3);
+    objc_storeStrong(&self->_userInterfacePresenter, presenter);
   }
 
   else
@@ -3315,40 +3315,40 @@ LABEL_12:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setWorkflow:(id)a3
+- (void)setWorkflow:(id)workflow
 {
-  objc_storeStrong(&self->_workflow, a3);
-  v6 = [(WFDialogTransformer *)self userInterfacePresenter];
-  v4 = [(WFDialogTransformer *)self attribution];
-  v5 = [(WFDialogTransformer *)self runningContext];
-  [v6 updateAttribution:v4 runningContext:v5];
+  objc_storeStrong(&self->_workflow, workflow);
+  userInterfacePresenter = [(WFDialogTransformer *)self userInterfacePresenter];
+  attribution = [(WFDialogTransformer *)self attribution];
+  runningContext = [(WFDialogTransformer *)self runningContext];
+  [userInterfacePresenter updateAttribution:attribution runningContext:runningContext];
 }
 
-- (void)requestFileAccessForURLs:(id)a3 workflowName:(id)a4 workflowID:(id)a5 completionHandler:(id)a6
+- (void)requestFileAccessForURLs:(id)ls workflowName:(id)name workflowID:(id)d completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v30 = a6;
-  v11 = a5;
+  lsCopy = ls;
+  nameCopy = name;
+  handlerCopy = handler;
+  dCopy = d;
   v12 = getWFFilesLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v35 = "[WFDialogTransformer requestFileAccessForURLs:workflowName:workflowID:completionHandler:]";
     v36 = 2112;
-    v37 = v9;
+    v37 = lsCopy;
     _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_DEBUG, "%s Requesting File access for urls: %@", buf, 0x16u);
   }
 
-  v13 = [v9 if_map:&__block_literal_global_24952];
-  if ([v9 count] == 1)
+  v13 = [lsCopy if_map:&__block_literal_global_24952];
+  if ([lsCopy count] == 1)
   {
-    v14 = [v9 firstObject];
-    v15 = [v14 hasDirectoryPath];
+    firstObject = [lsCopy firstObject];
+    hasDirectoryPath = [firstObject hasDirectoryPath];
 
     v16 = MEMORY[0x1E696AEC0];
-    if (v15)
+    if (hasDirectoryPath)
     {
       v17 = @"Allow “%1$@” to access your “%2$@” folder?";
     }
@@ -3359,31 +3359,31 @@ LABEL_12:
     }
 
     v18 = WFLocalizedString(v17);
-    v19 = [v13 firstObject];
-    v22 = [v16 stringWithFormat:v18, v10, v19];
+    firstObject2 = [v13 firstObject];
+    v22 = [v16 stringWithFormat:v18, nameCopy, firstObject2];
   }
 
   else
   {
     v18 = [v13 if_map:&__block_literal_global_275];
-    v19 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v18];
+    firstObject2 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v18];
     v20 = MEMORY[0x1E696AEC0];
     v21 = WFLocalizedString(@"Allow “%1$@” to access %2$@?");
-    v22 = [v20 stringWithFormat:v21, v10, v19];
+    v22 = [v20 stringWithFormat:v21, nameCopy, firstObject2];
   }
 
   v23 = [WFFileAccessDialogRequest alloc];
-  v24 = [MEMORY[0x1E69E0AA0] okButton];
-  v25 = [MEMORY[0x1E69E0AA0] cancelButton];
-  v26 = [(WFDialogTransformer *)self privacyAttribution];
-  v27 = [(WFFileAccessDialogRequest *)v23 initWithPrompt:v22 message:0 okButton:v24 cancelButton:v25 attribution:v26 workflowID:v11 URLs:v9];
+  okButton = [MEMORY[0x1E69E0AA0] okButton];
+  cancelButton = [MEMORY[0x1E69E0AA0] cancelButton];
+  privacyAttribution = [(WFDialogTransformer *)self privacyAttribution];
+  v27 = [(WFFileAccessDialogRequest *)v23 initWithPrompt:v22 message:0 okButton:okButton cancelButton:cancelButton attribution:privacyAttribution workflowID:dCopy URLs:lsCopy];
 
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __90__WFDialogTransformer_requestFileAccessForURLs_workflowName_workflowID_completionHandler___block_invoke_3;
   v32[3] = &unk_1E8377188;
-  v33 = v30;
-  v28 = v30;
+  v33 = handlerCopy;
+  v28 = handlerCopy;
   [(WFDialogTransformer *)self handleDialogRequest:v27 completionHandler:v32];
 
   v29 = *MEMORY[0x1E69E9840];
@@ -3466,78 +3466,78 @@ id __90__WFDialogTransformer_requestFileAccessForURLs_workflowName_workflowID_co
   return v6;
 }
 
-- (void)configureSmartPromptIntent:(id)a3 withConfiguration:(id)a4
+- (void)configureSmartPromptIntent:(id)intent withConfiguration:(id)configuration
 {
-  v31 = a3;
+  intentCopy = intent;
   v5 = *MEMORY[0x1E69E0F30];
-  v6 = a4;
-  [v31 _setLaunchId:v5];
-  [v31 _setExtensionBundleId:v5];
+  configurationCopy = configuration;
+  [intentCopy _setLaunchId:v5];
+  [intentCopy _setExtensionBundleId:v5];
   v7 = [WFSmartPromptDialogRequest alloc];
   v8 = [MEMORY[0x1E69E0A98] attributionWithAppBundleIdentifier:*MEMORY[0x1E69E0FB0]];
-  v9 = [(WFSmartPromptDialogRequest *)v7 initWithConfiguration:v6 attribution:v8];
+  v9 = [(WFSmartPromptDialogRequest *)v7 initWithConfiguration:configurationCopy attribution:v8];
 
-  v10 = [v6 localizedPrompt];
+  localizedPrompt = [configurationCopy localizedPrompt];
 
-  [v31 setPromptMessage:v10];
+  [intentCopy setPromptMessage:localizedPrompt];
   v11 = WFLocalizedString(@"Privacy");
-  [v31 setPrivacyTitle:v11];
+  [intentCopy setPrivacyTitle:v11];
 
   v12 = MEMORY[0x1E69E0B58];
   v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v14 = [v12 imageNamed:@"Privacy" inBundle:v13];
 
   v15 = MEMORY[0x1E696E840];
-  v16 = [v14 PNGRepresentation];
-  v17 = [v15 fileWithData:v16 filename:@"PrivacyIcon" typeIdentifier:@"public.png"];
+  pNGRepresentation = [v14 PNGRepresentation];
+  v17 = [v15 fileWithData:pNGRepresentation filename:@"PrivacyIcon" typeIdentifier:@"public.png"];
 
-  [v31 setPrivacyIcon:v17];
-  v18 = [MEMORY[0x1E695DF70] array];
-  v19 = [(WFSmartPromptDialogRequest *)v9 previewButton];
+  [intentCopy setPrivacyIcon:v17];
+  array = [MEMORY[0x1E695DF70] array];
+  previewButton = [(WFSmartPromptDialogRequest *)v9 previewButton];
 
-  if (v19)
+  if (previewButton)
   {
-    v20 = [(WFSmartPromptDialogRequest *)v9 previewButton];
-    v21 = [v20 smartPromptIntentButton];
-    [v18 addObject:v21];
+    previewButton2 = [(WFSmartPromptDialogRequest *)v9 previewButton];
+    smartPromptIntentButton = [previewButton2 smartPromptIntentButton];
+    [array addObject:smartPromptIntentButton];
   }
 
-  v22 = [(WFSmartPromptDialogRequest *)v9 allowOnceButton];
+  allowOnceButton = [(WFSmartPromptDialogRequest *)v9 allowOnceButton];
 
-  if (v22)
+  if (allowOnceButton)
   {
-    v23 = [(WFSmartPromptDialogRequest *)v9 allowOnceButton];
-    v24 = [v23 smartPromptIntentButton];
-    [v18 addObject:v24];
+    allowOnceButton2 = [(WFSmartPromptDialogRequest *)v9 allowOnceButton];
+    smartPromptIntentButton2 = [allowOnceButton2 smartPromptIntentButton];
+    [array addObject:smartPromptIntentButton2];
   }
 
-  v25 = [(WFSmartPromptDialogRequest *)v9 allowAlwaysButton];
+  allowAlwaysButton = [(WFSmartPromptDialogRequest *)v9 allowAlwaysButton];
 
-  if (v25)
+  if (allowAlwaysButton)
   {
-    v26 = [(WFSmartPromptDialogRequest *)v9 allowAlwaysButton];
-    v27 = [v26 smartPromptIntentButton];
-    [v18 addObject:v27];
+    allowAlwaysButton2 = [(WFSmartPromptDialogRequest *)v9 allowAlwaysButton];
+    smartPromptIntentButton3 = [allowAlwaysButton2 smartPromptIntentButton];
+    [array addObject:smartPromptIntentButton3];
   }
 
-  v28 = [(WFSmartPromptDialogRequest *)v9 denyButton];
+  denyButton = [(WFSmartPromptDialogRequest *)v9 denyButton];
 
-  if (v28)
+  if (denyButton)
   {
-    v29 = [(WFSmartPromptDialogRequest *)v9 denyButton];
-    v30 = [v29 smartPromptIntentButton];
-    [v18 addObject:v30];
+    denyButton2 = [(WFSmartPromptDialogRequest *)v9 denyButton];
+    smartPromptIntentButton4 = [denyButton2 smartPromptIntentButton];
+    [array addObject:smartPromptIntentButton4];
   }
 
-  [v31 setButtons:v18];
+  [intentCopy setButtons:array];
 }
 
-- (void)updateSmartPromptsWithConfiguration:(id)a3 resultCode:(unint64_t)a4 error:(id *)a5
+- (void)updateSmartPromptsWithConfiguration:(id)configuration resultCode:(unint64_t)code error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v24 = a4;
-  obj = [WFSmartPromptDialogResponse prepareSmartPromptsDatabaseDataFromConfiguration:v7 resultCode:a4 error:a5];
+  configurationCopy = configuration;
+  codeCopy = code;
+  obj = [WFSmartPromptDialogResponse prepareSmartPromptsDatabaseDataFromConfiguration:configurationCopy resultCode:code error:error];
   if (obj)
   {
     v29 = 0u;
@@ -3561,10 +3561,10 @@ id __90__WFDialogTransformer_requestFileAccessForURLs_workflowName_workflowID_co
 
           v12 = *(*(&v27 + 1) + 8 * v11);
           v13 = +[WFDatabaseProxy defaultDatabase];
-          v14 = [v7 actionUUID];
-          v15 = [(WFDialogTransformer *)self workflow];
-          v16 = [v15 reference];
-          [v13 saveSmartPromptStateData:v12 actionUUID:v14 reference:v16 error:a5];
+          actionUUID = [configurationCopy actionUUID];
+          workflow = [(WFDialogTransformer *)self workflow];
+          reference = [workflow reference];
+          [v13 saveSmartPromptStateData:v12 actionUUID:actionUUID reference:reference error:error];
 
           ++v11;
         }
@@ -3577,37 +3577,37 @@ id __90__WFDialogTransformer_requestFileAccessForURLs_workflowName_workflowID_co
     }
   }
 
-  v17 = [WFSmartPromptDialogResponse prepareDeletionAuthorizationDatabaseDataFromConfiguration:v7 resultCode:v24 error:a5];
+  v17 = [WFSmartPromptDialogResponse prepareDeletionAuthorizationDatabaseDataFromConfiguration:configurationCopy resultCode:codeCopy error:error];
   if (v17)
   {
     v18 = +[WFDatabaseProxy defaultDatabase];
-    [v7 actionUUID];
-    v20 = v19 = a5;
-    v21 = [(WFDialogTransformer *)self workflow];
-    v22 = [v21 reference];
-    [v18 saveSmartPromptStateData:v17 actionUUID:v20 reference:v22 error:v19];
+    [configurationCopy actionUUID];
+    v20 = v19 = error;
+    workflow2 = [(WFDialogTransformer *)self workflow];
+    reference2 = [workflow2 reference];
+    [v18 saveSmartPromptStateData:v17 actionUUID:v20 reference:reference2 error:v19];
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)executeSmartPromptIntentWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)executeSmartPromptIntentWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x1E69E0D48]);
-  [(WFDialogTransformer *)self configureSmartPromptIntent:v8 withConfiguration:v6];
+  [(WFDialogTransformer *)self configureSmartPromptIntent:v8 withConfiguration:configurationCopy];
   [(WFDialogTransformer *)self configureIntent:v8];
   v9 = [objc_alloc(MEMORY[0x1E69E0CC0]) initWithIntent:v8];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __83__WFDialogTransformer_executeSmartPromptIntentWithConfiguration_completionHandler___block_invoke;
   v12[3] = &unk_1E8377140;
-  v13 = v6;
-  v14 = v7;
+  v13 = configurationCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = configurationCopy;
+  v11 = handlerCopy;
   [(WFDialogTransformer *)self performSiriRequest:v9 completionHandler:v12];
 }
 
@@ -3701,13 +3701,13 @@ LABEL_16:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestAuthorizationWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)requestAuthorizationWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   if ([(WFDialogTransformer *)self isRunningWithSiriUI]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = v6;
+    v8 = configurationCopy;
     if (v8)
     {
       objc_opt_class();
@@ -3729,20 +3729,20 @@ LABEL_16:
 
     v11 = v9;
 
-    [(WFDialogTransformer *)self executeSmartPromptIntentWithConfiguration:v11 completionHandler:v7];
+    [(WFDialogTransformer *)self executeSmartPromptIntentWithConfiguration:v11 completionHandler:handlerCopy];
   }
 
   else
   {
-    v10 = [(WFDialogTransformer *)self privacyAttribution];
-    v11 = [v6 authorizationDialogRequestWithAttribution:v10];
+    privacyAttribution = [(WFDialogTransformer *)self privacyAttribution];
+    v11 = [configurationCopy authorizationDialogRequestWithAttribution:privacyAttribution];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __79__WFDialogTransformer_requestAuthorizationWithConfiguration_completionHandler___block_invoke;
     v12[3] = &unk_1E8377340;
     v12[4] = self;
-    v13 = v7;
+    v13 = handlerCopy;
     [(WFDialogTransformer *)self handleDialogRequest:v11 completionHandler:v12];
   }
 }
@@ -3812,24 +3812,24 @@ void __79__WFDialogTransformer_requestAuthorizationWithConfiguration_completionH
   }
 }
 
-- (void)cleanupListDialogRequestIfNeeded:(id)a3
+- (void)cleanupListDialogRequestIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  neededCopy = needed;
+  if (neededCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(WFDialogTransformer *)self isRunningWithSiriUI];
-    v6 = v4;
-    if (v5)
+    isRunningWithSiriUI = [(WFDialogTransformer *)self isRunningWithSiriUI];
+    v6 = neededCopy;
+    if (isRunningWithSiriUI)
     {
-      v7 = [v4 items];
+      items = [neededCopy items];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __56__WFDialogTransformer_cleanupListDialogRequestIfNeeded___block_invoke;
       v8[3] = &unk_1E8377118;
       v8[4] = self;
-      [v7 enumerateObjectsUsingBlock:v8];
+      [items enumerateObjectsUsingBlock:v8];
 
-      v6 = v4;
+      v6 = neededCopy;
     }
   }
 
@@ -3850,14 +3850,14 @@ void __56__WFDialogTransformer_cleanupListDialogRequestIfNeeded___block_invoke(u
   [v5 removeContentItemWithIdentifier:v4];
 }
 
-- (void)prepareListDialogRequestIfNeeded:(id)a3 completionHandler:(id)a4
+- (void)prepareListDialogRequestIfNeeded:(id)needed completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  neededCopy = needed;
+  handlerCopy = handler;
+  v8 = neededCopy;
   if (!v8)
   {
-    v10 = 0;
+    runningContext = 0;
     v9 = 0;
 LABEL_8:
 
@@ -3868,7 +3868,7 @@ LABEL_8:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = 0;
-    v10 = v8;
+    runningContext = v8;
     goto LABEL_8;
   }
 
@@ -3883,20 +3883,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = [(WFDialogTransformer *)self runningContext];
-  if (![v10 shouldForwardDialogRequests])
+  runningContext = [(WFDialogTransformer *)self runningContext];
+  if (![runningContext shouldForwardDialogRequests])
   {
     v9 = v8;
     goto LABEL_8;
   }
 
-  v11 = [(WFDialogTransformer *)self isRunningFromSpotlight];
+  isRunningFromSpotlight = [(WFDialogTransformer *)self isRunningFromSpotlight];
 
   v9 = v8;
-  if (!v11)
+  if (!isRunningFromSpotlight)
   {
 LABEL_13:
-    v12 = [v8 items];
+    items = [v8 items];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __74__WFDialogTransformer_prepareListDialogRequestIfNeeded_completionHandler___block_invoke;
@@ -3908,15 +3908,15 @@ LABEL_13:
     v13[3] = &unk_1E837E9D0;
     v9 = v8;
     v14 = v9;
-    v15 = self;
-    v16 = v7;
-    [v12 if_mapAsynchronously:v17 completionHandler:v13];
+    selfCopy = self;
+    v16 = handlerCopy;
+    [items if_mapAsynchronously:v17 completionHandler:v13];
 
     goto LABEL_10;
   }
 
 LABEL_9:
-  (*(v7 + 2))(v7, v8);
+  (*(handlerCopy + 2))(handlerCopy, v8);
 LABEL_10:
 }
 
@@ -3991,33 +3991,33 @@ void __74__WFDialogTransformer_prepareListDialogRequestIfNeeded_completionHandle
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)handleUIRequestResponse:(id)a3 error:(id)a4 forRequest:(id)a5 shouldFailoverToLocalUI:(BOOL)a6 completionHandler:(id)a7
+- (void)handleUIRequestResponse:(id)response error:(id)error forRequest:(id)request shouldFailoverToLocalUI:(BOOL)i completionHandler:(id)handler
 {
-  v8 = a6;
+  iCopy = i;
   v32[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = v15;
-  if (v12)
+  responseCopy = response;
+  errorCopy = error;
+  requestCopy = request;
+  handlerCopy = handler;
+  v16 = handlerCopy;
+  if (responseCopy)
   {
-    v17 = [v12 responseCode];
-    if (v17 > 3)
+    responseCode = [responseCopy responseCode];
+    if (responseCode > 3)
     {
-      if (v17 != 4)
+      if (responseCode != 4)
       {
-        if (v17 != 6)
+        if (responseCode != 6)
         {
 LABEL_27:
-          (v16)[2](v16, v12, 0);
-          v29 = [(WFDialogTransformer *)self delegate];
-          [v29 dialogTransformerDidDisplayDialog:self];
+          (v16)[2](v16, responseCopy, 0);
+          delegate = [(WFDialogTransformer *)self delegate];
+          [delegate dialogTransformerDidDisplayDialog:self];
 
           goto LABEL_28;
         }
 
-        if (v8)
+        if (iCopy)
         {
           goto LABEL_14;
         }
@@ -4037,9 +4037,9 @@ LABEL_21:
 
     else
     {
-      if (v17 != 1)
+      if (responseCode != 1)
       {
-        if (v17 != 2)
+        if (responseCode != 2)
         {
           goto LABEL_27;
         }
@@ -4047,149 +4047,149 @@ LABEL_21:
 LABEL_22:
         if ([(WFDialogTransformer *)self isRunningWithToolKitClient]&& ![(WFDialogTransformer *)self isRunningFromSpotlight])
         {
-          v27 = [MEMORY[0x1E696ABC0] wfCancelledStepError];
+          wfCancelledStepError = [MEMORY[0x1E696ABC0] wfCancelledStepError];
         }
 
         else
         {
-          v27 = [MEMORY[0x1E696ABC0] userCancelledError];
+          wfCancelledStepError = [MEMORY[0x1E696ABC0] userCancelledError];
         }
 
-        v28 = v27;
-        [(WFDialogTransformer *)self stopWithError:v27];
+        v28 = wfCancelledStepError;
+        [(WFDialogTransformer *)self stopWithError:wfCancelledStepError];
 
         goto LABEL_27;
       }
 
-      if (!v13)
+      if (!errorCopy)
       {
-        v18 = [(WFDialogTransformer *)self currentAction];
-        v19 = [v18 localizedName];
-        v20 = v19;
-        if (!v19)
+        currentAction = [(WFDialogTransformer *)self currentAction];
+        localizedName = [currentAction localizedName];
+        workflowName = localizedName;
+        if (!localizedName)
         {
-          v20 = [(WFDialogTransformer *)self workflowName];
+          workflowName = [(WFDialogTransformer *)self workflowName];
         }
 
-        v21 = WFRunnerFailureErrorMessage(v20);
+        v21 = WFRunnerFailureErrorMessage(workflowName);
         [(WFDialogTransformer *)self stopWithError:v21];
 
-        if (!v19)
+        if (!localizedName)
         {
         }
 
-        if (v8)
+        if (iCopy)
         {
           goto LABEL_14;
         }
 
 LABEL_20:
-        v22 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
-        [(WFDialogTransformer *)self stopWithError:v22];
+        wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+        [(WFDialogTransformer *)self stopWithError:wfUnsupportedUserInterfaceError];
 
         goto LABEL_21;
       }
 
-      [(WFDialogTransformer *)self stopWithError:v13];
+      [(WFDialogTransformer *)self stopWithError:errorCopy];
     }
 
-    if (v8)
+    if (iCopy)
     {
 LABEL_14:
-      [(WFDialogTransformer *)self showDialogRequest:v14 completionHandler:v16];
+      [(WFDialogTransformer *)self showDialogRequest:requestCopy completionHandler:v16];
       goto LABEL_28;
     }
 
     goto LABEL_20;
   }
 
-  (*(v15 + 2))(v15, 0, v13);
+  (*(handlerCopy + 2))(handlerCopy, 0, errorCopy);
 LABEL_28:
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)showDialogRequest:(id)a3 completionHandler:(id)a4
+- (void)showDialogRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFDialogTransformer *)self userInterfacePresenter];
+  requestCopy = request;
+  handlerCopy = handler;
+  userInterfacePresenter = [(WFDialogTransformer *)self userInterfacePresenter];
 
-  if (v8)
+  if (userInterfacePresenter)
   {
-    v9 = [(WFDialogTransformer *)self runViewSource];
-    [v6 setRunViewSource:v9];
+    runViewSource = [(WFDialogTransformer *)self runViewSource];
+    [requestCopy setRunViewSource:runViewSource];
 
-    v10 = [(WFDialogTransformer *)self currentAction];
-    [v6 setIsLastAction:{objc_msgSend(v10, "isLastAction")}];
+    currentAction = [(WFDialogTransformer *)self currentAction];
+    [requestCopy setIsLastAction:{objc_msgSend(currentAction, "isLastAction")}];
 
-    v11 = [(WFDialogTransformer *)self userInterfacePresenter];
-    v12 = [(WFDialogTransformer *)self runningContext];
+    userInterfacePresenter2 = [(WFDialogTransformer *)self userInterfacePresenter];
+    runningContext = [(WFDialogTransformer *)self runningContext];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __59__WFDialogTransformer_showDialogRequest_completionHandler___block_invoke;
     v15[3] = &unk_1E83772C8;
     v15[4] = self;
-    v16 = v6;
-    v17 = v7;
-    [v11 showDialogRequest:v16 runningContext:v12 completionHandler:v15];
+    v16 = requestCopy;
+    v17 = handlerCopy;
+    [userInterfacePresenter2 showDialogRequest:v16 runningContext:runningContext completionHandler:v15];
   }
 
   else
   {
     if ([(WFDialogTransformer *)self allowsHandoff]|| [(WFDialogTransformer *)self presentationMode]!= 3)
     {
-      v13 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+      wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E696ABC0] userCancelledError];
+      wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] userCancelledError];
     }
 
-    v14 = v13;
-    [(WFDialogTransformer *)self stopWithError:v13];
+    v14 = wfUnsupportedUserInterfaceError;
+    [(WFDialogTransformer *)self stopWithError:wfUnsupportedUserInterfaceError];
   }
 }
 
-- (void)handleDialogRequest:(id)a3 completionHandler:(id)a4
+- (void)handleDialogRequest:(id)request completionHandler:(id)handler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   [(WFDialogTransformer *)self setNumberOfDialogsPresented:[(WFDialogTransformer *)self numberOfDialogsPresented]+ 1];
   if (![(WFDialogTransformer *)self hasPresentedFirstDialog])
   {
     [(WFDialogTransformer *)self setHasPresentedFirstDialog:1];
-    v8 = [(WFDialogTransformer *)self workflowStartTime];
-    [v8 timeIntervalSinceNow];
+    workflowStartTime = [(WFDialogTransformer *)self workflowStartTime];
+    [workflowStartTime timeIntervalSinceNow];
     v10 = v9;
 
     if (v10 < -15.0)
     {
-      v6 = v6;
-      if (v6)
+      requestCopy = requestCopy;
+      if (requestCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v6 textFieldConfiguration];
-          v12 = [v11 copy];
+          textFieldConfiguration = [requestCopy textFieldConfiguration];
+          v12 = [textFieldConfiguration copy];
 
           [v12 setFocusImmediatelyWhenPresented:0];
           v13 = objc_alloc(MEMORY[0x1E69E0B80]);
-          v14 = [v6 message];
-          v15 = [v6 attribution];
-          v16 = [v6 prompt];
-          v17 = [v6 parameterKey];
-          v18 = [v13 initWithTextFieldConfiguration:v12 message:v14 attribution:v15 prompt:v16 parameterKey:v17];
+          message = [requestCopy message];
+          attribution = [requestCopy attribution];
+          prompt = [requestCopy prompt];
+          parameterKey = [requestCopy parameterKey];
+          v18 = [v13 initWithTextFieldConfiguration:v12 message:message attribution:attribution prompt:prompt parameterKey:parameterKey];
 
           v19 = v18;
           v20 = v19;
           v21 = v20;
           if (!v20)
           {
-            v6 = 0;
+            requestCopy = 0;
 LABEL_12:
 
             goto LABEL_13;
@@ -4199,19 +4199,19 @@ LABEL_12:
         else
         {
 
-          v20 = v6;
+          v20 = requestCopy;
           v21 = 0;
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v6 = [v20 requestBySettingFocusImmediatelyWhenPresented:0];
+          requestCopy = [v20 requestBySettingFocusImmediatelyWhenPresented:0];
         }
 
         else
         {
-          v6 = v20;
+          requestCopy = v20;
         }
 
         goto LABEL_12;
@@ -4224,13 +4224,13 @@ LABEL_12:
   }
 
 LABEL_13:
-  v22 = [(WFDialogTransformer *)self delegate];
-  [v22 dialogTransformerWillDisplayDialog:self];
+  delegate = [(WFDialogTransformer *)self delegate];
+  [delegate dialogTransformerWillDisplayDialog:self];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v24 = [(WFDialogTransformer *)self runningContext];
-  if ([v24 shouldForwardDialogRequests])
+  runningContext = [(WFDialogTransformer *)self runningContext];
+  if ([runningContext shouldForwardDialogRequests])
   {
 
 LABEL_16:
@@ -4239,17 +4239,17 @@ LABEL_16:
     v41[2] = __61__WFDialogTransformer_handleDialogRequest_completionHandler___block_invoke;
     v41[3] = &unk_1E8377078;
     v41[4] = self;
-    v42 = v7;
-    [(WFDialogTransformer *)self prepareListDialogRequestIfNeeded:v6 completionHandler:v41];
+    v42 = handlerCopy;
+    [(WFDialogTransformer *)self prepareListDialogRequestIfNeeded:requestCopy completionHandler:v41];
     v26 = v42;
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v25 = [(WFDialogTransformer *)self isRunningWithToolKitClient];
+  isRunningWithToolKitClient = [(WFDialogTransformer *)self isRunningWithToolKitClient];
 
-  if (v25)
+  if (isRunningWithToolKitClient)
   {
     goto LABEL_16;
   }
@@ -4257,14 +4257,14 @@ LABEL_17:
   if (isKindOfClass)
   {
     v28 = [objc_alloc(MEMORY[0x1E69E0AB8]) initWithCancelled:0];
-    (*(v7 + 2))(v7, v28, 0);
+    (*(handlerCopy + 2))(handlerCopy, v28, 0);
 
     goto LABEL_18;
   }
 
   if (![(WFDialogTransformer *)self isRunningWithSiriUI])
   {
-    [(WFDialogTransformer *)self showDialogRequest:v6 completionHandler:v7];
+    [(WFDialogTransformer *)self showDialogRequest:requestCopy completionHandler:handlerCopy];
     goto LABEL_18;
   }
 
@@ -4284,8 +4284,8 @@ LABEL_17:
     v39[2] = __61__WFDialogTransformer_handleDialogRequest_completionHandler___block_invoke_227;
     v39[3] = &unk_1E8377078;
     v39[4] = self;
-    v40 = v7;
-    [(WFDialogTransformer *)self prepareListDialogRequestIfNeeded:v6 completionHandler:v39];
+    v40 = handlerCopy;
+    [(WFDialogTransformer *)self prepareListDialogRequestIfNeeded:requestCopy completionHandler:v39];
     v26 = v40;
     goto LABEL_17;
   }
@@ -4301,8 +4301,8 @@ LABEL_17:
     _os_log_impl(&dword_1CA256000, v36, OS_LOG_TYPE_ERROR, "%s Unsupported dialog request of type %@ sent to Siri, punching to Shortcuts Jr", buf, 0x16u);
   }
 
-  v38 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
-  [(WFDialogTransformer *)self stopWithError:v38];
+  wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+  [(WFDialogTransformer *)self stopWithError:wfUnsupportedUserInterfaceError];
 
 LABEL_18:
   v27 = *MEMORY[0x1E69E9840];
@@ -4388,9 +4388,9 @@ void __61__WFDialogTransformer_handleDialogRequest_completionHandler___block_inv
     return 1;
   }
 
-  v4 = [(WFDialogTransformer *)self runSource];
+  runSource = [(WFDialogTransformer *)self runSource];
   v5 = *MEMORY[0x1E69E1410];
-  v6 = v4;
+  v6 = runSource;
   v7 = v5;
   v8 = v7;
   if (v6 == v7)
@@ -4412,26 +4412,26 @@ void __61__WFDialogTransformer_handleDialogRequest_completionHandler___block_inv
 
 - (id)attributionIcon
 {
-  v2 = [(WFDialogTransformer *)self workflow];
-  v3 = [v2 attributionIcon];
+  workflow = [(WFDialogTransformer *)self workflow];
+  attributionIcon = [workflow attributionIcon];
 
-  return v3;
+  return attributionIcon;
 }
 
 - (id)attributionTitle
 {
-  v2 = [(WFDialogTransformer *)self workflow];
-  v3 = [v2 attributionTitle];
+  workflow = [(WFDialogTransformer *)self workflow];
+  attributionTitle = [workflow attributionTitle];
 
-  return v3;
+  return attributionTitle;
 }
 
 - (id)workflowName
 {
-  v2 = [(WFDialogTransformer *)self workflow];
-  v3 = [v2 name];
+  workflow = [(WFDialogTransformer *)self workflow];
+  name = [workflow name];
 
-  return v3;
+  return name;
 }
 
 - (id)privacyAttribution
@@ -4459,19 +4459,19 @@ void __61__WFDialogTransformer_handleDialogRequest_completionHandler___block_inv
 - (id)standaloneActionAttribution
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [(WFDialogTransformer *)self workflow];
-  v4 = [(WFDialogTransformer *)self currentAction];
-  v5 = [v3 icon];
+  workflow = [(WFDialogTransformer *)self workflow];
+  currentAction = [(WFDialogTransformer *)self currentAction];
+  icon = [workflow icon];
   v6 = *MEMORY[0x1E69E0FB0];
-  if (v4)
+  if (currentAction)
   {
-    v7 = [v4 localizedAppName];
-    v8 = [v4 icon];
-    v9 = [v4 appBundleIdentifier];
-    v10 = v9;
-    if (v9)
+    localizedAppName = [currentAction localizedAppName];
+    icon2 = [currentAction icon];
+    appBundleIdentifier = [currentAction appBundleIdentifier];
+    v10 = appBundleIdentifier;
+    if (appBundleIdentifier)
     {
-      v11 = v9;
+      v11 = appBundleIdentifier;
     }
 
     else
@@ -4486,35 +4486,35 @@ void __61__WFDialogTransformer_handleDialogRequest_completionHandler___block_inv
 
   else
   {
-    v8 = 0;
-    v7 = 0;
+    icon2 = 0;
+    localizedAppName = 0;
   }
 
-  v13 = [(WFDialogTransformer *)self currentAction];
-  v14 = [v13 identifier];
+  currentAction2 = [(WFDialogTransformer *)self currentAction];
+  identifier = [currentAction2 identifier];
 
-  if (v14)
+  if (identifier)
   {
-    v15 = [MEMORY[0x1E69E0D70] symbolIconForActionIdentifier:v14 bundleIdentifier:v6];
+    v15 = [MEMORY[0x1E69E0D70] symbolIconForActionIdentifier:identifier bundleIdentifier:v6];
     v16 = v15;
     if (v15)
     {
       v17 = v15;
 
-      v8 = v17;
+      icon2 = v17;
     }
 
-    v18 = v14;
+    v18 = identifier;
     if (v18 == @"is.workflow.actions.runworkflow" || (v19 = v18, v20 = [(__CFString *)v18 isEqualToString:@"is.workflow.actions.runworkflow"], v19, v20))
     {
-      v21 = [(WFDialogTransformer *)self currentAction];
-      v36 = v5;
-      if (v21)
+      currentAction3 = [(WFDialogTransformer *)self currentAction];
+      v36 = icon;
+      if (currentAction3)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = v21;
+          v22 = currentAction3;
         }
 
         else
@@ -4537,14 +4537,14 @@ void __61__WFDialogTransformer_handleDialogRequest_completionHandler___block_inv
       v35 = v25;
       if (v24)
       {
-        v26 = [v3 attributionTitle];
+        attributionTitle = [workflow attributionTitle];
 
-        v27 = [v3 attributionIcon];
+        attributionIcon = [workflow attributionIcon];
 
-        [v3 resolvedAssociatedAppBundleIdentifier];
+        [workflow resolvedAssociatedAppBundleIdentifier];
         v6 = v28 = v6;
-        v8 = v27;
-        v7 = v26;
+        icon2 = attributionIcon;
+        localizedAppName = attributionTitle;
       }
 
       else
@@ -4561,13 +4561,13 @@ void __61__WFDialogTransformer_handleDialogRequest_completionHandler___block_inv
         }
       }
 
-      v5 = v36;
+      icon = v36;
     }
   }
 
-  if (v8)
+  if (icon2)
   {
-    if (v7)
+    if (localizedAppName)
     {
       goto LABEL_24;
     }
@@ -4575,114 +4575,114 @@ void __61__WFDialogTransformer_handleDialogRequest_completionHandler___block_inv
 
   else
   {
-    v33 = [(WFDialogTransformer *)self shortcutsAppAttribution];
-    v8 = [v33 icon];
+    shortcutsAppAttribution = [(WFDialogTransformer *)self shortcutsAppAttribution];
+    icon2 = [shortcutsAppAttribution icon];
 
-    if (v7)
+    if (localizedAppName)
     {
       goto LABEL_24;
     }
   }
 
-  v34 = [(WFDialogTransformer *)self shortcutsAppAttribution];
-  v7 = [v34 title];
+  shortcutsAppAttribution2 = [(WFDialogTransformer *)self shortcutsAppAttribution];
+  localizedAppName = [shortcutsAppAttribution2 title];
 
 LABEL_24:
-  v30 = [objc_alloc(MEMORY[0x1E69E0A98]) initWithTitle:v7 icon:v8 workflowIcon:v5 appBundleIdentifier:v6];
+  v30 = [objc_alloc(MEMORY[0x1E69E0A98]) initWithTitle:localizedAppName icon:icon2 workflowIcon:icon appBundleIdentifier:v6];
 
   v31 = *MEMORY[0x1E69E9840];
 
   return v30;
 }
 
-- (id)attributionAllowingAction:(BOOL)a3
+- (id)attributionAllowingAction:(BOOL)action
 {
-  v4 = a3;
-  v6 = [(WFDialogTransformer *)self workflow];
-  v7 = [v6 icon];
+  actionCopy = action;
+  workflow = [(WFDialogTransformer *)self workflow];
+  icon = [workflow icon];
   v8 = *MEMORY[0x1E69E0FB0];
-  v9 = [(WFDialogTransformer *)self currentAction];
-  v10 = v9;
-  if (v4 && v9 && [v9 prefersActionAttribution])
+  currentAction = [(WFDialogTransformer *)self currentAction];
+  v10 = currentAction;
+  if (actionCopy && currentAction && [currentAction prefersActionAttribution])
   {
-    v11 = [v10 localizedAppName];
-    v12 = [v10 icon];
-    v13 = [v10 appBundleIdentifier];
+    localizedAppName = [v10 localizedAppName];
+    icon2 = [v10 icon];
+    appBundleIdentifier = [v10 appBundleIdentifier];
 LABEL_7:
-    v52 = v13;
+    v52 = appBundleIdentifier;
 
     goto LABEL_9;
   }
 
-  if (v6)
+  if (workflow)
   {
-    v11 = [v6 attributionTitle];
-    v12 = [v6 attributionIcon];
-    v13 = [v6 resolvedAssociatedAppBundleIdentifier];
+    localizedAppName = [workflow attributionTitle];
+    icon2 = [workflow attributionIcon];
+    appBundleIdentifier = [workflow resolvedAssociatedAppBundleIdentifier];
     goto LABEL_7;
   }
 
-  v12 = 0;
-  v11 = 0;
+  icon2 = 0;
+  localizedAppName = 0;
   v52 = v8;
 LABEL_9:
-  v14 = [v6 name];
+  name = [workflow name];
   v51 = v10;
-  if ([v14 length])
+  if ([name length])
   {
     goto LABEL_15;
   }
 
-  v15 = [v6 actions];
-  if ([v15 count] != 1)
+  actions = [workflow actions];
+  if ([actions count] != 1)
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v3 = [v6 associatedAppBundleIdentifier];
-  v16 = [v3 length];
+  associatedAppBundleIdentifier = [workflow associatedAppBundleIdentifier];
+  v16 = [associatedAppBundleIdentifier length];
 
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x1E69635F8]);
-    v18 = [v6 associatedAppBundleIdentifier];
-    v14 = [v17 initWithBundleIdentifier:v18 allowPlaceholder:0 error:0];
+    associatedAppBundleIdentifier2 = [workflow associatedAppBundleIdentifier];
+    name = [v17 initWithBundleIdentifier:associatedAppBundleIdentifier2 allowPlaceholder:0 error:0];
 
-    if (v14)
+    if (name)
     {
-      [v14 localizedName];
-      v11 = v15 = v11;
+      [name localizedName];
+      localizedAppName = actions = localizedAppName;
       goto LABEL_14;
     }
 
 LABEL_15:
   }
 
-  v19 = [(WFDialogTransformer *)self runSource];
-  v20 = [v19 isEqualToString:*MEMORY[0x1E69E1398]];
+  runSource = [(WFDialogTransformer *)self runSource];
+  v20 = [runSource isEqualToString:*MEMORY[0x1E69E1398]];
 
   if (v20)
   {
-    v21 = [MEMORY[0x1E69E0A90] currentDevice];
-    v22 = [v21 hasSystemAperture];
+    currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+    hasSystemAperture = [currentDevice hasSystemAperture];
 
-    if ((v22 & 1) == 0)
+    if ((hasSystemAperture & 1) == 0)
     {
       v23 = MEMORY[0x1E696AEC0];
       v24 = WFLocalizedString(@"%@ │ Shortcuts");
-      v25 = [v23 localizedStringWithFormat:v24, v11];
+      v25 = [v23 localizedStringWithFormat:v24, localizedAppName];
 
-      v11 = v25;
+      localizedAppName = v25;
     }
   }
 
-  if ([v6 hiddenFromLibraryAndSync])
+  if ([workflow hiddenFromLibraryAndSync])
   {
     v26 = WFLocalizedString(@"Shortcuts");
 
-    v11 = v26;
+    localizedAppName = v26;
   }
 
   if (!v52)
@@ -4690,13 +4690,13 @@ LABEL_15:
     v52 = v8;
   }
 
-  v27 = [v6 workflowID];
-  if (v27 || ([v6 actions], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "count") != 1))
+  workflowID = [workflow workflowID];
+  if (workflowID || ([workflow actions], associatedAppBundleIdentifier = objc_claimAutoreleasedReturnValue(), objc_msgSend(associatedAppBundleIdentifier, "count") != 1))
   {
-    v31 = [(WFDialogTransformer *)self currentAction];
-    v30 = [v31 identifier];
+    currentAction2 = [(WFDialogTransformer *)self currentAction];
+    identifier = [currentAction2 identifier];
 
-    if (v27)
+    if (workflowID)
     {
       goto LABEL_28;
     }
@@ -4704,43 +4704,43 @@ LABEL_15:
 
   else
   {
-    v28 = [v6 actions];
-    v29 = [v28 firstObject];
-    v30 = [v29 identifier];
+    actions2 = [workflow actions];
+    firstObject = [actions2 firstObject];
+    identifier = [firstObject identifier];
   }
 
 LABEL_28:
-  v32 = [MEMORY[0x1E69E0D70] symbolIconForActionIdentifier:v30 bundleIdentifier:v52];
+  v32 = [MEMORY[0x1E69E0D70] symbolIconForActionIdentifier:identifier bundleIdentifier:v52];
   v33 = v32;
   if (v32)
   {
     v34 = v32;
 
-    v12 = v34;
+    icon2 = v34;
   }
 
-  v35 = [(WFDialogTransformer *)self runningContext];
-  v36 = [v35 runSource];
-  if ([v36 isEqualToString:*MEMORY[0x1E69E1368]])
+  runningContext = [(WFDialogTransformer *)self runningContext];
+  runSource2 = [runningContext runSource];
+  if ([runSource2 isEqualToString:*MEMORY[0x1E69E1368]])
   {
-    v50 = v7;
-    v37 = [v6 icon];
-    v38 = [v37 symbolOverride];
+    v50 = icon;
+    icon3 = [workflow icon];
+    symbolOverride = [icon3 symbolOverride];
 
-    if (!v38)
+    if (!symbolOverride)
     {
-      v7 = v50;
+      icon = v50;
       v42 = v51;
-      if (v12)
+      if (icon2)
       {
         goto LABEL_39;
       }
 
 LABEL_43:
-      v48 = [(WFDialogTransformer *)self shortcutsAppAttribution];
-      v12 = [v48 icon];
+      shortcutsAppAttribution = [(WFDialogTransformer *)self shortcutsAppAttribution];
+      icon2 = [shortcutsAppAttribution icon];
 
-      if (v11)
+      if (localizedAppName)
       {
         goto LABEL_40;
       }
@@ -4752,80 +4752,80 @@ LABEL_43:
     v40 = v39;
     if (v39)
     {
-      v41 = v39;
+      whiteColor = v39;
     }
 
     else
     {
-      v41 = [MEMORY[0x1E69E09E0] whiteColor];
+      whiteColor = [MEMORY[0x1E69E09E0] whiteColor];
     }
 
-    v35 = v41;
+    runningContext = whiteColor;
 
     v43 = objc_alloc(MEMORY[0x1E69E0D70]);
-    v36 = [v6 icon];
-    v44 = [v36 symbolOverride];
-    v45 = [v43 initWithSymbolName:v44 symbolColor:v35];
+    runSource2 = [workflow icon];
+    symbolOverride2 = [runSource2 symbolOverride];
+    v45 = [v43 initWithSymbolName:symbolOverride2 symbolColor:runningContext];
 
-    v12 = v45;
-    v7 = v50;
+    icon2 = v45;
+    icon = v50;
   }
 
   v42 = v51;
 
-  if (!v12)
+  if (!icon2)
   {
     goto LABEL_43;
   }
 
 LABEL_39:
-  if (v11)
+  if (localizedAppName)
   {
     goto LABEL_40;
   }
 
 LABEL_44:
-  v49 = [(WFDialogTransformer *)self shortcutsAppAttribution];
-  v11 = [v49 title];
+  shortcutsAppAttribution2 = [(WFDialogTransformer *)self shortcutsAppAttribution];
+  localizedAppName = [shortcutsAppAttribution2 title];
 
 LABEL_40:
-  v46 = [objc_alloc(MEMORY[0x1E69E0A98]) initWithTitle:v11 icon:v12 workflowIcon:v7 appBundleIdentifier:v52];
+  v46 = [objc_alloc(MEMORY[0x1E69E0A98]) initWithTitle:localizedAppName icon:icon2 workflowIcon:icon appBundleIdentifier:v52];
 
   return v46;
 }
 
-- (void)stopWithError:(id)a3
+- (void)stopWithError:(id)error
 {
-  v7 = a3;
-  if ([v7 wf_isUnsupportedUserInterfaceError] && (-[WFDialogTransformer currentAction](self, "currentAction"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isRunning"), v4, v5))
+  errorCopy = error;
+  if ([errorCopy wf_isUnsupportedUserInterfaceError] && (-[WFDialogTransformer currentAction](self, "currentAction"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isRunning"), v4, v5))
   {
-    v6 = [(WFDialogTransformer *)self currentAction];
-    [v6 finishRunningWithError:v7];
+    currentAction = [(WFDialogTransformer *)self currentAction];
+    [currentAction finishRunningWithError:errorCopy];
   }
 
   else
   {
-    v6 = [(WFDialogTransformer *)self delegate];
-    [v6 dialogTransformer:self stopRunningWithError:v7];
+    currentAction = [(WFDialogTransformer *)self delegate];
+    [currentAction dialogTransformer:self stopRunningWithError:errorCopy];
   }
 }
 
-- (WFDialogTransformer)initWithWorkflow:(id)a3 userInterfacePresenter:(id)a4 runSource:(id)a5 runningContext:(id)a6
+- (WFDialogTransformer)initWithWorkflow:(id)workflow userInterfacePresenter:(id)presenter runSource:(id)source runningContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  workflowCopy = workflow;
+  presenterCopy = presenter;
+  sourceCopy = source;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = WFDialogTransformer;
   v15 = [(WFDialogTransformer *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_workflow, a3);
-    objc_storeStrong(&v16->_userInterfacePresenter, a4);
-    objc_storeStrong(&v16->_runSource, a5);
-    objc_storeStrong(&v16->_runningContext, a6);
+    objc_storeStrong(&v15->_workflow, workflow);
+    objc_storeStrong(&v16->_userInterfacePresenter, presenter);
+    objc_storeStrong(&v16->_runSource, source);
+    objc_storeStrong(&v16->_runningContext, context);
     v16->_allowsHandoff = 0;
     v16->_presentationMode = 0;
     v16->_numberOfDialogsPresented = 0;

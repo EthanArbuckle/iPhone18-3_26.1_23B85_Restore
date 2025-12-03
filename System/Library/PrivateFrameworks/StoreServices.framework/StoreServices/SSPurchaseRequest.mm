@@ -1,19 +1,19 @@
 @interface SSPurchaseRequest
 - (NSArray)purchases;
-- (SSPurchaseRequest)initWithPurchases:(id)a3;
-- (id)_purchaseForUniqueIdentifier:(int64_t)a3;
+- (SSPurchaseRequest)initWithPurchases:(id)purchases;
+- (id)_purchaseForUniqueIdentifier:(int64_t)identifier;
 - (void)_addPurchasesToManager;
-- (void)_finishPurchasesWithResponses:(id)a3;
+- (void)_finishPurchasesWithResponses:(id)responses;
 - (void)cancel;
 - (void)dealloc;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithPurchaseBlock:(id)a3 completionBlock:(id)a4;
-- (void)startWithPurchaseResponseBlock:(id)a3 completionBlock:(id)a4;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithPurchaseBlock:(id)block completionBlock:(id)completionBlock;
+- (void)startWithPurchaseResponseBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation SSPurchaseRequest
 
-- (SSPurchaseRequest)initWithPurchases:(id)a3
+- (SSPurchaseRequest)initWithPurchases:(id)purchases
 {
   v7.receiver = self;
   v7.super_class = SSPurchaseRequest;
@@ -24,7 +24,7 @@
     v4->_createsDownloads = 1;
     v4->_createsJobs = 1;
     v4->_needsAuthentication = 1;
-    v4->_purchases = [a3 copy];
+    v4->_purchases = [purchases copy];
     v5->_shouldValidatePurchases = 1;
   }
 
@@ -47,39 +47,39 @@
   return v2;
 }
 
-- (void)startWithPurchaseBlock:(id)a3 completionBlock:(id)a4
+- (void)startWithPurchaseBlock:(id)block completionBlock:(id)completionBlock
 {
   purchaseBlock = self->_purchaseBlock;
-  if (purchaseBlock != a3)
+  if (purchaseBlock != block)
   {
 
-    self->_purchaseBlock = [a3 copy];
+    self->_purchaseBlock = [block copy];
   }
 
   completionBlock = self->_completionBlock;
-  if (completionBlock != a4)
+  if (completionBlock != completionBlock)
   {
 
-    self->_completionBlock = [a4 copy];
+    self->_completionBlock = [completionBlock copy];
   }
 
   [(SSPurchaseRequest *)self _addPurchasesToManager];
 }
 
-- (void)startWithPurchaseResponseBlock:(id)a3 completionBlock:(id)a4
+- (void)startWithPurchaseResponseBlock:(id)block completionBlock:(id)completionBlock
 {
   purchaseResponseBlock = self->_purchaseResponseBlock;
-  if (purchaseResponseBlock != a3)
+  if (purchaseResponseBlock != block)
   {
 
-    self->_purchaseResponseBlock = [a3 copy];
+    self->_purchaseResponseBlock = [block copy];
   }
 
   completionBlock = self->_completionBlock;
-  if (completionBlock != a4)
+  if (completionBlock != completionBlock)
   {
 
-    self->_completionBlock = [a4 copy];
+    self->_completionBlock = [completionBlock copy];
   }
 
   [(SSPurchaseRequest *)self _addPurchasesToManager];
@@ -93,13 +93,13 @@
   [(SSRequest *)&v3 cancel];
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   completionBlock = self->_completionBlock;
-  if (completionBlock != a3)
+  if (completionBlock != block)
   {
 
-    self->_completionBlock = [a3 copy];
+    self->_completionBlock = [block copy];
   }
 
   [(SSPurchaseRequest *)self _addPurchasesToManager];
@@ -109,7 +109,7 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   [(SSRequest *)self _beginBackgroundTask];
-  v3 = self;
+  selfCopy = self;
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
   if (!self->_purchaseManager)
   {
@@ -209,7 +209,7 @@ void __43__SSPurchaseRequest__addPurchasesToManager__block_invoke(uint64_t a1, c
   }
 }
 
-- (void)_finishPurchasesWithResponses:(id)a3
+- (void)_finishPurchasesWithResponses:(id)responses
 {
   v45 = *MEMORY[0x1E69E9840];
   v38 = 0;
@@ -242,7 +242,7 @@ void __43__SSPurchaseRequest__addPurchasesToManager__block_invoke(uint64_t a1, c
   block[6] = &v38;
   block[7] = &v28;
   block[4] = self;
-  block[5] = a3;
+  block[5] = responses;
   block[8] = &v22;
   block[9] = &v34;
   dispatch_sync(dispatchQueue, block);
@@ -252,7 +252,7 @@ void __43__SSPurchaseRequest__addPurchasesToManager__block_invoke(uint64_t a1, c
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v17 objects:v44 count:16];
+    v6 = [responses countByEnumeratingWithState:&v17 objects:v44 count:16];
     if (v6)
     {
       v7 = *v18;
@@ -262,17 +262,17 @@ void __43__SSPurchaseRequest__addPurchasesToManager__block_invoke(uint64_t a1, c
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(responses);
           }
 
           v9 = *(*(&v17 + 1) + 8 * i);
           v10 = [objc_msgSend(v9 "purchase")];
-          v11 = [v9 error];
+          error = [v9 error];
           v12 = [(SSPurchaseRequest *)self _purchaseForUniqueIdentifier:v10];
           v13 = v29[5];
           if (v13)
           {
-            (*(v13 + 16))(v13, v12, v11);
+            (*(v13 + 16))(v13, v12, error);
           }
 
           if (v23[5])
@@ -282,7 +282,7 @@ void __43__SSPurchaseRequest__addPurchasesToManager__block_invoke(uint64_t a1, c
           }
         }
 
-        v6 = [a3 countByEnumeratingWithState:&v17 objects:v44 count:16];
+        v6 = [responses countByEnumeratingWithState:&v17 objects:v44 count:16];
       }
 
       while (v6);
@@ -294,7 +294,7 @@ void __43__SSPurchaseRequest__addPurchasesToManager__block_invoke(uint64_t a1, c
   v16[2] = __51__SSPurchaseRequest__finishPurchasesWithResponses___block_invoke_2;
   v16[3] = &unk_1E84AC7B0;
   v16[4] = self;
-  v16[5] = a3;
+  v16[5] = responses;
   v16[6] = &v34;
   dispatch_async(MEMORY[0x1E69E96A0], v16);
   if (*(v35 + 24) == 1)
@@ -306,7 +306,7 @@ void __43__SSPurchaseRequest__addPurchasesToManager__block_invoke(uint64_t a1, c
     }
 
     [(SSRequest *)self _endBackgroundTask];
-    v15 = self;
+    selfCopy = self;
   }
 
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
@@ -433,7 +433,7 @@ uint64_t __51__SSPurchaseRequest__finishPurchasesWithResponses___block_invoke_2(
   return result;
 }
 
-- (id)_purchaseForUniqueIdentifier:(int64_t)a3
+- (id)_purchaseForUniqueIdentifier:(int64_t)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -459,7 +459,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 uniqueIdentifier] == a3)
+    if ([v9 uniqueIdentifier] == identifier)
     {
       return v9;
     }

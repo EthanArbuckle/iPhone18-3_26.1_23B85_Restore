@@ -1,28 +1,28 @@
 @interface AWDWiFiMetricsManagerBTCoexModeChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasA2dpConnectionCount:(BOOL)a3;
-- (void)setHasClamshellClosed:(BOOL)a3;
-- (void)setHasCoexMode:(BOOL)a3;
-- (void)setHasHidConnectionCount:(BOOL)a3;
-- (void)setHasRssi:(BOOL)a3;
-- (void)setHasScoConnectionCount:(BOOL)a3;
-- (void)setHasWifiInfraChainConfig:(BOOL)a3;
-- (void)setHasWifiInfraChannel:(BOOL)a3;
-- (void)setHasWifiInfraPhyMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasA2dpConnectionCount:(BOOL)count;
+- (void)setHasClamshellClosed:(BOOL)closed;
+- (void)setHasCoexMode:(BOOL)mode;
+- (void)setHasHidConnectionCount:(BOOL)count;
+- (void)setHasRssi:(BOOL)rssi;
+- (void)setHasScoConnectionCount:(BOOL)count;
+- (void)setHasWifiInfraChainConfig:(BOOL)config;
+- (void)setHasWifiInfraChannel:(BOOL)channel;
+- (void)setHasWifiInfraPhyMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerBTCoexModeChange
 
-- (void)setHasCoexMode:(BOOL)a3
+- (void)setHasCoexMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 8;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasA2dpConnectionCount:(BOOL)a3
+- (void)setHasA2dpConnectionCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasHidConnectionCount:(BOOL)a3
+- (void)setHasHidConnectionCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasScoConnectionCount:(BOOL)a3
+- (void)setHasScoConnectionCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasWifiInfraChannel:(BOOL)a3
+- (void)setHasWifiInfraChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 256;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasWifiInfraChainConfig:(BOOL)a3
+- (void)setHasWifiInfraChainConfig:(BOOL)config
 {
-  if (a3)
+  if (config)
   {
     v3 = 128;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasWifiInfraPhyMode:(BOOL)a3
+- (void)setHasWifiInfraPhyMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 512;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasClamshellClosed:(BOOL)a3
+- (void)setHasClamshellClosed:(BOOL)closed
 {
-  if (a3)
+  if (closed)
   {
     v3 = 4;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRssi:(BOOL)a3
+- (void)setHasRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 32;
   }
@@ -164,11 +164,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -187,7 +187,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coexMode), @"coexMode"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coexMode), @"coexMode"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -201,7 +201,7 @@ LABEL_4:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_a2dpConnectionCount), @"a2dpConnectionCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_a2dpConnectionCount), @"a2dpConnectionCount"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -215,7 +215,7 @@ LABEL_5:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_hidConnectionCount), @"hidConnectionCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_hidConnectionCount), @"hidConnectionCount"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -229,7 +229,7 @@ LABEL_6:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_scoConnectionCount), @"scoConnectionCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_scoConnectionCount), @"scoConnectionCount"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -243,7 +243,7 @@ LABEL_7:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiInfraChannel), @"wifiInfraChannel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiInfraChannel), @"wifiInfraChannel"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -257,7 +257,7 @@ LABEL_8:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiInfraChainConfig), @"wifiInfraChainConfig"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiInfraChainConfig), @"wifiInfraChainConfig"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -268,17 +268,17 @@ LABEL_9:
     }
 
 LABEL_21:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_clamshellClosed), @"clamshellClosed"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_clamshellClosed), @"clamshellClosed"}];
     if ((*&self->_has & 0x20) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_11;
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiInfraPhyMode), @"wifiInfraPhyMode"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiInfraPhyMode), @"wifiInfraPhyMode"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -289,13 +289,13 @@ LABEL_10:
   if ((has & 0x20) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_rssi), @"rssi"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_rssi), @"rssi"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -438,13 +438,13 @@ LABEL_21:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 26) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 26) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -463,8 +463,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 6) = self->_coexMode;
-  *(a3 + 26) |= 8u;
+  *(to + 6) = self->_coexMode;
+  *(to + 26) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -478,8 +478,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  *(a3 + 4) = self->_a2dpConnectionCount;
-  *(a3 + 26) |= 2u;
+  *(to + 4) = self->_a2dpConnectionCount;
+  *(to + 26) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -493,8 +493,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  *(a3 + 7) = self->_hidConnectionCount;
-  *(a3 + 26) |= 0x10u;
+  *(to + 7) = self->_hidConnectionCount;
+  *(to + 26) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -508,8 +508,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  *(a3 + 9) = self->_scoConnectionCount;
-  *(a3 + 26) |= 0x40u;
+  *(to + 9) = self->_scoConnectionCount;
+  *(to + 26) |= 0x40u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -523,8 +523,8 @@ LABEL_7:
   }
 
 LABEL_17:
-  *(a3 + 11) = self->_wifiInfraChannel;
-  *(a3 + 26) |= 0x100u;
+  *(to + 11) = self->_wifiInfraChannel;
+  *(to + 26) |= 0x100u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -538,8 +538,8 @@ LABEL_8:
   }
 
 LABEL_18:
-  *(a3 + 10) = self->_wifiInfraChainConfig;
-  *(a3 + 26) |= 0x80u;
+  *(to + 10) = self->_wifiInfraChainConfig;
+  *(to + 26) |= 0x80u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -553,8 +553,8 @@ LABEL_9:
   }
 
 LABEL_19:
-  *(a3 + 12) = self->_wifiInfraPhyMode;
-  *(a3 + 26) |= 0x200u;
+  *(to + 12) = self->_wifiInfraPhyMode;
+  *(to + 26) |= 0x200u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -565,23 +565,23 @@ LABEL_10:
     }
 
 LABEL_21:
-    *(a3 + 8) = self->_rssi;
-    *(a3 + 26) |= 0x20u;
+    *(to + 8) = self->_rssi;
+    *(to + 26) |= 0x20u;
     return;
   }
 
 LABEL_20:
-  *(a3 + 5) = self->_clamshellClosed;
-  *(a3 + 26) |= 4u;
+  *(to + 5) = self->_clamshellClosed;
+  *(to + 26) |= 4u;
   if ((*&self->_has & 0x20) != 0)
   {
     goto LABEL_21;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -723,16 +723,16 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 26);
+    v7 = *(equal + 26);
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_51;
       }
@@ -747,7 +747,7 @@ LABEL_51:
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_coexMode != *(a3 + 6))
+      if ((v7 & 8) == 0 || self->_coexMode != *(equal + 6))
       {
         goto LABEL_51;
       }
@@ -760,7 +760,7 @@ LABEL_51:
 
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_a2dpConnectionCount != *(a3 + 4))
+      if ((v7 & 2) == 0 || self->_a2dpConnectionCount != *(equal + 4))
       {
         goto LABEL_51;
       }
@@ -773,7 +773,7 @@ LABEL_51:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_hidConnectionCount != *(a3 + 7))
+      if ((v7 & 0x10) == 0 || self->_hidConnectionCount != *(equal + 7))
       {
         goto LABEL_51;
       }
@@ -786,7 +786,7 @@ LABEL_51:
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_scoConnectionCount != *(a3 + 9))
+      if ((v7 & 0x40) == 0 || self->_scoConnectionCount != *(equal + 9))
       {
         goto LABEL_51;
       }
@@ -799,20 +799,20 @@ LABEL_51:
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 26) & 0x100) == 0 || self->_wifiInfraChannel != *(a3 + 11))
+      if ((*(equal + 26) & 0x100) == 0 || self->_wifiInfraChannel != *(equal + 11))
       {
         goto LABEL_51;
       }
     }
 
-    else if ((*(a3 + 26) & 0x100) != 0)
+    else if ((*(equal + 26) & 0x100) != 0)
     {
       goto LABEL_51;
     }
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_wifiInfraChainConfig != *(a3 + 10))
+      if ((v7 & 0x80) == 0 || self->_wifiInfraChainConfig != *(equal + 10))
       {
         goto LABEL_51;
       }
@@ -825,20 +825,20 @@ LABEL_51:
 
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 26) & 0x200) == 0 || self->_wifiInfraPhyMode != *(a3 + 12))
+      if ((*(equal + 26) & 0x200) == 0 || self->_wifiInfraPhyMode != *(equal + 12))
       {
         goto LABEL_51;
       }
     }
 
-    else if ((*(a3 + 26) & 0x200) != 0)
+    else if ((*(equal + 26) & 0x200) != 0)
     {
       goto LABEL_51;
     }
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_clamshellClosed != *(a3 + 5))
+      if ((v7 & 4) == 0 || self->_clamshellClosed != *(equal + 5))
       {
         goto LABEL_51;
       }
@@ -852,7 +852,7 @@ LABEL_51:
     LOBYTE(v5) = (v7 & 0x20) == 0;
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_rssi != *(a3 + 8))
+      if ((v7 & 0x20) == 0 || self->_rssi != *(equal + 8))
       {
         goto LABEL_51;
       }
@@ -1003,14 +1003,14 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 26);
+    v3 = *(from + 26);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -1028,9 +1028,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_coexMode = *(a3 + 6);
+  self->_coexMode = *(from + 6);
   *&self->_has |= 8u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 2) == 0)
   {
 LABEL_4:
@@ -1043,9 +1043,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_a2dpConnectionCount = *(a3 + 4);
+  self->_a2dpConnectionCount = *(from + 4);
   *&self->_has |= 2u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x10) == 0)
   {
 LABEL_5:
@@ -1058,9 +1058,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_hidConnectionCount = *(a3 + 7);
+  self->_hidConnectionCount = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x40) == 0)
   {
 LABEL_6:
@@ -1073,9 +1073,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_scoConnectionCount = *(a3 + 9);
+  self->_scoConnectionCount = *(from + 9);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x100) == 0)
   {
 LABEL_7:
@@ -1088,9 +1088,9 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_wifiInfraChannel = *(a3 + 11);
+  self->_wifiInfraChannel = *(from + 11);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x80) == 0)
   {
 LABEL_8:
@@ -1103,9 +1103,9 @@ LABEL_8:
   }
 
 LABEL_18:
-  self->_wifiInfraChainConfig = *(a3 + 10);
+  self->_wifiInfraChainConfig = *(from + 10);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 0x200) == 0)
   {
 LABEL_9:
@@ -1118,9 +1118,9 @@ LABEL_9:
   }
 
 LABEL_19:
-  self->_wifiInfraPhyMode = *(a3 + 12);
+  self->_wifiInfraPhyMode = *(from + 12);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 26);
+  v3 = *(from + 26);
   if ((v3 & 4) == 0)
   {
 LABEL_10:
@@ -1130,15 +1130,15 @@ LABEL_10:
     }
 
 LABEL_21:
-    self->_rssi = *(a3 + 8);
+    self->_rssi = *(from + 8);
     *&self->_has |= 0x20u;
     return;
   }
 
 LABEL_20:
-  self->_clamshellClosed = *(a3 + 5);
+  self->_clamshellClosed = *(from + 5);
   *&self->_has |= 4u;
-  if ((*(a3 + 26) & 0x20) != 0)
+  if ((*(from + 26) & 0x20) != 0)
   {
     goto LABEL_21;
   }

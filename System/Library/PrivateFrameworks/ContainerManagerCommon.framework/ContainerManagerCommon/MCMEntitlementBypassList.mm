@@ -1,21 +1,21 @@
 @interface MCMEntitlementBypassList
 + (id)sharedBypassList;
-- (BOOL)containerIdIsWellknown:(id)a3 class:(unint64_t)a4;
-- (BOOL)isLookupAllowedToBypassEntitlementFromCodeSignIdentifier:(id)a3 forContainerClass:(unint64_t)a4 containerIdentifier:(id)a5;
-- (BOOL)systemContainerIdIsWellknown:(id)a3;
-- (BOOL)systemGroupContainerIdIsWellknown:(id)a3;
-- (MCMEntitlementBypassList)initWithSystemContainerMapping:(id)a3 systemGroupContainerMapping:(id)a4 bypassListedCodeSignIdentifierMapping:(id)a5;
+- (BOOL)containerIdIsWellknown:(id)wellknown class:(unint64_t)class;
+- (BOOL)isLookupAllowedToBypassEntitlementFromCodeSignIdentifier:(id)identifier forContainerClass:(unint64_t)class containerIdentifier:(id)containerIdentifier;
+- (BOOL)systemContainerIdIsWellknown:(id)wellknown;
+- (BOOL)systemGroupContainerIdIsWellknown:(id)wellknown;
+- (MCMEntitlementBypassList)initWithSystemContainerMapping:(id)mapping systemGroupContainerMapping:(id)containerMapping bypassListedCodeSignIdentifierMapping:(id)identifierMapping;
 - (NSDictionary)systemEntitlementBypassList;
 - (NSDictionary)systemGroupEntitlementBypassList;
-- (id)_convertArraysToSetsInNestedDictionary:(id)a3;
+- (id)_convertArraysToSetsInNestedDictionary:(id)dictionary;
 - (id)wellKnownContainerIdentifiersForSandboxPushDownCompatibilitySet;
-- (id)wellknownContainerForId:(id)a3 class:(unint64_t)a4;
-- (id)wellknownSystemContainerForId:(id)a3;
+- (id)wellknownContainerForId:(id)id class:(unint64_t)class;
+- (id)wellknownSystemContainerForId:(id)id;
 - (id)wellknownSystemContainers;
-- (id)wellknownSystemGroupContainerForId:(id)a3;
+- (id)wellknownSystemGroupContainerForId:(id)id;
 - (id)wellknownSystemGroupContainers;
-- (void)setSystemEntitlementBypassList:(id)a3;
-- (void)setSystemGroupEntitlementBypassList:(id)a3;
+- (void)setSystemEntitlementBypassList:(id)list;
+- (void)setSystemGroupEntitlementBypassList:(id)list;
 @end
 
 @implementation MCMEntitlementBypassList
@@ -50,22 +50,22 @@
   return result;
 }
 
-- (void)setSystemGroupEntitlementBypassList:(id)a3
+- (void)setSystemGroupEntitlementBypassList:(id)list
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_systemGroupEntitlementBypassList = &self->_systemGroupEntitlementBypassList;
 
-  objc_storeStrong(p_systemGroupEntitlementBypassList, a3);
+  objc_storeStrong(p_systemGroupEntitlementBypassList, list);
 }
 
-- (void)setSystemEntitlementBypassList:(id)a3
+- (void)setSystemEntitlementBypassList:(id)list
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_systemEntitlementBypassList = &self->_systemEntitlementBypassList;
 
-  objc_storeStrong(p_systemEntitlementBypassList, a3);
+  objc_storeStrong(p_systemEntitlementBypassList, list);
 }
 
 - (id)wellKnownContainerIdentifiersForSandboxPushDownCompatibilitySet
@@ -91,28 +91,28 @@ uint64_t __91__MCMEntitlementBypassList_wellKnownContainerIdentifiersForSandboxP
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_convertArraysToSetsInNestedDictionary:(id)a3
+- (id)_convertArraysToSetsInNestedDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
-  v22 = v3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithObject:v3];
+  dictionaryCopy = dictionary;
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
+  v22 = dictionaryCopy;
+  v5 = [MEMORY[0x1E695DF70] arrayWithObject:dictionaryCopy];
   v23 = [MEMORY[0x1E695DF70] arrayWithObject:v4];
   if ([v5 count])
   {
     do
     {
-      v6 = [v5 lastObject];
+      lastObject = [v5 lastObject];
       v7 = v5;
       [v5 removeLastObject];
-      v8 = [v23 lastObject];
+      lastObject2 = [v23 lastObject];
       [v23 removeLastObject];
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v9 = v6;
+      v9 = lastObject;
       v10 = [v9 countByEnumeratingWithState:&v25 objects:v24 count:16];
       if (v10)
       {
@@ -133,10 +133,10 @@ uint64_t __91__MCMEntitlementBypassList_wellKnownContainerIdentifiersForSandboxP
             if (objc_opt_isKindOfClass())
             {
               v16 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v15, "count")}];
-              [v8 setObject:v16 forKeyedSubscript:v14];
+              [lastObject2 setObject:v16 forKeyedSubscript:v14];
 
               [v7 addObject:v15];
-              v17 = [v8 objectForKeyedSubscript:v14];
+              v17 = [lastObject2 objectForKeyedSubscript:v14];
               [v23 addObject:v17];
             }
 
@@ -146,12 +146,12 @@ uint64_t __91__MCMEntitlementBypassList_wellKnownContainerIdentifiersForSandboxP
               if (objc_opt_isKindOfClass())
               {
                 v18 = [MEMORY[0x1E695DFD8] setWithArray:v15];
-                [v8 setObject:v18 forKeyedSubscript:v14];
+                [lastObject2 setObject:v18 forKeyedSubscript:v14];
               }
 
               else
               {
-                [v8 setObject:v15 forKeyedSubscript:v14];
+                [lastObject2 setObject:v15 forKeyedSubscript:v14];
               }
             }
           }
@@ -175,17 +175,17 @@ uint64_t __91__MCMEntitlementBypassList_wellKnownContainerIdentifiersForSandboxP
   return v19;
 }
 
-- (BOOL)isLookupAllowedToBypassEntitlementFromCodeSignIdentifier:(id)a3 forContainerClass:(unint64_t)a4 containerIdentifier:(id)a5
+- (BOOL)isLookupAllowedToBypassEntitlementFromCodeSignIdentifier:(id)identifier forContainerClass:(unint64_t)class containerIdentifier:(id)containerIdentifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (a4 <= 0xE)
+  containerIdentifierCopy = containerIdentifier;
+  if (class <= 0xE)
   {
-    v10 = [(NSDictionary *)self->_bypassListedLookupByCodeSignIdentifier objectForKeyedSubscript:a3];
+    v10 = [(NSDictionary *)self->_bypassListedLookupByCodeSignIdentifier objectForKeyedSubscript:identifier];
     if (v10)
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      v12 = [v10 isEqual:v11];
+      null = [MEMORY[0x1E695DFB0] null];
+      v12 = [v10 isEqual:null];
 
       if (v12)
       {
@@ -197,17 +197,17 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:class];
       v13 = [v10 objectForKeyedSubscript:v14];
 
       if (v13)
       {
-        v15 = [MEMORY[0x1E695DFB0] null];
-        v16 = [v13 isEqual:v15];
+        null2 = [MEMORY[0x1E695DFB0] null];
+        v16 = [v13 isEqual:null2];
 
         if ((v16 & 1) == 0)
         {
-          v9 = [v13 containsObject:v8];
+          v9 = [v13 containsObject:containerIdentifierCopy];
           goto LABEL_11;
         }
 
@@ -231,19 +231,19 @@ LABEL_12:
   return v9;
 }
 
-- (id)wellknownContainerForId:(id)a3 class:(unint64_t)a4
+- (id)wellknownContainerForId:(id)id class:(unint64_t)class
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 == 13)
+  idCopy = id;
+  if (class == 13)
   {
-    v7 = [(MCMEntitlementBypassList *)self wellknownSystemGroupContainerForId:v6];
+    v7 = [(MCMEntitlementBypassList *)self wellknownSystemGroupContainerForId:idCopy];
     goto LABEL_5;
   }
 
-  if (a4 == 12)
+  if (class == 12)
   {
-    v7 = [(MCMEntitlementBypassList *)self wellknownSystemContainerForId:v6];
+    v7 = [(MCMEntitlementBypassList *)self wellknownSystemContainerForId:idCopy];
 LABEL_5:
     v8 = v7;
     goto LABEL_7;
@@ -257,24 +257,24 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)containerIdIsWellknown:(id)a3 class:(unint64_t)a4
+- (BOOL)containerIdIsWellknown:(id)wellknown class:(unint64_t)class
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 == 13)
+  wellknownCopy = wellknown;
+  if (class == 13)
   {
-    v7 = [(MCMEntitlementBypassList *)self systemGroupContainerIdIsWellknown:v6];
+    v7 = [(MCMEntitlementBypassList *)self systemGroupContainerIdIsWellknown:wellknownCopy];
   }
 
   else
   {
-    if (a4 != 12)
+    if (class != 12)
     {
       v8 = 0;
       goto LABEL_7;
     }
 
-    v7 = [(MCMEntitlementBypassList *)self systemContainerIdIsWellknown:v6];
+    v7 = [(MCMEntitlementBypassList *)self systemContainerIdIsWellknown:wellknownCopy];
   }
 
   v8 = v7;
@@ -287,31 +287,31 @@ LABEL_7:
 - (id)wellknownSystemGroupContainers
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMEntitlementBypassList *)self systemGroupEntitlementBypassList];
-  v3 = [v2 allKeys];
+  systemGroupEntitlementBypassList = [(MCMEntitlementBypassList *)self systemGroupEntitlementBypassList];
+  allKeys = [systemGroupEntitlementBypassList allKeys];
 
   v4 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return allKeys;
 }
 
-- (BOOL)systemGroupContainerIdIsWellknown:(id)a3
+- (BOOL)systemGroupContainerIdIsWellknown:(id)wellknown
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MCMEntitlementBypassList *)self systemGroupEntitlementBypassList];
-  v6 = [v5 valueForKey:v4];
+  wellknownCopy = wellknown;
+  systemGroupEntitlementBypassList = [(MCMEntitlementBypassList *)self systemGroupEntitlementBypassList];
+  v6 = [systemGroupEntitlementBypassList valueForKey:wellknownCopy];
 
   v7 = *MEMORY[0x1E69E9840];
   return v6 != 0;
 }
 
-- (id)wellknownSystemGroupContainerForId:(id)a3
+- (id)wellknownSystemGroupContainerForId:(id)id
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MCMEntitlementBypassList *)self systemGroupEntitlementBypassList];
-  v6 = [v5 valueForKey:v4];
+  idCopy = id;
+  systemGroupEntitlementBypassList = [(MCMEntitlementBypassList *)self systemGroupEntitlementBypassList];
+  v6 = [systemGroupEntitlementBypassList valueForKey:idCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -321,52 +321,52 @@ LABEL_7:
 - (id)wellknownSystemContainers
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMEntitlementBypassList *)self systemEntitlementBypassList];
-  v3 = [v2 allKeys];
+  systemEntitlementBypassList = [(MCMEntitlementBypassList *)self systemEntitlementBypassList];
+  allKeys = [systemEntitlementBypassList allKeys];
 
   v4 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return allKeys;
 }
 
-- (BOOL)systemContainerIdIsWellknown:(id)a3
+- (BOOL)systemContainerIdIsWellknown:(id)wellknown
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MCMEntitlementBypassList *)self systemEntitlementBypassList];
-  v6 = [v5 valueForKey:v4];
+  wellknownCopy = wellknown;
+  systemEntitlementBypassList = [(MCMEntitlementBypassList *)self systemEntitlementBypassList];
+  v6 = [systemEntitlementBypassList valueForKey:wellknownCopy];
 
   v7 = *MEMORY[0x1E69E9840];
   return v6 != 0;
 }
 
-- (id)wellknownSystemContainerForId:(id)a3
+- (id)wellknownSystemContainerForId:(id)id
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MCMEntitlementBypassList *)self systemEntitlementBypassList];
-  v6 = [v5 valueForKey:v4];
+  idCopy = id;
+  systemEntitlementBypassList = [(MCMEntitlementBypassList *)self systemEntitlementBypassList];
+  v6 = [systemEntitlementBypassList valueForKey:idCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-- (MCMEntitlementBypassList)initWithSystemContainerMapping:(id)a3 systemGroupContainerMapping:(id)a4 bypassListedCodeSignIdentifierMapping:(id)a5
+- (MCMEntitlementBypassList)initWithSystemContainerMapping:(id)mapping systemGroupContainerMapping:(id)containerMapping bypassListedCodeSignIdentifierMapping:(id)identifierMapping
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  mappingCopy = mapping;
+  containerMappingCopy = containerMapping;
+  identifierMappingCopy = identifierMapping;
   v17.receiver = self;
   v17.super_class = MCMEntitlementBypassList;
   v11 = [(MCMEntitlementBypassList *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    [(MCMEntitlementBypassList *)v11 setSystemEntitlementBypassList:v8];
-    [(MCMEntitlementBypassList *)v12 setSystemGroupEntitlementBypassList:v9];
-    v13 = [(MCMEntitlementBypassList *)v12 _convertArraysToSetsInNestedDictionary:v10];
+    [(MCMEntitlementBypassList *)v11 setSystemEntitlementBypassList:mappingCopy];
+    [(MCMEntitlementBypassList *)v12 setSystemGroupEntitlementBypassList:containerMappingCopy];
+    v13 = [(MCMEntitlementBypassList *)v12 _convertArraysToSetsInNestedDictionary:identifierMappingCopy];
     bypassListedLookupByCodeSignIdentifier = v12->_bypassListedLookupByCodeSignIdentifier;
     v12->_bypassListedLookupByCodeSignIdentifier = v13;
   }

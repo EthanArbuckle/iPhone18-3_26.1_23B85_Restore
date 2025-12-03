@@ -11,17 +11,17 @@
   if ([(HUServiceDetailsHeaderCellAccessibility *)self accessibilityHomeUIIsMessageTextViewVisible])
   {
     v3 = [(HUServiceDetailsHeaderCellAccessibility *)self safeUIViewForKey:@"messageTextView"];
-    v4 = [v3 safeValueForKey:@"text"];
+    accessibilityLabel = [v3 safeValueForKey:@"text"];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = HUServiceDetailsHeaderCellAccessibility;
-    v4 = [(HUServiceDetailsHeaderCellAccessibility *)&v6 accessibilityLabel];
+    accessibilityLabel = [(HUServiceDetailsHeaderCellAccessibility *)&v6 accessibilityLabel];
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -39,9 +39,9 @@
 - (BOOL)accessibilityHomeUIIsMessageTextViewVisible
 {
   v2 = [(HUServiceDetailsHeaderCellAccessibility *)self safeUIViewForKey:@"messageTextView"];
-  v3 = [v2 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v2 _accessibilityViewIsVisible];
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
 @end

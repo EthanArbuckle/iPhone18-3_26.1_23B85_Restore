@@ -1,40 +1,40 @@
 @interface SXMosaicGalleryGroupLayout
-- (CGRect)frameForItemAtIndex:(unint64_t)a3;
+- (CGRect)frameForItemAtIndex:(unint64_t)index;
 - (NSArray)frames;
 - (NSMutableArray)columnRanges;
-- (SXMosaicGalleryGroupLayout)initWithCluster:(id)a3 numberOfColumns:(unint64_t)a4 columnLayout:(id)a5;
-- (_NSRange)columnRangeForItem:(id)a3;
+- (SXMosaicGalleryGroupLayout)initWithCluster:(id)cluster numberOfColumns:(unint64_t)columns columnLayout:(id)layout;
+- (_NSRange)columnRangeForItem:(id)item;
 - (double)calculateHeight;
-- (double)desiredHeightForItem:(id)a3;
+- (double)desiredHeightForItem:(id)item;
 - (double)height;
 - (id)calculateFrames;
 @end
 
 @implementation SXMosaicGalleryGroupLayout
 
-- (SXMosaicGalleryGroupLayout)initWithCluster:(id)a3 numberOfColumns:(unint64_t)a4 columnLayout:(id)a5
+- (SXMosaicGalleryGroupLayout)initWithCluster:(id)cluster numberOfColumns:(unint64_t)columns columnLayout:(id)layout
 {
-  v9 = a3;
-  v10 = a5;
+  clusterCopy = cluster;
+  layoutCopy = layout;
   v14.receiver = self;
   v14.super_class = SXMosaicGalleryGroupLayout;
   v11 = [(SXMosaicGalleryGroupLayout *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_cluster, a3);
-    objc_storeStrong(&v12->_columnLayout, a5);
+    objc_storeStrong(&v11->_cluster, cluster);
+    objc_storeStrong(&v12->_columnLayout, layout);
     v12->_height = 1.79769313e308;
-    v12->_numberOfColumns = a4;
+    v12->_numberOfColumns = columns;
   }
 
   return v12;
 }
 
-- (CGRect)frameForItemAtIndex:(unint64_t)a3
+- (CGRect)frameForItemAtIndex:(unint64_t)index
 {
-  v4 = [(SXMosaicGalleryGroupLayout *)self frames];
-  v5 = [v4 objectAtIndex:a3];
+  frames = [(SXMosaicGalleryGroupLayout *)self frames];
+  v5 = [frames objectAtIndex:index];
 
   [v5 CGRectValue];
   v7 = v6;
@@ -70,9 +70,9 @@
   frames = self->_frames;
   if (!frames)
   {
-    v4 = [(SXMosaicGalleryGroupLayout *)self calculateFrames];
+    calculateFrames = [(SXMosaicGalleryGroupLayout *)self calculateFrames];
     v5 = self->_frames;
-    self->_frames = v4;
+    self->_frames = calculateFrames;
 
     frames = self->_frames;
   }
@@ -83,15 +83,15 @@
 - (double)calculateHeight
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [(SXMosaicGalleryGroupLayout *)self numberOfColumns];
+  numberOfColumns = [(SXMosaicGalleryGroupLayout *)self numberOfColumns];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v4 = [(SXMosaicGalleryGroupLayout *)self cluster];
-  v5 = [v4 items];
+  cluster = [(SXMosaicGalleryGroupLayout *)self cluster];
+  items = [cluster items];
 
-  v6 = [v5 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  v6 = [items countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v6)
   {
     v7 = v6;
@@ -104,7 +104,7 @@
       {
         if (*v40 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         [(SXMosaicGalleryGroupLayout *)self desiredHeightForItem:*(*(&v39 + 1) + 8 * i)];
@@ -119,7 +119,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v7 = [items countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v7);
@@ -134,10 +134,10 @@
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v15 = [(SXMosaicGalleryGroupLayout *)self cluster];
-        v16 = [v15 items];
+        cluster2 = [(SXMosaicGalleryGroupLayout *)self cluster];
+        items2 = [cluster2 items];
 
-        v17 = [v16 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        v17 = [items2 countByEnumeratingWithState:&v35 objects:v43 count:16];
         v18 = 0.0;
         if (v17)
         {
@@ -149,14 +149,14 @@
             {
               if (*v36 != v20)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(items2);
               }
 
               v22 = *(*(&v35 + 1) + 8 * j);
               v23 = [(SXMosaicGalleryGroupLayout *)self columnRangeForItem:v22];
               v25 = v24;
-              v26 = [(SXMosaicGalleryGroupLayout *)self columnLayout];
-              [v26 widthForColumnRange:v23 numberOfColumns:{v25, v3}];
+              columnLayout = [(SXMosaicGalleryGroupLayout *)self columnLayout];
+              [columnLayout widthForColumnRange:v23 numberOfColumns:{v25, numberOfColumns}];
               v28 = v27;
 
               [v22 aspectRatio];
@@ -186,7 +186,7 @@
               v18 = v18 + v31 * v33 * (v31 * v33);
             }
 
-            v19 = [v16 countByEnumeratingWithState:&v35 objects:v43 count:16];
+            v19 = [items2 countByEnumeratingWithState:&v35 objects:v43 count:16];
           }
 
           while (v19);
@@ -220,10 +220,10 @@
 
 - (id)calculateFrames
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SXMosaicGalleryGroupLayout *)self cluster];
-  v5 = [v4 items];
-  v6 = [v5 count];
+  array = [MEMORY[0x1E695DF70] array];
+  cluster = [(SXMosaicGalleryGroupLayout *)self cluster];
+  items = [cluster items];
+  v6 = [items count];
 
   if (v6)
   {
@@ -235,38 +235,38 @@
     do
     {
       v12 = [MEMORY[0x1E696B098] valueWithCGRect:{v8, v9, v10, v11}];
-      [v3 addObject:v12];
+      [array addObject:v12];
 
       ++v7;
-      v13 = [(SXMosaicGalleryGroupLayout *)self cluster];
-      v14 = [v13 items];
-      v15 = [v14 count];
+      cluster2 = [(SXMosaicGalleryGroupLayout *)self cluster];
+      items2 = [cluster2 items];
+      v15 = [items2 count];
     }
 
     while (v7 < v15);
   }
 
-  v16 = [MEMORY[0x1E695DEC8] arrayWithArray:v3];
+  v16 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v16;
 }
 
-- (double)desiredHeightForItem:(id)a3
+- (double)desiredHeightForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SXMosaicGalleryGroupLayout *)self columnRangeForItem:v4];
+  itemCopy = item;
+  v5 = [(SXMosaicGalleryGroupLayout *)self columnRangeForItem:itemCopy];
   v7 = v6;
-  [v4 aspectRatio];
+  [itemCopy aspectRatio];
   v9 = v8;
 
-  v10 = [(SXMosaicGalleryGroupLayout *)self columnLayout];
-  [v10 widthForColumnRange:v5 numberOfColumns:{v7, -[SXMosaicGalleryGroupLayout numberOfColumns](self, "numberOfColumns")}];
+  columnLayout = [(SXMosaicGalleryGroupLayout *)self columnLayout];
+  [columnLayout widthForColumnRange:v5 numberOfColumns:{v7, -[SXMosaicGalleryGroupLayout numberOfColumns](self, "numberOfColumns")}];
   v12 = v11;
 
   return round(v12 / v9);
 }
 
-- (_NSRange)columnRangeForItem:(id)a3
+- (_NSRange)columnRangeForItem:(id)item
 {
   v3 = 0;
   v4 = 0;
@@ -280,10 +280,10 @@
   columnRanges = self->_columnRanges;
   if (!columnRanges)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [(SXMosaicGalleryGroupLayout *)self cluster];
-    v6 = [v5 items];
-    v7 = [v6 count];
+    array = [MEMORY[0x1E695DF70] array];
+    cluster = [(SXMosaicGalleryGroupLayout *)self cluster];
+    items = [cluster items];
+    v7 = [items count];
 
     if (v7)
     {
@@ -291,19 +291,19 @@
       do
       {
         v9 = [MEMORY[0x1E696B098] valueWithRange:{0, 0}];
-        [(NSMutableArray *)v4 addObject:v9];
+        [(NSMutableArray *)array addObject:v9];
 
         ++v8;
-        v10 = [(SXMosaicGalleryGroupLayout *)self cluster];
-        v11 = [v10 items];
-        v12 = [v11 count];
+        cluster2 = [(SXMosaicGalleryGroupLayout *)self cluster];
+        items2 = [cluster2 items];
+        v12 = [items2 count];
       }
 
       while (v8 < v12);
     }
 
     v13 = self->_columnRanges;
-    self->_columnRanges = v4;
+    self->_columnRanges = array;
 
     columnRanges = self->_columnRanges;
   }

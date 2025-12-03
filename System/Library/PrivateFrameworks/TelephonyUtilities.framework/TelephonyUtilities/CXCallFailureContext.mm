@@ -1,24 +1,24 @@
 @interface CXCallFailureContext
-- (id)endedReasonUserInfoForCall:(id)a3;
+- (id)endedReasonUserInfoForCall:(id)call;
 @end
 
 @implementation CXCallFailureContext
 
-- (id)endedReasonUserInfoForCall:(id)a3
+- (id)endedReasonUserInfoForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(CXCallFailureContext *)self title];
-  [v5 setObject:v6 forKeyedSubscript:TUCallRemoteUnavailableTitle];
+  title = [(CXCallFailureContext *)self title];
+  [v5 setObject:title forKeyedSubscript:TUCallRemoteUnavailableTitle];
 
-  v7 = [(CXCallFailureContext *)self message];
-  v8 = [v7 length];
+  message = [(CXCallFailureContext *)self message];
+  v8 = [message length];
 
   if (v8)
   {
-    v9 = [(CXCallFailureContext *)self message];
-    v10 = [v4 displayName];
-    v11 = [v9 stringByReplacingOccurrencesOfString:@"<display_name>" withString:v10];
+    message2 = [(CXCallFailureContext *)self message];
+    displayName = [callCopy displayName];
+    v11 = [message2 stringByReplacingOccurrencesOfString:@"<display_name>" withString:displayName];
 
     [v5 setObject:v11 forKeyedSubscript:TUCallRemoteUnavailableMessage];
   }
@@ -38,10 +38,10 @@
   if ([(CXCallFailureContext *)self hasWiFiSettingsRemediation])
   {
     v17 = +[FTDeviceSupport sharedInstance];
-    v18 = [v17 supportsWLAN];
+    supportsWLAN = [v17 supportsWLAN];
     v19 = TUBundle();
     v20 = v19;
-    if (v18)
+    if (supportsWLAN)
     {
       v21 = @"WLAN_SETTINGS";
     }
@@ -70,7 +70,7 @@
 
   if ([(CXCallFailureContext *)self hasLocationSettingsRemediation])
   {
-    if ([v4 isVideo])
+    if ([callCopy isVideo])
     {
       +[IMService facetimeService];
     }
@@ -90,8 +90,8 @@
     v30 = [v29 localizedStringForKey:@"SETTINGS" value:&stru_100631E68 table:@"TelephonyUtilities"];
     [v12 addObject:v30];
 
-    v31 = [v28 uniqueID];
-    v32 = [NSString stringWithFormat:@"prefs:root=FACETIME&path=LOCATION&guid=%@", v31];
+    uniqueID = [v28 uniqueID];
+    v32 = [NSString stringWithFormat:@"prefs:root=FACETIME&path=LOCATION&guid=%@", uniqueID];
     v33 = [NSURL URLWithString:v32];
     [v13 addObject:v33];
   }

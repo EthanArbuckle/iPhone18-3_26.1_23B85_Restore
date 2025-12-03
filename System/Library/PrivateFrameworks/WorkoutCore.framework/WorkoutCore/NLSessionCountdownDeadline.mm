@@ -1,6 +1,6 @@
 @interface NLSessionCountdownDeadline
 + (id)defaultDeadline;
-- (NLSessionCountdownDeadline)initWithFireDate:(id)a3 minimumDelay:(double)a4 requiresPreciseFireDate:(BOOL)a5;
+- (NLSessionCountdownDeadline)initWithFireDate:(id)date minimumDelay:(double)delay requiresPreciseFireDate:(BOOL)fireDate;
 @end
 
 @implementation NLSessionCountdownDeadline
@@ -15,30 +15,30 @@
   return v5;
 }
 
-- (NLSessionCountdownDeadline)initWithFireDate:(id)a3 minimumDelay:(double)a4 requiresPreciseFireDate:(BOOL)a5
+- (NLSessionCountdownDeadline)initWithFireDate:(id)date minimumDelay:(double)delay requiresPreciseFireDate:(BOOL)fireDate
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = a4;
-  v11 = a5;
-  v5 = v14;
-  v14 = 0;
+  objc_storeStrong(location, date);
+  delayCopy = delay;
+  fireDateCopy = fireDate;
+  v5 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v5;
   v10.super_class = NLSessionCountdownDeadline;
-  v14 = [(NLSessionCountdownDeadline *)&v10 init];
-  objc_storeStrong(&v14, v14);
-  if (v14)
+  selfCopy = [(NLSessionCountdownDeadline *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v14->_fireDate, location[0]);
-    v14->_minimumDelay = v12;
-    v14->_requiresPreciseFireDate = v11;
+    objc_storeStrong(&selfCopy->_fireDate, location[0]);
+    selfCopy->_minimumDelay = delayCopy;
+    selfCopy->_requiresPreciseFireDate = fireDateCopy;
   }
 
-  v7 = MEMORY[0x277D82BE0](v14);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 

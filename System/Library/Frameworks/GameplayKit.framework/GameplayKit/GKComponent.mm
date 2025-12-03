@@ -1,12 +1,12 @@
 @interface GKComponent
 - (GKComponent)init;
-- (GKComponent)initWithCoder:(id)a3;
-- (GKComponent)initWithName:(id)a3;
+- (GKComponent)initWithCoder:(id)coder;
+- (GKComponent)initWithName:(id)name;
 - (NSString)componentName;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setUsesPerComponentUpdate:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setUsesPerComponentUpdate:(BOOL)update;
 @end
 
 @implementation GKComponent
@@ -31,10 +31,10 @@
   return v3;
 }
 
-- (GKComponent)initWithCoder:(id)a3
+- (GKComponent)initWithCoder:(id)coder
 {
   v36[10] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(GKComponent *)self init];
   if (v5)
   {
@@ -52,14 +52,14 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:10];
     [v6 addObjectsFromArray:v7];
 
-    v8 = [v4 allowedClasses];
-    [v6 unionSet:v8];
+    allowedClasses = [coderCopy allowedClasses];
+    [v6 unionSet:allowedClasses];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_componentName"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_componentName"];
     componentName = v5->_componentName;
     v5->_componentName = v9;
 
-    v11 = [v4 decodeObjectOfClasses:v6 forKey:@"_propertyNames"];
+    v11 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_propertyNames"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,16 +90,16 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v17 = [v4 decodeObjectForKey:v16];
+              v17 = [coderCopy decodeObjectForKey:v16];
               if (v17)
               {
-                v18 = v4;
+                v18 = coderCopy;
                 v19 = MEMORY[0x277CCACA8];
                 [v16 substringToIndex:1];
                 v21 = v20 = v5;
-                v22 = [v21 capitalizedString];
+                capitalizedString = [v21 capitalizedString];
                 v23 = [v16 substringFromIndex:1];
-                v24 = [v19 stringWithFormat:@"set%@%@:", v22, v23];
+                v24 = [v19 stringWithFormat:@"set%@%@:", capitalizedString, v23];
 
                 v5 = v20;
                 NSSelectorFromString(v24);
@@ -113,7 +113,7 @@
                   NSLog(&cfstr_CannotSetIniti.isa, v20->_componentName, v16);
                 }
 
-                v4 = v18;
+                coderCopy = v18;
                 v14 = v29;
               }
             }
@@ -137,12 +137,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   componentName = self->_componentName;
   if (componentName)
   {
-    [a3 encodeObject:componentName forKey:@"_componentName"];
+    [coder encodeObject:componentName forKey:@"_componentName"];
   }
 }
 
@@ -153,30 +153,30 @@
   return [(GKComponent *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 
   return objc_alloc_init(v3);
 }
 
-- (GKComponent)initWithName:(id)a3
+- (GKComponent)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = [(GKComponent *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_componentName, a3);
+    objc_storeStrong(&v6->_componentName, name);
   }
 
   return v7;
 }
 
-- (void)setUsesPerComponentUpdate:(BOOL)a3
+- (void)setUsesPerComponentUpdate:(BOOL)update
 {
   usesPerComponentUpdateCount = self->_usesPerComponentUpdateCount;
-  if (a3)
+  if (update)
   {
     v4 = usesPerComponentUpdateCount + 1;
   }

@@ -1,9 +1,9 @@
 @interface CKSuggestedActionsHandler
-+ (id)pluginPayloadForShelfCardWithTitle:(id)a3 summary:(id)a4 userInfo:(id)a5;
++ (id)pluginPayloadForShelfCardWithTitle:(id)title summary:(id)summary userInfo:(id)info;
 - (_TtC7ChatKit25CKSuggestedActionsHandler)init;
 - (_TtP7ChatKit33CKSuggestedActionsHandlerDelegate_)delegate;
-- (void)openWithFallbackString:(id)a3;
-- (void)performChipAction:(id)a3;
+- (void)openWithFallbackString:(id)string;
+- (void)performChipAction:(id)action;
 @end
 
 @implementation CKSuggestedActionsHandler
@@ -16,25 +16,25 @@
   return Strong;
 }
 
-- (void)openWithFallbackString:(id)a3
+- (void)openWithFallbackString:(id)string
 {
-  if (a3)
+  if (string)
   {
     sub_190D56F10();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_190B3AA78();
 }
 
-- (void)performChipAction:(id)a3
+- (void)performChipAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  sub_190B3A224(v4);
+  actionCopy = action;
+  selfCopy = self;
+  sub_190B3A224(actionCopy);
 }
 
-+ (id)pluginPayloadForShelfCardWithTitle:(id)a3 summary:(id)a4 userInfo:(id)a5
++ (id)pluginPayloadForShelfCardWithTitle:(id)title summary:(id)summary userInfo:(id)info
 {
   v5 = sub_190D56F10();
   v7 = v6;

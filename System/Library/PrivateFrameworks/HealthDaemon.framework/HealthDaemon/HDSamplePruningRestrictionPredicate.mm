@@ -1,6 +1,6 @@
 @interface HDSamplePruningRestrictionPredicate
 - (HDSamplePruningRestrictionPredicate)init;
-- (HDSamplePruningRestrictionPredicate)initWithMaximumAnchor:(id)a3 startDate:(id)a4 endDate:(id)a5 excludedSyncIdentities:(id)a6;
+- (HDSamplePruningRestrictionPredicate)initWithMaximumAnchor:(id)anchor startDate:(id)date endDate:(id)endDate excludedSyncIdentities:(id)identities;
 @end
 
 @implementation HDSamplePruningRestrictionPredicate
@@ -15,22 +15,22 @@
   return 0;
 }
 
-- (HDSamplePruningRestrictionPredicate)initWithMaximumAnchor:(id)a3 startDate:(id)a4 endDate:(id)a5 excludedSyncIdentities:(id)a6
+- (HDSamplePruningRestrictionPredicate)initWithMaximumAnchor:(id)anchor startDate:(id)date endDate:(id)endDate excludedSyncIdentities:(id)identities
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  anchorCopy = anchor;
+  dateCopy = date;
+  endDateCopy = endDate;
+  identitiesCopy = identities;
   v18.receiver = self;
   v18.super_class = HDSamplePruningRestrictionPredicate;
   v15 = [(HDSamplePruningRestrictionPredicate *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_maximumAnchor, a3);
-    objc_storeStrong(&v16->_startDate, a4);
-    objc_storeStrong(&v16->_endDate, a5);
-    objc_storeStrong(&v16->_excludedSyncIdentities, a6);
+    objc_storeStrong(&v15->_maximumAnchor, anchor);
+    objc_storeStrong(&v16->_startDate, date);
+    objc_storeStrong(&v16->_endDate, endDate);
+    objc_storeStrong(&v16->_excludedSyncIdentities, identities);
   }
 
   return v16;

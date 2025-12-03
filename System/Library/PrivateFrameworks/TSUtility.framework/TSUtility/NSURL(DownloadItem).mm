@@ -9,16 +9,16 @@
 - (id)downloadTaskDescription
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 absoluteString];
-  v3 = [v1 stringWithFormat:@"%@%@", @"File:", v2];
+  absoluteString = [self absoluteString];
+  v3 = [v1 stringWithFormat:@"%@%@", @"File:", absoluteString];
 
   return v3;
 }
 
 + (uint64_t)canHandleDownloadTask:()DownloadItem
 {
-  v3 = [a3 taskDescription];
-  v4 = [v3 hasPrefix:@"File:"];
+  taskDescription = [a3 taskDescription];
+  v4 = [taskDescription hasPrefix:@"File:"];
 
   return v4;
 }
@@ -27,20 +27,20 @@
 {
   v7 = a5;
   v8 = a3;
-  v9 = [a4 originalRequest];
-  v10 = [v9 URL];
+  originalRequest = [a4 originalRequest];
+  v10 = [originalRequest URL];
 
-  v11 = [v8 downloadInboxDirectory];
+  downloadInboxDirectory = [v8 downloadInboxDirectory];
 
-  v12 = [v10 lastPathComponent];
-  v13 = [v11 URLByAppendingPathComponent:v12];
+  lastPathComponent = [v10 lastPathComponent];
+  v13 = [downloadInboxDirectory URLByAppendingPathComponent:lastPathComponent];
 
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  [v14 removeItemAtURL:v13 error:0];
-  if (([v14 linkItemAtURL:v7 toURL:v13 error:0] & 1) == 0)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtURL:v13 error:0];
+  if (([defaultManager linkItemAtURL:v7 toURL:v13 error:0] & 1) == 0)
   {
     v21 = 0;
-    v15 = [v14 copyItemAtURL:v7 toURL:v13 error:&v21];
+    v15 = [defaultManager copyItemAtURL:v7 toURL:v13 error:&v21];
     v20 = v21;
     if ((v15 & 1) == 0)
     {

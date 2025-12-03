@@ -1,55 +1,55 @@
 @interface IMFindMyLocation
-+ (id)locationWithFMFLocation:(id)a3;
-+ (id)locationWithFMFLocation:(id)a3 fmlLocation:(id)a4;
-+ (id)locationWithFMLLocation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (IMFindMyLocation)initWithFMFLocation:(id)a3 fmlLocation:(id)a4;
++ (id)locationWithFMFLocation:(id)location;
++ (id)locationWithFMFLocation:(id)location fmlLocation:(id)fmlLocation;
++ (id)locationWithFMLLocation:(id)location;
+- (BOOL)isEqual:(id)equal;
+- (IMFindMyLocation)initWithFMFLocation:(id)location fmlLocation:(id)fmlLocation;
 - (NSString)shortAddress;
 - (unint64_t)hash;
 @end
 
 @implementation IMFindMyLocation
 
-+ (id)locationWithFMFLocation:(id)a3 fmlLocation:(id)a4
++ (id)locationWithFMFLocation:(id)location fmlLocation:(id)fmlLocation
 {
-  v5 = a4;
-  v6 = a3;
+  fmlLocationCopy = fmlLocation;
+  locationCopy = location;
   v7 = [IMFindMyLocation alloc];
-  v9 = objc_msgSend_initWithFMFLocation_fmlLocation_(v7, v8, v6, v5);
+  v9 = objc_msgSend_initWithFMFLocation_fmlLocation_(v7, v8, locationCopy, fmlLocationCopy);
 
   return v9;
 }
 
-+ (id)locationWithFMFLocation:(id)a3
++ (id)locationWithFMFLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   v4 = [IMFindMyLocation alloc];
-  v6 = objc_msgSend_initWithFMFLocation_fmlLocation_(v4, v5, v3, 0);
+  v6 = objc_msgSend_initWithFMFLocation_fmlLocation_(v4, v5, locationCopy, 0);
 
   return v6;
 }
 
-+ (id)locationWithFMLLocation:(id)a3
++ (id)locationWithFMLLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   v4 = [IMFindMyLocation alloc];
-  v6 = objc_msgSend_initWithFMFLocation_fmlLocation_(v4, v5, 0, v3);
+  v6 = objc_msgSend_initWithFMFLocation_fmlLocation_(v4, v5, 0, locationCopy);
 
   return v6;
 }
 
-- (IMFindMyLocation)initWithFMFLocation:(id)a3 fmlLocation:(id)a4
+- (IMFindMyLocation)initWithFMFLocation:(id)location fmlLocation:(id)fmlLocation
 {
-  v7 = a3;
-  v8 = a4;
+  locationCopy = location;
+  fmlLocationCopy = fmlLocation;
   v12.receiver = self;
   v12.super_class = IMFindMyLocation;
   v9 = [(IMFindMyLocation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fmfLocation, a3);
-    objc_storeStrong(&v10->_fmlLocation, a4);
+    objc_storeStrong(&v9->_fmfLocation, location);
+    objc_storeStrong(&v10->_fmlLocation, fmlLocation);
   }
 
   return v10;
@@ -91,10 +91,10 @@ LABEL_8:
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v26 = 1;
   }
@@ -104,7 +104,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v11 = objc_msgSend_fmfLocation(self, v7, v8);
       if (v11 || (objc_msgSend_fmfLocation(v6, v9, v10), (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {

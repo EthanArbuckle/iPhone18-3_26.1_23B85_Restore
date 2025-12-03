@@ -1,17 +1,17 @@
 @interface WFRadiosPreferencesSettingsClient
-+ (void)createClientWithCompletionHandler:(id)a3;
-- (WFRadiosPreferencesSettingsClient)initWithRadiosPreferences:(id)a3;
++ (void)createClientWithCompletionHandler:(id)handler;
+- (WFRadiosPreferencesSettingsClient)initWithRadiosPreferences:(id)preferences;
 @end
 
 @implementation WFRadiosPreferencesSettingsClient
 
-- (WFRadiosPreferencesSettingsClient)initWithRadiosPreferences:(id)a3
+- (WFRadiosPreferencesSettingsClient)initWithRadiosPreferences:(id)preferences
 {
-  v6 = a3;
-  if (!v6)
+  preferencesCopy = preferences;
+  if (!preferencesCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFRadiosPreferencesSettingsClient.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"radiosPreferences"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRadiosPreferencesSettingsClient.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"radiosPreferences"}];
   }
 
   v12.receiver = self;
@@ -20,17 +20,17 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_radiosPreferences, a3);
+    objc_storeStrong(&v7->_radiosPreferences, preferences);
     v9 = v8;
   }
 
   return v8;
 }
 
-+ (void)createClientWithCompletionHandler:(id)a3
++ (void)createClientWithCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -62,15 +62,15 @@
 
   if (v7)
   {
-    v9 = [a1 alloc];
+    v9 = [self alloc];
     v10 = [v9 initWithRadiosPreferences:{v7, v12}];
-    v4[2](v4, v10, 0);
+    handlerCopy[2](handlerCopy, v10, 0);
   }
 
   else
   {
     v10 = WFSettingsClientError();
-    (v4)[2](v4, 0, v10);
+    (handlerCopy)[2](handlerCopy, 0, v10);
   }
 
   v11 = *MEMORY[0x277D85DE8];

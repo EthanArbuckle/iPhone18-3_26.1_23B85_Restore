@@ -1,11 +1,11 @@
 @interface MSRHDRProcessingT2
 - (MSRHDRProcessingT2)init;
 - (void)setupHardwareConfigUnit;
-- (void)setupMSRMappingTableWithMetadata:(id *)a3;
+- (void)setupMSRMappingTableWithMetadata:(id *)metadata;
 - (void)setupMSRPolynomialTableForHDR10;
-- (void)updateMmrReshapeChromaForComponent:(unsigned __int16)a3 mmrReshapeChroma:(int)a4;
-- (void)updateMmrTableForComponent:(unsigned __int16)a3 mmrClipValMin:(unsigned __int16 *)a4 mmrClipValMax:(unsigned __int16 *)a5 mmrCoeff:(float *)a6;
-- (void)updatePolynomialTablesForComponent:(unsigned __int16 *)a3 Component:(unsigned __int16)a4 TableSize:(unint64_t)a5;
+- (void)updateMmrReshapeChromaForComponent:(unsigned __int16)component mmrReshapeChroma:(int)chroma;
+- (void)updateMmrTableForComponent:(unsigned __int16)component mmrClipValMin:(unsigned __int16 *)min mmrClipValMax:(unsigned __int16 *)max mmrCoeff:(float *)coeff;
+- (void)updatePolynomialTablesForComponent:(unsigned __int16 *)component Component:(unsigned __int16)a4 TableSize:(unint64_t)size;
 @end
 
 @implementation MSRHDRProcessingT2
@@ -30,48 +30,48 @@
   msrCU->var0 = vadd_s32(msrCU->var0, 0xC000000001);
 }
 
-- (void)updatePolynomialTablesForComponent:(unsigned __int16 *)a3 Component:(unsigned __int16)a4 TableSize:(unint64_t)a5
+- (void)updatePolynomialTablesForComponent:(unsigned __int16 *)component Component:(unsigned __int16)a4 TableSize:(unint64_t)size
 {
   self->super.super._reshapeLUTCreated = 1;
-  self->super.super._reshapeLUTSize = a5;
-  if (a5)
+  self->super.super._reshapeLUTSize = size;
+  if (size)
   {
-    v5 = &a3[a4 * a5];
+    v5 = &component[a4 * size];
     v6 = self->super.super._reshapeLUT[a4];
     do
     {
       v7 = *v5++;
       *v6++ = 4 * v7;
-      --a5;
+      --size;
     }
 
-    while (a5);
+    while (size);
   }
 }
 
-- (void)updateMmrTableForComponent:(unsigned __int16)a3 mmrClipValMin:(unsigned __int16 *)a4 mmrClipValMax:(unsigned __int16 *)a5 mmrCoeff:(float *)a6
+- (void)updateMmrTableForComponent:(unsigned __int16)component mmrClipValMin:(unsigned __int16 *)min mmrClipValMax:(unsigned __int16 *)max mmrCoeff:(float *)coeff
 {
   msrCU = self->super.super._msrCU;
   var4 = msrCU->var6.var4;
   v8 = 3;
   do
   {
-    v9 = *a4++;
+    v9 = *min++;
     *(var4 - 3) = v9;
-    v10 = *a5++;
+    v10 = *max++;
     *var4++ = v10;
     --v8;
   }
 
   while (v8);
-  if (a3 == 1)
+  if (component == 1)
   {
     v11 = 42044;
   }
 
   else
   {
-    if (a3 != 2)
+    if (component != 2)
     {
       return;
     }
@@ -83,25 +83,25 @@
   v13 = msrCU + v11;
   do
   {
-    *&v13[v12 * 4] = a6[v12];
+    *&v13[v12 * 4] = coeff[v12];
     ++v12;
   }
 
   while (v12 != 22);
 }
 
-- (void)updateMmrReshapeChromaForComponent:(unsigned __int16)a3 mmrReshapeChroma:(int)a4
+- (void)updateMmrReshapeChromaForComponent:(unsigned __int16)component mmrReshapeChroma:(int)chroma
 {
   v4 = &self->super.super._msrCU->var4[1016];
   self->super.super._msrCU->var6.var2 = 4;
-  if (a3 == 2)
+  if (component == 2)
   {
-    *(v4 + 1069) = a4 != 0;
+    *(v4 + 1069) = chroma != 0;
   }
 
-  else if (a3 == 1)
+  else if (component == 1)
   {
-    *(v4 + 1068) = a4 != 0;
+    *(v4 + 1068) = chroma != 0;
   }
 }
 
@@ -116,12 +116,12 @@
   }
 }
 
-- (void)setupMSRMappingTableWithMetadata:(id *)a3
+- (void)setupMSRMappingTableWithMetadata:(id *)metadata
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3->var0 + 8;
-  v22 = (1 << (LOBYTE(a3->var0) + 8));
-  v6 = malloc_type_malloc(6 << (LOBYTE(a3->var0) + 8), 0x1000040BDFB0063uLL);
+  v5 = metadata->var0 + 8;
+  v22 = (1 << (LOBYTE(metadata->var0) + 8));
+  v6 = malloc_type_malloc(6 << (LOBYTE(metadata->var0) + 8), 0x1000040BDFB0063uLL);
   v7 = malloc_type_calloc(0x2CuLL, 4uLL, 0x100004052888210uLL);
   v9 = v7;
   if (v6)
@@ -173,7 +173,7 @@
   v21 = v8;
   do
   {
-    v16 = *(&a3->var0 + v15);
+    v16 = *(&metadata->var0 + v15);
     if (v16 >= 2)
     {
       if (enableLogInstance)
@@ -204,7 +204,7 @@
         _os_log_impl(&dword_250836000, v14, OS_LOG_TYPE_DEFAULT, " [1.450.54] Assertion: metadata->mapping_idc[0][0][cmp][0] == 0 || metadata->mapping_idc[0][0][cmp][0] == 1 warned in /Library/Caches/com.apple.xbs/Sources/HDRProcessing/MSR/MSRHDRProcessingT2.mm at line 167\n", buf, 2u);
       }
 
-      v16 = *(&a3->var0 + v15);
+      v16 = *(&metadata->var0 + v15);
     }
 
     if (v16 && (v16 != 1 || [(MSRHDRProcessing *)self isMMREnabled]))
@@ -240,14 +240,14 @@
         }
       }
 
-      createMmrTableForComponent(a3, v12, v24, v23, &v9[v13 & 0xFFFFFFFE]);
+      createMmrTableForComponent(metadata, v12, v24, v23, &v9[v13 & 0xFFFFFFFE]);
       [(MSRHDRProcessingT2 *)self updateMmrTableForComponent:v12 mmrClipValMin:v24 mmrClipValMax:v23 mmrCoeff:&v9[v13 & 0xFFFFFFFE]];
       v19 = 0;
     }
 
     else
     {
-      createPolynomialTableForComponent(a3, v12, v6 + 2 * (v12 << v5));
+      createPolynomialTableForComponent(metadata, v12, v6 + 2 * (v12 << v5));
       [(MSRHDRProcessingT2 *)self updatePolynomialTablesForComponent:v6 Component:v12 TableSize:v22];
       v19 = 1;
     }

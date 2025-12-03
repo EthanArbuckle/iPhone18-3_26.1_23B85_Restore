@@ -1,29 +1,29 @@
 @interface PXStoryStyleSwitchingFullsizeLayout
-- (BOOL)_handleSwitchStyle:(id)a3 inGroup:(id)a4;
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (BOOL)_handleSwitchStyle:(id)style inGroup:(id)group;
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (PXGAXResponder)axNextResponder;
 - (PXStoryFullsizeLayout)dominantFullsizePlayerLayout;
 - (PXStoryStyleSwitchingFullsizeLayout)init;
-- (PXStoryStyleSwitchingFullsizeLayout)initWithModel:(id)a3;
+- (PXStoryStyleSwitchingFullsizeLayout)initWithModel:(id)model;
 - (_NSRange)displayedStyleRange;
 - (id)_axAssetsVisible;
 - (id)_axSongArtistName;
 - (id)_axSongTitle;
 - (id)_axStyleTitle;
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)axContainingScrollViewForAXGroup:(id)a3;
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3;
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)axContainingScrollViewForAXGroup:(id)group;
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index;
 - (id)axSpriteIndexes;
 - (id)axVisibleSpriteIndexes;
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (unint64_t)_axSwitcherFractionDenominator;
 - (unint64_t)_axSwitcherFractionNumerator;
-- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)a3 inDirection:(unint64_t)a4;
-- (void)_configureTimelineLayout:(id)a3 maskLayout:(id)a4 forIndex:(int64_t)a5;
-- (void)_handlePageControl:(id)a3;
-- (void)_handleRestartButton:(id)a3;
+- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)index inDirection:(unint64_t)direction;
+- (void)_configureTimelineLayout:(id)layout maskLayout:(id)maskLayout forIndex:(int64_t)index;
+- (void)_handlePageControl:(id)control;
+- (void)_handleRestartButton:(id)button;
 - (void)_invalidateAXSpriteIndexes;
 - (void)_invalidateContent;
 - (void)_invalidateDisplayedStyleRange;
@@ -39,18 +39,18 @@
 - (void)_updateRestartButton;
 - (void)_updateTitleString;
 - (void)alphaDidChange;
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5;
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info;
 - (void)didUpdate;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceDepthDidChange;
 - (void)referenceSizeDidChange;
-- (void)setDataSource:(id)a3;
-- (void)setDisplayedStyleInfos:(id)a3;
-- (void)setDisplayedStyleRange:(_NSRange)a3;
-- (void)setPageControlConfiguration:(id)a3;
-- (void)setRelativeZPositionAboveLegibilityGradients:(double)a3;
-- (void)setRestartButtonConfiguration:(id)a3;
-- (void)setStyleSwitcherTitleString:(id)a3;
+- (void)setDataSource:(id)source;
+- (void)setDisplayedStyleInfos:(id)infos;
+- (void)setDisplayedStyleRange:(_NSRange)range;
+- (void)setPageControlConfiguration:(id)configuration;
+- (void)setRelativeZPositionAboveLegibilityGradients:(double)gradients;
+- (void)setRestartButtonConfiguration:(id)configuration;
+- (void)setStyleSwitcherTitleString:(id)string;
 - (void)update;
 - (void)willUpdate;
 @end
@@ -76,38 +76,38 @@
 
 - (id)_axAssetsVisible
 {
-  v4 = [(PXStoryStyleSwitchingFullsizeLayout *)self dominantFullsizePlayerLayout];
-  v5 = [v4 displayedTimeline];
-  v6 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v7 = [v6 currentSegmentIdentifier];
+  dominantFullsizePlayerLayout = [(PXStoryStyleSwitchingFullsizeLayout *)self dominantFullsizePlayerLayout];
+  displayedTimeline = [dominantFullsizePlayerLayout displayedTimeline];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  currentSegmentIdentifier = [model currentSegmentIdentifier];
 
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
-  if (v5)
+  if (displayedTimeline)
   {
-    [v5 timeRangeForSegmentWithIdentifier:v7];
+    [displayedTimeline timeRangeForSegmentWithIdentifier:currentSegmentIdentifier];
   }
 
-  [v4 displayedTimelineRect];
+  [dominantFullsizePlayerLayout displayedTimelineRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
   v26 = __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke;
   v27 = &unk_1E77423E0;
-  v28 = v5;
-  v29 = self;
-  v30 = v16;
+  v28 = displayedTimeline;
+  selfCopy = self;
+  v30 = array;
   v31 = a2;
   v21 = v32;
   v22 = v33;
   v23 = v34;
-  v17 = v16;
-  v18 = v5;
+  v17 = array;
+  v18 = displayedTimeline;
   [v18 enumerateClipsInTimeRange:&v21 rect:&v24 usingBlock:{v9, v11, v13, v15}];
   v19 = [v17 copy];
 
@@ -152,88 +152,88 @@ void __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke(ui
 
 - (id)_axSongTitle
 {
-  v3 = [(PXStoryStyleSwitchingFullsizeLayout *)self dataSource];
-  v4 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v5 = [v4 styleManager];
-  v6 = [v3 styleInfoAtIndex:{objc_msgSend(v5, "focusedStyleIndex")}];
+  dataSource = [(PXStoryStyleSwitchingFullsizeLayout *)self dataSource];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  styleManager = [model styleManager];
+  v6 = [dataSource styleInfoAtIndex:{objc_msgSend(styleManager, "focusedStyleIndex")}];
 
-  v7 = [v6 songResource];
-  v8 = [v7 px_storyResourceSongAsset];
-  v9 = [v8 title];
+  songResource = [v6 songResource];
+  px_storyResourceSongAsset = [songResource px_storyResourceSongAsset];
+  title = [px_storyResourceSongAsset title];
 
-  return v9;
+  return title;
 }
 
 - (id)_axSongArtistName
 {
-  v3 = [(PXStoryStyleSwitchingFullsizeLayout *)self dataSource];
-  v4 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v5 = [v4 styleManager];
-  v6 = [v3 styleInfoAtIndex:{objc_msgSend(v5, "focusedStyleIndex")}];
+  dataSource = [(PXStoryStyleSwitchingFullsizeLayout *)self dataSource];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  styleManager = [model styleManager];
+  v6 = [dataSource styleInfoAtIndex:{objc_msgSend(styleManager, "focusedStyleIndex")}];
 
-  v7 = [v6 songResource];
-  v8 = [v7 px_storyResourceSongAsset];
-  v9 = [v8 artistName];
+  songResource = [v6 songResource];
+  px_storyResourceSongAsset = [songResource px_storyResourceSongAsset];
+  artistName = [px_storyResourceSongAsset artistName];
 
-  return v9;
+  return artistName;
 }
 
 - (id)_axStyleTitle
 {
-  v3 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v4 = [v3 colorGradingRepository];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  colorGradingRepository = [model colorGradingRepository];
 
-  v5 = [(PXStoryStyleSwitchingFullsizeLayout *)self dataSource];
-  v6 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v7 = [v6 styleManager];
-  v8 = [v5 styleInfoAtIndex:{objc_msgSend(v7, "focusedStyleIndex")}];
+  dataSource = [(PXStoryStyleSwitchingFullsizeLayout *)self dataSource];
+  model2 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  styleManager = [model2 styleManager];
+  v8 = [dataSource styleInfoAtIndex:{objc_msgSend(styleManager, "focusedStyleIndex")}];
 
-  v9 = [v4 localizedTitleForColorGradeKind:{objc_msgSend(v8, "customColorGradeKind")}];
+  v9 = [colorGradingRepository localizedTitleForColorGradeKind:{objc_msgSend(v8, "customColorGradeKind")}];
 
   return v9;
 }
 
 - (unint64_t)_axSwitcherFractionDenominator
 {
-  v2 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v3 = [v2 styleManager];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  styleManager = [model styleManager];
 
-  v4 = [v3 selectionDataSource];
-  v5 = [v4 numberOfStyles];
+  selectionDataSource = [styleManager selectionDataSource];
+  numberOfStyles = [selectionDataSource numberOfStyles];
 
-  return v5;
+  return numberOfStyles;
 }
 
 - (unint64_t)_axSwitcherFractionNumerator
 {
-  v2 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v3 = [v2 styleManager];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  styleManager = [model styleManager];
 
-  v4 = [v3 focusedStyleIndex];
-  return v4 + 1;
+  focusedStyleIndex = [styleManager focusedStyleIndex];
+  return focusedStyleIndex + 1;
 }
 
-- (BOOL)_handleSwitchStyle:(id)a3 inGroup:(id)a4
+- (BOOL)_handleSwitchStyle:(id)style inGroup:(id)group
 {
-  [a3 axFrame];
+  [style axFrame];
   v6 = v5;
-  v7 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v8 = [v7 styleManager];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  styleManager = [model styleManager];
 
-  v9 = [v8 focusedStyleIndex];
+  focusedStyleIndex = [styleManager focusedStyleIndex];
   if (v6 <= 0.0)
   {
-    v10 = v9;
+    v10 = focusedStyleIndex;
   }
 
   else
   {
-    v10 = v9 + 1;
+    v10 = focusedStyleIndex + 1;
   }
 
   if (v6 < 0.0)
   {
-    v11 = v9 - 1;
+    v11 = focusedStyleIndex - 1;
   }
 
   else
@@ -241,7 +241,7 @@ void __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke(ui
     v11 = v10;
   }
 
-  if (v11 < 0 || ([v8 selectionDataSource], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "numberOfStyles"), v12, v11 >= v13))
+  if (v11 < 0 || ([styleManager selectionDataSource], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "numberOfStyles"), v12, v11 >= v13))
   {
     PXAssertGetLog();
   }
@@ -251,39 +251,39 @@ void __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke(ui
   v15[2] = __66__PXStoryStyleSwitchingFullsizeLayout__handleSwitchStyle_inGroup___block_invoke;
   v15[3] = &__block_descriptor_40_e38_v16__0___PXStoryMutableStyleManager__8l;
   v15[4] = v11;
-  [v8 performChanges:v15 origin:6];
+  [styleManager performChanges:v15 origin:6];
 
   return 1;
 }
 
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a5;
+  groupCopy = group;
+  infoCopy = info;
   PXGAXGetElementForUserInfo();
 }
 
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXStoryStyleSwitchingFullsizeLayout *)self axNextResponder];
-  [v10 axGroup:v9 didChange:a4 userInfo:v8];
+  infoCopy = info;
+  groupCopy = group;
+  axNextResponder = [(PXStoryStyleSwitchingFullsizeLayout *)self axNextResponder];
+  [axNextResponder axGroup:groupCopy didChange:change userInfo:infoCopy];
 }
 
-- (id)axContainingScrollViewForAXGroup:(id)a3
+- (id)axContainingScrollViewForAXGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(PXStoryStyleSwitchingFullsizeLayout *)self axNextResponder];
-  v6 = [v5 axContainingScrollViewForAXGroup:v4];
+  groupCopy = group;
+  axNextResponder = [(PXStoryStyleSwitchingFullsizeLayout *)self axNextResponder];
+  v6 = [axNextResponder axContainingScrollViewForAXGroup:groupCopy];
 
   return v6;
 }
 
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  if ([(PXStoryStyleSwitchingFullsizeLayout *)self _isFakeAXSpriteIndex:a3])
+  v3 = *&index;
+  if ([(PXStoryStyleSwitchingFullsizeLayout *)self _isFakeAXSpriteIndex:index])
   {
     [(PXStoryStyleSwitchingFullsizeLayout *)self referenceSize];
     PXRectWithOriginAndSize();
@@ -296,23 +296,23 @@ void __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke(ui
   return v5;
 }
 
-- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)a3 inDirection:(unint64_t)a4
+- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)index inDirection:(unint64_t)direction
 {
-  if (a4 - 4 < 2)
+  if (direction - 4 < 2)
   {
-    v5 = [(PXStoryStyleSwitchingFullsizeLayout *)self axSpriteIndexes];
-    v6 = [v5 indexGreaterThanIndex:a3];
+    axSpriteIndexes = [(PXStoryStyleSwitchingFullsizeLayout *)self axSpriteIndexes];
+    v6 = [axSpriteIndexes indexGreaterThanIndex:index];
   }
 
   else
   {
-    if (a4 != 6 && a4 != 3)
+    if (direction != 6 && direction != 3)
     {
       return -1;
     }
 
-    v5 = [(PXStoryStyleSwitchingFullsizeLayout *)self axSpriteIndexes];
-    v6 = [v5 indexLessThanIndex:a3];
+    axSpriteIndexes = [(PXStoryStyleSwitchingFullsizeLayout *)self axSpriteIndexes];
+    v6 = [axSpriteIndexes indexLessThanIndex:index];
   }
 
   v7 = v6;
@@ -322,8 +322,8 @@ void __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke(ui
 
 - (id)axVisibleSpriteIndexes
 {
-  v3 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  [v3 styleSwitcherVisibilityFraction];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  [model styleSwitcherVisibilityFraction];
   v5 = v4;
 
   if (v5 <= 0.5)
@@ -333,8 +333,8 @@ void __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke(ui
 
   else
   {
-    v6 = [(PXStoryStyleSwitchingFullsizeLayout *)self axSpriteIndexes];
-    v7 = [v6 mutableCopy];
+    axSpriteIndexes = [(PXStoryStyleSwitchingFullsizeLayout *)self axSpriteIndexes];
+    v7 = [axSpriteIndexes mutableCopy];
 
     [v7 removeIndex:1000];
     [v7 removeIndex:1002];
@@ -352,18 +352,18 @@ void __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke(ui
   return v2;
 }
 
-- (void)setRestartButtonConfiguration:(id)a3
+- (void)setRestartButtonConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_restartButtonConfiguration != v5)
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  if (self->_restartButtonConfiguration != configurationCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryChromeButtonConfiguration *)v5 isEqual:?];
+    v8 = configurationCopy;
+    v7 = [(PXStoryChromeButtonConfiguration *)configurationCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_restartButtonConfiguration, a3);
+      objc_storeStrong(&self->_restartButtonConfiguration, configuration);
       [(PXStoryStyleSwitchingFullsizeLayout *)self setRestartButtonVersion:[(PXStoryStyleSwitchingFullsizeLayout *)self restartButtonVersion]+ 1];
       [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateContent];
       v6 = v8;
@@ -371,14 +371,14 @@ void __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke(ui
   }
 }
 
-- (void)setPageControlConfiguration:(id)a3
+- (void)setPageControlConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_pageControlConfiguration != v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (self->_pageControlConfiguration != configurationCopy)
   {
-    v9 = v4;
-    v6 = [(PXGPageControlConfiguration *)v4 isEqual:?];
+    v9 = configurationCopy;
+    v6 = [(PXGPageControlConfiguration *)configurationCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -393,14 +393,14 @@ void __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke(ui
   }
 }
 
-- (void)setStyleSwitcherTitleString:(id)a3
+- (void)setStyleSwitcherTitleString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_styleSwitcherTitleString != v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (self->_styleSwitcherTitleString != stringCopy)
   {
-    v9 = v4;
-    v6 = [(NSAttributedString *)v4 isEqual:?];
+    v9 = stringCopy;
+    v6 = [(NSAttributedString *)stringCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -415,23 +415,23 @@ void __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke(ui
   }
 }
 
-- (void)_configureTimelineLayout:(id)a3 maskLayout:(id)a4 forIndex:(int64_t)a5
+- (void)_configureTimelineLayout:(id)layout maskLayout:(id)maskLayout forIndex:(int64_t)index
 {
-  v33 = a3;
-  v8 = a4;
+  layoutCopy = layout;
+  maskLayoutCopy = maskLayout;
   [(PXStoryStyleSwitchingFullsizeLayout *)self alpha];
   v32 = v9;
-  v10 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v11 = [v10 layoutSpec];
-  v12 = [v11 styleSwitcherLayoutDirection];
-  [v10 styleSwitcherVisibilityFraction];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  layoutSpec = [model layoutSpec];
+  styleSwitcherLayoutDirection = [layoutSpec styleSwitcherLayoutDirection];
+  [model styleSwitcherVisibilityFraction];
   v14 = v13;
   if (v13 > 0.0)
   {
     [(PXStoryStyleSwitchingFullsizeLayout *)self referenceSize];
-    [v11 styleSwitcherViewportSpacing];
-    v15 = [v10 styleManager];
-    [v15 selectionFocus];
+    [layoutSpec styleSwitcherViewportSpacing];
+    styleManager = [model styleManager];
+    [styleManager selectionFocus];
 
     [(PXStoryStyleSwitchingFullsizeLayout *)self displayedStyleRange];
     PXRectWithOriginAndSize();
@@ -441,63 +441,63 @@ void __55__PXStoryStyleSwitchingFullsizeLayout__axAssetsVisible__block_invoke(ui
   v17 = *(off_1E7721FA8 + 3);
   v18 = *off_1E7721FA8;
   v19 = *(off_1E7721FA8 + 2);
-  [v33 setAlpha:v32];
-  [v33 setTextAlpha:1.0 - v14];
-  if (v12 == 2)
+  [layoutCopy setAlpha:v32];
+  [layoutCopy setTextAlpha:1.0 - v14];
+  if (styleSwitcherLayoutDirection == 2)
   {
     PXEdgeInsetsByFlippingHorizontally();
   }
 
-  [v33 setClippingInsets:{v18, v16, v19, v17}];
+  [layoutCopy setClippingInsets:{v18, v16, v19, v17}];
   [(PXStoryStyleSwitchingFullsizeLayout *)self referenceDepth];
-  [v33 setReferenceDepth:?];
-  [v33 referenceDepth];
+  [layoutCopy setReferenceDepth:?];
+  [layoutCopy referenceDepth];
   v21 = v20;
   [(PXStoryStyleSwitchingFullsizeLayout *)self referenceDepth];
   v23 = v21 / v22;
   [(PXStoryStyleSwitchingFullsizeLayout *)self relativeZPositionAboveLegibilityGradients];
-  [v33 setRelativeZPositionAboveLegibilityGradients:v24 / v23];
-  if (v8)
+  [layoutCopy setRelativeZPositionAboveLegibilityGradients:v24 / v23];
+  if (maskLayoutCopy)
   {
-    [v8 setInsets:{v18, v16, v19, v17}];
-    [v8 setAlpha:v32];
-    [v8 setMaskScale:v14];
-    [v8 setLeftMaskWidth:0.0];
-    [v8 setRightMaskWidth:0.0];
-    v25 = [v11 backgroundColor];
+    [maskLayoutCopy setInsets:{v18, v16, v19, v17}];
+    [maskLayoutCopy setAlpha:v32];
+    [maskLayoutCopy setMaskScale:v14];
+    [maskLayoutCopy setLeftMaskWidth:0.0];
+    [maskLayoutCopy setRightMaskWidth:0.0];
+    backgroundColor = [layoutSpec backgroundColor];
     v26 = +[PXStorySettings sharedInstance];
-    v27 = [v26 wantsHighContrastColors];
+    wantsHighContrastColors = [v26 wantsHighContrastColors];
 
-    if (v27)
+    if (wantsHighContrastColors)
     {
-      *v28.i64 = ([(PXStoryStyleSwitchingFullsizeLayout *)self displayedStyleRange]+ a5) * 0.2;
+      *v28.i64 = ([(PXStoryStyleSwitchingFullsizeLayout *)self displayedStyleRange]+ index) * 0.2;
       *v29.i64 = *v28.i64 - trunc(*v28.i64);
       v30.f64[0] = NAN;
       v30.f64[1] = NAN;
       v31 = [MEMORY[0x1E69DC888] colorWithHue:*vbslq_s8(vnegq_f64(v30) saturation:v29 brightness:v28).i64 alpha:{1.0, 1.0, 1.0}];
 
-      v25 = v31;
+      backgroundColor = v31;
     }
 
-    [v8 setMaskColor:v25];
+    [maskLayoutCopy setMaskColor:backgroundColor];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v13 = a3;
-  if (ModelObservationContext_117831 == a5)
+  observableCopy = observable;
+  if (ModelObservationContext_117831 == context)
   {
-    if ((a4 & 0x2000) != 0)
+    if ((change & 0x2000) != 0)
     {
       [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateTitleString];
       [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidatePageControl];
       [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateContent];
       [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateRestartButton];
-      if ((a4 & 0x2000000000000) == 0)
+      if ((change & 0x2000000000000) == 0)
       {
 LABEL_9:
-        if ((a4 & 0x10000) == 0)
+        if ((change & 0x10000) == 0)
         {
           goto LABEL_11;
         }
@@ -506,14 +506,14 @@ LABEL_9:
       }
     }
 
-    else if ((a4 & 0x2000000000000) == 0)
+    else if ((change & 0x2000000000000) == 0)
     {
       goto LABEL_9;
     }
 
     [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateDisplayedStyleRange];
     [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateContent];
-    if ((a4 & 0x10000) == 0)
+    if ((change & 0x10000) == 0)
     {
       goto LABEL_11;
     }
@@ -523,15 +523,15 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (StyleManagerObservationContext_117832 != a5)
+  if (StyleManagerObservationContext_117832 != context)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:570 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:570 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((a4 & 0x100) != 0)
+  if ((change & 0x100) != 0)
   {
     [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateDisplayedStyleRange];
     [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidatePageControl];
@@ -539,54 +539,54 @@ LABEL_10:
     [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateAXSpriteIndexes];
   }
 
-  if ((a4 & 0x20) != 0)
+  if ((change & 0x20) != 0)
   {
-    v9 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-    v10 = [v9 styleManager];
-    v11 = [v10 selectionDataSource];
-    [(PXStoryStyleSwitchingFullsizeLayout *)self setDataSource:v11];
+    model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+    styleManager = [model styleManager];
+    selectionDataSource = [styleManager selectionDataSource];
+    [(PXStoryStyleSwitchingFullsizeLayout *)self setDataSource:selectionDataSource];
   }
 
 LABEL_11:
 }
 
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index
 {
-  v6 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v7 = [v6 layoutSpec];
-  v8 = [(PXStoryStyleSwitchingFullsizeLayout *)self displayedStyleRange]+ a4;
-  v9 = [(PXStoryStyleSwitchingFullsizeLayout *)self dataSource];
-  v10 = [v9 indexOfCurrentStyle];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  layoutSpec = [model layoutSpec];
+  v8 = [(PXStoryStyleSwitchingFullsizeLayout *)self displayedStyleRange]+ index;
+  dataSource = [(PXStoryStyleSwitchingFullsizeLayout *)self dataSource];
+  indexOfCurrentStyle = [dataSource indexOfCurrentStyle];
 
-  if (v8 == v10)
+  if (v8 == indexOfCurrentStyle)
   {
     v11 = 0;
   }
 
   else
   {
-    v12 = [(PXStoryStyleSwitchingFullsizeLayout *)self displayedStyleInfos];
-    v11 = [v12 objectAtIndexedSubscript:a4];
+    displayedStyleInfos = [(PXStoryStyleSwitchingFullsizeLayout *)self displayedStyleInfos];
+    v11 = [displayedStyleInfos objectAtIndexedSubscript:index];
   }
 
-  v13 = [[PXStoryFullsizeLayout alloc] initWithModel:v6 overrideStyleInfo:v11];
-  v14 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v15 = [v14 extendedTraitCollection];
-  v16 = [v15 userInterfaceIdiom];
+  v13 = [[PXStoryFullsizeLayout alloc] initWithModel:model overrideStyleInfo:v11];
+  model2 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  extendedTraitCollection = [model2 extendedTraitCollection];
+  userInterfaceIdiom = [extendedTraitCollection userInterfaceIdiom];
 
-  if (v16 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    [(PXStoryStyleSwitchingFullsizeLayout *)self _configureTimelineLayout:v13 maskLayout:0 forIndex:a4];
+    [(PXStoryStyleSwitchingFullsizeLayout *)self _configureTimelineLayout:v13 maskLayout:0 forIndex:index];
     v17 = v13;
   }
 
   else
   {
     v18 = [off_1E77216A0 alloc];
-    v19 = [v7 backgroundColor];
-    v20 = [v18 initWithCornerRadius:1 continuousCorners:v19 maskColor:16.0];
+    backgroundColor = [layoutSpec backgroundColor];
+    v20 = [v18 initWithCornerRadius:1 continuousCorners:backgroundColor maskColor:16.0];
 
-    [(PXStoryStyleSwitchingFullsizeLayout *)self _configureTimelineLayout:v13 maskLayout:v20 forIndex:a4];
+    [(PXStoryStyleSwitchingFullsizeLayout *)self _configureTimelineLayout:v13 maskLayout:v20 forIndex:index];
     v17 = objc_alloc_init(off_1E77216C8);
     [(PXStoryFullsizeLayout *)v17 setFirstSublayout:v20];
     [(PXStoryFullsizeLayout *)v17 setSecondSublayout:v13];
@@ -596,39 +596,39 @@ LABEL_11:
   return v17;
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_pageControlSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_pageControlSpriteIndex == index)
   {
-    v8 = [(PXStoryStyleSwitchingFullsizeLayout *)self pageControlConfiguration];
+    pageControlConfiguration = [(PXStoryStyleSwitchingFullsizeLayout *)self pageControlConfiguration];
   }
 
   else
   {
-    if (self->_restartButtonSpriteIndex != a3)
+    if (self->_restartButtonSpriteIndex != index)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:499 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:499 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v8 = [(PXStoryStyleSwitchingFullsizeLayout *)self restartButtonConfiguration];
+    pageControlConfiguration = [(PXStoryStyleSwitchingFullsizeLayout *)self restartButtonConfiguration];
   }
 
-  v9 = v8;
+  v9 = pageControlConfiguration;
 
   return v9;
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_pageControlSpriteIndex != a3 && self->_restartButtonSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_pageControlSpriteIndex != index && self->_restartButtonSpriteIndex != index)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:490 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:490 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -638,57 +638,57 @@ LABEL_11:
   return v8;
 }
 
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_styleSwitcherTitleSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_styleSwitcherTitleSpriteIndex != index)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:479 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:479 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = v7;
-  v9 = [(PXStoryStyleSwitchingFullsizeLayout *)self styleSwitcherTitleString];
+  v8 = layoutCopy;
+  styleSwitcherTitleString = [(PXStoryStyleSwitchingFullsizeLayout *)self styleSwitcherTitleString];
 
-  return v9;
+  return styleSwitcherTitleString;
 }
 
-- (void)_handleRestartButton:(id)a3
+- (void)_handleRestartButton:(id)button
 {
-  v3 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  [v3 performChanges:&__block_literal_global_117844];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  [model performChanges:&__block_literal_global_117844];
 }
 
-- (void)_handlePageControl:(id)a3
+- (void)_handlePageControl:(id)control
 {
-  v4 = a3;
-  v5 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v6 = [v5 styleManager];
-  v7 = [v4 currentPage];
+  controlCopy = control;
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  styleManager = [model styleManager];
+  currentPage = [controlCopy currentPage];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__PXStoryStyleSwitchingFullsizeLayout__handlePageControl___block_invoke;
   v8[3] = &__block_descriptor_40_e38_v16__0___PXStoryMutableStyleManager__8l;
-  v8[4] = v7;
-  [v6 performChanges:v8 origin:6];
+  v8[4] = currentPage;
+  [styleManager performChanges:v8 origin:6];
 }
 
 - (void)_updateAXSpriteIndexes
 {
-  v3 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v4 = [v3 viewMode] == 4;
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  v4 = [model viewMode] == 4;
 
-  v5 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v6 = [v5 styleManager];
+  model2 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  styleManager = [model2 styleManager];
 
-  v7 = [v6 focusedStyleIndex];
-  v8 = [v6 selectionDataSource];
-  v9 = [v8 numberOfStyles] - 1;
+  focusedStyleIndex = [styleManager focusedStyleIndex];
+  selectionDataSource = [styleManager selectionDataSource];
+  v9 = [selectionDataSource numberOfStyles] - 1;
 
-  v10 = v7 != v9 && v4;
+  v10 = focusedStyleIndex != v9 && v4;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__PXStoryStyleSwitchingFullsizeLayout__updateAXSpriteIndexes__block_invoke;
@@ -697,7 +697,7 @@ LABEL_11:
   v11 = _Block_copy(aBlock);
   v11[2](v11, v4, 1001);
   v11[2](v11, v10, 1002);
-  if (v7)
+  if (focusedStyleIndex)
   {
     v12 = v4;
   }
@@ -740,9 +740,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x40) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout _invalidateAXSpriteIndexes]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:412 description:{@"invalidating %lu after it already has been updated", 64}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:412 description:{@"invalidating %lu after it already has been updated", 64}];
 
       abort();
     }
@@ -767,8 +767,8 @@ LABEL_5:
 - (void)_updateContent
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryStyleSwitchingFullsizeLayout *)self sublayoutDataStore];
-  [v3 count];
+  sublayoutDataStore = [(PXStoryStyleSwitchingFullsizeLayout *)self sublayoutDataStore];
+  [sublayoutDataStore count];
 
   [(PXStoryStyleSwitchingFullsizeLayout *)self model];
   [objc_claimAutoreleasedReturnValue() styleSwitcherVisibilityFraction];
@@ -890,9 +890,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:331 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:331 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -917,11 +917,11 @@ LABEL_5:
 - (void)_updateDisplayedStyles
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v4 = [v3 styleManager];
-  v5 = [v4 selectionDataSource];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  styleManager = [model styleManager];
+  selectionDataSource = [styleManager selectionDataSource];
 
-  if ([v5 numberOfStyles] < 1)
+  if ([selectionDataSource numberOfStyles] < 1)
   {
     v9 = +[_PXStoryFallbackStyleDescriptor defaultFallbackStyleDescriptor];
     v10[0] = v9;
@@ -930,8 +930,8 @@ LABEL_5:
 
   else
   {
-    v6 = [(PXStoryStyleSwitchingFullsizeLayout *)self displayedStyleRange];
-    v8 = [v5 infosForStylesInRange:{v6, v7}];
+    displayedStyleRange = [(PXStoryStyleSwitchingFullsizeLayout *)self displayedStyleRange];
+    v8 = [selectionDataSource infosForStylesInRange:{displayedStyleRange, v7}];
   }
 
   [(PXStoryStyleSwitchingFullsizeLayout *)self setDisplayedStyleInfos:v8];
@@ -953,9 +953,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout _invalidateDisplayedStyles]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:314 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:314 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -979,24 +979,24 @@ LABEL_5:
 
 - (void)_updateDisplayedStyleRange
 {
-  v7 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v3 = [v7 styleManager];
-  v4 = [v3 selectionDataSource];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  styleManager = [model styleManager];
+  selectionDataSource = [styleManager selectionDataSource];
 
-  [v7 styleSwitcherVisibilityFraction];
+  [model styleSwitcherVisibilityFraction];
   if (v5 <= 0.0)
   {
-    if ([v4 indexOfCurrentStyle] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v4, "numberOfStyles") <= 0)
+    if ([selectionDataSource indexOfCurrentStyle] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(selectionDataSource, "numberOfStyles") <= 0)
     {
-      [v4 indexOfCurrentStyle];
+      [selectionDataSource indexOfCurrentStyle];
     }
   }
 
   else
   {
-    [v4 numberOfStyles];
-    v6 = [v7 styleManager];
-    [v6 focusedStyleIndex];
+    [selectionDataSource numberOfStyles];
+    styleManager2 = [model styleManager];
+    [styleManager2 focusedStyleIndex];
   }
 
   [(PXStoryStyleSwitchingFullsizeLayout *)self setDisplayedStyleRange:?];
@@ -1018,9 +1018,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout _invalidateDisplayedStyleRange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:289 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:289 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -1048,10 +1048,10 @@ LABEL_5:
   [(PXStoryChromeButtonConfiguration *)v7 setBackgroundStyle:0];
   [(PXStoryChromeButtonConfiguration *)v7 setTarget:self];
   [(PXStoryChromeButtonConfiguration *)v7 setAction:sel__handleRestartButton_];
-  v3 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v4 = [v3 layoutSpec];
-  v5 = [v4 styleSwitcherChromeButtonSpec];
-  [(PXStoryChromeButtonConfiguration *)v7 setSpec:v5];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  layoutSpec = [model layoutSpec];
+  styleSwitcherChromeButtonSpec = [layoutSpec styleSwitcherChromeButtonSpec];
+  [(PXStoryChromeButtonConfiguration *)v7 setSpec:styleSwitcherChromeButtonSpec];
 
   [(PXStoryChromeButtonConfiguration *)v7 setSystemImageName:@"arrow.counterclockwise"];
   v6 = PXLocalizedStringFromTable(@"InteractiveMemoryButtonAccessibilityLabelRestart", @"PhotosUICore");
@@ -1076,9 +1076,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x20) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout _invalidateRestartButton]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:274 description:{@"invalidating %lu after it already has been updated", 32}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:274 description:{@"invalidating %lu after it already has been updated", 32}];
 
       abort();
     }
@@ -1102,12 +1102,12 @@ LABEL_5:
 
 - (void)_updatePageControl
 {
-  v6 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v3 = [v6 styleManager];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  styleManager = [model styleManager];
   v4 = objc_alloc_init(off_1E7721668);
-  [v4 setCurrentPage:{objc_msgSend(v3, "focusedStyleIndex")}];
-  v5 = [v3 selectionDataSource];
-  [v4 setNumberOfPages:{objc_msgSend(v5, "numberOfStyles")}];
+  [v4 setCurrentPage:{objc_msgSend(styleManager, "focusedStyleIndex")}];
+  selectionDataSource = [styleManager selectionDataSource];
+  [v4 setNumberOfPages:{objc_msgSend(selectionDataSource, "numberOfStyles")}];
 
   [v4 setHidesForSinglePage:1];
   [v4 setTarget:self];
@@ -1131,9 +1131,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x10) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout _invalidatePageControl]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:258 description:{@"invalidating %lu after it already has been updated", 16}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:258 description:{@"invalidating %lu after it already has been updated", 16}];
 
       abort();
     }
@@ -1159,10 +1159,10 @@ LABEL_5:
 {
   v3 = objc_alloc(MEMORY[0x1E696AAB0]);
   v8 = PXLocalizedStringFromTable(@"InteractiveMemoryStyleSwitcherTitle", @"PhotosUICore");
-  v4 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v5 = [v4 layoutSpec];
-  v6 = [v5 styleSwitcherTitleAttributes];
-  v7 = [v3 initWithString:v8 attributes:v6];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  layoutSpec = [model layoutSpec];
+  styleSwitcherTitleAttributes = [layoutSpec styleSwitcherTitleAttributes];
+  v7 = [v3 initWithString:v8 attributes:styleSwitcherTitleAttributes];
   [(PXStoryStyleSwitchingFullsizeLayout *)self setStyleSwitcherTitleString:v7];
 }
 
@@ -1182,9 +1182,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout _invalidateTitleString]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:249 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:249 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -1213,9 +1213,9 @@ LABEL_5:
   [(PXGCompositeLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:245 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:245 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -1228,9 +1228,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout update]"];
-      [v11 handleFailureInFunction:v12 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v12 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -1243,9 +1243,9 @@ LABEL_5:
       [(PXStoryStyleSwitchingFullsizeLayout *)self _updateDisplayedStyleRange];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout update]"];
-        [v13 handleFailureInFunction:v14 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v14 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -1259,9 +1259,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout update]"];
-      [v15 handleFailureInFunction:v16 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v16 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -1274,9 +1274,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout update]"];
-      [v17 handleFailureInFunction:v18 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:227 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v18 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:227 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -1289,9 +1289,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout update]"];
-      [v19 handleFailureInFunction:v20 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v20 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v8 = p_updateFlags->needsUpdate;
@@ -1304,9 +1304,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout update]"];
-      [v21 handleFailureInFunction:v22 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:233 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler6 handleFailureInFunction:v22 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:233 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v9 = p_updateFlags->needsUpdate;
@@ -1319,9 +1319,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout update]"];
-      [v23 handleFailureInFunction:v24 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler7 handleFailureInFunction:v24 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v10 = p_updateFlags->needsUpdate;
@@ -1336,9 +1336,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v10)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
       v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout update]"];
-      [v25 handleFailureInFunction:v26 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:239 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler8 handleFailureInFunction:v26 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:239 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -1355,9 +1355,9 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleSwitchingFullsizeLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
@@ -1387,37 +1387,37 @@ LABEL_5:
   [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateContent];
 }
 
-- (void)setRelativeZPositionAboveLegibilityGradients:(double)a3
+- (void)setRelativeZPositionAboveLegibilityGradients:(double)gradients
 {
-  if (self->_relativeZPositionAboveLegibilityGradients != a3)
+  if (self->_relativeZPositionAboveLegibilityGradients != gradients)
   {
-    self->_relativeZPositionAboveLegibilityGradients = a3;
+    self->_relativeZPositionAboveLegibilityGradients = gradients;
     [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateContent];
   }
 }
 
-- (void)setDisplayedStyleInfos:(id)a3
+- (void)setDisplayedStyleInfos:(id)infos
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_displayedStyleInfos != v4)
+  infosCopy = infos;
+  v5 = infosCopy;
+  if (self->_displayedStyleInfos != infosCopy)
   {
-    v11 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v11 = infosCopy;
+    v6 = [(NSArray *)infosCopy isEqual:?];
     v5 = v11;
     if ((v6 & 1) == 0)
     {
       if ([(NSArray *)self->_displayedStyleInfos count]== 1 && [(NSArray *)v11 count]== 1)
       {
-        v7 = [off_1E7721450 changeDetailsWithNoChanges];
+        changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
       }
 
       else
       {
-        v7 = [off_1E7721450 changeDetailsFromArray:self->_displayedStyleInfos toArray:v11 changedObjects:MEMORY[0x1E695E0F0]];
+        changeDetailsWithNoChanges = [off_1E7721450 changeDetailsFromArray:self->_displayedStyleInfos toArray:v11 changedObjects:MEMORY[0x1E695E0F0]];
       }
 
-      v8 = v7;
+      v8 = changeDetailsWithNoChanges;
       v9 = [(NSArray *)v11 copy];
       displayedStyleInfos = self->_displayedStyleInfos;
       self->_displayedStyleInfos = v9;
@@ -1431,27 +1431,27 @@ LABEL_5:
   }
 }
 
-- (void)setDisplayedStyleRange:(_NSRange)a3
+- (void)setDisplayedStyleRange:(_NSRange)range
 {
-  if (a3.location != self->_displayedStyleRange.location || a3.length != self->_displayedStyleRange.length)
+  if (range.location != self->_displayedStyleRange.location || range.length != self->_displayedStyleRange.length)
   {
-    self->_displayedStyleRange = a3;
+    self->_displayedStyleRange = range;
     [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateDisplayedStyles];
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_dataSource != v5)
+  sourceCopy = source;
+  v6 = sourceCopy;
+  if (self->_dataSource != sourceCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryStyleSelectionDataSource *)v5 isEqual:?];
+    v8 = sourceCopy;
+    v7 = [(PXStoryStyleSelectionDataSource *)sourceCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_dataSource, a3);
+      objc_storeStrong(&self->_dataSource, source);
       [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateDisplayedStyleRange];
       [(PXStoryStyleSwitchingFullsizeLayout *)self _invalidateDisplayedStyles];
       v6 = v8;
@@ -1462,9 +1462,9 @@ LABEL_5:
 - (PXStoryFullsizeLayout)dominantFullsizePlayerLayout
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
-  v5 = [(PXStoryStyleSwitchingFullsizeLayout *)self sublayoutDataStore];
-  [v4 styleSwitcherVisibilityFraction];
+  model = [(PXStoryStyleSwitchingFullsizeLayout *)self model];
+  sublayoutDataStore = [(PXStoryStyleSwitchingFullsizeLayout *)self sublayoutDataStore];
+  [model styleSwitcherVisibilityFraction];
   if (v6 <= 0.0)
   {
     v9 = 0;
@@ -1472,16 +1472,16 @@ LABEL_5:
 
   else
   {
-    v7 = [v4 styleManager];
-    v8 = [v7 focusedStyleIndex];
-    v9 = v8 - [(PXStoryStyleSwitchingFullsizeLayout *)self displayedStyleRange];
+    styleManager = [model styleManager];
+    focusedStyleIndex = [styleManager focusedStyleIndex];
+    v9 = focusedStyleIndex - [(PXStoryStyleSwitchingFullsizeLayout *)self displayedStyleRange];
   }
 
-  if (v9 < [v5 count])
+  if (v9 < [sublayoutDataStore count])
   {
-    v10 = [v5 sublayoutAtIndex:v9];
-    v11 = [v10 secondSublayout];
-    if (v11)
+    v10 = [sublayoutDataStore sublayoutAtIndex:v9];
+    secondSublayout = [v10 secondSublayout];
+    if (secondSublayout)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1491,19 +1491,19 @@ LABEL_7:
         goto LABEL_11;
       }
 
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = objc_opt_class();
       v16 = NSStringFromClass(v17);
-      v18 = [v11 px_descriptionForAssertionMessage];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:129 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"splitLayout.secondSublayout", v16, v18}];
+      px_descriptionForAssertionMessage = [secondSublayout px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:129 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"splitLayout.secondSublayout", v16, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      [v14 handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:129 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"splitLayout.secondSublayout", v16}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:129 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"splitLayout.secondSublayout", v16}];
     }
 
     goto LABEL_7;
@@ -1517,15 +1517,15 @@ LABEL_7:
     _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "Unable to return the dominant fullsize player layout, because there is no sublayout at index %ld", buf, 0xCu);
   }
 
-  v11 = 0;
+  secondSublayout = 0;
 LABEL_11:
 
-  return v11;
+  return secondSublayout;
 }
 
-- (PXStoryStyleSwitchingFullsizeLayout)initWithModel:(id)a3
+- (PXStoryStyleSwitchingFullsizeLayout)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v17.receiver = self;
   v17.super_class = PXStoryStyleSwitchingFullsizeLayout;
   v6 = [(PXGAbsoluteCompositeLayout *)&v17 init];
@@ -1535,12 +1535,12 @@ LABEL_11:
     fullsizeFrameRectsStore = v6->_fullsizeFrameRectsStore;
     v6->_fullsizeFrameRectsStore = v7;
 
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
     [(PXStoryModel *)v6->_model registerChangeObserver:v6 context:ModelObservationContext_117831];
-    v9 = [(PXStoryModel *)v6->_model styleManager];
-    [v9 registerChangeObserver:v6 context:StyleManagerObservationContext_117832];
-    v10 = [v9 selectionDataSource];
-    [(PXStoryStyleSwitchingFullsizeLayout *)v6 setDataSource:v10];
+    styleManager = [(PXStoryModel *)v6->_model styleManager];
+    [styleManager registerChangeObserver:v6 context:StyleManagerObservationContext_117832];
+    selectionDataSource = [styleManager selectionDataSource];
+    [(PXStoryStyleSwitchingFullsizeLayout *)v6 setDataSource:selectionDataSource];
 
     [(PXGCompositeLayout *)v6 setSublayoutFaultingDelegate:v6];
     [(PXStoryStyleSwitchingFullsizeLayout *)v6 _invalidateDisplayedStyles];
@@ -1568,8 +1568,8 @@ LABEL_11:
 
 - (PXStoryStyleSwitchingFullsizeLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:87 description:{@"%s is not available as initializer", "-[PXStoryStyleSwitchingFullsizeLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleSwitchingFullsizeLayout.m" lineNumber:87 description:{@"%s is not available as initializer", "-[PXStoryStyleSwitchingFullsizeLayout init]"}];
 
   abort();
 }

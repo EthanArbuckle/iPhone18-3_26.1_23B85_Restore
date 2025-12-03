@@ -1,21 +1,21 @@
 @interface ZWTVSlider
-- (ZWTVSlider)initWithFrame:(CGRect)a3;
-- (void)_handlePan:(id)a3;
-- (void)_updateColorsForUserInterfaceStyle:(int64_t)a3;
+- (ZWTVSlider)initWithFrame:(CGRect)frame;
+- (void)_handlePan:(id)pan;
+- (void)_updateColorsForUserInterfaceStyle:(int64_t)style;
 - (void)_updateSliderPosition;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 - (void)layoutSubviews;
-- (void)setValue:(double)a3;
+- (void)setValue:(double)value;
 @end
 
 @implementation ZWTVSlider
 
-- (ZWTVSlider)initWithFrame:(CGRect)a3
+- (ZWTVSlider)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = ZWTVSlider;
-  v3 = [(ZWTVSlider *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ZWTVSlider *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -25,23 +25,23 @@
     [(ZWTVSlider *)v3 setClipsToBounds:0];
     v5 = +[CAShapeLayer layer];
     [(ZWTVSlider *)v4 setUnfilledTrackLayer:v5];
-    v6 = [(ZWTVSlider *)v4 layer];
-    [v6 addSublayer:v5];
+    layer = [(ZWTVSlider *)v4 layer];
+    [layer addSublayer:v5];
 
     [v5 setLineWidth:8.0];
     [v5 setLineCap:kCALineCapRound];
     v7 = +[CAShapeLayer layer];
 
     [(ZWTVSlider *)v4 setFilledTrackLayer:v7];
-    v8 = [(ZWTVSlider *)v4 layer];
-    [v8 addSublayer:v7];
+    layer2 = [(ZWTVSlider *)v4 layer];
+    [layer2 addSublayer:v7];
 
     [v7 setLineWidth:8.0];
     [v7 setLineCap:kCALineCapRound];
     v9 = +[CAShapeLayer layer];
     [(ZWTVSlider *)v4 setGrabberLayer:v9];
-    v10 = [(ZWTVSlider *)v4 layer];
-    [v10 addSublayer:v9];
+    layer3 = [(ZWTVSlider *)v4 layer];
+    [layer3 addSublayer:v9];
 
     v11 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, 30.0, 30.0];
     [v9 setBounds:{0.0, 0.0, 30.0, 30.0}];
@@ -56,8 +56,8 @@
     v14 = +[UIColor blackColor];
     [v9 setShadowColor:{objc_msgSend(v14, "CGColor")}];
 
-    v15 = [(ZWTVSlider *)v4 traitCollection];
-    -[ZWTVSlider _updateColorsForUserInterfaceStyle:](v4, "_updateColorsForUserInterfaceStyle:", [v15 userInterfaceStyle]);
+    traitCollection = [(ZWTVSlider *)v4 traitCollection];
+    -[ZWTVSlider _updateColorsForUserInterfaceStyle:](v4, "_updateColorsForUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
 
     [(ZWTVSlider *)v4 setUserInteractionEnabled:1];
     v16 = [[UIPanGestureRecognizer alloc] initWithTarget:v4 action:"_handlePan:"];
@@ -69,7 +69,7 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(ZWTVSlider *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(ZWTVSlider *)self _shouldReverseLayoutDirection];
   v26.receiver = self;
   v26.super_class = ZWTVSlider;
   [(ZWTVSlider *)&v26 layoutSubviews];
@@ -83,7 +83,7 @@
   v14 = v7;
   v15 = v9;
   v16 = v11;
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     MaxX = CGRectGetMaxX(*&v13);
     v27.origin.x = v5;
@@ -114,38 +114,38 @@
   v30.size.width = v9;
   v30.size.height = v11;
   [v12 addLineToPoint:{v19, CGRectGetMidY(v30)}];
-  v20 = [(ZWTVSlider *)self unfilledTrackLayer];
-  [v20 setFrame:{v5, v7, v9, v11}];
+  unfilledTrackLayer = [(ZWTVSlider *)self unfilledTrackLayer];
+  [unfilledTrackLayer setFrame:{v5, v7, v9, v11}];
 
-  v21 = [v12 CGPath];
-  v22 = [(ZWTVSlider *)self unfilledTrackLayer];
-  [v22 setPath:v21];
+  cGPath = [v12 CGPath];
+  unfilledTrackLayer2 = [(ZWTVSlider *)self unfilledTrackLayer];
+  [unfilledTrackLayer2 setPath:cGPath];
 
-  v23 = [(ZWTVSlider *)self filledTrackLayer];
-  [v23 setFrame:{v5, v7, v9, v11}];
+  filledTrackLayer = [(ZWTVSlider *)self filledTrackLayer];
+  [filledTrackLayer setFrame:{v5, v7, v9, v11}];
 
-  v24 = [v12 CGPath];
-  v25 = [(ZWTVSlider *)self filledTrackLayer];
-  [v25 setPath:v24];
+  cGPath2 = [v12 CGPath];
+  filledTrackLayer2 = [(ZWTVSlider *)self filledTrackLayer];
+  [filledTrackLayer2 setPath:cGPath2];
 
   [(ZWTVSlider *)self _updateSliderPosition];
 }
 
 - (void)_updateSliderPosition
 {
-  v3 = [(ZWTVSlider *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(ZWTVSlider *)self _shouldReverseLayoutDirection];
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   [(ZWTVSlider *)self value];
   v5 = (v4 - self->_minimumValue) / (self->_maximumValue - self->_minimumValue);
-  v6 = [(ZWTVSlider *)self filledTrackLayer];
-  [v6 setStrokeEnd:v5];
+  filledTrackLayer = [(ZWTVSlider *)self filledTrackLayer];
+  [filledTrackLayer setStrokeEnd:v5];
 
-  v7 = [(ZWTVSlider *)self unfilledTrackLayer];
-  [v7 setStrokeStart:v5];
+  unfilledTrackLayer = [(ZWTVSlider *)self unfilledTrackLayer];
+  [unfilledTrackLayer setStrokeStart:v5];
 
   [(ZWTVSlider *)self bounds];
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v12 = v10 - v10 * v5;
   }
@@ -156,49 +156,49 @@
   }
 
   MidY = CGRectGetMidY(*&v8);
-  v14 = [(ZWTVSlider *)self grabberLayer];
-  [v14 setPosition:{v12, MidY}];
+  grabberLayer = [(ZWTVSlider *)self grabberLayer];
+  [grabberLayer setPosition:{v12, MidY}];
 
   +[CATransaction commit];
 }
 
-- (void)_updateColorsForUserInterfaceStyle:(int64_t)a3
+- (void)_updateColorsForUserInterfaceStyle:(int64_t)style
 {
-  if (a3 <= 2)
+  if (style <= 2)
   {
     v5 = +[UIColor systemGrayColor];
-    v6 = [v5 CGColor];
-    v7 = [(ZWTVSlider *)self unfilledTrackLayer];
-    [v7 setStrokeColor:v6];
+    cGColor = [v5 CGColor];
+    unfilledTrackLayer = [(ZWTVSlider *)self unfilledTrackLayer];
+    [unfilledTrackLayer setStrokeColor:cGColor];
 
     v8 = [UIColor colorWithWhite:0.5 alpha:1.0];
-    v9 = [v8 CGColor];
-    v10 = [(ZWTVSlider *)self defaultTickLayer];
-    [v10 setBackgroundColor:v9];
+    cGColor2 = [v8 CGColor];
+    defaultTickLayer = [(ZWTVSlider *)self defaultTickLayer];
+    [defaultTickLayer setBackgroundColor:cGColor2];
 
     v14 = +[UIColor whiteColor];
     v11 = v14;
-    v12 = [v14 CGColor];
-    v13 = [(ZWTVSlider *)self filledTrackLayer];
-    [v13 setStrokeColor:v12];
+    cGColor3 = [v14 CGColor];
+    filledTrackLayer = [(ZWTVSlider *)self filledTrackLayer];
+    [filledTrackLayer setStrokeColor:cGColor3];
   }
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
   [(ZWTVSlider *)self minimumValue];
-  if (v5 > a3)
+  if (v5 > value)
   {
-    a3 = v5;
+    value = v5;
   }
 
   [(ZWTVSlider *)self maximumValue];
-  if (a3 < v6)
+  if (value < valueCopy)
   {
-    v6 = a3;
+    valueCopy = value;
   }
 
-  self->_value = v6;
+  self->_value = valueCopy;
 
   [(ZWTVSlider *)self _updateSliderPosition];
 }
@@ -217,48 +217,48 @@
   [(ZWTVSlider *)self sendActionsForControlEvents:4096];
 }
 
-- (void)_handlePan:(id)a3
+- (void)_handlePan:(id)pan
 {
-  v14 = a3;
-  v4 = [(ZWTVSlider *)self _shouldReverseLayoutDirection];
-  v5 = [v14 state];
-  if (v5 == &dword_0 + 3)
+  panCopy = pan;
+  _shouldReverseLayoutDirection = [(ZWTVSlider *)self _shouldReverseLayoutDirection];
+  state = [panCopy state];
+  if (state == &dword_0 + 3)
   {
-    v7 = self;
+    selfCopy3 = self;
     v8 = 0x40000;
   }
 
-  else if (v5 == &dword_0 + 2)
+  else if (state == &dword_0 + 2)
   {
     [(ZWTVSlider *)self bounds];
     v10 = v9;
-    [v14 translationInView:self];
+    [panCopy translationInView:self];
     v12 = v11 / v10;
     v13 = self->_maximumValue - self->_minimumValue;
-    if (v4)
+    if (_shouldReverseLayoutDirection)
     {
       v13 = -v13;
     }
 
     [(ZWTVSlider *)self setValue:self->_gestureBeganValue + v13 * v12];
-    v7 = self;
+    selfCopy3 = self;
     v8 = 4096;
   }
 
   else
   {
-    if (v5 != &dword_0 + 1)
+    if (state != &dword_0 + 1)
     {
       goto LABEL_10;
     }
 
     [(ZWTVSlider *)self value];
     self->_gestureBeganValue = v6;
-    v7 = self;
+    selfCopy3 = self;
     v8 = 0x10000;
   }
 
-  [(ZWTVSlider *)v7 sendActionsForControlEvents:v8];
+  [(ZWTVSlider *)selfCopy3 sendActionsForControlEvents:v8];
 LABEL_10:
 }
 

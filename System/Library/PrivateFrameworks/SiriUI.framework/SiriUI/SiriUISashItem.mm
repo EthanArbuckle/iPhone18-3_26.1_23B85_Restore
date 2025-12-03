@@ -1,9 +1,9 @@
 @interface SiriUISashItem
 + (id)defaultSashItem;
 - (BOOL)canPunchout;
-- (SiriUISashItem)initWithExtension:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setTitle:(id)a3;
+- (SiriUISashItem)initWithExtension:(id)extension;
+- (void)setImage:(id)image;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SiriUISashItem
@@ -19,36 +19,36 @@
   return v4;
 }
 
-- (SiriUISashItem)initWithExtension:(id)a3
+- (SiriUISashItem)initWithExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = [(SiriSharedUISashItem *)self init];
   if (v5)
   {
-    v6 = [v4 siriui_displayName];
-    v7 = [v6 copy];
+    siriui_displayName = [extensionCopy siriui_displayName];
+    v7 = [siriui_displayName copy];
     [(SiriUISashItem *)v5 setTitle:v7];
 
-    v8 = [v4 siriui_iconImage];
-    [(SiriUISashItem *)v5 setImage:v8];
+    siriui_iconImage = [extensionCopy siriui_iconImage];
+    [(SiriUISashItem *)v5 setImage:siriui_iconImage];
   }
 
   return v5;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = SiriUISashItem;
-  [(SiriSharedUISashItem *)&v4 setImage:a3];
+  [(SiriSharedUISashItem *)&v4 setImage:image];
   [(SiriUISashItem *)self _setDefault:0];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4.receiver = self;
   v4.super_class = SiriUISashItem;
-  [(SiriSharedUISashItem *)&v4 setTitle:a3];
+  [(SiriSharedUISashItem *)&v4 setTitle:title];
   [(SiriUISashItem *)self _setDefault:0];
 }
 

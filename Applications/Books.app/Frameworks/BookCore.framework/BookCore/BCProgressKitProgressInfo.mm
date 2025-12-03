@@ -1,5 +1,5 @@
 @interface BCProgressKitProgressInfo
-- (BCProgressKitProgressInfo)initWithIdentifier:(id)a3 pageRange:(_NSRange)a4;
+- (BCProgressKitProgressInfo)initWithIdentifier:(id)identifier pageRange:(_NSRange)range;
 - (BOOL)isProgressValid;
 - (_NSRange)pageRange;
 - (double)progress;
@@ -7,18 +7,18 @@
 
 @implementation BCProgressKitProgressInfo
 
-- (BCProgressKitProgressInfo)initWithIdentifier:(id)a3 pageRange:(_NSRange)a4
+- (BCProgressKitProgressInfo)initWithIdentifier:(id)identifier pageRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = BCProgressKitProgressInfo;
   v9 = [(BCProgressKitProgressInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
+    objc_storeStrong(&v9->_identifier, identifier);
     v10->_pageRange.location = location;
     v10->_pageRange.length = length;
     v10->_currentPage = 0x7FFFFFFFFFFFFFFFLL;
@@ -34,22 +34,22 @@
     return 0;
   }
 
-  v4 = [(BCProgressKitProgressInfo *)self currentPage];
-  v5 = [(BCProgressKitProgressInfo *)self pageRange];
-  return v4 >= v5 && v4 - v5 < v6;
+  currentPage = [(BCProgressKitProgressInfo *)self currentPage];
+  pageRange = [(BCProgressKitProgressInfo *)self pageRange];
+  return currentPage >= pageRange && currentPage - pageRange < v6;
 }
 
 - (double)progress
 {
-  v3 = [(BCProgressKitProgressInfo *)self isProgressValid];
+  isProgressValid = [(BCProgressKitProgressInfo *)self isProgressValid];
   result = -1.0;
-  if (v3)
+  if (isProgressValid)
   {
     [(BCProgressKitProgressInfo *)self pageRange];
     if (v5)
     {
-      v6 = [(BCProgressKitProgressInfo *)self currentPage];
-      v7 = (v6 - [(BCProgressKitProgressInfo *)self pageRange]+ 1);
+      currentPage = [(BCProgressKitProgressInfo *)self currentPage];
+      v7 = (currentPage - [(BCProgressKitProgressInfo *)self pageRange]+ 1);
       [(BCProgressKitProgressInfo *)self pageRange];
       return v7 / v8;
     }

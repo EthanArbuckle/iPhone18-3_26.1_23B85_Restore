@@ -1,32 +1,32 @@
 @interface _UITextChoiceAccelerationAssistantAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)showPromptForReplacementCandidate:(id)a3 delay:(double)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)showPromptForReplacementCandidate:(id)candidate delay:(double)delay;
 @end
 
 @implementation _UITextChoiceAccelerationAssistantAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UITextChoiceAccelerationAssistant" hasInstanceMethod:@"showPromptForReplacementCandidate:delay:" withFullSignature:{"B", "@", "d", 0}];
   objc_storeStrong(v4, obj);
 }
 
-- (BOOL)showPromptForReplacementCandidate:(id)a3 delay:(double)a4
+- (BOOL)showPromptForReplacementCandidate:(id)candidate delay:(double)delay
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v7.receiver = v11;
+  objc_storeStrong(location, candidate);
+  delayCopy = delay;
+  v7.receiver = selfCopy;
   v7.super_class = _UITextChoiceAccelerationAssistantAccessibility;
-  v8 = [(_UITextChoiceAccelerationAssistantAccessibility *)&v7 showPromptForReplacementCandidate:location[0] delay:a4];
+  v8 = [(_UITextChoiceAccelerationAssistantAccessibility *)&v7 showPromptForReplacementCandidate:location[0] delay:delay];
   if (v8)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7390], 0);

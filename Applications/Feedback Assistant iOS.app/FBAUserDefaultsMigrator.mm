@@ -14,9 +14,9 @@
 
 + (void)run
 {
-  v28 = [objc_opt_self() sharedUserDefaults];
+  sharedUserDefaults = [objc_opt_self() sharedUserDefaults];
   v0 = String._bridgeToObjectiveC()();
-  v1 = [v28 BOOLForKey:v0];
+  v1 = [sharedUserDefaults BOOLForKey:v0];
 
   if (v1)
   {
@@ -27,19 +27,19 @@
 
     v2 = type metadata accessor for Logger();
     sub_1000466AC(v2, qword_10010AE40);
-    v3 = Logger.logObject.getter();
+    standardUserDefaults = Logger.logObject.getter();
     v4 = static os_log_type_t.info.getter();
-    if (os_log_type_enabled(v3, v4))
+    if (os_log_type_enabled(standardUserDefaults, v4))
     {
       v5 = swift_slowAlloc();
       *v5 = 0;
-      _os_log_impl(&_mh_execute_header, v3, v4, "User defaults migrator already completed, skipping.", v5, 2u);
+      _os_log_impl(&_mh_execute_header, standardUserDefaults, v4, "User defaults migrator already completed, skipping.", v5, 2u);
     }
   }
 
   else
   {
-    v3 = [objc_opt_self() standardUserDefaults];
+    standardUserDefaults = [objc_opt_self() standardUserDefaults];
     if (qword_100108E38 != -1)
     {
       swift_once();
@@ -57,8 +57,8 @@
     }
 
     v10 = FBKAgreedLegalVersionKey;
-    v11 = [v3 integerForKey:FBKAgreedLegalVersionKey];
-    v12 = [v3 stringForKey:@"LastSuccessfulLogin"];
+    v11 = [standardUserDefaults integerForKey:FBKAgreedLegalVersionKey];
+    v12 = [standardUserDefaults stringForKey:@"LastSuccessfulLogin"];
     if (v12)
     {
       v13 = v12;
@@ -73,7 +73,7 @@
     }
 
     v16 = FBKSuppressPrivacyNoticePreferencesKey;
-    v27 = [v3 BOOLForKey:FBKSuppressPrivacyNoticePreferencesKey, v26];
+    v27 = [standardUserDefaults BOOLForKey:FBKSuppressPrivacyNoticePreferencesKey, v26];
     v17 = Logger.logObject.getter();
     v18 = static os_log_type_t.default.getter();
     if (os_log_type_enabled(v17, v18))
@@ -83,14 +83,14 @@
       _os_log_impl(&_mh_execute_header, v17, v18, "Migrating defaults to shared domain", v19, 2u);
     }
 
-    if (v11 && ![v28 integerForKey:v10])
+    if (v11 && ![sharedUserDefaults integerForKey:v10])
     {
-      [v28 setInteger:v11 forKey:v10];
+      [sharedUserDefaults setInteger:v11 forKey:v10];
     }
 
     if (v15)
     {
-      v20 = [v28 stringForKey:@"LastSuccessfulLogin"];
+      v20 = [sharedUserDefaults stringForKey:@"LastSuccessfulLogin"];
       if (v20)
       {
         v21 = v20;
@@ -100,13 +100,13 @@
       {
         v21 = String._bridgeToObjectiveC()();
 
-        [v28 setObject:v21 forKey:@"LastSuccessfulLogin"];
+        [sharedUserDefaults setObject:v21 forKey:@"LastSuccessfulLogin"];
       }
     }
 
-    if (v27 && ([v28 BOOLForKey:v16] & 1) == 0)
+    if (v27 && ([sharedUserDefaults BOOLForKey:v16] & 1) == 0)
     {
-      [v28 setBool:1 forKey:v16];
+      [sharedUserDefaults setBool:1 forKey:v16];
     }
 
     v22 = Logger.logObject.getter();
@@ -118,13 +118,13 @@
       _os_log_impl(&_mh_execute_header, v22, v23, "Deleting defaults in app domain", v24, 2u);
     }
 
-    [v3 removeObjectForKey:v10];
-    [v3 removeObjectForKey:@"LastSuccessfulLogin"];
-    [v3 removeObjectForKey:v16];
+    [standardUserDefaults removeObjectForKey:v10];
+    [standardUserDefaults removeObjectForKey:@"LastSuccessfulLogin"];
+    [standardUserDefaults removeObjectForKey:v16];
     v25 = String._bridgeToObjectiveC()();
-    [v28 setBool:1 forKey:v25];
+    [sharedUserDefaults setBool:1 forKey:v25];
 
-    v28 = v25;
+    sharedUserDefaults = v25;
   }
 }
 

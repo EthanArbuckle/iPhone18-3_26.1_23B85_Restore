@@ -1,32 +1,32 @@
 @interface _NUSemanticStyleProperties
-+ (id)baselineExposureFromLegacyMetadata:(id)a3 error:(id *)a4;
-+ (id)globalToneCurveDataFromCaptureMetadata:(id)a3 error:(id *)a4;
-+ (id)legacySemanticStylePropertiesFromData:(id)a3 fromVideo:(BOOL)a4 keyTime:(id *)a5 error:(id *)a6;
-+ (id)semanticStylePropertiesFromData:(id)a3 fromVideo:(BOOL)a4 keyTime:(id *)a5 error:(id *)a6;
-+ (id)semanticStylePropertiesFromImageMetadata:(id)a3 error:(id *)a4;
-+ (id)semanticStylePropertiesFromVideoMetadata:(id)a3 keyTime:(id *)a4 error:(id *)a5;
++ (id)baselineExposureFromLegacyMetadata:(id)metadata error:(id *)error;
++ (id)globalToneCurveDataFromCaptureMetadata:(id)metadata error:(id *)error;
++ (id)legacySemanticStylePropertiesFromData:(id)data fromVideo:(BOOL)video keyTime:(id *)time error:(id *)error;
++ (id)semanticStylePropertiesFromData:(id)data fromVideo:(BOOL)video keyTime:(id *)time error:(id *)error;
++ (id)semanticStylePropertiesFromImageMetadata:(id)metadata error:(id *)error;
++ (id)semanticStylePropertiesFromVideoMetadata:(id)metadata keyTime:(id *)time error:(id *)error;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setKeyTime:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setKeyTime:(id *)time;
 @end
 
 @implementation _NUSemanticStyleProperties
 
-- (void)setKeyTime:(id *)a3
+- (void)setKeyTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_keyTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_keyTime.epoch = time->var3;
   *&self->_keyTime.value = v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_NUSemanticStyleProperties allocWithZone:a3];
-  v5 = [(_NUSemanticStyleProperties *)self version];
-  [(_NUSemanticStyleProperties *)v4 setVersion:v5];
+  v4 = [_NUSemanticStyleProperties allocWithZone:zone];
+  version = [(_NUSemanticStyleProperties *)self version];
+  [(_NUSemanticStyleProperties *)v4 setVersion:version];
 
-  v6 = [(_NUSemanticStyleProperties *)self styleData];
-  [(_NUSemanticStyleProperties *)v4 setStyleData:v6];
+  styleData = [(_NUSemanticStyleProperties *)self styleData];
+  [(_NUSemanticStyleProperties *)v4 setStyleData:styleData];
 
   [(_NUSemanticStyleProperties *)v4 setStyleDataIsFloat16:[(_NUSemanticStyleProperties *)self styleDataIsFloat16]];
   [(_NUSemanticStyleProperties *)v4 setIsVideo:[(_NUSemanticStyleProperties *)self isVideo]];
@@ -34,49 +34,49 @@
   v22 = v24;
   v23 = v25;
   [(_NUSemanticStyleProperties *)v4 setKeyTime:&v22];
-  v7 = [(_NUSemanticStyleProperties *)self globalToneCurveData];
-  [(_NUSemanticStyleProperties *)v4 setGlobalToneCurveData:v7];
+  globalToneCurveData = [(_NUSemanticStyleProperties *)self globalToneCurveData];
+  [(_NUSemanticStyleProperties *)v4 setGlobalToneCurveData:globalToneCurveData];
 
   [(_NUSemanticStyleProperties *)self baselineExposure];
   [(_NUSemanticStyleProperties *)v4 setBaselineExposure:?];
-  v8 = [(_NUSemanticStyleProperties *)self sceneType];
-  [(_NUSemanticStyleProperties *)v4 setSceneType:v8];
+  sceneType = [(_NUSemanticStyleProperties *)self sceneType];
+  [(_NUSemanticStyleProperties *)v4 setSceneType:sceneType];
 
-  v9 = [(_NUSemanticStyleProperties *)self subjectRelightingValue];
-  [(_NUSemanticStyleProperties *)v4 setSubjectRelightingValue:v9];
+  subjectRelightingValue = [(_NUSemanticStyleProperties *)self subjectRelightingValue];
+  [(_NUSemanticStyleProperties *)v4 setSubjectRelightingValue:subjectRelightingValue];
 
-  v10 = [(_NUSemanticStyleProperties *)self stats];
-  [(_NUSemanticStyleProperties *)v4 setStats:v10];
+  stats = [(_NUSemanticStyleProperties *)self stats];
+  [(_NUSemanticStyleProperties *)v4 setStats:stats];
 
-  v11 = [(_NUSemanticStyleProperties *)self lightMapData];
-  [(_NUSemanticStyleProperties *)v4 setLightMapData:v11];
+  lightMapData = [(_NUSemanticStyleProperties *)self lightMapData];
+  [(_NUSemanticStyleProperties *)v4 setLightMapData:lightMapData];
 
-  v12 = [(_NUSemanticStyleProperties *)self linearLightMapData];
-  [(_NUSemanticStyleProperties *)v4 setLinearLightMapData:v12];
+  linearLightMapData = [(_NUSemanticStyleProperties *)self linearLightMapData];
+  [(_NUSemanticStyleProperties *)v4 setLinearLightMapData:linearLightMapData];
 
-  v13 = [(_NUSemanticStyleProperties *)self lightMapWidth];
-  [(_NUSemanticStyleProperties *)v4 setLightMapWidth:v13];
+  lightMapWidth = [(_NUSemanticStyleProperties *)self lightMapWidth];
+  [(_NUSemanticStyleProperties *)v4 setLightMapWidth:lightMapWidth];
 
-  v14 = [(_NUSemanticStyleProperties *)self lightMapHeight];
-  [(_NUSemanticStyleProperties *)v4 setLightMapHeight:v14];
+  lightMapHeight = [(_NUSemanticStyleProperties *)self lightMapHeight];
+  [(_NUSemanticStyleProperties *)v4 setLightMapHeight:lightMapHeight];
 
-  v15 = [(_NUSemanticStyleProperties *)self baseGain];
-  [(_NUSemanticStyleProperties *)v4 setBaseGain:v15];
+  baseGain = [(_NUSemanticStyleProperties *)self baseGain];
+  [(_NUSemanticStyleProperties *)v4 setBaseGain:baseGain];
 
-  v16 = [(_NUSemanticStyleProperties *)self linearGain];
-  [(_NUSemanticStyleProperties *)v4 setLinearGain:v16];
+  linearGain = [(_NUSemanticStyleProperties *)self linearGain];
+  [(_NUSemanticStyleProperties *)v4 setLinearGain:linearGain];
 
-  v17 = [(_NUSemanticStyleProperties *)self linearRangeMin];
-  [(_NUSemanticStyleProperties *)v4 setLinearRangeMin:v17];
+  linearRangeMin = [(_NUSemanticStyleProperties *)self linearRangeMin];
+  [(_NUSemanticStyleProperties *)v4 setLinearRangeMin:linearRangeMin];
 
-  v18 = [(_NUSemanticStyleProperties *)self linearRangeMax];
-  [(_NUSemanticStyleProperties *)v4 setLinearRangeMax:v18];
+  linearRangeMax = [(_NUSemanticStyleProperties *)self linearRangeMax];
+  [(_NUSemanticStyleProperties *)v4 setLinearRangeMax:linearRangeMax];
 
-  v19 = [(_NUSemanticStyleProperties *)self faceBasedGlobalExposureBoostRatio];
-  [(_NUSemanticStyleProperties *)v4 setFaceBasedGlobalExposureBoostRatio:v19];
+  faceBasedGlobalExposureBoostRatio = [(_NUSemanticStyleProperties *)self faceBasedGlobalExposureBoostRatio];
+  [(_NUSemanticStyleProperties *)v4 setFaceBasedGlobalExposureBoostRatio:faceBasedGlobalExposureBoostRatio];
 
-  v20 = [(_NUSemanticStyleProperties *)self extendedStats];
-  [(_NUSemanticStyleProperties *)v4 setExtendedStats:v20];
+  extendedStats = [(_NUSemanticStyleProperties *)self extendedStats];
+  [(_NUSemanticStyleProperties *)v4 setExtendedStats:extendedStats];
 
   return v4;
 }
@@ -85,8 +85,8 @@
 {
   v33 = MEMORY[0x1E696AEC0];
   v32 = objc_opt_class();
-  v3 = [(_NUSemanticStyleProperties *)self version];
-  v31 = [(_NUSemanticStyleProperties *)self isVideo];
+  version = [(_NUSemanticStyleProperties *)self version];
+  isVideo = [(_NUSemanticStyleProperties *)self isVideo];
   [(_NUSemanticStyleProperties *)self keyTime];
   if (v40)
   {
@@ -101,7 +101,7 @@
   }
 
   [(_NUSemanticStyleProperties *)self keyTime];
-  v34 = v3;
+  v34 = version;
   if (v38)
   {
     v5 = MEMORY[0x1E696AD98];
@@ -114,30 +114,30 @@
     v35 = @"-";
   }
 
-  v30 = [(_NUSemanticStyleProperties *)self styleData];
-  v27 = [v30 length];
-  v25 = [(_NUSemanticStyleProperties *)self styleDataIsFloat16];
-  v29 = [(_NUSemanticStyleProperties *)self globalToneCurveData];
-  v23 = [v29 length];
+  styleData = [(_NUSemanticStyleProperties *)self styleData];
+  v27 = [styleData length];
+  styleDataIsFloat16 = [(_NUSemanticStyleProperties *)self styleDataIsFloat16];
+  globalToneCurveData = [(_NUSemanticStyleProperties *)self globalToneCurveData];
+  v23 = [globalToneCurveData length];
   [(_NUSemanticStyleProperties *)self baselineExposure];
   v7 = v6;
-  v22 = [(_NUSemanticStyleProperties *)self sceneType];
-  v21 = [(_NUSemanticStyleProperties *)self subjectRelightingValue];
-  v19 = [(_NUSemanticStyleProperties *)self baseGain];
-  v28 = [(_NUSemanticStyleProperties *)self stats];
-  v20 = [v28 count];
-  v26 = [(_NUSemanticStyleProperties *)self lightMapData];
-  v18 = [v26 length];
-  v24 = [(_NUSemanticStyleProperties *)self linearLightMapData];
-  v8 = [v24 length];
-  v17 = [(_NUSemanticStyleProperties *)self lightMapWidth];
-  v9 = [(_NUSemanticStyleProperties *)self lightMapHeight];
-  v10 = [(_NUSemanticStyleProperties *)self linearGain];
-  v11 = [(_NUSemanticStyleProperties *)self linearRangeMin];
-  v12 = [(_NUSemanticStyleProperties *)self linearRangeMax];
-  v13 = [(_NUSemanticStyleProperties *)self faceBasedGlobalExposureBoostRatio];
-  v14 = [(_NUSemanticStyleProperties *)self extendedStats];
-  v15 = [v33 stringWithFormat:@"<%@:%p version=%@ video=%d key=%@/%@ data:%luB float16:%d GTC:%luB exp:%g scn=%@ srl=%@ gain=%@ stats:%luB lightMap:%luB/%luB(%@x%@) lin:(x%@, %@:%@) fb=%@ xstats=%@>", v32, self, v34, v31, v36, v35, v27, v25, v23, v7, v22, v21, v19, v20, v18, v8, v17, v9, v10, v11, v12, v13, v14];
+  sceneType = [(_NUSemanticStyleProperties *)self sceneType];
+  subjectRelightingValue = [(_NUSemanticStyleProperties *)self subjectRelightingValue];
+  baseGain = [(_NUSemanticStyleProperties *)self baseGain];
+  stats = [(_NUSemanticStyleProperties *)self stats];
+  v20 = [stats count];
+  lightMapData = [(_NUSemanticStyleProperties *)self lightMapData];
+  v18 = [lightMapData length];
+  linearLightMapData = [(_NUSemanticStyleProperties *)self linearLightMapData];
+  v8 = [linearLightMapData length];
+  lightMapWidth = [(_NUSemanticStyleProperties *)self lightMapWidth];
+  lightMapHeight = [(_NUSemanticStyleProperties *)self lightMapHeight];
+  linearGain = [(_NUSemanticStyleProperties *)self linearGain];
+  linearRangeMin = [(_NUSemanticStyleProperties *)self linearRangeMin];
+  linearRangeMax = [(_NUSemanticStyleProperties *)self linearRangeMax];
+  faceBasedGlobalExposureBoostRatio = [(_NUSemanticStyleProperties *)self faceBasedGlobalExposureBoostRatio];
+  extendedStats = [(_NUSemanticStyleProperties *)self extendedStats];
+  v15 = [v33 stringWithFormat:@"<%@:%p version=%@ video=%d key=%@/%@ data:%luB float16:%d GTC:%luB exp:%g scn=%@ srl=%@ gain=%@ stats:%luB lightMap:%luB/%luB(%@x%@) lin:(x%@, %@:%@) fb=%@ xstats=%@>", v32, self, v34, isVideo, v36, v35, v27, styleDataIsFloat16, v23, v7, sceneType, subjectRelightingValue, baseGain, v20, v18, v8, lightMapWidth, lightMapHeight, linearGain, linearRangeMin, linearRangeMax, faceBasedGlobalExposureBoostRatio, extendedStats];
 
   if (v38)
   {
@@ -150,12 +150,12 @@
   return v15;
 }
 
-+ (id)legacySemanticStylePropertiesFromData:(id)a3 fromVideo:(BOOL)a4 keyTime:(id *)a5 error:(id *)a6
++ (id)legacySemanticStylePropertiesFromData:(id)data fromVideo:(BOOL)video keyTime:(id *)time error:(id *)error
 {
-  v8 = a4;
+  videoCopy = video;
   v90 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (!v10)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v43 = NUAssertLogger_3297();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -176,8 +176,8 @@
         v57 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v58 = MEMORY[0x1E696AF00];
         v59 = v57;
-        v60 = [v58 callStackSymbols];
-        v61 = [v60 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v58 callStackSymbols];
+        v61 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v57;
         *&buf[12] = 2114;
@@ -188,8 +188,8 @@
 
     else if (v47)
     {
-      v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v49 = [v48 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v49 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v49;
       _os_log_error_impl(&dword_1C0184000, v46, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -198,7 +198,7 @@
     _NUAssertFailHandler("+[_NUSemanticStyleProperties legacySemanticStylePropertiesFromData:fromVideo:keyTime:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageProperties.m", 894, @"Invalid parameter not satisfying: %s", v62, v63, v64, v65, "data != nil");
   }
 
-  if (!a6)
+  if (!error)
   {
     v50 = NUAssertLogger_3297();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
@@ -219,8 +219,8 @@
         v66 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v67 = MEMORY[0x1E696AF00];
         v68 = v66;
-        v69 = [v67 callStackSymbols];
-        v70 = [v69 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v67 callStackSymbols];
+        v70 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v66;
         *&buf[12] = 2114;
@@ -231,8 +231,8 @@
 
     else if (v54)
     {
-      v55 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v56 = [v55 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v56 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v56;
       _os_log_error_impl(&dword_1C0184000, v53, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -241,22 +241,22 @@
     _NUAssertFailHandler("+[_NUSemanticStyleProperties legacySemanticStylePropertiesFromData:fromVideo:keyTime:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageProperties.m", 895, @"Invalid parameter not satisfying: %s", v71, v72, v73, v74, "error != NULL");
   }
 
-  v11 = v10;
+  v11 = dataCopy;
   v88 = 0;
-  v12 = [MEMORY[0x1E696AE40] propertyListWithData:v10 options:0 format:0 error:&v88];
+  v12 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:&v88];
   v13 = v88;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [NUError errorWithCode:1 reason:@"Could not deserialized property list from data" object:v11 underlyingError:v13];
-    *a6 = v17 = 0;
+    *error = v17 = 0;
     goto LABEL_81;
   }
 
   v14 = objc_alloc_init(_NUSemanticStyleProperties);
-  [(_NUSemanticStyleProperties *)v14 setIsVideo:v8];
-  *buf = *&a5->var0;
-  *&buf[16] = a5->var3;
+  [(_NUSemanticStyleProperties *)v14 setIsVideo:videoCopy];
+  *buf = *&time->var0;
+  *&buf[16] = time->var3;
   [(_NUSemanticStyleProperties *)v14 setKeyTime:buf];
   v15 = [v12 objectForKeyedSubscript:@"smartStyleMetadataVersion"];
   objc_opt_class();
@@ -276,7 +276,7 @@
   v19 = v18;
   if (!v16 || v18)
   {
-    if (!v16 && v18 && !v8)
+    if (!v16 && v18 && !videoCopy)
     {
       v87 = v13;
       v17 = [(_NUSemanticStyleProperties *)v18 decompressedDataUsingAlgorithm:1 error:&v87];
@@ -284,7 +284,7 @@
 
       if (!v17)
       {
-        *a6 = [NUError errorWithCode:1 reason:@"Failed to decompress style data" object:v12 underlyingError:v20];
+        *error = [NUError errorWithCode:1 reason:@"Failed to decompress style data" object:v12 underlyingError:v20];
         v13 = v20;
         goto LABEL_80;
       }
@@ -327,7 +327,7 @@
       {
         v82 = v21;
         v86 = 0;
-        [a1 globalToneCurveDataFromCaptureMetadata:v23 error:&v86];
+        [self globalToneCurveDataFromCaptureMetadata:v23 error:&v86];
         v17 = v24 = v23;
         v25 = v86;
 
@@ -339,7 +339,7 @@
 LABEL_28:
           v81 = v23;
           v85 = 0;
-          v26 = [a1 baselineExposureFromLegacyMetadata:v12 error:&v85];
+          v26 = [self baselineExposureFromLegacyMetadata:v12 error:&v85];
           v13 = v85;
 
           if (v26)
@@ -515,7 +515,7 @@ LABEL_28:
           else
           {
             [NUError errorWithCode:1 reason:@"Failed to get baseline exposure value" object:v12 underlyingError:v13];
-            *a6 = v17 = 0;
+            *error = v17 = 0;
             v21 = v82;
           }
 
@@ -523,7 +523,7 @@ LABEL_28:
           goto LABEL_79;
         }
 
-        *a6 = [NUError errorWithCode:1 reason:@"Failed to read GTC data" object:v24 underlyingError:v25];
+        *error = [NUError errorWithCode:1 reason:@"Failed to read GTC data" object:v24 underlyingError:v25];
         v13 = v25;
         v21 = v82;
       }
@@ -532,7 +532,7 @@ LABEL_28:
       {
         [NUError errorWithCode:1 reason:@"Invalid GTC data" object:v23 underlyingError:v13];
         v24 = v23;
-        *a6 = v17 = 0;
+        *error = v17 = 0;
       }
 
 LABEL_79:
@@ -546,7 +546,7 @@ LABEL_79:
   }
 
   [NUError missingError:@"Missing style data" object:v12];
-  *a6 = v17 = 0;
+  *error = v17 = 0;
 LABEL_80:
 
 LABEL_81:
@@ -554,11 +554,11 @@ LABEL_81:
   return v17;
 }
 
-+ (id)baselineExposureFromLegacyMetadata:(id)a3 error:(id *)a4
++ (id)baselineExposureFromLegacyMetadata:(id)metadata error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
     v27 = NUAssertLogger_3297();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -579,8 +579,8 @@ LABEL_81:
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v44 = v34;
         v45 = 2114;
@@ -591,8 +591,8 @@ LABEL_81:
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v44 = v33;
       _os_log_error_impl(&dword_1C0184000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -601,8 +601,8 @@ LABEL_81:
     _NUAssertFailHandler("+[_NUSemanticStyleProperties baselineExposureFromLegacyMetadata:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageProperties.m", 832, @"Invalid parameter not satisfying: %s", v39, v40, v41, v42, "metadata != nil");
   }
 
-  v6 = v5;
-  v7 = [v5 objectForKeyedSubscript:@"smartStyleBaselineExposure"];
+  v6 = metadataCopy;
+  v7 = [metadataCopy objectForKeyedSubscript:@"smartStyleBaselineExposure"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -635,7 +635,7 @@ LABEL_81:
     if (!v10)
     {
       [NUError missingError:@"Missing metadata property" object:@"ispDGain"];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
 LABEL_26:
 
       goto LABEL_27;
@@ -654,7 +654,7 @@ LABEL_26:
       v7 = v18;
       if (!v18)
       {
-        *a4 = [NUError invalidError:@"Invalid metadata property" object:@"AverageLTM"];
+        *error = [NUError invalidError:@"Invalid metadata property" object:@"AverageLTM"];
 LABEL_25:
 
         goto LABEL_26;
@@ -697,7 +697,7 @@ LABEL_25:
   }
 
   [NUError missingError:@"Missing metadata property" object:@"ispDGain"];
-  *a4 = v7 = 0;
+  *error = v7 = 0;
 LABEL_27:
 
 LABEL_28:
@@ -705,11 +705,11 @@ LABEL_28:
   return v7;
 }
 
-+ (id)globalToneCurveDataFromCaptureMetadata:(id)a3 error:(id *)a4
++ (id)globalToneCurveDataFromCaptureMetadata:(id)metadata error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
     v19 = NUAssertLogger_3297();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -730,8 +730,8 @@ LABEL_28:
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v26;
         v37 = 2114;
@@ -742,8 +742,8 @@ LABEL_28:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -752,30 +752,30 @@ LABEL_28:
     _NUAssertFailHandler("+[_NUSemanticStyleProperties globalToneCurveDataFromCaptureMetadata:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageProperties.m", 801, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "gtcData != nil");
   }
 
-  v6 = v5;
-  if ([v5 length] < 2)
+  v6 = metadataCopy;
+  if ([metadataCopy length] < 2)
   {
     v7 = @"Invalid GTC metadata size";
 LABEL_6:
     [NUError invalidError:v7 object:v6];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
     goto LABEL_7;
   }
 
-  v8 = [v6 bytes];
-  LODWORD(v9) = *v8 - 1;
+  bytes = [v6 bytes];
+  LODWORD(v9) = *bytes - 1;
   if (v9 > 0x100)
   {
     v7 = @"Invalid GTC metadata count";
     goto LABEL_6;
   }
 
-  v12 = v8;
+  v12 = bytes;
   v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:4 * (v9 & 0x3FFF)];
-  v13 = [v10 mutableBytes];
+  mutableBytes = [v10 mutableBytes];
   if (v9)
   {
-    v14 = v13;
+    v14 = mutableBytes;
     v9 = v9;
     v15 = v12 + 1;
     do
@@ -804,29 +804,29 @@ LABEL_7:
   return v10;
 }
 
-+ (id)semanticStylePropertiesFromVideoMetadata:(id)a3 keyTime:(id *)a4 error:(id *)a5
++ (id)semanticStylePropertiesFromVideoMetadata:(id)metadata keyTime:(id *)time error:(id *)error
 {
-  v7 = *a4;
-  v5 = [a1 semanticStylePropertiesFromData:a3 fromVideo:1 keyTime:&v7 error:a5];
+  v7 = *time;
+  v5 = [self semanticStylePropertiesFromData:metadata fromVideo:1 keyTime:&v7 error:error];
 
   return v5;
 }
 
-+ (id)semanticStylePropertiesFromImageMetadata:(id)a3 error:(id *)a4
++ (id)semanticStylePropertiesFromImageMetadata:(id)metadata error:(id *)error
 {
   v6 = *MEMORY[0x1E6960C70];
   v7 = *(MEMORY[0x1E6960C70] + 16);
-  v4 = [a1 semanticStylePropertiesFromData:a3 fromVideo:0 keyTime:&v6 error:a4];
+  v4 = [self semanticStylePropertiesFromData:metadata fromVideo:0 keyTime:&v6 error:error];
 
   return v4;
 }
 
-+ (id)semanticStylePropertiesFromData:(id)a3 fromVideo:(BOOL)a4 keyTime:(id *)a5 error:(id *)a6
++ (id)semanticStylePropertiesFromData:(id)data fromVideo:(BOOL)video keyTime:(id *)time error:(id *)error
 {
-  v8 = a4;
+  videoCopy = video;
   v119 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (!v10)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v67 = NUAssertLogger_3297();
     if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
@@ -847,8 +847,8 @@ LABEL_7:
         v81 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v82 = MEMORY[0x1E696AF00];
         v83 = v81;
-        v84 = [v82 callStackSymbols];
-        v85 = [v84 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v82 callStackSymbols];
+        v85 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v81;
         *&buf[12] = 2114;
@@ -859,8 +859,8 @@ LABEL_7:
 
     else if (v71)
     {
-      v72 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v73 = [v72 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v73 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v73;
       _os_log_error_impl(&dword_1C0184000, v70, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -869,7 +869,7 @@ LABEL_7:
     _NUAssertFailHandler("+[_NUSemanticStyleProperties semanticStylePropertiesFromData:fromVideo:keyTime:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageProperties.m", 625, @"Invalid parameter not satisfying: %s", v86, v87, v88, v89, "data != nil");
   }
 
-  if (!a6)
+  if (!error)
   {
     v74 = NUAssertLogger_3297();
     if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
@@ -890,8 +890,8 @@ LABEL_7:
         v90 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v91 = MEMORY[0x1E696AF00];
         v92 = v90;
-        v93 = [v91 callStackSymbols];
-        v94 = [v93 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v91 callStackSymbols];
+        v94 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v90;
         *&buf[12] = 2114;
@@ -902,8 +902,8 @@ LABEL_7:
 
     else if (v78)
     {
-      v79 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v80 = [v79 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v80 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v80;
       _os_log_error_impl(&dword_1C0184000, v77, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -912,15 +912,15 @@ LABEL_7:
     _NUAssertFailHandler("+[_NUSemanticStyleProperties semanticStylePropertiesFromData:fromVideo:keyTime:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageProperties.m", 626, @"Invalid parameter not satisfying: %s", v95, v96, v97, v98, "error != NULL");
   }
 
-  v11 = v10;
+  v11 = dataCopy;
   v116 = 0;
-  v12 = [MEMORY[0x1E696AE40] propertyListWithData:v10 options:0 format:0 error:&v116];
+  v12 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:&v116];
   v13 = v116;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [NUError errorWithCode:1 reason:@"Could not deserialized property list from data" object:v11 underlyingError:v13];
-    *a6 = v22 = 0;
+    *error = v22 = 0;
     goto LABEL_129;
   }
 
@@ -928,17 +928,17 @@ LABEL_7:
 
   if (!v14)
   {
-    *buf = *&a5->var0;
-    *&buf[16] = a5->var3;
-    v22 = [a1 legacySemanticStylePropertiesFromData:v11 fromVideo:v8 keyTime:buf error:a6];
+    *buf = *&time->var0;
+    *&buf[16] = time->var3;
+    v22 = [self legacySemanticStylePropertiesFromData:v11 fromVideo:videoCopy keyTime:buf error:error];
     goto LABEL_129;
   }
 
   v15 = v13;
   v16 = objc_alloc_init(_NUSemanticStyleProperties);
-  [(_NUSemanticStyleProperties *)v16 setIsVideo:v8];
-  *buf = *&a5->var0;
-  *&buf[16] = a5->var3;
+  [(_NUSemanticStyleProperties *)v16 setIsVideo:videoCopy];
+  *buf = *&time->var0;
+  *&buf[16] = time->var3;
   [(_NUSemanticStyleProperties *)v16 setKeyTime:buf];
   v17 = [v12 objectForKeyedSubscript:@"0"];
   objc_opt_class();
@@ -988,7 +988,7 @@ LABEL_7:
       if (objc_opt_isKindOfClass())
       {
         v115 = 0;
-        v22 = [a1 globalToneCurveDataFromCaptureMetadata:v23 error:&v115];
+        v22 = [self globalToneCurveDataFromCaptureMetadata:v23 error:&v115];
         v15 = v115;
 
         if (v22)
@@ -1037,7 +1037,7 @@ LABEL_22:
 LABEL_39:
               v108 = v30;
               [(_NUSemanticStyleProperties *)v16 setSceneType:?];
-              if (v8)
+              if (videoCopy)
               {
                 v32 = &unk_1F3F822A8;
               }
@@ -1372,7 +1372,7 @@ LABEL_39:
         v22 = 0;
       }
 
-      *a6 = v26;
+      *error = v26;
       v17 = v114;
 LABEL_127:
 
@@ -1384,7 +1384,7 @@ LABEL_127:
   }
 
   [NUError missingError:@"Invalid style version" object:v12];
-  *a6 = v22 = 0;
+  *error = v22 = 0;
 LABEL_128:
 
   v13 = v15;

@@ -1,9 +1,9 @@
 @interface VUIApplicationViewController
 - (id)preferredFocusEnvironments;
-- (void)_startApplicationControllerWithBootURL:(id)a3;
-- (void)appController:(id)a3 didFailWithError:(id)a4;
-- (void)appController:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (void)appController:(id)a3 evaluateAppJavaScriptInContext:(id)a4;
+- (void)_startApplicationControllerWithBootURL:(id)l;
+- (void)appController:(id)controller didFailWithError:(id)error;
+- (void)appController:(id)controller didFinishLaunchingWithOptions:(id)options;
+- (void)appController:(id)controller evaluateAppJavaScriptInContext:(id)context;
 - (void)dealloc;
 - (void)viewDidLoad;
 @end
@@ -17,8 +17,8 @@
   if (navigationController)
   {
     [(UINavigationController *)navigationController willMoveToParentViewController:0];
-    v4 = [(UINavigationController *)self->_navigationController view];
-    [v4 removeFromSuperview];
+    view = [(UINavigationController *)self->_navigationController view];
+    [view removeFromSuperview];
     [(UINavigationController *)self->_navigationController removeFromParentViewController];
   }
 
@@ -30,22 +30,22 @@
 - (id)preferredFocusEnvironments
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIApplicationViewController *)self navigationController];
-  v4 = v3;
-  if (v3)
+  navigationController = [(VUIApplicationViewController *)self navigationController];
+  v4 = navigationController;
+  if (navigationController)
   {
-    v9[0] = v3;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
+    v9[0] = navigationController;
+    preferredFocusEnvironments = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = VUIApplicationViewController;
-    v5 = [(VUIApplicationViewController *)&v8 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(VUIApplicationViewController *)&v8 preferredFocusEnvironments];
   }
 
-  v6 = v5;
+  v6 = preferredFocusEnvironments;
 
   return v6;
 }
@@ -56,12 +56,12 @@
   v12.super_class = VUIApplicationViewController;
   [(VUIApplicationViewController *)&v12 viewDidLoad];
   v3 = kVUIBagTVAppJetpackURL;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [_TtC8VideosUI20VUIJetPackController controllerWithBagKey:v3 defaults:v4 urlOverrideDefaultKey:@"boot-url"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [_TtC8VideosUI20VUIJetPackController controllerWithBagKey:v3 defaults:standardUserDefaults urlOverrideDefaultKey:@"boot-url"];
 
   [(VUIApplicationViewController *)self setJetPackController:v5];
   objc_initWeak(&location, self);
-  v6 = [v5 getJetPackSource];
+  getJetPackSource = [v5 getJetPackSource];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__VUIApplicationViewController_viewDidLoad__block_invoke;
@@ -69,7 +69,7 @@
   objc_copyWeak(&v10, &location);
   v7 = v5;
   v9 = v7;
-  [v6 resultWithCompletion:v8];
+  [getJetPackSource resultWithCompletion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -112,63 +112,63 @@ void __43__VUIApplicationViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)appController:(id)a3 evaluateAppJavaScriptInContext:(id)a4
+- (void)appController:(id)controller evaluateAppJavaScriptInContext:(id)context
 {
-  v5 = a4;
-  [VUIJSFactory exposeObjectsInJSContext:v5];
-  [(VUIApplicationViewController *)self _exposeObjectsInJSContext:v5];
+  contextCopy = context;
+  [VUIJSFactory exposeObjectsInJSContext:contextCopy];
+  [(VUIApplicationViewController *)self _exposeObjectsInJSContext:contextCopy];
 }
 
-- (void)appController:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (void)appController:(id)controller didFinishLaunchingWithOptions:(id)options
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  controllerCopy = controller;
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v22 = v6;
+    v22 = optionsCopy;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_INFO, "VUIApplicationViewController: TVApplicationController did finish launching with options: %@", buf, 0xCu);
   }
 
-  v9 = [v7 appContext];
+  appContext = [controllerCopy appContext];
 
-  v10 = [(VUIApplicationViewController *)self _initialViewControllerWithAppContext:v9];
+  v10 = [(VUIApplicationViewController *)self _initialViewControllerWithAppContext:appContext];
   if (v10)
   {
-    v11 = [(VUIApplicationViewController *)self navigationController];
+    navigationController = [(VUIApplicationViewController *)self navigationController];
     v20 = v10;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-    [v11 setViewControllers:v12 animated:0];
+    [navigationController setViewControllers:v12 animated:0];
   }
 
   else
   {
-    v11 = VUIDefaultLogObject();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    navigationController = VUIDefaultLogObject();
+    if (os_log_type_enabled(navigationController, OS_LOG_TYPE_ERROR))
     {
-      [(VUIApplicationViewController *)v11 appController:v13 didFinishLaunchingWithOptions:v14, v15, v16, v17, v18, v19];
+      [(VUIApplicationViewController *)navigationController appController:v13 didFinishLaunchingWithOptions:v14, v15, v16, v17, v18, v19];
     }
   }
 }
 
-- (void)appController:(id)a3 didFailWithError:(id)a4
+- (void)appController:(id)controller didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [VUIApplicationViewController appController:v4 didFailWithError:v5];
+    [VUIApplicationViewController appController:errorCopy didFailWithError:v5];
   }
 }
 
-- (void)_startApplicationControllerWithBootURL:(id)a3
+- (void)_startApplicationControllerWithBootURL:(id)l
 {
-  v4 = a3;
-  v5 = [(VUIApplicationViewController *)self applicationController];
+  lCopy = l;
+  applicationController = [(VUIApplicationViewController *)self applicationController];
 
-  if (v5)
+  if (applicationController)
   {
     v6 = VUIDefaultLogObject();
     if (os_log_type_enabled(&v6->super, OS_LOG_TYPE_ERROR))
@@ -177,29 +177,29 @@ void __43__VUIApplicationViewController_viewDidLoad__block_invoke_2(uint64_t a1)
     }
   }
 
-  else if (v4)
+  else if (lCopy)
   {
     v6 = objc_alloc_init(VUITVApplicationControllerContext);
-    [(VUITVApplicationControllerContext *)v6 setJavaScriptApplicationURL:v4];
-    v14 = [(VUIApplicationViewController *)self _launchOptions];
-    v15 = v14;
-    if (v14)
+    [(VUITVApplicationControllerContext *)v6 setJavaScriptApplicationURL:lCopy];
+    _launchOptions = [(VUIApplicationViewController *)self _launchOptions];
+    v15 = _launchOptions;
+    if (_launchOptions)
     {
-      v16 = [v14 mutableCopy];
+      dictionary = [_launchOptions mutableCopy];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v24 = v16;
-    v25 = [MEMORY[0x1E69DF700] sharedInstance];
-    v26 = [v25 osFeatureFlagsJSON];
+    v24 = dictionary;
+    mEMORY[0x1E69DF700] = [MEMORY[0x1E69DF700] sharedInstance];
+    osFeatureFlagsJSON = [mEMORY[0x1E69DF700] osFeatureFlagsJSON];
 
-    if ([v26 count])
+    if ([osFeatureFlagsJSON count])
     {
-      [v24 setObject:v26 forKey:@"featureFlags"];
+      [v24 setObject:osFeatureFlagsJSON forKey:@"featureFlags"];
     }
 
     v27 = [v24 copy];
@@ -207,16 +207,16 @@ void __43__VUIApplicationViewController_viewDidLoad__block_invoke_2(uint64_t a1)
 
     v28 = [objc_alloc(-[VUIApplicationViewController _applicationControllerClass](self "_applicationControllerClass"))];
     [(VUIApplicationViewController *)self setApplicationController:v28];
-    v29 = [v28 navigationController];
-    [(VUIApplicationViewController *)self setNavigationController:v29];
-    [(VUIApplicationViewController *)self addChildViewController:v29];
-    v30 = [(VUIApplicationViewController *)self view];
-    v31 = [v29 view];
-    [v30 bounds];
-    [v31 setFrame:?];
-    [v30 addSubview:v31];
-    [v29 didMoveToParentViewController:self];
-    [v28 setKeyTraitEnvironment:v30];
+    navigationController = [v28 navigationController];
+    [(VUIApplicationViewController *)self setNavigationController:navigationController];
+    [(VUIApplicationViewController *)self addChildViewController:navigationController];
+    view = [(VUIApplicationViewController *)self view];
+    view2 = [navigationController view];
+    [view bounds];
+    [view2 setFrame:?];
+    [view addSubview:view2];
+    [navigationController didMoveToParentViewController:self];
+    [v28 setKeyTraitEnvironment:view];
   }
 
   else

@@ -1,21 +1,21 @@
 @interface SKGConfig
-- (SKGConfig)initWithConfigPath:(id)a3;
-- (SKGConfig)initWithConfigPath:(id)a3 resourceDirectoryPath:(id)a4 resourceVersion:(int64_t)a5;
+- (SKGConfig)initWithConfigPath:(id)path;
+- (SKGConfig)initWithConfigPath:(id)path resourceDirectoryPath:(id)directoryPath resourceVersion:(int64_t)version;
 - (void)readConfig;
 - (void)updateConfig;
 @end
 
 @implementation SKGConfig
 
-- (SKGConfig)initWithConfigPath:(id)a3
+- (SKGConfig)initWithConfigPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = SKGConfig;
   v5 = [(SKGConfig *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
+    v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
     v7 = *(v5 + 2);
     *(v5 + 2) = v6;
 
@@ -26,21 +26,21 @@
   return v5;
 }
 
-- (SKGConfig)initWithConfigPath:(id)a3 resourceDirectoryPath:(id)a4 resourceVersion:(int64_t)a5
+- (SKGConfig)initWithConfigPath:(id)path resourceDirectoryPath:(id)directoryPath resourceVersion:(int64_t)version
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  directoryPathCopy = directoryPath;
   v14.receiver = self;
   v14.super_class = SKGConfig;
   v10 = [(SKGConfig *)&v14 init];
   if (v10)
   {
-    v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
+    v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
     configURL = v10->_configURL;
     v10->_configURL = v11;
 
-    objc_storeStrong(&v10->_resourcePath, a4);
-    v10->_currentResourceVersion = a5;
+    objc_storeStrong(&v10->_resourcePath, directoryPath);
+    v10->_currentResourceVersion = version;
     v10->_currentReleaseVersion = 3;
     [(SKGConfig *)v10 updateConfig];
   }
@@ -55,9 +55,9 @@
     return;
   }
 
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSURL *)self->_configURL path];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)self->_configURL path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   if (!v5)
   {
@@ -65,8 +65,8 @@
   }
 
   v6 = MEMORY[0x277CBEA90];
-  v7 = [(NSURL *)self->_configURL path];
-  v21 = [v6 dataWithContentsOfFile:v7];
+  path2 = [(NSURL *)self->_configURL path];
+  v21 = [v6 dataWithContentsOfFile:path2];
 
   v8 = *MEMORY[0x277CBECE8];
   v9 = v21;
@@ -148,9 +148,9 @@ LABEL_9:
       if (!v12)
       {
         v13 = [MEMORY[0x277CBEA90] dataWithBytes:Bytes length:Length];
-        v14 = [MEMORY[0x277CCAA00] defaultManager];
-        v15 = [(NSURL *)self->_configURL path];
-        [v14 createFileAtPath:v15 contents:v13 attributes:0];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        path = [(NSURL *)self->_configURL path];
+        [defaultManager createFileAtPath:path contents:v13 attributes:0];
       }
 
       CFRelease(v9);

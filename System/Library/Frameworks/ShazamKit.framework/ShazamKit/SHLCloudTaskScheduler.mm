@@ -1,22 +1,22 @@
 @interface SHLCloudTaskScheduler
 - (SHLCloudLibraryCache)cache;
 - (SHLCloudModifyZoneTransformer)zoneTransformer;
-- (SHLCloudTaskScheduler)initWithConfiguration:(id)a3;
+- (SHLCloudTaskScheduler)initWithConfiguration:(id)configuration;
 @end
 
 @implementation SHLCloudTaskScheduler
 
-- (SHLCloudTaskScheduler)initWithConfiguration:(id)a3
+- (SHLCloudTaskScheduler)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = SHLCloudTaskScheduler;
   v6 = [(SHLCloudTaskScheduler *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
-    v8 = -[SHLCloudContainerTransformer initWithScope:]([SHLCloudContainerTransformer alloc], "initWithScope:", [v5 sessionScope]);
+    objc_storeStrong(&v6->_configuration, configuration);
+    v8 = -[SHLCloudContainerTransformer initWithScope:]([SHLCloudContainerTransformer alloc], "initWithScope:", [configurationCopy sessionScope]);
     containerTransformer = v7->_containerTransformer;
     v7->_containerTransformer = v8;
   }
@@ -30,8 +30,8 @@
   if (!zoneTransformer)
   {
     v4 = [SHLCloudModifyZoneTransformer alloc];
-    v5 = [(SHLCloudTaskScheduler *)self configuration];
-    v6 = [(SHLCloudModifyZoneTransformer *)v4 initWithConfiguration:v5];
+    configuration = [(SHLCloudTaskScheduler *)self configuration];
+    v6 = [(SHLCloudModifyZoneTransformer *)v4 initWithConfiguration:configuration];
     v7 = self->_zoneTransformer;
     self->_zoneTransformer = v6;
 
@@ -46,17 +46,17 @@
   cache = self->_cache;
   if (!cache)
   {
-    v4 = [(SHLCloudTaskScheduler *)self containerTransformer];
-    v5 = [v4 cloudBackedContainer];
+    containerTransformer = [(SHLCloudTaskScheduler *)self containerTransformer];
+    cloudBackedContainer = [containerTransformer cloudBackedContainer];
 
     v6 = [SHLCloudLibraryCache alloc];
-    v7 = [(SHLCloudTaskScheduler *)self configuration];
-    v8 = [v7 callingProcessIdentifier];
-    v9 = [v5 container];
-    v10 = [v9 containerIdentifier];
-    v11 = [(SHLCloudTaskScheduler *)self configuration];
-    v12 = [v11 sessionIdentifier];
-    v13 = [(SHLCloudLibraryCache *)v6 initWithCallingProcessIdentifier:v8 containerIdentifier:v10 transactionIdentifier:v12];
+    configuration = [(SHLCloudTaskScheduler *)self configuration];
+    callingProcessIdentifier = [configuration callingProcessIdentifier];
+    container = [cloudBackedContainer container];
+    containerIdentifier = [container containerIdentifier];
+    configuration2 = [(SHLCloudTaskScheduler *)self configuration];
+    sessionIdentifier = [configuration2 sessionIdentifier];
+    v13 = [(SHLCloudLibraryCache *)v6 initWithCallingProcessIdentifier:callingProcessIdentifier containerIdentifier:containerIdentifier transactionIdentifier:sessionIdentifier];
     v14 = self->_cache;
     self->_cache = v13;
 

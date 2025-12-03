@@ -1,10 +1,10 @@
 @interface UARPSoCUpdaterController
 - (BOOL)applyStagedFirmware;
-- (BOOL)initializeUpdatersWithOptions:(id)a3;
-- (BOOL)offerFirmwareDataWithDictionary:(id)a3;
-- (BOOL)offerFirmwareForUpdater:(id)a3 inputDict:(id)a4;
-- (BOOL)offerPersonalizationDataWithDictionary:(id)a3;
-- (UARPSoCUpdaterController)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5;
+- (BOOL)initializeUpdatersWithOptions:(id)options;
+- (BOOL)offerFirmwareDataWithDictionary:(id)dictionary;
+- (BOOL)offerFirmwareForUpdater:(id)updater inputDict:(id)dict;
+- (BOOL)offerPersonalizationDataWithDictionary:(id)dictionary;
+- (UARPSoCUpdaterController)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context;
 - (id)firmwareTags;
 - (id)queryInfo;
 - (id)ticketNameTags;
@@ -12,15 +12,15 @@
 
 @implementation UARPSoCUpdaterController
 
-- (UARPSoCUpdaterController)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5
+- (UARPSoCUpdaterController)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context
 {
-  v8 = a3;
+  optionsCopy = options;
   v29.receiver = self;
   v29.super_class = UARPSoCUpdaterController;
   v9 = [(UARPSoCUpdaterController *)&v29 init];
   if (v9)
   {
-    v10 = [[SoCUpdaterHelper alloc] initWithOptions:v8 logFunction:a4 logContext:a5];
+    v10 = [[SoCUpdaterHelper alloc] initWithOptions:optionsCopy logFunction:function logContext:context];
     log = v9->_log;
     v9->_log = v10;
 
@@ -29,13 +29,13 @@
     v9->_updaters = v12;
 
     v9->_isDone = 0;
-    if (![(UARPSoCUpdaterController *)v9 initializeUpdatersWithOptions:v8])
+    if (![(UARPSoCUpdaterController *)v9 initializeUpdatersWithOptions:optionsCopy])
     {
       v27 = 0;
       goto LABEL_10;
     }
 
-    ShouldSkipSameVersion = SoCUpdaterShouldSkipSameVersion(v8);
+    ShouldSkipSameVersion = SoCUpdaterShouldSkipSameVersion(optionsCopy);
     v9->_skipSameVersion = ShouldSkipSameVersion;
     v15 = "No";
     if (ShouldSkipSameVersion)
@@ -44,7 +44,7 @@
     }
 
     [(SoCUpdaterHelper *)v9->_log log:@"Ace3 skip same version: %s", v15];
-    v16 = [v8 objectForKeyedSubscript:@"Options"];
+    v16 = [optionsCopy objectForKeyedSubscript:@"Options"];
     v17 = v9->_log;
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
@@ -100,8 +100,8 @@ LABEL_10:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) firmwareTagName];
-        [v3 addObject:v9];
+        firmwareTagName = [*(*(&v13 + 1) + 8 * i) firmwareTagName];
+        [v3 addObject:firmwareTagName];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -140,8 +140,8 @@ LABEL_10:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) ticketName];
-        [v3 addObject:v9];
+        ticketName = [*(*(&v13 + 1) + 8 * i) ticketName];
+        [v3 addObject:ticketName];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -213,18 +213,18 @@ LABEL_15:
     v22[0] = @"UpdaterRef";
     v22[1] = @"TicketName";
     v10 = [(NSMutableArray *)self->_updaters objectAtIndexedSubscript:0, v18];
-    v11 = [v10 ticketName];
-    v23[1] = v11;
+    ticketName = [v10 ticketName];
+    v23[1] = ticketName;
     v22[2] = @"RestoreSystemPartition";
-    v12 = [(UARPSoCUpdaterController *)self restorePartition];
-    v23[2] = v12;
+    restorePartition = [(UARPSoCUpdaterController *)self restorePartition];
+    v23[2] = restorePartition;
     v22[3] = @"LocalSigningID";
     v13 = [MEMORY[0x29EDBA070] numberWithBool:v3];
     v23[3] = v13;
     v22[4] = @"ManifestPrefix";
     v14 = [(NSMutableArray *)self->_updaters objectAtIndexedSubscript:0];
-    v15 = [v14 manifestPrefix];
-    v23[4] = v15;
+    manifestPrefix = [v14 manifestPrefix];
+    v23[4] = manifestPrefix;
     v4 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v23 forKeys:v22 count:5];
   }
 
@@ -238,12 +238,12 @@ LABEL_15:
   return v4;
 }
 
-- (BOOL)offerFirmwareDataWithDictionary:(id)a3
+- (BOOL)offerFirmwareDataWithDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
-  [(SoCUpdaterHelper *)self->_log log:@"%s: options = %@", "[UARPSoCUpdaterController offerFirmwareDataWithDictionary:]", v4];
+  [(SoCUpdaterHelper *)self->_log log:@"%s: options = %@", "[UARPSoCUpdaterController offerFirmwareDataWithDictionary:]", dictionaryCopy];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -271,14 +271,14 @@ LABEL_15:
 
         else
         {
-          if (![(UARPSoCUpdaterController *)self offerFirmwareForUpdater:v11 inputDict:v4])
+          if (![(UARPSoCUpdaterController *)self offerFirmwareForUpdater:v11 inputDict:dictionaryCopy])
           {
             v14 = 0;
             goto LABEL_14;
           }
 
-          v12 = [v11 personalizationRequestDict];
-          [v5 addEntriesFromDictionary:v12];
+          personalizationRequestDict = [v11 personalizationRequestDict];
+          [v5 addEntriesFromDictionary:personalizationRequestDict];
         }
       }
 
@@ -302,10 +302,10 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)offerPersonalizationDataWithDictionary:(id)a3
+- (BOOL)offerPersonalizationDataWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -326,20 +326,20 @@ LABEL_14:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        -[SoCUpdaterHelper log:](self->_log, "log:", @"%s: Maybe Offer IM4M Asset to Updater(LUN:%d,RouterID:%d); %@", "-[UARPSoCUpdaterController offerPersonalizationDataWithDictionary:]", [v9 logicUnitNumber], objc_msgSend(v9, "routerID"), v4);
-        v10 = [v9 isDone];
+        -[SoCUpdaterHelper log:](self->_log, "log:", @"%s: Maybe Offer IM4M Asset to Updater(LUN:%d,RouterID:%d); %@", "-[UARPSoCUpdaterController offerPersonalizationDataWithDictionary:]", [v9 logicUnitNumber], objc_msgSend(v9, "routerID"), dictionaryCopy);
+        isDone = [v9 isDone];
         log = self->_log;
-        v12 = [v9 logicUnitNumber];
-        v13 = [v9 routerID];
-        if (v10)
+        logicUnitNumber = [v9 logicUnitNumber];
+        routerID = [v9 routerID];
+        if (isDone)
         {
-          [(SoCUpdaterHelper *)log log:@"%s: Don't offer IM4M Asset to Updater(LUN:%d, RouterID:%d); is done", "[UARPSoCUpdaterController offerPersonalizationDataWithDictionary:]", v12, v13];
+          [(SoCUpdaterHelper *)log log:@"%s: Don't offer IM4M Asset to Updater(LUN:%d, RouterID:%d); is done", "[UARPSoCUpdaterController offerPersonalizationDataWithDictionary:]", logicUnitNumber, routerID];
         }
 
         else
         {
-          [(SoCUpdaterHelper *)log log:@"%s: Offer IM4M Asset to Updater(LUN:%d, RouterID:%d)", "[UARPSoCUpdaterController offerPersonalizationDataWithDictionary:]", v12, v13];
-          if (![v9 offerPersonalizationResponse:v4])
+          [(SoCUpdaterHelper *)log log:@"%s: Offer IM4M Asset to Updater(LUN:%d, RouterID:%d)", "[UARPSoCUpdaterController offerPersonalizationDataWithDictionary:]", logicUnitNumber, routerID];
+          if (![v9 offerPersonalizationResponse:dictionaryCopy])
           {
             v14 = 0;
             goto LABEL_13;
@@ -429,17 +429,17 @@ LABEL_15:
   return v3;
 }
 
-- (BOOL)initializeUpdatersWithOptions:(id)a3
+- (BOOL)initializeUpdatersWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(UARPSoCUpdaterController *)self numberOfAvailableUnits];
-  if (v5)
+  optionsCopy = options;
+  numberOfAvailableUnits = [(UARPSoCUpdaterController *)self numberOfAvailableUnits];
+  if (numberOfAvailableUnits)
   {
-    v6 = v5;
+    v6 = numberOfAvailableUnits;
     v7 = 1;
     while (1)
     {
-      v8 = [(UARPSoCUpdaterController *)self createUpdaterInstanceFor:v7 helper:self->_log options:v4];
+      v8 = [(UARPSoCUpdaterController *)self createUpdaterInstanceFor:v7 helper:self->_log options:optionsCopy];
       if (!v8)
       {
         break;
@@ -475,17 +475,17 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)offerFirmwareForUpdater:(id)a3 inputDict:(id)a4
+- (BOOL)offerFirmwareForUpdater:(id)updater inputDict:(id)dict
 {
-  v6 = a3;
+  updaterCopy = updater;
   log = self->_log;
-  v8 = a4;
-  [(SoCUpdaterHelper *)log log:@"%s: options = %@", "[UARPSoCUpdaterController offerFirmwareForUpdater:inputDict:]", v8];
-  v9 = [v8 objectForKeyedSubscript:@"FirmwareData"];
+  dictCopy = dict;
+  [(SoCUpdaterHelper *)log log:@"%s: options = %@", "[UARPSoCUpdaterController offerFirmwareForUpdater:inputDict:]", dictCopy];
+  v9 = [dictCopy objectForKeyedSubscript:@"FirmwareData"];
 
   if (v9)
   {
-    v10 = [v6 offerFirmwareData:v9];
+    v10 = [updaterCopy offerFirmwareData:v9];
   }
 
   else

@@ -1,50 +1,50 @@
 @interface MPMusicPlayerControllerNowPlayingTimeSnapshot
-+ (MPMusicPlayerControllerNowPlayingTimeSnapshot)snapshotWithElapsedTime:(double)a3 duration:(double)a4 rate:(float)a5 atTimestamp:(double)a6 state:(int64_t)a7;
-+ (id)liveSnapshotWithRate:(float)a3 state:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (MPMusicPlayerControllerNowPlayingTimeSnapshot)initWithCoder:(id)a3;
++ (MPMusicPlayerControllerNowPlayingTimeSnapshot)snapshotWithElapsedTime:(double)time duration:(double)duration rate:(float)rate atTimestamp:(double)timestamp state:(int64_t)state;
++ (id)liveSnapshotWithRate:(float)rate state:(int64_t)state;
+- (BOOL)isEqual:(id)equal;
+- (MPMusicPlayerControllerNowPlayingTimeSnapshot)initWithCoder:(id)coder;
 - (double)currentTime;
 - (id)_init;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPMusicPlayerControllerNowPlayingTimeSnapshot
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   *&v4 = self->_rate;
-  [v5 encodeFloat:@"rate" forKey:v4];
-  [v5 encodeBool:self->_live forKey:@"live"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeFloat:@"rate" forKey:v4];
+  [coderCopy encodeBool:self->_live forKey:@"live"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
   if (!self->_live)
   {
-    [v5 encodeDouble:@"elapsed" forKey:self->_elapsedTime];
-    [v5 encodeDouble:@"duration" forKey:self->_duration];
-    [v5 encodeDouble:@"timestamp" forKey:self->_timestamp];
+    [coderCopy encodeDouble:@"elapsed" forKey:self->_elapsedTime];
+    [coderCopy encodeDouble:@"duration" forKey:self->_duration];
+    [coderCopy encodeDouble:@"timestamp" forKey:self->_timestamp];
   }
 }
 
-- (MPMusicPlayerControllerNowPlayingTimeSnapshot)initWithCoder:(id)a3
+- (MPMusicPlayerControllerNowPlayingTimeSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MPMusicPlayerControllerNowPlayingTimeSnapshot;
   v5 = [(MPMusicPlayerControllerNowPlayingTimeSnapshot *)&v11 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"rate"];
+    [coderCopy decodeFloatForKey:@"rate"];
     v5->_rate = v6;
-    v5->_live = [v4 decodeBoolForKey:@"live"];
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
+    v5->_live = [coderCopy decodeBoolForKey:@"live"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
     if (!v5->_live)
     {
-      [v4 decodeDoubleForKey:@"elapsed"];
+      [coderCopy decodeDoubleForKey:@"elapsed"];
       v5->_elapsedTime = v7;
-      [v4 decodeDoubleForKey:@"duration"];
+      [coderCopy decodeDoubleForKey:@"duration"];
       v5->_duration = v8;
-      [v4 decodeDoubleForKey:@"timestamp"];
+      [coderCopy decodeDoubleForKey:@"timestamp"];
       v5->_timestamp = v9;
     }
   }
@@ -70,12 +70,12 @@
   return fmax(duration, 0.0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self->_state != *(v5 + 5) || self->_live != v5[32])
     {
@@ -138,26 +138,26 @@ LABEL_12:
   return [(MPMusicPlayerControllerNowPlayingTimeSnapshot *)&v3 init];
 }
 
-+ (MPMusicPlayerControllerNowPlayingTimeSnapshot)snapshotWithElapsedTime:(double)a3 duration:(double)a4 rate:(float)a5 atTimestamp:(double)a6 state:(int64_t)a7
++ (MPMusicPlayerControllerNowPlayingTimeSnapshot)snapshotWithElapsedTime:(double)time duration:(double)duration rate:(float)rate atTimestamp:(double)timestamp state:(int64_t)state
 {
-  v12 = [[a1 alloc] _init];
-  *(v12 + 8) = a3;
-  *(v12 + 16) = a4;
-  *(v12 + 36) = a5;
-  *(v12 + 24) = a6;
-  *(v12 + 40) = a7;
+  _init = [[self alloc] _init];
+  *(_init + 8) = time;
+  *(_init + 16) = duration;
+  *(_init + 36) = rate;
+  *(_init + 24) = timestamp;
+  *(_init + 40) = state;
 
-  return v12;
+  return _init;
 }
 
-+ (id)liveSnapshotWithRate:(float)a3 state:(int64_t)a4
++ (id)liveSnapshotWithRate:(float)rate state:(int64_t)state
 {
-  v6 = [[a1 alloc] _init];
-  *(v6 + 32) = 1;
-  *(v6 + 36) = a3;
-  *(v6 + 40) = a4;
+  _init = [[self alloc] _init];
+  *(_init + 32) = 1;
+  *(_init + 36) = rate;
+  *(_init + 40) = state;
 
-  return v6;
+  return _init;
 }
 
 @end

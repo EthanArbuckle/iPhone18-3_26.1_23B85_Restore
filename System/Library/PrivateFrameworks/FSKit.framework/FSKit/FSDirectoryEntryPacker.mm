@@ -1,29 +1,29 @@
 @interface FSDirectoryEntryPacker
-- (BOOL)packEntryWithName:(id)a3 itemType:(int64_t)a4 itemID:(unint64_t)a5 nextCookie:(unint64_t)a6 attributes:(id)a7;
-- (FSDirectoryEntryPacker)initWithBuffer:(id)a3 withAttributes:(BOOL)a4;
+- (BOOL)packEntryWithName:(id)name itemType:(int64_t)type itemID:(unint64_t)d nextCookie:(unint64_t)cookie attributes:(id)attributes;
+- (FSDirectoryEntryPacker)initWithBuffer:(id)buffer withAttributes:(BOOL)attributes;
 - (void)setLastEntryAsEOF;
 @end
 
 @implementation FSDirectoryEntryPacker
 
-- (BOOL)packEntryWithName:(id)a3 itemType:(int64_t)a4 itemID:(unint64_t)a5 nextCookie:(unint64_t)a6 attributes:(id)a7
+- (BOOL)packEntryWithName:(id)name itemType:(int64_t)type itemID:(unint64_t)d nextCookie:(unint64_t)cookie attributes:(id)attributes
 {
-  v10 = a4;
+  typeCopy = type;
   v44 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
-  v14 = self;
-  objc_sync_enter(v14);
-  v15 = [v12 data];
-  v16 = [v15 length];
+  nameCopy = name;
+  attributesCopy = attributes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  data = [nameCopy data];
+  v16 = [data length];
 
   if (v16)
   {
     v17 = 0;
     while (1)
     {
-      v18 = [v12 data];
-      v19 = *([v18 bytes] + v17);
+      data2 = [nameCopy data];
+      v19 = *([data2 bytes] + v17);
 
       if (v19 == 47)
       {
@@ -36,13 +36,13 @@
       }
     }
 
-    v29 = [v12 string];
-    if (v29)
+    string = [nameCopy string];
+    if (string)
     {
       v30 = fskit_std_log();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        [FSDirectoryEntryPacker packEntryWithName:v29 itemType:v30 itemID:? nextCookie:? attributes:?];
+        [FSDirectoryEntryPacker packEntryWithName:string itemType:v30 itemID:? nextCookie:? attributes:?];
       }
     }
 
@@ -59,15 +59,15 @@
   }
 
 LABEL_5:
-  if (v14->_withAttributes)
+  if (selfCopy->_withAttributes)
   {
-    if (v13)
+    if (attributesCopy)
     {
-      bytesPacked = v14->_bytesPacked;
+      bytesPacked = selfCopy->_bytesPacked;
       v21 = (v16 + 208) & 0xFFFFFFF8;
-      if (bytesPacked + v21 > [(FSMutableFileDataBuffer *)v14->_buffer length])
+      if (bytesPacked + v21 > [(FSMutableFileDataBuffer *)selfCopy->_buffer length])
       {
-        lastEntry = v14->_lastEntry;
+        lastEntry = selfCopy->_lastEntry;
         if (lastEntry)
         {
           lastEntry[4] = 0;
@@ -84,19 +84,19 @@ LABEL_5:
         goto LABEL_18;
       }
 
-      v36 = a6;
-      v37 = ([(FSMutableFileDataBuffer *)v14->_buffer mutableBytes]+ v14->_bytesPacked);
-      [v13 getLIAttributes:v37 + 16];
-      v38 = [v12 data];
-      memcpy((v37 + 200), [v38 bytes], v16);
+      cookieCopy = cookie;
+      v37 = ([(FSMutableFileDataBuffer *)selfCopy->_buffer mutableBytes]+ selfCopy->_bytesPacked);
+      [attributesCopy getLIAttributes:v37 + 16];
+      data3 = [nameCopy data];
+      memcpy((v37 + 200), [data3 bytes], v16);
 
       *(v37 + 200 + v16) = 0;
       *(v37 + 10) = 200;
       *(v37 + 12) = v16;
       *(v37 + 8) = (v16 + 208) & 0xFFF8;
-      *v37 = v36;
-      v14->_bytesPacked += v21;
-      v14->_lastEntry = v37;
+      *v37 = cookieCopy;
+      selfCopy->_bytesPacked += v21;
+      selfCopy->_lastEntry = v37;
     }
 
     else
@@ -113,39 +113,39 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v24 = v14->_bytesPacked;
-  v41 = a6;
-  v25 = v13;
+  v24 = selfCopy->_bytesPacked;
+  cookieCopy2 = cookie;
+  v25 = attributesCopy;
   v26 = (v16 + 29) & 0xFFFFFFFFFFFFFFF8;
-  if (v24 + v26 <= [(FSMutableFileDataBuffer *)v14->_buffer length])
+  if (v24 + v26 <= [(FSMutableFileDataBuffer *)selfCopy->_buffer length])
   {
-    v31 = [(FSMutableFileDataBuffer *)v14->_buffer mutableBytes];
-    v32 = v14->_bytesPacked;
-    v33 = [v12 data];
-    v34 = (v31 + v32);
-    memcpy(v34 + 21, [v33 bytes], v16);
+    mutableBytes = [(FSMutableFileDataBuffer *)selfCopy->_buffer mutableBytes];
+    v32 = selfCopy->_bytesPacked;
+    data4 = [nameCopy data];
+    v34 = (mutableBytes + v32);
+    memcpy(v34 + 21, [data4 bytes], v16);
 
     v34[v16 + 21] = 0;
     *(v34 + 9) = v16;
-    v34[20] = v10;
+    v34[20] = typeCopy;
     *(v34 + 8) = v26;
-    *v34 = a5;
-    *(v34 + 1) = v41;
-    v14->_bytesPacked += v26;
-    v14->_lastEntry = v34;
+    *v34 = d;
+    *(v34 + 1) = cookieCopy2;
+    selfCopy->_bytesPacked += v26;
+    selfCopy->_lastEntry = v34;
     v28 = 1;
-    v13 = v25;
+    attributesCopy = v25;
     goto LABEL_31;
   }
 
-  v27 = v14->_lastEntry;
+  v27 = selfCopy->_lastEntry;
   if (v27)
   {
     v27[8] = 0;
   }
 
   v23 = fskit_std_log();
-  v13 = v25;
+  attributesCopy = v25;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
     *buf = 136315138;
@@ -156,27 +156,27 @@ LABEL_30:
 LABEL_18:
 
   v28 = 0;
-  v14->_outOfSpace = 1;
+  selfCopy->_outOfSpace = 1;
 LABEL_31:
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
 
   v39 = *MEMORY[0x277D85DE8];
   return v28;
 }
 
-- (FSDirectoryEntryPacker)initWithBuffer:(id)a3 withAttributes:(BOOL)a4
+- (FSDirectoryEntryPacker)initWithBuffer:(id)buffer withAttributes:(BOOL)attributes
 {
-  v7 = a3;
+  bufferCopy = buffer;
   v11.receiver = self;
   v11.super_class = FSDirectoryEntryPacker;
   v8 = [(FSDirectoryEntryPacker *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_buffer, a3);
-    v9->_lastEntry = [v7 mutableBytes];
+    objc_storeStrong(&v8->_buffer, buffer);
+    v9->_lastEntry = [bufferCopy mutableBytes];
     v9->_bytesPacked = 0;
-    v9->_withAttributes = a4;
+    v9->_withAttributes = attributes;
     v9->_outOfSpace = 0;
   }
 

@@ -1,16 +1,16 @@
 @interface PKPaymentWebServiceBackgroundContext
-+ (id)contextWithArchive:(id)a3;
++ (id)contextWithArchive:(id)archive;
 - (PKPaymentWebServiceBackgroundContext)init;
-- (PKPaymentWebServiceBackgroundContext)initWithCoder:(id)a3;
-- (id)backgroundDownloadRecordForRecordName:(id)a3;
-- (id)backgroundDownloadRecordForTaskIdentifier:(unint64_t)a3;
+- (PKPaymentWebServiceBackgroundContext)initWithCoder:(id)coder;
+- (id)backgroundDownloadRecordForRecordName:(id)name;
+- (id)backgroundDownloadRecordForTaskIdentifier:(unint64_t)identifier;
 - (id)remainingTasks;
-- (void)addBackgroundDownloadRecord:(id)a3 forRecordName:(id)a4;
-- (void)addBackgroundDownloadRecord:(id)a3 forTaskIdentifier:(unint64_t)a4;
-- (void)archiveAtPath:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeBackgroundDownloadRecordForRecordName:(id)a3;
-- (void)removeBackgroundDownloadRecordForTaskIdentifier:(unint64_t)a3;
+- (void)addBackgroundDownloadRecord:(id)record forRecordName:(id)name;
+- (void)addBackgroundDownloadRecord:(id)record forTaskIdentifier:(unint64_t)identifier;
+- (void)archiveAtPath:(id)path;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeBackgroundDownloadRecordForRecordName:(id)name;
+- (void)removeBackgroundDownloadRecordForTaskIdentifier:(unint64_t)identifier;
 @end
 
 @implementation PKPaymentWebServiceBackgroundContext
@@ -36,9 +36,9 @@
   return v3;
 }
 
-- (PKPaymentWebServiceBackgroundContext)initWithCoder:(id)a3
+- (PKPaymentWebServiceBackgroundContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKPaymentWebServiceBackgroundContext *)self init];
   v6 = v5;
   if (v5)
@@ -52,7 +52,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v7 setWithObjects:{v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"backgroundTaskByTaskIdentifier"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"backgroundTaskByTaskIdentifier"];
     v16 = [v15 mutableCopy];
     [(PKPaymentWebServiceBackgroundContext *)v6 setBackgroundTaskRecordsByTaskIdentifier:v16];
 
@@ -64,16 +64,16 @@
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = [v17 setWithObjects:{v18, v19, v20, v21, v22, v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"backgroundTaskRecordsByRecordName"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"backgroundTaskRecordsByRecordName"];
     v26 = [v25 mutableCopy];
     [(PKPaymentWebServiceBackgroundContext *)v6 setBackgroundTaskRecordsByRecordName:v26];
 
-    v27 = [(PKPaymentWebServiceBackgroundContext *)v6 backgroundTaskRecordsByRecordName];
+    backgroundTaskRecordsByRecordName = [(PKPaymentWebServiceBackgroundContext *)v6 backgroundTaskRecordsByRecordName];
 
-    if (!v27)
+    if (!backgroundTaskRecordsByRecordName)
     {
-      v28 = [MEMORY[0x1E695DF90] dictionary];
-      [(PKPaymentWebServiceBackgroundContext *)v6 setBackgroundTaskRecordsByRecordName:v28];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(PKPaymentWebServiceBackgroundContext *)v6 setBackgroundTaskRecordsByRecordName:dictionary];
     }
 
     os_unfair_lock_unlock(&v6->_lock);
@@ -82,23 +82,23 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByTaskIdentifier];
-  [v4 encodeObject:v5 forKey:@"backgroundTaskByTaskIdentifier"];
+  backgroundTaskRecordsByTaskIdentifier = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByTaskIdentifier];
+  [coderCopy encodeObject:backgroundTaskRecordsByTaskIdentifier forKey:@"backgroundTaskByTaskIdentifier"];
 
-  v6 = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByRecordName];
-  [v4 encodeObject:v6 forKey:@"backgroundTaskRecordsByRecordName"];
+  backgroundTaskRecordsByRecordName = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByRecordName];
+  [coderCopy encodeObject:backgroundTaskRecordsByRecordName forKey:@"backgroundTaskRecordsByRecordName"];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-+ (id)contextWithArchive:(id)a3
++ (id)contextWithArchive:(id)archive
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:a3 options:1 error:0];
+  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:archive options:1 error:0];
   if (v3)
   {
     v13 = 0;
@@ -149,9 +149,9 @@ LABEL_11:
   return v7;
 }
 
-- (void)archiveAtPath:(id)a3
+- (void)archiveAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -160,76 +160,76 @@ LABEL_11:
   }
 
   v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  [v6 writeToFile:v4 atomically:1];
+  [v6 writeToFile:pathCopy atomically:1];
 
-  PKExcludePathFromBackup(v4);
+  PKExcludePathFromBackup(pathCopy);
 }
 
-- (void)addBackgroundDownloadRecord:(id)a3 forTaskIdentifier:(unint64_t)a4
+- (void)addBackgroundDownloadRecord:(id)record forTaskIdentifier:(unint64_t)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  recordCopy = record;
   os_unfair_lock_lock(&self->_lock);
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = a4;
+    identifierCopy = identifier;
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Adding background download record for task %lu", &v10, 0xCu);
   }
 
-  v8 = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByTaskIdentifier];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v8 setObject:v6 forKey:v9];
+  backgroundTaskRecordsByTaskIdentifier = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByTaskIdentifier];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:identifier];
+  [backgroundTaskRecordsByTaskIdentifier setObject:recordCopy forKey:v9];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addBackgroundDownloadRecord:(id)a3 forRecordName:(id)a4
+- (void)addBackgroundDownloadRecord:(id)record forRecordName:(id)name
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  recordCopy = record;
   os_unfair_lock_lock(&self->_lock);
   v8 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = nameCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Adding background download record for recordName %@", &v10, 0xCu);
   }
 
-  v9 = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByRecordName];
-  [v9 setObject:v7 forKey:v6];
+  backgroundTaskRecordsByRecordName = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByRecordName];
+  [backgroundTaskRecordsByRecordName setObject:recordCopy forKey:nameCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)backgroundDownloadRecordForTaskIdentifier:(unint64_t)a3
+- (id)backgroundDownloadRecordForTaskIdentifier:(unint64_t)identifier
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByTaskIdentifier];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKey:v6];
+  backgroundTaskRecordsByTaskIdentifier = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByTaskIdentifier];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:identifier];
+  v7 = [backgroundTaskRecordsByTaskIdentifier objectForKey:v6];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;
 }
 
-- (id)backgroundDownloadRecordForRecordName:(id)a3
+- (id)backgroundDownloadRecordForRecordName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByRecordName];
-  v6 = [v5 objectForKey:v4];
+  backgroundTaskRecordsByRecordName = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByRecordName];
+  v6 = [backgroundTaskRecordsByRecordName objectForKey:nameCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v6;
 }
 
-- (void)removeBackgroundDownloadRecordForTaskIdentifier:(unint64_t)a3
+- (void)removeBackgroundDownloadRecordForTaskIdentifier:(unint64_t)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -237,32 +237,32 @@ LABEL_11:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a3;
+    identifierCopy = identifier;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Removing background download record for task %lu", &v8, 0xCu);
   }
 
-  v6 = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByTaskIdentifier];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v6 removeObjectForKey:v7];
+  backgroundTaskRecordsByTaskIdentifier = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByTaskIdentifier];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:identifier];
+  [backgroundTaskRecordsByTaskIdentifier removeObjectForKey:v7];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeBackgroundDownloadRecordForRecordName:(id)a3
+- (void)removeBackgroundDownloadRecordForRecordName:(id)name
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
   v5 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = nameCopy;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Removing background download record for recordName %@", &v7, 0xCu);
   }
 
-  v6 = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByRecordName];
-  [v6 removeObjectForKey:v4];
+  backgroundTaskRecordsByRecordName = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByRecordName];
+  [backgroundTaskRecordsByRecordName removeObjectForKey:nameCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
@@ -270,13 +270,13 @@ LABEL_11:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByTaskIdentifier];
-  v5 = [v4 allKeys];
-  [v3 addObjectsFromArray:v5];
+  backgroundTaskRecordsByTaskIdentifier = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByTaskIdentifier];
+  allKeys = [backgroundTaskRecordsByTaskIdentifier allKeys];
+  [v3 addObjectsFromArray:allKeys];
 
-  v6 = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByRecordName];
-  v7 = [v6 allKeys];
-  [v3 addObjectsFromArray:v7];
+  backgroundTaskRecordsByRecordName = [(PKPaymentWebServiceBackgroundContext *)self backgroundTaskRecordsByRecordName];
+  allKeys2 = [backgroundTaskRecordsByRecordName allKeys];
+  [v3 addObjectsFromArray:allKeys2];
 
   os_unfair_lock_unlock(&self->_lock);
 

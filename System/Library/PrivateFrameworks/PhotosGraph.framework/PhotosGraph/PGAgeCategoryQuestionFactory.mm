@@ -1,14 +1,14 @@
 @interface PGAgeCategoryQuestionFactory
-- (BOOL)_shouldAddNewAgeCategoryQuestionForPersonUUID:(id)a3;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (BOOL)_shouldAddNewAgeCategoryQuestionForPersonUUID:(id)d;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGAgeCategoryQuestionFactory
 
-- (BOOL)_shouldAddNewAgeCategoryQuestionForPersonUUID:(id)a3
+- (BOOL)_shouldAddNewAgeCategoryQuestionForPersonUUID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  [(PGSurveyQuestionFactory *)self existingQuestionsForEntityIdentifier:a3];
+  [(PGSurveyQuestionFactory *)self existingQuestionsForEntityIdentifier:d];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -57,26 +57,26 @@ LABEL_13:
   return v9;
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [(PGSurveyQuestionFactory *)self workingContext];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __73__PGAgeCategoryQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
   v16 = &unk_27888A2F8;
-  v19 = v6;
-  v20 = a3;
-  v17 = self;
+  v19 = blockCopy;
+  limitCopy = limit;
+  selfCopy = self;
   v18 = v7;
   v9 = v7;
-  v10 = v6;
-  [v8 performSynchronousConcurrentGraphReadUsingBlock:&v13];
+  v10 = blockCopy;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:&v13];
 
-  v11 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __73__PGAgeCategoryQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2)

@@ -1,52 +1,52 @@
 @interface PXGPrivateMetalRenderContext
-- (PXGPrivateMetalRenderContext)initWithDevice:(id)a3;
-- (id)newTextureWithDescriptor:(id)a3;
-- (void)copyBytes:(const void *)a3 toTexture:(id)a4 inRegion:(id *)a5 length:(unint64_t)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8;
-- (void)fastCopyBytes:(const void *)a3 toTexture:(id)a4 inRegion:(id *)a5 length:(unint64_t)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8;
+- (PXGPrivateMetalRenderContext)initWithDevice:(id)device;
+- (id)newTextureWithDescriptor:(id)descriptor;
+- (void)copyBytes:(const void *)bytes toTexture:(id)texture inRegion:(id *)region length:(unint64_t)length bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image;
+- (void)fastCopyBytes:(const void *)bytes toTexture:(id)texture inRegion:(id *)region length:(unint64_t)length bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image;
 @end
 
 @implementation PXGPrivateMetalRenderContext
 
-- (void)fastCopyBytes:(const void *)a3 toTexture:(id)a4 inRegion:(id *)a5 length:(unint64_t)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8
+- (void)fastCopyBytes:(const void *)bytes toTexture:(id)texture inRegion:(id *)region length:(unint64_t)length bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image
 {
-  v8 = *&a5->var0.var2;
-  v9[0] = *&a5->var0.var0;
+  v8 = *&region->var0.var2;
+  v9[0] = *&region->var0.var0;
   v9[1] = v8;
-  v9[2] = *&a5->var1.var1;
-  [(PXGPrivateMetalRenderContext *)self copyBytes:a3 toTexture:a4 inRegion:v9 length:a6 bytesPerRow:a7 bytesPerImage:a8];
+  v9[2] = *&region->var1.var1;
+  [(PXGPrivateMetalRenderContext *)self copyBytes:bytes toTexture:texture inRegion:v9 length:length bytesPerRow:row bytesPerImage:image];
 }
 
-- (void)copyBytes:(const void *)a3 toTexture:(id)a4 inRegion:(id *)a5 length:(unint64_t)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8
+- (void)copyBytes:(const void *)bytes toTexture:(id)texture inRegion:(id *)region length:(unint64_t)length bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image
 {
-  v8 = *&a5->var0.var2;
-  v9[0] = *&a5->var0.var0;
+  v8 = *&region->var0.var2;
+  v9[0] = *&region->var0.var0;
   v9[1] = v8;
-  v9[2] = *&a5->var1.var1;
-  if (a8)
+  v9[2] = *&region->var1.var1;
+  if (image)
   {
-    [a4 replaceRegion:v9 mipmapLevel:0 slice:0 withBytes:a3 bytesPerRow:a7 bytesPerImage:?];
+    [texture replaceRegion:v9 mipmapLevel:0 slice:0 withBytes:bytes bytesPerRow:row bytesPerImage:?];
   }
 
   else
   {
-    [a4 replaceRegion:v9 mipmapLevel:0 withBytes:a3 bytesPerRow:a7];
+    [texture replaceRegion:v9 mipmapLevel:0 withBytes:bytes bytesPerRow:row];
   }
 }
 
-- (id)newTextureWithDescriptor:(id)a3
+- (id)newTextureWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(PXGMetalRenderContext *)self device];
-  v6 = [v5 newTextureWithDescriptor:v4];
+  descriptorCopy = descriptor;
+  device = [(PXGMetalRenderContext *)self device];
+  v6 = [device newTextureWithDescriptor:descriptorCopy];
 
   return v6;
 }
 
-- (PXGPrivateMetalRenderContext)initWithDevice:(id)a3
+- (PXGPrivateMetalRenderContext)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = PXGPrivateMetalRenderContext;
-  return [(PXGMetalRenderContext *)&v4 initWithDevice:a3 commandQueue:0];
+  return [(PXGMetalRenderContext *)&v4 initWithDevice:device commandQueue:0];
 }
 
 @end

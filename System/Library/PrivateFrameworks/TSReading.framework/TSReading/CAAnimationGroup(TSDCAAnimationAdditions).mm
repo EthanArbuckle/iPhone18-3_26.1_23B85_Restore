@@ -15,8 +15,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a1 animations];
-  result = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  animations = [self animations];
+  result = [animations countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (result)
   {
     v6 = result;
@@ -28,7 +28,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animations);
         }
 
         if ([*(*(&v9 + 1) + 8 * v8) TSD_containsAnimationForKeyPath:a3])
@@ -40,7 +40,7 @@
       }
 
       while (v6 != v8);
-      result = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      result = [animations countByEnumeratingWithState:&v9 objects:v13 count:16];
       v6 = result;
       if (result)
       {
@@ -57,7 +57,7 @@
 - (uint64_t)p_getValue:()TSDCAAnimationAdditions animation:animationPercent:forKeyPath:atTime:animationCache:
 {
   v38 = *MEMORY[0x277D85DE8];
-  if ([a1 timingFunction])
+  if ([self timingFunction])
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     if (v15 > *&p_getValue_animation_animationPercent_forKeyPath_atTime_animationCache__s_lastTimingFunctionAssertTimeInterval + 1.0)
@@ -67,13 +67,13 @@
   }
 
   v32 = a6;
-  v16 = [objc_msgSend(a8 initialValues];
+  initialValues = [objc_msgSend(a8 initialValues];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v17 = [a1 animations];
-  result = [v17 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  animations = [self animations];
+  result = [animations countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (result)
   {
     v19 = result;
@@ -87,7 +87,7 @@
       {
         if (*v34 != v21)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(animations);
         }
 
         v24 = *(*(&v33 + 1) + 8 * v23);
@@ -98,7 +98,7 @@
           v27 = 0.0;
           if (v26 < 0.0 || v26 > 1.0)
           {
-            [a1 duration];
+            [self duration];
             if (v26 >= 0.0)
             {
               v27 = (v26 + -1.0) * v29;
@@ -121,7 +121,7 @@
       }
 
       while (v19 != v23);
-      result = [v17 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      result = [animations countByEnumeratingWithState:&v33 objects:v37 count:16];
       v19 = result;
     }
 
@@ -142,11 +142,11 @@
   {
     if (v20)
     {
-      result = [v20 TSD_valueAtTime:v16 initialValue:a2];
-      v16 = result;
+      result = [v20 TSD_valueAtTime:initialValues initialValue:a2];
+      initialValues = result;
     }
 
-    *v31 = v16;
+    *v31 = initialValues;
   }
 
   if (v32)
@@ -161,21 +161,21 @@
 - (uint64_t)TSD_valueForKeyPath:()TSDCAAnimationAdditions atTime:animationCache:
 {
   v5 = 0;
-  [a1 p_getValue:&v5 animation:0 animationPercent:0 forKeyPath:a3 atTime:a4 animationCache:?];
+  [self p_getValue:&v5 animation:0 animationPercent:0 forKeyPath:a3 atTime:a4 animationCache:?];
   return v5;
 }
 
 - (uint64_t)TSD_animationForKeyPath:()TSDCAAnimationAdditions atTime:
 {
   v4 = 0;
-  [a1 p_getValue:0 animation:&v4 animationPercent:0 forKeyPath:a3 atTime:0 animationCache:?];
+  [self p_getValue:0 animation:&v4 animationPercent:0 forKeyPath:a3 atTime:0 animationCache:?];
   return v4;
 }
 
 - (double)TSD_animationPercentByApplyingTimingFunctionForKeyPath:()TSDCAAnimationAdditions atTime:
 {
   v4 = 0.0;
-  [a1 p_getValue:0 animation:0 animationPercent:&v4 forKeyPath:a3 atTime:0 animationCache:?];
+  [self p_getValue:0 animation:0 animationPercent:&v4 forKeyPath:a3 atTime:0 animationCache:?];
   return v4;
 }
 

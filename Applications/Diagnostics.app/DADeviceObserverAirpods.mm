@@ -1,30 +1,30 @@
 @interface DADeviceObserverAirpods
-+ (id)primarySerialNumberForAirpodsDevice:(id)a3;
-- (BOOL)_isBeatsDevice:(id)a3;
-- (BOOL)_isBluetoothDeviceServicableAirpods:(id)a3;
++ (id)primarySerialNumberForAirpodsDevice:(id)device;
+- (BOOL)_isBeatsDevice:(id)device;
+- (BOOL)_isBluetoothDeviceServicableAirpods:(id)airpods;
 - (DADeviceObserverAirpods)init;
-- (id)_airpodsDeviceFromDevice:(id)a3;
-- (id)beginDiscoveringDevicesWithHandler:(id)a3;
-- (void)_addAirpodsDevice:(id)a3;
+- (id)_airpodsDeviceFromDevice:(id)device;
+- (id)beginDiscoveringDevicesWithHandler:(id)handler;
+- (void)_addAirpodsDevice:(id)device;
 - (void)_beginObserving;
-- (void)_bluetoothPairingStatusChanged:(id)a3;
+- (void)_bluetoothPairingStatusChanged:(id)changed;
 - (void)_btManagerAvailable;
 - (void)_endObserving;
 - (void)_ensureInitialDevicesFetched;
 - (void)_forceDiscoverAllDevices;
 - (void)_purgeUnpairedDevices;
 - (void)_updateHandlers;
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3;
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3;
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler;
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier;
 @end
 
 @implementation DADeviceObserverAirpods
 
-+ (id)primarySerialNumberForAirpodsDevice:(id)a3
++ (id)primarySerialNumberForAirpodsDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 accessoryInfo];
-  v5 = [v4 objectForKeyedSubscript:@"AACPVersionInfo"];
+  deviceCopy = device;
+  accessoryInfo = [deviceCopy accessoryInfo];
+  v5 = [accessoryInfo objectForKeyedSubscript:@"AACPVersionInfo"];
 
   v6 = [v5 objectAtIndexedSubscript:3];
   v7 = v6;
@@ -60,7 +60,7 @@
         v11 = DiagnosticLogHandleForCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          sub_100157BEC(v3, v11);
+          sub_100157BEC(deviceCopy, v11);
         }
       }
     }
@@ -99,8 +99,8 @@
     v2->_supportedDeviceAllowList = v11;
 
     v13 = +[NSBundle mainBundle];
-    v14 = [v13 bundleIdentifier];
-    v15 = [v14 isEqualToString:@"com.apple.Diagnostics"];
+    bundleIdentifier = [v13 bundleIdentifier];
+    v15 = [bundleIdentifier isEqualToString:@"com.apple.Diagnostics"];
 
     if (v15)
     {
@@ -135,25 +135,25 @@
   return v2;
 }
 
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = qword_100202D08;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100004088;
   v7[3] = &unk_1001BC5A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
-- (id)beginDiscoveringDevicesWithHandler:(id)a3
+- (id)beginDiscoveringDevicesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSUUID UUID];
-  v6 = [(DADeviceObserverAirpods *)self airpodsRegistrationQueue];
+  airpodsRegistrationQueue = [(DADeviceObserverAirpods *)self airpodsRegistrationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004254;
@@ -161,9 +161,9 @@
   block[4] = self;
   v7 = v5;
   v13 = v7;
-  v14 = v4;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v14 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(airpodsRegistrationQueue, block);
 
   v9 = v14;
   v10 = v7;
@@ -171,18 +171,18 @@
   return v7;
 }
 
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DADeviceObserverAirpods *)self airpodsRegistrationQueue];
+  identifierCopy = identifier;
+  airpodsRegistrationQueue = [(DADeviceObserverAirpods *)self airpodsRegistrationQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100004380;
   v7[3] = &unk_1001BC5F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(airpodsRegistrationQueue, v7);
 }
 
 - (void)_beginObserving
@@ -194,12 +194,12 @@
     [v3 addObserver:self selector:"_bluetoothPairingStatusChanged:" name:BluetoothPairedStatusChangedNotification object:0];
   }
 
-  v4 = [(DADeviceObserverAirpods *)self btManager];
-  if (!v4 || (v5 = v4, -[DADeviceObserverAirpods btManager](self, "btManager"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 available], v6, v5, (v7 & 1) == 0))
+  btManager = [(DADeviceObserverAirpods *)self btManager];
+  if (!btManager || (v5 = btManager, -[DADeviceObserverAirpods btManager](self, "btManager"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 available], v6, v5, (v7 & 1) == 0))
   {
-    v8 = [(DADeviceObserverAirpods *)self btManagerAvailableSemaphore];
+    btManagerAvailableSemaphore = [(DADeviceObserverAirpods *)self btManagerAvailableSemaphore];
     v9 = dispatch_time(0, 3000000000);
-    dispatch_semaphore_wait(v8, v9);
+    dispatch_semaphore_wait(btManagerAvailableSemaphore, v9);
   }
 
   [(DADeviceObserverAirpods *)self _ensureInitialDevicesFetched];
@@ -223,8 +223,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(DADeviceObserverAirpods *)self handlers];
-  v4 = [v3 copy];
+  handlers = [(DADeviceObserverAirpods *)self handlers];
+  v4 = [handlers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
@@ -242,13 +242,13 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(DADeviceObserverAirpods *)self handlers];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        handlers2 = [(DADeviceObserverAirpods *)self handlers];
+        v11 = [handlers2 objectForKeyedSubscript:v9];
 
         if (v11)
         {
-          v12 = [(DADeviceObserverAirpods *)self devices];
-          (v11)[2](v11, v12);
+          devices = [(DADeviceObserverAirpods *)self devices];
+          (v11)[2](v11, devices);
         }
 
         v8 = v8 + 1;
@@ -265,29 +265,29 @@
 - (void)_btManagerAvailable
 {
   [(DADeviceObserverAirpods *)self _ensureInitialDevicesFetched];
-  v3 = [(DADeviceObserverAirpods *)self btManagerAvailableSemaphore];
-  dispatch_semaphore_signal(v3);
+  btManagerAvailableSemaphore = [(DADeviceObserverAirpods *)self btManagerAvailableSemaphore];
+  dispatch_semaphore_signal(btManagerAvailableSemaphore);
 }
 
-- (BOOL)_isBluetoothDeviceServicableAirpods:(id)a3
+- (BOOL)_isBluetoothDeviceServicableAirpods:(id)airpods
 {
-  v4 = a3;
-  if ([v4 isAppleAudioDevice])
+  airpodsCopy = airpods;
+  if ([airpodsCopy isAppleAudioDevice])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(DADeviceObserverAirpods *)self _isBeatsDevice:v4];
+    v5 = [(DADeviceObserverAirpods *)self _isBeatsDevice:airpodsCopy];
   }
 
-  v6 = [v4 isTemporaryPaired];
+  isTemporaryPaired = [airpodsCopy isTemporaryPaired];
   if ([(DADeviceObserverAirpods *)self useSupportedDeviceAllowList])
   {
-    v7 = [(DADeviceObserverAirpods *)self supportedDeviceAllowList];
-    v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 productId]);
-    v9 = [v7 containsObject:v8];
+    supportedDeviceAllowList = [(DADeviceObserverAirpods *)self supportedDeviceAllowList];
+    v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [airpodsCopy productId]);
+    v9 = [supportedDeviceAllowList containsObject:v8];
   }
 
   else
@@ -306,40 +306,40 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138413314;
-    v14 = v4;
+    v14 = airpodsCopy;
     v15 = 1024;
-    v16 = v5 & (v6 ^ 1) & v9;
+    v16 = v5 & (isTemporaryPaired ^ 1) & v9;
     v17 = 1024;
     v18 = v5;
     v19 = 1024;
-    v20 = v6;
+    v20 = isTemporaryPaired;
     v21 = 1024;
     v22 = v9;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "BluetoothDevice (%@) is servicable: (%d) appleAudioDevice: (%d) tempPaired: (%d) allowed: (%d)", &v13, 0x24u);
   }
 
-  return v5 & (v6 ^ 1) & v9;
+  return v5 & (isTemporaryPaired ^ 1) & v9;
 }
 
-- (BOOL)_isBeatsDevice:(id)a3
+- (BOOL)_isBeatsDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 productId];
-  if (v4 == 8209)
+  deviceCopy = device;
+  productId = [deviceCopy productId];
+  if (productId == 8209)
   {
     v5 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Device (%@) is a AirPods-like Beats device that does not report as an Apple Audio Device", &v7, 0xCu);
     }
   }
 
-  return v4 == 8209;
+  return productId == 8209;
 }
 
-- (void)_bluetoothPairingStatusChanged:(id)a3
+- (void)_bluetoothPairingStatusChanged:(id)changed
 {
   v4 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -355,16 +355,16 @@
 
 - (void)_forceDiscoverAllDevices
 {
-  v3 = [(DADeviceObserverAirpods *)self devices];
-  objc_sync_enter(v3);
-  v4 = [(DADeviceObserverAirpods *)self btManager];
-  v5 = [v4 pairedDevices];
+  devices = [(DADeviceObserverAirpods *)self devices];
+  objc_sync_enter(devices);
+  btManager = [(DADeviceObserverAirpods *)self btManager];
+  pairedDevices = [btManager pairedDevices];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v5;
+  v6 = pairedDevices;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v7)
   {
@@ -401,15 +401,15 @@
     while (v7);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(devices);
 }
 
 - (void)_purgeUnpairedDevices
 {
   obj = [(DADeviceObserverAirpods *)self devices];
   objc_sync_enter(obj);
-  v3 = [(DADeviceObserverAirpods *)self devices];
-  v4 = [v3 copy];
+  devices = [(DADeviceObserverAirpods *)self devices];
+  v4 = [devices copy];
 
   v17 = 0u;
   v18 = 0u;
@@ -430,10 +430,10 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 airpodsDevice];
-        v11 = [v10 paired];
+        airpodsDevice = [v9 airpodsDevice];
+        paired = [airpodsDevice paired];
 
-        if ((v11 & 1) == 0)
+        if ((paired & 1) == 0)
         {
           v12 = DiagnosticLogHandleForCategory();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -443,8 +443,8 @@
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Removing Airpods device %@", buf, 0xCu);
           }
 
-          v13 = [(DADeviceObserverAirpods *)self devices];
-          [v13 removeObject:v9];
+          devices2 = [(DADeviceObserverAirpods *)self devices];
+          [devices2 removeObject:v9];
         }
       }
 
@@ -467,55 +467,55 @@
   }
 }
 
-- (void)_addAirpodsDevice:(id)a3
+- (void)_addAirpodsDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(DADeviceObserverAirpods *)self _airpodsDeviceFromDevice:v4];
+  deviceCopy = device;
+  v5 = [(DADeviceObserverAirpods *)self _airpodsDeviceFromDevice:deviceCopy];
   v6 = DiagnosticLogHandleForCategory();
-  v7 = v6;
+  devices2 = v6;
   if (v5)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Adding Bluetooth device: %@", &v10, 0xCu);
+      v11 = deviceCopy;
+      _os_log_impl(&_mh_execute_header, devices2, OS_LOG_TYPE_DEFAULT, "Adding Bluetooth device: %@", &v10, 0xCu);
     }
 
-    v8 = [(DADeviceObserverAirpods *)self devices];
-    v9 = [v8 containsObject:v5];
+    devices = [(DADeviceObserverAirpods *)self devices];
+    v9 = [devices containsObject:v5];
 
     if (v9)
     {
-      v7 = DiagnosticLogHandleForCategory();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      devices2 = DiagnosticLogHandleForCategory();
+      if (os_log_type_enabled(devices2, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412290;
-        v11 = v4;
-        _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Connected bluetooth device %@ is already in device list", &v10, 0xCu);
+        v11 = deviceCopy;
+        _os_log_impl(&_mh_execute_header, devices2, OS_LOG_TYPE_DEFAULT, "Connected bluetooth device %@ is already in device list", &v10, 0xCu);
       }
     }
 
     else
     {
-      v7 = [(DADeviceObserverAirpods *)self devices];
-      [v7 addObject:v5];
+      devices2 = [(DADeviceObserverAirpods *)self devices];
+      [devices2 addObject:v5];
     }
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_100157C8C(v4, v7);
+    sub_100157C8C(deviceCopy, devices2);
   }
 }
 
-- (id)_airpodsDeviceFromDevice:(id)a3
+- (id)_airpodsDeviceFromDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = NSClassFromString(@"DADeviceAirpods");
   if (v4)
   {
-    v5 = [[v4 alloc] initWithBluetoothDevice:v3];
+    v5 = [[v4 alloc] initWithBluetoothDevice:deviceCopy];
     if (v5)
     {
       v6 = NSClassFromString(@"DADeviceDecoratorWithUI");
@@ -543,7 +543,7 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v5 = [DADeviceObserverAirpods primarySerialNumberForAirpodsDevice:v3];
+  v5 = [DADeviceObserverAirpods primarySerialNumberForAirpodsDevice:deviceCopy];
   if (!v5)
   {
     goto LABEL_7;

@@ -1,23 +1,23 @@
 @interface EditShortcutTypeCell
-- (EditShortcutTypeCell)initWithShortcut:(id)a3 shortcutType:(id)a4;
+- (EditShortcutTypeCell)initWithShortcut:(id)shortcut shortcutType:(id)type;
 - (void)_updateFonts;
-- (void)setChecked:(BOOL)a3;
+- (void)setChecked:(BOOL)checked;
 @end
 
 @implementation EditShortcutTypeCell
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  v3 = a3;
+  checkedCopy = checked;
   if (sub_10000FA08(self) == 5)
   {
-    if (v3)
+    if (checkedCopy)
     {
       v5 = +[UIColor systemWhiteColor];
       v14[0] = v5;
-      v6 = [(EditShortcutTypeCell *)self theme];
-      v7 = [v6 keyColor];
-      v14[1] = v7;
+      theme = [(EditShortcutTypeCell *)self theme];
+      keyColor = [theme keyColor];
+      v14[1] = keyColor;
       v8 = [NSArray arrayWithObjects:v14 count:2];
       v9 = [UIImageSymbolConfiguration configurationWithPaletteColors:v8];
 
@@ -37,7 +37,7 @@
 
   else
   {
-    if (v3)
+    if (checkedCopy)
     {
       v11 = 3;
     }
@@ -71,10 +71,10 @@
   [(UILabel *)label setNumberOfLines:v4];
 }
 
-- (EditShortcutTypeCell)initWithShortcut:(id)a3 shortcutType:(id)a4
+- (EditShortcutTypeCell)initWithShortcut:(id)shortcut shortcutType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  shortcutCopy = shortcut;
+  typeCopy = type;
   v71.receiver = self;
   v71.super_class = EditShortcutTypeCell;
   v8 = [(EditShortcutTypeCell *)&v71 initWithStyle:0 reuseIdentifier:@"EditShortcutTypeCell"];
@@ -82,7 +82,7 @@
   if (v8)
   {
     [(EditShortcutTypeCell *)v8 setAccessibilityIdentifier:@"EditShortcutTypeCell"];
-    v10 = [(EditShortcutTypeCell *)v9 contentView];
+    contentView = [(EditShortcutTypeCell *)v9 contentView];
     v11 = [UIImageView alloc];
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
@@ -90,67 +90,67 @@
     v15 = [v11 initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v15 setAccessibilityIdentifier:@"EditShortcutTypeImage"];
-    [v10 addSubview:v15];
+    [contentView addSubview:v15];
     objc_storeStrong(&v9->_imageView, v15);
     v16 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v16 setAccessibilityIdentifier:@"EditShortcutTypeLabel"];
-    [v10 addSubview:v16];
+    [contentView addSubview:v16];
     v67 = v9;
     objc_storeStrong(&v9->_label, v16);
-    v63 = [v15 heightAnchor];
-    v62 = [v63 constraintEqualToConstant:30.0];
+    heightAnchor = [v15 heightAnchor];
+    v62 = [heightAnchor constraintEqualToConstant:30.0];
     v72[0] = v62;
-    v61 = [v15 widthAnchor];
-    v60 = [v61 constraintEqualToConstant:30.0];
+    widthAnchor = [v15 widthAnchor];
+    v60 = [widthAnchor constraintEqualToConstant:30.0];
     v72[1] = v60;
-    v59 = [v15 centerYAnchor];
-    v58 = [v10 centerYAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    centerYAnchor = [v15 centerYAnchor];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v57 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v72[2] = v57;
-    v56 = [v15 leadingAnchor];
-    v55 = [v10 leadingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55 constant:16.0];
+    leadingAnchor = [v15 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v54 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v72[3] = v54;
-    v53 = [v16 leadingAnchor];
+    leadingAnchor3 = [v16 leadingAnchor];
     v65 = v15;
-    v52 = [v15 trailingAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52 constant:10.0];
+    trailingAnchor = [v15 trailingAnchor];
+    v51 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
     v72[4] = v51;
-    v50 = [v16 trailingAnchor];
-    v49 = [v10 trailingAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49 constant:-10.0];
+    trailingAnchor2 = [v16 trailingAnchor];
+    trailingAnchor3 = [contentView trailingAnchor];
+    v48 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-10.0];
     v72[5] = v48;
-    v47 = [v16 centerYAnchor];
-    v17 = [v10 centerYAnchor];
-    v18 = [v47 constraintEqualToAnchor:v17];
+    centerYAnchor3 = [v16 centerYAnchor];
+    centerYAnchor4 = [contentView centerYAnchor];
+    v18 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v72[6] = v18;
-    v19 = [v16 topAnchor];
-    v20 = [v10 topAnchor];
-    [v19 constraintEqualToAnchor:v20 constant:15.0];
-    v21 = v68 = v6;
+    topAnchor = [v16 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    [topAnchor constraintEqualToAnchor:topAnchor2 constant:15.0];
+    v21 = v68 = shortcutCopy;
     v72[7] = v21;
     v64 = v16;
-    v22 = [v16 bottomAnchor];
-    v66 = v10;
-    v23 = [v10 bottomAnchor];
-    [v22 constraintEqualToAnchor:v23 constant:-15.0];
-    v25 = v24 = v7;
+    bottomAnchor = [v16 bottomAnchor];
+    v66 = contentView;
+    bottomAnchor2 = [contentView bottomAnchor];
+    [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-15.0];
+    v25 = v24 = typeCopy;
     v72[8] = v25;
     v26 = [NSArray arrayWithObjects:v72 count:9];
     [NSLayoutConstraint activateConstraints:v26];
 
-    v7 = v24;
-    v6 = v68;
+    typeCopy = v24;
+    shortcutCopy = v68;
 
     v27 = [MKMapItem alloc];
-    v28 = [v68 geoMapItem];
-    v29 = [v27 initWithGeoMapItem:v28 isPlaceHolderPlace:0];
+    geoMapItem = [v68 geoMapItem];
+    v29 = [v27 initWithGeoMapItem:geoMapItem isPlaceHolderPlace:0];
 
-    v30 = [v24 type];
+    type = [v24 type];
     v31 = v29;
     v32 = v31;
-    if (v30 <= 5 && ((1 << v30) & 0x2C) != 0)
+    if (type <= 5 && ((1 << type) & 0x2C) != 0)
     {
       v33 = MapsSuggestionsLocalizedMyTitleForShortcutType();
       v9 = v67;
@@ -160,11 +160,11 @@
 
     else
     {
-      v36 = [v31 _firstLocalizedCategoryName];
-      v37 = v36;
-      if (v36)
+      _firstLocalizedCategoryName = [v31 _firstLocalizedCategoryName];
+      v37 = _firstLocalizedCategoryName;
+      if (_firstLocalizedCategoryName)
       {
-        v33 = v36;
+        v33 = _firstLocalizedCategoryName;
       }
 
       else
@@ -182,20 +182,20 @@
     [v35 setText:v33];
     if (sub_10000FA08(v9) != 5)
     {
-      v39 = [v7 type];
+      type2 = [typeCopy type];
       v40 = v32;
       v41 = v40;
-      if (v39 <= 5 && ((1 << v39) & 0x2C) != 0)
+      if (type2 <= 5 && ((1 << type2) & 0x2C) != 0)
       {
-        v42 = MapsSuggestionsShortcutTypeStyleAttributes();
+        _styleAttributes = MapsSuggestionsShortcutTypeStyleAttributes();
       }
 
       else
       {
-        v42 = [v40 _styleAttributes];
+        _styleAttributes = [v40 _styleAttributes];
       }
 
-      v43 = v42;
+      v43 = _styleAttributes;
 
       v44 = +[MapsUIImageCache sharedCache];
       v69[0] = _NSConcreteStackBlock;

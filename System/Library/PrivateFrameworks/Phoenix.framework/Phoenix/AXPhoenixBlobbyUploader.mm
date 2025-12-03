@@ -1,30 +1,30 @@
 @interface AXPhoenixBlobbyUploader
-+ (id)_getStringforDate:(id)a3;
++ (id)_getStringforDate:(id)date;
 + (id)sharedUploader;
 - (AXPhoenixBlobbyUploader)init;
-- (id)_dateStringForHeaderForDate:(id)a3;
-- (id)_getAuthorizationForRequest:(id)a3 headers:(id)a4;
-- (id)_hmacSHA1WithKey:(id)a3 forData:(id)a4;
-- (id)_md5OfData:(id)a3;
-- (id)_prefixFromPackageFilePath:(id)a3;
-- (id)_urlRequestForFileAtPath:(id)a3 bucket:(id)a4 prefix:(id)a5 error:(id *)a6;
-- (void)_completeUploadRequestWithData:(id)a3 urlResponse:(id)a4 error:(id)a5 forPackagePath:(id)a6 withCompletion:(id)a7;
-- (void)_uploadPackage:(id)a3 bucket:(id)a4 prefix:(id)a5 withCompletion:(id)a6;
-- (void)_uploadPackagePath:(id)a3 bucket:(id)a4 prefix:(id)a5 withCompletion:(id)a6;
-- (void)uploadPackages:(id)a3 toBucket:(id)a4 withCompletion:(id)a5;
+- (id)_dateStringForHeaderForDate:(id)date;
+- (id)_getAuthorizationForRequest:(id)request headers:(id)headers;
+- (id)_hmacSHA1WithKey:(id)key forData:(id)data;
+- (id)_md5OfData:(id)data;
+- (id)_prefixFromPackageFilePath:(id)path;
+- (id)_urlRequestForFileAtPath:(id)path bucket:(id)bucket prefix:(id)prefix error:(id *)error;
+- (void)_completeUploadRequestWithData:(id)data urlResponse:(id)response error:(id)error forPackagePath:(id)path withCompletion:(id)completion;
+- (void)_uploadPackage:(id)package bucket:(id)bucket prefix:(id)prefix withCompletion:(id)completion;
+- (void)_uploadPackagePath:(id)path bucket:(id)bucket prefix:(id)prefix withCompletion:(id)completion;
+- (void)uploadPackages:(id)packages toBucket:(id)bucket withCompletion:(id)completion;
 @end
 
 @implementation AXPhoenixBlobbyUploader
 
-- (id)_hmacSHA1WithKey:(id)a3 forData:(id)a4
+- (id)_hmacSHA1WithKey:(id)key forData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, data);
   if (v16)
   {
     v8 = location[0];
@@ -55,18 +55,18 @@
   return v6;
 }
 
-- (id)_getAuthorizationForRequest:(id)a3 headers:(id)a4
+- (id)_getAuthorizationForRequest:(id)request headers:(id)headers
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
-  v26 = [MEMORY[0x277CBEB18] array];
-  v20 = [location[0] HTTPMethod];
-  [v26 addObject:?];
-  MEMORY[0x277D82BD8](v20);
+  objc_storeStrong(&v27, headers);
+  array = [MEMORY[0x277CBEB18] array];
+  hTTPMethod = [location[0] HTTPMethod];
+  [array addObject:?];
+  MEMORY[0x277D82BD8](hTTPMethod);
   v25 = [v27 objectForKey:@"Content-MD5"];
   if (v25)
   {
@@ -78,7 +78,7 @@
     v18 = &stru_287032B48;
   }
 
-  [v26 addObject:v18];
+  [array addObject:v18];
   v24 = [v27 objectForKey:@"Content-Type"];
   if (v24)
   {
@@ -90,7 +90,7 @@
     v17 = &stru_287032B48;
   }
 
-  [v26 addObject:v17];
+  [array addObject:v17];
   v23 = [v27 objectForKey:@"Date"];
   if (v23)
   {
@@ -102,16 +102,16 @@
     v16 = &stru_287032B48;
   }
 
-  [v26 addObject:v16];
-  v5 = v26;
+  [array addObject:v16];
+  v5 = array;
   v7 = [location[0] URL];
-  v6 = [v7 path];
+  path = [v7 path];
   [v5 addObject:?];
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](path);
   MEMORY[0x277D82BD8](v7);
-  v22 = [v26 componentsJoinedByString:@"\n"];
-  v8 = v29;
-  v11 = [(NSDictionary *)v29->_bucketInfo objectForKeyedSubscript:@"SecretKey"];
+  v22 = [array componentsJoinedByString:@"\n"];
+  v8 = selfCopy;
+  v11 = [(NSDictionary *)selfCopy->_bucketInfo objectForKeyedSubscript:@"SecretKey"];
   v10 = [v11 dataUsingEncoding:4];
   v9 = [v22 dataUsingEncoding:134217984];
   v21 = [(AXPhoenixBlobbyUploader *)v8 _hmacSHA1WithKey:v10 forData:?];
@@ -119,7 +119,7 @@
   MEMORY[0x277D82BD8](v10);
   MEMORY[0x277D82BD8](v11);
   v12 = MEMORY[0x277CCACA8];
-  v14 = [(NSDictionary *)v29->_bucketInfo objectForKeyedSubscript:@"AccessIdentifier"];
+  v14 = [(NSDictionary *)selfCopy->_bucketInfo objectForKeyedSubscript:@"AccessIdentifier"];
   v13 = [v21 base64EncodedStringWithOptions:0];
   v15 = [v12 stringWithFormat:@"AWS %@:%@", v14, v13];
   MEMORY[0x277D82BD8](v13);
@@ -129,19 +129,19 @@
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v25, 0);
-  objc_storeStrong(&v26, 0);
+  objc_storeStrong(&array, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(location, 0);
 
   return v15;
 }
 
-- (id)_dateStringForHeaderForDate:(id)a3
+- (id)_dateStringForHeaderForDate:(id)date
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   if (location[0])
   {
     v9 = objc_alloc_init(MEMORY[0x277CCA968]);
@@ -171,13 +171,13 @@
   return v3;
 }
 
-- (id)_md5OfData:(id)a3
+- (id)_md5OfData:(id)data
 {
   v10 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v5 = location[0];
   v3 = location[0];
   data = [v5 bytes];
@@ -189,12 +189,12 @@
   return v7;
 }
 
-+ (id)_getStringforDate:(id)a3
++ (id)_getStringforDate:(id)date
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v6 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v6 setDateFormat:@"yyyyMMdd"];
   v5 = [v6 stringFromDate:location[0]];
@@ -206,26 +206,26 @@
   return v4;
 }
 
-- (id)_urlRequestForFileAtPath:(id)a3 bucket:(id)a4 prefix:(id)a5 error:(id *)a6
+- (id)_urlRequestForFileAtPath:(id)path bucket:(id)bucket prefix:(id)prefix error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
+  objc_storeStrong(&v45, bucket);
   v44 = 0;
-  objc_storeStrong(&v44, a5);
-  v43 = a6;
-  v42 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:location[0] options:8 error:a6];
-  if (*a6)
+  objc_storeStrong(&v44, prefix);
+  errorCopy = error;
+  v42 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:location[0] options:8 error:error];
+  if (*error)
   {
     v41 = AXLogBackTap();
     v40 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_3_8_32_8_64_8_64(v51, "[AXPhoenixBlobbyUploader _urlRequestForFileAtPath:bucket:prefix:error:]", location[0], *v43);
+      __os_log_helper_16_2_3_8_32_8_64_8_64(v51, "[AXPhoenixBlobbyUploader _urlRequestForFileAtPath:bucket:prefix:error:]", location[0], *errorCopy);
       _os_log_error_impl(&dword_25E4AC000, v41, v40, "[PHOENIX] %s Unable to memory map %@ %@", v51, 0x20u);
     }
 
@@ -236,20 +236,20 @@
 
   else
   {
-    v38 = [location[0] lastPathComponent];
-    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@/%@", v45, v44, v38];
+    lastPathComponent = [location[0] lastPathComponent];
+    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@/%@", v45, v44, lastPathComponent];
     v20 = MEMORY[0x277CBEBC0];
     v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v37];
-    v24 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+    uRLPathAllowedCharacterSet = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
     v23 = [v25 stringByAddingPercentEncodingWithAllowedCharacters:?];
     v19 = MEMORY[0x277CBEBC0];
-    v22 = [(NSDictionary *)v47->_bucketInfo objectForKeyedSubscript:@"Endpoint"];
+    v22 = [(NSDictionary *)selfCopy->_bucketInfo objectForKeyedSubscript:@"Endpoint"];
     v21 = [v19 URLWithString:?];
     v36 = [v20 URLWithString:v23 relativeToURL:?];
     MEMORY[0x277D82BD8](v21);
     MEMORY[0x277D82BD8](v22);
     MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
+    MEMORY[0x277D82BD8](uRLPathAllowedCharacterSet);
     MEMORY[0x277D82BD8](v25);
     v35 = AXLogBackTap();
     v34 = OS_LOG_TYPE_DEFAULT;
@@ -268,19 +268,19 @@
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v42, "length")];
     [v32 setObject:? forKeyedSubscript:?];
     MEMORY[0x277D82BD8](v12);
-    v14 = [(AXPhoenixBlobbyUploader *)v47 _md5OfData:v42];
+    v14 = [(AXPhoenixBlobbyUploader *)selfCopy _md5OfData:v42];
     v13 = [v14 base64EncodedStringWithOptions:0];
     [v32 setObject:? forKeyedSubscript:?];
     MEMORY[0x277D82BD8](v13);
     MEMORY[0x277D82BD8](v14);
-    v15 = v47;
-    v17 = [MEMORY[0x277CBEAA8] date];
+    v15 = selfCopy;
+    date = [MEMORY[0x277CBEAA8] date];
     v16 = [(AXPhoenixBlobbyUploader *)v15 _dateStringForHeaderForDate:?];
     [v32 setObject:? forKeyedSubscript:?];
     MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](date);
     [v32 setObject:@"100-continue" forKeyedSubscript:@"Expect"];
-    v18 = [(AXPhoenixBlobbyUploader *)v47 _getAuthorizationForRequest:v33 headers:v32];
+    v18 = [(AXPhoenixBlobbyUploader *)selfCopy _getAuthorizationForRequest:v33 headers:v32];
     [v32 setObject:? forKeyedSubscript:?];
     MEMORY[0x277D82BD8](v18);
     [v33 setAllHTTPHeaderFields:v32];
@@ -293,11 +293,11 @@
     {
       v9 = oslog;
       v10 = v30;
-      v11 = [v33 allHTTPHeaderFields];
-      v29 = MEMORY[0x277D82BE0](v11);
+      allHTTPHeaderFields = [v33 allHTTPHeaderFields];
+      v29 = MEMORY[0x277D82BE0](allHTTPHeaderFields);
       __os_log_helper_16_2_2_8_32_8_64(v49, "[AXPhoenixBlobbyUploader _urlRequestForFileAtPath:bucket:prefix:error:]", v29);
       _os_log_impl(&dword_25E4AC000, v9, v10, "[PHOENIX] %s URL request: %@", v49, 0x16u);
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](allHTTPHeaderFields);
       objc_storeStrong(&v29, 0);
     }
 
@@ -308,7 +308,7 @@
     objc_storeStrong(&v33, 0);
     objc_storeStrong(&v36, 0);
     objc_storeStrong(&v37, 0);
-    objc_storeStrong(&v38, 0);
+    objc_storeStrong(&lastPathComponent, 0);
   }
 
   objc_storeStrong(&v42, 0);
@@ -321,21 +321,21 @@
   return v7;
 }
 
-- (void)_completeUploadRequestWithData:(id)a3 urlResponse:(id)a4 error:(id)a5 forPackagePath:(id)a6 withCompletion:(id)a7
+- (void)_completeUploadRequestWithData:(id)data urlResponse:(id)response error:(id)error forPackagePath:(id)path withCompletion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, response);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
+  objc_storeStrong(&v28, error);
   v27 = 0;
-  objc_storeStrong(&v27, a6);
+  objc_storeStrong(&v27, path);
   v26 = 0;
-  objc_storeStrong(&v26, a7);
+  objc_storeStrong(&v26, completion);
   if (v28)
   {
     v25 = AXLogBackTap();
@@ -364,11 +364,11 @@
         {
           v10 = v22;
           v11 = v21;
-          v12 = [v27 lastPathComponent];
-          v20 = MEMORY[0x277D82BE0](v12);
+          lastPathComponent = [v27 lastPathComponent];
+          v20 = MEMORY[0x277D82BE0](lastPathComponent);
           __os_log_helper_16_2_2_8_32_8_64(v32, "[AXPhoenixBlobbyUploader _completeUploadRequestWithData:urlResponse:error:forPackagePath:withCompletion:]", v20);
           _os_log_impl(&dword_25E4AC000, v10, v11, "[PHOENIX] %s Upload successful for %@.", v32, 0x16u);
-          MEMORY[0x277D82BD8](v12);
+          MEMORY[0x277D82BD8](lastPathComponent);
           objc_storeStrong(&v20, 0);
         }
 
@@ -407,22 +407,22 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_uploadPackage:(id)a3 bucket:(id)a4 prefix:(id)a5 withCompletion:(id)a6
+- (void)_uploadPackage:(id)package bucket:(id)bucket prefix:(id)prefix withCompletion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, package);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, bucket);
   v34 = 0;
-  objc_storeStrong(&v34, a5);
+  objc_storeStrong(&v34, prefix);
   v33 = 0;
-  objc_storeStrong(&v33, a6);
+  objc_storeStrong(&v33, completion);
   v32 = 0;
   v30 = 0;
-  v15 = [(AXPhoenixBlobbyUploader *)v37 _urlRequestForFileAtPath:location[0] bucket:v35 prefix:v34 error:&v30];
+  v15 = [(AXPhoenixBlobbyUploader *)selfCopy _urlRequestForFileAtPath:location[0] bucket:v35 prefix:v34 error:&v30];
   objc_storeStrong(&v32, v30);
   v31 = v15;
   if (v32)
@@ -434,7 +434,7 @@
   else
   {
     v28 = [MEMORY[0x277CBEBC0] fileURLWithPath:location[0]];
-    session = v37->_session;
+    session = selfCopy->_session;
     v9 = v31;
     v10 = v28;
     v19 = MEMORY[0x277D85DD0];
@@ -442,7 +442,7 @@
     v21 = 0;
     v22 = __71__AXPhoenixBlobbyUploader__uploadPackage_bucket_prefix_withCompletion___block_invoke;
     v23 = &unk_279A20800;
-    v24 = MEMORY[0x277D82BE0](v37);
+    v24 = MEMORY[0x277D82BE0](selfCopy);
     v25 = MEMORY[0x277D82BE0](location[0]);
     v26 = MEMORY[0x277D82BE0](v33);
     v27 = [(NSURLSession *)session uploadTaskWithRequest:v9 fromFile:v10 completionHandler:&v19];
@@ -452,11 +452,11 @@
     {
       log = oslog;
       v7 = type;
-      v8 = [location[0] lastPathComponent];
-      v16 = MEMORY[0x277D82BE0](v8);
+      lastPathComponent = [location[0] lastPathComponent];
+      v16 = MEMORY[0x277D82BE0](lastPathComponent);
       __os_log_helper_16_2_2_8_32_8_64(v38, "[AXPhoenixBlobbyUploader _uploadPackage:bucket:prefix:withCompletion:]", v16);
       _os_log_impl(&dword_25E4AC000, log, v7, "[PHOENIX] %s Uploading package: %@", v38, 0x16u);
-      MEMORY[0x277D82BD8](v8);
+      MEMORY[0x277D82BD8](lastPathComponent);
       objc_storeStrong(&v16, 0);
     }
 
@@ -494,19 +494,19 @@ void __71__AXPhoenixBlobbyUploader__uploadPackage_bucket_prefix_withCompletion__
   objc_storeStrong(location, 0);
 }
 
-- (void)_uploadPackagePath:(id)a3 bucket:(id)a4 prefix:(id)a5 withCompletion:(id)a6
+- (void)_uploadPackagePath:(id)path bucket:(id)bucket prefix:(id)prefix withCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, bucket);
   v24 = 0;
-  objc_storeStrong(&v24, a5);
+  objc_storeStrong(&v24, prefix);
   v23 = 0;
-  objc_storeStrong(&v23, a6);
+  objc_storeStrong(&v23, completion);
   v22 = AXLogBackTap();
   v21 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -516,8 +516,8 @@ void __71__AXPhoenixBlobbyUploader__uploadPackage_bucket_prefix_withCompletion__
   }
 
   objc_storeStrong(&v22, 0);
-  objc_initWeak(&v20, v27);
-  queue = v27->_queue;
+  objc_initWeak(&v20, selfCopy);
+  queue = selfCopy->_queue;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
@@ -641,47 +641,47 @@ void __75__AXPhoenixBlobbyUploader__uploadPackagePath_bucket_prefix_withCompleti
   *MEMORY[0x277D85DE8];
 }
 
-- (id)_prefixFromPackageFilePath:(id)a3
+- (id)_prefixFromPackageFilePath:(id)path
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [location[0] lastPathComponent];
-  v5 = [v6 componentsSeparatedByString:@"_"];
-  v4 = [v5 lastObject];
-  v7 = [v4 substringToIndex:10];
-  MEMORY[0x277D82BD8](v4);
+  objc_storeStrong(location, path);
+  lastPathComponent = [location[0] lastPathComponent];
+  v5 = [lastPathComponent componentsSeparatedByString:@"_"];
+  lastObject = [v5 lastObject];
+  v7 = [lastObject substringToIndex:10];
+  MEMORY[0x277D82BD8](lastObject);
   MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](lastPathComponent);
   objc_storeStrong(location, 0);
 
   return v7;
 }
 
-- (void)uploadPackages:(id)a3 toBucket:(id)a4 withCompletion:(id)a5
+- (void)uploadPackages:(id)packages toBucket:(id)bucket withCompletion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, packages);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, bucket);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, completion);
   v17[0] = 0;
   v17[1] = v17;
   v18 = 0x20000000;
   v19 = 32;
   v20 = 0;
-  queue = v24->_queue;
+  queue = selfCopy->_queue;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __66__AXPhoenixBlobbyUploader_uploadPackages_toBucket_withCompletion___block_invoke;
   v12 = &unk_279A208A0;
   v13 = MEMORY[0x277D82BE0](location[0]);
-  v14 = MEMORY[0x277D82BE0](v24);
+  v14 = MEMORY[0x277D82BE0](selfCopy);
   v15 = MEMORY[0x277D82BE0](v22);
   v16[1] = v17;
   v16[0] = MEMORY[0x277D82BE0](v21);
@@ -892,12 +892,12 @@ void __66__AXPhoenixBlobbyUploader_uploadPackages_toBucket_withCompletion___bloc
     v5 = *(v16 + 2);
     *(v16 + 2) = v4;
     MEMORY[0x277D82BD8](v5);
-    v13 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    [v13 setWaitsForConnectivity:1];
-    [v13 setAllowsCellularAccess:1];
-    [v13 setNetworkServiceType:6];
-    [v13 setTimeoutIntervalForRequest:kResponseTimeout];
-    v6 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v13];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [defaultSessionConfiguration setWaitsForConnectivity:1];
+    [defaultSessionConfiguration setAllowsCellularAccess:1];
+    [defaultSessionConfiguration setNetworkServiceType:6];
+    [defaultSessionConfiguration setTimeoutIntervalForRequest:kResponseTimeout];
+    v6 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
     v7 = *(v16 + 3);
     *(v16 + 3) = v6;
     MEMORY[0x277D82BD8](v7);
@@ -913,7 +913,7 @@ void __66__AXPhoenixBlobbyUploader_uploadPackages_toBucket_withCompletion___bloc
     }
 
     objc_storeStrong(&oslog, 0);
-    objc_storeStrong(&v13, 0);
+    objc_storeStrong(&defaultSessionConfiguration, 0);
   }
 
   v11 = MEMORY[0x277D82BE0](v16);

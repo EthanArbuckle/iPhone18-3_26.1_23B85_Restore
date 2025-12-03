@@ -1,8 +1,8 @@
 @interface _DASGroupSchedulingPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (_DASGroupSchedulingPolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASGroupSchedulingPolicy
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005817C;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B238 != -1)
   {
     dispatch_once(&qword_10020B238, block);
@@ -39,14 +39,14 @@
   return v3;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 groupName];
-  if (v4 && ([v3 requestsImmediateRuntime] & 1) == 0)
+  activityCopy = activity;
+  groupName = [activityCopy groupName];
+  if (groupName && ([activityCopy requestsImmediateRuntime] & 1) == 0)
   {
-    v6 = [v3 schedulingPriority];
-    v5 = v6 < _DASSchedulingPriorityUserInitiatedOvercommit;
+    schedulingPriority = [activityCopy schedulingPriority];
+    v5 = schedulingPriority < _DASSchedulingPriorityUserInitiatedOvercommit;
   }
 
   else
@@ -57,15 +57,15 @@
   return v5;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = +[_DASDaemon sharedInstance];
-  v6 = [v4 groupName];
+  groupName = [activityCopy groupName];
   if (_os_feature_enabled_impl())
   {
-    v7 = [v4 internalGroupNames];
-    v8 = [v7 count];
+    internalGroupNames = [activityCopy internalGroupNames];
+    v8 = [internalGroupNames count];
 
     if (v8)
     {
@@ -73,8 +73,8 @@
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v9 = [v4 internalGroupNames];
-      v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      internalGroupNames2 = [activityCopy internalGroupNames];
+      v10 = [internalGroupNames2 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v10)
       {
         v11 = v10;
@@ -85,11 +85,11 @@
           {
             if (*v26 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(internalGroupNames2);
             }
 
             v14 = *(*(&v25 + 1) + 8 * i);
-            v15 = [v5 additionalCapacityForActivity:v4 inGroupWithName:v14 shouldTryToSuspend:1];
+            v15 = [v5 additionalCapacityForActivity:activityCopy inGroupWithName:v14 shouldTryToSuspend:1];
             if (v15 < 1)
             {
               v18 = v15;
@@ -104,7 +104,7 @@
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v11 = [internalGroupNames2 countByEnumeratingWithState:&v25 objects:v29 count:16];
           if (v11)
           {
             continue;
@@ -118,7 +118,7 @@
     goto LABEL_13;
   }
 
-  v16 = [v5 additionalCapacityForActivity:v4 inGroupWithName:v6 shouldTryToSuspend:1];
+  v16 = [v5 additionalCapacityForActivity:activityCopy inGroupWithName:groupName shouldTryToSuspend:1];
   if (v16 >= 1)
   {
 LABEL_13:
@@ -128,7 +128,7 @@ LABEL_13:
 
   v21 = v16;
   v22 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Activity Group Policy"];
-  v23 = [NSPredicate predicateWithFormat:@"%@.currentAvailableLimit == %ld", v6, v21];
+  v23 = [NSPredicate predicateWithFormat:@"%@.currentAvailableLimit == %ld", groupName, v21];
   [(_DASPolicyResponseRationale *)v22 addRationaleWithCondition:v23];
 
   [(_DASPolicyResponseRationale *)v22 setResponseOptions:[(_DASPolicyResponseRationale *)v22 responseOptions]| 1];

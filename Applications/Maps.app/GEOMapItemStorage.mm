@@ -1,15 +1,15 @@
 @interface GEOMapItemStorage
-- (id)searchResultForFidelity:(unint64_t)a3 refinedHandler:(id)a4;
+- (id)searchResultForFidelity:(unint64_t)fidelity refinedHandler:(id)handler;
 @end
 
 @implementation GEOMapItemStorage
 
-- (id)searchResultForFidelity:(unint64_t)a3 refinedHandler:(id)a4
+- (id)searchResultForFidelity:(unint64_t)fidelity refinedHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(GEOMapItemStorage *)self data];
-  v8 = [GEOMapItemStorage mapItemStorageForSerializedMapItemStorage:v7];
+  fidelityCopy = fidelity;
+  handlerCopy = handler;
+  data = [(GEOMapItemStorage *)self data];
+  v8 = [GEOMapItemStorage mapItemStorageForSerializedMapItemStorage:data];
 
   if (!v8)
   {
@@ -26,7 +26,7 @@ LABEL_8:
   }
 
   v11 = v10;
-  if ((v4 & 0x10) == 0)
+  if ((fidelityCopy & 0x10) == 0)
   {
     [(SearchResultRepr *)v10 setHasIncompleteMetadata:1];
     v12 = +[MKMapService sharedService];
@@ -37,7 +37,7 @@ LABEL_8:
     v16[2] = sub_100F1BA74;
     v16[3] = &unk_10165D020;
     v17 = v11;
-    v18 = v6;
+    v18 = handlerCopy;
     v14 = v11;
     [v13 submitWithRefinedHandler:v16 networkActivity:0];
 

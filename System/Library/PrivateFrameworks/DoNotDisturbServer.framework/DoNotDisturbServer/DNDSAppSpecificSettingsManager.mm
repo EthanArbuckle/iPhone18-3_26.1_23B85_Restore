@@ -1,98 +1,98 @@
 @interface DNDSAppSpecificSettingsManager
-- (BOOL)removeAppSpecificSettingsForApplicationIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)removeModeSpecificSettingsForModeIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)setAppSpecificSettings:(id)a3 identifier:(id)a4 type:(Class)a5 applicationIdentifier:(id)a6 modeIdentifier:(id)a7 error:(id *)a8;
-- (BOOL)setModeSpecificSettings:(id)a3 identifier:(id)a4 type:(Class)a5 modeIdentifier:(id)a6 error:(id *)a7;
+- (BOOL)removeAppSpecificSettingsForApplicationIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeModeSpecificSettingsForModeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setAppSpecificSettings:(id)settings identifier:(id)identifier type:(Class)type applicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (BOOL)setModeSpecificSettings:(id)settings identifier:(id)identifier type:(Class)type modeIdentifier:(id)modeIdentifier error:(id *)error;
 - (DNDSAppSpecificSettingsManager)init;
-- (DNDSAppSpecificSettingsManager)initWithIDSSyncEngine:(id)a3 backingStoreURL:(id)a4;
+- (DNDSAppSpecificSettingsManager)initWithIDSSyncEngine:(id)engine backingStoreURL:(id)l;
 - (DNDSAppSpecificSettingsManagerDelegate)delegate;
-- (id)_allAppSpecificSettingsOfType:(Class)a3;
-- (id)_allModeSpecificSettingsOfType:(Class)a3;
-- (id)_initWithBackingStoreURL:(id)a3;
-- (id)_perModeSettingsMOsOfType:(Class)a3 modeIdentifier:(id)a4 processBlock:(id)a5;
-- (id)appActionWithIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6;
-- (id)appConfigurationPredicateForActionIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6;
-- (id)appConfigurationPredicateForApplicationIdentifier:(id)a3 modeIdentifier:(id)a4 error:(id *)a5;
-- (id)appConfigurationTargetContentIdentifierPrefixForActionIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6;
-- (id)appConfigurationTargetContentIdentifierPrefixForApplicationIdentifier:(id)a3 modeIdentifier:(id)a4 error:(id *)a5;
-- (id)appSpecificSettingsDictinariesForModeIdentifier:(id)a3;
-- (id)appSpecificSettingsOfType:(Class)a3 identifier:(id)a4 modeIdentifier:(id)a5 applicationIdentifier:(id)a6 error:(id *)a7;
-- (id)appSpecificSettingsOfType:(Class)a3 modeIdentifier:(id)a4 applicationIdentifier:(id)a5 error:(id *)a6;
-- (id)appSpecificSettingsOfType:(Class)a3 modeIdentifier:(id)a4 error:(id *)a5;
-- (id)modeSpecificSettingsOfType:(Class)a3 identifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6;
-- (id)modeSpecificSettingsOfType:(Class)a3 modeIdentifier:(id)a4 error:(id *)a5;
-- (id)recordIDsForIDSSyncEngine:(id)a3;
-- (id)removeModeSpecificSettingsForModeIdentifiersNotInModeIdentifiers:(id)a3 error:(id *)a4;
-- (id)systemActionWithIdentifier:(id)a3 modeIdentifier:(id)a4 error:(id *)a5;
-- (void)_allPerModeSettingsMOsOfType:(Class)a3 processBlock:(id)a4;
-- (void)_modesToSave:(id)a3 modesToDelete:(id)a4;
-- (void)idsSyncEngine:(id)a3 didFetchRecord:(id)a4;
-- (void)idsSyncEngine:(id)a3 prepareRecordToSave:(id)a4;
-- (void)idsSyncEngine:(id)a3 recordWithIDWasDeleted:(id)a4;
-- (void)purgeRecordsForIDSSyncEngine:(id)a3;
+- (id)_allAppSpecificSettingsOfType:(Class)type;
+- (id)_allModeSpecificSettingsOfType:(Class)type;
+- (id)_initWithBackingStoreURL:(id)l;
+- (id)_perModeSettingsMOsOfType:(Class)type modeIdentifier:(id)identifier processBlock:(id)block;
+- (id)appActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (id)appConfigurationPredicateForActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (id)appConfigurationPredicateForApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (id)appConfigurationTargetContentIdentifierPrefixForActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (id)appConfigurationTargetContentIdentifierPrefixForApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (id)appSpecificSettingsDictinariesForModeIdentifier:(id)identifier;
+- (id)appSpecificSettingsOfType:(Class)type identifier:(id)identifier modeIdentifier:(id)modeIdentifier applicationIdentifier:(id)applicationIdentifier error:(id *)error;
+- (id)appSpecificSettingsOfType:(Class)type modeIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier error:(id *)error;
+- (id)appSpecificSettingsOfType:(Class)type modeIdentifier:(id)identifier error:(id *)error;
+- (id)modeSpecificSettingsOfType:(Class)type identifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (id)modeSpecificSettingsOfType:(Class)type modeIdentifier:(id)identifier error:(id *)error;
+- (id)recordIDsForIDSSyncEngine:(id)engine;
+- (id)removeModeSpecificSettingsForModeIdentifiersNotInModeIdentifiers:(id)identifiers error:(id *)error;
+- (id)systemActionWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (void)_allPerModeSettingsMOsOfType:(Class)type processBlock:(id)block;
+- (void)_modesToSave:(id)save modesToDelete:(id)delete;
+- (void)idsSyncEngine:(id)engine didFetchRecord:(id)record;
+- (void)idsSyncEngine:(id)engine prepareRecordToSave:(id)save;
+- (void)idsSyncEngine:(id)engine recordWithIDWasDeleted:(id)deleted;
+- (void)purgeRecordsForIDSSyncEngine:(id)engine;
 @end
 
 @implementation DNDSAppSpecificSettingsManager
 
-- (id)appActionWithIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6
+- (id)appActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsOfType:objc_opt_class() identifier:v12 modeIdentifier:v10 applicationIdentifier:v11 error:a6];
+  modeIdentifierCopy = modeIdentifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  identifierCopy = identifier;
+  v13 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsOfType:objc_opt_class() identifier:identifierCopy modeIdentifier:modeIdentifierCopy applicationIdentifier:applicationIdentifierCopy error:error];
 
   return v13;
 }
 
-- (id)appConfigurationTargetContentIdentifierPrefixForApplicationIdentifier:(id)a3 modeIdentifier:(id)a4 error:(id *)a5
+- (id)appConfigurationTargetContentIdentifierPrefixForApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsOfType:objc_opt_class() modeIdentifier:v8 applicationIdentifier:v9 error:a5];
+  modeIdentifierCopy = modeIdentifier;
+  identifierCopy = identifier;
+  v10 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsOfType:objc_opt_class() modeIdentifier:modeIdentifierCopy applicationIdentifier:identifierCopy error:error];
 
-  v11 = [v10 anyObject];
+  anyObject = [v10 anyObject];
 
-  return v11;
+  return anyObject;
 }
 
-- (id)appConfigurationTargetContentIdentifierPrefixForActionIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6
+- (id)appConfigurationTargetContentIdentifierPrefixForActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsOfType:objc_opt_class() identifier:v12 modeIdentifier:v10 applicationIdentifier:v11 error:a6];
+  modeIdentifierCopy = modeIdentifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  identifierCopy = identifier;
+  v13 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsOfType:objc_opt_class() identifier:identifierCopy modeIdentifier:modeIdentifierCopy applicationIdentifier:applicationIdentifierCopy error:error];
 
   return v13;
 }
 
-- (id)systemActionWithIdentifier:(id)a3 modeIdentifier:(id)a4 error:(id *)a5
+- (id)systemActionWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(DNDSAppSpecificSettingsManager *)self modeSpecificSettingsOfType:objc_opt_class() identifier:v9 modeIdentifier:v8 error:a5];
+  modeIdentifierCopy = modeIdentifier;
+  identifierCopy = identifier;
+  v10 = [(DNDSAppSpecificSettingsManager *)self modeSpecificSettingsOfType:objc_opt_class() identifier:identifierCopy modeIdentifier:modeIdentifierCopy error:error];
 
   return v10;
 }
 
-- (id)appConfigurationPredicateForActionIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6
+- (id)appConfigurationPredicateForActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsOfType:objc_opt_class() identifier:v12 modeIdentifier:v10 applicationIdentifier:v11 error:a6];
+  modeIdentifierCopy = modeIdentifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  identifierCopy = identifier;
+  v13 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsOfType:objc_opt_class() identifier:identifierCopy modeIdentifier:modeIdentifierCopy applicationIdentifier:applicationIdentifierCopy error:error];
 
   return v13;
 }
 
-- (id)appConfigurationPredicateForApplicationIdentifier:(id)a3 modeIdentifier:(id)a4 error:(id *)a5
+- (id)appConfigurationPredicateForApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsOfType:objc_opt_class() modeIdentifier:v8 applicationIdentifier:v9 error:a5];
+  modeIdentifierCopy = modeIdentifier;
+  identifierCopy = identifier;
+  v10 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsOfType:objc_opt_class() modeIdentifier:modeIdentifierCopy applicationIdentifier:identifierCopy error:error];
 
-  v11 = [v10 anyObject];
+  anyObject = [v10 anyObject];
 
-  return v11;
+  return anyObject;
 }
 
 - (DNDSAppSpecificSettingsManager)init
@@ -110,19 +110,19 @@
   return v2;
 }
 
-- (DNDSAppSpecificSettingsManager)initWithIDSSyncEngine:(id)a3 backingStoreURL:(id)a4
+- (DNDSAppSpecificSettingsManager)initWithIDSSyncEngine:(id)engine backingStoreURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  engineCopy = engine;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = DNDSAppSpecificSettingsManager;
   v9 = [(DNDSAppSpecificSettingsManager *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_idsSyncEngine, a3);
+    objc_storeStrong(&v9->_idsSyncEngine, engine);
     [(DNDSIDSSyncEngine *)v10->_idsSyncEngine setDataSource:v10 forZone:@"DNDSAppSpecificSettings"];
-    v11 = [[DNDSCoreDataBackingStore alloc] _initWithURL:v8];
+    v11 = [[DNDSCoreDataBackingStore alloc] _initWithURL:lCopy];
     store = v10->_store;
     v10->_store = v11;
   }
@@ -130,13 +130,13 @@
   return v10;
 }
 
-- (id)_initWithBackingStoreURL:(id)a3
+- (id)_initWithBackingStoreURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(DNDSAppSpecificSettingsManager *)self init];
   if (v5)
   {
-    v6 = [[DNDSCoreDataBackingStore alloc] _initWithURL:v4];
+    v6 = [[DNDSCoreDataBackingStore alloc] _initWithURL:lCopy];
     store = v5->_store;
     v5->_store = v6;
   }
@@ -144,9 +144,9 @@
   return v5;
 }
 
-- (id)modeSpecificSettingsOfType:(Class)a3 modeIdentifier:(id)a4 error:(id *)a5
+- (id)modeSpecificSettingsOfType:(Class)type modeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -158,17 +158,17 @@
   v14[2] = __82__DNDSAppSpecificSettingsManager_modeSpecificSettingsOfType_modeIdentifier_error___block_invoke;
   v14[3] = &unk_278F8B860;
   v14[4] = &v15;
-  v14[5] = a3;
-  v9 = [(DNDSAppSpecificSettingsManager *)self _perModeSettingsMOsOfType:a3 modeIdentifier:v8 processBlock:v14];
+  v14[5] = type;
+  v9 = [(DNDSAppSpecificSettingsManager *)self _perModeSettingsMOsOfType:type modeIdentifier:identifierCopy processBlock:v14];
   if (v9)
   {
     v10 = v16[5];
     v16[5] = 0;
 
-    if (a5)
+    if (error)
     {
       v11 = v9;
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -221,28 +221,28 @@ void __82__DNDSAppSpecificSettingsManager_modeSpecificSettingsOfType_modeIdentif
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appSpecificSettingsOfType:(Class)a3 modeIdentifier:(id)a4 error:(id *)a5
+- (id)appSpecificSettingsOfType:(Class)type modeIdentifier:(id)identifier error:(id *)error
 {
   v8 = MEMORY[0x277CBEB38];
-  v9 = a4;
-  v10 = [v8 dictionary];
+  identifierCopy = identifier;
+  dictionary = [v8 dictionary];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __81__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_modeIdentifier_error___block_invoke;
   v16[3] = &unk_278F8B888;
-  v11 = v10;
+  v11 = dictionary;
   v17 = v11;
-  v18 = a3;
-  v12 = [(DNDSAppSpecificSettingsManager *)self _perModeSettingsMOsOfType:a3 modeIdentifier:v9 processBlock:v16];
+  typeCopy = type;
+  v12 = [(DNDSAppSpecificSettingsManager *)self _perModeSettingsMOsOfType:type modeIdentifier:identifierCopy processBlock:v16];
 
   if (v12)
   {
 
-    if (a5)
+    if (error)
     {
       v13 = v12;
       v11 = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -327,11 +327,11 @@ void __81__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_modeIdentifi
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_perModeSettingsMOsOfType:(Class)a3 modeIdentifier:(id)a4 processBlock:(id)a5
+- (id)_perModeSettingsMOsOfType:(Class)type modeIdentifier:(id)identifier processBlock:(id)block
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  blockCopy = block;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -339,20 +339,20 @@ void __81__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_modeIdentifi
   v45 = __Block_byref_object_dispose__13;
   v46 = 0;
   v10 = +[DNDSKeybag sharedInstance];
-  v11 = [v10 hasUnlockedSinceBoot];
+  hasUnlockedSinceBoot = [v10 hasUnlockedSinceBoot];
 
-  if (v11)
+  if (hasUnlockedSinceBoot)
   {
-    v12 = [(DNDSAppSpecificSettingsManager *)self store];
-    v13 = [v12 newManagedObjectContext];
+    store = [(DNDSAppSpecificSettingsManager *)self store];
+    newManagedObjectContext = [store newManagedObjectContext];
 
-    v14 = [(objc_class *)a3 appSpecificSettingsEntity];
-    v15 = [v13 persistentStoreCoordinator];
-    v16 = [v15 managedObjectModel];
-    v17 = [v16 entitiesByName];
-    v18 = [v17 objectForKeyedSubscript:v14];
+    appSpecificSettingsEntity = [(objc_class *)type appSpecificSettingsEntity];
+    persistentStoreCoordinator = [newManagedObjectContext persistentStoreCoordinator];
+    managedObjectModel = [persistentStoreCoordinator managedObjectModel];
+    entitiesByName = [managedObjectModel entitiesByName];
+    v18 = [entitiesByName objectForKeyedSubscript:appSpecificSettingsEntity];
 
-    if (v8)
+    if (identifierCopy)
     {
       if (v18)
       {
@@ -360,11 +360,11 @@ void __81__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_modeIdentifi
         v34[1] = 3221225472;
         v34[2] = __88__DNDSAppSpecificSettingsManager__perModeSettingsMOsOfType_modeIdentifier_processBlock___block_invoke;
         v34[3] = &unk_278F8B8B0;
-        v35 = v13;
-        v36 = v8;
+        v35 = newManagedObjectContext;
+        v36 = identifierCopy;
         v37 = v18;
         v39 = &v41;
-        v38 = v9;
+        v38 = blockCopy;
         [v35 performBlockAndWait:v34];
 
         v19 = v35;
@@ -471,15 +471,15 @@ void __88__DNDSAppSpecificSettingsManager__perModeSettingsMOsOfType_modeIdentifi
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appSpecificSettingsOfType:(Class)a3 modeIdentifier:(id)a4 applicationIdentifier:(id)a5 error:(id *)a6
+- (id)appSpecificSettingsOfType:(Class)type modeIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier error:(id *)error
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
   v12 = +[DNDSKeybag sharedInstance];
-  v13 = [v12 hasUnlockedSinceBoot];
+  hasUnlockedSinceBoot = [v12 hasUnlockedSinceBoot];
 
-  if (v13)
+  if (hasUnlockedSinceBoot)
   {
     *buf = 0;
     v43 = buf;
@@ -493,8 +493,8 @@ void __88__DNDSAppSpecificSettingsManager__perModeSettingsMOsOfType_modeIdentifi
     v39 = __Block_byref_object_copy__13;
     v40 = __Block_byref_object_dispose__13;
     v41 = 0;
-    v14 = [v11 bundleID];
-    v15 = v14 == 0;
+    bundleID = [applicationIdentifierCopy bundleID];
+    v15 = bundleID == 0;
 
     if (v15)
     {
@@ -507,22 +507,22 @@ void __88__DNDSAppSpecificSettingsManager__perModeSettingsMOsOfType_modeIdentifi
 
     else
     {
-      if (v10)
+      if (identifierCopy)
       {
-        v16 = [(DNDSAppSpecificSettingsManager *)self store];
-        v17 = [v16 newManagedObjectContext];
+        store = [(DNDSAppSpecificSettingsManager *)self store];
+        newManagedObjectContext = [store newManagedObjectContext];
 
         v29[0] = MEMORY[0x277D85DD0];
         v29[1] = 3221225472;
         v29[2] = __103__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_modeIdentifier_applicationIdentifier_error___block_invoke;
         v29[3] = &unk_278F8B8D8;
-        v18 = v17;
+        v18 = newManagedObjectContext;
         v30 = v18;
-        v31 = v11;
-        v32 = v10;
+        v31 = applicationIdentifierCopy;
+        v32 = identifierCopy;
         v33 = &v36;
         v34 = buf;
-        v35 = a3;
+        typeCopy = type;
         [v18 performBlockAndWait:v29];
 
         v19 = v30;
@@ -540,9 +540,9 @@ void __88__DNDSAppSpecificSettingsManager__perModeSettingsMOsOfType_modeIdentifi
     v37[5] = v24;
 LABEL_12:
 
-    if (a6)
+    if (error)
     {
-      *a6 = v37[5];
+      *error = v37[5];
       if (v37[5])
       {
         v26 = *(v43 + 5);
@@ -550,7 +550,7 @@ LABEL_12:
       }
     }
 
-    a6 = *(v43 + 5);
+    error = *(v43 + 5);
     _Block_object_dispose(&v36, 8);
 
     _Block_object_dispose(buf, 8);
@@ -564,22 +564,22 @@ LABEL_12:
     _os_log_impl(&dword_24912E000, v20, OS_LOG_TYPE_DEFAULT, "Attempt to get app specific settings before first unlock.", buf, 2u);
   }
 
-  if (a6)
+  if (error)
   {
     v21 = MEMORY[0x277CCA9B8];
     v52 = *MEMORY[0x277CCA450];
     v53[0] = @"Attempt to get app specific settings before first unlock.";
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:&v52 count:1];
-    *a6 = [v21 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v22];
+    *error = [v21 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v22];
 
-    a6 = 0;
+    error = 0;
   }
 
 LABEL_16:
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return a6;
+  return error;
 }
 
 void __103__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_modeIdentifier_applicationIdentifier_error___block_invoke(uint64_t a1)
@@ -690,15 +690,15 @@ void __103__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_modeIdentif
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)modeSpecificSettingsOfType:(Class)a3 identifier:(id)a4 modeIdentifier:(id)a5 error:(id *)a6
+- (id)modeSpecificSettingsOfType:(Class)type identifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
   v12 = +[DNDSKeybag sharedInstance];
-  v13 = [v12 hasUnlockedSinceBoot];
+  hasUnlockedSinceBoot = [v12 hasUnlockedSinceBoot];
 
-  if (v13)
+  if (hasUnlockedSinceBoot)
   {
     *buf = 0;
     v39 = buf;
@@ -712,22 +712,22 @@ void __103__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_modeIdentif
     v35 = __Block_byref_object_copy__13;
     v36 = __Block_byref_object_dispose__13;
     v37 = 0;
-    if (v11)
+    if (modeIdentifierCopy)
     {
-      v14 = [(DNDSAppSpecificSettingsManager *)self store];
-      v15 = [v14 newManagedObjectContext];
+      store = [(DNDSAppSpecificSettingsManager *)self store];
+      newManagedObjectContext = [store newManagedObjectContext];
 
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __93__DNDSAppSpecificSettingsManager_modeSpecificSettingsOfType_identifier_modeIdentifier_error___block_invoke;
       v25[3] = &unk_278F8B8D8;
-      v16 = v15;
+      v16 = newManagedObjectContext;
       v26 = v16;
-      v27 = v11;
-      v28 = v10;
+      v27 = modeIdentifierCopy;
+      v28 = identifierCopy;
       v29 = &v32;
       v30 = buf;
-      v31 = a3;
+      typeCopy = type;
       [v16 performBlockAndWait:v25];
 
       v17 = v26;
@@ -744,12 +744,12 @@ void __103__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_modeIdentif
       v33[5] = v22;
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = v33[5];
+      *error = v33[5];
     }
 
-    a6 = *(v39 + 5);
+    error = *(v39 + 5);
     _Block_object_dispose(&v32, 8);
 
     _Block_object_dispose(buf, 8);
@@ -764,21 +764,21 @@ void __103__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_modeIdentif
       _os_log_impl(&dword_24912E000, v18, OS_LOG_TYPE_DEFAULT, "Attempt to get mode specific settings before first unlock.", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v19 = MEMORY[0x277CCA9B8];
       v46 = *MEMORY[0x277CCA450];
       v47[0] = @"Attempt to mode app specific settings before first unlock.";
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:&v46 count:1];
-      *a6 = [v19 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v20];
+      *error = [v19 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v20];
 
-      a6 = 0;
+      error = 0;
     }
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return a6;
+  return error;
 }
 
 void __93__DNDSAppSpecificSettingsManager_modeSpecificSettingsOfType_identifier_modeIdentifier_error___block_invoke(uint64_t a1)
@@ -869,16 +869,16 @@ LABEL_16:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appSpecificSettingsOfType:(Class)a3 identifier:(id)a4 modeIdentifier:(id)a5 applicationIdentifier:(id)a6 error:(id *)a7
+- (id)appSpecificSettingsOfType:(Class)type identifier:(id)identifier modeIdentifier:(id)modeIdentifier applicationIdentifier:(id)applicationIdentifier error:(id *)error
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  applicationIdentifierCopy = applicationIdentifier;
   v15 = +[DNDSKeybag sharedInstance];
-  v16 = [v15 hasUnlockedSinceBoot];
+  hasUnlockedSinceBoot = [v15 hasUnlockedSinceBoot];
 
-  if (v16)
+  if (hasUnlockedSinceBoot)
   {
     *buf = 0;
     v46 = buf;
@@ -892,8 +892,8 @@ LABEL_16:
     v42 = __Block_byref_object_copy__13;
     v43 = __Block_byref_object_dispose__13;
     v44 = 0;
-    v17 = [v14 bundleID];
-    v18 = v17 == 0;
+    bundleID = [applicationIdentifierCopy bundleID];
+    v18 = bundleID == 0;
 
     if (v18)
     {
@@ -906,34 +906,34 @@ LABEL_16:
 
     else
     {
-      if (v13)
+      if (modeIdentifierCopy)
       {
-        v19 = [(DNDSAppSpecificSettingsManager *)self store];
-        v20 = [v19 newManagedObjectContext];
+        store = [(DNDSAppSpecificSettingsManager *)self store];
+        newManagedObjectContext = [store newManagedObjectContext];
 
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __114__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_identifier_modeIdentifier_applicationIdentifier_error___block_invoke;
         v31[3] = &unk_278F8B900;
-        v21 = v20;
+        v21 = newManagedObjectContext;
         v32 = v21;
-        v33 = v14;
-        v34 = v13;
-        v35 = v12;
+        v33 = applicationIdentifierCopy;
+        v34 = modeIdentifierCopy;
+        v35 = identifierCopy;
         v36 = &v39;
         v37 = buf;
-        v38 = a3;
+        typeCopy = type;
         [v21 performBlockAndWait:v31];
 
         v22 = v32;
 LABEL_12:
 
-        if (a7)
+        if (error)
         {
-          *a7 = v40[5];
+          *error = v40[5];
         }
 
-        a7 = *(v46 + 5);
+        error = *(v46 + 5);
         _Block_object_dispose(&v39, 8);
 
         _Block_object_dispose(buf, 8);
@@ -959,22 +959,22 @@ LABEL_12:
     _os_log_impl(&dword_24912E000, v23, OS_LOG_TYPE_DEFAULT, "Attempt to get app specific settings before first unlock.", buf, 2u);
   }
 
-  if (a7)
+  if (error)
   {
     v24 = MEMORY[0x277CCA9B8];
     v55 = *MEMORY[0x277CCA450];
     v56[0] = @"Attempt to get app specific settings before first unlock.";
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:&v55 count:1];
-    *a7 = [v24 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v25];
+    *error = [v24 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v25];
 
-    a7 = 0;
+    error = 0;
   }
 
 LABEL_15:
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return a7;
+  return error;
 }
 
 void __114__DNDSAppSpecificSettingsManager_appSpecificSettingsOfType_identifier_modeIdentifier_applicationIdentifier_error___block_invoke(uint64_t a1)
@@ -1068,16 +1068,16 @@ LABEL_16:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setModeSpecificSettings:(id)a3 identifier:(id)a4 type:(Class)a5 modeIdentifier:(id)a6 error:(id *)a7
+- (BOOL)setModeSpecificSettings:(id)settings identifier:(id)identifier type:(Class)type modeIdentifier:(id)modeIdentifier error:(id *)error
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
   v15 = +[DNDSKeybag sharedInstance];
-  v16 = [v15 hasUnlockedSinceBoot];
+  hasUnlockedSinceBoot = [v15 hasUnlockedSinceBoot];
 
-  if (v16)
+  if (hasUnlockedSinceBoot)
   {
     v40 = 0;
     v41 = &v40;
@@ -1089,24 +1089,24 @@ LABEL_16:
     v37 = &v36;
     v38 = 0x2020000000;
     v39 = 1;
-    if (v14)
+    if (modeIdentifierCopy)
     {
-      v17 = [(DNDSAppSpecificSettingsManager *)self store];
-      v18 = [v17 newManagedObjectContext];
+      store = [(DNDSAppSpecificSettingsManager *)self store];
+      newManagedObjectContext = [store newManagedObjectContext];
 
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __95__DNDSAppSpecificSettingsManager_setModeSpecificSettings_identifier_type_modeIdentifier_error___block_invoke;
       v27[3] = &unk_278F8B928;
-      v19 = v18;
+      v19 = newManagedObjectContext;
       v28 = v19;
-      v29 = v14;
-      v35 = a5;
-      v30 = v13;
+      v29 = modeIdentifierCopy;
+      typeCopy = type;
+      v30 = identifierCopy;
       v33 = &v40;
       v34 = &v36;
-      v31 = v12;
-      v32 = self;
+      v31 = settingsCopy;
+      selfCopy = self;
       [v19 performBlockAndWait:v27];
 
       v20 = v28;
@@ -1123,12 +1123,12 @@ LABEL_16:
       v41[5] = v24;
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = v41[5];
+      *error = v41[5];
     }
 
-    LOBYTE(a7) = *(v37 + 24);
+    LOBYTE(error) = *(v37 + 24);
     _Block_object_dispose(&v36, 8);
     _Block_object_dispose(&v40, 8);
   }
@@ -1140,20 +1140,20 @@ LABEL_16:
       [DNDSAppSpecificSettingsManager setModeSpecificSettings:identifier:type:modeIdentifier:error:];
     }
 
-    if (a7)
+    if (error)
     {
       v21 = MEMORY[0x277CCA9B8];
       v48 = *MEMORY[0x277CCA450];
       v49[0] = @"Attempt to set mode specific settings before first unlock.";
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
-      *a7 = [v21 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v22];
+      *error = [v21 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v22];
 
-      LOBYTE(a7) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   v25 = *MEMORY[0x277D85DE8];
-  return a7 & 1;
+  return error & 1;
 }
 
 void __95__DNDSAppSpecificSettingsManager_setModeSpecificSettings_identifier_type_modeIdentifier_error___block_invoke(uint64_t a1)
@@ -1394,17 +1394,17 @@ LABEL_37:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setAppSpecificSettings:(id)a3 identifier:(id)a4 type:(Class)a5 applicationIdentifier:(id)a6 modeIdentifier:(id)a7 error:(id *)a8
+- (BOOL)setAppSpecificSettings:(id)settings identifier:(id)identifier type:(Class)type applicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
   v18 = +[DNDSKeybag sharedInstance];
-  v19 = [v18 hasUnlockedSinceBoot];
+  hasUnlockedSinceBoot = [v18 hasUnlockedSinceBoot];
 
-  if (v19)
+  if (hasUnlockedSinceBoot)
   {
     v47 = 0;
     v48 = &v47;
@@ -1416,8 +1416,8 @@ LABEL_37:
     v44 = &v43;
     v45 = 0x2020000000;
     v46 = 1;
-    v20 = [v16 bundleID];
-    v21 = v20 == 0;
+    bundleID = [applicationIdentifierCopy bundleID];
+    v21 = bundleID == 0;
 
     if (v21)
     {
@@ -1430,36 +1430,36 @@ LABEL_37:
 
     else
     {
-      if (v17)
+      if (modeIdentifierCopy)
       {
-        v22 = [(DNDSAppSpecificSettingsManager *)self store];
-        v23 = [v22 newManagedObjectContext];
+        store = [(DNDSAppSpecificSettingsManager *)self store];
+        newManagedObjectContext = [store newManagedObjectContext];
 
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __116__DNDSAppSpecificSettingsManager_setAppSpecificSettings_identifier_type_applicationIdentifier_modeIdentifier_error___block_invoke;
         v33[3] = &unk_278F8B950;
-        v24 = v23;
+        v24 = newManagedObjectContext;
         v34 = v24;
-        v35 = v16;
-        v36 = v17;
-        v42 = a5;
-        v37 = v15;
+        v35 = applicationIdentifierCopy;
+        v36 = modeIdentifierCopy;
+        typeCopy = type;
+        v37 = identifierCopy;
         v40 = &v47;
         v41 = &v43;
-        v38 = v14;
-        v39 = self;
+        v38 = settingsCopy;
+        selfCopy = self;
         [v24 performBlockAndWait:v33];
 
         v25 = v34;
 LABEL_12:
 
-        if (a8)
+        if (error)
         {
-          *a8 = v48[5];
+          *error = v48[5];
         }
 
-        LOBYTE(a8) = *(v44 + 24);
+        LOBYTE(error) = *(v44 + 24);
         _Block_object_dispose(&v43, 8);
         _Block_object_dispose(&v47, 8);
 
@@ -1483,21 +1483,21 @@ LABEL_12:
     [DNDSAppSpecificSettingsManager setAppSpecificSettings:identifier:type:applicationIdentifier:modeIdentifier:error:];
   }
 
-  if (a8)
+  if (error)
   {
     v26 = MEMORY[0x277CCA9B8];
     v57 = *MEMORY[0x277CCA450];
     v58[0] = @"Attempt to set app specific settings before first unlock.";
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:&v57 count:1];
-    *a8 = [v26 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v27];
+    *error = [v26 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v27];
 
-    LOBYTE(a8) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_15:
 
   v31 = *MEMORY[0x277D85DE8];
-  return a8 & 1;
+  return error & 1;
 }
 
 void __116__DNDSAppSpecificSettingsManager_setAppSpecificSettings_identifier_type_applicationIdentifier_modeIdentifier_error___block_invoke(uint64_t a1)
@@ -1747,14 +1747,14 @@ LABEL_37:
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeModeSpecificSettingsForModeIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeModeSpecificSettingsForModeIdentifier:(id)identifier error:(id *)error
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[DNDSKeybag sharedInstance];
-  v8 = [v7 hasUnlockedSinceBoot];
+  hasUnlockedSinceBoot = [v7 hasUnlockedSinceBoot];
 
-  if (v8)
+  if (hasUnlockedSinceBoot)
   {
     v26 = 0;
     v27 = &v26;
@@ -1766,26 +1766,26 @@ LABEL_37:
     v23 = &v22;
     v24 = 0x2020000000;
     v25 = 1;
-    v9 = [(DNDSAppSpecificSettingsManager *)self store];
-    v10 = [v9 newManagedObjectContext];
+    store = [(DNDSAppSpecificSettingsManager *)self store];
+    newManagedObjectContext = [store newManagedObjectContext];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __84__DNDSAppSpecificSettingsManager_removeModeSpecificSettingsForModeIdentifier_error___block_invoke;
     v16[3] = &unk_278F8B978;
-    v11 = v10;
+    v11 = newManagedObjectContext;
     v17 = v11;
     v20 = &v26;
     v21 = &v22;
-    v18 = v6;
-    v19 = self;
+    v18 = identifierCopy;
+    selfCopy = self;
     [v11 performBlockAndWait:v16];
-    if (a4)
+    if (error)
     {
-      *a4 = v27[5];
+      *error = v27[5];
     }
 
-    LOBYTE(a4) = *(v23 + 24);
+    LOBYTE(error) = *(v23 + 24);
 
     _Block_object_dispose(&v22, 8);
     _Block_object_dispose(&v26, 8);
@@ -1798,20 +1798,20 @@ LABEL_37:
       [DNDSAppSpecificSettingsManager removeModeSpecificSettingsForModeIdentifier:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
       v32 = *MEMORY[0x277CCA450];
       v33[0] = @"Attempt to remove mode specific settings before first unlock.";
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-      *a4 = [v12 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v13];
+      *error = [v12 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v13];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return a4 & 1;
+  return error & 1;
 }
 
 void __84__DNDSAppSpecificSettingsManager_removeModeSpecificSettingsForModeIdentifier_error___block_invoke(uint64_t a1)
@@ -1918,14 +1918,14 @@ void __84__DNDSAppSpecificSettingsManager_removeModeSpecificSettingsForModeIdent
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)removeModeSpecificSettingsForModeIdentifiersNotInModeIdentifiers:(id)a3 error:(id *)a4
+- (id)removeModeSpecificSettingsForModeIdentifiersNotInModeIdentifiers:(id)identifiers error:(id *)error
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v7 = +[DNDSKeybag sharedInstance];
-  v8 = [v7 hasUnlockedSinceBoot];
+  hasUnlockedSinceBoot = [v7 hasUnlockedSinceBoot];
 
-  if (v8)
+  if (hasUnlockedSinceBoot)
   {
     v29 = 0;
     v30 = &v29;
@@ -1943,30 +1943,30 @@ void __84__DNDSAppSpecificSettingsManager_removeModeSpecificSettingsForModeIdent
     if (os_log_type_enabled(DNDSLogAppSpecificSettingsManager, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v36 = v6;
+      v36 = identifiersCopy;
       _os_log_impl(&dword_24912E000, v9, OS_LOG_TYPE_DEFAULT, "Removing settings for modes not in %{public}@.", buf, 0xCu);
     }
 
-    v10 = [(DNDSAppSpecificSettingsManager *)self store];
-    v11 = [v10 newManagedObjectContext];
+    store = [(DNDSAppSpecificSettingsManager *)self store];
+    newManagedObjectContext = [store newManagedObjectContext];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __105__DNDSAppSpecificSettingsManager_removeModeSpecificSettingsForModeIdentifiersNotInModeIdentifiers_error___block_invoke;
     v17[3] = &unk_278F8B978;
-    v18 = v6;
-    v12 = v11;
+    v18 = identifiersCopy;
+    v12 = newManagedObjectContext;
     v21 = &v29;
     v22 = &v23;
     v19 = v12;
-    v20 = self;
+    selfCopy = self;
     [v12 performBlockAndWait:v17];
-    if (a4)
+    if (error)
     {
-      *a4 = v30[5];
+      *error = v30[5];
     }
 
-    a4 = v24[5];
+    error = v24[5];
 
     _Block_object_dispose(&v23, 8);
     _Block_object_dispose(&v29, 8);
@@ -1979,21 +1979,21 @@ void __84__DNDSAppSpecificSettingsManager_removeModeSpecificSettingsForModeIdent
       [DNDSAppSpecificSettingsManager removeModeSpecificSettingsForModeIdentifier:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v37 = *MEMORY[0x277CCA450];
       v38[0] = @"Attempt to remove mode specific settings before first unlock.";
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
-      *a4 = [v13 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v14];
+      *error = [v13 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v14];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
 void __105__DNDSAppSpecificSettingsManager_removeModeSpecificSettingsForModeIdentifiersNotInModeIdentifiers_error___block_invoke(uint64_t a1)
@@ -2211,14 +2211,14 @@ LABEL_37:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeAppSpecificSettingsForApplicationIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeAppSpecificSettingsForApplicationIdentifier:(id)identifier error:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[DNDSKeybag sharedInstance];
-  v8 = [v7 hasUnlockedSinceBoot];
+  hasUnlockedSinceBoot = [v7 hasUnlockedSinceBoot];
 
-  if (v8)
+  if (hasUnlockedSinceBoot)
   {
     v25 = 0;
     v26 = &v25;
@@ -2230,25 +2230,25 @@ LABEL_37:
     v22 = &v21;
     v23 = 0x2020000000;
     v24 = 1;
-    v9 = [(DNDSAppSpecificSettingsManager *)self store];
-    v10 = [v9 newManagedObjectContext];
+    store = [(DNDSAppSpecificSettingsManager *)self store];
+    newManagedObjectContext = [store newManagedObjectContext];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __90__DNDSAppSpecificSettingsManager_removeAppSpecificSettingsForApplicationIdentifier_error___block_invoke;
     v16[3] = &unk_278F8B9A0;
-    v11 = v10;
+    v11 = newManagedObjectContext;
     v17 = v11;
-    v18 = v6;
+    v18 = identifierCopy;
     v19 = &v25;
     v20 = &v21;
     [v11 performBlockAndWait:v16];
-    if (a4)
+    if (error)
     {
-      *a4 = v26[5];
+      *error = v26[5];
     }
 
-    LOBYTE(a4) = *(v22 + 24);
+    LOBYTE(error) = *(v22 + 24);
 
     _Block_object_dispose(&v21, 8);
     _Block_object_dispose(&v25, 8);
@@ -2261,20 +2261,20 @@ LABEL_37:
       [DNDSAppSpecificSettingsManager removeAppSpecificSettingsForApplicationIdentifier:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
       v31 = *MEMORY[0x277CCA450];
       v32[0] = @"Attempt to remove app specific settings before first unlock.";
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-      *a4 = [v12 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v13];
+      *error = [v12 errorWithDomain:*MEMORY[0x277D05840] code:1004 userInfo:v13];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return a4 & 1;
+  return error & 1;
 }
 
 void __90__DNDSAppSpecificSettingsManager_removeAppSpecificSettingsForApplicationIdentifier_error___block_invoke(uint64_t a1)
@@ -2365,7 +2365,7 @@ void __90__DNDSAppSpecificSettingsManager_removeAppSpecificSettingsForApplicatio
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_allModeSpecificSettingsOfType:(Class)a3
+- (id)_allModeSpecificSettingsOfType:(Class)type
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8[0] = MEMORY[0x277D85DD0];
@@ -2374,8 +2374,8 @@ void __90__DNDSAppSpecificSettingsManager_removeAppSpecificSettingsForApplicatio
   v8[3] = &unk_278F8B9C8;
   v6 = v5;
   v9 = v6;
-  v10 = a3;
-  [(DNDSAppSpecificSettingsManager *)self _allPerModeSettingsMOsOfType:a3 processBlock:v8];
+  typeCopy = type;
+  [(DNDSAppSpecificSettingsManager *)self _allPerModeSettingsMOsOfType:type processBlock:v8];
 
   return v6;
 }
@@ -2402,7 +2402,7 @@ void __65__DNDSAppSpecificSettingsManager__allModeSpecificSettingsOfType___block
   }
 }
 
-- (id)_allAppSpecificSettingsOfType:(Class)a3
+- (id)_allAppSpecificSettingsOfType:(Class)type
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8[0] = MEMORY[0x277D85DD0];
@@ -2411,8 +2411,8 @@ void __65__DNDSAppSpecificSettingsManager__allModeSpecificSettingsOfType___block
   v8[3] = &unk_278F8B9C8;
   v6 = v5;
   v9 = v6;
-  v10 = a3;
-  [(DNDSAppSpecificSettingsManager *)self _allPerModeSettingsMOsOfType:a3 processBlock:v8];
+  typeCopy = type;
+  [(DNDSAppSpecificSettingsManager *)self _allPerModeSettingsMOsOfType:type processBlock:v8];
 
   return v6;
 }
@@ -2467,17 +2467,17 @@ void __64__DNDSAppSpecificSettingsManager__allAppSpecificSettingsOfType___block_
   }
 }
 
-- (void)_allPerModeSettingsMOsOfType:(Class)a3 processBlock:(id)a4
+- (void)_allPerModeSettingsMOsOfType:(Class)type processBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(DNDSAppSpecificSettingsManager *)self store];
-  v8 = [v7 newManagedObjectContext];
+  blockCopy = block;
+  store = [(DNDSAppSpecificSettingsManager *)self store];
+  newManagedObjectContext = [store newManagedObjectContext];
 
-  v9 = [(objc_class *)a3 appSpecificSettingsEntity];
-  v10 = [v8 persistentStoreCoordinator];
-  v11 = [v10 managedObjectModel];
-  v12 = [v11 entitiesByName];
-  v13 = [v12 objectForKeyedSubscript:v9];
+  appSpecificSettingsEntity = [(objc_class *)type appSpecificSettingsEntity];
+  persistentStoreCoordinator = [newManagedObjectContext persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
+  entitiesByName = [managedObjectModel entitiesByName];
+  v13 = [entitiesByName objectForKeyedSubscript:appSpecificSettingsEntity];
 
   if (v13)
   {
@@ -2485,9 +2485,9 @@ void __64__DNDSAppSpecificSettingsManager__allAppSpecificSettingsOfType___block_
     v14[1] = 3221225472;
     v14[2] = __76__DNDSAppSpecificSettingsManager__allPerModeSettingsMOsOfType_processBlock___block_invoke;
     v14[3] = &unk_278F89E80;
-    v15 = v9;
-    v16 = v6;
-    [v8 performBlockAndWait:v14];
+    v15 = appSpecificSettingsEntity;
+    v16 = blockCopy;
+    [newManagedObjectContext performBlockAndWait:v14];
   }
 
   else if (os_log_type_enabled(DNDSLogAppSpecificSettingsManager, OS_LOG_TYPE_FAULT))
@@ -2548,53 +2548,53 @@ void __76__DNDSAppSpecificSettingsManager__allPerModeSettingsMOsOfType_processBl
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)idsSyncEngine:(id)a3 didFetchRecord:(id)a4
+- (void)idsSyncEngine:(id)engine didFetchRecord:(id)record
 {
-  v4 = a4;
+  recordCopy = record;
   if (os_log_type_enabled(DNDSLogAppSpecificSettingsManager, OS_LOG_TYPE_FAULT))
   {
     [DNDSAppSpecificSettingsManager idsSyncEngine:didFetchRecord:];
   }
 }
 
-- (void)idsSyncEngine:(id)a3 prepareRecordToSave:(id)a4
+- (void)idsSyncEngine:(id)engine prepareRecordToSave:(id)save
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  saveCopy = save;
   v6 = DNDSLogAppSpecificSettingsManager;
   if (os_log_type_enabled(DNDSLogAppSpecificSettingsManager, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = saveCopy;
     _os_log_impl(&dword_24912E000, v6, OS_LOG_TYPE_DEFAULT, "prepareRecordToSave: %@", &v11, 0xCu);
   }
 
-  v7 = [v5 recordID];
-  v8 = [v7 identifier];
+  recordID = [saveCopy recordID];
+  identifier = [recordID identifier];
 
-  v9 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsDictinariesForModeIdentifier:v8];
-  [v5 setObject:v9 forKey:@"DNDSAppSpecificSettingsRecord"];
+  v9 = [(DNDSAppSpecificSettingsManager *)self appSpecificSettingsDictinariesForModeIdentifier:identifier];
+  [saveCopy setObject:v9 forKey:@"DNDSAppSpecificSettingsRecord"];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appSpecificSettingsDictinariesForModeIdentifier:(id)a3
+- (id)appSpecificSettingsDictinariesForModeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(DNDSAppSpecificSettingsManager *)self store];
-  v7 = [v6 newManagedObjectContext];
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
+  store = [(DNDSAppSpecificSettingsManager *)self store];
+  newManagedObjectContext = [store newManagedObjectContext];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __82__DNDSAppSpecificSettingsManager_appSpecificSettingsDictinariesForModeIdentifier___block_invoke;
   v14[3] = &unk_278F89E30;
-  v15 = v7;
-  v16 = v4;
-  v8 = v5;
+  v15 = newManagedObjectContext;
+  v16 = identifierCopy;
+  v8 = array;
   v17 = v8;
-  v9 = v4;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = newManagedObjectContext;
   [v10 performBlockAndWait:v14];
   v11 = v17;
   v12 = v8;
@@ -2701,16 +2701,16 @@ void __82__DNDSAppSpecificSettingsManager_appSpecificSettingsDictinariesForModeI
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)idsSyncEngine:(id)a3 recordWithIDWasDeleted:(id)a4
+- (void)idsSyncEngine:(id)engine recordWithIDWasDeleted:(id)deleted
 {
-  v4 = a4;
+  deletedCopy = deleted;
   if (os_log_type_enabled(DNDSLogAppSpecificSettingsManager, OS_LOG_TYPE_FAULT))
   {
     [DNDSAppSpecificSettingsManager idsSyncEngine:recordWithIDWasDeleted:];
   }
 }
 
-- (void)purgeRecordsForIDSSyncEngine:(id)a3
+- (void)purgeRecordsForIDSSyncEngine:(id)engine
 {
   if (os_log_type_enabled(DNDSLogAppSpecificSettingsManager, OS_LOG_TYPE_FAULT))
   {
@@ -2718,7 +2718,7 @@ void __82__DNDSAppSpecificSettingsManager_appSpecificSettingsDictinariesForModeI
   }
 }
 
-- (id)recordIDsForIDSSyncEngine:(id)a3
+- (id)recordIDsForIDSSyncEngine:(id)engine
 {
   v4 = DNDSLogAppSpecificSettingsManager;
   if (os_log_type_enabled(DNDSLogAppSpecificSettingsManager, OS_LOG_TYPE_DEFAULT))
@@ -2727,18 +2727,18 @@ void __82__DNDSAppSpecificSettingsManager_appSpecificSettingsDictinariesForModeI
     _os_log_impl(&dword_24912E000, v4, OS_LOG_TYPE_DEFAULT, "recordIDsForIDSSyncEngine", buf, 2u);
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(DNDSAppSpecificSettingsManager *)self store];
-  v7 = [v6 newManagedObjectContext];
+  array = [MEMORY[0x277CBEB18] array];
+  store = [(DNDSAppSpecificSettingsManager *)self store];
+  newManagedObjectContext = [store newManagedObjectContext];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__DNDSAppSpecificSettingsManager_recordIDsForIDSSyncEngine___block_invoke;
   v13[3] = &unk_278F89F48;
-  v14 = v7;
-  v8 = v5;
+  v14 = newManagedObjectContext;
+  v8 = array;
   v15 = v8;
-  v9 = v7;
+  v9 = newManagedObjectContext;
   [v9 performBlockAndWait:v13];
   v10 = v15;
   v11 = v8;
@@ -2795,17 +2795,17 @@ void __60__DNDSAppSpecificSettingsManager_recordIDsForIDSSyncEngine___block_invo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_modesToSave:(id)a3 modesToDelete:(id)a4
+- (void)_modesToSave:(id)save modesToDelete:(id)delete
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  saveCopy = save;
+  deleteCopy = delete;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(saveCopy, "count")}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v5;
+  v8 = saveCopy;
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v9)
   {
@@ -2834,12 +2834,12 @@ void __60__DNDSAppSpecificSettingsManager_recordIDsForIDSSyncEngine___block_invo
     while (v10);
   }
 
-  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(deleteCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v15 = v6;
+  v15 = deleteCopy;
   v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v16)
   {

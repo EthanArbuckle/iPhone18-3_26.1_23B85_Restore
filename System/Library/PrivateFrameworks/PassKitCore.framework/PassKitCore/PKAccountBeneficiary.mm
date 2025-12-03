@@ -1,18 +1,18 @@
 @interface PKAccountBeneficiary
-- (PKAccountBeneficiary)initWithCoder:(id)a3;
-- (PKAccountBeneficiary)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKAccountBeneficiary)initWithCoder:(id)coder;
+- (PKAccountBeneficiary)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)displayableRelationshipString;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountBeneficiary
 
-- (PKAccountBeneficiary)initWithDictionary:(id)a3
+- (PKAccountBeneficiary)initWithDictionary:(id)dictionary
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v50.receiver = self;
   v50.super_class = PKAccountBeneficiary;
   v5 = [(PKAccountBeneficiary *)&v50 init];
@@ -22,9 +22,9 @@
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695CF18]);
-  v49 = [v4 PKStringForKey:@"firstName"];
-  v7 = [v4 PKStringForKey:@"lastName"];
-  v8 = [v4 PKStringForKey:@"relationshipType"];
+  v49 = [dictionaryCopy PKStringForKey:@"firstName"];
+  v7 = [dictionaryCopy PKStringForKey:@"lastName"];
+  v8 = [dictionaryCopy PKStringForKey:@"relationshipType"];
   v9 = v8;
   if (v8 == @"child")
   {
@@ -84,8 +84,8 @@ LABEL_5:
   v11 = 1;
 LABEL_22:
 
-  v27 = [v4 PKDecimalNumberFromStringForKey:@"allocation"];
-  v28 = [v4 PKStringForKey:@"identifier"];
+  v27 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"allocation"];
+  v28 = [dictionaryCopy PKStringForKey:@"identifier"];
   v29 = [v49 length];
   v30 = v7;
   v31 = [v7 length];
@@ -137,8 +137,8 @@ LABEL_27:
     }
 
     v48 = v43;
-    v44 = [(NSDecimalNumber *)v27 stringValue];
-    v45 = v44;
+    stringValue = [(NSDecimalNumber *)v27 stringValue];
+    v45 = stringValue;
     *buf = 138413058;
     v46 = @"YES";
     if (!v33)
@@ -150,7 +150,7 @@ LABEL_27:
     v53 = 2112;
     v54 = v48;
     v55 = 2112;
-    v56 = v44;
+    v56 = stringValue;
     v57 = 2112;
     v58 = v46;
     _os_log_impl(&dword_1AD337000, v41, OS_LOG_TYPE_DEFAULT, "Account beneficiary field is missing; firstName present: %@ lastName present: %@ allocation: %@ identifier present: %@", buf, 0x2Au);
@@ -178,34 +178,34 @@ LABEL_39:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contact = self->_contact;
-  v5 = a3;
-  [v5 encodeObject:contact forKey:@"contact"];
-  [v5 encodeInteger:self->_relationshipType forKey:@"relationshipType"];
-  [v5 encodeObject:self->_allocation forKey:@"allocation"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contact forKey:@"contact"];
+  [coderCopy encodeInteger:self->_relationshipType forKey:@"relationshipType"];
+  [coderCopy encodeObject:self->_allocation forKey:@"allocation"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (PKAccountBeneficiary)initWithCoder:(id)a3
+- (PKAccountBeneficiary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKAccountBeneficiary;
   v5 = [(PKAccountBeneficiary *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
     contact = v5->_contact;
     v5->_contact = v6;
 
-    v5->_relationshipType = [v4 decodeIntegerForKey:@"relationshipType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allocation"];
+    v5->_relationshipType = [coderCopy decodeIntegerForKey:@"relationshipType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allocation"];
     allocation = v5->_allocation;
     v5->_allocation = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v10;
   }
@@ -213,19 +213,19 @@ LABEL_39:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(CNContact *)self->_contact copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(CNContact *)self->_contact copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   v5[2] = self->_relationshipType;
-  v8 = [(NSDecimalNumber *)self->_allocation copyWithZone:a3];
+  v8 = [(NSDecimalNumber *)self->_allocation copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_identifier copyWithZone:a3];
+  v10 = [(NSString *)self->_identifier copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 

@@ -1,20 +1,20 @@
 @interface LACMutableSharedModeDataSourceRequestOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 @end
 
 @implementation LACMutableSharedModeDataSourceRequestOptions
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F269F840])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_1F269F840])
   {
-    v5 = v4;
-    v6 = [(LACMutableSharedModeDataSourceRequestOptions *)self isPreflight];
-    v7 = [v5 isPreflight];
+    v5 = equalCopy;
+    isPreflight = [(LACMutableSharedModeDataSourceRequestOptions *)self isPreflight];
+    isPreflight2 = [v5 isPreflight];
 
-    v8 = v6 ^ v7 ^ 1;
+    v8 = isPreflight ^ isPreflight2 ^ 1;
   }
 
   else
@@ -31,9 +31,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v11 = @"isPreflight";
-  v5 = [(LACMutableSharedModeDataSourceRequestOptions *)self isPreflight];
+  isPreflight = [(LACMutableSharedModeDataSourceRequestOptions *)self isPreflight];
   v6 = @"NO";
-  if (v5)
+  if (isPreflight)
   {
     v6 = @"YES";
   }

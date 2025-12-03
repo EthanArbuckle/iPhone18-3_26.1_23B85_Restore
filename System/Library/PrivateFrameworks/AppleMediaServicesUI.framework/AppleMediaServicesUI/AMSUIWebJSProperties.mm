@@ -1,6 +1,6 @@
 @interface AMSUIWebJSProperties
 - (AMSUIWebClientContext)context;
-- (AMSUIWebJSProperties)initWithContext:(id)a3 delegate:(id)a4;
+- (AMSUIWebJSProperties)initWithContext:(id)context delegate:(id)delegate;
 - (AMSUIWebJSPropertiesDelegate)delegate;
 - (id)_accessibilityProperties;
 - (id)_accountsProperties;
@@ -8,58 +8,58 @@
 - (id)_appearancePropertiesDictionary;
 - (id)_clientOptionsProperties;
 - (id)_deviceProperties;
-- (id)_hexStringFromColor:(id)a3;
+- (id)_hexStringFromColor:(id)color;
 - (id)_pluginProperties;
 - (id)_processProperties;
-- (id)_propertiesForClientInfo:(id)a3;
+- (id)_propertiesForClientInfo:(id)info;
 - (id)generateProperties;
-- (void)_accessibilityPropertiesDidChange:(id)a3;
-- (void)_accountStoreDidChange:(id)a3;
-- (void)_lastConnectionReportDidChange:(id)a3;
+- (void)_accessibilityPropertiesDidChange:(id)change;
+- (void)_accountStoreDidChange:(id)change;
+- (void)_lastConnectionReportDidChange:(id)change;
 - (void)dealloc;
 @end
 
 @implementation AMSUIWebJSProperties
 
-- (AMSUIWebJSProperties)initWithContext:(id)a3 delegate:(id)a4
+- (AMSUIWebJSProperties)initWithContext:(id)context delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = AMSUIWebJSProperties;
   v8 = [(AMSUIWebJSProperties *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_context, v6);
-    objc_storeWeak(&v9->_delegate, v7);
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v9 selector:sel__lastConnectionReportDidChange_ name:*MEMORY[0x1E698C5F8] object:0];
+    objc_storeWeak(&v8->_context, contextCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__lastConnectionReportDidChange_ name:*MEMORY[0x1E698C5F8] object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v9 selector:sel__accountStoreDidChange_ name:*MEMORY[0x1E69597D8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel__accountStoreDidChange_ name:*MEMORY[0x1E69597D8] object:0];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DD8D8] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DD8D8] object:0];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
     v14 = *MEMORY[0x1E69DD898];
-    [v13 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DD898] object:0];
+    [defaultCenter4 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DD898] object:0];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DD8D0] object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DD8D0] object:0];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:v14 object:0];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter6 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:v14 object:0];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DD8B8] object:0];
+    defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter7 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DD8B8] object:0];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DD900] object:0];
+    defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter8 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DD900] object:0];
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DDA58] object:0];
+    defaultCenter9 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter9 addObserver:v9 selector:sel__accessibilityPropertiesDidChange_ name:*MEMORY[0x1E69DDA58] object:0];
   }
 
   return v9;
@@ -67,8 +67,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AMSUIWebJSProperties;
@@ -79,18 +79,18 @@
 {
   v16[6] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E698CAD0];
-  v4 = [(AMSUIWebJSProperties *)self _accountsProperties];
-  v16[0] = v4;
-  v5 = [(AMSUIWebJSProperties *)self _appearanceProperties];
-  v16[1] = v5;
-  v6 = [(AMSUIWebJSProperties *)self _clientOptionsProperties];
-  v16[2] = v6;
-  v7 = [(AMSUIWebJSProperties *)self _deviceProperties];
-  v16[3] = v7;
-  v8 = [(AMSUIWebJSProperties *)self _processProperties];
-  v16[4] = v8;
-  v9 = [(AMSUIWebJSProperties *)self _accessibilityProperties];
-  v16[5] = v9;
+  _accountsProperties = [(AMSUIWebJSProperties *)self _accountsProperties];
+  v16[0] = _accountsProperties;
+  _appearanceProperties = [(AMSUIWebJSProperties *)self _appearanceProperties];
+  v16[1] = _appearanceProperties;
+  _clientOptionsProperties = [(AMSUIWebJSProperties *)self _clientOptionsProperties];
+  v16[2] = _clientOptionsProperties;
+  _deviceProperties = [(AMSUIWebJSProperties *)self _deviceProperties];
+  v16[3] = _deviceProperties;
+  _processProperties = [(AMSUIWebJSProperties *)self _processProperties];
+  v16[4] = _processProperties;
+  _accessibilityProperties = [(AMSUIWebJSProperties *)self _accessibilityProperties];
+  v16[5] = _accessibilityProperties;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:6];
   v11 = [v3 promiseWithAll:v10];
 
@@ -201,25 +201,25 @@ id __42__AMSUIWebJSProperties_generateProperties__block_invoke(uint64_t a1, void
   return v17;
 }
 
-- (void)_accessibilityPropertiesDidChange:(id)a3
+- (void)_accessibilityPropertiesDidChange:(id)change
 {
-  v4 = [(AMSUIWebJSProperties *)self delegate];
-  [v4 propertiesDidChange:self];
+  delegate = [(AMSUIWebJSProperties *)self delegate];
+  [delegate propertiesDidChange:self];
 
-  v7 = [(AMSUIWebJSProperties *)self context];
-  v5 = [v7 dataProvider];
-  v6 = [v5 postEvent:@"AccessibilityChange" options:0];
+  context = [(AMSUIWebJSProperties *)self context];
+  dataProvider = [context dataProvider];
+  v6 = [dataProvider postEvent:@"AccessibilityChange" options:0];
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(AMSUIWebJSProperties *)self context];
-  v6 = [v5 clientInfo];
-  v7 = [v6 accountMediaType];
+  changeCopy = change;
+  context = [(AMSUIWebJSProperties *)self context];
+  clientInfo = [context clientInfo];
+  accountMediaType = [clientInfo accountMediaType];
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69598B8]];
+  userInfo = [changeCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69598B8]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -232,8 +232,8 @@ id __42__AMSUIWebJSProperties_generateProperties__block_invoke(uint64_t a1, void
     v10 = 0;
   }
 
-  v11 = [v4 userInfo];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E6959720]];
+  userInfo2 = [changeCopy userInfo];
+  v12 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E6959720]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -246,22 +246,22 @@ id __42__AMSUIWebJSProperties_generateProperties__block_invoke(uint64_t a1, void
     v13 = 0;
   }
 
-  v14 = [MEMORY[0x1E6959A48] ams_accountTypeIdentifierForMediaType:v7];
+  v14 = [MEMORY[0x1E6959A48] ams_accountTypeIdentifierForMediaType:accountMediaType];
   if ([v10 isEqualToString:v14])
   {
 
 LABEL_10:
-    v16 = [(AMSUIWebJSProperties *)self context];
-    v17 = [v16 account];
-    [v17 reload];
+    context2 = [(AMSUIWebJSProperties *)self context];
+    account = [context2 account];
+    [account reload];
 
-    v18 = [(AMSUIWebJSProperties *)self _accountsProperties];
+    _accountsProperties = [(AMSUIWebJSProperties *)self _accountsProperties];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __47__AMSUIWebJSProperties__accountStoreDidChange___block_invoke;
     v19[3] = &unk_1E7F25BA0;
     v19[4] = self;
-    [v18 resultWithCompletion:v19];
+    [_accountsProperties resultWithCompletion:v19];
 
     goto LABEL_11;
   }
@@ -319,7 +319,7 @@ void __47__AMSUIWebJSProperties__accountStoreDidChange___block_invoke(uint64_t a
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lastConnectionReportDidChange:(id)a3
+- (void)_lastConnectionReportDidChange:(id)change
 {
   v4 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -406,59 +406,59 @@ void __55__AMSUIWebJSProperties__lastConnectionReportDidChange___block_invoke(ui
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = MEMORY[0x1E6959A48];
-  v5 = [(AMSUIWebJSProperties *)self context];
-  v6 = [v5 clientInfo];
-  v7 = [v6 accountMediaType];
-  v8 = [v4 ams_sharedAccountStoreForMediaType:v7];
+  context = [(AMSUIWebJSProperties *)self context];
+  clientInfo = [context clientInfo];
+  accountMediaType = [clientInfo accountMediaType];
+  v8 = [v4 ams_sharedAccountStoreForMediaType:accountMediaType];
 
-  v9 = [v8 ams_activeiCloudAccount];
-  v10 = [v8 ams_activeiTunesAccount];
-  v11 = [(AMSUIWebJSProperties *)self context];
-  v12 = [v11 account];
-  v13 = v12;
-  if (v12)
+  ams_activeiCloudAccount = [v8 ams_activeiCloudAccount];
+  ams_activeiTunesAccount = [v8 ams_activeiTunesAccount];
+  context2 = [(AMSUIWebJSProperties *)self context];
+  account = [context2 account];
+  v13 = account;
+  if (account)
   {
-    v14 = v12;
+    ams_localiTunesAccount = account;
   }
 
   else
   {
-    v14 = [v8 ams_localiTunesAccount];
+    ams_localiTunesAccount = [v8 ams_localiTunesAccount];
   }
 
-  v15 = v14;
+  v15 = ams_localiTunesAccount;
 
-  v16 = [(AMSUIWebJSProperties *)self context];
-  v17 = [v16 JSAccountFromAccount:v9 store:v8];
+  context3 = [(AMSUIWebJSProperties *)self context];
+  v17 = [context3 JSAccountFromAccount:ams_activeiCloudAccount store:v8];
   [v3 setObject:v17 forKeyedSubscript:@"activeiCloud"];
 
-  v18 = [(AMSUIWebJSProperties *)self context];
-  v19 = [v18 JSAccountFromAccount:v10 store:v8];
+  context4 = [(AMSUIWebJSProperties *)self context];
+  v19 = [context4 JSAccountFromAccount:ams_activeiTunesAccount store:v8];
   [v3 setObject:v19 forKeyedSubscript:@"activeiTunes"];
 
-  v20 = [(AMSUIWebJSProperties *)self context];
-  v21 = [v20 JSAccountFromAccount:v15 store:v8];
+  context5 = [(AMSUIWebJSProperties *)self context];
+  v21 = [context5 JSAccountFromAccount:v15 store:v8];
   [v3 setObject:v21 forKeyedSubscript:@"current"];
 
-  v22 = [v9 ams_DSID];
-  if (v22)
+  ams_DSID = [ams_activeiCloudAccount ams_DSID];
+  if (ams_DSID)
   {
-    v23 = [v10 ams_DSID];
+    ams_DSID2 = [ams_activeiTunesAccount ams_DSID];
 
-    if (v23)
+    if (ams_DSID2)
     {
-      v24 = [v9 ams_DSID];
-      v25 = [v10 ams_DSID];
-      v22 = [v24 isEqualToNumber:v25];
+      ams_DSID3 = [ams_activeiCloudAccount ams_DSID];
+      ams_DSID4 = [ams_activeiTunesAccount ams_DSID];
+      ams_DSID = [ams_DSID3 isEqualToNumber:ams_DSID4];
     }
 
     else
     {
-      v22 = 0;
+      ams_DSID = 0;
     }
   }
 
-  v26 = [MEMORY[0x1E696AD98] numberWithBool:v22];
+  v26 = [MEMORY[0x1E696AD98] numberWithBool:ams_DSID];
   [v3 setObject:v26 forKeyedSubscript:@"isCombinedAccount"];
 
   v27 = [v3 copy];
@@ -474,8 +474,8 @@ void __55__AMSUIWebJSProperties__lastConnectionReportDidChange___block_invoke(ui
   v3 = objc_alloc_init(MEMORY[0x1E698CAD0]);
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v4 = [(AMSUIWebJSProperties *)self _appearancePropertiesDictionary];
-    [v3 finishWithResult:v4];
+    _appearancePropertiesDictionary = [(AMSUIWebJSProperties *)self _appearancePropertiesDictionary];
+    [v3 finishWithResult:_appearancePropertiesDictionary];
   }
 
   else
@@ -485,7 +485,7 @@ void __55__AMSUIWebJSProperties__lastConnectionReportDidChange___block_invoke(ui
     v6[2] = __45__AMSUIWebJSProperties__appearanceProperties__block_invoke;
     v6[3] = &unk_1E7F243C0;
     v7 = v3;
-    v8 = self;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], v6);
   }
 
@@ -502,23 +502,23 @@ void __45__AMSUIWebJSProperties__appearanceProperties__block_invoke(uint64_t a1)
 - (id)_appearancePropertiesDictionary
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIWebJSProperties *)self context];
-  v4 = [v3 flowController];
-  v5 = [v4 rootContainer];
-  v6 = [v5 view];
-  v7 = [v6 tintColor];
-  v8 = v7;
-  if (v7)
+  context = [(AMSUIWebJSProperties *)self context];
+  flowController = [context flowController];
+  rootContainer = [flowController rootContainer];
+  view = [rootContainer view];
+  tintColor = [view tintColor];
+  v8 = tintColor;
+  if (tintColor)
   {
-    v9 = v7;
+    systemBlueColor = tintColor;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
-  v10 = v9;
+  v10 = systemBlueColor;
 
   v15 = @"tintColor";
   v11 = [(AMSUIWebJSProperties *)self _hexStringFromColor:v10];
@@ -533,13 +533,13 @@ void __45__AMSUIWebJSProperties__appearanceProperties__block_invoke(uint64_t a1)
 - (id)_clientOptionsProperties
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(AMSUIWebJSProperties *)self context];
-  v3 = [v2 clientOptions];
-  v4 = v3;
+  context = [(AMSUIWebJSProperties *)self context];
+  clientOptions = [context clientOptions];
+  v4 = clientOptions;
   v5 = MEMORY[0x1E695E0F8];
-  if (v3)
+  if (clientOptions)
   {
-    v5 = v3;
+    v5 = clientOptions;
   }
 
   v6 = v5;
@@ -551,14 +551,14 @@ void __45__AMSUIWebJSProperties__appearanceProperties__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v8)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v8 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -566,7 +566,7 @@ void __45__AMSUIWebJSProperties__appearanceProperties__block_invoke(uint64_t a1)
       v15 = v10;
       v16 = 2114;
       v17 = v11;
-      _os_log_impl(&dword_1BB036000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Cannot serialize client options", &v14, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Cannot serialize client options", &v14, 0x16u);
     }
 
     v7 = 0;
@@ -604,14 +604,14 @@ void __45__AMSUIWebJSProperties__appearanceProperties__block_invoke(uint64_t a1)
 
   if (!v7)
   {
-    v9 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v9)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v9 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
@@ -621,7 +621,7 @@ void __45__AMSUIWebJSProperties__appearanceProperties__block_invoke(uint64_t a1)
       v28 = v12;
       v29 = 2114;
       v30 = v8;
-      _os_log_impl(&dword_1BB036000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch resource keys for free space: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch resource keys for free space: %{public}@", buf, 0x20u);
     }
   }
 
@@ -864,16 +864,16 @@ void __41__AMSUIWebJSProperties__deviceProperties__block_invoke(uint64_t a1)
 {
   v44 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v30 = self;
-  v4 = [(AMSUIWebJSProperties *)self context];
-  v5 = [v4 pluginLoader];
-  v6 = [v5 loadedPlugins];
+  selfCopy = self;
+  context = [(AMSUIWebJSProperties *)self context];
+  pluginLoader = [context pluginLoader];
+  loadedPlugins = [pluginLoader loadedPlugins];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v6;
+  obj = loadedPlugins;
   v7 = [obj countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v7)
   {
@@ -894,35 +894,35 @@ void __41__AMSUIWebJSProperties__deviceProperties__block_invoke(uint64_t a1)
         }
 
         v13 = *(*(&v33 + 1) + 8 * v12);
-        v14 = [v13 globalName];
-        v15 = [v14 lowercaseString];
-        v16 = [v3 objectForKeyedSubscript:v15];
+        globalName = [v13 globalName];
+        lowercaseString = [globalName lowercaseString];
+        v16 = [v3 objectForKeyedSubscript:lowercaseString];
 
         if (v16)
         {
-          v17 = [*(v11 + 2408) sharedWebUIConfig];
-          if (!v17)
+          sharedWebUIConfig = [*(v11 + 2408) sharedWebUIConfig];
+          if (!sharedWebUIConfig)
           {
-            v17 = [*(v11 + 2408) sharedConfig];
+            sharedWebUIConfig = [*(v11 + 2408) sharedConfig];
           }
 
-          v18 = [v17 OSLogObject];
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          oSLogObject = [sharedWebUIConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v19 = v3;
             v20 = v10;
             v21 = v11;
             v22 = objc_opt_class();
-            v23 = [(AMSUIWebJSProperties *)v30 context];
-            v24 = [v23 logKey];
-            v25 = [v13 globalName];
+            context2 = [(AMSUIWebJSProperties *)selfCopy context];
+            logKey = [context2 logKey];
+            globalName2 = [v13 globalName];
             *buf = v29;
             v38 = v22;
             v39 = 2114;
-            v40 = v24;
+            v40 = logKey;
             v41 = 2114;
-            v42 = v25;
-            _os_log_impl(&dword_1BB036000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Skipping plugin with duplicate global name: %{public}@", buf, 0x20u);
+            v42 = globalName2;
+            _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Skipping plugin with duplicate global name: %{public}@", buf, 0x20u);
 
             v11 = v21;
             v10 = v20;
@@ -933,10 +933,10 @@ void __41__AMSUIWebJSProperties__deviceProperties__block_invoke(uint64_t a1)
 
         else
         {
-          v17 = [v13 generateGlobalProperties];
-          v18 = [v13 globalName];
-          v26 = [v18 lowercaseString];
-          [v3 setObject:v17 forKeyedSubscript:v26];
+          sharedWebUIConfig = [v13 generateGlobalProperties];
+          oSLogObject = [v13 globalName];
+          lowercaseString2 = [oSLogObject lowercaseString];
+          [v3 setObject:sharedWebUIConfig forKeyedSubscript:lowercaseString2];
         }
 
         ++v12;
@@ -959,13 +959,13 @@ void __41__AMSUIWebJSProperties__deviceProperties__block_invoke(uint64_t a1)
   v14[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E698CAD0];
   v13[0] = @"client";
-  v4 = [(AMSUIWebJSProperties *)self context];
-  v5 = [v4 clientInfo];
-  v6 = [(AMSUIWebJSProperties *)self _propertiesForClientInfo:v5];
+  context = [(AMSUIWebJSProperties *)self context];
+  clientInfo = [context clientInfo];
+  v6 = [(AMSUIWebJSProperties *)self _propertiesForClientInfo:clientInfo];
   v13[1] = @"current";
   v14[0] = v6;
-  v7 = [MEMORY[0x1E698CAC8] currentProcess];
-  v8 = [(AMSUIWebJSProperties *)self _propertiesForClientInfo:v7];
+  currentProcess = [MEMORY[0x1E698CAC8] currentProcess];
+  v8 = [(AMSUIWebJSProperties *)self _propertiesForClientInfo:currentProcess];
   v14[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v10 = [v3 promiseWithResult:v9];
@@ -975,16 +975,16 @@ void __41__AMSUIWebJSProperties__deviceProperties__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (id)_propertiesForClientInfo:(id)a3
+- (id)_propertiesForClientInfo:(id)info
 {
   v22[5] = *MEMORY[0x1E69E9840];
   v21[0] = @"accountMediaType";
-  v3 = a3;
-  v4 = [v3 accountMediaType];
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  accountMediaType = [infoCopy accountMediaType];
+  v5 = accountMediaType;
+  if (accountMediaType)
   {
-    v6 = v4;
+    v6 = accountMediaType;
   }
 
   else
@@ -994,11 +994,11 @@ void __41__AMSUIWebJSProperties__deviceProperties__block_invoke(uint64_t a1)
 
   v22[0] = v6;
   v21[1] = @"bundleIdentifier";
-  v7 = [v3 bundleIdentifier];
-  v8 = v7;
-  if (v7)
+  bundleIdentifier = [infoCopy bundleIdentifier];
+  v8 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v9 = v7;
+    v9 = bundleIdentifier;
   }
 
   else
@@ -1008,11 +1008,11 @@ void __41__AMSUIWebJSProperties__deviceProperties__block_invoke(uint64_t a1)
 
   v22[1] = v9;
   v21[2] = @"bundleVersion";
-  v10 = [v3 clientVersion];
-  v11 = v10;
-  if (v10)
+  clientVersion = [infoCopy clientVersion];
+  v11 = clientVersion;
+  if (clientVersion)
   {
-    v12 = v10;
+    v12 = clientVersion;
   }
 
   else
@@ -1022,11 +1022,11 @@ void __41__AMSUIWebJSProperties__deviceProperties__block_invoke(uint64_t a1)
 
   v22[2] = v12;
   v21[3] = @"executableName";
-  v13 = [v3 executableName];
-  v14 = v13;
-  if (v13)
+  executableName = [infoCopy executableName];
+  v14 = executableName;
+  if (executableName)
   {
-    v15 = v13;
+    v15 = executableName;
   }
 
   else
@@ -1036,11 +1036,11 @@ void __41__AMSUIWebJSProperties__deviceProperties__block_invoke(uint64_t a1)
 
   v22[3] = v15;
   v21[4] = @"proxyApp";
-  v16 = [v3 proxyAppBundleID];
+  proxyAppBundleID = [infoCopy proxyAppBundleID];
 
-  if (v16)
+  if (proxyAppBundleID)
   {
-    v17 = v16;
+    v17 = proxyAppBundleID;
   }
 
   else
@@ -1056,15 +1056,15 @@ void __41__AMSUIWebJSProperties__deviceProperties__block_invoke(uint64_t a1)
   return v18;
 }
 
-- (id)_hexStringFromColor:(id)a3
+- (id)_hexStringFromColor:(id)color
 {
-  if (a3)
+  if (color)
   {
     v13 = 0.0;
     v14 = 0.0;
     v12 = 0.0;
     v11 = 0;
-    [a3 getRed:&v14 green:&v13 blue:&v12 alpha:&v11];
+    [color getRed:&v14 green:&v13 blue:&v12 alpha:&v11];
     v4 = v14 * 255.0;
     v5 = llroundf(v4);
     v6 = v13 * 255.0;

@@ -1,10 +1,10 @@
 @interface VKResourceManager
-- (BOOL)isDevResourceWithName:(id)a3;
+- (BOOL)isDevResourceWithName:(id)name;
 - (VKResourceManager)init;
-- (id)_localNameForResourceName:(id)a3;
-- (id)dataForResourceWithName:(id)a3;
-- (id)dataForResourceWithName:(id)a3 fallbackNameHandler:(id)a4;
-- (id)pathForResourceWithName:(id)a3;
+- (id)_localNameForResourceName:(id)name;
+- (id)dataForResourceWithName:(id)name;
+- (id)dataForResourceWithName:(id)name fallbackNameHandler:(id)handler;
+- (id)pathForResourceWithName:(id)name;
 @end
 
 @implementation VKResourceManager
@@ -26,17 +26,17 @@
   return v2;
 }
 
-- (BOOL)isDevResourceWithName:(id)a3
+- (BOOL)isDevResourceWithName:(id)name
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A2468] sharedManager];
+  nameCopy = name;
+  mEMORY[0x1E69A2468] = [MEMORY[0x1E69A2468] sharedManager];
   vkBundle = self->_vkBundle;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__VKResourceManager_isDevResourceWithName___block_invoke;
   v8[3] = &unk_1E7B38E60;
   v8[4] = self;
-  LOBYTE(self) = [v5 isDevResourceWithName:v4 fallbackBundle:vkBundle fallbackNameHandler:v8];
+  LOBYTE(self) = [mEMORY[0x1E69A2468] isDevResourceWithName:nameCopy fallbackBundle:vkBundle fallbackNameHandler:v8];
 
   return self;
 }
@@ -48,17 +48,17 @@ id __43__VKResourceManager_isDevResourceWithName___block_invoke(uint64_t a1, uin
   return v2;
 }
 
-- (id)pathForResourceWithName:(id)a3
+- (id)pathForResourceWithName:(id)name
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A2468] sharedManager];
+  nameCopy = name;
+  mEMORY[0x1E69A2468] = [MEMORY[0x1E69A2468] sharedManager];
   vkBundle = self->_vkBundle;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__VKResourceManager_pathForResourceWithName___block_invoke;
   v9[3] = &unk_1E7B38E60;
   v9[4] = self;
-  v7 = [v5 pathForResourceWithName:v4 fallbackBundle:vkBundle fallbackNameHandler:v9];
+  v7 = [mEMORY[0x1E69A2468] pathForResourceWithName:nameCopy fallbackBundle:vkBundle fallbackNameHandler:v9];
 
   return v7;
 }
@@ -70,27 +70,27 @@ id __45__VKResourceManager_pathForResourceWithName___block_invoke(uint64_t a1, u
   return v2;
 }
 
-- (id)dataForResourceWithName:(id)a3 fallbackNameHandler:(id)a4
+- (id)dataForResourceWithName:(id)name fallbackNameHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A2468] sharedManager];
-  v9 = [v8 dataForResourceWithName:v6 fallbackBundle:self->_vkBundle fallbackNameHandler:v7];
+  nameCopy = name;
+  handlerCopy = handler;
+  mEMORY[0x1E69A2468] = [MEMORY[0x1E69A2468] sharedManager];
+  v9 = [mEMORY[0x1E69A2468] dataForResourceWithName:nameCopy fallbackBundle:self->_vkBundle fallbackNameHandler:handlerCopy];
 
   return v9;
 }
 
-- (id)dataForResourceWithName:(id)a3
+- (id)dataForResourceWithName:(id)name
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A2468] sharedManager];
+  nameCopy = name;
+  mEMORY[0x1E69A2468] = [MEMORY[0x1E69A2468] sharedManager];
   vkBundle = self->_vkBundle;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__VKResourceManager_dataForResourceWithName___block_invoke;
   v9[3] = &unk_1E7B38E60;
   v9[4] = self;
-  v7 = [v5 dataForResourceWithName:v4 fallbackBundle:vkBundle fallbackNameHandler:v9];
+  v7 = [mEMORY[0x1E69A2468] dataForResourceWithName:nameCopy fallbackBundle:vkBundle fallbackNameHandler:v9];
 
   return v7;
 }
@@ -102,11 +102,11 @@ id __45__VKResourceManager_dataForResourceWithName___block_invoke(uint64_t a1, u
   return v2;
 }
 
-- (id)_localNameForResourceName:(id)a3
+- (id)_localNameForResourceName:(id)name
 {
-  v3 = a3;
-  v4 = [v3 stringByDeletingPathExtension];
-  v5 = [v3 pathExtension];
+  nameCopy = name;
+  stringByDeletingPathExtension = [nameCopy stringByDeletingPathExtension];
+  pathExtension = [nameCopy pathExtension];
   v6 = 0;
   v7 = 2;
   do
@@ -114,15 +114,15 @@ id __45__VKResourceManager_dataForResourceWithName___block_invoke(uint64_t a1, u
     v8 = v6;
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"@%lux", v7];
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_%lux", v7];
-    v11 = [v4 stringByReplacingOccurrencesOfString:v9 withString:v10];
+    v11 = [stringByDeletingPathExtension stringByReplacingOccurrencesOfString:v9 withString:v10];
 
     v6 = 1;
-    v4 = v11;
+    stringByDeletingPathExtension = v11;
     v7 = 3;
   }
 
   while ((v8 & 1) == 0);
-  v12 = [v11 stringByAppendingPathExtension:v5];
+  v12 = [v11 stringByAppendingPathExtension:pathExtension];
 
   return v12;
 }

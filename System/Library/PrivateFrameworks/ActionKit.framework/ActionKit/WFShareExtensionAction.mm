@@ -5,12 +5,12 @@
 - (id)inputConfiguration;
 - (id)inputContentClasses;
 - (id)inputType;
-- (id)localizedDescriptionSummaryWithContext:(id)a3;
+- (id)localizedDescriptionSummaryWithContext:(id)context;
 - (id)shareExtensionDefinition;
 - (id)socialServiceType;
 - (id)socialTypes;
 - (id)textItemHandling;
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4;
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input;
 @end
 
 @implementation WFShareExtensionAction
@@ -18,8 +18,8 @@
 - (id)extensionUserInfo
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(WFShareExtensionAction *)self shareExtensionDefinition];
-  v4 = [v3 objectForKey:@"UserInfo"];
+  shareExtensionDefinition = [(WFShareExtensionAction *)self shareExtensionDefinition];
+  v4 = [shareExtensionDefinition objectForKey:@"UserInfo"];
 
   if (v4)
   {
@@ -89,8 +89,8 @@
 
 - (id)textItemHandling
 {
-  v2 = [(WFShareExtensionAction *)self shareExtensionDefinition];
-  v3 = [v2 objectForKey:@"TextItemHandling"];
+  shareExtensionDefinition = [(WFShareExtensionAction *)self shareExtensionDefinition];
+  v3 = [shareExtensionDefinition objectForKey:@"TextItemHandling"];
   v4 = v3;
   if (v3)
   {
@@ -109,24 +109,24 @@
 
 - (id)socialTypes
 {
-  v2 = [(WFShareExtensionAction *)self shareExtensionDefinition];
-  v3 = [v2 objectForKey:@"SLTypes"];
+  shareExtensionDefinition = [(WFShareExtensionAction *)self shareExtensionDefinition];
+  v3 = [shareExtensionDefinition objectForKey:@"SLTypes"];
 
   return v3;
 }
 
 - (id)inputType
 {
-  v2 = [(WFShareExtensionAction *)self shareExtensionDefinition];
-  v3 = [v2 objectForKey:@"InputType"];
+  shareExtensionDefinition = [(WFShareExtensionAction *)self shareExtensionDefinition];
+  v3 = [shareExtensionDefinition objectForKey:@"InputType"];
 
   return v3;
 }
 
 - (id)contentItemClasses
 {
-  v2 = [(WFShareExtensionAction *)self shareExtensionDefinition];
-  v3 = [v2 objectForKey:@"ContentItemClasses"];
+  shareExtensionDefinition = [(WFShareExtensionAction *)self shareExtensionDefinition];
+  v3 = [shareExtensionDefinition objectForKey:@"ContentItemClasses"];
 
   v4 = [v3 if_flatMap:&__block_literal_global_298];
 
@@ -135,21 +135,21 @@
 
 - (id)inputContentClasses
 {
-  v3 = [(WFShareExtensionAction *)self contentItemClasses];
-  v4 = v3;
-  if (v3)
+  contentItemClasses = [(WFShareExtensionAction *)self contentItemClasses];
+  v4 = contentItemClasses;
+  if (contentItemClasses)
   {
-    v5 = v3;
+    v5 = contentItemClasses;
   }
 
   else
   {
-    v6 = [(WFShareExtensionAction *)self inputType];
-    if ([v6 isEqualToString:@"SLTypes"])
+    inputType = [(WFShareExtensionAction *)self inputType];
+    if ([inputType isEqualToString:@"SLTypes"])
     {
       v7 = MEMORY[0x277CBEB98];
-      v8 = [(WFShareExtensionAction *)self socialTypes];
-      v9 = [v7 setWithArray:v8];
+      socialTypes = [(WFShareExtensionAction *)self socialTypes];
+      v9 = [v7 setWithArray:socialTypes];
 
       v5 = objc_opt_new();
       if ([v9 containsObject:@"Text"])
@@ -184,16 +184,16 @@
 
 - (id)socialServiceType
 {
-  v2 = [(WFShareExtensionAction *)self shareExtensionDefinition];
-  v3 = [v2 objectForKey:@"ServiceType"];
+  shareExtensionDefinition = [(WFShareExtensionAction *)self shareExtensionDefinition];
+  v3 = [shareExtensionDefinition objectForKey:@"ServiceType"];
 
   return v3;
 }
 
 - (id)extensionBundleIdentifier
 {
-  v2 = [(WFShareExtensionAction *)self shareExtensionDefinition];
-  v3 = [v2 objectForKey:@"BundleIdentifier"];
+  shareExtensionDefinition = [(WFShareExtensionAction *)self shareExtensionDefinition];
+  v3 = [shareExtensionDefinition objectForKey:@"BundleIdentifier"];
 
   return v3;
 }
@@ -201,37 +201,37 @@
 - (id)inputConfiguration
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(WFShareExtensionAction *)self inputType];
+  inputType = [(WFShareExtensionAction *)self inputType];
 
-  if (v4)
+  if (inputType)
   {
-    v5 = [(WFShareExtensionAction *)self inputType];
-    [v3 setObject:v5 forKey:@"InputType"];
+    inputType2 = [(WFShareExtensionAction *)self inputType];
+    [v3 setObject:inputType2 forKey:@"InputType"];
   }
 
-  v6 = [(WFShareExtensionAction *)self textItemHandling];
+  textItemHandling = [(WFShareExtensionAction *)self textItemHandling];
 
-  if (v6)
+  if (textItemHandling)
   {
-    v7 = [(WFShareExtensionAction *)self textItemHandling];
-    [v3 setObject:v7 forKey:@"TextItemHandling"];
+    textItemHandling2 = [(WFShareExtensionAction *)self textItemHandling];
+    [v3 setObject:textItemHandling2 forKey:@"TextItemHandling"];
   }
 
-  v8 = [(WFShareExtensionAction *)self inputContentClasses];
+  inputContentClasses = [(WFShareExtensionAction *)self inputContentClasses];
 
-  if (v8)
+  if (inputContentClasses)
   {
-    v9 = [(WFShareExtensionAction *)self inputContentClasses];
-    v10 = [(WFShareExtensionAction *)self stringRepresentationForClasses:v9];
+    inputContentClasses2 = [(WFShareExtensionAction *)self inputContentClasses];
+    v10 = [(WFShareExtensionAction *)self stringRepresentationForClasses:inputContentClasses2];
     [v3 setObject:v10 forKey:@"InputContentItemClasses"];
   }
 
-  v11 = [(WFShareExtensionAction *)self contentItemClasses];
+  contentItemClasses = [(WFShareExtensionAction *)self contentItemClasses];
 
-  if (v11)
+  if (contentItemClasses)
   {
-    v12 = [(WFShareExtensionAction *)self contentItemClasses];
-    v13 = [(WFShareExtensionAction *)self stringRepresentationForClasses:v12];
+    contentItemClasses2 = [(WFShareExtensionAction *)self contentItemClasses];
+    v13 = [(WFShareExtensionAction *)self stringRepresentationForClasses:contentItemClasses2];
     [v3 setObject:v13 forKey:@"ContentItemClasses"];
   }
 
@@ -240,18 +240,18 @@
 
 - (id)shareExtensionDefinition
 {
-  v2 = [(WFShareExtensionAction *)self definition];
-  v3 = [v2 objectForKey:@"ShareExtension"];
+  definition = [(WFShareExtensionAction *)self definition];
+  v3 = [definition objectForKey:@"ShareExtension"];
 
   return v3;
 }
 
-- (id)localizedDescriptionSummaryWithContext:(id)a3
+- (id)localizedDescriptionSummaryWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = WFShareExtensionAction;
-  v5 = [(WFShareExtensionAction *)&v14 localizedDescriptionSummaryWithContext:v4];
+  v5 = [(WFShareExtensionAction *)&v14 localizedDescriptionSummaryWithContext:contextCopy];
   v6 = v5;
   if (v5)
   {
@@ -262,32 +262,32 @@
   {
     v8 = MEMORY[0x277CCACA8];
     v9 = WFLocalizedStringResourceWithKey(@"Shares the input with %@.", @"Shares the input with %@.");
-    v10 = [v4 localize:v9];
+    v10 = [contextCopy localize:v9];
     v11 = [(WFShareExtensionAction *)self app];
-    v12 = [v11 localizedName];
-    v7 = [v8 localizedStringWithFormat:v10, v12];
+    localizedName = [v11 localizedName];
+    v7 = [v8 localizedStringWithFormat:v10, localizedName];
   }
 
   return v7;
 }
 
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 numberOfItems])
+  interfaceCopy = interface;
+  inputCopy = input;
+  if ([inputCopy numberOfItems])
   {
-    v8 = [MEMORY[0x277CCAAB0] wf_securelyArchivedDataWithRootObject:v7];
-    v9 = [(WFShareExtensionAction *)self inputConfiguration];
-    v10 = [(WFShareExtensionAction *)self socialServiceType];
-    v11 = [(WFShareExtensionAction *)self extensionBundleIdentifier];
-    v12 = [(WFShareExtensionAction *)self extensionUserInfo];
+    v8 = [MEMORY[0x277CCAAB0] wf_securelyArchivedDataWithRootObject:inputCopy];
+    inputConfiguration = [(WFShareExtensionAction *)self inputConfiguration];
+    socialServiceType = [(WFShareExtensionAction *)self socialServiceType];
+    extensionBundleIdentifier = [(WFShareExtensionAction *)self extensionBundleIdentifier];
+    extensionUserInfo = [(WFShareExtensionAction *)self extensionUserInfo];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __59__WFShareExtensionAction_runWithRemoteUserInterface_input___block_invoke;
     v13[3] = &unk_278C21E70;
     v13[4] = self;
-    [v6 performActionWithInput:v8 inputConfiguration:v9 socialServiceType:v10 extensionBundleIdentifier:v11 extensionUserInfo:v12 completionHandler:v13];
+    [interfaceCopy performActionWithInput:v8 inputConfiguration:inputConfiguration socialServiceType:socialServiceType extensionBundleIdentifier:extensionBundleIdentifier extensionUserInfo:extensionUserInfo completionHandler:v13];
   }
 
   else

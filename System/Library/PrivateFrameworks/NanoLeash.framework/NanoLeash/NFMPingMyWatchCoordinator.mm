@@ -1,9 +1,9 @@
 @interface NFMPingMyWatchCoordinator
 + (BOOL)isPingMySupportedOnActiveDevice;
-+ (void)_updateActiveDeviceSupportedState:(id)a3;
++ (void)_updateActiveDeviceSupportedState:(id)state;
 - (NFMPingMyWatchCoordinator)init;
 - (NFMPingMyWatchCoordinatorDelegate)delegate;
-- (void)_nanoRegistryStatusChanged:(id)a3;
+- (void)_nanoRegistryStatusChanged:(id)changed;
 - (void)dealloc;
 - (void)updatePingMyWatchSupportStateIfNeeded;
 @end
@@ -17,14 +17,14 @@
   v2 = [(NFMPingMyWatchCoordinator *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__onActiveDeviceChange name:*MEMORY[0x277D2BC48] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__onActiveDeviceChange name:*MEMORY[0x277D2BC48] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel__onActiveDeviceChange name:*MEMORY[0x277D2BC50] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__onActiveDeviceChange name:*MEMORY[0x277D2BC50] object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__nanoRegistryStatusChanged_ name:*MEMORY[0x277D2BCA8] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__nanoRegistryStatusChanged_ name:*MEMORY[0x277D2BCA8] object:0];
   }
 
   return v2;
@@ -32,18 +32,18 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NFMPingMyWatchCoordinator;
   [(NFMPingMyWatchCoordinator *)&v4 dealloc];
 }
 
-- (void)_nanoRegistryStatusChanged:(id)a3
+- (void)_nanoRegistryStatusChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D2BCB0]];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D2BCB0]];
 
   if ([v5 unsignedIntegerValue] == 5)
   {
@@ -55,8 +55,8 @@
     }
 
     CFPreferencesSetAppValue(@"isPingMySupported", [MEMORY[0x277CCABB0] numberWithBool:0], @"com.apple.NanoLeash.NFMPingMyWatch");
-    v7 = [(NFMPingMyWatchCoordinator *)self delegate];
-    [v7 pingMyWatchCapabilityDidChange];
+    delegate = [(NFMPingMyWatchCoordinator *)self delegate];
+    [delegate pingMyWatchCapabilityDidChange];
   }
 }
 
@@ -99,17 +99,17 @@ void __66__NFMPingMyWatchCoordinator_updatePingMyWatchSupportStateIfNeeded__bloc
   return AppBooleanValue != 0;
 }
 
-+ (void)_updateActiveDeviceSupportedState:(id)a3
++ (void)_updateActiveDeviceSupportedState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = dispatch_get_global_queue(2, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__NFMPingMyWatchCoordinator__updateActiveDeviceSupportedState___block_invoke;
   v7[3] = &unk_279933890;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
+  v8 = stateCopy;
+  selfCopy = self;
+  v6 = stateCopy;
   dispatch_async(v5, v7);
 }
 

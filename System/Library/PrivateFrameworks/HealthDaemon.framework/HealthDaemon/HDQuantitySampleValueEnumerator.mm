@@ -1,50 +1,50 @@
 @interface HDQuantitySampleValueEnumerator
-+ (BOOL)orderedQuantityValuesBySeriesForPredicate:(id)a3 profile:(id)a4 options:(int64_t)a5 error:(id *)a6 handler:(id)a7;
-+ (BOOL)orderedQuantityValuesBySeriesForPredicate:(id)a3 transaction:(id)a4 options:(int64_t)a5 error:(id *)a6 handler:(id)a7;
-+ (BOOL)orderedQuantityValuesForPredicate:(id)a3 profile:(id)a4 options:(int64_t)a5 error:(id *)a6 handler:(id)a7;
-+ (BOOL)orderedQuantityValuesForPredicate:(id)a3 transaction:(id)a4 options:(int64_t)a5 error:(id *)a6 handler:(id)a7;
-+ (BOOL)quantityValuesForType:(id)a3 from:(id)a4 to:(id)a5 transaction:(id)a6 error:(id *)a7 handler:(id)a8;
-+ (BOOL)quantityValuesWithSourceForType:(id)a3 from:(id)a4 to:(id)a5 dataInterval:(id)a6 table:(id)a7 transaction:(id)a8 error:(id *)a9 handler:(id)a10;
-+ (BOOL)simplerOrderedQuantityValuesForPredicate:(id)a3 transaction:(id)a4 options:(int64_t)a5 error:(id *)a6 handler:(id)a7;
++ (BOOL)orderedQuantityValuesBySeriesForPredicate:(id)predicate profile:(id)profile options:(int64_t)options error:(id *)error handler:(id)handler;
++ (BOOL)orderedQuantityValuesBySeriesForPredicate:(id)predicate transaction:(id)transaction options:(int64_t)options error:(id *)error handler:(id)handler;
++ (BOOL)orderedQuantityValuesForPredicate:(id)predicate profile:(id)profile options:(int64_t)options error:(id *)error handler:(id)handler;
++ (BOOL)orderedQuantityValuesForPredicate:(id)predicate transaction:(id)transaction options:(int64_t)options error:(id *)error handler:(id)handler;
++ (BOOL)quantityValuesForType:(id)type from:(id)from to:(id)to transaction:(id)transaction error:(id *)error handler:(id)handler;
++ (BOOL)quantityValuesWithSourceForType:(id)type from:(id)from to:(id)to dataInterval:(id)interval table:(id)table transaction:(id)transaction error:(id *)error handler:(id)self0;
++ (BOOL)simplerOrderedQuantityValuesForPredicate:(id)predicate transaction:(id)transaction options:(int64_t)options error:(id *)error handler:(id)handler;
 + (id)_propertiesForEnumeration;
-+ (id)_queryForEnumerationWithPredicate:(void *)a3 transaction:(char)a4 options:;
-+ (uint64_t)_enumerateWithEnumerator:(void *)a3 endTime:(void *)a4 error:(void *)a5 handler:;
-+ (uint64_t)_enumerateWithEnumerator:(void *)a3 endTime:(void *)a4 error:(void *)a5 sampleHandler:;
-+ (uint64_t)_enumerateWithEnumerator:(void *)a3 endTime:(void *)a4 error:(void *)a5 sourceHandler:;
++ (id)_queryForEnumerationWithPredicate:(void *)predicate transaction:(char)transaction options:;
++ (uint64_t)_enumerateWithEnumerator:(void *)enumerator endTime:(void *)time error:(void *)error handler:;
++ (uint64_t)_enumerateWithEnumerator:(void *)enumerator endTime:(void *)time error:(void *)error sampleHandler:;
++ (uint64_t)_enumerateWithEnumerator:(void *)enumerator endTime:(void *)time error:(void *)error sourceHandler:;
 @end
 
 @implementation HDQuantitySampleValueEnumerator
 
-+ (BOOL)orderedQuantityValuesBySeriesForPredicate:(id)a3 profile:(id)a4 options:(int64_t)a5 error:(id *)a6 handler:(id)a7
++ (BOOL)orderedQuantityValuesBySeriesForPredicate:(id)predicate profile:(id)profile options:(int64_t)options error:(id *)error handler:(id)handler
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = [a4 database];
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  database = [profile database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __107__HDQuantitySampleValueEnumerator_orderedQuantityValuesBySeriesForPredicate_profile_options_error_handler___block_invoke;
   v18[3] = &unk_2786145D0;
-  v21 = a1;
-  v22 = a5;
-  v19 = v12;
-  v20 = v13;
-  v15 = v13;
-  v16 = v12;
-  LOBYTE(a6) = [(HDHealthEntity *)HDQuantitySampleEntity performReadTransactionWithHealthDatabase:v14 error:a6 block:v18];
+  selfCopy = self;
+  optionsCopy = options;
+  v19 = predicateCopy;
+  v20 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = predicateCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDQuantitySampleEntity performReadTransactionWithHealthDatabase:database error:error block:v18];
 
-  return a6;
+  return error;
 }
 
-+ (BOOL)orderedQuantityValuesBySeriesForPredicate:(id)a3 transaction:(id)a4 options:(int64_t)a5 error:(id *)a6 handler:(id)a7
++ (BOOL)orderedQuantityValuesBySeriesForPredicate:(id)predicate transaction:(id)transaction options:(int64_t)options error:(id *)error handler:(id)handler
 {
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v32 = a7;
-  v33 = v12;
-  v30 = v11;
-  v34 = a5;
-  v13 = [(HDQuantitySampleValueEnumerator *)a1 _queryForEnumerationWithPredicate:v11 transaction:v12 options:a5];
+  predicateCopy = predicate;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v33 = transactionCopy;
+  v30 = predicateCopy;
+  optionsCopy = options;
+  v13 = [(HDQuantitySampleValueEnumerator *)self _queryForEnumerationWithPredicate:predicateCopy transaction:transactionCopy options:options];
   v14 = +[HDQuantitySampleValueEnumerator _propertiesForEnumeration];
   v31 = [v14 indexOfObject:*MEMORY[0x277D10A40]];
   v15 = [v14 indexOfObject:@"uuid"];
@@ -72,13 +72,13 @@
   v46 = v18;
   v47 = v21;
   v48 = v22;
-  v49 = v34;
-  v23 = v32;
+  v49 = optionsCopy;
+  v23 = handlerCopy;
   v38 = v23;
   v24 = v33;
   v37 = v24;
   v39 = &v50;
-  v25 = [v13 enumerateProperties:v14 error:a6 enumerationHandler:v36];
+  v25 = [v13 enumerateProperties:v14 error:error enumerationHandler:v36];
   if (v51[3] >= 1)
   {
     _HKInitializeLogging();
@@ -97,19 +97,19 @@
   return v25;
 }
 
-+ (id)_queryForEnumerationWithPredicate:(void *)a3 transaction:(char)a4 options:
++ (id)_queryForEnumerationWithPredicate:(void *)predicate transaction:(char)transaction options:
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
+  predicateCopy = predicate;
   objc_opt_self();
   v8 = objc_opt_class();
-  v9 = [v7 databaseForEntityClass:v8];
+  v9 = [predicateCopy databaseForEntityClass:v8];
 
-  if ((a4 & 4) == 0)
+  if ((transaction & 4) == 0)
   {
-    v10 = [v8 additionalPredicateForEnumeration];
-    v11 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v6 otherPredicate:v10];
+    additionalPredicateForEnumeration = [v8 additionalPredicateForEnumeration];
+    v11 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v6 otherPredicate:additionalPredicateForEnumeration];
 
     v6 = v11;
   }
@@ -118,7 +118,7 @@
   v19[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
 
-  if ((a4 & 2) != 0)
+  if ((transaction & 2) != 0)
   {
     v14 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"uuid" entityClass:objc_opt_class() ascending:1];
     v15 = [v13 arrayByAddingObject:v14];
@@ -321,35 +321,35 @@ uint64_t __111__HDQuantitySampleValueEnumerator_orderedQuantityValuesBySeriesFor
   return *(*(*(a1 + 48) + 8) + 24);
 }
 
-+ (BOOL)orderedQuantityValuesForPredicate:(id)a3 profile:(id)a4 options:(int64_t)a5 error:(id *)a6 handler:(id)a7
++ (BOOL)orderedQuantityValuesForPredicate:(id)predicate profile:(id)profile options:(int64_t)options error:(id *)error handler:(id)handler
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = [a4 database];
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  database = [profile database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __99__HDQuantitySampleValueEnumerator_orderedQuantityValuesForPredicate_profile_options_error_handler___block_invoke;
   v18[3] = &unk_2786145D0;
-  v21 = a1;
-  v22 = a5;
-  v19 = v12;
-  v20 = v13;
-  v15 = v13;
-  v16 = v12;
-  LOBYTE(a6) = [(HDHealthEntity *)HDQuantitySampleEntity performReadTransactionWithHealthDatabase:v14 error:a6 block:v18];
+  selfCopy = self;
+  optionsCopy = options;
+  v19 = predicateCopy;
+  v20 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = predicateCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDQuantitySampleEntity performReadTransactionWithHealthDatabase:database error:error block:v18];
 
-  return a6;
+  return error;
 }
 
-+ (BOOL)simplerOrderedQuantityValuesForPredicate:(id)a3 transaction:(id)a4 options:(int64_t)a5 error:(id *)a6 handler:(id)a7
++ (BOOL)simplerOrderedQuantityValuesForPredicate:(id)predicate transaction:(id)transaction options:(int64_t)options error:(id *)error handler:(id)handler
 {
-  v9 = a5;
+  optionsCopy = options;
   v51 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v30 = a4;
-  v32 = a7;
-  v29 = v12;
-  v33 = [(HDQuantitySampleValueEnumerator *)a1 _queryForEnumerationWithPredicate:v12 transaction:v30 options:v9];
+  predicateCopy = predicate;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v29 = predicateCopy;
+  v33 = [(HDQuantitySampleValueEnumerator *)self _queryForEnumerationWithPredicate:predicateCopy transaction:transactionCopy options:optionsCopy];
   objc_opt_self();
   v46 = *MEMORY[0x277D10A40];
   v13 = v46;
@@ -377,16 +377,16 @@ uint64_t __111__HDQuantitySampleValueEnumerator_orderedQuantityValuesBySeriesFor
   v42 = v17;
   v43 = v18;
   v44 = v19;
-  v31 = v30;
+  v31 = transactionCopy;
   v35 = v31;
   v21 = v20;
   v36 = v21;
   v37 = &__block_literal_global_163;
-  v45 = a1;
-  v22 = v32;
+  selfCopy = self;
+  v22 = handlerCopy;
   v38 = v22;
   v39 = &v46;
-  if ([v33 enumerateProperties:v14 error:a6 enumerationHandler:v34])
+  if ([v33 enumerateProperties:v14 error:error enumerationHandler:v34])
   {
     if (LOBYTE(v47->length) == 1)
     {
@@ -399,7 +399,7 @@ uint64_t __111__HDQuantitySampleValueEnumerator_orderedQuantityValuesBySeriesFor
 
         v23 = [v21 hk_firstSortedObjectWithComparison:&__block_literal_global_163];
         [v23 nextDatumTime];
-        v25 = [(HDQuantitySampleValueEnumerator *)v24 _enumerateWithEnumerator:a1 endTime:v23 error:a6 sampleHandler:v22];
+        v25 = [(HDQuantitySampleValueEnumerator *)v24 _enumerateWithEnumerator:self endTime:v23 error:error sampleHandler:v22];
         if ([v23 done])
         {
           [v21 removeObject:v23];
@@ -538,10 +538,10 @@ LABEL_24:
   return v25 & 1;
 }
 
-+ (uint64_t)_enumerateWithEnumerator:(void *)a3 endTime:(void *)a4 error:(void *)a5 sampleHandler:
++ (uint64_t)_enumerateWithEnumerator:(void *)enumerator endTime:(void *)time error:(void *)error sampleHandler:
 {
-  v8 = a3;
-  v9 = a5;
+  enumeratorCopy = enumerator;
+  errorCopy = error;
   objc_opt_self();
   v35 = 0;
   v36 = &v35;
@@ -563,12 +563,12 @@ LABEL_24:
   v19[3] = &unk_278625998;
   v22 = &v35;
   v23 = &v31;
-  v10 = v9;
+  v10 = errorCopy;
   v21 = v10;
-  v11 = v8;
+  v11 = enumeratorCopy;
   v20 = v11;
   v24 = &v25;
-  v12 = [v11 enumerateDataToTime:a4 error:v19 handler:a1];
+  v12 = [v11 enumerateDataToTime:time error:v19 handler:self];
   v13 = v26[5];
   if (!v12)
   {
@@ -582,10 +582,10 @@ LABEL_11:
 LABEL_7:
     v15 = v13;
     v16 = v15;
-    if (a4)
+    if (time)
     {
       v17 = v15;
-      *a4 = v16;
+      *time = v16;
     }
 
     else
@@ -620,14 +620,14 @@ LABEL_12:
   return v14;
 }
 
-+ (BOOL)orderedQuantityValuesForPredicate:(id)a3 transaction:(id)a4 options:(int64_t)a5 error:(id *)a6 handler:(id)a7
++ (BOOL)orderedQuantityValuesForPredicate:(id)predicate transaction:(id)transaction options:(int64_t)options error:(id *)error handler:(id)handler
 {
-  v8 = a5;
-  v11 = a3;
-  v12 = a4;
-  v35 = a7;
-  v29 = v11;
-  v33 = [(HDQuantitySampleValueEnumerator *)a1 _queryForEnumerationWithPredicate:v11 transaction:v12 options:v8 | 2];
+  optionsCopy = options;
+  predicateCopy = predicate;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v29 = predicateCopy;
+  v33 = [(HDQuantitySampleValueEnumerator *)self _queryForEnumerationWithPredicate:predicateCopy transaction:transactionCopy options:optionsCopy | 2];
   v13 = +[HDQuantitySampleValueEnumerator _propertiesForEnumeration];
   v32 = [v13 indexOfObject:*MEMORY[0x277D10A40]];
   v31 = [v13 indexOfObject:@"uuid"];
@@ -656,16 +656,16 @@ LABEL_12:
   v48 = v15;
   v49 = v18;
   v50 = v19;
-  v21 = v12;
+  v21 = transactionCopy;
   v37 = v21;
   v22 = v20;
   v38 = v22;
   v39 = &__block_literal_global_301_2;
-  v51 = a1;
-  v23 = v35;
+  selfCopy = self;
+  v23 = handlerCopy;
   v40 = v23;
   v41 = &v52;
-  if ([v33 enumerateProperties:v13 error:a6 enumerationHandler:v36])
+  if ([v33 enumerateProperties:v13 error:error enumerationHandler:v36])
   {
     if (*(v53 + 24) == 1)
     {
@@ -678,7 +678,7 @@ LABEL_12:
 
         v24 = [v22 hk_firstSortedObjectWithComparison:&__block_literal_global_301_2];
         [v24 nextDatumTime];
-        v26 = [(HDQuantitySampleValueEnumerator *)v25 _enumerateWithEnumerator:a1 endTime:v24 error:a6 handler:v23];
+        v26 = [(HDQuantitySampleValueEnumerator *)v25 _enumerateWithEnumerator:self endTime:v24 error:error handler:v23];
         if ([v24 done])
         {
           [v22 removeObject:v24];
@@ -844,10 +844,10 @@ LABEL_27:
   return v32 & 1;
 }
 
-+ (uint64_t)_enumerateWithEnumerator:(void *)a3 endTime:(void *)a4 error:(void *)a5 handler:
++ (uint64_t)_enumerateWithEnumerator:(void *)enumerator endTime:(void *)time error:(void *)error handler:
 {
-  v8 = a3;
-  v9 = a5;
+  enumeratorCopy = enumerator;
+  errorCopy = error;
   objc_opt_self();
   v35 = 0;
   v36 = &v35;
@@ -869,12 +869,12 @@ LABEL_27:
   v19[3] = &unk_278625998;
   v22 = &v35;
   v23 = &v31;
-  v10 = v9;
+  v10 = errorCopy;
   v21 = v10;
-  v11 = v8;
+  v11 = enumeratorCopy;
   v20 = v11;
   v24 = &v25;
-  v12 = [v11 enumerateDataToTime:a4 error:v19 handler:a1];
+  v12 = [v11 enumerateDataToTime:time error:v19 handler:self];
   v13 = v26[5];
   if (!v12)
   {
@@ -888,10 +888,10 @@ LABEL_11:
 LABEL_7:
     v15 = v13;
     v16 = v15;
-    if (a4)
+    if (time)
     {
       v17 = v15;
-      *a4 = v16;
+      *time = v16;
     }
 
     else
@@ -939,10 +939,10 @@ uint64_t __88__HDQuantitySampleValueEnumerator__enumerateWithEnumerator_endTime_
   return *(*(*(a1 + 56) + 8) + 24);
 }
 
-+ (uint64_t)_enumerateWithEnumerator:(void *)a3 endTime:(void *)a4 error:(void *)a5 sourceHandler:
++ (uint64_t)_enumerateWithEnumerator:(void *)enumerator endTime:(void *)time error:(void *)error sourceHandler:
 {
-  v8 = a3;
-  v9 = a5;
+  enumeratorCopy = enumerator;
+  errorCopy = error;
   objc_opt_self();
   v35 = 0;
   v36 = &v35;
@@ -964,12 +964,12 @@ uint64_t __88__HDQuantitySampleValueEnumerator__enumerateWithEnumerator_endTime_
   v19[3] = &unk_278625998;
   v22 = &v35;
   v23 = &v31;
-  v10 = v9;
+  v10 = errorCopy;
   v21 = v10;
-  v11 = v8;
+  v11 = enumeratorCopy;
   v20 = v11;
   v24 = &v25;
-  v12 = [v11 enumerateDataToTime:a4 error:v19 handler:a1];
+  v12 = [v11 enumerateDataToTime:time error:v19 handler:self];
   v13 = v26[5];
   if (!v12)
   {
@@ -983,10 +983,10 @@ LABEL_11:
 LABEL_7:
     v15 = v13;
     v16 = v15;
-    if (a4)
+    if (time)
     {
       v17 = v15;
-      *a4 = v16;
+      *time = v16;
     }
 
     else
@@ -1056,26 +1056,26 @@ uint64_t __82__HDQuantitySampleValueEnumerator__enumerateWithEnumerator_endTime_
   return *(*(*(a1 + 56) + 8) + 24);
 }
 
-+ (BOOL)quantityValuesWithSourceForType:(id)a3 from:(id)a4 to:(id)a5 dataInterval:(id)a6 table:(id)a7 transaction:(id)a8 error:(id *)a9 handler:(id)a10
++ (BOOL)quantityValuesWithSourceForType:(id)type from:(id)from to:(id)to dataInterval:(id)interval table:(id)table transaction:(id)transaction error:(id *)error handler:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
-  v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v15, "code")}];
+  typeCopy = type;
+  fromCopy = from;
+  toCopy = to;
+  intervalCopy = interval;
+  tableCopy = table;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(typeCopy, "code")}];
   v66 = &stru_283BF39C8;
-  v45 = v21;
-  v57 = v20;
-  if (v16 && v17)
+  v45 = handlerCopy;
+  v57 = transactionCopy;
+  if (fromCopy && toCopy)
   {
     v23 = v22;
-    if (v18)
+    if (intervalCopy)
     {
       v24 = MEMORY[0x277CCACA8];
-      [v18 timeIntervalSinceReferenceDate];
+      [intervalCopy timeIntervalSinceReferenceDate];
       v66 = [v24 stringWithFormat:@"AND samples.start_date >= %f", v25 + -0.001];
     }
   }
@@ -1085,16 +1085,16 @@ uint64_t __82__HDQuantitySampleValueEnumerator__enumerateWithEnumerator_endTime_
     v23 = v22;
   }
 
-  v26 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v27 = [v26 features];
-  v28 = [v27 workoutTempTableChanges];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  workoutTempTableChanges = [features workoutTempTableChanges];
 
-  v44 = v15;
-  v60 = v19;
+  v44 = typeCopy;
+  v60 = tableCopy;
   v61 = v23;
-  if (v28)
+  if (workoutTempTableChanges)
   {
-    v65 = [MEMORY[0x277CCACA8] stringWithFormat:@"AND (%@.sample_type = %@)", v19, v23];
+    v65 = [MEMORY[0x277CCACA8] stringWithFormat:@"AND (%@.sample_type = %@)", tableCopy, v23];
   }
 
   else
@@ -1121,7 +1121,7 @@ uint64_t __82__HDQuantitySampleValueEnumerator__enumerateWithEnumerator_endTime_
   v31 = +[(HDSQLiteSchemaEntity *)HDSampleEntity];
   +[(HDSQLiteSchemaEntity *)HDSampleEntity];
   v32 = v43 = v30;
-  v59 = [v58 stringWithFormat:@"SELECT                      %@.%@, %@.%@, %@.%@, %@.%@, %@.%@, %@.%@, %@.%@                      FROM %@                      INNER JOIN %@ USING(%@)                      INNER JOIN %@ USING(%@)                      INNER JOIN %@ USING(%@)                      LEFT JOIN %@ USING(%@)                      INNER JOIN %@ ON %@.%@=%@.%@                      WHERE(                     (%@.%@ = %@)                      %@                      %@                     )                      ORDER BY %@.%@ ASC", v64, @"data_id", v63, @"quantity", v62, @"source_id", v56, @"start_date", v55, @"end_date", v54, @"hfd_key", v53, @"insertion_era", v19, v52, @"uuid", v49, @"data_id", v51, @"data_id", v48, @"data_id", v47, v29, @"provenance", v50, v43, v31, @"data_type", v23, v66, v65, v32, @"start_date"];
+  v59 = [v58 stringWithFormat:@"SELECT                      %@.%@, %@.%@, %@.%@, %@.%@, %@.%@, %@.%@, %@.%@                      FROM %@                      INNER JOIN %@ USING(%@)                      INNER JOIN %@ USING(%@)                      INNER JOIN %@ USING(%@)                      LEFT JOIN %@ USING(%@)                      INNER JOIN %@ ON %@.%@=%@.%@                      WHERE(                     (%@.%@ = %@)                      %@                      %@                     )                      ORDER BY %@.%@ ASC", v64, @"data_id", v63, @"quantity", v62, @"source_id", v56, @"start_date", v55, @"end_date", v54, @"hfd_key", v53, @"insertion_era", tableCopy, v52, @"uuid", v49, @"data_id", v51, @"data_id", v48, @"data_id", v47, v29, @"provenance", v50, v43, v31, @"data_type", v23, v66, v65, v32, @"start_date"];
 
   v33 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v74 = 0;
@@ -1138,11 +1138,11 @@ uint64_t __82__HDQuantitySampleValueEnumerator__enumerateWithEnumerator_endTime_
   v36 = v33;
   v69 = v36;
   v70 = &__block_literal_global_322_1;
-  v73 = a1;
+  selfCopy = self;
   v37 = v45;
   v71 = v37;
   v72 = &v74;
-  if ([v34 executeUncachedSQL:v59 error:a9 bindingHandler:0 enumerationHandler:v67])
+  if ([v34 executeUncachedSQL:v59 error:error bindingHandler:0 enumerationHandler:v67])
   {
     if (*(v75 + 24) == 1)
     {
@@ -1155,7 +1155,7 @@ uint64_t __82__HDQuantitySampleValueEnumerator__enumerateWithEnumerator_endTime_
 
         v38 = [v36 hk_firstSortedObjectWithComparison:&__block_literal_global_322_1];
         [v38 nextDatumTime];
-        v40 = [(HDQuantitySampleValueEnumerator *)v39 _enumerateWithEnumerator:a1 endTime:v38 error:a9 sourceHandler:v37];
+        v40 = [(HDQuantitySampleValueEnumerator *)v39 _enumerateWithEnumerator:self endTime:v38 error:error sourceHandler:v37];
         if ([v38 done])
         {
           [v36 removeObject:v38];
@@ -1292,38 +1292,38 @@ LABEL_24:
   return v22 & 1;
 }
 
-+ (BOOL)quantityValuesForType:(id)a3 from:(id)a4 to:(id)a5 transaction:(id)a6 error:(id *)a7 handler:(id)a8
++ (BOOL)quantityValuesForType:(id)type from:(id)from to:(id)to transaction:(id)transaction error:(id *)error handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v57 = a6;
-  v15 = a8;
+  typeCopy = type;
+  fromCopy = from;
+  toCopy = to;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   v16 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if (v14)
+  if (toCopy)
   {
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"AND %@ <= %@", @"start_date", @"end_date"];
     [v16 appendString:v17];
   }
 
-  v39 = v14;
-  v40 = v13;
-  v43 = v15;
-  if (v13)
+  v39 = toCopy;
+  v40 = fromCopy;
+  v43 = handlerCopy;
+  if (fromCopy)
   {
-    v18 = [v13 dateByAddingTimeInterval:-86400.0];
+    v18 = [fromCopy dateByAddingTimeInterval:-86400.0];
     v19 = MEMORY[0x277CCACA8];
     [v18 timeIntervalSinceReferenceDate];
     v21 = [v19 stringWithFormat:@" AND %@ >= %f", @"start_date", v20];
     [v16 appendString:v21];
     v22 = MEMORY[0x277CCACA8];
-    [v13 timeIntervalSinceReferenceDate];
+    [fromCopy timeIntervalSinceReferenceDate];
     v24 = [v22 stringWithFormat:@" AND %@ >= %f", @"end_date", v23];
     [v16 appendString:v24];
   }
 
-  v41 = v12;
-  v42 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v12, "code")}];
+  v41 = typeCopy;
+  v42 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(typeCopy, "code")}];
   v56 = MEMORY[0x277CCACA8];
   v55 = +[(HDSQLiteSchemaEntity *)HDQuantitySampleEntity];
   v54 = +[(HDSQLiteSchemaEntity *)HDQuantitySampleEntity];
@@ -1347,7 +1347,7 @@ LABEL_24:
   v71 = &v70;
   v72 = 0x2020000000;
   v73 = 1;
-  v29 = [v57 databaseForEntityClass:objc_opt_class()];
+  v29 = [transactionCopy databaseForEntityClass:objc_opt_class()];
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = __91__HDQuantitySampleValueEnumerator_quantityValuesForType_from_to_transaction_error_handler___block_invoke_2;
@@ -1358,16 +1358,16 @@ LABEL_24:
   v61[1] = 3221225472;
   v61[2] = __91__HDQuantitySampleValueEnumerator_quantityValuesForType_from_to_transaction_error_handler___block_invoke_3;
   v61[3] = &unk_2786259C0;
-  v31 = v57;
+  v31 = transactionCopy;
   v62 = v31;
   v32 = v28;
   v63 = v32;
   v64 = &__block_literal_global_335;
-  v67 = a1;
+  selfCopy = self;
   v33 = v43;
   v65 = v33;
   v66 = &v70;
-  if ([v29 executeSQL:v58 error:a7 bindingHandler:v68 enumerationHandler:v61])
+  if ([v29 executeSQL:v58 error:error bindingHandler:v68 enumerationHandler:v61])
   {
     if (*(v71 + 24) == 1)
     {
@@ -1380,7 +1380,7 @@ LABEL_24:
 
         v34 = [v32 hk_firstSortedObjectWithComparison:&__block_literal_global_335];
         [v34 nextDatumTime];
-        v36 = [(HDQuantitySampleValueEnumerator *)v35 _enumerateWithEnumerator:a1 endTime:v34 error:a7 sampleHandler:v33];
+        v36 = [(HDQuantitySampleValueEnumerator *)v35 _enumerateWithEnumerator:self endTime:v34 error:error sampleHandler:v33];
         if ([v34 done])
         {
           [v32 removeObject:v34];

@@ -1,16 +1,16 @@
 @interface CHDBar2DType
-- (CHDBar2DType)initWithChart:(id)a3;
+- (CHDBar2DType)initWithChart:(id)chart;
 - (int)defaultLabelPosition;
-- (void)setGapWidth:(int)a3;
+- (void)setGapWidth:(int)width;
 @end
 
 @implementation CHDBar2DType
 
-- (CHDBar2DType)initWithChart:(id)a3
+- (CHDBar2DType)initWithChart:(id)chart
 {
   v4.receiver = self;
   v4.super_class = CHDBar2DType;
-  result = [(CHDChartTypeWithGrouping *)&v4 initWithChart:a3];
+  result = [(CHDChartTypeWithGrouping *)&v4 initWithChart:chart];
   if (result)
   {
     *(&result->super.mGrouping + 4) = 1;
@@ -22,19 +22,19 @@
   return result;
 }
 
-- (void)setGapWidth:(int)a3
+- (void)setGapWidth:(int)width
 {
-  if (a3 >= 500)
+  if (width >= 500)
   {
-    v3 = 500;
+    widthCopy = 500;
   }
 
   else
   {
-    v3 = a3;
+    widthCopy = width;
   }
 
-  self->super.mGrouping = v3;
+  self->super.mGrouping = widthCopy;
 }
 
 - (int)defaultLabelPosition

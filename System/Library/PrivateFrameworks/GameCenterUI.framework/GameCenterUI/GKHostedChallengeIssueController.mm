@@ -1,23 +1,23 @@
 @interface GKHostedChallengeIssueController
-+ (id)hostedIssueControllerWithChallenge:(id)a3 players:(id)a4 defaultMessage:(id)a5 completionHandler:(id)a6;
++ (id)hostedIssueControllerWithChallenge:(id)challenge players:(id)players defaultMessage:(id)message completionHandler:(id)handler;
 + (id)presentationQueue;
-- (GKHostedChallengeIssueController)initWithChallenge:(id)a3 players:(id)a4 defaultMessage:(id)a5 completionHandler:(id)a6;
+- (GKHostedChallengeIssueController)initWithChallenge:(id)challenge players:(id)players defaultMessage:(id)message completionHandler:(id)handler;
 - (void)_setupChildViewController;
 - (void)_setupRemoteViewController;
 - (void)dealloc;
-- (void)doneWithPlayers:(id)a3 message:(id)a4;
-- (void)extensionDidFinishWithError:(id)a3;
-- (void)setRemoteViewController:(id)a3;
+- (void)doneWithPlayers:(id)players message:(id)message;
+- (void)extensionDidFinishWithError:(id)error;
+- (void)setRemoteViewController:(id)controller;
 @end
 
 @implementation GKHostedChallengeIssueController
 
-+ (id)hostedIssueControllerWithChallenge:(id)a3 players:(id)a4 defaultMessage:(id)a5 completionHandler:(id)a6
++ (id)hostedIssueControllerWithChallenge:(id)challenge players:(id)players defaultMessage:(id)message completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  challengeCopy = challenge;
+  playersCopy = players;
+  messageCopy = message;
+  handlerCopy = handler;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -29,10 +29,10 @@
   v20 = 3221225472;
   v21 = __112__GKHostedChallengeIssueController_hostedIssueControllerWithChallenge_players_defaultMessage_completionHandler___block_invoke;
   v22 = &unk_27966CC70;
-  v14 = v12;
+  v14 = handlerCopy;
   v23 = v14;
   v24 = &v25;
-  v15 = [(GKHostedChallengeIssueController *)v13 initWithChallenge:v9 players:v10 defaultMessage:v11 completionHandler:&v19];
+  v15 = [(GKHostedChallengeIssueController *)v13 initWithChallenge:challengeCopy players:playersCopy defaultMessage:messageCopy completionHandler:&v19];
   objc_storeStrong(v26 + 5, v15);
   [(GKHostedChallengeIssueController *)v15 setForcePicker:1, v19, v20, v21, v22];
   v16 = v23;
@@ -54,22 +54,22 @@ void __112__GKHostedChallengeIssueController_hostedIssueControllerWithChallenge_
   }
 }
 
-- (GKHostedChallengeIssueController)initWithChallenge:(id)a3 players:(id)a4 defaultMessage:(id)a5 completionHandler:(id)a6
+- (GKHostedChallengeIssueController)initWithChallenge:(id)challenge players:(id)players defaultMessage:(id)message completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  challengeCopy = challenge;
+  playersCopy = players;
+  messageCopy = message;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = GKHostedChallengeIssueController;
   v14 = [(GKHostedChallengeIssueController *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    [(GKHostedChallengeIssueController *)v14 setPlayers:v11];
-    [(GKHostedChallengeIssueController *)v15 setChallenge:v10];
-    [(GKHostedChallengeIssueController *)v15 setDefaultMessage:v12];
-    [(GKHostedChallengeIssueController *)v15 setCompletionHandler:v13];
+    [(GKHostedChallengeIssueController *)v14 setPlayers:playersCopy];
+    [(GKHostedChallengeIssueController *)v15 setChallenge:challengeCopy];
+    [(GKHostedChallengeIssueController *)v15 setDefaultMessage:messageCopy];
+    [(GKHostedChallengeIssueController *)v15 setCompletionHandler:handlerCopy];
     [(GKHostedChallengeIssueController *)v15 _setupChildViewController];
   }
 
@@ -87,18 +87,18 @@ void __112__GKHostedChallengeIssueController_hostedIssueControllerWithChallenge_
 
 - (void)_setupChildViewController
 {
-  v3 = [(GKHostedChallengeIssueController *)self view];
-  [v3 setAlpha:1.0];
+  view = [(GKHostedChallengeIssueController *)self view];
+  [view setAlpha:1.0];
 
   [(GKHostedChallengeIssueController *)self setWantsFullScreenLayout:1];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(GKHostedChallengeIssueController *)self setModalPresentationStyle:16];
-    v6 = [MEMORY[0x277D0C8C8] sharedTheme];
-    [v6 formSheetSize];
+    mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+    [mEMORY[0x277D0C8C8] formSheetSize];
     [(GKHostedChallengeIssueController *)self setPreferredContentSize:?];
   }
 
@@ -134,10 +134,10 @@ void __53__GKHostedChallengeIssueController_presentationQueue__block_invoke()
   presentationQueue_sResult = v0;
 }
 
-- (void)doneWithPlayers:(id)a3 message:(id)a4
+- (void)doneWithPlayers:(id)players message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  playersCopy = players;
+  messageCopy = message;
   if (self->_completionHandler)
   {
     block[0] = MEMORY[0x277D85DD0];
@@ -145,8 +145,8 @@ void __53__GKHostedChallengeIssueController_presentationQueue__block_invoke()
     block[2] = __60__GKHostedChallengeIssueController_doneWithPlayers_message___block_invoke;
     block[3] = &unk_27966A9A8;
     block[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = playersCopy;
+    v10 = messageCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -243,18 +243,18 @@ void __62__GKHostedChallengeIssueController__setupRemoteViewController__block_in
   }
 }
 
-- (void)setRemoteViewController:(id)a3
+- (void)setRemoteViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_remoteViewController != v5)
+  controllerCopy = controller;
+  if (self->_remoteViewController != controllerCopy)
   {
-    objc_storeStrong(&self->_remoteViewController, a3);
+    objc_storeStrong(&self->_remoteViewController, controller);
     v6 = MEMORY[0x277CBEB38];
     v7 = +[GKExtensionRemoteViewController initialItemsForExtension];
     v8 = [v6 dictionaryWithDictionary:v7];
 
-    v9 = [(GKHostedChallengeIssueController *)self players];
-    v10 = [v9 _gkMapWithBlock:&__block_literal_global_16];
+    players = [(GKHostedChallengeIssueController *)self players];
+    v10 = [players _gkMapWithBlock:&__block_literal_global_16];
 
     [v8 setObject:v10 forKeyedSubscript:@"PlayerInternalsKey"];
     v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_forcePicker];
@@ -269,8 +269,8 @@ void __62__GKHostedChallengeIssueController__setupRemoteViewController__block_in
     challenge = self->_challenge;
     if (challenge)
     {
-      v14 = [(GKChallenge *)challenge internal];
-      [v8 setObject:v14 forKeyedSubscript:@"ChallengeKey"];
+      internal = [(GKChallenge *)challenge internal];
+      [v8 setObject:internal forKeyedSubscript:@"ChallengeKey"];
     }
 
     objc_initWeak(&location, self);
@@ -308,21 +308,21 @@ void __60__GKHostedChallengeIssueController_setRemoteViewController___block_invo
   }
 }
 
-- (void)extensionDidFinishWithError:(id)a3
+- (void)extensionDidFinishWithError:(id)error
 {
-  v4 = [(GKHostedChallengeIssueController *)self completionHandler];
+  completionHandler = [(GKHostedChallengeIssueController *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(GKHostedChallengeIssueController *)self completionHandler];
-    v5[2](v5, 0, 0);
+    completionHandler2 = [(GKHostedChallengeIssueController *)self completionHandler];
+    completionHandler2[2](completionHandler2, 0, 0);
 
     [(GKHostedChallengeIssueController *)self setCompletionHandler:0];
   }
 
   [(GKChallengeIssueHostViewController *)self->_remoteViewController willMoveToParentViewController:0];
-  v6 = [(GKChallengeIssueHostViewController *)self->_remoteViewController view];
-  [v6 removeFromSuperview];
+  view = [(GKChallengeIssueHostViewController *)self->_remoteViewController view];
+  [view removeFromSuperview];
 
   [(GKChallengeIssueHostViewController *)self->_remoteViewController removeFromParentViewController];
 

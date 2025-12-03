@@ -1,8 +1,8 @@
 @interface NTTodayBanner
 - (NTTodayBanner)init;
-- (NTTodayBanner)initWithCoder:(id)a3;
-- (NTTodayBanner)initWithIdentifier:(id)a3 title:(id)a4 body:(id)a5 actionURL:(id)a6 actionButtonText:(id)a7 imageMethod:(unint64_t)a8 imageURL:(id)a9 backgroundMethod:(unint64_t)a10 solidBackgroundColorPair:(id)a11 gradientBackgroundPair:(id)a12 numberOfAppearancesToHide:(unint64_t)a13 numberOfTapsToHide:(unint64_t)a14;
-- (void)encodeWithCoder:(id)a3;
+- (NTTodayBanner)initWithCoder:(id)coder;
+- (NTTodayBanner)initWithIdentifier:(id)identifier title:(id)title body:(id)body actionURL:(id)l actionButtonText:(id)text imageMethod:(unint64_t)method imageURL:(id)rL backgroundMethod:(unint64_t)self0 solidBackgroundColorPair:(id)self1 gradientBackgroundPair:(id)self2 numberOfAppearancesToHide:(unint64_t)self3 numberOfTapsToHide:(unint64_t)self4;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTTodayBanner
@@ -33,135 +33,135 @@
   objc_exception_throw(v6);
 }
 
-- (NTTodayBanner)initWithIdentifier:(id)a3 title:(id)a4 body:(id)a5 actionURL:(id)a6 actionButtonText:(id)a7 imageMethod:(unint64_t)a8 imageURL:(id)a9 backgroundMethod:(unint64_t)a10 solidBackgroundColorPair:(id)a11 gradientBackgroundPair:(id)a12 numberOfAppearancesToHide:(unint64_t)a13 numberOfTapsToHide:(unint64_t)a14
+- (NTTodayBanner)initWithIdentifier:(id)identifier title:(id)title body:(id)body actionURL:(id)l actionButtonText:(id)text imageMethod:(unint64_t)method imageURL:(id)rL backgroundMethod:(unint64_t)self0 solidBackgroundColorPair:(id)self1 gradientBackgroundPair:(id)self2 numberOfAppearancesToHide:(unint64_t)self3 numberOfTapsToHide:(unint64_t)self4
 {
-  v20 = a3;
-  obj = a4;
-  v21 = a4;
-  v31 = a5;
-  v22 = a5;
-  v32 = a6;
-  v35 = a6;
-  v33 = a7;
-  v23 = a7;
-  v24 = a9;
-  v25 = a11;
-  v26 = a12;
+  identifierCopy = identifier;
+  obj = title;
+  titleCopy = title;
+  bodyCopy = body;
+  bodyCopy2 = body;
+  lCopy = l;
+  lCopy2 = l;
+  textCopy = text;
+  textCopy2 = text;
+  rLCopy = rL;
+  pairCopy = pair;
+  backgroundPairCopy = backgroundPair;
   v36.receiver = self;
   v36.super_class = NTTodayBanner;
   v27 = [(NTTodayBanner *)&v36 init];
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(&v27->_identifier, a3);
+    objc_storeStrong(&v27->_identifier, identifier);
     objc_storeStrong(&v28->_title, obj);
-    objc_storeStrong(&v28->_body, v31);
-    objc_storeStrong(&v28->_actionURL, v32);
-    objc_storeStrong(&v28->_actionButtonText, v33);
-    v28->_imageMethod = a8;
-    objc_storeStrong(&v28->_imageURL, a9);
-    v28->_backgroundMethod = a10;
-    objc_storeStrong(&v28->_solidBackgroundColorPair, a11);
-    objc_storeStrong(&v28->_gradientBackgroundPair, a12);
-    v28->_numberOfAppearancesToHide = a13;
-    v28->_numberOfTapsToHide = a14;
+    objc_storeStrong(&v28->_body, bodyCopy);
+    objc_storeStrong(&v28->_actionURL, lCopy);
+    objc_storeStrong(&v28->_actionButtonText, textCopy);
+    v28->_imageMethod = method;
+    objc_storeStrong(&v28->_imageURL, rL);
+    v28->_backgroundMethod = backgroundMethod;
+    objc_storeStrong(&v28->_solidBackgroundColorPair, pair);
+    objc_storeStrong(&v28->_gradientBackgroundPair, backgroundPair);
+    v28->_numberOfAppearancesToHide = hide;
+    v28->_numberOfTapsToHide = toHide;
   }
 
   return v28;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v20 = a3;
-  v4 = [(NTTodayBanner *)self identifier];
-  [v20 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(NTTodayBanner *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(NTTodayBanner *)self title];
+  title = [(NTTodayBanner *)self title];
 
-  if (v5)
+  if (title)
   {
-    v6 = [(NTTodayBanner *)self title];
-    [v20 encodeObject:v6 forKey:@"title"];
+    title2 = [(NTTodayBanner *)self title];
+    [coderCopy encodeObject:title2 forKey:@"title"];
   }
 
-  v7 = [(NTTodayBanner *)self body];
+  body = [(NTTodayBanner *)self body];
 
-  if (v7)
+  if (body)
   {
-    v8 = [(NTTodayBanner *)self body];
-    [v20 encodeObject:v8 forKey:@"body"];
+    body2 = [(NTTodayBanner *)self body];
+    [coderCopy encodeObject:body2 forKey:@"body"];
   }
 
-  v9 = [(NTTodayBanner *)self actionURL];
+  actionURL = [(NTTodayBanner *)self actionURL];
 
-  if (v9)
+  if (actionURL)
   {
-    v10 = [(NTTodayBanner *)self actionURL];
-    [v20 encodeObject:v10 forKey:@"actionURL"];
+    actionURL2 = [(NTTodayBanner *)self actionURL];
+    [coderCopy encodeObject:actionURL2 forKey:@"actionURL"];
   }
 
-  v11 = [(NTTodayBanner *)self actionButtonText];
+  actionButtonText = [(NTTodayBanner *)self actionButtonText];
 
-  if (v11)
+  if (actionButtonText)
   {
-    v12 = [(NTTodayBanner *)self actionButtonText];
-    [v20 encodeObject:v12 forKey:@"actionButtonText"];
+    actionButtonText2 = [(NTTodayBanner *)self actionButtonText];
+    [coderCopy encodeObject:actionButtonText2 forKey:@"actionButtonText"];
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NTTodayBanner imageMethod](self, "imageMethod")}];
-  [v20 encodeObject:v13 forKey:@"imageMethod"];
+  [coderCopy encodeObject:v13 forKey:@"imageMethod"];
 
-  v14 = [(NTTodayBanner *)self imageURL];
+  imageURL = [(NTTodayBanner *)self imageURL];
 
-  if (v14)
+  if (imageURL)
   {
-    v15 = [(NTTodayBanner *)self imageURL];
-    [v20 encodeObject:v15 forKey:@"imageURL"];
+    imageURL2 = [(NTTodayBanner *)self imageURL];
+    [coderCopy encodeObject:imageURL2 forKey:@"imageURL"];
   }
 
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NTTodayBanner backgroundMethod](self, "backgroundMethod")}];
-  [v20 encodeObject:v16 forKey:@"backgroundMethod"];
+  [coderCopy encodeObject:v16 forKey:@"backgroundMethod"];
 
-  v17 = [(NTTodayBanner *)self solidBackgroundColorPair];
+  solidBackgroundColorPair = [(NTTodayBanner *)self solidBackgroundColorPair];
 
-  if (v17)
+  if (solidBackgroundColorPair)
   {
-    v18 = [(NTTodayBanner *)self solidBackgroundColorPair];
-    [v20 encodeObject:v18 forKey:@"solidBackgroundColorPair"];
+    solidBackgroundColorPair2 = [(NTTodayBanner *)self solidBackgroundColorPair];
+    [coderCopy encodeObject:solidBackgroundColorPair2 forKey:@"solidBackgroundColorPair"];
   }
 
-  v19 = [(NTTodayBanner *)self gradientBackgroundPair];
-  [v20 encodeObject:v19 forKey:@"gradientBackgroundPair"];
+  gradientBackgroundPair = [(NTTodayBanner *)self gradientBackgroundPair];
+  [coderCopy encodeObject:gradientBackgroundPair forKey:@"gradientBackgroundPair"];
 
-  [v20 encodeInt64:-[NTTodayBanner numberOfAppearancesToHide](self forKey:{"numberOfAppearancesToHide"), @"numberOfAppearancesToHide"}];
-  [v20 encodeInt64:-[NTTodayBanner numberOfTapsToHide](self forKey:{"numberOfTapsToHide"), @"numberOfTapToHide"}];
+  [coderCopy encodeInt64:-[NTTodayBanner numberOfAppearancesToHide](self forKey:{"numberOfAppearancesToHide"), @"numberOfAppearancesToHide"}];
+  [coderCopy encodeInt64:-[NTTodayBanner numberOfTapsToHide](self forKey:{"numberOfTapsToHide"), @"numberOfTapToHide"}];
 }
 
-- (NTTodayBanner)initWithCoder:(id)a3
+- (NTTodayBanner)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v25 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"actionButtonText"];
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"imageMethod"];
-  v20 = [v24 intValue];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundMethod"];
-  v6 = [v19 intValue];
+  coderCopy = coder;
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionButtonText"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageMethod"];
+  intValue = [v24 intValue];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundMethod"];
+  intValue2 = [v19 intValue];
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
   v18 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v9 = [v3 decodeObjectOfClasses:v18 forKey:@"solidBackgroundColorPair"];
+  v9 = [coderCopy decodeObjectOfClasses:v18 forKey:@"solidBackgroundColorPair"];
   v10 = MEMORY[0x277CBEB98];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"gradientBackgroundPair"];
-  v14 = [v3 decodeInt64ForKey:@"numberOfAppearancesToHide"];
-  v15 = [v3 decodeInt64ForKey:@"numberOfTapToHide"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"gradientBackgroundPair"];
+  v14 = [coderCopy decodeInt64ForKey:@"numberOfAppearancesToHide"];
+  v15 = [coderCopy decodeInt64ForKey:@"numberOfTapToHide"];
 
-  v16 = [(NTTodayBanner *)self initWithIdentifier:v21 title:v25 body:v4 actionURL:v23 actionButtonText:v22 imageMethod:v20 imageURL:v5 backgroundMethod:v6 solidBackgroundColorPair:v9 gradientBackgroundPair:v13 numberOfAppearancesToHide:v14 numberOfTapsToHide:v15];
+  v16 = [(NTTodayBanner *)self initWithIdentifier:v21 title:v25 body:v4 actionURL:v23 actionButtonText:v22 imageMethod:intValue imageURL:v5 backgroundMethod:intValue2 solidBackgroundColorPair:v9 gradientBackgroundPair:v13 numberOfAppearancesToHide:v14 numberOfTapsToHide:v15];
   return v16;
 }
 

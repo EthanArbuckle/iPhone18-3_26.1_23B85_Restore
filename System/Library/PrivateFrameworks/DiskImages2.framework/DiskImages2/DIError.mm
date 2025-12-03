@@ -1,28 +1,28 @@
 @interface DIError
-+ (BOOL)failWithInError:(id)a3 outError:(id *)a4;
++ (BOOL)failWithInError:(id)error outError:(id *)outError;
 + (NSBundle)frameworkBundle;
-+ (id)copyDefaultLocalizedStringForDIErrorCode:(int64_t)a3;
-+ (id)errorWithDIException:(const void *)a3 description:(id)a4 prefix:(id)a5 error:(id *)a6;
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 verboseInfo:(id)a6 error:(id *)a7;
-+ (id)errorWithEnumValue:(int64_t)a3 verboseInfo:(id)a4;
-+ (id)errorWithPOSIXCode:(int)a3 verboseInfo:(id)a4;
-+ (id)errorWithUnexpected:(unexpected<std:(id)a4 :(id *)a5 error_code>)a3 verboseInfo:error:;
++ (id)copyDefaultLocalizedStringForDIErrorCode:(int64_t)code;
++ (id)errorWithDIException:(const void *)exception description:(id)description prefix:(id)prefix error:(id *)error;
++ (id)errorWithDomain:(id)domain code:(int64_t)code description:(id)description verboseInfo:(id)info error:(id *)error;
++ (id)errorWithEnumValue:(int64_t)value verboseInfo:(id)info;
++ (id)errorWithPOSIXCode:(int)code verboseInfo:(id)info;
++ (id)errorWithUnexpected:(unexpected<std:(id)unexpected :(id *)a5 error_code>)a3 verboseInfo:error:;
 @end
 
 @implementation DIError
 
-+ (id)copyDefaultLocalizedStringForDIErrorCode:(int64_t)a3
++ (id)copyDefaultLocalizedStringForDIErrorCode:(int64_t)code
 {
-  if (a3 > 165)
+  if (code > 165)
   {
-    if (a3 == 166)
+    if (code == 166)
     {
       return @"Corrupted shadow file(s) chain";
     }
 
-    if (a3 != 168)
+    if (code != 168)
     {
-      if (a3 == 169)
+      if (code == 169)
       {
         return @"Passphrase is too long";
       }
@@ -35,20 +35,20 @@
 
   else
   {
-    if (a3 == 152)
+    if (code == 152)
     {
       return @"The disk image is corrupted";
     }
 
-    if (a3 != 161)
+    if (code != 161)
     {
-      if (a3 == 165)
+      if (code == 165)
       {
         return @"Failed to mount filesystems";
       }
 
 LABEL_12:
-      [MEMORY[0x277CCACA8] stringWithFormat:@"Disk image operation failed with error code %d", a3];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"Disk image operation failed with error code %d", code];
       return objc_claimAutoreleasedReturnValue();
     }
 
@@ -56,52 +56,52 @@ LABEL_12:
   }
 }
 
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 verboseInfo:(id)a6 error:(id *)a7
++ (id)errorWithDomain:(id)domain code:(int64_t)code description:(id)description verboseInfo:(id)info error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  v15 = [v11 isEqualToString:*MEMORY[0x277CCA5B8]];
-  if (a4 >= 0)
+  domainCopy = domain;
+  descriptionCopy = description;
+  infoCopy = info;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v15 = [domainCopy isEqualToString:*MEMORY[0x277CCA5B8]];
+  if (code >= 0)
   {
-    v16 = a4;
+    codeCopy = code;
   }
 
   else
   {
-    v16 = -a4;
+    codeCopy = -code;
   }
 
   if (v15)
   {
-    v17 = v16;
+    codeCopy2 = codeCopy;
   }
 
   else
   {
-    v17 = a4;
+    codeCopy2 = code;
   }
 
-  if (!v12)
+  if (!descriptionCopy)
   {
-    if ([v11 isEqualToString:@"com.apple.DiskImages2.ErrorDomain"])
+    if ([domainCopy isEqualToString:@"com.apple.DiskImages2.ErrorDomain"])
     {
-      v12 = [DIError copyDefaultLocalizedStringForDIErrorCode:v17];
+      descriptionCopy = [DIError copyDefaultLocalizedStringForDIErrorCode:codeCopy2];
     }
 
     else
     {
-      v12 = 0;
+      descriptionCopy = 0;
     }
   }
 
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"(err code %d)", v17];
-  if (v12)
+  codeCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"(err code %d)", codeCopy2];
+  if (descriptionCopy)
   {
-    [v14 setObject:v12 forKeyedSubscript:*MEMORY[0x277CCA450]];
-    if (v13)
+    [dictionary setObject:descriptionCopy forKeyedSubscript:*MEMORY[0x277CCA450]];
+    if (infoCopy)
     {
       v19 = *__error();
       if (!DIForwardLogs())
@@ -114,11 +114,11 @@ LABEL_12:
           v40 = 2080;
           v41 = "+[DIError errorWithDomain:code:description:verboseInfo:error:]";
           v42 = 2114;
-          v43 = v12;
+          v43 = descriptionCopy;
           v44 = 2114;
-          v45 = v13;
+          v45 = infoCopy;
           v46 = 2114;
-          v47 = v18;
+          v47 = codeCopy2;
           _os_log_impl(&dword_248DE0000, v26, OS_LOG_TYPE_ERROR, "%.*s: %{public}@ - %{public}@ %{public}@", buf, 0x30u);
         }
 
@@ -132,11 +132,11 @@ LABEL_12:
       v40 = 2080;
       v41 = "+[DIError errorWithDomain:code:description:verboseInfo:error:]";
       v42 = 2114;
-      v43 = v12;
+      v43 = descriptionCopy;
       v44 = 2114;
-      v45 = v13;
+      v45 = infoCopy;
       v46 = 2114;
-      v47 = v18;
+      v47 = codeCopy2;
       LODWORD(v37) = 48;
       v36 = buf;
       v21 = _os_log_send_and_compose_impl();
@@ -160,9 +160,9 @@ LABEL_12:
         v40 = 2080;
         v41 = "+[DIError errorWithDomain:code:description:verboseInfo:error:]";
         v42 = 2114;
-        v43 = v12;
+        v43 = descriptionCopy;
         v44 = 2114;
-        v45 = v18;
+        v45 = codeCopy2;
         _os_log_impl(&dword_248DE0000, v29, OS_LOG_TYPE_ERROR, "%.*s: %{public}@ %{public}@", buf, 0x26u);
       }
 
@@ -176,9 +176,9 @@ LABEL_12:
     v40 = 2080;
     v41 = "+[DIError errorWithDomain:code:description:verboseInfo:error:]";
     v42 = 2114;
-    v43 = v12;
+    v43 = descriptionCopy;
     v44 = 2114;
-    v45 = v18;
+    v45 = codeCopy2;
     LODWORD(v37) = 38;
     v36 = buf;
     v25 = _os_log_send_and_compose_impl();
@@ -191,7 +191,7 @@ LABEL_12:
 
   else
   {
-    if (v13)
+    if (infoCopy)
     {
       v19 = *__error();
       if (!DIForwardLogs())
@@ -204,9 +204,9 @@ LABEL_12:
           v40 = 2080;
           v41 = "+[DIError errorWithDomain:code:description:verboseInfo:error:]";
           v42 = 2114;
-          v43 = v13;
+          v43 = infoCopy;
           v44 = 2114;
-          v45 = v18;
+          v45 = codeCopy2;
           _os_log_impl(&dword_248DE0000, v28, OS_LOG_TYPE_ERROR, "%.*s: %{public}@ %{public}@", buf, 0x26u);
         }
 
@@ -220,9 +220,9 @@ LABEL_12:
       v40 = 2080;
       v41 = "+[DIError errorWithDomain:code:description:verboseInfo:error:]";
       v42 = 2114;
-      v43 = v13;
+      v43 = infoCopy;
       v44 = 2114;
-      v45 = v18;
+      v45 = codeCopy2;
       LODWORD(v37) = 38;
       v36 = buf;
       v21 = _os_log_send_and_compose_impl();
@@ -236,7 +236,7 @@ LABEL_19:
 
 LABEL_33:
       *__error() = v19;
-      [v14 setObject:v13 forKeyedSubscript:{@"DIErrorVerboseInfo", v36, v37}];
+      [dictionary setObject:infoCopy forKeyedSubscript:{@"DIErrorVerboseInfo", v36, v37}];
       goto LABEL_42;
     }
 
@@ -251,9 +251,9 @@ LABEL_33:
         v40 = 2080;
         v41 = "+[DIError errorWithDomain:code:description:verboseInfo:error:]";
         v42 = 2114;
-        v43 = v11;
+        v43 = domainCopy;
         v44 = 2114;
-        v45 = v18;
+        v45 = codeCopy2;
         _os_log_impl(&dword_248DE0000, v30, OS_LOG_TYPE_ERROR, "%.*s: %{public}@ error %{public}@", buf, 0x26u);
       }
 
@@ -267,9 +267,9 @@ LABEL_33:
     v40 = 2080;
     v41 = "+[DIError errorWithDomain:code:description:verboseInfo:error:]";
     v42 = 2114;
-    v43 = v11;
+    v43 = domainCopy;
     v44 = 2114;
-    v45 = v18;
+    v45 = codeCopy2;
     LODWORD(v37) = 38;
     v36 = buf;
     v25 = _os_log_send_and_compose_impl();
@@ -285,12 +285,12 @@ LABEL_29:
 LABEL_41:
   *__error() = v23;
 LABEL_42:
-  v31 = [MEMORY[0x277CCA9B8] errorWithDomain:v11 code:v17 userInfo:{v14, v36, v37}];
+  v31 = [MEMORY[0x277CCA9B8] errorWithDomain:domainCopy code:codeCopy2 userInfo:{dictionary, v36, v37}];
   v32 = v31;
-  if (a7)
+  if (error)
   {
     v33 = v31;
-    *a7 = v32;
+    *error = v32;
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -298,16 +298,16 @@ LABEL_42:
   return v32;
 }
 
-+ (id)errorWithPOSIXCode:(int)a3 verboseInfo:(id)a4
++ (id)errorWithPOSIXCode:(int)code verboseInfo:(id)info
 {
-  v4 = [DIError errorWithDomain:*MEMORY[0x277CCA5B8] code:a3 description:0 verboseInfo:a4 error:0];
+  v4 = [DIError errorWithDomain:*MEMORY[0x277CCA5B8] code:code description:0 verboseInfo:info error:0];
 
   return v4;
 }
 
-+ (id)errorWithEnumValue:(int64_t)a3 verboseInfo:(id)a4
++ (id)errorWithEnumValue:(int64_t)value verboseInfo:(id)info
 {
-  v4 = [DIError errorWithDomain:@"com.apple.DiskImages2.ErrorDomain" code:a3 description:0 verboseInfo:a4 error:0];
+  v4 = [DIError errorWithDomain:@"com.apple.DiskImages2.ErrorDomain" code:value description:0 verboseInfo:info error:0];
 
   return v4;
 }
@@ -333,21 +333,21 @@ void __26__DIError_frameworkBundle__block_invoke()
   +[DIError frameworkBundle]::_bundle = v1;
 }
 
-+ (BOOL)failWithInError:(id)a3 outError:(id *)a4
++ (BOOL)failWithInError:(id)error outError:(id *)outError
 {
-  if (a4)
+  if (outError)
   {
-    *a4 = a3;
+    *outError = error;
   }
 
   return 0;
 }
 
-+ (id)errorWithDIException:(const void *)a3 description:(id)a4 prefix:(id)a5 error:(id *)a6
++ (id)errorWithDIException:(const void *)exception description:(id)description prefix:(id)prefix error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = *(a3 + 2);
+  descriptionCopy = description;
+  prefixCopy = prefix;
+  v11 = *(exception + 2);
   if (v11 >= 0)
   {
     v12 = v11;
@@ -366,10 +366,10 @@ void __26__DIError_frameworkBundle__block_invoke()
 
   v14 = v13;
   v15 = MEMORY[0x277CCACA8];
-  v16 = (*(*a3 + 16))(a3);
-  if (v10)
+  v16 = (*(*exception + 16))(exception);
+  if (prefixCopy)
   {
-    [v15 stringWithFormat:@"%@: %s", v10, v16];
+    [v15 stringWithFormat:@"%@: %s", prefixCopy, v16];
   }
 
   else
@@ -377,12 +377,12 @@ void __26__DIError_frameworkBundle__block_invoke()
     [v15 stringWithUTF8String:v16];
   }
   v17 = ;
-  v18 = [DIError errorWithDomain:v14 code:v12 description:v9 verboseInfo:v17 error:a6];
+  v18 = [DIError errorWithDomain:v14 code:v12 description:descriptionCopy verboseInfo:v17 error:error];
 
   return v18;
 }
 
-+ (id)errorWithUnexpected:(unexpected<std:(id)a4 :(id *)a5 error_code>)a3 verboseInfo:error:
++ (id)errorWithUnexpected:(unexpected<std:(id)unexpected :(id *)a5 error_code>)a3 verboseInfo:error:
 {
   if (a3.var0.var0 >= 0)
   {

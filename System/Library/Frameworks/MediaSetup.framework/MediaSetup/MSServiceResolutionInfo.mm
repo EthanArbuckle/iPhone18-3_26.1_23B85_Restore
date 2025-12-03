@@ -1,15 +1,15 @@
 @interface MSServiceResolutionInfo
-- (MSServiceResolutionInfo)initWithCoder:(id)a3;
-- (MSServiceResolutionInfo)initWithServiceAppInfo:(id)a3 userAccountInfo:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MSServiceResolutionInfo)initWithCoder:(id)coder;
+- (MSServiceResolutionInfo)initWithServiceAppInfo:(id)info userAccountInfo:(id)accountInfo;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSServiceResolutionInfo
 
-- (MSServiceResolutionInfo)initWithServiceAppInfo:(id)a3 userAccountInfo:(id)a4
+- (MSServiceResolutionInfo)initWithServiceAppInfo:(id)info userAccountInfo:(id)accountInfo
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  accountInfoCopy = accountInfo;
   v13.receiver = self;
   v13.super_class = MSServiceResolutionInfo;
   v9 = [(MSServiceResolutionInfo *)&v13 init];
@@ -20,10 +20,10 @@
   }
 
   v11 = 0;
-  if (v7 && v8)
+  if (infoCopy && accountInfoCopy)
   {
-    objc_storeStrong(&v9->_serviceAppInfo, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_serviceAppInfo, info);
+    objc_storeStrong(p_isa + 2, accountInfo);
 LABEL_5:
     v11 = p_isa;
   }
@@ -31,33 +31,33 @@ LABEL_5:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serviceAppInfo = self->_serviceAppInfo;
-  v5 = a3;
-  [v5 encodeObject:serviceAppInfo forKey:@"MSSRAppInfoEncodedKey"];
-  [v5 encodeObject:self->_userAccountInfo forKey:@"MSSRUserAccountEncodedKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:serviceAppInfo forKey:@"MSSRAppInfoEncodedKey"];
+  [coderCopy encodeObject:self->_userAccountInfo forKey:@"MSSRUserAccountEncodedKey"];
 }
 
-- (MSServiceResolutionInfo)initWithCoder:(id)a3
+- (MSServiceResolutionInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSSRAppInfoEncodedKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSSRAppInfoEncodedKey"];
   serviceAppInfo = self->_serviceAppInfo;
   self->_serviceAppInfo = v5;
 
-  if (self->_serviceAppInfo && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSSRUserAccountEncodedKey"], v7 = objc_claimAutoreleasedReturnValue(), userAccountInfo = self->_userAccountInfo, self->_userAccountInfo = v7, userAccountInfo, self->_userAccountInfo))
+  if (self->_serviceAppInfo && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSSRUserAccountEncodedKey"], v7 = objc_claimAutoreleasedReturnValue(), userAccountInfo = self->_userAccountInfo, self->_userAccountInfo = v7, userAccountInfo, self->_userAccountInfo))
   {
     self = [(MSServiceResolutionInfo *)self initWithServiceAppInfo:self->_serviceAppInfo userAccountInfo:?];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

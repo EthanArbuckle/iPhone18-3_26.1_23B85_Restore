@@ -12,12 +12,12 @@
 
 + (id)writableTypeIdentifiersForItemProvider
 {
-  v0 = [MEMORY[0x1E695DF70] array];
-  [v0 addObject:@"com.apple.mobilemail.internalMessageTransfer"];
-  v1 = [MEMORY[0x1E699AD30] externalDataTypeIdentifiers];
-  [v0 addObjectsFromArray:v1];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:@"com.apple.mobilemail.internalMessageTransfer"];
+  externalDataTypeIdentifiers = [MEMORY[0x1E699AD30] externalDataTypeIdentifiers];
+  [array addObjectsFromArray:externalDataTypeIdentifiers];
 
-  return v0;
+  return array;
 }
 
 - (id)loadDataWithTypeIdentifier:()NSItemProvider forItemProviderCompletionHandler:
@@ -33,49 +33,49 @@
   v9 = v8;
   v31 = v9;
   v10 = _Block_copy(&v27);
-  v11 = [a1 subject];
-  if ([v11 length])
+  subject = [self subject];
+  if ([subject length])
   {
-    v12 = [a1 subject];
-    [v12 subjectString];
+    subject2 = [self subject];
+    [subject2 subjectString];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.messageui"];
-    [v12 localizedStringForKey:@"NO_SUBJECT" value:&stru_1F3CF3758 table:@"Main"];
+    subject2 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.messageui"];
+    [subject2 localizedStringForKey:@"NO_SUBJECT" value:&stru_1F3CF3758 table:@"Main"];
   }
   v13 = ;
 
   if ([v9 conformsToType:*MEMORY[0x1E6982DA8]])
   {
-    [a1 _loadMessageDataWithCompletion:v7];
+    [self _loadMessageDataWithCompletion:v7];
 LABEL_6:
     v14 = 0;
     goto LABEL_12;
   }
 
-  v15 = [MEMORY[0x1E69636A8] writableTypeIdentifiersForItemProvider];
-  v16 = [v15 containsObject:v6];
+  writableTypeIdentifiersForItemProvider = [MEMORY[0x1E69636A8] writableTypeIdentifiersForItemProvider];
+  v16 = [writableTypeIdentifiersForItemProvider containsObject:v6];
 
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x1E69636A8]);
     v18 = *MEMORY[0x1E69ADCA8];
-    v19 = [v17 initWithActivityType:*MEMORY[0x1E69ADCA8]];
-    [v19 setTitle:v13];
+    globalMessageURL2 = [v17 initWithActivityType:*MEMORY[0x1E69ADCA8]];
+    [globalMessageURL2 setTitle:v13];
     v20 = *MEMORY[0x1E69ADCB0];
     v33[0] = v18;
     v21 = *MEMORY[0x1E69ADC58];
     v32[0] = v20;
     v32[1] = v21;
-    v22 = [a1 globalMessageURL];
-    v23 = [v22 absoluteString];
-    v33[1] = v23;
+    globalMessageURL = [self globalMessageURL];
+    absoluteString = [globalMessageURL absoluteString];
+    v33[1] = absoluteString;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
-    [v19 setUserInfo:v24];
+    [globalMessageURL2 setUserInfo:v24];
 
-    v25 = [v19 loadDataWithTypeIdentifier:v6 forItemProviderCompletionHandler:v7];
+    v25 = [globalMessageURL2 loadDataWithTypeIdentifier:v6 forItemProviderCompletionHandler:v7];
 LABEL_11:
     v14 = v25;
 
@@ -84,9 +84,9 @@ LABEL_11:
 
   if ([v9 conformsToType:*MEMORY[0x1E6983030]])
   {
-    v19 = [a1 globalMessageURL];
-    [v19 _setTitle:v13];
-    v25 = [v19 loadDataWithTypeIdentifier:v6 forItemProviderCompletionHandler:v7];
+    globalMessageURL2 = [self globalMessageURL];
+    [globalMessageURL2 _setTitle:v13];
+    v25 = [globalMessageURL2 loadDataWithTypeIdentifier:v6 forItemProviderCompletionHandler:v7];
     goto LABEL_11;
   }
 
@@ -105,14 +105,14 @@ LABEL_12:
 {
   v3 = a3;
   v4 = [MEMORY[0x1E6982C40] typeWithIdentifier:v3];
-  v5 = [MEMORY[0x1E696AAB0] writableTypeIdentifiersForItemProvider];
-  if (![v5 containsObject:v3] || (objc_msgSend(v4, "conformsToType:", *MEMORY[0x1E6982DA8]) & 1) != 0)
+  writableTypeIdentifiersForItemProvider = [MEMORY[0x1E696AAB0] writableTypeIdentifiersForItemProvider];
+  if (![writableTypeIdentifiersForItemProvider containsObject:v3] || (objc_msgSend(v4, "conformsToType:", *MEMORY[0x1E6982DA8]) & 1) != 0)
   {
     goto LABEL_5;
   }
 
-  v6 = [MEMORY[0x1E69636A8] readableTypeIdentifiersForItemProvider];
-  if ([v6 containsObject:v3])
+  readableTypeIdentifiersForItemProvider = [MEMORY[0x1E69636A8] readableTypeIdentifiersForItemProvider];
+  if ([readableTypeIdentifiersForItemProvider containsObject:v3])
   {
 
 LABEL_5:
@@ -138,17 +138,17 @@ LABEL_7:
 {
   v7 = a3;
   v8 = a4;
-  v9 = [MEMORY[0x1E696AAB0] writableTypeIdentifiersForItemProvider];
-  v10 = [v9 containsObject:v7];
+  writableTypeIdentifiersForItemProvider = [MEMORY[0x1E696AAB0] writableTypeIdentifiersForItemProvider];
+  v10 = [writableTypeIdentifiersForItemProvider containsObject:v7];
 
   if ((v10 & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"MFMailMessage+NSItemProvider.m" lineNumber:102 description:@"Attempting to load file representation for an incompatible type."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFMailMessage+NSItemProvider.m" lineNumber:102 description:@"Attempting to load file representation for an incompatible type."];
   }
 
-  v11 = [a1 _attributedSubject];
-  v12 = [v11 _loadFileRepresentationOfTypeIdentifier:v7 forItemProviderCompletionHandler:v8];
+  _attributedSubject = [self _attributedSubject];
+  v12 = [_attributedSubject _loadFileRepresentationOfTypeIdentifier:v7 forItemProviderCompletionHandler:v8];
 
   return v12;
 }
@@ -156,26 +156,26 @@ LABEL_7:
 - (id)_attributedSubject
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 subject];
-  if ([v2 length])
+  subject = [self subject];
+  if ([subject length])
   {
-    v3 = [a1 subject];
-    [v3 subjectString];
+    subject2 = [self subject];
+    [subject2 subjectString];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.messageui"];
-    [v3 localizedStringForKey:@"NO_SUBJECT" value:&stru_1F3CF3758 table:@"Main"];
+    subject2 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.messageui"];
+    [subject2 localizedStringForKey:@"NO_SUBJECT" value:&stru_1F3CF3758 table:@"Main"];
   }
   v4 = ;
 
-  v5 = [a1 globalMessageURL];
+  globalMessageURL = [self globalMessageURL];
   v6 = 0;
-  if ([v4 length] && v5)
+  if ([v4 length] && globalMessageURL)
   {
     v9 = *MEMORY[0x1E69DB670];
-    v10[0] = v5;
+    v10[0] = globalMessageURL;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4 attributes:v7];
   }
@@ -186,27 +186,27 @@ LABEL_7:
 - (void)_loadMessageDataWithCompletion:()NSItemProvider
 {
   v4 = a3;
-  v5 = [a1 messageStore];
+  messageStore = [self messageStore];
   v11 = 0;
   v6 = objc_alloc_init(MEMORY[0x1E69AD698]);
-  v7 = [v5 headerDataForMessage:a1 downloadIfNecessary:1];
+  v7 = [messageStore headerDataForMessage:self downloadIfNecessary:1];
   [v6 appendData:v7];
 
-  v8 = [v5 fullBodyDataForMessage:a1 andHeaderDataIfReadilyAvailable:0 isComplete:&v11 downloadIfNecessary:1 didDownload:0];
+  v8 = [messageStore fullBodyDataForMessage:self andHeaderDataIfReadilyAvailable:0 isComplete:&v11 downloadIfNecessary:1 didDownload:0];
   [v6 appendData:v8];
 
   [v6 done];
   if (v11 == 1)
   {
-    v9 = [v6 data];
-    v4[2](v4, v9, 0);
+    data = [v6 data];
+    v4[2](v4, data, 0);
   }
 
   else
   {
     v10 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v9 = [v10 initWithDomain:*MEMORY[0x1E69B1560] code:1030 userInfo:0];
-    (v4)[2](v4, 0, v9);
+    data = [v10 initWithDomain:*MEMORY[0x1E69B1560] code:1030 userInfo:0];
+    (v4)[2](v4, 0, data);
   }
 }
 
@@ -232,10 +232,10 @@ LABEL_7:
           objc_enumerationMutation(v3);
         }
 
-        v7 = [*(*(&v13 + 1) + 8 * v6) itemProvider];
-        v8 = [v7 registeredTypeIdentifiers];
-        v9 = [v8 firstObject];
-        v10 = [v9 isEqualToString:@"com.apple.mobilemail.internalMessageTransfer"];
+        itemProvider = [*(*(&v13 + 1) + 8 * v6) itemProvider];
+        registeredTypeIdentifiers = [itemProvider registeredTypeIdentifiers];
+        firstObject = [registeredTypeIdentifiers firstObject];
+        v10 = [firstObject isEqualToString:@"com.apple.mobilemail.internalMessageTransfer"];
 
         if ((v10 & 1) == 0)
         {

@@ -1,36 +1,36 @@
 @interface BYODDeleteEmailRequest
-- (BYODDeleteEmailRequest)initWithAccount:(id)a3 accountStore:(id)a4 domain:(id)a5 emailArray:(id)a6 dsid:(id)a7 invitedEmail:(id)a8 invitedPhone:(id)a9;
+- (BYODDeleteEmailRequest)initWithAccount:(id)account accountStore:(id)store domain:(id)domain emailArray:(id)array dsid:(id)dsid invitedEmail:(id)email invitedPhone:(id)phone;
 - (id)bodyDictionary;
 - (id)urlString;
-- (void)performRequestWithCallback:(id)a3;
+- (void)performRequestWithCallback:(id)callback;
 @end
 
 @implementation BYODDeleteEmailRequest
 
-- (BYODDeleteEmailRequest)initWithAccount:(id)a3 accountStore:(id)a4 domain:(id)a5 emailArray:(id)a6 dsid:(id)a7 invitedEmail:(id)a8 invitedPhone:(id)a9
+- (BYODDeleteEmailRequest)initWithAccount:(id)account accountStore:(id)store domain:(id)domain emailArray:(id)array dsid:(id)dsid invitedEmail:(id)email invitedPhone:(id)phone
 {
-  v15 = a3;
-  v16 = a4;
-  v26 = a5;
-  v17 = a6;
-  v25 = a7;
-  v24 = a8;
-  v18 = a9;
-  v19 = [(BYODDeleteEmailRequest *)self urlString];
+  accountCopy = account;
+  storeCopy = store;
+  domainCopy = domain;
+  arrayCopy = array;
+  dsidCopy = dsid;
+  emailCopy = email;
+  phoneCopy = phone;
+  urlString = [(BYODDeleteEmailRequest *)self urlString];
   v27.receiver = self;
   v27.super_class = BYODDeleteEmailRequest;
-  v20 = [(BYODRequest *)&v27 initWithURLString:v19 accountStore:v16 appleAccount:v15 httpRequestType:@"POST" requestBody:0 httpHeader:0];
+  v20 = [(BYODRequest *)&v27 initWithURLString:urlString accountStore:storeCopy appleAccount:accountCopy httpRequestType:@"POST" requestBody:0 httpHeader:0];
 
   if (v20)
   {
-    objc_storeStrong(&v20->_domainName, a5);
-    v21 = [v17 copy];
+    objc_storeStrong(&v20->_domainName, domain);
+    v21 = [arrayCopy copy];
     emailArray = v20->_emailArray;
     v20->_emailArray = v21;
 
-    objc_storeStrong(&v20->_dsid, a7);
-    objc_storeStrong(&v20->_invitedEmail, a8);
-    objc_storeStrong(&v20->_invitedPhone, a9);
+    objc_storeStrong(&v20->_dsid, dsid);
+    objc_storeStrong(&v20->_invitedEmail, email);
+    objc_storeStrong(&v20->_invitedPhone, phone);
   }
 
   return v20;
@@ -38,21 +38,21 @@
 
 - (id)urlString
 {
-  v2 = [(BYODRequest *)self iCloudAppleAccount];
-  v3 = [v2 propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
+  iCloudAppleAccount = [(BYODRequest *)self iCloudAppleAccount];
+  v3 = [iCloudAppleAccount propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
   v4 = [v3 objectForKeyedSubscript:@"deleteCustomEmailURL"];
 
   return v4;
 }
 
-- (void)performRequestWithCallback:(id)a3
+- (void)performRequestWithCallback:(id)callback
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_5A72C;
   v5[3] = &unk_B97F0;
-  v6 = a3;
-  v4 = v6;
+  callbackCopy = callback;
+  v4 = callbackCopy;
   [(BYODRequest *)self performRequestWithHandler:v5];
 }
 

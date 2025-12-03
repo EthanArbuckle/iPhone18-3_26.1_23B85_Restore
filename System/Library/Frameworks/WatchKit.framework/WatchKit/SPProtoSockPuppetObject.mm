@@ -1,26 +1,26 @@
 @interface SPProtoSockPuppetObject
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNBOOL:(BOOL)a3;
-- (void)setHasNfloat:(BOOL)a3;
-- (void)setHasNint32:(BOOL)a3;
-- (void)setHasNint64:(BOOL)a3;
-- (void)setHasNuint32:(BOOL)a3;
-- (void)setHasNuint64:(BOOL)a3;
-- (void)setHasSubtype:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNBOOL:(BOOL)l;
+- (void)setHasNfloat:(BOOL)nfloat;
+- (void)setHasNint32:(BOOL)nint32;
+- (void)setHasNint64:(BOOL)nint64;
+- (void)setHasNuint32:(BOOL)nuint32;
+- (void)setHasNuint64:(BOOL)nuint64;
+- (void)setHasSubtype:(BOOL)subtype;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SPProtoSockPuppetObject
 
-- (void)setHasSubtype:(BOOL)a3
+- (void)setHasSubtype:(BOOL)subtype
 {
-  if (a3)
+  if (subtype)
   {
     v3 = 64;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasNfloat:(BOOL)a3
+- (void)setHasNfloat:(BOOL)nfloat
 {
-  if (a3)
+  if (nfloat)
   {
     v3 = 8;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNint64:(BOOL)a3
+- (void)setHasNint64:(BOOL)nint64
 {
-  if (a3)
+  if (nint64)
   {
     v3 = 2;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasNint32:(BOOL)a3
+- (void)setHasNint32:(BOOL)nint32
 {
-  if (a3)
+  if (nint32)
   {
     v3 = 16;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasNuint64:(BOOL)a3
+- (void)setHasNuint64:(BOOL)nuint64
 {
-  if (a3)
+  if (nuint64)
   {
     v3 = 4;
   }
@@ -93,9 +93,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNuint32:(BOOL)a3
+- (void)setHasNuint32:(BOOL)nuint32
 {
-  if (a3)
+  if (nuint32)
   {
     v3 = 32;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasNBOOL:(BOOL)a3
+- (void)setHasNBOOL:(BOOL)l
 {
-  if (a3)
+  if (l)
   {
     v3 = 0x80;
   }
@@ -129,48 +129,48 @@
   v8.receiver = self;
   v8.super_class = SPProtoSockPuppetObject;
   v4 = [(SPProtoSockPuppetObject *)&v8 description];
-  v5 = [(SPProtoSockPuppetObject *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SPProtoSockPuppetObject *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_type];
-  [v3 setObject:v4 forKey:@"type"];
+  [dictionary setObject:v4 forKey:@"type"];
 
   if ((*&self->_has & 0x40) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInt:self->_subtype];
-    [v3 setObject:v6 forKey:@"subtype"];
+    [dictionary setObject:v6 forKey:@"subtype"];
   }
 
   cacheMessage = self->_cacheMessage;
   if (cacheMessage)
   {
-    v8 = [(SPProtoCacheMessage *)cacheMessage dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"cacheMessage"];
+    dictionaryRepresentation = [(SPProtoCacheMessage *)cacheMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"cacheMessage"];
   }
 
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   text = self->_text;
   if (text)
   {
-    [v3 setObject:text forKey:@"text"];
+    [dictionary setObject:text forKey:@"text"];
   }
 
   has = self->_has;
   if (has)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_ndouble];
-    [v3 setObject:v14 forKey:@"ndouble"];
+    [dictionary setObject:v14 forKey:@"ndouble"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -192,7 +192,7 @@ LABEL_11:
 
   *&v5 = self->_nfloat;
   v15 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
-  [v3 setObject:v15 forKey:@"nfloat"];
+  [dictionary setObject:v15 forKey:@"nfloat"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -208,7 +208,7 @@ LABEL_12:
 
 LABEL_23:
   v16 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_nint64];
-  [v3 setObject:v16 forKey:@"nint64"];
+  [dictionary setObject:v16 forKey:@"nint64"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -224,7 +224,7 @@ LABEL_13:
 
 LABEL_24:
   v17 = [MEMORY[0x277CCABB0] numberWithInt:self->_nint32];
-  [v3 setObject:v17 forKey:@"nint32"];
+  [dictionary setObject:v17 forKey:@"nint32"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -237,7 +237,7 @@ LABEL_14:
 
 LABEL_26:
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_nuint32];
-    [v3 setObject:v19 forKey:@"nuint32"];
+    [dictionary setObject:v19 forKey:@"nuint32"];
 
     if ((*&self->_has & 0x80) == 0)
     {
@@ -249,7 +249,7 @@ LABEL_26:
 
 LABEL_25:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_nuint64];
-  [v3 setObject:v18 forKey:@"nuint64"];
+  [dictionary setObject:v18 forKey:@"nuint64"];
 
   has = self->_has;
   if ((has & 0x20) != 0)
@@ -265,23 +265,23 @@ LABEL_15:
 
 LABEL_27:
   v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_nBOOL];
-  [v3 setObject:v20 forKey:@"nBOOL"];
+  [dictionary setObject:v20 forKey:@"nBOOL"];
 
 LABEL_16:
   object = self->_object;
   if (object)
   {
-    [v3 setObject:object forKey:@"object"];
+    [dictionary setObject:object forKey:@"object"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   type = self->_type;
-  v16 = v4;
+  v16 = toCopy;
   PBDataWriterWriteInt32Field();
   if ((*&self->_has & 0x40) != 0)
   {
@@ -415,40 +415,40 @@ LABEL_16:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[22] = self->_type;
+  toCopy = to;
+  toCopy[22] = self->_type;
   if ((*&self->_has & 0x40) != 0)
   {
-    v4[18] = self->_subtype;
-    *(v4 + 96) |= 0x40u;
+    toCopy[18] = self->_subtype;
+    *(toCopy + 96) |= 0x40u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_cacheMessage)
   {
-    [v4 setCacheMessage:?];
-    v4 = v6;
+    [toCopy setCacheMessage:?];
+    toCopy = v6;
   }
 
   if (self->_key)
   {
     [v6 setKey:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_text)
   {
     [v6 setText:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_ndouble;
-    *(v4 + 96) |= 1u;
+    *(toCopy + 1) = *&self->_ndouble;
+    *(toCopy + 96) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -467,8 +467,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v4[12] = LODWORD(self->_nfloat);
-  *(v4 + 96) |= 8u;
+  toCopy[12] = LODWORD(self->_nfloat);
+  *(toCopy + 96) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -482,8 +482,8 @@ LABEL_12:
   }
 
 LABEL_23:
-  *(v4 + 2) = self->_nint64;
-  *(v4 + 96) |= 2u;
+  *(toCopy + 2) = self->_nint64;
+  *(toCopy + 96) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -497,8 +497,8 @@ LABEL_13:
   }
 
 LABEL_24:
-  v4[13] = self->_nint32;
-  *(v4 + 96) |= 0x10u;
+  toCopy[13] = self->_nint32;
+  *(toCopy + 96) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -509,8 +509,8 @@ LABEL_14:
     }
 
 LABEL_26:
-    v4[14] = self->_nuint32;
-    *(v4 + 96) |= 0x20u;
+    toCopy[14] = self->_nuint32;
+    *(toCopy + 96) |= 0x20u;
     if ((*&self->_has & 0x80) == 0)
     {
       goto LABEL_16;
@@ -520,8 +520,8 @@ LABEL_26:
   }
 
 LABEL_25:
-  *(v4 + 3) = self->_nuint64;
-  *(v4 + 96) |= 4u;
+  *(toCopy + 3) = self->_nuint64;
+  *(toCopy + 96) |= 4u;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -535,19 +535,19 @@ LABEL_15:
   }
 
 LABEL_27:
-  *(v4 + 92) = self->_nBOOL;
-  *(v4 + 96) |= 0x80u;
+  *(toCopy + 92) = self->_nBOOL;
+  *(toCopy + 96) |= 0x80u;
 LABEL_16:
   if (self->_object)
   {
     [v6 setObject:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   *(v5 + 88) = self->_type;
   if ((*&self->_has & 0x40) != 0)
@@ -556,15 +556,15 @@ LABEL_16:
     *(v5 + 96) |= 0x40u;
   }
 
-  v7 = [(SPProtoCacheMessage *)self->_cacheMessage copyWithZone:a3];
+  v7 = [(SPProtoCacheMessage *)self->_cacheMessage copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
-  v9 = [(NSString *)self->_key copyWithZone:a3];
+  v9 = [(NSString *)self->_key copyWithZone:zone];
   v10 = *(v6 + 40);
   *(v6 + 40) = v9;
 
-  v11 = [(NSString *)self->_text copyWithZone:a3];
+  v11 = [(NSString *)self->_text copyWithZone:zone];
   v12 = *(v6 + 80);
   *(v6 + 80) = v11;
 
@@ -662,43 +662,43 @@ LABEL_9:
   }
 
 LABEL_10:
-  v14 = [(NSData *)self->_object copyWithZone:a3];
+  v14 = [(NSData *)self->_object copyWithZone:zone];
   v15 = *(v6 + 64);
   *(v6 + 64) = v14;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_type != *(v4 + 22))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_type != *(equalCopy + 22))
   {
     goto LABEL_49;
   }
 
-  v5 = *(v4 + 96);
+  v5 = *(equalCopy + 96);
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 96) & 0x40) == 0 || self->_subtype != *(v4 + 18))
+    if ((*(equalCopy + 96) & 0x40) == 0 || self->_subtype != *(equalCopy + 18))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 96) & 0x40) != 0)
+  else if ((*(equalCopy + 96) & 0x40) != 0)
   {
     goto LABEL_49;
   }
 
   cacheMessage = self->_cacheMessage;
-  if (cacheMessage | *(v4 + 4) && ![(SPProtoCacheMessage *)cacheMessage isEqual:?])
+  if (cacheMessage | *(equalCopy + 4) && ![(SPProtoCacheMessage *)cacheMessage isEqual:?])
   {
     goto LABEL_49;
   }
 
   key = self->_key;
-  if (key | *(v4 + 5))
+  if (key | *(equalCopy + 5))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -707,7 +707,7 @@ LABEL_10:
   }
 
   text = self->_text;
-  if (text | *(v4 + 10))
+  if (text | *(equalCopy + 10))
   {
     if (![(NSString *)text isEqual:?])
     {
@@ -715,88 +715,88 @@ LABEL_10:
     }
   }
 
-  v9 = *(v4 + 96);
+  v9 = *(equalCopy + 96);
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_ndouble != *(v4 + 1))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_ndouble != *(equalCopy + 1))
     {
       goto LABEL_49;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 96) & 8) == 0 || self->_nfloat != *(v4 + 12))
+    if ((*(equalCopy + 96) & 8) == 0 || self->_nfloat != *(equalCopy + 12))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 96) & 8) != 0)
+  else if ((*(equalCopy + 96) & 8) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_nint64 != *(v4 + 2))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_nint64 != *(equalCopy + 2))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 96) & 0x10) == 0 || self->_nint32 != *(v4 + 13))
+    if ((*(equalCopy + 96) & 0x10) == 0 || self->_nint32 != *(equalCopy + 13))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 96) & 0x10) != 0)
+  else if ((*(equalCopy + 96) & 0x10) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 96) & 4) == 0 || self->_nuint64 != *(v4 + 3))
+    if ((*(equalCopy + 96) & 4) == 0 || self->_nuint64 != *(equalCopy + 3))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 96) & 4) != 0)
+  else if ((*(equalCopy + 96) & 4) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 96) & 0x20) == 0 || self->_nuint32 != *(v4 + 14))
+    if ((*(equalCopy + 96) & 0x20) == 0 || self->_nuint32 != *(equalCopy + 14))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 96) & 0x20) != 0)
+  else if ((*(equalCopy + 96) & 0x20) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 0x80) == 0)
   {
-    if ((*(v4 + 96) & 0x80) == 0)
+    if ((*(equalCopy + 96) & 0x80) == 0)
     {
       goto LABEL_46;
     }
@@ -806,28 +806,28 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  if ((*(v4 + 96) & 0x80) == 0)
+  if ((*(equalCopy + 96) & 0x80) == 0)
   {
     goto LABEL_49;
   }
 
-  v13 = *(v4 + 92);
+  v13 = *(equalCopy + 92);
   if (self->_nBOOL)
   {
-    if ((*(v4 + 92) & 1) == 0)
+    if ((*(equalCopy + 92) & 1) == 0)
     {
       goto LABEL_49;
     }
   }
 
-  else if (*(v4 + 92))
+  else if (*(equalCopy + 92))
   {
     goto LABEL_49;
   }
 
 LABEL_46:
   object = self->_object;
-  if (object | *(v4 + 8))
+  if (object | *(equalCopy + 8))
   {
     v11 = [(NSData *)object isEqual:?];
   }
@@ -996,14 +996,14 @@ LABEL_26:
   return v3 ^ v5 ^ v6 ^ v7 ^ v10 ^ (2654435761 * type) ^ v14 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ [(NSData *)self->_object hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  self->_type = v4[22];
-  if ((v4[24] & 0x40) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  self->_type = fromCopy[22];
+  if ((fromCopy[24] & 0x40) != 0)
   {
-    self->_subtype = v4[18];
+    self->_subtype = fromCopy[18];
     *&self->_has |= 0x40u;
   }
 

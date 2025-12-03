@@ -1,23 +1,23 @@
 @interface FBARDVRow
-- (FBARDVRow)initWithTitle:(id)a3 subtitle:(id)a4 object:(id)a5;
+- (FBARDVRow)initWithTitle:(id)title subtitle:(id)subtitle object:(id)object;
 @end
 
 @implementation FBARDVRow
 
-- (FBARDVRow)initWithTitle:(id)a3 subtitle:(id)a4 object:(id)a5
+- (FBARDVRow)initWithTitle:(id)title subtitle:(id)subtitle object:(id)object
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = FBARDVRow;
   v12 = [(FBARDVRow *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_title, a3);
-    objc_storeStrong(&v13->_subtitle, a4);
-    objc_storeStrong(&v13->_object, a5);
+    objc_storeStrong(&v12->_title, title);
+    objc_storeStrong(&v13->_subtitle, subtitle);
+    objc_storeStrong(&v13->_object, object);
   }
 
   return v13;

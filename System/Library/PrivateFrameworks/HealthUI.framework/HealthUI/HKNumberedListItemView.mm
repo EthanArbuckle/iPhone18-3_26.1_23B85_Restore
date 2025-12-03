@@ -1,16 +1,16 @@
 @interface HKNumberedListItemView
 + (CGSize)listItemSize;
-+ (id)createNumberedViewWithInteger:(unint64_t)a3;
-- (HKNumberedListItemView)initWithInteger:(unint64_t)a3;
++ (id)createNumberedViewWithInteger:(unint64_t)integer;
+- (HKNumberedListItemView)initWithInteger:(unint64_t)integer;
 - (void)_setUpConstraints;
 - (void)_setUpUI;
 - (void)layoutSubviews;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation HKNumberedListItemView
 
-- (HKNumberedListItemView)initWithInteger:(unint64_t)a3
+- (HKNumberedListItemView)initWithInteger:(unint64_t)integer
 {
   v7.receiver = self;
   v7.super_class = HKNumberedListItemView;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_number = a3;
+    v4->_number = integer;
     [(HKNumberedListItemView *)v4 _setUpUI];
     [(HKNumberedListItemView *)v5 _setUpConstraints];
   }
@@ -33,24 +33,24 @@
   [(HKNumberedListItemView *)&v6 layoutSubviews];
   [(HKNumberedListItemView *)self frame];
   v3 = CGRectGetWidth(v7) * 0.5;
-  v4 = [(HKNumberedListItemView *)self layer];
-  [v4 setCornerRadius:v3];
+  layer = [(HKNumberedListItemView *)self layer];
+  [layer setCornerRadius:v3];
 
-  v5 = [(HKNumberedListItemView *)self layer];
-  [v5 setMasksToBounds:1];
+  layer2 = [(HKNumberedListItemView *)self layer];
+  [layer2 setMasksToBounds:1];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = HKNumberedListItemView;
-  v4 = a3;
-  [(HKNumberedListItemView *)&v8 setTintColor:v4];
-  v5 = v4;
-  v6 = [v5 CGColor];
+  colorCopy = color;
+  [(HKNumberedListItemView *)&v8 setTintColor:colorCopy];
+  v5 = colorCopy;
+  cGColor = [v5 CGColor];
 
-  v7 = [(HKNumberedListItemView *)self layer];
-  [v7 setBackgroundColor:v6];
+  layer = [(HKNumberedListItemView *)self layer];
+  [layer setBackgroundColor:cGColor];
 }
 
 - (void)_setUpUI
@@ -61,38 +61,38 @@
   v12 = HKNumberFormatterFromTemplate(0);
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HKNumberedListItemView number](self, "number")}];
   v5 = [v12 stringFromNumber:v4];
-  v6 = [(HKNumberedListItemView *)self numberLabel];
-  [v6 setText:v5];
+  numberLabel = [(HKNumberedListItemView *)self numberLabel];
+  [numberLabel setText:v5];
 
-  v7 = [objc_opt_class() numberFont];
-  v8 = [(HKNumberedListItemView *)self numberLabel];
-  [v8 setFont:v7];
+  numberFont = [objc_opt_class() numberFont];
+  numberLabel2 = [(HKNumberedListItemView *)self numberLabel];
+  [numberLabel2 setFont:numberFont];
 
-  v9 = [(HKNumberedListItemView *)self numberLabel];
-  [v9 setAdjustsFontForContentSizeCategory:1];
+  numberLabel3 = [(HKNumberedListItemView *)self numberLabel];
+  [numberLabel3 setAdjustsFontForContentSizeCategory:1];
 
-  v10 = [(HKNumberedListItemView *)self numberLabel];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  numberLabel4 = [(HKNumberedListItemView *)self numberLabel];
+  [numberLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(HKNumberedListItemView *)self numberLabel];
-  [(HKNumberedListItemView *)self addSubview:v11];
+  numberLabel5 = [(HKNumberedListItemView *)self numberLabel];
+  [(HKNumberedListItemView *)self addSubview:numberLabel5];
 }
 
 - (void)_setUpConstraints
 {
-  v3 = [(HKNumberedListItemView *)self numberLabel];
-  [v3 hk_alignCenterConstraintsWithView:self];
+  numberLabel = [(HKNumberedListItemView *)self numberLabel];
+  [numberLabel hk_alignCenterConstraintsWithView:self];
 }
 
-+ (id)createNumberedViewWithInteger:(unint64_t)a3
++ (id)createNumberedViewWithInteger:(unint64_t)integer
 {
-  v3 = [[HKNumberedListItemView alloc] initWithInteger:a3];
-  v4 = [MEMORY[0x1E69DC888] hk_appKeyColor];
-  [(HKNumberedListItemView *)v3 setTintColor:v4];
+  v3 = [[HKNumberedListItemView alloc] initWithInteger:integer];
+  hk_appKeyColor = [MEMORY[0x1E69DC888] hk_appKeyColor];
+  [(HKNumberedListItemView *)v3 setTintColor:hk_appKeyColor];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [(HKNumberedListItemView *)v3 numberLabel];
-  [v6 setTextColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  numberLabel = [(HKNumberedListItemView *)v3 numberLabel];
+  [numberLabel setTextColor:whiteColor];
 
   [(HKNumberedListItemView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
 

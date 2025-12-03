@@ -1,71 +1,71 @@
 @interface PSAppChannelSubscriptions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAttributes:(id)a3;
-- (void)addSubscriptionChannels:(id)a3;
-- (void)addUnsubscriptionChannels:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttributes:(id)attributes;
+- (void)addSubscriptionChannels:(id)channels;
+- (void)addUnsubscriptionChannels:(id)channels;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSAppChannelSubscriptions
 
-- (void)addSubscriptionChannels:(id)a3
+- (void)addSubscriptionChannels:(id)channels
 {
-  v4 = a3;
+  channelsCopy = channels;
   subscriptionChannels = self->_subscriptionChannels;
-  v8 = v4;
+  v8 = channelsCopy;
   if (!subscriptionChannels)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_subscriptionChannels;
     self->_subscriptionChannels = v6;
 
-    v4 = v8;
+    channelsCopy = v8;
     subscriptionChannels = self->_subscriptionChannels;
   }
 
-  [(NSMutableArray *)subscriptionChannels addObject:v4];
+  [(NSMutableArray *)subscriptionChannels addObject:channelsCopy];
 }
 
-- (void)addUnsubscriptionChannels:(id)a3
+- (void)addUnsubscriptionChannels:(id)channels
 {
-  v4 = a3;
+  channelsCopy = channels;
   unsubscriptionChannels = self->_unsubscriptionChannels;
-  v8 = v4;
+  v8 = channelsCopy;
   if (!unsubscriptionChannels)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_unsubscriptionChannels;
     self->_unsubscriptionChannels = v6;
 
-    v4 = v8;
+    channelsCopy = v8;
     unsubscriptionChannels = self->_unsubscriptionChannels;
   }
 
-  [(NSMutableArray *)unsubscriptionChannels addObject:v4];
+  [(NSMutableArray *)unsubscriptionChannels addObject:channelsCopy];
 }
 
-- (void)addAttributes:(id)a3
+- (void)addAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   attributes = self->_attributes;
-  v8 = v4;
+  v8 = attributesCopy;
   if (!attributes)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_attributes;
     self->_attributes = v6;
 
-    v4 = v8;
+    attributesCopy = v8;
     attributes = self->_attributes;
   }
 
-  [(NSMutableArray *)attributes addObject:v4];
+  [(NSMutableArray *)attributes addObject:attributesCopy];
 }
 
 - (id)description
@@ -73,8 +73,8 @@
   v7.receiver = self;
   v7.super_class = PSAppChannelSubscriptions;
   v3 = [(PSAppChannelSubscriptions *)&v7 description];
-  v4 = [(PSAppChannelSubscriptions *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PSAppChannelSubscriptions *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -111,8 +111,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -146,8 +146,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v32 objects:v41 count:16];
@@ -181,8 +181,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v28 + 1) + 8 * k) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation3 = [*(*(&v28 + 1) + 8 * k) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation3];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v28 objects:v40 count:16];
@@ -197,9 +197,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_appId)
   {
     PBDataWriterWriteStringField();
@@ -302,64 +302,64 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (self->_appId)
   {
-    [v16 setAppId:?];
+    [toCopy setAppId:?];
   }
 
   if ([(PSAppChannelSubscriptions *)self subscriptionChannelsCount])
   {
-    [v16 clearSubscriptionChannels];
-    v4 = [(PSAppChannelSubscriptions *)self subscriptionChannelsCount];
-    if (v4)
+    [toCopy clearSubscriptionChannels];
+    subscriptionChannelsCount = [(PSAppChannelSubscriptions *)self subscriptionChannelsCount];
+    if (subscriptionChannelsCount)
     {
-      v5 = v4;
+      v5 = subscriptionChannelsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PSAppChannelSubscriptions *)self subscriptionChannelsAtIndex:i];
-        [v16 addSubscriptionChannels:v7];
+        [toCopy addSubscriptionChannels:v7];
       }
     }
   }
 
   if ([(PSAppChannelSubscriptions *)self unsubscriptionChannelsCount])
   {
-    [v16 clearUnsubscriptionChannels];
-    v8 = [(PSAppChannelSubscriptions *)self unsubscriptionChannelsCount];
-    if (v8)
+    [toCopy clearUnsubscriptionChannels];
+    unsubscriptionChannelsCount = [(PSAppChannelSubscriptions *)self unsubscriptionChannelsCount];
+    if (unsubscriptionChannelsCount)
     {
-      v9 = v8;
+      v9 = unsubscriptionChannelsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PSAppChannelSubscriptions *)self unsubscriptionChannelsAtIndex:j];
-        [v16 addUnsubscriptionChannels:v11];
+        [toCopy addUnsubscriptionChannels:v11];
       }
     }
   }
 
   if ([(PSAppChannelSubscriptions *)self attributesCount])
   {
-    [v16 clearAttributes];
-    v12 = [(PSAppChannelSubscriptions *)self attributesCount];
-    if (v12)
+    [toCopy clearAttributes];
+    attributesCount = [(PSAppChannelSubscriptions *)self attributesCount];
+    if (attributesCount)
     {
-      v13 = v12;
+      v13 = attributesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(PSAppChannelSubscriptions *)self attributesAtIndex:k];
-        [v16 addAttributes:v15];
+        [toCopy addAttributes:v15];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_appId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_appId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -383,7 +383,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v35 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v35 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addSubscriptionChannels:v13];
 
         v12 = v12 + 1;
@@ -416,7 +416,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v31 + 1) + 8 * v18) copyWithZone:a3];
+        v19 = [*(*(&v31 + 1) + 8 * v18) copyWithZone:zone];
         [v5 addUnsubscriptionChannels:v19];
 
         v18 = v18 + 1;
@@ -449,7 +449,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v27 + 1) + 8 * v24) copyWithZone:{a3, v27}];
+        v25 = [*(*(&v27 + 1) + 8 * v24) copyWithZone:{zone, v27}];
         [v5 addAttributes:v25];
 
         v24 = v24 + 1;
@@ -465,13 +465,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((appId = self->_appId, !(appId | v4[1])) || -[NSString isEqual:](appId, "isEqual:")) && ((subscriptionChannels = self->_subscriptionChannels, !(subscriptionChannels | v4[3])) || -[NSMutableArray isEqual:](subscriptionChannels, "isEqual:")) && ((unsubscriptionChannels = self->_unsubscriptionChannels, !(unsubscriptionChannels | v4[4])) || -[NSMutableArray isEqual:](unsubscriptionChannels, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((appId = self->_appId, !(appId | equalCopy[1])) || -[NSString isEqual:](appId, "isEqual:")) && ((subscriptionChannels = self->_subscriptionChannels, !(subscriptionChannels | equalCopy[3])) || -[NSMutableArray isEqual:](subscriptionChannels, "isEqual:")) && ((unsubscriptionChannels = self->_unsubscriptionChannels, !(unsubscriptionChannels | equalCopy[4])) || -[NSMutableArray isEqual:](unsubscriptionChannels, "isEqual:")))
   {
     attributes = self->_attributes;
-    if (attributes | v4[2])
+    if (attributes | equalCopy[2])
     {
       v9 = [(NSMutableArray *)attributes isEqual:?];
     }
@@ -498,10 +498,10 @@
   return v4 ^ v5 ^ [(NSMutableArray *)self->_attributes hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(PSAppChannelSubscriptions *)self setAppId:?];
   }
@@ -510,7 +510,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v6)
   {
@@ -538,7 +538,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v11)
   {
@@ -566,7 +566,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = *(v4 + 2);
+  v15 = *(fromCopy + 2);
   v16 = [v15 countByEnumeratingWithState:&v20 objects:v32 count:16];
   if (v16)
   {

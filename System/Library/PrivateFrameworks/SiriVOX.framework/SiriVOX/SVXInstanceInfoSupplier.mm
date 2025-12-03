@@ -1,17 +1,17 @@
 @interface SVXInstanceInfoSupplier
-- (SVXInstanceInfoSupplier)initWithRemoteDelegateSupplier:(id)a3 performer:(id)a4;
-- (void)_updateInstanceInfo:(id)a3;
-- (void)getInstanceInfoWithConnection:(id)a3 completion:(id)a4;
+- (SVXInstanceInfoSupplier)initWithRemoteDelegateSupplier:(id)supplier performer:(id)performer;
+- (void)_updateInstanceInfo:(id)info;
+- (void)getInstanceInfoWithConnection:(id)connection completion:(id)completion;
 @end
 
 @implementation SVXInstanceInfoSupplier
 
-- (void)_updateInstanceInfo:(id)a3
+- (void)_updateInstanceInfo:(id)info
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   cacheInstanceInfo = self->_cacheInstanceInfo;
-  if (cacheInstanceInfo != v4 && ([(AFInstanceInfo *)cacheInstanceInfo isEqual:v4]& 1) == 0)
+  if (cacheInstanceInfo != infoCopy && ([(AFInstanceInfo *)cacheInstanceInfo isEqual:infoCopy]& 1) == 0)
   {
     v6 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -22,11 +22,11 @@
       v13 = 2112;
       v14 = v7;
       v15 = 2112;
-      v16 = v4;
+      v16 = infoCopy;
       _os_log_impl(&dword_2695B9000, v6, OS_LOG_TYPE_INFO, "%s instanceInfo: %@ -> %@", &v11, 0x20u);
     }
 
-    v8 = [(AFInstanceInfo *)v4 copy];
+    v8 = [(AFInstanceInfo *)infoCopy copy];
     v9 = self->_cacheInstanceInfo;
     self->_cacheInstanceInfo = v8;
   }
@@ -34,20 +34,20 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getInstanceInfoWithConnection:(id)a3 completion:(id)a4
+- (void)getInstanceInfoWithConnection:(id)connection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  completionCopy = completion;
   performer = self->_performer;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__SVXInstanceInfoSupplier_getInstanceInfoWithConnection_completion___block_invoke;
   v11[3] = &unk_279C68EA8;
-  v12 = v6;
-  v13 = v7;
+  v12 = connectionCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = connectionCopy;
+  v10 = completionCopy;
   [(SVXPerforming *)performer performBlock:v11];
 }
 
@@ -194,18 +194,18 @@ uint64_t __68__SVXInstanceInfoSupplier_getInstanceInfoWithConnection_completion_
   return result;
 }
 
-- (SVXInstanceInfoSupplier)initWithRemoteDelegateSupplier:(id)a3 performer:(id)a4
+- (SVXInstanceInfoSupplier)initWithRemoteDelegateSupplier:(id)supplier performer:(id)performer
 {
-  v7 = a3;
-  v8 = a4;
+  supplierCopy = supplier;
+  performerCopy = performer;
   v12.receiver = self;
   v12.super_class = SVXInstanceInfoSupplier;
   v9 = [(SVXInstanceInfoSupplier *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_remoteDelegateSupplier, a3);
-    objc_storeStrong(&v10->_performer, a4);
+    objc_storeStrong(&v9->_remoteDelegateSupplier, supplier);
+    objc_storeStrong(&v10->_performer, performer);
   }
 
   return v10;

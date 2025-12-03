@@ -19,7 +19,7 @@
 + (id)ck_glassScaleDownAnimationWithBeginTime:()SendAnimation entryViewSize:delegate:
 {
   v10 = a6;
-  [a1 _ck_scaleDownFactorForEntryViewSize:{a3, a4}];
+  [self _ck_scaleDownFactorForEntryViewSize:{a3, a4}];
   memset(&v26, 0, sizeof(v26));
   v11 = *(MEMORY[0x1E695EFD0] + 16);
   *&v25.m11 = *MEMORY[0x1E695EFD0];
@@ -29,7 +29,7 @@
   memset(&v25, 0, sizeof(v25));
   m = v26;
   CATransform3DMakeAffineTransform(&v25, &m);
-  v13 = [a1 animationWithKeyPath:@"transform"];
+  v13 = [self animationWithKeyPath:@"transform"];
   [v13 setAdditive:1];
   v14 = *(MEMORY[0x1E69792E8] + 80);
   v23[4] = *(MEMORY[0x1E69792E8] + 64);
@@ -70,7 +70,7 @@
 + (id)ck_glassScaleUpAnimationWithBeginTime:()SendAnimation entryViewSize:delegate:
 {
   v10 = a6;
-  [a1 _ck_scaleDownFactorForEntryViewSize:{a3, a4}];
+  [self _ck_scaleDownFactorForEntryViewSize:{a3, a4}];
   memset(&v26, 0, sizeof(v26));
   v11 = *(MEMORY[0x1E695EFD0] + 16);
   *&v25.m11 = *MEMORY[0x1E695EFD0];
@@ -80,7 +80,7 @@
   memset(&v25, 0, sizeof(v25));
   m = v26;
   CATransform3DMakeAffineTransform(&v25, &m);
-  v13 = [a1 animationWithKeyPath:@"transform"];
+  v13 = [self animationWithKeyPath:@"transform"];
   [v13 setAdditive:1];
   v14 = *(MEMORY[0x1E69792E8] + 80);
   v23[4] = *(MEMORY[0x1E69792E8] + 64);
@@ -121,7 +121,7 @@
 + (id)ck_glassScaleUpAnimationWithBeginTime:()SendAnimation entryViewSize:initialSize:finalSize:delegate:
 {
   v18 = a10;
-  [a1 _ck_scaleDownFactorForEntryViewSize:{a3, a4}];
+  [self _ck_scaleDownFactorForEntryViewSize:{a3, a4}];
   memset(&v34, 0, sizeof(v34));
   v19 = *(MEMORY[0x1E695EFD0] + 16);
   *&v33.m11 = *MEMORY[0x1E695EFD0];
@@ -131,7 +131,7 @@
   memset(&v33, 0, sizeof(v33));
   m = v34;
   CATransform3DMakeAffineTransform(&v33, &m);
-  v21 = [a1 animationWithKeyPath:@"transform"];
+  v21 = [self animationWithKeyPath:@"transform"];
   [v21 setAdditive:1];
   v22 = *(MEMORY[0x1E69792E8] + 80);
   v31[4] = *(MEMORY[0x1E69792E8] + 64);

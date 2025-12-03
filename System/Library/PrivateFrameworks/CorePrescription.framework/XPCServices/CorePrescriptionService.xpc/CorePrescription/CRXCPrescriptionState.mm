@@ -1,9 +1,9 @@
 @interface CRXCPrescriptionState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRXCPrescriptionState)init;
 - (NSString)description;
 - (NSString)rxUUID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXCPrescriptionState
@@ -28,7 +28,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CRXCPrescriptionState.description.getter();
 
   v3 = sub_100081288();
@@ -36,11 +36,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100081658();
     swift_unknownObjectRelease();
@@ -49,7 +49,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CRXCPrescriptionState.isEqual(_:)(v8);
@@ -58,11 +58,11 @@
   return v6 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRXCPrescriptionState.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRXCPrescriptionState.encode(with:)(coderCopy);
 }
 
 - (CRXCPrescriptionState)init

@@ -1,67 +1,67 @@
 @interface HDCodableSyncState
 - ($2825F4736939C4A6D3AD43837233062D)versionRange;
-- (BOOL)decodedObjectOfClass:(Class)a3 version:(int64_t)a4 decodedObject:(id *)a5 error:(id *)a6;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)decodedObjectOfClass:(Class)class version:(int64_t)version decodedObject:(id *)object error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addVersionedData:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setCodableObject:(id)a3 version:(int64_t)a4 profile:(id)a5;
-- (void)setVersionRange:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addVersionedData:(id)data;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setCodableObject:(id)object version:(int64_t)version profile:(id)profile;
+- (void)setVersionRange:(id)range;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableSyncState
 
 - ($2825F4736939C4A6D3AD43837233062D)versionRange
 {
-  v2 = [(HDCodableSyncState *)self version];
-  v3 = [v2 syncVersionRange];
+  version = [(HDCodableSyncState *)self version];
+  syncVersionRange = [version syncVersionRange];
 
-  return v3;
+  return syncVersionRange;
 }
 
-- (void)setVersionRange:(id)a3
+- (void)setVersionRange:(id)range
 {
-  v4 = [HDCodableSyncVersionRange versionRangeWithSyncVersionRange:a3];
+  v4 = [HDCodableSyncVersionRange versionRangeWithSyncVersionRange:range];
   [(HDCodableSyncState *)self setVersion:v4];
 }
 
-- (void)setCodableObject:(id)a3 version:(int64_t)a4 profile:(id)a5
+- (void)setCodableObject:(id)object version:(int64_t)version profile:(id)profile
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(HDCodableSyncState *)self versionedDatas];
+  profileCopy = profile;
+  objectCopy = object;
+  versionedDatas = [(HDCodableSyncState *)self versionedDatas];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __70__HDCodableSyncState_HDSyncSupport__setCodableObject_version_profile___block_invoke;
   v24[3] = &__block_descriptor_40_e41_B16__0__HDCodableSyncStateVersionedData_8l;
-  v24[4] = a4;
-  [v10 hk_removeObjectsPassingTest:v24];
+  v24[4] = version;
+  [versionedDatas hk_removeObjectsPassingTest:v24];
 
-  v11 = v8;
+  v11 = profileCopy;
   objc_opt_self();
-  v12 = [v11 daemon];
-  v13 = [v12 behavior];
+  daemon = [v11 daemon];
+  behavior = [daemon behavior];
 
   v14 = objc_alloc_init(HDCodableSyncStateOrigin);
   [(HDCodableSyncStateOrigin *)v14 setTimestamp:CFAbsoluteTimeGetCurrent()];
-  v15 = [v13 currentOSBuild];
-  [(HDCodableSyncStateOrigin *)v14 setBuild:v15];
+  currentOSBuild = [behavior currentOSBuild];
+  [(HDCodableSyncStateOrigin *)v14 setBuild:currentOSBuild];
 
-  v16 = [v13 currentDeviceProductType];
-  [(HDCodableSyncStateOrigin *)v14 setProductType:v16];
+  currentDeviceProductType = [behavior currentDeviceProductType];
+  [(HDCodableSyncStateOrigin *)v14 setProductType:currentDeviceProductType];
 
-  if (v13)
+  if (behavior)
   {
-    [v13 currentOSVersionStruct];
+    [behavior currentOSVersionStruct];
     [(HDCodableSyncStateOrigin *)v14 setMajorVersion:v29];
-    [v13 currentOSVersionStruct];
+    [behavior currentOSVersionStruct];
     [(HDCodableSyncStateOrigin *)v14 setMinorVersion:v27];
-    [v13 currentOSVersionStruct];
+    [behavior currentOSVersionStruct];
     v17 = v25;
   }
 
@@ -82,54 +82,54 @@
   }
 
   [(HDCodableSyncStateOrigin *)v14 setPatchVersion:v17];
-  v18 = [v11 syncIdentityManager];
-  v19 = [v18 currentSyncIdentity];
-  v20 = [v19 identity];
-  v21 = [v20 codableSyncIdentity];
-  [(HDCodableSyncStateOrigin *)v14 setSyncIdentity:v21];
+  syncIdentityManager = [v11 syncIdentityManager];
+  currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+  identity = [currentSyncIdentity identity];
+  codableSyncIdentity = [identity codableSyncIdentity];
+  [(HDCodableSyncStateOrigin *)v14 setSyncIdentity:codableSyncIdentity];
 
   v22 = objc_alloc_init(HDCodableSyncStateVersionedData);
-  [(HDCodableSyncStateVersionedData *)v22 setVersion:a4];
+  [(HDCodableSyncStateVersionedData *)v22 setVersion:version];
   [(HDCodableSyncStateVersionedData *)v22 setOrigin:v14];
-  v23 = [v9 data];
+  data = [objectCopy data];
 
-  [(HDCodableSyncStateVersionedData *)v22 setObjectData:v23];
+  [(HDCodableSyncStateVersionedData *)v22 setObjectData:data];
   [(HDCodableSyncState *)self addVersionedData:v22];
   [(HDCodableSyncState *)self setOrigin:v14];
 }
 
-- (BOOL)decodedObjectOfClass:(Class)a3 version:(int64_t)a4 decodedObject:(id *)a5 error:(id *)a6
+- (BOOL)decodedObjectOfClass:(Class)class version:(int64_t)version decodedObject:(id *)object error:(id *)error
 {
-  v11 = [(HDCodableSyncState *)self versionedDatas];
+  versionedDatas = [(HDCodableSyncState *)self versionedDatas];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __86__HDCodableSyncState_HDSyncSupport__decodedObjectOfClass_version_decodedObject_error___block_invoke;
   v22[3] = &__block_descriptor_40_e41_B16__0__HDCodableSyncStateVersionedData_8l;
-  v22[4] = a4;
-  v12 = [v11 hk_firstObjectPassingTest:v22];
+  v22[4] = version;
+  v12 = [versionedDatas hk_firstObjectPassingTest:v22];
 
   if (v12)
   {
     v13 = objc_alloc(objc_opt_class());
-    v14 = [v12 objectData];
-    v15 = [v13 initWithData:v14];
+    objectData = [v12 objectData];
+    v15 = [v13 initWithData:objectData];
 
     v16 = v15 != 0;
     if (v15)
     {
-      if (a5)
+      if (object)
       {
         v17 = v15;
-        *a5 = v15;
+        *object = v15;
       }
     }
 
     else
     {
       v18 = MEMORY[0x277CCA9B8];
-      v19 = [(HDCodableSyncState *)self domain];
+      domain = [(HDCodableSyncState *)self domain];
       v20 = [(HDCodableSyncState *)self key];
-      [v18 hk_assignError:a6 code:129 format:{@"Unable to decode data as class %@ for version %d (%@, %@)", a3, a4, v19, v20}];
+      [v18 hk_assignError:error code:129 format:{@"Unable to decode data as class %@ for version %d (%@, %@)", class, version, domain, v20}];
     }
   }
 
@@ -141,22 +141,22 @@
   return v16;
 }
 
-- (void)addVersionedData:(id)a3
+- (void)addVersionedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   versionedDatas = self->_versionedDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!versionedDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_versionedDatas;
     self->_versionedDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     versionedDatas = self->_versionedDatas;
   }
 
-  [(NSMutableArray *)versionedDatas addObject:v4];
+  [(NSMutableArray *)versionedDatas addObject:dataCopy];
 }
 
 - (NSString)description
@@ -165,8 +165,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableSyncState;
   v4 = [(HDCodableSyncState *)&v8 description];
-  v5 = [(HDCodableSyncState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableSyncState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -174,12 +174,12 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   key = self->_key;
@@ -191,15 +191,15 @@
   version = self->_version;
   if (version)
   {
-    v8 = [(HDCodableSyncVersionRange *)version dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"version"];
+    dictionaryRepresentation = [(HDCodableSyncVersionRange *)version dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"version"];
   }
 
   origin = self->_origin;
   if (origin)
   {
-    v10 = [(HDCodableSyncStateOrigin *)origin dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"origin"];
+    dictionaryRepresentation2 = [(HDCodableSyncStateOrigin *)origin dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"origin"];
   }
 
   if ([(NSMutableArray *)self->_versionedDatas count])
@@ -224,8 +224,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation3 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation3];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -242,10 +242,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
@@ -301,62 +301,62 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_domain)
   {
-    [v8 setDomain:?];
+    [toCopy setDomain:?];
   }
 
   if (self->_key)
   {
-    [v8 setKey:?];
+    [toCopy setKey:?];
   }
 
   if (self->_version)
   {
-    [v8 setVersion:?];
+    [toCopy setVersion:?];
   }
 
   if (self->_origin)
   {
-    [v8 setOrigin:?];
+    [toCopy setOrigin:?];
   }
 
   if ([(HDCodableSyncState *)self versionedDatasCount])
   {
-    [v8 clearVersionedDatas];
-    v4 = [(HDCodableSyncState *)self versionedDatasCount];
-    if (v4)
+    [toCopy clearVersionedDatas];
+    versionedDatasCount = [(HDCodableSyncState *)self versionedDatasCount];
+    if (versionedDatasCount)
     {
-      v5 = v4;
+      v5 = versionedDatasCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableSyncState *)self versionedDataAtIndex:i];
-        [v8 addVersionedData:v7];
+        [toCopy addVersionedData:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_key copyWithZone:a3];
+  v8 = [(NSString *)self->_key copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(HDCodableSyncVersionRange *)self->_version copyWithZone:a3];
+  v10 = [(HDCodableSyncVersionRange *)self->_version copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(HDCodableSyncStateOrigin *)self->_origin copyWithZone:a3];
+  v12 = [(HDCodableSyncStateOrigin *)self->_origin copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
@@ -380,7 +380,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addVersionedData:v19];
 
         ++v18;
@@ -397,13 +397,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | v4[1])) || -[NSString isEqual:](domain, "isEqual:")) && ((key = self->_key, !(key | v4[2])) || -[NSString isEqual:](key, "isEqual:")) && ((version = self->_version, !(version | v4[4])) || -[HDCodableSyncVersionRange isEqual:](version, "isEqual:")) && ((origin = self->_origin, !(origin | v4[3])) || -[HDCodableSyncStateOrigin isEqual:](origin, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | equalCopy[1])) || -[NSString isEqual:](domain, "isEqual:")) && ((key = self->_key, !(key | equalCopy[2])) || -[NSString isEqual:](key, "isEqual:")) && ((version = self->_version, !(version | equalCopy[4])) || -[HDCodableSyncVersionRange isEqual:](version, "isEqual:")) && ((origin = self->_origin, !(origin | equalCopy[3])) || -[HDCodableSyncStateOrigin isEqual:](origin, "isEqual:")))
   {
     versionedDatas = self->_versionedDatas;
-    if (versionedDatas | v4[5])
+    if (versionedDatas | equalCopy[5])
     {
       v10 = [(NSMutableArray *)versionedDatas isEqual:?];
     }
@@ -431,22 +431,22 @@
   return v6 ^ [(NSMutableArray *)self->_versionedDatas hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(HDCodableSyncState *)self setDomain:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(HDCodableSyncState *)self setKey:?];
   }
 
   version = self->_version;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (version)
   {
     if (v6)
@@ -461,7 +461,7 @@
   }
 
   origin = self->_origin;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (origin)
   {
     if (v8)
@@ -479,7 +479,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = *(v4 + 5);
+  v9 = *(fromCopy + 5);
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {

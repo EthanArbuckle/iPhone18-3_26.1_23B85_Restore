@@ -1,51 +1,51 @@
 @interface SPAccessoryDiscoveryPairingStatusResult
-- (SPAccessoryDiscoveryPairingStatusResult)initWithCoder:(id)a3;
-- (SPAccessoryDiscoveryPairingStatusResult)initWithPairingStatus:(int64_t)a3 lostModeInfo:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPAccessoryDiscoveryPairingStatusResult)initWithCoder:(id)coder;
+- (SPAccessoryDiscoveryPairingStatusResult)initWithPairingStatus:(int64_t)status lostModeInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPAccessoryDiscoveryPairingStatusResult
 
-- (SPAccessoryDiscoveryPairingStatusResult)initWithPairingStatus:(int64_t)a3 lostModeInfo:(id)a4
+- (SPAccessoryDiscoveryPairingStatusResult)initWithPairingStatus:(int64_t)status lostModeInfo:(id)info
 {
-  v7 = a4;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = SPAccessoryDiscoveryPairingStatusResult;
   v8 = [(SPAccessoryDiscoveryPairingStatusResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_pairingStatus = a3;
-    objc_storeStrong(&v8->_lostModeInfo, a4);
+    v8->_pairingStatus = status;
+    objc_storeStrong(&v8->_lostModeInfo, info);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPAccessoryDiscoveryPairingStatusResult alloc];
-  v5 = [(SPAccessoryDiscoveryPairingStatusResult *)self pairingStatus];
-  v6 = [(SPAccessoryDiscoveryPairingStatusResult *)self lostModeInfo];
-  v7 = [(SPAccessoryDiscoveryPairingStatusResult *)v4 initWithPairingStatus:v5 lostModeInfo:v6];
+  pairingStatus = [(SPAccessoryDiscoveryPairingStatusResult *)self pairingStatus];
+  lostModeInfo = [(SPAccessoryDiscoveryPairingStatusResult *)self lostModeInfo];
+  v7 = [(SPAccessoryDiscoveryPairingStatusResult *)v4 initWithPairingStatus:pairingStatus lostModeInfo:lostModeInfo];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pairingStatus = self->_pairingStatus;
-  v5 = a3;
-  [v5 encodeInt64:pairingStatus forKey:@"pairingStatus"];
-  [v5 encodeObject:self->_lostModeInfo forKey:@"lostModeInfo"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:pairingStatus forKey:@"pairingStatus"];
+  [coderCopy encodeObject:self->_lostModeInfo forKey:@"lostModeInfo"];
 }
 
-- (SPAccessoryDiscoveryPairingStatusResult)initWithCoder:(id)a3
+- (SPAccessoryDiscoveryPairingStatusResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_pairingStatus = [v4 decodeInt64ForKey:@"pairingStatus"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lostModeInfo"];
+  coderCopy = coder;
+  self->_pairingStatus = [coderCopy decodeInt64ForKey:@"pairingStatus"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lostModeInfo"];
 
   lostModeInfo = self->_lostModeInfo;
   self->_lostModeInfo = v5;

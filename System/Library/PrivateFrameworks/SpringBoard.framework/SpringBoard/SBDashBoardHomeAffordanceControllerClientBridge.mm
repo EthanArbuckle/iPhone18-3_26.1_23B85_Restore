@@ -1,30 +1,30 @@
 @interface SBDashBoardHomeAffordanceControllerClientBridge
-- (SBDashBoardHomeAffordanceControllerClientBridge)initWithCoverSheetHomeGestureParticipant:(id)a3;
-- (void)zStackParticipantDidChange:(id)a3;
+- (SBDashBoardHomeAffordanceControllerClientBridge)initWithCoverSheetHomeGestureParticipant:(id)participant;
+- (void)zStackParticipantDidChange:(id)change;
 @end
 
 @implementation SBDashBoardHomeAffordanceControllerClientBridge
 
-- (SBDashBoardHomeAffordanceControllerClientBridge)initWithCoverSheetHomeGestureParticipant:(id)a3
+- (SBDashBoardHomeAffordanceControllerClientBridge)initWithCoverSheetHomeGestureParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   v8.receiver = self;
   v8.super_class = SBDashBoardHomeAffordanceControllerClientBridge;
   v5 = [(SBDashBoardHomeAffordanceControllerClientBridge *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_coverSheetHomeGestureParticipant, v4);
+    objc_storeWeak(&v5->_coverSheetHomeGestureParticipant, participantCopy);
   }
 
   return v6;
 }
 
-- (void)zStackParticipantDidChange:(id)a3
+- (void)zStackParticipantDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_coverSheetHomeGestureParticipant);
-  [WeakRetained homeGestureParticipantOwningHomeGestureDidChange:v4 ownsHomeGesture:{objc_msgSend(v4, "ownsHomeGesture")}];
+  [WeakRetained homeGestureParticipantOwningHomeGestureDidChange:changeCopy ownsHomeGesture:{objc_msgSend(changeCopy, "ownsHomeGesture")}];
 }
 
 @end

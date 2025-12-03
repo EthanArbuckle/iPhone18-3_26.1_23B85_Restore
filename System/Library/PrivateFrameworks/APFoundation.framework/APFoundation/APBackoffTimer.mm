@@ -1,7 +1,7 @@
 @interface APBackoffTimer
-- (APBackoffTimer)initWithSchedule:(id)a3 name:(id)a4;
+- (APBackoffTimer)initWithSchedule:(id)schedule name:(id)name;
 - (APBackoffTimerDelegate)delegate;
-- (BOOL)scheduleNextLevelWithQueue:(id)a3;
+- (BOOL)scheduleNextLevelWithQueue:(id)queue;
 - (BOOL)scheduleTerminated;
 - (BOOL)scheduled;
 - (id)_getNextLevelTimeInterval;
@@ -12,17 +12,17 @@
 
 @implementation APBackoffTimer
 
-- (APBackoffTimer)initWithSchedule:(id)a3 name:(id)a4
+- (APBackoffTimer)initWithSchedule:(id)schedule name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  scheduleCopy = schedule;
+  nameCopy = name;
   v11 = objc_msgSend_init(self, v8, v9, v10);
   v12 = v11;
   if (v11)
   {
-    if (v6)
+    if (scheduleCopy)
     {
-      v13 = v6;
+      v13 = scheduleCopy;
     }
 
     else
@@ -31,7 +31,7 @@
     }
 
     objc_storeStrong((v11 + 40), v13);
-    objc_storeStrong((v12 + 48), a4);
+    objc_storeStrong((v12 + 48), name);
     *(v12 + 32) = 0;
     v14 = [APUnfairLock alloc];
     v17 = objc_msgSend_initWithOptions_(v14, v15, 1, v16);
@@ -211,14 +211,14 @@
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)scheduleNextLevelWithQueue:(id)a3
+- (BOOL)scheduleNextLevelWithQueue:(id)queue
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   v8 = objc_msgSend__getNextLevelTimeInterval(self, v5, v6, v7);
   if (v8)
   {
-    v9 = v4;
+    v9 = queueCopy;
     if (!v9)
     {
       v9 = dispatch_queue_create("com.apple.ap.backoff_timer.retry_queue", 0);

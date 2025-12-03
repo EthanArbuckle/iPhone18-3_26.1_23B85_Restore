@@ -1,16 +1,16 @@
 @interface HAWristTemperatureSession
 - (BOOL)parsePacket:()variant<PackedWristTemperatureHeaderV0;
 - (HAWristTemperatureEnumerator)wristTemperatureEnumerator;
-- (HAWristTemperatureSession)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(id)a5;
-- (id)sessionIntervalV0WithStartTime:(double)a3;
+- (HAWristTemperatureSession)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(id)timestamp;
+- (id)sessionIntervalV0WithStartTime:(double)time;
 @end
 
 @implementation HAWristTemperatureSession
 
-- (id)sessionIntervalV0WithStartTime:(double)a3
+- (id)sessionIntervalV0WithStartTime:(double)time
 {
-  v5 = [(HAWristTemperatureSession *)self representation];
-  [v5 getBytes:v12 range:{-[HAWristTemperatureSession firstSampleOffset](self, "firstSampleOffset") + 21 * -[HAWristTemperatureSession numWristTemperatures](self, "numWristTemperatures") - 21, 21}];
+  representation = [(HAWristTemperatureSession *)self representation];
+  [representation getBytes:v12 range:{-[HAWristTemperatureSession firstSampleOffset](self, "firstSampleOffset") + 21 * -[HAWristTemperatureSession numWristTemperatures](self, "numWristTemperatures") - 21, 21}];
 
   if ([(HAWristTemperatureSession *)self numWristTemperatures])
   {
@@ -24,7 +24,7 @@
   }
 
   v8 = objc_alloc(MEMORY[0x277CCA970]);
-  v9 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:a3];
+  v9 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:time];
   v10 = [v8 initWithStartDate:v9 duration:v7];
 
   return v10;
@@ -32,8 +32,8 @@
 
 - (BOOL)parsePacket:()variant<PackedWristTemperatureHeaderV0
 {
-  v11 = &v12;
-  v12 = self;
+  v11 = &selfCopy;
+  selfCopy = self;
   var6_low = LODWORD(a3->var0.var0.var1.var0.var6);
   if (var6_low == -1)
   {
@@ -49,13 +49,13 @@
     {
       v13 = &v11;
       v7 = (off_286352750[v6])(&v13, a3);
-      v12->_isPublishable = v7;
+      selfCopy->_isPublishable = v7;
       v8 = LODWORD(a3->var0.var0.var1.var0.var6);
       if (v8 != -1)
       {
         v13 = &v11;
         v9 = (off_286352768[v8])(&v13, a3);
-        v12->_c0UserDeviceCorrectionCoefficient = v9;
+        selfCopy->_c0UserDeviceCorrectionCoefficient = v9;
         return v5;
       }
     }
@@ -67,11 +67,11 @@ LABEL_7:
   return v5;
 }
 
-- (HAWristTemperatureSession)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(id)a5
+- (HAWristTemperatureSession)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(id)timestamp
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ([v7 length])
+  representationCopy = representation;
+  if ([representationCopy length])
   {
     v17.receiver = self;
     v17.super_class = HAWristTemperatureSession;
@@ -79,8 +79,8 @@ LABEL_7:
     v9 = v8;
     if (v8)
     {
-      [v7 getBytes:&v8->_dataVersion length:1];
-      objc_storeStrong(&v9->_representation, a3);
+      [representationCopy getBytes:&v8->_dataVersion length:1];
+      objc_storeStrong(&v9->_representation, representation);
       dataVersion = v9->_dataVersion;
       if (dataVersion == 2)
       {
@@ -114,12 +114,12 @@ LABEL_7:
       if (v11)
       {
         self = v9;
-        v13 = self;
+        selfCopy = self;
         goto LABEL_20;
       }
 
 LABEL_19:
-      v13 = 0;
+      selfCopy = 0;
       self = v9;
       goto LABEL_20;
     }
@@ -132,24 +132,24 @@ LABEL_19:
     v12 = ha_get_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
-      -[HAWristTemperatureSession initWithBinarySampleRepresentation:metadata:timestamp:].cold.2(v18, [v7 length]);
+      -[HAWristTemperatureSession initWithBinarySampleRepresentation:metadata:timestamp:].cold.2(v18, [representationCopy length]);
     }
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_20:
 
   v15 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
 - (HAWristTemperatureEnumerator)wristTemperatureEnumerator
 {
   v3 = [HAWristTemperatureEnumerator alloc];
-  v4 = [(HAWristTemperatureSession *)self representation];
-  v5 = [(HAWristTemperatureSession *)self sessionInterval];
-  v6 = [v5 startDate];
-  v7 = [(HAWristTemperatureEnumerator *)v3 initWithData:v4 withSessionStartDate:v6 numWristTemperatures:[(HAWristTemperatureSession *)self numWristTemperatures] firstSampleOffset:[(HAWristTemperatureSession *)self firstSampleOffset]];
+  representation = [(HAWristTemperatureSession *)self representation];
+  sessionInterval = [(HAWristTemperatureSession *)self sessionInterval];
+  startDate = [sessionInterval startDate];
+  v7 = [(HAWristTemperatureEnumerator *)v3 initWithData:representation withSessionStartDate:startDate numWristTemperatures:[(HAWristTemperatureSession *)self numWristTemperatures] firstSampleOffset:[(HAWristTemperatureSession *)self firstSampleOffset]];
 
   return v7;
 }

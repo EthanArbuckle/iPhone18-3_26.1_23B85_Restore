@@ -1,47 +1,47 @@
 @interface BMResourceContainer
-- (BMResourceContainer)initWithCoder:(id)a3;
-- (BMResourceContainer)initWithURL:(id)a3 personaIdentifier:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContainer:(id)a3;
+- (BMResourceContainer)initWithCoder:(id)coder;
+- (BMResourceContainer)initWithURL:(id)l personaIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContainer:(id)container;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMResourceContainer
 
 - (unint64_t)hash
 {
-  v3 = [(NSURL *)self->_url path];
-  v4 = [v3 hash];
+  path = [(NSURL *)self->_url path];
+  v4 = [path hash];
   v5 = [(NSString *)self->_personaIdentifier hash];
 
   return v5 ^ v4;
 }
 
-- (BMResourceContainer)initWithURL:(id)a3 personaIdentifier:(id)a4
+- (BMResourceContainer)initWithURL:(id)l personaIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = BMResourceContainer;
   v9 = [(BMResourceContainer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_personaIdentifier, a4);
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_personaIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (BMResourceContainer)initWithCoder:(id)a3
+- (BMResourceContainer)initWithCoder:(id)coder
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personaIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personaIdentifier"];
   if (v5)
   {
     self = [(BMResourceContainer *)self initWithURL:v5 personaIdentifier:v6];
@@ -54,19 +54,19 @@
     v13[0] = @"Decoding failure";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v9 = [v7 errorWithDomain:@"Biome" code:-1 userInfo:v8];
-    [v4 failWithError:v9];
+    [coderCopy failWithError:v9];
   }
 
   v10 = *MEMORY[0x1E69E9840];
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   url = self->_url;
-  v5 = a3;
-  [v5 encodeObject:url forKey:@"url"];
-  [v5 encodeObject:self->_personaIdentifier forKey:@"personaIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:url forKey:@"url"];
+  [coderCopy encodeObject:self->_personaIdentifier forKey:@"personaIdentifier"];
 }
 
 - (NSString)description
@@ -90,37 +90,37 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(BMResourceContainer *)self isEqualToContainer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(BMResourceContainer *)self isEqualToContainer:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToContainer:(id)a3
+- (BOOL)isEqualToContainer:(id)container
 {
-  v5 = a3;
-  v6 = [(NSURL *)self->_url path];
-  v7 = [v5 url];
-  v8 = [v7 path];
-  if ([v6 isEqual:v8])
+  containerCopy = container;
+  path = [(NSURL *)self->_url path];
+  v7 = [containerCopy url];
+  path2 = [v7 path];
+  if ([path isEqual:path2])
   {
     personaIdentifier = self->_personaIdentifier;
     v10 = personaIdentifier;
     if (!personaIdentifier)
     {
-      v3 = [v5 personaIdentifier];
-      if (!v3)
+      personaIdentifier = [containerCopy personaIdentifier];
+      if (!personaIdentifier)
       {
         v12 = 1;
 LABEL_9:
@@ -131,8 +131,8 @@ LABEL_9:
       v10 = self->_personaIdentifier;
     }
 
-    v11 = [v5 personaIdentifier];
-    v12 = [(NSString *)v10 isEqual:v11];
+    personaIdentifier2 = [containerCopy personaIdentifier];
+    v12 = [(NSString *)v10 isEqual:personaIdentifier2];
 
     if (!personaIdentifier)
     {

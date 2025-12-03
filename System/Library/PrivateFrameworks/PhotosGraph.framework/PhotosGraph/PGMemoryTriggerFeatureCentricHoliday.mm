@@ -1,15 +1,15 @@
 @interface PGMemoryTriggerFeatureCentricHoliday
-+ (id)_relationshipForHolidayName:(id)a3;
-- (id)personNodesForRelationship:(id)a3 inGraph:(id)a4;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
++ (id)_relationshipForHolidayName:(id)name;
+- (id)personNodesForRelationship:(id)relationship inGraph:(id)graph;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerFeatureCentricHoliday
 
-+ (id)_relationshipForHolidayName:(id)a3
++ (id)_relationshipForHolidayName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Mother’s Day"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Mother’s Day"])
   {
     v4 = kPGGraphEdgePeopleMother;
 LABEL_7:
@@ -17,13 +17,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:@"Father’s Day"])
+  if ([nameCopy isEqualToString:@"Father’s Day"])
   {
     v4 = kPGGraphEdgePeopleFather;
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"Valentine’s Day"])
+  if ([nameCopy isEqualToString:@"Valentine’s Day"])
   {
     v4 = kPGGraphEdgePeoplePartner;
     goto LABEL_7;
@@ -35,35 +35,35 @@ LABEL_8:
   return v5;
 }
 
-- (id)personNodesForRelationship:(id)a3 inGraph:(id)a4
+- (id)personNodesForRelationship:(id)relationship inGraph:(id)graph
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithGraph:v6];
-  if ([v5 isEqualToString:@"MOTHER"])
+  relationshipCopy = relationship;
+  graphCopy = graph;
+  v7 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithGraph:graphCopy];
+  if ([relationshipCopy isEqualToString:@"MOTHER"])
   {
-    v8 = [v6 meNodeCollection];
-    v9 = [v8 motherPersonNodes];
+    meNodeCollection = [graphCopy meNodeCollection];
+    motherPersonNodes = [meNodeCollection motherPersonNodes];
   }
 
-  else if ([v5 isEqualToString:@"FATHER"])
+  else if ([relationshipCopy isEqualToString:@"FATHER"])
   {
-    v8 = [v6 meNodeCollection];
-    v9 = [v8 fatherPersonNodes];
+    meNodeCollection = [graphCopy meNodeCollection];
+    motherPersonNodes = [meNodeCollection fatherPersonNodes];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"PARTNER"])
+    if (![relationshipCopy isEqualToString:@"PARTNER"])
     {
       goto LABEL_8;
     }
 
-    v8 = [v6 meNodeCollection];
-    v9 = [v8 partnerPersonNodes];
+    meNodeCollection = [graphCopy meNodeCollection];
+    motherPersonNodes = [meNodeCollection partnerPersonNodes];
   }
 
-  v10 = v9;
+  v10 = motherPersonNodes;
 
   v7 = v10;
 LABEL_8:
@@ -71,13 +71,13 @@ LABEL_8:
   return v7;
 }
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -93,34 +93,34 @@ LABEL_8:
 
   else
   {
-    v12 = [v9 infoNode];
-    v13 = [v12 locale];
+    infoNode = [graphCopy infoNode];
+    locale = [infoNode locale];
 
-    if (!v13)
+    if (!locale)
     {
-      v13 = [MEMORY[0x277CBEAF8] currentLocale];
+      locale = [MEMORY[0x277CBEAF8] currentLocale];
     }
 
     v14 = objc_alloc_init(MEMORY[0x277D22BD0]);
-    v15 = [(PGHolidayMemoryTrigger *)self holidayService];
-    v16 = [v8 localDate];
-    v17 = [v8 localDate];
-    v25 = v13;
-    v18 = [v13 countryCode];
+    holidayService = [(PGHolidayMemoryTrigger *)self holidayService];
+    localDate = [contextCopy localDate];
+    localDate2 = [contextCopy localDate];
+    v25 = locale;
+    countryCode = [locale countryCode];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __93__PGMemoryTriggerFeatureCentricHoliday_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
     v26[3] = &unk_2788829F8;
-    v19 = v9;
+    v19 = graphCopy;
     v27 = v19;
     v20 = v14;
     v28 = v20;
-    v29 = self;
-    [v15 enumerateEventRulesBetweenLocalDate:v16 andLocalDate:v17 supportedCountryCode:v18 usingBlock:v26];
+    selfCopy = self;
+    [holidayService enumerateEventRulesBetweenLocalDate:localDate andLocalDate:localDate2 supportedCountryCode:countryCode usingBlock:v26];
 
     v21 = [(MAElementCollection *)[PGGraphMemoryNodeCollection alloc] initWithGraph:v19 elementIdentifiers:v20];
-    v22 = [objc_opt_class() singleDayValidityIntervalWithContext:v8];
-    if ([v10 isCancelledWithProgress:1.0])
+    v22 = [objc_opt_class() singleDayValidityIntervalWithContext:contextCopy];
+    if ([reporterCopy isCancelledWithProgress:1.0])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {

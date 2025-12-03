@@ -1,22 +1,22 @@
 @interface ABPKSkeleton
-- (ABPKSkeleton)initWithType:(int64_t)a3;
+- (ABPKSkeleton)initWithType:(int64_t)type;
 - (__n128)cameraRootTransform;
 - (__n128)deviceRootTransform;
 - (__n128)renderingCameraRootTransform;
-- (__n128)setCameraRootTransform:(__n128)a3;
-- (__n128)setDeviceRootTransform:(__n128)a3;
-- (__n128)setRenderingCameraRootTransform:(__n128)a3;
+- (__n128)setCameraRootTransform:(__n128)transform;
+- (__n128)setDeviceRootTransform:(__n128)transform;
+- (__n128)setRenderingCameraRootTransform:(__n128)transform;
 - (float)computeHeight;
 - (id).cxx_construct;
 - (id)description;
 - (id)toDictionary;
-- (void)getGlobalJointDataForSkeletonWithPosition:(ABPKSkeleton *)self withOrientation:(SEL)a2;
-- (void)getLocalJointDataForSkeletonWithPosition:(ABPKSkeleton *)self withOrientation:(SEL)a2;
-- (void)scaleTransform:(id *)a3 withScale:(float)a4;
-- (void)setLocalPoses:(const ABPKTransform *)a3 andUpdateModelPoses:(BOOL)a4;
-- (void)setModelPoses:(id *)a3 andUpdateLocalPoses:(BOOL)a4;
-- (void)setModelPosesFromDict:(id)a3 andUpdateLocalPoses:(BOOL)a4;
-- (void)transformModelPoses:(int)a3 andUpdateLocalPoses:(float32x4_t)a4;
+- (void)getGlobalJointDataForSkeletonWithPosition:(ABPKSkeleton *)self withOrientation:(SEL)orientation;
+- (void)getLocalJointDataForSkeletonWithPosition:(ABPKSkeleton *)self withOrientation:(SEL)orientation;
+- (void)scaleTransform:(id *)transform withScale:(float)scale;
+- (void)setLocalPoses:(const ABPKTransform *)poses andUpdateModelPoses:(BOOL)modelPoses;
+- (void)setModelPoses:(id *)poses andUpdateLocalPoses:(BOOL)localPoses;
+- (void)setModelPosesFromDict:(id)dict andUpdateLocalPoses:(BOOL)poses;
+- (void)transformModelPoses:(int)poses andUpdateLocalPoses:(float32x4_t)localPoses;
 - (void)updateJointPosesAndRootTransformUsingDepthEstimatedScale;
 - (void)updateLocalPosesFromModelPoses;
 - (void)updateModelPosesFromLocalPoses;
@@ -24,7 +24,7 @@
 
 @implementation ABPKSkeleton
 
-- (ABPKSkeleton)initWithType:(int64_t)a3
+- (ABPKSkeleton)initWithType:(int64_t)type
 {
   v17.receiver = self;
   v17.super_class = ABPKSkeleton;
@@ -37,8 +37,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v4->_skeletonType = a3;
-  if (a3 > 4 || a3 == 1)
+  v4->_skeletonType = type;
+  if (type > 4 || type == 1)
   {
     v13 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -50,12 +50,12 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v6 = [[ABPKSkeletonDefinition alloc] initWithType:a3];
+  v6 = [[ABPKSkeletonDefinition alloc] initWithType:type];
   skeletonDefinition = v5->_skeletonDefinition;
   v5->_skeletonDefinition = v6;
 
-  v8 = [(ABPKSkeleton *)v5 skeletonDefinition];
-  std::vector<ABPKTransform>::vector[abi:ne200100](&v15, [v8 jointCount]);
+  skeletonDefinition = [(ABPKSkeleton *)v5 skeletonDefinition];
+  std::vector<ABPKTransform>::vector[abi:ne200100](&v15, [skeletonDefinition jointCount]);
   begin = v5->_localPoses.__begin_;
   if (begin)
   {
@@ -71,8 +71,8 @@ LABEL_12:
   v15 = 0uLL;
   v16 = 0;
 
-  v10 = [(ABPKSkeleton *)v5 skeletonDefinition];
-  std::vector<simd_float4x4>::vector[abi:ne200100](&v15, [v10 jointCount]);
+  skeletonDefinition2 = [(ABPKSkeleton *)v5 skeletonDefinition];
+  std::vector<simd_float4x4>::vector[abi:ne200100](&v15, [skeletonDefinition2 jointCount]);
   v11 = v5->_modelPoses.__begin_;
   if (v11)
   {
@@ -112,7 +112,7 @@ LABEL_13:
   return v3;
 }
 
-- (void)getLocalJointDataForSkeletonWithPosition:(ABPKSkeleton *)self withOrientation:(SEL)a2
+- (void)getLocalJointDataForSkeletonWithPosition:(ABPKSkeleton *)self withOrientation:(SEL)orientation
 {
   v4 = v3;
   v5 = v2;
@@ -131,7 +131,7 @@ LABEL_13:
   }
 }
 
-- (void)getGlobalJointDataForSkeletonWithPosition:(ABPKSkeleton *)self withOrientation:(SEL)a2
+- (void)getGlobalJointDataForSkeletonWithPosition:(ABPKSkeleton *)self withOrientation:(SEL)orientation
 {
   v4 = v3;
   v5 = v2;
@@ -152,33 +152,33 @@ LABEL_13:
   }
 }
 
-- (void)setModelPoses:(id *)a3 andUpdateLocalPoses:(BOOL)a4
+- (void)setModelPoses:(id *)poses andUpdateLocalPoses:(BOOL)localPoses
 {
-  v4 = a4;
-  v7 = [(ABPKSkeleton *)self skeletonDefinition];
-  v8 = [v7 jointCount];
-  if (v8)
+  localPosesCopy = localPoses;
+  skeletonDefinition = [(ABPKSkeleton *)self skeletonDefinition];
+  jointCount = [skeletonDefinition jointCount];
+  if (jointCount)
   {
-    memmove(self->_modelPoses.__begin_, a3, v8 << 6);
+    memmove(self->_modelPoses.__begin_, poses, jointCount << 6);
   }
 
-  if (v4)
+  if (localPosesCopy)
   {
 
     [(ABPKSkeleton *)self updateLocalPosesFromModelPoses];
   }
 }
 
-- (void)setModelPosesFromDict:(id)a3 andUpdateLocalPoses:(BOOL)a4
+- (void)setModelPosesFromDict:(id)dict andUpdateLocalPoses:(BOOL)poses
 {
-  v4 = a4;
+  posesCopy = poses;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke;
   v6[3] = &unk_278C71898;
   v6[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v6];
-  if (v4)
+  [dict enumerateKeysAndObjectsUsingBlock:v6];
+  if (posesCopy)
   {
     [(ABPKSkeleton *)self updateLocalPosesFromModelPoses];
   }
@@ -219,17 +219,17 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLocalPoses:(const ABPKTransform *)a3 andUpdateModelPoses:(BOOL)a4
+- (void)setLocalPoses:(const ABPKTransform *)poses andUpdateModelPoses:(BOOL)modelPoses
 {
-  v4 = a4;
-  v7 = [(ABPKSkeleton *)self skeletonDefinition];
-  v8 = [v7 jointCount];
-  if (v8)
+  modelPosesCopy = modelPoses;
+  skeletonDefinition = [(ABPKSkeleton *)self skeletonDefinition];
+  jointCount = [skeletonDefinition jointCount];
+  if (jointCount)
   {
-    memmove(self->_localPoses.__begin_, a3, 32 * v8);
+    memmove(self->_localPoses.__begin_, poses, 32 * jointCount);
   }
 
-  if (v4)
+  if (modelPosesCopy)
   {
 
     [(ABPKSkeleton *)self updateModelPosesFromLocalPoses];
@@ -241,15 +241,15 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
   for (i = 0; ; ++i)
   {
     v4 = [(ABPKSkeleton *)self skeletonDefinition:*&v17];
-    v5 = [v4 jointCount];
+    jointCount = [v4 jointCount];
 
-    if (i >= v5)
+    if (i >= jointCount)
     {
       break;
     }
 
-    v6 = [(ABPKSkeleton *)self skeletonDefinition];
-    v7 = [v6 parentJoint:i];
+    skeletonDefinition = [(ABPKSkeleton *)self skeletonDefinition];
+    v7 = [skeletonDefinition parentJoint:i];
 
     begin = self->_modelPoses.__begin_;
     v9 = (begin + 64 * i);
@@ -295,10 +295,10 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v3 = [(ABPKSkeleton *)self skeletonDefinition];
-  v4 = [v3 parentChildOrder];
+  skeletonDefinition = [(ABPKSkeleton *)self skeletonDefinition];
+  parentChildOrder = [skeletonDefinition parentChildOrder];
 
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  v5 = [parentChildOrder countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v5)
   {
     v6 = *v33;
@@ -309,24 +309,24 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
       {
         if (*v33 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(parentChildOrder);
         }
 
-        v8 = [*(*(&v32 + 1) + 8 * v7) intValue];
-        v9 = [(ABPKSkeleton *)self skeletonDefinition];
-        v10 = [v9 parentJoint:v8];
+        intValue = [*(*(&v32 + 1) + 8 * v7) intValue];
+        skeletonDefinition2 = [(ABPKSkeleton *)self skeletonDefinition];
+        v10 = [skeletonDefinition2 parentJoint:intValue];
 
-        v11 = self->_localPoses.__begin_ + 32 * v8;
+        v11 = self->_localPoses.__begin_ + 32 * intValue;
         *&v12 = simd_matrix4x4(*v11);
         if (v10 == -1)
         {
-          v28 = (self->_modelPoses.__begin_ + 64 * v8);
+          v28 = (self->_modelPoses.__begin_ + 64 * intValue);
           *v28 = v12;
           v28[1] = v13;
           v28[2] = v14;
           v28[3] = v15;
-          v29 = *(self->_localPoses.__begin_ + 2 * v8 + 1);
-          v30 = self->_modelPoses.__begin_ + 64 * v8;
+          v29 = *(self->_localPoses.__begin_ + 2 * intValue + 1);
+          v30 = self->_modelPoses.__begin_ + 64 * intValue;
           HIDWORD(v29) = *(v30 + 15);
           *(v30 + 3) = v29;
         }
@@ -356,7 +356,7 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
           v24 = v37[1];
           v25 = v37[2];
           v26 = v37[3];
-          v27 = (begin + 64 * v8);
+          v27 = (begin + 64 * intValue);
           *v27 = v37[0];
           v27[1] = v24;
           v27[2] = v25;
@@ -367,7 +367,7 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
       }
 
       while (v7 != v5);
-      v5 = [v4 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v5 = [parentChildOrder countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v5);
@@ -376,11 +376,11 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scaleTransform:(id *)a3 withScale:(float)a4
+- (void)scaleTransform:(id *)transform withScale:(float)scale
 {
-  v4 = vmulq_n_f32(*(a3 + 3), a4);
+  v4 = vmulq_n_f32(*(transform + 3), scale);
   v4.i32[3] = 1.0;
-  *(a3 + 3) = v4;
+  *(transform + 3) = v4;
 }
 
 - (void)updateJointPosesAndRootTransformUsingDepthEstimatedScale
@@ -402,10 +402,10 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(ABPKSkeleton *)self skeletonDefinition];
-    v5 = [v4 parentChildOrder];
+    skeletonDefinition = [(ABPKSkeleton *)self skeletonDefinition];
+    parentChildOrder = [skeletonDefinition parentChildOrder];
 
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    v6 = [parentChildOrder countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v6)
     {
       v7 = *v18;
@@ -416,21 +416,21 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(parentChildOrder);
           }
 
-          v9 = [*(*(&v17 + 1) + 8 * v8) intValue];
-          v10 = (self->_modelPoses.__begin_ + 64 * v9);
+          intValue = [*(*(&v17 + 1) + 8 * v8) intValue];
+          v10 = (self->_modelPoses.__begin_ + 64 * intValue);
           v11 = vmulq_n_f32(v10[3], self->_estimatedScale);
           v11.i32[3] = 1.0;
           v10[3] = v11;
-          v12 = (self->_localPoses.__begin_ + 32 * v9);
+          v12 = (self->_localPoses.__begin_ + 32 * intValue);
           v12[1] = vmulq_n_f32(v12[1], self->_estimatedScale);
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v6 = [parentChildOrder countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v6);
@@ -448,10 +448,10 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transformModelPoses:(int)a3 andUpdateLocalPoses:(float32x4_t)a4
+- (void)transformModelPoses:(int)poses andUpdateLocalPoses:(float32x4_t)localPoses
 {
-  v7 = *(a1 + 4);
-  for (i = *(a1 + 5); v7 != i; v7 += 4)
+  v7 = *(self + 4);
+  for (i = *(self + 5); v7 != i; v7 += 4)
   {
     v9 = 0;
     v10 = v7[1];
@@ -463,7 +463,7 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
     v16[3] = v12;
     do
     {
-      v17[v9] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a4, COERCE_FLOAT(v16[v9])), a5, *&v16[v9], 1), a6, v16[v9], 2), a7, v16[v9], 3);
+      v17[v9] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(localPoses, COERCE_FLOAT(v16[v9])), a5, *&v16[v9], 1), a6, v16[v9], 2), a7, v16[v9], 3);
       ++v9;
     }
 
@@ -477,12 +477,12 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
     v7[3] = v15;
   }
 
-  if (a3)
+  if (poses)
   {
-    return [a1 updateLocalPosesFromModelPoses];
+    return [self updateLocalPosesFromModelPoses];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)toDictionary
@@ -580,26 +580,26 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
       }
     }
 
-    v6 = [(ABPKSkeleton *)self skeletonDefinition];
-    v7 = [v6 indexOfJointWithName:@"leftfoot"];
+    skeletonDefinition = [(ABPKSkeleton *)self skeletonDefinition];
+    v7 = [skeletonDefinition indexOfJointWithName:@"leftfoot"];
 
-    v8 = [(ABPKSkeleton *)self skeletonDefinition];
-    v9 = [v8 indexOfJointWithName:@"leftleg"];
+    skeletonDefinition2 = [(ABPKSkeleton *)self skeletonDefinition];
+    v9 = [skeletonDefinition2 indexOfJointWithName:@"leftleg"];
 
-    v10 = [(ABPKSkeleton *)self skeletonDefinition];
-    v11 = [v10 indexOfJointWithName:@"leftupleg"];
+    skeletonDefinition3 = [(ABPKSkeleton *)self skeletonDefinition];
+    v11 = [skeletonDefinition3 indexOfJointWithName:@"leftupleg"];
 
-    v12 = [(ABPKSkeleton *)self skeletonDefinition];
-    v13 = [v12 indexOfJointWithName:@"hips"];
+    skeletonDefinition4 = [(ABPKSkeleton *)self skeletonDefinition];
+    v13 = [skeletonDefinition4 indexOfJointWithName:@"hips"];
 
-    v14 = [(ABPKSkeleton *)self skeletonDefinition];
-    v15 = [v14 indexOfJointWithName:@"spine7"];
+    skeletonDefinition5 = [(ABPKSkeleton *)self skeletonDefinition];
+    v15 = [skeletonDefinition5 indexOfJointWithName:@"spine7"];
 
-    v16 = [(ABPKSkeleton *)self skeletonDefinition];
-    v17 = [v16 indexOfJointWithName:@"neck1"];
+    skeletonDefinition6 = [(ABPKSkeleton *)self skeletonDefinition];
+    v17 = [skeletonDefinition6 indexOfJointWithName:@"neck1"];
 
-    v18 = [(ABPKSkeleton *)self skeletonDefinition];
-    v19 = [v18 indexOfJointWithName:@"head"];
+    skeletonDefinition7 = [(ABPKSkeleton *)self skeletonDefinition];
+    v19 = [skeletonDefinition7 indexOfJointWithName:@"head"];
 
     v20 = vsubq_f32(*([(ABPKSkeleton *)self modelPoses]+ (v7 << 6) + 48), *([(ABPKSkeleton *)self modelPoses]+ (v9 << 6) + 48));
     v37 = vmulq_f32(v20, v20);
@@ -626,17 +626,17 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
 
 - (__n128)cameraRootTransform
 {
-  result = *(a1 + 80);
-  v2 = *(a1 + 96);
-  v3 = *(a1 + 112);
-  v4 = *(a1 + 128);
+  result = *(self + 80);
+  v2 = *(self + 96);
+  v3 = *(self + 112);
+  v4 = *(self + 128);
   return result;
 }
 
-- (__n128)setCameraRootTransform:(__n128)a3
+- (__n128)setCameraRootTransform:(__n128)transform
 {
   result[5] = a2;
-  result[6] = a3;
+  result[6] = transform;
   result[7] = a4;
   result[8] = a5;
   return result;
@@ -644,17 +644,17 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
 
 - (__n128)renderingCameraRootTransform
 {
-  result = *(a1 + 144);
-  v2 = *(a1 + 160);
-  v3 = *(a1 + 176);
-  v4 = *(a1 + 192);
+  result = *(self + 144);
+  v2 = *(self + 160);
+  v3 = *(self + 176);
+  v4 = *(self + 192);
   return result;
 }
 
-- (__n128)setRenderingCameraRootTransform:(__n128)a3
+- (__n128)setRenderingCameraRootTransform:(__n128)transform
 {
   result[9] = a2;
-  result[10] = a3;
+  result[10] = transform;
   result[11] = a4;
   result[12] = a5;
   return result;
@@ -662,17 +662,17 @@ void __58__ABPKSkeleton_setModelPosesFromDict_andUpdateLocalPoses___block_invoke
 
 - (__n128)deviceRootTransform
 {
-  result = *(a1 + 208);
-  v2 = *(a1 + 224);
-  v3 = *(a1 + 240);
-  v4 = *(a1 + 256);
+  result = *(self + 208);
+  v2 = *(self + 224);
+  v3 = *(self + 240);
+  v4 = *(self + 256);
   return result;
 }
 
-- (__n128)setDeviceRootTransform:(__n128)a3
+- (__n128)setDeviceRootTransform:(__n128)transform
 {
   result[13] = a2;
-  result[14] = a3;
+  result[14] = transform;
   result[15] = a4;
   result[16] = a5;
   return result;

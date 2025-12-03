@@ -1,7 +1,7 @@
 @interface LAPublicKey
 - (BOOL)canEncryptUsingSecKeyAlgorithm:(SecKeyAlgorithm)algorithm;
 - (BOOL)canVerifyUsingSecKeyAlgorithm:(SecKeyAlgorithm)algorithm;
-- (LAPublicKey)initWithKey:(id)a3;
+- (LAPublicKey)initWithKey:(id)key;
 - (id)right;
 - (void)dealloc;
 - (void)encryptData:(NSData *)data secKeyAlgorithm:(SecKeyAlgorithm)algorithm completion:(void *)handler;
@@ -11,22 +11,22 @@
 
 @implementation LAPublicKey
 
-- (LAPublicKey)initWithKey:(id)a3
+- (LAPublicKey)initWithKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v13.receiver = self;
   v13.super_class = LAPublicKey;
   v6 = [(LAPublicKey *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_key, a3);
+    objc_storeStrong(&v6->_key, key);
     v8 = [MEMORY[0x1E69AD238] createDefaultSerialQueueWithIdentifier:@"LAPublicKey"];
     workQueue = v7->_workQueue;
     v7->_workQueue = v8;
 
-    v10 = [MEMORY[0x1E696EE90] sharedInstance];
-    v7->_instanceID = [v10 nextInstanceIDInDomain:@"LAPublicKey"];
+    mEMORY[0x1E696EE90] = [MEMORY[0x1E696EE90] sharedInstance];
+    v7->_instanceID = [mEMORY[0x1E696EE90] nextInstanceIDInDomain:@"LAPublicKey"];
 
     v11 = LA_LOG_4();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))

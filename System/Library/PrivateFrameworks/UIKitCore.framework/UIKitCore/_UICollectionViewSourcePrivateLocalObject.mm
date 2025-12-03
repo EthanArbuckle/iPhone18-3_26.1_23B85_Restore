@@ -1,22 +1,22 @@
 @interface _UICollectionViewSourcePrivateLocalObject
 - (UICollectionView)collectionView;
-- (_UICollectionViewSourcePrivateLocalObject)initWithIndexPath:(id)a3 collectionView:(id)a4;
+- (_UICollectionViewSourcePrivateLocalObject)initWithIndexPath:(id)path collectionView:(id)view;
 @end
 
 @implementation _UICollectionViewSourcePrivateLocalObject
 
-- (_UICollectionViewSourcePrivateLocalObject)initWithIndexPath:(id)a3 collectionView:(id)a4
+- (_UICollectionViewSourcePrivateLocalObject)initWithIndexPath:(id)path collectionView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = _UICollectionViewSourcePrivateLocalObject;
   v9 = [(_UICollectionViewSourcePrivateLocalObject *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_indexPath, a3);
-    objc_storeWeak(&v10->_collectionView, v8);
+    objc_storeStrong(&v9->_indexPath, path);
+    objc_storeWeak(&v10->_collectionView, viewCopy);
   }
 
   return v10;

@@ -8,15 +8,15 @@
 {
   if ([(NSURL *)self isFileURL])
   {
-    v3 = [(NSURL *)self path];
-    v4 = [NSFileHandle fileHandleForReadingAtPath:v3];
+    path = [(NSURL *)self path];
+    v4 = [NSFileHandle fileHandleForReadingAtPath:path];
   }
 
   else
   {
-    v3 = [(NSURL *)self absoluteString];
-    v5 = [v3 stringByRemovingPercentEncoding];
-    v4 = [NSFileHandle fileHandleForReadingAtPath:v5];
+    path = [(NSURL *)self absoluteString];
+    stringByRemovingPercentEncoding = [path stringByRemovingPercentEncoding];
+    v4 = [NSFileHandle fileHandleForReadingAtPath:stringByRemovingPercentEncoding];
   }
 
   memset(&c, 0, sizeof(c));

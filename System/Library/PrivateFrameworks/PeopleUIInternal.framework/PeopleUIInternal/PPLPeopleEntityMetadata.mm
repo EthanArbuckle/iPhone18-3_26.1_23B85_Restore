@@ -1,14 +1,14 @@
 @interface PPLPeopleEntityMetadata
-- (BOOL)_isValidURL:(id)a3;
-- (PPLPeopleEntityMetadata)initWithURL:(id)a3;
+- (BOOL)_isValidURL:(id)l;
+- (PPLPeopleEntityMetadata)initWithURL:(id)l;
 @end
 
 @implementation PPLPeopleEntityMetadata
 
-- (PPLPeopleEntityMetadata)initWithURL:(id)a3
+- (PPLPeopleEntityMetadata)initWithURL:(id)l
 {
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     [(PPLPeopleEntityMetadata *)a2 initWithURL:?];
   }
@@ -22,9 +22,9 @@
     goto LABEL_6;
   }
 
-  if ([(PPLPeopleEntityMetadata *)v7 _isValidURL:v6])
+  if ([(PPLPeopleEntityMetadata *)v7 _isValidURL:lCopy])
   {
-    objc_storeStrong(p_isa + 1, a3);
+    objc_storeStrong(p_isa + 1, l);
 LABEL_6:
     v9 = p_isa;
     goto LABEL_10;
@@ -33,7 +33,7 @@ LABEL_6:
   v10 = PPLPeopleViewServiceLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [(PPLPeopleEntityMetadata *)v6 initWithURL:v10];
+    [(PPLPeopleEntityMetadata *)lCopy initWithURL:v10];
   }
 
   v9 = 0;
@@ -42,22 +42,22 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)_isValidURL:(id)a3
+- (BOOL)_isValidURL:(id)l
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"people"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v5 = [scheme isEqualToString:@"people"];
 
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v3 resolvingAgainstBaseURL:0];
+    v6 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [v6 queryItems];
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    queryItems = [v6 queryItems];
+    v8 = [queryItems countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -69,19 +69,19 @@ LABEL_10:
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(queryItems);
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v12 name];
-          if ([v13 isEqualToString:@"contactIdentifier"])
+          name = [v12 name];
+          if ([name isEqualToString:@"contactIdentifier"])
           {
           }
 
           else
           {
-            v14 = [v12 name];
-            v15 = [v14 isEqualToString:@"priorities"];
+            name2 = [v12 name];
+            v15 = [name2 isEqualToString:@"priorities"];
 
             if (!v15)
             {
@@ -91,7 +91,7 @@ LABEL_10:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v9 = [queryItems countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v9)
         {
           continue;

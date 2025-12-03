@@ -2,27 +2,27 @@
 + (AMSBagProtocol)defaultBag;
 + (AMSBagProtocol)sandboxBag;
 + (AMSBagProtocol)testflightBag;
-+ (id)xcodeBagWithBundleId:(id)a3;
++ (id)xcodeBagWithBundleId:(id)id;
 - (BOOL)isExpired;
 - (NSDate)expirationDate;
 - (NSString)profile;
 - (NSString)profileVersion;
-- (id)BOOLForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)URLForKey:(id)a3 account:(id)a4;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)doubleForKey:(id)a3;
-- (id)integerForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)createSnapshotWithCompletion:(id)a3;
+- (id)BOOLForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)URLForKey:(id)key account:(id)account;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)doubleForKey:(id)key;
+- (id)integerForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)createSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation Bag
 
 - (NSString)profile
 {
-  v2 = self;
+  selfCopy = self;
   sub_100239878();
 
   v3 = String._bridgeToObjectiveC()();
@@ -39,7 +39,7 @@
 
 - (BOOL)isExpired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10023991C();
 
   return v3 & 1;
@@ -50,7 +50,7 @@
   v3 = sub_100080FB4(&qword_1003CD9A0);
   __chkstk_darwin(v3 - 8);
   v5 = &v10 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_100239A4C(v5);
 
   v7 = type metadata accessor for Date();
@@ -85,7 +85,7 @@
   return v2;
 }
 
-+ (id)xcodeBagWithBundleId:(id)a3
++ (id)xcodeBagWithBundleId:(id)id
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   sub_100239E58();
@@ -94,84 +94,84 @@
   return v4;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10023AC78(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10023AC78(keyCopy);
 
   return v6;
 }
 
-- (id)BOOLForKey:(id)a3
+- (id)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10023AD1C(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10023AD1C(keyCopy);
 
   return v6;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_10023ADC0(sub_10023F8FC, v5);
 }
 
-- (id)doubleForKey:(id)a3
+- (id)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10023AF7C(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10023AF7C(keyCopy);
 
   return v6;
 }
 
-- (id)integerForKey:(id)a3
+- (id)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10023B020(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10023B020(keyCopy);
 
   return v6;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10023B0C4(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10023B0C4(keyCopy);
 
   return v6;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10023B168(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10023B168(keyCopy);
 
   return v6;
 }
 
-- (id)URLForKey:(id)a3 account:(id)a4
+- (id)URLForKey:(id)key account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10023B20C(v6, a4);
+  keyCopy = key;
+  accountCopy = account;
+  selfCopy = self;
+  v9 = sub_10023B20C(keyCopy, account);
 
   return v9;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10023B32C(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10023B32C(keyCopy);
 
   return v6;
 }

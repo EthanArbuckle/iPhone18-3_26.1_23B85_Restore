@@ -1,15 +1,15 @@
 @interface BEWebProcessJavaScriptAPI
-+ (void)exportForContext:(id)a3;
++ (void)exportForContext:(id)context;
 @end
 
 @implementation BEWebProcessJavaScriptAPI
 
-+ (void)exportForContext:(id)a3
++ (void)exportForContext:(id)context
 {
-  v3 = a3;
-  JSContextGetGroup([v3 JSGlobalContextRef]);
+  contextCopy = context;
+  JSContextGetGroup([contextCopy JSGlobalContextRef]);
   JSContextGroupSetExecutionTimeLimit();
-  [v3 setObject:&stru_209B0 forKeyedSubscript:@"adjustedTextRectsForRange"];
+  [contextCopy setObject:&stru_209B0 forKeyedSubscript:@"adjustedTextRectsForRange"];
 }
 
 @end

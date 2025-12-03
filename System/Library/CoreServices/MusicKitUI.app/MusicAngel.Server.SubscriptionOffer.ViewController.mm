@@ -1,8 +1,8 @@
 @interface MusicAngel.Server.SubscriptionOffer.ViewController
-- (BOOL)dynamicViewControllerShouldDismiss:(id)a3;
-- (_TtCVCE10MusicKitUIC17_MusicKit_SwiftUI10MusicAngel6Server17SubscriptionOffer14ViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)dynamicViewController:(id)a3 contentViewWithDictionary:(id)a4 frame:(CGRect)a5;
-- (void)dynamicViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5;
+- (BOOL)dynamicViewControllerShouldDismiss:(id)dismiss;
+- (_TtCVCE10MusicKitUIC17_MusicKit_SwiftUI10MusicAngel6Server17SubscriptionOffer14ViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)dynamicViewController:(id)controller contentViewWithDictionary:(id)dictionary frame:(CGRect)frame;
+- (void)dynamicViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error;
 - (void)viewDidLoad;
 @end
 
@@ -10,51 +10,51 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100005CC8();
 }
 
-- (_TtCVCE10MusicKitUIC17_MusicKit_SwiftUI10MusicAngel6Server17SubscriptionOffer14ViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCVCE10MusicKitUIC17_MusicKit_SwiftUI10MusicAngel6Server17SubscriptionOffer14ViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1000070EC();
 }
 
-- (BOOL)dynamicViewControllerShouldDismiss:(id)a3
+- (BOOL)dynamicViewControllerShouldDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_1000071E8();
 
   return 0;
 }
 
-- (id)dynamicViewController:(id)a3 contentViewWithDictionary:(id)a4 frame:(CGRect)a5
+- (id)dynamicViewController:(id)controller contentViewWithDictionary:(id)dictionary frame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v13 = sub_100007264(x, y, width, height);
 
   return v13;
 }
 
-- (void)dynamicViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_100007398(v11, a4, a5);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100007398(errorCopy, result, error);
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface AXSBServerVolumeControl
-- (void)_effectiveVolumeChanged:(id)a3;
-- (void)_presentVolumeHUDWithVolume:(float)a3;
+- (void)_effectiveVolumeChanged:(id)changed;
+- (void)_presentVolumeHUDWithVolume:(float)volume;
 @end
 
 @implementation AXSBServerVolumeControl
 
-- (void)_effectiveVolumeChanged:(id)a3
+- (void)_effectiveVolumeChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277D26BC8]];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D26BC8]];
   [v6 floatValue];
   v8 = v7;
 
@@ -17,10 +17,10 @@
   _LastVolumeDisplay = CFAbsoluteTimeGetCurrent();
   v9.receiver = self;
   v9.super_class = AXSBServerVolumeControl;
-  [(AXSBServerVolumeControl *)&v9 _effectiveVolumeChanged:v4];
+  [(AXSBServerVolumeControl *)&v9 _effectiveVolumeChanged:changedCopy];
 }
 
-- (void)_presentVolumeHUDWithVolume:(float)a3
+- (void)_presentVolumeHUDWithVolume:(float)volume
 {
   v5 = +[_AXSpringBoardServerInstance springBoardServerInstance];
   [v5 springBoardActionOccurred:1];
@@ -32,7 +32,7 @@
   {
     v9.receiver = self;
     v9.super_class = AXSBServerVolumeControl;
-    *&v8 = a3;
+    *&v8 = volume;
     [(AXSBServerVolumeControl *)&v9 _presentVolumeHUDWithVolume:v8];
   }
 }

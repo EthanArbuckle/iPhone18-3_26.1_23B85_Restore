@@ -1,14 +1,14 @@
 @interface HDWorkoutZonesAssociationEntity
-+ (BOOL)_wasDeletedObjectWithUUID:(void *)a3 transaction:(uint64_t)a4 error:;
-+ (BOOL)associateSyncedZonesSamplesWithUUIDs:(id)a3 withWorkoutUUID:(id)a4 syncIdentity:(id)a5 syncProvenance:(int64_t)a6 transaction:(id)a7 error:(id *)a8;
-+ (BOOL)associateZonesSamplesWithUUIDs:(id)a3 withWorkoutUUID:(id)a4 transaction:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)enumerateZonesSamplesWithWorkoutPersistentID:(unint64_t)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6 handler:(id)a7;
++ (BOOL)_wasDeletedObjectWithUUID:(void *)d transaction:(uint64_t)transaction error:;
++ (BOOL)associateSyncedZonesSamplesWithUUIDs:(id)ds withWorkoutUUID:(id)d syncIdentity:(id)identity syncProvenance:(int64_t)provenance transaction:(id)transaction error:(id *)error;
++ (BOOL)associateZonesSamplesWithUUIDs:(id)ds withWorkoutUUID:(id)d transaction:(id)transaction profile:(id)profile error:(id *)error;
++ (BOOL)enumerateZonesSamplesWithWorkoutPersistentID:(unint64_t)d profile:(id)profile transaction:(id)transaction error:(id *)error handler:(id)handler;
 + (id)foreignKeys;
 + (id)uniquedColumns;
-+ (uint64_t)_insertAssociationsForZonesSamplesWithUUIDs:(void *)a3 withWorkoutUUID:(uint64_t)a4 syncProvenance:(uint64_t)a5 syncIdentity:(int)a6 ignoreDeletedObjects:(void *)a7 transaction:(void *)a8 error:;
-- (id)_dataObjectUUIDWithPredicate:(void *)a3 transaction:(uint64_t)a4 error:;
-- (id)workoutUUIDWithTransaction:(id)a3 error:(id *)a4;
-- (id)zonesUUIDWithTransaction:(id)a3 error:(id *)a4;
++ (uint64_t)_insertAssociationsForZonesSamplesWithUUIDs:(void *)ds withWorkoutUUID:(uint64_t)d syncProvenance:(uint64_t)provenance syncIdentity:(int)identity ignoreDeletedObjects:(void *)objects transaction:(void *)transaction error:;
+- (id)_dataObjectUUIDWithPredicate:(void *)predicate transaction:(uint64_t)transaction error:;
+- (id)workoutUUIDWithTransaction:(id)transaction error:(id *)error;
+- (id)zonesUUIDWithTransaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDWorkoutZonesAssociationEntity
@@ -40,24 +40,24 @@
   return v4;
 }
 
-+ (BOOL)associateZonesSamplesWithUUIDs:(id)a3 withWorkoutUUID:(id)a4 transaction:(id)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)associateZonesSamplesWithUUIDs:(id)ds withWorkoutUUID:(id)d transaction:(id)transaction profile:(id)profile error:(id *)error
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  LOBYTE(a7) = +[HDWorkoutZonesAssociationEntity _insertAssociationsForZonesSamplesWithUUIDs:withWorkoutUUID:syncProvenance:syncIdentity:ignoreDeletedObjects:transaction:error:](a1, v14, v13, 0, [a6 currentSyncIdentityPersistentID], 0, v12, a7);
+  transactionCopy = transaction;
+  dCopy = d;
+  dsCopy = ds;
+  LOBYTE(error) = +[HDWorkoutZonesAssociationEntity _insertAssociationsForZonesSamplesWithUUIDs:withWorkoutUUID:syncProvenance:syncIdentity:ignoreDeletedObjects:transaction:error:](self, dsCopy, dCopy, 0, [profile currentSyncIdentityPersistentID], 0, transactionCopy, error);
 
-  return a7;
+  return error;
 }
 
-+ (uint64_t)_insertAssociationsForZonesSamplesWithUUIDs:(void *)a3 withWorkoutUUID:(uint64_t)a4 syncProvenance:(uint64_t)a5 syncIdentity:(int)a6 ignoreDeletedObjects:(void *)a7 transaction:(void *)a8 error:
++ (uint64_t)_insertAssociationsForZonesSamplesWithUUIDs:(void *)ds withWorkoutUUID:(uint64_t)d syncProvenance:(uint64_t)provenance syncIdentity:(int)identity ignoreDeletedObjects:(void *)objects transaction:(void *)transaction error:
 {
   v46[4] = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v13 = a7;
+  dsCopy = ds;
+  objectsCopy = objects;
   v14 = objc_opt_self();
-  v15 = [v13 databaseForEntityClass:v14];
+  v15 = [objectsCopy databaseForEntityClass:v14];
   v46[0] = @"workout_id";
   v46[1] = @"zones_sample_id";
   v46[2] = @"sync_provenance";
@@ -74,26 +74,26 @@
     v32[1] = 3221225472;
     v32[2] = __162__HDWorkoutZonesAssociationEntity__insertAssociationsForZonesSamplesWithUUIDs_withWorkoutUUID_syncProvenance_syncIdentity_ignoreDeletedObjects_transaction_error___block_invoke;
     v32[3] = &unk_27861BB10;
-    v41 = a6;
+    identityCopy = identity;
     v33 = v15;
     v38 = v14;
-    v34 = v13;
-    v35 = v12;
+    v34 = objectsCopy;
+    v35 = dsCopy;
     v36 = v16;
     v37 = v18;
-    v39 = a4;
-    v40 = a5;
-    v20 = [v11 hk_enumerateUUIDsWithError:a8 block:v32];
+    dCopy = d;
+    provenanceCopy = provenance;
+    v20 = [v11 hk_enumerateUUIDsWithError:transaction block:v32];
 
     goto LABEL_16;
   }
 
   if (!v19)
   {
-    if (a6)
+    if (identity)
     {
       v42 = 0;
-      v21 = [(HDWorkoutZonesAssociationEntity *)v14 _wasDeletedObjectWithUUID:v12 transaction:v13 error:&v42];
+      v21 = [(HDWorkoutZonesAssociationEntity *)v14 _wasDeletedObjectWithUUID:dsCopy transaction:objectsCopy error:&v42];
       v19 = v42;
       if (v21)
       {
@@ -102,7 +102,7 @@
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v45 = v12;
+          v45 = dsCopy;
           _os_log_impl(&dword_228986000, v22, OS_LOG_TYPE_DEFAULT, "Not inserting zones associations since workout %{public}@ was previously deleted", buf, 0xCu);
         }
 
@@ -119,8 +119,8 @@
   else
   {
     v23 = MEMORY[0x277CCA9B8];
-    v24 = [v12 UUIDString];
-    v25 = [v23 hk_error:118 format:{@"Workout %@ does not exist when associating zones", v24}];
+    uUIDString = [dsCopy UUIDString];
+    v25 = [v23 hk_error:118 format:{@"Workout %@ does not exist when associating zones", uUIDString}];
 
     v19 = v25;
     if (!v19)
@@ -131,10 +131,10 @@ LABEL_13:
     }
   }
 
-  if (a8)
+  if (transaction)
   {
     v26 = v19;
-    *a8 = v19;
+    *transaction = v19;
   }
 
   else
@@ -149,17 +149,17 @@ LABEL_16:
   return v20;
 }
 
-+ (BOOL)associateSyncedZonesSamplesWithUUIDs:(id)a3 withWorkoutUUID:(id)a4 syncIdentity:(id)a5 syncProvenance:(int64_t)a6 transaction:(id)a7 error:(id *)a8
++ (BOOL)associateSyncedZonesSamplesWithUUIDs:(id)ds withWorkoutUUID:(id)d syncIdentity:(id)identity syncProvenance:(int64_t)provenance transaction:(id)transaction error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = [HDSyncIdentityEntity insertOrLookupConcreteIdentityForIdentity:a5 transaction:v16 error:a8];
+  dsCopy = ds;
+  dCopy = d;
+  transactionCopy = transaction;
+  v17 = [HDSyncIdentityEntity insertOrLookupConcreteIdentityForIdentity:identity transaction:transactionCopy error:error];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 entity];
-    v20 = +[HDWorkoutZonesAssociationEntity _insertAssociationsForZonesSamplesWithUUIDs:withWorkoutUUID:syncProvenance:syncIdentity:ignoreDeletedObjects:transaction:error:](a1, v14, v15, a6, [v19 persistentID], 1, v16, a8);
+    entity = [v17 entity];
+    v20 = +[HDWorkoutZonesAssociationEntity _insertAssociationsForZonesSamplesWithUUIDs:withWorkoutUUID:syncProvenance:syncIdentity:ignoreDeletedObjects:transaction:error:](self, dsCopy, dCopy, provenance, [entity persistentID], 1, transactionCopy, error);
   }
 
   else
@@ -170,34 +170,34 @@ LABEL_16:
   return v20;
 }
 
-+ (BOOL)enumerateZonesSamplesWithWorkoutPersistentID:(unint64_t)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6 handler:(id)a7
++ (BOOL)enumerateZonesSamplesWithWorkoutPersistentID:(unint64_t)d profile:(id)profile transaction:(id)transaction error:(id *)error handler:(id)handler
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a7;
+  profileCopy = profile;
+  handlerCopy = handler;
   v14 = MEMORY[0x277D10B18];
   v15 = MEMORY[0x277CCABB0];
-  v16 = a5;
-  v17 = [v15 numberWithUnsignedLongLong:a3];
+  transactionCopy = transaction;
+  v17 = [v15 numberWithUnsignedLongLong:d];
   v18 = [v14 predicateWithProperty:@"workout_id" equalToValue:v17];
 
-  v19 = [v16 databaseForEntityClass:a1];
+  v19 = [transactionCopy databaseForEntityClass:self];
 
-  v20 = [a1 queryWithDatabase:v19 predicate:v18];
+  v20 = [self queryWithDatabase:v19 predicate:v18];
   v29[0] = @"zones_sample_id";
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __114__HDWorkoutZonesAssociationEntity_enumerateZonesSamplesWithWorkoutPersistentID_profile_transaction_error_handler___block_invoke;
   v26[3] = &unk_27861BAC0;
-  v27 = v12;
-  v28 = v13;
-  v22 = v13;
-  v23 = v12;
-  LOBYTE(a6) = [v20 enumerateProperties:v21 error:a6 enumerationHandler:v26];
+  v27 = profileCopy;
+  v28 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = profileCopy;
+  LOBYTE(error) = [v20 enumerateProperties:v21 error:error enumerationHandler:v26];
 
   v24 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
 uint64_t __114__HDWorkoutZonesAssociationEntity_enumerateZonesSamplesWithWorkoutPersistentID_profile_transaction_error_handler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -218,15 +218,15 @@ uint64_t __114__HDWorkoutZonesAssociationEntity_enumerateZonesSamplesWithWorkout
   return v8;
 }
 
-- (id)workoutUUIDWithTransaction:(id)a3 error:(id *)a4
+- (id)workoutUUIDWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDHealthEntity *)self numberForProperty:@"workout_id" transaction:v6 error:a4];
+  transactionCopy = transaction;
+  v7 = [(HDHealthEntity *)self numberForProperty:@"workout_id" transaction:transactionCopy error:error];
   v8 = v7;
   if (v7)
   {
     v9 = HDDataEntityPredicateForRowID(v7, 1);
-    v10 = [(HDWorkoutZonesAssociationEntity *)self _dataObjectUUIDWithPredicate:v9 transaction:v6 error:a4];
+    v10 = [(HDWorkoutZonesAssociationEntity *)self _dataObjectUUIDWithPredicate:v9 transaction:transactionCopy error:error];
   }
 
   else
@@ -237,15 +237,15 @@ uint64_t __114__HDWorkoutZonesAssociationEntity_enumerateZonesSamplesWithWorkout
   return v10;
 }
 
-- (id)_dataObjectUUIDWithPredicate:(void *)a3 transaction:(uint64_t)a4 error:
+- (id)_dataObjectUUIDWithPredicate:(void *)predicate transaction:(uint64_t)transaction error:
 {
-  if (a1)
+  if (self)
   {
-    v6 = a3;
+    predicateCopy = predicate;
     v7 = a2;
-    v8 = [v6 databaseForEntityClass:objc_opt_class()];
+    v8 = [predicateCopy databaseForEntityClass:objc_opt_class()];
 
-    v9 = [(HDSQLiteEntity *)HDDataEntity propertyValueForAnyInDatabase:v8 property:@"uuid" predicate:v7 error:a4];
+    v9 = [(HDSQLiteEntity *)HDDataEntity propertyValueForAnyInDatabase:v8 property:@"uuid" predicate:v7 error:transaction];
 
     v10 = _HDUUIDForSQLiteValue();
   }
@@ -258,15 +258,15 @@ uint64_t __114__HDWorkoutZonesAssociationEntity_enumerateZonesSamplesWithWorkout
   return v10;
 }
 
-- (id)zonesUUIDWithTransaction:(id)a3 error:(id *)a4
+- (id)zonesUUIDWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDHealthEntity *)self numberForProperty:@"zones_sample_id" transaction:v6 error:a4];
+  transactionCopy = transaction;
+  v7 = [(HDHealthEntity *)self numberForProperty:@"zones_sample_id" transaction:transactionCopy error:error];
   v8 = v7;
   if (v7)
   {
     v9 = HDDataEntityPredicateForRowID(v7, 1);
-    v10 = [(HDWorkoutZonesAssociationEntity *)self _dataObjectUUIDWithPredicate:v9 transaction:v6 error:a4];
+    v10 = [(HDWorkoutZonesAssociationEntity *)self _dataObjectUUIDWithPredicate:v9 transaction:transactionCopy error:error];
   }
 
   else
@@ -277,12 +277,12 @@ uint64_t __114__HDWorkoutZonesAssociationEntity_enumerateZonesSamplesWithWorkout
   return v10;
 }
 
-+ (BOOL)_wasDeletedObjectWithUUID:(void *)a3 transaction:(uint64_t)a4 error:
++ (BOOL)_wasDeletedObjectWithUUID:(void *)d transaction:(uint64_t)transaction error:
 {
-  v6 = a3;
+  dCopy = d;
   v7 = a2;
   objc_opt_self();
-  v8 = [HDDeletedObjectEntity deletedObjectEntityWithUUID:v7 transaction:v6 error:a4];
+  v8 = [HDDeletedObjectEntity deletedObjectEntityWithUUID:v7 transaction:dCopy error:transaction];
 
   return v8 != 0;
 }

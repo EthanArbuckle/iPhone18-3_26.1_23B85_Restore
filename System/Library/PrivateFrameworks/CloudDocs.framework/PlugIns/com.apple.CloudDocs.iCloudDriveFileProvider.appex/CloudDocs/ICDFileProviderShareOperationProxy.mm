@@ -1,27 +1,27 @@
 @interface ICDFileProviderShareOperationProxy
-- (ICDFileProviderShareOperationProxy)initWithFileProviderExtension:(id)a3 itemIdentifier:(id)a4 operationQueue:(id)a5 clientPrivilegesDescriptor:(id)a6;
+- (ICDFileProviderShareOperationProxy)initWithFileProviderExtension:(id)extension itemIdentifier:(id)identifier operationQueue:(id)queue clientPrivilegesDescriptor:(id)descriptor;
 - (id)remoteObject;
-- (void)createSharingInfoWithReply:(id)a3;
-- (void)startOperation:(id)a3 toCopyParticipantTokenWithReply:(id)a4;
-- (void)startOperation:(id)a3 toCopySharingAccessTokenWithReply:(id)a4;
-- (void)startOperation:(id)a3 toCopySharingInfoWithReply:(id)a4;
-- (void)startOperation:(id)a3 toCopyShortTokenWithReply:(id)a4;
-- (void)startOperation:(id)a3 toPrepFolderForSharingWithReply:(id)a4;
-- (void)startOperation:(id)a3 toProcessSubitemsWithMaxSubsharesFailures:(unint64_t)a4 processType:(unint64_t)a5 reply:(id)a6;
+- (void)createSharingInfoWithReply:(id)reply;
+- (void)startOperation:(id)operation toCopyParticipantTokenWithReply:(id)reply;
+- (void)startOperation:(id)operation toCopySharingAccessTokenWithReply:(id)reply;
+- (void)startOperation:(id)operation toCopySharingInfoWithReply:(id)reply;
+- (void)startOperation:(id)operation toCopyShortTokenWithReply:(id)reply;
+- (void)startOperation:(id)operation toPrepFolderForSharingWithReply:(id)reply;
+- (void)startOperation:(id)operation toProcessSubitemsWithMaxSubsharesFailures:(unint64_t)failures processType:(unint64_t)type reply:(id)reply;
 @end
 
 @implementation ICDFileProviderShareOperationProxy
 
-- (ICDFileProviderShareOperationProxy)initWithFileProviderExtension:(id)a3 itemIdentifier:(id)a4 operationQueue:(id)a5 clientPrivilegesDescriptor:(id)a6
+- (ICDFileProviderShareOperationProxy)initWithFileProviderExtension:(id)extension itemIdentifier:(id)identifier operationQueue:(id)queue clientPrivilegesDescriptor:(id)descriptor
 {
-  v11 = a3;
+  extensionCopy = extension;
   v15.receiver = self;
   v15.super_class = ICDFileProviderShareOperationProxy;
-  v12 = [(BaseFileProviderShareOperationProxy *)&v15 initWithItemIdentifier:a4 operationQueue:a5 clientPrivilegesDescriptor:a6];
+  v12 = [(BaseFileProviderShareOperationProxy *)&v15 initWithItemIdentifier:identifier operationQueue:queue clientPrivilegesDescriptor:descriptor];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fileProviderExtension, a3);
+    objc_storeStrong(&v12->_fileProviderExtension, extension);
   }
 
   return v13;
@@ -30,17 +30,17 @@
 - (id)remoteObject
 {
   v2 = +[BRDaemonConnection defaultConnection];
-  v3 = [v2 remoteObjectProxy];
+  remoteObjectProxy = [v2 remoteObjectProxy];
 
-  v4 = [[BRFileProviderXPCAutomaticErrorProxy alloc] initWithConnection:v3 protocol:&OBJC_PROTOCOL___BRProtocolFPFS orError:0 name:@"daemon connection" requestPid:0];
+  v4 = [[BRFileProviderXPCAutomaticErrorProxy alloc] initWithConnection:remoteObjectProxy protocol:&OBJC_PROTOCOL___BRProtocolFPFS orError:0 name:@"daemon connection" requestPid:0];
 
   return v4;
 }
 
-- (void)startOperation:(id)a3 toCopySharingInfoWithReply:(id)a4
+- (void)startOperation:(id)operation toCopySharingInfoWithReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  replyCopy = reply;
   memset(v22, 0, sizeof(v22));
   sub_100001C50(1, "[ICDFileProviderShareOperationProxy startOperation:toCopySharingInfoWithReply:]", 49, 0, v22);
   v8 = brc_bread_crumbs();
@@ -56,22 +56,22 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v10 = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
-  v11 = [v10 isSharingProxyEntitled];
+  clientPrivilegesDescriptor = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
+  isSharingProxyEntitled = [clientPrivilegesDescriptor isSharingProxyEntitled];
 
-  if (v11)
+  if (isSharingProxyEntitled)
   {
-    v12 = sub_100011E44(v6);
-    v13 = [(ICDFileProviderShareOperationProxy *)self remoteObject];
-    v14 = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
+    v12 = sub_100011E44(operationCopy);
+    remoteObject = [(ICDFileProviderShareOperationProxy *)self remoteObject];
+    itemIdentifier = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10001B848;
     v17[3] = &unk_100044D10;
     v15 = v12;
     v18 = v15;
-    v19 = v7;
-    [v13 startOperation:v15 toCopySharingInfoWithItemID:v14 reply:v17];
+    v19 = replyCopy;
+    [remoteObject startOperation:v15 toCopySharingInfoWithItemID:itemIdentifier reply:v17];
 
     v16 = &v18;
   }
@@ -83,7 +83,7 @@
     v20[1] = 3221225472;
     v20[2] = sub_10001B720;
     v20[3] = &unk_100044598;
-    v21 = v7;
+    v21 = replyCopy;
     sub_10001B720(v20, v15);
     v16 = &v21;
   }
@@ -91,10 +91,10 @@
   sub_100001DE4(v22);
 }
 
-- (void)startOperation:(id)a3 toCopySharingAccessTokenWithReply:(id)a4
+- (void)startOperation:(id)operation toCopySharingAccessTokenWithReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  replyCopy = reply;
   memset(v22, 0, sizeof(v22));
   sub_100001C50(1, "[ICDFileProviderShareOperationProxy startOperation:toCopySharingAccessTokenWithReply:]", 62, 0, v22);
   v8 = brc_bread_crumbs();
@@ -110,22 +110,22 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v10 = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
-  v11 = [v10 isSharingProxyEntitled];
+  clientPrivilegesDescriptor = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
+  isSharingProxyEntitled = [clientPrivilegesDescriptor isSharingProxyEntitled];
 
-  if (v11)
+  if (isSharingProxyEntitled)
   {
-    v12 = sub_100011E44(v6);
-    v13 = [(ICDFileProviderShareOperationProxy *)self remoteObject];
-    v14 = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
+    v12 = sub_100011E44(operationCopy);
+    remoteObject = [(ICDFileProviderShareOperationProxy *)self remoteObject];
+    itemIdentifier = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10001BDB0;
     v17[3] = &unk_100045120;
     v15 = v12;
     v18 = v15;
-    v19 = v7;
-    [v13 startOperation:v15 toCopySharingAccessTokenOfItemID:v14 reply:v17];
+    v19 = replyCopy;
+    [remoteObject startOperation:v15 toCopySharingAccessTokenOfItemID:itemIdentifier reply:v17];
 
     v16 = &v18;
   }
@@ -137,7 +137,7 @@
     v20[1] = 3221225472;
     v20[2] = sub_10001BC88;
     v20[3] = &unk_100044598;
-    v21 = v7;
+    v21 = replyCopy;
     sub_10001BC88(v20, v15);
     v16 = &v21;
   }
@@ -145,10 +145,10 @@
   sub_100001DE4(v22);
 }
 
-- (void)startOperation:(id)a3 toCopyShortTokenWithReply:(id)a4
+- (void)startOperation:(id)operation toCopyShortTokenWithReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  replyCopy = reply;
   memset(v22, 0, sizeof(v22));
   sub_100001C50(1, "[ICDFileProviderShareOperationProxy startOperation:toCopyShortTokenWithReply:]", 73, 0, v22);
   v8 = brc_bread_crumbs();
@@ -164,22 +164,22 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v10 = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
-  v11 = [v10 isSharingProxyEntitled];
+  clientPrivilegesDescriptor = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
+  isSharingProxyEntitled = [clientPrivilegesDescriptor isSharingProxyEntitled];
 
-  if (v11)
+  if (isSharingProxyEntitled)
   {
-    v12 = sub_100011E44(v6);
-    v13 = [(ICDFileProviderShareOperationProxy *)self remoteObject];
-    v14 = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
+    v12 = sub_100011E44(operationCopy);
+    remoteObject = [(ICDFileProviderShareOperationProxy *)self remoteObject];
+    itemIdentifier = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10001C30C;
     v17[3] = &unk_100045148;
     v15 = v12;
     v18 = v15;
-    v19 = v7;
-    [v13 startOperation:v15 toCopyShortTokenOfItemID:v14 reply:v17];
+    v19 = replyCopy;
+    [remoteObject startOperation:v15 toCopyShortTokenOfItemID:itemIdentifier reply:v17];
 
     v16 = &v18;
   }
@@ -191,7 +191,7 @@
     v20[1] = 3221225472;
     v20[2] = sub_10001C1F0;
     v20[3] = &unk_100044598;
-    v21 = v7;
+    v21 = replyCopy;
     sub_10001C1F0(v20, v15);
     v16 = &v21;
   }
@@ -199,9 +199,9 @@
   sub_100001DE4(v22);
 }
 
-- (void)createSharingInfoWithReply:(id)a3
+- (void)createSharingInfoWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   memset(v16, 0, sizeof(v16));
   sub_100001C50(1, "[ICDFileProviderShareOperationProxy createSharingInfoWithReply:]", 84, 0, v16);
   v5 = brc_bread_crumbs();
@@ -217,19 +217,19 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v7 = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
-  v8 = [v7 isSharingProxyEntitled];
+  clientPrivilegesDescriptor = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
+  isSharingProxyEntitled = [clientPrivilegesDescriptor isSharingProxyEntitled];
 
-  if (v8)
+  if (isSharingProxyEntitled)
   {
-    v9 = [(ICDFileProviderShareOperationProxy *)self remoteObject];
-    v10 = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
+    remoteObject = [(ICDFileProviderShareOperationProxy *)self remoteObject];
+    itemIdentifier = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10001C7FC;
     v12[3] = &unk_100045170;
-    v13 = v4;
-    [v9 createSharingInfoForItemID:v10 reply:v12];
+    v13 = replyCopy;
+    [remoteObject createSharingInfoForItemID:itemIdentifier reply:v12];
 
     v11 = v13;
   }
@@ -241,17 +241,17 @@
     v14[1] = 3221225472;
     v14[2] = sub_10001C6E0;
     v14[3] = &unk_100044598;
-    v15 = v4;
+    v15 = replyCopy;
     sub_10001C6E0(v14, v11);
   }
 
   sub_100001DE4(v16);
 }
 
-- (void)startOperation:(id)a3 toCopyParticipantTokenWithReply:(id)a4
+- (void)startOperation:(id)operation toCopyParticipantTokenWithReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  replyCopy = reply;
   memset(v22, 0, sizeof(v22));
   sub_100001C50(1, "[ICDFileProviderShareOperationProxy startOperation:toCopyParticipantTokenWithReply:]", 104, 0, v22);
   v8 = brc_bread_crumbs();
@@ -267,22 +267,22 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v10 = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
-  v11 = [v10 isSharingPrivateInterfaceEntitled];
+  clientPrivilegesDescriptor = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
+  isSharingPrivateInterfaceEntitled = [clientPrivilegesDescriptor isSharingPrivateInterfaceEntitled];
 
-  if (v11)
+  if (isSharingPrivateInterfaceEntitled)
   {
-    v12 = sub_100011E44(v6);
-    v13 = [(ICDFileProviderShareOperationProxy *)self remoteObject];
-    v14 = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
+    v12 = sub_100011E44(operationCopy);
+    remoteObject = [(ICDFileProviderShareOperationProxy *)self remoteObject];
+    itemIdentifier = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10001D2B0;
     v17[3] = &unk_100045198;
     v15 = v12;
     v18 = v15;
-    v19 = v7;
-    [v13 startOperation:v15 toCopyParticipantTokenWithItemID:v14 reply:v17];
+    v19 = replyCopy;
+    [remoteObject startOperation:v15 toCopyParticipantTokenWithItemID:itemIdentifier reply:v17];
 
     v16 = &v18;
   }
@@ -294,7 +294,7 @@
     v20[1] = 3221225472;
     v20[2] = sub_10001D188;
     v20[3] = &unk_100044598;
-    v21 = v7;
+    v21 = replyCopy;
     sub_10001D188(v20, v15);
     v16 = &v21;
   }
@@ -302,10 +302,10 @@
   sub_100001DE4(v22);
 }
 
-- (void)startOperation:(id)a3 toPrepFolderForSharingWithReply:(id)a4
+- (void)startOperation:(id)operation toPrepFolderForSharingWithReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  replyCopy = reply;
   memset(v22, 0, sizeof(v22));
   sub_100001C50(1, "[ICDFileProviderShareOperationProxy startOperation:toPrepFolderForSharingWithReply:]", 115, 0, v22);
   v8 = brc_bread_crumbs();
@@ -321,22 +321,22 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v10 = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
-  v11 = [v10 isSharingPrivateInterfaceEntitled];
+  clientPrivilegesDescriptor = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
+  isSharingPrivateInterfaceEntitled = [clientPrivilegesDescriptor isSharingPrivateInterfaceEntitled];
 
-  if (v11)
+  if (isSharingPrivateInterfaceEntitled)
   {
-    v12 = sub_100011E44(v6);
-    v13 = [(ICDFileProviderShareOperationProxy *)self remoteObject];
-    v14 = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
+    v12 = sub_100011E44(operationCopy);
+    remoteObject = [(ICDFileProviderShareOperationProxy *)self remoteObject];
+    itemIdentifier = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10001D800;
     v17[3] = &unk_1000448A8;
     v15 = v12;
     v18 = v15;
-    v19 = v7;
-    [v13 startOperation:v15 toPrepFolderForSharingWithItemID:v14 reply:v17];
+    v19 = replyCopy;
+    [remoteObject startOperation:v15 toPrepFolderForSharingWithItemID:itemIdentifier reply:v17];
 
     v16 = &v18;
   }
@@ -348,7 +348,7 @@
     v20[1] = 3221225472;
     v20[2] = sub_10001D6F0;
     v20[3] = &unk_100044598;
-    v21 = v7;
+    v21 = replyCopy;
     sub_10001D6F0(v20, v15);
     v16 = &v21;
   }
@@ -356,10 +356,10 @@
   sub_100001DE4(v22);
 }
 
-- (void)startOperation:(id)a3 toProcessSubitemsWithMaxSubsharesFailures:(unint64_t)a4 processType:(unint64_t)a5 reply:(id)a6
+- (void)startOperation:(id)operation toProcessSubitemsWithMaxSubsharesFailures:(unint64_t)failures processType:(unint64_t)type reply:(id)reply
 {
-  v10 = a3;
-  v11 = a6;
+  operationCopy = operation;
+  replyCopy = reply;
   memset(v26, 0, sizeof(v26));
   sub_100001C50(1, "[ICDFileProviderShareOperationProxy startOperation:toProcessSubitemsWithMaxSubsharesFailures:processType:reply:]", 127, 0, v26);
   v12 = brc_bread_crumbs();
@@ -375,22 +375,22 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %s %@", buf, 0x20u);
   }
 
-  v14 = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
-  v15 = [v14 isFolderSharingProxyEntitled];
+  clientPrivilegesDescriptor = [(BaseFileProviderShareOperationProxy *)self clientPrivilegesDescriptor];
+  isFolderSharingProxyEntitled = [clientPrivilegesDescriptor isFolderSharingProxyEntitled];
 
-  if (v15)
+  if (isFolderSharingProxyEntitled)
   {
-    v16 = sub_100011E44(v10);
-    v17 = [(ICDFileProviderShareOperationProxy *)self remoteObject];
-    v18 = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
+    v16 = sub_100011E44(operationCopy);
+    remoteObject = [(ICDFileProviderShareOperationProxy *)self remoteObject];
+    itemIdentifier = [(BaseFileProviderShareOperationProxy *)self itemIdentifier];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10001DD28;
     v21[3] = &unk_1000448A8;
     v19 = v16;
     v22 = v19;
-    v23 = v11;
-    [v17 startOperation:v19 toProcessSubitemsWithItemID:v18 maxSubsharesFailures:a4 processType:a5 reply:v21];
+    v23 = replyCopy;
+    [remoteObject startOperation:v19 toProcessSubitemsWithItemID:itemIdentifier maxSubsharesFailures:failures processType:type reply:v21];
 
     v20 = &v22;
   }
@@ -402,7 +402,7 @@
     v24[1] = 3221225472;
     v24[2] = sub_10001DC18;
     v24[3] = &unk_100044598;
-    v25 = v11;
+    v25 = replyCopy;
     sub_10001DC18(v24, v19);
     v20 = &v25;
   }

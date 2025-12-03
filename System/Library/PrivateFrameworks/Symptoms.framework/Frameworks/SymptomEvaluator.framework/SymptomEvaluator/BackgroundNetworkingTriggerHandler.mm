@@ -1,7 +1,7 @@
 @interface BackgroundNetworkingTriggerHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (BOOL)noteSymptom:(id)a3;
+- (BOOL)noteSymptom:(id)symptom;
 - (NSString)description;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __52__BackgroundNetworkingTriggerHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_45 != -1)
   {
     dispatch_once(&sharedInstance_pred_45, block);
@@ -46,7 +46,7 @@ void __52__BackgroundNetworkingTriggerHandler_sharedInstance__block_invoke(uint6
   return v6;
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v3 = rnfLogHandle;
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -59,11 +59,11 @@ void __52__BackgroundNetworkingTriggerHandler_sharedInstance__block_invoke(uint6
   return 0;
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[BackgroundNetworkingTriggerHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }

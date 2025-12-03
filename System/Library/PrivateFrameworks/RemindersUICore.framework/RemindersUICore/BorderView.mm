@@ -1,7 +1,7 @@
 @interface BorderView
 - (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF1605510BorderView)init;
-- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF1605510BorderView)initWithCoder:(id)a3;
-- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF1605510BorderView)initWithFrame:(CGRect)a3;
+- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF1605510BorderView)initWithCoder:(id)coder;
+- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF1605510BorderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -21,15 +21,15 @@
   v8[3] = &block_descriptor_35;
   v4 = _Block_copy(v8);
   v5 = v2;
-  v6 = [v3 initWithDynamicProvider_];
+  initWithDynamicProvider_ = [v3 initWithDynamicProvider_];
   _Block_release(v4);
 
-  [(BorderView *)v5 setBackgroundColor:v6];
+  [(BorderView *)v5 setBackgroundColor:initWithDynamicProvider_];
 
   return v5;
 }
 
-- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF1605510BorderView)initWithCoder:(id)a3
+- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF1605510BorderView)initWithCoder:(id)coder
 {
   result = sub_21DBFC31C();
   __break(1u);
@@ -38,11 +38,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D1E172C();
 }
 
-- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF1605510BorderView)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF1605510BorderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -2,7 +2,7 @@
 - (BOOL)has_result;
 - (BOOL)speech_profile_used;
 - (FTAudioAnalytics)audio_analytics;
-- (FTFinalSpeechRecognitionResponse)initWithFlatbuffData:(id)a3 root:(const FinalSpeechRecognitionResponse *)a4 verify:(BOOL)a5;
+- (FTFinalSpeechRecognitionResponse)initWithFlatbuffData:(id)data root:(const FinalSpeechRecognitionResponse *)root verify:(BOOL)verify;
 - (FTLatnnMitigatorResult)latnn_mitigator_result;
 - (FTRecognitionResult)recognition_result;
 - (NSString)language;
@@ -10,7 +10,7 @@
 - (NSString)return_str;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::FinalSpeechRecognitionResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::FinalSpeechRecognitionResponse>)addObjectToBuffer:(void *)buffer;
 - (double)watermark_peak_average;
 - (id)flatbuffData;
 - (int)return_code;
@@ -20,10 +20,10 @@
 
 @implementation FTFinalSpeechRecognitionResponse
 
-- (FTFinalSpeechRecognitionResponse)initWithFlatbuffData:(id)a3 root:(const FinalSpeechRecognitionResponse *)a4 verify:(BOOL)a5
+- (FTFinalSpeechRecognitionResponse)initWithFlatbuffData:(id)data root:(const FinalSpeechRecognitionResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTFinalSpeechRecognitionResponse;
   v10 = [(FTFinalSpeechRecognitionResponse *)&v25 init];
@@ -32,35 +32,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -352,99 +352,99 @@ LABEL_13:
   return *v3->var0 >= 0x1Fu && (v4 = *v3[30].var0) != 0 && root[v4].var0[0] != 0;
 }
 
-- (Offset<siri::speech::schema_fb::FinalSpeechRecognitionResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::FinalSpeechRecognitionResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTFinalSpeechRecognitionResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(FTFinalSpeechRecognitionResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_284834138;
+    speech_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(FTFinalSpeechRecognitionResponse *)self session_id];
-  v11 = v10;
-  if (!v10)
+  session_id = [(FTFinalSpeechRecognitionResponse *)self session_id];
+  v11 = session_id;
+  if (!session_id)
   {
-    v10 = &stru_284834138;
+    session_id = &stru_284834138;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(FTFinalSpeechRecognitionResponse *)self return_code];
-  v16 = [(FTFinalSpeechRecognitionResponse *)self return_str];
-  v17 = v16;
-  if (!v16)
+  return_code = [(FTFinalSpeechRecognitionResponse *)self return_code];
+  return_str = [(FTFinalSpeechRecognitionResponse *)self return_str];
+  v17 = return_str;
+  if (!return_str)
   {
-    v16 = &stru_284834138;
+    return_str = &stru_284834138;
   }
 
-  v18 = [(__CFString *)v16 UTF8String];
-  v19 = strlen(v18);
-  v20 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v18, v19);
+  uTF8String3 = [(__CFString *)return_str UTF8String];
+  v19 = strlen(uTF8String3);
+  v20 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String3, v19);
 
-  v21 = [(FTFinalSpeechRecognitionResponse *)self recognition_result];
-  v22 = [v21 addObjectToBuffer:a3];
+  recognition_result = [(FTFinalSpeechRecognitionResponse *)self recognition_result];
+  v22 = [recognition_result addObjectToBuffer:buffer];
 
-  v45 = [(FTFinalSpeechRecognitionResponse *)self lang_profile_recreate_codes];
-  v23 = [(FTFinalSpeechRecognitionResponse *)self audio_analytics];
-  v44 = [v23 addObjectToBuffer:a3];
+  lang_profile_recreate_codes = [(FTFinalSpeechRecognitionResponse *)self lang_profile_recreate_codes];
+  audio_analytics = [(FTFinalSpeechRecognitionResponse *)self audio_analytics];
+  v44 = [audio_analytics addObjectToBuffer:buffer];
 
-  v43 = [(FTFinalSpeechRecognitionResponse *)self watermark_detection];
+  watermark_detection = [(FTFinalSpeechRecognitionResponse *)self watermark_detection];
   [(FTFinalSpeechRecognitionResponse *)self watermark_peak_average];
   v25 = v24;
-  v26 = [(FTFinalSpeechRecognitionResponse *)self language];
-  v27 = v26;
-  if (!v26)
+  language = [(FTFinalSpeechRecognitionResponse *)self language];
+  v27 = language;
+  if (!language)
   {
-    v26 = &stru_284834138;
+    language = &stru_284834138;
   }
 
-  v28 = [(__CFString *)v26 UTF8String];
-  v29 = strlen(v28);
-  LODWORD(v28) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v28, v29);
+  uTF8String4 = [(__CFString *)language UTF8String];
+  v29 = strlen(uTF8String4);
+  LODWORD(uTF8String4) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String4, v29);
 
-  v30 = [(FTFinalSpeechRecognitionResponse *)self latnn_mitigator_result];
-  v42 = [v30 addObjectToBuffer:a3];
-  v41 = v28;
+  latnn_mitigator_result = [(FTFinalSpeechRecognitionResponse *)self latnn_mitigator_result];
+  v42 = [latnn_mitigator_result addObjectToBuffer:buffer];
+  v41 = uTF8String4;
 
-  v31 = [(FTFinalSpeechRecognitionResponse *)self request_locale];
-  v32 = v31;
-  if (!v31)
+  request_locale = [(FTFinalSpeechRecognitionResponse *)self request_locale];
+  v32 = request_locale;
+  if (!request_locale)
   {
-    v31 = &stru_284834138;
+    request_locale = &stru_284834138;
   }
 
-  v33 = [(__CFString *)v31 UTF8String];
-  v34 = strlen(v33);
-  v40 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v33, v34);
+  uTF8String5 = [(__CFString *)request_locale UTF8String];
+  v34 = strlen(uTF8String5);
+  v40 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String5, v34);
 
-  v35 = [(FTFinalSpeechRecognitionResponse *)self has_result];
-  v36 = [(FTFinalSpeechRecognitionResponse *)self speech_profile_used];
-  *(a3 + 70) = 1;
-  v37 = *(a3 + 10);
-  v38 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v14);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v15, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v20);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 12, v22);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 14, v45, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 16, v44);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 18, v43, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(a3, 20, v25, 0.0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 22, v41);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 24, v42);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 26, v40);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 28, v35, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 30, v36, 0);
+  has_result = [(FTFinalSpeechRecognitionResponse *)self has_result];
+  speech_profile_used = [(FTFinalSpeechRecognitionResponse *)self speech_profile_used];
+  *(buffer + 70) = 1;
+  v37 = *(buffer + 10);
+  v38 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v14);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, return_code, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v20);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 12, v22);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 14, lang_profile_recreate_codes, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 16, v44);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 18, watermark_detection, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(buffer, 20, v25, 0.0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 22, v41);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 24, v42);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 26, v40);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 28, has_result, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 30, speech_profile_used, 0);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v38 + v37);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v38 + v37);
 }
 
 - (id)flatbuffData

@@ -1,16 +1,16 @@
 @interface APConfigurationDecompressor
 - (APConfigurationDecompressor)init;
-- (BOOL)untarFileAtPath:(id)a3;
-- (BOOL)unzipContentsOfFileAtPath:(id)a3 toPath:(id)a4;
-- (char)typeForObject:(id)a3 atOffset:(unint64_t)a4;
-- (id)dataForObject:(id)a3 inLocation:(unint64_t)a4 andLength:(unint64_t)a5;
-- (id)nameForObject:(id)a3 atOffset:(unint64_t)a4;
-- (id)unzipData:(id)a3;
-- (int64_t)decompressTarAtPath:(id)a3 toPath:(id)a4;
-- (unint64_t)sizeForFileAtPath:(id)a3;
-- (unint64_t)sizeForObject:(id)a3 atOffset:(unint64_t)a4;
-- (void)removeFileAtPath:(id)a3;
-- (void)writeFileDataForFile:(id)a3 atLocation:(unint64_t)a4 withLength:(unint64_t)a5 atPath:(id)a6;
+- (BOOL)untarFileAtPath:(id)path;
+- (BOOL)unzipContentsOfFileAtPath:(id)path toPath:(id)toPath;
+- (char)typeForObject:(id)object atOffset:(unint64_t)offset;
+- (id)dataForObject:(id)object inLocation:(unint64_t)location andLength:(unint64_t)length;
+- (id)nameForObject:(id)object atOffset:(unint64_t)offset;
+- (id)unzipData:(id)data;
+- (int64_t)decompressTarAtPath:(id)path toPath:(id)toPath;
+- (unint64_t)sizeForFileAtPath:(id)path;
+- (unint64_t)sizeForObject:(id)object atOffset:(unint64_t)offset;
+- (void)removeFileAtPath:(id)path;
+- (void)writeFileDataForFile:(id)file atLocation:(unint64_t)location withLength:(unint64_t)length atPath:(id)path;
 @end
 
 @implementation APConfigurationDecompressor
@@ -30,20 +30,20 @@
   return v4;
 }
 
-- (int64_t)decompressTarAtPath:(id)a3 toPath:(id)a4
+- (int64_t)decompressTarAtPath:(id)path toPath:(id)toPath
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  toPathCopy = toPath;
   v10 = objc_msgSend_filemanager(self, v8, v9);
-  v12 = objc_msgSend_fileExistsAtPath_(v10, v11, v6);
+  v12 = objc_msgSend_fileExistsAtPath_(v10, v11, pathCopy);
 
   if (v12)
   {
-    if (objc_msgSend_unzipContentsOfFileAtPath_toPath_(self, v13, v6, v7))
+    if (objc_msgSend_unzipContentsOfFileAtPath_toPath_(self, v13, pathCopy, toPathCopy))
     {
-      if (objc_msgSend_untarFileAtPath_(self, v14, v7))
+      if (objc_msgSend_untarFileAtPath_(self, v14, toPathCopy))
       {
-        objc_msgSend_removeFileAtPath_(self, v15, v7);
+        objc_msgSend_removeFileAtPath_(self, v15, toPathCopy);
         v16 = 1200;
       }
 
@@ -88,17 +88,17 @@
   return v16;
 }
 
-- (BOOL)unzipContentsOfFileAtPath:(id)a3 toPath:(id)a4
+- (BOOL)unzipContentsOfFileAtPath:(id)path toPath:(id)toPath
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v8 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], v7, a3);
+  toPathCopy = toPath;
+  v8 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], v7, path);
   v10 = objc_msgSend_unzipData_(self, v9, v8);
 
   if (objc_msgSend_length(v10, v11, v12))
   {
     v23 = 0;
-    objc_msgSend_writeToFile_options_error_(v10, v13, v6, 0x10000000, &v23);
+    objc_msgSend_writeToFile_options_error_(v10, v13, toPathCopy, 0x10000000, &v23);
     v14 = v23;
     if (!v14)
     {
@@ -112,7 +112,7 @@
     {
       v19 = objc_msgSend_description(v15, v17, v18);
       *buf = 138478083;
-      v25 = v6;
+      v25 = toPathCopy;
       v26 = 2114;
       v27 = v19;
       _os_log_impl(&dword_1CA1CE000, v16, OS_LOG_TYPE_ERROR, "Error: Unable to create decompressed file: %{private}@, error: %{public}@.", buf, 0x16u);
@@ -126,13 +126,13 @@ LABEL_8:
   return v20;
 }
 
-- (id)unzipData:(id)a3
+- (id)unzipData:(id)data
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   memset(&v41.avail_in, 0, 104);
-  v41.avail_in = objc_msgSend_length(v3, v4, v5);
-  v6 = v3;
+  v41.avail_in = objc_msgSend_length(dataCopy, v4, v5);
+  v6 = dataCopy;
   v41.next_in = objc_msgSend_bytes(v6, v7, v8);
   v41.avail_out = 0;
   v9 = inflateInit2_(&v41, 47, "1.2.12", 112);
@@ -153,7 +153,7 @@ LABEL_8:
   else
   {
     v15 = MEMORY[0x1E695DF88];
-    v16 = objc_msgSend_length(v3, v10, v11);
+    v16 = objc_msgSend_length(dataCopy, v10, v11);
     v14 = objc_msgSend_dataWithCapacity_(v15, v17, 2 * v16);
     do
     {
@@ -161,7 +161,7 @@ LABEL_8:
       total_out = v41.total_out;
       if (total_out >= objc_msgSend_length(v14, v20, v21))
       {
-        v24 = objc_msgSend_length(v3, v22, v23);
+        v24 = objc_msgSend_length(dataCopy, v22, v23);
         v27 = objc_msgSend_length(v14, v25, v26);
         objc_msgSend_setLength_(v14, v28, v27 + (v24 >> 1));
       }
@@ -188,14 +188,14 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)untarFileAtPath:(id)a3
+- (BOOL)untarFileAtPath:(id)path
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = objc_msgSend_stringByDeletingLastPathComponent(v4, v5, v6);
-  v9 = objc_msgSend_sizeForFileAtPath_(self, v8, v4);
-  v59 = v4;
-  v13 = objc_msgSend_fileHandleForReadingAtPath_(MEMORY[0x1E696AC00], v10, v4);
+  pathCopy = path;
+  v7 = objc_msgSend_stringByDeletingLastPathComponent(pathCopy, v5, v6);
+  v9 = objc_msgSend_sizeForFileAtPath_(self, v8, pathCopy);
+  v59 = pathCopy;
+  v13 = objc_msgSend_fileHandleForReadingAtPath_(MEMORY[0x1E696AC00], v10, pathCopy);
   if (v9)
   {
     v14 = 0;
@@ -306,13 +306,13 @@ LABEL_26:
   return 1;
 }
 
-- (unint64_t)sizeForFileAtPath:(id)a3
+- (unint64_t)sizeForFileAtPath:(id)path
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v7 = objc_msgSend_filemanager(self, v5, v6);
   v21 = 0;
-  v9 = objc_msgSend_attributesOfItemAtPath_error_(v7, v8, v4, &v21);
+  v9 = objc_msgSend_attributesOfItemAtPath_error_(v7, v8, pathCopy, &v21);
   v10 = v21;
 
   if (v10)
@@ -322,7 +322,7 @@ LABEL_26:
     {
       v15 = objc_msgSend_description(v10, v13, v14);
       *buf = 138478083;
-      v23 = v4;
+      v23 = pathCopy;
       v24 = 2114;
       v25 = v15;
       _os_log_impl(&dword_1CA1CE000, v12, OS_LOG_TYPE_ERROR, "Error: Unable to get attributes for decompressed file: %{private}@, error: %{public}@.", buf, 0x16u);
@@ -341,13 +341,13 @@ LABEL_26:
   return v16;
 }
 
-- (void)removeFileAtPath:(id)a3
+- (void)removeFileAtPath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v7 = objc_msgSend_filemanager(self, v5, v6);
   v15 = 0;
-  objc_msgSend_removeItemAtPath_error_(v7, v8, v4, &v15);
+  objc_msgSend_removeItemAtPath_error_(v7, v8, pathCopy, &v15);
   v9 = v15;
 
   if (v9)
@@ -357,7 +357,7 @@ LABEL_26:
     {
       v13 = objc_msgSend_description(v9, v11, v12);
       *buf = 138478083;
-      v17 = v4;
+      v17 = pathCopy;
       v18 = 2114;
       v19 = v13;
       _os_log_impl(&dword_1CA1CE000, v10, OS_LOG_TYPE_ERROR, "Error: Unable to remove file: %{private}@, error: %{public}@.", buf, 0x16u);
@@ -367,9 +367,9 @@ LABEL_26:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (char)typeForObject:(id)a3 atOffset:(unint64_t)a4
+- (char)typeForObject:(id)object atOffset:(unint64_t)offset
 {
-  v4 = objc_msgSend_dataForObject_inLocation_andLength_(self, a2, a3, a4 + 156, 1);
+  v4 = objc_msgSend_dataForObject_inLocation_andLength_(self, a2, object, offset + 156, 1);
   if (objc_msgSend_length(v4, v5, v6))
   {
     v7 = v4;
@@ -384,10 +384,10 @@ LABEL_26:
   return v10;
 }
 
-- (id)nameForObject:(id)a3 atOffset:(unint64_t)a4
+- (id)nameForObject:(id)object atOffset:(unint64_t)offset
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend_dataForObject_inLocation_andLength_(self, a2, a3, a4, 100);
+  v4 = objc_msgSend_dataForObject_inLocation_andLength_(self, a2, object, offset, 100);
   v20 = 0;
   v5 = v4;
   v8 = objc_msgSend_bytes(v5, v6, v7);
@@ -410,10 +410,10 @@ LABEL_26:
   return v15;
 }
 
-- (unint64_t)sizeForObject:(id)a3 atOffset:(unint64_t)a4
+- (unint64_t)sizeForObject:(id)object atOffset:(unint64_t)offset
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend_dataForObject_inLocation_andLength_(self, a2, a3, a4 + 124, 12);
+  v4 = objc_msgSend_dataForObject_inLocation_andLength_(self, a2, object, offset + 124, 12);
   v5 = v4;
   v8 = objc_msgSend_bytes(v5, v6, v7);
   v14 = 0;
@@ -425,44 +425,44 @@ LABEL_26:
   return v9;
 }
 
-- (void)writeFileDataForFile:(id)a3 atLocation:(unint64_t)a4 withLength:(unint64_t)a5 atPath:(id)a6
+- (void)writeFileDataForFile:(id)file atLocation:(unint64_t)location withLength:(unint64_t)length atPath:(id)path
 {
-  v27 = a3;
-  v9 = a6;
+  fileCopy = file;
+  pathCopy = path;
   v12 = objc_msgSend_data(MEMORY[0x1E695DEF0], v10, v11);
-  v14 = objc_msgSend_writeToFile_atomically_(v12, v13, v9, 0);
+  v14 = objc_msgSend_writeToFile_atomically_(v12, v13, pathCopy, 0);
 
   if (v14)
   {
-    v16 = objc_msgSend_fileHandleForWritingAtPath_(MEMORY[0x1E696AC00], v15, v9);
-    objc_msgSend_seekToFileOffset_(v27, v17, a4);
-    if (a5 >= 0xC801)
+    v16 = objc_msgSend_fileHandleForWritingAtPath_(MEMORY[0x1E696AC00], v15, pathCopy);
+    objc_msgSend_seekToFileOffset_(fileCopy, v17, location);
+    if (length >= 0xC801)
     {
       do
       {
         v19 = objc_autoreleasePoolPush();
-        v21 = objc_msgSend_readDataOfLength_(v27, v20, 51200);
+        v21 = objc_msgSend_readDataOfLength_(fileCopy, v20, 51200);
         objc_msgSend_writeData_(v16, v22, v21);
 
-        a5 -= 51200;
+        length -= 51200;
         objc_autoreleasePoolPop(v19);
       }
 
-      while (a5 > 0xC800);
+      while (length > 0xC800);
     }
 
-    v23 = objc_msgSend_readDataOfLength_(v27, v18, a5);
+    v23 = objc_msgSend_readDataOfLength_(fileCopy, v18, length);
     objc_msgSend_writeData_(v16, v24, v23);
 
     objc_msgSend_closeFile(v16, v25, v26);
   }
 }
 
-- (id)dataForObject:(id)a3 inLocation:(unint64_t)a4 andLength:(unint64_t)a5
+- (id)dataForObject:(id)object inLocation:(unint64_t)location andLength:(unint64_t)length
 {
-  v7 = a3;
-  objc_msgSend_seekToFileOffset_(v7, v8, a4);
-  v10 = objc_msgSend_readDataOfLength_(v7, v9, a5);
+  objectCopy = object;
+  objc_msgSend_seekToFileOffset_(objectCopy, v8, location);
+  v10 = objc_msgSend_readDataOfLength_(objectCopy, v9, length);
 
   return v10;
 }

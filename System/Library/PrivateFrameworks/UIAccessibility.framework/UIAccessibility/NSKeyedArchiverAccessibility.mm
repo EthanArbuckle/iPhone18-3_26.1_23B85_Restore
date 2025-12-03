@@ -1,33 +1,33 @@
 @interface NSKeyedArchiverAccessibility
-- (id)decodeObjectForKey:(id)a3;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
+- (id)decodeObjectForKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
 @end
 
 @implementation NSKeyedArchiverAccessibility
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v10.receiver = self;
   v10.super_class = NSKeyedArchiverAccessibility;
-  v7 = a3;
-  [(NSKeyedArchiverAccessibility *)&v10 encodeObject:v7 forKey:v6];
-  v8 = [v7 _accessibilityAttributedLocalizedString];
+  objectCopy = object;
+  [(NSKeyedArchiverAccessibility *)&v10 encodeObject:objectCopy forKey:keyCopy];
+  _accessibilityAttributedLocalizedString = [objectCopy _accessibilityAttributedLocalizedString];
 
-  if (v8)
+  if (_accessibilityAttributedLocalizedString)
   {
-    v9 = [v6 stringByAppendingString:@"_delocalized"];
-    [(NSKeyedArchiverAccessibility *)self encodeObject:v8 forKey:v9];
+    v9 = [keyCopy stringByAppendingString:@"_delocalized"];
+    [(NSKeyedArchiverAccessibility *)self encodeObject:_accessibilityAttributedLocalizedString forKey:v9];
   }
 }
 
-- (id)decodeObjectForKey:(id)a3
+- (id)decodeObjectForKey:(id)key
 {
   v9.receiver = self;
   v9.super_class = NSKeyedArchiverAccessibility;
-  v4 = a3;
-  v5 = [(NSKeyedArchiverAccessibility *)&v9 decodeObjectForKey:v4];
-  v6 = [v4 stringByAppendingString:{@"_delocalized", v9.receiver, v9.super_class}];
+  keyCopy = key;
+  v5 = [(NSKeyedArchiverAccessibility *)&v9 decodeObjectForKey:keyCopy];
+  v6 = [keyCopy stringByAppendingString:{@"_delocalized", v9.receiver, v9.super_class}];
 
   v7 = [(NSKeyedArchiverAccessibility *)self decodeObjectForKey:v6];
 

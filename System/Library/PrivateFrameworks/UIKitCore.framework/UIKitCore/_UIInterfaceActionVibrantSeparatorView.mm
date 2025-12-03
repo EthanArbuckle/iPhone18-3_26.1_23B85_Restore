@@ -2,9 +2,9 @@
 - (_UIInterfaceActionVibrantSeparatorView)init;
 - (void)_setupEffectView;
 - (void)_updateContentDirectionalInsets;
-- (void)setConstantAxisDimension:(double)a3;
-- (void)setConstantSizedAxis:(int64_t)a3;
-- (void)setHorizontalLineLeadingInset:(double)a3;
+- (void)setConstantAxisDimension:(double)dimension;
+- (void)setConstantSizedAxis:(int64_t)axis;
+- (void)setHorizontalLineLeadingInset:(double)inset;
 - (void)updateConstraints;
 @end
 
@@ -36,8 +36,8 @@
   self->_effectView = v4;
 
   v6 = +[UIColor whiteColor];
-  v7 = [(UIVisualEffectView *)self->_effectView contentView];
-  [v7 setBackgroundColor:v6];
+  contentView = [(UIVisualEffectView *)self->_effectView contentView];
+  [contentView setBackgroundColor:v6];
 
   [(UIView *)self bounds];
   [(UIView *)self->_effectView setFrame:?];
@@ -45,29 +45,29 @@
   [(UIView *)self addSubview:self->_effectView];
 }
 
-- (void)setConstantAxisDimension:(double)a3
+- (void)setConstantAxisDimension:(double)dimension
 {
   [(_UIInterfaceActionSeparatorConstraintController *)self->_separatorViewConstraints setConstantAxisDimension:?];
-  if (a3 >= 0.0)
+  if (dimension >= 0.0)
   {
     v6 = [UIColor colorWithWhite:1.0 alpha:0.3];
-    v5 = [(UIVisualEffectView *)self->_effectView contentView];
-    [v5 setBackgroundColor:v6];
+    contentView = [(UIVisualEffectView *)self->_effectView contentView];
+    [contentView setBackgroundColor:v6];
   }
 }
 
-- (void)setHorizontalLineLeadingInset:(double)a3
+- (void)setHorizontalLineLeadingInset:(double)inset
 {
-  if (self->_horizontalLineLeadingInset != a3)
+  if (self->_horizontalLineLeadingInset != inset)
   {
-    self->_horizontalLineLeadingInset = a3;
+    self->_horizontalLineLeadingInset = inset;
     [(_UIInterfaceActionVibrantSeparatorView *)self _updateContentDirectionalInsets];
   }
 }
 
-- (void)setConstantSizedAxis:(int64_t)a3
+- (void)setConstantSizedAxis:(int64_t)axis
 {
-  [(_UIInterfaceActionSeparatorConstraintController *)self->_separatorViewConstraints setConstantSizedAxis:a3];
+  [(_UIInterfaceActionSeparatorConstraintController *)self->_separatorViewConstraints setConstantSizedAxis:axis];
 
   [(_UIInterfaceActionVibrantSeparatorView *)self _updateContentDirectionalInsets];
 }
@@ -82,9 +82,9 @@
 
 - (void)_updateContentDirectionalInsets
 {
-  v3 = [(_UIInterfaceActionVibrantSeparatorView *)self constantSizedAxis];
+  constantSizedAxis = [(_UIInterfaceActionVibrantSeparatorView *)self constantSizedAxis];
   v4 = 0.0;
-  if (v3 == 1)
+  if (constantSizedAxis == 1)
   {
     [(_UIInterfaceActionVibrantSeparatorView *)self horizontalLineLeadingInset];
     v4 = v5;

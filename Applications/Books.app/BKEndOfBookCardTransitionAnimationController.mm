@@ -1,5 +1,5 @@
 @interface BKEndOfBookCardTransitionAnimationController
-- (BKEndOfBookCardTransitionAnimationController)initWithCompactViewController:(id)a3 cardViewController:(id)a4;
+- (BKEndOfBookCardTransitionAnimationController)initWithCompactViewController:(id)controller cardViewController:(id)viewController;
 - (BKEndOfBookCardViewController)cardViewController;
 - (BKEndOfBookCompactViewController)compactViewController;
 - (BOOL)isCompositeCompactArtwork;
@@ -7,20 +7,20 @@
 - (double)_cardInitialTopOffset;
 - (id)createCardArtworkSource;
 - (id)createCompactArtworkSource;
-- (void)_animateContentCrossfade:(BOOL)a3;
-- (void)_finalizePresentation:(BOOL)a3;
-- (void)_prepareForPresentation:(id)a3;
+- (void)_animateContentCrossfade:(BOOL)crossfade;
+- (void)_finalizePresentation:(BOOL)presentation;
+- (void)_prepareForPresentation:(id)presentation;
 - (void)_removeTransitioningViews;
-- (void)_setupCardDropShadowForPresented:(BOOL)a3;
+- (void)_setupCardDropShadowForPresented:(BOOL)presented;
 - (void)dealloc;
-- (void)finalizeAnimationsForDismissal:(BOOL)a3;
-- (void)finalizeAnimationsForPresentation:(BOOL)a3;
+- (void)finalizeAnimationsForDismissal:(BOOL)dismissal;
+- (void)finalizeAnimationsForPresentation:(BOOL)presentation;
 - (void)hideCovers;
 - (void)prepareForDismissal;
-- (void)prepareForPresentation:(id)a3;
-- (void)setCoverController:(id)a3;
-- (void)setDropShadowView:(id)a3;
-- (void)setSnapshotView:(id)a3;
+- (void)prepareForPresentation:(id)presentation;
+- (void)setCoverController:(id)controller;
+- (void)setDropShadowView:(id)view;
+- (void)setSnapshotView:(id)view;
 - (void)setupAnimationsForDismissal;
 - (void)setupAnimationsForPresentation;
 - (void)unhideCovers;
@@ -28,18 +28,18 @@
 
 @implementation BKEndOfBookCardTransitionAnimationController
 
-- (BKEndOfBookCardTransitionAnimationController)initWithCompactViewController:(id)a3 cardViewController:(id)a4
+- (BKEndOfBookCardTransitionAnimationController)initWithCompactViewController:(id)controller cardViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v11.receiver = self;
   v11.super_class = BKEndOfBookCardTransitionAnimationController;
   v8 = [(BKEndOfBookCardTransitionAnimationController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_compactViewController, v6);
-    objc_storeWeak(&v9->_cardViewController, v7);
+    objc_storeWeak(&v8->_compactViewController, controllerCopy);
+    objc_storeWeak(&v9->_cardViewController, viewControllerCopy);
   }
 
   return v9;
@@ -47,12 +47,12 @@
 
 - (BOOL)isCoverTransition
 {
-  v3 = [(BKEndOfBookCardTransitionAnimationController *)self cardContent];
-  if (v3)
+  cardContent = [(BKEndOfBookCardTransitionAnimationController *)self cardContent];
+  if (cardContent)
   {
-    v4 = v3;
-    v5 = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
-    if (!v5)
+    compactArtworkSource3 = cardContent;
+    compactArtworkSource = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
+    if (!compactArtworkSource)
     {
       v15 = 0;
 LABEL_8:
@@ -60,26 +60,26 @@ LABEL_8:
       return v15;
     }
 
-    v6 = v5;
-    v7 = [(BKEndOfBookCardTransitionAnimationController *)self cardArtworkSource];
+    v6 = compactArtworkSource;
+    cardArtworkSource = [(BKEndOfBookCardTransitionAnimationController *)self cardArtworkSource];
 
-    if (v7)
+    if (cardArtworkSource)
     {
-      v8 = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
-      v9 = [v8 isCover];
+      compactArtworkSource2 = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
+      isCover = [compactArtworkSource2 isCover];
 
-      if (!v9)
+      if (!isCover)
       {
         return 1;
       }
 
-      v4 = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
-      v10 = [v4 identifier];
-      v11 = [v10 refInstance];
-      v12 = [(BKEndOfBookCardTransitionAnimationController *)self cardArtworkSource];
-      v13 = [v12 identifier];
-      v14 = [v13 refInstance];
-      v15 = [v11 isEqualToString:v14];
+      compactArtworkSource3 = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
+      identifier = [compactArtworkSource3 identifier];
+      refInstance = [identifier refInstance];
+      cardArtworkSource2 = [(BKEndOfBookCardTransitionAnimationController *)self cardArtworkSource];
+      identifier2 = [cardArtworkSource2 identifier];
+      refInstance2 = [identifier2 refInstance];
+      v15 = [refInstance isEqualToString:refInstance2];
 
       goto LABEL_8;
     }
@@ -90,64 +90,64 @@ LABEL_8:
 
 - (BOOL)isCompositeCompactArtwork
 {
-  v2 = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
-  v3 = [v2 isCover];
+  compactArtworkSource = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
+  isCover = [compactArtworkSource isCover];
 
-  return v3 ^ 1;
+  return isCover ^ 1;
 }
 
-- (void)setDropShadowView:(id)a3
+- (void)setDropShadowView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   dropShadowView = self->_dropShadowView;
   p_dropShadowView = &self->_dropShadowView;
   v6 = dropShadowView;
-  if (dropShadowView != v5)
+  if (dropShadowView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(UIView *)v6 removeFromSuperview];
-    objc_storeStrong(p_dropShadowView, a3);
-    v5 = v9;
+    objc_storeStrong(p_dropShadowView, view);
+    viewCopy = v9;
   }
 }
 
-- (void)setSnapshotView:(id)a3
+- (void)setSnapshotView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   snapshotView = self->_snapshotView;
   p_snapshotView = &self->_snapshotView;
   v6 = snapshotView;
-  if (snapshotView != v5)
+  if (snapshotView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(_BKEndOfBookCardTransitionSnapshotView *)v6 removeFromSuperview];
-    objc_storeStrong(p_snapshotView, a3);
-    v5 = v9;
+    objc_storeStrong(p_snapshotView, view);
+    viewCopy = v9;
   }
 }
 
-- (void)setCoverController:(id)a3
+- (void)setCoverController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   coverController = self->_coverController;
   p_coverController = &self->_coverController;
   v6 = coverController;
-  if (coverController != v5)
+  if (coverController != controllerCopy)
   {
-    v10 = v5;
-    v9 = [(BCSheetTransitionCoverController *)v6 coverView];
-    [v9 removeFromSuperview];
+    v10 = controllerCopy;
+    coverView = [(BCSheetTransitionCoverController *)v6 coverView];
+    [coverView removeFromSuperview];
 
-    objc_storeStrong(p_coverController, a3);
-    v5 = v10;
+    objc_storeStrong(p_coverController, controller);
+    controllerCopy = v10;
   }
 }
 
 - (id)createCompactArtworkSource
 {
-  v3 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
-  v4 = [v3 feedViewController];
-  v5 = [v4 artworkSourceInEntryWithIndex:0 refId:@"featured-cover" refInstance:0 isCover:1];
+  compactViewController = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
+  feedViewController = [compactViewController feedViewController];
+  v5 = [feedViewController artworkSourceInEntryWithIndex:0 refId:@"featured-cover" refInstance:0 isCover:1];
   v6 = v5;
   if (v5)
   {
@@ -156,9 +156,9 @@ LABEL_8:
 
   else
   {
-    v8 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
-    v9 = [v8 feedViewController];
-    v7 = [v9 artworkSourceInEntryWithIndex:0 refId:@"featured-artwork" refInstance:0 isCover:0];
+    compactViewController2 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
+    feedViewController2 = [compactViewController2 feedViewController];
+    v7 = [feedViewController2 artworkSourceInEntryWithIndex:0 refId:@"featured-artwork" refInstance:0 isCover:0];
   }
 
   return v7;
@@ -167,9 +167,9 @@ LABEL_8:
 - (id)createCardArtworkSource
 {
   objc_opt_class();
-  v3 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
-  v4 = [v3 cardNavigationController];
-  v5 = [v4 topViewController];
+  cardViewController = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
+  cardNavigationController = [cardViewController cardNavigationController];
+  topViewController = [cardNavigationController topViewController];
   v6 = BUDynamicCast();
 
   v7 = [v6 sheetTransitioningCardContentArtworkSourceInEntryWithIndex:1];
@@ -179,159 +179,159 @@ LABEL_8:
 
 - (void)hideCovers
 {
-  v3 = [(BKEndOfBookCardTransitionAnimationController *)self compactUnhideBlock];
-  if (!v3)
+  compactUnhideBlock = [(BKEndOfBookCardTransitionAnimationController *)self compactUnhideBlock];
+  if (!compactUnhideBlock)
   {
-    v4 = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
-    v5 = [v4 isCover];
+    compactArtworkSource = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
+    isCover = [compactArtworkSource isCover];
 
-    if (!v5)
+    if (!isCover)
     {
       goto LABEL_5;
     }
 
-    v3 = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
-    v6 = [v3 hide];
-    [(BKEndOfBookCardTransitionAnimationController *)self setCompactUnhideBlock:v6];
+    compactUnhideBlock = [(BKEndOfBookCardTransitionAnimationController *)self compactArtworkSource];
+    hide = [compactUnhideBlock hide];
+    [(BKEndOfBookCardTransitionAnimationController *)self setCompactUnhideBlock:hide];
   }
 
 LABEL_5:
-  v7 = [(BKEndOfBookCardTransitionAnimationController *)self cardUnhideBlock];
-  if (!v7)
+  cardUnhideBlock = [(BKEndOfBookCardTransitionAnimationController *)self cardUnhideBlock];
+  if (!cardUnhideBlock)
   {
-    v8 = [(BKEndOfBookCardTransitionAnimationController *)self cardArtworkSource];
-    v9 = [v8 isCover];
+    cardArtworkSource = [(BKEndOfBookCardTransitionAnimationController *)self cardArtworkSource];
+    isCover2 = [cardArtworkSource isCover];
 
-    if (!v9)
+    if (!isCover2)
     {
       return;
     }
 
-    v11 = [(BKEndOfBookCardTransitionAnimationController *)self cardArtworkSource];
-    v10 = [v11 hide];
-    [(BKEndOfBookCardTransitionAnimationController *)self setCardUnhideBlock:v10];
+    cardArtworkSource2 = [(BKEndOfBookCardTransitionAnimationController *)self cardArtworkSource];
+    hide2 = [cardArtworkSource2 hide];
+    [(BKEndOfBookCardTransitionAnimationController *)self setCardUnhideBlock:hide2];
 
-    v7 = v11;
+    cardUnhideBlock = cardArtworkSource2;
   }
 }
 
 - (void)unhideCovers
 {
-  v3 = [(BKEndOfBookCardTransitionAnimationController *)self compactUnhideBlock];
-  v4 = v3;
-  if (v3)
+  compactUnhideBlock = [(BKEndOfBookCardTransitionAnimationController *)self compactUnhideBlock];
+  v4 = compactUnhideBlock;
+  if (compactUnhideBlock)
   {
-    (*(v3 + 16))(v3);
+    (*(compactUnhideBlock + 16))(compactUnhideBlock);
   }
 
   [(BKEndOfBookCardTransitionAnimationController *)self setCompactUnhideBlock:0];
 
-  v5 = [(BKEndOfBookCardTransitionAnimationController *)self cardUnhideBlock];
-  if (v5)
+  cardUnhideBlock = [(BKEndOfBookCardTransitionAnimationController *)self cardUnhideBlock];
+  if (cardUnhideBlock)
   {
-    v5[2]();
+    cardUnhideBlock[2]();
   }
 
   [(BKEndOfBookCardTransitionAnimationController *)self setCardUnhideBlock:0];
 }
 
-- (void)_setupCardDropShadowForPresented:(BOOL)a3
+- (void)_setupCardDropShadowForPresented:(BOOL)presented
 {
-  v3 = a3;
-  v5 = [(BKEndOfBookCardTransitionAnimationController *)self dropShadowView];
+  presentedCopy = presented;
+  dropShadowView = [(BKEndOfBookCardTransitionAnimationController *)self dropShadowView];
 
-  if (!v5)
+  if (!dropShadowView)
   {
-    v6 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
-    v7 = [v6 dropShadowView];
+    compactViewController = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
+    dropShadowView2 = [compactViewController dropShadowView];
 
-    v8 = [v7 layer];
+    layer = [dropShadowView2 layer];
     v9 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    v10 = [v9 layer];
-    v11 = [v8 cornerCurve];
-    [v10 setCornerCurve:v11];
+    layer2 = [v9 layer];
+    cornerCurve = [layer cornerCurve];
+    [layer2 setCornerCurve:cornerCurve];
 
-    [v8 cornerRadius];
-    [v10 setCornerRadius:?];
-    [v8 shadowOffset];
-    [v10 setShadowOffset:?];
-    [v8 shadowRadius];
-    [v10 setShadowRadius:?];
-    [v10 setShadowColor:{objc_msgSend(v8, "shadowColor")}];
-    [v8 shadowOpacity];
-    [v10 setShadowOpacity:?];
-    [v10 setShadowPathIsBounds:1];
-    v12 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
-    v13 = [v12 presentationController];
-    v14 = [v13 containerView];
+    [layer cornerRadius];
+    [layer2 setCornerRadius:?];
+    [layer shadowOffset];
+    [layer2 setShadowOffset:?];
+    [layer shadowRadius];
+    [layer2 setShadowRadius:?];
+    [layer2 setShadowColor:{objc_msgSend(layer, "shadowColor")}];
+    [layer shadowOpacity];
+    [layer2 setShadowOpacity:?];
+    [layer2 setShadowPathIsBounds:1];
+    cardViewController = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
+    presentationController = [cardViewController presentationController];
+    containerView = [presentationController containerView];
 
-    v15 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
-    v16 = [v15 presentationController];
-    v17 = [v16 presentedView];
+    cardViewController2 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
+    presentationController2 = [cardViewController2 presentationController];
+    presentedView = [presentationController2 presentedView];
 
-    v18 = [v17 superview];
+    superview = [presentedView superview];
 
-    if (v18 == v14)
+    if (superview == containerView)
     {
-      [v14 insertSubview:v9 belowSubview:v17];
+      [containerView insertSubview:v9 belowSubview:presentedView];
     }
 
     else
     {
-      [v14 insertSubview:v9 atIndex:0];
+      [containerView insertSubview:v9 atIndex:0];
     }
 
     [(BKEndOfBookCardTransitionAnimationController *)self setDropShadowView:v9];
   }
 
-  if (v3)
+  if (presentedCopy)
   {
-    v19 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
-    v20 = [v19 view];
+    cardViewController3 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
+    view = [cardViewController3 view];
 
-    v21 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
-    v22 = [v21 presentationController];
-    [v22 containerView];
+    cardViewController4 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
+    presentationController3 = [cardViewController4 presentationController];
+    [presentationController3 containerView];
   }
 
   else
   {
-    v23 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
-    v20 = [v23 dropShadowView];
+    compactViewController2 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
+    view = [compactViewController2 dropShadowView];
 
-    v21 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
-    v22 = [v21 bc_ancestorFullScreenPresentingViewController];
-    [v22 view];
+    cardViewController4 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
+    presentationController3 = [cardViewController4 bc_ancestorFullScreenPresentingViewController];
+    [presentationController3 view];
   }
   v24 = ;
 
-  [v20 bounds];
-  [v24 convertRect:v20 fromView:?];
+  [view bounds];
+  [v24 convertRect:view fromView:?];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
 
-  v33 = [(BKEndOfBookCardTransitionAnimationController *)self dropShadowView];
-  [v33 setFrame:{v26, v28, v30, v32}];
-  [v33 setAlpha:!v3];
+  dropShadowView3 = [(BKEndOfBookCardTransitionAnimationController *)self dropShadowView];
+  [dropShadowView3 setFrame:{v26, v28, v30, v32}];
+  [dropShadowView3 setAlpha:!presentedCopy];
 }
 
-- (void)prepareForPresentation:(id)a3
+- (void)prepareForPresentation:(id)presentation
 {
-  v8 = a3;
-  v4 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
-  v5 = [v4 transitioningCardContent];
+  presentationCopy = presentation;
+  cardViewController = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
+  transitioningCardContent = [cardViewController transitioningCardContent];
 
-  if (v5)
+  if (transitioningCardContent)
   {
-    [(BKEndOfBookCardTransitionAnimationController *)self setCardContent:v5];
-    [(BKEndOfBookCardTransitionAnimationController *)self _prepareForPresentation:v8];
+    [(BKEndOfBookCardTransitionAnimationController *)self setCardContent:transitioningCardContent];
+    [(BKEndOfBookCardTransitionAnimationController *)self _prepareForPresentation:presentationCopy];
   }
 
   else
   {
-    v6 = objc_retainBlock(v8);
+    v6 = objc_retainBlock(presentationCopy);
     v7 = v6;
     if (v6)
     {
@@ -340,16 +340,16 @@ LABEL_5:
   }
 }
 
-- (void)_prepareForPresentation:(id)a3
+- (void)_prepareForPresentation:(id)presentation
 {
-  v53 = a3;
-  v4 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
-  v5 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
-  v6 = [(BKEndOfBookCardTransitionAnimationController *)self createCompactArtworkSource];
-  [(BKEndOfBookCardTransitionAnimationController *)self setCompactArtworkSource:v6];
+  presentationCopy = presentation;
+  compactViewController = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
+  cardViewController = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
+  createCompactArtworkSource = [(BKEndOfBookCardTransitionAnimationController *)self createCompactArtworkSource];
+  [(BKEndOfBookCardTransitionAnimationController *)self setCompactArtworkSource:createCompactArtworkSource];
 
-  v7 = [v4 bc_windowForViewController];
-  [v5 preferredContentSize];
+  bc_windowForViewController = [compactViewController bc_windowForViewController];
+  [cardViewController preferredContentSize];
   _UISheetFormSize();
   v9 = v8;
   v11 = v10;
@@ -358,37 +358,37 @@ LABEL_5:
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v5 view];
-  [v20 setBounds:{v13, v15, v17, v19}];
+  view = [cardViewController view];
+  [view setBounds:{v13, v15, v17, v19}];
 
   objc_opt_class();
-  v21 = [v5 cardNavigationController];
-  v22 = [v21 topViewController];
+  cardNavigationController = [cardViewController cardNavigationController];
+  topViewController = [cardNavigationController topViewController];
   v23 = BUDynamicCast();
 
-  v24 = [v23 scrollView];
-  [v24 setContentOffset:{0.0, 0.0}];
+  scrollView = [v23 scrollView];
+  [scrollView setContentOffset:{0.0, 0.0}];
 
-  v25 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
-  v26 = [v25 tui_effectiveSyncLayoutController];
+  compactViewController2 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
+  tui_effectiveSyncLayoutController = [compactViewController2 tui_effectiveSyncLayoutController];
   v54 = v23;
-  [v23 configureWithSyncLayoutController:v26];
+  [v23 configureWithSyncLayoutController:tui_effectiveSyncLayoutController];
 
-  v27 = v4;
-  v52 = [v4 im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCCardStackTransitioningCoverHost includePresented:0];
+  v27 = compactViewController;
+  v52 = [compactViewController im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCCardStackTransitioningCoverHost includePresented:0];
   if (v52)
   {
     v72[0] = _NSConcreteStackBlock;
     v72[1] = 3221225472;
     v72[2] = sub_1001BF330;
     v72[3] = &unk_100A033C8;
-    v73 = v5;
+    v73 = cardViewController;
     [UIView performWithoutAnimation:v72];
   }
 
-  v55 = v5;
+  v55 = cardViewController;
   v28 = dispatch_group_create();
-  v29 = [(BKEndOfBookCardTransitionAnimationController *)self cardContent];
+  cardContent = [(BKEndOfBookCardTransitionAnimationController *)self cardContent];
   dispatch_group_enter(v28);
   v70[0] = _NSConcreteStackBlock;
   v70[1] = 3221225472;
@@ -396,9 +396,9 @@ LABEL_5:
   v70[3] = &unk_100A033C8;
   v30 = v28;
   v71 = v30;
-  v31 = [v29 cardStackTransitionSuspendUpdatesAssertionUntilContentExceedsHeightWithCompletion:v70];
-  v32 = [v29 cardStackTransitionSuspendLayoutAssertion];
-  [(BKEndOfBookCardTransitionAnimationController *)self setSuspendLayoutAssertion:v32];
+  v31 = [cardContent cardStackTransitionSuspendUpdatesAssertionUntilContentExceedsHeightWithCompletion:v70];
+  cardStackTransitionSuspendLayoutAssertion = [cardContent cardStackTransitionSuspendLayoutAssertion];
+  [(BKEndOfBookCardTransitionAnimationController *)self setSuspendLayoutAssertion:cardStackTransitionSuspendLayoutAssertion];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -436,31 +436,31 @@ LABEL_5:
   v65[1] = 3221225472;
   v65[2] = sub_1001BF458;
   v65[3] = &unk_100A0AA18;
-  v66 = v7;
-  v42 = v7;
+  v66 = bc_windowForViewController;
+  v42 = bc_windowForViewController;
   v43 = objc_retainBlock(v65);
   v62[0] = _NSConcreteStackBlock;
   v62[1] = 3221225472;
   v62[2] = sub_1001BF4CC;
   v62[3] = &unk_100A03440;
-  v63 = v29;
+  v63 = cardContent;
   v44 = v41;
   v64 = v44;
-  v45 = v29;
-  [v45 sheetTransitioningCardContentPrepareForOpenWithViewController:v4 viewSize:v43 overrideTraitsBlock:3 numEntries:v62 completion:{v9, v11}];
+  v45 = cardContent;
+  [v45 sheetTransitioningCardContentPrepareForOpenWithViewController:compactViewController viewSize:v43 overrideTraitsBlock:3 numEntries:v62 completion:{v9, v11}];
   v46 = +[UIApplication sharedApplication];
-  v47 = [v46 isRunningTest];
+  isRunningTest = [v46 isRunningTest];
 
   v48 = dispatch_get_global_queue(25, 0);
   v57[0] = _NSConcreteStackBlock;
   v57[1] = 3221225472;
   v57[2] = sub_1001BF5AC;
   v57[3] = &unk_100A09798;
-  v61 = v47;
+  v61 = isRunningTest;
   v58 = v44;
-  v59 = v53;
+  v59 = presentationCopy;
   v60 = v38;
-  v49 = v53;
+  v49 = presentationCopy;
   v50 = v44;
   dispatch_async(v48, v57);
 
@@ -484,7 +484,7 @@ LABEL_5:
 
 - (void)setupAnimationsForPresentation
 {
-  v3 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
+  compactViewController = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
   [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
   v38 = 0;
   v39 = &v38;
@@ -510,38 +510,38 @@ LABEL_5:
   v4 = v21[4] = self;
   v22 = v4;
   v24 = &v27;
-  v5 = v3;
+  v5 = compactViewController;
   v23 = v5;
   v25 = &v38;
   v26 = &v31;
   [UIView performWithoutAnimation:v21];
   [(BKEndOfBookCardTransitionAnimationController *)self _setupCardDropShadowForPresented:1];
   [v4 updateCardSize];
-  v6 = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
-  [v6 setupConstraintsToSuperview];
+  snapshotView = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
+  [snapshotView setupConstraintsToSuperview];
 
   v7 = v28[3];
-  v8 = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
-  [v8 setSnapshotTopOffset:v7];
+  snapshotView2 = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
+  [snapshotView2 setSnapshotTopOffset:v7];
 
   if ([(BKEndOfBookCardTransitionAnimationController *)self isCoverTransition])
   {
     v9 = v39[4];
     v10 = v39[5];
-    v11 = [(BKEndOfBookCardTransitionAnimationController *)self coverController];
-    v12 = [v11 coverView];
-    [v12 setCenter:{v9, v10}];
+    coverController = [(BKEndOfBookCardTransitionAnimationController *)self coverController];
+    coverView = [coverController coverView];
+    [coverView setCenter:{v9, v10}];
 
     v13 = *(v32 + 3);
     v18 = *(v32 + 2);
     v19 = v13;
     v20 = *(v32 + 4);
-    v14 = [(BKEndOfBookCardTransitionAnimationController *)self coverController];
-    v15 = [v14 coverView];
+    coverController2 = [(BKEndOfBookCardTransitionAnimationController *)self coverController];
+    coverView2 = [coverController2 coverView];
     v17[0] = v18;
     v17[1] = v19;
     v17[2] = v20;
-    [v15 setTransform:v17];
+    [coverView2 setTransform:v17];
   }
 
   block[0] = _NSConcreteStackBlock;
@@ -558,7 +558,7 @@ LABEL_5:
 
 - (void)setupAnimationsForDismissal
 {
-  v3 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
+  compactViewController = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
   [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
   v50 = 0;
   v51 = &v50;
@@ -579,59 +579,59 @@ LABEL_5:
   v38[3] = &unk_100A0AA68;
   v4 = v38[4] = self;
   v39 = v4;
-  v5 = v3;
+  v5 = compactViewController;
   v40 = v5;
   v41 = &v50;
   v42 = &v43;
   [UIView performWithoutAnimation:v38];
   [(BKEndOfBookCardTransitionAnimationController *)self _setupCardDropShadowForPresented:0];
-  v6 = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
-  [v6 setupConstraintsToSuperview];
+  snapshotView = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
+  [snapshotView setupConstraintsToSuperview];
 
-  v7 = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
-  [v7 snapshotTopOffset];
+  snapshotView2 = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
+  [snapshotView2 snapshotTopOffset];
   v9 = v8;
 
   if (v9 != 0.0)
   {
-    v10 = [v4 cardNavigationController];
-    v11 = [v10 view];
-    [v11 frame];
+    cardNavigationController = [v4 cardNavigationController];
+    view = [cardNavigationController view];
+    [view frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
 
-    v20 = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
-    [v20 snapshotTopOffset];
+    snapshotView3 = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
+    [snapshotView3 snapshotTopOffset];
     v22 = v21;
 
-    v23 = [v4 cardNavigationController];
-    v24 = [v23 view];
-    [v24 setFrame:{v13, v15 - v22, v17, v19}];
+    cardNavigationController2 = [v4 cardNavigationController];
+    view2 = [cardNavigationController2 view];
+    [view2 setFrame:{v13, v15 - v22, v17, v19}];
 
-    v25 = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
-    [v25 setSnapshotTopOffset:0.0];
+    snapshotView4 = [(BKEndOfBookCardTransitionAnimationController *)self snapshotView];
+    [snapshotView4 setSnapshotTopOffset:0.0];
   }
 
   if ([(BKEndOfBookCardTransitionAnimationController *)self isCoverTransition])
   {
     v26 = v51[4];
     v27 = v51[5];
-    v28 = [(BKEndOfBookCardTransitionAnimationController *)self coverController];
-    v29 = [v28 coverView];
-    [v29 setCenter:{v26, v27}];
+    coverController = [(BKEndOfBookCardTransitionAnimationController *)self coverController];
+    coverView = [coverController coverView];
+    [coverView setCenter:{v26, v27}];
 
     v30 = *(v44 + 3);
     v35 = *(v44 + 2);
     v36 = v30;
     v37 = *(v44 + 4);
-    v31 = [(BKEndOfBookCardTransitionAnimationController *)self coverController];
-    v32 = [v31 coverView];
+    coverController2 = [(BKEndOfBookCardTransitionAnimationController *)self coverController];
+    coverView2 = [coverController2 coverView];
     v34[0] = v35;
     v34[1] = v36;
     v34[2] = v37;
-    [v32 setTransform:v34];
+    [coverView2 setTransform:v34];
   }
 
   block[0] = _NSConcreteStackBlock;
@@ -645,61 +645,61 @@ LABEL_5:
   _Block_object_dispose(&v50, 8);
 }
 
-- (void)finalizeAnimationsForPresentation:(BOOL)a3
+- (void)finalizeAnimationsForPresentation:(BOOL)presentation
 {
-  v3 = a3;
+  presentationCopy = presentation;
   [(BKEndOfBookCardTransitionAnimationController *)self setSuspendLayoutAssertion:0];
-  v5 = [(BKEndOfBookCardTransitionAnimationController *)self cardContent];
-  [v5 cardStackTransitioningCardContentFinalizeForOpen];
+  cardContent = [(BKEndOfBookCardTransitionAnimationController *)self cardContent];
+  [cardContent cardStackTransitioningCardContentFinalizeForOpen];
 
   [(BKEndOfBookCardTransitionAnimationController *)self setCardContent:0];
 
-  [(BKEndOfBookCardTransitionAnimationController *)self _finalizePresentation:v3];
+  [(BKEndOfBookCardTransitionAnimationController *)self _finalizePresentation:presentationCopy];
 }
 
-- (void)finalizeAnimationsForDismissal:(BOOL)a3
+- (void)finalizeAnimationsForDismissal:(BOOL)dismissal
 {
-  v3 = a3;
-  v5 = [(BKEndOfBookCardTransitionAnimationController *)self cardContent];
-  [v5 cardStackTransitioningCardContentFinalizeForDismiss];
+  dismissalCopy = dismissal;
+  cardContent = [(BKEndOfBookCardTransitionAnimationController *)self cardContent];
+  [cardContent cardStackTransitioningCardContentFinalizeForDismiss];
 
   [(BKEndOfBookCardTransitionAnimationController *)self setCardContent:0];
 
-  [(BKEndOfBookCardTransitionAnimationController *)self _finalizePresentation:!v3];
+  [(BKEndOfBookCardTransitionAnimationController *)self _finalizePresentation:!dismissalCopy];
 }
 
 - (double)_cardInitialTopOffset
 {
   objc_opt_class();
-  v3 = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
-  v4 = [v3 cardNavigationController];
-  v5 = [v4 topViewController];
+  cardViewController = [(BKEndOfBookCardTransitionAnimationController *)self cardViewController];
+  cardNavigationController = [cardViewController cardNavigationController];
+  topViewController = [cardNavigationController topViewController];
   v6 = BUDynamicCast();
 
-  v7 = [(BKEndOfBookCardTransitionAnimationController *)self cardContent];
+  cardContent = [(BKEndOfBookCardTransitionAnimationController *)self cardContent];
 
   v8 = 0.0;
-  if (v7 && v6)
+  if (cardContent && v6)
   {
-    v9 = [v6 content];
-    v10 = [v9 entries];
-    v11 = [v10 firstObject];
+    content = [v6 content];
+    entries = [content entries];
+    firstObject = [entries firstObject];
 
-    v12 = [v11 uuid];
-    v13 = [TUIRenderReferenceQuery queryWithUUID:v12 uid:0 refId:@"root-box" refInstance:0];
+    uuid = [firstObject uuid];
+    v13 = [TUIRenderReferenceQuery queryWithUUID:uuid uid:0 refId:@"root-box" refInstance:0];
 
     v14 = [v6 renderReferencesMatchingQuery:v13];
-    v15 = [v14 allKeys];
-    v16 = [v15 firstObject];
+    allKeys = [v14 allKeys];
+    firstObject2 = [allKeys firstObject];
 
-    if (v16)
+    if (firstObject2)
     {
-      v17 = [v14 objectForKeyedSubscript:v16];
-      v18 = [v17 firstObject];
+      v17 = [v14 objectForKeyedSubscript:firstObject2];
+      firstObject3 = [v17 firstObject];
 
-      if (v18)
+      if (firstObject3)
       {
-        [v18 size];
+        [firstObject3 size];
         v8 = v19;
       }
     }
@@ -708,9 +708,9 @@ LABEL_5:
   return v8;
 }
 
-- (void)_animateContentCrossfade:(BOOL)a3
+- (void)_animateContentCrossfade:(BOOL)crossfade
 {
-  v6 = a3;
+  crossfadeCopy = crossfade;
   LODWORD(v3) = 1051260355;
   LODWORD(v4) = 1059816735;
   LODWORD(v5) = 1.0;
@@ -722,7 +722,7 @@ LABEL_5:
   v20[2] = sub_1001C0D0C;
   v20[3] = &unk_100A044C8;
   v20[4] = self;
-  v21 = v6;
+  v21 = crossfadeCopy;
   [v10 addAnimations:v20];
   v11 = [[UIViewPropertyAnimator alloc] initWithDuration:v9 timingParameters:0.17];
   v18[0] = _NSConcreteStackBlock;
@@ -730,9 +730,9 @@ LABEL_5:
   v18[2] = sub_1001C0DC4;
   v18[3] = &unk_100A044C8;
   v18[4] = self;
-  v19 = v6;
+  v19 = crossfadeCopy;
   [v11 addAnimations:v18];
-  if (v6)
+  if (crossfadeCopy)
   {
     [v10 startAnimation];
     v12 = 0.1;
@@ -763,12 +763,12 @@ LABEL_5:
   [(BKEndOfBookCardTransitionAnimationController *)self setCardArtworkSource:0];
 }
 
-- (void)_finalizePresentation:(BOOL)a3
+- (void)_finalizePresentation:(BOOL)presentation
 {
-  v3 = a3;
-  v5 = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
-  v6 = [v5 view];
-  [v6 setHidden:v3];
+  presentationCopy = presentation;
+  compactViewController = [(BKEndOfBookCardTransitionAnimationController *)self compactViewController];
+  view = [compactViewController view];
+  [view setHidden:presentationCopy];
 
   [(BKEndOfBookCardTransitionAnimationController *)self unhideCovers];
 

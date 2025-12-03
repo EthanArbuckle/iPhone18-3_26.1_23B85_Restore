@@ -17,25 +17,25 @@
 - (NSMeasurement)aqi;
 - (NSMeasurement)temperature;
 - (unsigned)icyConditions;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFExteriorConditions
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFExteriorConditions;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -48,12 +48,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -69,13 +69,13 @@
 - (CAFMeasurementCharacteristic)temperatureCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x000000003000001D"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000001D"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x000000003000001D"];
@@ -94,49 +94,49 @@
 
 - (NSMeasurement)temperature
 {
-  v2 = [(CAFExteriorConditions *)self temperatureCharacteristic];
-  v3 = [v2 measurementValue];
+  temperatureCharacteristic = [(CAFExteriorConditions *)self temperatureCharacteristic];
+  measurementValue = [temperatureCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFFloatRange)temperatureRange
 {
-  v2 = [(CAFExteriorConditions *)self temperatureCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 floatRange];
+  temperatureCharacteristic = [(CAFExteriorConditions *)self temperatureCharacteristic];
+  range = [temperatureCharacteristic range];
+  floatRange = [range floatRange];
 
-  return v4;
+  return floatRange;
 }
 
 - (CAFMeasurementRange)temperatureMeasurementRange
 {
-  v3 = [(CAFExteriorConditions *)self temperatureRange];
-  v4 = [(CAFExteriorConditions *)self temperature];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  temperatureRange = [(CAFExteriorConditions *)self temperatureRange];
+  temperature = [(CAFExteriorConditions *)self temperature];
+  unit = [temperature unit];
+  v6 = [temperatureRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)temperatureInvalid
 {
-  v2 = [(CAFExteriorConditions *)self temperatureCharacteristic];
-  v3 = [v2 isInvalid];
+  temperatureCharacteristic = [(CAFExteriorConditions *)self temperatureCharacteristic];
+  isInvalid = [temperatureCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFIcyConditionsCharacteristic)icyConditionsCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000051000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000051000005"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000051000005"];
@@ -155,16 +155,16 @@
 
 - (unsigned)icyConditions
 {
-  v2 = [(CAFExteriorConditions *)self icyConditionsCharacteristic];
-  v3 = [v2 icyConditionsValue];
+  icyConditionsCharacteristic = [(CAFExteriorConditions *)self icyConditionsCharacteristic];
+  icyConditionsValue = [icyConditionsCharacteristic icyConditionsValue];
 
-  return v3;
+  return icyConditionsValue;
 }
 
 - (BOOL)hasIcyConditions
 {
-  v2 = [(CAFExteriorConditions *)self icyConditionsCharacteristic];
-  v3 = v2 != 0;
+  icyConditionsCharacteristic = [(CAFExteriorConditions *)self icyConditionsCharacteristic];
+  v3 = icyConditionsCharacteristic != 0;
 
   return v3;
 }
@@ -172,13 +172,13 @@
 - (CAFMeasurementCharacteristic)aqiCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000031000010"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000010"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000031000010"];
@@ -197,57 +197,57 @@
 
 - (NSMeasurement)aqi
 {
-  v2 = [(CAFExteriorConditions *)self aqiCharacteristic];
-  v3 = [v2 measurementValue];
+  aqiCharacteristic = [(CAFExteriorConditions *)self aqiCharacteristic];
+  measurementValue = [aqiCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFFloatRange)aqiRange
 {
-  v2 = [(CAFExteriorConditions *)self aqiCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 floatRange];
+  aqiCharacteristic = [(CAFExteriorConditions *)self aqiCharacteristic];
+  range = [aqiCharacteristic range];
+  floatRange = [range floatRange];
 
-  return v4;
+  return floatRange;
 }
 
 - (CAFMeasurementRange)aqiMeasurementRange
 {
-  v3 = [(CAFExteriorConditions *)self aqiRange];
+  aqiRange = [(CAFExteriorConditions *)self aqiRange];
   v4 = [(CAFExteriorConditions *)self aqi];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  unit = [v4 unit];
+  v6 = [aqiRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasAqi
 {
-  v2 = [(CAFExteriorConditions *)self aqiCharacteristic];
-  v3 = v2 != 0;
+  aqiCharacteristic = [(CAFExteriorConditions *)self aqiCharacteristic];
+  v3 = aqiCharacteristic != 0;
 
   return v3;
 }
 
 - (BOOL)aqiInvalid
 {
-  v2 = [(CAFExteriorConditions *)self aqiCharacteristic];
-  v3 = [v2 isInvalid];
+  aqiCharacteristic = [(CAFExteriorConditions *)self aqiCharacteristic];
+  isInvalid = [aqiCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (BOOL)registeredForTemperature
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x000000003000001D"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000001D"];
 
   return v10;
 }
@@ -255,13 +255,13 @@
 - (BOOL)registeredForIcyConditions
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000051000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000051000005"];
 
   return v10;
 }
@@ -269,13 +269,13 @@
 - (BOOL)registeredForAQI
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000031000010"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000010"];
 
   return v10;
 }

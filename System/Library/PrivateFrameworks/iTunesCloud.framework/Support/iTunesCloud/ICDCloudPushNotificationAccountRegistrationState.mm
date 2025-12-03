@@ -1,5 +1,5 @@
 @interface ICDCloudPushNotificationAccountRegistrationState
-- (ICDCloudPushNotificationAccountRegistrationState)initWithDictionaryRepresentation:(id)a3;
+- (ICDCloudPushNotificationAccountRegistrationState)initWithDictionaryRepresentation:(id)representation;
 - (id)dictionaryRepresentation;
 @end
 
@@ -24,17 +24,17 @@
   return v4;
 }
 
-- (ICDCloudPushNotificationAccountRegistrationState)initWithDictionaryRepresentation:(id)a3
+- (ICDCloudPushNotificationAccountRegistrationState)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(ICDCloudPushNotificationAccountRegistrationState *)self init];
   if (v5)
   {
-    v6 = [v4 ic_dataValueForKey:@"APNSToken"];
+    v6 = [representationCopy ic_dataValueForKey:@"APNSToken"];
     APNSToken = v5->_APNSToken;
     v5->_APNSToken = v6;
 
-    v8 = [v4 ic_arrayValueForKey:@"mediaKinds"];
+    v8 = [representationCopy ic_arrayValueForKey:@"mediaKinds"];
     mediaKinds = v5->_mediaKinds;
     v5->_mediaKinds = v8;
   }

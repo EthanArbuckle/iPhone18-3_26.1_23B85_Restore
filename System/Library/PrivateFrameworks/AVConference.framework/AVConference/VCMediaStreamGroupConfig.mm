@@ -1,5 +1,5 @@
 @interface VCMediaStreamGroupConfig
-- (BOOL)addMediaStreamInfo:(id)a3;
+- (BOOL)addMediaStreamInfo:(id)info;
 - (BOOL)hasRepairedStreams;
 - (NSArray)mediaStreams;
 - (NSDictionary)groupEntries;
@@ -7,8 +7,8 @@
 - (VCMediaStreamGroupConfig)init;
 - (unsigned)rtpTimestampRate;
 - (void)dealloc;
-- (void)setDelegateQueue:(id)a3;
-- (void)setJbTargetEstimatorSynchronizer:(tagVCJBTargetEstimatorSynchronizer *)a3;
+- (void)setDelegateQueue:(id)queue;
+- (void)setJbTargetEstimatorSynchronizer:(tagVCJBTargetEstimatorSynchronizer *)synchronizer;
 - (void)setupStreams;
 @end
 
@@ -55,10 +55,10 @@
   [(VCMediaStreamGroupConfig *)&v5 dealloc];
 }
 
-- (void)setDelegateQueue:(id)a3
+- (void)setDelegateQueue:(id)queue
 {
   delegateQueue = self->_delegateQueue;
-  if (delegateQueue != a3)
+  if (delegateQueue != queue)
   {
     if (delegateQueue)
     {
@@ -66,21 +66,21 @@
       self->_delegateQueue = 0;
     }
 
-    if (a3)
+    if (queue)
     {
-      dispatch_retain(a3);
-      self->_delegateQueue = a3;
+      dispatch_retain(queue);
+      self->_delegateQueue = queue;
     }
   }
 }
 
-- (BOOL)addMediaStreamInfo:(id)a3
+- (BOOL)addMediaStreamInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     [(VCMediaStreamGroupConfig *)self lock];
     self->_shouldSetupStreams = 1;
-    [(NSMutableArray *)self->_mediaStreamInfoArray addObject:a3];
+    [(NSMutableArray *)self->_mediaStreamInfoArray addObject:info];
     [(VCMediaStreamGroupConfig *)self unlock];
   }
 
@@ -94,7 +94,7 @@
     }
   }
 
-  return a3 != 0;
+  return info != 0;
 }
 
 - (NSArray)mediaStreams
@@ -165,7 +165,7 @@
 - (void)setupStreams
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -196,7 +196,7 @@ LABEL_12:
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [a1 performSelector:sel_logPrefix];
+    v4 = [self performSelector:sel_logPrefix];
   }
 
   else
@@ -216,7 +216,7 @@ LABEL_12:
       v19 = 2112;
       v20 = v4;
       v21 = 2048;
-      v22 = a1;
+      selfCopy = self;
       v23 = v13;
       v24 = v14;
       v9 = " [%s] %s:%d %@(%p) Failed to create the stream array for streamToken=%u";
@@ -230,7 +230,7 @@ LABEL_10:
   *a2 = 0;
 }
 
-- (void)setJbTargetEstimatorSynchronizer:(tagVCJBTargetEstimatorSynchronizer *)a3
+- (void)setJbTargetEstimatorSynchronizer:(tagVCJBTargetEstimatorSynchronizer *)synchronizer
 {
   jbTargetEstimatorSynchronizer = self->_jbTargetEstimatorSynchronizer;
   if (jbTargetEstimatorSynchronizer)
@@ -238,11 +238,11 @@ LABEL_10:
     CFRelease(jbTargetEstimatorSynchronizer);
   }
 
-  self->_jbTargetEstimatorSynchronizer = a3;
-  if (a3)
+  self->_jbTargetEstimatorSynchronizer = synchronizer;
+  if (synchronizer)
   {
 
-    CFRetain(a3);
+    CFRetain(synchronizer);
   }
 }
 

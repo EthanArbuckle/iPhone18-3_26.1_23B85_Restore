@@ -1,7 +1,7 @@
 @interface VCPDataCompressor
 + (id)compressor;
 - (VCPDataCompressor)init;
-- (id)compressData:(id)a3;
+- (id)compressData:(id)data;
 @end
 
 @implementation VCPDataCompressor
@@ -36,16 +36,16 @@
   return v2;
 }
 
-- (id)compressData:(id)a3
+- (id)compressData:(id)data
 {
   resultData = self->_resultData;
-  v5 = a3;
-  v6 = [(NSMutableData *)resultData mutableBytes];
+  dataCopy = data;
+  mutableBytes = [(NSMutableData *)resultData mutableBytes];
   v7 = [(NSMutableData *)self->_resultData length];
-  v8 = [v5 bytes];
-  v9 = [v5 length];
+  bytes = [dataCopy bytes];
+  v9 = [dataCopy length];
 
-  v10 = compression_encode_buffer(v6, v7, v8, v9, [(NSMutableData *)self->_scratchData mutableBytes], COMPRESSION_ZLIB);
+  v10 = compression_encode_buffer(mutableBytes, v7, bytes, v9, [(NSMutableData *)self->_scratchData mutableBytes], COMPRESSION_ZLIB);
   if (v10)
   {
     v10 = [NSData dataWithBytesNoCopy:[(NSMutableData *)self->_resultData mutableBytes] length:v10 freeWhenDone:0];

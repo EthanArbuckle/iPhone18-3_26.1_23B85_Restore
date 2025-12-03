@@ -1,48 +1,48 @@
 @interface GTReplayUpdateResult
-- (GTReplayUpdateResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTReplayUpdateResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTReplayUpdateResult
 
-- (GTReplayUpdateResult)initWithCoder:(id)a3
+- (GTReplayUpdateResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = GTReplayUpdateResult;
-  v5 = [(GTReplayRequest *)&v16 initWithCoder:v4];
+  v5 = [(GTReplayRequest *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_streamRef = [v4 decodeInt64ForKey:@"streamRef"];
+    v5->_streamRef = [coderCopy decodeInt64ForKey:@"streamRef"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"updatedPipelines"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"updatedPipelines"];
     updatePipelines = v5->_updatePipelines;
     v5->_updatePipelines = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v12;
 
-    v5->_dispatchUID.uid = GTDispatchUIDDecode(v4, @"dispatchUID");
+    v5->_dispatchUID.uid = GTDispatchUIDDecode(coderCopy, @"dispatchUID");
     v14 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GTReplayUpdateResult;
-  v4 = a3;
-  [(GTReplayRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_streamRef forKey:{@"streamRef", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_updatePipelines forKey:@"updatedPipelines"];
-  [v4 encodeObject:self->_error forKey:@"error"];
-  GTDispatchUIDEncode(v4, self->_dispatchUID.uid, @"dispatchUID");
+  coderCopy = coder;
+  [(GTReplayRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_streamRef forKey:{@"streamRef", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_updatePipelines forKey:@"updatedPipelines"];
+  [coderCopy encodeObject:self->_error forKey:@"error"];
+  GTDispatchUIDEncode(coderCopy, self->_dispatchUID.uid, @"dispatchUID");
 }
 
 @end

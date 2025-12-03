@@ -26,24 +26,24 @@
 - (void)_updateStatus;
 - (void)dealloc;
 - (void)invalidatePlaybackState;
-- (void)seekByTimeInterval:(double)a3 toleranceBefore:(double)a4 toleranceAfter:(double)a5;
-- (void)setContentTimeRange:(id *)a3;
-- (void)setEnqueuedBufferDimensions:(CGSize)a3;
-- (void)setPictureInPictureController:(id)a3;
-- (void)setPictureInPictureInterrupted:(BOOL)a3;
-- (void)setPlaybackDelegate:(id)a3;
-- (void)setPlaybackState:(id)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)togglePlaybackEvenWhenInBackground:(id)a3;
+- (void)seekByTimeInterval:(double)interval toleranceBefore:(double)before toleranceAfter:(double)after;
+- (void)setContentTimeRange:(id *)range;
+- (void)setEnqueuedBufferDimensions:(CGSize)dimensions;
+- (void)setPictureInPictureController:(id)controller;
+- (void)setPictureInPictureInterrupted:(BOOL)interrupted;
+- (void)setPlaybackDelegate:(id)delegate;
+- (void)setPlaybackState:(id)state;
+- (void)setPlaying:(BOOL)playing;
+- (void)togglePlaybackEvenWhenInBackground:(id)background;
 @end
 
 @implementation AVSampleBufferDisplayLayerPlayerController
 
-- (void)setContentTimeRange:(id *)a3
+- (void)setContentTimeRange:(id *)range
 {
-  v4 = *&a3->var0.var3;
-  v3 = *&a3->var1.var1;
-  *&self->_enqueuedBufferDimensions.height = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v3 = *&range->var1.var1;
+  *&self->_enqueuedBufferDimensions.height = *&range->var0.var0;
   *&self->_contentTimeRange.start.timescale = v4;
   *&self->_contentTimeRange.duration.value = v3;
 }
@@ -83,26 +83,26 @@
 - (void)_startObservation
 {
   v59[6] = *MEMORY[0x1E69E9840];
-  v3 = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
+  sbdlObservationController = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
 
-  if (!v3)
+  if (!sbdlObservationController)
   {
     v4 = [[AVObservationController alloc] initWithOwner:self];
     [(AVSampleBufferDisplayLayerPlayerController *)self setSbdlObservationController:v4];
 
-    v5 = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
-    v6 = [MEMORY[0x1E6958460] sharedInstance];
-    v7 = [v5 startObserving:v6 keyPath:@"isPiPAvailable" includeInitialValue:1 observationHandler:&__block_literal_global_34584];
+    sbdlObservationController2 = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+    v7 = [sbdlObservationController2 startObserving:mEMORY[0x1E6958460] keyPath:@"isPiPAvailable" includeInitialValue:1 observationHandler:&__block_literal_global_34584];
 
-    v8 = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
-    [v8 startObservingNotificationForName:*MEMORY[0x1E6960CD0] object:0 notificationCenter:0 observationHandler:&__block_literal_global_142_34585];
+    sbdlObservationController3 = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
+    [sbdlObservationController3 startObservingNotificationForName:*MEMORY[0x1E6960CD0] object:0 notificationCenter:0 observationHandler:&__block_literal_global_142_34585];
 
-    v9 = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
-    [v9 startObservingNotificationForName:*MEMORY[0x1E6960CE8] object:0 notificationCenter:0 observationHandler:&__block_literal_global_142_34585];
+    sbdlObservationController4 = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
+    [sbdlObservationController4 startObservingNotificationForName:*MEMORY[0x1E6960CE8] object:0 notificationCenter:0 observationHandler:&__block_literal_global_142_34585];
 
-    v10 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
-    v11 = [v10 contentSource];
-    v12 = [v11 sampleBufferDisplayLayer];
+    pictureInPictureController = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
+    contentSource = [pictureInPictureController contentSource];
+    sampleBufferDisplayLayer = [contentSource sampleBufferDisplayLayer];
 
     v56[0] = 0;
     v56[1] = v56;
@@ -110,7 +110,7 @@
     v56[3] = "";
     v57 = 0u;
     v58 = 0u;
-    [v12 frame];
+    [sampleBufferDisplayLayer frame];
     *&v57 = v13;
     *(&v57 + 1) = v14;
     *&v58 = v15;
@@ -121,7 +121,7 @@
     v53[3] = "";
     v54 = 0u;
     v55 = 0u;
-    [v12 bounds];
+    [sampleBufferDisplayLayer bounds];
     *&v54 = v17;
     *(&v54 + 1) = v18;
     *&v55 = v19;
@@ -133,9 +133,9 @@
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    if (v12)
+    if (sampleBufferDisplayLayer)
     {
-      [v12 affineTransform];
+      [sampleBufferDisplayLayer affineTransform];
       v37 = 0;
       v38 = &v37;
       v39 = 0xA010000000;
@@ -148,7 +148,7 @@
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
-      [v12 transform];
+      [sampleBufferDisplayLayer transform];
       v25 = 0;
       v26 = &v25;
       v27 = 0xA010000000;
@@ -161,7 +161,7 @@
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      [v12 sublayerTransform];
+      [sampleBufferDisplayLayer sublayerTransform];
     }
 
     else
@@ -192,7 +192,7 @@
       v36 = 0uLL;
     }
 
-    v21 = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
+    sbdlObservationController5 = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
     v59[0] = @"bounds";
     v59[1] = @"frame";
     v59[2] = @"transform";
@@ -209,7 +209,7 @@
     v24[6] = v49;
     v24[7] = &v37;
     v24[8] = &v25;
-    v23 = [v21 startObserving:v12 keyPaths:v22 includeInitialValue:1 observationHandler:v24];
+    v23 = [sbdlObservationController5 startObserving:sampleBufferDisplayLayer keyPaths:v22 includeInitialValue:1 observationHandler:v24];
 
     _Block_object_dispose(&v25, 8);
     _Block_object_dispose(&v37, 8);
@@ -354,8 +354,8 @@ uint64_t __63__AVSampleBufferDisplayLayerPlayerController__startObservation__blo
   if (v4)
   {
     v5 = objc_loadWeakRetained(&self->_pictureInPictureController);
-    v6 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
-    v7 = [v5 pictureInPictureControllerShouldProhibitBackgroundAudioPlayback:v6];
+    pictureInPictureController = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
+    v7 = [v5 pictureInPictureControllerShouldProhibitBackgroundAudioPlayback:pictureInPictureController];
 
     if (v7)
     {
@@ -373,8 +373,8 @@ uint64_t __63__AVSampleBufferDisplayLayerPlayerController__startObservation__blo
     v8 = 1;
   }
 
-  v9 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
-  [v9 setBackgroundPlaybackPolicy:v8];
+  pictureInPictureController2 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
+  [pictureInPictureController2 setBackgroundPlaybackPolicy:v8];
 }
 
 - (void)_updateStatus
@@ -402,10 +402,10 @@ uint64_t __63__AVSampleBufferDisplayLayerPlayerController__startObservation__blo
 
 - (void)_updatePlaybackStateTiming
 {
-  v11 = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
-  [v11 currentElapsedTime];
+  playbackState = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
+  [playbackState currentElapsedTime];
   v4 = v3;
-  if ([v11 isPaused])
+  if ([playbackState isPaused])
   {
     v5 = 0.0;
     v6 = NAN;
@@ -415,7 +415,7 @@ uint64_t __63__AVSampleBufferDisplayLayerPlayerController__startObservation__blo
   {
     +[AVValueTiming currentTimeStamp];
     v6 = v7;
-    [v11 timelineRate];
+    [playbackState timelineRate];
     v5 = v8;
   }
 
@@ -424,11 +424,11 @@ uint64_t __63__AVSampleBufferDisplayLayerPlayerController__startObservation__blo
   self->super._seekToTimeInternal.epoch = v9;
 }
 
-- (void)setEnqueuedBufferDimensions:(CGSize)a3
+- (void)setEnqueuedBufferDimensions:(CGSize)dimensions
 {
-  *&self->_oldAVPlayControllerStatus = a3;
-  v4 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
-  [v4 contentSourceVideoRectInWindowChanged];
+  *&self->_oldAVPlayControllerStatus = dimensions;
+  pictureInPictureController = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
+  [pictureInPictureController contentSourceVideoRectInWindowChanged];
 
   [(AVSampleBufferDisplayLayerPlayerController *)self _updateStatus];
 }
@@ -459,8 +459,8 @@ uint64_t __63__AVSampleBufferDisplayLayerPlayerController__startObservation__blo
 
 - (double)contentDurationWithinEndTimes
 {
-  v2 = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
-  [v2 timelineDuration];
+  playbackState = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
+  [playbackState timelineDuration];
   v4 = v3;
 
   return v4;
@@ -468,8 +468,8 @@ uint64_t __63__AVSampleBufferDisplayLayerPlayerController__startObservation__blo
 
 - (double)currentTimeWithinEndTimes
 {
-  v2 = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
-  [v2 currentElapsedTime];
+  playbackState = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
+  [playbackState currentElapsedTime];
   v4 = v3;
 
   return v4;
@@ -477,8 +477,8 @@ uint64_t __63__AVSampleBufferDisplayLayerPlayerController__startObservation__blo
 
 - (double)rate
 {
-  v2 = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
-  [v2 timelineRate];
+  playbackState = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
+  [playbackState timelineRate];
   v4 = v3;
 
   return v4;
@@ -487,8 +487,8 @@ uint64_t __63__AVSampleBufferDisplayLayerPlayerController__startObservation__blo
 - (BOOL)isPictureInPicturePossible
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(AVSampleBufferDisplayLayerPlayerController *)self oldAVPlayControllerStatus];
-  if (v3 != [(AVSampleBufferDisplayLayerPlayerController *)self status]|| (v4 = [(AVSampleBufferDisplayLayerPlayerController *)self oldPictureInPictureAvailableState], v4 != [(AVSampleBufferDisplayLayerPlayerController *)self isPictureInPictureAvailable]))
+  oldAVPlayControllerStatus = [(AVSampleBufferDisplayLayerPlayerController *)self oldAVPlayControllerStatus];
+  if (oldAVPlayControllerStatus != [(AVSampleBufferDisplayLayerPlayerController *)self status]|| (v4 = [(AVSampleBufferDisplayLayerPlayerController *)self oldPictureInPictureAvailableState], v4 != [(AVSampleBufferDisplayLayerPlayerController *)self isPictureInPictureAvailable]))
   {
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -529,29 +529,29 @@ uint64_t __63__AVSampleBufferDisplayLayerPlayerController__startObservation__blo
   return [(AVSampleBufferDisplayLayerPlayerController *)self status]!= 3 && [(AVSampleBufferDisplayLayerPlayerController *)self isPictureInPictureAvailable];
 }
 
-- (void)setPictureInPictureInterrupted:(BOOL)a3
+- (void)setPictureInPictureInterrupted:(BOOL)interrupted
 {
-  v3 = a3;
+  interruptedCopy = interrupted;
   v5.receiver = self;
   v5.super_class = AVSampleBufferDisplayLayerPlayerController;
   [(AVPlayerController *)&v5 setPictureInPictureInterrupted:?];
-  if (v3)
+  if (interruptedCopy)
   {
     [(AVSampleBufferDisplayLayerPlayerController *)self setPlaying:0];
   }
 }
 
-- (void)togglePlaybackEvenWhenInBackground:(id)a3
+- (void)togglePlaybackEvenWhenInBackground:(id)background
 {
   v4 = [(AVSampleBufferDisplayLayerPlayerController *)self isPlaying]^ 1;
 
   [(AVSampleBufferDisplayLayerPlayerController *)self setPlaying:v4];
 }
 
-- (void)seekByTimeInterval:(double)a3 toleranceBefore:(double)a4 toleranceAfter:(double)a5
+- (void)seekByTimeInterval:(double)interval toleranceBefore:(double)before toleranceAfter:(double)after
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = [(AVSampleBufferDisplayLayerPlayerController *)self isPlaying:a3];
+  v7 = [(AVSampleBufferDisplayLayerPlayerController *)self isPlaying:interval];
   if (v7)
   {
     [(AVSampleBufferDisplayLayerPlayerController *)self togglePlaybackEvenWhenInBackground:self];
@@ -569,23 +569,23 @@ uint64_t __63__AVSampleBufferDisplayLayerPlayerController__startObservation__blo
     }
 
     LOWORD(buf.flags) = 2048;
-    *(&buf.flags + 2) = a3;
+    *(&buf.flags + 2) = interval;
     HIWORD(buf.epoch) = 2112;
     v17 = v9;
     _os_log_impl(&dword_18B49C000, v8, OS_LOG_TYPE_DEFAULT, "%s  interval: %f shouldResumePlayback: %@", &buf, 0x20u);
   }
 
   objc_initWeak(&location, self);
-  v10 = [(AVSampleBufferDisplayLayerPlayerController *)self playbackDelegate];
-  v11 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
-  CMTimeMakeWithSeconds(&buf, a3, 90000);
+  playbackDelegate = [(AVSampleBufferDisplayLayerPlayerController *)self playbackDelegate];
+  pictureInPictureController = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
+  CMTimeMakeWithSeconds(&buf, interval, 90000);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __96__AVSampleBufferDisplayLayerPlayerController_seekByTimeInterval_toleranceBefore_toleranceAfter___block_invoke;
   v12[3] = &unk_1E720A0B8;
   objc_copyWeak(&v13, &location);
   v14 = v7;
-  [v10 pictureInPictureController:v11 skipByInterval:&buf completionHandler:v12];
+  [playbackDelegate pictureInPictureController:pictureInPictureController skipByInterval:&buf completionHandler:v12];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -617,14 +617,14 @@ void __96__AVSampleBufferDisplayLayerPlayerController_seekByTimeInterval_toleran
   }
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  v3 = a3;
-  if ([(AVSampleBufferDisplayLayerPlayerController *)self isPlaying]!= a3)
+  playingCopy = playing;
+  if ([(AVSampleBufferDisplayLayerPlayerController *)self isPlaying]!= playing)
   {
-    v5 = [(AVSampleBufferDisplayLayerPlayerController *)self playbackDelegateAdapter];
-    v6 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
-    [v5 pictureInPictureController:v6 setPlaying:v3];
+    playbackDelegateAdapter = [(AVSampleBufferDisplayLayerPlayerController *)self playbackDelegateAdapter];
+    pictureInPictureController = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
+    [playbackDelegateAdapter pictureInPictureController:pictureInPictureController setPlaying:playingCopy];
 
     [(AVSampleBufferDisplayLayerPlayerController *)self invalidatePlaybackState];
   }
@@ -632,15 +632,15 @@ void __96__AVSampleBufferDisplayLayerPlayerController_seekByTimeInterval_toleran
 
 - (int64_t)timeControlStatus
 {
-  v2 = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
-  if ([v2 isPaused])
+  playbackState = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
+  if ([playbackState isPaused])
   {
     v3 = 0;
   }
 
   else
   {
-    [v2 timelineRate];
+    [playbackState timelineRate];
     if (v4 == 0.0)
     {
       v3 = 1;
@@ -657,21 +657,21 @@ void __96__AVSampleBufferDisplayLayerPlayerController_seekByTimeInterval_toleran
 
 - (BOOL)isPaused
 {
-  v2 = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
-  v3 = [v2 isPaused];
+  playbackState = [(AVSampleBufferDisplayLayerPlayerController *)self playbackState];
+  isPaused = [playbackState isPaused];
 
-  return v3;
+  return isPaused;
 }
 
-- (void)setPlaybackState:(id)a3
+- (void)setPlaybackState:(id)state
 {
-  v5 = a3;
-  if (self->_timeControlStatus != v5)
+  stateCopy = state;
+  if (self->_timeControlStatus != stateCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_timeControlStatus, a3);
+    v6 = stateCopy;
+    objc_storeStrong(&self->_timeControlStatus, state);
     [(AVSampleBufferDisplayLayerPlayerController *)self _updatePlaybackStateTiming];
-    v5 = v6;
+    stateCopy = v6;
   }
 }
 
@@ -691,15 +691,15 @@ void __96__AVSampleBufferDisplayLayerPlayerController_seekByTimeInterval_toleran
 
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v4 = [(AVSampleBufferDisplayLayerPlayerController *)self playbackDelegateAdapter];
-    v5 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
-    v6 = [v4 pictureInPictureControllerIsPlaybackPaused:v5];
+    playbackDelegateAdapter = [(AVSampleBufferDisplayLayerPlayerController *)self playbackDelegateAdapter];
+    pictureInPictureController = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
+    v6 = [playbackDelegateAdapter pictureInPictureControllerIsPlaybackPaused:pictureInPictureController];
 
-    v7 = [(AVSampleBufferDisplayLayerPlayerController *)self playbackDelegateAdapter];
-    v8 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
-    if (v7)
+    playbackDelegateAdapter2 = [(AVSampleBufferDisplayLayerPlayerController *)self playbackDelegateAdapter];
+    pictureInPictureController2 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
+    if (playbackDelegateAdapter2)
     {
-      [v7 pictureInPictureControllerTimeRangeForPlayback:v8];
+      [playbackDelegateAdapter2 pictureInPictureControllerTimeRangeForPlayback:pictureInPictureController2];
     }
 
     else
@@ -744,9 +744,9 @@ void __96__AVSampleBufferDisplayLayerPlayerController_seekByTimeInterval_toleran
   }
 }
 
-- (void)setPictureInPictureController:(id)a3
+- (void)setPictureInPictureController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_playbackState);
 
   if (WeakRetained)
@@ -759,20 +759,20 @@ void __96__AVSampleBufferDisplayLayerPlayerController_seekByTimeInterval_toleran
     }
   }
 
-  objc_storeWeak(&self->_playbackState, v4);
-  v7 = [v4 contentSource];
+  objc_storeWeak(&self->_playbackState, controllerCopy);
+  contentSource = [controllerCopy contentSource];
 
-  v8 = [v7 sampleBufferPlaybackDelegate];
-  [(AVSampleBufferDisplayLayerPlayerController *)self setPlaybackDelegate:v8];
+  sampleBufferPlaybackDelegate = [contentSource sampleBufferPlaybackDelegate];
+  [(AVSampleBufferDisplayLayerPlayerController *)self setPlaybackDelegate:sampleBufferPlaybackDelegate];
 
   [(AVSampleBufferDisplayLayerPlayerController *)self _startObservation];
 }
 
-- (void)setPlaybackDelegate:(id)a3
+- (void)setPlaybackDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_pictureInPictureController, v4);
-  v5 = [AVSampleBufferDisplayLayerPlaybackDelegateAdapter playbackDelegateAdapterWithDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_pictureInPictureController, delegateCopy);
+  v5 = [AVSampleBufferDisplayLayerPlaybackDelegateAdapter playbackDelegateAdapterWithDelegate:delegateCopy];
 
   [(AVSampleBufferDisplayLayerPlayerController *)self setPlaybackDelegateAdapter:v5];
 
@@ -782,18 +782,18 @@ void __96__AVSampleBufferDisplayLayerPlayerController_seekByTimeInterval_toleran
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)_currentSBDLTime
 {
   *retstr = **&MEMORY[0x1E6960C70];
-  v4 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
-  v5 = [v4 contentSource];
-  v6 = [v5 sampleBufferDisplayLayer];
-  v7 = [v6 sampleBufferRenderer];
-  v8 = [v7 timebase];
+  pictureInPictureController = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
+  contentSource = [pictureInPictureController contentSource];
+  sampleBufferDisplayLayer = [contentSource sampleBufferDisplayLayer];
+  sampleBufferRenderer = [sampleBufferDisplayLayer sampleBufferRenderer];
+  timebase = [sampleBufferRenderer timebase];
 
-  if (v8)
+  if (timebase)
   {
-    CFRetain(v8);
-    CMTimebaseGetTime(retstr, v8);
+    CFRetain(timebase);
+    CMTimebaseGetTime(retstr, timebase);
 
-    CFRelease(v8);
+    CFRelease(timebase);
   }
 
   return result;
@@ -801,20 +801,20 @@ void __96__AVSampleBufferDisplayLayerPlayerController_seekByTimeInterval_toleran
 
 - (double)_effectiveRate
 {
-  v2 = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
-  v3 = [v2 contentSource];
-  v4 = [v3 sampleBufferDisplayLayer];
-  v5 = [v4 sampleBufferRenderer];
-  v6 = [v5 timebase];
+  pictureInPictureController = [(AVSampleBufferDisplayLayerPlayerController *)self pictureInPictureController];
+  contentSource = [pictureInPictureController contentSource];
+  sampleBufferDisplayLayer = [contentSource sampleBufferDisplayLayer];
+  sampleBufferRenderer = [sampleBufferDisplayLayer sampleBufferRenderer];
+  timebase = [sampleBufferRenderer timebase];
 
-  if (!v6)
+  if (!timebase)
   {
     return 0.0;
   }
 
-  CFRetain(v6);
-  EffectiveRate = CMTimebaseGetEffectiveRate(v6);
-  CFRelease(v6);
+  CFRetain(timebase);
+  EffectiveRate = CMTimebaseGetEffectiveRate(timebase);
+  CFRelease(timebase);
   return EffectiveRate;
 }
 
@@ -825,8 +825,8 @@ void __96__AVSampleBufferDisplayLayerPlayerController_seekByTimeInterval_toleran
   v2 = [(AVPlayerController *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6958460] sharedInstance];
-    LOBYTE(v2->_timing) = [v3 isPiPAvailable];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+    LOBYTE(v2->_timing) = [mEMORY[0x1E6958460] isPiPAvailable];
 
     v4 = [[AVPictureInPicturePlaybackState alloc] initWithElapsedTime:1 timelineDuration:NAN timelineRate:NAN paused:0.0];
     timeControlStatus = v2->_timeControlStatus;
@@ -842,8 +842,8 @@ void __96__AVSampleBufferDisplayLayerPlayerController_seekByTimeInterval_toleran
 
 - (void)dealloc
 {
-  v3 = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
-  [v3 stopAllObservation];
+  sbdlObservationController = [(AVSampleBufferDisplayLayerPlayerController *)self sbdlObservationController];
+  [sbdlObservationController stopAllObservation];
 
   v4.receiver = self;
   v4.super_class = AVSampleBufferDisplayLayerPlayerController;

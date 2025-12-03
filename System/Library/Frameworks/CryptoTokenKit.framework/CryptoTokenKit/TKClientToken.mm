@@ -1,57 +1,57 @@
 @interface TKClientToken
 + (NSArray)builtinTokenIDs;
-- (TKClientToken)initWithTokenID:(id)a3;
-- (TKClientToken)initWithTokenID:(id)a3 ctkdConnection:(id)a4;
-- (TKClientToken)initWithTokenID:(id)a3 serverEndpoint:(id)a4 targetUID:(id)a5;
-- (id)_initWithTokenID:(id)a3;
-- (id)sessionWithLAContext:(id)a3 error:(id *)a4;
-- (void)notifyOperation:(int64_t)a3 forToken:(id)a4 withStatus:(int64_t)a5;
+- (TKClientToken)initWithTokenID:(id)d;
+- (TKClientToken)initWithTokenID:(id)d ctkdConnection:(id)connection;
+- (TKClientToken)initWithTokenID:(id)d serverEndpoint:(id)endpoint targetUID:(id)iD;
+- (id)_initWithTokenID:(id)d;
+- (id)sessionWithLAContext:(id)context error:(id *)error;
+- (void)notifyOperation:(int64_t)operation forToken:(id)token withStatus:(int64_t)status;
 @end
 
 @implementation TKClientToken
 
-- (id)_initWithTokenID:(id)a3
+- (id)_initWithTokenID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = TKClientToken;
   v6 = [(TKClientToken *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tokenID, a3);
+    objc_storeStrong(&v6->_tokenID, d);
   }
 
   return v7;
 }
 
-- (TKClientToken)initWithTokenID:(id)a3
+- (TKClientToken)initWithTokenID:(id)d
 {
-  v4 = a3;
-  v5 = [TKSEPClientToken handlesTokenID:v4];
+  dCopy = d;
+  v5 = [TKSEPClientToken handlesTokenID:dCopy];
   v6 = off_1E86B6830;
   if (v5)
   {
     v6 = off_1E86B6840;
   }
 
-  v7 = [objc_alloc(*v6) initWithTokenID:v4];
+  v7 = [objc_alloc(*v6) initWithTokenID:dCopy];
 
   return v7;
 }
 
-- (TKClientToken)initWithTokenID:(id)a3 ctkdConnection:(id)a4
+- (TKClientToken)initWithTokenID:(id)d ctkdConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  if ([TKSEPClientToken handlesTokenID:v7])
+  connectionCopy = connection;
+  dCopy = d;
+  if ([TKSEPClientToken handlesTokenID:dCopy])
   {
-    v8 = [[TKSEPClientToken alloc] initWithTokenID:v7];
+    v8 = [[TKSEPClientToken alloc] initWithTokenID:dCopy];
   }
 
   else
   {
-    v8 = [[TKExtensionClientToken alloc] initWithTokenID:v7 ctkdConnection:v6];
+    v8 = [[TKExtensionClientToken alloc] initWithTokenID:dCopy ctkdConnection:connectionCopy];
   }
 
   p_super = &v8->super;
@@ -59,22 +59,22 @@
   return p_super;
 }
 
-- (TKClientToken)initWithTokenID:(id)a3 serverEndpoint:(id)a4 targetUID:(id)a5
+- (TKClientToken)initWithTokenID:(id)d serverEndpoint:(id)endpoint targetUID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[TKCTKDConnection alloc] initWithCTKDEndpoint:v9 targetUID:v8];
+  iDCopy = iD;
+  endpointCopy = endpoint;
+  dCopy = d;
+  v11 = [[TKCTKDConnection alloc] initWithCTKDEndpoint:endpointCopy targetUID:iDCopy];
 
-  v12 = [(TKClientToken *)self initWithTokenID:v10 ctkdConnection:v11];
+  v12 = [(TKClientToken *)self initWithTokenID:dCopy ctkdConnection:v11];
   return v12;
 }
 
-- (id)sessionWithLAContext:(id)a3 error:(id *)a4
+- (id)sessionWithLAContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = [TKClientTokenSession alloc];
-  v8 = [(TKClientTokenSession *)v7 initWithToken:self LAContext:v6 parameters:MEMORY[0x1E695E0F8] error:a4];
+  v8 = [(TKClientTokenSession *)v7 initWithToken:self LAContext:contextCopy parameters:MEMORY[0x1E695E0F8] error:error];
 
   return v8;
 }
@@ -88,7 +88,7 @@
   return v4;
 }
 
-- (void)notifyOperation:(int64_t)a3 forToken:(id)a4 withStatus:(int64_t)a5
+- (void)notifyOperation:(int64_t)operation forToken:(id)token withStatus:(int64_t)status
 {
   v5 = TK_LOG_client_1();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))

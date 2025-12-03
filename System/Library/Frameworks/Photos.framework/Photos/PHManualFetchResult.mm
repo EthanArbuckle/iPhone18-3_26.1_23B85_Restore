@@ -1,36 +1,36 @@
 @interface PHManualFetchResult
-+ (id)emptyFetchResultWithPhotoLibrary:(id)a3;
-+ (id)emptyFetchResultWithPhotoLibrary:(id)a3 fetchType:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)emptyFetchResultWithPhotoLibrary:(id)library;
++ (id)emptyFetchResultWithPhotoLibrary:(id)library fetchType:(id)type;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFullyBackedByObjectIDs;
 - (NSOrderedSet)objectIDs;
-- (PHManualFetchResult)fetchResultWithChangeHandlingValue:(id)a3;
-- (PHManualFetchResult)initWithObjects:(id)a3 photoLibrary:(id)a4 fetchType:(id)a5 fetchPropertySets:(id)a6 identifier:(id)a7 registerIfNeeded:(BOOL)a8;
-- (PHManualFetchResult)initWithOids:(id)a3 photoLibrary:(id)a4 fetchType:(id)a5 fetchPropertySets:(id)a6 identifier:(id)a7 registerIfNeeded:(BOOL)a8 graphQuery:(id)a9 batchSize:(unint64_t)a10;
-- (PHManualFetchResult)initWithOids:(id)a3 photoLibrary:(id)a4 fetchType:(id)a5 fetchPropertySets:(id)a6 identifier:(id)a7 registerIfNeeded:(BOOL)a8 graphQuery:(id)obj;
-- (PHManualFetchResult)initWithOids:(id)a3 photoLibrary:(id)a4 fetchType:(id)a5 fetchPropertySets:(id)a6 identifier:(id)a7 registerIfNeeded:(BOOL)a8 photosCount:(unint64_t)a9 videosCount:(unint64_t)a10 audiosCount:(unint64_t)a11 batchSize:(unint64_t)a12;
+- (PHManualFetchResult)fetchResultWithChangeHandlingValue:(id)value;
+- (PHManualFetchResult)initWithObjects:(id)objects photoLibrary:(id)library fetchType:(id)type fetchPropertySets:(id)sets identifier:(id)identifier registerIfNeeded:(BOOL)needed;
+- (PHManualFetchResult)initWithOids:(id)oids photoLibrary:(id)library fetchType:(id)type fetchPropertySets:(id)sets identifier:(id)identifier registerIfNeeded:(BOOL)needed graphQuery:(id)obj;
+- (PHManualFetchResult)initWithOids:(id)oids photoLibrary:(id)library fetchType:(id)type fetchPropertySets:(id)sets identifier:(id)identifier registerIfNeeded:(BOOL)needed graphQuery:(id)query batchSize:(unint64_t)self0;
+- (PHManualFetchResult)initWithOids:(id)oids photoLibrary:(id)library fetchType:(id)type fetchPropertySets:(id)sets identifier:(id)identifier registerIfNeeded:(BOOL)needed photosCount:(unint64_t)count videosCount:(unint64_t)self0 audiosCount:(unint64_t)self1 batchSize:(unint64_t)self2;
 - (id)calculateMediaTypeCounts;
-- (id)changeHandlingValueUsingSeedOids:(id)a3 withChange:(id)a4 usingManagedObjectContext:(id)a5;
-- (id)copyWithOptions:(id)a3;
+- (id)changeHandlingValueUsingSeedOids:(id)oids withChange:(id)change usingManagedObjectContext:(id)context;
+- (id)copyWithOptions:(id)options;
 - (id)description;
 - (id)fetchUpdatedObjects;
 - (id)fetchedObjectIDs;
 - (id)fetchedObjectIDsSet;
-- (id)objectIDAtIndex:(unint64_t)a3;
+- (id)objectIDAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unint64_t)possibleChangesForChange:(id)a3 propertiesFetchResult:(id)a4;
-- (void)prefetchObjectsAtIndexes:(id)a3;
+- (unint64_t)possibleChangesForChange:(id)change propertiesFetchResult:(id)result;
+- (void)prefetchObjectsAtIndexes:(id)indexes;
 @end
 
 @implementation PHManualFetchResult
 
 - (unint64_t)hash
 {
-  v3 = [(PHManualFetchResult *)self identifier];
-  v4 = v3;
-  if (v3)
+  identifier = [(PHManualFetchResult *)self identifier];
+  v4 = identifier;
+  if (identifier)
   {
-    v5 = [v3 hash];
+    v5 = [identifier hash];
   }
 
   else
@@ -54,23 +54,23 @@
   return v2;
 }
 
-- (PHManualFetchResult)fetchResultWithChangeHandlingValue:(id)a3
+- (PHManualFetchResult)fetchResultWithChangeHandlingValue:(id)value
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v33 = v4;
-  if (v4)
+  valueCopy = value;
+  v33 = valueCopy;
+  if (valueCopy)
   {
-    v5 = v4;
+    fetchUpdatedObjects = valueCopy;
   }
 
   else
   {
-    v5 = [(PHManualFetchResult *)self fetchUpdatedObjects];
+    fetchUpdatedObjects = [(PHManualFetchResult *)self fetchUpdatedObjects];
   }
 
-  v6 = v5;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  v6 = fetchUpdatedObjects;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -91,8 +91,8 @@
         }
 
         v13 = *(*(&v38 + 1) + 8 * i);
-        v14 = [v13 objectID];
-        [v7 setObject:v13 forKeyedSubscript:v14];
+        objectID = [v13 objectID];
+        [dictionary setObject:v13 forKeyedSubscript:objectID];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -102,15 +102,15 @@
   }
 
   v15 = MEMORY[0x1E695DF70];
-  v16 = [(PHManualFetchResult *)self objects];
-  v17 = [v15 arrayWithCapacity:{objc_msgSend(v16, "count")}];
+  objects = [(PHManualFetchResult *)self objects];
+  v17 = [v15 arrayWithCapacity:{objc_msgSend(objects, "count")}];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v18 = [(PHManualFetchResult *)self objects];
-  v19 = [v18 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  objects2 = [(PHManualFetchResult *)self objects];
+  v19 = [objects2 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v19)
   {
     v20 = v19;
@@ -121,7 +121,7 @@
       {
         if (*v35 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(objects2);
         }
 
         v23 = *(*(&v34 + 1) + 8 * j);
@@ -132,8 +132,8 @@
 
         else
         {
-          v24 = [v23 objectID];
-          v25 = [v7 objectForKeyedSubscript:v24];
+          objectID2 = [v23 objectID];
+          v25 = [dictionary objectForKeyedSubscript:objectID2];
 
           if (v25)
           {
@@ -142,52 +142,52 @@
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v20 = [objects2 countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v20);
   }
 
   v26 = [PHManualFetchResult alloc];
-  v27 = [(PHManualFetchResult *)self photoLibrary];
-  v28 = [(PHFetchResult *)self fetchType];
-  v29 = [(PHFetchResult *)self fetchPropertySets];
-  v30 = [(PHManualFetchResult *)self identifier];
-  v31 = [(PHManualFetchResult *)v26 initWithObjects:v17 photoLibrary:v27 fetchType:v28 fetchPropertySets:v29 identifier:v30 registerIfNeeded:0];
+  photoLibrary = [(PHManualFetchResult *)self photoLibrary];
+  fetchType = [(PHFetchResult *)self fetchType];
+  fetchPropertySets = [(PHFetchResult *)self fetchPropertySets];
+  identifier = [(PHManualFetchResult *)self identifier];
+  v31 = [(PHManualFetchResult *)v26 initWithObjects:v17 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:fetchPropertySets identifier:identifier registerIfNeeded:0];
 
   return v31;
 }
 
 - (id)fetchUpdatedObjects
 {
-  v3 = [(PHFetchResult *)self fetchPropertySets];
-  v4 = [(PHFetchResult *)self fetchType];
-  v5 = [PHPhotoLibrary classForFetchType:v4];
+  fetchPropertySets = [(PHFetchResult *)self fetchPropertySets];
+  fetchType = [(PHFetchResult *)self fetchType];
+  v5 = [PHPhotoLibrary classForFetchType:fetchType];
 
   v6 = 2;
-  if ([v3 count] && v5)
+  if ([fetchPropertySets count] && v5)
   {
-    v7 = [(PHFetchResult *)self fetchPropertySets];
-    v6 = [(objc_class *)v5 propertyFetchHintsForPropertySets:v7];
+    fetchPropertySets2 = [(PHFetchResult *)self fetchPropertySets];
+    v6 = [(objc_class *)v5 propertyFetchHintsForPropertySets:fetchPropertySets2];
   }
 
-  v8 = [(PHManualFetchResult *)self photoLibrary];
-  v9 = [(PHManualFetchResult *)self objectIDs];
-  v10 = [v9 array];
-  v11 = [v8 fetchPHObjectsForOIDs:v10 propertyHint:v6 includeTrash:0 overrideResultsWithClass:0];
+  photoLibrary = [(PHManualFetchResult *)self photoLibrary];
+  objectIDs = [(PHManualFetchResult *)self objectIDs];
+  array = [objectIDs array];
+  v11 = [photoLibrary fetchPHObjectsForOIDs:array propertyHint:v6 includeTrash:0 overrideResultsWithClass:0];
 
   return v11;
 }
 
-- (unint64_t)possibleChangesForChange:(id)a3 propertiesFetchResult:(id)a4
+- (unint64_t)possibleChangesForChange:(id)change propertiesFetchResult:(id)result
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  resultCopy = result;
   graphQuery = self->_graphQuery;
   if (graphQuery)
   {
-    v9 = [(PHGraphQuery *)graphQuery possibleChangesForChange:v6];
+    v9 = [(PHGraphQuery *)graphQuery possibleChangesForChange:changeCopy];
     if (v9 == 15)
     {
       goto LABEL_26;
@@ -203,8 +203,8 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = [v6 deletedObjectIDs];
-  v11 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  deletedObjectIDs = [changeCopy deletedObjectIDs];
+  v11 = [deletedObjectIDs countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v11)
   {
     v12 = v11;
@@ -215,12 +215,12 @@
       {
         if (*v30 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(deletedObjectIDs);
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        v16 = [(PHManualFetchResult *)self objectIDs];
-        LODWORD(v15) = [v16 containsObject:v15];
+        objectIDs = [(PHManualFetchResult *)self objectIDs];
+        LODWORD(v15) = [objectIDs containsObject:v15];
 
         if (v15)
         {
@@ -229,7 +229,7 @@
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v12 = [deletedObjectIDs countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v12)
       {
         continue;
@@ -245,8 +245,8 @@ LABEL_15:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = [v6 updatedObjectIDs];
-  v18 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  updatedObjectIDs = [changeCopy updatedObjectIDs];
+  v18 = [updatedObjectIDs countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v18)
   {
     v19 = v18;
@@ -257,12 +257,12 @@ LABEL_15:
       {
         if (*v26 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(updatedObjectIDs);
         }
 
         v22 = *(*(&v25 + 1) + 8 * j);
-        v23 = [(PHManualFetchResult *)self objectIDs];
-        LODWORD(v22) = [v23 containsObject:v22];
+        objectIDs2 = [(PHManualFetchResult *)self objectIDs];
+        LODWORD(v22) = [objectIDs2 containsObject:v22];
 
         if (v22)
         {
@@ -271,7 +271,7 @@ LABEL_15:
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v19 = [updatedObjectIDs countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v19)
       {
         continue;
@@ -287,109 +287,109 @@ LABEL_26:
   return v9;
 }
 
-- (id)objectIDAtIndex:(unint64_t)a3
+- (id)objectIDAtIndex:(unint64_t)index
 {
-  v4 = [(PHManualFetchResult *)self objects];
-  v5 = [v4 objectAtIndex:a3];
-  v6 = [v5 objectID];
+  objects = [(PHManualFetchResult *)self objects];
+  v5 = [objects objectAtIndex:index];
+  objectID = [v5 objectID];
 
-  return v6;
+  return objectID;
 }
 
 - (id)fetchedObjectIDsSet
 {
-  v3 = [(PHManualFetchResult *)self objects];
+  objects = [(PHManualFetchResult *)self objects];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(PHManualFetchResult *)self objects];
-    v6 = [v5 oidsSet];
+    objects2 = [(PHManualFetchResult *)self objects];
+    oidsSet = [objects2 oidsSet];
   }
 
   else if ([(PHManualFetchResult *)self isFullyBackedByObjectIDs])
   {
-    v6 = [(NSOrderedSet *)self->_objectIDs set];
+    oidsSet = [(NSOrderedSet *)self->_objectIDs set];
   }
 
   else
   {
-    v6 = 0;
+    oidsSet = 0;
   }
 
-  return v6;
+  return oidsSet;
 }
 
 - (id)fetchedObjectIDs
 {
-  v3 = [(PHManualFetchResult *)self objects];
+  objects = [(PHManualFetchResult *)self objects];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(PHManualFetchResult *)self objects];
-    v6 = [v5 oids];
+    objects2 = [(PHManualFetchResult *)self objects];
+    oids = [objects2 oids];
   }
 
   else if ([(PHManualFetchResult *)self isFullyBackedByObjectIDs])
   {
-    v6 = [(NSOrderedSet *)self->_objectIDs array];
+    oids = [(NSOrderedSet *)self->_objectIDs array];
   }
 
   else
   {
-    v6 = 0;
+    oids = 0;
   }
 
-  return v6;
+  return oids;
 }
 
-- (void)prefetchObjectsAtIndexes:(id)a3
+- (void)prefetchObjectsAtIndexes:(id)indexes
 {
-  v5 = a3;
-  v4 = [(PHManualFetchResult *)self objects];
+  indexesCopy = indexes;
+  objects = [(PHManualFetchResult *)self objects];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 prefetchObjectsAtIndexes:v5];
+    [objects prefetchObjectsAtIndexes:indexesCopy];
   }
 }
 
-- (id)changeHandlingValueUsingSeedOids:(id)a3 withChange:(id)a4 usingManagedObjectContext:(id)a5
+- (id)changeHandlingValueUsingSeedOids:(id)oids withChange:(id)change usingManagedObjectContext:(id)context
 {
   if (self->_graphQuery)
   {
-    v5 = [(PHGraphQuery *)self->_graphQuery updatedQueryWithChange:a4];
-    v6 = [v5 executeQuery];
+    v5 = [(PHGraphQuery *)self->_graphQuery updatedQueryWithChange:change];
+    executeQuery = [v5 executeQuery];
   }
 
   else
   {
-    v6 = [(PHManualFetchResult *)self fetchResultWithChangeHandlingValue:0, a4, a5];
+    executeQuery = [(PHManualFetchResult *)self fetchResultWithChangeHandlingValue:0, change, context];
   }
 
-  return v6;
+  return executeQuery;
 }
 
 - (BOOL)isFullyBackedByObjectIDs
 {
   v3 = [(NSArray *)self->_objects count];
-  v4 = [(PHManualFetchResult *)self objectIDs];
-  LOBYTE(v3) = v3 == [v4 count];
+  objectIDs = [(PHManualFetchResult *)self objectIDs];
+  LOBYTE(v3) = v3 == [objectIDs count];
 
   return v3;
 }
 
-- (id)copyWithOptions:(id)a3
+- (id)copyWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(PHManualFetchResult *)self objects];
+  optionsCopy = options;
+  objects = [(PHManualFetchResult *)self objects];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = objects;
   }
 
   else
@@ -398,15 +398,15 @@ LABEL_26:
   }
 
   v7 = v6;
-  v8 = [v4 objectForKeyedSubscript:@"invalidateCache"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"invalidateCache"];
 
   if (v7 && [v8 BOOLValue])
   {
-    v9 = [v7 oids];
-    v10 = [(PHFetchResult *)self isRegisteredForChangeNotificationDeltas];
+    oids = [v7 oids];
+    isRegisteredForChangeNotificationDeltas = [(PHFetchResult *)self isRegisteredForChangeNotificationDeltas];
     v11 = [PHManualFetchResult alloc];
-    v12 = [(PHManualFetchResult *)self photoLibrary];
-    v13 = [(PHManualFetchResult *)v11 initWithOids:v9 photoLibrary:v12 fetchType:self->super._fetchType fetchPropertySets:self->super._fetchPropertySets identifier:0 registerIfNeeded:v10 batchSize:0];
+    photoLibrary = [(PHManualFetchResult *)self photoLibrary];
+    v13 = [(PHManualFetchResult *)v11 initWithOids:oids photoLibrary:photoLibrary fetchType:self->super._fetchType fetchPropertySets:self->super._fetchPropertySets identifier:0 registerIfNeeded:isRegisteredForChangeNotificationDeltas batchSize:0];
 
     objc_storeStrong(v13 + 21, self->_graphQuery);
   }
@@ -446,8 +446,8 @@ LABEL_26:
 
       if (v10)
       {
-        v11 = [v10 mediaType];
-        switch(v11)
+        mediaType = [v10 mediaType];
+        switch(mediaType)
         {
           case 3:
             ++v5;
@@ -480,23 +480,23 @@ LABEL_26:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = PHManualFetchResult;
-  if ([(PHManualFetchResult *)&v9 isEqual:v4])
+  if ([(PHManualFetchResult *)&v9 isEqual:equalCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PHManualFetchResult *)self identifier];
-    if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    identifier = [(PHManualFetchResult *)self identifier];
+    if (identifier && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v4 identifier];
-      v5 = [v6 isEqualToString:v7];
+      identifier2 = [equalCopy identifier];
+      v5 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -516,13 +516,13 @@ LABEL_26:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PHManualFetchResult.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"[_objects isKindOfClass:[PHBatchFetchingArray class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PHManualFetchResult.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"[_objects isKindOfClass:[PHBatchFetchingArray class]]"}];
     }
 
     v5 = self->_objects;
-    v6 = [(NSArray *)v5 oids];
-    v7 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v6];
+    oids = [(NSArray *)v5 oids];
+    v7 = [MEMORY[0x1E695DFB8] orderedSetWithArray:oids];
     v8 = self->_objectIDs;
     self->_objectIDs = v7;
 
@@ -532,58 +532,58 @@ LABEL_26:
   return objectIDs;
 }
 
-- (PHManualFetchResult)initWithOids:(id)a3 photoLibrary:(id)a4 fetchType:(id)a5 fetchPropertySets:(id)a6 identifier:(id)a7 registerIfNeeded:(BOOL)a8 graphQuery:(id)a9 batchSize:(unint64_t)a10
+- (PHManualFetchResult)initWithOids:(id)oids photoLibrary:(id)library fetchType:(id)type fetchPropertySets:(id)sets identifier:(id)identifier registerIfNeeded:(BOOL)needed graphQuery:(id)query batchSize:(unint64_t)self0
 {
-  v10 = a8;
-  objc_storeStrong(&self->_graphQuery, a9);
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [(PHManualFetchResult *)self initWithOids:v21 photoLibrary:v20 fetchType:v19 fetchPropertySets:v18 identifier:v17 registerIfNeeded:v10 batchSize:a10];
+  neededCopy = needed;
+  objc_storeStrong(&self->_graphQuery, query);
+  identifierCopy = identifier;
+  setsCopy = sets;
+  typeCopy = type;
+  libraryCopy = library;
+  oidsCopy = oids;
+  v22 = [(PHManualFetchResult *)self initWithOids:oidsCopy photoLibrary:libraryCopy fetchType:typeCopy fetchPropertySets:setsCopy identifier:identifierCopy registerIfNeeded:neededCopy batchSize:size];
 
   return v22;
 }
 
-- (PHManualFetchResult)initWithOids:(id)a3 photoLibrary:(id)a4 fetchType:(id)a5 fetchPropertySets:(id)a6 identifier:(id)a7 registerIfNeeded:(BOOL)a8 graphQuery:(id)obj
+- (PHManualFetchResult)initWithOids:(id)oids photoLibrary:(id)library fetchType:(id)type fetchPropertySets:(id)sets identifier:(id)identifier registerIfNeeded:(BOOL)needed graphQuery:(id)obj
 {
-  v9 = a8;
+  neededCopy = needed;
   objc_storeStrong(&self->_graphQuery, obj);
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  v21 = [(PHManualFetchResult *)self initWithOids:v20 photoLibrary:v19 fetchType:v18 fetchPropertySets:v17 identifier:v16 registerIfNeeded:v9 batchSize:0];
+  identifierCopy = identifier;
+  setsCopy = sets;
+  typeCopy = type;
+  libraryCopy = library;
+  oidsCopy = oids;
+  v21 = [(PHManualFetchResult *)self initWithOids:oidsCopy photoLibrary:libraryCopy fetchType:typeCopy fetchPropertySets:setsCopy identifier:identifierCopy registerIfNeeded:neededCopy batchSize:0];
 
   return v21;
 }
 
-- (PHManualFetchResult)initWithOids:(id)a3 photoLibrary:(id)a4 fetchType:(id)a5 fetchPropertySets:(id)a6 identifier:(id)a7 registerIfNeeded:(BOOL)a8 photosCount:(unint64_t)a9 videosCount:(unint64_t)a10 audiosCount:(unint64_t)a11 batchSize:(unint64_t)a12
+- (PHManualFetchResult)initWithOids:(id)oids photoLibrary:(id)library fetchType:(id)type fetchPropertySets:(id)sets identifier:(id)identifier registerIfNeeded:(BOOL)needed photosCount:(unint64_t)count videosCount:(unint64_t)self0 audiosCount:(unint64_t)self1 batchSize:(unint64_t)self2
 {
-  v39 = a8;
-  v41 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = [PHFetchResultMediaTypeCounts mediaTypeCountsWithPhotosCount:a9 videosCount:a10 audiosCount:a11];
+  neededCopy = needed;
+  oidsCopy = oids;
+  libraryCopy = library;
+  typeCopy = type;
+  setsCopy = sets;
+  identifierCopy = identifier;
+  v21 = [PHFetchResultMediaTypeCounts mediaTypeCountsWithPhotosCount:count videosCount:videosCount audiosCount:audiosCount];
   v42.receiver = self;
   v42.super_class = PHManualFetchResult;
-  v22 = [(PHFetchResult *)&v42 initWithMediaTypeCounts:v21 library:v17];
-  v40 = v18;
+  v22 = [(PHFetchResult *)&v42 initWithMediaTypeCounts:v21 library:libraryCopy];
+  v40 = typeCopy;
   if (v22)
   {
-    v23 = [v18 copy];
+    v23 = [typeCopy copy];
     fetchType = v22->super._fetchType;
     v22->super._fetchType = v23;
 
-    v25 = [v19 copy];
+    v25 = [setsCopy copy];
     fetchPropertySets = v22->super._fetchPropertySets;
     v22->super._fetchPropertySets = v25;
 
-    objc_storeStrong(&v22->_photoLibrary, a4);
+    objc_storeStrong(&v22->_photoLibrary, library);
     if (v22->super._fetchType && [(NSSet *)v22->super._fetchPropertySets count])
     {
       v27 = [(objc_class *)[PHPhotoLibrary classForFetchType:?], "propertyFetchHintsForPropertySets:", v22->super._fetchPropertySets];
@@ -594,34 +594,34 @@ LABEL_26:
       v27 = 2;
     }
 
-    v28 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v27];
-    [v28 setObject:v29 forKeyedSubscript:@"propertyHint"];
+    [dictionary setObject:v29 forKeyedSubscript:@"propertyHint"];
 
-    v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a12];
-    [v28 setObject:v30 forKeyedSubscript:@"batchSize"];
+    v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
+    [dictionary setObject:v30 forKeyedSubscript:@"batchSize"];
 
     graphQuery = v22->_graphQuery;
     if (graphQuery)
     {
-      v32 = [(PHGraphQuery *)graphQuery extraBatchFetchingArrayOptions];
-      [v28 addEntriesFromDictionary:v32];
+      extraBatchFetchingArrayOptions = [(PHGraphQuery *)graphQuery extraBatchFetchingArrayOptions];
+      [dictionary addEntriesFromDictionary:extraBatchFetchingArrayOptions];
     }
 
-    v33 = v41;
-    v34 = [[PHBatchFetchingArray alloc] initWithOIDs:v41 options:v28 photoLibrary:v22->_photoLibrary];
+    v33 = oidsCopy;
+    v34 = [[PHBatchFetchingArray alloc] initWithOIDs:oidsCopy options:dictionary photoLibrary:v22->_photoLibrary];
     objects = v22->_objects;
     v22->_objects = &v34->super;
 
-    if (!v20)
+    if (!identifierCopy)
     {
-      v36 = [MEMORY[0x1E696AFB0] UUID];
-      v20 = [v36 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      identifierCopy = [uUID UUIDString];
     }
 
-    objc_storeStrong(&v22->_identifier, v20);
-    v19 = v38;
-    if (v39)
+    objc_storeStrong(&v22->_identifier, identifierCopy);
+    setsCopy = v38;
+    if (neededCopy)
     {
       [(PHFetchResult *)v22 setRegisteredForChangeNotificationDeltas:1];
     }
@@ -629,21 +629,21 @@ LABEL_26:
 
   else
   {
-    v33 = v41;
+    v33 = oidsCopy;
   }
 
   return v22;
 }
 
-- (PHManualFetchResult)initWithObjects:(id)a3 photoLibrary:(id)a4 fetchType:(id)a5 fetchPropertySets:(id)a6 identifier:(id)a7 registerIfNeeded:(BOOL)a8
+- (PHManualFetchResult)initWithObjects:(id)objects photoLibrary:(id)library fetchType:(id)type fetchPropertySets:(id)sets identifier:(id)identifier registerIfNeeded:(BOOL)needed
 {
-  v8 = a8;
+  neededCopy = needed;
   v65 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  objectsCopy = objects;
+  libraryCopy = library;
+  typeCopy = type;
+  setsCopy = sets;
+  identifierCopy = identifier;
   v63.receiver = self;
   v63.super_class = PHManualFetchResult;
   v20 = [(PHFetchResult *)&v63 init];
@@ -653,54 +653,54 @@ LABEL_26:
   }
 
   v53 = a2;
-  v57 = v8;
-  v21 = [v15 copy];
+  v57 = neededCopy;
+  v21 = [objectsCopy copy];
   objects = v20->_objects;
   v20->_objects = v21;
 
-  v58 = v17;
-  v23 = [v17 copy];
+  v58 = typeCopy;
+  v23 = [typeCopy copy];
   fetchType = v20->super._fetchType;
   v20->super._fetchType = v23;
 
-  v56 = v18;
-  v25 = [v18 copy];
+  v56 = setsCopy;
+  v25 = [setsCopy copy];
   fetchPropertySets = v20->super._fetchPropertySets;
   v20->super._fetchPropertySets = v25;
 
-  v27 = v16;
+  v27 = libraryCopy;
   v28 = v27;
   if (!v27)
   {
-    v29 = [v15 firstObject];
-    v28 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:0 object:v29];
+    firstObject = [objectsCopy firstObject];
+    v28 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:0 object:firstObject];
   }
 
   v55 = v28;
   objc_storeStrong(&v20->_photoLibrary, v28);
-  v30 = [v15 firstObject];
-  v31 = v30;
-  v54 = v16;
-  if (v30)
+  firstObject2 = [objectsCopy firstObject];
+  v31 = firstObject2;
+  v54 = libraryCopy;
+  if (firstObject2)
   {
-    v32 = [v30 photoLibrary];
-    if (v32 != v27)
+    photoLibrary = [firstObject2 photoLibrary];
+    if (photoLibrary != v27)
     {
-      v33 = [v31 photoLibrary];
-      v34 = [v33 description];
+      photoLibrary2 = [v31 photoLibrary];
+      v34 = [photoLibrary2 description];
       if ([v34 containsString:@"Mock"])
       {
-        v52 = [v31 photoLibrary];
-        v50 = [v52 photoLibraryURL];
-        v35 = [v50 path];
-        v36 = [v27 photoLibraryURL];
-        [v36 path];
-        v51 = v33;
-        v38 = v37 = v15;
-        v49 = [v35 compare:v38];
+        photoLibrary3 = [v31 photoLibrary];
+        photoLibraryURL = [photoLibrary3 photoLibraryURL];
+        path = [photoLibraryURL path];
+        photoLibraryURL2 = [v27 photoLibraryURL];
+        [photoLibraryURL2 path];
+        v51 = photoLibrary2;
+        v38 = v37 = objectsCopy;
+        v49 = [path compare:v38];
 
-        v15 = v37;
-        v16 = v54;
+        objectsCopy = v37;
+        libraryCopy = v54;
 
         if (!v49)
         {
@@ -712,20 +712,20 @@ LABEL_26:
       {
       }
 
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v32 handleFailureInMethod:v53 object:v20 file:@"PHManualFetchResult.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"firstObject == nil || firstObject.photoLibrary == photoLibrary || ([firstObject.photoLibrary.description containsString:@Mock] && [firstObject.photoLibrary.photoLibraryURL.path compare:photoLibrary.photoLibraryURL.path] == NSOrderedSame)"}];
+      photoLibrary = [MEMORY[0x1E696AAA8] currentHandler];
+      [photoLibrary handleFailureInMethod:v53 object:v20 file:@"PHManualFetchResult.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"firstObject == nil || firstObject.photoLibrary == photoLibrary || ([firstObject.photoLibrary.description containsString:@Mock] && [firstObject.photoLibrary.photoLibraryURL.path compare:photoLibrary.photoLibraryURL.path] == NSOrderedSame)"}];
     }
   }
 
 LABEL_12:
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(NSArray *)v20->_objects isFullyBackedByObjectIDs])
   {
-    v39 = [(NSArray *)v20->_objects objectIDs];
+    objectIDs = [(NSArray *)v20->_objects objectIDs];
   }
 
   else
   {
-    v39 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{-[NSArray count](v20->_objects, "count")}];
+    objectIDs = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{-[NSArray count](v20->_objects, "count")}];
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
@@ -745,10 +745,10 @@ LABEL_12:
             objc_enumerationMutation(v40);
           }
 
-          v45 = [*(*(&v59 + 1) + 8 * i) objectID];
-          if (v45)
+          objectID = [*(*(&v59 + 1) + 8 * i) objectID];
+          if (objectID)
           {
-            [(NSOrderedSet *)v39 addObject:v45];
+            [(NSOrderedSet *)objectIDs addObject:objectID];
           }
         }
 
@@ -758,21 +758,21 @@ LABEL_12:
       while (v42);
     }
 
-    v16 = v54;
+    libraryCopy = v54;
   }
 
   objectIDs = v20->_objectIDs;
-  v20->_objectIDs = v39;
+  v20->_objectIDs = objectIDs;
 
-  v18 = v56;
-  if (!v19)
+  setsCopy = v56;
+  if (!identifierCopy)
   {
-    v47 = [MEMORY[0x1E696AFB0] UUID];
-    v19 = [v47 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    identifierCopy = [uUID UUIDString];
   }
 
-  objc_storeStrong(&v20->_identifier, v19);
-  v17 = v58;
+  objc_storeStrong(&v20->_identifier, identifierCopy);
+  typeCopy = v58;
   if (v57)
   {
     [(PHFetchResult *)v20 setRegisteredForChangeNotificationDeltas:1];
@@ -782,21 +782,21 @@ LABEL_30:
   return v20;
 }
 
-+ (id)emptyFetchResultWithPhotoLibrary:(id)a3 fetchType:(id)a4
++ (id)emptyFetchResultWithPhotoLibrary:(id)library fetchType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v9 = [v8 initWithObjects:MEMORY[0x1E695E0F0] photoLibrary:v7 fetchType:v6 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  typeCopy = type;
+  libraryCopy = library;
+  v8 = [self alloc];
+  v9 = [v8 initWithObjects:MEMORY[0x1E695E0F0] photoLibrary:libraryCopy fetchType:typeCopy fetchPropertySets:0 identifier:0 registerIfNeeded:0];
 
   return v9;
 }
 
-+ (id)emptyFetchResultWithPhotoLibrary:(id)a3
++ (id)emptyFetchResultWithPhotoLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v5 initWithObjects:MEMORY[0x1E695E0F0] photoLibrary:v4 fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  libraryCopy = library;
+  v5 = [self alloc];
+  v6 = [v5 initWithObjects:MEMORY[0x1E695E0F0] photoLibrary:libraryCopy fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
 
   return v6;
 }

@@ -1,19 +1,19 @@
 @interface PDFPageIconLayer
 - (PDFDocument)document;
-- (PDFPageIconLayer)initWithSize:(CGSize)a3;
+- (PDFPageIconLayer)initWithSize:(CGSize)size;
 - (void)_updateUI;
-- (void)setFrame:(CGRect)a3;
-- (void)setPrefersOverlaySelection:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)updateAsPageIndex:(int)a3 forDocument:(id)a4;
+- (void)setFrame:(CGRect)frame;
+- (void)setPrefersOverlaySelection:(BOOL)selection;
+- (void)setSelected:(BOOL)selected;
+- (void)updateAsPageIndex:(int)index forDocument:(id)document;
 @end
 
 @implementation PDFPageIconLayer
 
-- (PDFPageIconLayer)initWithSize:(CGSize)a3
+- (PDFPageIconLayer)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = PDFPageIconLayer;
   v5 = [(PDFPageIconLayer *)&v10 init];
@@ -21,12 +21,12 @@
   if (v5)
   {
     [(PDFPageIconLayer *)v5 setFrame:0.0, 0.0, width, height];
-    v7 = [MEMORY[0x1E69DC888] lightGrayColor];
-    -[PDFPageIconLayer setBorderColor:](v6, "setBorderColor:", [v7 CGColor]);
+    lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+    -[PDFPageIconLayer setBorderColor:](v6, "setBorderColor:", [lightGrayColor CGColor]);
 
     [(PDFPageIconLayer *)v6 setBorderWidth:1.0];
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    -[PDFPageIconLayer setBackgroundColor:](v6, "setBackgroundColor:", [v8 CGColor]);
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    -[PDFPageIconLayer setBackgroundColor:](v6, "setBackgroundColor:", [whiteColor CGColor]);
 
     [(PDFPageIconLayer *)v6 setContentsGravity:*MEMORY[0x1E6979DE8]];
     [(PDFPageIconLayer *)v6 setZPosition:0.0];
@@ -41,20 +41,20 @@
   return v6;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(PDFPageIconLayer *)self _updateUI];
   }
 }
 
-- (void)setPrefersOverlaySelection:(BOOL)a3
+- (void)setPrefersOverlaySelection:(BOOL)selection
 {
-  if (self->_prefersOverlaySelection != a3)
+  if (self->_prefersOverlaySelection != selection)
   {
-    self->_prefersOverlaySelection = a3;
+    self->_prefersOverlaySelection = selection;
     [(PDFPageIconLayer *)self _updateUI];
   }
 }
@@ -86,9 +86,9 @@ LABEL_6:
 
   if (!overlay)
   {
-    v6 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     v7 = self->_overlay;
-    self->_overlay = v6;
+    self->_overlay = layer;
 
     v8 = self->_overlay;
     [(PDFPageIconLayer *)self frame];
@@ -110,21 +110,21 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v6.receiver = self;
   v6.super_class = PDFPageIconLayer;
-  [(PDFPageIconLayer *)&v6 setFrame:a3.origin.x, a3.origin.y];
+  [(PDFPageIconLayer *)&v6 setFrame:frame.origin.x, frame.origin.y];
   self->_frameSize.width = width;
   self->_frameSize.height = height;
   [(PDFPageIconLayer *)self _updateUI];
 }
 
-- (void)updateAsPageIndex:(int)a3 forDocument:(id)a4
+- (void)updateAsPageIndex:(int)index forDocument:(id)document
 {
-  v6 = a4;
+  documentCopy = document;
   if (updateAsPageIndex_forDocument__onceToken[0] != -1)
   {
     [PDFPageIconLayer updateAsPageIndex:forDocument:];
@@ -136,12 +136,12 @@ LABEL_6:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_document);
-  if (WeakRetained != v6)
+  if (WeakRetained != documentCopy)
   {
 
 LABEL_7:
-    objc_storeWeak(&self->_document, v6);
-    self->_pageIndex = a3;
+    objc_storeWeak(&self->_document, documentCopy);
+    self->_pageIndex = index;
     self->_needsUpdate = 0;
     objc_initWeak(&location, self);
     v9 = updateAsPageIndex_forDocument__gIconsQueue;
@@ -150,8 +150,8 @@ LABEL_7:
     v10[2] = __50__PDFPageIconLayer_updateAsPageIndex_forDocument___block_invoke_2;
     v10[3] = &unk_1E8152780;
     objc_copyWeak(&v12, &location);
-    v11 = v6;
-    v13 = a3;
+    v11 = documentCopy;
+    indexCopy = index;
     dispatch_async(v9, v10);
 
     objc_destroyWeak(&v12);
@@ -161,7 +161,7 @@ LABEL_7:
 
   pageIndex = self->_pageIndex;
 
-  if (pageIndex != a3)
+  if (pageIndex != index)
   {
     goto LABEL_7;
   }

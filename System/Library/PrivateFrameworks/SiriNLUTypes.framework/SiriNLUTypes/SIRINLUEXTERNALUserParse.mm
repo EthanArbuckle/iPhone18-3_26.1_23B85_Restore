@@ -1,24 +1,24 @@
 @interface SIRINLUEXTERNALUserParse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addUserDialogActs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasProbability:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addUserDialogActs:(id)acts;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasProbability:(BOOL)probability;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALUserParse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   idA = self->_idA;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (idA)
   {
     if (v6)
@@ -36,7 +36,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = *(v4 + 8);
+  v7 = *(fromCopy + 8);
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -60,19 +60,19 @@
     while (v9);
   }
 
-  if ((*(v4 + 72) & 2) != 0)
+  if ((*(fromCopy + 72) & 2) != 0)
   {
-    self->_probability = *(v4 + 2);
+    self->_probability = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SIRINLUEXTERNALUserParse *)self setParserId:?];
   }
 
   repetitionResult = self->_repetitionResult;
-  v13 = *(v4 + 7);
+  v13 = *(fromCopy + 7);
   if (repetitionResult)
   {
     if (v13)
@@ -87,7 +87,7 @@
   }
 
   parser = self->_parser;
-  v15 = *(v4 + 5);
+  v15 = *(fromCopy + 5);
   if (parser)
   {
     if (v15)
@@ -101,14 +101,14 @@
     [(SIRINLUEXTERNALUserParse *)self setParser:?];
   }
 
-  if (*(v4 + 72))
+  if (*(fromCopy + 72))
   {
-    self->_comparableProbability = *(v4 + 1);
+    self->_comparableProbability = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   correctionOutcome = self->_correctionOutcome;
-  v17 = *(v4 + 3);
+  v17 = *(fromCopy + 3);
   if (correctionOutcome)
   {
     if (v17)
@@ -201,16 +201,16 @@
   return v4 ^ v3 ^ v7 ^ v11 ^ v12 ^ v13 ^ v16 ^ [(SIRINLUEXTERNALCorrectionOutcome *)self->_correctionOutcome hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   idA = self->_idA;
-  if (idA | *(v4 + 4))
+  if (idA | *(equalCopy + 4))
   {
     if (![(SIRINLUEXTERNALUUID *)idA isEqual:?])
     {
@@ -219,7 +219,7 @@
   }
 
   userDialogActs = self->_userDialogActs;
-  if (userDialogActs | *(v4 + 8))
+  if (userDialogActs | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)userDialogActs isEqual:?])
     {
@@ -227,16 +227,16 @@
     }
   }
 
-  v7 = *(v4 + 72);
+  v7 = *(equalCopy + 72);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_probability != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_probability != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
 LABEL_24:
     v13 = 0;
@@ -244,13 +244,13 @@ LABEL_24:
   }
 
   parserId = self->_parserId;
-  if (parserId | *(v4 + 6) && ![(NSString *)parserId isEqual:?])
+  if (parserId | *(equalCopy + 6) && ![(NSString *)parserId isEqual:?])
   {
     goto LABEL_24;
   }
 
   repetitionResult = self->_repetitionResult;
-  if (repetitionResult | *(v4 + 7))
+  if (repetitionResult | *(equalCopy + 7))
   {
     if (![(SIRINLUEXTERNALRepetitionResult *)repetitionResult isEqual:?])
     {
@@ -259,7 +259,7 @@ LABEL_24:
   }
 
   parser = self->_parser;
-  if (parser | *(v4 + 5))
+  if (parser | *(equalCopy + 5))
   {
     if (![(SIRINLUEXTERNALParser *)parser isEqual:?])
     {
@@ -267,22 +267,22 @@ LABEL_24:
     }
   }
 
-  v11 = *(v4 + 72);
+  v11 = *(equalCopy + 72);
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_comparableProbability != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_comparableProbability != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_24;
   }
 
   correctionOutcome = self->_correctionOutcome;
-  if (correctionOutcome | *(v4 + 3))
+  if (correctionOutcome | *(equalCopy + 3))
   {
     v13 = [(SIRINLUEXTERNALCorrectionOutcome *)correctionOutcome isEqual:?];
   }
@@ -297,11 +297,11 @@ LABEL_25:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALUUID *)self->_idA copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALUUID *)self->_idA copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -325,7 +325,7 @@ LABEL_25:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v24 + 1) + 8 * v12) copyWithZone:{a3, v24}];
+        v13 = [*(*(&v24 + 1) + 8 * v12) copyWithZone:{zone, v24}];
         [v5 addUserDialogActs:v13];
 
         ++v12;
@@ -344,15 +344,15 @@ LABEL_25:
     *(v5 + 72) |= 2u;
   }
 
-  v14 = [(NSString *)self->_parserId copyWithZone:a3, v24];
+  v14 = [(NSString *)self->_parserId copyWithZone:zone, v24];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
-  v16 = [(SIRINLUEXTERNALRepetitionResult *)self->_repetitionResult copyWithZone:a3];
+  v16 = [(SIRINLUEXTERNALRepetitionResult *)self->_repetitionResult copyWithZone:zone];
   v17 = *(v5 + 56);
   *(v5 + 56) = v16;
 
-  v18 = [(SIRINLUEXTERNALParser *)self->_parser copyWithZone:a3];
+  v18 = [(SIRINLUEXTERNALParser *)self->_parser copyWithZone:zone];
   v19 = *(v5 + 40);
   *(v5 + 40) = v18;
 
@@ -362,7 +362,7 @@ LABEL_25:
     *(v5 + 72) |= 1u;
   }
 
-  v20 = [(SIRINLUEXTERNALCorrectionOutcome *)self->_correctionOutcome copyWithZone:a3];
+  v20 = [(SIRINLUEXTERNALCorrectionOutcome *)self->_correctionOutcome copyWithZone:zone];
   v21 = *(v5 + 24);
   *(v5 + 24) = v20;
 
@@ -370,52 +370,52 @@ LABEL_25:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_idA)
   {
-    [v9 setIdA:?];
+    [toCopy setIdA:?];
   }
 
   if ([(SIRINLUEXTERNALUserParse *)self userDialogActsCount])
   {
-    [v9 clearUserDialogActs];
-    v4 = [(SIRINLUEXTERNALUserParse *)self userDialogActsCount];
-    if (v4)
+    [toCopy clearUserDialogActs];
+    userDialogActsCount = [(SIRINLUEXTERNALUserParse *)self userDialogActsCount];
+    if (userDialogActsCount)
     {
-      v5 = v4;
+      v5 = userDialogActsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALUserParse *)self userDialogActsAtIndex:i];
-        [v9 addUserDialogActs:v7];
+        [toCopy addUserDialogActs:v7];
       }
     }
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
-    *(v9 + 2) = *&self->_probability;
-    *(v9 + 72) |= 2u;
+    *(toCopy + 2) = *&self->_probability;
+    *(toCopy + 72) |= 2u;
   }
 
   if (self->_parserId)
   {
-    [v9 setParserId:?];
-    v8 = v9;
+    [toCopy setParserId:?];
+    v8 = toCopy;
   }
 
   if (self->_repetitionResult)
   {
-    [v9 setRepetitionResult:?];
-    v8 = v9;
+    [toCopy setRepetitionResult:?];
+    v8 = toCopy;
   }
 
   if (self->_parser)
   {
-    [v9 setParser:?];
-    v8 = v9;
+    [toCopy setParser:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -426,15 +426,15 @@ LABEL_25:
 
   if (self->_correctionOutcome)
   {
-    [v9 setCorrectionOutcome:?];
-    v8 = v9;
+    [toCopy setCorrectionOutcome:?];
+    v8 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_idA)
   {
     PBDataWriterWriteSubmessage();
@@ -510,12 +510,12 @@ LABEL_25:
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   idA = self->_idA;
   if (idA)
   {
-    v5 = [(SIRINLUEXTERNALUUID *)idA dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"id_a"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)idA dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"id_a"];
   }
 
   if ([(NSMutableArray *)self->_userDialogActs count])
@@ -540,8 +540,8 @@ LABEL_25:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -550,51 +550,51 @@ LABEL_25:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"user_dialog_acts"];
+    [dictionary setObject:v6 forKey:@"user_dialog_acts"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:self->_probability];
-    [v3 setObject:v13 forKey:@"probability"];
+    [dictionary setObject:v13 forKey:@"probability"];
   }
 
   parserId = self->_parserId;
   if (parserId)
   {
-    [v3 setObject:parserId forKey:@"parser_id"];
+    [dictionary setObject:parserId forKey:@"parser_id"];
   }
 
   repetitionResult = self->_repetitionResult;
   if (repetitionResult)
   {
-    v16 = [(SIRINLUEXTERNALRepetitionResult *)repetitionResult dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"repetition_result"];
+    dictionaryRepresentation3 = [(SIRINLUEXTERNALRepetitionResult *)repetitionResult dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"repetition_result"];
   }
 
   parser = self->_parser;
   if (parser)
   {
-    v18 = [(SIRINLUEXTERNALParser *)parser dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"parser"];
+    dictionaryRepresentation4 = [(SIRINLUEXTERNALParser *)parser dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"parser"];
   }
 
   if (*&self->_has)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithDouble:self->_comparableProbability];
-    [v3 setObject:v19 forKey:@"comparable_probability"];
+    [dictionary setObject:v19 forKey:@"comparable_probability"];
   }
 
   correctionOutcome = self->_correctionOutcome;
   if (correctionOutcome)
   {
-    v21 = [(SIRINLUEXTERNALCorrectionOutcome *)correctionOutcome dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"correction_outcome"];
+    dictionaryRepresentation5 = [(SIRINLUEXTERNALCorrectionOutcome *)correctionOutcome dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"correction_outcome"];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -603,15 +603,15 @@ LABEL_25:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALUserParse;
   v4 = [(SIRINLUEXTERNALUserParse *)&v8 description];
-  v5 = [(SIRINLUEXTERNALUserParse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALUserParse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasProbability:(BOOL)a3
+- (void)setHasProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 2;
   }
@@ -624,22 +624,22 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addUserDialogActs:(id)a3
+- (void)addUserDialogActs:(id)acts
 {
-  v4 = a3;
+  actsCopy = acts;
   userDialogActs = self->_userDialogActs;
-  v8 = v4;
+  v8 = actsCopy;
   if (!userDialogActs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_userDialogActs;
     self->_userDialogActs = v6;
 
-    v4 = v8;
+    actsCopy = v8;
     userDialogActs = self->_userDialogActs;
   }
 
-  [(NSMutableArray *)userDialogActs addObject:v4];
+  [(NSMutableArray *)userDialogActs addObject:actsCopy];
 }
 
 @end

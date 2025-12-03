@@ -1,34 +1,34 @@
 @interface PKValueAddedMerchant
-- (PKValueAddedMerchant)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKValueAddedMerchant)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKValueAddedMerchant
 
-- (PKValueAddedMerchant)initWithCoder:(id)a3
+- (PKValueAddedMerchant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKValueAddedMerchant;
   v5 = [(PKValueAddedMerchant *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedMerchantIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PKValueAddedMerchantIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_timesPresented = [v4 decodeIntegerForKey:@"PKValueAddedMerchantTimesPresentedKey"];
+    v5->_timesPresented = [coderCopy decodeIntegerForKey:@"PKValueAddedMerchantTimesPresentedKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"PKValueAddedMerchantIdentifierKey"];
-  [v5 encodeInteger:self->_timesPresented forKey:@"PKValueAddedMerchantTimesPresentedKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"PKValueAddedMerchantIdentifierKey"];
+  [coderCopy encodeInteger:self->_timesPresented forKey:@"PKValueAddedMerchantTimesPresentedKey"];
 }
 
 @end

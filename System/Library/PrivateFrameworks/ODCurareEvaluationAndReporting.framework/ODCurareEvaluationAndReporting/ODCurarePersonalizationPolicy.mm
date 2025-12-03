@@ -1,21 +1,21 @@
 @interface ODCurarePersonalizationPolicy
-- (ODCurarePersonalizationPolicy)initWithModelSelectionParameters:(id)a3 minimumNumberOfSamplesForPersonalization:(id)a4 minimumNumberOfSamplesForPersonalizationSelection:(id)a5;
+- (ODCurarePersonalizationPolicy)initWithModelSelectionParameters:(id)parameters minimumNumberOfSamplesForPersonalization:(id)personalization minimumNumberOfSamplesForPersonalizationSelection:(id)selection;
 @end
 
 @implementation ODCurarePersonalizationPolicy
 
-- (ODCurarePersonalizationPolicy)initWithModelSelectionParameters:(id)a3 minimumNumberOfSamplesForPersonalization:(id)a4 minimumNumberOfSamplesForPersonalizationSelection:(id)a5
+- (ODCurarePersonalizationPolicy)initWithModelSelectionParameters:(id)parameters minimumNumberOfSamplesForPersonalization:(id)personalization minimumNumberOfSamplesForPersonalizationSelection:(id)selection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  parametersCopy = parameters;
+  personalizationCopy = personalization;
+  selectionCopy = selection;
   v11 = [(ODCurarePersonalizationPolicy *)self init];
   v12 = v11;
   if (v11)
   {
-    [(ODCurarePersonalizationPolicy *)v11 setHyperparameterSelectionPolicy:v8];
-    [(ODCurarePersonalizationPolicy *)v12 setMinimumNumberOfSamplesForPersonalization:v9];
-    [(ODCurarePersonalizationPolicy *)v12 setMinimumNumberOfSamplesForPersonalizationSelection:v10];
+    [(ODCurarePersonalizationPolicy *)v11 setHyperparameterSelectionPolicy:parametersCopy];
+    [(ODCurarePersonalizationPolicy *)v12 setMinimumNumberOfSamplesForPersonalization:personalizationCopy];
+    [(ODCurarePersonalizationPolicy *)v12 setMinimumNumberOfSamplesForPersonalizationSelection:selectionCopy];
   }
 
   return v12;

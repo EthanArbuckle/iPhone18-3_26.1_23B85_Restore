@@ -1,16 +1,16 @@
 @interface VCAdaptiveLearning
 + (id)segmentHistoryStorageFile;
-- (VCAdaptiveLearning)initWithParameters:(id)a3;
-- (int)getValueForSegment:(id)a3 withBlock:(id)a4;
-- (int)learntBitrateForSegment:(id)a3 defaultValue:(int)a4;
+- (VCAdaptiveLearning)initWithParameters:(id)parameters;
+- (int)getValueForSegment:(id)segment withBlock:(id)block;
+- (int)learntBitrateForSegment:(id)segment defaultValue:(int)value;
 - (void)dealloc;
 - (void)saveCallSegmentHistory;
-- (void)updateSegment:(id)a3 TBR:(int)a4 ISBTR:(int)a5 SATXBR:(int)a6 SARBR:(int)a7 BWE:(int)a8;
+- (void)updateSegment:(id)segment TBR:(int)r ISBTR:(int)tR SATXBR:(int)bR SARBR:(int)rBR BWE:(int)e;
 @end
 
 @implementation VCAdaptiveLearning
 
-- (VCAdaptiveLearning)initWithParameters:(id)a3
+- (VCAdaptiveLearning)initWithParameters:(id)parameters
 {
   v79 = *MEMORY[0x277D85DE8];
   v66.receiver = self;
@@ -21,16 +21,16 @@
     goto LABEL_71;
   }
 
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningState), "intValue"}];
+  v5 = [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningState), "intValue"}];
   v4->_adaptiveLearningState = v5;
   if (v5)
   {
-    v4->_shortTermHistoryLength = [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningShortTermHistoryLength), "intValue"}];
-    v4->_longTermHistoryLength = [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningLongTermHistoryLength), "intValue"}];
+    v4->_shortTermHistoryLength = [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningShortTermHistoryLength), "intValue"}];
+    v4->_longTermHistoryLength = [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningLongTermHistoryLength), "intValue"}];
     v6 = arc4random() / 4294967300.0;
-    [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningAdaptiveLearningA), "doubleValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningAdaptiveLearningA), "doubleValue"}];
     v8 = v7;
-    [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningAdaptiveLearningB), "doubleValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningAdaptiveLearningB), "doubleValue"}];
     if (v6 >= v8)
     {
       v18 = v9;
@@ -38,12 +38,12 @@
       if (v6 >= v19)
       {
         v4->_adaptiveLearningState = 3;
-        [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningAdjustmentFactorC), "doubleValue"}];
+        [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningAdjustmentFactorC), "doubleValue"}];
         v4->_shortTermAdjustmentFactor = v24;
         v4->_longTermAdjustmentFactor = 1.0 - v24;
-        [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningShortTermValueWeightC), "doubleValue"}];
+        [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningShortTermValueWeightC), "doubleValue"}];
         v4->_shortTermValueWeight = v25;
-        [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningLongTermValueWeightC), "floatValue"}];
+        [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningLongTermValueWeightC), "floatValue"}];
         v4->_longTermValueWeight = v26;
         if (VRTraceGetErrorLogLevelForModule("") < 8)
         {
@@ -94,12 +94,12 @@
       else
       {
         v4->_adaptiveLearningState = 2;
-        [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningAdjustmentFactorB), "doubleValue"}];
+        [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningAdjustmentFactorB), "doubleValue"}];
         v4->_shortTermAdjustmentFactor = v20;
         v4->_longTermAdjustmentFactor = 1.0 - v20;
-        [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningShortTermValueWeightB), "doubleValue"}];
+        [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningShortTermValueWeightB), "doubleValue"}];
         v4->_shortTermValueWeight = v21;
-        [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningLongTermValueWeightB), "floatValue"}];
+        [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningLongTermValueWeightB), "floatValue"}];
         v4->_longTermValueWeight = v22;
         if (VRTraceGetErrorLogLevelForModule("") < 8)
         {
@@ -310,12 +310,12 @@ LABEL_30:
     else
     {
       v4->_adaptiveLearningState = 1;
-      [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningAdjustmentFactorA), "doubleValue"}];
+      [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningAdjustmentFactorA), "doubleValue"}];
       v4->_shortTermAdjustmentFactor = v10;
       v4->_longTermAdjustmentFactor = 1.0 - v10;
-      [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningShortTermValueWeightA), "doubleValue"}];
+      [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningShortTermValueWeightA), "doubleValue"}];
       v4->_shortTermValueWeight = v11;
-      [objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningLongTermValueWeightA), "floatValue"}];
+      [objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningLongTermValueWeightA), "floatValue"}];
       v4->_longTermValueWeight = v12;
       if (VRTraceGetErrorLogLevelForModule("") < 8)
       {
@@ -642,21 +642,21 @@ LABEL_44:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (int)learntBitrateForSegment:(id)a3 defaultValue:(int)a4
+- (int)learntBitrateForSegment:(id)segment defaultValue:(int)value
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
-  v12 = a4;
+  valueCopy = value;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__VCAdaptiveLearning_learntBitrateForSegment_defaultValue___block_invoke;
   v7[3] = &unk_278BD4C60;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = segment;
   v7[6] = &v9;
-  v8 = a4;
+  valueCopy2 = value;
   dispatch_sync(stateQueue, v7);
   v5 = *(v10 + 6);
   _Block_object_dispose(&v9, 8);
@@ -806,7 +806,7 @@ LABEL_18:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSegment:(id)a3 TBR:(int)a4 ISBTR:(int)a5 SATXBR:(int)a6 SARBR:(int)a7 BWE:(int)a8
+- (void)updateSegment:(id)segment TBR:(int)r ISBTR:(int)tR SATXBR:(int)bR SARBR:(int)rBR BWE:(int)e
 {
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -814,12 +814,12 @@ LABEL_18:
   block[2] = __63__VCAdaptiveLearning_updateSegment_TBR_ISBTR_SATXBR_SARBR_BWE___block_invoke;
   block[3] = &unk_278BD4C88;
   block[4] = self;
-  block[5] = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = a8;
+  block[5] = segment;
+  rCopy = r;
+  tRCopy = tR;
+  bRCopy = bR;
+  rBRCopy = rBR;
+  eCopy = e;
   dispatch_async(stateQueue, block);
 }
 
@@ -914,15 +914,15 @@ LABEL_9:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (int)getValueForSegment:(id)a3 withBlock:(id)a4
+- (int)getValueForSegment:(id)segment withBlock:(id)block
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  if (a3)
+  if (segment)
   {
-    if (a4)
+    if (block)
     {
       stateQueue = self->_stateQueue;
       v7[0] = MEMORY[0x277D85DD0];
@@ -930,8 +930,8 @@ LABEL_9:
       v7[2] = __51__VCAdaptiveLearning_getValueForSegment_withBlock___block_invoke;
       v7[3] = &unk_278BD4CB0;
       v7[4] = self;
-      v7[5] = a3;
-      v7[6] = a4;
+      v7[5] = segment;
+      v7[6] = block;
       v7[7] = &v8;
       dispatch_sync(stateQueue, v7);
     }

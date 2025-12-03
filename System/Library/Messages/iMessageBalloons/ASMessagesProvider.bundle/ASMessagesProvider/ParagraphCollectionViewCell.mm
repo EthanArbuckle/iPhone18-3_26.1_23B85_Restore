@@ -1,12 +1,12 @@
 @interface ParagraphCollectionViewCell
-- (_TtC18ASMessagesProvider27ParagraphCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider27ParagraphCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ParagraphCollectionViewCell
 
-- (_TtC18ASMessagesProvider27ParagraphCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider27ParagraphCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider27ParagraphCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -27,7 +27,7 @@
   v17.super_class = swift_getObjectType();
   v2 = v17.receiver;
   [(ParagraphCollectionViewCell *)&v17 layoutSubviews];
-  v3 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_BE70(0, &qword_93E550);
   sub_75D650();
   v5 = v4;

@@ -1,26 +1,26 @@
 @interface HostedWindowSceneDelegate
 - (_TtC9CoreIDVUI25HostedWindowSceneDelegate)init;
 - (void)dealloc;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)setWindow:(id)window;
 @end
 
 @implementation HostedWindowSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC9CoreIDVUI25HostedWindowSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC9CoreIDVUI25HostedWindowSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC9CoreIDVUI25HostedWindowSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_2458D3520(v8, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_2458D3520(sceneCopy, optionsCopy);
 }
 
 - (void)dealloc
@@ -34,7 +34,7 @@
   v8 = *(&self->super.super.isa + OBJC_IVAR____TtC9CoreIDVUI25HostedWindowSceneDelegate_window);
   sub_245910D34();
   v9 = v8;
-  v10 = self;
+  selfCopy = self;
   v11 = sub_245910D24();
   v12 = swift_allocObject();
   v13 = MEMORY[0x277D85700];
@@ -43,7 +43,7 @@
   v12[4] = v8;
   sub_2458B93DC(0, 0, v6, &unk_24591D390, v12);
 
-  v14.receiver = v10;
+  v14.receiver = selfCopy;
   v14.super_class = ObjectType;
   [(HostedWindowSceneDelegate *)&v14 dealloc];
 }

@@ -1,25 +1,25 @@
 @interface APSigningContextStorage
 + (APUnfairRecursiveLock)lock;
-+ (BOOL)_isContextAssigned:(void *)a3;
++ (BOOL)_isContextAssigned:(void *)assigned;
 + (NSMutableArray)assignedContexts;
 + (NSMutableDictionary)contextDictionaries;
 + (NSString)launchID;
-+ (id)_contextsForPool:(id)a3;
-+ (id)_retrieveStashedContextsForPool:(id)a3 includeAssigned:(BOOL)a4;
++ (id)_contextsForPool:(id)pool;
++ (id)_retrieveStashedContextsForPool:(id)pool includeAssigned:(BOOL)assigned;
 + (id)bundleIdentifier;
-+ (id)reconstructFromStorage:(id)a3 contextRef:(id)a4;
-+ (void)_setContextsForPool:(id)a3 contexts:(id)a4;
-+ (void)destroyAndClearAllContextsForPool:(id)a3;
++ (id)reconstructFromStorage:(id)storage contextRef:(id)ref;
++ (void)_setContextsForPool:(id)pool contexts:(id)contexts;
++ (void)destroyAndClearAllContextsForPool:(id)pool;
 + (void)destroyAndClearAllPreviousLaunchContexts;
-+ (void)destroyAndClearAllPreviousLaunchContextsForPool:(id)a3;
-+ (void)removeContextForPool:(id)a3 contextIdentifier:(void *)a4;
-+ (void)setContextDictionaries:(id)a3;
-- (APSigningContextStorage)initWithContextRef:(void *)a3 poolName:(id)a4 stashed:(BOOL)a5;
++ (void)destroyAndClearAllPreviousLaunchContextsForPool:(id)pool;
++ (void)removeContextForPool:(id)pool contextIdentifier:(void *)identifier;
++ (void)setContextDictionaries:(id)dictionaries;
+- (APSigningContextStorage)initWithContextRef:(void *)ref poolName:(id)name stashed:(BOOL)stashed;
 - (NSArray)propertyArray;
 - (void)assign;
 - (void)save;
-- (void)setPoolName:(id)a3;
-- (void)stashed:(BOOL)a3;
+- (void)setPoolName:(id)name;
+- (void)stashed:(BOOL)stashed;
 @end
 
 @implementation APSigningContextStorage
@@ -107,17 +107,17 @@
   return v22;
 }
 
-+ (void)setContextDictionaries:(id)a3
++ (void)setContextDictionaries:(id)dictionaries
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v7 = objc_msgSend_lock(APSigningContextStorage, v4, v5, v6);
   objc_msgSend_lock(v7, v8, v9, v10);
 
   v11 = [APStorageManager alloc];
   v14 = objc_msgSend_initWithPathPrefix_(v11, v12, @"fpdi", v13);
   v19 = objc_msgSend_bundleIdentifier(APSigningContextStorage, v15, v16, v17);
-  if (v3)
+  if (dictionariesCopy)
   {
     v35 = 0;
     v20 = objc_msgSend_fileForWritingAtKeyPath_error_(v14, v18, v19, &v35);
@@ -140,12 +140,12 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v37 = v3;
+        v37 = dictionariesCopy;
         _os_log_impl(&dword_1BADC1000, v23, OS_LOG_TYPE_INFO, "Writing pools %@", buf, 0xCu);
       }
 
       v34 = 0;
-      objc_msgSend_addObject_error_(v20, v27, v3, &v34);
+      objc_msgSend_addObject_error_(v20, v27, dictionariesCopy, &v34);
       v21 = v34;
     }
 
@@ -178,12 +178,12 @@ LABEL_13:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_contextsForPool:(id)a3
++ (id)_contextsForPool:(id)pool
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  poolCopy = pool;
   v7 = objc_msgSend_contextDictionaries(APSigningContextStorage, v4, v5, v6);
-  v10 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v3, v9);
+  v10 = objc_msgSend_objectForKeyedSubscript_(v7, v8, poolCopy, v9);
 
   if (!v10)
   {
@@ -191,7 +191,7 @@ LABEL_13:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v3;
+      v15 = poolCopy;
       _os_log_impl(&dword_1BADC1000, v11, OS_LOG_TYPE_INFO, "No context dictionary for pool %@", &v14, 0xCu);
     }
   }
@@ -201,27 +201,27 @@ LABEL_13:
   return v10;
 }
 
-+ (void)_setContextsForPool:(id)a3 contexts:(id)a4
++ (void)_setContextsForPool:(id)pool contexts:(id)contexts
 {
-  v5 = a4;
-  v6 = a3;
+  contextsCopy = contexts;
+  poolCopy = pool;
   v10 = objc_msgSend_lock(APSigningContextStorage, v7, v8, v9);
   objc_msgSend_lock(v10, v11, v12, v13);
 
   v27 = objc_msgSend_contextDictionaries(APSigningContextStorage, v14, v15, v16);
-  objc_msgSend_setObject_forKeyedSubscript_(v27, v17, v5, v6);
+  objc_msgSend_setObject_forKeyedSubscript_(v27, v17, contextsCopy, poolCopy);
 
   objc_msgSend_setContextDictionaries_(APSigningContextStorage, v18, v27, v19);
   v23 = objc_msgSend_lock(APSigningContextStorage, v20, v21, v22);
   objc_msgSend_unlock(v23, v24, v25, v26);
 }
 
-+ (void)removeContextForPool:(id)a3 contextIdentifier:(void *)a4
++ (void)removeContextForPool:(id)pool contextIdentifier:(void *)identifier
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v34 = a4;
-  v11 = objc_msgSend__contextsForPool_(APSigningContextStorage, v6, v5, v7);
+  poolCopy = pool;
+  identifierCopy = identifier;
+  v11 = objc_msgSend__contextsForPool_(APSigningContextStorage, v6, poolCopy, v7);
   if (v11)
   {
     v12 = objc_msgSend_lock(APSigningContextStorage, v8, v9, v10);
@@ -231,27 +231,27 @@ LABEL_13:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 134218242;
-      v36 = a4;
+      identifierCopy2 = identifier;
       v37 = 2112;
-      v38 = v5;
+      v38 = poolCopy;
       _os_log_impl(&dword_1BADC1000, v16, OS_LOG_TYPE_INFO, "Removing context %p from pool %@", buf, 0x16u);
     }
 
-    v19 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], v17, a4, v18);
+    v19 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], v17, identifier, v18);
     objc_msgSend_removeObjectForKey_(v11, v20, v19, v21);
 
-    if (objc_msgSend_FPDIDestroyContext_(APFPDIWrapper, v22, &v34, v23))
+    if (objc_msgSend_FPDIDestroyContext_(APFPDIWrapper, v22, &identifierCopy, v23))
     {
       v25 = APLogForCategory(0x30uLL);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v36 = v34;
+        identifierCopy2 = identifierCopy;
         _os_log_impl(&dword_1BADC1000, v25, OS_LOG_TYPE_ERROR, "Unable to destroy FPDI context %p.", buf, 0xCu);
       }
     }
 
-    objc_msgSend__setContextsForPool_contexts_(APSigningContextStorage, v24, v5, v11);
+    objc_msgSend__setContextsForPool_contexts_(APSigningContextStorage, v24, poolCopy, v11);
     v29 = objc_msgSend_lock(APSigningContextStorage, v26, v27, v28);
     objc_msgSend_unlock(v29, v30, v31, v32);
   }
@@ -262,7 +262,7 @@ LABEL_13:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v36 = v5;
+      identifierCopy2 = poolCopy;
       _os_log_impl(&dword_1BADC1000, v29, OS_LOG_TYPE_ERROR, "Unable to find context dictionary for pool %@", buf, 0xCu);
     }
   }
@@ -270,9 +270,9 @@ LABEL_13:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_retrieveStashedContextsForPool:(id)a3 includeAssigned:(BOOL)a4
++ (id)_retrieveStashedContextsForPool:(id)pool includeAssigned:(BOOL)assigned
 {
-  v5 = a3;
+  poolCopy = pool;
   v9 = objc_msgSend_lock(APSigningContextStorage, v6, v7, v8);
   objc_msgSend_lock(v9, v10, v11, v12);
 
@@ -282,12 +282,12 @@ LABEL_13:
   v38 = sub_1BAF2AF40;
   v39 = sub_1BAF2AF50;
   v40 = objc_msgSend_array(MEMORY[0x1E695DF70], v13, v14, v15);
-  v18 = objc_msgSend__contextsForPool_(APSigningContextStorage, v16, v5, v17);
+  v18 = objc_msgSend__contextsForPool_(APSigningContextStorage, v16, poolCopy, v17);
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = sub_1BAF2AF58;
   v33[3] = &unk_1E7F1D620;
-  v34 = a4;
+  assignedCopy = assigned;
   v33[4] = &v35;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v18, v19, v33, v20);
   v24 = objc_msgSend_lock(APSigningContextStorage, v21, v22, v23);
@@ -299,10 +299,10 @@ LABEL_13:
   return v31;
 }
 
-+ (void)destroyAndClearAllContextsForPool:(id)a3
++ (void)destroyAndClearAllContextsForPool:(id)pool
 {
-  v3 = a3;
-  v6 = objc_msgSend__contextsForPool_(APSigningContextStorage, v4, v3, v5);
+  poolCopy = pool;
+  v6 = objc_msgSend__contextsForPool_(APSigningContextStorage, v4, poolCopy, v5);
   v10 = objc_msgSend_lock(APSigningContextStorage, v7, v8, v9);
   objc_msgSend_lock(v10, v11, v12, v13);
 
@@ -310,8 +310,8 @@ LABEL_13:
   v28[1] = 3221225472;
   v28[2] = sub_1BAF2B154;
   v28[3] = &unk_1E7F1D648;
-  v29 = v3;
-  v14 = v3;
+  v29 = poolCopy;
+  v14 = poolCopy;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v6, v15, v28, v16);
   objc_msgSend_removeAllObjects(v6, v17, v18, v19);
   objc_msgSend__setContextsForPool_contexts_(APSigningContextStorage, v20, v14, v6);
@@ -319,15 +319,15 @@ LABEL_13:
   objc_msgSend_unlock(v24, v25, v26, v27);
 }
 
-+ (void)destroyAndClearAllPreviousLaunchContextsForPool:(id)a3
++ (void)destroyAndClearAllPreviousLaunchContextsForPool:(id)pool
 {
-  v3 = a3;
+  poolCopy = pool;
   v7 = objc_msgSend_lock(APSigningContextStorage, v4, v5, v6);
   objc_msgSend_lock(v7, v8, v9, v10);
 
   v14 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v11, v12, v13);
   v18 = objc_msgSend_contextDictionaries(APSigningContextStorage, v15, v16, v17);
-  v21 = objc_msgSend_objectForKeyedSubscript_(v18, v19, v3, v20);
+  v21 = objc_msgSend_objectForKeyedSubscript_(v18, v19, poolCopy, v20);
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = sub_1BAF2B37C;
@@ -336,7 +336,7 @@ LABEL_13:
   v22 = v14;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v21, v23, v33, v24);
 
-  objc_msgSend__setContextsForPool_contexts_(APSigningContextStorage, v25, v3, v22);
+  objc_msgSend__setContextsForPool_contexts_(APSigningContextStorage, v25, poolCopy, v22);
   v29 = objc_msgSend_lock(APSigningContextStorage, v26, v27, v28);
   objc_msgSend_unlock(v29, v30, v31, v32);
 }
@@ -366,13 +366,13 @@ LABEL_13:
   return v3;
 }
 
-+ (BOOL)_isContextAssigned:(void *)a3
++ (BOOL)_isContextAssigned:(void *)assigned
 {
-  v5 = objc_msgSend_lock(APSigningContextStorage, a2, a3, v3);
+  v5 = objc_msgSend_lock(APSigningContextStorage, a2, assigned, v3);
   objc_msgSend_lock(v5, v6, v7, v8);
 
   v12 = objc_msgSend_assignedContexts(APSigningContextStorage, v9, v10, v11);
-  v15 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], v13, a3, v14);
+  v15 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], v13, assigned, v14);
   v18 = objc_msgSend_containsObject_(v12, v16, v15, v17);
 
   v22 = objc_msgSend_lock(APSigningContextStorage, v19, v20, v21);
@@ -439,24 +439,24 @@ LABEL_13:
   objc_msgSend_unlock(v36, v37, v38, v39);
 }
 
-- (APSigningContextStorage)initWithContextRef:(void *)a3 poolName:(id)a4 stashed:(BOOL)a5
+- (APSigningContextStorage)initWithContextRef:(void *)ref poolName:(id)name stashed:(BOOL)stashed
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  nameCopy = name;
   v30.receiver = self;
   v30.super_class = APSigningContextStorage;
   v10 = [(APSigningContextStorage *)&v30 init];
   v14 = v10;
   if (v10)
   {
-    v10->_contextRef = a3;
-    v10->_stashed = a5;
+    v10->_contextRef = ref;
+    v10->_stashed = stashed;
     v15 = objc_msgSend_launchID(APSigningContextStorage, v11, v12, v13);
     sessionIdentifier = v14->_sessionIdentifier;
     v14->_sessionIdentifier = v15;
 
     v14->_used = 1;
-    objc_storeStrong(&v14->_poolName, a4);
+    objc_storeStrong(&v14->_poolName, name);
     objc_msgSend_save(v14, v17, v18, v19);
     objc_msgSend_assign(v14, v20, v21, v22);
     v23 = APLogForCategory(0x30uLL);
@@ -473,25 +473,25 @@ LABEL_13:
   return v14;
 }
 
-+ (id)reconstructFromStorage:(id)a3 contextRef:(id)a4
++ (id)reconstructFromStorage:(id)storage contextRef:(id)ref
 {
-  v5 = a4;
-  v6 = a3;
+  refCopy = ref;
+  storageCopy = storage;
   v7 = objc_alloc_init(APSigningContextStorage);
-  v11 = objc_msgSend_longLongValue(v5, v8, v9, v10);
+  v11 = objc_msgSend_longLongValue(refCopy, v8, v9, v10);
 
   v7->_contextRef = v11;
-  v14 = objc_msgSend_objectAtIndexedSubscript_(v6, v12, 1, v13);
+  v14 = objc_msgSend_objectAtIndexedSubscript_(storageCopy, v12, 1, v13);
   v7->_stashed = objc_msgSend_BOOLValue(v14, v15, v16, v17);
 
-  v20 = objc_msgSend_objectAtIndexedSubscript_(v6, v18, 0, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(storageCopy, v18, 0, v19);
   sessionIdentifier = v7->_sessionIdentifier;
   v7->_sessionIdentifier = v20;
 
-  v24 = objc_msgSend_objectAtIndexedSubscript_(v6, v22, 2, v23);
+  v24 = objc_msgSend_objectAtIndexedSubscript_(storageCopy, v22, 2, v23);
   v7->_used = objc_msgSend_BOOLValue(v24, v25, v26, v27);
 
-  v30 = objc_msgSend_objectAtIndexedSubscript_(v6, v28, 3, v29);
+  v30 = objc_msgSend_objectAtIndexedSubscript_(storageCopy, v28, 3, v29);
 
   poolName = v7->_poolName;
   v7->_poolName = v30;
@@ -499,9 +499,9 @@ LABEL_13:
   return v7;
 }
 
-- (void)stashed:(BOOL)a3
+- (void)stashed:(BOOL)stashed
 {
-  v3 = a3;
+  stashedCopy = stashed;
   v26 = *MEMORY[0x1E69E9840];
   v5 = APLogForCategory(0x30uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -523,7 +523,7 @@ LABEL_13:
     v21 = v9;
     v22 = 2112;
     v23 = v15;
-    if (v3)
+    if (stashedCopy)
     {
       v14 = @"yes";
     }
@@ -533,15 +533,15 @@ LABEL_13:
     _os_log_impl(&dword_1BADC1000, v5, OS_LOG_TYPE_INFO, "Change stashed state of context ref %p from %@ to %@", &v20, 0x20u);
   }
 
-  self->_stashed = v3;
+  self->_stashed = stashedCopy;
   objc_msgSend_save(self, v16, v17, v18);
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPoolName:(id)a3
+- (void)setPoolName:(id)name
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = APLogForCategory(0x30uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -552,12 +552,12 @@ LABEL_13:
     v21 = 2112;
     v22 = v13;
     v23 = 2112;
-    v24 = v4;
+    v24 = nameCopy;
     _os_log_impl(&dword_1BADC1000, v5, OS_LOG_TYPE_INFO, "Change poolName of context ref %p from %@ to %@", &v19, 0x20u);
   }
 
   poolName = self->_poolName;
-  self->_poolName = v4;
+  self->_poolName = nameCopy;
 
   objc_msgSend_save(self, v15, v16, v17);
   v18 = *MEMORY[0x1E69E9840];

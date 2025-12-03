@@ -1,15 +1,15 @@
 @interface TSCHPresetImagerScatter
-- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)a3;
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8;
+- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)size;
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache;
 @end
 
 @implementation TSCHPresetImagerScatter
 
-- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)a3
+- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  objc_msgSend_p_nativeSize(self, a2, a3.width, a3.height, v3);
+  height = size.height;
+  width = size.width;
+  objc_msgSend_p_nativeSize(self, a2, size.width, size.height, v3);
   v7 = width / v6;
   v9 = height / v8;
   v10 = floor(height / v8 * 9.0);
@@ -23,12 +23,12 @@
   return result;
 }
 
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v135[12] = *MEMORY[0x277D85DE8];
-  v12 = objc_msgSend_seriesStyles(a6, a2, a4.width, a4.height, a5);
+  v12 = objc_msgSend_seriesStyles(preset, a2, size.width, size.height, scale);
   v17 = objc_msgSend_objectAtIndexedSubscript_(v12, v13, v14, v15, v16, 0);
   if (objc_msgSend_count(v12, v18, v19, v20, v21) <= 1)
   {
@@ -93,13 +93,13 @@
     v57 = 1.5;
   }
 
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v60 = objc_msgSend_colorWithWhite_alpha_(MEMORY[0x277D81180], v58, 0.46, 1.0, v59);
   v65 = objc_msgSend_CGColor(v60, v61, v62, v63, v64);
-  CGContextSetStrokeColorWithColor(a3, v65);
-  CGContextSetLineCap(a3, kCGLineCapSquare);
-  CGContextSetLineJoin(a3, kCGLineJoinMiter);
-  CGContextSetLineWidth(a3, 1.0);
+  CGContextSetStrokeColorWithColor(context, v65);
+  CGContextSetLineCap(context, kCGLineCapSquare);
+  CGContextSetLineJoin(context, kCGLineJoinMiter);
+  CGContextSetLineWidth(context, 1.0);
   v136.origin.x = v36;
   v136.origin.y = v38;
   v136.size.width = v40;
@@ -144,56 +144,56 @@
   v143.size.height = v42;
   v133[0] = v69;
   v133[1] = CGRectGetMaxY(v143);
-  sub_27628C654(a3, &points.x, v131, 2, 1.0);
-  sub_27628C654(a3, v132, v133, 2, 1.0);
-  CGContextStrokeLineSegments(a3, &points, 4uLL);
-  CGContextRestoreGState(a3);
+  sub_27628C654(context, &points.x, v131, 2, 1.0);
+  sub_27628C654(context, v132, v133, 2, 1.0);
+  CGContextStrokeLineSegments(context, &points, 4uLL);
+  CGContextRestoreGState(context);
 
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v74 = objc_msgSend_p_strokeFromStyle_specific_default_(self, v70, v71, v72, v73, v17, 1538, 0);
   v79 = objc_msgSend_color(v74, v75, v76, v77, v78);
   v84 = objc_msgSend_CGColor(v79, v80, v81, v82, v83);
-  CGContextSetFillColorWithColor(a3, v84);
+  CGContextSetFillColorWithColor(context, v84);
 
   v89 = objc_msgSend_color(v74, v85, v86, v87, v88);
   v94 = objc_msgSend_CGColor(v89, v90, v91, v92, v93);
-  CGContextSetStrokeColorWithColor(a3, v94);
+  CGContextSetStrokeColorWithColor(context, v94);
 
   for (i = 0; i != 12; i += 2)
   {
-    sub_27628CB34(a3, *&v135[i] - v57, *&v135[i + 1] - v57, v57 + v57, v57 + v57, 0.0);
+    sub_27628CB34(context, *&v135[i] - v57, *&v135[i + 1] - v57, v57 + v57, v57 + v57, 0.0);
     if (v98 < v99)
     {
       v98 = v99;
     }
 
-    sub_27631AEFC(a3, v96, v97, v98, v98);
+    sub_27631AEFC(context, v96, v97, v98, v98);
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v104 = objc_msgSend_p_strokeFromStyle_specific_default_(self, v100, v101, v102, v103, v31, 1538, 0);
   v109 = objc_msgSend_color(v104, v105, v106, v107, v108);
   v114 = objc_msgSend_CGColor(v109, v110, v111, v112, v113);
-  CGContextSetFillColorWithColor(a3, v114);
+  CGContextSetFillColorWithColor(context, v114);
 
   v119 = objc_msgSend_color(v104, v115, v116, v117, v118);
   v124 = objc_msgSend_CGColor(v119, v120, v121, v122, v123);
-  CGContextSetStrokeColorWithColor(a3, v124);
+  CGContextSetStrokeColorWithColor(context, v124);
 
   for (j = 0; j != 12; j += 2)
   {
-    sub_27628CB34(a3, *&v134[j] - v57, *&v134[j + 1] - v57, v57 + v57, v57 + v57, 0.0);
+    sub_27628CB34(context, *&v134[j] - v57, *&v134[j + 1] - v57, v57 + v57, v57 + v57, 0.0);
     if (v128 < v129)
     {
       v128 = v129;
     }
 
-    sub_27631AEFC(a3, v126, v127, v128, v128);
+    sub_27631AEFC(context, v126, v127, v128, v128);
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 @end

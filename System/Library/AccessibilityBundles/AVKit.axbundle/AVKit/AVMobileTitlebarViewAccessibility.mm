@@ -1,19 +1,19 @@
 @interface AVMobileTitlebarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (AVMobileTitlebarViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (AVMobileTitlebarViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation AVMobileTitlebarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVMobileTitlebarView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"AVMobileTitlebarView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"AVMobileTitlebarView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVMobileTitlebarView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"AVMobileTitlebarView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"AVMobileTitlebarView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -67,11 +67,11 @@ id __79__AVMobileTitlebarViewAccessibility__accessibilityLoadAccessibilityInform
   return v4;
 }
 
-- (AVMobileTitlebarViewAccessibility)initWithFrame:(CGRect)a3
+- (AVMobileTitlebarViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = AVMobileTitlebarViewAccessibility;
-  v3 = [(AVMobileTitlebarViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVMobileTitlebarViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(AVMobileTitlebarViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

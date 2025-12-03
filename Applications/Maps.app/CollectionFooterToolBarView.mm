@@ -1,98 +1,98 @@
 @interface CollectionFooterToolBarView
-- (BOOL)_shouldUseGlyphForStrings:(id)a3;
+- (BOOL)_shouldUseGlyphForStrings:(id)strings;
 - (void)_updateContent;
-- (void)addAction:(id)a3;
-- (void)addToAction:(id)a3;
-- (void)cancelAction:(id)a3;
-- (void)cancelListAction:(id)a3;
-- (void)deleteAction:(id)a3;
-- (void)deleteListAction:(id)a3;
-- (void)editAction:(id)a3;
-- (void)editListAction:(id)a3;
+- (void)addAction:(id)action;
+- (void)addToAction:(id)action;
+- (void)cancelAction:(id)action;
+- (void)cancelListAction:(id)action;
+- (void)deleteAction:(id)action;
+- (void)deleteListAction:(id)action;
+- (void)editAction:(id)action;
+- (void)editListAction:(id)action;
 - (void)loadContentActions;
 - (void)loadEditActions;
 - (void)loadEditAllActions;
 - (void)loadListActions;
 - (void)loadListEditActions;
 - (void)loadListEditAllActions;
-- (void)newCollectionAction:(id)a3;
-- (void)selectAction:(id)a3;
-- (void)selectAllAction:(id)a3;
-- (void)shareAction:(id)a3;
+- (void)newCollectionAction:(id)action;
+- (void)selectAction:(id)action;
+- (void)selectAllAction:(id)action;
+- (void)shareAction:(id)action;
 @end
 
 @implementation CollectionFooterToolBarView
 
-- (void)selectAction:(id)a3
+- (void)selectAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:0];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:0];
 }
 
-- (void)shareAction:(id)a3
+- (void)shareAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:10];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:10];
 }
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:9];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:9];
 }
 
-- (void)deleteAction:(id)a3
+- (void)deleteAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:2];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:2];
 }
 
-- (void)selectAllAction:(id)a3
+- (void)selectAllAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:6];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:6];
 }
 
-- (void)addToAction:(id)a3
+- (void)addToAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:7];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:7];
 }
 
-- (void)newCollectionAction:(id)a3
+- (void)newCollectionAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:8];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:8];
 }
 
-- (void)cancelAction:(id)a3
+- (void)cancelAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:1];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:1];
 }
 
-- (void)editAction:(id)a3
+- (void)editAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:0];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:0];
 }
 
-- (void)deleteListAction:(id)a3
+- (void)deleteListAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:5];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:5];
 }
 
-- (void)cancelListAction:(id)a3
+- (void)cancelListAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:4];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:4];
 }
 
-- (void)editListAction:(id)a3
+- (void)editListAction:(id)action
 {
-  v4 = [(FooterToolBarView *)self delegate];
-  [v4 view:self requestsCollectionFooterAction:3];
+  delegate = [(FooterToolBarView *)self delegate];
+  [delegate view:self requestsCollectionFooterAction:3];
 }
 
 - (void)loadEditActions
@@ -170,8 +170,8 @@
     }
   }
 
-  v24 = [(FooterToolBarView *)self toolBar];
-  [v24 setItems:v18];
+  toolBar = [(FooterToolBarView *)self toolBar];
+  [toolBar setItems:v18];
 }
 
 - (void)loadEditAllActions
@@ -241,14 +241,14 @@
     }
   }
 
-  v23 = [(FooterToolBarView *)self toolBar];
-  [v23 setItems:v17];
+  toolBar = [(FooterToolBarView *)self toolBar];
+  [toolBar setItems:v17];
 }
 
-- (BOOL)_shouldUseGlyphForStrings:(id)a3
+- (BOOL)_shouldUseGlyphForStrings:(id)strings
 {
-  v4 = a3;
-  v5 = ([v4 count] + 1) * 20.0;
+  stringsCopy = strings;
+  v5 = ([stringsCopy count] + 1) * 20.0;
   v22 = NSFontAttributeName;
   v6 = +[UIFont system17];
   v23 = v6;
@@ -258,7 +258,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v4;
+  v8 = stringsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -311,8 +311,8 @@
     [v7 addObjectsFromArray:v8];
   }
 
-  v9 = [(FooterToolBarView *)self toolBar];
-  [v9 setItems:v7];
+  toolBar = [(FooterToolBarView *)self toolBar];
+  [toolBar setItems:v7];
 }
 
 - (void)loadListEditAllActions
@@ -332,8 +332,8 @@
   v12[1] = v4;
   v12[2] = v8;
   v10 = [NSArray arrayWithObjects:v12 count:3];
-  v11 = [(FooterToolBarView *)self toolBar];
-  [v11 setItems:v10];
+  toolBar = [(FooterToolBarView *)self toolBar];
+  [toolBar setItems:v10];
 }
 
 - (void)loadListEditActions
@@ -352,8 +352,8 @@
   v12[1] = v4;
   v12[2] = v8;
   v10 = [NSArray arrayWithObjects:v12 count:3];
-  v11 = [(FooterToolBarView *)self toolBar];
-  [v11 setItems:v10];
+  toolBar = [(FooterToolBarView *)self toolBar];
+  [toolBar setItems:v10];
 }
 
 - (void)loadListActions
@@ -379,24 +379,24 @@
   }
 
   v8 = [NSArray arrayWithObjects:v6 count:v7, v10, v11, v12, v13, v14];
-  v9 = [(FooterToolBarView *)self toolBar];
-  [v9 setItems:v8];
+  toolBar = [(FooterToolBarView *)self toolBar];
+  [toolBar setItems:v8];
 }
 
 - (void)_updateContent
 {
-  v3 = [(FooterToolBarView *)self state];
-  if (v3 <= 2)
+  state = [(FooterToolBarView *)self state];
+  if (state <= 2)
   {
-    if (v3)
+    if (state)
     {
-      if (v3 == 1)
+      if (state == 1)
       {
 
         [(CollectionFooterToolBarView *)self loadContentActions];
       }
 
-      else if (v3 == 2)
+      else if (state == 2)
       {
 
         [(CollectionFooterToolBarView *)self loadEditActions];
@@ -405,27 +405,27 @@
 
     else
     {
-      v4 = [(FooterToolBarView *)self toolBar];
-      [v4 setItems:&__NSArray0__struct];
+      toolBar = [(FooterToolBarView *)self toolBar];
+      [toolBar setItems:&__NSArray0__struct];
     }
   }
 
-  else if (v3 > 4)
+  else if (state > 4)
   {
-    if (v3 == 5)
+    if (state == 5)
     {
 
       [(CollectionFooterToolBarView *)self loadListEditActions];
     }
 
-    else if (v3 == 6)
+    else if (state == 6)
     {
 
       [(CollectionFooterToolBarView *)self loadListEditAllActions];
     }
   }
 
-  else if (v3 == 3)
+  else if (state == 3)
   {
 
     [(CollectionFooterToolBarView *)self loadEditAllActions];

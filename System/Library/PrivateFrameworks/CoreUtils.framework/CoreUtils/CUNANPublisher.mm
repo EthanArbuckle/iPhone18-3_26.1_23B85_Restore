@@ -2,47 +2,47 @@
 - (CUNANPublisher)init;
 - (NSArray)dataSessions;
 - (NSString)description;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_publisher:(id)a3 dataConfirmedForHandle:(id)a4 localInterfaceIndex:(unsigned int)a5 serviceSpecificInfo:(id)a6;
+- (void)_publisher:(id)_publisher dataConfirmedForHandle:(id)handle localInterfaceIndex:(unsigned int)index serviceSpecificInfo:(id)info;
 - (void)_scheduleRetry;
 - (void)_updateServiceSpecificInfo;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)generateStatisticsReportWithCompletionHandler:(id)a3;
+- (void)generateStatisticsReportWithCompletionHandler:(id)handler;
 - (void)invalidate;
-- (void)pairingRequestIndicatedForPublisher:(id)a3 bySubscriber:(id)a4 usingPINCode:(id)a5;
-- (void)publisher:(id)a3 dataConfirmedForHandle:(id)a4 localInterfaceIndex:(unsigned int)a5 serviceSpecificInfo:(id)a6;
-- (void)publisher:(id)a3 dataIndicatedForHandle:(id)a4 serviceSpecificInfo:(id)a5;
-- (void)publisher:(id)a3 dataTerminatedForHandle:(id)a4 reason:(int64_t)a5;
-- (void)publisher:(id)a3 failedToStartWithError:(int64_t)a4;
-- (void)publisher:(id)a3 receivedMessage:(id)a4 fromSubscriberID:(unsigned __int8)a5 subscriberAddress:(id)a6;
-- (void)publisher:(id)a3 terminatedWithReason:(int64_t)a4;
-- (void)publisherStarted:(id)a3;
-- (void)reportIssue:(id)a3;
+- (void)pairingRequestIndicatedForPublisher:(id)publisher bySubscriber:(id)subscriber usingPINCode:(id)code;
+- (void)publisher:(id)publisher dataConfirmedForHandle:(id)handle localInterfaceIndex:(unsigned int)index serviceSpecificInfo:(id)info;
+- (void)publisher:(id)publisher dataIndicatedForHandle:(id)handle serviceSpecificInfo:(id)info;
+- (void)publisher:(id)publisher dataTerminatedForHandle:(id)handle reason:(int64_t)reason;
+- (void)publisher:(id)publisher failedToStartWithError:(int64_t)error;
+- (void)publisher:(id)publisher receivedMessage:(id)message fromSubscriberID:(unsigned __int8)d subscriberAddress:(id)address;
+- (void)publisher:(id)publisher terminatedWithReason:(int64_t)reason;
+- (void)publisherStarted:(id)started;
+- (void)reportIssue:(id)issue;
 - (void)scheduleRetry;
-- (void)sendMessageData:(id)a3 endpoint:(id)a4 completionHandler:(id)a5;
-- (void)setTextInfo:(id)a3;
-- (void)updateLinkStatus:(int)a3;
+- (void)sendMessageData:(id)data endpoint:(id)endpoint completionHandler:(id)handler;
+- (void)setTextInfo:(id)info;
+- (void)updateLinkStatus:(int)status;
 @end
 
 @implementation CUNANPublisher
 
-- (void)pairingRequestIndicatedForPublisher:(id)a3 bySubscriber:(id)a4 usingPINCode:(id)a5
+- (void)pairingRequestIndicatedForPublisher:(id)publisher bySubscriber:(id)subscriber usingPINCode:(id)code
 {
-  v7 = a4;
-  v8 = a5;
+  subscriberCopy = subscriber;
+  codeCopy = code;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__CUNANPublisher_pairingRequestIndicatedForPublisher_bySubscriber_usingPINCode___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = subscriberCopy;
+  v14 = codeCopy;
+  v10 = codeCopy;
+  v11 = subscriberCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -68,18 +68,18 @@ void __80__CUNANPublisher_pairingRequestIndicatedForPublisher_bySubscriber_using
   }
 }
 
-- (void)publisher:(id)a3 dataTerminatedForHandle:(id)a4 reason:(int64_t)a5
+- (void)publisher:(id)publisher dataTerminatedForHandle:(id)handle reason:(int64_t)reason
 {
-  v7 = a4;
+  handleCopy = handle;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__CUNANPublisher_publisher_dataTerminatedForHandle_reason___block_invoke;
   block[3] = &unk_1E73A4040;
   block[4] = self;
-  v11 = v7;
-  v12 = a5;
-  v9 = v7;
+  v11 = handleCopy;
+  reasonCopy = reason;
+  v9 = handleCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -175,17 +175,17 @@ void __59__CUNANPublisher_publisher_dataTerminatedForHandle_reason___block_invok
   }
 }
 
-- (void)_publisher:(id)a3 dataConfirmedForHandle:(id)a4 localInterfaceIndex:(unsigned int)a5 serviceSpecificInfo:(id)a6
+- (void)_publisher:(id)_publisher dataConfirmedForHandle:(id)handle localInterfaceIndex:(unsigned int)index serviceSpecificInfo:(id)info
 {
-  v7 = *&a5;
+  v7 = *&index;
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 initiatorDataAddress];
-  v14 = [v13 data];
-  [v11 datapathID];
-  v15 = _WiFiAwareCreateEndpointIdentifier(v14);
+  _publisherCopy = _publisher;
+  handleCopy = handle;
+  infoCopy = info;
+  initiatorDataAddress = [handleCopy initiatorDataAddress];
+  data = [initiatorDataAddress data];
+  [handleCopy datapathID];
+  v15 = _WiFiAwareCreateEndpointIdentifier(data);
 
   if (v15)
   {
@@ -217,7 +217,7 @@ LABEL_7:
       [(CUNANDataSession *)v21 setLocalInterfaceIndex:v7];
       [(CUNANDataSession *)v21 setPeerEndpoint:v17];
       [(CUNANDataSession *)v21 setTrafficFlags:self->_trafficFlags];
-      [(CUNANDataSession *)v21 setWfaDataSessionServer:v11];
+      [(CUNANDataSession *)v21 setWfaDataSessionServer:handleCopy];
       v22 = logger_4859();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
@@ -226,8 +226,8 @@ LABEL_7:
         _os_log_impl(&dword_191EAF000, v22, OS_LOG_TYPE_DEFAULT, "WFA DataSession started: %@", &v29, 0xCu);
       }
 
-      v23 = self;
-      objc_sync_enter(v23);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       sessions = self->_sessions;
       if (!sessions)
       {
@@ -240,9 +240,9 @@ LABEL_7:
       }
 
       [(NSMutableDictionary *)sessions setObject:v21 forKeyedSubscript:v15];
-      objc_sync_exit(v23);
+      objc_sync_exit(selfCopy);
 
-      dataSessionStartedHandler = v23->_dataSessionStartedHandler;
+      dataSessionStartedHandler = selfCopy->_dataSessionStartedHandler;
       if (dataSessionStartedHandler)
       {
         dataSessionStartedHandler[2](dataSessionStartedHandler, v21);
@@ -264,24 +264,24 @@ LABEL_7:
   }
 }
 
-- (void)publisher:(id)a3 dataConfirmedForHandle:(id)a4 localInterfaceIndex:(unsigned int)a5 serviceSpecificInfo:(id)a6
+- (void)publisher:(id)publisher dataConfirmedForHandle:(id)handle localInterfaceIndex:(unsigned int)index serviceSpecificInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  publisherCopy = publisher;
+  handleCopy = handle;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__CUNANPublisher_publisher_dataConfirmedForHandle_localInterfaceIndex_serviceSpecificInfo___block_invoke;
   block[3] = &unk_1E73A3738;
   block[4] = self;
-  v18 = v10;
-  v21 = a5;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = publisherCopy;
+  indexCopy = index;
+  v19 = handleCopy;
+  v20 = infoCopy;
+  v14 = infoCopy;
+  v15 = handleCopy;
+  v16 = publisherCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -296,15 +296,15 @@ void *__91__CUNANPublisher_publisher_dataConfirmedForHandle_localInterfaceIndex_
   return result;
 }
 
-- (void)publisher:(id)a3 dataIndicatedForHandle:(id)a4 serviceSpecificInfo:(id)a5
+- (void)publisher:(id)publisher dataIndicatedForHandle:(id)handle serviceSpecificInfo:(id)info
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 initiatorDataAddress];
-  v8 = [v7 data];
-  [v6 datapathID];
+  handleCopy = handle;
+  initiatorDataAddress = [handleCopy initiatorDataAddress];
+  data = [initiatorDataAddress data];
+  [handleCopy datapathID];
 
-  v9 = _WiFiAwareCreateEndpointIdentifier(v8);
+  v9 = _WiFiAwareCreateEndpointIdentifier(data);
 
   v10 = logger_4859();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -318,21 +318,21 @@ void *__91__CUNANPublisher_publisher_dataConfirmedForHandle_localInterfaceIndex_
   }
 }
 
-- (void)publisher:(id)a3 receivedMessage:(id)a4 fromSubscriberID:(unsigned __int8)a5 subscriberAddress:(id)a6
+- (void)publisher:(id)publisher receivedMessage:(id)message fromSubscriberID:(unsigned __int8)d subscriberAddress:(id)address
 {
-  v9 = a4;
-  v10 = a6;
+  messageCopy = message;
+  addressCopy = address;
   dispatchQueue = self->_dispatchQueue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__CUNANPublisher_publisher_receivedMessage_fromSubscriberID_subscriberAddress___block_invoke;
   v14[3] = &unk_1E73A4090;
   v14[4] = self;
-  v15 = v10;
-  v17 = a5;
-  v16 = v9;
-  v12 = v9;
-  v13 = v10;
+  v15 = addressCopy;
+  dCopy = d;
+  v16 = messageCopy;
+  v12 = messageCopy;
+  v13 = addressCopy;
   dispatch_async(dispatchQueue, v14);
 }
 
@@ -368,7 +368,7 @@ void __79__CUNANPublisher_publisher_receivedMessage_fromSubscriberID_subscriberA
   }
 }
 
-- (void)publisher:(id)a3 terminatedWithReason:(int64_t)a4
+- (void)publisher:(id)publisher terminatedWithReason:(int64_t)reason
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -376,7 +376,7 @@ void __79__CUNANPublisher_publisher_receivedMessage_fromSubscriberID_subscriberA
   v5[2] = __49__CUNANPublisher_publisher_terminatedWithReason___block_invoke;
   v5[3] = &unk_1E73A4340;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = reason;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -433,7 +433,7 @@ uint64_t __49__CUNANPublisher_publisher_terminatedWithReason___block_invoke(uint
   return result;
 }
 
-- (void)publisher:(id)a3 failedToStartWithError:(int64_t)a4
+- (void)publisher:(id)publisher failedToStartWithError:(int64_t)error
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -441,7 +441,7 @@ uint64_t __49__CUNANPublisher_publisher_terminatedWithReason___block_invoke(uint
   v5[2] = __51__CUNANPublisher_publisher_failedToStartWithError___block_invoke;
   v5[3] = &unk_1E73A4340;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = error;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -470,7 +470,7 @@ uint64_t __51__CUNANPublisher_publisher_failedToStartWithError___block_invoke(ui
   return result;
 }
 
-- (void)publisherStarted:(id)a3
+- (void)publisherStarted:(id)started
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -565,7 +565,7 @@ void __44__CUNANPublisher__updateServiceSpecificInfo__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)updateLinkStatus:(int)a3
+- (void)updateLinkStatus:(int)status
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -573,7 +573,7 @@ void __44__CUNANPublisher__updateServiceSpecificInfo__block_invoke(uint64_t a1, 
   v4[2] = __35__CUNANPublisher_updateLinkStatus___block_invoke;
   v4[3] = &unk_1E73A42A0;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -651,23 +651,23 @@ void __31__CUNANPublisher_scheduleRetry__block_invoke(uint64_t a1)
   [WeakRetained _scheduleRetry];
 }
 
-- (void)sendMessageData:(id)a3 endpoint:(id)a4 completionHandler:(id)a5
+- (void)sendMessageData:(id)data endpoint:(id)endpoint completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61__CUNANPublisher_sendMessageData_endpoint_completionHandler___block_invoke;
   v15[3] = &unk_1E73A4108;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = endpointCopy;
+  v17 = dataCopy;
+  v18 = handlerCopy;
+  v12 = dataCopy;
+  v13 = endpointCopy;
+  v14 = handlerCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -831,17 +831,17 @@ void __61__CUNANPublisher_sendMessageData_endpoint_completionHandler___block_inv
   }
 }
 
-- (void)reportIssue:(id)a3
+- (void)reportIssue:(id)issue
 {
-  v4 = a3;
+  issueCopy = issue;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__CUNANPublisher_reportIssue___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = issueCopy;
+  v6 = issueCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -876,17 +876,17 @@ uint64_t __30__CUNANPublisher_reportIssue___block_invoke_2(uint64_t a1, uint64_t
   return MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)generateStatisticsReportWithCompletionHandler:(id)a3
+- (void)generateStatisticsReportWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__CUNANPublisher_generateStatisticsReportWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1044,10 +1044,10 @@ void __64__CUNANPublisher_generateStatisticsReportWithCompletionHandler___block_
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v137 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = logger_4859();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1121,7 +1121,7 @@ void __64__CUNANPublisher_generateStatisticsReportWithCompletionHandler___block_
       }
 
       v35 = v31;
-      v36 = self;
+      selfCopy = self;
       os_unfair_lock_lock(&gCUNANMockLock);
       v37 = [gCUNANMockPublishers objectForKeyedSubscript:v35];
       if (!v37)
@@ -1140,9 +1140,9 @@ void __64__CUNANPublisher_generateStatisticsReportWithCompletionHandler___block_
         [v38 setObject:v37 forKeyedSubscript:v35];
       }
 
-      [v37 addObject:v36];
-      v41 = [(CUNANPublisher *)v36 mockEndpoint];
-      if (v41)
+      [v37 addObject:selfCopy];
+      mockEndpoint = [(CUNANPublisher *)selfCopy mockEndpoint];
+      if (mockEndpoint)
       {
         v121 = 0u;
         v122 = 0u;
@@ -1163,7 +1163,7 @@ void __64__CUNANPublisher_generateStatisticsReportWithCompletionHandler___block_
                 objc_enumerationMutation(v42);
               }
 
-              [*(*(&v119 + 1) + 8 * i) reportMockEndpointFound:v41];
+              [*(*(&v119 + 1) + 8 * i) reportMockEndpointFound:mockEndpoint];
             }
 
             v44 = [v42 countByEnumeratingWithState:&v119 objects:buf count:16];
@@ -1175,9 +1175,9 @@ void __64__CUNANPublisher_generateStatisticsReportWithCompletionHandler___block_
 
       os_unfair_lock_unlock(&gCUNANMockLock);
 
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       goto LABEL_76;
@@ -1194,17 +1194,17 @@ void __64__CUNANPublisher_generateStatisticsReportWithCompletionHandler___block_
 
     if ((controlFlags & 2) != 0)
     {
-      v58 = [getWiFiAwareInternetSharingConfigurationClass_4908[0]() automaticallyRequestInternetFromInitiators];
-      if (v58)
+      automaticallyRequestInternetFromInitiators = [getWiFiAwareInternetSharingConfigurationClass_4908[0]() automaticallyRequestInternetFromInitiators];
+      if (automaticallyRequestInternetFromInitiators)
       {
-        [v56 setInternetSharingConfiguration:v58];
+        [v56 setInternetSharingConfiguration:automaticallyRequestInternetFromInitiators];
       }
 
       v59 = logger_4859();
       if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
       {
         v60 = "success";
-        if (!v58)
+        if (!automaticallyRequestInternetFromInitiators)
         {
           v60 = "failed";
         }
@@ -1247,9 +1247,9 @@ void __64__CUNANPublisher_generateStatisticsReportWithCompletionHandler___block_
           _os_log_error_impl(&dword_191EAF000, v84, OS_LOG_TYPE_ERROR, "### Activate failed: %@", buf, 0xCu);
         }
 
-        if (v4)
+        if (completionCopy)
         {
-          (v4)[2](v4, v74);
+          (completionCopy)[2](completionCopy, v74);
         }
 
         goto LABEL_75;
@@ -1323,9 +1323,9 @@ void __64__CUNANPublisher_generateStatisticsReportWithCompletionHandler___block_
     {
       [(WiFiAwarePublisher *)v103 setDelegate:self];
       [(WiFiAwarePublisher *)self->_wfaPublisher start];
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -1341,9 +1341,9 @@ void __64__CUNANPublisher_generateStatisticsReportWithCompletionHandler___block_
         _os_log_error_impl(&dword_191EAF000, v105, OS_LOG_TYPE_ERROR, "### Activate failed: %@", buf, 0xCu);
       }
 
-      if (v4)
+      if (completionCopy)
       {
-        (v4)[2](v4, v104);
+        (completionCopy)[2](completionCopy, v104);
       }
     }
 
@@ -1363,33 +1363,33 @@ LABEL_75:
     _os_log_error_impl(&dword_191EAF000, v47, OS_LOG_TYPE_ERROR, "### Activate failed: %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    (v4)[2](v4, v35);
+    (completionCopy)[2](completionCopy, v35);
   }
 
 LABEL_76:
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__CUNANPublisher_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)setTextInfo:(id)a3
+- (void)setTextInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   textInfo = self->_textInfo;
-  v7 = v5;
+  v7 = infoCopy;
   v8 = textInfo;
   v9 = v8;
   if (v8 == v7)
@@ -1412,7 +1412,7 @@ LABEL_76:
     {
     }
 
-    objc_storeStrong(&self->_textInfo, a3);
+    objc_storeStrong(&self->_textInfo, info);
     if (self->_wfaPublisher)
     {
       dispatchQueue = self->_dispatchQueue;
@@ -1440,23 +1440,23 @@ LABEL_9:
 
 - (NSArray)dataSessions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_sessions;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_sessions;
   v4 = v3;
   if (v3)
   {
-    v5 = [(NSMutableDictionary *)v3 allValues];
+    allValues = [(NSMutableDictionary *)v3 allValues];
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return allValues;
 }
 
 - (void)dealloc

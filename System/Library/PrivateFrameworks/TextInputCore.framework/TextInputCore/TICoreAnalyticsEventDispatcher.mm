@@ -1,17 +1,17 @@
 @interface TICoreAnalyticsEventDispatcher
-- (void)sessionDidEnd:(id)a3 aligned:(id)a4;
+- (void)sessionDidEnd:(id)end aligned:(id)aligned;
 @end
 
 @implementation TICoreAnalyticsEventDispatcher
 
-- (void)sessionDidEnd:(id)a3 aligned:(id)a4
+- (void)sessionDidEnd:(id)end aligned:(id)aligned
 {
   v30[7] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endCopy = end;
+  alignedCopy = aligned;
   v23 = objc_opt_new();
   v8 = objc_opt_new();
-  v24 = self;
+  selfCopy = self;
   [(TICoreAnalyticsEventDispatcher *)self setRevisionRateAnalyzer:v8];
 
   v9 = objc_opt_new();
@@ -50,7 +50,7 @@
           objc_enumerationMutation(v17);
         }
 
-        [*(*(&v25 + 1) + 8 * v21) analyzeSession:v6 alignedSession:v7 withConfidence:{objc_msgSend(*(*(&v25 + 1) + 8 * v21), "evaluateConfidenceInSession:alignedSession:", v6, v7, v23)}];
+        [*(*(&v25 + 1) + 8 * v21) analyzeSession:endCopy alignedSession:alignedCopy withConfidence:{objc_msgSend(*(*(&v25 + 1) + 8 * v21), "evaluateConfidenceInSession:alignedSession:", endCopy, alignedCopy, v23)}];
         ++v21;
       }
 
@@ -61,10 +61,10 @@
     while (v19);
   }
 
-  [v23 analyzeSession:v6 alignedSession:v7 withConfidence:{objc_msgSend(v23, "evaluateConfidenceInSession:alignedSession:", v6, v7)}];
-  -[TIRevisionRateAnalyzer setHasEmojiInput:](v24->_revisionRateAnalyzer, "setHasEmojiInput:", [v23 hasEmojiInput]);
-  -[TIRevisionRateAnalyzer setHasCursorMovement:](v24->_revisionRateAnalyzer, "setHasCursorMovement:", [v23 hasCursorMovement]);
-  [(TIRevisionRateAnalyzer *)v24->_revisionRateAnalyzer analyzeSession:v6 alignedSession:v7 withConfidence:[(TIRevisionRateAnalyzer *)v24->_revisionRateAnalyzer evaluateConfidenceInSession:v6 alignedSession:v7]];
+  [v23 analyzeSession:endCopy alignedSession:alignedCopy withConfidence:{objc_msgSend(v23, "evaluateConfidenceInSession:alignedSession:", endCopy, alignedCopy)}];
+  -[TIRevisionRateAnalyzer setHasEmojiInput:](selfCopy->_revisionRateAnalyzer, "setHasEmojiInput:", [v23 hasEmojiInput]);
+  -[TIRevisionRateAnalyzer setHasCursorMovement:](selfCopy->_revisionRateAnalyzer, "setHasCursorMovement:", [v23 hasCursorMovement]);
+  [(TIRevisionRateAnalyzer *)selfCopy->_revisionRateAnalyzer analyzeSession:endCopy alignedSession:alignedCopy withConfidence:[(TIRevisionRateAnalyzer *)selfCopy->_revisionRateAnalyzer evaluateConfidenceInSession:endCopy alignedSession:alignedCopy]];
 
   v22 = *MEMORY[0x277D85DE8];
 }

@@ -1,25 +1,25 @@
 @interface EPKey
-+ (id)derivedKeyFrom:(id)a3 salt:(id)a4;
-+ (id)keyFromData:(id)a3;
-+ (id)paddedSalt:(id)a3 forEncryption:(BOOL)a4;
-+ (id)randomData:(unint64_t)a3;
-+ (id)timeDerivedKeyFrom:(id)a3 keyIndex:(int64_t)a4 salt:(id)a5;
-+ (id)timeDerivedKeyFrom:(id)a3 keyIndex:(int64_t)a4 salt:(id)a5 date:(id)a6;
-- (BOOL)storeKey:(id)a3;
++ (id)derivedKeyFrom:(id)from salt:(id)salt;
++ (id)keyFromData:(id)data;
++ (id)paddedSalt:(id)salt forEncryption:(BOOL)encryption;
++ (id)randomData:(unint64_t)data;
++ (id)timeDerivedKeyFrom:(id)from keyIndex:(int64_t)index salt:(id)salt;
++ (id)timeDerivedKeyFrom:(id)from keyIndex:(int64_t)index salt:(id)salt date:(id)date;
+- (BOOL)storeKey:(id)key;
 - (NRPBMigrationKeyForKeychain)key;
-- (id)decryptPayload:(id)a3;
-- (id)decryptPayloadRaw:(id)a3 withSalt:(id)a4 date:(id)a5;
-- (id)decryptPayloadRaw:(id)a3 withSalt:(id)a4 key:(id)a5;
-- (id)encryptPayload:(id)a3;
-- (id)encryptPayloadRaw:(id)a3 withSalt:(id)a4 date:(id)a5;
-- (id)encryptPayloadRaw:(id)a3 withSalt:(id)a4 key:(id)a5;
+- (id)decryptPayload:(id)payload;
+- (id)decryptPayloadRaw:(id)raw withSalt:(id)salt date:(id)date;
+- (id)decryptPayloadRaw:(id)raw withSalt:(id)salt key:(id)key;
+- (id)encryptPayload:(id)payload;
+- (id)encryptPayloadRaw:(id)raw withSalt:(id)salt date:(id)date;
+- (id)encryptPayloadRaw:(id)raw withSalt:(id)salt key:(id)key;
 @end
 
 @implementation EPKey
 
-+ (id)randomData:(unint64_t)a3
++ (id)randomData:(unint64_t)data
 {
-  v3 = [[NSMutableData alloc] initWithLength:a3];
+  v3 = [[NSMutableData alloc] initWithLength:data];
   if (SecRandomCopyBytes(kSecRandomDefault, [v3 length], objc_msgSend(v3, "mutableBytes")))
   {
     v4 = nr_daemon_log();
@@ -45,11 +45,11 @@
   return v7;
 }
 
-+ (id)paddedSalt:(id)a3 forEncryption:(BOOL)a4
++ (id)paddedSalt:(id)salt forEncryption:(BOOL)encryption
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4)
+  encryptionCopy = encryption;
+  saltCopy = salt;
+  if (encryptionCopy)
   {
     v6 = @"EEE5EDA5-3A09-4C03-85B8-0CB4E21F177E";
   }
@@ -66,9 +66,9 @@
     v19[0] = 0;
     v19[1] = 0;
     [v7 getUUIDBytes:v19];
-    v9 = [v5 mutableCopy];
+    v9 = [saltCopy mutableCopy];
     [v9 appendBytes:v19 length:16];
-    if (v5 && v9 && (v10 = [v9 length], v10 == objc_msgSend(v5, "length") + 16))
+    if (saltCopy && v9 && (v10 = [v9 length], v10 == objc_msgSend(saltCopy, "length") + 16))
     {
       v11 = v9;
     }
@@ -114,17 +114,17 @@
 - (NRPBMigrationKeyForKeychain)key
 {
   v3 = [NRPBMigrationKeyForKeychain alloc];
-  v4 = [(EPKey *)self keymaster];
-  v5 = [v4 name];
-  v6 = [EPKeychain retrieveKeyWithName:v5 keychainGroup:@"com.apple.nanoregistry.migration2"];
+  keymaster = [(EPKey *)self keymaster];
+  name = [keymaster name];
+  v6 = [EPKeychain retrieveKeyWithName:name keychainGroup:@"com.apple.nanoregistry.migration2"];
   v7 = [(NRPBMigrationKeyForKeychain *)v3 initWithData:v6];
 
   return v7;
 }
 
-- (id)encryptPayload:(id)a3
+- (id)encryptPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = [(EPKey *)self key];
   v6 = sub_1000FDEB0(v5);
 
@@ -140,14 +140,14 @@ LABEL_4:
         v10 = objc_opt_new();
         sub_100100DE0(v10, v8);
         v11 = +[NSDate date];
-        v12 = [(EPKey *)self encryptPayloadRaw:v4 withSalt:v9 date:v11];
+        v12 = [(EPKey *)self encryptPayloadRaw:payloadCopy withSalt:v9 date:v11];
         sub_100100DF4(v10, v12);
 
-        v13 = sub_100100E1C(v10);
+        data = sub_100100E1C(v10);
 
-        if (v13)
+        if (data)
         {
-          v13 = [v10 data];
+          data = [v10 data];
         }
 
         goto LABEL_17;
@@ -173,7 +173,7 @@ LABEL_4:
 
       if (!v15)
       {
-        v13 = 0;
+        data = 0;
         goto LABEL_18;
       }
 
@@ -184,7 +184,7 @@ LABEL_4:
       }
     }
 
-    v13 = 0;
+    data = 0;
 LABEL_17:
 
 LABEL_18:
@@ -193,10 +193,10 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v7 = [(EPKey *)self legacyKey];
-  if (v7)
+  legacyKey = [(EPKey *)self legacyKey];
+  if (legacyKey)
   {
-    v6 = v7;
+    v6 = legacyKey;
     goto LABEL_4;
   }
 
@@ -211,19 +211,19 @@ LABEL_19:
       sub_1001051A4();
     }
 
-    v13 = 0;
+    data = 0;
     goto LABEL_19;
   }
 
-  v13 = 0;
+  data = 0;
 LABEL_20:
 
-  return v13;
+  return data;
 }
 
-- (id)decryptPayload:(id)a3
+- (id)decryptPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = [(EPKey *)self key];
   v6 = sub_1000FDEB0(v5);
 
@@ -232,12 +232,12 @@ LABEL_20:
     goto LABEL_4;
   }
 
-  v7 = [(EPKey *)self legacyKey];
-  if (v7)
+  legacyKey = [(EPKey *)self legacyKey];
+  if (legacyKey)
   {
-    v6 = v7;
+    v6 = legacyKey;
 LABEL_4:
-    v8 = [[NRPBBTMigrationCiphertext alloc] initWithData:v4];
+    v8 = [[NRPBBTMigrationCiphertext alloc] initWithData:payloadCopy];
     v9 = objc_opt_class();
     v10 = sub_100100E08(v8);
     v11 = [v9 paddedSalt:v10 forEncryption:0];
@@ -291,11 +291,11 @@ LABEL_13:
   return v14;
 }
 
-- (id)encryptPayloadRaw:(id)a3 withSalt:(id)a4 date:(id)a5
+- (id)encryptPayloadRaw:(id)raw withSalt:(id)salt date:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rawCopy = raw;
+  saltCopy = salt;
+  dateCopy = date;
   v11 = [(EPKey *)self key];
   v12 = sub_1000FDEB0(v11);
 
@@ -304,15 +304,15 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  v13 = [(EPKey *)self legacyKey];
-  if (v13)
+  legacyKey = [(EPKey *)self legacyKey];
+  if (legacyKey)
   {
-    v12 = v13;
+    v12 = legacyKey;
 LABEL_4:
-    v14 = [EPKey timeDerivedKeyFrom:v12 keyIndex:0 salt:v9 date:v10];
+    v14 = [EPKey timeDerivedKeyFrom:v12 keyIndex:0 salt:saltCopy date:dateCopy];
     if (v14)
     {
-      v15 = [(EPKey *)self encryptPayloadRaw:v8 withSalt:v9 key:v14];
+      v15 = [(EPKey *)self encryptPayloadRaw:rawCopy withSalt:saltCopy key:v14];
     }
 
     else
@@ -357,11 +357,11 @@ LABEL_13:
   return v15;
 }
 
-- (id)decryptPayloadRaw:(id)a3 withSalt:(id)a4 date:(id)a5
+- (id)decryptPayloadRaw:(id)raw withSalt:(id)salt date:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rawCopy = raw;
+  saltCopy = salt;
+  dateCopy = date;
   v11 = [(EPKey *)self key];
   v12 = sub_1000FDEB0(v11);
 
@@ -370,18 +370,18 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  v13 = [(EPKey *)self legacyKey];
-  if (v13)
+  legacyKey = [(EPKey *)self legacyKey];
+  if (legacyKey)
   {
-    v12 = v13;
+    v12 = legacyKey;
 LABEL_4:
     v14 = 0;
     while (1)
     {
-      v15 = [EPKey timeDerivedKeyFrom:v12 keyIndex:v14 salt:v9 date:v10];
+      v15 = [EPKey timeDerivedKeyFrom:v12 keyIndex:v14 salt:saltCopy date:dateCopy];
       if (v15)
       {
-        v16 = [(EPKey *)self decryptPayloadRaw:v8 withSalt:v9 key:v15];
+        v16 = [(EPKey *)self decryptPayloadRaw:rawCopy withSalt:saltCopy key:v15];
         if (v16)
         {
           v17 = v16;
@@ -443,22 +443,22 @@ LABEL_20:
   return v17;
 }
 
-- (id)encryptPayloadRaw:(id)a3 withSalt:(id)a4 key:(id)a5
+- (id)encryptPayloadRaw:(id)raw withSalt:(id)salt key:(id)key
 {
-  v6 = a3;
-  v7 = a5;
-  if (v7)
+  rawCopy = raw;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v8 = [v6 NRSHA256];
-    if (v8)
+    nRSHA256 = [rawCopy NRSHA256];
+    if (nRSHA256)
     {
-      v9 = [v6 mutableCopy];
-      [v9 appendData:v8];
+      v9 = [rawCopy mutableCopy];
+      [v9 appendData:nRSHA256];
       v10 = [NSInputStream inputStreamWithData:v9];
       v11 = +[NSOutputStream outputStreamToMemory];
       [v10 open];
       [v11 open];
-      v12 = sub_1000E01E4(v10, v11, [v7 bytes]);
+      v12 = sub_1000E01E4(v10, v11, [keyCopy bytes]);
       [v10 close];
       [v11 close];
       if (v12)
@@ -514,8 +514,8 @@ LABEL_20:
       goto LABEL_22;
     }
 
-    v8 = nr_framework_log();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    nRSHA256 = nr_framework_log();
+    if (os_log_type_enabled(nRSHA256, OS_LOG_TYPE_ERROR))
     {
       sub_1001053A0();
     }
@@ -529,16 +529,16 @@ LABEL_22:
   return v16;
 }
 
-- (id)decryptPayloadRaw:(id)a3 withSalt:(id)a4 key:(id)a5
+- (id)decryptPayloadRaw:(id)raw withSalt:(id)salt key:(id)key
 {
-  v6 = a5;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [NSInputStream inputStreamWithData:a3];
+    v7 = [NSInputStream inputStreamWithData:raw];
     v8 = +[NSOutputStream outputStreamToMemory];
     [v7 open];
     [v8 open];
-    v9 = sub_1000E01E4(v7, v8, [v6 bytes]);
+    v9 = sub_1000E01E4(v7, v8, [keyCopy bytes]);
     [v8 close];
     [v7 close];
     v10 = [v8 propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
@@ -583,11 +583,11 @@ LABEL_22:
   return v15;
 }
 
-+ (id)keyFromData:(id)a3
++ (id)keyFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  sub_1000FDE98(v4, v3);
+  sub_1000FDE98(v4, dataCopy);
   v7 = 0;
   do
   {
@@ -601,25 +601,25 @@ LABEL_22:
   return v4;
 }
 
-- (BOOL)storeKey:(id)a3
+- (BOOL)storeKey:(id)key
 {
-  v4 = [EPKey keyFromData:a3];
+  v4 = [EPKey keyFromData:key];
   v5 = [EPKeychain removeKeyWithName:@"migration" keychainGroup:@"com.apple.nanoregistry.migration"];
-  v6 = [(EPKey *)self keymaster];
-  v7 = [v6 name];
-  v8 = [EPKeychain removeKeyWithName:v7 keychainGroup:@"com.apple.nanoregistry.migration"];
+  keymaster = [(EPKey *)self keymaster];
+  name = [keymaster name];
+  v8 = [EPKeychain removeKeyWithName:name keychainGroup:@"com.apple.nanoregistry.migration"];
 
-  v9 = [(EPKey *)self keymaster];
-  v10 = [v9 name];
-  v11 = [EPKeychain removeKeyWithName:v10 keychainGroup:@"com.apple.nanoregistry.migration2"];
+  keymaster2 = [(EPKey *)self keymaster];
+  name2 = [keymaster2 name];
+  v11 = [EPKeychain removeKeyWithName:name2 keychainGroup:@"com.apple.nanoregistry.migration2"];
 
   v12 = sub_1000FDEB0(v4);
   v13 = [EPKeychain storeKeyWithData:v12 name:@"migration" keychainGroup:@"com.apple.nanoregistry.migration"];
 
-  v14 = [v4 data];
-  v15 = [(EPKey *)self keymaster];
-  v16 = [v15 name];
-  v17 = [EPKeychain storeKeyWithData:v14 name:v16 keychainGroup:@"com.apple.nanoregistry.migration2"];
+  data = [v4 data];
+  keymaster3 = [(EPKey *)self keymaster];
+  name3 = [keymaster3 name];
+  v17 = [EPKeychain storeKeyWithData:data name:name3 keychainGroup:@"com.apple.nanoregistry.migration2"];
 
   v18 = v13 & v17;
   if ((v13 & v17 & 1) == 0)
@@ -644,19 +644,19 @@ LABEL_22:
 
         if (v17)
         {
-          v24 = 0;
+          name4 = 0;
         }
 
         else
         {
           self = [(EPKey *)self keymaster];
-          v24 = [(EPKey *)self name];
+          name4 = [(EPKey *)self name];
         }
 
         v25 = 138412546;
         v26 = v23;
         v27 = 2112;
-        v28 = v24;
+        v28 = name4;
         _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "EPKey: Unable to store key %@ %@", &v25, 0x16u);
         if ((v17 & 1) == 0)
         {
@@ -668,11 +668,11 @@ LABEL_22:
   return v18;
 }
 
-+ (id)derivedKeyFrom:(id)a3 salt:(id)a4
++ (id)derivedKeyFrom:(id)from salt:(id)salt
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] < 0x20)
+  fromCopy = from;
+  saltCopy = salt;
+  if ([fromCopy length] < 0x20)
   {
     v13 = nr_framework_log();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
@@ -693,7 +693,7 @@ LABEL_22:
   else
   {
     v7 = [NSMutableData dataWithLength:32];
-    v8 = CCKeyDerivationPBKDF(2u, [v5 bytes], objc_msgSend(v5, "length"), objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length"), 3u, 0x2710u, -[NSObject mutableBytes](v7, "mutableBytes"), -[NSObject length](v7, "length"));
+    v8 = CCKeyDerivationPBKDF(2u, [fromCopy bytes], objc_msgSend(fromCopy, "length"), objc_msgSend(saltCopy, "bytes"), objc_msgSend(saltCopy, "length"), 3u, 0x2710u, -[NSObject mutableBytes](v7, "mutableBytes"), -[NSObject length](v7, "length"));
     if (!v8)
     {
       v7 = v7;
@@ -723,32 +723,32 @@ LABEL_14:
   return v15;
 }
 
-+ (id)timeDerivedKeyFrom:(id)a3 keyIndex:(int64_t)a4 salt:(id)a5
++ (id)timeDerivedKeyFrom:(id)from keyIndex:(int64_t)index salt:(id)salt
 {
-  v7 = a5;
-  v8 = a3;
+  saltCopy = salt;
+  fromCopy = from;
   v9 = objc_opt_class();
   v10 = +[NSDate date];
-  v11 = [v9 timeDerivedKeyFrom:v8 keyIndex:a4 salt:v7 date:v10];
+  v11 = [v9 timeDerivedKeyFrom:fromCopy keyIndex:index salt:saltCopy date:v10];
 
   return v11;
 }
 
-+ (id)timeDerivedKeyFrom:(id)a3 keyIndex:(int64_t)a4 salt:(id)a5 date:(id)a6
++ (id)timeDerivedKeyFrom:(id)from keyIndex:(int64_t)index salt:(id)salt date:(id)date
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if ((a4 - 2) > 0xFFFFFFFFFFFFFFFCLL)
+  fromCopy = from;
+  saltCopy = salt;
+  dateCopy = date;
+  v13 = dateCopy;
+  if ((index - 2) > 0xFFFFFFFFFFFFFFFCLL)
   {
-    [v12 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     if (v17)
     {
-      v23 = a4 + v17 / 0x12C;
+      v23 = index + v17 / 0x12C;
       v18 = [NSMutableData dataWithBytes:&v23 length:8];
-      [v18 appendData:v10];
-      v19 = [a1 derivedKeyFrom:v18 salt:v11];
+      [v18 appendData:fromCopy];
+      v19 = [self derivedKeyFrom:v18 salt:saltCopy];
 
       goto LABEL_12;
     }

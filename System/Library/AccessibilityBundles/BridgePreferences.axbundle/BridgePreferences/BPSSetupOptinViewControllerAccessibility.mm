@@ -1,20 +1,20 @@
 @interface BPSSetupOptinViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation BPSSetupOptinViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BPSSetupOptinViewController" hasInstanceVariable:@"_suggestedChoiceButton" withType:"UIButton"];
-  [v3 validateClass:@"BPSSetupOptinViewController" hasInstanceVariable:@"_alternateChoiceButton" withType:"UIButton"];
-  [v3 validateClass:@"BPSSetupOptinViewController" hasInstanceMethod:@"watchView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BPSSetupOptinViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BPSSetupOptinViewController" hasInstanceMethod:@"wantsAlternateChoicePillButton" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"BPSSetupOptinViewController" hasInstanceMethod:@"wantsAlternateChoiceSystemButton" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BPSSetupOptinViewController" hasInstanceVariable:@"_suggestedChoiceButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"BPSSetupOptinViewController" hasInstanceVariable:@"_alternateChoiceButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"BPSSetupOptinViewController" hasInstanceMethod:@"watchView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BPSSetupOptinViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BPSSetupOptinViewController" hasInstanceMethod:@"wantsAlternateChoicePillButton" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"BPSSetupOptinViewController" hasInstanceMethod:@"wantsAlternateChoiceSystemButton" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -29,8 +29,8 @@
   {
     v4 = [(BPSSetupOptinViewControllerAccessibility *)self safeValueForKey:@"watchView"];
     [v4 setIsAccessibilityElement:1];
-    v5 = [(BPSSetupOptinViewControllerAccessibility *)self _accessibilityLabelForWatchView];
-    [v4 setAccessibilityLabel:v5];
+    _accessibilityLabelForWatchView = [(BPSSetupOptinViewControllerAccessibility *)self _accessibilityLabelForWatchView];
+    [v4 setAccessibilityLabel:_accessibilityLabelForWatchView];
   }
 
   if (([(BPSSetupOptinViewControllerAccessibility *)self safeBoolForKey:@"wantsAlternateChoicePillButton"]& 1) == 0 && ([(BPSSetupOptinViewControllerAccessibility *)self safeBoolForKey:@"wantsAlternateChoiceSystemButton"]& 1) == 0)

@@ -1,5 +1,5 @@
 @interface SKUIRunLoopDelay
-- (SKUIRunLoopDelay)initWithRunLoopMode:(id)a3 timeout:(double)a4;
+- (SKUIRunLoopDelay)initWithRunLoopMode:(id)mode timeout:(double)timeout;
 - (void)dealloc;
 - (void)delayRunLoop;
 - (void)endDelay;
@@ -7,9 +7,9 @@
 
 @implementation SKUIRunLoopDelay
 
-- (SKUIRunLoopDelay)initWithRunLoopMode:(id)a3 timeout:(double)a4
+- (SKUIRunLoopDelay)initWithRunLoopMode:(id)mode timeout:(double)timeout
 {
-  v6 = a3;
+  modeCopy = mode;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIRunLoopDelay initWithRunLoopMode:timeout:];
@@ -20,11 +20,11 @@
   v7 = [(SKUIRunLoopDelay *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [modeCopy copy];
     mode = v7->_mode;
     v7->_mode = v8;
 
-    v7->_timeout = a4;
+    v7->_timeout = timeout;
     v7->_runLoop = CFRunLoopGetCurrent();
     memset(&v11, 0, sizeof(v11));
     v7->_runLoopSource = CFRunLoopSourceCreate(0, 0, &v11);

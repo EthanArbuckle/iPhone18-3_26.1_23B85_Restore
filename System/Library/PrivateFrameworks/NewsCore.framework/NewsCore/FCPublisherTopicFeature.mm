@@ -1,7 +1,7 @@
 @interface FCPublisherTopicFeature
 - (FCPublisherTopicFeature)init;
-- (FCPublisherTopicFeature)initWithPersonalizationIdentifier:(id)a3;
-- (FCPublisherTopicFeature)initWithPublisherTagID:(id)a3 topicTagID:(id)a4;
+- (FCPublisherTopicFeature)initWithPersonalizationIdentifier:(id)identifier;
+- (FCPublisherTopicFeature)initWithPublisherTagID:(id)d topicTagID:(id)iD;
 - (NSArray)features;
 @end
 
@@ -34,56 +34,56 @@
   objc_exception_throw(v6);
 }
 
-- (FCPublisherTopicFeature)initWithPersonalizationIdentifier:(id)a3
+- (FCPublisherTopicFeature)initWithPersonalizationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 rangeOfString:@"+"];
+  identifierCopy = identifier;
+  v5 = [identifierCopy rangeOfString:@"+"];
   v7 = v6;
-  v8 = [v4 rangeOfString:@"+" options:4];
+  v8 = [identifierCopy rangeOfString:@"+" options:4];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL && v8 != 0x7FFFFFFFFFFFFFFFLL && v8 > v5)
   {
     v13 = v5 + v7;
     v14 = v8 - v13;
     v15 = v8 + v9;
-    v16 = [v4 length] - (v8 + v9);
-    v17 = [v4 substringWithRange:{v13, v14}];
-    v18 = [v4 substringWithRange:{v15, v16}];
+    v16 = [identifierCopy length] - (v8 + v9);
+    v17 = [identifierCopy substringWithRange:{v13, v14}];
+    v18 = [identifierCopy substringWithRange:{v15, v16}];
     self = [(FCPublisherTopicFeature *)self initWithPublisherTagID:v17 topicTagID:v18];
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (FCPublisherTopicFeature)initWithPublisherTagID:(id)a3 topicTagID:(id)a4
+- (FCPublisherTopicFeature)initWithPublisherTagID:(id)d topicTagID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v13.receiver = self;
   v13.super_class = FCPublisherTopicFeature;
   v8 = [(FCPersonalizationFeature *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (dCopy)
     {
-      [(FCPublisherTopicFeature *)v8 setPublisherTagID:v6];
+      [(FCPublisherTopicFeature *)v8 setPublisherTagID:dCopy];
     }
 
-    if (v7)
+    if (iDCopy)
     {
-      [(FCPublisherTopicFeature *)v9 setTopicTagID:v7];
+      [(FCPublisherTopicFeature *)v9 setTopicTagID:iDCopy];
     }
 
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@%@%@", @"f4", @"+", v6, @"+", v7];
+    iDCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@%@%@", @"f4", @"+", dCopy, @"+", iDCopy];
     personalizationIdentifier = v9->super._personalizationIdentifier;
-    v9->super._personalizationIdentifier = v10;
+    v9->super._personalizationIdentifier = iDCopy;
   }
 
   return v9;
@@ -93,12 +93,12 @@
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = [FCTagIDFeature alloc];
-  v4 = [(FCPublisherTopicFeature *)self publisherTagID];
-  v5 = [(FCTagIDFeature *)v3 initWithTagID:v4];
+  publisherTagID = [(FCPublisherTopicFeature *)self publisherTagID];
+  v5 = [(FCTagIDFeature *)v3 initWithTagID:publisherTagID];
   v12[0] = v5;
   v6 = [FCTagIDFeature alloc];
-  v7 = [(FCPublisherTopicFeature *)self topicTagID];
-  v8 = [(FCTagIDFeature *)v6 initWithTagID:v7];
+  topicTagID = [(FCPublisherTopicFeature *)self topicTagID];
+  v8 = [(FCTagIDFeature *)v6 initWithTagID:topicTagID];
   v12[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
 

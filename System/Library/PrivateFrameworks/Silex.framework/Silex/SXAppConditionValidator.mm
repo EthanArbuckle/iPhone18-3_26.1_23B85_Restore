@@ -1,21 +1,21 @@
 @interface SXAppConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXAppConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v4 = a3;
-  v5 = [v4 app];
+  conditionCopy = condition;
+  v5 = [conditionCopy app];
 
-  if (v5 && ([v4 app], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", @"any"), v6, (v7 & 1) == 0))
+  if (v5 && ([conditionCopy app], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", @"any"), v6, (v7 & 1) == 0))
   {
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
-    v10 = [v9 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v11 = [v4 app];
-    v8 = [v11 isEqualToString:v10];
+    v11 = [conditionCopy app];
+    v8 = [v11 isEqualToString:bundleIdentifier];
   }
 
   else

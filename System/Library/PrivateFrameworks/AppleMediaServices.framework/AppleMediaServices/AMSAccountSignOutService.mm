@@ -1,24 +1,24 @@
 @interface AMSAccountSignOutService
-+ (void)performSignOutTasksInDaemonForAccount:(id)a3;
++ (void)performSignOutTasksInDaemonForAccount:(id)account;
 @end
 
 @implementation AMSAccountSignOutService
 
-+ (void)performSignOutTasksInDaemonForAccount:(id)a3
++ (void)performSignOutTasksInDaemonForAccount:(id)account
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v5 = +[AMSLogConfig sharedAccountsConfig];
   v6 = v5;
-  if (v4)
+  if (accountCopy)
   {
     if (!v5)
     {
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [(AMSDaemonConnection *)v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [(AMSDaemonConnection *)v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
@@ -27,19 +27,19 @@
       v18 = 2114;
       v19 = v9;
       v20 = 2114;
-      v21 = v4;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Performing sign-out tasks for: %{public}@", buf, 0x20u);
+      v21 = accountCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Performing sign-out tasks for: %{public}@", buf, 0x20u);
     }
 
     v6 = objc_alloc_init(AMSDaemonConnection);
-    v10 = [(AMSDaemonConnection *)v6 accountSignOutServiceProxy];
+    accountSignOutServiceProxy = [(AMSDaemonConnection *)v6 accountSignOutServiceProxy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __66__AMSAccountSignOutService_performSignOutTasksInDaemonForAccount___block_invoke;
     v13[3] = &unk_1E73B36F8;
-    v15 = a1;
-    v14 = v4;
-    [v10 addFinishBlock:v13];
+    selfCopy = self;
+    v14 = accountCopy;
+    [accountSignOutServiceProxy addFinishBlock:v13];
   }
 
   else
@@ -49,8 +49,8 @@
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [(AMSDaemonConnection *)v6 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    accountSignOutServiceProxy = [(AMSDaemonConnection *)v6 OSLogObject];
+    if (os_log_type_enabled(accountSignOutServiceProxy, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
@@ -58,7 +58,7 @@
       v17 = v11;
       v18 = 2114;
       v19 = v12;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Failed to perform sign-out tasks", buf, 0x16u);
+      _os_log_impl(&dword_192869000, accountSignOutServiceProxy, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Failed to perform sign-out tasks", buf, 0x16u);
     }
   }
 }

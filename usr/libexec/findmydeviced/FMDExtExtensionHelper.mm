@@ -1,18 +1,18 @@
 @interface FMDExtExtensionHelper
-+ (id)_getConnectionForID:(id)a3 withDelegate:(id)a4;
-+ (id)extensionforFeature:(id)a3 flavor:(id)a4;
-+ (id)getAccessoryControllerForFeature:(id)a3 flavor:(id)a4;
-+ (id)getAccessoryControllerForFeature:(id)a3 flavor:(id)a4 withDelegate:(id)a5;
-+ (id)getAccessoryProxyForId:(id)a3 withDelegate:(id)a4;
++ (id)_getConnectionForID:(id)d withDelegate:(id)delegate;
++ (id)extensionforFeature:(id)feature flavor:(id)flavor;
++ (id)getAccessoryControllerForFeature:(id)feature flavor:(id)flavor;
++ (id)getAccessoryControllerForFeature:(id)feature flavor:(id)flavor withDelegate:(id)delegate;
++ (id)getAccessoryProxyForId:(id)id withDelegate:(id)delegate;
 + (id)getAllExtensions;
 @end
 
 @implementation FMDExtExtensionHelper
 
-+ (id)getAccessoryProxyForId:(id)a3 withDelegate:(id)a4
++ (id)getAccessoryProxyForId:(id)id withDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = [a1 _getConnectionForID:v6 withDelegate:a4];
+  idCopy = id;
+  v7 = [self _getConnectionForID:idCopy withDelegate:delegate];
   v8 = v7;
   if (v7)
   {
@@ -22,7 +22,7 @@
     v15[3] = &unk_1002CE320;
     v9 = v7;
     v16 = v9;
-    v10 = v6;
+    v10 = idCopy;
     v17 = v10;
     v11 = [v9 remoteObjectProxyWithErrorHandler:v15];
     v12 = sub_10000BE38();
@@ -45,7 +45,7 @@
     v13 = sub_10000BE38();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_10022B298(v6, v13);
+      sub_10022B298(idCopy, v13);
     }
 
     v11 = 0;
@@ -54,16 +54,16 @@
   return v11;
 }
 
-+ (id)_getConnectionForID:(id)a3 withDelegate:(id)a4
++ (id)_getConnectionForID:(id)d withDelegate:(id)delegate
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  delegateCopy = delegate;
   v7 = +[FMDExtExtensionsDataSource sharedInstance];
-  v8 = [v7 extensionWithIdentifier:v5];
+  v8 = [v7 extensionWithIdentifier:dCopy];
 
   if (v8)
   {
-    v9 = [v8 connectWithDelegate:v6];
+    v9 = [v8 connectWithDelegate:delegateCopy];
   }
 
   else
@@ -71,7 +71,7 @@
     v10 = sub_10000BE38();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_10022B39C(v5, v10);
+      sub_10022B39C(dCopy, v10);
     }
 
     v9 = 0;
@@ -83,33 +83,33 @@
 + (id)getAllExtensions
 {
   v2 = +[FMDExtExtensionsDataSource sharedInstance];
-  v3 = [v2 allExtensionIdentifiers];
+  allExtensionIdentifiers = [v2 allExtensionIdentifiers];
 
-  return v3;
+  return allExtensionIdentifiers;
 }
 
-+ (id)extensionforFeature:(id)a3 flavor:(id)a4
++ (id)extensionforFeature:(id)feature flavor:(id)flavor
 {
   v5 = qword_1003147A8;
-  v6 = a4;
-  v7 = a3;
+  flavorCopy = flavor;
+  featureCopy = feature;
   if (v5 != -1)
   {
     sub_10022B414();
   }
 
-  v8 = [NSString stringWithFormat:@"%@__%@", v7, v6];
+  flavorCopy = [NSString stringWithFormat:@"%@__%@", featureCopy, flavorCopy];
 
-  v9 = [qword_1003147A0 objectForKeyedSubscript:v8];
+  v9 = [qword_1003147A0 objectForKeyedSubscript:flavorCopy];
 
   return v9;
 }
 
-+ (id)getAccessoryControllerForFeature:(id)a3 flavor:(id)a4
++ (id)getAccessoryControllerForFeature:(id)feature flavor:(id)flavor
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [FMDExtExtensionHelper extensionforFeature:v5 flavor:v6];
+  featureCopy = feature;
+  flavorCopy = flavor;
+  v7 = [FMDExtExtensionHelper extensionforFeature:featureCopy flavor:flavorCopy];
   if (v7)
   {
     v8 = [FMDExtExtensionHelper getAccessoryProxyForId:v7 withDelegate:0];
@@ -129,15 +129,15 @@
   return v8;
 }
 
-+ (id)getAccessoryControllerForFeature:(id)a3 flavor:(id)a4 withDelegate:(id)a5
++ (id)getAccessoryControllerForFeature:(id)feature flavor:(id)flavor withDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [FMDExtExtensionHelper extensionforFeature:v7 flavor:v8];
+  featureCopy = feature;
+  flavorCopy = flavor;
+  delegateCopy = delegate;
+  v10 = [FMDExtExtensionHelper extensionforFeature:featureCopy flavor:flavorCopy];
   if (v10)
   {
-    v11 = [FMDExtExtensionHelper getAccessoryProxyForId:v10 withDelegate:v9];
+    v11 = [FMDExtExtensionHelper getAccessoryProxyForId:v10 withDelegate:delegateCopy];
     if (v11)
     {
       goto LABEL_9;

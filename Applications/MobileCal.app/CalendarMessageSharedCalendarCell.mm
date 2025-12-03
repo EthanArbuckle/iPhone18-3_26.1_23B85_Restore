@@ -12,9 +12,9 @@
 
 - (BOOL)_shouldShowMessage
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = v2;
-  v4 = v2 && [v2 sharingInvitationResponse] != 1 && objc_msgSend(v3, "sharingInvitationResponse") != 2;
+  notification = [(CalendarMessageCell *)self notification];
+  v3 = notification;
+  v4 = notification && [notification sharingInvitationResponse] != 1 && objc_msgSend(v3, "sharingInvitationResponse") != 2;
 
   return v4;
 }
@@ -23,18 +23,18 @@
 {
   if ([(CalendarMessageSharedCalendarCell *)self _shouldShowMessage])
   {
-    v3 = [(CalendarMessageCell *)self notification];
-    v4 = [v3 title];
-    if (v4)
+    notification = [(CalendarMessageCell *)self notification];
+    title = [notification title];
+    if (title)
     {
-      v5 = [(CalendarMessageCell *)self notification];
-      [v5 title];
+      notification2 = [(CalendarMessageCell *)self notification];
+      [notification2 title];
     }
 
     else
     {
-      v5 = [NSBundle bundleForClass:objc_opt_class()];
-      [v5 localizedStringForKey:@"Shared Calendar" value:&stru_1002133B8 table:0];
+      notification2 = [NSBundle bundleForClass:objc_opt_class()];
+      [notification2 localizedStringForKey:@"Shared Calendar" value:&stru_1002133B8 table:0];
     }
     v7 = ;
 
@@ -55,18 +55,18 @@
 
 - (id)bodyStringDict
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = [v2 descriptionStrings:CUIKCalendarNoboDescriptionProfile];
+  notification = [(CalendarMessageCell *)self notification];
+  v3 = [notification descriptionStrings:CUIKCalendarNoboDescriptionProfile];
 
   return v3;
 }
 
 - (id)preActionBodyStrings
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = [v2 couldBeJunk];
+  notification = [(CalendarMessageCell *)self notification];
+  couldBeJunk = [notification couldBeJunk];
 
-  if (v3)
+  if (couldBeJunk)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"This invitation is from an unknown sender." value:&stru_1002133B8 table:0];
@@ -84,10 +84,10 @@
 
 - (id)actionBodyString
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = [v2 couldBeJunk];
+  notification = [(CalendarMessageCell *)self notification];
+  couldBeJunk = [notification couldBeJunk];
 
-  if (v3)
+  if (couldBeJunk)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"Report Junk…" value:&stru_1002133B8 table:0];
@@ -103,10 +103,10 @@
 
 - (int64_t)actionBodyStringAction
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = [v2 couldBeJunk];
+  notification = [(CalendarMessageCell *)self notification];
+  couldBeJunk = [notification couldBeJunk];
 
-  if (v3)
+  if (couldBeJunk)
   {
     return 0x10000;
   }
@@ -119,14 +119,14 @@
 
 - (void)updateAuthor
 {
-  v3 = [(CalendarMessageCell *)self notification];
-  v4 = [v3 couldBeJunk];
+  notification = [(CalendarMessageCell *)self notification];
+  couldBeJunk = [notification couldBeJunk];
 
-  if (v4)
+  if (couldBeJunk)
   {
-    v6 = [(CalendarMessageCell *)self authorView];
+    authorView = [(CalendarMessageCell *)self authorView];
     v5 = objc_opt_new();
-    [v6 setContact:v5];
+    [authorView setContact:v5];
   }
 
   else

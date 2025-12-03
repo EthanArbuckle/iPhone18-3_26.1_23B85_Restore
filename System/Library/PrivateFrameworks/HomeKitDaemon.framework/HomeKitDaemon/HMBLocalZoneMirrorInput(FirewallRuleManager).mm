@@ -8,7 +8,7 @@
 - (uint64_t)frmSyncCommitWithOptions:()FirewallRuleManager error:
 {
   v6 = a3;
-  v7 = [objc_opt_class() frmSyncCommitWithMirrorInput:a1 options:v6 error:a4];
+  v7 = [objc_opt_class() frmSyncCommitWithMirrorInput:self options:v6 error:a4];
 
   return v7;
 }
@@ -23,9 +23,9 @@
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 mirrorOutputResult];
+      mirrorOutputResult = [v8 mirrorOutputResult];
 
-      if (!v10 || ([v9 mirrorOutputResult], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "blockAndWaitForCompletionWithError:", a5), v12 = objc_claimAutoreleasedReturnValue(), v11, v12, v12))
+      if (!mirrorOutputResult || ([v9 mirrorOutputResult], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "blockAndWaitForCompletionWithError:", a5), v12 = objc_claimAutoreleasedReturnValue(), v11, v12, v12))
       {
         v12 = 1;
       }

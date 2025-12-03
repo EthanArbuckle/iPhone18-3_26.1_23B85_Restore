@@ -2,14 +2,14 @@
 + (id)action;
 - (MPAction)init;
 - (NSObject)targetObject;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)key;
 - (id)parentDocument;
 - (void)configureTarget;
 - (void)dealloc;
-- (void)setAction:(id)a3;
-- (void)setParent:(id)a3;
-- (void)setTargetObject:(id)a3;
+- (void)setAction:(id)action;
+- (void)setParent:(id)parent;
+- (void)setTargetObject:(id)object;
 @end
 
 @implementation MPAction
@@ -37,8 +37,8 @@
 
 - (NSObject)targetObject
 {
-  v3 = [(MPAction *)self parentDocument];
-  if (!v3)
+  parentDocument = [(MPAction *)self parentDocument];
+  if (!parentDocument)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -57,7 +57,7 @@
   targetObject = self->_targetObject;
   if (isKindOfClass)
   {
-    v6 = [v3 actionableObjectForID:targetObject];
+    v6 = [parentDocument actionableObjectForID:targetObject];
     if (v6)
     {
       v7 = v6;
@@ -73,7 +73,7 @@
   return targetObject;
 }
 
-- (void)setTargetObject:(id)a3
+- (void)setTargetObject:(id)object
 {
   targetObject = self->_targetObject;
   if (targetObject)
@@ -82,7 +82,7 @@
     self->_targetObject = 0;
   }
 
-  self->_targetObject = a3;
+  self->_targetObject = object;
 
   [(MPAction *)self configureTarget];
 }
@@ -97,9 +97,9 @@
   [(MPAction *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setTargetObject:self->_targetObject];
   return v4;
 }
@@ -156,23 +156,23 @@ LABEL_8:
   return [(MPActionSupport *)parentObject parentDocument];
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  if (a3 && self->_parentObject)
+  if (parent && self->_parentObject)
   {
     objc_exception_throw([NSException exceptionWithName:@"ManyToOneException" reason:@"An action may have one parent.  Please remove it first.  This is unsupported." userInfo:0, v3, v4]);
   }
 
-  self->_parentObject = a3;
+  self->_parentObject = parent;
 }
 
 - (void)configureTarget
 {
-  v3 = [(MPAction *)self parentDocument];
+  parentDocument = [(MPAction *)self parentDocument];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && v3)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && parentDocument)
   {
-    v4 = [v3 actionableObjectForID:self->_targetObject];
+    v4 = [parentDocument actionableObjectForID:self->_targetObject];
     if (!v4)
     {
       return;
@@ -188,15 +188,15 @@ LABEL_8:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [self->_targetObject objectID];
+      objectID = [self->_targetObject objectID];
       action = self->_action;
 
-      [(MCAction *)action setTargetObjectID:v6];
+      [(MCAction *)action setTargetObjectID:objectID];
     }
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
   action = self->_action;
   if (action)
@@ -205,9 +205,9 @@ LABEL_8:
     self->_action = 0;
   }
 
-  v6 = a3;
-  self->_action = v6;
-  if (v6)
+  actionCopy = action;
+  self->_action = actionCopy;
+  if (actionCopy)
   {
 
     [(MPAction *)self configureTarget];

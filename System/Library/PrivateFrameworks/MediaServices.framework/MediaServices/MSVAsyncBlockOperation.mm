@@ -1,24 +1,24 @@
 @interface MSVAsyncBlockOperation
-- (MSVAsyncBlockOperation)initWithStartHandler:(id)a3;
+- (MSVAsyncBlockOperation)initWithStartHandler:(id)handler;
 - (id)cancellationHandler;
 - (void)cancel;
-- (void)finishWithError:(id)a3;
-- (void)setCancellationHandler:(id)a3;
+- (void)finishWithError:(id)error;
+- (void)setCancellationHandler:(id)handler;
 @end
 
 @implementation MSVAsyncBlockOperation
 
-- (void)setCancellationHandler:(id)a3
+- (void)setCancellationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__MSVAsyncBlockOperation_setCancellationHandler___block_invoke;
   v7[3] = &unk_1E7982B00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -64,11 +64,11 @@ uint64_t __45__MSVAsyncBlockOperation_cancellationHandler__block_invoke(uint64_t
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v4.receiver = self;
   v4.super_class = MSVAsyncBlockOperation;
-  [(MSVAsyncOperation *)&v4 finishWithError:a3];
+  [(MSVAsyncOperation *)&v4 finishWithError:error];
   [(MSVAsyncBlockOperation *)self setCancellationHandler:0];
 }
 
@@ -77,17 +77,17 @@ uint64_t __45__MSVAsyncBlockOperation_cancellationHandler__block_invoke(uint64_t
   v5.receiver = self;
   v5.super_class = MSVAsyncBlockOperation;
   [(MSVAsyncBlockOperation *)&v5 cancel];
-  v3 = [(MSVAsyncBlockOperation *)self cancellationHandler];
-  v4 = v3;
-  if (v3)
+  cancellationHandler = [(MSVAsyncBlockOperation *)self cancellationHandler];
+  v4 = cancellationHandler;
+  if (cancellationHandler)
   {
-    (*(v3 + 16))(v3);
+    (*(cancellationHandler + 16))(cancellationHandler);
   }
 }
 
-- (MSVAsyncBlockOperation)initWithStartHandler:(id)a3
+- (MSVAsyncBlockOperation)initWithStartHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = MSVAsyncBlockOperation;
   v5 = [(MSVAsyncOperation *)&v11 init];
@@ -97,7 +97,7 @@ uint64_t __45__MSVAsyncBlockOperation_cancellationHandler__block_invoke(uint64_t
     accessQueue = v5->_accessQueue;
     v5->_accessQueue = v6;
 
-    v8 = MEMORY[0x1B26EC6C0](v4);
+    v8 = MEMORY[0x1B26EC6C0](handlerCopy);
     startHandler = v5->_startHandler;
     v5->_startHandler = v8;
   }

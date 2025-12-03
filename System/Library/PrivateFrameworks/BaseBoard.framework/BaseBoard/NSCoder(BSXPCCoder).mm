@@ -12,10 +12,10 @@
 
 - (void)encodeCollection:()BSXPCCoder forKey:
 {
-  v6 = [a3 objectEnumerator];
-  v7 = [v6 allObjects];
+  objectEnumerator = [a3 objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  [a1 encodeObject:v7 forKey:a4];
+  [self encodeObject:allObjects forKey:a4];
 }
 
 - (void)encodeStruct:()BSXPCCoder withObjCType:forKey:
@@ -34,7 +34,7 @@
       v21 = 2114;
       v22 = v12;
       v23 = 2048;
-      v24 = a1;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = @"BSXPCCoder.m";
       v27 = 1024;
@@ -63,7 +63,7 @@
       v21 = 2114;
       v22 = v17;
       v23 = 2048;
-      v24 = a1;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = @"BSXPCCoder.m";
       v27 = 1024;
@@ -83,7 +83,7 @@
   if (objc_opt_isKindOfClass())
   {
     v19 = [MEMORY[0x1E696B098] valueWithBytes:a3 objCType:a4];
-    [a1 encodeObject:? forKey:?];
+    [self encodeObject:? forKey:?];
   }
 
   else
@@ -92,14 +92,14 @@
     *sizep = 0;
     NSGetSizeAndAlignment(a4, sizep, 0);
     v19 = [v8 dataWithBytes:a3 length:*sizep];
-    [a1 encodeObject:? forKey:?];
+    [self encodeObject:? forKey:?];
   }
 }
 
 - (id)decodeCollectionOfClass:()BSXPCCoder containingClass:forKey:
 {
   v8 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), a4, 0}];
-  v9 = [a1 decodeObjectOfClasses:v8 forKey:a5];
+  v9 = [self decodeObjectOfClasses:v8 forKey:a5];
 
   if ([v9 isNSArray])
   {
@@ -118,7 +118,7 @@
 {
   v5 = objc_opt_class();
 
-  return [a1 decodeObjectOfClass:v5 forKey:a3];
+  return [self decodeObjectOfClass:v5 forKey:a3];
 }
 
 - (id)decodeDictionaryOfClass:()BSXPCCoder forKey:
@@ -126,7 +126,7 @@
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), a3, 0}];
-  v10 = [a1 decodeObjectOfClasses:v9 forKey:a4];
+  v10 = [self decodeObjectOfClasses:v9 forKey:a4];
 
   return v10;
 }
@@ -143,8 +143,8 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"BSXPCCoder.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"bytes != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"bytes != NULL"}];
 
     if (a4)
     {
@@ -152,11 +152,11 @@
     }
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:a1 file:@"BSXPCCoder.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"encoding != NULL"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"encoding != NULL"}];
 
 LABEL_3:
-  v10 = [a1 decodeValueWithObjCType:a4 forKey:a5];
+  v10 = [self decodeValueWithObjCType:a4 forKey:a5];
   if (v10)
   {
     sizep = 0;
@@ -171,31 +171,31 @@ LABEL_3:
 {
   if (!a3)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"BSXPCCoder.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"encoding != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"encoding != NULL"}];
   }
 
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [a1 decodeObjectOfClasses:v10 forKey:a4];
+  v11 = [self decodeObjectOfClasses:v10 forKey:a4];
 
   if (v11)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      currentHandler3 = v11;
       sizep = 0;
       NSGetSizeAndAlignment(a3, &sizep, 0);
       v13 = sizep;
-      if (v13 != [v12 length])
+      if (v13 != [currentHandler3 length])
       {
-        v17 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v17 handleFailureInMethod:a2 object:a1 file:@"BSXPCCoder.m" lineNumber:138 description:{@"Decoded NSData for %@ does not match expected encoding %s (%lu vs %lu)", a4, a3, v13, objc_msgSend(v12, "length")}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:138 description:{@"Decoded NSData for %@ does not match expected encoding %s (%lu vs %lu)", a4, a3, v13, objc_msgSend(currentHandler3, "length")}];
       }
 
-      v14 = [MEMORY[0x1E696B098] valueWithBytes:objc_msgSend(v12 objCType:{"bytes"), a3}];
+      v14 = [MEMORY[0x1E696B098] valueWithBytes:objc_msgSend(currentHandler3 objCType:{"bytes"), a3}];
 
       v11 = v14;
       goto LABEL_8;
@@ -203,8 +203,8 @@ LABEL_3:
 
     if (strcmp(a3, [v11 objCType]))
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:a1 file:@"BSXPCCoder.m" lineNumber:141 description:{@"Decoded NSValue for %@ does not match expected encoding %s", a4, a3}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:141 description:{@"Decoded NSValue for %@ does not match expected encoding %s", a4, a3}];
 LABEL_8:
     }
   }

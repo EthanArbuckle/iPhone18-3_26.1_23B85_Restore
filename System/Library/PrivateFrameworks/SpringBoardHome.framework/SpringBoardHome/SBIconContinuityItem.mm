@@ -1,25 +1,25 @@
 @interface SBIconContinuityItem
-+ (SBIconContinuityItem)itemWithBadgeType:(int64_t)a3 deviceTypeIdentifier:(id)a4;
-+ (id)_resolvedItemForExplicitBadgeType:(int64_t)a3 deviceTypeIdentifier:(id)a4;
-+ (id)itemForBadgeTypeString:(id)a3 deviceTypeIdentifier:(id)a4;
-+ (id)itemForContinuityInfo:(id)a3;
-+ (int64_t)_continuityBadgeTypeForNSString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (SBIconContinuityItem)itemWithBadgeType:(int64_t)type deviceTypeIdentifier:(id)identifier;
++ (id)_resolvedItemForExplicitBadgeType:(int64_t)type deviceTypeIdentifier:(id)identifier;
++ (id)itemForBadgeTypeString:(id)string deviceTypeIdentifier:(id)identifier;
++ (id)itemForContinuityInfo:(id)info;
++ (int64_t)_continuityBadgeTypeForNSString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (SBIconContinuityItem)init;
-- (SBIconContinuityItem)initWithBadgeType:(int64_t)a3 systemImageName:(id)a4;
+- (SBIconContinuityItem)initWithBadgeType:(int64_t)type systemImageName:(id)name;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SBIconContinuityItem
 
-+ (id)itemForContinuityInfo:(id)a3
++ (id)itemForContinuityInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    if ([v4 isLocationBasedSuggestion])
+    if ([infoCopy isLocationBasedSuggestion])
     {
       v6 = 5;
     }
@@ -49,8 +49,8 @@
       v6 = 0;
     }
 
-    v8 = [v5 originatingDeviceType];
-    v7 = [a1 _resolvedItemForExplicitBadgeType:v6 deviceTypeIdentifier:v8];
+    originatingDeviceType = [v5 originatingDeviceType];
+    v7 = [self _resolvedItemForExplicitBadgeType:v6 deviceTypeIdentifier:originatingDeviceType];
   }
 
   else
@@ -61,30 +61,30 @@
   return v7;
 }
 
-+ (SBIconContinuityItem)itemWithBadgeType:(int64_t)a3 deviceTypeIdentifier:(id)a4
++ (SBIconContinuityItem)itemWithBadgeType:(int64_t)type deviceTypeIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 1 && !v6)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (type == 1 && !identifierCopy)
   {
     NSLog(&cfstr_Sbiconcontinui.isa);
   }
 
-  v8 = [a1 _resolvedItemForExplicitBadgeType:a3 deviceTypeIdentifier:v7];
+  v8 = [self _resolvedItemForExplicitBadgeType:type deviceTypeIdentifier:v7];
 
   return v8;
 }
 
-- (SBIconContinuityItem)initWithBadgeType:(int64_t)a3 systemImageName:(id)a4
+- (SBIconContinuityItem)initWithBadgeType:(int64_t)type systemImageName:(id)name
 {
-  v8 = a4;
-  if (!a3)
+  nameCopy = name;
+  if (!type)
   {
     [SBIconContinuityItem initWithBadgeType:a2 systemImageName:?];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = nameCopy;
+  if (!nameCopy)
   {
     [SBIconContinuityItem initWithBadgeType:a2 systemImageName:?];
   }
@@ -95,8 +95,8 @@
   v11 = v10;
   if (v10)
   {
-    v10->_badgeType = a3;
-    objc_storeStrong(&v10->_systemImageName, a4);
+    v10->_badgeType = type;
+    objc_storeStrong(&v10->_systemImageName, name);
   }
 
   return v11;
@@ -115,7 +115,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"SBIconContinuityItem.m";
     v17 = 1024;
@@ -131,132 +131,132 @@
   return result;
 }
 
-+ (id)itemForBadgeTypeString:(id)a3 deviceTypeIdentifier:(id)a4
++ (id)itemForBadgeTypeString:(id)string deviceTypeIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a1 itemWithBadgeType:objc_msgSend(a1 deviceTypeIdentifier:{"_continuityBadgeTypeForNSString:", a3), v6}];
+  identifierCopy = identifier;
+  v7 = [self itemWithBadgeType:objc_msgSend(self deviceTypeIdentifier:{"_continuityBadgeTypeForNSString:", string), identifierCopy}];
 
   return v7;
 }
 
-+ (id)_resolvedItemForExplicitBadgeType:(int64_t)a3 deviceTypeIdentifier:(id)a4
++ (id)_resolvedItemForExplicitBadgeType:(int64_t)type deviceTypeIdentifier:(id)identifier
 {
-  v6 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v17 = 0;
-    v7 = [MEMORY[0x1E69A8A40] symbolForTypeIdentifier:v6 withResolutionStrategy:1 variantOptions:1 error:&v17];
+    v7 = [MEMORY[0x1E69A8A40] symbolForTypeIdentifier:identifierCopy withResolutionStrategy:1 variantOptions:1 error:&v17];
     v8 = v17;
     if (v7)
     {
-      v9 = [v7 name];
+      name = [v7 name];
 LABEL_6:
 
-      a3 = 1;
+      type = 1;
       goto LABEL_23;
     }
 
-    if ([v6 isEqualToString:@"com.apple.mac"])
+    if ([identifierCopy isEqualToString:@"com.apple.mac"])
     {
-      v9 = @"display";
+      name = @"display";
       goto LABEL_6;
     }
 
     v10 = SBLogContinuity();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [SBIconContinuityItem _resolvedItemForExplicitBadgeType:v6 deviceTypeIdentifier:v10];
+      [SBIconContinuityItem _resolvedItemForExplicitBadgeType:identifierCopy deviceTypeIdentifier:v10];
     }
   }
 
-  if (a3 > 3)
+  if (type > 3)
   {
     v12 = @"airpods";
     v13 = @"location.fill";
     v15 = @"alarm";
-    if (a3 != 6)
+    if (type != 6)
     {
       v15 = 0;
     }
 
-    if (a3 != 5)
+    if (type != 5)
     {
       v13 = v15;
     }
 
-    v14 = a3 == 4;
+    v14 = type == 4;
   }
 
   else
   {
     v11 = 0;
-    if (a3 < 2)
+    if (type < 2)
     {
       goto LABEL_24;
     }
 
     v12 = @"headphones";
     v13 = @"bluetooth";
-    if (a3 != 3)
+    if (type != 3)
     {
       v13 = 0;
     }
 
-    v14 = a3 == 2;
+    v14 = type == 2;
   }
 
   if (v14)
   {
-    v9 = v12;
+    name = v12;
   }
 
   else
   {
-    v9 = v13;
+    name = v13;
   }
 
 LABEL_23:
-  v11 = [[a1 alloc] initWithBadgeType:a3 systemImageName:v9];
+  v11 = [[self alloc] initWithBadgeType:type systemImageName:name];
 
 LABEL_24:
 
   return v11;
 }
 
-+ (int64_t)_continuityBadgeTypeForNSString:(id)a3
++ (int64_t)_continuityBadgeTypeForNSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SBIconContinuityBadgeTypeNone"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"SBIconContinuityBadgeTypeNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SBIconContinuityBadgeTypeDevice"])
+  else if ([stringCopy isEqualToString:@"SBIconContinuityBadgeTypeDevice"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SBIconContinuityBadgeTypeAUX"])
+  else if ([stringCopy isEqualToString:@"SBIconContinuityBadgeTypeAUX"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SBIconContinuityBadgeTypeBluetooth"])
+  else if ([stringCopy isEqualToString:@"SBIconContinuityBadgeTypeBluetooth"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SBIconContinuityBadgeTypeHeadphones"])
+  else if ([stringCopy isEqualToString:@"SBIconContinuityBadgeTypeHeadphones"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SBIconContinuityBadgeTypeLocation"])
+  else if ([stringCopy isEqualToString:@"SBIconContinuityBadgeTypeLocation"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SBIconContinuityBadgeTypeWake"])
+  else if ([stringCopy isEqualToString:@"SBIconContinuityBadgeTypeWake"])
   {
     v4 = 6;
   }
@@ -269,10 +269,10 @@ LABEL_24:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -284,12 +284,12 @@ LABEL_24:
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(SBIconContinuityItem *)self badgeType];
-      if (v8 == [(SBIconContinuityItem *)v7 badgeType])
+      v7 = equalCopy;
+      badgeType = [(SBIconContinuityItem *)self badgeType];
+      if (badgeType == [(SBIconContinuityItem *)v7 badgeType])
       {
-        v9 = [(SBIconContinuityItem *)self systemImageName];
-        v10 = [(SBIconContinuityItem *)v7 systemImageName];
+        systemImageName = [(SBIconContinuityItem *)self systemImageName];
+        systemImageName2 = [(SBIconContinuityItem *)v7 systemImageName];
         v11 = BSEqualObjects();
       }
 
@@ -310,11 +310,11 @@ LABEL_24:
 
 - (unint64_t)hash
 {
-  v3 = [(SBIconContinuityItem *)self badgeType];
-  v4 = [(SBIconContinuityItem *)self systemImageName];
-  v5 = [v4 hash];
+  badgeType = [(SBIconContinuityItem *)self badgeType];
+  systemImageName = [(SBIconContinuityItem *)self systemImageName];
+  v5 = [systemImageName hash];
 
-  return v5 ^ v3;
+  return v5 ^ badgeType;
 }
 
 - (id)description
@@ -332,8 +332,8 @@ LABEL_24:
     v6 = off_1E808A390[v5];
   }
 
-  v7 = [(SBIconContinuityItem *)self systemImageName];
-  v8 = [v3 stringWithFormat:@"<%@: %p badgeType: %@, systemImageName: %@>", v4, self, v6, v7];;
+  systemImageName = [(SBIconContinuityItem *)self systemImageName];
+  v8 = [v3 stringWithFormat:@"<%@: %p badgeType: %@, systemImageName: %@>", v4, self, v6, systemImageName];;
 
   return v8;
 }

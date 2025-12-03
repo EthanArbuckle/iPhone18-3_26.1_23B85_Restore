@@ -1,33 +1,33 @@
 @interface FLOWSchemaFLOWDomainExecutionStarted
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWDomainExecutionStarted)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWDomainExecutionStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWDomainExecutionStarted)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWDomainExecutionStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWDomainExecutionStarted
 
-- (FLOWSchemaFLOWDomainExecutionStarted)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWDomainExecutionStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = FLOWSchemaFLOWDomainExecutionStarted;
   v5 = [(FLOWSchemaFLOWDomainExecutionStarted *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"domainExecutionType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"domainExecutionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWDomainExecutionStarted setDomainExecutionType:](v5, "setDomainExecutionType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"domainExecutionMetadata"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"domainExecutionMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWDomainExecutionStarted)initWithJSON:(id)a3
+- (FLOWSchemaFLOWDomainExecutionStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWDomainExecutionStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWDomainExecutionStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWDomainExecutionStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,88 +77,88 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_domainExecutionMetadata)
   {
-    v4 = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    domainExecutionMetadata = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
+    dictionaryRepresentation = [domainExecutionMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"domainExecutionMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"domainExecutionMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"domainExecutionMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"domainExecutionMetadata"];
     }
   }
 
   if (*&self->_has)
   {
-    v7 = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionType];
+    domainExecutionType = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionType];
     v8 = @"FLOWDOMAINEXECUTIONTYPE_UNKNOWN";
-    if (v7 <= 399)
+    if (domainExecutionType <= 399)
     {
-      if (v7 <= 202)
+      if (domainExecutionType <= 202)
       {
         v10 = @"FLOWDOMAINEXECUTIONTYPE_HOME_AUTOMATION_NL_INTENT_CONVERTER";
         v18 = @"FLOWDOMAINEXECUTIONTYPE_HOME_AUTOMATION_ININTENT_CONVERTER";
-        if (v7 != 202)
+        if (domainExecutionType != 202)
         {
           v18 = @"FLOWDOMAINEXECUTIONTYPE_UNKNOWN";
         }
 
-        if (v7 != 201)
+        if (domainExecutionType != 201)
         {
           v10 = v18;
         }
 
         v19 = @"FLOWDOMAINEXECUTIONTYPE_MESSAGE_NOW_PLAYING_QUEUE_FETCH";
         v20 = @"FLOWDOMAINEXECUTIONTYPE_HOME_AUTOMATION_INTENT_SELECTION";
-        if (v7 != 200)
+        if (domainExecutionType != 200)
         {
           v20 = @"FLOWDOMAINEXECUTIONTYPE_UNKNOWN";
         }
 
-        if (v7 != 104)
+        if (domainExecutionType != 104)
         {
           v19 = v20;
         }
 
-        if (v7 <= 200)
+        if (domainExecutionType <= 200)
         {
           v10 = v19;
         }
 
         v21 = @"FLOWDOMAINEXECUTIONTYPE_MESSAGE_ONE_SHOT_AUTO_PUNCTUATION_CESRFORMATTER";
         v22 = @"FLOWDOMAINEXECUTIONTYPE_MESSAGE_WFON_SCREEN_CONTENT_EXTRACTION";
-        if (v7 != 103)
+        if (domainExecutionType != 103)
         {
           v22 = @"FLOWDOMAINEXECUTIONTYPE_UNKNOWN";
         }
 
-        if (v7 != 102)
+        if (domainExecutionType != 102)
         {
           v21 = v22;
         }
 
-        if (v7 == 101)
+        if (domainExecutionType == 101)
         {
           v8 = @"FLOWDOMAINEXECUTIONTYPE_MESSAGE_SHARING_LINK_PRESENTATION";
         }
 
-        if (v7 == 100)
+        if (domainExecutionType == 100)
         {
           v8 = @"FLOWDOMAINEXECUTIONTYPE_MESSAGE_READ_ACTION_SPEECH_API";
         }
 
-        if (v7 > 101)
+        if (domainExecutionType > 101)
         {
           v8 = v21;
         }
 
-        v17 = v7 <= 103;
+        v17 = domainExecutionType <= 103;
       }
 
       else
@@ -166,66 +166,66 @@
         v10 = @"FLOWDOMAINEXECUTIONTYPE_PHONE_RESOLVE_CRR";
         v11 = @"FLOWDOMAINEXECUTIONTYPE_PHONE_FACETIME_MESSAGE";
         v12 = @"FLOWDOMAINEXECUTIONTYPE_PHONE_RESOLVE_SRR";
-        if (v7 != 302)
+        if (domainExecutionType != 302)
         {
           v12 = @"FLOWDOMAINEXECUTIONTYPE_UNKNOWN";
         }
 
-        if (v7 != 301)
+        if (domainExecutionType != 301)
         {
           v11 = v12;
         }
 
-        if (v7 != 300)
+        if (domainExecutionType != 300)
         {
           v10 = v11;
         }
 
         v13 = @"FLOWDOMAINEXECUTIONTYPE_HOME_AUTOMATION_MODIFYING_INTENT";
         v14 = @"FLOWDOMAINEXECUTIONTYPE_HOME_AUTOMATION_BLOCKING_INTENT";
-        if (v7 != 208)
+        if (domainExecutionType != 208)
         {
           v14 = @"FLOWDOMAINEXECUTIONTYPE_UNKNOWN";
         }
 
-        if (v7 != 207)
+        if (domainExecutionType != 207)
         {
           v13 = v14;
         }
 
-        if (v7 <= 299)
+        if (domainExecutionType <= 299)
         {
           v10 = v13;
         }
 
         v15 = @"FLOWDOMAINEXECUTIONTYPE_HOME_AUTOMATION_SEND_HOMEKIT_COMMAND_CONFIGURE";
         v16 = @"FLOWDOMAINEXECUTIONTYPE_HOME_AUTOMATION_NATIVE_HOME_STORE_INITIALIZATION";
-        if (v7 != 206)
+        if (domainExecutionType != 206)
         {
           v16 = @"FLOWDOMAINEXECUTIONTYPE_UNKNOWN";
         }
 
-        if (v7 != 205)
+        if (domainExecutionType != 205)
         {
           v15 = v16;
         }
 
-        if (v7 == 204)
+        if (domainExecutionType == 204)
         {
           v8 = @"FLOWDOMAINEXECUTIONTYPE_HOME_AUTOMATION_SEND_HOMEKIT_COMMAND_ACE";
         }
 
-        if (v7 == 203)
+        if (domainExecutionType == 203)
         {
           v8 = @"FLOWDOMAINEXECUTIONTYPE_HOME_AUTOMATION_SEND_HOMEKIT_COMMAND_CONTROL";
         }
 
-        if (v7 > 204)
+        if (domainExecutionType > 204)
         {
           v8 = v15;
         }
 
-        v17 = v7 <= 206;
+        v17 = domainExecutionType <= 206;
       }
 
       if (v17)
@@ -241,7 +241,7 @@
 
     else
     {
-      switch(v7)
+      switch(domainExecutionType)
       {
         case 1000:
           v9 = @"FLOWDOMAINEXECUTIONTYPE_MEDIAPLAYER_AIRPLAY_DEVICE_SEARCH";
@@ -364,12 +364,12 @@
           v9 = @"FLOWDOMAINEXECUTIONTYPE_APPINTENT";
           break;
         default:
-          if (v7 == 401)
+          if (domainExecutionType == 401)
           {
             v8 = @"FLOWDOMAINEXECUTIONTYPE_VOICESHORTCUTS_LINK_EVENT_WAIT";
           }
 
-          if (v7 == 400)
+          if (domainExecutionType == 400)
           {
             v9 = @"FLOWDOMAINEXECUTIONTYPE_VOICESHORTCUTS_SHORTCUT_EVENT_WAIT";
           }
@@ -383,12 +383,12 @@
       }
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"domainExecutionType"];
+    [dictionary setObject:v9 forKeyedSubscript:@"domainExecutionType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -406,22 +406,22 @@
   return [(FLOWSchemaFLOWDomainExecutionMetadata *)self->_domainExecutionMetadata hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (domainExecutionType = self->_domainExecutionType, domainExecutionType == [v4 domainExecutionType]))
+      if ((*&self->_has & 1) == 0 || (domainExecutionType = self->_domainExecutionType, domainExecutionType == [equalCopy domainExecutionType]))
       {
-        v6 = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
-        v7 = [v4 domainExecutionMetadata];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        domainExecutionMetadata = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
+        domainExecutionMetadata2 = [equalCopy domainExecutionMetadata];
+        v8 = domainExecutionMetadata2;
+        if ((domainExecutionMetadata != 0) != (domainExecutionMetadata2 == 0))
         {
-          v9 = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
-          if (!v9)
+          domainExecutionMetadata3 = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
+          if (!domainExecutionMetadata3)
           {
 
 LABEL_13:
@@ -429,10 +429,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
-          v12 = [v4 domainExecutionMetadata];
-          v13 = [v11 isEqual:v12];
+          v10 = domainExecutionMetadata3;
+          domainExecutionMetadata4 = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
+          domainExecutionMetadata5 = [equalCopy domainExecutionMetadata];
+          v13 = [domainExecutionMetadata4 isEqual:domainExecutionMetadata5];
 
           if (v13)
           {
@@ -453,37 +453,37 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
+  domainExecutionMetadata = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
 
-  v5 = v7;
-  if (v4)
+  v5 = toCopy;
+  if (domainExecutionMetadata)
   {
-    v6 = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
+    domainExecutionMetadata2 = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata];
     PBDataWriterWriteSubmessage();
 
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = FLOWSchemaFLOWDomainExecutionStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(FLOWSchemaFLOWDomainExecutionStarted *)self domainExecutionMetadata:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(FLOWSchemaFLOWDomainExecutionStarted *)self deleteDomainExecutionMetadata];
   }

@@ -2,8 +2,8 @@
 - (CAMNebulaKeepAliveController)init;
 - (id)_keepAliveFilePath;
 - (void)removeKeepAliveFileIfNotKeptForAnyIdentifiers;
-- (void)startKeepAliveForIdentifier:(id)a3;
-- (void)stopKeepAliveForIdentifier:(id)a3;
+- (void)startKeepAliveForIdentifier:(id)identifier;
+- (void)stopKeepAliveForIdentifier:(id)identifier;
 @end
 
 @implementation CAMNebulaKeepAliveController
@@ -20,14 +20,14 @@
     syncQueue = v2->__syncQueue;
     v2->__syncQueue = v4;
 
-    v6 = [(CAMNebulaKeepAliveController *)v2 _syncQueue];
+    _syncQueue = [(CAMNebulaKeepAliveController *)v2 _syncQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __36__CAMNebulaKeepAliveController_init__block_invoke;
     block[3] = &unk_1E76F77B0;
     v7 = v2;
     v11 = v7;
-    dispatch_sync(v6, block);
+    dispatch_sync(_syncQueue, block);
 
     v8 = v7;
   }
@@ -48,32 +48,32 @@ uint64_t __36__CAMNebulaKeepAliveController_init__block_invoke(uint64_t a1)
 
 - (id)_keepAliveFilePath
 {
-  v3 = [MEMORY[0x1E69BF168] nebuladkeepalivepath];
-  v4 = [v3 stringByDeletingLastPathComponent];
+  nebuladkeepalivepath = [MEMORY[0x1E69BF168] nebuladkeepalivepath];
+  stringByDeletingLastPathComponent = [nebuladkeepalivepath stringByDeletingLastPathComponent];
   if (![(CAMNebulaKeepAliveController *)self _didCreateKeepAliveDirectory])
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
     [(CAMNebulaKeepAliveController *)self _setDidCreateKeepAliveDirectory:1];
   }
 
-  return v3;
+  return nebuladkeepalivepath;
 }
 
-- (void)startKeepAliveForIdentifier:(id)a3
+- (void)startKeepAliveForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(CAMNebulaKeepAliveController *)self _syncQueue];
+    _syncQueue = [(CAMNebulaKeepAliveController *)self _syncQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __60__CAMNebulaKeepAliveController_startKeepAliveForIdentifier___block_invoke;
     v6[3] = &unk_1E76F7960;
     v6[4] = self;
-    v7 = v4;
-    dispatch_sync(v5, v6);
+    v7 = identifierCopy;
+    dispatch_sync(_syncQueue, v6);
   }
 }
 
@@ -108,19 +108,19 @@ uint64_t __60__CAMNebulaKeepAliveController_startKeepAliveForIdentifier___block_
   return [*(*(a1 + 32) + 24) addObject:*(a1 + 40)];
 }
 
-- (void)stopKeepAliveForIdentifier:(id)a3
+- (void)stopKeepAliveForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(CAMNebulaKeepAliveController *)self _syncQueue];
+    _syncQueue = [(CAMNebulaKeepAliveController *)self _syncQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __59__CAMNebulaKeepAliveController_stopKeepAliveForIdentifier___block_invoke;
     v6[3] = &unk_1E76F7960;
     v6[4] = self;
-    v7 = v4;
-    dispatch_sync(v5, v6);
+    v7 = identifierCopy;
+    dispatch_sync(_syncQueue, v6);
   }
 }
 
@@ -141,13 +141,13 @@ void __59__CAMNebulaKeepAliveController_stopKeepAliveForIdentifier___block_invok
 
 - (void)removeKeepAliveFileIfNotKeptForAnyIdentifiers
 {
-  v3 = [(CAMNebulaKeepAliveController *)self _syncQueue];
+  _syncQueue = [(CAMNebulaKeepAliveController *)self _syncQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__CAMNebulaKeepAliveController_removeKeepAliveFileIfNotKeptForAnyIdentifiers__block_invoke;
   block[3] = &unk_1E76F77B0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_syncQueue, block);
 }
 
 void __77__CAMNebulaKeepAliveController_removeKeepAliveFileIfNotKeptForAnyIdentifiers__block_invoke(uint64_t a1)

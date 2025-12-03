@@ -13,7 +13,7 @@
   v5 = MEMORY[0x277CBEA60];
   v6 = a3;
   v7 = [v5 arrayWithObjects:v9 count:2];
-  [a1 markShardsWithIdentifiers:v7 options:3 completion:v6];
+  [self markShardsWithIdentifiers:v7 options:3 completion:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 }

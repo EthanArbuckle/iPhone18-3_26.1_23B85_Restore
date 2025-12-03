@@ -1,10 +1,10 @@
 @interface RAPMapState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
-- (RAPMapState)initWithMapView:(id)a3 traits:(id)a4 place:(id)a5;
-- (RAPMapState)initWithTraits:(id)a3;
-- (id)copyWithReportedPlace:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RAPMapState)initWithMapView:(id)view traits:(id)traits place:(id)place;
+- (RAPMapState)initWithTraits:(id)traits;
+- (id)copyWithReportedPlace:(id)place;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -95,10 +95,10 @@
   return v8 ^ v10 ^ [(RAPLookAroundContext *)self->_reportedLookAroundContext hash]^ self->_isShowingTraffic ^ self->_isSprMap;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v23 = 1;
   }
@@ -108,7 +108,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       isShowingLabels = self->_isShowingLabels;
       if (isShowingLabels != [(RAPMapState *)v6 isShowingLabels]|| (isShowingImagery = self->_isShowingImagery, isShowingImagery != [(RAPMapState *)v6 isShowingImagery]) || (mapZoomLevel = self->_mapZoomLevel, [(RAPMapState *)v6 mapZoomLevel], mapZoomLevel != v10) || (mapType = self->_mapType, mapType != [(RAPMapState *)v6 mapType]))
       {
@@ -119,8 +119,8 @@ LABEL_19:
       }
 
       mapRegion = self->_mapRegion;
-      v13 = [(RAPMapState *)v6 mapRegion];
-      if (![(GEOMapRegion *)mapRegion isEqual:v13])
+      mapRegion = [(RAPMapState *)v6 mapRegion];
+      if (![(GEOMapRegion *)mapRegion isEqual:mapRegion])
       {
         v23 = 0;
 LABEL_61:
@@ -129,8 +129,8 @@ LABEL_61:
       }
 
       mapVisibleTileSets = self->_mapVisibleTileSets;
-      v15 = [(RAPMapState *)v6 mapVisibleTileSets];
-      if (![(NSArray *)mapVisibleTileSets isEqual:v15])
+      mapVisibleTileSets = [(RAPMapState *)v6 mapVisibleTileSets];
+      if (![(NSArray *)mapVisibleTileSets isEqual:mapVisibleTileSets])
       {
         v23 = 0;
 LABEL_60:
@@ -139,8 +139,8 @@ LABEL_60:
       }
 
       mapCamera = self->_mapCamera;
-      v17 = [(RAPMapState *)v6 mapCamera];
-      if (![(MKMapCamera *)mapCamera isEqual:v17])
+      mapCamera = [(RAPMapState *)v6 mapCamera];
+      if (![(MKMapCamera *)mapCamera isEqual:mapCamera])
       {
         v23 = 0;
 LABEL_59:
@@ -149,8 +149,8 @@ LABEL_59:
       }
 
       traits = self->_traits;
-      v19 = [(RAPMapState *)v6 traits];
-      if (![(GEOMapServiceTraits *)traits isEqual:v19])
+      traits = [(RAPMapState *)v6 traits];
+      if (![(GEOMapServiceTraits *)traits isEqual:traits])
       {
         v23 = 0;
 LABEL_58:
@@ -162,20 +162,20 @@ LABEL_58:
       v21 = reportedPlace;
       if (!reportedPlace)
       {
-        v22 = [(RAPMapState *)v6 reportedPlace];
-        if (!v22)
+        reportedPlace = [(RAPMapState *)v6 reportedPlace];
+        if (!reportedPlace)
         {
           v40 = 0;
           v43 = 0;
           goto LABEL_27;
         }
 
-        v40 = v22;
+        v40 = reportedPlace;
         v21 = self->_reportedPlace;
       }
 
-      v3 = [(RAPMapState *)v6 reportedPlace];
-      if (![(RAPPlace *)v21 isEqual:v3])
+      reportedPlace2 = [(RAPMapState *)v6 reportedPlace];
+      if (![(RAPPlace *)v21 isEqual:reportedPlace2])
       {
         v23 = 0;
         goto LABEL_55;
@@ -187,20 +187,20 @@ LABEL_27:
       v42 = reportedLine;
       if (!reportedLine)
       {
-        v26 = [(RAPMapState *)v6 reportedLine];
-        if (!v26)
+        reportedLine = [(RAPMapState *)v6 reportedLine];
+        if (!reportedLine)
         {
-          v39 = v3;
+          v39 = reportedPlace2;
           v37 = 0;
           v38 = 0;
           goto LABEL_34;
         }
 
-        v37 = v26;
+        v37 = reportedLine;
         reportedLine = self->_reportedLine;
       }
 
-      v41 = [(RAPMapState *)v6 reportedLine];
+      reportedLine2 = [(RAPMapState *)v6 reportedLine];
       if (![(RAPTransitLine *)reportedLine isEqual:?])
       {
         v23 = 0;
@@ -209,33 +209,33 @@ LABEL_50:
         goto LABEL_53;
       }
 
-      v39 = v3;
+      v39 = reportedPlace2;
       v38 = 1;
 LABEL_34:
       reportedLookAroundContext = self->_reportedLookAroundContext;
       v28 = reportedLookAroundContext;
       if (!reportedLookAroundContext)
       {
-        v29 = [(RAPMapState *)v6 reportedLookAroundContext];
-        if (!v29)
+        reportedLookAroundContext = [(RAPMapState *)v6 reportedLookAroundContext];
+        if (!reportedLookAroundContext)
         {
           v35 = 0;
           v36 = 0;
           goto LABEL_41;
         }
 
-        v35 = v29;
+        v35 = reportedLookAroundContext;
         v28 = self->_reportedLookAroundContext;
       }
 
-      v30 = [(RAPMapState *)v6 reportedLookAroundContext];
-      if (v28 != v30)
+      reportedLookAroundContext2 = [(RAPMapState *)v6 reportedLookAroundContext];
+      if (v28 != reportedLookAroundContext2)
       {
         v23 = 0;
         goto LABEL_46;
       }
 
-      v33 = v30;
+      v33 = reportedLookAroundContext2;
       v36 = 1;
 LABEL_41:
       isShowingTraffic = self->_isShowingTraffic;
@@ -251,7 +251,7 @@ LABEL_47:
             if (v38)
             {
 LABEL_49:
-              v3 = v39;
+              reportedPlace2 = v39;
               goto LABEL_50;
             }
           }
@@ -265,7 +265,7 @@ LABEL_49:
             }
           }
 
-          v3 = v39;
+          reportedPlace2 = v39;
 LABEL_53:
           if (v42)
           {
@@ -304,7 +304,7 @@ LABEL_55:
         }
       }
 
-      v30 = v34;
+      reportedLookAroundContext2 = v34;
 LABEL_46:
 
       goto LABEL_47;
@@ -318,45 +318,45 @@ LABEL_20:
   return v23;
 }
 
-- (id)copyWithReportedPlace:(id)a3
+- (id)copyWithReportedPlace:(id)place
 {
-  v4 = a3;
+  placeCopy = place;
   v5 = [(RAPMapState *)self copyWithZone:0];
   v6 = v5[2];
-  v5[2] = v4;
+  v5[2] = placeCopy;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_mapSnapshotImageData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_mapSnapshotImageData copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
   *(v5 + 9) = self->_isShowingImagery;
   *(v5 + 8) = self->_isShowingLabels;
   *(v5 + 6) = *&self->_mapZoomLevel;
-  v8 = [(GEOMapRegion *)self->_mapRegion copyWithZone:a3];
+  v8 = [(GEOMapRegion *)self->_mapRegion copyWithZone:zone];
   v9 = *(v5 + 5);
   *(v5 + 5) = v8;
 
   *(v5 + 7) = self->_mapType;
-  v10 = [(NSArray *)self->_mapVisibleTileSets copyWithZone:a3];
+  v10 = [(NSArray *)self->_mapVisibleTileSets copyWithZone:zone];
   v11 = *(v5 + 9);
   *(v5 + 9) = v10;
 
-  v12 = [(MKMapCamera *)self->_mapCamera copyWithZone:a3];
+  v12 = [(MKMapCamera *)self->_mapCamera copyWithZone:zone];
   v13 = *(v5 + 10);
   *(v5 + 10) = v12;
 
-  v14 = [(GEOMapServiceTraits *)self->_traits copyWithZone:a3];
+  v14 = [(GEOMapServiceTraits *)self->_traits copyWithZone:zone];
   v15 = *(v5 + 4);
   *(v5 + 4) = v14;
 
   objc_storeStrong(v5 + 2, self->_reportedPlace);
-  v16 = [(RAPTransitLine *)self->_reportedLine copyWithZone:a3];
+  v16 = [(RAPTransitLine *)self->_reportedLine copyWithZone:zone];
   v17 = *(v5 + 3);
   *(v5 + 3) = v16;
 
@@ -366,52 +366,52 @@ LABEL_20:
   return v5;
 }
 
-- (RAPMapState)initWithMapView:(id)a3 traits:(id)a4 place:(id)a5
+- (RAPMapState)initWithMapView:(id)view traits:(id)traits place:(id)place
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  traitsCopy = traits;
+  placeCopy = place;
   v20.receiver = self;
   v20.super_class = RAPMapState;
   v11 = [(RAPMapState *)&v20 init];
   if (v11)
   {
-    v11->_isShowingImagery = [v8 isShowingImagery];
-    v11->_isShowingLabels = ([v8 mapType] & 0xFFFFFFFFFFFFFFFDLL) != 1;
-    [v8 _zoomLevel];
+    v11->_isShowingImagery = [viewCopy isShowingImagery];
+    v11->_isShowingLabels = ([viewCopy mapType] & 0xFFFFFFFFFFFFFFFDLL) != 1;
+    [viewCopy _zoomLevel];
     v11->_mapZoomLevel = v12;
-    v13 = [v8 mapRegion];
+    mapRegion = [viewCopy mapRegion];
     mapRegion = v11->_mapRegion;
-    v11->_mapRegion = v13;
+    v11->_mapRegion = mapRegion;
 
-    v11->_mapType = [v8 mapType];
-    v11->_isShowingTraffic = [v8 showsTraffic];
-    v11->_isSprMap = [v8 _isShowingCuratedElevatedGround];
-    v15 = [v8 _visibleTileSets];
+    v11->_mapType = [viewCopy mapType];
+    v11->_isShowingTraffic = [viewCopy showsTraffic];
+    v11->_isSprMap = [viewCopy _isShowingCuratedElevatedGround];
+    _visibleTileSets = [viewCopy _visibleTileSets];
     mapVisibleTileSets = v11->_mapVisibleTileSets;
-    v11->_mapVisibleTileSets = v15;
+    v11->_mapVisibleTileSets = _visibleTileSets;
 
-    v17 = [v8 camera];
+    camera = [viewCopy camera];
     mapCamera = v11->_mapCamera;
-    v11->_mapCamera = v17;
+    v11->_mapCamera = camera;
 
-    objc_storeStrong(&v11->_traits, a4);
-    objc_storeStrong(&v11->_reportedPlace, a5);
+    objc_storeStrong(&v11->_traits, traits);
+    objc_storeStrong(&v11->_reportedPlace, place);
   }
 
   return v11;
 }
 
-- (RAPMapState)initWithTraits:(id)a3
+- (RAPMapState)initWithTraits:(id)traits
 {
-  v5 = a3;
+  traitsCopy = traits;
   v9.receiver = self;
   v9.super_class = RAPMapState;
   v6 = [(RAPMapState *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_traits, a3);
+    objc_storeStrong(&v6->_traits, traits);
   }
 
   return v7;

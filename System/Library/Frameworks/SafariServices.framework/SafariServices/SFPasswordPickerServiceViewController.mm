@@ -1,53 +1,53 @@
 @interface SFPasswordPickerServiceViewController
-+ (BOOL)_shouldRestoreStateForAutoFillForAppID:(id)a3;
-+ (void)_rememberStateForAutoFillWithSearchQuery:(id)a3 savedAccount:(id)a4;
-+ (void)_restoreStateForAutoFillToAccountPickerConfiguration:(id)a3 isForFillingIndividualAccountFields:(BOOL)a4;
++ (BOOL)_shouldRestoreStateForAutoFillForAppID:(id)d;
++ (void)_rememberStateForAutoFillWithSearchQuery:(id)query savedAccount:(id)account;
++ (void)_restoreStateForAutoFillToAccountPickerConfiguration:(id)configuration isForFillingIndividualAccountFields:(BOOL)fields;
 - (BOOL)_isConfiguredForSystemAutoFill;
-- (SFPasswordPickerServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_actionForPresentingPasswordManagerExtension:(id)a3;
+- (SFPasswordPickerServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_actionForPresentingPasswordManagerExtension:(id)extension;
 - (id)_context;
-- (id)authenticationMessageForContext:(id)a3;
-- (id)passcodePromptForContext:(id)a3;
-- (void)_authenticateAndSetPresentCredentialsHandlerWithSavedAccountContext:(id)a3 completionHandler:(id)a4;
-- (void)_authenticateToViewOtherPasswordsWithCompletion:(id)a3;
+- (id)authenticationMessageForContext:(id)context;
+- (id)passcodePromptForContext:(id)context;
+- (void)_authenticateAndSetPresentCredentialsHandlerWithSavedAccountContext:(id)context completionHandler:(id)handler;
+- (void)_authenticateToViewOtherPasswordsWithCompletion:(id)completion;
 - (void)_dismiss;
-- (void)_fillCredential:(id)a3 needsAuthentication:(BOOL)a4;
-- (void)_presentCredentialListForExtension:(id)a3;
-- (void)_sendCredentialToClient:(id)a3 needsAuthentication:(BOOL)a4;
-- (void)_sendCredentialToClientAndDismiss:(id)a3 providerBundleIdentifier:(id)a4;
-- (void)accountPickerViewController:(id)a3 fillPasswordForSavedAccount:(id)a4;
-- (void)accountPickerViewController:(id)a3 fillText:(id)a4;
-- (void)accountPickerViewController:(id)a3 fillText:(id)a4 forSavedAccount:(id)a5;
-- (void)accountPickerViewController:(id)a3 fillUsernameForSavedAccount:(id)a4;
-- (void)accountPickerViewController:(id)a3 fillVerificationCode:(id)a4;
-- (void)accountPickerViewController:(id)a3 fillVerificationCodeForSavedAccount:(id)a4;
-- (void)credentialAuthenticationViewController:(id)a3 didFinishWithCredential:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)credentialAuthenticationViewController:(id)a3 didFinishWithPasskeyAssertionCredential:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)credentialListViewController:(id)a3 didFinishWithCredential:(id)a4 completion:(id)a5;
-- (void)credentialListViewController:(id)a3 didFinishWithPasskeyAssertionCredential:(id)a4 completion:(id)a5;
-- (void)credentialListViewController:(id)a3 didFinishWithText:(id)a4 completion:(id)a5;
-- (void)setAuthenticationGracePeriod:(double)a3;
-- (void)setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:(id)a3;
-- (void)setPageID:(id)a3 frameID:(id)a4 credentialType:(id)a5;
-- (void)setRemoteAppID:(id)a3;
-- (void)setRemoteLocalizedAppName:(id)a3;
-- (void)setRemoteUnlocalizedAppName:(id)a3;
-- (void)setSystemAutoFillDocumentTraits:(id)a3;
-- (void)setWebViewURL:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)_fillCredential:(id)credential needsAuthentication:(BOOL)authentication;
+- (void)_presentCredentialListForExtension:(id)extension;
+- (void)_sendCredentialToClient:(id)client needsAuthentication:(BOOL)authentication;
+- (void)_sendCredentialToClientAndDismiss:(id)dismiss providerBundleIdentifier:(id)identifier;
+- (void)accountPickerViewController:(id)controller fillPasswordForSavedAccount:(id)account;
+- (void)accountPickerViewController:(id)controller fillText:(id)text;
+- (void)accountPickerViewController:(id)controller fillText:(id)text forSavedAccount:(id)account;
+- (void)accountPickerViewController:(id)controller fillUsernameForSavedAccount:(id)account;
+- (void)accountPickerViewController:(id)controller fillVerificationCode:(id)code;
+- (void)accountPickerViewController:(id)controller fillVerificationCodeForSavedAccount:(id)account;
+- (void)credentialAuthenticationViewController:(id)controller didFinishWithCredential:(id)credential error:(id)error completion:(id)completion;
+- (void)credentialAuthenticationViewController:(id)controller didFinishWithPasskeyAssertionCredential:(id)credential error:(id)error completion:(id)completion;
+- (void)credentialListViewController:(id)controller didFinishWithCredential:(id)credential completion:(id)completion;
+- (void)credentialListViewController:(id)controller didFinishWithPasskeyAssertionCredential:(id)credential completion:(id)completion;
+- (void)credentialListViewController:(id)controller didFinishWithText:(id)text completion:(id)completion;
+- (void)setAuthenticationGracePeriod:(double)period;
+- (void)setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:(id)domains;
+- (void)setPageID:(id)d frameID:(id)iD credentialType:(id)type;
+- (void)setRemoteAppID:(id)d;
+- (void)setRemoteLocalizedAppName:(id)name;
+- (void)setRemoteUnlocalizedAppName:(id)name;
+- (void)setSystemAutoFillDocumentTraits:(id)traits;
+- (void)setWebViewURL:(id)l;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SFPasswordPickerServiceViewController
 
-- (id)authenticationMessageForContext:(id)a3
+- (id)authenticationMessageForContext:(id)context
 {
   v3 = +[SFAutoFillAuthenticationUtilities customAuthenticationTitleForFillingSavedPassword];
 
   return v3;
 }
 
-- (id)passcodePromptForContext:(id)a3
+- (id)passcodePromptForContext:(id)context
 {
   v3 = +[SFAutoFillAuthenticationUtilities passcodePromptForFillingSavedAccount];
 
@@ -72,16 +72,16 @@
   return v6;
 }
 
-- (SFPasswordPickerServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SFPasswordPickerServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v18.receiver = self;
   v18.super_class = SFPasswordPickerServiceViewController;
-  v4 = [(SFPasswordPickerServiceViewController *)&v18 initWithNibName:a3 bundle:a4];
+  v4 = [(SFPasswordPickerServiceViewController *)&v18 initWithNibName:name bundle:bundle];
   if (v4)
   {
     objc_initWeak(&location, v4);
-    v5 = [MEMORY[0x1E69C8DE0] sharedManager];
-    [v5 addObserver:v4];
+    mEMORY[0x1E69C8DE0] = [MEMORY[0x1E69C8DE0] sharedManager];
+    [mEMORY[0x1E69C8DE0] addObserver:v4];
 
     v6 = objc_alloc_init(MEMORY[0x1E69C8818]);
     authenticationServicesAgentProxy = v4->_authenticationServicesAgentProxy;
@@ -115,26 +115,26 @@ void __64__SFPasswordPickerServiceViewController_initWithNibName_bundle___block_
   [WeakRetained _dismiss];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69C8DE0] sharedManager];
-  [v5 removeObserver:self];
+  disappearCopy = disappear;
+  mEMORY[0x1E69C8DE0] = [MEMORY[0x1E69C8DE0] sharedManager];
+  [mEMORY[0x1E69C8DE0] removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = SFPasswordPickerServiceViewController;
-  [(SFPasswordPickerServiceViewController *)&v6 viewWillDisappear:v3];
+  [(SFPasswordPickerServiceViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = SFPasswordPickerServiceViewController;
-  [(SFPasswordPickerServiceViewController *)&v9 viewDidAppear:a3];
-  v4 = [(SFPasswordPickerServiceViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 _rootSheetPresentationController];
-  [v6 _setShouldScaleDownBehindDescendantSheets:0];
+  [(SFPasswordPickerServiceViewController *)&v9 viewDidAppear:appear];
+  view = [(SFPasswordPickerServiceViewController *)self view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
   presentCredentialsHandler = self->_presentCredentialsHandler;
   if (presentCredentialsHandler)
@@ -148,18 +148,18 @@ void __64__SFPasswordPickerServiceViewController_initWithNibName_bundle___block_
 - (void)_dismiss
 {
   self->_hasAuthenticationForOtherPasswords = 0;
-  v2 = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
-  [v2 willDismissServiceViewController];
+  _remoteViewControllerProxy = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy willDismissServiceViewController];
 }
 
-- (void)_authenticateToViewOtherPasswordsWithCompletion:(id)a3
+- (void)_authenticateToViewOtherPasswordsWithCompletion:(id)completion
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_hasAuthenticationForOtherPasswords)
   {
-    (v4[2])(v4, 1, 0);
+    (completionCopy[2])(completionCopy, 1, 0);
   }
 
   else
@@ -249,12 +249,12 @@ uint64_t __89__SFPasswordPickerServiceViewController__authenticateToViewOtherPas
   }
 }
 
-- (id)_actionForPresentingPasswordManagerExtension:(id)a3
+- (id)_actionForPresentingPasswordManagerExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x1E69C8DE0] sharedManager];
-  v6 = [v5 displayNameForExtension:v4];
+  mEMORY[0x1E69C8DE0] = [MEMORY[0x1E69C8DE0] sharedManager];
+  v6 = [mEMORY[0x1E69C8DE0] displayNameForExtension:extensionCopy];
 
   v7 = MEMORY[0x1E696AEC0];
   v8 = _WBSLocalizedString();
@@ -266,7 +266,7 @@ uint64_t __89__SFPasswordPickerServiceViewController__authenticateToViewOtherPas
   v14[2] = __86__SFPasswordPickerServiceViewController__actionForPresentingPasswordManagerExtension___block_invoke;
   v14[3] = &unk_1E8492540;
   objc_copyWeak(&v16, &location);
-  v11 = v4;
+  v11 = extensionCopy;
   v15 = v11;
   v12 = [v10 _actionWithTitle:v9 image:0 style:0 handler:v14 shouldDismissHandler:&__block_literal_global_28];
 
@@ -282,16 +282,16 @@ void __86__SFPasswordPickerServiceViewController__actionForPresentingPasswordMan
   [WeakRetained _presentCredentialListForExtension:*(a1 + 32)];
 }
 
-- (void)_presentCredentialListForExtension:(id)a3
+- (void)_presentCredentialListForExtension:(id)extension
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  extensionCopy = extension;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__SFPasswordPickerServiceViewController__presentCredentialListForExtension___block_invoke;
   aBlock[3] = &unk_1E8492590;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = extensionCopy;
   v26 = v5;
   v6 = _Block_copy(aBlock);
   v23 = 0u;
@@ -303,20 +303,20 @@ void __86__SFPasswordPickerServiceViewController__actionForPresentingPasswordMan
   v8 = HasEntitlement;
   if (HasEntitlement && (remoteAppID = self->_remoteAppID) != 0)
   {
-    v10 = remoteAppID;
+    applicationIdentifier = remoteAppID;
   }
 
   else
   {
-    v10 = [(SFPasswordServiceViewController *)self applicationIdentifier];
+    applicationIdentifier = [(SFPasswordServiceViewController *)self applicationIdentifier];
   }
 
-  v11 = v10;
+  v11 = applicationIdentifier;
   if (self->_webViewURL)
   {
     v12 = objc_alloc(MEMORY[0x1E695A920]);
-    v13 = [(NSURL *)self->_webViewURL absoluteString];
-    v14 = [v12 initWithIdentifier:v13 type:1];
+    absoluteString = [(NSURL *)self->_webViewURL absoluteString];
+    v14 = [v12 initWithIdentifier:absoluteString type:1];
     v27[0] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
     v6[2](v6, v15, v11);
@@ -462,31 +462,31 @@ LABEL_10:
   }
 }
 
-- (void)_fillCredential:(id)a3 needsAuthentication:(BOOL)a4
+- (void)_fillCredential:(id)credential needsAuthentication:(BOOL)authentication
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 isExternal])
+  authenticationCopy = authentication;
+  credentialCopy = credential;
+  if ([credentialCopy isExternal])
   {
-    v7 = [v6 externalCredential];
-    objc_storeStrong(&self->_credentialIdentityToFill, v7);
-    v8 = [v7 owningExtensionState];
-    v9 = [v8 providerBundleID];
+    externalCredential = [credentialCopy externalCredential];
+    objc_storeStrong(&self->_credentialIdentityToFill, externalCredential);
+    owningExtensionState = [externalCredential owningExtensionState];
+    providerBundleID = [owningExtensionState providerBundleID];
 
-    v10 = [MEMORY[0x1E69C8DE0] sharedManager];
+    mEMORY[0x1E69C8DE0] = [MEMORY[0x1E69C8DE0] sharedManager];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __77__SFPasswordPickerServiceViewController__fillCredential_needsAuthentication___block_invoke;
     v12[3] = &unk_1E8492630;
-    v11 = v7;
+    v11 = externalCredential;
     v13 = v11;
-    v14 = self;
-    [v10 getExtensionWithBundleID:v9 completion:v12];
+    selfCopy = self;
+    [mEMORY[0x1E69C8DE0] getExtensionWithBundleID:providerBundleID completion:v12];
   }
 
   else
   {
-    [(SFPasswordPickerServiceViewController *)self _sendCredentialToClient:v6 needsAuthentication:v4];
+    [(SFPasswordPickerServiceViewController *)self _sendCredentialToClient:credentialCopy needsAuthentication:authenticationCopy];
   }
 }
 
@@ -546,29 +546,29 @@ void __77__SFPasswordPickerServiceViewController__fillCredential_needsAuthentica
   }
 }
 
-- (void)_sendCredentialToClient:(id)a3 needsAuthentication:(BOOL)a4
+- (void)_sendCredentialToClient:(id)client needsAuthentication:(BOOL)authentication
 {
-  v4 = a4;
-  v6 = a3;
+  authenticationCopy = authentication;
+  clientCopy = client;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__SFPasswordPickerServiceViewController__sendCredentialToClient_needsAuthentication___block_invoke;
   aBlock[3] = &unk_1E848F9B0;
-  v7 = v6;
+  v7 = clientCopy;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v8 = _Block_copy(aBlock);
   v9 = v8;
-  if (v4)
+  if (authenticationCopy)
   {
-    v10 = [(SFPasswordPickerServiceViewController *)self _context];
+    _context = [(SFPasswordPickerServiceViewController *)self _context];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __85__SFPasswordPickerServiceViewController__sendCredentialToClient_needsAuthentication___block_invoke_126;
     v11[3] = &unk_1E8492658;
     v11[4] = self;
     v12 = v9;
-    [v10 authenticateForClient:self userInitiated:1 completion:v11];
+    [_context authenticateForClient:self userInitiated:1 completion:v11];
   }
 
   else
@@ -671,10 +671,10 @@ void __85__SFPasswordPickerServiceViewController__sendCredentialToClient_needsAu
   }
 }
 
-- (void)_authenticateAndSetPresentCredentialsHandlerWithSavedAccountContext:(id)a3 completionHandler:(id)a4
+- (void)_authenticateAndSetPresentCredentialsHandlerWithSavedAccountContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   objc_initWeak(location, self);
   v8 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -682,17 +682,17 @@ void __85__SFPasswordPickerServiceViewController__sendCredentialToClient_needsAu
     [SFPasswordPickerServiceViewController _authenticateAndSetPresentCredentialsHandlerWithSavedAccountContext:completionHandler:];
   }
 
-  v9 = [(SFPasswordPickerServiceViewController *)self presentedViewController];
+  presentedViewController = [(SFPasswordPickerServiceViewController *)self presentedViewController];
 
-  if (v9)
+  if (presentedViewController)
   {
-    v7[2](v7, 1);
+    handlerCopy[2](handlerCopy, 1);
     goto LABEL_27;
   }
 
   v43 = 0u;
   v44 = 0u;
-  v29 = v6;
+  v29 = contextCopy;
   [(SFPasswordPickerServiceViewController *)self _hostAuditToken];
   v41 = 0u;
   v42 = 0u;
@@ -715,37 +715,37 @@ void __85__SFPasswordPickerServiceViewController__sendCredentialToClient_needsAu
   remoteAppID = self->_remoteAppID;
   if (remoteAppID)
   {
-    v13 = remoteAppID;
+    applicationIdentifier = remoteAppID;
     goto LABEL_11;
   }
 
 LABEL_10:
-  v13 = [(SFPasswordServiceViewController *)self applicationIdentifier];
+  applicationIdentifier = [(SFPasswordServiceViewController *)self applicationIdentifier];
 LABEL_11:
-  v14 = v13;
-  v28 = v13;
+  v14 = applicationIdentifier;
+  v28 = applicationIdentifier;
   v15 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     [SFPasswordPickerServiceViewController _authenticateAndSetPresentCredentialsHandlerWithSavedAccountContext:completionHandler:];
   }
 
-  v16 = [(SFPasswordPickerServiceViewController *)self _isConfiguredForSystemAutoFill];
+  _isConfiguredForSystemAutoFill = [(SFPasswordPickerServiceViewController *)self _isConfiguredForSystemAutoFill];
   v17 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    if (v16)
+    if (_isConfiguredForSystemAutoFill)
     {
       goto LABEL_15;
     }
 
 LABEL_19:
-    v18 = 0;
+    isExplicitAutoFillMode = 0;
     goto LABEL_20;
   }
 
   [SFPasswordPickerServiceViewController _authenticateAndSetPresentCredentialsHandlerWithSavedAccountContext:completionHandler:];
-  if (!v16)
+  if (!_isConfiguredForSystemAutoFill)
   {
     goto LABEL_19;
   }
@@ -753,12 +753,12 @@ LABEL_19:
 LABEL_15:
   if ([(RTIDocumentTraits *)self->_systemAutoFillDocumentTraits autofillMode]== 1)
   {
-    v18 = [(RTIDocumentTraits *)self->_systemAutoFillDocumentTraits isExplicitAutoFillMode];
+    isExplicitAutoFillMode = [(RTIDocumentTraits *)self->_systemAutoFillDocumentTraits isExplicitAutoFillMode];
   }
 
   else
   {
-    v18 = 1;
+    isExplicitAutoFillMode = 1;
   }
 
 LABEL_20:
@@ -766,14 +766,14 @@ LABEL_20:
   aBlock[1] = 3221225472;
   aBlock[2] = __127__SFPasswordPickerServiceViewController__authenticateAndSetPresentCredentialsHandlerWithSavedAccountContext_completionHandler___block_invoke;
   aBlock[3] = &unk_1E8492868;
-  v36 = v7;
+  v36 = handlerCopy;
   aBlock[4] = self;
   v38 = HasEntitlement;
   v19 = v14;
   v34 = v19;
-  v39 = v16;
-  v35 = v6;
-  v40 = v18;
+  v39 = _isConfiguredForSystemAutoFill;
+  v35 = contextCopy;
+  v40 = isExplicitAutoFillMode;
   objc_copyWeak(&v37, location);
   v20 = _Block_copy(aBlock);
   if (HasEntitlement)
@@ -810,7 +810,7 @@ LABEL_20:
   [v22 getCredentialsForAppWithAppID:v23 frameIdentifier:webFrameIdentifier externallyVerifiedAndApprovedSharedWebCredentialDomains:v21 websiteURL:webViewURL completionHandler:v30];
 
   objc_destroyWeak(&v37);
-  v6 = v29;
+  contextCopy = v29;
 LABEL_27:
   objc_destroyWeak(location);
 }
@@ -1938,28 +1938,28 @@ void __127__SFPasswordPickerServiceViewController__authenticateAndSetPresentCred
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 }
 
-- (void)_sendCredentialToClientAndDismiss:(id)a3 providerBundleIdentifier:(id)a4
+- (void)_sendCredentialToClientAndDismiss:(id)dismiss providerBundleIdentifier:(id)identifier
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SFPasswordServiceViewController *)self applicationIdentifier];
+  dismissCopy = dismiss;
+  identifierCopy = identifier;
+  applicationIdentifier = [(SFPasswordServiceViewController *)self applicationIdentifier];
   v20[0] = 0;
-  v9 = [v8 safari_bundleIdentifierFromApplicationIdentifier:v20];
+  v9 = [applicationIdentifier safari_bundleIdentifierFromApplicationIdentifier:v20];
   v10 = v20[0];
 
   if (v9)
   {
     authenticationServicesAgentProxy = self->_authenticationServicesAgentProxy;
-    v12 = [v6 user];
-    v13 = [v6 requestedHost];
-    [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy didFillCredentialForUsername:v12 forHost:v13 fromProviderWithBundleIdentifier:v7 inAppWithBundleIdentifier:v9 externalProviderConditionalRegistrationRequester:self->_conditionalRegistrationRequester];
+    user = [dismissCopy user];
+    requestedHost = [dismissCopy requestedHost];
+    [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy didFillCredentialForUsername:user forHost:requestedHost fromProviderWithBundleIdentifier:identifierCopy inAppWithBundleIdentifier:v9 externalProviderConditionalRegistrationRequester:self->_conditionalRegistrationRequester];
   }
 
   else
   {
-    v12 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    user = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
+    if (os_log_type_enabled(user, OS_LOG_TYPE_ERROR))
     {
       [(SFPasswordServiceViewController *)self applicationIdentifier];
       objc_claimAutoreleasedReturnValue();
@@ -1986,8 +1986,8 @@ void __127__SFPasswordPickerServiceViewController__authenticateAndSetPresentCred
       _os_log_impl(&dword_1D4644000, v16, OS_LOG_TYPE_INFO, "Dismissing password picker service view controller after sending credential directly", buf, 2u);
     }
 
-    v17 = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
-    [v17 selectedCredential:v6];
+    _remoteViewControllerProxy = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy selectedCredential:dismissCopy];
 
     [(SFPasswordPickerServiceViewController *)self _dismiss];
   }
@@ -1999,7 +1999,7 @@ void __127__SFPasswordPickerServiceViewController__authenticateAndSetPresentCred
     v18[2] = __100__SFPasswordPickerServiceViewController__sendCredentialToClientAndDismiss_providerBundleIdentifier___block_invoke;
     v18[3] = &unk_1E8490658;
     v18[4] = self;
-    [MEMORY[0x1E69D9578] sendAutofillCredentialCandidate:v6 completionHandler:v18];
+    [MEMORY[0x1E69D9578] sendAutofillCredentialCandidate:dismissCopy completionHandler:v18];
   }
 }
 
@@ -2025,82 +2025,82 @@ uint64_t __100__SFPasswordPickerServiceViewController__sendCredentialToClientAnd
   return [*(a1 + 32) _dismiss];
 }
 
-- (void)setWebViewURL:(id)a3
+- (void)setWebViewURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [SFPasswordPickerServiceViewController setWebViewURL:];
   }
 
-  v7 = [v5 scheme];
-  v8 = [v7 lowercaseString];
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
 
   v9 = [MEMORY[0x1E695DFD8] setWithObjects:{@"http", @"https", 0}];
-  if ([v8 length] && (objc_msgSend(v9, "containsObject:", v8) & 1) != 0)
+  if ([lowercaseString length] && (objc_msgSend(v9, "containsObject:", lowercaseString) & 1) != 0)
   {
-    objc_storeStrong(&self->_webViewURL, a3);
+    objc_storeStrong(&self->_webViewURL, l);
   }
 }
 
-- (void)setRemoteAppID:(id)a3
+- (void)setRemoteAppID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SFPasswordPickerServiceViewController setRemoteAppID:];
   }
 
-  v6 = [v4 copy];
+  v6 = [dCopy copy];
   remoteAppID = self->_remoteAppID;
   self->_remoteAppID = v6;
 }
 
-- (void)setRemoteLocalizedAppName:(id)a3
+- (void)setRemoteLocalizedAppName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SFPasswordPickerServiceViewController setRemoteLocalizedAppName:];
   }
 
-  v6 = [v4 copy];
+  v6 = [nameCopy copy];
   remoteLocalizedAppName = self->_remoteLocalizedAppName;
   self->_remoteLocalizedAppName = v6;
 }
 
-- (void)setRemoteUnlocalizedAppName:(id)a3
+- (void)setRemoteUnlocalizedAppName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SFPasswordPickerServiceViewController setRemoteUnlocalizedAppName:];
   }
 
-  v6 = [v4 copy];
+  v6 = [nameCopy copy];
   remoteUnlocalizedAppName = self->_remoteUnlocalizedAppName;
   self->_remoteUnlocalizedAppName = v6;
 }
 
-- (void)setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:(id)a3
+- (void)setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SFPasswordPickerServiceViewController setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:];
   }
 
-  v6 = [v4 copy];
+  v6 = [domainsCopy copy];
   externallyVerifiedAssociatedDomains = self->_externallyVerifiedAssociatedDomains;
   self->_externallyVerifiedAssociatedDomains = v6;
 }
 
-- (void)setAuthenticationGracePeriod:(double)a3
+- (void)setAuthenticationGracePeriod:(double)period
 {
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -2108,60 +2108,60 @@ uint64_t __100__SFPasswordPickerServiceViewController__sendCredentialToClientAnd
     [SFPasswordPickerServiceViewController setAuthenticationGracePeriod:];
   }
 
-  self->_authenticationGracePeriod = a3;
+  self->_authenticationGracePeriod = period;
 }
 
-- (void)setPageID:(id)a3 frameID:(id)a4 credentialType:(id)a5
+- (void)setPageID:(id)d frameID:(id)iD credentialType:(id)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
   v11 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v14 = 134218754;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v8;
+    v17 = dCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = iDCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = typeCopy;
     _os_log_debug_impl(&dword_1D4644000, v11, OS_LOG_TYPE_DEBUG, "View controller %p setPageID: %@ frameID: %@ credentialType: %@", &v14, 0x2Au);
-    if (!v8)
+    if (!dCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (!v8)
+  else if (!dCopy)
   {
     goto LABEL_5;
   }
 
-  if (v9)
+  if (iDCopy)
   {
-    v12 = [objc_alloc(MEMORY[0x1E69C88A0]) initWithPageID:v8 frameID:v9];
+    v12 = [objc_alloc(MEMORY[0x1E69C88A0]) initWithPageID:dCopy frameID:iDCopy];
     webFrameIdentifier = self->_webFrameIdentifier;
     self->_webFrameIdentifier = v12;
 
-    objc_storeStrong(&self->_credentialType, a5);
+    objc_storeStrong(&self->_credentialType, type);
   }
 
 LABEL_5:
 }
 
-- (void)setSystemAutoFillDocumentTraits:(id)a3
+- (void)setSystemAutoFillDocumentTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SFPasswordPickerServiceViewController setSystemAutoFillDocumentTraits:];
   }
 
-  v6 = [v4 copy];
+  v6 = [traitsCopy copy];
   systemAutoFillDocumentTraits = self->_systemAutoFillDocumentTraits;
   self->_systemAutoFillDocumentTraits = v6;
 }
@@ -2178,32 +2178,32 @@ LABEL_5:
   return HasEntitlement;
 }
 
-- (void)credentialListViewController:(id)a3 didFinishWithCredential:(id)a4 completion:(id)a5
+- (void)credentialListViewController:(id)controller didFinishWithCredential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  credentialCopy = credential;
+  completionCopy = completion;
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __105__SFPasswordPickerServiceViewController_credentialListViewController_didFinishWithCredential_completion___block_invoke;
   v24 = &unk_1E8492908;
-  v11 = v10;
+  v11 = completionCopy;
   v27 = v11;
-  v12 = v9;
+  v12 = credentialCopy;
   v25 = v12;
-  v26 = self;
-  [v8 dismissViewControllerAnimated:1 completion:&v21];
+  selfCopy = self;
+  [controllerCopy dismissViewControllerAnimated:1 completion:&v21];
   if (v12)
   {
     v13 = objc_alloc(MEMORY[0x1E69C8E10]);
-    v14 = [v12 user];
-    v15 = [v12 password];
-    v16 = [MEMORY[0x1E695DF00] date];
-    v17 = [v13 initWithUser:v14 password:v15 site:&stru_1F4FE9E38 creationDate:v16 customTitle:0 groupName:0 requestedHost:{self->_hostForCredentialList, v21, v22, v23, v24}];
+    user = [v12 user];
+    password = [v12 password];
+    date = [MEMORY[0x1E695DF00] date];
+    v17 = [v13 initWithUser:user password:password site:&stru_1F4FE9E38 creationDate:date customTitle:0 groupName:0 requestedHost:{self->_hostForCredentialList, v21, v22, v23, v24}];
 
-    v18 = [v8 extension];
-    v19 = [v18 sf_bundleIdentifierForContainingApp];
-    [(SFPasswordPickerServiceViewController *)self _sendCredentialToClientAndDismiss:v17 providerBundleIdentifier:v19];
+    extension = [controllerCopy extension];
+    sf_bundleIdentifierForContainingApp = [extension sf_bundleIdentifierForContainingApp];
+    [(SFPasswordPickerServiceViewController *)self _sendCredentialToClientAndDismiss:v17 providerBundleIdentifier:sf_bundleIdentifierForContainingApp];
 
     credentialIdentityToFill = self->_credentialIdentityToFill;
     self->_credentialIdentityToFill = 0;
@@ -2223,28 +2223,28 @@ uint64_t __105__SFPasswordPickerServiceViewController_credentialListViewControll
   return result;
 }
 
-- (void)credentialListViewController:(id)a3 didFinishWithPasskeyAssertionCredential:(id)a4 completion:(id)a5
+- (void)credentialListViewController:(id)controller didFinishWithPasskeyAssertionCredential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v18 = a5;
+  controllerCopy = controller;
+  credentialCopy = credential;
+  completionCopy = completion;
   authenticationServicesAgentProxy = self->_authenticationServicesAgentProxy;
-  v11 = [(SFPasswordServiceViewController *)self applicationIdentifier];
-  v12 = [v9 relyingParty];
-  v13 = [v9 authenticatorData];
-  v14 = [v9 signature];
-  v15 = [v9 userHandle];
-  v16 = [v9 credentialID];
-  [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy completeAssertionWithExternalPasskeyForApplicationIdentifier:v11 relyingPartyIdentifier:v12 authenticatorData:v13 signature:v14 userHandle:v15 credentialID:v16];
+  applicationIdentifier = [(SFPasswordServiceViewController *)self applicationIdentifier];
+  relyingParty = [credentialCopy relyingParty];
+  authenticatorData = [credentialCopy authenticatorData];
+  signature = [credentialCopy signature];
+  userHandle = [credentialCopy userHandle];
+  credentialID = [credentialCopy credentialID];
+  [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy completeAssertionWithExternalPasskeyForApplicationIdentifier:applicationIdentifier relyingPartyIdentifier:relyingParty authenticatorData:authenticatorData signature:signature userHandle:userHandle credentialID:credentialID];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __121__SFPasswordPickerServiceViewController_credentialListViewController_didFinishWithPasskeyAssertionCredential_completion___block_invoke;
   v19[3] = &unk_1E84904F8;
-  v17 = v18;
+  v17 = completionCopy;
   v19[4] = self;
   v20 = v17;
-  [v8 dismissViewControllerAnimated:1 completion:v19];
+  [controllerCopy dismissViewControllerAnimated:1 completion:v19];
 }
 
 uint64_t __121__SFPasswordPickerServiceViewController_credentialListViewController_didFinishWithPasskeyAssertionCredential_completion___block_invoke(uint64_t a1)
@@ -2255,24 +2255,24 @@ uint64_t __121__SFPasswordPickerServiceViewController_credentialListViewControll
   return [v2 _dismiss];
 }
 
-- (void)credentialListViewController:(id)a3 didFinishWithText:(id)a4 completion:(id)a5
+- (void)credentialListViewController:(id)controller didFinishWithText:(id)text completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  textCopy = text;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __99__SFPasswordPickerServiceViewController_credentialListViewController_didFinishWithText_completion___block_invoke;
   v14[3] = &unk_1E8492908;
-  v10 = v9;
+  v10 = completionCopy;
   v17 = v10;
-  v11 = v8;
+  v11 = textCopy;
   v15 = v11;
-  v16 = self;
-  [a3 dismissViewControllerAnimated:1 completion:v14];
+  selfCopy = self;
+  [controller dismissViewControllerAnimated:1 completion:v14];
   if ([v11 length])
   {
-    v12 = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
-    [v12 fillText:v11];
+    _remoteViewControllerProxy = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy fillText:v11];
   }
 
   else
@@ -2299,63 +2299,63 @@ uint64_t __99__SFPasswordPickerServiceViewController_credentialListViewControlle
   return result;
 }
 
-- (void)credentialAuthenticationViewController:(id)a3 didFinishWithCredential:(id)a4 error:(id)a5 completion:(id)a6
+- (void)credentialAuthenticationViewController:(id)controller didFinishWithCredential:(id)credential error:(id)error completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  controllerCopy = controller;
+  credentialCopy = credential;
+  completionCopy = completion;
   externalCredentialViewController = self->_externalCredentialViewController;
   self->_externalCredentialViewController = 0;
 
-  v13 = [v9 presentingViewController];
+  presentingViewController = [controllerCopy presentingViewController];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __121__SFPasswordPickerServiceViewController_credentialAuthenticationViewController_didFinishWithCredential_error_completion___block_invoke;
   aBlock[3] = &unk_1E8492908;
-  v14 = v11;
+  v14 = completionCopy;
   v38 = v14;
-  v15 = v10;
+  v15 = credentialCopy;
   v36 = v15;
-  v37 = self;
+  selfCopy = self;
   v33 = _Block_copy(aBlock);
-  [v9 dismissViewControllerAnimated:1 completion:v33];
+  [controllerCopy dismissViewControllerAnimated:1 completion:v33];
   if (v15)
   {
     v16 = objc_alloc(MEMORY[0x1E69C8E10]);
-    v17 = [v15 user];
-    v18 = [v15 password];
-    v19 = [MEMORY[0x1E695DF00] date];
-    v20 = [(SFCredentialIdentity *)self->_credentialIdentityToFill serviceIdentifier];
-    v32 = [v16 initWithUser:v17 password:v18 site:&stru_1F4FE9E38 creationDate:v19 customTitle:0 groupName:0 requestedHost:v20];
+    user = [v15 user];
+    password = [v15 password];
+    date = [MEMORY[0x1E695DF00] date];
+    serviceIdentifier = [(SFCredentialIdentity *)self->_credentialIdentityToFill serviceIdentifier];
+    v32 = [v16 initWithUser:user password:password site:&stru_1F4FE9E38 creationDate:date customTitle:0 groupName:0 requestedHost:serviceIdentifier];
 
     v21 = v32;
-    if (v13)
+    if (presentingViewController)
     {
-      v22 = 0;
+      authenticationRequiredToAutoFill = 0;
     }
 
     else
     {
-      v17 = +[_SFManagedFeatureObserver sharedObserver];
-      v22 = [v17 authenticationRequiredToAutoFill];
+      user = +[_SFManagedFeatureObserver sharedObserver];
+      authenticationRequiredToAutoFill = [user authenticationRequiredToAutoFill];
     }
 
-    [(SFPasswordPickerServiceViewController *)self _sendCredentialToClient:v32 needsAuthentication:v22];
-    if (!v13)
+    [(SFPasswordPickerServiceViewController *)self _sendCredentialToClient:v32 needsAuthentication:authenticationRequiredToAutoFill];
+    if (!presentingViewController)
     {
     }
 
-    v23 = [(SFPasswordServiceViewController *)self applicationIdentifier];
+    applicationIdentifier = [(SFPasswordServiceViewController *)self applicationIdentifier];
     v34 = 0;
-    v31 = [v23 safari_bundleIdentifierFromApplicationIdentifier:&v34];
+    v31 = [applicationIdentifier safari_bundleIdentifierFromApplicationIdentifier:&v34];
     v24 = v34;
 
     if (v24)
     {
-      v25 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+      user2 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
+      if (os_log_type_enabled(user2, OS_LOG_TYPE_ERROR))
       {
         [v24 safari_privacyPreservingDescription];
         objc_claimAutoreleasedReturnValue();
@@ -2366,11 +2366,11 @@ uint64_t __99__SFPasswordPickerServiceViewController_credentialListViewControlle
     else
     {
       authenticationServicesAgentProxy = self->_authenticationServicesAgentProxy;
-      v25 = [v15 user];
-      v27 = [(SFCredentialIdentity *)self->_credentialIdentityToFill site];
-      v28 = [v9 extension];
-      v29 = [v28 sf_bundleIdentifierForContainingApp];
-      [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy didFillCredentialForUsername:v25 forHost:v27 fromProviderWithBundleIdentifier:v29 inAppWithBundleIdentifier:v31 externalProviderConditionalRegistrationRequester:self->_conditionalRegistrationRequester];
+      user2 = [v15 user];
+      site = [(SFCredentialIdentity *)self->_credentialIdentityToFill site];
+      extension = [controllerCopy extension];
+      sf_bundleIdentifierForContainingApp = [extension sf_bundleIdentifierForContainingApp];
+      [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy didFillCredentialForUsername:user2 forHost:site fromProviderWithBundleIdentifier:sf_bundleIdentifierForContainingApp inAppWithBundleIdentifier:v31 externalProviderConditionalRegistrationRequester:self->_conditionalRegistrationRequester];
 
       v21 = v32;
     }
@@ -2393,31 +2393,31 @@ uint64_t __121__SFPasswordPickerServiceViewController_credentialAuthenticationVi
   return result;
 }
 
-- (void)credentialAuthenticationViewController:(id)a3 didFinishWithPasskeyAssertionCredential:(id)a4 error:(id)a5 completion:(id)a6
+- (void)credentialAuthenticationViewController:(id)controller didFinishWithPasskeyAssertionCredential:(id)credential error:(id)error completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v20 = a6;
+  controllerCopy = controller;
+  credentialCopy = credential;
+  completionCopy = completion;
   externalCredentialViewController = self->_externalCredentialViewController;
   self->_externalCredentialViewController = 0;
 
   authenticationServicesAgentProxy = self->_authenticationServicesAgentProxy;
-  v13 = [(SFPasswordServiceViewController *)self applicationIdentifier];
-  v14 = [v10 relyingParty];
-  v15 = [v10 authenticatorData];
-  v16 = [v10 signature];
-  v17 = [v10 userHandle];
-  v18 = [v10 credentialID];
-  [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy completeAssertionWithExternalPasskeyForApplicationIdentifier:v13 relyingPartyIdentifier:v14 authenticatorData:v15 signature:v16 userHandle:v17 credentialID:v18];
+  applicationIdentifier = [(SFPasswordServiceViewController *)self applicationIdentifier];
+  relyingParty = [credentialCopy relyingParty];
+  authenticatorData = [credentialCopy authenticatorData];
+  signature = [credentialCopy signature];
+  userHandle = [credentialCopy userHandle];
+  credentialID = [credentialCopy credentialID];
+  [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy completeAssertionWithExternalPasskeyForApplicationIdentifier:applicationIdentifier relyingPartyIdentifier:relyingParty authenticatorData:authenticatorData signature:signature userHandle:userHandle credentialID:credentialID];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __137__SFPasswordPickerServiceViewController_credentialAuthenticationViewController_didFinishWithPasskeyAssertionCredential_error_completion___block_invoke;
   v21[3] = &unk_1E84904F8;
-  v19 = v20;
+  v19 = completionCopy;
   v21[4] = self;
   v22 = v19;
-  [v9 dismissViewControllerAnimated:1 completion:v21];
+  [controllerCopy dismissViewControllerAnimated:1 completion:v21];
 }
 
 uint64_t __137__SFPasswordPickerServiceViewController_credentialAuthenticationViewController_didFinishWithPasskeyAssertionCredential_error_completion___block_invoke(uint64_t a1)
@@ -2428,19 +2428,19 @@ uint64_t __137__SFPasswordPickerServiceViewController_credentialAuthenticationVi
   return [v2 _dismiss];
 }
 
-- (void)accountPickerViewController:(id)a3 fillUsernameForSavedAccount:(id)a4
+- (void)accountPickerViewController:(id)controller fillUsernameForSavedAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  accountCopy = account;
   if ([(SFPasswordPickerServiceViewController *)self _isClientEntitledToDirectlyReceiveCredentials])
   {
     v8 = objc_opt_class();
-    v9 = [v6 searchQuery];
-    [v8 _rememberStateForAutoFillWithSearchQuery:v9 savedAccount:v7];
+    searchQuery = [controllerCopy searchQuery];
+    [v8 _rememberStateForAutoFillWithSearchQuery:searchQuery savedAccount:accountCopy];
 
-    v10 = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
-    v11 = [v7 user];
-    [v10 fillUsername:v11];
+    _remoteViewControllerProxy = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
+    user = [accountCopy user];
+    [_remoteViewControllerProxy fillUsername:user];
 
     [(SFPasswordPickerServiceViewController *)self _dismiss];
   }
@@ -2455,19 +2455,19 @@ uint64_t __137__SFPasswordPickerServiceViewController_credentialAuthenticationVi
   }
 }
 
-- (void)accountPickerViewController:(id)a3 fillPasswordForSavedAccount:(id)a4
+- (void)accountPickerViewController:(id)controller fillPasswordForSavedAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  accountCopy = account;
   if ([(SFPasswordPickerServiceViewController *)self _isClientEntitledToDirectlyReceiveCredentials])
   {
     v8 = objc_opt_class();
-    v9 = [v6 searchQuery];
-    [v8 _rememberStateForAutoFillWithSearchQuery:v9 savedAccount:v7];
+    searchQuery = [controllerCopy searchQuery];
+    [v8 _rememberStateForAutoFillWithSearchQuery:searchQuery savedAccount:accountCopy];
 
-    v10 = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
-    v11 = [v7 password];
-    [v10 fillPassword:v11];
+    _remoteViewControllerProxy = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
+    password = [accountCopy password];
+    [_remoteViewControllerProxy fillPassword:password];
 
     [(SFPasswordPickerServiceViewController *)self _dismiss];
   }
@@ -2482,19 +2482,19 @@ uint64_t __137__SFPasswordPickerServiceViewController_credentialAuthenticationVi
   }
 }
 
-- (void)accountPickerViewController:(id)a3 fillVerificationCodeForSavedAccount:(id)a4
+- (void)accountPickerViewController:(id)controller fillVerificationCodeForSavedAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  accountCopy = account;
   if ([(SFPasswordPickerServiceViewController *)self _isClientEntitledToDirectlyReceiveCredentials])
   {
     v8 = objc_opt_class();
-    v9 = [v6 searchQuery];
-    [v8 _rememberStateForAutoFillWithSearchQuery:v9 savedAccount:v7];
+    searchQuery = [controllerCopy searchQuery];
+    [v8 _rememberStateForAutoFillWithSearchQuery:searchQuery savedAccount:accountCopy];
 
-    v10 = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
-    v11 = [v7 currentOneTimeCode];
-    [v10 fillVerificationCode:v11];
+    _remoteViewControllerProxy = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
+    currentOneTimeCode = [accountCopy currentOneTimeCode];
+    [_remoteViewControllerProxy fillVerificationCode:currentOneTimeCode];
 
     [(SFPasswordPickerServiceViewController *)self _dismiss];
   }
@@ -2509,14 +2509,14 @@ uint64_t __137__SFPasswordPickerServiceViewController_credentialAuthenticationVi
   }
 }
 
-- (void)accountPickerViewController:(id)a3 fillVerificationCode:(id)a4
+- (void)accountPickerViewController:(id)controller fillVerificationCode:(id)code
 {
-  v5 = a4;
+  codeCopy = code;
   if ([(SFPasswordPickerServiceViewController *)self _isClientEntitledToDirectlyReceiveCredentials])
   {
-    v6 = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
-    v7 = [v5 code];
-    [v6 fillVerificationCode:v7];
+    _remoteViewControllerProxy = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
+    code = [codeCopy code];
+    [_remoteViewControllerProxy fillVerificationCode:code];
 
     [(SFPasswordPickerServiceViewController *)self _dismiss];
   }
@@ -2531,13 +2531,13 @@ uint64_t __137__SFPasswordPickerServiceViewController_credentialAuthenticationVi
   }
 }
 
-- (void)accountPickerViewController:(id)a3 fillText:(id)a4
+- (void)accountPickerViewController:(id)controller fillText:(id)text
 {
-  v5 = a4;
+  textCopy = text;
   if ([(SFPasswordPickerServiceViewController *)self _isClientEntitledToDirectlyReceiveCredentials])
   {
-    v6 = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
-    [v6 fillText:v5];
+    _remoteViewControllerProxy = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy fillText:textCopy];
 
     [(SFPasswordPickerServiceViewController *)self _dismiss];
   }
@@ -2552,19 +2552,19 @@ uint64_t __137__SFPasswordPickerServiceViewController_credentialAuthenticationVi
   }
 }
 
-- (void)accountPickerViewController:(id)a3 fillText:(id)a4 forSavedAccount:(id)a5
+- (void)accountPickerViewController:(id)controller fillText:(id)text forSavedAccount:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  textCopy = text;
+  accountCopy = account;
   if ([(SFPasswordPickerServiceViewController *)self _isClientEntitledToDirectlyReceiveCredentials])
   {
     v11 = objc_opt_class();
-    v12 = [v8 searchQuery];
-    [v11 _rememberStateForAutoFillWithSearchQuery:v12 savedAccount:v10];
+    searchQuery = [controllerCopy searchQuery];
+    [v11 _rememberStateForAutoFillWithSearchQuery:searchQuery savedAccount:accountCopy];
 
-    v13 = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
-    [v13 fillText:v9];
+    _remoteViewControllerProxy = [(SFPasswordPickerServiceViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy fillText:textCopy];
 
     [(SFPasswordPickerServiceViewController *)self _dismiss];
   }
@@ -2579,9 +2579,9 @@ uint64_t __137__SFPasswordPickerServiceViewController_credentialAuthenticationVi
   }
 }
 
-+ (BOOL)_shouldRestoreStateForAutoFillForAppID:(id)a3
++ (BOOL)_shouldRestoreStateForAutoFillForAppID:(id)d
 {
-  LODWORD(v3) = [a3 isEqualToString:lastUsedAppIDForAutoFill];
+  LODWORD(v3) = [d isEqualToString:lastUsedAppIDForAutoFill];
   if (v3)
   {
     v4 = [MEMORY[0x1E695DF00] now];
@@ -2603,25 +2603,25 @@ uint64_t __137__SFPasswordPickerServiceViewController_credentialAuthenticationVi
   return v3;
 }
 
-+ (void)_restoreStateForAutoFillToAccountPickerConfiguration:(id)a3 isForFillingIndividualAccountFields:(BOOL)a4
++ (void)_restoreStateForAutoFillToAccountPickerConfiguration:(id)configuration isForFillingIndividualAccountFields:(BOOL)fields
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 setInitialSearchQuery:lastSearchQueryForAutoFill];
-  if (v4)
+  fieldsCopy = fields;
+  configurationCopy = configuration;
+  [configurationCopy setInitialSearchQuery:lastSearchQueryForAutoFill];
+  if (fieldsCopy)
   {
-    [v6 setSavedAccountToInitiallyShowDetailsFor:lastUsedSavedAccountForAutoFill];
+    [configurationCopy setSavedAccountToInitiallyShowDetailsFor:lastUsedSavedAccountForAutoFill];
   }
 
-  [a1 _rememberStateForAutoFillWithSearchQuery:0 savedAccount:0];
+  [self _rememberStateForAutoFillWithSearchQuery:0 savedAccount:0];
 }
 
-+ (void)_rememberStateForAutoFillWithSearchQuery:(id)a3 savedAccount:(id)a4
++ (void)_rememberStateForAutoFillWithSearchQuery:(id)query savedAccount:(id)account
 {
-  v9 = a3;
-  v6 = a4;
-  objc_storeStrong(&lastSearchQueryForAutoFill, a3);
-  objc_storeStrong(&lastUsedSavedAccountForAutoFill, a4);
+  queryCopy = query;
+  accountCopy = account;
+  objc_storeStrong(&lastSearchQueryForAutoFill, query);
+  objc_storeStrong(&lastUsedSavedAccountForAutoFill, account);
   v7 = [MEMORY[0x1E695DF00] now];
   [v7 timeIntervalSinceReferenceDate];
   timeIntervalSinceReferenceDateOfLastAutoFill = v8;

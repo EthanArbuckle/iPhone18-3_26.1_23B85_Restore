@@ -1,36 +1,36 @@
 @interface THNoteCardLayoutContext
-+ (THNoteCardLayoutContext)contextWithScale:(double)a3 hostView:(id)a4;
++ (THNoteCardLayoutContext)contextWithScale:(double)scale hostView:(id)view;
 - (BOOL)_isCompactHeight;
 - (BOOL)_isCompactWidth;
 - (CGPoint)bottomCardOffset;
 - (CGSize)noteCardOffset;
-- (CGSize)noteCardShadowOffsetForScreenScale:(double)a3;
+- (CGSize)noteCardShadowOffsetForScreenScale:(double)scale;
 - (CGSize)noteCardSize;
-- (THNoteCardLayoutContext)initWithScale:(double)a3 hostView:(id)a4;
+- (THNoteCardLayoutContext)initWithScale:(double)scale hostView:(id)view;
 - (double)bottomCardAngle;
-- (double)noteCardShadowRadiusForScreenScale:(double)a3;
+- (double)noteCardShadowRadiusForScreenScale:(double)scale;
 - (double)textScale;
 - (void)dealloc;
 @end
 
 @implementation THNoteCardLayoutContext
 
-+ (THNoteCardLayoutContext)contextWithScale:(double)a3 hostView:(id)a4
++ (THNoteCardLayoutContext)contextWithScale:(double)scale hostView:(id)view
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithScale:a4 hostView:a3];
+  v4 = [objc_alloc(objc_opt_class()) initWithScale:view hostView:scale];
 
   return v4;
 }
 
-- (THNoteCardLayoutContext)initWithScale:(double)a3 hostView:(id)a4
+- (THNoteCardLayoutContext)initWithScale:(double)scale hostView:(id)view
 {
   v8.receiver = self;
   v8.super_class = THNoteCardLayoutContext;
   v6 = [(THNoteCardLayoutContext *)&v8 init];
   if (v6)
   {
-    v6->_hostView = a4;
-    v6->_scale = a3;
+    v6->_hostView = view;
+    v6->_scale = scale;
   }
 
   return v6;
@@ -77,9 +77,9 @@
   return result;
 }
 
-- (CGSize)noteCardShadowOffsetForScreenScale:(double)a3
+- (CGSize)noteCardShadowOffsetForScreenScale:(double)scale
 {
-  v3 = vdup_n_s32(a3 > 1.0);
+  v3 = vdup_n_s32(scale > 1.0);
   v4.i64[0] = v3.u32[0];
   v4.i64[1] = v3.u32[1];
   v5 = vmulq_n_f64(vbslq_s8(vcltzq_s64(vshlq_n_s64(v4, 0x3FuLL)), kTHNoteCardShadowOffsetRetina, kTHNoteCardShadowOffset), self->_scale);
@@ -89,10 +89,10 @@
   return result;
 }
 
-- (double)noteCardShadowRadiusForScreenScale:(double)a3
+- (double)noteCardShadowRadiusForScreenScale:(double)scale
 {
   v3 = &kTHNoteCardShadowRadiusRetina;
-  if (a3 <= 1.0)
+  if (scale <= 1.0)
   {
     v3 = &kTHNoteCardShadowRadius;
   }
@@ -102,25 +102,25 @@
 
 - (BOOL)_isCompactWidth
 {
-  v2 = [(UIWindow *)[(UIView *)self->_hostView window] rootViewController];
+  rootViewController = [(UIWindow *)[(UIView *)self->_hostView window] rootViewController];
 
-  return [(UIViewController *)v2 im_isCompactWidth];
+  return [(UIViewController *)rootViewController im_isCompactWidth];
 }
 
 - (BOOL)_isCompactHeight
 {
-  v2 = [(UIWindow *)[(UIView *)self->_hostView window] rootViewController];
+  rootViewController = [(UIWindow *)[(UIView *)self->_hostView window] rootViewController];
 
-  return [(UIViewController *)v2 im_isCompactHeight];
+  return [(UIViewController *)rootViewController im_isCompactHeight];
 }
 
 - (double)bottomCardAngle
 {
   if ([(THNoteCardLayoutContext *)self _isCompactWidth])
   {
-    v3 = [(THNoteCardLayoutContext *)self _isCompactHeight];
+    _isCompactHeight = [(THNoteCardLayoutContext *)self _isCompactHeight];
     v4 = &kTHNoteCardBottomCardAngleCompactWidthCompactHeight;
-    if (!v3)
+    if (!_isCompactHeight)
     {
       v4 = &kTHNoteCardBottomCardAngleCompactWidthRegularHeight;
     }

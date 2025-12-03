@@ -1,6 +1,6 @@
 @interface CRLCanvasLayout
 - (BOOL)canAspectRatioLockBeChangedByUser;
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3;
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable;
 - (BOOL)i_anyAncestorCurrentlyBeingFreeTransformedWantsNormalLayoutDuringDynamicFreeTransform;
 - (BOOL)i_anyAncestorCurrentlyBeingRotatedWantsNormalLayoutDuringDynamicRotation;
 - (BOOL)isBeingTransformed;
@@ -9,7 +9,7 @@
 - (BOOL)isSelectable;
 - (BOOL)layoutHasValidFrameForCulling;
 - (BOOL)resizeMayChangeAspectRatio;
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3;
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space;
 - (CGAffineTransform)originalPureTransformInRoot;
 - (CGAffineTransform)originalTransformInRoot;
 - (CGAffineTransform)pureTransformInRoot;
@@ -20,35 +20,35 @@
 - (CGPoint)cardinalWestPosition;
 - (CGPoint)centerForConnecting;
 - (CGPoint)centerForRotation;
-- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)a3;
-- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)a3;
-- (CGPoint)findNewEdgeMagnetCanvasPositionForConnectionLine:(id)a3 forLineEnd:(unint64_t)a4 withCanvasPosition:(CGPoint)a5;
-- (CGPoint)getCardinalPositionFromType:(unint64_t)a3;
-- (CGPoint)getCardinalPositionWithParentTransformFromType:(unint64_t)a3;
-- (CGPoint)nearestEdgePointOnWrapPathFromPoint:(CGPoint)a3;
-- (CGPoint)p_convertNormalizedPositionFromLayoutToPureGeomtry:(CGPoint)a3 forLayout:(id)a4;
-- (CGPoint)p_findFirstEdgePointIntersectionOnWrapPathWithLine:(id)a3 forLineEnd:(unint64_t)a4 withDistanceToPoint:(double *)a5 withOverridenHeadPosition:(CGPoint)a6 withOverridenTailPosition:(CGPoint)a7;
-- (CGPoint)p_findNearestEdgePointOnWrapPathFromPoint:(CGPoint)a3 withSearchThreshold:(double)a4 withDistanceToPoint:(double *)a5;
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
+- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)canvas;
+- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)canvas;
+- (CGPoint)findNewEdgeMagnetCanvasPositionForConnectionLine:(id)line forLineEnd:(unint64_t)end withCanvasPosition:(CGPoint)position;
+- (CGPoint)getCardinalPositionFromType:(unint64_t)type;
+- (CGPoint)getCardinalPositionWithParentTransformFromType:(unint64_t)type;
+- (CGPoint)nearestEdgePointOnWrapPathFromPoint:(CGPoint)point;
+- (CGPoint)p_convertNormalizedPositionFromLayoutToPureGeomtry:(CGPoint)geomtry forLayout:(id)layout;
+- (CGPoint)p_findFirstEdgePointIntersectionOnWrapPathWithLine:(id)line forLineEnd:(unint64_t)end withDistanceToPoint:(double *)point withOverridenHeadPosition:(CGPoint)position withOverridenTailPosition:(CGPoint)tailPosition;
+- (CGPoint)p_findNearestEdgePointOnWrapPathFromPoint:(CGPoint)point withSearchThreshold:(double)threshold withDistanceToPoint:(double *)toPoint;
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
 - (CGRect)boundsForStandardKnobs;
-- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)a3;
-- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)a3;
+- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)canvas;
+- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)canvas;
 - (CGRect)frameForCaptionPositioning;
 - (CGRect)frameForCulling;
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform;
 - (CGRect)frameForMiniFormatterPositioning;
 - (CGRect)i_takeDirtyRect;
 - (CGRect)initialBoundsForStandardKnobs;
-- (CGRect)p_frameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
-- (CGRect)rectInRootForSelectionPath:(id)a3;
-- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)a3;
+- (CGRect)p_frameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
+- (CGRect)rectInRootForSelectionPath:(id)path;
+- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)path;
 - (CGRect)shadowedNaturalBoundsWithoutOffset;
-- (CGSize)maximumFrameSizeForChild:(id)a3;
+- (CGSize)maximumFrameSizeForChild:(id)child;
 - (CGSize)maximumInlineFrameSize;
 - (CGSize)minimumSize;
 - (CGSize)p_newMaxInlineFrameSize;
 - (CRLBezierPath)i_wrapPath;
-- (CRLCanvasLayout)initWithInfo:(id)a3;
+- (CRLCanvasLayout)initWithInfo:(id)info;
 - (CRLCanvasLayoutGeometry)dynamicGeometry;
 - (CRLCanvasLayoutGeometry)inspectorGeometry;
 - (CRLCanvasLayoutGeometry)originalPureGeometry;
@@ -59,29 +59,29 @@
 - (NSArray)childSearchTargets;
 - (NSArray)dependentLayouts;
 - (double)inspectorGeometryAngleInDegrees;
-- (double)percentOfUnscaledRectContainedInParentRep:(CGRect)a3;
-- (double)scaleForInlineClampingUnrotatedSize:(CGSize)a3 withTransform:(CGAffineTransform *)a4;
-- (id)commandForSettingAspectRatioLocked:(BOOL)a3;
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3;
-- (id)commandToFlipWithOrientation:(int)a3;
+- (double)percentOfUnscaledRectContainedInParentRep:(CGRect)rep;
+- (double)scaleForInlineClampingUnrotatedSize:(CGSize)size withTransform:(CGAffineTransform *)transform;
+- (id)commandForSettingAspectRatioLocked:(BOOL)locked;
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform;
+- (id)commandToFlipWithOrientation:(int)orientation;
 - (id)commandsForAdjustingMagnetsFromClineLayouts;
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3;
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry;
 - (id)computeLayoutGeometry;
 - (id)convexHullPath;
 - (id)layoutController;
 - (id)layoutGeometryFromInfo;
-- (id)newCommandToMoveByOffset:(CGPoint)a3 whenDistributingLayoutsByOffsets:(id)a4;
+- (id)newCommandToMoveByOffset:(CGPoint)offset whenDistributingLayoutsByOffsets:(id)offsets;
 - (id)rootLayout;
-- (id)unscaledPositionsForCollaboratorHUDForSelectionPath:(id)a3;
-- (unint64_t)p_directionForCollaboratorCursorKnobTag:(unint64_t)a3;
-- (void)addConnectedLayout:(id)a3;
+- (id)unscaledPositionsForCollaboratorHUDForSelectionPath:(id)path;
+- (unint64_t)p_directionForCollaboratorCursorKnobTag:(unint64_t)tag;
+- (void)addConnectedLayout:(id)layout;
 - (void)adjustCustomMagnetPositions;
 - (void)beginDrag;
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3;
-- (void)beginFreeTransformWithTracker:(id)a3;
-- (void)calculateAndSetPointsToSearchReference:(id)a3;
-- (void)dragBy:(CGPoint)a3;
-- (void)dragByUnscaled:(CGPoint)a3;
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands;
+- (void)beginFreeTransformWithTracker:(id)tracker;
+- (void)calculateAndSetPointsToSearchReference:(id)reference;
+- (void)dragBy:(CGPoint)by;
+- (void)dragByUnscaled:(CGPoint)unscaled;
 - (void)endDynamicOperation;
 - (void)enqueueCommandsForAdjustingPathSourcesAfterRoutingChanges;
 - (void)i_recursivelyClearInvalidationCache;
@@ -92,33 +92,33 @@
 - (void)invalidateFrameForCulling;
 - (void)invalidatePosition;
 - (void)invalidateSize;
-- (void)layoutSearchForHyperlinkWithHitBlock:(id)a3;
-- (void)layoutSearchForNearbyElementsWithHitBlock:(id)a3;
-- (void)p_adjustCardinalMagnetTValuesIfNeededWithPadding:(double)a3 forLowestT:(double *)a4 forHighestT:(double *)a5;
-- (void)p_adjustEdgeMagnetPosition:(id)a3 forLineEnd:(unint64_t)a4;
-- (void)p_adjustFloatingMagnetPosition:(id)a3 forLineEnd:(unint64_t)a4;
-- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)a3 andPerformBlock:(id)a4;
+- (void)layoutSearchForHyperlinkWithHitBlock:(id)block;
+- (void)layoutSearchForNearbyElementsWithHitBlock:(id)block;
+- (void)p_adjustCardinalMagnetTValuesIfNeededWithPadding:(double)padding forLowestT:(double *)t forHighestT:(double *)highestT;
+- (void)p_adjustEdgeMagnetPosition:(id)position forLineEnd:(unint64_t)end;
+- (void)p_adjustFloatingMagnetPosition:(id)position forLineEnd:(unint64_t)end;
+- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)transform andPerformBlock:(id)block;
 - (void)p_calculateMagnetPositionsIfNeeded;
-- (void)p_getIntersectionsForTestPath:(id)a3 withLowestT:(double *)a4 withHighestT:(double *)a5;
+- (void)p_getIntersectionsForTestPath:(id)path withLowestT:(double *)t withHighestT:(double *)highestT;
 - (void)p_invalidateConnectedLayouts;
 - (void)p_invalidateDescendentWrapPaths;
 - (void)p_invalidateDescendentWrapPathsInRoot;
 - (void)p_recursiveInvalidate;
-- (void)p_registerWithLayoutController:(id)a3;
-- (void)p_unregisterWithLayoutController:(id)a3;
-- (void)p_updateDescendentWrapPathsWithTransform:(CGAffineTransform *)a3;
-- (void)processChangedProperty:(unint64_t)a3;
-- (void)processChanges:(id)a3;
-- (void)recursivelyAddLayoutAndDependentLayoutsToValidateSet:(id)a3;
-- (void)setDynamicGeometry:(id)a3;
-- (void)setInitialBoundsForStandardKnobs:(CGRect)a3;
+- (void)p_registerWithLayoutController:(id)controller;
+- (void)p_unregisterWithLayoutController:(id)controller;
+- (void)p_updateDescendentWrapPathsWithTransform:(CGAffineTransform *)transform;
+- (void)processChangedProperty:(unint64_t)property;
+- (void)processChanges:(id)changes;
+- (void)recursivelyAddLayoutAndDependentLayoutsToValidateSet:(id)set;
+- (void)setDynamicGeometry:(id)geometry;
+- (void)setInitialBoundsForStandardKnobs:(CGRect)knobs;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setParent:(id)a3;
-- (void)takeFreeTransformFromTracker:(id)a3;
-- (void)takeRotationFromTracker:(id)a3;
-- (void)takeSizeFromTracker:(id)a3;
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setParent:(id)parent;
+- (void)takeFreeTransformFromTracker:(id)tracker;
+- (void)takeRotationFromTracker:(id)tracker;
+- (void)takeSizeFromTracker:(id)tracker;
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document;
 - (void)unregisterFromLayoutController;
 - (void)updateChildrenFromInfo;
 - (void)validate;
@@ -126,16 +126,16 @@
 
 @implementation CRLCanvasLayout
 
-- (CRLCanvasLayout)initWithInfo:(id)a3
+- (CRLCanvasLayout)initWithInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = CRLCanvasLayout;
   v6 = [(CRLCanvasAbstractLayout *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong((v6 + 74), a3);
+    objc_storeStrong((v6 + 74), info);
     v7[154] |= 7u;
     *(v7 + 210) = vdupq_n_s64(0x7FF8000000000000uLL);
     size = CGRectNull.size;
@@ -150,20 +150,20 @@
 {
   if (*(&self->mInvalidFlags + 2))
   {
-    v3 = [(CRLCanvasAbstractLayout *)self geometry];
+    geometry = [(CRLCanvasAbstractLayout *)self geometry];
   }
 
   else
   {
-    v3 = 0;
+    geometry = 0;
   }
 
-  return v3;
+  return geometry;
 }
 
-- (void)setDynamicGeometry:(id)a3
+- (void)setDynamicGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   if (!*(&self->mInvalidFlags + 2))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -193,7 +193,7 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:141 isFatal:0 description:"invalid nil value for '%{public}s'", "mBaseGeometry"];
   }
 
-  [(CRLCanvasAbstractLayout *)self setGeometry:v4];
+  [(CRLCanvasAbstractLayout *)self setGeometry:geometryCopy];
   [(CRLCanvasLayout *)self invalidate];
 }
 
@@ -232,27 +232,27 @@
   return result;
 }
 
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
   [(CRLCanvasAbstractLayout *)self frame];
-  v4 = *&a3->c;
-  *&v5.a = *&a3->a;
+  v4 = *&transform->c;
+  *&v5.a = *&transform->a;
   *&v5.c = v4;
-  *&v5.tx = *&a3->tx;
+  *&v5.tx = *&transform->tx;
   return CGRectApplyAffineTransform(v6, &v5);
 }
 
-- (CGRect)p_frameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)p_frameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->c;
-  v11 = *&a3->a;
+  v5 = *&transform->c;
+  v11 = *&transform->a;
   v12 = v5;
-  v13 = *&a3->tx;
+  v13 = *&transform->tx;
   [(CRLCanvasLayout *)self baseFrameForFrameForCullingWithAdditionalTransform:&v11];
-  v6 = *&a3->c;
-  v11 = *&a3->a;
+  v6 = *&transform->c;
+  v11 = *&transform->a;
   v12 = v6;
-  v13 = *&a3->tx;
+  v13 = *&transform->tx;
   [(CRLCanvasLayout *)self frameForCullingWithBaseFrame:&v11 additionalTransform:?];
   result.size.height = v10;
   result.size.width = v9;
@@ -261,18 +261,18 @@
   return result;
 }
 
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   memset(&v30, 0, sizeof(v30));
-  v10 = [(CRLCanvasAbstractLayout *)self geometry];
-  v11 = v10;
-  if (v10)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v11 = geometry;
+  if (geometry)
   {
-    [v10 transform];
+    [geometry transform];
   }
 
   else
@@ -282,17 +282,17 @@
 
   t1 = v30;
   memset(&v29, 0, sizeof(v29));
-  v12 = *&a4->c;
-  *&t2.a = *&a4->a;
+  v12 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v12;
-  *&t2.tx = *&a4->tx;
+  *&t2.tx = *&transform->tx;
   CGAffineTransformConcat(&v29, &t1, &t2);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = [(CRLCanvasAbstractLayout *)self children];
-  v14 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v14 = [children countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -303,7 +303,7 @@
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(children);
         }
 
         v18 = *(*(&v23 + 1) + 8 * i);
@@ -323,7 +323,7 @@
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v15 = [children countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v15);
@@ -344,8 +344,8 @@
 {
   if ((BYTE6(self->mDirtyRect.size.height) & 1) == 0)
   {
-    v3 = [(CRLCanvasLayout *)self layoutController];
-    [v3 invalidateLayout:self];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    [layoutController invalidateLayout:self];
 
     if ([(CRLCanvasLayout *)self layoutState])
     {
@@ -362,8 +362,8 @@
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(CRLCanvasLayout *)self dependentLayouts];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    dependentLayouts = [(CRLCanvasLayout *)self dependentLayouts];
+    v6 = [dependentLayouts countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -374,13 +374,13 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(dependentLayouts);
           }
 
           [*(*(&v10 + 1) + 8 * i) invalidate];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [dependentLayouts countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -394,8 +394,8 @@
 - (void)i_recursivelyClearInvalidationCache
 {
   [(CRLCanvasLayout *)self i_clearInvalidationCache];
-  v4 = [(CRLCanvasAbstractLayout *)self children];
-  [v4 makeObjectsPerformSelector:a2];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  [children makeObjectsPerformSelector:a2];
 }
 
 - (void)invalidatePosition
@@ -413,13 +413,13 @@
     BYTE2(self->mDirtyRect.size.height) = 1;
     *(&self->mInvalidatingSize + 2) |= 2u;
     BYTE6(self->mDirtyRect.size.height) = BYTE6(self->mDirtyRect.size.height) & 0xFD | (2 * ([(CRLCanvasLayout *)self layoutState]!= 0));
-    v3 = [(CRLCanvasLayout *)self dependentLayouts];
-    v4 = [(CRLCanvasLayout *)self bidirectionalSizeDependentLayouts];
+    dependentLayouts = [(CRLCanvasLayout *)self dependentLayouts];
+    bidirectionalSizeDependentLayouts = [(CRLCanvasLayout *)self bidirectionalSizeDependentLayouts];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = v3;
+    v5 = dependentLayouts;
     v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v6)
     {
@@ -451,7 +451,7 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = v4;
+    v11 = bidirectionalSizeDependentLayouts;
     v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v12)
     {
@@ -498,15 +498,15 @@
 - (void)invalidateFrameForCulling
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasAbstractLayout *)self parent];
-  v8 = sub_100014370(v3, v4);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v8 = sub_100014370(v3, parent);
 
   v5 = v8;
   if (v8)
   {
-    v6 = [v8 layoutHasValidFrameForCulling];
+    layoutHasValidFrameForCulling = [v8 layoutHasValidFrameForCulling];
     v5 = v8;
-    if (v6)
+    if (layoutHasValidFrameForCulling)
     {
       [v8 invalidateFrameForCulling];
       v5 = v8;
@@ -529,23 +529,23 @@
 
 - (void)invalidateChildren
 {
-  v3 = [(CRLCanvasLayout *)self layoutController];
-  [v3 invalidateChildrenOfLayout:self];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  [layoutController invalidateChildrenOfLayout:self];
 }
 
 - (void)updateChildrenFromInfo
 {
-  v3 = [(CRLCanvasLayout *)self childInfosForChildLayouts];
-  v4 = [(CRLCanvasAbstractLayout *)self children];
-  v5 = [v3 count];
-  v26 = v4;
-  if (v5 == [v4 count])
+  childInfosForChildLayouts = [(CRLCanvasLayout *)self childInfosForChildLayouts];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v5 = [childInfosForChildLayouts count];
+  v26 = children;
+  if (v5 == [children count])
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = v3;
+    v6 = childInfosForChildLayouts;
     v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v7)
     {
@@ -563,9 +563,9 @@
 
           v12 = *(*(&v31 + 1) + 8 * i);
           v13 = [v26 objectAtIndexedSubscript:v9];
-          v14 = [v13 info];
+          info = [v13 info];
 
-          if (v14 != v12)
+          if (info != v12)
           {
 
             goto LABEL_12;
@@ -589,13 +589,13 @@
   {
 LABEL_12:
     v6 = +[NSMutableArray array];
-    v15 = [(CRLCanvasLayout *)self layoutController];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v25 = v3;
-    v16 = v3;
+    v25 = childInfosForChildLayouts;
+    v16 = childInfosForChildLayouts;
     v17 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v17)
     {
@@ -611,7 +611,7 @@ LABEL_12:
           }
 
           v21 = *(*(&v27 + 1) + 8 * j);
-          v22 = [v15 layoutForInfo:v21 childOfLayout:{self, v25}];
+          v22 = [layoutController layoutForInfo:v21 childOfLayout:{self, v25}];
           if (!v22)
           {
             v22 = [objc_alloc(+[CRLCanvasLayoutController effectiveLayoutClassForInfo:](CRLCanvasLayoutController effectiveLayoutClassForInfo:{v21)), "initWithInfo:", v21}];
@@ -635,63 +635,63 @@ LABEL_12:
     [(CRLCanvasLayout *)self invalidate];
     [(CRLCanvasLayout *)self i_clearInvalidationCache];
 
-    v3 = v25;
+    childInfosForChildLayouts = v25;
   }
 
-  v24 = [(CRLCanvasAbstractLayout *)self children];
-  [v24 makeObjectsPerformSelector:"updateChildrenFromInfo"];
+  children2 = [(CRLCanvasAbstractLayout *)self children];
+  [children2 makeObjectsPerformSelector:"updateChildrenFromInfo"];
 }
 
 - (void)unregisterFromLayoutController
 {
-  v3 = [(CRLCanvasLayout *)self layoutController];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
 
-  if (v3)
+  if (layoutController)
   {
-    v4 = [(CRLCanvasLayout *)self layoutController];
-    [(CRLCanvasLayout *)self p_unregisterWithLayoutController:v4];
+    layoutController2 = [(CRLCanvasLayout *)self layoutController];
+    [(CRLCanvasLayout *)self p_unregisterWithLayoutController:layoutController2];
   }
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v4 = a3;
-  v5 = [(CRLCanvasAbstractLayout *)self parent];
+  parentCopy = parent;
+  parent = [(CRLCanvasAbstractLayout *)self parent];
 
-  if (v5 != v4)
+  if (parent != parentCopy)
   {
-    [(CRLCanvasLayout *)self parentWillChangeTo:v4];
-    v6 = [(CRLCanvasAbstractLayout *)self root];
-    v7 = [v4 root];
-    if (v6 != v7)
+    [(CRLCanvasLayout *)self parentWillChangeTo:parentCopy];
+    root = [(CRLCanvasAbstractLayout *)self root];
+    root2 = [parentCopy root];
+    if (root != root2)
     {
-      v8 = [(CRLCanvasLayout *)self layoutController];
-      if (v8)
+      layoutController = [(CRLCanvasLayout *)self layoutController];
+      if (layoutController)
       {
-        [(CRLCanvasLayout *)self p_unregisterWithLayoutController:v8];
+        [(CRLCanvasLayout *)self p_unregisterWithLayoutController:layoutController];
       }
     }
 
     v12.receiver = self;
     v12.super_class = CRLCanvasLayout;
-    [(CRLCanvasAbstractLayout *)&v12 setParent:v4];
+    [(CRLCanvasAbstractLayout *)&v12 setParent:parentCopy];
     v9 = objc_opt_class();
-    v10 = sub_100014370(v9, v4);
+    v10 = sub_100014370(v9, parentCopy);
     [v10 i_clearInvalidationCache];
 
-    if (v6 != v7)
+    if (root != root2)
     {
-      v11 = [(CRLCanvasLayout *)self layoutController];
-      if (v11)
+      layoutController2 = [(CRLCanvasLayout *)self layoutController];
+      if (layoutController2)
       {
-        [(CRLCanvasLayout *)self p_registerWithLayoutController:v11];
+        [(CRLCanvasLayout *)self p_registerWithLayoutController:layoutController2];
         [(CRLCanvasLayout *)self p_recursiveInvalidate];
         [(CRLCanvasLayout *)self i_recursivelyClearInvalidationCache];
       }
     }
 
     [(CRLCanvasLayout *)self parentDidChange];
-    if (v7)
+    if (root2)
     {
       [(CRLCanvasLayout *)self p_invalidateConnectedLayouts];
     }
@@ -701,31 +701,31 @@ LABEL_12:
 - (id)rootLayout
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasAbstractLayout *)self root];
-  v5 = sub_100014370(v3, v4);
+  root = [(CRLCanvasAbstractLayout *)self root];
+  v5 = sub_100014370(v3, root);
 
   return v5;
 }
 
 - (id)layoutController
 {
-  v2 = [(CRLCanvasLayout *)self rootLayout];
-  v3 = [v2 layoutController];
+  rootLayout = [(CRLCanvasLayout *)self rootLayout];
+  layoutController = [rootLayout layoutController];
 
-  return v3;
+  return layoutController;
 }
 
 - (void)validate
 {
   if ([(CRLCanvasLayout *)self invalidGeometry])
   {
-    v3 = [(CRLCanvasLayout *)self computeLayoutGeometry];
-    [(CRLCanvasAbstractLayout *)self setGeometry:v3];
+    computeLayoutGeometry = [(CRLCanvasLayout *)self computeLayoutGeometry];
+    [(CRLCanvasAbstractLayout *)self setGeometry:computeLayoutGeometry];
 
-    v4 = [(CRLCanvasAbstractLayout *)self parent];
-    if (v4 && [(CRLCanvasAbstractLayout *)self shouldApplyOffsetWhenComputingLayoutGeometry])
+    parent = [(CRLCanvasAbstractLayout *)self parent];
+    if (parent && [(CRLCanvasAbstractLayout *)self shouldApplyOffsetWhenComputingLayoutGeometry])
     {
-      [v4 offsetToApplyWhenComputingLayoutGeometryOfChild:self];
+      [parent offsetToApplyWhenComputingLayoutGeometryOfChild:self];
       if (v6 != CGPointZero.x || v5 != CGPointZero.y)
       {
         [(CRLCanvasAbstractLayout *)self offsetGeometryBy:?];
@@ -772,18 +772,18 @@ LABEL_12:
   }
 
   v6 = [CRLCanvasLayoutGeometry alloc];
-  v7 = [(CRLCanvasLayout *)self info];
-  v8 = [v7 geometry];
-  v9 = [(CRLCanvasLayoutGeometry *)v6 initWithInfoGeometry:v8];
+  info = [(CRLCanvasLayout *)self info];
+  geometry = [info geometry];
+  v9 = [(CRLCanvasLayoutGeometry *)v6 initWithInfoGeometry:geometry];
 
   return v9;
 }
 
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry
 {
-  if (a3)
+  if (geometry)
   {
-    [a3 fullTransform];
+    [geometry fullTransform];
   }
 
   else
@@ -798,10 +798,10 @@ LABEL_12:
 
 - (BOOL)isInGroup
 {
-  v2 = [(CRLCanvasAbstractLayout *)self parent];
-  if (v2)
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  if (parent)
   {
-    v3 = v2;
+    v3 = parent;
     do
     {
       objc_opt_class();
@@ -811,12 +811,12 @@ LABEL_12:
         break;
       }
 
-      v5 = [v3 parent];
+      parent2 = [v3 parent];
 
-      v3 = v5;
+      v3 = parent2;
     }
 
-    while (v5);
+    while (parent2);
   }
 
   else
@@ -829,24 +829,24 @@ LABEL_12:
 
 - (BOOL)isInTopLevelContainerForEditing
 {
-  v3 = [(CRLCanvasAbstractLayout *)self parent];
-  v4 = [(CRLCanvasLayout *)self layoutController];
-  v5 = [v4 canvas];
-  v6 = [v5 canvasController];
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
 
-  v7 = [v6 editorController];
-  v8 = [v7 selectionPath];
-  v9 = [v8 mostSpecificSelectionOfClass:objc_opt_class()];
+  editorController = [canvasController editorController];
+  selectionPath = [editorController selectionPath];
+  v9 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
 
   if (v9)
   {
     v10 = objc_opt_class();
-    v11 = [v9 boardItems];
-    v12 = [v11 anyObject];
-    v13 = [v6 layoutForInfo:v12];
+    boardItems = [v9 boardItems];
+    anyObject = [boardItems anyObject];
+    v13 = [canvasController layoutForInfo:anyObject];
     v14 = sub_100014370(v10, v13);
 
-    if (v3)
+    if (parent)
     {
       goto LABEL_3;
     }
@@ -855,7 +855,7 @@ LABEL_12:
   }
 
   v14 = 0;
-  if (!v3)
+  if (!parent)
   {
 LABEL_6:
     v20 = 1;
@@ -866,28 +866,28 @@ LABEL_6:
   {
 LABEL_3:
     v15 = objc_opt_class();
-    v16 = sub_100014370(v15, v3);
+    v16 = sub_100014370(v15, parent);
     v17 = v16;
     if (v16)
     {
-      v21 = [v16 info];
-      v22 = [v14 info];
-      v20 = v21 == v22;
+      info = [v16 info];
+      info2 = [v14 info];
+      v20 = info == info2;
 
       goto LABEL_11;
     }
 
-    v18 = [v3 root];
+    root = [parent root];
 
-    if (v18 == v3)
+    if (root == parent)
     {
       break;
     }
 
-    v19 = [v3 parent];
+    v3Parent = [parent parent];
 
-    v3 = v19;
-    if (!v19)
+    parent = v3Parent;
+    if (!v3Parent)
     {
       goto LABEL_6;
     }
@@ -922,7 +922,7 @@ LABEL_12:
   return result;
 }
 
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands
 {
   if (*(&self->mInfo + 2))
   {
@@ -987,8 +987,8 @@ LABEL_12:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:583 isFatal:0 description:"expected nil value for '%{public}s'", "mBaseGeometry"];
   }
 
-  v14 = [(CRLCanvasAbstractLayout *)self geometry];
-  v15 = [v14 copy];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v15 = [geometry copy];
   v16 = *(&self->mInvalidFlags + 2);
   *(&self->mInvalidFlags + 2) = v15;
 
@@ -1021,14 +1021,14 @@ LABEL_12:
     [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:586 isFatal:0 description:"expected nil value for '%{public}s'", "mInfoGeometryBeforeDynamicOperation"];
   }
 
-  v20 = [(CRLCanvasLayout *)self info];
-  v21 = [v20 geometry];
-  v22 = [v21 copy];
+  info = [(CRLCanvasLayout *)self info];
+  geometry2 = [info geometry];
+  v22 = [geometry2 copy];
   v23 = *(&self->mIsInRealTimeDynamicOperation + 2);
   *(&self->mIsInRealTimeDynamicOperation + 2) = v22;
 
   *(&self->mInfo + 2) = 1;
-  BYTE2(self->mConvexHullPath) = a3;
+  BYTE2(self->mConvexHullPath) = commands;
 }
 
 - (void)endDynamicOperation
@@ -1108,18 +1108,18 @@ LABEL_12:
 
 - (BOOL)isBeingTransformed
 {
-  v3 = [(CRLCanvasLayout *)self layoutController];
-  v4 = [v3 canvas];
-  v5 = [v4 canvasController];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 dynamicOperationController];
-  v7 = [v6 currentlyTransformingReps];
+  dynamicOperationController = [canvasController dynamicOperationController];
+  currentlyTransformingReps = [dynamicOperationController currentlyTransformingReps];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [currentlyTransformingReps countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1130,19 +1130,19 @@ LABEL_12:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(currentlyTransformingReps);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) layout];
+        layout = [*(*(&v15 + 1) + 8 * i) layout];
 
-        if (v12 == self)
+        if (layout == self)
         {
           v13 = 1;
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [currentlyTransformingReps countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;
@@ -1167,19 +1167,19 @@ LABEL_11:
   *(&self->mInfo + 2) = 2;
 }
 
-- (void)dragByUnscaled:(CGPoint)a3
+- (void)dragByUnscaled:(CGPoint)unscaled
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLCanvasAbstractLayout *)self parent];
+  y = unscaled.y;
+  x = unscaled.x;
+  parent = [(CRLCanvasAbstractLayout *)self parent];
 
-  if (v6)
+  if (parent)
   {
-    v7 = [(CRLCanvasAbstractLayout *)self parent];
-    v8 = v7;
-    if (v7)
+    parent2 = [(CRLCanvasAbstractLayout *)self parent];
+    v8 = parent2;
+    if (parent2)
     {
-      [v7 transformInRoot];
+      [parent2 transformInRoot];
     }
 
     else
@@ -1195,27 +1195,27 @@ LABEL_11:
   [(CRLCanvasLayout *)self dragBy:x, y, *&v10.a, *&v10.c, *&v10.tx];
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != CGPointZero.x || a3.y != CGPointZero.y)
+  y = by.y;
+  x = by.x;
+  if (by.x != CGPointZero.x || by.y != CGPointZero.y)
   {
     if ([(CRLCanvasLayout *)self isInRealTimeDynamicOperation])
     {
-      v7 = [(CRLCanvasLayout *)self layoutController];
-      v8 = [v7 canvas];
+      layoutController = [(CRLCanvasLayout *)self layoutController];
+      canvas = [layoutController canvas];
 
-      v9 = [v8 canvasController];
-      v10 = [v9 commandController];
+      canvasController = [canvas canvasController];
+      commandController = [canvasController commandController];
 
-      v11 = [v8 repForLayout:self];
-      v12 = [(CRLCanvasLayout *)self info];
-      v13 = [v12 geometry];
+      v11 = [canvas repForLayout:self];
+      info = [(CRLCanvasLayout *)self info];
+      geometry = [info geometry];
       CGAffineTransformMakeTranslation(&v32, x, y);
-      v14 = [v13 geometryByAppendingTransform:&v32];
-      v15 = [v11 newCommandToApplyGeometry:v14 toInfo:v12];
-      [v10 enqueueCommand:v15];
+      v14 = [geometry geometryByAppendingTransform:&v32];
+      v15 = [v11 newCommandToApplyGeometry:v14 toInfo:info];
+      [commandController enqueueCommand:v15];
     }
 
     if (!*(&self->mInvalidFlags + 2))
@@ -1247,21 +1247,21 @@ LABEL_11:
       [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:655 isFatal:0 description:"invalid nil value for '%{public}s'", "mBaseGeometry"];
     }
 
-    v19 = [(CRLCanvasAbstractLayout *)self geometry];
-    v20 = [v19 geometryByTranslatingBy:{x, y}];
+    geometry2 = [(CRLCanvasAbstractLayout *)self geometry];
+    v20 = [geometry2 geometryByTranslatingBy:{x, y}];
 
     [(CRLCanvasLayout *)self setDynamicGeometry:v20];
     [(CRLCanvasLayout *)self p_invalidateConnectedLayouts];
-    v21 = [(CRLCanvasLayout *)self layoutController];
-    v22 = [v21 canvas];
-    [v22 canvasInvalidatedForLayout:self];
+    layoutController2 = [(CRLCanvasLayout *)self layoutController];
+    canvas2 = [layoutController2 canvas];
+    [canvas2 canvasInvalidatedForLayout:self];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v23 = [(CRLCanvasLayout *)self dependentLayoutsForDrag];
-    v24 = [v23 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    dependentLayoutsForDrag = [(CRLCanvasLayout *)self dependentLayoutsForDrag];
+    v24 = [dependentLayoutsForDrag countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v24)
     {
       v25 = v24;
@@ -1272,13 +1272,13 @@ LABEL_11:
         {
           if (*v29 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(dependentLayoutsForDrag);
           }
 
           [*(*(&v28 + 1) + 8 * i) invalidateFrame];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v25 = [dependentLayoutsForDrag countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v25);
@@ -1300,9 +1300,9 @@ LABEL_11:
     {
       v7 = objc_opt_class();
       v8 = sub_100014370(v7, v6);
-      v9 = [v8 originalGeometry];
+      originalGeometry = [v8 originalGeometry];
 
-      if (v9)
+      if (originalGeometry)
       {
         [v8 originalGeometry];
       }
@@ -1334,18 +1334,18 @@ LABEL_11:
       *&retstr->c = v13;
       *&retstr->tx = v18;
 
-      v14 = [(CGAffineTransform *)v6 parent];
+      parent = [(CGAffineTransform *)v6 parent];
 
-      v6 = v14;
+      v6 = parent;
     }
 
-    while (v14);
+    while (parent);
   }
 
   return result;
 }
 
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space
 {
   v7 = *(&self->mIsInRealTimeDynamicOperation + 2);
   if (![v7 heightValid] || !objc_msgSend(v7, "widthValid") || (objc_msgSend(v7, "size"), v8 == 0.0) || fabs(v8) < 0.00000001 || (objc_msgSend(v7, "size"), v9 == 0.0) || fabs(v9) < 0.00000001)
@@ -1359,11 +1359,11 @@ LABEL_11:
   else
   {
     memset(&v19, 0, sizeof(v19));
-    v10 = [(CRLCanvasLayout *)self originalPureGeometry];
-    v11 = v10;
-    if (v10)
+    originalPureGeometry = [(CRLCanvasLayout *)self originalPureGeometry];
+    v11 = originalPureGeometry;
+    if (originalPureGeometry)
     {
-      [v10 fullTransform];
+      [originalPureGeometry fullTransform];
     }
 
     else
@@ -1400,24 +1400,24 @@ LABEL_11:
   return result;
 }
 
-- (void)takeRotationFromTracker:(id)a3
+- (void)takeRotationFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   if ([(CRLCanvasLayout *)self isInRealTimeDynamicOperation])
   {
-    v5 = [(CRLCanvasLayout *)self layoutController];
-    v6 = [v5 canvas];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
 
-    v7 = [v6 canvasController];
-    v8 = [v7 commandController];
+    canvasController = [canvas canvasController];
+    commandController = [canvasController commandController];
 
-    v9 = [v6 repForLayout:self];
+    v9 = [canvas repForLayout:self];
     v16 = 0u;
     v17 = 0u;
     v15 = 0u;
-    if (v4)
+    if (trackerCopy)
     {
-      [v4 rotateTransform];
+      [trackerCopy rotateTransform];
     }
 
     v10 = *(&self->mIsInRealTimeDynamicOperation + 2);
@@ -1425,18 +1425,18 @@ LABEL_11:
     v14[1] = v16;
     v14[2] = v17;
     v11 = [v10 geometryByAppendingTransform:v14];
-    v12 = [(CRLCanvasLayout *)self info];
-    v13 = [v9 newCommandToApplyGeometry:v11 toInfo:v12];
+    info = [(CRLCanvasLayout *)self info];
+    v13 = [v9 newCommandToApplyGeometry:v11 toInfo:info];
 
-    [v8 enqueueCommand:v13];
+    [commandController enqueueCommand:v13];
   }
 }
 
 - (BOOL)i_anyAncestorCurrentlyBeingRotatedWantsNormalLayoutDuringDynamicRotation
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasAbstractLayout *)self parent];
-  v5 = sub_100014370(v3, v4);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v5 = sub_100014370(v3, parent);
 
   if (v5)
   {
@@ -1454,8 +1454,8 @@ LABEL_11:
       }
 
       v6 = objc_opt_class();
-      v7 = [v5 parent];
-      v8 = sub_100014370(v6, v7);
+      parent2 = [v5 parent];
+      v8 = sub_100014370(v6, parent2);
 
       v5 = v8;
       if (!v8)
@@ -1479,8 +1479,8 @@ LABEL_9:
 - (BOOL)resizeMayChangeAspectRatio
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
   if (v5)
   {
@@ -1498,21 +1498,21 @@ LABEL_9:
 - (BOOL)canAspectRatioLockBeChangedByUser
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
-  LOBYTE(v4) = [v5 canAspectRatioLockBeChangedByUser];
-  return v4;
+  LOBYTE(info) = [v5 canAspectRatioLockBeChangedByUser];
+  return info;
 }
 
-- (id)commandForSettingAspectRatioLocked:(BOOL)a3
+- (id)commandForSettingAspectRatioLocked:(BOOL)locked
 {
-  v3 = a3;
+  lockedCopy = locked;
   v5 = objc_opt_class();
-  v6 = [(CRLCanvasLayout *)self info];
-  v7 = sub_100014370(v5, v6);
+  info = [(CRLCanvasLayout *)self info];
+  v7 = sub_100014370(v5, info);
 
-  v8 = [[_TtC8Freeform30CRLCommandSetAspectRatioLocked alloc] initWithBoardItem:v7 aspectRatioLocked:v3];
+  v8 = [[_TtC8Freeform30CRLCommandSetAspectRatioLocked alloc] initWithBoardItem:v7 aspectRatioLocked:lockedCopy];
 
   return v8;
 }
@@ -1526,30 +1526,30 @@ LABEL_9:
   return result;
 }
 
-- (void)takeSizeFromTracker:(id)a3
+- (void)takeSizeFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   if ([(CRLCanvasLayout *)self isInRealTimeDynamicOperation])
   {
-    v5 = [(CRLCanvasLayout *)self layoutController];
-    v6 = [v5 canvas];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
 
-    v7 = [v6 canvasController];
-    v8 = [v7 commandController];
+    canvasController = [canvas canvasController];
+    commandController = [canvasController commandController];
 
-    v9 = [v6 repForLayout:self];
-    v10 = [v4 currentGeometryForLayout:self];
+    v9 = [canvas repForLayout:self];
+    v10 = [trackerCopy currentGeometryForLayout:self];
     v11 = [v10 copy];
 
-    v12 = [(CRLCanvasLayout *)self info];
-    v13 = [v9 newCommandToApplyGeometry:v11 toInfo:v12];
+    info = [(CRLCanvasLayout *)self info];
+    v13 = [v9 newCommandToApplyGeometry:v11 toInfo:info];
 
-    [v8 enqueueCommand:v13];
+    [commandController enqueueCommand:v13];
   }
 
-  if (v4)
+  if (trackerCopy)
   {
-    [v4 transformForLayout:self];
+    [trackerCopy transformForLayout:self];
   }
 
   else
@@ -1561,20 +1561,20 @@ LABEL_9:
   [(CRLCanvasLayout *)self resizeWithTransform:v15];
 }
 
-- (void)beginFreeTransformWithTracker:(id)a3
+- (void)beginFreeTransformWithTracker:(id)tracker
 {
   *(&self->mInfo + 2) = 5;
-  v4 = a3;
-  v5 = [v4 isDragging];
-  v6 = [v4 isRotating];
+  trackerCopy = tracker;
+  isDragging = [trackerCopy isDragging];
+  isRotating = [trackerCopy isRotating];
   v7 = 2;
-  if (!v6)
+  if (!isRotating)
   {
     v7 = 0;
   }
 
-  v8 = v7 | v5;
-  if ([v4 isResizing])
+  v8 = v7 | isDragging;
+  if ([trackerCopy isResizing])
   {
     v9 = 4;
   }
@@ -1584,10 +1584,10 @@ LABEL_9:
     v9 = 0;
   }
 
-  v10 = [v4 inRotateResizeMode];
+  inRotateResizeMode = [trackerCopy inRotateResizeMode];
 
   v11 = 8;
-  if (!v10)
+  if (!inRotateResizeMode)
   {
     v11 = 0;
   }
@@ -1595,19 +1595,19 @@ LABEL_9:
   *(&self->mLayoutState + 2) = v8 | v9 | v11;
 }
 
-- (void)takeFreeTransformFromTracker:(id)a3
+- (void)takeFreeTransformFromTracker:(id)tracker
 {
-  v4 = a3;
-  v5 = [v4 isDragging];
-  v6 = [v4 isRotating];
+  trackerCopy = tracker;
+  isDragging = [trackerCopy isDragging];
+  isRotating = [trackerCopy isRotating];
   v7 = 2;
-  if (!v6)
+  if (!isRotating)
   {
     v7 = 0;
   }
 
-  v8 = v7 | v5;
-  if ([v4 isResizing])
+  v8 = v7 | isDragging;
+  if ([trackerCopy isResizing])
   {
     v9 = 4;
   }
@@ -1617,9 +1617,9 @@ LABEL_9:
     v9 = 0;
   }
 
-  v10 = [v4 inRotateResizeMode];
+  inRotateResizeMode = [trackerCopy inRotateResizeMode];
   v11 = 8;
-  if (!v10)
+  if (!inRotateResizeMode)
   {
     v11 = 0;
   }
@@ -1627,25 +1627,25 @@ LABEL_9:
   *(&self->mLayoutState + 2) = v8 | v9 | v11;
   if ([(CRLCanvasLayout *)self isInRealTimeDynamicOperation])
   {
-    v12 = [(CRLCanvasLayout *)self layoutController];
-    v13 = [v12 canvas];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
 
-    v14 = [v13 canvasController];
-    v15 = [v14 commandController];
+    canvasController = [canvas canvasController];
+    commandController = [canvasController commandController];
 
-    v16 = [v13 repForLayout:self];
-    v17 = [v4 currentGeometryForLayout:self];
+    v16 = [canvas repForLayout:self];
+    v17 = [trackerCopy currentGeometryForLayout:self];
     v18 = [v17 copy];
 
-    v19 = [(CRLCanvasLayout *)self info];
-    v20 = [v16 newCommandToApplyGeometry:v18 toInfo:v19];
+    info = [(CRLCanvasLayout *)self info];
+    v20 = [v16 newCommandToApplyGeometry:v18 toInfo:info];
 
-    [v15 enqueueCommand:v20];
+    [commandController enqueueCommand:v20];
   }
 
-  if (v4)
+  if (trackerCopy)
   {
-    [v4 freeTransformForLayout:self];
+    [trackerCopy freeTransformForLayout:self];
   }
 
   else
@@ -1660,8 +1660,8 @@ LABEL_9:
 - (BOOL)i_anyAncestorCurrentlyBeingFreeTransformedWantsNormalLayoutDuringDynamicFreeTransform
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasAbstractLayout *)self parent];
-  v5 = sub_100014370(v3, v4);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v5 = sub_100014370(v3, parent);
 
   if (v5)
   {
@@ -1679,8 +1679,8 @@ LABEL_9:
       }
 
       v6 = objc_opt_class();
-      v7 = [v5 parent];
-      v8 = sub_100014370(v6, v7);
+      parent2 = [v5 parent];
+      v8 = sub_100014370(v6, parent2);
 
       v5 = v8;
       if (!v8)
@@ -1709,11 +1709,11 @@ LABEL_9:
   v8 = v7;
   v10 = v9;
   memset(&v19, 0, sizeof(v19));
-  v11 = [(CRLCanvasLayout *)self originalGeometry];
-  v12 = v11;
-  if (v11)
+  originalGeometry = [(CRLCanvasLayout *)self originalGeometry];
+  v12 = originalGeometry;
+  if (originalGeometry)
   {
-    [v11 transform];
+    [originalGeometry transform];
   }
 
   else
@@ -1740,11 +1740,11 @@ LABEL_9:
   v8 = v7;
   v10 = v9;
   memset(&v19, 0, sizeof(v19));
-  v11 = [(CRLCanvasAbstractLayout *)self geometry];
-  v12 = v11;
-  if (v11)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v12 = geometry;
+  if (geometry)
   {
-    [v11 transform];
+    [geometry transform];
   }
 
   else
@@ -1765,23 +1765,23 @@ LABEL_9:
 
 - (CRLCanvasLayoutGeometry)pureGeometryInRoot
 {
-  v3 = [(CRLCanvasLayout *)self pureGeometry];
-  v4 = [(CRLCanvasAbstractLayout *)self geometryInRoot:v3];
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+  v4 = [(CRLCanvasAbstractLayout *)self geometryInRoot:pureGeometry];
 
   return v4;
 }
 
 - (CRLCanvasLayoutGeometry)pureGeometryInParent
 {
-  v3 = [(CRLCanvasLayout *)self pureGeometry];
-  v4 = [v3 mutableCopy];
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+  v4 = [pureGeometry mutableCopy];
 
-  v5 = [(CRLCanvasAbstractLayout *)self parent];
-  v6 = [v5 geometry];
-  v7 = v6;
-  if (v6)
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  geometry = [parent geometry];
+  v7 = geometry;
+  if (geometry)
   {
-    [v6 transform];
+    [geometry transform];
   }
 
   else
@@ -1796,15 +1796,15 @@ LABEL_9:
 
 - (CRLCanvasLayoutGeometry)inspectorGeometry
 {
-  v3 = [(CRLCanvasLayout *)self pureGeometry];
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
   v4 = *&CGAffineTransformIdentity.c;
   v25 = *&CGAffineTransformIdentity.a;
   v26 = v4;
   v27 = *&CGAffineTransformIdentity.tx;
-  v5 = [(CRLCanvasAbstractLayout *)self parent];
-  if (v5)
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  if (parent)
   {
-    v6 = v5;
+    v6 = parent;
     do
     {
       if ([v6 isRootLayoutForInspectorGeometry])
@@ -1812,14 +1812,14 @@ LABEL_9:
         break;
       }
 
-      v7 = [v6 geometry];
-      v8 = v7;
-      if (v7)
+      geometry = [v6 geometry];
+      v8 = geometry;
+      if (geometry)
       {
         v21[0] = v25;
         v21[1] = v26;
         v21[2] = v27;
-        [v7 transformByConcatenatingTransformTo:v21];
+        [geometry transformByConcatenatingTransformTo:v21];
       }
 
       else
@@ -1833,24 +1833,24 @@ LABEL_9:
       v26 = v23;
       v27 = v24;
 
-      v9 = [v6 parent];
+      parent2 = [v6 parent];
 
-      v6 = v9;
+      v6 = parent2;
     }
 
-    while (v9);
+    while (parent2);
   }
 
   v22 = v25;
   v23 = v26;
   v24 = v27;
-  v10 = [v3 geometryByTransformingBy:&v22];
+  v10 = [pureGeometry geometryByTransformingBy:&v22];
 
-  v11 = [(CRLCanvasLayout *)self layoutController];
-  v12 = [v11 canvas];
-  v13 = [v12 isAnchoredAtRight];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  isAnchoredAtRight = [canvas isAnchoredAtRight];
 
-  if (v13)
+  if (isAnchoredAtRight)
   {
     [v10 frame];
     x = v29.origin.x;
@@ -1872,11 +1872,11 @@ LABEL_9:
 
 - (double)inspectorGeometryAngleInDegrees
 {
-  v2 = [(CRLCanvasLayout *)self inspectorGeometry];
-  v3 = v2;
-  if (v2)
+  inspectorGeometry = [(CRLCanvasLayout *)self inspectorGeometry];
+  v3 = inspectorGeometry;
+  if (inspectorGeometry)
   {
-    [v2 transform];
+    [inspectorGeometry transform];
   }
 
   else
@@ -1903,11 +1903,11 @@ LABEL_9:
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v5 = [(CRLCanvasLayout *)self pureGeometry];
-  v6 = v5;
-  if (v5)
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+  v6 = pureGeometry;
+  if (pureGeometry)
   {
-    [v5 transform];
+    [pureGeometry transform];
   }
 
   else
@@ -1923,15 +1923,15 @@ LABEL_9:
     v8 = result;
     do
     {
-      v9 = [(CGAffineTransform *)v8 geometry];
-      v10 = v9;
-      if (v9)
+      geometry = [(CGAffineTransform *)v8 geometry];
+      v10 = geometry;
+      if (geometry)
       {
         v11 = *&retstr->c;
         v14[0] = *&retstr->a;
         v14[1] = v11;
         v14[2] = *&retstr->tx;
-        [v9 transformByConcatenatingTransformTo:v14];
+        [geometry transformByConcatenatingTransformTo:v14];
       }
 
       else
@@ -1946,12 +1946,12 @@ LABEL_9:
       *&retstr->c = v12;
       *&retstr->tx = v17;
 
-      v13 = [(CGAffineTransform *)v8 parent];
+      parent = [(CGAffineTransform *)v8 parent];
 
-      v8 = v13;
+      v8 = parent;
     }
 
-    while (v13);
+    while (parent);
   }
 
   return result;
@@ -1962,11 +1962,11 @@ LABEL_9:
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v5 = [(CRLCanvasLayout *)self originalPureGeometry];
-  v6 = v5;
-  if (v5)
+  originalPureGeometry = [(CRLCanvasLayout *)self originalPureGeometry];
+  v6 = originalPureGeometry;
+  if (originalPureGeometry)
   {
-    [v5 transform];
+    [originalPureGeometry transform];
   }
 
   else
@@ -1982,15 +1982,15 @@ LABEL_9:
     v8 = result;
     do
     {
-      v9 = [(CGAffineTransform *)v8 geometry];
-      v10 = v9;
-      if (v9)
+      geometry = [(CGAffineTransform *)v8 geometry];
+      v10 = geometry;
+      if (geometry)
       {
         v11 = *&retstr->c;
         v14[0] = *&retstr->a;
         v14[1] = v11;
         v14[2] = *&retstr->tx;
-        [v9 transformByConcatenatingTransformTo:v14];
+        [geometry transformByConcatenatingTransformTo:v14];
       }
 
       else
@@ -2005,27 +2005,27 @@ LABEL_9:
       *&retstr->c = v12;
       *&retstr->tx = v17;
 
-      v13 = [(CGAffineTransform *)v8 parent];
+      parent = [(CGAffineTransform *)v8 parent];
 
-      v8 = v13;
+      v8 = parent;
     }
 
-    while (v13);
+    while (parent);
   }
 
   return result;
 }
 
-- (id)commandToFlipWithOrientation:(int)a3
+- (id)commandToFlipWithOrientation:(int)orientation
 {
   v5 = objc_opt_class();
-  v6 = [(CRLCanvasLayout *)self info];
-  v7 = sub_100013F00(v5, v6);
+  info = [(CRLCanvasLayout *)self info];
+  v7 = sub_100013F00(v5, info);
 
-  v8 = [v7 geometry];
-  v9 = [v8 mutableCopy];
+  geometry = [v7 geometry];
+  v9 = [geometry mutableCopy];
 
-  if (a3)
+  if (orientation)
   {
     [v9 setVerticalFlip:{objc_msgSend(v9, "verticalFlip") ^ 1}];
   }
@@ -2040,13 +2040,13 @@ LABEL_9:
   return v10;
 }
 
-- (unint64_t)p_directionForCollaboratorCursorKnobTag:(unint64_t)a3
+- (unint64_t)p_directionForCollaboratorCursorKnobTag:(unint64_t)tag
 {
-  v5 = [(CRLCanvasAbstractLayout *)self geometryInRoot];
-  v6 = v5;
-  if (v5)
+  geometryInRoot = [(CRLCanvasAbstractLayout *)self geometryInRoot];
+  v6 = geometryInRoot;
+  if (geometryInRoot)
   {
-    [v5 transform];
+    [geometryInRoot transform];
   }
 
   else
@@ -2059,12 +2059,12 @@ LABEL_9:
   v7 = sub_100139980(&v15);
 
   v8 = sub_1004C31F4(v7 * 1000.0);
-  v9 = sub_100345E1C(a3, v8 / 1000.0);
-  v10 = [(CRLCanvasAbstractLayout *)self geometry];
-  v11 = v10;
-  if (v10)
+  v9 = sub_100345E1C(tag, v8 / 1000.0);
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v11 = geometry;
+  if (geometry)
   {
-    [v10 transform];
+    [geometry transform];
   }
 
   else
@@ -2100,9 +2100,9 @@ LABEL_9:
   return 4;
 }
 
-- (id)unscaledPositionsForCollaboratorHUDForSelectionPath:(id)a3
+- (id)unscaledPositionsForCollaboratorHUDForSelectionPath:(id)path
 {
-  [(CRLCanvasLayout *)self boundsForCollaboratorHUDForSelectionPath:a3];
+  [(CRLCanvasLayout *)self boundsForCollaboratorHUDForSelectionPath:path];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2153,44 +2153,44 @@ LABEL_9:
   return v26;
 }
 
-- (id)newCommandToMoveByOffset:(CGPoint)a3 whenDistributingLayoutsByOffsets:(id)a4
+- (id)newCommandToMoveByOffset:(CGPoint)offset whenDistributingLayoutsByOffsets:(id)offsets
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v7 = objc_opt_class();
-  v8 = [(CRLCanvasLayout *)self info];
-  v9 = sub_100014370(v7, v8);
+  info = [(CRLCanvasLayout *)self info];
+  v9 = sub_100014370(v7, info);
 
-  v10 = [(CRLCanvasLayout *)self info];
-  v11 = [v10 geometry];
+  info2 = [(CRLCanvasLayout *)self info];
+  geometry = [info2 geometry];
   CGAffineTransformMakeTranslation(&v15, x, y);
-  v12 = [v11 geometryByAppendingTransform:&v15];
+  v12 = [geometry geometryByAppendingTransform:&v15];
 
   v13 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:v9 geometry:v12];
   return v13;
 }
 
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document
 {
-  v5 = a5;
-  v8 = a3;
-  if (v5)
+  documentCopy = document;
+  infoCopy = info;
+  if (documentCopy)
   {
-    v9 = [(CRLCanvasLayout *)self layoutController];
-    v10 = [v9 canvas];
-    v11 = [v10 canvasController];
-    v12 = [v11 editingCoordinator];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
+    canvasController = [canvas canvasController];
+    editingCoordinator = [canvasController editingCoordinator];
 
     v13 = objc_opt_class();
-    v14 = sub_100014370(v13, v8);
+    v14 = sub_100014370(v13, infoCopy);
     v15 = v14;
-    if (v12)
+    if (editingCoordinator)
     {
       if (v14)
       {
-        v16 = [v12 mainBoard];
+        mainBoard = [editingCoordinator mainBoard];
         v17 = [v15 id];
-        v18 = [v16 containsObject:v17];
+        v18 = [mainBoard containsObject:v17];
 
         if (v18)
         {
@@ -2228,16 +2228,16 @@ LABEL_9:
   v25[1] = 3221225472;
   v25[2] = sub_100374478;
   v25[3] = &unk_101859CC0;
-  v26 = v8;
-  v22 = *&a4->c;
-  v24[0] = *&a4->a;
+  v26 = infoCopy;
+  v22 = *&transform->c;
+  v24[0] = *&transform->a;
   v24[1] = v22;
-  v24[2] = *&a4->tx;
-  v23 = v8;
+  v24[2] = *&transform->tx;
+  v23 = infoCopy;
   [(CRLCanvasLayout *)self p_calculateClampModelValuesWithAdditionalTransform:v24 andPerformBlock:v25];
 }
 
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform
 {
   v8 = 0;
   v9 = &v8;
@@ -2251,10 +2251,10 @@ LABEL_9:
   v7[3] = &unk_101859D28;
   v7[4] = self;
   v7[5] = &v8;
-  v3 = *&a3->c;
-  v6[0] = *&a3->a;
+  v3 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v3;
-  v6[2] = *&a3->tx;
+  v6[2] = *&transform->tx;
   [(CRLCanvasLayout *)self p_calculateClampModelValuesWithAdditionalTransform:v6 andPerformBlock:v7];
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -2262,47 +2262,47 @@ LABEL_9:
   return v4;
 }
 
-- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)a3 andPerformBlock:(id)a4
+- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)transform andPerformBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(CRLCanvasLayout *)self pureGeometry];
-  v8 = *&a3->c;
-  v21[0] = *&a3->a;
+  blockCopy = block;
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+  v8 = *&transform->c;
+  v21[0] = *&transform->a;
   v21[1] = v8;
-  v21[2] = *&a3->tx;
-  v9 = [v7 geometryByTransformingBy:v21];
+  v21[2] = *&transform->tx;
+  v9 = [pureGeometry geometryByTransformingBy:v21];
 
   v10 = [(CRLCanvasLayout *)self computeInfoGeometryFromPureLayoutGeometry:v9];
-  v11 = [v10 normalizedGeometry];
+  normalizedGeometry = [v10 normalizedGeometry];
 
-  v12 = [(CRLCanvasLayout *)self info];
-  v13 = [v12 geometry];
+  info = [(CRLCanvasLayout *)self info];
+  geometry = [info geometry];
 
-  if ([v13 widthValid] && (objc_msgSend(v13, "heightValid") & 1) != 0)
+  if ([geometry widthValid] && (objc_msgSend(geometry, "heightValid") & 1) != 0)
   {
-    v14 = v11;
+    v14 = normalizedGeometry;
   }
 
   else
   {
-    v14 = [v11 mutableCopy];
-    [v14 setWidthValid:{objc_msgSend(v13, "widthValid")}];
-    [v14 setHeightValid:{objc_msgSend(v13, "heightValid")}];
+    v14 = [normalizedGeometry mutableCopy];
+    [v14 setWidthValid:{objc_msgSend(geometry, "widthValid")}];
+    [v14 setHeightValid:{objc_msgSend(geometry, "heightValid")}];
     [v14 size];
     v16 = v15;
     v18 = v17;
-    if (([v13 widthValid] & 1) == 0)
+    if (([geometry widthValid] & 1) == 0)
     {
-      [v13 size];
+      [geometry size];
       if (v19 == 0.0)
       {
         v16 = 0.0;
       }
     }
 
-    if (([v13 heightValid] & 1) == 0)
+    if (([geometry heightValid] & 1) == 0)
     {
-      [v13 size];
+      [geometry size];
       if (v20 == 0.0)
       {
         v18 = 0.0;
@@ -2312,15 +2312,15 @@ LABEL_9:
     [v14 setSize:{v16, v18}];
   }
 
-  v6[2](v6, v14);
+  blockCopy[2](blockCopy, v14);
 }
 
 - (BOOL)isSelectable
 {
-  v2 = [(CRLCanvasLayout *)self info];
-  if ([v2 isSelectable])
+  info = [(CRLCanvasLayout *)self info];
+  if ([info isSelectable])
   {
-    v3 = [v2 parentInfo];
+    parentInfo = [info parentInfo];
     objc_opt_class();
     v4 = 0;
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2331,9 +2331,9 @@ LABEL_9:
     do
     {
       v5 = v4;
-      v4 = v3;
+      v4 = parentInfo;
 
-      v3 = [v4 parentInfo];
+      parentInfo = [v4 parentInfo];
 
       objc_opt_class();
     }
@@ -2361,8 +2361,8 @@ LABEL_9:
 
 - (CGRect)boundsForStandardKnobs
 {
-  v2 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v2 size];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry size];
   v3 = sub_10011ECB4();
   v5 = v4;
   v7 = v6;
@@ -2381,8 +2381,8 @@ LABEL_9:
 
 - (CGRect)frameForCaptionPositioning
 {
-  v2 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v2 frame];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2429,11 +2429,11 @@ LABEL_9:
   [(CRLCanvasLayout *)self centerForRotation];
   v12 = v4;
   v13 = v3;
-  v5 = [(CRLCanvasAbstractLayout *)self geometry];
-  v6 = v5;
-  if (v5)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v6 = geometry;
+  if (geometry)
   {
-    [v5 transform];
+    [geometry transform];
     v7 = v15;
     v8 = v16;
     v9 = v17;
@@ -2458,11 +2458,11 @@ LABEL_9:
 - (CGPoint)cardinalNorthPosition
 {
   [(CRLCanvasLayout *)self p_calculateMagnetPositionsIfNeeded];
-  v3 = [(CRLCanvasAbstractLayout *)self geometry];
-  v4 = v3;
-  if (v3)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v4 = geometry;
+  if (geometry)
   {
-    [v3 transform];
+    [geometry transform];
     v5 = v11;
     v6 = v12;
     v7 = v13;
@@ -2487,11 +2487,11 @@ LABEL_9:
 - (CGPoint)cardinalEastPosition
 {
   [(CRLCanvasLayout *)self p_calculateMagnetPositionsIfNeeded];
-  v3 = [(CRLCanvasAbstractLayout *)self geometry];
-  v4 = v3;
-  if (v3)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v4 = geometry;
+  if (geometry)
   {
-    [v3 transform];
+    [geometry transform];
     v5 = v11;
     v6 = v12;
     v7 = v13;
@@ -2516,11 +2516,11 @@ LABEL_9:
 - (CGPoint)cardinalSouthPosition
 {
   [(CRLCanvasLayout *)self p_calculateMagnetPositionsIfNeeded];
-  v3 = [(CRLCanvasAbstractLayout *)self geometry];
-  v4 = v3;
-  if (v3)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v4 = geometry;
+  if (geometry)
   {
-    [v3 transform];
+    [geometry transform];
     v5 = v11;
     v6 = v12;
     v7 = v13;
@@ -2545,11 +2545,11 @@ LABEL_9:
 - (CGPoint)cardinalWestPosition
 {
   [(CRLCanvasLayout *)self p_calculateMagnetPositionsIfNeeded];
-  v3 = [(CRLCanvasAbstractLayout *)self geometry];
-  v4 = v3;
-  if (v3)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v4 = geometry;
+  if (geometry)
   {
-    [v3 transform];
+    [geometry transform];
     v5 = v11;
     v6 = v12;
     v7 = v13;
@@ -2571,17 +2571,17 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)getCardinalPositionFromType:(unint64_t)a3
+- (CGPoint)getCardinalPositionFromType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       [(CRLCanvasLayout *)self cardinalSouthPosition];
       goto __CRLCanvasLayout_getCardinalPositionFromType__;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       [(CRLCanvasLayout *)self cardinalWestPosition];
       goto __CRLCanvasLayout_getCardinalPositionFromType__;
@@ -2592,41 +2592,35 @@ LABEL_8:
     goto __CRLCanvasLayout_getCardinalPositionFromType__;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     [(CRLCanvasLayout *)self cardinalNorthPosition];
     goto __CRLCanvasLayout_getCardinalPositionFromType__;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
     goto LABEL_8;
   }
 
   [(CRLCanvasLayout *)self cardinalEastPosition];
-__CRLCanvasLayout_getCardinalPositionFromType__:
-  result.y = v4;
-  result.x = v3;
-  return result;
-}
-
-- (CGPoint)getCardinalPositionWithParentTransformFromType:(unint64_t)a3
+- (CGPoint)getCardinalPositionWithParentTransformFromType:(unint64_t)type
 {
-  [(CRLCanvasLayout *)self getCardinalPositionFromType:a3];
+  [(CRLCanvasLayout *)self getCardinalPositionFromType:type];
   v12 = v5;
   v13 = v4;
   v15 = 0u;
   v16 = 0u;
   v14 = 0u;
-  v6 = [(CRLCanvasAbstractLayout *)self parent];
-  if (v6)
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  if (parent)
   {
-    v7 = [(CRLCanvasAbstractLayout *)self parent];
-    v8 = [v7 geometryInRoot];
-    v9 = v8;
-    if (v8)
+    parent2 = [(CRLCanvasAbstractLayout *)self parent];
+    geometryInRoot = [parent2 geometryInRoot];
+    v9 = geometryInRoot;
+    if (geometryInRoot)
     {
-      [v8 transform];
+      [geometryInRoot transform];
     }
 
     else
@@ -2653,23 +2647,23 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
 
 - (id)computeLayoutGeometry
 {
-  v3 = [(CRLCanvasLayout *)self layoutGeometryFromInfo];
+  layoutGeometryFromInfo = [(CRLCanvasLayout *)self layoutGeometryFromInfo];
   v4 = objc_opt_class();
-  v5 = [(CRLCanvasAbstractLayout *)self parent];
-  v6 = sub_100014370(v4, v5);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v6 = sub_100014370(v4, parent);
 
   if (v6 && [(CRLCanvasLayout *)self layoutState]!= 4 && [(CRLCanvasLayout *)self layoutState]!= 5)
   {
     if ([(CRLCanvasLayout *)self layoutState]== 3 && ![(CRLCanvasLayout *)self wantsNormalLayoutDuringDynamicRotation])
     {
       v20 = [CRLCanvasLayoutGeometry alloc];
-      v21 = [(CRLCanvasLayout *)self originalPureGeometry];
-      [v21 size];
+      originalPureGeometry = [(CRLCanvasLayout *)self originalPureGeometry];
+      [originalPureGeometry size];
       v23 = v22;
       v25 = v24;
-      if (v3)
+      if (layoutGeometryFromInfo)
       {
-        [v3 transform];
+        [layoutGeometryFromInfo transform];
       }
 
       else
@@ -2681,17 +2675,17 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
 
       v19 = [(CRLCanvasLayoutGeometry *)v20 initWithSize:&v27 transform:v23, v25];
 
-      v3 = v21;
+      layoutGeometryFromInfo = originalPureGeometry;
     }
 
     else
     {
-      [v3 size];
+      [layoutGeometryFromInfo size];
       v8 = v7;
       v10 = v9;
-      if (v3)
+      if (layoutGeometryFromInfo)
       {
-        [v3 transform];
+        [layoutGeometryFromInfo transform];
       }
 
       else
@@ -2703,13 +2697,13 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
 
       [(CRLCanvasLayout *)self scaleForInlineClampingUnrotatedSize:&v27 withTransform:v8, v10];
       v12 = v11;
-      [v3 size];
+      [layoutGeometryFromInfo size];
       v15 = sub_10011F340(v13, v14, v12);
       v17 = v16;
       v18 = [CRLCanvasLayoutGeometry alloc];
-      if (v3)
+      if (layoutGeometryFromInfo)
       {
-        [v3 transform];
+        [layoutGeometryFromInfo transform];
       }
 
       else
@@ -2722,17 +2716,17 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
       v19 = [(CRLCanvasLayoutGeometry *)v18 initWithSize:&v27 transform:v15, v17];
     }
 
-    v3 = v19;
+    layoutGeometryFromInfo = v19;
   }
 
-  return v3;
+  return layoutGeometryFromInfo;
 }
 
-- (double)scaleForInlineClampingUnrotatedSize:(CGSize)a3 withTransform:(CGAffineTransform *)a4
+- (double)scaleForInlineClampingUnrotatedSize:(CGSize)size withTransform:(CGAffineTransform *)transform
 {
   v6 = objc_opt_class();
-  v7 = [(CRLCanvasAbstractLayout *)self parent];
-  v8 = sub_100014370(v6, v7);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v8 = sub_100014370(v6, parent);
 
   v9 = 1.0;
   if (v8)
@@ -2747,10 +2741,10 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
       v18 = v17;
       v20 = v19;
       v22 = v21;
-      v23 = *&a4->c;
-      *&v33.a = *&a4->a;
+      v23 = *&transform->c;
+      *&v33.a = *&transform->a;
       *&v33.c = v23;
-      *&v33.tx = *&a4->tx;
+      *&v33.tx = *&transform->tx;
       v24 = sub_1001399C0(&v33.a);
       CGAffineTransformMakeRotation(&v33, v24);
       v34.origin.x = v16;
@@ -2801,15 +2795,15 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   return v9;
 }
 
-- (void)processChanges:(id)a3
+- (void)processChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = objc_alloc_init(NSMutableOrderedSet);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v4;
+  v6 = changesCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
@@ -2825,16 +2819,16 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * v10) details];
-        v12 = v11;
-        if (v11)
+        details = [*(*(&v23 + 1) + 8 * v10) details];
+        v12 = details;
+        if (details)
         {
           v22[0] = _NSConcreteStackBlock;
           v22[1] = 3221225472;
           v22[2] = sub_100375670;
           v22[3] = &unk_101855978;
           v22[4] = v5;
-          [v11 enumeratePropertiesUsingBlock:v22];
+          [details enumeratePropertiesUsingBlock:v22];
         }
 
         v10 = v10 + 1;
@@ -2879,9 +2873,9 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   }
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
-  switch(a3)
+  switch(property)
   {
     case 4uLL:
       [(CRLCanvasLayout *)self invalidateChildren];
@@ -2897,35 +2891,35 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   [(CRLCanvasLayout *)self invalidateFrameForCulling];
 }
 
-- (void)calculateAndSetPointsToSearchReference:(id)a3
+- (void)calculateAndSetPointsToSearchReference:(id)reference
 {
-  v4 = a3;
-  [(CRLCanvasLayout *)self calculatePointFromSearchReference:v4];
-  [v4 setSearchReferencePoint:?];
+  referenceCopy = reference;
+  [(CRLCanvasLayout *)self calculatePointFromSearchReference:referenceCopy];
+  [referenceCopy setSearchReferencePoint:?];
 }
 
 - (NSArray)dependentLayouts
 {
-  v3 = [(CRLCanvasAbstractLayout *)self parent];
-  v4 = [v3 additionalDependenciesForChildLayout:self];
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v4 = [parent additionalDependenciesForChildLayout:self];
   v5 = [&__NSArray0__struct arrayByAddingObjectsFromArray:v4];
 
-  v6 = [(CRLCanvasLayout *)self layoutController];
-  v7 = [v6 canvas];
-  v8 = [v7 canvasController];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
 
   v9 = objc_opt_class();
-  v10 = [(CRLCanvasLayout *)self info];
-  v11 = sub_100014370(v9, v10);
+  info = [(CRLCanvasLayout *)self info];
+  v11 = sub_100014370(v9, info);
 
-  if (v8 && v11)
+  if (canvasController && v11)
   {
-    v12 = [v8 additionalDependentLayoutsForBoardItem:v11];
+    v12 = [canvasController additionalDependentLayoutsForBoardItem:v11];
     v13 = v12;
     if (v12 && [v12 count])
     {
-      v14 = [v13 allObjects];
-      v15 = [v5 arrayByAddingObjectsFromArray:v14];
+      allObjects = [v13 allObjects];
+      v15 = [v5 arrayByAddingObjectsFromArray:allObjects];
 
       v5 = v15;
     }
@@ -2934,7 +2928,7 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   return v5;
 }
 
-- (CGSize)maximumFrameSizeForChild:(id)a3
+- (CGSize)maximumFrameSizeForChild:(id)child
 {
   v3 = 1.79769313e308;
   v4 = 1.79769313e308;
@@ -2943,22 +2937,22 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   return result;
 }
 
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable
 {
-  v4 = [a3 parent];
-  LOBYTE(self) = v4 == self;
+  parent = [wrappable parent];
+  LOBYTE(self) = parent == self;
 
   return self;
 }
 
-- (void)p_updateDescendentWrapPathsWithTransform:(CGAffineTransform *)a3
+- (void)p_updateDescendentWrapPathsWithTransform:(CGAffineTransform *)transform
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(CRLCanvasLayout *)self descendentWrappables];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  descendentWrappables = [(CRLCanvasLayout *)self descendentWrappables];
+  v5 = [descendentWrappables countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2970,7 +2964,7 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(descendentWrappables);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
@@ -2979,10 +2973,10 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
         v12 = v11;
         if (v11)
         {
-          v13 = *&a3->c;
-          v14[0] = *&a3->a;
+          v13 = *&transform->c;
+          v14[0] = *&transform->a;
           v14[1] = v13;
-          v14[2] = *&a3->tx;
+          v14[2] = *&transform->tx;
           [v11 inRootGeometryChangedBy:v14];
         }
 
@@ -2990,7 +2984,7 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [descendentWrappables countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -3003,8 +2997,8 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CRLCanvasLayout *)self descendentWrappables];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  descendentWrappables = [(CRLCanvasLayout *)self descendentWrappables];
+  v3 = [descendentWrappables countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3016,7 +3010,7 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(descendentWrappables);
         }
 
         v7 = *(*(&v11 + 1) + 8 * v6);
@@ -3032,7 +3026,7 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [descendentWrappables countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -3046,26 +3040,26 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   *(&self->mDirtyRect.origin.y + 2) = size;
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
   v3 = (&self->mBaseAlignmentFrameOriginForFixingInterimPosition.y + 2);
   v4.origin.x = *(&self->mBaseAlignmentFrameOriginForFixingInterimPosition.y + 2);
   v4.origin.y = *(&self->mDirtyRect.origin.x + 2);
   v4.size.width = *(&self->mDirtyRect.origin.y + 2);
   v4.size.height = *(&self->mDirtyRect.size.width + 2);
-  v5 = CGRectUnion(v4, a3);
+  v5 = CGRectUnion(v4, rect);
   *v3 = v5.origin.x;
   v3[1] = v5.origin.y;
   v3[2] = v5.size.width;
   v3[3] = v5.size.height;
 }
 
-- (void)recursivelyAddLayoutAndDependentLayoutsToValidateSet:(id)a3
+- (void)recursivelyAddLayoutAndDependentLayoutsToValidateSet:(id)set
 {
-  v5 = a3;
-  [v5 addObject:self];
-  v6 = [(CRLCanvasAbstractLayout *)self children];
-  [v6 makeObjectsPerformSelector:a2 withObject:v5];
+  setCopy = set;
+  [setCopy addObject:self];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  [children makeObjectsPerformSelector:a2 withObject:setCopy];
 }
 
 - (CGRect)i_takeDirtyRect
@@ -3086,26 +3080,26 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
 
 - (CRLBezierPath)i_wrapPath
 {
-  v2 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v2 size];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry size];
   v3 = [CRLBezierPath bezierPathWithRect:sub_10011ECB4()];
 
   return v3;
 }
 
-- (void)p_registerWithLayoutController:(id)a3
+- (void)p_registerWithLayoutController:(id)controller
 {
-  v5 = a3;
-  [v5 i_registerLayout:self];
+  controllerCopy = controller;
+  [controllerCopy i_registerLayout:self];
   [(CRLCanvasLayout *)self i_clearInvalidationCache];
-  v6 = [(CRLCanvasAbstractLayout *)self children];
-  [v6 makeObjectsPerformSelector:a2 withObject:v5];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  [children makeObjectsPerformSelector:a2 withObject:controllerCopy];
 }
 
-- (void)p_unregisterWithLayoutController:(id)a3
+- (void)p_unregisterWithLayoutController:(id)controller
 {
-  v5 = a3;
-  [v5 i_unregisterLayout:self];
+  controllerCopy = controller;
+  [controllerCopy i_unregisterLayout:self];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -3138,22 +3132,22 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   }
 
   [(CRLCanvasLayout *)self i_clearInvalidationCache];
-  v11 = [(CRLCanvasAbstractLayout *)self children];
-  [v11 makeObjectsPerformSelector:a2 withObject:v5];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  [children makeObjectsPerformSelector:a2 withObject:controllerCopy];
 }
 
 - (void)p_recursiveInvalidate
 {
   [(CRLCanvasLayout *)self invalidate];
-  v4 = [(CRLCanvasAbstractLayout *)self children];
-  [v4 makeObjectsPerformSelector:a2];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  [children makeObjectsPerformSelector:a2];
 }
 
 - (CGSize)p_newMaxInlineFrameSize
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasAbstractLayout *)self parent];
-  v5 = sub_100014370(v3, v4);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v5 = sub_100014370(v3, parent);
 
   if (v5)
   {
@@ -3178,13 +3172,13 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
 - (CRLSearchReference)searchTargetSearchReference
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
-  v6 = [(CRLCanvasLayout *)self layoutController];
-  v7 = [v6 canvas];
-  v8 = [v7 delegate];
-  v15 = sub_1003035DC(v8, 1, v9, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLSearchCanvasDelegate);
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  delegate = [canvas delegate];
+  v15 = sub_1003035DC(delegate, 1, v9, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLSearchCanvasDelegate);
 
   v16 = [CRLCanvasSearchReference searchReferenceWithBoardItem:v5 searchCanvasDelegate:v15];
   [(CRLCanvasLayout *)self calculatePointFromSearchReference:v16];
@@ -3198,47 +3192,47 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
 - (NSArray)childSearchTargets
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CRLCanvasAbstractLayout *)self children];
-  [v3 addObjectsFromArray:v4];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  [v3 addObjectsFromArray:children];
 
   v5 = [v3 copy];
 
   return v5;
 }
 
-- (void)layoutSearchForNearbyElementsWithHitBlock:(id)a3
+- (void)layoutSearchForNearbyElementsWithHitBlock:(id)block
 {
-  v7 = a3;
-  v4 = [(CRLCanvasLayout *)self info];
+  blockCopy = block;
+  info = [(CRLCanvasLayout *)self info];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(CRLCanvasLayout *)self searchTargetSearchReference];
-    v7[2](v7, v6);
+    searchTargetSearchReference = [(CRLCanvasLayout *)self searchTargetSearchReference];
+    blockCopy[2](blockCopy, searchTargetSearchReference);
   }
 }
 
-- (void)layoutSearchForHyperlinkWithHitBlock:(id)a3
+- (void)layoutSearchForHyperlinkWithHitBlock:(id)block
 {
-  v11 = a3;
+  blockCopy = block;
   v4 = objc_opt_class();
-  v5 = [(CRLCanvasLayout *)self info];
-  v6 = sub_100014370(v4, v5);
+  info = [(CRLCanvasLayout *)self info];
+  v6 = sub_100014370(v4, info);
 
-  v7 = [v6 hyperlinkURL];
-  v8 = [v7 absoluteString];
-  v9 = [v8 length];
+  hyperlinkURL = [v6 hyperlinkURL];
+  absoluteString = [hyperlinkURL absoluteString];
+  v9 = [absoluteString length];
 
   if (v9)
   {
-    v10 = [(CRLCanvasLayout *)self searchTargetSearchReference];
-    v11[2](v11, v10);
+    searchTargetSearchReference = [(CRLCanvasLayout *)self searchTargetSearchReference];
+    blockCopy[2](blockCopy, searchTargetSearchReference);
   }
 }
 
-- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)a3
+- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)path
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -3251,10 +3245,10 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   return result;
 }
 
-- (CGRect)rectInRootForSelectionPath:(id)a3
+- (CGRect)rectInRootForSelectionPath:(id)path
 {
-  v3 = [(CRLCanvasAbstractLayout *)self geometryInRoot];
-  [v3 frame];
+  geometryInRoot = [(CRLCanvasAbstractLayout *)self geometryInRoot];
+  [geometryInRoot frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -3271,14 +3265,14 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   return result;
 }
 
-- (double)percentOfUnscaledRectContainedInParentRep:(CGRect)a3
+- (double)percentOfUnscaledRectContainedInParentRep:(CGRect)rep
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(CRLCanvasLayout *)self pureGeometryInRoot];
-  [v7 frame];
+  height = rep.size.height;
+  width = rep.size.width;
+  y = rep.origin.y;
+  x = rep.origin.x;
+  pureGeometryInRoot = [(CRLCanvasLayout *)self pureGeometryInRoot];
+  [pureGeometryInRoot frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -3296,20 +3290,20 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
 
 - (CGRect)shadowedNaturalBoundsWithoutOffset
 {
-  v3 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v3 size];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry size];
   x = sub_10011ECB4();
   y = v5;
   width = v7;
   height = v9;
 
   v11 = objc_opt_class();
-  v12 = [(CRLCanvasLayout *)self info];
-  v13 = sub_100013F00(v11, v12);
+  info = [(CRLCanvasLayout *)self info];
+  v13 = sub_100013F00(v11, info);
 
-  v14 = [v13 shadow];
-  v15 = v14;
-  if (v14 && [v14 isEnabled])
+  shadow = [v13 shadow];
+  v15 = shadow;
+  if (shadow && [shadow isEnabled])
   {
     [v15 radius];
     v17 = -v16;
@@ -3335,22 +3329,22 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   return result;
 }
 
-- (void)addConnectedLayout:(id)a3
+- (void)addConnectedLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = *(&self->mInitialBoundsForStandardKnobs.size.height + 2);
-  v8 = v4;
+  v8 = layoutCopy;
   if (!v5)
   {
     v6 = objc_alloc_init(NSMutableSet);
     v7 = *(&self->mInitialBoundsForStandardKnobs.size.height + 2);
     *(&self->mInitialBoundsForStandardKnobs.size.height + 2) = v6;
 
-    v4 = v8;
+    layoutCopy = v8;
     v5 = *(&self->mInitialBoundsForStandardKnobs.size.height + 2);
   }
 
-  [v5 addObject:v4];
+  [v5 addObject:layoutCopy];
 }
 
 - (void)p_invalidateConnectedLayouts
@@ -3369,8 +3363,8 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CRLCanvasLayout *)self descendentWrappables];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  descendentWrappables = [(CRLCanvasLayout *)self descendentWrappables];
+  v3 = [descendentWrappables countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3382,7 +3376,7 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(descendentWrappables);
         }
 
         [*(*(&v7 + 1) + 8 * v6) invalidateExteriorWrap];
@@ -3390,17 +3384,17 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [descendentWrappables countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
+  y = canvas.y;
+  x = canvas.x;
   [(CRLCanvasAbstractLayout *)self transformInRoot];
   CGAffineTransformInvert(&v8, &v7);
   v3 = vaddq_f64(*&v8.tx, vmlaq_n_f64(vmulq_n_f64(*&v8.c, y), *&v8.a, x));
@@ -3410,10 +3404,10 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   return result;
 }
 
-- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertNaturalPointToUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
+  y = canvas.y;
+  x = canvas.x;
   [(CRLCanvasAbstractLayout *)self transformInRoot];
   v3 = vaddq_f64(v9, vmlaq_n_f64(vmulq_n_f64(v8, y), v7, x));
   v4 = v3.f64[1];
@@ -3422,12 +3416,12 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   return result;
 }
 
-- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)a3
+- (CGRect)convertNaturalRectFromUnscaledCanvas:(CGRect)canvas
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
   [(CRLCanvasAbstractLayout *)self transformInRoot];
   CGAffineTransformInvert(&v8, &v7);
   v9.origin.x = x;
@@ -3437,12 +3431,12 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   return CGRectApplyAffineTransform(v9, &v8);
 }
 
-- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)a3
+- (CGRect)convertNaturalRectToUnscaledCanvas:(CGRect)canvas
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
   [(CRLCanvasAbstractLayout *)self transformInRoot];
   v8.origin.x = x;
   v8.origin.y = y;
@@ -3455,10 +3449,10 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
 {
   if ((*(&self->mInvalidatingSize + 2) & 4) != 0)
   {
-    v3 = [(CRLCanvasLayout *)self pathForClippingConnectionLines];
-    if (-[CRLCanvasLayout shouldBringCardinalMagnetsInward](self, "shouldBringCardinalMagnetsInward") && v3 && ([v3 isEmpty] & 1) == 0)
+    pathForClippingConnectionLines = [(CRLCanvasLayout *)self pathForClippingConnectionLines];
+    if (-[CRLCanvasLayout shouldBringCardinalMagnetsInward](self, "shouldBringCardinalMagnetsInward") && pathForClippingConnectionLines && ([pathForClippingConnectionLines isEmpty] & 1) == 0)
     {
-      [v3 bounds];
+      [pathForClippingConnectionLines bounds];
       v15 = v14;
       v17 = v16;
       [(CRLCanvasLayout *)self centerForRotation];
@@ -3506,27 +3500,27 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   }
 }
 
-- (void)p_adjustCardinalMagnetTValuesIfNeededWithPadding:(double)a3 forLowestT:(double *)a4 forHighestT:(double *)a5
+- (void)p_adjustCardinalMagnetTValuesIfNeededWithPadding:(double)padding forLowestT:(double *)t forHighestT:(double *)highestT
 {
-  if (*a4 > 0.5 - a3)
+  if (*t > 0.5 - padding)
   {
-    *a4 = 0.0;
+    *t = 0.0;
   }
 
-  if (*a5 < a3 + 0.5)
+  if (*highestT < padding + 0.5)
   {
-    *a5 = 1.0;
+    *highestT = 1.0;
   }
 }
 
-- (void)p_getIntersectionsForTestPath:(id)a3 withLowestT:(double *)a4 withHighestT:(double *)a5
+- (void)p_getIntersectionsForTestPath:(id)path withLowestT:(double *)t withHighestT:(double *)highestT
 {
-  v8 = a3;
-  v9 = [(CRLCanvasLayout *)self pathForClippingConnectionLines];
-  v10 = [v9 copy];
+  pathCopy = path;
+  pathForClippingConnectionLines = [(CRLCanvasLayout *)self pathForClippingConnectionLines];
+  v10 = [pathForClippingConnectionLines copy];
 
   v11 = +[NSMutableArray array];
-  [v8 addIntersectionsWithPath:v10 to:v11 allIntersections:1 reversed:0];
+  [pathCopy addIntersectionsWithPath:v10 to:v11 allIntersections:1 reversed:0];
   if ([v11 count] < 2)
   {
     v17 = 1.0;
@@ -3585,8 +3579,8 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
     }
   }
 
-  *a4 = v16;
-  *a5 = v17;
+  *t = v16;
+  *highestT = v17;
 }
 
 - (id)convexHullPath
@@ -3594,8 +3588,8 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
   v3 = *(&self->mCardinalWestPosition.y + 2);
   if (!v3)
   {
-    v4 = [(CRLCanvasLayout *)self pathForClippingConnectionLines];
-    if ([v4 isEmpty])
+    pathForClippingConnectionLines = [(CRLCanvasLayout *)self pathForClippingConnectionLines];
+    if ([pathForClippingConnectionLines isEmpty])
     {
       [(CRLCanvasLayout *)self boundsForStandardKnobs];
       [CRLBezierPath bezierPathWithRect:?];
@@ -3603,7 +3597,7 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
 
     else
     {
-      [CRLBezierPath bezierPathWithConvexHullFromWrapPath:v4];
+      [CRLBezierPath bezierPathWithConvexHullFromWrapPath:pathForClippingConnectionLines];
     }
     v5 = ;
     v6 = *(&self->mCardinalWestPosition.y + 2);
@@ -3637,13 +3631,13 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 connectedTo];
+        connectedTo = [v8 connectedTo];
 
-        if (v9 == self)
+        if (connectedTo == self)
         {
           if ([v8 headMagnetType] == 6)
           {
-            v11 = self;
+            selfCopy3 = self;
             v12 = v8;
             v13 = 11;
             goto LABEL_12;
@@ -3651,37 +3645,37 @@ __CRLCanvasLayout_getCardinalPositionFromType__:
 
           if ([v8 headMagnetType] == 7)
           {
-            v14 = self;
+            selfCopy4 = self;
             v15 = v8;
             v16 = 11;
 LABEL_17:
-            [(CRLCanvasLayout *)v14 p_adjustFloatingMagnetPosition:v15 forLineEnd:v16];
+            [(CRLCanvasLayout *)selfCopy4 p_adjustFloatingMagnetPosition:v15 forLineEnd:v16];
             continue;
           }
         }
 
         else
         {
-          v10 = [v8 connectedFrom];
+          connectedFrom = [v8 connectedFrom];
 
-          if (v10 != self)
+          if (connectedFrom != self)
           {
             continue;
           }
 
           if ([v8 tailMagnetType] == 6)
           {
-            v11 = self;
+            selfCopy3 = self;
             v12 = v8;
             v13 = 10;
 LABEL_12:
-            [(CRLCanvasLayout *)v11 p_adjustEdgeMagnetPosition:v12 forLineEnd:v13];
+            [(CRLCanvasLayout *)selfCopy3 p_adjustEdgeMagnetPosition:v12 forLineEnd:v13];
             continue;
           }
 
           if ([v8 tailMagnetType] == 7)
           {
-            v14 = self;
+            selfCopy4 = self;
             v15 = v8;
             v16 = 10;
             goto LABEL_17;
@@ -3696,24 +3690,24 @@ LABEL_12:
   }
 }
 
-- (void)p_adjustEdgeMagnetPosition:(id)a3 forLineEnd:(unint64_t)a4
+- (void)p_adjustEdgeMagnetPosition:(id)position forLineEnd:(unint64_t)end
 {
-  v6 = a3;
+  positionCopy = position;
   [(CRLCanvasLayout *)self boundsForStandardKnobs];
   v8 = v7;
   [(CRLCanvasLayout *)self boundsForStandardKnobs];
   v10 = fmax(v8, v9);
   v11 = 0.0;
-  if ([v6 connectionType])
+  if ([positionCopy connectionType])
   {
-    if (a4 == 11)
+    if (end == 11)
     {
-      [v6 headMagnetCanvasPosition];
+      [positionCopy headMagnetCanvasPosition];
     }
 
     else
     {
-      [v6 tailMagnetCanvasPosition];
+      [positionCopy tailMagnetCanvasPosition];
     }
 
     [CRLCanvasLayout p_findNearestEdgePointOnWrapPathFromPoint:"p_findNearestEdgePointOnWrapPathFromPoint:withSearchThreshold:withDistanceToPoint:" withSearchThreshold:&v11 withDistanceToPoint:?];
@@ -3721,46 +3715,46 @@ LABEL_12:
 
   else
   {
-    [(CRLCanvasLayout *)self p_findFirstEdgePointIntersectionOnWrapPathWithLine:v6 forLineEnd:a4 withDistanceToPoint:&v11 withOverridenHeadPosition:INFINITY withOverridenTailPosition:INFINITY, INFINITY, INFINITY];
+    [(CRLCanvasLayout *)self p_findFirstEdgePointIntersectionOnWrapPathWithLine:positionCopy forLineEnd:end withDistanceToPoint:&v11 withOverridenHeadPosition:INFINITY withOverridenTailPosition:INFINITY, INFINITY, INFINITY];
   }
 
   if (v11 < v10)
   {
-    if (a4 == 11)
+    if (end == 11)
     {
-      [v6 setHeadMagnetPosition:?];
+      [positionCopy setHeadMagnetPosition:?];
     }
 
     else
     {
-      [v6 setTailMagnetPosition:?];
+      [positionCopy setTailMagnetPosition:?];
     }
 
-    [v6 updateConnectedPath];
-    [v6 setMagnetsAdjusted:1];
+    [positionCopy updateConnectedPath];
+    [positionCopy setMagnetsAdjusted:1];
   }
 }
 
-- (void)p_adjustFloatingMagnetPosition:(id)a3 forLineEnd:(unint64_t)a4
+- (void)p_adjustFloatingMagnetPosition:(id)position forLineEnd:(unint64_t)end
 {
-  v6 = a3;
+  positionCopy = position;
   v7 = objc_opt_class();
-  v8 = [v6 info];
-  v9 = sub_100014370(v7, v8);
+  info = [positionCopy info];
+  v9 = sub_100014370(v7, info);
 
-  v10 = [v9 connectionLinePathSource];
-  v11 = v10;
-  if (a4 == 11)
+  connectionLinePathSource = [v9 connectionLinePathSource];
+  v11 = connectionLinePathSource;
+  if (end == 11)
   {
-    v12 = [v10 headMagnet];
-    [v12 magnetNormalizedPosition];
+    headMagnet = [connectionLinePathSource headMagnet];
+    [headMagnet magnetNormalizedPosition];
     v26 = v14;
     v28 = v13;
-    v15 = [(CRLCanvasLayout *)self pureGeometry];
-    v16 = v15;
-    if (v15)
+    pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+    v16 = pureGeometry;
+    if (pureGeometry)
     {
-      [v15 fullTransform];
+      [pureGeometry fullTransform];
       v17 = v30;
       v18 = v31;
       v19 = v32;
@@ -3773,20 +3767,20 @@ LABEL_12:
       v18 = 0uLL;
     }
 
-    [v6 setHeadMagnetPosition:{vaddq_f64(v19, vmlaq_n_f64(vmulq_n_f64(v18, v26), v17, v28))}];
+    [positionCopy setHeadMagnetPosition:{vaddq_f64(v19, vmlaq_n_f64(vmulq_n_f64(v18, v26), v17, v28))}];
   }
 
   else
   {
-    v12 = [v10 tailMagnet];
-    [v12 magnetNormalizedPosition];
+    headMagnet = [connectionLinePathSource tailMagnet];
+    [headMagnet magnetNormalizedPosition];
     v27 = v21;
     v29 = v20;
-    v22 = [(CRLCanvasLayout *)self pureGeometry];
-    v16 = v22;
-    if (v22)
+    pureGeometry2 = [(CRLCanvasLayout *)self pureGeometry];
+    v16 = pureGeometry2;
+    if (pureGeometry2)
     {
-      [v22 fullTransform];
+      [pureGeometry2 fullTransform];
       v23 = v30;
       v24 = v31;
       v25 = v32;
@@ -3799,40 +3793,40 @@ LABEL_12:
       v24 = 0uLL;
     }
 
-    [v6 setTailMagnetPosition:{vaddq_f64(v25, vmlaq_n_f64(vmulq_n_f64(v24, v27), v23, v29))}];
+    [positionCopy setTailMagnetPosition:{vaddq_f64(v25, vmlaq_n_f64(vmulq_n_f64(v24, v27), v23, v29))}];
   }
 
-  [v6 updateConnectedPath];
-  [v6 setMagnetsAdjusted:1];
+  [positionCopy updateConnectedPath];
+  [positionCopy setMagnetsAdjusted:1];
 }
 
-- (CGPoint)p_findFirstEdgePointIntersectionOnWrapPathWithLine:(id)a3 forLineEnd:(unint64_t)a4 withDistanceToPoint:(double *)a5 withOverridenHeadPosition:(CGPoint)a6 withOverridenTailPosition:(CGPoint)a7
+- (CGPoint)p_findFirstEdgePointIntersectionOnWrapPathWithLine:(id)line forLineEnd:(unint64_t)end withDistanceToPoint:(double *)point withOverridenHeadPosition:(CGPoint)position withOverridenTailPosition:(CGPoint)tailPosition
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
-  v14 = a3;
+  y = tailPosition.y;
+  x = tailPosition.x;
+  v9 = position.y;
+  v10 = position.x;
+  lineCopy = line;
   v15 = objc_opt_class();
-  v16 = [v14 info];
-  v17 = sub_100014370(v15, v16);
+  info = [lineCopy info];
+  v17 = sub_100014370(v15, info);
 
   v125 = v17;
-  v18 = [v17 connectionLinePathSource];
-  v19 = [v14 connectedTo];
+  connectionLinePathSource = [v17 connectionLinePathSource];
+  connectedTo = [lineCopy connectedTo];
   v128 = y;
-  if (v19)
+  if (connectedTo)
   {
-    v20 = [v18 headMagnet];
-    [v20 magnetNormalizedPosition];
+    headMagnet = [connectionLinePathSource headMagnet];
+    [headMagnet magnetNormalizedPosition];
     v22 = v21;
     v24 = v23;
-    v25 = [v14 connectedTo];
-    v26 = [v25 pureGeometry];
-    v27 = v26;
-    if (v26)
+    connectedTo2 = [lineCopy connectedTo];
+    pureGeometry = [connectedTo2 pureGeometry];
+    v27 = pureGeometry;
+    if (pureGeometry)
     {
-      [v26 fullTransform];
+      [pureGeometry fullTransform];
       a = v136.a;
       b = v136.b;
       c = v136.c;
@@ -3857,12 +3851,12 @@ LABEL_12:
 
   else
   {
-    [v14 headPoint];
+    [lineCopy headPoint];
     v35 = v34;
     v37 = v36;
-    if (v14)
+    if (lineCopy)
     {
-      [v14 transform];
+      [lineCopy transform];
       v39 = v136.a;
       v38 = v136.b;
       v41 = v136.c;
@@ -3885,20 +3879,20 @@ LABEL_12:
     v45 = v42 + v37 * v40 + v38 * v35;
   }
 
-  v46 = [v14 connectedFrom];
-  if (v46)
+  connectedFrom = [lineCopy connectedFrom];
+  if (connectedFrom)
   {
-    v47 = [v18 tailMagnet];
-    [v47 magnetNormalizedPosition];
+    tailMagnet = [connectionLinePathSource tailMagnet];
+    [tailMagnet magnetNormalizedPosition];
     v49 = v48;
     v51 = v50;
-    v52 = [v14 connectedFrom];
-    v53 = [v52 pureGeometry];
-    v54 = v53;
+    connectedFrom2 = [lineCopy connectedFrom];
+    pureGeometry2 = [connectedFrom2 pureGeometry];
+    v54 = pureGeometry2;
     v55 = x;
-    if (v53)
+    if (pureGeometry2)
     {
-      [v53 fullTransform];
+      [pureGeometry2 fullTransform];
       v57 = v136.a;
       v56 = v136.b;
       v59 = v136.c;
@@ -3923,13 +3917,13 @@ LABEL_12:
 
   else
   {
-    [v14 tailPoint];
+    [lineCopy tailPoint];
     v63 = v62;
     v65 = v64;
     v55 = x;
-    if (v14)
+    if (lineCopy)
     {
-      [v14 transform];
+      [lineCopy transform];
       v67 = v136.a;
       v66 = v136.b;
       v69 = v136.c;
@@ -3979,7 +3973,7 @@ LABEL_12:
     v76 = v55;
   }
 
-  if (a4 == 10)
+  if (end == 10)
   {
     v77 = v9;
   }
@@ -3990,7 +3984,7 @@ LABEL_12:
   }
 
   v126 = v77;
-  if (a4 == 10)
+  if (end == 10)
   {
     v78 = v10;
   }
@@ -4001,7 +3995,7 @@ LABEL_12:
   }
 
   v129 = v78;
-  if (a4 == 10)
+  if (end == 10)
   {
     v79 = v75;
   }
@@ -4011,7 +4005,7 @@ LABEL_12:
     v79 = v9;
   }
 
-  if (a4 == 10)
+  if (end == 10)
   {
     v80 = v76;
   }
@@ -4021,13 +4015,13 @@ LABEL_12:
     v80 = v10;
   }
 
-  v81 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v81 frame];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry frame];
   v83 = v82;
   if (v80 > v129)
   {
-    v84 = [(CRLCanvasAbstractLayout *)self geometry];
-    [v84 size];
+    geometry2 = [(CRLCanvasAbstractLayout *)self geometry];
+    [geometry2 size];
     v83 = v83 + v85;
   }
 
@@ -4035,11 +4029,11 @@ LABEL_12:
   v86 = sub_10011F334(v80, v79, v83 - v80);
   v121 = v87;
   v122 = v86;
-  v88 = [(CRLCanvasAbstractLayout *)self geometry];
-  v89 = v88;
-  if (v88)
+  geometry3 = [(CRLCanvasAbstractLayout *)self geometry];
+  v89 = geometry3;
+  if (geometry3)
   {
-    [v88 transform];
+    [geometry3 transform];
   }
 
   else
@@ -4049,11 +4043,11 @@ LABEL_12:
 
   CGAffineTransformInvert(&v136, &v135);
   v123 = vaddq_f64(*&v136.tx, vmlaq_n_f64(vmulq_n_f64(*&v136.c, v121), *&v136.a, v122));
-  v90 = [(CRLCanvasAbstractLayout *)self geometry];
-  v91 = v90;
-  if (v90)
+  geometry4 = [(CRLCanvasAbstractLayout *)self geometry];
+  v91 = geometry4;
+  if (geometry4)
   {
-    [v90 transform];
+    [geometry4 transform];
   }
 
   else
@@ -4064,15 +4058,15 @@ LABEL_12:
   CGAffineTransformInvert(&v136, &v135);
   v92 = [CRLBezierPath bezierPathWithStart:*&v123 end:vaddq_f64(*&v136.tx, vmlaq_n_f64(vmulq_n_f64(*&v136.c, v126), *&v136.a, v129))];
 
-  v93 = [(CRLCanvasLayout *)self pathForClippingConnectionLines];
-  v94 = [v93 copy];
+  pathForClippingConnectionLines = [(CRLCanvasLayout *)self pathForClippingConnectionLines];
+  v94 = [pathForClippingConnectionLines copy];
 
   v95 = +[NSMutableArray array];
   [v92 addIntersectionsWithPath:v94 to:v95 allIntersections:1 reversed:0];
   if ([v95 count])
   {
-    v124 = v18;
-    v127 = a5;
+    v124 = connectionLinePathSource;
+    pointCopy = point;
     v133 = 0u;
     v134 = 0u;
     v131 = 0u;
@@ -4128,8 +4122,8 @@ LABEL_12:
       v103 = 0.0;
     }
 
-    a5 = v127;
-    v18 = v124;
+    point = pointCopy;
+    connectionLinePathSource = v124;
   }
 
   else
@@ -4140,11 +4134,11 @@ LABEL_12:
     v103 = 0.0;
   }
 
-  v112 = [(CRLCanvasAbstractLayout *)self geometry];
-  v113 = v112;
-  if (v112)
+  geometry5 = [(CRLCanvasAbstractLayout *)self geometry];
+  v113 = geometry5;
+  if (geometry5)
   {
-    [v112 transform];
+    [geometry5 transform];
     v114 = *&v136.a;
     v115 = *&v136.c;
     v116 = *&v136.tx;
@@ -4179,7 +4173,7 @@ LABEL_12:
 
   v130 = vaddq_f64(v116, vmlaq_n_f64(vmulq_n_f64(v115, v118), v114, v117));
 
-  *a5 = sub_100120090(v130.f64[0], v130.f64[1], v80, v79);
+  *point = sub_100120090(v130.f64[0], v130.f64[1], v80, v79);
   v120 = v130.f64[1];
   v119 = v130.f64[0];
   result.y = v120;
@@ -4194,7 +4188,7 @@ LABEL_12:
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v59 = self;
+  selfCopy = self;
   obj = *(&self->mInitialBoundsForStandardKnobs.size.height + 2);
   v3 = [obj countByEnumeratingWithState:&v67 objects:v71 count:16];
   if (v3)
@@ -4216,13 +4210,13 @@ LABEL_12:
         v7 = *(*(&v67 + 1) + 8 * v6);
         if ([v7 magnetsAdjusted])
         {
-          v8 = [v7 connectionLineInfo];
-          v9 = [v8 connectionLinePathSource];
-          v10 = [v9 copy];
+          connectionLineInfo = [v7 connectionLineInfo];
+          connectionLinePathSource = [connectionLineInfo connectionLinePathSource];
+          v10 = [connectionLinePathSource copy];
 
-          v11 = [v10 headMagnet];
+          headMagnet = [v10 headMagnet];
 
-          if (v11)
+          if (headMagnet)
           {
             [v7 headMagnetNormalizedPosition];
             v60 = v13;
@@ -4232,17 +4226,17 @@ LABEL_12:
               [v7 headMagnetNormalizedPosition];
               v15 = v14;
               v17 = v16;
-              v18 = [v7 connectedTo];
-              [(CRLCanvasLayout *)v59 p_convertNormalizedPositionFromLayoutToPureGeomtry:v18 forLayout:v15, v17];
+              connectedTo = [v7 connectedTo];
+              [(CRLCanvasLayout *)selfCopy p_convertNormalizedPositionFromLayoutToPureGeomtry:connectedTo forLayout:v15, v17];
               v60 = v20;
               v62 = v19;
 
-              v21 = [v7 connectedTo];
-              v22 = [v21 pureGeometry];
-              v23 = v22;
-              if (v22)
+              connectedTo2 = [v7 connectedTo];
+              pureGeometry = [connectedTo2 pureGeometry];
+              v23 = pureGeometry;
+              if (pureGeometry)
               {
-                [v22 fullTransform];
+                [pureGeometry fullTransform];
                 v24 = v64;
                 v25 = v65;
                 v26 = v66;
@@ -4262,9 +4256,9 @@ LABEL_12:
             [v10 setHeadMagnet:v27];
           }
 
-          v28 = [v10 tailMagnet];
+          tailMagnet = [v10 tailMagnet];
 
-          if (v28)
+          if (tailMagnet)
           {
             [v7 tailMagnetNormalizedPosition];
             v61 = v30;
@@ -4274,17 +4268,17 @@ LABEL_12:
               [v7 tailMagnetNormalizedPosition];
               v32 = v31;
               v34 = v33;
-              v35 = [v7 connectedFrom];
-              [(CRLCanvasLayout *)v59 p_convertNormalizedPositionFromLayoutToPureGeomtry:v35 forLayout:v32, v34];
+              connectedFrom = [v7 connectedFrom];
+              [(CRLCanvasLayout *)selfCopy p_convertNormalizedPositionFromLayoutToPureGeomtry:connectedFrom forLayout:v32, v34];
               v61 = v37;
               v63 = v36;
 
-              v38 = [v7 connectedFrom];
-              v39 = [v38 pureGeometry];
-              v40 = v39;
-              if (v39)
+              connectedFrom2 = [v7 connectedFrom];
+              pureGeometry2 = [connectedFrom2 pureGeometry];
+              v40 = pureGeometry2;
+              if (pureGeometry2)
               {
-                [v39 fullTransform];
+                [pureGeometry2 fullTransform];
                 v41 = v64;
                 v42 = v65;
                 v43 = v66;
@@ -4304,15 +4298,15 @@ LABEL_12:
             [v10 setTailMagnet:v44];
           }
 
-          v45 = [(CRLCanvasLayout *)v59 layoutController];
-          v46 = [v45 boardItemOwner];
-          v47 = [v8 getConnectedToWithBoardItemOwner:v46];
+          layoutController = [(CRLCanvasLayout *)selfCopy layoutController];
+          boardItemOwner = [layoutController boardItemOwner];
+          v47 = [connectionLineInfo getConnectedToWithBoardItemOwner:boardItemOwner];
 
-          v48 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:v8 connectedItem:v47 chirality:1 pathSource:v10];
+          v48 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:connectionLineInfo connectedItem:v47 chirality:1 pathSource:v10];
           [v56 addObject:v48];
-          v49 = [(CRLCanvasLayout *)v59 layoutController];
-          [v49 boardItemOwner];
-          v51 = v50 = v8;
+          layoutController2 = [(CRLCanvasLayout *)selfCopy layoutController];
+          [layoutController2 boardItemOwner];
+          v51 = v50 = connectionLineInfo;
           v52 = [v50 getConnectedFromWithBoardItemOwner:v51];
 
           v53 = [[_TtC8Freeform37CRLCommandSetConnectionLineConnection alloc] initWithConnectionLine:v50 connectedItem:v52 chirality:0 pathSource:v10];
@@ -4336,16 +4330,16 @@ LABEL_12:
   return v56;
 }
 
-- (CGPoint)p_convertNormalizedPositionFromLayoutToPureGeomtry:(CGPoint)a3 forLayout:(id)a4
+- (CGPoint)p_convertNormalizedPositionFromLayoutToPureGeomtry:(CGPoint)geomtry forLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  v7 = [v6 geometry];
-  v8 = v7;
-  if (v7)
+  y = geomtry.y;
+  x = geomtry.x;
+  layoutCopy = layout;
+  geometry = [layoutCopy geometry];
+  v8 = geometry;
+  if (geometry)
   {
-    [v7 fullTransform];
+    [geometry fullTransform];
     a = v26.a;
     b = v26.b;
     c = v26.c;
@@ -4364,9 +4358,9 @@ LABEL_12:
     a = 0.0;
   }
 
-  if (v6)
+  if (layoutCopy)
   {
-    [v6 pureTransformInRoot];
+    [layoutCopy pureTransformInRoot];
   }
 
   else
@@ -4376,8 +4370,8 @@ LABEL_12:
 
   CGAffineTransformInvert(&v26, &v25);
   v24 = vaddq_f64(*&v26.tx, vmlaq_n_f64(vmulq_n_f64(*&v26.c, ty + y * d + b * x), *&v26.a, tx + y * c + a * x));
-  v15 = [v6 pureGeometry];
-  [v15 size];
+  pureGeometry = [layoutCopy pureGeometry];
+  [pureGeometry size];
   v16 = sub_10011ECB4();
   v19 = sub_100121720(v24.f64[0], v24.f64[1], v16, v17, v18);
   v21 = v20;
@@ -4395,8 +4389,8 @@ LABEL_12:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(CRLCanvasLayout *)self connectedLayouts];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  connectedLayouts = [(CRLCanvasLayout *)self connectedLayouts];
+  v4 = [connectedLayouts countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4407,16 +4401,16 @@ LABEL_12:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedLayouts);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
         if ([v8 controlKnobPositionChangedFromRouting])
         {
-          v9 = [(CRLCanvasLayout *)self layoutController];
-          v10 = [v9 canvas];
-          v11 = [v10 canvasController];
-          v12 = [v11 repForLayout:v8];
+          layoutController = [(CRLCanvasLayout *)self layoutController];
+          canvas = [layoutController canvas];
+          canvasController = [canvas canvasController];
+          v12 = [canvasController repForLayout:v8];
 
           v13 = objc_opt_class();
           v14 = sub_100014370(v13, v12);
@@ -4429,41 +4423,41 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [connectedLayouts countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
   }
 }
 
-- (CGPoint)nearestEdgePointOnWrapPathFromPoint:(CGPoint)a3
+- (CGPoint)nearestEdgePointOnWrapPathFromPoint:(CGPoint)point
 {
   v5 = 0;
-  [(CRLCanvasLayout *)self p_findNearestEdgePointOnWrapPathFromPoint:&v5 withSearchThreshold:a3.x withDistanceToPoint:a3.y, 10.0];
+  [(CRLCanvasLayout *)self p_findNearestEdgePointOnWrapPathFromPoint:&v5 withSearchThreshold:point.x withDistanceToPoint:point.y, 10.0];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)p_findNearestEdgePointOnWrapPathFromPoint:(CGPoint)a3 withSearchThreshold:(double)a4 withDistanceToPoint:(double *)a5
+- (CGPoint)p_findNearestEdgePointOnWrapPathFromPoint:(CGPoint)point withSearchThreshold:(double)threshold withDistanceToPoint:(double *)toPoint
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(CRLCanvasLayout *)self pathForClippingConnectionLines];
+  y = point.y;
+  x = point.x;
+  pathForClippingConnectionLines = [(CRLCanvasLayout *)self pathForClippingConnectionLines];
   v22 = 0.0;
   v23 = 0;
   [(CRLCanvasAbstractLayout *)self transform];
   CGAffineTransformInvert(&v21, &v20);
-  [v8 distanceToPoint:&v23 elementIndex:&v22 tValue:1 threshold:vaddq_f64(*&v21.tx findClosestMatch:{vmlaq_n_f64(vmulq_n_f64(*&v21.c, y), *&v21.a, x)), a4}];
-  *a5 = v9;
-  if (v9 >= a4)
+  [pathForClippingConnectionLines distanceToPoint:&v23 elementIndex:&v22 tValue:1 threshold:vaddq_f64(*&v21.tx findClosestMatch:{vmlaq_n_f64(vmulq_n_f64(*&v21.c, y), *&v21.a, x)), threshold}];
+  *toPoint = v9;
+  if (v9 >= threshold)
   {
     v12 = xmmword_1014629F0;
   }
 
   else
   {
-    [v8 pointAt:v23 fromElement:v22];
+    [pathForClippingConnectionLines pointAt:v23 fromElement:v22];
     v16 = v11;
     v18 = v10;
     [(CRLCanvasAbstractLayout *)self transform];
@@ -4479,17 +4473,17 @@ LABEL_12:
   return result;
 }
 
-- (CGPoint)findNewEdgeMagnetCanvasPositionForConnectionLine:(id)a3 forLineEnd:(unint64_t)a4 withCanvasPosition:(CGPoint)a5
+- (CGPoint)findNewEdgeMagnetCanvasPositionForConnectionLine:(id)line forLineEnd:(unint64_t)end withCanvasPosition:(CGPoint)position
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
+  y = position.y;
+  x = position.x;
+  lineCopy = line;
   [(CRLCanvasLayout *)self boundsForStandardKnobs];
   v11 = v10;
   [(CRLCanvasLayout *)self boundsForStandardKnobs];
   v13 = fmax(v11, v12);
   v22 = 0.0;
-  if ([v9 connectionType])
+  if ([lineCopy connectionType])
   {
     [(CRLCanvasLayout *)self p_findNearestEdgePointOnWrapPathFromPoint:&v22 withSearchThreshold:x withDistanceToPoint:y, v13];
   }
@@ -4498,7 +4492,7 @@ LABEL_12:
   {
     v16 = INFINITY;
     v17 = INFINITY;
-    if (a4 == 11)
+    if (end == 11)
     {
       v18 = x;
     }
@@ -4508,7 +4502,7 @@ LABEL_12:
       v18 = INFINITY;
     }
 
-    if (a4 == 11)
+    if (end == 11)
     {
       v19 = y;
     }
@@ -4518,13 +4512,13 @@ LABEL_12:
       v19 = INFINITY;
     }
 
-    if (a4 == 10)
+    if (end == 10)
     {
       v16 = x;
       v17 = y;
     }
 
-    [(CRLCanvasLayout *)self p_findFirstEdgePointIntersectionOnWrapPathWithLine:v9 forLineEnd:a4 withDistanceToPoint:&v22 withOverridenHeadPosition:v18 withOverridenTailPosition:v19, v16, v17];
+    [(CRLCanvasLayout *)self p_findFirstEdgePointIntersectionOnWrapPathWithLine:lineCopy forLineEnd:end withDistanceToPoint:&v22 withOverridenHeadPosition:v18 withOverridenTailPosition:v19, v16, v17];
   }
 
   if (v22 < v13)
@@ -4562,12 +4556,12 @@ LABEL_12:
   return result;
 }
 
-- (void)setInitialBoundsForStandardKnobs:(CGRect)a3
+- (void)setInitialBoundsForStandardKnobs:(CGRect)knobs
 {
-  *(&self->mBaseGeometry + 2) = *&a3.origin.x;
-  *(&self->mInitialBoundsForStandardKnobs.origin.x + 2) = a3.origin.y;
-  *(&self->mInitialBoundsForStandardKnobs.origin.y + 2) = a3.size.width;
-  *(&self->mInitialBoundsForStandardKnobs.size.width + 2) = a3.size.height;
+  *(&self->mBaseGeometry + 2) = *&knobs.origin.x;
+  *(&self->mInitialBoundsForStandardKnobs.origin.x + 2) = knobs.origin.y;
+  *(&self->mInitialBoundsForStandardKnobs.origin.y + 2) = knobs.size.width;
+  *(&self->mInitialBoundsForStandardKnobs.size.width + 2) = knobs.size.height;
 }
 
 @end

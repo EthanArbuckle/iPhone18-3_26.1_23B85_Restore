@@ -1,7 +1,7 @@
 @interface HFUserItemProvider
 - (HFUserItemProvider)init;
-- (HFUserItemProvider)initWithHome:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFUserItemProvider)initWithHome:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
@@ -10,23 +10,23 @@
 
 - (HFUserItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFUserItemProvider.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HFUserItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFUserItemProvider.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HFUserItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HFUserItemProvider)initWithHome:(id)a3
+- (HFUserItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HFUserItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     userItems = v7->_userItems;
     v7->_userItems = v8;
@@ -38,11 +38,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFUserItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFUserItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -57,32 +57,32 @@
   v3 = _Block_copy(aBlock);
   if ([(HFUserItemProvider *)self includeOtherUsers])
   {
-    v4 = [(HFUserItemProvider *)self home];
-    v5 = [v4 users];
-    if (v5)
+    home = [(HFUserItemProvider *)self home];
+    users = [home users];
+    if (users)
     {
-      v6 = [(HFUserItemProvider *)self home];
-      v7 = [v6 users];
+      home2 = [(HFUserItemProvider *)self home];
+      users2 = [home2 users];
     }
 
     else
     {
-      v7 = MEMORY[0x277CBEBF8];
+      users2 = MEMORY[0x277CBEBF8];
     }
   }
 
   else
   {
-    v7 = MEMORY[0x277CBEBF8];
+    users2 = MEMORY[0x277CBEBF8];
   }
 
   if ([(HFUserItemProvider *)self includeCurrentUser])
   {
-    v8 = [(HFUserItemProvider *)self home];
-    v9 = [v8 currentUser];
-    v10 = [v7 arrayByAddingObject:v9];
+    home3 = [(HFUserItemProvider *)self home];
+    currentUser = [home3 currentUser];
+    v10 = [users2 arrayByAddingObject:currentUser];
 
-    v7 = v10;
+    users2 = v10;
   }
 
   if (![(HFUserItemProvider *)self includeGuestUsers])
@@ -92,14 +92,14 @@
     v19[2] = __33__HFUserItemProvider_reloadItems__block_invoke_2;
     v19[3] = &unk_277DF55C0;
     v19[4] = self;
-    v11 = [v7 na_filter:v19];
+    v11 = [users2 na_filter:v19];
 
-    v7 = v11;
+    users2 = v11;
   }
 
   objc_initWeak(&location, self);
-  v12 = [(HFUserItemProvider *)self filter];
-  v13 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v7 filter:v12 itemMap:v3];
+  filter = [(HFUserItemProvider *)self filter];
+  v13 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:users2 filter:filter itemMap:v3];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __33__HFUserItemProvider_reloadItems__block_invoke_3;
@@ -168,8 +168,8 @@ id __33__HFUserItemProvider_reloadItems__block_invoke_3(uint64_t a1, void *a2)
 {
   v5.receiver = self;
   v5.super_class = HFUserItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"user"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"user"];
 
   return v3;
 }

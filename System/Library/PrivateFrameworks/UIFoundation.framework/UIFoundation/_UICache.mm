@@ -1,14 +1,14 @@
 @interface _UICache
 - (_UICache)init;
 - (id)cacheKeys;
-- (id)objectForKey:(id)a3;
-- (id)retainedObjectForKey:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)retainedObjectForKey:(id)key;
 - (void)dealloc;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setClearsCacheOnApplicationBackground:(BOOL)a3;
-- (void)setClearsCacheOnLowMemoryWarnings:(BOOL)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setClearsCacheOnApplicationBackground:(BOOL)background;
+- (void)setClearsCacheOnLowMemoryWarnings:(BOOL)warnings;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation _UICache
@@ -65,7 +65,7 @@
   [(_UICache *)&v4 dealloc];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   cacheQueue = self->_cacheQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -73,12 +73,12 @@
   block[2] = __29___UICache_setObject_forKey___block_invoke;
   block[3] = &unk_1E726E598;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = object;
+  block[6] = key;
   dispatch_sync(cacheQueue, block);
 }
 
-- (id)retainedObjectForKey:(id)a3
+- (id)retainedObjectForKey:(id)key
 {
   v7 = 0;
   v8 = &v7;
@@ -91,7 +91,7 @@
   block[1] = 3221225472;
   block[2] = __33___UICache_retainedObjectForKey___block_invoke;
   block[3] = &unk_1E726E5C0;
-  block[5] = a3;
+  block[5] = key;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(cacheQueue, block);
@@ -100,14 +100,14 @@
   return v4;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v3 = [(_UICache *)self retainedObjectForKey:a3];
+  v3 = [(_UICache *)self retainedObjectForKey:key];
 
   return v3;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   cacheQueue = self->_cacheQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -115,7 +115,7 @@
   v4[2] = __31___UICache_removeObjectForKey___block_invoke;
   v4[3] = &unk_1E726E570;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = key;
   dispatch_sync(cacheQueue, v4);
 }
 
@@ -130,12 +130,12 @@
   dispatch_sync(cacheQueue, block);
 }
 
-- (void)setClearsCacheOnLowMemoryWarnings:(BOOL)a3
+- (void)setClearsCacheOnLowMemoryWarnings:(BOOL)warnings
 {
-  if (self->_clearsCacheOnLowMemoryWarnings != a3)
+  if (self->_clearsCacheOnLowMemoryWarnings != warnings)
   {
     memoryWarningsSource = self->_memoryWarningsSource;
-    if (a3)
+    if (warnings)
     {
       dispatch_resume(memoryWarningsSource);
     }
@@ -145,20 +145,20 @@
       dispatch_suspend(memoryWarningsSource);
     }
 
-    self->_clearsCacheOnLowMemoryWarnings = a3;
+    self->_clearsCacheOnLowMemoryWarnings = warnings;
   }
 }
 
-- (void)setClearsCacheOnApplicationBackground:(BOOL)a3
+- (void)setClearsCacheOnApplicationBackground:(BOOL)background
 {
-  if (self->_clearsCacheOnApplicationBackground != a3)
+  if (self->_clearsCacheOnApplicationBackground != background)
   {
     v13 = v3;
     v14 = v4;
-    v5 = a3;
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    v8 = v7;
-    if (v5)
+    backgroundCopy = background;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v8 = defaultCenter;
+    if (backgroundCopy)
     {
       v10 = *&self->_cacheQueue;
       UIApplicationDidEnterBackgroundNotification_0 = getUIApplicationDidEnterBackgroundNotification_0();
@@ -172,26 +172,26 @@
 
     else
     {
-      [v7 removeObserver:self->_noteObserver];
+      [defaultCenter removeObserver:self->_noteObserver];
       self->_noteObserver = 0;
     }
 
-    self->_clearsCacheOnApplicationBackground = v5;
+    self->_clearsCacheOnApplicationBackground = backgroundCopy;
   }
 }
 
 - (id)cacheKeys
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   cacheQueue = self->_cacheQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __21___UICache_cacheKeys__block_invoke;
   v6[3] = &unk_1E726E570;
-  v6[4] = v3;
+  v6[4] = array;
   v6[5] = self;
   dispatch_sync(cacheQueue, v6);
-  return v3;
+  return array;
 }
 
 @end

@@ -1,44 +1,44 @@
 @interface _SBKeyboardFocusCoalitionPolicyEnforcer
-- (_SBKeyboardFocusCoalitionPolicyEnforcer)initWithDeferringRulePredicate:(id)a3 deferringRuleReason:(id)a4 debugName:(id)a5;
-- (_SBKeyboardFocusCoalitionPolicyEnforcer)initWithDeferringRulePredicate:(id)a3 deferringRuleReason:(id)a4 debugName:(id)a5 deliveryManager:(id)a6;
-- (id)deferringTargetForPolicy:(id)a3;
-- (void)enforce:(id)a3;
+- (_SBKeyboardFocusCoalitionPolicyEnforcer)initWithDeferringRulePredicate:(id)predicate deferringRuleReason:(id)reason debugName:(id)name;
+- (_SBKeyboardFocusCoalitionPolicyEnforcer)initWithDeferringRulePredicate:(id)predicate deferringRuleReason:(id)reason debugName:(id)name deliveryManager:(id)manager;
+- (id)deferringTargetForPolicy:(id)policy;
+- (void)enforce:(id)enforce;
 - (void)stopEnforcing;
 @end
 
 @implementation _SBKeyboardFocusCoalitionPolicyEnforcer
 
-- (_SBKeyboardFocusCoalitionPolicyEnforcer)initWithDeferringRulePredicate:(id)a3 deferringRuleReason:(id)a4 debugName:(id)a5
+- (_SBKeyboardFocusCoalitionPolicyEnforcer)initWithDeferringRulePredicate:(id)predicate deferringRuleReason:(id)reason debugName:(id)name
 {
   v8 = MEMORY[0x277CF0668];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 sharedInstance];
-  v13 = [(_SBKeyboardFocusCoalitionPolicyEnforcer *)self initWithDeferringRulePredicate:v11 deferringRuleReason:v10 debugName:v9 deliveryManager:v12];
+  nameCopy = name;
+  reasonCopy = reason;
+  predicateCopy = predicate;
+  sharedInstance = [v8 sharedInstance];
+  v13 = [(_SBKeyboardFocusCoalitionPolicyEnforcer *)self initWithDeferringRulePredicate:predicateCopy deferringRuleReason:reasonCopy debugName:nameCopy deliveryManager:sharedInstance];
 
   return v13;
 }
 
-- (_SBKeyboardFocusCoalitionPolicyEnforcer)initWithDeferringRulePredicate:(id)a3 deferringRuleReason:(id)a4 debugName:(id)a5 deliveryManager:(id)a6
+- (_SBKeyboardFocusCoalitionPolicyEnforcer)initWithDeferringRulePredicate:(id)predicate deferringRuleReason:(id)reason debugName:(id)name deliveryManager:(id)manager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  predicateCopy = predicate;
+  reasonCopy = reason;
+  nameCopy = name;
+  managerCopy = manager;
   v22.receiver = self;
   v22.super_class = _SBKeyboardFocusCoalitionPolicyEnforcer;
   v15 = [(_SBKeyboardFocusCoalitionPolicyEnforcer *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_predicate, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_predicate, predicate);
+    v17 = [reasonCopy copy];
     deferringRuleReason = v16->_deferringRuleReason;
     v16->_deferringRuleReason = v17;
 
-    objc_storeStrong(&v16->_deliveryManager, a6);
-    v19 = [v13 copy];
+    objc_storeStrong(&v16->_deliveryManager, manager);
+    v19 = [nameCopy copy];
     debugName = v16->_debugName;
     v16->_debugName = v19;
   }
@@ -46,20 +46,20 @@
   return v16;
 }
 
-- (id)deferringTargetForPolicy:(id)a3
+- (id)deferringTargetForPolicy:(id)policy
 {
-  v3 = [a3 sbWindowSceneAncestor];
-  v4 = [SBKeyboardFocusTarget targetForSBWindowScene:v3];
+  sbWindowSceneAncestor = [policy sbWindowSceneAncestor];
+  v4 = [SBKeyboardFocusTarget targetForSBWindowScene:sbWindowSceneAncestor];
 
-  v5 = [(SBKeyboardFocusTarget *)v4 deferringTarget];
+  deferringTarget = [(SBKeyboardFocusTarget *)v4 deferringTarget];
 
-  return v5;
+  return deferringTarget;
 }
 
-- (void)enforce:(id)a3
+- (void)enforce:(id)enforce
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(_SBKeyboardFocusCoalitionPolicyEnforcer *)self deferringTargetForPolicy:a3];
+  v4 = [(_SBKeyboardFocusCoalitionPolicyEnforcer *)self deferringTargetForPolicy:enforce];
   if (!self->_enforcedTarget || !self->_focusRule || (BSEqualObjects() & 1) == 0)
   {
     objc_storeStrong(&self->_enforcedTarget, v4);
@@ -71,11 +71,11 @@
     v7 = SBLogKeyboardFocus();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(BKSHIDEventDeferringPredicate *)self->_predicate environment];
+      environment = [(BKSHIDEventDeferringPredicate *)self->_predicate environment];
       predicate = self->_predicate;
       enforcedTarget = self->_enforcedTarget;
       v11 = 138543874;
-      v12 = v8;
+      v12 = environment;
       v13 = 2114;
       v14 = predicate;
       v15 = 2114;

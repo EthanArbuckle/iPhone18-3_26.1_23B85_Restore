@@ -1,27 +1,27 @@
 @interface SKGDataDetector
 + (id)sharedDetector;
-- (BOOL)enumerateAirportCodesInStringUsingGeoScanner:(id)a3 entityBlock:(id)a4;
-- (BOOL)enumerateDetectedDataInString:(id)a3 locale:(id)a4 referenceDate:(id)a5 referenceTimezone:(id)a6 entityCategories:(id)a7 entityBlock:(id)a8 rangeBlock:(id)a9;
-- (BOOL)enumerateLocationStrings:(id)a3 locale:(id)a4 entityBlock:(id)a5;
-- (BOOL)enumerateLocationsInString:(id)a3 locale:(id)a4 latitude:(double)a5 longitude:(double)a6 entityBlock:(id)a7;
+- (BOOL)enumerateAirportCodesInStringUsingGeoScanner:(id)scanner entityBlock:(id)block;
+- (BOOL)enumerateDetectedDataInString:(id)string locale:(id)locale referenceDate:(id)date referenceTimezone:(id)timezone entityCategories:(id)categories entityBlock:(id)block rangeBlock:(id)rangeBlock;
+- (BOOL)enumerateLocationStrings:(id)strings locale:(id)locale entityBlock:(id)block;
+- (BOOL)enumerateLocationsInString:(id)string locale:(id)locale latitude:(double)latitude longitude:(double)longitude entityBlock:(id)block;
 - (BOOL)loadDetector;
 - (SKGDataDetector)init;
-- (id)_addressFromResult:(id)a3;
-- (id)_callPIRWithQuery:(id)a3 hitError:(BOOL *)a4;
-- (id)_currencyFromResult:(id)a3;
-- (id)_dateFromResult:(id)a3 referenceDate:(id)a4 referenceTimezone:(id)a5;
-- (id)_emailAddressFromResult:(id)a3;
-- (id)_flightFromResult:(id)a3;
-- (id)_linkFromResult:(id)a3;
-- (id)_lookupCitiesFromLocalCacheWithString:(id)a3 locale:(id)a4 countries:(id)a5 parents:(id)a6;
-- (id)_lookupCountriesFromLocalCacheWithString:(id)a3 locale:(id)a4;
-- (id)_lookupParentsFromLocalCacheWithString:(id)a3 locale:(id)a4 countries:(id)a5;
-- (id)_phoneNumberDigitsFromResult:(id)a3;
-- (id)_retrieveLocationFromLocalCache:(id)a3 locale:(id)a4;
-- (id)_retrieveLocationFromPIR:(id)a3 locale:(id)a4;
-- (id)_trackingNumberFromResult:(id)a3;
-- (id)locationFromAddress:(id)a3 locale:(id)a4;
-- (void)_lookupExpansionsFromLocalCacheWithLocation:(id)a3 locale:(id)a4;
+- (id)_addressFromResult:(id)result;
+- (id)_callPIRWithQuery:(id)query hitError:(BOOL *)error;
+- (id)_currencyFromResult:(id)result;
+- (id)_dateFromResult:(id)result referenceDate:(id)date referenceTimezone:(id)timezone;
+- (id)_emailAddressFromResult:(id)result;
+- (id)_flightFromResult:(id)result;
+- (id)_linkFromResult:(id)result;
+- (id)_lookupCitiesFromLocalCacheWithString:(id)string locale:(id)locale countries:(id)countries parents:(id)parents;
+- (id)_lookupCountriesFromLocalCacheWithString:(id)string locale:(id)locale;
+- (id)_lookupParentsFromLocalCacheWithString:(id)string locale:(id)locale countries:(id)countries;
+- (id)_phoneNumberDigitsFromResult:(id)result;
+- (id)_retrieveLocationFromLocalCache:(id)cache locale:(id)locale;
+- (id)_retrieveLocationFromPIR:(id)r locale:(id)locale;
+- (id)_trackingNumberFromResult:(id)result;
+- (id)locationFromAddress:(id)address locale:(id)locale;
+- (void)_lookupExpansionsFromLocalCacheWithLocation:(id)location locale:(id)locale;
 - (void)dealloc;
 @end
 
@@ -67,10 +67,10 @@ void __33__SKGDataDetector_sharedDetector__block_invoke()
 
 - (BOOL)loadDetector
 {
-  v3 = [MEMORY[0x277CC3410] sharedInstance];
-  v4 = [v3 isSemanticSearchAvailable];
+  mEMORY[0x277CC3410] = [MEMORY[0x277CC3410] sharedInstance];
+  isSemanticSearchAvailable = [mEMORY[0x277CC3410] isSemanticSearchAvailable];
 
-  if (v4 && _os_feature_enabled_impl() && !self->_pirClient)
+  if (isSemanticSearchAvailable && _os_feature_enabled_impl() && !self->_pirClient)
   {
     v12 = [objc_alloc(MEMORY[0x277CFA598]) initWithUseCase:@"encryptedPQAGeo"];
     v13 = [objc_alloc(MEMORY[0x277CFA5B0]) initWithClientConfig:v12];
@@ -87,10 +87,10 @@ void __33__SKGDataDetector_sharedDetector__block_invoke()
 
   if (!self->_geoIndex)
   {
-    v6 = [MEMORY[0x277D657A8] sharedProcessorListener];
-    v7 = [v6 geoIndexResourcesURL];
+    mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedProcessorListener];
+    geoIndexResourcesURL = [mEMORY[0x277D657A8] geoIndexResourcesURL];
 
-    if (v7)
+    if (geoIndexResourcesURL)
     {
       self->_geoIndex = SIGeoIndexCreateWithOptions();
     }
@@ -98,10 +98,10 @@ void __33__SKGDataDetector_sharedDetector__block_invoke()
 
   if (!self->_geoScanner)
   {
-    v8 = [MEMORY[0x277D657A8] sharedProcessorListener];
-    v9 = [v8 geoPatternsResourcesURL];
+    mEMORY[0x277D657A8]2 = [MEMORY[0x277D657A8] sharedProcessorListener];
+    geoPatternsResourcesURL = [mEMORY[0x277D657A8]2 geoPatternsResourcesURL];
 
-    if (v9)
+    if (geoPatternsResourcesURL)
     {
       v10 = DDScannerCreateWithCacheFile();
       self->_geoScanner = v10;
@@ -115,14 +115,14 @@ void __33__SKGDataDetector_sharedDetector__block_invoke()
   return (self->_geoIndex != 0 || v5) && self->_geoScanner != 0;
 }
 
-- (id)_addressFromResult:(id)a3
+- (id)_addressFromResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = [(SKGEntity *)[SKGAddress alloc] initWithScore:1.0];
-  v5 = [v3 value];
-  [(SKGAddress *)v4 setAddress:v5];
+  value = [resultCopy value];
+  [(SKGAddress *)v4 setAddress:value];
 
-  lookupAddressScore(v3, v4);
+  lookupAddressScore(resultCopy, v4);
   [(SKGEntity *)v4 score];
   if (v6 <= 1.0)
   {
@@ -139,26 +139,26 @@ void __33__SKGDataDetector_sharedDetector__block_invoke()
   return v7;
 }
 
-- (id)locationFromAddress:(id)a3 locale:(id)a4
+- (id)locationFromAddress:(id)address locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKGDataDetector *)self _retrieveLocationFromLocalCache:v6 locale:v7];
+  addressCopy = address;
+  localeCopy = locale;
+  v8 = [(SKGDataDetector *)self _retrieveLocationFromLocalCache:addressCopy locale:localeCopy];
   if (!v8)
   {
-    v8 = [(SKGDataDetector *)self _retrieveLocationFromPIR:v6 locale:v7];
+    v8 = [(SKGDataDetector *)self _retrieveLocationFromPIR:addressCopy locale:localeCopy];
   }
 
   return v8;
 }
 
-- (id)_lookupCountriesFromLocalCacheWithString:(id)a3 locale:(id)a4
+- (id)_lookupCountriesFromLocalCacheWithString:(id)string locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  stringCopy = string;
+  localeCopy = locale;
+  v8 = localeCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (stringCopy && localeCopy)
   {
     v18[0] = 0;
     v18[1] = v18;
@@ -221,14 +221,14 @@ uint64_t __67__SKGDataDetector__lookupCountriesFromLocalCacheWithString_locale__
   return result;
 }
 
-- (id)_lookupParentsFromLocalCacheWithString:(id)a3 locale:(id)a4 countries:(id)a5
+- (id)_lookupParentsFromLocalCacheWithString:(id)string locale:(id)locale countries:(id)countries
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  stringCopy = string;
+  localeCopy = locale;
+  countriesCopy = countries;
+  v11 = countriesCopy;
   v12 = 0;
-  if (v8 && v9)
+  if (stringCopy && localeCopy)
   {
     v22[0] = 0;
     v22[1] = v22;
@@ -243,7 +243,7 @@ uint64_t __67__SKGDataDetector__lookupCountriesFromLocalCacheWithString_locale__
     v20 = __Block_byref_object_dispose__15;
     v21 = 0;
     geoIndex = self->_geoIndex;
-    v15 = v10;
+    v15 = countriesCopy;
     SIGeoIndexEnumerateGeoEntriesForString();
     v12 = v17[5];
 
@@ -371,16 +371,16 @@ LABEL_19:
   }
 }
 
-- (id)_lookupCitiesFromLocalCacheWithString:(id)a3 locale:(id)a4 countries:(id)a5 parents:(id)a6
+- (id)_lookupCitiesFromLocalCacheWithString:(id)string locale:(id)locale countries:(id)countries parents:(id)parents
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stringCopy = string;
+  localeCopy = locale;
+  countriesCopy = countries;
+  parentsCopy = parents;
   v14 = 0;
-  if (v10 && v11)
+  if (stringCopy && localeCopy)
   {
-    if ([v12 count] || objc_msgSend(v13, "count"))
+    if ([countriesCopy count] || objc_msgSend(parentsCopy, "count"))
     {
       v25[0] = 0;
       v25[1] = v25;
@@ -395,8 +395,8 @@ LABEL_19:
       v23 = __Block_byref_object_dispose__15;
       v24 = 0;
       geoIndex = self->_geoIndex;
-      v17 = v13;
-      v18 = v12;
+      v17 = parentsCopy;
+      v18 = countriesCopy;
       SIGeoIndexEnumerateGeoEntriesForString();
       v14 = v20[5];
 
@@ -548,53 +548,53 @@ LABEL_34:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lookupExpansionsFromLocalCacheWithLocation:(id)a3 locale:(id)a4
+- (void)_lookupExpansionsFromLocalCacheWithLocation:(id)location locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 geoID])
+  locationCopy = location;
+  localeCopy = locale;
+  if ([locationCopy geoID])
   {
     geoIndex = self->_geoIndex;
-    [v6 geoID];
-    v13 = v6;
+    [locationCopy geoID];
+    v13 = locationCopy;
     SIGeoIndexEnumerateGeoExpansionsForID();
   }
 
-  if ([v6 parentID])
+  if ([locationCopy parentID])
   {
     v9 = self->_geoIndex;
-    [v6 parentID];
-    v12 = v6;
+    [locationCopy parentID];
+    v12 = locationCopy;
     SIGeoIndexEnumerateGeoExpansionsForID();
   }
 
-  if ([v6 countryID])
+  if ([locationCopy countryID])
   {
     v10 = self->_geoIndex;
-    [v6 countryID];
-    v11 = v6;
+    [locationCopy countryID];
+    v11 = locationCopy;
     SIGeoIndexEnumerateGeoExpansionsForID();
   }
 }
 
-- (id)_retrieveLocationFromLocalCache:(id)a3 locale:(id)a4
+- (id)_retrieveLocationFromLocalCache:(id)cache locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  localeCopy = locale;
   if ((_os_feature_enabled_impl() & 1) == 0 && ![(SKGDataDetector *)self forceDataDetection]|| !self->_geoIndex)
   {
     v13 = 0;
     goto LABEL_37;
   }
 
-  v8 = [v6 country];
+  country = [cacheCopy country];
 
-  if (v8)
+  if (country)
   {
-    v9 = [v6 country];
-    v10 = normalizedLocationString(v7, v9);
+    country2 = [cacheCopy country];
+    v10 = normalizedLocationString(localeCopy, country2);
 
-    v11 = [(SKGDataDetector *)self _lookupCountriesFromLocalCacheWithString:v10 locale:v7];
+    v11 = [(SKGDataDetector *)self _lookupCountriesFromLocalCacheWithString:v10 locale:localeCopy];
     if (!v11)
     {
       if ([v10 length] < 5)
@@ -604,8 +604,8 @@ LABEL_34:
 
       else
       {
-        v12 = [v10 uppercaseString];
-        v11 = [(SKGDataDetector *)self _lookupCountriesFromLocalCacheWithString:v12 locale:v7];
+        uppercaseString = [v10 uppercaseString];
+        v11 = [(SKGDataDetector *)self _lookupCountriesFromLocalCacheWithString:uppercaseString locale:localeCopy];
       }
     }
 
@@ -618,8 +618,8 @@ LABEL_34:
     }
 
     v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v15 = [v11 allObjects];
-    [v14 addObjectsFromArray:v15];
+    allObjects = [v11 allObjects];
+    [v14 addObjectsFromArray:allObjects];
   }
 
   else
@@ -627,16 +627,16 @@ LABEL_34:
     v14 = 0;
   }
 
-  v16 = [v6 area];
+  area = [cacheCopy area];
 
-  if (v16)
+  if (area)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = [v6 area];
-    v19 = normalizedLocationString(v7, v18);
+    area2 = [cacheCopy area];
+    v19 = normalizedLocationString(localeCopy, area2);
 
     v41 = v14;
-    v20 = [(SKGDataDetector *)self _lookupParentsFromLocalCacheWithString:v19 locale:v7 countries:v14];
+    v20 = [(SKGDataDetector *)self _lookupParentsFromLocalCacheWithString:v19 locale:localeCopy countries:v14];
     if (!v20)
     {
 
@@ -650,13 +650,13 @@ LABEL_34:
     v21 = v20;
     v22 = objc_alloc_init(MEMORY[0x277CBEB58]);
     [v21 allObjects];
-    v40 = v7;
+    v40 = localeCopy;
     v24 = v23 = v17;
     v25 = v22;
     [v22 addObjectsFromArray:v24];
 
     v26 = v23;
-    v7 = v40;
+    localeCopy = v40;
     objc_autoreleasePoolPop(v26);
     v14 = v41;
   }
@@ -666,9 +666,9 @@ LABEL_34:
     v25 = 0;
   }
 
-  v27 = [v6 city];
-  v28 = (v8 | v16) != 0;
-  if (!v27)
+  city = [cacheCopy city];
+  v28 = (country | area) != 0;
+  if (!city)
   {
     v32 = 0;
     if (!v28)
@@ -680,13 +680,13 @@ LABEL_34:
     goto LABEL_25;
   }
 
-  if (v8 | v16)
+  if (country | area)
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = [v6 city];
-    v31 = normalizedLocationString(v7, v30);
+    city2 = [cacheCopy city];
+    v31 = normalizedLocationString(localeCopy, city2);
 
-    v32 = [(SKGDataDetector *)self _lookupCitiesFromLocalCacheWithString:v31 locale:v7 countries:v14 parents:v25];
+    v32 = [(SKGDataDetector *)self _lookupCitiesFromLocalCacheWithString:v31 locale:localeCopy countries:v14 parents:v25];
     v33 = [v32 count];
 
     objc_autoreleasePoolPop(v29);
@@ -696,38 +696,38 @@ LABEL_34:
     }
 
 LABEL_25:
-    v34 = [v32 allObjects];
-    v35 = [v34 sortedArrayUsingComparator:&__block_literal_global_83];
+    allObjects2 = [v32 allObjects];
+    v35 = [allObjects2 sortedArrayUsingComparator:&__block_literal_global_83];
 
     if (!v35)
     {
-      v36 = [v25 allObjects];
-      v35 = [v36 sortedArrayUsingComparator:&__block_literal_global_85];
+      allObjects3 = [v25 allObjects];
+      v35 = [allObjects3 sortedArrayUsingComparator:&__block_literal_global_85];
 
       if (!v35)
       {
-        v37 = [v14 allObjects];
-        v35 = [v37 sortedArrayUsingComparator:&__block_literal_global_87];
+        allObjects4 = [v14 allObjects];
+        v35 = [allObjects4 sortedArrayUsingComparator:&__block_literal_global_87];
       }
     }
 
     if ([v35 count])
     {
-      v38 = [v35 firstObject];
+      firstObject = [v35 firstObject];
     }
 
     else
     {
-      v38 = 0;
+      firstObject = 0;
     }
 
-    if ([v38 geoID])
+    if ([firstObject geoID])
     {
-      [(SKGDataDetector *)self _lookupExpansionsFromLocalCacheWithLocation:v38 locale:v7];
-      [v38 setAddress:v6];
+      [(SKGDataDetector *)self _lookupExpansionsFromLocalCacheWithLocation:firstObject locale:localeCopy];
+      [firstObject setAddress:cacheCopy];
     }
 
-    v13 = v38;
+    v13 = firstObject;
 
     goto LABEL_36;
   }
@@ -800,11 +800,11 @@ uint64_t __58__SKGDataDetector__retrieveLocationFromLocalCache_locale___block_in
   }
 }
 
-- (id)_callPIRWithQuery:(id)a3 hitError:(BOOL *)a4
+- (id)_callPIRWithQuery:(id)query hitError:(BOOL *)error
 {
-  v6 = a3;
-  v7 = 0;
-  if (v6 && self->_pirClient)
+  queryCopy = query;
+  geoList = 0;
+  if (queryCopy && self->_pirClient)
   {
     v8 = dispatch_semaphore_create(0);
     v9 = dispatch_time(0, 10000000000);
@@ -829,7 +829,7 @@ uint64_t __58__SKGDataDetector__retrieveLocationFromLocalCache_locale___block_in
     v22 = &v29;
     v11 = v8;
     v20 = v11;
-    [(CMLKeywordPIRClient *)pirClient requestDataByStringKeyword:v6 completionHandler:v19];
+    [(CMLKeywordPIRClient *)pirClient requestDataByStringKeyword:queryCopy completionHandler:v19];
     if (dispatch_semaphore_wait(v11, v9))
     {
       NSLog(&cfstr_TimedOutWaitin.isa);
@@ -843,32 +843,32 @@ uint64_t __58__SKGDataDetector__retrieveLocationFromLocalCache_locale___block_in
         v14 = [v13 initWithData:v24[5]];
         if ([v14 hasGeoList])
         {
-          v7 = [v14 geoList];
+          geoList = [v14 geoList];
         }
 
         else if ([v14 hasCompressedGeoList])
         {
-          v15 = [v14 compressedGeoList];
+          compressedGeoList = [v14 compressedGeoList];
           v18 = 0;
-          v16 = [v15 decompressedDataUsingAlgorithm:3 error:&v18];
+          v16 = [compressedGeoList decompressedDataUsingAlgorithm:3 error:&v18];
           v17 = v18;
 
           if (v17)
           {
             NSLog(&cfstr_FailedToDecomp.isa, v17);
-            v7 = 0;
-            *a4 = 1;
+            geoList = 0;
+            *error = 1;
           }
 
           else
           {
-            v7 = [objc_alloc(MEMORY[0x277D37B30]) initWithData:v16];
+            geoList = [objc_alloc(MEMORY[0x277D37B30]) initWithData:v16];
           }
         }
 
         else
         {
-          v7 = 0;
+          geoList = 0;
         }
 
         goto LABEL_8;
@@ -877,15 +877,15 @@ uint64_t __58__SKGDataDetector__retrieveLocationFromLocalCache_locale___block_in
       NSLog(&cfstr_FailedToQueryP.isa, v30[5]);
     }
 
-    v7 = 0;
-    *a4 = 1;
+    geoList = 0;
+    *error = 1;
 LABEL_8:
 
     _Block_object_dispose(&v23, 8);
     _Block_object_dispose(&v29, 8);
   }
 
-  return v7;
+  return geoList;
 }
 
 void __46__SKGDataDetector__callPIRWithQuery_hitError___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -905,22 +905,22 @@ void __46__SKGDataDetector__callPIRWithQuery_hitError___block_invoke(uint64_t a1
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_retrieveLocationFromPIR:(id)a3 locale:(id)a4
+- (id)_retrieveLocationFromPIR:(id)r locale:(id)locale
 {
   v169 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v110 = a4;
-  v7 = [MEMORY[0x277D657A8] sharedClientListener];
-  v8 = [v7 parsecIsEnabled];
+  rCopy = r;
+  localeCopy = locale;
+  mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedClientListener];
+  parsecIsEnabled = [mEMORY[0x277D657A8] parsecIsEnabled];
 
-  v111 = v6;
-  v9 = 0;
-  if (!v8)
+  v111 = rCopy;
+  firstObject2 = 0;
+  if (!parsecIsEnabled)
   {
     goto LABEL_133;
   }
 
-  if (!v6)
+  if (!rCopy)
   {
     v10 = 0;
     goto LABEL_134;
@@ -934,12 +934,12 @@ void __46__SKGDataDetector__callPIRWithQuery_hitError___block_invoke(uint64_t a1
 
   v109 = objc_autoreleasePoolPush();
   v159 = 0;
-  v11 = [v6 country];
+  country = [rCopy country];
 
-  if (v11)
+  if (country)
   {
-    v12 = [v6 country];
-    v13 = normalizedLocationString(v110, v12);
+    country2 = [rCopy country];
+    v13 = normalizedLocationString(localeCopy, country2);
 
     v14 = [(SKGDataDetector *)self _callPIRWithQuery:v13 hitError:&v159];
     v15 = convertGeoListToLocations(v14, @"Country");
@@ -958,15 +958,15 @@ void __46__SKGDataDetector__callPIRWithQuery_hitError___block_invoke(uint64_t a1
   }
 
   v18 = v111;
-  v19 = [v111 area];
+  area = [v111 area];
 
   v120 = v15;
-  v112 = self;
-  if (v19)
+  selfCopy = self;
+  if (area)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = [v111 area];
-    v22 = normalizedLocationString(v110, v21);
+    area2 = [v111 area];
+    v22 = normalizedLocationString(localeCopy, area2);
 
     v23 = [(SKGDataDetector *)self _callPIRWithQuery:v22 hitError:&v159];
     v24 = convertGeoListToLocations(v23, @"State");
@@ -1019,42 +1019,42 @@ void __46__SKGDataDetector__callPIRWithQuery_hitError___block_invoke(uint64_t a1
                   }
 
                   v31 = *(*(&v151 + 1) + 8 * j);
-                  v32 = [v26 address];
-                  v33 = [v32 countryCode];
-                  v34 = v33;
-                  if (v33)
+                  address = [v26 address];
+                  countryCode = [address countryCode];
+                  v34 = countryCode;
+                  if (countryCode)
                   {
-                    v35 = v33;
+                    country3 = countryCode;
                   }
 
                   else
                   {
-                    v36 = [v26 address];
-                    v35 = [v36 country];
+                    address2 = [v26 address];
+                    country3 = [address2 country];
                   }
 
-                  v37 = [v31 address];
-                  v38 = [v37 countryCode];
-                  v39 = v38;
-                  if (v38)
+                  address3 = [v31 address];
+                  countryCode2 = [address3 countryCode];
+                  v39 = countryCode2;
+                  if (countryCode2)
                   {
-                    v40 = v38;
+                    country4 = countryCode2;
                   }
 
                   else
                   {
-                    v41 = [v31 address];
-                    v40 = [v41 country];
+                    address4 = [v31 address];
+                    country4 = [address4 country];
                   }
 
-                  if (v35 && v40 && [v35 isEqualToString:v40])
+                  if (country3 && country4 && [country3 isEqualToString:country4])
                   {
                     v149 = 0u;
                     v150 = 0u;
                     v147 = 0u;
                     v148 = 0u;
-                    v42 = [v31 expansions];
-                    v43 = [v42 countByEnumeratingWithState:&v147 objects:v166 count:16];
+                    expansions = [v31 expansions];
+                    v43 = [expansions countByEnumeratingWithState:&v147 objects:v166 count:16];
                     v17 = v123;
                     if (v43)
                     {
@@ -1066,13 +1066,13 @@ void __46__SKGDataDetector__callPIRWithQuery_hitError___block_invoke(uint64_t a1
                         {
                           if (*v148 != v45)
                           {
-                            objc_enumerationMutation(v42);
+                            objc_enumerationMutation(expansions);
                           }
 
                           [v26 addExpansion:*(*(&v147 + 1) + 8 * k)];
                         }
 
-                        v44 = [v42 countByEnumeratingWithState:&v147 objects:v166 count:16];
+                        v44 = [expansions countByEnumeratingWithState:&v147 objects:v166 count:16];
                       }
 
                       while (v44);
@@ -1124,7 +1124,7 @@ LABEL_43:
 LABEL_54:
       v50 = 0;
       v51 = 0;
-      v9 = 0;
+      firstObject2 = 0;
       goto LABEL_131;
     }
 
@@ -1136,23 +1136,23 @@ LABEL_54:
     v17 = 0;
   }
 
-  v47 = [v18 city];
-  if (!v47)
+  city = [v18 city];
+  if (!city)
   {
     goto LABEL_124;
   }
 
-  v48 = v47;
-  v49 = [v18 area];
-  if (v49)
+  v48 = city;
+  area3 = [v18 area];
+  if (area3)
   {
   }
 
   else
   {
-    v52 = [v18 country];
+    country5 = [v18 country];
 
-    if (!v52)
+    if (!country5)
     {
       v50 = 0;
       goto LABEL_125;
@@ -1160,11 +1160,11 @@ LABEL_54:
   }
 
   contexta = objc_autoreleasePoolPush();
-  v53 = [v111 city];
-  v54 = normalizedLocationString(v110, v53);
+  city2 = [v111 city];
+  v54 = normalizedLocationString(localeCopy, city2);
 
   v106 = v54;
-  v104 = [(SKGDataDetector *)v112 _callPIRWithQuery:v54 hitError:&v159];
+  v104 = [(SKGDataDetector *)selfCopy _callPIRWithQuery:v54 hitError:&v159];
   convertGeoListToLocations(v104, @"City");
   v143 = 0u;
   v144 = 0u;
@@ -1213,42 +1213,42 @@ LABEL_54:
               }
 
               v61 = *(*(&v139 + 1) + 8 * n);
-              v62 = [v56 address];
-              v63 = [v62 areaCode];
-              v64 = v63;
-              if (v63)
+              address5 = [v56 address];
+              areaCode = [address5 areaCode];
+              v64 = areaCode;
+              if (areaCode)
               {
-                v65 = v63;
+                area4 = areaCode;
               }
 
               else
               {
-                v66 = [v56 address];
-                v65 = [v66 area];
+                address6 = [v56 address];
+                area4 = [address6 area];
               }
 
-              v67 = [v61 address];
-              v68 = [v67 areaCode];
-              v69 = v68;
-              if (v68)
+              address7 = [v61 address];
+              areaCode2 = [address7 areaCode];
+              v69 = areaCode2;
+              if (areaCode2)
               {
-                v70 = v68;
+                area5 = areaCode2;
               }
 
               else
               {
-                v71 = [v61 address];
-                v70 = [v71 area];
+                address8 = [v61 address];
+                area5 = [address8 area];
               }
 
-              if (v65 && v70 && [v65 isEqualToString:v70])
+              if (area4 && area5 && [area4 isEqualToString:area5])
               {
                 v137 = 0u;
                 v138 = 0u;
                 v135 = 0u;
                 v136 = 0u;
-                v85 = [v61 expansions];
-                v86 = [v85 countByEnumeratingWithState:&v135 objects:v163 count:16];
+                expansions2 = [v61 expansions];
+                v86 = [expansions2 countByEnumeratingWithState:&v135 objects:v163 count:16];
                 v17 = v124;
                 if (v86)
                 {
@@ -1260,13 +1260,13 @@ LABEL_54:
                     {
                       if (*v136 != v88)
                       {
-                        objc_enumerationMutation(v85);
+                        objc_enumerationMutation(expansions2);
                       }
 
                       [v56 addExpansion:*(*(&v135 + 1) + 8 * ii)];
                     }
 
-                    v87 = [v85 countByEnumeratingWithState:&v135 objects:v163 count:16];
+                    v87 = [expansions2 countByEnumeratingWithState:&v135 objects:v163 count:16];
                   }
 
                   while (v87);
@@ -1321,42 +1321,42 @@ LABEL_115:
               }
 
               v76 = *(*(&v131 + 1) + 8 * jj);
-              v77 = [v56 address];
-              v78 = [v77 countryCode];
-              v79 = v78;
-              if (v78)
+              address9 = [v56 address];
+              countryCode3 = [address9 countryCode];
+              v79 = countryCode3;
+              if (countryCode3)
               {
-                v65 = v78;
+                area4 = countryCode3;
               }
 
               else
               {
-                v80 = [v56 address];
-                v65 = [v80 country];
+                address10 = [v56 address];
+                area4 = [address10 country];
               }
 
-              v81 = [v76 address];
-              v82 = [v81 countryCode];
-              v83 = v82;
-              if (v82)
+              address11 = [v76 address];
+              countryCode4 = [address11 countryCode];
+              v83 = countryCode4;
+              if (countryCode4)
               {
-                v70 = v82;
+                area5 = countryCode4;
               }
 
               else
               {
-                v84 = [v76 address];
-                v70 = [v84 country];
+                address12 = [v76 address];
+                area5 = [address12 country];
               }
 
-              if (v65 && v70 && [v65 isEqualToString:v70])
+              if (area4 && area5 && [area4 isEqualToString:area5])
               {
                 v129 = 0u;
                 v130 = 0u;
                 v127 = 0u;
                 v128 = 0u;
-                v85 = [v76 expansions];
-                v90 = [v85 countByEnumeratingWithState:&v127 objects:v161 count:16];
+                expansions2 = [v76 expansions];
+                v90 = [expansions2 countByEnumeratingWithState:&v127 objects:v161 count:16];
                 v17 = v124;
                 if (v90)
                 {
@@ -1368,13 +1368,13 @@ LABEL_115:
                     {
                       if (*v128 != v92)
                       {
-                        objc_enumerationMutation(v85);
+                        objc_enumerationMutation(expansions2);
                       }
 
                       [v56 addExpansion:*(*(&v127 + 1) + 8 * kk)];
                     }
 
-                    v91 = [v85 countByEnumeratingWithState:&v127 objects:v161 count:16];
+                    v91 = [expansions2 countByEnumeratingWithState:&v127 objects:v161 count:16];
                   }
 
                   while (v91);
@@ -1417,11 +1417,11 @@ LABEL_121:
   objc_autoreleasePoolPop(contexta);
   if (v117)
   {
-    v95 = [v117 allObjects];
-    v52 = [v95 sortedArrayUsingComparator:&__block_literal_global_110];
+    allObjects = [v117 allObjects];
+    country5 = [allObjects sortedArrayUsingComparator:&__block_literal_global_110];
 
     v50 = v117;
-    if (v52)
+    if (country5)
     {
       goto LABEL_127;
     }
@@ -1431,25 +1431,25 @@ LABEL_121:
 
 LABEL_124:
   v50 = 0;
-  v52 = 0;
+  country5 = 0;
 LABEL_125:
   if (v17)
   {
-    v96 = [v17 allObjects];
-    v52 = [v96 sortedArrayUsingComparator:&__block_literal_global_112];
+    allObjects2 = [v17 allObjects];
+    country5 = [allObjects2 sortedArrayUsingComparator:&__block_literal_global_112];
   }
 
 LABEL_127:
-  if (!v52 && v15)
+  if (!country5 && v15)
   {
     v97 = [v15 sortedArrayUsingComparator:&__block_literal_global_114];
-    v98 = [v97 firstObject];
-    v160 = v98;
-    v52 = [MEMORY[0x277CBEA60] arrayWithObjects:&v160 count:1];
+    firstObject = [v97 firstObject];
+    v160 = firstObject;
+    country5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v160 count:1];
   }
 
-  v9 = [v52 firstObject];
-  [v9 setHitPIRError:v159];
+  firstObject2 = [country5 firstObject];
+  [firstObject2 setHitPIRError:v159];
 
   v51 = 1;
 LABEL_131:
@@ -1457,9 +1457,9 @@ LABEL_131:
   objc_autoreleasePoolPop(v109);
   if (v51)
   {
-    [v9 setAddress:v111];
-    v9 = v9;
-    v10 = v9;
+    [firstObject2 setAddress:v111];
+    firstObject2 = firstObject2;
+    v10 = firstObject2;
     goto LABEL_134;
   }
 
@@ -1529,22 +1529,22 @@ uint64_t __51__SKGDataDetector__retrieveLocationFromPIR_locale___block_invoke_3(
   }
 }
 
-- (id)_dateFromResult:(id)a3 referenceDate:(id)a4 referenceTimezone:(id)a5
+- (id)_dateFromResult:(id)result referenceDate:(id)date referenceTimezone:(id)timezone
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  resultCopy = result;
+  dateCopy = date;
+  timezoneCopy = timezone;
   v18 = 1.0;
   v17 = 0;
-  v10 = [v7 type];
-  v11 = [v10 hasPrefix:@"Date"];
+  type = [resultCopy type];
+  v11 = [type hasPrefix:@"Date"];
 
   if (!v11)
   {
     goto LABEL_6;
   }
 
-  v12 = [v7 dateFromReferenceDate:v8 referenceTimezone:v9 timezoneRef:0 allDayRef:&v17];
+  v12 = [resultCopy dateFromReferenceDate:dateCopy referenceTimezone:timezoneCopy timezoneRef:0 allDayRef:&v17];
   v13 = v12;
   if (v17 == 1)
   {
@@ -1553,7 +1553,7 @@ uint64_t __51__SKGDataDetector__retrieveLocationFromPIR_locale___block_invoke_3(
 
   if (v12)
   {
-    lookupDateScore(v7, &v18);
+    lookupDateScore(resultCopy, &v18);
     v14 = [SKGDate alloc];
     v15 = [(SKGEntity *)v14 initWithScore:v18];
     [(SKGDate *)v15 setDate:v13];
@@ -1568,34 +1568,34 @@ LABEL_6:
   return v15;
 }
 
-- (id)_emailAddressFromResult:(id)a3
+- (id)_emailAddressFromResult:(id)result
 {
   v11 = 0;
   v12 = 0;
-  v3 = [a3 getMailValue:&v12 label:&v11];
+  v3 = [result getMailValue:&v12 label:&v11];
   v4 = v12;
   v5 = v11;
   v6 = 0;
   if (v3)
   {
     v6 = [(SKGEntity *)[SKGEmailAddress alloc] initWithScore:1.0];
-    v7 = [v4 lowercaseString];
-    [(SKGEmailAddress *)v6 setEmail:v7];
+    lowercaseString = [v4 lowercaseString];
+    [(SKGEmailAddress *)v6 setEmail:lowercaseString];
 
-    v8 = [(SKGEmailAddress *)v6 email];
-    v9 = [v8 componentsSeparatedByString:@"@"];
+    email = [(SKGEmailAddress *)v6 email];
+    v9 = [email componentsSeparatedByString:@"@"];
     [(SKGEmailAddress *)v6 setComponents:v9];
   }
 
   return v6;
 }
 
-- (id)_phoneNumberDigitsFromResult:(id)a3
+- (id)_phoneNumberDigitsFromResult:(id)result
 {
   v27[1] = *MEMORY[0x277D85DE8];
   v25 = 0;
   v26 = 0;
-  v4 = [a3 getPhoneValue:&v26 label:&v25];
+  v4 = [result getPhoneValue:&v26 label:&v25];
   v5 = v26;
   v6 = v25;
   v7 = 0;
@@ -1622,12 +1622,12 @@ LABEL_6:
         v9 = 1.0;
       }
 
-      v10 = [v8 countryCode];
-      if (v10)
+      countryCode = [v8 countryCode];
+      if (countryCode)
       {
         v11 = MEMORY[0x277CBDB70];
-        v12 = [v8 countryCode];
-        v13 = [v11 dialingCodeForISOCountryCode:v12];
+        countryCode2 = [v8 countryCode];
+        v13 = [v11 dialingCodeForISOCountryCode:countryCode2];
       }
 
       else
@@ -1635,26 +1635,26 @@ LABEL_6:
         v13 = 0;
       }
 
-      v14 = [v8 unformattedInternationalStringValue];
-      v15 = [v14 stringByRemovingCharactersFromSet:self->_punctuation];
+      unformattedInternationalStringValue = [v8 unformattedInternationalStringValue];
+      v15 = [unformattedInternationalStringValue stringByRemovingCharactersFromSet:self->_punctuation];
 
-      v16 = [v15 stringByRemovingWhitespace];
+      stringByRemovingWhitespace = [v15 stringByRemovingWhitespace];
 
       v17 = 0;
       v18 = 0x7FFFFFFFFFFFFFFFLL;
-      if (v13 && v16)
+      if (v13 && stringByRemovingWhitespace)
       {
-        v18 = [v16 rangeOfString:v13];
+        v18 = [stringByRemovingWhitespace rangeOfString:v13];
       }
 
       if (v18 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v19 = v16;
+        v19 = stringByRemovingWhitespace;
       }
 
       else
       {
-        v19 = [v16 stringByReplacingOccurrencesOfString:v13 withString:&stru_2846CE8D8 options:8 range:{v18, v17}];
+        v19 = [stringByRemovingWhitespace stringByReplacingOccurrencesOfString:v13 withString:&stru_2846CE8D8 options:8 range:{v18, v17}];
       }
 
       v20 = v19;
@@ -1662,7 +1662,7 @@ LABEL_6:
       v21 = [v13 stringByReplacingOccurrencesOfString:@"+" withString:&stru_2846CE8D8];
       -[SKGPhoneNumber setCountryCodeValue:](v7, "setCountryCodeValue:", [v21 integerValue]);
 
-      [(SKGPhoneNumber *)v7 setPhoneNumberValue:v16];
+      [(SKGPhoneNumber *)v7 setPhoneNumberValue:stringByRemovingWhitespace];
       if (v20)
       {
         v27[0] = v20;
@@ -1687,20 +1687,20 @@ LABEL_6:
   return v7;
 }
 
-- (id)_flightFromResult:(id)a3
+- (id)_flightFromResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v11 = 0;
   v12 = 0;
-  v4 = [v3 getFlightNumber:&v12 airline:&v11];
+  v4 = [resultCopy getFlightNumber:&v12 airline:&v11];
   v5 = v12;
   v6 = v11;
   v7 = 0;
   if (v4)
   {
     v7 = [(SKGEntity *)[SKGFlight alloc] initWithScore:1.0];
-    v8 = [v3 value];
-    [(SKGFlight *)v7 setFlight:v8];
+    value = [resultCopy value];
+    [(SKGFlight *)v7 setFlight:value];
 
     if (v5)
     {
@@ -1715,24 +1715,24 @@ LABEL_6:
   return v7;
 }
 
-- (id)_linkFromResult:(id)a3
+- (id)_linkFromResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = [&unk_2846E81A8 containsObject:v4];
+  resultCopy = result;
+  type = [resultCopy type];
+  v5 = [&unk_2846E81A8 containsObject:type];
 
   if (v5)
   {
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [v3 value];
-    v8 = [v6 URLWithString:v7];
+    value = [resultCopy value];
+    v8 = [v6 URLWithString:value];
 
-    v9 = [v8 host];
+    host = [v8 host];
 
-    if (v9)
+    if (host)
     {
-      v10 = [v3 type];
-      if ([v10 isEqualToString:@"HttpURL"])
+      type2 = [resultCopy type];
+      if ([type2 isEqualToString:@"HttpURL"])
       {
         v11 = 2.0;
       }
@@ -1743,32 +1743,32 @@ LABEL_6:
       }
 
       v12 = [SKGLink alloc];
-      v13 = [v3 value];
-      v9 = -[SKGEntity initWithScore:](v12, "initWithScore:", v11 + [v13 length]);
+      value2 = [resultCopy value];
+      host = -[SKGEntity initWithScore:](v12, "initWithScore:", v11 + [value2 length]);
 
-      v14 = [v3 value];
-      v15 = [v14 lowercaseString];
-      [(SKGLink *)v9 setLink:v15];
+      value3 = [resultCopy value];
+      lowercaseString = [value3 lowercaseString];
+      [(SKGLink *)host setLink:lowercaseString];
 
-      v16 = [v8 host];
-      v17 = [v16 lowercaseString];
-      [(SKGLink *)v9 setDomain:v17];
+      host2 = [v8 host];
+      lowercaseString2 = [host2 lowercaseString];
+      [(SKGLink *)host setDomain:lowercaseString2];
     }
   }
 
   else
   {
-    v9 = 0;
+    host = 0;
   }
 
-  return v9;
+  return host;
 }
 
-- (id)_trackingNumberFromResult:(id)a3
+- (id)_trackingNumberFromResult:(id)result
 {
   v10 = 0;
   v11 = 0;
-  v3 = [a3 getTrackingNumber:&v11 carrier:&v10];
+  v3 = [result getTrackingNumber:&v11 carrier:&v10];
   v4 = v11;
   v5 = v10;
   v6 = v5;
@@ -1787,12 +1787,12 @@ LABEL_6:
   return v8;
 }
 
-- (id)_currencyFromResult:(id)a3
+- (id)_currencyFromResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v12 = 0;
   v13 = 0.0;
-  v4 = [v3 getMoneyAmount:&v13 currency:&v12];
+  v4 = [resultCopy getMoneyAmount:&v13 currency:&v12];
   v5 = v12;
   v6 = v5;
   v7 = 0;
@@ -1803,8 +1803,8 @@ LABEL_6:
     {
       v9 = CurrencyCode;
       v7 = [(SKGEntity *)[SKGCurrency alloc] initWithScore:1.0];
-      v10 = [v3 value];
-      [(SKGCurrency *)v7 setAmount:v10];
+      value = [resultCopy value];
+      [(SKGCurrency *)v7 setAmount:value];
 
       [(SKGCurrency *)v7 setValue:v13];
       [(SKGCurrency *)v7 setCode:v9];
@@ -1819,30 +1819,30 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)enumerateDetectedDataInString:(id)a3 locale:(id)a4 referenceDate:(id)a5 referenceTimezone:(id)a6 entityCategories:(id)a7 entityBlock:(id)a8 rangeBlock:(id)a9
+- (BOOL)enumerateDetectedDataInString:(id)string locale:(id)locale referenceDate:(id)date referenceTimezone:(id)timezone entityCategories:(id)categories entityBlock:(id)block rangeBlock:(id)rangeBlock
 {
   v67 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v60 = a7;
-  v18 = a8;
-  v19 = a9;
-  if (!v14 || ![v14 length])
+  stringCopy = string;
+  localeCopy = locale;
+  dateCopy = date;
+  timezoneCopy = timezone;
+  categoriesCopy = categories;
+  blockCopy = block;
+  rangeBlockCopy = rangeBlock;
+  if (!stringCopy || ![stringCopy length])
   {
     v47 = 1;
     goto LABEL_55;
   }
 
-  v56 = v17;
-  v57 = v16;
-  v55 = v15;
+  v56 = timezoneCopy;
+  v57 = dateCopy;
+  v55 = localeCopy;
   [(SKGDataDetector *)self loadDetector];
   v65 = 0;
   context = objc_autoreleasePoolPush();
-  v54 = v14;
-  [MEMORY[0x277D04220] scanString:v14 range:0 configuration:{objc_msgSend(v14, "length"), self->_config}];
+  v54 = stringCopy;
+  [MEMORY[0x277D04220] scanString:stringCopy range:0 configuration:{objc_msgSend(stringCopy, "length"), self->_config}];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -1871,7 +1871,7 @@ LABEL_6:
       v26 = *(*(&v61 + 1) + 8 * i);
       if ([v26 category] == 4)
       {
-        if (v18 && [v60 containsObject:&unk_2846E7BA8])
+        if (blockCopy && [categoriesCopy containsObject:&unk_2846E7BA8])
         {
           v27 = objc_autoreleasePoolPush();
           v28 = [(SKGDataDetector *)self _dateFromResult:v26 referenceDate:v57 referenceTimezone:v56];
@@ -1881,11 +1881,11 @@ LABEL_6:
 
       else if ([v26 category] == 1)
       {
-        if (v18 && [v60 containsObject:&unk_2846E7B60])
+        if (blockCopy && [categoriesCopy containsObject:&unk_2846E7B60])
         {
           v27 = objc_autoreleasePoolPush();
-          v30 = [v26 type];
-          v31 = [v30 containsString:@"Email"];
+          type = [v26 type];
+          v31 = [type containsString:@"Email"];
 
           if (v31)
           {
@@ -1901,7 +1901,7 @@ LABEL_12:
           v29 = v28;
           if (v28)
           {
-            v18[2](v18, v28, &v65);
+            blockCopy[2](blockCopy, v28, &v65);
           }
 
           objc_autoreleasePoolPop(v27);
@@ -1911,7 +1911,7 @@ LABEL_12:
 
       else if ([v26 category] == 2)
       {
-        if (v18 && [v60 containsObject:&unk_2846E7B78])
+        if (blockCopy && [categoriesCopy containsObject:&unk_2846E7B78])
         {
           v27 = objc_autoreleasePoolPush();
           v28 = [(SKGDataDetector *)self _phoneNumberDigitsFromResult:v26];
@@ -1923,7 +1923,7 @@ LABEL_12:
       {
         if ([v26 category] == 3)
         {
-          if (v18 && [v60 containsObject:&unk_2846E7B90])
+          if (blockCopy && [categoriesCopy containsObject:&unk_2846E7B90])
           {
             v32 = objc_autoreleasePoolPush();
             v33 = [(SKGDataDetector *)self _addressFromResult:v26];
@@ -1933,12 +1933,12 @@ LABEL_12:
               if (v55 && ([(SKGDataDetector *)self locationFromAddress:v33 locale:?], (v35 = objc_claimAutoreleasedReturnValue()) != 0))
               {
                 v36 = v35;
-                v18[2](v18, v35, &v65);
+                blockCopy[2](blockCopy, v35, &v65);
               }
 
               else
               {
-                v18[2](v18, v33, &v65);
+                blockCopy[2](blockCopy, v33, &v65);
               }
 
               v32 = v34;
@@ -1959,7 +1959,7 @@ LABEL_12:
 
         if ([v26 category] == 6)
         {
-          if (v18 && [v60 containsObject:&unk_2846E7BD8])
+          if (blockCopy && [categoriesCopy containsObject:&unk_2846E7BD8])
           {
             v27 = objc_autoreleasePoolPush();
             v28 = [(SKGDataDetector *)self _currencyFromResult:v26];
@@ -1974,7 +1974,7 @@ LABEL_12:
             goto LABEL_50;
           }
 
-          if (v18 && [v60 containsObject:&unk_2846E7BC0])
+          if (blockCopy && [categoriesCopy containsObject:&unk_2846E7BC0])
           {
             v27 = objc_autoreleasePoolPush();
             [v26 coreResult];
@@ -1984,14 +1984,14 @@ LABEL_12:
               v38 = [(SKGDataDetector *)self _flightFromResult:v26];
               if (v38)
               {
-                v18[2](v18, v38, &v65);
+                blockCopy[2](blockCopy, v38, &v65);
               }
 
               objc_autoreleasePoolPop(v37);
-              v50 = [v26 range];
+              range = [v26 range];
               v40 = v39;
-              v41 = [v26 type];
-              v19[2](v19, v50, v40, v41, &v65);
+              type2 = [v26 type];
+              rangeBlockCopy[2](rangeBlockCopy, range, v40, type2, &v65);
             }
 
             v28 = [(SKGDataDetector *)self _trackingNumberFromResult:v26];
@@ -2001,10 +2001,10 @@ LABEL_12:
       }
 
 LABEL_49:
-      v43 = [v26 range];
+      range2 = [v26 range];
       v45 = v44;
-      v46 = [v26 type];
-      v19[2](v19, v43, v45, v46, &v65);
+      type3 = [v26 type];
+      rangeBlockCopy[2](rangeBlockCopy, range2, v45, type3, &v65);
 
 LABEL_50:
       if (v65)
@@ -2021,25 +2021,25 @@ LABEL_53:
 
   objc_autoreleasePoolPop(context);
   v47 = v65 ^ 1;
-  v14 = v54;
-  v15 = v55;
-  v17 = v56;
-  v16 = v57;
+  stringCopy = v54;
+  localeCopy = v55;
+  timezoneCopy = v56;
+  dateCopy = v57;
 LABEL_55:
 
   v48 = *MEMORY[0x277D85DE8];
   return v47 & 1;
 }
 
-- (BOOL)enumerateAirportCodesInStringUsingGeoScanner:(id)a3 entityBlock:(id)a4
+- (BOOL)enumerateAirportCodesInStringUsingGeoScanner:(id)scanner entityBlock:(id)block
 {
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  scannerCopy = scanner;
+  blockCopy = block;
   v74 = 0;
   v8 = 1;
-  v67 = v7;
-  if (v7)
+  v67 = blockCopy;
+  if (blockCopy)
   {
     if (self->_geoScanner)
     {
@@ -2050,8 +2050,8 @@ LABEL_55:
         if (v10)
         {
           v11 = v10;
-          v66 = self;
-          v63 = v6;
+          selfCopy = self;
+          v63 = scannerCopy;
           v61 = objc_autoreleasePoolPush();
           Count = CFArrayGetCount(v11);
           v60[1] = v60;
@@ -2066,12 +2066,12 @@ LABEL_55:
           v65 = Count;
           if (Count < 1)
           {
-            v15 = 0;
+            array = 0;
           }
 
           else
           {
-            v15 = 0;
+            array = 0;
             v16 = 0;
             do
             {
@@ -2081,17 +2081,17 @@ LABEL_55:
               {
                 v19 = [(SKGEntity *)[SKGNamedLocation alloc] initWithScore:1.0];
                 v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", DDResultGetMatchedString()];
-                v21 = [v20 uppercaseString];
-                [(SKGNamedLocation *)v19 setLocation:v21];
+                uppercaseString = [v20 uppercaseString];
+                [(SKGNamedLocation *)v19 setLocation:uppercaseString];
 
                 (*(v67 + 2))(v67, v19, &v74);
-                if (!v15)
+                if (!array)
                 {
-                  v15 = [MEMORY[0x277CBEB18] array];
+                  array = [MEMORY[0x277CBEB18] array];
                 }
 
-                v22 = [(SKGNamedLocation *)v19 location];
-                [v15 addObject:v22];
+                location = [(SKGNamedLocation *)v19 location];
+                [array addObject:location];
 
                 v23 = v74;
                 if (v23)
@@ -2108,7 +2108,7 @@ LABEL_55:
                 if (v26)
                 {
                   v27 = v26;
-                  v28 = v15;
+                  v28 = array;
                   v64 = v60;
                   MEMORY[0x28223BE20]();
                   v30 = (v60 - ((v29 + 15) & 0xFFFFFFFFFFFFFFF0));
@@ -2126,19 +2126,19 @@ LABEL_55:
                       {
                         v33 = [(SKGEntity *)[SKGNamedLocation alloc] initWithScore:2.0];
                         v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", DDResultGetMatchedString()];
-                        v35 = [v34 uppercaseString];
-                        [(SKGNamedLocation *)v33 setLocation:v35];
+                        uppercaseString2 = [v34 uppercaseString];
+                        [(SKGNamedLocation *)v33 setLocation:uppercaseString2];
 
                         (*(v67 + 2))(v67, v33, &v74);
-                        v36 = v28;
+                        array2 = v28;
                         if (!v28)
                         {
-                          v36 = [MEMORY[0x277CBEB18] array];
+                          array2 = [MEMORY[0x277CBEB18] array];
                         }
 
-                        v37 = [(SKGNamedLocation *)v33 location];
-                        v28 = v36;
-                        [v36 addObject:v37];
+                        location2 = [(SKGNamedLocation *)v33 location];
+                        v28 = array2;
+                        [array2 addObject:location2];
 
                         v38 = v74;
                         if (v38)
@@ -2154,7 +2154,7 @@ LABEL_55:
                     while (v27);
                   }
 
-                  v15 = v28;
+                  array = v28;
                 }
               }
 
@@ -2171,17 +2171,17 @@ LABEL_55:
 
           objc_autoreleasePoolPop(v61);
           CFRelease(v62);
-          if (v15)
+          if (array)
           {
             v73 = 0;
             v69 = 0u;
             v70 = 0u;
             v71 = 0u;
             v72 = 0u;
-            v64 = v15;
-            v68 = v15;
+            v64 = array;
+            v68 = array;
             v39 = [v68 countByEnumeratingWithState:&v69 objects:v75 count:16];
-            v40 = v66;
+            v40 = selfCopy;
             if (v39)
             {
               v41 = v39;
@@ -2198,36 +2198,36 @@ LABEL_55:
                   }
 
                   v45 = *(*(&v69 + 1) + 8 * i);
-                  v46 = [v45 lowercaseString];
-                  v47 = [(SKGDataDetector *)v40 _callPIRWithQuery:v46 hitError:&v73];
+                  lowercaseString = [v45 lowercaseString];
+                  v47 = [(SKGDataDetector *)v40 _callPIRWithQuery:lowercaseString hitError:&v73];
 
                   if (v47)
                   {
                     v48 = convertGeoListToLocations(v47, @"transportation.airport");
                     if ([v48 count])
                     {
-                      v49 = [v48 firstObject];
-                      [v49 setHitPIRError:v73];
+                      firstObject = [v48 firstObject];
+                      [firstObject setHitPIRError:v73];
                       v50 = [(SKGEntity *)[SKGAirportLocation alloc] initWithScore:2.0];
                       [(SKGAirportLocation *)v50 setAirportCode:v45];
-                      v51 = [v49 address];
-                      v52 = [v51 area];
-                      [(SKGAirportLocation *)v50 setAirportRegion:v52];
+                      address = [firstObject address];
+                      area = [address area];
+                      [(SKGAirportLocation *)v50 setAirportRegion:area];
 
-                      v53 = [v49 address];
-                      v54 = [v53 city];
-                      [(SKGAirportLocation *)v50 setAirportLocality:v54];
+                      address2 = [firstObject address];
+                      city = [address2 city];
+                      [(SKGAirportLocation *)v50 setAirportLocality:city];
 
-                      v55 = [v49 address];
-                      v56 = [v55 country];
-                      [(SKGAirportLocation *)v50 setAirportCountry:v56];
+                      address3 = [firstObject address];
+                      country = [address3 country];
+                      [(SKGAirportLocation *)v50 setAirportCountry:country];
 
                       [(SKGAirportLocation *)v50 setIsDepartureAirport:v43 & 1];
                       v57 = v67;
                       (*(v67 + 2))(v67, v50, &v74);
-                      (*(v57 + 2))(v57, v49, &v74);
+                      (*(v57 + 2))(v57, firstObject, &v74);
 
-                      v40 = v66;
+                      v40 = selfCopy;
                       v43 = 0;
                     }
                   }
@@ -2239,11 +2239,11 @@ LABEL_55:
               while (v41);
             }
 
-            v15 = v64;
+            array = v64;
           }
 
           v8 = v74 ^ 1;
-          v6 = v63;
+          scannerCopy = v63;
         }
       }
     }
@@ -2253,16 +2253,16 @@ LABEL_55:
   return v8 & 1;
 }
 
-- (BOOL)enumerateLocationsInString:(id)a3 locale:(id)a4 latitude:(double)a5 longitude:(double)a6 entityBlock:(id)a7
+- (BOOL)enumerateLocationsInString:(id)string locale:(id)locale latitude:(double)latitude longitude:(double)longitude entityBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (v12 && [v12 length])
+  stringCopy = string;
+  localeCopy = locale;
+  blockCopy = block;
+  if (stringCopy && [stringCopy length])
   {
-    v15 = [v12 length];
+    v15 = [stringCopy length];
     v16 = 1;
-    if (v14)
+    if (blockCopy)
     {
       if (v15 <= 0x64)
       {
@@ -2270,7 +2270,7 @@ LABEL_55:
         [(SKGDataDetector *)self loadDetector];
         if (self->_geoIndex)
         {
-          v17 = normalizedLocationString(v13, v12);
+          v17 = normalizedLocationString(localeCopy, stringCopy);
           if (v17)
           {
             v18 = v17;
@@ -2282,13 +2282,13 @@ LABEL_55:
             v29 = 0;
             geoIndex = self->_geoIndex;
             v22 = MEMORY[0x277D85DD0];
-            v23 = v12;
+            v23 = stringCopy;
             SIGeoIndexEnumerateGeoIDForString();
             v20 = v25[5];
             if (v20)
             {
-              [(SKGDataDetector *)self _lookupExpansionsFromLocalCacheWithLocation:v20 locale:v13, v22, 3221225472, __84__SKGDataDetector_enumerateLocationsInString_locale_latitude_longitude_entityBlock___block_invoke, &unk_27893E818, self, v23, &v24, *&a5, *&a6];
-              v14[2](v14, v25[5], &v30);
+              [(SKGDataDetector *)self _lookupExpansionsFromLocalCacheWithLocation:v20 locale:localeCopy, v22, 3221225472, __84__SKGDataDetector_enumerateLocationsInString_locale_latitude_longitude_entityBlock___block_invoke, &unk_27893E818, self, v23, &v24, *&latitude, *&longitude];
+              blockCopy[2](blockCopy, v25[5], &v30);
             }
 
             _Block_object_dispose(&v24, 8);
@@ -2362,16 +2362,16 @@ LABEL_9:
   }
 }
 
-- (BOOL)enumerateLocationStrings:(id)a3 locale:(id)a4 entityBlock:(id)a5
+- (BOOL)enumerateLocationStrings:(id)strings locale:(id)locale entityBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  stringsCopy = strings;
+  localeCopy = locale;
+  blockCopy = block;
+  if (stringsCopy)
   {
-    v11 = [v8 length];
+    v11 = [stringsCopy length];
     v12 = 1;
-    if (v10)
+    if (blockCopy)
     {
       if (v11)
       {
@@ -2379,17 +2379,17 @@ LABEL_9:
         [(SKGDataDetector *)self loadDetector];
         if (self->_geoIndex)
         {
-          v13 = normalizedLocationString(v9, v8);
+          v13 = normalizedLocationString(localeCopy, stringsCopy);
           if (v13)
           {
             geoIndex = self->_geoIndex;
             if (SIGeoIndexContainsStringKeyForLocale())
             {
               v15 = [(SKGEntity *)[SKGNamedLocation alloc] initWithScore:1.0];
-              v16 = [v8 localizedLowercaseString];
-              [(SKGNamedLocation *)v15 setLocation:v16];
+              localizedLowercaseString = [stringsCopy localizedLowercaseString];
+              [(SKGNamedLocation *)v15 setLocation:localizedLowercaseString];
 
-              v10[2](v10, v15, &v18);
+              blockCopy[2](blockCopy, v15, &v18);
             }
           }
 

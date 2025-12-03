@@ -1,11 +1,11 @@
 @interface AggregatedTimeSpentUtilities
-+ (id)retrieveComponentMetaDataFromEntries:(id)a3;
++ (id)retrieveComponentMetaDataFromEntries:(id)entries;
 - (_TtC15LegacyInterface28AggregatedTimeSpentUtilities)init;
 @end
 
 @implementation AggregatedTimeSpentUtilities
 
-+ (id)retrieveComponentMetaDataFromEntries:(id)a3
++ (id)retrieveComponentMetaDataFromEntries:(id)entries
 {
   type metadata accessor for AggregatedTimeSpentEntry();
   v3 = sub_100399198();

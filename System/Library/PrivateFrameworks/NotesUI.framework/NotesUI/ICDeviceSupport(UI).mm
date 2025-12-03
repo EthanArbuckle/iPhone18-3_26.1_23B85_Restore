@@ -41,13 +41,13 @@
   }
 
   v1 = +[ICUIApplicationShim sharedInstance];
-  v2 = [v1 keyWindow];
+  keyWindow = [v1 keyWindow];
 
-  v3 = [v2 traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [keyWindow traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  [v2 bounds];
-  v0 = CGRectGetWidth(v7) > 667.0 && v4 == 1;
+  [keyWindow bounds];
+  v0 = CGRectGetWidth(v7) > 667.0 && horizontalSizeClass == 1;
 
   return v0;
 }

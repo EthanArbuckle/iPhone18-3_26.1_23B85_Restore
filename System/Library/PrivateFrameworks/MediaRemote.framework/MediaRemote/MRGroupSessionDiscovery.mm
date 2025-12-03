@@ -1,24 +1,24 @@
 @interface MRGroupSessionDiscovery
-- (MRGroupSessionDiscovery)initWithDelegate:(id)a3;
+- (MRGroupSessionDiscovery)initWithDelegate:(id)delegate;
 - (MRGroupSessionDiscoveryDelegate)delegate;
 - (MRGroupSessionInfo)activeSession;
 - (NSSet)discoveredSessions;
 - (id)debugDescription;
-- (void)activeSessionDidChange:(id)a3;
-- (void)discoveredSessionsDidChange:(id)a3;
+- (void)activeSessionDidChange:(id)change;
+- (void)discoveredSessionsDidChange:(id)change;
 - (void)handleDidRestoreConnectionNotification;
 - (void)initializeConnection;
-- (void)notifyDelegateWithActiveSession:(id)a3;
-- (void)notifyDelegateWithDiscoveredSessions:(id)a3;
+- (void)notifyDelegateWithActiveSession:(id)session;
+- (void)notifyDelegateWithDiscoveredSessions:(id)sessions;
 - (void)registerNotifications;
-- (void)setConnection:(id)a3;
+- (void)setConnection:(id)connection;
 @end
 
 @implementation MRGroupSessionDiscovery
 
-- (MRGroupSessionDiscovery)initWithDelegate:(id)a3
+- (MRGroupSessionDiscovery)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = MRGroupSessionDiscovery;
   v5 = [(MRGroupSessionDiscovery *)&v14 init];
@@ -32,7 +32,7 @@
     callbackQueue = v6->_callbackQueue;
     v6->_callbackQueue = v9;
 
-    objc_storeWeak(&v6->_delegate, v4);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
     v11 = [MEMORY[0x1E695DFD8] set];
     discoveredSessions = v6->_discoveredSessions;
     v6->_discoveredSessions = v11;
@@ -127,8 +127,8 @@ void __47__MRGroupSessionDiscovery_initializeConnection__block_invoke_2(uint64_t
 
 - (void)registerNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_handleDidRestoreConnectionNotification name:@"kMRMediaRemoteServiceClientDidRestoreConnectionNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleDidRestoreConnectionNotification name:@"kMRMediaRemoteServiceClientDidRestoreConnectionNotification" object:0];
 }
 
 - (void)handleDidRestoreConnectionNotification
@@ -138,7 +138,7 @@ void __47__MRGroupSessionDiscovery_initializeConnection__block_invoke_2(uint64_t
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRGroupSessionDiscovery] %@ Daemon connection restored. Re-initializing", &v5, 0xCu);
   }
 
@@ -155,12 +155,12 @@ void __47__MRGroupSessionDiscovery_initializeConnection__block_invoke_2(uint64_t
   return v3;
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
   connection = self->_connection;
-  self->_connection = v4;
+  self->_connection = connectionCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -183,81 +183,81 @@ void __47__MRGroupSessionDiscovery_initializeConnection__block_invoke_2(uint64_t
   return v3;
 }
 
-- (void)discoveredSessionsDidChange:(id)a3
+- (void)discoveredSessionsDidChange:(id)change
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changeCopy = change;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_discoveredSessions, a3);
+  objc_storeStrong(&self->_discoveredSessions, change);
   os_unfair_lock_unlock(&self->_lock);
   v6 = _MRLogForCategory(0xCuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = changeCopy;
     _os_log_impl(&dword_1A2860000, v6, OS_LOG_TYPE_INFO, "[MRGroupSessionDiscovery] %@ Discovered sessions changed: %@", &v8, 0x16u);
   }
 
-  [(MRGroupSessionDiscovery *)self notifyDelegateWithDiscoveredSessions:v5];
+  [(MRGroupSessionDiscovery *)self notifyDelegateWithDiscoveredSessions:changeCopy];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activeSessionDidChange:(id)a3
+- (void)activeSessionDidChange:(id)change
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changeCopy = change;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_activeSession, a3);
+  objc_storeStrong(&self->_activeSession, change);
   os_unfair_lock_unlock(&self->_lock);
   v6 = _MRLogForCategory(0xCuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = changeCopy;
     _os_log_impl(&dword_1A2860000, v6, OS_LOG_TYPE_INFO, "[MRGroupSessionDiscovery] %@ Active session changed: %@", &v8, 0x16u);
   }
 
-  [(MRGroupSessionDiscovery *)self notifyDelegateWithActiveSession:v5];
+  [(MRGroupSessionDiscovery *)self notifyDelegateWithActiveSession:changeCopy];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyDelegateWithDiscoveredSessions:(id)a3
+- (void)notifyDelegateWithDiscoveredSessions:(id)sessions
 {
-  v4 = a3;
-  v5 = [(MRGroupSessionDiscovery *)self delegate];
-  if (v5)
+  sessionsCopy = sessions;
+  delegate = [(MRGroupSessionDiscovery *)self delegate];
+  if (delegate)
   {
-    v6 = [(MRGroupSessionDiscovery *)self callbackQueue];
+    callbackQueue = [(MRGroupSessionDiscovery *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __64__MRGroupSessionDiscovery_notifyDelegateWithDiscoveredSessions___block_invoke;
     block[3] = &unk_1E769BA00;
-    v8 = v5;
-    v9 = self;
-    v10 = v4;
-    dispatch_async(v6, block);
+    v8 = delegate;
+    selfCopy = self;
+    v10 = sessionsCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)notifyDelegateWithActiveSession:(id)a3
+- (void)notifyDelegateWithActiveSession:(id)session
 {
-  v4 = a3;
-  v5 = [(MRGroupSessionDiscovery *)self delegate];
-  if (v5)
+  sessionCopy = session;
+  delegate = [(MRGroupSessionDiscovery *)self delegate];
+  if (delegate)
   {
-    v6 = [(MRGroupSessionDiscovery *)self callbackQueue];
+    callbackQueue = [(MRGroupSessionDiscovery *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__MRGroupSessionDiscovery_notifyDelegateWithActiveSession___block_invoke;
     block[3] = &unk_1E769BA00;
-    v8 = v5;
-    v9 = self;
-    v10 = v4;
-    dispatch_async(v6, block);
+    v8 = delegate;
+    selfCopy = self;
+    v10 = sessionCopy;
+    dispatch_async(callbackQueue, block);
   }
 }
 

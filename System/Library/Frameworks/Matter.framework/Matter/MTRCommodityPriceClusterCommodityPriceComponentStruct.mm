@@ -1,6 +1,6 @@
 @interface MTRCommodityPriceClusterCommodityPriceComponentStruct
 - (MTRCommodityPriceClusterCommodityPriceComponentStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityPriceClusterCommodityPriceComponentStruct);
-  v5 = [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)self price];
-  [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)v4 setPrice:v5];
+  price = [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)self price];
+  [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)v4 setPrice:price];
 
-  v6 = [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)self source];
-  [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)v4 setSource:v6];
+  source = [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)self source];
+  [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)v4 setSource:source];
 
-  v7 = [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)self descriptionString];
-  [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)v4 setDescriptionString:v7];
+  descriptionString = [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)self descriptionString];
+  [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)v4 setDescriptionString:descriptionString];
 
-  v8 = [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)self tariffComponentID];
-  [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)v4 setTariffComponentID:v8];
+  tariffComponentID = [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)self tariffComponentID];
+  [(MTRCommodityPriceClusterCommodityPriceComponentStruct *)v4 setTariffComponentID:tariffComponentID];
 
   return v4;
 }

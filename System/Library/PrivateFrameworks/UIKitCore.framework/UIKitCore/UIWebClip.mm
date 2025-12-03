@@ -1,35 +1,35 @@
 @interface UIWebClip
-+ (BOOL)webClipFullScreenValueForWebDocumentView:(id)a3;
-+ (BOOL)webClipWithIdentifierExists:(id)a3;
-+ (id)_contentForMetaName:(id)a3 inWebDocumentView:(id)a4;
-+ (id)_normalizedWebClipIdentifierFromBundleIdentifier:(id)a3;
-+ (id)_webClipLinkTagsFromWebDocumentView:(id)a3;
++ (BOOL)webClipFullScreenValueForWebDocumentView:(id)view;
++ (BOOL)webClipWithIdentifierExists:(id)exists;
++ (id)_contentForMetaName:(id)name inWebDocumentView:(id)view;
++ (id)_normalizedWebClipIdentifierFromBundleIdentifier:(id)identifier;
++ (id)_webClipLinkTagsFromWebDocumentView:(id)view;
 + (id)appClips;
-+ (id)clipsIncludingWebClips:(BOOL)a3 includingAppClips:(BOOL)a4 trustedByClientBundleIdentifier:(id)a5;
-+ (id)pathForWebClipCacheWithIdentifier:(id)a3;
-+ (id)pathForWebClipStorageWithIdentifier:(id)a3;
-+ (id)pathForWebClipWithIdentifier:(id)a3;
-+ (id)urlForWebClipWithIdentifier:(id)a3;
-+ (id)webClipIconsForWebClipLinkTags:(id)a3 pageURL:(id)a4;
-+ (id)webClipIconsForWebDocumentView:(id)a3;
-+ (id)webClipIdentifierFromBundleIdentifier:(id)a3;
-+ (id)webClipWithDictionaryRepresentation:(id)a3;
-+ (id)webClipWithIdentifier:(id)a3;
-+ (id)webClipWithURL:(id)a3;
-+ (id)webClipWithUUID:(id)a3;
++ (id)clipsIncludingWebClips:(BOOL)clips includingAppClips:(BOOL)appClips trustedByClientBundleIdentifier:(id)identifier;
++ (id)pathForWebClipCacheWithIdentifier:(id)identifier;
++ (id)pathForWebClipStorageWithIdentifier:(id)identifier;
++ (id)pathForWebClipWithIdentifier:(id)identifier;
++ (id)urlForWebClipWithIdentifier:(id)identifier;
++ (id)webClipIconsForWebClipLinkTags:(id)tags pageURL:(id)l;
++ (id)webClipIconsForWebDocumentView:(id)view;
++ (id)webClipIdentifierFromBundleIdentifier:(id)identifier;
++ (id)webClipWithDictionaryRepresentation:(id)representation;
++ (id)webClipWithIdentifier:(id)identifier;
++ (id)webClipWithURL:(id)l;
++ (id)webClipWithUUID:(id)d;
 + (id)webClips;
 + (id)webClipsDirectoryPath;
-+ (int64_t)_webClipStatusBarStyleForMetaTagContent:(id)a3;
-+ (int64_t)webClipStatusBarStyleForWebDocumentView:(id)a3;
++ (int64_t)_webClipStatusBarStyleForMetaTagContent:(id)content;
++ (int64_t)webClipStatusBarStyleForWebDocumentView:(id)view;
 + (unint64_t)_determineEligibility;
-+ (unint64_t)_webClipOrientationsForMetaTagContent:(id)a3;
-+ (unint64_t)webClipOrientationsForWebDocumentView:(id)a3;
++ (unint64_t)_webClipOrientationsForMetaTagContent:(id)content;
++ (unint64_t)webClipOrientationsForWebDocumentView:(id)view;
 - (BOOL)_createApplicationRecord;
 - (BOOL)_hasPlaceholderBundle;
 - (BOOL)_requiresPlaceholderBundle;
-- (BOOL)_writeIconImage:(id)a3 toDiskWithFileName:(id)a4;
-- (BOOL)_writeImage:(id)a3 toDiskWithFileName:(id)a4;
-- (BOOL)addTrustedClientBundleIdentifier:(id)a3;
+- (BOOL)_writeIconImage:(id)image toDiskWithFileName:(id)name;
+- (BOOL)_writeImage:(id)image toDiskWithFileName:(id)name;
+- (BOOL)addTrustedClientBundleIdentifier:(id)identifier;
 - (BOOL)alternativeFullScreen;
 - (BOOL)createOnDisk;
 - (BOOL)ensurePlaceholderBundle;
@@ -51,44 +51,44 @@
 - (UIImage)startupLandscapeImage;
 - (UIImage)tintableIconImage;
 - (WebClipDelegate)delegate;
-- (id)_bundleImageWithName:(id)a3;
-- (id)_bundleResourceWithName:(id)a3;
+- (id)_bundleImageWithName:(id)name;
+- (id)_bundleResourceWithName:(id)name;
 - (id)_createPlaceholderBundleIdentifier;
 - (id)_defaultBrowserName;
 - (id)_info;
-- (id)_initWithIdentifier:(id)a3 dictionaryRepresentation:(id)a4;
-- (id)_launchURLWithScheme:(id)a3;
+- (id)_initWithIdentifier:(id)identifier dictionaryRepresentation:(id)representation;
+- (id)_launchURLWithScheme:(id)scheme;
 - (id)bundleIdentifier;
-- (id)eligibilityAlert:(id)a3;
-- (id)generateIconImageForFormat:(int)a3 scale:(double)a4;
-- (id)getStartupImage:(int64_t)a3;
-- (void)_readPropertiesFromInfoPlist:(id)a3;
+- (id)eligibilityAlert:(id)alert;
+- (id)generateIconImageForFormat:(int)format scale:(double)scale;
+- (id)getStartupImage:(int64_t)image;
+- (void)_readPropertiesFromInfoPlist:(id)plist;
 - (void)_reloadProperties;
 - (void)_removePlaceholderBundleAndClearBadge;
-- (void)_removePlaceholderBundleWithCompletion:(id)a3;
-- (void)_setIconImage:(id)a3 isPrecomposed:(BOOL)a4 isScreenShotBased:(BOOL)a5;
-- (void)_updateWebClipWithEligibility:(unint64_t)a3;
+- (void)_removePlaceholderBundleWithCompletion:(id)completion;
+- (void)_setIconImage:(id)image isPrecomposed:(BOOL)precomposed isScreenShotBased:(BOOL)based;
+- (void)_updateWebClipWithEligibility:(unint64_t)eligibility;
 - (void)cancelMediaUpdate;
-- (void)configureWithMetaTags:(id)a3 linkTags:(id)a4;
-- (void)connection:(id)a3 didFailWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4;
-- (void)connectionDidFinishLoading:(id)a3;
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5;
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4;
+- (void)configureWithMetaTags:(id)tags linkTags:(id)linkTags;
+- (void)connection:(id)connection didFailWithError:(id)error;
+- (void)connection:(id)connection didReceiveData:(id)data;
+- (void)connection:(id)connection didReceiveResponse:(id)response;
+- (void)connectionDidFinishLoading:(id)loading;
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client;
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record;
 - (void)dealloc;
 - (void)requestCustomIconUpdate;
 - (void)requestCustomLandscapeStartupImageUpdate;
 - (void)requestCustomPortraitStartupImageUpdate;
 - (void)requestIconUpdateInSpringBoard;
-- (void)setApplicationBundleIdentifier:(id)a3;
-- (void)setContentModeWithString:(id)a3;
-- (void)setPageURL:(id)a3;
+- (void)setApplicationBundleIdentifier:(id)identifier;
+- (void)setContentModeWithString:(id)string;
+- (void)setPageURL:(id)l;
 - (void)stopLoadingCustomIcon;
 - (void)stopLoadingStartupImage;
 - (void)stopLoadingStartupLandscapeImage;
-- (void)updateCustomMediaLocationsFromWebDocumentView:(id)a3;
-- (void)updateCustomMediaLocationsWithWebClipLinkTags:(id)a3 baseURL:(id)a4;
+- (void)updateCustomMediaLocationsFromWebDocumentView:(id)view;
+- (void)updateCustomMediaLocationsWithWebClipLinkTags:(id)tags baseURL:(id)l;
 @end
 
 @implementation UIWebClip
@@ -103,57 +103,57 @@
 + (id)webClipsDirectoryPath
 {
   v2 = [CPSharedResourcesDirectory() stringByAppendingPathComponent:@"Library/WebClips"];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  [v3 _web_createDirectoryAtPathWithIntermediateDirectories:v2 attributes:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager _web_createDirectoryAtPathWithIntermediateDirectories:v2 attributes:0];
 
   return v2;
 }
 
-- (void)configureWithMetaTags:(id)a3 linkTags:(id)a4
+- (void)configureWithMetaTags:(id)tags linkTags:(id)linkTags
 {
-  v20 = a3;
+  tagsCopy = tags;
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a4;
-  v8 = [v6 UUID];
-  v9 = [v8 UUIDString];
-  v10 = [v9 stringByReplacingOccurrencesOfString:@"-" withString:&stru_1EFB14550];
+  linkTagsCopy = linkTags;
+  uUID = [v6 UUID];
+  uUIDString = [uUID UUIDString];
+  v10 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_1EFB14550];
 
   [(UIWebClip *)self setIdentifier:v10];
-  v11 = [v20 objectForKey:@"apple-mobile-web-app-title"];
-  v12 = [v11 _web_stringByTrimmingWhitespace];
+  v11 = [tagsCopy objectForKey:@"apple-mobile-web-app-title"];
+  _web_stringByTrimmingWhitespace = [v11 _web_stringByTrimmingWhitespace];
 
-  if ([v12 length])
+  if ([_web_stringByTrimmingWhitespace length])
   {
-    [(UIWebClip *)self setTitle:v12];
+    [(UIWebClip *)self setTitle:_web_stringByTrimmingWhitespace];
   }
 
   v13 = objc_opt_class();
-  v14 = [v20 _web_stringForKey:@"apple-mobile-web-app-capable"];
+  v14 = [tagsCopy _web_stringForKey:@"apple-mobile-web-app-capable"];
   v15 = [v13 _webClipFullScreenValueForMetaTagContent:v14];
 
   [(UIWebClip *)self setFullScreen:v15];
-  v16 = [v20 _web_stringForKey:@"apple-mobile-web-app-status-bar-style"];
+  v16 = [tagsCopy _web_stringForKey:@"apple-mobile-web-app-status-bar-style"];
   self->_webClipStatusBarStyle = UIWebClipStatusBarStyleForMetaTagContent(v16);
 
   v17 = objc_opt_class();
-  v18 = [v20 _web_stringForKey:@"Orientations"];
+  v18 = [tagsCopy _web_stringForKey:@"Orientations"];
   v19 = [v17 _webClipOrientationsForMetaTagContent:v18];
 
   [(UIWebClip *)self setSupportedOrientations:v19];
-  [(UIWebClip *)self updateCustomMediaLocationsWithWebClipLinkTags:v7 baseURL:self->pageURL];
+  [(UIWebClip *)self updateCustomMediaLocationsWithWebClipLinkTags:linkTagsCopy baseURL:self->pageURL];
 }
 
-- (void)_readPropertiesFromInfoPlist:(id)a3
+- (void)_readPropertiesFromInfoPlist:(id)plist
 {
-  v34 = a3;
-  v4 = [v34 count];
-  v5 = v34;
+  plistCopy = plist;
+  v4 = [plistCopy count];
+  v5 = plistCopy;
   if (!v4)
   {
     goto LABEL_88;
   }
 
-  v6 = [v34 objectForKey:@"URL"];
+  v6 = [plistCopy objectForKey:@"URL"];
   if (v6)
   {
     objc_opt_class();
@@ -164,7 +164,7 @@
     }
   }
 
-  v8 = [v34 objectForKey:@"Title"];
+  v8 = [plistCopy objectForKey:@"Title"];
 
   if (v8)
   {
@@ -175,7 +175,7 @@
     }
   }
 
-  v9 = [v34 objectForKey:@"ConfigurationIsManaged"];
+  v9 = [plistCopy objectForKey:@"ConfigurationIsManaged"];
 
   if (v9)
   {
@@ -186,7 +186,7 @@
     }
   }
 
-  v10 = [v34 objectForKey:@"ApplicationBundleIdentifier"];
+  v10 = [plistCopy objectForKey:@"ApplicationBundleIdentifier"];
 
   if (v10)
   {
@@ -197,7 +197,7 @@
     }
   }
 
-  v11 = [v34 objectForKey:@"PlaceholderBundleIdentifier"];
+  v11 = [plistCopy objectForKey:@"PlaceholderBundleIdentifier"];
 
   if (v11)
   {
@@ -208,7 +208,7 @@
     }
   }
 
-  v12 = [v34 objectForKey:@"TrustedClientBundleIdentifiers"];
+  v12 = [plistCopy objectForKey:@"TrustedClientBundleIdentifiers"];
 
   if (v12)
   {
@@ -221,7 +221,7 @@
     }
   }
 
-  v15 = [v34 objectForKey:@"ShortcutIdentifier"];
+  v15 = [plistCopy objectForKey:@"ShortcutIdentifier"];
 
   if (v15)
   {
@@ -232,7 +232,7 @@
     }
   }
 
-  v16 = [v34 objectForKey:@"FullScreen"];
+  v16 = [plistCopy objectForKey:@"FullScreen"];
 
   if (v16)
   {
@@ -243,7 +243,7 @@
     }
   }
 
-  v17 = [v34 objectForKey:@"ClassicMode"];
+  v17 = [plistCopy objectForKey:@"ClassicMode"];
 
   if (v17)
   {
@@ -254,7 +254,7 @@
     }
   }
 
-  v18 = [v34 objectForKey:@"Eligibility"];
+  v18 = [plistCopy objectForKey:@"Eligibility"];
 
   if (v18)
   {
@@ -265,7 +265,7 @@
     }
   }
 
-  v19 = [v34 objectForKey:@"IconIsScreenShotBased"];
+  v19 = [plistCopy objectForKey:@"IconIsScreenShotBased"];
 
   if (v19)
   {
@@ -276,7 +276,7 @@
     }
   }
 
-  v20 = [v34 objectForKey:@"IconIsPrecomposed"];
+  v20 = [plistCopy objectForKey:@"IconIsPrecomposed"];
 
   if (v20)
   {
@@ -287,20 +287,20 @@
     }
   }
 
-  v21 = [v34 objectForKey:@"ApplicationBundleVersion"];
+  v21 = [plistCopy objectForKey:@"ApplicationBundleVersion"];
 
   if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v22 = [v21 unsignedIntegerValue];
+    unsignedIntegerValue = [v21 unsignedIntegerValue];
   }
 
   else
   {
-    v22 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  self->bundleVersion = v22;
-  v23 = [v34 objectForKey:@"IsAppClip"];
+  self->bundleVersion = unsignedIntegerValue;
+  v23 = [plistCopy objectForKey:@"IsAppClip"];
 
   if (v23)
   {
@@ -311,7 +311,7 @@
     }
   }
 
-  v24 = [v34 objectForKey:@"ScenelessBackgroundLaunch"];
+  v24 = [plistCopy objectForKey:@"ScenelessBackgroundLaunch"];
 
   if (v24)
   {
@@ -322,7 +322,7 @@
     }
   }
 
-  v25 = [v34 objectForKey:@"RemovalDisallowed"];
+  v25 = [plistCopy objectForKey:@"RemovalDisallowed"];
 
   if (v25)
   {
@@ -336,7 +336,7 @@
     }
   }
 
-  v26 = [v34 objectForKey:@"ContentMode"];
+  v26 = [plistCopy objectForKey:@"ContentMode"];
 
   if (v26)
   {
@@ -347,7 +347,7 @@
     }
   }
 
-  v27 = [v34 objectForKey:@"IgnoreManifestScope"];
+  v27 = [plistCopy objectForKey:@"IgnoreManifestScope"];
 
   if (v27)
   {
@@ -358,7 +358,7 @@
     }
   }
 
-  v28 = [v34 objectForKey:@"WebClipStatusBarStyle"];
+  v28 = [plistCopy objectForKey:@"WebClipStatusBarStyle"];
 
   if (v28)
   {
@@ -421,7 +421,7 @@
     }
   }
 
-  v29 = [v34 objectForKey:@"UIStatusBarStyle"];
+  v29 = [plistCopy objectForKey:@"UIStatusBarStyle"];
 
   if (v29)
   {
@@ -448,7 +448,7 @@ LABEL_78:
   }
 
 LABEL_84:
-  v33 = [v34 objectForKey:@"Orientations"];
+  v33 = [plistCopy objectForKey:@"Orientations"];
 
   if (v33)
   {
@@ -459,7 +459,7 @@ LABEL_84:
     }
   }
 
-  v5 = v34;
+  v5 = plistCopy;
 LABEL_88:
 }
 
@@ -478,8 +478,8 @@ LABEL_88:
     {
       v7 = v3;
       v4 = [MEMORY[0x1E696AAE8] bundleWithURL:v3];
-      v5 = [v4 bundleURL];
-      v6 = CFBundleCopyInfoDictionaryForURL(v5);
+      bundleURL = [v4 bundleURL];
+      v6 = CFBundleCopyInfoDictionaryForURL(bundleURL);
 
       [(UIWebClip *)self _readPropertiesFromInfoPlist:v6];
       v3 = v7;
@@ -489,15 +489,15 @@ LABEL_88:
 
 - (NSUUID)uuid
 {
-  v2 = [(UIWebClip *)self identifier];
-  if ([v2 length] == 32)
+  identifier = [(UIWebClip *)self identifier];
+  if ([identifier length] == 32)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [v2 substringWithRange:{0, 8}];
-    v5 = [v2 substringWithRange:{8, 4}];
-    v6 = [v2 substringWithRange:{12, 4}];
-    v7 = [v2 substringWithRange:{16, 4}];
-    v8 = [v2 substringWithRange:{20, 12}];
+    v4 = [identifier substringWithRange:{0, 8}];
+    v5 = [identifier substringWithRange:{8, 4}];
+    v6 = [identifier substringWithRange:{12, 4}];
+    v7 = [identifier substringWithRange:{16, 4}];
+    v8 = [identifier substringWithRange:{20, 12}];
     v9 = [v3 stringWithFormat:@"%@-%@-%@-%@-%@", v4, v5, v6, v7, v8];
 
     v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v9];
@@ -505,7 +505,7 @@ LABEL_88:
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v2];
+    v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:identifier];
   }
 
   return v10;
@@ -612,32 +612,32 @@ LABEL_6:
 - (BOOL)alternativeFullScreen
 {
   [(UIWebClip *)self _reloadProperties];
-  v3 = _os_feature_enabled_impl();
-  if (v3)
+  fullScreen = _os_feature_enabled_impl();
+  if (fullScreen)
   {
-    v3 = [(UIWebClip *)self fullScreen];
-    if (v3)
+    fullScreen = [(UIWebClip *)self fullScreen];
+    if (fullScreen)
     {
-      LOBYTE(v3) = self->_eligibilityStatus == 2;
+      LOBYTE(fullScreen) = self->_eligibilityStatus == 2;
     }
   }
 
-  return v3;
+  return fullScreen;
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3
+- (void)setApplicationBundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  if (!self->_configurationIsManaged || ([v7 lowercaseString], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasPrefix:", @"com.apple"), v5, (v6 & 1) == 0))
+  identifierCopy = identifier;
+  if (!self->_configurationIsManaged || ([identifierCopy lowercaseString], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasPrefix:", @"com.apple"), v5, (v6 & 1) == 0))
   {
-    objc_storeStrong(&self->applicationBundleIdentifier, a3);
+    objc_storeStrong(&self->applicationBundleIdentifier, identifier);
   }
 }
 
-- (BOOL)addTrustedClientBundleIdentifier:(id)a3
+- (BOOL)addTrustedClientBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (![v4 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     goto LABEL_5;
   }
@@ -649,17 +649,17 @@ LABEL_6:
     trustedClientBundleIdentifiers = self->_trustedClientBundleIdentifiers;
   }
 
-  if (![(NSSet *)trustedClientBundleIdentifiers containsObject:v4])
+  if (![(NSSet *)trustedClientBundleIdentifiers containsObject:identifierCopy])
   {
     v7 = self->_trustedClientBundleIdentifiers;
     if (v7)
     {
-      [(NSSet *)v7 setByAddingObject:v4];
+      [(NSSet *)v7 setByAddingObject:identifierCopy];
     }
 
     else
     {
-      [MEMORY[0x1E695DFD8] setWithObject:v4];
+      [MEMORY[0x1E695DFD8] setWithObject:identifierCopy];
     }
     v8 = ;
     v9 = self->_trustedClientBundleIdentifiers;
@@ -683,40 +683,40 @@ LABEL_5:
   {
     v3 = @"appclip:";
 LABEL_4:
-    v4 = [(UIWebClip *)self _launchURLWithScheme:v3];
+    pageURL = [(UIWebClip *)self _launchURLWithScheme:v3];
     goto LABEL_9;
   }
 
   if (self->applicationBundleIdentifier || ![(UIWebClip *)self fullScreen]|| [(UIWebClip *)self alternativeFullScreen])
   {
-    v4 = [(UIWebClip *)self pageURL];
+    pageURL = [(UIWebClip *)self pageURL];
   }
 
   else
   {
-    v6 = [(UIWebClip *)self identifier];
+    identifier = [(UIWebClip *)self identifier];
 
-    if (v6)
+    if (identifier)
     {
       v3 = @"webapp:";
       goto LABEL_4;
     }
 
-    v4 = 0;
+    pageURL = 0;
   }
 
 LABEL_9:
 
-  return v4;
+  return pageURL;
 }
 
-- (id)_launchURLWithScheme:(id)a3
+- (id)_launchURLWithScheme:(id)scheme
 {
   v4 = MEMORY[0x1E695DFF8];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a3;
-  v7 = [(UIWebClip *)self identifier];
-  v8 = [v5 stringWithFormat:@"%@%@", v6, v7];
+  schemeCopy = scheme;
+  identifier = [(UIWebClip *)self identifier];
+  v8 = [v5 stringWithFormat:@"%@%@", schemeCopy, identifier];
 
   v9 = [v4 URLWithString:v8];
 
@@ -766,10 +766,10 @@ LABEL_9:
   pageURL = self->pageURL;
   if (pageURL)
   {
-    v5 = [(NSURL *)pageURL absoluteString];
-    if (v5)
+    absoluteString = [(NSURL *)pageURL absoluteString];
+    if (absoluteString)
     {
-      [v3 setObject:v5 forKey:@"URL"];
+      [v3 setObject:absoluteString forKey:@"URL"];
     }
   }
 
@@ -793,8 +793,8 @@ LABEL_9:
 
   if ([(NSSet *)self->_trustedClientBundleIdentifiers count])
   {
-    v9 = [(NSSet *)self->_trustedClientBundleIdentifiers allObjects];
-    [v3 setObject:v9 forKey:@"TrustedClientBundleIdentifiers"];
+    allObjects = [(NSSet *)self->_trustedClientBundleIdentifiers allObjects];
+    [v3 setObject:allObjects forKey:@"TrustedClientBundleIdentifiers"];
   }
 
   shortcutIdentifier = self->_shortcutIdentifier;
@@ -872,15 +872,15 @@ LABEL_9:
   return v3;
 }
 
-- (void)setContentModeWithString:(id)a3
+- (void)setContentModeWithString:(id)string
 {
-  v4 = [a3 lowercaseString];
-  if ([v4 containsString:@"mobile"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString containsString:@"mobile"])
   {
     v5 = 1;
   }
 
-  else if ([v4 containsString:@"desktop"])
+  else if ([lowercaseString containsString:@"desktop"])
   {
     v5 = 2;
   }
@@ -893,14 +893,14 @@ LABEL_9:
   self->_contentMode = v5;
 }
 
-- (BOOL)_writeImage:(id)a3 toDiskWithFileName:(id)a4
+- (BOOL)_writeImage:(id)image toDiskWithFileName:(id)name
 {
-  v6 = a3;
+  imageCopy = image;
   v7 = MEMORY[0x1E695DFF8];
   identifier = self->identifier;
-  v9 = a4;
+  nameCopy = name;
   v10 = [UIWebClip pathForWebClipWithIdentifier:identifier];
-  v11 = [v10 stringByAppendingPathComponent:v9];
+  v11 = [v10 stringByAppendingPathComponent:nameCopy];
 
   v12 = [v7 fileURLWithPath:v11];
 
@@ -908,7 +908,7 @@ LABEL_9:
   if (v13)
   {
     v14 = v13;
-    CGImageDestinationAddImage(v13, [v6 imageRef], 0);
+    CGImageDestinationAddImage(v13, [imageCopy imageRef], 0);
     v15 = CGImageDestinationFinalize(v14);
     CFRelease(v14);
   }
@@ -921,22 +921,22 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)_writeIconImage:(id)a3 toDiskWithFileName:(id)a4
+- (BOOL)_writeIconImage:(id)image toDiskWithFileName:(id)name
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(UIWebClip *)self _writeImage:a3 toDiskWithFileName:v6];
+  nameCopy = name;
+  v7 = [(UIWebClip *)self _writeImage:image toDiskWithFileName:nameCopy];
   v8 = v7;
-  if (a3 && v7)
+  if (image && v7)
   {
     v9 = [UIWebClip pathForWebClipWithIdentifier:self->identifier];
-    v10 = [v9 stringByAppendingPathComponent:v6];
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
+    v10 = [v9 stringByAppendingPathComponent:nameCopy];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v17 = *MEMORY[0x1E696A3A0];
     v18[0] = *MEMORY[0x1E696A3A8];
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v16 = 0;
-    v13 = [v11 setAttributes:v12 ofItemAtPath:v10 error:&v16];
+    v13 = [defaultManager setAttributes:v12 ofItemAtPath:v10 error:&v16];
     v14 = v16;
 
     if ((v13 & 1) == 0)
@@ -951,8 +951,8 @@ LABEL_9:
 - (id)_createPlaceholderBundleIdentifier
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(UIWebClip *)self identifier];
-  v4 = [v2 stringWithFormat:@"com.apple.WebKit.PushBundle.%@", v3];
+  identifier = [(UIWebClip *)self identifier];
+  v4 = [v2 stringWithFormat:@"com.apple.WebKit.PushBundle.%@", identifier];
 
   return v4;
 }
@@ -969,18 +969,18 @@ LABEL_9:
 
 - (BOOL)_hasPlaceholderBundle
 {
-  v2 = self;
-  v3 = [(UIWebClip *)self _createPlaceholderBundleIdentifier];
-  placeholderBundleIdentifier = v2->placeholderBundleIdentifier;
-  v2->placeholderBundleIdentifier = v3;
+  selfCopy = self;
+  _createPlaceholderBundleIdentifier = [(UIWebClip *)self _createPlaceholderBundleIdentifier];
+  placeholderBundleIdentifier = selfCopy->placeholderBundleIdentifier;
+  selfCopy->placeholderBundleIdentifier = _createPlaceholderBundleIdentifier;
 
   v5 = objc_alloc(MEMORY[0x1E69635F8]);
-  v6 = v2->placeholderBundleIdentifier;
+  v6 = selfCopy->placeholderBundleIdentifier;
   v9 = 0;
   v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:1 error:&v9];
-  LOBYTE(v2) = v7 != 0;
+  LOBYTE(selfCopy) = v7 != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)ensurePlaceholderBundle
@@ -995,17 +995,17 @@ LABEL_9:
     objc_storeStrong(&self->manifestId, self->pageURL);
   }
 
-  v4 = [(UIWebClip *)self _createApplicationRecord];
+  _createApplicationRecord = [(UIWebClip *)self _createApplicationRecord];
   [(UIWebClip *)self updateOnDisk];
-  return v4;
+  return _createApplicationRecord;
 }
 
 - (BOOL)_createApplicationRecord
 {
   v102[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIWebClip *)self _createPlaceholderBundleIdentifier];
+  _createPlaceholderBundleIdentifier = [(UIWebClip *)self _createPlaceholderBundleIdentifier];
   placeholderBundleIdentifier = self->placeholderBundleIdentifier;
-  self->placeholderBundleIdentifier = v3;
+  self->placeholderBundleIdentifier = _createPlaceholderBundleIdentifier;
 
   v5 = [objc_alloc(getIXApplicationIdentityClass()) initWithBundleIdentifier:self->placeholderBundleIdentifier];
   IXAppInstallCoordinatorClass = getIXAppInstallCoordinatorClass();
@@ -1106,8 +1106,8 @@ LABEL_34:
       if (manifestId)
       {
         v101 = @"manifestId";
-        v23 = [(NSURL *)manifestId absoluteString];
-        v102[0] = v23;
+        absoluteString = [(NSURL *)manifestId absoluteString];
+        v102[0] = absoluteString;
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:&v101 count:1];
         [v12 setWebKitPushBundleMetadata:v24];
       }
@@ -1178,11 +1178,11 @@ LABEL_33:
         v35 = v42;
         if (v41)
         {
-          v43 = [(UIWebClip *)self iconImage];
-          image = v43;
-          if (v43)
+          iconImage = [(UIWebClip *)self iconImage];
+          image = iconImage;
+          if (iconImage)
           {
-            v44 = UIImagePNGRepresentation(v43);
+            v44 = UIImagePNGRepresentation(iconImage);
             if (v44)
             {
               v68 = [objc_alloc(getIXPromisedInMemoryDataClass()) initWithName:@"Placeholder icon" client:25 data:v44];
@@ -1342,17 +1342,17 @@ LABEL_35:
   {
     v4 = [UIWebClip pathForWebClipWithIdentifier:self->identifier];
     v5 = [v4 stringByAppendingPathComponent:@"Info.plist"];
-    v6 = [(UIWebClip *)self _info];
-    v7 = [v6 writeToFile:v5 atomically:1];
+    _info = [(UIWebClip *)self _info];
+    v7 = [_info writeToFile:v5 atomically:1];
 
     if (v7)
     {
-      v8 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v21 = *MEMORY[0x1E696A3A0];
       v22[0] = *MEMORY[0x1E696A3A8];
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
       v20 = 0;
-      v10 = [v8 setAttributes:v9 ofItemAtPath:v5 error:&v20];
+      v10 = [defaultManager setAttributes:v9 ofItemAtPath:v5 error:&v20];
       v11 = v20;
 
       if ((v10 & 1) == 0)
@@ -1455,8 +1455,8 @@ LABEL_29:
   else
   {
     v4 = [UIWebClip pathForWebClipWithIdentifier:self->identifier];
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0])
     {
       if ([(UIWebClip *)self _requiresPlaceholderBundle])
       {
@@ -1473,17 +1473,17 @@ LABEL_29:
         self->_eligibilityStatus = 2;
       }
 
-      v2 = [(UIWebClip *)self updateOnDisk];
+      updateOnDisk = [(UIWebClip *)self updateOnDisk];
     }
 
     else
     {
       NSLog(&cfstr_CouldnTCreateW.isa);
-      v2 = 0;
+      updateOnDisk = 0;
     }
   }
 
-  return v2;
+  return updateOnDisk;
 }
 
 - (BOOL)removeFromDisk
@@ -1501,9 +1501,9 @@ LABEL_29:
 
   else
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v5 = [UIWebClip pathForWebClipWithIdentifier:self->identifier];
-    v6 = [v4 removeItemAtPath:v5 error:0];
+    v6 = [defaultManager removeItemAtPath:v5 error:0];
 
     return v6;
   }
@@ -1559,9 +1559,9 @@ uint64_t __27__UIWebClip_removeFromDisk__block_invoke_2(uint64_t a1)
   return notify_post("com.apple.webclip.placeholder.removed");
 }
 
-- (void)_removePlaceholderBundleWithCompletion:(id)a3
+- (void)_removePlaceholderBundleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(UIWebClip *)self _hasPlaceholderBundle])
   {
     v13 = 0;
@@ -1589,13 +1589,13 @@ uint64_t __27__UIWebClip_removeFromDisk__block_invoke_2(uint64_t a1)
     v10[1] = 3221225472;
     v10[2] = __52__UIWebClip__removePlaceholderBundleWithCompletion___block_invoke;
     v10[3] = &unk_1E712BE70;
-    v11 = v4;
+    v11 = completionCopy;
     [IXAppInstallCoordinatorClass uninstallAppWithIdentity:v9 options:v7 completion:v10];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1620,23 +1620,23 @@ void __52__UIWebClip__removePlaceholderBundleWithCompletion___block_invoke(uint6
   }
 }
 
-- (id)_initWithIdentifier:(id)a3 dictionaryRepresentation:(id)a4
+- (id)_initWithIdentifier:(id)identifier dictionaryRepresentation:(id)representation
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  representationCopy = representation;
   v12.receiver = self;
   v12.super_class = UIWebClip;
   v8 = [(UIWebClip *)&v12 init];
   if (v8)
   {
-    v9 = [UIWebClip _normalizedWebClipIdentifierFromBundleIdentifier:v6];
+    v9 = [UIWebClip _normalizedWebClipIdentifierFromBundleIdentifier:identifierCopy];
     [(UIWebClip *)v8 setIdentifier:v9];
 
     [(UIWebClip *)v8 setFullScreen:0];
     [(UIWebClip *)v8 setClassicMode:0];
     [(UIWebClip *)v8 setStatusBarStyle:0];
     v8->iconIsPrerendered = 1;
-    objc_storeStrong(&v8->_readOnlyDictionaryRepresentation, a4);
+    objc_storeStrong(&v8->_readOnlyDictionaryRepresentation, representation);
     [(UIWebClip *)v8 _reloadProperties];
     v10 = +[UIWebClipEligibilityObserver sharedObserver];
     [v10 startObservingEligibility];
@@ -1645,30 +1645,30 @@ void __52__UIWebClip__removePlaceholderBundleWithCompletion___block_invoke(uint6
   return v8;
 }
 
-- (void)setPageURL:(id)a3
+- (void)setPageURL:(id)l
 {
-  v5 = a3;
-  if (([v5 isFileURL] & 1) == 0)
+  lCopy = l;
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    objc_storeStrong(&self->pageURL, a3);
+    objc_storeStrong(&self->pageURL, l);
   }
 }
 
-- (id)_bundleResourceWithName:(id)a3
+- (id)_bundleResourceWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [UIWebClip urlForWebClipWithIdentifier:self->identifier];
   if (v5)
   {
     v6 = [MEMORY[0x1E696AAE8] bundleWithURL:v5];
-    v7 = [v6 bundlePath];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.png", v4];
-    v9 = [v7 stringByAppendingPathComponent:v8];
+    bundlePath = [v6 bundlePath];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.png", nameCopy];
+    v9 = [bundlePath stringByAppendingPathComponent:nameCopy];
 
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    LODWORD(v8) = [v10 fileExistsAtPath:v9];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    LODWORD(nameCopy) = [defaultManager fileExistsAtPath:v9];
 
-    if (v8)
+    if (nameCopy)
     {
       v11 = v9;
     }
@@ -1687,9 +1687,9 @@ void __52__UIWebClip__removePlaceholderBundleWithCompletion___block_invoke(uint6
   return v11;
 }
 
-- (id)_bundleImageWithName:(id)a3
+- (id)_bundleImageWithName:(id)name
 {
-  v3 = [(UIWebClip *)self _bundleResourceWithName:a3];
+  v3 = [(UIWebClip *)self _bundleResourceWithName:name];
   if (v3)
   {
     v4 = [UIImage imageWithContentsOfFile:v3];
@@ -1703,14 +1703,14 @@ void __52__UIWebClip__removePlaceholderBundleWithCompletion___block_invoke(uint6
   return v4;
 }
 
-- (id)generateIconImageForFormat:(int)a3 scale:(double)a4
+- (id)generateIconImageForFormat:(int)format scale:(double)scale
 {
-  v5 = *&a3;
+  v5 = *&format;
   [(UIWebClip *)self _reloadProperties];
-  v7 = [(UIWebClip *)self iconImage];
-  v8 = [v7 _applicationIconImageForFormat:v5 precomposed:-[UIWebClip iconIsPrecomposed](self scale:"iconIsPrecomposed"), a4];
+  iconImage = [(UIWebClip *)self iconImage];
+  scale = [iconImage _applicationIconImageForFormat:v5 precomposed:-[UIWebClip iconIsPrecomposed](self scale:"iconIsPrecomposed"), scale];
 
-  return v8;
+  return scale;
 }
 
 - (UIImage)iconImage
@@ -1732,12 +1732,12 @@ void __52__UIWebClip__removePlaceholderBundleWithCompletion___block_invoke(uint6
         [v5 setShape:5];
         [v5 setScale:2.0];
         [v5 setSize:{167.0, 167.0}];
-        v6 = [MEMORY[0x1E69A8A00] genericApplicationIcon];
-        v7 = [v6 prepareImageForDescriptor:v5];
+        genericApplicationIcon = [MEMORY[0x1E69A8A00] genericApplicationIcon];
+        v7 = [genericApplicationIcon prepareImageForDescriptor:v5];
 
-        v8 = [v7 CGImage];
+        cGImage = [v7 CGImage];
         [v7 scale];
-        v3 = [UIImage imageWithCGImage:v8 scale:0 orientation:?];
+        v3 = [UIImage imageWithCGImage:cGImage scale:0 orientation:?];
       }
 
       else
@@ -1755,19 +1755,19 @@ void __52__UIWebClip__removePlaceholderBundleWithCompletion___block_invoke(uint6
   darkIconImage = self->darkIconImage;
   if (darkIconImage)
   {
-    v3 = darkIconImage;
+    iconImage = darkIconImage;
   }
 
   else
   {
-    v3 = [(UIWebClip *)self _bundleImageWithName:@"dark-icon"];
-    if (!v3)
+    iconImage = [(UIWebClip *)self _bundleImageWithName:@"dark-icon"];
+    if (!iconImage)
     {
-      v3 = [(UIWebClip *)self iconImage];
+      iconImage = [(UIWebClip *)self iconImage];
     }
   }
 
-  return v3;
+  return iconImage;
 }
 
 - (UIImage)tintableIconImage
@@ -1775,26 +1775,26 @@ void __52__UIWebClip__removePlaceholderBundleWithCompletion___block_invoke(uint6
   tintableIconImage = self->tintableIconImage;
   if (tintableIconImage)
   {
-    v3 = tintableIconImage;
+    iconImage = tintableIconImage;
   }
 
   else
   {
-    v3 = [(UIWebClip *)self _bundleImageWithName:@"tintable-icon"];
-    if (!v3)
+    iconImage = [(UIWebClip *)self _bundleImageWithName:@"tintable-icon"];
+    if (!iconImage)
     {
-      v3 = [(UIWebClip *)self iconImage];
+      iconImage = [(UIWebClip *)self iconImage];
     }
   }
 
-  return v3;
+  return iconImage;
 }
 
-- (void)_setIconImage:(id)a3 isPrecomposed:(BOOL)a4 isScreenShotBased:(BOOL)a5
+- (void)_setIconImage:(id)image isPrecomposed:(BOOL)precomposed isScreenShotBased:(BOOL)based
 {
-  objc_storeStrong(&self->iconImage, a3);
-  self->iconIsScreenShotBased = a5;
-  self->iconIsPrecomposed = a4;
+  objc_storeStrong(&self->iconImage, image);
+  self->iconIsScreenShotBased = based;
+  self->iconIsPrecomposed = precomposed;
 }
 
 - (UIImage)startupImage
@@ -1858,8 +1858,8 @@ void __52__UIWebClip__removePlaceholderBundleWithCompletion___block_invoke(uint6
   v4 = [MEMORY[0x1E695DFF8] URLWithString:@"http://"];
   if (!v4)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIWebClip.m" lineNumber:1181 description:@"HTTP URL should always construct"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWebClip.m" lineNumber:1181 description:@"HTTP URL should always construct"];
   }
 
   v11 = 0;
@@ -1867,23 +1867,23 @@ void __52__UIWebClip__removePlaceholderBundleWithCompletion___block_invoke(uint6
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 bundleRecord];
-    v8 = [v7 localizedName];
+    bundleRecord = [v5 bundleRecord];
+    localizedName = [bundleRecord localizedName];
   }
 
   else
   {
-    v8 = 0;
+    localizedName = 0;
   }
 
-  return v8;
+  return localizedName;
 }
 
-- (id)eligibilityAlert:(id)a3
+- (id)eligibilityAlert:(id)alert
 {
-  v4 = a3;
-  v10 = [(UIWebClip *)self _defaultBrowserName];
-  if (v10)
+  alertCopy = alert;
+  _defaultBrowserName = [(UIWebClip *)self _defaultBrowserName];
+  if (_defaultBrowserName)
   {
     _UILocalizedFormat(@"OPEN_IN_BROWSER_TITLE", @"open web page in browser alert title", @"Open “%@” in %@?", v5, v6, v7, v8, v9, self->title);
   }
@@ -1900,7 +1900,7 @@ void __52__UIWebClip__removePlaceholderBundleWithCompletion___block_invoke(uint6
   v23[2] = __30__UIWebClip_eligibilityAlert___block_invoke;
   v23[3] = &unk_1E712BE98;
   v23[4] = self;
-  v14 = v4;
+  v14 = alertCopy;
   v24 = v14;
   v15 = [UIAlertAction actionWithTitle:v13 style:0 handler:v23];
 
@@ -1952,34 +1952,34 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
   return v3();
 }
 
-+ (id)webClipWithIdentifier:(id)a3
++ (id)webClipWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[UIWebClip alloc] _initWithIdentifier:v3 dictionaryRepresentation:0];
+  identifierCopy = identifier;
+  v4 = [[UIWebClip alloc] _initWithIdentifier:identifierCopy dictionaryRepresentation:0];
 
   return v4;
 }
 
-+ (id)webClipWithUUID:(id)a3
++ (id)webClipWithUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"-" withString:&stru_1EFB14550];
+  uUIDString = [d UUIDString];
+  v5 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_1EFB14550];
 
-  v6 = [a1 webClipWithIdentifier:v5];
+  v6 = [self webClipWithIdentifier:v5];
 
   return v6;
 }
 
-+ (id)webClipWithURL:(id)a3
++ (id)webClipWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 scheme];
-  if (([v5 isEqualToString:@"webclip"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"webapp"))
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if (([scheme isEqualToString:@"webclip"] & 1) != 0 || objc_msgSend(scheme, "isEqualToString:", @"webapp"))
   {
-    v6 = [v4 resourceSpecifier];
-    if (v6)
+    resourceSpecifier = [lCopy resourceSpecifier];
+    if (resourceSpecifier)
     {
-      v7 = [a1 webClipWithIdentifier:v6];
+      v7 = [self webClipWithIdentifier:resourceSpecifier];
     }
 
     else
@@ -1996,13 +1996,13 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
   return v7;
 }
 
-+ (id)webClipWithDictionaryRepresentation:(id)a3
++ (id)webClipWithDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"DictionaryRepresentationIdentifier"];
+  representationCopy = representation;
+  v4 = [representationCopy objectForKeyedSubscript:@"DictionaryRepresentationIdentifier"];
   if ([v4 length])
   {
-    v5 = [[UIWebClip alloc] _initWithIdentifier:v4 dictionaryRepresentation:v3];
+    v5 = [[UIWebClip alloc] _initWithIdentifier:v4 dictionaryRepresentation:representationCopy];
   }
 
   else
@@ -2020,14 +2020,14 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
   return [v2 clipsIncludingWebClips:0 includingAppClips:1];
 }
 
-+ (id)clipsIncludingWebClips:(BOOL)a3 includingAppClips:(BOOL)a4 trustedByClientBundleIdentifier:(id)a5
++ (id)clipsIncludingWebClips:(BOOL)clips includingAppClips:(BOOL)appClips trustedByClientBundleIdentifier:(id)identifier
 {
-  v30 = a3;
-  v31 = a4;
-  v34 = a5;
-  v32 = [MEMORY[0x1E695DF70] array];
-  v6 = [a1 webClipsDirectoryPath];
-  v7 = opendir([v6 fileSystemRepresentation]);
+  clipsCopy = clips;
+  appClipsCopy = appClips;
+  identifierCopy = identifier;
+  array = [MEMORY[0x1E695DF70] array];
+  webClipsDirectoryPath = [self webClipsDirectoryPath];
+  v7 = opendir([webClipsDirectoryPath fileSystemRepresentation]);
   if (v7)
   {
     v8 = v7;
@@ -2042,37 +2042,37 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
       do
       {
         v14 = [objc_alloc(*(v11 + 3776)) initWithUTF8String:v10->d_name];
-        v15 = [v14 lastPathComponent];
-        v16 = [v15 stringByDeletingPathExtension];
+        lastPathComponent = [v14 lastPathComponent];
+        stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-        if (v16)
+        if (stringByDeletingPathExtension)
         {
-          v17 = [v6 stringByAppendingPathComponent:v14];
+          v17 = [webClipsDirectoryPath stringByAppendingPathComponent:v14];
           v18 = [v17 stringByAppendingPathComponent:v13];
 
-          v19 = [*(v12 + 3080) defaultManager];
-          v20 = [v19 fileExistsAtPath:v18];
+          defaultManager = [*(v12 + 3080) defaultManager];
+          v20 = [defaultManager fileExistsAtPath:v18];
 
           if (v20)
           {
-            v21 = v6;
+            v21 = webClipsDirectoryPath;
             v22 = v11;
             v23 = v13;
             v24 = v12;
-            v25 = [UIWebClip webClipWithIdentifier:v16];
+            v25 = [UIWebClip webClipWithIdentifier:stringByDeletingPathExtension];
             v26 = v25;
-            if (v30 && v31 || v31 && ([v25 isAppClip] & 1) != 0 || v30 && (objc_msgSend(v26, "isAppClip") & 1) == 0)
+            if (clipsCopy && appClipsCopy || appClipsCopy && ([v25 isAppClip] & 1) != 0 || clipsCopy && (objc_msgSend(v26, "isAppClip") & 1) == 0)
             {
-              if (!v34 || ([v26 trustedClientBundleIdentifiers], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "containsObject:", v34), v27, v28))
+              if (!identifierCopy || ([v26 trustedClientBundleIdentifiers], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "containsObject:", identifierCopy), v27, v28))
               {
-                [v32 addObject:v26];
+                [array addObject:v26];
               }
             }
 
             v12 = v24;
             v13 = v23;
             v11 = v22;
-            v6 = v21;
+            webClipsDirectoryPath = v21;
             v8 = v33;
           }
         }
@@ -2086,18 +2086,18 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
     closedir(v8);
   }
 
-  return v32;
+  return array;
 }
 
-+ (BOOL)webClipWithIdentifierExists:(id)a3
++ (BOOL)webClipWithIdentifierExists:(id)exists
 {
-  v3 = [a1 pathForWebClipWithIdentifier:a3];
+  v3 = [self pathForWebClipWithIdentifier:exists];
   v4 = [v3 stringByAppendingPathComponent:@"Info.plist"];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:v4];
   }
 
   else
@@ -2108,12 +2108,12 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
   return v6;
 }
 
-+ (id)webClipIdentifierFromBundleIdentifier:(id)a3
++ (id)webClipIdentifierFromBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"com.apple.webapp-"])
+  identifierCopy = identifier;
+  if ([identifierCopy hasPrefix:@"com.apple.webapp-"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"com.apple.webapp-", "length")}];
+    v4 = [identifierCopy substringFromIndex:{objc_msgSend(@"com.apple.webapp-", "length")}];
   }
 
   else
@@ -2124,34 +2124,34 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-+ (id)_normalizedWebClipIdentifierFromBundleIdentifier:(id)a3
++ (id)_normalizedWebClipIdentifierFromBundleIdentifier:(id)identifier
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v8[0] = @"com.apple.webapp-";
   v8[1] = @"com.apple.appclip-";
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [v3 arrayWithObjects:v8 count:2];
-  v6 = [v4 _uikit_stringByRemovingFirstMatchFromPrefixes:v5];
+  v6 = [identifierCopy _uikit_stringByRemovingFirstMatchFromPrefixes:v5];
 
   return v6;
 }
 
-+ (id)_contentForMetaName:(id)a3 inWebDocumentView:(id)a4
++ (id)_contentForMetaName:(id)name inWebDocumentView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  viewCopy = view;
   WebThreadLock();
-  v7 = [v6 webView];
-  v8 = [v7 mainFrame];
-  v9 = [v8 DOMDocument];
-  v10 = v9;
-  if (v9)
+  webView = [viewCopy webView];
+  mainFrame = [webView mainFrame];
+  dOMDocument = [mainFrame DOMDocument];
+  v10 = dOMDocument;
+  if (dOMDocument)
   {
-    v20 = v8;
-    v21 = v7;
-    v22 = v6;
-    v11 = [v9 getElementsByTagName:@"meta"];
+    v20 = mainFrame;
+    v21 = webView;
+    v22 = viewCopy;
+    v11 = [dOMDocument getElementsByTagName:@"meta"];
     v12 = 0;
     if ([v11 length])
     {
@@ -2160,7 +2160,7 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
       {
         v14 = [v11 item:v13];
         v15 = [v14 getAttribute:@"name"];
-        v16 = [v5 caseInsensitiveCompare:v15];
+        v16 = [nameCopy caseInsensitiveCompare:v15];
 
         if (!v16)
         {
@@ -2175,9 +2175,9 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
       while (v13 < [v11 length]);
     }
 
-    v7 = v21;
-    v6 = v22;
-    v8 = v20;
+    webView = v21;
+    viewCopy = v22;
+    mainFrame = v20;
   }
 
   else
@@ -2190,13 +2190,13 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
   return v12;
 }
 
-+ (int64_t)_webClipStatusBarStyleForMetaTagContent:(id)a3
++ (int64_t)_webClipStatusBarStyleForMetaTagContent:(id)content
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  contentCopy = content;
+  v4 = contentCopy;
+  if (contentCopy)
   {
-    if ([v3 caseInsensitiveCompare:@"black"])
+    if ([contentCopy caseInsensitiveCompare:@"black"])
     {
       v5 = [v4 caseInsensitiveCompare:@"black-translucent"] == 0;
     }
@@ -2215,34 +2215,34 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
   return v5;
 }
 
-+ (int64_t)webClipStatusBarStyleForWebDocumentView:(id)a3
++ (int64_t)webClipStatusBarStyleForWebDocumentView:(id)view
 {
-  v4 = [a1 _contentForMetaName:@"apple-mobile-web-app-status-bar-style" inWebDocumentView:a3];
-  v5 = [a1 _webClipStatusBarStyleForMetaTagContent:v4];
+  v4 = [self _contentForMetaName:@"apple-mobile-web-app-status-bar-style" inWebDocumentView:view];
+  v5 = [self _webClipStatusBarStyleForMetaTagContent:v4];
 
   return v5;
 }
 
-+ (BOOL)webClipFullScreenValueForWebDocumentView:(id)a3
++ (BOOL)webClipFullScreenValueForWebDocumentView:(id)view
 {
-  v3 = a1;
-  v4 = [a1 _contentForMetaName:@"apple-mobile-web-app-capable" inWebDocumentView:a3];
-  LOBYTE(v3) = [v3 _webClipFullScreenValueForMetaTagContent:v4];
+  selfCopy = self;
+  v4 = [self _contentForMetaName:@"apple-mobile-web-app-capable" inWebDocumentView:view];
+  LOBYTE(selfCopy) = [selfCopy _webClipFullScreenValueForMetaTagContent:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (unint64_t)_webClipOrientationsForMetaTagContent:(id)a3
++ (unint64_t)_webClipOrientationsForMetaTagContent:(id)content
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  contentCopy = content;
+  if (contentCopy)
   {
     v4 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:{@", "}];
     v5 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@" \t\n\f\r"];
     v16 = v4;
-    v17 = v3;
-    v6 = [v3 componentsSeparatedByCharactersInSet:v4];
+    v17 = contentCopy;
+    v6 = [contentCopy componentsSeparatedByCharactersInSet:v4];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -2348,7 +2348,7 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
       v13 = v14;
     }
 
-    v3 = v17;
+    contentCopy = v17;
   }
 
   else
@@ -2359,10 +2359,10 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
   return v13;
 }
 
-+ (unint64_t)webClipOrientationsForWebDocumentView:(id)a3
++ (unint64_t)webClipOrientationsForWebDocumentView:(id)view
 {
-  v4 = [a1 _contentForMetaName:@"apple-mobile-web-app-orientations" inWebDocumentView:a3];
-  v5 = [a1 _webClipOrientationsForMetaTagContent:v4];
+  v4 = [self _contentForMetaName:@"apple-mobile-web-app-orientations" inWebDocumentView:view];
+  v5 = [self _webClipOrientationsForMetaTagContent:v4];
 
   return v5;
 }
@@ -2417,32 +2417,32 @@ uint64_t __30__UIWebClip_eligibilityAlert___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
-  v12 = a3;
-  v6 = a4;
-  if (self->_iconConnection == v12)
+  connectionCopy = connection;
+  dataCopy = data;
+  if (self->_iconConnection == connectionCopy)
   {
     customIconData = self->_customIconData;
     if (!customIconData)
     {
-      v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithData:v6];
+      v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithData:dataCopy];
       customStartupImageData = self->_customIconData;
       self->_customIconData = v10;
       goto LABEL_11;
     }
 
 LABEL_9:
-    [(NSMutableData *)customIconData appendData:v6];
+    [(NSMutableData *)customIconData appendData:dataCopy];
     goto LABEL_12;
   }
 
-  if (self->_startupImageConnection == v12)
+  if (self->_startupImageConnection == connectionCopy)
   {
     customIconData = self->_customStartupImageData;
     if (!customIconData)
     {
-      v11 = [objc_alloc(MEMORY[0x1E695DF88]) initWithData:v6];
+      v11 = [objc_alloc(MEMORY[0x1E695DF88]) initWithData:dataCopy];
       customStartupImageData = self->_customStartupImageData;
       self->_customStartupImageData = v11;
       goto LABEL_11;
@@ -2451,7 +2451,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (self->_startupLandscapeImageConnection != v12)
+  if (self->_startupLandscapeImageConnection != connectionCopy)
   {
     goto LABEL_12;
   }
@@ -2462,7 +2462,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithData:v6];
+  v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithData:dataCopy];
   customStartupImageData = self->_customStartupLandscapeImageData;
   self->_customStartupLandscapeImageData = v8;
 LABEL_11:
@@ -2472,12 +2472,12 @@ LABEL_12:
 
 - (id)bundleIdentifier
 {
-  v3 = [(UIWebClip *)self identifier];
+  identifier = [(UIWebClip *)self identifier];
   if ([(UIWebClip *)self isAppClip])
   {
     v4 = @"com.apple.appclip-";
 LABEL_5:
-    v5 = [(__CFString *)v4 stringByAppendingString:v3];
+    v5 = [(__CFString *)v4 stringByAppendingString:identifier];
     goto LABEL_7;
   }
 
@@ -2487,7 +2487,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v5 = v3;
+  v5 = identifier;
 LABEL_7:
   v6 = v5;
 
@@ -2497,9 +2497,9 @@ LABEL_7:
 - (void)requestIconUpdateInSpringBoard
 {
   v49 = *MEMORY[0x1E69E9840];
-  v2 = [(UIWebClip *)self bundleIdentifier];
-  v3 = v2;
-  if (v2)
+  bundleIdentifier = [(UIWebClip *)self bundleIdentifier];
+  v3 = bundleIdentifier;
+  if (bundleIdentifier)
   {
     v47 = 0u;
     v48 = 0u;
@@ -2533,7 +2533,7 @@ LABEL_7:
     v20 = 0u;
     *buffer = 0u;
     v18 = 0u;
-    if (CFStringGetCString(v2, buffer, 1024, 0x8000100u))
+    if (CFStringGetCString(bundleIdentifier, buffer, 1024, 0x8000100u))
     {
       v13 = 0;
       v14 = &v13;
@@ -2572,16 +2572,16 @@ LABEL_7:
           goto LABEL_10;
         }
 
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"kern_return_t softLink_SBReloadIconForIdentifier(mach_port_t, char *)"}];
-        [v11 handleFailureInFunction:v12 file:@"UIWebClip.m" lineNumber:49 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v12 file:@"UIWebClip.m" lineNumber:49 description:{@"%s", dlerror()}];
       }
 
       else
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"mach_port_t softLink_SBSSpringBoardServerPort(void)"];
-        [v9 handleFailureInFunction:v10 file:@"UIWebClip.m" lineNumber:48 description:{@"%s", dlerror()}];
+        [currentHandler2 handleFailureInFunction:v10 file:@"UIWebClip.m" lineNumber:48 description:{@"%s", dlerror()}];
       }
 
       __break(1u);
@@ -2591,17 +2591,17 @@ LABEL_7:
 LABEL_10:
 }
 
-+ (id)webClipIconsForWebClipLinkTags:(id)a3 pageURL:(id)a4
++ (id)webClipIconsForWebClipLinkTags:(id)tags pageURL:(id)l
 {
   v71 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v49 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  tagsCopy = tags;
+  lCopy = l;
+  array = [MEMORY[0x1E695DF70] array];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v7 = v5;
+  v7 = tagsCopy;
   v8 = [v7 countByEnumeratingWithState:&v61 objects:v69 count:16];
   v52 = v7;
   if (v8)
@@ -2611,7 +2611,7 @@ LABEL_10:
     v11 = *MEMORY[0x1E695F060];
     v12 = *(MEMORY[0x1E695F060] + 8);
     v50 = *v62;
-    v51 = v6;
+    v51 = array;
     do
     {
       v13 = 0;
@@ -2628,14 +2628,14 @@ LABEL_10:
         v59 = [v14 rel];
         if (([v59 _web_isCaseInsensitiveEqualToString:@"apple-touch-icon"] & 1) != 0 || objc_msgSend(v59, "_web_isCaseInsensitiveEqualToString:", @"apple-touch-icon-precomposed"))
         {
-          v15 = [v14 href];
-          if (![v15 length])
+          href = [v14 href];
+          if (![href length])
           {
             goto LABEL_32;
           }
 
-          v57 = v15;
-          v16 = [MEMORY[0x1E695DFF8] URLWithString:v15 encodingInvalidCharacters:0];
+          v57 = href;
+          v16 = [MEMORY[0x1E695DFF8] URLWithString:href encodingInvalidCharacters:0];
           if (!v16)
           {
             goto LABEL_31;
@@ -2643,16 +2643,16 @@ LABEL_10:
 
           v56 = objc_alloc_init(UIWebClipIcon);
           -[UIWebClipIcon setPrecomposed:](v56, "setPrecomposed:", [v59 _web_isCaseInsensitiveEqualToString:@"apple-touch-icon-precomposed"]);
-          v17 = [v14 sizes];
-          v18 = v6;
-          if (v17)
+          sizes = [v14 sizes];
+          v18 = array;
+          if (sizes)
           {
             v67 = 0u;
             v68 = 0u;
             v65 = 0u;
             v66 = 0u;
-            v55 = v17;
-            v19 = [v17 componentsSeparatedByString:@" "];
+            v55 = sizes;
+            v19 = [sizes componentsSeparatedByString:@" "];
             v20 = [v19 countByEnumeratingWithState:&v65 objects:v70 count:16];
             if (v20)
             {
@@ -2675,17 +2675,17 @@ LABEL_10:
                   if ([v27 count] == 2)
                   {
                     v28 = [v27 objectAtIndex:0];
-                    v29 = [v28 integerValue];
+                    integerValue = [v28 integerValue];
 
                     v30 = [v27 objectAtIndex:1];
-                    v31 = [v30 integerValue];
+                    integerValue2 = [v30 integerValue];
 
-                    if (v29 >= 1 && v31 >= 1)
+                    if (integerValue >= 1 && integerValue2 >= 1)
                     {
-                      if ([MEMORY[0x1E6963698] _compareApplicationIconCanvasSize:v29 withSize:{v31, v25, v24}] == 1)
+                      if ([MEMORY[0x1E6963698] _compareApplicationIconCanvasSize:integerValue withSize:{integerValue2, v25, v24}] == 1)
                       {
-                        v24 = v31;
-                        v25 = v29;
+                        v24 = integerValue2;
+                        v25 = integerValue;
                       }
 
                       v22 = 1;
@@ -2703,18 +2703,18 @@ LABEL_10:
               v10 = v50;
               v9 = v53;
               v16 = v54;
-              v17 = v55;
+              sizes = v55;
               if (v22)
               {
 LABEL_30:
 
                 [(UIWebClipIcon *)v56 setBestSize:v25, v24];
                 [(UIWebClipIcon *)v56 setUrl:v16];
-                v6 = v18;
+                array = v18;
                 [v18 addObject:v56];
 
 LABEL_31:
-                v15 = v57;
+                href = v57;
 LABEL_32:
 
                 goto LABEL_33;
@@ -2725,7 +2725,7 @@ LABEL_32:
             {
 
               v9 = v53;
-              v17 = v55;
+              sizes = v55;
             }
           }
 
@@ -2752,31 +2752,31 @@ LABEL_33:
   v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ldx%ld", v33, v35];
   v38 = objc_alloc_init(UIWebClipIcon);
   v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/apple-touch-icon-%@.png", v37];
-  v39 = [MEMORY[0x1E695DFF8] URLWithString:v60 relativeToURL:v49];
+  v39 = [MEMORY[0x1E695DFF8] URLWithString:v60 relativeToURL:lCopy];
   [(UIWebClipIcon *)v38 setUrl:v39];
 
   [(UIWebClipIcon *)v38 setSiteWide:1];
   [(UIWebClipIcon *)v38 setBestSize:v34, v36];
-  v40 = v6;
-  [v6 addObject:v38];
+  v40 = array;
+  [array addObject:v38];
   v41 = objc_alloc_init(UIWebClipIcon);
   v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/apple-touch-icon-%@-precomposed.png", v37];
-  v43 = [MEMORY[0x1E695DFF8] URLWithString:v42 relativeToURL:v49];
+  v43 = [MEMORY[0x1E695DFF8] URLWithString:v42 relativeToURL:lCopy];
   [(UIWebClipIcon *)v41 setUrl:v43];
 
   [(UIWebClipIcon *)v41 setSiteWide:1];
   [(UIWebClipIcon *)v41 setBestSize:v34, v36];
   [(UIWebClipIcon *)v41 setPrecomposed:1];
-  [v6 addObject:v41];
+  [array addObject:v41];
   v44 = objc_alloc_init(UIWebClipIcon);
-  v45 = [MEMORY[0x1E695DFF8] URLWithString:@"/apple-touch-icon.png" relativeToURL:v49];
+  v45 = [MEMORY[0x1E695DFF8] URLWithString:@"/apple-touch-icon.png" relativeToURL:lCopy];
   [(UIWebClipIcon *)v44 setUrl:v45];
 
   [(UIWebClipIcon *)v44 setSiteWide:1];
   [v40 addObject:v44];
   v46 = objc_alloc_init(UIWebClipIcon);
   [(UIWebClipIcon *)v46 setPrecomposed:1];
-  v47 = [MEMORY[0x1E695DFF8] URLWithString:@"/apple-touch-icon-precomposed.png" relativeToURL:v49];
+  v47 = [MEMORY[0x1E695DFF8] URLWithString:@"/apple-touch-icon-precomposed.png" relativeToURL:lCopy];
   [(UIWebClipIcon *)v46 setUrl:v47];
 
   [(UIWebClipIcon *)v46 setSiteWide:1];
@@ -2786,32 +2786,32 @@ LABEL_33:
   return v40;
 }
 
-+ (id)webClipIconsForWebDocumentView:(id)a3
++ (id)webClipIconsForWebDocumentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WebThreadLock();
-  v5 = baseURLForWebDocumentView(v4);
-  v6 = [a1 _webClipLinkTagsFromWebDocumentView:v4];
+  v5 = baseURLForWebDocumentView(viewCopy);
+  v6 = [self _webClipLinkTagsFromWebDocumentView:viewCopy];
 
-  v7 = [a1 webClipIconsForWebClipLinkTags:v6 pageURL:v5];
+  v7 = [self webClipIconsForWebClipLinkTags:v6 pageURL:v5];
 
   return v7;
 }
 
-- (void)updateCustomMediaLocationsWithWebClipLinkTags:(id)a3 baseURL:(id)a4
+- (void)updateCustomMediaLocationsWithWebClipLinkTags:(id)tags baseURL:(id)l
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v22 = a4;
-  v7 = [objc_opt_class() webClipIconsForWebClipLinkTags:v6 pageURL:v22];
-  v21 = self;
+  tagsCopy = tags;
+  lCopy = l;
+  v7 = [objc_opt_class() webClipIconsForWebClipLinkTags:tagsCopy pageURL:lCopy];
+  selfCopy = self;
   [(UIWebClip *)self setIcons:v7];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = tagsCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -2834,19 +2834,19 @@ LABEL_33:
 
         if (v17)
         {
-          v18 = [v15 hrefURL];
-          if (v18)
+          hrefURL = [v15 hrefURL];
+          if (hrefURL)
           {
             if ([v15 mediaMatchesPortraitOrientation])
             {
-              v19 = v18;
+              v19 = hrefURL;
 
               v12 = v19;
             }
 
             if ([v15 mediaMatchesLandscapeOrientation])
             {
-              v20 = v18;
+              v20 = hrefURL;
 
               v11 = v20;
             }
@@ -2866,45 +2866,45 @@ LABEL_33:
     v12 = 0;
   }
 
-  [(UIWebClip *)v21 setStartupImageURL:v12];
-  [(UIWebClip *)v21 setStartupLandscapeImageURL:v11];
-  [(UIWebClip *)v21 requestCustomIconUpdate];
-  if ([(UIWebClip *)v21 fullScreen])
+  [(UIWebClip *)selfCopy setStartupImageURL:v12];
+  [(UIWebClip *)selfCopy setStartupLandscapeImageURL:v11];
+  [(UIWebClip *)selfCopy requestCustomIconUpdate];
+  if ([(UIWebClip *)selfCopy fullScreen])
   {
-    [(UIWebClip *)v21 requestCustomPortraitStartupImageUpdate];
-    [(UIWebClip *)v21 requestCustomLandscapeStartupImageUpdate];
+    [(UIWebClip *)selfCopy requestCustomPortraitStartupImageUpdate];
+    [(UIWebClip *)selfCopy requestCustomLandscapeStartupImageUpdate];
   }
 }
 
-- (void)updateCustomMediaLocationsFromWebDocumentView:(id)a3
+- (void)updateCustomMediaLocationsFromWebDocumentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WebThreadLock();
-  v6 = baseURLForWebDocumentView(v4);
-  v5 = [objc_opt_class() _webClipLinkTagsFromWebDocumentView:v4];
+  v6 = baseURLForWebDocumentView(viewCopy);
+  v5 = [objc_opt_class() _webClipLinkTagsFromWebDocumentView:viewCopy];
 
   [(UIWebClip *)self updateCustomMediaLocationsWithWebClipLinkTags:v5 baseURL:v6];
 }
 
-+ (id)_webClipLinkTagsFromWebDocumentView:(id)a3
++ (id)_webClipLinkTagsFromWebDocumentView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   WebThreadLock();
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v17 = __49__UIWebClip__webClipLinkTagsFromWebDocumentView___block_invoke;
   v18 = &unk_1E712BEC0;
-  v5 = v4;
+  v5 = array;
   v19 = v5;
   v6 = v16;
-  v7 = [v3 webView];
-  v8 = [v7 mainFrame];
-  v9 = [v8 DOMDocument];
+  webView = [viewCopy webView];
+  mainFrame = [webView mainFrame];
+  dOMDocument = [mainFrame DOMDocument];
 
-  if (v9)
+  if (dOMDocument)
   {
-    v10 = [v9 getElementsByTagName:@"link"];
+    v10 = [dOMDocument getElementsByTagName:@"link"];
     v11 = [v10 length];
     if (v11)
     {
@@ -2965,24 +2965,24 @@ void __49__UIWebClip__webClipLinkTagsFromWebDocumentView___block_invoke(uint64_t
   return v5 < v6;
 }
 
-- (void)connectionDidFinishLoading:(id)a3
+- (void)connectionDidFinishLoading:(id)loading
 {
-  v46 = a3;
-  v4 = [objc_opt_self() mainScreen];
-  [v4 scale];
+  loadingCopy = loading;
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v6 = v5;
-  [v4 bounds];
+  [mainScreen bounds];
   v8 = v7;
   v10 = v9;
   [UIApp statusBarHeight];
   v12 = v11;
   WeakRetained = objc_loadWeakRetained(&self->delegate);
-  if (self->_iconConnection != v46)
+  if (self->_iconConnection != loadingCopy)
   {
     v14 = v10 - v12;
     v15 = v6 * v8;
     v16 = v6 * (v10 - v12);
-    if (self->_startupImageConnection == v46)
+    if (self->_startupImageConnection == loadingCopy)
     {
       v17 = [UIImage imageWithData:self->_customStartupImageData];
       if (objc_opt_respondsToSelector())
@@ -3006,7 +3006,7 @@ void __49__UIWebClip__webClipLinkTagsFromWebDocumentView___block_invoke(uint64_t
 
     else
     {
-      if (self->_startupLandscapeImageConnection != v46)
+      if (self->_startupLandscapeImageConnection != loadingCopy)
       {
         goto LABEL_50;
       }
@@ -3068,7 +3068,7 @@ void __49__UIWebClip__webClipLinkTagsFromWebDocumentView___block_invoke(uint64_t
   }
 
   v37 = [(NSArray *)self->icons objectAtIndex:self->currentIconIndex];
-  v38 = [v37 isPrecomposed];
+  isPrecomposed = [v37 isPrecomposed];
 
   v17 = [UIImage imageWithData:self->_customIconData];
   if (!v17)
@@ -3089,11 +3089,11 @@ void __49__UIWebClip__webClipLinkTagsFromWebDocumentView___block_invoke(uint64_t
   if (objc_opt_respondsToSelector())
   {
 LABEL_45:
-    [WeakRetained webClip:self iconRequestDidFinishWithImage:v17 precomposed:v38];
+    [WeakRetained webClip:self iconRequestDidFinishWithImage:v17 precomposed:isPrecomposed];
     goto LABEL_46;
   }
 
-  [(UIWebClip *)self setIconImage:v17 isPrecomposed:v38];
+  [(UIWebClip *)self setIconImage:v17 isPrecomposed:isPrecomposed];
   [(UIWebClip *)self updateOnDisk];
   [(UIWebClip *)self requestIconUpdateInSpringBoard];
 LABEL_46:
@@ -3103,11 +3103,11 @@ LABEL_49:
 LABEL_50:
 }
 
-- (void)connection:(id)a3 didFailWithError:(id)a4
+- (void)connection:(id)connection didFailWithError:(id)error
 {
-  v6 = a3;
+  connectionCopy = connection;
   WeakRetained = objc_loadWeakRetained(&self->delegate);
-  if (self->_iconConnection == v6)
+  if (self->_iconConnection == connectionCopy)
   {
     [(UIWebClip *)self stopLoadingCustomIcon];
     if (![(UIWebClip *)self tryLoadingNextCustomIcon]&& (objc_opt_respondsToSelector() & 1) != 0)
@@ -3116,7 +3116,7 @@ LABEL_50:
     }
   }
 
-  else if (self->_startupImageConnection == v6)
+  else if (self->_startupImageConnection == connectionCopy)
   {
     [(UIWebClip *)self stopLoadingStartupImage];
     if (objc_opt_respondsToSelector())
@@ -3125,7 +3125,7 @@ LABEL_50:
     }
   }
 
-  else if (self->_startupLandscapeImageConnection == v6)
+  else if (self->_startupLandscapeImageConnection == connectionCopy)
   {
     [(UIWebClip *)self stopLoadingStartupLandscapeImage];
     if (objc_opt_respondsToSelector())
@@ -3135,14 +3135,14 @@ LABEL_50:
   }
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4
+- (void)connection:(id)connection didReceiveResponse:(id)response
 {
-  v7 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  responseCopy = response;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 statusCode] >= 400)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [responseCopy statusCode] >= 400)
   {
-    [(UIWebClip *)self connection:v7 didFailWithError:0];
+    [(UIWebClip *)self connection:connectionCopy didFailWithError:0];
   }
 }
 
@@ -3223,46 +3223,46 @@ LABEL_50:
   }
 }
 
-+ (id)pathForWebClipWithIdentifier:(id)a3
++ (id)pathForWebClipWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 webClipsDirectoryPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  identifierCopy = identifier;
+  webClipsDirectoryPath = [self webClipsDirectoryPath];
+  v6 = [webClipsDirectoryPath stringByAppendingPathComponent:identifierCopy];
 
   v7 = [v6 stringByAppendingPathExtension:@"webclip"];
 
   return v7;
 }
 
-+ (id)pathForWebClipStorageWithIdentifier:(id)a3
++ (id)pathForWebClipStorageWithIdentifier:(id)identifier
 {
-  v3 = [a1 pathForWebClipWithIdentifier:a3];
+  v3 = [self pathForWebClipWithIdentifier:identifier];
   v4 = [v3 stringByAppendingPathComponent:@"Storage"];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  [v5 _web_createDirectoryAtPathWithIntermediateDirectories:v4 attributes:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager _web_createDirectoryAtPathWithIntermediateDirectories:v4 attributes:0];
 
   return v4;
 }
 
-+ (id)pathForWebClipCacheWithIdentifier:(id)a3
++ (id)pathForWebClipCacheWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   v5 = [v4 objectAtIndex:0];
   v6 = [v5 stringByAppendingPathComponent:@"Caches/WebClips"];
 
-  v7 = [v6 stringByAppendingPathComponent:v3];
+  v7 = [v6 stringByAppendingPathComponent:identifierCopy];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  [v8 _web_createDirectoryAtPathWithIntermediateDirectories:v7 attributes:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager _web_createDirectoryAtPathWithIntermediateDirectories:v7 attributes:0];
 
   return v7;
 }
 
-+ (id)urlForWebClipWithIdentifier:(id)a3
++ (id)urlForWebClipWithIdentifier:(id)identifier
 {
-  v3 = [a1 pathForWebClipWithIdentifier:a3];
+  v3 = [self pathForWebClipWithIdentifier:identifier];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v3];
@@ -3293,9 +3293,9 @@ LABEL_50:
   return 0;
 }
 
-- (void)_updateWebClipWithEligibility:(unint64_t)a3
+- (void)_updateWebClipWithEligibility:(unint64_t)eligibility
 {
-  if (a3 == 2)
+  if (eligibility == 2)
   {
     if (self->_eligibilityStatus - 1 <= 1)
     {
@@ -3305,7 +3305,7 @@ LABEL_50:
     }
   }
 
-  else if (a3 == 4 && !self->_eligibilityStatus)
+  else if (eligibility == 4 && !self->_eligibilityStatus)
   {
     self->_eligibilityStatus = 1;
     [(UIWebClip *)self updateOnDisk];
@@ -3324,9 +3324,9 @@ LABEL_50:
   }
 }
 
-- (id)getStartupImage:(int64_t)a3
+- (id)getStartupImage:(int64_t)image
 {
-  if ((a3 - 1) > 1)
+  if ((image - 1) > 1)
   {
     [(UIWebClip *)self startupLandscapeImage];
   }
@@ -3340,15 +3340,15 @@ LABEL_50:
   return v3;
 }
 
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record
 {
-  v4 = [a4 bundleIdentifier];
-  NSLog(&cfstr_WebClipPlaceho.isa, v4);
+  bundleIdentifier = [record bundleIdentifier];
+  NSLog(&cfstr_WebClipPlaceho.isa, bundleIdentifier);
 }
 
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client
 {
-  v5 = [a4 description];
+  v5 = [reason description];
   NSLog(&cfstr_WebClipPlaceho_0.isa, v5);
 }
 

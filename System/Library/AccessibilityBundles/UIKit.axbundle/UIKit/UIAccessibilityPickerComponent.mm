@@ -1,13 +1,13 @@
 @interface UIAccessibilityPickerComponent
 - (BOOL)_accessibilitySetNativeFocus;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (CGRect)accessibilityFrame;
 - (_NSRange)accessibilityRowRange;
 - (double)_accessibilityNumberValue;
 - (id)_accessibilityDateTimePickerValues;
 - (id)_accessibilityViewForComponent;
-- (id)_axSpeechInputLabelForDateCalendarUnit:(uint64_t)a1;
-- (id)_axSpeechInputLabelForTimeIntervalCalendarUnit:(uint64_t)a1;
+- (id)_axSpeechInputLabelForDateCalendarUnit:(uint64_t)unit;
+- (id)_axSpeechInputLabelForTimeIntervalCalendarUnit:(uint64_t)unit;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
@@ -15,44 +15,44 @@
 - (id)automationElements;
 - (id)picker;
 - (id)setPicker:(id *)result;
-- (int64_t)_accessibilityIndexForPickerString:(id)a3;
+- (int64_t)_accessibilityIndexForPickerString:(id)string;
 - (int64_t)_accessibilityPickerType;
 - (uint64_t)_axIsInDatePickerView;
-- (uint64_t)_isRowDisabledInWebKit:(uint64_t)a1;
+- (uint64_t)_isRowDisabledInWebKit:(uint64_t)kit;
 - (uint64_t)component;
 - (uint64_t)setComponent:(uint64_t)result;
 - (unint64_t)_accessibilityDatePickerComponentType;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityMoveSelection:(uint64_t)a1;
+- (void)_accessibilityMoveSelection:(uint64_t)selection;
 @end
 
 @implementation UIAccessibilityPickerComponent
 
 - (id)accessibilityLabel
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   component = self->_component;
   WeakRetained = objc_loadWeakRetained(&self->_picker);
-  v14 = [WeakRetained numberOfComponents];
+  numberOfComponents = [WeakRetained numberOfComponents];
   MEMORY[0x29EDC9740](WeakRetained);
-  if (component >= v14)
+  if (component >= numberOfComponents)
   {
     v20 = 0;
   }
 
   else
   {
-    v12 = objc_loadWeakRetained(&v19->_picker);
+    v12 = objc_loadWeakRetained(&selfCopy->_picker);
     v18[0] = [v12 delegate];
     MEMORY[0x29EDC9740](v12);
     v17 = 0;
     v2 = objc_opt_respondsToSelector();
     if (v2)
     {
-      v11 = [(UIAccessibilityPickerComponent *)v19 picker];
+      picker = [(UIAccessibilityPickerComponent *)selfCopy picker];
       location = [v18[0] pickerView:? accessibilityAttributedLabelForComponent:?];
-      MEMORY[0x29EDC9740](v11);
+      MEMORY[0x29EDC9740](picker);
       if (location)
       {
         v3 = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithCFAttributedString:location];
@@ -67,12 +67,12 @@
     if (!v17 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v9 = v18[0];
-      v10 = [(UIAccessibilityPickerComponent *)v19 picker];
+      picker2 = [(UIAccessibilityPickerComponent *)selfCopy picker];
       v5 = [v9 pickerView:? accessibilityLabelForComponent:?];
       v6 = v17;
       v17 = v5;
       MEMORY[0x29EDC9740](v6);
-      MEMORY[0x29EDC9740](v10);
+      MEMORY[0x29EDC9740](picker2);
     }
 
     v20 = MEMORY[0x29EDC9748](v17);
@@ -87,9 +87,9 @@
 
 - (id)picker
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    WeakRetained = objc_loadWeakRetained((self + 56));
   }
 
   else
@@ -102,21 +102,21 @@
 
 - (id)accessibilityHint
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   component = self->_component;
   WeakRetained = objc_loadWeakRetained(&self->_picker);
-  v10 = [WeakRetained numberOfComponents];
+  numberOfComponents = [WeakRetained numberOfComponents];
   MEMORY[0x29EDC9740](WeakRetained);
-  if (component < v10)
+  if (component < numberOfComponents)
   {
-    v8 = objc_loadWeakRetained(&v15->_picker);
+    v8 = objc_loadWeakRetained(&selfCopy->_picker);
     v14[0] = [v8 delegate];
     MEMORY[0x29EDC9740](v8);
     v13 = 0;
     if (objc_opt_respondsToSelector())
     {
-      location = [v14[0] pickerView:v15 accessibilityAttributedHintForComponent:v15->_component];
+      location = [v14[0] pickerView:selfCopy accessibilityAttributedHintForComponent:selfCopy->_component];
       if (location)
       {
         v2 = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithCFAttributedString:location];
@@ -130,7 +130,7 @@
 
     if (!v13 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v4 = [v14[0] pickerView:v15 accessibilityHintForComponent:v15->_component];
+      v4 = [v14[0] pickerView:selfCopy accessibilityHintForComponent:selfCopy->_component];
       v5 = v13;
       v13 = v4;
       MEMORY[0x29EDC9740](v5);
@@ -154,16 +154,16 @@
 - (int64_t)_accessibilityPickerType
 {
   WeakRetained = objc_loadWeakRetained(&self->_picker);
-  v4 = [WeakRetained _accessibilityPickerType];
+  _accessibilityPickerType = [WeakRetained _accessibilityPickerType];
   MEMORY[0x29EDC9740](WeakRetained);
-  return v4;
+  return _accessibilityPickerType;
 }
 
 - (uint64_t)_axIsInDatePickerView
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    WeakRetained = objc_loadWeakRetained((self + 56));
     NSClassFromString(&cfstr_Uidatepickervi.isa);
     v3 = objc_opt_isKindOfClass() & 1;
     MEMORY[0x29EDC9740](WeakRetained);
@@ -179,28 +179,28 @@
 
 - (id)automationElements
 {
-  v32 = self;
+  selfCopy = self;
   v31[1] = a2;
   WeakRetained = objc_loadWeakRetained(&self->_picker);
   NSClassFromString(&cfstr_Uidatepickervi_1.isa);
-  v19 = 1;
+  _axIsInDatePickerView = 1;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v19 = [(UIAccessibilityPickerComponent *)v32 _axIsInDatePickerView];
+    _axIsInDatePickerView = [(UIAccessibilityPickerComponent *)selfCopy _axIsInDatePickerView];
   }
 
   *&v2 = MEMORY[0x29EDC9740](WeakRetained).n128_u64[0];
-  if (v19)
+  if (_axIsInDatePickerView)
   {
     v33 = 0;
   }
 
   else
   {
-    v31[0] = [(UIAccessibilityPickerComponent *)v32 _accessibilityValueForKey:@"AXCachedChildren", v2];
-    v17 = objc_loadWeakRetained(&v32->_picker);
+    v31[0] = [(UIAccessibilityPickerComponent *)selfCopy _accessibilityValueForKey:@"AXCachedChildren", v2];
+    v17 = objc_loadWeakRetained(&selfCopy->_picker);
     v16 = [v17 safeValueForKey:@"_tables"];
-    v30 = [v16 objectAtIndex:v32->_component];
+    v30 = [v16 objectAtIndex:selfCopy->_component];
     MEMORY[0x29EDC9740](v16);
     v29 = [v30 safeValueForKey:{@"_middleTable", MEMORY[0x29EDC9740](v17).n128_f64[0]}];
     v28 = [v29 numberOfRowsInSection:0];
@@ -223,9 +223,9 @@
         if (objc_opt_respondsToSelector())
         {
           v12 = MEMORY[0x29EDBD7F0];
-          v13 = [v24 title];
+          title = [v24 title];
           v23 = [v12 axAttributedStringWithString:?];
-          *&v3 = MEMORY[0x29EDC9740](v13).n128_u64[0];
+          *&v3 = MEMORY[0x29EDC9740](title).n128_u64[0];
           [v25 addObject:{v23, v3}];
           objc_storeStrong(&v23, 0);
         }
@@ -236,35 +236,35 @@
           if (objc_opt_isKindOfClass())
           {
             v22 = [v24 safeUIViewForKey:@"wrappedView"];
-            v21 = [v22 accessibilityLabel];
-            if (![v21 length])
+            accessibilityLabel = [v22 accessibilityLabel];
+            if (![accessibilityLabel length])
             {
-              v11 = [v22 _accessibleSubviews];
+              _accessibleSubviews = [v22 _accessibleSubviews];
               v4 = MEMORY[0x29ED3D9D0]();
-              v5 = v21;
-              v21 = v4;
+              v5 = accessibilityLabel;
+              accessibilityLabel = v4;
               MEMORY[0x29EDC9740](v5);
-              MEMORY[0x29EDC9740](v11);
+              MEMORY[0x29EDC9740](_accessibleSubviews);
             }
 
-            if (![v21 length])
+            if (![accessibilityLabel length])
             {
-              v10 = [v22 accessibilityElements];
+              accessibilityElements = [v22 accessibilityElements];
               v6 = MEMORY[0x29ED3D9D0]();
-              v7 = v21;
-              v21 = v6;
+              v7 = accessibilityLabel;
+              accessibilityLabel = v6;
               MEMORY[0x29EDC9740](v7);
-              MEMORY[0x29EDC9740](v10);
+              MEMORY[0x29EDC9740](accessibilityElements);
             }
 
-            if (v21)
+            if (accessibilityLabel)
             {
-              v20 = [MEMORY[0x29EDBD7F0] axAttributedStringWithString:v21];
+              v20 = [MEMORY[0x29EDBD7F0] axAttributedStringWithString:accessibilityLabel];
               [v25 addObject:v20];
               objc_storeStrong(&v20, 0);
             }
 
-            objc_storeStrong(&v21, 0);
+            objc_storeStrong(&accessibilityLabel, 0);
             objc_storeStrong(&v22, 0);
           }
         }
@@ -273,7 +273,7 @@
         ++v27;
       }
 
-      [(UIAccessibilityPickerComponent *)v32 _accessibilitySetRetainedValue:v25 forKey:@"AXCachedChildren"];
+      [(UIAccessibilityPickerComponent *)selfCopy _accessibilitySetRetainedValue:v25 forKey:@"AXCachedChildren"];
       v33 = MEMORY[0x29EDC9748](v25);
       v26 = 1;
       objc_storeStrong(&v25, 0);
@@ -289,15 +289,15 @@
   return v8;
 }
 
-- (int64_t)_accessibilityIndexForPickerString:(id)a3
+- (int64_t)_accessibilityIndexForPickerString:(id)string
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  WeakRetained = objc_loadWeakRetained(&v20->_picker);
+  objc_storeStrong(location, string);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_picker);
   v10 = [WeakRetained safeValueForKey:@"_tables"];
-  v18 = [v10 objectAtIndex:v20->_component];
+  v18 = [v10 objectAtIndex:selfCopy->_component];
   MEMORY[0x29EDC9740](v10);
   v17 = [v18 safeValueForKey:{@"_middleTable", MEMORY[0x29EDC9740](WeakRetained).n128_f64[0]}];
   v16 = [v17 numberOfRowsInSection:0];
@@ -309,9 +309,9 @@
     MEMORY[0x29EDC9740](v9);
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v14 title];
-      v7 = [v6 isEqualToString:location[0]];
-      MEMORY[0x29EDC9740](v6);
+      title = [v14 title];
+      v7 = [title isEqualToString:location[0]];
+      MEMORY[0x29EDC9740](title);
       if (v7)
       {
         v21 = i;
@@ -331,9 +331,9 @@ LABEL_13:
     }
 
     v12 = [v14 safeValueForKey:@"wrappedView"];
-    v4 = [v12 accessibilityLabel];
-    v5 = [v4 isEqualToString:location[0]];
-    MEMORY[0x29EDC9740](v4);
+    accessibilityLabel = [v12 accessibilityLabel];
+    v5 = [accessibilityLabel isEqualToString:location[0]];
+    MEMORY[0x29EDC9740](accessibilityLabel);
     if (v5)
     {
       v21 = i;
@@ -370,26 +370,26 @@ LABEL_16:
 
 - (id)_accessibilityViewForComponent
 {
-  v14 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v10 = *(v14 + 48);
-    WeakRetained = objc_loadWeakRetained((v14 + 56));
-    v9 = [WeakRetained numberOfComponents];
+    v10 = *(selfCopy + 48);
+    WeakRetained = objc_loadWeakRetained((selfCopy + 56));
+    numberOfComponents = [WeakRetained numberOfComponents];
     MEMORY[0x29EDC9740](WeakRetained);
-    if (v10 >= v9)
+    if (v10 >= numberOfComponents)
     {
       v15 = 0;
     }
 
     else
     {
-      v4 = objc_loadWeakRetained((v14 + 56));
-      v5 = [v4 selectedRowInComponent:*(v14 + 48)];
+      v4 = objc_loadWeakRetained((selfCopy + 56));
+      v5 = [v4 selectedRowInComponent:*(selfCopy + 48)];
       MEMORY[0x29EDC9740](v4);
       v13 = v5;
-      v6 = objc_loadWeakRetained((v14 + 56));
-      v7 = [v6 numberOfRowsInComponent:*(v14 + 48)];
+      v6 = objc_loadWeakRetained((selfCopy + 56));
+      v7 = [v6 numberOfRowsInComponent:*(selfCopy + 48)];
       MEMORY[0x29EDC9740](v6);
       v12 = v7;
       if (v13 < 0 || v13 >= v12)
@@ -399,8 +399,8 @@ LABEL_16:
 
       else
       {
-        v3 = objc_loadWeakRetained((v14 + 56));
-        v11 = [v3 viewForRow:v13 forComponent:*(v14 + 48)];
+        v3 = objc_loadWeakRetained((selfCopy + 56));
+        v11 = [v3 viewForRow:v13 forComponent:*(selfCopy + 48)];
         MEMORY[0x29EDC9740](v3);
         v15 = MEMORY[0x29EDC9748](v11);
         objc_storeStrong(&v11, 0);
@@ -421,24 +421,24 @@ LABEL_16:
 - (id)_accessibilityDateTimePickerValues
 {
   v52 = *MEMORY[0x29EDCA608];
-  v49 = self;
+  selfCopy = self;
   v48[1] = a2;
   v48[0] = [MEMORY[0x29EDB8DE8] array];
-  v47 = [(UIAccessibilityPickerComponent *)v49 _accessibilityDatePickerComponentType];
-  if (!v47)
+  _accessibilityDatePickerComponentType = [(UIAccessibilityPickerComponent *)selfCopy _accessibilityDatePickerComponentType];
+  if (!_accessibilityDatePickerComponentType)
   {
     CFRunLoopRunInMode(*MEMORY[0x29EDB8FC0], 0.25, 0);
-    v47 = [(UIAccessibilityPickerComponent *)v49 _accessibilityDatePickerComponentType];
+    _accessibilityDatePickerComponentType = [(UIAccessibilityPickerComponent *)selfCopy _accessibilityDatePickerComponentType];
   }
 
-  v46 = [(UIAccessibilityPickerComponent *)v49 _accessibilityViewForComponent];
-  v45 = [v46 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uidatepickervi.isa)];
+  _accessibilityViewForComponent = [(UIAccessibilityPickerComponent *)selfCopy _accessibilityViewForComponent];
+  v45 = [_accessibilityViewForComponent _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uidatepickervi.isa)];
   v38[1] = MEMORY[0x29EDCA5F8];
   v39 = -1073741824;
   v40 = 0;
   v41 = __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues__block_invoke;
   v42 = &__block_descriptor_40_e24___NSString_32__0_8q16q24l;
-  v43 = v47;
+  v43 = _accessibilityDatePickerComponentType;
   v44 = MEMORY[0x29ED3E4C0]();
   v38[0] = [v45 _accessibilityViewAncestorIsKindOf:objc_opt_class()];
   v37 = [v45 safeValueForKey:@"_mode"];
@@ -452,35 +452,35 @@ LABEL_16:
   v29 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(location, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_0_1_4_0(v51, v47);
+    __os_log_helper_16_0_1_4_0(v51, _accessibilityDatePickerComponentType);
     _os_log_impl(&dword_29C4D6000, location, v29, "Date picker unit: %d", v51, 8u);
   }
 
   objc_storeStrong(&location, 0);
-  if (v47 == 2 || v47 == 4)
+  if (_accessibilityDatePickerComponentType == 2 || _accessibilityDatePickerComponentType == 4)
   {
     goto LABEL_26;
   }
 
-  if (v47 == 8)
+  if (_accessibilityDatePickerComponentType == 8)
   {
     v32[3] = 12;
     goto LABEL_27;
   }
 
-  if (v47 == 16)
+  if (_accessibilityDatePickerComponentType == 16)
   {
     v32[3] = 31;
     goto LABEL_27;
   }
 
-  if (v47 == 32)
+  if (_accessibilityDatePickerComponentType == 32)
   {
     v10 = [v37 safeValueForKey:@"is24Hour"];
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
     MEMORY[0x29EDC9740](v10);
-    v28 = v11;
-    if (v11)
+    v28 = bOOLValue;
+    if (bOOLValue)
     {
       v2 = 24;
     }
@@ -494,29 +494,29 @@ LABEL_16:
     goto LABEL_27;
   }
 
-  if (v47 == 64)
+  if (_accessibilityDatePickerComponentType == 64)
   {
     if (v38[0])
     {
-      v9 = [v38[0] minuteInterval];
+      minuteInterval = [v38[0] minuteInterval];
     }
 
     else
     {
-      v9 = 60;
+      minuteInterval = 60;
     }
 
-    v32[3] = 60 / v9;
+    v32[3] = 60 / minuteInterval;
     goto LABEL_27;
   }
 
-  if (v47 == 128)
+  if (_accessibilityDatePickerComponentType == 128)
   {
     v32[3] = 60;
     goto LABEL_27;
   }
 
-  if (v47 == 536)
+  if (_accessibilityDatePickerComponentType == 536)
   {
 LABEL_26:
     v22 = MEMORY[0x29EDCA5F8];
@@ -526,22 +526,22 @@ LABEL_26:
     v26 = &unk_29F30CFE8;
     v27[1] = &v31;
     v27[0] = MEMORY[0x29EDC9748](v37);
-    v27[2] = v47;
+    v27[2] = _accessibilityDatePickerComponentType;
     AXPerformSafeBlock();
     objc_storeStrong(v27, 0);
     goto LABEL_27;
   }
 
-  if (v47 == 0x10000)
+  if (_accessibilityDatePickerComponentType == 0x10000)
   {
     v32[3] = 2;
   }
 
 LABEL_27:
-  if (v47 == 536)
+  if (_accessibilityDatePickerComponentType == 536)
   {
-    WeakRetained = objc_loadWeakRetained(&v49->_picker);
-    v7 = [WeakRetained selectedRowInComponent:v49->_component];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_picker);
+    v7 = [WeakRetained selectedRowInComponent:selfCopy->_component];
     MEMORY[0x29EDC9740](WeakRetained);
     v21 = v7;
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -593,7 +593,7 @@ LABEL_27:
   objc_storeStrong(oslog, 0);
   for (i = v36; i < v32[3]; ++i)
   {
-    v12 = (*(v44 + 2))(v44, v37, i, v49->_component);
+    v12 = (*(v44 + 2))(v44, v37, i, selfCopy->_component);
     if (!v12)
     {
       _AXAssert();
@@ -604,7 +604,7 @@ LABEL_27:
       [v48[0] addObject:v12];
     }
 
-    if (v47 == 4 && v32[3] > 1000 && i != v32[3] - 1)
+    if (_accessibilityDatePickerComponentType == 4 && v32[3] > 1000 && i != v32[3] - 1)
     {
       i = v32[3] - 2;
     }
@@ -618,7 +618,7 @@ LABEL_27:
   objc_storeStrong(v38, 0);
   objc_storeStrong(&v44, 0);
   objc_storeStrong(&v45, 0);
-  objc_storeStrong(&v46, 0);
+  objc_storeStrong(&_accessibilityViewForComponent, 0);
   objc_storeStrong(v48, 0);
 
   return v4;
@@ -693,19 +693,19 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
 
 - (unint64_t)_accessibilityDatePickerComponentType
 {
-  v3 = [(UIAccessibilityPickerComponent *)self _accessibilityViewForComponent];
-  v4 = [v3 _accessibilityDatePickerComponentType];
-  MEMORY[0x29EDC9740](v3);
-  return v4;
+  _accessibilityViewForComponent = [(UIAccessibilityPickerComponent *)self _accessibilityViewForComponent];
+  _accessibilityDatePickerComponentType = [_accessibilityViewForComponent _accessibilityDatePickerComponentType];
+  MEMORY[0x29EDC9740](_accessibilityViewForComponent);
+  return _accessibilityDatePickerComponentType;
 }
 
 - (double)_accessibilityNumberValue
 {
   component = self->_component;
   WeakRetained = objc_loadWeakRetained(&self->_picker);
-  v8 = [WeakRetained numberOfComponents];
+  numberOfComponents = [WeakRetained numberOfComponents];
   MEMORY[0x29EDC9740](WeakRetained);
-  if (component >= v8)
+  if (component >= numberOfComponents)
   {
     return 0.0;
   }
@@ -729,25 +729,25 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
 
 - (id)accessibilityValue
 {
-  v67 = self;
+  selfCopy = self;
   v66 = a2;
   component = self->_component;
   WeakRetained = objc_loadWeakRetained(&self->_picker);
-  v47 = [WeakRetained numberOfComponents];
+  numberOfComponents = [WeakRetained numberOfComponents];
   MEMORY[0x29EDC9740](WeakRetained);
-  if (component >= v47)
+  if (component >= numberOfComponents)
   {
     v68 = 0;
   }
 
   else
   {
-    v42 = objc_loadWeakRetained(&v67->_picker);
-    v43 = [v42 selectedRowInComponent:v67->_component];
+    v42 = objc_loadWeakRetained(&selfCopy->_picker);
+    v43 = [v42 selectedRowInComponent:selfCopy->_component];
     MEMORY[0x29EDC9740](v42);
     v65 = v43;
-    v44 = objc_loadWeakRetained(&v67->_picker);
-    v45 = [v44 numberOfRowsInComponent:v67->_component];
+    v44 = objc_loadWeakRetained(&selfCopy->_picker);
+    v45 = [v44 numberOfRowsInComponent:selfCopy->_component];
     MEMORY[0x29EDC9740](v44);
     v64 = v45;
     if (v65 < 0 || v65 >= v64)
@@ -757,53 +757,53 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
 
     else
     {
-      v41 = objc_loadWeakRetained(&v67->_picker);
-      v63 = [v41 viewForRow:v65 forComponent:v67->_component];
-      v62 = [v63 accessibilityLabel];
-      if ([v62 length])
+      v41 = objc_loadWeakRetained(&selfCopy->_picker);
+      v63 = [v41 viewForRow:v65 forComponent:selfCopy->_component];
+      accessibilityLabel = [v63 accessibilityLabel];
+      if ([accessibilityLabel length])
       {
-        v49 = [v63 accessibilityLanguage];
-        if ([v49 length])
+        accessibilityLanguage = [v63 accessibilityLanguage];
+        if ([accessibilityLanguage length])
         {
-          v15 = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithString:v62];
-          v16 = v62;
-          v62 = v15;
-          [v15 setAttribute:v49 forKey:{*MEMORY[0x29EDC7F30], MEMORY[0x29EDC9740](v16).n128_f64[0]}];
+          v15 = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithString:accessibilityLabel];
+          v16 = accessibilityLabel;
+          accessibilityLabel = v15;
+          [v15 setAttribute:accessibilityLanguage forKey:{*MEMORY[0x29EDC7F30], MEMORY[0x29EDC9740](v16).n128_f64[0]}];
         }
 
-        objc_storeStrong(&v49, 0);
+        objc_storeStrong(&accessibilityLanguage, 0);
       }
 
       else
       {
-        v39 = objc_loadWeakRetained(&v67->_picker);
-        v38 = [v39 delegate];
+        v39 = objc_loadWeakRetained(&selfCopy->_picker);
+        delegate = [v39 delegate];
         v40 = objc_opt_respondsToSelector();
-        MEMORY[0x29EDC9740](v38);
+        MEMORY[0x29EDC9740](delegate);
         *&v2 = MEMORY[0x29EDC9740](v39).n128_u64[0];
         if (v40)
         {
-          v35 = objc_loadWeakRetained(&v67->_picker);
-          v34 = [v35 delegate];
-          v33 = objc_loadWeakRetained(&v67->_picker);
-          location = [v34 pickerView:? attributedTitleForRow:? forComponent:?];
+          v35 = objc_loadWeakRetained(&selfCopy->_picker);
+          delegate2 = [v35 delegate];
+          v33 = objc_loadWeakRetained(&selfCopy->_picker);
+          location = [delegate2 pickerView:? attributedTitleForRow:? forComponent:?];
           MEMORY[0x29EDC9740](v33);
-          MEMORY[0x29EDC9740](v34);
-          v36 = [location accessibilityLabel];
-          v37 = [v36 length];
-          *&v3 = MEMORY[0x29EDC9740](v36).n128_u64[0];
+          MEMORY[0x29EDC9740](delegate2);
+          accessibilityLabel2 = [location accessibilityLabel];
+          v37 = [accessibilityLabel2 length];
+          *&v3 = MEMORY[0x29EDC9740](accessibilityLabel2).n128_u64[0];
           if (v37)
           {
-            v4 = [v62 accessibilityLabel];
+            v62AccessibilityLabel = [accessibilityLabel accessibilityLabel];
           }
 
           else
           {
-            v4 = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithCFAttributedString:location];
+            v62AccessibilityLabel = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithCFAttributedString:location];
           }
 
-          v5 = v62;
-          v62 = v4;
+          v5 = accessibilityLabel;
+          accessibilityLabel = v62AccessibilityLabel;
           MEMORY[0x29EDC9740](v5);
           objc_storeStrong(&location, 0);
         }
@@ -811,18 +811,18 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
         v59 = 0;
         v57 = 0;
         v32 = 0;
-        if (![v62 length])
+        if (![accessibilityLabel length])
         {
-          v60 = objc_loadWeakRetained(&v67->_picker);
+          v60 = objc_loadWeakRetained(&selfCopy->_picker);
           v59 = 1;
-          v58 = [v60 delegate];
+          delegate3 = [v60 delegate];
           v57 = 1;
           v32 = objc_opt_respondsToSelector();
         }
 
         if (v57)
         {
-          MEMORY[0x29EDC9740](v58);
+          MEMORY[0x29EDC9740](delegate3);
         }
 
         if (v59)
@@ -832,40 +832,40 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
 
         if (v32)
         {
-          v31 = objc_loadWeakRetained(&v67->_picker);
-          v30 = [v31 delegate];
-          v29 = objc_loadWeakRetained(&v67->_picker);
-          v6 = [v30 pickerView:? titleForRow:? forComponent:?];
-          v7 = v62;
-          v62 = v6;
+          v31 = objc_loadWeakRetained(&selfCopy->_picker);
+          delegate4 = [v31 delegate];
+          v29 = objc_loadWeakRetained(&selfCopy->_picker);
+          v6 = [delegate4 pickerView:? titleForRow:? forComponent:?];
+          v7 = accessibilityLabel;
+          accessibilityLabel = v6;
           MEMORY[0x29EDC9740](v7);
           MEMORY[0x29EDC9740](v29);
-          MEMORY[0x29EDC9740](v30);
+          MEMORY[0x29EDC9740](delegate4);
           *&v8 = MEMORY[0x29EDC9740](v31).n128_u64[0];
-          v56 = [v62 accessibilityLabel];
-          if ([v56 length])
+          v62AccessibilityLabel2 = [accessibilityLabel accessibilityLabel];
+          if ([v62AccessibilityLabel2 length])
           {
-            objc_storeStrong(&v62, v56);
+            objc_storeStrong(&accessibilityLabel, v62AccessibilityLabel2);
           }
 
-          objc_storeStrong(&v56, 0);
+          objc_storeStrong(&v62AccessibilityLabel2, 0);
         }
 
         v54 = 0;
         v52 = 0;
         v28 = 0;
-        if (![v62 length])
+        if (![accessibilityLabel length])
         {
-          v55 = objc_loadWeakRetained(&v67->_picker);
+          v55 = objc_loadWeakRetained(&selfCopy->_picker);
           v54 = 1;
-          v53 = [v55 delegate];
+          delegate5 = [v55 delegate];
           v52 = 1;
           v28 = objc_opt_respondsToSelector();
         }
 
         if (v52)
         {
-          MEMORY[0x29EDC9740](v53);
+          MEMORY[0x29EDC9740](delegate5);
         }
 
         if (v54)
@@ -875,53 +875,53 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
 
         if (v28)
         {
-          v27 = objc_loadWeakRetained(&v67->_picker);
-          v26 = [v27 delegate];
-          v25 = objc_loadWeakRetained(&v67->_picker);
-          v51 = [v26 pickerView:? viewForRow:? forComponent:? reusingView:?];
+          v27 = objc_loadWeakRetained(&selfCopy->_picker);
+          delegate6 = [v27 delegate];
+          v25 = objc_loadWeakRetained(&selfCopy->_picker);
+          v51 = [delegate6 pickerView:? viewForRow:? forComponent:? reusingView:?];
           MEMORY[0x29EDC9740](v25);
-          MEMORY[0x29EDC9740](v26);
-          v9 = [v51 accessibilityLabel];
-          v10 = v62;
-          v62 = v9;
-          v50 = [v51 accessibilityLanguage];
-          if ([v50 length])
+          MEMORY[0x29EDC9740](delegate6);
+          accessibilityLabel3 = [v51 accessibilityLabel];
+          v10 = accessibilityLabel;
+          accessibilityLabel = accessibilityLabel3;
+          accessibilityLanguage2 = [v51 accessibilityLanguage];
+          if ([accessibilityLanguage2 length])
           {
             v11 = objc_alloc(MEMORY[0x29EDBD7E8]);
-            v12 = [v11 initWithString:v62];
-            v13 = v62;
-            v62 = v12;
+            v12 = [v11 initWithString:accessibilityLabel];
+            v13 = accessibilityLabel;
+            accessibilityLabel = v12;
             *&v14 = MEMORY[0x29EDC9740](v13).n128_u64[0];
-            [v62 setAttribute:v50 forKey:{*MEMORY[0x29EDC7F30], v14}];
+            [accessibilityLabel setAttribute:accessibilityLanguage2 forKey:{*MEMORY[0x29EDC7F30], v14}];
           }
 
-          objc_storeStrong(&v50, 0);
+          objc_storeStrong(&accessibilityLanguage2, 0);
           objc_storeStrong(&v51, 0);
         }
       }
 
-      if (![v62 length])
+      if (![accessibilityLabel length])
       {
-        v24 = [v63 _accessibleSubviews];
+        _accessibleSubviews = [v63 _accessibleSubviews];
         v17 = MEMORY[0x29ED3D9D0]();
-        v18 = v62;
-        v62 = v17;
+        v18 = accessibilityLabel;
+        accessibilityLabel = v17;
         MEMORY[0x29EDC9740](v18);
-        MEMORY[0x29EDC9740](v24);
+        MEMORY[0x29EDC9740](_accessibleSubviews);
       }
 
-      if (![v62 length])
+      if (![accessibilityLabel length])
       {
-        v23 = [v63 accessibilityElements];
+        accessibilityElements = [v63 accessibilityElements];
         v19 = MEMORY[0x29ED3D9D0]();
-        v20 = v62;
-        v62 = v19;
+        v20 = accessibilityLabel;
+        accessibilityLabel = v19;
         MEMORY[0x29EDC9740](v20);
-        MEMORY[0x29EDC9740](v23);
+        MEMORY[0x29EDC9740](accessibilityElements);
       }
 
-      v68 = MEMORY[0x29EDC9748](v62);
-      objc_storeStrong(&v62, 0);
+      v68 = MEMORY[0x29EDC9748](accessibilityLabel);
+      objc_storeStrong(&accessibilityLabel, 0);
       objc_storeStrong(&v63, 0);
     }
   }
@@ -933,20 +933,20 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
 
 - (_NSRange)accessibilityRowRange
 {
-  v55 = self;
+  selfCopy = self;
   v54 = a2;
   component = self->_component;
   WeakRetained = objc_loadWeakRetained(&self->_picker);
-  v15 = [WeakRetained numberOfComponents];
+  numberOfComponents = [WeakRetained numberOfComponents];
   MEMORY[0x29EDC9740](WeakRetained);
-  if (component < v15)
+  if (component < numberOfComponents)
   {
-    v10 = objc_loadWeakRetained(&v55->_picker);
-    v11 = [v10 selectedRowInComponent:v55->_component];
+    v10 = objc_loadWeakRetained(&selfCopy->_picker);
+    v11 = [v10 selectedRowInComponent:selfCopy->_component];
     MEMORY[0x29EDC9740](v10);
     v53 = v11;
-    v12 = objc_loadWeakRetained(&v55->_picker);
-    v13 = [v12 numberOfRowsInComponent:v55->_component];
+    v12 = objc_loadWeakRetained(&selfCopy->_picker);
+    v13 = [v12 numberOfRowsInComponent:selfCopy->_component];
     MEMORY[0x29EDC9740](v12);
     v52 = v13;
     if (v11 < 0 || v53 >= v52)
@@ -956,8 +956,8 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
       goto LABEL_47;
     }
 
-    v9 = objc_loadWeakRetained(&v55->_picker);
-    v51 = [v9 viewForRow:v53 forComponent:v55->_component];
+    v9 = objc_loadWeakRetained(&selfCopy->_picker);
+    v51 = [v9 viewForRow:v53 forComponent:selfCopy->_component];
     MEMORY[0x29EDC9740](v9);
     NSClassFromString(&cfstr_Uidatepickerco.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1016,14 +1016,14 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
     v31 = MEMORY[0x29EDC9748](v32);
     objc_storeStrong(&v32, 0);
     v34 = v31;
-    v6 = objc_loadWeakRetained(&v55->_picker);
-    v7 = [v6 _accessibilityPickerType];
+    v6 = objc_loadWeakRetained(&selfCopy->_picker);
+    _accessibilityPickerType = [v6 _accessibilityPickerType];
     *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-    v30 = v7;
-    switch(v7)
+    v30 = _accessibilityPickerType;
+    switch(_accessibilityPickerType)
     {
       case 2:
-        if (!v55->_component)
+        if (!selfCopy->_component)
         {
           v19 = 0;
           v20 = &v19;
@@ -1047,7 +1047,7 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
           goto LABEL_40;
         }
 
-        if (v55->_component == 1)
+        if (selfCopy->_component == 1)
         {
           v71 = v53 % 60;
           v70 = 60;
@@ -1061,7 +1061,7 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
 
         break;
       case 3:
-        switch(v55->_component)
+        switch(selfCopy->_component)
         {
           case 0uLL:
             v115 = v53 % *(&v48 + 1);
@@ -1094,7 +1094,7 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
 
         break;
       case 4:
-        switch(v55->_component)
+        switch(selfCopy->_component)
         {
           case 0uLL:
             v91 = 0x7FFFFFFFLL;
@@ -1136,7 +1136,7 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
 
         break;
       case 5:
-        switch(v55->_component)
+        switch(selfCopy->_component)
         {
           case 0uLL:
             v103 = v53 % 12;
@@ -1148,9 +1148,9 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
             v29 = 1;
             goto LABEL_40;
           case 1uLL:
-            v28 = [v35[0] calendar];
-            v27 = [v28 dateFromComponents:v34];
-            v25 = [v28 rangeOfUnit:16 inUnit:8 forDate:v27];
+            calendar = [v35[0] calendar];
+            v27 = [calendar dateFromComponents:v34];
+            v25 = [calendar rangeOfUnit:16 inUnit:8 forDate:v27];
             v26 = v3;
             v99 = v53 % 31;
             v98 = v3;
@@ -1160,7 +1160,7 @@ uint64_t __68__UIAccessibilityPickerComponent__accessibilityDateTimePickerValues
             v57 = v3;
             v29 = 1;
             objc_storeStrong(&v27, 0);
-            objc_storeStrong(&v28, 0);
+            objc_storeStrong(&calendar, 0);
             goto LABEL_40;
           case 2uLL:
             v95 = 0x7FFFFFFFLL;
@@ -1226,15 +1226,15 @@ uint64_t __55__UIAccessibilityPickerComponent_accessibilityRowRange__block_invok
 
 - (CGRect)accessibilityFrame
 {
-  v41 = self;
+  selfCopy = self;
   v40 = a2;
   WeakRetained = objc_loadWeakRetained(&self->_picker);
-  v28 = [WeakRetained accessibilityUserDefinedFrame];
+  accessibilityUserDefinedFrame = [WeakRetained accessibilityUserDefinedFrame];
   v38 = 0;
   v29 = 0;
-  if (v28)
+  if (accessibilityUserDefinedFrame)
   {
-    v39 = objc_loadWeakRetained(&v41->_picker);
+    v39 = objc_loadWeakRetained(&selfCopy->_picker);
     v38 = 1;
     v29 = [v39 numberOfComponents] == 1;
   }
@@ -1244,36 +1244,36 @@ uint64_t __55__UIAccessibilityPickerComponent_accessibilityRowRange__block_invok
     MEMORY[0x29EDC9740](v39);
   }
 
-  MEMORY[0x29EDC9740](v28);
+  MEMORY[0x29EDC9740](accessibilityUserDefinedFrame);
   MEMORY[0x29EDC9740](WeakRetained);
   if (v29)
   {
-    v26 = objc_loadWeakRetained(&v41->_picker);
-    v25 = [v26 accessibilityUserDefinedFrame];
-    [v25 CGRectValue];
+    v26 = objc_loadWeakRetained(&selfCopy->_picker);
+    accessibilityUserDefinedFrame2 = [v26 accessibilityUserDefinedFrame];
+    [accessibilityUserDefinedFrame2 CGRectValue];
     *&v42 = v2;
     *(&v42 + 1) = v3;
     *&v43 = v4;
     *(&v43 + 1) = v5;
-    MEMORY[0x29EDC9740](v25);
+    MEMORY[0x29EDC9740](accessibilityUserDefinedFrame2);
     MEMORY[0x29EDC9740](v26);
   }
 
   else
   {
-    component = v41->_component;
-    v22 = objc_loadWeakRetained(&v41->_picker);
-    v23 = [v22 numberOfComponents];
+    component = selfCopy->_component;
+    v22 = objc_loadWeakRetained(&selfCopy->_picker);
+    numberOfComponents = [v22 numberOfComponents];
     MEMORY[0x29EDC9740](v22);
-    if (component < v23)
+    if (component < numberOfComponents)
     {
-      v20 = objc_loadWeakRetained(&v41->_picker);
+      v20 = objc_loadWeakRetained(&selfCopy->_picker);
       v37 = [v20 safeValueForKey:@"_tables"];
       *&v6 = MEMORY[0x29EDC9740](v20).n128_u64[0];
-      v21 = v41->_component;
+      v21 = selfCopy->_component;
       if (v21 < [v37 count])
       {
-        v35 = [v37 objectAtIndex:v41->_component];
+        v35 = [v37 objectAtIndex:selfCopy->_component];
         v34.origin = *MEMORY[0x29EDB90E0];
         v34.size = *(MEMORY[0x29EDB90E0] + 16);
         NSClassFromString(&cfstr_Uipickercolumn.isa);
@@ -1342,24 +1342,24 @@ uint64_t __55__UIAccessibilityPickerComponent_accessibilityRowRange__block_invok
   return result;
 }
 
-- (void)_accessibilityMoveSelection:(uint64_t)a1
+- (void)_accessibilityMoveSelection:(uint64_t)selection
 {
-  v35 = a1;
+  selectionCopy = selection;
   v34 = a2;
-  if (a1)
+  if (selection)
   {
-    v22 = *(v35 + 48);
-    WeakRetained = objc_loadWeakRetained((v35 + 56));
-    v21 = [WeakRetained numberOfComponents];
+    v22 = *(selectionCopy + 48);
+    WeakRetained = objc_loadWeakRetained((selectionCopy + 56));
+    numberOfComponents = [WeakRetained numberOfComponents];
     MEMORY[0x29EDC9740](WeakRetained);
-    if (v22 < v21)
+    if (v22 < numberOfComponents)
     {
-      v16 = objc_loadWeakRetained((v35 + 56));
-      v17 = [v16 selectedRowInComponent:*(v35 + 48)];
+      v16 = objc_loadWeakRetained((selectionCopy + 56));
+      v17 = [v16 selectedRowInComponent:*(selectionCopy + 48)];
       MEMORY[0x29EDC9740](v16);
       v33 = v17 + v34;
-      v18 = objc_loadWeakRetained((v35 + 56));
-      v19 = [v18 numberOfRowsInComponent:*(v35 + 48)];
+      v18 = objc_loadWeakRetained((selectionCopy + 56));
+      v19 = [v18 numberOfRowsInComponent:*(selectionCopy + 48)];
       MEMORY[0x29EDC9740](v18);
       if (v17 + v34 < v19)
       {
@@ -1371,14 +1371,14 @@ uint64_t __55__UIAccessibilityPickerComponent_accessibilityRowRange__block_invok
 
       else
       {
-        v15 = objc_loadWeakRetained((v35 + 56));
-        v33 = [v15 numberOfRowsInComponent:*(v35 + 48)] - 1;
+        v15 = objc_loadWeakRetained((selectionCopy + 56));
+        v33 = [v15 numberOfRowsInComponent:*(selectionCopy + 48)] - 1;
         MEMORY[0x29EDC9740](v15);
       }
 
-      v32 = 1;
-      v14 = objc_loadWeakRetained((v35 + 56));
-      v31 = [v14 viewForRow:v33 forComponent:*(v35 + 48)];
+      bOOLValue = 1;
+      v14 = objc_loadWeakRetained((selectionCopy + 56));
+      v31 = [v14 viewForRow:v33 forComponent:*(selectionCopy + 48)];
       MEMORY[0x29EDC9740](v14);
       if (v31)
       {
@@ -1387,23 +1387,23 @@ uint64_t __55__UIAccessibilityPickerComponent_accessibilityRowRange__block_invok
         {
           v13 = [v31 safeValueForKey:@"titleLabel"];
           v12 = [v13 safeValueForKey:@"isEnabled"];
-          v32 = [v12 BOOLValue];
+          bOOLValue = [v12 BOOLValue];
           MEMORY[0x29EDC9740](v12);
           MEMORY[0x29EDC9740](v13);
         }
       }
 
-      if (v32)
+      if (bOOLValue)
       {
         if (v34 > 0)
         {
           while (1)
           {
-            v9 = objc_loadWeakRetained((v35 + 56));
+            v9 = objc_loadWeakRetained((selectionCopy + 56));
             v10 = 0;
-            if (v33 < [v9 numberOfRowsInComponent:*(v35 + 48)] - 1)
+            if (v33 < [v9 numberOfRowsInComponent:*(selectionCopy + 48)] - 1)
             {
-              v10 = [(UIAccessibilityPickerComponent *)v35 _isRowDisabledInWebKit:v33];
+              v10 = [(UIAccessibilityPickerComponent *)selectionCopy _isRowDisabledInWebKit:v33];
             }
 
             MEMORY[0x29EDC9740](v9);
@@ -1428,9 +1428,9 @@ uint64_t __55__UIAccessibilityPickerComponent_accessibilityRowRange__block_invok
         v11 = 0;
         if (v34 > 0)
         {
-          v30 = objc_loadWeakRetained((v35 + 56));
+          v30 = objc_loadWeakRetained((selectionCopy + 56));
           v29 = 1;
-          v11 = v33 < [v30 numberOfRowsInComponent:*(v35 + 48)];
+          v11 = v33 < [v30 numberOfRowsInComponent:*(selectionCopy + 48)];
         }
 
         if (v29)
@@ -1444,9 +1444,9 @@ uint64_t __55__UIAccessibilityPickerComponent_accessibilityRowRange__block_invok
         }
       }
 
-      v6 = objc_loadWeakRetained((v35 + 56));
+      v6 = objc_loadWeakRetained((selectionCopy + 56));
       v5 = [v6 safeValueForKey:@"_tables"];
-      v28 = [v5 objectAtIndex:*(v35 + 48)];
+      v28 = [v5 objectAtIndex:*(selectionCopy + 48)];
       MEMORY[0x29EDC9740](v5);
       *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
       v27 = [v28 safeValueForKey:{@"_middleTable", v2}];
@@ -1456,7 +1456,7 @@ uint64_t __55__UIAccessibilityPickerComponent_accessibilityRowRange__block_invok
       MEMORY[0x29EDC9740](v7);
       v26 = v8;
       v23 = MEMORY[0x29EDC9748](v27);
-      v24 = MEMORY[0x29EDC9748](v35);
+      v24 = MEMORY[0x29EDC9748](selectionCopy);
       v25[0] = MEMORY[0x29EDC9748](v28);
       v25[1] = v33;
       v25[2] = v26;
@@ -1472,24 +1472,24 @@ uint64_t __55__UIAccessibilityPickerComponent_accessibilityRowRange__block_invok
   }
 }
 
-- (uint64_t)_isRowDisabledInWebKit:(uint64_t)a1
+- (uint64_t)_isRowDisabledInWebKit:(uint64_t)kit
 {
-  v21 = a1;
+  kitCopy = kit;
   v20 = a2;
-  if (a1)
+  if (kit)
   {
-    WeakRetained = objc_loadWeakRetained((v21 + 56));
-    v14 = [WeakRetained numberOfRowsInComponent:*(v21 + 48)];
+    WeakRetained = objc_loadWeakRetained((kitCopy + 56));
+    v14 = [WeakRetained numberOfRowsInComponent:*(kitCopy + 48)];
     MEMORY[0x29EDC9740](WeakRetained);
     if (v20 < v14)
     {
-      v11 = objc_loadWeakRetained((v21 + 56));
+      v11 = objc_loadWeakRetained((kitCopy + 56));
       NSClassFromString(&cfstr_Wkselectsingle.isa);
       v18 = 0;
       LOBYTE(v12) = 0;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v19 = objc_loadWeakRetained((v21 + 56));
+        v19 = objc_loadWeakRetained((kitCopy + 56));
         v18 = 1;
         NSClassFromString(&cfstr_Uiwebselectsin_0.isa);
         v12 = objc_opt_isKindOfClass() ^ 1;
@@ -1508,19 +1508,19 @@ uint64_t __55__UIAccessibilityPickerComponent_accessibilityRowRange__block_invok
 
       else
       {
-        v9 = objc_loadWeakRetained((v21 + 56));
-        v8 = [v9 delegate];
+        v9 = objc_loadWeakRetained((kitCopy + 56));
+        delegate = [v9 delegate];
         v10 = objc_opt_respondsToSelector();
-        MEMORY[0x29EDC9740](v8);
+        MEMORY[0x29EDC9740](delegate);
         MEMORY[0x29EDC9740](v9);
         if (v10)
         {
-          v7 = objc_loadWeakRetained((v21 + 56));
-          v6 = [v7 delegate];
-          v5 = objc_loadWeakRetained((v21 + 56));
-          v17 = [v6 pickerView:? attributedTitleForRow:? forComponent:?];
+          v7 = objc_loadWeakRetained((kitCopy + 56));
+          delegate2 = [v7 delegate];
+          v5 = objc_loadWeakRetained((kitCopy + 56));
+          v17 = [delegate2 pickerView:? attributedTitleForRow:? forComponent:?];
           MEMORY[0x29EDC9740](v5);
-          MEMORY[0x29EDC9740](v6);
+          MEMORY[0x29EDC9740](delegate2);
           if ([v17 length])
           {
             location = [v17 attribute:*MEMORY[0x29EDC7640] atIndex:0 effectiveRange:0];
@@ -1618,14 +1618,14 @@ double __62__UIAccessibilityPickerComponent__accessibilityMoveSelection___block_
   return result;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 3)
+  if (scroll == 3)
   {
     [(UIAccessibilityPickerComponent *)self _accessibilityMoveSelection:?];
   }
 
-  else if (a3 == 4)
+  else if (scroll == 4)
   {
     [(UIAccessibilityPickerComponent *)self _accessibilityMoveSelection:?];
   }
@@ -1635,58 +1635,58 @@ double __62__UIAccessibilityPickerComponent__accessibilityMoveSelection___block_
 
 - (unint64_t)accessibilityTraits
 {
-  v32 = self;
+  selfCopy = self;
   v31 = a2;
   component = self->_component;
   WeakRetained = objc_loadWeakRetained(&self->_picker);
-  v21 = [WeakRetained numberOfComponents];
+  numberOfComponents = [WeakRetained numberOfComponents];
   *&v2 = MEMORY[0x29EDC9740](WeakRetained).n128_u64[0];
-  if (component >= v21)
+  if (component >= numberOfComponents)
   {
     return 0;
   }
 
-  v29.receiver = v32;
+  v29.receiver = selfCopy;
   v29.super_class = UIAccessibilityPickerComponent;
-  v30 = [(UIAccessibilityPickerComponent *)&v29 accessibilityTraits];
-  v30 |= *MEMORY[0x29EDC7548] | *MEMORY[0x29EDC7F60];
-  v16 = objc_loadWeakRetained(&v32->_picker);
-  v17 = [v16 selectedRowInComponent:v32->_component];
+  accessibilityTraits = [(UIAccessibilityPickerComponent *)&v29 accessibilityTraits];
+  accessibilityTraits |= *MEMORY[0x29EDC7548] | *MEMORY[0x29EDC7F60];
+  v16 = objc_loadWeakRetained(&selfCopy->_picker);
+  v17 = [v16 selectedRowInComponent:selfCopy->_component];
   MEMORY[0x29EDC9740](v16);
   v28 = v17;
-  v18 = objc_loadWeakRetained(&v32->_picker);
-  v19 = [v18 numberOfRowsInComponent:v32->_component];
+  v18 = objc_loadWeakRetained(&selfCopy->_picker);
+  v19 = [v18 numberOfRowsInComponent:selfCopy->_component];
   MEMORY[0x29EDC9740](v18);
   v27 = v19;
   if (v28 < 0 || v28 >= v27)
   {
-    return v30;
+    return accessibilityTraits;
   }
 
-  v14 = objc_loadWeakRetained(&v32->_picker);
-  v13 = [v14 delegate];
+  v14 = objc_loadWeakRetained(&selfCopy->_picker);
+  delegate = [v14 delegate];
   v15 = objc_opt_respondsToSelector();
-  MEMORY[0x29EDC9740](v13);
+  MEMORY[0x29EDC9740](delegate);
   MEMORY[0x29EDC9740](v14);
   if (v15)
   {
-    v12 = objc_loadWeakRetained(&v32->_picker);
-    v11 = [v12 delegate];
-    v10 = objc_loadWeakRetained(&v32->_picker);
-    v26 = [v11 pickerView:? viewForRow:? forComponent:? reusingView:?];
+    v12 = objc_loadWeakRetained(&selfCopy->_picker);
+    delegate2 = [v12 delegate];
+    v10 = objc_loadWeakRetained(&selfCopy->_picker);
+    v26 = [delegate2 pickerView:? viewForRow:? forComponent:? reusingView:?];
     MEMORY[0x29EDC9740](v10);
-    MEMORY[0x29EDC9740](v11);
+    MEMORY[0x29EDC9740](delegate2);
     MEMORY[0x29EDC9740](v12);
-    if (([(UIAccessibilityPickerComponent *)v32 _axIsInDatePickerView]& 1) != 0)
+    if (([(UIAccessibilityPickerComponent *)selfCopy _axIsInDatePickerView]& 1) != 0)
     {
-      v7 = objc_loadWeakRetained(&v32->_picker);
+      v7 = objc_loadWeakRetained(&selfCopy->_picker);
       v25 = [v7 safeValueForKey:@"_mode"];
       MEMORY[0x29EDC9740](v7);
       v8 = [objc_opt_class() safeValueForKey:@"datePickerMode"];
-      v9 = [v8 integerValue];
+      integerValue = [v8 integerValue];
       *&v3 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-      v24 = v9;
-      if (v9 == 1 || v24 == 2)
+      v24 = integerValue;
+      if (integerValue == 1 || v24 == 2)
       {
         v23 = [v25 safeValueForKey:{@"todayTextColor", v3}];
         [v26 _accessibilitySetRetainedValue:v23 forKey:@"SelectedColor"];
@@ -1696,19 +1696,19 @@ double __62__UIAccessibilityPickerComponent__accessibilityMoveSelection___block_
       objc_storeStrong(&v25, 0);
     }
 
-    v4 = [v26 accessibilityTraits];
-    v30 |= v4;
+    accessibilityTraits2 = [v26 accessibilityTraits];
+    accessibilityTraits |= accessibilityTraits2;
     objc_storeStrong(v6, 0);
   }
 
-  return v30;
+  return accessibilityTraits;
 }
 
-- (id)_axSpeechInputLabelForDateCalendarUnit:(uint64_t)a1
+- (id)_axSpeechInputLabelForDateCalendarUnit:(uint64_t)unit
 {
-  v8 = a1;
+  unitCopy = unit;
   v7 = a2;
-  if (a1)
+  if (unit)
   {
     v6 = 0;
     if (v7 == 4 || v7 == 8 || v7 == 16 || v7 == 32 || v7 == 64 || v7 == 128 || v7 == 536 || v7 == 0x10000)
@@ -1738,11 +1738,11 @@ double __62__UIAccessibilityPickerComponent__accessibilityMoveSelection___block_
   return v4;
 }
 
-- (id)_axSpeechInputLabelForTimeIntervalCalendarUnit:(uint64_t)a1
+- (id)_axSpeechInputLabelForTimeIntervalCalendarUnit:(uint64_t)unit
 {
-  v8 = a1;
+  unitCopy = unit;
   v7 = a2;
-  if (a1)
+  if (unit)
   {
     v6 = 0;
     if (v7 == 32 || v7 == 64 || v7 == 128)
@@ -1774,13 +1774,13 @@ double __62__UIAccessibilityPickerComponent__accessibilityMoveSelection___block_
 
 - (id)accessibilityUserInputLabels
 {
-  v49 = self;
+  selfCopy = self;
   v48[1] = a2;
   component = self->_component;
   WeakRetained = objc_loadWeakRetained(&self->_picker);
-  v42 = [WeakRetained numberOfComponents];
+  numberOfComponents = [WeakRetained numberOfComponents];
   MEMORY[0x29EDC9740](WeakRetained);
-  if (component >= v42)
+  if (component >= numberOfComponents)
   {
     v50 = MEMORY[0x29EDC9748](MEMORY[0x29EDB8E90]);
   }
@@ -1788,14 +1788,14 @@ double __62__UIAccessibilityPickerComponent__accessibilityMoveSelection___block_
   else
   {
     v48[0] = 0;
-    v40 = objc_loadWeakRetained(&v49->_picker);
-    v47 = [v40 delegate];
+    v40 = objc_loadWeakRetained(&selfCopy->_picker);
+    delegate = [v40 delegate];
     MEMORY[0x29EDC9740](v40);
     v2 = objc_opt_respondsToSelector();
     if (v2)
     {
-      v39 = [(UIAccessibilityPickerComponent *)v49 picker];
-      location = [v47 pickerView:? accessibilityAttributedUserInputLabelsForComponent:?];
+      picker = [(UIAccessibilityPickerComponent *)selfCopy picker];
+      location = [delegate pickerView:? accessibilityAttributedUserInputLabelsForComponent:?];
       if ([location count])
       {
         v3 = [location ax_mappedArrayUsingBlock:&__block_literal_global_12];
@@ -1809,51 +1809,51 @@ double __62__UIAccessibilityPickerComponent__accessibilityMoveSelection___block_
 
     if (!v48[0] && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v37 = v47;
-      v38 = [(UIAccessibilityPickerComponent *)v49 picker];
+      v37 = delegate;
+      picker2 = [(UIAccessibilityPickerComponent *)selfCopy picker];
       v5 = [v37 pickerView:? accessibilityUserInputLabelsForComponent:?];
       v6 = v48[0];
       v48[0] = v5;
       MEMORY[0x29EDC9740](v6);
-      MEMORY[0x29EDC9740](v38);
+      MEMORY[0x29EDC9740](picker2);
     }
 
     if (![v48[0] count])
     {
-      v36 = [(UIAccessibilityPickerComponent *)v49 accessibilityLabel];
+      accessibilityLabel = [(UIAccessibilityPickerComponent *)selfCopy accessibilityLabel];
       v7 = MEMORY[0x29ED3D9A0]();
       v8 = v48[0];
       v48[0] = v7;
       MEMORY[0x29EDC9740](v8);
-      MEMORY[0x29EDC9740](v36);
+      MEMORY[0x29EDC9740](accessibilityLabel);
     }
 
     if (![v48[0] count])
     {
-      v45.receiver = v49;
+      v45.receiver = selfCopy;
       v45.super_class = UIAccessibilityPickerComponent;
-      v9 = [(UIAccessibilityPickerComponent *)&v45 accessibilityUserInputLabels];
+      accessibilityUserInputLabels = [(UIAccessibilityPickerComponent *)&v45 accessibilityUserInputLabels];
       v10 = v48[0];
-      v48[0] = v9;
+      v48[0] = accessibilityUserInputLabels;
       MEMORY[0x29EDC9740](v10);
     }
 
     if (![v48[0] count])
     {
-      v35 = objc_loadWeakRetained(&v49->_picker);
-      [v35 selectedRowInComponent:v49->_component];
+      v35 = objc_loadWeakRetained(&selfCopy->_picker);
+      [v35 selectedRowInComponent:selfCopy->_component];
       MEMORY[0x29EDC9740](v35);
-      if (([(UIAccessibilityPickerComponent *)v49 _axIsInDatePickerView]& 1) != 0)
+      if (([(UIAccessibilityPickerComponent *)selfCopy _axIsInDatePickerView]& 1) != 0)
       {
-        v44 = [(UIAccessibilityPickerComponent *)v49 _accessibilityDatePickerComponentType];
-        v33 = objc_loadWeakRetained(&v49->_picker);
+        _accessibilityDatePickerComponentType = [(UIAccessibilityPickerComponent *)selfCopy _accessibilityDatePickerComponentType];
+        v33 = objc_loadWeakRetained(&selfCopy->_picker);
         v32 = [v33 safeValueForKey:@"_mode"];
         v34 = [v32 safeBoolForKey:@"isTimeIntervalMode"];
         MEMORY[0x29EDC9740](v32);
         MEMORY[0x29EDC9740](v33);
         if (v34)
         {
-          v31 = [(UIAccessibilityPickerComponent *)v49 _axSpeechInputLabelForTimeIntervalCalendarUnit:v44];
+          v31 = [(UIAccessibilityPickerComponent *)selfCopy _axSpeechInputLabelForTimeIntervalCalendarUnit:_accessibilityDatePickerComponentType];
           v11 = MEMORY[0x29ED3D9A0]();
           v12 = v48[0];
           v48[0] = v11;
@@ -1863,7 +1863,7 @@ double __62__UIAccessibilityPickerComponent__accessibilityMoveSelection___block_
 
         else
         {
-          v30 = [(UIAccessibilityPickerComponent *)v49 _axSpeechInputLabelForDateCalendarUnit:v44];
+          v30 = [(UIAccessibilityPickerComponent *)selfCopy _axSpeechInputLabelForDateCalendarUnit:_accessibilityDatePickerComponentType];
           v14 = MEMORY[0x29ED3D9A0]();
           v15 = v48[0];
           v48[0] = v14;
@@ -1874,41 +1874,41 @@ double __62__UIAccessibilityPickerComponent__accessibilityMoveSelection___block_
 
       else
       {
-        v28 = objc_loadWeakRetained(&v49->_picker);
-        v27 = [v28 delegate];
+        v28 = objc_loadWeakRetained(&selfCopy->_picker);
+        delegate2 = [v28 delegate];
         v29 = objc_opt_respondsToSelector();
-        MEMORY[0x29EDC9740](v27);
+        MEMORY[0x29EDC9740](delegate2);
         v13 = MEMORY[0x29EDC9740](v28).n128_u64[0];
         if (v29)
         {
-          v26 = objc_loadWeakRetained(&v49->_picker);
-          v25 = [v26 delegate];
-          v24 = objc_loadWeakRetained(&v49->_picker);
-          v23 = [v25 pickerView:? viewForRow:? forComponent:? reusingView:?];
-          v16 = [v23 accessibilityUserInputLabels];
+          v26 = objc_loadWeakRetained(&selfCopy->_picker);
+          delegate3 = [v26 delegate];
+          v24 = objc_loadWeakRetained(&selfCopy->_picker);
+          v23 = [delegate3 pickerView:? viewForRow:? forComponent:? reusingView:?];
+          accessibilityUserInputLabels2 = [v23 accessibilityUserInputLabels];
           v17 = v48[0];
-          v48[0] = v16;
+          v48[0] = accessibilityUserInputLabels2;
           MEMORY[0x29EDC9740](v17);
           MEMORY[0x29EDC9740](v23);
           MEMORY[0x29EDC9740](v24);
-          MEMORY[0x29EDC9740](v25);
+          MEMORY[0x29EDC9740](delegate3);
           v13 = MEMORY[0x29EDC9740](v26).n128_u64[0];
         }
       }
 
       if (![v48[0] count])
       {
-        v22 = [(UIAccessibilityPickerComponent *)v49 accessibilityValue];
+        accessibilityValue = [(UIAccessibilityPickerComponent *)selfCopy accessibilityValue];
         v18 = MEMORY[0x29ED3D9A0]();
         v19 = v48[0];
         v48[0] = v18;
         MEMORY[0x29EDC9740](v19);
-        MEMORY[0x29EDC9740](v22);
+        MEMORY[0x29EDC9740](accessibilityValue);
       }
     }
 
     v50 = MEMORY[0x29EDC9748](v48[0]);
-    objc_storeStrong(&v47, 0);
+    objc_storeStrong(&delegate, 0);
     objc_storeStrong(v48, 0);
   }
 
@@ -1931,21 +1931,21 @@ id __62__UIAccessibilityPickerComponent_accessibilityUserInputLabels__block_invo
 
 - (BOOL)_accessibilitySetNativeFocus
 {
-  v5 = [(UIAccessibilityPickerComponent *)self picker];
-  v4 = [v5 safeArrayForKey:@"_tables"];
+  picker = [(UIAccessibilityPickerComponent *)self picker];
+  v4 = [picker safeArrayForKey:@"_tables"];
   v3 = [v4 axSafeObjectAtIndex:-[UIAccessibilityPickerComponent component](self)];
-  v6 = [v3 _accessibilitySetNativeFocus];
+  _accessibilitySetNativeFocus = [v3 _accessibilitySetNativeFocus];
   MEMORY[0x29EDC9740](v3);
   MEMORY[0x29EDC9740](v4);
-  MEMORY[0x29EDC9740](v5);
-  return v6;
+  MEMORY[0x29EDC9740](picker);
+  return _accessibilitySetNativeFocus;
 }
 
 - (uint64_t)component
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 48);
+    return *(self + 48);
   }
 
   else

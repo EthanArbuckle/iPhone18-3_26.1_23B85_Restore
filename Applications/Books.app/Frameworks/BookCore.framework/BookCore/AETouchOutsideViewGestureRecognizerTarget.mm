@@ -1,24 +1,24 @@
 @interface AETouchOutsideViewGestureRecognizerTarget
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SEL)action;
 - (id)target;
 - (unint64_t)hash;
-- (void)setAction:(SEL)a3;
+- (void)setAction:(SEL)action;
 @end
 
 @implementation AETouchOutsideViewGestureRecognizerTarget
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
-    v5 = [(AETouchOutsideViewGestureRecognizerTarget *)self target];
-    v6 = [v4 target];
-    if (v5 == v6)
+    target = [(AETouchOutsideViewGestureRecognizerTarget *)self target];
+    target2 = [equalCopy target];
+    if (target == target2)
     {
-      v8 = [(AETouchOutsideViewGestureRecognizerTarget *)self action];
-      v7 = v8 == [v4 action];
+      action = [(AETouchOutsideViewGestureRecognizerTarget *)self action];
+      v7 = action == [equalCopy action];
     }
 
     else
@@ -37,8 +37,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(AETouchOutsideViewGestureRecognizerTarget *)self target];
-  v3 = [v2 hash];
+  target = [(AETouchOutsideViewGestureRecognizerTarget *)self target];
+  v3 = [target hash];
 
   return v3;
 }
@@ -63,19 +63,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->mAction = v3;
+  self->mAction = actionCopy;
 }
 
 @end

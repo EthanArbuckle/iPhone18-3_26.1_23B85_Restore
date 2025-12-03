@@ -7,15 +7,15 @@
 - (id)unionWithDateInterval:()MOExtensions
 {
   v4 = a3;
-  if ([a1 intersectsDateInterval:v4])
+  if ([self intersectsDateInterval:v4])
   {
-    v5 = [a1 startDate];
-    v6 = [v4 startDate];
-    v7 = [v5 earlierDate:v6];
+    startDate = [self startDate];
+    startDate2 = [v4 startDate];
+    v7 = [startDate earlierDate:startDate2];
 
-    v8 = [a1 endDate];
-    v9 = [v4 endDate];
-    v10 = [v8 laterDate:v9];
+    endDate = [self endDate];
+    endDate2 = [v4 endDate];
+    v10 = [endDate laterDate:endDate2];
 
     if ([v7 isBeforeDate:v10])
     {

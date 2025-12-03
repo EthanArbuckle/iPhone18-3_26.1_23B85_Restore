@@ -1,36 +1,36 @@
 @interface AVMobileHapticsTrackItem
-+ (BOOL)hasOnTrack:(id)a3;
-- (AVMobileHapticsTrackItem)initWithIsOn:(BOOL)a3 trackName:(id)a4;
++ (BOOL)hasOnTrack:(id)track;
+- (AVMobileHapticsTrackItem)initWithIsOn:(BOOL)on trackName:(id)name;
 @end
 
 @implementation AVMobileHapticsTrackItem
 
-- (AVMobileHapticsTrackItem)initWithIsOn:(BOOL)a3 trackName:(id)a4
+- (AVMobileHapticsTrackItem)initWithIsOn:(BOOL)on trackName:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = AVMobileHapticsTrackItem;
   v8 = [(AVMobileHapticsTrackItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_isOn = a3;
-    objc_storeStrong(&v8->_trackName, a4);
+    v8->_isOn = on;
+    objc_storeStrong(&v8->_trackName, name);
   }
 
   return v9;
 }
 
-+ (BOOL)hasOnTrack:(id)a3
++ (BOOL)hasOnTrack:(id)track
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  trackCopy = track;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [trackCopy allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -40,20 +40,20 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
-        v8 = [v3 objectForKeyedSubscript:*(*(&v11 + 1) + 8 * i)];
-        v9 = [v8 isOn];
+        v8 = [trackCopy objectForKeyedSubscript:*(*(&v11 + 1) + 8 * i)];
+        isOn = [v8 isOn];
 
-        if (v9)
+        if (isOn)
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;

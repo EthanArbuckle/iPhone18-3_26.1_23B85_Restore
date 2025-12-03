@@ -1,58 +1,58 @@
 @interface VideosExtrasCarouselViewController
 - (BOOL)_isPhone;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (VideosExtrasCarouselViewControllerDataSource)dataSource;
 - (VideosExtrasCarouselViewControllerDelegate)delegate;
-- (id)_findSnappingItemFromContentOffset:(CGPoint *)a3 withVelocity:(CGPoint)a4;
-- (id)carouselCollectionViewCellForItemAtIndex:(unint64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)_findSnappingItemFromContentOffset:(CGPoint *)offset withVelocity:(CGPoint)velocity;
+- (id)carouselCollectionViewCellForItemAtIndex:(unint64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (int64_t)_numberOfItems;
 - (unint64_t)indexOfVisibleItem;
 - (void)_ensureScrollViewSnaps;
-- (void)_loadCarouselCollectionViewInView:(id)a3 withContraintsAccumulator:(id)a4;
-- (void)_snapTargetContentOffset:(CGPoint *)a3 toItemIndexPath:(id)a4 atItemOffset:(CGPoint)a5;
+- (void)_loadCarouselCollectionViewInView:(id)view withContraintsAccumulator:(id)accumulator;
+- (void)_snapTargetContentOffset:(CGPoint *)offset toItemIndexPath:(id)path atItemOffset:(CGPoint)itemOffset;
 - (void)_updateOpacityOfTextInVisibleCells;
 - (void)_updateWindowSizeForVisibleCells;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4;
-- (void)performZoomingImageTransitionWithContext:(id)a3;
-- (void)prepareZoomingImageTransitionWithContext:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setIndexOfVisibleItem:(unint64_t)a3 animated:(BOOL)a4;
-- (void)subviewsDidChangeForCarouselCollectionView:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished;
+- (void)performZoomingImageTransitionWithContext:(id)context;
+- (void)prepareZoomingImageTransitionWithContext:(id)context;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setIndexOfVisibleItem:(unint64_t)item animated:(BOOL)animated;
+- (void)subviewsDidChangeForCarouselCollectionView:(id)view;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VideosExtrasCarouselViewController
 
 - (void)dealloc
 {
-  v3 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  [v3 setDataSource:0];
-  [v3 setDelegate:0];
-  [v3 setCarouselCollectionViewDelegate:0];
+  carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  [carouselCollectionView setDataSource:0];
+  [carouselCollectionView setDelegate:0];
+  [carouselCollectionView setCarouselCollectionViewDelegate:0];
 
   v4.receiver = self;
   v4.super_class = VideosExtrasCarouselViewController;
   [(VideosExtrasCarouselViewController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = VideosExtrasCarouselViewController;
-  [(VideosExtrasCarouselViewController *)&v7 viewWillAppear:a3];
-  v4 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  v5 = [v4 indexPathsForSelectedItems];
-  if ([v5 count] == 1)
+  [(VideosExtrasCarouselViewController *)&v7 viewWillAppear:appear];
+  carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  indexPathsForSelectedItems = [carouselCollectionView indexPathsForSelectedItems];
+  if ([indexPathsForSelectedItems count] == 1)
   {
-    v6 = [v5 firstObject];
-    [v4 deselectItemAtIndexPath:v6 animated:1];
+    firstObject = [indexPathsForSelectedItems firstObject];
+    [carouselCollectionView deselectItemAtIndexPath:firstObject animated:1];
   }
 
   [(VideosExtrasCarouselViewController *)self _ensureScrollViewSnaps];
@@ -63,10 +63,10 @@
   v24.receiver = self;
   v24.super_class = VideosExtrasCarouselViewController;
   [(VideosExtrasCarouselViewController *)&v24 viewDidLoad];
-  v3 = [(VideosExtrasCarouselViewController *)self view];
+  view = [(VideosExtrasCarouselViewController *)self view];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [(VideosExtrasCarouselViewController *)self _loadCarouselCollectionViewInView:v3 withContraintsAccumulator:v4];
-  [v3 addConstraints:v4];
+  [(VideosExtrasCarouselViewController *)self _loadCarouselCollectionViewInView:view withContraintsAccumulator:v4];
+  [view addConstraints:v4];
   if (![(VideosExtrasCarouselViewController *)self _isPhone])
   {
     [(VideosExtrasCarouselViewController *)self _updateOpacityOfTextInVisibleCells];
@@ -74,27 +74,27 @@
     goto LABEL_25;
   }
 
-  v5 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  [v5 layoutIfNeeded];
+  carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  [carouselCollectionView layoutIfNeeded];
   v6 = *MEMORY[0x1E695F060];
   v7 = *(MEMORY[0x1E695F060] + 8);
-  v8 = [(VideosExtrasCarouselViewController *)self dataSource];
-  v9 = [v8 carouselSize];
+  dataSource = [(VideosExtrasCarouselViewController *)self dataSource];
+  carouselSize = [dataSource carouselSize];
 
-  v10 = [(VideosExtrasCarouselViewController *)self navigationController];
-  v11 = [v10 view];
-  [v11 safeAreaInsets];
+  navigationController = [(VideosExtrasCarouselViewController *)self navigationController];
+  view2 = [navigationController view];
+  [view2 safeAreaInsets];
   v13 = v12;
-  v14 = [(VideosExtrasCarouselViewController *)self navigationController];
-  v15 = [v14 view];
-  [v15 safeAreaInsets];
+  navigationController2 = [(VideosExtrasCarouselViewController *)self navigationController];
+  view3 = [navigationController2 view];
+  [view3 safeAreaInsets];
   v17 = v13 + v16;
 
-  if (v9 > 1)
+  if (carouselSize > 1)
   {
-    if (v9 != 2)
+    if (carouselSize != 2)
     {
-      if (v9 == 3)
+      if (carouselSize == 3)
       {
         if (v17 == 0.0)
         {
@@ -126,7 +126,7 @@
     goto LABEL_19;
   }
 
-  if (v9 <= 1)
+  if (carouselSize <= 1)
   {
     if (v17 == 0.0)
     {
@@ -144,51 +144,51 @@ LABEL_19:
   }
 
 LABEL_20:
-  [v5 bounds];
+  [carouselCollectionView bounds];
   v20 = v19;
-  [v5 bounds];
+  [carouselCollectionView bounds];
   v22 = v21;
-  v23 = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
+  carouselCollectionViewLayout = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
   if (objc_opt_respondsToSelector())
   {
-    [v23 setItemSize:{v20 - v6, v22 - v7}];
+    [carouselCollectionViewLayout setItemSize:{v20 - v6, v22 - v7}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v23 setMinimumInteritemSpacing:0.0];
+    [carouselCollectionViewLayout setMinimumInteritemSpacing:0.0];
   }
 
-  [v23 invalidateLayout];
+  [carouselCollectionViewLayout invalidateLayout];
 
 LABEL_25:
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = [a3 cellForItemAtIndexPath:a5];
+  layoutCopy = layout;
+  v9 = [view cellForItemAtIndexPath:path];
   if (!v9 || ![(VideosExtrasCarouselViewController *)self _isPhone])
   {
     goto LABEL_7;
   }
 
-  v10 = [v9 titleText];
-  if ([v10 length])
+  titleText = [v9 titleText];
+  if ([titleText length])
   {
     goto LABEL_6;
   }
 
-  v11 = [v9 subtitleText];
-  if ([v11 length])
+  subtitleText = [v9 subtitleText];
+  if ([subtitleText length])
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v18 = [v9 descriptionText];
-  v19 = [v18 length];
+  descriptionText = [v9 descriptionText];
+  v19 = [descriptionText length];
 
   if (!v19)
   {
@@ -197,7 +197,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  [v8 itemSize];
+  [layoutCopy itemSize];
 LABEL_8:
   v14 = v12;
   v15 = v13;
@@ -209,13 +209,13 @@ LABEL_8:
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 item];
-  v9 = [v7 window];
-  [v9 bounds];
+  pathCopy = path;
+  viewCopy = view;
+  item = [pathCopy item];
+  window = [viewCopy window];
+  [window bounds];
   v11 = v10;
   v13 = v12;
 
@@ -223,63 +223,63 @@ LABEL_8:
   {
     v14 = *MEMORY[0x1E695F060];
     v15 = *(MEMORY[0x1E695F060] + 8);
-    v16 = [v7 dequeueReusableCellWithReuseIdentifier:@"_VideosExtrasLockupCollectionViewCellReuseIdentifier" forIndexPath:v6];
+    v16 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"_VideosExtrasLockupCollectionViewCellReuseIdentifier" forIndexPath:pathCopy];
 
-    [v16 setItemIndex:v8];
+    [v16 setItemIndex:item];
     [v16 setZoomingImageTransitionIdentifier:@"VideosExtrasCarouselZoomingImageTransitionIdentifier"];
   }
 
   else
   {
-    v16 = [v7 dequeueReusableCellWithReuseIdentifier:@"_VideosExtrasCarouselCollectionViewCellReuseIdentifier" forIndexPath:v6];
+    v16 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"_VideosExtrasCarouselCollectionViewCellReuseIdentifier" forIndexPath:pathCopy];
 
     [v16 setWindowSize:{v11, v13}];
-    v17 = [v16 titleLabel];
-    [v17 setAlpha:0.0];
+    titleLabel = [v16 titleLabel];
+    [titleLabel setAlpha:0.0];
 
-    v18 = [v16 descriptionLabel];
-    [v18 setAlpha:0.0];
+    descriptionLabel = [v16 descriptionLabel];
+    [descriptionLabel setAlpha:0.0];
 
-    [v16 setItemIndex:v8];
+    [v16 setItemIndex:item];
     [v16 setZoomingImageTransitionIdentifier:@"VideosExtrasCarouselZoomingImageTransitionIdentifier"];
-    v19 = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
-    [v19 itemWidth];
+    carouselCollectionViewLayout = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
+    [carouselCollectionViewLayout itemWidth];
     v14 = v20;
     [v16 thumbnailImageContainerHeight];
     v15 = v21;
   }
 
-  v22 = [(VideosExtrasCarouselViewController *)self dataSource];
-  [v22 carouselViewController:self configureCarouselCollectionViewCell:v16 forItemAtIndex:v8 withThumbnailImageContainerSize:{v14, v15}];
+  dataSource = [(VideosExtrasCarouselViewController *)self dataSource];
+  [dataSource carouselViewController:self configureCarouselCollectionViewCell:v16 forItemAtIndex:item withThumbnailImageContainerSize:{v14, v15}];
 
   return v16;
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v5 = [(VideosExtrasCarouselViewController *)self delegate];
+  pathCopy = path;
+  delegate = [(VideosExtrasCarouselViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 carouselViewController:self didHighlightItemAtIndex:{objc_msgSend(v6, "item")}];
+    [delegate carouselViewController:self didHighlightItemAtIndex:{objc_msgSend(pathCopy, "item")}];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VideosExtrasCarouselViewController *)self delegate];
+  viewCopy = view;
+  pathCopy = path;
+  delegate = [(VideosExtrasCarouselViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v7 item];
+    item = [pathCopy item];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __78__VideosExtrasCarouselViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
     v10[3] = &unk_1E872E9C8;
-    v11 = v6;
-    v12 = v7;
-    [v8 carouselViewController:self didSelectItemAtIndex:v9 completionHandler:v10];
+    v11 = viewCopy;
+    v12 = pathCopy;
+    [delegate carouselViewController:self didSelectItemAtIndex:item completionHandler:v10];
   }
 }
 
@@ -293,7 +293,7 @@ uint64_t __78__VideosExtrasCarouselViewController_collectionView_didSelectItemAt
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (![(VideosExtrasCarouselViewController *)self _isPhone])
   {
@@ -302,35 +302,35 @@ uint64_t __78__VideosExtrasCarouselViewController_collectionView_didSelectItemAt
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = velocity.y;
+  x = velocity.x;
   if ([(VideosExtrasCarouselViewController *)self _isPhone])
   {
-    v9 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-    [v9 _effectiveContentInset];
+    carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+    [carouselCollectionView _effectiveContentInset];
     v11 = v10;
 
-    v12 = v11 + a5->x;
-    v13 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-    [v13 bounds];
+    v12 = v11 + offset->x;
+    carouselCollectionView2 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+    [carouselCollectionView2 bounds];
     v15 = v12;
     MidY = CGRectGetMidY(v17);
 
     v14 = [(VideosExtrasCarouselViewController *)self _findSnappingItemFromContentOffset:&v15 withVelocity:x, y];
     if (v14)
     {
-      [(VideosExtrasCarouselViewController *)self _snapTargetContentOffset:a5 toItemIndexPath:v14 atItemOffset:v15, MidY];
+      [(VideosExtrasCarouselViewController *)self _snapTargetContentOffset:offset toItemIndexPath:v14 atItemOffset:v15, MidY];
     }
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = VideosExtrasCarouselViewController;
-  [(VideosExtrasCarouselViewController *)&v4 didMoveToParentViewController:a3];
+  [(VideosExtrasCarouselViewController *)&v4 didMoveToParentViewController:controller];
   [(VideosExtrasCarouselViewController *)self _ensureScrollViewSnaps];
 }
 
@@ -338,18 +338,18 @@ uint64_t __78__VideosExtrasCarouselViewController_collectionView_didSelectItemAt
 {
   if ([(VideosExtrasCarouselViewController *)self _isPhone])
   {
-    v3 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-    [v3 _effectiveContentInset];
+    carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+    [carouselCollectionView _effectiveContentInset];
     v5 = v4;
 
-    v6 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-    [v6 contentOffset];
+    carouselCollectionView2 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+    [carouselCollectionView2 contentOffset];
     v8 = v7;
     v17 = v7;
     v18 = v9;
 
-    v10 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-    [v10 bounds];
+    carouselCollectionView3 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+    [carouselCollectionView3 bounds];
     v15 = v5 + v8;
     MidY = CGRectGetMidY(v19);
 
@@ -359,23 +359,23 @@ uint64_t __78__VideosExtrasCarouselViewController_collectionView_didSelectItemAt
       [(VideosExtrasCarouselViewController *)self _snapTargetContentOffset:&v17 toItemIndexPath:v11 atItemOffset:v15, MidY];
       v12 = v17;
       v13 = v18;
-      v14 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-      [v14 setContentOffset:{v12, v13}];
+      carouselCollectionView4 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+      [carouselCollectionView4 setContentOffset:{v12, v13}];
     }
   }
 }
 
-- (id)_findSnappingItemFromContentOffset:(CGPoint *)a3 withVelocity:(CGPoint)a4
+- (id)_findSnappingItemFromContentOffset:(CGPoint *)offset withVelocity:(CGPoint)velocity
 {
-  x = a4.x;
-  v7 = [(VideosExtrasCarouselViewController *)self carouselCollectionView:a4.x];
+  x = velocity.x;
+  v7 = [(VideosExtrasCarouselViewController *)self carouselCollectionView:velocity.x];
   [v7 contentSize];
   v9 = v8;
-  v10 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  [v10 frame];
+  carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  [carouselCollectionView frame];
   v12 = v9 - v11;
 
-  if (v12 > 0.0 && a3->x >= v12)
+  if (v12 > 0.0 && offset->x >= v12)
   {
     v14 = 0;
     v24 = 1;
@@ -383,13 +383,13 @@ uint64_t __78__VideosExtrasCarouselViewController_collectionView_didSelectItemAt
 
   else
   {
-    v13 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-    v14 = [v13 indexPathForItemAtPoint:{a3->x, a3->y}];
+    carouselCollectionView2 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+    v14 = [carouselCollectionView2 indexPathForItemAtPoint:{offset->x, offset->y}];
 
     if (!v14)
     {
-      v15 = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
-      [v15 minimumInteritemSpacing];
+      carouselCollectionViewLayout = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
+      [carouselCollectionViewLayout minimumInteritemSpacing];
       v17 = v16;
 
       v18 = 10.0;
@@ -403,38 +403,38 @@ uint64_t __78__VideosExtrasCarouselViewController_collectionView_didSelectItemAt
         v18 = -v18;
       }
 
-      a3->x = a3->x + v18;
-      v19 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-      v14 = [v19 indexPathForItemAtPoint:{a3->x, a3->y}];
+      offset->x = offset->x + v18;
+      carouselCollectionView3 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+      v14 = [carouselCollectionView3 indexPathForItemAtPoint:{offset->x, offset->y}];
 
       if (!v14)
       {
-        v20 = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
-        [v20 minimumLineSpacing];
+        carouselCollectionViewLayout2 = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
+        [carouselCollectionViewLayout2 minimumLineSpacing];
         v22 = v21;
 
-        a3->y = a3->y - v22;
-        v23 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-        v14 = [v23 indexPathForItemAtPoint:{a3->x, a3->y}];
+        offset->y = offset->y - v22;
+        carouselCollectionView4 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+        v14 = [carouselCollectionView4 indexPathForItemAtPoint:{offset->x, offset->y}];
       }
     }
 
     v24 = 0;
   }
 
-  v25 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  v26 = [v25 numberOfSections];
+  carouselCollectionView5 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  numberOfSections = [carouselCollectionView5 numberOfSections];
 
   if (!v14)
   {
-    v27 = v26 - 1;
-    if (v26 >= 1)
+    v27 = numberOfSections - 1;
+    if (numberOfSections >= 1)
     {
       v28 = 0;
       do
       {
-        v29 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-        v30 = [v29 numberOfItemsInSection:v28];
+        carouselCollectionView6 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+        v30 = [carouselCollectionView6 numberOfItemsInSection:v28];
 
         if (v30 < 1)
         {
@@ -448,11 +448,11 @@ uint64_t __78__VideosExtrasCarouselViewController_collectionView_didSelectItemAt
         }
       }
 
-      while (v28 < v26 && !v31);
+      while (v28 < numberOfSections && !v31);
       do
       {
-        v32 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-        v33 = [v32 numberOfItemsInSection:v27];
+        carouselCollectionView7 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+        v33 = [carouselCollectionView7 numberOfItemsInSection:v27];
 
         if (v33 < 1)
         {
@@ -491,26 +491,26 @@ uint64_t __78__VideosExtrasCarouselViewController_collectionView_didSelectItemAt
   return v14;
 }
 
-- (void)_snapTargetContentOffset:(CGPoint *)a3 toItemIndexPath:(id)a4 atItemOffset:(CGPoint)a5
+- (void)_snapTargetContentOffset:(CGPoint *)offset toItemIndexPath:(id)path atItemOffset:(CGPoint)itemOffset
 {
-  x = a5.x;
-  v35 = a4;
-  v8 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  [v8 frame];
+  x = itemOffset.x;
+  pathCopy = path;
+  carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  [carouselCollectionView frame];
   v10 = v9;
 
-  v11 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  [v11 contentSize];
+  carouselCollectionView2 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  [carouselCollectionView2 contentSize];
   v13 = v12;
 
-  v14 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  [v14 _effectiveContentInset];
+  carouselCollectionView3 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  [carouselCollectionView3 _effectiveContentInset];
   v16 = v15;
   v18 = v17;
 
   v19 = v10 - v18 - v16;
-  v20 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  v21 = [v20 layoutAttributesForItemAtIndexPath:v35];
+  carouselCollectionView4 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  v21 = [carouselCollectionView4 layoutAttributesForItemAtIndexPath:pathCopy];
 
   [v21 frame];
   v26 = v22;
@@ -518,21 +518,21 @@ uint64_t __78__VideosExtrasCarouselViewController_collectionView_didSelectItemAt
   {
     if (CGRectGetMidX(*&v22) < x)
     {
-      v27 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-      v28 = [v27 numberOfItemsInSection:{objc_msgSend(v35, "section")}] - 1;
-      v29 = [v35 item];
+      carouselCollectionView5 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+      v28 = [carouselCollectionView5 numberOfItemsInSection:{objc_msgSend(pathCopy, "section")}] - 1;
+      item = [pathCopy item];
 
-      if (v28 > v29)
+      if (v28 > item)
       {
-        v30 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v35 inSection:{"item") + 1, objc_msgSend(v35, "section")}];
+        v30 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(pathCopy inSection:{"item") + 1, objc_msgSend(pathCopy, "section")}];
 
-        v31 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-        v32 = [v31 layoutAttributesForItemAtIndexPath:v30];
+        carouselCollectionView6 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+        v32 = [carouselCollectionView6 layoutAttributesForItemAtIndexPath:v30];
 
         [v32 frame];
         v26 = v33;
         v21 = v32;
-        v35 = v30;
+        pathCopy = v30;
       }
     }
 
@@ -548,10 +548,10 @@ LABEL_6:
 
   v34 = v13 - v10 + v18;
 LABEL_8:
-  a3->x = v34;
+  offset->x = v34;
 }
 
-- (void)subviewsDidChangeForCarouselCollectionView:(id)a3
+- (void)subviewsDidChangeForCarouselCollectionView:(id)view
 {
   if (![(VideosExtrasCarouselViewController *)self _isPhone])
   {
@@ -560,47 +560,47 @@ LABEL_8:
   }
 }
 
-- (void)prepareZoomingImageTransitionWithContext:(id)a3
+- (void)prepareZoomingImageTransitionWithContext:(id)context
 {
-  v11 = a3;
-  v4 = [v11 appearState];
-  v5 = [v11 itemIndex];
-  if (!v4)
+  contextCopy = context;
+  appearState = [contextCopy appearState];
+  itemIndex = [contextCopy itemIndex];
+  if (!appearState)
   {
-    [(VideosExtrasCarouselViewController *)self setIndexOfVisibleItem:v5];
-    v6 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-    [v6 layoutIfNeeded];
+    [(VideosExtrasCarouselViewController *)self setIndexOfVisibleItem:itemIndex];
+    carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+    [carouselCollectionView layoutIfNeeded];
 
     [(VideosExtrasCarouselViewController *)self _updateOpacityOfTextInVisibleCells];
-    v7 = [(VideosExtrasCarouselViewController *)self view];
-    [v7 setAlpha:0.0];
+    view = [(VideosExtrasCarouselViewController *)self view];
+    [view setAlpha:0.0];
 
-    v8 = [(VideosExtrasCarouselViewController *)self navigationController];
-    if ([v8 isNavigationBarHidden])
+    navigationController = [(VideosExtrasCarouselViewController *)self navigationController];
+    if ([navigationController isNavigationBarHidden])
     {
       [(VideosExtrasCarouselViewController *)self setRevealingNavigationBarDuringTransition:1];
-      [v8 setNavigationBarHidden:0 animated:1];
-      v9 = [v8 navigationBar];
-      [v9 setAlpha:0.0];
+      [navigationController setNavigationBarHidden:0 animated:1];
+      navigationBar = [navigationController navigationBar];
+      [navigationBar setAlpha:0.0];
     }
   }
 
-  v10 = [(VideosExtrasCarouselViewController *)self carouselCollectionViewCellForItemAtIndex:v5];
-  [v10 prepareZoomingImageTransitionWithContext:v11];
+  v10 = [(VideosExtrasCarouselViewController *)self carouselCollectionViewCellForItemAtIndex:itemIndex];
+  [v10 prepareZoomingImageTransitionWithContext:contextCopy];
 }
 
-- (void)performZoomingImageTransitionWithContext:(id)a3
+- (void)performZoomingImageTransitionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 appearState];
-  if (v5 == 1)
+  contextCopy = context;
+  appearState = [contextCopy appearState];
+  if (appearState == 1)
   {
     v6 = 0.0;
   }
 
   else
   {
-    if (v5)
+    if (appearState)
     {
       goto LABEL_7;
     }
@@ -608,32 +608,32 @@ LABEL_8:
     v6 = 1.0;
     if ([(VideosExtrasCarouselViewController *)self isRevealingNavigationBarDuringTransition])
     {
-      v7 = [(VideosExtrasCarouselViewController *)self navigationController];
-      v8 = [v7 navigationBar];
-      [v8 setAlpha:1.0];
+      navigationController = [(VideosExtrasCarouselViewController *)self navigationController];
+      navigationBar = [navigationController navigationBar];
+      [navigationBar setAlpha:1.0];
     }
   }
 
-  v9 = [(VideosExtrasCarouselViewController *)self view];
-  [v9 setAlpha:v6];
+  view = [(VideosExtrasCarouselViewController *)self view];
+  [view setAlpha:v6];
 
 LABEL_7:
-  v10 = -[VideosExtrasCarouselViewController carouselCollectionViewCellForItemAtIndex:](self, "carouselCollectionViewCellForItemAtIndex:", [v4 itemIndex]);
-  [v10 performZoomingImageTransitionWithContext:v4];
+  v10 = -[VideosExtrasCarouselViewController carouselCollectionViewCellForItemAtIndex:](self, "carouselCollectionViewCellForItemAtIndex:", [contextCopy itemIndex]);
+  [v10 performZoomingImageTransitionWithContext:contextCopy];
 }
 
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = -[VideosExtrasCarouselViewController carouselCollectionViewCellForItemAtIndex:](self, "carouselCollectionViewCellForItemAtIndex:", [v6 itemIndex]);
-  [v9 finalizeZoomingImageTransitionWithContext:v6 transitionFinished:v4];
-  v7 = [v6 appearState];
+  finishedCopy = finished;
+  contextCopy = context;
+  v9 = -[VideosExtrasCarouselViewController carouselCollectionViewCellForItemAtIndex:](self, "carouselCollectionViewCellForItemAtIndex:", [contextCopy itemIndex]);
+  [v9 finalizeZoomingImageTransitionWithContext:contextCopy transitionFinished:finishedCopy];
+  appearState = [contextCopy appearState];
 
-  if (v7 == 1)
+  if (appearState == 1)
   {
-    v8 = [(VideosExtrasCarouselViewController *)self view];
-    [v8 setAlpha:1.0];
+    view = [(VideosExtrasCarouselViewController *)self view];
+    [view setAlpha:1.0];
   }
 
   [(VideosExtrasCarouselViewController *)self setRevealingNavigationBarDuringTransition:0];
@@ -641,35 +641,35 @@ LABEL_7:
 
 - (unint64_t)indexOfVisibleItem
 {
-  v2 = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
-  v3 = [v2 indexOfVisibleItem];
+  carouselCollectionViewLayout = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
+  indexOfVisibleItem = [carouselCollectionViewLayout indexOfVisibleItem];
 
-  return v3;
+  return indexOfVisibleItem;
 }
 
-- (void)setIndexOfVisibleItem:(unint64_t)a3 animated:(BOOL)a4
+- (void)setIndexOfVisibleItem:(unint64_t)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  [v7 layoutIfNeeded];
+  animatedCopy = animated;
+  carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  [carouselCollectionView layoutIfNeeded];
 
-  v8 = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
-  [v8 setIndexOfVisibleItem:a3 animated:v4];
+  carouselCollectionViewLayout = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
+  [carouselCollectionViewLayout setIndexOfVisibleItem:item animated:animatedCopy];
 }
 
-- (id)carouselCollectionViewCellForItemAtIndex:(unint64_t)a3
+- (id)carouselCollectionViewCellForItemAtIndex:(unint64_t)index
 {
-  v4 = [MEMORY[0x1E696AC88] indexPathForItem:a3 inSection:0];
-  v5 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  v6 = [v5 cellForItemAtIndexPath:v4];
+  v4 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
+  carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  v6 = [carouselCollectionView cellForItemAtIndexPath:v4];
 
   return v6;
 }
 
-- (void)_loadCarouselCollectionViewInView:(id)a3 withContraintsAccumulator:(id)a4
+- (void)_loadCarouselCollectionViewInView:(id)view withContraintsAccumulator:(id)accumulator
 {
-  v38 = a3;
-  v6 = a4;
+  viewCopy = view;
+  accumulatorCopy = accumulator;
   v7 = *MEMORY[0x1E69DDCE0];
   v8 = *(MEMORY[0x1E69DDCE0] + 8);
   v9 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -678,14 +678,14 @@ LABEL_7:
   {
     v11 = objc_alloc_init(VideosExtrasCarouselCollectionViewFlowLayout);
     [(UICollectionViewFlowLayout *)v11 setScrollDirection:1];
-    v12 = [(VideosExtrasCarouselViewController *)self navigationController];
-    v13 = [v12 view];
-    [v13 safeAreaInsets];
+    navigationController = [(VideosExtrasCarouselViewController *)self navigationController];
+    view = [navigationController view];
+    [view safeAreaInsets];
     v15 = v14;
 
-    v16 = [(VideosExtrasCarouselViewController *)self navigationController];
-    v17 = [v16 view];
-    [v17 safeAreaInsets];
+    navigationController2 = [(VideosExtrasCarouselViewController *)self navigationController];
+    view2 = [navigationController2 view];
+    [view2 safeAreaInsets];
     v19 = v18;
 
     if (v15 == 0.0)
@@ -721,8 +721,8 @@ LABEL_7:
   v23 = [(VideosExtrasCarouselCollectionView *)v22 initWithFrame:v11 collectionViewLayout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(VideosExtrasCarouselCollectionView *)v23 setContentInset:v7, v20, v9, v21];
   [(VideosExtrasCarouselCollectionView *)v23 setShowsHorizontalScrollIndicator:0];
-  v24 = [MEMORY[0x1E69DC888] clearColor];
-  [(VideosExtrasCarouselCollectionView *)v23 setBackgroundColor:v24];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(VideosExtrasCarouselCollectionView *)v23 setBackgroundColor:clearColor];
 
   [(VideosExtrasCarouselCollectionView *)v23 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"_VideosExtrasCarouselCollectionViewCellReuseIdentifier"];
   [(VideosExtrasCarouselCollectionView *)v23 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"_VideosExtrasLockupCollectionViewCellReuseIdentifier"];
@@ -731,30 +731,30 @@ LABEL_7:
   [(VideosExtrasCarouselCollectionView *)v23 setCarouselCollectionViewDelegate:self];
   [(VideosExtrasCarouselCollectionView *)v23 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(VideosExtrasCarouselCollectionView *)v23 _setContentInsetAdjustmentBehavior:2];
-  [v38 addSubview:v23];
+  [viewCopy addSubview:v23];
   v25 = 0.0;
-  v26 = [MEMORY[0x1E696ACD8] constraintWithItem:v23 attribute:3 relatedBy:0 toItem:v38 attribute:3 multiplier:1.0 constant:0.0];
-  [v6 addObject:v26];
+  v26 = [MEMORY[0x1E696ACD8] constraintWithItem:v23 attribute:3 relatedBy:0 toItem:viewCopy attribute:3 multiplier:1.0 constant:0.0];
+  [accumulatorCopy addObject:v26];
 
-  v27 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v23 toView:v38 alongEdges:10 insets:{v7, v8, v9, v10}];
-  [v6 addObjectsFromArray:v27];
+  v27 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v23 toView:viewCopy alongEdges:10 insets:{v7, v8, v9, v10}];
+  [accumulatorCopy addObjectsFromArray:v27];
 
-  v28 = [(VideosExtrasCarouselViewController *)self navigationController];
+  navigationController3 = [(VideosExtrasCarouselViewController *)self navigationController];
   v29 = objc_opt_respondsToSelector();
 
   if (v29)
   {
-    v30 = [(VideosExtrasCarouselViewController *)self navigationController];
-    v31 = [v30 mainTemplateViewController];
-    v32 = [v31 menuBarView];
-    [v32 bounds];
+    navigationController4 = [(VideosExtrasCarouselViewController *)self navigationController];
+    mainTemplateViewController = [navigationController4 mainTemplateViewController];
+    menuBarView = [mainTemplateViewController menuBarView];
+    [menuBarView bounds];
     v25 = v33;
 
     v34 = MEMORY[0x1E696ACD8];
     if (v25 > 0.0)
     {
       v35 = 0;
-      v36 = v38;
+      safeAreaLayoutGuide = viewCopy;
       goto LABEL_14;
     }
   }
@@ -764,12 +764,12 @@ LABEL_7:
     v34 = MEMORY[0x1E696ACD8];
   }
 
-  v30 = [(VideosExtrasCarouselViewController *)self view];
-  v36 = [v30 safeAreaLayoutGuide];
+  navigationController4 = [(VideosExtrasCarouselViewController *)self view];
+  safeAreaLayoutGuide = [navigationController4 safeAreaLayoutGuide];
   v35 = 1;
 LABEL_14:
-  v37 = [v34 constraintWithItem:v23 attribute:4 relatedBy:0 toItem:v36 attribute:4 multiplier:1.0 constant:-v25];
-  [v6 addObject:v37];
+  v37 = [v34 constraintWithItem:v23 attribute:4 relatedBy:0 toItem:safeAreaLayoutGuide attribute:4 multiplier:1.0 constant:-v25];
+  [accumulatorCopy addObject:v37];
 
   if (v35)
   {
@@ -780,8 +780,8 @@ LABEL_14:
 
 - (int64_t)_numberOfItems
 {
-  v3 = [(VideosExtrasCarouselViewController *)self dataSource];
-  v4 = [v3 numberOfItemsInCarouselViewController:self];
+  dataSource = [(VideosExtrasCarouselViewController *)self dataSource];
+  v4 = [dataSource numberOfItemsInCarouselViewController:self];
 
   return v4;
 }
@@ -791,20 +791,20 @@ LABEL_14:
   v27 = *MEMORY[0x1E69E9840];
   if (![(VideosExtrasCarouselViewController *)self _isPhone])
   {
-    v3 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-    v4 = [v3 superview];
-    [v3 center];
+    carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+    superview = [carouselCollectionView superview];
+    [carouselCollectionView center];
     v6 = v5;
-    v7 = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
-    [v7 itemWidth];
+    carouselCollectionViewLayout = [(VideosExtrasCarouselViewController *)self carouselCollectionViewLayout];
+    [carouselCollectionViewLayout itemWidth];
     v9 = v8;
 
-    v10 = [v3 visibleCells];
+    visibleCells = [carouselCollectionView visibleCells];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v11 = [visibleCells countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
       v12 = v11;
@@ -815,12 +815,12 @@ LABEL_14:
         {
           if (*v23 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(visibleCells);
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
           [v15 bounds];
-          [v15 convertRect:v4 toView:?];
+          [v15 convertRect:superview toView:?];
           v16 = vabdd_f64(CGRectGetMidX(v28), v6);
           v17 = 1.0;
           if (v16 >= v9 * 0.5)
@@ -834,17 +834,17 @@ LABEL_14:
             }
           }
 
-          v19 = [v15 titleLabel];
-          [v19 setAlpha:v17];
+          titleLabel = [v15 titleLabel];
+          [titleLabel setAlpha:v17];
 
-          v20 = [v15 subtitleLabel];
-          [v20 setAlpha:v17];
+          subtitleLabel = [v15 subtitleLabel];
+          [subtitleLabel setAlpha:v17];
 
-          v21 = [v15 descriptionLabel];
-          [v21 setAlpha:v17];
+          descriptionLabel = [v15 descriptionLabel];
+          [descriptionLabel setAlpha:v17];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v12 = [visibleCells countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v12);
@@ -855,18 +855,18 @@ LABEL_14:
 - (void)_updateWindowSizeForVisibleCells
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
-  v3 = [v2 window];
-  [v3 bounds];
+  carouselCollectionView = [(VideosExtrasCarouselViewController *)self carouselCollectionView];
+  window = [carouselCollectionView window];
+  [window bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [v2 visibleCells];
+  visibleCells = [carouselCollectionView visibleCells];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -878,14 +878,14 @@ LABEL_14:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v13 + 1) + 8 * v12++) setWindowSize:{v5, v7}];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
@@ -894,8 +894,8 @@ LABEL_14:
 
 - (BOOL)_isPhone
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }

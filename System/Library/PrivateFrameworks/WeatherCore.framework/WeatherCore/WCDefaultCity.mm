@@ -1,42 +1,42 @@
 @interface WCDefaultCity
-+ (id)cityFromAlCity:(id)a3;
++ (id)cityFromAlCity:(id)city;
 - (id)description;
 @end
 
 @implementation WCDefaultCity
 
-+ (id)cityFromAlCity:(id)a3
++ (id)cityFromAlCity:(id)city
 {
-  v3 = a3;
+  cityCopy = city;
   v4 = objc_alloc_init(WCDefaultCity);
-  v5 = [v3 localeCode];
-  [(WCDefaultCity *)v4 setLocaleCode:v5];
+  localeCode = [cityCopy localeCode];
+  [(WCDefaultCity *)v4 setLocaleCode:localeCode];
 
-  v6 = [v3 timeZone];
-  [(WCDefaultCity *)v4 setTimeZone:v6];
+  timeZone = [cityCopy timeZone];
+  [(WCDefaultCity *)v4 setTimeZone:timeZone];
 
-  [v3 longitude];
+  [cityCopy longitude];
   [(WCDefaultCity *)v4 setLongitude:?];
-  [v3 latitude];
+  [cityCopy latitude];
   [(WCDefaultCity *)v4 setLatitude:?];
-  v7 = [v3 name];
-  [(WCDefaultCity *)v4 setName:v7];
+  name = [cityCopy name];
+  [(WCDefaultCity *)v4 setName:name];
 
-  v8 = [v3 unlocalizedName];
-  [(WCDefaultCity *)v4 setUnlocalizedName:v8];
+  unlocalizedName = [cityCopy unlocalizedName];
+  [(WCDefaultCity *)v4 setUnlocalizedName:unlocalizedName];
 
-  v9 = [v3 countryName];
-  [(WCDefaultCity *)v4 setCountryName:v9];
+  countryName = [cityCopy countryName];
+  [(WCDefaultCity *)v4 setCountryName:countryName];
 
-  v10 = [v3 unlocalizedCountryName];
-  [(WCDefaultCity *)v4 setUnlocalizedCountryName:v10];
+  unlocalizedCountryName = [cityCopy unlocalizedCountryName];
+  [(WCDefaultCity *)v4 setUnlocalizedCountryName:unlocalizedCountryName];
 
-  v11 = [v3 countryOverride];
-  [(WCDefaultCity *)v4 setCountryOverride:v11];
+  countryOverride = [cityCopy countryOverride];
+  [(WCDefaultCity *)v4 setCountryOverride:countryOverride];
 
-  v12 = [v3 unlocalizedCountryOverride];
+  unlocalizedCountryOverride = [cityCopy unlocalizedCountryOverride];
 
-  [(WCDefaultCity *)v4 setUnlocalizedCountryOverride:v12];
+  [(WCDefaultCity *)v4 setUnlocalizedCountryOverride:unlocalizedCountryOverride];
 
   return v4;
 }
@@ -47,10 +47,10 @@
   v10.receiver = self;
   v10.super_class = WCDefaultCity;
   v4 = [(WCDefaultCity *)&v10 description];
-  v5 = [(WCDefaultCity *)self name];
-  v6 = [(WCDefaultCity *)self countryName];
-  v7 = [(WCDefaultCity *)self countryOverride];
-  v8 = [v3 stringWithFormat:@"%@ %@, %@ [%@] || %@, %@ || %f %f", v4, v5, v6, v7, self->_timeZone, self->_localeCode, self->_latitude, self->_longitude];
+  name = [(WCDefaultCity *)self name];
+  countryName = [(WCDefaultCity *)self countryName];
+  countryOverride = [(WCDefaultCity *)self countryOverride];
+  v8 = [v3 stringWithFormat:@"%@ %@, %@ [%@] || %@, %@ || %f %f", v4, name, countryName, countryOverride, self->_timeZone, self->_localeCode, self->_latitude, self->_longitude];
 
   return v8;
 }

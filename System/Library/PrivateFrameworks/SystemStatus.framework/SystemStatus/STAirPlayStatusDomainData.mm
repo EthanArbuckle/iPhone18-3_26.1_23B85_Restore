@@ -1,137 +1,137 @@
 @interface STAirPlayStatusDomainData
-- (BOOL)isEqual:(id)a3;
-- (STAirPlayStatusDomainData)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)initWithAirPlayState:(void *)a3 bundleIdentifier:;
-- (id)initWithData:(id *)a1;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (STAirPlayStatusDomainData)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)initWithAirPlayState:(void *)state bundleIdentifier:;
+- (id)initWithData:(id *)data;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STAirPlayStatusDomainData
 
-- (id)initWithData:(id *)a1
+- (id)initWithData:(id *)data
 {
-  v2 = a1;
-  if (a1)
+  dataCopy = data;
+  if (data)
   {
     v3 = a2;
-    v4 = [v3 airPlayState];
-    v5 = [v3 bundleIdentifier];
+    airPlayState = [v3 airPlayState];
+    bundleIdentifier = [v3 bundleIdentifier];
 
-    v2 = [(STAirPlayStatusDomainData *)v2 initWithAirPlayState:v4 bundleIdentifier:v5];
+    dataCopy = [(STAirPlayStatusDomainData *)dataCopy initWithAirPlayState:airPlayState bundleIdentifier:bundleIdentifier];
   }
 
-  return v2;
+  return dataCopy;
 }
 
-- (id)initWithAirPlayState:(void *)a3 bundleIdentifier:
+- (id)initWithAirPlayState:(void *)state bundleIdentifier:
 {
-  v6 = a3;
-  if (a1)
+  stateCopy = state;
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = STAirPlayStatusDomainData;
     v7 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       v7[1] = a2;
-      objc_storeStrong(v7 + 2, a3);
+      objc_storeStrong(v7 + 2, state);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STAirPlayStatusDomainData *)self airPlayState];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  airPlayState = [(STAirPlayStatusDomainData *)self airPlayState];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __37__STAirPlayStatusDomainData_isEqual___block_invoke;
   v18[3] = &unk_1E85DE2F8;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
-  v8 = [v5 appendUnsignedInteger:v6 counterpart:v18];
-  v9 = [(STAirPlayStatusDomainData *)self bundleIdentifier];
+  v8 = [v5 appendUnsignedInteger:airPlayState counterpart:v18];
+  bundleIdentifier = [(STAirPlayStatusDomainData *)self bundleIdentifier];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __37__STAirPlayStatusDomainData_isEqual___block_invoke_2;
   v16 = &unk_1E85DDD28;
   v17 = v7;
   v10 = v7;
-  v11 = [v5 appendString:v9 counterpart:&v13];
+  v11 = [v5 appendString:bundleIdentifier counterpart:&v13];
 
-  LOBYTE(v9) = [v5 isEqual];
-  return v9;
+  LOBYTE(bundleIdentifier) = [v5 isEqual];
+  return bundleIdentifier;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendUnsignedInteger:{-[STAirPlayStatusDomainData airPlayState](self, "airPlayState")}];
-  v5 = [(STAirPlayStatusDomainData *)self bundleIdentifier];
-  v6 = [v3 appendString:v5];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendUnsignedInteger:{-[STAirPlayStatusDomainData airPlayState](self, "airPlayState")}];
+  bundleIdentifier = [(STAirPlayStatusDomainData *)self bundleIdentifier];
+  v6 = [builder appendString:bundleIdentifier];
 
-  v7 = [v3 hash];
+  v7 = [builder hash];
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableAirPlayStatusDomainData allocWithZone:a3];
+  v4 = [STMutableAirPlayStatusDomainData allocWithZone:zone];
 
   return [(STAirPlayStatusDomainData *)&v4->super.super.isa initWithData:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STAirPlayStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STAirPlayStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STAirPlayStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STAirPlayStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STAirPlayStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STAirPlayStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __77__STAirPlayStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;
@@ -165,13 +165,13 @@ void __77__STAirPlayStatusDomainData__descriptionBuilderWithMultilinePrefix_forD
   [v5 appendString:v6 withName:@"bundleIdentifier"];
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STAirPlayStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STAirPlayStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -182,13 +182,13 @@ void __77__STAirPlayStatusDomainData__descriptionBuilderWithMultilinePrefix_forD
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STAirPlayStatusDomainData *)self copy];
     }
@@ -196,7 +196,7 @@ void __77__STAirPlayStatusDomainData__descriptionBuilderWithMultilinePrefix_forD
     else
     {
       v5 = [(STAirPlayStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -208,19 +208,19 @@ void __77__STAirPlayStatusDomainData__descriptionBuilderWithMultilinePrefix_forD
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[STAirPlayStatusDomainData airPlayState](self forKey:{"airPlayState"), @"airPlayState"}];
-  v5 = [(STAirPlayStatusDomainData *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[STAirPlayStatusDomainData airPlayState](self forKey:{"airPlayState"), @"airPlayState"}];
+  bundleIdentifier = [(STAirPlayStatusDomainData *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 }
 
-- (STAirPlayStatusDomainData)initWithCoder:(id)a3
+- (STAirPlayStatusDomainData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"airPlayState"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"airPlayState"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
 
   v7 = [(STAirPlayStatusDomainData *)&self->super.isa initWithAirPlayState:v5 bundleIdentifier:v6];
   return v7;

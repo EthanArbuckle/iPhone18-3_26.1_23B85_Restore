@@ -1,46 +1,46 @@
 @interface MFDAStoreDraftConsumer
-- (void)handleResponse:(id)a3 error:(id)a4;
+- (void)handleResponse:(id)response error:(id)error;
 @end
 
 @implementation MFDAStoreDraftConsumer
 
-- (void)handleResponse:(id)a3 error:(id)a4
+- (void)handleResponse:(id)response error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  responseCopy = response;
+  errorCopy = error;
+  if (errorCopy)
   {
-    objc_storeStrong(&self->_error, a4);
+    objc_storeStrong(&self->_error, error);
   }
 
-  v9 = v7;
+  v9 = responseCopy;
   v17 = v9;
   if (v9)
   {
     if (self->_error)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"MFDAStoreDraftConsumer.m" lineNumber:29 description:@"should not have error and response"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MFDAStoreDraftConsumer.m" lineNumber:29 description:@"should not have error and response"];
 
       v9 = v17;
     }
 
     if ([v9 status] != 2)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"MFDAStoreDraftConsumer.m" lineNumber:32 description:{@"got non-successful status code %ld for response", objc_msgSend(v17, "status")}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"MFDAStoreDraftConsumer.m" lineNumber:32 description:{@"got non-successful status code %ld for response", objc_msgSend(v17, "status")}];
     }
 
-    v10 = [v17 serverId];
+    serverId = [v17 serverId];
 
-    if (!v10)
+    if (!serverId)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"MFDAStoreDraftConsumer.m" lineNumber:33 description:@"got a successful response with no server id"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"MFDAStoreDraftConsumer.m" lineNumber:33 description:@"got a successful response with no server id"];
     }
 
-    v11 = [v17 serverId];
-    v12 = [v11 copy];
+    serverId2 = [v17 serverId];
+    v12 = [serverId2 copy];
     serverId = self->_serverId;
     self->_serverId = v12;
 

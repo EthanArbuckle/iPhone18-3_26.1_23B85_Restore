@@ -1,21 +1,21 @@
 @interface ClimateTargetTemperatureStepper
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)dimensionManager:(id)a3 didUpdateTemperatureUnit:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)dimensionManager:(id)manager didUpdateTemperatureUnit:(id)unit;
 - (void)layoutSubviews;
-- (void)temperatureService:(id)a3 didUpdateTargetTemperature:(id)a4;
+- (void)temperatureService:(id)service didUpdateTargetTemperature:(id)temperature;
 @end
 
 @implementation ClimateTargetTemperatureStepper
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002DD2C();
 }
 
-- (void)temperatureService:(id)a3 didUpdateTargetTemperature:(id)a4
+- (void)temperatureService:(id)service didUpdateTargetTemperature:(id)temperature
 {
   v6 = sub_1000040E8(&unk_100114790);
   v7 = *(v6 - 8);
@@ -23,22 +23,22 @@
   v9 = &v12 - v8;
   sub_10000827C(0, &qword_100114AB0);
   static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10002E4B0(v10, v9);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10002E4B0(serviceCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v14.receiver = self;
   v14.super_class = type metadata accessor for ClimateTargetTemperatureStepper();
   v7 = v14.receiver;
-  v8 = a4;
-  v9 = [(ClimateTargetTemperatureStepper *)&v14 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(ClimateTargetTemperatureStepper *)&v14 hitTest:eventCopy withEvent:x, y];
   if (v9)
   {
     v10 = v9;
@@ -66,26 +66,26 @@
   return v10;
 }
 
-- (void)dimensionManager:(id)a3 didUpdateTemperatureUnit:(id)a4
+- (void)dimensionManager:(id)manager didUpdateTemperatureUnit:(id)unit
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  unitCopy = unit;
+  selfCopy = self;
   sub_100030100();
 }
 
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter
 {
-  v3 = self;
+  selfCopy = self;
   sub_10002EF9C();
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10002F6D4(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_10002F6D4(contextCopy, coordinatorCopy);
 }
 
 @end

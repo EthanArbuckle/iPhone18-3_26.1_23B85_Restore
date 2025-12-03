@@ -1,41 +1,41 @@
 @interface SLHighlight
-+ (id)Sha256ForData:(id)a3 withSalt:(id)a4;
-+ (id)errorForHighlightDomain:(id)a3 andCode:(int64_t)a4 andUnderlyingError:(id *)a5;
++ (id)Sha256ForData:(id)data withSalt:(id)salt;
++ (id)errorForHighlightDomain:(id)domain andCode:(int64_t)code andUnderlyingError:(id *)error;
 + (id)requiredSpotlightAttributeKeys;
-- (BOOL)isEqual:(id)a3;
-- (SLHighlight)initWithAttribution:(id)a3;
-- (SLHighlight)initWithCSSearchableItem:(id)a3 error:(id *)a4;
-- (SLHighlight)initWithCoder:(id)a3;
-- (SLHighlight)initWithDictionary:(id)a3;
-- (SLHighlight)initWithPortraitHighlight:(id)a3 error:(id *)a4;
-- (id)_uniqueIdentifierForResourceURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SLHighlight)initWithAttribution:(id)attribution;
+- (SLHighlight)initWithCSSearchableItem:(id)item error:(id *)error;
+- (SLHighlight)initWithCoder:(id)coder;
+- (SLHighlight)initWithDictionary:(id)dictionary;
+- (SLHighlight)initWithPortraitHighlight:(id)highlight error:(id *)error;
+- (id)_uniqueIdentifierForResourceURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)portraitHighlight;
 - (unint64_t)hash;
 - (void)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAttributions:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAttributions:(id)attributions;
 @end
 
 @implementation SLHighlight
 
-+ (id)Sha256ForData:(id)a3 withSalt:(id)a4
++ (id)Sha256ForData:(id)data withSalt:(id)salt
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  saltCopy = salt;
   memset(&v13, 0, sizeof(v13));
-  v6 = a3;
+  dataCopy = data;
   CC_SHA256_Init(&v13);
-  v7 = v6;
-  v8 = [v7 bytes];
-  v9 = [v6 length];
+  v7 = dataCopy;
+  bytes = [v7 bytes];
+  v9 = [dataCopy length];
 
-  CC_SHA256_Update(&v13, v8, v9);
-  if (v5)
+  CC_SHA256_Update(&v13, bytes, v9);
+  if (saltCopy)
   {
-    CC_SHA256_Update(&v13, [v5 bytes], objc_msgSend(v5, "length"));
+    CC_SHA256_Update(&v13, [saltCopy bytes], objc_msgSend(saltCopy, "length"));
   }
 
   CC_SHA256_Final(md, &v13);
@@ -46,10 +46,10 @@
   return v10;
 }
 
-- (SLHighlight)initWithAttribution:(id)a3
+- (SLHighlight)initWithAttribution:(id)attribution
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributionCopy = attribution;
   v20.receiver = self;
   v20.super_class = SLHighlight;
   v5 = [(SLHighlight *)&v20 init];
@@ -63,11 +63,11 @@
     resourceURL = v6->_resourceURL;
     v6->_resourceURL = v8;
 
-    v10 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     timestamp = v6->_timestamp;
-    v6->_timestamp = v10;
+    v6->_timestamp = date;
 
-    v21[0] = v4;
+    v21[0] = attributionCopy;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
     attributions = v6->_attributions;
     v6->_attributions = v12;
@@ -87,10 +87,10 @@
   return v6;
 }
 
-- (SLHighlight)initWithPortraitHighlight:(id)a3 error:(id *)a4
+- (SLHighlight)initWithPortraitHighlight:(id)highlight error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  highlightCopy = highlight;
   v51.receiver = self;
   v51.super_class = SLHighlight;
   v7 = [(SLHighlight *)&v51 init];
@@ -101,44 +101,44 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if (v6)
+  if (highlightCopy)
   {
-    v8 = [v6 identifier];
-    v9 = [v8 length];
+    identifier = [highlightCopy identifier];
+    v9 = [identifier length];
 
     if (v9)
     {
-      v10 = [v6 identifier];
+      identifier2 = [highlightCopy identifier];
       identifier = v7->_identifier;
-      v7->_identifier = v10;
+      v7->_identifier = identifier2;
 
-      v12 = [v6 resourceURL];
+      resourceURL = [highlightCopy resourceURL];
 
-      if (v12)
+      if (resourceURL)
       {
-        v13 = [v6 resourceURL];
+        resourceURL2 = [highlightCopy resourceURL];
         resourceURL = v7->_resourceURL;
-        v7->_resourceURL = v13;
+        v7->_resourceURL = resourceURL2;
 
-        v15 = [v6 timestamp];
+        timestamp = [highlightCopy timestamp];
 
-        if (v15)
+        if (timestamp)
         {
-          v16 = [v6 timestamp];
+          timestamp2 = [highlightCopy timestamp];
           timestamp = v7->_timestamp;
-          v7->_timestamp = v16;
+          v7->_timestamp = timestamp2;
 
           v18 = objc_opt_new();
           v47 = 0u;
           v48 = 0u;
           v49 = 0u;
           v50 = 0u;
-          obj = [v6 attributionIdentifiers];
+          obj = [highlightCopy attributionIdentifiers];
           v19 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
           if (v19)
           {
             v20 = v19;
-            v43 = a4;
+            errorCopy = error;
             v21 = 0;
             v22 = *v48;
             while (2)
@@ -160,14 +160,14 @@ LABEL_32:
 
                 if (!v27)
                 {
-                  if (v43)
+                  if (errorCopy)
                   {
                     v45 = v21;
                     v30 = [objc_opt_class() errorForHighlightDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" andCode:5 andUnderlyingError:&v45];
                     v31 = v45;
 
                     v32 = v30;
-                    *v43 = v30;
+                    *errorCopy = v30;
                     v21 = v31;
                   }
 
@@ -197,13 +197,13 @@ LABEL_32:
           }
 
           objc_storeStrong(&v7->_attributions, v18);
-          v34 = [v6 supplementaryData];
+          supplementaryData = [highlightCopy supplementaryData];
           supplementaryData = v7->_supplementaryData;
-          v7->_supplementaryData = v34;
+          v7->_supplementaryData = supplementaryData;
 
-          v36 = [v6 score];
+          score = [highlightCopy score];
           score = v7->_score;
-          v7->_score = v36;
+          v7->_score = score;
 
           v38 = [(NSDictionary *)v7->_supplementaryData valueForKey:@"com_apple_mobilesms_resolvedURL"];
 
@@ -217,7 +217,7 @@ LABEL_32:
           goto LABEL_32;
         }
 
-        if (a4)
+        if (error)
         {
           v28 = objc_opt_class();
           v29 = 4;
@@ -229,7 +229,7 @@ LABEL_27:
         goto LABEL_33;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -240,7 +240,7 @@ LABEL_27:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -252,7 +252,7 @@ LABEL_27:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -263,7 +263,7 @@ LABEL_27:
 
 LABEL_26:
   [v28 errorForHighlightDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" andCode:v29 andUnderlyingError:0];
-  *a4 = v33 = 0;
+  *error = v33 = 0;
 LABEL_33:
 
   v41 = *MEMORY[0x277D85DE8];
@@ -278,8 +278,8 @@ LABEL_33:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(SLHighlight *)self attributions];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  attributions = [(SLHighlight *)self attributions];
+  v5 = [attributions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -290,36 +290,36 @@ LABEL_33:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributions);
         }
 
-        v9 = [*(*(&v19 + 1) + 8 * i) uniqueIdentifier];
-        [v3 addObject:v9];
+        uniqueIdentifier = [*(*(&v19 + 1) + 8 * i) uniqueIdentifier];
+        [v3 addObject:uniqueIdentifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [attributions countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
   }
 
   v10 = objc_alloc(MEMORY[0x277D3A4C0]);
-  v11 = [(SLHighlight *)self identifier];
-  v12 = [(SLHighlight *)self resourceURL];
-  v13 = [(SLHighlight *)self timestamp];
-  v14 = [(SLHighlight *)self supplementaryData];
-  v15 = [(SLHighlight *)self score];
-  v16 = [v10 initWithIdentifier:v11 resourceURL:v12 timestamp:v13 attributionIdentifiers:v3 supplementaryData:v14 score:v15];
+  identifier = [(SLHighlight *)self identifier];
+  resourceURL = [(SLHighlight *)self resourceURL];
+  timestamp = [(SLHighlight *)self timestamp];
+  supplementaryData = [(SLHighlight *)self supplementaryData];
+  score = [(SLHighlight *)self score];
+  v16 = [v10 initWithIdentifier:identifier resourceURL:resourceURL timestamp:timestamp attributionIdentifiers:v3 supplementaryData:supplementaryData score:score];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (SLHighlight)initWithCSSearchableItem:(id)a3 error:(id *)a4
+- (SLHighlight)initWithCSSearchableItem:(id)item error:(id *)error
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemCopy = item;
   v48.receiver = self;
   v48.super_class = SLHighlight;
   v7 = [(SLHighlight *)&v48 init];
@@ -328,35 +328,35 @@ LABEL_33:
     goto LABEL_35;
   }
 
-  v8 = [v6 attributeSet];
-  v9 = [v8 messageType];
+  attributeSet = [itemCopy attributeSet];
+  messageType = [attributeSet messageType];
 
-  v10 = [v9 isEqualToString:@"lnk"];
-  v11 = [v6 domainIdentifier];
-  v12 = [v11 isEqualToString:@"attachmentDomain"];
+  v10 = [messageType isEqualToString:@"lnk"];
+  domainIdentifier = [itemCopy domainIdentifier];
+  v12 = [domainIdentifier isEqualToString:@"attachmentDomain"];
 
   if ((v12 & 1) == 0 && (v10 & 1) == 0)
   {
     v13 = SLFrameworkLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [SLHighlight initWithCSSearchableItem:v6 error:?];
+      [SLHighlight initWithCSSearchableItem:itemCopy error:?];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_opt_class() errorForHighlightDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" andCode:6 andUnderlyingError:0];
+      *error = [objc_opt_class() errorForHighlightDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" andCode:6 andUnderlyingError:0];
     }
 
     goto LABEL_22;
   }
 
-  v14 = [v6 attributeSet];
-  v15 = [v14 contentURL];
-  if (v15 || ([v14 URL], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+  attributeSet2 = [itemCopy attributeSet];
+  contentURL = [attributeSet2 contentURL];
+  if (contentURL || ([attributeSet2 URL], (contentURL = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v16 = v15;
-    objc_storeStrong(&v7->_resourceURL, v15);
+    v16 = contentURL;
+    objc_storeStrong(&v7->_resourceURL, contentURL);
     v17 = [(SLHighlight *)v7 _uniqueIdentifierForResourceURL:v7->_resourceURL];
     if ([v17 length])
     {
@@ -365,7 +365,7 @@ LABEL_33:
       v7->_supplementaryData = MEMORY[0x277CBEC10];
 
       v47 = 0;
-      v19 = [[SLAttribution alloc] initWithCSSearchableItem:v6 error:&v47];
+      v19 = [[SLAttribution alloc] initWithCSSearchableItem:itemCopy error:&v47];
       v20 = v47;
       if (v19)
       {
@@ -374,29 +374,29 @@ LABEL_33:
         attributions = v7->_attributions;
         v7->_attributions = v21;
 
-        v23 = [v14 contentCreationDate];
-        if (v23)
+        contentCreationDate = [attributeSet2 contentCreationDate];
+        if (contentCreationDate)
         {
-          v44 = v23;
-          objc_storeStrong(&v7->_timestamp, v23);
-          v24 = [v14 customAttributeDictionary];
-          v25 = [v24 objectForKey:@"com_apple_mobilesms_isSyndicatedContent"];
+          v44 = contentCreationDate;
+          objc_storeStrong(&v7->_timestamp, contentCreationDate);
+          customAttributeDictionary = [attributeSet2 customAttributeDictionary];
+          v25 = [customAttributeDictionary objectForKey:@"com_apple_mobilesms_isSyndicatedContent"];
 
           v43 = v25;
           v7->_syndicationType = [v25 unsignedIntegerValue];
-          v26 = [v14 customAttributeDictionary];
-          v27 = [v26 objectForKey:@"com_apple_mobilesms_isSyndicatableMedia"];
+          customAttributeDictionary2 = [attributeSet2 customAttributeDictionary];
+          v27 = [customAttributeDictionary2 objectForKey:@"com_apple_mobilesms_isSyndicatableMedia"];
           v7->_isSyndicatableMedia = [v27 BOOLValue];
 
-          v28 = [v14 isLocal];
-          v7->_isLocalResource = [v28 BOOLValue];
+          isLocal = [attributeSet2 isLocal];
+          v7->_isLocalResource = [isLocal BOOLValue];
 
-          v29 = [v14 contentType];
-          v30 = v29;
+          contentType = [attributeSet2 contentType];
+          v30 = contentType;
           v45 = v20;
-          if (v29)
+          if (contentType)
           {
-            v31 = v29;
+            v31 = contentType;
             resourceUTI = v7->_resourceUTI;
             v7->_resourceUTI = v31;
           }
@@ -406,12 +406,12 @@ LABEL_33:
             resourceUTI = SLFrameworkLogHandle();
             if (os_log_type_enabled(resourceUTI, OS_LOG_TYPE_ERROR))
             {
-              [SLHighlight initWithCSSearchableItem:v6 error:?];
+              [SLHighlight initWithCSSearchableItem:itemCopy error:?];
             }
           }
 
-          v37 = [v14 customAttributeDictionary];
-          v38 = [v37 objectForKey:@"com_apple_mobilesms_livePhotoComplementPath"];
+          customAttributeDictionary3 = [attributeSet2 customAttributeDictionary];
+          v38 = [customAttributeDictionary3 objectForKey:@"com_apple_mobilesms_livePhotoComplementPath"];
 
           if (v38)
           {
@@ -427,15 +427,15 @@ LABEL_33:
           livePhotoComplementURL = v7->_livePhotoComplementURL;
           v7->_livePhotoComplementURL = v39;
 
-          v23 = v44;
+          contentCreationDate = v44;
         }
 
-        else if (a4)
+        else if (error)
         {
-          *a4 = [objc_opt_class() errorForHighlightDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" andCode:4 andUnderlyingError:0];
+          *error = [objc_opt_class() errorForHighlightDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" andCode:4 andUnderlyingError:0];
         }
 
-        if (!v23)
+        if (!contentCreationDate)
         {
           goto LABEL_23;
         }
@@ -445,27 +445,27 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      if (a4)
+      if (error)
       {
         v46 = v20;
         v33 = [objc_opt_class() errorForHighlightDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" andCode:5 andUnderlyingError:&v46];
         v34 = v46;
 
         v35 = v33;
-        *a4 = v33;
+        *error = v33;
         v20 = v34;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [objc_opt_class() errorForHighlightDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" andCode:2 andUnderlyingError:0];
+      *error = [objc_opt_class() errorForHighlightDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" andCode:2 andUnderlyingError:0];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [objc_opt_class() errorForHighlightDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" andCode:3 andUnderlyingError:0];
+    *error = [objc_opt_class() errorForHighlightDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" andCode:3 andUnderlyingError:0];
   }
 
 LABEL_22:
@@ -515,10 +515,10 @@ LABEL_36:
   return v11;
 }
 
-- (SLHighlight)initWithDictionary:(id)a3
+- (SLHighlight)initWithDictionary:(id)dictionary
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v49.receiver = self;
   v49.super_class = SLHighlight;
   v5 = [(SLHighlight *)&v49 init];
@@ -529,11 +529,11 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v6 = [v4 objectForKey:@"i"];
+  v6 = [dictionaryCopy objectForKey:@"i"];
   if ([v6 length])
   {
     objc_storeStrong(&v5->_identifier, v6);
-    v7 = [v4 objectForKey:@"ru"];
+    v7 = [dictionaryCopy objectForKey:@"ru"];
     if (v7)
     {
       v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
@@ -543,7 +543,7 @@ LABEL_35:
         v44 = v7;
         objc_storeStrong(&v5->_resourceURL, v8);
         v9 = objc_opt_new();
-        [v4 objectForKey:@"a"];
+        [dictionaryCopy objectForKey:@"a"];
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
@@ -589,7 +589,7 @@ LABEL_35:
         }
 
         objc_storeStrong(&v5->_attributions, v9);
-        v17 = [v4 objectForKey:@"t"];
+        v17 = [dictionaryCopy objectForKey:@"t"];
         v18 = v17;
         if (v17)
         {
@@ -607,28 +607,28 @@ LABEL_35:
           }
         }
 
-        v24 = [v4 objectForKey:@"sd"];
+        v24 = [dictionaryCopy objectForKey:@"sd"];
         supplementaryData = v5->_supplementaryData;
         v5->_supplementaryData = v24;
 
-        v26 = [v4 objectForKey:@"rt"];
+        v26 = [dictionaryCopy objectForKey:@"rt"];
         resourceUTI = v5->_resourceUTI;
         v5->_resourceUTI = v26;
 
-        v28 = [v4 objectForKey:@"sc"];
+        v28 = [dictionaryCopy objectForKey:@"sc"];
         score = v5->_score;
         v5->_score = v28;
 
-        v30 = [v4 objectForKey:@"st"];
+        v30 = [dictionaryCopy objectForKey:@"st"];
         v5->_syndicationType = [v30 unsignedIntegerValue];
 
-        v31 = [v4 objectForKey:@"m"];
+        v31 = [dictionaryCopy objectForKey:@"m"];
         v5->_isSyndicatableMedia = [v31 BOOLValue];
 
-        v32 = [v4 objectForKey:@"lr"];
+        v32 = [dictionaryCopy objectForKey:@"lr"];
         v5->_isLocalResource = [v32 BOOLValue];
 
-        v33 = [v4 objectForKey:@"lp"];
+        v33 = [dictionaryCopy objectForKey:@"lp"];
         if (v33)
         {
           v34 = [MEMORY[0x277CBEBC0] fileURLWithPath:v33];
@@ -636,7 +636,7 @@ LABEL_35:
           v5->_livePhotoComplementURL = v34;
         }
 
-        v36 = [v4 objectForKey:{@"com_apple_mobilesms_resolvedURL", v42}];
+        v36 = [dictionaryCopy objectForKey:{@"com_apple_mobilesms_resolvedURL", v42}];
         if (v36 && ([MEMORY[0x277CBEBC0] fileURLWithPath:v36], (v37 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           resolvedURL = v5->_resolvedURL;
@@ -684,10 +684,10 @@ LABEL_36:
 - (id)dictionaryRepresentation
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(SLHighlight *)self identifier];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [(SLHighlight *)self identifier];
 
-  if (!v4)
+  if (!identifier)
   {
     v37 = SLFrameworkLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -702,12 +702,12 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v5 = [(SLHighlight *)self identifier];
-  [v3 setObject:v5 forKey:@"i"];
+  identifier2 = [(SLHighlight *)self identifier];
+  [dictionary setObject:identifier2 forKey:@"i"];
 
-  v6 = [(SLHighlight *)self resourceURL];
+  resourceURL = [(SLHighlight *)self resourceURL];
 
-  if (!v6)
+  if (!resourceURL)
   {
     v37 = SLFrameworkLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -718,13 +718,13 @@ LABEL_36:
     goto LABEL_35;
   }
 
-  v7 = [(SLHighlight *)self resourceURL];
-  v8 = [v7 absoluteString];
-  [v3 setObject:v8 forKey:@"ru"];
+  resourceURL2 = [(SLHighlight *)self resourceURL];
+  absoluteString = [resourceURL2 absoluteString];
+  [dictionary setObject:absoluteString forKey:@"ru"];
 
-  v9 = [(SLHighlight *)self timestamp];
+  timestamp = [(SLHighlight *)self timestamp];
 
-  if (!v9)
+  if (!timestamp)
   {
     v37 = SLFrameworkLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -735,12 +735,12 @@ LABEL_36:
     goto LABEL_35;
   }
 
-  v10 = [(SLHighlight *)self timestamp];
-  [v3 setObject:v10 forKey:@"t"];
+  timestamp2 = [(SLHighlight *)self timestamp];
+  [dictionary setObject:timestamp2 forKey:@"t"];
 
-  v11 = [(SLHighlight *)self attributions];
+  attributions = [(SLHighlight *)self attributions];
 
-  if (!v11)
+  if (!attributions)
   {
     v37 = SLFrameworkLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -751,13 +751,13 @@ LABEL_36:
     goto LABEL_35;
   }
 
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v13 = [(SLHighlight *)self attributions];
-  v14 = [v13 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  attributions2 = [(SLHighlight *)self attributions];
+  v14 = [attributions2 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v14)
   {
     v15 = v14;
@@ -768,12 +768,12 @@ LABEL_36:
       {
         if (*v42 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(attributions2);
         }
 
         v18 = *(*(&v41 + 1) + 8 * i);
-        v19 = [v18 dictionaryRepresentation];
-        if (!v19)
+        dictionaryRepresentation = [v18 dictionaryRepresentation];
+        if (!dictionaryRepresentation)
         {
           v38 = SLFrameworkLogHandle();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -784,11 +784,11 @@ LABEL_36:
           goto LABEL_36;
         }
 
-        v20 = v19;
-        [v12 addObject:v19];
+        v20 = dictionaryRepresentation;
+        [array addObject:dictionaryRepresentation];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v15 = [attributions2 countByEnumeratingWithState:&v41 objects:v45 count:16];
       if (v15)
       {
         continue;
@@ -798,59 +798,59 @@ LABEL_36:
     }
   }
 
-  [v3 setObject:v12 forKey:@"a"];
+  [dictionary setObject:array forKey:@"a"];
   v21 = [MEMORY[0x277CCABB0] numberWithBool:{-[SLHighlight isLocalResource](self, "isLocalResource")}];
-  [v3 setObject:v21 forKey:@"lr"];
+  [dictionary setObject:v21 forKey:@"lr"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SLHighlight syndicationType](self, "syndicationType")}];
-  [v3 setObject:v22 forKey:@"st"];
+  [dictionary setObject:v22 forKey:@"st"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithBool:{-[SLHighlight isSyndicatableMedia](self, "isSyndicatableMedia")}];
-  [v3 setObject:v23 forKey:@"m"];
+  [dictionary setObject:v23 forKey:@"m"];
 
-  v24 = [(SLHighlight *)self score];
+  score = [(SLHighlight *)self score];
 
-  if (v24)
+  if (score)
   {
-    v25 = [(SLHighlight *)self score];
-    [v3 setObject:v25 forKey:@"sc"];
+    score2 = [(SLHighlight *)self score];
+    [dictionary setObject:score2 forKey:@"sc"];
   }
 
-  v26 = [(SLHighlight *)self supplementaryData];
+  supplementaryData = [(SLHighlight *)self supplementaryData];
 
-  if (v26)
+  if (supplementaryData)
   {
-    v27 = [(SLHighlight *)self supplementaryData];
-    [v3 setObject:v27 forKey:@"sd"];
+    supplementaryData2 = [(SLHighlight *)self supplementaryData];
+    [dictionary setObject:supplementaryData2 forKey:@"sd"];
   }
 
-  v28 = [(SLHighlight *)self resolvedURL];
+  resolvedURL = [(SLHighlight *)self resolvedURL];
 
-  if (v28)
+  if (resolvedURL)
   {
-    v29 = [(SLHighlight *)self resolvedURL];
-    v30 = [v29 path];
-    [v3 setObject:v30 forKey:@"rs"];
+    resolvedURL2 = [(SLHighlight *)self resolvedURL];
+    path = [resolvedURL2 path];
+    [dictionary setObject:path forKey:@"rs"];
   }
 
-  v31 = [(SLHighlight *)self resourceUTI];
+  resourceUTI = [(SLHighlight *)self resourceUTI];
 
-  if (v31)
+  if (resourceUTI)
   {
-    v32 = [(SLHighlight *)self resourceUTI];
-    [v3 setObject:v32 forKey:@"rt"];
+    resourceUTI2 = [(SLHighlight *)self resourceUTI];
+    [dictionary setObject:resourceUTI2 forKey:@"rt"];
   }
 
-  v33 = [(SLHighlight *)self livePhotoComplementURL];
+  livePhotoComplementURL = [(SLHighlight *)self livePhotoComplementURL];
 
-  if (v33)
+  if (livePhotoComplementURL)
   {
-    v34 = [(SLHighlight *)self livePhotoComplementURL];
-    v35 = [v34 path];
-    [v3 setObject:v35 forKey:@"lp"];
+    livePhotoComplementURL2 = [(SLHighlight *)self livePhotoComplementURL];
+    path2 = [livePhotoComplementURL2 path];
+    [dictionary setObject:path2 forKey:@"lp"];
   }
 
-  v36 = v3;
+  v36 = dictionary;
 LABEL_37:
 
   v39 = *MEMORY[0x277D85DE8];
@@ -858,60 +858,60 @@ LABEL_37:
   return v36;
 }
 
-- (SLHighlight)initWithCoder:(id)a3
+- (SLHighlight)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = SLHighlight;
   v5 = [(SLHighlight *)&v32 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ru"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ru"];
     resourceURL = v5->_resourceURL;
     v5->_resourceURL = v8;
 
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"a"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"a"];
     attributions = v5->_attributions;
     v5->_attributions = v13;
 
     v15 = objc_opt_class();
-    v16 = [v4 decodeDictionaryWithKeysOfClass:v15 objectsOfClass:objc_opt_class() forKey:@"sd"];
+    v16 = [coderCopy decodeDictionaryWithKeysOfClass:v15 objectsOfClass:objc_opt_class() forKey:@"sd"];
     supplementaryData = v5->_supplementaryData;
     v5->_supplementaryData = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sc"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sc"];
     score = v5->_score;
     v5->_score = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"st"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"st"];
     v5->_syndicationType = [v20 unsignedIntegerValue];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"t"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"t"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"com_apple_mobilesms_resolvedURL"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"com_apple_mobilesms_resolvedURL"];
     resolvedURL = v5->_resolvedURL;
     v5->_resolvedURL = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"m"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"m"];
     v5->_isSyndicatableMedia = [v25 BOOLValue];
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lr"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lr"];
     v5->_isLocalResource = [v26 BOOLValue];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rt"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rt"];
     resourceUTI = v5->_resourceUTI;
     v5->_resourceUTI = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lp"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lp"];
     livePhotoComplementURL = v5->_livePhotoComplementURL;
     v5->_livePhotoComplementURL = v29;
   }
@@ -919,70 +919,70 @@ LABEL_37:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SLHighlight *)self identifier];
-  [v4 encodeObject:v5 forKey:@"i"];
+  coderCopy = coder;
+  identifier = [(SLHighlight *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"i"];
 
-  v6 = [(SLHighlight *)self resourceURL];
-  [v4 encodeObject:v6 forKey:@"ru"];
+  resourceURL = [(SLHighlight *)self resourceURL];
+  [coderCopy encodeObject:resourceURL forKey:@"ru"];
 
-  v7 = [(SLHighlight *)self attributions];
-  [v4 encodeObject:v7 forKey:@"a"];
+  attributions = [(SLHighlight *)self attributions];
+  [coderCopy encodeObject:attributions forKey:@"a"];
 
-  v8 = [(SLHighlight *)self supplementaryData];
-  [v4 encodeObject:v8 forKey:@"sd"];
+  supplementaryData = [(SLHighlight *)self supplementaryData];
+  [coderCopy encodeObject:supplementaryData forKey:@"sd"];
 
-  v9 = [(SLHighlight *)self resolvedURL];
-  [v4 encodeObject:v9 forKey:@"com_apple_mobilesms_resolvedURL"];
+  resolvedURL = [(SLHighlight *)self resolvedURL];
+  [coderCopy encodeObject:resolvedURL forKey:@"com_apple_mobilesms_resolvedURL"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SLHighlight syndicationType](self, "syndicationType")}];
-  [v4 encodeObject:v10 forKey:@"st"];
+  [coderCopy encodeObject:v10 forKey:@"st"];
 
-  v11 = [(SLHighlight *)self timestamp];
-  [v4 encodeObject:v11 forKey:@"t"];
+  timestamp = [(SLHighlight *)self timestamp];
+  [coderCopy encodeObject:timestamp forKey:@"t"];
 
-  v12 = [(SLHighlight *)self score];
-  [v4 encodeObject:v12 forKey:@"sc"];
+  score = [(SLHighlight *)self score];
+  [coderCopy encodeObject:score forKey:@"sc"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[SLHighlight isSyndicatableMedia](self, "isSyndicatableMedia")}];
-  [v4 encodeObject:v13 forKey:@"m"];
+  [coderCopy encodeObject:v13 forKey:@"m"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[SLHighlight isLocalResource](self, "isLocalResource")}];
-  [v4 encodeObject:v14 forKey:@"lr"];
+  [coderCopy encodeObject:v14 forKey:@"lr"];
 
-  v15 = [(SLHighlight *)self resourceUTI];
-  [v4 encodeObject:v15 forKey:@"rt"];
+  resourceUTI = [(SLHighlight *)self resourceUTI];
+  [coderCopy encodeObject:resourceUTI forKey:@"rt"];
 
-  v16 = [(SLHighlight *)self livePhotoComplementURL];
-  [v4 encodeObject:v16 forKey:@"lp"];
+  livePhotoComplementURL = [(SLHighlight *)self livePhotoComplementURL];
+  [coderCopy encodeObject:livePhotoComplementURL forKey:@"lp"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SLHighlight alloc];
-  v5 = [(SLHighlight *)self dictionaryRepresentation];
-  v6 = [(SLHighlight *)v4 initWithDictionary:v5];
+  dictionaryRepresentation = [(SLHighlight *)self dictionaryRepresentation];
+  v6 = [(SLHighlight *)v4 initWithDictionary:dictionaryRepresentation];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(SLHighlight *)self identifier];
-    if (v7 || ([v6 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    identifier = [(SLHighlight *)self identifier];
+    if (identifier || ([v6 identifier], (resourceURL2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(SLHighlight *)self identifier];
-      v9 = [v6 identifier];
-      v10 = [v8 isEqualToString:v9];
+      identifier2 = [(SLHighlight *)self identifier];
+      identifier3 = [v6 identifier];
+      v10 = [identifier2 isEqualToString:identifier3];
 
-      if (v7)
+      if (identifier)
       {
 
         if (!v10)
@@ -1001,21 +1001,21 @@ LABEL_37:
       }
     }
 
-    v12 = [(SLHighlight *)self resourceURL];
-    if (!v12)
+    resourceURL = [(SLHighlight *)self resourceURL];
+    if (!resourceURL)
     {
-      v3 = [v6 resourceURL];
-      if (!v3)
+      resourceURL2 = [v6 resourceURL];
+      if (!resourceURL2)
       {
         goto LABEL_15;
       }
     }
 
-    v13 = [(SLHighlight *)self resourceURL];
-    v14 = [v6 resourceURL];
-    v15 = [v13 isEqual:v14];
+    resourceURL3 = [(SLHighlight *)self resourceURL];
+    resourceURL4 = [v6 resourceURL];
+    v15 = [resourceURL3 isEqual:resourceURL4];
 
-    if (v12)
+    if (resourceURL)
     {
 
       if (!v15)
@@ -1024,14 +1024,14 @@ LABEL_37:
       }
 
 LABEL_15:
-      v16 = [(SLHighlight *)self attributions];
-      v17 = [v16 count];
-      if (v17 || ([v6 attributions], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "count")))
+      attributions = [(SLHighlight *)self attributions];
+      v17 = [attributions count];
+      if (v17 || ([v6 attributions], resourceURL2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(resourceURL2, "count")))
       {
-        v18 = [(SLHighlight *)self attributions];
-        v19 = [v18 count];
-        v20 = [v6 attributions];
-        v21 = [v20 count];
+        attributions2 = [(SLHighlight *)self attributions];
+        v19 = [attributions2 count];
+        attributions3 = [v6 attributions];
+        v21 = [attributions3 count];
 
         if (!v17)
         {
@@ -1047,9 +1047,9 @@ LABEL_15:
       {
       }
 
-      v23 = [(SLHighlight *)self attributions];
-      v24 = [v6 attributions];
-      v11 = [v23 isEqualToArray:v24];
+      attributions4 = [(SLHighlight *)self attributions];
+      attributions5 = [v6 attributions];
+      v11 = [attributions4 isEqualToArray:attributions5];
 
       goto LABEL_21;
     }
@@ -1074,12 +1074,12 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [(SLHighlight *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(SLHighlight *)self resourceURL];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SLHighlight *)self attributions];
-  v8 = [v7 hash];
+  identifier = [(SLHighlight *)self identifier];
+  v4 = [identifier hash];
+  resourceURL = [(SLHighlight *)self resourceURL];
+  v6 = [resourceURL hash] ^ v4;
+  attributions = [(SLHighlight *)self attributions];
+  v8 = [attributions hash];
 
   return v6 ^ v8;
 }
@@ -1089,29 +1089,29 @@ LABEL_22:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SLHighlight *)self identifier];
-  v7 = [(SLHighlight *)self resourceURL];
-  v8 = [(SLHighlight *)self supplementaryData];
-  v9 = [v3 stringWithFormat:@"[%@: identifier: %@  resourceURL: %@ supplementaryData: %@]", v5, v6, v7, v8];
+  identifier = [(SLHighlight *)self identifier];
+  resourceURL = [(SLHighlight *)self resourceURL];
+  supplementaryData = [(SLHighlight *)self supplementaryData];
+  v9 = [v3 stringWithFormat:@"[%@: identifier: %@  resourceURL: %@ supplementaryData: %@]", v5, identifier, resourceURL, supplementaryData];
 
   return v9;
 }
 
-- (void)setAttributions:(id)a3
+- (void)setAttributions:(id)attributions
 {
-  v5 = a3;
-  if (v5)
+  attributionsCopy = attributions;
+  if (attributionsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_attributions, a3);
-    v5 = v6;
+    v6 = attributionsCopy;
+    objc_storeStrong(&self->_attributions, attributions);
+    attributionsCopy = v6;
   }
 }
 
-- (id)_uniqueIdentifierForResourceURL:(id)a3
+- (id)_uniqueIdentifierForResourceURL:(id)l
 {
-  v3 = [a3 absoluteString];
-  v4 = [v3 dataUsingEncoding:4];
+  absoluteString = [l absoluteString];
+  v4 = [absoluteString dataUsingEncoding:4];
 
   v5 = [objc_opt_class() Sha256ForData:v4 withSalt:0];
   v6 = [v5 base64EncodedStringWithOptions:0];
@@ -1119,14 +1119,14 @@ LABEL_22:
   return v6;
 }
 
-+ (id)errorForHighlightDomain:(id)a3 andCode:(int64_t)a4 andUnderlyingError:(id *)a5
++ (id)errorForHighlightDomain:(id)domain andCode:(int64_t)code andUnderlyingError:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  domainCopy = domain;
   v8 = 0;
-  if (a4 <= 3)
+  if (code <= 3)
   {
-    switch(a4)
+    switch(code)
     {
       case 1:
         v28 = *MEMORY[0x277CCA068];
@@ -1154,9 +1154,9 @@ LABEL_22:
     }
   }
 
-  else if (a4 > 5)
+  else if (code > 5)
   {
-    if (a4 == 6)
+    if (code == 6)
     {
       v18 = *MEMORY[0x277CCA068];
       v19 = @"SLHighlight Init failed. CSSearchableItem contains an invalid or nil domain identifier.";
@@ -1167,7 +1167,7 @@ LABEL_22:
 
     else
     {
-      if (a4 != 7)
+      if (code != 7)
       {
         goto LABEL_17;
       }
@@ -1180,7 +1180,7 @@ LABEL_22:
     }
   }
 
-  else if (a4 == 4)
+  else if (code == 4)
   {
     v22 = *MEMORY[0x277CCA068];
     v23 = @"SLHighlight Init failed. PPSocialHighlight contains an invalid or nil timestamp.";
@@ -1200,15 +1200,15 @@ LABEL_22:
 
   v8 = [v9 dictionaryWithObjects:v10 forKeys:v11 count:1];
 LABEL_17:
-  if (a5)
+  if (error)
   {
     v12 = [v8 mutableCopy];
-    [v12 setObject:*a5 forKey:*MEMORY[0x277CCA7E8]];
+    [v12 setObject:*error forKey:*MEMORY[0x277CCA7E8]];
 
     v8 = v12;
   }
 
-  v13 = [MEMORY[0x277CCA9B8] errorWithDomain:v7 code:a4 userInfo:v8];
+  v13 = [MEMORY[0x277CCA9B8] errorWithDomain:domainCopy code:code userInfo:v8];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -1237,7 +1237,7 @@ LABEL_17:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_231772000, a2, OS_LOG_TYPE_ERROR, "SLH an SLA failed dictionary serialization. Failing dictionary serialization for the SLH as well. Offending SLA: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

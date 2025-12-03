@@ -1,20 +1,20 @@
 @interface AWDIMessageNicknameRetrieved
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasHasAvatar:(BOOL)a3;
-- (void)setHasLinkQuality:(BOOL)a3;
-- (void)setHasPublicOperationalErrorCode:(BOOL)a3;
-- (void)setHasPublicSuccess:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasUpdated:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasHasAvatar:(BOOL)avatar;
+- (void)setHasLinkQuality:(BOOL)quality;
+- (void)setHasPublicOperationalErrorCode:(BOOL)code;
+- (void)setHasPublicSuccess:(BOOL)success;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasUpdated:(BOOL)updated;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIMessageNicknameRetrieved
@@ -27,9 +27,9 @@
   [(AWDIMessageNicknameRetrieved *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -42,9 +42,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUpdated:(BOOL)a3
+- (void)setHasUpdated:(BOOL)updated
 {
-  if (a3)
+  if (updated)
   {
     v3 = 0x80;
   }
@@ -57,9 +57,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasHasAvatar:(BOOL)a3
+- (void)setHasHasAvatar:(BOOL)avatar
 {
-  if (a3)
+  if (avatar)
   {
     v3 = 8;
   }
@@ -72,9 +72,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPublicSuccess:(BOOL)a3
+- (void)setHasPublicSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 64;
   }
@@ -87,9 +87,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasPublicOperationalErrorCode:(BOOL)a3
+- (void)setHasPublicOperationalErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 32;
   }
@@ -102,9 +102,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasLinkQuality:(BOOL)a3
+- (void)setHasLinkQuality:(BOOL)quality
 {
-  if (a3)
+  if (quality)
   {
     v3 = 16;
   }
@@ -117,9 +117,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -141,11 +141,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -164,7 +164,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timeTaken), @"timeTaken"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timeTaken), @"timeTaken"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -178,7 +178,7 @@ LABEL_4:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_updated), @"updated"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_updated), @"updated"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -192,18 +192,18 @@ LABEL_5:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_hasAvatar), @"hasAvatar"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_hasAvatar), @"hasAvatar"}];
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_6:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_publicSuccess), @"publicSuccess"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_publicSuccess), @"publicSuccess"}];
   }
 
 LABEL_7:
   publicOperationalErrorDomain = self->_publicOperationalErrorDomain;
   if (publicOperationalErrorDomain)
   {
-    [v3 setObject:publicOperationalErrorDomain forKey:@"publicOperationalErrorDomain"];
+    [dictionary setObject:publicOperationalErrorDomain forKey:@"publicOperationalErrorDomain"];
   }
 
   v6 = self->_has;
@@ -215,16 +215,16 @@ LABEL_7:
     }
 
 LABEL_20:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_linkQuality), @"linkQuality"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_linkQuality), @"linkQuality"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_12;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_publicOperationalErrorCode), @"publicOperationalErrorCode"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_publicOperationalErrorCode), @"publicOperationalErrorCode"}];
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
@@ -235,13 +235,13 @@ LABEL_11:
   if ((v6 & 4) != 0)
   {
 LABEL_12:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectionType), @"connectionType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectionType), @"connectionType"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -350,13 +350,13 @@ LABEL_20:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 56) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 56) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -375,8 +375,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 1) = self->_timeTaken;
-  *(a3 + 56) |= 1u;
+  *(to + 1) = self->_timeTaken;
+  *(to + 56) |= 1u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -390,8 +390,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  *(a3 + 13) = self->_updated;
-  *(a3 + 56) |= 0x80u;
+  *(to + 13) = self->_updated;
+  *(to + 56) |= 0x80u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -405,26 +405,26 @@ LABEL_5:
   }
 
 LABEL_17:
-  *(a3 + 7) = self->_hasAvatar;
-  *(a3 + 56) |= 8u;
+  *(to + 7) = self->_hasAvatar;
+  *(to + 56) |= 8u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_6:
-    *(a3 + 12) = self->_publicSuccess;
-    *(a3 + 56) |= 0x40u;
+    *(to + 12) = self->_publicSuccess;
+    *(to + 56) |= 0x40u;
   }
 
 LABEL_7:
   if (self->_publicOperationalErrorDomain)
   {
-    [a3 setPublicOperationalErrorDomain:?];
+    [to setPublicOperationalErrorDomain:?];
   }
 
   v6 = self->_has;
   if ((v6 & 0x20) != 0)
   {
-    *(a3 + 9) = self->_publicOperationalErrorCode;
-    *(a3 + 56) |= 0x20u;
+    *(to + 9) = self->_publicOperationalErrorCode;
+    *(to + 56) |= 0x20u;
     v6 = self->_has;
     if ((v6 & 0x10) == 0)
     {
@@ -443,21 +443,21 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(a3 + 8) = self->_linkQuality;
-  *(a3 + 56) |= 0x10u;
+  *(to + 8) = self->_linkQuality;
+  *(to + 56) |= 0x10u;
   if ((*&self->_has & 4) == 0)
   {
     return;
   }
 
 LABEL_12:
-  *(a3 + 6) = self->_connectionType;
-  *(a3 + 56) |= 4u;
+  *(to + 6) = self->_connectionType;
+  *(to + 56) |= 4u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -523,7 +523,7 @@ LABEL_6:
 
 LABEL_7:
 
-  *(v6 + 40) = [(NSString *)self->_publicOperationalErrorDomain copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_publicOperationalErrorDomain copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 0x20) == 0)
   {
@@ -562,48 +562,48 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 56);
+    v7 = *(equal + 56);
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 56) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 56) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_44;
       }
     }
 
-    else if ((*(a3 + 56) & 2) != 0)
+    else if ((*(equal + 56) & 2) != 0)
     {
       goto LABEL_44;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 56) & 1) == 0 || self->_timeTaken != *(a3 + 1))
+      if ((*(equal + 56) & 1) == 0 || self->_timeTaken != *(equal + 1))
       {
         goto LABEL_44;
       }
     }
 
-    else if (*(a3 + 56))
+    else if (*(equal + 56))
     {
       goto LABEL_44;
     }
 
     if ((*&self->_has & 0x80) != 0)
     {
-      if ((*(a3 + 56) & 0x80) == 0 || self->_updated != *(a3 + 13))
+      if ((*(equal + 56) & 0x80) == 0 || self->_updated != *(equal + 13))
       {
         goto LABEL_44;
       }
     }
 
-    else if ((*(a3 + 56) & 0x80) != 0)
+    else if ((*(equal + 56) & 0x80) != 0)
     {
 LABEL_44:
       LOBYTE(v5) = 0;
@@ -612,32 +612,32 @@ LABEL_44:
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 56) & 8) == 0 || self->_hasAvatar != *(a3 + 7))
+      if ((*(equal + 56) & 8) == 0 || self->_hasAvatar != *(equal + 7))
       {
         goto LABEL_44;
       }
     }
 
-    else if ((*(a3 + 56) & 8) != 0)
+    else if ((*(equal + 56) & 8) != 0)
     {
       goto LABEL_44;
     }
 
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 56) & 0x40) == 0 || self->_publicSuccess != *(a3 + 12))
+      if ((*(equal + 56) & 0x40) == 0 || self->_publicSuccess != *(equal + 12))
       {
         goto LABEL_44;
       }
     }
 
-    else if ((*(a3 + 56) & 0x40) != 0)
+    else if ((*(equal + 56) & 0x40) != 0)
     {
       goto LABEL_44;
     }
 
     publicOperationalErrorDomain = self->_publicOperationalErrorDomain;
-    if (publicOperationalErrorDomain | *(a3 + 5))
+    if (publicOperationalErrorDomain | *(equal + 5))
     {
       v5 = [(NSString *)publicOperationalErrorDomain isEqual:?];
       if (!v5)
@@ -650,34 +650,34 @@ LABEL_44:
 
     if ((has & 0x20) != 0)
     {
-      if ((*(a3 + 56) & 0x20) == 0 || self->_publicOperationalErrorCode != *(a3 + 9))
+      if ((*(equal + 56) & 0x20) == 0 || self->_publicOperationalErrorCode != *(equal + 9))
       {
         goto LABEL_44;
       }
     }
 
-    else if ((*(a3 + 56) & 0x20) != 0)
+    else if ((*(equal + 56) & 0x20) != 0)
     {
       goto LABEL_44;
     }
 
     if ((has & 0x10) != 0)
     {
-      if ((*(a3 + 56) & 0x10) == 0 || self->_linkQuality != *(a3 + 8))
+      if ((*(equal + 56) & 0x10) == 0 || self->_linkQuality != *(equal + 8))
       {
         goto LABEL_44;
       }
     }
 
-    else if ((*(a3 + 56) & 0x10) != 0)
+    else if ((*(equal + 56) & 0x10) != 0)
     {
       goto LABEL_44;
     }
 
-    LOBYTE(v5) = (*(a3 + 56) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 56) & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 56) & 4) == 0 || self->_connectionType != *(a3 + 6))
+      if ((*(equal + 56) & 4) == 0 || self->_connectionType != *(equal + 6))
       {
         goto LABEL_44;
       }
@@ -794,14 +794,14 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v9 ^ v10 ^ v11 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 56);
+  v5 = *(from + 56);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 56);
+    v5 = *(from + 56);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -814,14 +814,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 56) & 1) == 0)
+  else if ((*(from + 56) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_timeTaken = *(a3 + 1);
+  self->_timeTaken = *(from + 1);
   *&self->_has |= 1u;
-  v5 = *(a3 + 56);
+  v5 = *(from + 56);
   if ((v5 & 0x80) == 0)
   {
 LABEL_4:
@@ -834,9 +834,9 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_updated = *(a3 + 13);
+  self->_updated = *(from + 13);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 56);
+  v5 = *(from + 56);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -849,27 +849,27 @@ LABEL_5:
   }
 
 LABEL_17:
-  self->_hasAvatar = *(a3 + 7);
+  self->_hasAvatar = *(from + 7);
   *&self->_has |= 8u;
-  if ((*(a3 + 56) & 0x40) != 0)
+  if ((*(from + 56) & 0x40) != 0)
   {
 LABEL_6:
-    self->_publicSuccess = *(a3 + 12);
+    self->_publicSuccess = *(from + 12);
     *&self->_has |= 0x40u;
   }
 
 LABEL_7:
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDIMessageNicknameRetrieved *)self setPublicOperationalErrorDomain:?];
   }
 
-  v6 = *(a3 + 56);
+  v6 = *(from + 56);
   if ((v6 & 0x20) != 0)
   {
-    self->_publicOperationalErrorCode = *(a3 + 9);
+    self->_publicOperationalErrorCode = *(from + 9);
     *&self->_has |= 0x20u;
-    v6 = *(a3 + 56);
+    v6 = *(from + 56);
     if ((v6 & 0x10) == 0)
     {
 LABEL_11:
@@ -882,20 +882,20 @@ LABEL_11:
     }
   }
 
-  else if ((*(a3 + 56) & 0x10) == 0)
+  else if ((*(from + 56) & 0x10) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_linkQuality = *(a3 + 8);
+  self->_linkQuality = *(from + 8);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 56) & 4) == 0)
+  if ((*(from + 56) & 4) == 0)
   {
     return;
   }
 
 LABEL_12:
-  self->_connectionType = *(a3 + 6);
+  self->_connectionType = *(from + 6);
   *&self->_has |= 4u;
 }
 

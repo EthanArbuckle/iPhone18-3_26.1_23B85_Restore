@@ -1,24 +1,24 @@
 @interface VUIJSFoundation
 - (VUIAppContext)appContext;
-- (VUIJSFoundation)initWithAppContext:(id)a3;
-- (id)_startTimer:(id)a3 time:(int64_t)a4 repeating:(BOOL)a5;
-- (void)_clearTimer:(id)a3;
-- (void)_jsTimerFired:(id)a3;
+- (VUIJSFoundation)initWithAppContext:(id)context;
+- (id)_startTimer:(id)timer time:(int64_t)time repeating:(BOOL)repeating;
+- (void)_clearTimer:(id)timer;
+- (void)_jsTimerFired:(id)fired;
 - (void)stopTimers;
 @end
 
 @implementation VUIJSFoundation
 
-- (VUIJSFoundation)initWithAppContext:(id)a3
+- (VUIJSFoundation)initWithAppContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = VUIJSFoundation;
   v5 = [(VUIJSFoundation *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_appContext, v4);
+    objc_storeWeak(&v5->_appContext, contextCopy);
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     jsTimers = v6->_jsTimers;
     v6->_jsTimers = v7;
@@ -34,17 +34,17 @@
 - (void)stopTimers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIJSFoundation *)self jsTimers];
-  v4 = [v3 allValues];
+  jsTimers = [(VUIJSFoundation *)self jsTimers];
+  allValues = [jsTimers allValues];
 
-  if ([v4 count])
+  if ([allValues count])
   {
-    v5 = [v4 valueForKey:@"timer"];
+    v5 = [allValues valueForKey:@"timer"];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = allValues;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -79,8 +79,8 @@
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
-  v12 = [(VUIJSFoundation *)self jsTimers];
-  [v12 removeAllObjects];
+  jsTimers2 = [(VUIJSFoundation *)self jsTimers];
+  [jsTimers2 removeAllObjects];
 }
 
 void __29__VUIJSFoundation_stopTimers__block_invoke(uint64_t a1)
@@ -117,45 +117,45 @@ void __29__VUIJSFoundation_stopTimers__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_startTimer:(id)a3 time:(int64_t)a4 repeating:(BOOL)a5
+- (id)_startTimer:(id)timer time:(int64_t)time repeating:(BOOL)repeating
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(VUIJSFoundation *)self appContext];
-  if ([v8 isObject])
+  repeatingCopy = repeating;
+  timerCopy = timer;
+  appContext = [(VUIJSFoundation *)self appContext];
+  if ([timerCopy isObject])
   {
-    if (a4 >= 1)
+    if (time >= 1)
     {
-      v10 = a4;
+      timeCopy = time;
     }
 
     else
     {
-      v10 = 0;
+      timeCopy = 0;
     }
 
-    if (a4 > 0 || !v5)
+    if (time > 0 || !repeatingCopy)
     {
-      v13 = [MEMORY[0x1E696EB40] currentArguments];
-      if ([v13 count] < 3)
+      currentArguments = [MEMORY[0x1E696EB40] currentArguments];
+      if ([currentArguments count] < 3)
       {
         v14 = 0;
       }
 
       else
       {
-        v14 = [v13 subarrayWithRange:{2, objc_msgSend(v13, "count") - 2}];
+        v14 = [currentArguments subarrayWithRange:{2, objc_msgSend(currentArguments, "count") - 2}];
       }
 
-      v15 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:self target:sel__jsTimerFired_ selector:0 userInfo:v5 repeats:(v10 / 1000.0)];
+      v15 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:self target:sel__jsTimerFired_ selector:0 userInfo:repeatingCopy repeats:(timeCopy / 1000.0)];
       v16 = [VUIJSTimerContext alloc];
-      v17 = [v9 jsContext];
-      v18 = [v17 objectForKeyedSubscript:@"App"];
-      v19 = [(VUIJSTimerContext *)v16 initWithCallback:v8 callbackArgs:v14 repeating:v5 ownerObject:v18 timer:v15];
+      jsContext = [appContext jsContext];
+      v18 = [jsContext objectForKeyedSubscript:@"App"];
+      v19 = [(VUIJSTimerContext *)v16 initWithCallback:timerCopy callbackArgs:v14 repeating:repeatingCopy ownerObject:v18 timer:v15];
 
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", v15];
-      v20 = [(VUIJSFoundation *)self jsTimers];
-      [v20 setObject:v19 forKey:v12];
+      jsTimers = [(VUIJSFoundation *)self jsTimers];
+      [jsTimers setObject:v19 forKey:v12];
 
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -176,7 +176,7 @@ void __29__VUIJSFoundation_stopTimers__block_invoke(uint64_t a1)
     v11 = @"starting timer with empty handler";
   }
 
-  [v9 setException:0 withErrorMessage:v11];
+  [appContext setException:0 withErrorMessage:v11];
   v12 = 0;
 LABEL_14:
 
@@ -189,28 +189,28 @@ void __46__VUIJSFoundation__startTimer_time_repeating___block_invoke(uint64_t a1
   [v2 addTimer:*(a1 + 32) forMode:*MEMORY[0x1E695DA28]];
 }
 
-- (void)_clearTimer:(id)a3
+- (void)_clearTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [timerCopy length])
   {
-    v5 = [(VUIJSFoundation *)self jsTimers];
-    v6 = [v5 objectForKey:v4];
+    jsTimers = [(VUIJSFoundation *)self jsTimers];
+    v6 = [jsTimers objectForKey:timerCopy];
 
     if (v6)
     {
-      v7 = [v6 timer];
+      timer = [v6 timer];
       [v6 removeManagedReferences];
-      v8 = [(VUIJSFoundation *)self jsTimers];
-      [v8 removeObjectForKey:v4];
+      jsTimers2 = [(VUIJSFoundation *)self jsTimers];
+      [jsTimers2 removeObjectForKey:timerCopy];
 
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __31__VUIJSFoundation__clearTimer___block_invoke;
       block[3] = &unk_1E872D768;
-      v11 = v7;
-      v9 = v7;
+      v11 = timer;
+      v9 = timer;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
   }
@@ -220,25 +220,25 @@ void __46__VUIJSFoundation__startTimer_time_repeating___block_invoke(uint64_t a1
     v6 = VUIDefaultLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(VUIJSFoundation *)v4 _clearTimer:v6];
+      [(VUIJSFoundation *)timerCopy _clearTimer:v6];
     }
   }
 }
 
-- (void)_jsTimerFired:(id)a3
+- (void)_jsTimerFired:(id)fired
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", v4];
+  firedCopy = fired;
+  firedCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", firedCopy];
   objc_initWeak(&location, self);
-  v6 = [(VUIJSFoundation *)self appContext];
+  appContext = [(VUIJSFoundation *)self appContext];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __33__VUIJSFoundation__jsTimerFired___block_invoke;
   v8[3] = &unk_1E87309C0;
   objc_copyWeak(&v10, &location);
-  v7 = v5;
+  v7 = firedCopy;
   v9 = v7;
-  [v6 evaluate:v8];
+  [appContext evaluate:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);

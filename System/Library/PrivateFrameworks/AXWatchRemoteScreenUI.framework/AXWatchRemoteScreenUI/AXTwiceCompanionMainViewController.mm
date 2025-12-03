@@ -1,6 +1,6 @@
 @interface AXTwiceCompanionMainViewController
-- (_TtC21AXWatchRemoteScreenUI34AXTwiceCompanionMainViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)cardSwipeDownWithGesture:(id)a3;
+- (_TtC21AXWatchRemoteScreenUI34AXTwiceCompanionMainViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)cardSwipeDownWithGesture:(id)gesture;
 - (void)viewDidLoad;
 @end
 
@@ -8,20 +8,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D6CF160();
 }
 
-- (void)cardSwipeDownWithGesture:(id)a3
+- (void)cardSwipeDownWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D6D0A2C(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_23D6D0A2C(gestureCopy);
 }
 
-- (_TtC21AXWatchRemoteScreenUI34AXTwiceCompanionMainViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21AXWatchRemoteScreenUI34AXTwiceCompanionMainViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_23D6EE740();
     v7 = v6;
@@ -33,8 +33,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return AXTwiceCompanionMainViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return AXTwiceCompanionMainViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

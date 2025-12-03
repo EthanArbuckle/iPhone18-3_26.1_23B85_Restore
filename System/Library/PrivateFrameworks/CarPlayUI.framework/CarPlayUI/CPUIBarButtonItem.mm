@@ -1,5 +1,5 @@
 @interface CPUIBarButtonItem
-- (CPUIBarButtonItem)initWithTitle:(id)a3 image:(id)a4 style:(int64_t)a5 type:(unint64_t)a6;
+- (CPUIBarButtonItem)initWithTitle:(id)title image:(id)image style:(int64_t)style type:(unint64_t)type;
 - (CPUIButtonDelegate)cpui_delegate;
 - (UIColor)focusedBackgroundColor;
 - (UIColor)focusedColor;
@@ -8,31 +8,31 @@
 - (UIFont)font;
 - (id)_barButton;
 - (void)_updatePrefersSeparatePlatter;
-- (void)didSelectButton:(id)a3 withInteractionModel:(unint64_t)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFocusedBackgroundColor:(id)a3;
-- (void)setFocusedColor:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setNormalBackgroundColor:(id)a3;
-- (void)setNormalColor:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)didSelectButton:(id)button withInteractionModel:(unint64_t)model;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFocusedBackgroundColor:(id)color;
+- (void)setFocusedColor:(id)color;
+- (void)setFont:(id)font;
+- (void)setImage:(id)image;
+- (void)setNormalBackgroundColor:(id)color;
+- (void)setNormalColor:(id)color;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CPUIBarButtonItem
 
-- (CPUIBarButtonItem)initWithTitle:(id)a3 image:(id)a4 style:(int64_t)a5 type:(unint64_t)a6
+- (CPUIBarButtonItem)initWithTitle:(id)title image:(id)image style:(int64_t)style type:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [CPUIBarButton buttonWithTitle:v10 image:v11 style:a5 type:a6];
+  titleCopy = title;
+  imageCopy = image;
+  v12 = [CPUIBarButton buttonWithTitle:titleCopy image:imageCopy style:style type:type];
   v13 = [(CPUIBarButtonItem *)self initWithCustomView:v12];
   if (v13)
   {
     [v12 sizeToFit];
     [v12 setCpui_delegate:v13];
-    [(CPUIBarButtonItem *)v13 setTitle:v10];
-    [(CPUIBarButtonItem *)v13 setImage:v11];
+    [(CPUIBarButtonItem *)v13 setTitle:titleCopy];
+    [(CPUIBarButtonItem *)v13 setImage:imageCopy];
   }
 
   return v13;
@@ -40,11 +40,11 @@
 
 - (void)_updatePrefersSeparatePlatter
 {
-  v3 = [(CPUIBarButtonItem *)self title];
-  if ([v3 length])
+  title = [(CPUIBarButtonItem *)self title];
+  if ([title length])
   {
-    v4 = [(CPUIBarButtonItem *)self image];
-    v5 = v4 == 0;
+    image = [(CPUIBarButtonItem *)self image];
+    v5 = image == 0;
   }
 
   else
@@ -58,10 +58,10 @@
 - (id)_barButton
 {
   objc_opt_class();
-  v3 = [(CPUIBarButtonItem *)self customView];
+  customView = [(CPUIBarButtonItem *)self customView];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = customView;
   }
 
   else
@@ -74,129 +74,129 @@
 
 - (UIFont)font
 {
-  v2 = [(CPUIBarButtonItem *)self _barButton];
-  v3 = [v2 buttonFont];
+  _barButton = [(CPUIBarButtonItem *)self _barButton];
+  buttonFont = [_barButton buttonFont];
 
-  return v3;
+  return buttonFont;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(CPUIBarButtonItem *)self _barButton];
-  [v5 setButtonFont:v4];
+  fontCopy = font;
+  _barButton = [(CPUIBarButtonItem *)self _barButton];
+  [_barButton setButtonFont:fontCopy];
 }
 
 - (UIColor)normalColor
 {
-  v2 = [(CPUIBarButtonItem *)self _barButton];
-  v3 = [v2 normalColor];
+  _barButton = [(CPUIBarButtonItem *)self _barButton];
+  normalColor = [_barButton normalColor];
 
-  return v3;
+  return normalColor;
 }
 
-- (void)setNormalColor:(id)a3
+- (void)setNormalColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CPUIBarButtonItem *)self _barButton];
-  [v5 setNormalColor:v4];
+  colorCopy = color;
+  _barButton = [(CPUIBarButtonItem *)self _barButton];
+  [_barButton setNormalColor:colorCopy];
 }
 
 - (UIColor)focusedColor
 {
-  v2 = [(CPUIBarButtonItem *)self _barButton];
-  v3 = [v2 focusedColor];
+  _barButton = [(CPUIBarButtonItem *)self _barButton];
+  focusedColor = [_barButton focusedColor];
 
-  return v3;
+  return focusedColor;
 }
 
-- (void)setFocusedColor:(id)a3
+- (void)setFocusedColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CPUIBarButtonItem *)self _barButton];
-  [v5 setFocusedColor:v4];
+  colorCopy = color;
+  _barButton = [(CPUIBarButtonItem *)self _barButton];
+  [_barButton setFocusedColor:colorCopy];
 }
 
 - (UIColor)normalBackgroundColor
 {
-  v2 = [(CPUIBarButtonItem *)self _barButton];
-  v3 = [v2 normalBackgroundColor];
+  _barButton = [(CPUIBarButtonItem *)self _barButton];
+  normalBackgroundColor = [_barButton normalBackgroundColor];
 
-  return v3;
+  return normalBackgroundColor;
 }
 
-- (void)setNormalBackgroundColor:(id)a3
+- (void)setNormalBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CPUIBarButtonItem *)self _barButton];
-  [v5 setNormalBackgroundColor:v4];
+  colorCopy = color;
+  _barButton = [(CPUIBarButtonItem *)self _barButton];
+  [_barButton setNormalBackgroundColor:colorCopy];
 }
 
 - (UIColor)focusedBackgroundColor
 {
-  v2 = [(CPUIBarButtonItem *)self _barButton];
-  v3 = [v2 focusedBackgroundColor];
+  _barButton = [(CPUIBarButtonItem *)self _barButton];
+  focusedBackgroundColor = [_barButton focusedBackgroundColor];
 
-  return v3;
+  return focusedBackgroundColor;
 }
 
-- (void)setFocusedBackgroundColor:(id)a3
+- (void)setFocusedBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CPUIBarButtonItem *)self _barButton];
-  [v5 setFocusedBackgroundColor:v4];
+  colorCopy = color;
+  _barButton = [(CPUIBarButtonItem *)self _barButton];
+  [_barButton setFocusedBackgroundColor:colorCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = CPUIBarButtonItem;
   [(CPUIBarButtonItem *)&v6 setEnabled:?];
-  v5 = [(CPUIBarButtonItem *)self button];
-  [v5 setEnabled:v3];
+  button = [(CPUIBarButtonItem *)self button];
+  [button setEnabled:enabledCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v6.receiver = self;
   v6.super_class = CPUIBarButtonItem;
-  v4 = a3;
-  [(CPUIBarButtonItem *)&v6 setTitle:v4];
+  titleCopy = title;
+  [(CPUIBarButtonItem *)&v6 setTitle:titleCopy];
   v5 = [(CPUIBarButtonItem *)self button:v6.receiver];
-  [v5 setTitle:v4 forState:0];
+  [v5 setTitle:titleCopy forState:0];
 
   [(CPUIBarButtonItem *)self _updatePrefersSeparatePlatter];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v11.receiver = self;
   v11.super_class = CPUIBarButtonItem;
-  v4 = a3;
-  [(CPUIBarButtonItem *)&v11 setImage:v4];
+  imageCopy = image;
+  [(CPUIBarButtonItem *)&v11 setImage:imageCopy];
   v5 = [(CPUIBarButtonItem *)self button:v11.receiver];
-  v6 = [(CPUIBarButtonItem *)self normalColor];
-  v7 = [v4 _flatImageWithColor:v6];
+  normalColor = [(CPUIBarButtonItem *)self normalColor];
+  v7 = [imageCopy _flatImageWithColor:normalColor];
   [v5 setImage:v7 forState:0];
 
-  v8 = [(CPUIBarButtonItem *)self button];
-  v9 = [(CPUIBarButtonItem *)self focusedColor];
-  v10 = [v4 _flatImageWithColor:v9];
+  button = [(CPUIBarButtonItem *)self button];
+  focusedColor = [(CPUIBarButtonItem *)self focusedColor];
+  v10 = [imageCopy _flatImageWithColor:focusedColor];
 
-  [v8 setImage:v10 forState:8];
+  [button setImage:v10 forState:8];
   [(CPUIBarButtonItem *)self _updatePrefersSeparatePlatter];
 }
 
-- (void)didSelectButton:(id)a3 withInteractionModel:(unint64_t)a4
+- (void)didSelectButton:(id)button withInteractionModel:(unint64_t)model
 {
-  v6 = [(CPUIBarButtonItem *)self cpui_delegate];
+  cpui_delegate = [(CPUIBarButtonItem *)self cpui_delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CPUIBarButtonItem *)self cpui_delegate];
-    [v8 didSelectButton:self withInteractionModel:a4];
+    cpui_delegate2 = [(CPUIBarButtonItem *)self cpui_delegate];
+    [cpui_delegate2 didSelectButton:self withInteractionModel:model];
   }
 }
 

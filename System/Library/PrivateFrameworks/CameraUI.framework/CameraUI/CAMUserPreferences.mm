@@ -1,110 +1,110 @@
 @interface CAMUserPreferences
-+ (BOOL)_fallBackToCameraDefaultsForBundleIdentifier:(id)a3;
-+ (BOOL)_preferenceBoolValueForKey:(id)a3 defaultValue:(BOOL)a4;
-+ (BOOL)canShowSmartStylesOnboardingForCapabilities:(id)a3;
++ (BOOL)_fallBackToCameraDefaultsForBundleIdentifier:(id)identifier;
++ (BOOL)_preferenceBoolValueForKey:(id)key defaultValue:(BOOL)value;
++ (BOOL)canShowSmartStylesOnboardingForCapabilities:(id)capabilities;
 + (BOOL)hasSharedLibraryAlgorithmsPreferences;
-+ (BOOL)isSharedLibrarySupportedAndEnabledForCapabilities:(id)a3;
-+ (BOOL)shouldEnableHDR10BitVideoForHEVCEnabled:(BOOL)a3 capabilities:(id)a4;
++ (BOOL)isSharedLibrarySupportedAndEnabledForCapabilities:(id)capabilities;
++ (BOOL)shouldEnableHDR10BitVideoForHEVCEnabled:(BOOL)enabled capabilities:(id)capabilities;
 + (CAMUserPreferences)preferences;
-+ (id)_captureModeNumberForPersistenceString:(id)a3;
-+ (id)_convertDictionary:(id)a3 expectedKeyClass:(Class)a4 expectedValueClass:(Class)a5 keyConverter:(id)a6 valueConverter:(id)a7;
-+ (id)_createMappingFromStringsToIntegers:(id)a3;
++ (id)_captureModeNumberForPersistenceString:(id)string;
++ (id)_convertDictionary:(id)dictionary expectedKeyClass:(Class)class expectedValueClass:(Class)valueClass keyConverter:(id)converter valueConverter:(id)valueConverter;
++ (id)_createMappingFromStringsToIntegers:(id)integers;
 + (id)_defaultCaptureConfiguration;
 + (id)_defaultExposureBiasesByMode;
-+ (id)_drawerControlTypeNumberForPersistenceString:(id)a3;
-+ (id)_persistenceDictionaryForPreferredDrawerControlByMode:(id)a3;
-+ (id)_preferredDrawerControlByModeForPersistenceDictionary:(id)a3;
-+ (id)_stringForGroupingType:(int64_t)a3;
++ (id)_drawerControlTypeNumberForPersistenceString:(id)string;
++ (id)_persistenceDictionaryForPreferredDrawerControlByMode:(id)mode;
++ (id)_preferredDrawerControlByModeForPersistenceDictionary:(id)dictionary;
++ (id)_stringForGroupingType:(int64_t)type;
 + (id)defaultCaptureConfiguration;
-+ (int64_t)_groupingTypeForString:(id)a3;
-+ (int64_t)_preferenceIntegerValueForKey:(id)a3 defaultValue:(int64_t)a4;
++ (int64_t)_groupingTypeForString:(id)string;
++ (int64_t)_preferenceIntegerValueForKey:(id)key defaultValue:(int64_t)value;
 + (int64_t)defaultDevicePosition;
-+ (int64_t)defaultLightingTypeForMode:(int64_t)a3;
++ (int64_t)defaultLightingTypeForMode:(int64_t)mode;
 + (int64_t)solCamGroupingType;
-+ (unint64_t)selectedAudioConfigurationForCapabilities:(id)a3;
-+ (void)_setPreferenceValue:(id)a3 forKey:(id)a4;
-+ (void)performApertureMigrationWithCapabilities:(id)a3;
-+ (void)performAudioConfigurationMigrationWithCapabilities:(id)a3;
-+ (void)performHorizonLevelUpgradeWithCapabilities:(id)a3;
-+ (void)performLowLightVideoMigrationWithCapabilities:(id)a3;
-+ (void)performMostCompatibleConfirmationMigrationWithCapabilities:(id)a3;
-+ (void)performResponsiveShutterMigrationWithCapabilities:(id)a3;
-+ (void)performSmartStylesOnboardingAcknowledgementResetWithCapabilities:(id)a3;
-+ (void)performSuperWideAutoMacroMigrationWithCapabilities:(id)a3;
++ (unint64_t)selectedAudioConfigurationForCapabilities:(id)capabilities;
++ (void)_setPreferenceValue:(id)value forKey:(id)key;
++ (void)performApertureMigrationWithCapabilities:(id)capabilities;
++ (void)performAudioConfigurationMigrationWithCapabilities:(id)capabilities;
++ (void)performHorizonLevelUpgradeWithCapabilities:(id)capabilities;
++ (void)performLowLightVideoMigrationWithCapabilities:(id)capabilities;
++ (void)performMostCompatibleConfirmationMigrationWithCapabilities:(id)capabilities;
++ (void)performResponsiveShutterMigrationWithCapabilities:(id)capabilities;
++ (void)performSmartStylesOnboardingAcknowledgementResetWithCapabilities:(id)capabilities;
++ (void)performSuperWideAutoMacroMigrationWithCapabilities:(id)capabilities;
 + (void)removeSharedLibraryAlgorithmsPreferences;
 + (void)resetSmudgeDetectionDisplay;
-+ (void)setBottomOverCaptureGradientEnabled:(BOOL)a3;
-+ (void)setSolCamDebugMenuEnabled:(BOOL)a3;
-+ (void)setSolCamGroupingType:(int64_t)a3;
-+ (void)setSolCamOnboardingEnabled:(BOOL)a3;
-+ (void)setSolCamSelectedZoomCenteredEnabled:(BOOL)a3;
-+ (void)setSolCamShutterButtonCenterMaterialEnabled:(BOOL)a3;
-+ (void)setTopOverCaptureGradientEnabled:(BOOL)a3;
++ (void)setBottomOverCaptureGradientEnabled:(BOOL)enabled;
++ (void)setSolCamDebugMenuEnabled:(BOOL)enabled;
++ (void)setSolCamGroupingType:(int64_t)type;
++ (void)setSolCamOnboardingEnabled:(BOOL)enabled;
++ (void)setSolCamSelectedZoomCenteredEnabled:(BOOL)enabled;
++ (void)setSolCamShutterButtonCenterMaterialEnabled:(BOOL)enabled;
++ (void)setTopOverCaptureGradientEnabled:(BOOL)enabled;
 + (void)updateLastViewedSettingsDate;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)fallbackPhotoFormatForDesiredFormat:(id)a3 mode:(int64_t)a4 device:(int64_t)a5;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)fallbackPhotoFormatForDesiredFormat:(id)format mode:(int64_t)mode device:(int64_t)device;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)photoFormatControlSecondaryFormat;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)resolvedPhotoFormatForResolvedResolution:(int64_t)a3 rawMode:(int64_t)a4;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)resolvedPhotoFormatForResolvedResolution:(int64_t)resolution rawMode:(int64_t)mode;
 - (BOOL)_shouldReconfigureCurrentConfigurationForSettingsChange;
 - (BOOL)_shouldResetPreferencesForTimeout;
 - (BOOL)allowExplicitProResColorSpace;
-- (BOOL)isAutoFPSVideoEnabledForMode:(int64_t)a3 device:(int64_t)a4 videoConfiguration:(int64_t)a5 encodingBehavior:(int64_t)a6 outputToExternalStorage:(BOOL)a7 frontRearSimultaneousVideoEnabled:(BOOL)a8;
-- (BOOL)isPhotoFormat:(id)a3 enabledForMode:(int64_t)a4 device:(int64_t)a5;
-- (BOOL)mirrorCameraCapturesForDevicePosition:(int64_t)a3 mode:(int64_t)a4;
-- (BOOL)prefersHDR10BitVideoForCapabilities:(id)a3;
-- (BOOL)readPreferencesWithOverrides:(id)a3 emulationMode:(int64_t)a4 callActive:(BOOL)a5 shouldResetCaptureConfiguration:(BOOL *)a6 bypassXPCWhenReadingSystemStyle:(BOOL)a7;
-- (BOOL)shouldDisableCameraSwitchingDuringVideoRecordingForMode:(int64_t)a3;
+- (BOOL)isAutoFPSVideoEnabledForMode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration encodingBehavior:(int64_t)behavior outputToExternalStorage:(BOOL)storage frontRearSimultaneousVideoEnabled:(BOOL)enabled;
+- (BOOL)isPhotoFormat:(id)format enabledForMode:(int64_t)mode device:(int64_t)device;
+- (BOOL)mirrorCameraCapturesForDevicePosition:(int64_t)position mode:(int64_t)mode;
+- (BOOL)prefersHDR10BitVideoForCapabilities:(id)capabilities;
+- (BOOL)readPreferencesWithOverrides:(id)overrides emulationMode:(int64_t)mode callActive:(BOOL)active shouldResetCaptureConfiguration:(BOOL *)configuration bypassXPCWhenReadingSystemStyle:(BOOL)style;
+- (BOOL)shouldDisableCameraSwitchingDuringVideoRecordingForMode:(int64_t)mode;
 - (BOOL)shouldShowQRBanners;
-- (BOOL)shouldUsePhotoFormatControlForMode:(int64_t)a3;
+- (BOOL)shouldUsePhotoFormatControlForMode:(int64_t)mode;
 - (BOOL)smudgeDetectionDisplayWasResetBySettingsToggle;
 - (NSDate)resetTimeoutDate;
 - (double)_resetTimeoutSeconds;
-- (double)defaultZoomFactorForGraphConfiguration:(id)a3 captureOrientation:(int64_t)a4 outputToExternalStorage:(BOOL)a5;
-- (id)_devicePositionString:(int64_t)a3;
+- (double)defaultZoomFactorForGraphConfiguration:(id)configuration captureOrientation:(int64_t)orientation outputToExternalStorage:(BOOL)storage;
+- (id)_devicePositionString:(int64_t)string;
 - (id)_semanticStylesKey;
-- (id)filterTypesForMode:(int64_t)a3;
-- (id)smudgeAcknowledgementDateForDevicePosition:(int64_t)a3;
-- (id)smudgeAnalyticsDictionaryForDevicePosition:(int64_t)a3;
-- (id)videoThumbnailOutputConfigurationForMode:(int64_t)a3 devicePosition:(int64_t)a4;
-- (int64_t)_findIndexOfSmartStylePresetString:(id)a3 inStyles:(id)a4;
-- (int64_t)_sanitizeEffectFilterType:(int64_t)a3 forMode:(int64_t)a4;
-- (int64_t)_sanitizeLightingType:(int64_t)a3 forMode:(int64_t)a4;
-- (int64_t)colorSpaceForMode:(int64_t)a3 videoConfiguration:(int64_t)a4 videoEncodingBehavior:(int64_t)a5 device:(int64_t)a6 preferredProResColorSpace:(int64_t)a7;
-- (int64_t)defaultDeviceForModeChange:(int64_t)a3 devicePosition:(int64_t)a4;
-- (int64_t)maximumPhotoResolutionForMode:(int64_t)a3 device:(int64_t)a4;
+- (id)filterTypesForMode:(int64_t)mode;
+- (id)smudgeAcknowledgementDateForDevicePosition:(int64_t)position;
+- (id)smudgeAnalyticsDictionaryForDevicePosition:(int64_t)position;
+- (id)videoThumbnailOutputConfigurationForMode:(int64_t)mode devicePosition:(int64_t)position;
+- (int64_t)_findIndexOfSmartStylePresetString:(id)string inStyles:(id)styles;
+- (int64_t)_sanitizeEffectFilterType:(int64_t)type forMode:(int64_t)mode;
+- (int64_t)_sanitizeLightingType:(int64_t)type forMode:(int64_t)mode;
+- (int64_t)colorSpaceForMode:(int64_t)mode videoConfiguration:(int64_t)configuration videoEncodingBehavior:(int64_t)behavior device:(int64_t)device preferredProResColorSpace:(int64_t)space;
+- (int64_t)defaultDeviceForModeChange:(int64_t)change devicePosition:(int64_t)position;
+- (int64_t)maximumPhotoResolutionForMode:(int64_t)mode device:(int64_t)device;
 - (int64_t)photoEncodingBehavior;
-- (int64_t)photoEncodingBehaviorForMode:(int64_t)a3 resolvedRAWMode:(int64_t)a4 isCapturingVideo:(BOOL)a5 isTrueVideo:(BOOL)a6;
+- (int64_t)photoEncodingBehaviorForMode:(int64_t)mode resolvedRAWMode:(int64_t)wMode isCapturingVideo:(BOOL)video isTrueVideo:(BOOL)trueVideo;
 - (int64_t)ppt_readPortraitLightingType;
-- (int64_t)preferredHEICPhotoResolutionForDevicePosition:(int64_t)a3;
-- (int64_t)previewViewAspectModeForMode:(int64_t)a3 isFullScreen:(BOOL)a4;
-- (int64_t)smudgeAcknowledgementCountForDevicePosition:(int64_t)a3;
-- (int64_t)smudgeNotDetectedCountForDevicePosition:(int64_t)a3;
-- (int64_t)videoEncodingBehaviorForConfiguration:(int64_t)a3 mode:(int64_t)a4 desiredProResVideoMode:(int64_t)a5 outputToExternalStorage:(BOOL)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7;
-- (int64_t)videoStabilizationStrengthForVideoStabilizationMode:(int64_t)a3 captureMode:(int64_t)a4;
-- (unint64_t)_updateEntryForPresetType:(int64_t)a3 inSmartStyles:(id)a4 withStyle:(id)a5;
-- (unint64_t)audioConfigurationForMode:(int64_t)a3 device:(int64_t)a4 emulationMode:(int64_t)a5 duringCall:(BOOL)a6;
+- (int64_t)preferredHEICPhotoResolutionForDevicePosition:(int64_t)position;
+- (int64_t)previewViewAspectModeForMode:(int64_t)mode isFullScreen:(BOOL)screen;
+- (int64_t)smudgeAcknowledgementCountForDevicePosition:(int64_t)position;
+- (int64_t)smudgeNotDetectedCountForDevicePosition:(int64_t)position;
+- (int64_t)videoEncodingBehaviorForConfiguration:(int64_t)configuration mode:(int64_t)mode desiredProResVideoMode:(int64_t)videoMode outputToExternalStorage:(BOOL)storage frontRearSimultaneousVideoEnabled:(BOOL)enabled;
+- (int64_t)videoStabilizationStrengthForVideoStabilizationMode:(int64_t)mode captureMode:(int64_t)captureMode;
+- (unint64_t)_updateEntryForPresetType:(int64_t)type inSmartStyles:(id)styles withStyle:(id)style;
+- (unint64_t)audioConfigurationForMode:(int64_t)mode device:(int64_t)device emulationMode:(int64_t)emulationMode duringCall:(BOOL)call;
 - (void)_publishAnalyticsIfNeeded;
 - (void)_publishAnalyticsIfNeededAfterAppLaunch;
 - (void)_resetSharedLibraryAlgorithmsPreferences;
 - (void)_updateLastWrittenSettingsDate;
-- (void)_writeSmartStylePresetStringForIndex:(int64_t)a3 inStyles:(id)a4 key:(id)a5;
+- (void)_writeSmartStylePresetStringForIndex:(int64_t)index inStyles:(id)styles key:(id)key;
 - (void)clearSmudgeDetectionDisplayWasResetBySettingsToggle;
-- (void)removeSmudgeAnalyticsDictionaryForDevicePosition:(int64_t)a3;
-- (void)resolveDesiredPhotoResolution:(int64_t)a3 livePhotoMode:(int64_t)a4 rawMode:(int64_t)a5 conflicts:(unint64_t)a6 mode:(int64_t)a7 device:(int64_t)a8 resolvedPhotoResolution:(int64_t *)a9 resolvedLivePhotoMode:(int64_t *)a10;
-- (void)setDidAcknowledgeCTMDescription:(BOOL)a3;
-- (void)setDidAcknowledgeCinematicModeDescription:(BOOL)a3;
-- (void)setDidAcknowledgeDepthInPhotoModeDescription:(BOOL)a3;
-- (void)setDidAcknowledgePortraitModeDescription:(BOOL)a3;
-- (void)setDidAcknowledgeSemanticStylesDescription:(BOOL)a3;
-- (void)setDidAcknowledgeSmartStylesDescription:(BOOL)a3;
-- (void)setDidAcknowledgeSolCamDescription:(BOOL)a3;
-- (void)setDidAcknowledgeSpatialModeOverlayDescription:(BOOL)a3;
-- (void)setExplicitProResColorSpace:(int64_t)a3;
-- (void)setPreviewViewAspectMode:(int64_t)a3 forMode:(int64_t)a4 isFullScreen:(BOOL)a5;
-- (void)setSmudgeAcknowledgementCount:(int64_t)a3 forDevicePosition:(int64_t)a4;
-- (void)setSmudgeAcknowledgementDate:(id)a3 forDevicePosition:(int64_t)a4;
-- (void)setSmudgeAnalyticsDictionary:(id)a3 forDevicePosition:(int64_t)a4;
-- (void)setSmudgeNotDetectedCount:(int64_t)a3 forDevicePosition:(int64_t)a4;
-- (void)writeAvailableDevicesWithCompletion:(id)a3;
+- (void)removeSmudgeAnalyticsDictionaryForDevicePosition:(int64_t)position;
+- (void)resolveDesiredPhotoResolution:(int64_t)resolution livePhotoMode:(int64_t)mode rawMode:(int64_t)rawMode conflicts:(unint64_t)conflicts mode:(int64_t)a7 device:(int64_t)device resolvedPhotoResolution:(int64_t *)photoResolution resolvedLivePhotoMode:(int64_t *)self0;
+- (void)setDidAcknowledgeCTMDescription:(BOOL)description;
+- (void)setDidAcknowledgeCinematicModeDescription:(BOOL)description;
+- (void)setDidAcknowledgeDepthInPhotoModeDescription:(BOOL)description;
+- (void)setDidAcknowledgePortraitModeDescription:(BOOL)description;
+- (void)setDidAcknowledgeSemanticStylesDescription:(BOOL)description;
+- (void)setDidAcknowledgeSmartStylesDescription:(BOOL)description;
+- (void)setDidAcknowledgeSolCamDescription:(BOOL)description;
+- (void)setDidAcknowledgeSpatialModeOverlayDescription:(BOOL)description;
+- (void)setExplicitProResColorSpace:(int64_t)space;
+- (void)setPreviewViewAspectMode:(int64_t)mode forMode:(int64_t)forMode isFullScreen:(BOOL)screen;
+- (void)setSmudgeAcknowledgementCount:(int64_t)count forDevicePosition:(int64_t)position;
+- (void)setSmudgeAcknowledgementDate:(id)date forDevicePosition:(int64_t)position;
+- (void)setSmudgeAnalyticsDictionary:(id)dictionary forDevicePosition:(int64_t)position;
+- (void)setSmudgeNotDetectedCount:(int64_t)count forDevicePosition:(int64_t)position;
+- (void)writeAvailableDevicesWithCompletion:(id)completion;
 - (void)writePreferences;
 @end
 
@@ -116,7 +116,7 @@
   block[1] = 3221225472;
   block[2] = __33__CAMUserPreferences_preferences__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (preferences_onceToken != -1)
   {
     dispatch_once(&preferences_onceToken, block);
@@ -278,27 +278,27 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [v3 isBackFlashSupported];
+    isBackFlashSupported = [v3 isBackFlashSupported];
     v4 = 2;
-    if (!v5)
+    if (!isBackFlashSupported)
     {
       v4 = 0;
     }
   }
 
   v34 = v4;
-  v6 = [v3 isLivePhotoSupported];
-  v7 = [v3 isLivePhotoAutoModeSupported];
-  v31 = [v3 isSuperWideAutoMacroSupported];
-  v8 = [a1 defaultMode];
-  v9 = [a1 defaultDevice];
-  v33 = [a1 defaultFilterTypeForMode:0];
-  v32 = [a1 defaultFilterTypeForMode:4];
-  v30 = [a1 defaultFilterTypeForMode:6];
-  v29 = [a1 defaultLightingTypeForMode:6];
-  v10 = [v3 semanticStylesVersion];
+  isLivePhotoSupported = [v3 isLivePhotoSupported];
+  isLivePhotoAutoModeSupported = [v3 isLivePhotoAutoModeSupported];
+  isSuperWideAutoMacroSupported = [v3 isSuperWideAutoMacroSupported];
+  defaultMode = [self defaultMode];
+  defaultDevice = [self defaultDevice];
+  v33 = [self defaultFilterTypeForMode:0];
+  v32 = [self defaultFilterTypeForMode:4];
+  v30 = [self defaultFilterTypeForMode:6];
+  v29 = [self defaultLightingTypeForMode:6];
+  semanticStylesVersion = [v3 semanticStylesVersion];
   v11 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v10 == 1)
+  if (semanticStylesVersion == 1)
   {
     v12 = [MEMORY[0x1E6993890] defaultStylesIncludingSystemStyles:objc_msgSend(v3 systemStylePlaceholder:"allowSystemSmartStylesInPicker") creativeStyles:{1, 1}];
     v13 = [v12 indexOfObjectPassingTest:&__block_literal_global_12];
@@ -318,7 +318,7 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
 
   else
   {
-    if (v10)
+    if (semanticStylesVersion)
     {
       v12 = 0;
     }
@@ -331,36 +331,36 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
     v28 = 0;
   }
 
-  if ((v9 - 1) > 0xA)
+  if ((defaultDevice - 1) > 0xA)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = qword_1A3A68210[v9 - 1];
+    v15 = qword_1A3A68210[defaultDevice - 1];
   }
 
-  if (v7)
+  if (isLivePhotoAutoModeSupported)
   {
     v16 = 2;
   }
 
   else
   {
-    v16 = v6;
+    v16 = isLivePhotoSupported;
   }
 
-  v17 = [v3 defaultPhotoResolutionForMode:v8 devicePosition:v15 encodingBehavior:1];
+  v17 = [v3 defaultPhotoResolutionForMode:defaultMode devicePosition:v15 encodingBehavior:1];
   v18 = [CAMCaptureConfiguration alloc];
   v19 = +[CAMCaptureCapabilities capabilities];
   [v19 defaultPortraitEffectIntensity];
   v21 = v20;
-  v22 = [a1 _defaultExposureBiasesByMode];
+  _defaultExposureBiasesByMode = [self _defaultExposureBiasesByMode];
   LOBYTE(v27) = 0;
   LOWORD(v26) = [v3 isZoomPIPSupported];
   LOBYTE(v25) = 0;
-  v23 = [(CAMCaptureConfiguration *)v18 initWithCaptureMode:v8 captureDevice:v9 videoConfiguration:0 audioConfiguration:0 mixAudioWithOthers:1 flashMode:v34 torchMode:0.0 HDRMode:v21 irisMode:0 timerDuration:1 photoModeAspectRatioCrop:v16 photoModeEffectFilterType:0 squareModeEffectFilterType:0 portraitModeEffectFilterType:v33 portraitModeLightingEffectType:v32 portraitModeApertureValue:v30 portraitModeIntensityValue:v29 mirrorFrontCameraCaptures:v25 exposureBiasesByMode:v22 macroMode:v31 photoResolution:v17 rawMode:0 proResVideoMode:0 semanticStyles:v12 selectedSemanticStyleIndex:v28 smartStyleSystemStyleIndex:v11 videoStabilizationMode:0 zoomPIPEnabled:v26 optionalDepthEffectEnabled:0 sharedLibraryMode:v27 frontRearSimultaneousVideoEnabled:?];
+  v23 = [(CAMCaptureConfiguration *)v18 initWithCaptureMode:defaultMode captureDevice:defaultDevice videoConfiguration:0 audioConfiguration:0 mixAudioWithOthers:1 flashMode:v34 torchMode:0.0 HDRMode:v21 irisMode:0 timerDuration:1 photoModeAspectRatioCrop:v16 photoModeEffectFilterType:0 squareModeEffectFilterType:0 portraitModeEffectFilterType:v33 portraitModeLightingEffectType:v32 portraitModeApertureValue:v30 portraitModeIntensityValue:v29 mirrorFrontCameraCaptures:v25 exposureBiasesByMode:_defaultExposureBiasesByMode macroMode:isSuperWideAutoMacroSupported photoResolution:v17 rawMode:0 proResVideoMode:0 semanticStyles:v12 selectedSemanticStyleIndex:v28 smartStyleSystemStyleIndex:v11 videoStabilizationMode:0 zoomPIPEnabled:v26 optionalDepthEffectEnabled:0 sharedLibraryMode:v27 frontRearSimultaneousVideoEnabled:?];
 
   return v23;
 }
@@ -370,15 +370,15 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
   v3 = +[CAMCaptureCapabilities capabilities];
   if ([v3 isHEVCEncodingSupported])
   {
-    v4 = [(CAMUserPreferences *)self _preferHEVCWhenAvailable];
+    _preferHEVCWhenAvailable = [(CAMUserPreferences *)self _preferHEVCWhenAvailable];
   }
 
   else
   {
-    v4 = 0;
+    _preferHEVCWhenAvailable = 0;
   }
 
-  return v4;
+  return _preferHEVCWhenAvailable;
 }
 
 - (BOOL)shouldShowQRBanners
@@ -397,30 +397,30 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
 {
   v62 = *MEMORY[0x1E69E9840];
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 fallbackCameraEnabled];
+  fallbackCameraEnabled = [v3 fallbackCameraEnabled];
 
-  if (v4)
+  if (fallbackCameraEnabled)
   {
-    v5 = os_log_create("com.apple.camera", "UserPreferences");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    _underlyingUserDefaults = os_log_create("com.apple.camera", "UserPreferences");
+    if (os_log_type_enabled(_underlyingUserDefaults, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "Skip writePreferences since we are in a fallback state", buf, 2u);
+      _os_log_impl(&dword_1A3640000, _underlyingUserDefaults, OS_LOG_TYPE_DEFAULT, "Skip writePreferences since we are in a fallback state", buf, 2u);
     }
   }
 
   else
   {
-    v5 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-    [v5 setInteger:[(CAMUserPreferences *)self _previewAspectModeForPhotoModes] forKey:@"CAMUserPreferencePreviewAspectModeForPhotoModes"];
-    [v5 setInteger:[(CAMUserPreferences *)self _previewAspectModeForVideoModes] forKey:@"CAMUserPreferencePreviewViewAspectMode"];
-    [v5 setInteger:[(CAMUserPreferences *)self _windowedPreviewAspectModeForPhotoModes] forKey:@"CAMUserPreferenceWindowedPreviewAspectModeForPhotoModes"];
-    [v5 setInteger:[(CAMUserPreferences *)self _windowedPreviewAspectModeForVideoModes] forKey:@"CAMUserPreferenceWindowedPreviewAspectModeForVideoModes"];
-    v6 = [(CAMUserPreferences *)self captureConfiguration];
-    v7 = [(CAMUserPreferences *)self conflictingControlConfiguration];
-    -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v7 desiredFlashMode], @"CAMUserPreferenceDesiredFlashMode");
-    -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v7 desiredHDRMode], @"CAMUserPreferenceDesiredHDRMode");
-    v8 = [v6 device] - 1;
+    _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+    [_underlyingUserDefaults setInteger:[(CAMUserPreferences *)self _previewAspectModeForPhotoModes] forKey:@"CAMUserPreferencePreviewAspectModeForPhotoModes"];
+    [_underlyingUserDefaults setInteger:[(CAMUserPreferences *)self _previewAspectModeForVideoModes] forKey:@"CAMUserPreferencePreviewViewAspectMode"];
+    [_underlyingUserDefaults setInteger:[(CAMUserPreferences *)self _windowedPreviewAspectModeForPhotoModes] forKey:@"CAMUserPreferenceWindowedPreviewAspectModeForPhotoModes"];
+    [_underlyingUserDefaults setInteger:[(CAMUserPreferences *)self _windowedPreviewAspectModeForVideoModes] forKey:@"CAMUserPreferenceWindowedPreviewAspectModeForVideoModes"];
+    captureConfiguration = [(CAMUserPreferences *)self captureConfiguration];
+    conflictingControlConfiguration = [(CAMUserPreferences *)self conflictingControlConfiguration];
+    -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [conflictingControlConfiguration desiredFlashMode], @"CAMUserPreferenceDesiredFlashMode");
+    -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [conflictingControlConfiguration desiredHDRMode], @"CAMUserPreferenceDesiredHDRMode");
+    v8 = [captureConfiguration device] - 1;
     if (v8 > 0xA)
     {
       v9 = 0;
@@ -434,171 +434,171 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
     v10 = +[CAMCaptureCapabilities capabilities];
     if ([v10 isLivePhotoSupported])
     {
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v6 irisMode], @"CAMUserPreferenceDesiredIrisMode");
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [captureConfiguration irisMode], @"CAMUserPreferenceDesiredIrisMode");
     }
 
-    v11 = [v10 hostProcess];
-    if (v11 <= 4 && v11 != 3)
+    hostProcess = [v10 hostProcess];
+    if (hostProcess <= 4 && hostProcess != 3)
     {
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v6 mode], @"CAMUserPreferenceCaptureMode");
-      [v5 setInteger:v9 forKey:@"CAMUserPreferenceCaptureDevice"];
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [captureConfiguration mode], @"CAMUserPreferenceCaptureMode");
+      [_underlyingUserDefaults setInteger:v9 forKey:@"CAMUserPreferenceCaptureDevice"];
     }
 
-    -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v6 torchMode], @"CAMUserPreferenceTorchMode");
-    -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v6 timerDuration], @"CAMUserPreferenceTimerDuration");
+    -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [captureConfiguration torchMode], @"CAMUserPreferenceTorchMode");
+    -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [captureConfiguration timerDuration], @"CAMUserPreferenceTimerDuration");
     if ([v10 isAspectRatioCropSupported])
     {
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v6 photoModeAspectRatioCrop], @"CAMUserPreferenceAspectRatioCrop");
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [captureConfiguration photoModeAspectRatioCrop], @"CAMUserPreferenceAspectRatioCrop");
     }
 
     if ([v10 isLiveFilteringSupported])
     {
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v6 photoModeEffectFilterType], @"CAMUserPreferenceDesiredPhotoModeEffectFilterType");
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v6 squareModeEffectFilterType], @"CAMUserPreferenceSquareModeEffectFilterType");
-      [v5 setInteger:[(CAMUserPreferences *)self photoModeLastCapturedEffectFilterType] forKey:@"CAMUserPreferencePhotoModeLastCapturedEffectFilterType"];
-      [v5 setInteger:[(CAMUserPreferences *)self squareModeLastCapturedEffectFilterType] forKey:@"CAMUserPreferenceSquareModeLastCapturedEffectFilterType"];
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v6 portraitModeEffectFilterType], @"CAMUserPreferencePortraitModeEffectFilterType");
-      [v5 setInteger:[(CAMUserPreferences *)self portraitModeLastCapturedEffectFilterType] forKey:@"CAMUserPreferencePortraitModeLastCapturedEffectFilterType"];
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [captureConfiguration photoModeEffectFilterType], @"CAMUserPreferenceDesiredPhotoModeEffectFilterType");
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [captureConfiguration squareModeEffectFilterType], @"CAMUserPreferenceSquareModeEffectFilterType");
+      [_underlyingUserDefaults setInteger:[(CAMUserPreferences *)self photoModeLastCapturedEffectFilterType] forKey:@"CAMUserPreferencePhotoModeLastCapturedEffectFilterType"];
+      [_underlyingUserDefaults setInteger:[(CAMUserPreferences *)self squareModeLastCapturedEffectFilterType] forKey:@"CAMUserPreferenceSquareModeLastCapturedEffectFilterType"];
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [captureConfiguration portraitModeEffectFilterType], @"CAMUserPreferencePortraitModeEffectFilterType");
+      [_underlyingUserDefaults setInteger:[(CAMUserPreferences *)self portraitModeLastCapturedEffectFilterType] forKey:@"CAMUserPreferencePortraitModeLastCapturedEffectFilterType"];
     }
 
-    [v5 setInteger:[(CAMUserPreferences *)self portraitModeRearDevice] forKey:@"CAMUserPreferencePortraitModeRearDevice"];
+    [_underlyingUserDefaults setInteger:[(CAMUserPreferences *)self portraitModeRearDevice] forKey:@"CAMUserPreferencePortraitModeRearDevice"];
     [(CAMUserPreferences *)self portraitModeRearZoomValue];
     *&v12 = v12;
-    [v5 setFloat:@"CAMUserPreferencePortraitModeRearZoomValue" forKey:v12];
+    [_underlyingUserDefaults setFloat:@"CAMUserPreferencePortraitModeRearZoomValue" forKey:v12];
     if ([v10 arePortraitEffectsSupported])
     {
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v6 portraitModeLightingEffectType], @"CAMUserPreferencePortraitModeLightingEffectType");
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [captureConfiguration portraitModeLightingEffectType], @"CAMUserPreferencePortraitModeLightingEffectType");
     }
 
     if ([v10 isDepthEffectApertureSupported])
     {
-      [v6 portraitModeApertureValue];
+      [captureConfiguration portraitModeApertureValue];
       *&v13 = v13;
-      [v5 setFloat:@"CAMUserPreferencePortraitModeApertureValue" forKey:v13];
-      [v6 portraitModeIntensityValue];
+      [_underlyingUserDefaults setFloat:@"CAMUserPreferencePortraitModeApertureValue" forKey:v13];
+      [captureConfiguration portraitModeIntensityValue];
       *&v14 = v14;
-      [v5 setFloat:@"CAMUserPreferencePortraitEffectIntensityValue" forKey:v14];
+      [_underlyingUserDefaults setFloat:@"CAMUserPreferencePortraitEffectIntensityValue" forKey:v14];
     }
 
     if ([v10 isExposureSliderSupported])
     {
-      v15 = [v6 exposureBiasesByMode];
-      [CAMPreferencesUtilities setDictionary:v15 forKey:@"CAMUserPreferenceExposureBiasByMode" defaults:v5];
+      exposureBiasesByMode = [captureConfiguration exposureBiasesByMode];
+      [CAMPreferencesUtilities setDictionary:exposureBiasesByMode forKey:@"CAMUserPreferenceExposureBiasByMode" defaults:_underlyingUserDefaults];
     }
 
     if ([v10 isSuperWideAutoMacroSupported])
     {
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v7 desiredMacroMode], @"CAMUserPreferenceAutoMacroMode");
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [conflictingControlConfiguration desiredMacroMode], @"CAMUserPreferenceAutoMacroMode");
     }
 
     if ([(CAMUserPreferences *)self shouldUseDepthSuggestionInPhotoMode])
     {
-      -[NSObject setBool:forKey:](v5, "setBool:forKey:", [v6 optionalDepthEffectEnabled], @"CAMUserPreferenceOptionalDepthEffectEnabled");
+      -[NSObject setBool:forKey:](_underlyingUserDefaults, "setBool:forKey:", [captureConfiguration optionalDepthEffectEnabled], @"CAMUserPreferenceOptionalDepthEffectEnabled");
     }
 
     if ([(CAMUserPreferences *)self rawControlEnabled])
     {
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v7 desiredRAWMode], @"CAMUserPreferencesDesiredRAWMode");
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [conflictingControlConfiguration desiredRAWMode], @"CAMUserPreferencesDesiredRAWMode");
     }
 
     if ([(CAMUserPreferences *)self rawControlEnabled]|| [(CAMUserPreferences *)self photoFormatControlEnabled])
     {
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v7 photoFormatConflicts], @"CAMUserPreferencesRAWConflicts");
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [conflictingControlConfiguration photoFormatConflicts], @"CAMUserPreferencesRAWConflicts");
     }
 
     if ([(CAMUserPreferences *)self photoFormatControlEnabled])
     {
-      if ([v7 desiredPhotoResolution] > 2 || -[CAMUserPreferences rawControlEnabled](self, "rawControlEnabled") && objc_msgSend(v7, "desiredRAWMode") == 1)
+      if ([conflictingControlConfiguration desiredPhotoResolution] > 2 || -[CAMUserPreferences rawControlEnabled](self, "rawControlEnabled") && objc_msgSend(conflictingControlConfiguration, "desiredRAWMode") == 1)
       {
-        -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v7 desiredPhotoResolution], @"CAMUserPreferencesDesiredPhotoResolution");
+        -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [conflictingControlConfiguration desiredPhotoResolution], @"CAMUserPreferencesDesiredPhotoResolution");
       }
 
       else
       {
-        [v5 removeObjectForKey:@"CAMUserPreferencesDesiredPhotoResolution"];
+        [_underlyingUserDefaults removeObjectForKey:@"CAMUserPreferencesDesiredPhotoResolution"];
       }
     }
 
     if ([v10 isProResVideoSupported] && -[CAMUserPreferences isProResControlEnabled](self, "isProResControlEnabled"))
     {
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v6 proResVideoMode], @"CAMUserPreferenceDesiredProResVideoMode");
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [captureConfiguration proResVideoMode], @"CAMUserPreferenceDesiredProResVideoMode");
     }
 
     if ([v10 isNightModeSupported])
     {
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v7 desiredNightModeControlMode], @"CAMUserPreferenceDesiredNightMode");
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v7 nightModeConflicts], @"CAMUserPreferenceNightModeConflicts");
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [conflictingControlConfiguration desiredNightModeControlMode], @"CAMUserPreferenceDesiredNightMode");
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [conflictingControlConfiguration nightModeConflicts], @"CAMUserPreferenceNightModeConflicts");
     }
 
     if (([v10 semanticStylesSupport] & 8) != 0)
     {
-      v16 = [v10 smartStylesSupported];
+      smartStylesSupported = [v10 smartStylesSupported];
       v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v18 = [v6 semanticStyles];
+      semanticStyles = [captureConfiguration semanticStyles];
       v56[0] = MEMORY[0x1E69E9820];
       v56[1] = 3221225472;
       v56[2] = __38__CAMUserPreferences_writePreferences__block_invoke;
       v56[3] = &unk_1E76F91F0;
-      v59 = v16;
-      v19 = v6;
+      v59 = smartStylesSupported;
+      v19 = captureConfiguration;
       v57 = v19;
       v20 = v17;
       v58 = v20;
-      [v18 enumerateObjectsUsingBlock:v56];
+      [semanticStyles enumerateObjectsUsingBlock:v56];
 
       CFPreferencesSetAppValue([(CAMUserPreferences *)self _semanticStylesKey], v20, @"com.apple.camera");
-      if (v16)
+      if (smartStylesSupported)
       {
-        v21 = [v19 smartStyleSystemStyleIndex];
-        v22 = [v19 semanticStyles];
-        v54 = v7;
-        if (v21 >= [v22 count])
+        smartStyleSystemStyleIndex = [v19 smartStyleSystemStyleIndex];
+        semanticStyles2 = [v19 semanticStyles];
+        v54 = conflictingControlConfiguration;
+        if (smartStyleSystemStyleIndex >= [semanticStyles2 count])
         {
           v24 = 0;
         }
 
         else
         {
-          v23 = [v19 semanticStyles];
-          v24 = [v23 objectAtIndexedSubscript:{objc_msgSend(v19, "smartStyleSystemStyleIndex")}];
+          semanticStyles3 = [v19 semanticStyles];
+          v24 = [semanticStyles3 objectAtIndexedSubscript:{objc_msgSend(v19, "smartStyleSystemStyleIndex")}];
         }
 
-        v25 = [(CAMUserPreferences *)self lastReadSystemStyle];
-        v26 = 0;
-        v55 = v25;
-        v27 = 0;
-        if (v24 && v25)
+        lastReadSystemStyle = [(CAMUserPreferences *)self lastReadSystemStyle];
+        dictionaryRepresentation2 = 0;
+        v55 = lastReadSystemStyle;
+        dictionaryRepresentation = 0;
+        if (v24 && lastReadSystemStyle)
         {
-          if ([v24 isEqualToSmartStyle:v25])
+          if ([v24 isEqualToSmartStyle:lastReadSystemStyle])
           {
-            v26 = 0;
-            v27 = 0;
+            dictionaryRepresentation2 = 0;
+            dictionaryRepresentation = 0;
           }
 
           else
           {
-            v27 = [v24 dictionaryRepresentation];
-            v26 = [v55 dictionaryRepresentation];
+            dictionaryRepresentation = [v24 dictionaryRepresentation];
+            dictionaryRepresentation2 = [v55 dictionaryRepresentation];
           }
         }
 
         v53 = v24;
-        CFPreferencesSetAppValue(@"CAMUserPreferenceSmartStylesSystemStyleOverride", v27, @"com.apple.camera");
-        CFPreferencesSetAppValue(@"CAMUserPreferenceSmartStylesSystemStyleOverrideReference", v26, @"com.apple.camera");
-        v28 = [v19 selectedSemanticStyleIndex];
-        if (v28 == [v19 smartStyleSystemStyleIndex])
+        CFPreferencesSetAppValue(@"CAMUserPreferenceSmartStylesSystemStyleOverride", dictionaryRepresentation, @"com.apple.camera");
+        CFPreferencesSetAppValue(@"CAMUserPreferenceSmartStylesSystemStyleOverrideReference", dictionaryRepresentation2, @"com.apple.camera");
+        selectedSemanticStyleIndex = [v19 selectedSemanticStyleIndex];
+        if (selectedSemanticStyleIndex == [v19 smartStyleSystemStyleIndex])
         {
           CFPreferencesSetAppValue(@"CAMUserPreferenceSmartStylesSelectedPreset", 0, @"com.apple.camera");
         }
 
         else
         {
-          v29 = [v19 selectedSemanticStyleIndex];
-          v30 = [v19 semanticStyles];
-          [(CAMUserPreferences *)self _writeSmartStylePresetStringForIndex:v29 inStyles:v30 key:@"CAMUserPreferenceSmartStylesSelectedPreset"];
+          selectedSemanticStyleIndex2 = [v19 selectedSemanticStyleIndex];
+          semanticStyles4 = [v19 semanticStyles];
+          [(CAMUserPreferences *)self _writeSmartStylePresetStringForIndex:selectedSemanticStyleIndex2 inStyles:semanticStyles4 key:@"CAMUserPreferenceSmartStylesSelectedPreset"];
         }
 
-        v7 = v54;
+        conflictingControlConfiguration = v54;
       }
 
       else
@@ -611,23 +611,23 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
 
     if ([objc_opt_class() isSharedLibrarySupportedAndEnabledForCapabilities:v10])
     {
-      v31 = [v6 sharedLibraryMode];
-      [v5 setInteger:v31 forKey:@"CAMUserPreferenceSharedLibraryMode"];
+      sharedLibraryMode = [captureConfiguration sharedLibraryMode];
+      [_underlyingUserDefaults setInteger:sharedLibraryMode forKey:@"CAMUserPreferenceSharedLibraryMode"];
       v32 = os_log_create("com.apple.camera", "SharedLibrary");
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = CAMSharedLibraryModeDescription(v31);
+        v33 = CAMSharedLibraryModeDescription(sharedLibraryMode);
         *buf = 138543362;
         v61 = v33;
         _os_log_impl(&dword_1A3640000, v32, OS_LOG_TYPE_DEFAULT, "[CAMUserPreferences] write sharedLibraryMode:%{public}@", buf, 0xCu);
       }
 
-      v34 = [(CAMUserPreferences *)self sharedLibraryLastLocation];
-      if (v34)
+      sharedLibraryLastLocation = [(CAMUserPreferences *)self sharedLibraryLastLocation];
+      if (sharedLibraryLastLocation)
       {
         v35 = MEMORY[0x1E696ACC8];
-        v36 = [(CAMUserPreferences *)self sharedLibraryLastLocation];
-        v37 = [v35 archivedDataWithRootObject:v36 requiringSecureCoding:1 error:0];
+        sharedLibraryLastLocation2 = [(CAMUserPreferences *)self sharedLibraryLastLocation];
+        v37 = [v35 archivedDataWithRootObject:sharedLibraryLastLocation2 requiringSecureCoding:1 error:0];
       }
 
       else
@@ -635,17 +635,17 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
         v37 = 0;
       }
 
-      [v5 setObject:v37 forKey:@"CAMUserPreferenceSharedLibraryLastLocation"];
-      [v5 setBool:[(CAMUserPreferences *)self sharedLibraryLastLocationAcquiredDuringTrip] forKey:@"CAMUserPreferenceSharedLibraryLastLocationAcquiredDuringTrip"];
-      v38 = [(CAMUserPreferences *)self sharedLibraryLastDiscoveryDate];
-      [v5 setObject:v38 forKey:@"CAMUserPreferenceSharedLibraryLastDiscoveryDate"];
+      [_underlyingUserDefaults setObject:v37 forKey:@"CAMUserPreferenceSharedLibraryLastLocation"];
+      [_underlyingUserDefaults setBool:[(CAMUserPreferences *)self sharedLibraryLastLocationAcquiredDuringTrip] forKey:@"CAMUserPreferenceSharedLibraryLastLocationAcquiredDuringTrip"];
+      sharedLibraryLastDiscoveryDate = [(CAMUserPreferences *)self sharedLibraryLastDiscoveryDate];
+      [_underlyingUserDefaults setObject:sharedLibraryLastDiscoveryDate forKey:@"CAMUserPreferenceSharedLibraryLastDiscoveryDate"];
 
-      v39 = [(CAMUserPreferences *)self sharedLibraryLastDiscoveryLocation];
-      if (v39)
+      sharedLibraryLastDiscoveryLocation = [(CAMUserPreferences *)self sharedLibraryLastDiscoveryLocation];
+      if (sharedLibraryLastDiscoveryLocation)
       {
         v40 = MEMORY[0x1E696ACC8];
-        v41 = [(CAMUserPreferences *)self sharedLibraryLastDiscoveryLocation];
-        v42 = [v40 archivedDataWithRootObject:v41 requiringSecureCoding:1 error:0];
+        sharedLibraryLastDiscoveryLocation2 = [(CAMUserPreferences *)self sharedLibraryLastDiscoveryLocation];
+        v42 = [v40 archivedDataWithRootObject:sharedLibraryLastDiscoveryLocation2 requiringSecureCoding:1 error:0];
       }
 
       else
@@ -653,16 +653,16 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
         v42 = 0;
       }
 
-      [v5 setObject:v42 forKey:@"CAMUserPreferenceSharedLibraryLastDiscoveryLocation"];
-      v43 = [(CAMUserPreferences *)self sharedLibraryLastUserActionDate];
-      [v5 setObject:v43 forKey:@"CAMUserPreferenceSharedLibraryLastUserActionDate"];
+      [_underlyingUserDefaults setObject:v42 forKey:@"CAMUserPreferenceSharedLibraryLastDiscoveryLocation"];
+      sharedLibraryLastUserActionDate = [(CAMUserPreferences *)self sharedLibraryLastUserActionDate];
+      [_underlyingUserDefaults setObject:sharedLibraryLastUserActionDate forKey:@"CAMUserPreferenceSharedLibraryLastUserActionDate"];
 
-      v44 = [(CAMUserPreferences *)self sharedLibraryLastUserActionLocation];
-      if (v44)
+      sharedLibraryLastUserActionLocation = [(CAMUserPreferences *)self sharedLibraryLastUserActionLocation];
+      if (sharedLibraryLastUserActionLocation)
       {
         v45 = MEMORY[0x1E696ACC8];
-        v46 = [(CAMUserPreferences *)self sharedLibraryLastUserActionLocation];
-        v47 = [v45 archivedDataWithRootObject:v46 requiringSecureCoding:1 error:0];
+        sharedLibraryLastUserActionLocation2 = [(CAMUserPreferences *)self sharedLibraryLastUserActionLocation];
+        v47 = [v45 archivedDataWithRootObject:sharedLibraryLastUserActionLocation2 requiringSecureCoding:1 error:0];
       }
 
       else
@@ -670,50 +670,50 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
         v47 = 0;
       }
 
-      [v5 setObject:v47 forKey:@"CAMUserPreferenceSharedLibraryLastUserActionLocation"];
+      [_underlyingUserDefaults setObject:v47 forKey:@"CAMUserPreferenceSharedLibraryLastUserActionLocation"];
     }
 
     else
     {
-      [v5 removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastLocation"];
-      [v5 removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastLocationAcquiredDuringTrip"];
-      [v5 removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastDiscoveryDate"];
-      [v5 removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastDiscoveryLocation"];
-      [v5 removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastUserActionDate"];
-      [v5 removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastUserActionLocation"];
-      [v5 removeObjectForKey:@"CAMUserPreferenceSharedLibraryMode"];
+      [_underlyingUserDefaults removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastLocation"];
+      [_underlyingUserDefaults removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastLocationAcquiredDuringTrip"];
+      [_underlyingUserDefaults removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastDiscoveryDate"];
+      [_underlyingUserDefaults removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastDiscoveryLocation"];
+      [_underlyingUserDefaults removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastUserActionDate"];
+      [_underlyingUserDefaults removeObjectForKey:@"CAMUserPreferenceSharedLibraryLastUserActionLocation"];
+      [_underlyingUserDefaults removeObjectForKey:@"CAMUserPreferenceSharedLibraryMode"];
     }
 
     if ([v10 isActionModeControlSupported])
     {
-      -[NSObject setInteger:forKey:](v5, "setInteger:forKey:", [v6 videoStabilizationMode], @"CAMUserPreferenceVideoStabilizationMode");
+      -[NSObject setInteger:forKey:](_underlyingUserDefaults, "setInteger:forKey:", [captureConfiguration videoStabilizationMode], @"CAMUserPreferenceVideoStabilizationMode");
     }
 
     if ([v10 isHalfPressSupported])
     {
-      v48 = [(CAMUserPreferences *)self openHalfPressSpotlightControls];
-      v49 = [v48 allObjects];
-      [v5 setObject:v49 forKey:@"CAMUserPreferenceOpenHalfPressSpotlightControls"];
+      openHalfPressSpotlightControls = [(CAMUserPreferences *)self openHalfPressSpotlightControls];
+      allObjects = [openHalfPressSpotlightControls allObjects];
+      [_underlyingUserDefaults setObject:allObjects forKey:@"CAMUserPreferenceOpenHalfPressSpotlightControls"];
     }
 
     if ([v10 isFrontRearSimultaneousVideoSupported])
     {
-      [v5 setBool:[(CAMUserPreferences *)self shouldEnableFrontRearSimultaneousVideo] forKey:@"CAMUserPreferenceEnableFrontRearSimultaneousVideo"];
+      [_underlyingUserDefaults setBool:[(CAMUserPreferences *)self shouldEnableFrontRearSimultaneousVideo] forKey:@"CAMUserPreferenceEnableFrontRearSimultaneousVideo"];
     }
 
     if ([v10 allowControlDrawer])
     {
       v50 = objc_opt_class();
-      v51 = [(CAMUserPreferences *)self preferredDrawerControlByMode];
-      v52 = [v50 _persistenceDictionaryForPreferredDrawerControlByMode:v51];
+      preferredDrawerControlByMode = [(CAMUserPreferences *)self preferredDrawerControlByMode];
+      v52 = [v50 _persistenceDictionaryForPreferredDrawerControlByMode:preferredDrawerControlByMode];
 
-      [v5 setObject:v52 forKey:@"CAMUserPreferencesPreferredDrawerControlByMode"];
+      [_underlyingUserDefaults setObject:v52 forKey:@"CAMUserPreferencesPreferredDrawerControlByMode"];
     }
 
     if ([v10 isSmartFramingSupported])
     {
-      [v5 setBool:[(CAMUserPreferences *)self wantsSmartFramingAutoZoomDefault] forKey:@"CAMUserPreferencesWantsSmartFramingAutoZoomDefault"];
-      [v5 setBool:[(CAMUserPreferences *)self wantsSmartFramingAutoRotationDefault] forKey:@"CAMUserPreferencesWantsSmartFramingAutoRotationDefault"];
+      [_underlyingUserDefaults setBool:[(CAMUserPreferences *)self wantsSmartFramingAutoZoomDefault] forKey:@"CAMUserPreferencesWantsSmartFramingAutoZoomDefault"];
+      [_underlyingUserDefaults setBool:[(CAMUserPreferences *)self wantsSmartFramingAutoRotationDefault] forKey:@"CAMUserPreferencesWantsSmartFramingAutoRotationDefault"];
     }
 
     [(CAMUserPreferences *)self _updateLastWrittenSettingsDate];
@@ -721,12 +721,12 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
   }
 }
 
-+ (BOOL)_fallBackToCameraDefaultsForBundleIdentifier:(id)a3
++ (BOOL)_fallBackToCameraDefaultsForBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [v3 setWithObjects:{@"com.apple.MobileSMS", @"com.apple.camera.CameraMessagesApp", @"com.apple.Camera-API", @"com.apple.AssetExplorerTester", 0}];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:identifierCopy];
 
   return v6;
 }
@@ -745,7 +745,7 @@ void __33__CAMUserPreferences_preferences__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __49__CAMUserPreferences_defaultCaptureConfiguration__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultCaptureConfiguration_onceToken != -1)
   {
     dispatch_once(&defaultCaptureConfiguration_onceToken, block);
@@ -765,12 +765,12 @@ uint64_t __49__CAMUserPreferences_defaultCaptureConfiguration__block_invoke(uint
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (id)filterTypesForMode:(int64_t)a3
+- (id)filterTypesForMode:(int64_t)mode
 {
   v4 = +[CAMCaptureCapabilities capabilities];
   if ([v4 isLiveFilteringSupported])
   {
-    v5 = a3 > 6;
+    v5 = mode > 6;
   }
 
   else
@@ -785,42 +785,42 @@ uint64_t __49__CAMUserPreferences_defaultCaptureConfiguration__block_invoke(uint
 
   else
   {
-    v6 = qword_1E76F9308[a3];
+    v6 = qword_1E76F9308[mode];
   }
 
   return v6;
 }
 
-- (int64_t)_sanitizeEffectFilterType:(int64_t)a3 forMode:(int64_t)a4
+- (int64_t)_sanitizeEffectFilterType:(int64_t)type forMode:(int64_t)mode
 {
-  v6 = [(CAMUserPreferences *)self filterTypesForMode:a4];
-  if (!v6 || ([MEMORY[0x1E696AD98] numberWithInteger:a3], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "indexOfObject:", v7), v7, v8 == 0x7FFFFFFFFFFFFFFFLL))
+  v6 = [(CAMUserPreferences *)self filterTypesForMode:mode];
+  if (!v6 || ([MEMORY[0x1E696AD98] numberWithInteger:type], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "indexOfObject:", v7), v7, v8 == 0x7FFFFFFFFFFFFFFFLL))
   {
-    a3 = [CAMUserPreferences defaultFilterTypeForMode:a4];
+    type = [CAMUserPreferences defaultFilterTypeForMode:mode];
   }
 
-  return a3;
+  return type;
 }
 
-+ (int64_t)defaultLightingTypeForMode:(int64_t)a3
++ (int64_t)defaultLightingTypeForMode:(int64_t)mode
 {
   v4 = +[CAMCaptureCapabilities capabilities];
-  LODWORD(a3) = [v4 isLightingControlSupportedForMode:a3];
+  LODWORD(mode) = [v4 isLightingControlSupportedForMode:mode];
 
-  return a3;
+  return mode;
 }
 
 - (int64_t)ppt_readPortraitLightingType
 {
-  v3 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  v4 = -[CAMUserPreferences _sanitizeLightingType:forMode:](self, "_sanitizeLightingType:forMode:", [v3 integerForKey:@"CAMUserPreferencePortraitModeLightingEffectType"], 6);
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  v4 = -[CAMUserPreferences _sanitizeLightingType:forMode:](self, "_sanitizeLightingType:forMode:", [_underlyingUserDefaults integerForKey:@"CAMUserPreferencePortraitModeLightingEffectType"], 6);
 
   return v4;
 }
 
-- (int64_t)_sanitizeLightingType:(int64_t)a3 forMode:(int64_t)a4
+- (int64_t)_sanitizeLightingType:(int64_t)type forMode:(int64_t)mode
 {
-  v5 = [objc_opt_class() defaultLightingTypeForMode:a4];
+  v5 = [objc_opt_class() defaultLightingTypeForMode:mode];
   if (!v5)
   {
     return 0;
@@ -836,7 +836,7 @@ uint64_t __49__CAMUserPreferences_defaultCaptureConfiguration__block_invoke(uint
     v10 = qword_1E76F9340[v8];
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v12 = [v10 containsObject:v11];
 
   if ((v12 & 1) == 0)
@@ -851,16 +851,16 @@ uint64_t __49__CAMUserPreferences_defaultCaptureConfiguration__block_invoke(uint
       v13 = qword_1E76F9340[v9];
     }
 
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v15 = [v13 containsObject:v14];
 
     if (!v15)
     {
-      a3 = v6;
+      type = v6;
     }
   }
 
-  return a3;
+  return type;
 }
 
 + (id)_defaultExposureBiasesByMode
@@ -903,13 +903,13 @@ uint64_t __49__CAMUserPreferences_defaultCaptureConfiguration__block_invoke(uint
 - (void)_publishAnalyticsIfNeededAfterAppLaunch
 {
   objc_initWeak(&location, self);
-  v2 = [MEMORY[0x1E69C4598] sharedScheduler];
+  mEMORY[0x1E69C4598] = [MEMORY[0x1E69C4598] sharedScheduler];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_invoke;
   v3[3] = &unk_1E76F8580;
   objc_copyWeak(&v4, &location);
-  [v2 scheduleDeferredMainQueueTask:v3];
+  [mEMORY[0x1E69C4598] scheduleDeferredMainQueueTask:v3];
 
   objc_destroyWeak(&v4);
   objc_destroyWeak(&location);
@@ -926,21 +926,21 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
   }
 }
 
-- (int64_t)defaultDeviceForModeChange:(int64_t)a3 devicePosition:(int64_t)a4
+- (int64_t)defaultDeviceForModeChange:(int64_t)change devicePosition:(int64_t)position
 {
-  if (a4 == 1)
+  if (position == 1)
   {
     return 1;
   }
 
-  if (a4)
+  if (position)
   {
     return 0;
   }
 
-  if (a3 != 6)
+  if (change != 6)
   {
-    if (a3 == 8)
+    if (change == 8)
     {
       return 6;
     }
@@ -959,22 +959,22 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
   return [(CAMUserPreferences *)self portraitModeRearDevice];
 }
 
-- (double)defaultZoomFactorForGraphConfiguration:(id)a3 captureOrientation:(int64_t)a4 outputToExternalStorage:(BOOL)a5
+- (double)defaultZoomFactorForGraphConfiguration:(id)configuration captureOrientation:(int64_t)orientation outputToExternalStorage:(BOOL)storage
 {
-  v5 = a5;
-  v8 = a3;
+  storageCopy = storage;
+  configurationCopy = configuration;
   v9 = +[CAMCaptureCapabilities capabilities];
   v21 = 0;
-  [v9 defaultZoomFactorForGraphConfiguration:v8 captureOrientation:a4 customLens:-[CAMUserPreferences defaultCustomLens](self outputToExternalStorage:"defaultCustomLens") overrodeWithForcedZoomValue:{v5, &v21}];
+  [v9 defaultZoomFactorForGraphConfiguration:configurationCopy captureOrientation:orientation customLens:-[CAMUserPreferences defaultCustomLens](self outputToExternalStorage:"defaultCustomLens") overrodeWithForcedZoomValue:{storageCopy, &v21}];
   v11 = v10;
-  v12 = [v8 mode];
-  v13 = [v8 device];
-  v14 = [v8 videoConfiguration];
-  v15 = [v8 videoStabilizationStrength];
-  v16 = [v8 frontRearSimultaneousVideoEnabled];
+  mode = [configurationCopy mode];
+  device = [configurationCopy device];
+  videoConfiguration = [configurationCopy videoConfiguration];
+  videoStabilizationStrength = [configurationCopy videoStabilizationStrength];
+  frontRearSimultaneousVideoEnabled = [configurationCopy frontRearSimultaneousVideoEnabled];
 
-  v17 = [v9 resolvedDeviceForDesiredDevice:v13 mode:v12 videoConfiguration:v14 videoStabilizationStrength:v15 frontRearSimultaneousVideoEnabled:v16];
-  if ((v21 & 1) == 0 && v12 == 6)
+  v17 = [v9 resolvedDeviceForDesiredDevice:device mode:mode videoConfiguration:videoConfiguration videoStabilizationStrength:videoStabilizationStrength frontRearSimultaneousVideoEnabled:frontRearSimultaneousVideoEnabled];
+  if ((v21 & 1) == 0 && mode == 6)
   {
     v18 = v17;
     if ([(CAMUserPreferences *)self preservePortraitZoom])
@@ -990,18 +990,18 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
   return v11;
 }
 
-- (id)videoThumbnailOutputConfigurationForMode:(int64_t)a3 devicePosition:(int64_t)a4
+- (id)videoThumbnailOutputConfigurationForMode:(int64_t)mode devicePosition:(int64_t)position
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [(CAMUserPreferences *)self filterTypesForMode:a3, a4];
-  if ([v4 count])
+  position = [(CAMUserPreferences *)self filterTypesForMode:mode, position];
+  if ([position count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = position;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -1017,11 +1017,11 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
           }
 
           v11 = +[CAMEffectFilterManager filtersForFilterType:lightingType:applyDepthEffect:](CAMEffectFilterManager, "filtersForFilterType:lightingType:applyDepthEffect:", [*(*(&v17 + 1) + 8 * i) integerValue], 0, 0);
-          v12 = [v11 firstObject];
+          firstObject = [v11 firstObject];
 
-          if (v12)
+          if (firstObject)
           {
-            [v5 addObject:v12];
+            [array addObject:firstObject];
           }
         }
 
@@ -1032,7 +1032,7 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
     }
 
     [MEMORY[0x1E69938A8] defaultScreenScaleContentSize];
-    v15 = [[CAMVideoThumbnailOutputConfiguration alloc] initWithThumbnailSize:v5 filters:v13, v14];
+    v15 = [[CAMVideoThumbnailOutputConfiguration alloc] initWithThumbnailSize:array filters:v13, v14];
   }
 
   else
@@ -1043,85 +1043,85 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
   return v15;
 }
 
-- (void)resolveDesiredPhotoResolution:(int64_t)a3 livePhotoMode:(int64_t)a4 rawMode:(int64_t)a5 conflicts:(unint64_t)a6 mode:(int64_t)a7 device:(int64_t)a8 resolvedPhotoResolution:(int64_t *)a9 resolvedLivePhotoMode:(int64_t *)a10
+- (void)resolveDesiredPhotoResolution:(int64_t)resolution livePhotoMode:(int64_t)mode rawMode:(int64_t)rawMode conflicts:(unint64_t)conflicts mode:(int64_t)a7 device:(int64_t)device resolvedPhotoResolution:(int64_t *)photoResolution resolvedLivePhotoMode:(int64_t *)self0
 {
-  v11 = a6 & 2;
+  v11 = conflicts & 2;
   v12 = 2;
-  if ((a6 & 2) == 0)
+  if ((conflicts & 2) == 0)
   {
     v12 = 3;
   }
 
-  if (a3 == 3)
+  if (resolution == 3)
   {
-    v13 = v12;
+    resolutionCopy = v12;
   }
 
   else
   {
-    v13 = a3;
+    resolutionCopy = resolution;
   }
 
-  [(CAMUserPreferences *)self fallbackPhotoFormatForDesiredFormat:[(CAMUserPreferences *)self photoEncodingBehaviorForMode:a7 resolvedRAWMode:a5 isCapturingVideo:0 isTrueVideo:0] mode:v13 device:a7, a8];
+  [(CAMUserPreferences *)self fallbackPhotoFormatForDesiredFormat:[(CAMUserPreferences *)self photoEncodingBehaviorForMode:a7 resolvedRAWMode:rawMode isCapturingVideo:0 isTrueVideo:0] mode:resolutionCopy device:a7, device];
   if (v14 == 3 && v11 == 0)
   {
-    v16 = 0;
+    modeCopy = 0;
   }
 
   else
   {
-    v16 = a4;
+    modeCopy = mode;
   }
 
-  if (a9)
+  if (photoResolution)
   {
-    *a9 = v14;
+    *photoResolution = v14;
   }
 
-  if (a10)
+  if (photoMode)
   {
-    *a10 = v16;
+    *photoMode = modeCopy;
   }
 }
 
-- (BOOL)readPreferencesWithOverrides:(id)a3 emulationMode:(int64_t)a4 callActive:(BOOL)a5 shouldResetCaptureConfiguration:(BOOL *)a6 bypassXPCWhenReadingSystemStyle:(BOOL)a7
+- (BOOL)readPreferencesWithOverrides:(id)overrides emulationMode:(int64_t)mode callActive:(BOOL)active shouldResetCaptureConfiguration:(BOOL *)configuration bypassXPCWhenReadingSystemStyle:(BOOL)style
 {
-  v319 = a7;
-  v7 = a5;
+  styleCopy = style;
+  activeCopy = active;
   v424 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  overridesCopy = overrides;
   v10 = +[CAMCaptureCapabilities capabilities];
-  v11 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  if (([v11 BOOLForKey:@"CAMUserPreferenceDidMigrate"] & 1) == 0)
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  if (([_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceDidMigrate"] & 1) == 0)
   {
     +[CAMUserPreferencesMigrator migrateLegacyPreferences];
   }
 
   [objc_opt_class() performSmartStylesOnboardingAcknowledgementResetWithCapabilities:v10];
-  v12 = [objc_opt_class() defaultCaptureConfiguration];
-  v345 = [v11 BOOLForKey:@"CAMUserPreferencePreserveAllSettings"];
-  self->_preserveCaptureMode = [v11 BOOLForKey:@"CAMUserPreferencePreserveCaptureMode"];
-  v13 = [v10 isPreserveCreativeControlsSupported];
-  if (v13)
+  defaultCaptureConfiguration = [objc_opt_class() defaultCaptureConfiguration];
+  v345 = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveAllSettings"];
+  self->_preserveCaptureMode = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveCaptureMode"];
+  isPreserveCreativeControlsSupported = [v10 isPreserveCreativeControlsSupported];
+  if (isPreserveCreativeControlsSupported)
   {
-    LOBYTE(v13) = [v11 BOOLForKey:@"CAMUserPreferencePreserveEffectFilter"];
+    LOBYTE(isPreserveCreativeControlsSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveEffectFilter"];
   }
 
-  self->_preserveEffectFilter = v13;
-  v14 = [v10 smartStylesSupported];
-  if (v14)
+  self->_preserveEffectFilter = isPreserveCreativeControlsSupported;
+  smartStylesSupported = [v10 smartStylesSupported];
+  if (smartStylesSupported)
   {
-    LOBYTE(v14) = [v11 BOOLForKey:@"CAMUserPreferencePreserveSmartStyle"];
+    LOBYTE(smartStylesSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveSmartStyle"];
   }
 
-  self->_preserveSmartStyle = v14;
-  self->_preserveLivePhoto = [v11 BOOLForKey:@"CAMUserPreferencePreserveLivePhoto"];
-  self->_preserveExposure = [v11 BOOLForKey:@"CAMUserPreferencePreserveExposure"];
-  self->_preserveNightMode = [v11 BOOLForKey:@"CAMUserPreferencePreserveNightMode"];
+  self->_preserveSmartStyle = smartStylesSupported;
+  self->_preserveLivePhoto = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveLivePhoto"];
+  self->_preserveExposure = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveExposure"];
+  self->_preserveNightMode = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveNightMode"];
   [v10 _forcedInitialZoomDisplayFactor];
   if (v15 == 0.0)
   {
-    v16 = [v11 BOOLForKey:@"CAMUserPreferencePreservePortraitZoom"];
+    v16 = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreservePortraitZoom"];
   }
 
   else
@@ -1135,30 +1135,30 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
     self->_preservePortraitZoom = 0;
   }
 
-  self->_preserveRAW = [v11 BOOLForKey:@"CAMUserPreferencePreserveRAW"];
-  self->_preserveProRes = [v11 BOOLForKey:@"CAMUserPreferencePreserveProRes"];
-  v17 = [v10 isEnhancedStabilizationSupported];
-  if (v17)
+  self->_preserveRAW = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveRAW"];
+  self->_preserveProRes = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveProRes"];
+  isEnhancedStabilizationSupported = [v10 isEnhancedStabilizationSupported];
+  if (isEnhancedStabilizationSupported)
   {
-    LOBYTE(v17) = [v11 BOOLForKey:@"CAMUserPreferenceEnhancedVideoStabilization"];
+    LOBYTE(isEnhancedStabilizationSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnhancedVideoStabilization"];
   }
 
-  self->_enhancedVideoStabilization = v17;
-  v18 = [v10 isActionModeControlSupported];
-  if (v18)
+  self->_enhancedVideoStabilization = isEnhancedStabilizationSupported;
+  isActionModeControlSupported = [v10 isActionModeControlSupported];
+  if (isActionModeControlSupported)
   {
-    LOBYTE(v18) = [v11 BOOLForKey:@"CAMUserPreferenceActionModeLowLightEnabled"];
+    LOBYTE(isActionModeControlSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceActionModeLowLightEnabled"];
   }
 
-  self->_actionModeLowLightEnabled = v18;
-  self->_preserveVideoStabilization = [v11 BOOLForKey:@"CAMUserPreferencePreserveVideoStabilization"];
-  v19 = [v10 isFrontRearSimultaneousVideoSupported];
-  if (v19)
+  self->_actionModeLowLightEnabled = isActionModeControlSupported;
+  self->_preserveVideoStabilization = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveVideoStabilization"];
+  isFrontRearSimultaneousVideoSupported = [v10 isFrontRearSimultaneousVideoSupported];
+  if (isFrontRearSimultaneousVideoSupported)
   {
-    LOBYTE(v19) = [v11 BOOLForKey:@"CAMUserPreferencePreserveFrontRearSimultaneousVideoEnabled"];
+    LOBYTE(isFrontRearSimultaneousVideoSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveFrontRearSimultaneousVideoEnabled"];
   }
 
-  self->__preserveFrontRearSimultaneousVideoEnabled = v19;
+  self->__preserveFrontRearSimultaneousVideoEnabled = isFrontRearSimultaneousVideoSupported;
   if ([v10 isLinearDNGSupported])
   {
     preserveRAW = self->_preserveRAW;
@@ -1166,28 +1166,28 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
 
   else
   {
-    preserveRAW = [v11 BOOLForKey:@"CAMUserPreferencePreservePhotoResolution"];
+    preserveRAW = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreservePhotoResolution"];
   }
 
   self->_preservePhotoResolution = preserveRAW;
   [objc_opt_class() performApertureMigrationWithCapabilities:v10];
-  self->_preserveAperture = [v11 BOOLForKey:@"CAMUserPreferencePreserveAperture"];
-  self->_videoConfiguration = [v11 integerForKey:*MEMORY[0x1E69C0630]];
-  self->_slomoConfiguration = [v11 integerForKey:*MEMORY[0x1E69C0628]];
-  self->_videoConfigurationControlEnabled = [v11 BOOLForKey:@"CAMUserPreferenceEnableVideoConfigurationControl"];
-  v21 = [v10 isPALVideoSupported];
-  v370 = v9;
-  if (v21)
+  self->_preserveAperture = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveAperture"];
+  self->_videoConfiguration = [_underlyingUserDefaults integerForKey:*MEMORY[0x1E69C0630]];
+  self->_slomoConfiguration = [_underlyingUserDefaults integerForKey:*MEMORY[0x1E69C0628]];
+  self->_videoConfigurationControlEnabled = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnableVideoConfigurationControl"];
+  isPALVideoSupported = [v10 isPALVideoSupported];
+  v370 = overridesCopy;
+  if (isPALVideoSupported)
   {
-    LOBYTE(v21) = [v11 BOOLForKey:@"CAMUserPreferenceEnablePALVideoFormats"];
+    LOBYTE(isPALVideoSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnablePALVideoFormats"];
   }
 
-  self->_PALVideoEnabled = v21;
-  self->_cinematicConfiguration = [v11 integerForKey:@"CAMUserPreferenceCinematicConfiguration"];
+  self->_PALVideoEnabled = isPALVideoSupported;
+  self->_cinematicConfiguration = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceCinematicConfiguration"];
   v22 = [v10 defaultPhotoResolutionForMode:0 devicePosition:1 encodingBehavior:1];
   if ([v10 isPhotoResolutionSupported:2 forPhotoEncoding:1])
   {
-    v23 = [v11 integerForKey:@"CAMUserPreferenceMaximumHEICPhotoResolution"];
+    v23 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceMaximumHEICPhotoResolution"];
     if ([v10 dynamicAspectRatioSupported])
     {
       v22 = v23;
@@ -1208,7 +1208,7 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
   self->__frontPreferredHEICPhotoResolution = v22;
   if ([v10 enhancedRAWResolutionSupported] && objc_msgSend(v10, "isLinearDNGSupported"))
   {
-    v24 = [v11 integerForKey:@"CAMUserPreferenceMaximumRAWPhotoResolution"];
+    v24 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceMaximumRAWPhotoResolution"];
   }
 
   else
@@ -1230,12 +1230,12 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
   self->_maximumRAWPhotoResolution = v25;
   if ([v10 isCustomLensSupportedForPhotoResolution:v23])
   {
-    v26 = [v11 arrayForKey:@"CAMUserPreferencesSelectedCustomLensGroup"];
+    v26 = [_underlyingUserDefaults arrayForKey:@"CAMUserPreferencesSelectedCustomLensGroup"];
     v27 = [v10 supportedCustomLensGroupForGroup:v26];
     customLensGroup = self->_customLensGroup;
     self->_customLensGroup = v27;
 
-    self->_defaultCustomLens = [v10 supportedCustomLensForLens:objc_msgSend(v11 inGroup:{"integerForKey:", @"CAMUserPreferencesDefaultCustomLens", self->_customLensGroup}];
+    self->_defaultCustomLens = [v10 supportedCustomLensForLens:objc_msgSend(_underlyingUserDefaults inGroup:{"integerForKey:", @"CAMUserPreferencesDefaultCustomLens", self->_customLensGroup}];
   }
 
   else
@@ -1246,18 +1246,18 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
     self->_defaultCustomLens = 0;
   }
 
-  if (a4)
+  if (mode)
   {
     v30 = 0;
-    LOBYTE(v31) = 0;
+    LOBYTE(isAutoLowLightVideoSupported) = 0;
   }
 
   else
   {
-    v31 = [v10 isAutoLowLightVideoSupported];
-    if (v31)
+    isAutoLowLightVideoSupported = [v10 isAutoLowLightVideoSupported];
+    if (isAutoLowLightVideoSupported)
     {
-      LOBYTE(v31) = [v11 BOOLForKey:@"CAMUserPreferenceAutoLowLightVideoEnabled"];
+      LOBYTE(isAutoLowLightVideoSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceAutoLowLightVideoEnabled"];
       v30 = 1;
     }
 
@@ -1267,7 +1267,7 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
     }
   }
 
-  self->_lowLightVideoEnabled = v31;
+  self->_lowLightVideoEnabled = isAutoLowLightVideoSupported;
   if ([v10 isVariableFramerateVideoSupported])
   {
     [objc_opt_class() performLowLightVideoMigrationWithCapabilities:v10];
@@ -1275,7 +1275,7 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
 
   if (v30)
   {
-    v32 = [v11 integerForKey:@"CAMUserPreferenceVFRMode"];
+    v32 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceVFRMode"];
   }
 
   else
@@ -1289,29 +1289,29 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
     [objc_opt_class() performResponsiveShutterMigrationWithCapabilities:v10];
   }
 
-  v33 = [v10 responsiveShutterSupported];
-  if (v33)
+  responsiveShutterSupported = [v10 responsiveShutterSupported];
+  if (responsiveShutterSupported)
   {
-    LOBYTE(v33) = [v11 BOOLForKey:@"CAMUserPreferenceEnableResponsiveShutter"];
+    LOBYTE(responsiveShutterSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnableResponsiveShutter"];
   }
 
-  self->_responsiveShutterEnabled = v33;
-  v34 = [v10 isSuperWideAutoMacroSupported];
-  if (v34)
+  self->_responsiveShutterEnabled = responsiveShutterSupported;
+  isSuperWideAutoMacroSupported = [v10 isSuperWideAutoMacroSupported];
+  if (isSuperWideAutoMacroSupported)
   {
     [objc_opt_class() performSuperWideAutoMacroMigrationWithCapabilities:v10];
   }
 
   [objc_opt_class() performHorizonLevelUpgradeWithCapabilities:v10];
   [objc_opt_class() performMostCompatibleConfirmationMigrationWithCapabilities:v10];
-  self->_preserveSuperWideAutoMacro = [v11 BOOLForKey:@"CAMUserPreferencePreserveSuperWideAutoMacro"];
-  if (v34)
+  self->_preserveSuperWideAutoMacro = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveSuperWideAutoMacro"];
+  if (isSuperWideAutoMacroSupported)
   {
-    v35 = [v11 BOOLForKey:@"CAMUserPreferenceEnableSuperWideAutoMacro"];
+    v35 = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnableSuperWideAutoMacro"];
     self->_superWideAutoMacroControlAllowed = v35 ^ 1;
     if ((v35 & 1) == 0)
     {
-      v36 = [v11 integerForKey:@"CAMUserPreferenceAutoMacroMode"];
+      macroMode = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceAutoMacroMode"];
       goto LABEL_61;
     }
   }
@@ -1321,76 +1321,76 @@ void __61__CAMUserPreferences__publishAnalyticsIfNeededAfterAppLaunch__block_inv
     self->_superWideAutoMacroControlAllowed = 0;
   }
 
-  v36 = [v12 macroMode];
+  macroMode = [defaultCaptureConfiguration macroMode];
 LABEL_61:
-  v371 = v36;
+  macroMode2 = macroMode;
   [CAMUserPreferences performAudioConfigurationMigrationWithCapabilities:v10];
   self->_preferredAudioConfiguration = [CAMUserPreferences selectedAudioConfigurationForCapabilities:v10];
-  v37 = [v10 isMixAudioWithOthersSupported];
-  if (v37)
+  isMixAudioWithOthersSupported = [v10 isMixAudioWithOthersSupported];
+  if (isMixAudioWithOthersSupported)
   {
-    LOBYTE(v37) = [v11 BOOLForKey:@"CAMUserPreferenceMixAudioWithOthers"];
+    LOBYTE(isMixAudioWithOthersSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceMixAudioWithOthers"];
   }
 
-  self->_shouldMixAudioWithOthers = v37;
-  v38 = [v10 isWindRemovalSupported];
-  if (v38)
+  self->_shouldMixAudioWithOthers = isMixAudioWithOthersSupported;
+  isWindRemovalSupported = [v10 isWindRemovalSupported];
+  if (isWindRemovalSupported)
   {
-    LOBYTE(v38) = [v11 BOOLForKey:@"CAMUserPreferenceAudioWindRemoval"];
+    LOBYTE(isWindRemovalSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceAudioWindRemoval"];
   }
 
-  self->_shouldEnableWindRemoval = v38;
-  v39 = [v10 isWhiteBalanceLockingForVideoRecordingSupported];
-  v367 = v7;
-  if (v39)
+  self->_shouldEnableWindRemoval = isWindRemovalSupported;
+  isWhiteBalanceLockingForVideoRecordingSupported = [v10 isWhiteBalanceLockingForVideoRecordingSupported];
+  v367 = activeCopy;
+  if (isWhiteBalanceLockingForVideoRecordingSupported)
   {
-    LOBYTE(v39) = [v11 BOOLForKey:@"CAMUserPreferenceLockWhiteBalanceDuringVideoRecording"];
+    LOBYTE(isWhiteBalanceLockingForVideoRecordingSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceLockWhiteBalanceDuringVideoRecording"];
   }
 
-  self->_shouldLockWhiteBalanceDuringVideoRecording = v39;
-  self->_lockAsShutterEnabled = [v11 BOOLForKey:@"CAMUserPreferenceEnableLockAsShutter"];
+  self->_shouldLockWhiteBalanceDuringVideoRecording = isWhiteBalanceLockingForVideoRecordingSupported;
+  self->_lockAsShutterEnabled = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnableLockAsShutter"];
   self->_shouldShowGridView = CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceShowGridOverlay", @"com.apple.camera", 0) != 0;
-  v40 = [v11 BOOLForKey:@"CAMUserPreferenceShowHorizonLevelPlumb"];
+  v40 = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceShowHorizonLevelPlumb"];
   self->_shouldShowHorizonLevelView = v40;
   self->_shouldShowLevelView = v40;
-  self->_QRBannersEnabledInSettings = [v11 BOOLForKey:@"CAMUserPreferenceShowQRCodeBanners"];
+  self->_QRBannersEnabledInSettings = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceShowQRCodeBanners"];
   v343 = v23;
-  if ([v11 BOOLForKey:@"CAMUserPreferenceShowImageAnalysis"] && objc_msgSend(v10, "isImageAnalysisSupported"))
+  if ([_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceShowImageAnalysis"] && objc_msgSend(v10, "isImageAnalysisSupported"))
   {
-    v41 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v42 = [v41 objectForKey:@"AppleLiveTextEnabled" inDomain:*MEMORY[0x1E696A400]];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v42 = [standardUserDefaults objectForKey:@"AppleLiveTextEnabled" inDomain:*MEMORY[0x1E696A400]];
 
     if (v42)
     {
-      v43 = [v42 BOOLValue];
+      bOOLValue = [v42 BOOLValue];
     }
 
     else
     {
       v44 = MEMORY[0x1E695DF58];
-      v45 = [MEMORY[0x1E695DF58] _deviceLanguage];
-      *buf = v45;
+      _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+      *buf = _deviceLanguage;
       v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:buf count:1];
       v47 = [v44 matchedLanguagesFromAvailableLanguages:&unk_1F16C9290 forPreferredLanguages:v46];
 
-      v43 = [v47 count] != 0;
+      bOOLValue = [v47 count] != 0;
     }
   }
 
   else
   {
-    v43 = 0;
+    bOOLValue = 0;
   }
 
-  self->_imageAnalysisEnabled = v43;
-  self->_alwaysShowFlashIndicator = [v11 BOOLForKey:@"CAMUserPreferenceAlwaysShowFlashIndicator"];
-  self->_alwaysShowLivePhotoIndicator = [v11 BOOLForKey:@"CAMUserPreferenceAlwaysShowLivePhotoIndicator"];
-  self->_alwaysShowActionModeIndicator = [v11 BOOLForKey:@"CAMUserPreferenceAlwaysShowActionModeIndicator"];
-  self->_alwaysShowFrontPIPIndicator = [v11 BOOLForKey:@"CAMUserPreferenceAlwaysShowFrontPIPIndicator"];
+  self->_imageAnalysisEnabled = bOOLValue;
+  self->_alwaysShowFlashIndicator = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceAlwaysShowFlashIndicator"];
+  self->_alwaysShowLivePhotoIndicator = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceAlwaysShowLivePhotoIndicator"];
+  self->_alwaysShowActionModeIndicator = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceAlwaysShowActionModeIndicator"];
+  self->_alwaysShowFrontPIPIndicator = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceAlwaysShowFrontPIPIndicator"];
   if ([v10 isPreviewAspectRatioToggleSupportedForMode:0])
   {
-    self->__previewAspectModeForPhotoModes = [v11 integerForKey:@"CAMUserPreferencePreviewAspectModeForPhotoModes"];
-    v48 = [v11 integerForKey:@"CAMUserPreferencePreviewAspectModeForPhotoModes"];
+    self->__previewAspectModeForPhotoModes = [_underlyingUserDefaults integerForKey:@"CAMUserPreferencePreviewAspectModeForPhotoModes"];
+    v48 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferencePreviewAspectModeForPhotoModes"];
   }
 
   else
@@ -1402,8 +1402,8 @@ LABEL_61:
   self->__windowedPreviewAspectModeForPhotoModes = v48;
   if ([v10 isPreviewAspectRatioToggleSupportedForMode:1])
   {
-    self->__previewAspectModeForVideoModes = [v11 integerForKey:@"CAMUserPreferencePreviewViewAspectMode"];
-    v49 = [v11 integerForKey:@"CAMUserPreferenceWindowedPreviewAspectModeForVideoModes"];
+    self->__previewAspectModeForVideoModes = [_underlyingUserDefaults integerForKey:@"CAMUserPreferencePreviewViewAspectMode"];
+    v49 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceWindowedPreviewAspectModeForVideoModes"];
   }
 
   else
@@ -1413,55 +1413,55 @@ LABEL_61:
   }
 
   self->__windowedPreviewAspectModeForVideoModes = v49;
-  self->__shouldDisableCameraSwitchingDuringVideoRecording = [v11 BOOLForKey:@"CAMUserPreferenceDisableCameraSwitchingDuringVideoRecording"];
-  self->_didAcknowledgeCTMDescription = [v11 BOOLForKey:@"CAMUserPreferenceCTMDidAcknowledgeDescription"];
-  self->_shouldUseVolumeUpBurst = [v11 BOOLForKey:@"CAMUserPreferenceVolumeUpBurst"];
-  self->_overCapturePreviewEnabled = [v11 BOOLForKey:@"CAMUserPreferenceEnableViewOutsideTheFrame"];
-  v50 = [v10 isMirroredFrontCapturesSupported];
-  if (v50)
+  self->__shouldDisableCameraSwitchingDuringVideoRecording = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceDisableCameraSwitchingDuringVideoRecording"];
+  self->_didAcknowledgeCTMDescription = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceCTMDidAcknowledgeDescription"];
+  self->_shouldUseVolumeUpBurst = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceVolumeUpBurst"];
+  self->_overCapturePreviewEnabled = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnableViewOutsideTheFrame"];
+  isMirroredFrontCapturesSupported = [v10 isMirroredFrontCapturesSupported];
+  if (isMirroredFrontCapturesSupported)
   {
-    LOBYTE(v50) = [v11 BOOLForKey:@"CAMUserPreferenceMirrorFrontCameraCaptures"];
+    LOBYTE(isMirroredFrontCapturesSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceMirrorFrontCameraCaptures"];
   }
 
-  self->_shouldMirrorFrontCameraCaptures = v50;
-  v51 = [v10 contentAwareDistortionCorrectionSupported];
-  if (v51)
+  self->_shouldMirrorFrontCameraCaptures = isMirroredFrontCapturesSupported;
+  contentAwareDistortionCorrectionSupported = [v10 contentAwareDistortionCorrectionSupported];
+  if (contentAwareDistortionCorrectionSupported)
   {
-    LOBYTE(v51) = [v11 BOOLForKey:@"CAMUserPreferenceContentAwareDistortionCorrection"];
+    LOBYTE(contentAwareDistortionCorrectionSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceContentAwareDistortionCorrection"];
   }
 
-  self->_shouldUseContentAwareDistortionCorrection = v51;
+  self->_shouldUseContentAwareDistortionCorrection = contentAwareDistortionCorrectionSupported;
   if ([(CAMUserPreferences *)self allowExplicitProResColorSpace])
   {
-    v52 = [v11 integerForKey:@"CAMUserPreferenceExplicitProResColorSpace"];
-    v53 = [v10 supportedProResColorSpaces];
-    v54 = [MEMORY[0x1E696AD98] numberWithInteger:v52];
-    v55 = [v53 containsObject:v54];
+    integerValue = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceExplicitProResColorSpace"];
+    supportedProResColorSpaces = [v10 supportedProResColorSpaces];
+    v54 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
+    v55 = [supportedProResColorSpaces containsObject:v54];
 
     if ((v55 & 1) == 0)
     {
-      v56 = [v53 firstObject];
-      v52 = [v56 integerValue];
+      firstObject = [supportedProResColorSpaces firstObject];
+      integerValue = [firstObject integerValue];
     }
   }
 
   else
   {
-    v52 = 1;
+    integerValue = 1;
   }
 
-  self->_explicitProResColorSpace = v52;
-  v57 = [v10 isZoomPIPSupported];
-  if (v57)
+  self->_explicitProResColorSpace = integerValue;
+  isZoomPIPSupported = [v10 isZoomPIPSupported];
+  if (isZoomPIPSupported)
   {
-    LOBYTE(v57) = [v11 BOOLForKey:@"CAMUserPreferenceEnableZoomPIP"];
+    LOBYTE(isZoomPIPSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnableZoomPIP"];
   }
 
-  v347 = v57;
-  self->_zoomPIPEnabled = v57;
+  v347 = isZoomPIPSupported;
+  self->_zoomPIPEnabled = isZoomPIPSupported;
   if ([v10 isHalfPressSupported])
   {
-    v58 = [v11 objectForKey:@"CAMUserPreferenceOpenHalfPressSpotlightControls"];
+    v58 = [_underlyingUserDefaults objectForKey:@"CAMUserPreferenceOpenHalfPressSpotlightControls"];
     v59 = v58;
     v60 = MEMORY[0x1E695E0F0];
     if (v58)
@@ -1476,51 +1476,51 @@ LABEL_61:
     self->_openHalfPressSpotlightControls = v62;
   }
 
-  v348 = [v10 isInternalInstall];
-  if (v348)
+  isInternalInstall = [v10 isInternalInstall];
+  if (isInternalInstall)
   {
-    self->_shouldDelayRemotePersistence = [v11 BOOLForKey:@"CAMUserPreferenceDebugTransientAssets"];
+    self->_shouldDelayRemotePersistence = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceDebugTransientAssets"];
   }
 
-  self->__lastViewedSettingsInterfaceDate = [v11 objectForKey:@"CAMUserPreferencesLastViewedSettingsInterfaceDate"];
-  self->__lastWrittenSettingsDate = [v11 objectForKey:@"CAMUserPreferencesLastWrittenSettingsDate"];
+  self->__lastViewedSettingsInterfaceDate = [_underlyingUserDefaults objectForKey:@"CAMUserPreferencesLastViewedSettingsInterfaceDate"];
+  self->__lastWrittenSettingsDate = [_underlyingUserDefaults objectForKey:@"CAMUserPreferencesLastWrittenSettingsDate"];
   if ([v10 allowControlDrawer])
   {
-    v64 = [v11 dictionaryForKey:@"CAMUserPreferencesPreferredDrawerControlByMode"];
+    v64 = [_underlyingUserDefaults dictionaryForKey:@"CAMUserPreferencesPreferredDrawerControlByMode"];
     v65 = [objc_opt_class() _preferredDrawerControlByModeForPersistenceDictionary:v64];
     preferredDrawerControlByMode = self->_preferredDrawerControlByMode;
     self->_preferredDrawerControlByMode = v65;
 
-    self->_preservePreferredDrawerControl = [v11 BOOLForKey:@"CAMUserPreferencePreservePreferredDrawerControl"];
+    self->_preservePreferredDrawerControl = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreservePreferredDrawerControl"];
   }
 
-  self->_saveMessagesCapturesPhotoLibrary = [v11 BOOLForKey:@"CAMUserPreferencesSaveMessagesCapturesPhotoLibrary"];
-  v67 = [v10 isFrontRearSimultaneousVideoSupported];
-  if (v67)
+  self->_saveMessagesCapturesPhotoLibrary = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencesSaveMessagesCapturesPhotoLibrary"];
+  isFrontRearSimultaneousVideoSupported2 = [v10 isFrontRearSimultaneousVideoSupported];
+  if (isFrontRearSimultaneousVideoSupported2)
   {
-    LOBYTE(v67) = [v11 BOOLForKey:@"CAMUserPreferenceEnableFrontRearSimultaneousVideo"];
+    LOBYTE(isFrontRearSimultaneousVideoSupported2) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnableFrontRearSimultaneousVideo"];
   }
 
-  self->_shouldEnableFrontRearSimultaneousVideo = v67;
-  v68 = [v10 isSmartFramingSupported];
-  if (v68)
+  self->_shouldEnableFrontRearSimultaneousVideo = isFrontRearSimultaneousVideoSupported2;
+  isSmartFramingSupported = [v10 isSmartFramingSupported];
+  if (isSmartFramingSupported)
   {
-    LOBYTE(v68) = [v11 BOOLForKey:@"CAMUserPreferencesWantsSmartFramingAutoZoomDefault"];
+    LOBYTE(isSmartFramingSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencesWantsSmartFramingAutoZoomDefault"];
   }
 
-  self->_wantsSmartFramingAutoZoomDefault = v68;
-  v69 = [v10 isSmartFramingSupported];
-  if (v69)
+  self->_wantsSmartFramingAutoZoomDefault = isSmartFramingSupported;
+  isSmartFramingSupported2 = [v10 isSmartFramingSupported];
+  if (isSmartFramingSupported2)
   {
-    LOBYTE(v69) = [v11 BOOLForKey:@"CAMUserPreferencesWantsSmartFramingAutoRotationDefault"];
+    LOBYTE(isSmartFramingSupported2) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencesWantsSmartFramingAutoRotationDefault"];
   }
 
-  self->_wantsSmartFramingAutoRotationDefault = v69;
+  self->_wantsSmartFramingAutoRotationDefault = isSmartFramingSupported2;
   if ([v10 isFrontHDRSupported] & 1) != 0 || (objc_msgSend(v10, "isBackHDRSupported"))
   {
-    v70 = [v10 isModernHDRSupported];
+    isModernHDRSupported = [v10 isModernHDRSupported];
     v71 = @"CAMUserPreferenceHDREV0";
-    if (v70)
+    if (isModernHDRSupported)
     {
       v71 = @"CAMUserPreferenceModernHDRKeepNormalPhoto";
     }
@@ -1528,13 +1528,13 @@ LABEL_61:
     v72 = v71;
     if ([v10 isSpatialOverCaptureSupported])
     {
-      v73 = [v11 objectForKey:@"CAMUserPreferenceDidPerformSpatialOverCaptureEV0Disable13_0"];
+      v73 = [_underlyingUserDefaults objectForKey:@"CAMUserPreferenceDidPerformSpatialOverCaptureEV0Disable13_0"];
 
       if (!v73)
       {
-        if ([v11 BOOLForKey:v72])
+        if ([_underlyingUserDefaults BOOLForKey:v72])
         {
-          [v11 setBool:0 forKey:v72];
+          [_underlyingUserDefaults setBool:0 forKey:v72];
           v74 = os_log_create("com.apple.camera", "UserPreferences");
           if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
           {
@@ -1543,22 +1543,22 @@ LABEL_61:
           }
         }
 
-        [v11 setObject:MEMORY[0x1E695E118] forKey:@"CAMUserPreferenceDidPerformSpatialOverCaptureEV0Disable13_0"];
+        [_underlyingUserDefaults setObject:MEMORY[0x1E695E118] forKey:@"CAMUserPreferenceDidPerformSpatialOverCaptureEV0Disable13_0"];
       }
     }
 
     if ([v10 isHDRSettingAllowed])
     {
-      v75 = [v10 isHDREV0CaptureSupported];
-      if (v75)
+      isHDREV0CaptureSupported = [v10 isHDREV0CaptureSupported];
+      if (isHDREV0CaptureSupported)
       {
-        LOBYTE(v75) = [v11 BOOLForKey:v72];
+        LOBYTE(isHDREV0CaptureSupported) = [_underlyingUserDefaults BOOLForKey:v72];
       }
 
-      self->_shouldCaptureHDREV0 = v75;
-      if (v70)
+      self->_shouldCaptureHDREV0 = isHDREV0CaptureSupported;
+      if (isModernHDRSupported)
       {
-        v76 = [v11 BOOLForKey:@"CAMUserPreferenceModernHDRBehavior"];
+        v76 = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceModernHDRBehavior"];
       }
 
       else
@@ -1572,7 +1572,7 @@ LABEL_61:
     else
     {
       self->_shouldCaptureHDREV0 = 0;
-      self->_shouldUseModernHDRBehavior = v70;
+      self->_shouldUseModernHDRBehavior = isModernHDRSupported;
     }
 
     v384 = 1;
@@ -1586,7 +1586,7 @@ LABEL_61:
 
   if ([v10 isSmartHDRSupported])
   {
-    v77 = [v11 integerForKey:@"CAMUserPreferenceDesiredHDRMode"];
+    v77 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceDesiredHDRMode"];
     if ([v10 isHDRSettingAllowed])
     {
       if (!self->_shouldUseModernHDRBehavior && v77 >= 2)
@@ -1598,51 +1598,51 @@ LABEL_61:
           _os_log_impl(&dword_1A3640000, v78, OS_LOG_TYPE_DEFAULT, "Performing an upgrade of HDRMode from Auto to On for Smart HDR!", buf, 2u);
         }
 
-        [v11 setInteger:1 forKey:@"CAMUserPreferenceDesiredHDRMode"];
+        [_underlyingUserDefaults setInteger:1 forKey:@"CAMUserPreferenceDesiredHDRMode"];
       }
     }
   }
 
-  v331 = [v10 isLivePhotoSupported];
+  isLivePhotoSupported = [v10 isLivePhotoSupported];
   if ([v10 isFrontPortraitModeSupported])
   {
-    v79 = 1;
+    isBackPortraitModeSupported = 1;
   }
 
   else
   {
-    v79 = [v10 isBackPortraitModeSupported];
+    isBackPortraitModeSupported = [v10 isBackPortraitModeSupported];
   }
 
-  self->_didAcknowledgePortraitModeDescription = v79 & [v11 BOOLForKey:@"CAMUserPreferencePortraitModeDidAcknowledgeDescription_12"];
-  v80 = [v10 isCinematicModeSupported];
-  self->_didAcknowledgeCinematicModeDescription = v80 & [v11 BOOLForKey:@"CAMUserPreferenceCinematicModeDidAcknowledgeDescription"];
-  v393 = [v11 integerForKey:@"CAMUserPreferenceCaptureMode"];
-  v358 = [v11 integerForKey:@"CAMUserPreferenceCaptureDevice"];
-  v380 = [v11 integerForKey:@"CAMUserPreferenceDesiredFlashMode"];
-  v81 = [v11 integerForKey:@"CAMUserPreferenceTorchMode"];
-  v378 = [v11 integerForKey:@"CAMUserPreferenceDesiredHDRMode"];
-  v389 = [v11 integerForKey:@"CAMUserPreferenceDesiredIrisMode"];
-  v82 = [v11 integerForKey:@"CAMUserPreferenceTimerDuration"];
-  obj = [v11 integerForKey:@"CAMUserPreferenceAspectRatioCrop"];
-  v364 = [v11 integerForKey:@"CAMUserPreferenceDesiredPhotoModeEffectFilterType"];
-  v355 = [v11 integerForKey:@"CAMUserPreferenceSquareModeEffectFilterType"];
-  v352 = [v11 integerForKey:@"CAMUserPreferencePortraitModeEffectFilterType"];
-  v337 = [v11 integerForKey:@"CAMUserPreferencePhotoModeLastCapturedEffectFilterType"];
-  v335 = [v11 integerForKey:@"CAMUserPreferenceSquareModeLastCapturedEffectFilterType"];
-  v333 = [v11 integerForKey:@"CAMUserPreferencePortraitModeLastCapturedEffectFilterType"];
-  v350 = [v11 integerForKey:@"CAMUserPreferencePortraitModeLightingEffectType"];
-  [v11 floatForKey:@"CAMUserPreferencePortraitModeApertureValue"];
+  self->_didAcknowledgePortraitModeDescription = isBackPortraitModeSupported & [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePortraitModeDidAcknowledgeDescription_12"];
+  isCinematicModeSupported = [v10 isCinematicModeSupported];
+  self->_didAcknowledgeCinematicModeDescription = isCinematicModeSupported & [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceCinematicModeDidAcknowledgeDescription"];
+  mode = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceCaptureMode"];
+  v358 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceCaptureDevice"];
+  v380 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceDesiredFlashMode"];
+  torchMode = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceTorchMode"];
+  hDRMode = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceDesiredHDRMode"];
+  irisMode = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceDesiredIrisMode"];
+  v82 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceTimerDuration"];
+  obj = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceAspectRatioCrop"];
+  photoModeEffectFilterType = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceDesiredPhotoModeEffectFilterType"];
+  squareModeEffectFilterType = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceSquareModeEffectFilterType"];
+  portraitModeEffectFilterType = [_underlyingUserDefaults integerForKey:@"CAMUserPreferencePortraitModeEffectFilterType"];
+  v337 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferencePhotoModeLastCapturedEffectFilterType"];
+  v335 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceSquareModeLastCapturedEffectFilterType"];
+  v333 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferencePortraitModeLastCapturedEffectFilterType"];
+  portraitModeLightingEffectType = [_underlyingUserDefaults integerForKey:@"CAMUserPreferencePortraitModeLightingEffectType"];
+  [_underlyingUserDefaults floatForKey:@"CAMUserPreferencePortraitModeApertureValue"];
   v84 = v83;
-  [v11 floatForKey:@"CAMUserPreferencePortraitEffectIntensityValue"];
+  [_underlyingUserDefaults floatForKey:@"CAMUserPreferencePortraitEffectIntensityValue"];
   v86 = v85;
-  v354 = [v11 integerForKey:@"CAMUserPreferenceDesiredNightMode"];
-  v361 = [v11 integerForKey:@"CAMUserPreferenceNightModeConflicts"];
-  v87 = [v12 exposureBiasesByMode];
+  isNightModeSupported = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceDesiredNightMode"];
+  v361 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceNightModeConflicts"];
+  exposureBiasesByMode = [defaultCaptureConfiguration exposureBiasesByMode];
   v362 = v82;
   if ([v10 isExposureSliderSupported])
   {
-    v88 = [CAMPreferencesUtilities numericDictionaryForKey:@"CAMUserPreferenceExposureBiasByMode" defaults:v11];
+    v88 = [CAMPreferencesUtilities numericDictionaryForKey:@"CAMUserPreferenceExposureBiasByMode" defaults:_underlyingUserDefaults];
     v89 = v88;
     if (v88)
     {
@@ -1651,7 +1651,7 @@ LABEL_61:
 
     else
     {
-      v90 = v87;
+      v90 = exposureBiasesByMode;
     }
 
     v91 = v90;
@@ -1661,21 +1661,21 @@ LABEL_61:
 
   else
   {
-    v363 = v87;
+    v363 = exposureBiasesByMode;
   }
 
   if ([v10 continuousZoomSupportedForPortraitMode])
   {
-    v92 = [v11 objectForKey:@"CAMUserPreferenceDidPerformPortraitModeTripleCameraUpgrade"];
+    v92 = [_underlyingUserDefaults objectForKey:@"CAMUserPreferenceDidPerformPortraitModeTripleCameraUpgrade"];
 
     if (!v92)
     {
-      [v11 setInteger:0 forKey:@"CAMUserPreferencePortraitModeRearDevice"];
+      [_underlyingUserDefaults setInteger:0 forKey:@"CAMUserPreferencePortraitModeRearDevice"];
       LODWORD(v310) = 0;
       [v10 defaultZoomFactorForMode:6 device:0 videoConfiguration:0 captureOrientation:1 videoStabilizationStrength:0 videoEncodingBehavior:1 customLens:0 outputToExternalStorage:v310 isTrueVideo:0 frontRearSimultaneousVideoEnabled:0 prefersHDR10BitVideo:? smartFramingFieldOfView:? overrodeWithForcedZoomValue:?];
       *&v93 = v93;
-      [v11 setFloat:@"CAMUserPreferencePortraitModeRearZoomValue" forKey:v93];
-      [v11 setObject:MEMORY[0x1E695E118] forKey:@"CAMUserPreferenceDidPerformPortraitModeTripleCameraUpgrade"];
+      [_underlyingUserDefaults setFloat:@"CAMUserPreferencePortraitModeRearZoomValue" forKey:v93];
+      [_underlyingUserDefaults setObject:MEMORY[0x1E695E118] forKey:@"CAMUserPreferenceDidPerformPortraitModeTripleCameraUpgrade"];
       v94 = os_log_create("com.apple.camera", "UserPreferences");
       if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
       {
@@ -1695,8 +1695,8 @@ LABEL_61:
     v95 = [v10 isPhotoModeDepthSuggestionSupportedForDevicePosition:1];
   }
 
-  self->_didAcknowledgeDepthInPhotoModeDescription = v95 & [v11 BOOLForKey:@"CAMUserPreferenceDidAcknowledgeDepthInPhotoModeDescription"];
-  v96 = [v11 integerForKey:@"CAMUserPreferencePortraitModeRearDevice"];
+  self->_didAcknowledgeDepthInPhotoModeDescription = v95 & [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceDidAcknowledgeDepthInPhotoModeDescription"];
+  v96 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferencePortraitModeRearDevice"];
   self->_portraitModeRearDevice = v96;
   p_portraitModeRearDevice = &self->_portraitModeRearDevice;
   if ((v96 - 8) < 4 || (v98 = v96, v96 == 1))
@@ -1720,16 +1720,16 @@ LABEL_61:
     }
   }
 
-  [v11 floatForKey:@"CAMUserPreferencePortraitModeRearZoomValue"];
+  [_underlyingUserDefaults floatForKey:@"CAMUserPreferencePortraitModeRearZoomValue"];
   self->_portraitModeRearZoomValue = v107;
   v108 = [v10 significantZoomFactorsForMode:6 device:self->_portraitModeRearDevice];
   [v10 maximumZoomFactorForMode:6 device:self->_portraitModeRearDevice videoConfiguration:0 videoStabilizationStrength:0 shouldResolveDevice:1];
   v110 = v109;
-  v111 = [v10 continuousZoomSupportedForPortraitMode];
+  continuousZoomSupportedForPortraitMode = [v10 continuousZoomSupportedForPortraitMode];
   portraitModeRearZoomValue = self->_portraitModeRearZoomValue;
   if (portraitModeRearZoomValue <= v110)
   {
-    v113 = v111;
+    v113 = continuousZoomSupportedForPortraitMode;
   }
 
   else
@@ -1758,35 +1758,35 @@ LABEL_61:
     self->_portraitModeRearZoomValue = v117;
   }
 
-  v118 = [v10 isSpatialModeSupported];
-  if (v118)
+  isSpatialModeSupported = [v10 isSpatialModeSupported];
+  if (isSpatialModeSupported)
   {
-    LOBYTE(v118) = [v11 BOOLForKey:@"CAMUserPreferenceDidAcknowledgeSpatialModeOverlayDescription"];
+    LOBYTE(isSpatialModeSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceDidAcknowledgeSpatialModeOverlayDescription"];
   }
 
-  self->_didAcknowledgeSpatialModeOverlayDescription = v118;
-  self->_didAcknowledgeSolCamDescription = [v11 BOOLForKey:@"CAMUserPreferenceDidAcknowledgeSolCamModeOverlayDescription"];
-  v119 = [v10 semanticDevelopmentSupported];
-  if (v119)
+  self->_didAcknowledgeSpatialModeOverlayDescription = isSpatialModeSupported;
+  self->_didAcknowledgeSolCamDescription = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceDidAcknowledgeSolCamModeOverlayDescription"];
+  semanticDevelopmentSupported = [v10 semanticDevelopmentSupported];
+  if (semanticDevelopmentSupported)
   {
-    LOBYTE(v119) = [v11 BOOLForKey:@"CAMUserPreferenceEnableSemanticDevelopment"];
+    LOBYTE(semanticDevelopmentSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnableSemanticDevelopment"];
   }
 
-  self->_semanticDevelopmentEnabled = v119;
-  v120 = [v10 isLinearDNGSupported];
-  if (v120)
+  self->_semanticDevelopmentEnabled = semanticDevelopmentSupported;
+  isLinearDNGSupported = [v10 isLinearDNGSupported];
+  if (isLinearDNGSupported)
   {
-    LOBYTE(v120) = [v11 BOOLForKey:@"CAMUserPreferenceEnableLinearDNGControl"];
+    LOBYTE(isLinearDNGSupported) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnableLinearDNGControl"];
   }
 
-  self->_rawControlEnabled = v120;
+  self->_rawControlEnabled = isLinearDNGSupported;
   if ([v10 photoModeDepthSuggestionSupported])
   {
-    v121 = [v11 BOOLForKey:@"CAMUserPreferenceEnableDepthSuggestion"];
+    v121 = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnableDepthSuggestion"];
     self->_shouldUseDepthSuggestionInPhotoMode = v121;
     if (v121)
     {
-      v387 = [v11 BOOLForKey:@"CAMUserPreferenceOptionalDepthEffectEnabled"];
+      v387 = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceOptionalDepthEffectEnabled"];
     }
 
     else
@@ -1801,7 +1801,7 @@ LABEL_61:
     self->_shouldUseDepthSuggestionInPhotoMode = 0;
   }
 
-  v122 = [v11 BOOLForKey:@"CAMUserPreferencePreserveOptionalDepthEffect"];
+  v122 = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveOptionalDepthEffect"];
   self->_shouldAlwaysShowDepthSuggestionWhenDepthIsAvailable = v122;
   if ([v10 isPhotoResolutionSupported:3 forPhotoEncoding:1])
   {
@@ -1812,7 +1812,7 @@ LABEL_61:
 
     else
     {
-      rawControlEnabled = [v11 BOOLForKey:@"CAMUserPreferenceEnablePhotoFormatControl"];
+      rawControlEnabled = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnablePhotoFormatControl"];
     }
   }
 
@@ -1822,7 +1822,7 @@ LABEL_61:
   }
 
   self->_photoFormatControlEnabled = rawControlEnabled & 1;
-  v374 = [v11 integerForKey:@"CAMUserPreferencesDesiredRAWMode"];
+  rawMode = [_underlyingUserDefaults integerForKey:@"CAMUserPreferencesDesiredRAWMode"];
   if (!self->_rawControlEnabled && (rawControlEnabled & 1) == 0)
   {
     v373 = 0;
@@ -1831,21 +1831,21 @@ LABEL_188:
     goto LABEL_191;
   }
 
-  v373 = [v11 integerForKey:@"CAMUserPreferencesRAWConflicts"];
+  v373 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferencesRAWConflicts"];
   if ((rawControlEnabled & 1) == 0)
   {
     goto LABEL_188;
   }
 
-  v391 = [v11 integerForKey:@"CAMUserPreferencesDesiredPhotoResolution"];
+  v391 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferencesDesiredPhotoResolution"];
 LABEL_191:
   if ([v10 isProResVideoSupported])
   {
-    v124 = [v11 BOOLForKey:@"CAMUserPreferenceEnableProResControl"];
+    v124 = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceEnableProResControl"];
     self->_proResControlEnabled = v124;
     if (v124)
     {
-      v369 = [v11 integerForKey:@"CAMUserPreferenceDesiredProResVideoMode"];
+      v369 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceDesiredProResVideoMode"];
     }
 
     else
@@ -1862,7 +1862,7 @@ LABEL_191:
 
   if ([v10 isActionModeControlSupported])
   {
-    v125 = [v11 integerForKey:@"CAMUserPreferenceVideoStabilizationMode"];
+    v125 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceVideoStabilizationMode"];
     if (v125 >= 2)
     {
       v126 = 0;
@@ -1894,7 +1894,7 @@ LABEL_191:
 
   v128 = [objc_opt_class() isSharedLibrarySupportedAndEnabledForCapabilities:v10];
   self->_sharedLibraryEnabled = v128 & v127;
-  v372 = v12;
+  v372 = defaultCaptureConfiguration;
   if ((v128 & v127) != 1)
   {
     sharedLibraryLastLocation = self->_sharedLibraryLastLocation;
@@ -1915,7 +1915,7 @@ LABEL_191:
 
     *&self->_sharedLibraryAutoBehaviorEnabled = 0;
     self->_defaultToSharedLibraryEnabled = 0;
-    v144 = v380;
+    flashMode = v380;
     v138 = v358;
     goto LABEL_213;
   }
@@ -1924,7 +1924,7 @@ LABEL_191:
   aBlock[1] = 3221225472;
   aBlock[2] = __140__CAMUserPreferences_readPreferencesWithOverrides_emulationMode_callActive_shouldResetCaptureConfiguration_bypassXPCWhenReadingSystemStyle___block_invoke;
   aBlock[3] = &unk_1E76F9180;
-  v129 = v11;
+  v129 = _underlyingUserDefaults;
   v415 = v129;
   v130 = _Block_copy(aBlock);
   v131 = v130[2](v130, @"CAMUserPreferenceSharedLibraryLastLocation");
@@ -1955,10 +1955,10 @@ LABEL_211:
 
   if ((PXPreferencesIsCameraAutoShareEnabled() & 1) == 0)
   {
-    v185 = [v136 librarySelectionMockAutomationModeEnabled];
-    self->_sharedLibraryAutoBehaviorEnabled = v185;
+    librarySelectionMockAutomationModeEnabled = [v136 librarySelectionMockAutomationModeEnabled];
+    self->_sharedLibraryAutoBehaviorEnabled = librarySelectionMockAutomationModeEnabled;
     v138 = v358;
-    if (v185)
+    if (librarySelectionMockAutomationModeEnabled)
     {
       v137 = 0;
       goto LABEL_212;
@@ -1975,26 +1975,26 @@ LABEL_212:
   self->_shareWhenAtHomeEnabled = CFPreferencesGetAppBooleanValue(@"CameraShareFromHomeEnabled", @"com.apple.mobileslideshow", 0) != 0;
   self->_sharedLibrarySwitchEnabled = self->_sharedLibraryEnabled;
 
-  v12 = v372;
-  v144 = v380;
+  defaultCaptureConfiguration = v372;
+  flashMode = v380;
 LABEL_213:
   v145 = v84;
   v146 = v86;
-  v339 = [v11 integerForKey:@"CAMUserPreferenceSharedLibraryMode"];
-  v323 = [(CAMUserPreferences *)self _shouldReconfigureCurrentConfigurationForSettingsChange];
-  v147 = [(CAMUserPreferences *)self _shouldResetPreferencesForTimeout];
-  v322 = v147;
-  if (a4)
+  v339 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceSharedLibraryMode"];
+  _shouldReconfigureCurrentConfigurationForSettingsChange = [(CAMUserPreferences *)self _shouldReconfigureCurrentConfigurationForSettingsChange];
+  _shouldResetPreferencesForTimeout = [(CAMUserPreferences *)self _shouldResetPreferencesForTimeout];
+  v322 = _shouldResetPreferencesForTimeout;
+  if (mode)
   {
     v148 = 0;
   }
 
   else
   {
-    v148 = v147;
+    v148 = _shouldResetPreferencesForTimeout;
   }
 
-  v149 = [(CAMUserPreferences *)self defaultDeviceForModeChange:v393 devicePosition:v138];
+  device = [(CAMUserPreferences *)self defaultDeviceForModeChange:mode devicePosition:v138];
   v317 = v148;
   if (!v148)
   {
@@ -2004,69 +2004,69 @@ LABEL_213:
 
   if (!self->_preserveCaptureMode)
   {
-    v393 = [v12 mode];
-    v149 = [v12 device];
+    mode = [defaultCaptureConfiguration mode];
+    device = [defaultCaptureConfiguration device];
     self->_spatialModeHasVideoSelected = 0;
   }
 
-  if (v144 == 1)
+  if (flashMode == 1)
   {
-    v144 = [v12 flashMode];
+    flashMode = [defaultCaptureConfiguration flashMode];
   }
 
-  v359 = v81 == 1;
-  if (v81 == 1)
+  v359 = torchMode == 1;
+  if (torchMode == 1)
   {
-    v81 = [v12 torchMode];
+    torchMode = [defaultCaptureConfiguration torchMode];
   }
 
-  if (v378 == 1)
+  if (hDRMode == 1)
   {
-    v378 = [v12 HDRMode];
+    hDRMode = [defaultCaptureConfiguration HDRMode];
   }
 
-  v329 = v81;
+  v329 = torchMode;
   if (!self->_preserveLivePhoto)
   {
-    v389 = [v12 irisMode];
+    irisMode = [defaultCaptureConfiguration irisMode];
     v373 &= ~2uLL;
   }
 
-  v150 = v149;
+  v150 = device;
   if (!self->_preserveNightMode)
   {
-    v354 = [v10 isNightModeSupported];
+    isNightModeSupported = [v10 isNightModeSupported];
   }
 
-  v151 = [v12 timerDuration];
+  timerDuration = [defaultCaptureConfiguration timerDuration];
   if (!self->_preserveEffectFilter)
   {
-    obj = [v12 photoModeAspectRatioCrop];
-    v364 = [v12 photoModeEffectFilterType];
-    v355 = [v12 squareModeEffectFilterType];
-    v352 = [v12 portraitModeEffectFilterType];
-    v350 = [v12 portraitModeLightingEffectType];
-    [v12 portraitModeIntensityValue];
+    obj = [defaultCaptureConfiguration photoModeAspectRatioCrop];
+    photoModeEffectFilterType = [defaultCaptureConfiguration photoModeEffectFilterType];
+    squareModeEffectFilterType = [defaultCaptureConfiguration squareModeEffectFilterType];
+    portraitModeEffectFilterType = [defaultCaptureConfiguration portraitModeEffectFilterType];
+    portraitModeLightingEffectType = [defaultCaptureConfiguration portraitModeLightingEffectType];
+    [defaultCaptureConfiguration portraitModeIntensityValue];
     v146 = v152;
   }
 
-  v362 = v151;
+  v362 = timerDuration;
   if (!self->_preserveExposure)
   {
-    v153 = [v12 exposureBiasesByMode];
+    exposureBiasesByMode2 = [defaultCaptureConfiguration exposureBiasesByMode];
 
-    v363 = v153;
+    v363 = exposureBiasesByMode2;
   }
 
-  v149 = v150;
+  device = v150;
   if (!self->_preserveSuperWideAutoMacro)
   {
-    v371 = [v12 macroMode];
+    macroMode2 = [defaultCaptureConfiguration macroMode];
   }
 
   if (!self->_preserveRAW)
   {
-    v374 = [v12 rawMode];
+    rawMode = [defaultCaptureConfiguration rawMode];
   }
 
   preservePhotoResolution = self->_preservePhotoResolution;
@@ -2077,7 +2077,7 @@ LABEL_213:
   }
 
   v391 = v155;
-  v81 = v329;
+  torchMode = v329;
   if (self->_rawControlEnabled)
   {
     if (self->_preserveRAW && ((rawControlEnabled ^ 1 | preservePhotoResolution) & 1) != 0)
@@ -2109,7 +2109,7 @@ LABEL_247:
   v386 = v157;
   if (!self->_preserveAperture)
   {
-    [v12 portraitModeApertureValue];
+    [defaultCaptureConfiguration portraitModeApertureValue];
     v145 = v158;
   }
 
@@ -2126,55 +2126,55 @@ LABEL_256:
   v159 = v367;
   if (v370 && [v370 hasOverrides])
   {
-    v160 = v149;
-    v161 = [v370 captureMode];
+    integerValue2 = device;
+    captureMode = [v370 captureMode];
 
-    if (v161)
+    if (captureMode)
     {
-      v162 = [v370 captureMode];
-      v393 = [v162 integerValue];
+      captureMode2 = [v370 captureMode];
+      mode = [captureMode2 integerValue];
     }
 
-    v163 = [v370 captureDevice];
+    captureDevice = [v370 captureDevice];
 
-    if (v163)
+    if (captureDevice)
     {
-      v164 = [v370 captureDevice];
-      v160 = [v164 integerValue];
+      captureDevice2 = [v370 captureDevice];
+      integerValue2 = [captureDevice2 integerValue];
     }
 
-    v165 = [v370 videoConfiguration];
+    videoConfiguration = [v370 videoConfiguration];
 
-    if (v165)
+    if (videoConfiguration)
     {
-      v166 = [v370 videoConfiguration];
-      self->_videoConfiguration = [v166 integerValue];
+      videoConfiguration2 = [v370 videoConfiguration];
+      self->_videoConfiguration = [videoConfiguration2 integerValue];
     }
 
-    v167 = [v370 slomoConfiguration];
+    slomoConfiguration = [v370 slomoConfiguration];
 
-    if (v167)
+    if (slomoConfiguration)
     {
-      v168 = [v370 slomoConfiguration];
-      self->_slomoConfiguration = [v168 integerValue];
+      slomoConfiguration2 = [v370 slomoConfiguration];
+      self->_slomoConfiguration = [slomoConfiguration2 integerValue];
     }
 
-    v169 = [v370 cinematicConfiguration];
+    cinematicConfiguration = [v370 cinematicConfiguration];
 
-    if (v169)
+    if (cinematicConfiguration)
     {
-      v170 = [v370 cinematicConfiguration];
-      self->_cinematicConfiguration = [v170 integerValue];
+      cinematicConfiguration2 = [v370 cinematicConfiguration];
+      self->_cinematicConfiguration = [cinematicConfiguration2 integerValue];
     }
 
-    v171 = [v370 wantsQRCodes];
+    wantsQRCodes = [v370 wantsQRCodes];
 
-    if (v171)
+    if (wantsQRCodes)
     {
-      v172 = [v370 wantsQRCodes];
-      v173 = [v172 BOOLValue];
+      wantsQRCodes2 = [v370 wantsQRCodes];
+      bOOLValue2 = [wantsQRCodes2 BOOLValue];
 
-      if (v173)
+      if (bOOLValue2)
       {
         self->_forceEnableQRBanners = 1;
         v174 = os_log_create("com.apple.camera", "UserPreferences");
@@ -2186,55 +2186,55 @@ LABEL_256:
       }
     }
 
-    v175 = [v370 flashMode];
+    flashMode2 = [v370 flashMode];
 
-    if (v175)
+    if (flashMode2)
     {
-      v176 = [v370 flashMode];
-      v144 = [v176 integerValue];
+      flashMode3 = [v370 flashMode];
+      flashMode = [flashMode3 integerValue];
     }
 
-    v177 = [v370 torchMode];
+    torchMode2 = [v370 torchMode];
 
-    if (v177)
+    if (torchMode2)
     {
-      v178 = [v370 torchMode];
-      v81 = [v178 integerValue];
+      torchMode3 = [v370 torchMode];
+      torchMode = [torchMode3 integerValue];
     }
 
-    v179 = [v370 aspectRatioCrop];
+    aspectRatioCrop = [v370 aspectRatioCrop];
 
-    if (v179)
+    if (aspectRatioCrop)
     {
-      v180 = [v370 aspectRatioCrop];
-      v181 = [v180 integerValue];
+      aspectRatioCrop2 = [v370 aspectRatioCrop];
+      integerValue3 = [aspectRatioCrop2 integerValue];
 
-      v182 = v393;
-      if (v393)
+      mode2 = mode;
+      if (mode)
       {
-        if (v181)
+        if (integerValue3)
         {
           v183 = os_log_create("com.apple.camera", "UserPreferences");
           if (os_log_type_enabled(v183, OS_LOG_TYPE_DEFAULT))
           {
-            if (v181 > 6)
+            if (integerValue3 > 6)
             {
               v184 = 0;
             }
 
             else
             {
-              v184 = off_1E76F93C0[v181 - 1];
+              v184 = off_1E76F93C0[integerValue3 - 1];
             }
 
-            if (v393 > 9)
+            if (mode > 9)
             {
               v186 = 0;
             }
 
             else
             {
-              v186 = off_1E76F93F0[v393 - 1];
+              v186 = off_1E76F93F0[mode - 1];
             }
 
             *buf = 138543618;
@@ -2251,7 +2251,7 @@ LABEL_256:
       else
       {
         v324 = 1;
-        obj = v181;
+        obj = integerValue3;
       }
 
       v159 = v367;
@@ -2261,46 +2261,46 @@ LABEL_256:
     {
       v324 = 1;
       v159 = v367;
-      v182 = v393;
+      mode2 = mode;
     }
 
-    v149 = v160;
+    device = integerValue2;
   }
 
   else
   {
     v324 = 0;
-    v182 = v393;
+    mode2 = mode;
   }
 
-  if (([v10 isCameraSupportedForDevice:v149] & 1) == 0)
+  if (([v10 isCameraSupportedForDevice:device] & 1) == 0)
   {
-    v149 = [v12 device];
+    device = [defaultCaptureConfiguration device];
   }
 
-  v187 = [v10 isSupportedMode:v182 withDevice:v149];
+  v187 = [v10 isSupportedMode:mode2 withDevice:device];
   v188 = 0;
-  if (v182 <= 8 && ((1 << v182) & 0x186) != 0)
+  if (mode2 <= 8 && ((1 << mode2) & 0x186) != 0)
   {
     v188 = v159;
   }
 
   if (v188 || v187 != 1)
   {
-    v182 = [v12 mode];
+    mode2 = [defaultCaptureConfiguration mode];
   }
 
   if ([v10 isFrontFlashSupported])
   {
-    v189 = (v144 - 1) < 2;
+    v189 = (flashMode - 1) < 2;
 LABEL_309:
-    v191 = v144;
+    v191 = flashMode;
     goto LABEL_311;
   }
 
-  v190 = [v10 isBackFlashSupported];
-  v189 = (v144 - 1) < 2;
-  if (v190)
+  isBackFlashSupported = [v10 isBackFlashSupported];
+  v189 = (flashMode - 1) < 2;
+  if (isBackFlashSupported)
   {
     goto LABEL_309;
   }
@@ -2314,33 +2314,33 @@ LABEL_311:
 
   else
   {
-    v192 = v144;
+    v192 = flashMode;
   }
 
   v368 = v192;
   if ([v10 isFrontTorchSupported])
   {
-    v193 = (v81 - 1) < 2;
-    v194 = v389;
+    v193 = (torchMode - 1) < 2;
+    irisMode2 = irisMode;
     v195 = v359;
 LABEL_318:
-    v197 = v81;
+    v197 = torchMode;
     v198 = v195;
     goto LABEL_320;
   }
 
-  v196 = [v10 isBackTorchSupported];
-  v193 = (v81 - 1) < 2;
+  isBackTorchSupported = [v10 isBackTorchSupported];
+  v193 = (torchMode - 1) < 2;
   v195 = v359;
-  if (v196)
+  if (isBackTorchSupported)
   {
-    v194 = v389;
+    irisMode2 = irisMode;
     goto LABEL_318;
   }
 
   v197 = 0;
   v198 = 1;
-  v194 = v389;
+  irisMode2 = irisMode;
 LABEL_320:
   if (v193)
   {
@@ -2349,7 +2349,7 @@ LABEL_320:
 
   else
   {
-    v199 = v81;
+    v199 = torchMode;
   }
 
   if (v193)
@@ -2363,47 +2363,47 @@ LABEL_320:
   }
 
   v360 = v200;
-  if (v378 == 1)
+  if (hDRMode == 1)
   {
     v201 = v384;
   }
 
   else
   {
-    v201 = v378;
+    v201 = hDRMode;
   }
 
-  v394 = v182;
-  if (v194 == 2)
+  v394 = mode2;
+  if (irisMode2 == 2)
   {
     if ([v10 isLivePhotoAutoModeSupported])
     {
-      v194 = 2;
+      irisMode2 = 2;
     }
 
     else
     {
-      v194 = [v12 irisMode];
+      irisMode2 = [defaultCaptureConfiguration irisMode];
     }
   }
 
-  else if (v194 == 1)
+  else if (irisMode2 == 1)
   {
-    v194 = v331;
+    irisMode2 = isLivePhotoSupported;
   }
 
-  v390 = v194;
-  v202 = [v10 isSpatialOverCaptureSupported];
+  v390 = irisMode2;
+  isSpatialOverCaptureSupported = [v10 isSpatialOverCaptureSupported];
   v203 = MEMORY[0x1E69C0620];
-  v385 = v149;
-  if (v202)
+  v385 = device;
+  if (isSpatialOverCaptureSupported)
   {
-    v204 = [v11 objectForKey:@"CAMUserPreferenceDidPerformSpatialOverCaptureHighEfficiencyUpgrade"];
+    v204 = [_underlyingUserDefaults objectForKey:@"CAMUserPreferenceDidPerformSpatialOverCaptureHighEfficiencyUpgrade"];
 
     v205 = *v203;
     if (!v204)
     {
-      if ([v11 integerForKey:v205] == 1)
+      if ([_underlyingUserDefaults integerForKey:v205] == 1)
       {
         v206 = os_log_create("com.apple.camera", "UserPreferences");
         if (os_log_type_enabled(v206, OS_LOG_TYPE_DEFAULT))
@@ -2415,7 +2415,7 @@ LABEL_320:
         [MEMORY[0x1E69C0700] setNewFormatsConfiguration:0 fromSource:3];
       }
 
-      [v11 setObject:MEMORY[0x1E695E118] forKey:@"CAMUserPreferenceDidPerformSpatialOverCaptureHighEfficiencyUpgrade"];
+      [_underlyingUserDefaults setObject:MEMORY[0x1E695E118] forKey:@"CAMUserPreferenceDidPerformSpatialOverCaptureHighEfficiencyUpgrade"];
     }
   }
 
@@ -2424,19 +2424,19 @@ LABEL_320:
     v205 = *MEMORY[0x1E69C0620];
   }
 
-  v207 = [v11 integerForKey:v205];
+  v207 = [_underlyingUserDefaults integerForKey:v205];
   self->__preferHEVCWhenAvailable = v207 != 1;
   if (v207 == 1)
   {
-    v208 = 0;
+    isHEVCEncodingSupported = 0;
   }
 
   else
   {
-    v208 = [v10 isHEVCEncodingSupported];
+    isHEVCEncodingSupported = [v10 isHEVCEncodingSupported];
   }
 
-  v209 = [v11 integerForKey:@"CAMUserPreferenceSecondaryPhotoFormat"];
+  v209 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceSecondaryPhotoFormat"];
   v210 = 0;
   if (v209 <= 1)
   {
@@ -2463,7 +2463,7 @@ LABEL_320:
   {
     v210 = 3;
 LABEL_357:
-    v211 = v208;
+    v211 = isHEVCEncodingSupported;
     goto LABEL_358;
   }
 
@@ -2488,7 +2488,7 @@ LABEL_358:
   self->_photoFormatControlSecondaryFormat.resolution = v210;
   if ([v10 isProRawJpegXLSupported])
   {
-    v212 = [v11 integerForKey:@"CAMUserPreferenceProRawFileFormat"];
+    v212 = [_underlyingUserDefaults integerForKey:@"CAMUserPreferenceProRawFileFormat"];
   }
 
   else
@@ -2499,22 +2499,22 @@ LABEL_358:
   self->_rawFileFormatBehavior = v212;
   self->_HDR10BitVideoEnabled = [objc_opt_class() shouldEnableHDR10BitVideoForHEVCEnabled:self->__preferHEVCWhenAvailable capabilities:v10];
   v213 = +[CAMCaptureCapabilities capabilities];
-  v214 = [v213 isAspectRatioCropSupported];
+  isAspectRatioCropSupported = [v213 isAspectRatioCropSupported];
 
   v215 = obj;
-  if (!v214)
+  if (!isAspectRatioCropSupported)
   {
     v215 = 0;
   }
 
   v332 = v215;
-  v330 = [(CAMUserPreferences *)self _sanitizeEffectFilterType:v364 forMode:0];
-  v328 = [(CAMUserPreferences *)self _sanitizeEffectFilterType:v355 forMode:4];
-  v327 = [(CAMUserPreferences *)self _sanitizeEffectFilterType:v352 forMode:6];
+  v330 = [(CAMUserPreferences *)self _sanitizeEffectFilterType:photoModeEffectFilterType forMode:0];
+  v328 = [(CAMUserPreferences *)self _sanitizeEffectFilterType:squareModeEffectFilterType forMode:4];
+  v327 = [(CAMUserPreferences *)self _sanitizeEffectFilterType:portraitModeEffectFilterType forMode:6];
   v338 = [(CAMUserPreferences *)self _sanitizeEffectFilterType:v337 forMode:0];
   v336 = [(CAMUserPreferences *)self _sanitizeEffectFilterType:v335 forMode:4];
   v334 = [(CAMUserPreferences *)self _sanitizeEffectFilterType:v333 forMode:6];
-  v351 = [(CAMUserPreferences *)self _sanitizeLightingType:v350 forMode:6];
+  v351 = [(CAMUserPreferences *)self _sanitizeLightingType:portraitModeLightingEffectType forMode:6];
   if (([v10 isSupportedVideoConfiguration:self->_videoConfiguration forMode:1 device:1] & 1) == 0 && (objc_msgSend(v10, "isSupportedVideoConfiguration:forMode:device:", self->_videoConfiguration, 1, 0) & 1) == 0)
   {
     self->_videoConfiguration = 0;
@@ -2640,7 +2640,7 @@ LABEL_358:
   {
     if (v216 == 7)
     {
-      v220 = [(CAMUserPreferences *)self cinematicConfiguration];
+      cinematicConfiguration3 = [(CAMUserPreferences *)self cinematicConfiguration];
       goto LABEL_415;
     }
 
@@ -2656,7 +2656,7 @@ LABEL_358:
     }
 
 LABEL_414:
-    v220 = [(CAMUserPreferences *)self videoConfiguration];
+    cinematicConfiguration3 = [(CAMUserPreferences *)self videoConfiguration];
     goto LABEL_415;
   }
 
@@ -2667,21 +2667,21 @@ LABEL_414:
 
   if (v216 == 2)
   {
-    v220 = [(CAMUserPreferences *)self slomoConfiguration];
+    cinematicConfiguration3 = [(CAMUserPreferences *)self slomoConfiguration];
 LABEL_415:
-    v379 = v220;
+    v379 = cinematicConfiguration3;
   }
 
 LABEL_416:
-  v326 = [(CAMUserPreferences *)self audioConfigurationForMode:v216 device:v385 emulationMode:a4 duringCall:v159];
+  v326 = [(CAMUserPreferences *)self audioConfigurationForMode:v216 device:v385 emulationMode:mode duringCall:v159];
   if ((v199 != 1) | v345 & 1)
   {
-    v353 = v199;
+    torchMode4 = v199;
   }
 
   else
   {
-    v353 = [v12 torchMode];
+    torchMode4 = [defaultCaptureConfiguration torchMode];
     v360 = 1;
   }
 
@@ -2701,8 +2701,8 @@ LABEL_416:
   v411 = 0;
   if ([(CAMUserPreferences *)self rawControlEnabled])
   {
-    v222 = v374;
-    [CAMConflictingControlConfiguration resolveDesiredRAWMode:v374 photoFormatConflicts:v373 desiredLivePhotoMode:v390 desiredFlashMode:v368 toRAWMode:&v411 toLivePhotoMode:&v412 toFlashMode:&v413];
+    v222 = rawMode;
+    [CAMConflictingControlConfiguration resolveDesiredRAWMode:rawMode photoFormatConflicts:v373 desiredLivePhotoMode:v390 desiredFlashMode:v368 toRAWMode:&v411 toLivePhotoMode:&v412 toFlashMode:&v413];
   }
 
   else
@@ -2757,55 +2757,55 @@ LABEL_416:
   [CAMUserPreferences resolveDesiredPhotoResolution:"resolveDesiredPhotoResolution:livePhotoMode:rawMode:conflicts:mode:device:resolvedPhotoResolution:resolvedLivePhotoMode:" livePhotoMode:&v410 rawMode:&v412 conflicts:? mode:? device:? resolvedPhotoResolution:? resolvedLivePhotoMode:?];
   v227 = [(CAMUserPreferences *)self resolvedPhotoFormatForResolvedResolution:v410 rawMode:v411];
   LOWORD(v311) = v387;
-  v342 = [CAMConflictingControlConfiguration resolveDesiredMacroMode:v371 forMode:v394 device:v385 videoConfiguration:v379 videoStabilizationStrength:[(CAMUserPreferences *)self videoStabilizationStrengthForVideoStabilizationMode:v386 captureMode:v394] photoFormat:v227 optionalDepthEffectEnabled:v228 frontRearSimultaneousVideoEnabled:v311];
-  v229 = [(CAMUserPreferences *)self shouldMirrorFrontCameraCaptures];
+  v342 = [CAMConflictingControlConfiguration resolveDesiredMacroMode:macroMode2 forMode:v394 device:v385 videoConfiguration:v379 videoStabilizationStrength:[(CAMUserPreferences *)self videoStabilizationStrengthForVideoStabilizationMode:v386 captureMode:v394] photoFormat:v227 optionalDepthEffectEnabled:v228 frontRearSimultaneousVideoEnabled:v311];
+  shouldMirrorFrontCameraCaptures = [(CAMUserPreferences *)self shouldMirrorFrontCameraCaptures];
   v230 = 0;
-  if (v229)
+  if (shouldMirrorFrontCameraCaptures)
   {
     v230 = [v10 mirroredFrontCapturesSupportedForMode:v394];
   }
 
   v325 = v230;
-  v231 = [v10 semanticStylesSupport];
-  self->_didAcknowledgeSemanticStylesDescription = [v11 BOOLForKey:@"CAMUserPreferenceSemanticStylesDidAcknowledgeDescription"] & ((v231 & 8) >> 3);
-  if ((v231 & 8) != 0)
+  semanticStylesSupport = [v10 semanticStylesSupport];
+  self->_didAcknowledgeSemanticStylesDescription = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceSemanticStylesDidAcknowledgeDescription"] & ((semanticStylesSupport & 8) >> 3);
+  if ((semanticStylesSupport & 8) != 0)
   {
-    v232 = [v10 smartStylesSupported];
-    if (v232)
+    smartStylesSupported2 = [v10 smartStylesSupported];
+    if (smartStylesSupported2)
     {
-      LOBYTE(v232) = [v11 BOOLForKey:@"CAMUserPreferenceSmartStylesDidAcknowledgeDescription"];
+      LOBYTE(smartStylesSupported2) = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceSmartStylesDidAcknowledgeDescription"];
     }
   }
 
   else
   {
-    LOBYTE(v232) = 0;
+    LOBYTE(smartStylesSupported2) = 0;
   }
 
-  self->_didAcknowledgeSmartStylesDescription = v232;
-  v365 = [v372 selectedSemanticStyleIndex];
-  v381 = [v372 semanticStyles];
-  v356 = [v372 smartStyleSystemStyleIndex];
-  if ((v231 & 8) == 0)
+  self->_didAcknowledgeSmartStylesDescription = smartStylesSupported2;
+  selectedSemanticStyleIndex = [v372 selectedSemanticStyleIndex];
+  semanticStyles = [v372 semanticStyles];
+  smartStyleSystemStyleIndex = [v372 smartStyleSystemStyleIndex];
+  if ((semanticStylesSupport & 8) == 0)
   {
-    v250 = v381;
+    v250 = semanticStyles;
     goto LABEL_528;
   }
 
-  v233 = v11;
+  v233 = _underlyingUserDefaults;
   v234 = +[CAMCaptureCapabilities capabilities];
-  v235 = [v234 hostProcess];
+  hostProcess = [v234 hostProcess];
 
-  if (v235)
+  if (hostProcess)
   {
     v236 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.camera"];
 
     v233 = v236;
   }
 
-  v237 = [(CAMUserPreferences *)self _semanticStylesKey];
+  _semanticStylesKey = [(CAMUserPreferences *)self _semanticStylesKey];
   v321 = v233;
-  v238 = [v233 arrayForKey:v237];
+  v238 = [v233 arrayForKey:_semanticStylesKey];
 
   v392 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v238, "count")}];
   v406 = 0u;
@@ -2843,8 +2843,8 @@ LABEL_416:
         goto LABEL_470;
       }
 
-      v244 = [v10 semanticStylesVersion];
-      if (v244 == 1)
+      semanticStylesVersion = [v10 semanticStylesVersion];
+      if (semanticStylesVersion == 1)
       {
         v245 = MEMORY[0x1E6993890];
         v404 = 0;
@@ -2853,7 +2853,7 @@ LABEL_416:
         goto LABEL_456;
       }
 
-      if (v244)
+      if (semanticStylesVersion)
       {
         v248 = 0;
         v249 = 0;
@@ -2896,10 +2896,10 @@ LABEL_471:
 
   if ([v10 smartStylesSupported])
   {
-    v250 = [v381 mutableCopy];
+    v250 = [semanticStyles mutableCopy];
 
     Current = CFAbsoluteTimeGetCurrent();
-    v253 = [CAMSmartStyleUtilities readAVCaptureSystemStyleBypassXPC:v319 allowNil:0];
+    v253 = [CAMSmartStyleUtilities readAVCaptureSystemStyleBypassXPC:styleCopy allowNil:0];
     v254 = CFAbsoluteTimeGetCurrent() - Current;
     if (v254 > 0.002)
     {
@@ -2945,11 +2945,11 @@ LABEL_471:
 
     if (v317)
     {
-      v261 = [(CAMUserPreferences *)self preserveSmartStyle];
+      preserveSmartStyle = [(CAMUserPreferences *)self preserveSmartStyle];
       v262 = v382;
       v263 = v382;
       v264 = v321;
-      if (!v261)
+      if (!preserveSmartStyle)
       {
         v265 = v263;
         v266 = 1;
@@ -3068,39 +3068,39 @@ LABEL_519:
     v286 = [(CAMUserPreferences *)self _updateEntryForPresetType:0 inSmartStyles:v250 withStyle:v284];
     v287 = [v264 stringForKey:@"CAMUserPreferenceSmartStylesSelectedPreset"];
     v288 = [(CAMUserPreferences *)self _findIndexOfSmartStylePresetString:v287 inStyles:v250];
-    v356 = v286;
+    smartStyleSystemStyleIndex = v286;
     if ((v266 & 1) == 0)
     {
       v286 = v288;
       if (v288 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (v356 == 0x7FFFFFFFFFFFFFFFLL)
+        if (smartStyleSystemStyleIndex == 0x7FFFFFFFFFFFFFFFLL)
         {
           v286 = 0;
         }
 
         else
         {
-          v286 = v356;
+          v286 = smartStyleSystemStyleIndex;
         }
       }
     }
 
-    v365 = v286;
+    selectedSemanticStyleIndex = v286;
   }
 
   else
   {
     v264 = v321;
     v267 = [v321 integerForKey:@"CAMUserPreferenceSelectedSemanticStyleIndex"];
-    v268 = [v381 count];
+    v268 = [semanticStyles count];
     if ([v392 count] == v268)
     {
       if (v267 < v268)
       {
         v250 = v392;
 
-        v365 = v267;
+        selectedSemanticStyleIndex = v267;
         goto LABEL_527;
       }
     }
@@ -3108,23 +3108,23 @@ LABEL_519:
     else
     {
       v281 = v267 < v268 && obja == 0;
-      v282 = v365;
+      v282 = selectedSemanticStyleIndex;
       if (v281)
       {
         v282 = v267;
       }
 
-      v365 = v282;
+      selectedSemanticStyleIndex = v282;
     }
 
-    v250 = v381;
+    v250 = semanticStyles;
   }
 
 LABEL_527:
 
 LABEL_528:
   v289 = [CAMCaptureConfiguration alloc];
-  v290 = [(CAMUserPreferences *)self shouldMixAudioWithOthers];
+  shouldMixAudioWithOthers = [(CAMUserPreferences *)self shouldMixAudioWithOthers];
   v292 = v412;
   v291 = v413;
   v293 = v410;
@@ -3134,8 +3134,8 @@ LABEL_528:
   LOBYTE(v313) = v347;
   v383 = v250;
   LOBYTE(v312) = v325;
-  v295 = [(CAMCaptureConfiguration *)v289 initWithCaptureMode:v394 captureDevice:v385 videoConfiguration:v379 audioConfiguration:v326 mixAudioWithOthers:v290 flashMode:v291 torchMode:v145 HDRMode:v146 irisMode:v353 timerDuration:v346 photoModeAspectRatioCrop:v292 photoModeEffectFilterType:v362 squareModeEffectFilterType:v332 portraitModeEffectFilterType:v330 portraitModeLightingEffectType:v328 portraitModeApertureValue:v327 portraitModeIntensityValue:v351 mirrorFrontCameraCaptures:v312 exposureBiasesByMode:v363 macroMode:v342 photoResolution:v293 rawMode:v294 proResVideoMode:v369 semanticStyles:v250 selectedSemanticStyleIndex:v365 smartStyleSystemStyleIndex:v356 videoStabilizationMode:v386 zoomPIPEnabled:v313 optionalDepthEffectEnabled:v339 sharedLibraryMode:v314 frontRearSimultaneousVideoEnabled:?];
-  v296 = [[CAMConflictingControlConfiguration alloc] initWithDesiredFlashMode:v368 desiredHDRMode:v346 desiredLivePhotoMode:v390 desiredRAWMode:v375 desiredPhotoResolution:v344 photoFormatConflicts:v373 desiredNightModeControlMode:v354 nightModeConflicts:v361 desiredMacroMode:v371];
+  v295 = [(CAMCaptureConfiguration *)v289 initWithCaptureMode:v394 captureDevice:v385 videoConfiguration:v379 audioConfiguration:v326 mixAudioWithOthers:shouldMixAudioWithOthers flashMode:v291 torchMode:v145 HDRMode:v146 irisMode:torchMode4 timerDuration:v346 photoModeAspectRatioCrop:v292 photoModeEffectFilterType:v362 squareModeEffectFilterType:v332 portraitModeEffectFilterType:v330 portraitModeLightingEffectType:v328 portraitModeApertureValue:v327 portraitModeIntensityValue:v351 mirrorFrontCameraCaptures:v312 exposureBiasesByMode:v363 macroMode:v342 photoResolution:v293 rawMode:v294 proResVideoMode:v369 semanticStyles:v250 selectedSemanticStyleIndex:selectedSemanticStyleIndex smartStyleSystemStyleIndex:smartStyleSystemStyleIndex videoStabilizationMode:v386 zoomPIPEnabled:v313 optionalDepthEffectEnabled:v339 sharedLibraryMode:v314 frontRearSimultaneousVideoEnabled:?];
+  v296 = [[CAMConflictingControlConfiguration alloc] initWithDesiredFlashMode:v368 desiredHDRMode:v346 desiredLivePhotoMode:v390 desiredRAWMode:v375 desiredPhotoResolution:v344 photoFormatConflicts:v373 desiredNightModeControlMode:isNightModeSupported nightModeConflicts:v361 desiredMacroMode:macroMode2];
   objc_storeStrong(&self->_captureConfiguration, v295);
   objc_storeStrong(&self->_conflictingControlConfiguration, v296);
   self->_photoModeLastCapturedEffectFilterType = v338;
@@ -3176,11 +3176,11 @@ LABEL_532:
   v301 = v300;
   self->_smudgeNotificationsEnabled = v301;
   [(CAMUserPreferences *)self _setDidResetTorchMode:v297];
-  self->_classicModeSwitchingEnabled = [v11 BOOLForKey:@"CAMUserPreferenceClassicModeSwitchingEnabled"];
-  if (v348)
+  self->_classicModeSwitchingEnabled = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceClassicModeSwitchingEnabled"];
+  if (isInternalInstall)
   {
-    self->_overriddenBackCaptureInterval = [v11 integerForKey:@"CAMInternalPreferenceOverriddenBackBurstCaptureInterval"];
-    overriddenFrontCaptureInterval = [v11 integerForKey:@"CAMInternalPreferenceOverriddenFrontBurstCaptureInterval"];
+    self->_overriddenBackCaptureInterval = [_underlyingUserDefaults integerForKey:@"CAMInternalPreferenceOverriddenBackBurstCaptureInterval"];
+    overriddenFrontCaptureInterval = [_underlyingUserDefaults integerForKey:@"CAMInternalPreferenceOverriddenFrontBurstCaptureInterval"];
     self->_overriddenFrontCaptureInterval = overriddenFrontCaptureInterval;
     if (self->_overriddenBackCaptureInterval >= 1)
     {
@@ -3208,26 +3208,26 @@ LABEL_532:
       }
     }
 
-    self->_burstFollowsEncoderSettings = [v11 BOOLForKey:@"CAMUserPreferenceDebugBurstRespectsEncodingSettings"];
-    [v11 doubleForKey:@"CAMDebugResetTimeoutSeconds"];
+    self->_burstFollowsEncoderSettings = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceDebugBurstRespectsEncodingSettings"];
+    [_underlyingUserDefaults doubleForKey:@"CAMDebugResetTimeoutSeconds"];
     self->__resetTimeoutOverride = v307;
-    self->_preferredMinimumFreeBytes = [v11 integerForKey:@"CAMInternalPreferenceOverridenPreferredStorageThreshold"];
+    self->_preferredMinimumFreeBytes = [_underlyingUserDefaults integerForKey:@"CAMInternalPreferenceOverridenPreferredStorageThreshold"];
     if ([v10 featureDevelopmentSmudgeDetectionBaseTimeoutSeconds])
     {
       self->_smudgeNotificationBaseTimeoutInSeconds = [v10 featureDevelopmentSmudgeDetectionBaseTimeoutSeconds];
     }
   }
 
-  v308 = [v10 hostProcess];
-  if (v308 <= 4 && ((1 << v308) & 0x15) != 0)
+  hostProcess2 = [v10 hostProcess];
+  if (hostProcess2 <= 4 && ((1 << hostProcess2) & 0x15) != 0)
   {
     [(CAMUserPreferences *)self _publishAnalyticsIfNeededAfterAppLaunch];
   }
 
   [(CAMUserPreferences *)self _setHasReadLastWrittenValues:1];
-  if (a6)
+  if (configuration)
   {
-    *a6 = a4 == 0 && (v323 || v322);
+    *configuration = mode == 0 && (_shouldReconfigureCurrentConfigurationForSettingsChange || v322);
   }
 
   return v324;
@@ -3258,19 +3258,19 @@ LABEL_5:
   return v7;
 }
 
-- (unint64_t)_updateEntryForPresetType:(int64_t)a3 inSmartStyles:(id)a4 withStyle:(id)a5
+- (unint64_t)_updateEntryForPresetType:(int64_t)type inSmartStyles:(id)styles withStyle:(id)style
 {
-  v7 = a4;
-  v8 = a5;
+  stylesCopy = styles;
+  styleCopy = style;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__CAMUserPreferences__updateEntryForPresetType_inSmartStyles_withStyle___block_invoke;
   v11[3] = &__block_descriptor_40_e30_B32__0__CEKSmartStyle_8Q16_B24l;
-  v11[4] = a3;
-  v9 = [v7 indexOfObjectPassingTest:v11];
+  v11[4] = type;
+  v9 = [stylesCopy indexOfObjectPassingTest:v11];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v7 setObject:v8 atIndexedSubscript:v9];
+    [stylesCopy setObject:styleCopy atIndexedSubscript:v9];
   }
 
   return v9;
@@ -3279,15 +3279,15 @@ LABEL_5:
 - (id)_semanticStylesKey
 {
   v2 = +[CAMCaptureCapabilities capabilities];
-  v3 = [v2 semanticStylesVersion];
+  semanticStylesVersion = [v2 semanticStylesVersion];
 
   v4 = @"CAMUserPreferenceSmartStylesCustomizedStyles";
-  if (v3 != 1)
+  if (semanticStylesVersion != 1)
   {
     v4 = 0;
   }
 
-  if (v3)
+  if (semanticStylesVersion)
   {
     return v4;
   }
@@ -3312,29 +3312,29 @@ uint64_t __38__CAMUserPreferences_writePreferences__block_invoke(uint64_t a1, vo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_writeSmartStylePresetStringForIndex:(int64_t)a3 inStyles:(id)a4 key:(id)a5
+- (void)_writeSmartStylePresetStringForIndex:(int64_t)index inStyles:(id)styles key:(id)key
 {
-  v10 = a4;
-  v7 = a5;
-  if ([v10 count] <= a3)
+  stylesCopy = styles;
+  keyCopy = key;
+  if ([stylesCopy count] <= index)
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [v10 objectAtIndexedSubscript:a3];
+    v8 = [stylesCopy objectAtIndexedSubscript:index];
     v9 = [MEMORY[0x1E6993890] persistenceStringForPresetType:{objc_msgSend(v8, "presetType")}];
   }
 
-  CFPreferencesSetAppValue(v7, v9, @"com.apple.camera");
+  CFPreferencesSetAppValue(keyCopy, v9, @"com.apple.camera");
 }
 
-- (int64_t)_findIndexOfSmartStylePresetString:(id)a3 inStyles:(id)a4
+- (int64_t)_findIndexOfSmartStylePresetString:(id)string inStyles:(id)styles
 {
-  v5 = a4;
+  stylesCopy = styles;
   v10 = 0;
-  v6 = [MEMORY[0x1E6993890] presetTypeFromPersistenceString:a3 success:&v10];
+  v6 = [MEMORY[0x1E6993890] presetTypeFromPersistenceString:string success:&v10];
   if (v10 == 1)
   {
     v9[0] = MEMORY[0x1E69E9820];
@@ -3342,7 +3342,7 @@ uint64_t __38__CAMUserPreferences_writePreferences__block_invoke(uint64_t a1, vo
     v9[2] = __66__CAMUserPreferences__findIndexOfSmartStylePresetString_inStyles___block_invoke;
     v9[3] = &__block_descriptor_40_e34_B32__0___CEKCaptureStyle__8Q16_B24l;
     v9[4] = v6;
-    v7 = [v5 indexOfObjectPassingTest:v9];
+    v7 = [stylesCopy indexOfObjectPassingTest:v9];
   }
 
   else
@@ -3355,9 +3355,9 @@ uint64_t __38__CAMUserPreferences_writePreferences__block_invoke(uint64_t a1, vo
 
 - (void)_updateLastWrittenSettingsDate
 {
-  v4 = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
   v3 = [MEMORY[0x1E695DF00] now];
-  [v4 setObject:v3 forKey:@"CAMUserPreferencesLastWrittenSettingsDate"];
+  [_underlyingUserDefaults setObject:v3 forKey:@"CAMUserPreferencesLastWrittenSettingsDate"];
   [(CAMUserPreferences *)self _setLastWrittenSettingsDate:v3];
 }
 
@@ -3369,20 +3369,20 @@ uint64_t __38__CAMUserPreferences_writePreferences__block_invoke(uint64_t a1, vo
 
 - (BOOL)_shouldReconfigureCurrentConfigurationForSettingsChange
 {
-  v3 = [(CAMUserPreferences *)self _lastViewedSettingsInterfaceDate];
-  v4 = [(CAMUserPreferences *)self _lastWrittenSettingsDate];
-  v5 = !-[CAMUserPreferences _hasReadLastWrittenValues](self, "_hasReadLastWrittenValues") && [v4 compare:v3] == -1;
+  _lastViewedSettingsInterfaceDate = [(CAMUserPreferences *)self _lastViewedSettingsInterfaceDate];
+  _lastWrittenSettingsDate = [(CAMUserPreferences *)self _lastWrittenSettingsDate];
+  v5 = !-[CAMUserPreferences _hasReadLastWrittenValues](self, "_hasReadLastWrittenValues") && [_lastWrittenSettingsDate compare:_lastViewedSettingsInterfaceDate] == -1;
 
   return v5;
 }
 
 - (NSDate)resetTimeoutDate
 {
-  v3 = [(CAMUserPreferences *)self _lastWrittenSettingsDate];
+  _lastWrittenSettingsDate = [(CAMUserPreferences *)self _lastWrittenSettingsDate];
   [(CAMUserPreferences *)self _resetTimeoutSeconds];
-  if (v3)
+  if (_lastWrittenSettingsDate)
   {
-    [MEMORY[0x1E695DF00] dateWithTimeInterval:v3 sinceDate:?];
+    [MEMORY[0x1E695DF00] dateWithTimeInterval:_lastWrittenSettingsDate sinceDate:?];
   }
 
   else
@@ -3396,9 +3396,9 @@ uint64_t __38__CAMUserPreferences_writePreferences__block_invoke(uint64_t a1, vo
 
 - (BOOL)_shouldResetPreferencesForTimeout
 {
-  v3 = [(CAMUserPreferences *)self resetTimeoutDate];
-  v4 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  v5 = [v4 BOOLForKey:@"CAMUserPreferencePreserveAllSettings"];
+  resetTimeoutDate = [(CAMUserPreferences *)self resetTimeoutDate];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  v5 = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferencePreserveAllSettings"];
 
   if ((v5 & 1) != 0 || [(CAMUserPreferences *)self _hasReadLastWrittenValues])
   {
@@ -3408,7 +3408,7 @@ uint64_t __38__CAMUserPreferences_writePreferences__block_invoke(uint64_t a1, vo
   else
   {
     v7 = [MEMORY[0x1E695DF00] now];
-    v6 = [v3 compare:v7] == -1;
+    v6 = [resetTimeoutDate compare:v7] == -1;
   }
 
   return v6;
@@ -3436,29 +3436,29 @@ uint64_t __38__CAMUserPreferences_writePreferences__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (int64_t)videoEncodingBehaviorForConfiguration:(int64_t)a3 mode:(int64_t)a4 desiredProResVideoMode:(int64_t)a5 outputToExternalStorage:(BOOL)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7
+- (int64_t)videoEncodingBehaviorForConfiguration:(int64_t)configuration mode:(int64_t)mode desiredProResVideoMode:(int64_t)videoMode outputToExternalStorage:(BOOL)storage frontRearSimultaneousVideoEnabled:(BOOL)enabled
 {
-  v7 = a7;
-  v8 = a6;
+  enabledCopy = enabled;
+  storageCopy = storage;
   v13 = +[CAMCaptureCapabilities capabilities];
   v14 = v13;
-  if (a5 != 1 || ([v13 isProResVideoSupportedForMode:a4 videoConfiguration:a3 outputToExternalStorage:v8 frontRearSimultaneousVideoEnabled:v7] & 1) == 0)
+  if (videoMode != 1 || ([v13 isProResVideoSupportedForMode:mode videoConfiguration:configuration outputToExternalStorage:storageCopy frontRearSimultaneousVideoEnabled:enabledCopy] & 1) == 0)
   {
     if ([v14 isHEVCEncodingSupported])
     {
-      if ((a4 - 7) < 3)
+      if ((mode - 7) < 3)
       {
         v16 = 1;
       }
 
       else
       {
-        v16 = (a3 < 0xF) & (0x6300u >> a3);
+        v16 = (configuration < 0xF) & (0x6300u >> configuration);
       }
 
-      if (-[CAMUserPreferences HDR10BitVideoEnabled](self, "HDR10BitVideoEnabled") && [v14 isHDR10BitVideoSupportedForMode:a4])
+      if (-[CAMUserPreferences HDR10BitVideoEnabled](self, "HDR10BitVideoEnabled") && [v14 isHDR10BitVideoSupportedForMode:mode])
       {
-        if ((v16 | [v14 isHDR10BitVideoSupportedForVideoConfiguration:a3 videoEncodingBehavior:1]))
+        if ((v16 | [v14 isHDR10BitVideoSupportedForVideoConfiguration:configuration videoEncodingBehavior:1]))
         {
           goto LABEL_14;
         }
@@ -3487,12 +3487,12 @@ LABEL_16:
   return v15;
 }
 
-- (int64_t)photoEncodingBehaviorForMode:(int64_t)a3 resolvedRAWMode:(int64_t)a4 isCapturingVideo:(BOOL)a5 isTrueVideo:(BOOL)a6
+- (int64_t)photoEncodingBehaviorForMode:(int64_t)mode resolvedRAWMode:(int64_t)wMode isCapturingVideo:(BOOL)video isTrueVideo:(BOOL)trueVideo
 {
   result = 0;
-  if (!a5 && !a6)
+  if (!video && !trueVideo)
   {
-    if (a4 == 1)
+    if (wMode == 1)
     {
       result = 2;
     }
@@ -3503,7 +3503,7 @@ LABEL_16:
     }
   }
 
-  if (a3 == 9)
+  if (mode == 9)
   {
     return 1;
   }
@@ -3511,15 +3511,15 @@ LABEL_16:
   return result;
 }
 
-+ (BOOL)shouldEnableHDR10BitVideoForHEVCEnabled:(BOOL)a3 capabilities:(id)a4
++ (BOOL)shouldEnableHDR10BitVideoForHEVCEnabled:(BOOL)enabled capabilities:(id)capabilities
 {
-  v5 = [a4 isHDR10BitVideoSupported];
-  if (v5)
+  isHDR10BitVideoSupported = [capabilities isHDR10BitVideoSupported];
+  if (isHDR10BitVideoSupported)
   {
     keyExistsAndHasValidFormat = 0;
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceHDR10BitVideoEnabled", @"com.apple.camera", &keyExistsAndHasValidFormat);
     v7 = AppBooleanValue;
-    if (a3)
+    if (enabled)
     {
       if (AppBooleanValue)
       {
@@ -3531,7 +3531,7 @@ LABEL_16:
         v8 = keyExistsAndHasValidFormat == 0;
       }
 
-      LOBYTE(v5) = v8;
+      LOBYTE(isHDR10BitVideoSupported) = v8;
     }
 
     else
@@ -3547,144 +3547,144 @@ LABEL_16:
         v10 = 1;
       }
 
-      LOBYTE(v5) = !v10;
+      LOBYTE(isHDR10BitVideoSupported) = !v10;
     }
   }
 
-  return v5;
+  return isHDR10BitVideoSupported;
 }
 
-- (BOOL)prefersHDR10BitVideoForCapabilities:(id)a3
+- (BOOL)prefersHDR10BitVideoForCapabilities:(id)capabilities
 {
-  v4 = a3;
-  LOBYTE(self) = [objc_opt_class() shouldEnableHDR10BitVideoForHEVCEnabled:-[CAMUserPreferences _preferHEVCWhenAvailable](self capabilities:{"_preferHEVCWhenAvailable"), v4}];
+  capabilitiesCopy = capabilities;
+  LOBYTE(self) = [objc_opt_class() shouldEnableHDR10BitVideoForHEVCEnabled:-[CAMUserPreferences _preferHEVCWhenAvailable](self capabilities:{"_preferHEVCWhenAvailable"), capabilitiesCopy}];
 
   return self;
 }
 
-- (BOOL)shouldDisableCameraSwitchingDuringVideoRecordingForMode:(int64_t)a3
+- (BOOL)shouldDisableCameraSwitchingDuringVideoRecordingForMode:(int64_t)mode
 {
-  if (a3 > 9)
+  if (mode > 9)
   {
     return 0;
   }
 
-  if (((1 << a3) & 0x86) != 0)
+  if (((1 << mode) & 0x86) != 0)
   {
     return [(CAMUserPreferences *)self _shouldDisableCameraSwitchingDuringVideoRecording];
   }
 
-  return ((1 << a3) & 0x300) != 0;
+  return ((1 << mode) & 0x300) != 0;
 }
 
-- (void)setDidAcknowledgePortraitModeDescription:(BOOL)a3
+- (void)setDidAcknowledgePortraitModeDescription:(BOOL)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v6 = +[CAMCaptureCapabilities capabilities];
-  if ((([v6 isFrontPortraitModeSupported] & 1) != 0 || objc_msgSend(v6, "isBackPortraitModeSupported")) && self->_didAcknowledgePortraitModeDescription != v3)
+  if ((([v6 isFrontPortraitModeSupported] & 1) != 0 || objc_msgSend(v6, "isBackPortraitModeSupported")) && self->_didAcknowledgePortraitModeDescription != descriptionCopy)
   {
-    self->_didAcknowledgePortraitModeDescription = v3;
-    v5 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-    [v5 setBool:v3 forKey:@"CAMUserPreferencePortraitModeDidAcknowledgeDescription_12"];
+    self->_didAcknowledgePortraitModeDescription = descriptionCopy;
+    _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+    [_underlyingUserDefaults setBool:descriptionCopy forKey:@"CAMUserPreferencePortraitModeDidAcknowledgeDescription_12"];
   }
 }
 
-- (void)setDidAcknowledgeCinematicModeDescription:(BOOL)a3
+- (void)setDidAcknowledgeCinematicModeDescription:(BOOL)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 isCinematicModeSupported];
+  isCinematicModeSupported = [v5 isCinematicModeSupported];
 
-  if (v6 && self->_didAcknowledgeCinematicModeDescription != v3)
+  if (isCinematicModeSupported && self->_didAcknowledgeCinematicModeDescription != descriptionCopy)
   {
-    self->_didAcknowledgeCinematicModeDescription = v3;
-    v7 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-    [v7 setBool:v3 forKey:@"CAMUserPreferenceCinematicModeDidAcknowledgeDescription"];
+    self->_didAcknowledgeCinematicModeDescription = descriptionCopy;
+    _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+    [_underlyingUserDefaults setBool:descriptionCopy forKey:@"CAMUserPreferenceCinematicModeDidAcknowledgeDescription"];
   }
 }
 
-- (void)setDidAcknowledgeSemanticStylesDescription:(BOOL)a3
+- (void)setDidAcknowledgeSemanticStylesDescription:(BOOL)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 semanticStylesSupport];
+  semanticStylesSupport = [v5 semanticStylesSupport];
 
-  if ((v6 & 8) != 0 && self->_didAcknowledgeSemanticStylesDescription != v3)
+  if ((semanticStylesSupport & 8) != 0 && self->_didAcknowledgeSemanticStylesDescription != descriptionCopy)
   {
-    self->_didAcknowledgeSemanticStylesDescription = v3;
-    v7 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-    [v7 setBool:v3 forKey:@"CAMUserPreferenceSemanticStylesDidAcknowledgeDescription"];
+    self->_didAcknowledgeSemanticStylesDescription = descriptionCopy;
+    _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+    [_underlyingUserDefaults setBool:descriptionCopy forKey:@"CAMUserPreferenceSemanticStylesDidAcknowledgeDescription"];
   }
 }
 
-+ (BOOL)canShowSmartStylesOnboardingForCapabilities:(id)a3
++ (BOOL)canShowSmartStylesOnboardingForCapabilities:(id)capabilities
 {
-  v3 = a3;
-  v4 = ([v3 semanticStylesSupport] >> 3) & 1;
-  v5 = [v3 smartStylesSupported];
+  capabilitiesCopy = capabilities;
+  v4 = ([capabilitiesCopy semanticStylesSupport] >> 3) & 1;
+  smartStylesSupported = [capabilitiesCopy smartStylesSupported];
 
-  return v5 & v4;
+  return smartStylesSupported & v4;
 }
 
-- (void)setDidAcknowledgeSmartStylesDescription:(BOOL)a3
+- (void)setDidAcknowledgeSmartStylesDescription:(BOOL)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v5 = objc_opt_class();
   v6 = +[CAMCaptureCapabilities capabilities];
   LODWORD(v5) = [v5 canShowSmartStylesOnboardingForCapabilities:v6];
 
-  if (v5 && self->_didAcknowledgeSmartStylesDescription != v3)
+  if (v5 && self->_didAcknowledgeSmartStylesDescription != descriptionCopy)
   {
-    self->_didAcknowledgeSmartStylesDescription = v3;
-    v7 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-    [v7 setBool:v3 forKey:@"CAMUserPreferenceSmartStylesDidAcknowledgeDescription"];
+    self->_didAcknowledgeSmartStylesDescription = descriptionCopy;
+    _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+    [_underlyingUserDefaults setBool:descriptionCopy forKey:@"CAMUserPreferenceSmartStylesDidAcknowledgeDescription"];
   }
 }
 
-- (BOOL)mirrorCameraCapturesForDevicePosition:(int64_t)a3 mode:(int64_t)a4
+- (BOOL)mirrorCameraCapturesForDevicePosition:(int64_t)position mode:(int64_t)mode
 {
-  if (a3 != 1 || ![(CAMUserPreferences *)self shouldMirrorFrontCameraCaptures])
+  if (position != 1 || ![(CAMUserPreferences *)self shouldMirrorFrontCameraCaptures])
   {
     return 0;
   }
 
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 mirroredFrontCapturesSupportedForMode:a4];
+  v6 = [v5 mirroredFrontCapturesSupportedForMode:mode];
 
   return v6;
 }
 
-- (int64_t)maximumPhotoResolutionForMode:(int64_t)a3 device:(int64_t)a4
+- (int64_t)maximumPhotoResolutionForMode:(int64_t)mode device:(int64_t)device
 {
   v7 = +[CAMCaptureCapabilities capabilities];
-  if ((a4 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = qword_1A3A68210[a4 - 1];
+    v8 = qword_1A3A68210[device - 1];
   }
 
   v9 = [(CAMUserPreferences *)self preferredHEICPhotoResolutionForDevicePosition:v8];
-  v10 = [(CAMUserPreferences *)self maximumRAWPhotoResolution];
-  if ([(CAMUserPreferences *)self shouldUsePhotoFormatControlForMode:a3])
+  maximumRAWPhotoResolution = [(CAMUserPreferences *)self maximumRAWPhotoResolution];
+  if ([(CAMUserPreferences *)self shouldUsePhotoFormatControlForMode:mode])
   {
-    v9 = [v7 maximumPhotoResolutionForMode:a3 device:a4 encoding:1];
-    v10 = [v7 maximumPhotoResolutionForMode:a3 device:a4 encoding:2];
+    v9 = [v7 maximumPhotoResolutionForMode:mode device:device encoding:1];
+    maximumRAWPhotoResolution = [v7 maximumPhotoResolutionForMode:mode device:device encoding:2];
   }
 
-  v11 = [v7 isPhotoResolutionSupported:v10 forMode:a3 device:a4 photoEncoding:2];
-  v12 = [v7 isPhotoResolutionSupported:v9 forMode:a3 device:a4 photoEncoding:1];
-  if ((v10 - 1) > 2)
+  v11 = [v7 isPhotoResolutionSupported:maximumRAWPhotoResolution forMode:mode device:device photoEncoding:2];
+  v12 = [v7 isPhotoResolutionSupported:v9 forMode:mode device:device photoEncoding:1];
+  if ((maximumRAWPhotoResolution - 1) > 2)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = qword_1A3A681F8[v10 - 1];
+    v13 = qword_1A3A681F8[maximumRAWPhotoResolution - 1];
   }
 
   if ((v9 - 1) > 2)
@@ -3708,26 +3708,26 @@ LABEL_16:
   {
     if (v12)
     {
-      v10 = v9;
+      maximumRAWPhotoResolution = v9;
     }
 
     else
     {
-      v10 = 0;
+      maximumRAWPhotoResolution = 0;
     }
   }
 
-  return v10;
+  return maximumRAWPhotoResolution;
 }
 
-- (int64_t)preferredHEICPhotoResolutionForDevicePosition:(int64_t)a3
+- (int64_t)preferredHEICPhotoResolutionForDevicePosition:(int64_t)position
 {
-  if (a3 == 1)
+  if (position == 1)
   {
     return [(CAMUserPreferences *)self _frontPreferredHEICPhotoResolution];
   }
 
-  if (a3)
+  if (position)
   {
     return 0;
   }
@@ -3735,86 +3735,86 @@ LABEL_16:
   return [(CAMUserPreferences *)self _backPreferredHEICPhotoResolution];
 }
 
-- (int64_t)videoStabilizationStrengthForVideoStabilizationMode:(int64_t)a3 captureMode:(int64_t)a4
+- (int64_t)videoStabilizationStrengthForVideoStabilizationMode:(int64_t)mode captureMode:(int64_t)captureMode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v6 = [(CAMUserPreferences *)self actionModeLowLightEnabled];
-    v5 = 2;
-    if (!v6)
+    actionModeLowLightEnabled = [(CAMUserPreferences *)self actionModeLowLightEnabled];
+    enhancedVideoStabilization = 2;
+    if (!actionModeLowLightEnabled)
     {
-      v5 = 3;
+      enhancedVideoStabilization = 3;
     }
   }
 
-  else if (a3)
+  else if (mode)
   {
-    v5 = 0;
+    enhancedVideoStabilization = 0;
   }
 
   else
   {
-    v5 = [(CAMUserPreferences *)self enhancedVideoStabilization];
+    enhancedVideoStabilization = [(CAMUserPreferences *)self enhancedVideoStabilization];
   }
 
-  if (a4 == 8)
+  if (captureMode == 8)
   {
     return 1;
   }
 
   else
   {
-    return v5;
+    return enhancedVideoStabilization;
   }
 }
 
-- (BOOL)isAutoFPSVideoEnabledForMode:(int64_t)a3 device:(int64_t)a4 videoConfiguration:(int64_t)a5 encodingBehavior:(int64_t)a6 outputToExternalStorage:(BOOL)a7 frontRearSimultaneousVideoEnabled:(BOOL)a8
+- (BOOL)isAutoFPSVideoEnabledForMode:(int64_t)mode device:(int64_t)device videoConfiguration:(int64_t)configuration encodingBehavior:(int64_t)behavior outputToExternalStorage:(BOOL)storage frontRearSimultaneousVideoEnabled:(BOOL)enabled
 {
-  v8 = a8;
-  v9 = a7;
+  enabledCopy = enabled;
+  storageCopy = storage;
   v15 = +[CAMCaptureCapabilities capabilities];
   v16 = +[CAMCaptureCapabilities capabilities];
-  v28 = [v15 isAutoFPSVideoSupportedForMode:a3 videoConfiguration:a5 videoEncodingBehavior:a6 outputToExternalStorage:v9 prefersHDR10BitVideo:-[CAMUserPreferences prefersHDR10BitVideoForCapabilities:](self frontRearSimultaneousVideoEnabled:{"prefersHDR10BitVideoForCapabilities:", v16), v8}];
+  v28 = [v15 isAutoFPSVideoSupportedForMode:mode videoConfiguration:configuration videoEncodingBehavior:behavior outputToExternalStorage:storageCopy prefersHDR10BitVideo:-[CAMUserPreferences prefersHDR10BitVideoForCapabilities:](self frontRearSimultaneousVideoEnabled:{"prefersHDR10BitVideoForCapabilities:", v16), enabledCopy}];
 
   v17 = +[CAMCaptureCapabilities capabilities];
   v18 = +[CAMCaptureCapabilities capabilities];
-  LOBYTE(v27) = v8;
-  v19 = [v17 resolvedVideoConfigurationForMode:a3 device:a4 videoEncodingBehavior:a6 videoConfiguration:a5 outputToExternalStorage:v9 prefersHDR10BitVideo:-[CAMUserPreferences prefersHDR10BitVideoForCapabilities:](self frontRearSimultaneousVideoEnabled:{"prefersHDR10BitVideoForCapabilities:", v18), v27}];
+  LOBYTE(v27) = enabledCopy;
+  v19 = [v17 resolvedVideoConfigurationForMode:mode device:device videoEncodingBehavior:behavior videoConfiguration:configuration outputToExternalStorage:storageCopy prefersHDR10BitVideo:-[CAMUserPreferences prefersHDR10BitVideoForCapabilities:](self frontRearSimultaneousVideoEnabled:{"prefersHDR10BitVideoForCapabilities:", v18), v27}];
 
   if ((v19 - 5) >= 3)
   {
-    v22 = v23 && (+[CAMCaptureCapabilities capabilities](CAMCaptureCapabilities, "capabilities"), v24 = v23 = v19 == 9 || v19 == 1;
+    isLowLightVideoEnabled = v23 && (+[CAMCaptureCapabilities capabilities](CAMCaptureCapabilities, "capabilities"), v24 = v23 = v19 == 9 || v19 == 1;
   }
 
   else
   {
     v20 = +[CAMCaptureCapabilities capabilities];
-    v21 = [v20 isVariableFramerateVideoSupported];
+    isVariableFramerateVideoSupported = [v20 isVariableFramerateVideoSupported];
 
-    if (v21)
+    if (isVariableFramerateVideoSupported)
     {
-      v22 = ([(CAMUserPreferences *)self VFRMode]- 1) < 2;
+      isLowLightVideoEnabled = ([(CAMUserPreferences *)self VFRMode]- 1) < 2;
     }
 
     else
     {
-      v22 = [(CAMUserPreferences *)self isLowLightVideoEnabled];
+      isLowLightVideoEnabled = [(CAMUserPreferences *)self isLowLightVideoEnabled];
     }
   }
 
-  return v28 & v22;
+  return v28 & isLowLightVideoEnabled;
 }
 
-+ (void)performLowLightVideoMigrationWithCapabilities:(id)a3
++ (void)performLowLightVideoMigrationWithCapabilities:(id)capabilities
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 shouldPersistPreferences])
+  capabilitiesCopy = capabilities;
+  if (![capabilitiesCopy shouldPersistPreferences])
   {
     goto LABEL_27;
   }
 
-  v4 = [v3 defaultVFRMode];
+  defaultVFRMode = [capabilitiesCopy defaultVFRMode];
   keyExistsAndHasValidFormat = 0;
   CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceDidPerformVFRUpgrade", @"com.apple.camera", &keyExistsAndHasValidFormat);
   if (!keyExistsAndHasValidFormat)
@@ -3842,14 +3842,14 @@ LABEL_15:
         goto LABEL_18;
       }
 
-      if (v4 > 2)
+      if (defaultVFRMode > 2)
       {
         v6 = 0;
       }
 
       else
       {
-        v6 = off_1E76F9438[v4];
+        v6 = off_1E76F9438[defaultVFRMode];
       }
 
       [MEMORY[0x1E696AEC0] stringWithFormat:@"Performing one-time upgrade of auto low light from On to %@ for variable frame rate video", v6];
@@ -3857,27 +3857,27 @@ LABEL_15:
 
     else
     {
-      if (v4 > 2)
+      if (defaultVFRMode > 2)
       {
         v7 = 0;
       }
 
       else
       {
-        v7 = off_1E76F9438[v4];
+        v7 = off_1E76F9438[defaultVFRMode];
       }
 
       [MEMORY[0x1E696AEC0] stringWithFormat:@"Attempted one-time upgrade of auto low light. Key doesn't exist. Using %@ for variable frame rate video", v7];
     }
     v8 = ;
-    CFPreferencesSetAppValue(@"CAMUserPreferenceVFRMode", [MEMORY[0x1E696AD98] numberWithInteger:v4], @"com.apple.camera");
+    CFPreferencesSetAppValue(@"CAMUserPreferenceVFRMode", [MEMORY[0x1E696AD98] numberWithInteger:defaultVFRMode], @"com.apple.camera");
     goto LABEL_15;
   }
 
 LABEL_18:
   v14 = 0;
   CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceDidPerformVFRUpgrade2", @"com.apple.camera", &v14);
-  if (!v14 && v4 == 2)
+  if (!v14 && defaultVFRMode == 2)
   {
     v13 = 0;
     AppIntegerValue = CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceVFRMode", @"com.apple.camera", &v13);
@@ -3907,9 +3907,9 @@ LABEL_18:
 LABEL_27:
 }
 
-+ (void)performResponsiveShutterMigrationWithCapabilities:(id)a3
++ (void)performResponsiveShutterMigrationWithCapabilities:(id)capabilities
 {
-  if ([a3 shouldPersistPreferences])
+  if ([capabilities shouldPersistPreferences])
   {
     keyExistsAndHasValidFormat = 0;
     CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceEnableResponsiveShutterMigrationFromCoreMedia", @"com.apple.camera", &keyExistsAndHasValidFormat);
@@ -3948,13 +3948,13 @@ LABEL_8:
   }
 }
 
-- (void)writeAvailableDevicesWithCompletion:(id)a3
+- (void)writeAvailableDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 fallbackCameraSupported];
+  fallbackCameraSupported = [v5 fallbackCameraSupported];
 
-  if (v6)
+  if (fallbackCameraSupported)
   {
     if ([(CAMUserPreferences *)self writingAvailableDevices])
     {
@@ -3965,7 +3965,7 @@ LABEL_8:
         _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "writeAvailableDevices already writing", buf, 2u);
       }
 
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
@@ -3975,7 +3975,7 @@ LABEL_8:
       v8[2] = __58__CAMUserPreferences_writeAvailableDevicesWithCompletion___block_invoke;
       v8[3] = &unk_1E76F9260;
       v8[4] = self;
-      v9 = v4;
+      v9 = completionCopy;
       [CAMFallbackConfiguration getAvailableFallbackDevicesWithCompletion:v8];
     }
   }
@@ -4039,13 +4039,13 @@ void __58__CAMUserPreferences_writeAvailableDevicesWithCompletion___block_invoke
   }
 }
 
-+ (void)performSuperWideAutoMacroMigrationWithCapabilities:(id)a3
++ (void)performSuperWideAutoMacroMigrationWithCapabilities:(id)capabilities
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 shouldPersistPreferences])
+  capabilitiesCopy = capabilities;
+  if ([capabilitiesCopy shouldPersistPreferences])
   {
-    if ([v3 shouldPerformSuperWideAutoMacroMigration])
+    if ([capabilitiesCopy shouldPerformSuperWideAutoMacroMigration])
     {
       keyExistsAndHasValidFormat = 0;
       CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceDidPerformSuperWideAutoMacroUpgrade", @"com.apple.camera", &keyExistsAndHasValidFormat);
@@ -4076,7 +4076,7 @@ void __58__CAMUserPreferences_writeAvailableDevicesWithCompletion___block_invoke
   }
 }
 
-+ (void)performAudioConfigurationMigrationWithCapabilities:(id)a3
++ (void)performAudioConfigurationMigrationWithCapabilities:(id)capabilities
 {
   keyExistsAndHasValidFormat = 0;
   CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceAudioConfiguration", @"com.apple.camera", &keyExistsAndHasValidFormat);
@@ -4090,9 +4090,9 @@ void __58__CAMUserPreferences_writeAvailableDevicesWithCompletion___block_invoke
   }
 }
 
-+ (void)performHorizonLevelUpgradeWithCapabilities:(id)a3
++ (void)performHorizonLevelUpgradeWithCapabilities:(id)capabilities
 {
-  if ([a3 shouldPersistPreferences])
+  if ([capabilities shouldPersistPreferences])
   {
     keyExistsAndHasValidFormat = 0;
     CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceDidPerformHorizonLevelUpgrade", @"com.apple.camera", &keyExistsAndHasValidFormat);
@@ -4109,16 +4109,16 @@ void __58__CAMUserPreferences_writeAvailableDevicesWithCompletion___block_invoke
   }
 }
 
-+ (void)performMostCompatibleConfirmationMigrationWithCapabilities:(id)a3
++ (void)performMostCompatibleConfirmationMigrationWithCapabilities:(id)capabilities
 {
-  v8 = a3;
-  if ([v8 shouldPersistPreferences])
+  capabilitiesCopy = capabilities;
+  if ([capabilitiesCopy shouldPersistPreferences])
   {
-    v3 = [v8 isHEVCEncodingSupported];
-    v4 = [MEMORY[0x1E69C0700] newFormatsConfiguration];
-    if (v3)
+    isHEVCEncodingSupported = [capabilitiesCopy isHEVCEncodingSupported];
+    newFormatsConfiguration = [MEMORY[0x1E69C0700] newFormatsConfiguration];
+    if (isHEVCEncodingSupported)
     {
-      if (v4 == 1)
+      if (newFormatsConfiguration == 1)
       {
         AppBooleanValue = CFPreferencesGetAppBooleanValue(@"CAMUserPreferencesDidConfirmVideoMostCompatible", @"com.apple.camera", 0);
         v6 = CFPreferencesGetAppBooleanValue(@"CAMUserPreferencesDidConfirmVideoMostCompatible", @"com.apple.camera", 0);
@@ -4132,12 +4132,12 @@ void __58__CAMUserPreferences_writeAvailableDevicesWithCompletion___block_invoke
   }
 }
 
-+ (void)performApertureMigrationWithCapabilities:(id)a3
++ (void)performApertureMigrationWithCapabilities:(id)capabilities
 {
-  v3 = a3;
-  if ([v3 isDepthEffectApertureSupported])
+  capabilitiesCopy = capabilities;
+  if ([capabilitiesCopy isDepthEffectApertureSupported])
   {
-    if ([v3 shouldPersistPreferences])
+    if ([capabilitiesCopy shouldPersistPreferences])
     {
       keyExistsAndHasValidFormat = 0;
       CFPreferencesGetAppBooleanValue(@"CAMUserPreferencePreserveApertureDidMigrate", @"com.apple.camera", &keyExistsAndHasValidFormat);
@@ -4155,7 +4155,7 @@ void __58__CAMUserPreferences_writeAvailableDevicesWithCompletion___block_invoke
   }
 }
 
-+ (void)performSmartStylesOnboardingAcknowledgementResetWithCapabilities:(id)a3
++ (void)performSmartStylesOnboardingAcknowledgementResetWithCapabilities:(id)capabilities
 {
   v3 = objc_opt_class();
   v4 = +[CAMCaptureCapabilities capabilities];
@@ -4181,13 +4181,13 @@ void __58__CAMUserPreferences_writeAvailableDevicesWithCompletion___block_invoke
   }
 }
 
-- (BOOL)shouldUsePhotoFormatControlForMode:(int64_t)a3
+- (BOOL)shouldUsePhotoFormatControlForMode:(int64_t)mode
 {
   if ([(CAMUserPreferences *)self photoFormatControlEnabled])
   {
     v4 = +[CAMCaptureCapabilities capabilities];
-    v5 = [v4 isPhotoResolutionSupported:3 forMode:a3 device:0 photoEncoding:1];
-    v6 = v5 | [v4 isPhotoResolutionSupported:3 forMode:a3 device:1 photoEncoding:1];
+    v5 = [v4 isPhotoResolutionSupported:3 forMode:mode device:0 photoEncoding:1];
+    v6 = v5 | [v4 isPhotoResolutionSupported:3 forMode:mode device:1 photoEncoding:1];
   }
 
   else
@@ -4198,22 +4198,22 @@ void __58__CAMUserPreferences_writeAvailableDevicesWithCompletion___block_invoke
   return v6 & 1;
 }
 
-- (BOOL)isPhotoFormat:(id)a3 enabledForMode:(int64_t)a4 device:(int64_t)a5
+- (BOOL)isPhotoFormat:(id)format enabledForMode:(int64_t)mode device:(int64_t)device
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = format.var1;
+  var0 = format.var0;
   v10 = +[CAMCaptureCapabilities capabilities];
   v11 = v10;
   if (var0 < 2)
   {
-    if ((a5 - 1) > 0xA)
+    if ((device - 1) > 0xA)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = qword_1A3A68210[a5 - 1];
+      v12 = qword_1A3A68210[device - 1];
     }
 
     v13 = [(CAMUserPreferences *)self preferredHEICPhotoResolutionForDevicePosition:v12];
@@ -4227,22 +4227,22 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (var0 != 2 || ![v10 isLinearDNGSupportedForMode:a4] || !-[CAMUserPreferences rawControlEnabled](self, "rawControlEnabled"))
+  if (var0 != 2 || ![v10 isLinearDNGSupportedForMode:mode] || !-[CAMUserPreferences rawControlEnabled](self, "rawControlEnabled"))
   {
     goto LABEL_14;
   }
 
 LABEL_13:
-  v14 = [v11 isPhotoFormatSupported:var0 forMode:var1 device:{a4, a5}];
+  v14 = [v11 isPhotoFormatSupported:var0 forMode:var1 device:{mode, device}];
 LABEL_15:
 
   return v14;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)fallbackPhotoFormatForDesiredFormat:(id)a3 mode:(int64_t)a4 device:(int64_t)a5
+- ($0AC6E346AE4835514AAA8AC86D8F4844)fallbackPhotoFormatForDesiredFormat:(id)format mode:(int64_t)mode device:(int64_t)device
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = format.var1;
+  var0 = format.var0;
   v21 = *MEMORY[0x1E69E9840];
   if ([CAMUserPreferences isPhotoFormat:"isPhotoFormat:enabledForMode:device:" enabledForMode:? device:?])
   {
@@ -4260,15 +4260,15 @@ LABEL_15:
     v20[5] = xmmword_1A3A681D0;
     v20[6] = xmmword_1A3A681E0;
     v20[7] = xmmword_1A3A67B10;
-    v19 = [(CAMUserPreferences *)self photoEncodingBehavior];
-    if ((a5 - 1) > 0xA)
+    photoEncodingBehavior = [(CAMUserPreferences *)self photoEncodingBehavior];
+    if ((device - 1) > 0xA)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = qword_1A3A68210[a5 - 1];
+      v12 = qword_1A3A68210[device - 1];
     }
 
     v13 = [(CAMUserPreferences *)self preferredHEICPhotoResolutionForDevicePosition:v12];
@@ -4280,7 +4280,7 @@ LABEL_15:
       v10 = *(&v20[v14] + 1);
       if (v15)
       {
-        if ([(CAMUserPreferences *)self isPhotoFormat:*&v20[v14] enabledForMode:*(&v20[v14] + 1) device:a4, a5])
+        if ([(CAMUserPreferences *)self isPhotoFormat:*&v20[v14] enabledForMode:*(&v20[v14] + 1) device:mode, device])
         {
           goto LABEL_18;
         }
@@ -4298,7 +4298,7 @@ LABEL_15:
 
     while (v14 != 8);
     v10 = v13;
-    v11 = v19;
+    v11 = photoEncodingBehavior;
   }
 
 LABEL_18:
@@ -4309,51 +4309,51 @@ LABEL_18:
   return result;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)resolvedPhotoFormatForResolvedResolution:(int64_t)a3 rawMode:(int64_t)a4
+- ($0AC6E346AE4835514AAA8AC86D8F4844)resolvedPhotoFormatForResolvedResolution:(int64_t)resolution rawMode:(int64_t)mode
 {
-  if (a3 <= 1)
+  if (resolution <= 1)
   {
-    v5 = 1;
+    resolutionCopy = 1;
   }
 
   else
   {
-    v5 = a3;
+    resolutionCopy = resolution;
   }
 
-  v6 = [(CAMUserPreferences *)self photoEncodingBehavior];
-  if (a4 == 1)
+  photoEncodingBehavior = [(CAMUserPreferences *)self photoEncodingBehavior];
+  if (mode == 1)
   {
-    v6 = 2;
+    photoEncodingBehavior = 2;
   }
 
-  v7 = v5;
+  v7 = resolutionCopy;
   result.var1 = v7;
-  result.var0 = v6;
+  result.var0 = photoEncodingBehavior;
   return result;
 }
 
-- (void)setDidAcknowledgeCTMDescription:(BOOL)a3
+- (void)setDidAcknowledgeCTMDescription:(BOOL)description
 {
-  if (self->_didAcknowledgeCTMDescription != a3)
+  if (self->_didAcknowledgeCTMDescription != description)
   {
-    v4 = a3;
-    self->_didAcknowledgeCTMDescription = a3;
-    v5 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-    [v5 setBool:v4 forKey:@"CAMUserPreferenceCTMDidAcknowledgeDescription"];
+    descriptionCopy = description;
+    self->_didAcknowledgeCTMDescription = description;
+    _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+    [_underlyingUserDefaults setBool:descriptionCopy forKey:@"CAMUserPreferenceCTMDidAcknowledgeDescription"];
   }
 }
 
-- (int64_t)previewViewAspectModeForMode:(int64_t)a3 isFullScreen:(BOOL)a4
+- (int64_t)previewViewAspectModeForMode:(int64_t)mode isFullScreen:(BOOL)screen
 {
-  if (a3 > 9)
+  if (mode > 9)
   {
     return 0;
   }
 
-  if (((1 << a3) & 0x1A6) != 0)
+  if (((1 << mode) & 0x1A6) != 0)
   {
-    if (a4)
+    if (screen)
     {
       return [(CAMUserPreferences *)self _previewAspectModeForVideoModes];
     }
@@ -4364,12 +4364,12 @@ LABEL_18:
     }
   }
 
-  if (((1 << a3) & 0x241) == 0)
+  if (((1 << mode) & 0x241) == 0)
   {
     return 0;
   }
 
-  if (a4)
+  if (screen)
   {
     return [(CAMUserPreferences *)self _previewAspectModeForPhotoModes];
   }
@@ -4380,47 +4380,47 @@ LABEL_18:
   }
 }
 
-- (void)setPreviewViewAspectMode:(int64_t)a3 forMode:(int64_t)a4 isFullScreen:(BOOL)a5
+- (void)setPreviewViewAspectMode:(int64_t)mode forMode:(int64_t)forMode isFullScreen:(BOOL)screen
 {
-  if (a4 <= 9)
+  if (forMode <= 9)
   {
-    if (((1 << a4) & 0x1A6) != 0)
+    if (((1 << forMode) & 0x1A6) != 0)
     {
-      if (a5)
+      if (screen)
       {
-        [(CAMUserPreferences *)self _setPreviewAspectModeForVideoModes:a3];
+        [(CAMUserPreferences *)self _setPreviewAspectModeForVideoModes:mode];
       }
 
       else
       {
-        [(CAMUserPreferences *)self _setWindowedPreviewAspectModeForVideoModes:a3];
+        [(CAMUserPreferences *)self _setWindowedPreviewAspectModeForVideoModes:mode];
       }
     }
 
-    else if (((1 << a4) & 0x241) != 0)
+    else if (((1 << forMode) & 0x241) != 0)
     {
-      if (a5)
+      if (screen)
       {
-        [(CAMUserPreferences *)self _setPreviewAspectModeForPhotoModes:a3];
+        [(CAMUserPreferences *)self _setPreviewAspectModeForPhotoModes:mode];
       }
 
       else
       {
-        [(CAMUserPreferences *)self _setWindowedPreviewAspectModeForPhotoModes:a3];
+        [(CAMUserPreferences *)self _setWindowedPreviewAspectModeForPhotoModes:mode];
       }
     }
   }
 }
 
-+ (BOOL)isSharedLibrarySupportedAndEnabledForCapabilities:(id)a3
++ (BOOL)isSharedLibrarySupportedAndEnabledForCapabilities:(id)capabilities
 {
-  v3 = [a3 librarySelectionSupported];
-  if (v3)
+  librarySelectionSupported = [capabilities librarySelectionSupported];
+  if (librarySelectionSupported)
   {
-    LOBYTE(v3) = CFPreferencesGetAppBooleanValue(*MEMORY[0x1E6978E88], @"com.apple.mobileslideshow", 0) != 0;
+    LOBYTE(librarySelectionSupported) = CFPreferencesGetAppBooleanValue(*MEMORY[0x1E6978E88], @"com.apple.mobileslideshow", 0) != 0;
   }
 
-  return v3;
+  return librarySelectionSupported;
 }
 
 + (BOOL)hasSharedLibraryAlgorithmsPreferences
@@ -4451,54 +4451,54 @@ LABEL_18:
   [(CAMUserPreferences *)self setSharedLibraryLastDiscoveryLocation:0];
   [(CAMUserPreferences *)self setSharedLibraryLastUserActionDate:0];
   [(CAMUserPreferences *)self setSharedLibraryLastUserActionLocation:0];
-  v3 = [(CAMUserPreferences *)self captureConfiguration];
-  [v3 setSharedLibraryMode:0];
+  captureConfiguration = [(CAMUserPreferences *)self captureConfiguration];
+  [captureConfiguration setSharedLibraryMode:0];
 }
 
 - (BOOL)allowExplicitProResColorSpace
 {
   v2 = +[CAMCaptureCapabilities capabilities];
-  v3 = [v2 isProResLogColorSpaceSupported];
+  isProResLogColorSpaceSupported = [v2 isProResLogColorSpaceSupported];
 
-  return v3;
+  return isProResLogColorSpaceSupported;
 }
 
-- (int64_t)colorSpaceForMode:(int64_t)a3 videoConfiguration:(int64_t)a4 videoEncodingBehavior:(int64_t)a5 device:(int64_t)a6 preferredProResColorSpace:(int64_t)a7
+- (int64_t)colorSpaceForMode:(int64_t)mode videoConfiguration:(int64_t)configuration videoEncodingBehavior:(int64_t)behavior device:(int64_t)device preferredProResColorSpace:(int64_t)space
 {
   v13 = +[CAMCaptureCapabilities capabilities];
-  v14 = 1;
-  if (a3 > 4)
+  spaceCopy = 1;
+  if (mode > 4)
   {
-    if (a3 == 8)
+    if (mode == 8)
     {
-      v14 = 0;
+      spaceCopy = 0;
       goto LABEL_22;
     }
 
-    if (a3 != 7)
+    if (mode != 7)
     {
-      v14 = a3 != 5;
+      spaceCopy = mode != 5;
       goto LABEL_22;
     }
 
 LABEL_12:
-    v18 = [(CAMUserPreferences *)self HDR10BitVideoEnabled];
-    v19 = [v13 isHDR10BitVideoSupportedForMode:a3];
-    v20 = v18 & v19 & [v13 isHDR10BitVideoSupportedForVideoConfiguration:a4 videoEncodingBehavior:a5];
-    if (a5 == 2)
+    hDR10BitVideoEnabled = [(CAMUserPreferences *)self HDR10BitVideoEnabled];
+    v19 = [v13 isHDR10BitVideoSupportedForMode:mode];
+    v20 = hDR10BitVideoEnabled & v19 & [v13 isHDR10BitVideoSupportedForVideoConfiguration:configuration videoEncodingBehavior:behavior];
+    if (behavior == 2)
     {
-      v21 = [(CAMUserPreferences *)self allowExplicitProResColorSpace];
-      if (v21)
+      allowExplicitProResColorSpace = [(CAMUserPreferences *)self allowExplicitProResColorSpace];
+      if (allowExplicitProResColorSpace)
       {
-        v14 = a7;
+        spaceCopy = space;
       }
 
       else
       {
-        v14 = 2;
+        spaceCopy = 2;
       }
 
-      if ((v21 | v20))
+      if ((allowExplicitProResColorSpace | v20))
       {
         goto LABEL_22;
       }
@@ -4506,91 +4506,91 @@ LABEL_12:
 
     else if (v20)
     {
-      v14 = 2;
+      spaceCopy = 2;
       goto LABEL_22;
     }
 
-    v14 = (v18 | ~v19) & 1;
+    spaceCopy = (hDR10BitVideoEnabled | ~v19) & 1;
     goto LABEL_22;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     goto LABEL_12;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
-    if (!a4)
+    if (!configuration)
     {
       LOBYTE(v23) = 0;
-      a4 = [v13 resolvedVideoConfigurationForMode:2 device:a6 videoEncodingBehavior:a5 videoConfiguration:0 outputToExternalStorage:0 prefersHDR10BitVideo:-[CAMUserPreferences prefersHDR10BitVideoForCapabilities:](self frontRearSimultaneousVideoEnabled:{"prefersHDR10BitVideoForCapabilities:", v13), v23}];
+      configuration = [v13 resolvedVideoConfigurationForMode:2 device:device videoEncodingBehavior:behavior videoConfiguration:0 outputToExternalStorage:0 prefersHDR10BitVideo:-[CAMUserPreferences prefersHDR10BitVideoForCapabilities:](self frontRearSimultaneousVideoEnabled:{"prefersHDR10BitVideoForCapabilities:", v13), v23}];
     }
 
-    v15 = [(CAMUserPreferences *)self HDR10BitVideoEnabled];
+    hDR10BitVideoEnabled2 = [(CAMUserPreferences *)self HDR10BitVideoEnabled];
     v16 = [v13 isHDR10BitVideoSupportedForMode:2];
-    v17 = [v13 isHDR10BitVideoSupportedForVideoConfiguration:a4 videoEncodingBehavior:a5];
-    if ((v15 & v16 & v17 & [v13 isHDR10BitSlomoSupportedForDevice:a6]) != 0)
+    v17 = [v13 isHDR10BitVideoSupportedForVideoConfiguration:configuration videoEncodingBehavior:behavior];
+    if ((hDR10BitVideoEnabled2 & v16 & v17 & [v13 isHDR10BitSlomoSupportedForDevice:device]) != 0)
     {
-      v14 = 2;
+      spaceCopy = 2;
     }
 
     else
     {
-      v14 = 1;
+      spaceCopy = 1;
     }
   }
 
 LABEL_22:
 
-  return v14;
+  return spaceCopy;
 }
 
-- (void)setExplicitProResColorSpace:(int64_t)a3
+- (void)setExplicitProResColorSpace:(int64_t)space
 {
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 supportedProResColorSpaces];
+  supportedProResColorSpaces = [v5 supportedProResColorSpaces];
 
-  if (v6 && self->_explicitProResColorSpace != a3)
+  if (supportedProResColorSpaces && self->_explicitProResColorSpace != space)
   {
-    self->_explicitProResColorSpace = a3;
-    v7 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-    [v7 setInteger:a3 forKey:@"CAMUserPreferenceExplicitProResColorSpace"];
+    self->_explicitProResColorSpace = space;
+    _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+    [_underlyingUserDefaults setInteger:space forKey:@"CAMUserPreferenceExplicitProResColorSpace"];
   }
 }
 
-- (void)setDidAcknowledgeDepthInPhotoModeDescription:(BOOL)a3
+- (void)setDidAcknowledgeDepthInPhotoModeDescription:(BOOL)description
 {
-  if (self->_didAcknowledgeDepthInPhotoModeDescription != a3)
+  if (self->_didAcknowledgeDepthInPhotoModeDescription != description)
   {
-    v4 = a3;
-    self->_didAcknowledgeDepthInPhotoModeDescription = a3;
-    v5 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-    [v5 setBool:v4 forKey:@"CAMUserPreferenceDidAcknowledgeDepthInPhotoModeDescription"];
+    descriptionCopy = description;
+    self->_didAcknowledgeDepthInPhotoModeDescription = description;
+    _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+    [_underlyingUserDefaults setBool:descriptionCopy forKey:@"CAMUserPreferenceDidAcknowledgeDepthInPhotoModeDescription"];
   }
 }
 
-- (unint64_t)audioConfigurationForMode:(int64_t)a3 device:(int64_t)a4 emulationMode:(int64_t)a5 duringCall:(BOOL)a6
+- (unint64_t)audioConfigurationForMode:(int64_t)mode device:(int64_t)device emulationMode:(int64_t)emulationMode duringCall:(BOOL)call
 {
   v8 = 0;
-  if (a3 <= 9)
+  if (mode <= 9)
   {
-    if (((1 << a3) & 0x186) != 0)
+    if (((1 << mode) & 0x186) != 0)
     {
       v8 = 1;
     }
 
-    else if (((1 << a3) & 0x211) != 0)
+    else if (((1 << mode) & 0x211) != 0)
     {
-      v9 = a6;
-      if ((a4 - 1) > 0xA)
+      callCopy = call;
+      if ((device - 1) > 0xA)
       {
         v11 = 0;
       }
 
       else
       {
-        v11 = qword_1A3A68210[a4 - 1];
+        v11 = qword_1A3A68210[device - 1];
       }
 
       v12 = +[CAMCaptureCapabilities capabilities];
@@ -4598,14 +4598,14 @@ LABEL_22:
 
       if (v13)
       {
-        if (a5)
+        if (emulationMode)
         {
           v8 = 0;
         }
 
         else
         {
-          v8 = !v9;
+          v8 = !callCopy;
         }
       }
 
@@ -4617,16 +4617,16 @@ LABEL_22:
   }
 
   v14 = +[CAMCaptureCapabilities capabilities];
-  v15 = [v14 disableAudio];
+  disableAudio = [v14 disableAudio];
 
   v16 = +[CAMCaptureCapabilities capabilities];
-  v17 = [v16 isStereoAudioRecordingSupportedForMode:a3];
-  v18 = [v16 isCinematicAudioSupportedForMode:a3];
-  v19 = [(CAMUserPreferences *)self preferredAudioConfiguration];
+  v17 = [v16 isStereoAudioRecordingSupportedForMode:mode];
+  v18 = [v16 isCinematicAudioSupportedForMode:mode];
+  preferredAudioConfiguration = [(CAMUserPreferences *)self preferredAudioConfiguration];
   v20 = 0;
-  if (v8 && !v15)
+  if (v8 && !disableAudio)
   {
-    if (v19 == 3)
+    if (preferredAudioConfiguration == 3)
     {
       v21 = 1;
       if (v17)
@@ -4645,7 +4645,7 @@ LABEL_22:
       }
     }
 
-    else if (v19 == 2)
+    else if (preferredAudioConfiguration == 2)
     {
       if (v17)
       {
@@ -4660,16 +4660,16 @@ LABEL_22:
 
     else
     {
-      v20 = v19 == 1;
+      v20 = preferredAudioConfiguration == 1;
     }
   }
 
   return v20;
 }
 
-+ (unint64_t)selectedAudioConfigurationForCapabilities:(id)a3
++ (unint64_t)selectedAudioConfigurationForCapabilities:(id)capabilities
 {
-  v3 = a3;
+  capabilitiesCopy = capabilities;
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceAudioConfiguration", @"com.apple.camera", &keyExistsAndHasValidFormat);
   v5 = AppIntegerValue;
@@ -4677,7 +4677,7 @@ LABEL_22:
   {
     if (AppIntegerValue == 3)
     {
-      LOBYTE(AppIntegerValue) = [v3 isCinematicAudioSupported];
+      LOBYTE(AppIntegerValue) = [capabilitiesCopy isCinematicAudioSupported];
     }
 
     else
@@ -4685,12 +4685,12 @@ LABEL_22:
       if (AppIntegerValue != 2)
       {
 LABEL_8:
-        if ([v3 isCinematicAudioSupported])
+        if ([capabilitiesCopy isCinematicAudioSupported])
         {
           v5 = 3;
         }
 
-        else if ([v3 isStereoAudioRecordingSupported])
+        else if ([capabilitiesCopy isStereoAudioRecordingSupported])
         {
           v5 = 2;
         }
@@ -4703,7 +4703,7 @@ LABEL_8:
         goto LABEL_13;
       }
 
-      LOBYTE(AppIntegerValue) = [v3 isStereoAudioRecordingSupported];
+      LOBYTE(AppIntegerValue) = [capabilitiesCopy isStereoAudioRecordingSupported];
     }
   }
 
@@ -4717,48 +4717,48 @@ LABEL_13:
   return v5;
 }
 
-- (void)setDidAcknowledgeSpatialModeOverlayDescription:(BOOL)a3
+- (void)setDidAcknowledgeSpatialModeOverlayDescription:(BOOL)description
 {
-  if (self->_didAcknowledgeSpatialModeOverlayDescription != a3)
+  if (self->_didAcknowledgeSpatialModeOverlayDescription != description)
   {
-    v4 = a3;
-    self->_didAcknowledgeSpatialModeOverlayDescription = a3;
-    v5 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-    [v5 setBool:v4 forKey:@"CAMUserPreferenceDidAcknowledgeSpatialModeOverlayDescription"];
+    descriptionCopy = description;
+    self->_didAcknowledgeSpatialModeOverlayDescription = description;
+    _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+    [_underlyingUserDefaults setBool:descriptionCopy forKey:@"CAMUserPreferenceDidAcknowledgeSpatialModeOverlayDescription"];
   }
 }
 
-- (void)setDidAcknowledgeSolCamDescription:(BOOL)a3
+- (void)setDidAcknowledgeSolCamDescription:(BOOL)description
 {
-  if (self->_didAcknowledgeSolCamDescription != a3)
+  if (self->_didAcknowledgeSolCamDescription != description)
   {
-    v4 = a3;
-    self->_didAcknowledgeSolCamDescription = a3;
-    v5 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-    [v5 setBool:v4 forKey:@"CAMUserPreferenceDidAcknowledgeSolCamModeOverlayDescription"];
+    descriptionCopy = description;
+    self->_didAcknowledgeSolCamDescription = description;
+    _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+    [_underlyingUserDefaults setBool:descriptionCopy forKey:@"CAMUserPreferenceDidAcknowledgeSolCamModeOverlayDescription"];
   }
 }
 
-+ (id)_convertDictionary:(id)a3 expectedKeyClass:(Class)a4 expectedValueClass:(Class)a5 keyConverter:(id)a6 valueConverter:(id)a7
++ (id)_convertDictionary:(id)dictionary expectedKeyClass:(Class)class expectedValueClass:(Class)valueClass keyConverter:(id)converter valueConverter:(id)valueConverter
 {
-  v11 = a6;
-  v12 = a7;
+  converterCopy = converter;
+  valueConverterCopy = valueConverter;
   v13 = MEMORY[0x1E695DF90];
-  v14 = a3;
-  v15 = [[v13 alloc] initWithCapacity:{objc_msgSend(v14, "count")}];
+  dictionaryCopy = dictionary;
+  v15 = [[v13 alloc] initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __105__CAMUserPreferences__convertDictionary_expectedKeyClass_expectedValueClass_keyConverter_valueConverter___block_invoke;
   v22[3] = &unk_1E76F9288;
-  v26 = a4;
-  v27 = a5;
-  v24 = v11;
-  v25 = v12;
+  classCopy = class;
+  valueClassCopy = valueClass;
+  v24 = converterCopy;
+  v25 = valueConverterCopy;
   v16 = v15;
   v23 = v16;
-  v17 = v12;
-  v18 = v11;
-  [v14 enumerateKeysAndObjectsUsingBlock:v22];
+  v17 = valueConverterCopy;
+  v18 = converterCopy;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v22];
 
   v19 = v23;
   v20 = v16;
@@ -4828,11 +4828,11 @@ LABEL_9:
 LABEL_19:
 }
 
-+ (id)_createMappingFromStringsToIntegers:(id)a3
++ (id)_createMappingFromStringsToIntegers:(id)integers
 {
-  v3 = a3;
+  integersCopy = integers;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = v3[2](v3, 0);
+  v5 = integersCopy[2](integersCopy, 0);
   if ([v5 length])
   {
     v6 = 0;
@@ -4841,7 +4841,7 @@ LABEL_19:
       v7 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
       [v4 setObject:v7 forKeyedSubscript:v5];
 
-      v5 = v3[2](v3, ++v6);
+      v5 = integersCopy[2](integersCopy, ++v6);
     }
 
     while ([v5 length]);
@@ -4850,11 +4850,11 @@ LABEL_19:
   return v4;
 }
 
-+ (id)_persistenceDictionaryForPreferredDrawerControlByMode:(id)a3
++ (id)_persistenceDictionaryForPreferredDrawerControlByMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = objc_opt_class();
-  v6 = [a1 _convertDictionary:v4 expectedKeyClass:v5 expectedValueClass:objc_opt_class() keyConverter:&__block_literal_global_666 valueConverter:&__block_literal_global_668];
+  v6 = [self _convertDictionary:modeCopy expectedKeyClass:v5 expectedValueClass:objc_opt_class() keyConverter:&__block_literal_global_666 valueConverter:&__block_literal_global_668];
 
   return v6;
 }
@@ -4887,41 +4887,41 @@ __CFString *__76__CAMUserPreferences__persistenceDictionaryForPreferredDrawerCon
   }
 }
 
-+ (id)_preferredDrawerControlByModeForPersistenceDictionary:(id)a3
++ (id)_preferredDrawerControlByModeForPersistenceDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
-  v9[4] = a1;
+  v9[4] = self;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__CAMUserPreferences__preferredDrawerControlByModeForPersistenceDictionary___block_invoke;
   v10[3] = &__block_descriptor_40_e28___NSNumber_16__0__NSString_8l;
-  v10[4] = a1;
+  v10[4] = self;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__CAMUserPreferences__preferredDrawerControlByModeForPersistenceDictionary___block_invoke_2;
   v9[3] = &__block_descriptor_40_e28___NSNumber_16__0__NSString_8l;
-  v7 = [a1 _convertDictionary:v4 expectedKeyClass:v5 expectedValueClass:v6 keyConverter:v10 valueConverter:v9];
+  v7 = [self _convertDictionary:dictionaryCopy expectedKeyClass:v5 expectedValueClass:v6 keyConverter:v10 valueConverter:v9];
 
   return v7;
 }
 
-+ (id)_captureModeNumberForPersistenceString:(id)a3
++ (id)_captureModeNumberForPersistenceString:(id)string
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__CAMUserPreferences__captureModeNumberForPersistenceString___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = _captureModeNumberForPersistenceString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&_captureModeNumberForPersistenceString__onceToken, block);
   }
 
-  v5 = [_captureModeNumberForPersistenceString__stringToIntegerMap objectForKeyedSubscript:v4];
+  v5 = [_captureModeNumberForPersistenceString__stringToIntegerMap objectForKeyedSubscript:stringCopy];
 
   return v5;
 }
@@ -4948,21 +4948,21 @@ __CFString *__61__CAMUserPreferences__captureModeNumberForPersistenceString___bl
   }
 }
 
-+ (id)_drawerControlTypeNumberForPersistenceString:(id)a3
++ (id)_drawerControlTypeNumberForPersistenceString:(id)string
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__CAMUserPreferences__drawerControlTypeNumberForPersistenceString___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = _drawerControlTypeNumberForPersistenceString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&_drawerControlTypeNumberForPersistenceString__onceToken, block);
   }
 
-  v5 = [_drawerControlTypeNumberForPersistenceString__stringToIntegerMap objectForKeyedSubscript:v4];
+  v5 = [_drawerControlTypeNumberForPersistenceString__stringToIntegerMap objectForKeyedSubscript:stringCopy];
 
   return v5;
 }
@@ -5000,129 +5000,129 @@ __CFString *__67__CAMUserPreferences__drawerControlTypeNumberForPersistenceStrin
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }
 
-- (id)smudgeAcknowledgementDateForDevicePosition:(int64_t)a3
+- (id)smudgeAcknowledgementDateForDevicePosition:(int64_t)position
 {
-  v4 = [(CAMUserPreferences *)self _devicePositionString:a3];
+  v4 = [(CAMUserPreferences *)self _devicePositionString:position];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMUserPreferenceLastAcknowledged%@SmudgeDetection", v4];
-  v6 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  v7 = [v6 objectForKey:v5];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  v7 = [_underlyingUserDefaults objectForKey:v5];
 
   return v7;
 }
 
-- (void)setSmudgeAcknowledgementDate:(id)a3 forDevicePosition:(int64_t)a4
+- (void)setSmudgeAcknowledgementDate:(id)date forDevicePosition:(int64_t)position
 {
-  v6 = a3;
-  v10 = [(CAMUserPreferences *)self _devicePositionString:a4];
+  dateCopy = date;
+  v10 = [(CAMUserPreferences *)self _devicePositionString:position];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMUserPreferenceLastAcknowledged%@SmudgeDetection", v10];
-  v8 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v8 setObject:v6 forKey:v7];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults setObject:dateCopy forKey:v7];
 
-  v9 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v9 synchronize];
+  _underlyingUserDefaults2 = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults2 synchronize];
 }
 
-- (int64_t)smudgeAcknowledgementCountForDevicePosition:(int64_t)a3
+- (int64_t)smudgeAcknowledgementCountForDevicePosition:(int64_t)position
 {
-  v4 = [(CAMUserPreferences *)self _devicePositionString:a3];
+  v4 = [(CAMUserPreferences *)self _devicePositionString:position];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMUserPreference%@SmudgeDetectionAcknowledgedCount", v4];
-  v6 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  v7 = [v6 integerForKey:v5];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  v7 = [_underlyingUserDefaults integerForKey:v5];
 
   return v7;
 }
 
-- (void)setSmudgeAcknowledgementCount:(int64_t)a3 forDevicePosition:(int64_t)a4
+- (void)setSmudgeAcknowledgementCount:(int64_t)count forDevicePosition:(int64_t)position
 {
-  v9 = [(CAMUserPreferences *)self _devicePositionString:a4];
+  v9 = [(CAMUserPreferences *)self _devicePositionString:position];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMUserPreference%@SmudgeDetectionAcknowledgedCount", v9];
-  v7 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v7 setInteger:a3 forKey:v6];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults setInteger:count forKey:v6];
 
-  v8 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v8 synchronize];
+  _underlyingUserDefaults2 = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults2 synchronize];
 }
 
-- (int64_t)smudgeNotDetectedCountForDevicePosition:(int64_t)a3
+- (int64_t)smudgeNotDetectedCountForDevicePosition:(int64_t)position
 {
-  v4 = [(CAMUserPreferences *)self _devicePositionString:a3];
+  v4 = [(CAMUserPreferences *)self _devicePositionString:position];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMUserPreference%@SmudgeNotDetectedCount", v4];
-  v6 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  v7 = [v6 integerForKey:v5];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  v7 = [_underlyingUserDefaults integerForKey:v5];
 
   return v7;
 }
 
-- (void)setSmudgeNotDetectedCount:(int64_t)a3 forDevicePosition:(int64_t)a4
+- (void)setSmudgeNotDetectedCount:(int64_t)count forDevicePosition:(int64_t)position
 {
-  v9 = [(CAMUserPreferences *)self _devicePositionString:a4];
+  v9 = [(CAMUserPreferences *)self _devicePositionString:position];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMUserPreference%@SmudgeNotDetectedCount", v9];
-  v7 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v7 setInteger:a3 forKey:v6];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults setInteger:count forKey:v6];
 
-  v8 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v8 synchronize];
+  _underlyingUserDefaults2 = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults2 synchronize];
 }
 
-- (id)smudgeAnalyticsDictionaryForDevicePosition:(int64_t)a3
+- (id)smudgeAnalyticsDictionaryForDevicePosition:(int64_t)position
 {
-  v4 = [(CAMUserPreferences *)self _devicePositionString:a3];
+  v4 = [(CAMUserPreferences *)self _devicePositionString:position];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMUserPreference%@SmudgeAnalyticsDictionary", v4];
-  v6 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  v7 = [v6 objectForKey:v5];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  v7 = [_underlyingUserDefaults objectForKey:v5];
 
   return v7;
 }
 
-- (void)setSmudgeAnalyticsDictionary:(id)a3 forDevicePosition:(int64_t)a4
+- (void)setSmudgeAnalyticsDictionary:(id)dictionary forDevicePosition:(int64_t)position
 {
-  v6 = a3;
-  v10 = [(CAMUserPreferences *)self _devicePositionString:a4];
+  dictionaryCopy = dictionary;
+  v10 = [(CAMUserPreferences *)self _devicePositionString:position];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMUserPreference%@SmudgeAnalyticsDictionary", v10];
-  v8 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v8 setObject:v6 forKey:v7];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults setObject:dictionaryCopy forKey:v7];
 
-  v9 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v9 synchronize];
+  _underlyingUserDefaults2 = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults2 synchronize];
 }
 
-- (void)removeSmudgeAnalyticsDictionaryForDevicePosition:(int64_t)a3
+- (void)removeSmudgeAnalyticsDictionaryForDevicePosition:(int64_t)position
 {
-  v7 = [(CAMUserPreferences *)self _devicePositionString:a3];
+  v7 = [(CAMUserPreferences *)self _devicePositionString:position];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMUserPreference%@SmudgeAnalyticsDictionary", v7];
-  v5 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v5 removeObjectForKey:v4];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults removeObjectForKey:v4];
 
-  v6 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v6 synchronize];
+  _underlyingUserDefaults2 = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults2 synchronize];
 }
 
 - (BOOL)smudgeDetectionDisplayWasResetBySettingsToggle
 {
-  v2 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  v3 = [v2 BOOLForKey:@"CAMUserPreferenceSmudgeDetectionResetBySettingsToggle"];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  v3 = [_underlyingUserDefaults BOOLForKey:@"CAMUserPreferenceSmudgeDetectionResetBySettingsToggle"];
 
   return v3;
 }
 
 - (void)clearSmudgeDetectionDisplayWasResetBySettingsToggle
 {
-  v3 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v3 setBool:0 forKey:@"CAMUserPreferenceSmudgeDetectionResetBySettingsToggle"];
+  _underlyingUserDefaults = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults setBool:0 forKey:@"CAMUserPreferenceSmudgeDetectionResetBySettingsToggle"];
 
-  v4 = [(CAMUserPreferences *)self _underlyingUserDefaults];
-  [v4 synchronize];
+  _underlyingUserDefaults2 = [(CAMUserPreferences *)self _underlyingUserDefaults];
+  [_underlyingUserDefaults2 synchronize];
 }
 
-- (id)_devicePositionString:(int64_t)a3
+- (id)_devicePositionString:(int64_t)string
 {
   v3 = @"FrontFacing";
-  if (a3 != 1)
+  if (string != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (string)
   {
     return v3;
   }
@@ -5149,61 +5149,61 @@ __CFString *__67__CAMUserPreferences__drawerControlTypeNumberForPersistenceStrin
   return v3;
 }
 
-+ (void)setSolCamGroupingType:(int64_t)a3
++ (void)setSolCamGroupingType:(int64_t)type
 {
-  v3 = [CAMUserPreferences _stringForGroupingType:a3];
+  v3 = [CAMUserPreferences _stringForGroupingType:type];
   [CAMUserPreferences _setPreferenceValue:v3 forKey:@"CAMUserPreferenceSolCamGroupingType"];
 }
 
-+ (void)setSolCamShutterButtonCenterMaterialEnabled:(BOOL)a3
++ (void)setSolCamShutterButtonCenterMaterialEnabled:(BOOL)enabled
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
   [CAMUserPreferences _setPreferenceValue:v3 forKey:@"CAMUserPreferenceSolCamShutterButtonCenterMaterialEnabled"];
 }
 
-+ (void)setSolCamDebugMenuEnabled:(BOOL)a3
++ (void)setSolCamDebugMenuEnabled:(BOOL)enabled
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
   [CAMUserPreferences _setPreferenceValue:v3 forKey:@"CAMUserPreferenceValueSolariumDebugMenuEnabled"];
 }
 
-+ (id)_stringForGroupingType:(int64_t)a3
++ (id)_stringForGroupingType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return @"None";
   }
 
   else
   {
-    return off_1E76F9520[a3 - 1];
+    return off_1E76F9520[type - 1];
   }
 }
 
-+ (int64_t)_groupingTypeForString:(id)a3
++ (int64_t)_groupingTypeForString:(id)string
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"None"] & 1) == 0)
+  stringCopy = string;
+  if (([stringCopy isEqualToString:@"None"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"Split"])
+    if ([stringCopy isEqualToString:@"Split"])
     {
       v4 = 1;
       goto LABEL_9;
     }
 
-    if ([v3 isEqualToString:@"Complete"])
+    if ([stringCopy isEqualToString:@"Complete"])
     {
       v4 = 2;
       goto LABEL_9;
     }
 
-    if ([v3 isEqualToString:@"TopGroupsBottom"])
+    if ([stringCopy isEqualToString:@"TopGroupsBottom"])
     {
       v4 = 3;
       goto LABEL_9;
     }
 
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"Invalid grouping type string %@", v3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"Invalid grouping type string %@", stringCopy}];
   }
 
   v4 = 0;
@@ -5212,34 +5212,34 @@ LABEL_9:
   return v4;
 }
 
-+ (void)setSolCamSelectedZoomCenteredEnabled:(BOOL)a3
++ (void)setSolCamSelectedZoomCenteredEnabled:(BOOL)enabled
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
   [CAMUserPreferences _setPreferenceValue:v3 forKey:@"CAMUserPreferenceSolCamSelectedZoomCenteredEnabled"];
 }
 
-+ (void)setSolCamOnboardingEnabled:(BOOL)a3
++ (void)setSolCamOnboardingEnabled:(BOOL)enabled
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
   [CAMUserPreferences _setPreferenceValue:v3 forKey:@"CAMUserPreferenceSolCamOnboardingEnabled"];
 }
 
-+ (int64_t)_preferenceIntegerValueForKey:(id)a3 defaultValue:(int64_t)a4
++ (int64_t)_preferenceIntegerValueForKey:(id)key defaultValue:(int64_t)value
 {
   keyExistsAndHasValidFormat = 0;
-  result = CFPreferencesGetAppIntegerValue(a3, @"com.apple.camera", &keyExistsAndHasValidFormat);
+  result = CFPreferencesGetAppIntegerValue(key, @"com.apple.camera", &keyExistsAndHasValidFormat);
   if (!keyExistsAndHasValidFormat)
   {
-    return a4;
+    return value;
   }
 
   return result;
 }
 
-+ (BOOL)_preferenceBoolValueForKey:(id)a3 defaultValue:(BOOL)a4
++ (BOOL)_preferenceBoolValueForKey:(id)key defaultValue:(BOOL)value
 {
   keyExistsAndHasValidFormat = 0;
-  v5 = CFPreferencesGetAppBooleanValue(a3, @"com.apple.camera", &keyExistsAndHasValidFormat) != 0;
+  v5 = CFPreferencesGetAppBooleanValue(key, @"com.apple.camera", &keyExistsAndHasValidFormat) != 0;
   if (keyExistsAndHasValidFormat)
   {
     return v5;
@@ -5247,26 +5247,26 @@ LABEL_9:
 
   else
   {
-    return a4;
+    return value;
   }
 }
 
-+ (void)_setPreferenceValue:(id)a3 forKey:(id)a4
++ (void)_setPreferenceValue:(id)value forKey:(id)key
 {
-  CFPreferencesSetAppValue(a4, a3, @"com.apple.camera");
+  CFPreferencesSetAppValue(key, value, @"com.apple.camera");
 
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }
 
-+ (void)setTopOverCaptureGradientEnabled:(BOOL)a3
++ (void)setTopOverCaptureGradientEnabled:(BOOL)enabled
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
   [CAMUserPreferences _setPreferenceValue:v3 forKey:@"CAMUserPreferenceTopOverCaptureGradientEnabled"];
 }
 
-+ (void)setBottomOverCaptureGradientEnabled:(BOOL)a3
++ (void)setBottomOverCaptureGradientEnabled:(BOOL)enabled
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
   [CAMUserPreferences _setPreferenceValue:v3 forKey:@"CAMUserPreferenceBottomOverCaptureGradientEnabled"];
 }
 

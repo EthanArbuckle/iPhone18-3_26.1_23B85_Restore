@@ -1,8 +1,8 @@
 @interface _MFNanoServerMessageContentURLProtocolRegistry
 + (id)sharedRegistry;
 - (_MFNanoServerMessageContentURLProtocolRegistry)init;
-- (id)URLForLoadingContext:(id)a3 scheme:(id)a4;
-- (id)loadingContextForURL:(id)a3;
+- (id)URLForLoadingContext:(id)context scheme:(id)scheme;
+- (id)loadingContextForURL:(id)l;
 @end
 
 @implementation _MFNanoServerMessageContentURLProtocolRegistry
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_100091718;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185AA0 != -1)
   {
     dispatch_once(&qword_100185AA0, block);
@@ -43,24 +43,24 @@
   return v2;
 }
 
-- (id)URLForLoadingContext:(id)a3 scheme:(id)a4
+- (id)URLForLoadingContext:(id)context scheme:(id)scheme
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  schemeCopy = scheme;
   [(NSLock *)self->_lock lock];
-  v8 = objc_getAssociatedObject(v6, off_1001845D0);
+  v8 = objc_getAssociatedObject(contextCopy, off_1001845D0);
   if (!v8)
   {
     v9 = objc_alloc_init(NSURLComponents);
-    [v9 setScheme:v7];
+    [v9 setScheme:schemeCopy];
     v10 = qword_100185AA8++;
     v11 = [NSString stringWithFormat:@"/%lu", v10];
     [v9 setPath:v11];
 
     v8 = [v9 URL];
-    objc_setAssociatedObject(v6, off_1001845D0, v8, 0x301);
-    v12 = [(_MFNanoServerMessageContentURLProtocolRegistry *)self storage];
-    [v12 setObject:v6 forKey:v8];
+    objc_setAssociatedObject(contextCopy, off_1001845D0, v8, 0x301);
+    storage = [(_MFNanoServerMessageContentURLProtocolRegistry *)self storage];
+    [storage setObject:contextCopy forKey:v8];
   }
 
   [(NSLock *)self->_lock unlock];
@@ -68,30 +68,30 @@
   return v8;
 }
 
-- (id)loadingContextForURL:(id)a3
+- (id)loadingContextForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   [(NSLock *)self->_lock lock];
-  v5 = [(_MFNanoServerMessageContentURLProtocolRegistry *)self storage];
-  v6 = [v5 objectForKey:v4];
+  storage = [(_MFNanoServerMessageContentURLProtocolRegistry *)self storage];
+  query = [storage objectForKey:lCopy];
 
-  if (!v6)
+  if (!query)
   {
-    v7 = [NSURLComponents componentsWithURL:v4 resolvingAgainstBaseURL:0];
-    v6 = [v7 query];
+    v7 = [NSURLComponents componentsWithURL:lCopy resolvingAgainstBaseURL:0];
+    query = [v7 query];
 
-    if (v6)
+    if (query)
     {
       [v7 setQuery:0];
-      v8 = [(_MFNanoServerMessageContentURLProtocolRegistry *)self storage];
+      storage2 = [(_MFNanoServerMessageContentURLProtocolRegistry *)self storage];
       v9 = [v7 URL];
-      v6 = [v8 objectForKey:v9];
+      query = [storage2 objectForKey:v9];
     }
   }
 
   [(NSLock *)self->_lock unlock];
 
-  return v6;
+  return query;
 }
 
 @end

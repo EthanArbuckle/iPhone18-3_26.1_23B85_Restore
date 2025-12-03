@@ -1,75 +1,75 @@
 @interface AVTCoreDataRemoteChangesObserver
-- (AVTCoreDataRemoteChangesObserver)initWithConfiguration:(id)a3 workQueue:(id)a4 coalescer:(id)a5 environment:(id)a6;
+- (AVTCoreDataRemoteChangesObserver)initWithConfiguration:(id)configuration workQueue:(id)queue coalescer:(id)coalescer environment:(id)environment;
 - (BOOL)isObservingChanges;
-- (id)changeTransactionsForToken:(id)a3 managedObjectContext:(id)a4;
-- (void)addChangesHandler:(id)a3;
-- (void)performManagedObjectContextWork:(id)a3;
-- (void)processRemoteChangeNotification:(id)a3 completion:(id)a4;
+- (id)changeTransactionsForToken:(id)token managedObjectContext:(id)context;
+- (void)addChangesHandler:(id)handler;
+- (void)performManagedObjectContextWork:(id)work;
+- (void)processRemoteChangeNotification:(id)notification completion:(id)completion;
 - (void)registerCoalescerEventHandler;
 - (void)startObservingChanges;
 @end
 
 @implementation AVTCoreDataRemoteChangesObserver
 
-- (AVTCoreDataRemoteChangesObserver)initWithConfiguration:(id)a3 workQueue:(id)a4 coalescer:(id)a5 environment:(id)a6
+- (AVTCoreDataRemoteChangesObserver)initWithConfiguration:(id)configuration workQueue:(id)queue coalescer:(id)coalescer environment:(id)environment
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  configurationCopy = configuration;
+  queueCopy = queue;
+  coalescerCopy = coalescer;
+  environmentCopy = environment;
   v24.receiver = self;
   v24.super_class = AVTCoreDataRemoteChangesObserver;
   v15 = [(AVTCoreDataRemoteChangesObserver *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_configuration, a3);
-    v17 = [v14 logger];
+    objc_storeStrong(&v15->_configuration, configuration);
+    logger = [environmentCopy logger];
     logger = v16->_logger;
-    v16->_logger = v17;
+    v16->_logger = logger;
 
-    objc_storeStrong(&v16->_workQueue, a4);
-    objc_storeStrong(&v16->_coalescer, a5);
-    objc_storeStrong(&v16->_environment, a6);
-    v19 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v16->_workQueue, queue);
+    objc_storeStrong(&v16->_coalescer, coalescer);
+    objc_storeStrong(&v16->_environment, environment);
+    array = [MEMORY[0x277CBEB18] array];
     changeHandlers = v16->_changeHandlers;
-    v16->_changeHandlers = v19;
+    v16->_changeHandlers = array;
 
-    v21 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     transactionsForPendingChanges = v16->_transactionsForPendingChanges;
-    v16->_transactionsForPendingChanges = v21;
+    v16->_transactionsForPendingChanges = array2;
   }
 
   return v16;
 }
 
-- (void)addChangesHandler:(id)a3
+- (void)addChangesHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AVTCoreDataRemoteChangesObserver *)self observationToken];
+  handlerCopy = handler;
+  observationToken = [(AVTCoreDataRemoteChangesObserver *)self observationToken];
 
-  if (v5)
+  if (observationToken)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Add handler before starting to observe!"];
   }
 
-  v8 = [(AVTCoreDataRemoteChangesObserver *)self changeHandlers];
-  v6 = [v4 copy];
+  changeHandlers = [(AVTCoreDataRemoteChangesObserver *)self changeHandlers];
+  v6 = [handlerCopy copy];
 
   v7 = MEMORY[0x245CF3540](v6);
-  [v8 addObject:v7];
+  [changeHandlers addObject:v7];
 }
 
 - (void)registerCoalescerEventHandler
 {
   objc_initWeak(&location, self);
-  v3 = [(AVTCoreDataRemoteChangesObserver *)self coalescer];
+  coalescer = [(AVTCoreDataRemoteChangesObserver *)self coalescer];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __65__AVTCoreDataRemoteChangesObserver_registerCoalescerEventHandler__block_invoke;
   v4[3] = &unk_278CFA408;
   objc_copyWeak(&v5, &location);
-  [v3 registerEventForCoalescingWithLabel:@"NSPersistentStoreRemoteChangeNotification" handler:v4];
+  [coalescer registerEventForCoalescingWithLabel:@"NSPersistentStoreRemoteChangeNotification" handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -114,31 +114,31 @@ void __65__AVTCoreDataRemoteChangesObserver_registerCoalescerEventHandler__block
 
 - (void)startObservingChanges
 {
-  v3 = [(AVTCoreDataRemoteChangesObserver *)self observationToken];
+  observationToken = [(AVTCoreDataRemoteChangesObserver *)self observationToken];
 
-  if (v3)
+  if (observationToken)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Already observing!"];
   }
 
   [(AVTCoreDataRemoteChangesObserver *)self registerCoalescerEventHandler];
-  v4 = [(AVTCoreDataRemoteChangesObserver *)self configuration];
-  v5 = [v4 persistentStoreCoordinator];
+  configuration = [(AVTCoreDataRemoteChangesObserver *)self configuration];
+  persistentStoreCoordinator = [configuration persistentStoreCoordinator];
 
-  v6 = [(AVTCoreDataRemoteChangesObserver *)self logger];
-  v7 = [v5 description];
-  [v6 logStartObservingRemoteChangeNotificationFrom:v7];
+  logger = [(AVTCoreDataRemoteChangesObserver *)self logger];
+  v7 = [persistentStoreCoordinator description];
+  [logger logStartObservingRemoteChangeNotificationFrom:v7];
 
   objc_initWeak(&location, self);
-  v8 = [(AVTCoreDataRemoteChangesObserver *)self environment];
-  v9 = [v8 notificationCenter];
+  environment = [(AVTCoreDataRemoteChangesObserver *)self environment];
+  notificationCenter = [environment notificationCenter];
   v10 = *MEMORY[0x277CBE260];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __57__AVTCoreDataRemoteChangesObserver_startObservingChanges__block_invoke;
   v15 = &unk_278CFA0D0;
   objc_copyWeak(&v16, &location);
-  v11 = [v9 addObserverForName:v10 object:v5 queue:0 usingBlock:&v12];
+  v11 = [notificationCenter addObserverForName:v10 object:persistentStoreCoordinator queue:0 usingBlock:&v12];
   [(AVTCoreDataRemoteChangesObserver *)self setObservationToken:v11, v12, v13, v14, v15];
 
   objc_destroyWeak(&v16);
@@ -179,27 +179,27 @@ void __57__AVTCoreDataRemoteChangesObserver_startObservingChanges__block_invoke_
 
 - (BOOL)isObservingChanges
 {
-  v2 = [(AVTCoreDataRemoteChangesObserver *)self observationToken];
-  v3 = v2 != 0;
+  observationToken = [(AVTCoreDataRemoteChangesObserver *)self observationToken];
+  v3 = observationToken != 0;
 
   return v3;
 }
 
-- (void)processRemoteChangeNotification:(id)a3 completion:(id)a4
+- (void)processRemoteChangeNotification:(id)notification completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTCoreDataRemoteChangesObserver *)self logger];
+  notificationCopy = notification;
+  completionCopy = completion;
+  logger = [(AVTCoreDataRemoteChangesObserver *)self logger];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__AVTCoreDataRemoteChangesObserver_processRemoteChangeNotification_completion___block_invoke;
   v11[3] = &unk_278CFA7B0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 processingRemoteChangeNotification:v11];
+  v12 = notificationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = notificationCopy;
+  [logger processingRemoteChangeNotification:v11];
 }
 
 void __79__AVTCoreDataRemoteChangesObserver_processRemoteChangeNotification_completion___block_invoke(id *a1)
@@ -250,53 +250,53 @@ void __79__AVTCoreDataRemoteChangesObserver_processRemoteChangeNotification_comp
   [v5 eventDidOccur:v6];
 }
 
-- (id)changeTransactionsForToken:(id)a3 managedObjectContext:(id)a4
+- (id)changeTransactionsForToken:(id)token managedObjectContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTCoreDataRemoteChangesObserver *)self logger];
-  v9 = [v7 description];
-  [v8 logInspectingChangesForExportAfterToken:v9];
+  contextCopy = context;
+  tokenCopy = token;
+  logger = [(AVTCoreDataRemoteChangesObserver *)self logger];
+  v9 = [tokenCopy description];
+  [logger logInspectingChangesForExportAfterToken:v9];
 
-  v10 = [MEMORY[0x277CBE4B0] fetchHistoryTransactionForToken:v7];
+  v10 = [MEMORY[0x277CBE4B0] fetchHistoryTransactionForToken:tokenCopy];
 
   [v10 setResultType:5];
   v17 = 0;
-  v11 = [v6 executeRequest:v10 error:&v17];
+  v11 = [contextCopy executeRequest:v10 error:&v17];
 
   v12 = v17;
   if (v11)
   {
-    v13 = [v11 result];
+    result = [v11 result];
   }
 
   else
   {
-    v14 = [(AVTCoreDataRemoteChangesObserver *)self logger];
+    logger2 = [(AVTCoreDataRemoteChangesObserver *)self logger];
     v15 = [v12 description];
-    [v14 logErrorFetchingChangeHistory:v15];
+    [logger2 logErrorFetchingChangeHistory:v15];
 
-    v13 = 0;
+    result = 0;
   }
 
-  return v13;
+  return result;
 }
 
-- (void)performManagedObjectContextWork:(id)a3
+- (void)performManagedObjectContextWork:(id)work
 {
-  v4 = a3;
-  v5 = [(AVTCoreDataRemoteChangesObserver *)self configuration];
-  v6 = [v5 createManagedObjectContext];
+  workCopy = work;
+  configuration = [(AVTCoreDataRemoteChangesObserver *)self configuration];
+  createManagedObjectContext = [configuration createManagedObjectContext];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__AVTCoreDataRemoteChangesObserver_performManagedObjectContextWork___block_invoke;
   v9[3] = &unk_278CFA5D0;
-  v10 = v6;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
-  v8 = v6;
+  v10 = createManagedObjectContext;
+  selfCopy = self;
+  v12 = workCopy;
+  v7 = workCopy;
+  v8 = createManagedObjectContext;
   [v8 performBlockAndWait:v9];
 }
 

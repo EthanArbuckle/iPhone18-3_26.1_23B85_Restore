@@ -1,10 +1,10 @@
 @interface STStorageMediaMonitor
-+ (id)listOfUsedDataClassesInOverrides:(id)a3;
++ (id)listOfUsedDataClassesInOverrides:(id)overrides;
 + (id)sharedMonitor;
 - (STStorageMediaMonitor)init;
 - (void)_updateATCData;
-- (void)loadingComplete:(id)a3;
-- (void)mpLibraryChanged:(id)a3;
+- (void)loadingComplete:(id)complete;
+- (void)mpLibraryChanged:(id)changed;
 - (void)startMonitor;
 - (void)stopMonitor;
 - (void)sync;
@@ -44,8 +44,8 @@ uint64_t __38__STStorageMediaMonitor_sharedMonitor__block_invoke()
     v5 = *(v2 + 6);
     *(v2 + 6) = v4;
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_loadingComplete_ name:@"STNotify_LoadingComplete" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_loadingComplete_ name:@"STNotify_LoadingComplete" object:0];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_attr_make_with_qos_class(v7, QOS_CLASS_USER_INITIATED, 0);
 
@@ -65,12 +65,12 @@ uint64_t __38__STStorageMediaMonitor_sharedMonitor__block_invoke()
     v26 = v13;
     dispatch_source_set_event_handler(v12, handler);
     [v13 setRefreshTimer:v12];
-    v14 = [MEMORY[0x277CEA568] sharedInstance];
-    v15 = [v14 getCurrentUsage];
-    [v13 setAtcDictionary:v15];
+    mEMORY[0x277CEA568] = [MEMORY[0x277CEA568] sharedInstance];
+    getCurrentUsage = [mEMORY[0x277CEA568] getCurrentUsage];
+    [v13 setAtcDictionary:getCurrentUsage];
 
     v16 = [*(v2 + 6) componentsJoinedByString:{@", "}];
-    v24 = [v13 atcDictionary];
+    atcDictionary = [v13 atcDictionary];
     STLog(1, @"%s:%d ATC used data classes: %@; current usage: %@", v17, v18, v19, v20, v21, v22, "[STStorageMediaMonitor init]");
   }
 
@@ -88,25 +88,25 @@ uint64_t __38__STStorageMediaMonitor_sharedMonitor__block_invoke()
 
   else
   {
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel_mpLibraryChanged_ name:*MEMORY[0x277CD58D8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_mpLibraryChanged_ name:*MEMORY[0x277CD58D8] object:0];
 
-    v10 = [(STStorageMediaMonitor *)self refreshQueue];
+    refreshQueue = [(STStorageMediaMonitor *)self refreshQueue];
     v11 = ALRegisterForPhotosAndVideosCount();
     [(STStorageMediaMonitor *)self setPhotosLibToken:v11];
 
-    v12 = [MEMORY[0x277CD5E10] defaultMediaLibrary];
-    [v12 beginGeneratingLibraryChangeNotifications];
+    defaultMediaLibrary = [MEMORY[0x277CD5E10] defaultMediaLibrary];
+    [defaultMediaLibrary beginGeneratingLibraryChangeNotifications];
 
-    v13 = [(STStorageMediaMonitor *)self refreshTimer];
-    dispatch_resume(v13);
+    refreshTimer = [(STStorageMediaMonitor *)self refreshTimer];
+    dispatch_resume(refreshTimer);
 
     [(STStorageMediaMonitor *)self setIsMonitoring:1];
-    v14 = [MEMORY[0x277CEA568] sharedInstance];
-    v15 = [v14 getCurrentUsage];
-    [(STStorageMediaMonitor *)self setAtcDictionary:v15];
+    mEMORY[0x277CEA568] = [MEMORY[0x277CEA568] sharedInstance];
+    getCurrentUsage = [mEMORY[0x277CEA568] getCurrentUsage];
+    [(STStorageMediaMonitor *)self setAtcDictionary:getCurrentUsage];
 
-    v23 = [(STStorageMediaMonitor *)self atcDictionary];
+    atcDictionary = [(STStorageMediaMonitor *)self atcDictionary];
     STLog(1, @"%s:%d ATC %@", v16, v17, v18, v19, v20, v21, "[STStorageMediaMonitor startMonitor]");
 
     [(STStorageMediaMonitor *)self updateATCData];
@@ -125,18 +125,18 @@ uint64_t __37__STStorageMediaMonitor_startMonitor__block_invoke(uint64_t a1, uin
 {
   if (self->_isMonitoring)
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 removeObserver:self name:*MEMORY[0x277CD58D8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CD58D8] object:0];
 
-    v11 = [(STStorageMediaMonitor *)self photosLibToken];
+    photosLibToken = [(STStorageMediaMonitor *)self photosLibToken];
     ALUnregisterForPhotosAndVideosCount();
 
     [(STStorageMediaMonitor *)self setPhotosLibToken:0];
-    v12 = [MEMORY[0x277CD5E10] defaultMediaLibrary];
-    [v12 endGeneratingLibraryChangeNotifications];
+    defaultMediaLibrary = [MEMORY[0x277CD5E10] defaultMediaLibrary];
+    [defaultMediaLibrary endGeneratingLibraryChangeNotifications];
 
-    v13 = [(STStorageMediaMonitor *)self refreshTimer];
-    dispatch_suspend(v13);
+    refreshTimer = [(STStorageMediaMonitor *)self refreshTimer];
+    dispatch_suspend(refreshTimer);
 
     [(STStorageMediaMonitor *)self setIsMonitoring:0];
   }
@@ -161,12 +161,12 @@ uint64_t __37__STStorageMediaMonitor_startMonitor__block_invoke(uint64_t a1, uin
 
 - (void)_updateATCData
 {
-  v3 = [(STStorageMediaMonitor *)self refreshQueue];
-  dispatch_assert_queue_V2(v3);
+  refreshQueue = [(STStorageMediaMonitor *)self refreshQueue];
+  dispatch_assert_queue_V2(refreshQueue);
 
-  v4 = [(STStorageMediaMonitor *)self isUpdating];
+  isUpdating = [(STStorageMediaMonitor *)self isUpdating];
   v5 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  if (v4)
+  if (isUpdating)
   {
     [(STStorageMediaMonitor *)self refreshStartTimestamp];
     STLog(1, @"%s:%d ATC update is already in progress, running for %0.3f s", v6, v7, v8, v9, v10, v11, "[STStorageMediaMonitor _updateATCData]");
@@ -177,14 +177,14 @@ uint64_t __37__STStorageMediaMonitor_startMonitor__block_invoke(uint64_t a1, uin
     [(STStorageMediaMonitor *)self setRefreshStartTimestamp:v5];
     [(STStorageMediaMonitor *)self setIsUpdating:1];
     STLog(1, @"%s:%d Start updating ATC current usage", v12, v13, v14, v15, v16, v17, "[STStorageMediaMonitor _updateATCData]");
-    v18 = [MEMORY[0x277CEA568] sharedInstance];
+    mEMORY[0x277CEA568] = [MEMORY[0x277CEA568] sharedInstance];
     usedDataClasses = self->_usedDataClasses;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __39__STStorageMediaMonitor__updateATCData__block_invoke;
     v20[3] = &unk_279D1D3C8;
     v20[4] = self;
-    [v18 getCurrentUsageWithUpdatedDataClasses:usedDataClasses withCompletion:v20];
+    [mEMORY[0x277CEA568] getCurrentUsageWithUpdatedDataClasses:usedDataClasses withCompletion:v20];
   }
 }
 
@@ -219,7 +219,7 @@ void __39__STStorageMediaMonitor__updateATCData__block_invoke_2(uint64_t a1)
 {
   v3 = objc_autoreleasePoolPush();
   v4 = dispatch_semaphore_create(0);
-  v5 = [MEMORY[0x277CEA568] sharedInstance];
+  mEMORY[0x277CEA568] = [MEMORY[0x277CEA568] sharedInstance];
   usedDataClasses = self->_usedDataClasses;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -228,7 +228,7 @@ void __39__STStorageMediaMonitor__updateATCData__block_invoke_2(uint64_t a1)
   v8[4] = self;
   v9 = v4;
   v7 = v4;
-  [v5 getCurrentUsageWithUpdatedDataClasses:usedDataClasses withCompletion:v8];
+  [mEMORY[0x277CEA568] getCurrentUsageWithUpdatedDataClasses:usedDataClasses withCompletion:v8];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
 
   objc_autoreleasePoolPop(v3);
@@ -245,35 +245,35 @@ intptr_t __29__STStorageMediaMonitor_sync__block_invoke(uint64_t a1, void *a2)
   return dispatch_semaphore_signal(v9);
 }
 
-- (void)loadingComplete:(id)a3
+- (void)loadingComplete:(id)complete
 {
-  STLog(1, @"%s:%d Loading complete, activating ATC refresh", a3, v3, v4, v5, v6, v7, "[STStorageMediaMonitor loadingComplete:]");
-  v9 = [(STStorageMediaMonitor *)self refreshQueue];
-  dispatch_activate(v9);
+  STLog(1, @"%s:%d Loading complete, activating ATC refresh", complete, v3, v4, v5, v6, v7, "[STStorageMediaMonitor loadingComplete:]");
+  refreshQueue = [(STStorageMediaMonitor *)self refreshQueue];
+  dispatch_activate(refreshQueue);
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 removeObserver:self name:@"STNotify_LoadingComplete" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"STNotify_LoadingComplete" object:0];
   [(STStorageMediaMonitor *)self updateATCData];
 }
 
-- (void)mpLibraryChanged:(id)a3
+- (void)mpLibraryChanged:(id)changed
 {
-  STLog(1, @"%s:%d Media library change detected", a3, v3, v4, v5, v6, v7, "[STStorageMediaMonitor mpLibraryChanged:]");
+  STLog(1, @"%s:%d Media library change detected", changed, v3, v4, v5, v6, v7, "[STStorageMediaMonitor mpLibraryChanged:]");
 
   [(STStorageMediaMonitor *)self updateATCData];
 }
 
-+ (id)listOfUsedDataClassesInOverrides:(id)a3
++ (id)listOfUsedDataClassesInOverrides:(id)overrides
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  overridesCopy = overrides;
   v4 = [MEMORY[0x277CBEB58] setWithCapacity:5];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v19 = v3;
-  obj = [v3 allValues];
+  v19 = overridesCopy;
+  obj = [overridesCopy allValues];
   v5 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v5)
   {
@@ -293,8 +293,8 @@ intptr_t __29__STStorageMediaMonitor_sync__block_invoke(uint64_t a1, void *a2)
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v9 = [v8 includeMediaUsage];
-        v10 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        includeMediaUsage = [v8 includeMediaUsage];
+        v10 = [includeMediaUsage countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v10)
         {
           v11 = v10;
@@ -305,19 +305,19 @@ intptr_t __29__STStorageMediaMonitor_sync__block_invoke(uint64_t a1, void *a2)
             {
               if (*v23 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(includeMediaUsage);
               }
 
               v14 = [*(*(&v22 + 1) + 8 * j) componentsSeparatedByString:@":"];
-              v15 = [v14 firstObject];
+              firstObject = [v14 firstObject];
 
-              if (v15)
+              if (firstObject)
               {
-                [v4 addObject:v15];
+                [v4 addObject:firstObject];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v11 = [includeMediaUsage countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v11);
@@ -330,11 +330,11 @@ intptr_t __29__STStorageMediaMonitor_sync__block_invoke(uint64_t a1, void *a2)
     while (v6);
   }
 
-  v16 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return allObjects;
 }
 
 @end

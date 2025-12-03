@@ -1,24 +1,24 @@
 @interface DirectUploadArtistEntity
-+ (id)newEntityValuesWithMediaSocialArtist:(id)a3;
++ (id)newEntityValuesWithMediaSocialArtist:(id)artist;
 @end
 
 @implementation DirectUploadArtistEntity
 
-+ (id)newEntityValuesWithMediaSocialArtist:(id)a3
++ (id)newEntityValuesWithMediaSocialArtist:(id)artist
 {
-  v3 = a3;
+  artistCopy = artist;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 identifier];
-  if ([v5 length])
+  identifier = [artistCopy identifier];
+  if ([identifier length])
   {
-    [v4 setObject:v5 forKey:@"artist_id"];
+    [v4 setObject:identifier forKey:@"artist_id"];
   }
 
-  v6 = [v3 name];
+  name = [artistCopy name];
 
-  if ([v6 length])
+  if ([name length])
   {
-    [v4 setObject:v6 forKey:@"name"];
+    [v4 setObject:name forKey:@"name"];
   }
 
   return v4;

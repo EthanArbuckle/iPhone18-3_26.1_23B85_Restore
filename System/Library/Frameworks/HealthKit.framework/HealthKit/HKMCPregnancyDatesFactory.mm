@@ -1,26 +1,26 @@
 @interface HKMCPregnancyDatesFactory
-+ (BOOL)isPregnancyDurationPhysiologicallyPossibleForPregnancyStartDate:(id)a3;
-+ (BOOL)isPregnancyDurationPhysiologicallyPossibleForPregnancyStartDate:(id)a3 pregnancyEndDate:(id)a4;
-+ (id)calculatePhysiologicalWashoutFromPregnancySample:(id)a3;
-+ (id)calculatePregnancyStartForEstimatedDueDate:(id)a3;
-+ (id)gestationalAgeInComponentsOnDate:(id)a3 pregnancyStartDate:(id)a4 startTimeZoneName:(id)a5;
++ (BOOL)isPregnancyDurationPhysiologicallyPossibleForPregnancyStartDate:(id)date;
++ (BOOL)isPregnancyDurationPhysiologicallyPossibleForPregnancyStartDate:(id)date pregnancyEndDate:(id)endDate;
++ (id)calculatePhysiologicalWashoutFromPregnancySample:(id)sample;
++ (id)calculatePregnancyStartForEstimatedDueDate:(id)date;
++ (id)gestationalAgeInComponentsOnDate:(id)date pregnancyStartDate:(id)startDate startTimeZoneName:(id)name;
 - (HKMCPregnancyDatesFactory)init;
-- (HKMCPregnancyDatesFactory)initWithPregnancySample:(id)a3 state:(int64_t)a4;
+- (HKMCPregnancyDatesFactory)initWithPregnancySample:(id)sample state:(int64_t)state;
 @end
 
 @implementation HKMCPregnancyDatesFactory
 
-- (HKMCPregnancyDatesFactory)initWithPregnancySample:(id)a3 state:(int64_t)a4
+- (HKMCPregnancyDatesFactory)initWithPregnancySample:(id)sample state:(int64_t)state
 {
-  *(&self->super.isa + OBJC_IVAR___HKMCPregnancyDatesFactory_pregnancySample) = a3;
-  *(&self->super.isa + OBJC_IVAR___HKMCPregnancyDatesFactory_state) = a4;
+  *(&self->super.isa + OBJC_IVAR___HKMCPregnancyDatesFactory_pregnancySample) = sample;
+  *(&self->super.isa + OBJC_IVAR___HKMCPregnancyDatesFactory_state) = state;
   v6.receiver = self;
   v6.super_class = HKMCPregnancyDatesFactory;
-  v4 = a3;
+  sampleCopy = sample;
   return [(HKMCPregnancyDatesFactory *)&v6 init];
 }
 
-+ (id)calculatePregnancyStartForEstimatedDueDate:(id)a3
++ (id)calculatePregnancyStartForEstimatedDueDate:(id)date
 {
   v3 = sub_191CC6148();
   v4 = *(v3 - 8);
@@ -39,7 +39,7 @@
   return v14;
 }
 
-+ (id)gestationalAgeInComponentsOnDate:(id)a3 pregnancyStartDate:(id)a4 startTimeZoneName:(id)a5
++ (id)gestationalAgeInComponentsOnDate:(id)date pregnancyStartDate:(id)startDate startTimeZoneName:(id)name
 {
   v5 = sub_191CC6148();
   v6 = *(v5 - 8);
@@ -74,7 +74,7 @@
   return v26;
 }
 
-+ (BOOL)isPregnancyDurationPhysiologicallyPossibleForPregnancyStartDate:(id)a3
++ (BOOL)isPregnancyDurationPhysiologicallyPossibleForPregnancyStartDate:(id)date
 {
   v4 = sub_191CC6148();
   v5 = *(v4 - 8);
@@ -89,13 +89,13 @@
   v15 = sub_191CC60A8();
   v16 = *(v5 + 8);
   v16(v10, v4);
-  LOBYTE(a1) = [a1 isPregnancyDurationPhysiologicallyPossibleForPregnancyStartDate:v14 pregnancyEndDate:v15];
+  LOBYTE(self) = [self isPregnancyDurationPhysiologicallyPossibleForPregnancyStartDate:v14 pregnancyEndDate:v15];
 
   v16(v13, v4);
-  return a1;
+  return self;
 }
 
-+ (BOOL)isPregnancyDurationPhysiologicallyPossibleForPregnancyStartDate:(id)a3 pregnancyEndDate:(id)a4
++ (BOOL)isPregnancyDurationPhysiologicallyPossibleForPregnancyStartDate:(id)date pregnancyEndDate:(id)endDate
 {
   v4 = sub_191CC6148();
   v5 = *(v4 - 8);
@@ -113,14 +113,14 @@
   return v14;
 }
 
-+ (id)calculatePhysiologicalWashoutFromPregnancySample:(id)a3
++ (id)calculatePhysiologicalWashoutFromPregnancySample:(id)sample
 {
   sub_191C1C2CC(0, &unk_1ED5EFFF0, MEMORY[0x1E6969530], MEMORY[0x1E69E6720]);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x1EEE9AC00](v4 - 8, v6);
   v8 = &v16 - v7;
-  v9 = a3;
-  static HKMCPregnancyDatesFactory.calculatePhysiologicalWashout(fromPregnancySample:)(v9, v8);
+  sampleCopy = sample;
+  static HKMCPregnancyDatesFactory.calculatePhysiologicalWashout(fromPregnancySample:)(sampleCopy, v8);
 
   v10 = sub_191CC6148();
   v11 = *(v10 - 8);

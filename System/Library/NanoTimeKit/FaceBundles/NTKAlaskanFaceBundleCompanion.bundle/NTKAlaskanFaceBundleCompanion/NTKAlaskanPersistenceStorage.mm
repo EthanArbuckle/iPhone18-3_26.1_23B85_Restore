@@ -4,24 +4,24 @@
 - (NSNumber)gmtSelectedCityIdentifier;
 - (NSString)gmtSelectedTimezone;
 - (NTKFaceViewDelegate)delegate;
-- (void)setDiverCountUpStartDate:(id)a3;
-- (void)setGmtOffsetHours:(id)a3;
-- (void)setGmtSelectedCityIdentifier:(id)a3;
-- (void)setGmtSelectedTimezone:(id)a3;
+- (void)setDiverCountUpStartDate:(id)date;
+- (void)setGmtOffsetHours:(id)hours;
+- (void)setGmtSelectedCityIdentifier:(id)identifier;
+- (void)setGmtSelectedTimezone:(id)timezone;
 @end
 
 @implementation NTKAlaskanPersistenceStorage
 
-- (void)setGmtOffsetHours:(id)a3
+- (void)setGmtOffsetHours:(id)hours
 {
-  v7 = a3;
-  v4 = [(NTKAlaskanPersistenceStorage *)self gmtOffsetHours];
+  hoursCopy = hours;
+  gmtOffsetHours = [(NTKAlaskanPersistenceStorage *)self gmtOffsetHours];
   v5 = NTKEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained faceViewDidUpdateCustomData:v7 forKey:@"gmt-offset-hours"];
+    [WeakRetained faceViewDidUpdateCustomData:hoursCopy forKey:@"gmt-offset-hours"];
   }
 }
 
@@ -44,16 +44,16 @@
   return v4;
 }
 
-- (void)setGmtSelectedTimezone:(id)a3
+- (void)setGmtSelectedTimezone:(id)timezone
 {
-  v7 = a3;
-  v4 = [(NTKAlaskanPersistenceStorage *)self gmtSelectedTimezone];
-  v5 = [v7 isEqualToString:v4];
+  timezoneCopy = timezone;
+  gmtSelectedTimezone = [(NTKAlaskanPersistenceStorage *)self gmtSelectedTimezone];
+  v5 = [timezoneCopy isEqualToString:gmtSelectedTimezone];
 
   if ((v5 & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained faceViewDidUpdateCustomData:v7 forKey:@"gmt-selected-timezone"];
+    [WeakRetained faceViewDidUpdateCustomData:timezoneCopy forKey:@"gmt-selected-timezone"];
   }
 }
 
@@ -76,17 +76,17 @@
   return v4;
 }
 
-- (void)setGmtSelectedCityIdentifier:(id)a3
+- (void)setGmtSelectedCityIdentifier:(id)identifier
 {
-  v8 = a3;
-  v4 = [v8 integerValue];
-  v5 = [(NTKAlaskanPersistenceStorage *)self gmtSelectedCityIdentifier];
-  v6 = [v5 integerValue];
+  identifierCopy = identifier;
+  integerValue = [identifierCopy integerValue];
+  gmtSelectedCityIdentifier = [(NTKAlaskanPersistenceStorage *)self gmtSelectedCityIdentifier];
+  integerValue2 = [gmtSelectedCityIdentifier integerValue];
 
-  if (v4 != v6)
+  if (integerValue != integerValue2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained faceViewDidUpdateCustomData:v8 forKey:@"gmt-selected-city"];
+    [WeakRetained faceViewDidUpdateCustomData:identifierCopy forKey:@"gmt-selected-city"];
   }
 }
 
@@ -109,13 +109,13 @@
   return v4;
 }
 
-- (void)setDiverCountUpStartDate:(id)a3
+- (void)setDiverCountUpStartDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (v6)
+  if (dateCopy)
   {
-    [v6 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v5 = [NSNumber numberWithDouble:?];
     [WeakRetained faceViewDidUpdateCustomData:v5 forKey:NTKDiverCountUpStartDate];
   }
@@ -128,27 +128,27 @@
 
 - (NSDate)diverCountUpStartDate
 {
-  v3 = [(NTKAlaskanPersistenceStorage *)self delegate];
+  delegate = [(NTKAlaskanPersistenceStorage *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(NTKAlaskanPersistenceStorage *)self delegate];
-    v5 = [v4 faceViewDidRequestCustomDataForKey:NTKDiverCountUpStartDate];
+    delegate2 = [(NTKAlaskanPersistenceStorage *)self delegate];
+    v5 = [delegate2 faceViewDidRequestCustomDataForKey:NTKDiverCountUpStartDate];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v5 doubleValue];
-      v3 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
+      delegate = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
     }
 
     else
     {
-      v3 = 0;
+      delegate = 0;
     }
   }
 
-  return v3;
+  return delegate;
 }
 
 - (NTKFaceViewDelegate)delegate

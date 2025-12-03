@@ -1,11 +1,11 @@
 @interface TTRISECreateRemindersListPickerCell
 - (NSString)accessibilityLabel;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 @end
 
 @implementation TTRISECreateRemindersListPickerCell
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_10004C2F0();
   v5 = *(v4 - 8);
@@ -13,7 +13,7 @@
   __chkstk_darwin(v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10004C2E0();
-  v10 = self;
+  selfCopy = self;
   sub_10001727C();
 
   (*(v5 + 8))(v9, v4);
@@ -21,7 +21,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_100018214();
   v4 = v3;
 

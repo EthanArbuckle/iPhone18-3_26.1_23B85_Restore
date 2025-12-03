@@ -1,6 +1,6 @@
 @interface STPaddleView
 - (STPaddleView)init;
-- (void)setDataPoint:(id)a3;
+- (void)setDataPoint:(id)point;
 @end
 
 @implementation STPaddleView
@@ -18,8 +18,8 @@
   [(UIView *)v2->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)v2->_backgroundView _setContinuousCornerRadius:6.0];
   [(UIView *)v2->_backgroundView setClipsToBounds:1];
-  v5 = [MEMORY[0x277D75348] systemGreenColor];
-  [(UIView *)v2->_backgroundView setBackgroundColor:v5];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  [(UIView *)v2->_backgroundView setBackgroundColor:systemGreenColor];
 
   [(STPaddleView *)v2 addSubview:v2->_backgroundView];
   v106 = objc_opt_new();
@@ -33,8 +33,8 @@
   v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
   [(UILabel *)v2->_dayLabel setFont:v9];
 
-  v10 = [MEMORY[0x277D75348] systemGrayColor];
-  [(UILabel *)v2->_dayLabel setTextColor:v10];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [(UILabel *)v2->_dayLabel setTextColor:systemGrayColor];
 
   [(UILabel *)v2->_dayLabel _setDrawsAsBackdropOverlayWithBlendMode:2];
   [(STPaddleView *)v2 addSubview:v2->_dayLabel];
@@ -48,8 +48,8 @@
   v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:v8];
   [(UILabel *)v2->_dateTimeLabel setFont:v13];
 
-  v14 = [MEMORY[0x277D75348] systemWhiteColor];
-  [(UILabel *)v2->_dateTimeLabel setTextColor:v14];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [(UILabel *)v2->_dateTimeLabel setTextColor:systemWhiteColor];
 
   [(STPaddleView *)v2 addSubview:v2->_dateTimeLabel];
   v15 = objc_opt_new();
@@ -62,113 +62,113 @@
   v18 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A20]];
   [(UILabel *)v2->_usageLabel setFont:v18];
 
-  v19 = [MEMORY[0x277D75348] systemWhiteColor];
-  [(UILabel *)v2->_usageLabel setTextColor:v19];
+  systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+  [(UILabel *)v2->_usageLabel setTextColor:systemWhiteColor2];
 
   LODWORD(v20) = 1144750080;
   [(UILabel *)v2->_usageLabel setContentHuggingPriority:0 forAxis:v20];
   [(STPaddleView *)v2 addSubview:v2->_usageLabel];
   v75 = MEMORY[0x277CCAAD0];
-  v105 = [(UIView *)v2->_backgroundView topAnchor];
-  v104 = [(STPaddleView *)v2 topAnchor];
-  v103 = [v105 constraintEqualToAnchor:v104];
+  topAnchor = [(UIView *)v2->_backgroundView topAnchor];
+  topAnchor2 = [(STPaddleView *)v2 topAnchor];
+  v103 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v109[0] = v103;
-  v102 = [(UIView *)v2->_backgroundView leadingAnchor];
-  v101 = [(STPaddleView *)v2 leadingAnchor];
-  v100 = [v102 constraintEqualToAnchor:v101];
+  leadingAnchor = [(UIView *)v2->_backgroundView leadingAnchor];
+  leadingAnchor2 = [(STPaddleView *)v2 leadingAnchor];
+  v100 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v109[1] = v100;
-  v99 = [(UIView *)v2->_backgroundView bottomAnchor];
-  v98 = [(STPaddleView *)v2 bottomAnchor];
-  v97 = [v99 constraintEqualToAnchor:v98];
+  bottomAnchor = [(UIView *)v2->_backgroundView bottomAnchor];
+  bottomAnchor2 = [(STPaddleView *)v2 bottomAnchor];
+  v97 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v109[2] = v97;
-  v96 = [(UIView *)v2->_backgroundView trailingAnchor];
-  v95 = [(STPaddleView *)v2 trailingAnchor];
-  v94 = [v96 constraintEqualToAnchor:v95];
+  trailingAnchor = [(UIView *)v2->_backgroundView trailingAnchor];
+  trailingAnchor2 = [(STPaddleView *)v2 trailingAnchor];
+  v94 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v109[3] = v94;
-  v93 = [v106 topAnchor];
-  v92 = [(STPaddleView *)v2 topAnchor];
-  v91 = [v93 constraintEqualToAnchor:v92];
+  topAnchor3 = [v106 topAnchor];
+  topAnchor4 = [(STPaddleView *)v2 topAnchor];
+  v91 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v109[4] = v91;
-  v90 = [v106 leadingAnchor];
-  v89 = [(STPaddleView *)v2 leadingAnchor];
-  v88 = [v90 constraintEqualToAnchor:v89];
+  leadingAnchor3 = [v106 leadingAnchor];
+  leadingAnchor4 = [(STPaddleView *)v2 leadingAnchor];
+  v88 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v109[5] = v88;
-  v87 = [v106 trailingAnchor];
-  v86 = [(STPaddleView *)v2 trailingAnchor];
-  v85 = [v87 constraintEqualToAnchor:v86];
+  trailingAnchor3 = [v106 trailingAnchor];
+  trailingAnchor4 = [(STPaddleView *)v2 trailingAnchor];
+  v85 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v109[6] = v85;
-  v84 = [(UILabel *)v2->_dayLabel topAnchor];
-  v83 = [v106 bottomAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  topAnchor5 = [(UILabel *)v2->_dayLabel topAnchor];
+  bottomAnchor3 = [v106 bottomAnchor];
+  v82 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3];
   v109[7] = v82;
-  v81 = [(UILabel *)v2->_dayLabel topAnchor];
-  v80 = [(STPaddleView *)v2 topAnchor];
-  v79 = [v81 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v80 multiplier:0.5];
+  topAnchor6 = [(UILabel *)v2->_dayLabel topAnchor];
+  topAnchor7 = [(STPaddleView *)v2 topAnchor];
+  v79 = [topAnchor6 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:topAnchor7 multiplier:0.5];
   v109[8] = v79;
-  v78 = [(UILabel *)v2->_dayLabel leadingAnchor];
-  v77 = [(STPaddleView *)v2 leadingAnchor];
-  v76 = [v78 constraintEqualToSystemSpacingAfterAnchor:v77 multiplier:1.0];
+  leadingAnchor5 = [(UILabel *)v2->_dayLabel leadingAnchor];
+  leadingAnchor6 = [(STPaddleView *)v2 leadingAnchor];
+  v76 = [leadingAnchor5 constraintEqualToSystemSpacingAfterAnchor:leadingAnchor6 multiplier:1.0];
   v109[9] = v76;
-  v73 = [v107 topAnchor];
-  v72 = [(UILabel *)v2->_dayLabel bottomAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72];
+  topAnchor8 = [v107 topAnchor];
+  bottomAnchor4 = [(UILabel *)v2->_dayLabel bottomAnchor];
+  v71 = [topAnchor8 constraintEqualToAnchor:bottomAnchor4];
   v109[10] = v71;
-  v70 = [v107 leadingAnchor];
-  v69 = [(STPaddleView *)v2 leadingAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  leadingAnchor7 = [v107 leadingAnchor];
+  leadingAnchor8 = [(STPaddleView *)v2 leadingAnchor];
+  v68 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v109[11] = v68;
-  v67 = [v107 trailingAnchor];
-  v66 = [(STPaddleView *)v2 trailingAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66];
+  trailingAnchor5 = [v107 trailingAnchor];
+  trailingAnchor6 = [(STPaddleView *)v2 trailingAnchor];
+  v65 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v109[12] = v65;
-  v64 = [(UILabel *)v2->_dateTimeLabel topAnchor];
-  v63 = [v107 bottomAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  topAnchor9 = [(UILabel *)v2->_dateTimeLabel topAnchor];
+  bottomAnchor5 = [v107 bottomAnchor];
+  v62 = [topAnchor9 constraintEqualToAnchor:bottomAnchor5];
   v109[13] = v62;
-  v61 = [(UILabel *)v2->_dateTimeLabel leadingAnchor];
-  v60 = [(UILabel *)v2->_dayLabel leadingAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  leadingAnchor9 = [(UILabel *)v2->_dateTimeLabel leadingAnchor];
+  leadingAnchor10 = [(UILabel *)v2->_dayLabel leadingAnchor];
+  v59 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v109[14] = v59;
-  v58 = [(UILabel *)v2->_dateTimeLabel trailingAnchor];
-  v57 = [(UILabel *)v2->_dayLabel trailingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  trailingAnchor7 = [(UILabel *)v2->_dateTimeLabel trailingAnchor];
+  trailingAnchor8 = [(UILabel *)v2->_dayLabel trailingAnchor];
+  v56 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v109[15] = v56;
-  v55 = [v15 topAnchor];
-  v54 = [(UILabel *)v2->_dateTimeLabel bottomAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  topAnchor10 = [v15 topAnchor];
+  bottomAnchor6 = [(UILabel *)v2->_dateTimeLabel bottomAnchor];
+  v53 = [topAnchor10 constraintEqualToAnchor:bottomAnchor6];
   v109[16] = v53;
-  v52 = [v15 leadingAnchor];
-  v51 = [(STPaddleView *)v2 leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  leadingAnchor11 = [v15 leadingAnchor];
+  leadingAnchor12 = [(STPaddleView *)v2 leadingAnchor];
+  v50 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   v109[17] = v50;
-  v49 = [v15 trailingAnchor];
-  v48 = [(STPaddleView *)v2 trailingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  trailingAnchor9 = [v15 trailingAnchor];
+  trailingAnchor10 = [(STPaddleView *)v2 trailingAnchor];
+  v47 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v109[18] = v47;
   v74 = v15;
-  v46 = [v15 bottomAnchor];
-  v45 = [(STPaddleView *)v2 bottomAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  bottomAnchor7 = [v15 bottomAnchor];
+  bottomAnchor8 = [(STPaddleView *)v2 bottomAnchor];
+  v44 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v109[19] = v44;
-  v43 = [v106 heightAnchor];
-  v42 = [v107 heightAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42 multiplier:2.0 constant:0.0];
+  heightAnchor = [v106 heightAnchor];
+  heightAnchor2 = [v107 heightAnchor];
+  v41 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:2.0 constant:0.0];
   v109[20] = v41;
-  v40 = [v106 heightAnchor];
-  v39 = [v15 heightAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  heightAnchor3 = [v106 heightAnchor];
+  heightAnchor4 = [v15 heightAnchor];
+  v38 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
   v109[21] = v38;
-  v37 = [(UILabel *)v2->_usageLabel leadingAnchor];
-  v21 = [(UILabel *)v2->_dateTimeLabel trailingAnchor];
-  v22 = [v37 constraintEqualToSystemSpacingAfterAnchor:v21 multiplier:1.0];
+  leadingAnchor13 = [(UILabel *)v2->_usageLabel leadingAnchor];
+  trailingAnchor11 = [(UILabel *)v2->_dateTimeLabel trailingAnchor];
+  v22 = [leadingAnchor13 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor11 multiplier:1.0];
   v109[22] = v22;
-  v23 = [(UILabel *)v2->_usageLabel lastBaselineAnchor];
-  v24 = [(UILabel *)v2->_dateTimeLabel lastBaselineAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  lastBaselineAnchor = [(UILabel *)v2->_usageLabel lastBaselineAnchor];
+  lastBaselineAnchor2 = [(UILabel *)v2->_dateTimeLabel lastBaselineAnchor];
+  v25 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2];
   v109[23] = v25;
-  v26 = [(STPaddleView *)v2 trailingAnchor];
-  v27 = [(UILabel *)v2->_usageLabel trailingAnchor];
-  v28 = [v26 constraintEqualToSystemSpacingAfterAnchor:v27 multiplier:1.0];
+  trailingAnchor12 = [(STPaddleView *)v2 trailingAnchor];
+  trailingAnchor13 = [(UILabel *)v2->_usageLabel trailingAnchor];
+  v28 = [trailingAnchor12 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor13 multiplier:1.0];
   v109[24] = v28;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v109 count:25];
   [v75 activateConstraints:v29];
@@ -194,53 +194,53 @@
   return v2;
 }
 
-- (void)setDataPoint:(id)a3
+- (void)setDataPoint:(id)point
 {
-  v31 = a3;
-  objc_storeStrong(&self->_dataPoint, a3);
+  pointCopy = point;
+  objc_storeStrong(&self->_dataPoint, point);
   v5 = +[STScreenTimeSettingsUIBundle bundle];
-  v6 = [v31 timePeriod];
-  switch(v6)
+  timePeriod = [pointCopy timePeriod];
+  switch(timePeriod)
   {
     case 0:
       goto LABEL_18;
     case 2:
-      v13 = [(STPaddleView *)self weekdayDateFormatter];
-      v14 = [v31 date];
-      v15 = [v13 stringFromDate:v14];
-      v16 = [(STPaddleView *)self dayLabel];
-      [v16 setText:v15];
+      weekdayDateFormatter = [(STPaddleView *)self weekdayDateFormatter];
+      date = [pointCopy date];
+      v15 = [weekdayDateFormatter stringFromDate:date];
+      dayLabel = [(STPaddleView *)self dayLabel];
+      [dayLabel setText:v15];
 
-      v9 = [(STPaddleView *)self monthDateFormatter];
-      v10 = [v31 date];
-      v11 = [v9 stringFromDate:v10];
-      v12 = [v11 localizedUppercaseString];
-      v17 = [(STPaddleView *)self dateTimeLabel];
-      [v17 setText:v12];
+      monthDateFormatter = [(STPaddleView *)self monthDateFormatter];
+      date2 = [pointCopy date];
+      v11 = [monthDateFormatter stringFromDate:date2];
+      localizedUppercaseString = [v11 localizedUppercaseString];
+      dateTimeLabel = [(STPaddleView *)self dateTimeLabel];
+      [dateTimeLabel setText:localizedUppercaseString];
 
       goto LABEL_6;
     case 1:
       v7 = [v5 localizedStringForKey:@"TodayTitle" value:&stru_28766E5A8 table:0];
-      v8 = [(STPaddleView *)self dayLabel];
-      [v8 setText:v7];
+      dayLabel2 = [(STPaddleView *)self dayLabel];
+      [dayLabel2 setText:v7];
 
-      v9 = [(STPaddleView *)self hourIntervalDateFormatter];
-      v10 = [v31 dateInterval];
-      v11 = [v9 stringFromDateInterval:v10];
-      v12 = [(STPaddleView *)self dateTimeLabel];
-      [v12 setText:v11];
+      monthDateFormatter = [(STPaddleView *)self hourIntervalDateFormatter];
+      date2 = [pointCopy dateInterval];
+      v11 = [monthDateFormatter stringFromDateInterval:date2];
+      localizedUppercaseString = [(STPaddleView *)self dateTimeLabel];
+      [localizedUppercaseString setText:v11];
 LABEL_6:
 
       break;
   }
 
-  v18 = [v31 itemType];
-  if ((v18 - 1) >= 4)
+  itemType = [pointCopy itemType];
+  if ((itemType - 1) >= 4)
   {
-    if (v18 == 5)
+    if (itemType == 5)
     {
-      v29 = [v31 total];
-      v24 = [v29 unsignedLongValue];
+      total = [pointCopy total];
+      unsignedLongValue = [total unsignedLongValue];
 
       v25 = MEMORY[0x277CCACA8];
       v26 = @"NotificationsCount";
@@ -248,46 +248,46 @@ LABEL_6:
 
     else
     {
-      if (v18 != 6)
+      if (itemType != 6)
       {
         goto LABEL_18;
       }
 
-      v23 = [v31 total];
-      v24 = [v23 unsignedLongValue];
+      total2 = [pointCopy total];
+      unsignedLongValue = [total2 unsignedLongValue];
 
       v25 = MEMORY[0x277CCACA8];
       v26 = @"PickupsCount";
     }
 
     v27 = [v5 localizedStringForKey:v26 value:&stru_28766E5A8 table:0];
-    v28 = [v25 localizedStringWithFormat:v27, v24];
-    v30 = [(STPaddleView *)self usageLabel];
-    [v30 setText:v28];
+    usageLabel2 = [v25 localizedStringWithFormat:v27, unsignedLongValue];
+    usageLabel = [(STPaddleView *)self usageLabel];
+    [usageLabel setText:usageLabel2];
   }
 
   else
   {
-    v19 = [v31 total];
-    [v19 doubleValue];
+    total3 = [pointCopy total];
+    [total3 doubleValue];
     v21 = v20;
 
     if (v21 >= 60.0)
     {
-      v22 = objc_opt_new();
-      [v22 setAllowedUnits:96];
-      [v22 setUnitsStyle:1];
+      st_sharedAbbreviatedSecondsDateFormatter = objc_opt_new();
+      [st_sharedAbbreviatedSecondsDateFormatter setAllowedUnits:96];
+      [st_sharedAbbreviatedSecondsDateFormatter setUnitsStyle:1];
     }
 
     else
     {
-      v22 = [MEMORY[0x277CCA958] st_sharedAbbreviatedSecondsDateFormatter];
+      st_sharedAbbreviatedSecondsDateFormatter = [MEMORY[0x277CCA958] st_sharedAbbreviatedSecondsDateFormatter];
     }
 
-    v27 = [v22 stringFromTimeInterval:v21];
+    v27 = [st_sharedAbbreviatedSecondsDateFormatter stringFromTimeInterval:v21];
 
-    v28 = [(STPaddleView *)self usageLabel];
-    [v28 setText:v27];
+    usageLabel2 = [(STPaddleView *)self usageLabel];
+    [usageLabel2 setText:v27];
   }
 
 LABEL_18:

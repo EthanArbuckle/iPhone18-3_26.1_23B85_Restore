@@ -1,56 +1,56 @@
 @interface VKCActionInfoView
-+ (id)buildMoreButtonMenuFromQuickActions:(id)a3 moreButton:(id)a4 isStandAloneMoreButton:(BOOL)a5;
-- (BOOL)containsInteractableItemAtPoint:(CGPoint)a3;
-- (BOOL)isInteractableView:(id)a3 atPoint:(CGPoint)a4;
++ (id)buildMoreButtonMenuFromQuickActions:(id)actions moreButton:(id)button isStandAloneMoreButton:(BOOL)moreButton;
+- (BOOL)containsInteractableItemAtPoint:(CGPoint)point;
+- (BOOL)isInteractableView:(id)view atPoint:(CGPoint)point;
 - (CGRect)contentsRect;
 - (CGRect)normalizedVisibleRect;
 - (CGRect)visibleImageRect;
-- (CGSize)sizeForView:(id)a3 scale:(double)a4;
+- (CGSize)sizeForView:(id)view scale:(double)scale;
 - (NSArray)allViews;
 - (UIEdgeInsets)edgeInsets;
-- (VKCActionInfoView)initWithLiveTextButton:(id)a3 cornerView:(id)a4;
+- (VKCActionInfoView)initWithLiveTextButton:(id)button cornerView:(id)view;
 - (VKPlatformView)containerView;
-- (id)configureView:(id)a3 isLeading:(BOOL)a4 container:(id)a5 layoutContext:(id)a6;
-- (id)createContainerForView:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)configureView:(id)view isLeading:(BOOL)leading container:(id)container layoutContext:(id)context;
+- (id)createContainerForView:(id)view;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_applyConfigurationUpdateHandlerToQuickActions;
-- (void)adjustContextToFitWidth:(id)a3;
+- (void)adjustContextToFitWidth:(id)width;
 - (void)layoutContainerView;
 - (void)layoutSubviews;
-- (void)processView:(id)a3 hasContent:(BOOL)a4 isLeading:(BOOL)a5 layoutContext:(id)a6;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setLayoutUpdatesSuspended:(BOOL)a3;
-- (void)setLiveTextButtonDisabled:(BOOL)a3;
-- (void)setNormalizedVisibleRect:(CGRect)a3;
-- (void)setPreferredQuickActionButtonHeight:(double)a3;
-- (void)setQuickActionConfigurationUpdateHandler:(id)a3;
-- (void)setQuickActions:(id)a3;
-- (void)setQuickActionsDisabled:(BOOL)a3;
-- (void)setVisualSearchCornerView:(id)a3;
-- (void)setVisualSearchCornerViewDisabled:(BOOL)a3;
-- (void)set_quickActionsHidden:(BOOL)a3;
-- (void)updateButtonClippingForContext:(id)a3;
-- (void)updateFramesForContext:(id)a3;
+- (void)processView:(id)view hasContent:(BOOL)content isLeading:(BOOL)leading layoutContext:(id)context;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setHidden:(BOOL)hidden;
+- (void)setLayoutUpdatesSuspended:(BOOL)suspended;
+- (void)setLiveTextButtonDisabled:(BOOL)disabled;
+- (void)setNormalizedVisibleRect:(CGRect)rect;
+- (void)setPreferredQuickActionButtonHeight:(double)height;
+- (void)setQuickActionConfigurationUpdateHandler:(id)handler;
+- (void)setQuickActions:(id)actions;
+- (void)setQuickActionsDisabled:(BOOL)disabled;
+- (void)setVisualSearchCornerView:(id)view;
+- (void)setVisualSearchCornerViewDisabled:(BOOL)disabled;
+- (void)set_quickActionsHidden:(BOOL)hidden;
+- (void)updateButtonClippingForContext:(id)context;
+- (void)updateFramesForContext:(id)context;
 - (void)updateLayoutIfNecessary;
 @end
 
 @implementation VKCActionInfoView
 
-- (VKCActionInfoView)initWithLiveTextButton:(id)a3 cornerView:(id)a4
+- (VKCActionInfoView)initWithLiveTextButton:(id)button cornerView:(id)view
 {
   v28[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  buttonCopy = button;
+  viewCopy = view;
   v27.receiver = self;
   v27.super_class = VKCActionInfoView;
   v9 = [(VKCActionInfoView *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_liveTextButton, a3);
-    objc_storeStrong(&v10->_visualSearchCornerView, a4);
+    objc_storeStrong(&v9->_liveTextButton, button);
+    objc_storeStrong(&v10->_visualSearchCornerView, view);
     v11 = VKBundle();
     v12 = [v11 localizedStringForKey:@"VK_QUICK_ACTION_TITLE_MORE" value:@"VK_QUICK_ACTION_TITLE_MORE" table:@"Localizable"];
 
@@ -76,7 +76,7 @@
     layoutContext = v10->_layoutContext;
     v10->_layoutContext = v23;
 
-    v25 = [(VKCActionInfoView *)v10 containerView];
+    containerView = [(VKCActionInfoView *)v10 containerView];
   }
 
   return v10;
@@ -109,19 +109,19 @@
   return CGRectIntersection(*&v35, *&v28);
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  self->_edgeInsets = a3;
+  self->_edgeInsets = insets;
   [(VKCActionInfoView *)self setShouldAnimateQuickActionVisibilityChanges:1];
 
   [(VKCActionInfoView *)self layoutContainerView];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = VKCActionInfoView;
-  [(VKCActionInfoView *)&v4 setHidden:a3];
+  [(VKCActionInfoView *)&v4 setHidden:hidden];
   [(UIView *)self vk_setNeedsLayout];
 }
 
@@ -162,16 +162,16 @@
     [(VKCActionInfoView *)self setMoreButtonContainer:v8];
 
     v9 = self->_containerView;
-    v10 = [(VKCActionInfoView *)self textButtonContainer];
-    [(VKPlatformView *)v9 addSubview:v10];
+    textButtonContainer = [(VKCActionInfoView *)self textButtonContainer];
+    [(VKPlatformView *)v9 addSubview:textButtonContainer];
 
     v11 = self->_containerView;
-    v12 = [(VKCActionInfoView *)self visualSearchContainer];
-    [(VKPlatformView *)v11 addSubview:v12];
+    visualSearchContainer = [(VKCActionInfoView *)self visualSearchContainer];
+    [(VKPlatformView *)v11 addSubview:visualSearchContainer];
 
     v13 = self->_containerView;
-    v14 = [(VKCActionInfoView *)self moreButtonContainer];
-    [(VKPlatformView *)v13 addSubview:v14];
+    moreButtonContainer = [(VKCActionInfoView *)self moreButtonContainer];
+    [(VKPlatformView *)v13 addSubview:moreButtonContainer];
 
     [(VKCActionInfoView *)self bounds];
     [(VKPlatformView *)self->_containerView setFrame:?];
@@ -189,19 +189,19 @@
   return containerView;
 }
 
-+ (id)buildMoreButtonMenuFromQuickActions:(id)a3 moreButton:(id)a4 isStandAloneMoreButton:(BOOL)a5
++ (id)buildMoreButtonMenuFromQuickActions:(id)actions moreButton:(id)button isStandAloneMoreButton:(BOOL)moreButton
 {
-  v7 = a4;
-  v8 = [a3 reverseObjectEnumerator];
-  v9 = [v8 allObjects];
+  buttonCopy = button;
+  reverseObjectEnumerator = [actions reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __91__VKCActionInfoView_buildMoreButtonMenuFromQuickActions_moreButton_isStandAloneMoreButton___block_invoke;
   v17 = &unk_1E7BE5838;
-  v18 = v7;
-  v19 = a5;
-  v10 = v7;
-  v11 = [v9 vk_compactMap:&v14];
+  v18 = buttonCopy;
+  moreButtonCopy = moreButton;
+  v10 = buttonCopy;
+  v11 = [allObjects vk_compactMap:&v14];
 
   v12 = [MEMORY[0x1E69DCC60] menuWithChildren:{v11, v14, v15, v16, v17}];
 
@@ -340,12 +340,12 @@ void __91__VKCActionInfoView_buildMoreButtonMenuFromQuickActions_moreButton_isSt
   [WeakRetained performDefaultElementAction];
 }
 
-- (void)setQuickActionConfigurationUpdateHandler:(id)a3
+- (void)setQuickActionConfigurationUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   quickActionConfigurationUpdateHandler = self->_quickActionConfigurationUpdateHandler;
-  v9 = v4;
-  v6 = _Block_copy(v4);
+  v9 = handlerCopy;
+  v6 = _Block_copy(handlerCopy);
   LOBYTE(quickActionConfigurationUpdateHandler) = [quickActionConfigurationUpdateHandler isEqual:v6];
 
   if ((quickActionConfigurationUpdateHandler & 1) == 0)
@@ -362,16 +362,16 @@ void __91__VKCActionInfoView_buildMoreButtonMenuFromQuickActions_moreButton_isSt
 - (void)_applyConfigurationUpdateHandlerToQuickActions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(VKCActionInfoView *)self liveTextButton];
-  v4 = [v3 tintColor];
+  liveTextButton = [(VKCActionInfoView *)self liveTextButton];
+  tintColor = [liveTextButton tintColor];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(VKCActionInfoView *)self quickActions];
-  v6 = [(VKCActionInfoView *)self moreButton];
-  v7 = [v5 vk_arrayByAddingNonNilObject:v6];
+  quickActions = [(VKCActionInfoView *)self quickActions];
+  moreButton = [(VKCActionInfoView *)self moreButton];
+  v7 = [quickActions vk_arrayByAddingNonNilObject:moreButton];
 
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
@@ -389,7 +389,7 @@ void __91__VKCActionInfoView_buildMoreButtonMenuFromQuickActions_moreButton_isSt
 
         v11 = *(*(&v15 + 1) + 8 * v10);
         objc_initWeak(&location, self);
-        [v11 setTintColor:v4];
+        [v11 setTintColor:tintColor];
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__block_invoke;
@@ -451,9 +451,9 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
   }
 }
 
-- (void)setQuickActionsDisabled:(BOOL)a3
+- (void)setQuickActionsDisabled:(BOOL)disabled
 {
-  self->_quickActionsDisabled = a3;
+  self->_quickActionsDisabled = disabled;
   if (![(VKCActionInfoView *)self layoutUpdatesSuspended])
   {
 
@@ -461,17 +461,17 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
   }
 }
 
-- (void)setLiveTextButtonDisabled:(BOOL)a3
+- (void)setLiveTextButtonDisabled:(BOOL)disabled
 {
-  if (self->_liveTextButtonDisabled != a3)
+  if (self->_liveTextButtonDisabled != disabled)
   {
-    self->_liveTextButtonDisabled = a3;
+    self->_liveTextButtonDisabled = disabled;
     if ([(VKCActionInfoView *)self layoutUpdatesSuspended])
     {
       liveTextButtonDisabled = self->_liveTextButtonDisabled;
-      v6 = [(VKCActionInfoView *)self liveTextButton];
-      v5 = [v6 superview];
-      [v5 setHidden:liveTextButtonDisabled];
+      liveTextButton = [(VKCActionInfoView *)self liveTextButton];
+      superview = [liveTextButton superview];
+      [superview setHidden:liveTextButtonDisabled];
     }
 
     else
@@ -482,17 +482,17 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
   }
 }
 
-- (void)setVisualSearchCornerViewDisabled:(BOOL)a3
+- (void)setVisualSearchCornerViewDisabled:(BOOL)disabled
 {
-  if (self->_visualSearchCornerViewDisabled != a3)
+  if (self->_visualSearchCornerViewDisabled != disabled)
   {
-    v3 = a3;
-    self->_visualSearchCornerViewDisabled = a3;
+    disabledCopy = disabled;
+    self->_visualSearchCornerViewDisabled = disabled;
     if ([(VKCActionInfoView *)self layoutUpdatesSuspended])
     {
-      v6 = [(VKCActionInfoView *)self visualSearchCornerView];
-      v5 = [v6 superview];
-      [v5 setHidden:v3];
+      visualSearchCornerView = [(VKCActionInfoView *)self visualSearchCornerView];
+      superview = [visualSearchCornerView superview];
+      [superview setHidden:disabledCopy];
     }
 
     else
@@ -503,20 +503,20 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
   }
 }
 
-- (void)set_quickActionsHidden:(BOOL)a3
+- (void)set_quickActionsHidden:(BOOL)hidden
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->__quickActionsHidden != a3)
+  if (self->__quickActionsHidden != hidden)
   {
-    self->__quickActionsHidden = a3;
-    if (a3)
+    self->__quickActionsHidden = hidden;
+    if (hidden)
     {
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v4 = [(VKCActionInfoView *)self quickActions];
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      quickActions = [(VKCActionInfoView *)self quickActions];
+      v5 = [quickActions countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         v6 = v5;
@@ -527,16 +527,16 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
           {
             if (*v12 != v7)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(quickActions);
             }
 
             v9 = *(*(&v11 + 1) + 8 * i);
             [v9 setSelected:0];
-            v10 = [v9 contextMenuInteraction];
-            [v10 dismissMenu];
+            contextMenuInteraction = [v9 contextMenuInteraction];
+            [contextMenuInteraction dismissMenu];
           }
 
-          v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v6 = [quickActions countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v6);
@@ -547,20 +547,20 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
   }
 }
 
-- (void)setLayoutUpdatesSuspended:(BOOL)a3
+- (void)setLayoutUpdatesSuspended:(BOOL)suspended
 {
-  self->_layoutUpdatesSuspended = a3;
-  if (!a3)
+  self->_layoutUpdatesSuspended = suspended;
+  if (!suspended)
   {
     [(UIView *)self vk_setNeedsLayout];
   }
 }
 
-- (void)setPreferredQuickActionButtonHeight:(double)a3
+- (void)setPreferredQuickActionButtonHeight:(double)height
 {
-  if (self->_preferredQuickActionButtonHeight != a3)
+  if (self->_preferredQuickActionButtonHeight != height)
   {
-    self->_preferredQuickActionButtonHeight = a3;
+    self->_preferredQuickActionButtonHeight = height;
     [(UIView *)self vk_setNeedsLayout];
   }
 }
@@ -568,21 +568,21 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
 - (NSArray)allViews
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(VKCActionInfoView *)self quickActions];
-  v4 = v3;
+  quickActions = [(VKCActionInfoView *)self quickActions];
+  v4 = quickActions;
   v5 = MEMORY[0x1E695E0F0];
-  if (v3)
+  if (quickActions)
   {
-    v5 = v3;
+    v5 = quickActions;
   }
 
   v6 = v5;
 
-  v7 = [(VKCActionInfoView *)self liveTextButton];
-  v8 = [(VKCActionInfoView *)self visualSearchCornerView];
-  v13[1] = v8;
-  v9 = [(VKCActionInfoView *)self moreButton];
-  v13[2] = v9;
+  liveTextButton = [(VKCActionInfoView *)self liveTextButton];
+  visualSearchCornerView = [(VKCActionInfoView *)self visualSearchCornerView];
+  v13[1] = visualSearchCornerView;
+  moreButton = [(VKCActionInfoView *)self moreButton];
+  v13[2] = moreButton;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
   v11 = [v6 arrayByAddingObjectsFromArray:v10];
 
@@ -600,11 +600,11 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = VKCActionInfoView;
-  v5 = [(VKCActionInfoView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(VKCActionInfoView *)&v8 hitTest:event withEvent:test.x, test.y];
   if (v5 == self || ([(VKCActionInfoView *)self containerView], v6 = objc_claimAutoreleasedReturnValue(), v6, v5 == v6))
   {
 
@@ -616,9 +616,9 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
 
 - (void)layoutContainerView
 {
-  v3 = [(VKCActionInfoView *)self superview];
-  v4 = [(VKCActionInfoView *)self automaticVisualRectLayoutDisabled];
-  if (v3 && (v5 = v4, [(VKCActionInfoView *)self window], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, v8 = [(VKCActionInfoView *)self isHidden], v7, (v8 & 1) == 0))
+  superview = [(VKCActionInfoView *)self superview];
+  automaticVisualRectLayoutDisabled = [(VKCActionInfoView *)self automaticVisualRectLayoutDisabled];
+  if (superview && (v5 = automaticVisualRectLayoutDisabled, [(VKCActionInfoView *)self window], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, v8 = [(VKCActionInfoView *)self isHidden], v7, (v8 & 1) == 0))
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:0];
@@ -680,8 +680,8 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
 
       else
       {
-        v40 = [(VKCActionInfoView *)self liveTextButton];
-        [v40 backgroundDiameter];
+        liveTextButton = [(VKCActionInfoView *)self liveTextButton];
+        [liveTextButton backgroundDiameter];
         v39 = v36 + v41;
       }
 
@@ -707,56 +707,56 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
       v49 = v48;
       v51 = v50;
       v53 = v52;
-      v54 = [(VKCActionInfoView *)self containerView];
-      [v54 setFrame:{v47, v49, v51, v53}];
+      containerView = [(VKCActionInfoView *)self containerView];
+      [containerView setFrame:{v47, v49, v51, v53}];
 
-      v55 = [(VKCActionInfoView *)self layoutContext];
-      [v55 reset];
-      v56 = [(VKCActionInfoView *)self containerView];
-      [v56 bounds];
-      [v55 setContainerBounds:?];
+      layoutContext = [(VKCActionInfoView *)self layoutContext];
+      [layoutContext reset];
+      containerView2 = [(VKCActionInfoView *)self containerView];
+      [containerView2 bounds];
+      [layoutContext setContainerBounds:?];
 
-      [v55 setCurrentMaxX:v42];
-      [v55 setCurrentMinX:0.0];
-      [v55 setScale:v18];
-      [v55 setPadding:v70];
-      [v55 setAnimateItemVisibilityChanges:{-[VKCActionInfoView shouldAnimateQuickActionVisibilityChanges](self, "shouldAnimateQuickActionVisibilityChanges")}];
-      [v55 setShowingMoreButton:0];
+      [layoutContext setCurrentMaxX:v42];
+      [layoutContext setCurrentMinX:0.0];
+      [layoutContext setScale:v18];
+      [layoutContext setPadding:v70];
+      [layoutContext setAnimateItemVisibilityChanges:{-[VKCActionInfoView shouldAnimateQuickActionVisibilityChanges](self, "shouldAnimateQuickActionVisibilityChanges")}];
+      [layoutContext setShowingMoreButton:0];
       v57 = 0;
       if (![(VKCActionInfoView *)self liveTextButtonDisabled])
       {
-        v58 = [(VKCActionInfoView *)self liveTextButton];
-        [v58 vk_alpha];
+        liveTextButton2 = [(VKCActionInfoView *)self liveTextButton];
+        [liveTextButton2 vk_alpha];
         v57 = v59 > 0.0;
       }
 
-      v60 = [(VKCActionInfoView *)self liveTextButton];
-      [(VKCActionInfoView *)self processView:v60 hasContent:v57 isLeading:0 layoutContext:v55];
+      liveTextButton3 = [(VKCActionInfoView *)self liveTextButton];
+      [(VKCActionInfoView *)self processView:liveTextButton3 hasContent:v57 isLeading:0 layoutContext:layoutContext];
 
-      v61 = [(VKCActionInfoView *)self visualSearchCornerView];
-      if (-[VKCActionInfoView visualSearchCornerViewDisabled](self, "visualSearchCornerViewDisabled") || ([v61 isHidden] & 1) != 0)
+      visualSearchCornerView = [(VKCActionInfoView *)self visualSearchCornerView];
+      if (-[VKCActionInfoView visualSearchCornerViewDisabled](self, "visualSearchCornerViewDisabled") || ([visualSearchCornerView isHidden] & 1) != 0)
       {
         v62 = 0;
       }
 
       else
       {
-        v63 = [v61 cornerButtons];
-        v62 = [v63 count] != 0;
+        cornerButtons = [visualSearchCornerView cornerButtons];
+        v62 = [cornerButtons count] != 0;
       }
 
-      v64 = [(VKCActionInfoView *)self visualSearchCornerView];
-      [(VKCActionInfoView *)self processView:v64 hasContent:v62 isLeading:0 layoutContext:v55];
+      visualSearchCornerView2 = [(VKCActionInfoView *)self visualSearchCornerView];
+      [(VKCActionInfoView *)self processView:visualSearchCornerView2 hasContent:v62 isLeading:0 layoutContext:layoutContext];
 
-      v65 = [(VKCActionInfoView *)self quickActions];
+      quickActions = [(VKCActionInfoView *)self quickActions];
       v71[0] = MEMORY[0x1E69E9820];
       v71[1] = 3221225472;
       v71[2] = __40__VKCActionInfoView_layoutContainerView__block_invoke;
       v71[3] = &unk_1E7BE5860;
       v71[4] = self;
-      v66 = v55;
+      v66 = layoutContext;
       v72 = v66;
-      [v65 enumerateObjectsUsingBlock:v71];
+      [quickActions enumerateObjectsUsingBlock:v71];
 
       [(VKCActionInfoView *)self adjustContextToFitWidth:v66];
       [(VKCActionInfoView *)self updateFramesForContext:v66];
@@ -768,8 +768,8 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
 
       else
       {
-        v67 = [(VKCActionInfoView *)self moreButtonContainer];
-        [v67 setHidden:1];
+        moreButtonContainer = [(VKCActionInfoView *)self moreButtonContainer];
+        [moreButtonContainer setHidden:1];
       }
     }
 
@@ -778,8 +778,8 @@ void __67__VKCActionInfoView__applyConfigurationUpdateHandlerToQuickActions__blo
 
   else
   {
-    v9 = [(VKCActionInfoView *)self allViews];
-    [v9 enumerateObjectsUsingBlock:&__block_literal_global_13];
+    allViews = [(VKCActionInfoView *)self allViews];
+    [allViews enumerateObjectsUsingBlock:&__block_literal_global_13];
   }
 }
 
@@ -806,47 +806,47 @@ void __40__VKCActionInfoView_layoutContainerView__block_invoke_2(uint64_t a1, vo
   [v2 setHidden:1];
 }
 
-- (void)adjustContextToFitWidth:(id)a3
+- (void)adjustContextToFitWidth:(id)width
 {
-  v4 = a3;
-  v5 = [v4 leadingLayout];
-  v6 = [v4 trailingLayout];
-  v7 = [v6 firstObject];
+  widthCopy = width;
+  leadingLayout = [widthCopy leadingLayout];
+  trailingLayout = [widthCopy trailingLayout];
+  firstObject = [trailingLayout firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    [v7 frame];
+    [firstObject frame];
     v9 = v8;
   }
 
   else
   {
-    [v4 containerBounds];
+    [widthCopy containerBounds];
     v9 = v10;
   }
 
-  [v4 padding];
+  [widthCopy padding];
   v12 = v11;
-  v13 = [v4 leadingLayout];
+  leadingLayout2 = [widthCopy leadingLayout];
   v58[0] = MEMORY[0x1E69E9820];
   v58[1] = 3221225472;
   v58[2] = __45__VKCActionInfoView_adjustContextToFitWidth___block_invoke;
   v58[3] = &unk_1E7BE58A8;
-  v14 = v4;
+  v14 = widthCopy;
   v59 = v14;
   v60 = v9;
-  v15 = [v13 indexOfObjectPassingTest:v58];
+  v15 = [leadingLayout2 indexOfObjectPassingTest:v58];
 
   if (v15 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v16 = [v5 objectAtIndexedSubscript:v15];
-    v17 = [v5 lastObject];
+    v16 = [leadingLayout objectAtIndexedSubscript:v15];
+    lastObject = [leadingLayout lastObject];
 
     [v14 scale];
     v19 = v18 * 64.0;
-    v20 = [(VKCActionInfoView *)self moreButton];
+    moreButton = [(VKCActionInfoView *)self moreButton];
     [v14 scale];
-    [(VKCActionInfoView *)self sizeForView:v20 scale:?];
+    [(VKCActionInfoView *)self sizeForView:moreButton scale:?];
     v22 = v21;
     rect = v23;
 
@@ -857,12 +857,12 @@ void __40__VKCActionInfoView_layoutContainerView__block_invoke_2(uint64_t a1, vo
 
     [v16 frame];
     MinX = CGRectGetMinX(v61);
-    if (v16 != v17 || (MinX = v9 - MinX, MinX - v12 <= v19))
+    if (v16 != lastObject || (MinX = v9 - MinX, MinX - v12 <= v19))
     {
       [v16 setHidden:{1, MinX}];
       v25 = objc_alloc_init(VKCQuickActionLayoutInfo);
-      v26 = [(VKCActionInfoView *)self moreButton];
-      [(VKCQuickActionLayoutInfo *)v25 setView:v26];
+      moreButton2 = [(VKCActionInfoView *)self moreButton];
+      [(VKCQuickActionLayoutInfo *)v25 setView:moreButton2];
 
       [v16 frame];
       x = v62.origin.x;
@@ -870,8 +870,8 @@ void __40__VKCActionInfoView_layoutContainerView__block_invoke_2(uint64_t a1, vo
       v62.size.width = v22;
       v62.size.height = rect;
       MaxX = CGRectGetMaxX(v62);
-      v29 = [v14 leadingLayout];
-      [v29 insertObject:v25 atIndex:v15];
+      leadingLayout3 = [v14 leadingLayout];
+      [leadingLayout3 insertObject:v25 atIndex:v15];
 
       if (v15)
       {
@@ -888,10 +888,10 @@ void __40__VKCActionInfoView_layoutContainerView__block_invoke_2(uint64_t a1, vo
         v31 = v15 + 1;
         while (1)
         {
-          v32 = [v14 leadingLayout];
-          v33 = [v32 vk_safeObjectAtIndex:v31 - 2];
+          leadingLayout4 = [v14 leadingLayout];
+          firstObject2 = [leadingLayout4 vk_safeObjectAtIndex:v31 - 2];
 
-          if (!v33)
+          if (!firstObject2)
           {
             goto LABEL_31;
           }
@@ -901,7 +901,7 @@ void __40__VKCActionInfoView_layoutContainerView__block_invoke_2(uint64_t a1, vo
           v63.size.width = v22;
           v63.size.height = rect;
           v54 = CGRectGetMaxX(v63);
-          [v33 frame];
+          [firstObject2 frame];
           v35 = v34;
           v37 = v36;
           v39 = v38;
@@ -936,14 +936,14 @@ void __40__VKCActionInfoView_layoutContainerView__block_invoke_2(uint64_t a1, vo
               v22 = v42;
               if (v45 != v53 && vabdd_f64(v45, v53) >= fabs(v53 * 0.000000999999997))
               {
-                [v33 setFrame:{v35, v37, v39 - (v53 + v54 - v52), v41}];
+                [firstObject2 setFrame:{v35, v37, v39 - (v53 + v54 - v52), v41}];
               }
 
               goto LABEL_31;
             }
 
             v46 = v39 + v45 - v53;
-            [v33 setFrame:{v35, v37, v46, v41}];
+            [firstObject2 setFrame:{v35, v37, v46, v41}];
             v44 = v56;
             if (v46 >= v56)
             {
@@ -956,7 +956,7 @@ LABEL_32:
             }
           }
 
-          [v33 setHidden:{1, v44}];
+          [firstObject2 setHidden:{1, v44}];
 
           --v31;
           v30 = v35;
@@ -974,17 +974,17 @@ LABEL_33:
         }
       }
 
-      v48 = [v14 trailingLayout];
-      v33 = [v48 firstObject];
+      trailingLayout2 = [v14 trailingLayout];
+      firstObject2 = [trailingLayout2 firstObject];
 
-      if (!v33)
+      if (!firstObject2)
       {
         v30 = 0.0;
         v47 = v22 > v9;
         goto LABEL_32;
       }
 
-      [v33 frame];
+      [firstObject2 frame];
       v30 = 0.0;
       if (v49 < v12 + v22)
       {
@@ -1003,15 +1003,15 @@ LABEL_31:
     while (1)
     {
       ++v15;
-      v50 = [v14 leadingLayout];
-      v51 = [v50 count];
+      leadingLayout5 = [v14 leadingLayout];
+      v51 = [leadingLayout5 count];
 
       if (v15 >= v51)
       {
         break;
       }
 
-      v25 = [v5 objectAtIndexedSubscript:v15];
+      v25 = [leadingLayout objectAtIndexedSubscript:v15];
       [(VKCQuickActionLayoutInfo *)v25 setHidden:1];
 LABEL_34:
     }
@@ -1026,10 +1026,10 @@ BOOL __45__VKCActionInfoView_adjustContextToFitWidth___block_invoke(uint64_t a1,
   return MaxX + v4 > *(a1 + 40);
 }
 
-- (void)updateButtonClippingForContext:(id)a3
+- (void)updateButtonClippingForContext:(id)context
 {
-  v3 = [a3 leadingLayout];
-  [v3 enumerateObjectsUsingBlock:&__block_literal_global_316];
+  leadingLayout = [context leadingLayout];
+  [leadingLayout enumerateObjectsUsingBlock:&__block_literal_global_316];
 }
 
 void __52__VKCActionInfoView_updateButtonClippingForContext___block_invoke(uint64_t a1, void *a2)
@@ -1064,47 +1064,47 @@ void __52__VKCActionInfoView_updateButtonClippingForContext___block_invoke(uint6
   }
 }
 
-- (void)updateFramesForContext:(id)a3
+- (void)updateFramesForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:0];
-  v4 = [v3 leadingLayout];
+  leadingLayout = [contextCopy leadingLayout];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __44__VKCActionInfoView_updateFramesForContext___block_invoke;
   v21[3] = &unk_1E7BE58F0;
-  v5 = v3;
+  v5 = contextCopy;
   v22 = v5;
-  [v4 enumerateObjectsUsingBlock:v21];
+  [leadingLayout enumerateObjectsUsingBlock:v21];
 
-  v6 = [v5 trailingLayout];
+  trailingLayout = [v5 trailingLayout];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __44__VKCActionInfoView_updateFramesForContext___block_invoke_2;
   v19[3] = &unk_1E7BE58F0;
   v7 = v5;
   v20 = v7;
-  [v6 enumerateObjectsUsingBlock:v19];
+  [trailingLayout enumerateObjectsUsingBlock:v19];
 
   [MEMORY[0x1E6979518] setDisableActions:0];
-  v8 = [v7 leadingLayout];
+  leadingLayout2 = [v7 leadingLayout];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __44__VKCActionInfoView_updateFramesForContext___block_invoke_3;
   v17[3] = &unk_1E7BE58F0;
   v9 = v7;
   v18 = v9;
-  [v8 enumerateObjectsUsingBlock:v17];
+  [leadingLayout2 enumerateObjectsUsingBlock:v17];
 
-  v10 = [v9 trailingLayout];
+  trailingLayout2 = [v9 trailingLayout];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __44__VKCActionInfoView_updateFramesForContext___block_invoke_4;
   v15 = &unk_1E7BE58F0;
   v16 = v9;
   v11 = v9;
-  [v10 enumerateObjectsUsingBlock:&v12];
+  [trailingLayout2 enumerateObjectsUsingBlock:&v12];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -1199,73 +1199,73 @@ void __44__VKCActionInfoView_updateFramesForContext___block_invoke_4(uint64_t a1
   [v4 vk_setHidden:v5 animated:{objc_msgSend(*(a1 + 32), "animateItemVisibilityChanges")}];
 }
 
-- (void)processView:(id)a3 hasContent:(BOOL)a4 isLeading:(BOOL)a5 layoutContext:(id)a6
+- (void)processView:(id)view hasContent:(BOOL)content isLeading:(BOOL)leading layoutContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v20 = a3;
-  v10 = a6;
-  v11 = [v20 superview];
-  if (v8)
+  leadingCopy = leading;
+  contentCopy = content;
+  viewCopy = view;
+  contextCopy = context;
+  superview = [viewCopy superview];
+  if (contentCopy)
   {
-    v12 = [(VKCActionInfoView *)self configureView:v20 isLeading:v7 container:v11 layoutContext:v10];
-    if (v7)
+    v12 = [(VKCActionInfoView *)self configureView:viewCopy isLeading:leadingCopy container:superview layoutContext:contextCopy];
+    if (leadingCopy)
     {
-      if ([v10 didAddLeadingItem])
+      if ([contextCopy didAddLeadingItem])
       {
-        [v10 padding];
+        [contextCopy padding];
         v14 = v13;
-        [v10 currentMinX];
-        [v10 setCurrentMinX:v14 + v15];
+        [contextCopy currentMinX];
+        [contextCopy setCurrentMinX:v14 + v15];
       }
     }
 
-    else if ([v10 didAddTrailingItem])
+    else if ([contextCopy didAddTrailingItem])
     {
-      [v10 padding];
+      [contextCopy padding];
       v18 = v17;
-      [v10 currentMaxX];
-      [v10 setCurrentMaxX:v19 - v18];
+      [contextCopy currentMaxX];
+      [contextCopy setCurrentMaxX:v19 - v18];
     }
   }
 
   else
   {
-    v16 = [v20 superview];
-    [v16 setHidden:1];
+    superview2 = [viewCopy superview];
+    [superview2 setHidden:1];
   }
 }
 
-- (id)configureView:(id)a3 isLeading:(BOOL)a4 container:(id)a5 layoutContext:(id)a6
+- (id)configureView:(id)view isLeading:(BOOL)leading container:(id)container layoutContext:(id)context
 {
-  v7 = a4;
-  v9 = a3;
-  v10 = a6;
-  [v10 scale];
-  [(VKCActionInfoView *)self sizeForView:v9 scale:?];
+  leadingCopy = leading;
+  viewCopy = view;
+  contextCopy = context;
+  [contextCopy scale];
+  [(VKCActionInfoView *)self sizeForView:viewCopy scale:?];
   v12 = v11;
   v14 = v13;
   v15 = VKMRectWithSize();
   v17 = v16;
   v19 = v18;
-  if (v7)
+  if (leadingCopy)
   {
-    [v10 currentMinX];
+    [contextCopy currentMinX];
     v21 = v20;
   }
 
   else
   {
-    [v10 currentMaxX];
+    [contextCopy currentMaxX];
     v21 = v22 - v12;
   }
 
-  v23 = [(VKCActionInfoView *)self alignQuickActionsWithVerticalCenter];
-  [v10 containerBounds];
-  if (v23)
+  alignQuickActionsWithVerticalCenter = [(VKCActionInfoView *)self alignQuickActionsWithVerticalCenter];
+  [contextCopy containerBounds];
+  if (alignQuickActionsWithVerticalCenter)
   {
     v26 = v24;
-    [v10 containerBounds];
+    [contextCopy containerBounds];
     v28 = v26 + (v27 - v14) * 0.5;
   }
 
@@ -1280,25 +1280,25 @@ void __44__VKCActionInfoView_updateFramesForContext___block_invoke_4(uint64_t a1
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  [(VKCQuickActionLayoutInfo *)v29 setView:v9];
+  [(VKCQuickActionLayoutInfo *)v29 setView:viewCopy];
   [(VKCQuickActionLayoutInfo *)v29 setFrame:v31, v33, v35, v37];
   [(VKCQuickActionLayoutInfo *)v29 setDesiredFrame:v31, v33, v35, v37];
-  if (v7)
+  if (leadingCopy)
   {
     v41.origin.x = v21;
     v41.origin.y = v28;
     v41.size.width = v17;
     v41.size.height = v19;
-    [v10 setCurrentMinX:CGRectGetMaxX(v41)];
-    [v10 setDidAddLeadingItem:1];
-    [v10 leadingLayout];
+    [contextCopy setCurrentMinX:CGRectGetMaxX(v41)];
+    [contextCopy setDidAddLeadingItem:1];
+    [contextCopy leadingLayout];
   }
 
   else
   {
-    [v10 setCurrentMaxX:v21];
-    [v10 setDidAddTrailingItem:1];
-    [v10 trailingLayout];
+    [contextCopy setCurrentMaxX:v21];
+    [contextCopy setDidAddTrailingItem:1];
+    [contextCopy trailingLayout];
   }
   v38 = ;
   [v38 addObject:v29];
@@ -1306,23 +1306,23 @@ void __44__VKCActionInfoView_updateFramesForContext___block_invoke_4(uint64_t a1
   return v29;
 }
 
-- (CGSize)sizeForView:(id)a3 scale:(double)a4
+- (CGSize)sizeForView:(id)view scale:(double)scale
 {
-  v6 = a3;
-  [v6 intrinsicContentSize];
+  viewCopy = view;
+  [viewCopy intrinsicContentSize];
   v8 = v7;
   v10 = v9;
-  v11 = [(VKCActionInfoView *)self liveTextButton];
-  v12 = v11;
-  if (v11 == v6)
+  liveTextButton = [(VKCActionInfoView *)self liveTextButton];
+  v12 = liveTextButton;
+  if (liveTextButton == viewCopy)
   {
   }
 
   else
   {
-    v13 = [(VKCActionInfoView *)self visualSearchCornerView];
+    visualSearchCornerView = [(VKCActionInfoView *)self visualSearchCornerView];
 
-    if (v13 != v6)
+    if (visualSearchCornerView != viewCopy)
     {
       if ([(VKCActionInfoView *)self automaticVisualRectLayoutDisabled])
       {
@@ -1332,8 +1332,8 @@ void __44__VKCActionInfoView_updateFramesForContext___block_invoke_4(uint64_t a1
 
       else
       {
-        v16 = [(VKCActionInfoView *)self liveTextButton];
-        [v16 backgroundDiameter];
+        liveTextButton2 = [(VKCActionInfoView *)self liveTextButton];
+        [liveTextButton2 backgroundDiameter];
         v15 = v17;
       }
 
@@ -1349,7 +1349,7 @@ void __44__VKCActionInfoView_updateFramesForContext___block_invoke_4(uint64_t a1
     }
   }
 
-  v18 = VKMMultiplyPointScalar(v8, v10, a4);
+  v18 = VKMMultiplyPointScalar(v8, v10, scale);
   v20 = v19;
 
   v21 = v18;
@@ -1359,22 +1359,22 @@ void __44__VKCActionInfoView_updateFramesForContext___block_invoke_4(uint64_t a1
   return result;
 }
 
-- (void)setVisualSearchCornerView:(id)a3
+- (void)setVisualSearchCornerView:(id)view
 {
-  objc_storeStrong(&self->_visualSearchCornerView, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_visualSearchCornerView, view);
+  viewCopy = view;
   [(VKCActionInfoView *)self normalizedVisibleRect];
   [(VKCVisualSearchCornerView *)self->_visualSearchCornerView setNormalizedVisibleRect:?];
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_contentsRect = &self->_contentsRect;
-  if (!CGRectEqualToRect(self->_contentsRect, a3))
+  if (!CGRectEqualToRect(self->_contentsRect, rect))
   {
     p_contentsRect->origin.x = x;
     p_contentsRect->origin.y = y;
@@ -1385,12 +1385,12 @@ void __44__VKCActionInfoView_updateFramesForContext___block_invoke_4(uint64_t a1
   }
 }
 
-- (void)setNormalizedVisibleRect:(CGRect)a3
+- (void)setNormalizedVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_normalizedVisibleRect = &self->_normalizedVisibleRect;
   if ([(VKCActionInfoView *)self automaticVisualRectLayoutDisabled])
   {
@@ -1400,8 +1400,8 @@ void __44__VKCActionInfoView_updateFramesForContext___block_invoke_4(uint64_t a1
     v10 = self->_normalizedVisibleRect.origin.y;
     v11 = self->_normalizedVisibleRect.size.width;
     v12 = self->_normalizedVisibleRect.size.height;
-    v14 = [(VKCActionInfoView *)self visualSearchCornerView];
-    [v14 setNormalizedVisibleRect:{v9, v10, v11, v12}];
+    visualSearchCornerView = [(VKCActionInfoView *)self visualSearchCornerView];
+    [visualSearchCornerView setNormalizedVisibleRect:{v9, v10, v11, v12}];
   }
 
   else
@@ -1420,34 +1420,34 @@ void __44__VKCActionInfoView_updateFramesForContext___block_invoke_4(uint64_t a1
       self->_normalizedVisibleRect.origin.y = y;
       self->_normalizedVisibleRect.size.width = width;
       self->_normalizedVisibleRect.size.height = height;
-      v13 = [(VKCActionInfoView *)self visualSearchCornerView];
-      [v13 setNormalizedVisibleRect:{x, y, width, height}];
+      visualSearchCornerView2 = [(VKCActionInfoView *)self visualSearchCornerView];
+      [visualSearchCornerView2 setNormalizedVisibleRect:{x, y, width, height}];
 
       [(UIView *)self vk_setNeedsLayout];
     }
   }
 }
 
-- (id)createContainerForView:(id)a3
+- (id)createContainerForView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_alloc_init(VKPlatformView);
-  [(VKPlatformView *)v4 addSubview:v3];
+  [(VKPlatformView *)v4 addSubview:viewCopy];
 
   return v4;
 }
 
-- (void)setQuickActions:(id)a3
+- (void)setQuickActions:(id)actions
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionsCopy = actions;
   quickActions = self->_quickActions;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __37__VKCActionInfoView_setQuickActions___block_invoke;
   v25[3] = &unk_1E7BE5918;
   v25[4] = self;
-  v6 = v4;
+  v6 = actionsCopy;
   v26 = v6;
   [(NSArray *)quickActions enumerateObjectsUsingBlock:v25];
   v7 = [v6 copy];
@@ -1475,8 +1475,8 @@ void __44__VKCActionInfoView_updateFramesForContext___block_invoke_4(uint64_t a1
         }
 
         v14 = [(VKCActionInfoView *)self createContainerForView:*(*(&v21 + 1) + 8 * v13), v21];
-        v15 = [(VKCActionInfoView *)self containerView];
-        [v15 addSubview:v14];
+        containerView = [(VKCActionInfoView *)self containerView];
+        [containerView addSubview:v14];
 
         [v14 setHidden:1];
         ++v13;
@@ -1492,11 +1492,11 @@ void __44__VKCActionInfoView_updateFramesForContext___block_invoke_4(uint64_t a1
   [(VKCActionInfoView *)self _applyConfigurationUpdateHandlerToQuickActions];
   v16 = objc_opt_class();
   v17 = self->_quickActions;
-  v18 = [(VKCActionInfoView *)self moreButton];
-  v19 = [v16 buildMoreButtonMenuFromQuickActions:v17 moreButton:v18 isStandAloneMoreButton:0];
+  moreButton = [(VKCActionInfoView *)self moreButton];
+  v19 = [v16 buildMoreButtonMenuFromQuickActions:v17 moreButton:moreButton isStandAloneMoreButton:0];
 
-  v20 = [(VKCActionInfoView *)self moreButton];
-  [v20 setCustomMenu:v19];
+  moreButton2 = [(VKCActionInfoView *)self moreButton];
+  [moreButton2 setCustomMenu:v19];
 
   [(VKCActionInfoView *)self layoutContainerView];
 }
@@ -1515,27 +1515,27 @@ void __37__VKCActionInfoView_setQuickActions___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (BOOL)containsInteractableItemAtPoint:(CGPoint)a3
+- (BOOL)containsInteractableItemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCActionInfoView *)self liveTextButton];
-  v7 = [(VKCActionInfoView *)self isInteractableView:v6 atPoint:x, y];
+  y = point.y;
+  x = point.x;
+  liveTextButton = [(VKCActionInfoView *)self liveTextButton];
+  v7 = [(VKCActionInfoView *)self isInteractableView:liveTextButton atPoint:x, y];
 
   if (v7)
   {
     return 1;
   }
 
-  v8 = [(VKCActionInfoView *)self visualSearchCornerView];
-  v9 = [(VKCActionInfoView *)self isInteractableView:v8 atPoint:x, y];
+  visualSearchCornerView = [(VKCActionInfoView *)self visualSearchCornerView];
+  v9 = [(VKCActionInfoView *)self isInteractableView:visualSearchCornerView atPoint:x, y];
 
   if (v9)
   {
     return 1;
   }
 
-  v11 = [(VKCActionInfoView *)self allViews];
+  allViews = [(VKCActionInfoView *)self allViews];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __53__VKCActionInfoView_containsInteractableItemAtPoint___block_invoke;
@@ -1543,7 +1543,7 @@ void __37__VKCActionInfoView_setQuickActions___block_invoke(uint64_t a1, void *a
   v13[4] = self;
   *&v13[5] = x;
   *&v13[6] = y;
-  v10 = [v11 vk_containsObjectPassingTest:v13];
+  v10 = [allViews vk_containsObjectPassingTest:v13];
 
   return v10;
 }
@@ -1564,22 +1564,22 @@ uint64_t __53__VKCActionInfoView_containsInteractableItemAtPoint___block_invoke(
   return v4;
 }
 
-- (BOOL)isInteractableView:(id)a3 atPoint:(CGPoint)a4
+- (BOOL)isInteractableView:(id)view atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  if ([v7 isHidden])
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  if ([viewCopy isHidden])
   {
     v8 = 0;
   }
 
   else
   {
-    [(VKCActionInfoView *)self convertPoint:v7 toView:x, y];
+    [(VKCActionInfoView *)self convertPoint:viewCopy toView:x, y];
     v10 = v9;
     v12 = v11;
-    [v7 bounds];
+    [viewCopy bounds];
     v14.x = v10;
     v14.y = v12;
     v8 = CGRectContainsPoint(v15, v14);

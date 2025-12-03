@@ -2,18 +2,18 @@
 + (id)instance;
 - (ABSContactsShadow)init;
 - (BOOL)_createDb;
-- (BOOL)_execSql:(const char *)a3;
+- (BOOL)_execSql:(const char *)sql;
 - (BOOL)_prepareStatements;
-- (BOOL)contains:(id)a3;
+- (BOOL)contains:(id)contains;
 - (int64_t)_userSchema;
 - (void)_closeDb;
 - (void)_openDb;
 - (void)beginTransaction;
 - (void)commitTransaction;
 - (void)dealloc;
-- (void)insert:(id)a3;
+- (void)insert:(id)insert;
 - (void)purge;
-- (void)remove:(id)a3;
+- (void)remove:(id)remove;
 - (void)rollbackTransaction;
 @end
 
@@ -47,9 +47,9 @@
 - (void)_openDb
 {
   v3 = [ABSDatabaseFileManager syncStateDBPathFor:@"ABSABShadow.db"];
-  v4 = [v3 UTF8String];
+  uTF8String = [v3 UTF8String];
 
-  if (!sqlite3_open_v2(v4, &self->_db, 6, 0) && [(ABSContactsShadow *)self _createDb])
+  if (!sqlite3_open_v2(uTF8String, &self->_db, 6, 0) && [(ABSContactsShadow *)self _createDb])
   {
 
     [(ABSContactsShadow *)self _prepareStatements];
@@ -97,8 +97,8 @@
 - (BOOL)_createDb
 {
   [(ABSContactsShadow *)self _execSql:"PRAGMA journal_mode=WAL;"];
-  v3 = [(ABSContactsShadow *)self _userSchema];
-  switch(v3)
+  _userSchema = [(ABSContactsShadow *)self _userSchema];
+  switch(_userSchema)
   {
     case 2:
       goto LABEL_6;
@@ -121,11 +121,11 @@ LABEL_6:
   return 1;
 }
 
-- (BOOL)_execSql:(const char *)a3
+- (BOOL)_execSql:(const char *)sql
 {
   errmsg = 0;
   os_unfair_lock_lock(&self->_lock);
-  v5 = sqlite3_exec(self->_db, a3, 0, 0, &errmsg);
+  v5 = sqlite3_exec(self->_db, sql, 0, 0, &errmsg);
   if (v5)
   {
     v6 = *(qword_100071D00 + 8);
@@ -160,14 +160,14 @@ LABEL_6:
   return v3;
 }
 
-- (void)insert:(id)a3
+- (void)insert:(id)insert
 {
-  if (a3)
+  if (insert)
   {
     v4 = self->statements[0];
-    v5 = [a3 UTF8String];
+    uTF8String = [insert UTF8String];
     os_unfair_lock_lock(&self->_lock);
-    sqlite3_bind_text(v4, 1, v5, -1, 0xFFFFFFFFFFFFFFFFLL);
+    sqlite3_bind_text(v4, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
     if (sqlite3_step(v4) != 101 && os_log_type_enabled(*(qword_100071D00 + 8), OS_LOG_TYPE_ERROR))
     {
       sub_10003A8B0();
@@ -178,14 +178,14 @@ LABEL_6:
   }
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
-  if (a3)
+  if (remove)
   {
     v4 = self->statements[1];
-    v5 = [a3 UTF8String];
+    uTF8String = [remove UTF8String];
     os_unfair_lock_lock(&self->_lock);
-    sqlite3_bind_text(v4, 1, v5, -1, 0xFFFFFFFFFFFFFFFFLL);
+    sqlite3_bind_text(v4, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
     if (sqlite3_step(v4) != 101 && os_log_type_enabled(*(qword_100071D00 + 8), OS_LOG_TYPE_ERROR))
     {
       sub_10003A924();
@@ -196,14 +196,14 @@ LABEL_6:
   }
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
   v4 = self->statements[2];
-  v5 = a3;
+  containsCopy = contains;
   os_unfair_lock_lock(&self->_lock);
-  v6 = [v5 UTF8String];
+  uTF8String = [containsCopy UTF8String];
 
-  sqlite3_bind_text(v4, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_text(v4, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
   v7 = sqlite3_step(v4) == 100 && sqlite3_column_int(v4, 0) != 0;
   sqlite3_reset(v4);
   os_unfair_lock_unlock(&self->_lock);

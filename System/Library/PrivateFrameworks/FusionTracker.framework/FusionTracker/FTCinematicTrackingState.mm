@@ -1,5 +1,5 @@
 @interface FTCinematicTrackingState
-+ (id)stateWithTracker:(shared_ptr<ft:(shared_ptr<ft:(id)a5 :Frame>)a4 :CinematicTracker>)a3 frame:input:;
++ (id)stateWithTracker:(shared_ptr<ft:(shared_ptr<ft:(id)tracker :Frame>)a4 :CinematicTracker>)a3 frame:input:;
 - (id).cxx_construct;
 - (id)commit;
 - (void)commit;
@@ -7,7 +7,7 @@
 
 @implementation FTCinematicTrackingState
 
-+ (id)stateWithTracker:(shared_ptr<ft:(shared_ptr<ft:(id)a5 :Frame>)a4 :CinematicTracker>)a3 frame:input:
++ (id)stateWithTracker:(shared_ptr<ft:(shared_ptr<ft:(id)tracker :Frame>)a4 :CinematicTracker>)a3 frame:input:
 {
   ptr = a4.__ptr_;
   cntrl = a3.__cntrl_;
@@ -92,10 +92,10 @@
   v76 = *MEMORY[0x277D85DE8];
   ptr = self->_tracker.__ptr_;
   std::recursive_mutex::lock((ptr + 80));
-  v3 = [(FTCinematicHighPriorityTrackerState *)self->_highPriorityTrackerState completed];
-  if ((v3 & 1) == 0)
+  completed = [(FTCinematicHighPriorityTrackerState *)self->_highPriorityTrackerState completed];
+  if ((completed & 1) == 0)
   {
-    v7 = ft::GetOsLog(v3);
+    v7 = ft::GetOsLog(completed);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       [FTCinematicTrackingState commit];
@@ -108,7 +108,7 @@
   v5 = *(v4 + 1);
   if (v5 != self->_commitToken)
   {
-    v7 = ft::GetOsLog(v3);
+    v7 = ft::GetOsLog(completed);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       [(FTCinematicTrackingState *)&self->_commitToken commit];
@@ -120,7 +120,7 @@ LABEL_54:
   }
 
   *(v4 + 1) = v5 + 1;
-  if (*ft::UserDefaults::Get(v3) == 1)
+  if (*ft::UserDefaults::Get(completed) == 1)
   {
     ft::CinematicTracker::TerminateHighlyOverlappingDetectionlessTrack(self->_tracker.__ptr_);
   }
@@ -137,8 +137,8 @@ LABEL_54:
     atomic_fetch_add_explicit(&v9->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v11 = [(FTCinematicTrackingState *)self input];
-  v63 = [v11 observations];
+  input = [(FTCinematicTrackingState *)self input];
+  observations = [input observations];
 
   v13 = *ActiveTracks;
   v14 = ActiveTracks[1];
@@ -300,7 +300,7 @@ LABEL_36:
       time2.epoch = v32;
       if (!CMTimeCompare(&time1, &time2))
       {
-        v33 = [v63 count];
+        v33 = [observations count];
         if (v30 >= v33)
         {
           v34 = ft::GetOsLog(v33);
@@ -314,11 +314,11 @@ LABEL_36:
 
         else
         {
-          v34 = [v63 objectAtIndexedSubscript:v30];
+          v34 = [observations objectAtIndexedSubscript:v30];
           if (objc_opt_respondsToSelector())
           {
-            v35 = [v34 metadata];
-            [v17 setMetadata:v35];
+            metadata = [v34 metadata];
+            [v17 setMetadata:metadata];
           }
         }
       }
@@ -359,16 +359,16 @@ LABEL_58:
   *&time1.value = v45;
   [(FTCinematicTrackingResult *)v40 setMostRecentTapTime:&time1];
   [(FTCinematicTrackingResult *)v40 setDetectorDidRun:*(self->_frame.__ptr_ + 24)];
-  v46 = [(FTCinematicTrackingState *)self input];
-  v47 = [v46 tapRequest];
-  v48 = v47 == 0;
+  input2 = [(FTCinematicTrackingState *)self input];
+  tapRequest = [input2 tapRequest];
+  v48 = tapRequest == 0;
 
   if (!v48)
   {
     v49 = objc_alloc_init(FTCinematicTapResponse);
-    v50 = [(FTCinematicTrackingState *)self input];
-    v51 = [v50 tapRequest];
-    [(FTCinematicTapResponse *)v49 setRequest:v51];
+    input3 = [(FTCinematicTrackingState *)self input];
+    tapRequest2 = [input3 tapRequest];
+    [(FTCinematicTapResponse *)v49 setRequest:tapRequest2];
 
     [(FTCinematicTrackingResult *)v40 setTapResponse:v49];
     v67 = 0u;
@@ -454,7 +454,7 @@ LABEL_55:
 - (void)commit
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = *a1;
+  v3 = *self;
   v4 = *(*a2 + 8);
   v5 = 134218240;
   v6 = v3;

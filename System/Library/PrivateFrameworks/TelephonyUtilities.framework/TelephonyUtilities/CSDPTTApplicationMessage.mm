@@ -13,8 +13,8 @@
 
   [v4 appendFormat:@"<(PTT message), "];
   v5 = NSStringFromSelector("channelUUID");
-  v6 = [(CSDPTTApplicationMessage *)self channelUUID];
-  [v4 appendFormat:@"%@=%@", v5, v6];
+  channelUUID = [(CSDPTTApplicationMessage *)self channelUUID];
+  [v4 appendFormat:@"%@=%@", v5, channelUUID];
 
   [v4 appendFormat:@", "];
   v7 = NSStringFromSelector("isServiceUpdateMessage");

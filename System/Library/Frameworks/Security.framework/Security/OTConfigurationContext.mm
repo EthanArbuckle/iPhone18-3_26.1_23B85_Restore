@@ -1,9 +1,9 @@
 @interface OTConfigurationContext
 - (OTConfigurationContext)init;
 - (id)description;
-- (id)makeCKKSControl:(id *)a3;
-- (id)makeOTControl:(id *)a3;
-- (void)setOverrideEscrowCache:(BOOL)a3;
+- (id)makeCKKSControl:(id *)control;
+- (id)makeOTControl:(id *)control;
+- (void)setOverrideEscrowCache:(BOOL)cache;
 @end
 
 @implementation OTConfigurationContext
@@ -25,53 +25,53 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(OTConfigurationContext *)self context];
-  v5 = [(OTConfigurationContext *)self containerName];
-  v6 = [(OTConfigurationContext *)self altDSID];
-  v7 = [v3 stringWithFormat:@"<OTConfigurationContext %@, %@, %@>", v4, v5, v6];
+  context = [(OTConfigurationContext *)self context];
+  containerName = [(OTConfigurationContext *)self containerName];
+  altDSID = [(OTConfigurationContext *)self altDSID];
+  v7 = [v3 stringWithFormat:@"<OTConfigurationContext %@, %@, %@>", context, containerName, altDSID];
 
   return v7;
 }
 
-- (id)makeCKKSControl:(id *)a3
+- (id)makeCKKSControl:(id *)control
 {
-  v5 = [(OTConfigurationContext *)self ckksControl];
+  ckksControl = [(OTConfigurationContext *)self ckksControl];
 
-  if (v5)
+  if (ckksControl)
   {
     [(OTConfigurationContext *)self ckksControl];
   }
 
   else
   {
-    [CKKSControl CKKSControlObject:1 error:a3];
+    [CKKSControl CKKSControlObject:1 error:control];
   }
   v6 = ;
 
   return v6;
 }
 
-- (id)makeOTControl:(id *)a3
+- (id)makeOTControl:(id *)control
 {
-  v5 = [(OTConfigurationContext *)self otControl];
+  otControl = [(OTConfigurationContext *)self otControl];
 
-  if (v5)
+  if (otControl)
   {
     [(OTConfigurationContext *)self otControl];
   }
 
   else
   {
-    [OTControl controlObject:1 error:a3];
+    [OTControl controlObject:1 error:control];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)setOverrideEscrowCache:(BOOL)a3
+- (void)setOverrideEscrowCache:(BOOL)cache
 {
-  if (a3)
+  if (cache)
   {
     v3 = 2;
   }

@@ -1,17 +1,17 @@
 @interface AFCallStateSnapshot
-+ (id)newWithBuilder:(id)a3;
-- (AFCallStateSnapshot)initWithBuilder:(id)a3;
-- (AFCallStateSnapshot)initWithCallState:(unint64_t)a3 onSpeaker:(BOOL)a4 isDropInCall:(BOOL)a5;
-- (AFCallStateSnapshot)initWithCoder:(id)a3;
-- (AFCallStateSnapshot)initWithDictionaryRepresentation:(id)a3;
-- (AFCallStateSnapshot)initWithSerializedBackingStore:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFCallStateSnapshot)initWithBuilder:(id)builder;
+- (AFCallStateSnapshot)initWithCallState:(unint64_t)state onSpeaker:(BOOL)speaker isDropInCall:(BOOL)call;
+- (AFCallStateSnapshot)initWithCoder:(id)coder;
+- (AFCallStateSnapshot)initWithDictionaryRepresentation:(id)representation;
+- (AFCallStateSnapshot)initWithSerializedBackingStore:(id)store;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)ad_shortDescription;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFCallStateSnapshot
@@ -43,13 +43,13 @@
   return v5;
 }
 
-- (AFCallStateSnapshot)initWithDictionaryRepresentation:(id)a3
+- (AFCallStateSnapshot)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"callState"];
+    v6 = [representationCopy objectForKey:@"callState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,7 +73,7 @@
       v10 = 0;
     }
 
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
     v12 = [v5 objectForKey:@"isDropInCall"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -86,54 +86,54 @@
       v13 = 0;
     }
 
-    v14 = [v13 BOOLValue];
-    self = [(AFCallStateSnapshot *)self initWithCallState:v7 onSpeaker:v11 isDropInCall:v14];
-    v8 = self;
+    bOOLValue2 = [v13 BOOLValue];
+    self = [(AFCallStateSnapshot *)self initWithCallState:v7 onSpeaker:bOOLValue isDropInCall:bOOLValue2];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   callState = self->_callState;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:callState];
-  [v6 encodeObject:v7 forKey:@"AFCallStateSnapshot::callState"];
+  [coderCopy encodeObject:v7 forKey:@"AFCallStateSnapshot::callState"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_onSpeaker];
-  [v6 encodeObject:v8 forKey:@"AFCallStateSnapshot::onSpeaker"];
+  [coderCopy encodeObject:v8 forKey:@"AFCallStateSnapshot::onSpeaker"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_isDropInCall];
-  [v6 encodeObject:v9 forKey:@"AFCallStateSnapshot::isDropInCall"];
+  [coderCopy encodeObject:v9 forKey:@"AFCallStateSnapshot::isDropInCall"];
 }
 
-- (AFCallStateSnapshot)initWithCoder:(id)a3
+- (AFCallStateSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFCallStateSnapshot::callState"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCallStateSnapshot::callState"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFCallStateSnapshot::onSpeaker"];
-  v8 = [v7 BOOLValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCallStateSnapshot::onSpeaker"];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFCallStateSnapshot::isDropInCall"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCallStateSnapshot::isDropInCall"];
 
-  v10 = [v9 BOOLValue];
+  bOOLValue2 = [v9 BOOLValue];
 
-  return [(AFCallStateSnapshot *)self initWithCallState:v6 onSpeaker:v8 isDropInCall:v10];
+  return [(AFCallStateSnapshot *)self initWithCallState:unsignedIntegerValue onSpeaker:bOOLValue isDropInCall:bOOLValue2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -143,7 +143,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       callState = self->_callState;
       if (callState == [(AFCallStateSnapshot *)v5 callState]&& (onSpeaker = self->_onSpeaker, onSpeaker == [(AFCallStateSnapshot *)v5 onSpeaker]))
       {
@@ -178,7 +178,7 @@
   return v6 ^ v8;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v13.receiver = self;
@@ -208,15 +208,15 @@
   return v11;
 }
 
-- (AFCallStateSnapshot)initWithCallState:(unint64_t)a3 onSpeaker:(BOOL)a4 isDropInCall:(BOOL)a5
+- (AFCallStateSnapshot)initWithCallState:(unint64_t)state onSpeaker:(BOOL)speaker isDropInCall:(BOOL)call
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__AFCallStateSnapshot_initWithCallState_onSpeaker_isDropInCall___block_invoke;
   v6[3] = &__block_descriptor_42_e39_v16__0___AFCallStateSnapshotMutating__8l;
-  v6[4] = a3;
-  v7 = a4;
-  v8 = a5;
+  v6[4] = state;
+  speakerCopy = speaker;
+  callCopy = call;
   return [(AFCallStateSnapshot *)self initWithBuilder:v6];
 }
 
@@ -229,17 +229,17 @@ void __64__AFCallStateSnapshot_initWithCallState_onSpeaker_isDropInCall___block_
   [v4 setIsDropInCall:*(a1 + 41)];
 }
 
-- (AFCallStateSnapshot)initWithBuilder:(id)a3
+- (AFCallStateSnapshot)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = AFCallStateSnapshot;
   v5 = [(AFCallStateSnapshot *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFCallStateSnapshotMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFCallStateSnapshotMutation *)v7 isDirty])
     {
       v6->_callState = [(_AFCallStateSnapshotMutation *)v7 getCallState];
@@ -251,21 +251,21 @@ void __64__AFCallStateSnapshot_initWithCallState_onSpeaker_isDropInCall___block_
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFCallStateSnapshotMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFCallStateSnapshotMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFCallStateSnapshot);
@@ -288,20 +288,20 @@ void __64__AFCallStateSnapshot_initWithCallState_onSpeaker_isDropInCall___block_
   return v6;
 }
 
-- (AFCallStateSnapshot)initWithSerializedBackingStore:(id)a3
+- (AFCallStateSnapshot)initWithSerializedBackingStore:(id)store
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self = [(AFCallStateSnapshot *)self initWithDictionaryRepresentation:v4];
-    v5 = self;
+    self = [(AFCallStateSnapshot *)self initWithDictionaryRepresentation:storeCopy];
+    selfCopy = self;
   }
 
   else
   {
-    if (v4)
+    if (storeCopy)
     {
       v6 = AFSiriLogContextUtility;
       if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
@@ -309,16 +309,16 @@ void __64__AFCallStateSnapshot_initWithCallState_onSpeaker_isDropInCall___block_
         v9 = 136315394;
         v10 = "[AFCallStateSnapshot(ContextSnapshot) initWithSerializedBackingStore:]";
         v11 = 2112;
-        v12 = v4;
+        v12 = storeCopy;
         _os_log_error_impl(&dword_1912FE000, v6, OS_LOG_TYPE_ERROR, "%s #hal serializedBackingStore is of unexpected type: %@", &v9, 0x16u);
       }
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v5;
+  return selfCopy;
 }
 
 @end

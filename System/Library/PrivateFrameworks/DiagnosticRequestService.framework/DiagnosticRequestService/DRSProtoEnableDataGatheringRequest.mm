@@ -1,12 +1,12 @@
 @interface DRSProtoEnableDataGatheringRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DRSProtoEnableDataGatheringRequest
@@ -17,92 +17,92 @@
   v8.receiver = self;
   v8.super_class = DRSProtoEnableDataGatheringRequest;
   v4 = [(DRSProtoEnableDataGatheringRequest *)&v8 description];
-  v5 = [(DRSProtoEnableDataGatheringRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DRSProtoEnableDataGatheringRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   requestDescription = self->_requestDescription;
   if (requestDescription)
   {
-    v5 = [(DRSProtoRequestDescription *)requestDescription dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request_description"];
+    dictionaryRepresentation = [(DRSProtoRequestDescription *)requestDescription dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request_description"];
   }
 
   logType = self->_logType;
   if (logType)
   {
-    [v3 setObject:logType forKey:@"log_type"];
+    [dictionary setObject:logType forKey:@"log_type"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_isContinue];
-    [v3 setObject:v7 forKey:@"is_continue"];
+    [dictionary setObject:v7 forKey:@"is_continue"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_requestDescription)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_logType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     isContinue = self->_isContinue;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestDescription)
   {
-    [v4 setRequestDescription:?];
-    v4 = v5;
+    [toCopy setRequestDescription:?];
+    toCopy = v5;
   }
 
   if (self->_logType)
   {
     [v5 setLogType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_isContinue;
-    v4[28] |= 1u;
+    toCopy[24] = self->_isContinue;
+    toCopy[28] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(DRSProtoRequestDescription *)self->_requestDescription copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(DRSProtoRequestDescription *)self->_requestDescription copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_logType copyWithZone:a3];
+  v8 = [(NSString *)self->_logType copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -115,16 +115,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   requestDescription = self->_requestDescription;
-  if (requestDescription | *(v4 + 2))
+  if (requestDescription | *(equalCopy + 2))
   {
     if (![(DRSProtoRequestDescription *)requestDescription isEqual:?])
     {
@@ -133,7 +133,7 @@
   }
 
   logType = self->_logType;
-  if (logType | *(v4 + 1))
+  if (logType | *(equalCopy + 1))
   {
     if (![(NSString *)logType isEqual:?])
     {
@@ -141,10 +141,10 @@
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
 LABEL_8:
       v7 = 0;
@@ -153,13 +153,13 @@ LABEL_8:
 
     if (self->_isContinue)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_8;
     }
@@ -189,12 +189,12 @@ LABEL_9:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   requestDescription = self->_requestDescription;
-  v6 = *(v4 + 2);
-  v7 = v4;
+  v6 = *(fromCopy + 2);
+  v7 = fromCopy;
   if (requestDescription)
   {
     if (!v6)
@@ -215,17 +215,17 @@ LABEL_9:
     [(DRSProtoEnableDataGatheringRequest *)self setRequestDescription:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(DRSProtoEnableDataGatheringRequest *)self setLogType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_isContinue = *(v4 + 24);
+    self->_isContinue = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 }

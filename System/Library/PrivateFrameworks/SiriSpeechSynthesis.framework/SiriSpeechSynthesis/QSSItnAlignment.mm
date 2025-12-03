@@ -1,6 +1,6 @@
 @interface QSSItnAlignment
-- (Offset<siri::speech::schema_fb::ItnAlignment>)addObjectToBuffer:(void *)a3;
-- (QSSItnAlignment)initWithFlatbuffData:(id)a3 root:(const ItnAlignment *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::ItnAlignment>)addObjectToBuffer:(void *)buffer;
+- (QSSItnAlignment)initWithFlatbuffData:(id)data root:(const ItnAlignment *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)first_post_itn_char_pos;
 - (int)first_pre_itn_token_index;
@@ -39,23 +39,23 @@ flatbuffers::DetachedBuffer *__31__QSSItnAlignment_flatbuffData__block_invoke(ui
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::ItnAlignment>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::ItnAlignment>)addObjectToBuffer:(void *)buffer
 {
-  v4 = self;
-  v5 = [(QSSItnAlignment *)self first_pre_itn_token_index];
-  v6 = [(QSSItnAlignment *)v4 last_pre_itn_token_index];
-  v7 = [(QSSItnAlignment *)v4 first_post_itn_char_pos];
-  LODWORD(v4) = [(QSSItnAlignment *)v4 last_post_itn_char_pos];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v8 = *(a3 + 10);
-  v9 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v6);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v7);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v4);
+  selfCopy = self;
+  first_pre_itn_token_index = [(QSSItnAlignment *)self first_pre_itn_token_index];
+  last_pre_itn_token_index = [(QSSItnAlignment *)selfCopy last_pre_itn_token_index];
+  first_post_itn_char_pos = [(QSSItnAlignment *)selfCopy first_post_itn_char_pos];
+  LODWORD(selfCopy) = [(QSSItnAlignment *)selfCopy last_post_itn_char_pos];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v8 = *(buffer + 10);
+  v9 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, first_pre_itn_token_index);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, last_pre_itn_token_index);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, first_post_itn_char_pos);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, selfCopy);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v9 + v8);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v9 + v8);
 }
 
 - (int)last_post_itn_char_pos
@@ -118,42 +118,42 @@ flatbuffers::DetachedBuffer *__31__QSSItnAlignment_flatbuffData__block_invoke(ui
   }
 }
 
-- (QSSItnAlignment)initWithFlatbuffData:(id)a3 root:(const ItnAlignment *)a4 verify:(BOOL)a5
+- (QSSItnAlignment)initWithFlatbuffData:(id)data root:(const ItnAlignment *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSItnAlignment;
   v10 = [(QSSItnAlignment *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -175,9 +175,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

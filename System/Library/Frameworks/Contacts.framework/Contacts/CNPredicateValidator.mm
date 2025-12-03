@@ -1,35 +1,35 @@
 @interface CNPredicateValidator
-- (BOOL)validateWithError:(id *)a3;
+- (BOOL)validateWithError:(id *)error;
 - (NSArray)allowedKeys;
 - (NSArray)usedKeys;
-- (void)setAllowedKeys:(id)a3;
-- (void)visitPredicateExpression:(id)a3;
-- (void)visitPredicateOperator:(id)a3;
+- (void)setAllowedKeys:(id)keys;
+- (void)visitPredicateExpression:(id)expression;
+- (void)visitPredicateOperator:(id)operator;
 @end
 
 @implementation CNPredicateValidator
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
   [(CNPredicateValidator *)self setValidated:1];
-  v5 = [(CNPredicateValidator *)self predicate];
-  if (v5)
+  predicate = [(CNPredicateValidator *)self predicate];
+  if (predicate)
   {
-    v6 = v5;
-    v7 = [(CNPredicateValidator *)self allowedKeys];
+    v6 = predicate;
+    allowedKeys = [(CNPredicateValidator *)self allowedKeys];
 
-    if (v7)
+    if (allowedKeys)
     {
-      v8 = [(CNPredicateValidator *)self predicate];
-      [v8 acceptVisitor:self flags:3];
+      predicate2 = [(CNPredicateValidator *)self predicate];
+      [predicate2 acceptVisitor:self flags:3];
 
-      if (a3)
+      if (error)
       {
-        v9 = [(CNPredicateValidator *)self error];
+        error = [(CNPredicateValidator *)self error];
 
-        if (v9)
+        if (error)
         {
-          *a3 = [(CNPredicateValidator *)self error];
+          *error = [(CNPredicateValidator *)self error];
         }
       }
     }
@@ -38,16 +38,16 @@
   return [(CNPredicateValidator *)self validated];
 }
 
-- (void)setAllowedKeys:(id)a3
+- (void)setAllowedKeys:(id)keys
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v3, "count")}];
+  keysCopy = keys;
+  v4 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = keysCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -103,37 +103,37 @@ LABEL_12:
 
 - (NSArray)allowedKeys
 {
-  v2 = [(CNPredicateValidator *)self allowedKeysSet];
-  v3 = [v2 allObjects];
+  allowedKeysSet = [(CNPredicateValidator *)self allowedKeysSet];
+  allObjects = [allowedKeysSet allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  expressionCopy = expression;
   if (![(CNPredicateValidator *)self validated])
   {
     goto LABEL_34;
   }
 
-  v29 = v4;
+  v29 = expressionCopy;
   if (visitPredicateExpression__cn_once_token_0 != -1)
   {
     [CNPredicateValidator visitPredicateExpression:];
   }
 
   v5 = visitPredicateExpression__cn_once_object_0;
-  v6 = [v4 expressionType];
-  if (v6 != 10)
+  expressionType = [expressionCopy expressionType];
+  if (expressionType != 10)
   {
-    if (v6 == 4)
+    if (expressionType == 4)
     {
       v22 = MEMORY[0x1E696ABC8];
-      v23 = [v4 function];
-      v24 = [v4 arguments];
-      v25 = [v22 expressionForFunction:v23 arguments:v24];
+      function = [expressionCopy function];
+      arguments = [expressionCopy arguments];
+      v25 = [v22 expressionForFunction:function arguments:arguments];
 
       if (!v25)
       {
@@ -147,13 +147,13 @@ LABEL_12:
       goto LABEL_33;
     }
 
-    if (v6 != 3)
+    if (expressionType != 3)
     {
       goto LABEL_33;
     }
   }
 
-  v28 = [v4 keyPath];
+  keyPath = [expressionCopy keyPath];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -164,8 +164,8 @@ LABEL_12:
     goto LABEL_32;
   }
 
-  v7 = [v4 keyPath];
-  v8 = [v7 componentsSeparatedByString:@"."];
+  keyPath2 = [expressionCopy keyPath];
+  v8 = [keyPath2 componentsSeparatedByString:@"."];
 
   v32 = 0u;
   v33 = 0u;
@@ -189,7 +189,7 @@ LABEL_12:
       }
 
       v13 = *(*(&v30 + 1) + 8 * i);
-      if ([v13 hasPrefix:{@"@", v28}])
+      if ([v13 hasPrefix:{@"@", keyPath}])
       {
         if ([v13 length] < 2)
         {
@@ -205,8 +205,8 @@ LABEL_12:
 
       else
       {
-        v15 = [(CNPredicateValidator *)self allowedKeysSet];
-        v16 = [v15 containsObject:v13];
+        allowedKeysSet = [(CNPredicateValidator *)self allowedKeysSet];
+        v16 = [allowedKeysSet containsObject:v13];
 
         if ((v16 & 1) == 0)
         {
@@ -236,7 +236,7 @@ LABEL_25:
 
   if (![(CNPredicateValidator *)self validated])
   {
-    v34 = v28;
+    v34 = keyPath;
     v35 = @"CNKeyPaths";
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
     v36 = v19;
@@ -248,7 +248,7 @@ LABEL_25:
 LABEL_32:
 LABEL_33:
 
-  v4 = v29;
+  expressionCopy = v29;
 LABEL_34:
 }
 
@@ -264,15 +264,15 @@ uint64_t __49__CNPredicateValidator_visitPredicateExpression___block_invoke()
 
 - (NSArray)usedKeys
 {
-  v2 = [(NSMutableSet *)self->_usedKeysSet allObjects];
-  v3 = [v2 copy];
+  allObjects = [(NSMutableSet *)self->_usedKeysSet allObjects];
+  v3 = [allObjects copy];
 
   return v3;
 }
 
-- (void)visitPredicateOperator:(id)a3
+- (void)visitPredicateOperator:(id)operator
 {
-  if ([a3 operatorType] == 11)
+  if ([operator operatorType] == 11)
   {
 
     [(CNPredicateValidator *)self setValidated:0];

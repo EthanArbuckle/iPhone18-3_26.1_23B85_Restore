@@ -1,14 +1,14 @@
 @interface MFMessageBodyMigrator
 + (OS_os_log)log;
-- (BOOL)_mailboxHasUnmigratedFiles:(id)a3;
+- (BOOL)_mailboxHasUnmigratedFiles:(id)files;
 - (MFMailMessageLibrary)library;
-- (MFMessageBodyMigrator)initWithLibrary:(id)a3;
-- (id)_directoryContentsForPath:(id)a3;
-- (id)_filesForMessage:(id)a3;
-- (id)legacyAttachmentDirectoryForMessage:(id)a3;
-- (void)_migrateAllFilesForMailbox:(id)a3;
-- (void)_migrateDataFilesForMessage:(id)a3;
-- (void)migrateBodyForMessageIfNecessary:(id)a3;
+- (MFMessageBodyMigrator)initWithLibrary:(id)library;
+- (id)_directoryContentsForPath:(id)path;
+- (id)_filesForMessage:(id)message;
+- (id)legacyAttachmentDirectoryForMessage:(id)message;
+- (void)_migrateAllFilesForMailbox:(id)mailbox;
+- (void)_migrateDataFilesForMessage:(id)message;
+- (void)migrateBodyForMessageIfNecessary:(id)necessary;
 - (void)startMigratingBodies;
 @end
 
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __28__MFMessageBodyMigrator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_20 != -1)
   {
     dispatch_once(&log_onceToken_20, block);
@@ -39,16 +39,16 @@ void __28__MFMessageBodyMigrator_log__block_invoke(uint64_t a1)
   log_log_20 = v1;
 }
 
-- (MFMessageBodyMigrator)initWithLibrary:(id)a3
+- (MFMessageBodyMigrator)initWithLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v19.receiver = self;
   v19.super_class = MFMessageBodyMigrator;
   v5 = [(MFMessageBodyMigrator *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_library, v4);
+    objc_storeWeak(&v5->_library, libraryCopy);
     v7 = [objc_alloc(MEMORY[0x1E699B7E0]) initWithCountLimit:5];
     directoryContentCache = v6->_directoryContentCache;
     v6->_directoryContentCache = v7;
@@ -61,7 +61,7 @@ void __28__MFMessageBodyMigrator_log__block_invoke(uint64_t a1)
     mailboxesToCheck = v6->_mailboxesToCheck;
     v6->_mailboxesToCheck = v11;
 
-    v13 = [v4 database];
+    database = [libraryCopy database];
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMessageBodyMigrator initWithLibrary:]"];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -69,7 +69,7 @@ void __28__MFMessageBodyMigrator_log__block_invoke(uint64_t a1)
     v17[3] = &unk_1E7AA43C8;
     v15 = v6;
     v18 = v15;
-    [v13 __performReadWithCaller:v14 usingBlock:v17];
+    [database __performReadWithCaller:v14 usingBlock:v17];
 
     v15->_upgradeLock._os_unfair_lock_opaque = 0;
   }
@@ -105,13 +105,13 @@ void __41__MFMessageBodyMigrator_initWithLibrary___block_invoke_2(uint64_t a1, v
 
 - (void)startMigratingBodies
 {
-  v3 = [(MFMessageBodyMigrator *)self backgroundMigrationScheduler];
+  backgroundMigrationScheduler = [(MFMessageBodyMigrator *)self backgroundMigrationScheduler];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __45__MFMessageBodyMigrator_startMigratingBodies__block_invoke;
   v4[3] = &unk_1E7AA25C0;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [backgroundMigrationScheduler performBlock:v4];
 }
 
 void __45__MFMessageBodyMigrator_startMigratingBodies__block_invoke(uint64_t a1)
@@ -140,42 +140,42 @@ void __45__MFMessageBodyMigrator_startMigratingBodies__block_invoke(uint64_t a1)
   [v6 bodyMigrationFinished];
 }
 
-- (void)migrateBodyForMessageIfNecessary:(id)a3
+- (void)migrateBodyForMessageIfNecessary:(id)necessary
 {
-  v6 = a3;
-  v4 = [v6 mailbox];
-  v5 = [(MFMessageBodyMigrator *)self _mailboxHasUnmigratedFiles:v4];
+  necessaryCopy = necessary;
+  mailbox = [necessaryCopy mailbox];
+  v5 = [(MFMessageBodyMigrator *)self _mailboxHasUnmigratedFiles:mailbox];
 
   if (v5)
   {
-    [(MFMessageBodyMigrator *)self _migrateDataFilesForMessage:v6];
+    [(MFMessageBodyMigrator *)self _migrateDataFilesForMessage:necessaryCopy];
   }
 }
 
-- (void)_migrateDataFilesForMessage:(id)a3
+- (void)_migrateDataFilesForMessage:(id)message
 {
   v55 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v42 = [MEMORY[0x1E696AC08] defaultManager];
-  v37 = [(MFMessageBodyMigrator *)self _filesForMessage:v43];
+  messageCopy = message;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v37 = [(MFMessageBodyMigrator *)self _filesForMessage:messageCopy];
   if ([v37 count])
   {
     v4 = MEMORY[0x1E695DFF8];
-    v5 = [v43 mailbox];
-    v6 = [v5 fullPath];
-    v7 = [v6 stringByAppendingPathComponent:@"Messages"];
+    mailbox = [messageCopy mailbox];
+    fullPath = [mailbox fullPath];
+    v7 = [fullPath stringByAppendingPathComponent:@"Messages"];
     v41 = [v4 fileURLWithPath:v7];
 
-    v38 = [v43 account];
-    v8 = [(MFMessageBodyMigrator *)self library];
-    v36 = [v8 messageBasePathForAccount:v38];
+    account = [messageCopy account];
+    library = [(MFMessageBodyMigrator *)self library];
+    v36 = [library messageBasePathForAccount:account];
 
-    [MEMORY[0x1E699B5B0] messageDataDirectoryURLForGlobalMessageID:objc_msgSend(v43 basePath:"globalMessageID") purgeable:{v36, objc_msgSend(v38, "supportsPurge")}];
-    v35 = self;
+    [MEMORY[0x1E699B5B0] messageDataDirectoryURLForGlobalMessageID:objc_msgSend(messageCopy basePath:"globalMessageID") purgeable:{v36, objc_msgSend(account, "supportsPurge")}];
+    selfCopy = self;
     v40 = v51 = 0;
-    LOBYTE(v8) = [v42 createDirectoryAtURL:? withIntermediateDirectories:? attributes:? error:?];
+    LOBYTE(library) = [defaultManager createDirectoryAtURL:? withIntermediateDirectories:? attributes:? error:?];
     v9 = 0;
-    if ((v8 & 1) == 0)
+    if ((library & 1) == 0)
     {
       v10 = +[MFMessageBodyMigrator log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -205,8 +205,8 @@ void __45__MFMessageBodyMigrator_startMigratingBodies__block_invoke(uint64_t a1)
           }
 
           v15 = *(*(&v47 + 1) + 8 * v13);
-          v16 = [v43 externalID];
-          v17 = [v15 substringFromIndex:{objc_msgSend(v16, "length") + 1}];
+          externalID = [messageCopy externalID];
+          v17 = [v15 substringFromIndex:{objc_msgSend(externalID, "length") + 1}];
 
           v18 = @"full.emlx";
           if (([v17 isEqualToString:@"emlx"] & 1) == 0)
@@ -217,7 +217,7 @@ void __45__MFMessageBodyMigrator_startMigratingBodies__block_invoke(uint64_t a1)
           v19 = [v41 URLByAppendingPathComponent:v15];
           v20 = [v40 URLByAppendingPathComponent:v18];
           v46 = v14;
-          v21 = [v42 moveItemAtURL:v19 toURL:v20 error:&v46];
+          v21 = [defaultManager moveItemAtURL:v19 toURL:v20 error:&v46];
           v9 = v46;
 
           if ((v21 & 1) == 0)
@@ -242,16 +242,16 @@ void __45__MFMessageBodyMigrator_startMigratingBodies__block_invoke(uint64_t a1)
       while (v11);
     }
 
-    v23 = [(MFMessageBodyMigrator *)v35 legacyAttachmentDirectoryForMessage:v43];
-    v24 = [v23 path];
-    v25 = [v42 fileExistsAtPath:v24];
+    v23 = [(MFMessageBodyMigrator *)selfCopy legacyAttachmentDirectoryForMessage:messageCopy];
+    path = [v23 path];
+    v25 = [defaultManager fileExistsAtPath:path];
 
     if (v25)
     {
-      v26 = -[MFMessageBodyMigrator _legacyAttachmentDataDirectoryURLForGlobalMessageID:basePath:purgeable:](v35, "_legacyAttachmentDataDirectoryURLForGlobalMessageID:basePath:purgeable:", [v43 globalMessageID], v36, objc_msgSend(v38, "supportsPurge"));
-      v27 = [v26 URLByDeletingLastPathComponent];
+      v26 = -[MFMessageBodyMigrator _legacyAttachmentDataDirectoryURLForGlobalMessageID:basePath:purgeable:](selfCopy, "_legacyAttachmentDataDirectoryURLForGlobalMessageID:basePath:purgeable:", [messageCopy globalMessageID], v36, objc_msgSend(account, "supportsPurge"));
+      uRLByDeletingLastPathComponent = [v26 URLByDeletingLastPathComponent];
       v45 = v9;
-      v28 = [v42 createDirectoryAtURL:v27 withIntermediateDirectories:1 attributes:0 error:&v45];
+      v28 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v45];
       v29 = v45;
 
       if ((v28 & 1) == 0)
@@ -264,7 +264,7 @@ void __45__MFMessageBodyMigrator_startMigratingBodies__block_invoke(uint64_t a1)
       }
 
       v44 = v29;
-      v31 = [v42 moveItemAtURL:v23 toURL:v26 error:&v44];
+      v31 = [defaultManager moveItemAtURL:v23 toURL:v26 error:&v44];
       v32 = v44;
 
       if ((v31 & 1) == 0)
@@ -286,17 +286,17 @@ void __45__MFMessageBodyMigrator_startMigratingBodies__block_invoke(uint64_t a1)
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_mailboxHasUnmigratedFiles:(id)a3
+- (BOOL)_mailboxHasUnmigratedFiles:(id)files
 {
-  v4 = a3;
+  filesCopy = files;
   os_unfair_lock_lock(&self->_upgradeLock);
-  v5 = [(MFMessageBodyMigrator *)self mailboxesToCheck];
-  v6 = [v5 containsObject:v4];
+  mailboxesToCheck = [(MFMessageBodyMigrator *)self mailboxesToCheck];
+  v6 = [mailboxesToCheck containsObject:filesCopy];
 
   if (v6)
   {
-    v7 = [v4 fullPath];
-    v8 = [v7 stringByAppendingPathComponent:@"Messages"];
+    fullPath = [filesCopy fullPath];
+    v8 = [fullPath stringByAppendingPathComponent:@"Messages"];
 
     v9 = [(MFMessageBodyMigrator *)self _directoryContentsForPath:v8];
     if ([v9 count])
@@ -304,11 +304,11 @@ void __45__MFMessageBodyMigrator_startMigratingBodies__block_invoke(uint64_t a1)
       goto LABEL_4;
     }
 
-    v10 = [v4 fullPath];
-    v11 = [v10 stringByAppendingPathComponent:@"Attachments"];
+    fullPath2 = [filesCopy fullPath];
+    v11 = [fullPath2 stringByAppendingPathComponent:@"Attachments"];
 
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [v12 contentsOfDirectoryAtPath:v11 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v13 = [defaultManager contentsOfDirectoryAtPath:v11 error:0];
     v14 = [v13 count];
 
     if (v14)
@@ -319,8 +319,8 @@ LABEL_4:
 
     else
     {
-      v17 = [(MFMessageBodyMigrator *)self mailboxesToCheck];
-      [v17 removeObject:v4];
+      mailboxesToCheck2 = [(MFMessageBodyMigrator *)self mailboxesToCheck];
+      [mailboxesToCheck2 removeObject:filesCopy];
 
       v15 = 0;
     }
@@ -336,39 +336,39 @@ LABEL_4:
   return v15;
 }
 
-- (void)_migrateAllFilesForMailbox:(id)a3
+- (void)_migrateAllFilesForMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [MFMessageCriterion criterionForMailbox:v4];
-  v6 = [(MFMessageBodyMigrator *)self library];
+  mailboxCopy = mailbox;
+  v5 = [MFMessageCriterion criterionForMailbox:mailboxCopy];
+  library = [(MFMessageBodyMigrator *)self library];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52__MFMessageBodyMigrator__migrateAllFilesForMailbox___block_invoke;
   v10[3] = &unk_1E7AA66A8;
   v10[4] = self;
-  [v6 iterateMessagesMatchingCriterion:v5 options:6297663 handler:v10];
+  [library iterateMessagesMatchingCriterion:v5 options:6297663 handler:v10];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v4 fullPath];
-  [v7 removeItemAtPath:v8 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  fullPath = [mailboxCopy fullPath];
+  [defaultManager removeItemAtPath:fullPath error:0];
 
   os_unfair_lock_lock(&self->_upgradeLock);
-  v9 = [(MFMessageBodyMigrator *)self mailboxesToCheck];
-  [v9 removeObject:v4];
+  mailboxesToCheck = [(MFMessageBodyMigrator *)self mailboxesToCheck];
+  [mailboxesToCheck removeObject:mailboxCopy];
 
   os_unfair_lock_unlock(&self->_upgradeLock);
 }
 
-- (id)_filesForMessage:(id)a3
+- (id)_filesForMessage:(id)message
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 externalID];
-  if (v5)
+  messageCopy = message;
+  externalID = [messageCopy externalID];
+  if (externalID)
   {
-    v6 = [v4 mailbox];
-    v7 = [v6 fullPath];
-    v8 = [v7 stringByAppendingPathComponent:@"Messages"];
+    mailbox = [messageCopy mailbox];
+    fullPath = [mailbox fullPath];
+    v8 = [fullPath stringByAppendingPathComponent:@"Messages"];
 
     v9 = [(MFMessageBodyMigrator *)self _directoryContentsForPath:v8];
     if ([v9 count])
@@ -378,7 +378,7 @@ LABEL_4:
       v14[1] = 3221225472;
       v14[2] = __42__MFMessageBodyMigrator__filesForMessage___block_invoke;
       v14[3] = &unk_1E7AA66D0;
-      v15 = v5;
+      v15 = externalID;
       v10 = [v9 ef_filter:v14];
       [v9 removeObjectsInArray:v10];
 
@@ -396,8 +396,8 @@ LABEL_4:
     v8 = +[MFMessageBodyMigrator log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v4 ef_publicDescription];
-      [(MFMessageBodyMigrator *)v11 _filesForMessage:buf, v8];
+      ef_publicDescription = [messageCopy ef_publicDescription];
+      [(MFMessageBodyMigrator *)ef_publicDescription _filesForMessage:buf, v8];
     }
 
     v10 = MEMORY[0x1E695E0F0];
@@ -408,33 +408,33 @@ LABEL_4:
   return v10;
 }
 
-- (id)legacyAttachmentDirectoryForMessage:(id)a3
+- (id)legacyAttachmentDirectoryForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [v3 mailbox];
-  v6 = [v5 fullPath];
-  v7 = [v6 stringByAppendingPathComponent:@"Attachments"];
+  mailbox = [messageCopy mailbox];
+  fullPath = [mailbox fullPath];
+  v7 = [fullPath stringByAppendingPathComponent:@"Attachments"];
   v8 = [v4 fileURLWithPath:v7];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v3, "libraryID")}];
-  v10 = [v9 stringValue];
-  v11 = [v8 URLByAppendingPathComponent:v10];
+  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(messageCopy, "libraryID")}];
+  stringValue = [v9 stringValue];
+  v11 = [v8 URLByAppendingPathComponent:stringValue];
 
   return v11;
 }
 
-- (id)_directoryContentsForPath:(id)a3
+- (id)_directoryContentsForPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MFMessageBodyMigrator *)self directoryContentCache];
+  pathCopy = path;
+  directoryContentCache = [(MFMessageBodyMigrator *)self directoryContentCache];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__MFMessageBodyMigrator__directoryContentsForPath___block_invoke;
   v9[3] = &unk_1E7AA66F8;
-  v6 = v4;
+  v6 = pathCopy;
   v10 = v6;
-  v7 = [v5 objectForKey:v6 generator:v9];
+  v7 = [directoryContentCache objectForKey:v6 generator:v9];
 
   return v7;
 }

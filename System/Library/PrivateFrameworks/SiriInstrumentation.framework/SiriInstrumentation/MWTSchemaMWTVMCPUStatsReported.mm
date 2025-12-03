@@ -1,68 +1,68 @@
 @interface MWTSchemaMWTVMCPUStatsReported
-- (BOOL)isEqual:(id)a3;
-- (MWTSchemaMWTVMCPUStatsReported)initWithDictionary:(id)a3;
-- (MWTSchemaMWTVMCPUStatsReported)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MWTSchemaMWTVMCPUStatsReported)initWithDictionary:(id)dictionary;
+- (MWTSchemaMWTVMCPUStatsReported)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCompressions:(BOOL)a3;
-- (void)setHasCpuTicksIdle:(BOOL)a3;
-- (void)setHasCpuTicksNice:(BOOL)a3;
-- (void)setHasCpuTicksSystem:(BOOL)a3;
-- (void)setHasCpuTicksUser:(BOOL)a3;
-- (void)setHasDecompressions:(BOOL)a3;
-- (void)setHasFaults:(BOOL)a3;
-- (void)setHasPageins:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCompressions:(BOOL)compressions;
+- (void)setHasCpuTicksIdle:(BOOL)idle;
+- (void)setHasCpuTicksNice:(BOOL)nice;
+- (void)setHasCpuTicksSystem:(BOOL)system;
+- (void)setHasCpuTicksUser:(BOOL)user;
+- (void)setHasDecompressions:(BOOL)decompressions;
+- (void)setHasFaults:(BOOL)faults;
+- (void)setHasPageins:(BOOL)pageins;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MWTSchemaMWTVMCPUStatsReported
 
-- (MWTSchemaMWTVMCPUStatsReported)initWithDictionary:(id)a3
+- (MWTSchemaMWTVMCPUStatsReported)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = MWTSchemaMWTVMCPUStatsReported;
   v5 = [(MWTSchemaMWTVMCPUStatsReported *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"snapshotStage"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"snapshotStage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTVMCPUStatsReported setSnapshotStage:](v5, "setSnapshotStage:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"cpuTicksSystem"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"cpuTicksSystem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTVMCPUStatsReported setCpuTicksSystem:](v5, "setCpuTicksSystem:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"cpuTicksUser"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"cpuTicksUser"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTVMCPUStatsReported setCpuTicksUser:](v5, "setCpuTicksUser:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:{@"cpuTicksIdle", v8}];
+    v9 = [dictionaryCopy objectForKeyedSubscript:{@"cpuTicksIdle", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTVMCPUStatsReported setCpuTicksIdle:](v5, "setCpuTicksIdle:", [v9 unsignedLongLongValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"cpuTicksNice"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cpuTicksNice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTVMCPUStatsReported setCpuTicksNice:](v5, "setCpuTicksNice:", [v10 unsignedLongLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"compressions"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"compressions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
     }
 
     v19 = v7;
-    v12 = [v4 objectForKeyedSubscript:@"decompressions"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"decompressions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,14 +78,14 @@
     }
 
     v13 = v6;
-    v14 = [v4 objectForKeyedSubscript:@"pageins"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"pageins"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTVMCPUStatsReported setPageins:](v5, "setPageins:", [v14 unsignedLongLongValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"faults"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"faults"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (MWTSchemaMWTVMCPUStatsReported)initWithJSON:(id)a3
+- (MWTSchemaMWTVMCPUStatsReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MWTSchemaMWTVMCPUStatsReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MWTSchemaMWTVMCPUStatsReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MWTSchemaMWTVMCPUStatsReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,12 +134,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MWTSchemaMWTVMCPUStatsReported compressions](self, "compressions")}];
-    [v3 setObject:v5 forKeyedSubscript:@"compressions"];
+    [dictionary setObject:v5 forKeyedSubscript:@"compressions"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -160,7 +160,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MWTSchemaMWTVMCPUStatsReported cpuTicksIdle](self, "cpuTicksIdle")}];
-  [v3 setObject:v6 forKeyedSubscript:@"cpuTicksIdle"];
+  [dictionary setObject:v6 forKeyedSubscript:@"cpuTicksIdle"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -176,7 +176,7 @@ LABEL_4:
 
 LABEL_13:
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MWTSchemaMWTVMCPUStatsReported cpuTicksNice](self, "cpuTicksNice")}];
-  [v3 setObject:v7 forKeyedSubscript:@"cpuTicksNice"];
+  [dictionary setObject:v7 forKeyedSubscript:@"cpuTicksNice"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -192,7 +192,7 @@ LABEL_5:
 
 LABEL_14:
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MWTSchemaMWTVMCPUStatsReported cpuTicksSystem](self, "cpuTicksSystem")}];
-  [v3 setObject:v8 forKeyedSubscript:@"cpuTicksSystem"];
+  [dictionary setObject:v8 forKeyedSubscript:@"cpuTicksSystem"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -208,7 +208,7 @@ LABEL_6:
 
 LABEL_15:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MWTSchemaMWTVMCPUStatsReported cpuTicksUser](self, "cpuTicksUser")}];
-  [v3 setObject:v9 forKeyedSubscript:@"cpuTicksUser"];
+  [dictionary setObject:v9 forKeyedSubscript:@"cpuTicksUser"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -224,7 +224,7 @@ LABEL_7:
 
 LABEL_16:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MWTSchemaMWTVMCPUStatsReported decompressions](self, "decompressions")}];
-  [v3 setObject:v10 forKeyedSubscript:@"decompressions"];
+  [dictionary setObject:v10 forKeyedSubscript:@"decompressions"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -237,7 +237,7 @@ LABEL_8:
 
 LABEL_18:
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MWTSchemaMWTVMCPUStatsReported pageins](self, "pageins")}];
-    [v3 setObject:v12 forKeyedSubscript:@"pageins"];
+    [dictionary setObject:v12 forKeyedSubscript:@"pageins"];
 
     if ((*&self->_has & 1) == 0)
     {
@@ -256,13 +256,13 @@ LABEL_19:
       v14 = off_1E78DAFE8[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"snapshotStage"];
+    [dictionary setObject:v14 forKeyedSubscript:@"snapshotStage"];
     goto LABEL_23;
   }
 
 LABEL_17:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MWTSchemaMWTVMCPUStatsReported faults](self, "faults")}];
-  [v3 setObject:v11 forKeyedSubscript:@"faults"];
+  [dictionary setObject:v11 forKeyedSubscript:@"faults"];
 
   has = self->_has;
   if ((has & 0x80) != 0)
@@ -277,9 +277,9 @@ LABEL_9:
   }
 
 LABEL_23:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -407,16 +407,16 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_38;
@@ -425,13 +425,13 @@ LABEL_10:
   if (*&has)
   {
     snapshotStage = self->_snapshotStage;
-    if (snapshotStage != [v4 snapshotStage])
+    if (snapshotStage != [equalCopy snapshotStage])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -443,13 +443,13 @@ LABEL_10:
   if (v8)
   {
     cpuTicksSystem = self->_cpuTicksSystem;
-    if (cpuTicksSystem != [v4 cpuTicksSystem])
+    if (cpuTicksSystem != [equalCopy cpuTicksSystem])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -461,13 +461,13 @@ LABEL_10:
   if (v10)
   {
     cpuTicksUser = self->_cpuTicksUser;
-    if (cpuTicksUser != [v4 cpuTicksUser])
+    if (cpuTicksUser != [equalCopy cpuTicksUser])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -479,13 +479,13 @@ LABEL_10:
   if (v12)
   {
     cpuTicksIdle = self->_cpuTicksIdle;
-    if (cpuTicksIdle != [v4 cpuTicksIdle])
+    if (cpuTicksIdle != [equalCopy cpuTicksIdle])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -497,13 +497,13 @@ LABEL_10:
   if (v14)
   {
     cpuTicksNice = self->_cpuTicksNice;
-    if (cpuTicksNice != [v4 cpuTicksNice])
+    if (cpuTicksNice != [equalCopy cpuTicksNice])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -515,13 +515,13 @@ LABEL_10:
   if (v16)
   {
     compressions = self->_compressions;
-    if (compressions != [v4 compressions])
+    if (compressions != [equalCopy compressions])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -533,13 +533,13 @@ LABEL_10:
   if (v18)
   {
     decompressions = self->_decompressions;
-    if (decompressions != [v4 decompressions])
+    if (decompressions != [equalCopy decompressions])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -551,10 +551,10 @@ LABEL_10:
   if (v20)
   {
     pageins = self->_pageins;
-    if (pageins == [v4 pageins])
+    if (pageins == [equalCopy pageins])
     {
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
       goto LABEL_34;
     }
 
@@ -573,7 +573,7 @@ LABEL_34:
   if (v22)
   {
     faults = self->_faults;
-    if (faults != [v4 faults])
+    if (faults != [equalCopy faults])
     {
       goto LABEL_38;
     }
@@ -585,9 +585,9 @@ LABEL_39:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -704,9 +704,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setHasFaults:(BOOL)a3
+- (void)setHasFaults:(BOOL)faults
 {
-  if (a3)
+  if (faults)
   {
     v3 = 256;
   }
@@ -719,9 +719,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasPageins:(BOOL)a3
+- (void)setHasPageins:(BOOL)pageins
 {
-  if (a3)
+  if (pageins)
   {
     v3 = 128;
   }
@@ -734,9 +734,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasDecompressions:(BOOL)a3
+- (void)setHasDecompressions:(BOOL)decompressions
 {
-  if (a3)
+  if (decompressions)
   {
     v3 = 64;
   }
@@ -749,9 +749,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasCompressions:(BOOL)a3
+- (void)setHasCompressions:(BOOL)compressions
 {
-  if (a3)
+  if (compressions)
   {
     v3 = 32;
   }
@@ -764,9 +764,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasCpuTicksNice:(BOOL)a3
+- (void)setHasCpuTicksNice:(BOOL)nice
 {
-  if (a3)
+  if (nice)
   {
     v3 = 16;
   }
@@ -779,9 +779,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasCpuTicksIdle:(BOOL)a3
+- (void)setHasCpuTicksIdle:(BOOL)idle
 {
-  if (a3)
+  if (idle)
   {
     v3 = 8;
   }
@@ -794,9 +794,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasCpuTicksUser:(BOOL)a3
+- (void)setHasCpuTicksUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 4;
   }
@@ -809,9 +809,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasCpuTicksSystem:(BOOL)a3
+- (void)setHasCpuTicksSystem:(BOOL)system
 {
-  if (a3)
+  if (system)
   {
     v3 = 2;
   }

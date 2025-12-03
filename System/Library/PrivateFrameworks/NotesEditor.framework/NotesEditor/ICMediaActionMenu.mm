@@ -1,22 +1,22 @@
 @interface ICMediaActionMenu
-+ (ICMediaActionMenu)menuWithIsCameraAvailable:(BOOL)a3 isLiveTextAvailable:(BOOL)a4 isPasswordProtected:(BOOL)a5 isInSecureScreen:(BOOL)a6 presentingViewController:(id)a7 presentingBarButtonItem:(id)a8 presentingSourceView:(id)a9 deferredChildren:(BOOL)a10 sidecarMenuController:(id)a11 completion:(id)a12;
-+ (ICMediaActionMenu)menuWithIsPasswordProtected:(BOOL)a3 isInSecureScreen:(BOOL)a4 presentingViewController:(id)a5 presentingBarButtonItem:(id)a6 presentingSourceView:(id)a7 sidecarMenuController:(id)a8 completion:(id)aBlock;
++ (ICMediaActionMenu)menuWithIsCameraAvailable:(BOOL)available isLiveTextAvailable:(BOOL)textAvailable isPasswordProtected:(BOOL)protected isInSecureScreen:(BOOL)screen presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view deferredChildren:(BOOL)self0 sidecarMenuController:(id)self1 completion:(id)self2;
++ (ICMediaActionMenu)menuWithIsPasswordProtected:(BOOL)protected isInSecureScreen:(BOOL)screen presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view sidecarMenuController:(id)menuController completion:(id)aBlock;
 - (BOOL)hasSidecarMenuItems;
 - (ICMediaActionMenu)init;
-- (ICMediaActionMenu)initWithIsCameraAvailable:(BOOL)a3 isLiveTextAvailable:(BOOL)a4 isPasswordProtected:(BOOL)a5 isInSecureScreen:(BOOL)a6 presentingViewController:(id)a7 presentingBarButtonItem:(id)a8 presentingSourceView:(id)a9 sidecarMenuController:(id)a10 completion:(id)aBlock;
-- (ICMediaActionMenu)initWithIsPasswordProtected:(BOOL)a3 isInSecureScreen:(BOOL)a4 presentingViewController:(id)a5 presentingBarButtonItem:(id)a6 presentingSourceView:(id)a7 sidecarMenuController:(id)a8 completion:(id)aBlock;
+- (ICMediaActionMenu)initWithIsCameraAvailable:(BOOL)available isLiveTextAvailable:(BOOL)textAvailable isPasswordProtected:(BOOL)protected isInSecureScreen:(BOOL)screen presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view sidecarMenuController:(id)self0 completion:(id)aBlock;
+- (ICMediaActionMenu)initWithIsPasswordProtected:(BOOL)protected isInSecureScreen:(BOOL)screen presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view sidecarMenuController:(id)menuController completion:(id)aBlock;
 - (UIBarButtonItem)presentingBarButtonItem;
 - (id)completion;
 - (id)makeMenu;
 - (id)menuSections;
-- (void)setCompletion:(id)a3;
-- (void)setPresentingBarButtonItem:(id)a3;
+- (void)setCompletion:(id)completion;
+- (void)setPresentingBarButtonItem:(id)item;
 - (void)willShowMenu;
 @end
 
 @implementation ICMediaActionMenu
 
-- (ICMediaActionMenu)initWithIsPasswordProtected:(BOOL)a3 isInSecureScreen:(BOOL)a4 presentingViewController:(id)a5 presentingBarButtonItem:(id)a6 presentingSourceView:(id)a7 sidecarMenuController:(id)a8 completion:(id)aBlock
+- (ICMediaActionMenu)initWithIsPasswordProtected:(BOOL)protected isInSecureScreen:(BOOL)screen presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view sidecarMenuController:(id)menuController completion:(id)aBlock
 {
   v15 = _Block_copy(aBlock);
   if (v15)
@@ -31,14 +31,14 @@
     v16 = 0;
   }
 
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  return MediaActionMenu.init(isPasswordProtected:isInSecureScreen:presentingViewController:presentingBarButtonItem:presentingSourceView:sidecarMenuController:completion:)(a3, a4, v17, a6, a7, a8, v15, v16);
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
+  menuControllerCopy = menuController;
+  return MediaActionMenu.init(isPasswordProtected:isInSecureScreen:presentingViewController:presentingBarButtonItem:presentingSourceView:sidecarMenuController:completion:)(protected, screen, controllerCopy, item, view, menuController, v15, v16);
 }
 
-- (ICMediaActionMenu)initWithIsCameraAvailable:(BOOL)a3 isLiveTextAvailable:(BOOL)a4 isPasswordProtected:(BOOL)a5 isInSecureScreen:(BOOL)a6 presentingViewController:(id)a7 presentingBarButtonItem:(id)a8 presentingSourceView:(id)a9 sidecarMenuController:(id)a10 completion:(id)aBlock
+- (ICMediaActionMenu)initWithIsCameraAvailable:(BOOL)available isLiveTextAvailable:(BOOL)textAvailable isPasswordProtected:(BOOL)protected isInSecureScreen:(BOOL)screen presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view sidecarMenuController:(id)self0 completion:(id)aBlock
 {
   v14 = _Block_copy(aBlock);
   if (v14)
@@ -53,11 +53,11 @@
     v15 = 0;
   }
 
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = sub_2151BD580(a3, a4, a5, a6, v16, a8, a9, a10, v14, v15);
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
+  menuControllerCopy = menuController;
+  v20 = sub_2151BD580(available, textAvailable, protected, screen, controllerCopy, item, view, menuController, v14, v15);
   sub_2151AF750(v14);
 
   return v20;
@@ -67,7 +67,7 @@
 {
   type metadata accessor for MediaActionMenu();
   sub_2151BD978();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_21549F4FC();
 
   return v4;
@@ -75,15 +75,15 @@
 
 - (BOOL)hasSidecarMenuItems
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215377544();
 
   return v3 & 1;
 }
 
-+ (ICMediaActionMenu)menuWithIsCameraAvailable:(BOOL)a3 isLiveTextAvailable:(BOOL)a4 isPasswordProtected:(BOOL)a5 isInSecureScreen:(BOOL)a6 presentingViewController:(id)a7 presentingBarButtonItem:(id)a8 presentingSourceView:(id)a9 deferredChildren:(BOOL)a10 sidecarMenuController:(id)a11 completion:(id)a12
++ (ICMediaActionMenu)menuWithIsCameraAvailable:(BOOL)available isLiveTextAvailable:(BOOL)textAvailable isPasswordProtected:(BOOL)protected isInSecureScreen:(BOOL)screen presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view deferredChildren:(BOOL)self0 sidecarMenuController:(id)self1 completion:(id)self2
 {
-  v15 = _Block_copy(a12);
+  v15 = _Block_copy(completion);
   if (v15)
   {
     v16 = swift_allocObject();
@@ -96,17 +96,17 @@
     v16 = 0;
   }
 
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a11;
-  v21 = sub_215379CD4(a3, a4, a5, a6, v17, a8, a9, a10, a11, v15, v16);
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
+  menuControllerCopy = menuController;
+  v21 = sub_215379CD4(available, textAvailable, protected, screen, controllerCopy, item, view, children, menuController, v15, v16);
   sub_2151AF750(v15);
 
   return v21;
 }
 
-+ (ICMediaActionMenu)menuWithIsPasswordProtected:(BOOL)a3 isInSecureScreen:(BOOL)a4 presentingViewController:(id)a5 presentingBarButtonItem:(id)a6 presentingSourceView:(id)a7 sidecarMenuController:(id)a8 completion:(id)aBlock
++ (ICMediaActionMenu)menuWithIsPasswordProtected:(BOOL)protected isInSecureScreen:(BOOL)screen presentingViewController:(id)controller presentingBarButtonItem:(id)item presentingSourceView:(id)view sidecarMenuController:(id)menuController completion:(id)aBlock
 {
   v14 = _Block_copy(aBlock);
   if (v14)
@@ -121,11 +121,11 @@
     v15 = 0;
   }
 
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = _s11NotesEditor15MediaActionMenuC4menu19isPasswordProtected0G14InSecureScreen24presentingViewController0M13BarButtonItem0m6SourceN007sidecareO010completionSo6UIMenuCSb_SbSo06UIViewO0CSo05UIBarqR0CSgSo0W0CSgAA013SidecarInserteO0CSgySb_SStcSgtFZ_0(a3, a4, v16, a6, a7, a8, v14, v15);
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
+  menuControllerCopy = menuController;
+  v20 = _s11NotesEditor15MediaActionMenuC4menu19isPasswordProtected0G14InSecureScreen24presentingViewController0M13BarButtonItem0m6SourceN007sidecareO010completionSo6UIMenuCSb_SbSo06UIViewO0CSo05UIBarqR0CSgSo0W0CSgAA013SidecarInserteO0CSgySb_SStcSgtFZ_0(protected, screen, controllerCopy, item, view, menuController, v14, v15);
   sub_2151AF750(v14);
 
   return v20;
@@ -155,9 +155,9 @@
   return v4;
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -175,7 +175,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_2151AF750(v7);
 }
 
@@ -186,13 +186,13 @@
   return *(self + v3);
 }
 
-- (void)setPresentingBarButtonItem:(id)a3
+- (void)setPresentingBarButtonItem:(id)item
 {
   v5 = OBJC_IVAR___ICMediaActionMenu_presentingBarButtonItem;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = item;
+  itemCopy = item;
 }
 
 - (id)menuSections
@@ -200,7 +200,7 @@
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA5AA00);
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_2154BDB20;
-  v4 = self;
+  selfCopy = self;
   *(v3 + 32) = sub_21537876C();
 
   sub_2151A6C9C(0, &qword_281199650);

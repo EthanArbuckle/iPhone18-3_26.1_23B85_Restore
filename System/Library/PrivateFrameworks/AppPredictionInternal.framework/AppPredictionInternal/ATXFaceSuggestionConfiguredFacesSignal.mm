@@ -1,6 +1,6 @@
 @interface ATXFaceSuggestionConfiguredFacesSignal
 - (ATXFaceSuggestionConfiguredFacesSignal)init;
-- (double)valueForDescriptor:(id)a3;
+- (double)valueForDescriptor:(id)descriptor;
 - (void)_prepare;
 @end
 
@@ -42,13 +42,13 @@ id __50__ATXFaceSuggestionConfiguredFacesSignal__prepare__block_invoke(uint64_t 
   return v7;
 }
 
-- (double)valueForDescriptor:(id)a3
+- (double)valueForDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 extensionBundleIdentifier];
-  v6 = [v4 identifier];
+  descriptorCopy = descriptor;
+  extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+  identifier = [descriptorCopy identifier];
 
-  v7 = descriptorKey(v5, v6);
+  v7 = descriptorKey(extensionBundleIdentifier, identifier);
 
   if ([(NSCountedSet *)self->_configuredExtensionBundleIdentifiers countForObject:v7])
   {

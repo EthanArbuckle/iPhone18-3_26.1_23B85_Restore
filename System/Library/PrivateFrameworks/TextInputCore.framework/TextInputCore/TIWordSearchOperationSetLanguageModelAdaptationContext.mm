@@ -1,5 +1,5 @@
 @interface TIWordSearchOperationSetLanguageModelAdaptationContext
-- (TIWordSearchOperationSetLanguageModelAdaptationContext)initWithWordSearch:(id)a3 adaptationContext:(id)a4;
+- (TIWordSearchOperationSetLanguageModelAdaptationContext)initWithWordSearch:(id)search adaptationContext:(id)context;
 - (void)perform;
 @end
 
@@ -8,10 +8,10 @@
 - (void)perform
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(TIWordSearchOperationSetLanguageModelAdaptationContext *)self mecabraWrapper];
-  v4 = [v3 mecabraRef];
+  mecabraWrapper = [(TIWordSearchOperationSetLanguageModelAdaptationContext *)self mecabraWrapper];
+  mecabraRef = [mecabraWrapper mecabraRef];
 
-  if (v4)
+  if (mecabraRef)
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -24,36 +24,36 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = [(TIWordSearchOperationSetLanguageModelAdaptationContext *)self adaptationContext];
-        v11 = [v9 stringWithFormat:@"%s Set dynamic language model with context %@", "-[TIWordSearchOperationSetLanguageModelAdaptationContext perform]", v10];
+        adaptationContext = [(TIWordSearchOperationSetLanguageModelAdaptationContext *)self adaptationContext];
+        v11 = [v9 stringWithFormat:@"%s Set dynamic language model with context %@", "-[TIWordSearchOperationSetLanguageModelAdaptationContext perform]", adaptationContext];
         *buf = 138412290;
         v13 = v11;
         _os_log_debug_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
-    v6 = [(TIWordSearchOperationSetLanguageModelAdaptationContext *)self adaptationContext];
-    v7 = [v6 identifier];
+    adaptationContext2 = [(TIWordSearchOperationSetLanguageModelAdaptationContext *)self adaptationContext];
+    identifier = [adaptationContext2 identifier];
     MecabraSetDynamicLanguageModelAppContext();
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (TIWordSearchOperationSetLanguageModelAdaptationContext)initWithWordSearch:(id)a3 adaptationContext:(id)a4
+- (TIWordSearchOperationSetLanguageModelAdaptationContext)initWithWordSearch:(id)search adaptationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  searchCopy = search;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = TIWordSearchOperationSetLanguageModelAdaptationContext;
   v8 = [(TIWordSearchOperationSetLanguageModelAdaptationContext *)&v14 init];
   if (v8)
   {
-    v9 = [v6 mecabraWrapper];
+    mecabraWrapper = [searchCopy mecabraWrapper];
     mecabraWrapper = v8->_mecabraWrapper;
-    v8->_mecabraWrapper = v9;
+    v8->_mecabraWrapper = mecabraWrapper;
 
-    v11 = [v7 copy];
+    v11 = [contextCopy copy];
     adaptationContext = v8->_adaptationContext;
     v8->_adaptationContext = v11;
   }

@@ -1,30 +1,30 @@
 @interface REDependencyGraph
-- (BOOL)containsItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)item:(id)a3 isDependencyOfItem:(id)a4;
+- (BOOL)containsItem:(id)item;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)item:(id)item isDependencyOfItem:(id)ofItem;
 - (NSArray)allItems;
-- (REDependencyGraph)initWithPointerFunctions:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (REDependencyGraph)initWithPointerFunctions:(unint64_t)functions;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)topologicalSortedItemsWithComparator:(id)a3;
-- (void)_enumerateSortedFirstLevelDependenciesOfItem:(id)a3 usingComparator:(id)a4 withBlock:(id)a5;
-- (void)_visitNode:(id)a3 visited:(id)a4 temporary:(id)a5 result:(id)a6 comparator:(id)a7 warn:(BOOL)a8;
-- (void)addItem:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)markItem:(id)a3 dependentOnItem:(id)a4;
-- (void)removeItem:(id)a3;
+- (id)topologicalSortedItemsWithComparator:(id)comparator;
+- (void)_enumerateSortedFirstLevelDependenciesOfItem:(id)item usingComparator:(id)comparator withBlock:(id)block;
+- (void)_visitNode:(id)node visited:(id)visited temporary:(id)temporary result:(id)result comparator:(id)comparator warn:(BOOL)warn;
+- (void)addItem:(id)item;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)markItem:(id)item dependentOnItem:(id)onItem;
+- (void)removeItem:(id)item;
 @end
 
 @implementation REDependencyGraph
 
-- (REDependencyGraph)initWithPointerFunctions:(unint64_t)a3
+- (REDependencyGraph)initWithPointerFunctions:(unint64_t)functions
 {
   v8.receiver = self;
   v8.super_class = REDependencyGraph;
   v4 = [(REDependencyGraph *)&v8 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:a3 valueOptions:a3 capacity:0];
+    v5 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:functions valueOptions:functions capacity:0];
     nodes = v4->_nodes;
     v4->_nodes = v5;
   }
@@ -32,7 +32,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
   v4 = [[REDependencyGraph allocWithZone:?]];
@@ -159,23 +159,23 @@ id __34__REDependencyGraph_copyWithZone___block_invoke(uint64_t a1, void *a2)
   return v14;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v11 = a3;
+  itemCopy = item;
   if ([(REDependencyGraph *)self containsItem:?])
   {
-    RERaiseInternalException(*MEMORY[0x277CBE660], @"Item %@ already in dependency graph %@", v4, v5, v6, v7, v8, v9, v11);
+    RERaiseInternalException(*MEMORY[0x277CBE660], @"Item %@ already in dependency graph %@", v4, v5, v6, v7, v8, v9, itemCopy);
   }
 
-  v10 = [[REDependencyGraphNode alloc] initWithItem:v11];
-  [(NSMapTable *)self->_nodes setObject:v10 forKey:v11];
+  v10 = [[REDependencyGraphNode alloc] initWithItem:itemCopy];
+  [(NSMapTable *)self->_nodes setObject:v10 forKey:itemCopy];
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v11 = [(NSMapTable *)self->_nodes objectForKey:v4];
+  itemCopy = item;
+  v11 = [(NSMapTable *)self->_nodes objectForKey:itemCopy];
   if (v11)
   {
     v22 = 0u;
@@ -198,8 +198,8 @@ id __34__REDependencyGraph_copyWithZone___block_invoke(uint64_t a1, void *a2)
           }
 
           v17 = [(NSMapTable *)self->_nodes objectForKey:*(*(&v20 + 1) + 8 * i)];
-          v18 = [v17 connections];
-          [v18 removeObject:v11];
+          connections = [v17 connections];
+          [connections removeObject:v11];
         }
 
         v14 = [(NSMapTable *)v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -208,28 +208,28 @@ id __34__REDependencyGraph_copyWithZone___block_invoke(uint64_t a1, void *a2)
       while (v14);
     }
 
-    [(NSMapTable *)self->_nodes removeObjectForKey:v4];
+    [(NSMapTable *)self->_nodes removeObjectForKey:itemCopy];
   }
 
   else
   {
-    RERaiseInternalException(*MEMORY[0x277CBE660], @"Item %@ not in dependency graph %@", v5, v6, v7, v8, v9, v10, v4);
+    RERaiseInternalException(*MEMORY[0x277CBE660], @"Item %@ not in dependency graph %@", v5, v6, v7, v8, v9, v10, itemCopy);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markItem:(id)a3 dependentOnItem:(id)a4
+- (void)markItem:(id)item dependentOnItem:(id)onItem
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_nodes objectForKey:v19];
-  v8 = [(NSMapTable *)self->_nodes objectForKey:v6];
+  itemCopy = item;
+  onItemCopy = onItem;
+  v7 = [(NSMapTable *)self->_nodes objectForKey:itemCopy];
+  v8 = [(NSMapTable *)self->_nodes objectForKey:onItemCopy];
   v15 = v8;
   if (!v7)
   {
     v17 = *MEMORY[0x277CBE660];
-    v18 = v19;
+    v18 = itemCopy;
 LABEL_7:
     RERaiseInternalException(v17, @"Item %@ not in dependency graph %@", v9, v10, v11, v12, v13, v14, v18);
     goto LABEL_8;
@@ -238,29 +238,29 @@ LABEL_7:
   if (!v8)
   {
     v17 = *MEMORY[0x277CBE660];
-    v18 = v6;
+    v18 = onItemCopy;
     goto LABEL_7;
   }
 
   if (v7 == v8)
   {
-    RERaiseInternalException(*MEMORY[0x277CBE660], @"Cannot make item %@ not in dependency of itself", v9, v10, v11, v12, v13, v14, v19);
+    RERaiseInternalException(*MEMORY[0x277CBE660], @"Cannot make item %@ not in dependency of itself", v9, v10, v11, v12, v13, v14, itemCopy);
   }
 
   else
   {
-    v16 = [v7 connections];
-    [v16 addObject:v15];
+    connections = [v7 connections];
+    [connections addObject:v15];
   }
 
 LABEL_8:
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v15 = 0;
     v11 = 0u;
@@ -282,7 +282,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9), &v15);
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9), &v15);
         if (v15)
         {
           break;
@@ -305,24 +305,24 @@ LABEL_4:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)containsItem:(id)a3
+- (BOOL)containsItem:(id)item
 {
-  v3 = [(NSMapTable *)self->_nodes objectForKey:a3];
+  v3 = [(NSMapTable *)self->_nodes objectForKey:item];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)item:(id)a3 isDependencyOfItem:(id)a4
+- (BOOL)item:(id)item isDependencyOfItem:(id)ofItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMapTable *)self->_nodes objectForKey:v6];
-  v9 = [(NSMapTable *)self->_nodes objectForKey:v7];
+  itemCopy = item;
+  ofItemCopy = ofItem;
+  v8 = [(NSMapTable *)self->_nodes objectForKey:itemCopy];
+  v9 = [(NSMapTable *)self->_nodes objectForKey:ofItemCopy];
   v16 = v9;
   if (!v8)
   {
-    RERaiseInternalException(*MEMORY[0x277CBE660], @"Item %@ not in dependency graph %@", v10, v11, v12, v13, v14, v15, v6);
+    RERaiseInternalException(*MEMORY[0x277CBE660], @"Item %@ not in dependency graph %@", v10, v11, v12, v13, v14, v15, itemCopy);
 LABEL_6:
     v18 = 0;
     goto LABEL_7;
@@ -330,33 +330,33 @@ LABEL_6:
 
   if (!v9)
   {
-    RERaiseInternalException(*MEMORY[0x277CBE660], @"Item %@ not in dependency graph %@", v10, v11, v12, v13, v14, v15, v7);
+    RERaiseInternalException(*MEMORY[0x277CBE660], @"Item %@ not in dependency graph %@", v10, v11, v12, v13, v14, v15, ofItemCopy);
     goto LABEL_6;
   }
 
-  v17 = [v8 connections];
-  v18 = [v17 containsObject:v16];
+  connections = [v8 connections];
+  v18 = [connections containsObject:v16];
 
 LABEL_7:
   return v18;
 }
 
-- (void)_enumerateSortedFirstLevelDependenciesOfItem:(id)a3 usingComparator:(id)a4 withBlock:(id)a5
+- (void)_enumerateSortedFirstLevelDependenciesOfItem:(id)item usingComparator:(id)comparator withBlock:(id)block
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  itemCopy = item;
+  comparatorCopy = comparator;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v17 = [(NSMapTable *)self->_nodes objectForKey:v8];
+    v17 = [(NSMapTable *)self->_nodes objectForKey:itemCopy];
     if (v17)
     {
-      v35 = v10;
-      v36 = v9;
-      v37 = v8;
+      v35 = blockCopy;
+      v36 = comparatorCopy;
+      v37 = itemCopy;
       v46 = 0;
-      v18 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
@@ -380,13 +380,13 @@ LABEL_7:
             v25 = v24;
             if (v17 != v24)
             {
-              v26 = [v24 connections];
-              v27 = [v26 containsObject:v17];
+              connections = [v24 connections];
+              v27 = [connections containsObject:v17];
 
               if (v27)
               {
-                v28 = [v25 item];
-                [v18 addObject:v28];
+                item = [v25 item];
+                [array addObject:item];
               }
             }
           }
@@ -397,18 +397,18 @@ LABEL_7:
         while (v21);
       }
 
-      v10 = v35;
-      v9 = v36;
+      blockCopy = v35;
+      comparatorCopy = v36;
       if (v36)
       {
-        [v18 sortUsingComparator:v36];
+        [array sortUsingComparator:v36];
       }
 
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v29 = v18;
+      v29 = array;
       v30 = [v29 countByEnumeratingWithState:&v38 objects:v47 count:16];
       if (v30)
       {
@@ -442,23 +442,23 @@ LABEL_17:
         }
       }
 
-      v8 = v37;
+      itemCopy = v37;
     }
 
     else
     {
-      RERaiseInternalException(*MEMORY[0x277CBE660], @"Item %@ not in dependency graph %@", v11, v12, v13, v14, v15, v16, v8);
+      RERaiseInternalException(*MEMORY[0x277CBE660], @"Item %@ not in dependency graph %@", v11, v12, v13, v14, v15, v16, itemCopy);
     }
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -468,7 +468,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(REDependencyGraph *)self count];
       p_isa = &v5->super.isa;
       if (v6 == [(REDependencyGraph *)v5 count])
@@ -514,9 +514,9 @@ LABEL_22:
                 goto LABEL_23;
               }
 
-              v16 = [v12 connections];
-              v17 = [v14 connections];
-              v18 = [v16 isEqualToHashTable:v17];
+              connections = [v12 connections];
+              connections2 = [v14 connections];
+              v18 = [connections isEqualToHashTable:connections2];
 
               if (!v18)
               {
@@ -585,17 +585,17 @@ LABEL_23:
   return v5;
 }
 
-- (id)topologicalSortedItemsWithComparator:(id)a3
+- (id)topologicalSortedItemsWithComparator:(id)comparator
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  comparatorCopy = comparator;
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[REDependencyGraph count](self, "count")}];
   v6 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:512 capacity:{-[REDependencyGraph count](self, "count")}];
   v7 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:512 capacity:{-[REDependencyGraph count](self, "count")}];
-  if (v4)
+  if (comparatorCopy)
   {
-    v8 = [(REDependencyGraph *)self allItems];
-    v9 = [v8 sortedArrayUsingComparator:v4];
+    allItems = [(REDependencyGraph *)self allItems];
+    v9 = [allItems sortedArrayUsingComparator:comparatorCopy];
   }
 
   else
@@ -622,7 +622,7 @@ LABEL_23:
           objc_enumerationMutation(v10);
         }
 
-        [(REDependencyGraph *)self _visitNode:*(*(&v18 + 1) + 8 * i) visited:v6 temporary:v7 result:v5 comparator:v4 warn:v4 == 0, v18];
+        [(REDependencyGraph *)self _visitNode:*(*(&v18 + 1) + 8 * i) visited:v6 temporary:v7 result:v5 comparator:comparatorCopy warn:comparatorCopy == 0, v18];
       }
 
       v12 = [(NSMapTable *)v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -637,19 +637,19 @@ LABEL_23:
   return v15;
 }
 
-- (void)_visitNode:(id)a3 visited:(id)a4 temporary:(id)a5 result:(id)a6 comparator:(id)a7 warn:(BOOL)a8
+- (void)_visitNode:(id)node visited:(id)visited temporary:(id)temporary result:(id)result comparator:(id)comparator warn:(BOOL)warn
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (([v15 containsObject:v14] & 1) == 0)
+  warnCopy = warn;
+  nodeCopy = node;
+  visitedCopy = visited;
+  temporaryCopy = temporary;
+  resultCopy = result;
+  comparatorCopy = comparator;
+  if (([visitedCopy containsObject:nodeCopy] & 1) == 0)
   {
-    if ([v16 containsObject:v14])
+    if ([temporaryCopy containsObject:nodeCopy])
     {
-      if (v8)
+      if (warnCopy)
       {
         RERaiseInternalException(*MEMORY[0x277CBE658], @"A cycle was detected in the graph. Cannot run topoligcal sort", v19, v20, v21, v22, v23, v24, v27);
       }
@@ -657,22 +657,22 @@ LABEL_23:
 
     else
     {
-      [v16 addObject:v14];
+      [temporaryCopy addObject:nodeCopy];
       v27 = MEMORY[0x277D85DD0];
       v28 = 3221225472;
       v29 = __92__REDependencyGraph_REGraphExtensions___visitNode_visited_temporary_result_comparator_warn___block_invoke;
       v30 = &unk_2785F9E68;
-      v31 = self;
-      v25 = v15;
+      selfCopy = self;
+      v25 = visitedCopy;
       v32 = v25;
-      v33 = v16;
-      v26 = v17;
+      v33 = temporaryCopy;
+      v26 = resultCopy;
       v34 = v26;
-      v35 = v18;
-      v36 = v8;
-      [(REDependencyGraph *)self _enumerateSortedFirstLevelDependenciesOfItem:v14 usingComparator:v35 withBlock:&v27];
-      [v25 addObject:{v14, v27, v28, v29, v30, v31}];
-      [v26 insertObject:v14 atIndex:0];
+      v35 = comparatorCopy;
+      v36 = warnCopy;
+      [(REDependencyGraph *)self _enumerateSortedFirstLevelDependenciesOfItem:nodeCopy usingComparator:v35 withBlock:&v27];
+      [v25 addObject:{nodeCopy, v27, v28, v29, v30, selfCopy}];
+      [v26 insertObject:nodeCopy atIndex:0];
     }
   }
 }

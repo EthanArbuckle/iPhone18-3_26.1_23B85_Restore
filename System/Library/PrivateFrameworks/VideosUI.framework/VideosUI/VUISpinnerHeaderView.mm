@@ -1,14 +1,14 @@
 @interface VUISpinnerHeaderView
-- (VUISpinnerHeaderView)initWithSpecifier:(id)a3;
+- (VUISpinnerHeaderView)initWithSpecifier:(id)specifier;
 - (void)layoutSubviews;
 - (void)showText;
 @end
 
 @implementation VUISpinnerHeaderView
 
-- (VUISpinnerHeaderView)initWithSpecifier:(id)a3
+- (VUISpinnerHeaderView)initWithSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v23.receiver = self;
   v23.super_class = VUISpinnerHeaderView;
   v6 = *MEMORY[0x1E695F058];
@@ -18,8 +18,8 @@
   v10 = [(VUISpinnerHeaderView *)&v23 initWithFrame:*MEMORY[0x1E695F058], v7, v8, v9];
   if (v10)
   {
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [(VUISpinnerHeaderView *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(VUISpinnerHeaderView *)v10 setBackgroundColor:clearColor];
 
     [(VUISpinnerHeaderView *)v10 setAutoresizingMask:2];
     v12 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
@@ -34,9 +34,9 @@
     v17 = [MEMORY[0x1E69DD050] _defaultTextColorForTableViewStyle:1 isSectionHeader:1];
     [(UILabel *)v16 setTextColor:v17];
 
-    v18 = [v5 name];
-    v19 = [v18 uppercaseString];
-    [(UILabel *)v10->_text setText:v19];
+    name = [specifierCopy name];
+    uppercaseString = [name uppercaseString];
+    [(UILabel *)v10->_text setText:uppercaseString];
 
     [(VUISpinnerHeaderView *)v10 addSubview:v10->_text];
     v20 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
@@ -46,7 +46,7 @@
     [(UIActivityIndicatorView *)v10->_spinner setHidesWhenStopped:1];
     [(VUISpinnerHeaderView *)v10 addSubview:v10->_spinner];
     [(UIActivityIndicatorView *)v10->_spinner startAnimating];
-    objc_storeStrong(&v10->_specifier, a3);
+    objc_storeStrong(&v10->_specifier, specifier);
   }
 
   return v10;
@@ -54,9 +54,9 @@
 
 - (void)showText
 {
-  v4 = [(PSSpecifier *)self->_specifier name];
-  v3 = [v4 uppercaseString];
-  [(UILabel *)self->_text setText:v3];
+  name = [(PSSpecifier *)self->_specifier name];
+  uppercaseString = [name uppercaseString];
+  [(UILabel *)self->_text setText:uppercaseString];
 }
 
 - (void)layoutSubviews
@@ -76,8 +76,8 @@
   {
     [(VUISpinnerHeaderView *)self bounds];
     v13 = v12;
-    v14 = [(VUISpinnerHeaderView *)self superview];
-    [v14 _backgroundInset];
+    superview = [(VUISpinnerHeaderView *)self superview];
+    [superview _backgroundInset];
     v16 = v13 - v15;
     PreferencesTableViewCellLeftPad();
     v18 = v16 - v17 - v4;
@@ -85,8 +85,8 @@
 
   else
   {
-    v14 = [(VUISpinnerHeaderView *)self superview];
-    [v14 _backgroundInset];
+    superview = [(VUISpinnerHeaderView *)self superview];
+    [superview _backgroundInset];
     v20 = v19;
     PreferencesTableViewCellLeftPad();
     v18 = v20 + v21;

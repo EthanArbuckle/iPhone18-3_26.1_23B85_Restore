@@ -1,20 +1,20 @@
 @interface MPSGraphStochasticGradientDescentOptimizer
-- (MPSGraphStochasticGradientDescentOptimizer)initWithGraph:(id)a3 learningRateTensor:(id)a4 trainableVariables:(id)a5 variablesToGradientTensorMap:(id)a6 name:(id)a7;
+- (MPSGraphStochasticGradientDescentOptimizer)initWithGraph:(id)graph learningRateTensor:(id)tensor trainableVariables:(id)variables variablesToGradientTensorMap:(id)map name:(id)name;
 @end
 
 @implementation MPSGraphStochasticGradientDescentOptimizer
 
-- (MPSGraphStochasticGradientDescentOptimizer)initWithGraph:(id)a3 learningRateTensor:(id)a4 trainableVariables:(id)a5 variablesToGradientTensorMap:(id)a6 name:(id)a7
+- (MPSGraphStochasticGradientDescentOptimizer)initWithGraph:(id)graph learningRateTensor:(id)tensor trainableVariables:(id)variables variablesToGradientTensorMap:(id)map name:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  graphCopy = graph;
+  tensorCopy = tensor;
+  variablesCopy = variables;
+  mapCopy = map;
+  nameCopy = name;
   v32.receiver = self;
   v32.super_class = MPSGraphStochasticGradientDescentOptimizer;
-  v17 = [(MPSGraphOptimizer *)&v32 initWithGraph:v12 learningRateTensor:v13 trainableVariables:v14 variablesToGradientTensorMap:v15 name:v16];
-  v18 = [MEMORY[0x1E695DF90] dictionary];
+  v17 = [(MPSGraphOptimizer *)&v32 initWithGraph:graphCopy learningRateTensor:tensorCopy trainableVariables:variablesCopy variablesToGradientTensorMap:mapCopy name:nameCopy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   trainableVariables = v17->super._trainableVariables;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -22,9 +22,9 @@
   v28[3] = &unk_1E86D4E70;
   v20 = v17;
   v29 = v20;
-  v21 = v15;
+  v21 = mapCopy;
   v30 = v21;
-  v22 = v18;
+  v22 = dictionary;
   v31 = v22;
   [(NSArray *)trainableVariables enumerateObjectsUsingBlock:v28];
   v23 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v22];

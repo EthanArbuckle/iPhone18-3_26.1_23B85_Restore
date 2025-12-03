@@ -1,11 +1,11 @@
 @interface BankConnectAccountCredentialsViewControllerProvider
-+ (id)makeViewControllerWithAccountCredentials:(id)a3 title:(id)a4;
++ (id)makeViewControllerWithAccountCredentials:(id)credentials title:(id)title;
 - (_TtC9PassKitUI51BankConnectAccountCredentialsViewControllerProvider)init;
 @end
 
 @implementation BankConnectAccountCredentialsViewControllerProvider
 
-+ (id)makeViewControllerWithAccountCredentials:(id)a3 title:(id)a4
++ (id)makeViewControllerWithAccountCredentials:(id)credentials title:(id)title
 {
   sub_1BD1E57C8();
   v4 = sub_1BE052744();

@@ -1,12 +1,12 @@
 @interface SetGeoFenceIntentResponse
-- (SetGeoFenceIntentResponse)initWithPropertiesByName:(id)a3;
+- (SetGeoFenceIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation SetGeoFenceIntentResponse
 
-- (SetGeoFenceIntentResponse)initWithPropertiesByName:(id)a3
+- (SetGeoFenceIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_266DAA6AC();
   }

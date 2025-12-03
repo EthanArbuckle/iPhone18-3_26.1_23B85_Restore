@@ -5,7 +5,7 @@
 + (id)configurationForRequest;
 + (id)storeConfigurationForChildState;
 + (id)storeConfigurationForRequest;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -14,7 +14,7 @@
 + (id)ChildState
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForChildState];
+  configurationForChildState = [self configurationForChildState];
   v3 = +[BMScreenTimeChildState columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -26,7 +26,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Family.ScreenTime.ChildState" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Family.ScreenTime.ChildState" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Family.ScreenTime.ChildState" schema:v9 configuration:configurationForChildState];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -35,13 +35,13 @@
 
 + (id)configurationForChildState
 {
-  v3 = [a1 storeConfigurationForChildState];
-  v4 = [a1 syncPolicyForChildState];
+  storeConfigurationForChildState = [self storeConfigurationForChildState];
+  syncPolicyForChildState = [self syncPolicyForChildState];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"95E9EA71-D23F-426A-8259-6CE653638BC6"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Family.ScreenTime.ChildState" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Family.ScreenTime.ChildState" eventClass:objc_opt_class() storeConfig:storeConfigurationForChildState syncPolicy:syncPolicyForChildState legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -57,7 +57,7 @@
 + (id)Request
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForRequest];
+  configurationForRequest = [self configurationForRequest];
   v3 = +[BMFamilyScreenTimeRequest columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -69,7 +69,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Family.ScreenTime.Request" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Family.ScreenTime.Request" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Family.ScreenTime.Request" schema:v9 configuration:configurationForRequest];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -78,13 +78,13 @@
 
 + (id)configurationForRequest
 {
-  v3 = [a1 storeConfigurationForRequest];
-  v4 = [a1 syncPolicyForRequest];
+  storeConfigurationForRequest = [self storeConfigurationForRequest];
+  syncPolicyForRequest = [self syncPolicyForRequest];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"DBF0CD14-7822-4AD5-906F-2FCC967BC2FE"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Family.ScreenTime.Request" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3E92E8 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Family.ScreenTime.Request" eventClass:objc_opt_class() storeConfig:storeConfigurationForRequest syncPolicy:syncPolicyForRequest legacyNames:&unk_1EF3E92E8 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -97,20 +97,20 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ChildState"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ChildState"])
   {
-    v5 = [a1 ChildState];
+    childState = [self ChildState];
 LABEL_5:
-    v6 = v5;
+    v6 = childState;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Request"])
+  if ([nameCopy isEqualToString:@"Request"])
   {
-    v5 = [a1 Request];
+    childState = [self Request];
     goto LABEL_5;
   }
 

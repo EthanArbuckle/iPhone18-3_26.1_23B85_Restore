@@ -1,9 +1,9 @@
 @interface PLInternalResource
-+ (BOOL)batchResetFileIDInManagedObjectContext:(id)a3 error:(id *)a4;
-+ (BOOL)deleteObsoleteResourcesInManagedObjectContext:(id)a3 error:(id *)a4;
-+ (BOOL)supportsTrashedStateForResourceIdentity:(id)a3;
++ (BOOL)batchResetFileIDInManagedObjectContext:(id)context error:(id *)error;
++ (BOOL)deleteObsoleteResourcesInManagedObjectContext:(id)context error:(id *)error;
++ (BOOL)supportsTrashedStateForResourceIdentity:(id)identity;
 + (id)_obsoleteResourceRecipesWithCPLOff;
-+ (id)insertResourceForAssetObjectID:(id)a3 resourceIdentity:(id)a4 inManagedObjectContext:(id)a5;
++ (id)insertResourceForAssetObjectID:(id)d resourceIdentity:(id)identity inManagedObjectContext:(id)context;
 + (id)listOfSyncedProperties;
 + (id)nonOriginalCPLResourceTypes;
 + (id)originalCPLResourceTypes;
@@ -11,34 +11,34 @@
 + (id)originalCPLResourceTypesForMaster;
 + (id)predicateForAllFullSizeResourcesLocallyAvailable;
 + (id)predicateForAllOriginalResourcesLocallyAvailable;
-+ (id)predicateForImageResourcePixelsLessOrEqual:(int64_t)a3;
++ (id)predicateForImageResourcePixelsLessOrEqual:(int64_t)equal;
 + (id)predicateForOriginalsToDownload;
 + (id)predicateForPurgeableOriginalResources;
-+ (id)predicateForSyndicationResourcesRequiringBackgroundDownloadImmediately:(BOOL)a3;
++ (id)predicateForSyndicationResourcesRequiringBackgroundDownloadImmediately:(BOOL)immediately;
 + (id)predicateForSyndicationResourcesRequiringSanitization;
-+ (id)prefetchResourcePredicateForCPLResourceType:(unint64_t)a3 isAssetResource:(BOOL)a4 maxRetry:(unint64_t)a5 excludeDynamicResources:(BOOL)a6 additionalResourcePredicates:(id)a7;
-+ (id)purgeablePushedPredicateForCPLResourceTypes:(id)a3 urgency:(int64_t)a4;
-+ (id)resourceForManagedAsset:(id)a3 sharedStreamsType:(unsigned int)a4 managedObjectContext:(id)a5 error:(id *)a6;
-+ (signed)plTrashedStateForCPLExpungedState:(unint64_t)a3;
-+ (unint64_t)bytesForAllResourcesInLibrary:(id)a3;
-+ (unint64_t)bytesNeededToDownloadOriginalResourcesInLibrary:(id)a3;
-+ (unint64_t)cplExpungedStateForTrashedState:(signed __int16)a3;
-+ (void)resetCloudResourcesStateForCloudInManagedObjectContext:(id)a3 hardReset:(BOOL)a4;
-+ (void)resetPrefetchStateForResourcesWithVersion:(unsigned int)a3 cplType:(unint64_t)a4 assetUuids:(id)a5 inLibrary:(id)a6;
-+ (void)triggerBackgroundDownloadFailureForResources:(id)a3 cloudPhotoLibraryManager:(id)a4;
++ (id)prefetchResourcePredicateForCPLResourceType:(unint64_t)type isAssetResource:(BOOL)resource maxRetry:(unint64_t)retry excludeDynamicResources:(BOOL)resources additionalResourcePredicates:(id)predicates;
++ (id)purgeablePushedPredicateForCPLResourceTypes:(id)types urgency:(int64_t)urgency;
++ (id)resourceForManagedAsset:(id)asset sharedStreamsType:(unsigned int)type managedObjectContext:(id)context error:(id *)error;
++ (signed)plTrashedStateForCPLExpungedState:(unint64_t)state;
++ (unint64_t)bytesForAllResourcesInLibrary:(id)library;
++ (unint64_t)bytesNeededToDownloadOriginalResourcesInLibrary:(id)library;
++ (unint64_t)cplExpungedStateForTrashedState:(signed __int16)state;
++ (void)resetCloudResourcesStateForCloudInManagedObjectContext:(id)context hardReset:(BOOL)reset;
++ (void)resetPrefetchStateForResourcesWithVersion:(unsigned int)version cplType:(unint64_t)type assetUuids:(id)uuids inLibrary:(id)library;
++ (void)triggerBackgroundDownloadFailureForResources:(id)resources cloudPhotoLibraryManager:(id)manager;
 - (BOOL)_colorSpaceIsNativeForDisplay;
-- (BOOL)copyPurgeabilityFromFileURL:(id)a3;
+- (BOOL)copyPurgeabilityFromFileURL:(id)l;
 - (BOOL)isAdjustedFullSizeRenderResource;
 - (BOOL)isCPLAssetResource;
 - (BOOL)isCPLMasterResource;
-- (BOOL)isCPLOriginalResourceAssetHasAdjustments:(BOOL)a3;
-- (BOOL)isEquivalentToFingerprint:(id)a3 andStableHash:(id)a4 fingerprintContext:(id)a5;
+- (BOOL)isCPLOriginalResourceAssetHasAdjustments:(BOOL)adjustments;
+- (BOOL)isEquivalentToFingerprint:(id)fingerprint andStableHash:(id)hash fingerprintContext:(id)context;
 - (BOOL)isInCloud;
 - (BOOL)isOriginalResource;
 - (BOOL)isPlayableVideo;
 - (BOOL)isSyncableChange;
 - (BOOL)isValidForJournalPersistence;
-- (BOOL)repairResourceValidationErrors:(id)a3 managedObjectContext:(id)a4;
+- (BOOL)repairResourceValidationErrors:(id)errors managedObjectContext:(id)context;
 - (BOOL)shouldPersistTrashedState;
 - (BOOL)supportsTrashedState;
 - (NSString)cloudUUIDForDeletion;
@@ -52,32 +52,32 @@
 - (id)_avAssetProxyIfTypeIsFullSizeOrOriginal;
 - (id)_libraryID;
 - (id)cplFileURL;
-- (id)cplResourceForFileURL:(id)a3 createDirectoryIfNeeded:(BOOL)a4;
-- (id)cplResourceForTimeRange:(id *)a3;
-- (id)cplResourceIncludeFile:(BOOL)a3 createDirectoryIfNeeded:(BOOL)a4;
+- (id)cplResourceForFileURL:(id)l createDirectoryIfNeeded:(BOOL)needed;
+- (id)cplResourceForTimeRange:(id *)range;
+- (id)cplResourceIncludeFile:(BOOL)file createDirectoryIfNeeded:(BOOL)needed;
 - (id)expectedFileURL;
 - (id)expungeableResourceStateRepresentation;
 - (id)fileURL;
-- (id)makeResourceLocallyAvailableWithOptions:(id)a3 completion:(id)a4;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)makeResourceLocallyAvailableWithOptions:(id)options completion:(id)completion;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
 - (id)photosCTLDescription;
 - (id)photosCTLJSONDict;
-- (id)purgeIfPossibleReturningError:(id *)a3;
+- (id)purgeIfPossibleReturningError:(id *)error;
 - (id)redactedDescription;
 - (id)referenceMediaFileURL;
 - (id)scopedIdentifier;
 - (id)singleLineDescription;
-- (id)validateForAssetID:(id)a3 resourceIdentity:(id)a4;
-- (id)validatedExternalResourceRepresentationUsingFileURL:(id)a3;
+- (id)validateForAssetID:(id)d resourceIdentity:(id)identity;
+- (id)validatedExternalResourceRepresentationUsingFileURL:(id)l;
 - (int)qualitySortValue;
 - (int64_t)orientedHeight;
 - (int64_t)orientedWidth;
 - (unint64_t)cplType;
 - (unsigned)orientation;
 - (void)_markComputeResourceAsNotLocallyAvailableIfNeeded;
-- (void)applyTrashedState:(signed __int16)a3;
-- (void)applyTrashedState:(signed __int16)a3 trashedDate:(id)a4;
+- (void)applyTrashedState:(signed __int16)state;
+- (void)applyTrashedState:(signed __int16)state trashedDate:(id)date;
 - (void)clearRequiresSanitizationFlag;
 - (void)deleteResource;
 - (void)ensureInitialValuesForSyndication;
@@ -86,14 +86,14 @@
 - (void)persistTrashedStateToFilesystem;
 - (void)prepareForDeletion;
 - (void)resetPrefetchState;
-- (void)setCloudAttributesWithExternalResource:(id)a3;
-- (void)setDataLength:(int64_t)a3;
-- (void)setFingerprint:(id)a3;
-- (void)setLocalAvailability:(signed __int16)a3;
-- (void)setResourceIdentity:(id)a3 managedObjectContext:(id)a4;
-- (void)setSyndicationLocalAvailabilityWithAvailable:(BOOL)a3 additionalFlags:(unsigned __int16)a4;
-- (void)setUniformTypeIdentifier:(id)a3;
-- (void)transitional_reconsiderLocalAvailabilityBasedOnExistingLocationOfCPLResourceAtFilePath:(id)a3;
+- (void)setCloudAttributesWithExternalResource:(id)resource;
+- (void)setDataLength:(int64_t)length;
+- (void)setFingerprint:(id)fingerprint;
+- (void)setLocalAvailability:(signed __int16)availability;
+- (void)setResourceIdentity:(id)identity managedObjectContext:(id)context;
+- (void)setSyndicationLocalAvailabilityWithAvailable:(BOOL)available additionalFlags:(unsigned __int16)flags;
+- (void)setUniformTypeIdentifier:(id)identifier;
+- (void)transitional_reconsiderLocalAvailabilityBasedOnExistingLocationOfCPLResourceAtFilePath:(id)path;
 - (void)willSave;
 @end
 
@@ -102,49 +102,49 @@
 - (NSString)debugDescription
 {
   v3 = [[PLDescriptionBuilder alloc] initWithObject:self style:3 indent:0];
-  v4 = [(PLInternalResource *)self asset];
-  v5 = [v4 uuid];
-  [(PLDescriptionBuilder *)v3 appendName:@"assetUUID" object:v5];
+  asset = [(PLInternalResource *)self asset];
+  uuid = [asset uuid];
+  [(PLDescriptionBuilder *)v3 appendName:@"assetUUID" object:uuid];
 
-  v6 = [(PLInternalResource *)self objectID];
-  [(PLDescriptionBuilder *)v3 appendName:@"objectID" object:v6];
+  objectID = [(PLInternalResource *)self objectID];
+  [(PLDescriptionBuilder *)v3 appendName:@"objectID" object:objectID];
 
-  v7 = [(PLInternalResource *)self resourceType];
-  if (v7 > 0x1F)
+  resourceType = [(PLInternalResource *)self resourceType];
+  if (resourceType > 0x1F)
   {
     v8 = @"invalid";
   }
 
   else
   {
-    v8 = off_1E75663B0[v7];
+    v8 = off_1E75663B0[resourceType];
   }
 
   v9 = v8;
   [(PLDescriptionBuilder *)v3 appendName:@"resourceType" object:v9];
 
-  v10 = [(PLInternalResource *)self version];
-  if (v10 > 2)
+  version = [(PLInternalResource *)self version];
+  if (version > 2)
   {
     v11 = @"cur";
   }
 
   else
   {
-    v11 = off_1E75664B0[v10];
+    v11 = off_1E75664B0[version];
   }
 
   v12 = v11;
   [(PLDescriptionBuilder *)v3 appendName:@"version" object:v12];
 
-  v13 = [(PLInternalResource *)self dataStore];
-  v14 = [v13 name];
-  v15 = [v14 stringByAppendingFormat:@" (%ld)", -[PLInternalResource dataStoreClassID](self, "dataStoreClassID")];
+  dataStore = [(PLInternalResource *)self dataStore];
+  name = [dataStore name];
+  v15 = [name stringByAppendingFormat:@" (%ld)", -[PLInternalResource dataStoreClassID](self, "dataStoreClassID")];
 
   [(PLDescriptionBuilder *)v3 appendName:@"dataStore" object:v15];
-  v16 = [(PLInternalResource *)self dataStoreSubtype];
-  v17 = [v13 descriptionForSubtype:v16];
-  v18 = [v17 stringByAppendingFormat:@" (%ld)", v16];
+  dataStoreSubtype = [(PLInternalResource *)self dataStoreSubtype];
+  v17 = [dataStore descriptionForSubtype:dataStoreSubtype];
+  v18 = [v17 stringByAppendingFormat:@" (%ld)", dataStoreSubtype];
 
   [(PLDescriptionBuilder *)v3 appendName:@"dataStoreSubtype" object:v18];
   if ([(PLInternalResource *)self recipeID])
@@ -154,14 +154,14 @@
     [(PLDescriptionBuilder *)v3 appendName:@"recipeID" object:v20];
   }
 
-  v21 = [(PLInternalResource *)self dataStoreKey];
+  dataStoreKey = [(PLInternalResource *)self dataStoreKey];
 
-  if (v21)
+  if (dataStoreKey)
   {
-    v22 = [(PLInternalResource *)self dataStoreKey];
-    v23 = [(PLInternalResource *)self asset];
-    v24 = [v23 assetID];
-    v25 = [v22 descriptionForAssetID:v24];
+    dataStoreKey2 = [(PLInternalResource *)self dataStoreKey];
+    asset2 = [(PLInternalResource *)self asset];
+    assetID = [asset2 assetID];
+    v25 = [dataStoreKey2 descriptionForAssetID:assetID];
     [(PLDescriptionBuilder *)v3 appendName:@"dataStoreKey" object:v25];
   }
 
@@ -172,15 +172,15 @@
   [(PLDescriptionBuilder *)v3 appendName:@"fileID" object:v27];
 
   LODWORD(v27) = [(PLInternalResource *)self dataStoreClassID];
-  v28 = [(PLInternalResource *)self localAvailability];
+  localAvailability = [(PLInternalResource *)self localAvailability];
   if (v27 == 3)
   {
-    PLSyndicationResourceLocalAvailabilityDescription(v28);
+    PLSyndicationResourceLocalAvailabilityDescription(localAvailability);
   }
 
   else
   {
-    PLResourceLocalAvailabilityName(v28);
+    PLResourceLocalAvailabilityName(localAvailability);
   }
   v29 = ;
   [(PLDescriptionBuilder *)v3 appendName:@"localAvailability" object:v29];
@@ -188,8 +188,8 @@
   v30 = PLResourceLocalAvailabilityTargetName([(PLInternalResource *)self localAvailabilityTarget]);
   [(PLDescriptionBuilder *)v3 appendName:@"localAvailabilityTarget" object:v30];
 
-  v31 = [(PLInternalResource *)self remoteAvailability];
-  if (v31 == 1)
+  remoteAvailability = [(PLInternalResource *)self remoteAvailability];
+  if (remoteAvailability == 1)
   {
     v32 = @"available";
   }
@@ -199,7 +199,7 @@
     v32 = @"missing";
   }
 
-  if (!v31)
+  if (!remoteAvailability)
   {
     v32 = @"unavailable";
   }
@@ -207,8 +207,8 @@
   v33 = v32;
   [(PLDescriptionBuilder *)v3 appendName:@"remoteAvailability" object:v33];
 
-  v34 = [(PLInternalResource *)self remoteAvailabilityTarget];
-  if (v34 == 1)
+  remoteAvailabilityTarget = [(PLInternalResource *)self remoteAvailabilityTarget];
+  if (remoteAvailabilityTarget == 1)
   {
     v35 = @"available";
   }
@@ -218,7 +218,7 @@
     v35 = @"missing";
   }
 
-  if (!v34)
+  if (!remoteAvailabilityTarget)
   {
     v35 = @"unavailable";
   }
@@ -231,25 +231,25 @@
   [(PLDescriptionBuilder *)v3 appendName:@"unorientedHeight" integerValue:[(PLInternalResource *)self unorientedHeight]];
   [(PLDescriptionBuilder *)v3 appendName:@"orientation" integerValue:[(PLInternalResource *)self orientation]];
   [(PLDescriptionBuilder *)v3 appendName:@"qualitySortValue" integerValue:[(PLInternalResource *)self qualitySortValue]];
-  v37 = [(PLInternalResource *)self fingerprint];
-  [(PLDescriptionBuilder *)v3 appendName:@"fingerprint" object:v37];
+  fingerprint = [(PLInternalResource *)self fingerprint];
+  [(PLDescriptionBuilder *)v3 appendName:@"fingerprint" object:fingerprint];
 
-  v38 = [(PLInternalResource *)self stableHash];
-  [(PLDescriptionBuilder *)v3 appendName:@"stableHash" object:v38];
+  stableHash = [(PLInternalResource *)self stableHash];
+  [(PLDescriptionBuilder *)v3 appendName:@"stableHash" object:stableHash];
 
-  v39 = [(PLInternalResource *)self uniformTypeIdentifier];
-  v40 = [v39 identifier];
-  [(PLDescriptionBuilder *)v3 appendName:@"uniformTypeIdentifier" object:v40];
+  uniformTypeIdentifier = [(PLInternalResource *)self uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
+  [(PLDescriptionBuilder *)v3 appendName:@"uniformTypeIdentifier" object:identifier];
 
-  v41 = [(PLInternalResource *)self codecFourCharCodeName];
-  [(PLDescriptionBuilder *)v3 appendName:@"codecFourCharCodeName" object:v41];
+  codecFourCharCodeName = [(PLInternalResource *)self codecFourCharCodeName];
+  [(PLDescriptionBuilder *)v3 appendName:@"codecFourCharCodeName" object:codecFourCharCodeName];
 
-  v42 = [(PLInternalResource *)self sidecarIndex];
-  [(PLDescriptionBuilder *)v3 appendName:@"sidecarIndex" object:v42];
+  sidecarIndex = [(PLInternalResource *)self sidecarIndex];
+  [(PLDescriptionBuilder *)v3 appendName:@"sidecarIndex" object:sidecarIndex];
 
-  v43 = [(PLInternalResource *)self ptpTrashedState];
+  ptpTrashedState = [(PLInternalResource *)self ptpTrashedState];
   v44 = @"trashed";
-  if ((v43 & 1) == 0)
+  if ((ptpTrashedState & 1) == 0)
   {
     v44 = @"untrashed";
   }
@@ -265,39 +265,39 @@
     [(PLDescriptionBuilder *)v3 appendName:@"cloudLocalState" integerValue:[(PLInternalResource *)self cloudLocalState]];
   }
 
-  v47 = [(PLInternalResource *)self cloudMasterDateCreated];
+  cloudMasterDateCreated = [(PLInternalResource *)self cloudMasterDateCreated];
 
-  if (v47)
+  if (cloudMasterDateCreated)
   {
-    v48 = [(PLInternalResource *)self cloudMasterDateCreated];
-    [(PLDescriptionBuilder *)v3 appendName:@"cloudMasterDateCreated" object:v48];
+    cloudMasterDateCreated2 = [(PLInternalResource *)self cloudMasterDateCreated];
+    [(PLDescriptionBuilder *)v3 appendName:@"cloudMasterDateCreated" object:cloudMasterDateCreated2];
   }
 
-  v49 = [(PLInternalResource *)self cloudLastPrefetchDate];
-  [v49 timeIntervalSinceReferenceDate];
+  cloudLastPrefetchDate = [(PLInternalResource *)self cloudLastPrefetchDate];
+  [cloudLastPrefetchDate timeIntervalSinceReferenceDate];
   v51 = v50;
 
   if (v51 > 0.0)
   {
-    v52 = [(PLInternalResource *)self cloudLastPrefetchDate];
-    [(PLDescriptionBuilder *)v3 appendName:@"cloudLastPrefetchDate" object:v52];
+    cloudLastPrefetchDate2 = [(PLInternalResource *)self cloudLastPrefetchDate];
+    [(PLDescriptionBuilder *)v3 appendName:@"cloudLastPrefetchDate" object:cloudLastPrefetchDate2];
   }
 
-  v53 = [(PLInternalResource *)self cloudLastOnDemandDownloadDate];
+  cloudLastOnDemandDownloadDate = [(PLInternalResource *)self cloudLastOnDemandDownloadDate];
 
-  if (v53)
+  if (cloudLastOnDemandDownloadDate)
   {
-    v54 = [(PLInternalResource *)self cloudLastOnDemandDownloadDate];
-    [(PLDescriptionBuilder *)v3 appendName:@"cloudLastOnDemandDownloadDate" object:v54];
+    cloudLastOnDemandDownloadDate2 = [(PLInternalResource *)self cloudLastOnDemandDownloadDate];
+    [(PLDescriptionBuilder *)v3 appendName:@"cloudLastOnDemandDownloadDate" object:cloudLastOnDemandDownloadDate2];
   }
 
-  v55 = [(PLInternalResource *)self uniformTypeIdentifier];
-  v56 = [v55 conformsToMovie];
+  uniformTypeIdentifier2 = [(PLInternalResource *)self uniformTypeIdentifier];
+  conformsToMovie = [uniformTypeIdentifier2 conformsToMovie];
 
-  if (v56)
+  if (conformsToMovie)
   {
-    v57 = [(PLInternalResource *)self dataStore];
-    v58 = [v57 videoResource:self matchesOrExceedsQualityLevel:0];
+    dataStore2 = [(PLInternalResource *)self dataStore];
+    v58 = [dataStore2 videoResource:self matchesOrExceedsQualityLevel:0];
 
     if (v58)
     {
@@ -306,8 +306,8 @@
 
     else
     {
-      v60 = [(PLInternalResource *)self dataStore];
-      v61 = [v60 videoResource:self matchesOrExceedsQualityLevel:1];
+      dataStore3 = [(PLInternalResource *)self dataStore];
+      v61 = [dataStore3 videoResource:self matchesOrExceedsQualityLevel:1];
 
       if (v61)
       {
@@ -316,8 +316,8 @@
 
       else
       {
-        v62 = [(PLInternalResource *)self dataStore];
-        v63 = [v62 videoResource:self matchesOrExceedsQualityLevel:2];
+        dataStore4 = [(PLInternalResource *)self dataStore];
+        v63 = [dataStore4 videoResource:self matchesOrExceedsQualityLevel:2];
 
         if (v63)
         {
@@ -326,8 +326,8 @@
 
         else
         {
-          v64 = [(PLInternalResource *)self dataStore];
-          v65 = [v64 videoResource:self matchesOrExceedsQualityLevel:3];
+          dataStore5 = [(PLInternalResource *)self dataStore];
+          v65 = [dataStore5 videoResource:self matchesOrExceedsQualityLevel:3];
 
           if (v65)
           {
@@ -348,19 +348,19 @@
   if ([(PLInternalResource *)self trashedState])
   {
     [(PLDescriptionBuilder *)v3 appendName:@"trashedState" integerValue:[(PLInternalResource *)self trashedState]];
-    v66 = [(PLInternalResource *)self trashedDate];
-    [(PLDescriptionBuilder *)v3 appendName:@"trashedDate" object:v66];
+    trashedDate = [(PLInternalResource *)self trashedDate];
+    [(PLDescriptionBuilder *)v3 appendName:@"trashedDate" object:trashedDate];
   }
 
-  v67 = [(PLDescriptionBuilder *)v3 build];
+  build = [(PLDescriptionBuilder *)v3 build];
 
-  return v67;
+  return build;
 }
 
 - (id)redactedDescription
 {
-  v2 = [(PLInternalResource *)self objectID];
-  v3 = [v2 description];
+  objectID = [(PLInternalResource *)self objectID];
+  v3 = [objectID description];
 
   return v3;
 }
@@ -372,19 +372,19 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@ %p>", v5, self];
 
-  v7 = [(PLInternalResource *)self asset];
-  v8 = [v7 uuid];
-  [v6 appendFormat:@" assetUUID: %@", v8];
+  asset = [(PLInternalResource *)self asset];
+  uuid = [asset uuid];
+  [v6 appendFormat:@" assetUUID: %@", uuid];
 
-  v9 = [(PLInternalResource *)self resourceType];
-  if (v9 > 0x1F)
+  resourceType = [(PLInternalResource *)self resourceType];
+  if (resourceType > 0x1F)
   {
     v10 = @"invalid";
   }
 
   else
   {
-    v10 = off_1E75663B0[v9];
+    v10 = off_1E75663B0[resourceType];
   }
 
   v11 = v10;
@@ -394,41 +394,41 @@
   v13 = [v12 description];
   [v6 appendFormat:@" recipeID: %@", v13];
 
-  v14 = [(PLInternalResource *)self version];
-  if (v14 > 2)
+  version = [(PLInternalResource *)self version];
+  if (version > 2)
   {
     v15 = @"cur";
   }
 
   else
   {
-    v15 = off_1E75664B0[v14];
+    v15 = off_1E75664B0[version];
   }
 
   v16 = v15;
   [v6 appendFormat:@" ver: %@", v16];
 
-  v17 = [(PLInternalResource *)self dataStore];
-  v18 = [v17 descriptionForSubtype:{-[PLInternalResource dataStoreSubtype](self, "dataStoreSubtype")}];
+  dataStore = [(PLInternalResource *)self dataStore];
+  v18 = [dataStore descriptionForSubtype:{-[PLInternalResource dataStoreSubtype](self, "dataStoreSubtype")}];
   [v6 appendFormat:@" subtype: %@", v18];
 
   [v6 appendFormat:@" size: (%ld, %ld)", -[PLInternalResource unorientedWidth](self, "unorientedWidth"), -[PLInternalResource unorientedHeight](self, "unorientedHeight")];
-  v19 = [(PLInternalResource *)self uniformTypeIdentifier];
-  v20 = [v19 identifier];
-  [v6 appendFormat:@" uti: %@", v20];
+  uniformTypeIdentifier = [(PLInternalResource *)self uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
+  [v6 appendFormat:@" uti: %@", identifier];
 
-  v21 = [(PLInternalResource *)self localAvailability];
+  localAvailability = [(PLInternalResource *)self localAvailability];
   v22 = @"N";
-  if (v21 == 1)
+  if (localAvailability == 1)
   {
     v22 = @"Y";
   }
 
   [v6 appendFormat:@" local: %@", v22];
-  v23 = [(PLInternalResource *)self dataStoreKey];
-  v24 = [(PLInternalResource *)self asset];
-  v25 = [v24 assetID];
-  v26 = [v23 fileURLForAssetID:v25];
+  dataStoreKey = [(PLInternalResource *)self dataStoreKey];
+  asset2 = [(PLInternalResource *)self asset];
+  assetID = [asset2 assetID];
+  v26 = [dataStoreKey fileURLForAssetID:assetID];
 
   if (v26)
   {
@@ -442,44 +442,44 @@
 - (id)photosCTLJSONDict
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PLInternalResource *)self codecFourCharCodeName];
+  codecFourCharCodeName = [(PLInternalResource *)self codecFourCharCodeName];
 
-  if (v4)
+  if (codecFourCharCodeName)
   {
-    v5 = [(PLInternalResource *)self codecFourCharCodeName];
+    codecFourCharCodeName2 = [(PLInternalResource *)self codecFourCharCodeName];
   }
 
   else
   {
-    v5 = @"none";
+    codecFourCharCodeName2 = @"none";
   }
 
-  v6 = [(PLInternalResource *)self uniformTypeIdentifier];
-  v7 = v6;
-  if (v6)
+  uniformTypeIdentifier = [(PLInternalResource *)self uniformTypeIdentifier];
+  v7 = uniformTypeIdentifier;
+  if (uniformTypeIdentifier)
   {
-    v8 = [v6 identifier];
+    identifier = [uniformTypeIdentifier identifier];
   }
 
   else
   {
-    v8 = @"none";
+    identifier = @"none";
   }
 
-  v9 = [(PLInternalResource *)self objectID];
-  v10 = [v9 description];
+  objectID = [(PLInternalResource *)self objectID];
+  v10 = [objectID description];
   [v3 setObject:v10 forKeyedSubscript:@"objectID"];
 
-  v11 = [(PLInternalResource *)self asset];
+  asset = [(PLInternalResource *)self asset];
 
-  if (v11)
+  if (asset)
   {
-    v12 = [(PLInternalResource *)self asset];
-    v13 = [v12 uuid];
-    [v3 setObject:v13 forKeyedSubscript:@"asset"];
+    asset2 = [(PLInternalResource *)self asset];
+    uuid = [asset2 uuid];
+    [v3 setObject:uuid forKeyedSubscript:@"asset"];
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"uti"];
+  [v3 setObject:identifier forKeyedSubscript:@"uti"];
   v14 = [MEMORY[0x1E696AD98] numberWithShort:{-[PLInternalResource dataStoreClassID](self, "dataStoreClassID")}];
   [v3 setObject:v14 forKeyedSubscript:@"store"];
 
@@ -492,7 +492,7 @@
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLInternalResource recipeID](self, "recipeID")}];
   [v3 setObject:v17 forKeyedSubscript:@"recipe"];
 
-  [v3 setObject:v5 forKeyedSubscript:@"codec"];
+  [v3 setObject:codecFourCharCodeName2 forKeyedSubscript:@"codec"];
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLInternalResource orientation](self, "orientation")}];
   [v3 setObject:v18 forKeyedSubscript:@"orientation"];
 
@@ -508,21 +508,21 @@
   v22 = [MEMORY[0x1E696AD98] numberWithShort:{-[PLInternalResource remoteAvailability](self, "remoteAvailability")}];
   [v3 setObject:v22 forKeyedSubscript:@"remoteAvailability"];
 
-  v23 = [(PLInternalResource *)self dataStoreKey];
-  v24 = [(PLInternalResource *)self asset];
-  v25 = [v24 assetID];
-  v26 = [v23 descriptionForAssetID:v25];
+  dataStoreKey = [(PLInternalResource *)self dataStoreKey];
+  asset3 = [(PLInternalResource *)self asset];
+  assetID = [asset3 assetID];
+  v26 = [dataStoreKey descriptionForAssetID:assetID];
   [v3 setObject:v26 forKeyedSubscript:@"dataStoreKey"];
 
   v27 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PLInternalResource ptpTrashedState](self, "ptpTrashedState")}];
   [v3 setObject:v27 forKeyedSubscript:@"ptpTrashedState"];
 
-  v28 = [(PLInternalResource *)self sidecarIndex];
+  sidecarIndex = [(PLInternalResource *)self sidecarIndex];
 
-  if (v28)
+  if (sidecarIndex)
   {
-    v29 = [(PLInternalResource *)self sidecarIndex];
-    [v3 setObject:v29 forKeyedSubscript:@"sidecarIndex"];
+    sidecarIndex2 = [(PLInternalResource *)self sidecarIndex];
+    [v3 setObject:sidecarIndex2 forKeyedSubscript:@"sidecarIndex"];
   }
 
   return v3;
@@ -530,21 +530,21 @@
 
 - (id)photosCTLDescription
 {
-  v3 = [(PLInternalResource *)self asset];
-  v30 = [v3 uuid];
+  asset = [(PLInternalResource *)self asset];
+  uuid = [asset uuid];
 
-  v4 = [(PLInternalResource *)self localAvailability];
+  localAvailability = [(PLInternalResource *)self localAvailability];
   v5 = @"NO";
-  if (v4 >= 0)
+  if (localAvailability >= 0)
   {
     v5 = @"YES";
   }
 
   v29 = v5;
-  v26 = [(PLInternalResource *)self dataStoreSubtype];
-  v25 = [(PLInternalResource *)self orientation];
-  v6 = [(PLInternalResource *)self unorientedWidth];
-  v7 = [(PLInternalResource *)self unorientedHeight];
+  dataStoreSubtype = [(PLInternalResource *)self dataStoreSubtype];
+  orientation = [(PLInternalResource *)self orientation];
+  unorientedWidth = [(PLInternalResource *)self unorientedWidth];
+  unorientedHeight = [(PLInternalResource *)self unorientedHeight];
   v8 = [PLResourceRecipe recipeFromID:[(PLInternalResource *)self recipeID]];
   v28 = v8;
   if (v8)
@@ -557,101 +557,101 @@
     v27 = @"none";
   }
 
-  v9 = [(PLInternalResource *)self codecFourCharCodeName];
+  codecFourCharCodeName = [(PLInternalResource *)self codecFourCharCodeName];
 
-  if (v9)
+  if (codecFourCharCodeName)
   {
-    v24 = [(PLInternalResource *)self codecFourCharCodeName];
+    codecFourCharCodeName2 = [(PLInternalResource *)self codecFourCharCodeName];
   }
 
   else
   {
-    v24 = @"none";
+    codecFourCharCodeName2 = @"none";
   }
 
-  v10 = [(PLInternalResource *)self uniformTypeIdentifier];
-  v11 = v10;
-  if (v10)
+  uniformTypeIdentifier = [(PLInternalResource *)self uniformTypeIdentifier];
+  v11 = uniformTypeIdentifier;
+  if (uniformTypeIdentifier)
   {
-    v12 = [v10 identifier];
+    identifier = [uniformTypeIdentifier identifier];
   }
 
   else
   {
-    v12 = @"none";
+    identifier = @"none";
   }
 
-  v13 = [(PLInternalResource *)self dataStoreKey];
-  v14 = [(PLInternalResource *)self assetID];
-  v15 = [v13 descriptionForAssetID:v14];
+  dataStoreKey = [(PLInternalResource *)self dataStoreKey];
+  assetID = [(PLInternalResource *)self assetID];
+  v15 = [dataStoreKey descriptionForAssetID:assetID];
 
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [(PLInternalResource *)self dataStoreClassID];
-  v18 = [(PLInternalResource *)self version];
-  if (v18 > 2)
+  dataStoreClassID = [(PLInternalResource *)self dataStoreClassID];
+  version = [(PLInternalResource *)self version];
+  if (version > 2)
   {
     v19 = @"cur";
   }
 
   else
   {
-    v19 = off_1E75664B0[v18];
+    v19 = off_1E75664B0[version];
   }
 
-  v20 = v17;
+  v20 = dataStoreClassID;
   v21 = v19;
-  v22 = [v16 stringWithFormat:@"asset: %@, store: %ld, subtype: %ld, version: %@, recipe: %@, uti: %@, codec: %@, orient: %d, size: (%ld, %ld), l-avail: %@, qual: %ld, key: %@", v30, v20, v26, v21, v27, v12, v24, v25, v6, v7, v29, -[PLInternalResource qualitySortValue](self, "qualitySortValue"), v15];
+  v22 = [v16 stringWithFormat:@"asset: %@, store: %ld, subtype: %ld, version: %@, recipe: %@, uti: %@, codec: %@, orient: %d, size: (%ld, %ld), l-avail: %@, qual: %ld, key: %@", uuid, v20, dataStoreSubtype, v21, v27, identifier, codecFourCharCodeName2, orientation, unorientedWidth, unorientedHeight, v29, -[PLInternalResource qualitySortValue](self, "qualitySortValue"), v15];
 
   return v22;
 }
 
 - (int)qualitySortValue
 {
-  v3 = [(PLInternalResource *)self asset];
-  [v3 unorientedSize];
+  asset = [(PLInternalResource *)self asset];
+  [asset unorientedSize];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(PLInternalResource *)self compactUTI];
-  v9 = [PLUniformTypeIdentifier utiWithCompactRepresentation:v8 conformanceHint:[(PLInternalResource *)self utiConformanceHint]];
+  compactUTI = [(PLInternalResource *)self compactUTI];
+  v9 = [PLUniformTypeIdentifier utiWithCompactRepresentation:compactUTI conformanceHint:[(PLInternalResource *)self utiConformanceHint]];
 
-  v10 = [v9 isLosslessEncoding];
+  isLosslessEncoding = [v9 isLosslessEncoding];
   v11 = PLIsResourceMarkedFullSizeFromRecipeID([(PLInternalResource *)self recipeID]);
-  v12 = [(PLInternalResource *)self unorientedWidth];
-  v13 = [(PLInternalResource *)self unorientedHeight];
-  v14 = v10 | 2;
+  unorientedWidth = [(PLInternalResource *)self unorientedWidth];
+  unorientedHeight = [(PLInternalResource *)self unorientedHeight];
+  v14 = isLosslessEncoding | 2;
   if (!v11)
   {
-    v14 = v10;
+    v14 = isLosslessEncoding;
   }
 
-  v15 = v14 | ((fmin(sqrt((v13 * v12)) / sqrt((v7 * v5)), 1.0) * 32767.0) << 16);
+  v15 = v14 | ((fmin(sqrt((unorientedHeight * unorientedWidth)) / sqrt((v7 * v5)), 1.0) * 32767.0) << 16);
 
   return v15;
 }
 
-- (id)makeResourceLocallyAvailableWithOptions:(id)a3 completion:(id)a4
+- (id)makeResourceLocallyAvailableWithOptions:(id)options completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PLInternalResource *)self dataStore];
+  completionCopy = completion;
+  optionsCopy = options;
+  dataStore = [(PLInternalResource *)self dataStore];
 
-  if (!v9)
+  if (!dataStore)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLInternalResource.m" lineNumber:1043 description:{@"Invalid parameter not satisfying: %@", @"self.dataStore"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInternalResource.m" lineNumber:1043 description:{@"Invalid parameter not satisfying: %@", @"self.dataStore"}];
   }
 
-  v10 = [(PLInternalResource *)self dataStore];
+  dataStore2 = [(PLInternalResource *)self dataStore];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__PLInternalResource_makeResourceLocallyAvailableWithOptions_completion___block_invoke;
   v15[3] = &unk_1E7565778;
-  v16 = v7;
+  v16 = completionCopy;
   v17 = a2;
   v15[4] = self;
-  v11 = v7;
-  v12 = [v10 requestLocalAvailabilityChange:1 forResource:self options:v8 completion:v15];
+  v11 = completionCopy;
+  v12 = [dataStore2 requestLocalAvailabilityChange:1 forResource:self options:optionsCopy completion:v15];
 
   return v12;
 }
@@ -680,12 +680,12 @@ void __73__PLInternalResource_makeResourceLocallyAvailableWithOptions_completion
   v8();
 }
 
-- (id)purgeIfPossibleReturningError:(id *)a3
+- (id)purgeIfPossibleReturningError:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v5 = [(PLInternalResource *)self fileURL];
-  v6 = v5;
-  if (!v5)
+  fileURL = [(PLInternalResource *)self fileURL];
+  v6 = fileURL;
+  if (!fileURL)
   {
     v16 = MEMORY[0x1E696ABC0];
     v17 = *MEMORY[0x1E69BFF48];
@@ -697,9 +697,9 @@ void __73__PLInternalResource_makeResourceLocallyAvailableWithOptions_completion
     goto LABEL_27;
   }
 
-  v7 = [v5 path];
+  path = [fileURL path];
   v35 = 0;
-  v8 = [PLCacheDeleteSupport isPurgeableFile:v7 outIsPhotoType:0 outUrgencyLevel:0 error:&v35];
+  v8 = [PLCacheDeleteSupport isPurgeableFile:path outIsPhotoType:0 outUrgencyLevel:0 error:&v35];
   v9 = v35;
 
   if (!v8)
@@ -724,7 +724,7 @@ void __73__PLInternalResource_makeResourceLocallyAvailableWithOptions_completion
 
 LABEL_28:
       v15 = 0;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_30;
       }
@@ -757,9 +757,9 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v34 = v9;
-  v11 = [v10 removeItemAtURL:v6 error:&v34];
+  v11 = [defaultManager removeItemAtURL:v6 error:&v34];
   v12 = v34;
 
   if (v11)
@@ -817,11 +817,11 @@ LABEL_27:
   }
 
   v9 = v12;
-  if (a3)
+  if (error)
   {
 LABEL_29:
     v30 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
 LABEL_30:
@@ -842,16 +842,16 @@ LABEL_30:
 
 - (void)deleteResource
 {
-  v4 = [(PLInternalResource *)self managedObjectContext];
+  managedObjectContext = [(PLInternalResource *)self managedObjectContext];
 
-  if (!v4)
+  if (!managedObjectContext)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLInternalResource.m" lineNumber:907 description:@"deleteResource requires a managedObjectContext."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInternalResource.m" lineNumber:907 description:@"deleteResource requires a managedObjectContext."];
   }
 
-  v5 = [(PLInternalResource *)self managedObjectContext];
-  [v5 deleteObject:self];
+  managedObjectContext2 = [(PLInternalResource *)self managedObjectContext];
+  [managedObjectContext2 deleteObject:self];
 
   [(PLInternalResource *)self setAsset:0];
 }
@@ -865,8 +865,8 @@ LABEL_30:
 
 - (void)markAsNotLocallyAvailable
 {
-  v3 = [(PLInternalResource *)self localAvailability];
-  v9 = [(PLInternalResource *)self dataStoreKey];
+  localAvailability = [(PLInternalResource *)self localAvailability];
+  dataStoreKey = [(PLInternalResource *)self dataStoreKey];
   if ([(PLInternalResource *)self dataStoreClassID]== 3)
   {
     [(PLInternalResource *)self setSyndicationLocalAvailabilityWithAvailable:0];
@@ -880,19 +880,19 @@ LABEL_30:
   [(PLInternalResource *)self setDataStoreKeyData:0];
   [(PLInternalResource *)self setFileID:-1];
   [(PLInternalResource *)self _markComputeResourceAsNotLocallyAvailableIfNeeded];
-  if ((v3 & 0x80000000) == 0)
+  if ((localAvailability & 0x80000000) == 0)
   {
-    v4 = [(PLInternalResource *)self asset];
-    if (v4)
+    asset = [(PLInternalResource *)self asset];
+    if (asset)
     {
-      v5 = v4;
-      v6 = [(PLInternalResource *)self asset];
-      v7 = [v6 isDeleted];
+      v5 = asset;
+      asset2 = [(PLInternalResource *)self asset];
+      isDeleted = [asset2 isDeleted];
 
-      if ((v7 & 1) == 0)
+      if ((isDeleted & 1) == 0)
       {
-        v8 = [(PLInternalResource *)self asset];
-        [v8 recalculateImageRequestHintsForResource:self afterLocalAvailabilityChangeFrom:v3 previousDataStoreKey:v9];
+        asset3 = [(PLInternalResource *)self asset];
+        [asset3 recalculateImageRequestHintsForResource:self afterLocalAvailabilityChangeFrom:localAvailability previousDataStoreKey:dataStoreKey];
       }
     }
   }
@@ -905,18 +905,18 @@ LABEL_30:
     v3 = [(PLInternalResource *)self recipeID]- 327695;
     if (v3 <= 6 && ((1 << v3) & 0x55) != 0)
     {
-      v4 = [(PLInternalResource *)self asset];
-      if (v4)
+      asset = [(PLInternalResource *)self asset];
+      if (asset)
       {
-        v5 = v4;
-        v6 = [(PLInternalResource *)self asset];
-        v7 = [v6 isDeleted];
+        v5 = asset;
+        asset2 = [(PLInternalResource *)self asset];
+        isDeleted = [asset2 isDeleted];
 
-        if ((v7 & 1) == 0)
+        if ((isDeleted & 1) == 0)
         {
-          v9 = [(PLInternalResource *)self asset];
-          v8 = [v9 additionalAttributes];
-          [v8 resetNonSyncViewPresentation];
+          asset3 = [(PLInternalResource *)self asset];
+          additionalAttributes = [asset3 additionalAttributes];
+          [additionalAttributes resetNonSyncViewPresentation];
         }
       }
     }
@@ -940,22 +940,22 @@ LABEL_30:
 
 - (id)expectedFileURL
 {
-  v3 = [(PLInternalResource *)self dataStore];
-  v4 = [(PLInternalResource *)self asset];
-  v5 = [v3 expectedFileURLForResource:self asset:v4];
+  dataStore = [(PLInternalResource *)self dataStore];
+  asset = [(PLInternalResource *)self asset];
+  v5 = [dataStore expectedFileURLForResource:self asset:asset];
 
   return v5;
 }
 
 - (id)fileURL
 {
-  v3 = [(PLInternalResource *)self asset];
-  v4 = [v3 assetID];
+  asset = [(PLInternalResource *)self asset];
+  assetID = [asset assetID];
 
-  if (v4)
+  if (assetID)
   {
-    v5 = [(PLInternalResource *)self dataStoreKey];
-    v6 = [v5 fileURLForAssetID:v4];
+    dataStoreKey = [(PLInternalResource *)self dataStoreKey];
+    v6 = [dataStoreKey fileURLForAssetID:assetID];
   }
 
   else
@@ -966,30 +966,30 @@ LABEL_30:
   return v6;
 }
 
-- (void)setResourceIdentity:(id)a3 managedObjectContext:(id)a4
+- (void)setResourceIdentity:(id)identity managedObjectContext:(id)context
 {
-  v5 = a3;
-  -[PLInternalResource setResourceType:](self, "setResourceType:", [v5 resourceType]);
-  -[PLInternalResource setVersion:](self, "setVersion:", [v5 version]);
-  -[PLInternalResource setRecipeID:](self, "setRecipeID:", [v5 recipeID]);
-  v6 = [v5 uniformTypeIdentifier];
+  identityCopy = identity;
+  -[PLInternalResource setResourceType:](self, "setResourceType:", [identityCopy resourceType]);
+  -[PLInternalResource setVersion:](self, "setVersion:", [identityCopy version]);
+  -[PLInternalResource setRecipeID:](self, "setRecipeID:", [identityCopy recipeID]);
+  uniformTypeIdentifier = [identityCopy uniformTypeIdentifier];
 
-  [(PLInternalResource *)self setUniformTypeIdentifier:v6];
+  [(PLInternalResource *)self setUniformTypeIdentifier:uniformTypeIdentifier];
 }
 
-- (BOOL)repairResourceValidationErrors:(id)a3 managedObjectContext:(id)a4
+- (BOOL)repairResourceValidationErrors:(id)errors managedObjectContext:(id)context
 {
   v100[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorsCopy = errors;
   v6 = +[PLResourceModelValidationError allPossibleErrorCodes];
-  if (![v5 count])
+  if (![errorsCopy count])
   {
     v7 = v6;
 
-    v5 = v7;
+    errorsCopy = v7;
   }
 
-  v8 = [v5 mutableCopy];
+  v8 = [errorsCopy mutableCopy];
   if (![v8 count])
   {
     v77 = 0;
@@ -997,53 +997,53 @@ LABEL_30:
   }
 
   v81 = v6;
-  v82 = v5;
+  v82 = errorsCopy;
   v84 = 0;
   *&v9 = 138543618;
   v79 = v9;
   do
   {
-    v10 = [v8 anyObject];
-    v11 = [v10 integerValue];
-    if (v11 == 1 || v11 == 3)
+    anyObject = [v8 anyObject];
+    integerValue = [anyObject integerValue];
+    if (integerValue == 1 || integerValue == 3)
     {
-      v13 = [(PLInternalResource *)self asset];
+      asset = [(PLInternalResource *)self asset];
 
-      if (!v13)
+      if (!asset)
       {
         v19 = PLImageManagerGetLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(PLInternalResource *)self objectID];
+          objectID = [(PLInternalResource *)self objectID];
           *buf = 138543362;
-          v92 = v24;
+          v92 = objectID;
           _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "[RM]: Repair: Unable to repair resource with objectID: %{public}@, no asset is set.", buf, 0xCu);
         }
 
         goto LABEL_66;
       }
 
-      v14 = [(PLInternalResource *)self fileURL];
-      v15 = [(PLInternalResource *)self validatedExternalResourceRepresentationUsingFileURL:v14];
+      fileURL = [(PLInternalResource *)self fileURL];
+      v15 = [(PLInternalResource *)self validatedExternalResourceRepresentationUsingFileURL:fileURL];
 
-      v16 = [(PLInternalResource *)self asset];
-      v17 = [v16 master];
+      asset2 = [(PLInternalResource *)self asset];
+      master = [asset2 master];
 
-      if (v17)
+      if (master)
       {
-        v18 = [(PLInternalResource *)self isCPLResource];
+        isCPLResource = [(PLInternalResource *)self isCPLResource];
         v19 = MEMORY[0x1E695E0F0];
-        if (!v18)
+        if (!isCPLResource)
         {
           goto LABEL_33;
         }
 
-        v20 = [(PLInternalResource *)self asset];
-        v21 = [v20 pathForCPLResourceType:-[PLInternalResource cplType](self adjusted:{"cplType"), -[PLInternalResource isAdjustedResource](self, "isAdjustedResource")}];
+        asset3 = [(PLInternalResource *)self asset];
+        asset4 = [asset3 pathForCPLResourceType:-[PLInternalResource cplType](self adjusted:{"cplType"), -[PLInternalResource isAdjustedResource](self, "isAdjustedResource")}];
 
-        if (v21)
+        if (asset4)
         {
-          v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:v21 isDirectory:0];
+          v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:asset4 isDirectory:0];
           [v15 setFileURL:v22];
         }
 
@@ -1061,8 +1061,8 @@ LABEL_30:
       {
         if ([(PLInternalResource *)self dataStoreClassID]!= 3)
         {
-          v21 = [(PLInternalResource *)self asset];
-          v34 = [PLResourceInstaller externalResourcesForExistingAsset:v21 referencedResourceURLs:0];
+          asset4 = [(PLInternalResource *)self asset];
+          v34 = [PLResourceInstaller externalResourcesForExistingAsset:asset4 referencedResourceURLs:0];
 LABEL_32:
           v19 = v34;
 
@@ -1076,28 +1076,28 @@ LABEL_33:
           v90 = v36;
           v37 = [v35 predicateWithBlock:v89];
           v38 = [v19 filteredArrayUsingPredicate:v37];
-          v39 = [v38 firstObject];
+          firstObject = [v38 firstObject];
 
-          if (v39)
+          if (firstObject)
           {
             v85 = v36;
-            v40 = [v36 isEqualToValidatedExternalResource:v39];
+            v40 = [v36 isEqualToValidatedExternalResource:firstObject];
             if ([(PLInternalResource *)self isLocallyAvailable])
             {
-              v41 = [MEMORY[0x1E696AC08] defaultManager];
+              defaultManager = [MEMORY[0x1E696AC08] defaultManager];
               buf[0] = 0;
-              [v39 fileURL];
+              [firstObject fileURL];
               v42 = v8;
-              v43 = self;
+              selfCopy = self;
               v44 = v19;
-              v46 = v45 = v39;
-              v47 = [v46 path];
-              v48 = [v41 fileExistsAtPath:v47 isDirectory:buf];
+              v46 = v45 = firstObject;
+              path = [v46 path];
+              v48 = [defaultManager fileExistsAtPath:path isDirectory:buf];
               v49 = v48 | buf[0];
 
-              v39 = v45;
+              firstObject = v45;
               v19 = v44;
-              self = v43;
+              self = selfCopy;
               v8 = v42;
             }
 
@@ -1114,9 +1114,9 @@ LABEL_33:
               v36 = v85;
               if (v63)
               {
-                v64 = [(PLInternalResource *)self objectID];
+                objectID2 = [(PLInternalResource *)self objectID];
                 *buf = 138543362;
-                v92 = v64;
+                v92 = objectID2;
                 _os_log_impl(&dword_19BF1F000, v62, OS_LOG_TYPE_DEFAULT, "[RM]: Repair: Unable to repair resource with objectID: %{public}@, could not produce any changes vs stored resource.", buf, 0xCu);
               }
             }
@@ -1126,24 +1126,24 @@ LABEL_33:
               v36 = v85;
               if (v63)
               {
-                v65 = [(PLInternalResource *)self objectID];
+                objectID3 = [(PLInternalResource *)self objectID];
                 *buf = 138544130;
-                v92 = v65;
+                v92 = objectID3;
                 v93 = 2114;
                 v94 = v82;
                 v95 = 2112;
-                v96 = v39;
+                v96 = firstObject;
                 v97 = 2112;
-                v98 = self;
+                selfCopy2 = self;
                 _os_log_impl(&dword_19BF1F000, v62, OS_LOG_TYPE_DEFAULT, "[RM]: Repair: Storing corrections to objectID: %{public}@ for error codes: %{public}@, using external resource: %@, on target resource: %@.", buf, 0x2Au);
               }
 
-              v66 = [(PLInternalResource *)self dataStore];
-              v67 = [(PLInternalResource *)self asset];
+              dataStore = [(PLInternalResource *)self dataStore];
+              asset5 = [(PLInternalResource *)self asset];
               v87 = 0;
               v88 = 0;
-              v68 = v39;
-              v69 = [v66 storeExternalResource:v39 forAsset:v67 options:0 error:&v88 resultingResource:&v87];
+              v68 = firstObject;
+              v69 = [dataStore storeExternalResource:firstObject forAsset:asset5 options:0 error:&v88 resultingResource:&v87];
               v70 = v88;
               v83 = v87;
 
@@ -1157,49 +1157,49 @@ LABEL_33:
                 v71 = PLImageManagerGetLog();
                 if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
                 {
-                  v72 = [(PLInternalResource *)self objectID];
-                  v80 = [v70 code];
-                  v73 = [v70 domain];
+                  objectID4 = [(PLInternalResource *)self objectID];
+                  code = [v70 code];
+                  domain = [v70 domain];
                   *buf = 138544130;
-                  v92 = v72;
+                  v92 = objectID4;
                   v93 = 2112;
                   v94 = v70;
                   v95 = 2048;
-                  v96 = v80;
+                  v96 = code;
                   v97 = 2114;
-                  v98 = v73;
+                  selfCopy2 = domain;
                   _os_log_impl(&dword_19BF1F000, v71, OS_LOG_TYPE_ERROR, "[RM]: Repair: Unable to repair resource with objectID: %{public}@, cannot store changes. error: %@, code: %ld, domain: %{public}@", buf, 0x2Au);
                 }
               }
 
-              v39 = v68;
+              firstObject = v68;
             }
 
             goto LABEL_65;
           }
 
-          v50 = [(PLInternalResource *)self fileURL];
+          fileURL2 = [(PLInternalResource *)self fileURL];
 
-          if (v50)
+          if (fileURL2)
           {
             v86 = 0;
-            v51 = [MEMORY[0x1E696AC08] defaultManager];
-            v52 = [(PLInternalResource *)self fileURL];
-            v53 = [v52 path];
-            v54 = [v51 fileExistsAtPath:v53 isDirectory:&v86];
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+            fileURL3 = [(PLInternalResource *)self fileURL];
+            path2 = [fileURL3 path];
+            v54 = [defaultManager2 fileExistsAtPath:path2 isDirectory:&v86];
 
             if (!v54)
             {
               v55 = PLImageManagerGetLog();
               if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
               {
-                v56 = [(PLInternalResource *)self fileURL];
-                v57 = [v56 path];
-                v58 = [(PLInternalResource *)self objectID];
+                fileURL4 = [(PLInternalResource *)self fileURL];
+                path3 = [fileURL4 path];
+                objectID5 = [(PLInternalResource *)self objectID];
                 *buf = 138412802;
-                v92 = v57;
+                v92 = path3;
                 v93 = 2114;
-                v94 = v58;
+                v94 = objectID5;
                 v95 = 2114;
                 v96 = v82;
                 v59 = v55;
@@ -1208,7 +1208,7 @@ LABEL_33:
               }
 
 LABEL_59:
-              v39 = 0;
+              firstObject = 0;
 
               [(PLInternalResource *)self markAsNotLocallyAvailable];
               goto LABEL_60;
@@ -1219,13 +1219,13 @@ LABEL_59:
               v55 = PLImageManagerGetLog();
               if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
               {
-                v56 = [(PLInternalResource *)self fileURL];
-                v57 = [v56 path];
-                v58 = [(PLInternalResource *)self objectID];
+                fileURL4 = [(PLInternalResource *)self fileURL];
+                path3 = [fileURL4 path];
+                objectID5 = [(PLInternalResource *)self objectID];
                 *buf = 138412802;
-                v92 = v57;
+                v92 = path3;
                 v93 = 2114;
-                v94 = v58;
+                v94 = objectID5;
                 v95 = 2114;
                 v96 = v82;
                 v59 = v55;
@@ -1239,7 +1239,7 @@ LABEL_58:
               goto LABEL_59;
             }
 
-            v39 = 0;
+            firstObject = 0;
             if (v84)
             {
               goto LABEL_60;
@@ -1261,9 +1261,9 @@ LABEL_66:
           v74 = PLImageManagerGetLog();
           if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
           {
-            v75 = [(PLInternalResource *)self objectID];
+            objectID6 = [(PLInternalResource *)self objectID];
             *buf = v79;
-            v92 = v75;
+            v92 = objectID6;
             v93 = 2114;
             v94 = v82;
             _os_log_impl(&dword_19BF1F000, v74, OS_LOG_TYPE_DEFAULT, "[RM]: Repair: Cannot find external resource match to correct for resource objectID: %{public}@ for error codes: %{public}@, no corrections made.", buf, 0x16u);
@@ -1273,17 +1273,17 @@ LABEL_66:
           goto LABEL_65;
         }
 
-        v25 = [(PLInternalResource *)self asset];
-        v26 = [(PLInternalResource *)self resourceType];
-        v27 = [(PLInternalResource *)self version];
-        v28 = [(PLInternalResource *)self recipeID];
-        v29 = [(PLInternalResource *)self uniformTypeIdentifier];
-        v30 = [v29 identifier];
-        v21 = [v25 syndicationResourceURLForResourceType:v26 version:v27 recipeID:v28 utiString:v30 error:0];
+        asset6 = [(PLInternalResource *)self asset];
+        resourceType = [(PLInternalResource *)self resourceType];
+        version = [(PLInternalResource *)self version];
+        recipeID = [(PLInternalResource *)self recipeID];
+        uniformTypeIdentifier = [(PLInternalResource *)self uniformTypeIdentifier];
+        identifier = [uniformTypeIdentifier identifier];
+        asset4 = [asset6 syndicationResourceURLForResourceType:resourceType version:version recipeID:recipeID utiString:identifier error:0];
 
-        if (v21)
+        if (asset4)
         {
-          [v15 setFileURL:v21];
+          [v15 setFileURL:asset4];
         }
 
         v99 = v15;
@@ -1295,7 +1295,7 @@ LABEL_66:
       goto LABEL_32;
     }
 
-    if (v11 == 5)
+    if (integerValue == 5)
     {
       if (([(PLInternalResource *)self localAvailability]& 0x80000000) != 0 && ([(PLInternalResource *)self dataStoreKeyData], v33 = objc_claimAutoreleasedReturnValue(), v33, v33))
       {
@@ -1305,9 +1305,9 @@ LABEL_66:
 
       else if ([(PLInternalResource *)self isLocallyAvailable])
       {
-        v23 = [(PLInternalResource *)self dataStoreKeyData];
+        dataStoreKeyData = [(PLInternalResource *)self dataStoreKeyData];
 
-        if (!v23)
+        if (!dataStoreKeyData)
         {
           [(PLInternalResource *)self setLocalAvailability:0xFFFFFFFFLL];
           v84 = 1;
@@ -1316,14 +1316,14 @@ LABEL_66:
     }
 
 LABEL_67:
-    [v8 removeObject:v10];
+    [v8 removeObject:anyObject];
   }
 
   while ([v8 count]);
   if (v84)
   {
-    v76 = [(PLInternalResource *)self asset];
-    [v76 recalculateImageRequestHints];
+    asset7 = [(PLInternalResource *)self asset];
+    [asset7 recalculateImageRequestHints];
 
     v77 = 1;
   }
@@ -1333,16 +1333,16 @@ LABEL_67:
     v77 = 0;
   }
 
-  v5 = v82;
+  errorsCopy = v82;
   v6 = v81;
 LABEL_73:
 
   return v77;
 }
 
-- (id)validatedExternalResourceRepresentationUsingFileURL:(id)a3
+- (id)validatedExternalResourceRepresentationUsingFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if ([(PLInternalResource *)self isCPLResource])
   {
     v5 = [[PLValidatedExternalCloudResource alloc] initWithInternalResource:self];
@@ -1357,23 +1357,23 @@ LABEL_73:
   [(PLValidatedExternalResource *)v5 setVersion:[(PLInternalResource *)self version]];
   [(PLValidatedExternalResource *)v6 setResourceType:[(PLInternalResource *)self resourceType]];
   [(PLValidatedExternalResource *)v6 setRecipeID:[(PLInternalResource *)self recipeID]];
-  v7 = [(PLInternalResource *)self uniformTypeIdentifier];
-  [(PLValidatedExternalResource *)v6 setUniformTypeIdentifier:v7];
+  uniformTypeIdentifier = [(PLInternalResource *)self uniformTypeIdentifier];
+  [(PLValidatedExternalResource *)v6 setUniformTypeIdentifier:uniformTypeIdentifier];
 
-  [(PLValidatedExternalResource *)v6 setFileURL:v4];
+  [(PLValidatedExternalResource *)v6 setFileURL:lCopy];
   [(PLValidatedExternalResource *)v6 setDataLength:[(PLInternalResource *)self dataLength]];
   [(PLValidatedExternalResource *)v6 setUnorientedWidth:[(PLInternalResource *)self unorientedWidth]];
   [(PLValidatedExternalResource *)v6 setUnorientedHeight:[(PLInternalResource *)self unorientedHeight]];
-  v8 = [(PLInternalResource *)self codecFourCharCodeName];
-  [(PLValidatedExternalResource *)v6 setCodecFourCharCode:v8];
+  codecFourCharCodeName = [(PLInternalResource *)self codecFourCharCodeName];
+  [(PLValidatedExternalResource *)v6 setCodecFourCharCode:codecFourCharCodeName];
 
   [(PLValidatedExternalResource *)v6 setPtpTrashedState:[(PLInternalResource *)self ptpTrashedState]];
-  v9 = [(PLInternalResource *)self sidecarIndex];
-  [(PLValidatedExternalResource *)v6 setSidecarIndex:v9];
+  sidecarIndex = [(PLInternalResource *)self sidecarIndex];
+  [(PLValidatedExternalResource *)v6 setSidecarIndex:sidecarIndex];
 
   [(PLValidatedExternalResource *)v6 setTrashedState:[(PLInternalResource *)self trashedState]];
-  v10 = [(PLInternalResource *)self trashedDate];
-  [(PLValidatedExternalResource *)v6 setTrashedDate:v10];
+  trashedDate = [(PLInternalResource *)self trashedDate];
+  [(PLValidatedExternalResource *)v6 setTrashedDate:trashedDate];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1403,19 +1403,19 @@ LABEL_73:
 
 - (BOOL)isInCloud
 {
-  v3 = [(PLInternalResource *)self dataStoreClassID];
-  if ((v3 - 2) >= 2)
+  dataStoreClassID = [(PLInternalResource *)self dataStoreClassID];
+  if ((dataStoreClassID - 2) >= 2)
   {
-    if (v3)
+    if (dataStoreClassID)
     {
       return 0;
     }
 
-    v4 = [(PLInternalResource *)self dataStore];
-    if ([v4 dataStoreSubtypeIsDownloadable:{-[PLInternalResource dataStoreSubtype](self, "dataStoreSubtype")}])
+    dataStore = [(PLInternalResource *)self dataStore];
+    if ([dataStore dataStoreSubtypeIsDownloadable:{-[PLInternalResource dataStoreSubtype](self, "dataStoreSubtype")}])
     {
-      v6 = [(PLInternalResource *)self fingerprint];
-      v5 = v6 != 0;
+      fingerprint = [(PLInternalResource *)self fingerprint];
+      v5 = fingerprint != 0;
     }
 
     else
@@ -1426,38 +1426,38 @@ LABEL_73:
 
   else
   {
-    v4 = [(PLInternalResource *)self dataStore];
-    v5 = [v4 dataStoreSubtypeIsDownloadable:{-[PLInternalResource dataStoreSubtype](self, "dataStoreSubtype")}];
+    dataStore = [(PLInternalResource *)self dataStore];
+    v5 = [dataStore dataStoreSubtypeIsDownloadable:{-[PLInternalResource dataStoreSubtype](self, "dataStoreSubtype")}];
   }
 
   return v5;
 }
 
-- (void)setLocalAvailability:(signed __int16)a3
+- (void)setLocalAvailability:(signed __int16)availability
 {
-  v3 = a3;
+  availabilityCopy = availability;
   [(PLInternalResource *)self willAccessValueForKey:@"localAvailability"];
   v5 = [(PLInternalResource *)self primitiveValueForKey:@"localAvailability"];
-  v6 = [v5 shortValue];
+  shortValue = [v5 shortValue];
 
   [(PLInternalResource *)self didAccessValueForKey:@"localAvailability"];
-  if (v6 != v3)
+  if (shortValue != availabilityCopy)
   {
     [(PLInternalResource *)self willChangeValueForKey:@"localAvailability"];
-    v7 = [MEMORY[0x1E696AD98] numberWithShort:v3];
+    v7 = [MEMORY[0x1E696AD98] numberWithShort:availabilityCopy];
     [(PLInternalResource *)self setPrimitiveValue:v7 forKey:@"localAvailability"];
 
     [(PLInternalResource *)self didChangeValueForKey:@"localAvailability"];
     if (([(PLInternalResource *)self isDeleted]& 1) == 0)
     {
-      v8 = [(PLInternalResource *)self asset];
+      asset = [(PLInternalResource *)self asset];
 
-      if (v8)
+      if (asset)
       {
-        if (v3 >= 1 && v6 < 0)
+        if (availabilityCopy >= 1 && shortValue < 0)
         {
-          v9 = [(PLInternalResource *)self asset];
-          [v9 reconsiderLocalAvailabilityTargetsForResourceGeneratableByAvailabilityWorker];
+          asset2 = [(PLInternalResource *)self asset];
+          [asset2 reconsiderLocalAvailabilityTargetsForResourceGeneratableByAvailabilityWorker];
         }
       }
     }
@@ -1470,27 +1470,27 @@ LABEL_73:
   {
     if (-[PLInternalResource resourceType](self, "resourceType") != 1 || (v7 = objc_alloc(MEMORY[0x1E69C0718]), -[PLInternalResource _avAssetProxyIfTypeIsFullSizeOrOriginal](self, "_avAssetProxyIfTypeIsFullSizeOrOriginal"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 initWithAVAsset:v8 options:12 timeZoneLookup:0], v8, !v9) || (objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", objc_msgSend(v9, "isPlayable")), v6 = objc_claimAutoreleasedReturnValue(), v9, !v6))
     {
-      v10 = [(PLInternalResource *)self codecFourCharCodeName];
+      codecFourCharCodeName = [(PLInternalResource *)self codecFourCharCodeName];
 
-      if (!v10 || (v11 = MEMORY[0x1E696AD98], -[PLInternalResource codecFourCharCodeName](self, "codecFourCharCodeName"), v12 = objc_claimAutoreleasedReturnValue(), [v11 numberWithBool:{+[PLCodec isPlayableFourCharCodecName:](PLCodec, "isPlayableFourCharCodecName:", v12)}], v6 = objc_claimAutoreleasedReturnValue(), v12, !v6))
+      if (!codecFourCharCodeName || (v11 = MEMORY[0x1E696AD98], -[PLInternalResource codecFourCharCodeName](self, "codecFourCharCodeName"), v12 = objc_claimAutoreleasedReturnValue(), [v11 numberWithBool:{+[PLCodec isPlayableFourCharCodecName:](PLCodec, "isPlayableFourCharCodecName:", v12)}], v6 = objc_claimAutoreleasedReturnValue(), v12, !v6))
       {
-        v13 = [(PLInternalResource *)self uniformTypeIdentifier];
-        v14 = [v13 isPlayableVideo];
+        uniformTypeIdentifier = [(PLInternalResource *)self uniformTypeIdentifier];
+        isPlayableVideo = [uniformTypeIdentifier isPlayableVideo];
 
-        v6 = [MEMORY[0x1E696AD98] numberWithBool:v14];
+        v6 = [MEMORY[0x1E696AD98] numberWithBool:isPlayableVideo];
       }
     }
   }
 
-  v15 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v15;
+  return bOOLValue;
 }
 
 - (float)scale
 {
-  v3 = [(PLInternalResource *)self asset];
-  [v3 unorientedSize];
+  asset = [(PLInternalResource *)self asset];
+  [asset unorientedSize];
   v5 = v4;
   v7 = v6;
 
@@ -1498,10 +1498,10 @@ LABEL_73:
   result = 0.0;
   if (v8 > 0.0)
   {
-    v10 = [(PLInternalResource *)self unorientedWidth];
-    v11 = [(PLInternalResource *)self unorientedHeight];
+    unorientedWidth = [(PLInternalResource *)self unorientedWidth];
+    unorientedHeight = [(PLInternalResource *)self unorientedHeight];
     v12 = v8;
-    return (v11 * v10) / v12;
+    return (unorientedHeight * unorientedWidth) / v12;
   }
 
   return result;
@@ -1509,16 +1509,16 @@ LABEL_73:
 
 - (int64_t)orientedHeight
 {
-  v3 = [(PLInternalResource *)self unorientedWidth];
-  v4 = [(PLInternalResource *)self unorientedHeight];
+  unorientedWidth = [(PLInternalResource *)self unorientedWidth];
+  unorientedHeight = [(PLInternalResource *)self unorientedHeight];
   if ([(PLInternalResource *)self orientation]- 5 >= 4)
   {
-    v5 = v4;
+    v5 = unorientedHeight;
   }
 
   else
   {
-    v5 = v3;
+    v5 = unorientedWidth;
   }
 
   return v5;
@@ -1526,16 +1526,16 @@ LABEL_73:
 
 - (int64_t)orientedWidth
 {
-  v3 = [(PLInternalResource *)self unorientedWidth];
-  v4 = [(PLInternalResource *)self unorientedHeight];
+  unorientedWidth = [(PLInternalResource *)self unorientedWidth];
+  unorientedHeight = [(PLInternalResource *)self unorientedHeight];
   if ([(PLInternalResource *)self orientation]- 5 >= 4)
   {
-    v5 = v3;
+    v5 = unorientedWidth;
   }
 
   else
   {
-    v5 = v4;
+    v5 = unorientedHeight;
   }
 
   return v5;
@@ -1543,36 +1543,36 @@ LABEL_73:
 
 - (unsigned)orientation
 {
-  v3 = [(PLInternalResource *)self resourceType];
-  v4 = [(PLInternalResource *)self recipeID];
-  v5 = [(PLInternalResource *)self version];
-  v6 = [(PLInternalResource *)self asset];
-  v7 = [v6 orientation];
-  v8 = [(PLInternalResource *)self asset];
-  v9 = [v8 originalOrientation];
-  v10 = [(PLInternalResource *)self asset];
-  v11 = PLResourceOrientationFromResourceInfo(v3, v4, v5, v7, v9, [v10 hasAdjustments]);
+  resourceType = [(PLInternalResource *)self resourceType];
+  recipeID = [(PLInternalResource *)self recipeID];
+  version = [(PLInternalResource *)self version];
+  asset = [(PLInternalResource *)self asset];
+  orientation = [asset orientation];
+  asset2 = [(PLInternalResource *)self asset];
+  originalOrientation = [asset2 originalOrientation];
+  asset3 = [(PLInternalResource *)self asset];
+  v11 = PLResourceOrientationFromResourceInfo(resourceType, recipeID, version, orientation, originalOrientation, [asset3 hasAdjustments]);
 
   return v11;
 }
 
 - (PLAssetID)assetID
 {
-  v2 = [(PLInternalResource *)self asset];
-  v3 = [v2 assetID];
+  asset = [(PLInternalResource *)self asset];
+  assetID = [asset assetID];
 
-  return v3;
+  return assetID;
 }
 
 - (PLResourceDataStoreKey)dataStoreKey
 {
-  v3 = [(PLInternalResource *)self dataStoreKeyData];
-  v4 = v3;
-  if (v3)
+  dataStoreKeyData = [(PLInternalResource *)self dataStoreKeyData];
+  v4 = dataStoreKeyData;
+  if (dataStoreKeyData)
   {
-    v5 = [v3 bytes];
-    v6 = [(PLInternalResource *)self dataStore];
-    v7 = [v6 keyFromKeyStruct:v5];
+    bytes = [dataStoreKeyData bytes];
+    dataStore = [(PLInternalResource *)self dataStore];
+    v7 = [dataStore keyFromKeyStruct:bytes];
   }
 
   else
@@ -1585,92 +1585,92 @@ LABEL_73:
 
 - (PLResourceDataStore)dataStore
 {
-  v3 = [(PLInternalResource *)self dataStoreClassID];
-  v4 = [(PLInternalResource *)self _libraryID];
-  v5 = PLDataStoreForClassIDAndLibraryID(v3, v4);
+  dataStoreClassID = [(PLInternalResource *)self dataStoreClassID];
+  _libraryID = [(PLInternalResource *)self _libraryID];
+  v5 = PLDataStoreForClassIDAndLibraryID(dataStoreClassID, _libraryID);
 
   return v5;
 }
 
 - (BOOL)isOriginalResource
 {
-  v2 = self;
-  if ([(PLInternalResource *)v2 version])
+  selfCopy = self;
+  if ([(PLInternalResource *)selfCopy version])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = ([(PLInternalResource *)v2 recipeID]& 1) == 0;
+    v3 = ([(PLInternalResource *)selfCopy recipeID]& 1) == 0;
   }
 
   return v3;
 }
 
-- (void)setFingerprint:(id)a3
+- (void)setFingerprint:(id)fingerprint
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fingerprintCopy = fingerprint;
   [(PLInternalResource *)self willAccessValueForKey:@"fingerprint"];
   v5 = [(PLInternalResource *)self primitiveValueForKey:@"fingerprint"];
   [(PLInternalResource *)self didAccessValueForKey:@"fingerprint"];
-  if (([v5 isEqualToString:v4] & 1) == 0)
+  if (([v5 isEqualToString:fingerprintCopy] & 1) == 0)
   {
-    if (!v4 && v5)
+    if (!fingerprintCopy && v5)
     {
       v6 = PLImageManagerGetLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(PLInternalResource *)self objectID];
+        objectID = [(PLInternalResource *)self objectID];
         v8 = 138412290;
-        v9 = v7;
+        v9 = objectID;
         _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Erasing existing fingerprint on resource: %@", &v8, 0xCu);
       }
     }
 
     [(PLInternalResource *)self willChangeValueForKey:@"fingerprint"];
-    [(PLInternalResource *)self setPrimitiveValue:v4 forKey:@"fingerprint"];
+    [(PLInternalResource *)self setPrimitiveValue:fingerprintCopy forKey:@"fingerprint"];
     [(PLInternalResource *)self didChangeValueForKey:@"fingerprint"];
   }
 }
 
-- (void)setUniformTypeIdentifier:(id)a3
+- (void)setUniformTypeIdentifier:(id)identifier
 {
-  v9 = a3;
-  v4 = [(PLInternalResource *)self uniformTypeIdentifier];
-  v5 = [v4 isEqualToUniformTypeIdentifier:v9];
+  identifierCopy = identifier;
+  uniformTypeIdentifier = [(PLInternalResource *)self uniformTypeIdentifier];
+  v5 = [uniformTypeIdentifier isEqualToUniformTypeIdentifier:identifierCopy];
 
-  v6 = v9;
+  v6 = identifierCopy;
   if ((v5 & 1) == 0)
   {
-    if (v9)
+    if (identifierCopy)
     {
-      v7 = [v9 compactRepresentation];
-      [(PLInternalResource *)self setCompactUTI:v7];
+      compactRepresentation = [identifierCopy compactRepresentation];
+      [(PLInternalResource *)self setCompactUTI:compactRepresentation];
 
-      v8 = [v9 conformanceHint];
+      conformanceHint = [identifierCopy conformanceHint];
     }
 
     else
     {
       [(PLInternalResource *)self setCompactUTI:0];
-      v8 = 0;
+      conformanceHint = 0;
     }
 
-    [(PLInternalResource *)self setUtiConformanceHint:v8];
-    v6 = v9;
+    [(PLInternalResource *)self setUtiConformanceHint:conformanceHint];
+    v6 = identifierCopy;
   }
 }
 
 - (PLUniformTypeIdentifier)uniformTypeIdentifier
 {
-  v3 = [(PLInternalResource *)self compactUTI];
+  compactUTI = [(PLInternalResource *)self compactUTI];
 
-  if (v3)
+  if (compactUTI)
   {
-    v4 = [(PLInternalResource *)self compactUTI];
-    v5 = [PLUniformTypeIdentifier utiWithCompactRepresentation:v4 conformanceHint:[(PLInternalResource *)self utiConformanceHint]];
+    compactUTI2 = [(PLInternalResource *)self compactUTI];
+    v5 = [PLUniformTypeIdentifier utiWithCompactRepresentation:compactUTI2 conformanceHint:[(PLInternalResource *)self utiConformanceHint]];
   }
 
   else
@@ -1681,12 +1681,12 @@ LABEL_73:
   return v5;
 }
 
-- (id)validateForAssetID:(id)a3 resourceIdentity:(id)a4
+- (id)validateForAssetID:(id)d resourceIdentity:(id)identity
 {
-  v5 = a3;
-  v6 = [(PLInternalResource *)self dataStoreKeyData];
+  dCopy = d;
+  dataStoreKeyData = [(PLInternalResource *)self dataStoreKeyData];
 
-  if ([(PLInternalResource *)self isLocallyAvailable]&& !v6 || (v7 = [(PLInternalResource *)self localAvailability], v8 = MEMORY[0x1E695E0F0], v7 < 0) && v6)
+  if ([(PLInternalResource *)self isLocallyAvailable]&& !dataStoreKeyData || (v7 = [(PLInternalResource *)self localAvailability], v8 = MEMORY[0x1E695E0F0], v7 < 0) && dataStoreKeyData)
   {
     v9 = [PLResourceModelValidationError localAvailabilityInconsistencyErrorForResource:self];
     v8 = [MEMORY[0x1E695E0F0] arrayByAddingObject:v9];
@@ -1700,8 +1700,8 @@ LABEL_73:
     v8 = v11;
   }
 
-  v12 = [(PLInternalResource *)self dataStoreKey];
-  v13 = [v12 validateForAssetID:v5 resourceIdentity:self];
+  dataStoreKey = [(PLInternalResource *)self dataStoreKey];
+  v13 = [dataStoreKey validateForAssetID:dCopy resourceIdentity:self];
 
   v14 = [v8 arrayByAddingObjectsFromArray:v13];
 
@@ -1710,14 +1710,14 @@ LABEL_73:
 
 - (NSString)cloudUUIDForDeletion
 {
-  v3 = [(PLInternalResource *)self cloudDeleteAssetUUIDWithResourceType];
+  cloudDeleteAssetUUIDWithResourceType = [(PLInternalResource *)self cloudDeleteAssetUUIDWithResourceType];
 
-  if (!v3)
+  if (!cloudDeleteAssetUUIDWithResourceType)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(PLInternalResource *)self asset];
-    v6 = [v5 uuid];
-    v7 = [v4 stringWithFormat:@"%@%s%tu", v6, "-@-", -[PLInternalResource cplType](self, "cplType")];
+    asset = [(PLInternalResource *)self asset];
+    uuid = [asset uuid];
+    v7 = [v4 stringWithFormat:@"%@%s%tu", uuid, "-@-", -[PLInternalResource cplType](self, "cplType")];
 
     [(PLInternalResource *)self setCloudDeleteAssetUUIDWithResourceType:v7];
   }
@@ -1730,7 +1730,7 @@ LABEL_73:
   v10.receiver = self;
   v10.super_class = PLInternalResource;
   [(PLManagedObject *)&v10 willSave];
-  v3 = [(PLInternalResource *)self managedObjectContext];
+  managedObjectContext = [(PLInternalResource *)self managedObjectContext];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([(PLInternalResource *)self isDeleted]& 1) == 0)
   {
@@ -1741,18 +1741,18 @@ LABEL_73:
 
     else if ([(PLInternalResource *)self shouldPersistTrashedState])
     {
-      v4 = [(PLInternalResource *)self fileURL];
-      if (v4)
+      fileURL = [(PLInternalResource *)self fileURL];
+      if (fileURL)
       {
-        v5 = [(PLInternalResource *)self changedValues];
-        v6 = [v5 objectForKeyedSubscript:@"trashedState"];
+        changedValues = [(PLInternalResource *)self changedValues];
+        v6 = [changedValues objectForKeyedSubscript:@"trashedState"];
 
         if (v6)
         {
-          v7 = [MEMORY[0x1E69BF230] filesystemPersistenceBatchItemForFileAtURL:v4];
-          v8 = [(PLInternalResource *)self isTrashedOrExpunged];
+          v7 = [MEMORY[0x1E69BF230] filesystemPersistenceBatchItemForFileAtURL:fileURL];
+          isTrashedOrExpunged = [(PLInternalResource *)self isTrashedOrExpunged];
           v9 = *MEMORY[0x1E69BFE58];
-          if (v8)
+          if (isTrashedOrExpunged)
           {
             [v7 setUInt16:1 forKey:v9];
           }
@@ -1774,20 +1774,20 @@ LABEL_73:
   v6.receiver = self;
   v6.super_class = PLInternalResource;
   [(PLInternalResource *)&v6 prepareForDeletion];
-  v3 = [(PLInternalResource *)self asset];
+  asset = [(PLInternalResource *)self asset];
 
-  if (v3)
+  if (asset)
   {
     [(PLInternalResource *)self markAsNotLocallyAvailable];
-    v4 = [(PLInternalResource *)self cloudUUIDForDeletion];
-    [(PLInternalResource *)self setCloudDeleteAssetUUIDWithResourceType:v4];
+    cloudUUIDForDeletion = [(PLInternalResource *)self cloudUUIDForDeletion];
+    [(PLInternalResource *)self setCloudDeleteAssetUUIDWithResourceType:cloudUUIDForDeletion];
   }
 
-  v5 = [(PLInternalResource *)self managedObjectContext];
+  managedObjectContext = [(PLInternalResource *)self managedObjectContext];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 mergingChanges] & 1) == 0 && -[PLInternalResource supportsTrashedState](self, "supportsTrashedState"))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([managedObjectContext mergingChanges] & 1) == 0 && -[PLInternalResource supportsTrashedState](self, "supportsTrashedState"))
   {
-    [v5 recordCloudDeletionForObject:self];
+    [managedObjectContext recordCloudDeletionForObject:self];
   }
 }
 
@@ -1795,16 +1795,16 @@ LABEL_73:
 {
   if ([(PLInternalResource *)self shouldPersistTrashedState])
   {
-    v6 = [(PLInternalResource *)self fileURL];
-    v3 = [(PLInternalResource *)self isTrashedOrExpunged];
-    v4 = v6;
-    if (v6 && v3)
+    fileURL = [(PLInternalResource *)self fileURL];
+    isTrashedOrExpunged = [(PLInternalResource *)self isTrashedOrExpunged];
+    v4 = fileURL;
+    if (fileURL && isTrashedOrExpunged)
     {
-      v5 = [MEMORY[0x1E69BF230] filesystemPersistenceBatchItemForFileAtURL:v6];
+      v5 = [MEMORY[0x1E69BF230] filesystemPersistenceBatchItemForFileAtURL:fileURL];
       [v5 setUInt16:1 forKey:*MEMORY[0x1E69BFE58]];
       [v5 persist];
 
-      v4 = v6;
+      v4 = fileURL;
     }
   }
 }
@@ -1816,47 +1816,47 @@ LABEL_73:
     return 0;
   }
 
-  v3 = [(PLInternalResource *)self fileSystemBookmark];
-  v4 = v3 == 0;
+  fileSystemBookmark = [(PLInternalResource *)self fileSystemBookmark];
+  v4 = fileSystemBookmark == 0;
 
   return v4;
 }
 
-- (void)applyTrashedState:(signed __int16)a3 trashedDate:(id)a4
+- (void)applyTrashedState:(signed __int16)state trashedDate:(id)date
 {
-  v4 = a3;
+  stateCopy = state;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dateCopy = date;
   if (![(PLInternalResource *)self supportsTrashedState])
   {
-    v7 = PLBackendGetLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    asset = PLBackendGetLog();
+    if (os_log_type_enabled(asset, OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
-      *v27 = v4;
+      *v27 = stateCopy;
       *&v27[4] = 2048;
       *&v27[6] = [(PLInternalResource *)self dataStoreSubtype];
-      _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "Unexpected resource type for trash state: %d, with CPL resource type: %lld, ignoring", buf, 0x12u);
+      _os_log_impl(&dword_19BF1F000, asset, OS_LOG_TYPE_INFO, "Unexpected resource type for trash state: %d, with CPL resource type: %lld, ignoring", buf, 0x12u);
     }
 
     goto LABEL_30;
   }
 
-  v7 = [(PLInternalResource *)self asset];
-  if (v4 == 2)
+  asset = [(PLInternalResource *)self asset];
+  if (stateCopy == 2)
   {
     if ([(PLInternalResource *)self trashedState]== 1)
     {
       v13 = PLBackendGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(PLInternalResource *)self objectID];
-        v15 = [(PLInternalResource *)self asset];
-        v16 = [v15 uuid];
+        objectID = [(PLInternalResource *)self objectID];
+        asset2 = [(PLInternalResource *)self asset];
+        uuid = [asset2 uuid];
         *buf = 138543618;
-        *v27 = v14;
+        *v27 = objectID;
         *&v27[8] = 2114;
-        *&v27[10] = v16;
+        *&v27[10] = uuid;
         v17 = "Expunging already trashed resource %{public}@ on asset %{public}@";
 LABEL_20:
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, v17, buf, 0x16u);
@@ -1873,13 +1873,13 @@ LABEL_20:
       v13 = PLBackendGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(PLInternalResource *)self objectID];
-        v15 = [(PLInternalResource *)self asset];
-        v16 = [v15 uuid];
+        objectID = [(PLInternalResource *)self objectID];
+        asset2 = [(PLInternalResource *)self asset];
+        uuid = [asset2 uuid];
         *buf = 138543618;
-        *v27 = v14;
+        *v27 = objectID;
         *&v27[8] = 2114;
-        *&v27[10] = v16;
+        *&v27[10] = uuid;
         v17 = "Expunging resource, skipping trash state on resource %{public}@ on asset %{public}@";
         goto LABEL_20;
       }
@@ -1887,29 +1887,29 @@ LABEL_20:
 
 LABEL_22:
     [(PLInternalResource *)self setTrashedState:2];
-    v8 = [(PLInternalResource *)self fileURL];
+    fileURL = [(PLInternalResource *)self fileURL];
     [(PLInternalResource *)self deleteResource];
-    if (!v8)
+    if (!fileURL)
     {
       v20 = PLBackendGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [(PLInternalResource *)self objectID];
-        v22 = [(PLInternalResource *)self asset];
-        v23 = [v22 uuid];
+        objectID2 = [(PLInternalResource *)self objectID];
+        asset3 = [(PLInternalResource *)self asset];
+        uuid2 = [asset3 uuid];
         *buf = 138543618;
-        *v27 = v21;
+        *v27 = objectID2;
         *&v27[8] = 2114;
-        *&v27[10] = v23;
+        *&v27[10] = uuid2;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Cannot delete resource file for resource: %{public}@ on asset: %{public}@ because fileURL is nil.", buf, 0x16u);
       }
 
       goto LABEL_28;
     }
 
-    v18 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v25 = 0;
-    v19 = [v18 removeItemAtURL:v8 error:&v25];
+    v19 = [defaultManager removeItemAtURL:fileURL error:&v25];
     v20 = v25;
     if ((v19 & 1) == 0)
     {
@@ -1920,38 +1920,38 @@ LABEL_22:
         goto LABEL_28;
       }
 
-      v18 = PLBackendGetLog();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      defaultManager = PLBackendGetLog();
+      if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        *v27 = v8;
+        *v27 = fileURL;
         *&v27[8] = 2112;
         *&v27[10] = v20;
-        _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Cannot delete resource file: %@, %@", buf, 0x16u);
+        _os_log_impl(&dword_19BF1F000, defaultManager, OS_LOG_TYPE_ERROR, "Cannot delete resource file: %@, %@", buf, 0x16u);
       }
     }
 
 LABEL_28:
-    [v7 reevaluateCameraProcessingAdjustmentState];
+    [asset reevaluateCameraProcessingAdjustmentState];
     goto LABEL_29;
   }
 
-  if (v4 == 1)
+  if (stateCopy == 1)
   {
     if (![(PLInternalResource *)self trashedState])
     {
       [(PLInternalResource *)self setTrashedState:1];
-      [(PLInternalResource *)self setTrashedDate:v6];
-      v8 = PLBackendGetLog();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      [(PLInternalResource *)self setTrashedDate:dateCopy];
+      fileURL = PLBackendGetLog();
+      if (os_log_type_enabled(fileURL, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(PLInternalResource *)self objectID];
-        v10 = [(PLInternalResource *)self asset];
-        v11 = [v10 uuid];
+        objectID3 = [(PLInternalResource *)self objectID];
+        asset4 = [(PLInternalResource *)self asset];
+        uuid3 = [asset4 uuid];
         *buf = 138543618;
-        *v27 = v9;
+        *v27 = objectID3;
         *&v27[8] = 2114;
-        *&v27[10] = v11;
+        *&v27[10] = uuid3;
         v12 = "Trashed resource %{public}@ on asset %{public}@";
         goto LABEL_13;
       }
@@ -1960,23 +1960,23 @@ LABEL_29:
     }
   }
 
-  else if (!v4 && [(PLInternalResource *)self trashedState]== 1)
+  else if (!stateCopy && [(PLInternalResource *)self trashedState]== 1)
   {
     [(PLInternalResource *)self setTrashedState:0];
     [(PLInternalResource *)self setTrashedDate:0];
-    v8 = PLBackendGetLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    fileURL = PLBackendGetLog();
+    if (os_log_type_enabled(fileURL, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PLInternalResource *)self objectID];
-      v10 = [(PLInternalResource *)self asset];
-      v11 = [v10 uuid];
+      objectID3 = [(PLInternalResource *)self objectID];
+      asset4 = [(PLInternalResource *)self asset];
+      uuid3 = [asset4 uuid];
       *buf = 138543618;
-      *v27 = v9;
+      *v27 = objectID3;
       *&v27[8] = 2114;
-      *&v27[10] = v11;
+      *&v27[10] = uuid3;
       v12 = "Untrashed resource %{public}@ on asset %{public}@";
 LABEL_13:
-      _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, v12, buf, 0x16u);
+      _os_log_impl(&dword_19BF1F000, fileURL, OS_LOG_TYPE_DEFAULT, v12, buf, 0x16u);
 
       goto LABEL_29;
     }
@@ -1987,11 +1987,11 @@ LABEL_13:
 LABEL_30:
 }
 
-- (void)applyTrashedState:(signed __int16)a3
+- (void)applyTrashedState:(signed __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:2592000.0];
-  [(PLInternalResource *)self applyTrashedState:v3 trashedDate:v5];
+  [(PLInternalResource *)self applyTrashedState:stateCopy trashedDate:v5];
 }
 
 - (BOOL)supportsTrashedState
@@ -2004,7 +2004,7 @@ LABEL_30:
 - (BOOL)isSyncableChange
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(PLInternalResource *)self changedValues];
+  changedValues = [(PLInternalResource *)self changedValues];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -2023,7 +2023,7 @@ LABEL_30:
           objc_enumerationMutation(v3);
         }
 
-        v7 = [v2 objectForKey:*(*(&v9 + 1) + 8 * i)];
+        v7 = [changedValues objectForKey:*(*(&v9 + 1) + 8 * i)];
 
         if (v7)
         {
@@ -2049,24 +2049,24 @@ LABEL_11:
 
 - (id)_avAssetProxyIfTypeIsFullSizeOrOriginal
 {
-  v3 = [(PLInternalResource *)self cplType];
-  if (v3 == 16)
+  cplType = [(PLInternalResource *)self cplType];
+  if (cplType == 16)
   {
-    v6 = [(PLInternalResource *)self asset];
-    v7 = [v6 hasAdjustments];
+    asset = [(PLInternalResource *)self asset];
+    hasAdjustments = [asset hasAdjustments];
 
-    if (v7)
+    if (hasAdjustments)
     {
-      v4 = [(PLInternalResource *)self asset];
-      v5 = [v4 avAssetProxyForFullSizeAllowReadFromFile:0];
+      asset2 = [(PLInternalResource *)self asset];
+      v5 = [asset2 avAssetProxyForFullSizeAllowReadFromFile:0];
       goto LABEL_6;
     }
   }
 
-  else if (v3 == 1)
+  else if (cplType == 1)
   {
-    v4 = [(PLInternalResource *)self asset];
-    v5 = [v4 avAssetProxyForOriginalAllowReadFromFile:0];
+    asset2 = [(PLInternalResource *)self asset];
+    v5 = [asset2 avAssetProxyForOriginalAllowReadFromFile:0];
 LABEL_6:
     v8 = v5;
 
@@ -2081,27 +2081,27 @@ LABEL_8:
 
 - (BOOL)_colorSpaceIsNativeForDisplay
 {
-  v3 = [(PLInternalResource *)self isDerivative];
-  if (v3)
+  isDerivative = [(PLInternalResource *)self isDerivative];
+  if (isDerivative)
   {
     v4 = [PLResourceRecipe recipeFromID:[(PLInternalResource *)self recipeID]];
-    v5 = [v4 colorSpaceIsNativeForDisplay];
+    colorSpaceIsNativeForDisplay = [v4 colorSpaceIsNativeForDisplay];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isDerivative) = colorSpaceIsNativeForDisplay;
   }
 
-  return v3;
+  return isDerivative;
 }
 
 - (id)_libraryID
 {
-  v4 = [(PLInternalResource *)self managedObjectContext];
-  v5 = [v4 pathManager];
+  managedObjectContext = [(PLInternalResource *)self managedObjectContext];
+  pathManager = [managedObjectContext pathManager];
 
-  if (!v5)
+  if (!pathManager)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLInternalResource.m" lineNumber:140 description:@"Unexpected nil pathManager on managed object context."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInternalResource.m" lineNumber:140 description:@"Unexpected nil pathManager on managed object context."];
   }
 
   v6 = PLLibraryIDFromPathManager();
@@ -2109,14 +2109,14 @@ LABEL_8:
   return v6;
 }
 
-+ (BOOL)batchResetFileIDInManagedObjectContext:(id)a3 error:(id *)a4
++ (BOOL)batchResetFileIDInManagedObjectContext:(id)context error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695D560];
-  v7 = a3;
+  contextCopy = context;
   v8 = [v6 alloc];
-  v9 = [a1 entityName];
-  v10 = [v8 initWithEntityName:v9];
+  entityName = [self entityName];
+  v10 = [v8 initWithEntityName:entityName];
 
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %lld", @"fileID", -1];
   [v10 setPredicate:v11];
@@ -2127,7 +2127,7 @@ LABEL_8:
   [v10 setPropertiesToUpdate:v12];
 
   v19 = 0;
-  v13 = [v7 executeRequest:v10 error:&v19];
+  v13 = [contextCopy executeRequest:v10 error:&v19];
 
   v14 = v19;
   if (v14)
@@ -2156,35 +2156,35 @@ LABEL_8:
     v15 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v13 result];
+      result = [v13 result];
       *buf = 138412290;
-      v21 = v16;
+      v21 = result;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Batch reset fileID for %@ internal resources", buf, 0xCu);
     }
   }
 
 LABEL_9:
-  if (a4)
+  if (error)
   {
     v17 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   return v14 == 0;
 }
 
-+ (BOOL)deleteObsoleteResourcesInManagedObjectContext:(id)a3 error:(id *)a4
++ (BOOL)deleteObsoleteResourcesInManagedObjectContext:(id)context error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 fetchRequest];
+  contextCopy = context;
+  fetchRequest = [self fetchRequest];
   v8 = MEMORY[0x1E696AE18];
-  v9 = [a1 _obsoleteResourceRecipesWithCPLOff];
-  v10 = [v8 predicateWithFormat:@"%K in %@ AND %K == %d", @"recipeID", v9, @"dataStoreClassID", 0];
+  _obsoleteResourceRecipesWithCPLOff = [self _obsoleteResourceRecipesWithCPLOff];
+  v10 = [v8 predicateWithFormat:@"%K in %@ AND %K == %d", @"recipeID", _obsoleteResourceRecipesWithCPLOff, @"dataStoreClassID", 0];
 
-  [v7 setPredicate:v10];
+  [fetchRequest setPredicate:v10];
   v21 = 0;
-  v11 = [v6 executeFetchRequest:v7 error:&v21];
+  v11 = [contextCopy executeFetchRequest:fetchRequest error:&v21];
   v12 = v21;
   v13 = PLBackendGetLog();
   v14 = v13;
@@ -2193,21 +2193,21 @@ LABEL_9:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = [v11 count];
-      v16 = [a1 _obsoleteResourceRecipesWithCPLOff];
+      _obsoleteResourceRecipesWithCPLOff2 = [self _obsoleteResourceRecipesWithCPLOff];
       *buf = 134218242;
       v23 = v15;
       v24 = 2112;
-      v25 = v16;
+      v25 = _obsoleteResourceRecipesWithCPLOff2;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Deleting obsolete resources, deleting %ld resources with the following recipe IDs: %@", buf, 0x16u);
     }
 
     v17 = 1;
-    v18 = [v6 enumerateWithIncrementalSaveUsingObjects:v11 shouldRefreshAfterSave:1 withBlock:&__block_literal_global_111];
+    v18 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v11 shouldRefreshAfterSave:1 withBlock:&__block_literal_global_111];
 
     if (!v18)
     {
       v12 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -2238,11 +2238,11 @@ LABEL_9:
   }
 
   v17 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_11:
     v19 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
 LABEL_12:
@@ -2307,14 +2307,14 @@ void __56__PLInternalResource__obsoleteResourceRecipesWithCPLOff__block_invoke()
   _obsoleteResourceRecipesWithCPLOff_recipes = &unk_1F0FBF328;
 }
 
-+ (id)insertResourceForAssetObjectID:(id)a3 resourceIdentity:(id)a4 inManagedObjectContext:(id)a5
++ (id)insertResourceForAssetObjectID:(id)d resourceIdentity:(id)identity inManagedObjectContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  dCopy = d;
+  identityCopy = identity;
+  contextCopy = context;
+  if (dCopy)
   {
-    if (v10)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -2322,31 +2322,31 @@ void __56__PLInternalResource__obsoleteResourceRecipesWithCPLOff__block_invoke()
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLInternalResource.m" lineNumber:596 description:{@"Invalid parameter not satisfying: %@", @"assetObjectID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInternalResource.m" lineNumber:596 description:{@"Invalid parameter not satisfying: %@", @"assetObjectID"}];
 
-    if (v10)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:a1 file:@"PLInternalResource.m" lineNumber:597 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLInternalResource.m" lineNumber:597 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
 
 LABEL_3:
-  v12 = [a1 insertInManagedObjectContext:v11];
-  v13 = [v11 objectWithID:v9];
+  v12 = [self insertInManagedObjectContext:contextCopy];
+  v13 = [contextCopy objectWithID:dCopy];
   [v12 setAsset:v13];
-  [v12 setResourceIdentity:v10 managedObjectContext:v11];
+  [v12 setResourceIdentity:identityCopy managedObjectContext:contextCopy];
 
   return v12;
 }
 
-+ (BOOL)supportsTrashedStateForResourceIdentity:(id)a3
++ (BOOL)supportsTrashedStateForResourceIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = ([v3 resourceType] & 0xFFFFFFFE) == 0xA && objc_msgSend(v3, "version") == 0;
+  identityCopy = identity;
+  v4 = ([identityCopy resourceType] & 0xFFFFFFFE) == 0xA && objc_msgSend(identityCopy, "version") == 0;
 
   return v4;
 }
@@ -2373,22 +2373,22 @@ void __44__PLInternalResource_listOfSyncedProperties__block_invoke()
   [(PLInternalResource *)self setLocalAvailability:v3];
 }
 
-- (void)setSyndicationLocalAvailabilityWithAvailable:(BOOL)a3 additionalFlags:(unsigned __int16)a4
+- (void)setSyndicationLocalAvailabilityWithAvailable:(BOOL)available additionalFlags:(unsigned __int16)flags
 {
-  v5 = a3;
+  availableCopy = available;
   v13 = *MEMORY[0x1E69E9840];
-  v7 = [(PLInternalResource *)self localAvailability];
-  if (v5)
+  localAvailability = [(PLInternalResource *)self localAvailability];
+  if (availableCopy)
   {
-    v8 = ((v7 | a4) & 0x7FF8) + 1;
+    v8 = ((localAvailability | flags) & 0x7FF8) + 1;
   }
 
   else
   {
-    v8 = (v7 | a4) & 0x7FFE | 0xFFFF8000;
+    v8 = (localAvailability | flags) & 0x7FFE | 0xFFFF8000;
   }
 
-  if (v7 != v8)
+  if (localAvailability != v8)
   {
     [(PLInternalResource *)self setLocalAvailability:v8];
     v9 = PLSyndicationGetLog();
@@ -2405,32 +2405,32 @@ void __44__PLInternalResource_listOfSyncedProperties__block_invoke()
 - (void)ensureInitialValuesForSyndication
 {
   [(PLInternalResource *)self setDataStoreClassID:3];
-  v3 = [(PLInternalResource *)self resourceType];
-  v4 = [(PLInternalResource *)self recipeID];
+  resourceType = [(PLInternalResource *)self resourceType];
+  recipeID = [(PLInternalResource *)self recipeID];
   v5 = 18;
-  if (v4)
+  if (recipeID)
   {
     v5 = 0;
   }
 
-  v6 = v4 == 0;
-  v7 = 4 * (v4 == 65741);
-  if (!v4)
+  v6 = recipeID == 0;
+  v7 = 4 * (recipeID == 65741);
+  if (!recipeID)
   {
     v7 = 1;
   }
 
-  if (v3)
+  if (resourceType)
   {
     v7 = 0;
   }
 
-  if (v3 != 1)
+  if (resourceType != 1)
   {
     v6 = v7;
   }
 
-  if (v3 == 3)
+  if (resourceType == 3)
   {
     v8 = v5;
   }
@@ -2445,14 +2445,14 @@ void __44__PLInternalResource_listOfSyncedProperties__block_invoke()
   [(PLInternalResource *)self setLocalAvailability:4294934528];
 }
 
-+ (id)predicateForSyndicationResourcesRequiringBackgroundDownloadImmediately:(BOOL)a3
++ (id)predicateForSyndicationResourcesRequiringBackgroundDownloadImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   v17[5] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AE18];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = v5;
-  if (v3)
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = date;
+  if (immediatelyCopy)
   {
     v7 = @"%K < %@";
   }
@@ -2462,7 +2462,7 @@ void __44__PLInternalResource_listOfSyncedProperties__block_invoke()
     v7 = @"%K >= %@";
   }
 
-  v8 = [v4 predicateWithFormat:v7, @"cloudLastPrefetchDate", v5];
+  v8 = [v4 predicateWithFormat:v7, @"cloudLastPrefetchDate", date];
 
   v9 = MEMORY[0x1E696AB28];
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"dataStoreClassID", 3];
@@ -2485,8 +2485,8 @@ void __44__PLInternalResource_listOfSyncedProperties__block_invoke()
   v2 = MEMORY[0x1E696AB28];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"dataStoreClassID", 3];
   v8[0] = v3;
-  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"localAvailability", 4294934530];
-  v8[1] = v4;
+  4294934530 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"localAvailability", 4294934530];
+  v8[1] = 4294934530;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
   v6 = [v2 andPredicateWithSubpredicates:v5];
 
@@ -2495,14 +2495,14 @@ void __44__PLInternalResource_listOfSyncedProperties__block_invoke()
 
 - (id)referenceMediaFileURL
 {
-  v3 = [(PLInternalResource *)self dataStoreKey];
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dataStoreKey = [(PLInternalResource *)self dataStoreKey];
+  if (dataStoreKey && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = v3;
-    v5 = [(PLInternalResource *)self asset];
-    v6 = [v5 assetID];
-    v7 = [(PLInternalResource *)self managedObjectContext];
-    v8 = [v4 fileURLForAssetID:v6 inContext:v7];
+    v4 = dataStoreKey;
+    asset = [(PLInternalResource *)self asset];
+    assetID = [asset assetID];
+    managedObjectContext = [(PLInternalResource *)self managedObjectContext];
+    v8 = [v4 fileURLForAssetID:assetID inContext:managedObjectContext];
   }
 
   else
@@ -2513,28 +2513,28 @@ void __44__PLInternalResource_listOfSyncedProperties__block_invoke()
   return v8;
 }
 
-- (BOOL)isEquivalentToFingerprint:(id)a3 andStableHash:(id)a4 fingerprintContext:(id)a5
+- (BOOL)isEquivalentToFingerprint:(id)fingerprint andStableHash:(id)hash fingerprintContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PLInternalResource *)self fingerprint];
+  fingerprintCopy = fingerprint;
+  hashCopy = hash;
+  contextCopy = context;
+  fingerprint = [(PLInternalResource *)self fingerprint];
 
-  if (!v11)
+  if (!fingerprint)
   {
     v14 = 0;
     goto LABEL_14;
   }
 
-  v12 = [(PLInternalResource *)self fingerprint];
-  v13 = [v12 isEqualToString:v8];
+  fingerprint2 = [(PLInternalResource *)self fingerprint];
+  v13 = [fingerprint2 isEqualToString:fingerprintCopy];
 
   if ((v13 & 1) == 0)
   {
-    v15 = [(PLInternalResource *)self fingerprint];
-    v16 = [v10 fingerprintSchemeForFingerprint:v15];
+    fingerprint3 = [(PLInternalResource *)self fingerprint];
+    v16 = [contextCopy fingerprintSchemeForFingerprint:fingerprint3];
 
-    v17 = [v10 fingerprintSchemeForFingerprint:v8];
+    v17 = [contextCopy fingerprintSchemeForFingerprint:fingerprintCopy];
     if ([v16 isCompatibleWithFingerprintScheme:v17])
     {
       v14 = 0;
@@ -2543,23 +2543,23 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (v9)
+    if (hashCopy)
     {
-      v18 = [(PLInternalResource *)self fingerprint];
-      v19 = v9;
-      v20 = v18;
+      fingerprint4 = [(PLInternalResource *)self fingerprint];
+      stableHash = hashCopy;
+      v20 = fingerprint4;
     }
 
     else
     {
-      v19 = [(PLInternalResource *)self stableHash];
-      if (!v19)
+      stableHash = [(PLInternalResource *)self stableHash];
+      if (!stableHash)
       {
-        v22 = [(PLInternalResource *)self fileURL];
-        if (v22)
+        fileURL = [(PLInternalResource *)self fileURL];
+        if (fileURL)
         {
-          v23 = [v17 fingerPrintForFileAtURL:v22 error:0];
-          v14 = [v23 isEqualToString:v8];
+          v23 = [v17 fingerPrintForFileAtURL:fileURL error:0];
+          v14 = [v23 isEqualToString:fingerprintCopy];
         }
 
         else
@@ -2567,15 +2567,15 @@ LABEL_13:
           v14 = 0;
         }
 
-        v18 = 0;
+        fingerprint4 = 0;
         goto LABEL_12;
       }
 
-      v18 = v19;
-      v20 = v8;
+      fingerprint4 = stableHash;
+      v20 = fingerprintCopy;
     }
 
-    v14 = [v19 isEqualToString:v20];
+    v14 = [stableHash isEqualToString:v20];
 LABEL_12:
 
     goto LABEL_13;
@@ -2589,41 +2589,41 @@ LABEL_14:
 
 - (id)scopedIdentifier
 {
-  v3 = [(PLInternalResource *)self asset];
+  asset = [(PLInternalResource *)self asset];
   if ([(PLInternalResource *)self isCPLMasterResource])
   {
-    v4 = [v3 master];
-    v5 = [v4 scopedIdentifier];
+    master = [asset master];
+    scopedIdentifier = [master scopedIdentifier];
   }
 
-  else if (v3)
+  else if (asset)
   {
-    v5 = [v3 scopedIdentifier];
+    scopedIdentifier = [asset scopedIdentifier];
   }
 
   else
   {
-    v5 = 0;
+    scopedIdentifier = 0;
   }
 
-  return v5;
+  return scopedIdentifier;
 }
 
-- (void)setDataLength:(int64_t)a3
+- (void)setDataLength:(int64_t)length
 {
-  if (a3)
+  if (length)
   {
     [(PLInternalResource *)self managedObjectOriginal_setDataLength:?];
   }
 }
 
-- (BOOL)copyPurgeabilityFromFileURL:(id)a3
+- (BOOL)copyPurgeabilityFromFileURL:(id)l
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v17 = -1;
-  v5 = [v4 path];
-  v6 = [PLCacheDeleteSupport isPurgeableFile:v5 outIsPhotoType:0 outUrgencyLevel:&v17 error:0];
+  path = [lCopy path];
+  v6 = [PLCacheDeleteSupport isPurgeableFile:path outIsPhotoType:0 outUrgencyLevel:&v17 error:0];
 
   v7 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -2631,11 +2631,11 @@ LABEL_14:
     v8 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 path];
+      path2 = [lCopy path];
       *buf = 67109378;
       *v19 = v6;
       *&v19[4] = 2112;
-      *&v19[6] = v9;
+      *&v19[6] = path2;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "source file purgeable:%d at %@", buf, 0x12u);
     }
   }
@@ -2643,8 +2643,8 @@ LABEL_14:
   if (v6)
   {
     v16 = 0;
-    v10 = [(PLInternalResource *)self cplFileURL];
-    v11 = [PLCacheDeleteSupport markPurgeableForFileAtURL:v10 withUrgency:v17 outInode:&v16];
+    cplFileURL = [(PLInternalResource *)self cplFileURL];
+    v11 = [PLCacheDeleteSupport markPurgeableForFileAtURL:cplFileURL withUrgency:v17 outInode:&v16];
 
     if (v11)
     {
@@ -2654,10 +2654,10 @@ LABEL_14:
         v12 = __CPLAssetsdOSLogDomain();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [(PLInternalResource *)self fileURL];
-          v14 = [v13 path];
+          fileURL = [(PLInternalResource *)self fileURL];
+          path3 = [fileURL path];
           *buf = 138412546;
-          *v19 = v14;
+          *v19 = path3;
           *&v19[8] = 2048;
           *&v19[10] = v16;
           _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "updated purgeable file at %@ to inode %lld", buf, 0x16u);
@@ -2682,17 +2682,17 @@ LABEL_14:
   }
 
   v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:0.0];
-  v3 = [(PLInternalResource *)self cloudLastPrefetchDate];
-  v4 = [v3 isEqualToDate:v6];
+  cloudLastPrefetchDate = [(PLInternalResource *)self cloudLastPrefetchDate];
+  v4 = [cloudLastPrefetchDate isEqualToDate:v6];
 
   if ((v4 & 1) == 0)
   {
     [(PLInternalResource *)self setCloudLastPrefetchDate:v6];
   }
 
-  v5 = [(PLInternalResource *)self cloudPrunedAt];
+  cloudPrunedAt = [(PLInternalResource *)self cloudPrunedAt];
 
-  if (v5)
+  if (cloudPrunedAt)
   {
     [(PLInternalResource *)self setCloudPrunedAt:0];
   }
@@ -2700,66 +2700,66 @@ LABEL_14:
 
 - (id)cplFileURL
 {
-  v3 = [(PLInternalResource *)self fileURL];
-  if (!v3)
+  fileURL = [(PLInternalResource *)self fileURL];
+  if (!fileURL)
   {
     if ([(PLInternalResource *)self isCPLResource])
     {
-      v4 = [(PLInternalResource *)self asset];
-      v5 = [v4 pathForCPLResourceType:-[PLInternalResource dataStoreSubtype](self adjusted:{"dataStoreSubtype"), -[PLInternalResource isAdjustedResource](self, "isAdjustedResource")}];
+      asset = [(PLInternalResource *)self asset];
+      v5 = [asset pathForCPLResourceType:-[PLInternalResource dataStoreSubtype](self adjusted:{"dataStoreSubtype"), -[PLInternalResource isAdjustedResource](self, "isAdjustedResource")}];
 
       if (v5)
       {
-        v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5 isDirectory:0];
+        fileURL = [MEMORY[0x1E695DFF8] fileURLWithPath:v5 isDirectory:0];
       }
 
       else
       {
-        v3 = 0;
+        fileURL = 0;
       }
     }
 
     else
     {
-      v3 = 0;
+      fileURL = 0;
     }
   }
 
-  return v3;
+  return fileURL;
 }
 
-- (void)transitional_reconsiderLocalAvailabilityBasedOnExistingLocationOfCPLResourceAtFilePath:(id)a3
+- (void)transitional_reconsiderLocalAvailabilityBasedOnExistingLocationOfCPLResourceAtFilePath:(id)path
 {
-  v10 = a3;
+  pathCopy = path;
   if (![(PLInternalResource *)self dataStoreClassID])
   {
-    v4 = [(PLInternalResource *)self asset];
+    asset = [(PLInternalResource *)self asset];
 
-    if (v4)
+    if (asset)
     {
-      v5 = [(PLInternalResource *)self localAvailability];
-      v6 = [(PLInternalResource *)self dataStoreKey];
-      v7 = [(PLInternalResource *)self dataStore];
-      [v7 transitional_reconsiderLocalAvailabilityBasedOnExistingLocationOfCPLResource:self givenFilePath:v10];
-      v8 = [(PLInternalResource *)self localAvailability];
-      if ((v5 & 0x80000000) != 0)
+      localAvailability = [(PLInternalResource *)self localAvailability];
+      dataStoreKey = [(PLInternalResource *)self dataStoreKey];
+      dataStore = [(PLInternalResource *)self dataStore];
+      [dataStore transitional_reconsiderLocalAvailabilityBasedOnExistingLocationOfCPLResource:self givenFilePath:pathCopy];
+      localAvailability2 = [(PLInternalResource *)self localAvailability];
+      if ((localAvailability & 0x80000000) != 0)
       {
-        if (v8 < 0)
+        if (localAvailability2 < 0)
         {
           goto LABEL_9;
         }
       }
 
-      else if ((v8 & 0x80000000) == 0)
+      else if ((localAvailability2 & 0x80000000) == 0)
       {
         goto LABEL_8;
       }
 
-      v9 = [(PLInternalResource *)self asset];
-      [v9 recalculateImageRequestHintsForResource:self afterLocalAvailabilityChangeFrom:v5 previousDataStoreKey:v6];
+      asset2 = [(PLInternalResource *)self asset];
+      [asset2 recalculateImageRequestHintsForResource:self afterLocalAvailabilityChangeFrom:localAvailability previousDataStoreKey:dataStoreKey];
 
 LABEL_8:
-      if (v5 > 0)
+      if (localAvailability > 0)
       {
 LABEL_11:
 
@@ -2779,25 +2779,25 @@ LABEL_9:
 LABEL_12:
 }
 
-- (id)cplResourceForFileURL:(id)a3 createDirectoryIfNeeded:(BOOL)a4
+- (id)cplResourceForFileURL:(id)l createDirectoryIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   if ([(PLInternalResource *)self isCPLResource])
   {
-    v7 = [(PLInternalResource *)self fingerprint];
+    fingerprint = [(PLInternalResource *)self fingerprint];
 
-    if (v7)
+    if (fingerprint)
     {
-      if (v6 && v4)
+      if (lCopy && neededCopy)
       {
-        v8 = [v6 URLByDeletingLastPathComponent];
-        v9 = [v8 path];
+        uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+        path = [uRLByDeletingLastPathComponent path];
 
-        v10 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v24 = 0;
-        v11 = [v10 createDirectoryIfNeededAtPath:v9 error:&v24];
+        v11 = [defaultManager createDirectoryIfNeededAtPath:path error:&v24];
         v12 = v24;
 
         if ((v11 & 1) == 0 && (*MEMORY[0x1E6994D48] & 1) == 0)
@@ -2805,9 +2805,9 @@ LABEL_12:
           v13 = __CPLAssetsdOSLogDomain();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
-            v14 = [(PLInternalResource *)self singleLineDescription];
+            singleLineDescription = [(PLInternalResource *)self singleLineDescription];
             *buf = 138412546;
-            v26 = v14;
+            v26 = singleLineDescription;
             v27 = 2112;
             v28 = v12;
             _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Unable to create directory for resource %@: %@.", buf, 0x16u);
@@ -2815,22 +2815,22 @@ LABEL_12:
         }
       }
 
-      v15 = [objc_alloc(MEMORY[0x1E6994B98]) initWithFileURL:v6];
+      v15 = [objc_alloc(MEMORY[0x1E6994B98]) initWithFileURL:lCopy];
       [v15 setFileSize:[(PLInternalResource *)self dataLength]];
       [v15 setImageDimensions:[(PLInternalResource *)self unorientedWidth], [(PLInternalResource *)self unorientedHeight]];
       [v15 setAvailable:[(PLInternalResource *)self remoteAvailability]== 1];
-      v16 = [(PLInternalResource *)self uniformTypeIdentifier];
-      v17 = [v16 identifier];
-      [v15 setFileUTI:v17];
+      uniformTypeIdentifier = [(PLInternalResource *)self uniformTypeIdentifier];
+      identifier = [uniformTypeIdentifier identifier];
+      [v15 setFileUTI:identifier];
 
-      v18 = [(PLInternalResource *)self fingerprint];
-      [v15 setFingerPrint:v18];
+      fingerprint2 = [(PLInternalResource *)self fingerprint];
+      [v15 setFingerPrint:fingerprint2];
 
-      v19 = [(PLInternalResource *)self stableHash];
-      [v15 setStableHash:v19];
+      stableHash = [(PLInternalResource *)self stableHash];
+      [v15 setStableHash:stableHash];
 
-      v20 = [(PLInternalResource *)self scopedIdentifier];
-      v21 = [objc_alloc(MEMORY[0x1E6994B90]) initWithResourceIdentity:v15 itemScopedIdentifier:v20 resourceType:{-[PLInternalResource dataStoreSubtype](self, "dataStoreSubtype")}];
+      scopedIdentifier = [(PLInternalResource *)self scopedIdentifier];
+      v21 = [objc_alloc(MEMORY[0x1E6994B90]) initWithResourceIdentity:v15 itemScopedIdentifier:scopedIdentifier resourceType:{-[PLInternalResource dataStoreSubtype](self, "dataStoreSubtype")}];
 
 LABEL_16:
       goto LABEL_18;
@@ -2841,9 +2841,9 @@ LABEL_16:
       v15 = __CPLAssetsdOSLogDomain();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v22 = [(PLInternalResource *)self singleLineDescription];
+        singleLineDescription2 = [(PLInternalResource *)self singleLineDescription];
         *buf = 138412290;
-        v26 = v22;
+        v26 = singleLineDescription2;
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Resource %@ has no fingerprint", buf, 0xCu);
       }
 
@@ -2858,35 +2858,35 @@ LABEL_18:
   return v21;
 }
 
-- (id)cplResourceIncludeFile:(BOOL)a3 createDirectoryIfNeeded:(BOOL)a4
+- (id)cplResourceIncludeFile:(BOOL)file createDirectoryIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  if (a3)
+  neededCopy = needed;
+  if (file)
   {
-    v6 = [(PLInternalResource *)self cplFileURL];
+    cplFileURL = [(PLInternalResource *)self cplFileURL];
   }
 
   else
   {
-    v6 = 0;
+    cplFileURL = 0;
   }
 
-  v7 = [(PLInternalResource *)self cplResourceForFileURL:v6 createDirectoryIfNeeded:v4];
+  v7 = [(PLInternalResource *)self cplResourceForFileURL:cplFileURL createDirectoryIfNeeded:neededCopy];
 
   return v7;
 }
 
-- (id)cplResourceForTimeRange:(id *)a3
+- (id)cplResourceForTimeRange:(id *)range
 {
-  v5 = [(PLManagedObject *)self pathManager];
-  v6 = [(PLInternalResource *)self fingerprint];
-  v7 = [(PLInternalResource *)self asset];
-  v8 = [v7 uuid];
-  v9 = *&a3->var0.var3;
-  v13[0] = *&a3->var0.var0;
+  pathManager = [(PLManagedObject *)self pathManager];
+  fingerprint = [(PLInternalResource *)self fingerprint];
+  asset = [(PLInternalResource *)self asset];
+  uuid = [asset uuid];
+  v9 = *&range->var0.var3;
+  v13[0] = *&range->var0.var0;
   v13[1] = v9;
-  v13[2] = *&a3->var1.var1;
-  v10 = [v5 URLForPartialVideoWithResourceFingerprint:v6 assetUUID:v8 timeRange:v13];
+  v13[2] = *&range->var1.var1;
+  v10 = [pathManager URLForPartialVideoWithResourceFingerprint:fingerprint assetUUID:uuid timeRange:v13];
 
   v11 = [(PLInternalResource *)self cplResourceForFileURL:v10 createDirectoryIfNeeded:1];
 
@@ -2900,8 +2900,8 @@ LABEL_18:
     v3 = objc_alloc_init(MEMORY[0x1E6994AB8]);
     [v3 setResourceType:{-[PLInternalResource cplType](self, "cplType")}];
     [v3 setExpungedState:{+[PLInternalResource cplExpungedStateForTrashedState:](PLInternalResource, "cplExpungedStateForTrashedState:", -[PLInternalResource trashedState](self, "trashedState"))}];
-    v4 = [(PLInternalResource *)self trashedDate];
-    [v3 setExpungedDate:v4];
+    trashedDate = [(PLInternalResource *)self trashedDate];
+    [v3 setExpungedDate:trashedDate];
   }
 
   else
@@ -2912,26 +2912,26 @@ LABEL_18:
   return v3;
 }
 
-- (BOOL)isCPLOriginalResourceAssetHasAdjustments:(BOOL)a3
+- (BOOL)isCPLOriginalResourceAssetHasAdjustments:(BOOL)adjustments
 {
-  v5 = a3;
-  v7 = [(PLInternalResource *)self isCPLMasterResource];
-  if (v7)
+  adjustmentsCopy = adjustments;
+  isCPLMasterResource = [(PLInternalResource *)self isCPLMasterResource];
+  if (isCPLMasterResource)
   {
-    v3 = [objc_opt_class() originalCPLResourceTypesForMaster];
+    originalCPLResourceTypesForMaster = [objc_opt_class() originalCPLResourceTypesForMaster];
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PLInternalResource cplType](self, "cplType")}];
-    if ([v3 containsObject:v4])
+    if ([originalCPLResourceTypesForMaster containsObject:v4])
     {
       v8 = 1;
       goto LABEL_9;
     }
   }
 
-  if (!v5 || ![(PLInternalResource *)self isCPLAssetResource])
+  if (!adjustmentsCopy || ![(PLInternalResource *)self isCPLAssetResource])
   {
     v8 = 0;
     result = 0;
-    if (!v7)
+    if (!isCPLMasterResource)
     {
       return result;
     }
@@ -2939,12 +2939,12 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  v9 = [objc_opt_class() originalCPLResourceTypesForAsset];
+  originalCPLResourceTypesForAsset = [objc_opt_class() originalCPLResourceTypesForAsset];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PLInternalResource cplType](self, "cplType")}];
-  v8 = [v9 containsObject:v10];
+  v8 = [originalCPLResourceTypesForAsset containsObject:v10];
 
   result = v8;
-  if (v7)
+  if (isCPLMasterResource)
   {
 LABEL_9:
 
@@ -2956,14 +2956,14 @@ LABEL_9:
 
 - (BOOL)isCPLAssetResource
 {
-  v3 = [(PLInternalResource *)self isAdjustedResource];
-  if (v3)
+  isAdjustedResource = [(PLInternalResource *)self isAdjustedResource];
+  if (isAdjustedResource)
   {
 
-    LOBYTE(v3) = [(PLInternalResource *)self isCPLResource];
+    LOBYTE(isAdjustedResource) = [(PLInternalResource *)self isCPLResource];
   }
 
-  return v3;
+  return isAdjustedResource;
 }
 
 - (BOOL)isCPLMasterResource
@@ -2986,78 +2986,78 @@ LABEL_9:
   return [(PLInternalResource *)self dataStoreSubtype];
 }
 
-- (void)setCloudAttributesWithExternalResource:(id)a3
+- (void)setCloudAttributesWithExternalResource:(id)resource
 {
-  v15 = a3;
-  if ([v15 cloudLocalState])
+  resourceCopy = resource;
+  if ([resourceCopy cloudLocalState])
   {
-    -[PLInternalResource setCloudLocalState:](self, "setCloudLocalState:", [v15 cloudLocalState]);
+    -[PLInternalResource setCloudLocalState:](self, "setCloudLocalState:", [resourceCopy cloudLocalState]);
   }
 
-  v4 = [v15 masterDateCreated];
+  masterDateCreated = [resourceCopy masterDateCreated];
 
-  if (v4)
+  if (masterDateCreated)
   {
-    v5 = [v15 masterDateCreated];
-    [(PLInternalResource *)self setCloudMasterDateCreated:v5];
+    masterDateCreated2 = [resourceCopy masterDateCreated];
+    [(PLInternalResource *)self setCloudMasterDateCreated:masterDateCreated2];
   }
 
-  if ([v15 prefetchCount] >= 1)
+  if ([resourceCopy prefetchCount] >= 1)
   {
-    -[PLInternalResource setCloudPrefetchCount:](self, "setCloudPrefetchCount:", [v15 prefetchCount]);
+    -[PLInternalResource setCloudPrefetchCount:](self, "setCloudPrefetchCount:", [resourceCopy prefetchCount]);
   }
 
-  v6 = [v15 prunedAt];
+  prunedAt = [resourceCopy prunedAt];
 
-  if (v6)
+  if (prunedAt)
   {
-    v7 = [v15 prunedAt];
-    [(PLInternalResource *)self setCloudPrunedAt:v7];
+    prunedAt2 = [resourceCopy prunedAt];
+    [(PLInternalResource *)self setCloudPrunedAt:prunedAt2];
   }
 
-  v8 = [v15 lastOnDemandDownloadDate];
+  lastOnDemandDownloadDate = [resourceCopy lastOnDemandDownloadDate];
 
-  if (v8)
+  if (lastOnDemandDownloadDate)
   {
-    v9 = [v15 lastOnDemandDownloadDate];
-    [(PLInternalResource *)self setCloudLastOnDemandDownloadDate:v9];
+    lastOnDemandDownloadDate2 = [resourceCopy lastOnDemandDownloadDate];
+    [(PLInternalResource *)self setCloudLastOnDemandDownloadDate:lastOnDemandDownloadDate2];
   }
 
-  v10 = [v15 lastPrefetchDate];
+  lastPrefetchDate = [resourceCopy lastPrefetchDate];
 
-  if (v10)
+  if (lastPrefetchDate)
   {
-    v11 = [v15 lastPrefetchDate];
-    [(PLInternalResource *)self setCloudLastPrefetchDate:v11];
+    lastPrefetchDate2 = [resourceCopy lastPrefetchDate];
+    [(PLInternalResource *)self setCloudLastPrefetchDate:lastPrefetchDate2];
   }
 
-  if ([v15 sourceCplType])
+  if ([resourceCopy sourceCplType])
   {
-    -[PLInternalResource setCloudSourceType:](self, "setCloudSourceType:", [v15 sourceCplType]);
+    -[PLInternalResource setCloudSourceType:](self, "setCloudSourceType:", [resourceCopy sourceCplType]);
   }
 
-  v12 = [v15 fingerprint];
+  fingerprint = [resourceCopy fingerprint];
 
-  if (v12)
+  if (fingerprint)
   {
-    v13 = [v15 fingerprint];
-    [(PLInternalResource *)self setFingerprint:v13];
+    fingerprint2 = [resourceCopy fingerprint];
+    [(PLInternalResource *)self setFingerprint:fingerprint2];
 
-    v14 = [v15 stableHash];
-    [(PLInternalResource *)self setStableHash:v14];
+    stableHash = [resourceCopy stableHash];
+    [(PLInternalResource *)self setStableHash:stableHash];
   }
 }
 
-+ (void)triggerBackgroundDownloadFailureForResources:(id)a3 cloudPhotoLibraryManager:(id)a4
++ (void)triggerBackgroundDownloadFailureForResources:(id)resources cloudPhotoLibraryManager:(id)manager
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  resourcesCopy = resources;
+  managerCopy = manager;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  v7 = [resourcesCopy countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
     v9 = v7;
@@ -3072,7 +3072,7 @@ LABEL_9:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(resourcesCopy);
         }
 
         v13 = *(*(&v18 + 1) + 8 * v12);
@@ -3081,56 +3081,56 @@ LABEL_9:
           v14 = __CPLAssetsdOSLogDomain();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v13 singleLineDescription];
+            singleLineDescription = [v13 singleLineDescription];
             *buf = v17;
-            v23 = v15;
+            v23 = singleLineDescription;
             _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Triggering failure for resource %@ download, detecting change/delete", buf, 0xCu);
           }
         }
 
         v16 = [v13 cplResourceIncludeFile:{0, v17}];
-        [v6 libraryManager:0 backgroundDownloadDidFailForResource:v16];
+        [managerCopy libraryManager:0 backgroundDownloadDidFailForResource:v16];
 
         ++v12;
       }
 
       while (v9 != v12);
-      v9 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v9 = [resourcesCopy countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v9);
   }
 }
 
-+ (id)purgeablePushedPredicateForCPLResourceTypes:(id)a3 urgency:(int64_t)a4
++ (id)purgeablePushedPredicateForCPLResourceTypes:(id)types urgency:(int64_t)urgency
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AE18];
-  v6 = a3;
+  typesCopy = types;
   v7 = [v5 predicateWithFormat:@"%K > %@ AND %K >= %@ AND fingerprint != NULL", @"localAvailability", &unk_1F0FBD4C8, @"remoteAvailability", &unk_1F0FBD4E0];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d AND %K in %@", @"dataStoreClassID", 0, @"dataStoreSubtype", v6];
+  typesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d AND %K in %@", @"dataStoreClassID", 0, @"dataStoreSubtype", typesCopy];
 
-  if (a4)
+  if (urgency)
   {
     v9 = MEMORY[0x1E696AB28];
     v19[0] = v7;
-    v19[1] = v8;
+    v19[1] = typesCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     v11 = [v9 andPredicateWithSubpredicates:v10];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DF00] date];
-    v10 = [v12 dateByAddingTimeInterval:-86400.0];
+    date = [MEMORY[0x1E695DF00] date];
+    v10 = [date dateByAddingTimeInterval:-86400.0];
 
-    v13 = [MEMORY[0x1E695DF00] date];
-    v14 = [v13 dateByAddingTimeInterval:-259200.0];
+    date2 = [MEMORY[0x1E695DF00] date];
+    v14 = [date2 dateByAddingTimeInterval:-259200.0];
 
     v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"dateCreated <= %@ AND cloudLastOnDemandDownloadDate <= %@", v10, v14];
     v16 = MEMORY[0x1E696AB28];
     v20[0] = v7;
-    v20[1] = v8;
+    v20[1] = typesCopy;
     v20[2] = v15;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
     v11 = [v16 andPredicateWithSubpredicates:v17];
@@ -3142,8 +3142,8 @@ LABEL_9:
 + (id)predicateForPurgeableOriginalResources
 {
   v2 = MEMORY[0x1E696AE18];
-  v3 = [a1 originalCPLResourceTypes];
-  v4 = [v2 predicateWithFormat:@"dataStoreClassID == %d AND dataStoreSubtype IN %@ AND localAvailability == %d AND remoteAvailability == %d", 0, v3, 1, 1];
+  originalCPLResourceTypes = [self originalCPLResourceTypes];
+  v4 = [v2 predicateWithFormat:@"dataStoreClassID == %d AND dataStoreSubtype IN %@ AND localAvailability == %d AND remoteAvailability == %d", 0, originalCPLResourceTypes, 1, 1];
 
   return v4;
 }
@@ -3164,12 +3164,12 @@ LABEL_9:
   return v7;
 }
 
-+ (id)predicateForImageResourcePixelsLessOrEqual:(int64_t)a3
++ (id)predicateForImageResourcePixelsLessOrEqual:(int64_t)equal
 {
   v11[4] = *MEMORY[0x1E69E9840];
-  v4 = [*MEMORY[0x1E6982E58] identifier];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
   v5 = *MEMORY[0x1E69874A0];
-  v11[0] = v4;
+  v11[0] = identifier;
   v11[1] = v5;
   v6 = *MEMORY[0x1E6987470];
   v11[2] = *MEMORY[0x1E69874A8];
@@ -3177,21 +3177,21 @@ LABEL_9:
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:4];
   v8 = [PLUniformTypeIdentifierIntegratedLookup compactRepresentationsForIdentifiers:v7];
 
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"unorientedWidth * unorientedHeight <= %d AND compactUTI IN %@", a3, v8];
+  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"unorientedWidth * unorientedHeight <= %d AND compactUTI IN %@", equal, v8];
 
   return v9;
 }
 
-+ (id)prefetchResourcePredicateForCPLResourceType:(unint64_t)a3 isAssetResource:(BOOL)a4 maxRetry:(unint64_t)a5 excludeDynamicResources:(BOOL)a6 additionalResourcePredicates:(id)a7
++ (id)prefetchResourcePredicateForCPLResourceType:(unint64_t)type isAssetResource:(BOOL)resource maxRetry:(unint64_t)retry excludeDynamicResources:(BOOL)resources additionalResourcePredicates:(id)predicates
 {
-  v7 = a6;
+  resourcesCopy = resources;
   v33[2] = *MEMORY[0x1E69E9840];
-  v11 = a7;
-  v12 = [MEMORY[0x1E695DF00] date];
-  v13 = [v12 dateByAddingTimeInterval:-86400.0];
+  predicatesCopy = predicates;
+  date = [MEMORY[0x1E695DF00] date];
+  v13 = [date dateByAddingTimeInterval:-86400.0];
 
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"dataStoreClassID == %d AND dataStoreSubtype == %d AND localAvailability == %d AND remoteAvailability == %d AND cloudPrefetchCount <= %d AND cloudLastPrefetchDate <= %@ AND fingerprint != NULL", 0, a3, 0xFFFFFFFFLL, 1, a5, v13];
-  if (a4)
+  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"dataStoreClassID == %d AND dataStoreSubtype == %d AND localAvailability == %d AND remoteAvailability == %d AND cloudPrefetchCount <= %d AND cloudLastPrefetchDate <= %@ AND fingerprint != NULL", 0, type, 0xFFFFFFFFLL, 1, retry, v13];
+  if (resource)
   {
     [MEMORY[0x1E696AE18] predicateWithFormat:@"(version == %d OR version == %d)", 2, 1];
   }
@@ -3207,7 +3207,7 @@ LABEL_9:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
   v18 = [v16 andPredicateWithSubpredicates:v17];
 
-  if (v7)
+  if (resourcesCopy)
   {
     v19 = MEMORY[0x1E696AB28];
     v20 = [MEMORY[0x1E6994B90] predicateMatchingDynamicFingerprintForKey:@"fingerprint"];
@@ -3222,9 +3222,9 @@ LABEL_9:
     v18 = v24;
   }
 
-  if ([v11 count])
+  if ([predicatesCopy count])
   {
-    v25 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v11];
+    v25 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:predicatesCopy];
     v26 = MEMORY[0x1E696AB28];
     v31[0] = v18;
     v31[1] = v25;
@@ -3240,8 +3240,8 @@ LABEL_9:
 + (id)predicateForAllFullSizeResourcesLocallyAvailable
 {
   v2 = MEMORY[0x1E696AE18];
-  v3 = [a1 originalCPLResourceTypesForAsset];
-  v4 = [v2 predicateWithFormat:@"(SUBQUERY(modernResources, $r, $r.dataStoreClassID == %d AND ($r.dataStoreSubtype IN %@) AND $r.localAvailability == %d AND ($r.version == %d OR $r.version == %d)).@count == 0)", 0, v3, 0xFFFFFFFFLL, 2, 1];
+  originalCPLResourceTypesForAsset = [self originalCPLResourceTypesForAsset];
+  v4 = [v2 predicateWithFormat:@"(SUBQUERY(modernResources, $r, $r.dataStoreClassID == %d AND ($r.dataStoreSubtype IN %@) AND $r.localAvailability == %d AND ($r.version == %d OR $r.version == %d)).@count == 0)", 0, originalCPLResourceTypesForAsset, 0xFFFFFFFFLL, 2, 1];
 
   return v4;
 }
@@ -3249,15 +3249,15 @@ LABEL_9:
 + (id)predicateForAllOriginalResourcesLocallyAvailable
 {
   v2 = MEMORY[0x1E696AE18];
-  v3 = [a1 originalCPLResourceTypesForMaster];
-  v4 = [v2 predicateWithFormat:@"(SUBQUERY(modernResources, $r, $r.dataStoreClassID == %d AND ($r.dataStoreSubtype IN %@) AND $r.localAvailability == %d AND $r.version == %d).@count == 0)", 0, v3, 0xFFFFFFFFLL, 0];
+  originalCPLResourceTypesForMaster = [self originalCPLResourceTypesForMaster];
+  v4 = [v2 predicateWithFormat:@"(SUBQUERY(modernResources, $r, $r.dataStoreClassID == %d AND ($r.dataStoreSubtype IN %@) AND $r.localAvailability == %d AND $r.version == %d).@count == 0)", 0, originalCPLResourceTypesForMaster, 0xFFFFFFFFLL, 0];
 
   return v4;
 }
 
-+ (unint64_t)bytesNeededToDownloadOriginalResourcesInLibrary:(id)a3
++ (unint64_t)bytesNeededToDownloadOriginalResourcesInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -3266,8 +3266,8 @@ LABEL_9:
   v8[1] = 3221225472;
   v8[2] = __75__PLInternalResource_CPL__bytesNeededToDownloadOriginalResourcesInLibrary___block_invoke;
   v8[3] = &unk_1E7576208;
-  v11 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = libraryCopy;
   v9 = v5;
   v10 = &v12;
   [v5 performTransactionAndWait:v8];
@@ -3377,9 +3377,9 @@ LABEL_20:
   }
 }
 
-+ (unint64_t)bytesForAllResourcesInLibrary:(id)a3
++ (unint64_t)bytesForAllResourcesInLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -3388,8 +3388,8 @@ LABEL_20:
   v9[1] = 3221225472;
   v9[2] = __57__PLInternalResource_CPL__bytesForAllResourcesInLibrary___block_invoke;
   v9[3] = &unk_1E7576590;
-  v12 = a1;
-  v6 = v5;
+  selfCopy = self;
+  v6 = libraryCopy;
   v10 = v6;
   v11 = &v14;
   v13 = a2;
@@ -3483,21 +3483,21 @@ LABEL_13:
 LABEL_14:
 }
 
-+ (void)resetPrefetchStateForResourcesWithVersion:(unsigned int)a3 cplType:(unint64_t)a4 assetUuids:(id)a5 inLibrary:(id)a6
++ (void)resetPrefetchStateForResourcesWithVersion:(unsigned int)version cplType:(unint64_t)type assetUuids:(id)uuids inLibrary:(id)library
 {
-  v10 = a5;
-  v11 = a6;
+  uuidsCopy = uuids;
+  libraryCopy = library;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __98__PLInternalResource_CPL__resetPrefetchStateForResourcesWithVersion_cplType_assetUuids_inLibrary___block_invoke;
   v14[3] = &unk_1E756F1E0;
-  v17 = a1;
-  v18 = a4;
-  v19 = a3;
-  v15 = v10;
-  v16 = v11;
-  v12 = v11;
-  v13 = v10;
+  selfCopy = self;
+  typeCopy = type;
+  versionCopy = version;
+  v15 = uuidsCopy;
+  v16 = libraryCopy;
+  v12 = libraryCopy;
+  v13 = uuidsCopy;
   [v12 performTransactionAndWait:v14];
 }
 
@@ -3580,11 +3580,11 @@ LABEL_13:
 LABEL_14:
 }
 
-+ (void)resetCloudResourcesStateForCloudInManagedObjectContext:(id)a3 hardReset:(BOOL)a4
++ (void)resetCloudResourcesStateForCloudInManagedObjectContext:(id)context hardReset:(BOOL)reset
 {
-  v4 = a4;
+  resetCopy = reset;
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_autoreleasePoolPush();
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -3592,7 +3592,7 @@ LABEL_14:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = @"soft";
-      if (v4)
+      if (resetCopy)
       {
         v9 = @"hard";
       }
@@ -3604,11 +3604,11 @@ LABEL_14:
   }
 
   v47 = v7;
-  if (v4)
+  if (resetCopy)
   {
     v10 = MEMORY[0x1E695D5E0];
-    v11 = [a1 entityName];
-    v12 = [v10 fetchRequestWithEntityName:v11];
+    entityName = [self entityName];
+    v12 = [v10 fetchRequestWithEntityName:entityName];
 
     v44 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d AND %K != %d AND %K <= %d AND %K == nil AND %K == %d", @"dataStoreClassID", 0, @"dataStoreSubtype", 0, @"localAvailability", 0xFFFFFFFFLL, @"fileSystemBookmark", @"cloudLocalState", 3];
     [v12 setPredicate:?];
@@ -3616,8 +3616,8 @@ LABEL_14:
     v13 = [objc_alloc(MEMORY[0x1E695D538]) initWithFetchRequest:v12];
     [v13 setResultType:2];
     v50 = 0;
-    v46 = v6;
-    v14 = [v6 executeRequest:v13 error:&v50];
+    v46 = contextCopy;
+    v14 = [contextCopy executeRequest:v13 error:&v50];
     v15 = v50;
     if (v15)
     {
@@ -3645,9 +3645,9 @@ LABEL_14:
       v16 = __CPLAssetsdOSLogDomain();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [(__CFString *)v14 result];
+        result = [(__CFString *)v14 result];
         *buf = 138412290;
-        v56 = v32;
+        v56 = result;
         _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Batch deleted %@ non-local Resources", buf, 0xCu);
       }
     }
@@ -3656,8 +3656,8 @@ LABEL_20:
     v29 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:0.0];
     v31 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d AND %K != %d", @"dataStoreClassID", 0, @"dataStoreSubtype", 0];
     v33 = objc_alloc(MEMORY[0x1E695D560]);
-    v34 = [a1 entityName];
-    v35 = [v33 initWithEntityName:v34];
+    entityName2 = [self entityName];
+    v35 = [v33 initWithEntityName:entityName2];
 
     [v35 setResultType:2];
     [v35 setPredicate:v31];
@@ -3670,15 +3670,15 @@ LABEL_20:
     v54[2] = &unk_1F0FBD498;
     v54[3] = v29;
     v53[4] = @"cloudMasterDateCreated";
-    v36 = [MEMORY[0x1E695DFB0] null];
-    v54[4] = v36;
+    null = [MEMORY[0x1E695DFB0] null];
+    v54[4] = null;
     v53[5] = @"cloudPrunedAt";
-    v37 = [MEMORY[0x1E695DFB0] null];
-    v54[5] = v37;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v54[5] = null2;
     v53[6] = @"cloudLastOnDemandDownloadDate";
-    v38 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
     v53[7] = @"cloudSourceType";
-    v54[6] = v38;
+    v54[6] = null3;
     v54[7] = &unk_1F0FBD4B0;
     v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:8];
     [v35 setPropertiesToUpdate:v39];
@@ -3714,9 +3714,9 @@ LABEL_31:
         v41 = __CPLAssetsdOSLogDomain();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v40 result];
+          result2 = [v40 result];
           *buf = 138412290;
-          v56 = v43;
+          v56 = result2;
           _os_log_impl(&dword_19BF1F000, v41, OS_LOG_TYPE_DEFAULT, "Batch updated %@ cpl resources", buf, 0xCu);
 
           v22 = 0;
@@ -3740,17 +3740,17 @@ LABEL_33:
   v52[0] = &unk_1F0FBD498;
   v52[1] = v17;
   v51[2] = @"cloudPrunedAt";
-  v19 = [MEMORY[0x1E695DFB0] null];
-  v52[2] = v19;
+  null4 = [MEMORY[0x1E695DFB0] null];
+  v52[2] = null4;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:3];
   v21 = [v18 initWithDictionary:v20];
 
   v22 = v17;
-  v23 = v6;
+  v23 = contextCopy;
 
   v24 = MEMORY[0x1E696AE18];
-  v25 = [MEMORY[0x1E695DFB0] null];
-  v26 = [v24 predicateWithFormat:@"%K == %d AND %K != %d AND (%K != 0 OR %K != %@ OR %K != %@)", @"dataStoreClassID", 0, @"dataStoreSubtype", 0, @"cloudPrefetchCount", @"cloudLastPrefetchDate", v22, @"cloudPrunedAt", v25];
+  null5 = [MEMORY[0x1E695DFB0] null];
+  v26 = [v24 predicateWithFormat:@"%K == %d AND %K != %d AND (%K != 0 OR %K != %@ OR %K != %@)", @"dataStoreClassID", 0, @"dataStoreSubtype", 0, @"cloudPrefetchCount", @"cloudLastPrefetchDate", v22, @"cloudPrunedAt", null5];
 
   v27 = objc_alloc(MEMORY[0x1E695D560]);
   v28 = +[PLInternalResource entityName];
@@ -3760,7 +3760,7 @@ LABEL_33:
   [v13 setPredicate:v26];
   [v13 setPropertiesToUpdate:v21];
   v48 = 0;
-  v29 = [v6 executeRequest:v13 error:&v48];
+  v29 = [contextCopy executeRequest:v13 error:&v48];
   v30 = v48;
   if (!v30)
   {
@@ -3773,9 +3773,9 @@ LABEL_33:
     v31 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v42 = [v29 result];
+      result3 = [v29 result];
       *buf = 138412290;
-      v56 = v42;
+      v56 = result3;
       _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEFAULT, "Batch updated %@ cpl attributes", buf, 0xCu);
     }
 
@@ -3802,29 +3802,29 @@ LABEL_34:
   objc_autoreleasePoolPop(v7);
 }
 
-+ (signed)plTrashedStateForCPLExpungedState:(unint64_t)a3
++ (signed)plTrashedStateForCPLExpungedState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 }
 
-+ (unint64_t)cplExpungedStateForTrashedState:(signed __int16)a3
++ (unint64_t)cplExpungedStateForTrashedState:(signed __int16)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 }
 
@@ -3871,7 +3871,7 @@ void __54__PLInternalResource_CPL__nonOriginalCPLResourceTypes__block_invoke_2(u
   block[1] = 3221225472;
   block[2] = __51__PLInternalResource_CPL__originalCPLResourceTypes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (originalCPLResourceTypes_onceToken != -1)
   {
     dispatch_once(&originalCPLResourceTypes_onceToken, block);
@@ -3931,15 +3931,15 @@ void __60__PLInternalResource_CPL__originalCPLResourceTypesForMaster__block_invo
   originalCPLResourceTypesForMaster_resourceTypes = &unk_1F0FBFD90;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ([(PLInternalResource *)self isValidForJournalPersistence])
   {
-    v5 = [(PLInternalResource *)self asset];
-    if ([v5 isValidForJournalPersistence])
+    asset = [(PLInternalResource *)self asset];
+    if ([asset isValidForJournalPersistence])
     {
-      v6 = [[PLAssetJournalEntryPayload alloc] initWithInternalResource:self filesystemBookmark:0 changedKeys:v4];
+      v6 = [[PLAssetJournalEntryPayload alloc] initWithInternalResource:self filesystemBookmark:0 changedKeys:keysCopy];
     }
 
     else
@@ -3958,33 +3958,33 @@ void __60__PLInternalResource_CPL__originalCPLResourceTypesForMaster__block_invo
 
 - (id)payloadID
 {
-  v2 = [(PLInternalResource *)self asset];
-  v3 = [v2 uuid];
-  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
+  asset = [(PLInternalResource *)self asset];
+  uuid = [asset uuid];
+  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v4;
 }
 
 - (BOOL)isValidForJournalPersistence
 {
-  v2 = [(PLInternalResource *)self recipeID];
+  recipeID = [(PLInternalResource *)self recipeID];
 
-  return [PLAssetJournalEntryPayloadResource isValidForPersistenceWithRecipeID:v2];
+  return [PLAssetJournalEntryPayloadResource isValidForPersistenceWithRecipeID:recipeID];
 }
 
-+ (id)resourceForManagedAsset:(id)a3 sharedStreamsType:(unsigned int)a4 managedObjectContext:(id)a5 error:(id *)a6
++ (id)resourceForManagedAsset:(id)asset sharedStreamsType:(unsigned int)type managedObjectContext:(id)context error:(id *)error
 {
-  v7 = *&a4;
+  v7 = *&type;
   v9 = MEMORY[0x1E696AE18];
-  v10 = a5;
-  v11 = [v9 predicateWithFormat:@"%K == %@ AND %K == %d", @"asset", a3, @"dataStoreSubtype", v7];
-  v12 = [objc_opt_class() fetchRequest];
-  [v12 setPredicate:v11];
-  v13 = [v10 executeFetchRequest:v12 error:a6];
+  contextCopy = context;
+  v11 = [v9 predicateWithFormat:@"%K == %@ AND %K == %d", @"asset", asset, @"dataStoreSubtype", v7];
+  fetchRequest = [objc_opt_class() fetchRequest];
+  [fetchRequest setPredicate:v11];
+  v13 = [contextCopy executeFetchRequest:fetchRequest error:error];
 
-  v14 = [v13 firstObject];
+  firstObject = [v13 firstObject];
 
-  return v14;
+  return firstObject;
 }
 
 @end

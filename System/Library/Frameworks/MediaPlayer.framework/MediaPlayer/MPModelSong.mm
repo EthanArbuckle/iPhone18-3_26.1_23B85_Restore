@@ -59,7 +59,7 @@
 + (void)__MPModelRelationshipSongStoreAsset__MAPPING_MISSING__;
 + (void)___MPModelPropertySongTrackCount__MAPPING_MISSING__;
 - (MPLibraryAddStatusObserverConfiguration)libraryAddStatusObserverConfiguration;
-- (id)animatedArtworkCatalogForFormat:(int64_t)a3;
+- (id)animatedArtworkCatalogForFormat:(int64_t)format;
 - (id)artworkCatalog;
 - (id)humanDescription;
 - (id)mediaItemPropertyValues;
@@ -134,24 +134,24 @@
 
 - (MPLibraryAddStatusObserverConfiguration)libraryAddStatusObserverConfiguration
 {
-  v3 = [(MPModelSong *)self isExplicitSong];
+  isExplicitSong = [(MPModelSong *)self isExplicitSong];
   v4 = ~[(MPModelSong *)self isArtistUploadedContent];
-  v5 = [(MPModelSong *)self isLibraryAdded];
-  v6 = [(MPModelSong *)self isLibraryAddEligible];
+  isLibraryAdded = [(MPModelSong *)self isLibraryAdded];
+  isLibraryAddEligible = [(MPModelSong *)self isLibraryAddEligible];
   v7 = 0x100000000;
-  if (!v6)
+  if (!isLibraryAddEligible)
   {
     v7 = 0;
   }
 
   v8 = 256;
-  if (!v5)
+  if (!isLibraryAdded)
   {
     v8 = 0;
   }
 
   v9 = 0x10000;
-  if (v3)
+  if (isExplicitSong)
   {
     v9 = 0x1000000;
   }
@@ -347,15 +347,15 @@ void __62__MPModelSong_MPModelObjectMediaItem__mediaItemPropertyValues__block_in
   }
 }
 
-- (id)animatedArtworkCatalogForFormat:(int64_t)a3
+- (id)animatedArtworkCatalogForFormat:(int64_t)format
 {
   if (_os_feature_enabled_impl())
   {
-    v5 = [(MPModelSong *)self animatedArtworkCatalogBlock];
-    v6 = v5;
-    if (v5)
+    animatedArtworkCatalogBlock = [(MPModelSong *)self animatedArtworkCatalogBlock];
+    v6 = animatedArtworkCatalogBlock;
+    if (animatedArtworkCatalogBlock)
     {
-      v7 = (*(v5 + 16))(v5, a3);
+      v7 = (*(animatedArtworkCatalogBlock + 16))(animatedArtworkCatalogBlock, format);
     }
 
     else
@@ -374,11 +374,11 @@ void __62__MPModelSong_MPModelObjectMediaItem__mediaItemPropertyValues__block_in
 
 - (id)artworkCatalog
 {
-  v3 = [(MPModelSong *)self artworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  artworkCatalogBlock = [(MPModelSong *)self artworkCatalogBlock];
+  v4 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, self);
   }
 
   else
@@ -398,15 +398,15 @@ void __62__MPModelSong_MPModelObjectMediaItem__mediaItemPropertyValues__block_in
   }
 
   v4 = MEMORY[0x1E696AD60];
-  v5 = [(MPModelObject *)self identifiers];
-  v6 = [v5 humanDescription];
-  v7 = [v4 stringWithFormat:@"%@ %@", v3, v6];
+  identifiers = [(MPModelObject *)self identifiers];
+  humanDescription = [identifiers humanDescription];
+  v7 = [v4 stringWithFormat:@"%@ %@", v3, humanDescription];
 
   if ([(MPModelObject *)self hasLoadedValueForKey:@"MPModelPropertySongTitle"])
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(MPModelSong *)self title];
-    v10 = [v8 stringWithFormat:@"“%@” ", v9];
+    title = [(MPModelSong *)self title];
+    v10 = [v8 stringWithFormat:@"“%@” ", title];
 
     [v7 insertString:v10 atIndex:0];
   }
@@ -416,355 +416,355 @@ void __62__MPModelSong_MPModelObjectMediaItem__mediaItemPropertyValues__block_in
 
 + (void)__MPModelPropertySongDateReleased__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:182 description:@"Translator was missing mapping for MPModelPropertySongDateReleased"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:182 description:@"Translator was missing mapping for MPModelPropertySongDateReleased"];
 }
 
 + (void)__MPModelPropertySongImmersiveDeeplinkURL__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:181 description:@"Translator was missing mapping for MPModelPropertySongImmersiveDeeplinkURL"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:181 description:@"Translator was missing mapping for MPModelPropertySongImmersiveDeeplinkURL"];
 }
 
 + (void)__MPModelPropertySongIsPinned__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:180 description:@"Translator was missing mapping for MPModelPropertySongIsPinned"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:180 description:@"Translator was missing mapping for MPModelPropertySongIsPinned"];
 }
 
 + (void)__MPModelPropertySongHasCredits__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:179 description:@"Translator was missing mapping for MPModelPropertySongHasCredits"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:179 description:@"Translator was missing mapping for MPModelPropertySongHasCredits"];
 }
 
 + (void)__MPModelPropertySongSupportsExtendedLyricsAttribute__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:178 description:@"Translator was missing mapping for MPModelPropertySongSupportsExtendedLyricsAttribute"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:178 description:@"Translator was missing mapping for MPModelPropertySongSupportsExtendedLyricsAttribute"];
 }
 
 + (void)__MPModelPropertySongDateFavorited__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:177 description:@"Translator was missing mapping for MPModelPropertySongDateFavorited"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:177 description:@"Translator was missing mapping for MPModelPropertySongDateFavorited"];
 }
 
 + (void)__MPModelPropertySongIsDisliked__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:176 description:@"Translator was missing mapping for MPModelPropertySongIsDisliked"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:176 description:@"Translator was missing mapping for MPModelPropertySongIsDisliked"];
 }
 
 + (void)__MPModelPropertySongIsFavorite__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:175 description:@"Translator was missing mapping for MPModelPropertySongIsFavorite"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:175 description:@"Translator was missing mapping for MPModelPropertySongIsFavorite"];
 }
 
 + (void)__MPModelPropertySongTraits__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:174 description:@"Translator was missing mapping for MPModelPropertySongTraits"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:174 description:@"Translator was missing mapping for MPModelPropertySongTraits"];
 }
 
 + (void)__MPModelPropertySongDownloadedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:173 description:@"Translator was missing mapping for MPModelPropertySongDownloadedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:173 description:@"Translator was missing mapping for MPModelPropertySongDownloadedDate"];
 }
 
 + (void)__MPModelRelationshipSongPlaybackPosition__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:172 description:@"Translator was missing mapping for MPModelRelationshipSongPlaybackPosition"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:172 description:@"Translator was missing mapping for MPModelRelationshipSongPlaybackPosition"];
 }
 
 + (void)__MPModelPropertySongVolumeAdjustment__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:171 description:@"Translator was missing mapping for MPModelPropertySongVolumeAdjustment"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:171 description:@"Translator was missing mapping for MPModelPropertySongVolumeAdjustment"];
 }
 
 + (void)__MPModelPropertySongGaplessInfo__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:170 description:@"Translator was missing mapping for MPModelPropertySongGaplessInfo"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:170 description:@"Translator was missing mapping for MPModelPropertySongGaplessInfo"];
 }
 
 + (void)__MPModelPropertySongCloudStatus__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:169 description:@"Translator was missing mapping for MPModelPropertySongCloudStatus"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:169 description:@"Translator was missing mapping for MPModelPropertySongCloudStatus"];
 }
 
 + (void)__MPModelPropertySongUserRating__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:168 description:@"Translator was missing mapping for MPModelPropertySongUserRating"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:168 description:@"Translator was missing mapping for MPModelPropertySongUserRating"];
 }
 
 + (void)__MPModelRelationshipSongPreviewAsset__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:167 description:@"Translator was missing mapping for MPModelRelationshipSongPreviewAsset"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:167 description:@"Translator was missing mapping for MPModelRelationshipSongPreviewAsset"];
 }
 
 + (void)__MPModelRelationshipSongStoreAsset__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:166 description:@"Translator was missing mapping for MPModelRelationshipSongStoreAsset"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:166 description:@"Translator was missing mapping for MPModelRelationshipSongStoreAsset"];
 }
 
 + (void)__MPModelRelationshipSongHomeSharingAsset__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:165 description:@"Translator was missing mapping for MPModelRelationshipSongHomeSharingAsset"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:165 description:@"Translator was missing mapping for MPModelRelationshipSongHomeSharingAsset"];
 }
 
 + (void)__MPModelPropertySongYear__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:164 description:@"Translator was missing mapping for MPModelPropertySongYear"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:164 description:@"Translator was missing mapping for MPModelPropertySongYear"];
 }
 
 + (void)__MPModelPropertySongClassicalMovementNumber__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:163 description:@"Translator was missing mapping for MPModelPropertySongClassicalMovementNumber"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:163 description:@"Translator was missing mapping for MPModelPropertySongClassicalMovementNumber"];
 }
 
 + (void)__MPModelPropertySongClassicalMovementCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:162 description:@"Translator was missing mapping for MPModelPropertySongClassicalMovementCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:162 description:@"Translator was missing mapping for MPModelPropertySongClassicalMovementCount"];
 }
 
 + (void)__MPModelPropertySongClassicalMovement__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:161 description:@"Translator was missing mapping for MPModelPropertySongClassicalMovement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:161 description:@"Translator was missing mapping for MPModelPropertySongClassicalMovement"];
 }
 
 + (void)__MPModelPropertySongClassicalWork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:160 description:@"Translator was missing mapping for MPModelPropertySongClassicalWork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:160 description:@"Translator was missing mapping for MPModelPropertySongClassicalWork"];
 }
 
 + (void)__MPModelPropertySongHasCloudSyncSource__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:159 description:@"Translator was missing mapping for MPModelPropertySongHasCloudSyncSource"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:159 description:@"Translator was missing mapping for MPModelPropertySongHasCloudSyncSource"];
 }
 
 + (void)__MPModelPropertySongLibraryAddEligible__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:158 description:@"Translator was missing mapping for MPModelPropertySongLibraryAddEligible"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:158 description:@"Translator was missing mapping for MPModelPropertySongLibraryAddEligible"];
 }
 
 + (void)__MPModelPropertySongLastDevicePlaybackDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:157 description:@"Translator was missing mapping for MPModelPropertySongLastDevicePlaybackDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:157 description:@"Translator was missing mapping for MPModelPropertySongLastDevicePlaybackDate"];
 }
 
 + (void)__MPModelPropertySongLibraryAddedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:156 description:@"Translator was missing mapping for MPModelPropertySongLibraryAddedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:156 description:@"Translator was missing mapping for MPModelPropertySongLibraryAddedDate"];
 }
 
 + (void)__MPModelPropertySongLibraryAdded__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:155 description:@"Translator was missing mapping for MPModelPropertySongLibraryAdded"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:155 description:@"Translator was missing mapping for MPModelPropertySongLibraryAdded"];
 }
 
 + (void)__MPModelPropertySongKeepLocalConstraints__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:154 description:@"Translator was missing mapping for MPModelPropertySongKeepLocalConstraints"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:154 description:@"Translator was missing mapping for MPModelPropertySongKeepLocalConstraints"];
 }
 
 + (void)__MPModelPropertySongKeepLocalManagedStatusReason__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:153 description:@"Translator was missing mapping for MPModelPropertySongKeepLocalManagedStatusReason"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:153 description:@"Translator was missing mapping for MPModelPropertySongKeepLocalManagedStatusReason"];
 }
 
 + (void)__MPModelPropertySongKeepLocalManagedStatus__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:152 description:@"Translator was missing mapping for MPModelPropertySongKeepLocalManagedStatus"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:152 description:@"Translator was missing mapping for MPModelPropertySongKeepLocalManagedStatus"];
 }
 
 + (void)__MPModelPropertySongKeepLocalEnableState__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:151 description:@"Translator was missing mapping for MPModelPropertySongKeepLocalEnableState"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:151 description:@"Translator was missing mapping for MPModelPropertySongKeepLocalEnableState"];
 }
 
 + (void)__MPModelRelationshipSongLocalFileAsset__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:150 description:@"Translator was missing mapping for MPModelRelationshipSongLocalFileAsset"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:150 description:@"Translator was missing mapping for MPModelRelationshipSongLocalFileAsset"];
 }
 
 + (void)__MPModelPropertySongAnimatedArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:149 description:@"Translator was missing mapping for MPModelPropertySongAnimatedArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:149 description:@"Translator was missing mapping for MPModelPropertySongAnimatedArtwork"];
 }
 
 + (void)__MPModelPropertySongArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:148 description:@"Translator was missing mapping for MPModelPropertySongArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:148 description:@"Translator was missing mapping for MPModelPropertySongArtwork"];
 }
 
 + (void)__MPModelPropertySongVolumeNormalization__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:147 description:@"Translator was missing mapping for MPModelPropertySongVolumeNormalization"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:147 description:@"Translator was missing mapping for MPModelPropertySongVolumeNormalization"];
 }
 
 + (void)__MPModelPropertySongShouldShowComposer__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:146 description:@"Translator was missing mapping for MPModelPropertySongShouldShowComposer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:146 description:@"Translator was missing mapping for MPModelPropertySongShouldShowComposer"];
 }
 
 + (void)__MPModelRelationshipSongLyrics__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:145 description:@"Translator was missing mapping for MPModelRelationshipSongLyrics"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:145 description:@"Translator was missing mapping for MPModelRelationshipSongLyrics"];
 }
 
 + (void)__MPModelPropertySongBeatsPerMinute__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:144 description:@"Translator was missing mapping for MPModelPropertySongBeatsPerMinute"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:144 description:@"Translator was missing mapping for MPModelPropertySongBeatsPerMinute"];
 }
 
 + (void)__MPModelPropertySongHasVideo__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:143 description:@"Translator was missing mapping for MPModelPropertySongHasVideo"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:143 description:@"Translator was missing mapping for MPModelPropertySongHasVideo"];
 }
 
 + (void)__MPModelPropertySongArtistUploadedContent__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:142 description:@"Translator was missing mapping for MPModelPropertySongArtistUploadedContent"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:142 description:@"Translator was missing mapping for MPModelPropertySongArtistUploadedContent"];
 }
 
 + (void)__MPModelPropertySongExplicit__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:141 description:@"Translator was missing mapping for MPModelPropertySongExplicit"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:141 description:@"Translator was missing mapping for MPModelPropertySongExplicit"];
 }
 
 + (void)__MPModelPropertySongSkipCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:140 description:@"Translator was missing mapping for MPModelPropertySongSkipCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:140 description:@"Translator was missing mapping for MPModelPropertySongSkipCount"];
 }
 
 + (void)__MPModelPropertySongPlayCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:139 description:@"Translator was missing mapping for MPModelPropertySongPlayCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:139 description:@"Translator was missing mapping for MPModelPropertySongPlayCount"];
 }
 
 + (void)__MPModelPropertySongDiscNumber__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:138 description:@"Translator was missing mapping for MPModelPropertySongDiscNumber"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:138 description:@"Translator was missing mapping for MPModelPropertySongDiscNumber"];
 }
 
 + (void)__MPModelPropertySongTrackNumber__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:137 description:@"Translator was missing mapping for MPModelPropertySongTrackNumber"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:137 description:@"Translator was missing mapping for MPModelPropertySongTrackNumber"];
 }
 
 + (void)___MPModelPropertySongTrackCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:136 description:@"Translator was missing mapping for _MPModelPropertySongTrackCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:136 description:@"Translator was missing mapping for _MPModelPropertySongTrackCount"];
 }
 
 + (void)__MPModelPropertySongDuration__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:135 description:@"Translator was missing mapping for MPModelPropertySongDuration"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:135 description:@"Translator was missing mapping for MPModelPropertySongDuration"];
 }
 
 + (void)__MPModelPropertySongCopyrightText__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:134 description:@"Translator was missing mapping for MPModelPropertySongCopyrightText"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:134 description:@"Translator was missing mapping for MPModelPropertySongCopyrightText"];
 }
 
 + (void)__MPModelPropertySongGrouping__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:133 description:@"Translator was missing mapping for MPModelPropertySongGrouping"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:133 description:@"Translator was missing mapping for MPModelPropertySongGrouping"];
 }
 
 + (void)__MPModelRelationshipSongComposer__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:132 description:@"Translator was missing mapping for MPModelRelationshipSongComposer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:132 description:@"Translator was missing mapping for MPModelRelationshipSongComposer"];
 }
 
 + (void)__MPModelRelationshipSongGenre__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:131 description:@"Translator was missing mapping for MPModelRelationshipSongGenre"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:131 description:@"Translator was missing mapping for MPModelRelationshipSongGenre"];
 }
 
 + (void)__MPModelRelationshipSongArtist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:130 description:@"Translator was missing mapping for MPModelRelationshipSongArtist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:130 description:@"Translator was missing mapping for MPModelRelationshipSongArtist"];
 }
 
 + (void)__MPModelRelationshipSongAlbum__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:129 description:@"Translator was missing mapping for MPModelRelationshipSongAlbum"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:129 description:@"Translator was missing mapping for MPModelRelationshipSongAlbum"];
 }
 
 + (void)__MPModelPropertySongTitle__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelSong.m" lineNumber:128 description:@"Translator was missing mapping for MPModelPropertySongTitle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelSong.m" lineNumber:128 description:@"Translator was missing mapping for MPModelPropertySongTitle"];
 }
 
 - (id)newKeepLocalStatusObserverConfiguration
 {
   v3 = objc_alloc_init(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration);
-  v4 = [(MPModelSong *)self localFileAsset];
-  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setHasNonPurgeableAsset:](v3, "setHasNonPurgeableAsset:", [v4 isNonPurgeable]);
+  localFileAsset = [(MPModelSong *)self localFileAsset];
+  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setHasNonPurgeableAsset:](v3, "setHasNonPurgeableAsset:", [localFileAsset isNonPurgeable]);
   [(MPLibraryKeepLocalStatusObserverConfiguration *)v3 setIdentifyingModelObject:self];
   [(MPLibraryKeepLocalStatusObserverConfiguration *)v3 setEnableState:[(MPModelSong *)self keepLocalEnableState]];
   [(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)v3 setManagedStatus:[(MPModelSong *)self keepLocalManagedStatus]];
-  v5 = [(MPModelSong *)self storeAsset];
-  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setStoreRedownloadable:](v3, "setStoreRedownloadable:", [v5 isRedownloadable]);
+  storeAsset = [(MPModelSong *)self storeAsset];
+  -[MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration setStoreRedownloadable:](v3, "setStoreRedownloadable:", [storeAsset isRedownloadable]);
 
   return v3;
 }
 
 - (int64_t)libraryRemovalSupportedOptions
 {
-  v3 = [(MPModelSong *)self keepLocalManagedStatus];
-  v4 = [(MPModelSong *)self isLibraryAdded];
-  v5 = [(MPModelSong *)self localFileAsset];
-  v6 = [(MPModelSong *)self storeAsset];
-  v7 = _MPModelLibraryRemovalSupportedOptionsForIndividualItemProperties(v3, v4, v5, v6);
+  keepLocalManagedStatus = [(MPModelSong *)self keepLocalManagedStatus];
+  isLibraryAdded = [(MPModelSong *)self isLibraryAdded];
+  localFileAsset = [(MPModelSong *)self localFileAsset];
+  storeAsset = [(MPModelSong *)self storeAsset];
+  v7 = _MPModelLibraryRemovalSupportedOptionsForIndividualItemProperties(keepLocalManagedStatus, isLibraryAdded, localFileAsset, storeAsset);
 
   return v7;
 }

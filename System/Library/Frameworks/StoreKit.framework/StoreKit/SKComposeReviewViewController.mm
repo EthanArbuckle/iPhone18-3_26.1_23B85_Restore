@@ -1,29 +1,29 @@
 @interface SKComposeReviewViewController
 - (SKComposeReviewDelegate)delegate;
-- (SKComposeReviewViewController)initWithCompositionURL:(id)a3;
-- (SKComposeReviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SKComposeReviewViewController)initWithCompositionURL:(id)l;
+- (SKComposeReviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_addRemoteView;
-- (void)_didFinishWithResult:(BOOL)a3 error:(id)a4;
-- (void)_didPrepareWithResult:(BOOL)a3 error:(id)a4;
+- (void)_didFinishWithResult:(BOOL)result error:(id)error;
+- (void)_didPrepareWithResult:(BOOL)result error:(id)error;
 - (void)_requestRemoteViewController;
-- (void)_tearDownAfterError:(id)a3;
+- (void)_tearDownAfterError:(id)error;
 - (void)dealloc;
 - (void)loadView;
-- (void)prepareWithCompletionBlock:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)prepareWithCompletionBlock:(id)block;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SKComposeReviewViewController
 
-- (SKComposeReviewViewController)initWithCompositionURL:(id)a3
+- (SKComposeReviewViewController)initWithCompositionURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = SKComposeReviewViewController;
   v5 = [(SKComposeReviewViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     compositionURL = v5->_compositionURL;
     v5->_compositionURL = v6;
   }
@@ -31,21 +31,21 @@
   return v5;
 }
 
-- (SKComposeReviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKComposeReviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = SKComposeReviewViewController;
-  v4 = [(SKComposeReviewViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(SKComposeReviewViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [[SKInvocationQueueProxy alloc] initWithProtocol:&unk_1F2A066B8];
     serviceProxy = v4->_serviceProxy;
     v4->_serviceProxy = v5;
 
-    v7 = [MEMORY[0x1E69DC938] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v8 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(SKComposeReviewViewController *)v4 setModalPresentationStyle:2];
     }
@@ -56,7 +56,7 @@
 
 - (void)dealloc
 {
-  v3 = [(_UIAsyncInvocation *)self->_cancelRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_cancelRequest invoke];
   [(SKRemoteComposeReviewViewController *)self->_remoteViewController setComposeReviewViewController:0];
   [(SKUIServiceComposeReviewViewController *)self->_serviceProxy setInvocationTarget:0];
   v4.receiver = self;
@@ -64,7 +64,7 @@
   [(SKComposeReviewViewController *)&v4 dealloc];
 }
 
-- (void)prepareWithCompletionBlock:(id)a3
+- (void)prepareWithCompletionBlock:(id)block
 {
   if (self->_prepareBlock)
   {
@@ -76,7 +76,7 @@
 
   else
   {
-    v6 = [a3 copy];
+    v6 = [block copy];
     prepareBlock = self->_prepareBlock;
     self->_prepareBlock = v6;
 
@@ -87,29 +87,29 @@
 - (void)loadView
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v4 setBackgroundColor:systemBackgroundColor];
 
   [(SKComposeReviewViewController *)self setView:v4];
   [(SKComposeReviewViewController *)self _addRemoteView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SKUIServiceComposeReviewViewController *)self->_serviceProxy loadReviewWithURL:self->_compositionURL];
   v5.receiver = self;
   v5.super_class = SKComposeReviewViewController;
-  [(SKComposeReviewViewController *)&v5 viewDidAppear:v3];
+  [(SKComposeReviewViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)_didFinishWithResult:(BOOL)a3 error:(id)a4
+- (void)_didFinishWithResult:(BOOL)result error:(id)error
 {
-  v4 = a3;
+  resultCopy = result;
   if (self->_prepareBlock)
   {
 
-    [(SKComposeReviewViewController *)self _didPrepareWithResult:a3 error:a4];
+    [(SKComposeReviewViewController *)self _didPrepareWithResult:result error:error];
   }
 
   else
@@ -121,7 +121,7 @@
     v10 = v8;
     if (v7)
     {
-      [v8 reviewComposeViewController:self didFinishSubmitting:v4];
+      [v8 reviewComposeViewController:self didFinishSubmitting:resultCopy];
     }
 
     else
@@ -139,11 +139,11 @@
   }
 }
 
-- (void)_didPrepareWithResult:(BOOL)a3 error:(id)a4
+- (void)_didPrepareWithResult:(BOOL)result error:(id)error
 {
-  v4 = a3;
-  v8 = a4;
-  if (v4)
+  resultCopy = result;
+  errorCopy = error;
+  if (resultCopy)
   {
     [(SKComposeReviewViewController *)self _addRemoteView];
   }
@@ -152,7 +152,7 @@
   prepareBlock = self->_prepareBlock;
   if (prepareBlock)
   {
-    prepareBlock[2](prepareBlock, v4, v8);
+    prepareBlock[2](prepareBlock, resultCopy, errorCopy);
     v7 = self->_prepareBlock;
     self->_prepareBlock = 0;
   }
@@ -160,11 +160,11 @@
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)_tearDownAfterError:(id)a3
+- (void)_tearDownAfterError:(id)error
 {
   if (self->_prepareBlock)
   {
-    [(SKComposeReviewViewController *)self _didFinishWithResult:0 error:a3];
+    [(SKComposeReviewViewController *)self _didFinishWithResult:0 error:error];
   }
 
   else
@@ -177,12 +177,12 @@
 {
   if (self->_remoteViewController && [(SKComposeReviewViewController *)self isViewLoaded])
   {
-    v4 = [(SKComposeReviewViewController *)self view];
-    v3 = [(SKRemoteComposeReviewViewController *)self->_remoteViewController view];
-    [v4 bounds];
-    [v3 setFrame:?];
-    [v3 setAutoresizingMask:18];
-    [v4 addSubview:v3];
+    view = [(SKComposeReviewViewController *)self view];
+    view2 = [(SKRemoteComposeReviewViewController *)self->_remoteViewController view];
+    [view bounds];
+    [view2 setFrame:?];
+    [view2 setAutoresizingMask:18];
+    [view addSubview:view2];
   }
 }
 

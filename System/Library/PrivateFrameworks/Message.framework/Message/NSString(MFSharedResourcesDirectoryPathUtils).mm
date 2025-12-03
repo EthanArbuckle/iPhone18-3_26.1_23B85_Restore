@@ -21,68 +21,68 @@
     v2 = mf_betterStringByResolvingSymlinksInPath_resolvedPaths;
   }
 
-  v5 = [v2 objectForKey:a1];
+  stringByResolvingSymlinksInPath = [v2 objectForKey:self];
   _MFUnlockGlobalLock();
-  if (!v5)
+  if (!stringByResolvingSymlinksInPath)
   {
-    v5 = [a1 stringByResolvingSymlinksInPath];
-    if (v5)
+    stringByResolvingSymlinksInPath = [self stringByResolvingSymlinksInPath];
+    if (stringByResolvingSymlinksInPath)
     {
       _MFLockGlobalLock();
-      [mf_betterStringByResolvingSymlinksInPath_resolvedPaths setObject:v5 forKey:a1];
-      [mf_betterStringByResolvingSymlinksInPath_resolvedPaths setObject:v5 forKey:v5];
+      [mf_betterStringByResolvingSymlinksInPath_resolvedPaths setObject:stringByResolvingSymlinksInPath forKey:self];
+      [mf_betterStringByResolvingSymlinksInPath_resolvedPaths setObject:stringByResolvingSymlinksInPath forKey:stringByResolvingSymlinksInPath];
       _MFUnlockGlobalLock();
     }
   }
 
-  return v5;
+  return stringByResolvingSymlinksInPath;
 }
 
 - (id)mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath
 {
-  v1 = [a1 mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath];
-  if (([v1 hasPrefix:@"~"] & 1) == 0)
+  mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath = [self mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath];
+  if (([mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath hasPrefix:@"~"] & 1) == 0)
   {
     if (mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath_homeDir)
     {
-      v2 = 0;
+      mf_betterStringByResolvingSymlinksInPath = 0;
     }
 
     else
     {
-      v3 = [@"~" mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath];
-      v2 = [v3 mf_betterStringByResolvingSymlinksInPath];
+      mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath2 = [@"~" mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath];
+      mf_betterStringByResolvingSymlinksInPath = [mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath2 mf_betterStringByResolvingSymlinksInPath];
 
       _MFLockGlobalLock();
       if (!mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath_homeDir)
       {
-        objc_storeStrong(&mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath_homeDir, v2);
+        objc_storeStrong(&mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath_homeDir, mf_betterStringByResolvingSymlinksInPath);
       }
 
       _MFUnlockGlobalLock();
     }
 
-    if ([v1 hasPrefix:?])
+    if ([mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath hasPrefix:?])
     {
-      v4 = [v1 substringFromIndex:{objc_msgSend(mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath_homeDir, "length")}];
+      v4 = [mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath substringFromIndex:{objc_msgSend(mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath_homeDir, "length")}];
       v5 = [@"~" stringByAppendingString:v4];
 
-      v1 = v5;
+      mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath = v5;
     }
   }
 
-  return v1;
+  return mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath;
 }
 
 - (id)mf_canonicalizedAbsolutePath
 {
-  v1 = [a1 fileSystemRepresentation];
+  fileSystemRepresentation = [self fileSystemRepresentation];
   v2 = malloc_type_malloc(0x400uLL, 0x100004077774924uLL);
-  realpath_DARWIN_EXTSN(v1, v2);
+  realpath_DARWIN_EXTSN(fileSystemRepresentation, v2);
   if (*v2)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [v3 stringWithFileSystemRepresentation:v2 length:strlen(v2)];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v4 = [defaultManager stringWithFileSystemRepresentation:v2 length:strlen(v2)];
   }
 
   else
@@ -97,7 +97,7 @@
 
 - (id)mf_stringByExpandingTildeWithSharedResourcesDirectoryInPath
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = v2;
   if (v2 >= 0x400)
   {
@@ -110,7 +110,7 @@
   }
 
   v5 = malloc_type_malloc(0x800uLL, 0x1000040BDFB0063uLL);
-  [a1 getCharacters:v5 range:{0, v4}];
+  [self getCharacters:v5 range:{0, v4}];
   if (v3 < 2)
   {
     if (!v3)
@@ -162,8 +162,8 @@ LABEL_18:
 - (id)mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath
 {
   v23 = *MEMORY[0x1E69E9840];
-  v1 = a1;
-  v2 = [v1 length];
+  selfCopy = self;
+  v2 = [selfCopy length];
   v3 = v2;
   if (v2 < 1)
   {
@@ -183,7 +183,7 @@ LABEL_18:
     bzero(v5, 2 * v3);
   }
 
-  [v1 getCharacters:v5 range:{0, v3}];
+  [selfCopy getCharacters:v5 range:{0, v3}];
   if (v3 != 1)
   {
     v7 = v3;
@@ -283,11 +283,11 @@ LABEL_11:
     free(v5);
   }
 
-  v1 = v19;
+  selfCopy = v19;
 LABEL_35:
   v20 = *MEMORY[0x1E69E9840];
 
-  return v1;
+  return selfCopy;
 }
 
 @end

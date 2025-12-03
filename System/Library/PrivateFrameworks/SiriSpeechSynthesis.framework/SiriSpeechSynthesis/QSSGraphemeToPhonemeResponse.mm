@@ -8,8 +8,8 @@
 - (NSString)phoneset_version;
 - (NSString)return_str;
 - (NSString)session_id;
-- (Offset<siri::speech::schema_fb::GraphemeToPhonemeResponse>)addObjectToBuffer:(void *)a3;
-- (QSSGraphemeToPhonemeResponse)initWithFlatbuffData:(id)a3 root:(const GraphemeToPhonemeResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::GraphemeToPhonemeResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSGraphemeToPhonemeResponse)initWithFlatbuffData:(id)data root:(const GraphemeToPhonemeResponse *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)return_code;
 @end
@@ -45,42 +45,42 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::GraphemeToPhonemeResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::GraphemeToPhonemeResponse>)addObjectToBuffer:(void *)buffer
 {
   v83 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSGraphemeToPhonemeResponse *)self session_id];
-  v6 = v5;
-  if (!v5)
+  session_id = [(QSSGraphemeToPhonemeResponse *)self session_id];
+  v6 = session_id;
+  if (!session_id)
   {
-    v5 = &stru_2879AE8E0;
+    session_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)session_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v62 = [(QSSGraphemeToPhonemeResponse *)self return_code];
-  v9 = [(QSSGraphemeToPhonemeResponse *)self return_str];
-  v10 = v9;
-  if (!v9)
+  return_code = [(QSSGraphemeToPhonemeResponse *)self return_code];
+  return_str = [(QSSGraphemeToPhonemeResponse *)self return_str];
+  v10 = return_str;
+  if (!return_str)
   {
-    v9 = &stru_2879AE8E0;
+    return_str = &stru_2879AE8E0;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  v61 = flatbuffers::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String2 = [(__CFString *)return_str UTF8String];
+  v12 = strlen(uTF8String2);
+  v61 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v12);
 
   memset(&v79, 0, sizeof(v79));
-  v13 = [(QSSGraphemeToPhonemeResponse *)self phonemes];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v79, [v13 count]);
+  phonemes = [(QSSGraphemeToPhonemeResponse *)self phonemes];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v79, [phonemes count]);
 
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v14 = [(QSSGraphemeToPhonemeResponse *)self phonemes];
-  v15 = [v14 countByEnumeratingWithState:&v75 objects:v82 count:16];
+  phonemes2 = [(QSSGraphemeToPhonemeResponse *)self phonemes];
+  v15 = [phonemes2 countByEnumeratingWithState:&v75 objects:v82 count:16];
   if (v15)
   {
     v16 = *v76;
@@ -90,16 +90,16 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
       {
         if (*v76 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(phonemes2);
         }
 
-        v18 = [*(*(&v75 + 1) + 8 * i) UTF8String];
-        v19 = strlen(v18);
-        LODWORD(v74.__begin_) = flatbuffers::FlatBufferBuilder::CreateString(a3, v18, v19);
+        uTF8String3 = [*(*(&v75 + 1) + 8 * i) UTF8String];
+        v19 = strlen(uTF8String3);
+        LODWORD(v74.__begin_) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v19);
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v79, &v74);
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v75 objects:v82 count:16];
+      v15 = [phonemes2 countByEnumeratingWithState:&v75 objects:v82 count:16];
     }
 
     while (v15);
@@ -116,51 +116,51 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
     v21 = v79.__begin_;
   }
 
-  v60 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(a3, v21, v79.__end_ - v79.__begin_);
-  v59 = [(QSSGraphemeToPhonemeResponse *)self is_pron_guessed];
-  v22 = [(QSSGraphemeToPhonemeResponse *)self g2p_version];
-  v23 = v22;
-  if (!v22)
+  v60 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(buffer, v21, v79.__end_ - v79.__begin_);
+  is_pron_guessed = [(QSSGraphemeToPhonemeResponse *)self is_pron_guessed];
+  g2p_version = [(QSSGraphemeToPhonemeResponse *)self g2p_version];
+  v23 = g2p_version;
+  if (!g2p_version)
   {
-    v22 = &stru_2879AE8E0;
+    g2p_version = &stru_2879AE8E0;
   }
 
-  v24 = [(__CFString *)v22 UTF8String];
-  v25 = strlen(v24);
-  v58 = flatbuffers::FlatBufferBuilder::CreateString(a3, v24, v25);
+  uTF8String4 = [(__CFString *)g2p_version UTF8String];
+  v25 = strlen(uTF8String4);
+  v58 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v25);
 
-  v26 = [(QSSGraphemeToPhonemeResponse *)self g2p_model_version];
-  v27 = v26;
-  if (!v26)
+  g2p_model_version = [(QSSGraphemeToPhonemeResponse *)self g2p_model_version];
+  v27 = g2p_model_version;
+  if (!g2p_model_version)
   {
-    v26 = &stru_2879AE8E0;
+    g2p_model_version = &stru_2879AE8E0;
   }
 
-  v28 = [(__CFString *)v26 UTF8String];
-  v29 = strlen(v28);
-  v57 = flatbuffers::FlatBufferBuilder::CreateString(a3, v28, v29);
+  uTF8String5 = [(__CFString *)g2p_model_version UTF8String];
+  v29 = strlen(uTF8String5);
+  v57 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String5, v29);
 
-  v30 = [(QSSGraphemeToPhonemeResponse *)self phoneset_version];
-  v31 = v30;
-  if (!v30)
+  phoneset_version = [(QSSGraphemeToPhonemeResponse *)self phoneset_version];
+  v31 = phoneset_version;
+  if (!phoneset_version)
   {
-    v30 = &stru_2879AE8E0;
+    phoneset_version = &stru_2879AE8E0;
   }
 
-  v32 = [(__CFString *)v30 UTF8String];
-  v33 = strlen(v32);
-  v56 = flatbuffers::FlatBufferBuilder::CreateString(a3, v32, v33);
+  uTF8String6 = [(__CFString *)phoneset_version UTF8String];
+  v33 = strlen(uTF8String6);
+  v56 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String6, v33);
 
   memset(&v74, 0, sizeof(v74));
-  v34 = [(QSSGraphemeToPhonemeResponse *)self aot_token_prons];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v74, [v34 count]);
+  aot_token_prons = [(QSSGraphemeToPhonemeResponse *)self aot_token_prons];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v74, [aot_token_prons count]);
 
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v35 = [(QSSGraphemeToPhonemeResponse *)self aot_token_prons];
-  v36 = [v35 countByEnumeratingWithState:&v70 objects:v81 count:16];
+  aot_token_prons2 = [(QSSGraphemeToPhonemeResponse *)self aot_token_prons];
+  v36 = [aot_token_prons2 countByEnumeratingWithState:&v70 objects:v81 count:16];
   if (v36)
   {
     v37 = *v71;
@@ -170,14 +170,14 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
       {
         if (*v71 != v37)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(aot_token_prons2);
         }
 
-        LODWORD(v69.__begin_) = [*(*(&v70 + 1) + 8 * j) addObjectToBuffer:a3];
+        LODWORD(v69.__begin_) = [*(*(&v70 + 1) + 8 * j) addObjectToBuffer:buffer];
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v74, &v69);
       }
 
-      v36 = [v35 countByEnumeratingWithState:&v70 objects:v81 count:16];
+      v36 = [aot_token_prons2 countByEnumeratingWithState:&v70 objects:v81 count:16];
     }
 
     while (v36);
@@ -194,17 +194,17 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
     v40 = v74.__begin_;
   }
 
-  v41 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(a3, v40, v74.__end_ - v74.__begin_);
+  v41 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(buffer, v40, v74.__end_ - v74.__begin_);
   memset(&v69, 0, sizeof(v69));
-  v42 = [(QSSGraphemeToPhonemeResponse *)self jit_token_prons];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v69, [v42 count]);
+  jit_token_prons = [(QSSGraphemeToPhonemeResponse *)self jit_token_prons];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v69, [jit_token_prons count]);
 
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v43 = [(QSSGraphemeToPhonemeResponse *)self jit_token_prons];
-  v44 = [v43 countByEnumeratingWithState:&v65 objects:v80 count:16];
+  jit_token_prons2 = [(QSSGraphemeToPhonemeResponse *)self jit_token_prons];
+  v44 = [jit_token_prons2 countByEnumeratingWithState:&v65 objects:v80 count:16];
   if (v44)
   {
     v45 = *v66;
@@ -214,14 +214,14 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
       {
         if (*v66 != v45)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(jit_token_prons2);
         }
 
-        v64 = [*(*(&v65 + 1) + 8 * k) addObjectToBuffer:a3];
+        v64 = [*(*(&v65 + 1) + 8 * k) addObjectToBuffer:buffer];
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v69, &v64);
       }
 
-      v44 = [v43 countByEnumeratingWithState:&v65 objects:v80 count:16];
+      v44 = [jit_token_prons2 countByEnumeratingWithState:&v65 objects:v80 count:16];
     }
 
     while (v44);
@@ -238,23 +238,23 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
     v48 = v69.__begin_;
   }
 
-  v49 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(a3, v48, v69.__end_ - v69.__begin_);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v50 = *(a3 + 8);
-  v51 = *(a3 + 12);
-  v52 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v62);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v61);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v60);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 12, v59);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 14, v58);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 16, v57);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 18, v56);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 20, v41);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 22, v49);
-  v53.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v50 - v51 + v52);
+  v49 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(buffer, v48, v69.__end_ - v69.__begin_);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v50 = *(buffer + 8);
+  v51 = *(buffer + 12);
+  v52 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, return_code);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, v61);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, v60);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 12, is_pron_guessed);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 14, v58);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 16, v57);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 18, v56);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 20, v41);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 22, v49);
+  v53.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v50 - v51 + v52);
   if (v47)
   {
     operator delete(v47);
@@ -276,10 +276,10 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
 
 - (NSArray)jit_token_prons
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"jit_token_prons"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"jit_token_prons"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0x17u)
@@ -296,7 +296,7 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
           do
           {
             v11 = [[QSSTokenProns alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -307,18 +307,18 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"jit_token_prons"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"jit_token_prons"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)aot_token_prons
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"aot_token_prons"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"aot_token_prons"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0x15u)
@@ -335,7 +335,7 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
           do
           {
             v11 = [[QSSTokenProns alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -346,10 +346,10 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"aot_token_prons"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"aot_token_prons"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)phoneset_version
@@ -430,10 +430,10 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
 
 - (NSArray)phonemes
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"phonemes"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"phonemes"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xBu)
@@ -450,7 +450,7 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
           do
           {
             v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&v10[*v10->var0 + 4] length:*v10[*v10->var0].var0 encoding:4];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -461,10 +461,10 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"phonemes"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"phonemes"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)return_str
@@ -528,10 +528,10 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
   return v6;
 }
 
-- (QSSGraphemeToPhonemeResponse)initWithFlatbuffData:(id)a3 root:(const GraphemeToPhonemeResponse *)a4 verify:(BOOL)a5
+- (QSSGraphemeToPhonemeResponse)initWithFlatbuffData:(id)data root:(const GraphemeToPhonemeResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v53.receiver = self;
   v53.super_class = QSSGraphemeToPhonemeResponse;
   v10 = [(QSSGraphemeToPhonemeResponse *)&v53 init];
@@ -541,35 +541,35 @@ flatbuffers::DetachedBuffer *__44__QSSGraphemeToPhonemeResponse_flatbuffData__bl
     goto LABEL_81;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_82;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_80;
   }
 
-  v13 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v14 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v13 || root > v13 + v14)
+  if (root < bytes2 || root > bytes2 + v14)
   {
     goto LABEL_82;
   }
 
-  v17 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v18 = [(NSData *)v10->_data length];
-  v48 = v17;
+  v48 = bytes3;
   v49 = v18;
   v50 = xmmword_26914CD70;
   v51 = 0;
@@ -789,9 +789,9 @@ LABEL_79:
   }
 
 LABEL_80:
-  v44 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v44;
+  v11->_storage = dictionary;
 
 LABEL_81:
   v46 = v11;

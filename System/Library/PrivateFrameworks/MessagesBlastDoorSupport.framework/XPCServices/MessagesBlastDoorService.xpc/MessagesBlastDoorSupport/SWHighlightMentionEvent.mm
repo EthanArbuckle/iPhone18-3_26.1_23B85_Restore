@@ -1,18 +1,18 @@
 @interface SWHighlightMentionEvent
-- (id)__bdInitWithHighlightURL:(id)a3 mentionedPersonHandle:(id)a4 mentionedPersonIdentity:(id)a5;
+- (id)__bdInitWithHighlightURL:(id)l mentionedPersonHandle:(id)handle mentionedPersonIdentity:(id)identity;
 - (id)__bdSWMentionedPersonIdentity;
 @end
 
 @implementation SWHighlightMentionEvent
 
-- (id)__bdInitWithHighlightURL:(id)a3 mentionedPersonHandle:(id)a4 mentionedPersonIdentity:(id)a5
+- (id)__bdInitWithHighlightURL:(id)l mentionedPersonHandle:(id)handle mentionedPersonIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  handleCopy = handle;
+  identityCopy = identity;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(SWHighlightMentionEvent *)self initWithHighlightURL:v8 mentionedPersonHandle:v9 mentionedPersonIdentity:v10];
+    v11 = [(SWHighlightMentionEvent *)self initWithHighlightURL:lCopy mentionedPersonHandle:handleCopy mentionedPersonIdentity:identityCopy];
 LABEL_5:
     v12 = v11;
     goto LABEL_9;
@@ -20,7 +20,7 @@ LABEL_5:
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(SWHighlightMentionEvent *)self initWithHighlightURL:v8 mentionedPersonHandle:v9];
+    v11 = [(SWHighlightMentionEvent *)self initWithHighlightURL:lCopy mentionedPersonHandle:handleCopy];
     goto LABEL_5;
   }
 
@@ -40,15 +40,15 @@ LABEL_9:
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SWHighlightMentionEvent *)self mentionedPersonIdentity];
+    mentionedPersonIdentity = [(SWHighlightMentionEvent *)self mentionedPersonIdentity];
   }
 
   else
   {
-    v3 = 0;
+    mentionedPersonIdentity = 0;
   }
 
-  return v3;
+  return mentionedPersonIdentity;
 }
 
 @end

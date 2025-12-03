@@ -1,13 +1,13 @@
 @interface VLFSessionTaskUserState
-- (void)setOriginalUserTrackingBehavior:(id *)a3;
+- (void)setOriginalUserTrackingBehavior:(id *)behavior;
 @end
 
 @implementation VLFSessionTaskUserState
 
-- (void)setOriginalUserTrackingBehavior:(id *)a3
+- (void)setOriginalUserTrackingBehavior:(id *)behavior
 {
-  v3 = *&a3->var0;
-  *&self->_originalUserTrackingBehavior.shouldPreserveUserSpecifiedZoomLevel = *&a3->var2;
+  v3 = *&behavior->var0;
+  *&self->_originalUserTrackingBehavior.shouldPreserveUserSpecifiedZoomLevel = *&behavior->var2;
   *&self->_originalUserTrackingBehavior.shouldZoomToFit = v3;
 }
 

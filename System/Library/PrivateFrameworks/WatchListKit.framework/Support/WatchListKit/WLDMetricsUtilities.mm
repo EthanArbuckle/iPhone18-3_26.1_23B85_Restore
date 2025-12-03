@@ -1,37 +1,37 @@
 @interface WLDMetricsUtilities
-+ (void)sendMetricsEvents:(id)a3 metricsController:(id)a4;
++ (void)sendMetricsEvents:(id)events metricsController:(id)controller;
 @end
 
 @implementation WLDMetricsUtilities
 
-+ (void)sendMetricsEvents:(id)a3 metricsController:(id)a4
++ (void)sendMetricsEvents:(id)events metricsController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  controllerCopy = controller;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__0;
   v15 = __Block_byref_object_dispose__0;
   v16 = [[WLKTransactionScope alloc] initWithIdentifier:@"WLDMetricsUtilities.sendMetricsEvents"];
-  if ([v5 count])
+  if ([eventsCopy count])
   {
     v7 = WLKSystemLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v5;
+      v18 = eventsCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "WLDMetricsUtilities - Will send events: %@", buf, 0xCu);
     }
 
-    [v6 enqueueEvents:v5];
-    v8 = [v6 flush];
+    [controllerCopy enqueueEvents:eventsCopy];
+    flush = [controllerCopy flush];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = __59__WLDMetricsUtilities_sendMetricsEvents_metricsController___block_invoke;
     v10[3] = &unk_100045128;
     v10[4] = &v11;
-    [v8 addFinishBlock:v10];
+    [flush addFinishBlock:v10];
   }
 
   else
@@ -43,7 +43,7 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "WLDMetricsUtilities - No metrics to report.", buf, 2u);
     }
 
-    v8 = v12[5];
+    flush = v12[5];
     v12[5] = 0;
   }
 

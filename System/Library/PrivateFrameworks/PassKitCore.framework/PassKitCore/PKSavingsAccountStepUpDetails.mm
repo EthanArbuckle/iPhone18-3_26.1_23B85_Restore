@@ -1,51 +1,51 @@
 @interface PKSavingsAccountStepUpDetails
-- (BOOL)isEqual:(id)a3;
-- (PKSavingsAccountStepUpDetails)initWithCoder:(id)a3;
-- (PKSavingsAccountStepUpDetails)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKSavingsAccountStepUpDetails)initWithCoder:(id)coder;
+- (PKSavingsAccountStepUpDetails)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSavingsAccountStepUpDetails
 
-- (PKSavingsAccountStepUpDetails)initWithDictionary:(id)a3
+- (PKSavingsAccountStepUpDetails)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v10.receiver = self;
     v10.super_class = PKSavingsAccountStepUpDetails;
     v5 = [(PKSavingsAccountStepUpDetails *)&v10 init];
     if (v5)
     {
-      v5->_thresholdExceeded = [v4 PKBoolForKey:@"thresholdExceeded"];
-      v6 = [v4 PKDateForKey:@"neededBy"];
+      v5->_thresholdExceeded = [dictionaryCopy PKBoolForKey:@"thresholdExceeded"];
+      v6 = [dictionaryCopy PKDateForKey:@"neededBy"];
       neededBy = v5->_neededBy;
       v5->_neededBy = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PKSavingsAccountStepUpDetails)initWithCoder:(id)a3
+- (PKSavingsAccountStepUpDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSavingsAccountStepUpDetails *)self init];
   if (v5)
   {
-    v5->_thresholdExceeded = [v4 decodeBoolForKey:@"thresholdExceeded"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"neededBy"];
+    v5->_thresholdExceeded = [coderCopy decodeBoolForKey:@"thresholdExceeded"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"neededBy"];
     neededBy = v5->_neededBy;
     v5->_neededBy = v6;
   }
@@ -53,22 +53,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   thresholdExceeded = self->_thresholdExceeded;
-  v5 = a3;
-  [v5 encodeBool:thresholdExceeded forKey:@"thresholdExceeded"];
-  [v5 encodeObject:self->_neededBy forKey:@"neededBy"];
+  coderCopy = coder;
+  [coderCopy encodeBool:thresholdExceeded forKey:@"thresholdExceeded"];
+  [coderCopy encodeObject:self->_neededBy forKey:@"neededBy"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_thresholdExceeded == *(v4 + 8))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_thresholdExceeded == *(equalCopy + 8))
   {
     neededBy = self->_neededBy;
-    v6 = v4[2];
+    v6 = equalCopy[2];
     if (neededBy && v6)
     {
       v7 = [(NSDate *)neededBy isEqual:?];
@@ -121,7 +121,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKSavingsAccountStepUpDetails allocWithZone:?]];
   v4->_thresholdExceeded = self->_thresholdExceeded;

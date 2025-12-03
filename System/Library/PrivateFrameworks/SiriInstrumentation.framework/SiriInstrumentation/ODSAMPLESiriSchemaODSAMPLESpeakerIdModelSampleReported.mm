@@ -1,40 +1,40 @@
 @interface ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported)initWithDictionary:(id)a3;
-- (ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported)initWithDictionary:(id)dictionary;
+- (ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAsrTask:(BOOL)a3;
-- (void)setHasAudioCodec:(BOOL)a3;
-- (void)setHasAudioSkippedNumSamples:(BOOL)a3;
-- (void)setHasAudioSource:(BOOL)a3;
-- (void)setHasInvocationSource:(BOOL)a3;
-- (void)setHasIsDeviceHandHeld:(BOOL)a3;
-- (void)setHasIsMediaPlaying:(BOOL)a3;
-- (void)setHasIsPersonalRequest:(BOOL)a3;
-- (void)setHasIsPersonalizedRequest:(BOOL)a3;
-- (void)setHasIsWakeFromSleep:(BOOL)a3;
-- (void)setHasMotionActivity:(BOOL)a3;
-- (void)setHasOrchCancelledReason:(BOOL)a3;
-- (void)setHasStartDatestampInDaysSince1970:(BOOL)a3;
-- (void)setHasTriggerPhrase:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAsrTask:(BOOL)task;
+- (void)setHasAudioCodec:(BOOL)codec;
+- (void)setHasAudioSkippedNumSamples:(BOOL)samples;
+- (void)setHasAudioSource:(BOOL)source;
+- (void)setHasInvocationSource:(BOOL)source;
+- (void)setHasIsDeviceHandHeld:(BOOL)held;
+- (void)setHasIsMediaPlaying:(BOOL)playing;
+- (void)setHasIsPersonalRequest:(BOOL)request;
+- (void)setHasIsPersonalizedRequest:(BOOL)request;
+- (void)setHasIsWakeFromSleep:(BOOL)sleep;
+- (void)setHasMotionActivity:(BOOL)activity;
+- (void)setHasOrchCancelledReason:(BOOL)reason;
+- (void)setHasStartDatestampInDaysSince1970:(BOOL)since1970;
+- (void)setHasTriggerPhrase:(BOOL)phrase;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported
 
-- (ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported)initWithDictionary:(id)a3
+- (ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v64.receiver = self;
   v64.super_class = ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported;
   v5 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)&v64 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isEnrollmentSample"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isEnrollmentSample"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
     }
 
     v52 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"startDatestampInDaysSince1970"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"startDatestampInDaysSince1970"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
     }
 
     v51 = v7;
-    v8 = [v4 objectForKeyedSubscript:@"deviceType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
       [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)v5 setDeviceType:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"systemBuild"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"systemBuild"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)v5 setSystemBuild:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"audioInterfaceVendorId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"audioInterfaceVendorId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)v5 setAudioInterfaceVendorId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"firstPartyAudioInterfaceProductId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"firstPartyAudioInterfaceProductId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
       [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)v5 setFirstPartyAudioInterfaceProductId:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"siriInputLocale"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"siriInputLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)v5 setSiriInputLocale:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"invocationSource"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"invocationSource"];
     objc_opt_class();
     v63 = v18;
     if (objc_opt_isKindOfClass())
@@ -98,7 +98,7 @@
       -[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported setInvocationSource:](v5, "setInvocationSource:", [v18 intValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"motionActivity"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"motionActivity"];
     objc_opt_class();
     v62 = v19;
     if (objc_opt_isKindOfClass())
@@ -106,7 +106,7 @@
       -[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported setMotionActivity:](v5, "setMotionActivity:", [v19 intValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"isWakeFromSleep"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isWakeFromSleep"];
     objc_opt_class();
     v61 = v20;
     if (objc_opt_isKindOfClass())
@@ -114,7 +114,7 @@
       -[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported setIsWakeFromSleep:](v5, "setIsWakeFromSleep:", [v20 BOOLValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"isMediaPlaying"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"isMediaPlaying"];
     objc_opt_class();
     v60 = v21;
     if (objc_opt_isKindOfClass())
@@ -122,7 +122,7 @@
       -[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported setIsMediaPlaying:](v5, "setIsMediaPlaying:", [v21 BOOLValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"isDeviceHandHeld"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"isDeviceHandHeld"];
     objc_opt_class();
     v59 = v22;
     if (objc_opt_isKindOfClass())
@@ -130,7 +130,7 @@
       -[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported setIsDeviceHandHeld:](v5, "setIsDeviceHandHeld:", [v22 BOOLValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"audioCodec"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"audioCodec"];
     objc_opt_class();
     v58 = v23;
     if (objc_opt_isKindOfClass())
@@ -138,7 +138,7 @@
       -[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported setAudioCodec:](v5, "setAudioCodec:", [v23 intValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"audioSource"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"audioSource"];
     objc_opt_class();
     v57 = v24;
     if (objc_opt_isKindOfClass())
@@ -146,7 +146,7 @@
       -[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported setAudioSource:](v5, "setAudioSource:", [v24 intValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"asrTask"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"asrTask"];
     objc_opt_class();
     v56 = v25;
     if (objc_opt_isKindOfClass())
@@ -154,7 +154,7 @@
       -[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported setAsrTask:](v5, "setAsrTask:", [v25 intValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"audioSkippedNumSamples"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"audioSkippedNumSamples"];
     objc_opt_class();
     v55 = v26;
     if (objc_opt_isKindOfClass())
@@ -162,7 +162,7 @@
       -[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported setAudioSkippedNumSamples:](v5, "setAudioSkippedNumSamples:", [v26 unsignedLongLongValue]);
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"preItn1Best"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"preItn1Best"];
     objc_opt_class();
     v54 = v27;
     if (objc_opt_isKindOfClass())
@@ -171,7 +171,7 @@
       [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)v5 setPreItn1Best:v28];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"subDomain"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"subDomain"];
     objc_opt_class();
     v53 = v29;
     if (objc_opt_isKindOfClass())
@@ -181,7 +181,7 @@
     }
 
     v50 = v8;
-    v31 = [v4 objectForKeyedSubscript:@"isPersonalRequest"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"isPersonalRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -189,7 +189,7 @@
     }
 
     v49 = v10;
-    v32 = [v4 objectForKeyedSubscript:{@"isPersonalizedRequest", v31}];
+    v32 = [dictionaryCopy objectForKeyedSubscript:{@"isPersonalizedRequest", v31}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -197,7 +197,7 @@
     }
 
     v48 = v12;
-    v33 = [v4 objectForKeyedSubscript:@"responseId"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"responseId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -206,7 +206,7 @@
     }
 
     v47 = v14;
-    v35 = [v4 objectForKeyedSubscript:@"orchCancelledReason"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"orchCancelledReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -214,7 +214,7 @@
     }
 
     v46 = v16;
-    v36 = [v4 objectForKeyedSubscript:@"audioId"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"audioId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -222,14 +222,14 @@
       [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)v5 setAudioId:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"triggerPhrase"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"triggerPhrase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported setTriggerPhrase:](v5, "setTriggerPhrase:", [v38 intValue]);
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"location"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"location"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -237,7 +237,7 @@
       [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)v5 setLocation:v40];
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"postItn1Best"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"postItn1Best"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -251,30 +251,30 @@
   return v5;
 }
 
-- (ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported)initWithJSON:(id)a3
+- (ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -287,7 +287,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -302,7 +302,7 @@
       v6 = off_1E78DE1B0[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"asrTask"];
+    [dictionary setObject:v6 forKeyedSubscript:@"asrTask"];
     has = self->_has;
   }
 
@@ -319,37 +319,37 @@
       v8 = off_1E78DE1F0[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"audioCodec"];
+    [dictionary setObject:v8 forKeyedSubscript:@"audioCodec"];
   }
 
   if (self->_audioId)
   {
-    v9 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    audioId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
+    dictionaryRepresentation = [audioId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"audioId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"audioId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"audioId"];
     }
   }
 
   if (self->_audioInterfaceVendorId)
   {
-    v12 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioInterfaceVendorId];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"audioInterfaceVendorId"];
+    audioInterfaceVendorId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioInterfaceVendorId];
+    v13 = [audioInterfaceVendorId copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"audioInterfaceVendorId"];
   }
 
   v14 = self->_has;
   if ((v14 & 0x400) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported audioSkippedNumSamples](self, "audioSkippedNumSamples")}];
-    [v3 setObject:v15 forKeyedSubscript:@"audioSkippedNumSamples"];
+    [dictionary setObject:v15 forKeyedSubscript:@"audioSkippedNumSamples"];
 
     v14 = self->_has;
   }
@@ -367,21 +367,21 @@
       v17 = off_1E78DE248[v16];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"audioSource"];
+    [dictionary setObject:v17 forKeyedSubscript:@"audioSource"];
   }
 
   if (self->_deviceType)
   {
-    v18 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deviceType];
-    v19 = [v18 copy];
-    [v3 setObject:v19 forKeyedSubscript:@"deviceType"];
+    deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deviceType];
+    v19 = [deviceType copy];
+    [dictionary setObject:v19 forKeyedSubscript:@"deviceType"];
   }
 
   if (self->_firstPartyAudioInterfaceProductId)
   {
-    v20 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self firstPartyAudioInterfaceProductId];
-    v21 = [v20 copy];
-    [v3 setObject:v21 forKeyedSubscript:@"firstPartyAudioInterfaceProductId"];
+    firstPartyAudioInterfaceProductId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self firstPartyAudioInterfaceProductId];
+    v21 = [firstPartyAudioInterfaceProductId copy];
+    [dictionary setObject:v21 forKeyedSubscript:@"firstPartyAudioInterfaceProductId"];
   }
 
   v22 = self->_has;
@@ -398,7 +398,7 @@
       v27 = off_1E78DE288[v26];
     }
 
-    [v3 setObject:v27 forKeyedSubscript:@"invocationSource"];
+    [dictionary setObject:v27 forKeyedSubscript:@"invocationSource"];
     v22 = self->_has;
     if ((v22 & 0x40) == 0)
     {
@@ -418,7 +418,7 @@ LABEL_31:
   }
 
   v28 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported isDeviceHandHeld](self, "isDeviceHandHeld")}];
-  [v3 setObject:v28 forKeyedSubscript:@"isDeviceHandHeld"];
+  [dictionary setObject:v28 forKeyedSubscript:@"isDeviceHandHeld"];
 
   v22 = self->_has;
   if ((v22 & 1) == 0)
@@ -434,7 +434,7 @@ LABEL_32:
 
 LABEL_45:
   v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported isEnrollmentSample](self, "isEnrollmentSample")}];
-  [v3 setObject:v29 forKeyedSubscript:@"isEnrollmentSample"];
+  [dictionary setObject:v29 forKeyedSubscript:@"isEnrollmentSample"];
 
   v22 = self->_has;
   if ((v22 & 0x20) == 0)
@@ -450,7 +450,7 @@ LABEL_33:
 
 LABEL_46:
   v30 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported isMediaPlaying](self, "isMediaPlaying")}];
-  [v3 setObject:v30 forKeyedSubscript:@"isMediaPlaying"];
+  [dictionary setObject:v30 forKeyedSubscript:@"isMediaPlaying"];
 
   v22 = self->_has;
   if ((v22 & 0x800) == 0)
@@ -466,7 +466,7 @@ LABEL_34:
 
 LABEL_47:
   v31 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported isPersonalRequest](self, "isPersonalRequest")}];
-  [v3 setObject:v31 forKeyedSubscript:@"isPersonalRequest"];
+  [dictionary setObject:v31 forKeyedSubscript:@"isPersonalRequest"];
 
   v22 = self->_has;
   if ((v22 & 0x1000) == 0)
@@ -482,29 +482,29 @@ LABEL_35:
 
 LABEL_48:
   v32 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported isPersonalizedRequest](self, "isPersonalizedRequest")}];
-  [v3 setObject:v32 forKeyedSubscript:@"isPersonalizedRequest"];
+  [dictionary setObject:v32 forKeyedSubscript:@"isPersonalizedRequest"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_36:
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported isWakeFromSleep](self, "isWakeFromSleep")}];
-    [v3 setObject:v23 forKeyedSubscript:@"isWakeFromSleep"];
+    [dictionary setObject:v23 forKeyedSubscript:@"isWakeFromSleep"];
   }
 
 LABEL_37:
   if (self->_location)
   {
-    v24 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
-    v25 = [v24 dictionaryRepresentation];
-    if (v25)
+    location = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
+    dictionaryRepresentation2 = [location dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v25 forKeyedSubscript:@"location"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"location"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"location"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"location"];
     }
   }
 
@@ -522,20 +522,20 @@ LABEL_37:
       v36 = off_1E78DE5C0[v35];
     }
 
-    [v3 setObject:v36 forKeyedSubscript:@"motionActivity"];
+    [dictionary setObject:v36 forKeyedSubscript:@"motionActivity"];
     v34 = self->_has;
   }
 
   if ((v34 & 0x2000) != 0)
   {
-    v37 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self orchCancelledReason];
+    orchCancelledReason = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self orchCancelledReason];
     v38 = @"ORCHREQUESTCANCELLATIONREASON_UNKNOWN";
-    if (v37 == 1)
+    if (orchCancelledReason == 1)
     {
       v38 = @"ORCHREQUESTCANCELLATIONREASON_MITIGATED";
     }
 
-    if (v37 == 2)
+    if (orchCancelledReason == 2)
     {
       v39 = @"ORCHREQUESTCANCELLATIONREASON_CANCEL_COMMAND";
     }
@@ -545,76 +545,76 @@ LABEL_37:
       v39 = v38;
     }
 
-    [v3 setObject:v39 forKeyedSubscript:@"orchCancelledReason"];
+    [dictionary setObject:v39 forKeyedSubscript:@"orchCancelledReason"];
   }
 
   if (self->_postItn1Best)
   {
-    v40 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self postItn1Best];
-    v41 = [v40 copy];
-    [v3 setObject:v41 forKeyedSubscript:@"postItn1Best"];
+    postItn1Best = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self postItn1Best];
+    v41 = [postItn1Best copy];
+    [dictionary setObject:v41 forKeyedSubscript:@"postItn1Best"];
   }
 
   if (self->_preItn1Best)
   {
-    v42 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self preItn1Best];
-    v43 = [v42 copy];
-    [v3 setObject:v43 forKeyedSubscript:@"preItn1Best"];
+    preItn1Best = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self preItn1Best];
+    v43 = [preItn1Best copy];
+    [dictionary setObject:v43 forKeyedSubscript:@"preItn1Best"];
   }
 
   if (self->_responseId)
   {
-    v44 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self responseId];
-    v45 = [v44 copy];
-    [v3 setObject:v45 forKeyedSubscript:@"responseId"];
+    responseId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self responseId];
+    v45 = [responseId copy];
+    [dictionary setObject:v45 forKeyedSubscript:@"responseId"];
   }
 
   if (self->_siriInputLocale)
   {
-    v46 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    siriInputLocale = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
+    dictionaryRepresentation3 = [siriInputLocale dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"siriInputLocale"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"siriInputLocale"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"siriInputLocale"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"siriInputLocale"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v49 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported startDatestampInDaysSince1970](self, "startDatestampInDaysSince1970")}];
-    [v3 setObject:v49 forKeyedSubscript:@"startDatestampInDaysSince1970"];
+    [dictionary setObject:v49 forKeyedSubscript:@"startDatestampInDaysSince1970"];
   }
 
   if (self->_subDomain)
   {
-    v50 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self subDomain];
-    v51 = [v50 copy];
-    [v3 setObject:v51 forKeyedSubscript:@"subDomain"];
+    subDomain = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self subDomain];
+    v51 = [subDomain copy];
+    [dictionary setObject:v51 forKeyedSubscript:@"subDomain"];
   }
 
   if (self->_systemBuild)
   {
-    v52 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self systemBuild];
-    v53 = [v52 copy];
-    [v3 setObject:v53 forKeyedSubscript:@"systemBuild"];
+    systemBuild = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self systemBuild];
+    v53 = [systemBuild copy];
+    [dictionary setObject:v53 forKeyedSubscript:@"systemBuild"];
   }
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    v54 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self triggerPhrase];
+    triggerPhrase = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self triggerPhrase];
     v55 = @"TRIGGERPHRASE_UNKNOWN";
-    if (v54 == 1)
+    if (triggerPhrase == 1)
     {
       v55 = @"TRIGGERPHRASE_HEY_SIRI";
     }
 
-    if (v54 == 2)
+    if (triggerPhrase == 2)
     {
       v56 = @"TRIGGERPHRASE_SIRI";
     }
@@ -624,13 +624,13 @@ LABEL_37:
       v56 = v55;
     }
 
-    [v3 setObject:v56 forKeyedSubscript:@"triggerPhrase"];
+    [dictionary setObject:v56 forKeyedSubscript:@"triggerPhrase"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v57 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v57 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -835,16 +835,16 @@ LABEL_30:
   return v14 ^ v15 ^ [(NSString *)self->_postItn1Best hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_112;
   }
 
   has = self->_has;
-  v6 = v4[84];
+  v6 = equalCopy[84];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_112;
@@ -853,13 +853,13 @@ LABEL_30:
   if (*&has)
   {
     isEnrollmentSample = self->_isEnrollmentSample;
-    if (isEnrollmentSample != [v4 isEnrollmentSample])
+    if (isEnrollmentSample != [equalCopy isEnrollmentSample])
     {
       goto LABEL_112;
     }
 
     has = self->_has;
-    v6 = v4[84];
+    v6 = equalCopy[84];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -871,26 +871,26 @@ LABEL_30:
   if (v8)
   {
     startDatestampInDaysSince1970 = self->_startDatestampInDaysSince1970;
-    if (startDatestampInDaysSince1970 != [v4 startDatestampInDaysSince1970])
+    if (startDatestampInDaysSince1970 != [equalCopy startDatestampInDaysSince1970])
     {
       goto LABEL_112;
     }
   }
 
-  v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deviceType];
-  v11 = [v4 deviceType];
-  if ((v10 != 0) == (v11 == 0))
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deviceType];
+  deviceType2 = [equalCopy deviceType];
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
     goto LABEL_111;
   }
 
-  v12 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deviceType];
-  if (v12)
+  deviceType3 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deviceType];
+  if (deviceType3)
   {
-    v13 = v12;
-    v14 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deviceType];
-    v15 = [v4 deviceType];
-    v16 = [v14 isEqual:v15];
+    v13 = deviceType3;
+    deviceType4 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deviceType];
+    deviceType5 = [equalCopy deviceType];
+    v16 = [deviceType4 isEqual:deviceType5];
 
     if (!v16)
     {
@@ -902,20 +902,20 @@ LABEL_30:
   {
   }
 
-  v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self systemBuild];
-  v11 = [v4 systemBuild];
-  if ((v10 != 0) == (v11 == 0))
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self systemBuild];
+  deviceType2 = [equalCopy systemBuild];
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
     goto LABEL_111;
   }
 
-  v17 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self systemBuild];
-  if (v17)
+  systemBuild = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self systemBuild];
+  if (systemBuild)
   {
-    v18 = v17;
-    v19 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self systemBuild];
-    v20 = [v4 systemBuild];
-    v21 = [v19 isEqual:v20];
+    v18 = systemBuild;
+    systemBuild2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self systemBuild];
+    systemBuild3 = [equalCopy systemBuild];
+    v21 = [systemBuild2 isEqual:systemBuild3];
 
     if (!v21)
     {
@@ -927,20 +927,20 @@ LABEL_30:
   {
   }
 
-  v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioInterfaceVendorId];
-  v11 = [v4 audioInterfaceVendorId];
-  if ((v10 != 0) == (v11 == 0))
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioInterfaceVendorId];
+  deviceType2 = [equalCopy audioInterfaceVendorId];
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
     goto LABEL_111;
   }
 
-  v22 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioInterfaceVendorId];
-  if (v22)
+  audioInterfaceVendorId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioInterfaceVendorId];
+  if (audioInterfaceVendorId)
   {
-    v23 = v22;
-    v24 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioInterfaceVendorId];
-    v25 = [v4 audioInterfaceVendorId];
-    v26 = [v24 isEqual:v25];
+    v23 = audioInterfaceVendorId;
+    audioInterfaceVendorId2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioInterfaceVendorId];
+    audioInterfaceVendorId3 = [equalCopy audioInterfaceVendorId];
+    v26 = [audioInterfaceVendorId2 isEqual:audioInterfaceVendorId3];
 
     if (!v26)
     {
@@ -952,20 +952,20 @@ LABEL_30:
   {
   }
 
-  v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self firstPartyAudioInterfaceProductId];
-  v11 = [v4 firstPartyAudioInterfaceProductId];
-  if ((v10 != 0) == (v11 == 0))
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self firstPartyAudioInterfaceProductId];
+  deviceType2 = [equalCopy firstPartyAudioInterfaceProductId];
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
     goto LABEL_111;
   }
 
-  v27 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self firstPartyAudioInterfaceProductId];
-  if (v27)
+  firstPartyAudioInterfaceProductId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self firstPartyAudioInterfaceProductId];
+  if (firstPartyAudioInterfaceProductId)
   {
-    v28 = v27;
-    v29 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self firstPartyAudioInterfaceProductId];
-    v30 = [v4 firstPartyAudioInterfaceProductId];
-    v31 = [v29 isEqual:v30];
+    v28 = firstPartyAudioInterfaceProductId;
+    firstPartyAudioInterfaceProductId2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self firstPartyAudioInterfaceProductId];
+    firstPartyAudioInterfaceProductId3 = [equalCopy firstPartyAudioInterfaceProductId];
+    v31 = [firstPartyAudioInterfaceProductId2 isEqual:firstPartyAudioInterfaceProductId3];
 
     if (!v31)
     {
@@ -977,20 +977,20 @@ LABEL_30:
   {
   }
 
-  v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
-  v11 = [v4 siriInputLocale];
-  if ((v10 != 0) == (v11 == 0))
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
+  deviceType2 = [equalCopy siriInputLocale];
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
     goto LABEL_111;
   }
 
-  v32 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
-  if (v32)
+  siriInputLocale = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
+  if (siriInputLocale)
   {
-    v33 = v32;
-    v34 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
-    v35 = [v4 siriInputLocale];
-    v36 = [v34 isEqual:v35];
+    v33 = siriInputLocale;
+    siriInputLocale2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
+    siriInputLocale3 = [equalCopy siriInputLocale];
+    v36 = [siriInputLocale2 isEqual:siriInputLocale3];
 
     if (!v36)
     {
@@ -1004,7 +1004,7 @@ LABEL_30:
 
   v37 = self->_has;
   v38 = (*&v37 >> 2) & 1;
-  v39 = v4[84];
+  v39 = equalCopy[84];
   if (v38 != ((v39 >> 2) & 1))
   {
     goto LABEL_112;
@@ -1013,13 +1013,13 @@ LABEL_30:
   if (v38)
   {
     invocationSource = self->_invocationSource;
-    if (invocationSource != [v4 invocationSource])
+    if (invocationSource != [equalCopy invocationSource])
     {
       goto LABEL_112;
     }
 
     v37 = self->_has;
-    v39 = v4[84];
+    v39 = equalCopy[84];
   }
 
   v41 = (*&v37 >> 3) & 1;
@@ -1031,13 +1031,13 @@ LABEL_30:
   if (v41)
   {
     motionActivity = self->_motionActivity;
-    if (motionActivity != [v4 motionActivity])
+    if (motionActivity != [equalCopy motionActivity])
     {
       goto LABEL_112;
     }
 
     v37 = self->_has;
-    v39 = v4[84];
+    v39 = equalCopy[84];
   }
 
   v43 = (*&v37 >> 4) & 1;
@@ -1049,13 +1049,13 @@ LABEL_30:
   if (v43)
   {
     isWakeFromSleep = self->_isWakeFromSleep;
-    if (isWakeFromSleep != [v4 isWakeFromSleep])
+    if (isWakeFromSleep != [equalCopy isWakeFromSleep])
     {
       goto LABEL_112;
     }
 
     v37 = self->_has;
-    v39 = v4[84];
+    v39 = equalCopy[84];
   }
 
   v45 = (*&v37 >> 5) & 1;
@@ -1067,13 +1067,13 @@ LABEL_30:
   if (v45)
   {
     isMediaPlaying = self->_isMediaPlaying;
-    if (isMediaPlaying != [v4 isMediaPlaying])
+    if (isMediaPlaying != [equalCopy isMediaPlaying])
     {
       goto LABEL_112;
     }
 
     v37 = self->_has;
-    v39 = v4[84];
+    v39 = equalCopy[84];
   }
 
   v47 = (*&v37 >> 6) & 1;
@@ -1085,13 +1085,13 @@ LABEL_30:
   if (v47)
   {
     isDeviceHandHeld = self->_isDeviceHandHeld;
-    if (isDeviceHandHeld != [v4 isDeviceHandHeld])
+    if (isDeviceHandHeld != [equalCopy isDeviceHandHeld])
     {
       goto LABEL_112;
     }
 
     v37 = self->_has;
-    v39 = v4[84];
+    v39 = equalCopy[84];
   }
 
   v49 = (*&v37 >> 7) & 1;
@@ -1103,13 +1103,13 @@ LABEL_30:
   if (v49)
   {
     audioCodec = self->_audioCodec;
-    if (audioCodec != [v4 audioCodec])
+    if (audioCodec != [equalCopy audioCodec])
     {
       goto LABEL_112;
     }
 
     v37 = self->_has;
-    v39 = v4[84];
+    v39 = equalCopy[84];
   }
 
   v51 = (*&v37 >> 8) & 1;
@@ -1121,13 +1121,13 @@ LABEL_30:
   if (v51)
   {
     audioSource = self->_audioSource;
-    if (audioSource != [v4 audioSource])
+    if (audioSource != [equalCopy audioSource])
     {
       goto LABEL_112;
     }
 
     v37 = self->_has;
-    v39 = v4[84];
+    v39 = equalCopy[84];
   }
 
   v53 = (*&v37 >> 9) & 1;
@@ -1139,13 +1139,13 @@ LABEL_30:
   if (v53)
   {
     asrTask = self->_asrTask;
-    if (asrTask != [v4 asrTask])
+    if (asrTask != [equalCopy asrTask])
     {
       goto LABEL_112;
     }
 
     v37 = self->_has;
-    v39 = v4[84];
+    v39 = equalCopy[84];
   }
 
   v55 = (*&v37 >> 10) & 1;
@@ -1157,26 +1157,26 @@ LABEL_30:
   if (v55)
   {
     audioSkippedNumSamples = self->_audioSkippedNumSamples;
-    if (audioSkippedNumSamples != [v4 audioSkippedNumSamples])
+    if (audioSkippedNumSamples != [equalCopy audioSkippedNumSamples])
     {
       goto LABEL_112;
     }
   }
 
-  v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self preItn1Best];
-  v11 = [v4 preItn1Best];
-  if ((v10 != 0) == (v11 == 0))
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self preItn1Best];
+  deviceType2 = [equalCopy preItn1Best];
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
     goto LABEL_111;
   }
 
-  v57 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self preItn1Best];
-  if (v57)
+  preItn1Best = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self preItn1Best];
+  if (preItn1Best)
   {
-    v58 = v57;
-    v59 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self preItn1Best];
-    v60 = [v4 preItn1Best];
-    v61 = [v59 isEqual:v60];
+    v58 = preItn1Best;
+    preItn1Best2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self preItn1Best];
+    preItn1Best3 = [equalCopy preItn1Best];
+    v61 = [preItn1Best2 isEqual:preItn1Best3];
 
     if (!v61)
     {
@@ -1188,20 +1188,20 @@ LABEL_30:
   {
   }
 
-  v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self subDomain];
-  v11 = [v4 subDomain];
-  if ((v10 != 0) == (v11 == 0))
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self subDomain];
+  deviceType2 = [equalCopy subDomain];
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
     goto LABEL_111;
   }
 
-  v62 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self subDomain];
-  if (v62)
+  subDomain = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self subDomain];
+  if (subDomain)
   {
-    v63 = v62;
-    v64 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self subDomain];
-    v65 = [v4 subDomain];
-    v66 = [v64 isEqual:v65];
+    v63 = subDomain;
+    subDomain2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self subDomain];
+    subDomain3 = [equalCopy subDomain];
+    v66 = [subDomain2 isEqual:subDomain3];
 
     if (!v66)
     {
@@ -1215,7 +1215,7 @@ LABEL_30:
 
   v67 = self->_has;
   v68 = (*&v67 >> 11) & 1;
-  v69 = v4[84];
+  v69 = equalCopy[84];
   if (v68 != ((v69 >> 11) & 1))
   {
     goto LABEL_112;
@@ -1224,13 +1224,13 @@ LABEL_30:
   if (v68)
   {
     isPersonalRequest = self->_isPersonalRequest;
-    if (isPersonalRequest != [v4 isPersonalRequest])
+    if (isPersonalRequest != [equalCopy isPersonalRequest])
     {
       goto LABEL_112;
     }
 
     v67 = self->_has;
-    v69 = v4[84];
+    v69 = equalCopy[84];
   }
 
   v71 = (*&v67 >> 12) & 1;
@@ -1242,26 +1242,26 @@ LABEL_30:
   if (v71)
   {
     isPersonalizedRequest = self->_isPersonalizedRequest;
-    if (isPersonalizedRequest != [v4 isPersonalizedRequest])
+    if (isPersonalizedRequest != [equalCopy isPersonalizedRequest])
     {
       goto LABEL_112;
     }
   }
 
-  v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self responseId];
-  v11 = [v4 responseId];
-  if ((v10 != 0) == (v11 == 0))
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self responseId];
+  deviceType2 = [equalCopy responseId];
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
     goto LABEL_111;
   }
 
-  v73 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self responseId];
-  if (v73)
+  responseId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self responseId];
+  if (responseId)
   {
-    v74 = v73;
-    v75 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self responseId];
-    v76 = [v4 responseId];
-    v77 = [v75 isEqual:v76];
+    v74 = responseId;
+    responseId2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self responseId];
+    responseId3 = [equalCopy responseId];
+    v77 = [responseId2 isEqual:responseId3];
 
     if (!v77)
     {
@@ -1274,7 +1274,7 @@ LABEL_30:
   }
 
   v78 = (*&self->_has >> 13) & 1;
-  if (v78 != ((v4[84] >> 13) & 1))
+  if (v78 != ((equalCopy[84] >> 13) & 1))
   {
     goto LABEL_112;
   }
@@ -1282,26 +1282,26 @@ LABEL_30:
   if (v78)
   {
     orchCancelledReason = self->_orchCancelledReason;
-    if (orchCancelledReason != [v4 orchCancelledReason])
+    if (orchCancelledReason != [equalCopy orchCancelledReason])
     {
       goto LABEL_112;
     }
   }
 
-  v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
-  v11 = [v4 audioId];
-  if ((v10 != 0) == (v11 == 0))
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
+  deviceType2 = [equalCopy audioId];
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
     goto LABEL_111;
   }
 
-  v80 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
-  if (v80)
+  audioId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
+  if (audioId)
   {
-    v81 = v80;
-    v82 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
-    v83 = [v4 audioId];
-    v84 = [v82 isEqual:v83];
+    v81 = audioId;
+    audioId2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
+    audioId3 = [equalCopy audioId];
+    v84 = [audioId2 isEqual:audioId3];
 
     if (!v84)
     {
@@ -1314,7 +1314,7 @@ LABEL_30:
   }
 
   v85 = (*&self->_has >> 14) & 1;
-  if (v85 != ((v4[84] >> 14) & 1))
+  if (v85 != ((equalCopy[84] >> 14) & 1))
   {
     goto LABEL_112;
   }
@@ -1322,26 +1322,26 @@ LABEL_30:
   if (v85)
   {
     triggerPhrase = self->_triggerPhrase;
-    if (triggerPhrase != [v4 triggerPhrase])
+    if (triggerPhrase != [equalCopy triggerPhrase])
     {
       goto LABEL_112;
     }
   }
 
-  v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
-  v11 = [v4 location];
-  if ((v10 != 0) == (v11 == 0))
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
+  deviceType2 = [equalCopy location];
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
     goto LABEL_111;
   }
 
-  v87 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
-  if (v87)
+  location = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
+  if (location)
   {
-    v88 = v87;
-    v89 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
-    v90 = [v4 location];
-    v91 = [v89 isEqual:v90];
+    v88 = location;
+    location2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
+    location3 = [equalCopy location];
+    v91 = [location2 isEqual:location3];
 
     if (!v91)
     {
@@ -1353,17 +1353,17 @@ LABEL_30:
   {
   }
 
-  v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self postItn1Best];
-  v11 = [v4 postItn1Best];
-  if ((v10 != 0) == (v11 == 0))
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self postItn1Best];
+  deviceType2 = [equalCopy postItn1Best];
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
 LABEL_111:
 
     goto LABEL_112;
   }
 
-  v92 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self postItn1Best];
-  if (!v92)
+  postItn1Best = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self postItn1Best];
+  if (!postItn1Best)
   {
 
 LABEL_115:
@@ -1371,10 +1371,10 @@ LABEL_115:
     goto LABEL_113;
   }
 
-  v93 = v92;
-  v94 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self postItn1Best];
-  v95 = [v4 postItn1Best];
-  v96 = [v94 isEqual:v95];
+  v93 = postItn1Best;
+  postItn1Best2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self postItn1Best];
+  postItn1Best3 = [equalCopy postItn1Best];
+  v96 = [postItn1Best2 isEqual:postItn1Best3];
 
   if (v96)
   {
@@ -1388,9 +1388,9 @@ LABEL_113:
   return v97;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v22 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1403,39 +1403,39 @@ LABEL_113:
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deviceType];
+  deviceType = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deviceType];
 
-  if (v5)
+  if (deviceType)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self systemBuild];
+  systemBuild = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self systemBuild];
 
-  if (v6)
+  if (systemBuild)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioInterfaceVendorId];
+  audioInterfaceVendorId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioInterfaceVendorId];
 
-  if (v7)
+  if (audioInterfaceVendorId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self firstPartyAudioInterfaceProductId];
+  firstPartyAudioInterfaceProductId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self firstPartyAudioInterfaceProductId];
 
-  if (v8)
+  if (firstPartyAudioInterfaceProductId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
+  siriInputLocale = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
 
-  if (v9)
+  if (siriInputLocale)
   {
-    v10 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
+    siriInputLocale2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1553,16 +1553,16 @@ LABEL_24:
   }
 
 LABEL_25:
-  v12 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self preItn1Best];
+  preItn1Best = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self preItn1Best];
 
-  if (v12)
+  if (preItn1Best)
   {
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self subDomain];
+  subDomain = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self subDomain];
 
-  if (v13)
+  if (subDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -1579,9 +1579,9 @@ LABEL_25:
     PBDataWriterWriteBOOLField();
   }
 
-  v15 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self responseId];
+  responseId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self responseId];
 
-  if (v15)
+  if (responseId)
   {
     PBDataWriterWriteStringField();
   }
@@ -1591,11 +1591,11 @@ LABEL_25:
     PBDataWriterWriteInt32Field();
   }
 
-  v16 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
+  audioId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
 
-  if (v16)
+  if (audioId)
   {
-    v17 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
+    audioId2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1604,27 +1604,27 @@ LABEL_25:
     PBDataWriterWriteInt32Field();
   }
 
-  v18 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
+  location = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
 
-  if (v18)
+  if (location)
   {
-    v19 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
+    location2 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self postItn1Best];
+  postItn1Best = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self postItn1Best];
 
-  v21 = v22;
-  if (v20)
+  v21 = toCopy;
+  if (postItn1Best)
   {
     PBDataWriterWriteStringField();
-    v21 = v22;
+    v21 = toCopy;
   }
 }
 
-- (void)setHasTriggerPhrase:(BOOL)a3
+- (void)setHasTriggerPhrase:(BOOL)phrase
 {
-  if (a3)
+  if (phrase)
   {
     v3 = 0x4000;
   }
@@ -1637,9 +1637,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasOrchCancelledReason:(BOOL)a3
+- (void)setHasOrchCancelledReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 0x2000;
   }
@@ -1652,9 +1652,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasIsPersonalizedRequest:(BOOL)a3
+- (void)setHasIsPersonalizedRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 4096;
   }
@@ -1667,9 +1667,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasIsPersonalRequest:(BOOL)a3
+- (void)setHasIsPersonalRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 2048;
   }
@@ -1682,9 +1682,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasAudioSkippedNumSamples:(BOOL)a3
+- (void)setHasAudioSkippedNumSamples:(BOOL)samples
 {
-  if (a3)
+  if (samples)
   {
     v3 = 1024;
   }
@@ -1697,9 +1697,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasAsrTask:(BOOL)a3
+- (void)setHasAsrTask:(BOOL)task
 {
-  if (a3)
+  if (task)
   {
     v3 = 512;
   }
@@ -1712,9 +1712,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasAudioSource:(BOOL)a3
+- (void)setHasAudioSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 256;
   }
@@ -1727,9 +1727,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasAudioCodec:(BOOL)a3
+- (void)setHasAudioCodec:(BOOL)codec
 {
-  if (a3)
+  if (codec)
   {
     v3 = 128;
   }
@@ -1742,9 +1742,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsDeviceHandHeld:(BOOL)a3
+- (void)setHasIsDeviceHandHeld:(BOOL)held
 {
-  if (a3)
+  if (held)
   {
     v3 = 64;
   }
@@ -1757,9 +1757,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsMediaPlaying:(BOOL)a3
+- (void)setHasIsMediaPlaying:(BOOL)playing
 {
-  if (a3)
+  if (playing)
   {
     v3 = 32;
   }
@@ -1772,9 +1772,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasIsWakeFromSleep:(BOOL)a3
+- (void)setHasIsWakeFromSleep:(BOOL)sleep
 {
-  if (a3)
+  if (sleep)
   {
     v3 = 16;
   }
@@ -1787,9 +1787,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasMotionActivity:(BOOL)a3
+- (void)setHasMotionActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     v3 = 8;
   }
@@ -1802,9 +1802,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasInvocationSource:(BOOL)a3
+- (void)setHasInvocationSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4;
   }
@@ -1817,9 +1817,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasStartDatestampInDaysSince1970:(BOOL)a3
+- (void)setHasStartDatestampInDaysSince1970:(BOOL)since1970
 {
-  if (a3)
+  if (since1970)
   {
     v3 = 2;
   }
@@ -1832,35 +1832,35 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  siriInputLocale = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self siriInputLocale];
+  v7 = [siriInputLocale applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deleteSiriInputLocale];
   }
 
-  v9 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  audioId = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self audioId];
+  v10 = [audioId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deleteAudioId];
   }
 
-  v12 = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  location = [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self location];
+  v13 = [location applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ODSAMPLESiriSchemaODSAMPLESpeakerIdModelSampleReported *)self deleteLocation];
   }

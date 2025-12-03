@@ -1,27 +1,27 @@
 @interface SKUISlideshowGalleryBarView
-- (SKUISlideshowGalleryBarView)initWithFrame:(CGRect)a3;
+- (SKUISlideshowGalleryBarView)initWithFrame:(CGRect)frame;
 - (SKUISlideshowGalleryBarViewDelegate)delegate;
 - (id)_newImageView;
-- (id)imageAtIndex:(int64_t)a3;
-- (void)_handleTouch:(id)a3 withEvent:(id)a4;
+- (id)imageAtIndex:(int64_t)index;
+- (void)_handleTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3 atIndex:(int64_t)a4;
-- (void)setNumberOfImages:(unint64_t)a3;
-- (void)setSelectedImageIndex:(unint64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setImage:(id)image atIndex:(int64_t)index;
+- (void)setNumberOfImages:(unint64_t)images;
+- (void)setSelectedImageIndex:(unint64_t)index;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation SKUISlideshowGalleryBarView
 
-- (SKUISlideshowGalleryBarView)initWithFrame:(CGRect)a3
+- (SKUISlideshowGalleryBarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISlideshowGalleryBarView initWithFrame:];
@@ -29,12 +29,12 @@
 
   v18.receiver = self;
   v18.super_class = SKUISlideshowGalleryBarView;
-  v8 = [(SKUISlideshowGalleryBarView *)&v18 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUISlideshowGalleryBarView *)&v18 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v8->_numberOfImages = 0;
-    v8->_selectedImageIndex = 0;
+    height->_numberOfImages = 0;
+    height->_selectedImageIndex = 0;
     v10 = objc_alloc(MEMORY[0x277D75C58]);
     [(SKUISlideshowGalleryBarView *)v9 bounds];
     v11 = [v10 initWithFrame:?];
@@ -68,8 +68,8 @@
   v7 = [(NSMutableArray *)self->_imageViews count];
   [(UIView *)self->_imageViewsContainer setFrame:v4 * 0.5 - (v6 / 3.0 * 1.33333337 + 1.0) * v7 * 0.5, 0.0, (v6 / 3.0 * 1.33333337 + 1.0) * v7, v6];
   imageViewsContainer = self->_imageViewsContainer;
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)imageViewsContainer setBackgroundColor:v9];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)imageViewsContainer setBackgroundColor:clearColor];
 
   imageViews = self->_imageViews;
   v11[1] = 3221225472;
@@ -114,25 +114,25 @@ void __45__SKUISlideshowGalleryBarView_layoutSubviews__block_invoke(double *a1, 
   }
 }
 
-- (void)setNumberOfImages:(unint64_t)a3
+- (void)setNumberOfImages:(unint64_t)images
 {
   v5 = [(NSMutableArray *)self->_imageViews count];
-  v6 = a3 - v5;
-  if (a3 <= v5)
+  v6 = images - v5;
+  if (images <= v5)
   {
-    if (a3 < v5)
+    if (images < v5)
     {
       v9 = v5;
       do
       {
-        v10 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:a3];
+        v10 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:images];
         [v10 removeFromSuperview];
-        [(NSMutableArray *)self->_imageViews removeObjectAtIndex:a3];
+        [(NSMutableArray *)self->_imageViews removeObjectAtIndex:images];
 
-        ++a3;
+        ++images;
       }
 
-      while (v9 != a3);
+      while (v9 != images);
     }
   }
 
@@ -141,10 +141,10 @@ void __45__SKUISlideshowGalleryBarView_layoutSubviews__block_invoke(double *a1, 
     v7 = 0;
     do
     {
-      v8 = [(SKUISlideshowGalleryBarView *)self _newImageView];
-      [v8 setTag:v7];
-      [(NSMutableArray *)self->_imageViews addObject:v8];
-      [(UIView *)self->_imageViewsContainer addSubview:v8];
+      _newImageView = [(SKUISlideshowGalleryBarView *)self _newImageView];
+      [_newImageView setTag:v7];
+      [(NSMutableArray *)self->_imageViews addObject:_newImageView];
+      [(UIView *)self->_imageViewsContainer addSubview:_newImageView];
 
       ++v7;
     }
@@ -155,9 +155,9 @@ void __45__SKUISlideshowGalleryBarView_layoutSubviews__block_invoke(double *a1, 
   [(SKUISlideshowGalleryBarView *)self setNeedsLayout];
 }
 
-- (void)setSelectedImageIndex:(unint64_t)a3
+- (void)setSelectedImageIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_imageViews count]> a3)
+  if ([(NSMutableArray *)self->_imageViews count]> index)
   {
     v5 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:self->_selectedImageIndex];
     v6 = *(MEMORY[0x277CBF2C0] + 16);
@@ -165,56 +165,56 @@ void __45__SKUISlideshowGalleryBarView_layoutSubviews__block_invoke(double *a1, 
     *&v8.c = v6;
     *&v8.tx = *(MEMORY[0x277CBF2C0] + 32);
     [v5 setTransform:&v8];
-    v7 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:a3];
+    v7 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:index];
     CGAffineTransformMakeScale(&v8, 1.5, 1.5);
     [v7 setTransform:&v8];
     [(UIView *)self->_imageViewsContainer bringSubviewToFront:v7];
-    self->_selectedImageIndex = a3;
+    self->_selectedImageIndex = index;
   }
 }
 
-- (id)imageAtIndex:(int64_t)a3
+- (id)imageAtIndex:(int64_t)index
 {
-  if ([(NSMutableArray *)self->_imageViews count]> a3 && ([(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:a3], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if ([(NSMutableArray *)self->_imageViews count]> index && ([(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:index], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:a3];
-    v7 = [v6 image];
+    v6 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:index];
+    image = [v6 image];
   }
 
   else
   {
-    v7 = 0;
+    image = 0;
   }
 
-  return v7;
+  return image;
 }
 
-- (void)setImage:(id)a3 atIndex:(int64_t)a4
+- (void)setImage:(id)image atIndex:(int64_t)index
 {
-  v9 = a3;
-  if ([(NSMutableArray *)self->_imageViews count]> a4)
+  imageCopy = image;
+  if ([(NSMutableArray *)self->_imageViews count]> index)
   {
-    v6 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:a4];
+    v6 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:index];
 
     if (!v6)
     {
-      v7 = [(SKUISlideshowGalleryBarView *)self _newImageView];
-      [v7 setTag:a4];
-      [(NSMutableArray *)self->_imageViews setObject:v7 atIndexedSubscript:a4];
+      _newImageView = [(SKUISlideshowGalleryBarView *)self _newImageView];
+      [_newImageView setTag:index];
+      [(NSMutableArray *)self->_imageViews setObject:_newImageView atIndexedSubscript:index];
     }
 
-    v8 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:a4];
-    [v8 setImage:v9];
+    v8 = [(NSMutableArray *)self->_imageViews objectAtIndexedSubscript:index];
+    [v8 setImage:imageCopy];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v11.receiver = self;
   v11.super_class = SKUISlideshowGalleryBarView;
-  v7 = a4;
-  [(SKUISlideshowGalleryBarView *)&v11 touchesBegan:v6 withEvent:v7];
+  eventCopy = event;
+  [(SKUISlideshowGalleryBarView *)&v11 touchesBegan:beganCopy withEvent:eventCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -223,27 +223,27 @@ void __45__SKUISlideshowGalleryBarView_layoutSubviews__block_invoke(double *a1, 
     [v9 userBeganInteractingWithGalleryBarView:{self, v11.receiver, v11.super_class}];
   }
 
-  v10 = [v6 anyObject];
-  [(SKUISlideshowGalleryBarView *)self _handleTouch:v10 withEvent:v7];
+  anyObject = [beganCopy anyObject];
+  [(SKUISlideshowGalleryBarView *)self _handleTouch:anyObject withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SKUISlideshowGalleryBarView;
-  v6 = a4;
-  v7 = a3;
-  [(SKUISlideshowGalleryBarView *)&v9 touchesMoved:v7 withEvent:v6];
-  v8 = [v7 anyObject];
+  eventCopy = event;
+  movedCopy = moved;
+  [(SKUISlideshowGalleryBarView *)&v9 touchesMoved:movedCopy withEvent:eventCopy];
+  anyObject = [movedCopy anyObject];
 
-  [(SKUISlideshowGalleryBarView *)self _handleTouch:v8 withEvent:v6];
+  [(SKUISlideshowGalleryBarView *)self _handleTouch:anyObject withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SKUISlideshowGalleryBarView;
-  [(SKUISlideshowGalleryBarView *)&v7 touchesEnded:a3 withEvent:a4];
+  [(SKUISlideshowGalleryBarView *)&v7 touchesEnded:ended withEvent:event];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -253,11 +253,11 @@ void __45__SKUISlideshowGalleryBarView_layoutSubviews__block_invoke(double *a1, 
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SKUISlideshowGalleryBarView;
-  [(SKUISlideshowGalleryBarView *)&v7 touchesCancelled:a3 withEvent:a4];
+  [(SKUISlideshowGalleryBarView *)&v7 touchesCancelled:cancelled withEvent:event];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -276,39 +276,39 @@ void __45__SKUISlideshowGalleryBarView_layoutSubviews__block_invoke(double *a1, 
   [v2 setContentMode:2];
   [v2 setClipsToBounds:1];
   [v2 setUserInteractionEnabled:1];
-  v4 = [v2 layer];
-  v5 = [MEMORY[0x277D75348] whiteColor];
-  [v4 setBorderColor:{objc_msgSend(v5, "CGColor")}];
+  layer = [v2 layer];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [layer setBorderColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-  v6 = [v2 layer];
-  [v6 setBorderWidth:1.0];
+  layer2 = [v2 layer];
+  [layer2 setBorderWidth:1.0];
 
-  v7 = [v2 layer];
-  v8 = [MEMORY[0x277D75348] blackColor];
-  [v7 setShadowColor:{objc_msgSend(v8, "CGColor")}];
+  layer3 = [v2 layer];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [layer3 setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  v9 = [v2 layer];
-  [v9 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  layer4 = [v2 layer];
+  [layer4 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
 
-  v10 = [v2 layer];
+  layer5 = [v2 layer];
   LODWORD(v11) = 1061997773;
-  [v10 setShadowOpacity:v11];
+  [layer5 setShadowOpacity:v11];
 
-  v12 = [v2 layer];
-  [v12 setShadowRadius:2.0];
+  layer6 = [v2 layer];
+  [layer6 setShadowRadius:2.0];
 
   return v2;
 }
 
-- (void)_handleTouch:(id)a3 withEvent:(id)a4
+- (void)_handleTouch:(id)touch withEvent:(id)event
 {
-  v17 = a3;
-  v6 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
-    [v17 locationInView:self];
+    [touchCopy locationInView:self];
     v9 = v8;
     v11 = v10;
     if ([(NSMutableArray *)self->_imageViews count])
@@ -318,7 +318,7 @@ void __45__SKUISlideshowGalleryBarView_layoutSubviews__block_invoke(double *a1, 
       v11 = v13;
     }
 
-    v14 = [(SKUISlideshowGalleryBarView *)self hitTest:v6 withEvent:v9, v11];
+    v14 = [(SKUISlideshowGalleryBarView *)self hitTest:eventCopy withEvent:v9, v11];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

@@ -1,6 +1,6 @@
 @interface SKProductSubscriptionPeriod
 - (SKProductSubscriptionPeriod)init;
-- (SKProductSubscriptionPeriod)initWithISO8601String:(id)a3;
+- (SKProductSubscriptionPeriod)initWithISO8601String:(id)string;
 - (id)toISO8601String;
 @end
 
@@ -21,16 +21,16 @@
   return v2;
 }
 
-- (SKProductSubscriptionPeriod)initWithISO8601String:(id)a3
+- (SKProductSubscriptionPeriod)initWithISO8601String:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [(SKProductSubscriptionPeriod *)self init];
   if (!v5)
   {
     goto LABEL_18;
   }
 
-  v6 = [MEMORY[0x1E696AE88] scannerWithString:v4];
+  v6 = [MEMORY[0x1E696AE88] scannerWithString:stringCopy];
   v16 = 0;
   [v6 scanString:@"P" intoString:&v16];
   v7 = v16;
@@ -104,15 +104,15 @@ LABEL_18:
 
 - (id)toISO8601String
 {
-  v3 = [(SKProductSubscriptionPeriod *)self unit];
-  if (v3 > SKProductPeriodUnitYear)
+  unit = [(SKProductSubscriptionPeriod *)self unit];
+  if (unit > SKProductPeriodUnitYear)
   {
     v4 = &stru_1F29BCE20;
   }
 
   else
   {
-    v4 = off_1E7B27A00[v3];
+    v4 = off_1E7B27A00[unit];
   }
 
   v5 = MEMORY[0x1E696AEC0];

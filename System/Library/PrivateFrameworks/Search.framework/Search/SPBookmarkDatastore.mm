@@ -1,12 +1,12 @@
 @interface SPBookmarkDatastore
-- (id)performQuery:(id)a3;
+- (id)performQuery:(id)query;
 @end
 
 @implementation SPBookmarkDatastore
 
-- (id)performQuery:(id)a3
+- (id)performQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = si_tracing_current_span();
   v6 = *(v5 + 16);
   v25 = *v5;
@@ -22,7 +22,7 @@
   *(v5 + 28) = 102;
   *(v5 + 32) = "[SPBookmarkDatastore performQuery:]";
   si_tracing_log_span_begin();
-  if ([v4 isPeopleSearch] & 1) != 0 || (objc_msgSend(v4, "isScopedAppSearch"))
+  if ([queryCopy isPeopleSearch] & 1) != 0 || (objc_msgSend(queryCopy, "isScopedAppSearch"))
   {
     v11 = 0;
   }
@@ -30,21 +30,21 @@
   else
   {
     v12 = SPLogForSPLogCategoryTelemetry();
-    v13 = [v4 externalID];
-    if (v13 && os_signpost_enabled(v12))
+    externalID = [queryCopy externalID];
+    if (externalID && os_signpost_enabled(v12))
     {
       *v24 = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_BEGIN, v13, "bookmarkSpotlightLatency", " enableTelemetry=YES ", v24, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_BEGIN, externalID, "bookmarkSpotlightLatency", " enableTelemetry=YES ", v24, 2u);
     }
 
     v11 = [[SPBookmarkDatastoreToken alloc] initWithStore:self];
-    [(SPBookmarkDatastoreToken *)v11 begin:v4];
+    [(SPBookmarkDatastoreToken *)v11 begin:queryCopy];
     v14 = SPLogForSPLogCategoryTelemetry();
-    v15 = [v4 externalID];
-    if (v15 && os_signpost_enabled(v14))
+    externalID2 = [queryCopy externalID];
+    if (externalID2 && os_signpost_enabled(v14))
     {
       *v24 = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_INTERVAL_END, v15, "bookmarkSpotlightLatency", " enableTelemetry=YES ", v24, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_INTERVAL_END, externalID2, "bookmarkSpotlightLatency", " enableTelemetry=YES ", v24, 2u);
     }
   }
 

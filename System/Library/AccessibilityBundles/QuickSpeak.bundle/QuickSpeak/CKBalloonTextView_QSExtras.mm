@@ -1,24 +1,24 @@
 @interface CKBalloonTextView_QSExtras
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityQuickSpeakContent;
 @end
 
 @implementation CKBalloonTextView_QSExtras
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UITextView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKBalloonTextView" isKindOfClass:@"UITextView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UITextView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKBalloonTextView" isKindOfClass:@"UITextView"];
 }
 
 - (id)_accessibilityQuickSpeakContent
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 text];
+  text = [v2 text];
 
-  return v3;
+  return text;
 }
 
 @end

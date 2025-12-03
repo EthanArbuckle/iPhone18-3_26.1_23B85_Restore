@@ -12,11 +12,11 @@
 - (CGPoint)_paletteViewHoverLocation;
 - (CGRect)_palettePopoverSourceRect;
 - (CGRect)adjustedWindowSceneBounds;
-- (CGRect)palettePopoverSourceRectToPresentViewController:(id)a3;
+- (CGRect)palettePopoverSourceRectToPresentViewController:(id)controller;
 - (CGSize)minimizedPaletteSize;
-- (CGSize)paletteSizeForEdge:(unint64_t)a3;
+- (CGSize)paletteSizeForEdge:(unint64_t)edge;
 - (NSDirectionalEdgeInsets)edgeInsetsInCompactSize;
-- (PKPaletteView)initWithFrame:(CGRect)a3;
+- (PKPaletteView)initWithFrame:(CGRect)frame;
 - (PKPaletteViewDelegate)delegate;
 - (PKPaletteViewHosting)paletteViewHosting;
 - (PKPaletteViewHoverDelegate)hoverDelegate;
@@ -30,43 +30,43 @@
 - (id)palettePopoverPassthroughViews;
 - (id)palettePopoverSourceView;
 - (unint64_t)_nextAutoHideCorner;
-- (unint64_t)edgeLocationToDockFromCorner:(unint64_t)a3;
+- (unint64_t)edgeLocationToDockFromCorner:(unint64_t)corner;
 - (unint64_t)palettePopoverPermittedArrowDirections;
 - (void)_didChangeAutoHideEnabled;
-- (void)_installBackgroundViewInView:(id)a3;
-- (void)_installClippingViewInView:(id)a3;
-- (void)_installContainerViewInView:(id)a3;
-- (void)_installToolPreviewInView:(id)a3;
+- (void)_installBackgroundViewInView:(id)view;
+- (void)_installClippingViewInView:(id)view;
+- (void)_installContainerViewInView:(id)view;
+- (void)_installToolPreviewInView:(id)view;
 - (void)_saveOptions;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setCornerRadius:(double)a3;
-- (void)_setPaletteScaleFactor:(double)a3 notifyDidChange:(BOOL)a4;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setCornerRadius:(double)radius;
+- (void)_setPaletteScaleFactor:(double)factor notifyDidChange:(BOOL)change;
 - (void)_uninstallToolPreview;
 - (void)_updateContainerSizeConstraints;
-- (void)_updateContainerSizeConstraintsForEdge:(unint64_t)a3;
+- (void)_updateContainerSizeConstraintsForEdge:(unint64_t)edge;
 - (void)_updateContainerViewConstraints;
-- (void)_updateToolPreviewScalingAnimated:(BOOL)a3;
+- (void)_updateToolPreviewScalingAnimated:(BOOL)animated;
 - (void)_updateToolPreviewVisibility;
-- (void)_willDockPaletteToEdge:(unint64_t)a3 prepareForExpansion:(BOOL)a4 isPaletteChangingOrientation:(BOOL)a5;
-- (void)didChangePalettePositionFromPosition:(int64_t)a3 toPosition:(int64_t)a4;
+- (void)_willDockPaletteToEdge:(unint64_t)edge prepareForExpansion:(BOOL)expansion isPaletteChangingOrientation:(BOOL)orientation;
+- (void)didChangePalettePositionFromPosition:(int64_t)position toPosition:(int64_t)toPosition;
 - (void)didChangePaletteScaleFactor;
-- (void)dismissPalettePopoverWithCompletion:(id)a3;
-- (void)hostView:(id)a3 didDockPaletteToPosition:(int64_t)a4;
-- (void)hostView:(id)a3 willDockPaletteToPosition:(int64_t)a4 prepareForExpansion:(BOOL)a5;
+- (void)dismissPalettePopoverWithCompletion:(id)completion;
+- (void)hostView:(id)view didDockPaletteToPosition:(int64_t)position;
+- (void)hostView:(id)view willDockPaletteToPosition:(int64_t)position prepareForExpansion:(BOOL)expansion;
 - (void)layoutSubviews;
-- (void)paletteHostingWindowSceneDidChangeBounds:(id)a3;
+- (void)paletteHostingWindowSceneDidChangeBounds:(id)bounds;
 - (void)saveOptionsIfNecessary;
-- (void)setAdjustedWindowSceneBounds:(CGRect)a3;
-- (void)setAutoHideEnabled:(BOOL)a3;
-- (void)setEdgeInsetsInCompactSize:(NSDirectionalEdgeInsets)a3;
-- (void)setIgnoresSafeAreaInsetsInCompactSize:(BOOL)a3;
-- (void)setPaletteContentAlpha:(double)a3;
-- (void)setPalettePopoverLayoutSceneMargins:(UIEdgeInsets)a3;
-- (void)setPalettePosition:(int64_t)a3;
-- (void)setToolPreviewMinimized:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updatePalettePopover:(id)a3;
-- (void)willStartAppearanceAnimation:(BOOL)a3;
+- (void)setAdjustedWindowSceneBounds:(CGRect)bounds;
+- (void)setAutoHideEnabled:(BOOL)enabled;
+- (void)setEdgeInsetsInCompactSize:(NSDirectionalEdgeInsets)size;
+- (void)setIgnoresSafeAreaInsetsInCompactSize:(BOOL)size;
+- (void)setPaletteContentAlpha:(double)alpha;
+- (void)setPalettePopoverLayoutSceneMargins:(UIEdgeInsets)margins;
+- (void)setPalettePosition:(int64_t)position;
+- (void)setToolPreviewMinimized:(BOOL)minimized animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updatePalettePopover:(id)popover;
+- (void)willStartAppearanceAnimation:(BOOL)animation;
 @end
 
 @implementation PKPaletteView
@@ -96,31 +96,31 @@
   return v2;
 }
 
-- (PKPaletteView)initWithFrame:(CGRect)a3
+- (PKPaletteView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = PKPaletteView;
-  v3 = [(PKPaletteView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaletteView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v3 setBackgroundColor:clearColor];
 
-    v5 = [v3 layer];
-    [v5 setInheritsTiming:0];
+    layer = [v3 layer];
+    [layer setInheritsTiming:0];
 
-    v6 = [v3 traitCollection];
-    v7 = [v6 layoutDirection];
+    traitCollection = [v3 traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
     v8 = 4;
-    if (v7 == 1)
+    if (layoutDirection == 1)
     {
       v8 = 8;
     }
 
     *(v3 + 68) = v8;
 
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v9 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     *(v3 + 89) = v10;
     *(v3 + 90) = v11;
     *(v3 + 91) = v12;
@@ -146,8 +146,8 @@
     [v3 _installClippingViewInView:v3];
     [v3 _installBackgroundViewInView:*(v3 + 69)];
     [v3 _installContainerViewInView:*(v3 + 69)];
-    v18 = [v3 layer];
-    [v18 setShadowPathIsBounds:1];
+    layer2 = [v3 layer];
+    [layer2 setShadowPathIsBounds:1];
 
     [v3 _loadOptions];
     _PKPaletteViewUpdateUI(v3, 0);
@@ -156,35 +156,35 @@
   return v3;
 }
 
-- (void)setIgnoresSafeAreaInsetsInCompactSize:(BOOL)a3
+- (void)setIgnoresSafeAreaInsetsInCompactSize:(BOOL)size
 {
-  if (self->_ignoresSafeAreaInsetsInCompactSize != a3)
+  if (self->_ignoresSafeAreaInsetsInCompactSize != size)
   {
-    self->_ignoresSafeAreaInsetsInCompactSize = a3;
-    v5 = [(PKPaletteView *)self internalDelegate];
-    [v5 paletteViewStateDidChange:self];
+    self->_ignoresSafeAreaInsetsInCompactSize = size;
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewStateDidChange:self];
   }
 }
 
-- (void)setEdgeInsetsInCompactSize:(NSDirectionalEdgeInsets)a3
+- (void)setEdgeInsetsInCompactSize:(NSDirectionalEdgeInsets)size
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = size.top;
+  v3.f64[1] = size.leading;
+  v4.f64[0] = size.bottom;
+  v4.f64[1] = size.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsetsInCompactSize.top, v3), vceqq_f64(*&self->_edgeInsetsInCompactSize.bottom, v4)))) & 1) == 0)
   {
-    self->_edgeInsetsInCompactSize = a3;
-    v6 = [(PKPaletteView *)self internalDelegate];
-    [v6 paletteViewStateDidChange:self];
+    self->_edgeInsetsInCompactSize = size;
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewStateDidChange:self];
   }
 }
 
-- (void)_installClippingViewInView:(id)a3
+- (void)_installClippingViewInView:(id)view
 {
   v22[4] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DD250];
-  v5 = a3;
+  viewCopy = view;
   v6 = objc_alloc_init(v4);
   clippingView = self->_clippingView;
   self->_clippingView = v6;
@@ -195,173 +195,173 @@
     [(UIView *)self->_clippingView pk_setGlassBackground];
   }
 
-  [v5 addSubview:self->_clippingView];
+  [viewCopy addSubview:self->_clippingView];
   v18 = MEMORY[0x1E696ACD8];
-  v21 = [(UIView *)self->_clippingView topAnchor];
-  v20 = [v5 topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  topAnchor = [(UIView *)self->_clippingView topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v22[0] = v19;
-  v8 = [(UIView *)self->_clippingView bottomAnchor];
-  v9 = [v5 bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  bottomAnchor = [(UIView *)self->_clippingView bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v22[1] = v10;
-  v11 = [(UIView *)self->_clippingView leftAnchor];
-  v12 = [v5 leftAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  leftAnchor = [(UIView *)self->_clippingView leftAnchor];
+  leftAnchor2 = [viewCopy leftAnchor];
+  v13 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v22[2] = v13;
-  v14 = [(UIView *)self->_clippingView rightAnchor];
-  v15 = [v5 rightAnchor];
+  rightAnchor = [(UIView *)self->_clippingView rightAnchor];
+  rightAnchor2 = [viewCopy rightAnchor];
 
-  v16 = [v14 constraintEqualToAnchor:v15];
+  v16 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v22[3] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
   [v18 activateConstraints:v17];
 }
 
-- (void)_installBackgroundViewInView:(id)a3
+- (void)_installBackgroundViewInView:(id)view
 {
-  v6 = a3;
-  v4 = [objc_opt_class() makeBackgroundView];
-  if (v4)
+  viewCopy = view;
+  makeBackgroundView = [objc_opt_class() makeBackgroundView];
+  if (makeBackgroundView)
   {
-    [v6 addSubview:v4];
+    [viewCopy addSubview:makeBackgroundView];
   }
 
   backgroundMaterialView = self->_backgroundMaterialView;
-  self->_backgroundMaterialView = v4;
+  self->_backgroundMaterialView = makeBackgroundView;
 }
 
-- (void)_installContainerViewInView:(id)a3
+- (void)_installContainerViewInView:(id)view
 {
   v49[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(PKPaletteContainerView);
   containerView = self->_containerView;
   self->_containerView = v5;
 
-  v7 = [(PKPaletteView *)self containerView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  containerView = [(PKPaletteView *)self containerView];
+  [containerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(PKPaletteView *)self containerView];
-  [v4 addSubview:v8];
+  containerView2 = [(PKPaletteView *)self containerView];
+  [viewCopy addSubview:containerView2];
 
   [(PKPaletteView *)self paletteSizeForEdge:4];
   v10 = v9;
   v12 = v11;
-  v13 = [(PKPaletteView *)self containerView];
-  v14 = [v13 widthAnchor];
-  v15 = [v14 constraintEqualToConstant:v10];
+  containerView3 = [(PKPaletteView *)self containerView];
+  widthAnchor = [containerView3 widthAnchor];
+  v15 = [widthAnchor constraintEqualToConstant:v10];
   [(PKPaletteView *)self setPaletteContainerWidthConstraint:v15];
 
-  v16 = [(PKPaletteView *)self containerView];
-  v17 = [v16 heightAnchor];
-  v18 = [v17 constraintEqualToConstant:v12];
+  containerView4 = [(PKPaletteView *)self containerView];
+  heightAnchor = [containerView4 heightAnchor];
+  v18 = [heightAnchor constraintEqualToConstant:v12];
   [(PKPaletteView *)self setPaletteContainerHeightConstraint:v18];
 
-  v19 = [(PKPaletteView *)self containerView];
-  v20 = [v19 centerXAnchor];
-  v21 = [v4 centerXAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  containerView5 = [(PKPaletteView *)self containerView];
+  centerXAnchor = [containerView5 centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [(PKPaletteView *)self setPaletteContainerCenterXConstraint:v22];
 
-  v23 = [(PKPaletteView *)self containerView];
-  v24 = [v23 centerYAnchor];
-  v25 = [v4 centerYAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  containerView6 = [(PKPaletteView *)self containerView];
+  centerYAnchor = [containerView6 centerYAnchor];
+  centerYAnchor2 = [viewCopy centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [(PKPaletteView *)self setPaletteContainerCenterYConstraint:v26];
 
-  v27 = [(PKPaletteView *)self containerView];
-  v28 = [v27 topAnchor];
-  v29 = [v4 topAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  containerView7 = [(PKPaletteView *)self containerView];
+  topAnchor = [containerView7 topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [(PKPaletteView *)self setPaletteContainerCompactTopConstraint:v30];
 
-  v31 = [(PKPaletteView *)self containerView];
-  v32 = [v31 bottomAnchor];
-  v33 = [v4 bottomAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  containerView8 = [(PKPaletteView *)self containerView];
+  bottomAnchor = [containerView8 bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [(PKPaletteView *)self setPaletteContainerCompactBottomConstraint:v34];
 
-  v35 = [(PKPaletteView *)self containerView];
-  v36 = [v35 leftAnchor];
-  v37 = [v4 leftAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  containerView9 = [(PKPaletteView *)self containerView];
+  leftAnchor = [containerView9 leftAnchor];
+  leftAnchor2 = [viewCopy leftAnchor];
+  v38 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [(PKPaletteView *)self setPaletteContainerCompactLeftConstraint:v38];
 
-  v39 = [(PKPaletteView *)self containerView];
-  v40 = [v39 rightAnchor];
-  v41 = [v4 rightAnchor];
+  containerView10 = [(PKPaletteView *)self containerView];
+  rightAnchor = [containerView10 rightAnchor];
+  rightAnchor2 = [viewCopy rightAnchor];
 
-  v42 = [v40 constraintEqualToAnchor:v41];
+  v42 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [(PKPaletteView *)self setPaletteContainerCompactRightConstraint:v42];
 
   v43 = MEMORY[0x1E696ACD8];
-  v44 = [(PKPaletteView *)self paletteContainerCenterXConstraint];
-  v49[0] = v44;
-  v45 = [(PKPaletteView *)self paletteContainerCenterYConstraint];
-  v49[1] = v45;
-  v46 = [(PKPaletteView *)self paletteContainerWidthConstraint];
-  v49[2] = v46;
-  v47 = [(PKPaletteView *)self paletteContainerHeightConstraint];
-  v49[3] = v47;
+  paletteContainerCenterXConstraint = [(PKPaletteView *)self paletteContainerCenterXConstraint];
+  v49[0] = paletteContainerCenterXConstraint;
+  paletteContainerCenterYConstraint = [(PKPaletteView *)self paletteContainerCenterYConstraint];
+  v49[1] = paletteContainerCenterYConstraint;
+  paletteContainerWidthConstraint = [(PKPaletteView *)self paletteContainerWidthConstraint];
+  v49[2] = paletteContainerWidthConstraint;
+  paletteContainerHeightConstraint = [(PKPaletteView *)self paletteContainerHeightConstraint];
+  v49[3] = paletteContainerHeightConstraint;
   v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:4];
   [v43 activateConstraints:v48];
 }
 
-- (void)_installToolPreviewInView:(id)a3
+- (void)_installToolPreviewInView:(id)view
 {
   v36[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(PKPaletteToolPreview);
   toolPreview = self->_toolPreview;
   self->_toolPreview = v5;
 
-  v7 = [(PKPaletteView *)self toolPreview];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  toolPreview = [(PKPaletteView *)self toolPreview];
+  [toolPreview setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(PKPaletteView *)self toolPreview];
-  [v4 addSubview:v8];
+  toolPreview2 = [(PKPaletteView *)self toolPreview];
+  [viewCopy addSubview:toolPreview2];
 
-  v9 = [(PKPaletteView *)self toolPreview];
-  v10 = [v9 widthAnchor];
-  v11 = [v4 heightAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  toolPreview3 = [(PKPaletteView *)self toolPreview];
+  widthAnchor = [toolPreview3 widthAnchor];
+  heightAnchor = [viewCopy heightAnchor];
+  v12 = [widthAnchor constraintEqualToAnchor:heightAnchor];
   [(PKPaletteView *)self setToolPreviewWidthConstraint:v12];
 
-  v13 = [(PKPaletteView *)self toolPreview];
-  v14 = [v13 heightAnchor];
-  v15 = [v4 heightAnchor];
+  toolPreview4 = [(PKPaletteView *)self toolPreview];
+  heightAnchor2 = [toolPreview4 heightAnchor];
+  heightAnchor3 = [viewCopy heightAnchor];
 
-  v16 = [v14 constraintEqualToAnchor:v15];
+  v16 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   [(PKPaletteView *)self setToolPreviewHeightConstraint:v16];
 
   v17 = MEMORY[0x1E696ACD8];
-  v18 = [(PKPaletteView *)self toolPreviewWidthConstraint];
-  v36[0] = v18;
-  v19 = [(PKPaletteView *)self toolPreviewHeightConstraint];
-  v36[1] = v19;
+  toolPreviewWidthConstraint = [(PKPaletteView *)self toolPreviewWidthConstraint];
+  v36[0] = toolPreviewWidthConstraint;
+  toolPreviewHeightConstraint = [(PKPaletteView *)self toolPreviewHeightConstraint];
+  v36[1] = toolPreviewHeightConstraint;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
   [v17 activateConstraints:v20];
 
-  v21 = [(PKPaletteView *)self toolPreview];
-  v22 = [v21 centerXAnchor];
-  v23 = [(PKPaletteView *)self containerView];
-  v24 = [v23 centerXAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  toolPreview5 = [(PKPaletteView *)self toolPreview];
+  centerXAnchor = [toolPreview5 centerXAnchor];
+  containerView = [(PKPaletteView *)self containerView];
+  centerXAnchor2 = [containerView centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [(PKPaletteView *)self setToolPreviewCenterXConstraint:v25];
 
-  v26 = [(PKPaletteView *)self toolPreview];
-  v27 = [v26 centerYAnchor];
-  v28 = [(PKPaletteView *)self containerView];
-  v29 = [v28 centerYAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  toolPreview6 = [(PKPaletteView *)self toolPreview];
+  centerYAnchor = [toolPreview6 centerYAnchor];
+  containerView2 = [(PKPaletteView *)self containerView];
+  centerYAnchor2 = [containerView2 centerYAnchor];
+  v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [(PKPaletteView *)self setToolPreviewCenterYConstraint:v30];
 
   v31 = MEMORY[0x1E696ACD8];
-  v32 = [(PKPaletteView *)self toolPreviewCenterXConstraint];
-  v35[0] = v32;
-  v33 = [(PKPaletteView *)self toolPreviewCenterYConstraint];
-  v35[1] = v33;
+  toolPreviewCenterXConstraint = [(PKPaletteView *)self toolPreviewCenterXConstraint];
+  v35[0] = toolPreviewCenterXConstraint;
+  toolPreviewCenterYConstraint = [(PKPaletteView *)self toolPreviewCenterYConstraint];
+  v35[1] = toolPreviewCenterYConstraint;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
   [v31 activateConstraints:v34];
 
@@ -370,8 +370,8 @@
 
 - (void)_uninstallToolPreview
 {
-  v3 = [(PKPaletteView *)self toolPreview];
-  [v3 removeFromSuperview];
+  toolPreview = [(PKPaletteView *)self toolPreview];
+  [toolPreview removeFromSuperview];
 
   toolPreview = self->_toolPreview;
   self->_toolPreview = 0;
@@ -379,26 +379,26 @@
 
 - (BOOL)isToolPreviewInstalled
 {
-  v2 = [(PKPaletteView *)self toolPreview];
-  v3 = [v2 superview];
-  v4 = v3 != 0;
+  toolPreview = [(PKPaletteView *)self toolPreview];
+  superview = [toolPreview superview];
+  v4 = superview != 0;
 
   return v4;
 }
 
-- (void)setAutoHideEnabled:(BOOL)a3
+- (void)setAutoHideEnabled:(BOOL)enabled
 {
-  if (self->_autoHideEnabled != a3)
+  if (self->_autoHideEnabled != enabled)
   {
-    self->_autoHideEnabled = a3;
+    self->_autoHideEnabled = enabled;
     [(PKPaletteView *)self _didChangeAutoHideEnabled];
   }
 }
 
 - (void)_didChangeAutoHideEnabled
 {
-  v3 = [(PKPaletteView *)self internalDelegate];
-  [v3 paletteViewStateDidChangeAutoHide:self];
+  internalDelegate = [(PKPaletteView *)self internalDelegate];
+  [internalDelegate paletteViewStateDidChangeAutoHide:self];
 
   v4 = +[PKStatisticsManager sharedStatisticsManager];
   [(PKStatisticsManager *)v4 recordAutoMinimizeEnabledDidChange:[(PKPaletteView *)self paletteViewType] type:?];
@@ -406,10 +406,10 @@
 
 - (BOOL)isVisible
 {
-  v2 = [(PKPaletteView *)self paletteViewHosting];
-  v3 = [v2 isPaletteVisible];
+  paletteViewHosting = [(PKPaletteView *)self paletteViewHosting];
+  isPaletteVisible = [paletteViewHosting isPaletteVisible];
 
-  return v3;
+  return isPaletteVisible;
 }
 
 - (BOOL)_wantsGlassBackground
@@ -425,25 +425,25 @@
 
 - (double)paletteContentAlpha
 {
-  v2 = [(PKPaletteView *)self containerView];
-  [v2 alpha];
+  containerView = [(PKPaletteView *)self containerView];
+  [containerView alpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPaletteContentAlpha:(double)a3
+- (void)setPaletteContentAlpha:(double)alpha
 {
-  v5 = [(PKPaletteView *)self containerView];
-  [v5 setAlpha:a3];
+  containerView = [(PKPaletteView *)self containerView];
+  [containerView setAlpha:alpha];
 
   [(PKPaletteView *)self _updateToolPreviewVisibility];
 }
 
 - (void)_updateToolPreviewVisibility
 {
-  v3 = [(PKPaletteView *)self containerView];
-  [v3 alpha];
+  containerView = [(PKPaletteView *)self containerView];
+  [containerView alpha];
   v5 = v4;
 
   if ([(PKPaletteView *)self _isPaletteContentViewHidden])
@@ -453,9 +453,9 @@
 
   else
   {
-    v7 = [(PKPaletteView *)self toolPreviewMatchesExpandedTool];
+    toolPreviewMatchesExpandedTool = [(PKPaletteView *)self toolPreviewMatchesExpandedTool];
     v6 = v5 * -2.0 + 1.0;
-    if (v7)
+    if (toolPreviewMatchesExpandedTool)
     {
       v6 = v5 * -5.0 + 4.5;
     }
@@ -472,29 +472,29 @@
     v9 = 0.0;
   }
 
-  v10 = [(PKPaletteView *)self toolPreview];
-  [v10 setAlpha:v9];
+  toolPreview = [(PKPaletteView *)self toolPreview];
+  [toolPreview setAlpha:v9];
 
-  v11 = [(PKPaletteView *)self toolPreview];
-  [v11 setHidden:v5 >= 1.0];
+  toolPreview2 = [(PKPaletteView *)self toolPreview];
+  [toolPreview2 setHidden:v5 >= 1.0];
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
   v6.receiver = self;
   v6.super_class = PKPaletteView;
   [(PKPaletteView *)&v6 _setCornerRadius:?];
-  v5 = [(PKPaletteView *)self clippingView];
-  [v5 _setCornerRadius:a3];
+  clippingView = [(PKPaletteView *)self clippingView];
+  [clippingView _setCornerRadius:radius];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v6.receiver = self;
   v6.super_class = PKPaletteView;
   [(PKPaletteView *)&v6 _setContinuousCornerRadius:?];
-  v5 = [(PKPaletteView *)self clippingView];
-  [v5 _setContinuousCornerRadius:a3];
+  clippingView = [(PKPaletteView *)self clippingView];
+  [clippingView _setContinuousCornerRadius:radius];
 }
 
 - (void)layoutSubviews
@@ -502,8 +502,8 @@
   v24.receiver = self;
   v24.super_class = PKPaletteView;
   [(PKPaletteView *)&v24 layoutSubviews];
-  v3 = [(PKPaletteView *)self clippingView];
-  [v3 bounds];
+  clippingView = [(PKPaletteView *)self clippingView];
+  [clippingView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -518,8 +518,8 @@
   y = v26.origin.y;
   width = v26.size.width;
   height = v26.size.height;
-  v16 = [(PKPaletteView *)self backgroundMaterialView];
-  [v16 setFrame:{x, y, width, height}];
+  backgroundMaterialView = [(PKPaletteView *)self backgroundMaterialView];
+  [backgroundMaterialView setFrame:{x, y, width, height}];
 
   [(PKPaletteView *)self _setCornerRadius:0.0];
   [(PKPaletteView *)self _setContinuousCornerRadius:0.0];
@@ -539,8 +539,8 @@
       return;
     }
 
-    v19 = [(PKPaletteView *)self traitCollection];
-    [v19 displayCornerRadius];
+    traitCollection = [(PKPaletteView *)self traitCollection];
+    [traitCollection displayCornerRadius];
     MidX = v20 * 0.727272727;
   }
 
@@ -570,40 +570,40 @@
   }
 }
 
-- (void)_updateContainerSizeConstraintsForEdge:(unint64_t)a3
+- (void)_updateContainerSizeConstraintsForEdge:(unint64_t)edge
 {
   v33[2] = *MEMORY[0x1E69E9840];
   [(PKPaletteView *)self paletteSizeForEdge:?];
   v6 = v5;
   v8 = v7;
-  v9 = [(PKPaletteView *)self paletteContainerWidthConstraint];
-  [v9 setConstant:v6];
+  paletteContainerWidthConstraint = [(PKPaletteView *)self paletteContainerWidthConstraint];
+  [paletteContainerWidthConstraint setConstant:v6];
 
-  v10 = [(PKPaletteView *)self paletteContainerHeightConstraint];
-  [v10 setConstant:v8];
+  paletteContainerHeightConstraint = [(PKPaletteView *)self paletteContainerHeightConstraint];
+  [paletteContainerHeightConstraint setConstant:v8];
 
   if ([(PKPaletteView *)self isToolPreviewInstalled])
   {
     v11 = MEMORY[0x1E696ACD8];
-    v12 = [(PKPaletteView *)self toolPreviewWidthConstraint];
-    v33[0] = v12;
-    v13 = [(PKPaletteView *)self toolPreviewHeightConstraint];
-    v33[1] = v13;
+    toolPreviewWidthConstraint = [(PKPaletteView *)self toolPreviewWidthConstraint];
+    v33[0] = toolPreviewWidthConstraint;
+    toolPreviewHeightConstraint = [(PKPaletteView *)self toolPreviewHeightConstraint];
+    v33[1] = toolPreviewHeightConstraint;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
     [v11 deactivateConstraints:v14];
 
-    if (a3 > 3)
+    if (edge > 3)
     {
-      if (a3 != 4)
+      if (edge != 4)
       {
-        if (a3 != 8)
+        if (edge != 8)
         {
 LABEL_11:
           v28 = MEMORY[0x1E696ACD8];
-          v29 = [(PKPaletteView *)self toolPreviewWidthConstraint];
-          v32[0] = v29;
-          v30 = [(PKPaletteView *)self toolPreviewHeightConstraint];
-          v32[1] = v30;
+          toolPreviewWidthConstraint2 = [(PKPaletteView *)self toolPreviewWidthConstraint];
+          v32[0] = toolPreviewWidthConstraint2;
+          toolPreviewHeightConstraint2 = [(PKPaletteView *)self toolPreviewHeightConstraint];
+          v32[1] = toolPreviewHeightConstraint2;
           v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
           [v28 activateConstraints:v31];
 
@@ -614,60 +614,60 @@ LABEL_11:
       }
     }
 
-    else if (a3 != 1)
+    else if (edge != 1)
     {
-      if (a3 != 2)
+      if (edge != 2)
       {
         goto LABEL_11;
       }
 
 LABEL_8:
-      v15 = [(PKPaletteView *)self toolPreview];
-      v16 = [v15 widthAnchor];
-      v17 = [(PKPaletteView *)self widthAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      toolPreview = [(PKPaletteView *)self toolPreview];
+      widthAnchor = [toolPreview widthAnchor];
+      widthAnchor2 = [(PKPaletteView *)self widthAnchor];
+      v18 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       [(PKPaletteView *)self setToolPreviewWidthConstraint:v18];
 
-      v19 = [(PKPaletteView *)self toolPreview];
-      v20 = [v19 heightAnchor];
-      v21 = [(PKPaletteView *)self widthAnchor];
+      toolPreview2 = [(PKPaletteView *)self toolPreview];
+      heightAnchor = [toolPreview2 heightAnchor];
+      widthAnchor3 = [(PKPaletteView *)self widthAnchor];
 LABEL_10:
-      v26 = v21;
-      v27 = [v20 constraintEqualToAnchor:v21];
+      v26 = widthAnchor3;
+      v27 = [heightAnchor constraintEqualToAnchor:widthAnchor3];
       [(PKPaletteView *)self setToolPreviewHeightConstraint:v27];
 
       goto LABEL_11;
     }
 
-    v22 = [(PKPaletteView *)self toolPreview];
-    v23 = [v22 widthAnchor];
-    v24 = [(PKPaletteView *)self heightAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    toolPreview3 = [(PKPaletteView *)self toolPreview];
+    widthAnchor4 = [toolPreview3 widthAnchor];
+    heightAnchor2 = [(PKPaletteView *)self heightAnchor];
+    v25 = [widthAnchor4 constraintEqualToAnchor:heightAnchor2];
     [(PKPaletteView *)self setToolPreviewWidthConstraint:v25];
 
-    v19 = [(PKPaletteView *)self toolPreview];
-    v20 = [v19 heightAnchor];
-    v21 = [(PKPaletteView *)self heightAnchor];
+    toolPreview2 = [(PKPaletteView *)self toolPreview];
+    heightAnchor = [toolPreview2 heightAnchor];
+    widthAnchor3 = [(PKPaletteView *)self heightAnchor];
     goto LABEL_10;
   }
 }
 
-- (void)hostView:(id)a3 willDockPaletteToPosition:(int64_t)a4 prepareForExpansion:(BOOL)a5
+- (void)hostView:(id)view willDockPaletteToPosition:(int64_t)position prepareForExpansion:(BOOL)expansion
 {
-  v5 = a5;
+  expansionCopy = expansion;
   [(PKPaletteView *)self _updateContainerViewConstraints];
-  if (a4 > 4)
+  if (position > 4)
   {
-    if (a4 > 6)
+    if (position > 6)
     {
-      if (a4 == 7)
+      if (position == 7)
       {
         v10 = 8;
       }
 
       else
       {
-        if (a4 != 8)
+        if (position != 8)
         {
           goto LABEL_26;
         }
@@ -676,7 +676,7 @@ LABEL_10:
       }
     }
 
-    else if (a4 == 5)
+    else if (position == 5)
     {
       v10 = 1;
     }
@@ -691,9 +691,9 @@ LABEL_10:
 
   else
   {
-    if (a4 > 2)
+    if (position > 2)
     {
-      if (a4 == 3)
+      if (position == 3)
       {
         v8 = 0;
         v9 = 4;
@@ -706,20 +706,20 @@ LABEL_10:
       }
 
 LABEL_17:
-      v11 = [(PKPaletteView *)self lastPaletteEdgePositionWhileDragging];
-      v13 = v11 == 2 || v11 == 8;
-      [(PKPaletteView *)self _willDockPaletteToEdge:v9 prepareForExpansion:v5 isPaletteChangingOrientation:v8 ^ v13];
+      lastPaletteEdgePositionWhileDragging = [(PKPaletteView *)self lastPaletteEdgePositionWhileDragging];
+      v13 = lastPaletteEdgePositionWhileDragging == 2 || lastPaletteEdgePositionWhileDragging == 8;
+      [(PKPaletteView *)self _willDockPaletteToEdge:v9 prepareForExpansion:expansionCopy isPaletteChangingOrientation:v8 ^ v13];
       goto LABEL_26;
     }
 
-    if (a4 == 1)
+    if (position == 1)
     {
       v8 = 0;
       v9 = 1;
       goto LABEL_17;
     }
 
-    if (a4 == 2)
+    if (position == 2)
     {
       v8 = 1;
       v9 = 8;
@@ -729,42 +729,42 @@ LABEL_17:
 
 LABEL_26:
 
-  [(PKPaletteView *)self setPalettePosition:a4];
+  [(PKPaletteView *)self setPalettePosition:position];
 }
 
-- (void)_willDockPaletteToEdge:(unint64_t)a3 prepareForExpansion:(BOOL)a4 isPaletteChangingOrientation:(BOOL)a5
+- (void)_willDockPaletteToEdge:(unint64_t)edge prepareForExpansion:(BOOL)expansion isPaletteChangingOrientation:(BOOL)orientation
 {
-  v5 = a4;
-  self->_lastPaletteEdgePositionWhileDragging = a3;
-  v8 = [(PKPaletteView *)self toolPreview];
-  [v8 dismissPalettePopoverWithCompletion:0];
+  expansionCopy = expansion;
+  self->_lastPaletteEdgePositionWhileDragging = edge;
+  toolPreview = [(PKPaletteView *)self toolPreview];
+  [toolPreview dismissPalettePopoverWithCompletion:0];
 
-  v9 = [(PKPaletteView *)self containerView];
-  [v9 setEdgeLocation:a3];
+  containerView = [(PKPaletteView *)self containerView];
+  [containerView setEdgeLocation:edge];
 
-  v10 = [(PKPaletteView *)self traitCollection];
-  v11 = [(PKPaletteView *)self window];
-  v12 = [v11 windowScene];
-  v13 = PKUseCompactSize(v10, v12);
+  traitCollection = [(PKPaletteView *)self traitCollection];
+  window = [(PKPaletteView *)self window];
+  windowScene = [window windowScene];
+  v13 = PKUseCompactSize(traitCollection, windowScene);
 
   if (!v13)
   {
-    [(PKPaletteView *)self _updateContainerSizeConstraintsForEdge:a3];
+    [(PKPaletteView *)self _updateContainerSizeConstraintsForEdge:edge];
   }
 
-  if (v5)
+  if (expansionCopy)
   {
     v14 = +[PKTextInputLanguageSelectionController sharedInstance];
     [v14 notifyLanguageDidChange];
   }
 }
 
-- (void)hostView:(id)a3 didDockPaletteToPosition:(int64_t)a4
+- (void)hostView:(id)view didDockPaletteToPosition:(int64_t)position
 {
-  [(PKPaletteView *)self setPalettePosition:a4];
-  if ((a4 - 1) <= 3)
+  [(PKPaletteView *)self setPalettePosition:position];
+  if ((position - 1) <= 3)
   {
-    self->_lastPaletteEdgePositionWhileDragging = qword_1C801C790[a4 - 1];
+    self->_lastPaletteEdgePositionWhileDragging = qword_1C801C790[position - 1];
   }
 }
 
@@ -772,54 +772,54 @@ LABEL_26:
 {
   v25[8] = *MEMORY[0x1E69E9840];
   v22 = MEMORY[0x1E696ACD8];
-  v3 = [(PKPaletteView *)self paletteContainerWidthConstraint];
-  v25[0] = v3;
-  v4 = [(PKPaletteView *)self paletteContainerHeightConstraint];
-  v25[1] = v4;
-  v5 = [(PKPaletteView *)self paletteContainerCenterXConstraint];
-  v25[2] = v5;
-  v6 = [(PKPaletteView *)self paletteContainerCenterYConstraint];
-  v25[3] = v6;
-  v7 = [(PKPaletteView *)self paletteContainerCompactTopConstraint];
-  v25[4] = v7;
-  v8 = [(PKPaletteView *)self paletteContainerCompactBottomConstraint];
-  v25[5] = v8;
-  v9 = [(PKPaletteView *)self paletteContainerCompactLeftConstraint];
-  v25[6] = v9;
-  v10 = [(PKPaletteView *)self paletteContainerCompactRightConstraint];
-  v25[7] = v10;
+  paletteContainerWidthConstraint = [(PKPaletteView *)self paletteContainerWidthConstraint];
+  v25[0] = paletteContainerWidthConstraint;
+  paletteContainerHeightConstraint = [(PKPaletteView *)self paletteContainerHeightConstraint];
+  v25[1] = paletteContainerHeightConstraint;
+  paletteContainerCenterXConstraint = [(PKPaletteView *)self paletteContainerCenterXConstraint];
+  v25[2] = paletteContainerCenterXConstraint;
+  paletteContainerCenterYConstraint = [(PKPaletteView *)self paletteContainerCenterYConstraint];
+  v25[3] = paletteContainerCenterYConstraint;
+  paletteContainerCompactTopConstraint = [(PKPaletteView *)self paletteContainerCompactTopConstraint];
+  v25[4] = paletteContainerCompactTopConstraint;
+  paletteContainerCompactBottomConstraint = [(PKPaletteView *)self paletteContainerCompactBottomConstraint];
+  v25[5] = paletteContainerCompactBottomConstraint;
+  paletteContainerCompactLeftConstraint = [(PKPaletteView *)self paletteContainerCompactLeftConstraint];
+  v25[6] = paletteContainerCompactLeftConstraint;
+  paletteContainerCompactRightConstraint = [(PKPaletteView *)self paletteContainerCompactRightConstraint];
+  v25[7] = paletteContainerCompactRightConstraint;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:8];
   [v22 deactivateConstraints:v11];
 
-  v12 = [(PKPaletteView *)self traitCollection];
-  v13 = [(PKPaletteView *)self window];
-  v14 = [v13 windowScene];
-  LODWORD(v6) = PKUseCompactSize(v12, v14);
+  traitCollection = [(PKPaletteView *)self traitCollection];
+  window = [(PKPaletteView *)self window];
+  windowScene = [window windowScene];
+  LODWORD(paletteContainerCenterYConstraint) = PKUseCompactSize(traitCollection, windowScene);
 
   v15 = MEMORY[0x1E696ACD8];
-  if (v6)
+  if (paletteContainerCenterYConstraint)
   {
-    v16 = [(PKPaletteView *)self paletteContainerCompactTopConstraint];
-    v24[0] = v16;
-    v17 = [(PKPaletteView *)self paletteContainerCompactBottomConstraint];
-    v24[1] = v17;
-    v18 = [(PKPaletteView *)self paletteContainerCompactLeftConstraint];
-    v24[2] = v18;
-    v19 = [(PKPaletteView *)self paletteContainerCompactRightConstraint];
-    v24[3] = v19;
+    paletteContainerCompactTopConstraint2 = [(PKPaletteView *)self paletteContainerCompactTopConstraint];
+    v24[0] = paletteContainerCompactTopConstraint2;
+    paletteContainerCompactBottomConstraint2 = [(PKPaletteView *)self paletteContainerCompactBottomConstraint];
+    v24[1] = paletteContainerCompactBottomConstraint2;
+    paletteContainerCompactLeftConstraint2 = [(PKPaletteView *)self paletteContainerCompactLeftConstraint];
+    v24[2] = paletteContainerCompactLeftConstraint2;
+    paletteContainerCompactRightConstraint2 = [(PKPaletteView *)self paletteContainerCompactRightConstraint];
+    v24[3] = paletteContainerCompactRightConstraint2;
     v20 = v24;
   }
 
   else
   {
-    v16 = [(PKPaletteView *)self paletteContainerWidthConstraint];
-    v23[0] = v16;
-    v17 = [(PKPaletteView *)self paletteContainerHeightConstraint];
-    v23[1] = v17;
-    v18 = [(PKPaletteView *)self paletteContainerCenterXConstraint];
-    v23[2] = v18;
-    v19 = [(PKPaletteView *)self paletteContainerCenterYConstraint];
-    v23[3] = v19;
+    paletteContainerCompactTopConstraint2 = [(PKPaletteView *)self paletteContainerWidthConstraint];
+    v23[0] = paletteContainerCompactTopConstraint2;
+    paletteContainerCompactBottomConstraint2 = [(PKPaletteView *)self paletteContainerHeightConstraint];
+    v23[1] = paletteContainerCompactBottomConstraint2;
+    paletteContainerCompactLeftConstraint2 = [(PKPaletteView *)self paletteContainerCenterXConstraint];
+    v23[2] = paletteContainerCompactLeftConstraint2;
+    paletteContainerCompactRightConstraint2 = [(PKPaletteView *)self paletteContainerCenterYConstraint];
+    v23[3] = paletteContainerCompactRightConstraint2;
     v20 = v23;
   }
 
@@ -827,21 +827,21 @@ LABEL_26:
   [v15 activateConstraints:v21];
 }
 
-- (void)paletteHostingWindowSceneDidChangeBounds:(id)a3
+- (void)paletteHostingWindowSceneDidChangeBounds:(id)bounds
 {
-  [a3 paletteHostingWindowSceneBounds];
+  [bounds paletteHostingWindowSceneBounds];
 
   [(PKPaletteView *)self setAdjustedWindowSceneBounds:?];
 }
 
-- (void)setAdjustedWindowSceneBounds:(CGRect)a3
+- (void)setAdjustedWindowSceneBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   p_adjustedWindowSceneBounds = &self->_adjustedWindowSceneBounds;
-  if (!CGRectEqualToRect(self->_adjustedWindowSceneBounds, a3))
+  if (!CGRectEqualToRect(self->_adjustedWindowSceneBounds, bounds))
   {
     p_adjustedWindowSceneBounds->origin.x = x;
     p_adjustedWindowSceneBounds->origin.y = y;
@@ -853,13 +853,13 @@ LABEL_26:
   }
 }
 
-- (void)_setPaletteScaleFactor:(double)a3 notifyDidChange:(BOOL)a4
+- (void)_setPaletteScaleFactor:(double)factor notifyDidChange:(BOOL)change
 {
   paletteScaleFactor = self->_paletteScaleFactor;
-  if (paletteScaleFactor != a3 && vabdd_f64(paletteScaleFactor, a3) >= fabs(a3 * 0.000000999999997))
+  if (paletteScaleFactor != factor && vabdd_f64(paletteScaleFactor, factor) >= fabs(factor * 0.000000999999997))
   {
-    self->_paletteScaleFactor = a3;
-    if (a4)
+    self->_paletteScaleFactor = factor;
+    if (change)
     {
       [(PKPaletteView *)self didChangePaletteScaleFactor];
     }
@@ -869,28 +869,28 @@ LABEL_26:
 - (void)didChangePaletteScaleFactor
 {
   [(PKPaletteView *)self _updateContainerSizeConstraints];
-  v3 = [(PKPaletteView *)self internalDelegate];
-  [v3 paletteViewStateDidChangeScaleFactor:self];
+  internalDelegate = [(PKPaletteView *)self internalDelegate];
+  [internalDelegate paletteViewStateDidChangeScaleFactor:self];
 
   [(PKPaletteView *)self _updateToolPreviewScalingAnimated:0];
-  v4 = [(PKPaletteView *)self delegate];
-  if (v4)
+  delegate = [(PKPaletteView *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PKPaletteView *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PKPaletteView *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PKPaletteView *)self delegate];
-      [v8 paletteViewDidChangeScaleFactor:self];
+      delegate3 = [(PKPaletteView *)self delegate];
+      [delegate3 paletteViewDidChangeScaleFactor:self];
     }
   }
 }
 
-- (void)setPalettePosition:(int64_t)a3
+- (void)setPalettePosition:(int64_t)position
 {
-  if (self->_palettePosition != a3)
+  if (self->_palettePosition != position)
   {
     v5 = [(PKPaletteView *)self palettePosition]- 1;
     if (v5 <= 3)
@@ -899,67 +899,67 @@ LABEL_26:
     }
 
     palettePosition = self->_palettePosition;
-    self->_palettePosition = a3;
-    [(PKPaletteView *)self didChangePalettePositionFromPosition:palettePosition toPosition:a3];
-    v7 = [(PKPaletteView *)self _nextAutoHideCorner];
-    if (v7 != -1)
+    self->_palettePosition = position;
+    [(PKPaletteView *)self didChangePalettePositionFromPosition:palettePosition toPosition:position];
+    _nextAutoHideCorner = [(PKPaletteView *)self _nextAutoHideCorner];
+    if (_nextAutoHideCorner != -1)
     {
-      self->_autoHideCorner = v7;
+      self->_autoHideCorner = _nextAutoHideCorner;
     }
 
     [(PKPaletteView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)didChangePalettePositionFromPosition:(int64_t)a3 toPosition:(int64_t)a4
+- (void)didChangePalettePositionFromPosition:(int64_t)position toPosition:(int64_t)toPosition
 {
-  v7 = [(PKPaletteView *)self delegate];
+  delegate = [(PKPaletteView *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PKPaletteView *)self delegate];
-    [v9 paletteViewDidChangePosition:self fromPosition:a3 toPosition:a4];
+    delegate2 = [(PKPaletteView *)self delegate];
+    [delegate2 paletteViewDidChangePosition:self fromPosition:position toPosition:toPosition];
   }
 }
 
-- (void)dismissPalettePopoverWithCompletion:(id)a3
+- (void)dismissPalettePopoverWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   if ([(PKPaletteView *)self isPalettePresentingPopover]&& ([(PKPaletteView *)self toolPreview], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(PKPaletteView *)self toolPreview];
-    [v5 dismissPalettePopoverWithCompletion:v7];
+    toolPreview = [(PKPaletteView *)self toolPreview];
+    [toolPreview dismissPalettePopoverWithCompletion:completionCopy];
   }
 
   else
   {
-    v6 = v7;
-    if (!v7)
+    v6 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_7;
     }
 
-    (*(v7 + 2))(v7);
+    (*(completionCopy + 2))(completionCopy);
   }
 
-  v6 = v7;
+  v6 = completionCopy;
 LABEL_7:
 }
 
 - (unint64_t)_nextAutoHideCorner
 {
-  v3 = [(PKPaletteView *)self palettePosition];
-  if (v3 > 4)
+  palettePosition = [(PKPaletteView *)self palettePosition];
+  if (palettePosition > 4)
   {
-    if (v3 > 6)
+    if (palettePosition > 6)
     {
-      if (v3 == 7)
+      if (palettePosition == 7)
       {
         return 8;
       }
 
-      if (v3 == 8)
+      if (palettePosition == 8)
       {
         return 4;
       }
@@ -967,7 +967,7 @@ LABEL_7:
       return -1;
     }
 
-    if (v3 == 5)
+    if (palettePosition == 5)
     {
       return 1;
     }
@@ -978,12 +978,12 @@ LABEL_7:
     }
   }
 
-  else if (v3 > 2)
+  else if (palettePosition > 2)
   {
-    if (v3 == 3)
+    if (palettePosition == 3)
     {
-      v7 = [(PKPaletteView *)self autoHideCorner];
-      if (v7 == 8 || v7 == 2)
+      autoHideCorner = [(PKPaletteView *)self autoHideCorner];
+      if (autoHideCorner == 8 || autoHideCorner == 2)
       {
         return 8;
       }
@@ -1007,9 +1007,9 @@ LABEL_7:
 
   else
   {
-    if (v3 != 1)
+    if (palettePosition != 1)
     {
-      if (v3 == 2)
+      if (palettePosition == 2)
       {
         if ([(PKPaletteView *)self autoHideCorner]- 1 >= 2)
         {
@@ -1025,8 +1025,8 @@ LABEL_7:
       return -1;
     }
 
-    v5 = [(PKPaletteView *)self autoHideCorner];
-    if (v5 == 8 || v5 == 2)
+    autoHideCorner2 = [(PKPaletteView *)self autoHideCorner];
+    if (autoHideCorner2 == 8 || autoHideCorner2 == 2)
     {
       return 2;
     }
@@ -1040,30 +1040,30 @@ LABEL_7:
 
 - (BOOL)isPalettePresentingPopover
 {
-  v2 = [(PKPaletteView *)self palettePopoverPresentingController];
-  v3 = [v2 presentedViewController];
+  palettePopoverPresentingController = [(PKPaletteView *)self palettePopoverPresentingController];
+  presentedViewController = [palettePopoverPresentingController presentedViewController];
 
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
 
-  v6 = [v4 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.PaperKit"];
+  bundleIdentifier = [v4 bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.PaperKit"];
 
-  if (v3 && (v4 == v5) | v7 & 1)
+  if (presentedViewController && (v4 == v5) | v7 & 1)
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v3 popoverPresentationController];
-    v10 = [v9 delegate];
+    popoverPresentationController = [presentedViewController popoverPresentationController];
+    delegate = [popoverPresentationController delegate];
 
     v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
 
-    v13 = [v11 bundleIdentifier];
-    v14 = [v13 isEqualToString:@"com.apple.PaperKit"];
+    bundleIdentifier2 = [v11 bundleIdentifier];
+    v14 = [bundleIdentifier2 isEqualToString:@"com.apple.PaperKit"];
 
     v8 = (v11 != 0) & ((v11 == v12) | v14);
   }
@@ -1073,21 +1073,21 @@ LABEL_7:
 
 - (BOOL)shouldPalettePresentPopover
 {
-  v2 = [(PKPaletteView *)self paletteViewHosting];
-  v3 = [v2 isPaletteDragging];
+  paletteViewHosting = [(PKPaletteView *)self paletteViewHosting];
+  isPaletteDragging = [paletteViewHosting isPaletteDragging];
 
-  return v3 ^ 1;
+  return isPaletteDragging ^ 1;
 }
 
 - (id)palettePopoverPassthroughViews
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaletteView *)self paletteViewHosting];
-  if (v3)
+  paletteViewHosting = [(PKPaletteView *)self paletteViewHosting];
+  if (paletteViewHosting)
   {
-    v4 = [(PKPaletteView *)self paletteViewHosting];
-    v5 = [v4 hostingView];
-    v8[0] = v5;
+    paletteViewHosting2 = [(PKPaletteView *)self paletteViewHosting];
+    hostingView = [paletteViewHosting2 hostingView];
+    v8[0] = hostingView;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 
@@ -1101,8 +1101,8 @@ LABEL_7:
 
 - (unint64_t)palettePopoverPermittedArrowDirections
 {
-  v3 = [(PKPaletteView *)self _paletteViewHoverView];
-  if ([(PKPaletteView *)self wantsCustomPalettePopoverPresentationSource]&& v3)
+  _paletteViewHoverView = [(PKPaletteView *)self _paletteViewHoverView];
+  if ([(PKPaletteView *)self wantsCustomPalettePopoverPresentationSource]&& _paletteViewHoverView)
   {
     v4 = 0;
   }
@@ -1128,17 +1128,17 @@ LABEL_7:
   else
   {
     v11 = [(PKPaletteView *)self palettePosition]- 5;
-    v12 = [(PKPaletteView *)self palettePosition];
+    palettePosition = [(PKPaletteView *)self palettePosition];
     if (v11 > 3)
     {
-      if ((v12 - 1) > 3)
+      if ((palettePosition - 1) > 3)
       {
         v14 = 0;
       }
 
       else
       {
-        v14 = qword_1C801C790[v12 - 1];
+        v14 = qword_1C801C790[palettePosition - 1];
       }
 
       v15 = PKUIPopoverPermittedArrowDirectionsForEdge(v14);
@@ -1146,14 +1146,14 @@ LABEL_7:
 
     else
     {
-      if ((v12 - 5) > 3)
+      if ((palettePosition - 5) > 3)
       {
         v13 = -1;
       }
 
       else
       {
-        v13 = qword_1C801C770[v12 - 5];
+        v13 = qword_1C801C770[palettePosition - 5];
       }
 
       v15 = PKUIPopoverPermittedArrowDirectionsForCorner(v13);
@@ -1165,54 +1165,54 @@ LABEL_7:
   return v4;
 }
 
-- (void)setPalettePopoverLayoutSceneMargins:(UIEdgeInsets)a3
+- (void)setPalettePopoverLayoutSceneMargins:(UIEdgeInsets)margins
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = margins.top;
+  v3.f64[1] = margins.left;
+  v4.f64[0] = margins.bottom;
+  v4.f64[1] = margins.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_palettePopoverLayoutSceneMargins.top, v3), vceqq_f64(*&self->_palettePopoverLayoutSceneMargins.bottom, v4)))) & 1) == 0)
   {
-    self->_palettePopoverLayoutSceneMargins = a3;
+    self->_palettePopoverLayoutSceneMargins = margins;
     [(PKPaletteView *)self updatePopoverUI];
   }
 }
 
 - (BOOL)_isCompactInSmallestQuickNoteWindowScene
 {
-  v3 = [(PKPaletteView *)self window];
-  v4 = [v3 windowScene];
-  v5 = PKIsSmallestQuickNoteWindowScene(v4) && [(UIView *)self _pk_useCompactLayout];
+  window = [(PKPaletteView *)self window];
+  windowScene = [window windowScene];
+  v5 = PKIsSmallestQuickNoteWindowScene(windowScene) && [(UIView *)self _pk_useCompactLayout];
 
   return v5;
 }
 
 - (id)_paletteViewHoverView
 {
-  v3 = [(PKPaletteView *)self hoverDelegate];
+  hoverDelegate = [(PKPaletteView *)self hoverDelegate];
 
-  if (v3)
+  if (hoverDelegate)
   {
-    v4 = [(PKPaletteView *)self hoverDelegate];
-    v5 = [v4 paletteViewHoverView:self];
+    hoverDelegate2 = [(PKPaletteView *)self hoverDelegate];
+    view = [hoverDelegate2 paletteViewHoverView:self];
     goto LABEL_3;
   }
 
   if ([(PKPaletteView *)self _shouldTrackHoverLocationForPencilTapActions])
   {
-    v8 = [(PKPaletteView *)self window];
-    v9 = [v8 windowScene];
-    v4 = [PKPencilObserverInteraction interactionForScene:v9];
+    window = [(PKPaletteView *)self window];
+    windowScene = [window windowScene];
+    hoverDelegate2 = [PKPencilObserverInteraction interactionForScene:windowScene];
 
-    if (!v4 || (v10 = v4[8]) == 0 || *(v10 + 56) != 1)
+    if (!hoverDelegate2 || (v10 = hoverDelegate2[8]) == 0 || *(v10 + 56) != 1)
     {
       v6 = 0;
       goto LABEL_4;
     }
 
-    v5 = [v4 view];
+    view = [hoverDelegate2 view];
 LABEL_3:
-    v6 = v5;
+    v6 = view;
 LABEL_4:
 
     goto LABEL_5;
@@ -1226,26 +1226,26 @@ LABEL_5:
 
 - (CGPoint)_paletteViewHoverLocation
 {
-  v3 = [(PKPaletteView *)self hoverDelegate];
+  hoverDelegate = [(PKPaletteView *)self hoverDelegate];
 
-  if (v3)
+  if (hoverDelegate)
   {
-    v4 = [(PKPaletteView *)self hoverDelegate];
-    [v4 paletteViewHoverLocation:self];
+    hoverDelegate2 = [(PKPaletteView *)self hoverDelegate];
+    [hoverDelegate2 paletteViewHoverLocation:self];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v9 = [(PKPaletteView *)self window];
-    v10 = [v9 windowScene];
-    v4 = [PKPencilObserverInteraction interactionForScene:v10];
+    window = [(PKPaletteView *)self window];
+    windowScene = [window windowScene];
+    hoverDelegate2 = [PKPencilObserverInteraction interactionForScene:windowScene];
 
-    if (v4 && (v11 = *(v4 + 8)) != 0 && *(v11 + 56) == 1)
+    if (hoverDelegate2 && (v11 = *(hoverDelegate2 + 8)) != 0 && *(v11 + 56) == 1)
     {
-      v6 = v4[15];
-      v8 = v4[16];
+      v6 = hoverDelegate2[15];
+      v8 = hoverDelegate2[16];
     }
 
     else
@@ -1266,31 +1266,31 @@ LABEL_5:
 {
   if ([(PKPaletteView *)self _isCompactInSmallestQuickNoteWindowScene])
   {
-    v3 = [(PKPaletteView *)self paletteViewHosting];
-    v4 = [v3 isPaletteVisible] ^ 1;
+    paletteViewHosting = [(PKPaletteView *)self paletteViewHosting];
+    v4 = [paletteViewHosting isPaletteVisible] ^ 1;
   }
 
   else
   {
-    v5 = [(PKPaletteView *)self _paletteViewHoverView];
+    _paletteViewHoverView = [(PKPaletteView *)self _paletteViewHoverView];
 
-    if (v5)
+    if (_paletteViewHoverView)
     {
       LOBYTE(v4) = 1;
       return v4;
     }
 
-    v3 = [(PKPaletteView *)self paletteViewHosting];
-    if ([v3 isPaletteVisible])
+    paletteViewHosting = [(PKPaletteView *)self paletteViewHosting];
+    if ([paletteViewHosting isPaletteVisible])
     {
       LOBYTE(v4) = 0;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E696AAE8] mainBundle];
-      v8 = [v7 bundleIdentifier];
-      v9 = [v8 isEqualToString:@"com.apple.mobilenotes"];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v9 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
       if (v9)
       {
@@ -1299,9 +1299,9 @@ LABEL_5:
 
       else
       {
-        v10 = [MEMORY[0x1E696AAE8] mainBundle];
-        v11 = [v10 bundleIdentifier];
-        LOBYTE(v4) = [v11 isEqualToString:@"com.apple.freeform"];
+        mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+        bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+        LOBYTE(v4) = [bundleIdentifier2 isEqualToString:@"com.apple.freeform"];
       }
     }
   }
@@ -1309,16 +1309,16 @@ LABEL_5:
   return v4;
 }
 
-- (CGRect)palettePopoverSourceRectToPresentViewController:(id)a3
+- (CGRect)palettePopoverSourceRectToPresentViewController:(id)controller
 {
-  v4 = a3;
-  if (!v4 || ![(PKPaletteView *)self _isCompactInSmallestQuickNoteWindowScene])
+  controllerCopy = controller;
+  if (!controllerCopy || ![(PKPaletteView *)self _isCompactInSmallestQuickNoteWindowScene])
   {
     goto LABEL_7;
   }
 
-  v5 = [(PKPaletteView *)self paletteViewHosting];
-  if ([v5 isPaletteVisible])
+  paletteViewHosting = [(PKPaletteView *)self paletteViewHosting];
+  if ([paletteViewHosting isPaletteVisible])
   {
 
     goto LABEL_7;
@@ -1330,16 +1330,16 @@ LABEL_5:
   if ((isKindOfClass & 1) == 0 || ([(PKPaletteView *)self _palettePopoverSourceRect], x = v38.origin.x, y = v38.origin.y, width = v38.size.width, height = v38.size.height, CGRectIsNull(v38)))
   {
 LABEL_7:
-    v11 = [(PKPaletteView *)self _paletteViewHoverView];
-    if (v11)
+    _paletteViewHoverView = [(PKPaletteView *)self _paletteViewHoverView];
+    if (_paletteViewHoverView)
     {
       [(PKPaletteView *)self _paletteViewHoverLocation];
       v13 = v12;
       v15 = v14;
-      v16 = [(PKPaletteView *)self paletteViewHosting];
-      v17 = [v16 hostingView];
+      paletteViewHosting2 = [(PKPaletteView *)self paletteViewHosting];
+      hostingView = [paletteViewHosting2 hostingView];
 
-      x = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v11, v17, v13, v15, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+      x = PK_convertRectFromCoordinateSpaceToCoordinateSpace(_paletteViewHoverView, hostingView, v13, v15, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
       y = v18;
 
       height = 0.0;
@@ -1360,22 +1360,22 @@ LABEL_37:
       goto LABEL_37;
     }
 
-    v19 = [(PKPaletteView *)self palettePosition];
-    v20 = [(PKPaletteView *)self paletteViewHosting];
-    v21 = [v20 hostingView];
-    v22 = [v21 safeAreaLayoutGuide];
-    [v22 layoutFrame];
+    palettePosition = [(PKPaletteView *)self palettePosition];
+    paletteViewHosting3 = [(PKPaletteView *)self paletteViewHosting];
+    hostingView2 = [paletteViewHosting3 hostingView];
+    safeAreaLayoutGuide = [hostingView2 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
 
     height = 0.0;
-    if (v19 > 4)
+    if (palettePosition > 4)
     {
-      if (v19 <= 6)
+      if (palettePosition <= 6)
       {
-        if (v19 != 5)
+        if (palettePosition != 5)
         {
           width = 0.0;
           v42.origin.x = v24;
@@ -1389,7 +1389,7 @@ LABEL_37:
 
       else
       {
-        if (v19 == 7)
+        if (palettePosition == 7)
         {
           v45.origin.x = v24;
           v45.origin.y = v26;
@@ -1399,7 +1399,7 @@ LABEL_37:
           goto LABEL_33;
         }
 
-        if (v19 == 8)
+        if (palettePosition == 8)
         {
           v48.origin.x = v24;
           v48.origin.y = v26;
@@ -1412,7 +1412,7 @@ LABEL_36:
           goto LABEL_37;
         }
 
-        if (v19 != 9)
+        if (palettePosition != 9)
         {
           width = 0.0;
           goto LABEL_37;
@@ -1422,9 +1422,9 @@ LABEL_36:
 
     else
     {
-      if (v19 > 1)
+      if (palettePosition > 1)
       {
-        if (v19 == 2)
+        if (palettePosition == 2)
         {
           v43.origin.x = v24;
           v43.origin.y = v26;
@@ -1441,7 +1441,7 @@ LABEL_34:
           goto LABEL_9;
         }
 
-        if (v19 != 3)
+        if (palettePosition != 3)
         {
           width = 0.0;
           v40.origin.x = v24;
@@ -1467,10 +1467,10 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      if (v19)
+      if (palettePosition)
       {
         width = 0.0;
-        if (v19 != 1)
+        if (palettePosition != 1)
         {
           goto LABEL_37;
         }
@@ -1507,14 +1507,14 @@ LABEL_38:
 
 - (CGRect)_palettePopoverSourceRect
 {
-  v3 = [(PKPaletteView *)self delegate];
+  delegate = [(PKPaletteView *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v4 = [(PKPaletteView *)self delegate];
+  delegate2 = [(PKPaletteView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -1527,18 +1527,18 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [(PKPaletteView *)self delegate];
-  v7 = [v6 paletteViewColorPickerPopoverPresentationSourceView:self];
+  delegate3 = [(PKPaletteView *)self delegate];
+  v7 = [delegate3 paletteViewColorPickerPopoverPresentationSourceView:self];
 
-  v8 = [(PKPaletteView *)self delegate];
-  [v8 paletteViewColorPickerPopoverPresentationSourceRect:self];
+  delegate4 = [(PKPaletteView *)self delegate];
+  [delegate4 paletteViewColorPickerPopoverPresentationSourceRect:self];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(PKPaletteView *)self palettePopoverSourceView];
-  v18 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v7, v17, v10, v12, v14, v16);
+  palettePopoverSourceView = [(PKPaletteView *)self palettePopoverSourceView];
+  v18 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v7, palettePopoverSourceView, v10, v12, v14, v16);
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -1557,71 +1557,71 @@ LABEL_6:
 
 - (id)palettePopoverSourceView
 {
-  v2 = [(PKPaletteView *)self paletteViewHosting];
-  v3 = [v2 hostingView];
+  paletteViewHosting = [(PKPaletteView *)self paletteViewHosting];
+  hostingView = [paletteViewHosting hostingView];
 
-  return v3;
+  return hostingView;
 }
 
-- (void)updatePalettePopover:(id)a3
+- (void)updatePalettePopover:(id)popover
 {
-  v4 = a3;
-  if (v4)
+  popoverCopy = popover;
+  if (popoverCopy)
   {
-    v27 = v4;
+    v27 = popoverCopy;
     [(PKPaletteView *)self palettePopoverLayoutMargins];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [v27 popoverPresentationController];
-    [v13 setPopoverLayoutMargins:{v6, v8, v10, v12}];
+    popoverPresentationController = [v27 popoverPresentationController];
+    [popoverPresentationController setPopoverLayoutMargins:{v6, v8, v10, v12}];
 
-    v14 = [MEMORY[0x1E696AAE8] mainBundle];
-    v15 = [v14 bundleIdentifier];
-    v16 = [v15 isEqualToString:@"com.apple.ScreenshotServicesService"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v16 = [bundleIdentifier isEqualToString:@"com.apple.ScreenshotServicesService"];
 
     if ((v16 & 1) != 0 || _UIApplicationIsExtension())
     {
-      v17 = [(PKPaletteView *)self palettePopoverSourceView];
-      v18 = [v17 traitCollection];
-      v19 = [v18 userInterfaceStyle];
+      palettePopoverSourceView = [(PKPaletteView *)self palettePopoverSourceView];
+      traitCollection = [palettePopoverSourceView traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      v20 = [v27 popoverPresentationController];
-      v21 = [v20 presentedView];
-      [v21 setOverrideUserInterfaceStyle:v19];
+      popoverPresentationController2 = [v27 popoverPresentationController];
+      presentedView = [popoverPresentationController2 presentedView];
+      [presentedView setOverrideUserInterfaceStyle:userInterfaceStyle];
 
-      [v27 setOverrideUserInterfaceStyle:v19];
+      [v27 setOverrideUserInterfaceStyle:userInterfaceStyle];
     }
 
-    v22 = [v27 traitCollection];
-    v23 = [v22 userInterfaceStyle];
-    v24 = [(PKPaletteView *)self traitCollection];
-    v25 = [v24 userInterfaceStyle];
+    traitCollection2 = [v27 traitCollection];
+    userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
+    traitCollection3 = [(PKPaletteView *)self traitCollection];
+    userInterfaceStyle3 = [traitCollection3 userInterfaceStyle];
 
-    v4 = v27;
-    if (v23 != v25)
+    popoverCopy = v27;
+    if (userInterfaceStyle2 != userInterfaceStyle3)
     {
-      v26 = [(PKPaletteView *)self traitCollection];
-      [v27 setOverrideUserInterfaceStyle:{objc_msgSend(v26, "userInterfaceStyle")}];
+      traitCollection4 = [(PKPaletteView *)self traitCollection];
+      [v27 setOverrideUserInterfaceStyle:{objc_msgSend(traitCollection4, "userInterfaceStyle")}];
 
-      v4 = v27;
+      popoverCopy = v27;
     }
   }
 }
 
-- (void)setToolPreviewMinimized:(BOOL)a3 animated:(BOOL)a4
+- (void)setToolPreviewMinimized:(BOOL)minimized animated:(BOOL)animated
 {
-  if (self->_toolPreviewMinimized != a3)
+  if (self->_toolPreviewMinimized != minimized)
   {
-    self->_toolPreviewMinimized = a3;
-    [(PKPaletteView *)self _updateToolPreviewScalingAnimated:a4];
+    self->_toolPreviewMinimized = minimized;
+    [(PKPaletteView *)self _updateToolPreviewScalingAnimated:animated];
   }
 }
 
-- (void)_updateToolPreviewScalingAnimated:(BOOL)a3
+- (void)_updateToolPreviewScalingAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(PKPaletteView *)self paletteScaleFactor];
   v6 = v5;
   if ([(PKPaletteView *)self isToolPreviewMinimized])
@@ -1629,8 +1629,8 @@ LABEL_6:
     v6 = v6 * 0.8;
   }
 
-  v11 = [(PKPaletteView *)self toolPreview];
-  [v11 scalingFactor];
+  toolPreview = [(PKPaletteView *)self toolPreview];
+  [toolPreview scalingFactor];
   if (v6 != v7)
   {
     v8 = fabs(v7 * 0.000000999999997);
@@ -1641,11 +1641,11 @@ LABEL_6:
       return;
     }
 
-    v10 = [(PKPaletteView *)self toolPreview];
-    v11 = v10;
-    if (v3)
+    toolPreview2 = [(PKPaletteView *)self toolPreview];
+    toolPreview = toolPreview2;
+    if (animatedCopy)
     {
-      [v10 layoutIfNeeded];
+      [toolPreview2 layoutIfNeeded];
 
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
@@ -1657,7 +1657,7 @@ LABEL_6:
       return;
     }
 
-    [v10 setScalingFactor:v6];
+    [toolPreview2 setScalingFactor:v6];
   }
 }
 
@@ -1671,9 +1671,9 @@ void __51__PKPaletteView__updateToolPreviewScalingAnimated___block_invoke(uint64
   [v4 layoutIfNeeded];
 }
 
-- (void)willStartAppearanceAnimation:(BOOL)a3
+- (void)willStartAppearanceAnimation:(BOOL)animation
 {
-  if (a3)
+  if (animation)
   {
     v3 = +[PKTextInputLanguageSelectionController sharedInstance];
     [v3 notifyLanguageDidChange];
@@ -1692,7 +1692,7 @@ void __51__PKPaletteView__updateToolPreviewScalingAnimated___block_invoke(uint64
   return result;
 }
 
-- (CGSize)paletteSizeForEdge:(unint64_t)a3
+- (CGSize)paletteSizeForEdge:(unint64_t)edge
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
@@ -1701,51 +1701,51 @@ void __51__PKPaletteView__updateToolPreviewScalingAnimated___block_invoke(uint64
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = PKPaletteView;
-  [(PKPaletteView *)&v13 traitCollectionDidChange:v4];
-  v5 = [v4 horizontalSizeClass];
-  v6 = [(PKPaletteView *)self traitCollection];
-  if (v5 != [v6 horizontalSizeClass])
+  [(PKPaletteView *)&v13 traitCollectionDidChange:changeCopy];
+  horizontalSizeClass = [changeCopy horizontalSizeClass];
+  traitCollection = [(PKPaletteView *)self traitCollection];
+  if (horizontalSizeClass != [traitCollection horizontalSizeClass])
   {
 
     goto LABEL_5;
   }
 
-  v7 = [v4 verticalSizeClass];
-  v8 = [(PKPaletteView *)self traitCollection];
-  v9 = [v8 verticalSizeClass];
+  verticalSizeClass = [changeCopy verticalSizeClass];
+  traitCollection2 = [(PKPaletteView *)self traitCollection];
+  verticalSizeClass2 = [traitCollection2 verticalSizeClass];
 
-  if (v7 != v9)
+  if (verticalSizeClass != verticalSizeClass2)
   {
 LABEL_5:
     [(PKPaletteView *)self _updateContainerViewConstraints];
   }
 
   _PKPaletteViewUpdateUI(self, 1);
-  v10 = [(PKPaletteView *)self delegate];
+  delegate = [(PKPaletteView *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(PKPaletteView *)self delegate];
-    [v12 paletteView:self didChangeTraitCollection:v4];
+    delegate2 = [(PKPaletteView *)self delegate];
+    [delegate2 paletteView:self didChangeTraitCollection:changeCopy];
   }
 }
 
-- (unint64_t)edgeLocationToDockFromCorner:(unint64_t)a3
+- (unint64_t)edgeLocationToDockFromCorner:(unint64_t)corner
 {
-  if (a3 - 1 > 7)
+  if (corner - 1 > 7)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_1E82D7BF8[a3 - 1];
+    v5 = qword_1E82D7BF8[corner - 1];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PKPaletteView lastEdgeLocation](self, "lastEdgeLocation")}];
@@ -1768,12 +1768,12 @@ LABEL_5:
       v12 = 8;
     }
 
-    if (a3 != 8)
+    if (corner != 8)
     {
       v12 = result;
     }
 
-    if (a3 != 4)
+    if (corner != 4)
     {
       v10 = v12;
     }
@@ -1792,17 +1792,17 @@ LABEL_5:
       v16 = 1;
     }
 
-    if (a3 != 2)
+    if (corner != 2)
     {
       v16 = result;
     }
 
-    if (a3 != 1)
+    if (corner != 1)
     {
       v14 = v16;
     }
 
-    if (a3 <= 3)
+    if (corner <= 3)
     {
       return v14;
     }
@@ -1818,8 +1818,8 @@ LABEL_5:
 
 - (BOOL)_loadOptions
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 dictionaryForKey:@"PKPaletteDefaults"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults dictionaryForKey:@"PKPaletteDefaults"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1864,9 +1864,9 @@ LABEL_5:
 
 - (void)_saveOptions
 {
-  v4 = [(PKPaletteView *)self _stateDictionary];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v3 setObject:v4 forKey:@"PKPaletteDefaults"];
+  _stateDictionary = [(PKPaletteView *)self _stateDictionary];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setObject:_stateDictionary forKey:@"PKPaletteDefaults"];
   objc_storeWeak(&PKLastSavedPalette, self);
 }
 

@@ -1,65 +1,65 @@
 @interface SearchUIWatchListState
-- (SearchUIWatchListState)initWithContainerResponse:(id)a3;
-- (SearchUIWatchListState)initWithIdentifier:(id)a3 watchListed:(BOOL)a4;
-- (SearchUIWatchListState)initWithResponse:(id)a3;
-- (void)toggleStateWithCompletion:(id)a3;
+- (SearchUIWatchListState)initWithContainerResponse:(id)response;
+- (SearchUIWatchListState)initWithIdentifier:(id)identifier watchListed:(BOOL)listed;
+- (SearchUIWatchListState)initWithResponse:(id)response;
+- (void)toggleStateWithCompletion:(id)completion;
 @end
 
 @implementation SearchUIWatchListState
 
-- (SearchUIWatchListState)initWithIdentifier:(id)a3 watchListed:(BOOL)a4
+- (SearchUIWatchListState)initWithIdentifier:(id)identifier watchListed:(BOOL)listed
 {
-  v4 = a4;
-  v6 = a3;
+  listedCopy = listed;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = SearchUIWatchListState;
   v7 = [(SearchUIWatchListState *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(SearchUIWatchListState *)v7 setWatchListIdentifier:v6];
-    [(SearchUIWatchListState *)v8 setIsWatchListed:v4];
+    [(SearchUIWatchListState *)v7 setWatchListIdentifier:identifierCopy];
+    [(SearchUIWatchListState *)v8 setIsWatchListed:listedCopy];
   }
 
   return v8;
 }
 
-- (SearchUIWatchListState)initWithResponse:(id)a3
+- (SearchUIWatchListState)initWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = [SearchUIWatchListState alloc];
-  v6 = [v4 canonicalID];
-  v7 = [v4 isWatchListed];
+  canonicalID = [responseCopy canonicalID];
+  isWatchListed = [responseCopy isWatchListed];
 
-  v8 = [(SearchUIWatchListState *)v5 initWithIdentifier:v6 watchListed:v7];
+  v8 = [(SearchUIWatchListState *)v5 initWithIdentifier:canonicalID watchListed:isWatchListed];
   return v8;
 }
 
-- (SearchUIWatchListState)initWithContainerResponse:(id)a3
+- (SearchUIWatchListState)initWithContainerResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = [SearchUIWatchListState alloc];
-  v6 = [v4 canonicalID];
-  v7 = [v4 isWatchListed];
+  canonicalID = [responseCopy canonicalID];
+  isWatchListed = [responseCopy isWatchListed];
 
-  v8 = [(SearchUIWatchListState *)v5 initWithIdentifier:v6 watchListed:v7];
+  v8 = [(SearchUIWatchListState *)v5 initWithIdentifier:canonicalID watchListed:isWatchListed];
   return v8;
 }
 
-- (void)toggleStateWithCompletion:(id)a3
+- (void)toggleStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(SearchUIWatchListState *)self isWatchListed]^ 1;
-  v6 = [(SearchUIWatchListState *)self watchListIdentifier];
+  watchListIdentifier = [(SearchUIWatchListState *)self watchListIdentifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__SearchUIWatchListState_toggleStateWithCompletion___block_invoke;
   v8[3] = &unk_1E85B2B48;
   v10 = v5;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [SearchUIWatchListUtilities updateStatusIsInWatchList:v5 watchListItemWithIdentifier:v6 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [SearchUIWatchListUtilities updateStatusIsInWatchList:v5 watchListItemWithIdentifier:watchListIdentifier completion:v8];
 }
 
 void __52__SearchUIWatchListState_toggleStateWithCompletion___block_invoke(uint64_t a1, char a2)

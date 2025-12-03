@@ -1,6 +1,6 @@
 @interface GESSMaterialParameterData
-- (BOOL)setColor:(CGColor *)a3;
-- (BOOL)setTextureImage:(CGImage *)a3;
+- (BOOL)setColor:(CGColor *)color;
+- (BOOL)setTextureImage:(CGImage *)image;
 - (GESSMaterialParameterData)init;
 @end
 
@@ -19,17 +19,17 @@
   return result;
 }
 
-- (BOOL)setTextureImage:(CGImage *)a3
+- (BOOL)setTextureImage:(CGImage *)image
 {
-  v5 = a3;
-  self->_image = a3;
+  imageCopy = image;
+  self->_image = image;
   return 1;
 }
 
-- (BOOL)setColor:(CGColor *)a3
+- (BOOL)setColor:(CGColor *)color
 {
-  Components = CGColorGetComponents(a3);
-  NumberOfComponents = CGColorGetNumberOfComponents(a3);
+  Components = CGColorGetComponents(color);
+  NumberOfComponents = CGColorGetNumberOfComponents(color);
   if (NumberOfComponents)
   {
     v6 = *Components;

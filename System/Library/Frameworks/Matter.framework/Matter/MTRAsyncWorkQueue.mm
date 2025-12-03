@@ -1,30 +1,30 @@
 @interface MTRAsyncWorkQueue
-- (BOOL)hasDuplicateForTypeID:(unint64_t)a3 workItemData:(id)a4;
-- (MTRAsyncWorkQueue)initWithContext:(id)a3 width:(unint64_t)a4;
+- (BOOL)hasDuplicateForTypeID:(unint64_t)d workItemData:(id)data;
+- (MTRAsyncWorkQueue)initWithContext:(id)context width:(unint64_t)width;
 - (id)description;
 - (unint64_t)itemCount;
-- (void)enqueueWorkItem:(id)a3 description:(id)a4;
-- (void)enqueueWorkItem:(id)a3 descriptionWithFormat:(id)a4;
+- (void)enqueueWorkItem:(id)item description:(id)description;
+- (void)enqueueWorkItem:(id)item descriptionWithFormat:(id)format;
 - (void)invalidate;
 @end
 
 @implementation MTRAsyncWorkQueue
 
-- (MTRAsyncWorkQueue)initWithContext:(id)a3 width:(unint64_t)a4
+- (MTRAsyncWorkQueue)initWithContext:(id)context width:(unint64_t)width
 {
-  v6 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = MTRAsyncWorkQueue;
   v7 = [(MTRAsyncWorkQueue *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_context, v6);
-    v9 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v7->_context, contextCopy);
+    array = [MEMORY[0x277CBEB18] array];
     items = v8->_items;
-    v8->_items = v9;
+    v8->_items = array;
 
-    v8->_width = a4;
+    v8->_width = width;
   }
 
   return v8;
@@ -40,44 +40,44 @@
   return v3;
 }
 
-- (void)enqueueWorkItem:(id)a3 descriptionWithFormat:(id)a4
+- (void)enqueueWorkItem:(id)item descriptionWithFormat:(id)format
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v7 arguments:&v9];
-  [(MTRAsyncWorkQueue *)self enqueueWorkItem:v6 description:v8];
+  itemCopy = item;
+  formatCopy = format;
+  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:formatCopy arguments:&v9];
+  [(MTRAsyncWorkQueue *)self enqueueWorkItem:itemCopy description:v8];
 }
 
-- (void)enqueueWorkItem:(id)a3 description:(id)a4
+- (void)enqueueWorkItem:(id)item description:(id)description
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  descriptionCopy = description;
   sub_2393ADE68(&v17, self);
   os_unfair_lock_lock(&self->_lock);
-  if (v6)
+  if (itemCopy)
   {
-    v6[2] = 2;
+    itemCopy[2] = 2;
   }
 
-  [(NSMutableArray *)self->_items addObject:v6];
+  [(NSMutableArray *)self->_items addObject:itemCopy];
   v8 = sub_2393D9044(0);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (descriptionCopy)
   {
     if (v9)
     {
       v10 = v18;
       v11 = [(NSMutableArray *)self->_items count];
-      v12 = [v6 uniqueID];
+      uniqueID = [itemCopy uniqueID];
       *buf = 138413058;
       v20 = v10;
       v21 = 2048;
       v22 = v11;
       v23 = 2048;
-      v24 = v12;
+      v24 = uniqueID;
       v25 = 2112;
-      v26 = v7;
+      v26 = descriptionCopy;
       _os_log_impl(&dword_238DAE000, v8, OS_LOG_TYPE_DEFAULT, "MTRAsyncWorkQueue<%@, items count: %lu> enqueued work item [%llu]: %@", buf, 0x2Au);
     }
 
@@ -85,7 +85,7 @@
     {
 LABEL_11:
       [(NSMutableArray *)self->_items count];
-      [v6 uniqueID];
+      [itemCopy uniqueID];
       sub_2393D5320(0, 2);
     }
   }
@@ -96,13 +96,13 @@ LABEL_11:
     {
       v13 = v18;
       v14 = [(NSMutableArray *)self->_items count];
-      v15 = [v6 uniqueID];
+      uniqueID2 = [itemCopy uniqueID];
       *buf = 138412802;
       v20 = v13;
       v21 = 2048;
       v22 = v14;
       v23 = 2048;
-      v24 = v15;
+      v24 = uniqueID2;
       _os_log_impl(&dword_238DAE000, v8, OS_LOG_TYPE_DEFAULT, "MTRAsyncWorkQueue<%@, items count: %lu> enqueued work item [%llu]", buf, 0x20u);
     }
 
@@ -176,17 +176,17 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasDuplicateForTypeID:(unint64_t)a3 workItemData:(id)a4
+- (BOOL)hasDuplicateForTypeID:(unint64_t)d workItemData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_lock);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(NSMutableArray *)self->_items reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_items reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = *v18;
@@ -196,17 +196,17 @@ LABEL_11:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 duplicateCheckHandler];
-        if (v12)
+        duplicateCheckHandler = [v11 duplicateCheckHandler];
+        if (duplicateCheckHandler)
         {
-          if ([v11 duplicateTypeID] == a3)
+          if ([v11 duplicateTypeID] == d)
           {
             v16 = 0;
-            (v12)[2](v12, v6, &v16, &v16 + 1);
+            (duplicateCheckHandler)[2](duplicateCheckHandler, dataCopy, &v16, &v16 + 1);
             if ((v16 & 0x100) != 0)
             {
               v13 = v16;
@@ -217,7 +217,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;

@@ -1,49 +1,49 @@
 @interface TSDAttribution
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSURL)authorURL;
 - (NSURL)externalURL;
-- (TSDAttribution)initWithTitle:(id)a3 descriptionText:(id)a4 externalURL:(id)a5 authorName:(id)a6 authorURL:(id)a7;
-- (id)initFromMessage:(const void *)a3 unarchiver:(id)a4;
+- (TSDAttribution)initWithTitle:(id)title descriptionText:(id)text externalURL:(id)l authorName:(id)name authorURL:(id)rL;
+- (id)initFromMessage:(const void *)message unarchiver:(id)unarchiver;
 - (unint64_t)hash;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation TSDAttribution
 
-- (TSDAttribution)initWithTitle:(id)a3 descriptionText:(id)a4 externalURL:(id)a5 authorName:(id)a6 authorURL:(id)a7
+- (TSDAttribution)initWithTitle:(id)title descriptionText:(id)text externalURL:(id)l authorName:(id)name authorURL:(id)rL
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  textCopy = text;
+  lCopy = l;
+  nameCopy = name;
+  rLCopy = rL;
   v45.receiver = self;
   v45.super_class = TSDAttribution;
   v19 = [(TSDAttribution *)&v45 init];
   if (v19)
   {
-    v20 = objc_msgSend_copy(v12, v17, v18);
+    v20 = objc_msgSend_copy(titleCopy, v17, v18);
     title = v19->_title;
     v19->_title = v20;
 
     v19->_definedTitle = v19->_title != 0;
-    v24 = objc_msgSend_copy(v13, v22, v23);
+    v24 = objc_msgSend_copy(textCopy, v22, v23);
     descriptionText = v19->_descriptionText;
     v19->_descriptionText = v24;
 
     v19->_definedDescriptionText = v19->_descriptionText != 0;
-    v28 = objc_msgSend_absoluteString(v14, v26, v27);
+    v28 = objc_msgSend_absoluteString(lCopy, v26, v27);
     v31 = objc_msgSend_copy(v28, v29, v30);
     externalURLString = v19->_externalURLString;
     v19->_externalURLString = v31;
 
     v19->_definedExternalURLString = v19->_externalURLString != 0;
-    v35 = objc_msgSend_copy(v15, v33, v34);
+    v35 = objc_msgSend_copy(nameCopy, v33, v34);
     authorName = v19->_authorName;
     v19->_authorName = v35;
 
     v19->_definedAuthorName = v19->_authorName != 0;
-    v39 = objc_msgSend_absoluteString(v16, v37, v38);
+    v39 = objc_msgSend_absoluteString(rLCopy, v37, v38);
     v42 = objc_msgSend_copy(v39, v40, v41);
     authorURLString = v19->_authorURLString;
     v19->_authorURLString = v42;
@@ -54,9 +54,9 @@
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (v7)
@@ -95,7 +95,7 @@
 
         else
         {
-          v51 = v4;
+          v51 = equalCopy;
           v50 = objc_msgSend_authorName(self, v29, v30);
           v34 = objc_msgSend_authorName(v7, v32, v33);
           v35 = v50;
@@ -122,7 +122,7 @@
             }
           }
 
-          v4 = v51;
+          equalCopy = v51;
         }
 
         v23 = v52;
@@ -186,63 +186,63 @@
   return v5;
 }
 
-- (id)initFromMessage:(const void *)a3 unarchiver:(id)a4
+- (id)initFromMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v30.receiver = self;
   v30.super_class = TSDAttribution;
   v7 = [(TSDAttribution *)&v30 init];
   if (v7)
   {
-    v8 = *(a3 + 4);
+    v8 = *(message + 4);
     if (v8)
     {
       v9 = objc_alloc(MEMORY[0x277CCACA8]);
-      v11 = objc_msgSend_tsp_initWithProtobufString_(v9, v10, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+      v11 = objc_msgSend_tsp_initWithProtobufString_(v9, v10, *(message + 3) & 0xFFFFFFFFFFFFFFFELL);
       title = v7->_title;
       v7->_title = v11;
 
       v7->_definedTitle = 1;
-      v8 = *(a3 + 4);
+      v8 = *(message + 4);
     }
 
     if ((v8 & 2) != 0)
     {
       v13 = objc_alloc(MEMORY[0x277CCACA8]);
-      v15 = objc_msgSend_tsp_initWithProtobufString_(v13, v14, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL);
+      v15 = objc_msgSend_tsp_initWithProtobufString_(v13, v14, *(message + 4) & 0xFFFFFFFFFFFFFFFELL);
       descriptionText = v7->_descriptionText;
       v7->_descriptionText = v15;
 
       v7->_definedDescriptionText = 1;
-      v8 = *(a3 + 4);
+      v8 = *(message + 4);
     }
 
     if ((v8 & 4) != 0)
     {
       v17 = objc_alloc(MEMORY[0x277CCACA8]);
-      v19 = objc_msgSend_tsp_initWithProtobufString_(v17, v18, *(a3 + 5) & 0xFFFFFFFFFFFFFFFELL);
+      v19 = objc_msgSend_tsp_initWithProtobufString_(v17, v18, *(message + 5) & 0xFFFFFFFFFFFFFFFELL);
       externalURLString = v7->_externalURLString;
       v7->_externalURLString = v19;
 
       v7->_definedExternalURLString = 1;
-      v8 = *(a3 + 4);
+      v8 = *(message + 4);
     }
 
     if ((v8 & 8) != 0)
     {
       v21 = objc_alloc(MEMORY[0x277CCACA8]);
-      v23 = objc_msgSend_tsp_initWithProtobufString_(v21, v22, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL);
+      v23 = objc_msgSend_tsp_initWithProtobufString_(v21, v22, *(message + 6) & 0xFFFFFFFFFFFFFFFELL);
       authorName = v7->_authorName;
       v7->_authorName = v23;
 
       v7->_definedAuthorName = 1;
-      v8 = *(a3 + 4);
+      v8 = *(message + 4);
     }
 
     if ((v8 & 0x10) != 0)
     {
       v25 = objc_alloc(MEMORY[0x277CCACA8]);
-      v27 = objc_msgSend_tsp_initWithProtobufString_(v25, v26, *(a3 + 7) & 0xFFFFFFFFFFFFFFFELL);
+      v27 = objc_msgSend_tsp_initWithProtobufString_(v25, v26, *(message + 7) & 0xFFFFFFFFFFFFFFFELL);
       authorURLString = v7->_authorURLString;
       v7->_authorURLString = v27;
 
@@ -253,14 +253,14 @@
   return v7;
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v8 = a4;
+  archiverCopy = archiver;
   title = self->_title;
   if (title)
   {
     v10 = objc_msgSend_tsp_protobufString(title, v6, v7);
-    *(a3 + 4) |= 1u;
+    *(message + 4) |= 1u;
     sub_276658080(__p, v10);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v20 < 0)
@@ -273,7 +273,7 @@
   if (descriptionText)
   {
     v12 = objc_msgSend_tsp_protobufString(descriptionText, v6, v7);
-    *(a3 + 4) |= 2u;
+    *(message + 4) |= 2u;
     sub_276658080(__p, v12);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v20 < 0)
@@ -286,7 +286,7 @@
   if (externalURLString)
   {
     v14 = objc_msgSend_tsp_protobufString(externalURLString, v6, v7);
-    *(a3 + 4) |= 4u;
+    *(message + 4) |= 4u;
     sub_276658080(__p, v14);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v20 < 0)
@@ -299,7 +299,7 @@
   if (authorName)
   {
     v16 = objc_msgSend_tsp_protobufString(authorName, v6, v7);
-    *(a3 + 4) |= 8u;
+    *(message + 4) |= 8u;
     sub_276658080(__p, v16);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v20 < 0)
@@ -312,7 +312,7 @@
   if (authorURLString)
   {
     v18 = objc_msgSend_tsp_protobufString(authorURLString, v6, v7);
-    *(a3 + 4) |= 0x10u;
+    *(message + 4) |= 0x10u;
     sub_276658080(__p, v18);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v20 < 0)

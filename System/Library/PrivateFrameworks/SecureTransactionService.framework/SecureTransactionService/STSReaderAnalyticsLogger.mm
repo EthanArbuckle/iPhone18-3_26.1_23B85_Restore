@@ -1,9 +1,9 @@
 @interface STSReaderAnalyticsLogger
 + (id)sharedCALogger;
 - (STSReaderAnalyticsLogger)init;
-- (void)_postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4;
-- (void)postReaderSessionEvent:(id)a3;
-- (void)postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4;
+- (void)_postReaderTransactionEvent:(id)event prepOnly:(BOOL)only;
+- (void)postReaderSessionEvent:(id)event;
+- (void)postReaderTransactionEvent:(id)event prepOnly:(BOOL)only;
 @end
 
 @implementation STSReaderAnalyticsLogger
@@ -37,15 +37,15 @@
   return v2;
 }
 
-- (void)_postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4
+- (void)_postReaderTransactionEvent:(id)event prepOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v99[11] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  eventCopy = event;
+  v6 = eventCopy;
+  if (onlyCopy)
   {
-    v7 = [v5 objectForKeyedSubscript:@"transactionStartEventTime"];
+    v7 = [eventCopy objectForKeyedSubscript:@"transactionStartEventTime"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -160,8 +160,8 @@
 
   else
   {
-    v48 = [MEMORY[0x277CCAD78] UUID];
-    v49 = [v48 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
     v53 = qword_280017798;
     if (!qword_280017798)
@@ -222,8 +222,8 @@
 
       v98[0] = @"transactionUUID";
       v98[1] = @"engagementType";
-      v94 = v49;
-      v99[0] = v49;
+      v94 = uUIDString;
+      v99[0] = uUIDString;
       v99[1] = qword_2800175C8;
       v98[2] = @"supportedtedReaderBTRoles";
       v98[3] = @"errorCode";
@@ -274,9 +274,9 @@
 
       v97[1] = v77;
       v96[2] = @"totalSuccessfulNFCEngagementTransactions";
-      v78 = [qword_2800175C8 intValue];
+      intValue = [qword_2800175C8 intValue];
       v79 = &unk_2876ED9B0;
-      if (v78 == 1)
+      if (intValue == 1)
       {
         if ([v47 intValue])
         {
@@ -301,7 +301,7 @@
       v81 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v97 forKeys:v96 count:4];
       [CALogger postCAEventFor:@"com.apple.sts.dailyReaderISO18013Statistics" eventInput:v81];
 
-      v49 = v94;
+      uUIDString = v94;
       v59 = v95;
     }
 
@@ -339,32 +339,32 @@
   v92 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4
+- (void)postReaderTransactionEvent:(id)event prepOnly:(BOOL)only
 {
-  v6 = a3;
+  eventCopy = event;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_265399264;
   block[3] = &unk_279B94158;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = eventCopy;
+  onlyCopy = only;
+  v8 = eventCopy;
   dispatch_async(queue, block);
 }
 
-- (void)postReaderSessionEvent:(id)a3
+- (void)postReaderSessionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_26539930C;
   v7[3] = &unk_279B93898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 

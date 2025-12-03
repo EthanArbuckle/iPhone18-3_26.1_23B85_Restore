@@ -1,15 +1,15 @@
 @interface SFContactAutoFillTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SFContactAutoFillTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFContactAutoFillTableViewCell" hasInstanceMethod:@"checked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFContactAutoFillTableViewCell" hasInstanceMethod:@"checkmarkButtonTapped:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFContactAutoFillTableViewCell" hasInstanceMethod:@"checked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFContactAutoFillTableViewCell" hasInstanceMethod:@"checkmarkButtonTapped:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -19,13 +19,13 @@
   [(SFContactAutoFillTableViewCellAccessibility *)&v8 _accessibilityLoadAccessibilityInformation];
   v7.receiver = self;
   v7.super_class = SFContactAutoFillTableViewCellAccessibility;
-  v3 = [(SFContactAutoFillTableViewCellAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(SFContactAutoFillTableViewCellAccessibility *)&v7 accessibilityTraits];
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v4[2] = __89__SFContactAutoFillTableViewCellAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v4[3] = &unk_29F2F29E0;
-  v5[1] = v3;
+  v5[1] = accessibilityTraits;
   objc_copyWeak(v5, &location);
   [(SFContactAutoFillTableViewCellAccessibility *)self _setAccessibilityTraitsBlock:v4];
   objc_destroyWeak(v5);

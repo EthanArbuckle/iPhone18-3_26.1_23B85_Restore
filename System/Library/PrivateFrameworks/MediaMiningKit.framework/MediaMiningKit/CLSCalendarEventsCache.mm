@@ -1,43 +1,43 @@
 @interface CLSCalendarEventsCache
-- (BOOL)hasEventsFromStartDate:(id)a3 toEndDate:(id)a4;
+- (BOOL)hasEventsFromStartDate:(id)date toEndDate:(id)endDate;
 - (CLSCalendarEventsCache)init;
-- (id)_storeDayForDate:(id)a3 createIfNeeded:(BOOL)a4;
+- (id)_storeDayForDate:(id)date createIfNeeded:(BOOL)needed;
 - (id)debugDescription;
-- (id)eventsForDate:(id)a3;
-- (id)eventsForStartDate:(id)a3 endDate:(id)a4;
-- (void)_enumerateDaysFromStartDate:(id)a3 toEndDate:(id)a4 usingBlock:(id)a5;
-- (void)enumerateEventsFromStartDate:(id)a3 toEndDate:(id)a4 usingBlock:(id)a5;
-- (void)insertEvent:(id)a3;
+- (id)eventsForDate:(id)date;
+- (id)eventsForStartDate:(id)date endDate:(id)endDate;
+- (void)_enumerateDaysFromStartDate:(id)date toEndDate:(id)endDate usingBlock:(id)block;
+- (void)enumerateEventsFromStartDate:(id)date toEndDate:(id)endDate usingBlock:(id)block;
+- (void)insertEvent:(id)event;
 @end
 
 @implementation CLSCalendarEventsCache
 
-- (id)_storeDayForDate:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_storeDayForDate:(id)date createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
+  neededCopy = needed;
+  dateCopy = date;
   if (_storeDayForDate_createIfNeeded__onceToken != -1)
   {
     dispatch_once(&_storeDayForDate_createIfNeeded__onceToken, &__block_literal_global_5778);
   }
 
-  v7 = [CLSCalendar components:28 fromDate:v6];
-  v8 = [v7 year];
-  [_storeDayForDate_createIfNeeded__s_fakeYear setYear:v8];
-  v9 = [v7 month];
-  [_storeDayForDate_createIfNeeded__s_fakeMonth setMonth:v9];
+  v7 = [CLSCalendar components:28 fromDate:dateCopy];
+  year = [v7 year];
+  [_storeDayForDate_createIfNeeded__s_fakeYear setYear:year];
+  month = [v7 month];
+  [_storeDayForDate_createIfNeeded__s_fakeMonth setMonth:month];
   v10 = [v7 day];
   [_storeDayForDate_createIfNeeded__s_fakeDay setDay:v10];
   v11 = [(NSMutableSet *)self->_years member:_storeDayForDate_createIfNeeded__s_fakeYear];
   if (v11)
   {
 LABEL_6:
-    v13 = [(CLSCalendarEventsCacheYear *)v11 months];
-    v14 = [v13 member:_storeDayForDate_createIfNeeded__s_fakeMonth];
+    months = [(CLSCalendarEventsCacheYear *)v11 months];
+    v14 = [months member:_storeDayForDate_createIfNeeded__s_fakeMonth];
 
     if (!v14)
     {
-      if (!v4)
+      if (!neededCopy)
       {
         v18 = 0;
 LABEL_13:
@@ -47,25 +47,25 @@ LABEL_13:
 
       v15 = [CLSCalendarEventsCacheMonth alloc];
       v14 = -[CLSCalendarEventsCacheMonth initWithMonth:](v15, "initWithMonth:", [_storeDayForDate_createIfNeeded__s_fakeMonth month]);
-      v16 = [(CLSCalendarEventsCacheYear *)v11 months];
-      [v16 addObject:v14];
+      months2 = [(CLSCalendarEventsCacheYear *)v11 months];
+      [months2 addObject:v14];
     }
 
-    v17 = [(CLSCalendarEventsCacheMonth *)v14 days];
-    v18 = [v17 member:_storeDayForDate_createIfNeeded__s_fakeDay];
+    days = [(CLSCalendarEventsCacheMonth *)v14 days];
+    v18 = [days member:_storeDayForDate_createIfNeeded__s_fakeDay];
 
-    if (!v18 && v4)
+    if (!v18 && neededCopy)
     {
       v19 = [CLSCalendarEventsCacheDay alloc];
       v18 = -[CLSCalendarEventsCacheDay initWithDay:](v19, "initWithDay:", [_storeDayForDate_createIfNeeded__s_fakeDay day]);
-      v20 = [(CLSCalendarEventsCacheMonth *)v14 days];
-      [v20 addObject:v18];
+      days2 = [(CLSCalendarEventsCacheMonth *)v14 days];
+      [days2 addObject:v18];
     }
 
     goto LABEL_13;
   }
 
-  if (v4)
+  if (neededCopy)
   {
     v12 = [CLSCalendarEventsCacheYear alloc];
     v11 = -[CLSCalendarEventsCacheYear initWithYear:](v12, "initWithYear:", [_storeDayForDate_createIfNeeded__s_fakeYear year]);
@@ -94,17 +94,17 @@ uint64_t __58__CLSCalendarEventsCache__storeDayForDate_createIfNeeded___block_in
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_enumerateDaysFromStartDate:(id)a3 toEndDate:(id)a4 usingBlock:(id)a5
+- (void)_enumerateDaysFromStartDate:(id)date toEndDate:(id)endDate usingBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  endDateCopy = endDate;
+  blockCopy = block;
+  if (blockCopy)
   {
     v14 = 0;
-    v9 = [CLSCalendar startOfDayForDate:a3];
-    v10 = [CLSCalendar startOfDayForDate:v7];
+    v9 = [CLSCalendar startOfDayForDate:date];
+    v10 = [CLSCalendar startOfDayForDate:endDateCopy];
     v11 = v9;
-    v8[2](v8, v11, &v14);
+    blockCopy[2](blockCopy, v11, &v14);
     v12 = v11;
     if ((v14 & 1) == 0)
     {
@@ -113,7 +113,7 @@ uint64_t __58__CLSCalendarEventsCache__storeDayForDate_createIfNeeded___block_in
       {
         v12 = [CLSCalendar dateByAddingDays:1 toDate:v13];
 
-        v8[2](v8, v12, &v14);
+        blockCopy[2](blockCopy, v12, &v14);
         v13 = v12;
         if (v14)
         {
@@ -128,10 +128,10 @@ LABEL_8:
   }
 }
 
-- (BOOL)hasEventsFromStartDate:(id)a3 toEndDate:(id)a4
+- (BOOL)hasEventsFromStartDate:(id)date toEndDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -141,7 +141,7 @@ LABEL_8:
   v9[2] = __59__CLSCalendarEventsCache_hasEventsFromStartDate_toEndDate___block_invoke;
   v9[3] = &unk_2788A85B0;
   v9[4] = &v10;
-  [(CLSCalendarEventsCache *)self enumerateEventsFromStartDate:v6 toEndDate:v7 usingBlock:v9];
+  [(CLSCalendarEventsCache *)self enumerateEventsFromStartDate:dateCopy toEndDate:endDateCopy usingBlock:v9];
   LOBYTE(self) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
@@ -155,24 +155,24 @@ uint64_t __59__CLSCalendarEventsCache_hasEventsFromStartDate_toEndDate___block_i
   return result;
 }
 
-- (id)eventsForDate:(id)a3
+- (id)eventsForDate:(id)date
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CLSCalendarEventsCache *)v5 _storeDayForDate:v4 createIfNeeded:0];
-  v7 = [v6 events];
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(CLSCalendarEventsCache *)selfCopy _storeDayForDate:dateCopy createIfNeeded:0];
+  events = [v6 events];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return events;
 }
 
-- (id)eventsForStartDate:(id)a3 endDate:(id)a4
+- (id)eventsForStartDate:(id)date endDate:(id)endDate
 {
   v6 = MEMORY[0x277CBEB58];
-  v7 = a4;
-  v8 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v9 = [v6 set];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -180,31 +180,31 @@ uint64_t __59__CLSCalendarEventsCache_hasEventsFromStartDate_toEndDate___block_i
   v12[3] = &unk_2788A8588;
   v10 = v9;
   v13 = v10;
-  [(CLSCalendarEventsCache *)self enumerateEventsFromStartDate:v8 toEndDate:v7 usingBlock:v12];
+  [(CLSCalendarEventsCache *)self enumerateEventsFromStartDate:dateCopy toEndDate:endDateCopy usingBlock:v12];
 
   return v10;
 }
 
-- (void)enumerateEventsFromStartDate:(id)a3 toEndDate:(id)a4 usingBlock:(id)a5
+- (void)enumerateEventsFromStartDate:(id)date toEndDate:(id)endDate usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v11 = self;
-    objc_sync_enter(v11);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __76__CLSCalendarEventsCache_enumerateEventsFromStartDate_toEndDate_usingBlock___block_invoke;
     v12[3] = &unk_2788A8560;
-    v12[4] = v11;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
-    [(CLSCalendarEventsCache *)v11 _enumerateDaysFromStartDate:v13 toEndDate:v14 usingBlock:v12];
+    v12[4] = selfCopy;
+    v13 = dateCopy;
+    v14 = endDateCopy;
+    v15 = blockCopy;
+    [(CLSCalendarEventsCache *)selfCopy _enumerateDaysFromStartDate:v13 toEndDate:v14 usingBlock:v12];
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -260,24 +260,24 @@ void __76__CLSCalendarEventsCache_enumerateEventsFromStartDate_toEndDate_usingBl
   }
 }
 
-- (void)insertEvent:(id)a3
+- (void)insertEvent:(id)event
 {
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [v4 startDate];
-    v7 = [v4 endDate];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    startDate = [eventCopy startDate];
+    endDate = [eventCopy endDate];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __38__CLSCalendarEventsCache_insertEvent___block_invoke;
     v8[3] = &unk_2788A8538;
-    v8[4] = v5;
-    v9 = v4;
-    [(CLSCalendarEventsCache *)v5 _enumerateDaysFromStartDate:v6 toEndDate:v7 usingBlock:v8];
+    v8[4] = selfCopy;
+    v9 = eventCopy;
+    [(CLSCalendarEventsCache *)selfCopy _enumerateDaysFromStartDate:startDate toEndDate:endDate usingBlock:v8];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 

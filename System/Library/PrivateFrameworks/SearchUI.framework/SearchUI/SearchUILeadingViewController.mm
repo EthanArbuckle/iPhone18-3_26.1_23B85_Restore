@@ -1,5 +1,5 @@
 @interface SearchUILeadingViewController
-+ (Class)leadingViewClassForRowModel:(id)a3;
++ (Class)leadingViewClassForRowModel:(id)model;
 - (SearchUIFeedbackDelegate)feedbackDelegate;
 - (SearchUILeadingViewController)init;
 - (void)hide;
@@ -15,17 +15,17 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(SearchUILeadingViewController *)v2 setupView];
-    [(SearchUILeadingViewController *)v3 setView:v4];
+    setupView = [(SearchUILeadingViewController *)v2 setupView];
+    [(SearchUILeadingViewController *)v3 setView:setupView];
   }
 
   return v3;
 }
 
-+ (Class)leadingViewClassForRowModel:(id)a3
++ (Class)leadingViewClassForRowModel:(id)model
 {
   v18[5] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  modelCopy = model;
   v4 = leadingViewClassForRowModel__classes;
   if (!leadingViewClassForRowModel__classes)
   {
@@ -60,7 +60,7 @@
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 supportsRowModel:{v3, v13}])
+        if ([v11 supportsRowModel:{modelCopy, v13}])
         {
           v8 = v11;
           goto LABEL_13;
@@ -84,8 +84,8 @@ LABEL_13:
 
 - (void)hide
 {
-  v2 = [(SearchUILeadingViewController *)self view];
-  [v2 setHidden:1];
+  view = [(SearchUILeadingViewController *)self view];
+  [view setHidden:1];
 }
 
 - (SearchUIFeedbackDelegate)feedbackDelegate

@@ -1,62 +1,62 @@
 @interface _SFPBMediaOffer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBMediaOffer)initWithDictionary:(id)a3;
-- (_SFPBMediaOffer)initWithFacade:(id)a3;
-- (_SFPBMediaOffer)initWithJSON:(id)a3;
+- (_SFPBMediaOffer)initWithDictionary:(id)dictionary;
+- (_SFPBMediaOffer)initWithFacade:(id)facade;
+- (_SFPBMediaOffer)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setOfferIdentifier:(id)a3;
-- (void)setSublabel:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setOfferIdentifier:(id)identifier;
+- (void)setSublabel:(id)sublabel;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBMediaOffer
 
-- (_SFPBMediaOffer)initWithFacade:(id)a3
+- (_SFPBMediaOffer)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBMediaOffer *)self init];
   if (v5)
   {
-    v6 = [v4 actionItem];
+    actionItem = [facadeCopy actionItem];
 
-    if (v6)
+    if (actionItem)
     {
       v7 = [_SFPBActionItem alloc];
-      v8 = [v4 actionItem];
-      v9 = [(_SFPBActionItem *)v7 initWithFacade:v8];
+      actionItem2 = [facadeCopy actionItem];
+      v9 = [(_SFPBActionItem *)v7 initWithFacade:actionItem2];
       [(_SFPBMediaOffer *)v5 setActionItem:v9];
     }
 
-    v10 = [v4 sublabel];
+    sublabel = [facadeCopy sublabel];
 
-    if (v10)
+    if (sublabel)
     {
-      v11 = [v4 sublabel];
-      [(_SFPBMediaOffer *)v5 setSublabel:v11];
+      sublabel2 = [facadeCopy sublabel];
+      [(_SFPBMediaOffer *)v5 setSublabel:sublabel2];
     }
 
-    v12 = [v4 offerIdentifier];
+    offerIdentifier = [facadeCopy offerIdentifier];
 
-    if (v12)
+    if (offerIdentifier)
     {
-      v13 = [v4 offerIdentifier];
-      [(_SFPBMediaOffer *)v5 setOfferIdentifier:v13];
+      offerIdentifier2 = [facadeCopy offerIdentifier];
+      [(_SFPBMediaOffer *)v5 setOfferIdentifier:offerIdentifier2];
     }
 
-    if ([v4 hasIsEnabled])
+    if ([facadeCopy hasIsEnabled])
     {
-      -[_SFPBMediaOffer setIsEnabled:](v5, "setIsEnabled:", [v4 isEnabled]);
+      -[_SFPBMediaOffer setIsEnabled:](v5, "setIsEnabled:", [facadeCopy isEnabled]);
     }
 
-    v14 = [v4 image];
+    image = [facadeCopy image];
 
-    if (v14)
+    if (image)
     {
       v15 = [_SFPBImage alloc];
-      v16 = [v4 image];
-      v17 = [(_SFPBImage *)v15 initWithFacade:v16];
+      image2 = [facadeCopy image];
+      v17 = [(_SFPBImage *)v15 initWithFacade:image2];
       [(_SFPBMediaOffer *)v5 setImage:v17];
     }
 
@@ -66,15 +66,15 @@
   return v5;
 }
 
-- (_SFPBMediaOffer)initWithDictionary:(id)a3
+- (_SFPBMediaOffer)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = _SFPBMediaOffer;
   v5 = [(_SFPBMediaOffer *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"actionItem"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"actionItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
       [(_SFPBMediaOffer *)v5 setActionItem:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sublabel"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sublabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       [(_SFPBMediaOffer *)v5 setSublabel:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"offerIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"offerIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,14 +98,14 @@
       [(_SFPBMediaOffer *)v5 setOfferIdentifier:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isEnabled"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBMediaOffer setIsEnabled:](v5, "setIsEnabled:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"image"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"image"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,30 +119,30 @@
   return v5;
 }
 
-- (_SFPBMediaOffer)initWithJSON:(id)a3
+- (_SFPBMediaOffer)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBMediaOffer *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBMediaOffer *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBMediaOffer *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -155,60 +155,60 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionItem)
   {
-    v4 = [(_SFPBMediaOffer *)self actionItem];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    actionItem = [(_SFPBMediaOffer *)self actionItem];
+    dictionaryRepresentation = [actionItem dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"actionItem"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionItem"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"actionItem"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionItem"];
     }
   }
 
   if (self->_image)
   {
-    v7 = [(_SFPBMediaOffer *)self image];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    image = [(_SFPBMediaOffer *)self image];
+    dictionaryRepresentation2 = [image dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"image"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"image"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"image"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"image"];
     }
   }
 
   if (self->_isEnabled)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBMediaOffer isEnabled](self, "isEnabled")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isEnabled"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isEnabled"];
   }
 
   if (self->_offerIdentifier)
   {
-    v11 = [(_SFPBMediaOffer *)self offerIdentifier];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"offerIdentifier"];
+    offerIdentifier = [(_SFPBMediaOffer *)self offerIdentifier];
+    v12 = [offerIdentifier copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"offerIdentifier"];
   }
 
   if (self->_sublabel)
   {
-    v13 = [(_SFPBMediaOffer *)self sublabel];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"sublabel"];
+    sublabel = [(_SFPBMediaOffer *)self sublabel];
+    v14 = [sublabel copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"sublabel"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -229,28 +229,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ [(_SFPBImage *)self->_image hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  v5 = [(_SFPBMediaOffer *)self actionItem];
-  v6 = [v4 actionItem];
-  if ((v5 != 0) == (v6 == 0))
+  actionItem = [(_SFPBMediaOffer *)self actionItem];
+  actionItem2 = [equalCopy actionItem];
+  if ((actionItem != 0) == (actionItem2 == 0))
   {
     goto LABEL_22;
   }
 
-  v7 = [(_SFPBMediaOffer *)self actionItem];
-  if (v7)
+  actionItem3 = [(_SFPBMediaOffer *)self actionItem];
+  if (actionItem3)
   {
-    v8 = v7;
-    v9 = [(_SFPBMediaOffer *)self actionItem];
-    v10 = [v4 actionItem];
-    v11 = [v9 isEqual:v10];
+    v8 = actionItem3;
+    actionItem4 = [(_SFPBMediaOffer *)self actionItem];
+    actionItem5 = [equalCopy actionItem];
+    v11 = [actionItem4 isEqual:actionItem5];
 
     if (!v11)
     {
@@ -262,20 +262,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaOffer *)self sublabel];
-  v6 = [v4 sublabel];
-  if ((v5 != 0) == (v6 == 0))
+  actionItem = [(_SFPBMediaOffer *)self sublabel];
+  actionItem2 = [equalCopy sublabel];
+  if ((actionItem != 0) == (actionItem2 == 0))
   {
     goto LABEL_22;
   }
 
-  v12 = [(_SFPBMediaOffer *)self sublabel];
-  if (v12)
+  sublabel = [(_SFPBMediaOffer *)self sublabel];
+  if (sublabel)
   {
-    v13 = v12;
-    v14 = [(_SFPBMediaOffer *)self sublabel];
-    v15 = [v4 sublabel];
-    v16 = [v14 isEqual:v15];
+    v13 = sublabel;
+    sublabel2 = [(_SFPBMediaOffer *)self sublabel];
+    sublabel3 = [equalCopy sublabel];
+    v16 = [sublabel2 isEqual:sublabel3];
 
     if (!v16)
     {
@@ -287,20 +287,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaOffer *)self offerIdentifier];
-  v6 = [v4 offerIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  actionItem = [(_SFPBMediaOffer *)self offerIdentifier];
+  actionItem2 = [equalCopy offerIdentifier];
+  if ((actionItem != 0) == (actionItem2 == 0))
   {
     goto LABEL_22;
   }
 
-  v17 = [(_SFPBMediaOffer *)self offerIdentifier];
-  if (v17)
+  offerIdentifier = [(_SFPBMediaOffer *)self offerIdentifier];
+  if (offerIdentifier)
   {
-    v18 = v17;
-    v19 = [(_SFPBMediaOffer *)self offerIdentifier];
-    v20 = [v4 offerIdentifier];
-    v21 = [v19 isEqual:v20];
+    v18 = offerIdentifier;
+    offerIdentifier2 = [(_SFPBMediaOffer *)self offerIdentifier];
+    offerIdentifier3 = [equalCopy offerIdentifier];
+    v21 = [offerIdentifier2 isEqual:offerIdentifier3];
 
     if (!v21)
     {
@@ -313,22 +313,22 @@
   }
 
   isEnabled = self->_isEnabled;
-  if (isEnabled != [v4 isEnabled])
+  if (isEnabled != [equalCopy isEnabled])
   {
     goto LABEL_23;
   }
 
-  v5 = [(_SFPBMediaOffer *)self image];
-  v6 = [v4 image];
-  if ((v5 != 0) == (v6 == 0))
+  actionItem = [(_SFPBMediaOffer *)self image];
+  actionItem2 = [equalCopy image];
+  if ((actionItem != 0) == (actionItem2 == 0))
   {
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  v23 = [(_SFPBMediaOffer *)self image];
-  if (!v23)
+  image = [(_SFPBMediaOffer *)self image];
+  if (!image)
   {
 
 LABEL_26:
@@ -336,10 +336,10 @@ LABEL_26:
     goto LABEL_24;
   }
 
-  v24 = v23;
-  v25 = [(_SFPBMediaOffer *)self image];
-  v26 = [v4 image];
-  v27 = [v25 isEqual:v26];
+  v24 = image;
+  image2 = [(_SFPBMediaOffer *)self image];
+  image3 = [equalCopy image];
+  v27 = [image2 isEqual:image3];
 
   if (v27)
   {
@@ -353,23 +353,23 @@ LABEL_24:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_SFPBMediaOffer *)self actionItem];
-  if (v4)
+  toCopy = to;
+  actionItem = [(_SFPBMediaOffer *)self actionItem];
+  if (actionItem)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBMediaOffer *)self sublabel];
-  if (v5)
+  sublabel = [(_SFPBMediaOffer *)self sublabel];
+  if (sublabel)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBMediaOffer *)self offerIdentifier];
-  if (v6)
+  offerIdentifier = [(_SFPBMediaOffer *)self offerIdentifier];
+  if (offerIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -379,25 +379,25 @@ LABEL_24:
     PBDataWriterWriteBOOLField();
   }
 
-  v7 = [(_SFPBMediaOffer *)self image];
-  if (v7)
+  image = [(_SFPBMediaOffer *)self image];
+  if (image)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setOfferIdentifier:(id)a3
+- (void)setOfferIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   offerIdentifier = self->_offerIdentifier;
   self->_offerIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSublabel:(id)a3
+- (void)setSublabel:(id)sublabel
 {
-  v4 = [a3 copy];
+  v4 = [sublabel copy];
   sublabel = self->_sublabel;
   self->_sublabel = v4;
 

@@ -1,8 +1,8 @@
 @interface SRBannerMediaPlayerView
 - (AVPlayer)avPlayer;
-- (void)loadMovieLoopWithPath:(id)a3 bannerInstance:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAvPlayer:(id)a3;
+- (void)loadMovieLoopWithPath:(id)path bannerInstance:(id)instance;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAvPlayer:(id)player;
 - (void)start;
 - (void)stop;
 @end
@@ -11,38 +11,38 @@
 
 - (AVPlayer)avPlayer
 {
-  v2 = [(SRBannerMediaPlayerView *)self playerLayer];
-  v3 = [v2 player];
+  playerLayer = [(SRBannerMediaPlayerView *)self playerLayer];
+  player = [playerLayer player];
 
-  return v3;
+  return player;
 }
 
-- (void)setAvPlayer:(id)a3
+- (void)setAvPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(SRBannerMediaPlayerView *)self playerLayer];
-  [v5 setPlayer:v4];
+  playerCopy = player;
+  playerLayer = [(SRBannerMediaPlayerView *)self playerLayer];
+  [playerLayer setPlayer:playerCopy];
 }
 
-- (void)loadMovieLoopWithPath:(id)a3 bannerInstance:(id)a4
+- (void)loadMovieLoopWithPath:(id)path bannerInstance:(id)instance
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  instanceCopy = instance;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = sub_100002CF4;
   v24[4] = sub_100002D04;
   v25 = 0;
-  v8 = [NSURL fileURLWithPath:v6 isDirectory:0];
+  v8 = [NSURL fileURLWithPath:pathCopy isDirectory:0];
   v9 = objc_alloc_init(AVPlayer);
   [(SRBannerMediaPlayerView *)self setAvPlayer:v9];
 
-  v10 = [(SRBannerMediaPlayerView *)self avPlayer];
-  [v10 _setParticipatesInAudioSession:0];
+  avPlayer = [(SRBannerMediaPlayerView *)self avPlayer];
+  [avPlayer _setParticipatesInAudioSession:0];
 
-  v11 = [(SRBannerMediaPlayerView *)self avPlayer];
-  [v11 setPreventsDisplaySleepDuringVideoPlayback:0];
+  avPlayer2 = [(SRBannerMediaPlayerView *)self avPlayer];
+  [avPlayer2 setPreventsDisplaySleepDuringVideoPlayback:0];
 
   v12 = [AVPlayerItem playerItemWithURL:v8];
   playerItem = self->_playerItem;
@@ -53,53 +53,53 @@
   v20[1] = 3221225472;
   v20[2] = sub_100002D0C;
   v14 = v20[3] = &unk_1000185A0;
-  v22 = self;
+  selfCopy = self;
   v23 = v24;
   v21 = v14;
   [v14 loadValuesAsynchronouslyForKeys:&off_100019358 completionHandler:v20];
-  v15 = [(SRBannerMediaPlayerView *)self avPlayer];
-  [v15 replaceCurrentItemWithPlayerItem:self->_playerItem];
+  avPlayer3 = [(SRBannerMediaPlayerView *)self avPlayer];
+  [avPlayer3 replaceCurrentItemWithPlayerItem:self->_playerItem];
 
-  v16 = [(SRBannerMediaPlayerView *)self avPlayer];
-  [v16 setAudiovisualBackgroundPlaybackPolicy:3];
+  avPlayer4 = [(SRBannerMediaPlayerView *)self avPlayer];
+  [avPlayer4 setAudiovisualBackgroundPlaybackPolicy:3];
 
-  v17 = [(SRBannerMediaPlayerView *)self playerLayer];
-  [v17 setHidden:0];
+  playerLayer = [(SRBannerMediaPlayerView *)self playerLayer];
+  [playerLayer setHidden:0];
 
-  v18 = [(SRBannerMediaPlayerView *)self avPlayer];
-  [v18 play];
+  avPlayer5 = [(SRBannerMediaPlayerView *)self avPlayer];
+  [avPlayer5 play];
 
   if (dword_10001EA10 <= 30 && (dword_10001EA10 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v19 = [(SRBannerMediaPlayerView *)self avPlayer];
-  [v19 addObserver:self forKeyPath:@"status" options:5 context:0];
+  avPlayer6 = [(SRBannerMediaPlayerView *)self avPlayer];
+  [avPlayer6 addObserver:self forKeyPath:@"status" options:5 context:0];
 
   _Block_object_dispose(v24, 8);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v15 = a5;
-  v8 = a4;
-  v9 = [(SRBannerMediaPlayerView *)self avPlayer];
-  v10 = [v8 isEqual:v9];
+  changeCopy = change;
+  objectCopy = object;
+  avPlayer = [(SRBannerMediaPlayerView *)self avPlayer];
+  v10 = [objectCopy isEqual:avPlayer];
 
-  v11 = v15;
+  v11 = changeCopy;
   if (v10)
   {
-    v12 = [v15 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v12 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
     }
 
     else
     {
-      v13 = 0;
+      integerValue = 0;
     }
 
     if (dword_10001EA10 <= 30 && (dword_10001EA10 != -1 || _LogCategory_Initialize()))
@@ -107,7 +107,7 @@
       sub_10000D5F8();
     }
 
-    if (v13 == 1)
+    if (integerValue == 1)
     {
       if (dword_10001EA10 <= 30 && (dword_10001EA10 != -1 || _LogCategory_Initialize()))
       {
@@ -118,23 +118,23 @@
       [v14 postNotificationName:@"VideoReadyToPlay" object:self];
     }
 
-    v11 = v15;
+    v11 = changeCopy;
   }
 }
 
 - (void)start
 {
-  v2 = [(SRBannerMediaPlayerView *)self avPlayer];
-  [v2 play];
+  avPlayer = [(SRBannerMediaPlayerView *)self avPlayer];
+  [avPlayer play];
 }
 
 - (void)stop
 {
-  v3 = [(SRBannerMediaPlayerView *)self avPlayer];
-  [v3 removeObserver:self forKeyPath:@"status" context:0];
+  avPlayer = [(SRBannerMediaPlayerView *)self avPlayer];
+  [avPlayer removeObserver:self forKeyPath:@"status" context:0];
 
-  v4 = [(SRBannerMediaPlayerView *)self avPlayer];
-  [v4 pause];
+  avPlayer2 = [(SRBannerMediaPlayerView *)self avPlayer];
+  [avPlayer2 pause];
 
   [(SRBannerMediaPlayerView *)self setAvPlayer:0];
   avLooper = self->_avLooper;

@@ -1,6 +1,6 @@
 @interface DMDLogOutUserOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -23,13 +23,13 @@
   return v3;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   v4 = +[UMUserManager sharedManager];
-  v5 = [v4 currentUser];
-  v6 = [v5 isLoginUser];
+  currentUser = [v4 currentUser];
+  isLoginUser = [currentUser isLoginUser];
 
-  if (v6)
+  if (isLoginUser)
   {
     v7 = DMFErrorWithCodeAndUserInfo();
     [(DMDLogOutUserOperation *)self endOperationWithError:v7];

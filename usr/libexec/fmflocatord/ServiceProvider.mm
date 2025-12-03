@@ -11,19 +11,19 @@
   v4 = sub_100002830();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(ServiceProvider *)self fm_logID];
-    v6 = [(ServiceProvider *)self account];
-    v7 = [v6 uniqueId];
+    fm_logID = [(ServiceProvider *)self fm_logID];
+    account = [(ServiceProvider *)self account];
+    uniqueId = [account uniqueId];
     *buf = 138412546;
-    v17 = v5;
+    v17 = fm_logID;
     v18 = 2112;
-    v19 = v7;
+    v19 = uniqueId;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%@ Starting service provider for account %@", buf, 0x16u);
   }
 
-  v8 = [(ServiceProvider *)self account];
+  account2 = [(ServiceProvider *)self account];
 
-  if (v8)
+  if (account2)
   {
     v9 = +[NSOperationQueue mainQueue];
     v15[0] = _NSConcreteStackBlock;
@@ -57,22 +57,22 @@
 - (void)_teardown
 {
   v7 = +[NSNotificationCenter defaultCenter];
-  v3 = [(ServiceProvider *)self didDeactivateToken];
+  didDeactivateToken = [(ServiceProvider *)self didDeactivateToken];
 
-  if (v3)
+  if (didDeactivateToken)
   {
-    v4 = [(ServiceProvider *)self didDeactivateToken];
-    [v7 removeObserver:v4];
+    didDeactivateToken2 = [(ServiceProvider *)self didDeactivateToken];
+    [v7 removeObserver:didDeactivateToken2];
 
     [(ServiceProvider *)self setDidDeactivateToken:0];
   }
 
-  v5 = [(ServiceProvider *)self didUpdateToken];
+  didUpdateToken = [(ServiceProvider *)self didUpdateToken];
 
-  if (v5)
+  if (didUpdateToken)
   {
-    v6 = [(ServiceProvider *)self didUpdateToken];
-    [v7 removeObserver:v6];
+    didUpdateToken2 = [(ServiceProvider *)self didUpdateToken];
+    [v7 removeObserver:didUpdateToken2];
 
     [(ServiceProvider *)self setDidUpdateToken:0];
   }

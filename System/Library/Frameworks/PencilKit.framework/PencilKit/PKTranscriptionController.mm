@@ -1,68 +1,68 @@
 @interface PKTranscriptionController
 - (PKAttachment)attachment;
 - (PKRecognitionSessionManager)recognitionManager;
-- (PKTranscriptionController)initWithRecognitionManager:(id)a3 strokeSelection:(id)a4 attachment:(id)a5;
-- (id)_fetchTranscriptionWithCompletion:(id)a3;
+- (PKTranscriptionController)initWithRecognitionManager:(id)manager strokeSelection:(id)selection attachment:(id)attachment;
+- (id)_fetchTranscriptionWithCompletion:(id)completion;
 - (void)_hideHUD;
 - (void)_progressChanged;
-- (void)_receiveTranscription:(id)a3;
-- (void)_showHUDWithProgress:(id)a3;
+- (void)_receiveTranscription:(id)transcription;
+- (void)_showHUDWithProgress:(id)progress;
 - (void)_unregisterProgressObserver;
 - (void)dealloc;
-- (void)findCompleteTranscriptionForNote:(id)a3;
-- (void)findTranscriptionForType:(int)a3 withCompletion:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)findCompleteTranscriptionForNote:(id)note;
+- (void)findTranscriptionForType:(int)type withCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation PKTranscriptionController
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKTranscriptionController;
   [(PKTranscriptionController *)&v4 dealloc];
 }
 
-- (PKTranscriptionController)initWithRecognitionManager:(id)a3 strokeSelection:(id)a4 attachment:(id)a5
+- (PKTranscriptionController)initWithRecognitionManager:(id)manager strokeSelection:(id)selection attachment:(id)attachment
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  selectionCopy = selection;
+  attachmentCopy = attachment;
   v15.receiver = self;
   v15.super_class = PKTranscriptionController;
   v11 = [(PKTranscriptionController *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_recognitionManager, v8);
-    objc_storeStrong(&v12->_strokeSelection, a4);
-    objc_storeWeak(&v12->_attachment, v10);
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v12 selector:sel_textInputDidChange_ name:@"TIPreferencesControllerChangedNotification" object:0];
+    objc_storeWeak(&v11->_recognitionManager, managerCopy);
+    objc_storeStrong(&v12->_strokeSelection, selection);
+    objc_storeWeak(&v12->_attachment, attachmentCopy);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel_textInputDidChange_ name:@"TIPreferencesControllerChangedNotification" object:0];
   }
 
   return v12;
 }
 
-- (void)findTranscriptionForType:(int)a3 withCompletion:(id)a4
+- (void)findTranscriptionForType:(int)type withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   self->_didShowHUD = 0;
-  self->_transcriptionType = a3;
-  v7 = [(PKTranscriptionController *)self textTranscription];
+  self->_transcriptionType = type;
+  textTranscription = [(PKTranscriptionController *)self textTranscription];
 
-  if (v7)
+  if (textTranscription)
   {
-    if (v6)
+    if (completionCopy)
     {
       v8 = [PKTranscriptionResult alloc];
-      v9 = [(PKTranscriptionController *)self textTranscription];
-      v10 = [(PKTranscriptionResult *)v8 initWithTranscription:v9 didShowHUD:self->_didShowHUD];
+      textTranscription2 = [(PKTranscriptionController *)self textTranscription];
+      v10 = [(PKTranscriptionResult *)v8 initWithTranscription:textTranscription2 didShowHUD:self->_didShowHUD];
 
-      v6[2](v6, v10);
+      completionCopy[2](completionCopy, v10);
     }
   }
 
@@ -73,9 +73,9 @@
     v15[2] = __69__PKTranscriptionController_findTranscriptionForType_withCompletion___block_invoke;
     v15[3] = &unk_1E82D9ED0;
     v15[4] = self;
-    v16 = v6;
+    v16 = completionCopy;
     v11 = [(PKTranscriptionController *)self _fetchTranscriptionWithCompletion:v15];
-    if (a3 != 2)
+    if (type != 2)
     {
       v12 = dispatch_time(0, 2000000000);
       v13[0] = MEMORY[0x1E69E9820];
@@ -113,13 +113,13 @@ uint64_t __69__PKTranscriptionController_findTranscriptionForType_withCompletion
   return result;
 }
 
-- (id)_fetchTranscriptionWithCompletion:(id)a3
+- (id)_fetchTranscriptionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKTranscriptionController *)self strokeSelection];
-  v6 = [v5 drawing];
+  completionCopy = completion;
+  strokeSelection = [(PKTranscriptionController *)self strokeSelection];
+  drawing = [strokeSelection drawing];
 
-  if (v6 && (v7 = objc_loadWeakRetained(&self->_recognitionManager), v7, v7))
+  if (drawing && (v7 = objc_loadWeakRetained(&self->_recognitionManager), v7, v7))
   {
     self->_shouldCancel = 0;
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -129,17 +129,17 @@ uint64_t __69__PKTranscriptionController_findTranscriptionForType_withCompletion
     aBlock[4] = self;
     v8 = _Block_copy(aBlock);
     WeakRetained = objc_loadWeakRetained(&self->_recognitionManager);
-    v10 = [WeakRetained state];
+    state = [WeakRetained state];
 
-    if (v10 != 3)
+    if (state != 3)
     {
       v11 = MEMORY[0x1E695DFA0];
       v12 = objc_loadWeakRetained(&self->_attachment);
-      v13 = [v12 strokeSpatialCache];
-      v14 = v13;
-      if (v13)
+      strokeSpatialCache = [v12 strokeSpatialCache];
+      v14 = strokeSpatialCache;
+      if (strokeSpatialCache)
       {
-        v15 = *(v13 + 24);
+        v15 = *(strokeSpatialCache + 24);
       }
 
       else
@@ -150,26 +150,26 @@ uint64_t __69__PKTranscriptionController_findTranscriptionForType_withCompletion
       v16 = v15;
       v17 = [v11 orderedSetWithArray:v16];
 
-      v18 = [(PKTranscriptionController *)self strokeSelection];
-      v19 = [v18 strokes];
-      [v17 unionOrderedSet:v19];
+      strokeSelection2 = [(PKTranscriptionController *)self strokeSelection];
+      strokes = [strokeSelection2 strokes];
+      [v17 unionOrderedSet:strokes];
 
       v20 = objc_loadWeakRetained(&self->_recognitionManager);
-      v21 = [v17 array];
-      [(PKRecognitionSessionManager *)v20 setVisibleOnscreenStrokes:v21];
+      array = [v17 array];
+      [(PKRecognitionSessionManager *)v20 setVisibleOnscreenStrokes:array];
     }
 
     v22 = objc_loadWeakRetained(&self->_recognitionManager);
-    v23 = [(PKTranscriptionController *)self strokeSelection];
-    v24 = [v23 strokes];
-    v25 = [v24 array];
+    strokeSelection3 = [(PKTranscriptionController *)self strokeSelection];
+    strokes2 = [strokeSelection3 strokes];
+    array2 = [strokes2 array];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __63__PKTranscriptionController__fetchTranscriptionWithCompletion___block_invoke_2;
     v28[3] = &unk_1E82D9ED0;
     v28[4] = self;
-    v29 = v4;
-    v26 = [(PKRecognitionSessionManager *)v22 fetchTranscriptionForStrokes:v25 cancelBlock:v8 withCompletion:v28];
+    v29 = completionCopy;
+    v26 = [(PKRecognitionSessionManager *)v22 fetchTranscriptionForStrokes:array2 cancelBlock:v8 withCompletion:v28];
   }
 
   else
@@ -198,9 +198,9 @@ void __63__PKTranscriptionController__fetchTranscriptionWithCompletion___block_i
   }
 }
 
-- (void)findCompleteTranscriptionForNote:(id)a3
+- (void)findCompleteTranscriptionForNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   WeakRetained = objc_loadWeakRetained(&self->_recognitionManager);
 
   if (WeakRetained)
@@ -213,16 +213,16 @@ void __63__PKTranscriptionController__fetchTranscriptionWithCompletion___block_i
     aBlock[4] = self;
     v6 = _Block_copy(aBlock);
     v7 = objc_loadWeakRetained(&self->_recognitionManager);
-    v8 = [(PKTranscriptionController *)self attachment];
-    v9 = [v8 drawing];
-    v10 = [v9 strokes];
+    attachment = [(PKTranscriptionController *)self attachment];
+    drawing = [attachment drawing];
+    strokes = [drawing strokes];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __62__PKTranscriptionController_findCompleteTranscriptionForNote___block_invoke_2;
     v12[3] = &unk_1E82D9ED0;
     v12[4] = self;
-    v13 = v4;
-    v11 = [(PKRecognitionSessionManager *)v7 fetchTranscriptionForStrokes:v10 cancelBlock:v6 withCompletion:v12];
+    v13 = noteCopy;
+    v11 = [(PKRecognitionSessionManager *)v7 fetchTranscriptionForStrokes:strokes cancelBlock:v6 withCompletion:v12];
   }
 }
 
@@ -239,10 +239,10 @@ void __62__PKTranscriptionController_findCompleteTranscriptionForNote___block_in
   }
 }
 
-- (void)_receiveTranscription:(id)a3
+- (void)_receiveTranscription:(id)transcription
 {
-  v4 = a3;
-  if (!v4)
+  transcriptionCopy = transcription;
+  if (!transcriptionCopy)
   {
     v5 = os_log_create("com.apple.pencilkit", "Recognition");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -252,9 +252,9 @@ void __62__PKTranscriptionController_findCompleteTranscriptionForNote___block_in
     }
   }
 
-  if ([v4 length] || self->_transcriptionType == 2)
+  if ([transcriptionCopy length] || self->_transcriptionType == 2)
   {
-    [(PKTranscriptionController *)self setTextTranscription:v4];
+    [(PKTranscriptionController *)self setTextTranscription:transcriptionCopy];
   }
 
   else
@@ -272,9 +272,9 @@ void __62__PKTranscriptionController_findCompleteTranscriptionForNote___block_in
   }
 }
 
-- (void)_showHUDWithProgress:(id)a3
+- (void)_showHUDWithProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   transcriptionType = self->_transcriptionType;
   v6 = _PencilKitBundle();
   v7 = v6;
@@ -305,23 +305,23 @@ void __62__PKTranscriptionController_findCompleteTranscriptionForNote___block_in
 
   [(PKProgressAlertController *)self->_progressAlertController setDelegate:self];
   v13 = self->_progressAlertController;
-  [(NSProgress *)v4 fractionCompleted];
+  [(NSProgress *)progressCopy fractionCompleted];
   [(PKProgressAlertController *)v13 setProgress:?];
   currentProgress = self->_currentProgress;
-  self->_currentProgress = v4;
-  v15 = v4;
+  self->_currentProgress = progressCopy;
+  v15 = progressCopy;
 
   [(NSProgress *)self->_currentProgress addObserver:self forKeyPath:@"fractionCompleted" options:3 context:PKCopyAsTextContext];
-  v16 = [(PKTranscriptionController *)self attachment];
-  v17 = [v16 viewRep];
-  v18 = [v17 window];
-  v19 = [v18 rootViewController];
-  [v19 presentViewController:self->_progressAlertController animated:1 completion:&__block_literal_global_51];
+  attachment = [(PKTranscriptionController *)self attachment];
+  viewRep = [attachment viewRep];
+  window = [viewRep window];
+  rootViewController = [window rootViewController];
+  [rootViewController presentViewController:self->_progressAlertController animated:1 completion:&__block_literal_global_51];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (PKCopyAsTextContext == a6)
+  if (PKCopyAsTextContext == context)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
@@ -343,9 +343,9 @@ void __62__PKTranscriptionController_findCompleteTranscriptionForNote___block_in
 
 - (void)_progressChanged
 {
-  v3 = [(PKProgressAlertController *)self->_progressAlertController presentingViewController];
+  presentingViewController = [(PKProgressAlertController *)self->_progressAlertController presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
     progressAlertController = self->_progressAlertController;
     [(NSProgress *)self->_currentProgress fractionCompleted];

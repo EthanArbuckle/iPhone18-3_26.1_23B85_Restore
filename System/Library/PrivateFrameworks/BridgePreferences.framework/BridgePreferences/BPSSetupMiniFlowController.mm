@@ -1,25 +1,25 @@
 @interface BPSSetupMiniFlowController
 - (BPSBuddyControllerDelegate)delegate;
 - (id)navigationController;
-- (void)pushController:(id)a3 animated:(BOOL)a4;
+- (void)pushController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation BPSSetupMiniFlowController
 
 - (id)navigationController
 {
-  v2 = [(BPSSetupMiniFlowController *)self viewController];
-  v3 = [v2 navigationController];
+  viewController = [(BPSSetupMiniFlowController *)self viewController];
+  navigationController = [viewController navigationController];
 
-  return v3;
+  return navigationController;
 }
 
-- (void)pushController:(id)a3 animated:(BOOL)a4
+- (void)pushController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BPSSetupMiniFlowController *)self navigationController];
-  [v7 pushViewController:v6 animated:v4];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  navigationController = [(BPSSetupMiniFlowController *)self navigationController];
+  [navigationController pushViewController:controllerCopy animated:animatedCopy];
 }
 
 - (BPSBuddyControllerDelegate)delegate

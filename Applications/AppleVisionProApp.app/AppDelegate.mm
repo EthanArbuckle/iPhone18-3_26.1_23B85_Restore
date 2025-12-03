@@ -1,38 +1,38 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4;
-- (void)application:(UIApplication *)a3 didReceiveRemoteNotification:(NSDictionary *)a4 fetchCompletionHandler:(id)a5;
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4;
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4;
-- (void)userNotificationCenter:(UNUserNotificationCenter *)a3 didReceiveNotificationResponse:(UNNotificationResponse *)a4 withCompletionHandler:(id)a5;
-- (void)userNotificationCenter:(UNUserNotificationCenter *)a3 willPresentNotification:(UNNotification *)a4 withCompletionHandler:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window;
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification fetchCompletionHandler:(id)handler;
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error;
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token;
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(id)handler;
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v4 = a4;
-  if (a4)
+  optionsCopy = options;
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_1000FBE40(&qword_1001691F0, type metadata accessor for LaunchOptionsKey);
-    v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = sub_1000F94DC(v4);
+  applicationCopy = application;
+  selfCopy = self;
+  v9 = sub_1000F94DC(optionsCopy);
 
   return v9 & 1;
 }
 
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = self;
+  applicationCopy = application;
+  tokenCopy = token;
+  selfCopy = self;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 
@@ -40,24 +40,24 @@
   sub_10003DBB8(v8, v10);
 }
 
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  applicationCopy = application;
+  errorCopy = error;
+  selfCopy = self;
   sub_1000F9C94();
 }
 
-- (void)application:(UIApplication *)a3 didReceiveRemoteNotification:(NSDictionary *)a4 fetchCompletionHandler:(id)a5
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification fetchCompletionHandler:(id)handler
 {
   v9 = sub_100002BE4(&unk_10016F2B0, &qword_10010F6F0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = application;
+  v14[3] = notification;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -72,43 +72,43 @@
   v17[3] = 0;
   v17[4] = &unk_10011A548;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  applicationCopy = application;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_1000F8E38(0, 0, v12, &unk_10011A550, v17);
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1000FA53C(v9, v10);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v12 = sub_1000FA53C(sessionCopy, optionsCopy);
 
   return v12;
 }
 
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  applicationCopy = application;
+  windowCopy = window;
+  selfCopy = self;
   v9 = sub_1000FA7D4();
 
   return v9;
 }
 
-- (void)userNotificationCenter:(UNUserNotificationCenter *)a3 didReceiveNotificationResponse:(UNNotificationResponse *)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(id)handler
 {
   v9 = sub_100002BE4(&unk_10016F2B0, &qword_10010F6F0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = center;
+  v14[3] = response;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -123,22 +123,22 @@
   v17[3] = 0;
   v17[4] = &unk_10011A4B8;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  centerCopy = center;
+  responseCopy = response;
+  selfCopy = self;
   sub_1000F8E38(0, 0, v12, &unk_10011A4C0, v17);
 }
 
-- (void)userNotificationCenter:(UNUserNotificationCenter *)a3 willPresentNotification:(UNNotification *)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(id)handler
 {
   v9 = sub_100002BE4(&unk_10016F2B0, &qword_10010F6F0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = center;
+  v14[3] = notification;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -153,9 +153,9 @@
   v17[3] = 0;
   v17[4] = &unk_10011A470;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  centerCopy = center;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_1000F8E38(0, 0, v12, &unk_10011A480, v17);
 }
 

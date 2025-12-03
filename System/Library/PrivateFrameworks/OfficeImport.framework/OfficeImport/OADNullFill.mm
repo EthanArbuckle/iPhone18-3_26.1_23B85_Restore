@@ -2,7 +2,7 @@
 + (id)defaultProperties;
 + (id)nullFill;
 - (OADNullFill)initWithDefaults;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OADNullFill
@@ -21,9 +21,9 @@
   return [(OADProperties *)&v3 initWithDefaults];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [OADNullFill allocWithZone:a3];
+  v3 = [OADNullFill allocWithZone:zone];
 
   return [(OADNullFill *)v3 initWithDefaults];
 }

@@ -1,74 +1,74 @@
 @interface VNBlurMeasure
-+ (BOOL)computeApproximateBlurScore:(float *)a3 onGrayscaleImage:(__CVBuffer *)a4 sampledPixelsCount:(int)a5 insetFactor:(float)a6 error:(id *)a7;
-+ (BOOL)computeApproximateBlurScore:(float *)a3 onRGBAImage:(__CVBuffer *)a4 sampledPixelsCount:(int)a5 insetFactor:(float)a6 error:(id *)a7;
-+ (BOOL)computeBlurScore:(float *)a3 onGrayscaleImage:(__CVBuffer *)a4 andWithRegionOfInterestInImageCoordinates:(CGRect)a5 andRegionOfInterestInsetFactor:(float)a6 error:(id *)a7;
-+ (BOOL)computeBlurScore:(float *)a3 onGrayscaleImage:(__CVBuffer *)a4 insetFactor:(float)a5 error:(id *)a6;
-+ (BOOL)computeBlurScore:(float *)a3 usingBlurSignature:(id)a4 insetFactor:(float)a5 imageROI:(CGRect)a6 error:(id *)a7;
-+ (BOOL)computeEdgeWidthBlurScore:(float *)a3 onGrayscaleImage:(__CVBuffer *)a4 error:(id *)a5;
++ (BOOL)computeApproximateBlurScore:(float *)score onGrayscaleImage:(__CVBuffer *)image sampledPixelsCount:(int)count insetFactor:(float)factor error:(id *)error;
++ (BOOL)computeApproximateBlurScore:(float *)score onRGBAImage:(__CVBuffer *)image sampledPixelsCount:(int)count insetFactor:(float)factor error:(id *)error;
++ (BOOL)computeBlurScore:(float *)score onGrayscaleImage:(__CVBuffer *)image andWithRegionOfInterestInImageCoordinates:(CGRect)coordinates andRegionOfInterestInsetFactor:(float)factor error:(id *)error;
++ (BOOL)computeBlurScore:(float *)score onGrayscaleImage:(__CVBuffer *)image insetFactor:(float)factor error:(id *)error;
++ (BOOL)computeBlurScore:(float *)score usingBlurSignature:(id)signature insetFactor:(float)factor imageROI:(CGRect)i error:(id *)error;
++ (BOOL)computeEdgeWidthBlurScore:(float *)score onGrayscaleImage:(__CVBuffer *)image error:(id *)error;
 @end
 
 @implementation VNBlurMeasure
 
-+ (BOOL)computeApproximateBlurScore:(float *)a3 onRGBAImage:(__CVBuffer *)a4 sampledPixelsCount:(int)a5 insetFactor:(float)a6 error:(id *)a7
++ (BOOL)computeApproximateBlurScore:(float *)score onRGBAImage:(__CVBuffer *)image sampledPixelsCount:(int)count insetFactor:(float)factor error:(id *)error
 {
   HIDWORD(v21) = 1065353216;
-  CVPixelBufferLockBaseAddress(a4, 1uLL);
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
-  BaseAddress = CVPixelBufferGetBaseAddress(a4);
-  CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+  CVPixelBufferLockBaseAddress(image, 1uLL);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+  BaseAddress = CVPixelBufferGetBaseAddress(image);
+  CVPixelBufferUnlockBaseAddress(image, 1uLL);
   if (v17 == 2688)
   {
-    if (a3)
+    if (score)
     {
-      *a3 = *(&v21 + 1);
+      *score = *(&v21 + 1);
     }
   }
 
-  else if (a7)
+  else if (error)
   {
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error while computing blur score: %s", CVML_getStatusDescription(v17)];
-    *a7 = [VNError errorWithCode:3 message:v18];
+    *error = [VNError errorWithCode:3 message:v18];
   }
 
   return v17 == 2688;
 }
 
-+ (BOOL)computeApproximateBlurScore:(float *)a3 onGrayscaleImage:(__CVBuffer *)a4 sampledPixelsCount:(int)a5 insetFactor:(float)a6 error:(id *)a7
++ (BOOL)computeApproximateBlurScore:(float *)score onGrayscaleImage:(__CVBuffer *)image sampledPixelsCount:(int)count insetFactor:(float)factor error:(id *)error
 {
   HIDWORD(v21) = 1065353216;
-  CVPixelBufferLockBaseAddress(a4, 1uLL);
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
-  BaseAddress = CVPixelBufferGetBaseAddress(a4);
-  CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+  CVPixelBufferLockBaseAddress(image, 1uLL);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+  BaseAddress = CVPixelBufferGetBaseAddress(image);
+  CVPixelBufferUnlockBaseAddress(image, 1uLL);
   if (v17 == 2688)
   {
-    if (a3)
+    if (score)
     {
-      *a3 = *(&v21 + 1);
+      *score = *(&v21 + 1);
     }
   }
 
-  else if (a7)
+  else if (error)
   {
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error while computing blur score: %s", CVML_getStatusDescription(v17)];
-    *a7 = [VNError errorWithCode:3 message:v18];
+    *error = [VNError errorWithCode:3 message:v18];
   }
 
   return v17 == 2688;
 }
 
-+ (BOOL)computeEdgeWidthBlurScore:(float *)a3 onGrayscaleImage:(__CVBuffer *)a4 error:(id *)a5
++ (BOOL)computeEdgeWidthBlurScore:(float *)score onGrayscaleImage:(__CVBuffer *)image error:(id *)error
 {
-  CVPixelBufferLockBaseAddress(a4, 1uLL);
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
+  CVPixelBufferLockBaseAddress(image, 1uLL);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
   v9 = malloc_type_malloc(Height * Width, 0x100004077774924uLL);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a4, 0);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(image, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(image, 0);
   v12 = Width - 2;
   v13 = Height - 2;
   if (Height == 2)
@@ -359,63 +359,63 @@ LABEL_64:
     v68 = 1.0;
   }
 
-  *a3 = v68;
+  *score = v68;
   free(v9);
-  CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+  CVPixelBufferUnlockBaseAddress(image, 1uLL);
   return 1;
 }
 
-+ (BOOL)computeBlurScore:(float *)a3 usingBlurSignature:(id)a4 insetFactor:(float)a5 imageROI:(CGRect)a6 error:(id *)a7
++ (BOOL)computeBlurScore:(float *)score usingBlurSignature:(id)signature insetFactor:(float)factor imageROI:(CGRect)i error:(id *)error
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v14 = a4;
+  height = i.size.height;
+  width = i.size.width;
+  y = i.origin.y;
+  x = i.origin.x;
+  signatureCopy = signature;
   v21 = 1065353216;
-  v15 = [v14 getSignatureData];
+  getSignatureData = [signatureCopy getSignatureData];
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.height = height;
   v22.size.width = width;
-  v17 = vision::mod::image_quality::BlurMeasure::computeEdgeBasedBlurForImageRegionUsingBlurSignature(v15, &v21, v22, 0, a5, 0, v16);
+  v17 = vision::mod::image_quality::BlurMeasure::computeEdgeBasedBlurForImageRegionUsingBlurSignature(getSignatureData, &v21, v22, 0, factor, 0, v16);
   v18 = v17;
   if (v17 == 2688)
   {
-    if (a3)
+    if (score)
     {
-      *a3 = v21;
+      *score = v21;
     }
   }
 
-  else if (a7)
+  else if (error)
   {
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error while computing blur score: %s", CVML_getStatusDescription(v17)];
-    *a7 = [VNError errorWithCode:3 message:v19];
+    *error = [VNError errorWithCode:3 message:v19];
   }
 
   return v18 == 2688;
 }
 
-+ (BOOL)computeBlurScore:(float *)a3 onGrayscaleImage:(__CVBuffer *)a4 insetFactor:(float)a5 error:(id *)a6
++ (BOOL)computeBlurScore:(float *)score onGrayscaleImage:(__CVBuffer *)image insetFactor:(float)factor error:(id *)error
 {
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  *&v13 = a5;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  *&v13 = factor;
 
-  return [a1 computeBlurScore:a3 onGrayscaleImage:a4 andWithRegionOfInterestInImageCoordinates:a6 andRegionOfInterestInsetFactor:0.0 error:{0.0, Width, Height, v13}];
+  return [self computeBlurScore:score onGrayscaleImage:image andWithRegionOfInterestInImageCoordinates:error andRegionOfInterestInsetFactor:0.0 error:{0.0, Width, Height, v13}];
 }
 
-+ (BOOL)computeBlurScore:(float *)a3 onGrayscaleImage:(__CVBuffer *)a4 andWithRegionOfInterestInImageCoordinates:(CGRect)a5 andRegionOfInterestInsetFactor:(float)a6 error:(id *)a7
++ (BOOL)computeBlurScore:(float *)score onGrayscaleImage:(__CVBuffer *)image andWithRegionOfInterestInImageCoordinates:(CGRect)coordinates andRegionOfInterestInsetFactor:(float)factor error:(id *)error
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = coordinates.size.height;
+  width = coordinates.size.width;
+  y = coordinates.origin.y;
+  x = coordinates.origin.x;
   *v27 = 1065353216;
-  CVPixelBufferLockBaseAddress(a4, 1uLL);
+  CVPixelBufferLockBaseAddress(image, 1uLL);
   v15 = (y + height + 0.5);
-  v16 = CVPixelBufferGetHeight(a4);
+  v16 = CVPixelBufferGetHeight(image);
   if (x >= 0.0)
   {
     v17 = (x + 0.5);
@@ -456,25 +456,25 @@ LABEL_64:
     v20 = 0;
   }
 
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
-  v26[0] = CVPixelBufferGetBaseAddress(a4) + v18 * BytesPerRow + v17;
+  BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+  v26[0] = CVPixelBufferGetBaseAddress(image) + v18 * BytesPerRow + v17;
   v26[1] = v19;
   v26[2] = v20;
   v26[3] = BytesPerRow;
-  v23 = vision::mod::image_quality::BlurMeasure::computeEdgeBasedBlurScoreForPlanar8Image(v26, v27, 0, a6, 0, 0, v22);
-  CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+  v23 = vision::mod::image_quality::BlurMeasure::computeEdgeBasedBlurScoreForPlanar8Image(v26, v27, 0, factor, 0, 0, v22);
+  CVPixelBufferUnlockBaseAddress(image, 1uLL);
   if (v23 == 2688)
   {
-    if (a3)
+    if (score)
     {
-      *a3 = *v27;
+      *score = *v27;
     }
   }
 
-  else if (a7)
+  else if (error)
   {
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error while computing blur score: %s", CVML_getStatusDescription(v23)];
-    *a7 = [VNError errorWithCode:3 message:v24];
+    *error = [VNError errorWithCode:3 message:v24];
   }
 
   return v23 == 2688;

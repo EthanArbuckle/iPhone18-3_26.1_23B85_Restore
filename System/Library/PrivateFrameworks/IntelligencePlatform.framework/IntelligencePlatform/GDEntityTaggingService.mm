@@ -1,18 +1,18 @@
 @interface GDEntityTaggingService
-- (GDEntityTaggingService)initWithConfig:(id)a3 error:(id *)a4;
-- (id)entitiesForTag:(int64_t)a3 options:(id)a4 error:(id *)a5;
-- (id)entitiesForTags:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)entityTagsForIdentifier:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)entityTagsForIdentifiers:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)recordDirectFeedbackWithGradedTrue:(id)a3 gradedFalse:(id)a4 ignored:(id)a5 neverPresented:(id)a6 error:(id *)a7;
-- (void)recordStatefulFeedback:(id)a3 error:(id *)a4;
+- (GDEntityTaggingService)initWithConfig:(id)config error:(id *)error;
+- (id)entitiesForTag:(int64_t)tag options:(id)options error:(id *)error;
+- (id)entitiesForTags:(id)tags options:(id)options error:(id *)error;
+- (id)entityTagsForIdentifier:(id)identifier options:(id)options error:(id *)error;
+- (id)entityTagsForIdentifiers:(id)identifiers options:(id)options error:(id *)error;
+- (void)recordDirectFeedbackWithGradedTrue:(id)true gradedFalse:(id)false ignored:(id)ignored neverPresented:(id)presented error:(id *)error;
+- (void)recordStatefulFeedback:(id)feedback error:(id *)error;
 @end
 
 @implementation GDEntityTaggingService
 
-- (void)recordStatefulFeedback:(id)a3 error:(id *)a4
+- (void)recordStatefulFeedback:(id)feedback error:(id *)error
 {
-  v6 = a3;
+  feedbackCopy = feedback;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -25,21 +25,21 @@
   v8[2] = sub_1ABEE1F1C;
   v8[3] = &unk_1E79628C8;
   v8[4] = &v9;
-  [(GDEntityTaggingServiceInner *)inner recordStatefulFeedbackWithFeedback:v6 error:v8];
-  if (a4)
+  [(GDEntityTaggingServiceInner *)inner recordStatefulFeedbackWithFeedback:feedbackCopy error:v8];
+  if (error)
   {
-    *a4 = v10[5];
+    *error = v10[5];
   }
 
   _Block_object_dispose(&v9, 8);
 }
 
-- (void)recordDirectFeedbackWithGradedTrue:(id)a3 gradedFalse:(id)a4 ignored:(id)a5 neverPresented:(id)a6 error:(id *)a7
+- (void)recordDirectFeedbackWithGradedTrue:(id)true gradedFalse:(id)false ignored:(id)ignored neverPresented:(id)presented error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  trueCopy = true;
+  falseCopy = false;
+  ignoredCopy = ignored;
+  presentedCopy = presented;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -52,27 +52,27 @@
   v17[2] = sub_1ABEE2084;
   v17[3] = &unk_1E79628C8;
   v17[4] = &v18;
-  [(GDEntityTaggingServiceInner *)inner recordDirectFeedbackWithGradedTrue:v12 gradedFalse:v13 ignored:v14 neverPresented:v15 error:v17];
-  if (a7)
+  [(GDEntityTaggingServiceInner *)inner recordDirectFeedbackWithGradedTrue:trueCopy gradedFalse:falseCopy ignored:ignoredCopy neverPresented:presentedCopy error:v17];
+  if (error)
   {
-    *a7 = v19[5];
+    *error = v19[5];
   }
 
   _Block_object_dispose(&v18, 8);
 }
 
-- (id)entitiesForTags:(id)a3 options:(id)a4 error:(id *)a5
+- (id)entitiesForTags:(id)tags options:(id)options error:(id *)error
 {
   v75[1] = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v8 = a4;
-  v9 = v8;
+  tagsCopy = tags;
+  optionsCopy = options;
+  v9 = optionsCopy;
   if (self->inner)
   {
     v10 = [GDPersonEntityTaggingOptionsInner alloc];
     v37 = v9;
-    v11 = [v9 tagThresholds];
-    v12 = [(GDPersonEntityTaggingOptionsInner *)v10 initWithTagNameThresholds:v11];
+    tagThresholds = [v9 tagThresholds];
+    v12 = [(GDPersonEntityTaggingOptionsInner *)v10 initWithTagNameThresholds:tagThresholds];
 
     v64 = 0;
     v65 = &v64;
@@ -97,7 +97,7 @@
     v15 = v13;
     v55 = v15;
     v38 = v12;
-    [(GDEntityTaggingServiceInner *)inner personEntitiesFor:v39 options:v12 completionHandler:v54];
+    [(GDEntityTaggingServiceInner *)inner personEntitiesFor:tagsCopy options:v12 completionHandler:v54];
     v16 = v15;
     v17 = dispatch_time(0, 5000000000);
     v18 = dispatch_semaphore_wait(v16, v17);
@@ -105,13 +105,13 @@
 
     if (v18)
     {
-      if (a5)
+      if (error)
       {
         v19 = objc_alloc(MEMORY[0x1E696ABC0]);
         v72 = *MEMORY[0x1E696A578];
         v73 = @"Timed out waiting for EntityTaggingService to return.";
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:{1, v16}];
-        *a5 = [v19 initWithDomain:@"GDErrorDomain" code:14 userInfo:v20];
+        *error = [v19 initWithDomain:@"GDErrorDomain" code:14 userInfo:v20];
       }
     }
 
@@ -146,8 +146,8 @@
               v49 = 0u;
               v46 = 0u;
               v47 = 0u;
-              v27 = [v25 scoredEntities];
-              v28 = [v27 countByEnumeratingWithState:&v46 objects:v70 count:16];
+              scoredEntities = [v25 scoredEntities];
+              v28 = [scoredEntities countByEnumeratingWithState:&v46 objects:v70 count:16];
               if (v28)
               {
                 v29 = *v47;
@@ -157,18 +157,18 @@
                   {
                     if (*v47 != v29)
                     {
-                      objc_enumerationMutation(v27);
+                      objc_enumerationMutation(scoredEntities);
                     }
 
                     v31 = *(*(&v46 + 1) + 8 * j);
                     v32 = [GDScoredPersonEntity alloc];
-                    v33 = [v31 idValue];
+                    idValue = [v31 idValue];
                     [v31 score];
-                    v34 = [(GDScoredPersonEntity *)v32 initWithIDValue:v33 score:?];
+                    v34 = [(GDScoredPersonEntity *)v32 initWithIDValue:idValue score:?];
                     [v26 addObject:v34];
                   }
 
-                  v28 = [v27 countByEnumeratingWithState:&v46 objects:v70 count:16];
+                  v28 = [scoredEntities countByEnumeratingWithState:&v46 objects:v70 count:16];
                 }
 
                 while (v28);
@@ -187,10 +187,10 @@
         goto LABEL_6;
       }
 
-      if (a5)
+      if (error)
       {
         v43 = 0;
-        *a5 = v59[5];
+        *error = v59[5];
         goto LABEL_6;
       }
     }
@@ -206,15 +206,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a5)
+  if (error)
   {
-    v37 = v8;
+    v37 = optionsCopy;
     v21 = objc_alloc(MEMORY[0x1E696ABC0]);
     v74 = *MEMORY[0x1E696A578];
     v75[0] = @"Error when initializing EntityTaggingService.";
     v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:&v74 count:1];
     v43 = 0;
-    *a5 = [v21 initWithDomain:@"GDErrorDomain" code:1 userInfo:v38];
+    *error = [v21 initWithDomain:@"GDErrorDomain" code:1 userInfo:v38];
     goto LABEL_9;
   }
 
@@ -226,18 +226,18 @@ LABEL_10:
   return v43;
 }
 
-- (id)entityTagsForIdentifiers:(id)a3 options:(id)a4 error:(id *)a5
+- (id)entityTagsForIdentifiers:(id)identifiers options:(id)options error:(id *)error
 {
   v75[1] = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v8 = a4;
-  v9 = v8;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  v9 = optionsCopy;
   if (self->inner)
   {
     v10 = [GDPersonEntityTaggingOptionsInner alloc];
     v37 = v9;
-    v11 = [v9 tagThresholds];
-    v12 = [(GDPersonEntityTaggingOptionsInner *)v10 initWithTagNameThresholds:v11];
+    tagThresholds = [v9 tagThresholds];
+    v12 = [(GDPersonEntityTaggingOptionsInner *)v10 initWithTagNameThresholds:tagThresholds];
 
     v64 = 0;
     v65 = &v64;
@@ -262,7 +262,7 @@ LABEL_10:
     v15 = v13;
     v55 = v15;
     v38 = v12;
-    [(GDEntityTaggingServiceInner *)inner peopleEntityTagsFor:v39 options:v12 completionHandler:v54];
+    [(GDEntityTaggingServiceInner *)inner peopleEntityTagsFor:identifiersCopy options:v12 completionHandler:v54];
     v16 = v15;
     v17 = dispatch_time(0, 5000000000);
     v18 = dispatch_semaphore_wait(v16, v17);
@@ -270,13 +270,13 @@ LABEL_10:
 
     if (v18)
     {
-      if (a5)
+      if (error)
       {
         v19 = objc_alloc(MEMORY[0x1E696ABC0]);
         v72 = *MEMORY[0x1E696A578];
         v73 = @"Timed out waiting for EntityTaggingService to return.";
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:{1, v16}];
-        *a5 = [v19 initWithDomain:@"GDErrorDomain" code:14 userInfo:v20];
+        *error = [v19 initWithDomain:@"GDErrorDomain" code:14 userInfo:v20];
       }
     }
 
@@ -311,8 +311,8 @@ LABEL_10:
               v49 = 0u;
               v46 = 0u;
               v47 = 0u;
-              v27 = [v25 scoredPersonEntityTags];
-              v28 = [v27 countByEnumeratingWithState:&v46 objects:v70 count:16];
+              scoredPersonEntityTags = [v25 scoredPersonEntityTags];
+              v28 = [scoredPersonEntityTags countByEnumeratingWithState:&v46 objects:v70 count:16];
               if (v28)
               {
                 v29 = *v47;
@@ -322,18 +322,18 @@ LABEL_10:
                   {
                     if (*v47 != v29)
                     {
-                      objc_enumerationMutation(v27);
+                      objc_enumerationMutation(scoredPersonEntityTags);
                     }
 
                     v31 = *(*(&v46 + 1) + 8 * j);
                     v32 = [GDScoredPersonEntityTagType alloc];
-                    v33 = [v31 gdTag];
+                    gdTag = [v31 gdTag];
                     [v31 score];
-                    v34 = [(GDScoredPersonEntityTagType *)v32 initWithTag:v33 score:?];
+                    v34 = [(GDScoredPersonEntityTagType *)v32 initWithTag:gdTag score:?];
                     [v26 addObject:v34];
                   }
 
-                  v28 = [v27 countByEnumeratingWithState:&v46 objects:v70 count:16];
+                  v28 = [scoredPersonEntityTags countByEnumeratingWithState:&v46 objects:v70 count:16];
                 }
 
                 while (v28);
@@ -352,10 +352,10 @@ LABEL_10:
         goto LABEL_6;
       }
 
-      if (a5)
+      if (error)
       {
         v43 = 0;
-        *a5 = v59[5];
+        *error = v59[5];
         goto LABEL_6;
       }
     }
@@ -371,15 +371,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a5)
+  if (error)
   {
-    v37 = v8;
+    v37 = optionsCopy;
     v21 = objc_alloc(MEMORY[0x1E696ABC0]);
     v74 = *MEMORY[0x1E696A578];
     v75[0] = @"Error when initializing EntityTaggingService.";
     v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:&v74 count:1];
     v43 = 0;
-    *a5 = [v21 initWithDomain:@"GDErrorDomain" code:1 userInfo:v38];
+    *error = [v21 initWithDomain:@"GDErrorDomain" code:1 userInfo:v38];
     goto LABEL_9;
   }
 
@@ -391,17 +391,17 @@ LABEL_10:
   return v43;
 }
 
-- (id)entitiesForTag:(int64_t)a3 options:(id)a4 error:(id *)a5
+- (id)entitiesForTag:(int64_t)tag options:(id)options error:(id *)error
 {
   v62[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
+  optionsCopy = options;
+  v9 = optionsCopy;
   if (self->inner)
   {
     v10 = [GDPersonEntityTaggingOptionsInner alloc];
     v36 = v9;
-    v11 = [v9 tagThresholds];
-    v12 = [(GDPersonEntityTaggingOptionsInner *)v10 initWithTagNameThresholds:v11];
+    tagThresholds = [v9 tagThresholds];
+    v12 = [(GDPersonEntityTaggingOptionsInner *)v10 initWithTagNameThresholds:tagThresholds];
 
     v52 = 0;
     v53 = &v52;
@@ -426,20 +426,20 @@ LABEL_10:
     v15 = v13;
     v43 = v15;
     v37 = v12;
-    [(GDEntityTaggingServiceInner *)inner entitiesForTagWithGdEntityTagType:a3 options:v12 completionHandler:v42];
+    [(GDEntityTaggingServiceInner *)inner entitiesForTagWithGdEntityTagType:tag options:v12 completionHandler:v42];
     v16 = v15;
     v17 = dispatch_time(0, 5000000000);
     v18 = dispatch_semaphore_wait(v16, v17);
 
     if (v18)
     {
-      if (a5)
+      if (error)
       {
         v19 = objc_alloc(MEMORY[0x1E696ABC0]);
         v59 = *MEMORY[0x1E696A578];
         v60 = @"Timed out waiting for EntityTaggingService to return.";
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-        *a5 = [v19 initWithDomain:@"GDErrorDomain" code:14 userInfo:v20];
+        *error = [v19 initWithDomain:@"GDErrorDomain" code:14 userInfo:v20];
       }
     }
 
@@ -452,8 +452,8 @@ LABEL_10:
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v24 = [v53[5] scoredEntities];
-        v25 = [v24 countByEnumeratingWithState:&v38 objects:v58 count:16];
+        scoredEntities = [v53[5] scoredEntities];
+        v25 = [scoredEntities countByEnumeratingWithState:&v38 objects:v58 count:16];
         if (v25)
         {
           v26 = *v39;
@@ -463,34 +463,34 @@ LABEL_10:
             {
               if (*v39 != v26)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(scoredEntities);
               }
 
               v28 = *(*(&v38 + 1) + 8 * i);
               v29 = [GDScoredPersonEntity alloc];
-              v30 = [v28 idValue];
+              idValue = [v28 idValue];
               [v28 score];
-              v31 = [(GDScoredPersonEntity *)v29 initWithIDValue:v30 score:?];
+              v31 = [(GDScoredPersonEntity *)v29 initWithIDValue:idValue score:?];
               [v23 addObject:v31];
             }
 
-            v25 = [v24 countByEnumeratingWithState:&v38 objects:v58 count:16];
+            v25 = [scoredEntities countByEnumeratingWithState:&v38 objects:v58 count:16];
           }
 
           while (v25);
         }
 
         v32 = [GDRankedEntityTagPersons alloc];
-        v33 = [v53[5] gdTag];
-        v21 = -[GDRankedEntityTagPersons initWithTag:scoredEntities:entityRelevanceInferenceEventId:](v32, "initWithTag:scoredEntities:entityRelevanceInferenceEventId:", v33, v23, [v53[5] inferenceEventIdValue]);
+        gdTag = [v53[5] gdTag];
+        v21 = -[GDRankedEntityTagPersons initWithTag:scoredEntities:entityRelevanceInferenceEventId:](v32, "initWithTag:scoredEntities:entityRelevanceInferenceEventId:", gdTag, v23, [v53[5] inferenceEventIdValue]);
 
         goto LABEL_20;
       }
 
-      if (a5)
+      if (error)
       {
         v21 = 0;
-        *a5 = v47[5];
+        *error = v47[5];
         goto LABEL_20;
       }
     }
@@ -504,19 +504,19 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!a5)
+  if (!error)
   {
     v21 = 0;
     goto LABEL_22;
   }
 
-  v36 = v8;
+  v36 = optionsCopy;
   v22 = objc_alloc(MEMORY[0x1E696ABC0]);
   v61 = *MEMORY[0x1E696A578];
   v62[0] = @"Error when initializing EntityTaggingService.";
   v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:&v61 count:1];
   v21 = 0;
-  *a5 = [v22 initWithDomain:@"GDErrorDomain" code:1 userInfo:v37];
+  *error = [v22 initWithDomain:@"GDErrorDomain" code:1 userInfo:v37];
 LABEL_21:
 
   v9 = v36;
@@ -527,18 +527,18 @@ LABEL_22:
   return v21;
 }
 
-- (id)entityTagsForIdentifier:(id)a3 options:(id)a4 error:(id *)a5
+- (id)entityTagsForIdentifier:(id)identifier options:(id)options error:(id *)error
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v8 = a4;
-  v38 = v8;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  v38 = optionsCopy;
   if (self->inner)
   {
-    v9 = v8;
+    v9 = optionsCopy;
     v10 = [GDPersonEntityTaggingOptionsInner alloc];
-    v11 = [v9 tagThresholds];
-    v12 = [(GDPersonEntityTaggingOptionsInner *)v10 initWithTagNameThresholds:v11];
+    tagThresholds = [v9 tagThresholds];
+    v12 = [(GDPersonEntityTaggingOptionsInner *)v10 initWithTagNameThresholds:tagThresholds];
 
     v54 = 0;
     v55 = &v54;
@@ -563,20 +563,20 @@ LABEL_22:
     v15 = v13;
     v45 = v15;
     v36 = v12;
-    [(GDEntityTaggingServiceInner *)inner personEntityTagsFor:v39 options:v12 completionHandler:v44];
+    [(GDEntityTaggingServiceInner *)inner personEntityTagsFor:identifierCopy options:v12 completionHandler:v44];
     v16 = v15;
     v17 = dispatch_time(0, 5000000000);
     v18 = dispatch_semaphore_wait(v16, v17);
 
     if (v18)
     {
-      if (a5)
+      if (error)
       {
         v19 = objc_alloc(MEMORY[0x1E696ABC0]);
         v61 = *MEMORY[0x1E696A578];
         v62 = @"Timed out waiting for EntityTaggingService to return.";
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
-        *a5 = [v19 initWithDomain:@"GDErrorDomain" code:14 userInfo:v20];
+        *error = [v19 initWithDomain:@"GDErrorDomain" code:14 userInfo:v20];
       }
     }
 
@@ -589,8 +589,8 @@ LABEL_22:
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v24 = [v55[5] scoredPersonEntityTags];
-        v25 = [v24 countByEnumeratingWithState:&v40 objects:v60 count:16];
+        scoredPersonEntityTags = [v55[5] scoredPersonEntityTags];
+        v25 = [scoredPersonEntityTags countByEnumeratingWithState:&v40 objects:v60 count:16];
         if (v25)
         {
           v26 = *v41;
@@ -600,34 +600,34 @@ LABEL_22:
             {
               if (*v41 != v26)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(scoredPersonEntityTags);
               }
 
               v28 = *(*(&v40 + 1) + 8 * i);
               v29 = [GDScoredPersonEntityTagType alloc];
-              v30 = [v28 gdTag];
+              gdTag = [v28 gdTag];
               [v28 score];
-              v31 = [(GDScoredPersonEntityTagType *)v29 initWithTag:v30 score:?];
+              v31 = [(GDScoredPersonEntityTagType *)v29 initWithTag:gdTag score:?];
               [v23 addObject:v31];
             }
 
-            v25 = [v24 countByEnumeratingWithState:&v40 objects:v60 count:16];
+            v25 = [scoredPersonEntityTags countByEnumeratingWithState:&v40 objects:v60 count:16];
           }
 
           while (v25);
         }
 
         v32 = [GDRankedPersonEntityTags alloc];
-        v33 = [v55[5] idValue];
-        v21 = -[GDRankedPersonEntityTags initWithIDValue:scoredPersonEntityTags:entityRelevanceInferenceEventId:](v32, "initWithIDValue:scoredPersonEntityTags:entityRelevanceInferenceEventId:", v33, v23, [v55[5] inferenceEventIdValue]);
+        idValue = [v55[5] idValue];
+        v21 = -[GDRankedPersonEntityTags initWithIDValue:scoredPersonEntityTags:entityRelevanceInferenceEventId:](v32, "initWithIDValue:scoredPersonEntityTags:entityRelevanceInferenceEventId:", idValue, v23, [v55[5] inferenceEventIdValue]);
 
         goto LABEL_20;
       }
 
-      if (a5)
+      if (error)
       {
         v21 = 0;
-        *a5 = v49[5];
+        *error = v49[5];
 LABEL_20:
 
         _Block_object_dispose(&v48, 8);
@@ -641,14 +641,14 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a5)
+  if (error)
   {
     v22 = objc_alloc(MEMORY[0x1E696ABC0]);
     v63 = *MEMORY[0x1E696A578];
     v64[0] = @"Error when initializing EntityTaggingService.";
     v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v63 count:1];
     v21 = 0;
-    *a5 = [v22 initWithDomain:@"GDErrorDomain" code:1 userInfo:v37];
+    *error = [v22 initWithDomain:@"GDErrorDomain" code:1 userInfo:v37];
   }
 
   else
@@ -663,7 +663,7 @@ LABEL_22:
   return v21;
 }
 
-- (GDEntityTaggingService)initWithConfig:(id)a3 error:(id *)a4
+- (GDEntityTaggingService)initWithConfig:(id)config error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = GDEntityTaggingService;
@@ -671,7 +671,7 @@ LABEL_22:
   if (v5)
   {
     v6 = objc_alloc_init(GDEntityTagConfigurationInner);
-    v7 = [[GDEntityTaggingServiceInner alloc] initWithEtConfig:v6 error:a4];
+    v7 = [[GDEntityTaggingServiceInner alloc] initWithEtConfig:v6 error:error];
     inner = v5->inner;
     v5->inner = v7;
   }

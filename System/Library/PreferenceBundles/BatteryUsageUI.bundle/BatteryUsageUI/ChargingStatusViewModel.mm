@@ -1,7 +1,7 @@
 @interface ChargingStatusViewModel
 - (_TtC14BatteryUsageUI23ChargingStatusViewModel)init;
 - (void)dataChanged;
-- (void)lastChargeInfoChangedWithLevel:(id)a3 dateInterval:(id)a4;
+- (void)lastChargeInfoChangedWithLevel:(id)level dateInterval:(id)interval;
 @end
 
 @implementation ChargingStatusViewModel
@@ -15,21 +15,21 @@
 
 - (void)dataChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_4FDE0();
 }
 
-- (void)lastChargeInfoChangedWithLevel:(id)a3 dateInterval:(id)a4
+- (void)lastChargeInfoChangedWithLevel:(id)level dateInterval:(id)interval
 {
-  v6 = a4;
-  v10 = self;
-  if (a3)
+  intervalCopy = interval;
+  selfCopy = self;
+  if (level)
   {
-    v7 = [a3 integerValue];
-    if (v6)
+    integerValue = [level integerValue];
+    if (intervalCopy)
     {
 LABEL_3:
-      [v6 doubleValue];
+      [intervalCopy doubleValue];
       v9 = v8;
       goto LABEL_6;
     }
@@ -37,8 +37,8 @@ LABEL_3:
 
   else
   {
-    v7 = 0;
-    if (v6)
+    integerValue = 0;
+    if (intervalCopy)
     {
       goto LABEL_3;
     }
@@ -46,7 +46,7 @@ LABEL_3:
 
   v9 = 0;
 LABEL_6:
-  sub_4CAD8(v7, a3 == 0, v9, v6 == 0);
+  sub_4CAD8(integerValue, level == 0, v9, intervalCopy == 0);
 }
 
 @end

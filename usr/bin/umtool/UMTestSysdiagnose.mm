@@ -1,11 +1,11 @@
 @interface UMTestSysdiagnose
-+ (BOOL)executeWithOutError:(id *)a3;
-+ (id)stringForUserType:(unint64_t)a3;
++ (BOOL)executeWithOutError:(id *)error;
++ (id)stringForUserType:(unint64_t)type;
 @end
 
 @implementation UMTestSysdiagnose
 
-+ (BOOL)executeWithOutError:(id *)a3
++ (BOOL)executeWithOutError:(id *)error
 {
   multiuser_flags = 0;
   v3 = mach_host_self();
@@ -45,14 +45,14 @@
   }
 
   v7 = +[UMUserManager sharedManager];
-  v8 = [v7 allUsersUnfiltered];
+  allUsersUnfiltered = [v7 allUsersUnfiltered];
 
   v70 = +[NSMutableArray array];
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  obj = v8;
+  obj = allUsersUnfiltered;
   v71 = [obj countByEnumeratingWithState:&v96 objects:v118 count:16];
   if (v71)
   {
@@ -71,11 +71,11 @@
         v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u", [v10 uid]);
         v117[0] = v11;
         v116[1] = @"UUID";
-        v12 = [v10 alternateDSID];
-        if (v12)
+        alternateDSID = [v10 alternateDSID];
+        if (alternateDSID)
         {
-          v76 = [v10 alternateDSID];
-          v13 = v76;
+          alternateDSID2 = [v10 alternateDSID];
+          v13 = alternateDSID2;
         }
 
         else
@@ -88,19 +88,19 @@
         v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u", [v10 gid]);
         v117[2] = v14;
         v116[3] = @"Type";
-        v15 = [a1 stringForUserType:{objc_msgSend(v10, "userType")}];
+        v15 = [self stringForUserType:{objc_msgSend(v10, "userType")}];
         v117[3] = v15;
         v117[4] = @"(private)";
         v116[4] = @"Username";
         v116[5] = @"Display Name";
         v117[5] = @"(private)";
         v116[6] = @"Home Directory";
-        v16 = [v10 homeDirectoryURL];
-        if (v16)
+        homeDirectoryURL = [v10 homeDirectoryURL];
+        if (homeDirectoryURL)
         {
-          v74 = [v10 homeDirectoryURL];
-          v72 = [(__CFString *)v74 path];
-          v17 = v72;
+          homeDirectoryURL2 = [v10 homeDirectoryURL];
+          path = [(__CFString *)homeDirectoryURL2 path];
+          v17 = path;
         }
 
         else
@@ -112,22 +112,22 @@
         v18 = [NSDictionary dictionaryWithObjects:v117 forKeys:v116 count:7];
         v19 = [NSMutableDictionary dictionaryWithDictionary:v18];
 
-        if (v16)
+        if (homeDirectoryURL)
         {
         }
 
-        if (v12)
+        if (alternateDSID)
         {
         }
 
         [(__CFString *)v70 addObject:v19];
         if (os_variant_has_internal_diagnostics())
         {
-          v20 = [v10 username];
-          if (v20)
+          username = [v10 username];
+          if (username)
           {
-            v21 = [v10 username];
-            [v19 setObject:v21 forKeyedSubscript:@"Username"];
+            username2 = [v10 username];
+            [v19 setObject:username2 forKeyedSubscript:@"Username"];
           }
 
           else
@@ -135,11 +135,11 @@
             [v19 setObject:&stru_1000209B8 forKeyedSubscript:@"Username"];
           }
 
-          v22 = [v10 displayName];
-          if (v22)
+          displayName = [v10 displayName];
+          if (displayName)
           {
-            v23 = [v10 displayName];
-            [v19 setObject:v23 forKeyedSubscript:@"Display Name"];
+            displayName2 = [v10 displayName];
+            [v19 setObject:displayName2 forKeyedSubscript:@"Display Name"];
           }
 
           else
@@ -199,8 +199,8 @@
         v28 = [v27 objectForKeyedSubscript:@"UserPersonaUserODUUID"];
         if (v28)
         {
-          v74 = [v27 objectForKeyedSubscript:@"UserPersonaUserODUUID"];
-          v29 = v74;
+          homeDirectoryURL2 = [v27 objectForKeyedSubscript:@"UserPersonaUserODUUID"];
+          v29 = homeDirectoryURL2;
         }
 
         else
@@ -213,8 +213,8 @@
         v30 = [v27 objectForKeyedSubscript:@"UserPersonaType"];
         if (v30)
         {
-          v72 = [v27 objectForKeyedSubscript:@"UserPersonaType"];
-          v71 = [NSString stringWithFormat:@"%@", v72];
+          path = [v27 objectForKeyedSubscript:@"UserPersonaType"];
+          v71 = [NSString stringWithFormat:@"%@", path];
           v31 = v71;
         }
 
@@ -242,8 +242,8 @@
         v34 = [v27 objectForKeyedSubscript:@"UserPersonaID"];
         if (v34)
         {
-          a1 = [v27 objectForKeyedSubscript:@"UserPersonaID"];
-          v68 = [NSString stringWithFormat:@"%@", a1];
+          self = [v27 objectForKeyedSubscript:@"UserPersonaID"];
+          v68 = [NSString stringWithFormat:@"%@", self];
           v35 = v68;
         }
 
@@ -414,8 +414,8 @@
           v103[0] = v52;
           v102[0] = @"UID";
           v102[1] = @"ID";
-          v53 = [NSString stringWithFormat:@"%u", v105];
-          v103[1] = v53;
+          v105 = [NSString stringWithFormat:@"%u", v105];
+          v103[1] = v105;
           v102[2] = @"Type";
           v54 = [NSString stringWithFormat:@"%u", DWORD1(v105)];
           v103[2] = v54;
@@ -448,9 +448,9 @@
   return 1;
 }
 
-+ (id)stringForUserType:(unint64_t)a3
++ (id)stringForUserType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"E";
   }

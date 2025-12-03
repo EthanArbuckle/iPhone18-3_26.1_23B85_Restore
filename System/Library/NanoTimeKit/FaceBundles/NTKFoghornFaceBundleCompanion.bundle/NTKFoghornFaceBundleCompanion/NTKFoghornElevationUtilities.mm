@@ -1,11 +1,11 @@
 @interface NTKFoghornElevationUtilities
-+ (double)roundedAltitude:(double)a3 accuracy:(double)a4 precision:(double)a5;
-+ (void)roundedValuesFromAltitude:(double)a3 precision:(double)a4 accuracy:(double)a5 roundedAltitude:(double *)a6 roundedPrecision:(double *)a7 roundedAccuracy:(double *)a8;
++ (double)roundedAltitude:(double)altitude accuracy:(double)accuracy precision:(double)precision;
++ (void)roundedValuesFromAltitude:(double)altitude precision:(double)precision accuracy:(double)accuracy roundedAltitude:(double *)roundedAltitude roundedPrecision:(double *)roundedPrecision roundedAccuracy:(double *)roundedAccuracy;
 @end
 
 @implementation NTKFoghornElevationUtilities
 
-+ (void)roundedValuesFromAltitude:(double)a3 precision:(double)a4 accuracy:(double)a5 roundedAltitude:(double *)a6 roundedPrecision:(double *)a7 roundedAccuracy:(double *)a8
++ (void)roundedValuesFromAltitude:(double)altitude precision:(double)precision accuracy:(double)accuracy roundedAltitude:(double *)roundedAltitude roundedPrecision:(double *)roundedPrecision roundedAccuracy:(double *)roundedAccuracy
 {
   v13 = 1.0;
 LABEL_2:
@@ -20,7 +20,7 @@ LABEL_2:
     }
 
     v16 = v14;
-    if (v14 > a4)
+    if (v14 > precision)
     {
       goto LABEL_10;
     }
@@ -29,8 +29,8 @@ LABEL_2:
     v14 = v13 * v17;
   }
 
-  while (v13 * v17 < a4);
-  if (a4 - v16 >= v14 - a4)
+  while (v13 * v17 < precision);
+  if (precision - v16 >= v14 - precision)
   {
     v16 = v14;
   }
@@ -38,17 +38,17 @@ LABEL_2:
 LABEL_10:
   if (v16 > 0.0)
   {
-    if (a3 >= 0.0)
+    if (altitude >= 0.0)
     {
-      v18 = a3;
+      altitudeCopy = altitude;
     }
 
     else
     {
-      v18 = -a3;
+      altitudeCopy = -altitude;
     }
 
-    v19 = fmod(v18, v16);
+    v19 = fmod(altitudeCopy, v16);
     if (v19 >= v16 - v19)
     {
       v20 = v16 - v19;
@@ -59,15 +59,15 @@ LABEL_10:
       v20 = -v19;
     }
 
-    v21 = v18 + v20;
-    if (a3 >= 0.0)
+    v21 = altitudeCopy + v20;
+    if (altitude >= 0.0)
     {
-      a3 = v21;
+      altitude = v21;
     }
 
     else
     {
-      a3 = -v21;
+      altitude = -v21;
     }
   }
 
@@ -83,7 +83,7 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    if (v23 > a5)
+    if (v23 > accuracy)
     {
       break;
     }
@@ -92,26 +92,26 @@ LABEL_21:
     v23 = v22 * v25;
   }
 
-  while (v22 * v25 < a5);
-  if (a6)
+  while (v22 * v25 < accuracy);
+  if (roundedAltitude)
   {
-    *a6 = a3;
+    *roundedAltitude = altitude;
   }
 
-  if (a7)
+  if (roundedPrecision)
   {
-    *a7 = v16;
+    *roundedPrecision = v16;
   }
 
-  if (a8)
+  if (roundedAccuracy)
   {
-    *a8 = v23;
+    *roundedAccuracy = v23;
   }
 }
 
-+ (double)roundedAltitude:(double)a3 accuracy:(double)a4 precision:(double)a5
++ (double)roundedAltitude:(double)altitude accuracy:(double)accuracy precision:(double)precision
 {
-  v6 = fabs(a5);
+  v6 = fabs(precision);
   v7 = 1.0;
 LABEL_2:
   v8 = v7 * 0.1;
@@ -143,17 +143,17 @@ LABEL_2:
 LABEL_10:
   if (v10 > 0.0)
   {
-    if (a3 >= 0.0)
+    if (altitude >= 0.0)
     {
-      v12 = a3;
+      altitudeCopy = altitude;
     }
 
     else
     {
-      v12 = -a3;
+      altitudeCopy = -altitude;
     }
 
-    v13 = fmod(v12, v10);
+    v13 = fmod(altitudeCopy, v10);
     if (v13 >= v10 - v13)
     {
       v14 = v10 - v13;
@@ -164,8 +164,8 @@ LABEL_10:
       v14 = -v13;
     }
 
-    v15 = v12 + v14;
-    if (a3 >= 0.0)
+    v15 = altitudeCopy + v14;
+    if (altitude >= 0.0)
     {
       return v15;
     }
@@ -176,7 +176,7 @@ LABEL_10:
     }
   }
 
-  return a3;
+  return altitude;
 }
 
 @end

@@ -3,50 +3,50 @@
 + (id)allowedFlowItems;
 + (void)didAgreeToServerTerms;
 + (void)skippedByCloudConfig;
-- (BuddyTermsConditionsFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6;
-- (id)controllerFollowingControllerClass:(Class)a3 requestedNext:(Class)a4;
+- (BuddyTermsConditionsFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector;
+- (id)controllerFollowingControllerClass:(Class)class requestedNext:(Class)next;
 @end
 
 @implementation BuddyTermsConditionsFlow
 
-- (BuddyTermsConditionsFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6
+- (BuddyTermsConditionsFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, delegate);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, starter);
   v14 = 0;
-  objc_storeStrong(&v14, a6);
-  v9 = v18;
-  v18 = 0;
+  objc_storeStrong(&v14, injector);
+  v9 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v9;
   v13.super_class = BuddyTermsConditionsFlow;
-  v18 = [(BuddyTermsConditionsFlow *)&v13 initWithNavigationController:location[0] flowDelegate:v16 flowStarter:v15 dependencyInjector:v14];
-  objc_storeStrong(&v18, v18);
-  if (v18)
+  selfCopy = [(BuddyTermsConditionsFlow *)&v13 initWithNavigationController:location[0] flowDelegate:v16 flowStarter:v15 dependencyInjector:v14];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v19[0] = objc_opt_class();
     v19[1] = objc_opt_class();
     v10 = [NSArray arrayWithObjects:v19 count:2];
-    [v18 setClassList:v10];
+    [selfCopy setClassList:v10];
   }
 
-  v11 = v18;
+  v11 = selfCopy;
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
 + (void)didAgreeToServerTerms
 {
-  oslog[2] = a1;
+  oslog[2] = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -69,17 +69,17 @@
   return [NSArray arrayWithObjects:v3 count:2];
 }
 
-- (id)controllerFollowingControllerClass:(Class)a3 requestedNext:(Class)a4
+- (id)controllerFollowingControllerClass:(Class)class requestedNext:(Class)next
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
+  classCopy = class;
+  nextCopy = next;
   if ([objc_opt_class() controllerNeedsToRun])
   {
-    v6.receiver = v10;
+    v6.receiver = selfCopy;
     v6.super_class = BuddyTermsConditionsFlow;
-    v11 = [(BuddyTermsConditionsFlow *)&v6 controllerFollowingControllerClass:v8 requestedNext:v7];
+    v11 = [(BuddyTermsConditionsFlow *)&v6 controllerFollowingControllerClass:classCopy requestedNext:nextCopy];
   }
 
   else
@@ -106,7 +106,7 @@
 
 + (void)skippedByCloudConfig
 {
-  oslog[2] = a1;
+  oslog[2] = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v15 = OS_LOG_TYPE_DEFAULT;
@@ -139,9 +139,9 @@
 
       else if (location)
       {
-        v10 = [location domain];
+        domain = [location domain];
         v9 = 1;
-        v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v10, [location code]);
+        v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location code]);
         v8 = v6;
         v7 = 1;
       }

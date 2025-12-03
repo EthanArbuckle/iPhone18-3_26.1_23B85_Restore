@@ -1,15 +1,15 @@
 @interface RTSynthesizedLocationMO
-+ (id)managedObjectWithSynthesizedLocation:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithSynthesizedLocation:(id)location inManagedObjectContext:(id)context;
 @end
 
 @implementation RTSynthesizedLocationMO
 
-+ (id)managedObjectWithSynthesizedLocation:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithSynthesizedLocation:(id)location inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  locationCopy = location;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!locationCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -25,34 +25,34 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTSynthesizedLocationMO alloc] initWithContext:v6];
-    [v5 coordinate];
+    v8 = [[RTSynthesizedLocationMO alloc] initWithContext:contextCopy];
+    [locationCopy coordinate];
     [(RTSynthesizedLocationMO *)v8 setLatitude:?];
-    [v5 coordinate];
+    [locationCopy coordinate];
     [(RTSynthesizedLocationMO *)v8 setLongitude:v9];
-    [v5 altitude];
+    [locationCopy altitude];
     [(RTSynthesizedLocationMO *)v8 setAltitude:?];
-    [v5 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     [(RTSynthesizedLocationMO *)v8 setHorizontalAccuracy:?];
-    [v5 verticalAccuracy];
+    [locationCopy verticalAccuracy];
     [(RTSynthesizedLocationMO *)v8 setVerticalAccuracy:?];
-    [v5 speed];
+    [locationCopy speed];
     [(RTSynthesizedLocationMO *)v8 setSpeed:?];
-    [v5 course];
+    [locationCopy course];
     [(RTSynthesizedLocationMO *)v8 setCourse:?];
-    [v5 speedAccuracy];
+    [locationCopy speedAccuracy];
     [(RTSynthesizedLocationMO *)v8 setSpeedAccuracy:?];
-    [v5 courseAccuracy];
+    [locationCopy courseAccuracy];
     [(RTSynthesizedLocationMO *)v8 setCourseAccuracy:?];
-    v10 = [v5 timestamp];
-    [(RTSynthesizedLocationMO *)v8 setTimestamp:v10];
+    timestamp = [locationCopy timestamp];
+    [(RTSynthesizedLocationMO *)v8 setTimestamp:timestamp];
 
-    -[RTSynthesizedLocationMO setDownsamplingLevel:](v8, "setDownsamplingLevel:", [v5 downsamplingLevel]);
-    -[RTSynthesizedLocationMO setGeoRoadClass:](v8, "setGeoRoadClass:", [v5 geoRoadClass]);
-    -[RTSynthesizedLocationMO setGeoFormOfWay:](v8, "setGeoFormOfWay:", [v5 geoFormOfWay]);
-    -[RTSynthesizedLocationMO setLocationType:](v8, "setLocationType:", [v5 locationType]);
+    -[RTSynthesizedLocationMO setDownsamplingLevel:](v8, "setDownsamplingLevel:", [locationCopy downsamplingLevel]);
+    -[RTSynthesizedLocationMO setGeoRoadClass:](v8, "setGeoRoadClass:", [locationCopy geoRoadClass]);
+    -[RTSynthesizedLocationMO setGeoFormOfWay:](v8, "setGeoFormOfWay:", [locationCopy geoFormOfWay]);
+    -[RTSynthesizedLocationMO setLocationType:](v8, "setLocationType:", [locationCopy locationType]);
     goto LABEL_8;
   }
 

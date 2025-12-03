@@ -1,6 +1,6 @@
 @interface SUScriptAccount
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (BOOL)isPrimaryAccount;
 - (NSNumber)dsID;
@@ -16,14 +16,14 @@
 - (id)scriptAttributeKeys;
 - (id)socialEnabled;
 - (void)_commitChanges;
-- (void)_setServiceType:(int64_t)a3 enabled:(id)a4;
+- (void)_setServiceType:(int64_t)type enabled:(id)enabled;
 - (void)dealloc;
-- (void)setAccount:(id)a3;
-- (void)setCredits:(id)a3;
-- (void)setDsID:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setKind:(id)a3;
-- (void)setSecureToken:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setCredits:(id)credits;
+- (void)setDsID:(id)d;
+- (void)setIdentifier:(id)identifier;
+- (void)setKind:(id)kind;
+- (void)setSecureToken:(id)token;
 @end
 
 @implementation SUScriptAccount
@@ -57,14 +57,14 @@
   return v3;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
   [(SUScriptObject *)self lock];
   account = self->_account;
-  if (account != a3)
+  if (account != account)
   {
 
-    self->_account = a3;
+    self->_account = account;
   }
 
   [(SUScriptObject *)self unlock];
@@ -73,12 +73,12 @@
 - (BOOL)isPrimaryAccount
 {
   v3 = [objc_msgSend(objc_msgSend(MEMORY[0x1E69D4890] "defaultStore")];
-  v4 = [(SUScriptAccount *)self dsID];
+  dsID = [(SUScriptAccount *)self dsID];
 
-  return [v3 isEqual:v4];
+  return [v3 isEqual:dsID];
 }
 
-- (void)setSecureToken:(id)a3
+- (void)setSecureToken:(id)token
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -90,7 +90,7 @@
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = a3, [a3 length]))
+  if (!token || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = token, [token length]))
   {
 LABEL_3:
     [(SSAccount *)[(SUScriptAccount *)self account] setSecureToken:v5];
@@ -107,30 +107,30 @@ LABEL_3:
 
 - (NSString)credits
 {
-  v2 = [(SUScriptAccount *)self account];
+  account = [(SUScriptAccount *)self account];
 
-  return [(SSAccount *)v2 creditsString];
+  return [(SSAccount *)account creditsString];
 }
 
 - (NSNumber)dsID
 {
-  v2 = [(SUScriptAccount *)self account];
+  account = [(SUScriptAccount *)self account];
 
-  return [(SSAccount *)v2 uniqueIdentifier];
+  return [(SSAccount *)account uniqueIdentifier];
 }
 
 - (NSString)identifier
 {
-  v2 = [(SUScriptAccount *)self account];
+  account = [(SUScriptAccount *)self account];
 
-  return [(SSAccount *)v2 accountName];
+  return [(SSAccount *)account accountName];
 }
 
 - (id)isPrimaryLockerAccount
 {
-  v2 = [(SSAccount *)[(SUScriptAccount *)self account] isActiveLockerAccount];
+  isActiveLockerAccount = [(SSAccount *)[(SUScriptAccount *)self account] isActiveLockerAccount];
   v3 = MEMORY[0x1E695E4D0];
-  if (!v2)
+  if (!isActiveLockerAccount)
   {
     v3 = MEMORY[0x1E695E4C0];
   }
@@ -140,10 +140,10 @@ LABEL_3:
 
 - (NSString)kind
 {
-  v2 = [(SUScriptAccount *)self account];
-  if ([(SSAccount *)v2 uniqueIdentifier])
+  account = [(SUScriptAccount *)self account];
+  if ([(SSAccount *)account uniqueIdentifier])
   {
-    if ([(SSAccount *)v2 accountKind]== 1)
+    if ([(SSAccount *)account accountKind]== 1)
     {
       return @"aol";
     }
@@ -164,16 +164,16 @@ LABEL_3:
 
 - (NSString)ITunesPassSerialNumber
 {
-  v2 = [(SUScriptAccount *)self account];
+  account = [(SUScriptAccount *)self account];
 
-  return [(SSAccount *)v2 ITunesPassSerialNumber];
+  return [(SSAccount *)account ITunesPassSerialNumber];
 }
 
 - (id)lockerEnabled
 {
-  v2 = [(SSAccount *)[(SUScriptAccount *)self account] enabledServiceTypes];
+  enabledServiceTypes = [(SSAccount *)[(SUScriptAccount *)self account] enabledServiceTypes];
   v3 = MEMORY[0x1E695E4D0];
-  if ((v2 & 4) == 0)
+  if ((enabledServiceTypes & 4) == 0)
   {
     v3 = MEMORY[0x1E695E4C0];
   }
@@ -183,9 +183,9 @@ LABEL_3:
 
 - (id)purchaseHistoryEnabled
 {
-  v2 = [(SSAccount *)[(SUScriptAccount *)self account] enabledServiceTypes];
+  enabledServiceTypes = [(SSAccount *)[(SUScriptAccount *)self account] enabledServiceTypes];
   v3 = MEMORY[0x1E695E4D0];
-  if ((v2 & 2) == 0)
+  if ((enabledServiceTypes & 2) == 0)
   {
     v3 = MEMORY[0x1E695E4C0];
   }
@@ -193,7 +193,7 @@ LABEL_3:
   return *v3;
 }
 
-- (void)setCredits:(id)a3
+- (void)setCredits:(id)credits
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -205,7 +205,7 @@ LABEL_3:
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!credits || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = credits, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
     [(SSAccount *)[(SUScriptAccount *)self account] setCreditsString:v5];
@@ -219,17 +219,17 @@ LABEL_3:
   [v7 throwException:@"Invalid argument"];
 }
 
-- (void)setDsID:(id)a3
+- (void)setDsID:(id)d
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    d = 0;
   }
 
   v5 = SSGetUnsignedLongLongFromValue();
   v6 = v5;
-  if (a3 && !v5)
+  if (d && !v5)
   {
     v7 = MEMORY[0x1E69E2F88];
     v8 = @"Invalid argument";
@@ -239,9 +239,9 @@ LABEL_11:
     return;
   }
 
-  v9 = [(SUScriptAccount *)self account];
-  v10 = v9;
-  if (a3)
+  account = [(SUScriptAccount *)self account];
+  v10 = account;
+  if (d)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v6];
     v12 = [objc_msgSend(MEMORY[0x1E69D4890] "defaultStore")];
@@ -252,7 +252,7 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v9 = v10;
+    account = v10;
     v13 = v11;
   }
 
@@ -261,12 +261,12 @@ LABEL_11:
     v13 = 0;
   }
 
-  [(SSAccount *)v9 setUniqueIdentifier:v13];
+  [(SSAccount *)account setUniqueIdentifier:v13];
 
   [(SUScriptAccount *)self _commitChanges];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -278,7 +278,7 @@ LABEL_11:
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!identifier || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = identifier, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
     [(SSAccount *)[(SUScriptAccount *)self account] setAccountName:v5];
@@ -292,25 +292,25 @@ LABEL_3:
   [v7 throwException:@"Invalid argument"];
 }
 
-- (void)setKind:(id)a3
+- (void)setKind:(id)kind
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a3 isEqualToString:@"aol"])
+    if ([kind isEqualToString:@"aol"])
     {
-      v5 = [(SUScriptAccount *)self account];
+      account = [(SUScriptAccount *)self account];
       v6 = 1;
 LABEL_10:
-      [(SSAccount *)v5 setAccountKind:v6];
+      [(SSAccount *)account setAccountKind:v6];
 
       [(SUScriptAccount *)self _commitChanges];
       return;
     }
 
-    if ([a3 isEqualToString:@"apple"])
+    if ([kind isEqualToString:@"apple"])
     {
-      v5 = [(SUScriptAccount *)self account];
+      account = [(SUScriptAccount *)self account];
       v6 = 0;
       goto LABEL_10;
     }
@@ -330,9 +330,9 @@ LABEL_10:
 
 - (id)socialEnabled
 {
-  v2 = [(SSAccount *)[(SUScriptAccount *)self account] enabledServiceTypes];
+  enabledServiceTypes = [(SSAccount *)[(SUScriptAccount *)self account] enabledServiceTypes];
   v3 = MEMORY[0x1E695E4D0];
-  if ((v2 & 1) == 0)
+  if ((enabledServiceTypes & 1) == 0)
   {
     v3 = MEMORY[0x1E695E4C0];
   }
@@ -342,29 +342,29 @@ LABEL_10:
 
 - (void)_commitChanges
 {
-  v2 = [(SUScriptAccount *)self account];
-  if ([(SSAccount *)v2 uniqueIdentifier])
+  account = [(SUScriptAccount *)self account];
+  if ([(SSAccount *)account uniqueIdentifier])
   {
-    v3 = [MEMORY[0x1E69D4890] defaultStore];
+    defaultStore = [MEMORY[0x1E69D4890] defaultStore];
 
-    [v3 addAccount:v2];
+    [defaultStore addAccount:account];
   }
 }
 
-- (void)_setServiceType:(int64_t)a3 enabled:(id)a4
+- (void)_setServiceType:(int64_t)type enabled:(id)enabled
 {
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a4 BOOLValue];
-    v8 = [(SUScriptAccount *)self account];
-    if (v7)
+    bOOLValue = [enabled BOOLValue];
+    account = [(SUScriptAccount *)self account];
+    if (bOOLValue)
     {
-      [(SSAccount *)v8 addEnabledServiceTypes:a3];
+      [(SSAccount *)account addEnabledServiceTypes:type];
     }
 
     else
     {
-      [(SSAccount *)v8 removeEnabledServiceTypes:a3];
+      [(SSAccount *)account removeEnabledServiceTypes:type];
     }
 
     [(SUScriptAccount *)self _commitChanges];
@@ -378,27 +378,27 @@ LABEL_10:
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_14 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptAccount;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_11, 4);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_11, 4);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptAccount;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -408,14 +408,14 @@ LABEL_10:
 {
   v4.receiver = self;
   v4.super_class = SUScriptAccount;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_14 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_14 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_11 = sel_isManagedAppleID;
     *algn_1EBF3AA28 = @"isManagedAppleID";

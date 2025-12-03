@@ -1,47 +1,47 @@
 @interface BuddyAISFlowTaskInfo
-- (BuddyAISFlowTaskInfo)initWithUnderlyingFlowTaskInfo:(id)a3;
-- (void)waitUntilLoadedWithCompletion:(id)a3;
+- (BuddyAISFlowTaskInfo)initWithUnderlyingFlowTaskInfo:(id)info;
+- (void)waitUntilLoadedWithCompletion:(id)completion;
 @end
 
 @implementation BuddyAISFlowTaskInfo
 
-- (BuddyAISFlowTaskInfo)initWithUnderlyingFlowTaskInfo:(id)a3
+- (BuddyAISFlowTaskInfo)initWithUnderlyingFlowTaskInfo:(id)info
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, info);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = BuddyAISFlowTaskInfo;
-  v8 = [(BuddyAISFlowTaskInfo *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(BuddyAISFlowTaskInfo *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v8 + 1, location[0]);
+    objc_storeStrong(selfCopy + 1, location[0]);
   }
 
-  v4 = v8;
+  v4 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v4;
 }
 
-- (void)waitUntilLoadedWithCompletion:(id)a3
+- (void)waitUntilLoadedWithCompletion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v3);
 
-  v4 = [(BuddyAISFlowTaskInfo *)v7 underlyingFlowTaskInfo];
-  if (v4)
+  underlyingFlowTaskInfo = [(BuddyAISFlowTaskInfo *)selfCopy underlyingFlowTaskInfo];
+  if (underlyingFlowTaskInfo)
   {
-    v5 = [(BuddyAISFlowTaskInfo *)v7 underlyingFlowTaskInfo];
-    [(AISFlowTaskInfoProtocol *)v5 waitUntilLoadedWithCompletionHandler:location[0]];
+    underlyingFlowTaskInfo2 = [(BuddyAISFlowTaskInfo *)selfCopy underlyingFlowTaskInfo];
+    [(AISFlowTaskInfoProtocol *)underlyingFlowTaskInfo2 waitUntilLoadedWithCompletionHandler:location[0]];
   }
 
   else

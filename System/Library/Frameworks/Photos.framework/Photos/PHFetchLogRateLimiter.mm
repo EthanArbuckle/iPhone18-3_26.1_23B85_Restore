@@ -3,7 +3,7 @@
 - (PHFetchLogRateLimiter)init;
 - (unsigned)rateLimitedLogForErrorLog;
 - (unsigned)rateLimitedLogForFaultLog;
-- (unsigned)rateLimitedLogLevelForLogForLevel:(unsigned __int8)a3;
+- (unsigned)rateLimitedLogLevelForLogForLevel:(unsigned __int8)level;
 @end
 
 @implementation PHFetchLogRateLimiter
@@ -36,19 +36,19 @@
   return [(PHFetchLogRateLimiter *)self rateLimitedLogForErrorLog];
 }
 
-- (unsigned)rateLimitedLogLevelForLogForLevel:(unsigned __int8)a3
+- (unsigned)rateLimitedLogLevelForLogForLevel:(unsigned __int8)level
 {
-  if (a3 == 16)
+  if (level == 16)
   {
     return [(PHFetchLogRateLimiter *)self rateLimitedLogForErrorLog];
   }
 
-  if (a3 == 17)
+  if (level == 17)
   {
     return [(PHFetchLogRateLimiter *)self rateLimitedLogForFaultLog];
   }
 
-  return a3;
+  return level;
 }
 
 - (PHFetchLogRateLimiter)init

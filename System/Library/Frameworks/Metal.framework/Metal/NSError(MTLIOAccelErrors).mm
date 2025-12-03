@@ -23,7 +23,7 @@
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s (%08x:%s)", v5, a3, v4];
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObject:v7 forKey:*MEMORY[0x1E696A578]];
 
-  return [a1 initWithDomain:@"MTLCommandBufferErrorDomain" code:v6 userInfo:v8];
+  return [self initWithDomain:@"MTLCommandBufferErrorDomain" code:v6 userInfo:v8];
 }
 
 @end

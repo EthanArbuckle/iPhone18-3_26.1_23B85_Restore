@@ -1,23 +1,23 @@
 @interface CIEnhancementCalculation
-+ (double)bestWarmthForI:(double)a3 q:(double)a4 percentChange:(double *)a5;
++ (double)bestWarmthForI:(double)i q:(double)q percentChange:(double *)change;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)originalFaceColor;
-- (CGPoint)curvePointAtIndex:(unint64_t)a3;
+- (CGPoint)curvePointAtIndex:(unint64_t)index;
 - (CIEnhancementCalculation)init;
 - (id)faceBalanceStrength;
 - (id)faceBalanceWarmth;
 - (id)rawShadow;
 - (id)shadow;
 - (id)vibrance;
-- (int)putShadowsAnalysisInto:(double *)a3;
+- (int)putShadowsAnalysisInto:(double *)into;
 - (unint64_t)curveCount;
 - (void)dealloc;
-- (void)downSampleHistogram:(id)a3 to:(unsigned int)a4 storeIn:(double *)a5;
+- (void)downSampleHistogram:(id)histogram to:(unsigned int)to storeIn:(double *)in;
 - (void)printAnalysis;
-- (void)printHistogram:(id)a3 downsampledTo:(unsigned int)a4;
-- (void)printHistogramsDownsampledTo:(unsigned int)a3;
-- (void)setFaceColorFromChromaI:(double)a3 andChromaQ:(double)a4;
-- (void)setShadowsMin:(double)a3 max:(double)a4 zeroExposure:(double)a5;
-- (void)setupFaceColor:(id)a3 redIndex:(int)a4 greenIndex:(int)a5 blueIndex:(int)a6;
+- (void)printHistogram:(id)histogram downsampledTo:(unsigned int)to;
+- (void)printHistogramsDownsampledTo:(unsigned int)to;
+- (void)setFaceColorFromChromaI:(double)i andChromaQ:(double)q;
+- (void)setShadowsMin:(double)min max:(double)max zeroExposure:(double)exposure;
+- (void)setupFaceColor:(id)color redIndex:(int)index greenIndex:(int)greenIndex blueIndex:(int)blueIndex;
 @end
 
 @implementation CIEnhancementCalculation
@@ -50,37 +50,37 @@
   [(CIEnhancementCalculation *)&v3 dealloc];
 }
 
-+ (double)bestWarmthForI:(double)a3 q:(double)a4 percentChange:(double *)a5
++ (double)bestWarmthForI:(double)i q:(double)q percentChange:(double *)change
 {
-  if (a5)
+  if (change)
   {
     v5 = (*(&faceBalanceOutdoorIQ + 1) - *(&faceBalanceIndoorIQ + 1)) * (*(&faceBalanceOutdoorIQ + 1) - *(&faceBalanceIndoorIQ + 1));
-    v6 = fmin(fmax(((a4 - *(&faceBalanceIndoorIQ + 1)) * (*(&faceBalanceOutdoorIQ + 1) - *(&faceBalanceIndoorIQ + 1)) + (a3 - *&faceBalanceIndoorIQ) * (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ)) / (v5 + (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ) * (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ)), 0.0), 1.0) * 0.75 + 0.25;
-    *a5 = sqrt((a3 - (*&faceBalanceIndoorIQ + v6 * (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ))) * (a3 - (*&faceBalanceIndoorIQ + v6 * (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ))) + (a4 - (*(&faceBalanceIndoorIQ + 1) + v6 * (*(&faceBalanceOutdoorIQ + 1) - *(&faceBalanceIndoorIQ + 1)))) * (a4 - (*(&faceBalanceIndoorIQ + 1) + v6 * (*(&faceBalanceOutdoorIQ + 1) - *(&faceBalanceIndoorIQ + 1))))) / sqrt((*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ) * (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ) + v5);
+    v6 = fmin(fmax(((q - *(&faceBalanceIndoorIQ + 1)) * (*(&faceBalanceOutdoorIQ + 1) - *(&faceBalanceIndoorIQ + 1)) + (i - *&faceBalanceIndoorIQ) * (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ)) / (v5 + (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ) * (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ)), 0.0), 1.0) * 0.75 + 0.25;
+    *change = sqrt((i - (*&faceBalanceIndoorIQ + v6 * (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ))) * (i - (*&faceBalanceIndoorIQ + v6 * (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ))) + (q - (*(&faceBalanceIndoorIQ + 1) + v6 * (*(&faceBalanceOutdoorIQ + 1) - *(&faceBalanceIndoorIQ + 1)))) * (q - (*(&faceBalanceIndoorIQ + 1) + v6 * (*(&faceBalanceOutdoorIQ + 1) - *(&faceBalanceIndoorIQ + 1))))) / sqrt((*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ) * (*&faceBalanceOutdoorIQ - *&faceBalanceIndoorIQ) + v5);
   }
 
   return 0.5;
 }
 
-- (void)setFaceColorFromChromaI:(double)a3 andChromaQ:(double)a4
+- (void)setFaceColorFromChromaI:(double)i andChromaQ:(double)q
 {
-  self->originalFaceColor.i = a3;
-  self->originalFaceColor.q = a4;
+  self->originalFaceColor.i = i;
+  self->originalFaceColor.q = q;
   self->faceInputSet = 1;
   [CIEnhancementCalculation bestWarmthForI:"bestWarmthForI:q:percentChange:" q:&self->percentFaceChange percentChange:?];
 }
 
-- (void)setupFaceColor:(id)a3 redIndex:(int)a4 greenIndex:(int)a5 blueIndex:(int)a6
+- (void)setupFaceColor:(id)color redIndex:(int)index greenIndex:(int)greenIndex blueIndex:(int)blueIndex
 {
   v55 = *MEMORY[0x1E69E9840];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v41 = [a3 countByEnumeratingWithState:&v50 objects:v54 count:16];
+  v41 = [color countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v41)
   {
-    v38 = self;
+    selfCopy = self;
     v40 = *v51;
     v10 = 0.0;
     v11 = 1.0;
@@ -93,27 +93,27 @@
       {
         if (*v51 != v40)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(color);
         }
 
         v44 = v12;
         v45 = v10;
         v43 = v13;
         v14 = *(*(&v50 + 1) + 8 * v13);
-        v15 = [v14 bytesPerPixel];
-        v16 = [v14 width];
+        bytesPerPixel = [v14 bytesPerPixel];
+        width = [v14 width];
         v48 = v14;
-        v17 = [v14 height];
-        v18 = v17;
-        v42 = v16;
-        if (v17)
+        height = [v14 height];
+        v18 = height;
+        v42 = width;
+        if (height)
         {
           v19 = 0;
-          v20 = v11 / (v16 * v17);
-          v21 = v16 - 1;
+          v20 = v11 / (width * height);
+          v21 = width - 1;
           v22 = 0.0;
           v23 = 0.0;
-          for (i = v17; i > v19; v18 = i)
+          for (i = height; i > v19; v18 = i)
           {
             v24 = [v48 rowAtIndex:v19];
             if (v21)
@@ -124,19 +124,19 @@
               do
               {
                 v29 = v26 + v27;
-                LOBYTE(v25) = *(v29 + a4);
+                LOBYTE(v25) = *(v29 + index);
                 *&v30 = pow(*&v25 / 255.0, 0.555555556);
                 v31 = *&v30;
-                LOBYTE(v30) = *(v29 + a5);
+                LOBYTE(v30) = *(v29 + greenIndex);
                 *&v32 = pow(v30 / 255.0, 0.555555556);
                 v33 = *&v32;
-                LOBYTE(v32) = *(v29 + a6);
+                LOBYTE(v32) = *(v29 + blueIndex);
                 v34 = pow(v32 / 255.0, 0.555555556);
                 v35 = v33 * -0.2755 + v31 * 0.596 + v34 * -0.321;
                 v25 = v33 * -0.523 + v31 * 0.212 + v34 * 0.311;
                 v22 = v22 + v20 * v35;
                 v23 = v23 + v20 * v25;
-                v27 += v15;
+                v27 += bytesPerPixel;
               }
 
               while (v21 > v28++);
@@ -163,22 +163,22 @@
       }
 
       while (v43 + 1 != v41);
-      v41 = [a3 countByEnumeratingWithState:&v50 objects:v54 count:16];
+      v41 = [color countByEnumeratingWithState:&v50 objects:v54 count:16];
     }
 
     while (v41);
     if (v10 > 0.0)
     {
-      [(CIEnhancementCalculation *)v38 setFaceColorFromChromaI:v46 / v10 andChromaQ:v12 / v10];
+      [(CIEnhancementCalculation *)selfCopy setFaceColorFromChromaI:v46 / v10 andChromaQ:v12 / v10];
     }
   }
 }
 
-- (void)setShadowsMin:(double)a3 max:(double)a4 zeroExposure:(double)a5
+- (void)setShadowsMin:(double)min max:(double)max zeroExposure:(double)exposure
 {
-  self->maxShadow = fmax(a4, 0.0);
-  self->minShadow = fmin(a3, 0.0);
-  self->exposureValueAtZeroShadow = a5;
+  self->maxShadow = fmax(max, 0.0);
+  self->minShadow = fmin(min, 0.0);
+  self->exposureValueAtZeroShadow = exposure;
 }
 
 - (id)faceBalanceStrength
@@ -221,7 +221,7 @@
   result = self->satHist;
   if (result)
   {
-    v4 = [result values];
+    values = [result values];
     v5 = 0.0;
     v6 = 255;
     do
@@ -232,7 +232,7 @@
         break;
       }
 
-      v5 = v5 + *(v4 + 8 * v6--);
+      v5 = v5 + *(values + 8 * v6--);
     }
 
     while (v5 < 0.02);
@@ -261,7 +261,7 @@
   }
 }
 
-- (CGPoint)curvePointAtIndex:(unint64_t)a3
+- (CGPoint)curvePointAtIndex:(unint64_t)index
 {
   v35 = *MEMORY[0x1E69E9840];
   v34[2] = xmmword_19CF2ABF8;
@@ -340,7 +340,7 @@ LABEL_10:
     }
 
     while (v14 != 40);
-    v23 = &v34[a3 % 5];
+    v23 = &v34[index % 5];
     v24 = *v23;
     v25 = v23[1];
   }
@@ -356,34 +356,34 @@ LABEL_10:
   return result;
 }
 
-- (int)putShadowsAnalysisInto:(double *)a3
+- (int)putShadowsAnalysisInto:(double *)into
 {
   v74[16] = *MEMORY[0x1E69E9840];
-  v5 = [(CIEnhancementHistogram *)self->lumHist values];
-  v6 = v5;
+  values = [(CIEnhancementHistogram *)self->lumHist values];
+  v6 = values;
   v7 = 0;
-  v8 = *v5;
+  v8 = *values;
   v9 = 0.0;
   do
   {
-    v10 = v5[v7];
+    v10 = values[v7];
     v8 = fmax(v8, v10);
     v9 = v9 + v10;
     *&v70[v7++] = v9;
   }
 
   while (v7 != 256);
-  v11 = [(CIEnhancementHistogram *)self->borderHist values];
-  v12 = v11;
+  values2 = [(CIEnhancementHistogram *)self->borderHist values];
+  v12 = values2;
   v13 = 0;
   v14 = 0;
-  v15 = *v11;
+  v15 = *values2;
   do
   {
-    if (v11[v13] > v15)
+    if (values2[v13] > v15)
     {
       v14 = v13;
-      v15 = v11[v13];
+      v15 = values2[v13];
     }
 
     ++v13;
@@ -487,7 +487,7 @@ LABEL_17:
   *&v71[3] = v12[v35] / v15;
   *&v73[3] = v6[v35] / v8;
   v72[3] = v70[v35];
-  v36 = [(CIEnhancementHistogram *)self->borderHist values];
+  values3 = [(CIEnhancementHistogram *)self->borderHist values];
   for (i = 0; i != 4; ++i)
   {
     v38 = putShadowsAnalysisInto__segTop[i];
@@ -496,7 +496,7 @@ LABEL_17:
     if (v38 > v39)
     {
       v41 = 1.0 / (v38 - v39);
-      v42 = &v36[v39];
+      v42 = &values3[v39];
       v43 = v38 - v39;
       v44 = 0.0;
       v40 = 0.0;
@@ -514,7 +514,7 @@ LABEL_17:
     v46 = putShadowsAnalysisInto__segDown[i];
     if (v38 < v46)
     {
-      v47 = &v36[v38];
+      v47 = &values3[v38];
       v48 = v46 - v38;
       do
       {
@@ -530,7 +530,7 @@ LABEL_17:
     if (v50 > v46)
     {
       v51 = 1.0 / (v50 - v46);
-      v52 = &v36[v46];
+      v52 = &values3[v46];
       v53 = v50 - v46;
       v54 = 1.0;
       do
@@ -575,12 +575,12 @@ LABEL_17:
     v63 = (&v66)[v56];
     do
     {
-      a3[result] = *&v63[v62];
-      v64 = &a3[result++ + 2];
+      into[result] = *&v63[v62];
+      v64 = &into[result++ + 2];
       v65 = v61;
       do
       {
-        a3[result] = *&v63[v62] - *(v63 + v65);
+        into[result] = *&v63[v62] - *(v63 + v65);
         *v64 = *&v63[v62] * *(v63 + v65);
         v64 += 2;
         result += 2;
@@ -645,21 +645,21 @@ LABEL_17:
   return [MEMORY[0x1E696AD98] numberWithDouble:v7];
 }
 
-- (void)downSampleHistogram:(id)a3 to:(unsigned int)a4 storeIn:(double *)a5
+- (void)downSampleHistogram:(id)histogram to:(unsigned int)to storeIn:(double *)in
 {
-  v7 = [a3 values];
-  if (a4)
+  values = [histogram values];
+  if (to)
   {
     v8 = 0;
     v9 = 0;
     do
     {
       v10 = v8 + 1;
-      v11 = floor(256.0 / a4 * (v8 + 1));
+      v11 = floor(256.0 / to * (v8 + 1));
       v12 = 0.0;
       if (v11 > v9)
       {
-        v13 = (v7 + 8 * v9);
+        v13 = (values + 8 * v9);
         do
         {
           v14 = *v13++;
@@ -670,29 +670,29 @@ LABEL_17:
         while (v11 > v9);
       }
 
-      a5[v8++] = v12;
+      in[v8++] = v12;
     }
 
-    while (v10 != a4);
+    while (v10 != to);
   }
 }
 
-- (void)printHistogram:(id)a3 downsampledTo:(unsigned int)a4
+- (void)printHistogram:(id)histogram downsampledTo:(unsigned int)to
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v5 = (v8 - ((8 * a4 + 15) & 0xFFFFFFFF0));
-  [CIEnhancementCalculation downSampleHistogram:"downSampleHistogram:to:storeIn:" to:a3 storeIn:?];
-  if (a4)
+  v5 = (v8 - ((8 * to + 15) & 0xFFFFFFFF0));
+  [CIEnhancementCalculation downSampleHistogram:"downSampleHistogram:to:storeIn:" to:histogram storeIn:?];
+  if (to)
   {
-    v6 = a4;
+    toCopy = to;
     do
     {
       v7 = *v5++;
       printf("%.5f\t", v7);
-      --v6;
+      --toCopy;
     }
 
-    while (v6);
+    while (toCopy);
   }
 }
 
@@ -715,7 +715,7 @@ LABEL_17:
   }
 }
 
-- (void)printHistogramsDownsampledTo:(unsigned int)a3
+- (void)printHistogramsDownsampledTo:(unsigned int)to
 {
   [(CIEnhancementCalculation *)self printAnalysis];
 

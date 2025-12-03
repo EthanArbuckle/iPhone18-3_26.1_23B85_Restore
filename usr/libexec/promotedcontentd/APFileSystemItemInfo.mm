@@ -1,15 +1,15 @@
 @interface APFileSystemItemInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation APFileSystemItemInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
-    sub_1003956B8(self, v4, &v7);
+    sub_1003956B8(self, equalCopy, &v7);
     v5 = v7;
   }
 

@@ -2,7 +2,7 @@
 - (BOOL)_requiresLocalPasscodeValidation;
 - (RUIObjectModel)objectModel;
 - (RUIPage)page;
-- (RUIPasscodeView)initWithAttributes:(id)a3 parent:(id)a4;
+- (RUIPasscodeView)initWithAttributes:(id)attributes parent:(id)parent;
 - (_TtC8RemoteUI28RUITextActivityIndicatorView)activityIndicatorView;
 - (id)HTMLHeaderView;
 - (id)_passcodeFieldAccessibilityIdentifier;
@@ -10,42 +10,42 @@
 - (id)headerView;
 - (id)passcodeView;
 - (id)sourceURL;
-- (id)subElementWithID:(id)a3;
+- (id)subElementWithID:(id)d;
 - (void)_clearPasscode;
-- (void)_complexPasscodeFieldDidChange:(id)a3;
-- (void)_doneButtonTapped:(id)a3;
-- (void)_jiggleView:(id)a3;
+- (void)_complexPasscodeFieldDidChange:(id)change;
+- (void)_doneButtonTapped:(id)tapped;
+- (void)_jiggleView:(id)view;
 - (void)_updateFieldSpacer;
-- (void)autofillWithToken:(id)a3;
-- (void)footerView:(id)a3 activatedLinkWithURL:(id)a4;
-- (void)keyboardFrameDidChange:(id)a3;
-- (void)performAction:(int)a3 forElement:(id)a4 completion:(id)a5;
-- (void)populatePostbackDictionary:(id)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setImageAlignment:(unint64_t)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)setKeyboardAppearance:(int64_t)a3;
-- (void)setNumberOfEntryFields:(unint64_t)a3;
+- (void)autofillWithToken:(id)token;
+- (void)footerView:(id)view activatedLinkWithURL:(id)l;
+- (void)keyboardFrameDidChange:(id)change;
+- (void)performAction:(int)action forElement:(id)element completion:(id)completion;
+- (void)populatePostbackDictionary:(id)dictionary;
+- (void)setForegroundColor:(id)color;
+- (void)setHeaderTitle:(id)title;
+- (void)setImage:(id)image;
+- (void)setImageAlignment:(unint64_t)alignment;
+- (void)setImageSize:(CGSize)size;
+- (void)setKeyboardAppearance:(int64_t)appearance;
+- (void)setNumberOfEntryFields:(unint64_t)fields;
 - (void)startActivityIndicator;
 - (void)stopActivityIndicator;
 - (void)submitPIN;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayout;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RUIPasscodeView
 
-- (RUIPasscodeView)initWithAttributes:(id)a3 parent:(id)a4
+- (RUIPasscodeView)initWithAttributes:(id)attributes parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  parentCopy = parent;
   v15.receiver = self;
   v15.super_class = RUIPasscodeView;
-  v8 = [(RUIElement *)&v15 initWithAttributes:v6 parent:v7];
+  v8 = [(RUIElement *)&v15 initWithAttributes:attributesCopy parent:parentCopy];
   v9 = v8;
   if (v8)
   {
@@ -68,9 +68,9 @@
 
     v11 = v10;
     _Block_object_dispose(&v17, 8);
-    v12 = [v10 appearance];
-    v13 = [MEMORY[0x277D75348] labelColor];
-    [v12 setTextColor:v13];
+    appearance = [v10 appearance];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [appearance setTextColor:labelColor];
   }
 
   return v9;
@@ -79,42 +79,42 @@
 - (id)sourceURL
 {
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-  v3 = [WeakRetained sourceURL];
+  sourceURL = [WeakRetained sourceURL];
 
-  return v3;
+  return sourceURL;
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_foregroundColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_foregroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_foregroundColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(&self->_foregroundColor, color);
     [(PSPasscodeField *)self->_passcodeField setForegroundColor:self->_foregroundColor];
     if (objc_opt_respondsToSelector())
     {
       [(RUIHeader *)self->_headerView setHeaderColor:self->_foregroundColor];
     }
 
-    v5 = objc_opt_respondsToSelector();
+    colorCopy = objc_opt_respondsToSelector();
     v6 = v7;
-    if (v5)
+    if (colorCopy)
     {
-      v5 = [(RemoteUITableFooter *)self->_footerView setTextColor:self->_foregroundColor];
+      colorCopy = [(RemoteUITableFooter *)self->_footerView setTextColor:self->_foregroundColor];
       v6 = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](colorCopy, v6);
 }
 
-- (void)setKeyboardAppearance:(int64_t)a3
+- (void)setKeyboardAppearance:(int64_t)appearance
 {
-  if (self->_keyboardAppearance != a3)
+  if (self->_keyboardAppearance != appearance)
   {
-    self->_keyboardAppearance = a3;
+    self->_keyboardAppearance = appearance;
     [(PSPasscodeField *)self->_passcodeField setKeyboardAppearance:?];
   }
 }
@@ -123,8 +123,8 @@
 {
   if (![(RUIPasscodeView *)self _requiresLocalPasscodeValidation]&& self->_passcodeField)
   {
-    v3 = [(RUIElement *)self attributes];
-    v6 = [v3 objectForKeyedSubscript:@"fieldSpacer"];
+    attributes = [(RUIElement *)self attributes];
+    v6 = [attributes objectForKeyedSubscript:@"fieldSpacer"];
 
     if ((self->_numberOfEntryFields & 1) == 0)
     {
@@ -169,8 +169,8 @@
     self->_containerView = v8;
 
     v10 = self->_containerView;
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(UIScrollView *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIScrollView *)v10 setBackgroundColor:clearColor];
 
     v12 = +[RUIPlatform isSolariumEnabled];
     v13 = self->_containerView;
@@ -185,20 +185,20 @@
     }
 
     [(UIScrollView *)self->_containerView setLayoutMarginsFollowReadableWidth:1];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:self selector:sel_keyboardFrameDidChange_ name:*MEMORY[0x277D76C60] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_keyboardFrameDidChange_ name:*MEMORY[0x277D76C60] object:0];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:self selector:sel_keyboardFrameDidChange_ name:*MEMORY[0x277D76B98] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_keyboardFrameDidChange_ name:*MEMORY[0x277D76B98] object:0];
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:self selector:sel_keyboardFrameDidChange_ name:*MEMORY[0x277D76C50] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel_keyboardFrameDidChange_ name:*MEMORY[0x277D76C50] object:0];
 
     if ([(RUIPasscodeView *)self _requiresLocalPasscodeValidation])
     {
       LODWORD(v47) = 0;
-      v17 = [getMCProfileConnectionClass_0() sharedConnection];
-      v18 = [v17 unlockScreenTypeWithOutSimplePasscodeType:&v47];
+      sharedConnection = [getMCProfileConnectionClass_0() sharedConnection];
+      v18 = [sharedConnection unlockScreenTypeWithOutSimplePasscodeType:&v47];
 
       if (v18)
       {
@@ -222,11 +222,11 @@ LABEL_11:
           [(UITextField *)self->_complexPasscodeField addTarget:self action:sel__complexPasscodeFieldDidChange_ forControlEvents:983040];
           v23 = self->_complexPasscodeField;
           v24 = MEMORY[0x277D74300];
-          v25 = [MEMORY[0x277D75418] currentDevice];
-          v26 = [v25 userInterfaceIdiom];
+          currentDevice = [MEMORY[0x277D75418] currentDevice];
+          userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
           v27 = 18.0;
-          if ((v26 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+          if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
           {
             v27 = 23.0;
           }
@@ -236,16 +236,16 @@ LABEL_11:
 
           [*p_complexPasscodeField setSecureTextEntry:1];
           [*p_complexPasscodeField setTextAlignment:1];
-          v29 = [*p_complexPasscodeField layer];
-          [v29 setBorderWidth:1.0];
+          layer = [*p_complexPasscodeField layer];
+          [layer setBorderWidth:1.0];
 
-          v30 = [*p_complexPasscodeField layer];
-          v31 = [MEMORY[0x277D75348] _labelColor];
-          v32 = v31;
-          [v30 setBorderColor:{objc_msgSend(v31, "CGColor")}];
+          layer2 = [*p_complexPasscodeField layer];
+          _labelColor = [MEMORY[0x277D75348] _labelColor];
+          v32 = _labelColor;
+          [layer2 setBorderColor:{objc_msgSend(_labelColor, "CGColor")}];
 
-          v33 = [*p_complexPasscodeField layer];
-          [v33 setCornerRadius:10.0];
+          layer3 = [*p_complexPasscodeField layer];
+          [layer3 setCornerRadius:10.0];
 
           if (v19)
           {
@@ -327,8 +327,8 @@ LABEL_24:
     self->_passcodeField = v39;
 
     [(PSPasscodeField *)self->_passcodeField setAccessibilityTraits:*MEMORY[0x277D765A8]];
-    v41 = [(RUIPasscodeView *)self _passcodeFieldAccessibilityIdentifier];
-    [(PSPasscodeField *)self->_passcodeField setAccessibilityIdentifier:v41];
+    _passcodeFieldAccessibilityIdentifier = [(RUIPasscodeView *)self _passcodeFieldAccessibilityIdentifier];
+    [(PSPasscodeField *)self->_passcodeField setAccessibilityIdentifier:_passcodeFieldAccessibilityIdentifier];
 
     if (self->_foregroundColor)
     {
@@ -338,8 +338,8 @@ LABEL_24:
     [(RUIPasscodeView *)self _updateFieldSpacer];
     [*p_complexPasscodeField setKeyboardAppearance:self->_keyboardAppearance];
     v42 = self->_containerView;
-    v43 = [(RUIPasscodeView *)self activityIndicatorView];
-    [(UIScrollView *)v42 addSubview:v43];
+    activityIndicatorView = [(RUIPasscodeView *)self activityIndicatorView];
+    [(UIScrollView *)v42 addSubview:activityIndicatorView];
 
     [*p_complexPasscodeField setDelegate:self];
     goto LABEL_29;
@@ -353,26 +353,26 @@ LABEL_30:
 
 - (id)_passcodeFieldAccessibilityIdentifier
 {
-  v3 = [(RUIElement *)self attributes];
+  attributes = [(RUIElement *)self attributes];
   v4 = @"accessibilityIdentifier";
-  v5 = [v3 objectForKeyedSubscript:@"accessibilityIdentifier"];
+  v5 = [attributes objectForKeyedSubscript:@"accessibilityIdentifier"];
 
-  v6 = [(RUIElement *)self attributes];
-  v7 = v6;
+  attributes2 = [(RUIElement *)self attributes];
+  v7 = attributes2;
   if (v5)
   {
     goto LABEL_4;
   }
 
   v4 = @"id";
-  v8 = [v6 objectForKeyedSubscript:@"id"];
+  v8 = [attributes2 objectForKeyedSubscript:@"id"];
 
   if (v8)
   {
-    v6 = [(RUIElement *)self attributes];
-    v7 = v6;
+    attributes2 = [(RUIElement *)self attributes];
+    v7 = attributes2;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:v4];
+    v9 = [attributes2 objectForKeyedSubscript:v4];
 
     goto LABEL_5;
   }
@@ -385,10 +385,10 @@ LABEL_5:
 
 - (_TtC8RemoteUI28RUITextActivityIndicatorView)activityIndicatorView
 {
-  v3 = [(RUIElement *)self style];
-  v4 = [v3 supportActivityIndicatorInPinView];
+  style = [(RUIElement *)self style];
+  supportActivityIndicatorInPinView = [style supportActivityIndicatorInPinView];
 
-  if (v4)
+  if (supportActivityIndicatorInPinView)
   {
     activityIndicatorView = self->_activityIndicatorView;
     if (!activityIndicatorView)
@@ -411,67 +411,67 @@ LABEL_5:
   return v8;
 }
 
-- (void)keyboardFrameDidChange:(id)a3
+- (void)keyboardFrameDidChange:(id)change
 {
   containerView = self->_containerView;
-  v5 = a3;
-  v6 = [(UIScrollView *)containerView superview];
-  v7 = [v6 keyboardSceneDelegate];
-  v8 = [(UIScrollView *)self->_containerView superview];
-  v9 = [v5 userInfo];
+  changeCopy = change;
+  superview = [(UIScrollView *)containerView superview];
+  keyboardSceneDelegate = [superview keyboardSceneDelegate];
+  superview2 = [(UIScrollView *)self->_containerView superview];
+  userInfo = [changeCopy userInfo];
 
-  [v7 verticalOverlapForView:v8 usingKeyboardInfo:v9];
+  [keyboardSceneDelegate verticalOverlapForView:superview2 usingKeyboardInfo:userInfo];
   self->_keyboardHeight = v10;
 
   [(RUIPasscodeView *)self viewDidLayout];
 }
 
-- (void)setNumberOfEntryFields:(unint64_t)a3
+- (void)setNumberOfEntryFields:(unint64_t)fields
 {
-  if (![(RUIPasscodeView *)self _requiresLocalPasscodeValidation]&& self->_numberOfEntryFields != a3)
+  if (![(RUIPasscodeView *)self _requiresLocalPasscodeValidation]&& self->_numberOfEntryFields != fields)
   {
-    self->_numberOfEntryFields = a3;
-    [(PSPasscodeField *)self->_passcodeField setNumberOfEntryFields:a3];
+    self->_numberOfEntryFields = fields;
+    [(PSPasscodeField *)self->_passcodeField setNumberOfEntryFields:fields];
 
     [(RUIPasscodeView *)self _updateFieldSpacer];
   }
 }
 
-- (void)populatePostbackDictionary:(id)a3
+- (void)populatePostbackDictionary:(id)dictionary
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   if (![(RUIPasscodeView *)self _requiresLocalPasscodeValidation])
   {
-    v4 = [(RUIElement *)self attributes];
-    v5 = [v4 objectForKeyedSubscript:@"id"];
+    attributes = [(RUIElement *)self attributes];
+    v5 = [attributes objectForKeyedSubscript:@"id"];
 
     if ([v5 length])
     {
       submittedPIN = self->_submittedPIN;
       if (submittedPIN)
       {
-        [v7 setObject:submittedPIN forKey:v5];
+        [dictionaryCopy setObject:submittedPIN forKey:v5];
       }
     }
   }
 }
 
-- (void)performAction:(int)a3 forElement:(id)a4 completion:(id)a5
+- (void)performAction:(int)action forElement:(id)element completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-  [WeakRetained passcodeViewOM:self activatedElement:v8 completion:v7];
+  [WeakRetained passcodeViewOM:self activatedElement:elementCopy completion:completionCopy];
 }
 
-- (id)subElementWithID:(id)a3
+- (id)subElementWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   p_header = &self->_header;
-  v6 = [(RUIElement *)self->_header identifier];
-  v7 = [v6 isEqualToString:v4];
+  identifier = [(RUIElement *)self->_header identifier];
+  v7 = [identifier isEqualToString:dCopy];
 
-  if ((v7 & 1) != 0 || (p_header = &self->_footer, -[RUIElement identifier](self->_footer, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqualToString:v4], v8, v9))
+  if ((v7 & 1) != 0 || (p_header = &self->_footer, -[RUIElement identifier](self->_footer, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqualToString:dCopy], v8, v9))
   {
     v10 = *p_header;
   }
@@ -484,9 +484,9 @@ LABEL_5:
   return v10;
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v9 = a3;
+  titleCopy = title;
   if (!self->_header)
   {
     v4 = [(RUIElement *)[RUIHeaderElement alloc] initWithAttributes:0 parent:self];
@@ -494,18 +494,18 @@ LABEL_5:
     self->_header = v4;
   }
 
-  v6 = [(RUIPasscodeView *)self headerView];
+  headerView = [(RUIPasscodeView *)self headerView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(RUIPasscodeView *)self headerView];
-    [v8 setTitle:v9];
+    headerView2 = [(RUIPasscodeView *)self headerView];
+    [headerView2 setTitle:titleCopy];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   self->_appeared = 1;
   if (self->_pendingAutoFillToken)
@@ -520,8 +520,8 @@ LABEL_5:
       }
     }
 
-    v5 = [(RUIPasscodeView *)self passcodeField];
-    [v5 setStringValue:self->_pendingAutoFillToken];
+    passcodeField = [(RUIPasscodeView *)self passcodeField];
+    [passcodeField setStringValue:self->_pendingAutoFillToken];
 
     pendingAutoFillToken = self->_pendingAutoFillToken;
     self->_pendingAutoFillToken = 0;
@@ -529,9 +529,9 @@ LABEL_5:
 
   [(UIScrollView *)self->_containerView contentSize];
   v8 = v7;
-  v9 = [(RUIPasscodeView *)self view];
-  v10 = [v9 readableContentGuide];
-  [v10 layoutFrame];
+  view = [(RUIPasscodeView *)self view];
+  readableContentGuide = [view readableContentGuide];
+  [readableContentGuide layoutFrame];
   v12 = v11;
 
   if ([(RUIPasscodeView *)self shouldManageScrollViewInsets])
@@ -540,25 +540,25 @@ LABEL_5:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   if (self->_passcodeField)
   {
-    v4 = [(RUIElement *)self attributes];
-    v5 = [v4 objectForKeyedSubscript:@"secure"];
+    attributes = [(RUIElement *)self attributes];
+    v5 = [attributes objectForKeyedSubscript:@"secure"];
     if (v5)
     {
-      v6 = [(RUIElement *)self attributes];
-      v7 = [v6 objectForKeyedSubscript:@"secure"];
-      v8 = [v7 BOOLValue];
+      attributes2 = [(RUIElement *)self attributes];
+      v7 = [attributes2 objectForKeyedSubscript:@"secure"];
+      bOOLValue = [v7 BOOLValue];
     }
 
     else
     {
-      v8 = 1;
+      bOOLValue = 1;
     }
 
-    [(PSPasscodeField *)self->_passcodeField setSecurePasscodeEntry:v8];
+    [(PSPasscodeField *)self->_passcodeField setSecurePasscodeEntry:bOOLValue];
     passcodeField = self->_passcodeField;
 
     [(PSPasscodeField *)passcodeField becomeFirstResponder];
@@ -568,15 +568,15 @@ LABEL_5:
   {
     v12 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__doneButtonTapped_];
     [v12 setEnabled:0];
-    v9 = [(RUIPasscodeView *)self page];
-    v10 = [v9 navigationItem];
-    [v10 setRightBarButtonItem:v12];
+    page = [(RUIPasscodeView *)self page];
+    navigationItem = [page navigationItem];
+    [navigationItem setRightBarButtonItem:v12];
 
     [(UITextField *)self->_complexPasscodeField becomeFirstResponder];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   self->_appeared = 0;
   passcodeField = self->_passcodeField;
@@ -591,9 +591,9 @@ LABEL_5:
   [(UIScrollView *)self->_containerView bounds];
   v123 = v3;
   v5 = v4;
-  v6 = [(RUIPasscodeView *)self view];
-  v7 = [v6 readableContentGuide];
-  [v7 layoutFrame];
+  view = [(RUIPasscodeView *)self view];
+  readableContentGuide = [view readableContentGuide];
+  [readableContentGuide layoutFrame];
   v121 = v8;
   v10 = v9;
 
@@ -603,8 +603,8 @@ LABEL_5:
     keyboardHeight = self->_keyboardHeight;
   }
 
-  v12 = [(RUIPasscodeView *)self scrollView];
-  [v12 adjustedContentInset];
+  scrollView = [(RUIPasscodeView *)self scrollView];
+  [scrollView adjustedContentInset];
   v14 = v13;
 
   complexPasscodeField = self->_complexPasscodeField;
@@ -614,11 +614,11 @@ LABEL_5:
     [(UITextField *)self->_complexPasscodeField frame];
     v17 = v16;
     v19 = v18;
-    v20 = [MEMORY[0x277D75418] currentDevice];
-    v21 = [v20 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v22 = 14.0;
-    if ((v21 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v22 = 24.0;
     }
@@ -636,18 +636,18 @@ LABEL_5:
   [v122 frame];
   v25 = v24;
   v27 = v26;
-  v28 = [(RUIPasscodeView *)self headerView];
-  [v28 frame];
+  headerView = [(RUIPasscodeView *)self headerView];
+  [headerView frame];
 
-  v29 = [(RUIPasscodeView *)self headerView];
+  headerView2 = [(RUIPasscodeView *)self headerView];
   v30 = objc_opt_respondsToSelector();
 
-  v31 = [(RUIPasscodeView *)self headerView];
-  v32 = v31;
+  headerView3 = [(RUIPasscodeView *)self headerView];
+  v32 = headerView3;
   if (v30)
   {
-    v33 = [(RUIPasscodeView *)self view];
-    [v32 headerHeightForWidth:v33 inView:v10];
+    view2 = [(RUIPasscodeView *)self view];
+    [v32 headerHeightForWidth:view2 inView:v10];
     v35 = v34;
 
     v114 = v10;
@@ -655,7 +655,7 @@ LABEL_5:
 
   else
   {
-    [v31 sizeThatFits:{v10, 1.79769313e308}];
+    [headerView3 sizeThatFits:{v10, 1.79769313e308}];
     v114 = v36;
     v35 = v37;
   }
@@ -663,44 +663,44 @@ LABEL_5:
   v117 = keyboardHeight;
   v38 = v5 - keyboardHeight;
 
-  v39 = [(RUIPasscodeView *)self HTMLHeaderView];
-  [v39 frame];
+  hTMLHeaderView = [(RUIPasscodeView *)self HTMLHeaderView];
+  [hTMLHeaderView frame];
   v41 = v40;
   v43 = v42;
 
-  v44 = [(RUIPasscodeView *)self HTMLHeaderView];
+  hTMLHeaderView2 = [(RUIPasscodeView *)self HTMLHeaderView];
 
-  if (v44)
+  if (hTMLHeaderView2)
   {
-    v45 = [(RUIPasscodeView *)self HTMLHeaderView];
-    v46 = [(RUIPasscodeView *)self view];
-    [v45 headerHeightForWidth:v46 inView:v10];
+    hTMLHeaderView3 = [(RUIPasscodeView *)self HTMLHeaderView];
+    view3 = [(RUIPasscodeView *)self view];
+    [hTMLHeaderView3 headerHeightForWidth:view3 inView:v10];
     v43 = v47;
 
     v41 = v10;
   }
 
   v48 = v38 - v14;
-  v49 = [(RUIPasscodeView *)self footerView];
-  [v49 frame];
+  footerView = [(RUIPasscodeView *)self footerView];
+  [footerView frame];
 
-  v50 = [(RUIPasscodeView *)self footerView];
+  footerView2 = [(RUIPasscodeView *)self footerView];
   v51 = objc_opt_respondsToSelector();
 
-  v52 = [(RUIPasscodeView *)self footerView];
-  v53 = v52;
+  footerView3 = [(RUIPasscodeView *)self footerView];
+  v53 = footerView3;
   v120 = v10;
   v119 = v41;
   if (v51)
   {
-    v54 = [(RUIPasscodeView *)self view];
-    [v53 footerHeightForWidth:v54 inView:v10];
+    view4 = [(RUIPasscodeView *)self view];
+    [v53 footerHeightForWidth:view4 inView:v10];
     v56 = v55;
   }
 
   else
   {
-    [v52 sizeThatFits:{v10, 1.79769313e308}];
+    [footerView3 sizeThatFits:{v10, 1.79769313e308}];
     v56 = v57;
   }
 
@@ -826,10 +826,10 @@ LABEL_5:
   [v122 setFrame:{v81, v79, v77, v27}];
   if (self->_header)
   {
-    v82 = [(RUIPasscodeView *)self page];
-    v83 = [v82 showsTitlesAsHeaderViews];
+    page = [(RUIPasscodeView *)self page];
+    showsTitlesAsHeaderViews = [page showsTitlesAsHeaderViews];
 
-    if ((v83 & 1) == 0)
+    if ((showsTitlesAsHeaderViews & 1) == 0)
     {
       v84 = 0.0;
       if (self->_HTMLHeader)
@@ -840,8 +840,8 @@ LABEL_5:
       v85 = v79 - v72 - v84 - v35 - v75;
       v86 = (v123 - v115) * 0.5;
       v87 = floorf(v86);
-      v88 = [(RUIPasscodeView *)self headerView];
-      [v88 setFrame:{v87, v85, v115, v116}];
+      headerView4 = [(RUIPasscodeView *)self headerView];
+      [headerView4 setFrame:{v87, v85, v115, v116}];
     }
   }
 
@@ -849,41 +849,41 @@ LABEL_5:
   {
     v89 = (v123 - v119) * 0.5;
     v90 = floorf(v89);
-    v91 = [(RUIPasscodeView *)self HTMLHeaderView];
-    [v91 setFrame:{v90, v79 - v72 - v43 - v75, v119, v43}];
+    hTMLHeaderView4 = [(RUIPasscodeView *)self HTMLHeaderView];
+    [hTMLHeaderView4 setFrame:{v90, v79 - v72 - v43 - v75, v119, v43}];
   }
 
   MaxY = v27 + v79;
   if (self->_footer)
   {
     v93 = v72 + MaxY;
-    v94 = [(RUIPasscodeView *)self footerView];
-    [v94 setFrame:{(v123 - v120) * 0.5, v93, v120, v118}];
+    footerView4 = [(RUIPasscodeView *)self footerView];
+    [footerView4 setFrame:{(v123 - v120) * 0.5, v93, v120, v118}];
 
     MaxY = v118 + v93;
   }
 
-  v95 = [(RUIPasscodeView *)self activityIndicatorView];
-  v96 = [v95 isHidden];
+  activityIndicatorView = [(RUIPasscodeView *)self activityIndicatorView];
+  isHidden = [activityIndicatorView isHidden];
 
-  if ((v96 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     v97 = v72 + MaxY;
-    v98 = [(RUIPasscodeView *)self activityIndicatorView];
-    [v98 frame];
+    activityIndicatorView2 = [(RUIPasscodeView *)self activityIndicatorView];
+    [activityIndicatorView2 frame];
 
-    v99 = [(RUIPasscodeView *)self activityIndicatorView];
-    [v99 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+    activityIndicatorView3 = [(RUIPasscodeView *)self activityIndicatorView];
+    [activityIndicatorView3 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
     v101 = v100;
     v103 = v102;
 
-    v104 = [(RUIPasscodeView *)self activityIndicatorView];
-    v105 = [v104 superview];
-    [v105 bounds];
+    activityIndicatorView4 = [(RUIPasscodeView *)self activityIndicatorView];
+    superview = [activityIndicatorView4 superview];
+    [superview bounds];
     v106 = CGRectGetMidX(v125) + v101 * -0.5;
 
-    v107 = [(RUIPasscodeView *)self activityIndicatorView];
-    [v107 setFrame:{v106, v97, v101, v103}];
+    activityIndicatorView5 = [(RUIPasscodeView *)self activityIndicatorView];
+    [activityIndicatorView5 setFrame:{v106, v97, v101, v103}];
 
     v126.origin.x = v106;
     v126.origin.y = v97;
@@ -905,19 +905,19 @@ LABEL_5:
 
 - (void)startActivityIndicator
 {
-  v3 = [(RUIPasscodeView *)self activityIndicatorView];
-  [v3 startAnimating];
+  activityIndicatorView = [(RUIPasscodeView *)self activityIndicatorView];
+  [activityIndicatorView startAnimating];
 
-  v6 = [(RUIElement *)self pageElement];
-  v4 = [v6 page];
-  v5 = [v4 view];
-  [v5 setNeedsLayout];
+  pageElement = [(RUIElement *)self pageElement];
+  page = [pageElement page];
+  view = [page view];
+  [view setNeedsLayout];
 }
 
 - (void)stopActivityIndicator
 {
-  v2 = [(RUIPasscodeView *)self activityIndicatorView];
-  [v2 stopAnimating];
+  activityIndicatorView = [(RUIPasscodeView *)self activityIndicatorView];
+  [activityIndicatorView stopAnimating];
 }
 
 - (id)headerView
@@ -928,8 +928,8 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [(RUIPasscodeView *)self page];
-      [v3 showsTitlesAsHeaderViews];
+      page = [(RUIPasscodeView *)self page];
+      [page showsTitlesAsHeaderViews];
       v4 = objc_opt_class();
     }
 
@@ -939,9 +939,9 @@ LABEL_5:
     }
 
     v5 = [v4 alloc];
-    v6 = [(RUIPasscodeView *)self header];
-    v7 = [v6 attributes];
-    v8 = [v5 initWithAttributes:v7];
+    header = [(RUIPasscodeView *)self header];
+    attributes = [header attributes];
+    v8 = [v5 initWithAttributes:attributes];
     headerView = self->_headerView;
     self->_headerView = v8;
 
@@ -951,29 +951,29 @@ LABEL_5:
       [(RUIHeader *)self->_headerView setHeaderColor:self->_foregroundColor];
     }
 
-    v10 = [(RUIPasscodeView *)self passcodeView];
-    [v10 addSubview:self->_headerView];
+    passcodeView = [(RUIPasscodeView *)self passcodeView];
+    [passcodeView addSubview:self->_headerView];
 
-    v11 = [(RUIPasscodeView *)self page];
-    v12 = [v11 showsTitlesAsHeaderViews];
+    page2 = [(RUIPasscodeView *)self page];
+    showsTitlesAsHeaderViews = [page2 showsTitlesAsHeaderViews];
 
-    if (v12)
+    if (showsTitlesAsHeaderViews)
     {
       [(RUIHeader *)self->_headerView setTranslatesAutoresizingMaskIntoConstraints:0];
       v24 = MEMORY[0x277CCAAD0];
-      v27 = [(RUIHeader *)self->_headerView topAnchor];
-      v26 = [(UIScrollView *)self->_containerView topAnchor];
-      v25 = [v27 constraintEqualToAnchor:v26];
+      topAnchor = [(RUIHeader *)self->_headerView topAnchor];
+      topAnchor2 = [(UIScrollView *)self->_containerView topAnchor];
+      v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v28[0] = v25;
-      v23 = [(RUIHeader *)self->_headerView leftAnchor];
-      v13 = [(UIScrollView *)self->_containerView readableContentGuide];
-      v14 = [v13 leftAnchor];
-      v15 = [v23 constraintEqualToAnchor:v14];
+      leftAnchor = [(RUIHeader *)self->_headerView leftAnchor];
+      readableContentGuide = [(UIScrollView *)self->_containerView readableContentGuide];
+      leftAnchor2 = [readableContentGuide leftAnchor];
+      v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v28[1] = v15;
-      v16 = [(RUIHeader *)self->_headerView rightAnchor];
-      v17 = [(UIScrollView *)self->_containerView readableContentGuide];
-      v18 = [v17 rightAnchor];
-      v19 = [v16 constraintEqualToAnchor:v18];
+      rightAnchor = [(RUIHeader *)self->_headerView rightAnchor];
+      readableContentGuide2 = [(UIScrollView *)self->_containerView readableContentGuide];
+      rightAnchor2 = [readableContentGuide2 rightAnchor];
+      v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       v28[2] = v19;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:3];
       [v24 activateConstraints:v20];
@@ -1004,8 +1004,8 @@ LABEL_5:
         self->_HTMLHeaderView = v3;
 
         [(RUIHTMLHeaderElement *)self->_HTMLHeader configureView:self->_HTMLHeaderView];
-        v5 = [(RUIPasscodeView *)self passcodeView];
-        [v5 addSubview:self->_HTMLHeaderView];
+        passcodeView = [(RUIPasscodeView *)self passcodeView];
+        [passcodeView addSubview:self->_HTMLHeaderView];
       }
     }
   }
@@ -1022,9 +1022,9 @@ LABEL_5:
     objc_opt_class();
     objc_opt_isKindOfClass();
     v3 = objc_alloc(objc_opt_class());
-    v4 = [(RUIPasscodeView *)self footer];
-    v5 = [v4 attributes];
-    v6 = [v3 initWithAttributes:v5];
+    footer = [(RUIPasscodeView *)self footer];
+    attributes = [footer attributes];
+    v6 = [v3 initWithAttributes:attributes];
     footerView = self->_footerView;
     self->_footerView = v6;
 
@@ -1035,8 +1035,8 @@ LABEL_5:
       [(RemoteUITableFooter *)self->_footerView setTextColor:self->_foregroundColor];
     }
 
-    v8 = [(RUIPasscodeView *)self passcodeView];
-    [v8 addSubview:self->_footerView];
+    passcodeView = [(RUIPasscodeView *)self passcodeView];
+    [passcodeView addSubview:self->_footerView];
   }
 
   v9 = self->_footerView;
@@ -1044,7 +1044,7 @@ LABEL_5:
   return v9;
 }
 
-- (void)footerView:(id)a3 activatedLinkWithURL:(id)a4
+- (void)footerView:(id)view activatedLinkWithURL:(id)l
 {
   if (self->_footer)
   {
@@ -1056,7 +1056,7 @@ LABEL_5:
 - (void)submitPIN
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(RUIPasscodeView *)self _requiresLocalPasscodeValidation];
+  _requiresLocalPasscodeValidation = [(RUIPasscodeView *)self _requiresLocalPasscodeValidation];
   passcodeField = self->_passcodeField;
   if (!passcodeField)
   {
@@ -1064,10 +1064,10 @@ LABEL_5:
   }
 
   v5 = passcodeField;
-  if (!v3)
+  if (!_requiresLocalPasscodeValidation)
   {
-    v15 = [(PSPasscodeField *)self->_passcodeField stringValue];
-    [(RUIPasscodeView *)self setSubmittedPIN:v15];
+    stringValue = [(PSPasscodeField *)self->_passcodeField stringValue];
+    [(RUIPasscodeView *)self setSubmittedPIN:stringValue];
 
     goto LABEL_7;
   }
@@ -1077,7 +1077,7 @@ LABEL_5:
     v16 = self->_passcodeField;
     if (v16)
     {
-      v17 = [(PSPasscodeField *)v16 stringValue];
+      stringValue2 = [(PSPasscodeField *)v16 stringValue];
     }
 
     else
@@ -1087,9 +1087,9 @@ LABEL_5:
       {
         v19 = 0;
 LABEL_15:
-        v20 = [getMCProfileConnectionClass_0() sharedConnection];
+        sharedConnection = [getMCProfileConnectionClass_0() sharedConnection];
         v27 = 0;
-        v21 = [v20 unlockDeviceWithPasscode:v19 outError:&v27];
+        v21 = [sharedConnection unlockDeviceWithPasscode:v19 outError:&v27];
         v22 = v27;
 
         if (v22 && _isInternalInstall())
@@ -1135,10 +1135,10 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v17 = [(UITextField *)complexPasscodeField text];
+      stringValue2 = [(UITextField *)complexPasscodeField text];
     }
 
-    v19 = v17;
+    v19 = stringValue2;
     goto LABEL_15;
   }
 
@@ -1154,8 +1154,8 @@ LABEL_5:
   v13 = [v10 actionWithTitle:v12 style:1 handler:0];
   [WeakRetained addAction:v13];
 
-  v14 = [(RUIPasscodeView *)self page];
-  [v14 presentViewController:WeakRetained animated:1 completion:0];
+  page = [(RUIPasscodeView *)self page];
+  [page presentViewController:WeakRetained animated:1 completion:0];
 
 LABEL_8:
 LABEL_9:
@@ -1194,13 +1194,13 @@ void __28__RUIPasscodeView_submitPIN__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)autofillWithToken:(id)a3
+- (void)autofillWithToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   if (self->_appeared)
   {
-    v6 = [(RUIPasscodeView *)self passcodeField];
-    [v6 setStringValue:v5];
+    passcodeField = [(RUIPasscodeView *)self passcodeField];
+    [passcodeField setStringValue:tokenCopy];
   }
 
   else
@@ -1215,14 +1215,14 @@ void __28__RUIPasscodeView_submitPIN__block_invoke_2(uint64_t a1)
       }
     }
 
-    objc_storeStrong(&self->_pendingAutoFillToken, a3);
+    objc_storeStrong(&self->_pendingAutoFillToken, token);
   }
 }
 
-- (void)_complexPasscodeFieldDidChange:(id)a3
+- (void)_complexPasscodeFieldDidChange:(id)change
 {
-  v4 = [(UITextField *)self->_complexPasscodeField text];
-  if ([v4 length])
+  text = [(UITextField *)self->_complexPasscodeField text];
+  if ([text length])
   {
     passcodeValidationAttempts = self->_passcodeValidationAttempts;
 
@@ -1239,100 +1239,100 @@ void __28__RUIPasscodeView_submitPIN__block_invoke_2(uint64_t a1)
 
   v6 = 0;
 LABEL_6:
-  v9 = [(RUIPasscodeView *)self page];
-  v7 = [v9 navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:v6];
+  page = [(RUIPasscodeView *)self page];
+  navigationItem = [page navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v6];
 }
 
-- (void)_doneButtonTapped:(id)a3
+- (void)_doneButtonTapped:(id)tapped
 {
-  v4 = [(UITextField *)self->_complexPasscodeField text];
-  [(RUIPasscodeView *)self passcodeField:0 enteredPasscode:v4];
+  text = [(UITextField *)self->_complexPasscodeField text];
+  [(RUIPasscodeView *)self passcodeField:0 enteredPasscode:text];
 }
 
-- (void)_jiggleView:(id)a3
+- (void)_jiggleView:(id)view
 {
-  v14 = [a3 layer];
-  v4 = [MEMORY[0x277CD9FA0] animation];
-  [v4 setMass:1.20000005];
-  [v4 setStiffness:1200.0];
-  [v4 setDamping:12.0];
-  [v4 setDuration:1.39999998];
-  [v4 setFillMode:*MEMORY[0x277CDA228]];
-  [v4 setDelegate:self];
+  layer = [view layer];
+  animation = [MEMORY[0x277CD9FA0] animation];
+  [animation setMass:1.20000005];
+  [animation setStiffness:1200.0];
+  [animation setDamping:12.0];
+  [animation setDuration:1.39999998];
+  [animation setFillMode:*MEMORY[0x277CDA228]];
+  [animation setDelegate:self];
   LODWORD(v5) = 30.0;
   v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
-  [v4 setFromValue:v6];
+  [animation setFromValue:v6];
 
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:0.0];
-  [v4 setToValue:v7];
+  [animation setToValue:v7];
 
   v8 = [MEMORY[0x277CDA008] functionWithName:*MEMORY[0x277CDA9C8]];
-  [v4 setValueFunction:v8];
+  [animation setValueFunction:v8];
 
   LODWORD(v9) = 1028389654;
   LODWORD(v10) = 990057071;
   LODWORD(v11) = 1059712716;
   LODWORD(v12) = 1.0;
   v13 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v9 :v10 :v11 :v12];
-  [v4 setTimingFunction:v13];
+  [animation setTimingFunction:v13];
 
-  [v4 setKeyPath:@"transform"];
-  [v14 addAnimation:v4 forKey:@"shake"];
+  [animation setKeyPath:@"transform"];
+  [layer addAnimation:animation forKey:@"shake"];
 }
 
 - (BOOL)_requiresLocalPasscodeValidation
 {
-  v2 = [(RUIElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"requireLocalPasscode"];
+  attributes = [(RUIElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"requireLocalPasscode"];
 
-  LOBYTE(v2) = [v3 isEqual:@"true"];
-  return v2;
+  LOBYTE(attributes) = [v3 isEqual:@"true"];
+  return attributes;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(RUIPasscodeView *)self page];
-  v6 = [v5 showsTitlesAsHeaderViews];
+  imageCopy = image;
+  page = [(RUIPasscodeView *)self page];
+  showsTitlesAsHeaderViews = [page showsTitlesAsHeaderViews];
 
-  v7 = [(RUIPasscodeView *)self headerView];
-  v8 = v7;
-  if (v6)
+  headerView = [(RUIPasscodeView *)self headerView];
+  v8 = headerView;
+  if (showsTitlesAsHeaderViews)
   {
-    [v7 setIcon:v4 accessibilityLabel:0];
+    [headerView setIcon:imageCopy accessibilityLabel:0];
   }
 
   else
   {
-    [v7 setIconImage:v4];
+    [headerView setIconImage:imageCopy];
   }
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(RUIPasscodeView *)self page];
-  v7 = [v6 showsTitlesAsHeaderViews];
+  height = size.height;
+  width = size.width;
+  page = [(RUIPasscodeView *)self page];
+  showsTitlesAsHeaderViews = [page showsTitlesAsHeaderViews];
 
-  if ((v7 & 1) == 0)
+  if ((showsTitlesAsHeaderViews & 1) == 0)
   {
-    v8 = [(RUIPasscodeView *)self headerView];
-    [v8 setImageSize:{width, height}];
+    headerView = [(RUIPasscodeView *)self headerView];
+    [headerView setImageSize:{width, height}];
   }
 }
 
-- (void)setImageAlignment:(unint64_t)a3
+- (void)setImageAlignment:(unint64_t)alignment
 {
-  v5 = [(RUIPasscodeView *)self page];
-  v6 = [v5 showsTitlesAsHeaderViews];
+  page = [(RUIPasscodeView *)self page];
+  showsTitlesAsHeaderViews = [page showsTitlesAsHeaderViews];
 
-  if ((v6 & 1) == 0)
+  if ((showsTitlesAsHeaderViews & 1) == 0)
   {
-    v7 = [(RUIPasscodeView *)self headerView];
-    [v7 setImageAlignment:a3];
+    headerView = [(RUIPasscodeView *)self headerView];
+    [headerView setImageAlignment:alignment];
   }
 }
 

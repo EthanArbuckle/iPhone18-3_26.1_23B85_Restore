@@ -1,65 +1,65 @@
 @interface AnalyticsProcessor
-+ (id)analyticsProcessorWithPersistentContainer:(id)a3;
++ (id)analyticsProcessorWithPersistentContainer:(id)container;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)getPolicyHandlersConfig;
-- (AnalyticsProcessor)initWithPersistentContainer:(id)a3;
-- (BOOL)ageOutAnalyticsWithError:(id *)a3 withReason:(id)a4;
+- (AnalyticsProcessor)initWithPersistentContainer:(id)container;
+- (BOOL)ageOutAnalyticsWithError:(id *)error withReason:(id)reason;
 - (BOOL)canRunPoliciesOnCurrentProcess;
-- (BOOL)classifyTraitsForNetwork:(id)a3 withReason:(id)a4;
-- (BOOL)classifyTraitsForNetworksWithReason:(id)a3;
-- (BOOL)dhcpEventOnBssid:(id)a3 ssid:(id)a4 serverInfo:(id)a5 at:(id)a6 with:(id)a7 andResetMoc:(BOOL)a8;
-- (BOOL)diagnosticEventAt:(id)a3 with:(id)a4 andResetMoc:(BOOL)a5;
-- (BOOL)faultEventOn:(id)a3 at:(id)a4 with:(id)a5 andDeferSave:(BOOL)a6 andResetMoc:(BOOL)a7;
-- (BOOL)geoTagEventOnBssid:(id)a3 ssid:(id)a4 lat:(double)a5 lon:(double)a6 at:(id)a7 andResetMoc:(BOOL)a8 andRunPostProcessing:(BOOL)a9;
+- (BOOL)classifyTraitsForNetwork:(id)network withReason:(id)reason;
+- (BOOL)classifyTraitsForNetworksWithReason:(id)reason;
+- (BOOL)dhcpEventOnBssid:(id)bssid ssid:(id)ssid serverInfo:(id)info at:(id)at with:(id)with andResetMoc:(BOOL)moc;
+- (BOOL)diagnosticEventAt:(id)at with:(id)with andResetMoc:(BOOL)moc;
+- (BOOL)faultEventOn:(id)on at:(id)at with:(id)with andDeferSave:(BOOL)save andResetMoc:(BOOL)moc;
+- (BOOL)geoTagEventOnBssid:(id)bssid ssid:(id)ssid lat:(double)lat lon:(double)lon at:(id)at andResetMoc:(BOOL)moc andRunPostProcessing:(BOOL)processing;
 - (BOOL)initPolicyHandlers;
-- (BOOL)joinEventOnBssid:(id)a3 ssid:(id)a4 at:(id)a5 with:(id)a6 andResetMoc:(BOOL)a7 andRunPostProcessing:(BOOL)a8;
-- (BOOL)leaveEventOnBssid:(id)a3 ssid:(id)a4 at:(id)a5 with:(id)a6 andResetMoc:(BOOL)a7 andRunPostProcessing:(BOOL)a8;
-- (BOOL)linkTestEventOn:(id)a3 at:(id)a4 with:(id)a5 andResetMoc:(BOOL)a6;
-- (BOOL)lqmEvent:(id)a3 on:(id)a4 at:(id)a5 andReset:(BOOL)a6;
-- (BOOL)networkDeploymentMetricCheckAndSubmitWithReason:(id)a3;
-- (BOOL)poorCoverageAnalysisWithReason:(id)a3;
-- (BOOL)processCachedFaultsAndResetCache:(id)a3 andResetMoc:(BOOL)a4;
-- (BOOL)processDeferredPoliciesWithReason:(id)a3;
-- (BOOL)processDeferredPriorityPoliciesWithReason:(id)a3;
-- (BOOL)recoveryEventOnBssid:(id)a3 at:(id)a4 with:(id)a5 andResetMoc:(BOOL)a6;
-- (BOOL)removeKnownNetworkEvent:(id)a3 at:(id)a4 andResetMoc:(BOOL)a5;
-- (BOOL)roamEvent:(id)a3 at:(id)a4 andResetMoc:(BOOL)a5 andRunPostProcessing:(BOOL)a6 withError:(id *)a7;
-- (BOOL)scanResultEventWith:(id)a3 ssid:(id)a4 whileOn:(id)a5 at:(id)a6 with:(id)a7 andResetMoc:(BOOL)a8;
-- (BOOL)updateBSS:(id)a3 withParsedBeacon:(id)a4 andResetMoc:(BOOL)a5;
-- (BOOL)updateNetwork:(id)a3 switchedFrom:(id)a4 at:(id)a5 andResetMoc:(BOOL)a6;
-- (BOOL)updateNetwork:(id)a3 withDeploymentCoverage:(signed __int16)a4 andResetMoc:(BOOL)a5;
-- (BOOL)updateRoamPoliciesForSourceBss:(id)a3 andRoam:(id)a4 withReason:(id)a5 andRefDate:(id)a6 withError:(id *)a7;
-- (BOOL)updateRoamPoliciesForSourceBssAndRoamWithReason:(id)a3 withError:(id *)a4;
-- (BOOL)updateRoamPoliciesForSourceBssid:(id)a3 andUpdateRoamCache:(BOOL)a4;
-- (BOOL)updateUsagePoliciesWithReason:(id)a3;
-- (id)fetchBSSesLastSeenAfterLastPolicyRunFor:(id)a3 withError:(id *)a4;
-- (id)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)a3 maxAgeInDays:(unint64_t)a4;
-- (unint64_t)performPrunePoliciesWithReasons:(id)a3 withError:(id *)a4;
-- (unint64_t)performPruneTestBSSes:(id)a3 withError:(id *)a4;
-- (unint64_t)performPruneTestEntity:(id)a3 since:(id)a4 withPredicate:(id)a5 withError:(id *)a6;
-- (void)_processMetricWiFiStats:(id)a3;
-- (void)networkDeploymentMetricCheckAndSubmit:(id)a3 withReason:(id)a4;
-- (void)performPruneBasedOnStoreSizeAndSaveWithReason:(id)a3;
-- (void)processDatapathMetricStream:(id)a3 withDate:(id)a4;
-- (void)processMetricWiFiStats:(id)a3;
-- (void)setPolicyHandlersConfig:(id *)a3;
+- (BOOL)joinEventOnBssid:(id)bssid ssid:(id)ssid at:(id)at with:(id)with andResetMoc:(BOOL)moc andRunPostProcessing:(BOOL)processing;
+- (BOOL)leaveEventOnBssid:(id)bssid ssid:(id)ssid at:(id)at with:(id)with andResetMoc:(BOOL)moc andRunPostProcessing:(BOOL)processing;
+- (BOOL)linkTestEventOn:(id)on at:(id)at with:(id)with andResetMoc:(BOOL)moc;
+- (BOOL)lqmEvent:(id)event on:(id)on at:(id)at andReset:(BOOL)reset;
+- (BOOL)networkDeploymentMetricCheckAndSubmitWithReason:(id)reason;
+- (BOOL)poorCoverageAnalysisWithReason:(id)reason;
+- (BOOL)processCachedFaultsAndResetCache:(id)cache andResetMoc:(BOOL)moc;
+- (BOOL)processDeferredPoliciesWithReason:(id)reason;
+- (BOOL)processDeferredPriorityPoliciesWithReason:(id)reason;
+- (BOOL)recoveryEventOnBssid:(id)bssid at:(id)at with:(id)with andResetMoc:(BOOL)moc;
+- (BOOL)removeKnownNetworkEvent:(id)event at:(id)at andResetMoc:(BOOL)moc;
+- (BOOL)roamEvent:(id)event at:(id)at andResetMoc:(BOOL)moc andRunPostProcessing:(BOOL)processing withError:(id *)error;
+- (BOOL)scanResultEventWith:(id)with ssid:(id)ssid whileOn:(id)on at:(id)at with:(id)a7 andResetMoc:(BOOL)moc;
+- (BOOL)updateBSS:(id)s withParsedBeacon:(id)beacon andResetMoc:(BOOL)moc;
+- (BOOL)updateNetwork:(id)network switchedFrom:(id)from at:(id)at andResetMoc:(BOOL)moc;
+- (BOOL)updateNetwork:(id)network withDeploymentCoverage:(signed __int16)coverage andResetMoc:(BOOL)moc;
+- (BOOL)updateRoamPoliciesForSourceBss:(id)bss andRoam:(id)roam withReason:(id)reason andRefDate:(id)date withError:(id *)error;
+- (BOOL)updateRoamPoliciesForSourceBssAndRoamWithReason:(id)reason withError:(id *)error;
+- (BOOL)updateRoamPoliciesForSourceBssid:(id)bssid andUpdateRoamCache:(BOOL)cache;
+- (BOOL)updateUsagePoliciesWithReason:(id)reason;
+- (id)fetchBSSesLastSeenAfterLastPolicyRunFor:(id)for withError:(id *)error;
+- (id)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)network maxAgeInDays:(unint64_t)days;
+- (unint64_t)performPrunePoliciesWithReasons:(id)reasons withError:(id *)error;
+- (unint64_t)performPruneTestBSSes:(id)ses withError:(id *)error;
+- (unint64_t)performPruneTestEntity:(id)entity since:(id)since withPredicate:(id)predicate withError:(id *)error;
+- (void)_processMetricWiFiStats:(id)stats;
+- (void)networkDeploymentMetricCheckAndSubmit:(id)submit withReason:(id)reason;
+- (void)performPruneBasedOnStoreSizeAndSaveWithReason:(id)reason;
+- (void)processDatapathMetricStream:(id)stream withDate:(id)date;
+- (void)processMetricWiFiStats:(id)stats;
+- (void)setPolicyHandlersConfig:(id *)config;
 - (void)signalPotentialNewIORChannels;
-- (void)storeMetricStreamFragment:(id)a3 withDate:(id)a4;
+- (void)storeMetricStreamFragment:(id)fragment withDate:(id)date;
 @end
 
 @implementation AnalyticsProcessor
 
-+ (id)analyticsProcessorWithPersistentContainer:(id)a3
++ (id)analyticsProcessorWithPersistentContainer:(id)container
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  containerCopy = container;
+  v4 = containerCopy;
+  if (containerCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __64__AnalyticsProcessor_analyticsProcessorWithPersistentContainer___block_invoke;
     block[3] = &unk_1E830D880;
-    v10 = v3;
+    v10 = containerCopy;
     if (qword_1EDE5CA90 != -1)
     {
       dispatch_once(&qword_1EDE5CA90, block);
@@ -112,10 +112,10 @@ void __64__AnalyticsProcessor_analyticsProcessorWithPersistentContainer___block_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (AnalyticsProcessor)initWithPersistentContainer:(id)a3
+- (AnalyticsProcessor)initWithPersistentContainer:(id)container
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  containerCopy = container;
   v18.receiver = self;
   v18.super_class = AnalyticsProcessor;
   v6 = [(AnalyticsProcessor *)&v18 init];
@@ -128,8 +128,8 @@ void __64__AnalyticsProcessor_analyticsProcessorWithPersistentContainer___block_
       _os_signpost_emit_with_name_impl(&dword_1C8460000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AnalyticsProcessor init", "", buf, 2u);
     }
 
-    objc_storeStrong(&v6->_persistentContainer, a3);
-    v8 = [AnalyticsStoreMOHandler sharedAnalyticsStoreMOHandlerWithContainer:v5];
+    objc_storeStrong(&v6->_persistentContainer, container);
+    v8 = [AnalyticsStoreMOHandler sharedAnalyticsStoreMOHandlerWithContainer:containerCopy];
     managedObjectHandler = v6->_managedObjectHandler;
     v6->_managedObjectHandler = v8;
 
@@ -277,10 +277,10 @@ LABEL_5:
   return result;
 }
 
-- (void)setPolicyHandlersConfig:(id *)a3
+- (void)setPolicyHandlersConfig:(id *)config
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3->var0 != 0x7FFFFFFFFFFFFFFFLL)
+  if (config->var0 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(AnalyticsProcessor *)self setTestDateDiffDays:?];
     v5 = WALogCategoryDefaultHandle();
@@ -291,41 +291,41 @@ LABEL_5:
       v13 = 1024;
       v14 = 163;
       v15 = 2048;
-      v16 = [(AnalyticsProcessor *)self testDateDiffDays];
+      testDateDiffDays = [(AnalyticsProcessor *)self testDateDiffDays];
       _os_log_impl(&dword_1C8460000, v5, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Updated testDateDiffDays to %lu days", &v11, 0x1Cu);
     }
   }
 
-  if (a3->var1 != 0x7FFFFFFFFFFFFFFFLL)
+  if (config->var1 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(AnalyticsProcessor *)self setDeploymentMetricDiffDays:?];
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [(AnalyticsProcessor *)self deploymentMetricDiffDays];
+      deploymentMetricDiffDays = [(AnalyticsProcessor *)self deploymentMetricDiffDays];
       v11 = 136446722;
       v12 = "[AnalyticsProcessor setPolicyHandlersConfig:]";
       v13 = 1024;
       v14 = 167;
       v15 = 2048;
-      v16 = v7;
+      testDateDiffDays = deploymentMetricDiffDays;
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Updated deploymentMetricDiffDays to %lu days", &v11, 0x1Cu);
     }
   }
 
-  if (a3->var2 != 0x7FFFFFFFFFFFFFFFLL)
+  if (config->var2 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(AnalyticsProcessor *)self setNumRoamSamples:?];
     v8 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(AnalyticsProcessor *)self numRoamSamples];
+      numRoamSamples = [(AnalyticsProcessor *)self numRoamSamples];
       v11 = 136446722;
       v12 = "[AnalyticsProcessor setPolicyHandlersConfig:]";
       v13 = 1024;
       v14 = 171;
       v15 = 2048;
-      v16 = v9;
+      testDateDiffDays = numRoamSamples;
       _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Roam Samples %lu ", &v11, 0x1Cu);
     }
   }
@@ -342,11 +342,11 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)processCachedFaultsAndResetCache:(id)a3 andResetMoc:(BOOL)a4
+- (BOOL)processCachedFaultsAndResetCache:(id)cache andResetMoc:(BOOL)moc
 {
-  v4 = a4;
+  mocCopy = moc;
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  cacheCopy = cache;
   v7 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v7))
   {
@@ -354,13 +354,13 @@ LABEL_5:
     _os_signpost_emit_with_name_impl(&dword_1C8460000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AnalyticsProcessor processCachedFaultsAndResetCache", "", buf, 2u);
   }
 
-  v8 = [(AnalyticsProcessor *)self cachedFaults];
-  v9 = [v8 count];
+  cachedFaults = [(AnalyticsProcessor *)self cachedFaults];
+  v9 = [cachedFaults count];
 
   if (!v9)
   {
     v14 = 1;
-    if (!v6)
+    if (!cacheCopy)
     {
       goto LABEL_14;
     }
@@ -368,19 +368,19 @@ LABEL_5:
     goto LABEL_13;
   }
 
-  v26 = v4;
+  v26 = mocCopy;
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = [(AnalyticsProcessor *)self cachedFaults];
-  v11 = [v10 countByEnumeratingWithState:&v29 objects:v39 count:16];
+  cachedFaults2 = [(AnalyticsProcessor *)self cachedFaults];
+  v11 = [cachedFaults2 countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v30;
     v14 = 1;
-    obj = v10;
+    obj = cachedFaults2;
     while (2)
     {
       for (i = 0; i != v12; ++i)
@@ -391,14 +391,14 @@ LABEL_5:
         }
 
         v16 = *(*(&v29 + 1) + 8 * i);
-        v17 = [(AnalyticsProcessor *)self bssidForCachedFaults];
-        v18 = [v16 eventDate];
+        bssidForCachedFaults = [(AnalyticsProcessor *)self bssidForCachedFaults];
+        eventDate = [v16 eventDate];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __67__AnalyticsProcessor_processCachedFaultsAndResetCache_andResetMoc___block_invoke;
         v28[3] = &unk_1E830D8A8;
         v28[4] = v16;
-        LOBYTE(v16) = [(AnalyticsProcessor *)self faultEventOn:v17 at:v18 with:v28 andDeferSave:1 andResetMoc:0];
+        LOBYTE(v16) = [(AnalyticsProcessor *)self faultEventOn:bssidForCachedFaults at:eventDate with:v28 andDeferSave:1 andResetMoc:0];
 
         v14 &= v16;
         if ((v16 & 1) == 0)
@@ -413,12 +413,12 @@ LABEL_5:
             _os_log_impl(&dword_1C8460000, v25, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to add fault into store - bailing", buf, 0x12u);
           }
 
-          v19 = obj;
+          cachedFaults3 = obj;
           goto LABEL_15;
         }
       }
 
-      v10 = obj;
+      cachedFaults2 = obj;
       v12 = [obj countByEnumeratingWithState:&v29 objects:v39 count:16];
       if (v12)
       {
@@ -430,15 +430,15 @@ LABEL_5:
   }
 
   v14 = [(AnalyticsProcessor *)self managedObjectContextSaveThenReset:v26 withError:0];
-  if (v6)
+  if (cacheCopy)
   {
 LABEL_13:
-    [(AnalyticsProcessor *)self setBssidForCachedFaults:v6];
+    [(AnalyticsProcessor *)self setBssidForCachedFaults:cacheCopy];
   }
 
 LABEL_14:
-  v19 = [(AnalyticsProcessor *)self cachedFaults];
-  [v19 removeAllObjects];
+  cachedFaults3 = [(AnalyticsProcessor *)self cachedFaults];
+  [cachedFaults3 removeAllObjects];
 LABEL_15:
 
   v20 = WALogCategoryDeviceStoreHandle();
@@ -481,12 +481,12 @@ void __67__AnalyticsProcessor_processCachedFaultsAndResetCache_andResetMoc___blo
   [v4 setInterface:v6];
 }
 
-- (BOOL)joinEventOnBssid:(id)a3 ssid:(id)a4 at:(id)a5 with:(id)a6 andResetMoc:(BOOL)a7 andRunPostProcessing:(BOOL)a8
+- (BOOL)joinEventOnBssid:(id)bssid ssid:(id)ssid at:(id)at with:(id)with andResetMoc:(BOOL)moc andRunPostProcessing:(BOOL)processing
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  bssidCopy = bssid;
+  ssidCopy = ssid;
+  atCopy = at;
+  withCopy = with;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -494,10 +494,10 @@ void __67__AnalyticsProcessor_processCachedFaultsAndResetCache_andResetMoc___blo
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x2020000000;
-  v35 = a8;
-  v18 = [BSSMO formattedMACAddressNotation:v14 as:6];
+  processingCopy = processing;
+  v18 = [BSSMO formattedMACAddressNotation:bssidCopy as:6];
 
-  v19 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+  viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __85__AnalyticsProcessor_joinEventOnBssid_ssid_at_with_andResetMoc_andRunPostProcessing___block_invoke;
@@ -505,16 +505,16 @@ void __67__AnalyticsProcessor_processCachedFaultsAndResetCache_andResetMoc___blo
   v26[4] = self;
   v20 = v18;
   v27 = v20;
-  v21 = v15;
+  v21 = ssidCopy;
   v28 = v21;
-  v22 = v16;
+  v22 = atCopy;
   v29 = v22;
-  v23 = v17;
+  v23 = withCopy;
   v30 = v23;
   v31 = v34;
   v32 = &v36;
-  v33 = a7;
-  [v19 performBlockAndWait:v26];
+  mocCopy = moc;
+  [viewContext performBlockAndWait:v26];
 
   v24 = *(v37 + 24);
   _Block_object_dispose(v34, 8);
@@ -680,19 +680,19 @@ void __85__AnalyticsProcessor_joinEventOnBssid_ssid_at_with_andResetMoc_andRunPo
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)leaveEventOnBssid:(id)a3 ssid:(id)a4 at:(id)a5 with:(id)a6 andResetMoc:(BOOL)a7 andRunPostProcessing:(BOOL)a8
+- (BOOL)leaveEventOnBssid:(id)bssid ssid:(id)ssid at:(id)at with:(id)with andResetMoc:(BOOL)moc andRunPostProcessing:(BOOL)processing
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  bssidCopy = bssid;
+  ssidCopy = ssid;
+  atCopy = at;
+  withCopy = with;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 0;
-  v17 = [BSSMO formattedMACAddressNotation:v13 as:6];
+  v17 = [BSSMO formattedMACAddressNotation:bssidCopy as:6];
 
-  v18 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+  viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __86__AnalyticsProcessor_leaveEventOnBssid_ssid_at_with_andResetMoc_andRunPostProcessing___block_invoke;
@@ -700,15 +700,15 @@ void __85__AnalyticsProcessor_joinEventOnBssid_ssid_at_with_andResetMoc_andRunPo
   v25[4] = self;
   v19 = v17;
   v26 = v19;
-  v20 = v14;
+  v20 = ssidCopy;
   v27 = v20;
-  v21 = v15;
+  v21 = atCopy;
   v28 = v21;
-  v22 = v16;
+  v22 = withCopy;
   v29 = v22;
   v30 = &v32;
-  v31 = a7;
-  [v18 performBlockAndWait:v25];
+  mocCopy = moc;
+  [viewContext performBlockAndWait:v25];
 
   v23 = *(v33 + 24);
   _Block_object_dispose(&v32, 8);
@@ -813,38 +813,38 @@ void __86__AnalyticsProcessor_leaveEventOnBssid_ssid_at_with_andResetMoc_andRunP
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)dhcpEventOnBssid:(id)a3 ssid:(id)a4 serverInfo:(id)a5 at:(id)a6 with:(id)a7 andResetMoc:(BOOL)a8
+- (BOOL)dhcpEventOnBssid:(id)bssid ssid:(id)ssid serverInfo:(id)info at:(id)at with:(id)with andResetMoc:(BOOL)moc
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  bssidCopy = bssid;
+  ssidCopy = ssid;
+  infoCopy = info;
+  atCopy = at;
+  withCopy = with;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 0;
-  v19 = [BSSMO formattedMACAddressNotation:v14 as:6];
+  v19 = [BSSMO formattedMACAddressNotation:bssidCopy as:6];
 
-  v20 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+  viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __75__AnalyticsProcessor_dhcpEventOnBssid_ssid_serverInfo_at_with_andResetMoc___block_invoke;
   v28[3] = &unk_1E830D9C0;
   v21 = v19;
   v29 = v21;
-  v22 = v15;
+  v22 = ssidCopy;
   v30 = v22;
-  v23 = v17;
+  v23 = atCopy;
   v31 = v23;
-  v32 = self;
-  v24 = v18;
+  selfCopy = self;
+  v24 = withCopy;
   v34 = v24;
   v35 = &v37;
-  v25 = v16;
+  v25 = infoCopy;
   v33 = v25;
-  v36 = a8;
-  [v20 performBlockAndWait:v28];
+  mocCopy = moc;
+  [viewContext performBlockAndWait:v28];
 
   v26 = *(v38 + 24);
   _Block_object_dispose(&v37, 8);
@@ -901,11 +901,11 @@ void __75__AnalyticsProcessor_dhcpEventOnBssid_ssid_serverInfo_at_with_andResetM
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)roamEvent:(id)a3 at:(id)a4 andResetMoc:(BOOL)a5 andRunPostProcessing:(BOOL)a6 withError:(id *)a7
+- (BOOL)roamEvent:(id)event at:(id)at andResetMoc:(BOOL)moc andRunPostProcessing:(BOOL)processing withError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  eventCopy = event;
+  atCopy = at;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -916,25 +916,25 @@ void __75__AnalyticsProcessor_dhcpEventOnBssid_ssid_serverInfo_at_with_andResetM
   v29 = __Block_byref_object_copy__0;
   v30 = __Block_byref_object_dispose__0;
   v31 = 0;
-  if (v12)
+  if (eventCopy)
   {
-    v14 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+    viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __78__AnalyticsProcessor_roamEvent_at_andResetMoc_andRunPostProcessing_withError___block_invoke;
     v19[3] = &unk_1E830D920;
     v22 = &v32;
     v19[4] = self;
-    v20 = v12;
+    v20 = eventCopy;
     v23 = &v26;
-    v21 = v13;
-    v24 = a6;
-    v25 = a5;
-    [v14 performBlockAndWait:v19];
+    v21 = atCopy;
+    processingCopy = processing;
+    mocCopy = moc;
+    [viewContext performBlockAndWait:v19];
 
-    if (a7)
+    if (error)
     {
-      *a7 = v27[5];
+      *error = v27[5];
     }
   }
 
@@ -1117,32 +1117,32 @@ void __78__AnalyticsProcessor_roamEvent_at_andResetMoc_andRunPostProcessing_with
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)recoveryEventOnBssid:(id)a3 at:(id)a4 with:(id)a5 andResetMoc:(BOOL)a6
+- (BOOL)recoveryEventOnBssid:(id)bssid at:(id)at with:(id)with andResetMoc:(BOOL)moc
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  bssidCopy = bssid;
+  atCopy = at;
+  withCopy = with;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v13 = [BSSMO formattedMACAddressNotation:v10 as:6];
+  v13 = [BSSMO formattedMACAddressNotation:bssidCopy as:6];
 
-  v14 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+  viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __63__AnalyticsProcessor_recoveryEventOnBssid_at_with_andResetMoc___block_invoke;
   v20[3] = &unk_1E830D948;
-  v15 = v11;
+  v15 = atCopy;
   v21 = v15;
-  v22 = self;
-  v16 = v12;
+  selfCopy = self;
+  v16 = withCopy;
   v24 = v16;
   v17 = v13;
   v23 = v17;
   v25 = &v27;
-  v26 = a6;
-  [v14 performBlockAndWait:v20];
+  mocCopy = moc;
+  [viewContext performBlockAndWait:v20];
 
   v18 = *(v28 + 24);
   _Block_object_dispose(&v27, 8);
@@ -1329,13 +1329,13 @@ LABEL_21:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)removeKnownNetworkEvent:(id)a3 at:(id)a4 andResetMoc:(BOOL)a5
+- (BOOL)removeKnownNetworkEvent:(id)event at:(id)at andResetMoc:(BOOL)moc
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  eventCopy = event;
+  atCopy = at;
+  v8 = atCopy;
+  if (!eventCopy)
   {
     v12 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -1357,7 +1357,7 @@ LABEL_10:
     goto LABEL_4;
   }
 
-  if (!v7)
+  if (!atCopy)
   {
     v12 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -1382,17 +1382,17 @@ LABEL_4:
   return v9;
 }
 
-- (BOOL)updateNetwork:(id)a3 switchedFrom:(id)a4 at:(id)a5 andResetMoc:(BOOL)a6
+- (BOOL)updateNetwork:(id)network switchedFrom:(id)from at:(id)at andResetMoc:(BOOL)moc
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  networkCopy = network;
+  fromCopy = from;
+  atCopy = at;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  if (!v10)
+  if (!networkCopy)
   {
     v14 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -1412,7 +1412,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v11)
+  if (!fromCopy)
   {
     v14 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -1432,7 +1432,7 @@ LABEL_15:
 
   v13 = WALogCategoryDeviceStoreHandle();
   v14 = v13;
-  if (!v12)
+  if (!atCopy)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
@@ -1458,23 +1458,23 @@ LABEL_16:
     v31 = 1024;
     v32 = 436;
     v33 = 2112;
-    v34 = v10;
+    v34 = networkCopy;
     v35 = 2112;
-    v36 = v11;
+    v36 = fromCopy;
     _os_log_impl(&dword_1C8460000, v14, OS_LOG_TYPE_DEBUG, "%{public}s::%d:SSID: %@ prevSsid: %@", buf, 0x26u);
   }
 
-  v15 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+  viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __64__AnalyticsProcessor_updateNetwork_switchedFrom_at_andResetMoc___block_invoke;
   v20[3] = &unk_1E830D970;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
+  v21 = networkCopy;
+  v22 = fromCopy;
   v23 = &v25;
-  v24 = a6;
-  [v15 performBlockAndWait:v20];
+  mocCopy = moc;
+  [viewContext performBlockAndWait:v20];
 
   if (+[WAUtil isWiFiFragmentSamplingEnabled])
   {
@@ -1635,32 +1635,32 @@ LABEL_16:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)geoTagEventOnBssid:(id)a3 ssid:(id)a4 lat:(double)a5 lon:(double)a6 at:(id)a7 andResetMoc:(BOOL)a8 andRunPostProcessing:(BOOL)a9
+- (BOOL)geoTagEventOnBssid:(id)bssid ssid:(id)ssid lat:(double)lat lon:(double)lon at:(id)at andResetMoc:(BOOL)moc andRunPostProcessing:(BOOL)processing
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  bssidCopy = bssid;
+  ssidCopy = ssid;
+  atCopy = at;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v18 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+  viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __90__AnalyticsProcessor_geoTagEventOnBssid_ssid_lat_lon_at_andResetMoc_andRunPostProcessing___block_invoke;
   v24[3] = &unk_1E830D998;
   v29 = &v33;
-  v19 = v17;
+  v19 = atCopy;
   v25 = v19;
-  v20 = v15;
+  v20 = bssidCopy;
   v26 = v20;
-  v21 = v16;
-  v30 = a5;
-  v31 = a6;
+  v21 = ssidCopy;
+  latCopy = lat;
+  lonCopy = lon;
   v27 = v21;
-  v28 = self;
-  v32 = a8;
-  [v18 performBlockAndWait:v24];
+  selfCopy = self;
+  mocCopy = moc;
+  [viewContext performBlockAndWait:v24];
 
   v22 = *(v34 + 24);
   _Block_object_dispose(&v33, 8);
@@ -1715,28 +1715,28 @@ void __90__AnalyticsProcessor_geoTagEventOnBssid_ssid_lat_lon_at_andResetMoc_and
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateBSS:(id)a3 withParsedBeacon:(id)a4 andResetMoc:(BOOL)a5
+- (BOOL)updateBSS:(id)s withParsedBeacon:(id)beacon andResetMoc:(BOOL)moc
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  sCopy = s;
+  beaconCopy = beacon;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (v8)
+  if (sCopy)
   {
-    v10 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+    viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __61__AnalyticsProcessor_updateBSS_withParsedBeacon_andResetMoc___block_invoke;
     v15[3] = &unk_1E830D970;
     v15[4] = self;
-    v16 = v8;
-    v17 = v9;
+    v16 = sCopy;
+    v17 = beaconCopy;
     v18 = &v20;
-    v19 = a5;
-    [v10 performBlockAndWait:v15];
+    mocCopy = moc;
+    [viewContext performBlockAndWait:v15];
   }
 
   else
@@ -1856,40 +1856,40 @@ void __61__AnalyticsProcessor_updateBSS_withParsedBeacon_andResetMoc___block_inv
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)scanResultEventWith:(id)a3 ssid:(id)a4 whileOn:(id)a5 at:(id)a6 with:(id)a7 andResetMoc:(BOOL)a8
+- (BOOL)scanResultEventWith:(id)with ssid:(id)ssid whileOn:(id)on at:(id)at with:(id)a7 andResetMoc:(BOOL)moc
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  withCopy = with;
+  ssidCopy = ssid;
+  onCopy = on;
+  atCopy = at;
   v18 = a7;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
   v41 = 0;
-  v19 = [BSSMO formattedMACAddressNotation:v14 as:6];
+  v19 = [BSSMO formattedMACAddressNotation:withCopy as:6];
 
-  v20 = [BSSMO formattedMACAddressNotation:v16 as:6];
+  v20 = [BSSMO formattedMACAddressNotation:onCopy as:6];
 
-  v21 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+  viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __75__AnalyticsProcessor_scanResultEventWith_ssid_whileOn_at_with_andResetMoc___block_invoke;
   v29[3] = &unk_1E830D9C0;
   v22 = v19;
   v30 = v22;
-  v23 = v17;
+  v23 = atCopy;
   v31 = v23;
-  v32 = self;
-  v24 = v15;
+  selfCopy = self;
+  v24 = ssidCopy;
   v33 = v24;
   v25 = v18;
   v35 = v25;
   v26 = v20;
   v34 = v26;
   v36 = &v38;
-  v37 = a8;
-  [v21 performBlockAndWait:v29];
+  mocCopy = moc;
+  [viewContext performBlockAndWait:v29];
 
   v27 = *(v39 + 24);
   _Block_object_dispose(&v38, 8);
@@ -2085,33 +2085,33 @@ LABEL_21:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)faultEventOn:(id)a3 at:(id)a4 with:(id)a5 andDeferSave:(BOOL)a6 andResetMoc:(BOOL)a7
+- (BOOL)faultEventOn:(id)on at:(id)at with:(id)with andDeferSave:(BOOL)save andResetMoc:(BOOL)moc
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  onCopy = on;
+  atCopy = at;
+  withCopy = with;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v15 = [BSSMO formattedMACAddressNotation:v12 as:6];
+  v15 = [BSSMO formattedMACAddressNotation:onCopy as:6];
 
-  v16 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+  viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __68__AnalyticsProcessor_faultEventOn_at_with_andDeferSave_andResetMoc___block_invoke;
   v22[3] = &unk_1E830D9E8;
-  v17 = v13;
+  v17 = atCopy;
   v23 = v17;
-  v24 = self;
-  v18 = v14;
+  selfCopy = self;
+  v18 = withCopy;
   v26 = v18;
   v19 = v15;
   v25 = v19;
   v27 = &v30;
-  v28 = a6;
-  v29 = a7;
-  [v16 performBlockAndWait:v22];
+  saveCopy = save;
+  mocCopy = moc;
+  [viewContext performBlockAndWait:v22];
 
   v20 = *(v31 + 24);
   _Block_object_dispose(&v30, 8);
@@ -2314,32 +2314,32 @@ LABEL_21:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)linkTestEventOn:(id)a3 at:(id)a4 with:(id)a5 andResetMoc:(BOOL)a6
+- (BOOL)linkTestEventOn:(id)on at:(id)at with:(id)with andResetMoc:(BOOL)moc
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  onCopy = on;
+  atCopy = at;
+  withCopy = with;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v13 = [BSSMO formattedMACAddressNotation:v10 as:6];
+  v13 = [BSSMO formattedMACAddressNotation:onCopy as:6];
 
-  v14 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+  viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __58__AnalyticsProcessor_linkTestEventOn_at_with_andResetMoc___block_invoke;
   v20[3] = &unk_1E830D948;
-  v15 = v11;
+  v15 = atCopy;
   v21 = v15;
-  v22 = self;
-  v16 = v12;
+  selfCopy = self;
+  v16 = withCopy;
   v24 = v16;
   v17 = v13;
   v23 = v17;
   v25 = &v27;
-  v26 = a6;
-  [v14 performBlockAndWait:v20];
+  mocCopy = moc;
+  [viewContext performBlockAndWait:v20];
 
   v18 = *(v28 + 24);
   _Block_object_dispose(&v27, 8);
@@ -2486,27 +2486,27 @@ LABEL_19:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)diagnosticEventAt:(id)a3 with:(id)a4 andResetMoc:(BOOL)a5
+- (BOOL)diagnosticEventAt:(id)at with:(id)with andResetMoc:(BOOL)moc
 {
-  v8 = a3;
-  v9 = a4;
+  atCopy = at;
+  withCopy = with;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v10 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+  viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __57__AnalyticsProcessor_diagnosticEventAt_with_andResetMoc___block_invoke;
   v15[3] = &unk_1E830DA10;
-  v11 = v8;
+  v11 = atCopy;
   v16 = v11;
-  v17 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = withCopy;
   v18 = v12;
   v19 = &v21;
-  v20 = a5;
-  [v10 performBlockAndWait:v15];
+  mocCopy = moc;
+  [viewContext performBlockAndWait:v15];
 
   v13 = *(v22 + 24);
   _Block_object_dispose(&v21, 8);
@@ -2606,18 +2606,18 @@ void __57__AnalyticsProcessor_diagnosticEventAt_with_andResetMoc___block_invoke(
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)lqmEvent:(id)a3 on:(id)a4 at:(id)a5 andReset:(BOOL)a6
+- (BOOL)lqmEvent:(id)event on:(id)on at:(id)at andReset:(BOOL)reset
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
+  eventCopy = event;
+  onCopy = on;
+  atCopy = at;
+  v13 = atCopy;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  if (!v10)
+  if (!eventCopy)
   {
     v18 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -2634,7 +2634,7 @@ void __57__AnalyticsProcessor_diagnosticEventAt_with_andResetMoc___block_invoke(
     goto LABEL_14;
   }
 
-  if (!v11)
+  if (!onCopy)
   {
     v18 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -2651,7 +2651,7 @@ void __57__AnalyticsProcessor_diagnosticEventAt_with_andResetMoc___block_invoke(
     goto LABEL_14;
   }
 
-  if (!v12)
+  if (!atCopy)
   {
     v18 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -2670,18 +2670,18 @@ LABEL_14:
     goto LABEL_5;
   }
 
-  v14 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+  viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __46__AnalyticsProcessor_lqmEvent_on_at_andReset___block_invoke;
   v19[3] = &unk_1E830DA38;
   v23 = &v25;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
+  v20 = eventCopy;
+  v21 = onCopy;
   v22 = v13;
-  v24 = a6;
-  [v14 performBlockAndWait:v19];
+  resetCopy = reset;
+  [viewContext performBlockAndWait:v19];
 
 LABEL_5:
   v15 = *(v26 + 24);
@@ -2770,46 +2770,46 @@ void __46__AnalyticsProcessor_lqmEvent_on_at_andReset___block_invoke(uint64_t a1
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateNetwork:(id)a3 withDeploymentCoverage:(signed __int16)a4 andResetMoc:(BOOL)a5
+- (BOOL)updateNetwork:(id)network withDeploymentCoverage:(signed __int16)coverage andResetMoc:(BOOL)moc
 {
-  v6 = a4;
+  coverageCopy = coverage;
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  networkCopy = network;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
   v9 = WALogCategoryDeviceStoreHandle();
   v10 = v9;
-  if (v8)
+  if (networkCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v11 = WADeploymentCoverageToString(v6);
+      v11 = WADeploymentCoverageToString(coverageCopy);
       *buf = 136447234;
       v26 = "[AnalyticsProcessor updateNetwork:withDeploymentCoverage:andResetMoc:]";
       v27 = 1024;
       v28 = 756;
       v29 = 2112;
-      v30 = v8;
+      v30 = networkCopy;
       v31 = 2112;
       v32 = v11;
       v33 = 2048;
-      v34 = v6;
+      v34 = coverageCopy;
       _os_log_impl(&dword_1C8460000, v10, OS_LOG_TYPE_DEBUG, "%{public}s::%d:SSID: %@ deploymentCoverage: %@ (%lu)", buf, 0x30u);
     }
 
-    v12 = [(WAPersistentContainer *)self->_persistentContainer viewContext];
+    viewContext = [(WAPersistentContainer *)self->_persistentContainer viewContext];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __71__AnalyticsProcessor_updateNetwork_withDeploymentCoverage_andResetMoc___block_invoke;
     v16[3] = &unk_1E830DA60;
     v16[4] = self;
-    v19 = v6;
-    v17 = v8;
+    v19 = coverageCopy;
+    v17 = networkCopy;
     v18 = &v21;
-    v20 = a5;
-    [v12 performBlockAndWait:v16];
+    mocCopy = moc;
+    [viewContext performBlockAndWait:v16];
   }
 
   else
@@ -2925,10 +2925,10 @@ LABEL_12:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processMetricWiFiStats:(id)a3
+- (void)processMetricWiFiStats:(id)stats
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statsCopy = stats;
   v5 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2941,21 +2941,21 @@ LABEL_12:
     _os_log_impl(&dword_1C8460000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%s", buf, 0x1Cu);
   }
 
-  v6 = [(AnalyticsProcessor *)self managedObjectHandler];
+  managedObjectHandler = [(AnalyticsProcessor *)self managedObjectHandler];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__AnalyticsProcessor_processMetricWiFiStats___block_invoke;
   v8[3] = &unk_1E830DA88;
   v8[4] = self;
-  [v6 performBlockOnManagedObjectContext:v4 block:v8];
+  [managedObjectHandler performBlockOnManagedObjectContext:statsCopy block:v8];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_processMetricWiFiStats:(id)a3
+- (void)_processMetricWiFiStats:(id)stats
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statsCopy = stats;
   v5 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v5))
   {
@@ -2963,23 +2963,23 @@ LABEL_12:
     _os_signpost_emit_with_name_impl(&dword_1C8460000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AnalyticsProcessor processMetricWiFiStats", "", buf, 2u);
   }
 
-  if (v4)
+  if (statsCopy)
   {
-    v28 = self;
+    selfCopy = self;
     context = objc_autoreleasePoolPush();
-    v6 = [(AnalyticsProcessor *)self managedObjectHandler];
-    v7 = [v6 managedObjectContext];
-    v8 = [WiFiStatMO generateInstance:v7];
+    managedObjectHandler = [(AnalyticsProcessor *)self managedObjectHandler];
+    managedObjectContext = [managedObjectHandler managedObjectContext];
+    v8 = [WiFiStatMO generateInstance:managedObjectContext];
 
-    v9 = [v8 entity];
-    v10 = [v9 attributesByName];
-    v11 = [v10 allKeys];
+    entity = [v8 entity];
+    attributesByName = [entity attributesByName];
+    allKeys = [attributesByName allKeys];
 
-    v12 = [v4 valueForKey:@"date"];
+    v12 = [statsCopy valueForKey:@"date"];
 
     if (v12)
     {
-      [v4 valueForKey:@"date"];
+      [statsCopy valueForKey:@"date"];
     }
 
     else
@@ -2993,7 +2993,7 @@ LABEL_12:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = v4;
+    v14 = statsCopy;
     v15 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v15)
     {
@@ -3009,7 +3009,7 @@ LABEL_12:
           }
 
           v19 = *(*(&v30 + 1) + 8 * i);
-          if ([v11 containsObject:v19])
+          if ([allKeys containsObject:v19])
           {
             v20 = [v14 objectForKeyedSubscript:v19];
             [v8 setValue:v20 forKey:v19];
@@ -3029,8 +3029,8 @@ LABEL_12:
       _os_signpost_emit_with_name_impl(&dword_1C8460000, v21, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AnalyticsProcessor processMetricWiFiStats saveMoc", "", buf, 2u);
     }
 
-    v22 = [(AnalyticsProcessor *)v28 managedObjectHandler];
-    [v22 managedObjectContextSave:1 reset:1 release:1 withError:0];
+    managedObjectHandler2 = [(AnalyticsProcessor *)selfCopy managedObjectHandler];
+    [managedObjectHandler2 managedObjectContextSave:1 reset:1 release:1 withError:0];
 
     v23 = WALogCategoryDeviceStoreHandle();
     if (os_signpost_enabled(v23))
@@ -3087,23 +3087,23 @@ LABEL_12:
 
   v5 = v4;
 
-  v6 = [MEMORY[0x1E696AE30] processInfo];
-  v7 = [v6 processName];
-  v8 = [v7 isEqualToString:v5];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v8 = [processName isEqualToString:v5];
 
   return v8;
 }
 
-- (BOOL)updateRoamPoliciesForSourceBssid:(id)a3 andUpdateRoamCache:(BOOL)a4
+- (BOOL)updateRoamPoliciesForSourceBssid:(id)bssid andUpdateRoamCache:(BOOL)cache
 {
-  v4 = a4;
+  cacheCopy = cache;
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bssidCopy = bssid;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  if (v6)
+  if (bssidCopy)
   {
     v7 = objc_autoreleasePoolPush();
     v8 = +[WAUtil customProcessInChargeOfDataProcessingForPolicies];
@@ -3116,9 +3116,9 @@ LABEL_12:
 
     v11 = v10;
 
-    v12 = [MEMORY[0x1E696AE30] processInfo];
-    v13 = [v12 processName];
-    v14 = [v13 isEqualToString:v11];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    v14 = [processName isEqualToString:v11];
 
     v15 = WALogCategoryDeviceStoreHandle();
     v16 = v15;
@@ -3131,29 +3131,29 @@ LABEL_12:
         v34 = 1024;
         v35 = 856;
         *buf = 136446978;
-        if (v4)
+        if (cacheCopy)
         {
           v17 = @"YES";
         }
 
         v36 = 2112;
-        v37 = v6;
+        v37 = bssidCopy;
         v38 = 2112;
         v39 = v17;
         _os_log_impl(&dword_1C8460000, v16, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Calling updateRoamPoliciesForSourceBssid:(%@)andUpdateRoamCache:(%@) on current process", buf, 0x26u);
       }
 
-      v18 = [(AnalyticsProcessor *)self persistentContainer];
-      v19 = [v18 viewContext];
+      persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
+      viewContext = [persistentContainer viewContext];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __74__AnalyticsProcessor_updateRoamPoliciesForSourceBssid_andUpdateRoamCache___block_invoke;
       v24[3] = &unk_1E830DAB0;
       v24[4] = self;
-      v27 = v4;
-      v25 = v6;
+      v27 = cacheCopy;
+      v25 = bssidCopy;
       v26 = &v28;
-      [v19 performBlockAndWait:v24];
+      [viewContext performBlockAndWait:v24];
     }
 
     else
@@ -3317,14 +3317,14 @@ void __51__AnalyticsProcessor_signalPotentialNewIORChannels__block_invoke(uint64
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchBSSesLastSeenAfterLastPolicyRunFor:(id)a3 withError:(id *)a4
+- (id)fetchBSSesLastSeenAfterLastPolicyRunFor:(id)for withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  forCopy = for;
   v7 = objc_opt_new();
-  v8 = [(AnalyticsProcessor *)self persistentContainer];
+  persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
   v28 = 0;
-  v9 = [v8 mostRecentPolicy:v6 withError:&v28];
+  v9 = [persistentContainer mostRecentPolicy:forCopy withError:&v28];
   v10 = v28;
 
   if (v9)
@@ -3339,7 +3339,7 @@ void __51__AnalyticsProcessor_signalPotentialNewIORChannels__block_invoke(uint64
   v11 = ;
   if (!v10)
   {
-    v25 = a4;
+    errorCopy = error;
     v12 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -3348,21 +3348,21 @@ void __51__AnalyticsProcessor_signalPotentialNewIORChannels__block_invoke(uint64
       v32 = 1024;
       v33 = 911;
       v34 = 2112;
-      v35 = v6;
+      v35 = forCopy;
       v36 = 2112;
       v37 = v9;
     }
 
-    v26 = v6;
+    v26 = forCopy;
 
-    v13 = [(AnalyticsProcessor *)self persistentContainer];
+    persistentContainer2 = [(AnalyticsProcessor *)self persistentContainer];
     v14 = +[BSSMO entity];
     v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"lastSeen > %@", v11];
     v16 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastSeen" ascending:0];
     v29 = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
     v27 = 0;
-    v18 = [v13 fetchObjects:v14 withPredicate:v15 withSorting:v17 withPrefetchedProperties:0 withLimit:0 withError:&v27];
+    v18 = [persistentContainer2 fetchObjects:v14 withPredicate:v15 withSorting:v17 withPrefetchedProperties:0 withLimit:0 withError:&v27];
     v10 = v27;
     [v7 setBssesToProcess:v18];
 
@@ -3370,27 +3370,27 @@ void __51__AnalyticsProcessor_signalPotentialNewIORChannels__block_invoke(uint64
     v19 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [v7 queryFrom];
-      v21 = [v7 bssesToProcess];
+      queryFrom = [v7 queryFrom];
+      bssesToProcess = [v7 bssesToProcess];
       *buf = 136446978;
       v31 = "[AnalyticsProcessor fetchBSSesLastSeenAfterLastPolicyRunFor:withError:]";
       v32 = 1024;
       v33 = 919;
       v34 = 2112;
-      v35 = v20;
+      v35 = queryFrom;
       v36 = 2112;
-      v37 = v21;
+      v37 = bssesToProcess;
       _os_log_impl(&dword_1C8460000, v19, OS_LOG_TYPE_DEBUG, "%{public}s::%d:BSSes last seen after %@: %@", buf, 0x26u);
     }
 
-    a4 = v25;
-    v6 = v26;
+    error = errorCopy;
+    forCopy = v26;
   }
 
-  if (a4)
+  if (error)
   {
     v22 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -3398,16 +3398,16 @@ void __51__AnalyticsProcessor_signalPotentialNewIORChannels__block_invoke(uint64
   return v7;
 }
 
-- (BOOL)poorCoverageAnalysisWithReason:(id)a3
+- (BOOL)poorCoverageAnalysisWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (_os_feature_enabled_impl())
   {
     v5 = [WADeploymentAnalyzer alloc];
-    v6 = [(AnalyticsProcessor *)self persistentContainer];
-    v7 = [(WADeploymentAnalyzer *)v5 initWithPersistentContainer:v6];
+    persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
+    v7 = [(WADeploymentAnalyzer *)v5 initWithPersistentContainer:persistentContainer];
     v13 = 0;
-    [(WADeploymentAnalyzer *)v7 updateHomeNetworksForDeploymentIssuesWithReason:v4 withError:&v13];
+    [(WADeploymentAnalyzer *)v7 updateHomeNetworksForDeploymentIssuesWithReason:reasonCopy withError:&v13];
     v8 = v13;
 
     v12 = v8;
@@ -3425,10 +3425,10 @@ void __51__AnalyticsProcessor_signalPotentialNewIORChannels__block_invoke(uint64
   return v10;
 }
 
-- (BOOL)processDeferredPriorityPoliciesWithReason:(id)a3
+- (BOOL)processDeferredPriorityPoliciesWithReason:(id)reason
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -3443,22 +3443,22 @@ void __51__AnalyticsProcessor_signalPotentialNewIORChannels__block_invoke(uint64
 
   v8 = v7;
 
-  v9 = [MEMORY[0x1E696AE30] processInfo];
-  v10 = [v9 processName];
-  v11 = [v10 isEqualToString:v8];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v11 = [processName isEqualToString:v8];
 
   if (v11)
   {
-    v12 = [(AnalyticsProcessor *)self persistentContainer];
-    v13 = [v12 viewContext];
+    persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
+    viewContext = [persistentContainer viewContext];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __64__AnalyticsProcessor_processDeferredPriorityPoliciesWithReason___block_invoke;
     v18[3] = &unk_1E830DAF8;
     v18[4] = self;
-    v19 = v4;
+    v19 = reasonCopy;
     v20 = &v21;
-    [v13 performBlockAndWait:v18];
+    [viewContext performBlockAndWait:v18];
   }
 
   else
@@ -3488,10 +3488,10 @@ uint64_t __64__AnalyticsProcessor_processDeferredPriorityPoliciesWithReason___bl
   return result;
 }
 
-- (BOOL)updateRoamPoliciesForSourceBssAndRoamWithReason:(id)a3 withError:(id *)a4
+- (BOOL)updateRoamPoliciesForSourceBssAndRoamWithReason:(id)reason withError:(id *)error
 {
   v68 = *MEMORY[0x1E69E9840];
-  v41 = a3;
+  reasonCopy = reason;
   v52 = 0;
   v6 = [(AnalyticsProcessor *)self fetchBSSesLastSeenAfterLastPolicyRunFor:@"updateRoamPoliciesForSourceBss:andRoam:" withError:&v52];
   v7 = v52;
@@ -3499,7 +3499,7 @@ uint64_t __64__AnalyticsProcessor_processDeferredPriorityPoliciesWithReason___bl
   {
     v8 = v7;
     v28 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_30;
     }
@@ -3517,7 +3517,7 @@ uint64_t __64__AnalyticsProcessor_processDeferredPriorityPoliciesWithReason___bl
   if (v34)
   {
     v36 = *v49;
-    v33 = a4;
+    errorCopy = error;
     v37 = v6;
     do
     {
@@ -3532,15 +3532,15 @@ uint64_t __64__AnalyticsProcessor_processDeferredPriorityPoliciesWithReason___bl
         v38 = v9;
         v10 = *(*(&v48 + 1) + 8 * v9);
         context = objc_autoreleasePoolPush();
-        v11 = [(AnalyticsProcessor *)self persistentContainer];
+        persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
         v12 = +[RoamMO entity];
-        v13 = [v6 queryFrom];
-        v14 = [RoamMO successfulRoamsOutOf:v10 since:v13];
+        queryFrom = [v6 queryFrom];
+        v14 = [RoamMO successfulRoamsOutOf:v10 since:queryFrom];
         v15 = +[WAPersistentContainer sortByOlderDateFirst];
         v66 = v15;
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
         v47 = v8;
-        v17 = [v11 fetchObjects:v12 withPredicate:v14 withSorting:v16 withPrefetchedProperties:&unk_1F483E470 withLimit:1 withError:&v47];
+        v17 = [persistentContainer fetchObjects:v12 withPredicate:v14 withSorting:v16 withPrefetchedProperties:&unk_1F483E470 withLimit:1 withError:&v47];
         v39 = v47;
 
         v18 = WALogCategoryDeviceStoreHandle();
@@ -3595,7 +3595,7 @@ uint64_t __64__AnalyticsProcessor_processDeferredPriorityPoliciesWithReason___bl
               }
 
               v42 = v24;
-              v27 = [(AnalyticsProcessor *)self updateRoamPoliciesForSourceBss:v10 andRoam:v25 withReason:v41 withError:&v42];
+              v27 = [(AnalyticsProcessor *)self updateRoamPoliciesForSourceBss:v10 andRoam:v25 withReason:reasonCopy withError:&v42];
               v8 = v42;
 
               if (!v27)
@@ -3612,7 +3612,7 @@ uint64_t __64__AnalyticsProcessor_processDeferredPriorityPoliciesWithReason___bl
                   v59 = 2112;
                   v60 = v25;
                   v61 = 2112;
-                  v62 = v41;
+                  v62 = reasonCopy;
                   v63 = 2112;
                   v64 = v8;
                   _os_log_impl(&dword_1C8460000, v29, OS_LOG_TYPE_ERROR, "%{public}s::%d:updateRoamPoliciesForSourceBss:%@ andRoam:%@ withReason:%@ FAILED %@ - bailing", buf, 0x3Au);
@@ -3620,7 +3620,7 @@ uint64_t __64__AnalyticsProcessor_processDeferredPriorityPoliciesWithReason___bl
 
                 objc_autoreleasePoolPop(context);
                 v28 = 0;
-                a4 = v33;
+                error = errorCopy;
                 v6 = v37;
                 goto LABEL_28;
               }
@@ -3652,7 +3652,7 @@ uint64_t __64__AnalyticsProcessor_processDeferredPriorityPoliciesWithReason___bl
 
       while (v38 + 1 != v34);
       v28 = 1;
-      a4 = v33;
+      error = errorCopy;
       v34 = [obj countByEnumeratingWithState:&v48 objects:v67 count:16];
     }
 
@@ -3666,11 +3666,11 @@ uint64_t __64__AnalyticsProcessor_processDeferredPriorityPoliciesWithReason___bl
 
 LABEL_28:
 
-  if (a4)
+  if (error)
   {
 LABEL_29:
     v30 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_30:
@@ -3679,17 +3679,17 @@ LABEL_30:
   return v28;
 }
 
-- (BOOL)networkDeploymentMetricCheckAndSubmitWithReason:(id)a3
+- (BOOL)networkDeploymentMetricCheckAndSubmitWithReason:(id)reason
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v22 = 0;
   v5 = [(AnalyticsProcessor *)self fetchBSSesLastSeenAfterLastPolicyRunFor:@"networkDeploymentMetricCheckAndSubmit:" withError:&v22];
   v6 = v22;
   if (v6)
   {
-    v7 = WALogCategoryDeviceStoreHandle();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    bssesToProcess = WALogCategoryDeviceStoreHandle();
+    if (os_log_type_enabled(bssesToProcess, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446722;
       v25 = "[AnalyticsProcessor networkDeploymentMetricCheckAndSubmitWithReason:]";
@@ -3697,7 +3697,7 @@ LABEL_30:
       v27 = 1004;
       v28 = 2112;
       v29 = @"networkDeploymentMetricCheckAndSubmit:";
-      _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to fetch BSSes last seen after last policy run for %@", buf, 0x1Cu);
+      _os_log_impl(&dword_1C8460000, bssesToProcess, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to fetch BSSes last seen after last policy run for %@", buf, 0x1Cu);
     }
   }
 
@@ -3707,8 +3707,8 @@ LABEL_30:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [v5 bssesToProcess];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    bssesToProcess = [v5 bssesToProcess];
+    v8 = [bssesToProcess countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -3720,27 +3720,27 @@ LABEL_30:
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(bssesToProcess);
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
           v13 = WALogCategoryDeviceStoreHandle();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v12 bssid];
+            bssid = [v12 bssid];
             *buf = 136446722;
             v25 = "[AnalyticsProcessor networkDeploymentMetricCheckAndSubmitWithReason:]";
             v26 = 1024;
             v27 = 1007;
             v28 = 2112;
-            v29 = v14;
+            v29 = bssid;
             _os_log_impl(&dword_1C8460000, v13, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Calling networkDeploymentMetricCheckAndSubmit:%@", buf, 0x1Cu);
           }
 
-          [(AnalyticsProcessor *)self networkDeploymentMetricCheckAndSubmit:v12 withReason:v4];
+          [(AnalyticsProcessor *)self networkDeploymentMetricCheckAndSubmit:v12 withReason:reasonCopy];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v9 = [bssesToProcess countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v9);
@@ -3753,13 +3753,13 @@ LABEL_30:
   return v6 == 0;
 }
 
-- (BOOL)classifyTraitsForNetworksWithReason:(id)a3
+- (BOOL)classifyTraitsForNetworksWithReason:(id)reason
 {
   v58 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v4 = [(AnalyticsProcessor *)self persistentContainer];
+  reasonCopy = reason;
+  persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
   v43 = 0;
-  v5 = [v4 mostRecentPolicy:@"classifyTraitsForNetwork:distanceFilter:" withError:&v43];
+  v5 = [persistentContainer mostRecentPolicy:@"classifyTraitsForNetwork:distanceFilter:" withError:&v43];
   v6 = v43;
 
   if (v5)
@@ -3792,10 +3792,10 @@ LABEL_30:
 
   else
   {
-    v8 = [(AnalyticsProcessor *)self persistentContainer];
+    persistentContainer2 = [(AnalyticsProcessor *)self persistentContainer];
     v9 = +[NetworkMO entity];
     v42 = 0;
-    v10 = [v8 fetchObjects:v9 withPredicate:0 withSorting:0 withPrefetchedProperties:0 withLimit:0 withError:&v42];
+    v10 = [persistentContainer2 fetchObjects:v9 withPredicate:0 withSorting:0 withPrefetchedProperties:0 withLimit:0 withError:&v42];
     v6 = v42;
 
     if (v6)
@@ -3812,7 +3812,7 @@ LABEL_30:
     v6 = [v11 countByEnumeratingWithState:&v38 objects:v57 count:16];
     if (v6)
     {
-      v35 = self;
+      selfCopy = self;
       obj = v11;
       v34 = v5;
       v12 = *v39;
@@ -3833,16 +3833,16 @@ LABEL_30:
           v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
           v19 = [v15 sortedArrayUsingDescriptors:v18];
 
-          v20 = [v19 firstObject];
-          v21 = [v20 lastSeen];
-          [v21 timeIntervalSinceReferenceDate];
+          firstObject = [v19 firstObject];
+          lastSeen = [firstObject lastSeen];
+          [lastSeen timeIntervalSinceReferenceDate];
           v23 = v22;
           [v7 timeIntervalSinceReferenceDate];
           v25 = v24;
 
           if (v23 >= v25)
           {
-            if (![(AnalyticsProcessor *)v35 classifyTraitsForNetwork:v14 withReason:v36])
+            if (![(AnalyticsProcessor *)selfCopy classifyTraitsForNetwork:v14 withReason:reasonCopy])
             {
               v31 = WALogCategoryDeviceStoreHandle();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -3854,7 +3854,7 @@ LABEL_30:
                 v48 = 2112;
                 v49 = v14;
                 v50 = 2112;
-                v51 = v36;
+                v51 = reasonCopy;
                 _os_log_impl(&dword_1C8460000, v31, OS_LOG_TYPE_ERROR, "%{public}s::%d:classifyTraitsForNetwork:%@ withReason:%@ FAILED - bailing", buf, 0x26u);
               }
 
@@ -3869,9 +3869,9 @@ LABEL_30:
             v26 = WALogCategoryDeviceStoreHandle();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = [v19 firstObject];
-              v28 = [v27 lastSeen];
-              v29 = [v19 firstObject];
+              firstObject2 = [v19 firstObject];
+              lastSeen2 = [firstObject2 lastSeen];
+              firstObject3 = [v19 firstObject];
               *buf = 136447490;
               v45 = "[AnalyticsProcessor classifyTraitsForNetworksWithReason:]";
               v46 = 1024;
@@ -3879,9 +3879,9 @@ LABEL_30:
               v48 = 2112;
               v49 = v14;
               v50 = 2112;
-              v51 = v28;
+              v51 = lastSeen2;
               v52 = 2112;
-              v53 = v29;
+              v53 = firstObject3;
               v54 = 2112;
               v55 = v7;
               _os_log_impl(&dword_1C8460000, v26, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%@ most recently seen at %@ (%@) earlier than lastClassifyTrains run (%@) -- skipping", buf, 0x3Au);
@@ -3917,10 +3917,10 @@ LABEL_25:
   return v30;
 }
 
-- (BOOL)processDeferredPoliciesWithReason:(id)a3
+- (BOOL)processDeferredPoliciesWithReason:(id)reason
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
@@ -3945,9 +3945,9 @@ LABEL_25:
 
   v8 = v7;
 
-  v9 = [MEMORY[0x1E696AE30] processInfo];
-  v10 = [v9 processName];
-  v11 = [v10 isEqualToString:v8];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v11 = [processName isEqualToString:v8];
 
   if ((v11 & 1) == 0)
   {
@@ -3972,7 +3972,7 @@ LABEL_11:
 
   v12 = v63;
   v55 = v63[5];
-  v13 = [(AnalyticsProcessor *)self ageOutAnalyticsWithError:&v55 withReason:v4];
+  v13 = [(AnalyticsProcessor *)self ageOutAnalyticsWithError:&v55 withReason:reasonCopy];
   objc_storeStrong(v12 + 5, v55);
   *(v59 + 24) = v13;
   if (!v13)
@@ -3997,28 +3997,28 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v14 = [(AnalyticsProcessor *)self persistentContainer];
-  v15 = [v14 viewContext];
+  persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
+  viewContext = [persistentContainer viewContext];
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
   v51[2] = __56__AnalyticsProcessor_processDeferredPoliciesWithReason___block_invoke;
   v51[3] = &unk_1E830DB20;
   v53 = v56;
   v51[4] = self;
-  v16 = v4;
+  v16 = reasonCopy;
   v52 = v16;
   v54 = &v58;
-  [v15 performBlockAndWait:v51];
+  [viewContext performBlockAndWait:v51];
 
-  v17 = [MEMORY[0x1E695DF00] date];
-  [(AnalyticsProcessor *)self setRefDate:v17];
+  date = [MEMORY[0x1E695DF00] date];
+  [(AnalyticsProcessor *)self setRefDate:date];
 
-  v18 = [(AnalyticsProcessor *)self refDate];
-  v19 = [v18 dateByAddingTimeInterval:-86400.0];
+  refDate = [(AnalyticsProcessor *)self refDate];
+  v19 = [refDate dateByAddingTimeInterval:-86400.0];
   [(AnalyticsProcessor *)self setDefaultQueryFrom:v19];
 
-  v20 = [(AnalyticsProcessor *)self persistentContainer];
-  v21 = [v20 viewContext];
+  persistentContainer2 = [(AnalyticsProcessor *)self persistentContainer];
+  viewContext2 = [persistentContainer2 viewContext];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __56__AnalyticsProcessor_processDeferredPoliciesWithReason___block_invoke_2;
@@ -4029,10 +4029,10 @@ LABEL_11:
   v47 = v22;
   v49 = &v62;
   v50 = &v58;
-  [v21 performBlockAndWait:v46];
+  [viewContext2 performBlockAndWait:v46];
 
-  v23 = [(AnalyticsProcessor *)self persistentContainer];
-  v24 = [v23 viewContext];
+  persistentContainer3 = [(AnalyticsProcessor *)self persistentContainer];
+  viewContext3 = [persistentContainer3 viewContext];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __56__AnalyticsProcessor_processDeferredPoliciesWithReason___block_invoke_3;
@@ -4042,17 +4042,17 @@ LABEL_11:
   v25 = v22;
   v43 = v25;
   v45 = &v58;
-  [v24 performBlockAndWait:v42];
+  [viewContext3 performBlockAndWait:v42];
 
-  v26 = [(AnalyticsProcessor *)self persistentContainer];
-  v27 = [v26 viewContext];
+  persistentContainer4 = [(AnalyticsProcessor *)self persistentContainer];
+  viewContext4 = [persistentContainer4 viewContext];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __56__AnalyticsProcessor_processDeferredPoliciesWithReason___block_invoke_4;
   v40[3] = &unk_1E830DB70;
   v40[4] = self;
   v41 = v25;
-  [v27 performBlockAndWait:v40];
+  [viewContext4 performBlockAndWait:v40];
 
   v28 = v63;
   v39 = v63[5];
@@ -4136,14 +4136,14 @@ uint64_t __56__AnalyticsProcessor_processDeferredPoliciesWithReason___block_invo
   return result;
 }
 
-- (BOOL)updateUsagePoliciesWithReason:(id)a3
+- (BOOL)updateUsagePoliciesWithReason:(id)reason
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AnalyticsProcessor *)self canRunPoliciesOnCurrentProcess];
+  reasonCopy = reason;
+  canRunPoliciesOnCurrentProcess = [(AnalyticsProcessor *)self canRunPoliciesOnCurrentProcess];
   v6 = WALogCategoryDeviceStoreHandle();
   v7 = v6;
-  if (v5)
+  if (canRunPoliciesOnCurrentProcess)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -4154,11 +4154,11 @@ uint64_t __56__AnalyticsProcessor_processDeferredPoliciesWithReason___block_invo
       _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Calling updateTopUsedNetworksWithReason: on current process", buf, 0x12u);
     }
 
-    v8 = [(AnalyticsProcessor *)self usagePoliciesHandler];
-    v9 = [v8 updateTopUsedByUsageWithReason:v4];
+    usagePoliciesHandler = [(AnalyticsProcessor *)self usagePoliciesHandler];
+    v9 = [usagePoliciesHandler updateTopUsedByUsageWithReason:reasonCopy];
 
-    v10 = [(AnalyticsProcessor *)self usagePoliciesHandler];
-    v11 = [v10 updateBandsInUniqueMOsWithReason:v4] & v9;
+    usagePoliciesHandler2 = [(AnalyticsProcessor *)self usagePoliciesHandler];
+    v11 = [usagePoliciesHandler2 updateBandsInUniqueMOsWithReason:reasonCopy] & v9;
 
     v18 = 0;
     [(AnalyticsProcessor *)self managedObjectContextSaveThenReset:0 withError:&v18];
@@ -4202,90 +4202,90 @@ uint64_t __56__AnalyticsProcessor_processDeferredPoliciesWithReason___block_invo
   return v12;
 }
 
-- (BOOL)updateRoamPoliciesForSourceBss:(id)a3 andRoam:(id)a4 withReason:(id)a5 andRefDate:(id)a6 withError:(id *)a7
+- (BOOL)updateRoamPoliciesForSourceBss:(id)bss andRoam:(id)roam withReason:(id)reason andRefDate:(id)date withError:(id *)error
 {
   v92 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 bssid];
-  if (v15)
+  bssCopy = bss;
+  roamCopy = roam;
+  reasonCopy = reason;
+  dateCopy = date;
+  bssid = [bssCopy bssid];
+  if (bssid)
   {
-    v67 = v13;
+    v67 = reasonCopy;
     if ([(AnalyticsProcessor *)self canRunPoliciesOnCurrentProcess])
     {
       v16 = WALogCategoryDeviceStoreHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        v17 = [v11 bssid];
+        bssid2 = [bssCopy bssid];
         *buf = 136446722;
         v79 = "[AnalyticsProcessor updateRoamPoliciesForSourceBss:andRoam:withReason:andRefDate:withError:]";
         v80 = 1024;
         v81 = 1158;
         v82 = 2112;
-        v83 = v17;
+        v83 = bssid2;
         _os_log_impl(&dword_1C8460000, v16, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Calling buildRoamPoliciesForSourceBSS:%@ on current process", buf, 0x1Cu);
       }
 
       context = objc_autoreleasePoolPush();
-      v18 = [(AnalyticsProcessor *)self roamPolicyHandler];
+      roamPolicyHandler = [(AnalyticsProcessor *)self roamPolicyHandler];
       numRoamSamples = self->_numRoamSamples;
       v75 = 0;
-      v20 = [v18 buildRoamPoliciesForSourceBSS:v11 numRoamSamples:numRoamSamples withError:&v75];
+      v20 = [roamPolicyHandler buildRoamPoliciesForSourceBSS:bssCopy numRoamSamples:numRoamSamples withError:&v75];
       v21 = v75;
 
-      if (!v12 || !v20)
+      if (!roamCopy || !v20)
       {
         v24 = v21;
 LABEL_24:
-        v45 = [(AnalyticsProcessor *)self persistentContainer];
+        persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
         v46 = +[PoliciesRoamingMO entity];
-        v66 = v14;
-        if (v14)
+        v66 = dateCopy;
+        if (dateCopy)
         {
-          v47 = [v45 newDatedEventObjectFor:v46 withDate:v14];
+          v47 = [persistentContainer newDatedEventObjectFor:v46 withDate:dateCopy];
         }
 
         else
         {
-          v48 = [MEMORY[0x1E695DF00] date];
-          v47 = [v45 newDatedEventObjectFor:v46 withDate:v48];
+          date = [MEMORY[0x1E695DF00] date];
+          v47 = [persistentContainer newDatedEventObjectFor:v46 withDate:date];
         }
 
         [v47 setPolicyType:@"updateRoamPoliciesForSourceBss:andRoam:"];
         [v47 setReasonForRunning:v67];
         [v47 setOutcome:v24 == 0];
-        v49 = [(AnalyticsProcessor *)self persistentContainer];
+        persistentContainer2 = [(AnalyticsProcessor *)self persistentContainer];
         v72 = v21;
-        [v47 setBSSto:v11 orBssid:v15 onContainer:v49 withError:&v72];
+        [v47 setBSSto:bssCopy orBssid:bssid onContainer:persistentContainer2 withError:&v72];
         v50 = v72;
 
-        if (v12 && !v50)
+        if (roamCopy && !v50)
         {
           v71 = 0;
-          [v47 setRoamto:v12 withError:&v71];
+          [v47 setRoamto:roamCopy withError:&v71];
           v50 = v71;
         }
 
         v51 = WALogCategoryDeviceStoreHandle();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
         {
-          v52 = [v47 policyType];
-          v53 = [v47 date];
+          policyType = [v47 policyType];
+          date2 = [v47 date];
           v54 = [v47 bss];
           [v47 roam];
-          v64 = v11;
-          v55 = v12;
-          v57 = v56 = v15;
+          v64 = bssCopy;
+          v55 = roamCopy;
+          v57 = v56 = bssid;
           *buf = 136447746;
           v79 = "[AnalyticsProcessor updateRoamPoliciesForSourceBss:andRoam:withReason:andRefDate:withError:]";
           v80 = 1024;
           v81 = 1187;
           v82 = 2112;
-          v83 = v52;
+          v83 = policyType;
           v84 = 2112;
-          v85 = v53;
+          v85 = date2;
           v86 = 2112;
           v87 = v54;
           v88 = 2112;
@@ -4294,9 +4294,9 @@ LABEL_24:
           v91 = v50;
           _os_log_impl(&dword_1C8460000, v51, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Stored Policy (%@) run at (%@) with %@ and %@ - %@", buf, 0x44u);
 
-          v15 = v56;
-          v12 = v55;
-          v11 = v64;
+          bssid = v56;
+          roamCopy = v55;
+          bssCopy = v64;
         }
 
         v70 = v50;
@@ -4304,33 +4304,33 @@ LABEL_24:
         v36 = v70;
 
         objc_autoreleasePoolPop(context);
-        v14 = v66;
-        v13 = v67;
+        dateCopy = v66;
+        reasonCopy = v67;
         goto LABEL_33;
       }
 
-      v22 = [(AnalyticsProcessor *)self roamPolicyHandler];
+      roamPolicyHandler2 = [(AnalyticsProcessor *)self roamPolicyHandler];
       v23 = self->_numRoamSamples;
       v74 = v21;
-      [v22 buildRoamCacheInfoForBss:v11 numRoamSamples:v23 withError:&v74];
+      [roamPolicyHandler2 buildRoamCacheInfoForBss:bssCopy numRoamSamples:v23 withError:&v74];
       v24 = v74;
 
-      v25 = [v12 neighborCache];
+      neighborCache = [roamCopy neighborCache];
 
-      if (v25)
+      if (neighborCache)
       {
-        v26 = [(AnalyticsProcessor *)self roamPolicyHandler];
-        v27 = [v26 monitorDeploymentChangesAfterRoam:v12];
-        v28 = [v11 network];
-        [v28 setDidDeploymentChange:v27];
+        roamPolicyHandler3 = [(AnalyticsProcessor *)self roamPolicyHandler];
+        v27 = [roamPolicyHandler3 monitorDeploymentChangesAfterRoam:roamCopy];
+        network = [bssCopy network];
+        [network setDidDeploymentChange:v27];
       }
 
-      v29 = [v11 network];
-      v30 = [v29 didDeploymentChange];
+      network2 = [bssCopy network];
+      didDeploymentChange = [network2 didDeploymentChange];
 
       v31 = WALogCategoryDeviceStoreHandle();
       v32 = os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG);
-      if (v30)
+      if (didDeploymentChange)
       {
         if (v32)
         {
@@ -4369,7 +4369,7 @@ LABEL_22:
     v38 = v37;
     if (v35)
     {
-      v39 = v15;
+      v39 = bssid;
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
       {
         *buf = 136446466;
@@ -4379,14 +4379,14 @@ LABEL_22:
         _os_log_impl(&dword_1C8460000, v38, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Calling updateRoamPoliciesForSourceBssidupdateRoamPoliciesForSourceBssid: thru WAClient", buf, 0x12u);
       }
 
-      v40 = v14;
+      v40 = dateCopy;
 
       v41 = +[WAClient sharedClient];
       if (v41)
       {
-        v42 = [v11 bssid];
-        v43 = [v42 copy];
-        [v41 updateRoamPoliciesForSourceBssid:v43 andUpdateRoamCache:v12 != 0 andReply:&__block_literal_global_251];
+        bssid3 = [bssCopy bssid];
+        v43 = [bssid3 copy];
+        [v41 updateRoamPoliciesForSourceBssid:v43 andUpdateRoamCache:roamCopy != 0 andReply:&__block_literal_global_251];
 
         v44 = v36;
       }
@@ -4399,21 +4399,21 @@ LABEL_22:
         v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
         v44 = [v62 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9003 userInfo:v63];
 
-        v42 = WALogCategoryDeviceStoreHandle();
-        if (os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
+        bssid3 = WALogCategoryDeviceStoreHandle();
+        if (os_log_type_enabled(bssid3, OS_LOG_TYPE_FAULT))
         {
           *buf = 136446466;
           v79 = "[AnalyticsProcessor updateRoamPoliciesForSourceBss:andRoam:withReason:andRefDate:withError:]";
           v80 = 1024;
           v81 = 1204;
-          _os_log_impl(&dword_1C8460000, v42, OS_LOG_TYPE_FAULT, "%{public}s::%d:Unable to get WAClient", buf, 0x12u);
+          _os_log_impl(&dword_1C8460000, bssid3, OS_LOG_TYPE_FAULT, "%{public}s::%d:Unable to get WAClient", buf, 0x12u);
         }
       }
 
       objc_autoreleasePoolPop(v34);
       v36 = v44;
-      v14 = v40;
-      v15 = v39;
+      dateCopy = v40;
+      bssid = v39;
     }
 
     else
@@ -4430,7 +4430,7 @@ LABEL_22:
       objc_autoreleasePoolPop(v34);
     }
 
-    v13 = v67;
+    reasonCopy = v67;
   }
 
   else
@@ -4443,7 +4443,7 @@ LABEL_22:
       v80 = 1024;
       v81 = 1154;
       v82 = 2112;
-      v83 = v11;
+      v83 = bssCopy;
       _os_log_impl(&dword_1C8460000, v61, OS_LOG_TYPE_FAULT, "%{public}s::%d:nil bssMO.bssid: %@", buf, 0x1Cu);
     }
 
@@ -4451,10 +4451,10 @@ LABEL_22:
   }
 
 LABEL_33:
-  if (a7)
+  if (error)
   {
     v58 = v36;
-    *a7 = v36;
+    *error = v36;
   }
 
   v59 = *MEMORY[0x1E69E9840];
@@ -4483,15 +4483,15 @@ void __93__AnalyticsProcessor_updateRoamPoliciesForSourceBss_andRoam_withReason_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)networkDeploymentMetricCheckAndSubmit:(id)a3 withReason:(id)a4
+- (void)networkDeploymentMetricCheckAndSubmit:(id)submit withReason:(id)reason
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AnalyticsProcessor *)self canRunPoliciesOnCurrentProcess];
+  submitCopy = submit;
+  reasonCopy = reason;
+  canRunPoliciesOnCurrentProcess = [(AnalyticsProcessor *)self canRunPoliciesOnCurrentProcess];
   v9 = WALogCategoryDeviceStoreHandle();
   v10 = v9;
-  if (v8)
+  if (canRunPoliciesOnCurrentProcess)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -4503,40 +4503,40 @@ void __93__AnalyticsProcessor_updateRoamPoliciesForSourceBss_andRoam_withReason_
     }
 
     v11 = objc_autoreleasePoolPush();
-    v12 = [(AnalyticsProcessor *)self deploymentMetricHandler];
-    [v12 networkDeploymentMetricCheckAndSubmit:v6 interval:{-[AnalyticsProcessor deploymentMetricDiffDays](self, "deploymentMetricDiffDays")}];
+    deploymentMetricHandler = [(AnalyticsProcessor *)self deploymentMetricHandler];
+    [deploymentMetricHandler networkDeploymentMetricCheckAndSubmit:submitCopy interval:{-[AnalyticsProcessor deploymentMetricDiffDays](self, "deploymentMetricDiffDays")}];
 
     persistentContainer = self->_persistentContainer;
     v14 = +[PoliciesNetworkDeploymentMetricMO entity];
-    v15 = [(AnalyticsProcessor *)self refDate];
-    if (v15)
+    refDate = [(AnalyticsProcessor *)self refDate];
+    if (refDate)
     {
-      v16 = [(WAPersistentContainer *)persistentContainer newDatedEventObjectFor:v14 withDate:v15];
+      v16 = [(WAPersistentContainer *)persistentContainer newDatedEventObjectFor:v14 withDate:refDate];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DF00] date];
-      v16 = [(WAPersistentContainer *)persistentContainer newDatedEventObjectFor:v14 withDate:v20];
+      date = [MEMORY[0x1E695DF00] date];
+      v16 = [(WAPersistentContainer *)persistentContainer newDatedEventObjectFor:v14 withDate:date];
     }
 
     [v16 setPolicyType:@"networkDeploymentMetricCheckAndSubmit:"];
-    [v16 setReasonForRunning:v7];
-    [v16 setBss:v6];
+    [v16 setReasonForRunning:reasonCopy];
+    [v16 setBss:submitCopy];
     v21 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v16 policyType];
-      v23 = [v16 date];
+      policyType = [v16 policyType];
+      date2 = [v16 date];
       v24 = [v16 bss];
       v26 = 136447234;
       v27 = "[AnalyticsProcessor networkDeploymentMetricCheckAndSubmit:withReason:]";
       v28 = 1024;
       v29 = 1233;
       v30 = 2112;
-      v31 = v22;
+      v31 = policyType;
       v32 = 2112;
-      v33 = v23;
+      v33 = date2;
       v34 = 2112;
       v35 = v24;
       _os_log_impl(&dword_1C8460000, v21, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Stored Policy (%@) run at (%@) with %@", &v26, 0x30u);
@@ -4570,15 +4570,15 @@ void __93__AnalyticsProcessor_updateRoamPoliciesForSourceBss_andRoam_withReason_
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)classifyTraitsForNetwork:(id)a3 withReason:(id)a4
+- (BOOL)classifyTraitsForNetwork:(id)network withReason:(id)reason
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AnalyticsProcessor *)self canRunPoliciesOnCurrentProcess];
+  networkCopy = network;
+  reasonCopy = reason;
+  canRunPoliciesOnCurrentProcess = [(AnalyticsProcessor *)self canRunPoliciesOnCurrentProcess];
   v9 = WALogCategoryDeviceStoreHandle();
   v10 = v9;
-  if (v8)
+  if (canRunPoliciesOnCurrentProcess)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -4592,32 +4592,32 @@ void __93__AnalyticsProcessor_updateRoamPoliciesForSourceBss_andRoam_withReason_
     }
 
     v11 = objc_autoreleasePoolPush();
-    v10 = [v6 classifyTraitsWithDistanceFilter:self->_persistentContainer container:4000.0];
+    v10 = [networkCopy classifyTraitsWithDistanceFilter:self->_persistentContainer container:4000.0];
     persistentContainer = self->_persistentContainer;
     v13 = +[PoliciesNetworkTraitsMO entity];
-    v14 = [MEMORY[0x1E695DF00] date];
-    v15 = [(WAPersistentContainer *)persistentContainer newDatedEventObjectFor:v13 withDate:v14];
+    date = [MEMORY[0x1E695DF00] date];
+    v15 = [(WAPersistentContainer *)persistentContainer newDatedEventObjectFor:v13 withDate:date];
 
     [v15 setPolicyType:@"classifyTraitsForNetwork:distanceFilter:"];
     [v15 setOutcome:v10];
-    [v15 setReasonForRunning:v7];
-    [v15 setNetwork:v6];
+    [v15 setReasonForRunning:reasonCopy];
+    [v15 setNetwork:networkCopy];
     v16 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [v15 policyType];
-      v18 = [v15 date];
-      v19 = [v15 network];
+      policyType = [v15 policyType];
+      date2 = [v15 date];
+      network = [v15 network];
       v25 = 136447234;
       v26 = "[AnalyticsProcessor classifyTraitsForNetwork:withReason:]";
       v27 = 1024;
       v28 = 1257;
       v29 = 2112;
-      v30 = v17;
+      v30 = policyType;
       v31 = 2112;
-      v32 = v18;
+      v32 = date2;
       v33 = 2112;
-      v34 = v19;
+      v34 = network;
       _os_log_impl(&dword_1C8460000, v16, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Stored Policy (%@) run at (%@) for %@", &v25, 0x30u);
     }
 
@@ -4653,10 +4653,10 @@ void __93__AnalyticsProcessor_updateRoamPoliciesForSourceBss_andRoam_withReason_
   return v10;
 }
 
-- (id)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)a3 maxAgeInDays:(unint64_t)a4
+- (id)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)network maxAgeInDays:(unint64_t)days
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  networkCopy = network;
   if ([(AnalyticsProcessor *)self canRunPoliciesOnCurrentProcess])
   {
     v6 = objc_autoreleasePoolPush();
@@ -4674,22 +4674,22 @@ void __93__AnalyticsProcessor_updateRoamPoliciesForSourceBss_andRoam_withReason_
       v21 = 1024;
       v22 = 1274;
       v23 = 2112;
-      v24 = v5;
+      v24 = networkCopy;
       _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%@", buf, 0x1Cu);
     }
 
-    if (v5)
+    if (networkCopy)
     {
-      v8 = [(AnalyticsProcessor *)self managedObjectHandler];
-      v9 = [v8 managedObjectContext];
+      managedObjectHandler = [(AnalyticsProcessor *)self managedObjectHandler];
+      managedObjectContext = [managedObjectHandler managedObjectContext];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __85__AnalyticsProcessor_updateRoamPoliciesAndSummarizeAnalyticsForNetwork_maxAgeInDays___block_invoke;
       v16[3] = &unk_1E830DAF8;
       v16[4] = self;
-      v17 = v5;
+      v17 = networkCopy;
       v18 = v25;
-      [v9 performBlockAndWait:v16];
+      [managedObjectContext performBlockAndWait:v16];
     }
 
     v10 = WALogCategoryDeviceStoreHandle();
@@ -4983,19 +4983,19 @@ void __85__AnalyticsProcessor_updateRoamPoliciesAndSummarizeAnalyticsForNetwork_
   v64 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processDatapathMetricStream:(id)a3 withDate:(id)a4
+- (void)processDatapathMetricStream:(id)stream withDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AnalyticsProcessor *)self managedObjectHandler];
+  streamCopy = stream;
+  dateCopy = date;
+  managedObjectHandler = [(AnalyticsProcessor *)self managedObjectHandler];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__AnalyticsProcessor_processDatapathMetricStream_withDate___block_invoke;
   v10[3] = &unk_1E830DB98;
-  v11 = v6;
-  v12 = self;
-  v9 = v6;
-  [v8 performBlockOnManagedObjectContextForNSData:v9 withDate:v7 block:v10];
+  v11 = streamCopy;
+  selfCopy = self;
+  v9 = streamCopy;
+  [managedObjectHandler performBlockOnManagedObjectContextForNSData:v9 withDate:dateCopy block:v10];
 }
 
 uint64_t __59__AnalyticsProcessor_processDatapathMetricStream_withDate___block_invoke(uint64_t result, uint64_t a2, uint64_t a3)
@@ -5009,14 +5009,14 @@ uint64_t __59__AnalyticsProcessor_processDatapathMetricStream_withDate___block_i
   return result;
 }
 
-- (void)storeMetricStreamFragment:(id)a3 withDate:(id)a4
+- (void)storeMetricStreamFragment:(id)fragment withDate:(id)date
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AnalyticsProcessor *)self managedObjectHandler];
-  v9 = [v8 managedObjectContext];
-  v10 = [MetricEntryMO metricEntryCount:500 moc:v9];
+  dateCopy = date;
+  fragmentCopy = fragment;
+  managedObjectHandler = [(AnalyticsProcessor *)self managedObjectHandler];
+  managedObjectContext = [managedObjectHandler managedObjectContext];
+  v10 = [MetricEntryMO metricEntryCount:500 moc:managedObjectContext];
 
   v11 = v10 + 1;
   if (v10 + 1 >= 0x169)
@@ -5038,8 +5038,8 @@ uint64_t __59__AnalyticsProcessor_processDatapathMetricStream_withDate___block_i
 
     v14 = objc_alloc(MEMORY[0x1E695D5E0]);
     v15 = +[MetricEntryMO entity];
-    v16 = [v15 name];
-    v17 = [v14 initWithEntityName:v16];
+    name = [v15 name];
+    v17 = [v14 initWithEntityName:name];
 
     v18 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"date" ascending:1];
     v29 = v18;
@@ -5048,49 +5048,49 @@ uint64_t __59__AnalyticsProcessor_processDatapathMetricStream_withDate___block_i
 
     [v17 setFetchLimit:v12];
     v20 = +[MetricEntryMO entity];
-    v21 = [v20 name];
-    v22 = [(AnalyticsProcessor *)self managedObjectHandler];
-    v23 = [v22 managedObjectContext];
-    [AnalyticsStoreProxy batchDelete:v21 withPredicate:0 withFetchRequest:v17 moc:v23];
+    name2 = [v20 name];
+    managedObjectHandler2 = [(AnalyticsProcessor *)self managedObjectHandler];
+    managedObjectContext2 = [managedObjectHandler2 managedObjectContext];
+    [AnalyticsStoreProxy batchDelete:name2 withPredicate:0 withFetchRequest:v17 moc:managedObjectContext2];
   }
 
-  v24 = [(AnalyticsProcessor *)self persistentContainer];
+  persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
   v25 = +[MetricEntryMO entity];
-  v26 = [v24 newDatedEventObjectFor:v25 withDate:v6];
+  v26 = [persistentContainer newDatedEventObjectFor:v25 withDate:dateCopy];
 
-  [v26 setEventMessage:v7];
-  v27 = [(AnalyticsProcessor *)self managedObjectHandler];
-  [v27 managedObjectContextSave:1 reset:1 release:1 withError:0];
+  [v26 setEventMessage:fragmentCopy];
+  managedObjectHandler3 = [(AnalyticsProcessor *)self managedObjectHandler];
+  [managedObjectHandler3 managedObjectContextSave:1 reset:1 release:1 withError:0];
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)ageOutAnalyticsWithError:(id *)a3 withReason:(id)a4
+- (BOOL)ageOutAnalyticsWithError:(id *)error withReason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(AnalyticsProcessor *)self persistentContainer];
+  persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
   v19 = 0;
-  v9 = [v8 ageOutAnalyticsWithReason:v6 withError:&v19];
+  v9 = [persistentContainer ageOutAnalyticsWithReason:reasonCopy withError:&v19];
   v10 = v19;
 
-  v11 = [(AnalyticsProcessor *)self persistentContainer];
-  v12 = [v11 viewContext];
+  persistentContainer2 = [(AnalyticsProcessor *)self persistentContainer];
+  viewContext = [persistentContainer2 viewContext];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __58__AnalyticsProcessor_ageOutAnalyticsWithError_withReason___block_invoke;
   v16[3] = &unk_1E830DBC0;
   v16[4] = self;
-  v13 = v6;
+  v13 = reasonCopy;
   v17 = v13;
   v18 = v9;
-  [v12 performBlockAndWait:v16];
+  [viewContext performBlockAndWait:v16];
 
   objc_autoreleasePoolPop(v7);
-  if (a3)
+  if (error)
   {
     v14 = v10;
-    *a3 = v10;
+    *error = v10;
   }
 
   return v9;
@@ -5127,10 +5127,10 @@ void __58__AnalyticsProcessor_ageOutAnalyticsWithError_withReason___block_invoke
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performPruneBasedOnStoreSizeAndSaveWithReason:(id)a3
+- (void)performPruneBasedOnStoreSizeAndSaveWithReason:(id)reason
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5141,16 +5141,16 @@ void __58__AnalyticsProcessor_ageOutAnalyticsWithError_withReason___block_invoke
     _os_log_impl(&dword_1C8460000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:performPruneBasedOnStoreSizeAndSave", buf, 0x12u);
   }
 
-  v6 = [(AnalyticsProcessor *)self persistentContainer];
-  v7 = [v6 viewContext];
+  persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
+  viewContext = [persistentContainer viewContext];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__AnalyticsProcessor_performPruneBasedOnStoreSizeAndSaveWithReason___block_invoke;
   v10[3] = &unk_1E830DB70;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
-  [v7 performBlockAndWait:v10];
+  v11 = reasonCopy;
+  v8 = reasonCopy;
+  [viewContext performBlockAndWait:v10];
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -5268,14 +5268,14 @@ void __68__AnalyticsProcessor_performPruneBasedOnStoreSizeAndSaveWithReason___bl
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)performPruneTestBSSes:(id)a3 withError:(id *)a4
+- (unint64_t)performPruneTestBSSes:(id)ses withError:(id *)error
 {
-  v6 = a3;
+  sesCopy = ses;
   if (!+[WAUtil isInternalInstall])
   {
     v9 = 0;
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -5283,34 +5283,34 @@ void __68__AnalyticsProcessor_performPruneBasedOnStoreSizeAndSaveWithReason___bl
     goto LABEL_6;
   }
 
-  v7 = [(AnalyticsProcessor *)self persistentContainer];
+  persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
   v18 = 0;
-  v8 = [v7 batchDeleteBSSList:v6 withError:&v18];
+  v8 = [persistentContainer batchDeleteBSSList:sesCopy withError:&v18];
   v9 = v18;
 
   if (!v9)
   {
-    v10 = [(AnalyticsProcessor *)self persistentContainer];
+    persistentContainer2 = [(AnalyticsProcessor *)self persistentContainer];
     v17 = 0;
-    v11 = [v10 batchDeleteEntitiesWithNilBssWithError:&v17];
+    v11 = [persistentContainer2 batchDeleteEntitiesWithNilBssWithError:&v17];
     v9 = v17;
     v8 += v11;
 
     if (!v9)
     {
-      v12 = [(AnalyticsProcessor *)self persistentContainer];
+      persistentContainer3 = [(AnalyticsProcessor *)self persistentContainer];
       v16 = 0;
-      v13 = [v12 batchDeleteUsageRecordsHavingBSSInList:v6 withError:&v16];
+      v13 = [persistentContainer3 batchDeleteUsageRecordsHavingBSSInList:sesCopy withError:&v16];
       v9 = v16;
       v8 += v13;
     }
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_6:
     v14 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_7:
@@ -5318,15 +5318,15 @@ LABEL_7:
   return v8;
 }
 
-- (unint64_t)performPruneTestEntity:(id)a3 since:(id)a4 withPredicate:(id)a5 withError:(id *)a6
+- (unint64_t)performPruneTestEntity:(id)entity since:(id)since withPredicate:(id)predicate withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  entityCopy = entity;
+  sinceCopy = since;
+  predicateCopy = predicate;
   if (+[WAUtil isInternalInstall])
   {
-    v13 = [(AnalyticsProcessor *)self persistentContainer];
-    v14 = [v13 batchDelete:v10 newerThanDate:v11 andPredicate:v12 withError:a6];
+    persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
+    v14 = [persistentContainer batchDelete:entityCopy newerThanDate:sinceCopy andPredicate:predicateCopy withError:error];
   }
 
   else
@@ -5337,15 +5337,15 @@ LABEL_7:
   return v14;
 }
 
-- (unint64_t)performPrunePoliciesWithReasons:(id)a3 withError:(id *)a4
+- (unint64_t)performPrunePoliciesWithReasons:(id)reasons withError:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  reasonsCopy = reasons;
   if (!+[WAUtil isInternalInstall])
   {
     v17 = 0;
     v18 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -5353,14 +5353,14 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v23 = a4;
+  errorCopy = error;
   context = objc_autoreleasePoolPush();
   v7 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = reasonsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -5376,8 +5376,8 @@ LABEL_7:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"policyType = %@", *(*(&v25 + 1) + 8 * v12), context];
-        [v7 addObject:v13];
+        context = [MEMORY[0x1E696AE18] predicateWithFormat:@"policyType = %@", *(*(&v25 + 1) + 8 * v12), context];
+        [v7 addObject:context];
 
         ++v12;
       }
@@ -5391,11 +5391,11 @@ LABEL_7:
 
   if ([v7 count])
   {
-    v14 = [(AnalyticsProcessor *)self persistentContainer];
+    persistentContainer = [(AnalyticsProcessor *)self persistentContainer];
     v15 = +[PoliciesMO entity];
     v16 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v7];
     v24 = 0;
-    v17 = [v14 batchDelete:v15 where:v16 withError:&v24];
+    v17 = [persistentContainer batchDelete:v15 where:v16 withError:&v24];
     v18 = v24;
   }
 
@@ -5405,14 +5405,14 @@ LABEL_7:
     v18 = 0;
   }
 
-  a4 = v23;
+  error = errorCopy;
 
   objc_autoreleasePoolPop(context);
-  if (v23)
+  if (errorCopy)
   {
 LABEL_12:
     v19 = v18;
-    *a4 = v18;
+    *error = v18;
   }
 
 LABEL_13:

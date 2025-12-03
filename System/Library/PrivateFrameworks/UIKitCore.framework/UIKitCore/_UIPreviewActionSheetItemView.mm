@@ -1,40 +1,40 @@
 @interface _UIPreviewActionSheetItemView
 - (UIImageView)imageView;
 - (UILabel)label;
-- (_UIPreviewActionSheetItemView)initWithCoder:(id)a3;
-- (_UIPreviewActionSheetItemView)initWithFrame:(CGRect)a3 action:(id)a4;
+- (_UIPreviewActionSheetItemView)initWithCoder:(id)coder;
+- (_UIPreviewActionSheetItemView)initWithFrame:(CGRect)frame action:(id)action;
 - (void)_updateConstraints;
 - (void)_updateImageFromAction;
 - (void)_updateLabelFont;
 - (void)_updateTitleFromAction;
 - (void)dealloc;
-- (void)setAction:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setAction:(id)action;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation _UIPreviewActionSheetItemView
 
-- (_UIPreviewActionSheetItemView)initWithCoder:(id)a3
+- (_UIPreviewActionSheetItemView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _UIPreviewActionSheetItemView;
-  return [(UIView *)&v4 initWithCoder:a3];
+  return [(UIView *)&v4 initWithCoder:coder];
 }
 
-- (_UIPreviewActionSheetItemView)initWithFrame:(CGRect)a3 action:(id)a4
+- (_UIPreviewActionSheetItemView)initWithFrame:(CGRect)frame action:(id)action
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  actionCopy = action;
   v22.receiver = self;
   v22.super_class = _UIPreviewActionSheetItemView;
-  v10 = [(UIView *)&v22 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(UIView *)&v22 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    v12 = v10;
+    v12 = height;
     [(UIView *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     v13 = [UIImageView alloc];
     v14 = *MEMORY[0x1E695F058];
@@ -51,10 +51,10 @@
     [(UILabel *)v19 setTextAlignment:1];
     [(UIView *)v12 addSubview:v19];
     [(_UIPreviewActionSheetItemView *)v12 setLabel:v19];
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v12 selector:sel__contentSizeChanged_ name:@"UIContentSizeCategoryDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__contentSizeChanged_ name:@"UIContentSizeCategoryDidChangeNotification" object:0];
 
-    [(_UIPreviewActionSheetItemView *)v12 setAction:v9];
+    [(_UIPreviewActionSheetItemView *)v12 setAction:actionCopy];
     [(_UIPreviewActionSheetItemView *)v12 _updateLabelFont];
   }
 
@@ -63,35 +63,35 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIContentSizeCategoryDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIContentSizeCategoryDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIPreviewActionSheetItemView;
   [(UIView *)&v4 dealloc];
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v5 = a3;
-  if (self->_action != v5)
+  actionCopy = action;
+  if (self->_action != actionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_action, a3);
+    v6 = actionCopy;
+    objc_storeStrong(&self->_action, action);
     [(_UIPreviewActionSheetItemView *)self _updateTitleFromAction];
     [(_UIPreviewActionSheetItemView *)self _updateImageFromAction];
     [(_UIPreviewActionSheetItemView *)self _updateConstraints];
-    v5 = v6;
+    actionCopy = v6;
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(_UIPreviewActionSheetItemView *)self selected]!= a3)
+  animatedCopy = animated;
+  selectedCopy = selected;
+  if ([(_UIPreviewActionSheetItemView *)self selected]!= selected)
   {
-    [(_UIPreviewActionSheetItemView *)self setSelected:v5];
+    [(_UIPreviewActionSheetItemView *)self setSelected:selectedCopy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __54___UIPreviewActionSheetItemView_setSelected_animated___block_invoke;
@@ -99,7 +99,7 @@
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
     v8 = v7;
-    if (v4)
+    if (animatedCopy)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
@@ -118,14 +118,14 @@
 
 - (void)_updateLabelFont
 {
-  v3 = [UIApp preferredContentSizeCategory];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
   v4 = 20.0;
-  if (([v3 isEqualToString:@"UICTContentSizeCategoryXS"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"UICTContentSizeCategoryS") & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"UICTContentSizeCategoryM") & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"UICTContentSizeCategoryL") & 1) == 0)
+  if (([preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryXS"] & 1) == 0 && (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", @"UICTContentSizeCategoryS") & 1) == 0 && (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", @"UICTContentSizeCategoryM") & 1) == 0 && (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", @"UICTContentSizeCategoryL") & 1) == 0)
   {
     v4 = 22.0;
-    if (([v3 isEqualToString:@"UICTContentSizeCategoryXL"] & 1) == 0)
+    if (([preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryXL"] & 1) == 0)
     {
-      if ([v3 isEqualToString:@"UICTContentSizeCategoryXXL"])
+      if ([preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryXXL"])
       {
         v4 = 23.0;
       }
@@ -138,8 +138,8 @@
   }
 
   v5 = [off_1E70ECC18 systemFontOfSize:v4];
-  v6 = [(_UIPreviewActionSheetItemView *)self label];
-  [v6 setFont:v5];
+  label = [(_UIPreviewActionSheetItemView *)self label];
+  [label setFont:v5];
 
   [(UIView *)self invalidateIntrinsicContentSize];
 }
@@ -148,20 +148,20 @@
 {
   if (self->_action)
   {
-    v3 = [(_UIPreviewActionSheetItemView *)self action];
-    v7 = [v3 _effectiveColor];
+    action = [(_UIPreviewActionSheetItemView *)self action];
+    _effectiveColor = [action _effectiveColor];
 
-    v4 = [(_UIPreviewActionSheetItemView *)self label];
-    v5 = [(_UIPreviewActionSheetItemView *)self action];
-    v6 = [v5 title];
-    [v4 setText:v6];
+    label = [(_UIPreviewActionSheetItemView *)self label];
+    action2 = [(_UIPreviewActionSheetItemView *)self action];
+    title = [action2 title];
+    [label setText:title];
 
-    if (v7)
+    if (_effectiveColor)
     {
-      [v4 setTextColor:v7];
+      [label setTextColor:_effectiveColor];
     }
 
-    [v4 _setTextColorFollowsTintColor:v7 == 0];
+    [label _setTextColorFollowsTintColor:_effectiveColor == 0];
   }
 }
 
@@ -169,96 +169,96 @@
 {
   if (self->_action)
   {
-    v8 = [(_UIPreviewActionSheetItemView *)self imageView];
-    v3 = [(_UIPreviewActionSheetItemView *)self action];
-    v4 = [v3 _effectiveColor];
-    [v8 setTintColor:v4];
+    imageView = [(_UIPreviewActionSheetItemView *)self imageView];
+    action = [(_UIPreviewActionSheetItemView *)self action];
+    _effectiveColor = [action _effectiveColor];
+    [imageView setTintColor:_effectiveColor];
 
-    v5 = [(_UIPreviewActionSheetItemView *)self action];
-    v6 = [v5 _effectiveImage];
-    v7 = [v6 imageWithRenderingMode:2];
-    [v8 setImage:v7];
+    action2 = [(_UIPreviewActionSheetItemView *)self action];
+    _effectiveImage = [action2 _effectiveImage];
+    v7 = [_effectiveImage imageWithRenderingMode:2];
+    [imageView setImage:v7];
   }
 }
 
 - (void)_updateConstraints
 {
-  v37 = [(_UIPreviewActionSheetItemView *)self label];
-  v3 = [(_UIPreviewActionSheetItemView *)self imageView];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v3 image];
+  label = [(_UIPreviewActionSheetItemView *)self label];
+  imageView = [(_UIPreviewActionSheetItemView *)self imageView];
+  array = [MEMORY[0x1E695DF70] array];
+  image = [imageView image];
 
-  v6 = [v37 leadingAnchor];
-  v7 = [(UIView *)self leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:21.0];
+  leadingAnchor = [label leadingAnchor];
+  leadingAnchor2 = [(UIView *)self leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:21.0];
 
   [v8 setIdentifier:@"labelLeading"];
   LODWORD(v9) = 1132068864;
   [v8 setPriority:v9];
-  [v4 addObject:v8];
-  if (v5)
+  [array addObject:v8];
+  if (image)
   {
-    v10 = [v3 trailingAnchor];
-    v11 = [(UIView *)self trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11 constant:-21.0];
+    trailingAnchor = [imageView trailingAnchor];
+    trailingAnchor2 = [(UIView *)self trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-21.0];
 
     [v12 setIdentifier:@"imageTrailing"];
     LODWORD(v13) = 1148846080;
     [v12 setPriority:v13];
-    [v4 addObject:v12];
-    v14 = [v3 leadingAnchor];
-    v15 = [v37 trailingAnchor];
-    v16 = [v14 constraintGreaterThanOrEqualToAnchor:v15 constant:17.0];
+    [array addObject:v12];
+    leadingAnchor3 = [imageView leadingAnchor];
+    trailingAnchor3 = [label trailingAnchor];
+    v16 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor3 constant:17.0];
 
     [v16 setIdentifier:@"labelToImageSpacing"];
     LODWORD(v17) = 1132068864;
     [v16 setPriority:v17];
-    [v4 addObject:v16];
-    v18 = [v37 centerXAnchor];
-    v19 = [(UIView *)self centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    [array addObject:v16];
+    centerXAnchor = [label centerXAnchor];
+    centerXAnchor2 = [(UIView *)self centerXAnchor];
+    v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
     [v20 setIdentifier:@"labelCentering"];
     LODWORD(v21) = 1132068864;
     [v20 setPriority:v21];
-    [v4 addObject:v20];
-    v22 = [v3 centerYAnchor];
-    v23 = [(UIView *)self centerYAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
-    [v4 addObject:v24];
+    [array addObject:v20];
+    centerYAnchor = [imageView centerYAnchor];
+    centerYAnchor2 = [(UIView *)self centerYAnchor];
+    v24 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v24];
   }
 
   else
   {
-    v25 = [v37 trailingAnchor];
-    v26 = [(UIView *)self trailingAnchor];
-    v12 = [v25 constraintEqualToAnchor:v26 constant:-21.0];
+    trailingAnchor4 = [label trailingAnchor];
+    trailingAnchor5 = [(UIView *)self trailingAnchor];
+    v12 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-21.0];
 
     [v12 setIdentifier:@"labelTrailing"];
     LODWORD(v27) = 1132068864;
     [v12 setPriority:v27];
-    [v4 addObject:v12];
-    v28 = [v37 centerXAnchor];
-    v29 = [(UIView *)self centerXAnchor];
-    v16 = [v28 constraintEqualToAnchor:v29];
+    [array addObject:v12];
+    centerXAnchor3 = [label centerXAnchor];
+    centerXAnchor4 = [(UIView *)self centerXAnchor];
+    v16 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
 
     [v16 setIdentifier:@"labelCentering"];
     LODWORD(v30) = 1144750080;
     [v16 setPriority:v30];
-    [v4 addObject:v16];
+    [array addObject:v16];
   }
 
-  v31 = [v37 firstBaselineAnchor];
-  v32 = [(UIView *)self topAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32 constant:36.0];
-  [v4 addObject:v33];
+  firstBaselineAnchor = [label firstBaselineAnchor];
+  topAnchor = [(UIView *)self topAnchor];
+  v33 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:36.0];
+  [array addObject:v33];
 
-  v34 = [v37 lastBaselineAnchor];
-  v35 = [(UIView *)self bottomAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35 constant:-21.0];
-  [v4 addObject:v36];
+  lastBaselineAnchor = [label lastBaselineAnchor];
+  bottomAnchor = [(UIView *)self bottomAnchor];
+  v36 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:-21.0];
+  [array addObject:v36];
 
-  [MEMORY[0x1E69977A0] activateConstraints:v4];
+  [MEMORY[0x1E69977A0] activateConstraints:array];
 }
 
 - (UILabel)label

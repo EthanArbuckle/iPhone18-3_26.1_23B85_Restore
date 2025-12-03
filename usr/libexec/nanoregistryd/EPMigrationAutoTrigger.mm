@@ -1,46 +1,46 @@
 @interface EPMigrationAutoTrigger
-+ (id)newService:(id)a3;
-+ (unint64_t)failureTypeWithError:(id)a3;
-- (BOOL)_hasMigrationConsent:(id)a3;
-- (BOOL)hasMessageTimeIntervalExpired:(double)a3 forCloudIdentifier:(id)a4;
-- (BOOL)isDate:(id)a3 agedMoreThan:(double)a4;
++ (id)newService:(id)service;
++ (unint64_t)failureTypeWithError:(id)error;
+- (BOOL)_hasMigrationConsent:(id)consent;
+- (BOOL)hasMessageTimeIntervalExpired:(double)expired forCloudIdentifier:(id)identifier;
+- (BOOL)isDate:(id)date agedMoreThan:(double)than;
 - (BOOL)isUIUnlocked;
-- (BOOL)shortTermFailureLockoutContainsBluetoothIdentifier:(id)a3;
+- (BOOL)shortTermFailureLockoutContainsBluetoothIdentifier:(id)identifier;
 - (BOOL)springBoardHasFinishedStartup;
 - (EPKeymaster)keymaster;
-- (EPMigrationAutoTrigger)initWithServiceRegistry:(id)a3;
+- (EPMigrationAutoTrigger)initWithServiceRegistry:(id)registry;
 - (EPPhoneMigrator)migrator;
 - (NRRegistry)registry;
-- (id)_cloudIdentifierForDevice:(id)a3;
+- (id)_cloudIdentifierForDevice:(id)device;
 - (id)cloud;
-- (id)shortTermFailureLockoutFilterBluetoothIdentifiers:(id)a3;
-- (void)addBluetoothIdentifierToShortTermFailureLockout:(id)a3;
-- (void)assertionFactoryDidBecomeIdle:(id)a3;
-- (void)calculateNextMessageSendIntervalWithCompletion:(id)a3;
-- (void)cancelMigrationSoftErrorAlertDelayTimerWithDeviceID:(id)a3;
+- (id)shortTermFailureLockoutFilterBluetoothIdentifiers:(id)identifiers;
+- (void)addBluetoothIdentifierToShortTermFailureLockout:(id)lockout;
+- (void)assertionFactoryDidBecomeIdle:(id)idle;
+- (void)calculateNextMessageSendIntervalWithCompletion:(id)completion;
+- (void)cancelMigrationSoftErrorAlertDelayTimerWithDeviceID:(id)d;
 - (void)cancelTimer;
 - (void)checkAssertionFactoryForAssertion;
 - (void)dealloc;
-- (void)discoveredMigrationCandidateWithNetworkRelayIdentifier:(id)a3;
-- (void)discoverer:(id)a3 deviceDidBecomeDisplayable:(id)a4;
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4;
-- (void)initialSyncStateObserver:(id)a3 syncDidResetForPairingIdentifier:(id)a4;
-- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)a3;
-- (void)isDevice:(id)a3 readyToMigrate:(id)a4;
+- (void)discoveredMigrationCandidateWithNetworkRelayIdentifier:(id)identifier;
+- (void)discoverer:(id)discoverer deviceDidBecomeDisplayable:(id)displayable;
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier;
+- (void)initialSyncStateObserver:(id)observer syncDidResetForPairingIdentifier:(id)identifier;
+- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)requests;
+- (void)isDevice:(id)device readyToMigrate:(id)migrate;
 - (void)nanoRegistryAdvertisingRequestTimeout;
 - (void)queryDeviceSyncStatusIfNeeded;
 - (void)registerForNotifications;
-- (void)resetAllMessageSendTimersWithCompletion:(id)a3;
-- (void)sendMessageToAvailableWatchesWithInterval:(double)a3 completion:(id)a4;
-- (void)sendMessageToWatchWithRawCloudIdentifiers:(id)a3;
-- (void)setLastMessageSendDate:(id)a3 forRawCloudIdentifiers:(id)a4;
-- (void)setMigrationSoftErrorAlertDelayTimer:(double)a3 deviceID:(id)a4 withBlock:(id)a5;
-- (void)setShouldClearAdvertisingIntervalTimeouts:(BOOL)a3;
-- (void)setTimerDuration:(double)a3 withBlock:(id)a4;
-- (void)startMigrationAfterTimeout:(double)a3;
-- (void)startMigrationOnMRUIfWatchWasFoundWithCompletion:(id)a3;
-- (void)startNetworkRelayWatchScanWithCompletion:(id)a3;
-- (void)startWatchScanWithCompletion:(id)a3;
+- (void)resetAllMessageSendTimersWithCompletion:(id)completion;
+- (void)sendMessageToAvailableWatchesWithInterval:(double)interval completion:(id)completion;
+- (void)sendMessageToWatchWithRawCloudIdentifiers:(id)identifiers;
+- (void)setLastMessageSendDate:(id)date forRawCloudIdentifiers:(id)identifiers;
+- (void)setMigrationSoftErrorAlertDelayTimer:(double)timer deviceID:(id)d withBlock:(id)block;
+- (void)setShouldClearAdvertisingIntervalTimeouts:(BOOL)timeouts;
+- (void)setTimerDuration:(double)duration withBlock:(id)block;
+- (void)startMigrationAfterTimeout:(double)timeout;
+- (void)startMigrationOnMRUIfWatchWasFoundWithCompletion:(id)completion;
+- (void)startNetworkRelayWatchScanWithCompletion:(id)completion;
+- (void)startWatchScanWithCompletion:(id)completion;
 - (void)stopNetworkRelayWatchScan;
 - (void)unregisterForNotifications;
 - (void)update;
@@ -50,10 +50,10 @@
 
 - (void)update
 {
-  v3 = [(EPMigrationAutoTrigger *)self isUIUnlocked];
-  v4 = v3;
-  v5 = v3 && !self->_wasUIUnlocked;
-  self->_wasUIUnlocked = v3;
+  isUIUnlocked = [(EPMigrationAutoTrigger *)self isUIUnlocked];
+  v4 = isUIUnlocked;
+  v5 = isUIUnlocked && !self->_wasUIUnlocked;
+  self->_wasUIUnlocked = isUIUnlocked;
   v41 = @"ExtendedDeviceLockState";
   v42 = &__kCFBooleanTrue;
   [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
@@ -74,7 +74,7 @@
 
   v25 = v9;
   self->_wasUnlocked = v9;
-  v11 = [(EPMigrationAutoTrigger *)self springBoardHasFinishedStartup];
+  springBoardHasFinishedStartup = [(EPMigrationAutoTrigger *)self springBoardHasFinishedStartup];
   v12 = nr_daemon_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -88,15 +88,15 @@
       v37 = 1024;
       v38 = v8;
       v39 = 1024;
-      v40 = v11;
+      v40 = springBoardHasFinishedStartup;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "EPMigrationAutoTrigger: unlocked=%{BOOL}d, becameUnlocked=%{BOOL}d, springBoardHasFinishedStartup=%{BOOL}d", buf, 0x14u);
     }
   }
 
   v15 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
-  v16 = [v15 hasAccounts];
-  v17 = v16;
-  if (v16)
+  hasAccounts = [v15 hasAccounts];
+  v17 = hasAccounts;
+  if (hasAccounts)
   {
     v18 = !self->_hadAccounts;
   }
@@ -128,7 +128,7 @@
   }
 
   v22 = v6 == 3;
-  v23 = [(EPMigrationAutoTrigger *)self migrator];
+  migrator = [(EPMigrationAutoTrigger *)self migrator];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100079C60;
@@ -138,11 +138,11 @@
   v28 = v22;
   v29 = v4;
   v30 = v17;
-  v31 = v11;
+  v31 = springBoardHasFinishedStartup;
   v32 = v18;
   v33 = v5;
   v34 = v8;
-  [v23 getNonAltAccountMigratableDeviceIDsWithBlock:v26];
+  [migrator getNonAltAccountMigratableDeviceIDsWithBlock:v26];
 }
 
 - (BOOL)isUIUnlocked
@@ -170,10 +170,10 @@
   return state64 == 0;
 }
 
-+ (id)newService:(id)a3
++ (id)newService:(id)service
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithServiceRegistry:v4];
+  serviceCopy = service;
+  v5 = [[self alloc] initWithServiceRegistry:serviceCopy];
 
   return v5;
 }
@@ -210,10 +210,10 @@
   return [(EPServiceRegistry *)serviceRegistry serviceFromClass:v3];
 }
 
-- (EPMigrationAutoTrigger)initWithServiceRegistry:(id)a3
+- (EPMigrationAutoTrigger)initWithServiceRegistry:(id)registry
 {
-  v5 = a3;
-  objc_storeStrong(&self->_serviceRegistry, a3);
+  registryCopy = registry;
+  objc_storeStrong(&self->_serviceRegistry, registry);
   v6 = [(EPMigrationAutoTrigger *)self init];
   if (v6)
   {
@@ -241,7 +241,7 @@
     v6->_bluetoothIdentifierShortTermFailureLockout = v12;
 
     objc_initWeak(buf, v6);
-    v14 = [(EPMigrationAutoTrigger *)v6 registry];
+    registry = [(EPMigrationAutoTrigger *)v6 registry];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100078094;
@@ -249,7 +249,7 @@
     objc_copyWeak(&v25, buf);
     v15 = v6;
     v24 = v15;
-    v16 = [v14 addDiffObserverWithWriteBlock:v23];
+    v16 = [registry addDiffObserverWithWriteBlock:v23];
 
     v17 = [[PSYInitialSyncStateObserver alloc] initWithDelegate:v15];
     syncObserver = v15->_syncObserver;
@@ -288,11 +288,11 @@
   }
 
   v6 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
-  v7 = [v6 assertions];
-  self->_hasSwitchAssertion = [v7 count] != 0;
+  assertions = [v6 assertions];
+  self->_hasSwitchAssertion = [assertions count] != 0;
 }
 
-- (void)assertionFactoryDidBecomeIdle:(id)a3
+- (void)assertionFactoryDidBecomeIdle:(id)idle
 {
   v4 = nr_daemon_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -314,16 +314,16 @@
 
 - (void)queryDeviceSyncStatusIfNeeded
 {
-  v3 = [(EPMigrationAutoTrigger *)self registry];
+  registry = [(EPMigrationAutoTrigger *)self registry];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100078844;
   v4[3] = &unk_100175948;
   v4[4] = self;
-  [v3 grabRegistryWithReadBlock:v4];
+  [registry grabRegistryWithReadBlock:v4];
 }
 
-- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)a3
+- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)requests
 {
   v4 = +[NRQueue registryDaemonQueue];
   v5[0] = _NSConcreteStackBlock;
@@ -334,53 +334,53 @@
   [v4 dispatchAsync:v5];
 }
 
-- (void)initialSyncStateObserver:(id)a3 syncDidResetForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer syncDidResetForPairingIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = +[NRQueue registryDaemonQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100078F40;
   v8[3] = &unk_100175598;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   [v6 dispatchAsync:v8];
 }
 
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = +[NRQueue registryDaemonQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000790B0;
   v8[3] = &unk_100175598;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   [v6 dispatchAsync:v8];
 }
 
-- (void)addBluetoothIdentifierToShortTermFailureLockout:(id)a3
+- (void)addBluetoothIdentifierToShortTermFailureLockout:(id)lockout
 {
-  v4 = a3;
-  v7 = v4;
+  lockoutCopy = lockout;
+  v7 = lockoutCopy;
   if (!self->_shortTermFailureLockoutCreationDate)
   {
     v5 = +[NSDate date];
     shortTermFailureLockoutCreationDate = self->_shortTermFailureLockoutCreationDate;
     self->_shortTermFailureLockoutCreationDate = v5;
 
-    v4 = v7;
+    lockoutCopy = v7;
   }
 
-  [(NSMutableSet *)self->_bluetoothIdentifierShortTermFailureLockout addObject:v4];
+  [(NSMutableSet *)self->_bluetoothIdentifierShortTermFailureLockout addObject:lockoutCopy];
 }
 
-- (BOOL)shortTermFailureLockoutContainsBluetoothIdentifier:(id)a3
+- (BOOL)shortTermFailureLockoutContainsBluetoothIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(NSDate *)self->_shortTermFailureLockoutCreationDate timeIntervalSinceNow];
   if (v5 > 300.0 || ([(NSDate *)self->_shortTermFailureLockoutCreationDate timeIntervalSinceNow], v6 < -300.0))
   {
@@ -390,14 +390,14 @@
     [(NSMutableSet *)self->_bluetoothIdentifierShortTermFailureLockout removeAllObjects];
   }
 
-  v8 = [(NSMutableSet *)self->_bluetoothIdentifierShortTermFailureLockout containsObject:v4];
+  v8 = [(NSMutableSet *)self->_bluetoothIdentifierShortTermFailureLockout containsObject:identifierCopy];
 
   return v8;
 }
 
-- (id)shortTermFailureLockoutFilterBluetoothIdentifiers:(id)a3
+- (id)shortTermFailureLockoutFilterBluetoothIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(NSDate *)self->_shortTermFailureLockoutCreationDate timeIntervalSinceNow];
   if (v5 > 300.0 || ([(NSDate *)self->_shortTermFailureLockoutCreationDate timeIntervalSinceNow], v6 < -300.0))
   {
@@ -407,28 +407,28 @@
     [(NSMutableSet *)self->_bluetoothIdentifierShortTermFailureLockout removeAllObjects];
   }
 
-  v8 = [v4 mutableCopy];
+  v8 = [identifiersCopy mutableCopy];
   [v8 minusSet:self->_bluetoothIdentifierShortTermFailureLockout];
 
   return v8;
 }
 
-- (BOOL)_hasMigrationConsent:(id)a3
+- (BOOL)_hasMigrationConsent:(id)consent
 {
-  v4 = a3;
-  v5 = [(EPMigrationAutoTrigger *)self registry];
-  v6 = [v5 collection];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  consentCopy = consent;
+  registry = [(EPMigrationAutoTrigger *)self registry];
+  collection = [registry collection];
+  v7 = [collection objectForKeyedSubscript:consentCopy];
 
   v8 = [v7 objectForKeyedSubscript:NRDevicePropertyMigrationConsent];
-  v9 = [v8 value];
+  value = [v8 value];
 
   v10 = [v7 objectForKeyedSubscript:NRDevicePropertyMigrationConsentDate];
-  v11 = [v10 value];
+  value2 = [v10 value];
 
-  if ([v9 BOOLValue])
+  if ([value BOOLValue])
   {
-    v12 = v11 == 0;
+    v12 = value2 == 0;
   }
 
   else
@@ -443,7 +443,7 @@
 
   else
   {
-    [v11 timeIntervalSinceNow];
+    [value2 timeIntervalSinceNow];
     v13 = v14 >= -86400.0 && v14 <= 0.0;
   }
 
@@ -456,13 +456,13 @@
   if (self->_uiUnlockNotifyToken == -1)
   {
     v4 = +[NRQueue registryDaemonQueue];
-    v5 = [v4 queue];
+    queue = [v4 queue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100079738;
     handler[3] = &unk_1001759E8;
     handler[4] = self;
-    v6 = notify_register_dispatch("com.apple.springboard.lockstate", p_uiUnlockNotifyToken, v5, handler);
+    v6 = notify_register_dispatch("com.apple.springboard.lockstate", p_uiUnlockNotifyToken, queue, handler);
 
     if (v6)
     {
@@ -484,13 +484,13 @@
   {
     v10 = kMobileKeyBagLockStatusNotifyToken;
     v11 = +[NRQueue registryDaemonQueue];
-    v12 = [v11 queue];
+    queue2 = [v11 queue];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1000797D4;
     v24[3] = &unk_1001759E8;
     v24[4] = self;
-    v13 = notify_register_dispatch(v10, &self->_keybagNotifyToken, v12, v24);
+    v13 = notify_register_dispatch(v10, &self->_keybagNotifyToken, queue2, v24);
 
     if (v13)
     {
@@ -511,13 +511,13 @@
   if (self->_springBoardNotifyToken == -1)
   {
     v17 = +[NRQueue registryDaemonQueue];
-    v18 = [v17 queue];
+    queue3 = [v17 queue];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100079870;
     v23[3] = &unk_1001759E8;
     v23[4] = self;
-    v19 = notify_register_dispatch("com.apple.springboard.finishedstartup", &self->_springBoardNotifyToken, v18, v23);
+    v19 = notify_register_dispatch("com.apple.springboard.finishedstartup", &self->_springBoardNotifyToken, queue3, v23);
 
     if (v19)
     {
@@ -584,11 +584,11 @@
   [(EPMigrationAutoTrigger *)&v3 dealloc];
 }
 
-- (BOOL)isDate:(id)a3 agedMoreThan:(double)a4
+- (BOOL)isDate:(id)date agedMoreThan:(double)than
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && ([v5 timeIntervalSinceNow], -v7 <= a4))
+  dateCopy = date;
+  v6 = dateCopy;
+  if (dateCopy && ([dateCopy timeIntervalSinceNow], -v7 <= than))
   {
     [v6 timeIntervalSinceNow];
     v8 = v9 > 0.0;
@@ -613,9 +613,9 @@
   dispatch_async(v3, block);
 }
 
-- (void)setShouldClearAdvertisingIntervalTimeouts:(BOOL)a3
+- (void)setShouldClearAdvertisingIntervalTimeouts:(BOOL)timeouts
 {
-  v3 = a3;
+  timeoutsCopy = timeouts;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -625,7 +625,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = "NO";
-      if (v3)
+      if (timeoutsCopy)
       {
         v8 = "YES";
       }
@@ -636,13 +636,13 @@
     }
   }
 
-  self->_shouldClearAdvertisingIntervalTimeouts = v3;
+  self->_shouldClearAdvertisingIntervalTimeouts = timeoutsCopy;
   [(EPMigrationAutoTrigger *)self update];
 }
 
-- (void)setTimerDuration:(double)a3 withBlock:(id)a4
+- (void)setTimerDuration:(double)duration withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   currentTimer = self->_currentTimer;
   if (currentTimer)
   {
@@ -651,19 +651,19 @@
     self->_currentTimer = 0;
   }
 
-  if (v6)
+  if (blockCopy)
   {
     v9 = +[EPFactory queue];
     v10 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v9);
 
-    v11 = dispatch_time(0, (a3 * 1000000000.0));
+    v11 = dispatch_time(0, (duration * 1000000000.0));
     dispatch_source_set_timer(v10, v11, 0xFFFFFFFFFFFFFFFFLL, 0);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10007ADD4;
     v14[3] = &unk_100175FA0;
     v14[4] = self;
-    v15 = v6;
+    v15 = blockCopy;
     dispatch_source_set_event_handler(v10, v14);
     dispatch_resume(v10);
     v12 = self->_currentTimer;
@@ -683,9 +683,9 @@
   }
 }
 
-- (void)cancelMigrationSoftErrorAlertDelayTimerWithDeviceID:(id)a3
+- (void)cancelMigrationSoftErrorAlertDelayTimerWithDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -694,14 +694,14 @@
     v7 = nr_daemon_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 UUIDString];
+      uUIDString = [dCopy UUIDString];
       v15 = 138412290;
-      v16 = v8;
+      v16 = uUIDString;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "EPMigrationAutoTrigger: cancelMigrationSoftErrorAlertDelayTimerWithDeviceID for %@", &v15, 0xCu);
     }
   }
 
-  if (!v4 || [v4 isEqual:self->_migrationSoftErrorDeviceID])
+  if (!dCopy || [dCopy isEqual:self->_migrationSoftErrorDeviceID])
   {
     migrationSoftErrorAlertDelayTimer = self->_migrationSoftErrorAlertDelayTimer;
     if (migrationSoftErrorAlertDelayTimer)
@@ -717,7 +717,7 @@
     v12 = +[NRRepeatingAlertEngine sharedInstance];
     [v12 setEnabled:0 withName:@"MigrationFailed"];
 
-    if (!v4)
+    if (!dCopy)
     {
       v13 = +[NRRepeatingAlertEngine sharedInstance];
       [v13 resetStateForAlertWithName:@"MigrationFailedPermanentlyForThisWatch"];
@@ -728,10 +728,10 @@
   }
 }
 
-- (void)setMigrationSoftErrorAlertDelayTimer:(double)a3 deviceID:(id)a4 withBlock:(id)a5
+- (void)setMigrationSoftErrorAlertDelayTimer:(double)timer deviceID:(id)d withBlock:(id)block
 {
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  blockCopy = block;
   [(EPMigrationAutoTrigger *)self cancelMigrationSoftErrorAlertDelayTimerWithDeviceID:0];
   v11 = nr_daemon_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -741,31 +741,31 @@
     v13 = nr_daemon_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v9 UUIDString];
+      uUIDString = [dCopy UUIDString];
       *buf = 134218242;
-      v30 = a3;
+      timerCopy = timer;
       v31 = 2112;
-      v32 = v14;
+      v32 = uUIDString;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "EPMigrationAutoTrigger: Setting migration soft error alert delay timer timeout to %1.1f for device %@", buf, 0x16u);
     }
   }
 
-  if (v10)
+  if (blockCopy)
   {
     v15 = +[NRQueue registryDaemonQueue];
-    v16 = [v15 queue];
-    v17 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v16);
+    queue = [v15 queue];
+    v17 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
 
-    v18 = dispatch_time(0, (a3 * 1000000000.0));
+    v18 = dispatch_time(0, (timer * 1000000000.0));
     dispatch_source_set_timer(v17, v18, 0xFFFFFFFFFFFFFFFFLL, 0);
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10007B2D4;
     handler[3] = &unk_1001768B0;
     handler[4] = self;
-    v19 = v9;
+    v19 = dCopy;
     v27 = v19;
-    v20 = v10;
+    v20 = blockCopy;
     v28 = v20;
     dispatch_source_set_event_handler(v17, handler);
     v23[0] = _NSConcreteStackBlock;
@@ -780,43 +780,43 @@
     self->_migrationSoftErrorAlertDelayTimer = v17;
     v22 = v17;
 
-    objc_storeStrong(&self->_migrationSoftErrorDeviceID, a4);
+    objc_storeStrong(&self->_migrationSoftErrorDeviceID, d);
     dispatch_resume(v22);
   }
 }
 
-- (void)startWatchScanWithCompletion:(id)a3
+- (void)startWatchScanWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_discoverer)
   {
     v5 = +[NRQueue registryDaemonQueue];
-    [v5 dispatchAsync:v4];
+    [v5 dispatchAsync:completionCopy];
   }
 
   else
   {
     v6 = +[NSMutableArray array];
-    v7 = [(EPMigrationAutoTrigger *)self migrator];
+    migrator = [(EPMigrationAutoTrigger *)self migrator];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10007B5E0;
     v8[3] = &unk_100178278;
     v8[4] = self;
     v9 = v6;
-    v10 = v4;
+    v10 = completionCopy;
     v5 = v6;
-    [v7 getNonAltAccountMigratableDeviceIDsWithBlock:v8];
+    [migrator getNonAltAccountMigratableDeviceIDsWithBlock:v8];
   }
 }
 
-- (void)startNetworkRelayWatchScanWithCompletion:(id)a3
+- (void)startNetworkRelayWatchScanWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_networkRelayAgent)
   {
     v5 = +[NRQueue registryDaemonQueue];
-    [v5 dispatchAsync:v4];
+    [v5 dispatchAsync:completionCopy];
   }
 
   else
@@ -834,16 +834,16 @@
     }
 
     v9 = objc_alloc_init(NSMutableSet);
-    v10 = [(EPMigrationAutoTrigger *)self migrator];
+    migrator = [(EPMigrationAutoTrigger *)self migrator];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10007BC0C;
     v11[3] = &unk_100178278;
     v11[4] = self;
     v12 = v9;
-    v13 = v4;
+    v13 = completionCopy;
     v5 = v9;
-    [v10 getNonAltAccountMigratableDeviceIDsWithBlock:v11];
+    [migrator getNonAltAccountMigratableDeviceIDsWithBlock:v11];
   }
 }
 
@@ -859,38 +859,38 @@
   }
 }
 
-- (void)sendMessageToAvailableWatchesWithInterval:(double)a3 completion:(id)a4
+- (void)sendMessageToAvailableWatchesWithInterval:(double)interval completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(EPMigrationAutoTrigger *)self migrator];
+  completionCopy = completion;
+  migrator = [(EPMigrationAutoTrigger *)self migrator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10007C1C0;
   v9[3] = &unk_1001782C8;
-  v11 = a3;
+  intervalCopy = interval;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 getNonAltAccountMigratableDeviceIDsWithBlock:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [migrator getNonAltAccountMigratableDeviceIDsWithBlock:v9];
 }
 
-- (id)_cloudIdentifierForDevice:(id)a3
+- (id)_cloudIdentifierForDevice:(id)device
 {
   v4 = _NRDevicePropertyMigrationIDSCloudIdentifier;
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 value];
+  deviceCopy = device;
+  v6 = [deviceCopy objectForKeyedSubscript:v4];
+  value = [v6 value];
 
-  v8 = [(EPMigrationAutoTrigger *)self registry];
-  v9 = [v8 secureProperties];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  registry = [(EPMigrationAutoTrigger *)self registry];
+  secureProperties = [registry secureProperties];
+  v10 = [secureProperties objectForKeyedSubscript:value];
 
-  v11 = [v5 objectForKeyedSubscript:NRDevicePropertyPairingID];
-  v12 = [v11 value];
+  v11 = [deviceCopy objectForKeyedSubscript:NRDevicePropertyPairingID];
+  value2 = [v11 value];
 
-  v13 = [v5 objectForKeyedSubscript:_NRDevicePropertyBluetoothIdentifier];
+  v13 = [deviceCopy objectForKeyedSubscript:_NRDevicePropertyBluetoothIdentifier];
 
-  v14 = [v13 value];
+  value3 = [v13 value];
 
   v15 = sub_1000034AC();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -900,12 +900,12 @@
     v17 = sub_1000034AC();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v12 UUIDString];
-      v19 = [v14 UUIDString];
+      uUIDString = [value2 UUIDString];
+      uUIDString2 = [value3 UUIDString];
       v21 = 138412802;
-      v22 = v18;
+      v22 = uUIDString;
       v23 = 2112;
-      v24 = v19;
+      v24 = uUIDString2;
       v25 = 2112;
       v26 = v10;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "cloudIdentifierForDevice(pairingID=%@) btID=%@ IDSID=%@", &v21, 0x20u);
@@ -915,10 +915,10 @@
   return v10;
 }
 
-- (void)setLastMessageSendDate:(id)a3 forRawCloudIdentifiers:(id)a4
+- (void)setLastMessageSendDate:(id)date forRawCloudIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  identifiersCopy = identifiers;
   v8 = sub_1000034AC();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -928,9 +928,9 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = v6;
+      v24 = dateCopy;
       v25 = 2112;
-      v26 = v7;
+      v26 = identifiersCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "setLastMessageSendDate: %@ for %@", buf, 0x16u);
     }
   }
@@ -939,7 +939,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v7;
+  obj = identifiersCopy;
   v11 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -956,9 +956,9 @@
         }
 
         v15 = [NSString stringWithFormat:@"%@.%@", @"lastAdvertisingNotificationDate", *(*(&v18 + 1) + 8 * v14)];
-        if (v6)
+        if (dateCopy)
         {
-          [v6 timeIntervalSinceReferenceDate];
+          [dateCopy timeIntervalSinceReferenceDate];
           v16 = [NSNumber numberWithDouble:?];
           [(NRPreferences *)self->_prefs setObject:v16 forKeyedSubscript:v15];
         }
@@ -981,23 +981,23 @@
   [(NRPreferences *)self->_prefs synchronize];
 }
 
-- (void)resetAllMessageSendTimersWithCompletion:(id)a3
+- (void)resetAllMessageSendTimersWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(EPMigrationAutoTrigger *)self migrator];
+  completionCopy = completion;
+  migrator = [(EPMigrationAutoTrigger *)self migrator];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007CB08;
   v7[3] = &unk_1001782F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 getNonAltAccountMigratableDeviceIDsWithBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [migrator getNonAltAccountMigratableDeviceIDsWithBlock:v7];
 }
 
-- (void)calculateNextMessageSendIntervalWithCompletion:(id)a3
+- (void)calculateNextMessageSendIntervalWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
@@ -1006,7 +1006,7 @@
   [v5 timeIntervalSinceReferenceDate];
   v7 = v6;
 
-  v8 = [(EPMigrationAutoTrigger *)self migrator];
+  migrator = [(EPMigrationAutoTrigger *)self migrator];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10007CEEC;
@@ -1014,17 +1014,17 @@
   v13 = v7;
   v10[4] = self;
   v12 = v14;
-  v9 = v4;
+  v9 = completionCopy;
   v11 = v9;
-  [v8 getNonAltAccountMigratableDeviceIDsWithBlock:v10];
+  [migrator getNonAltAccountMigratableDeviceIDsWithBlock:v10];
 
   _Block_object_dispose(v14, 8);
 }
 
-- (BOOL)hasMessageTimeIntervalExpired:(double)a3 forCloudIdentifier:(id)a4
+- (BOOL)hasMessageTimeIntervalExpired:(double)expired forCloudIdentifier:(id)identifier
 {
-  v5 = [NSString stringWithFormat:@"%@.%@", a3, @"lastAdvertisingNotificationDate", a4];
-  v6 = [(NRPreferences *)self->_prefs objectForKeyedSubscript:v5];
+  identifier = [NSString stringWithFormat:@"%@.%@", expired, @"lastAdvertisingNotificationDate", identifier];
+  v6 = [(NRPreferences *)self->_prefs objectForKeyedSubscript:identifier];
   v7 = +[NSDate date];
   [v7 timeIntervalSinceReferenceDate];
   v9 = v8;
@@ -1047,18 +1047,18 @@
   return v12;
 }
 
-- (void)sendMessageToWatchWithRawCloudIdentifiers:(id)a3
+- (void)sendMessageToWatchWithRawCloudIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[NSMutableSet set];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [(EPMigrationAutoTrigger *)self cloud];
-  v7 = [v6 deviceUniqueIdentifiers];
+  cloud = [(EPMigrationAutoTrigger *)self cloud];
+  deviceUniqueIdentifiers = [cloud deviceUniqueIdentifiers];
 
-  v8 = [v7 countByEnumeratingWithState:&v29 objects:v35 count:16];
+  v8 = [deviceUniqueIdentifiers countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v8)
   {
     v9 = *v30;
@@ -1068,17 +1068,17 @@
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(deviceUniqueIdentifiers);
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        if ([v4 containsObject:v11])
+        if ([identifiersCopy containsObject:v11])
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      v8 = [deviceUniqueIdentifiers countByEnumeratingWithState:&v29 objects:v35 count:16];
     }
 
     while (v8);
@@ -1101,7 +1101,7 @@
     }
 
     objc_initWeak(buf, self);
-    v15 = [(EPMigrationAutoTrigger *)self cloud];
+    cloud2 = [(EPMigrationAutoTrigger *)self cloud];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_10007D77C;
@@ -1114,13 +1114,13 @@
     objc_copyWeak(&v27, buf);
     v25[4] = self;
     v26 = v5;
-    [v15 sendMigrationRequestToDestinations:v26 shouldCancel:0 withSentBlock:v28 withResponseBlock:v25];
+    [cloud2 sendMigrationRequestToDestinations:v26 shouldCancel:0 withSentBlock:v28 withResponseBlock:v25];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(buf);
   }
 
-  else if ([v4 count])
+  else if ([identifiersCopy count])
   {
     v16 = nr_daemon_log();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
@@ -1160,18 +1160,18 @@
   }
 }
 
-+ (unint64_t)failureTypeWithError:(id)a3
++ (unint64_t)failureTypeWithError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    if ([v5 isEqualToString:@"com.apple.nanoregistry.saga.EPSagaTransactionPairing"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"com.apple.nanoregistry.saga.EPSagaTransactionPairing"])
     {
-      v6 = [v4 code];
+      code = [v4 code];
 
-      if (v6 == 9)
+      if (code == 9)
       {
         goto LABEL_9;
       }
@@ -1181,12 +1181,12 @@
     {
     }
 
-    v8 = [v4 domain];
-    if ([v8 isEqualToString:@"com.apple.nanoregistry.saga.EPSagaTransactionPairing"])
+    domain2 = [v4 domain];
+    if ([domain2 isEqualToString:@"com.apple.nanoregistry.saga.EPSagaTransactionPairing"])
     {
-      v9 = [v4 code];
+      code2 = [v4 code];
 
-      if (v9 == 10)
+      if (code2 == 10)
       {
 LABEL_9:
         v7 = 1;
@@ -1198,12 +1198,12 @@ LABEL_9:
     {
     }
 
-    v10 = [v4 domain];
-    if ([v10 isEqualToString:CBATTErrorDomain])
+    domain3 = [v4 domain];
+    if ([domain3 isEqualToString:CBATTErrorDomain])
     {
-      v11 = [v4 code];
+      code3 = [v4 code];
 
-      if (v11 != 3)
+      if (code3 != 3)
       {
         v7 = 2;
         goto LABEL_20;
@@ -1214,8 +1214,8 @@ LABEL_9:
     {
     }
 
-    v12 = [v4 domain];
-    v13 = [v12 isEqualToString:@"com.apple.nanoregistry.saga.EPSagaTransactionPairIDSDevice"];
+    domain4 = [v4 domain];
+    v13 = [domain4 isEqualToString:@"com.apple.nanoregistry.saga.EPSagaTransactionPairIDSDevice"];
 
     if (v13)
     {
@@ -1224,8 +1224,8 @@ LABEL_9:
 
     else
     {
-      v14 = [v4 domain];
-      v15 = [v14 isEqualToString:@"com.apple.nanoregistry.EPMigrationAutoTrigger"];
+      domain5 = [v4 domain];
+      v15 = [domain5 isEqualToString:@"com.apple.nanoregistry.EPMigrationAutoTrigger"];
 
       if (v15)
       {
@@ -1249,17 +1249,17 @@ LABEL_20:
   return v7;
 }
 
-- (void)startMigrationOnMRUIfWatchWasFoundWithCompletion:(id)a3
+- (void)startMigrationOnMRUIfWatchWasFoundWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSMutableSet set];
   v6 = +[NSMutableSet set];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [(EPDiscoverer *)self->_discoverer displayableDevices];
-  v8 = [v7 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  displayableDevices = [(EPDiscoverer *)self->_discoverer displayableDevices];
+  v8 = [displayableDevices countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1271,17 +1271,17 @@ LABEL_20:
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(displayableDevices);
         }
 
-        v12 = [*(*(&v32 + 1) + 8 * v11) uuid];
-        [v5 addObject:v12];
+        uuid = [*(*(&v32 + 1) + 8 * v11) uuid];
+        [v5 addObject:uuid];
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v9 = [displayableDevices countByEnumeratingWithState:&v32 objects:v37 count:16];
     }
 
     while (v9);
@@ -1292,9 +1292,9 @@ LABEL_20:
   v28 = 0u;
   v29 = 0u;
   v13 = +[NetworkRelayAgent sharedInstance];
-  v14 = [v13 migrationCandidates];
+  migrationCandidates = [v13 migrationCandidates];
 
-  v15 = [v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  v15 = [migrationCandidates countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1306,7 +1306,7 @@ LABEL_20:
       {
         if (*v29 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(migrationCandidates);
         }
 
         [v6 addObject:*(*(&v28 + 1) + 8 * v18)];
@@ -1314,28 +1314,28 @@ LABEL_20:
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v16 = [migrationCandidates countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v16);
   }
 
-  v19 = [(EPMigrationAutoTrigger *)self migrator];
+  migrator = [(EPMigrationAutoTrigger *)self migrator];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10007DC44;
   v23[3] = &unk_100178408;
   v24 = v5;
   v25 = v6;
-  v26 = self;
-  v27 = v4;
-  v20 = v4;
+  selfCopy = self;
+  v27 = completionCopy;
+  v20 = completionCopy;
   v21 = v6;
   v22 = v5;
-  [v19 getNonAltAccountMigratableDeviceIDsWithBlock:v23];
+  [migrator getNonAltAccountMigratableDeviceIDsWithBlock:v23];
 }
 
-- (void)startMigrationAfterTimeout:(double)a3
+- (void)startMigrationAfterTimeout:(double)timeout
 {
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
@@ -1344,12 +1344,12 @@ LABEL_20:
   v5[3] = &unk_100175520;
   objc_copyWeak(&v6, &location);
   v5[4] = self;
-  [(EPMigrationAutoTrigger *)self setTimerDuration:v5 withBlock:a3];
+  [(EPMigrationAutoTrigger *)self setTimerDuration:v5 withBlock:timeout];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (void)discoverer:(id)a3 deviceDidBecomeDisplayable:(id)a4
+- (void)discoverer:(id)discoverer deviceDidBecomeDisplayable:(id)displayable
 {
   if (!self->_aWatchWasDiscovered)
   {
@@ -1373,10 +1373,10 @@ LABEL_20:
   }
 }
 
-- (void)isDevice:(id)a3 readyToMigrate:(id)a4
+- (void)isDevice:(id)device readyToMigrate:(id)migrate
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  migrateCopy = migrate;
   v8 = nr_daemon_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1385,18 +1385,18 @@ LABEL_20:
     v10 = nr_daemon_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 UUIDString];
+      uUIDString = [deviceCopy UUIDString];
       *buf = 136315394;
       v38 = "[EPMigrationAutoTrigger isDevice:readyToMigrate:]";
       v39 = 2114;
-      v40 = v11;
+      v40 = uUIDString;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: %{public}@", buf, 0x16u);
     }
   }
 
   v12 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
-  v13 = [v12 idle];
-  v14 = [v12 currentTransactionPairingId];
+  idle = [v12 idle];
+  currentTransactionPairingId = [v12 currentTransactionPairingId];
   v15 = nr_daemon_log();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
 
@@ -1408,7 +1408,7 @@ LABEL_20:
       v18 = @"NO";
       v38 = "[EPMigrationAutoTrigger isDevice:readyToMigrate:]";
       *buf = 136315650;
-      if (v13)
+      if (idle)
       {
         v18 = @"YES";
       }
@@ -1416,14 +1416,14 @@ LABEL_20:
       v39 = 2114;
       v40 = v18;
       v41 = 2112;
-      v42 = v14;
+      v42 = currentTransactionPairingId;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s: Is coordinator idle (%{public}@); Current Transaction Pairing Id (%@)", buf, 0x20u);
     }
   }
 
-  if (v14)
+  if (currentTransactionPairingId)
   {
-    v19 = v13;
+    v19 = idle;
   }
 
   else
@@ -1431,7 +1431,7 @@ LABEL_20:
     v19 = 1;
   }
 
-  if ((v19 & 1) == 0 && [v12 isCurrentRunningTransactionOfType:@"migration"] && objc_msgSend(v6, "isEqual:", v14))
+  if ((v19 & 1) == 0 && [v12 isCurrentRunningTransactionOfType:@"migration"] && objc_msgSend(deviceCopy, "isEqual:", currentTransactionPairingId))
   {
     v20 = nr_daemon_log();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -1441,31 +1441,31 @@ LABEL_20:
       v22 = nr_daemon_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v6 UUIDString];
+        uUIDString2 = [deviceCopy UUIDString];
         *buf = 136315394;
         v38 = "[EPMigrationAutoTrigger isDevice:readyToMigrate:]";
         v39 = 2114;
-        v40 = v23;
+        v40 = uUIDString2;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s: %{public}@ NO- NanoRegistry has queued or running transactions for migrating this device. Not starting a new one.", buf, 0x16u);
       }
     }
 
-    v7[2](v7, 5);
+    migrateCopy[2](migrateCopy, 5);
     goto LABEL_36;
   }
 
-  if (v13)
+  if (idle)
   {
 LABEL_23:
-    v24 = [(EPMigrationAutoTrigger *)self registry];
+    registry = [(EPMigrationAutoTrigger *)self registry];
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_10007F2C4;
     v33[3] = &unk_1001773E8;
-    v34 = v6;
-    v35 = self;
-    v36 = v7;
-    [v24 grabRegistryWithReadBlock:v33];
+    v34 = deviceCopy;
+    selfCopy = self;
+    v36 = migrateCopy;
+    [registry grabRegistryWithReadBlock:v33];
 
     goto LABEL_36;
   }
@@ -1482,13 +1482,13 @@ LABEL_23:
         v27 = nr_daemon_log();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
-          v28 = [v6 UUIDString];
+          uUIDString3 = [deviceCopy UUIDString];
           *buf = 136315650;
           v38 = "[EPMigrationAutoTrigger isDevice:readyToMigrate:]";
           v39 = 2114;
-          v40 = v28;
+          v40 = uUIDString3;
           v41 = 2114;
-          v42 = v14;
+          v42 = currentTransactionPairingId;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%s: %{public}@ Current running transaction is of type reunion sync for %{public}@. Canceling it.", buf, 0x20u);
         }
       }
@@ -1507,20 +1507,20 @@ LABEL_23:
     v31 = nr_daemon_log();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v6 UUIDString];
+      uUIDString4 = [deviceCopy UUIDString];
       *buf = 136315394;
       v38 = "[EPMigrationAutoTrigger isDevice:readyToMigrate:]";
       v39 = 2114;
-      v40 = v32;
+      v40 = uUIDString4;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%s: %{public}@ NO- NanoRegistry has queued or running transactions.", buf, 0x16u);
     }
   }
 
-  v7[2](v7, 3);
+  migrateCopy[2](migrateCopy, 3);
 LABEL_36:
 }
 
-- (void)discoveredMigrationCandidateWithNetworkRelayIdentifier:(id)a3
+- (void)discoveredMigrationCandidateWithNetworkRelayIdentifier:(id)identifier
 {
   v4 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

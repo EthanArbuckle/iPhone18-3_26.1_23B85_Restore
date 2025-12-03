@@ -15,16 +15,16 @@
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v5 = [(_WKUserInitiatedAction *)v3 _apiObject];
+    _apiObject = [(_WKUserInitiatedAction *)v3 _apiObject];
     v11 = v3;
-    v12 = v5;
+    v12 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v12, &v11, v10);
-    v6 = [(_WKUserInitiatedAction *)v3 _apiObject];
-    *v6 = 0u;
-    v6[1] = 0u;
-    v6[2] = 0u;
-    v6[3] = 0u;
-    v7 = API::Object::Object(v6);
+    _apiObject2 = [(_WKUserInitiatedAction *)v3 _apiObject];
+    *_apiObject2 = 0u;
+    _apiObject2[1] = 0u;
+    _apiObject2[2] = 0u;
+    _apiObject2[3] = 0u;
+    v7 = API::Object::Object(_apiObject2);
     *v7 = &unk_1F10FC318;
     *(v7 + 16) = 0;
     *(v7 + 32) = 0;
@@ -50,9 +50,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_WKUserInitiatedAction *)self isConsumed];
+  isConsumed = [(_WKUserInitiatedAction *)self isConsumed];
   v7 = "NO";
-  if (v6)
+  if (isConsumed)
   {
     v7 = "YES";
   }

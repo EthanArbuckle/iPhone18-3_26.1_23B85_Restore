@@ -1,11 +1,11 @@
 @interface RCBoostableOperationThrottler
 - (BOOL)suspended;
 - (RCBoostableOperationThrottler)init;
-- (RCBoostableOperationThrottler)initWithDelegate:(id)a3;
+- (RCBoostableOperationThrottler)initWithDelegate:(id)delegate;
 - (RCOperationThrottlerDelegate)delegate;
-- (void)setSuspended:(BOOL)a3;
+- (void)setSuspended:(BOOL)suspended;
 - (void)suspended;
-- (void)tickleWithQualityOfService:(int64_t)a3 completion:(id)a4;
+- (void)tickleWithQualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation RCBoostableOperationThrottler
@@ -36,10 +36,10 @@
   objc_exception_throw(v6);
 }
 
-- (RCBoostableOperationThrottler)initWithDelegate:(id)a3
+- (RCBoostableOperationThrottler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  delegateCopy = delegate;
+  if (!delegateCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCBoostableOperationThrottler initWithDelegate:];
   }
@@ -50,7 +50,7 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [[RCUnfairLock alloc] initWithOptions:1];
     workPendingLock = v6->_workPendingLock;
     v6->_workPendingLock = v7;
@@ -64,45 +64,45 @@
   return v6;
 }
 
-- (void)tickleWithQualityOfService:(int64_t)a3 completion:(id)a4
+- (void)tickleWithQualityOfService:(int64_t)service completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(RCBoostableOperationThrottler *)self workPendingLock];
-  [v7 lock];
+  completionCopy = completion;
+  workPendingLock = [(RCBoostableOperationThrottler *)self workPendingLock];
+  [workPendingLock lock];
 
   if ([(RCBoostableOperationThrottler *)self workPending])
   {
-    v8 = [(RCBoostableOperationThrottler *)self workPendingLock];
-    [v8 unlock];
+    workPendingLock2 = [(RCBoostableOperationThrottler *)self workPendingLock];
+    [workPendingLock2 unlock];
   }
 
   else
   {
     [(RCBoostableOperationThrottler *)self setWorkPending:1];
-    v9 = [(RCBoostableOperationThrottler *)self workPendingLock];
-    [v9 unlock];
+    workPendingLock3 = [(RCBoostableOperationThrottler *)self workPendingLock];
+    [workPendingLock3 unlock];
 
-    v10 = [(RCBoostableOperationThrottler *)self delegate];
-    objc_initWeak(&location, v10);
+    delegate = [(RCBoostableOperationThrottler *)self delegate];
+    objc_initWeak(&location, delegate);
 
-    v11 = [(RCBoostableOperationThrottler *)self serialWorkQueue];
+    serialWorkQueue = [(RCBoostableOperationThrottler *)self serialWorkQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __71__RCBoostableOperationThrottler_tickleWithQualityOfService_completion___block_invoke;
     v15[3] = &unk_27822FC00;
     v15[4] = self;
     objc_copyWeak(&v16, &location);
-    RCDispatchAsyncWithQualityOfService(v11, a3, v15);
+    RCDispatchAsyncWithQualityOfService(serialWorkQueue, service, v15);
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
 
-  v12 = [(RCBoostableOperationThrottler *)self serialWorkQueue];
-  v13 = v12;
-  if (v6)
+  serialWorkQueue2 = [(RCBoostableOperationThrottler *)self serialWorkQueue];
+  v13 = serialWorkQueue2;
+  if (completionCopy)
   {
-    v14 = v6;
+    v14 = completionCopy;
   }
 
   else
@@ -110,7 +110,7 @@
     v14 = &__block_literal_global_1;
   }
 
-  RCDispatchAsyncWithQualityOfService(v12, a3, v14);
+  RCDispatchAsyncWithQualityOfService(serialWorkQueue2, service, v14);
 }
 
 void __71__RCBoostableOperationThrottler_tickleWithQualityOfService_completion___block_invoke(uint64_t a1)
@@ -165,7 +165,7 @@ void __71__RCBoostableOperationThrottler_tickleWithQualityOfService_completion__
   return 0;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {

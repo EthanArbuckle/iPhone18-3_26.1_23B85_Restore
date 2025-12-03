@@ -1,18 +1,18 @@
 @interface SharedTripContactAnnotationView
-- (SharedTripContactAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4 imageSideLength:(double)a5;
+- (SharedTripContactAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier imageSideLength:(double)length;
 - (id)contact;
 - (id)state;
 - (void)loadImage;
-- (void)setAnnotation:(id)a3;
+- (void)setAnnotation:(id)annotation;
 @end
 
 @implementation SharedTripContactAnnotationView
 
 - (void)loadImage
 {
-  v3 = [(SharedTripContactAnnotationView *)self contact];
+  contact = [(SharedTripContactAnnotationView *)self contact];
   objc_initWeak(&location, self);
-  if (v3)
+  if (contact)
   {
     v4 = +[MapsUIImageCache sharedCache];
     insetImageSideLength = self->_insetImageSideLength;
@@ -21,7 +21,7 @@
     v7[2] = sub_1005B2644;
     v7[3] = &unk_101650EA8;
     objc_copyWeak(&v8, &location);
-    [v4 getImageForContact:v3 size:v7 completion:insetImageSideLength];
+    [v4 getImageForContact:contact size:v7 completion:insetImageSideLength];
 
     objc_destroyWeak(&v8);
   }
@@ -37,16 +37,16 @@
 
 - (id)contact
 {
-  v2 = [(SharedTripContactAnnotationView *)self state];
-  v3 = [v2 senderInfo];
-  v4 = [v3 localContactIdentifier];
+  state = [(SharedTripContactAnnotationView *)self state];
+  senderInfo = [state senderInfo];
+  localContactIdentifier = [senderInfo localContactIdentifier];
 
-  if (v4)
+  if (localContactIdentifier)
   {
     v5 = +[AddressBookManager sharedManager];
-    v6 = [v2 senderInfo];
-    v7 = [v6 localContactIdentifier];
-    v8 = [v5 contactForCNContactIdentifier:v7];
+    senderInfo2 = [state senderInfo];
+    localContactIdentifier2 = [senderInfo2 localContactIdentifier];
+    v8 = [v5 contactForCNContactIdentifier:localContactIdentifier2];
   }
 
   else
@@ -59,38 +59,38 @@
 
 - (id)state
 {
-  v2 = [(SharedTripContactAnnotationView *)self annotation];
-  v3 = [v2 state];
+  annotation = [(SharedTripContactAnnotationView *)self annotation];
+  state = [annotation state];
 
-  return v3;
+  return state;
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
   v4.receiver = self;
   v4.super_class = SharedTripContactAnnotationView;
-  [(SharedTripContactAnnotationView *)&v4 setAnnotation:a3];
+  [(SharedTripContactAnnotationView *)&v4 setAnnotation:annotation];
   [(SharedTripContactAnnotationView *)self loadImage];
 }
 
-- (SharedTripContactAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4 imageSideLength:(double)a5
+- (SharedTripContactAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier imageSideLength:(double)length
 {
   v27.receiver = self;
   v27.super_class = SharedTripContactAnnotationView;
-  v6 = [(SharedTripContactAnnotationView *)&v27 initWithAnnotation:a3 reuseIdentifier:a4];
+  v6 = [(SharedTripContactAnnotationView *)&v27 initWithAnnotation:annotation reuseIdentifier:identifier];
   v7 = v6;
   if (v6)
   {
-    v6->_desiredImageSideLength = a5;
-    v6->_insetImageSideLength = a5 + -4.0;
+    v6->_desiredImageSideLength = length;
+    v6->_insetImageSideLength = length + -4.0;
     v8 = [[UIView alloc] initWithFrame:{0.0, 0.0, v6->_desiredImageSideLength, v6->_desiredImageSideLength}];
     v9 = +[UIColor whiteColor];
     [v8 setBackgroundColor:v9];
 
     [v8 setClipsToBounds:1];
     v10 = v7->_desiredImageSideLength * 0.5;
-    v11 = [v8 layer];
-    [v11 setCornerRadius:v10];
+    layer = [v8 layer];
+    [layer setCornerRadius:v10];
 
     [(SharedTripContactAnnotationView *)v7 addSubview:v8];
     v12 = [[UIImageView alloc] initWithFrame:{2.0, 2.0, v7->_insetImageSideLength, v7->_insetImageSideLength}];
@@ -100,8 +100,8 @@
     [(UIImageView *)v7->_imageView setContentMode:1];
     [(UIImageView *)v7->_imageView setClipsToBounds:1];
     v14 = v7->_insetImageSideLength * 0.5;
-    v15 = [(UIImageView *)v7->_imageView layer];
-    [v15 setCornerRadius:v14];
+    layer2 = [(UIImageView *)v7->_imageView layer];
+    [layer2 setCornerRadius:v14];
 
     [(SharedTripContactAnnotationView *)v7 addSubview:v7->_imageView];
     [(SharedTripContactAnnotationView *)v7 setCanShowCallout:0];
@@ -109,23 +109,23 @@
     [(SharedTripContactAnnotationView *)v7 setBackgroundColor:v16];
 
     v17 = v7->_desiredImageSideLength * 0.5;
-    v18 = [(SharedTripContactAnnotationView *)v7 layer];
-    [v18 setCornerRadius:v17];
+    layer3 = [(SharedTripContactAnnotationView *)v7 layer];
+    [layer3 setCornerRadius:v17];
 
-    v19 = [(SharedTripContactAnnotationView *)v7 layer];
-    [v19 setShadowRadius:4.0];
+    layer4 = [(SharedTripContactAnnotationView *)v7 layer];
+    [layer4 setShadowRadius:4.0];
 
-    v20 = [(SharedTripContactAnnotationView *)v7 layer];
-    [v20 setShadowOffset:{0.0, 0.0}];
+    layer5 = [(SharedTripContactAnnotationView *)v7 layer];
+    [layer5 setShadowOffset:{0.0, 0.0}];
 
     v21 = +[UIColor systemBlackColor];
-    v22 = [v21 CGColor];
-    v23 = [(SharedTripContactAnnotationView *)v7 layer];
-    [v23 setShadowColor:v22];
+    cGColor = [v21 CGColor];
+    layer6 = [(SharedTripContactAnnotationView *)v7 layer];
+    [layer6 setShadowColor:cGColor];
 
-    v24 = [(SharedTripContactAnnotationView *)v7 layer];
+    layer7 = [(SharedTripContactAnnotationView *)v7 layer];
     LODWORD(v25) = 0.25;
-    [v24 setShadowOpacity:v25];
+    [layer7 setShadowOpacity:v25];
 
     [(SharedTripContactAnnotationView *)v7 loadImage];
   }

@@ -1,30 +1,30 @@
 @interface SFDefaultBrowserViewController
-- (SFDefaultBrowserViewController)initWithViewDidBecomeReady:(id)a3 completion:(id)a4;
+- (SFDefaultBrowserViewController)initWithViewDidBecomeReady:(id)ready completion:(id)completion;
 - (id)serviceProxy;
 - (void)_addRemoteViewController;
 - (void)_connectToService;
-- (void)_didLoadRemoteViewController:(id)a3;
+- (void)_didLoadRemoteViewController:(id)controller;
 - (void)_initializeViewService;
-- (void)remoteViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)serviceProxyWillQueueInvocation:(id)a3;
+- (void)remoteViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)serviceProxyWillQueueInvocation:(id)invocation;
 @end
 
 @implementation SFDefaultBrowserViewController
 
-- (SFDefaultBrowserViewController)initWithViewDidBecomeReady:(id)a3 completion:(id)a4
+- (SFDefaultBrowserViewController)initWithViewDidBecomeReady:(id)ready completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  readyCopy = ready;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = SFDefaultBrowserViewController;
   v8 = [(SFDefaultBrowserViewController *)&v15 init];
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(readyCopy);
     viewDidBecomeReady = v8->_viewDidBecomeReady;
     v8->_viewDidBecomeReady = v9;
 
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionCopy);
     completionHandler = v8->_completionHandler;
     v8->_completionHandler = v11;
 
@@ -51,7 +51,7 @@
 
 - (void)_connectToService
 {
-  v3 = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__SFDefaultBrowserViewController__connectToService__block_invoke;
@@ -95,12 +95,12 @@ void __51__SFDefaultBrowserViewController__connectToService__block_invoke(uint64
   return serviceProxy;
 }
 
-- (void)_didLoadRemoteViewController:(id)a3
+- (void)_didLoadRemoteViewController:(id)controller
 {
-  objc_storeStrong(&self->_remoteViewController, a3);
-  v5 = a3;
-  v6 = [v5 serviceViewControllerProxy];
-  [(SFDefaultBrowserServiceProtocol *)self->_serviceProxy setTarget:v6];
+  objc_storeStrong(&self->_remoteViewController, controller);
+  controllerCopy = controller;
+  serviceViewControllerProxy = [controllerCopy serviceViewControllerProxy];
+  [(SFDefaultBrowserServiceProtocol *)self->_serviceProxy setTarget:serviceViewControllerProxy];
 
   [(SFDefaultBrowserRemoteViewController *)self->_remoteViewController setDelegate:self];
   serviceProxy = self->_serviceProxy;
@@ -126,23 +126,23 @@ uint64_t __63__SFDefaultBrowserViewController__didLoadRemoteViewController___blo
 
 - (void)_addRemoteViewController
 {
-  v7 = [(SFDefaultBrowserRemoteViewController *)self->_remoteViewController view];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
-  [v7 setFrame:?];
+  view = [(SFDefaultBrowserRemoteViewController *)self->_remoteViewController view];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
+  [view setFrame:?];
 
-  v4 = [(SFDefaultBrowserViewController *)self view];
-  [v4 addSubview:v7];
+  view2 = [(SFDefaultBrowserViewController *)self view];
+  [view2 addSubview:view];
 
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v6 = [(SFDefaultBrowserViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view3 = [(SFDefaultBrowserViewController *)self view];
+  [view3 setBackgroundColor:systemBackgroundColor];
 
   [(SFDefaultBrowserViewController *)self addChildViewController:self->_remoteViewController];
   [(_UIRemoteViewController *)self->_remoteViewController didMoveToParentViewController:self];
 }
 
-- (void)serviceProxyWillQueueInvocation:(id)a3
+- (void)serviceProxyWillQueueInvocation:(id)invocation
 {
   if (!self->_cancelViewServiceRequest)
   {
@@ -150,12 +150,12 @@ uint64_t __63__SFDefaultBrowserViewController__didLoadRemoteViewController___blo
   }
 }
 
-- (void)remoteViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)remoteViewController:(id)controller didFinishWithResult:(int64_t)result
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a4);
+    completionHandler[2](completionHandler, result);
   }
 }
 

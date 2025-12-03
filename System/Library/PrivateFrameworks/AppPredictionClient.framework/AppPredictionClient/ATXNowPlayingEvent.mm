@@ -1,20 +1,20 @@
 @interface ATXNowPlayingEvent
-- (ATXNowPlayingEvent)initWithContextInfo:(id)a3;
+- (ATXNowPlayingEvent)initWithContextInfo:(id)info;
 - (BOOL)isTVExperienceAppNowPlaying;
 @end
 
 @implementation ATXNowPlayingEvent
 
-- (ATXNowPlayingEvent)initWithContextInfo:(id)a3
+- (ATXNowPlayingEvent)initWithContextInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = ATXNowPlayingEvent;
   v5 = [(ATXNowPlayingEvent *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E6997A68] nowPlayingBundleIdKey];
-    v7 = [v4 objectForKeyedSubscript:v6];
+    nowPlayingBundleIdKey = [MEMORY[0x1E6997A68] nowPlayingBundleIdKey];
+    v7 = [infoCopy objectForKeyedSubscript:nowPlayingBundleIdKey];
     v8 = v7;
     if (v7)
     {
@@ -28,8 +28,8 @@
 
     objc_storeStrong(&v5->_bundleId, v9);
 
-    v10 = [MEMORY[0x1E6997A68] nowPlayingStatusKey];
-    v11 = [v4 objectForKeyedSubscript:v10];
+    nowPlayingStatusKey = [MEMORY[0x1E6997A68] nowPlayingStatusKey];
+    v11 = [infoCopy objectForKeyedSubscript:nowPlayingStatusKey];
     v5->_nowPlayingState = [v11 integerValue];
   }
 
@@ -43,8 +43,8 @@
     return 0;
   }
 
-  v3 = [(ATXNowPlayingEvent *)self bundleId];
-  v4 = [ATXAVRoutingUtils isTVExperienceAppWithBundleId:v3];
+  bundleId = [(ATXNowPlayingEvent *)self bundleId];
+  v4 = [ATXAVRoutingUtils isTVExperienceAppWithBundleId:bundleId];
 
   return v4;
 }

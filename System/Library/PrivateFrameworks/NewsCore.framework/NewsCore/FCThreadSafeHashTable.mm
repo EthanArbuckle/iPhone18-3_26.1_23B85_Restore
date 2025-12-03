@@ -1,17 +1,17 @@
 @interface FCThreadSafeHashTable
-+ (FCThreadSafeHashTable)hashTableWithOptions:(unint64_t)a3;
-- (BOOL)containsObject:(id)a3;
-- (FCThreadSafeHashTable)initWithOptions:(unint64_t)a3 capacity:(unint64_t)a4;
++ (FCThreadSafeHashTable)hashTableWithOptions:(unint64_t)options;
+- (BOOL)containsObject:(id)object;
+- (FCThreadSafeHashTable)initWithOptions:(unint64_t)options capacity:(unint64_t)capacity;
 - (NSArray)allObjects;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
+- (void)removeObject:(id)object;
 @end
 
 @implementation FCThreadSafeHashTable
 
-- (FCThreadSafeHashTable)initWithOptions:(unint64_t)a3 capacity:(unint64_t)a4
+- (FCThreadSafeHashTable)initWithOptions:(unint64_t)options capacity:(unint64_t)capacity
 {
   v12.receiver = self;
   v12.super_class = FCThreadSafeHashTable;
@@ -22,7 +22,7 @@
     lock = v6->_lock;
     v6->_lock = v7;
 
-    v9 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:a3 capacity:a4];
+    v9 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:options capacity:capacity];
     hashTable = v6->_hashTable;
     v6->_hashTable = v9;
   }
@@ -30,9 +30,9 @@
   return v6;
 }
 
-+ (FCThreadSafeHashTable)hashTableWithOptions:(unint64_t)a3
++ (FCThreadSafeHashTable)hashTableWithOptions:(unint64_t)options
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithOptions:a3 capacity:0];
+  v3 = [objc_alloc(objc_opt_class()) initWithOptions:options capacity:0];
 
   return v3;
 }
@@ -63,31 +63,31 @@ uint64_t __30__FCThreadSafeHashTable_count__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__FCThreadSafeHashTable_addObject___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__FCThreadSafeHashTable_removeObject___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   [(NFUnfairLock *)lock performWithLockSync:v7];
 }
 
@@ -134,9 +134,9 @@ uint64_t __35__FCThreadSafeHashTable_allObjects__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -148,7 +148,7 @@ uint64_t __35__FCThreadSafeHashTable_allObjects__block_invoke(uint64_t a1)
   v8[3] = &unk_1E7C37138;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = objectCopy;
   v9 = v6;
   [(NFUnfairLock *)lock performWithLockSync:v8];
   LOBYTE(lock) = *(v12 + 24);

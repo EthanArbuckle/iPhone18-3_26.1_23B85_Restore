@@ -1,12 +1,12 @@
 @interface FCFetchedValueObservable
 - (FCFetchedValueManager)manager;
 - (FCFetchedValueObservable)init;
-- (FCFetchedValueObservable)initWithManager:(id)a3 initialValue:(id)a4 equalityTest:(id)a5;
-- (id)valueWithError:(id *)a3;
-- (void)addObserver:(id)a3;
-- (void)handleError:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setValue:(id)a3;
+- (FCFetchedValueObservable)initWithManager:(id)manager initialValue:(id)value equalityTest:(id)test;
+- (id)valueWithError:(id *)error;
+- (void)addObserver:(id)observer;
+- (void)handleError:(id)error;
+- (void)removeObserver:(id)observer;
+- (void)setValue:(id)value;
 @end
 
 @implementation FCFetchedValueObservable
@@ -44,13 +44,13 @@
   objc_exception_throw(v6);
 }
 
-- (FCFetchedValueObservable)initWithManager:(id)a3 initialValue:(id)a4 equalityTest:(id)a5
+- (FCFetchedValueObservable)initWithManager:(id)manager initialValue:(id)value equalityTest:(id)test
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  valueCopy = value;
+  testCopy = test;
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "manager != nil"];
     *buf = 136315906;
@@ -63,13 +63,13 @@
     v33 = v23;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v10)
+    if (testCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (testCopy)
   {
     goto LABEL_6;
   }
@@ -95,12 +95,12 @@ LABEL_6:
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_manager, v8);
-    v13 = [v9 copy];
+    objc_storeWeak(&v11->_manager, managerCopy);
+    v13 = [valueCopy copy];
     value = v12->_value;
     v12->_value = v13;
 
-    v15 = _Block_copy(v10);
+    v15 = _Block_copy(testCopy);
     equalityTest = v12->_equalityTest;
     v12->_equalityTest = v15;
 
@@ -117,11 +117,11 @@ LABEL_6:
   return v12;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  valueCopy = value;
+  if (!valueCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "value"];
     *buf = 136315906;
@@ -141,19 +141,19 @@ LABEL_6:
   *&v19 = __Block_byref_object_copy__14;
   *(&v19 + 1) = __Block_byref_object_dispose__14;
   v20 = 0;
-  v5 = [(FCFetchedValueObservable *)self lock];
+  lock = [(FCFetchedValueObservable *)self lock];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __37__FCFetchedValueObservable_setValue___block_invoke;
   v15[3] = &unk_1E7C37408;
   v15[4] = self;
-  v6 = v4;
+  v6 = valueCopy;
   v16 = v6;
   v17 = buf;
-  [v5 performWithLockSync:v15];
+  [lock performWithLockSync:v15];
 
-  v7 = [(FCFetchedValueObservable *)self manager];
-  if (v7)
+  manager = [(FCFetchedValueObservable *)self manager];
+  if (manager)
   {
     v8 = dispatch_get_global_queue(17, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -161,7 +161,7 @@ LABEL_6:
     block[2] = __37__FCFetchedValueObservable_setValue___block_invoke_2;
     block[3] = &unk_1E7C37138;
     v14 = buf;
-    v12 = v7;
+    v12 = manager;
     v13 = v6;
     dispatch_async(v8, block);
   }
@@ -239,11 +239,11 @@ void __37__FCFetchedValueObservable_setValue___block_invoke_2(void *a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleError:(id)a3
+- (void)handleError:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  if (!errorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "error"];
     *buf = 136315906;
@@ -257,15 +257,15 @@ void __37__FCFetchedValueObservable_setValue___block_invoke_2(void *a1)
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCFetchedValueObservable *)self lock];
+  lock = [(FCFetchedValueObservable *)self lock];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__FCFetchedValueObservable_handleError___block_invoke;
   v9[3] = &unk_1E7C36C58;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  [v5 performWithLockSync:v9];
+  v10 = errorCopy;
+  v6 = errorCopy;
+  [lock performWithLockSync:v9];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -290,7 +290,7 @@ uint64_t __40__FCFetchedValueObservable_handleError___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)valueWithError:(id *)a3
+- (id)valueWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -304,7 +304,7 @@ uint64_t __40__FCFetchedValueObservable_handleError___block_invoke(uint64_t a1)
   v12 = __Block_byref_object_copy__14;
   v13 = __Block_byref_object_dispose__14;
   v14 = 0;
-  v5 = [(FCFetchedValueObservable *)self lock];
+  lock = [(FCFetchedValueObservable *)self lock];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__FCFetchedValueObservable_valueWithError___block_invoke;
@@ -312,11 +312,11 @@ uint64_t __40__FCFetchedValueObservable_handleError___block_invoke(uint64_t a1)
   v8[4] = self;
   v8[5] = &v15;
   v8[6] = &v9;
-  [v5 performWithLockSync:v8];
+  [lock performWithLockSync:v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v6 = v16[5];
@@ -336,11 +336,11 @@ void __43__FCFetchedValueObservable_valueWithError___block_invoke(void *a1)
   objc_storeStrong(v3, v2);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  observerCopy = observer;
+  if (!observerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer"];
     *buf = 136315906;
@@ -354,15 +354,15 @@ void __43__FCFetchedValueObservable_valueWithError___block_invoke(void *a1)
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCFetchedValueObservable *)self lock];
+  lock = [(FCFetchedValueObservable *)self lock];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__FCFetchedValueObservable_addObserver___block_invoke;
   v9[3] = &unk_1E7C36C58;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  [v5 performWithLockSync:v9];
+  v10 = observerCopy;
+  v6 = observerCopy;
+  [lock performWithLockSync:v9];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -373,11 +373,11 @@ void __40__FCFetchedValueObservable_addObserver___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  observerCopy = observer;
+  if (!observerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer"];
     *buf = 136315906;
@@ -391,15 +391,15 @@ void __40__FCFetchedValueObservable_addObserver___block_invoke(uint64_t a1)
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCFetchedValueObservable *)self lock];
+  lock = [(FCFetchedValueObservable *)self lock];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__FCFetchedValueObservable_removeObserver___block_invoke;
   v9[3] = &unk_1E7C36C58;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  [v5 performWithLockSync:v9];
+  v10 = observerCopy;
+  v6 = observerCopy;
+  [lock performWithLockSync:v9];
 
   v7 = *MEMORY[0x1E69E9840];
 }

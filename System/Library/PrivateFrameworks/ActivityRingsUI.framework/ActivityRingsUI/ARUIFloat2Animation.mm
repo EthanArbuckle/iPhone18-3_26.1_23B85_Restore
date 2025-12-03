@@ -1,31 +1,31 @@
 @interface ARUIFloat2Animation
-+ (id)animationWithDuration:(id)a1 startValue:(SEL)a2 endValue:(double)a3 timingFunction:(id)a4 applier:(id)a5;
-- (ARUIFloat2Animation)initWithDuration:(ARUIFloat2Animation *)self startValue:(SEL)a2 endValue:(double)a3 timingFunction:(id)a4 applier:(id)a5;
++ (id)animationWithDuration:(id)duration startValue:(SEL)value endValue:(double)endValue timingFunction:(id)function applier:(id)applier;
+- (ARUIFloat2Animation)initWithDuration:(ARUIFloat2Animation *)self startValue:(SEL)value endValue:(double)endValue timingFunction:(id)function applier:(id)applier;
 - (ARUIRingGroupAnimationDelegate)delegate;
 - (void)completeAnimation;
 - (void)dealloc;
-- (void)update:(double)a3;
+- (void)update:(double)update;
 @end
 
 @implementation ARUIFloat2Animation
 
-+ (id)animationWithDuration:(id)a1 startValue:(SEL)a2 endValue:(double)a3 timingFunction:(id)a4 applier:(id)a5
++ (id)animationWithDuration:(id)duration startValue:(SEL)value endValue:(double)endValue timingFunction:(id)function applier:(id)applier
 {
   v8 = v6;
   v9 = v5;
-  v11 = a5;
-  v12 = a4;
-  v13 = [[ARUIFloat2Animation alloc] initWithDuration:v12 startValue:v11 endValue:a3 timingFunction:v9 applier:v8];
+  applierCopy = applier;
+  functionCopy = function;
+  v13 = [[ARUIFloat2Animation alloc] initWithDuration:functionCopy startValue:applierCopy endValue:endValue timingFunction:v9 applier:v8];
 
   return v13;
 }
 
-- (ARUIFloat2Animation)initWithDuration:(ARUIFloat2Animation *)self startValue:(SEL)a2 endValue:(double)a3 timingFunction:(id)a4 applier:(id)a5
+- (ARUIFloat2Animation)initWithDuration:(ARUIFloat2Animation *)self startValue:(SEL)value endValue:(double)endValue timingFunction:(id)function applier:(id)applier
 {
   v9 = v6;
   v10 = v5;
-  v13 = a4;
-  v14 = a5;
+  functionCopy = function;
+  applierCopy = applier;
   v20.receiver = self;
   v20.super_class = ARUIFloat2Animation;
   v15 = [(ARUIFloat2Animation *)&v20 init];
@@ -34,12 +34,12 @@
   {
     v15->_completed = 0;
     v15->_percent = 0.0;
-    v15->_duration = a3;
+    v15->_duration = endValue;
     *v15->_startValue = v10;
     *v15->_currentValue = v10;
     *v15->_endValue = v9;
-    objc_storeStrong(&v15->_timingFunction, a4);
-    v17 = MEMORY[0x1D3875270](v14);
+    objc_storeStrong(&v15->_timingFunction, function);
+    v17 = MEMORY[0x1D3875270](applierCopy);
     applier = v16->_applier;
     v16->_applier = v17;
   }
@@ -59,14 +59,14 @@
   [(ARUIFloat2Animation *)&v3 dealloc];
 }
 
-- (void)update:(double)a3
+- (void)update:(double)update
 {
   if (self->_completed)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Should not call update on a ARUIFloat2Animation that has already completed"];
   }
 
-  v5 = self->_percent + a3 / self->_duration;
+  v5 = self->_percent + update / self->_duration;
   self->_percent = ARUISaturate(v5);
   [(CAMediaTimingFunction *)self->_timingFunction _solveForInput:?];
   v7 = v6;
@@ -78,7 +78,7 @@
   *self->_currentValue = v12.n128_u64[0];
   v10 = v12;
   v11 = *(self->_applier + 2);
-  v12.n128_f64[0] = a3;
+  v12.n128_f64[0] = update;
 
   v11(v10, v12);
 }

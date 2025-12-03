@@ -1,7 +1,7 @@
 @interface SKDLogManager
 + (id)sharedManager;
 - (SKDLogManager)init;
-- (id)logForDomain:(id)a3;
+- (id)logForDomain:(id)domain;
 @end
 
 @implementation SKDLogManager
@@ -42,19 +42,19 @@ void __30__SKDLogManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (id)logForDomain:(id)a3
+- (id)logForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_logs objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_logs objectForKeyedSubscript:domainCopy];
 
   if (!v5)
   {
-    v6 = [[SKDLog alloc] initWithCategory:v4];
-    [(NSMutableDictionary *)self->_logs setObject:v6 forKey:v4];
+    v6 = [[SKDLog alloc] initWithCategory:domainCopy];
+    [(NSMutableDictionary *)self->_logs setObject:v6 forKey:domainCopy];
   }
 
-  v7 = [(NSMutableDictionary *)self->_logs objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)self->_logs objectForKeyedSubscript:domainCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;

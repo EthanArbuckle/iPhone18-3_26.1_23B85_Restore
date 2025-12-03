@@ -1,23 +1,23 @@
 @interface VUIAppInstallConfirmationView
 + (CGSize)iconSize;
-- (VUIAppInstallConfirmationView)initWithFrame:(CGRect)a3;
-- (id)_buttonWithTitleForTV:(id)a3 textStyle:(id)a4;
+- (VUIAppInstallConfirmationView)initWithFrame:(CGRect)frame;
+- (id)_buttonWithTitleForTV:(id)v textStyle:(id)style;
 - (void)_layoutForIos;
 - (void)_layoutForTvos;
 - (void)layoutSubviews;
-- (void)setAppIcon:(id)a3;
-- (void)setIAP:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAppIcon:(id)icon;
+- (void)setIAP:(id)p;
+- (void)setMessage:(id)message;
+- (void)setTitle:(id)title;
 @end
 
 @implementation VUIAppInstallConfirmationView
 
-- (VUIAppInstallConfirmationView)initWithFrame:(CGRect)a3
+- (VUIAppInstallConfirmationView)initWithFrame:(CGRect)frame
 {
   v74.receiver = self;
   v74.super_class = VUIAppInstallConfirmationView;
-  v3 = [(VUIAppInstallConfirmationView *)&v74 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIAppInstallConfirmationView *)&v74 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [VUIAppInstallLockup alloc];
@@ -57,10 +57,10 @@
     [(UILabel *)v3->_messageView setNumberOfLines:-1];
     [(UILabel *)v3->_messageView setTextAlignment:1];
     [(UILabel *)v3->_messageView setAccessibilityIdentifier:@"UIA.TV.Text.message"];
-    v19 = [MEMORY[0x1E69DC938] currentDevice];
-    v20 = [v19 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v20 == 2)
+    if (userInterfaceIdiom == 2)
     {
       v21 = [MEMORY[0x1E69DC738] buttonWithType:1];
       actionButton = v3->_actionButton;
@@ -73,8 +73,8 @@
       [(UILabel *)v23 setFont:v24];
 
       v25 = v3->_imageSubtitleView;
-      v26 = [MEMORY[0x1E69DC888] whiteColor];
-      v27 = [v26 colorWithAlphaComponent:0.7];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      v27 = [whiteColor colorWithAlphaComponent:0.7];
       [(UILabel *)v25 setTextColor:v27];
 
       v28 = v3->_titleView;
@@ -82,8 +82,8 @@
       [(UILabel *)v28 setFont:v29];
 
       v30 = v3->_titleView;
-      v31 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UILabel *)v30 setTextColor:v31];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      [(UILabel *)v30 setTextColor:whiteColor2];
 
       v32 = v3->_messageView;
       v33 = *MEMORY[0x1E69DDCF8];
@@ -91,8 +91,8 @@
       [(UILabel *)v32 setFont:v34];
 
       v35 = v3->_messageView;
-      v36 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UILabel *)v35 setTextColor:v36];
+      whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+      [(UILabel *)v35 setTextColor:whiteColor3];
 
       v37 = [MEMORY[0x1E69DC738] buttonWithType:1];
       cancelButton = v3->_cancelButton;
@@ -101,11 +101,11 @@
       [(UIButton *)v3->_cancelButton setTranslatesAutoresizingMaskIntoConstraints:0];
       if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
       {
-        v39 = [MEMORY[0x1E69DC740] borderedButtonConfiguration];
-        [v39 setCornerStyle:4];
-        [v39 setTitleTextAttributesTransformer:&__block_literal_global_117];
-        [(UIButton *)v3->_actionButton setConfiguration:v39];
-        [(UIButton *)v3->_cancelButton setConfiguration:v39];
+        borderedButtonConfiguration = [MEMORY[0x1E69DC740] borderedButtonConfiguration];
+        [borderedButtonConfiguration setCornerStyle:4];
+        [borderedButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_117];
+        [(UIButton *)v3->_actionButton setConfiguration:borderedButtonConfiguration];
+        [(UIButton *)v3->_cancelButton setConfiguration:borderedButtonConfiguration];
       }
 
       v40 = v3->_cancelButton;
@@ -125,17 +125,17 @@
       secondaryLinkButton = v3->_secondaryLinkButton;
       v3->_secondaryLinkButton = v47;
 
-      v49 = [(UIButton *)v3->_secondaryLinkButton titleLabel];
-      [v49 setLineBreakMode:4];
+      titleLabel = [(UIButton *)v3->_secondaryLinkButton titleLabel];
+      [titleLabel setLineBreakMode:4];
 
       [(UIButton *)v3->_secondaryLinkButton setAccessibilityIdentifier:@"UIA.TV.Button.openSecondaryLink"];
       if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
       {
-        v50 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
-        [v50 setCornerStyle:4];
-        [v50 setTitleTextAttributesTransformer:&__block_literal_global_44_0];
-        [(UIButton *)v3->_appStoreButton setConfiguration:v50];
-        [(UIButton *)v3->_secondaryLinkButton setConfiguration:v50];
+        borderlessButtonConfiguration = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
+        [borderlessButtonConfiguration setCornerStyle:4];
+        [borderlessButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_44_0];
+        [(UIButton *)v3->_appStoreButton setConfiguration:borderlessButtonConfiguration];
+        [(UIButton *)v3->_secondaryLinkButton setConfiguration:borderlessButtonConfiguration];
       }
 
       v51 = v3->_actionButton;
@@ -143,8 +143,8 @@
       [(UIButton *)v51 _setVisualEffectViewEnabled:0 backgroundColor:v52];
 
       v53 = v3->_cancelButton;
-      v54 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.2];
-      [(UIButton *)v53 _setVisualEffectViewEnabled:0 backgroundColor:v54];
+      metadataStackView = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.2];
+      [(UIButton *)v53 _setVisualEffectViewEnabled:0 backgroundColor:metadataStackView];
     }
 
     else
@@ -157,29 +157,29 @@
       [(VUIBuyButtonLockup *)v3->_buyLockup setSpacing:6.0];
       [(VUIBuyButtonLockup *)v3->_buyLockup setAxis:1];
       [(VUIBuyButtonLockup *)v3->_buyLockup setAlignment:3];
-      v57 = [(VUIBuyButtonLockup *)v3->_buyLockup button];
-      [v57 setAccessibilityIdentifier:@"UIA.TV.Button.install.state=inactive"];
+      button = [(VUIBuyButtonLockup *)v3->_buyLockup button];
+      [button setAccessibilityIdentifier:@"UIA.TV.Button.install.state=inactive"];
 
-      v58 = [(VUIBuyButtonLockup *)v3->_buyLockup button];
+      button2 = [(VUIBuyButtonLockup *)v3->_buyLockup button];
       v59 = v3->_actionButton;
-      v3->_actionButton = v58;
+      v3->_actionButton = button2;
 
-      v54 = [(VUIAppInstallLockup *)v3->_lockupView metadataStackView];
-      v60 = [v54 arrangedSubviews];
-      v61 = [v60 lastObject];
+      metadataStackView = [(VUIAppInstallLockup *)v3->_lockupView metadataStackView];
+      arrangedSubviews = [metadataStackView arrangedSubviews];
+      lastObject = [arrangedSubviews lastObject];
 
-      [v54 addArrangedSubview:v3->_buyLockup];
-      [v54 setCustomSpacing:v61 afterView:15.0];
-      v62 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-      [(VUIAppInstallConfirmationView *)v3 setBackgroundColor:v62];
+      [metadataStackView addArrangedSubview:v3->_buyLockup];
+      [metadataStackView setCustomSpacing:lastObject afterView:15.0];
+      vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+      [(VUIAppInstallConfirmationView *)v3 setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
       v63 = v3->_imageSubtitleView;
       v64 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
       [(UILabel *)v63 setFont:v64];
 
       v65 = v3->_imageSubtitleView;
-      v66 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-      v67 = [v66 colorWithAlphaComponent:0.8];
+      vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+      v67 = [vui_primaryTextColor colorWithAlphaComponent:0.8];
       [(UILabel *)v65 setTextColor:v67];
 
       v68 = v3->_messageView;
@@ -187,15 +187,15 @@
       [(UILabel *)v68 setFont:v69];
 
       v70 = v3->_messageView;
-      v71 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-      [(UILabel *)v70 setTextColor:v71];
+      vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+      [(UILabel *)v70 setTextColor:vui_secondaryTextColor];
 
       if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
       {
-        v72 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
-        [v72 setCornerStyle:4];
-        [v72 setTitleTextAttributesTransformer:&__block_literal_global_47_0];
-        [(UIButton *)v3->_actionButton setConfiguration:v72];
+        borderlessButtonConfiguration2 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
+        [borderlessButtonConfiguration2 setCornerStyle:4];
+        [borderlessButtonConfiguration2 setTitleTextAttributesTransformer:&__block_literal_global_47_0];
+        [(UIButton *)v3->_actionButton setConfiguration:borderlessButtonConfiguration2];
       }
     }
   }
@@ -240,41 +240,41 @@ id __47__VUIAppInstallConfirmationView_initWithFrame___block_invoke_3(uint64_t a
   return v2;
 }
 
-- (void)setAppIcon:(id)a3
+- (void)setAppIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   [objc_opt_class() iconSize];
   v6 = v5;
   v8 = v7;
   [objc_opt_class() iconSize];
   [VUIAppIconImageService iconCornerRadiusForSize:?];
-  v10 = [v4 vui_iconImageOfSize:v6 radius:v8 stroke:{v9, 0.0}];
+  v10 = [iconCopy vui_iconImageOfSize:v6 radius:v8 stroke:{v9, 0.0}];
 
   [(VUIAppInstallLockup *)self->_lockupView setIcon:v10];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
   [(UILabel *)self->_titleView setText:self->_title];
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  objc_storeStrong(&self->_message, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_message, message);
+  messageCopy = message;
   [(UILabel *)self->_messageView setText:self->_message];
 }
 
-- (void)setIAP:(id)a3
+- (void)setIAP:(id)p
 {
   [(VUIAppInstallLockup *)self->_lockupView setIAP:?];
   buyLockup = self->_buyLockup;
   if (buyLockup)
   {
 
-    [(VUIBuyButtonLockup *)buyLockup setHasIAP:a3 != 0];
+    [(VUIBuyButtonLockup *)buyLockup setHasIAP:p != 0];
   }
 }
 
@@ -283,10 +283,10 @@ id __47__VUIAppInstallConfirmationView_initWithFrame___block_invoke_3(uint64_t a
   if (!self->_didLayout)
   {
     self->_didLayout = 1;
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4 == 2)
+    if (userInterfaceIdiom == 2)
     {
 
       [(VUIAppInstallConfirmationView *)self _layoutForTvos];
@@ -342,28 +342,28 @@ id __47__VUIAppInstallConfirmationView_initWithFrame___block_invoke_3(uint64_t a
   [v15 setAlignment:3];
   LODWORD(v16) = 1132068864;
   [v15 setContentCompressionResistancePriority:0 forAxis:v16];
-  v17 = [(UIButton *)self->_actionButton widthAnchor];
-  v18 = [v17 constraintEqualToConstant:500.0];
+  widthAnchor = [(UIButton *)self->_actionButton widthAnchor];
+  v18 = [widthAnchor constraintEqualToConstant:500.0];
   [v18 setActive:1];
 
-  v19 = [(UIButton *)self->_cancelButton widthAnchor];
-  v20 = [v19 constraintEqualToConstant:500.0];
+  widthAnchor2 = [(UIButton *)self->_cancelButton widthAnchor];
+  v20 = [widthAnchor2 constraintEqualToConstant:500.0];
   [v20 setActive:1];
 
-  v21 = [(UIButton *)self->_appStoreButton widthAnchor];
-  v22 = [v21 constraintEqualToConstant:500.0];
+  widthAnchor3 = [(UIButton *)self->_appStoreButton widthAnchor];
+  v22 = [widthAnchor3 constraintEqualToConstant:500.0];
   [v22 setActive:1];
 
   LODWORD(v23) = 1112014848;
   [(UIButton *)self->_secondaryLinkButton setContentCompressionResistancePriority:0 forAxis:v23];
   [v15 setSpacing:14.0];
-  v24 = [(UIButton *)self->_actionButton heightAnchor];
-  v25 = [v24 constraintEqualToConstant:66.0];
+  heightAnchor = [(UIButton *)self->_actionButton heightAnchor];
+  v25 = [heightAnchor constraintEqualToConstant:66.0];
   [v25 setActive:1];
 
-  v26 = [(UIButton *)self->_cancelButton heightAnchor];
-  v27 = [(UIButton *)self->_actionButton heightAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  heightAnchor2 = [(UIButton *)self->_cancelButton heightAnchor];
+  heightAnchor3 = [(UIButton *)self->_actionButton heightAnchor];
+  v28 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   [v28 setActive:1];
 
   v29 = objc_alloc(MEMORY[0x1E69DCF90]);
@@ -382,36 +382,36 @@ id __47__VUIAppInstallConfirmationView_initWithFrame___block_invoke_3(uint64_t a
   [v31 setCustomSpacing:v10 afterView:50.0];
   LODWORD(v32) = 1148846080;
   [v31 setContentHuggingPriority:0 forAxis:v32];
-  v33 = [v31 centerXAnchor];
-  v34 = [(VUIAppInstallConfirmationView *)self centerXAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  centerXAnchor = [v31 centerXAnchor];
+  centerXAnchor2 = [(VUIAppInstallConfirmationView *)self centerXAnchor];
+  v35 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v35 setActive:1];
 
-  v36 = [v31 centerYAnchor];
-  v37 = [(VUIAppInstallConfirmationView *)self centerYAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  centerYAnchor = [v31 centerYAnchor];
+  centerYAnchor2 = [(VUIAppInstallConfirmationView *)self centerYAnchor];
+  v38 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v38 setActive:1];
 
-  v39 = [v31 topAnchor];
-  v40 = [(VUIAppInstallConfirmationView *)self safeAreaLayoutGuide];
-  v41 = [v40 topAnchor];
-  v42 = [v39 constraintGreaterThanOrEqualToAnchor:v41];
+  topAnchor = [v31 topAnchor];
+  safeAreaLayoutGuide = [(VUIAppInstallConfirmationView *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v42 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   [v42 setActive:1];
 
-  v43 = [v31 bottomAnchor];
-  v44 = [(VUIAppInstallConfirmationView *)self safeAreaLayoutGuide];
-  v45 = [v44 bottomAnchor];
-  v46 = [v43 constraintLessThanOrEqualToAnchor:v45];
+  bottomAnchor = [v31 bottomAnchor];
+  safeAreaLayoutGuide2 = [(VUIAppInstallConfirmationView *)self safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v46 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   [v46 setActive:1];
 
-  v47 = [v15 leadingAnchor];
-  v48 = [v31 leadingAnchor];
-  v49 = [v47 constraintEqualToAnchor:v48];
+  leadingAnchor = [v15 leadingAnchor];
+  leadingAnchor2 = [v31 leadingAnchor];
+  v49 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v49 setActive:1];
 
-  v50 = [v15 trailingAnchor];
-  v51 = [v31 trailingAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  trailingAnchor = [v15 trailingAnchor];
+  trailingAnchor2 = [v31 trailingAnchor];
+  v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v52 setActive:1];
 }
 
@@ -442,56 +442,56 @@ id __47__VUIAppInstallConfirmationView_initWithFrame___block_invoke_3(uint64_t a
   [v9 setAlignment:3];
   [v9 setSpacing:24.0];
   [v9 setCustomSpacing:self->_messageView afterView:24.0];
-  v10 = [(UILabel *)self->_messageView widthAnchor];
-  v11 = [v9 widthAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:-80.0];
+  widthAnchor = [(UILabel *)self->_messageView widthAnchor];
+  widthAnchor2 = [v9 widthAnchor];
+  v12 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-80.0];
   [v12 setActive:1];
 
   LODWORD(v13) = 1144586240;
   [(UILabel *)self->_messageView setContentCompressionResistancePriority:1 forAxis:v13];
   LODWORD(v14) = 1144586240;
   [(UILabel *)self->_messageView setContentCompressionResistancePriority:0 forAxis:v14];
-  v15 = [v9 centerXAnchor];
-  v16 = [(VUIAppInstallConfirmationView *)self readableContentGuide];
-  v17 = [v16 centerXAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  centerXAnchor = [v9 centerXAnchor];
+  readableContentGuide = [(VUIAppInstallConfirmationView *)self readableContentGuide];
+  centerXAnchor2 = [readableContentGuide centerXAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v18 setActive:1];
 
-  v19 = [v9 centerYAnchor];
-  v20 = [(VUIAppInstallConfirmationView *)self readableContentGuide];
-  v21 = [v20 centerYAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  centerYAnchor = [v9 centerYAnchor];
+  readableContentGuide2 = [(VUIAppInstallConfirmationView *)self readableContentGuide];
+  centerYAnchor2 = [readableContentGuide2 centerYAnchor];
+  v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v22 setActive:1];
 
-  v23 = [v9 topAnchor];
-  v24 = [(VUIAppInstallConfirmationView *)self readableContentGuide];
-  v25 = [v24 topAnchor];
-  v26 = [v23 constraintGreaterThanOrEqualToAnchor:v25 constant:20.0];
+  topAnchor = [v9 topAnchor];
+  readableContentGuide3 = [(VUIAppInstallConfirmationView *)self readableContentGuide];
+  topAnchor2 = [readableContentGuide3 topAnchor];
+  v26 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:20.0];
   [v26 setActive:1];
 
-  v27 = [v9 bottomAnchor];
-  v28 = [(VUIAppInstallConfirmationView *)self readableContentGuide];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintLessThanOrEqualToAnchor:v29 constant:-20.0];
+  bottomAnchor = [v9 bottomAnchor];
+  readableContentGuide4 = [(VUIAppInstallConfirmationView *)self readableContentGuide];
+  bottomAnchor2 = [readableContentGuide4 bottomAnchor];
+  v30 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-20.0];
   [v30 setActive:1];
 
-  v31 = [v9 leftAnchor];
-  v32 = [(VUIAppInstallConfirmationView *)self readableContentGuide];
-  v33 = [v32 leftAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33 constant:20.0];
+  leftAnchor = [v9 leftAnchor];
+  readableContentGuide5 = [(VUIAppInstallConfirmationView *)self readableContentGuide];
+  leftAnchor2 = [readableContentGuide5 leftAnchor];
+  v34 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:20.0];
   [v34 setActive:1];
 
-  v35 = [v9 rightAnchor];
-  v36 = [(VUIAppInstallConfirmationView *)self readableContentGuide];
-  v37 = [v36 rightAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37 constant:-20.0];
+  rightAnchor = [v9 rightAnchor];
+  readableContentGuide6 = [(VUIAppInstallConfirmationView *)self readableContentGuide];
+  rightAnchor2 = [readableContentGuide6 rightAnchor];
+  v38 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-20.0];
   [v38 setActive:1];
 }
 
 + (CGSize)iconSize
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 2;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 2;
 
   v4 = dbl_1E4297510[v3];
   v5 = dbl_1E4297520[v3];
@@ -500,25 +500,25 @@ id __47__VUIAppInstallConfirmationView_initWithFrame___block_invoke_3(uint64_t a
   return result;
 }
 
-- (id)_buttonWithTitleForTV:(id)a3 textStyle:(id)a4
+- (id)_buttonWithTitleForTV:(id)v textStyle:(id)style
 {
   v5 = MEMORY[0x1E69DC738];
-  v6 = a4;
-  v7 = a3;
+  styleCopy = style;
+  vCopy = v;
   v8 = [v5 buttonWithType:1];
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v6];
+  v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:styleCopy];
 
   [v8 _setFont:v9];
-  v10 = [MEMORY[0x1E69DC888] whiteColor];
-  [v8 setTitleColor:v10 forState:0];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v8 setTitleColor:whiteColor forState:0];
 
-  v11 = [MEMORY[0x1E69DC888] blackColor];
-  [v8 setTitleColor:v11 forState:8];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v8 setTitleColor:blackColor forState:8];
 
   [v8 setBackgroundImage:0 forStates:0];
   [v8 _setVisualEffectViewEnabled:0 backgroundColor:0];
-  [v8 setTitle:v7 forState:0];
+  [v8 setTitle:vCopy forState:0];
 
   return v8;
 }

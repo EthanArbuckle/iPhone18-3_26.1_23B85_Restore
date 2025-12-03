@@ -1,6 +1,6 @@
 @interface INCodableBooleanAttributeMetadata
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (INCodableBooleanAttributeMetadata)initWithCoder:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (INCodableBooleanAttributeMetadata)initWithCoder:(id)coder;
 - (NSString)localizedFalseDisplayName;
 - (NSString)localizedTrueDisplayName;
 - (id)__INCodableDescriptionDefaultValueKey;
@@ -18,117 +18,117 @@
 - (id)__INTypeCodableDescriptionFalseDisplayNameKey;
 - (id)__INTypeCodableDescriptionTrueDisplayNameIDKey;
 - (id)__INTypeCodableDescriptionTrueDisplayNameKey;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)localizedFalseDisplayNameWithLocalizer:(id)a3;
-- (id)localizedTrueDisplayNameWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)localizedFalseDisplayNameWithLocalizer:(id)localizer;
+- (id)localizedTrueDisplayNameWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableBooleanAttributeMetadata
 
 - (id)__INCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableBooleanAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INCodableDescriptionFalseDisplayNameKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataFalseDisplayNameKey = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataFalseDisplayNameKey;
 }
 
 - (id)__INCodableDescriptionFalseDisplayNameIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey;
 }
 
 - (id)__INCodableDescriptionTrueDisplayNameKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataTrueDisplayNameKey = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataTrueDisplayNameKey;
 }
 
 - (id)__INCodableDescriptionTrueDisplayNameIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey;
 }
 
-- (INCodableBooleanAttributeMetadata)initWithCoder:(id)a3
+- (INCodableBooleanAttributeMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = INCodableBooleanAttributeMetadata;
-  v5 = [(INCodableAttributeMetadata *)&v18 initWithCoder:v4];
+  v5 = [(INCodableAttributeMetadata *)&v18 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
     [(INCodableBooleanAttributeMetadata *)v5 setDefaultValue:v6];
 
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"falseDisplayName"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"falseDisplayName"];
     [(INCodableBooleanAttributeMetadata *)v5 setFalseDisplayName:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"falseDisplayNameID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"falseDisplayNameID"];
     [(INCodableBooleanAttributeMetadata *)v5 setFalseDisplayNameID:v11];
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"trueDisplayName"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"trueDisplayName"];
     [(INCodableBooleanAttributeMetadata *)v5 setTrueDisplayName:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trueDisplayNameID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trueDisplayNameID"];
     [(INCodableBooleanAttributeMetadata *)v5 setTrueDisplayNameID:v16];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INCodableBooleanAttributeMetadata;
-  v4 = a3;
-  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_defaultValue forKey:{@"defaultValue", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_falseDisplayName forKey:@"falseDisplayName"];
-  [v4 encodeObject:self->_falseDisplayNameID forKey:@"falseDisplayNameID"];
-  [v4 encodeObject:self->_trueDisplayName forKey:@"trueDisplayName"];
-  [v4 encodeObject:self->_trueDisplayNameID forKey:@"trueDisplayNameID"];
+  coderCopy = coder;
+  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_defaultValue forKey:{@"defaultValue", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_falseDisplayName forKey:@"falseDisplayName"];
+  [coderCopy encodeObject:self->_falseDisplayNameID forKey:@"falseDisplayNameID"];
+  [coderCopy encodeObject:self->_trueDisplayName forKey:@"trueDisplayName"];
+  [coderCopy encodeObject:self->_trueDisplayNameID forKey:@"trueDisplayNameID"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = INCodableBooleanAttributeMetadata;
   v13 = 0;
-  v6 = [(INCodableAttributeMetadata *)&v12 widgetPlistableRepresentationWithParameters:a3 error:&v13];
+  v6 = [(INCodableAttributeMetadata *)&v12 widgetPlistableRepresentationWithParameters:parameters error:&v13];
   v7 = v13;
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -150,13 +150,13 @@
   return v10;
 }
 
-- (id)localizedFalseDisplayNameWithLocalizer:(id)a3
+- (id)localizedFalseDisplayNameWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INCodableBooleanAttributeMetadata *)self falseDisplayNameID];
-  v6 = [(INCodableBooleanAttributeMetadata *)self falseDisplayName];
-  v7 = [(INCodableAttributeMetadata *)self _localizationTable];
-  v8 = INLocalizedStringFromCodable(v5, v6, v7, v4, 0);
+  localizerCopy = localizer;
+  falseDisplayNameID = [(INCodableBooleanAttributeMetadata *)self falseDisplayNameID];
+  falseDisplayName = [(INCodableBooleanAttributeMetadata *)self falseDisplayName];
+  _localizationTable = [(INCodableAttributeMetadata *)self _localizationTable];
+  v8 = INLocalizedStringFromCodable(falseDisplayNameID, falseDisplayName, _localizationTable, localizerCopy, 0);
 
   return v8;
 }
@@ -169,13 +169,13 @@
   return v4;
 }
 
-- (id)localizedTrueDisplayNameWithLocalizer:(id)a3
+- (id)localizedTrueDisplayNameWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INCodableBooleanAttributeMetadata *)self trueDisplayNameID];
-  v6 = [(INCodableBooleanAttributeMetadata *)self trueDisplayName];
-  v7 = [(INCodableAttributeMetadata *)self _localizationTable];
-  v8 = INLocalizedStringFromCodable(v5, v6, v7, v4, 0);
+  localizerCopy = localizer;
+  trueDisplayNameID = [(INCodableBooleanAttributeMetadata *)self trueDisplayNameID];
+  trueDisplayName = [(INCodableBooleanAttributeMetadata *)self trueDisplayName];
+  _localizationTable = [(INCodableAttributeMetadata *)self _localizationTable];
+  v8 = INLocalizedStringFromCodable(trueDisplayNameID, trueDisplayName, _localizationTable, localizerCopy, 0);
 
   return v8;
 }
@@ -188,70 +188,70 @@
   return v4;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v32[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  localizerCopy = localizer;
   v30.receiver = self;
   v30.super_class = INCodableBooleanAttributeMetadata;
-  v25 = [(INCodableAttributeMetadata *)&v30 dictionaryRepresentationWithLocalizer:v4];
-  v28 = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
-  v31[0] = v28;
-  v5 = [(INCodableBooleanAttributeMetadata *)self defaultValue];
-  v27 = v5;
-  if (!v5)
+  v25 = [(INCodableAttributeMetadata *)&v30 dictionaryRepresentationWithLocalizer:localizerCopy];
+  __INCodableDescriptionDefaultValueKey = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
+  v31[0] = __INCodableDescriptionDefaultValueKey;
+  defaultValue = [(INCodableBooleanAttributeMetadata *)self defaultValue];
+  v27 = defaultValue;
+  if (!defaultValue)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    defaultValue = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v5;
-  v32[0] = v5;
-  v26 = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionTrueDisplayNameKey];
-  v31[1] = v26;
-  v6 = [(INCodableBooleanAttributeMetadata *)self localizedTrueDisplayNameWithLocalizer:v4];
-  v7 = v6;
-  if (!v6)
+  v22 = defaultValue;
+  v32[0] = defaultValue;
+  __INCodableDescriptionTrueDisplayNameKey = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionTrueDisplayNameKey];
+  v31[1] = __INCodableDescriptionTrueDisplayNameKey;
+  null = [(INCodableBooleanAttributeMetadata *)self localizedTrueDisplayNameWithLocalizer:localizerCopy];
+  v7 = null;
+  if (!null)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v6;
-  v32[1] = v6;
-  v24 = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionTrueDisplayNameIDKey];
-  v31[2] = v24;
-  v8 = [(INCodableBooleanAttributeMetadata *)self trueDisplayNameID];
-  v9 = v8;
-  if (!v8)
+  v21 = null;
+  v32[1] = null;
+  __INCodableDescriptionTrueDisplayNameIDKey = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionTrueDisplayNameIDKey];
+  v31[2] = __INCodableDescriptionTrueDisplayNameIDKey;
+  trueDisplayNameID = [(INCodableBooleanAttributeMetadata *)self trueDisplayNameID];
+  v9 = trueDisplayNameID;
+  if (!trueDisplayNameID)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    trueDisplayNameID = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[2] = v8;
-  v23 = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionFalseDisplayNameKey];
-  v31[3] = v23;
-  v29 = v4;
-  v10 = [(INCodableBooleanAttributeMetadata *)self localizedFalseDisplayNameWithLocalizer:v4];
-  v11 = v10;
+  v32[2] = trueDisplayNameID;
+  __INCodableDescriptionFalseDisplayNameKey = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionFalseDisplayNameKey];
+  v31[3] = __INCodableDescriptionFalseDisplayNameKey;
+  v29 = localizerCopy;
+  v10 = [(INCodableBooleanAttributeMetadata *)self localizedFalseDisplayNameWithLocalizer:localizerCopy];
+  null2 = v10;
   if (!v10)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[3] = v11;
-  v12 = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionFalseDisplayNameIDKey];
-  v31[4] = v12;
-  v13 = [(INCodableBooleanAttributeMetadata *)self falseDisplayNameID];
-  v14 = v13;
-  if (!v13)
+  v32[3] = null2;
+  __INCodableDescriptionFalseDisplayNameIDKey = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionFalseDisplayNameIDKey];
+  v31[4] = __INCodableDescriptionFalseDisplayNameIDKey;
+  falseDisplayNameID = [(INCodableBooleanAttributeMetadata *)self falseDisplayNameID];
+  null3 = falseDisplayNameID;
+  if (!falseDisplayNameID)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[4] = v14;
+  v32[4] = null3;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:5];
   v16 = [v25 if_dictionaryByAddingEntriesFromDictionary:v15];
 
-  if (!v13)
+  if (!falseDisplayNameID)
   {
   }
 
@@ -271,21 +271,21 @@
   {
   }
 
-  v17 = [v16 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v16 if_dictionaryWithNonEmptyValues];
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return if_dictionaryWithNonEmptyValues;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = INCodableBooleanAttributeMetadata;
-  [(INCodableAttributeMetadata *)&v35 updateWithDictionary:v4];
-  v5 = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  [(INCodableAttributeMetadata *)&v35 updateWithDictionary:dictionaryCopy];
+  __INCodableDescriptionDefaultValueKey = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
+  v6 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDefaultValueKey];
 
   if (v6)
   {
@@ -312,8 +312,8 @@
   defaultValue = self->_defaultValue;
   self->_defaultValue = v9;
 
-  v11 = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionFalseDisplayNameKey];
-  v12 = [v4 objectForKeyedSubscript:v11];
+  __INCodableDescriptionFalseDisplayNameKey = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionFalseDisplayNameKey];
+  v12 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionFalseDisplayNameKey];
 
   if (v12)
   {
@@ -340,8 +340,8 @@
   falseDisplayName = self->_falseDisplayName;
   self->_falseDisplayName = v15;
 
-  v17 = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionFalseDisplayNameIDKey];
-  v18 = [v4 objectForKeyedSubscript:v17];
+  __INCodableDescriptionFalseDisplayNameIDKey = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionFalseDisplayNameIDKey];
+  v18 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionFalseDisplayNameIDKey];
 
   if (v18)
   {
@@ -368,8 +368,8 @@
   falseDisplayNameID = self->_falseDisplayNameID;
   self->_falseDisplayNameID = v21;
 
-  v23 = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionTrueDisplayNameKey];
-  v24 = [v4 objectForKeyedSubscript:v23];
+  __INCodableDescriptionTrueDisplayNameKey = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionTrueDisplayNameKey];
+  v24 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionTrueDisplayNameKey];
 
   if (v24)
   {
@@ -396,8 +396,8 @@
   trueDisplayName = self->_trueDisplayName;
   self->_trueDisplayName = v27;
 
-  v29 = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionTrueDisplayNameIDKey];
-  v30 = [v4 objectForKeyedSubscript:v29];
+  __INCodableDescriptionTrueDisplayNameIDKey = [(INCodableBooleanAttributeMetadata *)self __INCodableDescriptionTrueDisplayNameIDKey];
+  v30 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionTrueDisplayNameIDKey];
 
   if (v30)
   {
@@ -425,22 +425,22 @@
   self->_trueDisplayNameID = v33;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v18.receiver = a1;
+  representationCopy = representation;
+  v18.receiver = self;
   v18.super_class = &OBJC_METACLASS___INCodableBooleanAttributeMetadata;
   v19 = 0;
-  v7 = objc_msgSendSuper2(&v18, sel_makeFromWidgetPlistableRepresentation_error_, v6, &v19);
+  v7 = objc_msgSendSuper2(&v18, sel_makeFromWidgetPlistableRepresentation_error_, representationCopy, &v19);
   v8 = v19;
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -451,19 +451,19 @@
 
   else
   {
-    v12 = [v6 intents_numberForKey:@"defaultValue"];
+    v12 = [representationCopy intents_numberForKey:@"defaultValue"];
     [v7 setDefaultValue:v12];
 
-    v13 = [v6 intents_stringForKey:@"falseDisplayName"];
+    v13 = [representationCopy intents_stringForKey:@"falseDisplayName"];
     [v7 setFalseDisplayName:v13];
 
-    v14 = [v6 intents_stringForKey:@"falseDisplayNameID"];
+    v14 = [representationCopy intents_stringForKey:@"falseDisplayNameID"];
     [v7 setFalseDisplayNameID:v14];
 
-    v15 = [v6 intents_stringForKey:@"trueDisplayName"];
+    v15 = [representationCopy intents_stringForKey:@"trueDisplayName"];
     [v7 setTrueDisplayName:v15];
 
-    v16 = [v6 intents_stringForKey:@"trueDisplayNameID"];
+    v16 = [representationCopy intents_stringForKey:@"trueDisplayNameID"];
     [v7 setTrueDisplayNameID:v16];
 
     v11 = v7;
@@ -474,82 +474,82 @@
 
 - (id)__INTypeCodableDescriptionTrueDisplayNameIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey;
 }
 
 - (id)__INTypeCodableDescriptionTrueDisplayNameKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataTrueDisplayNameKey = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataTrueDisplayNameKey;
 }
 
 - (id)__INTypeCodableDescriptionFalseDisplayNameIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey;
 }
 
 - (id)__INTypeCodableDescriptionFalseDisplayNameKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataFalseDisplayNameKey = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataFalseDisplayNameKey;
 }
 
 - (id)__INTypeCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableBooleanAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionTrueDisplayNameIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataTrueDisplayNameIDKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionTrueDisplayNameKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataTrueDisplayNameKey = [objc_opt_class() __INCodableBooleanAttributeMetadataTrueDisplayNameKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataTrueDisplayNameKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionFalseDisplayNameIDKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataFalseDisplayNameIDKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionFalseDisplayNameKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataFalseDisplayNameKey = [objc_opt_class() __INCodableBooleanAttributeMetadataFalseDisplayNameKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataFalseDisplayNameKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableBooleanAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableBooleanAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableBooleanAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableBooleanAttributeMetadataDefaultValueKey;
 }
 
 @end

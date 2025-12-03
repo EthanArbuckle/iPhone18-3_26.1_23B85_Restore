@@ -1,45 +1,45 @@
 @interface LPApplicationIdentification
-+ (BOOL)isKnownApplication:(int64_t)a3;
++ (BOOL)isKnownApplication:(int64_t)application;
 + (BOOL)isMessagesOrMessagesViewService;
-+ (id)bundleIdentifiersForKnownApplication:(int64_t)a3;
-+ (id)unlocalizedNameForBundleIdentifier:(id)a3;
-+ (id)unlocalizedNameForKnownApplication:(int64_t)a3;
-+ (int64_t)knownApplicationForBundleIdentifier:(id)a3;
++ (id)bundleIdentifiersForKnownApplication:(int64_t)application;
++ (id)unlocalizedNameForBundleIdentifier:(id)identifier;
++ (id)unlocalizedNameForKnownApplication:(int64_t)application;
++ (int64_t)knownApplicationForBundleIdentifier:(id)identifier;
 @end
 
 @implementation LPApplicationIdentification
 
-+ (BOOL)isKnownApplication:(int64_t)a3
++ (BOOL)isKnownApplication:(int64_t)application
 {
   if (knownApplication_onceToken != -1)
   {
     +[LPApplicationIdentification isKnownApplication:];
   }
 
-  return knownApplication_knownApplication == a3;
+  return knownApplication_knownApplication == application;
 }
 
-+ (id)bundleIdentifiersForKnownApplication:(int64_t)a3
++ (id)bundleIdentifiersForKnownApplication:(int64_t)application
 {
-  if (a3 > 0x10)
+  if (application > 0x10)
   {
     return &unk_1F2483728;
   }
 
   else
   {
-    return qword_1E7A356C0[a3];
+    return qword_1E7A356C0[application];
   }
 }
 
-+ (int64_t)knownApplicationForBundleIdentifier:(id)a3
++ (int64_t)knownApplicationForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = 1;
   while (1)
   {
     v5 = [LPApplicationIdentification bundleIdentifiersForKnownApplication:v4];
-    v6 = [v3 _lp_isEqualToAnyIgnoringCase:v5];
+    v6 = [identifierCopy _lp_isEqualToAnyIgnoringCase:v5];
 
     if (v6)
     {
@@ -56,35 +56,35 @@
   return v4;
 }
 
-+ (id)unlocalizedNameForKnownApplication:(int64_t)a3
++ (id)unlocalizedNameForKnownApplication:(int64_t)application
 {
-  if ((a3 - 4) > 9)
+  if ((application - 4) > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A35748[a3 - 4];
+    return off_1E7A35748[application - 4];
   }
 }
 
-+ (id)unlocalizedNameForBundleIdentifier:(id)a3
++ (id)unlocalizedNameForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 unlocalizedNameForKnownApplication:{objc_msgSend(a1, "knownApplicationForBundleIdentifier:", v4)}];
+  identifierCopy = identifier;
+  v5 = [self unlocalizedNameForKnownApplication:{objc_msgSend(self, "knownApplicationForBundleIdentifier:", identifierCopy)}];
 
   return v5;
 }
 
 + (BOOL)isMessagesOrMessagesViewService
 {
-  if ([a1 isKnownApplication:2])
+  if ([self isKnownApplication:2])
   {
     return 1;
   }
 
-  return [a1 isKnownApplication:3];
+  return [self isKnownApplication:3];
 }
 
 @end

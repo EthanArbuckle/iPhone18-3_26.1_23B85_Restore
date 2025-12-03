@@ -1,24 +1,24 @@
 @interface MPSNNConcatenation
-- (MPSNNConcatenation)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNNConcatenation)initWithDevice:(id)a3;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6;
-- (id)resultStateBatchForSourceImages:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5;
-- (id)resultStateForSourceImages:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5;
-- (id)temporaryResultStateBatchForCommandBuffer:(id)a3 sourceImages:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6;
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImages:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6;
-- (void)copyToGradientState:(id)a3 sourceImages:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6;
-- (void)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationImage:(id)a5;
-- (void)encodeToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationImage:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (MPSNNConcatenation)initWithCoder:(id)coder device:(id)device;
+- (MPSNNConcatenation)initWithDevice:(id)device;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset;
+- (id)resultStateBatchForSourceImages:(id)images sourceStates:(id)states destinationImage:(id)image;
+- (id)resultStateForSourceImages:(id)images sourceStates:(id)states destinationImage:(id)image;
+- (id)temporaryResultStateBatchForCommandBuffer:(id)buffer sourceImages:(id)images sourceStates:(id)states destinationImage:(id)image;
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImages:(id)images sourceStates:(id)states destinationImage:(id)image;
+- (void)copyToGradientState:(id)state sourceImages:(id)images sourceStates:(id)states destinationImage:(id)image;
+- (void)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images destinationImage:(id)image;
+- (void)encodeToCommandBuffer:(id)buffer sourceImages:(id)images destinationImage:(id)image;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNConcatenation
 
-- (MPSNNConcatenation)initWithDevice:(id)a3
+- (MPSNNConcatenation)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNNConcatenation;
-  result = [(MPSCNNKernel *)&v4 initWithDevice:a3];
+  result = [(MPSCNNKernel *)&v4 initWithDevice:device];
   if (result)
   {
     *(&result->super.super.super.isa + *MEMORY[0x277CD7348]) = 31;
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (MPSNNConcatenation)initWithCoder:(id)a3 device:(id)a4
+- (MPSNNConcatenation)initWithCoder:(id)coder device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MPSNNConcatenation;
-  result = [(MPSCNNKernel *)&v7 initWithCoder:a3 device:a4];
+  result = [(MPSCNNKernel *)&v7 initWithCoder:coder device:device];
   if (result && *(&result->super.super.super.isa + *MEMORY[0x277CD7358] + 2) << 16 != 0x10000)
   {
     v5 = result;
@@ -48,34 +48,34 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSNNConcatenation;
-  [(MPSCNNKernel *)&v3 encodeWithCoder:a3];
+  [(MPSCNNKernel *)&v3 encodeWithCoder:coder];
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationImage:(id)a5
+- (void)encodeToCommandBuffer:(id)buffer sourceImages:(id)images destinationImage:(id)image
 {
   v226 = *MEMORY[0x277CD7378];
   if ((*(&self->super.super.super.isa + v226) & 1) == 0)
   {
-    if (!a3 && MTLReportFailureTypeEnabled())
+    if (!buffer && MTLReportFailureTypeEnabled())
     {
       v206 = objc_opt_class();
       v213 = NSStringFromClass(v206);
       MTLReportFailure();
     }
 
-    if (!a4 && MTLReportFailureTypeEnabled())
+    if (!images && MTLReportFailureTypeEnabled())
     {
       v207 = objc_opt_class();
       v213 = NSStringFromClass(v207);
       MTLReportFailure();
     }
 
-    if (!a5 && MTLReportFailureTypeEnabled())
+    if (!image && MTLReportFailureTypeEnabled())
     {
       v208 = objc_opt_class();
       v213 = NSStringFromClass(v208);
@@ -92,16 +92,16 @@
     }
   }
 
-  if (a4 && a5)
+  if (images && image)
   {
-    v12 = *(a5 + *MEMORY[0x277CD7318]);
-    v220 = *(a5 + *MEMORY[0x277CD7300]);
-    v13 = a5 + *MEMORY[0x277CD7320];
-    v14 = *(a5 + *MEMORY[0x277CD72F8]);
-    v22 = objc_msgSend_destinationFeatureChannelOffset(self, a2, a3, a4, a5, v5, v6, v7);
-    v23 = *(a5 + *MEMORY[0x277CD7330]);
-    v24 = *(a5 + *MEMORY[0x277CD7308]);
-    v223 = *(a5 + *MEMORY[0x277CD7310]);
+    v12 = *(image + *MEMORY[0x277CD7318]);
+    v220 = *(image + *MEMORY[0x277CD7300]);
+    v13 = image + *MEMORY[0x277CD7320];
+    v14 = *(image + *MEMORY[0x277CD72F8]);
+    v22 = objc_msgSend_destinationFeatureChannelOffset(self, a2, buffer, images, image, v5, v6, v7);
+    v23 = *(image + *MEMORY[0x277CD7330]);
+    v24 = *(image + *MEMORY[0x277CD7308]);
+    v223 = *(image + *MEMORY[0x277CD7310]);
     if ((*(&self->super.super.super.isa + v226) & 1) == 0)
     {
       if ((v12 & 0x200000000000) == 0 && MTLReportFailureTypeEnabled())
@@ -166,7 +166,7 @@
       v44 = 0x8000000000000000;
     }
 
-    v224 = objc_msgSend_count(a4, v36, v37, v38, v39, v40, v41, v42, v213);
+    v224 = objc_msgSend_count(images, v36, v37, v38, v39, v40, v41, v42, v213);
     if (!(*(&self->super.super.super.isa + v226) & 1 | v224) && MTLReportFailureTypeEnabled())
     {
       v210 = objc_opt_class();
@@ -174,7 +174,7 @@
       MTLReportFailure();
     }
 
-    if (objc_msgSend_retainedReferences(a3, v45, v46, v47, v48, v49, v50, v51, v214))
+    if (objc_msgSend_retainedReferences(buffer, v45, v46, v47, v48, v49, v50, v51, v214))
     {
       v228 = 0;
     }
@@ -188,13 +188,13 @@
       v244[3] = &unk_278B28F28;
       v228 = v52;
       v244[4] = v52;
-      objc_msgSend_addCompletedHandler_(a3, v53, v244, v54, v55, v56, v57, v58);
+      objc_msgSend_addCompletedHandler_(buffer, v53, v244, v54, v55, v56, v57, v58);
     }
 
     v59 = objc_alloc(MEMORY[0x277CD7210]);
-    v72 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v59, v60, a3, 0, v61, v62, v63, v64);
+    v72 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v59, v60, buffer, 0, v61, v62, v63, v64);
     v242 = v72;
-    v243 = self;
+    selfCopy = self;
     if ((*(&self->super.super.super.isa + v226) & 0x18) != 0)
     {
       v66 = *(&self->super.super.super.isa + *MEMORY[0x277CD7360]);
@@ -215,13 +215,13 @@
       v84 = 1 << (v44 >> 1);
       v83.i16[1] = v81;
       v227 = v83;
-      for (i = objc_msgSend_objectAtIndexedSubscript_(a4, v65, 0, v67, v68, v69, v70, v71); ; i = objc_msgSend_objectAtIndexedSubscript_(a4, v65, v82, v67, v68, v69, v70, v71))
+      for (i = objc_msgSend_objectAtIndexedSubscript_(images, v65, 0, v67, v68, v69, v70, v71); ; i = objc_msgSend_objectAtIndexedSubscript_(images, v65, v82, v67, v68, v69, v70, v71))
       {
         v93 = i;
         v94 = i + *MEMORY[0x277CD7320];
         v95 = *(i + *MEMORY[0x277CD72F8]);
         v230 = *(v94 + 56);
-        if (*(i + *MEMORY[0x277CD7300]) != *(a5 + *MEMORY[0x277CD7300]) && MTLReportFailureTypeEnabled())
+        if (*(i + *MEMORY[0x277CD7300]) != *(image + *MEMORY[0x277CD7300]) && MTLReportFailureTypeEnabled())
         {
           v201 = objc_opt_class();
           v215 = NSStringFromClass(v201);
@@ -261,14 +261,14 @@
         v241 = 0;
         objc_msgSend_offset(self, v86, v87, v88, v89, v90, v91, v92, v215);
         v239 = 0;
-        v104 = *(a5 + *MEMORY[0x277CD72F8]) + 3;
+        v104 = *(image + *MEMORY[0x277CD72F8]) + 3;
         v233 = 0;
         v234 = v227;
         v235 = 0x1000000000000;
         v236 = 65537;
         v237 = v96 >> 2;
         v238 = v223;
-        v105 = *(a5 + *MEMORY[0x277CD7300]);
+        v105 = *(image + *MEMORY[0x277CD7300]);
         if (v105 == 1)
         {
           *&v107 = 0;
@@ -290,7 +290,7 @@
           v235 = 1;
         }
 
-        v109 = a5 + *MEMORY[0x277CD7320];
+        v109 = image + *MEMORY[0x277CD7320];
         for (j = atomic_load_explicit(v109, memory_order_acquire); (v109[56] & 2) != 0; j = atomic_load_explicit(v109, memory_order_acquire))
         {
           v109 = *(v109 + 5);
@@ -307,7 +307,7 @@
         }
 
         v119 = v111;
-        v120 = a5 + *MEMORY[0x277CD7320];
+        v120 = image + *MEMORY[0x277CD7320];
         for (k = atomic_load_explicit(v120, memory_order_acquire); (v120[56] & 2) != 0; k = atomic_load_explicit(v120, memory_order_acquire))
         {
           v120 = *(v120 + 5);
@@ -324,7 +324,7 @@
         }
 
         v130 = v122;
-        v131 = a5 + *MEMORY[0x277CD7320];
+        v131 = image + *MEMORY[0x277CD7320];
         v132 = atomic_load_explicit(v131, memory_order_acquire);
         if ((v131[56] & 2) != 0)
         {
@@ -695,24 +695,24 @@ LABEL_127:
   }
 }
 
-- (void)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationImage:(id)a5
+- (void)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images destinationImage:(id)image
 {
-  v12 = objc_msgSend_count(a5, a2, a3, a4, a5, v5, v6, v7);
-  v20 = objc_msgSend_count(a4, v13, v14, v15, v16, v17, v18, v19);
+  v12 = objc_msgSend_count(image, a2, buffer, images, image, v5, v6, v7);
+  v20 = objc_msgSend_count(images, v13, v14, v15, v16, v17, v18, v19);
   v27 = v20;
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0 && v20)
   {
     v28 = 0;
     do
     {
-      v29 = objc_msgSend_objectAtIndexedSubscript_(a4, v21, v28, v22, v23, v24, v25, v26, v108, v109, v110, v111);
+      v29 = objc_msgSend_objectAtIndexedSubscript_(images, v21, v28, v22, v23, v24, v25, v26, v108, v109, v110, v111);
       objc_msgSend_count(v29, v30, v31, v32, v33, v34, v35, v36);
-      v43 = objc_msgSend_objectAtIndexedSubscript_(a4, v37, v28, v38, v39, v40, v41, v42);
+      v43 = objc_msgSend_objectAtIndexedSubscript_(images, v37, v28, v38, v39, v40, v41, v42);
       if (objc_msgSend_count(v43, v44, v45, v46, v47, v48, v49, v50) < v12 && MTLReportFailureTypeEnabled())
       {
         v51 = objc_opt_class();
         v52 = NSStringFromClass(v51);
-        v59 = objc_msgSend_objectAtIndexedSubscript_(a4, v53, v28, v54, v55, v56, v57, v58);
+        v59 = objc_msgSend_objectAtIndexedSubscript_(images, v53, v28, v54, v55, v56, v57, v58);
         v110 = objc_msgSend_count(v59, v60, v61, v62, v63, v64, v65, v66);
         v111 = v12;
         v108 = v52;
@@ -737,13 +737,13 @@ LABEL_127:
       {
         for (j = 0; j != v27; ++j)
         {
-          v84 = objc_msgSend_objectAtIndexedSubscript_(a4, v75, j, v76, v77, v78, v79, v80, v108, v109, v110, v111);
+          v84 = objc_msgSend_objectAtIndexedSubscript_(images, v75, j, v76, v77, v78, v79, v80, v108, v109, v110, v111);
           v91 = objc_msgSend_objectAtIndexedSubscript_(v84, v85, i, v86, v87, v88, v89, v90);
           objc_msgSend_setObject_atIndexedSubscript_(v81, v92, v91, j, v93, v94, v95, v96);
         }
 
-        v97 = objc_msgSend_objectAtIndexedSubscript_(a5, v75, i, v76, v77, v78, v79, v80);
-        objc_msgSend_encodeToCommandBuffer_sourceImages_destinationImage_(self, v98, a3, v81, v97, v99, v100, v101);
+        v97 = objc_msgSend_objectAtIndexedSubscript_(image, v75, i, v76, v77, v78, v79, v80);
+        objc_msgSend_encodeToCommandBuffer_sourceImages_destinationImage_(self, v98, buffer, v81, v97, v99, v100, v101);
       }
     }
 
@@ -751,8 +751,8 @@ LABEL_127:
     {
       for (k = 0; k != v12; ++k)
       {
-        v103 = objc_msgSend_objectAtIndexedSubscript_(a5, v75, k, v76, v77, v78, v79, v80, v108, v109, v110, v111);
-        objc_msgSend_encodeToCommandBuffer_sourceImages_destinationImage_(self, v104, a3, v81, v103, v105, v106, v107);
+        v103 = objc_msgSend_objectAtIndexedSubscript_(image, v75, k, v76, v77, v78, v79, v80, v108, v109, v110, v111);
+        objc_msgSend_encodeToCommandBuffer_sourceImages_destinationImage_(self, v104, buffer, v81, v103, v105, v106, v107);
       }
     }
   }
@@ -760,9 +760,9 @@ LABEL_127:
   objc_autoreleasePoolPop(v67);
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset
 {
-  v10 = objc_msgSend_count(a3, a2, a3, a4, a5, a6, v6, v7);
+  v10 = objc_msgSend_count(images, a2, images, states, method, offset, v6, v7);
   if (*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1 | v10)
   {
     v17 = v10;
@@ -775,7 +775,7 @@ LABEL_127:
       v22 = MEMORY[0x277CD7310];
       v23 = -1;
       v24 = -1;
-      for (i = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 0, v12, v13, v14, v15, v16); ; i = objc_msgSend_objectAtIndexedSubscript_(a3, v11, v20, v26, v27, v28, v29, v30))
+      for (i = objc_msgSend_objectAtIndexedSubscript_(images, v11, 0, v12, v13, v14, v15, v16); ; i = objc_msgSend_objectAtIndexedSubscript_(images, v11, v20, v26, v27, v28, v29, v30))
       {
         v32 = *(i + *MEMORY[0x277CD72F0]);
         if (v32 <= 5)
@@ -849,13 +849,13 @@ LABEL_23:
   return objc_msgSend_imageDescriptorWithChannelFormat_width_height_featureChannels_numberOfImages_usage_(v36, v11, v19, v21, v23, v18, v24, 19);
 }
 
-- (id)resultStateForSourceImages:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5
+- (id)resultStateForSourceImages:(id)images sourceStates:(id)states destinationImage:(id)image
 {
   v9 = [MPSNNConcatenationGradientState alloc];
   v19 = objc_msgSend_initWithResource_(v9, v10, 0, v11, v12, v13, v14, v15);
   if (v19)
   {
-    objc_msgSend_copyToGradientState_sourceImages_sourceStates_destinationImage_(self, v16, v19, a3, a4, a5, v17, v18);
+    objc_msgSend_copyToGradientState_sourceImages_sourceStates_destinationImage_(self, v16, v19, images, states, image, v17, v18);
     if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x10) != 0)
     {
       v20 = MEMORY[0x277CCACA8];
@@ -869,12 +869,12 @@ LABEL_23:
   return v19;
 }
 
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImages:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImages:(id)images sourceStates:(id)states destinationImage:(id)image
 {
-  v15 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSNNConcatenationGradientState, a2, a3, a4, a5, a6, v6, v7);
+  v15 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSNNConcatenationGradientState, a2, buffer, images, states, image, v6, v7);
   if (v15)
   {
-    objc_msgSend_copyToGradientState_sourceImages_sourceStates_destinationImage_(self, v12, v15, a4, a5, a6, v13, v14);
+    objc_msgSend_copyToGradientState_sourceImages_sourceStates_destinationImage_(self, v12, v15, images, states, image, v13, v14);
     if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x10) != 0)
     {
       v16 = MEMORY[0x277CCACA8];
@@ -888,15 +888,15 @@ LABEL_23:
   return v15;
 }
 
-- (id)temporaryResultStateBatchForCommandBuffer:(id)a3 sourceImages:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6
+- (id)temporaryResultStateBatchForCommandBuffer:(id)buffer sourceImages:(id)images sourceStates:(id)states destinationImage:(id)image
 {
-  v8 = a6;
-  v14 = objc_msgSend_objectAtIndexedSubscript_(a4, a2, 0, a4, a5, a6, v6, v7);
+  imageCopy = image;
+  v14 = objc_msgSend_objectAtIndexedSubscript_(images, a2, 0, images, states, image, v6, v7);
   v29 = objc_msgSend_count(v14, v15, v16, v17, v18, v19, v20, v21);
-  v231 = self;
+  selfCopy = self;
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0)
   {
-    if (!a3 && MTLReportFailureTypeEnabled())
+    if (!buffer && MTLReportFailureTypeEnabled())
     {
       v222 = objc_opt_class();
       v224 = NSStringFromClass(v222);
@@ -904,7 +904,7 @@ LABEL_23:
       MTLReportFailure();
     }
 
-    if (!a4 && MTLReportFailureTypeEnabled())
+    if (!images && MTLReportFailureTypeEnabled())
     {
       v223 = objc_opt_class();
       v224 = NSStringFromClass(v223);
@@ -912,14 +912,14 @@ LABEL_23:
       MTLReportFailure();
     }
 
-    if (a5 && objc_msgSend_count(a5, v22, v23, v24, v25, v26, v27, v28))
+    if (states && objc_msgSend_count(states, v22, v23, v24, v25, v26, v27, v28))
     {
       v36 = 0;
       do
       {
-        v37 = objc_msgSend_objectAtIndexedSubscript_(a5, v30, v36, v31, v32, v33, v34, v35, v224, v226);
+        v37 = objc_msgSend_objectAtIndexedSubscript_(states, v30, v36, v31, v32, v33, v34, v35, v224, v226);
         objc_msgSend_count(v37, v38, v39, v40, v41, v42, v43, v44);
-        v51 = objc_msgSend_objectAtIndexedSubscript_(a5, v45, v36, v46, v47, v48, v49, v50);
+        v51 = objc_msgSend_objectAtIndexedSubscript_(states, v45, v36, v46, v47, v48, v49, v50);
         if (objc_msgSend_count(v51, v52, v53, v54, v55, v56, v57, v58) < v29 && MTLReportFailureTypeEnabled())
         {
           v66 = objc_opt_class();
@@ -931,7 +931,7 @@ LABEL_23:
         ++v36;
       }
 
-      while (v36 < objc_msgSend_count(a5, v59, v60, v61, v62, v63, v64, v65, v225, v227));
+      while (v36 < objc_msgSend_count(states, v59, v60, v61, v62, v63, v64, v65, v225, v227));
     }
   }
 
@@ -941,28 +941,28 @@ LABEL_23:
   }
 
   v67 = objc_autoreleasePoolPush();
-  v75 = objc_msgSend_count(a4, v68, v69, v70, v71, v72, v73, v74);
+  v75 = objc_msgSend_count(images, v68, v69, v70, v71, v72, v73, v74);
   v82 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v76, v75, v77, v78, v79, v80, v81);
   v90 = v82;
   if (v75 && v82)
   {
     for (i = 0; i != v75; ++i)
     {
-      v92 = objc_msgSend_objectAtIndexedSubscript_(a4, v83, i, v85, v86, v87, v88, v89, v224, v226);
+      v92 = objc_msgSend_objectAtIndexedSubscript_(images, v83, i, v85, v86, v87, v88, v89, v224, v226);
       v99 = objc_msgSend_objectAtIndexedSubscript_(v92, v93, 0, v94, v95, v96, v97, v98);
       objc_msgSend_setObject_atIndexedSubscript_(v90, v100, v99, i, v101, v102, v103, v104);
     }
   }
 
-  if (a5)
+  if (states)
   {
-    v105 = objc_msgSend_count(a5, v83, v84, v85, v86, v87, v88, v89);
+    v105 = objc_msgSend_count(states, v83, v84, v85, v86, v87, v88, v89);
     v112 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v106, v105, v107, v108, v109, v110, v111);
     if (v112 && v105)
     {
       for (j = 0; j != v105; ++j)
       {
-        v114 = objc_msgSend_objectAtIndexedSubscript_(a5, v83, j, v85, v86, v87, v88, v89, v224, v226);
+        v114 = objc_msgSend_objectAtIndexedSubscript_(states, v83, j, v85, v86, v87, v88, v89, v224, v226);
         v121 = objc_msgSend_objectAtIndexedSubscript_(v114, v115, 0, v116, v117, v118, v119, v120);
         objc_msgSend_setObject_atIndexedSubscript_(v112, v122, v121, j, v123, v124, v125, v126);
       }
@@ -974,8 +974,8 @@ LABEL_23:
     v112 = 0;
   }
 
-  v127 = objc_msgSend_objectAtIndexedSubscript_(v8, v83, 0, v85, v86, v87, v88, v89, v224, v226);
-  v131 = objc_msgSend_temporaryResultStateForCommandBuffer_sourceImages_sourceStates_destinationImage_(v231, v128, a3, v90, v112, v127, v129, v130);
+  v127 = objc_msgSend_objectAtIndexedSubscript_(imageCopy, v83, 0, v85, v86, v87, v88, v89, v224, v226);
+  v131 = objc_msgSend_temporaryResultStateForCommandBuffer_sourceImages_sourceStates_destinationImage_(selfCopy, v128, buffer, v90, v112, v127, v129, v130);
   if (!v131 || (v132 = v131, (v230 = malloc_type_malloc(8 * v29, 0x80040B8603338uLL)) == 0))
   {
     objc_autoreleasePoolPop(v67);
@@ -983,7 +983,7 @@ LABEL_23:
   }
 
   context = v67;
-  if (!objc_msgSend_isResultStateReusedAcrossBatch(v231, v133, v134, v135, v136, v137, v138, v139))
+  if (!objc_msgSend_isResultStateReusedAcrossBatch(selfCopy, v133, v134, v135, v136, v137, v138, v139))
   {
     v230->i64[0] = v132;
     v149 = 0x277CBE000uLL;
@@ -1002,38 +1002,38 @@ LABEL_23:
     v151 = 1;
     while (1)
     {
-      v157 = objc_msgSend_count(a4, v140, v141, v142, v143, v144, v145, v146);
+      v157 = objc_msgSend_count(images, v140, v141, v142, v143, v144, v145, v146);
       v164 = objc_msgSend_arrayWithCapacity_(*(v149 + 2840), v158, v157, v159, v160, v161, v162, v163);
       v172 = v164;
       if (v157 && v164)
       {
         for (k = 0; k != v157; ++k)
         {
-          v174 = objc_msgSend_objectAtIndexedSubscript_(a4, v165, k, v167, v168, v169, v170, v171);
+          v174 = objc_msgSend_objectAtIndexedSubscript_(images, v165, k, v167, v168, v169, v170, v171);
           v181 = objc_msgSend_objectAtIndexedSubscript_(v174, v175, v151, v176, v177, v178, v179, v180);
           objc_msgSend_setObject_atIndexedSubscript_(v172, v182, v181, k, v183, v184, v185, v186);
         }
       }
 
-      if (a5)
+      if (states)
       {
-        v187 = objc_msgSend_count(a5, v165, v166, v167, v168, v169, v170, v171);
+        v187 = objc_msgSend_count(states, v165, v166, v167, v168, v169, v170, v171);
         v152 = objc_msgSend_arrayWithCapacity_(*(v149 + 2840), v188, v187, v189, v190, v191, v192, v193);
         if (v152 && v187)
         {
-          v194 = a3;
-          v195 = v8;
+          bufferCopy = buffer;
+          v195 = imageCopy;
           for (m = 0; m != v187; ++m)
           {
-            v197 = objc_msgSend_objectAtIndexedSubscript_(a5, v165, m, v167, v168, v169, v170, v171);
+            v197 = objc_msgSend_objectAtIndexedSubscript_(states, v165, m, v167, v168, v169, v170, v171);
             v204 = objc_msgSend_objectAtIndexedSubscript_(v197, v198, v151, v199, v200, v201, v202, v203);
             objc_msgSend_setObject_atIndexedSubscript_(v152, v205, v204, m, v206, v207, v208, v209);
           }
 
-          v8 = v195;
-          a3 = v194;
+          imageCopy = v195;
+          buffer = bufferCopy;
           v149 = 0x277CBE000;
-          v153 = objc_msgSend_objectAtIndexedSubscript_(v8, v165, v151, v167, v168, v169, v170, v171);
+          v153 = objc_msgSend_objectAtIndexedSubscript_(imageCopy, v165, v151, v167, v168, v169, v170, v171);
           goto LABEL_37;
         }
       }
@@ -1043,9 +1043,9 @@ LABEL_23:
         v152 = 0;
       }
 
-      v153 = objc_msgSend_objectAtIndexedSubscript_(v8, v165, v151, v167, v168, v169, v170, v171);
+      v153 = objc_msgSend_objectAtIndexedSubscript_(imageCopy, v165, v151, v167, v168, v169, v170, v171);
 LABEL_37:
-      v230->i64[v151++] = objc_msgSend_temporaryResultStateForCommandBuffer_sourceImages_sourceStates_destinationImage_(v231, v154, a3, v172, v152, v153, v155, v156);
+      v230->i64[v151++] = objc_msgSend_temporaryResultStateForCommandBuffer_sourceImages_sourceStates_destinationImage_(selfCopy, v154, buffer, v172, v152, v153, v155, v156);
       if (v151 == v229)
       {
         goto LABEL_53;
@@ -1096,28 +1096,28 @@ LABEL_53:
   return v221;
 }
 
-- (id)resultStateBatchForSourceImages:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5
+- (id)resultStateBatchForSourceImages:(id)images sourceStates:(id)states destinationImage:(id)image
 {
-  v8 = a5;
-  v12 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4, a5, v5, v6, v7);
+  imageCopy = image;
+  v12 = objc_msgSend_objectAtIndexedSubscript_(images, a2, 0, states, image, v5, v6, v7);
   v27 = objc_msgSend_count(v12, v13, v14, v15, v16, v17, v18, v19);
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0)
   {
-    if (!a3 && MTLReportFailureTypeEnabled())
+    if (!images && MTLReportFailureTypeEnabled())
     {
       v222 = objc_opt_class();
       v223 = NSStringFromClass(v222);
       MTLReportFailure();
     }
 
-    if (a4 && objc_msgSend_count(a4, v20, v21, v22, v23, v24, v25, v26))
+    if (states && objc_msgSend_count(states, v20, v21, v22, v23, v24, v25, v26))
     {
       v34 = 0;
       do
       {
-        v35 = objc_msgSend_objectAtIndexedSubscript_(a4, v28, v34, v29, v30, v31, v32, v33, v223);
+        v35 = objc_msgSend_objectAtIndexedSubscript_(states, v28, v34, v29, v30, v31, v32, v33, v223);
         objc_msgSend_count(v35, v36, v37, v38, v39, v40, v41, v42);
-        v49 = objc_msgSend_objectAtIndexedSubscript_(a4, v43, v34, v44, v45, v46, v47, v48);
+        v49 = objc_msgSend_objectAtIndexedSubscript_(states, v43, v34, v44, v45, v46, v47, v48);
         if (objc_msgSend_count(v49, v50, v51, v52, v53, v54, v55, v56) < v27 && MTLReportFailureTypeEnabled())
         {
           v64 = objc_opt_class();
@@ -1128,7 +1128,7 @@ LABEL_53:
         ++v34;
       }
 
-      while (v34 < objc_msgSend_count(a4, v57, v58, v59, v60, v61, v62, v63, v224));
+      while (v34 < objc_msgSend_count(states, v57, v58, v59, v60, v61, v62, v63, v224));
     }
   }
 
@@ -1138,28 +1138,28 @@ LABEL_53:
   }
 
   v65 = objc_autoreleasePoolPush();
-  v73 = objc_msgSend_count(a3, v66, v67, v68, v69, v70, v71, v72);
+  v73 = objc_msgSend_count(images, v66, v67, v68, v69, v70, v71, v72);
   v80 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v74, v73, v75, v76, v77, v78, v79);
   v88 = v80;
   if (v73 && v80)
   {
     for (i = 0; i != v73; ++i)
     {
-      v90 = objc_msgSend_objectAtIndexedSubscript_(a3, v81, i, v83, v84, v85, v86, v87, v223);
+      v90 = objc_msgSend_objectAtIndexedSubscript_(images, v81, i, v83, v84, v85, v86, v87, v223);
       v97 = objc_msgSend_objectAtIndexedSubscript_(v90, v91, 0, v92, v93, v94, v95, v96);
       objc_msgSend_setObject_atIndexedSubscript_(v88, v98, v97, i, v99, v100, v101, v102);
     }
   }
 
-  if (a4)
+  if (states)
   {
-    v103 = objc_msgSend_count(a4, v81, v82, v83, v84, v85, v86, v87);
+    v103 = objc_msgSend_count(states, v81, v82, v83, v84, v85, v86, v87);
     v110 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v104, v103, v105, v106, v107, v108, v109);
     if (v110 && v103)
     {
       for (j = 0; j != v103; ++j)
       {
-        v112 = objc_msgSend_objectAtIndexedSubscript_(a4, v81, j, v83, v84, v85, v86, v87, v223);
+        v112 = objc_msgSend_objectAtIndexedSubscript_(states, v81, j, v83, v84, v85, v86, v87, v223);
         v119 = objc_msgSend_objectAtIndexedSubscript_(v112, v113, 0, v114, v115, v116, v117, v118);
         objc_msgSend_setObject_atIndexedSubscript_(v110, v120, v119, j, v121, v122, v123, v124);
       }
@@ -1171,7 +1171,7 @@ LABEL_53:
     v110 = 0;
   }
 
-  v125 = objc_msgSend_objectAtIndexedSubscript_(v8, v81, 0, v83, v84, v85, v86, v87, v223);
+  v125 = objc_msgSend_objectAtIndexedSubscript_(imageCopy, v81, 0, v83, v84, v85, v86, v87, v223);
   v130 = objc_msgSend_resultStateForSourceImages_sourceStates_destinationImage_(self, v126, v88, v110, v125, v127, v128, v129);
   if (!v130 || (v131 = v130, (v227 = malloc_type_malloc(8 * v27, 0x80040B8603338uLL)) == 0))
   {
@@ -1199,38 +1199,38 @@ LABEL_53:
     v150 = 1;
     while (1)
     {
-      v157 = objc_msgSend_count(a3, v139, v140, v141, v142, v143, v144, v145);
+      v157 = objc_msgSend_count(images, v139, v140, v141, v142, v143, v144, v145);
       v164 = objc_msgSend_arrayWithCapacity_(*(v148 + 2840), v158, v157, v159, v160, v161, v162, v163);
       v172 = v164;
       if (v157 && v164)
       {
         for (k = 0; k != v157; ++k)
         {
-          v174 = objc_msgSend_objectAtIndexedSubscript_(a3, v165, k, v167, v168, v169, v170, v171);
+          v174 = objc_msgSend_objectAtIndexedSubscript_(images, v165, k, v167, v168, v169, v170, v171);
           v181 = objc_msgSend_objectAtIndexedSubscript_(v174, v175, v150, v176, v177, v178, v179, v180);
           objc_msgSend_setObject_atIndexedSubscript_(v172, v182, v181, k, v183, v184, v185, v186);
         }
       }
 
-      if (a4)
+      if (states)
       {
-        v187 = objc_msgSend_count(a4, v165, v166, v167, v168, v169, v170, v171);
+        v187 = objc_msgSend_count(states, v165, v166, v167, v168, v169, v170, v171);
         v151 = objc_msgSend_arrayWithCapacity_(*(v148 + 2840), v188, v187, v189, v190, v191, v192, v193);
         if (v151 && v187)
         {
-          v194 = self;
-          v195 = v8;
+          selfCopy = self;
+          v195 = imageCopy;
           for (m = 0; m != v187; ++m)
           {
-            v197 = objc_msgSend_objectAtIndexedSubscript_(a4, v165, m, v167, v168, v169, v170, v171);
+            v197 = objc_msgSend_objectAtIndexedSubscript_(states, v165, m, v167, v168, v169, v170, v171);
             v204 = objc_msgSend_objectAtIndexedSubscript_(v197, v198, v150, v199, v200, v201, v202, v203);
             objc_msgSend_setObject_atIndexedSubscript_(v151, v205, v204, m, v206, v207, v208, v209);
           }
 
-          v8 = v195;
-          self = v194;
+          imageCopy = v195;
+          self = selfCopy;
           v148 = 0x277CBE000;
-          v152 = objc_msgSend_objectAtIndexedSubscript_(v8, v165, v150, v167, v168, v169, v170, v171);
+          v152 = objc_msgSend_objectAtIndexedSubscript_(imageCopy, v165, v150, v167, v168, v169, v170, v171);
           goto LABEL_36;
         }
       }
@@ -1240,7 +1240,7 @@ LABEL_53:
         v151 = 0;
       }
 
-      v152 = objc_msgSend_objectAtIndexedSubscript_(v8, v165, v150, v167, v168, v169, v170, v171);
+      v152 = objc_msgSend_objectAtIndexedSubscript_(imageCopy, v165, v150, v167, v168, v169, v170, v171);
 LABEL_36:
       v227->i64[v150++] = objc_msgSend_resultStateForSourceImages_sourceStates_destinationImage_(self, v153, v172, v151, v152, v154, v155, v156);
       if (v150 == v226)
@@ -1293,19 +1293,19 @@ LABEL_52:
   return v221;
 }
 
-- (void)copyToGradientState:(id)a3 sourceImages:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6
+- (void)copyToGradientState:(id)state sourceImages:(id)images sourceStates:(id)states destinationImage:(id)image
 {
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a4, a2, 0, a4, a5, a6, v6, v7);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(images, a2, 0, images, states, image, v6, v7);
   v34.receiver = self;
   v34.super_class = MPSNNConcatenation;
-  [(MPSCNNKernel *)&v34 copyToGradientState:a3 sourceImage:v13 sourceStates:a5 destinationImage:a6];
-  v27 = objc_msgSend_count(a4, v14, v15, v16, v17, v18, v19, v20);
-  if (*(a3 + 73) != v27)
+  [(MPSCNNKernel *)&v34 copyToGradientState:state sourceImage:v13 sourceStates:states destinationImage:image];
+  v27 = objc_msgSend_count(images, v14, v15, v16, v17, v18, v19, v20);
+  if (*(state + 73) != v27)
   {
-    free(*(a3 + 37));
-    *(a3 + 73) = v27;
-    *(a3 + 37) = malloc_type_calloc(*(a3 + 73), 0x10uLL, 0x1000040451B5BE8uLL);
-    v27 = *(a3 + 73);
+    free(*(state + 37));
+    *(state + 73) = v27;
+    *(state + 37) = malloc_type_calloc(*(state + 73), 0x10uLL, 0x1000040451B5BE8uLL);
+    v27 = *(state + 73);
   }
 
   if (v27)
@@ -1316,8 +1316,8 @@ LABEL_52:
     v31 = MEMORY[0x277CD72F8];
     do
     {
-      v32 = (*(objc_msgSend_objectAtIndexedSubscript_(a4, v21, v30, v22, v23, v24, v25, v26) + *v31) + 3) & 0xFFFFFFFC;
-      v33 = (*(a3 + 37) + v28);
+      v32 = (*(objc_msgSend_objectAtIndexedSubscript_(images, v21, v30, v22, v23, v24, v25, v26) + *v31) + 3) & 0xFFFFFFFC;
+      v33 = (*(state + 37) + v28);
       *v33 = v29;
       v33[1] = v32;
       v29 += v32;
@@ -1325,7 +1325,7 @@ LABEL_52:
       v28 += 16;
     }
 
-    while (v30 < *(a3 + 73));
+    while (v30 < *(state + 73));
   }
 }
 

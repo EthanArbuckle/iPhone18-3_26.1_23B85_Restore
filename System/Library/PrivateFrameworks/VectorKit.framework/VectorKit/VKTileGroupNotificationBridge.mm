@@ -1,5 +1,5 @@
 @interface VKTileGroupNotificationBridge
-- (VKTileGroupNotificationBridge)initWithManager:(weak_ptr<md::TileGroupNotificationManager>)a3;
+- (VKTileGroupNotificationBridge)initWithManager:(weak_ptr<md::TileGroupNotificationManager>)manager;
 - (id).cxx_construct;
 - (void)initWithManager:;
 @end
@@ -13,13 +13,13 @@
   return self;
 }
 
-- (VKTileGroupNotificationBridge)initWithManager:(weak_ptr<md::TileGroupNotificationManager>)a3
+- (VKTileGroupNotificationBridge)initWithManager:(weak_ptr<md::TileGroupNotificationManager>)manager
 {
-  ptr = a3.__ptr_;
+  ptr = manager.__ptr_;
   v32 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = VKTileGroupNotificationBridge;
-  v4 = [(VKTileGroupNotificationBridge *)&v22 init:a3.__ptr_];
+  v4 = [(VKTileGroupNotificationBridge *)&v22 init:manager.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -81,7 +81,7 @@
 
 - (void)initWithManager:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }

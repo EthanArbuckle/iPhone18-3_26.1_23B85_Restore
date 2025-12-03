@@ -1,31 +1,31 @@
 @interface UIDictationATVLinearView
 - (BOOL)isShowing;
-- (void)_applyRenderConfig:(id)a3;
+- (void)_applyRenderConfig:(id)config;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
 - (void)returnToKeyboard;
-- (void)setRenderConfig:(id)a3;
-- (void)setState:(int)a3;
+- (void)setRenderConfig:(id)config;
+- (void)setState:(int)state;
 @end
 
 @implementation UIDictationATVLinearView
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
-  v5 = a3;
-  if (self->_renderConfig != v5)
+  configCopy = config;
+  if (self->_renderConfig != configCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_renderConfig, a3);
+    v6 = configCopy;
+    objc_storeStrong(&self->_renderConfig, config);
     [(UIDictationATVLinearView *)self _applyRenderConfig:v6];
-    v5 = v6;
+    configCopy = v6;
   }
 }
 
-- (void)_applyRenderConfig:(id)a3
+- (void)_applyRenderConfig:(id)config
 {
-  v4 = a3;
-  if ([v4 lightKeyboard])
+  configCopy = config;
+  if ([configCopy lightKeyboard])
   {
     v5 = 0.4;
   }
@@ -35,9 +35,9 @@
     v5 = 0.5;
   }
 
-  v6 = [v4 lightKeyboard];
+  lightKeyboard = [configCopy lightKeyboard];
 
-  if (v6)
+  if (lightKeyboard)
   {
     +[UIColor blackColor];
   }
@@ -54,15 +54,15 @@
   }
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  v3 = *&a3;
-  if (a3 == 2)
+  v3 = *&state;
+  if (state == 2)
   {
     [(SUICFlamesView *)self->super._flamesView setState:1];
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
     [(UIView *)self bounds];
     v6 = v5;
@@ -76,8 +76,8 @@
     else
     {
       v9 = [SUICFlamesViewClass alloc];
-      v10 = [objc_opt_self() mainScreen];
-      v11 = [v9 initWithFrame:v10 screen:2 fidelity:{0.0, 0.0, v6, 100.0}];
+      mainScreen = [objc_opt_self() mainScreen];
+      v11 = [v9 initWithFrame:mainScreen screen:2 fidelity:{0.0, 0.0, v6, 100.0}];
       v12 = self->super._flamesView;
       self->super._flamesView = v11;
     }
@@ -131,9 +131,9 @@
 - (void)returnToKeyboard
 {
   v3 = +[UIDictationController sharedInstance];
-  v4 = [v3 state];
+  state = [v3 state];
 
-  if (v4 != 1)
+  if (state != 1)
   {
     v5.receiver = self;
     v5.super_class = UIDictationATVLinearView;
@@ -143,8 +143,8 @@
 
 - (BOOL)isShowing
 {
-  v2 = [(UIView *)self superview];
-  v3 = v2 != 0;
+  superview = [(UIView *)self superview];
+  v3 = superview != 0;
 
   return v3;
 }

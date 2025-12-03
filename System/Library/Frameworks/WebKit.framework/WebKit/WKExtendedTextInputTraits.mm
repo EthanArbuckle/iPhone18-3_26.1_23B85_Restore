@@ -4,13 +4,13 @@
 - (WKExtendedTextInputTraits)init;
 - (id).cxx_construct;
 - (void)restoreDefaultValues;
-- (void)setConversationContext:(id)a3;
-- (void)setInsertionPointColor:(id)a3;
-- (void)setPasswordRules:(id)a3;
-- (void)setSelectionColorsToMatchTintColor:(id)a3;
-- (void)setSelectionHandleColor:(id)a3;
-- (void)setSelectionHighlightColor:(id)a3;
-- (void)setTextContentType:(id)a3;
+- (void)setConversationContext:(id)context;
+- (void)setInsertionPointColor:(id)color;
+- (void)setPasswordRules:(id)rules;
+- (void)setSelectionColorsToMatchTintColor:(id)color;
+- (void)setSelectionHandleColor:(id)color;
+- (void)setSelectionHighlightColor:(id)color;
+- (void)setTextContentType:(id)type;
 @end
 
 @implementation WKExtendedTextInputTraits
@@ -31,9 +31,9 @@
   return v3;
 }
 
-- (void)setPasswordRules:(id)a3
+- (void)setPasswordRules:(id)rules
 {
-  v4 = [a3 copy];
+  v4 = [rules copy];
   m_ptr = self->_passwordRules.m_ptr;
   self->_passwordRules.m_ptr = v4;
   if (m_ptr)
@@ -53,9 +53,9 @@
   return v3;
 }
 
-- (void)setTextContentType:(id)a3
+- (void)setTextContentType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   m_ptr = self->_textContentType.m_ptr;
   self->_textContentType.m_ptr = v4;
   if (m_ptr)
@@ -75,82 +75,82 @@
   return v3;
 }
 
-- (void)setInsertionPointColor:(id)a3
+- (void)setInsertionPointColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v5 = a3;
+    colorCopy = color;
   }
 
   m_ptr = self->_insertionPointColor.m_ptr;
-  self->_insertionPointColor.m_ptr = a3;
+  self->_insertionPointColor.m_ptr = color;
   if (m_ptr)
   {
   }
 }
 
-- (void)setSelectionHandleColor:(id)a3
+- (void)setSelectionHandleColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v5 = a3;
+    colorCopy = color;
   }
 
   m_ptr = self->_selectionHandleColor.m_ptr;
-  self->_selectionHandleColor.m_ptr = a3;
+  self->_selectionHandleColor.m_ptr = color;
   if (m_ptr)
   {
   }
 }
 
-- (void)setSelectionHighlightColor:(id)a3
+- (void)setSelectionHighlightColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v5 = a3;
+    colorCopy = color;
   }
 
   m_ptr = self->_selectionHighlightColor.m_ptr;
-  self->_selectionHighlightColor.m_ptr = a3;
+  self->_selectionHighlightColor.m_ptr = color;
   if (m_ptr)
   {
   }
 }
 
-- (void)setConversationContext:(id)a3
+- (void)setConversationContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v5 = a3;
+    contextCopy = context;
   }
 
   m_ptr = self->_conversationContext.m_ptr;
-  self->_conversationContext.m_ptr = a3;
+  self->_conversationContext.m_ptr = context;
   if (m_ptr)
   {
   }
 }
 
-- (void)setSelectionColorsToMatchTintColor:(id)a3
+- (void)setSelectionColorsToMatchTintColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v5 = [MEMORY[0x1E69DC888] systemBlueColor];
-    if (v5 == a3)
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    if (systemBlueColor == color)
     {
-      v6 = 0;
+      colorCopy = 0;
     }
 
     else
     {
-      v6 = a3;
+      colorCopy = color;
     }
 
-    [(WKExtendedTextInputTraits *)self setInsertionPointColor:v6];
-    [(WKExtendedTextInputTraits *)self setSelectionHandleColor:v6];
-    if (v5 != a3)
+    [(WKExtendedTextInputTraits *)self setInsertionPointColor:colorCopy];
+    [(WKExtendedTextInputTraits *)self setSelectionHandleColor:colorCopy];
+    if (systemBlueColor != color)
     {
-      v7 = [a3 colorWithAlphaComponent:0.2];
+      v7 = [color colorWithAlphaComponent:0.2];
       goto LABEL_9;
     }
   }

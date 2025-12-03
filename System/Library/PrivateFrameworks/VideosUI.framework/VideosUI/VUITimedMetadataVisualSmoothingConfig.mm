@@ -13,14 +13,14 @@
   if (v2)
   {
     v2->_timeRangeProximityThreshold = 0.5;
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v4 objectForKey:@"CapInitialLookBack"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"CapInitialLookBack"];
 
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v7 = [v6 objectForKey:@"CapInitialLookAhead"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v7 = [standardUserDefaults2 objectForKey:@"CapInitialLookAhead"];
 
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v9 = [v8 objectForKey:@"CapLookAhead"];
+    standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v9 = [standardUserDefaults3 objectForKey:@"CapLookAhead"];
 
     if (v5)
     {

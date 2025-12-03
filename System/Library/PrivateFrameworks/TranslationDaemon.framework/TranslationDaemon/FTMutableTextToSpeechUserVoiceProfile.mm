@@ -6,13 +6,13 @@
 - (float)energy_std;
 - (float)pitch_mean;
 - (float)pitch_std;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDuration_mean:(float)a3;
-- (void)setDuration_std:(float)a3;
-- (void)setEnergy_mean:(float)a3;
-- (void)setEnergy_std:(float)a3;
-- (void)setPitch_mean:(float)a3;
-- (void)setPitch_std:(float)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDuration_mean:(float)duration_mean;
+- (void)setDuration_std:(float)duration_std;
+- (void)setEnergy_mean:(float)energy_mean;
+- (void)setEnergy_std:(float)energy_std;
+- (void)setPitch_mean:(float)pitch_mean;
+- (void)setPitch_std:(float)pitch_std;
 @end
 
 @implementation FTMutableTextToSpeechUserVoiceProfile
@@ -24,17 +24,17 @@
   v2 = [(FTMutableTextToSpeechUserVoiceProfile *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -51,10 +51,10 @@
   return v4;
 }
 
-- (void)setPitch_mean:(float)a3
+- (void)setPitch_mean:(float)pitch_mean
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = pitch_mean;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
@@ -68,10 +68,10 @@
   return v4;
 }
 
-- (void)setPitch_std:(float)a3
+- (void)setPitch_std:(float)pitch_std
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = pitch_std;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
@@ -85,10 +85,10 @@
   return v4;
 }
 
-- (void)setEnergy_mean:(float)a3
+- (void)setEnergy_mean:(float)energy_mean
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = energy_mean;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
@@ -102,10 +102,10 @@
   return v4;
 }
 
-- (void)setEnergy_std:(float)a3
+- (void)setEnergy_std:(float)energy_std
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = energy_std;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
@@ -119,10 +119,10 @@
   return v4;
 }
 
-- (void)setDuration_mean:(float)a3
+- (void)setDuration_mean:(float)duration_mean
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = duration_mean;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
@@ -136,10 +136,10 @@
   return v4;
 }
 
-- (void)setDuration_std:(float)a3
+- (void)setDuration_std:(float)duration_std
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = duration_std;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }

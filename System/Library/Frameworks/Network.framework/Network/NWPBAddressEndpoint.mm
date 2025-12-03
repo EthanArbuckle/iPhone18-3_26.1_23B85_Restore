@@ -1,20 +1,20 @@
 @interface NWPBAddressEndpoint
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NWPBAddressEndpoint
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     address = self->_address;
-    if (address | v4[1])
+    if (address | equalCopy[1])
     {
       v6 = [(NSData *)address isEqual:?];
     }
@@ -33,17 +33,17 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_address copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_address copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_address)
   {
@@ -53,16 +53,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   address = self->_address;
   if (address)
   {
-    v5 = v3;
-    [v3 setObject:address forKey:@"address"];
-    v3 = v5;
+    v5 = dictionary;
+    [dictionary setObject:address forKey:@"address"];
+    dictionary = v5;
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -71,8 +71,8 @@
   v8.receiver = self;
   v8.super_class = NWPBAddressEndpoint;
   v4 = [(NWPBAddressEndpoint *)&v8 description];
-  v5 = [(NWPBAddressEndpoint *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NWPBAddressEndpoint *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

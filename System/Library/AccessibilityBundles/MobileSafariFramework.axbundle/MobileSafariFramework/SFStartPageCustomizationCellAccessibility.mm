@@ -1,5 +1,5 @@
 @interface SFStartPageCustomizationCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityValue;
@@ -8,24 +8,24 @@
 
 @implementation SFStartPageCustomizationCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFStartPageCustomizationCell" hasInstanceVariable:@"_switch" withType:"UISwitch"];
-  [v3 validateClass:@"SFStartPageCustomizationCell" isKindOfClass:@"UICollectionViewListCell"];
-  [v3 validateClass:@"SFStartPageCustomizationCell" hasInstanceVariable:@"_contentView" withType:"UIView"];
-  [v3 validateClass:@"UIListContentView" hasInstanceVariable:@"_textLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFStartPageCustomizationCell" hasInstanceVariable:@"_switch" withType:"UISwitch"];
+  [validationsCopy validateClass:@"SFStartPageCustomizationCell" isKindOfClass:@"UICollectionViewListCell"];
+  [validationsCopy validateClass:@"SFStartPageCustomizationCell" hasInstanceVariable:@"_contentView" withType:"UIView"];
+  [validationsCopy validateClass:@"UIListContentView" hasInstanceVariable:@"_textLabel" withType:"UILabel"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v7.receiver = self;
   v7.super_class = SFStartPageCustomizationCellAccessibility;
-  v3 = [(SFStartPageCustomizationCellAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(SFStartPageCustomizationCellAccessibility *)&v7 accessibilityTraits];
   v4 = [(SFStartPageCustomizationCellAccessibility *)self safeValueForKey:@"_switch"];
-  v5 = [v4 accessibilityTraits];
+  accessibilityTraits2 = [v4 accessibilityTraits];
 
-  return v5 | v3;
+  return accessibilityTraits2 | accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -45,9 +45,9 @@
 - (id)accessibilityValue
 {
   v2 = [(SFStartPageCustomizationCellAccessibility *)self safeValueForKey:@"_switch"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
@@ -55,14 +55,14 @@
   v3 = [(SFStartPageCustomizationCellAccessibility *)self safeValueForKey:@"_switch"];
   v10.receiver = self;
   v10.super_class = SFStartPageCustomizationCellAccessibility;
-  v4 = [(SFStartPageCustomizationCellAccessibility *)&v10 _accessibilitySupplementaryFooterViews];
+  _accessibilitySupplementaryFooterViews = [(SFStartPageCustomizationCellAccessibility *)&v10 _accessibilitySupplementaryFooterViews];
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __83__SFStartPageCustomizationCellAccessibility__accessibilitySupplementaryFooterViews__block_invoke;
   v8[3] = &unk_29F2D6A90;
   v9 = v3;
   v5 = v3;
-  v6 = [v4 ax_filteredArrayUsingBlock:v8];
+  v6 = [_accessibilitySupplementaryFooterViews ax_filteredArrayUsingBlock:v8];
 
   return v6;
 }

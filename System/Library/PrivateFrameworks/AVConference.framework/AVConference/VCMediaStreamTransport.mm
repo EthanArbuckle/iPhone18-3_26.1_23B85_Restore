@@ -1,50 +1,50 @@
 @interface VCMediaStreamTransport
-+ (BOOL)isSameSRTPKey:(id)a3 newKey:(id)a4;
-+ (int)SRTPCipherSuiteForVCMediaStreamCipherSuite:(int64_t)a3;
-+ (int)getSRTPMediaKeyLength:(int64_t)a3;
-- (BOOL)configureWithStreamConfig:(id)a3 setupInfo:(_VCMediaStreamTransportSetupInfo *)a4 reducedSizeRTCPPackets:(BOOL)a5 hopByHopEncryptRTCPPackets:(BOOL)a6 statisticsCollector:(id)a7 basebandCongestionDetector:(id)a8 error:(id *)a9;
-- (BOOL)generateRTCPXRSummaryReport:(tagVCRTCPXRSummaryReport *)a3 reportCount:(char *)a4;
-- (BOOL)generateRTCPXRVoIPMetricsReport:(tagVCRTCPXRVoIPMetricsReport *)a3 reportCount:(char *)a4;
-- (BOOL)generateReceptionReport:(_RTCP_RECEPTION_REPORT *)a3 reportCount:(char *)a4;
++ (BOOL)isSameSRTPKey:(id)key newKey:(id)newKey;
++ (int)SRTPCipherSuiteForVCMediaStreamCipherSuite:(int64_t)suite;
++ (int)getSRTPMediaKeyLength:(int64_t)length;
+- (BOOL)configureWithStreamConfig:(id)config setupInfo:(_VCMediaStreamTransportSetupInfo *)info reducedSizeRTCPPackets:(BOOL)packets hopByHopEncryptRTCPPackets:(BOOL)pPackets statisticsCollector:(id)collector basebandCongestionDetector:(id)detector error:(id *)error;
+- (BOOL)generateRTCPXRSummaryReport:(tagVCRTCPXRSummaryReport *)report reportCount:(char *)count;
+- (BOOL)generateRTCPXRVoIPMetricsReport:(tagVCRTCPXRVoIPMetricsReport *)report reportCount:(char *)count;
+- (BOOL)generateReceptionReport:(_RTCP_RECEPTION_REPORT *)report reportCount:(char *)count;
 - (BOOL)isDecryptionTimeoutEnabled;
 - (BOOL)isRTCPSendEnabled;
 - (BOOL)isRTCPTimeoutEnabled;
 - (BOOL)isRTPTimeoutEnabled;
-- (BOOL)isSameSRTPConfig:(id)a3;
-- (BOOL)isSendingMedia:(id)a3;
-- (BOOL)setupRTPForIDS:(id *)a3;
-- (BOOL)setupRTPWithIPInfo:(_VCMediaStreamTransportSetupInfo *)a3 error:(id *)a4;
-- (BOOL)setupRTPWithNWConnection:(_VCMediaStreamTransportSetupInfo *)a3 error:(id *)a4;
-- (BOOL)setupRTPWithSockets:(_VCMediaStreamTransportSetupInfo *)a3 error:(id *)a4;
-- (BOOL)setupRTPWithTransportSetupInfo:(_VCMediaStreamTransportSetupInfo *)a3 error:(id *)a4;
-- (BOOL)setupSframeCryptorsWithError:(id *)a3;
-- (VCMediaStreamTransport)initWithHandle:(tagHANDLE *)a3 localSSRC:(unsigned int)a4;
+- (BOOL)isSameSRTPConfig:(id)config;
+- (BOOL)isSendingMedia:(id)media;
+- (BOOL)setupRTPForIDS:(id *)s;
+- (BOOL)setupRTPWithIPInfo:(_VCMediaStreamTransportSetupInfo *)info error:(id *)error;
+- (BOOL)setupRTPWithNWConnection:(_VCMediaStreamTransportSetupInfo *)connection error:(id *)error;
+- (BOOL)setupRTPWithSockets:(_VCMediaStreamTransportSetupInfo *)sockets error:(id *)error;
+- (BOOL)setupRTPWithTransportSetupInfo:(_VCMediaStreamTransportSetupInfo *)info error:(id *)error;
+- (BOOL)setupSframeCryptorsWithError:(id *)error;
+- (VCMediaStreamTransport)initWithHandle:(tagHANDLE *)handle localSSRC:(unsigned int)c;
 - (double)lastReceivedRTCPPacketTime;
 - (id)rxNetworkPayloads;
-- (int)getCryptoSet:(tagSRTPExchangeInfo *)a3 withMediaKey:(id)a4;
+- (int)getCryptoSet:(tagSRTPExchangeInfo *)set withMediaKey:(id)key;
 - (int)onStart;
 - (int)setupRTPWithTransportStreams;
 - (int)setupSRTP;
-- (tagVCCryptor)createSframeCryptorWithStreamConfig:(id)a3 ssrc:(unsigned int)a4 error:(id *)a5;
-- (unsigned)getExtendedSequenceNumberForSequenceNumber:(unsigned __int16)a3;
-- (unsigned)getRTCPReportNTPTimeMiddle32ForReportId:(unsigned __int8)a3;
+- (tagVCCryptor)createSframeCryptorWithStreamConfig:(id)config ssrc:(unsigned int)ssrc error:(id *)error;
+- (unsigned)getExtendedSequenceNumberForSequenceNumber:(unsigned __int16)number;
+- (unsigned)getRTCPReportNTPTimeMiddle32ForReportId:(unsigned __int8)id;
 - (unsigned)idsStreamId;
 - (void)dealloc;
-- (void)handleEncryptionInfoChange:(id)a3;
+- (void)handleEncryptionInfoChange:(id)change;
 - (void)lastReceivedRTCPPacketTime;
 - (void)onStop;
 - (void)registerRTPPayloadMappings;
-- (void)setBasebandCongestionDetector:(id)a3;
-- (void)setRtcpEnabled:(BOOL)a3;
-- (void)setRtcpSendInterval:(double)a3;
-- (void)setStreamDirection:(int64_t)a3;
+- (void)setBasebandCongestionDetector:(id)detector;
+- (void)setRtcpEnabled:(BOOL)enabled;
+- (void)setRtcpSendInterval:(double)interval;
+- (void)setStreamDirection:(int64_t)direction;
 - (void)setupSRTP;
 - (void)updateLastGeneratedKeyMaterial;
 @end
 
 @implementation VCMediaStreamTransport
 
-- (VCMediaStreamTransport)initWithHandle:(tagHANDLE *)a3 localSSRC:(unsigned int)a4
+- (VCMediaStreamTransport)initWithHandle:(tagHANDLE *)handle localSSRC:(unsigned int)c
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -53,8 +53,8 @@
   if (result)
   {
     result->_payloadType = 1;
-    result->_rtpHandle = a3;
-    result->_localSSRC = a4;
+    result->_rtpHandle = handle;
+    result->_localSSRC = c;
   }
 
   return result;
@@ -88,32 +88,32 @@
   [(VCMediaStreamTransport *)&v6 dealloc];
 }
 
-- (void)setBasebandCongestionDetector:(id)a3
+- (void)setBasebandCongestionDetector:(id)detector
 {
-  self->_basebandCongestionDetector = a3;
+  self->_basebandCongestionDetector = detector;
   rtpHandle = self->_rtpHandle;
 
-  RTPSetBasebandCongestionDetector(rtpHandle, a3);
+  RTPSetBasebandCongestionDetector(rtpHandle, detector);
 }
 
-- (BOOL)isSameSRTPConfig:(id)a3
+- (BOOL)isSameSRTPConfig:(id)config
 {
-  v5 = [(VCMediaStreamConfig *)self->_streamConfig SRTPCipherSuite];
-  if (v5 != [a3 SRTPCipherSuite])
+  sRTPCipherSuite = [(VCMediaStreamConfig *)self->_streamConfig SRTPCipherSuite];
+  if (sRTPCipherSuite != [config SRTPCipherSuite])
   {
     return 0;
   }
 
-  v6 = [(VCMediaStreamConfig *)self->_streamConfig SRTCPCipherSuite];
-  if (v6 != [a3 SRTCPCipherSuite] || !+[VCMediaStreamTransport isSameSRTPKey:newKey:](VCMediaStreamTransport, "isSameSRTPKey:newKey:", -[VCMediaStreamConfig sendMediaKey](self->_streamConfig, "sendMediaKey"), objc_msgSend(a3, "sendMediaKey")))
+  sRTCPCipherSuite = [(VCMediaStreamConfig *)self->_streamConfig SRTCPCipherSuite];
+  if (sRTCPCipherSuite != [config SRTCPCipherSuite] || !+[VCMediaStreamTransport isSameSRTPKey:newKey:](VCMediaStreamTransport, "isSameSRTPKey:newKey:", -[VCMediaStreamConfig sendMediaKey](self->_streamConfig, "sendMediaKey"), objc_msgSend(config, "sendMediaKey")))
   {
     return 0;
   }
 
-  v7 = [(VCMediaStreamConfig *)self->_streamConfig receiveMediaKey];
-  v8 = [a3 receiveMediaKey];
+  receiveMediaKey = [(VCMediaStreamConfig *)self->_streamConfig receiveMediaKey];
+  receiveMediaKey2 = [config receiveMediaKey];
 
-  return [VCMediaStreamTransport isSameSRTPKey:v7 newKey:v8];
+  return [VCMediaStreamTransport isSameSRTPKey:receiveMediaKey newKey:receiveMediaKey2];
 }
 
 - (void)updateLastGeneratedKeyMaterial
@@ -139,17 +139,17 @@
   }
 }
 
-- (BOOL)configureWithStreamConfig:(id)a3 setupInfo:(_VCMediaStreamTransportSetupInfo *)a4 reducedSizeRTCPPackets:(BOOL)a5 hopByHopEncryptRTCPPackets:(BOOL)a6 statisticsCollector:(id)a7 basebandCongestionDetector:(id)a8 error:(id *)a9
+- (BOOL)configureWithStreamConfig:(id)config setupInfo:(_VCMediaStreamTransportSetupInfo *)info reducedSizeRTCPPackets:(BOOL)packets hopByHopEncryptRTCPPackets:(BOOL)pPackets statisticsCollector:(id)collector basebandCongestionDetector:(id)detector error:(id *)error
 {
-  v90 = a7;
-  v10 = a6;
-  v11 = a5;
+  collectorCopy = collector;
+  pPacketsCopy = pPackets;
+  packetsCopy = packets;
   v105 = *MEMORY[0x1E69E9840];
   LODWORD(v91) = [(VCMediaStreamTransport *)self isSameSRTPConfig:?];
 
-  self->_streamConfig = a3;
+  self->_streamConfig = config;
   defaultMediaKeyIndex = self->_defaultMediaKeyIndex;
-  v16 = a4->defaultMediaKeyIndex;
+  v16 = info->defaultMediaKeyIndex;
   self->_defaultMediaKeyIndex = v16;
   if (v16)
   {
@@ -161,7 +161,7 @@
     CFRelease(defaultMediaKeyIndex);
   }
 
-  if (![(VCMediaStreamTransport *)self setupRTPWithTransportSetupInfo:a4 error:a9])
+  if (![(VCMediaStreamTransport *)self setupRTPWithTransportSetupInfo:info error:error])
   {
     if (objc_opt_class() == self)
     {
@@ -181,11 +181,11 @@
           return v48;
         }
 
-        if (a9)
+        if (error)
         {
-          if (*a9)
+          if (*error)
           {
-            v52 = [objc_msgSend(*a9 "description")];
+            v52 = [objc_msgSend(*error "description")];
           }
 
           else
@@ -217,11 +217,11 @@
         return v48;
       }
 
-      if (a9)
+      if (error)
       {
-        if (*a9)
+        if (*error)
         {
-          v70 = [objc_msgSend(*a9 "description")];
+          v70 = [objc_msgSend(*error "description")];
         }
 
         else
@@ -276,11 +276,11 @@
           return v48;
         }
 
-        if (a9)
+        if (error)
         {
-          if (*a9)
+          if (*error)
           {
-            v57 = [objc_msgSend(*a9 "description")];
+            v57 = [objc_msgSend(*error "description")];
           }
 
           else
@@ -317,11 +317,11 @@
         return v48;
       }
 
-      if (a9)
+      if (error)
       {
-        if (*a9)
+        if (*error)
         {
-          v59 = [objc_msgSend(*a9 "description")];
+          v59 = [objc_msgSend(*error "description")];
         }
 
         else
@@ -356,11 +356,11 @@
     goto LABEL_139;
   }
 
-  v89 = a9;
-  setupType = a4->setupType;
+  errorCopy = error;
+  setupType = info->setupType;
   if (setupType <= 1)
   {
-    if (a4->setupType)
+    if (info->setupType)
     {
       if (setupType != 1)
       {
@@ -372,7 +372,7 @@
         *&v101.sa_len = 0xAAAAAAAAAAAAAAAALL;
         *&v101.sa_data[6] = 0xAAAAAAAAAAAAAAAALL;
         v92 = 16;
-        if (getpeername(a4->var0.socketInfo.rtpSocket, &v101, &v92) != -1)
+        if (getpeername(info->var0.socketInfo.rtpSocket, &v101, &v92) != -1)
         {
           v100 = 0xAAAAAAAAAAAAAAAALL;
           *&v20 = 0xAAAAAAAAAAAAAAAALL;
@@ -382,13 +382,13 @@
           *&buf[16] = v20;
           *&buf[32] = v20;
           *buf = v20;
-          v87 = a4;
+          infoCopy3 = info;
           SAToIPPORT();
           IPToString();
-          v21 = [(VCMediaStreamConfig *)self->_streamConfig remoteAddress];
-          -[VCNetworkAddress setIp:](v21, "setIp:", [MEMORY[0x1E696AEC0] stringWithUTF8String:buf]);
-          [(VCNetworkAddress *)v21 setPort:WORD2(v100)];
-          -[VCNetworkAddress setInterfaceName:](v21, "setInterfaceName:", [MEMORY[0x1E696AEC0] stringWithUTF8String:&v98 + 4]);
+          remoteAddress = [(VCMediaStreamConfig *)self->_streamConfig remoteAddress];
+          -[VCNetworkAddress setIp:](remoteAddress, "setIp:", [MEMORY[0x1E696AEC0] stringWithUTF8String:buf]);
+          [(VCNetworkAddress *)remoteAddress setPort:WORD2(v100)];
+          -[VCNetworkAddress setInterfaceName:](remoteAddress, "setInterfaceName:", [MEMORY[0x1E696AEC0] stringWithUTF8String:&v98 + 4]);
           if (v98)
           {
             v22 = 6;
@@ -399,7 +399,7 @@
             v22 = 4;
           }
 
-          [(VCNetworkAddress *)v21 setIpVersion:v22];
+          [(VCNetworkAddress *)remoteAddress setIpVersion:v22];
         }
       }
     }
@@ -410,7 +410,7 @@
     if (setupType == 6)
     {
 LABEL_10:
-      datagramChannelToken = a4->datagramChannelToken;
+      datagramChannelToken = info->datagramChannelToken;
       if (datagramChannelToken)
       {
         RTPSetDestinationWithToken(self->_rtpHandle, datagramChannelToken, 0);
@@ -430,10 +430,10 @@ LABEL_10:
     }
   }
 
-  v23 = [(VCMediaStreamConfig *)self->_streamConfig remoteAddress];
-  if (![(NSString *)[(VCNetworkAddress *)v23 ip] length])
+  remoteAddress2 = [(VCMediaStreamConfig *)self->_streamConfig remoteAddress];
+  if (![(NSString *)[(VCNetworkAddress *)remoteAddress2 ip] length])
   {
-    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", v89, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", 192], @"Invalid Parameter", @"Call with empty remoteIP address");
+    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", errorCopy, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", 192], @"Invalid Parameter", @"Call with empty remoteIP address");
     if (objc_opt_class() != self)
     {
       if (objc_opt_respondsToSelector())
@@ -459,11 +459,11 @@ LABEL_10:
         return v48;
       }
 
-      if (v89)
+      if (errorCopy)
       {
-        if (*v89)
+        if (*errorCopy)
         {
-          v74 = [objc_msgSend(*v89 "description")];
+          v74 = [objc_msgSend(*errorCopy "description")];
         }
 
         else
@@ -512,11 +512,11 @@ LABEL_138:
       return v48;
     }
 
-    if (v89)
+    if (errorCopy)
     {
-      if (*v89)
+      if (*errorCopy)
       {
-        v72 = [objc_msgSend(*v89 "description")];
+        v72 = [objc_msgSend(*errorCopy "description")];
       }
 
       else
@@ -553,22 +553,22 @@ LABEL_137:
   *&buf[16] = v24;
   *&buf[32] = v24;
   *buf = v24;
-  [(NSString *)[(VCNetworkAddress *)v23 ip] UTF8String];
-  v88 = a8;
-  v25 = a3;
-  v26 = a4;
-  [(VCNetworkAddress *)v23 port];
+  [(NSString *)[(VCNetworkAddress *)remoteAddress2 ip] UTF8String];
+  detectorCopy2 = detector;
+  configCopy = config;
+  infoCopy2 = info;
+  [(VCNetworkAddress *)remoteAddress2 port];
   MakeIPPORT();
   IPToString();
   v27 = RTPGetPacketMultiplexMode();
-  v28 = v11;
-  v29 = v10;
+  v28 = packetsCopy;
+  v29 = pPacketsCopy;
   rtpHandle = self->_rtpHandle;
-  v31 = [(VCNetworkAddress *)v23 isIPv6];
+  isIPv6 = [(VCNetworkAddress *)remoteAddress2 isIPv6];
   v32 = v27 == 2;
-  a4 = v26;
-  a3 = v25;
-  a8 = v88;
+  info = infoCopy2;
+  config = configCopy;
+  detector = detectorCopy2;
   if (v32)
   {
     v33 = WORD2(v100);
@@ -580,9 +580,9 @@ LABEL_137:
   }
 
   v34 = rtpHandle;
-  v10 = v29;
-  v11 = v28;
-  RTPSetDestination(v34, v31, buf, WORD2(v100), v33, 0, 1);
+  pPacketsCopy = v29;
+  packetsCopy = v28;
+  RTPSetDestination(v34, isIPv6, buf, WORD2(v100), v33, 0, 1);
 LABEL_28:
   RTPSetStreamDirection(self->_rtpHandle, [(VCMediaStreamConfig *)self->_streamConfig direction]);
   self->_rtcpXREnabled = VCDefaults_GetBoolValueForKey(@"rtcpXrEnabled", [(VCMediaStreamConfig *)self->_streamConfig isRTCPXREnabled]);
@@ -597,20 +597,20 @@ LABEL_28:
     isSRTPInitialized = self->_isSRTPInitialized;
   }
 
-  v37 = v89;
+  v37 = errorCopy;
   if ((isSRTPInitialized & v91 & 1) == 0)
   {
-    v38 = [(VCMediaStreamTransport *)self setupSRTP];
-    if ((v38 & 0x80000000) == 0)
+    setupSRTP = [(VCMediaStreamTransport *)self setupSRTP];
+    if ((setupSRTP & 0x80000000) == 0)
     {
       self->_isSRTPInitialized = 1;
       goto LABEL_33;
     }
 
-    v60 = v38;
-    v61 = v38;
+    v60 = setupSRTP;
+    v61 = setupSRTP;
     v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", 234];
-    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", v89, 32018, 238, v61, v62, @"Failed to setup SRTP encryption", [MEMORY[0x1E696AEC0] stringWithFormat:@"setupSRTP failed with error %d", v60]);
+    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", errorCopy, 32018, 238, v61, v62, @"Failed to setup SRTP encryption", [MEMORY[0x1E696AEC0] stringWithFormat:@"setupSRTP failed with error %d", v60]);
     if (objc_opt_class() != self)
     {
       if (objc_opt_respondsToSelector())
@@ -636,11 +636,11 @@ LABEL_28:
         return v48;
       }
 
-      if (v89)
+      if (errorCopy)
       {
-        if (*v89)
+        if (*errorCopy)
         {
-          v78 = [objc_msgSend(*v89 "description")];
+          v78 = [objc_msgSend(*errorCopy "description")];
         }
 
         else
@@ -683,11 +683,11 @@ LABEL_28:
       return v48;
     }
 
-    if (v89)
+    if (errorCopy)
     {
-      if (*v89)
+      if (*errorCopy)
       {
-        v76 = [objc_msgSend(*v89 "description")];
+        v76 = [objc_msgSend(*errorCopy "description")];
       }
 
       else
@@ -781,107 +781,107 @@ LABEL_139:
     RTPSetCName(self->_rtpHandle, [(NSString *)[(VCMediaStreamConfig *)self->_streamConfig cName] UTF8String]);
   }
 
-  v88 = a8;
+  detectorCopy2 = detector;
   if ([(VCMediaStreamConfig *)self->_streamConfig defaultRemoteSSRC])
   {
     RTPSetRemoteSSRC(self->_rtpHandle, [(VCMediaStreamConfig *)[(VCMediaStreamTransport *)self streamConfig] defaultRemoteSSRC]);
   }
 
   [(VCMediaStreamTransport *)self registerRTPPayloadMappings];
-  v39 = [(VCMediaStreamTransport *)self rxNetworkPayloads];
-  v40 = [v39 count];
-  v91 = &v85;
+  rxNetworkPayloads = [(VCMediaStreamTransport *)self rxNetworkPayloads];
+  v40 = [rxNetworkPayloads count];
+  v91 = &configCopy2;
   v41 = (4 * v40 + 15) & 0xFFFFFFFFFFFFFFF0;
-  v42 = &v85 - v41;
+  v42 = &configCopy2 - v41;
   if (v40)
   {
-    memset(&v85 - v41, 170, 4 * v40);
+    memset(&configCopy2 - v41, 170, 4 * v40);
   }
 
   v96 = 0u;
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v43 = [v39 countByEnumeratingWithState:&v94 objects:v93 count:16];
+  v43 = [rxNetworkPayloads countByEnumeratingWithState:&v94 objects:v93 count:16];
   if (v43)
   {
     v44 = v43;
-    v85 = a3;
-    v86 = v11;
-    LODWORD(v89) = v10;
-    v87 = a4;
-    v11 = 0;
+    configCopy2 = config;
+    v86 = packetsCopy;
+    LODWORD(errorCopy) = pPacketsCopy;
+    infoCopy3 = info;
+    packetsCopy = 0;
     v45 = *v95;
     do
     {
       v46 = 0;
-      v47 = v11;
+      v47 = packetsCopy;
       do
       {
         if (*v95 != v45)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(rxNetworkPayloads);
         }
 
-        v11 = v47 + 1;
+        packetsCopy = v47 + 1;
         *&v42[4 * v47++] = [*(*(&v94 + 1) + 8 * v46++) intValue];
       }
 
       while (v44 != v46);
-      v44 = [v39 countByEnumeratingWithState:&v94 objects:v93 count:16];
+      v44 = [rxNetworkPayloads countByEnumeratingWithState:&v94 objects:v93 count:16];
     }
 
     while (v44);
-    RTPSetRxPayloadList(self->_rtpHandle, v11, v42);
-    a4 = v87;
-    LOBYTE(v10) = v89;
-    LOBYTE(v11) = v86;
-    a3 = v85;
+    RTPSetRxPayloadList(self->_rtpHandle, packetsCopy, v42);
+    info = infoCopy3;
+    LOBYTE(pPacketsCopy) = errorCopy;
+    LOBYTE(packetsCopy) = v86;
+    config = configCopy2;
   }
 
-  if ([a3 cellularUniqueTag])
+  if ([config cellularUniqueTag])
   {
-    RTPSetCellularUniqueTag(self->_rtpHandle, [a3 cellularUniqueTag]);
+    RTPSetCellularUniqueTag(self->_rtpHandle, [config cellularUniqueTag]);
   }
 
-  RTPSetSourceRate(self->_rtpHandle, a4->sourceRate);
-  RTCPReducedSizePackets(self->_rtpHandle, v11);
-  RTCPSetHopByHopEncryptionEnabled(self->_rtpHandle, v10);
-  RTCPSetEnableReceptionFromMultipleSSRC(self->_rtpHandle, a4->var0.ipInfo.srcIPPORT.szIfName[14]);
-  RTPSetStatisticsCollector(self->_rtpHandle, v90);
-  [(VCMediaStreamTransport *)self setBasebandCongestionDetector:v88];
+  RTPSetSourceRate(self->_rtpHandle, info->sourceRate);
+  RTCPReducedSizePackets(self->_rtpHandle, packetsCopy);
+  RTCPSetHopByHopEncryptionEnabled(self->_rtpHandle, pPacketsCopy);
+  RTCPSetEnableReceptionFromMultipleSSRC(self->_rtpHandle, info->var0.ipInfo.srcIPPORT.szIfName[14]);
+  RTPSetStatisticsCollector(self->_rtpHandle, collectorCopy);
+  [(VCMediaStreamTransport *)self setBasebandCongestionDetector:detectorCopy2];
   LOBYTE(v48) = 1;
   return v48;
 }
 
-- (BOOL)isSendingMedia:(id)a3
+- (BOOL)isSendingMedia:(id)media
 {
-  v4 = [a3 direction];
-  if (v4 != 1)
+  direction = [media direction];
+  if (direction != 1)
   {
-    LOBYTE(v4) = [a3 direction] == 3;
+    LOBYTE(direction) = [media direction] == 3;
   }
 
-  return v4;
+  return direction;
 }
 
-- (tagVCCryptor)createSframeCryptorWithStreamConfig:(id)a3 ssrc:(unsigned int)a4 error:(id *)a5
+- (tagVCCryptor)createSframeCryptorWithStreamConfig:(id)config ssrc:(unsigned int)ssrc error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v14 = a4;
+  ssrcCopy = ssrc;
   v13 = 0;
-  if (![a3 securityKeyHolder])
+  if (![config securityKeyHolder])
   {
     v10 = @"Invalid SecurityKeyHolder";
     v9 = -2143748095;
 LABEL_6:
-    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a5, 32038, 118, v9, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", 301], @"Create SFrame cryptor failed", v10);
+    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", error, 32038, 118, v9, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", 301], @"Create SFrame cryptor failed", v10);
     return v13;
   }
 
-  v14 = bswap32(a4);
-  v8 = [MEMORY[0x1E695DEF0] dataWithBytes:&v14 length:4];
-  v9 = VCCryptor_Create(*MEMORY[0x1E695E480], [a3 sframeCipherSuite], v8, objc_msgSend(a3, "securityKeyHolder"), 0, &v13);
+  ssrcCopy = bswap32(ssrc);
+  v8 = [MEMORY[0x1E695DEF0] dataWithBytes:&ssrcCopy length:4];
+  v9 = VCCryptor_Create(*MEMORY[0x1E695E480], [config sframeCipherSuite], v8, objc_msgSend(config, "securityKeyHolder"), 0, &v13);
   if (v9 < 0)
   {
     v10 = @"VCCryptor_Create failed";
@@ -901,7 +901,7 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)setupSframeCryptorsWithError:(id *)a3
+- (BOOL)setupSframeCryptorsWithError:(id *)error
 {
   receiverSframeCryptor = self->_receiverSframeCryptor;
   if (receiverSframeCryptor)
@@ -922,11 +922,11 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v7 = [(VCMediaStreamTransport *)self createSframeCryptorWithStreamConfig:self->_streamConfig ssrc:[(VCMediaStreamConfig *)self->_streamConfig defaultRemoteSSRC] error:a3];
+  v7 = [(VCMediaStreamTransport *)self createSframeCryptorWithStreamConfig:self->_streamConfig ssrc:[(VCMediaStreamConfig *)self->_streamConfig defaultRemoteSSRC] error:error];
   self->_receiverSframeCryptor = v7;
   if (v7)
   {
-    if (![(VCMediaStreamTransport *)self isSendingMedia:self->_streamConfig]|| (v8 = [(VCMediaStreamTransport *)self createSframeCryptorWithStreamConfig:self->_streamConfig ssrc:self->_localSSRC error:a3], (self->_transmitterSframeCryptor = v8) != 0))
+    if (![(VCMediaStreamTransport *)self isSendingMedia:self->_streamConfig]|| (v8 = [(VCMediaStreamTransport *)self createSframeCryptorWithStreamConfig:self->_streamConfig ssrc:self->_localSSRC error:error], (self->_transmitterSframeCryptor = v8) != 0))
     {
 LABEL_9:
       LOBYTE(v9) = 1;
@@ -959,59 +959,59 @@ LABEL_9:
   return v9;
 }
 
-+ (int)getSRTPMediaKeyLength:(int64_t)a3
++ (int)getSRTPMediaKeyLength:(int64_t)length
 {
-  if (a3 > 0xB)
+  if (length > 0xB)
   {
     return -1;
   }
 
   else
   {
-    return dword_1DBD4F350[a3];
+    return dword_1DBD4F350[length];
   }
 }
 
-+ (int)SRTPCipherSuiteForVCMediaStreamCipherSuite:(int64_t)a3
++ (int)SRTPCipherSuiteForVCMediaStreamCipherSuite:(int64_t)suite
 {
-  if ((a3 + 1) >= 0xD)
+  if ((suite + 1) >= 0xD)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return suite;
   }
 }
 
-+ (BOOL)isSameSRTPKey:(id)a3 newKey:(id)a4
++ (BOOL)isSameSRTPKey:(id)key newKey:(id)newKey
 {
-  if (a3)
+  if (key)
   {
-    return [a3 isEqualToData:a4];
+    return [key isEqualToData:newKey];
   }
 
   else
   {
-    return a4 == 0;
+    return newKey == 0;
   }
 }
 
-- (int)getCryptoSet:(tagSRTPExchangeInfo *)a3 withMediaKey:(id)a4
+- (int)getCryptoSet:(tagSRTPExchangeInfo *)set withMediaKey:(id)key
 {
   v42 = *MEMORY[0x1E69E9840];
-  v7 = [(VCMediaStreamConfig *)self->_streamConfig SRTPCipherSuite];
-  v8 = [(VCMediaStreamConfig *)self->_streamConfig SRTCPCipherSuite];
-  v9 = [VCMediaStreamTransport getSRTPMediaKeyLength:v7];
-  if (v9 <= [VCMediaStreamTransport getSRTPMediaKeyLength:v8])
+  sRTPCipherSuite = [(VCMediaStreamConfig *)self->_streamConfig SRTPCipherSuite];
+  sRTCPCipherSuite = [(VCMediaStreamConfig *)self->_streamConfig SRTCPCipherSuite];
+  v9 = [VCMediaStreamTransport getSRTPMediaKeyLength:sRTPCipherSuite];
+  if (v9 <= [VCMediaStreamTransport getSRTPMediaKeyLength:sRTCPCipherSuite])
   {
-    v10 = v8;
+    v10 = sRTCPCipherSuite;
   }
 
   else
   {
-    v10 = v7;
+    v10 = sRTPCipherSuite;
   }
 
   v11 = [VCMediaStreamTransport getSRTPMediaKeyLength:v10];
@@ -1023,9 +1023,9 @@ LABEL_9:
     memset(&buf[-v13], 170, v12);
   }
 
-  if (v7 | v8)
+  if (sRTPCipherSuite | sRTCPCipherSuite)
   {
-    if (v12 != [a4 length])
+    if (v12 != [key length])
     {
       v17 = -2145255423;
       if (objc_opt_class() == self)
@@ -1042,7 +1042,7 @@ LABEL_9:
           return v17;
         }
 
-        v22 = [a4 length];
+        v22 = [key length];
         *buf = 136316162;
         v30 = v20;
         v31 = 2080;
@@ -1082,7 +1082,7 @@ LABEL_9:
           return v17;
         }
 
-        v28 = [a4 length];
+        v28 = [key length];
         *buf = 136316674;
         v30 = v26;
         v31 = 2080;
@@ -1092,7 +1092,7 @@ LABEL_9:
         v35 = 2112;
         *v36 = v19;
         *&v36[8] = 2048;
-        v37 = self;
+        selfCopy = self;
         v38 = 1024;
         v39 = v12;
         v40 = 1024;
@@ -1106,7 +1106,7 @@ LABEL_9:
       return v17;
     }
 
-    [a4 getBytes:v14 length:v12];
+    [key getBytes:v14 length:v12];
   }
 
   else
@@ -1114,11 +1114,11 @@ LABEL_9:
     bzero(v14, v12);
   }
 
-  ByteToHex(a3, 65, v14, v11);
-  ByteToHex(a3->var1, 29, &v14[v11], 14);
-  var2 = a3->var2;
+  ByteToHex(set, 65, v14, v11);
+  ByteToHex(set->var1, 29, &v14[v11], 14);
+  var2 = set->var2;
   defaultMediaKeyIndex = self->_defaultMediaKeyIndex;
-  a3->var2 = defaultMediaKeyIndex;
+  set->var2 = defaultMediaKeyIndex;
   if (defaultMediaKeyIndex)
   {
     CFRetain(defaultMediaKeyIndex);
@@ -1248,7 +1248,7 @@ LABEL_25:
 
           v23 = _VCMediaStreamTransport_CipherSuiteAsString(v18);
           v24 = _VCMediaStreamTransport_CipherSuiteAsString(v19);
-          v25 = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)self->_streamConfig multiwayConfig] isOneToOne];
+          isOneToOne = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)self->_streamConfig multiwayConfig] isOneToOne];
           v26 = FourccToCStr([(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)self->_streamConfig multiwayConfig] streamGroupID]);
           v50 = 136316674;
           v51 = v21;
@@ -1259,9 +1259,9 @@ LABEL_25:
           v56 = 2112;
           v57 = v23;
           v58 = 2112;
-          v59 = v24;
+          selfCopy3 = v24;
           v60 = 1024;
-          *v61 = v25;
+          *v61 = isOneToOne;
           *&v61[4] = 2080;
           *&v61[6] = v26;
           v27 = " [%s] %s:%d Configuring srtpCipherSuite=%@, srtcpCipherSuite=%@, isOneToOne=%{BOOL}d, streamGroupID=%s";
@@ -1295,7 +1295,7 @@ LABEL_25:
 
           v32 = _VCMediaStreamTransport_CipherSuiteAsString(v18);
           v33 = _VCMediaStreamTransport_CipherSuiteAsString(v19);
-          v34 = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)self->_streamConfig multiwayConfig] isOneToOne];
+          isOneToOne2 = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)self->_streamConfig multiwayConfig] isOneToOne];
           v35 = FourccToCStr([(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)self->_streamConfig multiwayConfig] streamGroupID]);
           v50 = 136317186;
           v51 = v30;
@@ -1306,13 +1306,13 @@ LABEL_25:
           v56 = 2112;
           v57 = v20;
           v58 = 2048;
-          v59 = self;
+          selfCopy3 = self;
           v60 = 2112;
           *v61 = v32;
           *&v61[8] = 2112;
           *&v61[10] = v33;
           v62 = 1024;
-          v63 = v34;
+          v63 = isOneToOne2;
           v64 = 2080;
           v65 = v35;
           v27 = " [%s] %s:%d %@(%p) Configuring srtpCipherSuite=%@, srtcpCipherSuite=%@, isOneToOne=%{BOOL}d, streamGroupID=%s";
@@ -1385,7 +1385,7 @@ LABEL_38:
             v56 = 2112;
             v57 = v38;
             v58 = 2048;
-            v59 = self;
+            selfCopy3 = self;
             v41 = " [%s] %s:%d %@(%p) SRTPUseEncryption completed";
             v42 = v45;
             v43 = 48;
@@ -1439,7 +1439,7 @@ LABEL_51:
               v56 = 2112;
               v57 = v47;
               v58 = 2048;
-              v59 = self;
+              selfCopy3 = self;
               _os_log_error_impl(&dword_1DB56E000, v49, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) SRTPUseEncryption failed", &v50, 0x30u);
             }
           }
@@ -1506,10 +1506,10 @@ LABEL_56:
   return v5;
 }
 
-- (BOOL)setupRTPWithSockets:(_VCMediaStreamTransportSetupInfo *)a3 error:(id *)a4
+- (BOOL)setupRTPWithSockets:(_VCMediaStreamTransportSetupInfo *)sockets error:(id *)error
 {
-  rtcpSocket = a3->var0.socketInfo.rtcpSocket;
-  rtpSocket = a3->var0.socketInfo.rtpSocket;
+  rtcpSocket = sockets->var0.socketInfo.rtcpSocket;
+  rtpSocket = sockets->var0.socketInfo.rtpSocket;
   if (rtcpSocket == rtpSocket)
   {
     v9 = RTPSetPacketMultiplexMode(self->_rtpHandle, 2);
@@ -1519,8 +1519,8 @@ LABEL_56:
       goto LABEL_8;
     }
 
-    rtpSocket = a3->var0.socketInfo.rtpSocket;
-    rtcpSocket = a3->var0.socketInfo.rtcpSocket;
+    rtpSocket = sockets->var0.socketInfo.rtpSocket;
+    rtcpSocket = sockets->var0.socketInfo.rtcpSocket;
   }
 
   v9 = RTPSetSockets(self->_rtpHandle, rtpSocket, rtcpSocket);
@@ -1531,11 +1531,11 @@ LABEL_56:
 
   v11 = 500;
 LABEL_8:
-  +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a4, 32016, 105, v9, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", v11], @"Could not setup RTP", @"RTPSetSockets failed");
+  +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", error, 32016, 105, v9, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", v11], @"Could not setup RTP", @"RTPSetSockets failed");
   return 0;
 }
 
-- (BOOL)setupRTPWithNWConnection:(_VCMediaStreamTransportSetupInfo *)a3 error:(id *)a4
+- (BOOL)setupRTPWithNWConnection:(_VCMediaStreamTransportSetupInfo *)connection error:(id *)error
 {
   v7 = RTPSetPacketMultiplexMode(self->_rtpHandle, 2);
   if (v7 < 0)
@@ -1546,7 +1546,7 @@ LABEL_8:
 
   else
   {
-    v7 = RTPSetNWConnections(self->_rtpHandle, a3->var0.transportStreamInfo.context);
+    v7 = RTPSetNWConnections(self->_rtpHandle, connection->var0.transportStreamInfo.context);
     if ((v7 & 0x80000000) == 0)
     {
       return 1;
@@ -1556,11 +1556,11 @@ LABEL_8:
     v10 = 584;
   }
 
-  +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a4, 32016, 105, v7, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", v10], @"Could not setup RTP", v9);
+  +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", error, 32016, 105, v7, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", v10], @"Could not setup RTP", v9);
   return 0;
 }
 
-- (BOOL)setupRTPForIDS:(id *)a3
+- (BOOL)setupRTPForIDS:(id *)s
 {
   v4 = RTPSetPacketMultiplexMode(self->_rtpHandle, 2);
   if (v4 < 0)
@@ -1581,25 +1581,25 @@ LABEL_8:
     v7 = 612;
   }
 
-  +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a3, 32016, 105, v4, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", v7], @"Could not setup RTP", v6);
+  +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", s, 32016, 105, v4, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", v7], @"Could not setup RTP", v6);
   return 0;
 }
 
-- (BOOL)setupRTPWithIPInfo:(_VCMediaStreamTransportSetupInfo *)a3 error:(id *)a4
+- (BOOL)setupRTPWithIPInfo:(_VCMediaStreamTransportSetupInfo *)info error:(id *)error
 {
-  RTPCreateSocketsRetryBind(self->_rtpHandle, &a3->var0.socketInfo, (&a3->var0.nwConnection + 5), 0);
+  RTPCreateSocketsRetryBind(self->_rtpHandle, &info->var0.socketInfo, (&info->var0.nwConnection + 5), 0);
   v6 = v5;
   if (v5 < 0)
   {
-    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a4, 32016, 105, v5, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", 627], @"Could not setup RTP", @"RTPCreateSocketsRetryBind failed");
+    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", error, 32016, 105, v5, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", 627], @"Could not setup RTP", @"RTPCreateSocketsRetryBind failed");
   }
 
   return v6 >= 0;
 }
 
-- (BOOL)setupRTPWithTransportSetupInfo:(_VCMediaStreamTransportSetupInfo *)a3 error:(id *)a4
+- (BOOL)setupRTPWithTransportSetupInfo:(_VCMediaStreamTransportSetupInfo *)info error:(id *)error
 {
-  setupType = a3->setupType;
+  setupType = info->setupType;
   if (setupType <= 2)
   {
     if (setupType == 1)
@@ -1613,11 +1613,11 @@ LABEL_8:
       if (setupType != 2)
       {
 LABEL_20:
-        +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a4, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", 658], @"Setup type not set", @"Invalid setup type");
+        +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaStreamTransport.m", 658], @"Setup type not set", @"Invalid setup type");
         return 0;
       }
 
-      return [(VCMediaStreamTransport *)self setupRTPForIDS:a4];
+      return [(VCMediaStreamTransport *)self setupRTPForIDS:error];
     }
   }
 
@@ -1632,8 +1632,8 @@ LABEL_20:
 
         return [VCMediaStreamTransport setupRTPWithNWConnection:"setupRTPWithNWConnection:error:" error:?];
       case 5u:
-        v5 = *&a3->var0.socketInfo.rtpSocket;
-        *&self->_transportStreamInfo.isReceiveExternallyScheduled = *(&a3->var0.nwConnection + 2);
+        v5 = *&info->var0.socketInfo.rtpSocket;
+        *&self->_transportStreamInfo.isReceiveExternallyScheduled = *(&info->var0.nwConnection + 2);
         *&self->_transportStreamInfo.context = v5;
         return 1;
       default:
@@ -1650,8 +1650,8 @@ LABEL_20:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [(VCMediaStreamConfig *)self->_streamConfig allTxPayloadMap];
-  v4 = [(NSDictionary *)v3 countByEnumeratingWithState:&v31 objects:v30 count:16];
+  allTxPayloadMap = [(VCMediaStreamConfig *)self->_streamConfig allTxPayloadMap];
+  v4 = [(NSDictionary *)allTxPayloadMap countByEnumeratingWithState:&v31 objects:v30 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1662,15 +1662,15 @@ LABEL_20:
       {
         if (*v32 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allTxPayloadMap);
         }
 
         v8 = *(*(&v31 + 1) + 8 * i);
-        v9 = [v8 unsignedIntValue];
+        unsignedIntValue = [v8 unsignedIntValue];
         v10 = [-[NSDictionary objectForKeyedSubscript:](-[VCMediaStreamConfig allTxPayloadMap](self->_streamConfig "allTxPayloadMap")];
         if (v10 == 0xFFFF)
         {
-          v11 = v9;
+          v11 = unsignedIntValue;
         }
 
         else
@@ -1681,7 +1681,7 @@ LABEL_20:
         v12 = [-[NSDictionary objectForKeyedSubscript:](-[VCMediaStreamConfig allRxPayloadMap](self->_streamConfig "allRxPayloadMap")];
         if (v12 == 0xFFFF)
         {
-          v13 = v9;
+          v13 = unsignedIntValue;
         }
 
         else
@@ -1689,10 +1689,10 @@ LABEL_20:
           v13 = v12;
         }
 
-        RTPAddMappingForPayload(self->_rtpHandle, v11, v13, v9);
+        RTPAddMappingForPayload(self->_rtpHandle, v11, v13, unsignedIntValue);
       }
 
-      v5 = [(NSDictionary *)v3 countByEnumeratingWithState:&v31 objects:v30 count:16];
+      v5 = [(NSDictionary *)allTxPayloadMap countByEnumeratingWithState:&v31 objects:v30 count:16];
     }
 
     while (v5);
@@ -1702,8 +1702,8 @@ LABEL_20:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = [(VCMediaStreamConfig *)self->_streamConfig allRxPayloadMap];
-  v15 = [(NSDictionary *)v14 countByEnumeratingWithState:&v26 objects:v25 count:16];
+  allRxPayloadMap = [(VCMediaStreamConfig *)self->_streamConfig allRxPayloadMap];
+  v15 = [(NSDictionary *)allRxPayloadMap countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1714,15 +1714,15 @@ LABEL_20:
       {
         if (*v27 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allRxPayloadMap);
         }
 
         v19 = *(*(&v26 + 1) + 8 * j);
-        v20 = [v19 unsignedIntValue];
+        unsignedIntValue2 = [v19 unsignedIntValue];
         v21 = [-[NSDictionary objectForKeyedSubscript:](-[VCMediaStreamConfig allRxPayloadMap](self->_streamConfig "allRxPayloadMap")];
         if (v21 == 0xFFFF)
         {
-          v22 = v20;
+          v22 = unsignedIntValue2;
         }
 
         else
@@ -1733,7 +1733,7 @@ LABEL_20:
         v23 = [-[NSDictionary objectForKeyedSubscript:](-[VCMediaStreamConfig allTxPayloadMap](self->_streamConfig "allTxPayloadMap")];
         if (v23 == 0xFFFF)
         {
-          v24 = v20;
+          v24 = unsignedIntValue2;
         }
 
         else
@@ -1741,10 +1741,10 @@ LABEL_20:
           v24 = v23;
         }
 
-        RTPAddMappingForPayload(self->_rtpHandle, v24, v22, v20);
+        RTPAddMappingForPayload(self->_rtpHandle, v24, v22, unsignedIntValue2);
       }
 
-      v16 = [(NSDictionary *)v14 countByEnumeratingWithState:&v26 objects:v25 count:16];
+      v16 = [(NSDictionary *)allRxPayloadMap countByEnumeratingWithState:&v26 objects:v25 count:16];
     }
 
     while (v16);
@@ -1759,8 +1759,8 @@ LABEL_20:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(VCMediaStreamConfig *)self->_streamConfig rxPayloadMap];
-  v5 = [(NSDictionary *)v4 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  rxPayloadMap = [(VCMediaStreamConfig *)self->_streamConfig rxPayloadMap];
+  v5 = [(NSDictionary *)rxPayloadMap countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1771,15 +1771,15 @@ LABEL_20:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(rxPayloadMap);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 unsignedIntValue];
+        unsignedIntValue = [v9 unsignedIntValue];
         v11 = [-[NSDictionary objectForKeyedSubscript:](-[VCMediaStreamConfig rxPayloadMap](self->_streamConfig "rxPayloadMap")];
         if (v11 == 0xFFFF)
         {
-          v12 = v10;
+          v12 = unsignedIntValue;
         }
 
         else
@@ -1790,7 +1790,7 @@ LABEL_20:
         [v3 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", v12)}];
       }
 
-      v6 = [(NSDictionary *)v4 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v6 = [(NSDictionary *)rxPayloadMap countByEnumeratingWithState:&v15 objects:v14 count:16];
     }
 
     while (v6);
@@ -1846,7 +1846,7 @@ LABEL_20:
           v16 = 2112;
           v17 = v6;
           v18 = 2048;
-          v19 = self;
+          selfCopy = self;
           v20 = 1024;
           v21 = v5;
           _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to retrieve last RTCP timesamp. error=%d", buf, 0x36u);
@@ -1858,14 +1858,14 @@ LABEL_20:
   return v9;
 }
 
-- (void)handleEncryptionInfoChange:(id)a3
+- (void)handleEncryptionInfoChange:(id)change
 {
   v19 = *MEMORY[0x1E69E9840];
   if (self->_isSRTPInitialized)
   {
     if ([(VCMediaStreamConfig *)self->_streamConfig SRTPCipherSuite])
     {
-      v5 = SRTPUpdateKeyMaterial(self->_rtpHandle, a3) == 0;
+      v5 = SRTPUpdateKeyMaterial(self->_rtpHandle, change) == 0;
     }
 
     else
@@ -1917,7 +1917,7 @@ LABEL_20:
           v15 = 2112;
           v16 = v6;
           v17 = 2048;
-          v18 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) SRTP should be initialized first before we can update security key material", &v9, 0x30u);
         }
       }
@@ -1927,101 +1927,101 @@ LABEL_20:
   }
 }
 
-- (void)setRtcpEnabled:(BOOL)a3
+- (void)setRtcpEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(VCMediaStreamConfig *)self->_streamConfig isRTCPEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(VCMediaStreamConfig *)self->_streamConfig isRTCPEnabled]!= enabled)
   {
-    [(VCMediaStreamConfig *)self->_streamConfig setRtcpEnabled:v3];
+    [(VCMediaStreamConfig *)self->_streamConfig setRtcpEnabled:enabledCopy];
     rtpHandle = self->_rtpHandle;
 
-    RTPSetRTCPEnabled(rtpHandle, v3);
+    RTPSetRTCPEnabled(rtpHandle, enabledCopy);
   }
 }
 
-- (void)setRtcpSendInterval:(double)a3
+- (void)setRtcpSendInterval:(double)interval
 {
   [(VCMediaStreamConfig *)self->_streamConfig rtcpSendInterval];
-  if (v5 != a3)
+  if (v5 != interval)
   {
-    [(VCMediaStreamConfig *)self->_streamConfig setRtcpSendInterval:a3];
+    [(VCMediaStreamConfig *)self->_streamConfig setRtcpSendInterval:interval];
 
-    RTPSetRTCPSendInterval(a3);
+    RTPSetRTCPSendInterval(interval);
   }
 }
 
 - (BOOL)isRTCPSendEnabled
 {
-  v3 = [(VCMediaStreamConfig *)self->_streamConfig isRTCPEnabled];
-  if (v3)
+  isRTCPEnabled = [(VCMediaStreamConfig *)self->_streamConfig isRTCPEnabled];
+  if (isRTCPEnabled)
   {
     [(VCMediaStreamConfig *)self->_streamConfig rtcpSendInterval];
-    LOBYTE(v3) = v4 > 0.0;
+    LOBYTE(isRTCPEnabled) = v4 > 0.0;
   }
 
-  return v3;
+  return isRTCPEnabled;
 }
 
 - (BOOL)isRTPTimeoutEnabled
 {
-  v3 = [(VCMediaStreamConfig *)self->_streamConfig isRTPTimeOutEnabled];
-  if (v3)
+  isRTPTimeOutEnabled = [(VCMediaStreamConfig *)self->_streamConfig isRTPTimeOutEnabled];
+  if (isRTPTimeOutEnabled)
   {
     [(VCMediaStreamConfig *)self->_streamConfig rtpTimeOutInterval];
-    LOBYTE(v3) = v4 > 0.0;
+    LOBYTE(isRTPTimeOutEnabled) = v4 > 0.0;
   }
 
-  return v3;
+  return isRTPTimeOutEnabled;
 }
 
 - (BOOL)isRTCPTimeoutEnabled
 {
-  v3 = [(VCMediaStreamConfig *)self->_streamConfig isRTCPTimeOutEnabled];
-  if (v3)
+  isRTCPTimeOutEnabled = [(VCMediaStreamConfig *)self->_streamConfig isRTCPTimeOutEnabled];
+  if (isRTCPTimeOutEnabled)
   {
     [(VCMediaStreamConfig *)self->_streamConfig rtcpTimeOutInterval];
-    LOBYTE(v3) = v4 > 0.0;
+    LOBYTE(isRTCPTimeOutEnabled) = v4 > 0.0;
   }
 
-  return v3;
+  return isRTCPTimeOutEnabled;
 }
 
 - (BOOL)isDecryptionTimeoutEnabled
 {
-  v3 = [(VCMediaStreamConfig *)self->_streamConfig isDecryptionTimeOutEnabled];
-  if (v3)
+  isDecryptionTimeOutEnabled = [(VCMediaStreamConfig *)self->_streamConfig isDecryptionTimeOutEnabled];
+  if (isDecryptionTimeOutEnabled)
   {
     [(VCMediaStreamConfig *)self->_streamConfig decryptionTimeOutInterval];
-    LOBYTE(v3) = v4 > 0.0;
+    LOBYTE(isDecryptionTimeOutEnabled) = v4 > 0.0;
   }
 
-  return v3;
+  return isDecryptionTimeOutEnabled;
 }
 
-- (void)setStreamDirection:(int64_t)a3
+- (void)setStreamDirection:(int64_t)direction
 {
-  RTPSetStreamDirection(self->_rtpHandle, a3);
+  RTPSetStreamDirection(self->_rtpHandle, direction);
   streamConfig = self->_streamConfig;
 
-  [(VCMediaStreamConfig *)streamConfig setDirection:a3];
+  [(VCMediaStreamConfig *)streamConfig setDirection:direction];
 }
 
 - (unsigned)idsStreamId
 {
-  v2 = [(VCMediaStreamConfig *)self->_streamConfig multiwayConfig];
+  multiwayConfig = [(VCMediaStreamConfig *)self->_streamConfig multiwayConfig];
 
-  return [(VCMediaStreamMultiwayConfig *)v2 idsStreamID];
+  return [(VCMediaStreamMultiwayConfig *)multiwayConfig idsStreamID];
 }
 
-- (BOOL)generateReceptionReport:(_RTCP_RECEPTION_REPORT *)a3 reportCount:(char *)a4
+- (BOOL)generateReceptionReport:(_RTCP_RECEPTION_REPORT *)report reportCount:(char *)count
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (!*a4)
+  if (!*count)
   {
     return 0;
   }
 
-  v6 = RTCPInitializeReceptionReportBlock(self->_rtpHandle, a3);
+  v6 = RTCPInitializeReceptionReportBlock(self->_rtpHandle, report);
   v7 = v6 >= 0;
   if (v6 < 0)
   {
@@ -2051,7 +2051,7 @@ LABEL_20:
         v20 = 2080;
         v21 = v12;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2080;
         v25 = "[VCMediaStreamTransport generateReceptionReport:reportCount:]";
         v26 = 1024;
@@ -2068,16 +2068,16 @@ LABEL_20:
     v8 = 1;
   }
 
-  *a4 = v8;
+  *count = v8;
   return v7;
 }
 
-- (BOOL)generateRTCPXRSummaryReport:(tagVCRTCPXRSummaryReport *)a3 reportCount:(char *)a4
+- (BOOL)generateRTCPXRSummaryReport:(tagVCRTCPXRSummaryReport *)report reportCount:(char *)count
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (*a4)
+  if (*count)
   {
-    v5 = RTCPGetSummaryReportBlock(self->_rtpHandle, a3, 50);
+    v5 = RTCPGetSummaryReportBlock(self->_rtpHandle, report, 50);
     v6 = v5 >= 0;
     if (v5 < 0)
     {
@@ -2108,7 +2108,7 @@ LABEL_20:
       v7 = 1;
     }
 
-    *a4 = v7;
+    *count = v7;
   }
 
   else
@@ -2135,12 +2135,12 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)generateRTCPXRVoIPMetricsReport:(tagVCRTCPXRVoIPMetricsReport *)a3 reportCount:(char *)a4
+- (BOOL)generateRTCPXRVoIPMetricsReport:(tagVCRTCPXRVoIPMetricsReport *)report reportCount:(char *)count
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (*a4)
+  if (*count)
   {
-    v5 = RTCPGetVoIPMetricsReportBlock(self->_rtpHandle, a3);
+    v5 = RTCPGetVoIPMetricsReportBlock(self->_rtpHandle, report);
     v6 = v5 >= 0;
     if (v5 < 0)
     {
@@ -2171,7 +2171,7 @@ LABEL_20:
       v7 = 1;
     }
 
-    *a4 = v7;
+    *count = v7;
   }
 
   else
@@ -2198,12 +2198,12 @@ LABEL_20:
   return v6;
 }
 
-- (unsigned)getRTCPReportNTPTimeMiddle32ForReportId:(unsigned __int8)a3
+- (unsigned)getRTCPReportNTPTimeMiddle32ForReportId:(unsigned __int8)id
 {
-  v3 = a3;
+  idCopy = id;
   v28 = *MEMORY[0x1E69E9840];
   v11 = 0;
-  v5 = RTCPGetReportNTPTimeMiddle32(self->_rtpHandle, a3, &v11);
+  v5 = RTCPGetReportNTPTimeMiddle32(self->_rtpHandle, id, &v11);
   if (v5 < 0)
   {
     v6 = v5;
@@ -2232,11 +2232,11 @@ LABEL_20:
         v18 = 2080;
         v19 = v9;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v22 = 2080;
         v23 = "[VCMediaStreamTransport getRTCPReportNTPTimeMiddle32ForReportId:]";
         v24 = 1024;
-        v25 = v3;
+        v25 = idCopy;
         v26 = 1024;
         v27 = v6;
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s[%p] %s failed to retrieve the report[%d] time: status=%d", buf, 0x46u);
@@ -2247,11 +2247,11 @@ LABEL_20:
   return v11;
 }
 
-- (unsigned)getExtendedSequenceNumberForSequenceNumber:(unsigned __int16)a3
+- (unsigned)getExtendedSequenceNumberForSequenceNumber:(unsigned __int16)number
 {
   v25 = *MEMORY[0x1E69E9840];
   v10 = 0;
-  v4 = RTPGetExtendedSequenceNumber(self->_rtpHandle, a3, &v10);
+  v4 = RTPGetExtendedSequenceNumber(self->_rtpHandle, number, &v10);
   if (v4 < 0)
   {
     v5 = v4;
@@ -2280,7 +2280,7 @@ LABEL_20:
         v17 = 2080;
         v18 = v8;
         v19 = 2048;
-        v20 = self;
+        selfCopy = self;
         v21 = 2080;
         v22 = "[VCMediaStreamTransport getExtendedSequenceNumberForSequenceNumber:]";
         v23 = 1024;
@@ -2297,21 +2297,21 @@ LABEL_20:
 {
   if (self->_transportStreamInfo.creationCallback)
   {
-    v3 = [(VCMediaStreamTransport *)self setupRTPWithTransportStreams];
-    if (v3 < 0)
+    setupRTPWithTransportStreams = [(VCMediaStreamTransport *)self setupRTPWithTransportStreams];
+    if (setupRTPWithTransportStreams < 0)
     {
-      return v3;
+      return setupRTPWithTransportStreams;
     }
   }
 
   else
   {
-    v3 = 0;
+    setupRTPWithTransportStreams = 0;
   }
 
   RTPResetHandle();
   [(VCMediaStreamTransport *)self updateLastGeneratedKeyMaterial];
-  return v3;
+  return setupRTPWithTransportStreams;
 }
 
 - (int)setupRTPWithTransportStreams

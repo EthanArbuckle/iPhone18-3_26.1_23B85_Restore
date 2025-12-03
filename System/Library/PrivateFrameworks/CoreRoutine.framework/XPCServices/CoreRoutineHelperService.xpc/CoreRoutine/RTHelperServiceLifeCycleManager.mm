@@ -1,12 +1,12 @@
 @interface RTHelperServiceLifeCycleManager
-+ (id)createSourceForSignal:(int)a3 withBlock:(id)a4;
-- (RTHelperServiceLifeCycleManager)initWithEntitlementProvider:(id)a3 exitHandler:(id)a4 timerManager:(id)a5;
-- (RTHelperServiceLifeCycleManager)initWithExitHandler:(id)a3;
++ (id)createSourceForSignal:(int)signal withBlock:(id)block;
+- (RTHelperServiceLifeCycleManager)initWithEntitlementProvider:(id)provider exitHandler:(id)handler timerManager:(id)manager;
+- (RTHelperServiceLifeCycleManager)initWithExitHandler:(id)handler;
 - (void)_extendLifetime;
 - (void)_handleLifeCycleTimerExpiration;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
 - (void)dealloc;
-- (void)serviceListener:(id)a3 didAcceptConnection:(id)a4;
+- (void)serviceListener:(id)listener didAcceptConnection:(id)connection;
 @end
 
 @implementation RTHelperServiceLifeCycleManager
@@ -29,35 +29,35 @@
   [(RTTimer *)self->_transactionTimer resume];
 }
 
-+ (id)createSourceForSignal:(int)a3 withBlock:(id)a4
++ (id)createSourceForSignal:(int)signal withBlock:(id)block
 {
-  v5 = a4;
-  signal(a3, 1);
-  v6 = dispatch_source_create(&_dispatch_source_type_signal, a3, 0, &_dispatch_main_q);
-  dispatch_source_set_event_handler(v6, v5);
+  blockCopy = block;
+  signal(signal, 1);
+  v6 = dispatch_source_create(&_dispatch_source_type_signal, signal, 0, &_dispatch_main_q);
+  dispatch_source_set_event_handler(v6, blockCopy);
 
   dispatch_resume(v6);
 
   return v6;
 }
 
-- (RTHelperServiceLifeCycleManager)initWithExitHandler:(id)a3
+- (RTHelperServiceLifeCycleManager)initWithExitHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[RTEntitlementProvider helperServiceProtocolEntitlementProvider];
   v6 = objc_opt_new();
-  v7 = [(RTHelperServiceLifeCycleManager *)self initWithEntitlementProvider:v5 exitHandler:v4 timerManager:v6];
+  v7 = [(RTHelperServiceLifeCycleManager *)self initWithEntitlementProvider:v5 exitHandler:handlerCopy timerManager:v6];
 
   return v7;
 }
 
-- (RTHelperServiceLifeCycleManager)initWithEntitlementProvider:(id)a3 exitHandler:(id)a4 timerManager:(id)a5
+- (RTHelperServiceLifeCycleManager)initWithEntitlementProvider:(id)provider exitHandler:(id)handler timerManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  providerCopy = provider;
+  handlerCopy = handler;
+  managerCopy = manager;
+  v12 = managerCopy;
+  if (!providerCopy)
   {
     v18 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -72,7 +72,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     v18 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v11)
+  if (!managerCopy)
   {
     v18 = sub_1000011A0(&qword_1000B2958);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -97,7 +97,7 @@ LABEL_13:
 
 LABEL_14:
 
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -112,23 +112,23 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [(RTHelperServiceLifeCycleManager *)v15 UTF8String];
+      uTF8String = [(RTHelperServiceLifeCycleManager *)v15 UTF8String];
     }
 
     else
     {
       v21 = [NSString stringWithFormat:@"%@-%p", objc_opt_class(), v15];
-      v17 = [v21 UTF8String];
+      uTF8String = [v21 UTF8String];
     }
 
-    v22 = dispatch_queue_create(v17, v16);
+    v22 = dispatch_queue_create(uTF8String, v16);
 
     queue = v15->_queue;
     v15->_queue = v22;
 
-    objc_storeStrong(&v15->_entitlementProvider, a3);
-    objc_storeStrong(&v15->_timerManager, a5);
-    v24 = [v10 copy];
+    objc_storeStrong(&v15->_entitlementProvider, provider);
+    objc_storeStrong(&v15->_timerManager, manager);
+    v24 = [handlerCopy copy];
     exitHandler = v15->_exitHandler;
     v15->_exitHandler = v24;
 
@@ -168,10 +168,10 @@ LABEL_14:
   }
 
   self = v14;
-  v20 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v20;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -232,25 +232,25 @@ LABEL_18:
   }
 }
 
-- (void)serviceListener:(id)a3 didAcceptConnection:(id)a4
+- (void)serviceListener:(id)listener didAcceptConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100088B14;
   v8[3] = &unk_1000A8B68;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = connectionCopy;
+  selfCopy = self;
+  v7 = connectionCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v9 = a3;
-  v10 = a4;
-  [v10 retainArguments];
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
@@ -285,13 +285,13 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = sub_100088DD0;
   block[3] = &unk_1000A99F0;
-  v27 = a5;
+  replyCopy = reply;
   block[4] = self;
-  v24 = v10;
-  v25 = v9;
+  v24 = invocationCopy;
+  v25 = connectionCopy;
   v26 = v28;
-  v18 = v9;
-  v19 = v10;
+  v18 = connectionCopy;
+  v19 = invocationCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v28, 8);

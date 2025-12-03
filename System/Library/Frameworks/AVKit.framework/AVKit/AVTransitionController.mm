@@ -1,35 +1,35 @@
 @interface AVTransitionController
 - (AVDisplayLink)displayLink;
 - (AVTransitionControllerDelegate)delegate;
-- (BOOL)transitionDriver:(id)a3 gestureRecognizer:(id)a4 shouldReceiveTouch:(id)a5;
-- (BOOL)transitionDriver:(id)a3 shouldDriveTransitionInteractionOfType:(int64_t)a4;
+- (BOOL)transitionDriver:(id)driver gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)transitionDriver:(id)driver shouldDriveTransitionInteractionOfType:(int64_t)type;
 - (BOOL)wantsInteractiveStart;
 - (CGPoint)touchGravity;
 - (UIView)interactionView;
 - (UIView)sourceViewForNextPresentation;
-- (double)transitionDuration:(id)a3;
-- (id)transitionBackgroundViewBackgroundColor:(id)a3;
-- (id)transitionPresentedViewBackgroundColor:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (id)transitionBackgroundViewBackgroundColor:(id)color;
+- (id)transitionPresentedViewBackgroundColor:(id)color;
 - (void)_cancelTransition;
-- (void)_dismiss:(id)a3 fromViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)_ensurePresentationControllerWithTransitionContext:(id)a3;
+- (void)_dismiss:(id)_dismiss fromViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)_ensurePresentationControllerWithTransitionContext:(id)context;
 - (void)_finishTransition;
 - (void)_fireDidBeginHandlerIfNeeded;
-- (void)_present:(id)a3 fromViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)_present:(id)_present fromViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)_startObservingAnimatorProgress;
-- (void)addTransitionDriver:(id)a3 toView:(id)a4;
-- (void)animationEnded:(BOOL)a3;
-- (void)beginFullScreenDismissalOfViewController:(id)a3 animated:(BOOL)a4 isInteractive:(BOOL)a5 completion:(id)a6;
-- (void)beginFullScreenPresentationOfViewController:(id)a3 fromView:(id)a4 isInteractive:(BOOL)a5 completion:(id)a6;
-- (void)ensurePresentationControllerWithPresentingViewController:(id)a3 presentedViewController:(id)a4;
-- (void)setInteractionView:(id)a3;
-- (void)setInteractiveGestureTracker:(id)a3;
-- (void)startInteractiveTransition:(id)a3;
-- (void)transitionDriver:(id)a3 didBeginTrackingTransitionInteraction:(int64_t)a4 readyToProceedHandler:(id)a5;
-- (void)transitionDriverDidCancelInteraction:(id)a3;
-- (void)transitionDriverDidContinueInteraction:(id)a3;
-- (void)transitionDriverDidFinishInteraction:(id)a3;
-- (void)transitionWillComplete:(id)a3 success:(BOOL)a4 continueBlock:(id)a5;
+- (void)addTransitionDriver:(id)driver toView:(id)view;
+- (void)animationEnded:(BOOL)ended;
+- (void)beginFullScreenDismissalOfViewController:(id)controller animated:(BOOL)animated isInteractive:(BOOL)interactive completion:(id)completion;
+- (void)beginFullScreenPresentationOfViewController:(id)controller fromView:(id)view isInteractive:(BOOL)interactive completion:(id)completion;
+- (void)ensurePresentationControllerWithPresentingViewController:(id)controller presentedViewController:(id)viewController;
+- (void)setInteractionView:(id)view;
+- (void)setInteractiveGestureTracker:(id)tracker;
+- (void)startInteractiveTransition:(id)transition;
+- (void)transitionDriver:(id)driver didBeginTrackingTransitionInteraction:(int64_t)interaction readyToProceedHandler:(id)handler;
+- (void)transitionDriverDidCancelInteraction:(id)interaction;
+- (void)transitionDriverDidContinueInteraction:(id)interaction;
+- (void)transitionDriverDidFinishInteraction:(id)interaction;
+- (void)transitionWillComplete:(id)complete success:(BOOL)success continueBlock:(id)block;
 @end
 
 @implementation AVTransitionController
@@ -66,14 +66,14 @@
 
 - (void)_startObservingAnimatorProgress
 {
-  v3 = [(AVTransitionController *)self presentationContext];
-  v4 = [v3 presentedViewController];
-  v5 = [v4 transitioningDelegate];
+  presentationContext = [(AVTransitionController *)self presentationContext];
+  presentedViewController = [presentationContext presentedViewController];
+  transitioningDelegate = [presentedViewController transitioningDelegate];
 
-  if (v5 == self)
+  if (transitioningDelegate == self)
   {
-    v6 = [(AVTransitionController *)self displayLink];
-    [v6 startDisplayLinkUpdatesForObserver:self framesPerSecond:36 usingBlock:&__block_literal_global_29881];
+    displayLink = [(AVTransitionController *)self displayLink];
+    [displayLink startDisplayLinkUpdatesForObserver:self framesPerSecond:36 usingBlock:&__block_literal_global_29881];
   }
 }
 
@@ -90,16 +90,16 @@ void __57__AVTransitionController__startObservingAnimatorProgress__block_invoke(
   }
 }
 
-- (void)_present:(id)a3 fromViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_present:(id)_present fromViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
-  [(AVTransitionController *)self ensurePresentationControllerWithPresentingViewController:v10 presentedViewController:v12];
-  v13 = [v10 transitionCoordinator];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  _presentCopy = _present;
+  [(AVTransitionController *)self ensurePresentationControllerWithPresentingViewController:controllerCopy presentedViewController:_presentCopy];
+  transitionCoordinator = [controllerCopy transitionCoordinator];
 
-  if (v13)
+  if (transitionCoordinator)
   {
     v14 = _AVLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -109,16 +109,16 @@ void __57__AVTransitionController__startObservingAnimatorProgress__block_invoke(
     }
   }
 
-  [v10 presentViewController:v12 animated:v7 completion:0];
-  v15 = [v12 transitionCoordinator];
+  [controllerCopy presentViewController:_presentCopy animated:animatedCopy completion:0];
+  transitionCoordinator2 = [_presentCopy transitionCoordinator];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __74__AVTransitionController__present_fromViewController_animated_completion___block_invoke;
   v17[3] = &unk_1E72097E8;
-  v18 = v11;
-  v16 = v11;
-  [v15 animateAlongsideTransition:0 completion:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [transitionCoordinator2 animateAlongsideTransition:0 completion:v17];
 
   [(AVTransitionController *)self _startObservingAnimatorProgress];
 }
@@ -134,25 +134,25 @@ uint64_t __74__AVTransitionController__present_fromViewController_animated_compl
 
 - (void)_fireDidBeginHandlerIfNeeded
 {
-  v4 = [(AVTransitionController *)self transitionDidBeginHandler];
+  transitionDidBeginHandler = [(AVTransitionController *)self transitionDidBeginHandler];
   [(AVTransitionController *)self setTransitionDidBeginHandler:0];
-  v3 = v4;
-  if (v4)
+  v3 = transitionDidBeginHandler;
+  if (transitionDidBeginHandler)
   {
-    (*(v4 + 16))(v4);
-    v3 = v4;
+    (*(transitionDidBeginHandler + 16))(transitionDidBeginHandler);
+    v3 = transitionDidBeginHandler;
   }
 }
 
-- (void)_dismiss:(id)a3 fromViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_dismiss:(id)_dismiss fromViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
-  v13 = [v10 transitionCoordinator];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  _dismissCopy = _dismiss;
+  transitionCoordinator = [controllerCopy transitionCoordinator];
 
-  if (v13)
+  if (transitionCoordinator)
   {
     v14 = _AVLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -162,16 +162,16 @@ uint64_t __74__AVTransitionController__present_fromViewController_animated_compl
     }
   }
 
-  [v10 dismissViewControllerAnimated:v7 completion:0];
-  v15 = [v12 transitionCoordinator];
+  [controllerCopy dismissViewControllerAnimated:animatedCopy completion:0];
+  transitionCoordinator2 = [_dismissCopy transitionCoordinator];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __74__AVTransitionController__dismiss_fromViewController_animated_completion___block_invoke;
   v17[3] = &unk_1E72097E8;
-  v18 = v11;
-  v16 = v11;
-  [v15 animateAlongsideTransition:0 completion:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [transitionCoordinator2 animateAlongsideTransition:0 completion:v17];
 
   [(AVTransitionController *)self _startObservingAnimatorProgress];
 }
@@ -185,49 +185,49 @@ uint64_t __74__AVTransitionController__dismiss_fromViewController_animated_compl
   return v4(v2, v3 ^ 1u);
 }
 
-- (void)transitionWillComplete:(id)a3 success:(BOOL)a4 continueBlock:(id)a5
+- (void)transitionWillComplete:(id)complete success:(BOOL)success continueBlock:(id)block
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(AVTransitionController *)self delegate];
-  [v8 transitionController:self transitionWillComplete:v5 continueBlock:v7];
+  successCopy = success;
+  blockCopy = block;
+  delegate = [(AVTransitionController *)self delegate];
+  [delegate transitionController:self transitionWillComplete:successCopy continueBlock:blockCopy];
 }
 
-- (id)transitionPresentedViewBackgroundColor:(id)a3
+- (id)transitionPresentedViewBackgroundColor:(id)color
 {
-  v4 = [(AVTransitionController *)self delegate];
-  v5 = [v4 transitionControllerPresentedViewBackgroundColor:self];
+  delegate = [(AVTransitionController *)self delegate];
+  v5 = [delegate transitionControllerPresentedViewBackgroundColor:self];
 
   return v5;
 }
 
-- (id)transitionBackgroundViewBackgroundColor:(id)a3
+- (id)transitionBackgroundViewBackgroundColor:(id)color
 {
-  v4 = [(AVTransitionController *)self delegate];
-  v5 = [v4 transitionControllerBackgroundViewBackgroundColor:self];
+  delegate = [(AVTransitionController *)self delegate];
+  v5 = [delegate transitionControllerBackgroundViewBackgroundColor:self];
 
   return v5;
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
-  v3 = a3;
+  endedCopy = ended;
   v17 = *MEMORY[0x1E69E9840];
   if ([(AVPresentationController *)self->_presentationController presented]|| [(AVPresentationController *)self->_presentationController presenting])
   {
-    [(AVPresentationController *)self->_presentationController presentationTransitionDidEnd:v3];
+    [(AVPresentationController *)self->_presentationController presentationTransitionDidEnd:endedCopy];
   }
 
   else if ([(AVPresentationController *)self->_presentationController dismissed]|| [(AVPresentationController *)self->_presentationController dismissing])
   {
-    [(AVPresentationController *)self->_presentationController dismissalTransitionDidEnd:v3];
+    [(AVPresentationController *)self->_presentationController dismissalTransitionDidEnd:endedCopy];
     presentationController = self->_presentationController;
     self->_presentationController = 0;
   }
 
   [(AVTransitionController *)self setActiveTransition:0];
-  v5 = [(AVTransitionController *)self displayLink];
-  [v5 invalidate];
+  displayLink = [(AVTransitionController *)self displayLink];
+  [displayLink invalidate];
 
   [(AVTransitionController *)self setState:0];
   interactiveGestureTracker = self->_interactiveGestureTracker;
@@ -251,15 +251,15 @@ uint64_t __74__AVTransitionController__dismiss_fromViewController_animated_compl
     v13 = 1024;
     v14 = 675;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B49C000, v9, OS_LOG_TYPE_DEFAULT, "%s %d %p", &v11, 0x1Cu);
   }
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v5 = a3;
-  [(AVTransitionController *)self _ensurePresentationControllerWithTransitionContext:v5];
+  durationCopy = duration;
+  [(AVTransitionController *)self _ensurePresentationControllerWithTransitionContext:durationCopy];
   if ([(AVPresentationController *)self->_presentationController presented]|| [(AVPresentationController *)self->_presentationController presenting])
   {
     [(AVPresentationController *)self->_presentationController presentationTransitionWillBegin];
@@ -270,22 +270,22 @@ uint64_t __74__AVTransitionController__dismiss_fromViewController_animated_compl
     [(AVPresentationController *)self->_presentationController dismissalTransitionWillBegin];
   }
 
-  v6 = [(AVTransitionController *)self presentationContext];
-  v7 = [v6 presentationWindow];
-  v8 = [v7 windowScene];
+  presentationContext = [(AVTransitionController *)self presentationContext];
+  presentationWindow = [presentationContext presentationWindow];
+  windowScene = [presentationWindow windowScene];
 
-  v9 = [v8 activationState];
-  v10 = v9;
-  if (v9 == 2 || v9 == -1)
+  activationState = [windowScene activationState];
+  v10 = activationState;
+  if (activationState == 2 || activationState == -1)
   {
-    v7 = [(AVTransitionController *)self presentationContext];
-    v3 = [v7 presentationWindow];
-    v11 = [v3 avkit_isHostedInAnotherProcess];
+    presentationWindow = [(AVTransitionController *)self presentationContext];
+    v7PresentationWindow = [presentationWindow presentationWindow];
+    avkit_isHostedInAnotherProcess = [v7PresentationWindow avkit_isHostedInAnotherProcess];
   }
 
   else
   {
-    v11 = 1;
+    avkit_isHostedInAnotherProcess = 1;
   }
 
   if (v10 == 2 || v10 == -1)
@@ -293,113 +293,113 @@ uint64_t __74__AVTransitionController__dismiss_fromViewController_animated_compl
   }
 
   v12 = 0.0;
-  if (([v5 isAnimated] & v11) == 1)
+  if (([durationCopy isAnimated] & avkit_isHostedInAnotherProcess) == 1)
   {
-    v13 = [(AVTransitionController *)self presentationContext];
-    v14 = [v13 configuration];
-    [v14 transitionDuration];
+    presentationContext2 = [(AVTransitionController *)self presentationContext];
+    configuration = [presentationContext2 configuration];
+    [configuration transitionDuration];
     v12 = v15;
   }
 
   return v12;
 }
 
-- (void)_ensurePresentationControllerWithTransitionContext:(id)a3
+- (void)_ensurePresentationControllerWithTransitionContext:(id)context
 {
   v4 = *MEMORY[0x1E69DE768];
-  v5 = a3;
-  v8 = [v5 viewControllerForKey:v4];
-  v6 = [v5 viewControllerForKey:*MEMORY[0x1E69DE778]];
+  contextCopy = context;
+  v8 = [contextCopy viewControllerForKey:v4];
+  v6 = [contextCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
   [(AVTransitionController *)self ensurePresentationControllerWithPresentingViewController:v8 presentedViewController:v6];
-  v7 = [(AVPresentationController *)self->_presentationController context];
-  [v7 setTransitionContext:v5];
+  context = [(AVPresentationController *)self->_presentationController context];
+  [context setTransitionContext:contextCopy];
 }
 
-- (void)startInteractiveTransition:(id)a3
+- (void)startInteractiveTransition:(id)transition
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transitionCopy = transition;
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v35 = "[AVTransitionController startInteractiveTransition:]";
     v36 = 2112;
-    v37 = v4;
+    v37 = transitionCopy;
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
-  v6 = [(AVTransitionController *)self presentationContext];
-  [v6 setTransitionContext:v4];
+  presentationContext = [(AVTransitionController *)self presentationContext];
+  [presentationContext setTransitionContext:transitionCopy];
 
-  v7 = [[AVTransition alloc] initWithTransitionContext:v4];
+  v7 = [[AVTransition alloc] initWithTransitionContext:transitionCopy];
   [(AVTransitionController *)self setActiveTransition:v7];
 
-  v8 = [(AVTransitionController *)self activeTransition];
-  v9 = [(AVTransitionController *)self presentationContext];
-  [v8 setPresentationContext:v9];
+  activeTransition = [(AVTransitionController *)self activeTransition];
+  presentationContext2 = [(AVTransitionController *)self presentationContext];
+  [activeTransition setPresentationContext:presentationContext2];
 
-  v10 = [(AVTransitionController *)self activeTransition];
-  [v10 setDelegate:self];
+  activeTransition2 = [(AVTransitionController *)self activeTransition];
+  [activeTransition2 setDelegate:self];
 
-  v11 = [(AVTransitionController *)self activeTransition];
-  [v11 startInteractiveTransition];
+  activeTransition3 = [(AVTransitionController *)self activeTransition];
+  [activeTransition3 startInteractiveTransition];
 
-  v12 = [(AVTransitionController *)self state];
-  if (v12 > 2)
+  state = [(AVTransitionController *)self state];
+  if (state > 2)
   {
-    if (v12 != 3)
+    if (state != 3)
     {
-      if (v12 == 4)
+      if (state == 4)
       {
         [(AVTransitionController *)self _fireDidBeginHandlerIfNeeded];
-        v13 = [(AVTransitionController *)self delegate];
+        delegate = [(AVTransitionController *)self delegate];
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
         v33[2] = __53__AVTransitionController_startInteractiveTransition___block_invoke;
         v33[3] = &unk_1E720A090;
         v33[4] = self;
-        [v13 transitionController:self prepareForFinishingInteractiveTransition:v33];
+        [delegate transitionController:self prepareForFinishingInteractiveTransition:v33];
 LABEL_17:
 
         goto LABEL_21;
       }
 
-      if (v12 != 5)
+      if (state != 5)
       {
         goto LABEL_21;
       }
 
 LABEL_11:
-      v13 = _AVLog();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      delegate = _AVLog();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
       {
         v14 = _AVMethodProem(self);
         *buf = 138412290;
         v35 = v14;
-        _os_log_error_impl(&dword_18B49C000, v13, OS_LOG_TYPE_ERROR, "%@: Unexpected transition state.", buf, 0xCu);
+        _os_log_error_impl(&dword_18B49C000, delegate, OS_LOG_TYPE_ERROR, "%@: Unexpected transition state.", buf, 0xCu);
       }
 
       goto LABEL_17;
     }
 
     [(AVTransitionController *)self _fireDidBeginHandlerIfNeeded];
-    v15 = self;
+    selfCopy2 = self;
     v16 = 3;
 LABEL_20:
-    [(AVTransitionController *)v15 setState:v16];
+    [(AVTransitionController *)selfCopy2 setState:v16];
     goto LABEL_21;
   }
 
-  switch(v12)
+  switch(state)
   {
     case 0:
 LABEL_19:
-      v15 = self;
+      selfCopy2 = self;
       v16 = 5;
       goto LABEL_20;
     case 1:
-      if ([v4 isInteractive])
+      if ([transitionCopy isInteractive])
       {
         [(AVTransitionController *)self setState:2];
         [(AVTransitionController *)self _fireDidBeginHandlerIfNeeded];
@@ -413,97 +413,97 @@ LABEL_19:
   }
 
 LABEL_21:
-  v17 = [(AVPresentationController *)self->_presentationController context];
-  v18 = [v17 transitionType];
+  context = [(AVPresentationController *)self->_presentationController context];
+  transitionType = [context transitionType];
 
-  if (v18)
+  if (transitionType)
   {
-    if (v18 == 2)
+    if (transitionType == 2)
     {
-      v22 = [(AVTransitionController *)self delegate];
-      v23 = [(AVPresentationController *)self->_presentationController context];
-      v24 = [v23 presentedViewController];
-      v19 = [v22 transitionController:self targetViewForDismissingViewController:v24];
+      delegate2 = [(AVTransitionController *)self delegate];
+      context2 = [(AVPresentationController *)self->_presentationController context];
+      presentedViewController = [context2 presentedViewController];
+      delegate4 = [delegate2 transitionController:self targetViewForDismissingViewController:presentedViewController];
 
-      v25 = [(AVTransitionController *)self presentationContext];
-      [v25 setSourceView:v19];
+      presentationContext3 = [(AVTransitionController *)self presentationContext];
+      [presentationContext3 setSourceView:delegate4];
 
-      v26 = [(AVTransitionController *)self presentationContext];
-      v27 = [(AVTransitionController *)self interactiveGestureTracker];
-      [v26 setAllowsPausingWhenTransitionCompletes:{objc_msgSend(v27, "transitionInteraction") != 2}];
+      presentationContext4 = [(AVTransitionController *)self presentationContext];
+      interactiveGestureTracker = [(AVTransitionController *)self interactiveGestureTracker];
+      [presentationContext4 setAllowsPausingWhenTransitionCompletes:{objc_msgSend(interactiveGestureTracker, "transitionInteraction") != 2}];
 
-      v20 = [(AVTransitionController *)self delegate];
-      v21 = [(AVPresentationController *)self->_presentationController context];
-      v28 = [v21 presentedViewController];
-      [v20 transitionController:self willBeginDismissingViewController:v28];
+      delegate3 = [(AVTransitionController *)self delegate];
+      context3 = [(AVPresentationController *)self->_presentationController context];
+      presentedViewController2 = [context3 presentedViewController];
+      [delegate3 transitionController:self willBeginDismissingViewController:presentedViewController2];
     }
 
     else
     {
-      if (v18 != 1)
+      if (transitionType != 1)
       {
         goto LABEL_30;
       }
 
-      v19 = [(AVTransitionController *)self delegate];
-      v20 = [(AVPresentationController *)self->_presentationController context];
-      v21 = [v20 presentedViewController];
-      [v19 transitionController:self willBeginPresentingViewController:v21];
+      delegate4 = [(AVTransitionController *)self delegate];
+      delegate3 = [(AVPresentationController *)self->_presentationController context];
+      context3 = [delegate3 presentedViewController];
+      [delegate4 transitionController:self willBeginPresentingViewController:context3];
     }
   }
 
   else
   {
-    v19 = _AVLog();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    delegate4 = _AVLog();
+    if (os_log_type_enabled(delegate4, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_18B49C000, v19, OS_LOG_TYPE_ERROR, "Unexpected", buf, 2u);
+      _os_log_error_impl(&dword_18B49C000, delegate4, OS_LOG_TYPE_ERROR, "Unexpected", buf, 2u);
     }
   }
 
 LABEL_30:
-  v29 = [(AVTransitionController *)self activeTransition];
-  [v29 addRunAlongsideAnimationsIfNeeded];
+  activeTransition4 = [(AVTransitionController *)self activeTransition];
+  [activeTransition4 addRunAlongsideAnimationsIfNeeded];
 
-  v30 = [(AVTransitionController *)self state];
-  if (v30 > 2)
+  state2 = [(AVTransitionController *)self state];
+  if (state2 > 2)
   {
-    if (v30 == 3)
+    if (state2 == 3)
     {
-      v31 = [(AVTransitionController *)self activeTransition];
-      [v31 cancelInteractiveTransition];
+      activeTransition5 = [(AVTransitionController *)self activeTransition];
+      [activeTransition5 cancelInteractiveTransition];
       goto LABEL_40;
     }
 
-    if (v30 == 5)
+    if (state2 == 5)
     {
-      v31 = [(AVTransitionController *)self activeTransition];
-      [v31 finishInteractiveTransition];
+      activeTransition5 = [(AVTransitionController *)self activeTransition];
+      [activeTransition5 finishInteractiveTransition];
 LABEL_40:
     }
   }
 
   else
   {
-    if (v30 < 2)
+    if (state2 < 2)
     {
-      v31 = _AVLog();
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+      activeTransition5 = _AVLog();
+      if (os_log_type_enabled(activeTransition5, OS_LOG_TYPE_ERROR))
       {
         v32 = _AVMethodProem(self);
         *buf = 138412290;
         v35 = v32;
-        _os_log_error_impl(&dword_18B49C000, v31, OS_LOG_TYPE_ERROR, "%@: Unexpected transition state.", buf, 0xCu);
+        _os_log_error_impl(&dword_18B49C000, activeTransition5, OS_LOG_TYPE_ERROR, "%@: Unexpected transition state.", buf, 0xCu);
       }
 
       goto LABEL_40;
     }
 
-    if (v30 == 2)
+    if (state2 == 2)
     {
-      v31 = [(AVTransitionController *)self activeTransition];
-      [v31 pauseInteractiveTransition];
+      activeTransition5 = [(AVTransitionController *)self activeTransition];
+      [activeTransition5 pauseInteractiveTransition];
       goto LABEL_40;
     }
   }
@@ -518,7 +518,7 @@ void __53__AVTransitionController_startInteractiveTransition___block_invoke(uint
 - (BOOL)wantsInteractiveStart
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [(AVTransitionController *)self state];
+  state = [(AVTransitionController *)self state];
   v3 = _AVLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -527,7 +527,7 @@ void __53__AVTransitionController_startInteractiveTransition___block_invoke(uint
     v7 = "[AVTransitionController wantsInteractiveStart]";
     v9 = "wantsInteractiveStart";
     v8 = 2080;
-    if (v2 == 1)
+    if (state == 1)
     {
       v4 = "YES";
     }
@@ -537,7 +537,7 @@ void __53__AVTransitionController_startInteractiveTransition___block_invoke(uint
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v6, 0x20u);
   }
 
-  return v2 == 1;
+  return state == 1;
 }
 
 - (void)_finishTransition
@@ -552,23 +552,23 @@ void __53__AVTransitionController_startInteractiveTransition___block_invoke(uint
       *buf = 138412546;
       v9 = v6;
       v10 = 2048;
-      v11 = [(AVTransitionController *)self state];
+      state = [(AVTransitionController *)self state];
       _os_log_error_impl(&dword_18B49C000, v3, OS_LOG_TYPE_ERROR, "%@ called with an invalid state %ld", buf, 0x16u);
     }
   }
 
-  v4 = [(AVTransitionController *)self activeTransition];
+  activeTransition = [(AVTransitionController *)self activeTransition];
 
-  if (v4)
+  if (activeTransition)
   {
     [(AVTransitionController *)self setState:5];
-    v5 = [(AVTransitionController *)self delegate];
+    delegate = [(AVTransitionController *)self delegate];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __43__AVTransitionController__finishTransition__block_invoke;
     v7[3] = &unk_1E720A090;
     v7[4] = self;
-    [v5 transitionController:self prepareForFinishingInteractiveTransition:v7];
+    [delegate transitionController:self prepareForFinishingInteractiveTransition:v7];
   }
 
   else
@@ -583,25 +583,25 @@ void __43__AVTransitionController__finishTransition__block_invoke(uint64_t a1)
   [v1 finishInteractiveTransition];
 }
 
-- (void)transitionDriverDidFinishInteraction:(id)a3
+- (void)transitionDriverDidFinishInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [v4 transitionInteraction];
-  if (v5 > 1)
+  interactionCopy = interaction;
+  transitionInteraction = [interactionCopy transitionInteraction];
+  if (transitionInteraction > 1)
   {
-    if (v5 == 2)
+    if (transitionInteraction == 2)
     {
-      [v4 pinchScale];
+      [interactionCopy pinchScale];
       if (v30 < 0.95)
       {
-        [v4 pinchVelocity];
+        [interactionCopy pinchVelocity];
         if (v31 < 0.0)
         {
           goto LABEL_42;
         }
       }
 
-      [v4 pinchVelocity];
+      [interactionCopy pinchVelocity];
       if (v32 < -2.5)
       {
         goto LABEL_42;
@@ -610,32 +610,32 @@ void __43__AVTransitionController__finishTransition__block_invoke(uint64_t a1)
       goto LABEL_41;
     }
 
-    if (v5 != 3)
+    if (transitionInteraction != 3)
     {
       goto LABEL_43;
     }
 
-    [v4 locationInWindow];
+    [interactionCopy locationInWindow];
     v10 = v9;
-    [v4 velocityInWindow];
+    [interactionCopy velocityInWindow];
     v43 = v11;
     v13 = v12;
-    [v4 translationInWindow];
+    [interactionCopy translationInWindow];
     v15 = v14;
     v16 = v10 - v14;
-    v17 = [(AVTransitionController *)self presentationContext];
-    v18 = [v17 presentationWindow];
-    [v18 bounds];
+    presentationContext = [(AVTransitionController *)self presentationContext];
+    presentationWindow = [presentationContext presentationWindow];
+    [presentationWindow bounds];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = [(AVTransitionController *)self presentationContext];
-    v28 = [v27 currentTransition];
-    v29 = v28;
-    if (v28)
+    presentationContext2 = [(AVTransitionController *)self presentationContext];
+    currentTransition = [presentationContext2 currentTransition];
+    v29 = currentTransition;
+    if (currentTransition)
     {
-      [v28 rotationTransform];
+      [currentTransition rotationTransform];
     }
 
     else
@@ -660,9 +660,9 @@ void __43__AVTransitionController__finishTransition__block_invoke(uint64_t a1)
       v34 = v16 / height;
     }
 
-    [v4 angleOfVelocityInWindow];
+    [interactionCopy angleOfVelocityInWindow];
     v36 = v35;
-    v37 = [v4 lastNonZeroVelocityWasDownward];
+    lastNonZeroVelocityWasDownward = [interactionCopy lastNonZeroVelocityWasDownward];
     v38 = -v36;
     if (v36 >= 0.0)
     {
@@ -672,7 +672,7 @@ void __43__AVTransitionController__finishTransition__block_invoke(uint64_t a1)
     if (v38 >= v34 * 70.0 + (1.0 - v34) * 80.0 || v13 <= 0.0)
     {
       v39 = v13 != *(MEMORY[0x1E695EFF8] + 8) || v43 != *MEMORY[0x1E695EFF8];
-      if (!v37)
+      if (!lastNonZeroVelocityWasDownward)
       {
         goto LABEL_41;
       }
@@ -681,7 +681,7 @@ void __43__AVTransitionController__finishTransition__block_invoke(uint64_t a1)
     else
     {
       v39 = 0;
-      if (!v37)
+      if (!lastNonZeroVelocityWasDownward)
       {
         goto LABEL_41;
       }
@@ -721,17 +721,17 @@ void __43__AVTransitionController__finishTransition__block_invoke(uint64_t a1)
     goto LABEL_41;
   }
 
-  if (!v5)
+  if (!transitionInteraction)
   {
 LABEL_41:
     [(AVTransitionController *)self _cancelTransition];
     goto LABEL_43;
   }
 
-  if (v5 == 1)
+  if (transitionInteraction == 1)
   {
-    [v4 pinchScale];
-    if (v6 > 1.05 && ([v4 pinchVelocity], v7 > 0.0) || (objc_msgSend(v4, "pinchVelocity"), v8 > 1.5))
+    [interactionCopy pinchScale];
+    if (v6 > 1.05 && ([interactionCopy pinchVelocity], v7 > 0.0) || (objc_msgSend(interactionCopy, "pinchVelocity"), v8 > 1.5))
     {
 LABEL_42:
       [(AVTransitionController *)self _finishTransition];
@@ -758,29 +758,29 @@ LABEL_43:
         v6 = 138412546;
         v7 = v5;
         v8 = 2048;
-        v9 = [(AVTransitionController *)self state];
+        state = [(AVTransitionController *)self state];
         _os_log_error_impl(&dword_18B49C000, v3, OS_LOG_TYPE_ERROR, "%@ called with an invalid state %ld", &v6, 0x16u);
       }
     }
 
     [(AVTransitionController *)self setState:3];
-    v4 = [(AVTransitionController *)self activeTransition];
-    [v4 cancelInteractiveTransition];
+    activeTransition = [(AVTransitionController *)self activeTransition];
+    [activeTransition cancelInteractiveTransition];
   }
 }
 
-- (void)transitionDriverDidCancelInteraction:(id)a3
+- (void)transitionDriverDidCancelInteraction:(id)interaction
 {
-  v10 = [(AVTransitionController *)self presentationContext];
-  v4 = [v10 presentationWindow];
-  v5 = [v4 windowScene];
+  presentationContext = [(AVTransitionController *)self presentationContext];
+  presentationWindow = [presentationContext presentationWindow];
+  windowScene = [presentationWindow windowScene];
 
-  v6 = [v10 dismissingTransition];
-  v7 = [v5 interfaceOrientation];
-  if ([v10 isDismissing] && objc_msgSend(v6, "isRotated") && objc_msgSend(v10, "wasInitiallyInteractive") && v7 == objc_msgSend(v6, "finalInterfaceOrientation") && objc_msgSend(v5, "activationState"))
+  dismissingTransition = [presentationContext dismissingTransition];
+  interfaceOrientation = [windowScene interfaceOrientation];
+  if ([presentationContext isDismissing] && objc_msgSend(dismissingTransition, "isRotated") && objc_msgSend(presentationContext, "wasInitiallyInteractive") && interfaceOrientation == objc_msgSend(dismissingTransition, "finalInterfaceOrientation") && objc_msgSend(windowScene, "activationState"))
   {
-    v8 = [v10 rotatableSecondWindow];
-    if (v8)
+    rotatableSecondWindow = [presentationContext rotatableSecondWindow];
+    if (rotatableSecondWindow)
     {
 
 LABEL_9:
@@ -788,56 +788,56 @@ LABEL_9:
       goto LABEL_12;
     }
 
-    v9 = [v10 avFullScreenViewController];
+    avFullScreenViewController = [presentationContext avFullScreenViewController];
 
-    if (v9)
+    if (avFullScreenViewController)
     {
       goto LABEL_9;
     }
 
-    [v6 setWasCancelledWithInactiveScene:1];
+    [dismissingTransition setWasCancelledWithInactiveScene:1];
   }
 
   [(AVTransitionController *)self _cancelTransition];
 LABEL_12:
 }
 
-- (void)transitionDriverDidContinueInteraction:(id)a3
+- (void)transitionDriverDidContinueInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   if ([(AVTransitionController *)self state]!= 2)
   {
     goto LABEL_31;
   }
 
-  v5 = [(AVPresentationController *)self->_presentationController context];
-  v6 = [v5 sourceView];
+  context = [(AVPresentationController *)self->_presentationController context];
+  sourceView = [context sourceView];
 
-  [v4 translationInWindow];
+  [interactionCopy translationInWindow];
   v95 = v7;
   v96 = v8;
-  [v4 rotation];
+  [interactionCopy rotation];
   v10 = v9;
-  v11 = [v4 transitionInteraction];
+  transitionInteraction = [interactionCopy transitionInteraction];
   v12 = 0.5;
   v13 = 1.125;
-  if (v11 == 3)
+  if (transitionInteraction == 3)
   {
-    v19 = [(AVTransitionController *)self presentationContext];
-    v20 = [v19 transitionContext];
-    v21 = [v20 containerView];
-    [v21 frame];
+    presentationContext = [(AVTransitionController *)self presentationContext];
+    transitionContext = [presentationContext transitionContext];
+    containerView = [transitionContext containerView];
+    [containerView frame];
     v23 = v22;
 
-    v24 = [(AVTransitionController *)self presentationContext];
-    v25 = [v24 transitionContext];
-    v26 = [v25 containerView];
-    [v26 frame];
+    presentationContext2 = [(AVTransitionController *)self presentationContext];
+    transitionContext2 = [presentationContext2 transitionContext];
+    containerView2 = [transitionContext2 containerView];
+    [containerView2 frame];
     v28 = v27;
 
-    v29 = [(AVTransitionController *)self presentationContext];
-    v30 = [v29 dismissingTransition];
-    if ([v30 isRotated])
+    presentationContext3 = [(AVTransitionController *)self presentationContext];
+    dismissingTransition = [presentationContext3 dismissingTransition];
+    if ([dismissingTransition isRotated])
     {
       v23 = v28;
     }
@@ -847,9 +847,9 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (v11 == 2)
+  if (transitionInteraction == 2)
   {
-    [v4 pinchScale];
+    [interactionCopy pinchScale];
     v15 = 1.0 - v17;
   }
 
@@ -857,16 +857,16 @@ LABEL_12:
   {
     v14 = 1.0;
     v15 = 1.0;
-    if (v11 != 1)
+    if (transitionInteraction != 1)
     {
       goto LABEL_11;
     }
 
-    [v4 pinchScale];
+    [interactionCopy pinchScale];
     v15 = v16 + -1.0;
   }
 
-  [v4 pinchScale];
+  [interactionCopy pinchScale];
   v14 = v18;
   v13 = 3.5;
   v12 = 0.2;
@@ -887,10 +887,10 @@ LABEL_11:
   {
     if (v14 < 1.0)
     {
-      v41 = [(AVTransitionController *)self easeInFunction];
+      easeInFunction = [(AVTransitionController *)self easeInFunction];
       v42 = fmax(v14, 0.0);
       *&v42 = v42;
-      [v41 _solveForInput:v42];
+      [easeInFunction _solveForInput:v42];
       v44 = v43;
 
       v35 = v12 + v44 * (1.0 - v12);
@@ -900,21 +900,21 @@ LABEL_11:
   else
   {
     v36 = v13 - v12;
-    v37 = [(AVTransitionController *)self easeInFunction];
+    easeInFunction2 = [(AVTransitionController *)self easeInFunction];
     v38 = fmin(fmax((v14 + -1.0) / (v13 - v12), 0.0), 1.0);
     *&v38 = v38;
-    [v37 _solveForInput:v38];
+    [easeInFunction2 _solveForInput:v38];
     v40 = v39;
 
     v35 = v40 * v36 + 1.0;
   }
 
   v45 = fmax(v15, 0.0);
-  if (v6)
+  if (sourceView)
   {
-    v46 = [(AVTransitionController *)self presentationContext];
-    v47 = [v46 currentTransition];
-    if ([v47 isRotated])
+    presentationContext4 = [(AVTransitionController *)self presentationContext];
+    currentTransition = [presentationContext4 currentTransition];
+    if ([currentTransition isRotated])
     {
       v48 = 3.14159265;
     }
@@ -931,10 +931,10 @@ LABEL_11:
   }
 
   v49 = fmin(v45, 0.5);
-  v50 = [(AVTransitionController *)self easeOutFunction];
+  easeOutFunction = [(AVTransitionController *)self easeOutFunction];
   v51 = v10 / v48;
   *&v52 = fabsf(v51);
-  [v50 _solveForInput:v52];
+  [easeOutFunction _solveForInput:v52];
   if (v10 >= 0.0)
   {
     v54 = v53 * 1.57079633;
@@ -945,19 +945,19 @@ LABEL_11:
     v54 = -(v53 * 1.57079633);
   }
 
-  v55 = [(AVTransitionController *)self presentationContext];
-  v56 = [v55 presentationWindow];
-  [v56 bounds];
+  presentationContext5 = [(AVTransitionController *)self presentationContext];
+  presentationWindow = [presentationContext5 presentationWindow];
+  [presentationWindow bounds];
   v58 = v57;
   v60 = v59;
   v62 = v61;
   v64 = v63;
-  v65 = [(AVTransitionController *)self presentationContext];
-  v66 = [v65 currentTransition];
-  v67 = v66;
-  if (v66)
+  presentationContext6 = [(AVTransitionController *)self presentationContext];
+  currentTransition2 = [presentationContext6 currentTransition];
+  v67 = currentTransition2;
+  if (currentTransition2)
   {
-    [v66 rotationTransform];
+    [currentTransition2 rotationTransform];
   }
 
   else
@@ -973,7 +973,7 @@ LABEL_11:
   height = v99.size.height;
   width = v99.size.width;
 
-  [v4 locationInWindow];
+  [interactionCopy locationInWindow];
   v69 = v68;
   v71 = v70;
   UIRectGetCenter();
@@ -995,23 +995,23 @@ LABEL_11:
   v89 = 1.0 - v88;
   [(AVTransitionController *)self touchGravity];
   v91 = v75 * v90 + v89 * v96;
-  v92 = [(AVTransitionController *)self activeTransition];
-  [v92 updateWithPercentComplete:v49 scale:v35 translation:v87 rotation:{v91, v54}];
+  activeTransition = [(AVTransitionController *)self activeTransition];
+  [activeTransition updateWithPercentComplete:v49 scale:v35 translation:v87 rotation:{v91, v54}];
 
 LABEL_31:
 }
 
-- (void)transitionDriver:(id)a3 didBeginTrackingTransitionInteraction:(int64_t)a4 readyToProceedHandler:(id)a5
+- (void)transitionDriver:(id)driver didBeginTrackingTransitionInteraction:(int64_t)interaction readyToProceedHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  driverCopy = driver;
+  handlerCopy = handler;
   [(AVTransitionController *)self setTouchGravity:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   if (![(AVTransitionController *)self state])
   {
-    v10 = [v7 transitionInteraction];
-    if ((v10 - 2) >= 2)
+    transitionInteraction = [driverCopy transitionInteraction];
+    if ((transitionInteraction - 2) >= 2)
     {
-      if (v10 != 1)
+      if (transitionInteraction != 1)
       {
         v9 = _AVLog();
         if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1028,18 +1028,18 @@ LABEL_13:
       }
 
       [(AVTransitionController *)self setState:1];
-      v11 = [(AVTransitionController *)self delegate];
-      [v11 transitionControllerBeginInteractivePresentationTransition:self];
+      delegate = [(AVTransitionController *)self delegate];
+      [delegate transitionControllerBeginInteractivePresentationTransition:self];
     }
 
     else
     {
       [(AVTransitionController *)self setState:1];
-      v11 = [(AVTransitionController *)self delegate];
-      [v11 transitionControllerBeginInteractiveDismissalTransition:self];
+      delegate = [(AVTransitionController *)self delegate];
+      [delegate transitionControllerBeginInteractiveDismissalTransition:self];
     }
 
-    [(AVTransitionController *)self setTransitionDidBeginHandler:v8];
+    [(AVTransitionController *)self setTransitionDidBeginHandler:handlerCopy];
     goto LABEL_9;
   }
 
@@ -1054,19 +1054,19 @@ LABEL_13:
 
 LABEL_3:
 
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 LABEL_9:
 }
 
-- (BOOL)transitionDriver:(id)a3 shouldDriveTransitionInteractionOfType:(int64_t)a4
+- (BOOL)transitionDriver:(id)driver shouldDriveTransitionInteractionOfType:(int64_t)type
 {
-  v6 = a3;
-  if ((a4 - 2) >= 2)
+  driverCopy = driver;
+  if ((type - 2) >= 2)
   {
-    if (a4 == 1 && ![(AVTransitionController *)self state])
+    if (type == 1 && ![(AVTransitionController *)self state])
     {
-      v7 = [(AVTransitionController *)self delegate];
-      v9 = [v7 transitionControllerCanBeginInteractivePresentationTransition:self];
+      delegate = [(AVTransitionController *)self delegate];
+      v9 = [delegate transitionControllerCanBeginInteractivePresentationTransition:self];
 LABEL_10:
 
       goto LABEL_11;
@@ -1075,11 +1075,11 @@ LABEL_10:
 
   else if (![(AVTransitionController *)self state])
   {
-    v7 = [(AVTransitionController *)self presentationContext];
-    if ([v7 canBeInteractivelyDismissed])
+    delegate = [(AVTransitionController *)self presentationContext];
+    if ([delegate canBeInteractivelyDismissed])
     {
-      v8 = [(AVTransitionController *)self delegate];
-      v9 = [v8 transitionControllerCanBeginInteractiveDismissalTransition:self];
+      delegate2 = [(AVTransitionController *)self delegate];
+      v9 = [delegate2 transitionControllerCanBeginInteractiveDismissalTransition:self];
     }
 
     else
@@ -1096,14 +1096,14 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)transitionDriver:(id)a3 gestureRecognizer:(id)a4 shouldReceiveTouch:(id)a5
+- (BOOL)transitionDriver:(id)driver gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v8 = a4;
-  v9 = a5;
-  if ([a3 isEnabled])
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if ([driver isEnabled])
   {
-    v10 = [(AVTransitionController *)self delegate];
-    v11 = [v10 transitionController:self gestureRecognizer:v8 shouldReceiveTouch:v9];
+    delegate = [(AVTransitionController *)self delegate];
+    v11 = [delegate transitionController:self gestureRecognizer:recognizerCopy shouldReceiveTouch:touchCopy];
   }
 
   else
@@ -1114,22 +1114,22 @@ LABEL_11:
   return v11;
 }
 
-- (void)ensurePresentationControllerWithPresentingViewController:(id)a3 presentedViewController:(id)a4
+- (void)ensurePresentationControllerWithPresentingViewController:(id)controller presentedViewController:(id)viewController
 {
   if (!self->_presentationController)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(AVTransitionController *)self delegate];
-    v16 = [v9 transitionController:self configurationForPresentedViewController:v7 presentingViewController:v8];
+    viewControllerCopy = viewController;
+    controllerCopy = controller;
+    delegate = [(AVTransitionController *)self delegate];
+    v16 = [delegate transitionController:self configurationForPresentedViewController:viewControllerCopy presentingViewController:controllerCopy];
 
-    v10 = [(AVTransitionController *)self sourceViewForNextPresentation];
+    sourceViewForNextPresentation = [(AVTransitionController *)self sourceViewForNextPresentation];
     v11 = [AVPresentationController alloc];
-    v12 = [v7 presentationController];
-    v13 = [(AVPresentationController *)v11 initWithPresentationController:v12 presentedViewController:v7 presentingViewController:v8 withConfiguration:v16];
+    presentationController = [viewControllerCopy presentationController];
+    v13 = [(AVPresentationController *)v11 initWithPresentationController:presentationController presentedViewController:viewControllerCopy presentingViewController:controllerCopy withConfiguration:v16];
 
-    v14 = [(AVPresentationController *)v13 context];
-    [v14 setSourceView:v10];
+    context = [(AVPresentationController *)v13 context];
+    [context setSourceView:sourceViewForNextPresentation];
 
     [(AVTransitionController *)self setSourceViewForNextPresentation:0];
     presentationController = self->_presentationController;
@@ -1137,15 +1137,15 @@ LABEL_11:
   }
 }
 
-- (void)beginFullScreenDismissalOfViewController:(id)a3 animated:(BOOL)a4 isInteractive:(BOOL)a5 completion:(id)a6
+- (void)beginFullScreenDismissalOfViewController:(id)controller animated:(BOOL)animated isInteractive:(BOOL)interactive completion:(id)completion
 {
-  v7 = a4;
+  animatedCopy = animated;
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [a6 copy];
-  v11 = [v9 presentingViewController];
+  controllerCopy = controller;
+  v10 = [completion copy];
+  presentingViewController = [controllerCopy presentingViewController];
 
-  if (!v11)
+  if (!presentingViewController)
   {
     v12 = _AVLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1155,17 +1155,17 @@ LABEL_11:
     }
   }
 
-  v13 = [(AVTransitionController *)self presentationContext];
-  v14 = [v13 presentedViewController];
+  presentationContext = [(AVTransitionController *)self presentationContext];
+  presentedViewController = [presentationContext presentedViewController];
 
-  v15 = [v9 transitionCoordinator];
-  if (v15)
+  transitionCoordinator = [controllerCopy transitionCoordinator];
+  if (transitionCoordinator)
   {
     v16 = _AVLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v9;
+      v23 = controllerCopy;
       _os_log_impl(&dword_18B49C000, v16, OS_LOG_TYPE_DEFAULT, "Source view controller is transitioning. Will continue fullscreen dismissal once complete. %@", buf, 0xCu);
     }
 
@@ -1174,28 +1174,28 @@ LABEL_11:
     v17[2] = __101__AVTransitionController_beginFullScreenDismissalOfViewController_animated_isInteractive_completion___block_invoke;
     v17[3] = &unk_1E72097C0;
     v17[4] = self;
-    v18 = v9;
-    v19 = v14;
-    v21 = v7;
+    v18 = controllerCopy;
+    v19 = presentedViewController;
+    v21 = animatedCopy;
     v20 = v10;
-    [v15 animateAlongsideTransition:0 completion:v17];
+    [transitionCoordinator animateAlongsideTransition:0 completion:v17];
   }
 
   else
   {
-    [(AVTransitionController *)self _dismiss:v9 fromViewController:v14 animated:v7 completion:v10];
+    [(AVTransitionController *)self _dismiss:controllerCopy fromViewController:presentedViewController animated:animatedCopy completion:v10];
   }
 }
 
-- (void)beginFullScreenPresentationOfViewController:(id)a3 fromView:(id)a4 isInteractive:(BOOL)a5 completion:(id)a6
+- (void)beginFullScreenPresentationOfViewController:(id)controller fromView:(id)view isInteractive:(BOOL)interactive completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  [(AVTransitionController *)self setSourceViewForNextPresentation:v10];
-  [v9 setTransitioningDelegate:self];
-  if (v10 && ([MEMORY[0x1E69DD258] _viewControllerForFullScreenPresentationFromView:v10], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  controllerCopy = controller;
+  viewCopy = view;
+  completionCopy = completion;
+  [(AVTransitionController *)self setSourceViewForNextPresentation:viewCopy];
+  [controllerCopy setTransitioningDelegate:self];
+  if (viewCopy && ([MEMORY[0x1E69DD258] _viewControllerForFullScreenPresentationFromView:viewCopy], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
   }
@@ -1211,30 +1211,30 @@ LABEL_11:
     else
     {
 
-      v19 = [*v14 avkit_possibleWindowForControllingOverallAppearance];
-      for (i = [v19 rootViewController];
+      avkit_possibleWindowForControllingOverallAppearance = [*v14 avkit_possibleWindowForControllingOverallAppearance];
+      for (i = [avkit_possibleWindowForControllingOverallAppearance rootViewController];
       {
         v13 = i;
 
-        v10 = [v13 presentedViewController];
+        viewCopy = [v13 presentedViewController];
 
-        if (!v10)
+        if (!viewCopy)
         {
           break;
         }
 
-        v19 = v13;
+        avkit_possibleWindowForControllingOverallAppearance = v13;
         [v13 presentedViewController];
       }
     }
   }
 
-  if (v9)
+  if (controllerCopy)
   {
-    v15 = [v11 copy];
+    v15 = [completionCopy copy];
 
-    v16 = [v13 transitionCoordinator];
-    if (v16)
+    transitionCoordinator = [v13 transitionCoordinator];
+    if (transitionCoordinator)
     {
       v17 = _AVLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1249,15 +1249,15 @@ LABEL_11:
       v21[2] = __104__AVTransitionController_beginFullScreenPresentationOfViewController_fromView_isInteractive_completion___block_invoke;
       v21[3] = &unk_1E7209798;
       v21[4] = self;
-      v22 = v9;
+      v22 = controllerCopy;
       v23 = v13;
       v24 = v15;
-      [v16 animateAlongsideTransition:0 completion:v21];
+      [transitionCoordinator animateAlongsideTransition:0 completion:v21];
     }
 
     else
     {
-      [(AVTransitionController *)self _present:v9 fromViewController:v13 animated:1 completion:v15];
+      [(AVTransitionController *)self _present:controllerCopy fromViewController:v13 animated:1 completion:v15];
     }
   }
 
@@ -1270,60 +1270,60 @@ LABEL_11:
       _os_log_error_impl(&dword_18B49C000, v18, OS_LOG_TYPE_ERROR, "Cannot present view controller without a view controller from which to present.", buf, 2u);
     }
 
-    (*(v11 + 2))(v11, 0);
-    v15 = v11;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v15 = completionCopy;
   }
 }
 
-- (void)addTransitionDriver:(id)a3 toView:(id)a4
+- (void)addTransitionDriver:(id)driver toView:(id)view
 {
-  if (a3 && a4)
+  if (driver && view)
   {
-    v6 = a3;
-    [a4 addInteraction:v6];
-    [v6 setTransitionDriverDelegate:self];
+    driverCopy = driver;
+    [view addInteraction:driverCopy];
+    [driverCopy setTransitionDriverDelegate:self];
   }
 }
 
-- (void)setInteractionView:(id)a3
+- (void)setInteractionView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_interactionView);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_interactionView, obj);
-    v5 = [(AVTransitionController *)self interactiveGestureTracker];
-    [(AVTransitionController *)self addTransitionDriver:v5 toView:obj];
+    interactiveGestureTracker = [(AVTransitionController *)self interactiveGestureTracker];
+    [(AVTransitionController *)self addTransitionDriver:interactiveGestureTracker toView:obj];
   }
 }
 
-- (void)setInteractiveGestureTracker:(id)a3
+- (void)setInteractiveGestureTracker:(id)tracker
 {
-  v5 = a3;
-  if (self->_interactiveGestureTracker != v5)
+  trackerCopy = tracker;
+  if (self->_interactiveGestureTracker != trackerCopy)
   {
-    v14 = v5;
-    v6 = [(AVTransitionController *)self interactiveGestureTracker];
+    v14 = trackerCopy;
+    interactiveGestureTracker = [(AVTransitionController *)self interactiveGestureTracker];
 
-    if (v6)
+    if (interactiveGestureTracker)
     {
-      v7 = [(AVTransitionController *)self interactiveGestureTracker];
-      v8 = [v7 view];
-      v9 = [(AVTransitionController *)self interactiveGestureTracker];
-      [v8 removeInteraction:v9];
+      interactiveGestureTracker2 = [(AVTransitionController *)self interactiveGestureTracker];
+      view = [interactiveGestureTracker2 view];
+      interactiveGestureTracker3 = [(AVTransitionController *)self interactiveGestureTracker];
+      [view removeInteraction:interactiveGestureTracker3];
 
-      v10 = [(AVTransitionController *)self interactiveGestureTracker];
-      v11 = [v10 contentTransitioningViewGestureRecognizer];
-      [(AVTransitionDriver *)v14 setContentTransitioningViewGestureRecognizer:v11];
+      interactiveGestureTracker4 = [(AVTransitionController *)self interactiveGestureTracker];
+      contentTransitioningViewGestureRecognizer = [interactiveGestureTracker4 contentTransitioningViewGestureRecognizer];
+      [(AVTransitionDriver *)v14 setContentTransitioningViewGestureRecognizer:contentTransitioningViewGestureRecognizer];
     }
 
-    objc_storeStrong(&self->_interactiveGestureTracker, a3);
+    objc_storeStrong(&self->_interactiveGestureTracker, tracker);
     interactiveGestureTracker = self->_interactiveGestureTracker;
-    v13 = [(AVTransitionController *)self interactionView];
-    [(AVTransitionController *)self addTransitionDriver:interactiveGestureTracker toView:v13];
+    interactionView = [(AVTransitionController *)self interactionView];
+    [(AVTransitionController *)self addTransitionDriver:interactiveGestureTracker toView:interactionView];
 
-    v5 = v14;
+    trackerCopy = v14;
   }
 }
 

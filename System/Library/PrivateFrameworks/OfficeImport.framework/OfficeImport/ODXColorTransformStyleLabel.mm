@@ -1,77 +1,77 @@
 @interface ODXColorTransformStyleLabel
-+ (void)readNode:(_xmlNode *)a3 label:(id)a4 state:(id)a5;
++ (void)readNode:(_xmlNode *)node label:(id)label state:(id)state;
 @end
 
 @implementation ODXColorTransformStyleLabel
 
-+ (void)readNode:(_xmlNode *)a3 label:(id)a4 state:(id)a5
++ (void)readNode:(_xmlNode *)node label:(id)label state:(id)state
 {
-  v27 = a4;
-  v7 = a5;
-  v8 = OCXFirstChild(a3);
-  v9 = [v7 ODXDiagramNamespace];
-  HasName = CXNodeHasName(v8, v9, "fillClrLst");
+  labelCopy = label;
+  stateCopy = state;
+  v8 = OCXFirstChild(node);
+  oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+  HasName = CXNodeHasName(v8, oDXDiagramNamespace, "fillClrLst");
 
   if (HasName)
   {
     v11 = objc_alloc_init(ODDFillColorList);
     [ODXFillColorList readNode:v8 list:v11];
-    [v27 setFillColors:v11];
+    [labelCopy setFillColors:v11];
     v8 = OCXNextSibling(v8);
   }
 
-  v12 = [v7 ODXDiagramNamespace];
-  v13 = CXNodeHasName(v8, v12, "linClrLst");
+  oDXDiagramNamespace2 = [stateCopy ODXDiagramNamespace];
+  v13 = CXNodeHasName(v8, oDXDiagramNamespace2, "linClrLst");
 
   if (v13)
   {
     v14 = objc_alloc_init(ODDFillColorList);
     [ODXFillColorList readNode:v8 list:v14];
-    [v27 setLineColors:v14];
+    [labelCopy setLineColors:v14];
     v8 = OCXNextSibling(v8);
   }
 
-  v15 = [v7 ODXDiagramNamespace];
-  v16 = CXNodeHasName(v8, v15, "effectClrLst");
+  oDXDiagramNamespace3 = [stateCopy ODXDiagramNamespace];
+  v16 = CXNodeHasName(v8, oDXDiagramNamespace3, "effectClrLst");
 
   if (v16)
   {
     v17 = objc_alloc_init(ODDFillColorList);
     [ODXFillColorList readNode:v8 list:v17];
-    [v27 setEffectColors:v17];
+    [labelCopy setEffectColors:v17];
     v8 = OCXNextSibling(v8);
   }
 
-  v18 = [v7 ODXDiagramNamespace];
-  v19 = CXNodeHasName(v8, v18, "txLinClrLst");
+  oDXDiagramNamespace4 = [stateCopy ODXDiagramNamespace];
+  v19 = CXNodeHasName(v8, oDXDiagramNamespace4, "txLinClrLst");
 
   if (v19)
   {
     v20 = objc_alloc_init(ODDFillColorList);
     [ODXFillColorList readNode:v8 list:v20];
-    [v27 setTextLineColors:v20];
+    [labelCopy setTextLineColors:v20];
     v8 = OCXNextSibling(v8);
   }
 
-  v21 = [v7 ODXDiagramNamespace];
-  v22 = CXNodeHasName(v8, v21, "txFillClrLst");
+  oDXDiagramNamespace5 = [stateCopy ODXDiagramNamespace];
+  v22 = CXNodeHasName(v8, oDXDiagramNamespace5, "txFillClrLst");
 
   if (v22)
   {
     v23 = objc_alloc_init(ODDFillColorList);
     [ODXFillColorList readNode:v8 list:v23];
-    [v27 setTextFillColors:v23];
+    [labelCopy setTextFillColors:v23];
     v8 = OCXNextSibling(v8);
   }
 
-  v24 = [v7 ODXDiagramNamespace];
-  v25 = CXNodeHasName(v8, v24, "txEffectClrLst");
+  oDXDiagramNamespace6 = [stateCopy ODXDiagramNamespace];
+  v25 = CXNodeHasName(v8, oDXDiagramNamespace6, "txEffectClrLst");
 
   if (v25)
   {
     v26 = objc_alloc_init(ODDFillColorList);
     [ODXFillColorList readNode:v8 list:v26];
-    [v27 setTextEffectColors:v26];
+    [labelCopy setTextEffectColors:v26];
   }
 }
 

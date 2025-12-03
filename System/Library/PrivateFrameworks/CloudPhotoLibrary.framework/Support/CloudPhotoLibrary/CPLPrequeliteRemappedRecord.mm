@@ -8,8 +8,8 @@
 {
   v3 = [NSString alloc];
   scopedIdentifier = self->_scopedIdentifier;
-  v5 = [(CPLScopedIdentifier *)self->_realScopedIdentifier identifier];
-  v6 = [v3 initWithFormat:@"[%@ -> %@]", scopedIdentifier, v5];
+  identifier = [(CPLScopedIdentifier *)self->_realScopedIdentifier identifier];
+  v6 = [v3 initWithFormat:@"[%@ -> %@]", scopedIdentifier, identifier];
 
   return v6;
 }

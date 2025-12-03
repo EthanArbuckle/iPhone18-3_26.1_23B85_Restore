@@ -1,23 +1,23 @@
 @interface WFDictateTextActionUIKitUserInterface
-- (void)actionDidReceiveTranscription:(id)a3;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)dismissWithCompletionHandler:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)showWithCompletionHandler:(id)a3;
+- (void)actionDidReceiveTranscription:(id)transcription;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)dismissWithCompletionHandler:(id)handler;
+- (void)finishWithError:(id)error;
+- (void)showWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFDictateTextActionUIKitUserInterface
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__WFDictateTextActionUIKitUserInterface_finishWithError___block_invoke;
   v6[3] = &unk_278C375A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -48,26 +48,26 @@ uint64_t __57__WFDictateTextActionUIKitUserInterface_finishWithError___block_inv
   return [v4 setCompletionHandler:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
   v4 = MEMORY[0x277CCA9B8];
-  v6 = a3;
-  v5 = [v4 userCancelledError];
-  [(WFDictateTextActionUIKitUserInterface *)self finishWithError:v5];
+  handlerCopy = handler;
+  userCancelledError = [v4 userCancelledError];
+  [(WFDictateTextActionUIKitUserInterface *)self finishWithError:userCancelledError];
 
-  v6[2]();
+  handlerCopy[2]();
 }
 
-- (void)actionDidReceiveTranscription:(id)a3
+- (void)actionDidReceiveTranscription:(id)transcription
 {
-  v4 = a3;
+  transcriptionCopy = transcription;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__WFDictateTextActionUIKitUserInterface_actionDidReceiveTranscription___block_invoke;
   v6[3] = &unk_278C375A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = transcriptionCopy;
+  v5 = transcriptionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -77,16 +77,16 @@ void __71__WFDictateTextActionUIKitUserInterface_actionDidReceiveTranscription__
   [v2 updateWithTranscription:*(a1 + 40)];
 }
 
-- (void)dismissWithCompletionHandler:(id)a3
+- (void)dismissWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__WFDictateTextActionUIKitUserInterface_dismissWithCompletionHandler___block_invoke;
   v6[3] = &unk_278C375C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -103,16 +103,16 @@ void __70__WFDictateTextActionUIKitUserInterface_dismissWithCompletionHandler___
   objc_msgSendSuper2(&v2, sel_cancelPresentationWithCompletionHandler_, v3);
 }
 
-- (void)showWithCompletionHandler:(id)a3
+- (void)showWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__WFDictateTextActionUIKitUserInterface_showWithCompletionHandler___block_invoke;
   v6[3] = &unk_278C375C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

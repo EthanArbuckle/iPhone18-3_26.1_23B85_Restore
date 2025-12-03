@@ -1,34 +1,34 @@
 @interface ODXChoose
-+ (void)readElseNode:(_xmlNode *)a3 toChoose:(id)a4 state:(id)a5;
-+ (void)readIfNode:(_xmlNode *)a3 toChoose:(id)a4 state:(id)a5;
-+ (void)readNode:(_xmlNode *)a3 toChoose:(id)a4 state:(id)a5;
++ (void)readElseNode:(_xmlNode *)node toChoose:(id)choose state:(id)state;
++ (void)readIfNode:(_xmlNode *)node toChoose:(id)choose state:(id)state;
++ (void)readNode:(_xmlNode *)node toChoose:(id)choose state:(id)state;
 @end
 
 @implementation ODXChoose
 
-+ (void)readNode:(_xmlNode *)a3 toChoose:(id)a4 state:(id)a5
++ (void)readNode:(_xmlNode *)node toChoose:(id)choose state:(id)state
 {
-  v14 = a4;
-  v8 = a5;
-  for (i = OCXFirstChild(a3); ; i = OCXNextSibling(i))
+  chooseCopy = choose;
+  stateCopy = state;
+  for (i = OCXFirstChild(node); ; i = OCXNextSibling(i))
   {
-    v10 = [v8 ODXDiagramNamespace];
-    HasName = CXNodeHasName(i, v10, "if");
+    oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+    HasName = CXNodeHasName(i, oDXDiagramNamespace, "if");
 
     if (!HasName)
     {
       break;
     }
 
-    [a1 readIfNode:i toChoose:v14 state:v8];
+    [self readIfNode:i toChoose:chooseCopy state:stateCopy];
   }
 
-  v12 = [v8 ODXDiagramNamespace];
-  v13 = CXNodeHasName(i, v12, "else");
+  oDXDiagramNamespace2 = [stateCopy ODXDiagramNamespace];
+  v13 = CXNodeHasName(i, oDXDiagramNamespace2, "else");
 
   if (v13)
   {
-    [a1 readElseNode:i toChoose:v14 state:v8];
+    [self readElseNode:i toChoose:chooseCopy state:stateCopy];
     i = OCXNextSibling(i);
   }
 
@@ -38,25 +38,25 @@
   }
 }
 
-+ (void)readIfNode:(_xmlNode *)a3 toChoose:(id)a4 state:(id)a5
++ (void)readIfNode:(_xmlNode *)node toChoose:(id)choose state:(id)state
 {
-  v10 = a4;
-  v7 = a5;
+  chooseCopy = choose;
+  stateCopy = state;
   v8 = objc_alloc_init(ODDWhen);
-  [v10 addWhen:v8];
-  v9 = [(ODDWhen *)v8 iteratorSpecification];
-  [ODXIteratorSpecification readFromNode:a3 toSpecification:v9 state:v7];
+  [chooseCopy addWhen:v8];
+  iteratorSpecification = [(ODDWhen *)v8 iteratorSpecification];
+  [ODXIteratorSpecification readFromNode:node toSpecification:iteratorSpecification state:stateCopy];
 
-  [ODXLayoutObjectList readNode:a3 toList:v8 state:v7];
+  [ODXLayoutObjectList readNode:node toList:v8 state:stateCopy];
 }
 
-+ (void)readElseNode:(_xmlNode *)a3 toChoose:(id)a4 state:(id)a5
++ (void)readElseNode:(_xmlNode *)node toChoose:(id)choose state:(id)state
 {
-  v9 = a4;
-  v7 = a5;
+  chooseCopy = choose;
+  stateCopy = state;
   v8 = objc_alloc_init(ODDOtherwise);
-  [v9 setOtherwise:v8];
-  [ODXLayoutObjectList readNode:a3 toList:v8 state:v7];
+  [chooseCopy setOtherwise:v8];
+  [ODXLayoutObjectList readNode:node toList:v8 state:stateCopy];
 }
 
 @end

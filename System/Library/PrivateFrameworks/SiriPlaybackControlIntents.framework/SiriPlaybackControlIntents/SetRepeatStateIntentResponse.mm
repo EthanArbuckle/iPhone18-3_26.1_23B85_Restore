@@ -1,12 +1,12 @@
 @interface SetRepeatStateIntentResponse
-- (SetRepeatStateIntentResponse)initWithPropertiesByName:(id)a3;
+- (SetRepeatStateIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation SetRepeatStateIntentResponse
 
-- (SetRepeatStateIntentResponse)initWithPropertiesByName:(id)a3
+- (SetRepeatStateIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_268B37B64();
   }

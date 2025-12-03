@@ -1,17 +1,17 @@
 @interface RWIProtocolSecurity
 - (RWIProtocolSecurityCertificate)certificate;
 - (RWIProtocolSecurityConnection)connection;
-- (void)setCertificate:(id)a3;
-- (void)setConnection:(id)a3;
+- (void)setCertificate:(id)certificate;
+- (void)setConnection:(id)connection;
 @end
 
 @implementation RWIProtocolSecurity
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolSecurity;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"connection"];
+  [(RWIProtocolJSONObject *)&v3 setObject:connection forKey:@"connection"];
 }
 
 - (RWIProtocolSecurityConnection)connection
@@ -69,11 +69,11 @@
   return v7;
 }
 
-- (void)setCertificate:(id)a3
+- (void)setCertificate:(id)certificate
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolSecurity;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"certificate"];
+  [(RWIProtocolJSONObject *)&v3 setObject:certificate forKey:@"certificate"];
 }
 
 - (RWIProtocolSecurityCertificate)certificate

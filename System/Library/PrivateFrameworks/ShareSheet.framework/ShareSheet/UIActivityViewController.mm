@@ -1,18 +1,18 @@
 @interface UIActivityViewController
-+ (id)collaborationModeRestrictionFromActivityItemsConfiguration:(id)a3 collaborationMode:(int64_t)a4;
++ (id)collaborationModeRestrictionFromActivityItemsConfiguration:(id)configuration collaborationMode:(int64_t)mode;
 + (int64_t)_defaultPlatformPresentationStyle;
 - (BOOL)_allowsStylingSheetsAsCards;
 - (BOOL)_requiresCustomPresentationController;
 - (BOOL)isCollaborationSelected;
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (NSString)sessionIdentifier;
 - (UIActivity)activity;
 - (UIActivityViewController)initWithActivityItems:(NSArray *)activityItems applicationActivities:(NSArray *)applicationActivities;
-- (UIActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 peopleSuggestionBundleIds:(id)a5;
-- (UIActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 shouldSuggestFamilyMembers:(BOOL)a5;
+- (UIActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities peopleSuggestionBundleIds:(id)ids;
+- (UIActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities shouldSuggestFamilyMembers:(BOOL)members;
 - (UIActivityViewController)initWithActivityItemsConfiguration:(id)activityItemsConfiguration;
-- (UIActivityViewController)initWithAssetIdentifiers:(id)a3 activityItems:(id)a4 applicationActivities:(id)a5;
-- (UIActivityViewController)initWithUserDefaults:(id)a3 userDefaultsIdentifier:(id)a4 applicationActivities:(id)a5;
+- (UIActivityViewController)initWithAssetIdentifiers:(id)identifiers activityItems:(id)items applicationActivities:(id)activities;
+- (UIActivityViewController)initWithUserDefaults:(id)defaults userDefaultsIdentifier:(id)identifier applicationActivities:(id)activities;
 - (UIActivityViewControllerAirDropDelegate)airDropDelegate;
 - (UIActivityViewControllerCollaborationDelegate)collaborationDelegate;
 - (UIActivityViewControllerObjectManipulationDelegate)objectManipulationDelegate;
@@ -22,53 +22,53 @@
 - (double)customViewControllerSectionHeight;
 - (double)customViewControllerVerticalInset;
 - (id)_createContextFromCurrentState;
-- (id)_presentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)_presentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)activityItemsConfiguration;
-- (void)__viewControllerWillBePresented:(BOOL)a3;
+- (void)__viewControllerWillBePresented:(BOOL)presented;
 - (void)_cancel;
 - (void)_createMainPresenterIfNeeded;
 - (void)_delayPresentationIfNeeded;
-- (void)_didResignContentViewControllerOfPopover:(id)a3;
+- (void)_didResignContentViewControllerOfPopover:(id)popover;
 - (void)_endDelayingPresentation;
 - (void)_executeActivity;
-- (void)_findSupportedActivitiesWithCompletionHandler:(id)a3;
-- (void)_performActivity:(id)a3;
-- (void)_performActivityWithType:(id)a3 completionHandler:(id)a4;
-- (void)_prepareActivity:(id)a3 completion:(id)a4;
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4;
-- (void)_presentationControllerDidDismiss:(id)a3;
+- (void)_findSupportedActivitiesWithCompletionHandler:(id)handler;
+- (void)_performActivity:(id)activity;
+- (void)_performActivityWithType:(id)type completionHandler:(id)handler;
+- (void)_prepareActivity:(id)activity completion:(id)completion;
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController;
+- (void)_presentationControllerDidDismiss:(id)dismiss;
 - (void)_primeExtensionDiscovery;
 - (void)_readyToInteract;
-- (void)_reloadActivity:(id)a3;
-- (void)_setSelectedAssetIdentifiers:(id)a3;
-- (void)_updateActivityItems:(id)a3;
-- (void)_updateActivityItems:(id)a3 applicationActivities:(id)a4;
-- (void)_updateSheetPresentationController:(id)a3;
+- (void)_reloadActivity:(id)activity;
+- (void)_setSelectedAssetIdentifiers:(id)identifiers;
+- (void)_updateActivityItems:(id)items;
+- (void)_updateActivityItems:(id)items applicationActivities:(id)activities;
+- (void)_updateSheetPresentationController:(id)controller;
 - (void)_viewControllerPresentationDidInitiate;
 - (void)dealloc;
-- (void)mainPresenter:(id)a3 didCompleteActivity:(id)a4 withSuccess:(BOOL)a5 returnedItems:(id)a6 error:(id)a7;
-- (void)mainPresenter:(id)a3 willCompleteActivity:(id)a4 withSuccess:(BOOL)a5;
-- (void)mainPresenterIsReadyToInteract:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)runScrollingTestWithName:(id)a3 type:(int64_t)a4 completionHandler:(id)a5;
-- (void)setAllowsEmbedding:(BOOL)a3;
+- (void)mainPresenter:(id)presenter didCompleteActivity:(id)activity withSuccess:(BOOL)success returnedItems:(id)items error:(id)error;
+- (void)mainPresenter:(id)presenter willCompleteActivity:(id)activity withSuccess:(BOOL)success;
+- (void)mainPresenterIsReadyToInteract:(id)interact;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)runScrollingTestWithName:(id)name type:(int64_t)type completionHandler:(id)handler;
+- (void)setAllowsEmbedding:(BOOL)embedding;
 - (void)setAllowsProminentActivity:(BOOL)allowsProminentActivity;
-- (void)setCollaborationMode:(int64_t)a3;
-- (void)setCustomViewControllerSectionHeight:(double)a3;
-- (void)setCustomViewControllerVerticalInset:(double)a3;
-- (void)setIsContentManaged:(BOOL)a3;
-- (void)setModalPresentationStyle:(int64_t)a3;
-- (void)setPhotosCarouselViewController:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setCollaborationMode:(int64_t)mode;
+- (void)setCustomViewControllerSectionHeight:(double)height;
+- (void)setCustomViewControllerVerticalInset:(double)inset;
+- (void)setIsContentManaged:(BOOL)managed;
+- (void)setModalPresentationStyle:(int64_t)style;
+- (void)setPhotosCarouselViewController:(id)controller;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UIActivityViewController
@@ -87,7 +87,7 @@
     return 7;
   }
 
-  if ((dyld_program_sdk_at_least() & 1) != 0 || [a1 isMemberOfClass:objc_opt_class()])
+  if ((dyld_program_sdk_at_least() & 1) != 0 || [self isMemberOfClass:objc_opt_class()])
   {
     return 2;
   }
@@ -97,19 +97,19 @@
 
 - (BOOL)_requiresCustomPresentationController
 {
-  v3 = [(UIActivityViewController *)self modalPresentationStyle];
-  LOBYTE(v4) = v3 == 2;
+  modalPresentationStyle = [(UIActivityViewController *)self modalPresentationStyle];
+  LOBYTE(v4) = modalPresentationStyle == 2;
   if (_ShareSheetSolariumEnabled())
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v3 == 2)
+    if (modalPresentationStyle == 2)
     {
       LOBYTE(v4) = 1;
     }
 
-    else if (v6)
+    else if (userInterfaceIdiom)
     {
       LOBYTE(v4) = 0;
     }
@@ -127,66 +127,66 @@
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = [SHSheetContext alloc];
-  v4 = [(UIActivityViewController *)self activityItems];
-  v5 = [(SHSheetContext *)v3 initWithActivityViewController:self activityItems:v4];
+  activityItems = [(UIActivityViewController *)self activityItems];
+  v5 = [(SHSheetContext *)v3 initWithActivityViewController:self activityItems:activityItems];
 
-  v6 = [(UIActivityViewController *)self applicationActivities];
-  [(SHSheetContext *)v5 setApplicationActivities:v6];
+  applicationActivities = [(UIActivityViewController *)self applicationActivities];
+  [(SHSheetContext *)v5 setApplicationActivities:applicationActivities];
 
-  v7 = [(UIActivityViewController *)self excludedActivityTypes];
-  [(SHSheetContext *)v5 setExcludedActivityTypes:v7];
+  excludedActivityTypes = [(UIActivityViewController *)self excludedActivityTypes];
+  [(SHSheetContext *)v5 setExcludedActivityTypes:excludedActivityTypes];
 
-  v8 = [(UIActivityViewController *)self includedActivityTypes];
-  [(SHSheetContext *)v5 setIncludedActivityTypes:v8];
+  includedActivityTypes = [(UIActivityViewController *)self includedActivityTypes];
+  [(SHSheetContext *)v5 setIncludedActivityTypes:includedActivityTypes];
 
   [(SHSheetContext *)v5 setExcludedActivityCategories:[(UIActivityViewController *)self excludedActivityCategories]];
-  v9 = [(UIActivityViewController *)self activityTypeOrder];
-  [(SHSheetContext *)v5 setActivityTypeOrder:v9];
+  activityTypeOrder = [(UIActivityViewController *)self activityTypeOrder];
+  [(SHSheetContext *)v5 setActivityTypeOrder:activityTypeOrder];
 
   [(SHSheetContext *)v5 setShowKeyboardAutomatically:[(UIActivityViewController *)self showKeyboardAutomatically]];
   [(SHSheetContext *)v5 setWhitelistActionActivitiesOnly:[(UIActivityViewController *)self whitelistActionActivitiesOnly]];
   [(SHSheetContext *)v5 setSharingStyle:[(UIActivityViewController *)self sharingStyle]];
-  v10 = [(UIActivityViewController *)self heroActionActivityTypes];
-  [(SHSheetContext *)v5 setHeroActionActivityTypes:v10];
+  heroActionActivityTypes = [(UIActivityViewController *)self heroActionActivityTypes];
+  [(SHSheetContext *)v5 setHeroActionActivityTypes:heroActionActivityTypes];
 
   [(SHSheetContext *)v5 setShowHeroActionsHorizontally:[(UIActivityViewController *)self showHeroActionsHorizontally]];
   [(SHSheetContext *)v5 setIsContentManaged:[(UIActivityViewController *)self isContentManaged]];
   [(SHSheetContext *)v5 setAllowsEmbedding:[(UIActivityViewController *)self allowsEmbedding]];
-  v11 = [(UIActivityViewController *)self objectManipulationDelegate];
-  [(SHSheetContext *)v5 setObjectManipulationDelegate:v11];
+  objectManipulationDelegate = [(UIActivityViewController *)self objectManipulationDelegate];
+  [(SHSheetContext *)v5 setObjectManipulationDelegate:objectManipulationDelegate];
 
   [(SHSheetContext *)v5 setShouldSuggestFamilyMembers:[(UIActivityViewController *)self shouldSuggestFamilyMembers]];
   [(SHSheetContext *)v5 setAllowsProminentActivity:[(UIActivityViewController *)self allowsProminentActivity]];
-  v12 = [(UIActivityViewController *)self photosHeaderMetadata];
-  [(SHSheetContext *)v5 setPhotosHeaderMetadata:v12];
+  photosHeaderMetadata = [(UIActivityViewController *)self photosHeaderMetadata];
+  [(SHSheetContext *)v5 setPhotosHeaderMetadata:photosHeaderMetadata];
 
   [(SHSheetContext *)v5 setConfigureForCloudSharing:[(UIActivityViewController *)self configureForCloudSharing]];
   [(SHSheetContext *)v5 setConfigureForPhotosEdit:[(UIActivityViewController *)self configureForPhotosEdit]];
   [(SHSheetContext *)v5 setHideHeaderView:[(UIActivityViewController *)self hideHeaderView]];
   [(SHSheetContext *)v5 setHideNavigationBar:[(UIActivityViewController *)self hideNavigationBar]];
   [(SHSheetContext *)v5 setHideSuggestions:[(UIActivityViewController *)self hideSuggestions]];
-  v13 = [(UIActivityViewController *)self topContentSectionText];
-  [(SHSheetContext *)v5 setTopContentSectionText:v13];
+  topContentSectionText = [(UIActivityViewController *)self topContentSectionText];
+  [(SHSheetContext *)v5 setTopContentSectionText:topContentSectionText];
 
-  v14 = [(UIActivityViewController *)self _selectedAssetIdentifiers];
-  [(SHSheetContext *)v5 setSelectedAssetIdentifiers:v14];
+  _selectedAssetIdentifiers = [(UIActivityViewController *)self _selectedAssetIdentifiers];
+  [(SHSheetContext *)v5 setSelectedAssetIdentifiers:_selectedAssetIdentifiers];
 
-  v15 = [(UIActivityViewController *)self peopleSuggestionBundleIds];
-  [(SHSheetContext *)v5 setPeopleSuggestionBundleIds:v15];
+  peopleSuggestionBundleIds = [(UIActivityViewController *)self peopleSuggestionBundleIds];
+  [(SHSheetContext *)v5 setPeopleSuggestionBundleIds:peopleSuggestionBundleIds];
 
-  v16 = [(UIActivityViewController *)self cachedActivityItemsConfiguration];
-  v17 = [UIActivityViewController collaborationModeRestrictionFromActivityItemsConfiguration:v16 collaborationMode:[(UIActivityViewController *)self collaborationMode]];
+  cachedActivityItemsConfiguration = [(UIActivityViewController *)self cachedActivityItemsConfiguration];
+  v17 = [UIActivityViewController collaborationModeRestrictionFromActivityItemsConfiguration:cachedActivityItemsConfiguration collaborationMode:[(UIActivityViewController *)self collaborationMode]];
   [(SHSheetContext *)v5 setCollaborationModeRestriction:v17];
 
-  v18 = [(UIActivityViewController *)self managedFileURL];
-  [(SHSheetContext *)v5 setManagedFileURL:v18];
+  managedFileURL = [(UIActivityViewController *)self managedFileURL];
+  [(SHSheetContext *)v5 setManagedFileURL:managedFileURL];
 
   [(SHSheetContext *)v5 setShowCustomScene:[(UIActivityViewController *)self showCustomScene]];
-  v19 = [(UIActivityViewController *)self testingReferenceSnapshot];
-  [(SHSheetContext *)v5 setTestingReferenceSnapshot:v19];
+  testingReferenceSnapshot = [(UIActivityViewController *)self testingReferenceSnapshot];
+  [(SHSheetContext *)v5 setTestingReferenceSnapshot:testingReferenceSnapshot];
 
-  v20 = [(UIActivityViewController *)self snapshotHandler];
-  [(SHSheetContext *)v5 setSnapshotHandler:v20];
+  snapshotHandler = [(UIActivityViewController *)self snapshotHandler];
+  [(SHSheetContext *)v5 setSnapshotHandler:snapshotHandler];
 
   v21 = share_sheet_log();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -209,10 +209,10 @@
   }
 
   [(UIActivityViewController *)self _createMainPresenterIfNeeded];
-  v4 = [(UIActivityViewController *)self mainPresenter];
-  v5 = [v4 useRemoteUIService];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  useRemoteUIService = [mainPresenter useRemoteUIService];
 
-  if (v5)
+  if (useRemoteUIService)
   {
     [(UIActivityViewController *)self loadViewIfNeeded];
   }
@@ -224,8 +224,8 @@
 {
   if (!self->_mainPresenter)
   {
-    v5 = [(UIActivityViewController *)self _createContextFromCurrentState];
-    v3 = [SHSheetFactory createMainPresenterWithContext:v5];
+    _createContextFromCurrentState = [(UIActivityViewController *)self _createContextFromCurrentState];
+    v3 = [SHSheetFactory createMainPresenterWithContext:_createContextFromCurrentState];
     mainPresenter = self->_mainPresenter;
     self->_mainPresenter = v3;
 
@@ -263,12 +263,12 @@ uint64_t __54__UIActivityViewController__delayPresentationIfNeeded__block_invoke
 
 - (void)_delayPresentationIfNeeded
 {
-  v8 = [(UIActivityViewController *)self mainPresenter];
-  if ([v8 useRemoteUIService] && !-[UIActivityViewController didStartDelayingPresentation](self, "didStartDelayingPresentation"))
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  if ([mainPresenter useRemoteUIService] && !-[UIActivityViewController didStartDelayingPresentation](self, "didStartDelayingPresentation"))
   {
-    v3 = [(UIActivityViewController *)self didEndDelayingPresentation];
+    didEndDelayingPresentation = [(UIActivityViewController *)self didEndDelayingPresentation];
 
-    if (!v3)
+    if (!didEndDelayingPresentation)
     {
       [(UIActivityViewController *)self setDidStartDelayingPresentation:1];
       v4 = share_sheet_log();
@@ -306,8 +306,8 @@ uint64_t __54__UIActivityViewController__delayPresentationIfNeeded__block_invoke
   v4.receiver = self;
   v4.super_class = UIActivityViewController;
   [(UIActivityViewController *)&v4 viewSafeAreaInsetsDidChange];
-  v3 = [(UIActivityViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(UIActivityViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (UIActivityViewController)initWithActivityItemsConfiguration:(id)activityItemsConfiguration
@@ -327,21 +327,21 @@ uint64_t __54__UIActivityViewController__delayPresentationIfNeeded__block_invoke
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v4 applicationActivitiesForActivityItemsConfiguration];
+    applicationActivitiesForActivityItemsConfiguration = [v4 applicationActivitiesForActivityItemsConfiguration];
   }
 
   else
   {
-    v7 = 0;
+    applicationActivitiesForActivityItemsConfiguration = 0;
   }
 
-  v8 = [(UIActivityViewController *)self initWithActivityItems:v5 applicationActivities:v7];
+  v8 = [(UIActivityViewController *)self initWithActivityItems:v5 applicationActivities:applicationActivitiesForActivityItemsConfiguration];
   if (v8)
   {
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v4 _excludedActivityTypes];
-      [(UIActivityViewController *)v8 setExcludedActivityTypes:v9];
+      _excludedActivityTypes = [v4 _excludedActivityTypes];
+      [(UIActivityViewController *)v8 setExcludedActivityTypes:_excludedActivityTypes];
     }
 
     [(UIActivityViewController *)v8 setCachedActivityItemsConfiguration:v4];
@@ -357,37 +357,37 @@ _UIActivityItemsConfigurationActivityItemProvider *__101__UIActivityViewControll
   return v3;
 }
 
-- (UIActivityViewController)initWithAssetIdentifiers:(id)a3 activityItems:(id)a4 applicationActivities:(id)a5
+- (UIActivityViewController)initWithAssetIdentifiers:(id)identifiers activityItems:(id)items applicationActivities:(id)activities
 {
-  v9 = a3;
-  v10 = [(UIActivityViewController *)self initWithActivityItems:a4 applicationActivities:a5];
+  identifiersCopy = identifiers;
+  v10 = [(UIActivityViewController *)self initWithActivityItems:items applicationActivities:activities];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_selectedAssetIdentifiers, a3);
+    objc_storeStrong(&v10->_selectedAssetIdentifiers, identifiers);
   }
 
   return v11;
 }
 
-- (UIActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 shouldSuggestFamilyMembers:(BOOL)a5
+- (UIActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities shouldSuggestFamilyMembers:(BOOL)members
 {
-  result = [(UIActivityViewController *)self initWithActivityItems:a3 applicationActivities:a4];
+  result = [(UIActivityViewController *)self initWithActivityItems:items applicationActivities:activities];
   if (result)
   {
-    result->_shouldSuggestFamilyMembers = a5;
+    result->_shouldSuggestFamilyMembers = members;
   }
 
   return result;
 }
 
-- (UIActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 peopleSuggestionBundleIds:(id)a5
+- (UIActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities peopleSuggestionBundleIds:(id)ids
 {
-  v8 = a5;
-  v9 = [(UIActivityViewController *)self initWithActivityItems:a3 applicationActivities:a4];
+  idsCopy = ids;
+  v9 = [(UIActivityViewController *)self initWithActivityItems:items applicationActivities:activities];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [idsCopy copy];
     peopleSuggestionBundleIds = v9->_peopleSuggestionBundleIds;
     v9->_peopleSuggestionBundleIds = v10;
   }
@@ -395,16 +395,16 @@ _UIActivityItemsConfigurationActivityItemProvider *__101__UIActivityViewControll
   return v9;
 }
 
-- (UIActivityViewController)initWithUserDefaults:(id)a3 userDefaultsIdentifier:(id)a4 applicationActivities:(id)a5
+- (UIActivityViewController)initWithUserDefaults:(id)defaults userDefaultsIdentifier:(id)identifier applicationActivities:(id)activities
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(UIActivityViewController *)self initWithActivityItems:MEMORY[0x1E695E0F0] applicationActivities:a5];
+  defaultsCopy = defaults;
+  identifierCopy = identifier;
+  v11 = [(UIActivityViewController *)self initWithActivityItems:MEMORY[0x1E695E0F0] applicationActivities:activities];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_userDefaults, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_userDefaults, defaults);
+    v13 = [identifierCopy copy];
     userDefaultsIdentifier = v12->_userDefaultsIdentifier;
     v12->_userDefaultsIdentifier = v13;
   }
@@ -502,92 +502,92 @@ _UIActivityItemsConfigurationActivityItemProvider *__101__UIActivityViewControll
 
 - (_UIRemoteSheet)_remoteSheet
 {
-  v2 = [(UIActivityViewController *)self mainPresenter];
-  v3 = [v2 remoteSheet];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  remoteSheet = [mainPresenter remoteSheet];
 
-  return v3;
+  return remoteSheet;
 }
 
 - (UIActivity)activity
 {
-  v2 = [(UIActivityViewController *)self mainPresenter];
-  v3 = [v2 currentActivity];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  currentActivity = [mainPresenter currentActivity];
 
-  return v3;
+  return currentActivity;
 }
 
-- (void)setAllowsEmbedding:(BOOL)a3
+- (void)setAllowsEmbedding:(BOOL)embedding
 {
-  if (self->_allowsEmbedding != a3)
+  if (self->_allowsEmbedding != embedding)
   {
-    self->_allowsEmbedding = a3;
+    self->_allowsEmbedding = embedding;
   }
 }
 
-- (void)setCustomViewControllerVerticalInset:(double)a3
+- (void)setCustomViewControllerVerticalInset:(double)inset
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:inset];
   [(UIActivityViewController *)self setCustomViewControllerVerticalInsetWrapper:v4];
 
-  v5 = [(UIActivityViewController *)self mainPresenter];
-  [v5 updateCustomView];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter updateCustomView];
 }
 
 - (double)customViewControllerVerticalInset
 {
-  v2 = [(UIActivityViewController *)self customViewControllerVerticalInsetWrapper];
-  [v2 floatValue];
+  customViewControllerVerticalInsetWrapper = [(UIActivityViewController *)self customViewControllerVerticalInsetWrapper];
+  [customViewControllerVerticalInsetWrapper floatValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCustomViewControllerSectionHeight:(double)a3
+- (void)setCustomViewControllerSectionHeight:(double)height
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:height];
   [(UIActivityViewController *)self setCustomViewControllerSectionHeightWrapper:v4];
 
-  v5 = [(UIActivityViewController *)self mainPresenter];
-  [v5 updateCustomView];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter updateCustomView];
 }
 
 - (double)customViewControllerSectionHeight
 {
-  v2 = [(UIActivityViewController *)self customViewControllerSectionHeightWrapper];
-  [v2 floatValue];
+  customViewControllerSectionHeightWrapper = [(UIActivityViewController *)self customViewControllerSectionHeightWrapper];
+  [customViewControllerSectionHeightWrapper floatValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPhotosCarouselViewController:(id)a3
+- (void)setPhotosCarouselViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if ((_ShareSheetCanUseCustomViewController() & 1) == 0)
   {
-    v10 = share_sheet_log();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    mainPresenter2 = share_sheet_log();
+    if (os_log_type_enabled(mainPresenter2, OS_LOG_TYPE_ERROR))
     {
-      [(UIActivityViewController *)v5 setPhotosCarouselViewController:v10];
+      [(UIActivityViewController *)controllerCopy setPhotosCarouselViewController:mainPresenter2];
     }
 
     goto LABEL_9;
   }
 
-  if (self->_photosCarouselViewController != v5)
+  if (self->_photosCarouselViewController != controllerCopy)
   {
-    objc_storeStrong(&self->_photosCarouselViewController, a3);
-    v6 = [(UIActivityViewController *)self presentationController];
+    objc_storeStrong(&self->_photosCarouselViewController, controller);
+    presentationController = [(UIActivityViewController *)self presentationController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [(UIActivityViewController *)self presentationController];
-      [(UIActivityViewController *)self _updateSheetPresentationController:v8];
-      v9 = [(UIActivityViewController *)self mainPresenter];
+      presentationController2 = [(UIActivityViewController *)self presentationController];
+      [(UIActivityViewController *)self _updateSheetPresentationController:presentationController2];
+      mainPresenter = [(UIActivityViewController *)self mainPresenter];
 
-      if (v9)
+      if (mainPresenter)
       {
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
@@ -599,8 +599,8 @@ _UIActivityItemsConfigurationActivityItemProvider *__101__UIActivityViewControll
       }
     }
 
-    v10 = [(UIActivityViewController *)self mainPresenter];
-    [v10 updateCustomView];
+    mainPresenter2 = [(UIActivityViewController *)self mainPresenter];
+    [mainPresenter2 updateCustomView];
 LABEL_9:
   }
 
@@ -616,16 +616,16 @@ void __60__UIActivityViewController_setPhotosCarouselViewController___block_invo
   [v3 updateCustomView];
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
-  if (![(UIActivityViewController *)self allowsEmbedding]&& ![(UIActivityViewController *)self allowsCustomPresentationStyle]&& a3 != 2 && a3 != 7)
+  if (![(UIActivityViewController *)self allowsEmbedding]&& ![(UIActivityViewController *)self allowsCustomPresentationStyle]&& style != 2 && style != 7)
   {
-    a3 = +[UIActivityViewController _defaultPlatformPresentationStyle];
+    style = +[UIActivityViewController _defaultPlatformPresentationStyle];
   }
 
   if (_ShareSheetPlatformPrefersPopover())
   {
-    if (a3 == 2)
+    if (style == 2)
     {
       v5 = _ShareSheetFormSheetSize();
     }
@@ -644,17 +644,17 @@ void __60__UIActivityViewController_setPhotosCarouselViewController___block_invo
   [(UIActivityViewController *)self setPreferredContentSize:v5];
   v6.receiver = self;
   v6.super_class = UIActivityViewController;
-  [(UIActivityViewController *)&v6 setModalPresentationStyle:a3];
+  [(UIActivityViewController *)&v6 setModalPresentationStyle:style];
 }
 
-- (void)setIsContentManaged:(BOOL)a3
+- (void)setIsContentManaged:(BOOL)managed
 {
-  if (self->_isContentManaged != a3)
+  if (self->_isContentManaged != managed)
   {
-    v4 = a3;
-    self->_isContentManaged = a3;
-    v5 = [(UIActivityViewController *)self mainPresenter];
-    [v5 setIsContentManaged:v4];
+    managedCopy = managed;
+    self->_isContentManaged = managed;
+    mainPresenter = [(UIActivityViewController *)self mainPresenter];
+    [mainPresenter setIsContentManaged:managedCopy];
   }
 }
 
@@ -684,44 +684,44 @@ void __60__UIActivityViewController_setPhotosCarouselViewController___block_invo
 
 - (NSString)sessionIdentifier
 {
-  v2 = [(UIActivityViewController *)self mainPresenter];
-  v3 = [v2 sessionIdentifier];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  sessionIdentifier = [mainPresenter sessionIdentifier];
 
-  return v3;
+  return sessionIdentifier;
 }
 
 - (id)activityItemsConfiguration
 {
-  v3 = [(UIActivityViewController *)self mainPresenter];
-  v4 = [v3 isCollaborationSelected];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  isCollaborationSelected = [mainPresenter isCollaborationSelected];
 
-  if (v4)
+  if (isCollaborationSelected)
   {
-    v5 = [(UIActivityViewController *)self clientActivityItemsConfigurationSource];
-    [v5 activityItemsConfiguration];
+    clientActivityItemsConfigurationSource = [(UIActivityViewController *)self clientActivityItemsConfigurationSource];
+    [clientActivityItemsConfigurationSource activityItemsConfiguration];
   }
 
   else
   {
-    v5 = [(UIActivityViewController *)self mainPresenter];
-    [v5 createActivityItemsConfiguration];
+    clientActivityItemsConfigurationSource = [(UIActivityViewController *)self mainPresenter];
+    [clientActivityItemsConfigurationSource createActivityItemsConfiguration];
   }
   v6 = ;
 
   return v6;
 }
 
-+ (id)collaborationModeRestrictionFromActivityItemsConfiguration:(id)a3 collaborationMode:(int64_t)a4
++ (id)collaborationModeRestrictionFromActivityItemsConfiguration:(id)configuration collaborationMode:(int64_t)mode
 {
-  v5 = a3;
-  v6 = v5;
-  switch(a4)
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  switch(mode)
   {
     case 6:
-      if (v5)
+      if (configurationCopy)
       {
-        v10 = [_UIActivityItemsConfigurationActivityItemProvider metadataForKey:@"collaborationModeRestrictions" expectedClass:objc_opt_class() activityItemsConfiguration:v5 itemAtSourceIndex:0];
-        v9 = [v10 firstObject];
+        v10 = [_UIActivityItemsConfigurationActivityItemProvider metadataForKey:@"collaborationModeRestrictions" expectedClass:objc_opt_class() activityItemsConfiguration:configurationCopy itemAtSourceIndex:0];
+        firstObject = [v10 firstObject];
 
         goto LABEL_10;
       }
@@ -735,14 +735,14 @@ void __60__UIActivityViewController_setPhotosCarouselViewController___block_invo
       v7 = [UIActivityCollaborationModeRestriction alloc];
       v8 = 1;
 LABEL_6:
-      v9 = [(UIActivityCollaborationModeRestriction *)v7 initWithDisabledMode:v8];
+      firstObject = [(UIActivityCollaborationModeRestriction *)v7 initWithDisabledMode:v8];
       goto LABEL_10;
   }
 
-  v9 = 0;
+  firstObject = 0;
 LABEL_10:
 
-  return v9;
+  return firstObject;
 }
 
 - (void)viewDidLoad
@@ -751,14 +751,14 @@ LABEL_10:
   v6.super_class = UIActivityViewController;
   [(UIActivityViewController *)&v6 viewDidLoad];
   [(UIActivityViewController *)self _createMainPresenterIfNeeded];
-  v3 = [(UIActivityViewController *)self mainPresenter];
-  [v3 prepareViewIfNeeded];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter prepareViewIfNeeded];
 
-  v4 = [(UIActivityViewController *)self mainPresenter];
-  [v4 updateCustomView];
+  mainPresenter2 = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter2 updateCustomView];
 
-  v5 = [(UIActivityViewController *)self view];
-  [v5 setTintAdjustmentMode:1];
+  view = [(UIActivityViewController *)self view];
+  [view setTintAdjustmentMode:1];
 
   if ([(UIActivityViewController *)self allowsEmbedding])
   {
@@ -766,38 +766,38 @@ LABEL_10:
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v7.receiver = self;
   v7.super_class = UIActivityViewController;
-  [(UIActivityViewController *)&v7 viewIsAppearing:a3];
-  v4 = [(UIActivityViewController *)self view];
-  v5 = [v4 window];
+  [(UIActivityViewController *)&v7 viewIsAppearing:appearing];
+  view = [(UIActivityViewController *)self view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [(UIActivityViewController *)self mainPresenter];
-    [v6 present];
+    mainPresenter = [(UIActivityViewController *)self mainPresenter];
+    [mainPresenter present];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = UIActivityViewController;
-  [(UIActivityViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(UIActivityViewController *)self mainPresenter];
-  [v5 activityViewControllerSizeWillChange:self];
+  [(UIActivityViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter activityViewControllerSizeWillChange:self];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = UIActivityViewController;
-  v4 = a3;
-  [(UIActivityViewController *)&v6 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(UIActivityViewController *)&v6 traitCollectionDidChange:changeCopy];
   v5 = [(UIActivityViewController *)self mainPresenter:v6.receiver];
-  [v5 activityViewController:self traitCollectionDidChange:v4];
+  [v5 activityViewController:self traitCollectionDidChange:changeCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -805,37 +805,37 @@ LABEL_10:
   v12.receiver = self;
   v12.super_class = UIActivityViewController;
   [(UIActivityViewController *)&v12 viewDidLayoutSubviews];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v4)
+  if (!userInterfaceIdiom)
   {
-    v5 = [(UIActivityViewController *)self popoverPresentationController];
+    popoverPresentationController = [(UIActivityViewController *)self popoverPresentationController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [(UIActivityViewController *)self popoverPresentationController];
-      if ([v7 isCompactSize])
+      popoverPresentationController2 = [(UIActivityViewController *)self popoverPresentationController];
+      if ([popoverPresentationController2 isCompactSize])
       {
         SFUIShareSheetPopoverBackgroundViewClass = getSFUIShareSheetPopoverBackgroundViewClass();
-        v9 = [(UIActivityViewController *)self view];
-        [(objc_class *)SFUIShareSheetPopoverBackgroundViewClass effectiveBottomRadiusForView:v9];
+        view = [(UIActivityViewController *)self view];
+        [(objc_class *)SFUIShareSheetPopoverBackgroundViewClass effectiveBottomRadiusForView:view];
         v11 = v10;
 
         if (v11 > 0.0)
         {
-          [v7 setCompactCornerRadius:v11];
+          [popoverPresentationController2 setCompactCornerRadius:v11];
         }
       }
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v17[3] = *MEMORY[0x1E69E9840];
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -850,8 +850,8 @@ LABEL_10:
   v17[1] = &unk_1EFEC96C8;
   v16[1] = @"Status";
   v16[2] = @"Timestamp";
-  v7 = [MEMORY[0x1E695DF00] date];
-  v17[2] = v7;
+  date = [MEMORY[0x1E695DF00] date];
+  v17[2] = date;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
 
   softLinkPLLogRegisteredEvent(23, @"UIKit-Activity", v8, 0);
@@ -860,11 +860,11 @@ LABEL_10:
     [(UIActivityViewController *)self setViewWillAppearTimestamp:mach_continuous_time()];
   }
 
-  v9 = [(UIActivityViewController *)self presentationController];
+  presentationController = [(UIActivityViewController *)self presentationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = presentationController;
     v11 = _ShareSheetSolariumEnabled();
     v12 = 1;
     [v10 _setIgnoresKeyboardNotifications:1];
@@ -877,19 +877,19 @@ LABEL_10:
     [v10 _setCentersPopoverIfSourceViewNotSet:v12];
   }
 
-  v13 = [(UIActivityViewController *)self mainPresenter];
-  [v13 activityViewControllerWillAppear:self];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter activityViewControllerWillAppear:self];
 
   v14.receiver = self;
   v14.super_class = UIActivityViewController;
-  [(UIActivityViewController *)&v14 viewWillAppear:v3];
+  [(UIActivityViewController *)&v14 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = UIActivityViewController;
-  [(UIActivityViewController *)&v11 viewDidAppear:a3];
+  [(UIActivityViewController *)&v11 viewDidAppear:appear];
   v4 = share_sheet_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -897,25 +897,25 @@ LABEL_10:
     _os_log_impl(&dword_18B359000, v4, OS_LOG_TYPE_DEFAULT, "UIAVC: view did appear", v10, 2u);
   }
 
-  v5 = [(UIActivityViewController *)self mainPresenter];
-  [v5 activityViewControllerDidAppear:self];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter activityViewControllerDidAppear:self];
 
-  v6 = [(UIActivityViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
+  view = [(UIActivityViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  v9 = [v8 activityItemsConfigurationSource];
-  [(UIActivityViewController *)self setClientActivityItemsConfigurationSource:v9];
+  activityItemsConfigurationSource = [windowScene activityItemsConfigurationSource];
+  [(UIActivityViewController *)self setClientActivityItemsConfigurationSource:activityItemsConfigurationSource];
 
-  [v8 setActivityItemsConfigurationSource:self];
+  [windowScene setActivityItemsConfigurationSource:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v16[3] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = UIActivityViewController;
-  [(UIActivityViewController *)&v14 viewWillDisappear:a3];
+  [(UIActivityViewController *)&v14 viewWillDisappear:disappear];
   v4 = share_sheet_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -929,27 +929,27 @@ LABEL_10:
   v16[1] = &unk_1EFEC96E0;
   v15[1] = @"Status";
   v15[2] = @"Timestamp";
-  v6 = [MEMORY[0x1E695DF00] date];
-  v16[2] = v6;
+  date = [MEMORY[0x1E695DF00] date];
+  v16[2] = date;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   softLinkPLLogRegisteredEvent(23, @"UIKit-Activity", v7, 0);
-  v8 = [(UIActivityViewController *)self mainPresenter];
-  [v8 activityViewControllerWillDisappear:self];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter activityViewControllerWillDisappear:self];
 
-  v9 = [(UIActivityViewController *)self view];
-  v10 = [v9 window];
-  v11 = [v10 windowScene];
+  view = [(UIActivityViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  v12 = [(UIActivityViewController *)self clientActivityItemsConfigurationSource];
-  [v11 setActivityItemsConfigurationSource:v12];
+  clientActivityItemsConfigurationSource = [(UIActivityViewController *)self clientActivityItemsConfigurationSource];
+  [windowScene setActivityItemsConfigurationSource:clientActivityItemsConfigurationSource];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = UIActivityViewController;
-  [(UIActivityViewController *)&v7 viewDidDisappear:a3];
+  [(UIActivityViewController *)&v7 viewDidDisappear:disappear];
   v4 = share_sheet_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -957,8 +957,8 @@ LABEL_10:
     _os_log_impl(&dword_18B359000, v4, OS_LOG_TYPE_DEFAULT, "UIAVC: view did disappear", v6, 2u);
   }
 
-  v5 = [(UIActivityViewController *)self mainPresenter];
-  [v5 activityViewControllerDidDisappear:self];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter activityViewControllerDidDisappear:self];
 
   [(UIActivityViewController *)self setDidStartDelayingPresentation:0];
   [(UIActivityViewController *)self setDidEndDelayingPresentation:0];
@@ -975,7 +975,7 @@ LABEL_10:
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "UIAVC: ready to interact", buf, 2u);
   }
 
-  v4 = [(UIActivityViewController *)self _shareSheetReadyToInteractHandler];
+  _shareSheetReadyToInteractHandler = [(UIActivityViewController *)self _shareSheetReadyToInteractHandler];
   [(UIActivityViewController *)self _setShareSheetReadyToInteractHandler:0];
   v5 = *MEMORY[0x1E69DDA98];
   v7[0] = MEMORY[0x1E69E9820];
@@ -983,8 +983,8 @@ LABEL_10:
   v7[2] = __44__UIActivityViewController__readyToInteract__block_invoke;
   v7[3] = &unk_1E71FA0F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = _shareSheetReadyToInteractHandler;
+  v6 = _shareSheetReadyToInteractHandler;
   [v5 _performBlockAfterCATransactionCommits:v7];
 }
 
@@ -1055,11 +1055,11 @@ uint64_t __44__UIActivityViewController__readyToInteract__block_invoke(uint64_t 
   }
 }
 
-- (void)__viewControllerWillBePresented:(BOOL)a3
+- (void)__viewControllerWillBePresented:(BOOL)presented
 {
   v9.receiver = self;
   v9.super_class = UIActivityViewController;
-  [(UIActivityViewController *)&v9 __viewControllerWillBePresented:a3];
+  [(UIActivityViewController *)&v9 __viewControllerWillBePresented:presented];
   if (![(UIActivityViewController *)self clientAttemptedInitialPresentationOrEmbeddingTimestamp])
   {
     [(UIActivityViewController *)self setClientAttemptedInitialPresentationOrEmbeddingTimestamp:mach_continuous_time()];
@@ -1075,8 +1075,8 @@ uint64_t __44__UIActivityViewController__readyToInteract__block_invoke(uint64_t 
   }
 
   [(UIActivityViewController *)self _createMainPresenterIfNeeded];
-  v7 = [(UIActivityViewController *)self mainPresenter];
-  [v7 activityViewControllerWillBePresented:self];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter activityViewControllerWillBePresented:self];
 }
 
 - (double)_displayHeight
@@ -1087,35 +1087,35 @@ uint64_t __44__UIActivityViewController__readyToInteract__block_invoke(uint64_t 
   }
 
   [(UIActivityViewController *)self _createMainPresenterIfNeeded];
-  v3 = [(UIActivityViewController *)self mainPresenter];
-  [v3 activityViewControllerWillBeEmbedded:self];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter activityViewControllerWillBeEmbedded:self];
 
   [(UIActivityViewController *)self preferredContentSize];
   return v4;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return a3 != 2 || (v5 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return orientation != 2 || (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController
 {
-  v5 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(UIActivityViewController *)self _updateSheetPresentationController:v5];
+    [(UIActivityViewController *)self _updateSheetPresentationController:controllerCopy];
   }
 }
 
-- (id)_presentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)_presentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
   NSClassFromString(&cfstr_Puactivityview.isa);
   isKindOfClass = objc_opt_isKindOfClass();
   if (!_ShareSheetSolariumEnabled() || (isKindOfClass & 1) != 0)
@@ -1123,12 +1123,12 @@ uint64_t __44__UIActivityViewController__readyToInteract__block_invoke(uint64_t 
     goto LABEL_7;
   }
 
-  v10 = [(UIActivityViewController *)self customViewController];
-  if (v10)
+  customViewController = [(UIActivityViewController *)self customViewController];
+  if (customViewController)
   {
 
 LABEL_7:
-    v11 = [objc_alloc(MEMORY[0x1E69DD4F0]) initWithPresentedViewController:v7 presentingViewController:v8];
+    v11 = [objc_alloc(MEMORY[0x1E69DD4F0]) initWithPresentedViewController:controllerCopy presentingViewController:presentingControllerCopy];
     [(UIActivityViewController *)self _updateSheetPresentationController:v11];
     goto LABEL_8;
   }
@@ -1138,7 +1138,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v11 = [[_UIActivityViewControllerPresentationController alloc] initWithPresentedViewController:v7 presentingViewController:v8];
+  v11 = [[_UIActivityViewControllerPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:presentingControllerCopy];
   if (!v11)
   {
     goto LABEL_7;
@@ -1149,38 +1149,38 @@ LABEL_8:
   return v11;
 }
 
-- (void)_updateSheetPresentationController:(id)a3
+- (void)_updateSheetPresentationController:(id)controller
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
-    v5 = [(UIActivityViewController *)self presentationController];
+    presentationController = [(UIActivityViewController *)self presentationController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v4 = 0;
+      controllerCopy = 0;
       goto LABEL_20;
     }
 
-    v4 = [(UIActivityViewController *)self presentationController];
+    controllerCopy = [(UIActivityViewController *)self presentationController];
   }
 
-  [v4 _setShouldDismissWhenTappedOutside:1];
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  [controllerCopy _setShouldDismissWhenTappedOutside:1];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v8)
+  if (!userInterfaceIdiom)
   {
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v9 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(UIActivityViewController *)self customViewController];
-    if (v14)
+    customViewController = [(UIActivityViewController *)self customViewController];
+    if (customViewController)
     {
       v15 = 0;
     }
@@ -1190,14 +1190,14 @@ LABEL_8:
       v15 = v11 != 320.0 || v13 != 568.0;
     }
 
-    [v4 _setWantsBottomAttachedInCompactHeight:v15];
+    [controllerCopy _setWantsBottomAttachedInCompactHeight:v15];
 
-    [v4 _setWidthFollowsPreferredContentSizeWhenBottomAttached:1];
-    v16 = [(UIActivityViewController *)self includedActivityTypes];
-    if ([v16 containsObject:@"com.apple.UIKit.activity.AirDrop"])
+    [controllerCopy _setWidthFollowsPreferredContentSizeWhenBottomAttached:1];
+    includedActivityTypes = [(UIActivityViewController *)self includedActivityTypes];
+    if ([includedActivityTypes containsObject:@"com.apple.UIKit.activity.AirDrop"])
     {
-      v17 = [(UIActivityViewController *)self includedActivityTypes];
-      v18 = [v17 count] == 1;
+      includedActivityTypes2 = [(UIActivityViewController *)self includedActivityTypes];
+      v18 = [includedActivityTypes2 count] == 1;
     }
 
     else
@@ -1205,27 +1205,27 @@ LABEL_8:
       v18 = 0;
     }
 
-    v19 = [(UIActivityViewController *)self traitCollection];
-    v20 = [v19 preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v20))
+    traitCollection = [(UIActivityViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
 
 LABEL_17:
-      v22 = [MEMORY[0x1E69DD6F8] _largeDetent];
-      v46[0] = v22;
+      _largeDetent = [MEMORY[0x1E69DD6F8] _largeDetent];
+      v46[0] = _largeDetent;
       v23 = MEMORY[0x1E695DEC8];
       v24 = v46;
 LABEL_18:
-      v25 = [v23 arrayWithObjects:v24 count:1];
-      [v4 _setDetents:v25];
+      _largeDetent2 = [v23 arrayWithObjects:v24 count:1];
+      [controllerCopy _setDetents:_largeDetent2];
 LABEL_19:
 
       goto LABEL_20;
     }
 
-    v21 = [(UIActivityViewController *)self customViewController];
+    customViewController2 = [(UIActivityViewController *)self customViewController];
 
-    if (v21)
+    if (customViewController2)
     {
       goto LABEL_17;
     }
@@ -1235,28 +1235,28 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v26 = [(UIActivityViewController *)self customDetent];
-    v27 = v26;
-    if (v26)
+    customDetent = [(UIActivityViewController *)self customDetent];
+    v27 = customDetent;
+    if (customDetent)
     {
-      v28 = v26;
+      _mediumDetent = customDetent;
     }
 
     else
     {
-      v28 = [MEMORY[0x1E69DD6F8] _mediumDetent];
+      _mediumDetent = [MEMORY[0x1E69DD6F8] _mediumDetent];
     }
 
-    v22 = v28;
+    _largeDetent = _mediumDetent;
 
-    v29 = [(UIActivityViewController *)self mainPresenter];
-    v30 = [v29 isSLMEnabled];
+    mainPresenter = [(UIActivityViewController *)self mainPresenter];
+    isSLMEnabled = [mainPresenter isSLMEnabled];
 
-    if (v30)
+    if (isSLMEnabled)
     {
-      v31 = [(UIActivityViewController *)self customDetent];
+      customDetent2 = [(UIActivityViewController *)self customDetent];
 
-      if (!v31)
+      if (!customDetent2)
       {
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
@@ -1266,49 +1266,49 @@ LABEL_19:
         v32 = [MEMORY[0x1E69DCF58] customDetentWithIdentifier:0 resolver:v41];
 
         [(UIActivityViewController *)self setCustomDetent:v32];
-        v22 = v32;
+        _largeDetent = v32;
       }
 
-      v33 = [(UIActivityViewController *)self mainPresenter];
-      v34 = [v33 isSheetResizable];
+      mainPresenter2 = [(UIActivityViewController *)self mainPresenter];
+      isSheetResizable = [mainPresenter2 isSheetResizable];
 
-      if (!v34)
+      if (!isSheetResizable)
       {
-        v39 = [(UIActivityViewController *)self mainPresenter];
-        v40 = [v39 isCompactSize];
+        mainPresenter3 = [(UIActivityViewController *)self mainPresenter];
+        isCompactSize = [mainPresenter3 isCompactSize];
 
-        if (v40)
+        if (isCompactSize)
         {
-          v44 = v22;
+          v44 = _largeDetent;
           v23 = MEMORY[0x1E695DEC8];
           v24 = &v44;
           goto LABEL_18;
         }
 
-        v25 = [MEMORY[0x1E69DD6F8] _largeDetent];
-        v43 = v25;
+        _largeDetent2 = [MEMORY[0x1E69DD6F8] _largeDetent];
+        v43 = _largeDetent2;
         v35 = MEMORY[0x1E695DEC8];
         v36 = &v43;
         v37 = 1;
 LABEL_32:
         v38 = [v35 arrayWithObjects:v36 count:v37];
-        [v4 _setDetents:v38];
+        [controllerCopy _setDetents:v38];
 
         goto LABEL_19;
       }
 
-      v45[0] = v22;
-      v25 = [MEMORY[0x1E69DD6F8] _largeDetent];
-      v45[1] = v25;
+      v45[0] = _largeDetent;
+      _largeDetent2 = [MEMORY[0x1E69DD6F8] _largeDetent];
+      v45[1] = _largeDetent2;
       v35 = MEMORY[0x1E695DEC8];
       v36 = v45;
     }
 
     else
     {
-      v42[0] = v22;
-      v25 = [MEMORY[0x1E69DD6F8] _largeDetent];
-      v42[1] = v25;
+      v42[0] = _largeDetent;
+      _largeDetent2 = [MEMORY[0x1E69DD6F8] _largeDetent];
+      v42[1] = _largeDetent2;
       v35 = MEMORY[0x1E695DEC8];
       v36 = v42;
     }
@@ -1320,21 +1320,21 @@ LABEL_32:
 LABEL_20:
 }
 
-- (void)_performActivity:(id)a3
+- (void)_performActivity:(id)activity
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activityCopy = activity;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 activityType];
+    activityType = [activityCopy activityType];
     v8 = 138412290;
-    v9 = v6;
+    v9 = activityType;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "UIAVC: perform activity:%@", &v8, 0xCu);
   }
 
-  v7 = [(UIActivityViewController *)self mainPresenter];
-  [v7 performActivity:v4];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter performActivity:activityCopy];
 }
 
 - (void)_executeActivity
@@ -1346,49 +1346,49 @@ LABEL_20:
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "UIAVC: execute activity", v5, 2u);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"_UIActivityViewControllerExecuteActivityNotification" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIActivityViewControllerExecuteActivityNotification" object:self userInfo:0];
 }
 
 - (void)_primeExtensionDiscovery
 {
   [(UIActivityViewController *)self _createMainPresenterIfNeeded];
-  v3 = [(UIActivityViewController *)self mainPresenter];
-  [v3 preheatExtensionDiscovery];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter preheatExtensionDiscovery];
 }
 
-- (void)_setSelectedAssetIdentifiers:(id)a3
+- (void)_setSelectedAssetIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  if (([v6 isEqualToArray:self->_selectedAssetIdentifiers] & 1) == 0)
+  identifiersCopy = identifiers;
+  if (([identifiersCopy isEqualToArray:self->_selectedAssetIdentifiers] & 1) == 0)
   {
-    objc_storeStrong(&self->_selectedAssetIdentifiers, a3);
-    v5 = [(UIActivityViewController *)self mainPresenter];
-    [v5 setSelectedAssetIdentifiers:v6];
+    objc_storeStrong(&self->_selectedAssetIdentifiers, identifiers);
+    mainPresenter = [(UIActivityViewController *)self mainPresenter];
+    [mainPresenter setSelectedAssetIdentifiers:identifiersCopy];
   }
 }
 
-- (void)_updateActivityItems:(id)a3
+- (void)_updateActivityItems:(id)items
 {
-  v4 = a3;
-  v5 = [(UIActivityViewController *)self applicationActivities];
-  [(UIActivityViewController *)self _updateActivityItems:v4 applicationActivities:v5];
+  itemsCopy = items;
+  applicationActivities = [(UIActivityViewController *)self applicationActivities];
+  [(UIActivityViewController *)self _updateActivityItems:itemsCopy applicationActivities:applicationActivities];
 }
 
-- (void)_reloadActivity:(id)a3
+- (void)_reloadActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(UIActivityViewController *)self mainPresenter];
-  [v5 reloadActivity:v4];
+  activityCopy = activity;
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter reloadActivity:activityCopy];
 }
 
-- (void)_updateActivityItems:(id)a3 applicationActivities:(id)a4
+- (void)_updateActivityItems:(id)items applicationActivities:(id)activities
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  activitiesCopy = activities;
   v8 = self->_activityItems;
-  v9 = v6;
+  v9 = itemsCopy;
   v10 = v9;
   if (v8 == v9)
   {
@@ -1406,7 +1406,7 @@ LABEL_20:
   }
 
   v12 = self->_applicationActivities;
-  v13 = v7;
+  v13 = activitiesCopy;
   v14 = v13;
   if (v12 == v13)
   {
@@ -1423,11 +1423,11 @@ LABEL_20:
     v15 = [(NSArray *)v12 isEqual:v13]^ 1;
   }
 
-  v16 = [(UIActivityViewController *)self _isAppearingOrAppeared];
+  _isAppearingOrAppeared = [(UIActivityViewController *)self _isAppearingOrAppeared];
   IsRealityLauncher = _ShareSheetIsRealityLauncher();
-  v18 = share_sheet_log();
-  v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-  if ((v11 | v15) & 1) != 0 && ((IsRealityLauncher ^ 1 | v16))
+  _createContextFromCurrentState = share_sheet_log();
+  v19 = os_log_type_enabled(_createContextFromCurrentState, OS_LOG_TYPE_DEFAULT);
+  if ((v11 | v15) & 1) != 0 && ((IsRealityLauncher ^ 1 | _isAppearingOrAppeared))
   {
     if (v19)
     {
@@ -1435,10 +1435,10 @@ LABEL_20:
       v26 = v10;
       v27 = 2112;
       v28 = v14;
-      _os_log_impl(&dword_18B359000, v18, OS_LOG_TYPE_DEFAULT, "UIAVC: update activity items:%{private}@ applicationActivities:%@", &v25, 0x16u);
+      _os_log_impl(&dword_18B359000, _createContextFromCurrentState, OS_LOG_TYPE_DEFAULT, "UIAVC: update activity items:%{private}@ applicationActivities:%@", &v25, 0x16u);
     }
 
-    if (!v16)
+    if (!_isAppearingOrAppeared)
     {
       v20 = share_sheet_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -1449,27 +1449,27 @@ LABEL_20:
 
     [(UIActivityViewController *)self setActivityItems:v10];
     [(UIActivityViewController *)self setApplicationActivities:v14];
-    v18 = [(UIActivityViewController *)self _createContextFromCurrentState];
-    v21 = [(UIActivityViewController *)self mainPresenter];
-    [(NSArray *)v21 updateWithContext:v18];
+    _createContextFromCurrentState = [(UIActivityViewController *)self _createContextFromCurrentState];
+    mainPresenter = [(UIActivityViewController *)self mainPresenter];
+    [(NSArray *)mainPresenter updateWithContext:_createContextFromCurrentState];
     goto LABEL_22;
   }
 
   if (v19)
   {
-    v21 = NSStringFromBOOL();
+    mainPresenter = NSStringFromBOOL();
     v22 = NSStringFromBOOL();
     v23 = NSStringFromBOOL();
     v24 = NSStringFromBOOL();
     v25 = 138413058;
-    v26 = v21;
+    v26 = mainPresenter;
     v27 = 2112;
     v28 = v22;
     v29 = 2112;
     v30 = v23;
     v31 = 2112;
     v32 = v24;
-    _os_log_impl(&dword_18B359000, v18, OS_LOG_TYPE_DEFAULT, "UIAVC: ignoring _updateActivityItems request activityItemsNeedsUpdate:%@  applicationActivitiesNeedsUpdate:%@ isAppearingOrAppeared:%@ shouldCheckIsAppearingOrAppeared:%@", &v25, 0x2Au);
+    _os_log_impl(&dword_18B359000, _createContextFromCurrentState, OS_LOG_TYPE_DEFAULT, "UIAVC: ignoring _updateActivityItems request activityItemsNeedsUpdate:%@  applicationActivitiesNeedsUpdate:%@ isAppearingOrAppeared:%@ shouldCheckIsAppearingOrAppeared:%@", &v25, 0x2Au);
 
 LABEL_22:
   }
@@ -1484,49 +1484,49 @@ LABEL_22:
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "UIAVC: cancel", v5, 2u);
   }
 
-  v4 = [(UIActivityViewController *)self mainPresenter];
-  [v4 dismiss];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter dismiss];
 }
 
-- (void)_prepareActivity:(id)a3 completion:(id)a4
+- (void)_prepareActivity:(id)activity completion:(id)completion
 {
-  v7 = a4;
-  [(UIActivityViewController *)self _prepareActivity:a3];
-  v6 = v7;
-  if (v7)
+  completionCopy = completion;
+  [(UIActivityViewController *)self _prepareActivity:activity];
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy);
+    v6 = completionCopy;
   }
 }
 
-- (void)setCollaborationMode:(int64_t)a3
+- (void)setCollaborationMode:(int64_t)mode
 {
-  self->_collaborationMode = a3;
-  v5 = [(UIActivityViewController *)self _createContextFromCurrentState];
-  v4 = [(UIActivityViewController *)self mainPresenter];
-  [v4 updateWithContext:v5];
+  self->_collaborationMode = mode;
+  _createContextFromCurrentState = [(UIActivityViewController *)self _createContextFromCurrentState];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter updateWithContext:_createContextFromCurrentState];
 }
 
-- (void)_performActivityWithType:(id)a3 completionHandler:(id)a4
+- (void)_performActivityWithType:(id)type completionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   if (_ShareSheetHostCanPerformActivitySkippingShareSheet())
   {
-    v12 = v6;
+    v12 = typeCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
     [(UIActivityViewController *)self setIncludedActivityTypes:v8];
 
     [(UIActivityViewController *)self _createMainPresenterIfNeeded];
-    v9 = [(UIActivityViewController *)self mainPresenter];
-    [v9 prepareNonUIShareSheet];
+    mainPresenter = [(UIActivityViewController *)self mainPresenter];
+    [mainPresenter prepareNonUIShareSheet];
 
-    v10 = [(UIActivityViewController *)self mainPresenter];
-    [v10 performActivityWithType:v6 completionHandler:v7];
+    mainPresenter2 = [(UIActivityViewController *)self mainPresenter];
+    [mainPresenter2 performActivityWithType:typeCopy completionHandler:handlerCopy];
 
-    v7 = v10;
+    handlerCopy = mainPresenter2;
   }
 
   else
@@ -1535,54 +1535,54 @@ LABEL_22:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v6;
+      v14 = typeCopy;
       _os_log_impl(&dword_18B359000, v11, OS_LOG_TYPE_DEFAULT, "Not performing activity '%@' because entitlement is needed", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)_findSupportedActivitiesWithCompletionHandler:(id)a3
+- (void)_findSupportedActivitiesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(UIActivityViewController *)self _createMainPresenterIfNeeded];
-  v5 = [(UIActivityViewController *)self mainPresenter];
-  [v5 prepareNonUIShareSheet];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter prepareNonUIShareSheet];
 
-  v6 = [(UIActivityViewController *)self mainPresenter];
-  [v6 _findSupportedActivitiesWithCompletionHandler:v4];
+  mainPresenter2 = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter2 _findSupportedActivitiesWithCompletionHandler:handlerCopy];
 }
 
-- (void)_presentationControllerDidDismiss:(id)a3
+- (void)_presentationControllerDidDismiss:(id)dismiss
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = share_sheet_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B359000, v4, OS_LOG_TYPE_DEFAULT, "UIAVC:%@ was dismissed manually.", &v5, 0xCu);
   }
 
   [(UIActivityViewController *)self _cancel];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  containerCopy = container;
   v17.receiver = self;
   v17.super_class = UIActivityViewController;
-  [(UIActivityViewController *)&v17 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  [(UIActivityViewController *)&v17 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v4 topViewController];
-    [v9 preferredContentSize];
+    topViewController = [containerCopy topViewController];
+    [topViewController preferredContentSize];
     v6 = v10;
     v8 = v11;
   }
@@ -1608,8 +1608,8 @@ LABEL_22:
     [(UIActivityViewController *)self setInitialPreferredContentHeight:v8];
   }
 
-  v16 = [(UIActivityViewController *)self view];
-  [v16 setNeedsLayout];
+  view = [(UIActivityViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (BOOL)_allowsStylingSheetsAsCards
@@ -1619,80 +1619,80 @@ LABEL_22:
   return [(UIActivityViewController *)self isMemberOfClass:v3];
 }
 
-- (void)_didResignContentViewControllerOfPopover:(id)a3
+- (void)_didResignContentViewControllerOfPopover:(id)popover
 {
-  v4 = a3;
-  v5 = [(UIActivityViewController *)self mainPresenter];
-  [v5 activityViewControllerDidResignContentViewControllerOfPopover:self];
+  popoverCopy = popover;
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  [mainPresenter activityViewControllerDidResignContentViewControllerOfPopover:self];
 
   v6.receiver = self;
   v6.super_class = UIActivityViewController;
-  [(UIActivityViewController *)&v6 _didResignContentViewControllerOfPopover:v4];
+  [(UIActivityViewController *)&v6 _didResignContentViewControllerOfPopover:popoverCopy];
 }
 
-- (void)mainPresenterIsReadyToInteract:(id)a3
+- (void)mainPresenterIsReadyToInteract:(id)interact
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
 
   [(UIActivityViewController *)self _readyToInteract];
 }
 
-- (void)mainPresenter:(id)a3 willCompleteActivity:(id)a4 withSuccess:(BOOL)a5
+- (void)mainPresenter:(id)presenter willCompleteActivity:(id)activity withSuccess:(BOOL)success
 {
-  v5 = a5;
+  successCopy = success;
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  activityCopy = activity;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v8 = share_sheet_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromBOOL();
     v12 = 138412546;
-    v13 = v7;
+    v13 = activityCopy;
     v14 = 2112;
     v15 = v9;
     _os_log_impl(&dword_18B359000, v8, OS_LOG_TYPE_DEFAULT, "UIAVC: will complete activity:%@ success:%@", &v12, 0x16u);
   }
 
-  v10 = [(UIActivityViewController *)self preCompletionHandler];
-  if (v10)
+  preCompletionHandler = [(UIActivityViewController *)self preCompletionHandler];
+  if (preCompletionHandler)
   {
-    v11 = [v7 activityType];
-    (v10)[2](v10, v11, v5);
+    activityType = [activityCopy activityType];
+    (preCompletionHandler)[2](preCompletionHandler, activityType, successCopy);
 
     [(UIActivityViewController *)self setPreCompletionHandler:0];
   }
 }
 
-- (void)mainPresenter:(id)a3 didCompleteActivity:(id)a4 withSuccess:(BOOL)a5 returnedItems:(id)a6 error:(id)a7
+- (void)mainPresenter:(id)presenter didCompleteActivity:(id)activity withSuccess:(BOOL)success returnedItems:(id)items error:(id)error
 {
-  v9 = a5;
+  successCopy = success;
   v35 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
+  activityCopy = activity;
+  itemsCopy = items;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v14 = 1;
-  if (dyld_program_sdk_at_least() && !v9 && ([(UIActivityViewController *)self isBeingDismissed]& 1) == 0)
+  if (dyld_program_sdk_at_least() && !successCopy && ([(UIActivityViewController *)self isBeingDismissed]& 1) == 0)
   {
-    v15 = [(UIActivityViewController *)self presentingViewController];
-    v14 = v15 == 0;
+    presentingViewController = [(UIActivityViewController *)self presentingViewController];
+    v14 = presentingViewController == 0;
   }
 
   v16 = share_sheet_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = NSStringFromBOOL();
-    v18 = [v11 activityType];
+    activityType = [activityCopy activityType];
     v19 = NSStringFromBOOL();
     v25 = 138413314;
-    v26 = v11;
+    v26 = activityCopy;
     v27 = 2114;
     v28 = v17;
     v29 = 2114;
-    v30 = v13;
+    v30 = errorCopy;
     v31 = 2112;
-    v32 = v18;
+    v32 = activityType;
     v33 = 2112;
     v34 = v19;
     _os_log_impl(&dword_18B359000, v16, OS_LOG_TYPE_DEFAULT, "UIAVC: did complete activity:%@ (success=%{public}@, error=%{public}@) activityType:%@ shouldCallCompletionHandler:%@", &v25, 0x34u);
@@ -1700,21 +1700,21 @@ LABEL_22:
 
   if (v14)
   {
-    v20 = [(UIActivityViewController *)self completionWithItemsHandler];
-    v21 = [(UIActivityViewController *)self completionHandler];
-    v22 = v21;
-    if (v20)
+    completionWithItemsHandler = [(UIActivityViewController *)self completionWithItemsHandler];
+    completionHandler = [(UIActivityViewController *)self completionHandler];
+    v22 = completionHandler;
+    if (completionWithItemsHandler)
     {
-      v23 = [v11 activityType];
-      (v20)[2](v20, v23, v9, v12, v13);
+      activityType2 = [activityCopy activityType];
+      (completionWithItemsHandler)[2](completionWithItemsHandler, activityType2, successCopy, itemsCopy, errorCopy);
 
       [(UIActivityViewController *)self setCompletionWithItemsHandler:0];
     }
 
-    else if (v21)
+    else if (completionHandler)
     {
-      v24 = [v11 activityType];
-      (v22)[2](v22, v24, v9);
+      activityType3 = [activityCopy activityType];
+      (v22)[2](v22, activityType3, successCopy);
 
       [(UIActivityViewController *)self setCompletionHandler:0];
     }
@@ -1723,27 +1723,27 @@ LABEL_22:
 
 - (BOOL)isCollaborationSelected
 {
-  v2 = [(UIActivityViewController *)self mainPresenter];
-  v3 = [v2 isCollaborationSelected];
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
+  isCollaborationSelected = [mainPresenter isCollaborationSelected];
 
-  return v3;
+  return isCollaborationSelected;
 }
 
-- (void)runScrollingTestWithName:(id)a3 type:(int64_t)a4 completionHandler:(id)a5
+- (void)runScrollingTestWithName:(id)name type:(int64_t)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(UIActivityViewController *)self mainPresenter];
+  nameCopy = name;
+  handlerCopy = handler;
+  mainPresenter = [(UIActivityViewController *)self mainPresenter];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__UIActivityViewController_runScrollingTestWithName_type_completionHandler___block_invoke;
   v13[3] = &unk_1E71FA140;
-  v15 = v9;
-  v16 = a4;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
-  [v10 runScrollingTestWithName:v12 type:a4 completionHandler:v13];
+  v15 = handlerCopy;
+  typeCopy = type;
+  v14 = nameCopy;
+  v11 = handlerCopy;
+  v12 = nameCopy;
+  [mainPresenter runScrollingTestWithName:v12 type:type completionHandler:v13];
 }
 
 uint64_t __76__UIActivityViewController_runScrollingTestWithName_type_completionHandler___block_invoke(void *a1)

@@ -1,9 +1,9 @@
 @interface MRUFinishTaskAssertionManager
 + (id)sharedManager;
 - (MRUFinishTaskAssertionManager)init;
-- (void)acquireForTaskToken:(id)a3 withReason:(id)a4 invalidationHandler:(id)a5;
+- (void)acquireForTaskToken:(id)token withReason:(id)reason invalidationHandler:(id)handler;
 - (void)dealloc;
-- (void)releaseForTaskToken:(id)a3;
+- (void)releaseForTaskToken:(id)token;
 @end
 
 @implementation MRUFinishTaskAssertionManager
@@ -36,9 +36,9 @@ uint64_t __46__MRUFinishTaskAssertionManager_sharedManager__block_invoke()
   v2 = [(MRUFinishTaskAssertionManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     tokenMap = v2->_tokenMap;
-    v2->_tokenMap = v3;
+    v2->_tokenMap = strongToStrongObjectsMapTable;
   }
 
   return v2;
@@ -52,43 +52,43 @@ uint64_t __46__MRUFinishTaskAssertionManager_sharedManager__block_invoke()
   [(MRUFinishTaskAssertionManager *)&v3 dealloc];
 }
 
-- (void)acquireForTaskToken:(id)a3 withReason:(id)a4 invalidationHandler:(id)a5
+- (void)acquireForTaskToken:(id)token withReason:(id)reason invalidationHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  reasonCopy = reason;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v11 = [(MRUFinishTaskAssertionManager *)self tokenMap];
-  v12 = _Block_copy(v10);
-  [v11 setObject:v12 forKey:v8];
+  tokenMap = [(MRUFinishTaskAssertionManager *)self tokenMap];
+  v12 = _Block_copy(handlerCopy);
+  [tokenMap setObject:v12 forKey:tokenCopy];
 
   v13 = MCLogCategoryDefault();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v31 = v8;
+    v31 = tokenCopy;
     v32 = 2112;
-    v33 = v9;
+    v33 = reasonCopy;
     _os_log_impl(&dword_1A20FC000, v13, OS_LOG_TYPE_DEFAULT, "[MRUFinishTaskAssertionManager] Acquiring for token: %p with reason: %@", buf, 0x16u);
   }
 
-  v14 = [(MRUFinishTaskAssertionManager *)self taskAssertion];
-  v15 = v14 == 0;
+  taskAssertion = [(MRUFinishTaskAssertionManager *)self taskAssertion];
+  v15 = taskAssertion == 0;
 
   if (v15)
   {
     v16 = objc_alloc(MEMORY[0x1E69C7548]);
-    v17 = [MEMORY[0x1E69C7640] currentProcess];
+    currentProcess = [MEMORY[0x1E69C7640] currentProcess];
     v18 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.common" name:@"FinishTaskUninterruptable"];
     v29 = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
-    v20 = [v16 initWithExplanation:@"MediaRemote UI pre-suspend cleanup." target:v17 attributes:v19];
+    v20 = [v16 initWithExplanation:@"MediaRemote UI pre-suspend cleanup." target:currentProcess attributes:v19];
     [(MRUFinishTaskAssertionManager *)self setTaskAssertion:v20];
 
-    v21 = [(MRUFinishTaskAssertionManager *)self taskAssertion];
+    taskAssertion2 = [(MRUFinishTaskAssertionManager *)self taskAssertion];
     v28 = 0;
-    [v21 acquireWithError:&v28];
+    [taskAssertion2 acquireWithError:&v28];
     v22 = v28;
 
     if (v22)
@@ -183,13 +183,13 @@ void __84__MRUFinishTaskAssertionManager_acquireForTaskToken_withReason_invalida
   }
 }
 
-- (void)releaseForTaskToken:(id)a3
+- (void)releaseForTaskToken:(id)token
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(MRUFinishTaskAssertionManager *)self tokenMap];
-  v6 = [v5 objectForKey:v4];
+  tokenMap = [(MRUFinishTaskAssertionManager *)self tokenMap];
+  v6 = [tokenMap objectForKey:tokenCopy];
 
   if (v6)
   {
@@ -197,24 +197,24 @@ void __84__MRUFinishTaskAssertionManager_acquireForTaskToken_withReason_invalida
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134217984;
-      v14 = v4;
+      v14 = tokenCopy;
       _os_log_impl(&dword_1A20FC000, v7, OS_LOG_TYPE_DEFAULT, "[MRUFinishTaskAssertionManager] Releasing for token: %p", &v13, 0xCu);
     }
 
-    v8 = [(MRUFinishTaskAssertionManager *)self tokenMap];
-    [v8 removeObjectForKey:v4];
+    tokenMap2 = [(MRUFinishTaskAssertionManager *)self tokenMap];
+    [tokenMap2 removeObjectForKey:tokenCopy];
 
-    v9 = [(MRUFinishTaskAssertionManager *)self tokenMap];
-    v10 = [v9 count];
+    tokenMap3 = [(MRUFinishTaskAssertionManager *)self tokenMap];
+    v10 = [tokenMap3 count];
 
     if (!v10)
     {
-      v11 = [(MRUFinishTaskAssertionManager *)self autoInvalidationTimer];
-      [v11 invalidate];
+      autoInvalidationTimer = [(MRUFinishTaskAssertionManager *)self autoInvalidationTimer];
+      [autoInvalidationTimer invalidate];
 
       [(MRUFinishTaskAssertionManager *)self setAutoInvalidationTimer:0];
-      v12 = [(MRUFinishTaskAssertionManager *)self taskAssertion];
-      [v12 invalidate];
+      taskAssertion = [(MRUFinishTaskAssertionManager *)self taskAssertion];
+      [taskAssertion invalidate];
 
       [(MRUFinishTaskAssertionManager *)self setTaskAssertion:0];
     }

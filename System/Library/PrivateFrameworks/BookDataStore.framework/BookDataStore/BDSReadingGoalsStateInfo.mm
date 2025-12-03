@@ -1,36 +1,36 @@
 @interface BDSReadingGoalsStateInfo
-- (BDSReadingGoalsStateInfo)initWithBooksFinishedGoal:(id)a3 streakDayGoal:(id)a4;
-- (BDSReadingGoalsStateInfo)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BDSReadingGoalsStateInfo)initWithBooksFinishedGoal:(id)goal streakDayGoal:(id)dayGoal;
+- (BDSReadingGoalsStateInfo)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSReadingGoalsStateInfo
 
-- (BDSReadingGoalsStateInfo)initWithBooksFinishedGoal:(id)a3 streakDayGoal:(id)a4
+- (BDSReadingGoalsStateInfo)initWithBooksFinishedGoal:(id)goal streakDayGoal:(id)dayGoal
 {
-  v7 = a3;
-  v8 = a4;
+  goalCopy = goal;
+  dayGoalCopy = dayGoal;
   v12.receiver = self;
   v12.super_class = BDSReadingGoalsStateInfo;
   v9 = [(BDSReadingGoalsStateInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_booksFinishedGoal, a3);
-    objc_storeStrong(&v10->_streakDayGoal, a4);
+    objc_storeStrong(&v9->_booksFinishedGoal, goal);
+    objc_storeStrong(&v10->_streakDayGoal, dayGoal);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = BUDynamicCast();
 
@@ -40,18 +40,18 @@
       goto LABEL_13;
     }
 
-    v7 = [(BDSReadingGoalsStateInfo *)self booksFinishedGoal];
-    v8 = [v5 booksFinishedGoal];
-    v9 = v8;
-    if (v7 == v8)
+    booksFinishedGoal = [(BDSReadingGoalsStateInfo *)self booksFinishedGoal];
+    booksFinishedGoal2 = [v5 booksFinishedGoal];
+    v9 = booksFinishedGoal2;
+    if (booksFinishedGoal == booksFinishedGoal2)
     {
     }
 
     else
     {
-      v10 = [(BDSReadingGoalsStateInfo *)self booksFinishedGoal];
-      v11 = [v5 booksFinishedGoal];
-      v12 = [v10 isEqual:v11];
+      booksFinishedGoal3 = [(BDSReadingGoalsStateInfo *)self booksFinishedGoal];
+      booksFinishedGoal4 = [v5 booksFinishedGoal];
+      v12 = [booksFinishedGoal3 isEqual:booksFinishedGoal4];
 
       if (!v12)
       {
@@ -62,18 +62,18 @@ LABEL_13:
       }
     }
 
-    v13 = [(BDSReadingGoalsStateInfo *)self streakDayGoal];
-    v14 = [v5 streakDayGoal];
-    if (v13 == v14)
+    streakDayGoal = [(BDSReadingGoalsStateInfo *)self streakDayGoal];
+    streakDayGoal2 = [v5 streakDayGoal];
+    if (streakDayGoal == streakDayGoal2)
     {
       v6 = 1;
     }
 
     else
     {
-      v15 = [(BDSReadingGoalsStateInfo *)self streakDayGoal];
-      v16 = [v5 streakDayGoal];
-      v6 = [v15 isEqual:v16];
+      streakDayGoal3 = [(BDSReadingGoalsStateInfo *)self streakDayGoal];
+      streakDayGoal4 = [v5 streakDayGoal];
+      v6 = [streakDayGoal3 isEqual:streakDayGoal4];
     }
 
     goto LABEL_13;
@@ -82,17 +82,17 @@ LABEL_13:
   return 1;
 }
 
-- (BDSReadingGoalsStateInfo)initWithCoder:(id)a3
+- (BDSReadingGoalsStateInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BDSReadingGoalsStateInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"booksFinishedGoal"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"booksFinishedGoal"];
     booksFinishedGoal = v5->_booksFinishedGoal;
     v5->_booksFinishedGoal = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"streakDayGoal"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"streakDayGoal"];
     streakDayGoal = v5->_streakDayGoal;
     v5->_streakDayGoal = v8;
   }
@@ -100,26 +100,26 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BDSReadingGoalsStateInfo *)self booksFinishedGoal];
-  [v4 encodeObject:v5 forKey:@"booksFinishedGoal"];
+  coderCopy = coder;
+  booksFinishedGoal = [(BDSReadingGoalsStateInfo *)self booksFinishedGoal];
+  [coderCopy encodeObject:booksFinishedGoal forKey:@"booksFinishedGoal"];
 
-  v6 = [(BDSReadingGoalsStateInfo *)self streakDayGoal];
-  [v4 encodeObject:v6 forKey:@"streakDayGoal"];
+  streakDayGoal = [(BDSReadingGoalsStateInfo *)self streakDayGoal];
+  [coderCopy encodeObject:streakDayGoal forKey:@"streakDayGoal"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(BDSReadingGoalsStateInfo);
   if (v4)
   {
-    v5 = [(BDSReadingGoalsStateInfo *)self booksFinishedGoal];
-    [(BDSReadingGoalsStateInfo *)v4 setBooksFinishedGoal:v5];
+    booksFinishedGoal = [(BDSReadingGoalsStateInfo *)self booksFinishedGoal];
+    [(BDSReadingGoalsStateInfo *)v4 setBooksFinishedGoal:booksFinishedGoal];
 
-    v6 = [(BDSReadingGoalsStateInfo *)self streakDayGoal];
-    [(BDSReadingGoalsStateInfo *)v4 setStreakDayGoal:v6];
+    streakDayGoal = [(BDSReadingGoalsStateInfo *)self streakDayGoal];
+    [(BDSReadingGoalsStateInfo *)v4 setStreakDayGoal:streakDayGoal];
   }
 
   return v4;
@@ -129,9 +129,9 @@ LABEL_13:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(BDSReadingGoalsStateInfo *)self booksFinishedGoal];
-  v6 = [(BDSReadingGoalsStateInfo *)self streakDayGoal];
-  v7 = [v3 stringWithFormat:@"<%@: %p booksFinishedGoal:%@, streakDayGoal:%@>", v4, self, v5, v6];
+  booksFinishedGoal = [(BDSReadingGoalsStateInfo *)self booksFinishedGoal];
+  streakDayGoal = [(BDSReadingGoalsStateInfo *)self streakDayGoal];
+  v7 = [v3 stringWithFormat:@"<%@: %p booksFinishedGoal:%@, streakDayGoal:%@>", v4, self, booksFinishedGoal, streakDayGoal];
 
   return v7;
 }

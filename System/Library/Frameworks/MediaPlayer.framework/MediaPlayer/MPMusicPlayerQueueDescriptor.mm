@@ -1,46 +1,46 @@
 @interface MPMusicPlayerQueueDescriptor
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (MPMusicPlayerQueueDescriptor)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPMusicPlayerQueueDescriptor)initWithCoder:(id)coder;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setEndTime:(double)a3 forIdentifiers:(id)a4;
-- (void)_setStartTime:(double)a3 forIdentifiers:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setEndTime:(double)time forIdentifiers:(id)identifiers;
+- (void)_setStartTime:(double)time forIdentifiers:(id)identifiers;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPMusicPlayerQueueDescriptor
 
-- (void)_setEndTime:(double)a3 forIdentifiers:(id)a4
+- (void)_setEndTime:(double)time forIdentifiers:(id)identifiers
 {
-  v10 = a4;
+  identifiersCopy = identifiers;
   endTimes = self->_endTimes;
   p_endTimes = &self->_endTimes;
-  v8 = endTimes;
-  if (!v8)
+  dictionary = endTimes;
+  if (!dictionary)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    objc_storeStrong(p_endTimes, v8);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(p_endTimes, dictionary);
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [(NSDictionary *)v8 setObject:v9 forKey:v10];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:time];
+  [(NSDictionary *)dictionary setObject:v9 forKey:identifiersCopy];
 }
 
-- (void)_setStartTime:(double)a3 forIdentifiers:(id)a4
+- (void)_setStartTime:(double)time forIdentifiers:(id)identifiers
 {
-  v10 = a4;
+  identifiersCopy = identifiers;
   startTimes = self->_startTimes;
   p_startTimes = &self->_startTimes;
-  v8 = startTimes;
-  if (!v8)
+  dictionary = startTimes;
+  if (!dictionary)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    objc_storeStrong(p_startTimes, v8);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(p_startTimes, dictionary);
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [(NSDictionary *)v8 setObject:v9 forKey:v10];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:time];
+  [(NSDictionary *)dictionary setObject:v9 forKey:identifiersCopy];
 }
 
 - (BOOL)isEmpty
@@ -48,17 +48,17 @@
   v4 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v4 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:self file:@"MPMusicPlayerQueueDescriptor.m" lineNumber:189 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"[MPMusicPlayerQueueDescriptor class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMusicPlayerQueueDescriptor.m" lineNumber:189 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"[MPMusicPlayerQueueDescriptor class]"}];
   }
 
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 8) = self->_disableQueueModifications;
@@ -82,37 +82,37 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   disableQueueModifications = self->_disableQueueModifications;
-  v5 = a3;
-  [v5 encodeBool:disableQueueModifications forKey:@"disableQueueModifications"];
-  [v5 encodeInteger:self->_shuffleType forKey:@"shuffleType"];
-  [v5 encodeInteger:self->_repeatType forKey:@"repeatType"];
-  [v5 encodeBool:self->_isPrivate forKey:@"private"];
-  [v5 encodeObject:self->_startTimes forKey:@"MPMusicPlayerQueueDescriptorStartTimes"];
-  [v5 encodeObject:self->_endTimes forKey:@"MPMusicPlayerQueueDescriptorEndTimes"];
-  [v5 encodeObject:self->_requestingBundleIdentifier forKey:@"bundleID"];
-  [v5 encodeObject:self->_requestingBundleVersion forKey:@"bundleVersion"];
-  [v5 encodeObject:self->_playActivityQueueGroupingID forKey:@"queueGroupingID"];
-  [v5 encodeObject:self->_playActivityFeatureName forKey:@"featureName"];
-  [v5 encodeObject:self->_playActivityRecommendationData forKey:@"recommendationData"];
-  [v5 encodeBool:self->_prioritizeStartupOverQuality forKey:@"prioritizeStartupOverQuality"];
+  coderCopy = coder;
+  [coderCopy encodeBool:disableQueueModifications forKey:@"disableQueueModifications"];
+  [coderCopy encodeInteger:self->_shuffleType forKey:@"shuffleType"];
+  [coderCopy encodeInteger:self->_repeatType forKey:@"repeatType"];
+  [coderCopy encodeBool:self->_isPrivate forKey:@"private"];
+  [coderCopy encodeObject:self->_startTimes forKey:@"MPMusicPlayerQueueDescriptorStartTimes"];
+  [coderCopy encodeObject:self->_endTimes forKey:@"MPMusicPlayerQueueDescriptorEndTimes"];
+  [coderCopy encodeObject:self->_requestingBundleIdentifier forKey:@"bundleID"];
+  [coderCopy encodeObject:self->_requestingBundleVersion forKey:@"bundleVersion"];
+  [coderCopy encodeObject:self->_playActivityQueueGroupingID forKey:@"queueGroupingID"];
+  [coderCopy encodeObject:self->_playActivityFeatureName forKey:@"featureName"];
+  [coderCopy encodeObject:self->_playActivityRecommendationData forKey:@"recommendationData"];
+  [coderCopy encodeBool:self->_prioritizeStartupOverQuality forKey:@"prioritizeStartupOverQuality"];
 }
 
-- (MPMusicPlayerQueueDescriptor)initWithCoder:(id)a3
+- (MPMusicPlayerQueueDescriptor)initWithCoder:(id)coder
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = MPMusicPlayerQueueDescriptor;
   v5 = [(MPMusicPlayerQueueDescriptor *)&v24 init];
   if (v5)
   {
-    v5->_disableQueueModifications = [v4 decodeBoolForKey:@"disableQueueModifications"];
-    v5->_shuffleType = [v4 decodeIntegerForKey:@"shuffleType"];
-    v5->_repeatType = [v4 decodeIntegerForKey:@"repeatType"];
-    v5->_isPrivate = [v4 decodeBoolForKey:@"private"];
+    v5->_disableQueueModifications = [coderCopy decodeBoolForKey:@"disableQueueModifications"];
+    v5->_shuffleType = [coderCopy decodeIntegerForKey:@"shuffleType"];
+    v5->_repeatType = [coderCopy decodeIntegerForKey:@"repeatType"];
+    v5->_isPrivate = [coderCopy decodeBoolForKey:@"private"];
     v6 = MEMORY[0x1E695DFD8];
     v25[0] = objc_opt_class();
     v25[1] = objc_opt_class();
@@ -121,47 +121,47 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"MPMusicPlayerQueueDescriptorStartTimes"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MPMusicPlayerQueueDescriptorStartTimes"];
     startTimes = v5->_startTimes;
     v5->_startTimes = v9;
 
-    v11 = [v4 decodeObjectOfClasses:v8 forKey:@"MPMusicPlayerQueueDescriptorEndTimes"];
+    v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MPMusicPlayerQueueDescriptorEndTimes"];
     endTimes = v5->_endTimes;
     v5->_endTimes = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     requestingBundleIdentifier = v5->_requestingBundleIdentifier;
     v5->_requestingBundleIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
     requestingBundleVersion = v5->_requestingBundleVersion;
     v5->_requestingBundleVersion = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queueGroupingID"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queueGroupingID"];
     playActivityQueueGroupingID = v5->_playActivityQueueGroupingID;
     v5->_playActivityQueueGroupingID = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featureName"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featureName"];
     playActivityFeatureName = v5->_playActivityFeatureName;
     v5->_playActivityFeatureName = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recommendationData"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recommendationData"];
     playActivityRecommendationData = v5->_playActivityRecommendationData;
     v5->_playActivityRecommendationData = v21;
 
-    v5->_prioritizeStartupOverQuality = [v4 decodeBoolForKey:@"prioritizeStartupOverQuality"];
+    v5->_prioritizeStartupOverQuality = [coderCopy decodeBoolForKey:@"prioritizeStartupOverQuality"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     repeatType = self->_repeatType;
     shuffleType = self->_shuffleType;
     v6 = v5[3];
@@ -260,13 +260,13 @@
     }
 
     v4 = [MEMORY[0x1E69B1470] pairWithFirst:_MPMusicPlayerGetBundleInfoPair___bundleIdentifier second:_MPMusicPlayerGetBundleInfoPair___bundleVersion];
-    v5 = [v4 first];
+    first = [v4 first];
     requestingBundleIdentifier = v3->_requestingBundleIdentifier;
-    v3->_requestingBundleIdentifier = v5;
+    v3->_requestingBundleIdentifier = first;
 
-    v7 = [v4 second];
+    second = [v4 second];
     requestingBundleVersion = v3->_requestingBundleVersion;
-    v3->_requestingBundleVersion = v7;
+    v3->_requestingBundleVersion = second;
 
     playActivityFeatureName = v3->_playActivityFeatureName;
     v3->_playActivityFeatureName = @"MusicKit";

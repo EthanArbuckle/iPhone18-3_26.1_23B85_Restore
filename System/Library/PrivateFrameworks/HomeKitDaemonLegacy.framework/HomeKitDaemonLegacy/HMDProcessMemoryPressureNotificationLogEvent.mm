@@ -1,5 +1,5 @@
 @interface HMDProcessMemoryPressureNotificationLogEvent
-- (HMDProcessMemoryPressureNotificationLogEvent)initWithProcessMemoryEvent:(int64_t)a3 dataSyncState:(unint64_t)a4;
+- (HMDProcessMemoryPressureNotificationLogEvent)initWithProcessMemoryEvent:(int64_t)event dataSyncState:(unint64_t)state;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (id)processMemoryStateString;
 @end
@@ -10,9 +10,9 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"processMemoryState";
-  v3 = [(HMDProcessMemoryPressureNotificationLogEvent *)self processMemoryStateString];
+  processMemoryStateString = [(HMDProcessMemoryPressureNotificationLogEvent *)self processMemoryStateString];
   v8[1] = @"dataSyncState";
-  v9[0] = v3;
+  v9[0] = processMemoryStateString;
   [(HMDProcessMemoryPressureNotificationLogEvent *)self dataSyncState];
   v4 = HMHomeManagerDataSyncStateToString();
   v9[1] = v4;
@@ -25,14 +25,14 @@
 
 - (id)processMemoryStateString
 {
-  v2 = [(HMDProcessMemoryPressureNotificationLogEvent *)self processMemoryEvent];
+  processMemoryEvent = [(HMDProcessMemoryPressureNotificationLogEvent *)self processMemoryEvent];
   v3 = @"HMFProcessMemoryStateUnknown";
-  if (v2 == 5)
+  if (processMemoryEvent == 5)
   {
     v3 = @"HMFProcessMemoryStateCritical";
   }
 
-  if (v2 == 4)
+  if (processMemoryEvent == 4)
   {
     return @"HMFProcessMemoryStateWarning";
   }
@@ -43,15 +43,15 @@
   }
 }
 
-- (HMDProcessMemoryPressureNotificationLogEvent)initWithProcessMemoryEvent:(int64_t)a3 dataSyncState:(unint64_t)a4
+- (HMDProcessMemoryPressureNotificationLogEvent)initWithProcessMemoryEvent:(int64_t)event dataSyncState:(unint64_t)state
 {
   v7.receiver = self;
   v7.super_class = HMDProcessMemoryPressureNotificationLogEvent;
   result = [(HMMLogEvent *)&v7 init];
   if (result)
   {
-    result->_processMemoryEvent = a3;
-    result->_dataSyncState = a4;
+    result->_processMemoryEvent = event;
+    result->_dataSyncState = state;
   }
 
   return result;

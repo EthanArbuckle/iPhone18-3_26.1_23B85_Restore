@@ -1,23 +1,23 @@
 @interface ASDTIOPAudioVTConfigurationProperty
-+ (id)configDictForService:(id)a3;
-- (ASDTIOPAudioVTConfigurationProperty)initWithConfig:(id)a3;
-- (BOOL)storePropertyValue:(id)a3;
++ (id)configDictForService:(id)service;
+- (ASDTIOPAudioVTConfigurationProperty)initWithConfig:(id)config;
+- (BOOL)storePropertyValue:(id)value;
 - (id)retrievePropertyValue;
-- (int)checkPropertyValue:(id)a3;
+- (int)checkPropertyValue:(id)value;
 @end
 
 @implementation ASDTIOPAudioVTConfigurationProperty
 
-+ (id)configDictForService:(id)a3
++ (id)configDictForService:(id)service
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CEFC38];
   v9[0] = *MEMORY[0x277CEFC58];
   v9[1] = v3;
   v10[0] = @"ASDTIOPAudioVTConfigurationProperty";
-  v10[1] = a3;
+  v10[1] = service;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  serviceCopy = service;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -25,10 +25,10 @@
   return v6;
 }
 
-- (ASDTIOPAudioVTConfigurationProperty)initWithConfig:(id)a3
+- (ASDTIOPAudioVTConfigurationProperty)initWithConfig:(id)config
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:config];
   v5 = *MEMORY[0x277CEFC10];
   v12[0] = *MEMORY[0x277CEFC28];
   v12[1] = v5;
@@ -46,18 +46,18 @@
   return v8;
 }
 
-- (int)checkPropertyValue:(id)a3
+- (int)checkPropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = ASDTIOPAudioVTConfigurationProperty;
-  v5 = [(ASDTCustomProperty *)&v9 checkPropertyValue:v4];
+  v5 = [(ASDTCustomProperty *)&v9 checkPropertyValue:valueCopy];
   if (!v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 objectForKey:@"CorealisRTModel"];
+      v6 = [valueCopy objectForKey:@"CorealisRTModel"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -91,25 +91,25 @@
   return v5;
 }
 
-- (BOOL)storePropertyValue:(id)a3
+- (BOOL)storePropertyValue:(id)value
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   v23 = 0;
-  v5 = [(ASDTIOPAudioVTProperty *)self vtDevice];
-  v6 = [v5 getIsEnabled:&v23];
+  vtDevice = [(ASDTIOPAudioVTProperty *)self vtDevice];
+  v6 = [vtDevice getIsEnabled:&v23];
 
   if (v6)
   {
     if (!v23 || (-[ASDTIOPAudioVTProperty vtDevice](self, "vtDevice"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 setEnabled:0], v7, (v8 & 1) != 0))
     {
-      v9 = v4;
+      v9 = valueCopy;
       v10 = [v9 objectForKey:@"CorealisRTModelVersion"];
       v11 = ASDTIOPLogType();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(ASDTCustomProperty *)self name];
-        v13 = v12;
+        name = [(ASDTCustomProperty *)self name];
+        v13 = name;
         v14 = @"<unknown>";
         if (v10)
         {
@@ -117,14 +117,14 @@
         }
 
         *buf = 138412546;
-        v25 = v12;
+        v25 = name;
         v26 = 2112;
         v27 = v14;
         _os_log_impl(&dword_2416E9000, v11, OS_LOG_TYPE_DEFAULT, "%@: Updating VT configuration to '%@'\n", buf, 0x16u);
       }
 
-      v15 = [(ASDTIOPAudioVTProperty *)self vtDevice];
-      v16 = [v15 setConfigurationInfo:v9];
+      vtDevice2 = [(ASDTIOPAudioVTProperty *)self vtDevice];
+      v16 = [vtDevice2 setConfigurationInfo:v9];
 
       if (v16)
       {
@@ -182,25 +182,25 @@ LABEL_23:
 - (id)retrievePropertyValue
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ASDTIOPAudioVTProperty *)self vtDevice];
-  v4 = [v3 isConfigured];
+  vtDevice = [(ASDTIOPAudioVTProperty *)self vtDevice];
+  isConfigured = [vtDevice isConfigured];
 
-  if (v4)
+  if (isConfigured)
   {
-    v5 = [(ASDTIOPAudioVTProperty *)self vtDevice];
-    v6 = [v5 getConfigurationInfo];
+    vtDevice2 = [(ASDTIOPAudioVTProperty *)self vtDevice];
+    getConfigurationInfo = [vtDevice2 getConfigurationInfo];
   }
 
   else
   {
     v9 = @"CorealisRTModelVersion";
     v10[0] = @"<na>";
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
+    getConfigurationInfo = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return getConfigurationInfo;
 }
 
 - (void)checkPropertyValue:(void *)a1 .cold.1(void *a1)

@@ -1,25 +1,25 @@
 @interface _INPBHomeEntity
-- (BOOL)isEqual:(id)a3;
-- (_INPBHomeEntity)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBHomeEntity)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsDeviceType:(id)a3;
-- (int)StringAsDeviceTypes:(id)a3;
-- (int)StringAsEntityType:(id)a3;
-- (int)StringAsSceneType:(id)a3;
+- (int)StringAsDeviceType:(id)type;
+- (int)StringAsDeviceTypes:(id)types;
+- (int)StringAsEntityType:(id)type;
+- (int)StringAsSceneType:(id)type;
 - (unint64_t)hash;
-- (void)addDeviceTypes:(int)a3;
-- (void)addZones:(id)a3;
+- (void)addDeviceTypes:(int)types;
+- (void)addZones:(id)zones;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDeviceType:(int)a3;
-- (void)setEntityIdentifier:(id)a3;
-- (void)setEntityType:(int)a3;
-- (void)setHasEntityType:(BOOL)a3;
-- (void)setHasSceneType:(BOOL)a3;
-- (void)setSceneType:(int)a3;
-- (void)setZones:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDeviceType:(int)type;
+- (void)setEntityIdentifier:(id)identifier;
+- (void)setEntityType:(int)type;
+- (void)setHasEntityType:(BOOL)type;
+- (void)setHasSceneType:(BOOL)type;
+- (void)setSceneType:(int)type;
+- (void)setZones:(id)zones;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBHomeEntity
@@ -27,21 +27,21 @@
 - (id)dictionaryRepresentation
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBHomeEntity *)self hasDeviceType])
   {
-    v4 = [(_INPBHomeEntity *)self deviceType];
-    if (v4 < 0x32 && ((0x3FFFFF79FFEEFuLL >> v4) & 1) != 0)
+    deviceType = [(_INPBHomeEntity *)self deviceType];
+    if (deviceType < 0x32 && ((0x3FFFFF79FFEEFuLL >> deviceType) & 1) != 0)
     {
-      v5 = *(&off_1E727E4F8 + v4);
+      v5 = *(&off_1E727E4F8 + deviceType);
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", deviceType];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"deviceType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"deviceType"];
   }
 
   if (self->_deviceTypes.count)
@@ -71,75 +71,75 @@
       while (v7 < [(_INPBHomeEntity *)self deviceTypesCount]);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"deviceTypes"];
+    [dictionary setObject:v6 forKeyedSubscript:@"deviceTypes"];
   }
 
   if (self->_entityIdentifier)
   {
-    v10 = [(_INPBHomeEntity *)self entityIdentifier];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"entityIdentifier"];
+    entityIdentifier = [(_INPBHomeEntity *)self entityIdentifier];
+    v11 = [entityIdentifier copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"entityIdentifier"];
   }
 
-  v12 = [(_INPBHomeEntity *)self entityName];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"entityName"];
+  entityName = [(_INPBHomeEntity *)self entityName];
+  dictionaryRepresentation = [entityName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"entityName"];
 
   if ([(_INPBHomeEntity *)self hasEntityType])
   {
-    v14 = [(_INPBHomeEntity *)self entityType];
-    if (v14 >= 7)
+    entityType = [(_INPBHomeEntity *)self entityType];
+    if (entityType >= 7)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", entityType];
     }
 
     else
     {
-      v15 = *(&off_1E727E688 + v14);
+      v15 = *(&off_1E727E688 + entityType);
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"entityType"];
+    [dictionary setObject:v15 forKeyedSubscript:@"entityType"];
   }
 
-  v16 = [(_INPBHomeEntity *)self group];
-  v17 = [v16 dictionaryRepresentation];
-  [v3 setObject:v17 forKeyedSubscript:@"group"];
+  group = [(_INPBHomeEntity *)self group];
+  dictionaryRepresentation2 = [group dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"group"];
 
-  v18 = [(_INPBHomeEntity *)self home];
-  v19 = [v18 dictionaryRepresentation];
-  [v3 setObject:v19 forKeyedSubscript:@"home"];
+  home = [(_INPBHomeEntity *)self home];
+  dictionaryRepresentation3 = [home dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"home"];
 
-  v20 = [(_INPBHomeEntity *)self name];
-  v21 = [v20 dictionaryRepresentation];
-  [v3 setObject:v21 forKeyedSubscript:@"name"];
+  name = [(_INPBHomeEntity *)self name];
+  dictionaryRepresentation4 = [name dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"name"];
 
-  v22 = [(_INPBHomeEntity *)self room];
-  v23 = [v22 dictionaryRepresentation];
-  [v3 setObject:v23 forKeyedSubscript:@"room"];
+  room = [(_INPBHomeEntity *)self room];
+  dictionaryRepresentation5 = [room dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"room"];
 
   if ([(_INPBHomeEntity *)self hasSceneType])
   {
-    v24 = [(_INPBHomeEntity *)self sceneType];
-    if (v24 >= 5)
+    sceneType = [(_INPBHomeEntity *)self sceneType];
+    if (sceneType >= 5)
     {
-      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v24];
+      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", sceneType];
     }
 
     else
     {
-      v25 = *(&off_1E727E6C0 + v24);
+      v25 = *(&off_1E727E6C0 + sceneType);
     }
 
-    [v3 setObject:v25 forKeyedSubscript:@"sceneType"];
+    [dictionary setObject:v25 forKeyedSubscript:@"sceneType"];
   }
 
   v26 = [(_INPBHomeEntity *)self zone];
-  v27 = [v26 dictionaryRepresentation];
-  [v3 setObject:v27 forKeyedSubscript:@"zone"];
+  dictionaryRepresentation6 = [v26 dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"zone"];
 
   if ([(NSArray *)self->_zones count])
   {
-    v28 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -159,8 +159,8 @@
             objc_enumerationMutation(v29);
           }
 
-          v34 = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
-          [v28 addObject:v34];
+          dictionaryRepresentation7 = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation7];
         }
 
         v31 = [(NSArray *)v29 countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -169,12 +169,12 @@
       while (v31);
     }
 
-    [v3 setObject:v28 forKeyedSubscript:@"zones"];
+    [dictionary setObject:array forKeyedSubscript:@"zones"];
   }
 
   v35 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -221,26 +221,26 @@
   return v12 ^ v13 ^ [(NSArray *)self->_zones hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_55;
   }
 
-  v5 = [(_INPBHomeEntity *)self hasDeviceType];
-  if (v5 != [v4 hasDeviceType])
+  hasDeviceType = [(_INPBHomeEntity *)self hasDeviceType];
+  if (hasDeviceType != [equalCopy hasDeviceType])
   {
     goto LABEL_55;
   }
 
   if ([(_INPBHomeEntity *)self hasDeviceType])
   {
-    if ([v4 hasDeviceType])
+    if ([equalCopy hasDeviceType])
     {
       deviceType = self->_deviceType;
-      if (deviceType != [v4 deviceType])
+      if (deviceType != [equalCopy deviceType])
       {
         goto LABEL_55;
       }
@@ -252,20 +252,20 @@
     goto LABEL_55;
   }
 
-  v7 = [(_INPBHomeEntity *)self entityIdentifier];
-  v8 = [v4 entityIdentifier];
-  if ((v7 != 0) == (v8 == 0))
+  entityIdentifier = [(_INPBHomeEntity *)self entityIdentifier];
+  entityIdentifier2 = [equalCopy entityIdentifier];
+  if ((entityIdentifier != 0) == (entityIdentifier2 == 0))
   {
     goto LABEL_54;
   }
 
-  v9 = [(_INPBHomeEntity *)self entityIdentifier];
-  if (v9)
+  entityIdentifier3 = [(_INPBHomeEntity *)self entityIdentifier];
+  if (entityIdentifier3)
   {
-    v10 = v9;
-    v11 = [(_INPBHomeEntity *)self entityIdentifier];
-    v12 = [v4 entityIdentifier];
-    v13 = [v11 isEqual:v12];
+    v10 = entityIdentifier3;
+    entityIdentifier4 = [(_INPBHomeEntity *)self entityIdentifier];
+    entityIdentifier5 = [equalCopy entityIdentifier];
+    v13 = [entityIdentifier4 isEqual:entityIdentifier5];
 
     if (!v13)
     {
@@ -277,20 +277,20 @@
   {
   }
 
-  v7 = [(_INPBHomeEntity *)self entityName];
-  v8 = [v4 entityName];
-  if ((v7 != 0) == (v8 == 0))
+  entityIdentifier = [(_INPBHomeEntity *)self entityName];
+  entityIdentifier2 = [equalCopy entityName];
+  if ((entityIdentifier != 0) == (entityIdentifier2 == 0))
   {
     goto LABEL_54;
   }
 
-  v14 = [(_INPBHomeEntity *)self entityName];
-  if (v14)
+  entityName = [(_INPBHomeEntity *)self entityName];
+  if (entityName)
   {
-    v15 = v14;
-    v16 = [(_INPBHomeEntity *)self entityName];
-    v17 = [v4 entityName];
-    v18 = [v16 isEqual:v17];
+    v15 = entityName;
+    entityName2 = [(_INPBHomeEntity *)self entityName];
+    entityName3 = [equalCopy entityName];
+    v18 = [entityName2 isEqual:entityName3];
 
     if (!v18)
     {
@@ -302,38 +302,38 @@
   {
   }
 
-  v19 = [(_INPBHomeEntity *)self hasEntityType];
-  if (v19 != [v4 hasEntityType])
+  hasEntityType = [(_INPBHomeEntity *)self hasEntityType];
+  if (hasEntityType != [equalCopy hasEntityType])
   {
     goto LABEL_55;
   }
 
   if ([(_INPBHomeEntity *)self hasEntityType])
   {
-    if ([v4 hasEntityType])
+    if ([equalCopy hasEntityType])
     {
       entityType = self->_entityType;
-      if (entityType != [v4 entityType])
+      if (entityType != [equalCopy entityType])
       {
         goto LABEL_55;
       }
     }
   }
 
-  v7 = [(_INPBHomeEntity *)self group];
-  v8 = [v4 group];
-  if ((v7 != 0) == (v8 == 0))
+  entityIdentifier = [(_INPBHomeEntity *)self group];
+  entityIdentifier2 = [equalCopy group];
+  if ((entityIdentifier != 0) == (entityIdentifier2 == 0))
   {
     goto LABEL_54;
   }
 
-  v21 = [(_INPBHomeEntity *)self group];
-  if (v21)
+  group = [(_INPBHomeEntity *)self group];
+  if (group)
   {
-    v22 = v21;
-    v23 = [(_INPBHomeEntity *)self group];
-    v24 = [v4 group];
-    v25 = [v23 isEqual:v24];
+    v22 = group;
+    group2 = [(_INPBHomeEntity *)self group];
+    group3 = [equalCopy group];
+    v25 = [group2 isEqual:group3];
 
     if (!v25)
     {
@@ -345,20 +345,20 @@
   {
   }
 
-  v7 = [(_INPBHomeEntity *)self home];
-  v8 = [v4 home];
-  if ((v7 != 0) == (v8 == 0))
+  entityIdentifier = [(_INPBHomeEntity *)self home];
+  entityIdentifier2 = [equalCopy home];
+  if ((entityIdentifier != 0) == (entityIdentifier2 == 0))
   {
     goto LABEL_54;
   }
 
-  v26 = [(_INPBHomeEntity *)self home];
-  if (v26)
+  home = [(_INPBHomeEntity *)self home];
+  if (home)
   {
-    v27 = v26;
-    v28 = [(_INPBHomeEntity *)self home];
-    v29 = [v4 home];
-    v30 = [v28 isEqual:v29];
+    v27 = home;
+    home2 = [(_INPBHomeEntity *)self home];
+    home3 = [equalCopy home];
+    v30 = [home2 isEqual:home3];
 
     if (!v30)
     {
@@ -370,20 +370,20 @@
   {
   }
 
-  v7 = [(_INPBHomeEntity *)self name];
-  v8 = [v4 name];
-  if ((v7 != 0) == (v8 == 0))
+  entityIdentifier = [(_INPBHomeEntity *)self name];
+  entityIdentifier2 = [equalCopy name];
+  if ((entityIdentifier != 0) == (entityIdentifier2 == 0))
   {
     goto LABEL_54;
   }
 
-  v31 = [(_INPBHomeEntity *)self name];
-  if (v31)
+  name = [(_INPBHomeEntity *)self name];
+  if (name)
   {
-    v32 = v31;
-    v33 = [(_INPBHomeEntity *)self name];
-    v34 = [v4 name];
-    v35 = [v33 isEqual:v34];
+    v32 = name;
+    name2 = [(_INPBHomeEntity *)self name];
+    name3 = [equalCopy name];
+    v35 = [name2 isEqual:name3];
 
     if (!v35)
     {
@@ -395,20 +395,20 @@
   {
   }
 
-  v7 = [(_INPBHomeEntity *)self room];
-  v8 = [v4 room];
-  if ((v7 != 0) == (v8 == 0))
+  entityIdentifier = [(_INPBHomeEntity *)self room];
+  entityIdentifier2 = [equalCopy room];
+  if ((entityIdentifier != 0) == (entityIdentifier2 == 0))
   {
     goto LABEL_54;
   }
 
-  v36 = [(_INPBHomeEntity *)self room];
-  if (v36)
+  room = [(_INPBHomeEntity *)self room];
+  if (room)
   {
-    v37 = v36;
-    v38 = [(_INPBHomeEntity *)self room];
-    v39 = [v4 room];
-    v40 = [v38 isEqual:v39];
+    v37 = room;
+    room2 = [(_INPBHomeEntity *)self room];
+    room3 = [equalCopy room];
+    v40 = [room2 isEqual:room3];
 
     if (!v40)
     {
@@ -420,27 +420,27 @@
   {
   }
 
-  v41 = [(_INPBHomeEntity *)self hasSceneType];
-  if (v41 != [v4 hasSceneType])
+  hasSceneType = [(_INPBHomeEntity *)self hasSceneType];
+  if (hasSceneType != [equalCopy hasSceneType])
   {
     goto LABEL_55;
   }
 
   if ([(_INPBHomeEntity *)self hasSceneType])
   {
-    if ([v4 hasSceneType])
+    if ([equalCopy hasSceneType])
     {
       sceneType = self->_sceneType;
-      if (sceneType != [v4 sceneType])
+      if (sceneType != [equalCopy sceneType])
       {
         goto LABEL_55;
       }
     }
   }
 
-  v7 = [(_INPBHomeEntity *)self zone];
-  v8 = [v4 zone];
-  if ((v7 != 0) == (v8 == 0))
+  entityIdentifier = [(_INPBHomeEntity *)self zone];
+  entityIdentifier2 = [equalCopy zone];
+  if ((entityIdentifier != 0) == (entityIdentifier2 == 0))
   {
     goto LABEL_54;
   }
@@ -450,7 +450,7 @@
   {
     v44 = v43;
     v45 = [(_INPBHomeEntity *)self zone];
-    v46 = [v4 zone];
+    v46 = [equalCopy zone];
     v47 = [v45 isEqual:v46];
 
     if (!v47)
@@ -463,12 +463,12 @@
   {
   }
 
-  v7 = [(_INPBHomeEntity *)self zones];
-  v8 = [v4 zones];
-  if ((v7 != 0) != (v8 == 0))
+  entityIdentifier = [(_INPBHomeEntity *)self zones];
+  entityIdentifier2 = [equalCopy zones];
+  if ((entityIdentifier != 0) != (entityIdentifier2 == 0))
   {
-    v48 = [(_INPBHomeEntity *)self zones];
-    if (!v48)
+    zones = [(_INPBHomeEntity *)self zones];
+    if (!zones)
     {
 
 LABEL_58:
@@ -476,10 +476,10 @@ LABEL_58:
       goto LABEL_56;
     }
 
-    v49 = v48;
-    v50 = [(_INPBHomeEntity *)self zones];
-    v51 = [v4 zones];
-    v52 = [v50 isEqual:v51];
+    v49 = zones;
+    zones2 = [(_INPBHomeEntity *)self zones];
+    zones3 = [equalCopy zones];
+    v52 = [zones2 isEqual:zones3];
 
     if (v52)
     {
@@ -499,7 +499,7 @@ LABEL_56:
   return v53;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBHomeEntity allocWithZone:](_INPBHomeEntity init];
   if ([(_INPBHomeEntity *)self hasDeviceType])
@@ -508,10 +508,10 @@ LABEL_56:
   }
 
   PBRepeatedInt32Copy();
-  v6 = [(NSString *)self->_entityIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_entityIdentifier copyWithZone:zone];
   [(_INPBHomeEntity *)v5 setEntityIdentifier:v6];
 
-  v7 = [(_INPBDataString *)self->_entityName copyWithZone:a3];
+  v7 = [(_INPBDataString *)self->_entityName copyWithZone:zone];
   [(_INPBHomeEntity *)v5 setEntityName:v7];
 
   if ([(_INPBHomeEntity *)self hasEntityType])
@@ -519,16 +519,16 @@ LABEL_56:
     [(_INPBHomeEntity *)v5 setEntityType:[(_INPBHomeEntity *)self entityType]];
   }
 
-  v8 = [(_INPBDataString *)self->_group copyWithZone:a3];
+  v8 = [(_INPBDataString *)self->_group copyWithZone:zone];
   [(_INPBHomeEntity *)v5 setGroup:v8];
 
-  v9 = [(_INPBDataString *)self->_home copyWithZone:a3];
+  v9 = [(_INPBDataString *)self->_home copyWithZone:zone];
   [(_INPBHomeEntity *)v5 setHome:v9];
 
-  v10 = [(_INPBString *)self->_name copyWithZone:a3];
+  v10 = [(_INPBString *)self->_name copyWithZone:zone];
   [(_INPBHomeEntity *)v5 setName:v10];
 
-  v11 = [(_INPBDataString *)self->_room copyWithZone:a3];
+  v11 = [(_INPBDataString *)self->_room copyWithZone:zone];
   [(_INPBHomeEntity *)v5 setRoom:v11];
 
   if ([(_INPBHomeEntity *)self hasSceneType])
@@ -536,37 +536,37 @@ LABEL_56:
     [(_INPBHomeEntity *)v5 setSceneType:[(_INPBHomeEntity *)self sceneType]];
   }
 
-  v12 = [(_INPBDataString *)self->_zone copyWithZone:a3];
+  v12 = [(_INPBDataString *)self->_zone copyWithZone:zone];
   [(_INPBHomeEntity *)v5 setZone:v12];
 
-  v13 = [(NSArray *)self->_zones copyWithZone:a3];
+  v13 = [(NSArray *)self->_zones copyWithZone:zone];
   [(_INPBHomeEntity *)v5 setZones:v13];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBHomeEntity *)self data];
+  coderCopy = coder;
+  data = [(_INPBHomeEntity *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBHomeEntity)initWithCoder:(id)a3
+- (_INPBHomeEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBHomeEntity *)self initWithData:v6];
+    self = [(_INPBHomeEntity *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -577,10 +577,10 @@ LABEL_56:
   [(_INPBHomeEntity *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBHomeEntity *)self hasDeviceType])
   {
     deviceType = self->_deviceType;
@@ -600,19 +600,19 @@ LABEL_56:
     while (v6 < self->_deviceTypes.count);
   }
 
-  v8 = [(_INPBHomeEntity *)self entityIdentifier];
+  entityIdentifier = [(_INPBHomeEntity *)self entityIdentifier];
 
-  if (v8)
+  if (entityIdentifier)
   {
     entityIdentifier = self->_entityIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_INPBHomeEntity *)self entityName];
+  entityName = [(_INPBHomeEntity *)self entityName];
 
-  if (v10)
+  if (entityName)
   {
-    v11 = [(_INPBHomeEntity *)self entityName];
+    entityName2 = [(_INPBHomeEntity *)self entityName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -622,35 +622,35 @@ LABEL_56:
     PBDataWriterWriteInt32Field();
   }
 
-  v13 = [(_INPBHomeEntity *)self group];
+  group = [(_INPBHomeEntity *)self group];
 
-  if (v13)
+  if (group)
   {
-    v14 = [(_INPBHomeEntity *)self group];
+    group2 = [(_INPBHomeEntity *)self group];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_INPBHomeEntity *)self home];
+  home = [(_INPBHomeEntity *)self home];
 
-  if (v15)
+  if (home)
   {
-    v16 = [(_INPBHomeEntity *)self home];
+    home2 = [(_INPBHomeEntity *)self home];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_INPBHomeEntity *)self name];
+  name = [(_INPBHomeEntity *)self name];
 
-  if (v17)
+  if (name)
   {
-    v18 = [(_INPBHomeEntity *)self name];
+    name2 = [(_INPBHomeEntity *)self name];
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(_INPBHomeEntity *)self room];
+  room = [(_INPBHomeEntity *)self room];
 
-  if (v19)
+  if (room)
   {
-    v20 = [(_INPBHomeEntity *)self room];
+    room2 = [(_INPBHomeEntity *)self room];
     PBDataWriterWriteSubmessage();
   }
 
@@ -700,57 +700,57 @@ LABEL_56:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addZones:(id)a3
+- (void)addZones:(id)zones
 {
-  v4 = a3;
+  zonesCopy = zones;
   zones = self->_zones;
-  v8 = v4;
+  v8 = zonesCopy;
   if (!zones)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_zones;
-    self->_zones = v6;
+    self->_zones = array;
 
-    v4 = v8;
+    zonesCopy = v8;
     zones = self->_zones;
   }
 
-  [(NSArray *)zones addObject:v4];
+  [(NSArray *)zones addObject:zonesCopy];
 }
 
-- (void)setZones:(id)a3
+- (void)setZones:(id)zones
 {
-  v4 = [a3 mutableCopy];
+  v4 = [zones mutableCopy];
   zones = self->_zones;
   self->_zones = v4;
 
   MEMORY[0x1EEE66BB8](v4, zones);
 }
 
-- (int)StringAsSceneType:(id)a3
+- (int)StringAsSceneType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"USER_DEFINED"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"USER_DEFINED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GOOD_MORNING"])
+  else if ([typeCopy isEqualToString:@"GOOD_MORNING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"IM_LEAVING"])
+  else if ([typeCopy isEqualToString:@"IM_LEAVING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"IM_HOME"])
+  else if ([typeCopy isEqualToString:@"IM_HOME"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GOOD_NIGHT"])
+  else if ([typeCopy isEqualToString:@"GOOD_NIGHT"])
   {
     v4 = 4;
   }
@@ -763,9 +763,9 @@ LABEL_56:
   return v4;
 }
 
-- (void)setHasSceneType:(BOOL)a3
+- (void)setHasSceneType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -778,10 +778,10 @@ LABEL_56:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setSceneType:(int)a3
+- (void)setSceneType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -789,44 +789,44 @@ LABEL_56:
   else
   {
     *&self->_has = has | 4;
-    self->_sceneType = a3;
+    self->_sceneType = type;
   }
 }
 
-- (int)StringAsEntityType:(id)a3
+- (int)StringAsEntityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HOME"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"HOME"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ZONE"])
+  else if ([typeCopy isEqualToString:@"ZONE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ROOM"])
+  else if ([typeCopy isEqualToString:@"ROOM"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GROUP"])
+  else if ([typeCopy isEqualToString:@"GROUP"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SCENE"])
+  else if ([typeCopy isEqualToString:@"SCENE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TRIGGER"])
+  else if ([typeCopy isEqualToString:@"TRIGGER"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DEVICE"])
+  else if ([typeCopy isEqualToString:@"DEVICE"])
   {
     v4 = 4;
   }
@@ -839,9 +839,9 @@ LABEL_56:
   return v4;
 }
 
-- (void)setHasEntityType:(BOOL)a3
+- (void)setHasEntityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -854,10 +854,10 @@ LABEL_56:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setEntityType:(int)a3
+- (void)setEntityType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -865,243 +865,243 @@ LABEL_56:
   else
   {
     *&self->_has = has | 2;
-    self->_entityType = a3;
+    self->_entityType = type;
   }
 }
 
-- (void)setEntityIdentifier:(id)a3
+- (void)setEntityIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   entityIdentifier = self->_entityIdentifier;
   self->_entityIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, entityIdentifier);
 }
 
-- (int)StringAsDeviceTypes:(id)a3
+- (int)StringAsDeviceTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LIGHTBULB"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"LIGHTBULB"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SWITCH"])
+  else if ([typesCopy isEqualToString:@"SWITCH"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"THERMOSTAT"])
+  else if ([typesCopy isEqualToString:@"THERMOSTAT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GARAGE_DOOR_OPENER"])
+  else if ([typesCopy isEqualToString:@"GARAGE_DOOR_OPENER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FAN"])
+  else if ([typesCopy isEqualToString:@"FAN"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"OUTLET"])
+  else if ([typesCopy isEqualToString:@"OUTLET"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DOOR_LOCK"])
+  else if ([typesCopy isEqualToString:@"DOOR_LOCK"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AIR_QUALITY_SENSOR"])
+  else if ([typesCopy isEqualToString:@"AIR_QUALITY_SENSOR"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"BATTERY"])
+  else if ([typesCopy isEqualToString:@"BATTERY"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_DIOXIDE_SENSOR"])
+  else if ([typesCopy isEqualToString:@"CARBON_DIOXIDE_SENSOR"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_MONOXIDE_SENSOR"])
+  else if ([typesCopy isEqualToString:@"CARBON_MONOXIDE_SENSOR"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"CONTACT_SENSOR"])
+  else if ([typesCopy isEqualToString:@"CONTACT_SENSOR"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"DOOR"])
+  else if ([typesCopy isEqualToString:@"DOOR"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDITY_SENSOR"])
+  else if ([typesCopy isEqualToString:@"HUMIDITY_SENSOR"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"LEAK_SENSOR"])
+  else if ([typesCopy isEqualToString:@"LEAK_SENSOR"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"LIGHT_SENSOR"])
+  else if ([typesCopy isEqualToString:@"LIGHT_SENSOR"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"MOTION_SENSOR"])
+  else if ([typesCopy isEqualToString:@"MOTION_SENSOR"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"OCCUPANCY_SENSOR"])
+  else if ([typesCopy isEqualToString:@"OCCUPANCY_SENSOR"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"SECURITY_SYSTEM"])
+  else if ([typesCopy isEqualToString:@"SECURITY_SYSTEM"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"SMOKE_SENSOR"])
+  else if ([typesCopy isEqualToString:@"SMOKE_SENSOR"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"TEMPERATURE_SENSOR"])
+  else if ([typesCopy isEqualToString:@"TEMPERATURE_SENSOR"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"WINDOW"])
+  else if ([typesCopy isEqualToString:@"WINDOW"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"SHADES"])
+  else if ([typesCopy isEqualToString:@"SHADES"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"IP_CAMERA"])
+  else if ([typesCopy isEqualToString:@"IP_CAMERA"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"MICROPHONE"])
+  else if ([typesCopy isEqualToString:@"MICROPHONE"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"SPEAKER"])
+  else if ([typesCopy isEqualToString:@"SPEAKER"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"MOTORIZED_DOOR"])
+  else if ([typesCopy isEqualToString:@"MOTORIZED_DOOR"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"MOTORIZED_WINDOW"])
+  else if ([typesCopy isEqualToString:@"MOTORIZED_WINDOW"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"HEATER_COOLER"])
+  else if ([typesCopy isEqualToString:@"HEATER_COOLER"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDIFIER_DEHUMIDIFIER"])
+  else if ([typesCopy isEqualToString:@"HUMIDIFIER_DEHUMIDIFIER"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"SLAT"])
+  else if ([typesCopy isEqualToString:@"SLAT"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"SPRINKLER"])
+  else if ([typesCopy isEqualToString:@"SPRINKLER"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"VALVE"])
+  else if ([typesCopy isEqualToString:@"VALVE"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"FAUCET"])
+  else if ([typesCopy isEqualToString:@"FAUCET"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"SHOWER"])
+  else if ([typesCopy isEqualToString:@"SHOWER"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"TELEVISION"])
+  else if ([typesCopy isEqualToString:@"TELEVISION"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"CUSTOM"])
+  else if ([typesCopy isEqualToString:@"CUSTOM"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"DOOR_BELL"])
+  else if ([typesCopy isEqualToString:@"DOOR_BELL"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"AIR_PURIFIER"])
+  else if ([typesCopy isEqualToString:@"AIR_PURIFIER"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"FILTER"])
+  else if ([typesCopy isEqualToString:@"FILTER"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_TV"])
+  else if ([typesCopy isEqualToString:@"APPLE_TV"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"CAMERA_RECORDING"])
+  else if ([typesCopy isEqualToString:@"CAMERA_RECORDING"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"SENSOR"])
+  else if ([typesCopy isEqualToString:@"SENSOR"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"AIRPORT_EXPRESS"])
+  else if ([typesCopy isEqualToString:@"AIRPORT_EXPRESS"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"SINK"])
+  else if ([typesCopy isEqualToString:@"SINK"])
   {
     v4 = 49;
   }
@@ -1114,238 +1114,238 @@ LABEL_56:
   return v4;
 }
 
-- (void)addDeviceTypes:(int)a3
+- (void)addDeviceTypes:(int)types
 {
-  if (a3 != 0x7FFFFFFF)
+  if (types != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsDeviceType:(id)a3
+- (int)StringAsDeviceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LIGHTBULB"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"LIGHTBULB"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SWITCH"])
+  else if ([typeCopy isEqualToString:@"SWITCH"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"THERMOSTAT"])
+  else if ([typeCopy isEqualToString:@"THERMOSTAT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GARAGE_DOOR_OPENER"])
+  else if ([typeCopy isEqualToString:@"GARAGE_DOOR_OPENER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FAN"])
+  else if ([typeCopy isEqualToString:@"FAN"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"OUTLET"])
+  else if ([typeCopy isEqualToString:@"OUTLET"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DOOR_LOCK"])
+  else if ([typeCopy isEqualToString:@"DOOR_LOCK"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AIR_QUALITY_SENSOR"])
+  else if ([typeCopy isEqualToString:@"AIR_QUALITY_SENSOR"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"BATTERY"])
+  else if ([typeCopy isEqualToString:@"BATTERY"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_DIOXIDE_SENSOR"])
+  else if ([typeCopy isEqualToString:@"CARBON_DIOXIDE_SENSOR"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_MONOXIDE_SENSOR"])
+  else if ([typeCopy isEqualToString:@"CARBON_MONOXIDE_SENSOR"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"CONTACT_SENSOR"])
+  else if ([typeCopy isEqualToString:@"CONTACT_SENSOR"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"DOOR"])
+  else if ([typeCopy isEqualToString:@"DOOR"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDITY_SENSOR"])
+  else if ([typeCopy isEqualToString:@"HUMIDITY_SENSOR"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"LEAK_SENSOR"])
+  else if ([typeCopy isEqualToString:@"LEAK_SENSOR"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"LIGHT_SENSOR"])
+  else if ([typeCopy isEqualToString:@"LIGHT_SENSOR"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"MOTION_SENSOR"])
+  else if ([typeCopy isEqualToString:@"MOTION_SENSOR"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"OCCUPANCY_SENSOR"])
+  else if ([typeCopy isEqualToString:@"OCCUPANCY_SENSOR"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"SECURITY_SYSTEM"])
+  else if ([typeCopy isEqualToString:@"SECURITY_SYSTEM"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"SMOKE_SENSOR"])
+  else if ([typeCopy isEqualToString:@"SMOKE_SENSOR"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"TEMPERATURE_SENSOR"])
+  else if ([typeCopy isEqualToString:@"TEMPERATURE_SENSOR"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"WINDOW"])
+  else if ([typeCopy isEqualToString:@"WINDOW"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"SHADES"])
+  else if ([typeCopy isEqualToString:@"SHADES"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"IP_CAMERA"])
+  else if ([typeCopy isEqualToString:@"IP_CAMERA"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"MICROPHONE"])
+  else if ([typeCopy isEqualToString:@"MICROPHONE"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"SPEAKER"])
+  else if ([typeCopy isEqualToString:@"SPEAKER"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"MOTORIZED_DOOR"])
+  else if ([typeCopy isEqualToString:@"MOTORIZED_DOOR"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"MOTORIZED_WINDOW"])
+  else if ([typeCopy isEqualToString:@"MOTORIZED_WINDOW"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"HEATER_COOLER"])
+  else if ([typeCopy isEqualToString:@"HEATER_COOLER"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDIFIER_DEHUMIDIFIER"])
+  else if ([typeCopy isEqualToString:@"HUMIDIFIER_DEHUMIDIFIER"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"SLAT"])
+  else if ([typeCopy isEqualToString:@"SLAT"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"SPRINKLER"])
+  else if ([typeCopy isEqualToString:@"SPRINKLER"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"VALVE"])
+  else if ([typeCopy isEqualToString:@"VALVE"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"FAUCET"])
+  else if ([typeCopy isEqualToString:@"FAUCET"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"SHOWER"])
+  else if ([typeCopy isEqualToString:@"SHOWER"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"TELEVISION"])
+  else if ([typeCopy isEqualToString:@"TELEVISION"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"CUSTOM"])
+  else if ([typeCopy isEqualToString:@"CUSTOM"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"DOOR_BELL"])
+  else if ([typeCopy isEqualToString:@"DOOR_BELL"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"AIR_PURIFIER"])
+  else if ([typeCopy isEqualToString:@"AIR_PURIFIER"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"FILTER"])
+  else if ([typeCopy isEqualToString:@"FILTER"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_TV"])
+  else if ([typeCopy isEqualToString:@"APPLE_TV"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"CAMERA_RECORDING"])
+  else if ([typeCopy isEqualToString:@"CAMERA_RECORDING"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"SENSOR"])
+  else if ([typeCopy isEqualToString:@"SENSOR"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"AIRPORT_EXPRESS"])
+  else if ([typeCopy isEqualToString:@"AIRPORT_EXPRESS"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"SINK"])
+  else if ([typeCopy isEqualToString:@"SINK"])
   {
     v4 = 49;
   }
@@ -1358,10 +1358,10 @@ LABEL_56:
   return v4;
 }
 
-- (void)setDeviceType:(int)a3
+- (void)setDeviceType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -1369,7 +1369,7 @@ LABEL_56:
   else
   {
     *&self->_has = has | 1;
-    self->_deviceType = a3;
+    self->_deviceType = type;
   }
 }
 

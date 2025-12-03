@@ -1,13 +1,13 @@
 @interface PARSafariPropensity
-- (PARSafariPropensity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (PARSafariPropensity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation PARSafariPropensity
 
-- (PARSafariPropensity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (PARSafariPropensity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  entityCopy = entity;
+  contextCopy = context;
   return PARSafariPropensity.init(entity:insertInto:)();
 }
 

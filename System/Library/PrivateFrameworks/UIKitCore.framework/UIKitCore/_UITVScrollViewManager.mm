@@ -2,28 +2,28 @@
 - (CASpringAnimation)scrollAnimation;
 - (CGPoint)targetOffset;
 - (UIScrollView)scrollView;
-- (_UITVScrollViewManager)initWithScrollView:(id)a3 scrollStyle:(int64_t)a4;
+- (_UITVScrollViewManager)initWithScrollView:(id)view scrollStyle:(int64_t)style;
 - (_UITVScrollViewManagerDelegate)delegate;
-- (id)_customScrollingMaskForScrollView:(id)a3 frame:(CGRect)a4;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (id)_customScrollingMaskForScrollView:(id)view frame:(CGRect)frame;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)_removeScreenshotViewIfNeeded;
-- (void)_scroll:(id)a3 toContentOffset:(CGPoint)a4;
-- (void)_scrollAnimationDidEnd:(id)a3;
-- (void)_tearDown:(id)a3;
+- (void)_scroll:(id)_scroll toContentOffset:(CGPoint)offset;
+- (void)_scrollAnimationDidEnd:(id)end;
+- (void)_tearDown:(id)down;
 - (void)dealloc;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setDelegate:(id)a3;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UITVScrollViewManager
 
-- (_UITVScrollViewManager)initWithScrollView:(id)a3 scrollStyle:(int64_t)a4
+- (_UITVScrollViewManager)initWithScrollView:(id)view scrollStyle:(int64_t)style
 {
-  v7 = a3;
-  if (!v7)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UITVScrollViewManager.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"scrollView != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITVScrollViewManager.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"scrollView != nil"}];
   }
 
   v16.receiver = self;
@@ -32,14 +32,14 @@
   v9 = v8;
   if (v8)
   {
-    v10 = objc_storeWeak(&v8->_scrollView, v7);
-    v9->_scrollStyle = a4;
+    v10 = objc_storeWeak(&v8->_scrollView, viewCopy);
+    v9->_scrollStyle = style;
     v11 = v10;
-    [v7 _addScrollViewScrollObserver:v9];
+    [viewCopy _addScrollViewScrollObserver:v9];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     WeakRetained = objc_loadWeakRetained(&v9->_scrollView);
-    [v12 addObserver:v9 selector:sel__scrollAnimationDidEnd_ name:0x1EFBB9250 object:WeakRetained];
+    [defaultCenter addObserver:v9 selector:sel__scrollAnimationDidEnd_ name:0x1EFBB9250 object:WeakRetained];
   }
 
   return v9;
@@ -47,19 +47,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:0x1EFBB9250 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0x1EFBB9250 object:0];
 
-  v4 = [(_UITVScrollViewManager *)self scrollView];
-  v5 = [v4 allowsWeakReference];
+  scrollView = [(_UITVScrollViewManager *)self scrollView];
+  allowsWeakReference = [scrollView allowsWeakReference];
 
-  if (v5)
+  if (allowsWeakReference)
   {
-    v6 = [(_UITVScrollViewManager *)self scrollView];
-    v7 = v6;
-    if (v6)
+    scrollView2 = [(_UITVScrollViewManager *)self scrollView];
+    v7 = scrollView2;
+    if (scrollView2)
     {
-      [v6 _removeScrollViewScrollObserver:self];
+      [scrollView2 _removeScrollViewScrollObserver:self];
       [(_UITVScrollViewManager *)self _tearDown:v7];
     }
   }
@@ -74,37 +74,37 @@
   [(_UITVScrollViewManager *)&v8 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   self->_delegateScrollViewManagerDidFinishScrolling = v5 & 1;
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(_UITVScrollViewManager *)self scrollView];
-  v9 = [v8 allowsWeakReference];
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  scrollView = [(_UITVScrollViewManager *)self scrollView];
+  allowsWeakReference = [scrollView allowsWeakReference];
 
-  if (!v9)
+  if (!allowsWeakReference)
   {
-    v10 = 0;
+    scrollView2 = 0;
     goto LABEL_20;
   }
 
-  v10 = [(_UITVScrollViewManager *)self scrollView];
-  if (!v10)
+  scrollView2 = [(_UITVScrollViewManager *)self scrollView];
+  if (!scrollView2)
   {
     goto LABEL_20;
   }
 
-  v22 = v10;
-  [v10 contentOffset];
+  v22 = scrollView2;
+  [scrollView2 contentOffset];
   if (v12 != x || v11 != y)
   {
     [(_UITVScrollViewManager *)self setTargetOffset:x, y];
@@ -114,43 +114,43 @@
     v17 = v16;
     if ([(_UITVScrollViewManager *)self scrollStyle]!= 1)
     {
-      v21 = [(_UITVScrollViewManager *)self scrollAnimation];
-      [v22 _animateScrollToContentOffset:0 animationCurve:1 animationAdjustsForContentOffsetDelta:v21 animation:{x, y}];
+      scrollAnimation = [(_UITVScrollViewManager *)self scrollAnimation];
+      [v22 _animateScrollToContentOffset:0 animationCurve:1 animationAdjustsForContentOffsetDelta:scrollAnimation animation:{x, y}];
 
       goto LABEL_19;
     }
 
-    if (vcvtpd_s64_f64(v15 / v17) >= 4 && v4)
+    if (vcvtpd_s64_f64(v15 / v17) >= 4 && animatedCopy)
     {
       [(_UITVScrollViewManager *)self _scroll:v22 toContentOffset:x, y];
       goto LABEL_19;
     }
 
-    if (!v4)
+    if (!animatedCopy)
     {
       [v22 setContentOffset:0 animated:{x, y}];
       goto LABEL_19;
     }
 
-    v13 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:v22];
-    v19 = [v13 scrollManager];
-    [v19 cancelScrollingForScrollableContainer:v22];
+    delegate = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:v22];
+    scrollManager = [delegate scrollManager];
+    [scrollManager cancelScrollingForScrollableContainer:v22];
 
-    v20 = [(_UITVScrollViewManager *)self scrollAnimation];
-    [v22 _animateScrollToContentOffset:0 animationCurve:1 animationAdjustsForContentOffsetDelta:v20 animation:{x, y}];
+    scrollAnimation2 = [(_UITVScrollViewManager *)self scrollAnimation];
+    [v22 _animateScrollToContentOffset:0 animationCurve:1 animationAdjustsForContentOffsetDelta:scrollAnimation2 animation:{x, y}];
 
     goto LABEL_7;
   }
 
   if (self->_delegateScrollViewManagerDidFinishScrolling)
   {
-    v13 = [(_UITVScrollViewManager *)self delegate];
-    [v13 _scrollViewManagerDidFinishScrolling:self];
+    delegate = [(_UITVScrollViewManager *)self delegate];
+    [delegate _scrollViewManagerDidFinishScrolling:self];
 LABEL_7:
   }
 
 LABEL_19:
-  v10 = v22;
+  scrollView2 = v22;
 LABEL_20:
 }
 
@@ -175,30 +175,30 @@ LABEL_20:
   return scrollAnimation;
 }
 
-- (void)_tearDown:(id)a3
+- (void)_tearDown:(id)down
 {
-  v5 = a3;
+  downCopy = down;
   [(_UITVScrollViewManager *)self _removeScreenshotViewIfNeeded];
   if ([(_UITVScrollViewManager *)self useCustomMaskForScrolling])
   {
-    v4 = [v5 layer];
-    [v4 setMask:0];
+    layer = [downCopy layer];
+    [layer setMask:0];
   }
 }
 
-- (void)_scrollAnimationDidEnd:(id)a3
+- (void)_scrollAnimationDidEnd:(id)end
 {
   if (![(_UITVScrollViewManager *)self ignoreScrollAnimationDidEnd])
   {
-    v4 = [(_UITVScrollViewManager *)self scrollView];
-    v5 = [v4 allowsWeakReference];
+    scrollView = [(_UITVScrollViewManager *)self scrollView];
+    allowsWeakReference = [scrollView allowsWeakReference];
 
-    if (v5)
+    if (allowsWeakReference)
     {
-      v6 = [(_UITVScrollViewManager *)self scrollView];
-      if (v6)
+      scrollView2 = [(_UITVScrollViewManager *)self scrollView];
+      if (scrollView2)
       {
-        v8 = v6;
+        v8 = scrollView2;
         if (self->_delegateScrollViewManagerDidFinishScrolling)
         {
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -207,81 +207,81 @@ LABEL_20:
 
         [(_UITVScrollViewManager *)self targetOffset];
         [v8 setContentOffset:?];
-        v6 = v8;
+        scrollView2 = v8;
       }
     }
 
     else
     {
-      v6 = 0;
+      scrollView2 = 0;
     }
   }
 }
 
-- (void)_scroll:(id)a3 toContentOffset:(CGPoint)a4
+- (void)_scroll:(id)_scroll toContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v26 = a3;
+  y = offset.y;
+  x = offset.x;
+  _scrollCopy = _scroll;
   if ([(_UITVScrollViewManager *)self allowsWeakReference])
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
   v9 = v8;
   if (v8)
   {
     [(_UITVScrollViewManager *)v8 _removeScreenshotViewIfNeeded];
-    v10 = [v26 snapshotViewAfterScreenUpdates:0];
+    v10 = [_scrollCopy snapshotViewAfterScreenUpdates:0];
     [(_UITVScrollViewManager *)v9 setSnapshotViewForWindow:v10];
 
-    v11 = [(_UITVScrollViewManager *)v9 snapshotViewForWindow];
+    snapshotViewForWindow = [(_UITVScrollViewManager *)v9 snapshotViewForWindow];
 
-    if (v11)
+    if (snapshotViewForWindow)
     {
-      [v26 bounds];
+      [_scrollCopy bounds];
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [(_UITVScrollViewManager *)v9 snapshotViewForWindow];
-      [v18 setFrame:{0.0, 0.0, v15, v17}];
+      snapshotViewForWindow2 = [(_UITVScrollViewManager *)v9 snapshotViewForWindow];
+      [snapshotViewForWindow2 setFrame:{0.0, 0.0, v15, v17}];
 
-      v19 = [v26 window];
-      v20 = [(_UITVScrollViewManager *)v9 snapshotViewForWindow];
-      [v19 addSubview:v20];
+      window = [_scrollCopy window];
+      snapshotViewForWindow3 = [(_UITVScrollViewManager *)v9 snapshotViewForWindow];
+      [window addSubview:snapshotViewForWindow3];
 
-      v21 = [v26 layer];
-      v22 = [v21 mask];
-      [(_UITVScrollViewManager *)v9 setUseCustomMaskForScrolling:v22 == 0];
+      layer = [_scrollCopy layer];
+      mask = [layer mask];
+      [(_UITVScrollViewManager *)v9 setUseCustomMaskForScrolling:mask == 0];
 
       if ([(_UITVScrollViewManager *)v9 useCustomMaskForScrolling])
       {
-        v23 = [(_UITVScrollViewManager *)v9 _customScrollingMaskForScrollView:v26 frame:v13, v17 * 3.0, v15, v17];
-        v24 = [v26 layer];
-        [v24 setMask:v23];
+        v23 = [(_UITVScrollViewManager *)v9 _customScrollingMaskForScrollView:_scrollCopy frame:v13, v17 * 3.0, v15, v17];
+        layer2 = [_scrollCopy layer];
+        [layer2 setMask:v23];
       }
 
       [(_UITVScrollViewManager *)self setIgnoreScrollAnimationDidEnd:1];
-      [v26 _setContentOffset:0 animated:3 animationCurve:1 animationAdjustsForContentOffsetDelta:0 animation:{x, v17 * 3.0}];
+      [_scrollCopy _setContentOffset:0 animated:3 animationCurve:1 animationAdjustsForContentOffsetDelta:0 animation:{x, v17 * 3.0}];
       [(_UITVScrollViewManager *)self setIgnoreScrollAnimationDidEnd:0];
     }
 
-    v25 = [(_UITVScrollViewManager *)self scrollAnimation];
-    [v26 _animateScrollToContentOffset:0 animationCurve:1 animationAdjustsForContentOffsetDelta:v25 animation:{x, y}];
+    scrollAnimation = [(_UITVScrollViewManager *)self scrollAnimation];
+    [_scrollCopy _animateScrollToContentOffset:0 animationCurve:1 animationAdjustsForContentOffsetDelta:scrollAnimation animation:{x, y}];
   }
 }
 
 - (void)_removeScreenshotViewIfNeeded
 {
-  v3 = [(UIView *)self->_snapshotViewForWindow superview];
+  superview = [(UIView *)self->_snapshotViewForWindow superview];
 
-  if (v3)
+  if (superview)
   {
     snapshotViewForWindow = self->_snapshotViewForWindow;
 
@@ -289,57 +289,57 @@ LABEL_20:
   }
 }
 
-- (id)_customScrollingMaskForScrollView:(id)a3 frame:(CGRect)a4
+- (id)_customScrollingMaskForScrollView:(id)view frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = MEMORY[0x1E69794A0];
-  v9 = a3;
+  viewCopy = view;
   v10 = objc_alloc_init(v8);
-  [v9 contentSize];
+  [viewCopy contentSize];
   v12 = v11;
   v14 = v13;
-  [v9 frame];
+  [viewCopy frame];
   v16 = v15;
   v18 = v17;
 
   [v10 setFrame:{v16, v18, v12, v14}];
-  v19 = [UIBezierPath bezierPathWithRect:x, y, width, height];
+  height = [UIBezierPath bezierPathWithRect:x, y, width, height];
   v20 = [UIBezierPath bezierPathWithRect:v16, v18, v12, v14];
-  [v19 appendPath:v20];
+  [height appendPath:v20];
 
-  [v10 setPath:{objc_msgSend(v19, "CGPath")}];
+  [v10 setPath:{objc_msgSend(height, "CGPath")}];
   [v10 setFillRule:*MEMORY[0x1E69797F8]];
 
   return v10;
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v26 = a3;
-  v4 = [(_UITVScrollViewManager *)self snapshotViewForWindow];
-  v5 = [v4 superview];
+  scrollCopy = scroll;
+  snapshotViewForWindow = [(_UITVScrollViewManager *)self snapshotViewForWindow];
+  superview = [snapshotViewForWindow superview];
 
-  if (v5)
+  if (superview)
   {
-    [v26 bounds];
+    [scrollCopy bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v14 = v12 * 3.0;
-    [v26 contentOffset];
+    [scrollCopy contentOffset];
     v16 = v14 - v15;
-    v17 = [(_UITVScrollViewManager *)self snapshotViewForWindow];
-    [v17 frame];
+    snapshotViewForWindow2 = [(_UITVScrollViewManager *)self snapshotViewForWindow];
+    [snapshotViewForWindow2 frame];
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    v24 = [(_UITVScrollViewManager *)self snapshotViewForWindow];
-    [v24 setFrame:{v19, v16, v21, v23}];
+    snapshotViewForWindow3 = [(_UITVScrollViewManager *)self snapshotViewForWindow];
+    [snapshotViewForWindow3 setFrame:{v19, v16, v21, v23}];
 
     v28.origin.x = v19;
     v28.origin.y = v16;
@@ -352,7 +352,7 @@ LABEL_20:
     v29.size.height = v13;
     if (MinY > CGRectGetMaxY(v29))
     {
-      [(_UITVScrollViewManager *)self _tearDown:v26];
+      [(_UITVScrollViewManager *)self _tearDown:scrollCopy];
     }
   }
 }

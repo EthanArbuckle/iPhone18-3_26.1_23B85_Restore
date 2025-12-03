@@ -1,13 +1,13 @@
 @interface NTKProteusFontLoader
-+ (id)neptuneSharpFontDescriptorWithWeight:(double)a3 notch:(double)a4;
-+ (id)neptuneSoftFontDescriptorWithWeight:(double)a3 notch:(double)a4;
-+ (id)sharedInstanceWithSize:(double)a3;
-- (NTKProteusFontLoader)initWithSize:(double)a3;
-- (id)_neptuneFont:(unint64_t)a3 weight:(double)a4 notch:(double)a5;
-- (id)neptuneFont:(unint64_t)a3 weight:(double)a4 notch:(double)a5;
++ (id)neptuneSharpFontDescriptorWithWeight:(double)weight notch:(double)notch;
++ (id)neptuneSoftFontDescriptorWithWeight:(double)weight notch:(double)notch;
++ (id)sharedInstanceWithSize:(double)size;
+- (NTKProteusFontLoader)initWithSize:(double)size;
+- (id)_neptuneFont:(unint64_t)font weight:(double)weight notch:(double)notch;
+- (id)neptuneFont:(unint64_t)font weight:(double)weight notch:(double)notch;
 - (void)_logSize;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
-- (void)cacheFonts:(BOOL)a3 ofType:(unint64_t)a4 forClient:(id)a5;
+- (void)cache:(id)cache willEvictObject:(id)object;
+- (void)cacheFonts:(BOOL)fonts ofType:(unint64_t)type forClient:(id)client;
 - (void)clearMotionCache;
 - (void)clearStatusCache;
 - (void)dealloc;
@@ -15,19 +15,19 @@
 
 @implementation NTKProteusFontLoader
 
-+ (id)sharedInstanceWithSize:(double)a3
++ (id)sharedInstanceWithSize:(double)size
 {
   WeakRetained = objc_loadWeakRetained(&qword_16350);
   if (!WeakRetained)
   {
-    WeakRetained = [[NTKProteusFontLoader alloc] initWithSize:a3];
+    WeakRetained = [[NTKProteusFontLoader alloc] initWithSize:size];
     objc_storeWeak(&qword_16350, WeakRetained);
   }
 
   return WeakRetained;
 }
 
-+ (id)neptuneSharpFontDescriptorWithWeight:(double)a3 notch:(double)a4
++ (id)neptuneSharpFontDescriptorWithWeight:(double)weight notch:(double)notch
 {
   if (qword_16360 != -1)
   {
@@ -38,11 +38,11 @@
   v17 = kCTFontVariationAttribute;
   v7 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
   v15[0] = v7;
-  v8 = [NSNumber numberWithDouble:a3];
+  v8 = [NSNumber numberWithDouble:weight];
   v16[0] = v8;
   v9 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
   v15[1] = v9;
-  v10 = [NSNumber numberWithDouble:a4];
+  v10 = [NSNumber numberWithDouble:notch];
   v16[1] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
   v18 = v11;
@@ -52,7 +52,7 @@
   return v13;
 }
 
-+ (id)neptuneSoftFontDescriptorWithWeight:(double)a3 notch:(double)a4
++ (id)neptuneSoftFontDescriptorWithWeight:(double)weight notch:(double)notch
 {
   if (qword_16370 != -1)
   {
@@ -63,11 +63,11 @@
   v17 = kCTFontVariationAttribute;
   v7 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
   v15[0] = v7;
-  v8 = [NSNumber numberWithDouble:a3];
+  v8 = [NSNumber numberWithDouble:weight];
   v16[0] = v8;
   v9 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
   v15[1] = v9;
-  v10 = [NSNumber numberWithDouble:a4];
+  v10 = [NSNumber numberWithDouble:notch];
   v16[1] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
   v18 = v11;
@@ -77,7 +77,7 @@
   return v13;
 }
 
-- (NTKProteusFontLoader)initWithSize:(double)a3
+- (NTKProteusFontLoader)initWithSize:(double)size
 {
   v11.receiver = self;
   v11.super_class = NTKProteusFontLoader;
@@ -92,7 +92,7 @@
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Proteus font loader-init [%p]", buf, 0xCu);
     }
 
-    v4->_size = a3;
+    v4->_size = size;
     v6 = +[NSHashTable weakObjectsHashTable];
     sharpClients = v4->_sharpClients;
     v4->_sharpClients = v6;
@@ -111,7 +111,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Proteus font loader-going away [%p]", buf, 0xCu);
   }
 
@@ -124,22 +124,22 @@
   [(NTKProteusFontLoader *)&v4 dealloc];
 }
 
-- (id)_neptuneFont:(unint64_t)a3 weight:(double)a4 notch:(double)a5
+- (id)_neptuneFont:(unint64_t)font weight:(double)weight notch:(double)notch
 {
-  v6 = a4 * a4;
-  if (a3 == 1)
+  v6 = weight * weight;
+  if (font == 1)
   {
-    v7 = [NTKProteusFontLoader neptuneSoftFontDescriptorWithWeight:v6 notch:a5];
+    v7 = [NTKProteusFontLoader neptuneSoftFontDescriptorWithWeight:v6 notch:notch];
   }
 
   else
   {
-    if (a3)
+    if (font)
     {
       goto LABEL_7;
     }
 
-    v7 = [NTKProteusFontLoader neptuneSharpFontDescriptorWithWeight:v6 notch:a5];
+    v7 = [NTKProteusFontLoader neptuneSharpFontDescriptorWithWeight:v6 notch:notch];
   }
 
   v8 = v7;
@@ -157,15 +157,15 @@ LABEL_8:
   return v9;
 }
 
-- (id)neptuneFont:(unint64_t)a3 weight:(double)a4 notch:(double)a5
+- (id)neptuneFont:(unint64_t)font weight:(double)weight notch:(double)notch
 {
-  [(NTKProteusFontLoader *)self _discretizeWeight:a4];
+  [(NTKProteusFontLoader *)self _discretizeWeight:weight];
   v9 = v8;
-  [(NTKProteusFontLoader *)self _discretizeNotch:a5];
+  [(NTKProteusFontLoader *)self _discretizeNotch:notch];
   v11 = v10;
   v12 = [(NTKProteusFontLoader *)self _keyForWeight:v9 notch:v10];
   v13 = 16;
-  if (a3 == 1)
+  if (font == 1)
   {
     v13 = 8;
   }
@@ -175,7 +175,7 @@ LABEL_8:
   if (!v15)
   {
     v25 = 24;
-    if (a3 == 1)
+    if (font == 1)
     {
       v25 = 32;
     }
@@ -197,7 +197,7 @@ LABEL_8:
     }
 
     v36 = 40;
-    if (a3 == 1)
+    if (font == 1)
     {
       v36 = 48;
     }
@@ -217,7 +217,7 @@ LABEL_8:
       goto LABEL_42;
     }
 
-    v39 = [(NTKProteusFontLoader *)self _neptuneFont:a3 weight:v9 notch:v11];
+    v39 = [(NTKProteusFontLoader *)self _neptuneFont:font weight:v9 notch:v11];
     if (!v39)
     {
 LABEL_41:
@@ -231,7 +231,7 @@ LABEL_43:
 
     v47 = _NTKLoggingObjectForDomain();
     v48 = os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT);
-    if (a5 == 0.0 || a5 == 1.0)
+    if (notch == 0.0 || notch == 1.0)
     {
       if (v48)
       {
@@ -243,7 +243,7 @@ LABEL_43:
       if (v26)
       {
         [v26 setObject:v39 forKey:v12];
-        if (a3 == 1)
+        if (font == 1)
         {
           ++self->_softMotionCacheSize;
         }
@@ -278,7 +278,7 @@ LABEL_43:
       if (v37)
       {
         [v37 setObject:v39 forKey:v12];
-        if (a3 == 1)
+        if (font == 1)
         {
           ++self->_softStatusCacheSize;
         }
@@ -367,38 +367,38 @@ LABEL_44:
     v39 = 2048;
     v40 = v16 / v17;
     v41 = 2048;
-    v42 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Proteus font loader-cache size: active?%d/%d clients %lu/%lu perm %lu/%lu status %lu/%lu motion %lu/%lu evict %lu hitrate %f [%p]", v18, 0x7Cu);
   }
 }
 
-- (void)cacheFonts:(BOOL)a3 ofType:(unint64_t)a4 forClient:(id)a5
+- (void)cacheFonts:(BOOL)fonts ofType:(unint64_t)type forClient:(id)client
 {
-  v6 = a3;
-  v8 = a5;
+  fontsCopy = fonts;
+  clientCopy = client;
   v9 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v51 = 67109376;
-    LODWORD(v52[0]) = v6;
+    LODWORD(v52[0]) = fontsCopy;
     WORD2(v52[0]) = 2048;
-    *(v52 + 6) = a4;
+    *(v52 + 6) = type;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Proteus font loader-cache %d for style %lu", &v51, 0x12u);
   }
 
-  if (a4)
+  if (type)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       softClients = self->_softClients;
-      if (v6)
+      if (fontsCopy)
       {
-        [(NSHashTable *)softClients addObject:v8];
+        [(NSHashTable *)softClients addObject:clientCopy];
         v11 = _NTKLoggingObjectForDomain();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v51 = 134217984;
-          v52[0] = v8;
+          v52[0] = clientCopy;
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Proteus font loader-added soft client [%p]", &v51, 0xCu);
         }
 
@@ -444,7 +444,7 @@ LABEL_19:
 
       else
       {
-        [(NSHashTable *)softClients removeObject:v8];
+        [(NSHashTable *)softClients removeObject:clientCopy];
         if (![(NSHashTable *)self->_softClients count])
         {
           v43 = _NTKLoggingObjectForDomain();
@@ -475,14 +475,14 @@ LABEL_19:
   else
   {
     sharpClients = self->_sharpClients;
-    if (v6)
+    if (fontsCopy)
     {
-      [(NSHashTable *)sharpClients addObject:v8];
+      [(NSHashTable *)sharpClients addObject:clientCopy];
       v28 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         v51 = 134217984;
-        v52[0] = v8;
+        v52[0] = clientCopy;
         _os_log_impl(&dword_0, v28, OS_LOG_TYPE_DEFAULT, "Proteus font loader-added sharp client [%p]", &v51, 0xCu);
       }
 
@@ -527,7 +527,7 @@ LABEL_19:
 
     else
     {
-      [(NSHashTable *)sharpClients removeObject:v8];
+      [(NSHashTable *)sharpClients removeObject:clientCopy];
       if (![(NSHashTable *)self->_sharpClients count])
       {
         v47 = _NTKLoggingObjectForDomain();
@@ -573,27 +573,27 @@ LABEL_19:
   [(NTKProteusFontLoader *)self _logSize];
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v5 = a3;
-  v6 = v5;
+  cacheCopy = cache;
+  v6 = cacheCopy;
   ++self->_evictions;
-  if (self->_softMotionCache == v5)
+  if (self->_softMotionCache == cacheCopy)
   {
     --self->_softMotionCacheSize;
   }
 
-  else if (self->_sharpMotionCache == v5)
+  else if (self->_sharpMotionCache == cacheCopy)
   {
     --self->_sharpMotionCacheSize;
   }
 
-  else if (self->_softStatusCache == v5)
+  else if (self->_softStatusCache == cacheCopy)
   {
     --self->_softStatusCacheSize;
   }
 
-  else if (self->_sharpStatusCache == v5)
+  else if (self->_sharpStatusCache == cacheCopy)
   {
     --self->_sharpStatusCacheSize;
   }
@@ -604,7 +604,7 @@ LABEL_19:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Proteus font loader-! evicting from unrecognized cache [%p]", &v8, 0xCu);
     }
   }

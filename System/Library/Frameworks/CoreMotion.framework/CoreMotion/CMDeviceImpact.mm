@@ -1,61 +1,61 @@
 @interface CMDeviceImpact
-- (CMDeviceImpact)initWithCoder:(id)a3;
-- (CMDeviceImpact)initWithImpactType:(int64_t)a3 peakAcceleration:(double)a4 simulated:(BOOL)a5 date:(id)a6 timestamp:(double)a7;
+- (CMDeviceImpact)initWithCoder:(id)coder;
+- (CMDeviceImpact)initWithImpactType:(int64_t)type peakAcceleration:(double)acceleration simulated:(BOOL)simulated date:(id)date timestamp:(double)timestamp;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMDeviceImpact
 
-- (CMDeviceImpact)initWithImpactType:(int64_t)a3 peakAcceleration:(double)a4 simulated:(BOOL)a5 date:(id)a6 timestamp:(double)a7
+- (CMDeviceImpact)initWithImpactType:(int64_t)type peakAcceleration:(double)acceleration simulated:(BOOL)simulated date:(id)date timestamp:(double)timestamp
 {
   v12.receiver = self;
   v12.super_class = CMDeviceImpact;
-  result = [(CMLogItem *)&v12 initWithTimestamp:a7];
+  result = [(CMLogItem *)&v12 initWithTimestamp:timestamp];
   if (result)
   {
-    result->_impactType = a3;
-    result->_peakAcceleration = a4;
-    result->_simulated = a5;
-    result->_date = a6;
+    result->_impactType = type;
+    result->_peakAcceleration = acceleration;
+    result->_simulated = simulated;
+    result->_date = date;
   }
 
   return result;
 }
 
-- (CMDeviceImpact)initWithCoder:(id)a3
+- (CMDeviceImpact)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = CMDeviceImpact;
   v5 = [(CMLogItem *)&v11 initWithCoder:?];
   if (v5)
   {
-    v5->_impactType = objc_msgSend_decodeIntegerForKey_(a3, v4, @"kCMDeviceImpactCodingKeyImpactType");
-    objc_msgSend_decodeDoubleForKey_(a3, v6, @"kCMDeviceImpactCodingKeyPeakAcceleration");
+    v5->_impactType = objc_msgSend_decodeIntegerForKey_(coder, v4, @"kCMDeviceImpactCodingKeyImpactType");
+    objc_msgSend_decodeDoubleForKey_(coder, v6, @"kCMDeviceImpactCodingKeyPeakAcceleration");
     v5->_peakAcceleration = v7;
-    v5->_simulated = objc_msgSend_decodeBoolForKey_(a3, v8, @"kCMDeviceImpactCodingKeySimulated");
-    v5->_date = objc_msgSend_decodeObjectForKey_(a3, v9, @"kCMDeviceImpactCodingKeyDate");
+    v5->_simulated = objc_msgSend_decodeBoolForKey_(coder, v8, @"kCMDeviceImpactCodingKeySimulated");
+    v5->_date = objc_msgSend_decodeObjectForKey_(coder, v9, @"kCMDeviceImpactCodingKeyDate");
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = CMDeviceImpact;
   [(CMLogItem *)&v9 encodeWithCoder:?];
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->_impactType, @"kCMDeviceImpactCodingKeyImpactType");
-  objc_msgSend_encodeDouble_forKey_(a3, v6, @"kCMDeviceImpactCodingKeyPeakAcceleration", self->_peakAcceleration);
-  objc_msgSend_encodeBool_forKey_(a3, v7, self->_simulated, @"kCMDeviceImpactCodingKeySimulated");
-  objc_msgSend_encodeObject_forKey_(a3, v8, self->_date, @"kCMDeviceImpactCodingKeyDate");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->_impactType, @"kCMDeviceImpactCodingKeyImpactType");
+  objc_msgSend_encodeDouble_forKey_(coder, v6, @"kCMDeviceImpactCodingKeyPeakAcceleration", self->_peakAcceleration);
+  objc_msgSend_encodeBool_forKey_(coder, v7, self->_simulated, @"kCMDeviceImpactCodingKeySimulated");
+  objc_msgSend_encodeObject_forKey_(coder, v8, self->_date, @"kCMDeviceImpactCodingKeyDate");
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = objc_msgSend_date(self, a2, a3);
-  v8 = objc_msgSend_date(a3, v5, v6);
+  v4 = objc_msgSend_date(self, a2, compare);
+  v8 = objc_msgSend_date(compare, v5, v6);
 
   return objc_msgSend_compare_(v4, v7, v8);
 }

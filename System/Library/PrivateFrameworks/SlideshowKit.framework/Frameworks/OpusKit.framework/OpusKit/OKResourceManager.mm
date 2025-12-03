@@ -1,13 +1,13 @@
 @interface OKResourceManager
-- (OKResourceManager)initWithPresentationViewController:(id)a3;
-- (id)resourceLoaderForURL:(id)a3;
-- (id)resourceWithURL:(id)a3 copy:(BOOL)a4;
+- (OKResourceManager)initWithPresentationViewController:(id)controller;
+- (id)resourceLoaderForURL:(id)l;
+- (id)resourceWithURL:(id)l copy:(BOOL)copy;
 - (void)dealloc;
 @end
 
 @implementation OKResourceManager
 
-- (OKResourceManager)initWithPresentationViewController:(id)a3
+- (OKResourceManager)initWithPresentationViewController:(id)controller
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
@@ -19,7 +19,7 @@
     v8[0] = +[(OKResourceLoader *)OKMicaResourceLoader];
     v8[1] = +[(OKResourceLoader *)OKImageResourceLoader];
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-    v4->_presentationViewController = a3;
+    v4->_presentationViewController = controller;
     v4->_resourceLoaders = v5;
   }
 
@@ -47,7 +47,7 @@
   [(OKResourceManager *)&v5 dealloc];
 }
 
-- (id)resourceLoaderForURL:(id)a3
+- (id)resourceLoaderForURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -73,7 +73,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 canLoadResourceWithURL:a3])
+    if ([v9 canLoadResourceWithURL:l])
     {
       return v9;
     }
@@ -91,11 +91,11 @@ LABEL_3:
   }
 }
 
-- (id)resourceWithURL:(id)a3 copy:(BOOL)a4
+- (id)resourceWithURL:(id)l copy:(BOOL)copy
 {
-  v4 = a4;
+  copyCopy = copy;
   v7 = [(OFLRUCache *)self->_resources objectForKey:?];
-  v8 = [(OKResourceManager *)self resourceLoaderForURL:a3];
+  v8 = [(OKResourceManager *)self resourceLoaderForURL:l];
   if (!(v7 | v8))
   {
     return 0;
@@ -104,15 +104,15 @@ LABEL_3:
   v10 = v8;
   if (!v7)
   {
-    v11 = [v8 loadResourceWithURL:a3 withPresentationViewController:self->_presentationViewController];
+    v11 = [v8 loadResourceWithURL:l withPresentationViewController:self->_presentationViewController];
     if (!v11)
     {
       return 0;
     }
 
     v7 = v11;
-    [(OFLRUCache *)self->_resources setObject:v11 forKey:a3];
-    if (v4)
+    [(OFLRUCache *)self->_resources setObject:v11 forKey:l];
+    if (copyCopy)
     {
       goto LABEL_5;
     }
@@ -122,7 +122,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v4)
+  if (!copyCopy)
   {
     goto LABEL_8;
   }

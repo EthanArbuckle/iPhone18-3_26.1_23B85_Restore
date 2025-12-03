@@ -1,41 +1,41 @@
 @interface MFSecureMIMECompositionManager
-+ (BOOL)isRevokedCertificate:(__SecCertificate *)a3 sendingAddress:(id)a4;
-+ (__SecIdentity)copyEncryptionIdentityForAccount:(id)a3 sendingAddress:(id)a4 error:(id *)a5;
-+ (__SecIdentity)copySigningIdentityForAccount:(id)a3 sendingAddress:(id)a4 error:(id *)a5;
-+ (id)copyEncryptionCertificatesForAccount:(id)a3 recipientAddress:(id)a4 error:(id *)a5;
-- (BOOL)_nts_copyEncryptionIdentity:(__SecIdentity *)a3 error:(id *)a4 certificatesByRecipient:(id *)a5 errorsByRecipient:(id *)a6;
-- (BOOL)_nts_copySigningIdentity:(__SecIdentity *)a3 error:(id *)a4;
++ (BOOL)isRevokedCertificate:(__SecCertificate *)certificate sendingAddress:(id)address;
++ (__SecIdentity)copyEncryptionIdentityForAccount:(id)account sendingAddress:(id)address error:(id *)error;
++ (__SecIdentity)copySigningIdentityForAccount:(id)account sendingAddress:(id)address error:(id *)error;
++ (id)copyEncryptionCertificatesForAccount:(id)account recipientAddress:(id)address error:(id *)error;
+- (BOOL)_nts_copyEncryptionIdentity:(__SecIdentity *)identity error:(id *)error certificatesByRecipient:(id *)recipient errorsByRecipient:(id *)byRecipient;
+- (BOOL)_nts_copySigningIdentity:(__SecIdentity *)identity error:(id *)error;
 - (BOOL)_shouldAllowSend_nts;
 - (BOOL)_updateEncryptionStatus_nts;
 - (BOOL)_updateSigningStatus_nts;
 - (BOOL)shouldAllowSend;
-- (MFSecureMIMECompositionManager)initWithSendingAccount:(id)a3 signingPolicy:(int)a4 encryptionPolicy:(int)a5;
+- (MFSecureMIMECompositionManager)initWithSendingAccount:(id)account signingPolicy:(int)policy encryptionPolicy:(int)encryptionPolicy;
 - (MFSecureMIMECompositionManagerDelegate)delegate;
 - (NSSet)recipients;
 - (NSString)sendingAddress;
 - (id)compositionSpecification;
 - (int)encryptionStatus;
 - (int)signingStatus;
-- (void)_determineEncryptionStatusWithNewRecipients:(id)a3;
-- (void)_determineEncryptionStatusWithSendingAddress:(id)a3;
-- (void)_determineIdentitiesWithSendingAddress:(id)a3 forSigning:(BOOL)a4 encryption:(BOOL)a5;
-- (void)_determineRevocationStatusWithIdentity:(__SecIdentity *)a3 sendingAddress:(id)a4;
-- (void)_determineSigningStatusWithSendingAddress:(id)a3;
-- (void)_nts_setEncryptionIdentity:(__SecIdentity *)a3 error:(id)a4;
-- (void)_nts_setSigningIdentity:(__SecIdentity *)a3 error:(id)a4;
-- (void)addRecipients:(id)a3;
+- (void)_determineEncryptionStatusWithNewRecipients:(id)recipients;
+- (void)_determineEncryptionStatusWithSendingAddress:(id)address;
+- (void)_determineIdentitiesWithSendingAddress:(id)address forSigning:(BOOL)signing encryption:(BOOL)encryption;
+- (void)_determineRevocationStatusWithIdentity:(__SecIdentity *)identity sendingAddress:(id)address;
+- (void)_determineSigningStatusWithSendingAddress:(id)address;
+- (void)_nts_setEncryptionIdentity:(__SecIdentity *)identity error:(id)error;
+- (void)_nts_setSigningIdentity:(__SecIdentity *)identity error:(id)error;
+- (void)addRecipients:(id)recipients;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeRecipients:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setSendingAddress:(id)a3;
+- (void)removeRecipients:(id)recipients;
+- (void)setDelegate:(id)delegate;
+- (void)setSendingAddress:(id)address;
 @end
 
 @implementation MFSecureMIMECompositionManager
 
-- (MFSecureMIMECompositionManager)initWithSendingAccount:(id)a3 signingPolicy:(int)a4 encryptionPolicy:(int)a5
+- (MFSecureMIMECompositionManager)initWithSendingAccount:(id)account signingPolicy:(int)policy encryptionPolicy:(int)encryptionPolicy
 {
-  v9 = a3;
+  accountCopy = account;
   v16.receiver = self;
   v16.super_class = MFSecureMIMECompositionManager;
   v10 = [(MFSecureMIMECompositionManager *)&v16 init];
@@ -49,9 +49,9 @@
     queue = v10->_queue;
     v10->_queue = v13;
 
-    objc_storeStrong(&v10->_sendingAccount, a3);
-    v10->_signingPolicy = a4;
-    v10->_encryptionPolicy = a5;
+    objc_storeStrong(&v10->_sendingAccount, account);
+    v10->_signingPolicy = policy;
+    v10->_encryptionPolicy = encryptionPolicy;
     [(MFSecureMIMECompositionManager *)v10 _updateSigningStatus_nts];
     [(MFSecureMIMECompositionManager *)v10 _updateEncryptionStatus_nts];
   }
@@ -78,12 +78,12 @@
   [(MFSecureMIMECompositionManager *)&v5 dealloc];
 }
 
-- (void)addRecipients:(id)a3
+- (void)addRecipients:(id)recipients
 {
-  v4 = a3;
-  if ([v4 count])
+  recipientsCopy = recipients;
+  if ([recipientsCopy count])
   {
-    v5 = [v4 copy];
+    v5 = [recipientsCopy copy];
     [(NSLock *)self->_lock lock];
     if (self->_invalidated)
     {
@@ -109,10 +109,10 @@
         ++self->_encryptionStatusSemaphore;
       }
 
-      v10 = [(MFSecureMIMECompositionManager *)self _updateEncryptionStatus_nts];
+      _updateEncryptionStatus_nts = [(MFSecureMIMECompositionManager *)self _updateEncryptionStatus_nts];
       encryptionStatus = self->_encryptionStatus;
       [(NSLock *)self->_lock unlock];
-      if (v10)
+      if (_updateEncryptionStatus_nts)
       {
         [(MFSecureMIMECompositionManager *)self _notifyDelegateEncryptionStatusDidChange:encryptionStatus certsByRecipient:0 errorsByRecipient:0 identity:0 error:0];
       }
@@ -132,9 +132,9 @@
   }
 }
 
-- (void)removeRecipients:(id)a3
+- (void)removeRecipients:(id)recipients
 {
-  v15 = a3;
+  recipientsCopy = recipients;
   [(NSLock *)self->_lock lock];
   if (self->_invalidated)
   {
@@ -145,12 +145,12 @@
     goto LABEL_24;
   }
 
-  v7 = [v15 allObjects];
+  allObjects = [recipientsCopy allObjects];
   v8 = [(NSMutableDictionary *)self->_errorsByRecipient count];
   v9 = [(NSMutableDictionary *)self->_certificatesByRecipient count];
-  [(NSMutableSet *)self->_recipients minusSet:v15];
-  [(NSMutableDictionary *)self->_errorsByRecipient removeObjectsForKeys:v7];
-  [(NSMutableDictionary *)self->_certificatesByRecipient removeObjectsForKeys:v7];
+  [(NSMutableSet *)self->_recipients minusSet:recipientsCopy];
+  [(NSMutableDictionary *)self->_errorsByRecipient removeObjectsForKeys:allObjects];
+  [(NSMutableDictionary *)self->_certificatesByRecipient removeObjectsForKeys:allObjects];
   if (!self->_encryptionStatusSemaphore)
   {
     if ([(MFSecureMIMECompositionManager *)self _updateEncryptionStatus_nts]|| [(NSMutableDictionary *)self->_certificatesByRecipient count]!= v9)
@@ -244,13 +244,13 @@ LABEL_24:
   [(NSLock *)lock unlock];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   [(NSLock *)self->_lock lock];
   delegate = self->_delegate;
-  self->_delegate = v4;
-  v6 = v4;
+  self->_delegate = delegateCopy;
+  v6 = delegateCopy;
 
   [(NSLock *)self->_lock unlock];
 }
@@ -264,13 +264,13 @@ LABEL_24:
   return v3;
 }
 
-- (void)setSendingAddress:(id)a3
+- (void)setSendingAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   [(NSLock *)self->_lock lock];
-  if (!self->_invalidated && ![(NSString *)self->_sendingAddress isEqualToString:v4])
+  if (!self->_invalidated && ![(NSString *)self->_sendingAddress isEqualToString:addressCopy])
   {
-    v7 = [v4 copy];
+    v7 = [addressCopy copy];
     sendingAddress = self->_sendingAddress;
     self->_sendingAddress = v7;
 
@@ -285,7 +285,7 @@ LABEL_24:
       v5 = 0;
     }
 
-    v10 = [(MFSecureMIMECompositionManager *)self _updateSigningStatus_nts];
+    _updateSigningStatus_nts = [(MFSecureMIMECompositionManager *)self _updateSigningStatus_nts];
     if (self->_encryptionPolicy && self->_sendingAddress)
     {
       ++self->_encryptionStatusSemaphore;
@@ -298,19 +298,19 @@ LABEL_24:
     }
 
     signingStatus = self->_signingStatus;
-    v12 = [(MFSecureMIMECompositionManager *)self _updateEncryptionStatus_nts];
+    _updateEncryptionStatus_nts = [(MFSecureMIMECompositionManager *)self _updateEncryptionStatus_nts];
     encryptionStatus = self->_encryptionStatus;
     [(NSLock *)self->_lock unlock];
-    if (v10)
+    if (_updateSigningStatus_nts)
     {
       [(MFSecureMIMECompositionManager *)self _notifyDelegateSigningStatusDidChange:signingStatus identity:0 error:0];
-      if (!v12)
+      if (!_updateEncryptionStatus_nts)
       {
         goto LABEL_4;
       }
     }
 
-    else if (!v12)
+    else if (!_updateEncryptionStatus_nts)
     {
       goto LABEL_4;
     }
@@ -335,7 +335,7 @@ LABEL_4:
     v15 = v7;
     v17 = v5;
     v18 = v6;
-    v16 = v4;
+    v16 = addressCopy;
     dispatch_async(queue, v14);
   }
 }
@@ -368,19 +368,19 @@ uint64_t __52__MFSecureMIMECompositionManager_setSendingAddress___block_invoke(u
   return v3;
 }
 
-- (void)_determineIdentitiesWithSendingAddress:(id)a3 forSigning:(BOOL)a4 encryption:(BOOL)a5
+- (void)_determineIdentitiesWithSendingAddress:(id)address forSigning:(BOOL)signing encryption:(BOOL)encryption
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (v6)
+  encryptionCopy = encryption;
+  signingCopy = signing;
+  addressCopy = address;
+  if (signingCopy)
   {
     v9 = objc_opt_class();
     sendingAccount = self->_sendingAccount;
     v18 = 0;
-    v11 = [v9 copySigningIdentityForAccount:sendingAccount sendingAddress:v8 error:&v18];
+    v11 = [v9 copySigningIdentityForAccount:sendingAccount sendingAddress:addressCopy error:&v18];
     v12 = v18;
-    if (!v5)
+    if (!encryptionCopy)
     {
 LABEL_3:
       v13 = 0;
@@ -393,7 +393,7 @@ LABEL_3:
   {
     v12 = 0;
     v11 = 0;
-    if (!v5)
+    if (!encryptionCopy)
     {
       goto LABEL_3;
     }
@@ -402,18 +402,18 @@ LABEL_3:
   v15 = objc_opt_class();
   v16 = self->_sendingAccount;
   v17 = 0;
-  v14 = [v15 copyEncryptionIdentityForAccount:v16 sendingAddress:v8 error:&v17];
+  v14 = [v15 copyEncryptionIdentityForAccount:v16 sendingAddress:addressCopy error:&v17];
   v13 = v17;
 LABEL_6:
   [(NSLock *)self->_lock lock];
   if (!self->_invalidated)
   {
-    if (v6)
+    if (signingCopy)
     {
       [(MFSecureMIMECompositionManager *)self _nts_setSigningIdentity:v11 error:v12];
     }
 
-    if (v5)
+    if (encryptionCopy)
     {
       [(MFSecureMIMECompositionManager *)self _nts_setEncryptionIdentity:v14 error:v13];
     }
@@ -431,36 +431,36 @@ LABEL_6:
   }
 }
 
-- (void)_determineRevocationStatusWithIdentity:(__SecIdentity *)a3 sendingAddress:(id)a4
+- (void)_determineRevocationStatusWithIdentity:(__SecIdentity *)identity sendingAddress:(id)address
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  addressCopy = address;
   certificateRef = 0;
-  SecIdentityCopyCertificate(a3, &certificateRef);
+  SecIdentityCopyCertificate(identity, &certificateRef);
   if (!certificateRef)
   {
     v7 = vm_imap_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = addressCopy;
       _os_log_impl(&dword_2720B1000, v7, OS_LOG_TYPE_DEFAULT, "#SMIMEErrors SecIdentityCopyCertificate could not find certificate for %@", buf, 0xCu);
     }
 
     goto LABEL_7;
   }
 
-  if ([objc_opt_class() isRevokedCertificate:certificateRef sendingAddress:v6])
+  if ([objc_opt_class() isRevokedCertificate:certificateRef sendingAddress:addressCopy])
   {
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1052 localizedDescription:0];
     [(NSLock *)self->_lock lock];
-    if (!self->_signingStatusSemaphore && (signingIdentity = self->_signingIdentity) != 0 && CFEqual(a3, signingIdentity))
+    if (!self->_signingStatusSemaphore && (signingIdentity = self->_signingIdentity) != 0 && CFEqual(identity, signingIdentity))
     {
       [(MFSecureMIMECompositionManager *)self _nts_setSigningIdentity:0 error:v7];
-      v10 = [(MFSecureMIMECompositionManager *)self _updateSigningStatus_nts];
+      _updateSigningStatus_nts = [(MFSecureMIMECompositionManager *)self _updateSigningStatus_nts];
       signingStatus = self->_signingStatus;
       [(NSLock *)self->_lock unlock];
-      if (v10)
+      if (_updateSigningStatus_nts)
       {
         queue = self->_queue;
         v13[0] = MEMORY[0x277D85DD0];
@@ -486,9 +486,9 @@ LABEL_7:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_determineSigningStatusWithSendingAddress:(id)a3
+- (void)_determineSigningStatusWithSendingAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v15 = 0;
   [(NSLock *)self->_lock lock];
   signingStatusSemaphore = self->_signingStatusSemaphore;
@@ -524,14 +524,14 @@ LABEL_5:
     block[3] = &unk_279E35078;
     block[4] = self;
     v13 = v7;
-    v12 = v4;
+    v12 = addressCopy;
     dispatch_async(v8, block);
   }
 
-  v9 = [(MFSecureMIMECompositionManager *)self _updateSigningStatus_nts];
+  _updateSigningStatus_nts = [(MFSecureMIMECompositionManager *)self _updateSigningStatus_nts];
   signingStatus = self->_signingStatus;
   [(NSLock *)self->_lock unlock];
-  if (v9)
+  if (_updateSigningStatus_nts)
   {
     [(MFSecureMIMECompositionManager *)self _notifyDelegateSigningStatusDidChange:signingStatus identity:v15 error:v6];
   }
@@ -568,21 +568,21 @@ LABEL_6:
   return signingStatus != v3;
 }
 
-- (void)_nts_setSigningIdentity:(__SecIdentity *)a3 error:(id)a4
+- (void)_nts_setSigningIdentity:(__SecIdentity *)identity error:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   signingIdentity = self->_signingIdentity;
-  v11 = v7;
-  if (signingIdentity != a3)
+  v11 = errorCopy;
+  if (signingIdentity != identity)
   {
     if (signingIdentity)
     {
       CFRelease(signingIdentity);
     }
 
-    if (a3)
+    if (identity)
     {
-      signingIdentity = CFRetain(a3);
+      signingIdentity = CFRetain(identity);
     }
 
     else
@@ -590,24 +590,24 @@ LABEL_6:
       signingIdentity = 0;
     }
 
-    v7 = v11;
+    errorCopy = v11;
     self->_signingIdentity = signingIdentity;
   }
 
   signingIdentityError = self->_signingIdentityError;
   p_signingIdentityError = &self->_signingIdentityError;
-  if (signingIdentityError != v7)
+  if (signingIdentityError != errorCopy)
   {
-    objc_storeStrong(p_signingIdentityError, a4);
-    v7 = v11;
+    objc_storeStrong(p_signingIdentityError, error);
+    errorCopy = v11;
   }
 
-  MEMORY[0x2821F96F8](signingIdentity, v7);
+  MEMORY[0x2821F96F8](signingIdentity, errorCopy);
 }
 
-- (BOOL)_nts_copySigningIdentity:(__SecIdentity *)a3 error:(id *)a4
+- (BOOL)_nts_copySigningIdentity:(__SecIdentity *)identity error:(id *)error
 {
-  if (a3)
+  if (identity)
   {
     signingIdentity = self->_signingIdentity;
     if (signingIdentity)
@@ -615,16 +615,16 @@ LABEL_6:
       signingIdentity = CFRetain(signingIdentity);
     }
 
-    *a3 = signingIdentity;
+    *identity = signingIdentity;
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
 
   v8 = self->_signingIdentityError;
-  *a4 = v8;
+  *error = v8;
   return v8 != 0;
 }
 
@@ -636,9 +636,9 @@ LABEL_6:
   return signingStatus;
 }
 
-- (void)_determineEncryptionStatusWithSendingAddress:(id)a3
+- (void)_determineEncryptionStatusWithSendingAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   cf = 0;
   [(NSLock *)self->_lock lock];
   encryptionStatusSemaphore = self->_encryptionStatusSemaphore;
@@ -676,10 +676,10 @@ LABEL_6:
   }
 }
 
-- (void)_determineEncryptionStatusWithNewRecipients:(id)a3
+- (void)_determineEncryptionStatusWithNewRecipients:(id)recipients
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recipientsCopy = recipients;
   cf = 0;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -687,7 +687,7 @@ LABEL_6:
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v7 = v4;
+  v7 = recipientsCopy;
   v8 = [v7 countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v8)
   {
@@ -819,9 +819,9 @@ LABEL_11:
 
     else
     {
-      v39 = [(MFSecureMIMECompositionManager *)self _updateEncryptionStatus_nts];
+      _updateEncryptionStatus_nts = [(MFSecureMIMECompositionManager *)self _updateEncryptionStatus_nts];
       encryptionStatus = self->_encryptionStatus;
-      if (v39)
+      if (_updateEncryptionStatus_nts)
       {
         v43 = 0;
         v44 = 0;
@@ -890,21 +890,21 @@ LABEL_8:
   return encryptionStatus != v4;
 }
 
-- (void)_nts_setEncryptionIdentity:(__SecIdentity *)a3 error:(id)a4
+- (void)_nts_setEncryptionIdentity:(__SecIdentity *)identity error:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   encryptionIdentity = self->_encryptionIdentity;
-  v11 = v7;
-  if (encryptionIdentity != a3)
+  v11 = errorCopy;
+  if (encryptionIdentity != identity)
   {
     if (encryptionIdentity)
     {
       CFRelease(encryptionIdentity);
     }
 
-    if (a3)
+    if (identity)
     {
-      encryptionIdentity = CFRetain(a3);
+      encryptionIdentity = CFRetain(identity);
     }
 
     else
@@ -912,24 +912,24 @@ LABEL_8:
       encryptionIdentity = 0;
     }
 
-    v7 = v11;
+    errorCopy = v11;
     self->_encryptionIdentity = encryptionIdentity;
   }
 
   encryptionIdentityError = self->_encryptionIdentityError;
   p_encryptionIdentityError = &self->_encryptionIdentityError;
-  if (encryptionIdentityError != v7)
+  if (encryptionIdentityError != errorCopy)
   {
-    objc_storeStrong(p_encryptionIdentityError, a4);
-    v7 = v11;
+    objc_storeStrong(p_encryptionIdentityError, error);
+    errorCopy = v11;
   }
 
-  MEMORY[0x2821F96F8](encryptionIdentity, v7);
+  MEMORY[0x2821F96F8](encryptionIdentity, errorCopy);
 }
 
-- (BOOL)_nts_copyEncryptionIdentity:(__SecIdentity *)a3 error:(id *)a4 certificatesByRecipient:(id *)a5 errorsByRecipient:(id *)a6
+- (BOOL)_nts_copyEncryptionIdentity:(__SecIdentity *)identity error:(id *)error certificatesByRecipient:(id *)recipient errorsByRecipient:(id *)byRecipient
 {
-  if (a3)
+  if (identity)
   {
     encryptionIdentity = self->_encryptionIdentity;
     if (encryptionIdentity)
@@ -937,38 +937,38 @@ LABEL_8:
       encryptionIdentity = CFRetain(encryptionIdentity);
     }
 
-    *a3 = encryptionIdentity;
+    *identity = encryptionIdentity;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = self->_encryptionIdentityError;
+    *error = self->_encryptionIdentityError;
   }
 
-  if (a5)
+  if (recipient)
   {
     if (![(NSMutableDictionary *)self->_certificatesByRecipient count])
     {
-      *a5 = 0;
-      if (a6)
+      *recipient = 0;
+      if (byRecipient)
       {
         goto LABEL_11;
       }
 
 LABEL_15:
-      if (a4)
+      if (error)
       {
-        return *a4 != 0;
+        return *error != 0;
       }
 
       return 0;
     }
 
     v12 = [(NSMutableDictionary *)self->_certificatesByRecipient copy];
-    *a5 = v12;
+    *recipient = v12;
   }
 
-  if (!a6)
+  if (!byRecipient)
   {
     goto LABEL_15;
   }
@@ -977,20 +977,20 @@ LABEL_11:
   if ([(NSMutableDictionary *)self->_errorsByRecipient count])
   {
     v13 = [(NSMutableDictionary *)self->_errorsByRecipient copy];
-    *a6 = v13;
+    *byRecipient = v13;
 
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
 
-    return *a4 != 0;
+    return *error != 0;
   }
 
-  *a6 = 0;
-  if (a4)
+  *byRecipient = 0;
+  if (error)
   {
-    return *a4 != 0;
+    return *error != 0;
   }
 
   return 0;
@@ -1019,15 +1019,15 @@ LABEL_11:
   if (*&self->_encryptionStatusSemaphore == 0 && [(MFSecureMIMECompositionManager *)self _shouldAllowSend_nts])
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v4 = [(MFSecureMIMECompositionManager *)self _shouldSign_nts];
-    v5 = [(MFSecureMIMECompositionManager *)self _shouldEncrypt_nts];
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+    _shouldSign_nts = [(MFSecureMIMECompositionManager *)self _shouldSign_nts];
+    _shouldEncrypt_nts = [(MFSecureMIMECompositionManager *)self _shouldEncrypt_nts];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:_shouldSign_nts];
     [v3 setObject:v6 forKeyedSubscript:@"ShouldSign"];
 
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:_shouldEncrypt_nts];
     [v3 setObject:v7 forKeyedSubscript:@"ShouldEncrypt"];
 
-    if (v4)
+    if (_shouldSign_nts)
     {
       signingIdentity = self->_signingIdentity;
       if (!signingIdentity)
@@ -1043,7 +1043,7 @@ LABEL_11:
       }
     }
 
-    if (v5)
+    if (_shouldEncrypt_nts)
     {
       v10 = self->_encryptionIdentity;
       if (!v10)
@@ -1073,9 +1073,9 @@ LABEL_11:
 - (BOOL)shouldAllowSend
 {
   [(NSLock *)self->_lock lock];
-  v3 = [(MFSecureMIMECompositionManager *)self _shouldAllowSend_nts];
+  _shouldAllowSend_nts = [(MFSecureMIMECompositionManager *)self _shouldAllowSend_nts];
   [(NSLock *)self->_lock unlock];
-  return v3;
+  return _shouldAllowSend_nts;
 }
 
 - (BOOL)_shouldAllowSend_nts
@@ -1093,16 +1093,16 @@ LABEL_11:
   return 1;
 }
 
-+ (__SecIdentity)copySigningIdentityForAccount:(id)a3 sendingAddress:(id)a4 error:(id *)a5
++ (__SecIdentity)copySigningIdentityForAccount:(id)account sendingAddress:(id)address error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [a3 signingIdentityPersistentReferenceForAddress:v7];
+  addressCopy = address;
+  v8 = [account signingIdentityPersistentReferenceForAddress:addressCopy];
   v16 = 0;
   v9 = [MFMessageKeychainManager copyIdentityForPersistentReference:v8 error:&v16];
   v10 = v16;
   v11 = v10;
-  if (a5 && !v9)
+  if (error && !v9)
   {
     if (v10)
     {
@@ -1116,24 +1116,24 @@ LABEL_11:
       v12 = 0;
     }
 
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"You can’t send signed messages because a signing identity for the address “%@” could not be found.  Go to the Advanced settings for this account to choose a signing identity.", v7];
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1052 localizedDescription:v13 title:0 userInfo:v12];
+    addressCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"You can’t send signed messages because a signing identity for the address “%@” could not be found.  Go to the Advanced settings for this account to choose a signing identity.", addressCopy];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1052 localizedDescription:addressCopy title:0 userInfo:v12];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-+ (__SecIdentity)copyEncryptionIdentityForAccount:(id)a3 sendingAddress:(id)a4 error:(id *)a5
++ (__SecIdentity)copyEncryptionIdentityForAccount:(id)account sendingAddress:(id)address error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [a3 encryptionIdentityPersistentReferenceForAddress:v7];
+  addressCopy = address;
+  v8 = [account encryptionIdentityPersistentReferenceForAddress:addressCopy];
   v16 = 0;
   v9 = [MFMessageKeychainManager copyIdentityForPersistentReference:v8 error:&v16];
   v10 = v16;
   v11 = v10;
-  if (a5 && !v9)
+  if (error && !v9)
   {
     if (v10)
     {
@@ -1147,24 +1147,24 @@ LABEL_11:
       v12 = 0;
     }
 
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"You can’t send encrypted messages because an encryption identity for the address “%@” could not be found.  Go to the Advanced settings for this account to choose an encryption identity.", v7];
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1052 localizedDescription:v13 title:0 userInfo:v12];
+    addressCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"You can’t send encrypted messages because an encryption identity for the address “%@” could not be found.  Go to the Advanced settings for this account to choose an encryption identity.", addressCopy];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1052 localizedDescription:addressCopy title:0 userInfo:v12];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-+ (id)copyEncryptionCertificatesForAccount:(id)a3 recipientAddress:(id)a4 error:(id *)a5
++ (id)copyEncryptionCertificatesForAccount:(id)account recipientAddress:(id)address error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  addressCopy = address;
   v40 = 0;
-  v8 = [a3 copyDataForRemoteEncryptionCertificatesForAddress:v7 error:&v40];
+  v8 = [account copyDataForRemoteEncryptionCertificatesForAddress:addressCopy error:&v40];
   v9 = v40;
   if ([v8 count])
   {
-    v33 = a5;
+    errorCopy = error;
     v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
     v36 = 0u;
     v37 = 0u;
@@ -1191,7 +1191,7 @@ LABEL_11:
           if (v16)
           {
             v17 = v16;
-            v18 = checkCertificateExpiration(v16, v7);
+            v18 = checkCertificateExpiration(v16, addressCopy);
 
             if (!v18)
             {
@@ -1237,18 +1237,18 @@ LABEL_11:
     }
 
     v8 = v32;
-    a5 = v33;
+    error = errorCopy;
   }
 
   else
   {
     v35 = 0;
-    v23 = [MFMessageKeychainManager copyEncryptionCertificateForAddress:v7 error:&v35];
+    v23 = [MFMessageKeychainManager copyEncryptionCertificateForAddress:addressCopy error:&v35];
     v24 = v35;
     v21 = v24;
     if (v23)
     {
-      v25 = checkCertificateExpiration(v23, v7);
+      v25 = checkCertificateExpiration(v23, addressCopy);
 
       if (v25)
       {
@@ -1282,31 +1282,31 @@ LABEL_11:
           v27 = @"You can’t send encrypted messages because an encryption certificate for the address “%@” could not be found.";
         }
 
-        v28 = [MEMORY[0x277CCACA8] stringWithFormat:v27, v7];
-        v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:v28 title:@"Unable to Encrypt" userInfo:v26];
+        addressCopy = [MEMORY[0x277CCACA8] stringWithFormat:v27, addressCopy];
+        v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:addressCopy title:@"Unable to Encrypt" userInfo:v26];
       }
 
       v22 = 0;
     }
   }
 
-  if (a5 && !v22 && v9)
+  if (error && !v22 && v9)
   {
     v29 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   v30 = *MEMORY[0x277D85DE8];
   return v22;
 }
 
-+ (BOOL)isRevokedCertificate:(__SecCertificate *)a3 sendingAddress:(id)a4
++ (BOOL)isRevokedCertificate:(__SecCertificate *)certificate sendingAddress:(id)address
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEB18];
-  v6 = a4;
+  addressCopy = address;
   v7 = [[v5 alloc] initWithCapacity:2];
-  v8 = [MFMessageKeychainManager copySMIMESigningPolicyForAddress:v6];
+  v8 = [MFMessageKeychainManager copySMIMESigningPolicyForAddress:addressCopy];
 
   if (v8)
   {
@@ -1323,7 +1323,7 @@ LABEL_11:
   }
 
   trust = 0;
-  v11 = SecTrustCreateWithCertificates(a3, v7, &trust);
+  v11 = SecTrustCreateWithCertificates(certificate, v7, &trust);
   if (v11)
   {
     v12 = 1;

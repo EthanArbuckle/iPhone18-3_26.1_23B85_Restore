@@ -5,22 +5,22 @@
 - (CGAffineTransform)transformToDevice;
 - (CGPoint)tableOffset;
 - (TSTLayout)layout;
-- (TSTLayoutSpace)initWithLayoutSpaceBundle:(id)a3 type:(int)a4;
+- (TSTLayoutSpace)initWithLayoutSpaceBundle:(id)bundle type:(int)type;
 - (TSTMasterLayout)masterLayout;
 - (id)description;
-- (int)validate:(id)a3;
-- (int)validateCoordinateCache:(id)a3;
-- (int)validateTableOffset:(id)a3;
+- (int)validate:(id)validate;
+- (int)validateCoordinateCache:(id)cache;
+- (int)validateTableOffset:(id)offset;
 - (void)dealloc;
 - (void)invalidateCoordinates;
 - (void)invalidateTableOffset;
 - (void)lockForRead;
 - (void)lockForWrite;
-- (void)setTransformFromCanvas:(CGAffineTransform *)a3;
-- (void)setTransformFromDevice:(CGAffineTransform *)a3;
-- (void)setTransformToCanvas:(CGAffineTransform *)a3;
-- (void)setTransformToDevice:(CGAffineTransform *)a3;
-- (void)setViewScale:(double)a3;
+- (void)setTransformFromCanvas:(CGAffineTransform *)canvas;
+- (void)setTransformFromDevice:(CGAffineTransform *)device;
+- (void)setTransformToCanvas:(CGAffineTransform *)canvas;
+- (void)setTransformToDevice:(CGAffineTransform *)device;
+- (void)setViewScale:(double)scale;
 - (void)unlock;
 - (void)validateCachedFrames;
 @end
@@ -29,19 +29,19 @@
 
 - (TSTLayout)layout
 {
-  v2 = [(TSTLayoutSpace *)self bundle];
+  bundle = [(TSTLayoutSpace *)self bundle];
 
-  return [(TSTLayoutSpaceBundle *)v2 layout];
+  return [(TSTLayoutSpaceBundle *)bundle layout];
 }
 
 - (TSTMasterLayout)masterLayout
 {
-  v2 = [(TSTLayoutSpaceBundle *)[(TSTLayoutSpace *)self bundle] layout];
+  layout = [(TSTLayoutSpaceBundle *)[(TSTLayoutSpace *)self bundle] layout];
 
-  return [(TSTLayout *)v2 masterLayout];
+  return [(TSTLayout *)layout masterLayout];
 }
 
-- (TSTLayoutSpace)initWithLayoutSpaceBundle:(id)a3 type:(int)a4
+- (TSTLayoutSpace)initWithLayoutSpaceBundle:(id)bundle type:(int)type
 {
   v15.receiver = self;
   v15.super_class = TSTLayoutSpace;
@@ -49,8 +49,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->mBundle = a3;
-    v6->mLayoutSpaceType = a4;
+    v6->mBundle = bundle;
+    v6->mLayoutSpaceType = type;
     v6->mInvalidFlags = 257;
     TSTLayoutSpaceSetGridRange(v6, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL);
     *&v7->mHeaderColumnsRepeat = 0;
@@ -186,9 +186,9 @@
   if (v2)
   {
     v3 = v2;
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTLayoutSpace lockForRead]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTLayoutSpace.mm"), 287, @"Unable to lock layout space for reading: %d", v3}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTLayoutSpace.mm"), 287, @"Unable to lock layout space for reading: %d", v3}];
   }
 }
 
@@ -198,9 +198,9 @@
   if (v2)
   {
     v3 = v2;
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTLayoutSpace lockForWrite]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTLayoutSpace.mm"), 311, @"Unable to lock layout space for writing: %d", v3}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTLayoutSpace.mm"), 311, @"Unable to lock layout space for writing: %d", v3}];
   }
 }
 
@@ -210,9 +210,9 @@
   if (v2)
   {
     v3 = v2;
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTLayoutSpace unlock]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTLayoutSpace.mm"), 321, @"Unable to unlock layout space: %d", v3}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTLayoutSpace.mm"), 321, @"Unable to unlock layout space: %d", v3}];
   }
 }
 
@@ -232,7 +232,7 @@
   [(TSTLayoutSpace *)self unlock];
 }
 
-- (int)validate:(id)a3
+- (int)validate:(id)validate
 {
   if (!self->mInvalidFlags.tableOffset && !self->mInvalidFlags.coordinates)
   {
@@ -242,22 +242,22 @@
   [(TSTLayoutSpace *)self lockForWrite];
   self->mLayoutDirectionIsLeftToRight = [(TSTLayoutSpace *)self p_getLayoutDirectionLeftToRight];
   [(TSTLayoutSpace *)self validateCachedFrames];
-  v5 = [(TSTLayoutSpace *)self validateCoordinateCache:a3];
-  v6 = [(TSTLayoutSpace *)self validateTableOffset:a3]| v5;
+  v5 = [(TSTLayoutSpace *)self validateCoordinateCache:validate];
+  v6 = [(TSTLayoutSpace *)self validateTableOffset:validate]| v5;
   [(TSTLayoutSpace *)self unlock];
   return v6;
 }
 
-- (int)validateTableOffset:(id)a3
+- (int)validateTableOffset:(id)offset
 {
   if (!self->mInvalidFlags.tableOffset)
   {
     return 0;
   }
 
-  if (a3)
+  if (offset)
   {
-    [a3 tableOffset];
+    [offset tableOffset];
     v5 = v4;
     v7 = v6;
     v8 = 0;
@@ -298,17 +298,17 @@
   return v8;
 }
 
-- (void)setTransformToCanvas:(CGAffineTransform *)a3
+- (void)setTransformToCanvas:(CGAffineTransform *)canvas
 {
-  v4 = *&a3->a;
-  v5 = *&a3->c;
-  *&self->mTransformToCanvas.tx = *&a3->tx;
+  v4 = *&canvas->a;
+  v5 = *&canvas->c;
+  *&self->mTransformToCanvas.tx = *&canvas->tx;
   *&self->mTransformToCanvas.c = v5;
   *&self->mTransformToCanvas.a = v4;
-  v6 = *&a3->c;
-  *&v8.a = *&a3->a;
+  v6 = *&canvas->c;
+  *&v8.a = *&canvas->a;
   *&v8.c = v6;
-  *&v8.tx = *&a3->tx;
+  *&v8.tx = *&canvas->tx;
   CGAffineTransformInvert(&v9, &v8);
   v7 = *&v9.c;
   *&self->mTransformFromCanvas.a = *&v9.a;
@@ -316,11 +316,11 @@
   *&self->mTransformFromCanvas.tx = *&v9.tx;
 }
 
-- (void)setViewScale:(double)a3
+- (void)setViewScale:(double)scale
 {
-  if (self->mViewScale != a3)
+  if (self->mViewScale != scale)
   {
-    self->mViewScale = a3;
+    self->mViewScale = scale;
     self->mInvalidFlags.tableOffset = 1;
   }
 }
@@ -342,7 +342,7 @@
   }
 }
 
-- (int)validateCoordinateCache:(id)a3
+- (int)validateCoordinateCache:(id)cache
 {
   result = 0;
   v31 = 0;
@@ -448,22 +448,22 @@ LABEL_33:
 
       else
       {
-        v25 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTLayoutSpace validateCoordinateCache:]"];
-        [v25 handleFailureInFunction:v26 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTLayoutSpace.mm"), 3121, @"There are no column coordinates"}];
+        [currentHandler handleFailureInFunction:v26 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTLayoutSpace.mm"), 3121, @"There are no column coordinates"}];
         v24 = 0;
       }
     }
 
-    v27 = [(TSTLayoutSpace *)self isMain];
-    if (!a3 || v27)
+    isMain = [(TSTLayoutSpace *)self isMain];
+    if (!cache || isMain)
     {
       Coordinate = TSTCoordinateArrayGetCoordinate(v24, bottomRight.column + 1);
     }
 
     else
     {
-      Coordinate = TSTLayoutSpaceGetRawTableCoordinateForGridColumn(a3, (*(a3 + 8) + 1));
+      Coordinate = TSTLayoutSpaceGetRawTableCoordinateForGridColumn(cache, (*(cache + 8) + 1));
     }
 
     v29 = Coordinate;
@@ -514,11 +514,11 @@ LABEL_33:
   return self;
 }
 
-- (void)setTransformFromCanvas:(CGAffineTransform *)a3
+- (void)setTransformFromCanvas:(CGAffineTransform *)canvas
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->mTransformFromCanvas.tx = *&a3->tx;
+  v3 = *&canvas->a;
+  v4 = *&canvas->c;
+  *&self->mTransformFromCanvas.tx = *&canvas->tx;
   *&self->mTransformFromCanvas.c = v4;
   *&self->mTransformFromCanvas.a = v3;
 }
@@ -532,11 +532,11 @@ LABEL_33:
   return self;
 }
 
-- (void)setTransformToDevice:(CGAffineTransform *)a3
+- (void)setTransformToDevice:(CGAffineTransform *)device
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->mTransformToDevice.tx = *&a3->tx;
+  v3 = *&device->a;
+  v4 = *&device->c;
+  *&self->mTransformToDevice.tx = *&device->tx;
   *&self->mTransformToDevice.c = v4;
   *&self->mTransformToDevice.a = v3;
 }
@@ -550,11 +550,11 @@ LABEL_33:
   return self;
 }
 
-- (void)setTransformFromDevice:(CGAffineTransform *)a3
+- (void)setTransformFromDevice:(CGAffineTransform *)device
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->mTransformFromDevice.tx = *&a3->tx;
+  v3 = *&device->a;
+  v4 = *&device->c;
+  *&self->mTransformFromDevice.tx = *&device->tx;
   *&self->mTransformFromDevice.c = v4;
   *&self->mTransformFromDevice.a = v3;
 }

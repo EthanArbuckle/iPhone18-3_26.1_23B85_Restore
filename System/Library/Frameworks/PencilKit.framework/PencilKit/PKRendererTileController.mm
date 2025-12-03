@@ -1,10 +1,10 @@
 @interface PKRendererTileController
 + (id)sharedController;
 - (PKRendererTileController)init;
-- (id)_framebufferForTile:(char)a3 createIfNeeded:(void *)a4 device:(uint64_t)a5 pixelFormat:(void *)a6 tileFramebuffersDictionary:(void *)a7 clearColor:(double)a8 clearFramebufferBlock:(double)a9;
-- (id)framebufferForTile:(char)a3 createIfNeeded:(void *)a4 device:(uint64_t)a5 pixelFormat:(void *)a6 clearFramebufferBlock:;
-- (id)multiplyFramebufferForTile:(char)a3 createIfNeeded:(void *)a4 device:(uint64_t)a5 pixelFormat:(void *)a6 clearFramebufferBlock:;
-- (void)didTeardownTile:(uint64_t)a1;
+- (id)_framebufferForTile:(char)tile createIfNeeded:(void *)needed device:(uint64_t)device pixelFormat:(void *)format tileFramebuffersDictionary:(void *)dictionary clearColor:(double)color clearFramebufferBlock:(double)block;
+- (id)framebufferForTile:(char)tile createIfNeeded:(void *)needed device:(uint64_t)device pixelFormat:(void *)format clearFramebufferBlock:;
+- (id)multiplyFramebufferForTile:(char)tile createIfNeeded:(void *)needed device:(uint64_t)device pixelFormat:(void *)format clearFramebufferBlock:;
+- (void)didTeardownTile:(uint64_t)tile;
 @end
 
 @implementation PKRendererTileController
@@ -23,13 +23,13 @@
     tileQueue = v2->_tileQueue;
     v2->_tileQueue = v5;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     tileFramebuffers = v2->_tileFramebuffers;
-    v2->_tileFramebuffers = v7;
+    v2->_tileFramebuffers = dictionary;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     tileMultiplyFramebuffers = v2->_tileMultiplyFramebuffers;
-    v2->_tileMultiplyFramebuffers = v9;
+    v2->_tileMultiplyFramebuffers = dictionary2;
   }
 
   return v2;
@@ -55,15 +55,15 @@ void __44__PKRendererTileController_sharedController__block_invoke()
   qword_1ED6A4F68 = v0;
 }
 
-- (id)_framebufferForTile:(char)a3 createIfNeeded:(void *)a4 device:(uint64_t)a5 pixelFormat:(void *)a6 tileFramebuffersDictionary:(void *)a7 clearColor:(double)a8 clearFramebufferBlock:(double)a9
+- (id)_framebufferForTile:(char)tile createIfNeeded:(void *)needed device:(uint64_t)device pixelFormat:(void *)format tileFramebuffersDictionary:(void *)dictionary clearColor:(double)color clearFramebufferBlock:(double)block
 {
   v21 = a2;
-  v22 = a4;
-  v23 = a6;
-  v24 = a7;
-  if (a1)
+  neededCopy = needed;
+  formatCopy = format;
+  dictionaryCopy = dictionary;
+  if (self)
   {
-    v25 = a3;
+    tileCopy = tile;
     v54 = 0;
     v55 = &v54;
     v56 = 0x3032000000;
@@ -74,8 +74,8 @@ void __44__PKRendererTileController_sharedController__block_invoke()
     v51 = &v50;
     v52 = 0x2020000000;
     v53 = 0;
-    v26 = a5;
-    v27 = v22;
+    deviceCopy = device;
+    v27 = neededCopy;
     if (v21)
     {
       v28 = *(v21 + 200);
@@ -91,21 +91,21 @@ void __44__PKRendererTileController_sharedController__block_invoke()
     }
 
     v31 = v30;
-    v32 = *(a1 + 8);
+    v32 = *(self + 8);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __142__PKRendererTileController__framebufferForTile_createIfNeeded_device_pixelFormat_tileFramebuffersDictionary_clearColor_clearFramebufferBlock___block_invoke;
     block[3] = &unk_1E82D6E20;
     v41 = &v54;
-    v38 = v23;
+    v38 = formatCopy;
     v33 = v31;
     v39 = v33;
-    v49 = v25;
+    v49 = tileCopy;
     v43 = v36;
-    v44 = v26;
-    v22 = v27;
-    v45 = a8;
-    v46 = a9;
+    v44 = deviceCopy;
+    neededCopy = v27;
+    colorCopy = color;
+    blockCopy = block;
     v47 = a10;
     v48 = a11;
     v40 = v27;
@@ -113,7 +113,7 @@ void __44__PKRendererTileController_sharedController__block_invoke()
     dispatch_sync(v32, block);
     if (*(v51 + 24) == 1)
     {
-      v24[2](v24, v55[5]);
+      dictionaryCopy[2](dictionaryCopy, v55[5]);
     }
 
     v34 = v55[5];
@@ -163,13 +163,13 @@ void __142__PKRendererTileController__framebufferForTile_createIfNeeded_device_p
   }
 }
 
-- (id)framebufferForTile:(char)a3 createIfNeeded:(void *)a4 device:(uint64_t)a5 pixelFormat:(void *)a6 clearFramebufferBlock:
+- (id)framebufferForTile:(char)tile createIfNeeded:(void *)needed device:(uint64_t)device pixelFormat:(void *)format clearFramebufferBlock:
 {
   v11 = a2;
-  v12 = a4;
-  v13 = a6;
-  v14 = v13;
-  if (a1)
+  neededCopy = needed;
+  formatCopy = format;
+  v14 = formatCopy;
+  if (self)
   {
     if (v11 && v11[82] == 1 && v11[83] != 1)
     {
@@ -181,14 +181,14 @@ void __142__PKRendererTileController__framebufferForTile_createIfNeeded_device_p
       v15 = 0.0;
     }
 
-    v16 = *(a1 + 16);
+    v16 = *(self + 16);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __103__PKRendererTileController_framebufferForTile_createIfNeeded_device_pixelFormat_clearFramebufferBlock___block_invoke;
     v19[3] = &unk_1E82D6E48;
-    v21 = v13;
+    v21 = formatCopy;
     v20 = v11;
-    v17 = [(PKRendererTileController *)a1 _framebufferForTile:v20 createIfNeeded:a3 device:v12 pixelFormat:a5 tileFramebuffersDictionary:v16 clearColor:v19 clearFramebufferBlock:0.0, 0.0, 0.0, v15];
+    v17 = [(PKRendererTileController *)self _framebufferForTile:v20 createIfNeeded:tile device:neededCopy pixelFormat:device tileFramebuffersDictionary:v16 clearColor:v19 clearFramebufferBlock:0.0, 0.0, 0.0, v15];
   }
 
   else
@@ -208,13 +208,13 @@ void __103__PKRendererTileController_framebufferForTile_createIfNeeded_device_pi
   [(PKRendererTile *)*(a1 + 32) lockAndSetFramebufferThreadSafe:v5];
 }
 
-- (id)multiplyFramebufferForTile:(char)a3 createIfNeeded:(void *)a4 device:(uint64_t)a5 pixelFormat:(void *)a6 clearFramebufferBlock:
+- (id)multiplyFramebufferForTile:(char)tile createIfNeeded:(void *)needed device:(uint64_t)device pixelFormat:(void *)format clearFramebufferBlock:
 {
   v11 = a2;
-  v12 = a6;
-  if (a1)
+  formatCopy = format;
+  if (self)
   {
-    v13 = a4;
+    neededCopy = needed;
     if (v11)
     {
       if (v11[83])
@@ -233,14 +233,14 @@ void __103__PKRendererTileController_framebufferForTile_createIfNeeded_device_pi
       v14 = 1.0;
     }
 
-    v15 = *(a1 + 24);
+    v15 = *(self + 24);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __111__PKRendererTileController_multiplyFramebufferForTile_createIfNeeded_device_pixelFormat_clearFramebufferBlock___block_invoke;
     v18[3] = &unk_1E82D6E48;
-    v20 = v12;
+    v20 = formatCopy;
     v19 = v11;
-    v16 = [(PKRendererTileController *)a1 _framebufferForTile:v19 createIfNeeded:a3 device:v13 pixelFormat:a5 tileFramebuffersDictionary:v15 clearColor:v18 clearFramebufferBlock:v14, v14, v14, v14];
+    v16 = [(PKRendererTileController *)self _framebufferForTile:v19 createIfNeeded:tile device:neededCopy pixelFormat:device tileFramebuffersDictionary:v15 clearColor:v18 clearFramebufferBlock:v14, v14, v14, v14];
   }
 
   else
@@ -260,18 +260,18 @@ void __111__PKRendererTileController_multiplyFramebufferForTile_createIfNeeded_d
   [(PKRendererTile *)*(a1 + 32) lockAndSetMultiplyFramebufferThreadSafe:v5];
 }
 
-- (void)didTeardownTile:(uint64_t)a1
+- (void)didTeardownTile:(uint64_t)tile
 {
-  if (a1)
+  if (tile)
   {
     if (a2 && (v3 = *(a2 + 120)) != 0)
     {
-      v4 = *(a1 + 8);
+      v4 = *(tile + 8);
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __44__PKRendererTileController_didTeardownTile___block_invoke;
       v6[3] = &unk_1E82D6E70;
-      v6[4] = a1;
+      v6[4] = tile;
       v5 = v3;
       v7 = v5;
       dispatch_sync(v4, v6);

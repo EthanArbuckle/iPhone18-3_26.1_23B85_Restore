@@ -1,30 +1,30 @@
 @interface GCDevicePhysicalInputDescription
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validate:(id *)a3;
-- (GCDevicePhysicalInputDescription)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validate:(id *)validate;
+- (GCDevicePhysicalInputDescription)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCDevicePhysicalInputDescription
 
-- (GCDevicePhysicalInputDescription)initWithCoder:(id)a3
+- (GCDevicePhysicalInputDescription)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = GCDevicePhysicalInputDescription;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(GCDevicePhysicalInputDescription *)&v16 init];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0, v16.receiver, v16.super_class}];
-  v8 = [v3 decodeObjectOfClasses:v7 forKey:@"elements"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"elements"];
   elements = v4->_elements;
   v4->_elements = v8;
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"attributes"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"attributes"];
 
   attributes = v4->_attributes;
   v4->_attributes = v13;
@@ -32,15 +32,15 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   elements = self->_elements;
-  v5 = a3;
-  [v5 encodeObject:elements forKey:@"elements"];
-  [v5 encodeObject:self->_attributes forKey:@"attributes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:elements forKey:@"elements"];
+  [coderCopy encodeObject:self->_attributes forKey:@"attributes"];
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v35 = *MEMORY[0x1E69E9840];
   v26 = 0;
@@ -57,10 +57,10 @@
   v25[4] = &v26;
   [(NSArray *)elements enumerateObjectsUsingBlock:v25];
   v6 = v27[5];
-  if (a3 && v6)
+  if (validate && v6)
   {
     v6 = v6;
-    *a3 = v6;
+    *validate = v6;
   }
 
   v7 = v6 != 0;
@@ -92,26 +92,26 @@
             objc_enumerationMutation(v10);
           }
 
-          v14 = [*(*(&v21 + 1) + 8 * i) identifier];
-          v15 = [v9 member:v14];
+          identifier = [*(*(&v21 + 1) + 8 * i) identifier];
+          v15 = [v9 member:identifier];
 
           if (v15)
           {
-            if (a3)
+            if (validate)
             {
               v16 = MEMORY[0x1E696ABC0];
               v32 = *MEMORY[0x1E696A588];
-              v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Multiple elements with identifier '%@'.", v14];
+              v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Multiple elements with identifier '%@'.", identifier];
               v33 = v17;
               v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-              *a3 = [v16 errorWithDomain:@"GCDevicePhysicalInputError" code:0 userInfo:v18];
+              *validate = [v16 errorWithDomain:@"GCDevicePhysicalInputError" code:0 userInfo:v18];
             }
 
             v8 = 0;
             goto LABEL_18;
           }
 
-          [v9 addObject:v14];
+          [v9 addObject:identifier];
         }
 
         v11 = [(NSArray *)v10 countByEnumeratingWithState:&v21 objects:v34 count:16];
@@ -173,14 +173,14 @@ void __45__GCDevicePhysicalInputDescription_validate___block_invoke(uint64_t a1,
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ((attributes = self->_attributes, attributes == v4[2]) || [(NSSet *)attributes isEqual:?]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ((attributes = self->_attributes, attributes == equalCopy[2]) || [(NSSet *)attributes isEqual:?]))
   {
     elements = self->_elements;
-    if (elements == v4[1])
+    if (elements == equalCopy[1])
     {
       v7 = 1;
     }
@@ -203,8 +203,8 @@ void __45__GCDevicePhysicalInputDescription_validate___block_invoke(uint64_t a1,
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(NSSet *)self->_attributes allObjects];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  allObjects = [(NSSet *)self->_attributes allObjects];
+  v5 = [allObjects componentsJoinedByString:{@", "}];
   v6 = [v3 stringWithFormat:@"Physical Input [%@] {", v5];
 
   v17 = 0u;

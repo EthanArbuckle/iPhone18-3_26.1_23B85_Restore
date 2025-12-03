@@ -1,7 +1,7 @@
 @interface _DASCPMModeMonitor
 + (id)sharedMonitor;
 - (_DASCPMModeMonitor)init;
-- (void)queue_handleMode:(id)a3 updatedToState:(BOOL)a4;
+- (void)queue_handleMode:(id)mode updatedToState:(BOOL)state;
 - (void)registerForContextualPowerBudgets;
 - (void)registerForModeChanges;
 @end
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000B438;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020ADB0 != -1)
   {
     dispatch_once(&qword_10020ADB0, block);
@@ -60,26 +60,26 @@
   [(ContextualPowerModesClient *)v5 registerWithIdentifier:@"com.apple.dasd" queue:queue callback:v7];
 }
 
-- (void)queue_handleMode:(id)a3 updatedToState:(BOOL)a4
+- (void)queue_handleMode:(id)mode updatedToState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
+  stateCopy = state;
+  modeCopy = mode;
   v7 = [_DASDaemonLogger logForCategory:@"cpmModes"];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_10011BC5C(v6, v4, v7);
+    sub_10011BC5C(modeCopy, stateCopy, v7);
   }
 
-  if (v6)
+  if (modeCopy)
   {
-    v8 = [(_DASCPMModeMonitor *)self currentMode];
-    v9 = v8;
-    if (v4)
+    currentMode = [(_DASCPMModeMonitor *)self currentMode];
+    v9 = currentMode;
+    if (stateCopy)
     {
-      if (v8)
+      if (currentMode)
       {
-        v10 = [(_DASCPMModeMonitor *)self currentMode];
-        v11 = [v10 isEqualToString:v6] ^ 1;
+        currentMode2 = [(_DASCPMModeMonitor *)self currentMode];
+        v11 = [currentMode2 isEqualToString:modeCopy] ^ 1;
       }
 
       else
@@ -90,30 +90,30 @@
 
     else
     {
-      v11 = [v8 isEqualToString:v6];
+      v11 = [currentMode isEqualToString:modeCopy];
     }
 
-    v12 = [(_DASCPMModeMonitor *)self currentMode];
-    v13 = [v12 isEqual:v6];
+    currentMode3 = [(_DASCPMModeMonitor *)self currentMode];
+    v13 = [currentMode3 isEqual:modeCopy];
 
-    if (!v13 || v4)
+    if (!v13 || stateCopy)
     {
-      if (!v4)
+      if (!stateCopy)
       {
         goto LABEL_15;
       }
 
-      v14 = self;
-      v15 = v6;
+      selfCopy2 = self;
+      v15 = modeCopy;
     }
 
     else
     {
-      v14 = self;
+      selfCopy2 = self;
       v15 = 0;
     }
 
-    [(_DASCPMModeMonitor *)v14 setCurrentMode:v15];
+    [(_DASCPMModeMonitor *)selfCopy2 setCurrentMode:v15];
 LABEL_15:
     if (v11)
     {

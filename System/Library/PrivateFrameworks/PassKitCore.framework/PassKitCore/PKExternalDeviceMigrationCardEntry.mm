@@ -1,69 +1,69 @@
 @interface PKExternalDeviceMigrationCardEntry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToExternalDeviceMigrationCardEntry:(id)a3;
-- (PKExternalDeviceMigrationCardEntry)initWithCoder:(id)a3;
-- (PKExternalDeviceMigrationCardEntry)initWithLocalizedOrganization:(id)a3 localizedDescription:(id)a4 accountNumberSuffix:(id)a5 type:(unint64_t)a6 paymentDetails:(id)a7 credentialInSecureElement:(BOOL)a8 sanitizedPKPassArchive:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToExternalDeviceMigrationCardEntry:(id)entry;
+- (PKExternalDeviceMigrationCardEntry)initWithCoder:(id)coder;
+- (PKExternalDeviceMigrationCardEntry)initWithLocalizedOrganization:(id)organization localizedDescription:(id)description accountNumberSuffix:(id)suffix type:(unint64_t)type paymentDetails:(id)details credentialInSecureElement:(BOOL)element sanitizedPKPassArchive:(id)archive;
 - (id)description;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKExternalDeviceMigrationCardEntry
 
-- (PKExternalDeviceMigrationCardEntry)initWithLocalizedOrganization:(id)a3 localizedDescription:(id)a4 accountNumberSuffix:(id)a5 type:(unint64_t)a6 paymentDetails:(id)a7 credentialInSecureElement:(BOOL)a8 sanitizedPKPassArchive:(id)a9
+- (PKExternalDeviceMigrationCardEntry)initWithLocalizedOrganization:(id)organization localizedDescription:(id)description accountNumberSuffix:(id)suffix type:(unint64_t)type paymentDetails:(id)details credentialInSecureElement:(BOOL)element sanitizedPKPassArchive:(id)archive
 {
-  v23 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a9;
+  organizationCopy = organization;
+  descriptionCopy = description;
+  suffixCopy = suffix;
+  detailsCopy = details;
+  archiveCopy = archive;
   v24.receiver = self;
   v24.super_class = PKExternalDeviceMigrationCardEntry;
   v18 = [(PKExternalDeviceMigrationCardEntry *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_localizedOrganization, a3);
-    objc_storeStrong(&v19->_localizedDescription, a4);
-    objc_storeStrong(&v19->_accountNumberSuffix, a5);
-    v19->_type = a6;
-    objc_storeStrong(&v19->_paymentDetails, a7);
-    v19->_credentialInSecureElement = a8;
-    objc_storeStrong(&v19->_sanitizedPKPassArchive, a9);
+    objc_storeStrong(&v18->_localizedOrganization, organization);
+    objc_storeStrong(&v19->_localizedDescription, description);
+    objc_storeStrong(&v19->_accountNumberSuffix, suffix);
+    v19->_type = type;
+    objc_storeStrong(&v19->_paymentDetails, details);
+    v19->_credentialInSecureElement = element;
+    objc_storeStrong(&v19->_sanitizedPKPassArchive, archive);
   }
 
   return v19;
 }
 
-- (PKExternalDeviceMigrationCardEntry)initWithCoder:(id)a3
+- (PKExternalDeviceMigrationCardEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = PKExternalDeviceMigrationCardEntry;
   v5 = [(PKExternalDeviceMigrationCardEntry *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedOrganization"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedOrganization"];
     localizedOrganization = v5->_localizedOrganization;
     v5->_localizedOrganization = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountNumberSuffix"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountNumberSuffix"];
     accountNumberSuffix = v5->_accountNumberSuffix;
     v5->_accountNumberSuffix = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = PKExternalDeviceMigrationCardEntryTypeFromString(v12);
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentDetails"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentDetails"];
     paymentDetails = v5->_paymentDetails;
     v5->_paymentDetails = v13;
 
-    v5->_credentialInSecureElement = [v4 decodeBoolForKey:@"credentialInSecureElement"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sanitizedPKPassArchive"];
+    v5->_credentialInSecureElement = [coderCopy decodeBoolForKey:@"credentialInSecureElement"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sanitizedPKPassArchive"];
     sanitizedPKPassArchive = v5->_sanitizedPKPassArchive;
     v5->_sanitizedPKPassArchive = v15;
   }
@@ -71,19 +71,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   localizedOrganization = self->_localizedOrganization;
-  v6 = a3;
-  [v6 encodeObject:localizedOrganization forKey:@"localizedOrganization"];
-  [v6 encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
-  [v6 encodeObject:self->_accountNumberSuffix forKey:@"accountNumberSuffix"];
+  coderCopy = coder;
+  [coderCopy encodeObject:localizedOrganization forKey:@"localizedOrganization"];
+  [coderCopy encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
+  [coderCopy encodeObject:self->_accountNumberSuffix forKey:@"accountNumberSuffix"];
   v5 = PKExternalDeviceMigrationCardEntryTypeToString(self->_type);
-  [v6 encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
 
-  [v6 encodeObject:self->_paymentDetails forKey:@"paymentDetails"];
-  [v6 encodeBool:self->_credentialInSecureElement forKey:@"credentialInSecureElement"];
-  [v6 encodeObject:self->_sanitizedPKPassArchive forKey:@"sanitizedPKPassArchive"];
+  [coderCopy encodeObject:self->_paymentDetails forKey:@"paymentDetails"];
+  [coderCopy encodeBool:self->_credentialInSecureElement forKey:@"credentialInSecureElement"];
+  [coderCopy encodeObject:self->_sanitizedPKPassArchive forKey:@"sanitizedPKPassArchive"];
 }
 
 - (id)description
@@ -144,28 +144,28 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalDeviceMigrationCardEntry *)self isEqualToExternalDeviceMigrationCardEntry:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalDeviceMigrationCardEntry *)self isEqualToExternalDeviceMigrationCardEntry:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToExternalDeviceMigrationCardEntry:(id)a3
+- (BOOL)isEqualToExternalDeviceMigrationCardEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   localizedOrganization = self->_localizedOrganization;
-  v6 = v4[2];
+  v6 = entryCopy[2];
   if (localizedOrganization)
   {
     v7 = v6 == 0;
@@ -190,7 +190,7 @@
   }
 
   localizedDescription = self->_localizedDescription;
-  v9 = v4[3];
+  v9 = entryCopy[3];
   if (localizedDescription && v9)
   {
     if (([(NSString *)localizedDescription isEqual:?]& 1) == 0)
@@ -205,7 +205,7 @@
   }
 
   accountNumberSuffix = self->_accountNumberSuffix;
-  v11 = v4[4];
+  v11 = entryCopy[4];
   if (accountNumberSuffix && v11)
   {
     if (([(NSString *)accountNumberSuffix isEqual:?]& 1) == 0)
@@ -220,7 +220,7 @@
   }
 
   paymentDetails = self->_paymentDetails;
-  v13 = v4[6];
+  v13 = entryCopy[6];
   if (paymentDetails && v13)
   {
     if (![(PKExternalDeviceMigrationPaymentDetails *)paymentDetails isEqual:?])
@@ -235,7 +235,7 @@
   }
 
   sanitizedPKPassArchive = self->_sanitizedPKPassArchive;
-  v15 = v4[7];
+  v15 = entryCopy[7];
   if (!sanitizedPKPassArchive || !v15)
   {
     if (sanitizedPKPassArchive == v15)
@@ -254,12 +254,12 @@ LABEL_31:
   }
 
 LABEL_29:
-  if (self->_type != v4[5])
+  if (self->_type != entryCopy[5])
   {
     goto LABEL_31;
   }
 
-  v16 = self->_credentialInSecureElement == *(v4 + 8);
+  v16 = self->_credentialInSecureElement == *(entryCopy + 8);
 LABEL_32:
 
   return v16;

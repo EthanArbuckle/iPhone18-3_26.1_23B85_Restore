@@ -1,68 +1,68 @@
 @interface HKPopulationNormsGraphView
 - (CGSize)intrinsicContentSize;
-- (HKPopulationNormsGraphView)initWithMaxYValue:(double)a3 minYValue:(double)a4 YSeriesTitle:(id)a5 XSeriesTitle:(id)a6 highlightedSegmentColor:(id)a7;
-- (unint64_t)_highlightIndexForClassificationIndex:(unint64_t)a3 numberOfSegments:(unint64_t)a4;
+- (HKPopulationNormsGraphView)initWithMaxYValue:(double)value minYValue:(double)yValue YSeriesTitle:(id)title XSeriesTitle:(id)seriesTitle highlightedSegmentColor:(id)color;
+- (unint64_t)_highlightIndexForClassificationIndex:(unint64_t)index numberOfSegments:(unint64_t)segments;
 - (void)_updateUserValueChartPointIfNecessary;
 - (void)layoutSubviews;
-- (void)updateWithFlattenedLevelsByAgeBucket:(id)a3 currentClassificationIndex:(unint64_t)a4;
-- (void)updateWithUserAgeBucketIndex:(id)a3 userLatestSampleValue:(id)a4;
+- (void)updateWithFlattenedLevelsByAgeBucket:(id)bucket currentClassificationIndex:(unint64_t)index;
+- (void)updateWithUserAgeBucketIndex:(id)index userLatestSampleValue:(id)value;
 @end
 
 @implementation HKPopulationNormsGraphView
 
-- (HKPopulationNormsGraphView)initWithMaxYValue:(double)a3 minYValue:(double)a4 YSeriesTitle:(id)a5 XSeriesTitle:(id)a6 highlightedSegmentColor:(id)a7
+- (HKPopulationNormsGraphView)initWithMaxYValue:(double)value minYValue:(double)yValue YSeriesTitle:(id)title XSeriesTitle:(id)seriesTitle highlightedSegmentColor:(id)color
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  seriesTitleCopy = seriesTitle;
+  colorCopy = color;
   v21.receiver = self;
   v21.super_class = HKPopulationNormsGraphView;
   v17 = [(HKPopulationNormsGraphView *)&v21 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v17)
   {
-    if (a3 <= a4)
+    if (value <= yValue)
     {
       [HKPopulationNormsGraphView initWithMaxYValue:a2 minYValue:v17 YSeriesTitle:? XSeriesTitle:? highlightedSegmentColor:?];
     }
 
-    v17->_maxChartYValue = a3;
-    v17->_minChartYValue = a4;
-    objc_storeStrong(&v17->_ySeriesTitle, a5);
-    objc_storeStrong(&v17->_xSeriesTitle, a6);
-    v18 = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
+    v17->_maxChartYValue = value;
+    v17->_minChartYValue = yValue;
+    objc_storeStrong(&v17->_ySeriesTitle, title);
+    objc_storeStrong(&v17->_xSeriesTitle, seriesTitle);
+    hk_chartAxisLabelFont = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
     seriesTitleFont = v17->_seriesTitleFont;
-    v17->_seriesTitleFont = v18;
+    v17->_seriesTitleFont = hk_chartAxisLabelFont;
 
-    objc_storeStrong(&v17->_highlightedSegmentColor, a7);
+    objc_storeStrong(&v17->_highlightedSegmentColor, color);
   }
 
   return v17;
 }
 
-- (unint64_t)_highlightIndexForClassificationIndex:(unint64_t)a3 numberOfSegments:(unint64_t)a4
+- (unint64_t)_highlightIndexForClassificationIndex:(unint64_t)index numberOfSegments:(unint64_t)segments
 {
-  if (a3 >= a4)
+  if (index >= segments)
   {
     return 0;
   }
 
   else
   {
-    return ~a3 + a4;
+    return ~index + segments;
   }
 }
 
-- (void)updateWithFlattenedLevelsByAgeBucket:(id)a3 currentClassificationIndex:(unint64_t)a4
+- (void)updateWithFlattenedLevelsByAgeBucket:(id)bucket currentClassificationIndex:(unint64_t)index
 {
   v87 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 allKeys];
-  v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_35];
+  bucketCopy = bucket;
+  allKeys = [bucketCopy allKeys];
+  v8 = [allKeys sortedArrayUsingComparator:&__block_literal_global_35];
 
   if (!self->_gridView)
   {
-    v77 = v6;
-    v78 = self;
+    v77 = bucketCopy;
+    selfCopy = self;
     v80 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:5];
     v81 = 0u;
     v82 = 0u;
@@ -86,19 +86,19 @@
             objc_enumerationMutation(v9);
           }
 
-          v15 = [*(*(&v81 + 1) + 8 * i) rangeValue];
-          v17 = v15 + v16;
-          if (v15 + v16 == v13)
+          rangeValue = [*(*(&v81 + 1) + 8 * i) rangeValue];
+          v17 = rangeValue + v16;
+          if (rangeValue + v16 == v13)
           {
             v18 = [HKPopulationNormsUnboundedEndAxisLabel alloc];
-            v19 = [MEMORY[0x1E696AD98] numberWithInteger:v15];
+            v19 = [MEMORY[0x1E696AD98] numberWithInteger:rangeValue];
             v20 = [(HKPopulationNormsUnboundedEndAxisLabel *)v18 initWithRangeStart:v19];
           }
 
           else
           {
             v21 = [HKPopulationNormsAxisLabel alloc];
-            v19 = [MEMORY[0x1E696AD98] numberWithInteger:v15];
+            v19 = [MEMORY[0x1E696AD98] numberWithInteger:rangeValue];
             v22 = [MEMORY[0x1E696AD98] numberWithInteger:v17];
             v20 = [(HKPopulationNormsAxisLabel *)v21 initWithRangeStart:v19 end:v22];
 
@@ -115,9 +115,9 @@
     }
 
     v23 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:7];
-    minChartYValue = v78->_minChartYValue;
+    minChartYValue = selfCopy->_minChartYValue;
     v25 = minChartYValue;
-    maxChartYValue = v78->_maxChartYValue;
+    maxChartYValue = selfCopy->_maxChartYValue;
     if (maxChartYValue >= v25)
     {
       v27 = (maxChartYValue - minChartYValue) / 6.0;
@@ -132,92 +132,92 @@
         v25 = v25 + v27;
       }
 
-      while (v78->_maxChartYValue >= v25);
+      while (selfCopy->_maxChartYValue >= v25);
     }
 
     v32 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-    ySeriesTitleLabel = v78->_ySeriesTitleLabel;
-    v78->_ySeriesTitleLabel = v32;
+    ySeriesTitleLabel = selfCopy->_ySeriesTitleLabel;
+    selfCopy->_ySeriesTitleLabel = v32;
 
-    [(UILabel *)v78->_ySeriesTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UILabel *)v78->_ySeriesTitleLabel setNumberOfLines:0];
-    v34 = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
-    [(UILabel *)v78->_ySeriesTitleLabel setTextColor:v34];
+    [(UILabel *)selfCopy->_ySeriesTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)selfCopy->_ySeriesTitleLabel setNumberOfLines:0];
+    hk_chartAxisLabelColor = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
+    [(UILabel *)selfCopy->_ySeriesTitleLabel setTextColor:hk_chartAxisLabelColor];
 
-    [(UILabel *)v78->_ySeriesTitleLabel setText:v78->_ySeriesTitle];
-    [(UILabel *)v78->_ySeriesTitleLabel setFont:v78->_seriesTitleFont];
-    [(HKPopulationNormsGraphView *)v78 addSubview:v78->_ySeriesTitleLabel];
+    [(UILabel *)selfCopy->_ySeriesTitleLabel setText:selfCopy->_ySeriesTitle];
+    [(UILabel *)selfCopy->_ySeriesTitleLabel setFont:selfCopy->_seriesTitleFont];
+    [(HKPopulationNormsGraphView *)selfCopy addSubview:selfCopy->_ySeriesTitleLabel];
     v35 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-    xSeriesTitleLabel = v78->_xSeriesTitleLabel;
-    v78->_xSeriesTitleLabel = v35;
+    xSeriesTitleLabel = selfCopy->_xSeriesTitleLabel;
+    selfCopy->_xSeriesTitleLabel = v35;
 
-    [(UILabel *)v78->_xSeriesTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UILabel *)v78->_xSeriesTitleLabel setNumberOfLines:0];
-    v37 = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
-    [(UILabel *)v78->_xSeriesTitleLabel setTextColor:v37];
+    [(UILabel *)selfCopy->_xSeriesTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)selfCopy->_xSeriesTitleLabel setNumberOfLines:0];
+    hk_chartAxisLabelColor2 = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
+    [(UILabel *)selfCopy->_xSeriesTitleLabel setTextColor:hk_chartAxisLabelColor2];
 
-    [(UILabel *)v78->_xSeriesTitleLabel setText:v78->_xSeriesTitle];
-    [(UILabel *)v78->_xSeriesTitleLabel setFont:v78->_seriesTitleFont];
-    [(HKPopulationNormsGraphView *)v78 addSubview:v78->_xSeriesTitleLabel];
+    [(UILabel *)selfCopy->_xSeriesTitleLabel setText:selfCopy->_xSeriesTitle];
+    [(UILabel *)selfCopy->_xSeriesTitleLabel setFont:selfCopy->_seriesTitleFont];
+    [(HKPopulationNormsGraphView *)selfCopy addSubview:selfCopy->_xSeriesTitleLabel];
     v75 = v23;
     v38 = [[HKPopulationNormsChartGridView alloc] initWithXAxisLabels:v80 YAxisLabels:v23];
-    gridView = v78->_gridView;
-    v78->_gridView = v38;
+    gridView = selfCopy->_gridView;
+    selfCopy->_gridView = v38;
 
-    [(HKPopulationNormsChartGridView *)v78->_gridView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v40 = [MEMORY[0x1E69DC888] clearColor];
-    [(HKPopulationNormsChartGridView *)v78->_gridView setBackgroundColor:v40];
+    [(HKPopulationNormsChartGridView *)selfCopy->_gridView setTranslatesAutoresizingMaskIntoConstraints:0];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(HKPopulationNormsChartGridView *)selfCopy->_gridView setBackgroundColor:clearColor];
 
-    [(HKPopulationNormsGraphView *)v78 addSubview:v78->_gridView];
+    [(HKPopulationNormsGraphView *)selfCopy addSubview:selfCopy->_gridView];
     v67 = MEMORY[0x1E696ACD8];
-    v66 = [(UILabel *)v78->_ySeriesTitleLabel topAnchor];
-    v64 = [(HKPopulationNormsGraphView *)v78 topAnchor];
-    v74 = [v66 constraintEqualToAnchor:v64];
+    topAnchor = [(UILabel *)selfCopy->_ySeriesTitleLabel topAnchor];
+    topAnchor2 = [(HKPopulationNormsGraphView *)selfCopy topAnchor];
+    v74 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v85[0] = v74;
-    v73 = [(UILabel *)v78->_ySeriesTitleLabel rightAnchor];
-    v72 = [(HKPopulationNormsGraphView *)v78 rightAnchor];
-    v71 = [v73 constraintEqualToAnchor:v72];
+    rightAnchor = [(UILabel *)selfCopy->_ySeriesTitleLabel rightAnchor];
+    rightAnchor2 = [(HKPopulationNormsGraphView *)selfCopy rightAnchor];
+    v71 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v85[1] = v71;
-    v70 = [(HKPopulationNormsChartGridView *)v78->_gridView topAnchor];
-    v69 = [(UILabel *)v78->_ySeriesTitleLabel bottomAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69 constant:10.0];
+    topAnchor3 = [(HKPopulationNormsChartGridView *)selfCopy->_gridView topAnchor];
+    bottomAnchor = [(UILabel *)selfCopy->_ySeriesTitleLabel bottomAnchor];
+    v68 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:10.0];
     v85[2] = v68;
-    v65 = [(HKPopulationNormsChartGridView *)v78->_gridView leftAnchor];
-    v63 = [(HKPopulationNormsGraphView *)v78 leftAnchor];
-    v62 = [v65 constraintEqualToAnchor:v63];
+    leftAnchor = [(HKPopulationNormsChartGridView *)selfCopy->_gridView leftAnchor];
+    leftAnchor2 = [(HKPopulationNormsGraphView *)selfCopy leftAnchor];
+    v62 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v85[3] = v62;
-    v61 = [(HKPopulationNormsChartGridView *)v78->_gridView rightAnchor];
-    v60 = [(HKPopulationNormsGraphView *)v78 rightAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    rightAnchor3 = [(HKPopulationNormsChartGridView *)selfCopy->_gridView rightAnchor];
+    rightAnchor4 = [(HKPopulationNormsGraphView *)selfCopy rightAnchor];
+    v59 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     v85[4] = v59;
-    v58 = [(UILabel *)v78->_xSeriesTitleLabel topAnchor];
-    v57 = [(HKPopulationNormsChartGridView *)v78->_gridView bottomAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57 constant:3.0];
+    topAnchor4 = [(UILabel *)selfCopy->_xSeriesTitleLabel topAnchor];
+    bottomAnchor2 = [(HKPopulationNormsChartGridView *)selfCopy->_gridView bottomAnchor];
+    v56 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:3.0];
     v85[5] = v56;
-    v41 = [(UILabel *)v78->_xSeriesTitleLabel leftAnchor];
-    v42 = [(HKPopulationNormsGraphView *)v78 leftAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 constant:5.0];
+    leftAnchor3 = [(UILabel *)selfCopy->_xSeriesTitleLabel leftAnchor];
+    leftAnchor4 = [(HKPopulationNormsGraphView *)selfCopy leftAnchor];
+    v43 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4 constant:5.0];
     v85[6] = v43;
-    v44 = [(UILabel *)v78->_xSeriesTitleLabel bottomAnchor];
-    v45 = [(HKPopulationNormsGraphView *)v78 bottomAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45];
+    bottomAnchor3 = [(UILabel *)selfCopy->_xSeriesTitleLabel bottomAnchor];
+    bottomAnchor4 = [(HKPopulationNormsGraphView *)selfCopy bottomAnchor];
+    v46 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v85[7] = v46;
     v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:8];
     [v67 activateConstraints:v47];
 
-    self = v78;
+    self = selfCopy;
     v48 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v79, "count")}];
-    ageBucketBarViews = v78->_ageBucketBarViews;
-    v78->_ageBucketBarViews = v48;
+    ageBucketBarViews = selfCopy->_ageBucketBarViews;
+    selfCopy->_ageBucketBarViews = v48;
 
     if ([v79 count])
     {
       v50 = 0;
       do
       {
-        v51 = [[HKPopulationNormsAgeBucketBarView alloc] initWithReferenceMinY:v78->_highlightedSegmentColor referenceMaxY:v78->_minChartYValue highlightColor:v78->_maxChartYValue];
-        [(HKPopulationNormsChartGridView *)v78->_gridView addSubview:v51];
-        [(NSMutableArray *)v78->_ageBucketBarViews addObject:v51];
+        v51 = [[HKPopulationNormsAgeBucketBarView alloc] initWithReferenceMinY:selfCopy->_highlightedSegmentColor referenceMaxY:selfCopy->_minChartYValue highlightColor:selfCopy->_maxChartYValue];
+        [(HKPopulationNormsChartGridView *)selfCopy->_gridView addSubview:v51];
+        [(NSMutableArray *)selfCopy->_ageBucketBarViews addObject:v51];
 
         ++v50;
       }
@@ -225,7 +225,7 @@
       while ([v79 count] > v50);
     }
 
-    v6 = v77;
+    bucketCopy = v77;
     v8 = v76;
   }
 
@@ -236,9 +236,9 @@
     {
       v53 = [(NSMutableArray *)self->_ageBucketBarViews objectAtIndexedSubscript:v52];
       v54 = [v8 objectAtIndexedSubscript:v52];
-      v55 = [v6 objectForKeyedSubscript:v54];
+      v55 = [bucketCopy objectForKeyedSubscript:v54];
 
-      [v53 updateWithAscendingThresholds:v55 currentHighlightIndex:{-[HKPopulationNormsGraphView _highlightIndexForClassificationIndex:numberOfSegments:](self, "_highlightIndexForClassificationIndex:numberOfSegments:", a4, objc_msgSend(v55, "count") - 1)}];
+      [v53 updateWithAscendingThresholds:v55 currentHighlightIndex:{-[HKPopulationNormsGraphView _highlightIndexForClassificationIndex:numberOfSegments:](self, "_highlightIndexForClassificationIndex:numberOfSegments:", index, objc_msgSend(v55, "count") - 1)}];
       ++v52;
     }
 
@@ -261,22 +261,22 @@
       self->_latestSampleHighlightView = v4;
 
       [(UIView *)self->_latestSampleHighlightView setUserInteractionEnabled:0];
-      v6 = [MEMORY[0x1E69DC888] hk_chartLollipopStickColor];
-      [(UIView *)self->_latestSampleHighlightView setBackgroundColor:v6];
+      hk_chartLollipopStickColor = [MEMORY[0x1E69DC888] hk_chartLollipopStickColor];
+      [(UIView *)self->_latestSampleHighlightView setBackgroundColor:hk_chartLollipopStickColor];
 
-      v7 = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
-      v8 = [v7 CGColor];
-      v9 = [(UIView *)self->_latestSampleHighlightView layer];
-      [v9 setBorderColor:v8];
+      hk_chartBackgroundColor = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
+      cGColor = [hk_chartBackgroundColor CGColor];
+      layer = [(UIView *)self->_latestSampleHighlightView layer];
+      [layer setBorderColor:cGColor];
 
-      v10 = [(UIView *)self->_latestSampleHighlightView layer];
-      [v10 setBorderWidth:1.25];
+      layer2 = [(UIView *)self->_latestSampleHighlightView layer];
+      [layer2 setBorderWidth:1.25];
 
-      v11 = [(UIView *)self->_latestSampleHighlightView layer];
-      [v11 setCornerRadius:5.0];
+      layer3 = [(UIView *)self->_latestSampleHighlightView layer];
+      [layer3 setCornerRadius:5.0];
 
-      v12 = [(UIView *)self->_latestSampleHighlightView layer];
-      [v12 setMasksToBounds:1];
+      layer4 = [(UIView *)self->_latestSampleHighlightView layer];
+      [layer4 setMasksToBounds:1];
 
       [(HKPopulationNormsChartGridView *)self->_gridView addSubview:self->_latestSampleHighlightView];
       latestSampleHighlightView = self->_latestSampleHighlightView;
@@ -298,16 +298,16 @@
   }
 }
 
-- (void)updateWithUserAgeBucketIndex:(id)a3 userLatestSampleValue:(id)a4
+- (void)updateWithUserAgeBucketIndex:(id)index userLatestSampleValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  valueCopy = value;
   ageBucketIndex = self->_ageBucketIndex;
-  self->_ageBucketIndex = v6;
-  v10 = v6;
+  self->_ageBucketIndex = indexCopy;
+  v10 = indexCopy;
 
   latestSampleValue = self->_latestSampleValue;
-  self->_latestSampleValue = v7;
+  self->_latestSampleValue = valueCopy;
 }
 
 - (void)layoutSubviews
@@ -337,9 +337,9 @@
     ageBucketIndex = self->_ageBucketIndex;
     if (ageBucketIndex && self->_latestSampleValue)
     {
-      v15 = [(NSNumber *)ageBucketIndex unsignedIntegerValue];
+      unsignedIntegerValue = [(NSNumber *)ageBucketIndex unsignedIntegerValue];
       [(NSNumber *)self->_latestSampleValue floatValue];
-      [(UIView *)self->_latestSampleHighlightView setFrame:(v15 + 0.5) * v13 + -5.0, (maxChartYValue - v16) / (maxChartYValue - minChartYValue) * v11 + -5.0, 10.0, 10.0];
+      [(UIView *)self->_latestSampleHighlightView setFrame:(unsignedIntegerValue + 0.5) * v13 + -5.0, (maxChartYValue - v16) / (maxChartYValue - minChartYValue) * v11 + -5.0, 10.0, 10.0];
     }
 
     if ([(NSMutableArray *)self->_ageBucketBarViews count])

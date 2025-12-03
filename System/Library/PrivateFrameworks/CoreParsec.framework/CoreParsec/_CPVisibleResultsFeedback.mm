@@ -1,16 +1,16 @@
 @interface _CPVisibleResultsFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPVisibleResultsFeedback)init;
-- (_CPVisibleResultsFeedback)initWithFacade:(id)a3;
+- (_CPVisibleResultsFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (unint64_t)uniqueIdsOfVisibleButtonsAtIndex:(unint64_t)a3;
-- (void)addResults:(id)a3;
-- (void)addUniqueIdentifiersOfVisibleCardSections:(id)a3;
-- (void)addUniqueIdsOfVisibleButtons:(unint64_t)a3;
-- (void)setResults:(id)a3;
-- (void)setUniqueIdentifiersOfVisibleCardSections:(id)a3;
-- (void)setUniqueIdsOfVisibleButtons:(id)a3;
-- (void)writeTo:(id)a3;
+- (unint64_t)uniqueIdsOfVisibleButtonsAtIndex:(unint64_t)index;
+- (void)addResults:(id)results;
+- (void)addUniqueIdentifiersOfVisibleCardSections:(id)sections;
+- (void)addUniqueIdsOfVisibleButtons:(unint64_t)buttons;
+- (void)setResults:(id)results;
+- (void)setUniqueIdentifiersOfVisibleCardSections:(id)sections;
+- (void)setUniqueIdsOfVisibleButtons:(id)buttons;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPVisibleResultsFeedback
@@ -25,34 +25,34 @@
   return v6 ^ v7 ^ [(NSArray *)self->_uniqueIdentifiersOfVisibleCardSections hash]^ (2654435761 * self->_isFilterBarShown) ^ (2654435761 * self->_inputToResultShownMs);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_24;
   }
 
-  v6 = [(_CPVisibleResultsFeedback *)self results];
-  v7 = [v4 results];
-  if ((v6 != 0) == (v7 == 0))
+  results = [(_CPVisibleResultsFeedback *)self results];
+  results2 = [equalCopy results];
+  if ((results != 0) == (results2 == 0))
   {
     goto LABEL_23;
   }
 
-  v8 = [(_CPVisibleResultsFeedback *)self results];
-  if (v8)
+  results3 = [(_CPVisibleResultsFeedback *)self results];
+  if (results3)
   {
-    v9 = v8;
-    v10 = [(_CPVisibleResultsFeedback *)self results];
-    v11 = [v4 results];
-    v12 = [v10 isEqual:v11];
+    v9 = results3;
+    results4 = [(_CPVisibleResultsFeedback *)self results];
+    results5 = [equalCopy results];
+    v12 = [results4 isEqual:results5];
 
     if (!v12)
     {
@@ -65,25 +65,25 @@
   }
 
   triggerEvent = self->_triggerEvent;
-  if (triggerEvent != [v4 triggerEvent])
+  if (triggerEvent != [equalCopy triggerEvent])
   {
     goto LABEL_24;
   }
 
-  v6 = [(_CPVisibleResultsFeedback *)self goTakeoverResult];
-  v7 = [v4 goTakeoverResult];
-  if ((v6 != 0) == (v7 == 0))
+  results = [(_CPVisibleResultsFeedback *)self goTakeoverResult];
+  results2 = [equalCopy goTakeoverResult];
+  if ((results != 0) == (results2 == 0))
   {
     goto LABEL_23;
   }
 
-  v14 = [(_CPVisibleResultsFeedback *)self goTakeoverResult];
-  if (v14)
+  goTakeoverResult = [(_CPVisibleResultsFeedback *)self goTakeoverResult];
+  if (goTakeoverResult)
   {
-    v15 = v14;
-    v16 = [(_CPVisibleResultsFeedback *)self goTakeoverResult];
-    v17 = [v4 goTakeoverResult];
-    v18 = [v16 isEqual:v17];
+    v15 = goTakeoverResult;
+    goTakeoverResult2 = [(_CPVisibleResultsFeedback *)self goTakeoverResult];
+    goTakeoverResult3 = [equalCopy goTakeoverResult];
+    v18 = [goTakeoverResult2 isEqual:goTakeoverResult3];
 
     if (!v18)
     {
@@ -95,20 +95,20 @@
   {
   }
 
-  v6 = [(_CPVisibleResultsFeedback *)self uniqueIdsOfVisibleButtons];
-  v7 = [v4 uniqueIdsOfVisibleButtons];
-  if ((v6 != 0) == (v7 == 0))
+  results = [(_CPVisibleResultsFeedback *)self uniqueIdsOfVisibleButtons];
+  results2 = [equalCopy uniqueIdsOfVisibleButtons];
+  if ((results != 0) == (results2 == 0))
   {
     goto LABEL_23;
   }
 
-  v19 = [(_CPVisibleResultsFeedback *)self uniqueIdsOfVisibleButtons];
-  if (v19)
+  uniqueIdsOfVisibleButtons = [(_CPVisibleResultsFeedback *)self uniqueIdsOfVisibleButtons];
+  if (uniqueIdsOfVisibleButtons)
   {
-    v20 = v19;
-    v21 = [(_CPVisibleResultsFeedback *)self uniqueIdsOfVisibleButtons];
-    v22 = [v4 uniqueIdsOfVisibleButtons];
-    v23 = [v21 isEqual:v22];
+    v20 = uniqueIdsOfVisibleButtons;
+    uniqueIdsOfVisibleButtons2 = [(_CPVisibleResultsFeedback *)self uniqueIdsOfVisibleButtons];
+    uniqueIdsOfVisibleButtons3 = [equalCopy uniqueIdsOfVisibleButtons];
+    v23 = [uniqueIdsOfVisibleButtons2 isEqual:uniqueIdsOfVisibleButtons3];
 
     if (!v23)
     {
@@ -120,22 +120,22 @@
   {
   }
 
-  v6 = [(_CPVisibleResultsFeedback *)self uniqueIdentifiersOfVisibleCardSections];
-  v7 = [v4 uniqueIdentifiersOfVisibleCardSections];
-  if ((v6 != 0) == (v7 == 0))
+  results = [(_CPVisibleResultsFeedback *)self uniqueIdentifiersOfVisibleCardSections];
+  results2 = [equalCopy uniqueIdentifiersOfVisibleCardSections];
+  if ((results != 0) == (results2 == 0))
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v24 = [(_CPVisibleResultsFeedback *)self uniqueIdentifiersOfVisibleCardSections];
-  if (v24)
+  uniqueIdentifiersOfVisibleCardSections = [(_CPVisibleResultsFeedback *)self uniqueIdentifiersOfVisibleCardSections];
+  if (uniqueIdentifiersOfVisibleCardSections)
   {
-    v25 = v24;
-    v26 = [(_CPVisibleResultsFeedback *)self uniqueIdentifiersOfVisibleCardSections];
-    v27 = [v4 uniqueIdentifiersOfVisibleCardSections];
-    v28 = [v26 isEqual:v27];
+    v25 = uniqueIdentifiersOfVisibleCardSections;
+    uniqueIdentifiersOfVisibleCardSections2 = [(_CPVisibleResultsFeedback *)self uniqueIdentifiersOfVisibleCardSections];
+    uniqueIdentifiersOfVisibleCardSections3 = [equalCopy uniqueIdentifiersOfVisibleCardSections];
+    v28 = [uniqueIdentifiersOfVisibleCardSections2 isEqual:uniqueIdentifiersOfVisibleCardSections3];
 
     if (!v28)
     {
@@ -148,10 +148,10 @@ LABEL_23:
   }
 
   isFilterBarShown = self->_isFilterBarShown;
-  if (isFilterBarShown == [v4 isFilterBarShown])
+  if (isFilterBarShown == [equalCopy isFilterBarShown])
   {
     inputToResultShownMs = self->_inputToResultShownMs;
-    v29 = inputToResultShownMs == [v4 inputToResultShownMs];
+    v29 = inputToResultShownMs == [equalCopy inputToResultShownMs];
     goto LABEL_25;
   }
 
@@ -162,10 +162,10 @@ LABEL_25:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_CPVisibleResultsFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -210,11 +210,11 @@ LABEL_25:
     PBDataWriterWriteInt32Field();
   }
 
-  v13 = [(_CPVisibleResultsFeedback *)self goTakeoverResult];
+  goTakeoverResult = [(_CPVisibleResultsFeedback *)self goTakeoverResult];
 
-  if (v13)
+  if (goTakeoverResult)
   {
-    v14 = [(_CPVisibleResultsFeedback *)self goTakeoverResult];
+    goTakeoverResult2 = [(_CPVisibleResultsFeedback *)self goTakeoverResult];
     PBDataWriterWriteSubmessage();
   }
 
@@ -297,87 +297,87 @@ LABEL_25:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addUniqueIdentifiersOfVisibleCardSections:(id)a3
+- (void)addUniqueIdentifiersOfVisibleCardSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   uniqueIdentifiersOfVisibleCardSections = self->_uniqueIdentifiersOfVisibleCardSections;
-  v8 = v4;
+  v8 = sectionsCopy;
   if (!uniqueIdentifiersOfVisibleCardSections)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_uniqueIdentifiersOfVisibleCardSections;
-    self->_uniqueIdentifiersOfVisibleCardSections = v6;
+    self->_uniqueIdentifiersOfVisibleCardSections = array;
 
-    v4 = v8;
+    sectionsCopy = v8;
     uniqueIdentifiersOfVisibleCardSections = self->_uniqueIdentifiersOfVisibleCardSections;
   }
 
-  [(NSArray *)uniqueIdentifiersOfVisibleCardSections addObject:v4];
+  [(NSArray *)uniqueIdentifiersOfVisibleCardSections addObject:sectionsCopy];
 }
 
-- (void)setUniqueIdentifiersOfVisibleCardSections:(id)a3
+- (void)setUniqueIdentifiersOfVisibleCardSections:(id)sections
 {
-  v4 = [a3 mutableCopy];
+  v4 = [sections mutableCopy];
   uniqueIdentifiersOfVisibleCardSections = self->_uniqueIdentifiersOfVisibleCardSections;
   self->_uniqueIdentifiersOfVisibleCardSections = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (unint64_t)uniqueIdsOfVisibleButtonsAtIndex:(unint64_t)a3
+- (unint64_t)uniqueIdsOfVisibleButtonsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_uniqueIdsOfVisibleButtons objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [(NSArray *)self->_uniqueIdsOfVisibleButtons objectAtIndexedSubscript:index];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)addUniqueIdsOfVisibleButtons:(unint64_t)a3
+- (void)addUniqueIdsOfVisibleButtons:(unint64_t)buttons
 {
   uniqueIdsOfVisibleButtons = self->_uniqueIdsOfVisibleButtons;
   if (!uniqueIdsOfVisibleButtons)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_uniqueIdsOfVisibleButtons;
-    self->_uniqueIdsOfVisibleButtons = v6;
+    self->_uniqueIdsOfVisibleButtons = array;
 
     uniqueIdsOfVisibleButtons = self->_uniqueIdsOfVisibleButtons;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:buttons];
   [(NSArray *)uniqueIdsOfVisibleButtons addObject:v8];
 }
 
-- (void)setUniqueIdsOfVisibleButtons:(id)a3
+- (void)setUniqueIdsOfVisibleButtons:(id)buttons
 {
-  v4 = [a3 mutableCopy];
+  v4 = [buttons mutableCopy];
   uniqueIdsOfVisibleButtons = self->_uniqueIdsOfVisibleButtons;
   self->_uniqueIdsOfVisibleButtons = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addResults:(id)a3
+- (void)addResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!results)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_results;
-    self->_results = v6;
+    self->_results = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     results = self->_results;
   }
 
-  [(NSArray *)results addObject:v4];
+  [(NSArray *)results addObject:resultsCopy];
 }
 
-- (void)setResults:(id)a3
+- (void)setResults:(id)results
 {
-  v4 = [a3 mutableCopy];
+  v4 = [results mutableCopy];
   results = self->_results;
   self->_results = v4;
 
@@ -398,18 +398,18 @@ LABEL_25:
   return v2;
 }
 
-- (_CPVisibleResultsFeedback)initWithFacade:(id)a3
+- (_CPVisibleResultsFeedback)initWithFacade:(id)facade
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v49.receiver = self;
   v49.super_class = _CPVisibleResultsFeedback;
   v5 = [(_CPVisibleResultsFeedback *)&v49 init];
   if (v5)
   {
-    -[_CPVisibleResultsFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 results];
-    if (v6)
+    -[_CPVisibleResultsFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    results = [facadeCopy results];
+    if (results)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -423,8 +423,8 @@ LABEL_25:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v8 = [v4 results];
-    v9 = [v8 countByEnumeratingWithState:&v45 objects:v52 count:16];
+    results2 = [facadeCopy results];
+    v9 = [results2 countByEnumeratingWithState:&v45 objects:v52 count:16];
     if (v9)
     {
       v10 = v9;
@@ -435,33 +435,33 @@ LABEL_25:
         {
           if (*v46 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(results2);
           }
 
           v13 = [[_CPSearchResultForFeedback alloc] initWithFacade:*(*(&v45 + 1) + 8 * i)];
           [v7 addObject:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v45 objects:v52 count:16];
+        v10 = [results2 countByEnumeratingWithState:&v45 objects:v52 count:16];
       }
 
       while (v10);
     }
 
     [(_CPVisibleResultsFeedback *)v5 setResults:v7];
-    -[_CPVisibleResultsFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
-    v14 = [v4 goTakeoverResult];
+    -[_CPVisibleResultsFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
+    goTakeoverResult = [facadeCopy goTakeoverResult];
 
-    if (v14)
+    if (goTakeoverResult)
     {
       v15 = [_CPSearchResultForFeedback alloc];
-      v16 = [v4 goTakeoverResult];
-      v17 = [(_CPSearchResultForFeedback *)v15 initWithFacade:v16];
+      goTakeoverResult2 = [facadeCopy goTakeoverResult];
+      v17 = [(_CPSearchResultForFeedback *)v15 initWithFacade:goTakeoverResult2];
       [(_CPVisibleResultsFeedback *)v5 setGoTakeoverResult:v17];
     }
 
-    v18 = [v4 uniqueIdsOfVisibleButtons];
-    if (v18)
+    uniqueIdsOfVisibleButtons = [facadeCopy uniqueIdsOfVisibleButtons];
+    if (uniqueIdsOfVisibleButtons)
     {
       v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -475,8 +475,8 @@ LABEL_25:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v20 = [v4 uniqueIdsOfVisibleButtons];
-    v21 = [v20 countByEnumeratingWithState:&v41 objects:v51 count:16];
+    uniqueIdsOfVisibleButtons2 = [facadeCopy uniqueIdsOfVisibleButtons];
+    v21 = [uniqueIdsOfVisibleButtons2 countByEnumeratingWithState:&v41 objects:v51 count:16];
     if (v21)
     {
       v22 = v21;
@@ -487,7 +487,7 @@ LABEL_25:
         {
           if (*v42 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(uniqueIdsOfVisibleButtons2);
           }
 
           if (*(*(&v41 + 1) + 8 * j))
@@ -496,15 +496,15 @@ LABEL_25:
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v41 objects:v51 count:16];
+        v22 = [uniqueIdsOfVisibleButtons2 countByEnumeratingWithState:&v41 objects:v51 count:16];
       }
 
       while (v22);
     }
 
     [(_CPVisibleResultsFeedback *)v5 setUniqueIdsOfVisibleButtons:v19];
-    v25 = [v4 uniqueIdentifiersOfVisibleCardSections];
-    if (v25)
+    uniqueIdentifiersOfVisibleCardSections = [facadeCopy uniqueIdentifiersOfVisibleCardSections];
+    if (uniqueIdentifiersOfVisibleCardSections)
     {
       v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -518,8 +518,8 @@ LABEL_25:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v27 = [v4 uniqueIdentifiersOfVisibleCardSections];
-    v28 = [v27 countByEnumeratingWithState:&v37 objects:v50 count:16];
+    uniqueIdentifiersOfVisibleCardSections2 = [facadeCopy uniqueIdentifiersOfVisibleCardSections];
+    v28 = [uniqueIdentifiersOfVisibleCardSections2 countByEnumeratingWithState:&v37 objects:v50 count:16];
     if (v28)
     {
       v29 = v28;
@@ -530,7 +530,7 @@ LABEL_25:
         {
           if (*v38 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(uniqueIdentifiersOfVisibleCardSections2);
           }
 
           if (*(*(&v37 + 1) + 8 * k))
@@ -539,20 +539,20 @@ LABEL_25:
           }
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v37 objects:v50 count:16];
+        v29 = [uniqueIdentifiersOfVisibleCardSections2 countByEnumeratingWithState:&v37 objects:v50 count:16];
       }
 
       while (v29);
     }
 
     [(_CPVisibleResultsFeedback *)v5 setUniqueIdentifiersOfVisibleCardSections:v26];
-    -[_CPVisibleResultsFeedback setIsFilterBarShown:](v5, "setIsFilterBarShown:", [v4 isFilterBarShown]);
-    v32 = [v4 inputToResultShownMs];
+    -[_CPVisibleResultsFeedback setIsFilterBarShown:](v5, "setIsFilterBarShown:", [facadeCopy isFilterBarShown]);
+    inputToResultShownMs = [facadeCopy inputToResultShownMs];
 
-    if (v32)
+    if (inputToResultShownMs)
     {
-      v33 = [v4 inputToResultShownMs];
-      -[_CPVisibleResultsFeedback setInputToResultShownMs:](v5, "setInputToResultShownMs:", [v33 intValue]);
+      inputToResultShownMs2 = [facadeCopy inputToResultShownMs];
+      -[_CPVisibleResultsFeedback setInputToResultShownMs:](v5, "setInputToResultShownMs:", [inputToResultShownMs2 intValue]);
     }
 
     v34 = v5;

@@ -1,32 +1,32 @@
 @interface CPLPredictionDateFormatter
-- (id)stringForObjectValue:(id)a3;
-- (id)stringForTimeIntervalNumber:(id)a3 now:(id)a4;
+- (id)stringForObjectValue:(id)value;
+- (id)stringForTimeIntervalNumber:(id)number now:(id)now;
 @end
 
 @implementation CPLPredictionDateFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  [a3 doubleValue];
+  [value doubleValue];
   v4 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:v3];
   v5 = [CPLDateFormatter stringFromDateAgo:v4 now:0];
 
   return v5;
 }
 
-- (id)stringForTimeIntervalNumber:(id)a3 now:(id)a4
+- (id)stringForTimeIntervalNumber:(id)number now:(id)now
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  numberCopy = number;
+  nowCopy = now;
+  if (!nowCopy)
   {
-    v12 = [(CPLPredictionDateFormatter *)self stringForObjectValue:v6];
+    v12 = [(CPLPredictionDateFormatter *)self stringForObjectValue:numberCopy];
     goto LABEL_11;
   }
 
-  [v6 doubleValue];
+  [numberCopy doubleValue];
   v9 = v8;
-  [v7 timeIntervalSinceReferenceDate];
+  [nowCopy timeIntervalSinceReferenceDate];
   v11 = v10 - v9;
   if (v11 >= 0.0)
   {

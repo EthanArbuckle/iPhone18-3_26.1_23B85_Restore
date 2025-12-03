@@ -1,19 +1,19 @@
 @interface SBStartupTransitionController
-- (SBStartupTransitionController)initWithInitialRestartState:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBStartupTransitionController)initWithInitialRestartState:(id)state;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)initializeAndRunStartupTransition:(id)a3;
-- (void)transactionDidBegin:(id)a3;
-- (void)transactionDidComplete:(id)a3;
+- (void)initializeAndRunStartupTransition:(id)transition;
+- (void)transactionDidBegin:(id)begin;
+- (void)transactionDidComplete:(id)complete;
 @end
 
 @implementation SBStartupTransitionController
 
-- (SBStartupTransitionController)initWithInitialRestartState:(id)a3
+- (SBStartupTransitionController)initWithInitialRestartState:(id)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy = state;
   v15.receiver = self;
   v15.super_class = SBStartupTransitionController;
   v6 = [(SBStartupTransitionController *)&v15 init];
@@ -23,18 +23,18 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = stateCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "Startup transition controller initialized with initial state: %@", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_initialRestartState, a3);
+    objc_storeStrong(&v6->_initialRestartState, state);
     v8 = [[SBStartupTransitionFactory alloc] initWithInitialRestartState:v6->_initialRestartState];
     transitionFactory = v6->_transitionFactory;
     v6->_transitionFactory = v8;
 
     v10 = [SBStartupTransitionContextPersistence alloc];
-    v11 = [(SBInitialRestartState *)v6->_initialRestartState bootDefaults];
-    v12 = [(SBStartupTransitionContextPersistence *)v10 initWithBootDefaults:v11 loginSession:[(SBInitialRestartState *)v6->_initialRestartState isLoginSession]];
+    bootDefaults = [(SBInitialRestartState *)v6->_initialRestartState bootDefaults];
+    v12 = [(SBStartupTransitionContextPersistence *)v10 initWithBootDefaults:bootDefaults loginSession:[(SBInitialRestartState *)v6->_initialRestartState isLoginSession]];
     transitionContextPersistence = v6->_transitionContextPersistence;
     v6->_transitionContextPersistence = v12;
   }
@@ -42,10 +42,10 @@
   return v6;
 }
 
-- (void)initializeAndRunStartupTransition:(id)a3
+- (void)initializeAndRunStartupTransition:(id)transition
 {
   v53 = *MEMORY[0x277D85DE8];
-  v30 = a3;
+  transitionCopy = transition;
   kdebug_trace();
   BSDispatchQueueAssertMain();
   if (self->_ranOnce)
@@ -54,15 +54,15 @@
   }
 
   self->_ranOnce = 1;
-  v32 = [(SBStartupTransitionContextPersistence *)self->_transitionContextPersistence readTransitionContext];
-  v4 = v32;
-  if ([v32 hasUserSwitchOverlayMismatch])
+  readTransitionContext = [(SBStartupTransitionContextPersistence *)self->_transitionContextPersistence readTransitionContext];
+  v4 = readTransitionContext;
+  if ([readTransitionContext hasUserSwitchOverlayMismatch])
   {
-    v5 = [v32 overlay];
+    overlay = [readTransitionContext overlay];
     v6 = [MEMORY[0x277CF0B70] settingsWithDuration:0.5];
-    [v5 dismissWithAnimation:v6];
+    [overlay dismissWithAnimation:v6];
 
-    v4 = v32;
+    v4 = readTransitionContext;
   }
 
   v44 = 0;
@@ -84,9 +84,9 @@
   objc_copyWeak(&v42, &location);
   v41[4] = self;
   [(SBStartupTransition *)v9 registerBlockObserver:v41];
-  v10 = [MEMORY[0x277CF05E8] dismissActions];
+  dismissActions = [MEMORY[0x277CF05E8] dismissActions];
   renderOverlayDismissActions = self->_renderOverlayDismissActions;
-  self->_renderOverlayDismissActions = v10;
+  self->_renderOverlayDismissActions = dismissActions;
 
   if ([(NSSet *)self->_renderOverlayDismissActions count]>= 2)
   {
@@ -111,10 +111,10 @@
           }
 
           v18 = *(*(&v37 + 1) + 8 * i);
-          v19 = [v18 overlayDescriptor];
-          v20 = [v19 isInterstitial];
+          overlayDescriptor = [v18 overlayDescriptor];
+          isInterstitial = [overlayDescriptor isInterstitial];
 
-          if (v20)
+          if (isInterstitial)
           {
             [v12 addObject:v18];
           }
@@ -187,7 +187,7 @@ LABEL_29:
     v47 = 2114;
     v48 = v29;
     v49 = 2114;
-    v50 = v32;
+    v50 = readTransitionContext;
     _os_log_impl(&dword_21ED4E000, v27, OS_LOG_TYPE_DEFAULT, "Startup transition destination: %{public}@, with transition: %{public}@ (context=%{public}@).", buf, 0x20u);
   }
 
@@ -223,47 +223,47 @@ void __67__SBStartupTransitionController_initializeAndRunStartupTransition___blo
 
 - (id)succinctDescription
 {
-  v2 = [(SBStartupTransitionController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBStartupTransitionController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBStartupTransitionController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBStartupTransitionController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBStartupTransitionController *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBStartupTransitionController *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__SBStartupTransitionController_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyBody:v9];
   v7 = v5;
 
   return v5;
 }
 
-- (void)transactionDidBegin:(id)a3
+- (void)transactionDidBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (!beginCopy)
   {
     [SBStartupTransitionController transactionDidBegin:];
-    v4 = 0;
+    beginCopy = 0;
   }
 
-  if (self->_transition != v4)
+  if (self->_transition != beginCopy)
   {
     [SBStartupTransitionController transactionDidBegin:];
   }
@@ -271,15 +271,15 @@ void __67__SBStartupTransitionController_initializeAndRunStartupTransition___blo
   [(SBStartupTransitionContextPersistence *)self->_transitionContextPersistence saveContext:0];
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
-  v4 = a3;
-  if (!v4)
+  completeCopy = complete;
+  if (!completeCopy)
   {
     [SBStartupTransitionController transactionDidComplete:];
   }
 
-  if (self->_transition != v4)
+  if (self->_transition != completeCopy)
   {
     [SBStartupTransitionController transactionDidComplete:];
   }

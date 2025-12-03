@@ -1,14 +1,14 @@
 @interface SXMetadata
-- (int64_t)suppressRecommendedReadsWithValue:(id)a3 withType:(int)a4;
+- (int64_t)suppressRecommendedReadsWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXMetadata
 
-- (int64_t)suppressRecommendedReadsWithValue:(id)a3 withType:(int)a4
+- (int64_t)suppressRecommendedReadsWithValue:(id)value withType:(int)type
 {
-  if (a4 == 2)
+  if (type == 2)
   {
-    return [a3 BOOLValue];
+    return [value BOOLValue];
   }
 
   else

@@ -1,14 +1,14 @@
 @interface ViewControllerHostingCollectionViewCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation ViewControllerHostingCollectionViewCell
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v5 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_6_12();
-  sub_1E3C75380(a4);
+  sub_1E3C75380(only);
   v7 = v6;
   v9 = v8;
 

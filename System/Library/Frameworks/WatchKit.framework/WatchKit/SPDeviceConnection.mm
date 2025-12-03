@@ -2,47 +2,47 @@
 + (id)sharedDeviceConnection;
 - (SPDeviceConnection)init;
 - (SPDeviceConnectionDelegate)delegate;
-- (id)connectionProxy:(id)a3 caller:(const char *)a4;
+- (id)connectionProxy:(id)proxy caller:(const char *)caller;
 - (id)localeForUserNotification;
-- (int64_t)appInstallStateForAppConduitInstallState:(int64_t)a3;
-- (void)_enumerateObserversSafely:(id)a3;
-- (void)activeComplicationsForPairedDevice:(id)a3 completion:(id)a4;
-- (void)activeComplicationsWithCompletion:(id)a3;
-- (void)addObserver:(id)a3;
+- (int64_t)appInstallStateForAppConduitInstallState:(int64_t)state;
+- (void)_enumerateObserversSafely:(id)safely;
+- (void)activeComplicationsForPairedDevice:(id)device completion:(id)completion;
+- (void)activeComplicationsWithCompletion:(id)completion;
+- (void)addObserver:(id)observer;
 - (void)cancelPendingInstallations;
 - (void)createXPCConnectionIfNecessary;
-- (void)fetchApplicationWithContainingApplicationBundleID:(id)a3 completion:(id)a4;
-- (void)fetchInfoForApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5;
-- (void)fetchInstalledApplicationsForPairedDevice:(id)a3 completion:(id)a4;
-- (void)fetchInstalledApplicationsWithCompletion:(id)a3;
-- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)a3 withCompletion:(id)a4;
-- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)a3 withErrorCompletion:(id)a4;
-- (void)fetchInstalledComplicationsForPairedDevice:(id)a3 completion:(id)a4;
-- (void)fetchInstalledComplicationsWithCompletion:(id)a3;
-- (void)fetchProvisioningProfilesForApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5;
-- (void)fetchProvisioningProfilesForPairedDevice:(id)a3 completion:(id)a4;
-- (void)fetchWatchAppBundleIDForCompanionAppBundleID:(id)a3 completion:(id)a4;
-- (void)fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)a3 completion:(id)a4;
-- (void)getAlwaysInstallForPairedDevice:(id)a3 completion:(id)a4;
+- (void)fetchApplicationWithContainingApplicationBundleID:(id)d completion:(id)completion;
+- (void)fetchInfoForApplicationWithBundleID:(id)d forPairedDevice:(id)device completion:(id)completion;
+- (void)fetchInstalledApplicationsForPairedDevice:(id)device completion:(id)completion;
+- (void)fetchInstalledApplicationsWithCompletion:(id)completion;
+- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)device withCompletion:(id)completion;
+- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)device withErrorCompletion:(id)completion;
+- (void)fetchInstalledComplicationsForPairedDevice:(id)device completion:(id)completion;
+- (void)fetchInstalledComplicationsWithCompletion:(id)completion;
+- (void)fetchProvisioningProfilesForApplicationWithBundleID:(id)d forPairedDevice:(id)device completion:(id)completion;
+- (void)fetchProvisioningProfilesForPairedDevice:(id)device completion:(id)completion;
+- (void)fetchWatchAppBundleIDForCompanionAppBundleID:(id)d completion:(id)completion;
+- (void)fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)identifier completion:(id)completion;
+- (void)getAlwaysInstallForPairedDevice:(id)device completion:(id)completion;
 - (void)hideUserNotification;
 - (void)installAllApplications;
-- (void)installApplication:(id)a3 completion:(id)a4;
-- (void)installApplication:(id)a3 onPairedDevice:(id)a4 completion:(id)a5;
-- (void)installApplication:(id)a3 withProvisioningProfiles:(id)a4 completion:(id)a5;
-- (void)installApplication:(id)a3 withProvisioningProfiles:(id)a4 onPairedDevice:(id)a5 completion:(id)a6;
-- (void)installApplication:(id)a3 withProvisioningProfiles:(id)a4 onPairedDevice:(id)a5 completionWithError:(id)a6;
-- (void)installProvisioningProfileWithURL:(id)a3 onPairedDevice:(id)a4 completion:(id)a5;
+- (void)installApplication:(id)application completion:(id)completion;
+- (void)installApplication:(id)application onPairedDevice:(id)device completion:(id)completion;
+- (void)installApplication:(id)application withProvisioningProfiles:(id)profiles completion:(id)completion;
+- (void)installApplication:(id)application withProvisioningProfiles:(id)profiles onPairedDevice:(id)device completion:(id)completion;
+- (void)installApplication:(id)application withProvisioningProfiles:(id)profiles onPairedDevice:(id)device completionWithError:(id)error;
+- (void)installProvisioningProfileWithURL:(id)l onPairedDevice:(id)device completion:(id)completion;
 - (void)invalidateXPCConnection;
 - (void)localeForUserNotification;
-- (void)removeApplication:(id)a3 fromPairedDevice:(id)a4 completion:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)removeProvisioningProfileWithID:(id)a3 fromPairedDevice:(id)a4 completion:(id)a5;
-- (void)setAlwaysInstall:(id)a3;
-- (void)setAlwaysInstall:(id)a3 forDevice:(id)a4;
-- (void)showUserNotification:(int64_t)a3 applicationName:(id)a4 extensionBundleID:(id)a5;
-- (void)showUserNotification:(int64_t)a3 bundleID:(id)a4;
-- (void)updatePreferencesForApplicationWithIdentifier:(id)a3 preferences:(id)a4 forPairedDevice:(id)a5 completion:(id)a6;
-- (void)wakeExtensionForWatchApp:(id)a3;
+- (void)removeApplication:(id)application fromPairedDevice:(id)device completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)removeProvisioningProfileWithID:(id)d fromPairedDevice:(id)device completion:(id)completion;
+- (void)setAlwaysInstall:(id)install;
+- (void)setAlwaysInstall:(id)install forDevice:(id)device;
+- (void)showUserNotification:(int64_t)notification applicationName:(id)name extensionBundleID:(id)d;
+- (void)showUserNotification:(int64_t)notification bundleID:(id)d;
+- (void)updatePreferencesForApplicationWithIdentifier:(id)identifier preferences:(id)preferences forPairedDevice:(id)device completion:(id)completion;
+- (void)wakeExtensionForWatchApp:(id)app;
 @end
 
 @implementation SPDeviceConnection
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = __44__SPDeviceConnection_sharedDeviceConnection__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDeviceConnection_onceToken != -1)
   {
     dispatch_once(&sharedDeviceConnection_onceToken, block);
@@ -94,23 +94,23 @@ void __44__SPDeviceConnection_sharedDeviceConnection__block_invoke(uint64_t a1)
 
 - (void)createXPCConnectionIfNecessary
 {
-  v3 = [(SPDeviceConnection *)self serverConnection];
+  serverConnection = [(SPDeviceConnection *)self serverConnection];
 
-  if (!v3)
+  if (!serverConnection)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.companionappd" options:4096];
     [(SPDeviceConnection *)self setServerConnection:v4];
 
     v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284E10BE8];
-    v6 = [(SPDeviceConnection *)self serverConnection];
-    [v6 setRemoteObjectInterface:v5];
+    serverConnection2 = [(SPDeviceConnection *)self serverConnection];
+    [serverConnection2 setRemoteObjectInterface:v5];
 
     v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284E0FCE8];
-    v8 = [(SPDeviceConnection *)self serverConnection];
-    [v8 setExportedInterface:v7];
+    serverConnection3 = [(SPDeviceConnection *)self serverConnection];
+    [serverConnection3 setExportedInterface:v7];
 
-    v9 = [(SPDeviceConnection *)self serverConnection];
-    [v9 setExportedObject:self];
+    serverConnection4 = [(SPDeviceConnection *)self serverConnection];
+    [serverConnection4 setExportedObject:self];
 
     objc_initWeak(&location, self);
     v15[0] = MEMORY[0x277D85DD0];
@@ -118,19 +118,19 @@ void __44__SPDeviceConnection_sharedDeviceConnection__block_invoke(uint64_t a1)
     v15[2] = __52__SPDeviceConnection_createXPCConnectionIfNecessary__block_invoke;
     v15[3] = &unk_278B7EF10;
     objc_copyWeak(&v16, &location);
-    v10 = [(SPDeviceConnection *)self serverConnection];
-    [v10 setInterruptionHandler:v15];
+    serverConnection5 = [(SPDeviceConnection *)self serverConnection];
+    [serverConnection5 setInterruptionHandler:v15];
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__SPDeviceConnection_createXPCConnectionIfNecessary__block_invoke_80;
     v13[3] = &unk_278B7EF10;
     objc_copyWeak(&v14, &location);
-    v11 = [(SPDeviceConnection *)self serverConnection];
-    [v11 setInvalidationHandler:v13];
+    serverConnection6 = [(SPDeviceConnection *)self serverConnection];
+    [serverConnection6 setInvalidationHandler:v13];
 
-    v12 = [(SPDeviceConnection *)self serverConnection];
-    [v12 resume];
+    serverConnection7 = [(SPDeviceConnection *)self serverConnection];
+    [serverConnection7 resume];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&v16);
@@ -197,9 +197,9 @@ uint64_t __45__SPDeviceConnection_invalidateXPCConnection__block_invoke(uint64_t
   return [v3 setServerConnection:0];
 }
 
-- (id)connectionProxy:(id)a3 caller:(const char *)a4
+- (id)connectionProxy:(id)proxy caller:(const char *)caller
 {
-  v6 = a3;
+  proxyCopy = proxy;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -212,10 +212,10 @@ uint64_t __45__SPDeviceConnection_invalidateXPCConnection__block_invoke(uint64_t
   v11[2] = __45__SPDeviceConnection_connectionProxy_caller___block_invoke;
   v11[3] = &unk_278B7EF60;
   v13 = &v15;
-  v14 = a4;
+  callerCopy = caller;
   v11[4] = self;
-  v12 = v6;
-  v8 = v6;
+  v12 = proxyCopy;
+  v8 = proxyCopy;
   dispatch_sync(connectionQueue, v11);
   v9 = v16[5];
 
@@ -256,117 +256,117 @@ void __45__SPDeviceConnection_connectionProxy_caller___block_invoke_2(uint64_t a
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchInstalledApplicationsWithCompletion:(id)a3
+- (void)fetchInstalledApplicationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__SPDeviceConnection_fetchInstalledApplicationsWithCompletion___block_invoke;
   v6[3] = &unk_278B7EF88;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(SPDeviceConnection *)self fetchInstalledApplicationsWithErrorCompletion:v6];
 }
 
-- (void)fetchInstalledApplicationsForPairedDevice:(id)a3 completion:(id)a4
+- (void)fetchInstalledApplicationsForPairedDevice:(id)device completion:(id)completion
 {
   v5 = MEMORY[0x277CEAF80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDeviceConnection];
-  [v8 fetchInstalledApplicationsForPairedDevice:v7 completion:v6];
+  completionCopy = completion;
+  deviceCopy = device;
+  sharedDeviceConnection = [v5 sharedDeviceConnection];
+  [sharedDeviceConnection fetchInstalledApplicationsForPairedDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)a3 withCompletion:(id)a4
+- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)device withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __84__SPDeviceConnection_fetchInstalledCompatibleApplicationsWithDevice_withCompletion___block_invoke;
   v8[3] = &unk_278B7EF88;
-  v9 = v6;
-  v7 = v6;
-  [(SPDeviceConnection *)self fetchInstalledCompatibleApplicationsWithDevice:a3 withErrorCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(SPDeviceConnection *)self fetchInstalledCompatibleApplicationsWithDevice:device withErrorCompletion:v8];
 }
 
-- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)a3 withErrorCompletion:(id)a4
+- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)device withErrorCompletion:(id)completion
 {
   v5 = MEMORY[0x277CEAF80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDeviceConnection];
-  [v8 fetchInstalledCompatibleApplicationsWithDevice:v7 withErrorCompletion:v6];
+  completionCopy = completion;
+  deviceCopy = device;
+  sharedDeviceConnection = [v5 sharedDeviceConnection];
+  [sharedDeviceConnection fetchInstalledCompatibleApplicationsWithDevice:deviceCopy withErrorCompletion:completionCopy];
 }
 
-- (void)fetchInstalledComplicationsWithCompletion:(id)a3
+- (void)fetchInstalledComplicationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__SPDeviceConnection_fetchInstalledComplicationsWithCompletion___block_invoke;
   v6[3] = &unk_278B7EF88;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(SPDeviceConnection *)self fetchInstalledComplicationsWithErrorCompletion:v6];
 }
 
-- (void)fetchInstalledComplicationsForPairedDevice:(id)a3 completion:(id)a4
+- (void)fetchInstalledComplicationsForPairedDevice:(id)device completion:(id)completion
 {
   v5 = MEMORY[0x277CEAF80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDeviceConnection];
-  [v8 fetchInstalledComplicationsForPairedDevice:v7 completion:v6];
+  completionCopy = completion;
+  deviceCopy = device;
+  sharedDeviceConnection = [v5 sharedDeviceConnection];
+  [sharedDeviceConnection fetchInstalledComplicationsForPairedDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)activeComplicationsWithCompletion:(id)a3
+- (void)activeComplicationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__SPDeviceConnection_activeComplicationsWithCompletion___block_invoke;
   v6[3] = &unk_278B7EFB0;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(SPDeviceConnection *)self activeComplicationsWithErrorCompletion:v6];
 }
 
-- (void)activeComplicationsForPairedDevice:(id)a3 completion:(id)a4
+- (void)activeComplicationsForPairedDevice:(id)device completion:(id)completion
 {
   v5 = MEMORY[0x277CEAF80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDeviceConnection];
-  [v8 activeComplicationsForPairedDevice:v7 completion:v6];
+  completionCopy = completion;
+  deviceCopy = device;
+  sharedDeviceConnection = [v5 sharedDeviceConnection];
+  [sharedDeviceConnection activeComplicationsForPairedDevice:deviceCopy completion:completionCopy];
 }
 
 - (void)installAllApplications
 {
-  v2 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-  [v2 installAllApplications];
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  [mEMORY[0x277CEAF80] installAllApplications];
 }
 
 - (void)cancelPendingInstallations
 {
-  v2 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-  [v2 cancelPendingInstallations];
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  [mEMORY[0x277CEAF80] cancelPendingInstallations];
 }
 
-- (void)installApplication:(id)a3 completion:(id)a4
+- (void)installApplication:(id)application completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  applicationCopy = application;
+  completionCopy = completion;
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__SPDeviceConnection_installApplication_completion___block_invoke;
   v11[3] = &unk_278B7EFD8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  [v8 installApplication:v10 onPairedDevice:0 completion:v11];
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = applicationCopy;
+  v9 = completionCopy;
+  v10 = applicationCopy;
+  [mEMORY[0x277CEAF80] installApplication:v10 onPairedDevice:0 completion:v11];
 }
 
 void __52__SPDeviceConnection_installApplication_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -384,21 +384,21 @@ void __52__SPDeviceConnection_installApplication_completion___block_invoke(uint6
   (*(*(a1 + 48) + 16))(*(a1 + 48), [*(a1 + 40) appInstallStateForAppConduitInstallState:a2]);
 }
 
-- (void)installApplication:(id)a3 onPairedDevice:(id)a4 completion:(id)a5
+- (void)installApplication:(id)application onPairedDevice:(id)device completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = MEMORY[0x277CEAF80];
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 sharedDeviceConnection];
+  deviceCopy = device;
+  applicationCopy = application;
+  sharedDeviceConnection = [v9 sharedDeviceConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__SPDeviceConnection_installApplication_onPairedDevice_completion___block_invoke;
   v14[3] = &unk_278B7F000;
   v14[4] = self;
-  v15 = v8;
-  v13 = v8;
-  [v12 installApplication:v11 onPairedDevice:v10 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [sharedDeviceConnection installApplication:applicationCopy onPairedDevice:deviceCopy completion:v14];
 }
 
 void __67__SPDeviceConnection_installApplication_onPairedDevice_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -409,21 +409,21 @@ void __67__SPDeviceConnection_installApplication_onPairedDevice_completion___blo
   (*(v4 + 16))(v4, [v5 appInstallStateForAppConduitInstallState:a2], v6);
 }
 
-- (void)removeApplication:(id)a3 fromPairedDevice:(id)a4 completion:(id)a5
+- (void)removeApplication:(id)application fromPairedDevice:(id)device completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = MEMORY[0x277CEAF80];
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 sharedDeviceConnection];
+  deviceCopy = device;
+  applicationCopy = application;
+  sharedDeviceConnection = [v9 sharedDeviceConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__SPDeviceConnection_removeApplication_fromPairedDevice_completion___block_invoke;
   v14[3] = &unk_278B7F028;
   v14[4] = self;
-  v15 = v8;
-  v13 = v8;
-  [v12 removeApplication:v11 fromPairedDevice:v10 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [sharedDeviceConnection removeApplication:applicationCopy fromPairedDevice:deviceCopy completion:v14];
 }
 
 uint64_t __68__SPDeviceConnection_removeApplication_fromPairedDevice_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -435,76 +435,76 @@ uint64_t __68__SPDeviceConnection_removeApplication_fromPairedDevice_completion_
   return v4(v2, v3);
 }
 
-- (void)fetchApplicationWithContainingApplicationBundleID:(id)a3 completion:(id)a4
+- (void)fetchApplicationWithContainingApplicationBundleID:(id)d completion:(id)completion
 {
   v5 = MEMORY[0x277CEAF80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDeviceConnection];
-  [v8 fetchApplicationWithContainingApplicationBundleID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  sharedDeviceConnection = [v5 sharedDeviceConnection];
+  [sharedDeviceConnection fetchApplicationWithContainingApplicationBundleID:dCopy completion:completionCopy];
 }
 
-- (void)fetchInfoForApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5
+- (void)fetchInfoForApplicationWithBundleID:(id)d forPairedDevice:(id)device completion:(id)completion
 {
   v7 = MEMORY[0x277CEAF80];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 sharedDeviceConnection];
-  [v11 fetchInfoForApplicationWithBundleID:v10 forPairedDevice:v9 completion:v8];
+  completionCopy = completion;
+  deviceCopy = device;
+  dCopy = d;
+  sharedDeviceConnection = [v7 sharedDeviceConnection];
+  [sharedDeviceConnection fetchInfoForApplicationWithBundleID:dCopy forPairedDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)a3 completion:(id)a4
+- (void)fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)identifier completion:(id)completion
 {
   v5 = MEMORY[0x277CEAF80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDeviceConnection];
-  [v8 fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  sharedDeviceConnection = [v5 sharedDeviceConnection];
+  [sharedDeviceConnection fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)fetchWatchAppBundleIDForCompanionAppBundleID:(id)a3 completion:(id)a4
+- (void)fetchWatchAppBundleIDForCompanionAppBundleID:(id)d completion:(id)completion
 {
   v5 = MEMORY[0x277CEAF80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDeviceConnection];
-  [v8 fetchWatchAppBundleIDForCompanionAppBundleID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  sharedDeviceConnection = [v5 sharedDeviceConnection];
+  [sharedDeviceConnection fetchWatchAppBundleIDForCompanionAppBundleID:dCopy completion:completionCopy];
 }
 
-- (void)setAlwaysInstall:(id)a3
+- (void)setAlwaysInstall:(id)install
 {
   v3 = MEMORY[0x277CEAF80];
-  v4 = a3;
-  v5 = [v3 sharedDeviceConnection];
-  [v5 setAlwaysInstall:v4];
+  installCopy = install;
+  sharedDeviceConnection = [v3 sharedDeviceConnection];
+  [sharedDeviceConnection setAlwaysInstall:installCopy];
 }
 
-- (void)setAlwaysInstall:(id)a3 forDevice:(id)a4
+- (void)setAlwaysInstall:(id)install forDevice:(id)device
 {
   v5 = MEMORY[0x277CEAF80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDeviceConnection];
-  [v8 setAlwaysInstall:v7 forDevice:v6];
+  deviceCopy = device;
+  installCopy = install;
+  sharedDeviceConnection = [v5 sharedDeviceConnection];
+  [sharedDeviceConnection setAlwaysInstall:installCopy forDevice:deviceCopy];
 }
 
-- (void)getAlwaysInstallForPairedDevice:(id)a3 completion:(id)a4
+- (void)getAlwaysInstallForPairedDevice:(id)device completion:(id)completion
 {
   v5 = MEMORY[0x277CEAF80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDeviceConnection];
-  [v8 getAlwaysInstallForPairedDevice:v7 completion:v6];
+  completionCopy = completion;
+  deviceCopy = device;
+  sharedDeviceConnection = [v5 sharedDeviceConnection];
+  [sharedDeviceConnection getAlwaysInstallForPairedDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)showUserNotification:(int64_t)a3 bundleID:(id)a4
+- (void)showUserNotification:(int64_t)notification bundleID:(id)d
 {
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
     v7 = [(SPDeviceConnection *)self connectionProxy:&__block_literal_global_88 caller:"[SPDeviceConnection showUserNotification:bundleID:]"];
-    [v7 showUserNotification:a3 applicationName:v6];
+    [v7 showUserNotification:notification applicationName:dCopy];
   }
 
   else
@@ -517,31 +517,31 @@ uint64_t __68__SPDeviceConnection_removeApplication_fromPairedDevice_completion_
   }
 }
 
-- (void)showUserNotification:(int64_t)a3 applicationName:(id)a4 extensionBundleID:(id)a5
+- (void)showUserNotification:(int64_t)notification applicationName:(id)name extensionBundleID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  nameCopy = name;
+  dCopy = d;
+  if (nameCopy)
   {
     v10 = [(SPDeviceConnection *)self connectionProxy:&__block_literal_global_90 caller:"[SPDeviceConnection showUserNotification:applicationName:extensionBundleID:]"];
     v11 = v10;
-    if (v9)
+    if (dCopy)
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __77__SPDeviceConnection_showUserNotification_applicationName_extensionBundleID___block_invoke_2;
       v12[3] = &unk_278B7F070;
-      v13 = v9;
+      v13 = dCopy;
       v11 = v11;
       v14 = v11;
-      v16 = a3;
-      v15 = v8;
+      notificationCopy = notification;
+      v15 = nameCopy;
       [v11 fetchInstalledApplicationsWithCompletion:v12];
     }
 
     else
     {
-      [v10 showUserNotification:a3 applicationName:v8];
+      [v10 showUserNotification:notification applicationName:nameCopy];
     }
   }
 
@@ -626,9 +626,9 @@ void __77__SPDeviceConnection_showUserNotification_applicationName_extensionBund
 
   v3 = v2;
   _Block_object_dispose(&v21, 8);
-  v4 = [v2 sharedInstance];
-  v5 = [v4 getDevices];
-  v6 = [v5 firstObject];
+  sharedInstance = [v2 sharedInstance];
+  getDevices = [sharedInstance getDevices];
+  firstObject = [getDevices firstObject];
 
   v21 = 0;
   v22 = &v21;
@@ -655,52 +655,52 @@ void __77__SPDeviceConnection_showUserNotification_applicationName_extensionBund
     [SPDeviceConnection localeForUserNotification];
   }
 
-  v10 = [v6 valueForProperty:*v7];
+  v10 = [firstObject valueForProperty:*v7];
   v11 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v10];
   v12 = v11;
   if (v11)
   {
-    v13 = v11;
+    currentLocale = v11;
   }
 
   else
   {
-    v13 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   }
 
-  v14 = v13;
+  v14 = currentLocale;
 
   return v14;
 }
 
-- (void)wakeExtensionForWatchApp:(id)a3
+- (void)wakeExtensionForWatchApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v5 = [(SPDeviceConnection *)self connectionProxy:&__block_literal_global_99 caller:"[SPDeviceConnection wakeExtensionForWatchApp:]"];
-  [v5 wakeExtensionForWatchApp:v4];
+  [v5 wakeExtensionForWatchApp:appCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3 = MEMORY[0x277CEAF80];
-  v4 = a3;
-  v5 = [v3 sharedDeviceConnection];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  sharedDeviceConnection = [v3 sharedDeviceConnection];
+  [sharedDeviceConnection addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3 = MEMORY[0x277CEAF80];
-  v4 = a3;
-  v5 = [v3 sharedDeviceConnection];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  sharedDeviceConnection = [v3 sharedDeviceConnection];
+  [sharedDeviceConnection removeObserver:observerCopy];
 }
 
-- (void)_enumerateObserversSafely:(id)a3
+- (void)_enumerateObserversSafely:(id)safely
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  safelyCopy = safely;
+  if (safelyCopy)
   {
     v13 = 0u;
     v14 = 0u;
@@ -722,7 +722,7 @@ void __77__SPDeviceConnection_showUserNotification_applicationName_extensionBund
             objc_enumerationMutation(v5);
           }
 
-          v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+          safelyCopy[2](safelyCopy, *(*(&v11 + 1) + 8 * v9++));
         }
 
         while (v7 != v9);
@@ -736,23 +736,23 @@ void __77__SPDeviceConnection_showUserNotification_applicationName_extensionBund
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)installApplication:(id)a3 withProvisioningProfiles:(id)a4 completion:(id)a5
+- (void)installApplication:(id)application withProvisioningProfiles:(id)profiles completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  applicationCopy = application;
+  completionCopy = completion;
   v10 = MEMORY[0x277CEAF80];
-  v11 = a4;
-  v12 = [v10 sharedDeviceConnection];
+  profilesCopy = profiles;
+  sharedDeviceConnection = [v10 sharedDeviceConnection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__SPDeviceConnection_installApplication_withProvisioningProfiles_completion___block_invoke;
   v15[3] = &unk_278B7EFD8;
-  v17 = self;
-  v18 = v9;
-  v16 = v8;
-  v13 = v9;
-  v14 = v8;
-  [v12 installApplication:v14 withProvisioningProfiles:v11 onPairedDevice:0 completion:v15];
+  selfCopy = self;
+  v18 = completionCopy;
+  v16 = applicationCopy;
+  v13 = completionCopy;
+  v14 = applicationCopy;
+  [sharedDeviceConnection installApplication:v14 withProvisioningProfiles:profilesCopy onPairedDevice:0 completion:v15];
 }
 
 void __77__SPDeviceConnection_installApplication_withProvisioningProfiles_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -770,24 +770,24 @@ void __77__SPDeviceConnection_installApplication_withProvisioningProfiles_comple
   (*(*(a1 + 48) + 16))(*(a1 + 48), [*(a1 + 40) appInstallStateForAppConduitInstallState:a2]);
 }
 
-- (void)installApplication:(id)a3 withProvisioningProfiles:(id)a4 onPairedDevice:(id)a5 completion:(id)a6
+- (void)installApplication:(id)application withProvisioningProfiles:(id)profiles onPairedDevice:(id)device completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  applicationCopy = application;
+  completionCopy = completion;
   v12 = MEMORY[0x277CEAF80];
-  v13 = a5;
-  v14 = a4;
-  v15 = [v12 sharedDeviceConnection];
+  deviceCopy = device;
+  profilesCopy = profiles;
+  sharedDeviceConnection = [v12 sharedDeviceConnection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __92__SPDeviceConnection_installApplication_withProvisioningProfiles_onPairedDevice_completion___block_invoke;
   v18[3] = &unk_278B7EFD8;
-  v20 = self;
-  v21 = v11;
-  v19 = v10;
-  v16 = v11;
-  v17 = v10;
-  [v15 installApplication:v17 withProvisioningProfiles:v14 onPairedDevice:v13 completion:v18];
+  selfCopy = self;
+  v21 = completionCopy;
+  v19 = applicationCopy;
+  v16 = completionCopy;
+  v17 = applicationCopy;
+  [sharedDeviceConnection installApplication:v17 withProvisioningProfiles:profilesCopy onPairedDevice:deviceCopy completion:v18];
 }
 
 void __92__SPDeviceConnection_installApplication_withProvisioningProfiles_onPairedDevice_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -805,22 +805,22 @@ void __92__SPDeviceConnection_installApplication_withProvisioningProfiles_onPair
   (*(*(a1 + 48) + 16))(*(a1 + 48), [*(a1 + 40) appInstallStateForAppConduitInstallState:a2]);
 }
 
-- (void)installApplication:(id)a3 withProvisioningProfiles:(id)a4 onPairedDevice:(id)a5 completionWithError:(id)a6
+- (void)installApplication:(id)application withProvisioningProfiles:(id)profiles onPairedDevice:(id)device completionWithError:(id)error
 {
-  v10 = a6;
+  errorCopy = error;
   v11 = MEMORY[0x277CEAF80];
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v11 sharedDeviceConnection];
+  deviceCopy = device;
+  profilesCopy = profiles;
+  applicationCopy = application;
+  sharedDeviceConnection = [v11 sharedDeviceConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __101__SPDeviceConnection_installApplication_withProvisioningProfiles_onPairedDevice_completionWithError___block_invoke;
   v17[3] = &unk_278B7F000;
   v17[4] = self;
-  v18 = v10;
-  v16 = v10;
-  [v15 installApplication:v14 withProvisioningProfiles:v13 onPairedDevice:v12 completion:v17];
+  v18 = errorCopy;
+  v16 = errorCopy;
+  [sharedDeviceConnection installApplication:applicationCopy withProvisioningProfiles:profilesCopy onPairedDevice:deviceCopy completion:v17];
 }
 
 void __101__SPDeviceConnection_installApplication_withProvisioningProfiles_onPairedDevice_completionWithError___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -831,60 +831,60 @@ void __101__SPDeviceConnection_installApplication_withProvisioningProfiles_onPai
   (*(v4 + 16))(v4, [v5 appInstallStateForAppConduitInstallState:a2], v6);
 }
 
-- (void)installProvisioningProfileWithURL:(id)a3 onPairedDevice:(id)a4 completion:(id)a5
+- (void)installProvisioningProfileWithURL:(id)l onPairedDevice:(id)device completion:(id)completion
 {
   v7 = MEMORY[0x277CEAF80];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 sharedDeviceConnection];
-  [v11 installProvisioningProfileWithURL:v10 onPairedDevice:v9 completion:v8];
+  completionCopy = completion;
+  deviceCopy = device;
+  lCopy = l;
+  sharedDeviceConnection = [v7 sharedDeviceConnection];
+  [sharedDeviceConnection installProvisioningProfileWithURL:lCopy onPairedDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)removeProvisioningProfileWithID:(id)a3 fromPairedDevice:(id)a4 completion:(id)a5
+- (void)removeProvisioningProfileWithID:(id)d fromPairedDevice:(id)device completion:(id)completion
 {
   v7 = MEMORY[0x277CEAF80];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 sharedDeviceConnection];
-  [v11 removeProvisioningProfileWithID:v10 fromPairedDevice:v9 completion:v8];
+  completionCopy = completion;
+  deviceCopy = device;
+  dCopy = d;
+  sharedDeviceConnection = [v7 sharedDeviceConnection];
+  [sharedDeviceConnection removeProvisioningProfileWithID:dCopy fromPairedDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)fetchProvisioningProfilesForPairedDevice:(id)a3 completion:(id)a4
+- (void)fetchProvisioningProfilesForPairedDevice:(id)device completion:(id)completion
 {
   v5 = MEMORY[0x277CEAF80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDeviceConnection];
-  [v8 fetchProvisioningProfilesForPairedDevice:v7 completion:v6];
+  completionCopy = completion;
+  deviceCopy = device;
+  sharedDeviceConnection = [v5 sharedDeviceConnection];
+  [sharedDeviceConnection fetchProvisioningProfilesForPairedDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)fetchProvisioningProfilesForApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5
+- (void)fetchProvisioningProfilesForApplicationWithBundleID:(id)d forPairedDevice:(id)device completion:(id)completion
 {
   v7 = MEMORY[0x277CEAF80];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 sharedDeviceConnection];
-  [v11 fetchProvisioningProfilesForApplicationWithBundleID:v10 forPairedDevice:v9 completion:v8];
+  completionCopy = completion;
+  deviceCopy = device;
+  dCopy = d;
+  sharedDeviceConnection = [v7 sharedDeviceConnection];
+  [sharedDeviceConnection fetchProvisioningProfilesForApplicationWithBundleID:dCopy forPairedDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)updatePreferencesForApplicationWithIdentifier:(id)a3 preferences:(id)a4 forPairedDevice:(id)a5 completion:(id)a6
+- (void)updatePreferencesForApplicationWithIdentifier:(id)identifier preferences:(id)preferences forPairedDevice:(id)device completion:(id)completion
 {
   v9 = MEMORY[0x277CEAF80];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v9 sharedDeviceConnection];
-  [v14 updatePreferencesForApplicationWithIdentifier:v13 preferences:v12 forPairedDevice:v11 completion:v10];
+  completionCopy = completion;
+  deviceCopy = device;
+  preferencesCopy = preferences;
+  identifierCopy = identifier;
+  sharedDeviceConnection = [v9 sharedDeviceConnection];
+  [sharedDeviceConnection updatePreferencesForApplicationWithIdentifier:identifierCopy preferences:preferencesCopy forPairedDevice:deviceCopy completion:completionCopy];
 }
 
-- (int64_t)appInstallStateForAppConduitInstallState:(int64_t)a3
+- (int64_t)appInstallStateForAppConduitInstallState:(int64_t)state
 {
-  v3 = a3;
-  if (a3 >= 0xF)
+  stateCopy = state;
+  if (state >= 0xF)
   {
     v4 = wk_default_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -895,7 +895,7 @@ void __101__SPDeviceConnection_installApplication_withProvisioningProfiles_onPai
     return 0;
   }
 
-  return v3;
+  return stateCopy;
 }
 
 - (SPDeviceConnectionDelegate)delegate
@@ -952,9 +952,9 @@ void __52__SPDeviceConnection_installApplication_completion___block_invoke_cold_
 
 - (void)localeForUserNotification
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getNRDevicePropertyCurrentUserLocale(void)"];
-  [v0 handleFailureInFunction:v1 file:@"SPDeviceConnection.m" lineNumber:48 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"SPDeviceConnection.m" lineNumber:48 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

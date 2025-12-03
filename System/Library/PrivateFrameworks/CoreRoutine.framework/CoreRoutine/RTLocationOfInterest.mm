@@ -1,18 +1,18 @@
 @interface RTLocationOfInterest
-+ (id)geoMapItemSourceToString:(unint64_t)a3;
-+ (id)locationOfInterestTypeSourceToString:(unint64_t)a3;
-+ (id)locationOfInterestTypeToString:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)geoMapItemSourceToString:(unint64_t)string;
++ (id)locationOfInterestTypeSourceToString:(unint64_t)string;
++ (id)locationOfInterestTypeToString:(int64_t)string;
+- (BOOL)isEqual:(id)equal;
 - (NSString)preferredName;
-- (RTLocationOfInterest)initWithCoder:(id)a3;
-- (RTLocationOfInterest)initWithLocation:(id)a3 confidence:(double)a4 identifier:(id)a5 type:(int64_t)a6 typeSource:(unint64_t)a7 visits:(id)a8 customLabel:(id)a9 mapItem:(id)a10;
+- (RTLocationOfInterest)initWithCoder:(id)coder;
+- (RTLocationOfInterest)initWithLocation:(id)location confidence:(double)confidence identifier:(id)identifier type:(int64_t)type typeSource:(unint64_t)source visits:(id)visits customLabel:(id)label mapItem:(id)self0;
 - (id)description;
-- (id)nameFromType:(int64_t)a3;
-- (id)pruneVisitsWithDateInterval:(id)a3;
-- (int64_t)recentCompare:(id)a3;
+- (id)nameFromType:(int64_t)type;
+- (id)pruneVisitsWithDateInterval:(id)interval;
+- (int64_t)recentCompare:(id)compare;
 - (unint64_t)geoMapItemSource;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTLocationOfInterest
@@ -21,59 +21,59 @@
 {
   if ([(NSString *)self->_customLabel length])
   {
-    v3 = self->_customLabel;
+    mergedThoroughfare = self->_customLabel;
     goto LABEL_9;
   }
 
   v4 = [(RTLocationOfInterest *)self nameFromType:self->_type];
   if ([v4 length])
   {
-    v5 = v4;
+    name2 = v4;
   }
 
   else
   {
-    v6 = [(RTMapItem *)self->_mapItem name];
-    v7 = [v6 length];
+    name = [(RTMapItem *)self->_mapItem name];
+    v7 = [name length];
 
     mapItem = self->_mapItem;
     if (!v7)
     {
-      v10 = [(RTMapItem *)mapItem address];
-      v3 = [v10 mergedThoroughfare];
+      address = [(RTMapItem *)mapItem address];
+      mergedThoroughfare = [address mergedThoroughfare];
 
       goto LABEL_8;
     }
 
-    v5 = [(RTMapItem *)mapItem name];
+    name2 = [(RTMapItem *)mapItem name];
   }
 
-  v3 = v5;
+  mergedThoroughfare = name2;
 LABEL_8:
 
 LABEL_9:
 
-  return v3;
+  return mergedThoroughfare;
 }
 
-+ (id)locationOfInterestTypeToString:(int64_t)a3
++ (id)locationOfInterestTypeToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E80B4D38[a3];
+    return off_1E80B4D38[string];
   }
 }
 
-+ (id)locationOfInterestTypeSourceToString:(unint64_t)a3
++ (id)locationOfInterestTypeSourceToString:(unint64_t)string
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = v4;
-  if (!a3)
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = array;
+  if (!string)
   {
     v6 = @"None";
 LABEL_18:
@@ -81,13 +81,13 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a3)
+  if (string)
   {
-    [v4 addObject:@"MeCard"];
-    if ((a3 & 0x40) == 0)
+    [array addObject:@"MeCard"];
+    if ((string & 0x40) == 0)
     {
 LABEL_4:
-      if ((a3 & 2) == 0)
+      if ((string & 2) == 0)
       {
         goto LABEL_5;
       }
@@ -96,16 +96,16 @@ LABEL_4:
     }
   }
 
-  else if ((a3 & 0x40) == 0)
+  else if ((string & 0x40) == 0)
   {
     goto LABEL_4;
   }
 
   [v5 addObject:@"Maps"];
-  if ((a3 & 2) == 0)
+  if ((string & 2) == 0)
   {
 LABEL_5:
-    if ((a3 & 4) == 0)
+    if ((string & 4) == 0)
     {
       goto LABEL_6;
     }
@@ -115,10 +115,10 @@ LABEL_5:
 
 LABEL_13:
   [v5 addObject:@"Aggregate Inferred"];
-  if ((a3 & 4) == 0)
+  if ((string & 4) == 0)
   {
 LABEL_6:
-    if ((a3 & 8) == 0)
+    if ((string & 8) == 0)
     {
       goto LABEL_7;
     }
@@ -128,17 +128,17 @@ LABEL_6:
 
 LABEL_14:
   [v5 addObject:@"Pattern Based"];
-  if ((a3 & 8) == 0)
+  if ((string & 8) == 0)
   {
 LABEL_7:
-    if ((a3 & 0x10) == 0)
+    if ((string & 0x10) == 0)
     {
       goto LABEL_8;
     }
 
 LABEL_16:
     [v5 addObject:@"User"];
-    if ((a3 & 0x20) == 0)
+    if ((string & 0x20) == 0)
     {
       goto LABEL_19;
     }
@@ -148,13 +148,13 @@ LABEL_16:
 
 LABEL_15:
   [v5 addObject:@"Top Median"];
-  if ((a3 & 0x10) != 0)
+  if ((string & 0x10) != 0)
   {
     goto LABEL_16;
   }
 
 LABEL_8:
-  if ((a3 & 0x20) != 0)
+  if ((string & 0x20) != 0)
   {
 LABEL_17:
     v6 = @"Fallback";
@@ -186,11 +186,11 @@ LABEL_19:
   return v15 | v16 | (2 * [(RTMapItem *)self->_mapItem source]) & 0x10000;
 }
 
-+ (id)geoMapItemSourceToString:(unint64_t)a3
++ (id)geoMapItemSourceToString:(unint64_t)string
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = v4;
-  if (!a3)
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = array;
+  if (!string)
   {
     v6 = @"None";
 LABEL_38:
@@ -198,13 +198,13 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (a3)
+  if (string)
   {
-    [v4 addObject:@"Reverse Geocode"];
-    if ((a3 & 2) == 0)
+    [array addObject:@"Reverse Geocode"];
+    if ((string & 2) == 0)
     {
 LABEL_4:
-      if ((a3 & 4) == 0)
+      if ((string & 4) == 0)
       {
         goto LABEL_5;
       }
@@ -213,16 +213,16 @@ LABEL_4:
     }
   }
 
-  else if ((a3 & 2) == 0)
+  else if ((string & 2) == 0)
   {
     goto LABEL_4;
   }
 
   [v5 addObject:@"Contacts"];
-  if ((a3 & 4) == 0)
+  if ((string & 4) == 0)
   {
 LABEL_5:
-    if ((a3 & 8) == 0)
+    if ((string & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -232,10 +232,10 @@ LABEL_5:
 
 LABEL_23:
   [v5 addObject:@"Maps Support"];
-  if ((a3 & 8) == 0)
+  if ((string & 8) == 0)
   {
 LABEL_6:
-    if ((a3 & 0x10) == 0)
+    if ((string & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -245,10 +245,10 @@ LABEL_6:
 
 LABEL_24:
   [v5 addObject:@"User"];
-  if ((a3 & 0x10) == 0)
+  if ((string & 0x10) == 0)
   {
 LABEL_7:
-    if ((a3 & 0x20) == 0)
+    if ((string & 0x20) == 0)
     {
       goto LABEL_8;
     }
@@ -258,10 +258,10 @@ LABEL_7:
 
 LABEL_25:
   [v5 addObject:@"Maps Support Favorite"];
-  if ((a3 & 0x20) == 0)
+  if ((string & 0x20) == 0)
   {
 LABEL_8:
-    if ((a3 & 0x40) == 0)
+    if ((string & 0x40) == 0)
     {
       goto LABEL_9;
     }
@@ -271,10 +271,10 @@ LABEL_8:
 
 LABEL_26:
   [v5 addObject:@"Maps Support History Entry"];
-  if ((a3 & 0x40) == 0)
+  if ((string & 0x40) == 0)
   {
 LABEL_9:
-    if ((a3 & 0x80) == 0)
+    if ((string & 0x80) == 0)
     {
       goto LABEL_10;
     }
@@ -284,10 +284,10 @@ LABEL_9:
 
 LABEL_27:
   [v5 addObject:@"Maps Support History Entry Route"];
-  if ((a3 & 0x80) == 0)
+  if ((string & 0x80) == 0)
   {
 LABEL_10:
-    if ((a3 & 0x100) == 0)
+    if ((string & 0x100) == 0)
     {
       goto LABEL_11;
     }
@@ -297,10 +297,10 @@ LABEL_10:
 
 LABEL_28:
   [v5 addObject:@"Maps Support History Entry Place Display"];
-  if ((a3 & 0x100) == 0)
+  if ((string & 0x100) == 0)
   {
 LABEL_11:
-    if ((a3 & 0x200) == 0)
+    if ((string & 0x200) == 0)
     {
       goto LABEL_12;
     }
@@ -310,10 +310,10 @@ LABEL_11:
 
 LABEL_29:
   [v5 addObject:@"Event Kit"];
-  if ((a3 & 0x200) == 0)
+  if ((string & 0x200) == 0)
   {
 LABEL_12:
-    if ((a3 & 0x400) == 0)
+    if ((string & 0x400) == 0)
     {
       goto LABEL_13;
     }
@@ -323,10 +323,10 @@ LABEL_12:
 
 LABEL_30:
   [v5 addObject:@"Local Search"];
-  if ((a3 & 0x400) == 0)
+  if ((string & 0x400) == 0)
   {
 LABEL_13:
-    if ((a3 & 0x800) == 0)
+    if ((string & 0x800) == 0)
     {
       goto LABEL_14;
     }
@@ -336,10 +336,10 @@ LABEL_13:
 
 LABEL_31:
   [v5 addObject:@"MapItem Handle"];
-  if ((a3 & 0x800) == 0)
+  if ((string & 0x800) == 0)
   {
 LABEL_14:
-    if ((a3 & 0x1000) == 0)
+    if ((string & 0x1000) == 0)
     {
       goto LABEL_15;
     }
@@ -349,10 +349,10 @@ LABEL_14:
 
 LABEL_32:
   [v5 addObject:@"Forward Geocode"];
-  if ((a3 & 0x1000) == 0)
+  if ((string & 0x1000) == 0)
   {
 LABEL_15:
-    if ((a3 & 0x2000) == 0)
+    if ((string & 0x2000) == 0)
     {
       goto LABEL_16;
     }
@@ -362,10 +362,10 @@ LABEL_15:
 
 LABEL_33:
   [v5 addObject:@"Proactive Experts"];
-  if ((a3 & 0x2000) == 0)
+  if ((string & 0x2000) == 0)
   {
 LABEL_16:
-    if ((a3 & 0x4000) == 0)
+    if ((string & 0x4000) == 0)
     {
       goto LABEL_17;
     }
@@ -375,17 +375,17 @@ LABEL_16:
 
 LABEL_34:
   [v5 addObject:@"Portrait"];
-  if ((a3 & 0x4000) == 0)
+  if ((string & 0x4000) == 0)
   {
 LABEL_17:
-    if ((a3 & 0x8000) == 0)
+    if ((string & 0x8000) == 0)
     {
       goto LABEL_18;
     }
 
 LABEL_36:
     [v5 addObject:@"Blue POI"];
-    if ((a3 & 0x10000) == 0)
+    if ((string & 0x10000) == 0)
     {
       goto LABEL_39;
     }
@@ -395,13 +395,13 @@ LABEL_36:
 
 LABEL_35:
   [v5 addObject:@"Learned Place"];
-  if ((a3 & 0x8000) != 0)
+  if ((string & 0x8000) != 0)
   {
     goto LABEL_36;
   }
 
 LABEL_18:
-  if ((a3 & 0x10000) != 0)
+  if ((string & 0x10000) != 0)
   {
 LABEL_37:
     v6 = @"MapItemURL";
@@ -414,14 +414,14 @@ LABEL_39:
   return v7;
 }
 
-- (RTLocationOfInterest)initWithLocation:(id)a3 confidence:(double)a4 identifier:(id)a5 type:(int64_t)a6 typeSource:(unint64_t)a7 visits:(id)a8 customLabel:(id)a9 mapItem:(id)a10
+- (RTLocationOfInterest)initWithLocation:(id)location confidence:(double)confidence identifier:(id)identifier type:(int64_t)type typeSource:(unint64_t)source visits:(id)visits customLabel:(id)label mapItem:(id)self0
 {
-  v31 = a3;
-  v18 = a5;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  if (v18)
+  locationCopy = location;
+  identifierCopy = identifier;
+  visitsCopy = visits;
+  labelCopy = label;
+  itemCopy = item;
+  if (identifierCopy)
   {
     v32.receiver = self;
     v32.super_class = RTLocationOfInterest;
@@ -429,24 +429,24 @@ LABEL_39:
     v23 = v22;
     if (v22)
     {
-      objc_storeStrong(&v22->_location, a3);
-      v23->_confidence = a4;
-      v24 = [v18 copy];
+      objc_storeStrong(&v22->_location, location);
+      v23->_confidence = confidence;
+      v24 = [identifierCopy copy];
       identifier = v23->_identifier;
       v23->_identifier = v24;
 
-      v23->_type = a6;
-      v23->_typeSource = a7;
-      v26 = [v19 copy];
+      v23->_type = type;
+      v23->_typeSource = source;
+      v26 = [visitsCopy copy];
       visits = v23->_visits;
       v23->_visits = v26;
 
-      objc_storeStrong(&v23->_customLabel, a9);
-      objc_storeStrong(&v23->_mapItem, a10);
+      objc_storeStrong(&v23->_customLabel, label);
+      objc_storeStrong(&v23->_mapItem, item);
     }
 
     self = v23;
-    v28 = self;
+    selfCopy = self;
   }
 
   else
@@ -458,72 +458,72 @@ LABEL_39:
       _os_log_error_impl(&dword_1BF1C4000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier", buf, 2u);
     }
 
-    v28 = 0;
+    selfCopy = 0;
   }
 
-  return v28;
+  return selfCopy;
 }
 
-- (RTLocationOfInterest)initWithCoder:(id)a3
+- (RTLocationOfInterest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
-  [v4 decodeDoubleForKey:@"confidence"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+  [coderCopy decodeDoubleForKey:@"confidence"];
   v7 = v6;
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v9 = [v4 decodeIntegerForKey:@"type"];
-  v10 = [v4 decodeIntegerForKey:@"typeSource"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v9 = [coderCopy decodeIntegerForKey:@"type"];
+  v10 = [coderCopy decodeIntegerForKey:@"typeSource"];
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"visits"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"visits"];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customLabel"];
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customLabel"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
 
   v17 = [(RTLocationOfInterest *)self initWithLocation:v5 confidence:v8 identifier:v9 type:v10 typeSource:v14 visits:v15 customLabel:v7 mapItem:v16];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   location = self->_location;
-  v5 = a3;
-  [v5 encodeObject:location forKey:@"location"];
-  [v5 encodeDouble:@"confidence" forKey:self->_confidence];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeInteger:self->_typeSource forKey:@"typeSource"];
-  [v5 encodeObject:self->_visits forKey:@"visits"];
-  [v5 encodeObject:self->_customLabel forKey:@"customLabel"];
-  [v5 encodeObject:self->_mapItem forKey:@"mapItem"];
+  coderCopy = coder;
+  [coderCopy encodeObject:location forKey:@"location"];
+  [coderCopy encodeDouble:@"confidence" forKey:self->_confidence];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_typeSource forKey:@"typeSource"];
+  [coderCopy encodeObject:self->_visits forKey:@"visits"];
+  [coderCopy encodeObject:self->_customLabel forKey:@"customLabel"];
+  [coderCopy encodeObject:self->_mapItem forKey:@"mapItem"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 == self)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(RTLocationOfInterest *)self identifier];
-        if (v8 || ([(RTLocationOfInterest *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(RTLocationOfInterest *)self identifier];
+        if (identifier || ([(RTLocationOfInterest *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(RTLocationOfInterest *)self identifier];
-          v10 = [(RTLocationOfInterest *)v7 identifier];
-          v11 = [v9 isEqual:v10];
+          identifier2 = [(RTLocationOfInterest *)self identifier];
+          identifier3 = [(RTLocationOfInterest *)v7 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v8)
+          if (identifier)
           {
 LABEL_12:
 
@@ -550,8 +550,8 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(RTLocationOfInterest *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(RTLocationOfInterest *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -559,55 +559,55 @@ LABEL_13:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTLocationOfInterest *)self identifier];
-  v5 = [v4 UUIDString];
-  v6 = [(RTLocationOfInterest *)self location];
+  identifier = [(RTLocationOfInterest *)self identifier];
+  uUIDString = [identifier UUIDString];
+  location = [(RTLocationOfInterest *)self location];
   [(RTLocationOfInterest *)self confidence];
   v8 = v7;
   v9 = [RTLocationOfInterest locationOfInterestTypeToString:[(RTLocationOfInterest *)self type]];
   v10 = [RTLocationOfInterest locationOfInterestTypeSourceToString:[(RTLocationOfInterest *)self typeSource]];
-  v11 = [(RTLocationOfInterest *)self mapItem];
-  v12 = [(RTLocationOfInterest *)self customLabel];
-  v13 = [(RTLocationOfInterest *)self preferredName];
-  v14 = [v3 stringWithFormat:@"id, %@, %@, confidence, %f, type, %@, typeSource, %@, mapItem, %@, customLabel, %@, preferredName, %@", v5, v6, v8, v9, v10, v11, v12, v13];
+  mapItem = [(RTLocationOfInterest *)self mapItem];
+  customLabel = [(RTLocationOfInterest *)self customLabel];
+  preferredName = [(RTLocationOfInterest *)self preferredName];
+  v14 = [v3 stringWithFormat:@"id, %@, %@, confidence, %f, type, %@, typeSource, %@, mapItem, %@, customLabel, %@, preferredName, %@", uUIDString, location, v8, v9, v10, mapItem, customLabel, preferredName];
 
   return v14;
 }
 
-- (id)nameFromType:(int64_t)a3
+- (id)nameFromType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AAE8] _coreroutine_LocalizedStringForKey:{off_1E80B4D38[a3], v3}];
+    v5 = [MEMORY[0x1E696AAE8] _coreroutine_LocalizedStringForKey:{off_1E80B4D38[type], v3}];
   }
 
   return v5;
 }
 
-- (int64_t)recentCompare:(id)a3
+- (int64_t)recentCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(RTLocationOfInterest *)self visits];
-  v6 = [v5 lastObject];
+  compareCopy = compare;
+  visits = [(RTLocationOfInterest *)self visits];
+  lastObject = [visits lastObject];
 
-  v7 = [v6 exitDate];
-  v8 = [v4 visits];
-  v9 = [v8 lastObject];
+  exitDate = [lastObject exitDate];
+  visits2 = [compareCopy visits];
+  lastObject2 = [visits2 lastObject];
 
-  v10 = [v9 exitDate];
-  v11 = [v7 compare:v10];
+  exitDate2 = [lastObject2 exitDate];
+  v11 = [exitDate compare:exitDate2];
   if (!v11)
   {
-    v12 = [(RTLocationOfInterest *)self visits];
-    v13 = [v12 count];
+    visits3 = [(RTLocationOfInterest *)self visits];
+    v13 = [visits3 count];
 
-    v14 = [v4 visits];
-    v15 = [v14 count];
+    visits4 = [compareCopy visits];
+    v15 = [visits4 count];
 
     if (v13 < v15)
     {
@@ -623,18 +623,18 @@ LABEL_13:
   return v11;
 }
 
-- (id)pruneVisitsWithDateInterval:(id)a3
+- (id)pruneVisitsWithDateInterval:(id)interval
 {
   v53 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  if (v36)
+  intervalCopy = interval;
+  if (intervalCopy)
   {
-    v35 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v34 = self;
+    selfCopy = self;
     obj = [(RTLocationOfInterest *)self visits];
     v4 = [obj countByEnumeratingWithState:&v38 objects:v52 count:16];
     if (v4)
@@ -652,26 +652,26 @@ LABEL_13:
 
           v8 = *(*(&v38 + 1) + 8 * i);
           v9 = objc_autoreleasePoolPush();
-          v10 = [v8 exitDate];
-          v11 = [v8 entryDate];
-          v12 = [v10 isOnOrBefore:v11];
+          exitDate = [v8 exitDate];
+          entryDate = [v8 entryDate];
+          v12 = [exitDate isOnOrBefore:entryDate];
 
           if (v12)
           {
             v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
             {
-              v14 = [v8 identifier];
-              v15 = [v8 entryDate];
-              v16 = [v15 stringFromDate];
-              v17 = [v8 exitDate];
-              v18 = [v17 stringFromDate];
+              identifier = [v8 identifier];
+              entryDate2 = [v8 entryDate];
+              stringFromDate = [entryDate2 stringFromDate];
+              exitDate2 = [v8 exitDate];
+              stringFromDate2 = [exitDate2 stringFromDate];
               *buf = 138740995;
-              v43 = v14;
+              v43 = identifier;
               v44 = 2112;
-              v45 = v16;
+              v45 = stringFromDate;
               v46 = 2112;
-              v47 = v18;
+              v47 = stringFromDate2;
               v48 = 2080;
               v49 = "[RTLocationOfInterest pruneVisitsWithDateInterval:]";
               v50 = 1024;
@@ -683,13 +683,13 @@ LABEL_13:
           else
           {
             v19 = objc_alloc(MEMORY[0x1E696AB80]);
-            v20 = [v8 entryDate];
-            v21 = [v8 exitDate];
-            v13 = [v19 initWithStartDate:v20 endDate:v21];
+            entryDate3 = [v8 entryDate];
+            exitDate3 = [v8 exitDate];
+            v13 = [v19 initWithStartDate:entryDate3 endDate:exitDate3];
 
-            if ([v13 intersectsDateInterval:v36])
+            if ([v13 intersectsDateInterval:intervalCopy])
             {
-              [v35 addObject:v8];
+              [array addObject:v8];
             }
           }
 
@@ -703,25 +703,25 @@ LABEL_13:
     }
 
     v22 = [RTLocationOfInterest alloc];
-    v23 = [(RTLocationOfInterest *)v34 location];
-    [(RTLocationOfInterest *)v34 confidence];
+    location = [(RTLocationOfInterest *)selfCopy location];
+    [(RTLocationOfInterest *)selfCopy confidence];
     v25 = v24;
-    v26 = [(RTLocationOfInterest *)v34 identifier];
-    v27 = [(RTLocationOfInterest *)v34 type];
-    v28 = [(RTLocationOfInterest *)v34 typeSource];
-    v29 = [(RTLocationOfInterest *)v34 customLabel];
-    v30 = [(RTLocationOfInterest *)v34 mapItem];
-    v31 = [(RTLocationOfInterest *)v22 initWithLocation:v23 confidence:v26 identifier:v27 type:v28 typeSource:v35 visits:v29 customLabel:v25 mapItem:v30];
+    identifier2 = [(RTLocationOfInterest *)selfCopy identifier];
+    type = [(RTLocationOfInterest *)selfCopy type];
+    typeSource = [(RTLocationOfInterest *)selfCopy typeSource];
+    customLabel = [(RTLocationOfInterest *)selfCopy customLabel];
+    mapItem = [(RTLocationOfInterest *)selfCopy mapItem];
+    selfCopy2 = [(RTLocationOfInterest *)v22 initWithLocation:location confidence:identifier2 identifier:type type:typeSource typeSource:array visits:customLabel customLabel:v25 mapItem:mapItem];
   }
 
   else
   {
-    v31 = self;
+    selfCopy2 = self;
   }
 
   v32 = *MEMORY[0x1E69E9840];
 
-  return v31;
+  return selfCopy2;
 }
 
 @end

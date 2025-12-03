@@ -1,64 +1,64 @@
 @interface Communicator
 + (id)myNumber;
 - (BOOL)supports3WC;
-- (Communicator)initWithDelegate:(Delegate *)a3;
-- (id)_callForIdentifier:(id)a3;
+- (Communicator)initWithDelegate:(Delegate *)delegate;
+- (id)_callForIdentifier:(id)identifier;
 - (id)_getSubscriptionContext;
-- (id)_identifierForCall:(id)a3;
+- (id)_identifierForCall:(id)call;
 - (id)_myNumber;
 - (id)getCountryCode;
-- (id)getCountryCodeForIdentifier:(id)a3;
+- (id)getCountryCodeForIdentifier:(id)identifier;
 - (id)getCountryCodeIdentifer;
 - (id)getRegistrationStatus;
-- (int)_answerCall:(id)a3 uid:(const void *)a4 behavior:(int64_t)a5;
-- (int)_dialNumber:(const void *)a3 uid:(const void *)a4 providerIdentifier:(const void *)a5;
-- (int)_redialNumberWhileScreening:(const void *)a3 uid:(const void *)a4 providerIdentifier:(const void *)a5;
+- (int)_answerCall:(id)call uid:(const void *)uid behavior:(int64_t)behavior;
+- (int)_dialNumber:(const void *)number uid:(const void *)uid providerIdentifier:(const void *)identifier;
+- (int)_redialNumberWhileScreening:(const void *)screening uid:(const void *)uid providerIdentifier:(const void *)identifier;
 - (int)addHeldCall;
 - (int)addVirtualCall;
 - (int)answerIncomingCall:()basic_string<char;
-- (int)dialNumber:(const void *)a3 uid:()basic_string<char;
-- (int)enableEchoCancellationNoiseReduction:(BOOL)a3;
-- (int)getCurrentCalls:(void *)a3;
-- (int)getCurrentExpanseCalls:(void *)a3;
-- (int)getCurrentScreeningCalls:(void *)a3;
-- (int)getMobileEquipmentIdentity:(void *)a3;
-- (int)getMobileSubscriberIdentity:(void *)a3;
-- (int)getOperatorStatus:(void *)a3;
-- (int)getSignalStrength:(int *)a3 mode:(int)a4;
-- (int)getSubscriberNumber:(void *)a3;
-- (int)getTransmitState:(BOOL *)a3;
+- (int)dialNumber:(const void *)number uid:()basic_string<char;
+- (int)enableEchoCancellationNoiseReduction:(BOOL)reduction;
+- (int)getCurrentCalls:(void *)calls;
+- (int)getCurrentExpanseCalls:(void *)calls;
+- (int)getCurrentScreeningCalls:(void *)calls;
+- (int)getMobileEquipmentIdentity:(void *)identity;
+- (int)getMobileSubscriberIdentity:(void *)identity;
+- (int)getOperatorStatus:(void *)status;
+- (int)getSignalStrength:(int *)strength mode:(int)mode;
+- (int)getSubscriberNumber:(void *)number;
+- (int)getTransmitState:(BOOL *)state;
 - (int)hangupActiveCall;
 - (int)holdActiveCalls:()basic_string<char;
-- (int)privateConference:(id)a3;
+- (int)privateConference:(id)conference;
 - (int)rejectIncomingCall;
 - (int)releaseActiveCalls:()basic_string<char;
-- (int)releaseCall:(id)a3;
+- (int)releaseCall:(id)call;
 - (int)releaseHeldCalls;
 - (int)removeVirtualCall;
-- (int)sendDTMFTone:(unsigned __int8)a3;
-- (int)setScreeningCall:(id)a3 isScreening:(BOOL)a4;
-- (void)_handleCTCellularTransmitStateChangedNotification:(__CFDictionary *)a3;
-- (void)_handleTUCallCenterCallExpanseStatusChangedNotification:(id)a3;
-- (void)_handleTUCallCenterCallStatusChangedNotification:(id)a3;
+- (int)sendDTMFTone:(unsigned __int8)tone;
+- (int)setScreeningCall:(id)call isScreening:(BOOL)screening;
+- (void)_handleCTCellularTransmitStateChangedNotification:(__CFDictionary *)notification;
+- (void)_handleTUCallCenterCallExpanseStatusChangedNotification:(id)notification;
+- (void)_handleTUCallCenterCallStatusChangedNotification:(id)notification;
 - (void)_updateCalls;
 - (void)activeSubscriptionsDidChange;
-- (void)context:(id)a3 capabilitiesChanged:(id)a4;
+- (void)context:(id)context capabilitiesChanged:(id)changed;
 - (void)dealloc;
-- (void)displayStatusChanged:(id)a3 status:(id)a4;
+- (void)displayStatusChanged:(id)changed status:(id)status;
 - (void)invalidate;
-- (void)networkReselectionNeeded:(id)a3;
-- (void)networkSelected:(id)a3 success:(BOOL)a4 mode:(id)a5;
-- (void)operatorNameChanged:(id)a3 name:(id)a4;
-- (void)setCalls:(CallList *)a3;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
+- (void)networkReselectionNeeded:(id)needed;
+- (void)networkSelected:(id)selected success:(BOOL)success mode:(id)mode;
+- (void)operatorNameChanged:(id)changed name:(id)name;
+- (void)setCalls:(CallList *)calls;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
 @end
 
 @implementation Communicator
 
 - (void)_updateCalls
 {
-  v3 = [(Communicator *)self tuCallCenter];
-  v32 = [v3 currentAudioAndVideoCalls];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  currentAudioAndVideoCalls = [tuCallCenter currentAudioAndVideoCalls];
 
   v44 = 0;
   v45 = 0;
@@ -72,7 +72,7 @@
   if (os_log_type_enabled(qword_100BCE948, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v32;
+    *&buf[4] = currentAudioAndVideoCalls;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Current TU call(s): %@", buf, 0xCu);
   }
 
@@ -80,7 +80,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v32;
+  obj = currentAudioAndVideoCalls;
   v5 = [obj countByEnumeratingWithState:&v37 objects:v51 count:16];
   if (v5)
   {
@@ -105,27 +105,27 @@
         v10 = *buf;
         v11 = sub_1000D8B24(&v44, v10);
 
-        v12 = [v8 status];
-        if (v12 <= 2)
+        status = [v8 status];
+        if (status <= 2)
         {
-          switch(v12)
+          switch(status)
           {
             case 0:
               goto LABEL_51;
             case 1:
               if ([obj count] < 2)
               {
-                v12 = 1;
+                status = 1;
               }
 
               else if ([v8 isConnected])
               {
-                v12 = 1;
+                status = 1;
               }
 
               else
               {
-                v12 = 6;
+                status = 6;
               }
 
               break;
@@ -136,11 +136,11 @@
           }
         }
 
-        else if (v12 > 4)
+        else if (status > 4)
         {
-          if (v12 != 5)
+          if (status != 5)
           {
-            if (v12 == 6)
+            if (status == 6)
             {
               goto LABEL_51;
             }
@@ -153,12 +153,12 @@
             goto LABEL_51;
           }
 
-          v12 = *(v11 + 4);
+          status = *(v11 + 4);
         }
 
         else
         {
-          if (v12 == 3)
+          if (status == 3)
           {
             v13 = [v8 hasSentInvitation] == 0;
             v14 = 3;
@@ -172,16 +172,16 @@
 
           if (v13)
           {
-            v12 = v14;
+            status = v14;
           }
 
           else
           {
-            v12 = v14 + 1;
+            status = v14 + 1;
           }
         }
 
-        LODWORD(v49[0]) = v12;
+        LODWORD(v49[0]) = status;
 LABEL_24:
         if (v45 != v11)
         {
@@ -192,29 +192,29 @@ LABEL_24:
         buf[13] = [v8 isConferenced];
         buf[14] = [v8 mixesVoiceWithMedia];
         buf[15] = [v8 isScreening];
-        v15 = [v8 handle];
-        v16 = v15;
-        if (v15)
+        handle = [v8 handle];
+        v16 = handle;
+        if (handle)
         {
-          v17 = [v15 value];
-          v18 = [(Communicator *)self _appearsToBeEmailAddress:v17];
+          value = [handle value];
+          v18 = [(Communicator *)self _appearsToBeEmailAddress:value];
 
           if ((v18 & 1) == 0)
           {
-            v19 = [v16 value];
-            v20 = v19;
-            sub_1000DA180(&__str, [v19 UTF8String]);
+            value2 = [v16 value];
+            v20 = value2;
+            sub_1000DA180(&__str, [value2 UTF8String]);
             sub_1000DA184((v49 + 8), &__str);
             sub_1000D8E64(&__str);
           }
 
           if (v45 == v11 || !sub_1000DA1D4(v11 + 3, v49 + 1))
           {
-            v21 = [v8 displayName];
-            v22 = v21;
-            if (v21)
+            displayName = [v8 displayName];
+            v22 = displayName;
+            if (displayName)
             {
-              if ([v21 length] >= 0x81)
+              if ([displayName length] >= 0x81)
               {
                 v23 = [v22 substringToIndex:128];
 
@@ -315,7 +315,7 @@ LABEL_51:
   sub_1000D6BD4(buf);
 }
 
-- (Communicator)initWithDelegate:(Delegate *)a3
+- (Communicator)initWithDelegate:(Delegate *)delegate
 {
   v27.receiver = self;
   v27.super_class = Communicator;
@@ -323,7 +323,7 @@ LABEL_51:
   v5 = v4;
   if (v4)
   {
-    v4->_delegate = a3;
+    v4->_delegate = delegate;
     if (NSClassFromString(@"TUCallCenter"))
     {
       v6 = *(sub_1000D999C() + 8);
@@ -331,11 +331,11 @@ LABEL_51:
       tuCallCenter = v5->_tuCallCenter;
       v5->_tuCallCenter = v7;
 
-      v9 = [(TUCallCenter *)v5->_tuCallCenter callServicesClientCapabilities];
-      [v9 setWantsToScreenCalls:1];
+      callServicesClientCapabilities = [(TUCallCenter *)v5->_tuCallCenter callServicesClientCapabilities];
+      [callServicesClientCapabilities setWantsToScreenCalls:1];
 
-      v10 = [(TUCallCenter *)v5->_tuCallCenter callServicesClientCapabilities];
-      [v10 save];
+      callServicesClientCapabilities2 = [(TUCallCenter *)v5->_tuCallCenter callServicesClientCapabilities];
+      [callServicesClientCapabilities2 save];
 
       v11 = +[NSNotificationCenter defaultCenter];
       [v11 addObserver:v5 selector:"_handleTUCallCenterCallStatusChangedNotification:" name:TUCallCenterCallStatusChangedNotification object:0];
@@ -414,243 +414,243 @@ LABEL_51:
   [(Communicator *)&v3 dealloc];
 }
 
-- (id)_identifierForCall:(id)a3
+- (id)_identifierForCall:(id)call
 {
-  v3 = a3;
+  callCopy = call;
   v4 = [NSUUID alloc];
-  v5 = [v3 uniqueProxyIdentifier];
-  v6 = [v4 initWithUUIDString:v5];
+  uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
+  v6 = [v4 initWithUUIDString:uniqueProxyIdentifier];
 
   return v6;
 }
 
-- (id)_callForIdentifier:(id)a3
+- (id)_callForIdentifier:(id)identifier
 {
-  v4 = [a3 UUIDString];
-  v5 = [(Communicator *)self tuCallCenter];
-  v6 = [v5 callWithUniqueProxyIdentifier:v4];
+  uUIDString = [identifier UUIDString];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  v6 = [tuCallCenter callWithUniqueProxyIdentifier:uUIDString];
 
   return v6;
 }
 
 - (id)_myNumber
 {
-  v2 = [(Communicator *)self _getSubscriptionContext];
-  v3 = [v2 phoneNumber];
+  _getSubscriptionContext = [(Communicator *)self _getSubscriptionContext];
+  phoneNumber = [_getSubscriptionContext phoneNumber];
 
-  return v3;
+  return phoneNumber;
 }
 
-- (int)_dialNumber:(const void *)a3 uid:(const void *)a4 providerIdentifier:(const void *)a5
+- (int)_dialNumber:(const void *)number uid:(const void *)uid providerIdentifier:(const void *)identifier
 {
   v9 = objc_alloc_init(TUCallProviderManager);
-  if (*(a5 + 23) >= 0)
+  if (*(identifier + 23) >= 0)
   {
-    v10 = a5;
+    identifierCopy = identifier;
   }
 
   else
   {
-    v10 = *a5;
+    identifierCopy = *identifier;
   }
 
-  v11 = [NSString stringWithUTF8String:v10];
+  v11 = [NSString stringWithUTF8String:identifierCopy];
   v12 = [v9 providerWithIdentifier:v11];
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    telephonyProvider = v12;
   }
 
   else
   {
-    v14 = [v9 telephonyProvider];
+    telephonyProvider = [v9 telephonyProvider];
   }
 
-  v15 = v14;
+  v15 = telephonyProvider;
 
   v16 = [[TUDialRequest alloc] initWithProvider:v15];
-  if (*(a3 + 23) >= 0)
+  if (*(number + 23) >= 0)
   {
-    v17 = a3;
+    numberCopy = number;
   }
 
   else
   {
-    v17 = *a3;
+    numberCopy = *number;
   }
 
-  v18 = [NSString stringWithUTF8String:v17];
+  v18 = [NSString stringWithUTF8String:numberCopy];
   v19 = [TUHandle handleWithDestinationID:v18];
   [v16 setHandle:v19];
 
-  if (*(a4 + 23) >= 0)
+  if (*(uid + 23) >= 0)
   {
-    v20 = a4;
+    uidCopy = uid;
   }
 
   else
   {
-    v20 = *a4;
+    uidCopy = *uid;
   }
 
-  v21 = [NSString stringWithUTF8String:v20];
+  v21 = [NSString stringWithUTF8String:uidCopy];
   [v16 setAudioSourceIdentifier:v21];
 
   v22 = qword_100BCE948;
   if (os_log_type_enabled(qword_100BCE948, OS_LOG_TYPE_INFO))
   {
-    if (*(a3 + 23) >= 0)
+    if (*(number + 23) >= 0)
     {
-      v23 = a3;
+      numberCopy2 = number;
     }
 
     else
     {
-      v23 = *a3;
+      numberCopy2 = *number;
     }
 
     v26 = 136315394;
-    v27 = v23;
+    v27 = numberCopy2;
     v28 = 2112;
     v29 = v15;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Dialing '%s' with TU provider %@", &v26, 0x16u);
   }
 
-  v24 = [(Communicator *)self tuCallCenter];
-  [v24 launchAppForDialRequest:v16 completion:0];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  [tuCallCenter launchAppForDialRequest:v16 completion:0];
 
   return 0;
 }
 
-- (int)_redialNumberWhileScreening:(const void *)a3 uid:(const void *)a4 providerIdentifier:(const void *)a5
+- (int)_redialNumberWhileScreening:(const void *)screening uid:(const void *)uid providerIdentifier:(const void *)identifier
 {
   v9 = objc_alloc_init(TUCallProviderManager);
-  if (*(a5 + 23) >= 0)
+  if (*(identifier + 23) >= 0)
   {
-    v10 = a5;
+    identifierCopy = identifier;
   }
 
   else
   {
-    v10 = *a5;
+    identifierCopy = *identifier;
   }
 
-  v11 = [NSString stringWithUTF8String:v10];
+  v11 = [NSString stringWithUTF8String:identifierCopy];
   v12 = [v9 providerWithIdentifier:v11];
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    telephonyProvider = v12;
   }
 
   else
   {
-    v14 = [v9 telephonyProvider];
+    telephonyProvider = [v9 telephonyProvider];
   }
 
-  v15 = v14;
+  v15 = telephonyProvider;
 
   v16 = [[TUDialRequest alloc] initWithProvider:v15];
-  if (*(a3 + 23) >= 0)
+  if (*(screening + 23) >= 0)
   {
-    v17 = a3;
+    screeningCopy = screening;
   }
 
   else
   {
-    v17 = *a3;
+    screeningCopy = *screening;
   }
 
-  v18 = [NSString stringWithUTF8String:v17];
+  v18 = [NSString stringWithUTF8String:screeningCopy];
   v19 = [TUHandle handleWithDestinationID:v18];
   [v16 setHandle:v19];
 
-  if (*(a4 + 23) >= 0)
+  if (*(uid + 23) >= 0)
   {
-    v20 = a4;
+    uidCopy = uid;
   }
 
   else
   {
-    v20 = *a4;
+    uidCopy = *uid;
   }
 
-  v21 = [NSString stringWithUTF8String:v20];
+  v21 = [NSString stringWithUTF8String:uidCopy];
   [v16 setAudioSourceIdentifier:v21];
 
   v22 = qword_100BCE948;
   if (os_log_type_enabled(qword_100BCE948, OS_LOG_TYPE_INFO))
   {
-    if (*(a3 + 23) >= 0)
+    if (*(screening + 23) >= 0)
     {
-      v23 = a3;
+      screeningCopy2 = screening;
     }
 
     else
     {
-      v23 = *a3;
+      screeningCopy2 = *screening;
     }
 
     v28 = 136315394;
-    v29 = v23;
+    v29 = screeningCopy2;
     v30 = 2112;
     v31 = v15;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Calling handleRedialCommandWhileScreening '%s' with TU provider %@", &v28, 0x16u);
   }
 
-  v24 = [(Communicator *)self tuCallCenter];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
   v25 = objc_opt_respondsToSelector();
 
-  v26 = [(Communicator *)self tuCallCenter];
+  tuCallCenter2 = [(Communicator *)self tuCallCenter];
   if (v25)
   {
-    [v26 handleRedialCommandWhileScreening:v16];
+    [tuCallCenter2 handleRedialCommandWhileScreening:v16];
   }
 
   else
   {
-    [v26 launchAppForDialRequest:v16 completion:0];
+    [tuCallCenter2 launchAppForDialRequest:v16 completion:0];
   }
 
   return 0;
 }
 
-- (int)_answerCall:(id)a3 uid:(const void *)a4 behavior:(int64_t)a5
+- (int)_answerCall:(id)call uid:(const void *)uid behavior:(int64_t)behavior
 {
-  v8 = a3;
-  v9 = [[TUAnswerRequest alloc] initWithCall:v8];
-  if (*(a4 + 23) >= 0)
+  callCopy = call;
+  v9 = [[TUAnswerRequest alloc] initWithCall:callCopy];
+  if (*(uid + 23) >= 0)
   {
-    v10 = a4;
+    uidCopy = uid;
   }
 
   else
   {
-    v10 = *a4;
+    uidCopy = *uid;
   }
 
-  v11 = [NSString stringWithUTF8String:v10];
+  v11 = [NSString stringWithUTF8String:uidCopy];
   [v9 setSourceIdentifier:v11];
 
-  [v9 setBehavior:a5];
-  v12 = [(Communicator *)self tuCallCenter];
-  [v12 answerWithRequest:v9];
+  [v9 setBehavior:behavior];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  [tuCallCenter answerWithRequest:v9];
 
   return 0;
 }
 
 - (id)_getSubscriptionContext
 {
-  v2 = [(Communicator *)self ctClient];
-  v3 = [v2 getSubscriptionInfoWithError:0];
+  ctClient = [(Communicator *)self ctClient];
+  v3 = [ctClient getSubscriptionInfoWithError:0];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 subscriptions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subscriptions = [v3 subscriptions];
+  v5 = [subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -660,21 +660,21 @@ LABEL_51:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subscriptions);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 userDefaultVoice];
-        v10 = [v9 BOOLValue];
+        userDefaultVoice = [v8 userDefaultVoice];
+        bOOLValue = [userDefaultVoice BOOLValue];
 
-        if (v10)
+        if (bOOLValue)
         {
           v5 = v8;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -700,31 +700,31 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Received 'active subscriptions did change' delegate", v11, 2u);
     }
 
-    v4 = [(Communicator *)self _getSubscriptionContext];
-    v5 = [(Communicator *)self ctClient];
-    v6 = [v5 getSignalStrengthInfo:v4 error:0];
+    _getSubscriptionContext = [(Communicator *)self _getSubscriptionContext];
+    ctClient = [(Communicator *)self ctClient];
+    v6 = [ctClient getSignalStrengthInfo:_getSubscriptionContext error:0];
 
-    v7 = [(Communicator *)self delegate];
-    v8 = [v6 bars];
-    (*(v7->var0 + 4))(v7, [v8 unsignedIntValue]);
+    delegate = [(Communicator *)self delegate];
+    bars = [v6 bars];
+    (*(delegate->var0 + 4))(delegate, [bars unsignedIntValue]);
 
-    v9 = [(Communicator *)self delegate];
-    (*(v9->var0 + 3))(v9);
-    v10 = [(Communicator *)self delegate];
-    (*(v10->var0 + 1))(v10);
+    delegate2 = [(Communicator *)self delegate];
+    (*(delegate2->var0 + 3))(delegate2);
+    delegate3 = [(Communicator *)self delegate];
+    (*(delegate3->var0 + 1))(delegate3);
   }
 }
 
-- (void)operatorNameChanged:(id)a3 name:(id)a4
+- (void)operatorNameChanged:(id)changed name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  nameCopy = name;
   if ([(Communicator *)self delegate])
   {
-    v8 = [v6 userDefaultVoice];
-    v9 = [v8 BOOLValue];
+    userDefaultVoice = [changedCopy userDefaultVoice];
+    bOOLValue = [userDefaultVoice BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       v10 = qword_100BCE948;
       if (os_log_type_enabled(qword_100BCE948, OS_LOG_TYPE_INFO))
@@ -733,22 +733,22 @@ LABEL_11:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Received 'operator name changed' delegate", v12, 2u);
       }
 
-      v11 = [(Communicator *)self delegate];
-      (*(v11->var0 + 1))(v11);
+      delegate = [(Communicator *)self delegate];
+      (*(delegate->var0 + 1))(delegate);
     }
   }
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  infoCopy = info;
   if ([(Communicator *)self delegate])
   {
-    v8 = [v6 userDefaultVoice];
-    v9 = [v8 BOOLValue];
+    userDefaultVoice = [changedCopy userDefaultVoice];
+    bOOLValue = [userDefaultVoice BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       v10 = qword_100BCE948;
       if (os_log_type_enabled(qword_100BCE948, OS_LOG_TYPE_INFO))
@@ -757,25 +757,25 @@ LABEL_11:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Received 'signal strength changed' delegate", v14, 2u);
       }
 
-      v11 = [v7 bars];
-      v12 = [v11 unsignedIntValue];
+      bars = [infoCopy bars];
+      unsignedIntValue = [bars unsignedIntValue];
 
-      v13 = [(Communicator *)self delegate];
-      (*(v13->var0 + 4))(v13, v12);
+      delegate = [(Communicator *)self delegate];
+      (*(delegate->var0 + 4))(delegate, unsignedIntValue);
     }
   }
 }
 
-- (void)displayStatusChanged:(id)a3 status:(id)a4
+- (void)displayStatusChanged:(id)changed status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  statusCopy = status;
   if ([(Communicator *)self delegate])
   {
-    v8 = [v6 userDefaultVoice];
-    v9 = [v8 BOOLValue];
+    userDefaultVoice = [changedCopy userDefaultVoice];
+    bOOLValue = [userDefaultVoice BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       v10 = qword_100BCE948;
       if (os_log_type_enabled(qword_100BCE948, OS_LOG_TYPE_INFO))
@@ -784,16 +784,16 @@ LABEL_11:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Received 'display status changed' delegate", v12, 2u);
       }
 
-      v11 = [(Communicator *)self delegate];
-      (*(v11->var0 + 3))(v11);
+      delegate = [(Communicator *)self delegate];
+      (*(delegate->var0 + 3))(delegate);
     }
   }
 }
 
-- (void)context:(id)a3 capabilitiesChanged:(id)a4
+- (void)context:(id)context capabilitiesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  changedCopy = changed;
   if ([(Communicator *)self delegate])
   {
     v8 = qword_100BCE948;
@@ -803,14 +803,14 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Received 'context capabilities changed' notification", v10, 2u);
     }
 
-    v9 = [(Communicator *)self delegate];
-    (*(v9->var0 + 2))(v9);
+    delegate = [(Communicator *)self delegate];
+    (*(delegate->var0 + 2))(delegate);
   }
 }
 
-- (void)networkReselectionNeeded:(id)a3
+- (void)networkReselectionNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(Communicator *)self delegate])
   {
     v5 = qword_100BCE948;
@@ -820,17 +820,17 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Received 'network selection needed' notification", v8, 2u);
     }
 
-    v6 = [(Communicator *)self delegate];
-    (*(v6->var0 + 1))(v6);
-    v7 = [(Communicator *)self delegate];
-    (*(v7->var0 + 3))(v7);
+    delegate = [(Communicator *)self delegate];
+    (*(delegate->var0 + 1))(delegate);
+    delegate2 = [(Communicator *)self delegate];
+    (*(delegate2->var0 + 3))(delegate2);
   }
 }
 
-- (void)networkSelected:(id)a3 success:(BOOL)a4 mode:(id)a5
+- (void)networkSelected:(id)selected success:(BOOL)success mode:(id)mode
 {
-  v7 = a3;
-  v8 = a5;
+  selectedCopy = selected;
+  modeCopy = mode;
   if ([(Communicator *)self delegate])
   {
     v9 = qword_100BCE948;
@@ -840,18 +840,18 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Received 'network selection changed' notification", v12, 2u);
     }
 
-    v10 = [(Communicator *)self delegate];
-    (*(v10->var0 + 1))(v10);
-    v11 = [(Communicator *)self delegate];
-    (*(v11->var0 + 3))(v11);
+    delegate = [(Communicator *)self delegate];
+    (*(delegate->var0 + 1))(delegate);
+    delegate2 = [(Communicator *)self delegate];
+    (*(delegate2->var0 + 3))(delegate2);
   }
 }
 
-- (void)_handleTUCallCenterCallStatusChangedNotification:(id)a3
+- (void)_handleTUCallCenterCallStatusChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(Communicator *)self _identifierForCall:v5];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  v6 = [(Communicator *)self _identifierForCall:object];
 
   v7 = *(sub_1000D999C() + 8);
   v9[0] = _NSConcreteStackBlock;
@@ -864,22 +864,22 @@ LABEL_11:
   dispatch_async(v7, v9);
 }
 
-- (void)_handleTUCallCenterCallExpanseStatusChangedNotification:(id)a3
+- (void)_handleTUCallCenterCallExpanseStatusChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = qword_100BCE948;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 object];
+    object = [notificationCopy object];
     v7 = 138412290;
-    v8 = v6;
+    v8 = object;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Expanse status changed for call: %@", &v7, 0xCu);
   }
 
   [(Communicator *)self _updateCalls];
 }
 
-- (void)_handleCTCellularTransmitStateChangedNotification:(__CFDictionary *)a3
+- (void)_handleCTCellularTransmitStateChangedNotification:(__CFDictionary *)notification
 {
   if ([(Communicator *)self delegate])
   {
@@ -890,12 +890,12 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Received 'cellular transmit state changed' notification", v9, 2u);
     }
 
-    Value = CFDictionaryGetValue(a3, kKeyCTCellularTransmitState);
+    Value = CFDictionaryGetValue(notification, kKeyCTCellularTransmitState);
     if (Value)
     {
       v7 = CFEqual(Value, kCTCellularTransmitStarted) != 0;
-      v8 = [(Communicator *)self delegate];
-      (*(v8->var0 + 5))(v8, v7);
+      delegate = [(Communicator *)self delegate];
+      (*(delegate->var0 + 5))(delegate, v7);
     }
   }
 }
@@ -908,33 +908,33 @@ LABEL_11:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 subscriptions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
-  if (v5)
+  subscriptions = [v3 subscriptions];
+  phoneNumber = [subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (phoneNumber)
   {
     v6 = *v13;
     while (2)
     {
-      for (i = 0; i != v5; i = i + 1)
+      for (i = 0; i != phoneNumber; i = i + 1)
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subscriptions);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 userDefaultVoice];
-        v10 = [v9 BOOLValue];
+        userDefaultVoice = [v8 userDefaultVoice];
+        bOOLValue = [userDefaultVoice BOOLValue];
 
-        if (v10)
+        if (bOOLValue)
         {
-          v5 = [v8 phoneNumber];
+          phoneNumber = [v8 phoneNumber];
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
-      if (v5)
+      phoneNumber = [subscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
+      if (phoneNumber)
       {
         continue;
       }
@@ -945,7 +945,7 @@ LABEL_11:
 
 LABEL_11:
 
-  return v5;
+  return phoneNumber;
 }
 
 - (BOOL)supports3WC
@@ -961,8 +961,8 @@ LABEL_11:
 
 - (int)answerIncomingCall:()basic_string<char
 {
-  v5 = [(Communicator *)self tuCallCenter];
-  v6 = [v5 audioOrVideoCallWithStatus:4];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  v6 = [tuCallCenter audioOrVideoCallWithStatus:4];
 
   v7 = qword_100BCE948;
   if (v6)
@@ -992,8 +992,8 @@ LABEL_11:
 
 - (int)rejectIncomingCall
 {
-  v3 = [(Communicator *)self tuCallCenter];
-  v4 = [v3 audioOrVideoCallWithStatus:4];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  v4 = [tuCallCenter audioOrVideoCallWithStatus:4];
 
   v5 = qword_100BCE948;
   if (v4)
@@ -1005,8 +1005,8 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Found incoming TU call to reject: %@", &v9, 0xCu);
     }
 
-    v6 = [(Communicator *)self tuCallCenter];
-    [v6 disconnectCall:v4];
+    tuCallCenter2 = [(Communicator *)self tuCallCenter];
+    [tuCallCenter2 disconnectCall:v4];
 
     v7 = 0;
   }
@@ -1026,8 +1026,8 @@ LABEL_11:
 
 - (int)hangupActiveCall
 {
-  v3 = [(Communicator *)self tuCallCenter];
-  v4 = [v3 audioOrVideoCallWithStatus:3];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  v4 = [tuCallCenter audioOrVideoCallWithStatus:3];
 
   if (v4)
   {
@@ -1039,29 +1039,29 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Found sending TU call to disconnect: %@", &v13, 0xCu);
     }
 
-    v6 = [(Communicator *)self tuCallCenter];
-    [v6 disconnectCall:v4];
+    tuCallCenter2 = [(Communicator *)self tuCallCenter];
+    [tuCallCenter2 disconnectCall:v4];
 LABEL_9:
     v11 = 0;
     goto LABEL_10;
   }
 
-  v7 = [(Communicator *)self tuCallCenter];
-  v6 = [v7 audioAndVideoCallsWithStatus:1];
+  tuCallCenter3 = [(Communicator *)self tuCallCenter];
+  tuCallCenter2 = [tuCallCenter3 audioAndVideoCallsWithStatus:1];
 
-  v8 = [v6 count];
+  v8 = [tuCallCenter2 count];
   v9 = qword_100BCE948;
   if (v8)
   {
     if (os_log_type_enabled(qword_100BCE948, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = tuCallCenter2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Found active TU calls to disconnect: %@", &v13, 0xCu);
     }
 
-    v10 = [(Communicator *)self tuCallCenter];
-    [v10 disconnectCurrentCallAndActivateHeld];
+    tuCallCenter4 = [(Communicator *)self tuCallCenter];
+    [tuCallCenter4 disconnectCurrentCallAndActivateHeld];
 
     goto LABEL_9;
   }
@@ -1079,8 +1079,8 @@ LABEL_10:
 
 - (int)releaseHeldCalls
 {
-  v3 = [(Communicator *)self tuCallCenter];
-  v4 = [v3 audioAndVideoCallsWithStatus:2];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  v4 = [tuCallCenter audioAndVideoCallsWithStatus:2];
 
   v14 = v4;
   if ([v4 count])
@@ -1112,8 +1112,8 @@ LABEL_10:
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Found held TU call to disconnect: %@", buf, 0xCu);
           }
 
-          v11 = [(Communicator *)self tuCallCenter];
-          [v11 disconnectCall:v9];
+          tuCallCenter2 = [(Communicator *)self tuCallCenter];
+          [tuCallCenter2 disconnectCall:v9];
         }
 
         v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
@@ -1140,8 +1140,8 @@ LABEL_10:
 
 - (int)releaseActiveCalls:()basic_string<char
 {
-  v5 = [(Communicator *)self tuCallCenter];
-  v6 = [v5 audioOrVideoCallWithStatus:4];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  v6 = [tuCallCenter audioOrVideoCallWithStatus:4];
 
   if (v6)
   {
@@ -1158,8 +1158,8 @@ LABEL_10:
 
   else
   {
-    v9 = [(Communicator *)self tuCallCenter];
-    v10 = [v9 audioAndVideoCallsWithStatus:1];
+    tuCallCenter2 = [(Communicator *)self tuCallCenter];
+    v10 = [tuCallCenter2 audioAndVideoCallsWithStatus:1];
 
     v11 = [v10 count];
     v12 = qword_100BCE948;
@@ -1172,8 +1172,8 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Found active TU calls to disconnect: %@", &v15, 0xCu);
       }
 
-      v13 = [(Communicator *)self tuCallCenter];
-      [v13 disconnectCurrentCallAndActivateHeld];
+      tuCallCenter3 = [(Communicator *)self tuCallCenter];
+      [tuCallCenter3 disconnectCurrentCallAndActivateHeld];
 
       v8 = 0;
     }
@@ -1194,16 +1194,16 @@ LABEL_10:
 
 - (int)holdActiveCalls:()basic_string<char
 {
-  v5 = [(Communicator *)self tuCallCenter];
-  v6 = [v5 audioOrVideoCallWithStatus:4];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  v6 = [tuCallCenter audioOrVideoCallWithStatus:4];
 
   if (!v6)
   {
-    v11 = [(Communicator *)self tuCallCenter];
-    v12 = [v11 audioOrVideoCallWithStatus:1];
+    tuCallCenter2 = [(Communicator *)self tuCallCenter];
+    v12 = [tuCallCenter2 audioOrVideoCallWithStatus:1];
 
-    v13 = [(Communicator *)self tuCallCenter];
-    v14 = [v13 audioOrVideoCallWithStatus:2];
+    tuCallCenter3 = [(Communicator *)self tuCallCenter];
+    v14 = [tuCallCenter3 audioOrVideoCallWithStatus:2];
 
     if (v12 && v14)
     {
@@ -1214,8 +1214,8 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Swapping TU calls", &v24, 2u);
       }
 
-      v16 = [(Communicator *)self tuCallCenter];
-      [v16 swapCalls];
+      tuCallCenter4 = [(Communicator *)self tuCallCenter];
+      [tuCallCenter4 swapCalls];
     }
 
     else if (!v12 || v14)
@@ -1239,8 +1239,8 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Found held TU call to resume: %@", &v24, 0xCu);
       }
 
-      v23 = [(Communicator *)self tuCallCenter];
-      [v23 unholdCall:v14];
+      tuCallCenter5 = [(Communicator *)self tuCallCenter];
+      [tuCallCenter5 unholdCall:v14];
     }
 
     else
@@ -1253,10 +1253,10 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Found active TU call to hold: %@", &v24, 0xCu);
       }
 
-      v19 = [v12 model];
-      v20 = [v19 supportsHolding];
+      model = [v12 model];
+      supportsHolding = [model supportsHolding];
 
-      if (!v20)
+      if (!supportsHolding)
       {
         if (os_log_type_enabled(qword_100BCE948, OS_LOG_TYPE_ERROR))
         {
@@ -1267,8 +1267,8 @@ LABEL_10:
         goto LABEL_14;
       }
 
-      v21 = [(Communicator *)self tuCallCenter];
-      [v21 holdCall:v12];
+      tuCallCenter6 = [(Communicator *)self tuCallCenter];
+      [tuCallCenter6 holdCall:v12];
     }
 
     v10 = 0;
@@ -1277,8 +1277,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v7 = [(Communicator *)self tuCallCenter];
-  if ([v7 isHoldAndAnswerAllowed])
+  tuCallCenter7 = [(Communicator *)self tuCallCenter];
+  if ([tuCallCenter7 isHoldAndAnswerAllowed])
   {
     v8 = 2;
   }
@@ -1306,11 +1306,11 @@ LABEL_15:
 
 - (int)addHeldCall
 {
-  v3 = [(Communicator *)self tuCallCenter];
-  v4 = [v3 audioOrVideoCallWithStatus:2];
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  v4 = [tuCallCenter audioOrVideoCallWithStatus:2];
 
-  v5 = [(Communicator *)self tuCallCenter];
-  v6 = [v5 audioOrVideoCallWithStatus:1];
+  tuCallCenter2 = [(Communicator *)self tuCallCenter];
+  v6 = [tuCallCenter2 audioOrVideoCallWithStatus:1];
 
   v7 = qword_100BCE948;
   if (v4 && v6)
@@ -1330,13 +1330,13 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Found active TU call to create a conference: %@", &v14, 0xCu);
     }
 
-    v9 = [(Communicator *)self tuCallCenter];
-    v10 = [v9 canGroupCall:v4 withCall:v6];
+    tuCallCenter3 = [(Communicator *)self tuCallCenter];
+    v10 = [tuCallCenter3 canGroupCall:v4 withCall:v6];
 
     if (v10)
     {
-      v11 = [(Communicator *)self tuCallCenter];
-      [v11 groupCall:v4 withOtherCall:v6];
+      tuCallCenter4 = [(Communicator *)self tuCallCenter];
+      [tuCallCenter4 groupCall:v4 withOtherCall:v6];
 
       v12 = 0;
     }
@@ -1365,10 +1365,10 @@ LABEL_15:
   return v12;
 }
 
-- (int)releaseCall:(id)a3
+- (int)releaseCall:(id)call
 {
-  v4 = a3;
-  v5 = [(Communicator *)self _callForIdentifier:v4];
+  callCopy = call;
+  v5 = [(Communicator *)self _callForIdentifier:callCopy];
   v6 = qword_100BCE948;
   if (v5)
   {
@@ -1379,11 +1379,11 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Found TU call to disconnect: %@", &v14, 0xCu);
     }
 
-    v7 = [(Communicator *)self tuCallCenter];
-    [v7 disconnectCall:v5];
+    tuCallCenter = [(Communicator *)self tuCallCenter];
+    [tuCallCenter disconnectCall:v5];
 
-    v8 = [(Communicator *)self tuCallCenter];
-    v9 = [v8 audioOrVideoCallWithStatus:2];
+    tuCallCenter2 = [(Communicator *)self tuCallCenter];
+    v9 = [tuCallCenter2 audioOrVideoCallWithStatus:2];
 
     if (v9)
     {
@@ -1395,8 +1395,8 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Found held TU call to resume: %@", &v14, 0xCu);
       }
 
-      v11 = [(Communicator *)self tuCallCenter];
-      [v11 unholdCall:v9];
+      tuCallCenter3 = [(Communicator *)self tuCallCenter];
+      [tuCallCenter3 unholdCall:v9];
     }
 
     v12 = 0;
@@ -1415,10 +1415,10 @@ LABEL_15:
   return v12;
 }
 
-- (int)privateConference:(id)a3
+- (int)privateConference:(id)conference
 {
-  v4 = a3;
-  v5 = [(Communicator *)self _callForIdentifier:v4];
+  conferenceCopy = conference;
+  v5 = [(Communicator *)self _callForIdentifier:conferenceCopy];
   v6 = qword_100BCE948;
   if (!v5)
   {
@@ -1449,13 +1449,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v7 = [v5 model];
-  v8 = [v7 supportsUngrouping];
+  model = [v5 model];
+  supportsUngrouping = [model supportsUngrouping];
 
-  if (v8)
+  if (supportsUngrouping)
   {
-    v9 = [(Communicator *)self tuCallCenter];
-    [v9 ungroupCall:v5];
+    tuCallCenter = [(Communicator *)self tuCallCenter];
+    [tuCallCenter ungroupCall:v5];
 
     v10 = 0;
   }
@@ -1475,7 +1475,7 @@ LABEL_12:
   return v10;
 }
 
-- (int)dialNumber:(const void *)a3 uid:()basic_string<char
+- (int)dialNumber:(const void *)number uid:()basic_string<char
 {
   v14 = 0;
   v15 = 0;
@@ -1484,14 +1484,14 @@ LABEL_12:
   [(Communicator *)self getCurrentScreeningCalls:&v14];
   if (v14 == v15)
   {
-    sub_1000D6B20(a3, v12);
+    sub_1000D6B20(number, v12);
     sub_100007E30(__p, "");
     v7 = [(Communicator *)self _dialNumber:v12 uid:a4 providerIdentifier:__p];
   }
 
   else
   {
-    sub_1000D6B20(a3, v12);
+    sub_1000D6B20(number, v12);
     sub_100007E30(__p, "");
     v7 = [(Communicator *)self _redialNumberWhileScreening:v12 uid:a4 providerIdentifier:__p];
   }
@@ -1512,18 +1512,18 @@ LABEL_12:
   return v8;
 }
 
-- (int)sendDTMFTone:(unsigned __int8)a3
+- (int)sendDTMFTone:(unsigned __int8)tone
 {
-  v3 = a3;
-  v4 = [(Communicator *)self tuCallCenter];
-  v5 = [v4 audioOrVideoCallWithStatus:1];
+  toneCopy = tone;
+  tuCallCenter = [(Communicator *)self tuCallCenter];
+  v5 = [tuCallCenter audioOrVideoCallWithStatus:1];
 
-  v6 = [v5 model];
-  v7 = [v6 supportsDTMF];
+  model = [v5 model];
+  supportsDTMF = [model supportsDTMF];
 
-  if (v7)
+  if (supportsDTMF)
   {
-    [v5 playDTMFToneForKey:v3];
+    [v5 playDTMFToneForKey:toneCopy];
     v8 = 0;
   }
 
@@ -1540,15 +1540,15 @@ LABEL_12:
   return v8;
 }
 
-- (int)enableEchoCancellationNoiseReduction:(BOOL)a3
+- (int)enableEchoCancellationNoiseReduction:(BOOL)reduction
 {
-  v3 = a3;
+  reductionCopy = reduction;
   if (![(Communicator *)self ctServerConnection]|| ([(Communicator *)self ctServerConnection], (result = _CTServerConnectionEchoCancelationAndNoiseReduction()) != 0))
   {
     v6 = qword_100BCE948;
     if (os_log_type_enabled(qword_100BCE948, OS_LOG_TYPE_ERROR))
     {
-      sub_100841700(v3, v6, v7, v8, v9, v10, v11, v12);
+      sub_100841700(reductionCopy, v6, v7, v8, v9, v10, v11, v12);
     }
 
     return 2;
@@ -1575,9 +1575,9 @@ LABEL_12:
     *&v13[16] = 7;
     *&v13[8] = 1;
     *&v13[12] = 1;
-    v6 = [(Communicator *)self _myNumber];
-    v7 = v6;
-    sub_1000DA180(&__str, [v6 UTF8String]);
+    _myNumber = [(Communicator *)self _myNumber];
+    v7 = _myNumber;
+    sub_1000DA180(&__str, [_myNumber UTF8String]);
     sub_1000DA184(&v13[24], &__str);
     sub_1000D8E64(&__str);
 
@@ -1665,12 +1665,12 @@ LABEL_12:
   return v5;
 }
 
-- (int)getCurrentCalls:(void *)a3
+- (int)getCurrentCalls:(void *)calls
 {
   [(Communicator *)self calls];
-  if (&v5 != a3)
+  if (&v5 != calls)
   {
-    sub_1000D8984(a3, v5, v6, 0x4EC4EC4EC4EC4EC5 * ((v6 - v5) >> 3));
+    sub_1000D8984(calls, v5, v6, 0x4EC4EC4EC4EC4EC5 * ((v6 - v5) >> 3));
   }
 
   v7 = &v5;
@@ -1678,7 +1678,7 @@ LABEL_12:
   return 0;
 }
 
-- (int)getCurrentExpanseCalls:(void *)a3
+- (int)getCurrentExpanseCalls:(void *)calls
 {
   v10 = 0;
   v11 = 0;
@@ -1701,9 +1701,9 @@ LABEL_12:
     v5 += 104;
   }
 
-  if (&v7 != a3)
+  if (&v7 != calls)
   {
-    sub_1000D8984(a3, v7, v8, 0x4EC4EC4EC4EC4EC5 * ((v8 - v7) >> 3));
+    sub_1000D8984(calls, v7, v8, 0x4EC4EC4EC4EC4EC5 * ((v8 - v7) >> 3));
   }
 
   v13 = &v7;
@@ -1713,18 +1713,18 @@ LABEL_12:
   return 0;
 }
 
-- (int)setScreeningCall:(id)a3 isScreening:(BOOL)a4
+- (int)setScreeningCall:(id)call isScreening:(BOOL)screening
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(Communicator *)self _callForIdentifier:v6];
+  screeningCopy = screening;
+  callCopy = call;
+  v7 = [(Communicator *)self _callForIdentifier:callCopy];
   if (v7)
   {
     v8 = qword_100BCE948;
     if (os_log_type_enabled(qword_100BCE948, OS_LOG_TYPE_INFO))
     {
       *buf = 67109378;
-      *&buf[4] = v4;
+      *&buf[4] = screeningCopy;
       LOWORD(v18) = 2112;
       *(&v18 + 2) = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Screening:%d Call:%@", buf, 0x12u);
@@ -1734,7 +1734,7 @@ LABEL_12:
     *buf = 0;
     v18 = 0uLL;
     [(Communicator *)self calls];
-    v9 = sub_1000D8B24(buf, v6);
+    v9 = sub_1000D8B24(buf, callCopy);
     if (v18 != v9)
     {
       v10 = qword_100BCE948;
@@ -1744,13 +1744,13 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Found Call. Updating State", v16, 2u);
       }
 
-      *(v9 + 15) = v4;
+      *(v9 + 15) = screeningCopy;
       sub_1000DA9C4(v15);
       [(Communicator *)self setCalls:v15];
       *v16 = v15;
       sub_1000D6BD4(v16);
-      v11 = [(Communicator *)self delegate];
-      (*v11->var0)(v11, v6);
+      delegate = [(Communicator *)self delegate];
+      (*delegate->var0)(delegate, callCopy);
       *v16 = buf;
       sub_1000D6BD4(v16);
       v12 = 0;
@@ -1765,7 +1765,7 @@ LABEL_12:
   v12 = 16;
   if (os_log_type_enabled(qword_100BCE948, OS_LOG_TYPE_ERROR))
   {
-    sub_100841820(v7, v4, v13);
+    sub_100841820(v7, screeningCopy, v13);
   }
 
 LABEL_11:
@@ -1773,7 +1773,7 @@ LABEL_11:
   return v12;
 }
 
-- (int)getCurrentScreeningCalls:(void *)a3
+- (int)getCurrentScreeningCalls:(void *)calls
 {
   v10 = 0;
   v11 = 0;
@@ -1796,9 +1796,9 @@ LABEL_11:
     v5 += 104;
   }
 
-  if (&v7 != a3)
+  if (&v7 != calls)
   {
-    sub_1000D8984(a3, v7, v8, 0x4EC4EC4EC4EC4EC5 * ((v8 - v7) >> 3));
+    sub_1000D8984(calls, v7, v8, 0x4EC4EC4EC4EC4EC5 * ((v8 - v7) >> 3));
   }
 
   v13 = &v7;
@@ -1808,7 +1808,7 @@ LABEL_11:
   return 0;
 }
 
-- (int)getOperatorStatus:(void *)a3
+- (int)getOperatorStatus:(void *)status
 {
   if ([(Communicator *)self ctServerConnection])
   {
@@ -1822,9 +1822,9 @@ LABEL_11:
       LODWORD(v11[0]) = 1;
     }
 
-    v5 = [(Communicator *)self _getSubscriptionContext];
-    v6 = [(Communicator *)self ctClient];
-    v7 = [v6 getLocalizedOperatorName:v5 error:0];
+    _getSubscriptionContext = [(Communicator *)self _getSubscriptionContext];
+    ctClient = [(Communicator *)self ctClient];
+    v7 = [ctClient getLocalizedOperatorName:_getSubscriptionContext error:0];
 
     if (v7)
     {
@@ -1835,8 +1835,8 @@ LABEL_11:
         operator delete(__p.__r_.__value_.__l.__data_);
       }
 
-      std::string::operator=((a3 + 8), &v11[1]);
-      *a3 = v11[0];
+      std::string::operator=((status + 8), &v11[1]);
+      *status = v11[0];
     }
 
     if (SHIBYTE(v12) < 0)
@@ -1866,24 +1866,24 @@ LABEL_11:
 {
   if ([(Communicator *)self ctServerConnection])
   {
-    v3 = [(Communicator *)self _getSubscriptionContext];
-    v4 = [(Communicator *)self ctClient];
-    v5 = [v4 copyRegistrationDisplayStatus:v3 error:0];
+    _getSubscriptionContext = [(Communicator *)self _getSubscriptionContext];
+    ctClient = [(Communicator *)self ctClient];
+    v5 = [ctClient copyRegistrationDisplayStatus:_getSubscriptionContext error:0];
 
-    v6 = [v5 registrationDisplayStatus];
+    registrationDisplayStatus = [v5 registrationDisplayStatus];
     v7 = objc_alloc_init(BDRegistrationStatus);
-    if ([v6 isEqualToString:kCTRegistrationStatusRegisteredHome])
+    if ([registrationDisplayStatus isEqualToString:kCTRegistrationStatusRegisteredHome])
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v6 isEqualToString:kCTRegistrationStatusRegisteredRoaming];
+      v8 = [registrationDisplayStatus isEqualToString:kCTRegistrationStatusRegisteredRoaming];
     }
 
     [(BDRegistrationStatus *)v7 setService:v8];
-    -[BDRegistrationStatus setRoaming:](v7, "setRoaming:", [v6 isEqualToString:kCTRegistrationStatusRegisteredRoaming]);
+    -[BDRegistrationStatus setRoaming:](v7, "setRoaming:", [registrationDisplayStatus isEqualToString:kCTRegistrationStatusRegisteredRoaming]);
   }
 
   else
@@ -1899,34 +1899,34 @@ LABEL_11:
   return v7;
 }
 
-- (int)getSignalStrength:(int *)a3 mode:(int)a4
+- (int)getSignalStrength:(int *)strength mode:(int)mode
 {
   if ([(Communicator *)self ctServerConnection])
   {
-    v7 = [(Communicator *)self _getSubscriptionContext];
-    v8 = [(Communicator *)self ctClient];
-    v9 = [v8 getSignalStrengthInfo:v7 error:0];
+    _getSubscriptionContext = [(Communicator *)self _getSubscriptionContext];
+    ctClient = [(Communicator *)self ctClient];
+    v9 = [ctClient getSignalStrengthInfo:_getSubscriptionContext error:0];
 
-    if (a4)
+    if (mode)
     {
-      if (a4 != 1)
+      if (mode != 1)
       {
 LABEL_10:
 
         return 0;
       }
 
-      v10 = [v9 bars];
-      v11 = 20 * [v10 intValue];
+      bars = [v9 bars];
+      intValue = 20 * [bars intValue];
     }
 
     else
     {
-      v10 = [v9 bars];
-      v11 = [v10 intValue];
+      bars = [v9 bars];
+      intValue = [bars intValue];
     }
 
-    *a3 = v11;
+    *strength = intValue;
 
     goto LABEL_10;
   }
@@ -1939,14 +1939,14 @@ LABEL_10:
   return 2;
 }
 
-- (int)getSubscriberNumber:(void *)a3
+- (int)getSubscriberNumber:(void *)number
 {
-  v4 = [(Communicator *)self _myNumber];
-  v5 = v4;
-  if (v4)
+  _myNumber = [(Communicator *)self _myNumber];
+  v5 = _myNumber;
+  if (_myNumber)
   {
-    sub_1000DA180(v8, [v4 UTF8String]);
-    sub_1000DA184(a3, v8);
+    sub_1000DA180(v8, [_myNumber UTF8String]);
+    sub_1000DA184(number, v8);
     sub_1000D8E64(v8);
     v6 = 0;
   }
@@ -1964,11 +1964,11 @@ LABEL_10:
   return v6;
 }
 
-- (int)getMobileSubscriberIdentity:(void *)a3
+- (int)getMobileSubscriberIdentity:(void *)identity
 {
   if ([(Communicator *)self ctServerConnection]&& ([(Communicator *)self ctServerConnection], !_CTServerConnectionCopyMobileEquipmentInfo()) && (CFAutorelease(0), (Value = CFDictionaryGetValue(0, kCTMobileEquipmentInfoCurrentSubscriberId)) != 0))
   {
-    std::string::assign(a3, [Value UTF8String]);
+    std::string::assign(identity, [Value UTF8String]);
     return 0;
   }
 
@@ -1983,11 +1983,11 @@ LABEL_10:
   }
 }
 
-- (int)getMobileEquipmentIdentity:(void *)a3
+- (int)getMobileEquipmentIdentity:(void *)identity
 {
   if ([(Communicator *)self ctServerConnection]&& ([(Communicator *)self ctServerConnection], !_CTServerConnectionCopyMobileEquipmentInfo()) && (CFAutorelease(0), (Value = CFDictionaryGetValue(0, kCTMobileEquipmentInfoCurrentMobileId)) != 0))
   {
-    std::string::assign(a3, [Value UTF8String]);
+    std::string::assign(identity, [Value UTF8String]);
     return 0;
   }
 
@@ -2002,13 +2002,13 @@ LABEL_10:
   }
 }
 
-- (id)getCountryCodeForIdentifier:(id)a3
+- (id)getCountryCodeForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(Communicator *)self ctServerConnection]|| ([(Communicator *)self ctClient], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = objc_autoreleasePoolPush();
-    if (v4)
+    if (identifierCopy)
     {
       [(Communicator *)self ctServerConnection];
       _CTServerConnectionCopyISOForMCC();
@@ -2025,12 +2025,12 @@ LABEL_10:
   if ([(Communicator *)self ctServerConnection]|| ([(Communicator *)self ctClient], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(Communicator *)self ctClient];
-    v6 = [v5 getCurrentDataSubscriptionContextSync:0];
+    ctClient = [(Communicator *)self ctClient];
+    v6 = [ctClient getCurrentDataSubscriptionContextSync:0];
 
-    v7 = [(Communicator *)self ctClient];
+    ctClient2 = [(Communicator *)self ctClient];
     v19 = 0;
-    v8 = [v7 copyLastKnownMobileCountryCode:v6 error:&v19];
+    v8 = [ctClient2 copyLastKnownMobileCountryCode:v6 error:&v19];
     v9 = v19;
 
     if (v9)
@@ -2055,16 +2055,16 @@ LABEL_10:
 
 - (id)getCountryCodeIdentifer
 {
-  v3 = [(Communicator *)self ctClient];
+  ctClient = [(Communicator *)self ctClient];
 
-  if (v3)
+  if (ctClient)
   {
-    v4 = [(Communicator *)self ctClient];
-    v5 = [v4 getCurrentDataSubscriptionContextSync:0];
+    ctClient2 = [(Communicator *)self ctClient];
+    v5 = [ctClient2 getCurrentDataSubscriptionContextSync:0];
 
-    v6 = [(Communicator *)self ctClient];
+    ctClient3 = [(Communicator *)self ctClient];
     v17 = 0;
-    v7 = [v6 copyMobileCountryCode:v5 error:&v17];
+    v7 = [ctClient3 copyMobileCountryCode:v5 error:&v17];
     v8 = v17;
 
     if (v8)
@@ -2087,13 +2087,13 @@ LABEL_10:
   return v7;
 }
 
-- (int)getTransmitState:(BOOL *)a3
+- (int)getTransmitState:(BOOL *)state
 {
   if ([(Communicator *)self ctServerConnection]&& ([(Communicator *)self ctServerConnection], !_CTServerConnectionCopyCellularTransmitState()) && (CFAutorelease(0), (Value = CFDictionaryGetValue(0, kKeyCTCellularTransmitState)) != 0))
   {
     v7 = CFEqual(Value, kCTCellularTransmitStarted);
     result = 0;
-    *a3 = v7 != 0;
+    *state = v7 != 0;
   }
 
   else
@@ -2109,12 +2109,12 @@ LABEL_10:
   return result;
 }
 
-- (void)setCalls:(CallList *)a3
+- (void)setCalls:(CallList *)calls
 {
   p_calls = &self->_calls;
-  if (p_calls != a3)
+  if (p_calls != calls)
   {
-    sub_1000D8984(p_calls, a3->fCalls.__begin_, a3->fCalls.__end_, 0x4EC4EC4EC4EC4EC5 * ((a3->fCalls.__end_ - a3->fCalls.__begin_) >> 3));
+    sub_1000D8984(p_calls, calls->fCalls.__begin_, calls->fCalls.__end_, 0x4EC4EC4EC4EC4EC5 * ((calls->fCalls.__end_ - calls->fCalls.__begin_) >> 3));
   }
 }
 

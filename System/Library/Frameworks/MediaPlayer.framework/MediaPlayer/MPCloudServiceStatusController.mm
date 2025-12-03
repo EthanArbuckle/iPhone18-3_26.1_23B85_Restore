@@ -1,39 +1,39 @@
 @interface MPCloudServiceStatusController
-+ (MPCloudServiceStatusController)cloudServiceStatusControllerWithUserIdentity:(id)a3;
++ (MPCloudServiceStatusController)cloudServiceStatusControllerWithUserIdentity:(id)identity;
 + (MPCloudServiceStatusController)sharedController;
 + (NSMutableDictionary)controllers;
 + (OS_dispatch_queue)globalSerialQueue;
-+ (id)_cloudServiceStatusControllerWithUserIdentity:(id)a3 createIfRequired:(BOOL)a4;
-+ (void)_postNotificationName:(id)a3 controller:(id)a4 userInfo:(id)a5;
-- (BOOL)_calculateShouldPlaybackRequireSubscriptionLeaseReturningLikelyToReachRemoteServer:(BOOL *)a3;
++ (id)_cloudServiceStatusControllerWithUserIdentity:(id)identity createIfRequired:(BOOL)required;
++ (void)_postNotificationName:(id)name controller:(id)controller userInfo:(id)info;
+- (BOOL)_calculateShouldPlaybackRequireSubscriptionLeaseReturningLikelyToReachRemoteServer:(BOOL *)server;
 - (BOOL)_currentCloudLibraryEnabled;
 - (BOOL)_currentPurchaseHistoryEnabled;
-- (BOOL)_handlesSameAccountAs:(id)a3;
+- (BOOL)_handlesSameAccountAs:(id)as;
 - (BOOL)isSubscriptionAvailable;
 - (BOOL)shouldPlaybackRequireSubscriptionLease;
 - (ICUserIdentity)userIdentity;
 - (NSString)description;
-- (id)_initWithUserIdentity:(id)a3;
+- (id)_initWithUserIdentity:(id)identity;
 - (unint64_t)matchStatus;
-- (void)_allowsMusicSubscriptionDidChange:(id)a3;
+- (void)_allowsMusicSubscriptionDidChange:(id)change;
 - (void)_beginObservingCloudLibraryEnabled;
 - (void)_beginObservingMatchStatus;
 - (void)_cloudClientAuthenticationDidChange;
-- (void)_copyObservationStateFrom:(id)a3;
-- (void)_enableICMLErrorReasonChange:(id)a3;
+- (void)_copyObservationStateFrom:(id)from;
+- (void)_enableICMLErrorReasonChange:(id)change;
 - (void)_endObservingCloudLibraryEnabled;
 - (void)_endObservingMatchStatus;
-- (void)_performBlockOnControllerHandlingTheSameAccount:(id)a3;
+- (void)_performBlockOnControllerHandlingTheSameAccount:(id)account;
 - (void)_updateMatchStatus;
 - (void)_updateSubscriptionAvailability;
-- (void)_updateSubscriptionAvailabilityWithValue:(BOOL)a3;
-- (void)_userIdentityStoreDidChange:(id)a3;
+- (void)_updateSubscriptionAvailabilityWithValue:(BOOL)value;
+- (void)_userIdentityStoreDidChange:(id)change;
 - (void)beginObservingCloudLibraryEnabled;
 - (void)beginObservingMatchStatus;
 - (void)dealloc;
 - (void)endObservingCloudLibraryEnabled;
 - (void)endObservingMatchStatus;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
 @end
 
 @implementation MPCloudServiceStatusController
@@ -59,8 +59,8 @@ void __50__MPCloudServiceStatusController_sharedController__block_invoke()
   v7.receiver = self;
   v7.super_class = MPCloudServiceStatusController;
   v3 = [(MPCloudServiceStatusController *)&v7 description];
-  v4 = [(MPCloudServiceStatusController *)self userIdentity];
-  v5 = [v3 stringByAppendingFormat:@" [%@]", v4];
+  userIdentity = [(MPCloudServiceStatusController *)self userIdentity];
+  v5 = [v3 stringByAppendingFormat:@" [%@]", userIdentity];
 
   return v5;
 }
@@ -82,15 +82,15 @@ void __50__MPCloudServiceStatusController_sharedController__block_invoke()
   userIdentity = self->_userIdentity;
   if (userIdentity)
   {
-    v3 = userIdentity;
+    activeAccount = userIdentity;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69E4680] activeAccount];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
   }
 
-  return v3;
+  return activeAccount;
 }
 
 void __65__MPCloudServiceStatusController__updateSubscriptionAvailability__block_invoke(uint64_t a1, void *a2)
@@ -109,9 +109,9 @@ void __65__MPCloudServiceStatusController__updateSubscriptionAvailability__block
 - (void)_updateSubscriptionAvailability
 {
   v3 = +[MPRestrictionsMonitor sharedRestrictionsMonitor];
-  v4 = [v3 allowsMusicSubscription];
+  allowsMusicSubscription = [v3 allowsMusicSubscription];
 
-  if (v4)
+  if (allowsMusicSubscription)
   {
     v5 = objc_alloc(MEMORY[0x1E69E4618]);
     v9[0] = MEMORY[0x1E69E9820];
@@ -120,13 +120,13 @@ void __65__MPCloudServiceStatusController__updateSubscriptionAvailability__block
     v9[3] = &unk_1E767D580;
     v9[4] = self;
     v6 = [v5 initWithBlock:v9];
-    v7 = [MEMORY[0x1E69E4658] sharedBagProvider];
+    mEMORY[0x1E69E4658] = [MEMORY[0x1E69E4658] sharedBagProvider];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __65__MPCloudServiceStatusController__updateSubscriptionAvailability__block_invoke_2;
     v8[3] = &unk_1E767D230;
     v8[4] = self;
-    [v7 getBagForRequestContext:v6 withCompletionHandler:v8];
+    [mEMORY[0x1E69E4658] getBagForRequestContext:v6 withCompletionHandler:v8];
   }
 
   else
@@ -240,8 +240,8 @@ uint64_t __65__MPCloudServiceStatusController__updateSubscriptionAvailability__b
     return self->_subscriptionAvailable;
   }
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"_MPCloudServiceStatusControllerSubscriptionAvailability"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"_MPCloudServiceStatusControllerSubscriptionAvailability"];
 
   [(MPCloudServiceStatusController *)self _updateSubscriptionAvailability];
   return v5;
@@ -288,9 +288,9 @@ void __61__MPCloudServiceStatusController__currentCloudLibraryEnabled__block_inv
   *(*(*(a1 + 40) + 8) + 24) = v2 == 1;
 }
 
-- (void)_performBlockOnControllerHandlingTheSameAccount:(id)a3
+- (void)_performBlockOnControllerHandlingTheSameAccount:(id)account
 {
-  v12 = a3;
+  accountCopy = account;
   v4 = +[MPCloudServiceStatusController sharedController];
   v5 = v4;
   if (v4 == self)
@@ -311,7 +311,7 @@ void __61__MPCloudServiceStatusController__currentCloudLibraryEnabled__block_inv
       }
 
 LABEL_8:
-      v12[2](v12, v8);
+      accountCopy[2](accountCopy, v8);
 
       goto LABEL_9;
     }
@@ -322,8 +322,8 @@ LABEL_8:
   if (v9 == self)
   {
     v10 = +[MPCloudServiceStatusController sharedController];
-    v11 = [v10 userIdentity];
-    v8 = [MPCloudServiceStatusController _cloudServiceStatusControllerWithUserIdentity:v11 createIfRequired:0];
+    userIdentity = [v10 userIdentity];
+    v8 = [MPCloudServiceStatusController _cloudServiceStatusControllerWithUserIdentity:userIdentity createIfRequired:0];
 
     if (v8)
     {
@@ -334,35 +334,35 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)_handlesSameAccountAs:(id)a3
+- (BOOL)_handlesSameAccountAs:(id)as
 {
-  if (self == a3)
+  if (self == as)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(MPCloudServiceStatusController *)self userIdentity];
-  v6 = [v5 accountDSID];
-  v7 = [v4 userIdentity];
+  asCopy = as;
+  userIdentity = [(MPCloudServiceStatusController *)self userIdentity];
+  accountDSID = [userIdentity accountDSID];
+  userIdentity2 = [asCopy userIdentity];
 
-  v8 = [v7 accountDSID];
-  if (v6 == v8)
+  accountDSID2 = [userIdentity2 accountDSID];
+  if (accountDSID == accountDSID2)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [v6 isEqual:v8];
+    v9 = [accountDSID isEqual:accountDSID2];
   }
 
   return v9;
 }
 
-- (void)_copyObservationStateFrom:(id)a3
+- (void)_copyObservationStateFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -371,13 +371,13 @@ LABEL_9:
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__MPCloudServiceStatusController__copyObservationStateFrom___block_invoke;
   block[3] = &unk_1E767D4B8;
   v11 = &v17;
-  v6 = v4;
+  v6 = fromCopy;
   v10 = v6;
   v12 = &v13;
   dispatch_sync(v5, block);
@@ -498,17 +498,17 @@ void __66__MPCloudServiceStatusController__endObservingCloudLibraryEnabled__bloc
   }
 }
 
-- (void)_updateSubscriptionAvailabilityWithValue:(BOOL)a3
+- (void)_updateSubscriptionAvailabilityWithValue:(BOOL)value
 {
   self->_hasLoadedSubscriptionAvailability = 1;
-  if (self->_subscriptionAvailable != a3)
+  if (self->_subscriptionAvailable != value)
   {
     block[9] = v3;
     block[10] = v4;
-    v5 = a3;
-    self->_subscriptionAvailable = a3;
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v7 setBool:v5 forKey:@"_MPCloudServiceStatusControllerSubscriptionAvailability"];
+    valueCopy = value;
+    self->_subscriptionAvailable = value;
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setBool:valueCopy forKey:@"_MPCloudServiceStatusControllerSubscriptionAvailability"];
 
     calloutQueue = self->_calloutQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -524,8 +524,8 @@ void __66__MPCloudServiceStatusController__endObservingCloudLibraryEnabled__bloc
 {
   hasLoadedMatchStatus = self->_hasLoadedMatchStatus;
   self->_hasLoadedMatchStatus = 1;
-  v4 = [(MPCloudServiceStatusController *)self musicSubscriptionStatus];
-  if ([v4 isMatchEnabled])
+  musicSubscriptionStatus = [(MPCloudServiceStatusController *)self musicSubscriptionStatus];
+  if ([musicSubscriptionStatus isMatchEnabled])
   {
     v5 = 4;
   }
@@ -537,8 +537,8 @@ void __66__MPCloudServiceStatusController__endObservingCloudLibraryEnabled__bloc
 
   if (self->_matchStatus != v5 || !hasLoadedMatchStatus)
   {
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v6 setInteger:v5 forKey:@"_MPCloudServiceStatusControllerMatchStatus"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setInteger:v5 forKey:@"_MPCloudServiceStatusControllerMatchStatus"];
 
     if (self->_matchStatus != v5)
     {
@@ -556,32 +556,32 @@ void __66__MPCloudServiceStatusController__endObservingCloudLibraryEnabled__bloc
 
 - (BOOL)_currentPurchaseHistoryEnabled
 {
-  v3 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-  v4 = [(MPCloudServiceStatusController *)self userIdentity];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  userIdentity = [(MPCloudServiceStatusController *)self userIdentity];
   v9 = 0;
-  v5 = [v3 getPropertiesForUserIdentity:v4 error:&v9];
+  v5 = [defaultIdentityStore getPropertiesForUserIdentity:userIdentity error:&v9];
   v6 = v9;
 
-  v7 = 0;
+  isActive = 0;
   if (!v6 && v5)
   {
-    v7 = [v5 isActive];
+    isActive = [v5 isActive];
   }
 
-  return v7;
+  return isActive;
 }
 
-- (BOOL)_calculateShouldPlaybackRequireSubscriptionLeaseReturningLikelyToReachRemoteServer:(BOOL *)a3
+- (BOOL)_calculateShouldPlaybackRequireSubscriptionLeaseReturningLikelyToReachRemoteServer:(BOOL *)server
 {
-  v4 = [MEMORY[0x1E69E4428] sharedMonitor];
-  v5 = [v4 isRemoteServerLikelyReachable];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  isRemoteServerLikelyReachable = [mEMORY[0x1E69E4428] isRemoteServerLikelyReachable];
 
-  if (a3)
+  if (server)
   {
-    *a3 = v5;
+    *server = isRemoteServerLikelyReachable;
   }
 
-  return v5;
+  return isRemoteServerLikelyReachable;
 }
 
 - (void)endObservingMatchStatus
@@ -690,36 +690,36 @@ void __45__MPCloudServiceStatusController_matchStatus__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_enableICMLErrorReasonChange:(id)a3
+- (void)_enableICMLErrorReasonChange:(id)change
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = os_log_create("com.apple.amp.mediaplayer", "CloudController");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [changeCopy name];
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v6;
+    v10 = name;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - Received notification [%{public}@]", &v7, 0x16u);
   }
 
   [MPCloudServiceStatusController _postNotificationName:@"MPCloudServiceStatusControllerCloudLibraryEnabledDidChangeNotification" controller:self];
 }
 
-- (void)_userIdentityStoreDidChange:(id)a3
+- (void)_userIdentityStoreDidChange:(id)change
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = os_log_create("com.apple.amp.mediaplayer", "CloudController");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [changeCopy name];
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v6;
+    v12 = name;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_INFO, "%{public}@ - Received notification [%{public}@]", buf, 0x16u);
   }
 
@@ -803,7 +803,7 @@ void __62__MPCloudServiceStatusController__userIdentityStoreDidChange___block_in
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A238D000, v3, OS_LOG_TYPE_INFO, "%{public}@ - Received notification [ICCloudClientIsAuthenticatedDidChangeNotification]", buf, 0xCu);
   }
 
@@ -817,18 +817,18 @@ void __62__MPCloudServiceStatusController__userIdentityStoreDidChange___block_in
   dispatch_async(calloutQueue, block);
 }
 
-- (void)_allowsMusicSubscriptionDidChange:(id)a3
+- (void)_allowsMusicSubscriptionDidChange:(id)change
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = os_log_create("com.apple.amp.mediaplayer", "CloudController");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [changeCopy name];
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v6;
+    v10 = name;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_INFO, "%{public}@ - Received notification [%{public}@]", &v7, 0x16u);
   }
 
@@ -836,7 +836,7 @@ void __62__MPCloudServiceStatusController__userIdentityStoreDidChange___block_in
   [(MPCloudServiceStatusController *)self _updateSubscriptionAvailability];
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
   v8 = 0;
   v4 = [(MPCloudServiceStatusController *)self _calculateShouldPlaybackRequireSubscriptionLeaseReturningLikelyToReachRemoteServer:&v8];
@@ -872,26 +872,26 @@ void __81__MPCloudServiceStatusController_environmentMonitorDidChangeNetworkReac
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E69E4380];
-  v5 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-  [v3 removeObserver:self name:v4 object:v5];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  [defaultCenter removeObserver:self name:v4 object:defaultIdentityStore];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x1E69E4140], 0);
   [(ICMusicSubscriptionStatusMonitor *)self->_subscriptionStatusMonitor endObservingSubscriptionStatusWithToken:self->_subscriptionStatusObservationToken];
   v7 = +[MPRestrictionsMonitor sharedRestrictionsMonitor];
-  [v3 removeObserver:self name:@"MPRestrictionsMonitorMusicSubscriptionDidChangeNotification" object:v7];
+  [defaultCenter removeObserver:self name:@"MPRestrictionsMonitorMusicSubscriptionDidChangeNotification" object:v7];
 
   v8.receiver = self;
   v8.super_class = MPCloudServiceStatusController;
   [(MPCloudServiceStatusController *)&v8 dealloc];
 }
 
-- (id)_initWithUserIdentity:(id)a3
+- (id)_initWithUserIdentity:(id)identity
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v35.receiver = self;
   v35.super_class = MPCloudServiceStatusController;
   v5 = [(MPCloudServiceStatusController *)&v35 init];
@@ -903,7 +903,7 @@ void __81__MPCloudServiceStatusController_environmentMonitorDidChangeNetworkReac
       *buf = 138543618;
       v37 = v5;
       v38 = 2112;
-      v39 = v4;
+      v39 = identityCopy;
       _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ - Creating new controller for user identity %@", buf, 0x16u);
     }
 
@@ -920,30 +920,30 @@ void __81__MPCloudServiceStatusController_environmentMonitorDidChangeNetworkReac
     v5->_cloudLibraryStatusAccessQueue = v11;
 
     v5->_cloudLibraryStatus = -1;
-    v13 = [v4 copy];
+    v13 = [identityCopy copy];
     userIdentity = v5->_userIdentity;
     v5->_userIdentity = v13;
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    v16 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-    [v15 addObserver:v5 selector:sel__userIdentityStoreDidChange_ name:*MEMORY[0x1E69E4380] object:v16];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+    [defaultCenter addObserver:v5 selector:sel__userIdentityStoreDidChange_ name:*MEMORY[0x1E69E4380] object:defaultIdentityStore];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v5 selector:sel__enableICMLErrorReasonChange_ name:*MEMORY[0x1E69E4130] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel__enableICMLErrorReasonChange_ name:*MEMORY[0x1E69E4130] object:0];
 
     objc_initWeak(&location, v5);
     if (v5->_userIdentity)
     {
-      v18 = v5->_userIdentity;
+      autoupdatingActiveAccount = v5->_userIdentity;
     }
 
     else
     {
-      v18 = [MEMORY[0x1E69E4680] autoupdatingActiveAccount];
+      autoupdatingActiveAccount = [MEMORY[0x1E69E4680] autoupdatingActiveAccount];
     }
 
-    v19 = v18;
-    v20 = [MEMORY[0x1E69E44D0] sharedMonitorForIdentity:v18];
+    v19 = autoupdatingActiveAccount;
+    v20 = [MEMORY[0x1E69E44D0] sharedMonitorForIdentity:autoupdatingActiveAccount];
     subscriptionStatusMonitor = v5->_subscriptionStatusMonitor;
     v5->_subscriptionStatusMonitor = v20;
 
@@ -963,13 +963,13 @@ void __81__MPCloudServiceStatusController_environmentMonitorDidChangeNetworkReac
       *buf = 138543618;
       v37 = v5;
       v38 = 2112;
-      v39 = v4;
+      v39 = identityCopy;
       _os_log_impl(&dword_1A238D000, v25, OS_LOG_TYPE_INFO, "%{public}@ - New instance created for user identity: %@", buf, 0x16u);
     }
 
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
     v27 = +[MPRestrictionsMonitor sharedRestrictionsMonitor];
-    [v26 addObserver:v5 selector:sel__allowsMusicSubscriptionDidChange_ name:@"MPRestrictionsMonitorMusicSubscriptionDidChangeNotification" object:v27];
+    [defaultCenter3 addObserver:v5 selector:sel__allowsMusicSubscriptionDidChange_ name:@"MPRestrictionsMonitorMusicSubscriptionDidChangeNotification" object:v27];
 
     [(MPCloudServiceStatusController *)v5 _updateSubscriptionAvailability];
     objc_destroyWeak(&v33);
@@ -996,40 +996,40 @@ void __56__MPCloudServiceStatusController__initWithUserIdentity___block_invoke(u
   }
 }
 
-+ (void)_postNotificationName:(id)a3 controller:(id)a4 userInfo:(id)a5
++ (void)_postNotificationName:(id)name controller:(id)controller userInfo:(id)info
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  nameCopy = name;
+  controllerCopy = controller;
+  infoCopy = info;
+  if (controllerCopy)
   {
     v10 = os_log_create("com.apple.amp.mediaplayer", "CloudController");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = v8;
+      v17 = controllerCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = nameCopy;
       _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - Posting notification [%@]", buf, 0x16u);
     }
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:v7 object:v8 userInfo:v9];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:nameCopy object:controllerCopy userInfo:infoCopy];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __76__MPCloudServiceStatusController__postNotificationName_controller_userInfo___block_invoke;
     v13[3] = &unk_1E7676470;
-    v14 = v7;
-    v15 = v9;
-    [v8 _performBlockOnControllerHandlingTheSameAccount:v13];
+    v14 = nameCopy;
+    v15 = infoCopy;
+    [controllerCopy _performBlockOnControllerHandlingTheSameAccount:v13];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:v7 object:0 userInfo:v9];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:nameCopy object:0 userInfo:infoCopy];
   }
 }
 
@@ -1052,29 +1052,29 @@ void __76__MPCloudServiceStatusController__postNotificationName_controller_userI
   [v6 postNotificationName:*(a1 + 32) object:v3 userInfo:*(a1 + 40)];
 }
 
-+ (id)_cloudServiceStatusControllerWithUserIdentity:(id)a3 createIfRequired:(BOOL)a4
++ (id)_cloudServiceStatusControllerWithUserIdentity:(id)identity createIfRequired:(BOOL)required
 {
-  v4 = a4;
-  v6 = a3;
+  requiredCopy = required;
+  identityCopy = identity;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__4005;
   v25 = __Block_byref_object_dispose__4006;
   v26 = 0;
-  v7 = [a1 globalSerialQueue];
+  globalSerialQueue = [self globalSerialQueue];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __97__MPCloudServiceStatusController__cloudServiceStatusControllerWithUserIdentity_createIfRequired___block_invoke;
   v16 = &unk_1E7676420;
-  v8 = v6;
-  v20 = v4;
+  v8 = identityCopy;
+  v20 = requiredCopy;
   v18 = &v21;
-  v19 = a1;
+  selfCopy = self;
   v17 = v8;
-  dispatch_sync(v7, &v13);
+  dispatch_sync(globalSerialQueue, &v13);
 
-  if (v4)
+  if (requiredCopy)
   {
     v9 = v22[5];
     v10 = [MPCloudServiceStatusController sharedController:v13];
@@ -1130,26 +1130,26 @@ void __97__MPCloudServiceStatusController__cloudServiceStatusControllerWithUserI
   *(v12 + 40) = v11;
 }
 
-+ (MPCloudServiceStatusController)cloudServiceStatusControllerWithUserIdentity:(id)a3
++ (MPCloudServiceStatusController)cloudServiceStatusControllerWithUserIdentity:(id)identity
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v5 = os_log_create("com.apple.amp.mediaplayer", "CloudController");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v10 = 138543618;
-    v11 = a1;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = identityCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_INFO, "%{public}@ - Request for a controller with user identity %@", &v10, 0x16u);
   }
 
-  v6 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-  v7 = [v6 supportsMultipleITunesAccounts];
+  currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+  supportsMultipleITunesAccounts = [currentDeviceInfo supportsMultipleITunesAccounts];
 
-  if (v7)
+  if (supportsMultipleITunesAccounts)
   {
-    [MPCloudServiceStatusController _cloudServiceStatusControllerWithUserIdentity:v4 createIfRequired:1];
+    [MPCloudServiceStatusController _cloudServiceStatusControllerWithUserIdentity:identityCopy createIfRequired:1];
   }
 
   else

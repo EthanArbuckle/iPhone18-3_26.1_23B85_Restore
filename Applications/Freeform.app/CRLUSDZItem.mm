@@ -9,9 +9,9 @@
 - (NSArray)generativePlaygroundImageItems;
 - (NSString)previewTooltip;
 - (_TtC8Freeform8CRLAsset)posterAssetPayload;
-- (id)computeInfoGeometryForFittingIn:(CGRect)a3;
-- (id)promisedDataForPublicType:(id)a3;
-- (void)scaleDownSizeToFitWithinSize:(CGSize)a3 board:(id)a4;
+- (id)computeInfoGeometryForFittingIn:(CGRect)in;
+- (id)promisedDataForPublicType:(id)type;
+- (void)scaleDownSizeToFitWithinSize:(CGSize)size board:(id)board;
 - (void)setAspectRatioLocked:;
 @end
 
@@ -19,7 +19,7 @@
 
 - (CRLBezierPath)tracedPath
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007FD9AC();
   v4 = v3;
 
@@ -28,13 +28,13 @@
 
 - (CRLImageProvider)validatedPosterImageProvider
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007FDD4C();
   if (v3)
   {
     v4 = v3;
-    v5 = [objc_opt_self() sharedPool];
-    v6 = [v5 providerForAsset:v4 shouldValidate:1];
+    sharedPool = [objc_opt_self() sharedPool];
+    v6 = [sharedPool providerForAsset:v4 shouldValidate:1];
   }
 
   else
@@ -47,20 +47,20 @@
 
 - (_TtC8Freeform8CRLAsset)posterAssetPayload
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007FDD4C();
   v4 = v3;
 
   return v4;
 }
 
-- (id)computeInfoGeometryForFittingIn:(CGRect)a3
+- (id)computeInfoGeometryForFittingIn:(CGRect)in
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = in.size.height;
+  width = in.size.width;
+  y = in.origin.y;
+  x = in.origin.x;
+  selfCopy = self;
   v8 = sub_1007FE1A0(x, y, width, height);
 
   return v8;
@@ -105,7 +105,7 @@
 
 - (NSArray)customPublicTypesToPromiseWhenCopyingSingleBoardItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_100801BF4();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -113,14 +113,14 @@
   return v3.super.isa;
 }
 
-- (id)promisedDataForPublicType:(id)a3
+- (id)promisedDataForPublicType:(id)type
 {
   v5 = type metadata accessor for UTType();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v17 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = self;
+  typeCopy = type;
+  selfCopy = self;
   static UTType._unconditionallyBridgeFromObjectiveC(_:)();
 
   v11 = sub_100D8D944(v8);
@@ -140,7 +140,7 @@
 
 - (BOOL)placeHolderDataNeedsDownload
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007FDD4C();
   if (v3)
   {
@@ -159,17 +159,17 @@
   return v7 & 1;
 }
 
-- (void)scaleDownSizeToFitWithinSize:(CGSize)a3 board:(id)a4
+- (void)scaleDownSizeToFitWithinSize:(CGSize)size board:(id)board
 {
-  v5 = a4;
-  v6 = self;
+  boardCopy = board;
+  selfCopy = self;
   sub_100802CE4();
 }
 
 - (void)setAspectRatioLocked:
 {
   v0 = objc_opt_self();
-  v1 = [v0 _atomicIncrementAssertCount];
+  _atomicIncrementAssertCount = [v0 _atomicIncrementAssertCount];
   v23 = [objc_allocWithZone(NSString) init];
   sub_100604538(_swiftEmptyArrayStorage, &v23);
   StaticString.description.getter();
@@ -178,7 +178,7 @@
   StaticString.description.getter();
   v3 = String._bridgeToObjectiveC()();
 
-  v4 = [v3 lastPathComponent];
+  lastPathComponent = [v3 lastPathComponent];
 
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -194,7 +194,7 @@
   *(inited + 16) = xmmword_10146CA70;
   *(inited + 56) = &type metadata for Int32;
   *(inited + 64) = &protocol witness table for Int32;
-  *(inited + 32) = v1;
+  *(inited + 32) = _atomicIncrementAssertCount;
   v10 = sub_100006370(0, &qword_1019F4D30);
   *(inited + 96) = v10;
   v11 = sub_1005CF04C();
@@ -248,7 +248,7 @@
   *(v3 + 16) = xmmword_101465920;
   *(v3 + 32) = self;
   type metadata accessor for CRLBoardItem(0);
-  v4 = self;
+  selfCopy = self;
   v5.super.isa = Array._bridgeToObjectiveC()().super.isa;
 
   return v5.super.isa;

@@ -6,9 +6,9 @@
 
 - (id)analyticsDict
 {
-  v3 = [(NSPPrivateRelayIncompatibleNetworkStats *)self tierType];
+  tierType = [(NSPPrivateRelayIncompatibleNetworkStats *)self tierType];
 
-  if (!v3)
+  if (!tierType)
   {
     v9 = nplog_obj();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -24,16 +24,16 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v4 = [(NSPPrivateRelayIncompatibleNetworkStats *)self interfaceType];
+  interfaceType = [(NSPPrivateRelayIncompatibleNetworkStats *)self interfaceType];
 
-  if (v4)
+  if (interfaceType)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
-    v6 = [(NSPPrivateRelayIncompatibleNetworkStats *)self tierType];
-    [v5 setObject:v6 forKeyedSubscript:@"TierType"];
+    tierType2 = [(NSPPrivateRelayIncompatibleNetworkStats *)self tierType];
+    [v5 setObject:tierType2 forKeyedSubscript:@"TierType"];
 
-    v7 = [(NSPPrivateRelayIncompatibleNetworkStats *)self interfaceType];
-    [v5 setObject:v7 forKeyedSubscript:@"InterfaceType"];
+    interfaceType2 = [(NSPPrivateRelayIncompatibleNetworkStats *)self interfaceType];
+    [v5 setObject:interfaceType2 forKeyedSubscript:@"InterfaceType"];
 
     goto LABEL_4;
   }

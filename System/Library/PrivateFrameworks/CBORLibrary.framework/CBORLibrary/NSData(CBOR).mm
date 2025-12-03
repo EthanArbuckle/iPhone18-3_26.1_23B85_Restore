@@ -14,12 +14,12 @@
   {
     v7 = [v5 tag];
     objc_opt_self();
-    v8 = [v7 unsignedLongLongValue];
+    unsignedLongLongValue = [v7 unsignedLongLongValue];
 
-    if (HIDWORD(v8))
+    if (HIDWORD(unsignedLongLongValue))
     {
       LOBYTE(v81) = -37;
-      v86[0] = bswap64(v8);
+      v86[0] = bswap64(unsignedLongLongValue);
       v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:9];
       [v6 appendBytes:&v81 length:1];
       v9 = v86;
@@ -27,14 +27,14 @@
       v11 = 8;
     }
 
-    else if (v8 < 0x10000)
+    else if (unsignedLongLongValue < 0x10000)
     {
-      if (v8 < 0x100)
+      if (unsignedLongLongValue < 0x100)
       {
-        if (v8 > 0x17)
+        if (unsignedLongLongValue > 0x17)
         {
           LOBYTE(v81) = -40;
-          LOBYTE(v86[0]) = v8;
+          LOBYTE(v86[0]) = unsignedLongLongValue;
           v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:2];
           [v6 appendBytes:&v81 length:1];
           v9 = v86;
@@ -43,7 +43,7 @@
 
         else
         {
-          LOBYTE(v81) = v8 | 0xC0;
+          LOBYTE(v81) = unsignedLongLongValue | 0xC0;
           v10 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:1];
           v6 = v10;
           v9 = &v81;
@@ -55,7 +55,7 @@
       else
       {
         LOBYTE(v81) = -39;
-        LOWORD(v86[0]) = bswap32(v8) >> 16;
+        LOWORD(v86[0]) = bswap32(unsignedLongLongValue) >> 16;
         v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:3];
         [v6 appendBytes:&v81 length:1];
         v9 = v86;
@@ -67,7 +67,7 @@
     else
     {
       LOBYTE(v81) = -38;
-      LODWORD(v86[0]) = bswap32(v8);
+      LODWORD(v86[0]) = bswap32(unsignedLongLongValue);
       v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:5];
       [v6 appendBytes:&v81 length:1];
       v9 = v86;
@@ -81,52 +81,52 @@
   switch([v5 type])
   {
     case 0:
-      v29 = [v5 unsignedLongLongValue];
+      unsignedLongLongValue2 = [v5 unsignedLongLongValue];
       objc_opt_self();
-      if (HIDWORD(v29))
+      if (HIDWORD(unsignedLongLongValue2))
       {
         LOBYTE(v81) = 27;
-        v30 = bswap64(v29);
+        v30 = bswap64(unsignedLongLongValue2);
         goto LABEL_36;
       }
 
-      if (v29 >= 0x10000)
+      if (unsignedLongLongValue2 >= 0x10000)
       {
         LOBYTE(v81) = 26;
-        v43 = bswap32(v29);
+        v43 = bswap32(unsignedLongLongValue2);
         goto LABEL_58;
       }
 
-      if (v29 >= 0x100)
+      if (unsignedLongLongValue2 >= 0x100)
       {
         LOBYTE(v81) = 25;
-        v44 = bswap32(v29);
+        v44 = bswap32(unsignedLongLongValue2);
         goto LABEL_69;
       }
 
-      if (v29 <= 0x17)
+      if (unsignedLongLongValue2 <= 0x17)
       {
-        LOBYTE(v81) = v29;
+        LOBYTE(v81) = unsignedLongLongValue2;
         goto LABEL_78;
       }
 
       LOBYTE(v81) = 24;
-      LOBYTE(v86[0]) = v29;
+      LOBYTE(v86[0]) = unsignedLongLongValue2;
       goto LABEL_105;
     case 1:
-      v31 = [v5 longLongValue];
+      longLongValue = [v5 longLongValue];
       objc_opt_self();
-      v32 = ~v31;
-      if (v31 > 0xFFFFFFFEFFFFFFFFLL)
+      v32 = ~longLongValue;
+      if (longLongValue > 0xFFFFFFFEFFFFFFFFLL)
       {
-        if (v31 > 0xFFFFFFFFFFFEFFFFLL)
+        if (longLongValue > 0xFFFFFFFFFFFEFFFFLL)
         {
-          if (v31 > 0xFFFFFFFFFFFFFEFFLL)
+          if (longLongValue > 0xFFFFFFFFFFFFFEFFLL)
           {
-            if (v31 < 0xFFFFFFFFFFFFFFE8)
+            if (longLongValue < 0xFFFFFFFFFFFFFFE8)
             {
               LOBYTE(v81) = 56;
-              LOBYTE(v86[0]) = ~v31;
+              LOBYTE(v86[0]) = ~longLongValue;
 LABEL_105:
               v15 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:2];
               [v15 appendBytes:&v81 length:1];
@@ -136,7 +136,7 @@ LABEL_105:
 
             else
             {
-              LOBYTE(v81) = 31 - v31;
+              LOBYTE(v81) = 31 - longLongValue;
 LABEL_78:
               v34 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:1];
               v15 = v34;
@@ -195,43 +195,43 @@ LABEL_36:
 
       goto LABEL_122;
     case 2:
-      v23 = [v5 data];
+      data = [v5 data];
       goto LABEL_38;
     case 3:
-      v23 = [v5 string];
+      data = [v5 string];
 LABEL_38:
-      v12 = v23;
-      v15 = [CBOR encodeMajorType2or3:v23];
+      v12 = data;
+      v15 = [CBOR encodeMajorType2or3:data];
       goto LABEL_121;
     case 4:
-      v36 = [v5 array];
+      array = [v5 array];
       objc_opt_self();
       v15 = objc_opt_new();
-      [v36 count];
-      if ([v36 count] >> 32)
+      [array count];
+      if ([array count] >> 32)
       {
         LOBYTE(v80[0]) = -101;
-        v86[0] = bswap64([v36 count]);
+        v86[0] = bswap64([array count]);
         [v15 appendBytes:v80 length:1];
         v37 = v86;
         v38 = v15;
         v39 = 8;
       }
 
-      else if ([v36 count] < 0x10000)
+      else if ([array count] < 0x10000)
       {
-        if ([v36 count] < 0x100)
+        if ([array count] < 0x100)
         {
-          if ([v36 count] < 0x18)
+          if ([array count] < 0x18)
           {
-            LOBYTE(v80[0]) = [v36 count] ^ 0x80;
+            LOBYTE(v80[0]) = [array count] ^ 0x80;
             v37 = v80;
           }
 
           else
           {
             LOBYTE(v80[0]) = -104;
-            LOBYTE(v86[0]) = [v36 count];
+            LOBYTE(v86[0]) = [array count];
             [v15 appendBytes:v80 length:1];
             v37 = v86;
           }
@@ -243,7 +243,7 @@ LABEL_38:
         else
         {
           LOBYTE(v80[0]) = -103;
-          LOWORD(v86[0]) = bswap32([v36 count]) >> 16;
+          LOWORD(v86[0]) = bswap32([array count]) >> 16;
           [v15 appendBytes:v80 length:1];
           v37 = v86;
           v38 = v15;
@@ -254,7 +254,7 @@ LABEL_38:
       else
       {
         LOBYTE(v80[0]) = -102;
-        LODWORD(v86[0]) = bswap32([v36 count]);
+        LODWORD(v86[0]) = bswap32([array count]);
         [v15 appendBytes:v80 length:1];
         v37 = v86;
         v38 = v15;
@@ -266,7 +266,7 @@ LABEL_38:
       v84 = 0u;
       v81 = 0u;
       v82 = 0u;
-      v12 = v36;
+      v12 = array;
       v68 = [v12 countByEnumeratingWithState:&v81 objects:v86 count:16];
       if (v68)
       {
@@ -295,33 +295,33 @@ LABEL_38:
     case 5:
       v24 = v5;
       objc_opt_self();
-      v25 = [v24 dictionary];
+      dictionary = [v24 dictionary];
       v15 = objc_opt_new();
-      [v25 count];
-      if ([v25 count] >> 32)
+      [dictionary count];
+      if ([dictionary count] >> 32)
       {
         v85 = -69;
-        v86[0] = bswap64([v25 count]);
+        v86[0] = bswap64([dictionary count]);
         [v15 appendBytes:&v85 length:1];
         v26 = v86;
         v27 = v15;
         v28 = 8;
       }
 
-      else if ([v25 count] < 0x10000)
+      else if ([dictionary count] < 0x10000)
       {
-        if ([v25 count] < 0x100)
+        if ([dictionary count] < 0x100)
         {
-          if ([v25 count] < 0x18)
+          if ([dictionary count] < 0x18)
           {
-            v85 = [v25 count] - 96;
+            v85 = [dictionary count] - 96;
             v26 = &v85;
           }
 
           else
           {
             v85 = -72;
-            LOBYTE(v86[0]) = [v25 count];
+            LOBYTE(v86[0]) = [dictionary count];
             [v15 appendBytes:&v85 length:1];
             v26 = v86;
           }
@@ -333,7 +333,7 @@ LABEL_38:
         else
         {
           v85 = -71;
-          LOWORD(v86[0]) = bswap32([v25 count]) >> 16;
+          LOWORD(v86[0]) = bswap32([dictionary count]) >> 16;
           [v15 appendBytes:&v85 length:1];
           v26 = v86;
           v27 = v15;
@@ -344,7 +344,7 @@ LABEL_38:
       else
       {
         v85 = -70;
-        LODWORD(v86[0]) = bswap32([v25 count]);
+        LODWORD(v86[0]) = bswap32([dictionary count]);
         [v15 appendBytes:&v85 length:1];
         v26 = v86;
         v27 = v15;
@@ -352,16 +352,16 @@ LABEL_38:
       }
 
       [v27 appendBytes:v26 length:v28];
-      v45 = [v24 orderedKeys];
+      orderedKeys = [v24 orderedKeys];
 
-      if (v45)
+      if (orderedKeys)
       {
         v83 = 0u;
         v84 = 0u;
         v81 = 0u;
         v82 = 0u;
-        v46 = [v24 orderedKeys];
-        v47 = [v46 countByEnumeratingWithState:&v81 objects:v86 count:16];
+        orderedKeys2 = [v24 orderedKeys];
+        v47 = [orderedKeys2 countByEnumeratingWithState:&v81 objects:v86 count:16];
         if (!v47)
         {
           goto LABEL_101;
@@ -377,7 +377,7 @@ LABEL_38:
           {
             if (*v82 != v49)
             {
-              objc_enumerationMutation(v46);
+              objc_enumerationMutation(orderedKeys2);
             }
 
             v51 = *(*(&v81 + 1) + 8 * j);
@@ -385,12 +385,12 @@ LABEL_38:
             [v15 appendData:v52];
 
             v53 = MEMORY[0x277CBEA90];
-            v54 = [v25 objectForKey:v51];
+            v54 = [dictionary objectForKey:v51];
             v55 = [v53 dataWithCBOR:v54];
             [v15 appendData:v55];
           }
 
-          v48 = [v46 countByEnumeratingWithState:&v81 objects:v86 count:16];
+          v48 = [orderedKeys2 countByEnumeratingWithState:&v81 objects:v86 count:16];
         }
 
         while (v48);
@@ -400,20 +400,20 @@ LABEL_38:
       {
         v78 = v24;
         v79 = v5;
-        v56 = [v25 allKeys];
+        allKeys = [dictionary allKeys];
         v80[0] = MEMORY[0x277D85DD0];
         v80[1] = 3221225472;
         v80[2] = __51__CBOR_Encoder__encodeMajorType5_encodingKeyOrder___block_invoke;
         v80[3] = &__block_descriptor_40_e23_q24__0__CBOR_8__CBOR_16l;
         v80[4] = a4;
-        v57 = [v56 sortedArrayUsingComparator:v80];
+        v57 = [allKeys sortedArrayUsingComparator:v80];
 
         v83 = 0u;
         v84 = 0u;
         v81 = 0u;
         v82 = 0u;
-        v46 = v57;
-        v58 = [v46 countByEnumeratingWithState:&v81 objects:v86 count:16];
+        orderedKeys2 = v57;
+        v58 = [orderedKeys2 countByEnumeratingWithState:&v81 objects:v86 count:16];
         if (v58)
         {
           v59 = v58;
@@ -424,7 +424,7 @@ LABEL_38:
             {
               if (*v82 != v60)
               {
-                objc_enumerationMutation(v46);
+                objc_enumerationMutation(orderedKeys2);
               }
 
               v62 = *(*(&v81 + 1) + 8 * k);
@@ -432,12 +432,12 @@ LABEL_38:
               [v15 appendData:v63];
 
               v64 = MEMORY[0x277CBEA90];
-              v65 = [v25 objectForKey:v62];
+              v65 = [dictionary objectForKey:v62];
               v66 = [v64 dataWithCBOR:v65];
               [v15 appendData:v66];
             }
 
-            v59 = [v46 countByEnumeratingWithState:&v81 objects:v86 count:16];
+            v59 = [orderedKeys2 countByEnumeratingWithState:&v81 objects:v86 count:16];
           }
 
           while (v59);
@@ -460,17 +460,17 @@ LABEL_101:
       v12 = v5;
       objc_opt_self();
       LOBYTE(v81) = 0;
-      v13 = [v12 value];
+      value = [v12 value];
       objc_opt_class();
       objc_opt_isKindOfClass();
 
-      v14 = [v12 value];
+      value2 = [v12 value];
       if ([v12 valueSize] == 2 && objc_msgSend(v12, "type") == 6)
       {
         LOBYTE(v81) = -7;
         v15 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:3];
         [v15 appendBytes:&v81 length:1];
-        [v14 doubleValue];
+        [value2 doubleValue];
         LOWORD(v86[0]) = 0;
         v16 = v15;
         v17 = 2;
@@ -484,7 +484,7 @@ LABEL_24:
         LOBYTE(v81) = -6;
         v15 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:5];
         [v15 appendBytes:&v81 length:1];
-        [v14 floatValue];
+        [value2 floatValue];
         LODWORD(v86[0]) = bswap32(v18);
         v16 = v15;
         v17 = 4;
@@ -496,7 +496,7 @@ LABEL_24:
         LOBYTE(v81) = -5;
         v15 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:9];
         [v15 appendBytes:&v81 length:1];
-        [v14 doubleValue];
+        [value2 doubleValue];
         v86[0] = bswap64(v20);
         v16 = v15;
         v17 = 8;
@@ -555,11 +555,11 @@ LABEL_40:
     case 16:
       goto LABEL_20;
     case 13:
-      v40 = [v5 longLongValue];
+      longLongValue2 = [v5 longLongValue];
       objc_opt_self();
-      if (v40 > 0x1F)
+      if (longLongValue2 > 0x1F)
       {
-        if (v40 - 32 > 0xDF)
+        if (longLongValue2 - 32 > 0xDF)
         {
 LABEL_20:
           v19 = +[CBOR encodeMajorType7Undefined];
@@ -567,14 +567,14 @@ LABEL_20:
         }
 
         LOBYTE(v86[0]) = -8;
-        BYTE1(v86[0]) = v40;
+        BYTE1(v86[0]) = longLongValue2;
         v41 = objc_alloc(MEMORY[0x277CBEA90]);
         v42 = 2;
       }
 
       else
       {
-        v22 = v40 | 0xE0;
+        v22 = longLongValue2 | 0xE0;
 LABEL_46:
         LOBYTE(v86[0]) = v22;
         v41 = objc_alloc(MEMORY[0x277CBEA90]);

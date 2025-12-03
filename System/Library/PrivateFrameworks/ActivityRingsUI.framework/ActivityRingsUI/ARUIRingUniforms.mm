@@ -1,51 +1,51 @@
 @interface ARUIRingUniforms
-- (ARUIRingUniforms)initWithRing:(id)a3 inContext:(id)a4;
+- (ARUIRingUniforms)initWithRing:(id)ring inContext:(id)context;
 - (__n128)uniforms;
 - (__n128)vertexAttributes;
-- (void)_updateUniformsWithRing:(id)a3 inContext:(id)a4;
-- (void)_updateVertexAttributesWithRing:(id)a3 inContext:(id)a4;
+- (void)_updateUniformsWithRing:(id)ring inContext:(id)context;
+- (void)_updateVertexAttributesWithRing:(id)ring inContext:(id)context;
 @end
 
 @implementation ARUIRingUniforms
 
-- (ARUIRingUniforms)initWithRing:(id)a3 inContext:(id)a4
+- (ARUIRingUniforms)initWithRing:(id)ring inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  ringCopy = ring;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = ARUIRingUniforms;
   v8 = [(ARUIRingUniforms *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(ARUIRingUniforms *)v8 _updateVertexAttributesWithRing:v6 inContext:v7];
-    [(ARUIRingUniforms *)v9 _updateUniformsWithRing:v6 inContext:v7];
+    [(ARUIRingUniforms *)v8 _updateVertexAttributesWithRing:ringCopy inContext:contextCopy];
+    [(ARUIRingUniforms *)v9 _updateUniformsWithRing:ringCopy inContext:contextCopy];
   }
 
   return v9;
 }
 
-- (void)_updateVertexAttributesWithRing:(id)a3 inContext:(id)a4
+- (void)_updateVertexAttributesWithRing:(id)ring inContext:(id)context
 {
-  v56 = a3;
-  v6 = a4;
-  [v56 diameter];
-  [v56 thickness];
-  [v56 zRotation];
+  ringCopy = ring;
+  contextCopy = context;
+  [ringCopy diameter];
+  [ringCopy thickness];
+  [ringCopy zRotation];
   v8 = v7;
-  [v6 screenScale];
+  [contextCopy screenScale];
   v10 = v9;
-  [v56 scale];
+  [ringCopy scale];
   v12 = v11;
   v13 = v10 * v11;
-  [v6 drawableDiameter];
+  [contextCopy drawableDiameter];
   v15 = v14 / v13;
-  [v6 skewAdjustmentMatrix];
+  [contextCopy skewAdjustmentMatrix];
   v52 = v17;
   v54 = v16;
   v48 = v19;
   v50 = v18;
-  [v56 translation];
+  [ringCopy translation];
   *v20.i32 = v12 * v15;
   v22 = COERCE_DOUBLE(vneg_f32(v21));
   v21.i32[1] = HIDWORD(v22);
@@ -123,48 +123,48 @@
   *&self->_anon_10[112] = v43;
 }
 
-- (void)_updateUniformsWithRing:(id)a3 inContext:(id)a4
+- (void)_updateUniformsWithRing:(id)ring inContext:(id)context
 {
-  v54 = a3;
-  v6 = a4;
-  [v54 diameter];
+  ringCopy = ring;
+  contextCopy = context;
+  [ringCopy diameter];
   v8 = v7;
-  [v54 thickness];
+  [ringCopy thickness];
   v10 = v9;
-  [v6 screenScale];
+  [contextCopy screenScale];
   v53 = v11;
-  [v54 scale];
+  [ringCopy scale];
   v13 = v12;
-  [v54 translation];
+  [ringCopy translation];
   v15 = v14;
-  [v6 drawableSize];
+  [contextCopy drawableSize];
   v17 = v16;
-  [v54 percentage];
+  [ringCopy percentage];
   v19 = v18;
-  [v54 zRotation];
+  [ringCopy zRotation];
   v21 = v20;
-  v22 = [v6 opaque];
+  opaque = [contextCopy opaque];
 
-  if (v22)
+  if (opaque)
   {
-    [v54 topColorPremultipliedVector];
+    [ringCopy topColorPremultipliedVector];
     *&self[1].super.isa = v23;
-    [v54 bottomColorPremultipliedVector];
+    [ringCopy bottomColorPremultipliedVector];
   }
 
   else
   {
-    [v54 topColorVector];
+    [ringCopy topColorVector];
     *&self[1].super.isa = v25;
-    [v54 bottomColorVector];
+    [ringCopy bottomColorVector];
   }
 
   *self[1]._anon_10 = v24;
-  [v54 emptyOpacity];
+  [ringCopy emptyOpacity];
   *&self[1]._anon_10[80] = v26;
-  [v54 trackOpacity];
+  [ringCopy trackOpacity];
   *&self[1]._anon_10[88] = v27;
-  [v54 opacity];
+  [ringCopy opacity];
   *&self[1]._anon_10[92] = v28;
   *&self[1]._anon_10[64] = v19;
   v29 = ARUIFloatGreater(v19, 0.5);
@@ -205,17 +205,17 @@
 
 - (__n128)vertexAttributes
 {
-  v2 = *(a1 + 96);
-  *(a2 + 64) = *(a1 + 80);
+  v2 = *(self + 96);
+  *(a2 + 64) = *(self + 80);
   *(a2 + 80) = v2;
-  v3 = *(a1 + 128);
-  *(a2 + 96) = *(a1 + 112);
+  v3 = *(self + 128);
+  *(a2 + 96) = *(self + 112);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 32);
-  *a2 = *(a1 + 16);
+  v4 = *(self + 32);
+  *a2 = *(self + 16);
   *(a2 + 16) = v4;
-  result = *(a1 + 48);
-  v6 = *(a1 + 64);
+  result = *(self + 48);
+  v6 = *(self + 64);
   *(a2 + 32) = result;
   *(a2 + 48) = v6;
   return result;
@@ -223,17 +223,17 @@
 
 - (__n128)uniforms
 {
-  v2 = *(a1 + 224);
-  *(a2 + 64) = *(a1 + 208);
+  v2 = *(self + 224);
+  *(a2 + 64) = *(self + 208);
   *(a2 + 80) = v2;
-  v3 = *(a1 + 256);
-  *(a2 + 96) = *(a1 + 240);
+  v3 = *(self + 256);
+  *(a2 + 96) = *(self + 240);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 160);
-  *a2 = *(a1 + 144);
+  v4 = *(self + 160);
+  *a2 = *(self + 144);
   *(a2 + 16) = v4;
-  result = *(a1 + 176);
-  v6 = *(a1 + 192);
+  result = *(self + 176);
+  v6 = *(self + 192);
   *(a2 + 32) = result;
   *(a2 + 48) = v6;
   return result;

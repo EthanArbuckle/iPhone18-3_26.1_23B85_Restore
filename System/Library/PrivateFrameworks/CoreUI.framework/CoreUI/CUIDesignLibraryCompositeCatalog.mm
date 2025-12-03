@@ -1,19 +1,19 @@
 @interface CUIDesignLibraryCompositeCatalog
-+ (id)_catalogsForDesignSystem:(int64_t)a3 colorScheme:(int64_t)a4 contrast:(int64_t)a5 styling:(int64_t)a6 error:(id *)a7;
-+ (id)compositeCatalogForDesignSystem:(int64_t)a3 colorScheme:(int64_t)a4 contrast:(int64_t)a5 styling:(int64_t)a6 error:(id *)a7;
-- (CUIDesignLibraryCompositeCatalog)initWithCatalogs:(id)a3;
-- (id)colorWithName:(int64_t)a3 palette:(int64_t)a4 displayGamut:(int64_t)a5 hierarchyLevel:(int64_t)a6 error:(id *)a7;
-- (id)shapeEffectPresetWithName:(id)a3 error:(id *)a4;
++ (id)_catalogsForDesignSystem:(int64_t)system colorScheme:(int64_t)scheme contrast:(int64_t)contrast styling:(int64_t)styling error:(id *)error;
++ (id)compositeCatalogForDesignSystem:(int64_t)system colorScheme:(int64_t)scheme contrast:(int64_t)contrast styling:(int64_t)styling error:(id *)error;
+- (CUIDesignLibraryCompositeCatalog)initWithCatalogs:(id)catalogs;
+- (id)colorWithName:(int64_t)name palette:(int64_t)palette displayGamut:(int64_t)gamut hierarchyLevel:(int64_t)level error:(id *)error;
+- (id)shapeEffectPresetWithName:(id)name error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CUIDesignLibraryCompositeCatalog
 
-+ (id)_catalogsForDesignSystem:(int64_t)a3 colorScheme:(int64_t)a4 contrast:(int64_t)a5 styling:(int64_t)a6 error:(id *)a7
++ (id)_catalogsForDesignSystem:(int64_t)system colorScheme:(int64_t)scheme contrast:(int64_t)contrast styling:(int64_t)styling error:(id *)error
 {
-  v11 = __resolvedDesignSystemForInputSystem(a3);
+  v11 = __resolvedDesignSystemForInputSystem(system);
   v12 = objc_alloc_init(NSMutableArray);
-  v13 = [CUIDesignLibraryCatalog catalogForDesignSystem:v11 colorScheme:a4 contrast:a5 styling:a6 error:a7];
+  v13 = [CUIDesignLibraryCatalog catalogForDesignSystem:v11 colorScheme:scheme contrast:contrast styling:styling error:error];
   if (v13)
   {
     [v12 addObject:v13];
@@ -33,16 +33,16 @@
     }
 
 LABEL_9:
-    v15 = [CUIDesignLibraryCatalog catalogForDesignSystem:1 colorScheme:a4 contrast:a5 styling:a6 error:a7];
+    v15 = [CUIDesignLibraryCatalog catalogForDesignSystem:1 colorScheme:scheme contrast:contrast styling:styling error:error];
     if (v15)
     {
       [v14 addObject:v15];
     }
 
 LABEL_11:
-    if (a6 == 1)
+    if (styling == 1)
     {
-      v16 = [CUIDesignLibraryCatalog catalogForDesignSystem:1 colorScheme:a4 contrast:a5 styling:0 error:a7];
+      v16 = [CUIDesignLibraryCatalog catalogForDesignSystem:1 colorScheme:scheme contrast:contrast styling:0 error:error];
       if (v16)
       {
         [v14 addObject:v16];
@@ -62,17 +62,17 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  if (a6)
+  if (styling)
   {
-    v19 = [CUIDesignLibraryCatalog catalogForDesignSystem:5 colorScheme:a4 contrast:a5 styling:0 error:a7];
+    v19 = [CUIDesignLibraryCatalog catalogForDesignSystem:5 colorScheme:scheme contrast:contrast styling:0 error:error];
     if (v19)
     {
       [v14 addObject:v19];
     }
 
-    if (a6 == 1)
+    if (styling == 1)
     {
-      v20 = [CUIDesignLibraryCatalog catalogForDesignSystem:5 colorScheme:a4 contrast:a5 styling:2 error:a7];
+      v20 = [CUIDesignLibraryCatalog catalogForDesignSystem:5 colorScheme:scheme contrast:contrast styling:2 error:error];
       if (v20)
       {
         [v14 insertObject:v20 atIndex:0];
@@ -91,7 +91,7 @@ LABEL_14:
   return v17;
 }
 
-- (CUIDesignLibraryCompositeCatalog)initWithCatalogs:(id)a3
+- (CUIDesignLibraryCompositeCatalog)initWithCatalogs:(id)catalogs
 {
   v7.receiver = self;
   v7.super_class = CUIDesignLibraryCompositeCatalog;
@@ -99,9 +99,9 @@ LABEL_14:
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (catalogs)
     {
-      v4->_catalogs = a3;
+      v4->_catalogs = catalogs;
     }
 
     else
@@ -114,23 +114,23 @@ LABEL_14:
   return v5;
 }
 
-+ (id)compositeCatalogForDesignSystem:(int64_t)a3 colorScheme:(int64_t)a4 contrast:(int64_t)a5 styling:(int64_t)a6 error:(id *)a7
++ (id)compositeCatalogForDesignSystem:(int64_t)system colorScheme:(int64_t)scheme contrast:(int64_t)contrast styling:(int64_t)styling error:(id *)error
 {
-  v13 = [NSString stringWithFormat:@"%d.%d.%d.%d", a3, a4, a5, a6];
+  styling = [NSString stringWithFormat:@"%d.%d.%d.%d", system, scheme, contrast, styling];
   if (__compositeOnceToken != -1)
   {
     +[CUIDesignLibraryCompositeCatalog compositeCatalogForDesignSystem:colorScheme:contrast:styling:error:];
   }
 
   os_unfair_lock_lock(&__compositeCatalogCacheLock);
-  v14 = [__compositeCatalogCache objectForKey:v13];
+  v14 = [__compositeCatalogCache objectForKey:styling];
   if (!v14)
   {
-    v15 = [a1 _catalogsForDesignSystem:a3 colorScheme:a4 contrast:a5 styling:a6 error:a7];
+    v15 = [self _catalogsForDesignSystem:system colorScheme:scheme contrast:contrast styling:styling error:error];
     if (v15)
     {
-      v14 = [[a1 alloc] initWithCatalogs:v15];
-      [__compositeCatalogCache setObject:v14 forKey:v13];
+      v14 = [[self alloc] initWithCatalogs:v15];
+      [__compositeCatalogCache setObject:v14 forKey:styling];
       v16 = v14;
     }
 
@@ -151,7 +151,7 @@ id __103__CUIDesignLibraryCompositeCatalog_compositeCatalogForDesignSystem_color
   return result;
 }
 
-- (id)colorWithName:(int64_t)a3 palette:(int64_t)a4 displayGamut:(int64_t)a5 hierarchyLevel:(int64_t)a6 error:(id *)a7
+- (id)colorWithName:(int64_t)name palette:(int64_t)palette displayGamut:(int64_t)gamut hierarchyLevel:(int64_t)level error:(id *)error
 {
   v27 = 0u;
   v28 = 0u;
@@ -172,7 +172,7 @@ LABEL_3:
         objc_enumerationMutation(catalogs);
       }
 
-      result = [*(*(&v27 + 1) + 8 * v17) colorWithName:a3 palette:a4 displayGamut:a5 hierarchyLevel:a6 error:a7];
+      result = [*(*(&v27 + 1) + 8 * v17) colorWithName:name palette:palette displayGamut:gamut hierarchyLevel:level error:error];
       if (result)
       {
         break;
@@ -194,7 +194,7 @@ LABEL_3:
   else
   {
 LABEL_9:
-    if (!a4)
+    if (!palette)
     {
       return 0;
     }
@@ -221,7 +221,7 @@ LABEL_12:
         objc_enumerationMutation(v19);
       }
 
-      result = [*(*(&v23 + 1) + 8 * v22) colorWithName:a3 palette:0 displayGamut:a5 hierarchyLevel:a6 error:a7];
+      result = [*(*(&v23 + 1) + 8 * v22) colorWithName:name palette:0 displayGamut:gamut hierarchyLevel:level error:error];
       if (result)
       {
         break;
@@ -241,15 +241,15 @@ LABEL_12:
     }
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
   return result;
 }
 
-- (id)shapeEffectPresetWithName:(id)a3 error:(id *)a4
+- (id)shapeEffectPresetWithName:(id)name error:(id *)error
 {
   v11 = 0u;
   v12 = 0u;
@@ -271,12 +271,12 @@ LABEL_12:
           objc_enumerationMutation(catalogs);
         }
 
-        result = [*(*(&v11 + 1) + 8 * v10) shapeEffectPresetWithName:a3 error:a4];
+        result = [*(*(&v11 + 1) + 8 * v10) shapeEffectPresetWithName:name error:error];
         if (result)
         {
-          if (a4)
+          if (error)
           {
-            *a4 = 0;
+            *error = 0;
           }
 
           return result;

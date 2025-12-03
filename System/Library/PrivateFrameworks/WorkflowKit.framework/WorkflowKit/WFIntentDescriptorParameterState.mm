@@ -1,61 +1,61 @@
 @interface WFIntentDescriptorParameterState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFIntentDescriptorParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
   v11 = WFLocalizedString(@"Select an app");
-  v12 = [(WFVariableSubstitutableParameterState *)self value];
-  v13 = [v12 requiresUserConfirmation];
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  requiresUserConfirmation = [value requiresUserConfirmation];
 
-  if (v13)
+  if (requiresUserConfirmation)
   {
     goto LABEL_7;
   }
 
-  v14 = [(WFVariableSubstitutableParameterState *)self variable];
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (!v14)
+  if (!variable)
   {
     v17.receiver = self;
     v17.super_class = WFIntentDescriptorParameterState;
-    [(WFVariableSubstitutableParameterState *)&v17 processWithContext:v8 userInputRequiredHandler:v9 valueHandler:v10];
+    [(WFVariableSubstitutableParameterState *)&v17 processWithContext:contextCopy userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy];
     goto LABEL_9;
   }
 
-  v15 = [(WFVariableSubstitutableParameterState *)self variable];
-  if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+  if (!variable2 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
 LABEL_7:
-    v9[2](v9, v11, 0);
+    handlerCopy[2](handlerCopy, v11, 0);
     goto LABEL_9;
   }
 
-  v16 = [v15 prompt];
-  v9[2](v9, v16, 0);
+  prompt = [variable2 prompt];
+  handlerCopy[2](handlerCopy, prompt, 0);
 
 LABEL_9:
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"WFAppDescriptorParameterState.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[INIntentDescriptor class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAppDescriptorParameterState.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[INIntentDescriptor class]]"}];
   }
 
-  v6 = v5;
+  v6 = valueCopy;
   if (v6)
   {
     objc_opt_class();
@@ -77,24 +77,24 @@ LABEL_9:
 
   v8 = v7;
 
-  v9 = [v8 serializedRepresentation];
+  serializedRepresentation = [v8 serializedRepresentation];
 
-  return v9;
+  return serializedRepresentation;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  representationCopy = representation;
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = representationCopy;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
     {
       v8 = [objc_alloc(MEMORY[0x1E696E890]) initWithSerializedRepresentation:v7];
-      v9 = [MEMORY[0x1E696E748] sharedResolver];
-      v10 = [v9 resolvedIntentMatchingDescriptor:v8];
+      mEMORY[0x1E696E748] = [MEMORY[0x1E696E748] sharedResolver];
+      v10 = [mEMORY[0x1E696E748] resolvedIntentMatchingDescriptor:v8];
 
       goto LABEL_8;
     }

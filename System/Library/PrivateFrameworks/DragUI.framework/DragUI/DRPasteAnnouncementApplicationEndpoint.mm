@@ -1,22 +1,22 @@
 @interface DRPasteAnnouncementApplicationEndpoint
 + (id)homeScreenEndpoint;
-- (BOOL)isSimilarToApplicationEndpoint:(id)a3;
-- (DRPasteAnnouncementApplicationEndpoint)initWithCoder:(id)a3;
-- (DRPasteAnnouncementApplicationEndpoint)initWithLocalizedName:(id)a3 persistentIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isSimilarToApplicationEndpoint:(id)endpoint;
+- (DRPasteAnnouncementApplicationEndpoint)initWithCoder:(id)coder;
+- (DRPasteAnnouncementApplicationEndpoint)initWithLocalizedName:(id)name persistentIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DRPasteAnnouncementApplicationEndpoint
 
-- (DRPasteAnnouncementApplicationEndpoint)initWithLocalizedName:(id)a3 persistentIdentifier:(id)a4
+- (DRPasteAnnouncementApplicationEndpoint)initWithLocalizedName:(id)name persistentIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = DRPasteAnnouncementApplicationEndpoint;
-  v7 = [(DRPasteAnnouncementEndpoint *)&v11 _initWithLocalizedName:a3];
+  v7 = [(DRPasteAnnouncementEndpoint *)&v11 _initWithLocalizedName:name];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     persistentIdentifier = v7->_persistentIdentifier;
     v7->_persistentIdentifier = v8;
   }
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __60__DRPasteAnnouncementApplicationEndpoint_homeScreenEndpoint__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (homeScreenEndpoint_onceToken != -1)
   {
     dispatch_once(&homeScreenEndpoint_onceToken, block);
@@ -56,49 +56,49 @@ void __60__DRPasteAnnouncementApplicationEndpoint_homeScreenEndpoint__block_invo
   *(homeScreenEndpoint_sharedInstance + 16) |= 1u;
 }
 
-- (DRPasteAnnouncementApplicationEndpoint)initWithCoder:(id)a3
+- (DRPasteAnnouncementApplicationEndpoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DRPasteAnnouncementApplicationEndpoint;
-  v5 = [(DRPasteAnnouncementEndpoint *)&v9 initWithCoder:v4];
+  v5 = [(DRPasteAnnouncementEndpoint *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
     persistentIdentifier = v5->_persistentIdentifier;
     v5->_persistentIdentifier = v6;
 
-    *&v5->_flags = *&v5->_flags & 0xFE | [v4 decodeBoolForKey:@"isHomeScreen"];
+    *&v5->_flags = *&v5->_flags & 0xFE | [coderCopy decodeBoolForKey:@"isHomeScreen"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = DRPasteAnnouncementApplicationEndpoint;
-  [(DRPasteAnnouncementEndpoint *)&v6 encodeWithCoder:v4];
+  [(DRPasteAnnouncementEndpoint *)&v6 encodeWithCoder:coderCopy];
   persistentIdentifier = self->_persistentIdentifier;
   if (persistentIdentifier)
   {
-    [v4 encodeObject:persistentIdentifier forKey:@"persistentIdentifier"];
-    [v4 encodeBool:*&self->_flags & 1 forKey:@"isHomeScreen"];
+    [coderCopy encodeObject:persistentIdentifier forKey:@"persistentIdentifier"];
+    [coderCopy encodeBool:*&self->_flags & 1 forKey:@"isHomeScreen"];
   }
 }
 
-- (BOOL)isSimilarToApplicationEndpoint:(id)a3
+- (BOOL)isSimilarToApplicationEndpoint:(id)endpoint
 {
-  v3 = a3;
-  v4 = [v3 persistentIdentifier];
-  LODWORD(self) = [v4 isEqualToData:self->_persistentIdentifier];
+  endpointCopy = endpoint;
+  persistentIdentifier = [endpointCopy persistentIdentifier];
+  LODWORD(self) = [persistentIdentifier isEqualToData:self->_persistentIdentifier];
 
   if (self)
   {
     self = objc_alloc(MEMORY[0x277CC1EE8]);
-    v6 = [v3 persistentIdentifier];
-    v7 = [(DRPasteAnnouncementApplicationEndpoint *)self initWithPersistentIdentifier:v6];
+    persistentIdentifier2 = [endpointCopy persistentIdentifier];
+    v7 = [(DRPasteAnnouncementApplicationEndpoint *)self initWithPersistentIdentifier:persistentIdentifier2];
 
     objc_opt_class();
     LOBYTE(self) = objc_opt_isKindOfClass();

@@ -1,17 +1,17 @@
 @interface SGMultiHeadPredictionItem
-- (SGMultiHeadPredictionItem)initWithScore:(id)a3 label:(id)a4;
+- (SGMultiHeadPredictionItem)initWithScore:(id)score label:(id)label;
 @end
 
 @implementation SGMultiHeadPredictionItem
 
-- (SGMultiHeadPredictionItem)initWithScore:(id)a3 label:(id)a4
+- (SGMultiHeadPredictionItem)initWithScore:(id)score label:(id)label
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  scoreCopy = score;
+  labelCopy = label;
+  if (!scoreCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"SGMultiHeadInference.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"score"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGMultiHeadInference.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"score"}];
   }
 
   v14.receiver = self;
@@ -20,8 +20,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_score, a3);
-    objc_storeStrong(&v11->_label, a4);
+    objc_storeStrong(&v10->_score, score);
+    objc_storeStrong(&v11->_label, label);
   }
 
   return v11;

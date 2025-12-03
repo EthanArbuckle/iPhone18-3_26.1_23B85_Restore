@@ -1,52 +1,52 @@
 @interface PXSortCollectionAction
-- (PXSortCollectionAction)initWithCollection:(id)a3 sortType:(PXSortCollectionActionSortType)a4;
-- (void)_performPeopleVirtualCollectionActionWithCompletion:(id)a3;
-- (void)performAction:(id)a3;
-- (void)performChangeToSortType:(PXSortCollectionActionSortType)a3 completeCallback:(id)a4;
-- (void)performUndo:(id)a3;
+- (PXSortCollectionAction)initWithCollection:(id)collection sortType:(PXSortCollectionActionSortType)type;
+- (void)_performPeopleVirtualCollectionActionWithCompletion:(id)completion;
+- (void)performAction:(id)action;
+- (void)performChangeToSortType:(PXSortCollectionActionSortType)type completeCallback:(id)callback;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXSortCollectionAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  [(PXSortCollectionAction *)self performChangeToSortType:[(PXSortCollectionAction *)self originalSortType] completeCallback:v4];
+  undoCopy = undo;
+  [(PXSortCollectionAction *)self performChangeToSortType:[(PXSortCollectionAction *)self originalSortType] completeCallback:undoCopy];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v6 = a3;
-  v4 = [(PXSortCollectionAction *)self collection];
-  v5 = [v4 px_isPeopleVirtualCollection];
+  actionCopy = action;
+  collection = [(PXSortCollectionAction *)self collection];
+  px_isPeopleVirtualCollection = [collection px_isPeopleVirtualCollection];
 
-  if (v5)
+  if (px_isPeopleVirtualCollection)
   {
-    [(PXSortCollectionAction *)self _performPeopleVirtualCollectionActionWithCompletion:v6];
+    [(PXSortCollectionAction *)self _performPeopleVirtualCollectionActionWithCompletion:actionCopy];
   }
 
   else
   {
-    [(PXSortCollectionAction *)self performChangeToSortType:[(PXSortCollectionAction *)self sortType] completeCallback:v6];
+    [(PXSortCollectionAction *)self performChangeToSortType:[(PXSortCollectionAction *)self sortType] completeCallback:actionCopy];
   }
 }
 
-- (void)performChangeToSortType:(PXSortCollectionActionSortType)a3 completeCallback:(id)a4
+- (void)performChangeToSortType:(PXSortCollectionActionSortType)type completeCallback:(id)callback
 {
-  v6 = a4;
-  v7 = [(PXSortCollectionAction *)self collection];
-  v8 = [(PXSortCollectionAction *)self originalCollectionContent];
+  callbackCopy = callback;
+  collection = [(PXSortCollectionAction *)self collection];
+  originalCollectionContent = [(PXSortCollectionAction *)self originalCollectionContent];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__PXSortCollectionAction_performChangeToSortType_completeCallback___block_invoke;
   v11[3] = &unk_1E7741058;
-  sortKey = a3.sortKey;
-  ascending = a3.ascending;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
-  [(PXPhotosAction *)self performChanges:v11 completionHandler:v6];
+  sortKey = type.sortKey;
+  ascending = type.ascending;
+  v12 = collection;
+  v13 = originalCollectionContent;
+  v9 = originalCollectionContent;
+  v10 = collection;
+  [(PXPhotosAction *)self performChanges:v11 completionHandler:callbackCopy];
 }
 
 void __67__PXSortCollectionAction_performChangeToSortType_completeCallback___block_invoke(uint64_t a1)
@@ -104,12 +104,12 @@ LABEL_20:
   }
 }
 
-- (void)_performPeopleVirtualCollectionActionWithCompletion:(id)a3
+- (void)_performPeopleVirtualCollectionActionWithCompletion:(id)completion
 {
-  v12 = a3;
-  v4 = [(PXSortCollectionAction *)self sortType];
-  v5 = [(PXPhotosAction *)self photoLibrary];
-  v6 = [PXPeopleUtilities currentSortOrderFor:v5];
+  completionCopy = completion;
+  sortType = [(PXSortCollectionAction *)self sortType];
+  photoLibrary = [(PXPhotosAction *)self photoLibrary];
+  v6 = [PXPeopleUtilities currentSortOrderFor:photoLibrary];
 
   if (v6)
   {
@@ -118,17 +118,17 @@ LABEL_20:
 
   else
   {
-    v7 = v4.sortKey == 5;
+    v7 = sortType.sortKey == 5;
   }
 
-  v8 = !v7 && (*&v4 & 0x100000000) == 0;
+  v8 = !v7 && (*&sortType & 0x100000000) == 0;
   v9 = 1;
   if (v8)
   {
     v9 = 2;
   }
 
-  if (v4.sortKey)
+  if (sortType.sortKey)
   {
     v10 = v9;
   }
@@ -138,31 +138,31 @@ LABEL_20:
     v10 = 0;
   }
 
-  v11 = [(PXPhotosAction *)self photoLibrary];
-  [PXPeopleUtilities setSortOrder:v10 toPhotoLibrary:v11];
+  photoLibrary2 = [(PXPhotosAction *)self photoLibrary];
+  [PXPeopleUtilities setSortOrder:v10 toPhotoLibrary:photoLibrary2];
 
-  v12[2](v12, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (PXSortCollectionAction)initWithCollection:(id)a3 sortType:(PXSortCollectionActionSortType)a4
+- (PXSortCollectionAction)initWithCollection:(id)collection sortType:(PXSortCollectionActionSortType)type
 {
-  v7 = a3;
-  v8 = [v7 photoLibrary];
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
   v17.receiver = self;
   v17.super_class = PXSortCollectionAction;
-  v9 = [(PXPhotosAction *)&v17 initWithPhotoLibrary:v8];
+  v9 = [(PXPhotosAction *)&v17 initWithPhotoLibrary:photoLibrary];
 
   if (!v9)
   {
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v9->_collection, a3);
-  v9->_sortType = a4;
-  v10 = [(PXPhotosAction *)v9 standardFetchOptions];
-  if ([v7 canContainAssets])
+  objc_storeStrong(&v9->_collection, collection);
+  v9->_sortType = type;
+  standardFetchOptions = [(PXPhotosAction *)v9 standardFetchOptions];
+  if ([collectionCopy canContainAssets])
   {
-    v11 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v7 options:v10];
+    v11 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:collectionCopy options:standardFetchOptions];
 LABEL_6:
     originalCollectionContent = v9->_originalCollectionContent;
     v9->_originalCollectionContent = v11;
@@ -170,22 +170,22 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v7 canContainCollections])
+  if ([collectionCopy canContainCollections])
   {
-    v11 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v7 options:v10];
+    v11 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:collectionCopy options:standardFetchOptions];
     goto LABEL_6;
   }
 
 LABEL_7:
-  v13 = [v7 customSortKey];
-  v14 = [v7 customSortAscending];
+  customSortKey = [collectionCopy customSortKey];
+  customSortAscending = [collectionCopy customSortAscending];
   v15 = 0x100000000;
-  if (!v14)
+  if (!customSortAscending)
   {
     v15 = 0;
   }
 
-  v9->_originalSortType = (v15 | v13);
+  v9->_originalSortType = (v15 | customSortKey);
 
 LABEL_10:
   return v9;

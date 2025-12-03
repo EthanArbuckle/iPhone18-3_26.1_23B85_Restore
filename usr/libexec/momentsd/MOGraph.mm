@@ -1,17 +1,17 @@
 @interface MOGraph
-- (MOGraph)initWithNumVertices:(unint64_t)a3 edges:(id)a4;
-- (id)calculateConnectedComponentWithGraphTraversal:(unint64_t)a3;
-- (void)bfsStartingFrom:(id)a3 connectedPartIndx:(id)a4;
-- (void)dfsStartingFrom:(id)a3 connectedPartIndx:(id)a4;
+- (MOGraph)initWithNumVertices:(unint64_t)vertices edges:(id)edges;
+- (id)calculateConnectedComponentWithGraphTraversal:(unint64_t)traversal;
+- (void)bfsStartingFrom:(id)from connectedPartIndx:(id)indx;
+- (void)dfsStartingFrom:(id)from connectedPartIndx:(id)indx;
 @end
 
 @implementation MOGraph
 
-- (MOGraph)initWithNumVertices:(unint64_t)a3 edges:(id)a4
+- (MOGraph)initWithNumVertices:(unint64_t)vertices edges:(id)edges
 {
-  v8 = a4;
-  v9 = v8;
-  if (!a3)
+  edgesCopy = edges;
+  v9 = edgesCopy;
+  if (!vertices)
   {
     v34 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -23,12 +23,12 @@
     v36 = v35;
     v37 = @"Invalid parameter not satisfying: numVertices > 0";
     v38 = a2;
-    v39 = self;
+    selfCopy6 = self;
     v40 = 18;
     goto LABEL_23;
   }
 
-  if (!v8)
+  if (!edgesCopy)
   {
     v41 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -40,34 +40,34 @@
     v36 = v35;
     v37 = @"Invalid parameter not satisfying: edges";
     v38 = a2;
-    v39 = self;
+    selfCopy6 = self;
     v40 = 19;
 LABEL_23:
-    [v35 handleFailureInMethod:v38 object:v39 file:@"MOGraph.m" lineNumber:v40 description:v37];
+    [v35 handleFailureInMethod:v38 object:selfCopy6 file:@"MOGraph.m" lineNumber:v40 description:v37];
 
-    v33 = 0;
+    selfCopy7 = 0;
     goto LABEL_24;
   }
 
-  if ([v8 count])
+  if ([edgesCopy count])
   {
     v10 = 0;
     while (1)
     {
       v11 = [v9 objectAtIndexedSubscript:v10];
       v12 = [v11 objectAtIndexedSubscript:0];
-      v13 = [v12 intValue];
+      intValue = [v12 intValue];
 
-      if ((v13 & 0x80000000) != 0)
+      if ((intValue & 0x80000000) != 0)
       {
         break;
       }
 
       v14 = [v9 objectAtIndexedSubscript:v10];
       v15 = [v14 objectAtIndexedSubscript:0];
-      v16 = [v15 intValue];
+      intValue2 = [v15 intValue];
 
-      if (v16 >= a3)
+      if (intValue2 >= vertices)
       {
         v44 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -79,16 +79,16 @@ LABEL_23:
         v36 = v35;
         v37 = @"Invalid parameter not satisfying: edges[i][0].intValue < numVertices";
         v38 = a2;
-        v39 = self;
+        selfCopy6 = self;
         v40 = 22;
         goto LABEL_23;
       }
 
       v17 = [v9 objectAtIndexedSubscript:v10];
       v18 = [v17 objectAtIndexedSubscript:1];
-      v19 = [v18 intValue];
+      intValue3 = [v18 intValue];
 
-      if ((v19 & 0x80000000) != 0)
+      if ((intValue3 & 0x80000000) != 0)
       {
         v45 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -100,16 +100,16 @@ LABEL_23:
         v36 = v35;
         v37 = @"Invalid parameter not satisfying: edges[i][1].intValue >= 0";
         v38 = a2;
-        v39 = self;
+        selfCopy6 = self;
         v40 = 23;
         goto LABEL_23;
       }
 
       v20 = [v9 objectAtIndexedSubscript:v10];
       v21 = [v20 objectAtIndexedSubscript:1];
-      v22 = [v21 intValue];
+      intValue4 = [v21 intValue];
 
-      if (v22 >= a3)
+      if (intValue4 >= vertices)
       {
         v46 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -121,7 +121,7 @@ LABEL_23:
         v36 = v35;
         v37 = @"Invalid parameter not satisfying: edges[i][1].intValue < numVertices";
         v38 = a2;
-        v39 = self;
+        selfCopy6 = self;
         v40 = 24;
         goto LABEL_23;
       }
@@ -142,7 +142,7 @@ LABEL_23:
     v36 = v35;
     v37 = @"Invalid parameter not satisfying: edges[i][0].intValue >= 0";
     v38 = a2;
-    v39 = self;
+    selfCopy6 = self;
     v40 = 21;
     goto LABEL_23;
   }
@@ -154,8 +154,8 @@ LABEL_10:
   v24 = v23;
   if (v23)
   {
-    v23->_numVertices = a3;
-    objc_storeStrong(&v23->_edges, a4);
+    v23->_numVertices = vertices;
+    objc_storeStrong(&v23->_edges, edges);
     v25 = objc_alloc_init(NSMutableArray);
     membership = v24->_membership;
     v24->_membership = v25;
@@ -163,10 +163,10 @@ LABEL_10:
     do
     {
       [(NSMutableArray *)v24->_membership addObject:&off_100369220];
-      --a3;
+      --vertices;
     }
 
-    while (a3);
+    while (vertices);
     v27 = objc_alloc_init(NSMutableDictionary);
     sparseAdjacencyMatrix = v24->_sparseAdjacencyMatrix;
     v24->_sparseAdjacencyMatrix = v27;
@@ -189,13 +189,13 @@ LABEL_10:
   }
 
   self = v24;
-  v33 = self;
+  selfCopy7 = self;
 LABEL_24:
 
-  return v33;
+  return selfCopy7;
 }
 
-- (id)calculateConnectedComponentWithGraphTraversal:(unint64_t)a3
+- (id)calculateConnectedComponentWithGraphTraversal:(unint64_t)traversal
 {
   if ([(NSArray *)self->_edges count])
   {
@@ -233,7 +233,7 @@ LABEL_24:
       {
         v16 = [NSNumber numberWithInt:v12];
         v17 = [NSNumber numberWithInt:v13];
-        if (a3 == 1)
+        if (traversal == 1)
         {
           [(MOGraph *)self bfsStartingFrom:v16 connectedPartIndx:v17];
         }
@@ -257,21 +257,21 @@ LABEL_24:
   return membership;
 }
 
-- (void)dfsStartingFrom:(id)a3 connectedPartIndx:(id)a4
+- (void)dfsStartingFrom:(id)from connectedPartIndx:(id)indx
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_membership, "objectAtIndexedSubscript:", [v6 intValue]);
+  fromCopy = from;
+  indxCopy = indx;
+  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_membership, "objectAtIndexedSubscript:", [fromCopy intValue]);
   v9 = [v8 isEqual:&off_100369220];
 
   if (v9)
   {
-    -[NSMutableArray setObject:atIndexedSubscript:](self->_membership, "setObject:atIndexedSubscript:", v7, [v6 intValue]);
+    -[NSMutableArray setObject:atIndexedSubscript:](self->_membership, "setObject:atIndexedSubscript:", indxCopy, [fromCopy intValue]);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v10 = [(NSMutableDictionary *)self->_sparseAdjacencyMatrix objectForKeyedSubscript:v6, 0];
+    v10 = [(NSMutableDictionary *)self->_sparseAdjacencyMatrix objectForKeyedSubscript:fromCopy, 0];
     v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v11)
     {
@@ -287,7 +287,7 @@ LABEL_24:
             objc_enumerationMutation(v10);
           }
 
-          [(MOGraph *)self dfsStartingFrom:*(*(&v15 + 1) + 8 * v14) connectedPartIndx:v7];
+          [(MOGraph *)self dfsStartingFrom:*(*(&v15 + 1) + 8 * v14) connectedPartIndx:indxCopy];
           v14 = v14 + 1;
         }
 
@@ -300,18 +300,18 @@ LABEL_24:
   }
 }
 
-- (void)bfsStartingFrom:(id)a3 connectedPartIndx:(id)a4
+- (void)bfsStartingFrom:(id)from connectedPartIndx:(id)indx
 {
-  v6 = a3;
-  v22 = a4;
-  v7 = -[NSMutableArray objectAtIndexedSubscript:](self->_membership, "objectAtIndexedSubscript:", [v6 intValue]);
+  fromCopy = from;
+  indxCopy = indx;
+  v7 = -[NSMutableArray objectAtIndexedSubscript:](self->_membership, "objectAtIndexedSubscript:", [fromCopy intValue]);
   v8 = [v7 isEqual:&off_100369220];
 
   if (v8)
   {
     v9 = objc_alloc_init(NSMutableArray);
-    v21 = v6;
-    [v9 enqueue:v6];
+    v21 = fromCopy;
+    [v9 enqueue:fromCopy];
     while ([v9 count])
     {
       v10 = [v9 count];
@@ -320,18 +320,18 @@ LABEL_24:
         v11 = v10;
         for (i = 0; i != v11; ++i)
         {
-          v13 = [v9 dequeue];
-          v14 = -[NSMutableArray objectAtIndexedSubscript:](self->_membership, "objectAtIndexedSubscript:", [v13 intValue]);
+          dequeue = [v9 dequeue];
+          v14 = -[NSMutableArray objectAtIndexedSubscript:](self->_membership, "objectAtIndexedSubscript:", [dequeue intValue]);
           v15 = [v14 isEqual:&off_100369220];
 
           if (v15)
           {
-            -[NSMutableArray setObject:atIndexedSubscript:](self->_membership, "setObject:atIndexedSubscript:", v22, [v13 intValue]);
+            -[NSMutableArray setObject:atIndexedSubscript:](self->_membership, "setObject:atIndexedSubscript:", indxCopy, [dequeue intValue]);
             v25 = 0u;
             v26 = 0u;
             v23 = 0u;
             v24 = 0u;
-            v16 = [(NSMutableDictionary *)self->_sparseAdjacencyMatrix objectForKeyedSubscript:v13];
+            v16 = [(NSMutableDictionary *)self->_sparseAdjacencyMatrix objectForKeyedSubscript:dequeue];
             v17 = [v16 countByEnumeratingWithState:&v23 objects:v27 count:16];
             if (v17)
             {
@@ -362,7 +362,7 @@ LABEL_24:
       }
     }
 
-    v6 = v21;
+    fromCopy = v21;
   }
 }
 

@@ -7,7 +7,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D0F1C9E8();
 }
 

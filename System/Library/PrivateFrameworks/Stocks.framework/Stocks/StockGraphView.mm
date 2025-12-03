@@ -1,43 +1,43 @@
 @interface StockGraphView
-- ($87A9BE3275E22128A73FF46D0B92144E)plottedPointNearestToPoint:(SEL)a3;
+- ($87A9BE3275E22128A73FF46D0B92144E)plottedPointNearestToPoint:(SEL)point;
 - (CGPoint)rightmostPlottedPoint;
-- (CGRect)_lineViewFrameForBoundsSize:(CGSize)a3;
+- (CGRect)_lineViewFrameForBoundsSize:(CGSize)size;
 - (CGRect)_trueGraphPointsRegion;
-- (CGRect)_volumeViewFrameForBoundsSize:(CGSize)a3;
-- (CGRect)volumeBarRectNearestToPoint:(CGPoint)a3;
-- (StockGraphView)initWithFrame:(CGRect)a3;
+- (CGRect)_volumeViewFrameForBoundsSize:(CGSize)size;
+- (CGRect)volumeBarRectNearestToPoint:(CGPoint)point;
+- (StockGraphView)initWithFrame:(CGRect)frame;
 - (StockGraphViewContainer)chartViewDelegate;
 - (UIEdgeInsets)graphInsets;
-- (double)_timeAtPosition:(double)a3;
-- (float)_priceAtTime:(double)a3 dataPosition:(double *)a4;
-- (unint64_t)_normalizedAccumulatedVolumeInDataRange:(CGPoint)a3;
+- (double)_timeAtPosition:(double)position;
+- (float)_priceAtTime:(double)time dataPosition:(double *)position;
+- (unint64_t)_normalizedAccumulatedVolumeInDataRange:(CGPoint)range;
 - (void)_finishCurrentLine;
 - (void)_layoutSubviews;
-- (void)_processGraphDataForWidth:(double)a3;
+- (void)_processGraphDataForWidth:(double)width;
 - (void)cancelRenderOperation;
 - (void)clearData;
 - (void)clearPaths;
 - (void)dealloc;
-- (void)graphRenderOperationDidFinish:(id)a3;
-- (void)loadStockChartData:(id)a3;
+- (void)graphRenderOperationDidFinish:(id)finish;
+- (void)loadStockChartData:(id)data;
 - (void)readyForDisplayFromChartData;
-- (void)recomputePathsAndRenderIfNeededForSize:(CGSize)a3;
-- (void)setDottedLinePositionsWithLabelInfo:(id)a3;
-- (void)setEvenlySpacedDottedLinePositionsWithCount:(unint64_t)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)recomputePathsAndRenderIfNeededForSize:(CGSize)size;
+- (void)setDottedLinePositionsWithLabelInfo:(id)info;
+- (void)setEvenlySpacedDottedLinePositionsWithCount:(unint64_t)count;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation StockGraphView
 
-- (StockGraphView)initWithFrame:(CGRect)a3
+- (StockGraphView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = StockGraphView;
-  v3 = [(StockGraphView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(StockGraphView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(StockGraphView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(StockGraphView *)v3 setBackgroundColor:clearColor];
 
     [(StockGraphView *)v3 setMultipleTouchEnabled:1];
     v3->_points = malloc_type_malloc(0x1E0uLL, 0x1000040451B5BE8uLL);
@@ -66,10 +66,10 @@
   return v3;
 }
 
-- (CGRect)_lineViewFrameForBoundsSize:(CGSize)a3
+- (CGRect)_lineViewFrameForBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = *MEMORY[0x277CBF348];
   v6 = *(MEMORY[0x277CBF348] + 8);
   result.size.height = height;
@@ -79,10 +79,10 @@
   return result;
 }
 
-- (CGRect)_volumeViewFrameForBoundsSize:(CGSize)a3
+- (CGRect)_volumeViewFrameForBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(StockChartDisplayMode *)self->_displayMode volumeHeight];
   v7 = height - v6;
   [(StockChartDisplayMode *)self->_displayMode volumeHeight];
@@ -111,24 +111,24 @@
   [(VolumeGraphView *)volumeView setFrame:?];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = StockGraphView;
-  [(StockGraphView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(StockGraphView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(StockGraphView *)self _layoutSubviews];
 }
 
-- (void)setDottedLinePositionsWithLabelInfo:(id)a3
+- (void)setDottedLinePositionsWithLabelInfo:(id)info
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  infoCopy = info;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(infoCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = infoCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -166,13 +166,13 @@
   self->_dottedLinePositionsForStyleOnly = 0;
 }
 
-- (void)setEvenlySpacedDottedLinePositionsWithCount:(unint64_t)a3
+- (void)setEvenlySpacedDottedLinePositionsWithCount:(unint64_t)count
 {
-  v3 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
-  if (v3)
+  countCopy = count;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:count];
+  if (countCopy)
   {
-    v6 = (v3 + 1);
+    v6 = (countCopy + 1);
     v7 = 1;
     do
     {
@@ -180,10 +180,10 @@
       [(NSArray *)v5 addObject:v8];
 
       ++v7;
-      --v3;
+      --countCopy;
     }
 
-    while (v3);
+    while (countCopy);
   }
 
   dottedLinePositionsForStyleOnly = self->_dottedLinePositionsForStyleOnly;
@@ -194,16 +194,16 @@
   self->_dottedLinePositions = 0;
 }
 
-- (float)_priceAtTime:(double)a3 dataPosition:(double *)a4
+- (float)_priceAtTime:(double)time dataPosition:(double *)position
 {
   valueIndex = self->_valueIndex;
   if (valueIndex >= self->_valueCount)
   {
     chartData = self->_chartData;
-    return *([(StockChartData *)chartData stockValues:a4]+ 24 * self->_valueCount - 16);
+    return *([(StockChartData *)chartData stockValues:position]+ 24 * self->_valueCount - 16);
   }
 
-  v7 = a3;
+  timeCopy = time;
   if (valueIndex <= 0)
   {
     self->_valueIndex = 1;
@@ -212,12 +212,12 @@
   v8 = [(StockChartData *)self->_chartData stockValues]+ 24 * self->_valueIndex;
   var0 = v8[-1].var0;
   var1 = v8[-1].var1;
-  v11 = [(StockChartData *)self->_chartData stockValues];
+  stockValues = [(StockChartData *)self->_chartData stockValues];
   v12 = self->_valueIndex;
-  p_var0 = &v11[v12].var0;
+  p_var0 = &stockValues[v12].var0;
   v14 = *p_var0;
-  a3 = p_var0[1];
-  if (*p_var0 < v7)
+  time = p_var0[1];
+  if (*p_var0 < timeCopy)
   {
     while (1)
     {
@@ -228,51 +228,51 @@
         break;
       }
 
-      var1 = a3;
+      var1 = time;
       var0 = v14;
-      v16 = [(StockChartData *)self->_chartData stockValues];
+      stockValues2 = [(StockChartData *)self->_chartData stockValues];
       v12 = self->_valueIndex;
-      v17 = &v16[v12].var0;
+      v17 = &stockValues2[v12].var0;
       v14 = *v17;
-      a3 = v17[1];
-      if (*v17 >= v7)
+      time = v17[1];
+      if (*v17 >= timeCopy)
       {
         goto LABEL_7;
       }
     }
 
-    if (a4)
+    if (position)
     {
-      *a4 = 1.0;
+      *position = 1.0;
     }
 
     chartData = self->_chartData;
-    return *([(StockChartData *)chartData stockValues:a4]+ 24 * self->_valueCount - 16);
+    return *([(StockChartData *)chartData stockValues:position]+ 24 * self->_valueCount - 16);
   }
 
 LABEL_7:
-  v18 = (v7 - var0) / (v14 - var0);
-  if (a4)
+  v18 = (timeCopy - var0) / (v14 - var0);
+  if (position)
   {
-    *a4 = (v18 + v12) / (self->_valueCount - 1);
+    *position = (v18 + v12) / (self->_valueCount - 1);
   }
 
-  return a3 * v18 + var1 * (1.0 - v18);
+  return time * v18 + var1 * (1.0 - v18);
 }
 
-- (double)_timeAtPosition:(double)a3
+- (double)_timeAtPosition:(double)position
 {
   v4 = self->_valueCount - 1;
-  v5 = v4 * a3;
+  v5 = v4 * position;
   v6 = v5;
   v7 = vcvtms_s32_f32(v6);
-  v8 = [(StockChartData *)self->_chartData stockValues];
+  stockValues = [(StockChartData *)self->_chartData stockValues];
   if (v4 <= v7)
   {
-    return v8[self->_valueCount - 1].var0;
+    return stockValues[self->_valueCount - 1].var0;
   }
 
-  var0 = v8[v7].var0;
+  var0 = stockValues[v7].var0;
   v10 = v7 + 1;
   if (v10 >= self->_valueCount - 1)
   {
@@ -297,8 +297,8 @@ LABEL_7:
   v6 = v5;
   [(StockChartDisplayMode *)self->_displayMode lineWidth];
   v8 = v6 - v7 - self->_graphInsets.bottom - self->_graphInsets.top;
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v11 = v8 + -1.0 / v10;
 
   [(StockChartDisplayMode *)self->_displayMode lineWidth];
@@ -365,13 +365,13 @@ LABEL_7:
   [(NSMutableArray *)linePointCounts addObject:v10];
 }
 
-- (unint64_t)_normalizedAccumulatedVolumeInDataRange:(CGPoint)a3
+- (unint64_t)_normalizedAccumulatedVolumeInDataRange:(CGPoint)range
 {
   valueCount = self->_valueCount;
   v4 = (valueCount - 1);
-  v5 = a3.x * v4;
-  v6 = a3.y * v4;
-  if (a3.y * v4 <= a3.x * v4)
+  v5 = range.x * v4;
+  v6 = range.y * v4;
+  if (range.y * v4 <= range.x * v4)
   {
     return 0;
   }
@@ -413,18 +413,18 @@ LABEL_7:
   return v9;
 }
 
-- (void)_processGraphDataForWidth:(double)a3
+- (void)_processGraphDataForWidth:(double)width
 {
-  v3 = self;
+  selfCopy = self;
   if (![(StockChartData *)self->_chartData stockValueCount])
   {
     return;
   }
 
-  v4 = *[(StockChartData *)v3->_chartData stockValues];
-  v128 = *([(StockChartData *)v3->_chartData stockValues]+ 24 * v3->_valueCount - 24);
-  v5 = [(StockChartData *)v3->_chartData chartInterval];
-  if (v5)
+  v4 = *[(StockChartData *)selfCopy->_chartData stockValues];
+  v128 = *([(StockChartData *)selfCopy->_chartData stockValues]+ 24 * selfCopy->_valueCount - 24);
+  chartInterval = [(StockChartData *)selfCopy->_chartData chartInterval];
+  if (chartInterval)
   {
     v120 = 0.0;
     v116 = 1.0;
@@ -432,15 +432,15 @@ LABEL_7:
 
   else
   {
-    v6 = [(StockChartData *)v3->_chartData marketCloseDate];
-    [v6 timeIntervalSince1970];
+    marketCloseDate = [(StockChartData *)selfCopy->_chartData marketCloseDate];
+    [marketCloseDate timeIntervalSince1970];
     v8 = v7;
-    v9 = [(StockChartData *)v3->_chartData marketOpenDate];
-    [v9 timeIntervalSince1970];
-    v11 = a3 / ((v8 - v10) / 60.0);
+    marketOpenDate = [(StockChartData *)selfCopy->_chartData marketOpenDate];
+    [marketOpenDate timeIntervalSince1970];
+    v11 = width / ((v8 - v10) / 60.0);
 
-    v12 = [(StockChartData *)v3->_chartData marketOpenDate];
-    [v12 timeIntervalSince1970];
+    marketOpenDate2 = [(StockChartData *)selfCopy->_chartData marketOpenDate];
+    [marketOpenDate2 timeIntervalSince1970];
     v14 = (v4 - v13) / 60.0;
 
     v15 = fmax(v14, 0.0);
@@ -449,18 +449,18 @@ LABEL_7:
     v120 = v16;
   }
 
-  if (![(StockChartData *)v3->_chartData chartInterval]|| (v17 = 0.0, [(StockChartData *)v3->_chartData chartInterval]== 1))
+  if (![(StockChartData *)selfCopy->_chartData chartInterval]|| (v17 = 0.0, [(StockChartData *)selfCopy->_chartData chartInterval]== 1))
   {
-    v18 = [(StockChartData *)v3->_chartData marketCloseDate];
-    [v18 timeIntervalSince1970];
+    marketCloseDate2 = [(StockChartData *)selfCopy->_chartData marketCloseDate];
+    [marketCloseDate2 timeIntervalSince1970];
     v17 = (v19 - v128) / 60.0;
   }
 
   v20 = v120;
-  v21 = (a3 - v120 - v17 * v116) / (v3->_valueCount - 1);
+  v21 = (width - v120 - v17 * v116) / (selfCopy->_valueCount - 1);
   v22 = v21 >= 2.0;
-  v23 = [(StockChartData *)v3->_chartData interestingIndexes];
-  v24 = [v23 count];
+  interestingIndexes = [(StockChartData *)selfCopy->_chartData interestingIndexes];
+  v24 = [interestingIndexes count];
 
   v110 = v24;
   v118 = v4;
@@ -474,43 +474,43 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v25 = [(StockChartData *)v3->_chartData chartInterval];
+  chartInterval2 = [(StockChartData *)selfCopy->_chartData chartInterval];
   v26 = fmax(v21, 2.0);
   v132[0] = 0.0;
-  if (v25 != 1)
+  if (chartInterval2 != 1)
   {
     v124 = 0;
     goto LABEL_13;
   }
 
-  v27 = [(StockChartData *)v3->_chartData interestingIndexes];
-  v28 = [v27 lastObject];
-  [v28 doubleValue];
+  interestingIndexes2 = [(StockChartData *)selfCopy->_chartData interestingIndexes];
+  lastObject = [interestingIndexes2 lastObject];
+  [lastObject doubleValue];
   v131 = v29;
 
   v22 = 0;
   v124 = 1;
 LABEL_14:
-  v3->_valueIndex = 0;
-  [(StockGraphView *)v3 clearPaths];
-  v123 = [(StockChartData *)v3->_chartData hasVolume];
-  v3->_maxVolume = 0;
+  selfCopy->_valueIndex = 0;
+  [(StockGraphView *)selfCopy clearPaths];
+  hasVolume = [(StockChartData *)selfCopy->_chartData hasVolume];
+  selfCopy->_maxVolume = 0;
   v30 = 1.0;
   if (v22)
   {
     v30 = 2.0;
   }
 
-  v3->_volumeBarWidth = v30;
-  v31 = [(StockChartData *)v3->_chartData minValue][8];
-  v32 = [(StockChartData *)v3->_chartData maxValue][8];
-  [(StockChartData *)v3->_chartData previousClosePrice];
+  selfCopy->_volumeBarWidth = v30;
+  v31 = [(StockChartData *)selfCopy->_chartData minValue][8];
+  v32 = [(StockChartData *)selfCopy->_chartData maxValue][8];
+  [(StockChartData *)selfCopy->_chartData previousClosePrice];
   v34 = v32;
   v125 = v31;
   if (v33 != 0.0)
   {
     v35 = v33;
-    v36 = [(StockChartData *)v3->_chartData chartInterval];
+    chartInterval3 = [(StockChartData *)selfCopy->_chartData chartInterval];
     v37 = v35;
     if (v31 >= v35)
     {
@@ -527,7 +527,7 @@ LABEL_14:
       v37 = v32;
     }
 
-    if (v36)
+    if (chartInterval3)
     {
       v34 = v32;
     }
@@ -537,7 +537,7 @@ LABEL_14:
       v34 = v37;
     }
 
-    if (v36)
+    if (chartInterval3)
     {
       v39 = v31;
     }
@@ -552,17 +552,17 @@ LABEL_14:
 
   v108 = v32;
   v111 = v31;
-  v40 = *[(StockChartData *)v3->_chartData minValue];
-  v41 = [(StockChartData *)v3->_chartData maxValue];
+  v40 = *[(StockChartData *)selfCopy->_chartData minValue];
+  maxValue = [(StockChartData *)selfCopy->_chartData maxValue];
   v42 = v128;
-  v44 = v128 > 0.0 || v5 != 0;
-  if (v3->_valueIndex < v3->_valueCount)
+  v44 = v128 > 0.0 || chartInterval != 0;
+  if (selfCopy->_valueIndex < selfCopy->_valueCount)
   {
-    v42 = v20 / a3;
-    if (v20 / a3 <= v131 && v44)
+    v42 = v20 / width;
+    if (v20 / width <= v131 && v44)
     {
       v112 = *(MEMORY[0x277CBF348] + 8);
-      v45 = *v41;
+      v45 = *maxValue;
       v109 = -v26;
       v121 = v34 - v125;
       v122 = 1.0 / v110;
@@ -575,14 +575,14 @@ LABEL_14:
       v114 = v128 + 1.0;
       v47 = 0.0;
       v119 = v26;
-      v130 = v3;
-      while (v5)
+      v130 = selfCopy;
+      while (chartInterval)
       {
         if (!v22)
         {
-          [(StockGraphView *)v3 _timeAtPosition:v132[0]];
+          [(StockGraphView *)selfCopy _timeAtPosition:v132[0]];
           v61 = v67;
-          [(StockGraphView *)v3 _priceAtTime:0 dataPosition:?];
+          [(StockGraphView *)selfCopy _priceAtTime:0 dataPosition:?];
           if (v40 > v47 && v40 < v61)
           {
             v69 = v20 + v109 * (1.0 - (v40 - v47) / (v40 - v47));
@@ -606,44 +606,44 @@ LABEL_63:
           goto LABEL_64;
         }
 
-        v48 = [(StockChartData *)v3->_chartData stockValues];
-        valueIndex = v3->_valueIndex;
-        v50 = (v48 + 24 * valueIndex);
+        stockValues = [(StockChartData *)selfCopy->_chartData stockValues];
+        valueIndex = selfCopy->_valueIndex;
+        v50 = (stockValues + 24 * valueIndex);
         v51 = v40;
         v40 = *v50;
         v52 = v50[1];
-        v3->_valueIndex = valueIndex + 1;
+        selfCopy->_valueIndex = valueIndex + 1;
         v53 = v45;
         v54 = v20;
 LABEL_66:
-        dataCount = v3->_dataCount;
-        v3->_dataCount = dataCount + 1;
-        dataSize = v3->_dataSize;
+        dataCount = selfCopy->_dataCount;
+        selfCopy->_dataCount = dataCount + 1;
+        dataSize = selfCopy->_dataSize;
         if (dataSize >= dataCount + 1)
         {
-          values = v3->_values;
+          values = selfCopy->_values;
         }
 
         else
         {
-          v3->_dataSize = 2 * dataSize;
-          v3->_points = malloc_type_realloc(v3->_points, 32 * dataSize, 0x1000040451B5BE8uLL);
+          selfCopy->_dataSize = 2 * dataSize;
+          selfCopy->_points = malloc_type_realloc(selfCopy->_points, 32 * dataSize, 0x1000040451B5BE8uLL);
           values = malloc_type_realloc(v130->_values, 16 * v130->_dataSize, 0x1000040451B5BE8uLL);
           v130->_values = values;
-          v3 = v130;
+          selfCopy = v130;
           dataCount = v130->_dataCount - 1;
         }
 
-        p_x = &v3->_points[dataCount].x;
+        p_x = &selfCopy->_points[dataCount].x;
         *p_x = v20;
         p_x[1] = (v52 - v125) / v121;
         v76 = &values[dataCount].x;
         *v76 = v40;
         v76[1] = v52;
         v20 = v26 + v54;
-        if (v54 / a3 >= v131 || (v26 + v54) / a3 <= v131)
+        if (v54 / width >= v131 || (v26 + v54) / width <= v131)
         {
-          v78 = (v26 + v54) / a3;
+          v78 = (v26 + v54) / width;
         }
 
         else
@@ -675,8 +675,8 @@ LABEL_66:
           {
             if (v81)
             {
-              v83 = [(StockChartData *)v3->_chartData interestingIndexes];
-              v84 = [v83 objectAtIndex:v81 - 1];
+              interestingIndexes3 = [(StockChartData *)selfCopy->_chartData interestingIndexes];
+              v84 = [interestingIndexes3 objectAtIndex:v81 - 1];
               [v84 doubleValue];
               v115 = v85;
             }
@@ -694,8 +694,8 @@ LABEL_66:
 
             else
             {
-              v89 = [(StockChartData *)v3->_chartData interestingIndexes];
-              v90 = [v89 objectAtIndex:v81];
+              interestingIndexes4 = [(StockChartData *)selfCopy->_chartData interestingIndexes];
+              v90 = [interestingIndexes4 objectAtIndex:v81];
               [v90 doubleValue];
               v117 = v91;
             }
@@ -708,41 +708,41 @@ LABEL_66:
         else
         {
           v82 = v129;
-          if (v5)
+          if (chartInterval)
           {
             v132[0] = v78;
           }
         }
 
         v129 = v82;
-        if (v123 && (v22 || v20 >= v127))
+        if (hasVolume && (v22 || v20 >= v127))
         {
-          v92 = v3->_volumeCount + 1;
-          v3->_volumeCount = v92;
-          volumeSize = v3->_volumeSize;
+          v92 = selfCopy->_volumeCount + 1;
+          selfCopy->_volumeCount = v92;
+          volumeSize = selfCopy->_volumeSize;
           if (volumeSize < v92)
           {
             v94 = 2 * volumeSize;
-            v3->_volumeSize = v94;
-            v3->_volumeBars = malloc_type_realloc(v3->_volumeBars, 16 * v94, 0x1000040451B5BE8uLL);
+            selfCopy->_volumeSize = v94;
+            selfCopy->_volumeBars = malloc_type_realloc(selfCopy->_volumeBars, 16 * v94, 0x1000040451B5BE8uLL);
           }
 
           v95 = v20 - v26;
           if (v22)
           {
-            v96 = *([(StockChartData *)v3->_chartData stockValues]+ 24 * v3->_valueIndex - 8);
-            volumeCount = v3->_volumeCount;
+            v96 = *([(StockChartData *)selfCopy->_chartData stockValues]+ 24 * selfCopy->_valueIndex - 8);
+            volumeCount = selfCopy->_volumeCount;
             if (volumeCount >= 2)
             {
-              v98 = v95 - v3->_volumeBars[volumeCount - 2].var0 + -1.0;
+              v98 = v95 - selfCopy->_volumeBars[volumeCount - 2].var0 + -1.0;
               if (v98 > 0.0)
               {
-                if (*(&v3->super.super.super.isa + v107) < v98)
+                if (*(&selfCopy->super.super.super.isa + v107) < v98)
                 {
-                  v98 = *(&v3->super.super.super.isa + v107);
+                  v98 = *(&selfCopy->super.super.super.isa + v107);
                 }
 
-                *(&v3->super.super.super.isa + v107) = v98;
+                *(&selfCopy->super.super.super.isa + v107) = v98;
               }
             }
           }
@@ -751,29 +751,29 @@ LABEL_66:
           {
             v99 = v132[0];
             v100 = v127 + -1.0 + -0.5;
-            v96 = [(StockGraphView *)v3 _normalizedAccumulatedVolumeInDataRange:v112, v132[0]];
+            v96 = [(StockGraphView *)selfCopy _normalizedAccumulatedVolumeInDataRange:v112, v132[0]];
             v127 = v95 + 1.0 + 1.0;
-            volumeCount = v3->_volumeCount;
+            volumeCount = selfCopy->_volumeCount;
             v112 = v99;
             v26 = v119;
             v95 = v100;
           }
 
-          v101 = &v3->_volumeBars[volumeCount - 1];
+          v101 = &selfCopy->_volumeBars[volumeCount - 1];
           *v101 = v95;
           *(v101 + 8) = v96;
-          maxVolume = v3->_maxVolume;
+          maxVolume = selfCopy->_maxVolume;
           if (maxVolume <= v96)
           {
             maxVolume = v96;
           }
 
-          v3->_maxVolume = maxVolume;
+          selfCopy->_maxVolume = maxVolume;
         }
 
         v42 = v128;
-        v104 = v40 < v128 || v5 != 0;
-        if (v3->_valueIndex < v3->_valueCount)
+        v104 = v40 < v128 || chartInterval != 0;
+        if (selfCopy->_valueIndex < selfCopy->_valueCount)
         {
           v42 = v131;
           if (v78 <= v131)
@@ -794,20 +794,20 @@ LABEL_66:
       v55 = v114;
       if (v47 == v114)
       {
-        [(StockGraphView *)v3 _finishCurrentLine];
-        v56 = [(StockChartData *)v3->_chartData interestingIndexes];
-        v57 = [v56 objectAtIndex:v46];
+        [(StockGraphView *)selfCopy _finishCurrentLine];
+        interestingIndexes5 = [(StockChartData *)selfCopy->_chartData interestingIndexes];
+        v57 = [interestingIndexes5 objectAtIndex:v46];
         v58 = v46;
-        v59 = [v57 unsignedIntValue];
+        unsignedIntValue = [v57 unsignedIntValue];
 
-        v60 = ([(StockChartData *)v3->_chartData stockValues]+ 24 * v59);
+        v60 = ([(StockChartData *)selfCopy->_chartData stockValues]+ 24 * unsignedIntValue);
         LODWORD(v46) = v58;
         v61 = *v60;
         v52 = v60[1];
         v20 = v120 + (*v60 - v118) / 60.0 * v116;
         v62 = v20;
         v120 = v62;
-        v132[0] = v132[0] + 1.0 / (v3->_valueCount - 1);
+        v132[0] = v132[0] + 1.0 / (selfCopy->_valueCount - 1);
         v118 = v61;
       }
 
@@ -815,13 +815,13 @@ LABEL_66:
       {
         if (v22)
         {
-          v86 = [(StockChartData *)v3->_chartData stockValues];
-          v87 = v3->_valueIndex;
-          v88 = (v86 + 24 * v87);
+          stockValues2 = [(StockChartData *)selfCopy->_chartData stockValues];
+          v87 = selfCopy->_valueIndex;
+          v88 = (stockValues2 + 24 * v87);
           v61 = *v88;
           v52 = v88[1];
           v20 = v120 + (*v88 - v118) / 60.0 * v116;
-          v3->_valueIndex = v87 + 1;
+          selfCopy->_valueIndex = v87 + 1;
         }
 
         else
@@ -842,7 +842,7 @@ LABEL_66:
             v61 = v118 + (v20 - v120) / v116 * 60.0;
           }
 
-          [(StockGraphView *)v3 _priceAtTime:v132 dataPosition:v61];
+          [(StockGraphView *)selfCopy _priceAtTime:v132 dataPosition:v61];
           v52 = v106;
         }
 
@@ -855,21 +855,21 @@ LABEL_66:
       v46 = (v46 + 1);
       if (v110 <= v46)
       {
-        valueCount = v3->_valueCount;
+        valueCount = selfCopy->_valueCount;
       }
 
       else
       {
-        v63 = [(StockChartData *)v3->_chartData interestingIndexes];
-        [v63 objectAtIndex:v46];
+        interestingIndexes6 = [(StockChartData *)selfCopy->_chartData interestingIndexes];
+        [interestingIndexes6 objectAtIndex:v46];
         v65 = v64 = v46;
         valueCount = [v65 unsignedIntValue];
 
         v46 = v64;
-        v3 = v130;
+        selfCopy = v130;
       }
 
-      v70 = ([(StockChartData *)v3->_chartData stockValues]+ 24 * valueCount);
+      v70 = ([(StockChartData *)selfCopy->_chartData stockValues]+ 24 * valueCount);
       v71 = *(v70 - 24);
       if (v71 == v128)
       {
@@ -914,7 +914,7 @@ LABEL_64:
   }
 
 LABEL_124:
-  [(StockGraphView *)v3 _finishCurrentLine];
+  [(StockGraphView *)selfCopy _finishCurrentLine];
 }
 
 - (void)readyForDisplayFromChartData
@@ -925,8 +925,8 @@ LABEL_124:
   [(LineGraphView *)self->_lineView setGraphImageSet:v4];
   [(VolumeGraphView *)self->_volumeView setGraphImageSet:v4];
   self->_isRendered = 1;
-  v3 = [(StockGraphView *)self chartViewDelegate];
-  [v3 stockGraphViewReadyForDisplay:self];
+  chartViewDelegate = [(StockGraphView *)self chartViewDelegate];
+  [chartViewDelegate stockGraphViewReadyForDisplay:self];
 }
 
 - (void)cancelRenderOperation
@@ -936,10 +936,10 @@ LABEL_124:
   self->_renderOperation = 0;
 }
 
-- (void)recomputePathsAndRenderIfNeededForSize:(CGSize)a3
+- (void)recomputePathsAndRenderIfNeededForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(StockGraphView *)self cancelRenderOperation];
   v6 = [(StockChartData *)self->_chartData imageSetForDisplayMode:self->_displayMode];
 
@@ -974,14 +974,14 @@ LABEL_124:
   }
 }
 
-- (void)graphRenderOperationDidFinish:(id)a3
+- (void)graphRenderOperationDidFinish:(id)finish
 {
   renderOperation = self->_renderOperation;
-  if (renderOperation == a3)
+  if (renderOperation == finish)
   {
     chartData = self->_chartData;
-    v6 = [(GraphRenderOperation *)renderOperation graphImageSet];
-    [(StockChartData *)chartData setImageSet:v6 forDisplayMode:self->_displayMode];
+    graphImageSet = [(GraphRenderOperation *)renderOperation graphImageSet];
+    [(StockChartData *)chartData setImageSet:graphImageSet forDisplayMode:self->_displayMode];
 
     [(StockGraphView *)self readyForDisplayFromChartData];
     v7 = self->_renderOperation;
@@ -1001,16 +1001,16 @@ LABEL_124:
   self->_isRendered = 0;
 }
 
-- (void)loadStockChartData:(id)a3
+- (void)loadStockChartData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(StockGraphView *)self clearData];
   chartData = self->_chartData;
-  self->_chartData = v4;
-  v6 = v4;
+  self->_chartData = dataCopy;
+  v6 = dataCopy;
 
-  v7 = [(StockChartData *)self->_chartData stockValueCount];
-  self->_valueCount = v7;
+  stockValueCount = [(StockChartData *)self->_chartData stockValueCount];
+  self->_valueCount = stockValueCount;
 }
 
 - (CGPoint)rightmostPlottedPoint
@@ -1023,7 +1023,7 @@ LABEL_124:
   return result;
 }
 
-- ($87A9BE3275E22128A73FF46D0B92144E)plottedPointNearestToPoint:(SEL)a3
+- ($87A9BE3275E22128A73FF46D0B92144E)plottedPointNearestToPoint:(SEL)point
 {
   retstr->var0 = 0.0;
   retstr->var1 = 0.0;
@@ -1031,7 +1031,7 @@ LABEL_124:
   var1_high = HIDWORD(self[20].var1);
   if (var1_high)
   {
-    v7 = self;
+    selfCopy = self;
     var2 = self[18].var2;
     x = a4->x;
     if (a4->x < *var2)
@@ -1073,12 +1073,12 @@ LABEL_124:
     [($87A9BE3275E22128A73FF46D0B92144E *)self bounds];
     v34 = v18;
     v35 = v17;
-    [($87A9BE3275E22128A73FF46D0B92144E *)v7 _trueGraphPointsRegion];
+    [($87A9BE3275E22128A73FF46D0B92144E *)selfCopy _trueGraphPointsRegion];
     v20 = v19;
-    v21 = 1.0 - *(v7[18].var2 + 16 * v11 + 8);
-    self = [v7[22].var2 lineWidth];
-    v23.f64[0] = *(v7[18].var2 + 16 * v11);
-    v23.f64[1] = v22 * 0.5 + v21 * v20 + v7[23].var0;
+    v21 = 1.0 - *(selfCopy[18].var2 + 16 * v11 + 8);
+    self = [selfCopy[22].var2 lineWidth];
+    v23.f64[0] = *(selfCopy[18].var2 + 16 * v11);
+    v23.f64[1] = v22 * 0.5 + v21 * v20 + selfCopy[23].var0;
     v24 = vrndm_f32(vcvt_f32_f64(v23));
     v25.f64[0] = v35;
     v25.f64[1] = v34;
@@ -1087,7 +1087,7 @@ LABEL_124:
     v31 = vaddq_f64(v25, _Q1);
     v32 = vcvtq_f64_f32(v24);
     *a4 = vmaxnmq_f64(vbslq_s8(vcgtq_f64(v31, v32), v32, v31), 0);
-    *&retstr->var0 = *(*&v7[19].var0 + 16 * v11);
+    *&retstr->var0 = *(*&selfCopy[19].var0 + 16 * v11);
     retstr->var2 = 0;
   }
 
@@ -1101,24 +1101,24 @@ LABEL_124:
   return self;
 }
 
-- (CGRect)volumeBarRectNearestToPoint:(CGPoint)a3
+- (CGRect)volumeBarRectNearestToPoint:(CGPoint)point
 {
   volumeCount = self->_volumeCount;
   if (volumeCount)
   {
     volumeBars = self->_volumeBars;
-    if (a3.x < volumeBars->var0)
+    if (point.x < volumeBars->var0)
     {
-      a3.x = volumeBars->var0;
+      point.x = volumeBars->var0;
     }
 
     var0 = volumeBars[volumeCount - 1].var0;
-    if (a3.x >= var0)
+    if (point.x >= var0)
     {
-      a3.x = volumeBars[volumeCount - 1].var0;
+      point.x = volumeBars[volumeCount - 1].var0;
     }
 
-    v7 = ((a3.x - volumeBars->var0) / (var0 - volumeBars->var0));
+    v7 = ((point.x - volumeBars->var0) / (var0 - volumeBars->var0));
     p_var0 = &volumeBars[v7 + 1].var0;
     do
     {
@@ -1127,7 +1127,7 @@ LABEL_124:
       --v7;
     }
 
-    while (v9 > a3.x);
+    while (v9 > point.x);
     do
     {
       v10 = *p_var0;
@@ -1136,11 +1136,11 @@ LABEL_124:
       ++v7;
     }
 
-    while (v10 < a3.x);
+    while (v10 < point.x);
     if (v7 >= 1)
     {
       v12 = volumeBars[v7 - 1].var0;
-      LODWORD(v7) = v7 - ((a3.x - v12) / (v11 - v12) <= 0.5);
+      LODWORD(v7) = v7 - ((point.x - v12) / (v11 - v12) <= 0.5);
     }
 
     v13 = &volumeBars[v7];

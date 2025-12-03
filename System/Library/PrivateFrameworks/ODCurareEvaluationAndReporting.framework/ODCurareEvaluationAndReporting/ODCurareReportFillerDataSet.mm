@@ -1,33 +1,33 @@
 @interface ODCurareReportFillerDataSet
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addStats:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addStats:(id)stats;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODCurareReportFillerDataSet
 
-- (void)addStats:(id)a3
+- (void)addStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   stats = self->_stats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!stats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_stats;
     self->_stats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     stats = self->_stats;
   }
 
-  [(NSMutableArray *)stats addObject:v4];
+  [(NSMutableArray *)stats addObject:statsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = ODCurareReportFillerDataSet;
   v4 = [(ODCurareReportFillerDataSet *)&v8 description];
-  v5 = [(ODCurareReportFillerDataSet *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ODCurareReportFillerDataSet *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   size = self->_size;
   if (size)
   {
-    v5 = [(ODCurareReportFillerDataSetSize *)size dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"size"];
+    dictionaryRepresentation = [(ODCurareReportFillerDataSetSize *)size dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"size"];
   }
 
   if ([(NSMutableArray *)self->_stats count])
@@ -75,8 +75,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -85,36 +85,36 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"stats"];
+    [dictionary setObject:v6 forKey:@"stats"];
   }
 
   sampleStartDate = self->_sampleStartDate;
   if (sampleStartDate)
   {
-    [v3 setObject:sampleStartDate forKey:@"sampleStartDate"];
+    [dictionary setObject:sampleStartDate forKey:@"sampleStartDate"];
   }
 
   sampleEndDate = self->_sampleEndDate;
   if (sampleEndDate)
   {
-    [v3 setObject:sampleEndDate forKey:@"sampleEndDate"];
+    [dictionary setObject:sampleEndDate forKey:@"sampleEndDate"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_size)
   {
     [ODCurareReportFillerDataSet writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   v15 = 0u;
   v16 = 0u;
@@ -161,43 +161,43 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
-  [v9 setSize:self->_size];
+  toCopy = to;
+  [toCopy setSize:self->_size];
   if ([(ODCurareReportFillerDataSet *)self statsCount])
   {
-    [v9 clearStats];
-    v4 = [(ODCurareReportFillerDataSet *)self statsCount];
-    if (v4)
+    [toCopy clearStats];
+    statsCount = [(ODCurareReportFillerDataSet *)self statsCount];
+    if (statsCount)
     {
-      v5 = v4;
+      v5 = statsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ODCurareReportFillerDataSet *)self statsAtIndex:i];
-        [v9 addStats:v7];
+        [toCopy addStats:v7];
       }
     }
   }
 
   if (self->_sampleStartDate)
   {
-    [v9 setSampleStartDate:?];
+    [toCopy setSampleStartDate:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_sampleEndDate)
   {
-    [v9 setSampleEndDate:?];
-    v8 = v9;
+    [toCopy setSampleEndDate:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ODCurareReportFillerDataSetSize *)self->_size copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ODCurareReportFillerDataSetSize *)self->_size copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -221,7 +221,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * v12) copyWithZone:{a3, v20}];
+        v13 = [*(*(&v20 + 1) + 8 * v12) copyWithZone:{zone, v20}];
         [v5 addStats:v13];
 
         ++v12;
@@ -234,11 +234,11 @@
     while (v10);
   }
 
-  v14 = [(NSString *)self->_sampleStartDate copyWithZone:a3];
+  v14 = [(NSString *)self->_sampleStartDate copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
-  v16 = [(NSString *)self->_sampleEndDate copyWithZone:a3];
+  v16 = [(NSString *)self->_sampleEndDate copyWithZone:zone];
   v17 = v5[1];
   v5[1] = v16;
 
@@ -246,13 +246,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((size = self->_size, !(size | v4[3])) || -[ODCurareReportFillerDataSetSize isEqual:](size, "isEqual:")) && ((stats = self->_stats, !(stats | v4[4])) || -[NSMutableArray isEqual:](stats, "isEqual:")) && ((sampleStartDate = self->_sampleStartDate, !(sampleStartDate | v4[2])) || -[NSString isEqual:](sampleStartDate, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((size = self->_size, !(size | equalCopy[3])) || -[ODCurareReportFillerDataSetSize isEqual:](size, "isEqual:")) && ((stats = self->_stats, !(stats | equalCopy[4])) || -[NSMutableArray isEqual:](stats, "isEqual:")) && ((sampleStartDate = self->_sampleStartDate, !(sampleStartDate | equalCopy[2])) || -[NSString isEqual:](sampleStartDate, "isEqual:")))
   {
     sampleEndDate = self->_sampleEndDate;
-    if (sampleEndDate | v4[1])
+    if (sampleEndDate | equalCopy[1])
     {
       v9 = [(NSString *)sampleEndDate isEqual:?];
     }
@@ -279,12 +279,12 @@
   return v4 ^ v5 ^ [(NSString *)self->_sampleEndDate hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   size = self->_size;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (size)
   {
     if (v6)
@@ -302,7 +302,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -326,12 +326,12 @@
     while (v9);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ODCurareReportFillerDataSet *)self setSampleStartDate:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ODCurareReportFillerDataSet *)self setSampleEndDate:?];
   }

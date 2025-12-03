@@ -1,5 +1,5 @@
 @interface DAMailboxFetchMessageRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -9,29 +9,29 @@
 - (unint64_t)hash
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(DAMailboxRequest *)self messageID];
-  v5 = [v3 initWithFormat:@"%@\n%d\n%d", v4, -[DAMailboxFetchMessageRequest maxSize](self, "maxSize"), -[DAMailboxRequest bodyFormat](self, "bodyFormat")];
+  messageID = [(DAMailboxRequest *)self messageID];
+  v5 = [v3 initWithFormat:@"%@\n%d\n%d", messageID, -[DAMailboxFetchMessageRequest maxSize](self, "maxSize"), -[DAMailboxRequest bodyFormat](self, "bodyFormat")];
 
   v6 = [v5 hash];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(DAMailboxRequest *)self messageID];
-    v9 = [v7 messageID];
-    if (v8 == v9 || (-[DAMailboxRequest messageID](self, "messageID"), v3 = objc_claimAutoreleasedReturnValue(), [v7 messageID], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    v7 = equalCopy;
+    messageID = [(DAMailboxRequest *)self messageID];
+    messageID2 = [v7 messageID];
+    if (messageID == messageID2 || (-[DAMailboxRequest messageID](self, "messageID"), v3 = objc_claimAutoreleasedReturnValue(), [v7 messageID], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v11 = [v7 maxSize];
-      if (v11 == [(DAMailboxFetchMessageRequest *)self maxSize])
+      maxSize = [v7 maxSize];
+      if (maxSize == [(DAMailboxFetchMessageRequest *)self maxSize])
       {
-        v12 = [v7 bodyFormat];
-        v10 = v12 == [(DAMailboxRequest *)self bodyFormat];
+        bodyFormat = [v7 bodyFormat];
+        v10 = bodyFormat == [(DAMailboxRequest *)self bodyFormat];
       }
 
       else
@@ -39,7 +39,7 @@
         v10 = 0;
       }
 
-      if (v8 == v9)
+      if (messageID == messageID2)
       {
         goto LABEL_11;
       }
@@ -66,8 +66,8 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = DAMailboxFetchMessageRequest;
   v4 = [(DAMailboxFetchMessageRequest *)&v8 description];
-  v5 = [(DAMailboxRequest *)self messageID];
-  v6 = [v3 stringWithFormat:@"%@ messageID %@, maxSize %d, bodyFormat %d", v4, v5, -[DAMailboxFetchMessageRequest maxSize](self, "maxSize"), -[DAMailboxRequest bodyFormat](self, "bodyFormat")];
+  messageID = [(DAMailboxRequest *)self messageID];
+  v6 = [v3 stringWithFormat:@"%@ messageID %@, maxSize %d, bodyFormat %d", v4, messageID, -[DAMailboxFetchMessageRequest maxSize](self, "maxSize"), -[DAMailboxRequest bodyFormat](self, "bodyFormat")];
 
   return v6;
 }

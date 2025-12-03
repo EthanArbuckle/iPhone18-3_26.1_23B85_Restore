@@ -6,10 +6,10 @@
 - (void)beginDiscoveryTimer;
 - (void)cancelDiscoveryTimer;
 - (void)dealloc;
-- (void)discoveredAdvertisingWatch:(id)a3;
-- (void)okayButtonPressed:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)discoveredAdvertisingWatch:(id)watch;
+- (void)okayButtonPressed:(id)pressed;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation COSResetWatchNoticeViewController
@@ -77,20 +77,20 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSResetWatchNoticeViewController;
-  [(COSResetWatchNoticeViewController *)&v4 viewDidAppear:a3];
+  [(COSResetWatchNoticeViewController *)&v4 viewDidAppear:appear];
   [(COSResetWatchNoticeViewController *)self cancelDiscoveryTimer];
   [(COSResetWatchNoticeViewController *)self beginDiscoveryTimer];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = COSResetWatchNoticeViewController;
-  [(COSResetWatchNoticeViewController *)&v4 viewDidDisappear:a3];
+  [(COSResetWatchNoticeViewController *)&v4 viewDidDisappear:disappear];
   [(COSResetWatchNoticeViewController *)self cancelDiscoveryTimer];
 }
 
@@ -118,13 +118,13 @@
   return v3;
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
-  v4 = [(COSResetWatchNoticeViewController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSResetWatchNoticeViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)discoveredAdvertisingWatch:(id)a3
+- (void)discoveredAdvertisingWatch:(id)watch
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:PPDeviceWasDiscoveredNotification object:0];
@@ -136,8 +136,8 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Discovered a nearby advertising watch, automatically continuing...", v7, 2u);
   }
 
-  v6 = [(COSResetWatchNoticeViewController *)self delegate];
-  [v6 buddyControllerDone:self];
+  delegate = [(COSResetWatchNoticeViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 @end

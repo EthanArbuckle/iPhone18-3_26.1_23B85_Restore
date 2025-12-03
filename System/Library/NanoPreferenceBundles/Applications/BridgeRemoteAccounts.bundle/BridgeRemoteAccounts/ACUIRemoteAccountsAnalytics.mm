@@ -1,24 +1,24 @@
 @interface ACUIRemoteAccountsAnalytics
-+ (id)_descriptionForAction:(int64_t)a3;
-+ (void)reportAccountActionErrorForAccount:(id)a3 action:(int64_t)a4 error:(id)a5;
-+ (void)reportAccountActionForAccount:(id)a3 action:(int64_t)a4 numberOfAccounts:(int64_t)a5;
++ (id)_descriptionForAction:(int64_t)action;
++ (void)reportAccountActionErrorForAccount:(id)account action:(int64_t)action error:(id)error;
++ (void)reportAccountActionForAccount:(id)account action:(int64_t)action numberOfAccounts:(int64_t)accounts;
 @end
 
 @implementation ACUIRemoteAccountsAnalytics
 
-+ (void)reportAccountActionForAccount:(id)a3 action:(int64_t)a4 numberOfAccounts:(int64_t)a5
++ (void)reportAccountActionForAccount:(id)account action:(int64_t)action numberOfAccounts:(int64_t)accounts
 {
-  v15 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = a4;
-  v12 = a5;
-  v8 = [location[0] accountType];
-  v9 = [v8 identifier];
-  if (v9)
+  objc_storeStrong(location, account);
+  actionCopy = action;
+  accountsCopy = accounts;
+  accountType = [location[0] accountType];
+  identifier = [accountType identifier];
+  if (identifier)
   {
-    v5 = v9;
+    v5 = identifier;
   }
 
   else
@@ -29,29 +29,29 @@
   v11 = v5;
 
   v10[0] = v11;
-  v10[1] = v15;
-  v10[2] = v13;
-  v10[3] = v12;
+  v10[1] = selfCopy;
+  v10[2] = actionCopy;
+  v10[3] = accountsCopy;
   AnalyticsSendEventLazy();
   objc_storeStrong(v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-+ (void)reportAccountActionErrorForAccount:(id)a3 action:(int64_t)a4 error:(id)a5
++ (void)reportAccountActionErrorForAccount:(id)account action:(int64_t)action error:(id)error
 {
-  v21 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
+  objc_storeStrong(location, account);
+  actionCopy = action;
   v18 = 0;
-  objc_storeStrong(&v18, a5);
-  v8 = [location[0] accountType];
-  v9 = [v8 identifier];
-  if (v9)
+  objc_storeStrong(&v18, error);
+  accountType = [location[0] accountType];
+  identifier = [accountType identifier];
+  if (identifier)
   {
-    v5 = v9;
+    v5 = identifier;
   }
 
   else
@@ -67,8 +67,8 @@
   v13 = sub_10CB4;
   v14 = &unk_1C718;
   v15 = v17;
-  v16[1] = v21;
-  v16[2] = v19;
+  v16[1] = selfCopy;
+  v16[2] = actionCopy;
   v16[0] = v18;
   AnalyticsSendEventLazy();
   objc_storeStrong(v16, 0);
@@ -78,11 +78,11 @@
   objc_storeStrong(location, 0);
 }
 
-+ (id)_descriptionForAction:(int64_t)a3
++ (id)_descriptionForAction:(int64_t)action
 {
-  if (a3)
+  if (action)
   {
-    switch(a3)
+    switch(action)
     {
       case 1:
         v4 = @"delete";

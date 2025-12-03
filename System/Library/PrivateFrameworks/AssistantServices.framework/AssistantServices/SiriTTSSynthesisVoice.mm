@@ -4,22 +4,22 @@
 - (id)SAVoiceType;
 - (int64_t)AFVoiceFootprint;
 - (int64_t)AFVoiceGender;
-- (void)updateWithTargetVoice:(id)a3;
+- (void)updateWithTargetVoice:(id)voice;
 @end
 
 @implementation SiriTTSSynthesisVoice
 
 - (id)SAVoiceType
 {
-  v2 = [(SiriTTSSynthesisVoice *)self type];
-  if ((v2 - 1) > 5)
+  type = [(SiriTTSSynthesisVoice *)self type];
+  if ((type - 1) > 5)
   {
     v3 = &SAVoiceVoiceTypeUndefinedValue;
   }
 
   else
   {
-    v3 = *(&off_100514870 + (v2 - 1));
+    v3 = *(&off_100514870 + (type - 1));
   }
 
   v4 = *v3;
@@ -29,15 +29,15 @@
 
 - (id)SAVoiceQuality
 {
-  v2 = [(SiriTTSSynthesisVoice *)self footprint];
-  if (v2 > 3)
+  footprint = [(SiriTTSSynthesisVoice *)self footprint];
+  if (footprint > 3)
   {
     v3 = &SAVoiceQualityUnknownValue;
   }
 
   else
   {
-    v3 = *(&off_100514850 + v2);
+    v3 = *(&off_100514850 + footprint);
   }
 
   v4 = *v3;
@@ -47,15 +47,15 @@
 
 - (id)SAVoiceGender
 {
-  v2 = [(SiriTTSSynthesisVoice *)self gender];
-  if ((v2 - 1) > 2)
+  gender = [(SiriTTSSynthesisVoice *)self gender];
+  if ((gender - 1) > 2)
   {
     v3 = &SAVoiceGenderUnknownValue;
   }
 
   else
   {
-    v3 = *(&off_100514838 + (v2 - 1));
+    v3 = *(&off_100514838 + (gender - 1));
   }
 
   v4 = *v3;
@@ -65,15 +65,15 @@
 
 - (int64_t)AFVoiceFootprint
 {
-  v2 = [(SiriTTSSynthesisVoice *)self footprint];
-  if (v2 > 3)
+  footprint = [(SiriTTSSynthesisVoice *)self footprint];
+  if (footprint > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1003F03F8[v2];
+    return qword_1003F03F8[footprint];
   }
 }
 
@@ -88,26 +88,26 @@
   return result;
 }
 
-- (void)updateWithTargetVoice:(id)a3
+- (void)updateWithTargetVoice:(id)voice
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v13 = [v5 lowercaseString];
+  voiceCopy = voice;
+  name = [voiceCopy name];
+  lowercaseString = [name lowercaseString];
 
-  v6 = [v4 language];
+  language = [voiceCopy language];
 
-  v7 = [(SiriTTSSynthesisVoice *)self language];
-  v8 = [v6 isEqualToString:v7];
+  language2 = [(SiriTTSSynthesisVoice *)self language];
+  v8 = [language isEqualToString:language2];
 
   if ((v8 & 1) == 0)
   {
-    [(SiriTTSSynthesisVoice *)self setLanguage:v6];
+    [(SiriTTSSynthesisVoice *)self setLanguage:language];
   }
 
-  v9 = v13;
-  if (v13 && (-[SiriTTSSynthesisVoice name](self, "name"), v10 = objc_claimAutoreleasedReturnValue(), [v10 lowercaseString], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v13, "isEqualToString:", v11), v11, v10, v9 = v13, (v12 & 1) == 0))
+  v9 = lowercaseString;
+  if (lowercaseString && (-[SiriTTSSynthesisVoice name](self, "name"), v10 = objc_claimAutoreleasedReturnValue(), [v10 lowercaseString], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(lowercaseString, "isEqualToString:", v11), v11, v10, v9 = lowercaseString, (v12 & 1) == 0))
   {
-    [(SiriTTSSynthesisVoice *)self setName:v13];
+    [(SiriTTSSynthesisVoice *)self setName:lowercaseString];
   }
 
   else if (v8)

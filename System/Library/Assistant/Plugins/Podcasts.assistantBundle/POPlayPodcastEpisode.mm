@@ -1,19 +1,19 @@
 @interface POPlayPodcastEpisode
 - (id)_playbackRequestIdentifier;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation POPlayPodcastEpisode
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v5 = a3;
+  completionCopy = completion;
   v10 = objc_msgSend__validate(self, v6, v7, v8, v9);
   v15 = v10;
   if (v10)
   {
     v16 = objc_msgSend_dictionary(v10, v11, v12, v13, v14);
-    v5[2](v5, v16);
+    completionCopy[2](completionCopy, v16);
   }
 
   else
@@ -29,7 +29,7 @@
     v49[1] = 3221225472;
     v49[2] = sub_23352E790;
     v49[3] = &unk_2789DE2C0;
-    v50 = v5;
+    v50 = completionCopy;
     objc_msgSend_performPodcastsPlaybackRequestWithIdentifier_assetInfo_hashedRouteUIDs_startPlaying_requesterSharedUserId_sharedUserIdFromPlayableITunesAccount_context_completion_(POUtilities, v48, v17, v22, v27, started, v37, v42, v47, v49);
   }
 }

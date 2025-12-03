@@ -1,26 +1,26 @@
 @interface OrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory
-- (id)createAttributeInstanceWithIOSClass:(id)a3;
+- (id)createAttributeInstanceWithIOSClass:(id)class;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilAttributeFactory_DefaultAttributeFactory
 
-- (id)createAttributeInstanceWithIOSClass:(id)a3
+- (id)createAttributeInstanceWithIOSClass:(id)class
 {
   constructors = self->constructors_;
-  if (!constructors || (v4 = [(OrgLukhnosPortmobileLangClassValue *)constructors getWithIOSClass:a3]) == 0)
+  if (!constructors || (v4 = [(OrgLukhnosPortmobileLangClassValue *)constructors getWithIOSClass:class]) == 0)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [v4 invokeExact];
+  invokeExact = [v4 invokeExact];
   objc_opt_class();
-  if (v5 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (invokeExact && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return v5;
+  return invokeExact;
 }
 
 - (void)dealloc

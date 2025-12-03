@@ -1,25 +1,25 @@
 @interface UITableViewCellContentView
 - (NSDirectionalEdgeInsets)_overriddenDefaultLayoutMargins;
 - (UIEdgeInsets)_concreteDefaultLayoutMargins;
-- (UITableViewCellContentView)initWithCoder:(id)a3;
-- (UITableViewCellContentView)initWithFrame:(CGRect)a3;
-- (void)_setOverriddenDefaultLayoutMargins:(NSDirectionalEdgeInsets)a3;
+- (UITableViewCellContentView)initWithCoder:(id)coder;
+- (UITableViewCellContentView)initWithFrame:(CGRect)frame;
+- (void)_setOverriddenDefaultLayoutMargins:(NSDirectionalEdgeInsets)margins;
 - (void)_tableViewCellContentViewCommonSetup;
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3;
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints;
 @end
 
 @implementation UITableViewCellContentView
 
 - (UIEdgeInsets)_concreteDefaultLayoutMargins
 {
-  v3 = [(UIView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
   v9.receiver = self;
   v9.super_class = UITableViewCellContentView;
   [(UIView *)&v9 _concreteDefaultLayoutMargins];
   if ((*&self->_contentViewFlags & 2) != 0)
   {
     leading = self->_overriddenDefaultLayoutMargins.leading;
-    if (!v3)
+    if (!_shouldReverseLayoutDirection)
     {
       trailing = self->_overriddenDefaultLayoutMargins.leading;
       if ((*&self->_contentViewFlags & 8) == 0)
@@ -48,7 +48,7 @@ LABEL_7:
   }
 
   leading = v7;
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     goto LABEL_7;
   }
@@ -95,11 +95,11 @@ LABEL_10:
   }
 }
 
-- (UITableViewCellContentView)initWithCoder:(id)a3
+- (UITableViewCellContentView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UITableViewCellContentView;
-  v3 = [(UIView *)&v6 initWithCoder:a3];
+  v3 = [(UIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -109,11 +109,11 @@ LABEL_10:
   return v4;
 }
 
-- (UITableViewCellContentView)initWithFrame:(CGRect)a3
+- (UITableViewCellContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UITableViewCellContentView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -131,11 +131,11 @@ LABEL_10:
   return v4;
 }
 
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints
 {
-  v3 = a3;
+  constraintsCopy = constraints;
   v11 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!constraints)
   {
     if ([(UIView *)self translatesAutoresizingMaskIntoConstraints])
     {
@@ -145,9 +145,9 @@ LABEL_10:
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
         {
           v6 = v5;
-          v7 = [(UIView *)self superview];
+          superview = [(UIView *)self superview];
           *buf = 138412290;
-          v10 = v7;
+          v10 = superview;
           _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "Changing the translatesAutoresizingMaskIntoConstraints property of the contentView of a UITableViewCell is not supported and will result in undefined behavior, as this property is managed by the owning UITableViewCell. Cell: %@", buf, 0xCu);
         }
       }
@@ -156,16 +156,16 @@ LABEL_10:
 
   v8.receiver = self;
   v8.super_class = UITableViewCellContentView;
-  [(UIView *)&v8 setTranslatesAutoresizingMaskIntoConstraints:v3];
+  [(UIView *)&v8 setTranslatesAutoresizingMaskIntoConstraints:constraintsCopy];
 }
 
-- (void)_setOverriddenDefaultLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)_setOverriddenDefaultLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  v3 = fabs(a3.leading);
-  self->_overriddenDefaultLayoutMargins = a3;
+  v3 = fabs(margins.leading);
+  self->_overriddenDefaultLayoutMargins = margins;
   v4 = 2 * (v3 >= 2.22044605e-16);
-  v5 = fabs(a3.top);
-  if (fabs(a3.trailing) >= 2.22044605e-16)
+  v5 = fabs(margins.top);
+  if (fabs(margins.trailing) >= 2.22044605e-16)
   {
     v4 = (2 * (v3 >= 2.22044605e-16)) | 8;
   }
@@ -175,7 +175,7 @@ LABEL_10:
     ++v4;
   }
 
-  if (fabs(a3.bottom) >= 2.22044605e-16)
+  if (fabs(margins.bottom) >= 2.22044605e-16)
   {
     v4 |= 4u;
   }

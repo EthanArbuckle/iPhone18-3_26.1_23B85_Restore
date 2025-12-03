@@ -1,5 +1,5 @@
 @interface BPSWelcomeOptinViewController
-+ (id)expressModeSettingsItem:(id)a3;
++ (id)expressModeSettingsItem:(id)item;
 + (int64_t)obkContentLayout;
 + (unint64_t)contentLayout;
 - (BPSBuddyControllerDelegate)delegate;
@@ -14,39 +14,39 @@
 - (id)suggestedButtonTitle;
 - (id)tapToRadarMetadata;
 - (void)_addButtonObservers;
-- (void)_didTapPrivacyAccept:(id)a3;
+- (void)_didTapPrivacyAccept:(id)accept;
 - (void)_endTapToRadarActivity;
-- (void)_learnMoreButtonPrivacyPressed:(id)a3;
+- (void)_learnMoreButtonPrivacyPressed:(id)pressed;
 - (void)_refreshButtonTray;
 - (void)_removeButtonObservers;
 - (void)_startTapToRadarActivity;
-- (void)addFollowUpForPageAndDevice:(id)a3 withCompletion:(id)a4;
-- (void)addFollowUpForPageWithCompletion:(id)a3;
-- (void)alternateButtonPressed:(id)a3;
-- (void)applyConfirmedOptin:(BOOL)a3;
+- (void)addFollowUpForPageAndDevice:(id)device withCompletion:(id)completion;
+- (void)addFollowUpForPageWithCompletion:(id)completion;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)applyConfirmedOptin:(BOOL)optin;
 - (void)dealloc;
-- (void)learnMoreButtonPressed:(id)a3;
+- (void)learnMoreButtonPressed:(id)pressed;
 - (void)markPaneAsSkipped;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)okayButtonPressed:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)okayButtonPressed:(id)pressed;
 - (void)openTapToRadar;
 - (void)refreshViews;
-- (void)removeFollowupForPageWithCompletion:(id)a3;
-- (void)showOptinConfirmationAlert:(id)a3 optinChoice:(BOOL)a4;
-- (void)suggestedButtonPressed:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)removeFollowupForPageWithCompletion:(id)completion;
+- (void)showOptinConfirmationAlert:(id)alert optinChoice:(BOOL)choice;
+- (void)suggestedButtonPressed:(id)pressed;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BPSWelcomeOptinViewController
 
 - (BPSWelcomeOptinViewController)init
 {
-  v3 = [objc_opt_class() obkContentLayout];
+  obkContentLayout = [objc_opt_class() obkContentLayout];
   v9.receiver = self;
   v9.super_class = BPSWelcomeOptinViewController;
-  v4 = [(BPSWelcomeOptinViewController *)&v9 initWithTitle:&stru_285406330 detailText:0 icon:0 contentLayout:v3];
+  v4 = [(BPSWelcomeOptinViewController *)&v9 initWithTitle:&stru_285406330 detailText:0 icon:0 contentLayout:obkContentLayout];
   v5 = v4;
   if (v4 && [(BPSWelcomeOptinViewController *)v4 wantsAlternateChoicePillButton]&& [(BPSWelcomeOptinViewController *)v5 wantsAlternateChoiceSystemButton])
   {
@@ -110,7 +110,7 @@
   {
     if ([(BPSWelcomeOptinViewController *)self wantsToUseLearnMoreButtonForPrivacyBundles])
     {
-      v3 = [(BPSWelcomeOptinViewController *)self _learnMoreButtonPrivacyTitle];
+      _learnMoreButtonPrivacyTitle = [(BPSWelcomeOptinViewController *)self _learnMoreButtonPrivacyTitle];
       goto LABEL_9;
     }
 
@@ -123,10 +123,10 @@
     }
   }
 
-  v3 = 0;
+  _learnMoreButtonPrivacyTitle = 0;
 LABEL_9:
 
-  return v3;
+  return _learnMoreButtonPrivacyTitle;
 }
 
 - (id)okayButtonTitle
@@ -146,7 +146,7 @@ LABEL_9:
   return 0;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v7 = *MEMORY[0x277D85DE8];
   if ([(BPSWelcomeOptinViewController *)self wantsSuggestedChoicePillButton]|| [(BPSWelcomeOptinViewController *)self wantsSuggestedChoiceLinkButton])
@@ -161,7 +161,7 @@ LABEL_9:
   }
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   v7 = *MEMORY[0x277D85DE8];
   if ([(BPSWelcomeOptinViewController *)self wantsAlternateChoicePillButton]&& [(BPSWelcomeOptinViewController *)self wantsAlternateChoiceSystemButton])
@@ -176,15 +176,15 @@ LABEL_9:
   }
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressedCopy = pressed;
   if ([(BPSWelcomeOptinViewController *)self wantsLearnMoreButton])
   {
     if ([(BPSWelcomeOptinViewController *)self wantsToUseLearnMoreButtonForPrivacyBundles])
     {
-      [(BPSWelcomeOptinViewController *)self _learnMoreButtonPrivacyPressed:v4];
+      [(BPSWelcomeOptinViewController *)self _learnMoreButtonPrivacyPressed:pressedCopy];
     }
 
     else
@@ -200,7 +200,7 @@ LABEL_9:
   }
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
   v6 = *MEMORY[0x277D85DE8];
   if ([(BPSWelcomeOptinViewController *)self wantsOkayPillButton])
@@ -217,7 +217,7 @@ LABEL_9:
 
 + (int64_t)obkContentLayout
 {
-  if ([a1 contentLayout] == 1)
+  if ([self contentLayout] == 1)
   {
     return 1;
   }
@@ -232,7 +232,7 @@ LABEL_9:
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_28540EEE0];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 containsObject:v4];
 
   v6 = bps_setup_log();
@@ -241,7 +241,7 @@ LABEL_9:
   {
     if (v7)
     {
-      v8 = NSStringFromClass(a1);
+      v8 = NSStringFromClass(self);
       v12 = 138412290;
       v13 = v8;
       _os_log_impl(&dword_241E74000, v6, OS_LOG_TYPE_DEFAULT, "%@ opted into BPSWelcomeOptinContentLayoutContentViewAboveHeader", &v12, 0xCu);
@@ -254,7 +254,7 @@ LABEL_9:
   {
     if (v7)
     {
-      v10 = NSStringFromClass(a1);
+      v10 = NSStringFromClass(self);
       v12 = 138412290;
       v13 = v10;
       _os_log_impl(&dword_241E74000, v6, OS_LOG_TYPE_DEFAULT, "%@ opted into BPSWelcomeOptinContentLayoutHeaderAboveContentView", &v12, 0xCu);
@@ -272,13 +272,13 @@ LABEL_9:
   v71.receiver = self;
   v71.super_class = BPSWelcomeOptinViewController;
   [(OBBaseWelcomeController *)&v71 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(BPSWelcomeOptinViewController *)self contentView];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  contentView = [(BPSWelcomeOptinViewController *)self contentView];
+  [contentView setBackgroundColor:clearColor];
 
-  v5 = [(BPSWelcomeOptinViewController *)self headerView];
+  headerView = [(BPSWelcomeOptinViewController *)self headerView];
   LODWORD(v6) = 1036831949;
-  [v5 setTitleHyphenationFactor:v6];
+  [headerView setTitleHyphenationFactor:v6];
 
   if ([(BPSWelcomeOptinViewController *)self wantsToShowWatchHW])
   {
@@ -287,8 +287,8 @@ LABEL_9:
     illustratedWatchView = self->_illustratedWatchView;
     self->_illustratedWatchView = v8;
 
-    v10 = [(BPSWelcomeOptinViewController *)self contentView];
-    [v10 addSubview:self->_illustratedWatchView];
+    contentView2 = [(BPSWelcomeOptinViewController *)self contentView];
+    [contentView2 addSubview:self->_illustratedWatchView];
 
     [(BPSIllustratedWatchView *)self->_illustratedWatchView setTranslatesAutoresizingMaskIntoConstraints:0];
     if ([(BPSWelcomeOptinViewController *)self optOutOfSemiCompactWatchHardwareAsset])
@@ -302,38 +302,38 @@ LABEL_9:
       [(BPSIllustratedWatchView *)self->_illustratedWatchView setShouldBeVerticallyCentered:1];
       [(BPSIllustratedWatchView *)self->_illustratedWatchView idealAssetHeight];
       v12 = v11;
-      v13 = [(BPSWelcomeOptinViewController *)self view];
-      [v13 bounds];
+      view = [(BPSWelcomeOptinViewController *)self view];
+      [view bounds];
       v15 = v14;
 
       v16 = [MEMORY[0x277CCAE60] valueWithCGSize:{v15, v12}];
       [(BPSIllustratedWatchView *)self->_illustratedWatchView setPreferredCGSizeValue:v16];
 
-      v17 = [(BPSWelcomeOptinViewController *)self contentView];
-      v18 = [v17 heightAnchor];
+      contentView3 = [(BPSWelcomeOptinViewController *)self contentView];
+      heightAnchor = [contentView3 heightAnchor];
       [(BPSIllustratedWatchView *)self->_illustratedWatchView idealContainerHeight];
-      v19 = [v18 constraintEqualToConstant:?];
+      v19 = [heightAnchor constraintEqualToConstant:?];
       [v19 setActive:1];
     }
 
-    v20 = [(BPSIllustratedWatchView *)self->_illustratedWatchView topAnchor];
-    v21 = [(BPSWelcomeOptinViewController *)self contentView];
-    v22 = [v21 topAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    topAnchor = [(BPSIllustratedWatchView *)self->_illustratedWatchView topAnchor];
+    contentView4 = [(BPSWelcomeOptinViewController *)self contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v23 setActive:1];
 
-    v24 = [(BPSIllustratedWatchView *)self->_illustratedWatchView bottomAnchor];
-    v25 = [(BPSWelcomeOptinViewController *)self contentView];
-    v26 = [v25 bottomAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
+    bottomAnchor = [(BPSIllustratedWatchView *)self->_illustratedWatchView bottomAnchor];
+    contentView5 = [(BPSWelcomeOptinViewController *)self contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     watchViewBottomConstraint = self->_watchViewBottomConstraint;
     self->_watchViewBottomConstraint = v27;
 
     [(NSLayoutConstraint *)self->_watchViewBottomConstraint setActive:1];
-    v29 = [(BPSIllustratedWatchView *)self->_illustratedWatchView centerXAnchor];
-    v30 = [(BPSWelcomeOptinViewController *)self view];
-    v31 = [v30 centerXAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31];
+    centerXAnchor = [(BPSIllustratedWatchView *)self->_illustratedWatchView centerXAnchor];
+    view2 = [(BPSWelcomeOptinViewController *)self view];
+    centerXAnchor2 = [view2 centerXAnchor];
+    v32 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v32 setActive:1];
   }
 
@@ -343,8 +343,8 @@ LABEL_9:
   aBlock[3] = &unk_278D23510;
   aBlock[4] = self;
   v33 = _Block_copy(aBlock);
-  v34 = [(BPSWelcomeOptinViewController *)self suggestedButtonTitle];
-  if (v34 || [(BPSWelcomeOptinViewController *)self wantsSuggestedChoicePillButton])
+  suggestedButtonTitle = [(BPSWelcomeOptinViewController *)self suggestedButtonTitle];
+  if (suggestedButtonTitle || [(BPSWelcomeOptinViewController *)self wantsSuggestedChoicePillButton])
   {
   }
 
@@ -354,38 +354,38 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  v35 = [(BPSWelcomeOptinViewController *)self wantsSuggestedChoicePillButton];
-  if (v35)
+  wantsSuggestedChoicePillButton = [(BPSWelcomeOptinViewController *)self wantsSuggestedChoicePillButton];
+  if (wantsSuggestedChoicePillButton)
   {
-    v36 = [MEMORY[0x277D37618] boldButton];
-    [(BPSWelcomeOptinViewController *)self setSuggestedChoiceButton:v36];
+    boldButton = [MEMORY[0x277D37618] boldButton];
+    [(BPSWelcomeOptinViewController *)self setSuggestedChoiceButton:boldButton];
 
-    v37 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-    v33[2](v33, v37);
+    suggestedChoiceButton = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+    v33[2](v33, suggestedChoiceButton);
   }
 
   else
   {
-    v37 = [MEMORY[0x277D37650] linkButton];
-    [(BPSWelcomeOptinViewController *)self setSuggestedChoiceButton:v37];
+    suggestedChoiceButton = [MEMORY[0x277D37650] linkButton];
+    [(BPSWelcomeOptinViewController *)self setSuggestedChoiceButton:suggestedChoiceButton];
   }
 
-  v38 = [(BPSWelcomeOptinViewController *)self privacyBundles];
-  v39 = [v38 count];
+  privacyBundles = [(BPSWelcomeOptinViewController *)self privacyBundles];
+  v39 = [privacyBundles count];
 
   if (v39)
   {
-    v40 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-    [v40 addTarget:self action:sel__didTapPrivacyAccept_ forEvents:64];
+    suggestedChoiceButton2 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+    [suggestedChoiceButton2 addTarget:self action:sel__didTapPrivacyAccept_ forEvents:64];
   }
 
-  v41 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-  [v41 addTarget:self action:sel_suggestedButtonPressed_ forControlEvents:64];
+  suggestedChoiceButton3 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton3 addTarget:self action:sel_suggestedButtonPressed_ forControlEvents:64];
 
-  v42 = !v35;
+  v42 = !wantsSuggestedChoicePillButton;
 LABEL_17:
-  v43 = [(BPSWelcomeOptinViewController *)self alternateButtonTitle];
-  if (v43 || [(BPSWelcomeOptinViewController *)self wantsAlternateChoicePillButton])
+  alternateButtonTitle = [(BPSWelcomeOptinViewController *)self alternateButtonTitle];
+  if (alternateButtonTitle || [(BPSWelcomeOptinViewController *)self wantsAlternateChoicePillButton])
   {
   }
 
@@ -396,28 +396,28 @@ LABEL_17:
 
   if ((v42 & 1) != 0 || ![(BPSWelcomeOptinViewController *)self wantsAlternateChoicePillButton])
   {
-    v45 = [MEMORY[0x277D37650] linkButton];
-    [(BPSWelcomeOptinViewController *)self setAlternateChoiceButton:v45];
+    linkButton = [MEMORY[0x277D37650] linkButton];
+    [(BPSWelcomeOptinViewController *)self setAlternateChoiceButton:linkButton];
     v46 = 1;
   }
 
   else
   {
-    v44 = [MEMORY[0x277D37618] boldButton];
-    [(BPSWelcomeOptinViewController *)self setAlternateChoiceButton:v44];
+    boldButton2 = [MEMORY[0x277D37618] boldButton];
+    [(BPSWelcomeOptinViewController *)self setAlternateChoiceButton:boldButton2];
 
-    v45 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-    v33[2](v33, v45);
+    linkButton = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+    v33[2](v33, linkButton);
     v46 = 0;
   }
 
-  v47 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-  [v47 addTarget:self action:sel_alternateButtonPressed_ forControlEvents:64];
+  alternateChoiceButton = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+  [alternateChoiceButton addTarget:self action:sel_alternateButtonPressed_ forControlEvents:64];
 
   v42 |= v46;
 LABEL_25:
-  v48 = [(BPSWelcomeOptinViewController *)self okayButtonTitle];
-  if (v48)
+  okayButtonTitle = [(BPSWelcomeOptinViewController *)self okayButtonTitle];
+  if (okayButtonTitle)
   {
 
     goto LABEL_28;
@@ -426,16 +426,16 @@ LABEL_25:
   if ([(BPSWelcomeOptinViewController *)self wantsOkayPillButton])
   {
 LABEL_28:
-    v49 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-    if (v49)
+    suggestedChoiceButton4 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+    if (suggestedChoiceButton4)
     {
     }
 
     else
     {
-      v50 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+      alternateChoiceButton2 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
 
-      if (v50)
+      if (alternateChoiceButton2)
       {
         v51 = 1;
       }
@@ -447,94 +447,94 @@ LABEL_28:
 
       if ((v51 & 1) == 0 && [(BPSWelcomeOptinViewController *)self wantsOkayPillButton])
       {
-        v52 = [MEMORY[0x277D37618] boldButton];
-        [(BPSWelcomeOptinViewController *)self setOkayButton:v52];
+        boldButton3 = [MEMORY[0x277D37618] boldButton];
+        [(BPSWelcomeOptinViewController *)self setOkayButton:boldButton3];
 
-        v53 = [(BPSWelcomeOptinViewController *)self okayButton];
-        v33[2](v33, v53);
+        okayButton = [(BPSWelcomeOptinViewController *)self okayButton];
+        v33[2](v33, okayButton);
 LABEL_37:
 
-        v54 = [(BPSWelcomeOptinViewController *)self okayButton];
-        [v54 addTarget:self action:sel_okayButtonPressed_ forControlEvents:64];
+        okayButton2 = [(BPSWelcomeOptinViewController *)self okayButton];
+        [okayButton2 addTarget:self action:sel_okayButtonPressed_ forControlEvents:64];
 
         goto LABEL_38;
       }
     }
 
-    v53 = [MEMORY[0x277D37650] linkButton];
-    [(BPSWelcomeOptinViewController *)self setOkayButton:v53];
+    okayButton = [MEMORY[0x277D37650] linkButton];
+    [(BPSWelcomeOptinViewController *)self setOkayButton:okayButton];
     goto LABEL_37;
   }
 
 LABEL_38:
   [(BPSWelcomeOptinViewController *)self refreshViews];
-  v55 = [(BPSWelcomeOptinViewController *)self learnMoreButtonTitle];
-  if (v55)
+  learnMoreButtonTitle = [(BPSWelcomeOptinViewController *)self learnMoreButtonTitle];
+  if (learnMoreButtonTitle)
   {
-    v56 = v55;
-    v57 = [(BPSWelcomeOptinViewController *)self wantsLearnMoreButton];
+    v56 = learnMoreButtonTitle;
+    wantsLearnMoreButton = [(BPSWelcomeOptinViewController *)self wantsLearnMoreButton];
 
-    if (v57)
+    if (wantsLearnMoreButton)
     {
       if ([(BPSWelcomeOptinViewController *)self hasDetailText])
       {
-        v58 = [MEMORY[0x277D37638] accessoryButton];
-        [(BPSWelcomeOptinViewController *)self setLearnMoreButton:v58];
+        accessoryButton = [MEMORY[0x277D37638] accessoryButton];
+        [(BPSWelcomeOptinViewController *)self setLearnMoreButton:accessoryButton];
 
-        v59 = [(BPSWelcomeOptinViewController *)self learnMoreButton];
-        v60 = [(BPSWelcomeOptinViewController *)self learnMoreButtonTitle];
-        [v59 setTitle:v60 forState:0];
+        learnMoreButton = [(BPSWelcomeOptinViewController *)self learnMoreButton];
+        learnMoreButtonTitle2 = [(BPSWelcomeOptinViewController *)self learnMoreButtonTitle];
+        [learnMoreButton setTitle:learnMoreButtonTitle2 forState:0];
 
-        v61 = [(BPSWelcomeOptinViewController *)self learnMoreButton];
-        [v61 addTarget:self action:sel_learnMoreButtonPressed_ forControlEvents:64];
+        learnMoreButton2 = [(BPSWelcomeOptinViewController *)self learnMoreButton];
+        [learnMoreButton2 addTarget:self action:sel_learnMoreButtonPressed_ forControlEvents:64];
 
-        v62 = [(BPSWelcomeOptinViewController *)self headerView];
-        v63 = [(BPSWelcomeOptinViewController *)self learnMoreButton];
-        [v62 addAccessoryButton:v63];
+        headerView2 = [(BPSWelcomeOptinViewController *)self headerView];
+        learnMoreButton3 = [(BPSWelcomeOptinViewController *)self learnMoreButton];
+        [headerView2 addAccessoryButton:learnMoreButton3];
       }
 
       else
       {
-        v62 = bps_setup_log();
-        if (!os_log_type_enabled(v62, OS_LOG_TYPE_ERROR) || !os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
+        headerView2 = bps_setup_log();
+        if (!os_log_type_enabled(headerView2, OS_LOG_TYPE_ERROR) || !os_log_type_enabled(headerView2, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_50;
         }
 
         v64 = objc_opt_class();
-        v63 = NSStringFromClass(v64);
+        learnMoreButton3 = NSStringFromClass(v64);
         *buf = 138412290;
-        v73 = v63;
-        _os_log_impl(&dword_241E74000, v62, OS_LOG_TYPE_DEFAULT, "Error: %@ wants learnMoreButton but no detail text was provided, this is not supported", buf, 0xCu);
+        v73 = learnMoreButton3;
+        _os_log_impl(&dword_241E74000, headerView2, OS_LOG_TYPE_DEFAULT, "Error: %@ wants learnMoreButton but no detail text was provided, this is not supported", buf, 0xCu);
       }
 
 LABEL_50:
     }
   }
 
-  v65 = [(BPSWelcomeOptinViewController *)self privacyBundles];
-  v66 = [v65 count];
+  privacyBundles2 = [(BPSWelcomeOptinViewController *)self privacyBundles];
+  v66 = [privacyBundles2 count];
 
   if (v66)
   {
     if (![(BPSWelcomeOptinViewController *)self wantsToUseLearnMoreButtonForPrivacyBundles])
     {
-      v67 = [(BPSWelcomeOptinViewController *)self buttonTray];
-      v68 = [(BPSWelcomeOptinViewController *)self privacyBundles];
-      [v67 addPrivacyLinkForBundles:v68];
+      buttonTray = [(BPSWelcomeOptinViewController *)self buttonTray];
+      privacyBundles3 = [(BPSWelcomeOptinViewController *)self privacyBundles];
+      [buttonTray addPrivacyLinkForBundles:privacyBundles3];
 LABEL_56:
     }
   }
 
   else
   {
-    v69 = [(BPSWelcomeOptinViewController *)self captionText];
+    captionText = [(BPSWelcomeOptinViewController *)self captionText];
 
-    if (v69)
+    if (captionText)
     {
-      v67 = [(BPSWelcomeOptinViewController *)self buttonTray];
-      v68 = [(BPSWelcomeOptinViewController *)self captionText];
-      [v67 addCaptionText:v68];
+      buttonTray = [(BPSWelcomeOptinViewController *)self buttonTray];
+      privacyBundles3 = [(BPSWelcomeOptinViewController *)self captionText];
+      [buttonTray addCaptionText:privacyBundles3];
       goto LABEL_56;
     }
   }
@@ -567,117 +567,117 @@ void __44__BPSWelcomeOptinViewController_viewDidLoad__block_invoke(uint64_t a1, 
     return;
   }
 
-  v3 = [(BPSWelcomeOptinViewController *)self headerView];
-  v4 = [(BPSWelcomeOptinViewController *)self titleString];
-  [v3 setTitle:v4];
+  headerView = [(BPSWelcomeOptinViewController *)self headerView];
+  titleString = [(BPSWelcomeOptinViewController *)self titleString];
+  [headerView setTitle:titleString];
 
-  v5 = [(BPSWelcomeOptinViewController *)self detailString];
-  v6 = v5;
-  if (v5)
+  detailString = [(BPSWelcomeOptinViewController *)self detailString];
+  v6 = detailString;
+  if (detailString)
   {
-    v39 = v5;
+    string = detailString;
   }
 
   else
   {
-    v7 = [(BPSWelcomeOptinViewController *)self detailAtrributedString];
-    v39 = [v7 string];
+    detailAtrributedString = [(BPSWelcomeOptinViewController *)self detailAtrributedString];
+    string = [detailAtrributedString string];
   }
 
-  v8 = [(BPSWelcomeOptinViewController *)self headerView];
-  [v8 setDetailText:v39];
+  headerView2 = [(BPSWelcomeOptinViewController *)self headerView];
+  [headerView2 setDetailText:string];
 
-  [(BPSWelcomeOptinViewController *)self setHasDetailText:v39 != 0];
-  v9 = [(BPSWelcomeOptinViewController *)self view];
-  [v9 layoutIfNeeded];
+  [(BPSWelcomeOptinViewController *)self setHasDetailText:string != 0];
+  view = [(BPSWelcomeOptinViewController *)self view];
+  [view layoutIfNeeded];
 
-  v10 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-  v11 = [(BPSWelcomeOptinViewController *)self suggestedButtonTitle];
-  [v10 setTitle:v11 forState:0];
+  suggestedChoiceButton = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+  suggestedButtonTitle = [(BPSWelcomeOptinViewController *)self suggestedButtonTitle];
+  [suggestedChoiceButton setTitle:suggestedButtonTitle forState:0];
 
-  v12 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-  v13 = [(BPSWelcomeOptinViewController *)self alternateButtonTitle];
-  [v12 setTitle:v13 forState:0];
+  alternateChoiceButton = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+  alternateButtonTitle = [(BPSWelcomeOptinViewController *)self alternateButtonTitle];
+  [alternateChoiceButton setTitle:alternateButtonTitle forState:0];
 
-  v14 = [(BPSWelcomeOptinViewController *)self okayButton];
-  v15 = [(BPSWelcomeOptinViewController *)self okayButtonTitle];
-  [v14 setTitle:v15 forState:0];
+  okayButton = [(BPSWelcomeOptinViewController *)self okayButton];
+  okayButtonTitle = [(BPSWelcomeOptinViewController *)self okayButtonTitle];
+  [okayButton setTitle:okayButtonTitle forState:0];
 
   [(BPSWelcomeOptinViewController *)self _refreshButtonTray];
-  v16 = [(BPSWelcomeOptinViewController *)self animationController];
-  v17 = [(BPSWelcomeOptinViewController *)self videoController];
-  if ([(BPSWelcomeOptinViewController *)self wantsToShowWatchHW]&& v17)
+  animationController = [(BPSWelcomeOptinViewController *)self animationController];
+  videoController = [(BPSWelcomeOptinViewController *)self videoController];
+  if ([(BPSWelcomeOptinViewController *)self wantsToShowWatchHW]&& videoController)
   {
     illustratedWatchView = self->_illustratedWatchView;
-    v19 = v17;
+    v19 = videoController;
 LABEL_12:
-    v20 = [v19 view];
-    [(BPSIllustratedWatchView *)illustratedWatchView addScreenView:v20];
+    view2 = [v19 view];
+    [(BPSIllustratedWatchView *)illustratedWatchView addScreenView:view2];
     goto LABEL_13;
   }
 
-  if ([(BPSWelcomeOptinViewController *)self wantsToShowWatchHW]&& v16)
+  if ([(BPSWelcomeOptinViewController *)self wantsToShowWatchHW]&& animationController)
   {
     illustratedWatchView = self->_illustratedWatchView;
-    v19 = v16;
+    v19 = animationController;
     goto LABEL_12;
   }
 
   if ([(BPSWelcomeOptinViewController *)self wantsToShowWatchHW]&& ([(BPSWelcomeOptinViewController *)self imageResource], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
   {
     v22 = self->_illustratedWatchView;
-    v23 = [(BPSWelcomeOptinViewController *)self imageResourceBundleIdentifier];
-    [(BPSIllustratedWatchView *)v22 setScreenImageSearchBundleIdentifier:v23];
+    imageResourceBundleIdentifier = [(BPSWelcomeOptinViewController *)self imageResourceBundleIdentifier];
+    [(BPSIllustratedWatchView *)v22 setScreenImageSearchBundleIdentifier:imageResourceBundleIdentifier];
 
     v24 = self->_illustratedWatchView;
-    v20 = [(BPSWelcomeOptinViewController *)self imageResource];
-    [(BPSIllustratedWatchView *)v24 setScreenImageName:v20];
+    view2 = [(BPSWelcomeOptinViewController *)self imageResource];
+    [(BPSIllustratedWatchView *)v24 setScreenImageName:view2];
   }
 
   else
   {
-    v25 = [(BPSWelcomeOptinViewController *)self imageResource];
+    imageResource = [(BPSWelcomeOptinViewController *)self imageResource];
 
-    if (!v25)
+    if (!imageResource)
     {
       goto LABEL_14;
     }
 
-    v20 = [MEMORY[0x277CCA8D8] mainBundle];
-    v26 = [(BPSWelcomeOptinViewController *)self imageResourceBundleIdentifier];
+    view2 = [MEMORY[0x277CCA8D8] mainBundle];
+    imageResourceBundleIdentifier2 = [(BPSWelcomeOptinViewController *)self imageResourceBundleIdentifier];
 
-    if (v26)
+    if (imageResourceBundleIdentifier2)
     {
       v27 = MEMORY[0x277CCA8D8];
-      v28 = [(BPSWelcomeOptinViewController *)self imageResourceBundleIdentifier];
-      v29 = [v27 bundleWithIdentifier:v28];
+      imageResourceBundleIdentifier3 = [(BPSWelcomeOptinViewController *)self imageResourceBundleIdentifier];
+      v29 = [v27 bundleWithIdentifier:imageResourceBundleIdentifier3];
 
-      v20 = v29;
+      view2 = v29;
     }
 
     v30 = MEMORY[0x277D755B8];
-    v31 = [(BPSWelcomeOptinViewController *)self imageResource];
-    v32 = [v30 imageNamed:v31 inBundle:v20];
+    imageResource2 = [(BPSWelcomeOptinViewController *)self imageResource];
+    v32 = [v30 imageNamed:imageResource2 inBundle:view2];
 
     if (!v32)
     {
       v33 = MEMORY[0x277D755B8];
-      v34 = [(BPSWelcomeOptinViewController *)self imageResource];
-      v32 = [v33 systemImageNamed:v34];
+      imageResource3 = [(BPSWelcomeOptinViewController *)self imageResource];
+      v32 = [v33 systemImageNamed:imageResource3];
     }
 
-    v35 = [(BPSWelcomeOptinViewController *)self imageTintColor];
+    imageTintColor = [(BPSWelcomeOptinViewController *)self imageTintColor];
 
-    if (v35)
+    if (imageTintColor)
     {
-      v36 = [(BPSWelcomeOptinViewController *)self imageTintColor];
-      v37 = [v32 imageWithTintColor:v36];
+      imageTintColor2 = [(BPSWelcomeOptinViewController *)self imageTintColor];
+      v37 = [v32 imageWithTintColor:imageTintColor2];
 
       v32 = v37;
     }
 
-    v38 = [(BPSWelcomeOptinViewController *)self headerView];
-    [v38 setIcon:v32 accessibilityLabel:0];
+    headerView3 = [(BPSWelcomeOptinViewController *)self headerView];
+    [headerView3 setIcon:v32 accessibilityLabel:0];
   }
 
 LABEL_13:
@@ -685,51 +685,51 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BPSWelcomeOptinViewController;
-  [(OBBaseWelcomeController *)&v4 viewDidAppear:a3];
+  [(OBBaseWelcomeController *)&v4 viewDidAppear:appear];
   [(BPSWelcomeOptinViewController *)self _startTapToRadarActivity];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = BPSWelcomeOptinViewController;
-  [(OBBaseWelcomeController *)&v4 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v4 viewWillDisappear:disappear];
   [(BPSWelcomeOptinViewController *)self _endTapToRadarActivity];
 }
 
 - (void)_addButtonObservers
 {
-  v3 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-  [v3 addObserver:self forKeyPath:@"hidden" options:1 context:BPSWelcomeOptinViewControllerKVOContext];
+  suggestedChoiceButton = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton addObserver:self forKeyPath:@"hidden" options:1 context:BPSWelcomeOptinViewControllerKVOContext];
 
-  v4 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-  [v4 addObserver:self forKeyPath:@"hidden" options:1 context:BPSWelcomeOptinViewControllerKVOContext];
+  alternateChoiceButton = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+  [alternateChoiceButton addObserver:self forKeyPath:@"hidden" options:1 context:BPSWelcomeOptinViewControllerKVOContext];
 
-  v5 = [(BPSWelcomeOptinViewController *)self okayButton];
-  [v5 addObserver:self forKeyPath:@"hidden" options:1 context:BPSWelcomeOptinViewControllerKVOContext];
+  okayButton = [(BPSWelcomeOptinViewController *)self okayButton];
+  [okayButton addObserver:self forKeyPath:@"hidden" options:1 context:BPSWelcomeOptinViewControllerKVOContext];
 }
 
 - (void)_removeButtonObservers
 {
-  v3 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-  [v3 removeObserver:self forKeyPath:@"hidden"];
+  suggestedChoiceButton = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton removeObserver:self forKeyPath:@"hidden"];
 
-  v4 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-  [v4 removeObserver:self forKeyPath:@"hidden"];
+  alternateChoiceButton = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+  [alternateChoiceButton removeObserver:self forKeyPath:@"hidden"];
 
-  v5 = [(BPSWelcomeOptinViewController *)self okayButton];
-  [v5 removeObserver:self forKeyPath:@"hidden"];
+  okayButton = [(BPSWelcomeOptinViewController *)self okayButton];
+  [okayButton removeObserver:self forKeyPath:@"hidden"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (BPSWelcomeOptinViewControllerKVOContext == a6)
+  if (BPSWelcomeOptinViewControllerKVOContext == context)
   {
-    if ([@"hidden" isEqualToString:{a3, a4, a5}])
+    if ([@"hidden" isEqualToString:{path, object, change}])
     {
 
       [(BPSWelcomeOptinViewController *)self _refreshButtonTray];
@@ -740,18 +740,18 @@ LABEL_14:
   {
     v7.receiver = self;
     v7.super_class = BPSWelcomeOptinViewController;
-    [(BPSWelcomeOptinViewController *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(BPSWelcomeOptinViewController *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)_refreshButtonTray
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(BPSWelcomeOptinViewController *)self suggestedButtonTitle];
-  if (v3 && ([(BPSWelcomeOptinViewController *)self wantsSuggestedChoicePillButton]|| [(BPSWelcomeOptinViewController *)self wantsSuggestedChoiceLinkButton]))
+  suggestedButtonTitle = [(BPSWelcomeOptinViewController *)self suggestedButtonTitle];
+  if (suggestedButtonTitle && ([(BPSWelcomeOptinViewController *)self wantsSuggestedChoicePillButton]|| [(BPSWelcomeOptinViewController *)self wantsSuggestedChoiceLinkButton]))
   {
-    v4 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-    v5 = [v4 isHidden] ^ 1;
+    suggestedChoiceButton = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+    v5 = [suggestedChoiceButton isHidden] ^ 1;
   }
 
   else
@@ -759,11 +759,11 @@ LABEL_14:
     v5 = 0;
   }
 
-  v6 = [(BPSWelcomeOptinViewController *)self alternateButtonTitle];
-  if (v6 && ([(BPSWelcomeOptinViewController *)self wantsAlternateChoiceSystemButton]|| [(BPSWelcomeOptinViewController *)self wantsAlternateChoicePillButton]))
+  alternateButtonTitle = [(BPSWelcomeOptinViewController *)self alternateButtonTitle];
+  if (alternateButtonTitle && ([(BPSWelcomeOptinViewController *)self wantsAlternateChoiceSystemButton]|| [(BPSWelcomeOptinViewController *)self wantsAlternateChoicePillButton]))
   {
-    v7 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-    v8 = [v7 isHidden] ^ 1;
+    alternateChoiceButton = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+    v8 = [alternateChoiceButton isHidden] ^ 1;
   }
 
   else
@@ -771,11 +771,11 @@ LABEL_14:
     v8 = 0;
   }
 
-  v9 = [(BPSWelcomeOptinViewController *)self okayButtonTitle];
-  if (v9 && [(BPSWelcomeOptinViewController *)self wantsOkayPillButton])
+  okayButtonTitle = [(BPSWelcomeOptinViewController *)self okayButtonTitle];
+  if (okayButtonTitle && [(BPSWelcomeOptinViewController *)self wantsOkayPillButton])
   {
-    v10 = [(BPSWelcomeOptinViewController *)self okayButton];
-    v11 = [v10 isHidden] ^ 1;
+    okayButton = [(BPSWelcomeOptinViewController *)self okayButton];
+    v11 = [okayButton isHidden] ^ 1;
   }
 
   else
@@ -788,34 +788,34 @@ LABEL_14:
     goto LABEL_50;
   }
 
-  v12 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-  v13 = [v12 superview];
+  suggestedChoiceButton2 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+  superview = [suggestedChoiceButton2 superview];
 
-  if (v13)
+  if (superview)
   {
-    v14 = [(BPSWelcomeOptinViewController *)self buttonTray];
-    v15 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-    [v14 removeButton:v15];
+    buttonTray = [(BPSWelcomeOptinViewController *)self buttonTray];
+    suggestedChoiceButton3 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+    [buttonTray removeButton:suggestedChoiceButton3];
   }
 
-  v16 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-  v17 = [v16 superview];
+  alternateChoiceButton2 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+  superview2 = [alternateChoiceButton2 superview];
 
-  if (v17)
+  if (superview2)
   {
-    v18 = [(BPSWelcomeOptinViewController *)self buttonTray];
-    v19 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-    [v18 removeButton:v19];
+    buttonTray2 = [(BPSWelcomeOptinViewController *)self buttonTray];
+    alternateChoiceButton3 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+    [buttonTray2 removeButton:alternateChoiceButton3];
   }
 
-  v20 = [(BPSWelcomeOptinViewController *)self okayButton];
-  v21 = [v20 superview];
+  okayButton2 = [(BPSWelcomeOptinViewController *)self okayButton];
+  superview3 = [okayButton2 superview];
 
-  if (v21)
+  if (superview3)
   {
-    v22 = [(BPSWelcomeOptinViewController *)self buttonTray];
-    v23 = [(BPSWelcomeOptinViewController *)self okayButton];
-    [v22 removeButton:v23];
+    buttonTray3 = [(BPSWelcomeOptinViewController *)self buttonTray];
+    okayButton3 = [(BPSWelcomeOptinViewController *)self okayButton];
+    [buttonTray3 removeButton:okayButton3];
   }
 
   if (!v5)
@@ -828,26 +828,26 @@ LABEL_14:
     goto LABEL_36;
   }
 
-  v24 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+  suggestedChoiceButton4 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
 
-  if (v24)
+  if (suggestedChoiceButton4)
   {
-    v25 = [(BPSWelcomeOptinViewController *)self buttonTray];
-    v26 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-    [v25 addButton:v26];
+    buttonTray4 = [(BPSWelcomeOptinViewController *)self buttonTray];
+    suggestedChoiceButton5 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+    [buttonTray4 addButton:suggestedChoiceButton5];
 LABEL_31:
 
     goto LABEL_35;
   }
 
-  v25 = bps_setup_log();
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+  buttonTray4 = bps_setup_log();
+  if (os_log_type_enabled(buttonTray4, OS_LOG_TYPE_ERROR) && os_log_type_enabled(buttonTray4, OS_LOG_TYPE_DEFAULT))
   {
     v27 = objc_opt_class();
-    v26 = NSStringFromClass(v27);
+    suggestedChoiceButton5 = NSStringFromClass(v27);
     v36 = 138412290;
-    v37 = v26;
-    _os_log_impl(&dword_241E74000, v25, OS_LOG_TYPE_DEFAULT, "Error: %@ wants suggestedChoiceButton but none was initialized", &v36, 0xCu);
+    v37 = suggestedChoiceButton5;
+    _os_log_impl(&dword_241E74000, buttonTray4, OS_LOG_TYPE_DEFAULT, "Error: %@ wants suggestedChoiceButton but none was initialized", &v36, 0xCu);
     goto LABEL_31;
   }
 
@@ -862,28 +862,28 @@ LABEL_27:
     }
 
 LABEL_43:
-    v32 = [(BPSWelcomeOptinViewController *)self okayButton];
+    okayButton4 = [(BPSWelcomeOptinViewController *)self okayButton];
 
-    if (v32)
+    if (okayButton4)
     {
-      v33 = [(BPSWelcomeOptinViewController *)self buttonTray];
-      v34 = [(BPSWelcomeOptinViewController *)self okayButton];
-      [v33 addButton:v34];
+      buttonTray5 = [(BPSWelcomeOptinViewController *)self buttonTray];
+      okayButton5 = [(BPSWelcomeOptinViewController *)self okayButton];
+      [buttonTray5 addButton:okayButton5];
     }
 
     else
     {
-      v33 = bps_setup_log();
-      if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR) || !os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+      buttonTray5 = bps_setup_log();
+      if (!os_log_type_enabled(buttonTray5, OS_LOG_TYPE_ERROR) || !os_log_type_enabled(buttonTray5, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_49;
       }
 
       v35 = objc_opt_class();
-      v34 = NSStringFromClass(v35);
+      okayButton5 = NSStringFromClass(v35);
       v36 = 138412290;
-      v37 = v34;
-      _os_log_impl(&dword_241E74000, v33, OS_LOG_TYPE_DEFAULT, "Error: %@ wants okayButton but none was initialized", &v36, 0xCu);
+      v37 = okayButton5;
+      _os_log_impl(&dword_241E74000, buttonTray5, OS_LOG_TYPE_DEFAULT, "Error: %@ wants okayButton but none was initialized", &v36, 0xCu);
     }
 
 LABEL_49:
@@ -891,26 +891,26 @@ LABEL_49:
   }
 
 LABEL_36:
-  v28 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+  alternateChoiceButton4 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
 
-  if (v28)
+  if (alternateChoiceButton4)
   {
-    v29 = [(BPSWelcomeOptinViewController *)self buttonTray];
-    v30 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-    [v29 addButton:v30];
+    buttonTray6 = [(BPSWelcomeOptinViewController *)self buttonTray];
+    alternateChoiceButton5 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+    [buttonTray6 addButton:alternateChoiceButton5];
 LABEL_38:
 
     goto LABEL_42;
   }
 
-  v29 = bps_setup_log();
-  if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+  buttonTray6 = bps_setup_log();
+  if (os_log_type_enabled(buttonTray6, OS_LOG_TYPE_ERROR) && os_log_type_enabled(buttonTray6, OS_LOG_TYPE_DEFAULT))
   {
     v31 = objc_opt_class();
-    v30 = NSStringFromClass(v31);
+    alternateChoiceButton5 = NSStringFromClass(v31);
     v36 = 138412290;
-    v37 = v30;
-    _os_log_impl(&dword_241E74000, v29, OS_LOG_TYPE_DEFAULT, "Error: %@ wants alternateChoiceButton but none was initialized", &v36, 0xCu);
+    v37 = alternateChoiceButton5;
+    _os_log_impl(&dword_241E74000, buttonTray6, OS_LOG_TYPE_DEFAULT, "Error: %@ wants alternateChoiceButton but none was initialized", &v36, 0xCu);
     goto LABEL_38;
   }
 
@@ -955,43 +955,43 @@ LABEL_50:
   return 0;
 }
 
-- (void)showOptinConfirmationAlert:(id)a3 optinChoice:(BOOL)a4
+- (void)showOptinConfirmationAlert:(id)alert optinChoice:(BOOL)choice
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [v5 stringWithFormat:@"%@_ENABLE_ALERT_TITLE", v6];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_BODY", v6];
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_CANCEL", v6];
-  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_OK", v6];
+  alertCopy = alert;
+  alertCopy = [v5 stringWithFormat:@"%@_ENABLE_ALERT_TITLE", alertCopy];
+  alertCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_BODY", alertCopy];
+  alertCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_CANCEL", alertCopy];
+  alertCopy4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_OK", alertCopy];
 
   v10 = MEMORY[0x277D75110];
-  v11 = [(BPSWelcomeOptinViewController *)self optinLocalizationBundle];
-  v12 = [(BPSWelcomeOptinViewController *)self optinLocalizationStringsFile];
-  v32 = v7;
-  v13 = [v11 localizedStringForKey:v7 value:&stru_285406330 table:v12];
-  v14 = [(BPSWelcomeOptinViewController *)self optinLocalizationBundle];
-  v15 = [(BPSWelcomeOptinViewController *)self optinLocalizationStringsFile];
-  v31 = v8;
-  v16 = [v14 localizedStringForKey:v8 value:&stru_285406330 table:v15];
+  optinLocalizationBundle = [(BPSWelcomeOptinViewController *)self optinLocalizationBundle];
+  optinLocalizationStringsFile = [(BPSWelcomeOptinViewController *)self optinLocalizationStringsFile];
+  v32 = alertCopy;
+  v13 = [optinLocalizationBundle localizedStringForKey:alertCopy value:&stru_285406330 table:optinLocalizationStringsFile];
+  optinLocalizationBundle2 = [(BPSWelcomeOptinViewController *)self optinLocalizationBundle];
+  optinLocalizationStringsFile2 = [(BPSWelcomeOptinViewController *)self optinLocalizationStringsFile];
+  v31 = alertCopy2;
+  v16 = [optinLocalizationBundle2 localizedStringForKey:alertCopy2 value:&stru_285406330 table:optinLocalizationStringsFile2];
   v17 = [v10 alertControllerWithTitle:v13 message:v16 preferredStyle:1];
 
   v18 = MEMORY[0x277D750F8];
-  v19 = [(BPSWelcomeOptinViewController *)self optinLocalizationBundle];
-  v20 = [(BPSWelcomeOptinViewController *)self optinLocalizationStringsFile];
-  v21 = [v19 localizedStringForKey:v9 value:&stru_285406330 table:v20];
+  optinLocalizationBundle3 = [(BPSWelcomeOptinViewController *)self optinLocalizationBundle];
+  optinLocalizationStringsFile3 = [(BPSWelcomeOptinViewController *)self optinLocalizationStringsFile];
+  v21 = [optinLocalizationBundle3 localizedStringForKey:alertCopy3 value:&stru_285406330 table:optinLocalizationStringsFile3];
   v22 = [v18 actionWithTitle:v21 style:1 handler:0];
   [v17 addAction:v22];
 
   v23 = MEMORY[0x277D750F8];
-  v24 = [(BPSWelcomeOptinViewController *)self optinLocalizationBundle];
-  v25 = [(BPSWelcomeOptinViewController *)self optinLocalizationStringsFile];
-  v26 = [v24 localizedStringForKey:v29 value:&stru_285406330 table:v25];
+  optinLocalizationBundle4 = [(BPSWelcomeOptinViewController *)self optinLocalizationBundle];
+  optinLocalizationStringsFile4 = [(BPSWelcomeOptinViewController *)self optinLocalizationStringsFile];
+  v26 = [optinLocalizationBundle4 localizedStringForKey:alertCopy4 value:&stru_285406330 table:optinLocalizationStringsFile4];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __72__BPSWelcomeOptinViewController_showOptinConfirmationAlert_optinChoice___block_invoke;
   v34[3] = &unk_278D234C0;
   v34[4] = self;
-  v35 = a4;
+  choiceCopy = choice;
   v27 = [v23 actionWithTitle:v26 style:0 handler:v34];
   [v17 addAction:v27];
 
@@ -1005,7 +1005,7 @@ LABEL_50:
   [(BPSWelcomeOptinViewController *)self presentViewController:v17 animated:1 completion:0];
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
   v6 = *MEMORY[0x277D85DE8];
   v3 = bps_setup_log();
@@ -1020,10 +1020,10 @@ LABEL_50:
 - (id)_baseIdentifier
 {
   v3 = +[BPSFollowUpController baseDomainIdentifier];
-  v4 = [(BPSWelcomeOptinViewController *)self followUpIdentifier];
-  if (v4)
+  followUpIdentifier = [(BPSWelcomeOptinViewController *)self followUpIdentifier];
+  if (followUpIdentifier)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v3, v4];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v3, followUpIdentifier];
   }
 
   else
@@ -1034,17 +1034,17 @@ LABEL_50:
   return v5;
 }
 
-- (void)addFollowUpForPageAndDevice:(id)a3 withCompletion:(id)a4
+- (void)addFollowUpForPageAndDevice:(id)device withCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BPSWelcomeOptinViewController *)self _baseIdentifier];
-  if (v8)
+  deviceCopy = device;
+  completionCopy = completion;
+  _baseIdentifier = [(BPSWelcomeOptinViewController *)self _baseIdentifier];
+  if (_baseIdentifier)
   {
-    v18 = v7;
-    v9 = [v6 valueForProperty:*MEMORY[0x277D2BC30]];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v8, v9];
+    v18 = completionCopy;
+    v9 = [deviceCopy valueForProperty:*MEMORY[0x277D2BC30]];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", _baseIdentifier, v9];
     v11 = bps_setup_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -1057,19 +1057,19 @@ LABEL_50:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = v6;
+      v24 = deviceCopy;
       _os_log_impl(&dword_241E74000, v12, OS_LOG_TYPE_DEFAULT, "...for device: %{public}@", buf, 0xCu);
     }
 
     v21[0] = @"title";
-    v13 = [(BPSWelcomeOptinViewController *)self localizedTitle];
-    v22[0] = v13;
+    localizedTitle = [(BPSWelcomeOptinViewController *)self localizedTitle];
+    v22[0] = localizedTitle;
     v21[1] = @"description";
-    v14 = [(BPSWelcomeOptinViewController *)self localizedInformativeText];
-    v22[1] = v14;
+    localizedInformativeText = [(BPSWelcomeOptinViewController *)self localizedInformativeText];
+    v22[1] = localizedInformativeText;
     v21[2] = @"followUpActions";
-    v15 = [(BPSWelcomeOptinViewController *)self followUpActions];
-    v22[2] = v15;
+    followUpActions = [(BPSWelcomeOptinViewController *)self followUpActions];
+    v22[2] = followUpActions;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:3];
     v17 = [BPSFollowUpAttributes attributeWithOptions:v16];
 
@@ -1077,7 +1077,7 @@ LABEL_50:
     v19[1] = 3221225472;
     v19[2] = __76__BPSWelcomeOptinViewController_addFollowUpForPageAndDevice_withCompletion___block_invoke;
     v19[3] = &unk_278D23430;
-    v7 = v18;
+    completionCopy = v18;
     v20 = v18;
     [BPSFollowUpController addFollowUpForIdentifier:v10 withAttributes:v17 withCompletion:v19];
   }
@@ -1104,31 +1104,31 @@ uint64_t __76__BPSWelcomeOptinViewController_addFollowUpForPageAndDevice_withCom
   return result;
 }
 
-- (void)addFollowUpForPageWithCompletion:(id)a3
+- (void)addFollowUpForPageWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BPSWelcomeOptinViewController *)self _baseIdentifier];
+  completionCopy = completion;
+  _baseIdentifier = [(BPSWelcomeOptinViewController *)self _baseIdentifier];
   v6 = bps_setup_log();
   v7 = v6;
-  if (v5)
+  if (_baseIdentifier)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v5;
+      v17 = _baseIdentifier;
       _os_log_impl(&dword_241E74000, v7, OS_LOG_TYPE_DEFAULT, "Add Global FollowUp for %{public}@", buf, 0xCu);
     }
 
     v14[0] = @"title";
-    v8 = [(BPSWelcomeOptinViewController *)self localizedTitle];
-    v15[0] = v8;
+    localizedTitle = [(BPSWelcomeOptinViewController *)self localizedTitle];
+    v15[0] = localizedTitle;
     v14[1] = @"description";
-    v9 = [(BPSWelcomeOptinViewController *)self localizedInformativeText];
-    v15[1] = v9;
+    localizedInformativeText = [(BPSWelcomeOptinViewController *)self localizedInformativeText];
+    v15[1] = localizedInformativeText;
     v14[2] = @"followUpActions";
-    v10 = [(BPSWelcomeOptinViewController *)self followUpActions];
-    v15[2] = v10;
+    followUpActions = [(BPSWelcomeOptinViewController *)self followUpActions];
+    v15[2] = followUpActions;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
     v7 = [BPSFollowUpAttributes attributeWithOptions:v11];
 
@@ -1136,8 +1136,8 @@ uint64_t __76__BPSWelcomeOptinViewController_addFollowUpForPageAndDevice_withCom
     v12[1] = 3221225472;
     v12[2] = __66__BPSWelcomeOptinViewController_addFollowUpForPageWithCompletion___block_invoke;
     v12[3] = &unk_278D23430;
-    v13 = v4;
-    [BPSFollowUpController addFollowUpForIdentifier:v5 withAttributes:v7 withCompletion:v12];
+    v13 = completionCopy;
+    [BPSFollowUpController addFollowUpForIdentifier:_baseIdentifier withAttributes:v7 withCompletion:v12];
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1158,19 +1158,19 @@ uint64_t __66__BPSWelcomeOptinViewController_addFollowUpForPageWithCompletion___
   return result;
 }
 
-- (void)removeFollowupForPageWithCompletion:(id)a3
+- (void)removeFollowupForPageWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BPSWelcomeOptinViewController *)self followUpIdentifier];
+  completionCopy = completion;
+  followUpIdentifier = [(BPSWelcomeOptinViewController *)self followUpIdentifier];
   v6 = bps_setup_log();
   v7 = v6;
-  if (v5)
+  if (followUpIdentifier)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = v5;
+      v11 = followUpIdentifier;
       _os_log_impl(&dword_241E74000, v7, OS_LOG_TYPE_DEFAULT, "Remove identifier %{public}@", buf, 0xCu);
     }
 
@@ -1178,8 +1178,8 @@ uint64_t __66__BPSWelcomeOptinViewController_addFollowUpForPageWithCompletion___
     v8[1] = 3221225472;
     v8[2] = __69__BPSWelcomeOptinViewController_removeFollowupForPageWithCompletion___block_invoke;
     v8[3] = &unk_278D23430;
-    v9 = v4;
-    [BPSFollowUpController removeFollowUpForIdentifier:v5 withCompletion:v8];
+    v9 = completionCopy;
+    [BPSFollowUpController removeFollowUpForIdentifier:followUpIdentifier withCompletion:v8];
     v7 = v9;
   }
 
@@ -1220,10 +1220,10 @@ uint64_t __69__BPSWelcomeOptinViewController_removeFollowupForPageWithCompletion
 
 - (void)openTapToRadar
 {
-  v2 = [(BPSWelcomeOptinViewController *)self tapToRadarMetadata];
-  if (v2)
+  tapToRadarMetadata = [(BPSWelcomeOptinViewController *)self tapToRadarMetadata];
+  if (tapToRadarMetadata)
   {
-    [BPSTapToRadarCoordinator openTapToRadarWithInitialMetadata:v2];
+    [BPSTapToRadarCoordinator openTapToRadarWithInitialMetadata:tapToRadarMetadata];
   }
 
   else
@@ -1241,12 +1241,12 @@ uint64_t __69__BPSWelcomeOptinViewController_removeFollowupForPageWithCompletion
 {
   if (PBIsInternalInstall())
   {
-    v3 = [(BPSWelcomeOptinViewController *)self tapToRadarMetadata];
+    tapToRadarMetadata = [(BPSWelcomeOptinViewController *)self tapToRadarMetadata];
 
-    if (v3)
+    if (tapToRadarMetadata)
     {
-      v4 = [(BPSWelcomeOptinViewController *)self tapToRadarMetadata];
-      v5 = [BPSTapToRadarCoordinator tapToRadarUserActivityWithInitialMetadata:v4];
+      tapToRadarMetadata2 = [(BPSWelcomeOptinViewController *)self tapToRadarMetadata];
+      v5 = [BPSTapToRadarCoordinator tapToRadarUserActivityWithInitialMetadata:tapToRadarMetadata2];
       tapToRadarActivity = self->_tapToRadarActivity;
       self->_tapToRadarActivity = v5;
 
@@ -1281,25 +1281,25 @@ uint64_t __69__BPSWelcomeOptinViewController_removeFollowupForPageWithCompletion
   }
 }
 
-- (void)_didTapPrivacyAccept:(id)a3
+- (void)_didTapPrivacyAccept:(id)accept
 {
   v40 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v4 = [(BPSWelcomeOptinViewController *)self privacyBundles];
+  acceptCopy = accept;
+  privacyBundles = [(BPSWelcomeOptinViewController *)self privacyBundles];
 
-  if (v4)
+  if (privacyBundles)
   {
-    v5 = [(BPSWelcomeOptinViewController *)self delegate];
-    v23 = [v5 setupFlowUserInfo];
+    delegate = [(BPSWelcomeOptinViewController *)self delegate];
+    setupFlowUserInfo = [delegate setupFlowUserInfo];
 
-    v6 = [v23 objectForKey:@"BPSPairingFlowIsTinkerPairing"];
-    v7 = [v6 BOOLValue];
+    v6 = [setupFlowUserInfo objectForKey:@"BPSPairingFlowIsTinkerPairing"];
+    bOOLValue = [v6 BOOLValue];
 
-    if (v7)
+    if (bOOLValue)
     {
-      v8 = [v23 objectForKey:@"BPSPairingFlowFamilyMember"];
-      v9 = [v8 dsid];
-      if (!v9 || ([MEMORY[0x277CB8F48] ams_sharedAccountStore], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "ams_iTunesAccountWithDSID:", v9), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
+      v8 = [setupFlowUserInfo objectForKey:@"BPSPairingFlowFamilyMember"];
+      dsid = [v8 dsid];
+      if (!dsid || ([MEMORY[0x277CB8F48] ams_sharedAccountStore], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "ams_iTunesAccountWithDSID:", dsid), aa_primaryAppleAccount = objc_claimAutoreleasedReturnValue(), v10, !aa_primaryAppleAccount))
       {
         v12 = bps_setup_log();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1308,14 +1308,14 @@ uint64_t __69__BPSWelcomeOptinViewController_removeFollowupForPageWithCompletion
           _os_log_impl(&dword_241E74000, v12, OS_LOG_TYPE_DEFAULT, "Error acknowledging privacy bundle: alt account pairing but we could not map an alt ACAccount", buf, 2u);
         }
 
-        v11 = 0;
+        aa_primaryAppleAccount = 0;
       }
     }
 
     else
     {
       v13 = objc_alloc_init(MEMORY[0x277CB8F48]);
-      v11 = [v13 aa_primaryAppleAccount];
+      aa_primaryAppleAccount = [v13 aa_primaryAppleAccount];
     }
 
     v28 = 0u;
@@ -1356,14 +1356,14 @@ uint64_t __69__BPSWelcomeOptinViewController_removeFollowupForPageWithCompletion
 
           v19 = v18;
           _Block_object_dispose(&v35, 8);
-          v20 = [[v18 alloc] initWithPrivacyIdentifier:v17 account:v11];
-          v21 = [v20 acknowledgePrivacy];
+          v20 = [[v18 alloc] initWithPrivacyIdentifier:v17 account:aa_primaryAppleAccount];
+          acknowledgePrivacy = [v20 acknowledgePrivacy];
           v25[0] = MEMORY[0x277D85DD0];
           v25[1] = 3221225472;
           v25[2] = __54__BPSWelcomeOptinViewController__didTapPrivacyAccept___block_invoke;
           v25[3] = &unk_278D23538;
           v25[4] = v17;
-          [v21 addFinishBlock:v25];
+          [acknowledgePrivacy addFinishBlock:v25];
 
           ++v16;
         }
@@ -1406,19 +1406,19 @@ void __54__BPSWelcomeOptinViewController__didTapPrivacyAccept___block_invoke(uin
   }
 }
 
-+ (id)expressModeSettingsItem:(id)a3
++ (id)expressModeSettingsItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (objc_opt_respondsToSelector())
   {
     v5 = objc_opt_new();
-    v6 = [a1 expressModeSettingsString:v4];
+    v6 = [self expressModeSettingsString:itemCopy];
     [v5 setTitle:v6];
 
     if (objc_opt_respondsToSelector())
     {
-      v7 = [a1 imageForExpressSetting];
-      [v5 setImage:v7];
+      imageForExpressSetting = [self imageForExpressSetting];
+      [v5 setImage:imageForExpressSetting];
     }
   }
 
@@ -1432,38 +1432,38 @@ void __54__BPSWelcomeOptinViewController__didTapPrivacyAccept___block_invoke(uin
 
 - (id)_learnMoreButtonPrivacyTitle
 {
-  v2 = [(BPSWelcomeOptinViewController *)self privacyBundles];
-  v3 = [v2 firstObject];
+  privacyBundles = [(BPSWelcomeOptinViewController *)self privacyBundles];
+  firstObject = [privacyBundles firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [MEMORY[0x277D37630] bundleWithIdentifier:v3];
-    v5 = [v4 privacyFlow];
-    v6 = [v5 localizedButtonTitle];
+    v4 = [MEMORY[0x277D37630] bundleWithIdentifier:firstObject];
+    privacyFlow = [v4 privacyFlow];
+    localizedButtonTitle = [privacyFlow localizedButtonTitle];
   }
 
   else
   {
-    v6 = 0;
+    localizedButtonTitle = 0;
   }
 
-  return v6;
+  return localizedButtonTitle;
 }
 
-- (void)_learnMoreButtonPrivacyPressed:(id)a3
+- (void)_learnMoreButtonPrivacyPressed:(id)pressed
 {
-  v8 = [(BPSWelcomeOptinViewController *)self privacyBundles];
-  v4 = [v8 count];
+  privacyBundles = [(BPSWelcomeOptinViewController *)self privacyBundles];
+  v4 = [privacyBundles count];
   v5 = MEMORY[0x277D37678];
   if (v4 == 1)
   {
-    v6 = [v8 firstObject];
-    v7 = [v5 presenterForPrivacySplashWithIdentifier:v6];
+    firstObject = [privacyBundles firstObject];
+    v7 = [v5 presenterForPrivacySplashWithIdentifier:firstObject];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D37678] presenterForPrivacyUnifiedAboutWithIdentifiers:v8];
+    v7 = [MEMORY[0x277D37678] presenterForPrivacyUnifiedAboutWithIdentifiers:privacyBundles];
   }
 
   [v7 setPresentingViewController:self];

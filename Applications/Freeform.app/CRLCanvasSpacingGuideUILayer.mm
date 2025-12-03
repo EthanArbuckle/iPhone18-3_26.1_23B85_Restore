@@ -1,24 +1,24 @@
 @interface CRLCanvasSpacingGuideUILayer
-- (CRLCanvasSpacingGuideUILayer)initWithSpacingRect:(CGRect)a3 ofOrientation:(int)a4 icc:(id)a5 useVisibleRect:(BOOL)a6;
-- (void)p_generateArrowLayerForSpacingRect:(CGRect)a3 andViewScale:(double)a4;
-- (void)setFrameFromSpacingRect:(CGRect)a3 icc:(id)a4;
+- (CRLCanvasSpacingGuideUILayer)initWithSpacingRect:(CGRect)rect ofOrientation:(int)orientation icc:(id)icc useVisibleRect:(BOOL)visibleRect;
+- (void)p_generateArrowLayerForSpacingRect:(CGRect)rect andViewScale:(double)scale;
+- (void)setFrameFromSpacingRect:(CGRect)rect icc:(id)icc;
 @end
 
 @implementation CRLCanvasSpacingGuideUILayer
 
-- (CRLCanvasSpacingGuideUILayer)initWithSpacingRect:(CGRect)a3 ofOrientation:(int)a4 icc:(id)a5 useVisibleRect:(BOOL)a6
+- (CRLCanvasSpacingGuideUILayer)initWithSpacingRect:(CGRect)rect ofOrientation:(int)orientation icc:(id)icc useVisibleRect:(BOOL)visibleRect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  iccCopy = icc;
   v17.receiver = self;
   v17.super_class = CRLCanvasSpacingGuideUILayer;
   v13 = [(CRLCanvasSpacingGuideUILayer *)&v17 init];
   if (v13)
   {
-    if (a4)
+    if (orientation)
     {
       +[CRLSwappableAxesGeometry swappedAxesGeometry];
     }
@@ -33,25 +33,25 @@
 
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
-    [(CRLCanvasSpacingGuideUILayer *)v13 setFrameFromSpacingRect:v12 icc:x, y, width, height];
+    [(CRLCanvasSpacingGuideUILayer *)v13 setFrameFromSpacingRect:iccCopy icc:x, y, width, height];
     +[CATransaction commit];
   }
 
   return v13;
 }
 
-- (void)setFrameFromSpacingRect:(CGRect)a3 icc:(id)a4
+- (void)setFrameFromSpacingRect:(CGRect)rect icc:(id)icc
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  iccCopy = icc;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   if (self->mUseVisibleRect)
   {
-    [v9 visibleScaledRectForCanvasUI];
+    [iccCopy visibleScaledRectForCanvasUI];
     v81 = v11;
     v82 = v10;
     v80 = v12;
@@ -66,7 +66,7 @@
     rect = CGRectNull.size.height;
   }
 
-  [v9 viewScale];
+  [iccCopy viewScale];
   v79 = v14;
   CGAffineTransformMakeScale(&v84, v14, v14);
   v85.origin.x = x;
@@ -149,12 +149,12 @@
   +[CATransaction commit];
 }
 
-- (void)p_generateArrowLayerForSpacingRect:(CGRect)a3 andViewScale:(double)a4
+- (void)p_generateArrowLayerForSpacingRect:(CGRect)rect andViewScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = objc_alloc_init(CAShapeLayer);
   mArrowLayer = self->mArrowLayer;
   self->mArrowLayer = v9;
@@ -223,7 +223,7 @@
   CGPathMoveToPoint(Mutable, 0, v78, v71);
   CGPathAddLineToPoint(Mutable, 0, v73, v72);
   [(CRLSwappableAxesGeometry *)self->mHorizontalGeom rectWidth:x, y, width, height];
-  if (v58 * a4 >= 14.0)
+  if (v58 * scale >= 14.0)
   {
     CGPathMoveToPoint(Mutable, 0, v68, v67);
     CGPathAddLineToPoint(Mutable, 0, v78, v71);

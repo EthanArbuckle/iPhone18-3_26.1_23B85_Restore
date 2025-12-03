@@ -1,23 +1,23 @@
 @interface CSFocusActivityViewController
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (BOOL)isActivityIndicatorVisible;
 - (CSActivityPickerViewController)activityPickerViewController;
 - (CSFocusActivityViewControllerDelegate)delegate;
 - (UIView)activityIndicator;
 - (UIView)customFocusActivityPickerPresentingView;
 - (id)_activityViewIfLoaded;
-- (id)activityPickerViewControllerPresentingView:(id)a3;
+- (id)activityPickerViewControllerPresentingView:(id)view;
 - (void)_removeActivityViewIndicatorIfNecessary;
 - (void)_updateActivityViewActivity;
 - (void)_updateActivityViewBehavior;
 - (void)_updateActivityViewLegibility;
 - (void)_updatePreferredContentSize;
-- (void)focusActivityViewIndicatorDidChangeToVisible:(BOOL)a3;
-- (void)focusActivityViewIndicatorPressed:(id)a3;
-- (void)presentFocusActivityPickerViewControllerFromView:(id)a3 coverSheetViewPresenting:(id)a4;
-- (void)setActivity:(id)a3;
-- (void)setContainerSize:(CGSize)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)focusActivityViewIndicatorDidChangeToVisible:(BOOL)visible;
+- (void)focusActivityViewIndicatorPressed:(id)pressed;
+- (void)presentFocusActivityPickerViewControllerFromView:(id)view coverSheetViewPresenting:(id)presenting;
+- (void)setActivity:(id)activity;
+- (void)setContainerSize:(CGSize)size;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -30,14 +30,14 @@
   v6.super_class = CSFocusActivityViewController;
   [(CSCoverSheetViewControllerBase *)&v6 viewDidLoad];
   v3 = +[CSLockScreenDomain rootSettings];
-  v4 = [v3 focusSettings];
-  [v4 addKeyObserver:self];
+  focusSettings = [v3 focusSettings];
+  [focusSettings addKeyObserver:self];
 
   [(CSFocusActivityViewController *)self _updateActivityViewBehavior];
   [(CSFocusActivityViewController *)self _updateActivityViewActivity];
   [(CSFocusActivityViewController *)self _updateActivityViewLegibility];
-  v5 = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
-  [v5 setDelegate:self];
+  _activityViewIfLoaded = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
+  [_activityViewIfLoaded setDelegate:self];
 }
 
 - (void)viewWillLayoutSubviews
@@ -45,45 +45,45 @@
   v4.receiver = self;
   v4.super_class = CSFocusActivityViewController;
   [(CSCoverSheetViewControllerBase *)&v4 viewWillLayoutSubviews];
-  v3 = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
+  _activityViewIfLoaded = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
   [(CSFocusActivityViewController *)self preferredContentSize];
-  [v3 setSize:?];
+  [_activityViewIfLoaded setSize:?];
 }
 
-- (void)focusActivityViewIndicatorPressed:(id)a3
+- (void)focusActivityViewIndicatorPressed:(id)pressed
 {
   objc_storeWeak(&self->_customFocusActivityPickerPresentingView, 0);
   v4 = [CSAction actionWithType:12];
   [(CSCoverSheetViewControllerBase *)self sendAction:v4];
 }
 
-- (void)focusActivityViewIndicatorDidChangeToVisible:(BOOL)a3
+- (void)focusActivityViewIndicatorDidChangeToVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(CSFocusActivityViewController *)self delegate];
-  [v4 focusActivityViewIndicatorDidChangeToVisible:v3];
+  visibleCopy = visible;
+  delegate = [(CSFocusActivityViewController *)self delegate];
+  [delegate focusActivityViewIndicatorDidChangeToVisible:visibleCopy];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = CSFocusActivityViewController;
-  if (-[CSCoverSheetViewControllerBase handleEvent:](&v9, sel_handleEvent_, v4) && ([v4 isConsumable] & 1) != 0)
+  if (-[CSCoverSheetViewControllerBase handleEvent:](&v9, sel_handleEvent_, eventCopy) && ([eventCopy isConsumable] & 1) != 0)
   {
-    v5 = [v4 isConsumable];
+    isConsumable = [eventCopy isConsumable];
   }
 
   else
   {
-    v6 = [v4 type];
-    switch(v6)
+    type = [eventCopy type];
+    switch(type)
     {
       case 25:
         if (!self->_activity)
         {
-          v7 = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
-          [v7 removeIndicator];
+          _activityViewIfLoaded = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
+          [_activityViewIfLoaded removeIndicator];
         }
 
         break;
@@ -95,67 +95,67 @@
         break;
     }
 
-    v5 = 0;
+    isConsumable = 0;
   }
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)setContainerSize:(CGSize)a3
+- (void)setContainerSize:(CGSize)size
 {
-  if (self->_containerSize.width != a3.width || self->_containerSize.height != a3.height)
+  if (self->_containerSize.width != size.width || self->_containerSize.height != size.height)
   {
-    self->_containerSize = a3;
+    self->_containerSize = size;
     [(CSFocusActivityViewController *)self _updatePreferredContentSize];
   }
 }
 
-- (id)activityPickerViewControllerPresentingView:(id)a3
+- (id)activityPickerViewControllerPresentingView:(id)view
 {
-  v4 = [(CSFocusActivityViewController *)self customFocusActivityPickerPresentingView];
-  v5 = v4;
-  if (v4)
+  customFocusActivityPickerPresentingView = [(CSFocusActivityViewController *)self customFocusActivityPickerPresentingView];
+  v5 = customFocusActivityPickerPresentingView;
+  if (customFocusActivityPickerPresentingView)
   {
-    v6 = v4;
+    activityIndicator = customFocusActivityPickerPresentingView;
   }
 
   else
   {
-    v6 = [(CSFocusActivityViewController *)self activityIndicator];
+    activityIndicator = [(CSFocusActivityViewController *)self activityIndicator];
   }
 
-  v7 = v6;
+  v7 = activityIndicator;
 
   return v7;
 }
 
 - (BOOL)isActivityIndicatorVisible
 {
-  v2 = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
-  v3 = [v2 isActivityIndicatorVisible];
+  _activityViewIfLoaded = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
+  isActivityIndicatorVisible = [_activityViewIfLoaded isActivityIndicatorVisible];
 
-  return v3;
+  return isActivityIndicatorVisible;
 }
 
-- (void)setActivity:(id)a3
+- (void)setActivity:(id)activity
 {
-  v5 = a3;
-  if (self->_activity != v5)
+  activityCopy = activity;
+  if (self->_activity != activityCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_activity, a3);
+    v6 = activityCopy;
+    objc_storeStrong(&self->_activity, activity);
     [(CSFocusActivityViewController *)self _updateActivityViewActivity];
     [(CSFocusActivityViewController *)self _removeActivityViewIndicatorIfNecessary];
-    v5 = v6;
+    activityCopy = v6;
   }
 }
 
 - (UIView)activityIndicator
 {
-  v2 = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
-  v3 = [v2 activityIndicator];
+  _activityViewIfLoaded = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
+  activityIndicator = [_activityViewIfLoaded activityIndicator];
 
-  return v3;
+  return activityIndicator;
 }
 
 - (CSActivityPickerViewController)activityPickerViewController
@@ -179,58 +179,58 @@
   [(CSFocusActivityViewController *)self setPreferredContentSize:width];
 }
 
-- (void)presentFocusActivityPickerViewControllerFromView:(id)a3 coverSheetViewPresenting:(id)a4
+- (void)presentFocusActivityPickerViewControllerFromView:(id)view coverSheetViewPresenting:(id)presenting
 {
-  v6 = a4;
-  objc_storeWeak(&self->_customFocusActivityPickerPresentingView, a3);
+  presentingCopy = presenting;
+  objc_storeWeak(&self->_customFocusActivityPickerPresentingView, view);
   v7 = [CSAction actionWithType:12];
-  [v6 handleAction:v7 fromSender:self];
+  [presentingCopy handleAction:v7 fromSender:self];
 }
 
 - (void)_updateActivityViewBehavior
 {
-  v3 = [(CSCoverSheetViewControllerBase *)self activeBehavior];
-  v4 = [v3 areRestrictedCapabilities:0x400000];
+  activeBehavior = [(CSCoverSheetViewControllerBase *)self activeBehavior];
+  v4 = [activeBehavior areRestrictedCapabilities:0x400000];
 
   v5 = +[CSLockScreenDomain rootSettings];
-  v6 = [v5 focusSettings];
-  v7 = [v6 gatesOnControlCenterAccess];
+  focusSettings = [v5 focusSettings];
+  gatesOnControlCenterAccess = [focusSettings gatesOnControlCenterAccess];
 
-  v8 = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
-  [v8 setEnabled:v4 & v7 ^ 1u];
+  _activityViewIfLoaded = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
+  [_activityViewIfLoaded setEnabled:v4 & gatesOnControlCenterAccess ^ 1u];
 }
 
 - (void)_updateActivityViewActivity
 {
-  v3 = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
-  [v3 setActivity:self->_activity];
+  _activityViewIfLoaded = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
+  [_activityViewIfLoaded setActivity:self->_activity];
 }
 
 - (void)_updateActivityViewLegibility
 {
-  v5 = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
-  v3 = [(CSCoverSheetViewControllerBase *)self activeAppearance];
-  v4 = [v3 legibilitySettings];
-  [v5 setLegibilitySettings:v4];
+  _activityViewIfLoaded = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
+  activeAppearance = [(CSCoverSheetViewControllerBase *)self activeAppearance];
+  legibilitySettings = [activeAppearance legibilitySettings];
+  [_activityViewIfLoaded setLegibilitySettings:legibilitySettings];
 }
 
 - (void)_removeActivityViewIndicatorIfNecessary
 {
-  v3 = [(CSFocusActivityViewController *)self activityPickerViewController];
-  v4 = [v3 _appearState];
+  activityPickerViewController = [(CSFocusActivityViewController *)self activityPickerViewController];
+  _appearState = [activityPickerViewController _appearState];
 
-  if (v4 != 2 && !self->_activity)
+  if (_appearState != 2 && !self->_activity)
   {
-    v5 = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
-    [v5 removeIndicator];
+    _activityViewIfLoaded = [(CSFocusActivityViewController *)self _activityViewIfLoaded];
+    [_activityViewIfLoaded removeIndicator];
   }
 }
 
 - (id)_activityViewIfLoaded
 {
-  v2 = [(CSFocusActivityViewController *)self viewIfLoaded];
+  viewIfLoaded = [(CSFocusActivityViewController *)self viewIfLoaded];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = viewIfLoaded;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -249,9 +249,9 @@
   return v3;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if ([a4 isEqualToString:@"gatesOnControlCenterAccess"])
+  if ([key isEqualToString:@"gatesOnControlCenterAccess"])
   {
 
     [(CSFocusActivityViewController *)self _updateActivityViewBehavior];

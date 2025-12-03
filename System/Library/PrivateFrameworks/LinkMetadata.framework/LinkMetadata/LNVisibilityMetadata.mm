@@ -1,25 +1,25 @@
 @interface LNVisibilityMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)visibleForUse:(int64_t)a3;
-- (LNVisibilityMetadata)initWithCoder:(id)a3;
-- (LNVisibilityMetadata)initWithIsDiscoverable:(BOOL)a3 assistantOnly:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)visibleForUse:(int64_t)use;
+- (LNVisibilityMetadata)initWithCoder:(id)coder;
+- (LNVisibilityMetadata)initWithIsDiscoverable:(BOOL)discoverable assistantOnly:(BOOL)only;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNVisibilityMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
     goto LABEL_10;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -27,16 +27,16 @@
     goto LABEL_7;
   }
 
-  v7 = [(LNVisibilityMetadata *)self isDiscoverable];
-  if (v7 != [(LNVisibilityMetadata *)v6 isDiscoverable])
+  isDiscoverable = [(LNVisibilityMetadata *)self isDiscoverable];
+  if (isDiscoverable != [(LNVisibilityMetadata *)v6 isDiscoverable])
   {
 LABEL_7:
     LOBYTE(v9) = 0;
     goto LABEL_8;
   }
 
-  v8 = [(LNVisibilityMetadata *)self assistantOnly];
-  v9 = v8 ^ [(LNVisibilityMetadata *)v6 assistantOnly]^ 1;
+  assistantOnly = [(LNVisibilityMetadata *)self assistantOnly];
+  v9 = assistantOnly ^ [(LNVisibilityMetadata *)v6 assistantOnly]^ 1;
 LABEL_8:
 
 LABEL_10:
@@ -73,25 +73,25 @@ LABEL_10:
   return v8;
 }
 
-- (LNVisibilityMetadata)initWithCoder:(id)a3
+- (LNVisibilityMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"isDiscoverable"];
-  v6 = [v4 decodeBoolForKey:@"assistantOnly"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"isDiscoverable"];
+  v6 = [coderCopy decodeBoolForKey:@"assistantOnly"];
 
   return [(LNVisibilityMetadata *)self initWithIsDiscoverable:v5 assistantOnly:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[LNVisibilityMetadata isDiscoverable](self forKey:{"isDiscoverable"), @"isDiscoverable"}];
-  [v4 encodeBool:-[LNVisibilityMetadata assistantOnly](self forKey:{"assistantOnly"), @"assistantOnly"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[LNVisibilityMetadata isDiscoverable](self forKey:{"isDiscoverable"), @"isDiscoverable"}];
+  [coderCopy encodeBool:-[LNVisibilityMetadata assistantOnly](self forKey:{"assistantOnly"), @"assistantOnly"}];
 }
 
-- (BOOL)visibleForUse:(int64_t)a3
+- (BOOL)visibleForUse:(int64_t)use
 {
-  if (a3 == 1)
+  if (use == 1)
   {
 
     return [(LNVisibilityMetadata *)self isDiscoverable];
@@ -99,7 +99,7 @@ LABEL_10:
 
   else
   {
-    if (!a3)
+    if (!use)
     {
       if ([(LNVisibilityMetadata *)self isDiscoverable])
       {
@@ -116,7 +116,7 @@ LABEL_10:
   }
 }
 
-- (LNVisibilityMetadata)initWithIsDiscoverable:(BOOL)a3 assistantOnly:(BOOL)a4
+- (LNVisibilityMetadata)initWithIsDiscoverable:(BOOL)discoverable assistantOnly:(BOOL)only
 {
   v10.receiver = self;
   v10.super_class = LNVisibilityMetadata;
@@ -124,8 +124,8 @@ LABEL_10:
   v7 = v6;
   if (v6)
   {
-    v6->_isDiscoverable = a3;
-    v6->_assistantOnly = a4;
+    v6->_isDiscoverable = discoverable;
+    v6->_assistantOnly = only;
     v8 = v6;
   }
 

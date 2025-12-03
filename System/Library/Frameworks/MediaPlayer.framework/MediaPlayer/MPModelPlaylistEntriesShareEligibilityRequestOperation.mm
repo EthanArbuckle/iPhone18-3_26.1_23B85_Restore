@@ -7,13 +7,13 @@
 - (void)execute
 {
   v3 = objc_alloc_init(MPModelLibraryRequest);
-  v4 = [(MPAsyncOperation *)self userIdentity];
-  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v4];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
   [(MPModelLibraryRequest *)v3 setMediaLibrary:v5];
 
   v6 = [MPMediaLibraryView alloc];
-  v7 = [(MPModelLibraryRequest *)v3 mediaLibrary];
-  [(MPMediaLibraryView *)v6 initWithLibrary:v7 filteringOptions:[(MPModelLibraryRequest *)v3 filteringOptions]];
+  mediaLibrary = [(MPModelLibraryRequest *)v3 mediaLibrary];
+  [(MPMediaLibraryView *)v6 initWithLibrary:mediaLibrary filteringOptions:[(MPModelLibraryRequest *)v3 filteringOptions]];
 
   v9 = mlcore::PlaylistItemPropertyItemPersistentID(v8);
   v10 = mlcore::ItemPropertySubscriptionStoreItemID(v9);

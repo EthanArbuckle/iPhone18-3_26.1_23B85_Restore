@@ -1,14 +1,14 @@
 @interface RideBookingAppStoreApplicationsOutlineSection
 - (RideBookingOutlineController)parentDataSource;
-- (double)tableView:(id)a3 estimatedHeightForHeaderInSection:(int64_t)a4;
-- (id)cellForItemAtIndexPath:(id)a3;
-- (id)viewForHeaderInSection:(int64_t)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (double)tableView:(id)view estimatedHeightForHeaderInSection:(int64_t)section;
+- (id)cellForItemAtIndexPath:(id)path;
+- (id)viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (void)configureWithRideBookingRideOptionState:(id)a3;
-- (void)didSelectItemAtIndexPath:(id)a3;
-- (void)ridesharingAppLargeIconTableViewCell:(id)a3 didSelectActionButton:(id)a4;
-- (void)ridesharingEnableAllAppsTableViewCellDidPerformEnableCommand:(id)a3;
+- (void)configureWithRideBookingRideOptionState:(id)state;
+- (void)didSelectItemAtIndexPath:(id)path;
+- (void)ridesharingAppLargeIconTableViewCell:(id)cell didSelectActionButton:(id)button;
+- (void)ridesharingEnableAllAppsTableViewCellDidPerformEnableCommand:(id)command;
 @end
 
 @implementation RideBookingAppStoreApplicationsOutlineSection
@@ -20,17 +20,17 @@
   return WeakRetained;
 }
 
-- (void)configureWithRideBookingRideOptionState:(id)a3
+- (void)configureWithRideBookingRideOptionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [v4 rideOptionStatusMap];
-  v6 = [v5 allValues];
+  rideOptionStatusMap = [stateCopy rideOptionStatusMap];
+  allValues = [rideOptionStatusMap allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -44,19 +44,19 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        v13 = [*(*(&v21 + 1) + 8 * v12) application];
-        v14 = [v13 enabled];
+        application = [*(*(&v21 + 1) + 8 * v12) application];
+        enabled = [application enabled];
 
-        v9 += v14 ^ 1;
-        v10 += v14;
+        v9 += enabled ^ 1;
+        v10 += enabled;
         v12 = v12 + 1;
       }
 
       while (v8 != v12);
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -85,90 +85,90 @@
   }
 
   [(RideBookingAppStoreApplicationsOutlineSection *)self setOnlyAppStoreSuggestionsSection:v16];
-  v17 = [v4 appStoreSuggestions];
-  [(RideBookingAppStoreApplicationsOutlineSection *)self setAppStoreSuggestions:v17];
+  appStoreSuggestions = [stateCopy appStoreSuggestions];
+  [(RideBookingAppStoreApplicationsOutlineSection *)self setAppStoreSuggestions:appStoreSuggestions];
 
   BOOL = GEOConfigGetBOOL();
-  LOBYTE(v17) = BOOL;
+  LOBYTE(appStoreSuggestions) = BOOL;
   [(RideBookingAppStoreApplicationsOutlineSection *)self setShouldHideAppStoreSuggestionsSection:v15 & (BOOL ^ 1u)];
-  if (v17)
+  if (appStoreSuggestions)
   {
     [(RideBookingAppStoreApplicationsOutlineSection *)self setShouldShowEnableAppsCell:0];
   }
 
   else
   {
-    v19 = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
-    if ([v19 count])
+    appStoreSuggestions2 = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
+    if ([appStoreSuggestions2 count])
     {
-      v20 = [(RideBookingAppStoreApplicationsOutlineSection *)self onlyAppStoreSuggestionsSection];
+      onlyAppStoreSuggestionsSection = [(RideBookingAppStoreApplicationsOutlineSection *)self onlyAppStoreSuggestionsSection];
     }
 
     else
     {
-      v20 = 0;
+      onlyAppStoreSuggestionsSection = 0;
     }
 
-    [(RideBookingAppStoreApplicationsOutlineSection *)self setShouldShowEnableAppsCell:v20];
+    [(RideBookingAppStoreApplicationsOutlineSection *)self setShouldShowEnableAppsCell:onlyAppStoreSuggestionsSection];
   }
 }
 
-- (void)ridesharingAppLargeIconTableViewCell:(id)a3 didSelectActionButton:(id)a4
+- (void)ridesharingAppLargeIconTableViewCell:(id)cell didSelectActionButton:(id)button
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  buttonCopy = button;
   v8 = +[MKMapService sharedService];
   [v8 captureUserAction:14001 onTarget:304 eventValue:0];
 
-  v9 = [v6 applicationIdentifer];
+  applicationIdentifer = [cellCopy applicationIdentifer];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = sub_100674524;
   v26 = sub_100674534;
   v27 = 0;
-  v10 = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
+  appStoreSuggestions = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_10067453C;
   v19 = &unk_101625570;
-  v11 = v9;
+  v11 = applicationIdentifer;
   v20 = v11;
   v21 = &v22;
-  [v10 enumerateObjectsUsingBlock:&v16];
+  [appStoreSuggestions enumerateObjectsUsingBlock:&v16];
 
   v12 = [(RideBookingAppStoreApplicationsOutlineSection *)self parentDataSource:v16];
-  v13 = [v12 delegate];
-  v14 = [v23[5] identifier];
-  v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v14 integerValue]);
-  [v13 didSelectAppStoreSuggestionWithIdentifier:v15];
+  delegate = [v12 delegate];
+  identifier = [v23[5] identifier];
+  v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [identifier integerValue]);
+  [delegate didSelectAppStoreSuggestionWithIdentifier:v15];
 
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)ridesharingEnableAllAppsTableViewCellDidPerformEnableCommand:(id)a3
+- (void)ridesharingEnableAllAppsTableViewCellDidPerformEnableCommand:(id)command
 {
   GEOConfigSetBOOL();
   [(RideBookingAppStoreApplicationsOutlineSection *)self setShouldShowEnableAppsCell:0];
-  v6 = [(RideBookingAppStoreApplicationsOutlineSection *)self parentDataSource];
-  v4 = [v6 delegate];
-  v5 = [(RideBookingAppStoreApplicationsOutlineSection *)self parentDataSource];
-  [v4 dataSourceRequiresReload:v5];
+  parentDataSource = [(RideBookingAppStoreApplicationsOutlineSection *)self parentDataSource];
+  delegate = [parentDataSource delegate];
+  parentDataSource2 = [(RideBookingAppStoreApplicationsOutlineSection *)self parentDataSource];
+  [delegate dataSourceRequiresReload:parentDataSource2];
 }
 
-- (double)tableView:(id)a3 estimatedHeightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view estimatedHeightForHeaderInSection:(int64_t)section
 {
-  v5 = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions:a3];
+  v5 = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions:view];
   if (![v5 count] || -[RideBookingAppStoreApplicationsOutlineSection shouldHideAppStoreSuggestionsSection](self, "shouldHideAppStoreSuggestionsSection"))
   {
 
     return 0.0;
   }
 
-  v7 = [(RideBookingAppStoreApplicationsOutlineSection *)self onlyAppStoreSuggestionsSection];
+  onlyAppStoreSuggestionsSection = [(RideBookingAppStoreApplicationsOutlineSection *)self onlyAppStoreSuggestionsSection];
 
   result = 10.0;
-  if (v7)
+  if (onlyAppStoreSuggestionsSection)
   {
     return 0.0;
   }
@@ -176,10 +176,10 @@
   return result;
 }
 
-- (id)viewForHeaderInSection:(int64_t)a3
+- (id)viewForHeaderInSection:(int64_t)section
 {
-  v5 = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
-  if (![v5 count] || -[RideBookingAppStoreApplicationsOutlineSection shouldHideAppStoreSuggestionsSection](self, "shouldHideAppStoreSuggestionsSection"))
+  appStoreSuggestions = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
+  if (![appStoreSuggestions count] || -[RideBookingAppStoreApplicationsOutlineSection shouldHideAppStoreSuggestionsSection](self, "shouldHideAppStoreSuggestionsSection"))
   {
     v6 = 0;
 LABEL_4:
@@ -187,18 +187,18 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v8 = [(RideBookingAppStoreApplicationsOutlineSection *)self onlyAppStoreSuggestionsSection];
+  onlyAppStoreSuggestionsSection = [(RideBookingAppStoreApplicationsOutlineSection *)self onlyAppStoreSuggestionsSection];
 
-  if ((v8 & 1) == 0)
+  if ((onlyAppStoreSuggestionsSection & 1) == 0)
   {
     collectionView = self->super._collectionView;
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [NSIndexPath indexPathForItem:0 inSection:a3];
+    v12 = [NSIndexPath indexPathForItem:0 inSection:section];
     v6 = [(UICollectionView *)collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v11 forIndexPath:v12];
 
-    v5 = +[NSBundle mainBundle];
-    v13 = [v5 localizedStringForKey:@"App Store [Ridesharing]" value:@"localized string not found" table:0];
+    appStoreSuggestions = +[NSBundle mainBundle];
+    v13 = [appStoreSuggestions localizedStringForKey:@"App Store [Ridesharing]" value:@"localized string not found" table:0];
     [RidesharingAppSelectionSectionHeaderViewComposer configureHeader:v6 withPrimaryText:v13];
 
     goto LABEL_4;
@@ -210,29 +210,29 @@ LABEL_5:
   return v6;
 }
 
-- (void)didSelectItemAtIndexPath:(id)a3
+- (void)didSelectItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
-  v6 = [v4 row];
+  pathCopy = path;
+  appStoreSuggestions = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
+  v6 = [pathCopy row];
 
-  v11 = [v5 objectAtIndex:v6];
+  v11 = [appStoreSuggestions objectAtIndex:v6];
 
-  v7 = [(RideBookingAppStoreApplicationsOutlineSection *)self parentDataSource];
-  v8 = [v7 delegate];
-  v9 = [v11 identifier];
-  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 integerValue]);
-  [v8 didSelectAppStoreSuggestionWithIdentifier:v10];
+  parentDataSource = [(RideBookingAppStoreApplicationsOutlineSection *)self parentDataSource];
+  delegate = [parentDataSource delegate];
+  identifier = [v11 identifier];
+  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [identifier integerValue]);
+  [delegate didSelectAppStoreSuggestionWithIdentifier:v10];
 }
 
 - (int64_t)numberOfSections
 {
-  v3 = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
-  if ([v3 count])
+  appStoreSuggestions = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
+  if ([appStoreSuggestions count])
   {
-    v4 = [(RideBookingAppStoreApplicationsOutlineSection *)self shouldHideAppStoreSuggestionsSection];
+    shouldHideAppStoreSuggestionsSection = [(RideBookingAppStoreApplicationsOutlineSection *)self shouldHideAppStoreSuggestionsSection];
 
-    return v4 ^ 1;
+    return shouldHideAppStoreSuggestionsSection ^ 1;
   }
 
   else
@@ -242,28 +242,28 @@ LABEL_5:
   }
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
   if ([(RideBookingAppStoreApplicationsOutlineSection *)self shouldShowEnableAppsCell])
   {
     return 1;
   }
 
-  v5 = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
-  v6 = [v5 count];
+  appStoreSuggestions = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
+  v6 = [appStoreSuggestions count];
 
   return v6;
 }
 
-- (id)cellForItemAtIndexPath:(id)a3
+- (id)cellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (-[RideBookingAppStoreApplicationsOutlineSection shouldShowEnableAppsCell](self, "shouldShowEnableAppsCell") && ![v4 row])
+  pathCopy = path;
+  if (-[RideBookingAppStoreApplicationsOutlineSection shouldShowEnableAppsCell](self, "shouldShowEnableAppsCell") && ![pathCopy row])
   {
     collectionView = self->super._collectionView;
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v19 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v18 forIndexPath:v4];
+    v19 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v18 forIndexPath:pathCopy];
 
     [v19 setDelegate:self];
     v23[0] = _NSConcreteStackBlock;
@@ -281,11 +281,11 @@ LABEL_5:
     v5 = self->super._collectionView;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(UICollectionView *)v5 dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v4];
+    v8 = [(UICollectionView *)v5 dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:pathCopy];
 
     [v8 setDelegate:self];
-    v9 = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
-    v10 = [v9 objectAtIndex:{objc_msgSend(v4, "row")}];
+    appStoreSuggestions = [(RideBookingAppStoreApplicationsOutlineSection *)self appStoreSuggestions];
+    v10 = [appStoreSuggestions objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;

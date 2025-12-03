@@ -1,80 +1,80 @@
 @interface PLLibraryRepairSupportRegistration
 + (BOOL)_shouldSuppressPeriodicMaintenanceTasks;
-+ (int64_t)checkLibraryIsReadyForProcessing:(id)a3 libraryBundle:(id *)a4;
-+ (void)_enqueueDrawAssetPersonEdgesOperationWithLSM:(id)a3 library:(id)a4 serverTransaction:(id)a5;
-+ (void)_enqueueSocialGroupAssetContainmentOperationWithLSM:(id)a3 library:(id)a4 serverTransaction:(id)a5;
-+ (void)_enqueueSocialGroupDeduplicationOperationWithLSM:(id)a3 library:(id)a4 serverTransaction:(id)a5;
-+ (void)_reportProgressForTask:(id)a3 repairTaskName:(id)a4 started:(id)a5 stopped:(id)a6 itemCount:(unint64_t)a7;
-+ (void)enqueueOutstandingTransactionCrashRecoveryOperationsIfNecessary:(id)a3;
++ (int64_t)checkLibraryIsReadyForProcessing:(id)processing libraryBundle:(id *)bundle;
++ (void)_enqueueDrawAssetPersonEdgesOperationWithLSM:(id)m library:(id)library serverTransaction:(id)transaction;
++ (void)_enqueueSocialGroupAssetContainmentOperationWithLSM:(id)m library:(id)library serverTransaction:(id)transaction;
++ (void)_enqueueSocialGroupDeduplicationOperationWithLSM:(id)m library:(id)library serverTransaction:(id)transaction;
++ (void)_reportProgressForTask:(id)task repairTaskName:(id)name started:(id)started stopped:(id)stopped itemCount:(unint64_t)count;
++ (void)enqueueOutstandingTransactionCrashRecoveryOperationsIfNecessary:(id)necessary;
 + (void)installPeriodicMaintenanceActivity;
-+ (void)registerTaskHandler:(id)a3 description:(id)a4 executionWithProgressBlock:(id)a5;
++ (void)registerTaskHandler:(id)handler description:(id)description executionWithProgressBlock:(id)block;
 @end
 
 @implementation PLLibraryRepairSupportRegistration
 
-+ (void)_enqueueSocialGroupAssetContainmentOperationWithLSM:(id)a3 library:(id)a4 serverTransaction:(id)a5
++ (void)_enqueueSocialGroupAssetContainmentOperationWithLSM:(id)m library:(id)library serverTransaction:(id)transaction
 {
-  v6 = a5;
+  transactionCopy = transaction;
   v7 = PLLibraryServicesOperationNameCrashRecoverySocialGroupAssetContainment;
-  v8 = a3;
-  v9 = [v8 postRunningProgress];
+  mCopy = m;
+  postRunningProgress = [mCopy postRunningProgress];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000E120;
   v12[3] = &unk_10002D828;
-  v13 = v6;
-  v10 = v6;
-  v11 = [PLLibraryServicesOperation operationWithName:v7 libraryServicesManager:v8 requiredState:7 parentProgress:v9 executionBlock:v12];
+  v13 = transactionCopy;
+  v10 = transactionCopy;
+  v11 = [PLLibraryServicesOperation operationWithName:v7 libraryServicesManager:mCopy requiredState:7 parentProgress:postRunningProgress executionBlock:v12];
 
-  [v8 enqueueOperation:v11 error:0];
+  [mCopy enqueueOperation:v11 error:0];
 }
 
-+ (void)_enqueueDrawAssetPersonEdgesOperationWithLSM:(id)a3 library:(id)a4 serverTransaction:(id)a5
++ (void)_enqueueDrawAssetPersonEdgesOperationWithLSM:(id)m library:(id)library serverTransaction:(id)transaction
 {
-  v7 = a4;
-  v8 = a5;
+  libraryCopy = library;
+  transactionCopy = transaction;
   v9 = PLLibraryServicesOperationNameCrashRecoveryDrawAssetPersonEdges;
-  v10 = a3;
-  v11 = [v10 postRunningProgress];
+  mCopy = m;
+  postRunningProgress = [mCopy postRunningProgress];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_10000E48C;
   v18 = &unk_10002D230;
-  v19 = v7;
-  v20 = v8;
-  v12 = v8;
-  v13 = v7;
-  v14 = [PLLibraryServicesOperation operationWithName:v9 libraryServicesManager:v10 requiredState:7 parentProgress:v11 executionBlock:&v15];
+  v19 = libraryCopy;
+  v20 = transactionCopy;
+  v12 = transactionCopy;
+  v13 = libraryCopy;
+  v14 = [PLLibraryServicesOperation operationWithName:v9 libraryServicesManager:mCopy requiredState:7 parentProgress:postRunningProgress executionBlock:&v15];
 
-  [v10 enqueueOperation:v14 error:{0, v15, v16, v17, v18}];
+  [mCopy enqueueOperation:v14 error:{0, v15, v16, v17, v18}];
 }
 
-+ (void)_enqueueSocialGroupDeduplicationOperationWithLSM:(id)a3 library:(id)a4 serverTransaction:(id)a5
++ (void)_enqueueSocialGroupDeduplicationOperationWithLSM:(id)m library:(id)library serverTransaction:(id)transaction
 {
-  v6 = a5;
+  transactionCopy = transaction;
   v7 = PLLibraryServicesOperationNameCrashRecoverySocialGroupDeduplication;
-  v8 = a3;
-  v9 = [v8 postRunningProgress];
+  mCopy = m;
+  postRunningProgress = [mCopy postRunningProgress];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000E6F8;
   v12[3] = &unk_10002D828;
-  v13 = v6;
-  v10 = v6;
-  v11 = [PLLibraryServicesOperation operationWithName:v7 libraryServicesManager:v8 requiredState:7 parentProgress:v9 executionBlock:v12];
+  v13 = transactionCopy;
+  v10 = transactionCopy;
+  v11 = [PLLibraryServicesOperation operationWithName:v7 libraryServicesManager:mCopy requiredState:7 parentProgress:postRunningProgress executionBlock:v12];
 
-  [v8 enqueueOperation:v11 error:0];
+  [mCopy enqueueOperation:v11 error:0];
 }
 
-+ (void)enqueueOutstandingTransactionCrashRecoveryOperationsIfNecessary:(id)a3
++ (void)enqueueOutstandingTransactionCrashRecoveryOperationsIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [v4 pathManager];
-  v6 = [v4 databaseContext];
-  v7 = [v6 newShortLivedLibraryWithName:"+[PLLibraryRepairSupportRegistration enqueueOutstandingTransactionCrashRecoveryOperationsIfNecessary:]"];
+  necessaryCopy = necessary;
+  pathManager = [necessaryCopy pathManager];
+  databaseContext = [necessaryCopy databaseContext];
+  v7 = [databaseContext newShortLivedLibraryWithName:"+[PLLibraryRepairSupportRegistration enqueueOutstandingTransactionCrashRecoveryOperationsIfNecessary:]"];
 
-  v8 = [v7 globalValues];
-  v9 = [v8 didImportFileSystemAssets];
+  globalValues = [v7 globalValues];
+  didImportFileSystemAssets = [globalValues didImportFileSystemAssets];
 
   v10 = PLClientServerTransactionsGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -87,14 +87,14 @@
   v14[1] = 3221225472;
   v14[2] = sub_10000E9BC;
   v14[3] = &unk_10002D280;
-  v15 = v5;
-  v16 = v4;
-  v19 = v9 ^ 1;
+  v15 = pathManager;
+  v16 = necessaryCopy;
+  v19 = didImportFileSystemAssets ^ 1;
   v17 = v7;
-  v18 = a1;
+  selfCopy = self;
   v11 = v7;
-  v12 = v4;
-  v13 = v5;
+  v12 = necessaryCopy;
+  v13 = pathManager;
   [v12 registerOutstandingTransactionsHandler:v14];
 }
 
@@ -107,7 +107,7 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Registering periodic maintenance task activity", buf, 2u);
   }
 
-  [a1 registerTaskHandler:@"com.apple.assetsd.periodicmaintenance" description:@"MaintenanceTasks: Repair library" executionWithProgressBlock:&stru_10002D198];
+  [self registerTaskHandler:@"com.apple.assetsd.periodicmaintenance" description:@"MaintenanceTasks: Repair library" executionWithProgressBlock:&stru_10002D198];
   v4 = PLBackendGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -115,17 +115,17 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Registering periodic curated library processing activity", v5, 2u);
   }
 
-  [a1 registerTaskHandler:@"com.apple.assetsd.curatedlibraryprocessing" description:@"CuratedLibraryMaintenanceTasks: Repair library" executionWithProgressBlock:&stru_10002D1B8];
+  [self registerTaskHandler:@"com.apple.assetsd.curatedlibraryprocessing" description:@"CuratedLibraryMaintenanceTasks: Repair library" executionWithProgressBlock:&stru_10002D1B8];
   +[PLBackgroundMigrationActivity registerIncompleteBackgroundMigrationActivity];
 }
 
-+ (int64_t)checkLibraryIsReadyForProcessing:(id)a3 libraryBundle:(id *)a4
++ (int64_t)checkLibraryIsReadyForProcessing:(id)processing libraryBundle:(id *)bundle
 {
-  v5 = a3;
+  processingCopy = processing;
   v6 = +[PLLibraryBookmarkManager sharedBookmarkManager];
   v40 = 0;
-  v38 = v5;
-  v7 = [v6 URLFromClientLibraryURL:v5 sandboxExtension:0 error:&v40];
+  v38 = processingCopy;
+  v7 = [v6 URLFromClientLibraryURL:processingCopy sandboxExtension:0 error:&v40];
   v8 = v40;
   if (v7)
   {
@@ -193,8 +193,8 @@
     if (([PLPhotoLibraryPathManager isSystemPhotoLibraryURL:v7]& 1) == 0)
     {
       v16 = [PLModelMigrator alloc];
-      v17 = [(__CFString *)v13 pathManager];
-      v18 = [v16 initWithPathManager:v17];
+      pathManager = [(__CFString *)v13 pathManager];
+      v18 = [v16 initWithPathManager:pathManager];
       v19 = [v18 isPhotoLibraryDatabaseReadyForOpen:0];
 
       if (!v19)
@@ -207,14 +207,14 @@
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Photo library database at %@ is not ready for maintenance tasks", buf, 0xCu);
         }
 
-        v20 = 0;
+        libraryServicesManager = 0;
         v9 = 5;
         goto LABEL_44;
       }
     }
 
-    v20 = [(__CFString *)v13 libraryServicesManager];
-    if (!v20)
+    libraryServicesManager = [(__CFString *)v13 libraryServicesManager];
+    if (!libraryServicesManager)
     {
       v21 = PLBackendGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -224,7 +224,7 @@
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "No libraryServicesManager for library bundle %@", buf, 0xCu);
       }
 
-      v20 = 0;
+      libraryServicesManager = 0;
       v9 = 2;
       goto LABEL_44;
     }
@@ -232,7 +232,7 @@
 
   else
   {
-    v20 = 0;
+    libraryServicesManager = 0;
   }
 
   if (v9 != 6)
@@ -240,8 +240,8 @@
     goto LABEL_45;
   }
 
-  v37 = a4;
-  v22 = [[PLPhotoLibraryOpener alloc] initWithLibraryServicesManager:v20 reportInProgressUpgrades:0];
+  bundleCopy = bundle;
+  v22 = [[PLPhotoLibraryOpener alloc] initWithLibraryServicesManager:libraryServicesManager reportInProgressUpgrades:0];
   v39 = 0;
   v23 = [v22 openPhotoLibraryDatabaseWithAutoUpgrade:0 autoCreate:0 error:&v39];
   v24 = v39;
@@ -287,21 +287,21 @@
 
   if (!v23)
   {
-    a4 = v37;
+    bundle = bundleCopy;
     goto LABEL_45;
   }
 
   v30 = v6;
-  v31 = [(__CFString *)v13 libraryServicesManager];
-  v32 = [v31 cplReadiness];
-  v33 = [v32 isReadyForCloudPhotoLibraryWithStatus:0];
+  libraryServicesManager2 = [(__CFString *)v13 libraryServicesManager];
+  cplReadiness = [libraryServicesManager2 cplReadiness];
+  v33 = [cplReadiness isReadyForCloudPhotoLibraryWithStatus:0];
 
   if (v33)
   {
     v9 = 6;
     v6 = v30;
     v8 = v36;
-    a4 = v37;
+    bundle = bundleCopy;
     goto LABEL_45;
   }
 
@@ -316,40 +316,40 @@
 
   v9 = 3;
   v8 = v36;
-  a4 = v37;
+  bundle = bundleCopy;
 LABEL_44:
 
 LABEL_45:
-  if (a4)
+  if (bundle)
   {
     v34 = v13;
-    *a4 = v13;
+    *bundle = v13;
   }
 
   return v9;
 }
 
-+ (void)_reportProgressForTask:(id)a3 repairTaskName:(id)a4 started:(id)a5 stopped:(id)a6 itemCount:(unint64_t)a7
++ (void)_reportProgressForTask:(id)task repairTaskName:(id)name started:(id)started stopped:(id)stopped itemCount:(unint64_t)count
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a4;
-  v15 = [v11 identifier];
-  v16 = [NSString stringWithFormat:@"%@.%@", v15, v14];
+  taskCopy = task;
+  startedCopy = started;
+  stoppedCopy = stopped;
+  nameCopy = name;
+  identifier = [taskCopy identifier];
+  nameCopy = [NSString stringWithFormat:@"%@.%@", identifier, nameCopy];
 
   v17 = [BGSystemTaskThroughputMetrics alloc];
   v18 = [NSNumber numberWithUnsignedInt:qos_class_self()];
-  v19 = [v17 initWithIdentifier:v16 qos:v18 workloadCategory:10 expectedMetricValue:0];
+  v19 = [v17 initWithIdentifier:nameCopy qos:v18 workloadCategory:10 expectedMetricValue:0];
 
   v30 = 0;
-  LOBYTE(v18) = [v11 registerThroughputTrackingFor:v19 withStartTime:v12 error:&v30];
+  LOBYTE(v18) = [taskCopy registerThroughputTrackingFor:v19 withStartTime:startedCopy error:&v30];
   v20 = v30;
   if (v18)
   {
-    [v19 addItemCount:a7];
+    [v19 addItemCount:count];
     v29 = v20;
-    v21 = [v11 deregisterThroughputTrackingFor:v19 withEndTime:v13 error:&v29];
+    v21 = [taskCopy deregisterThroughputTrackingFor:v19 withEndTime:stoppedCopy error:&v29];
     v22 = v29;
 
     v23 = PLBackendGetLog();
@@ -359,13 +359,13 @@ LABEL_45:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138413058;
-        v32 = v16;
+        v32 = nameCopy;
         v33 = 2112;
-        v34 = v12;
+        v34 = startedCopy;
         v35 = 2112;
-        v36 = v13;
+        v36 = stoppedCopy;
         v37 = 2048;
-        v38 = a7;
+        countCopy = count;
         v25 = "Finished task '%@' work, from: %@, to: %@, itemCount: %lu";
         v26 = v24;
         v27 = OS_LOG_TYPE_DEBUG;
@@ -378,7 +378,7 @@ LABEL_9:
     else if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v32 = v16;
+      v32 = nameCopy;
       v33 = 2112;
       v34 = v22;
       v25 = "Couldn't deregister metrics for '%@': %@";
@@ -396,7 +396,7 @@ LABEL_9:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v32 = v16;
+    v32 = nameCopy;
     v33 = 2112;
     v34 = v20;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "'%@': %@, Can't register throughput tracking", buf, 0x16u);
@@ -405,22 +405,22 @@ LABEL_9:
 LABEL_11:
 }
 
-+ (void)registerTaskHandler:(id)a3 description:(id)a4 executionWithProgressBlock:(id)a5
++ (void)registerTaskHandler:(id)handler description:(id)description executionWithProgressBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  descriptionCopy = description;
+  blockCopy = block;
+  handlerCopy = handler;
   v11 = +[BGSystemTaskScheduler sharedScheduler];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100010538;
   v14[3] = &unk_10002D158;
-  v16 = v9;
-  v17 = a1;
-  v15 = v8;
-  v12 = v9;
-  v13 = v8;
-  [v11 registerForTaskWithIdentifier:v10 usingQueue:0 launchHandler:v14];
+  v16 = blockCopy;
+  selfCopy = self;
+  v15 = descriptionCopy;
+  v12 = blockCopy;
+  v13 = descriptionCopy;
+  [v11 registerForTaskWithIdentifier:handlerCopy usingQueue:0 launchHandler:v14];
 }
 
 + (BOOL)_shouldSuppressPeriodicMaintenanceTasks

@@ -1,14 +1,14 @@
 @interface ManagedBurnBarDisplayPreference
-- (ManagedBurnBarDisplayPreference)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedBurnBarDisplayPreference)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedBurnBarDisplayPreference
 
-- (ManagedBurnBarDisplayPreference)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedBurnBarDisplayPreference)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedBurnBarDisplayPreference();
-  return [(ManagedBurnBarDisplayPreference *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedBurnBarDisplayPreference *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface ComAppleProactiveLuceneJContextJapaneseAnalyzer
-- (id)createComponentsWithNSString:(id)a3;
+- (id)createComponentsWithNSString:(id)string;
 @end
 
 @implementation ComAppleProactiveLuceneJContextJapaneseAnalyzer
 
-- (id)createComponentsWithNSString:(id)a3
+- (id)createComponentsWithNSString:(id)string
 {
   v3 = [ComAppleProactiveLuceneJContextJapaneseAnalyzer_CRFJapaneseTokenizer alloc];
   ComAppleProactiveLuceneCRFTokenizer_init(v3);

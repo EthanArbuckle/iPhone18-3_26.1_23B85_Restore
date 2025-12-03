@@ -1,39 +1,39 @@
 @interface ServiceDelegate
-- (BOOL)allowXPCConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)allowXPCConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)allowXPCConnection:(id)a3
+- (BOOL)allowXPCConnection:(id)connection
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = 0;
+  objc_storeStrong(location, connection);
+  bOOLValue = 0;
   v6 = @"com.apple.wifi.cloudasset-access";
   if (v6)
   {
     v5 = [location[0] valueForEntitlement:v6];
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
-  v4 = v7;
+  v4 = bOOLValue;
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   return v4 & 1;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v8 = [(ServiceDelegate *)v11 allowXPCConnection:v9];
+  objc_storeStrong(&v9, connection);
+  v8 = [(ServiceDelegate *)selfCopy allowXPCConnection:v9];
   if (v8)
   {
     v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___WiFiCloudAssetsXPCServiceProtocol];

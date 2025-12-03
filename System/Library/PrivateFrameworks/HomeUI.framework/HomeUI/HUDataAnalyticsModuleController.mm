@@ -1,81 +1,81 @@
 @interface HUDataAnalyticsModuleController
-- (BOOL)canSelectItem:(id)a3;
-- (HUDataAnalyticsModuleController)initWithModule:(id)a3;
+- (BOOL)canSelectItem:(id)item;
+- (HUDataAnalyticsModuleController)initWithModule:(id)module;
 - (HUDataAnalyticsModuleControllerDelegate)dataAnalyticsModuleControllerDelegate;
 - (id)module;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
+- (unint64_t)didSelectItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
 @end
 
 @implementation HUDataAnalyticsModuleController
 
-- (HUDataAnalyticsModuleController)initWithModule:(id)a3
+- (HUDataAnalyticsModuleController)initWithModule:(id)module
 {
   v4.receiver = self;
   v4.super_class = HUDataAnalyticsModuleController;
-  return [(HUItemModuleController *)&v4 initWithModule:a3];
+  return [(HUItemModuleController *)&v4 initWithModule:module];
 }
 
 - (id)module
 {
   v4.receiver = self;
   v4.super_class = HUDataAnalyticsModuleController;
-  v2 = [(HUItemModuleController *)&v4 module];
+  module = [(HUItemModuleController *)&v4 module];
 
-  return v2;
+  return module;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v14 = a3;
-  v5 = a4;
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v8 = [v14 textLabel];
-  [v8 setText:v7];
+  cellCopy = cell;
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:v7];
 
-  [v14 setAccessoryType:1];
-  v9 = [v5 latestResults];
+  [cellCopy setAccessoryType:1];
+  latestResults2 = [itemCopy latestResults];
 
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-  v11 = [v10 BOOLValue];
-  if (v11)
+  v10 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+  bOOLValue = [v10 BOOLValue];
+  if (bOOLValue)
   {
-    v12 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
   }
 
   else
   {
-    v12 = 0;
+    systemGrayColor = 0;
   }
 
-  v13 = [v14 textLabel];
-  [v13 setTextColor:v12];
+  textLabel2 = [cellCopy textLabel];
+  [textLabel2 setTextColor:systemGrayColor];
 
-  if (v11)
+  if (bOOLValue)
   {
   }
 }
 
-- (BOOL)canSelectItem:(id)a3
+- (BOOL)canSelectItem:(id)item
 {
-  v3 = [a3 latestResults];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-  v5 = [v4 BOOLValue];
+  latestResults = [item latestResults];
+  v4 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUDataAnalyticsModuleController *)self dataAnalyticsModuleControllerDelegate];
+  itemCopy = item;
+  dataAnalyticsModuleControllerDelegate = [(HUDataAnalyticsModuleController *)self dataAnalyticsModuleControllerDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(HUDataAnalyticsModuleController *)self dataAnalyticsModuleControllerDelegate];
-    [v7 dataAnalyticsModuleController:self didSelectItem:v4];
+    dataAnalyticsModuleControllerDelegate2 = [(HUDataAnalyticsModuleController *)self dataAnalyticsModuleControllerDelegate];
+    [dataAnalyticsModuleControllerDelegate2 dataAnalyticsModuleController:self didSelectItem:itemCopy];
   }
 
   return 0;

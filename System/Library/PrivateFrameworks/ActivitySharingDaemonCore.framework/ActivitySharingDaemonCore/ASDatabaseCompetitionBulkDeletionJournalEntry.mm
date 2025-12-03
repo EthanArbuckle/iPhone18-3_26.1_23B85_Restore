@@ -1,29 +1,29 @@
 @interface ASDatabaseCompetitionBulkDeletionJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
 @end
 
 @implementation ASDatabaseCompetitionBulkDeletionJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 database];
+  entriesCopy = entries;
+  profileCopy = profile;
+  database = [profileCopy database];
   v17 = 0;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__ASDatabaseCompetitionBulkDeletionJournalEntry_applyEntries_withProfile___block_invoke;
   v15[3] = &unk_278C4BF90;
-  v16 = v6;
+  v16 = profileCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__ASDatabaseCompetitionBulkDeletionJournalEntry_applyEntries_withProfile___block_invoke_2;
   v12[3] = &unk_278C4BF40;
   v8 = v16;
   v13 = v8;
-  v9 = v5;
+  v9 = entriesCopy;
   v14 = v9;
-  v10 = [(HDHealthEntity *)ASDatabaseCompetitionEntity performWriteTransactionWithHealthDatabase:v7 error:&v17 block:v15 inaccessibilityHandler:v12];
+  v10 = [(HDHealthEntity *)ASDatabaseCompetitionEntity performWriteTransactionWithHealthDatabase:database error:&v17 block:v15 inaccessibilityHandler:v12];
   v11 = v17;
 
   if (!v10)

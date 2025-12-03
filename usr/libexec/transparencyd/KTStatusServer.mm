@@ -1,96 +1,96 @@
 @interface KTStatusServer
-+ (id)auditorReportForKTRequest:(id)a3;
-+ (id)auditorReportForKTSMT:(id)a3;
-+ (id)auditorReportForSTH:(id)a3;
-+ (void)auditorReportsForFailedEvents:(id)a3 dataStore:(id)a4 completionBlock:(id)a5;
++ (id)auditorReportForKTRequest:(id)request;
++ (id)auditorReportForKTSMT:(id)t;
++ (id)auditorReportForSTH:(id)h;
++ (void)auditorReportsForFailedEvents:(id)events dataStore:(id)store completionBlock:(id)block;
 @end
 
 @implementation KTStatusServer
 
-+ (id)auditorReportForKTRequest:(id)a3
++ (id)auditorReportForKTRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 type];
-  if (v5 <= 2)
+  type = [requestCopy type];
+  if (type <= 2)
   {
-    [v4 setObject:**(&off_10032A1F8 + v5) forKeyedSubscript:kTransparencyAuditorReportType];
+    [v4 setObject:**(&off_10032A1F8 + type) forKeyedSubscript:kTransparencyAuditorReportType];
   }
 
-  v6 = [v3 uri];
+  v6 = [requestCopy uri];
   [v4 setObject:v6 forKeyedSubscript:kTransparencyAuditorReportURI];
 
-  v7 = [v3 accountKey];
-  v8 = [v7 base64EncodedStringWithOptions:0];
+  accountKey = [requestCopy accountKey];
+  v8 = [accountKey base64EncodedStringWithOptions:0];
   [v4 setObject:v8 forKeyedSubscript:kTransparencyAuditorReportAccountKey];
 
-  v9 = [v3 application];
-  [v4 setObject:v9 forKeyedSubscript:kTransparencyAuditorReportApplication];
+  application = [requestCopy application];
+  [v4 setObject:application forKeyedSubscript:kTransparencyAuditorReportApplication];
 
-  [v3 requestTime];
+  [requestCopy requestTime];
   v10 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
   [v10 timeIntervalSince1970];
   v11 = [NSNumber numberWithDouble:?];
   [v4 setObject:v11 forKeyedSubscript:kTransparencyAuditorReportRequestTime];
 
-  v12 = [v3 serverLoggableDatas];
-  v13 = [v12 base64EncodedStringWithOptions:0];
+  serverLoggableDatas = [requestCopy serverLoggableDatas];
+  v13 = [serverLoggableDatas base64EncodedStringWithOptions:0];
   [v4 setObject:v13 forKeyedSubscript:kTransparencyAuditorReportServerLoggableDatas];
 
-  v14 = [v3 clientLoggableDatas];
+  clientLoggableDatas = [requestCopy clientLoggableDatas];
 
-  if (v14)
+  if (clientLoggableDatas)
   {
-    v15 = [v3 clientLoggableDatas];
-    v16 = [v15 base64EncodedStringWithOptions:0];
+    clientLoggableDatas2 = [requestCopy clientLoggableDatas];
+    v16 = [clientLoggableDatas2 base64EncodedStringWithOptions:0];
     [v4 setObject:v16 forKeyedSubscript:kTransparencyAuditorReportTrustedLoggableDatas];
   }
 
-  v17 = [v3 serverHint];
+  serverHint = [requestCopy serverHint];
 
-  if (v17)
+  if (serverHint)
   {
-    v18 = [v3 serverHint];
-    [v4 setObject:v18 forKeyedSubscript:kTransparencyAuditorReportServerHint];
+    serverHint2 = [requestCopy serverHint];
+    [v4 setObject:serverHint2 forKeyedSubscript:kTransparencyAuditorReportServerHint];
   }
 
-  if ([v3 usedReversePush])
+  if ([requestCopy usedReversePush])
   {
     [v4 setObject:&off_10033D050 forKeyedSubscript:kTransparencyAuditorReportUsedReversePush];
   }
 
-  v19 = [v3 queryRequest];
+  queryRequest = [requestCopy queryRequest];
 
-  if (v19)
+  if (queryRequest)
   {
-    v20 = [v3 queryRequest];
-    v21 = [v20 base64EncodedStringWithOptions:0];
+    queryRequest2 = [requestCopy queryRequest];
+    v21 = [queryRequest2 base64EncodedStringWithOptions:0];
     [v4 setObject:v21 forKeyedSubscript:kTransparencyAuditorReportQueryRequest];
   }
 
-  v22 = [v3 queryResponse];
+  queryResponse = [requestCopy queryResponse];
 
-  if (v22)
+  if (queryResponse)
   {
-    v23 = [v3 queryResponse];
-    v24 = [v23 base64EncodedStringWithOptions:0];
+    queryResponse2 = [requestCopy queryResponse];
+    v24 = [queryResponse2 base64EncodedStringWithOptions:0];
     [v4 setObject:v24 forKeyedSubscript:kTransparencyAuditorReportQueryResponse];
   }
 
-  v25 = [v3 responseTime];
+  responseTime = [requestCopy responseTime];
 
-  if (v25)
+  if (responseTime)
   {
-    v26 = [v3 responseTime];
-    [v26 timeIntervalSince1970];
+    responseTime2 = [requestCopy responseTime];
+    [responseTime2 timeIntervalSince1970];
     v27 = [NSNumber numberWithDouble:?];
     [v4 setObject:v27 forKeyedSubscript:kTransparencyAuditorReportResponseTime];
   }
 
-  if ([v3 type] == 1)
+  if ([requestCopy type] == 1)
   {
-    v28 = [v3 application];
-    v29 = [KTAccountKeyServer sharedKeyServiceForApplication:v28];
+    application2 = [requestCopy application];
+    v29 = [KTAccountKeyServer sharedKeyServiceForApplication:application2];
 
     if (v29)
     {
@@ -116,57 +116,57 @@
   return v4;
 }
 
-+ (id)auditorReportForKTSMT:(id)a3
++ (id)auditorReportForKTSMT:(id)t
 {
-  v3 = a3;
+  tCopy = t;
   v4 = +[NSMutableDictionary dictionary];
   [v4 setObject:kTransparencyAuditorReportTypeSMT forKeyedSubscript:kTransparencyAuditorReportType];
-  v5 = [v3 uri];
+  v5 = [tCopy uri];
   [v4 setObject:v5 forKeyedSubscript:kTransparencyAuditorReportURI];
 
-  v6 = [v3 application];
-  [v4 setObject:v6 forKeyedSubscript:kTransparencyAuditorReportApplication];
+  application = [tCopy application];
+  [v4 setObject:application forKeyedSubscript:kTransparencyAuditorReportApplication];
 
-  v7 = [v3 receiptTime];
-  [v7 timeIntervalSince1970];
+  receiptTime = [tCopy receiptTime];
+  [receiptTime timeIntervalSince1970];
   v8 = [NSNumber numberWithDouble:?];
   [v4 setObject:v8 forKeyedSubscript:kTransparencyAuditorReportRequestTime];
 
-  v9 = [v3 smt];
+  v9 = [tCopy smt];
   v10 = [v9 base64EncodedStringWithOptions:0];
   [v4 setObject:v10 forKeyedSubscript:kTransparencyAuditorReportSMT];
 
-  if ([v3 signatureResult] != 1)
+  if ([tCopy signatureResult] != 1)
   {
     [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:kTransparencyAuditorReportSignatureFailed];
   }
 
-  if ([v3 mergeResult] != 1)
+  if ([tCopy mergeResult] != 1)
   {
     [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:kTransparencyAuditorReportMMDFailed];
   }
 
-  v11 = [v3 failureEvent];
+  failureEvent = [tCopy failureEvent];
 
-  if (v11)
+  if (failureEvent)
   {
-    v12 = [v3 failureEvent];
-    v13 = [v12 encodedError];
-    v14 = [v13 base64EncodedStringWithOptions:0];
+    failureEvent2 = [tCopy failureEvent];
+    encodedError = [failureEvent2 encodedError];
+    v14 = [encodedError base64EncodedStringWithOptions:0];
     [v4 setObject:v14 forKeyedSubscript:kTransparencyAuditorReportNSError];
   }
 
   return v4;
 }
 
-+ (id)auditorReportForSTH:(id)a3
++ (id)auditorReportForSTH:(id)h
 {
-  v3 = a3;
+  hCopy = h;
   v4 = +[NSMutableDictionary dictionary];
-  if ([v3 isMapHead])
+  if ([hCopy isMapHead])
   {
     [v4 setObject:kTransparencyAuditorReportTypeSMH forKeyedSubscript:kTransparencyAuditorReportType];
-    v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 populating]);
+    v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [hCopy populating]);
     [v4 setObject:v5 forKeyedSubscript:kTransparencyAuditorReportMapPopulating];
   }
 
@@ -175,66 +175,66 @@
     [v4 setObject:kTransparencyAuditorReportTypeSLH forKeyedSubscript:kTransparencyAuditorReportType];
   }
 
-  v6 = [v3 application];
-  [v4 setObject:v6 forKeyedSubscript:kTransparencyAuditorReportApplication];
+  application = [hCopy application];
+  [v4 setObject:application forKeyedSubscript:kTransparencyAuditorReportApplication];
 
-  [v3 receiptTime];
+  [hCopy receiptTime];
   v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
   [v7 timeIntervalSince1970];
   v8 = [NSNumber numberWithDouble:?];
   [v4 setObject:v8 forKeyedSubscript:kTransparencyAuditorReportRequestTime];
 
-  v9 = [v3 sth];
+  v9 = [hCopy sth];
   v10 = [v9 base64EncodedStringWithOptions:0];
   [v4 setObject:v10 forKeyedSubscript:kTransparencyAuditorReportSTH];
 
-  v11 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v3 gossip]);
+  v11 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [hCopy gossip]);
   [v4 setObject:v11 forKeyedSubscript:kTransparencyAuditorReportGossip];
 
-  v12 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v3 logBeginTime]);
+  v12 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [hCopy logBeginTime]);
   [v4 setObject:v12 forKeyedSubscript:kTransparencyAuditorReportTreeEpoch];
 
-  v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v3 revision]);
+  v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [hCopy revision]);
   [v4 setObject:v13 forKeyedSubscript:kTransparencyAuditorReportRevision];
 
-  if ([v3 signatureVerified] != 1)
+  if ([hCopy signatureVerified] != 1)
   {
     [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:kTransparencyAuditorReportSignatureFailed];
   }
 
-  if ([v3 inclusionVerified] != 1)
+  if ([hCopy inclusionVerified] != 1)
   {
     [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:kTransparencyAuditorReportInclusionFailed];
   }
 
-  if ([v3 consistencyVerified] != 1)
+  if ([hCopy consistencyVerified] != 1)
   {
     [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:kTransparencyAuditorReportConsistencyFailed];
   }
 
-  if ([v3 mmdVerified] != 1)
+  if ([hCopy mmdVerified] != 1)
   {
     [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:kTransparencyAuditorReportMMDFailed];
   }
 
-  v14 = [v3 failureEvent];
+  failureEvent = [hCopy failureEvent];
 
-  if (v14)
+  if (failureEvent)
   {
-    v15 = [v3 failureEvent];
-    v16 = [v15 encodedError];
-    v17 = [v16 base64EncodedStringWithOptions:0];
+    failureEvent2 = [hCopy failureEvent];
+    encodedError = [failureEvent2 encodedError];
+    v17 = [encodedError base64EncodedStringWithOptions:0];
     [v4 setObject:v17 forKeyedSubscript:kTransparencyAuditorReportNSError];
   }
 
   return v4;
 }
 
-+ (void)auditorReportsForFailedEvents:(id)a3 dataStore:(id)a4 completionBlock:(id)a5
++ (void)auditorReportsForFailedEvents:(id)events dataStore:(id)store completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v24 = a5;
+  eventsCopy = events;
+  storeCopy = store;
+  blockCopy = block;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -246,7 +246,7 @@
   v36 = 0u;
   v34 = 0u;
   v33 = 0u;
-  obj = v7;
+  obj = eventsCopy;
   v10 = [obj countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v10)
   {
@@ -270,7 +270,7 @@
         v30[4] = v13;
         v15 = v9;
         v31 = v15;
-        v16 = [v8 performAndWaitForRequestId:v13 error:&v32 block:v30];
+        v16 = [storeCopy performAndWaitForRequestId:v13 error:&v32 block:v30];
         objc_storeStrong(v14, v32);
         if ((v16 & 1) == 0)
         {
@@ -284,7 +284,7 @@
           v29 = v17;
           v26[4] = v13;
           v27 = v15;
-          v19 = [v8 performAndWaitForFailedEventId:v13 error:&v29 block:v26];
+          v19 = [storeCopy performAndWaitForFailedEventId:v13 error:&v29 block:v26];
           objc_storeStrong(v18, v29);
 
           if ((v19 & 1) == 0)
@@ -317,7 +317,7 @@ LABEL_12:
   {
     if (v38[5])
     {
-      v24[2](v24, 0);
+      blockCopy[2](blockCopy, 0);
       goto LABEL_17;
     }
 
@@ -329,7 +329,7 @@ LABEL_12:
     v20 = v38[5];
   }
 
-  (v24[2])(v24, v21, v20);
+  (blockCopy[2])(blockCopy, v21, v20);
 LABEL_17:
 
   _Block_object_dispose(&v37, 8);

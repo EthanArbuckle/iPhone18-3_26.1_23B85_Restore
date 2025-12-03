@@ -6,9 +6,9 @@
 
 + (void)_sf_postPerSitePreferencesDidChangeDistributedNotification
 {
-  v2 = [a1 defaultCenter];
+  defaultCenter = [self defaultCenter];
   v1 = processIdentifierString();
-  [v2 postNotificationName:@"com.apple.mobilesafari.PerSitePreferenceDidChange" object:v1];
+  [defaultCenter postNotificationName:@"com.apple.mobilesafari.PerSitePreferenceDidChange" object:v1];
 }
 
 @end

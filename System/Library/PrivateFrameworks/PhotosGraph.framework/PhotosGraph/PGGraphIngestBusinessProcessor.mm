@@ -1,22 +1,22 @@
 @interface PGGraphIngestBusinessProcessor
 + (id)_spatialMapCategoriesByMeaningIdentifier;
-- (BOOL)_momentNode:(id)a3 hasValidConstraintsForLocationOfInterestVisit:(id)a4 requiredCriteriaByPOIIdentifier:(id)a5 meaningfulEventProcessorCache:(id)a6;
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestBusinessProcessor)initWithGraphBuilder:(id)a3;
-- (id)_businessItemContainersToEnrichForLowConfidenceDisambiguation:(id)a3 requiredCriteriaByPOIIdentifier:(id)a4 meaningfulEventProcessorCache:(id)a5;
-- (id)_predominantVisitForMomentNode:(id)a3 publicEventBusinessItemMuid:(unint64_t)a4;
-- (id)requiredCriteriaByPOIIdentifierForGraph:(id)a3;
-- (void)_insertBusinessItemsForMomentNodesToResolvedBusinessItems:(id)a3 graph:(id)a4 progressBlock:(id)a5;
-- (void)_insertBusinessItemsFromMomentNodes:(id)a3 graph:(id)a4 withLocationOfInterestVisitsToResolveByMomentUUID:(id)a5 requiredCriteriaByPOIIdentifier:(id)a6 progressBlock:(id)a7;
-- (void)deleteBusinessCategoryNodesWithNoEdges:(id)a3;
-- (void)deleteBusinessEdgesWithMomentNodes:(id)a3 inGraph:(id)a4;
-- (void)deleteBusinessNodesWithNoInEdgesInGraph:(id)a3;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)_momentNode:(id)node hasValidConstraintsForLocationOfInterestVisit:(id)visit requiredCriteriaByPOIIdentifier:(id)identifier meaningfulEventProcessorCache:(id)cache;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestBusinessProcessor)initWithGraphBuilder:(id)builder;
+- (id)_businessItemContainersToEnrichForLowConfidenceDisambiguation:(id)disambiguation requiredCriteriaByPOIIdentifier:(id)identifier meaningfulEventProcessorCache:(id)cache;
+- (id)_predominantVisitForMomentNode:(id)node publicEventBusinessItemMuid:(unint64_t)muid;
+- (id)requiredCriteriaByPOIIdentifierForGraph:(id)graph;
+- (void)_insertBusinessItemsForMomentNodesToResolvedBusinessItems:(id)items graph:(id)graph progressBlock:(id)block;
+- (void)_insertBusinessItemsFromMomentNodes:(id)nodes graph:(id)graph withLocationOfInterestVisitsToResolveByMomentUUID:(id)d requiredCriteriaByPOIIdentifier:(id)identifier progressBlock:(id)block;
+- (void)deleteBusinessCategoryNodesWithNoEdges:(id)edges;
+- (void)deleteBusinessEdgesWithMomentNodes:(id)nodes inGraph:(id)graph;
+- (void)deleteBusinessNodesWithNoInEdgesInGraph:(id)graph;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestBusinessProcessor
 
-- (id)requiredCriteriaByPOIIdentifierForGraph:(id)a3
+- (id)requiredCriteriaByPOIIdentifierForGraph:(id)graph
 {
   v15[10] = *MEMORY[0x277D85DE8];
   v15[0] = @"Performance";
@@ -30,10 +30,10 @@
   v15[8] = @"Museum";
   v15[9] = @"Concert";
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  graphCopy = graph;
   v6 = [v4 arrayWithObjects:v15 count:10];
-  v7 = [(PGGraphBuilder *)self->_graphBuilder sceneTaxonomy];
-  v8 = [PGMeaningfulEventRequiredCriteriaFactory requiredCriteriaForIdentifiers:v6 inferenceType:0 graph:v5 sceneTaxonomy:v7];
+  sceneTaxonomy = [(PGGraphBuilder *)self->_graphBuilder sceneTaxonomy];
+  v8 = [PGMeaningfulEventRequiredCriteriaFactory requiredCriteriaForIdentifiers:v6 inferenceType:0 graph:graphCopy sceneTaxonomy:sceneTaxonomy];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v13[0] = MEMORY[0x277D85DD0];
@@ -126,9 +126,9 @@ void __74__PGGraphIngestBusinessProcessor_requiredCriteriaByPOIIdentifierForGrap
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_predominantVisitForMomentNode:(id)a3 publicEventBusinessItemMuid:(unint64_t)a4
+- (id)_predominantVisitForMomentNode:(id)node publicEventBusinessItemMuid:(unint64_t)muid
 {
-  v6 = a3;
+  nodeCopy = node;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -149,21 +149,21 @@ void __74__PGGraphIngestBusinessProcessor_requiredCriteriaByPOIIdentifierForGrap
   v26[1] = v26;
   v26[2] = 0x2020000000;
   v26[3] = 0;
-  v7 = *MEMORY[0x277D27628] != a4;
-  v8 = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
-  if (!v8)
+  v7 = *MEMORY[0x277D27628] != muid;
+  serviceManager = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
+  if (!serviceManager)
   {
     __assert_rtn("[PGGraphIngestBusinessProcessor _predominantVisitForMomentNode:publicEventBusinessItemMuid:]", "PGGraphIngestBusinessProcessor.m", 577, "serviceManager != nil");
   }
 
-  v9 = [v6 universalStartDate];
-  v10 = [v6 universalEndDate];
-  v11 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 endDate:v10];
+  universalStartDate = [nodeCopy universalStartDate];
+  universalEndDate = [nodeCopy universalEndDate];
+  v11 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:universalStartDate endDate:universalEndDate];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __93__PGGraphIngestBusinessProcessor__predominantVisitForMomentNode_publicEventBusinessItemMuid___block_invoke;
   v17[3] = &unk_2788807B8;
-  v12 = v8;
+  v12 = serviceManager;
   v18 = v12;
   v13 = v11;
   v19 = v13;
@@ -172,8 +172,8 @@ void __74__PGGraphIngestBusinessProcessor_requiredCriteriaByPOIIdentifierForGrap
   v21 = v33;
   v22 = &v27;
   v23 = v26;
-  v24 = a4;
-  [v6 enumeratePreciseAddressNodesUsingBlock:v17];
+  muidCopy = muid;
+  [nodeCopy enumeratePreciseAddressNodesUsingBlock:v17];
   v14 = v28[5];
   if (!v14)
   {
@@ -273,11 +273,11 @@ LABEL_20:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_businessItemContainersToEnrichForLowConfidenceDisambiguation:(id)a3 requiredCriteriaByPOIIdentifier:(id)a4 meaningfulEventProcessorCache:(id)a5
+- (id)_businessItemContainersToEnrichForLowConfidenceDisambiguation:(id)disambiguation requiredCriteriaByPOIIdentifier:(id)identifier meaningfulEventProcessorCache:(id)cache
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  disambiguationCopy = disambiguation;
+  identifierCopy = identifier;
+  cacheCopy = cache;
   v11 = [MEMORY[0x277CBEB58] set];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -285,8 +285,8 @@ LABEL_20:
   v42[3] = &unk_2788875D0;
   v12 = v11;
   v43 = v12;
-  [v8 enumeratePOINodesUsingBlock:v42];
-  v13 = [v8 name];
+  [disambiguationCopy enumeratePOINodesUsingBlock:v42];
+  name = [disambiguationCopy name];
   if (PGIsAppleInternal_onceToken != -1)
   {
     dispatch_once(&PGIsAppleInternal_onceToken, &__block_literal_global_8316);
@@ -295,18 +295,18 @@ LABEL_20:
   v14 = PGIsAppleInternal_isAppleInternal;
   if ([v12 count])
   {
-    v26 = v10;
-    v27 = v9;
+    v26 = cacheCopy;
+    v27 = identifierCopy;
     v15 = [MEMORY[0x277CBEB58] set];
-    v16 = [(PGGraphBuilder *)self->_graphBuilder poiCache];
-    v17 = [objc_opt_class() _spatialMapCategoriesByMeaningIdentifier];
+    poiCache = [(PGGraphBuilder *)self->_graphBuilder poiCache];
+    _spatialMapCategoriesByMeaningIdentifier = [objc_opt_class() _spatialMapCategoriesByMeaningIdentifier];
     v40[0] = 0;
     v40[1] = v40;
     v40[2] = 0x3032000000;
     v40[3] = __Block_byref_object_copy__15654;
     v40[4] = __Block_byref_object_dispose__15655;
     v41 = 0;
-    v18 = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
+    serviceManager = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __158__PGGraphIngestBusinessProcessor__businessItemContainersToEnrichForLowConfidenceDisambiguation_requiredCriteriaByPOIIdentifier_meaningfulEventProcessorCache___block_invoke_2;
@@ -314,25 +314,25 @@ LABEL_20:
     v29 = v12;
     v30 = v27;
     v38 = v40;
-    v31 = v8;
-    v32 = v10;
-    v19 = v18;
+    v31 = disambiguationCopy;
+    v32 = cacheCopy;
+    v19 = serviceManager;
     v33 = v19;
-    v20 = v17;
+    v20 = _spatialMapCategoriesByMeaningIdentifier;
     v34 = v20;
-    v21 = v16;
+    v21 = poiCache;
     v35 = v21;
     v22 = v15;
     v36 = v22;
     v39 = v14;
-    v37 = v13;
+    v37 = name;
     [v31 enumerateConsolidatedAddressesUsingBlock:v28];
     v23 = v37;
     v24 = v22;
 
     _Block_object_dispose(v40, 8);
-    v10 = v26;
-    v9 = v27;
+    cacheCopy = v26;
+    identifierCopy = v27;
   }
 
   else
@@ -591,28 +591,28 @@ uint64_t __158__PGGraphIngestBusinessProcessor__businessItemContainersToEnrichFo
   return v15;
 }
 
-- (BOOL)_momentNode:(id)a3 hasValidConstraintsForLocationOfInterestVisit:(id)a4 requiredCriteriaByPOIIdentifier:(id)a5 meaningfulEventProcessorCache:(id)a6
+- (BOOL)_momentNode:(id)node hasValidConstraintsForLocationOfInterestVisit:(id)visit requiredCriteriaByPOIIdentifier:(id)identifier meaningfulEventProcessorCache:(id)cache
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 locationOfInterest];
-  v15 = [v14 businessItemMuid];
-  v16 = [v10 name];
-  if (v15 != *MEMORY[0x277D27628])
+  nodeCopy = node;
+  visitCopy = visit;
+  identifierCopy = identifier;
+  cacheCopy = cache;
+  locationOfInterest = [visitCopy locationOfInterest];
+  businessItemMuid = [locationOfInterest businessItemMuid];
+  name = [nodeCopy name];
+  if (businessItemMuid != *MEMORY[0x277D27628])
   {
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
     v40 = 0;
-    v18 = [v11 visitInterval];
-    [v18 duration];
+    visitInterval = [visitCopy visitInterval];
+    [visitInterval duration];
     v20 = v19;
 
     if (v20 >= 3600.0)
     {
-      if ([v11 isHighConfidence])
+      if ([visitCopy isHighConfidence])
       {
         v17 = 1;
         *(v38 + 24) = 1;
@@ -636,7 +636,7 @@ uint64_t __158__PGGraphIngestBusinessProcessor__businessItemContainersToEnrichFo
       v31[3] = &unk_278880720;
       v31[4] = v32;
       v31[5] = &v33;
-      [v10 enumerateConsolidatedAddressesUsingBlock:v31];
+      [nodeCopy enumerateConsolidatedAddressesUsingBlock:v31];
       v21 = *(v34 + 24);
       _Block_object_dispose(v32, 8);
       _Block_object_dispose(&v33, 8);
@@ -649,15 +649,15 @@ LABEL_10:
       }
     }
 
-    v22 = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
+    serviceManager = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __154__PGGraphIngestBusinessProcessor__momentNode_hasValidConstraintsForLocationOfInterestVisit_requiredCriteriaByPOIIdentifier_meaningfulEventProcessorCache___block_invoke_2;
     v25[3] = &unk_278880748;
-    v26 = v12;
-    v27 = v10;
-    v28 = v13;
-    v23 = v22;
+    v26 = identifierCopy;
+    v27 = nodeCopy;
+    v28 = cacheCopy;
+    v23 = serviceManager;
     v29 = v23;
     v30 = &v37;
     [v27 enumeratePOINodesUsingBlock:v25];
@@ -736,23 +736,23 @@ LABEL_3:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_insertBusinessItemsFromMomentNodes:(id)a3 graph:(id)a4 withLocationOfInterestVisitsToResolveByMomentUUID:(id)a5 requiredCriteriaByPOIIdentifier:(id)a6 progressBlock:(id)a7
+- (void)_insertBusinessItemsFromMomentNodes:(id)nodes graph:(id)graph withLocationOfInterestVisitsToResolveByMomentUUID:(id)d requiredCriteriaByPOIIdentifier:(id)identifier progressBlock:(id)block
 {
   v112 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v47 = a4;
-  v48 = a5;
-  v49 = a6;
-  v12 = a7;
-  v51 = v11;
-  if ([v11 count])
+  nodesCopy = nodes;
+  graphCopy = graph;
+  dCopy = d;
+  identifierCopy = identifier;
+  blockCopy = block;
+  v51 = nodesCopy;
+  if ([nodesCopy count])
   {
     v97 = 0;
     v98 = &v97;
     v99 = 0x2020000000;
     v100 = 0x3FE0000000000000;
-    v44 = v12;
-    v50 = _Block_copy(v12);
+    v44 = blockCopy;
+    v50 = _Block_copy(blockCopy);
     v93 = 0;
     v94 = &v93;
     v95 = 0x2020000000;
@@ -787,14 +787,14 @@ LABEL_3:
       }
     }
 
-    v15 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v16 = [MEMORY[0x277CBEB58] set];
-    v17 = [v11 count];
+    v17 = [nodesCopy count];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __172__PGGraphIngestBusinessProcessor__insertBusinessItemsFromMomentNodes_graph_withLocationOfInterestVisitsToResolveByMomentUUID_requiredCriteriaByPOIIdentifier_progressBlock___block_invoke;
     aBlock[3] = &unk_2788806D0;
-    v46 = v15;
+    v46 = strongToStrongObjectsMapTable;
     v87 = v46;
     v45 = v16;
     v88 = v45;
@@ -804,17 +804,17 @@ LABEL_3:
     *(&v108 + 1) = 0x3032000000;
     v109 = __Block_byref_object_copy__15654;
     v110 = __Block_byref_object_dispose__15655;
-    v111 = [[PGMeaningfulEventProcessorCache alloc] initWithMomentNodes:v11];
-    v19 = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
+    v111 = [[PGMeaningfulEventProcessorCache alloc] initWithMomentNodes:nodesCopy];
+    serviceManager = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = __172__PGGraphIngestBusinessProcessor__insertBusinessItemsFromMomentNodes_graph_withLocationOfInterestVisitsToResolveByMomentUUID_requiredCriteriaByPOIIdentifier_progressBlock___block_invoke_2;
     v73[3] = &unk_2788806F8;
-    v74 = v48;
-    v75 = self;
-    v76 = v49;
+    v74 = dCopy;
+    selfCopy = self;
+    v76 = identifierCopy;
     v80 = buf;
-    v42 = v19;
+    v42 = serviceManager;
     v77 = v42;
     v41 = v18;
     v78 = v41;
@@ -825,7 +825,7 @@ LABEL_3:
     v82 = &v97;
     v83 = &v93;
     v85 = 0.2 / v17;
-    [v11 enumerateNodesUsingBlock:v73];
+    [nodesCopy enumerateNodesUsingBlock:v73];
     if ([v46 count])
     {
       businessCacheUpdater = self->_businessCacheUpdater;
@@ -870,7 +870,7 @@ LABEL_37:
             _Block_object_dispose(&v93, 8);
 
             _Block_object_dispose(&v97, 8);
-            v12 = v44;
+            blockCopy = v44;
             goto LABEL_38;
           }
         }
@@ -919,8 +919,8 @@ LABEL_37:
                   }
 
                   v33 = *(*(&v58 + 1) + 8 * i);
-                  v34 = [v33 businessItem];
-                  v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v34, "muid")}];
+                  businessItem = [v33 businessItem];
+                  v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(businessItem, "muid")}];
                   v36 = [v22 objectForKeyedSubscript:v35];
 
                   if (v36)
@@ -1168,13 +1168,13 @@ void __172__PGGraphIngestBusinessProcessor__insertBusinessItemsFromMomentNodes_g
   }
 }
 
-- (void)_insertBusinessItemsForMomentNodesToResolvedBusinessItems:(id)a3 graph:(id)a4 progressBlock:(id)a5
+- (void)_insertBusinessItemsForMomentNodesToResolvedBusinessItems:(id)items graph:(id)graph progressBlock:(id)block
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = _Block_copy(v10);
+  itemsCopy = items;
+  graphCopy = graph;
+  blockCopy = block;
+  v11 = _Block_copy(blockCopy);
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -1198,8 +1198,8 @@ void __172__PGGraphIngestBusinessProcessor__insertBusinessItemsFromMomentNodes_g
   else
   {
     v14 = MEMORY[0x277CBEB98];
-    v15 = [v8 allKeys];
-    v16 = [v14 setWithArray:v15];
+    allKeys = [itemsCopy allKeys];
+    v16 = [v14 setWithArray:allKeys];
 
     *buf = 0;
     *&v61 = buf;
@@ -1224,7 +1224,7 @@ void __172__PGGraphIngestBusinessProcessor__insertBusinessItemsFromMomentNodes_g
     v38[0] = 0;
     v38[1] = v38;
     v38[2] = 0x2020000000;
-    *&v38[3] = 0.05 / [v8 count];
+    *&v38[3] = 0.05 / [itemsCopy count];
     if (v11 && (v19 = CFAbsoluteTimeGetCurrent(), v19 - v49[3] >= 0.01) && (v49[3] = v19, v37 = 0, (*(v18 + 2))(v18, &v37, v40[3]), v20 = *(v53 + 24) | v37, *(v53 + 24) = v20, (v20 & 1) != 0))
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1239,15 +1239,15 @@ void __172__PGGraphIngestBusinessProcessor__insertBusinessItemsFromMomentNodes_g
 
     else
     {
-      v21 = [(PGGraphBuilder *)self->_graphBuilder publicEventManager];
+      publicEventManager = [(PGGraphBuilder *)self->_graphBuilder publicEventManager];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __112__PGGraphIngestBusinessProcessor__insertBusinessItemsForMomentNodesToResolvedBusinessItems_graph_progressBlock___block_invoke_319;
       v27[3] = &unk_2788806A8;
       v31 = buf;
-      v22 = v21;
+      v22 = publicEventManager;
       v28 = v22;
-      v29 = self;
+      selfCopy = self;
       v32 = &v39;
       v33 = v38;
       v23 = v18;
@@ -1255,7 +1255,7 @@ void __172__PGGraphIngestBusinessProcessor__insertBusinessItemsFromMomentNodes_g
       v34 = &v48;
       v35 = &v52;
       v36 = 0x3F847AE147AE147BLL;
-      [v8 enumerateKeysAndObjectsUsingBlock:v27];
+      [itemsCopy enumerateKeysAndObjectsUsingBlock:v27];
       if (v11)
       {
         Current = CFAbsoluteTimeGetCurrent();
@@ -1415,74 +1415,74 @@ void __112__PGGraphIngestBusinessProcessor__insertBusinessItemsForMomentNodesToR
   v12 = [*(*(a1 + 32) + 8) connectPublicEventNode:*(a1 + 56) withBusinessNode:v11];
 }
 
-- (void)deleteBusinessCategoryNodesWithNoEdges:(id)a3
+- (void)deleteBusinessCategoryNodesWithNoEdges:(id)edges
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGGraphNodeCollection *)PGGraphBusinessCategoryNodeCollection nodesInGraph:v4];
-  v6 = [v5 categories];
-  v7 = [PGGraphBusinessCategoryNode filterWithCategories:v6];
+  edgesCopy = edges;
+  v5 = [(PGGraphNodeCollection *)PGGraphBusinessCategoryNodeCollection nodesInGraph:edgesCopy];
+  categories = [v5 categories];
+  v7 = [PGGraphBusinessCategoryNode filterWithCategories:categories];
   [v7 setWhereNoInAndOutEdges:1];
-  v8 = [v4 nodeIdentifiersMatchingFilter:v7];
-  v9 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  v8 = [edgesCopy nodeIdentifiersMatchingFilter:v7];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
   {
     v12 = 134217984;
     v13 = [v8 count];
-    _os_log_debug_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_DEBUG, "[IngestBusiness] Deleted %lu business category nodes from the graph", &v12, 0xCu);
+    _os_log_debug_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEBUG, "[IngestBusiness] Deleted %lu business category nodes from the graph", &v12, 0xCu);
   }
 
   v10 = objc_alloc_init(MEMORY[0x277D22C50]);
   [v10 removeNodesForIdentifiers:v8];
-  [v4 executeGraphChangeRequest:v10];
+  [edgesCopy executeGraphChangeRequest:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteBusinessNodesWithNoInEdgesInGraph:(id)a3
+- (void)deleteBusinessNodesWithNoInEdgesInGraph:(id)graph
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphBusinessNode filter];
   [v5 setWhereNoInEdges:1];
-  v6 = [v4 nodeIdentifiersMatchingFilter:v5];
-  v7 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  v6 = [graphCopy nodeIdentifiersMatchingFilter:v5];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
   {
     v10 = 134217984;
     v11 = [v6 count];
-    _os_log_debug_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_DEBUG, "[IngestBusiness] Deleted %lu business item nodes from the graph", &v10, 0xCu);
+    _os_log_debug_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEBUG, "[IngestBusiness] Deleted %lu business item nodes from the graph", &v10, 0xCu);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277D22C50]);
   [v8 removeNodesForIdentifiers:v6];
-  [v4 executeGraphChangeRequest:v8];
+  [graphCopy executeGraphChangeRequest:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteBusinessEdgesWithMomentNodes:(id)a3 inGraph:(id)a4
+- (void)deleteBusinessEdgesWithMomentNodes:(id)nodes inGraph:(id)graph
 {
   v5 = MEMORY[0x277D22C50];
-  v6 = a4;
-  v7 = a3;
+  graphCopy = graph;
+  nodesCopy = nodes;
   v10 = objc_alloc_init(v5);
-  v8 = [v7 businessNodes];
-  v9 = [(PGGraphEdgeCollection *)PGGraphPlaceBusinessEdgeCollection edgesFromNodes:v7 toNodes:v8];
+  businessNodes = [nodesCopy businessNodes];
+  v9 = [(PGGraphEdgeCollection *)PGGraphPlaceBusinessEdgeCollection edgesFromNodes:nodesCopy toNodes:businessNodes];
 
   [v10 removeEdges:v9];
-  [v6 executeGraphChangeRequest:v10];
+  [graphCopy executeGraphChangeRequest:v10];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v30 = a4;
-  v7 = [(PGGraphBuilder *)self->_graphBuilder graph];
-  v8 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v9 = os_signpost_id_generate(v8);
-  v10 = v8;
+  updateCopy = update;
+  blockCopy = block;
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  v9 = os_signpost_id_generate(loggingConnection);
+  v10 = loggingConnection;
   v11 = v10;
   v12 = v9 - 1;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
@@ -1494,36 +1494,36 @@ void __112__PGGraphIngestBusinessProcessor__insertBusinessItemsForMomentNodesToR
   info = 0;
   mach_timebase_info(&info);
   v13 = mach_absolute_time();
-  v14 = [v6 momentNodesToProcessInGraph:v7 forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
-  [(PGGraphIngestBusinessProcessor *)self deleteBusinessEdgesWithMomentNodes:v14 inGraph:v7];
-  v15 = [v6 registeredResolvableItemsByBusinessItemMuid];
-  if ([v15 count])
+  v14 = [updateCopy momentNodesToProcessInGraph:graph forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
+  [(PGGraphIngestBusinessProcessor *)self deleteBusinessEdgesWithMomentNodes:v14 inGraph:graph];
+  registeredResolvableItemsByBusinessItemMuid = [updateCopy registeredResolvableItemsByBusinessItemMuid];
+  if ([registeredResolvableItemsByBusinessItemMuid count])
   {
-    [(PGGraphIngestBusinessProcessor *)self _insertBusinessItemsForMomentNodesToResolvedBusinessItems:v15 graph:v7 progressBlock:v30];
+    [(PGGraphIngestBusinessProcessor *)self _insertBusinessItemsForMomentNodesToResolvedBusinessItems:registeredResolvableItemsByBusinessItemMuid graph:graph progressBlock:blockCopy];
   }
 
   if ([v14 count])
   {
-    v16 = [v6 registeredLocationOfInterestVisitsToResolveByMomentUUID];
-    [(PGGraphIngestBusinessProcessor *)self requiredCriteriaByPOIIdentifierForGraph:v7];
+    registeredLocationOfInterestVisitsToResolveByMomentUUID = [updateCopy registeredLocationOfInterestVisitsToResolveByMomentUUID];
+    [(PGGraphIngestBusinessProcessor *)self requiredCriteriaByPOIIdentifierForGraph:graph];
     v29 = v11;
-    v17 = v15;
+    v17 = registeredResolvableItemsByBusinessItemMuid;
     v18 = v9 - 1;
-    v19 = v6;
+    v19 = updateCopy;
     v20 = v9;
     v22 = v21 = v13;
-    [(PGGraphIngestBusinessProcessor *)self _insertBusinessItemsFromMomentNodes:v14 graph:v7 withLocationOfInterestVisitsToResolveByMomentUUID:v16 requiredCriteriaByPOIIdentifier:v22 progressBlock:v30];
+    [(PGGraphIngestBusinessProcessor *)self _insertBusinessItemsFromMomentNodes:v14 graph:graph withLocationOfInterestVisitsToResolveByMomentUUID:registeredLocationOfInterestVisitsToResolveByMomentUUID requiredCriteriaByPOIIdentifier:v22 progressBlock:blockCopy];
 
     v13 = v21;
     v9 = v20;
-    v6 = v19;
+    updateCopy = v19;
     v12 = v18;
-    v15 = v17;
+    registeredResolvableItemsByBusinessItemMuid = v17;
     v11 = v29;
   }
 
-  [(PGGraphIngestBusinessProcessor *)self deleteBusinessNodesWithNoInEdgesInGraph:v7];
-  [(PGGraphIngestBusinessProcessor *)self deleteBusinessCategoryNodesWithNoEdges:v7];
+  [(PGGraphIngestBusinessProcessor *)self deleteBusinessNodesWithNoInEdgesInGraph:graph];
+  [(PGGraphIngestBusinessProcessor *)self deleteBusinessCategoryNodesWithNoEdges:graph];
   v23 = mach_absolute_time();
   numer = info.numer;
   denom = info.denom;
@@ -1547,36 +1547,36 @@ void __112__PGGraphIngestBusinessProcessor__insertBusinessItemsForMomentNodesToR
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(v3, "hasMomentsToInsert") & 1) != 0 || (objc_msgSend(v3, "hasMomentsToDelete"))
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToInsert") & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToDelete"))
   {
     v4 = 1;
   }
 
   else
   {
-    v6 = [v3 momentUpdateTypes];
-    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & v6) != 0;
+    momentUpdateTypes = [updateCopy momentUpdateTypes];
+    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & momentUpdateTypes) != 0;
   }
 
   return v4;
 }
 
-- (PGGraphIngestBusinessProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestBusinessProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v13.receiver = self;
   v13.super_class = PGGraphIngestBusinessProcessor;
   v6 = [(PGGraphIngestBusinessProcessor *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
     v8 = objc_alloc(MEMORY[0x277D27678]);
-    v9 = [v5 poiCache];
-    v10 = [v8 initWithBusinessCategoryCache:v9];
+    poiCache = [builderCopy poiCache];
+    v10 = [v8 initWithBusinessCategoryCache:poiCache];
     businessCacheUpdater = v7->_businessCacheUpdater;
     v7->_businessCacheUpdater = v10;
   }

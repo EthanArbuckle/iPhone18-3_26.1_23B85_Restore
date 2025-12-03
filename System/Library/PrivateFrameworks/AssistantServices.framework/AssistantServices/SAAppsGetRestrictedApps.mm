@@ -1,16 +1,16 @@
 @interface SAAppsGetRestrictedApps
-- (void)_ad_handleAppLaunchCommandWithRequest:(id)a3 completion:(id)a4;
+- (void)_ad_handleAppLaunchCommandWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation SAAppsGetRestrictedApps
 
-- (void)_ad_handleAppLaunchCommandWithRequest:(id)a3 completion:(id)a4
+- (void)_ad_handleAppLaunchCommandWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v28 = objc_alloc_init(NSMutableDictionary);
-  v8 = [off_10058BBA0() serviceWithDefaultShellEndpoint];
-  if (!v8)
+  serviceWithDefaultShellEndpoint = [off_10058BBA0() serviceWithDefaultShellEndpoint];
+  if (!serviceWithDefaultShellEndpoint)
   {
     v10 = [AFError errorWithCode:13];
     if (v10)
@@ -21,9 +21,9 @@
 LABEL_18:
     v20 = objc_alloc_init(SAAppsGetRestrictedAppsResponse);
     [v20 setAppToItsRestrictionsMap:v28];
-    v21 = [v6 createResponseWithReplyCommand:v20];
+    v21 = [requestCopy createResponseWithReplyCommand:v20];
 
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_27;
     }
@@ -35,11 +35,11 @@ LABEL_18:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [(SAAppsGetRestrictedApps *)self appIds];
-  v10 = [v9 countByEnumeratingWithState:&v30 objects:v41 count:16];
+  appIds = [(SAAppsGetRestrictedApps *)self appIds];
+  v10 = [appIds countByEnumeratingWithState:&v30 objects:v41 count:16];
   if (v10)
   {
-    v26 = v7;
+    v26 = completionCopy;
     v11 = *v31;
     v12 = SAAppsAppRestrictionReasonRESTRICTEDValue;
     v27 = SAAppsAppRestrictionReasonNOT_FOUNDValue;
@@ -49,12 +49,12 @@ LABEL_18:
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(appIds);
         }
 
         v14 = *(*(&v30 + 1) + 8 * i);
         v29 = 0;
-        if ([v8 canOpenApplication:v14 reason:&v29])
+        if ([serviceWithDefaultShellEndpoint canOpenApplication:v14 reason:&v29])
         {
           v15 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -93,7 +93,7 @@ LABEL_18:
               v25 = 8;
             }
 
-            v7 = v26;
+            completionCopy = v26;
             v10 = [NSError errorWithDomain:@"com.apple.siri.bksopenapplication.ErrorDomain" code:v25 userInfo:0];
             goto LABEL_24;
           }
@@ -112,7 +112,7 @@ LABEL_18:
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v30 objects:v41 count:16];
+      v10 = [appIds countByEnumeratingWithState:&v30 objects:v41 count:16];
       if (v10)
       {
         continue;
@@ -121,7 +121,7 @@ LABEL_18:
       break;
     }
 
-    v7 = v26;
+    completionCopy = v26;
   }
 
 LABEL_24:
@@ -133,10 +133,10 @@ LABEL_24:
 
 LABEL_25:
   v21 = 0;
-  if (v7)
+  if (completionCopy)
   {
 LABEL_26:
-    v7[2](v7, v21, 0, v10);
+    completionCopy[2](completionCopy, v21, 0, v10);
   }
 
 LABEL_27:

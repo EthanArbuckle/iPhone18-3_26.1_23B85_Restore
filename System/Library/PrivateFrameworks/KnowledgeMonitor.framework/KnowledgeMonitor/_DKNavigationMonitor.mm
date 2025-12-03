@@ -3,23 +3,23 @@
 - (void)deactivate;
 - (void)dealloc;
 - (void)didSetNavigating;
-- (void)setNavigating:(BOOL)a3;
-- (void)setShutdownHandler:(id)a3;
+- (void)setNavigating:(BOOL)navigating;
+- (void)setShutdownHandler:(id)handler;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation _DKNavigationMonitor
 
-- (void)setShutdownHandler:(id)a3
+- (void)setShutdownHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43___DKNavigationMonitor_setShutdownHandler___block_invoke;
   v8[3] = &unk_27856F1A0;
-  v5 = v4;
+  v5 = handlerCopy;
   v9 = v5;
   objc_copyWeak(&v10, &location);
   v6 = [v8 copy];
@@ -47,10 +47,10 @@
 
 - (void)didSetNavigating
 {
-  v9 = [MEMORY[0x277CFE338] keyPathForNavigationStatus];
+  keyPathForNavigationStatus = [MEMORY[0x277CFE338] keyPathForNavigationStatus];
   v3 = [MEMORY[0x277CCABB0] numberWithBool:self->_navigating];
-  v4 = [MEMORY[0x277CFE318] userContext];
-  [v4 setObject:v3 forKeyedSubscript:v9];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  [userContext setObject:v3 forKeyedSubscript:keyPathForNavigationStatus];
 
   source = self->_source;
   v6 = objc_alloc(MEMORY[0x277CF1308]);
@@ -59,11 +59,11 @@
   [(BMSource *)source sendEvent:v8];
 }
 
-- (void)setNavigating:(BOOL)a3
+- (void)setNavigating:(BOOL)navigating
 {
-  if (self->_enabled && self->_navigating != a3)
+  if (self->_enabled && self->_navigating != navigating)
   {
-    self->_navigating = a3;
+    self->_navigating = navigating;
     [(_DKNavigationMonitor *)self didSetNavigating];
   }
 }
@@ -76,32 +76,32 @@
   {
     self->_enabled = 1;
     self->_startedToken = -1;
-    v3 = [@"com.apple.GeoServices.navigation.started" UTF8String];
-    v4 = [(_DKMonitor *)self queue];
+    uTF8String = [@"com.apple.GeoServices.navigation.started" UTF8String];
+    queue = [(_DKMonitor *)self queue];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __29___DKNavigationMonitor_start__block_invoke;
     handler[3] = &unk_27856F408;
     handler[4] = self;
-    notify_register_dispatch(v3, &self->_startedToken, v4, handler);
+    notify_register_dispatch(uTF8String, &self->_startedToken, queue, handler);
 
     self->_stoppedToken = -1;
-    v5 = [@"com.apple.GeoServices.navigation.stopped" UTF8String];
-    v6 = [(_DKMonitor *)self queue];
+    uTF8String2 = [@"com.apple.GeoServices.navigation.stopped" UTF8String];
+    queue2 = [(_DKMonitor *)self queue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __29___DKNavigationMonitor_start__block_invoke_2;
     v9[3] = &unk_27856F408;
     v9[4] = self;
-    notify_register_dispatch(v5, &self->_stoppedToken, v6, v9);
+    notify_register_dispatch(uTF8String2, &self->_stoppedToken, queue2, v9);
 
-    v7 = [(_DKMonitor *)self queue];
+    queue3 = [(_DKMonitor *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __29___DKNavigationMonitor_start__block_invoke_3;
     block[3] = &unk_27856F060;
     block[4] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(queue3, block);
   }
 }
 

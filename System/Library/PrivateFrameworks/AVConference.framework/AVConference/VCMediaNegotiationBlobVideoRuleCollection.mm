@@ -1,43 +1,43 @@
 @interface VCMediaNegotiationBlobVideoRuleCollection
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)operationAsString:(int)a3;
-- (id)transportAsString:(int)a3;
-- (int)StringAsOperation:(id)a3;
-- (int)StringAsTransport:(id)a3;
+- (id)operationAsString:(int)string;
+- (id)transportAsString:(int)string;
+- (int)StringAsOperation:(id)operation;
+- (int)StringAsTransport:(id)transport;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPreferredFormat:(BOOL)a3;
-- (void)setHasPreferredFormatExt1:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPreferredFormat:(BOOL)format;
+- (void)setHasPreferredFormatExt1:(BOOL)ext1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobVideoRuleCollection
 
-- (id)transportAsString:(int)a3
+- (id)transportAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"NEGOTIATION_TRANSPORT_TYPE_WIFI";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"NEGOTIATION_TRANSPORT_TYPE_CELLULAR";
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
 }
 
-- (int)StringAsTransport:(id)a3
+- (int)StringAsTransport:(id)transport
 {
   v4 = 1;
-  if (([a3 isEqualToString:@"NEGOTIATION_TRANSPORT_TYPE_WIFI"] & 1) == 0)
+  if (([transport isEqualToString:@"NEGOTIATION_TRANSPORT_TYPE_WIFI"] & 1) == 0)
   {
-    if ([a3 isEqualToString:@"NEGOTIATION_TRANSPORT_TYPE_CELLULAR"])
+    if ([transport isEqualToString:@"NEGOTIATION_TRANSPORT_TYPE_CELLULAR"])
     {
       return 2;
     }
@@ -51,27 +51,27 @@
   return v4;
 }
 
-- (id)operationAsString:(int)a3
+- (id)operationAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"NEGOTIATION_OPERATION_TYPE_ENCODE";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"NEGOTIATION_OPERATION_TYPE_DECODE";
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
 }
 
-- (int)StringAsOperation:(id)a3
+- (int)StringAsOperation:(id)operation
 {
   v4 = 1;
-  if (([a3 isEqualToString:@"NEGOTIATION_OPERATION_TYPE_ENCODE"] & 1) == 0)
+  if (([operation isEqualToString:@"NEGOTIATION_OPERATION_TYPE_ENCODE"] & 1) == 0)
   {
-    if ([a3 isEqualToString:@"NEGOTIATION_OPERATION_TYPE_DECODE"])
+    if ([operation isEqualToString:@"NEGOTIATION_OPERATION_TYPE_DECODE"])
     {
       return 2;
     }
@@ -85,9 +85,9 @@
   return v4;
 }
 
-- (void)setHasPreferredFormat:(BOOL)a3
+- (void)setHasPreferredFormat:(BOOL)format
 {
-  if (a3)
+  if (format)
   {
     v3 = 2;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPreferredFormatExt1:(BOOL)a3
+- (void)setHasPreferredFormatExt1:(BOOL)ext1
 {
-  if (a3)
+  if (ext1)
   {
     v3 = 4;
   }
@@ -125,7 +125,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   transport = self->_transport;
   if (transport == 1)
   {
@@ -142,7 +142,7 @@
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", self->_transport];
   }
 
-  [v3 setObject:v5 forKey:@"transport"];
+  [dictionary setObject:v5 forKey:@"transport"];
   operation = self->_operation;
   if (operation == 1)
   {
@@ -159,8 +159,8 @@
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", self->_operation];
   }
 
-  [v3 setObject:v7 forKey:@"operation"];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_formats), @"formats"}];
+  [dictionary setObject:v7 forKey:@"operation"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_formats), @"formats"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -170,16 +170,16 @@
     }
 
 LABEL_17:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_formatsExt1), @"formatsExt1"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_formatsExt1), @"formatsExt1"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_14;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_preferredFormat), @"preferredFormat"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_preferredFormat), @"preferredFormat"}];
   has = self->_has;
   if (has)
   {
@@ -190,13 +190,13 @@ LABEL_13:
   if ((has & 4) != 0)
   {
 LABEL_14:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_preferredFormatExt1), @"preferredFormatExt1"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_preferredFormatExt1), @"preferredFormatExt1"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteInt32Field();
@@ -237,16 +237,16 @@ LABEL_7:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 7) = self->_transport;
-  *(a3 + 4) = self->_operation;
-  *(a3 + 2) = self->_formats;
+  *(to + 7) = self->_transport;
+  *(to + 4) = self->_operation;
+  *(to + 2) = self->_formats;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 5) = self->_preferredFormat;
-    *(a3 + 32) |= 2u;
+    *(to + 5) = self->_preferredFormat;
+    *(to + 32) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -257,8 +257,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 6) = self->_preferredFormatExt1;
-      *(a3 + 32) |= 4u;
+      *(to + 6) = self->_preferredFormatExt1;
+      *(to + 32) |= 4u;
       return;
     }
   }
@@ -268,17 +268,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 3) = self->_formatsExt1;
-  *(a3 + 32) |= 1u;
+  *(to + 3) = self->_formatsExt1;
+  *(to + 32) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 7) = self->_transport;
   *(result + 4) = self->_operation;
   *(result + 2) = self->_formats;
@@ -318,25 +318,25 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_transport != *(a3 + 7) || self->_operation != *(a3 + 4) || self->_formats != *(a3 + 2))
+    if (self->_transport != *(equal + 7) || self->_operation != *(equal + 4) || self->_formats != *(equal + 2))
     {
       goto LABEL_19;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_preferredFormat != *(a3 + 5))
+      if ((*(equal + 32) & 2) == 0 || self->_preferredFormat != *(equal + 5))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 32) & 2) != 0)
+    else if ((*(equal + 32) & 2) != 0)
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -345,21 +345,21 @@ LABEL_19:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_formatsExt1 != *(a3 + 3))
+      if ((*(equal + 32) & 1) == 0 || self->_formatsExt1 != *(equal + 3))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
       goto LABEL_19;
     }
 
-    LOBYTE(v5) = (*(a3 + 32) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 32) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 32) & 4) == 0 || self->_preferredFormatExt1 != *(a3 + 6))
+      if ((*(equal + 32) & 4) == 0 || self->_preferredFormatExt1 != *(equal + 6))
       {
         goto LABEL_19;
       }
@@ -406,17 +406,17 @@ LABEL_19:
   return (2654435761 * self->_operation) ^ (2654435761 * self->_transport) ^ (2654435761 * self->_formats) ^ v2 ^ v3 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_transport = *(a3 + 7);
-  self->_operation = *(a3 + 4);
-  self->_formats = *(a3 + 2);
-  v3 = *(a3 + 32);
+  self->_transport = *(from + 7);
+  self->_operation = *(from + 4);
+  self->_formats = *(from + 2);
+  v3 = *(from + 32);
   if ((v3 & 2) != 0)
   {
-    self->_preferredFormat = *(a3 + 5);
+    self->_preferredFormat = *(from + 5);
     *&self->_has |= 2u;
-    v3 = *(a3 + 32);
+    v3 = *(from + 32);
     if ((v3 & 1) == 0)
     {
 LABEL_3:
@@ -426,20 +426,20 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_preferredFormatExt1 = *(a3 + 6);
+      self->_preferredFormatExt1 = *(from + 6);
       *&self->_has |= 4u;
       return;
     }
   }
 
-  else if ((*(a3 + 32) & 1) == 0)
+  else if ((*(from + 32) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_formatsExt1 = *(a3 + 3);
+  self->_formatsExt1 = *(from + 3);
   *&self->_has |= 1u;
-  if ((*(a3 + 32) & 4) != 0)
+  if ((*(from + 32) & 4) != 0)
   {
     goto LABEL_7;
   }

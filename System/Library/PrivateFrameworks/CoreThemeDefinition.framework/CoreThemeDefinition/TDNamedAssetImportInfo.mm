@@ -7,9 +7,9 @@
 - (CGSize)physicalSizeInMeters;
 - (CGSize)resizableSliceSize;
 - (TDNamedAssetImportInfo)init;
-- (__n128)setTransformation:(__n128)a3;
+- (__n128)setTransformation:(__n128)transformation;
 - (__n128)transformation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)renditionSubtype;
 - (uint64_t)verify;
@@ -19,7 +19,7 @@
 
 @implementation TDNamedAssetImportInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TDNamedAssetImportInfo allocWithZone:?]];
   [(TDNamedAssetImportInfo *)v4 setName:[(TDNamedAssetImportInfo *)self name]];
@@ -154,22 +154,22 @@
   {
     if ([(TDNamedAssetImportInfo *)self resizingMode]== 1)
     {
-      v3 = [(TDNamedAssetImportInfo *)self renditionType];
-      if (v3 < 4)
+      renditionType = [(TDNamedAssetImportInfo *)self renditionType];
+      if (renditionType < 4)
       {
         v4 = &unk_247A49448;
-        return v4[v3];
+        return v4[renditionType];
       }
     }
   }
 
   else
   {
-    v3 = [(TDNamedAssetImportInfo *)self renditionType];
-    if (v3 < 4)
+    renditionType = [(TDNamedAssetImportInfo *)self renditionType];
+    if (renditionType < 4)
     {
       v4 = &unk_247A49428;
-      return v4[v3];
+      return v4[renditionType];
     }
   }
 
@@ -185,7 +185,7 @@
   v58 = [MEMORY[0x277CCACA8] stringWithFormat:@"\nEdge insets top: %f left: %f bottom: %f right: %f", v3, v4, v5, v6];
   [(TDNamedAssetImportInfo *)self resizableSliceSize];
   v57 = NSStringFromSize(v61);
-  v7 = [(TDNamedAssetImportInfo *)self displayGamut];
+  displayGamut = [(TDNamedAssetImportInfo *)self displayGamut];
   if ([(TDNamedAssetImportInfo *)self layoutDirection]== 5)
   {
     v8 = @"Left to Right";
@@ -193,9 +193,9 @@
 
   else
   {
-    v9 = [(TDNamedAssetImportInfo *)self layoutDirection];
+    layoutDirection = [(TDNamedAssetImportInfo *)self layoutDirection];
     v8 = @"Any direction";
-    if (v9 == 4)
+    if (layoutDirection == 4)
     {
       v8 = @"Right to Left";
     }
@@ -203,57 +203,57 @@
 
   v53 = v8;
   v10 = @"P3";
-  if (!v7)
+  if (!displayGamut)
   {
     v10 = @"sRGB";
   }
 
   v50 = v10;
   v56 = MEMORY[0x277CCACA8];
-  v55 = [(TDNamedAssetImportInfo *)self name];
-  v54 = [(TDNamedAssetImportInfo *)self nameIdentifier];
-  v52 = [(TDNamedAssetImportInfo *)self appearanceName];
-  v51 = [(TDNamedAssetImportInfo *)self appearanceIdentifier];
-  v49 = [(TDNamedAssetImportInfo *)self localizationName];
-  v48 = [(TDNamedAssetImportInfo *)self localizationIdentifier];
+  name = [(TDNamedAssetImportInfo *)self name];
+  nameIdentifier = [(TDNamedAssetImportInfo *)self nameIdentifier];
+  appearanceName = [(TDNamedAssetImportInfo *)self appearanceName];
+  appearanceIdentifier = [(TDNamedAssetImportInfo *)self appearanceIdentifier];
+  localizationName = [(TDNamedAssetImportInfo *)self localizationName];
+  localizationIdentifier = [(TDNamedAssetImportInfo *)self localizationIdentifier];
   v47 = [(NSURL *)[(TDNamedAssetImportInfo *)self fileURL] description];
   v46 = [(NSDate *)[(TDNamedAssetImportInfo *)self modificationDate] description];
-  v45 = [(TDNamedAssetImportInfo *)self idiom];
-  v44 = [(TDNamedAssetImportInfo *)self subtype];
-  v43 = [(TDNamedAssetImportInfo *)self scaleFactor];
-  v42 = [(TDNamedAssetImportInfo *)self renditionType];
-  v41 = [(TDNamedAssetImportInfo *)self resizingMode];
-  v40 = [(TDNamedAssetImportInfo *)self isTemplate];
-  v39 = [(TDNamedAssetImportInfo *)self preservesVectorRepresentation];
-  v38 = [(TDNamedAssetImportInfo *)self templateRenderingMode];
-  v37 = [(TDNamedAssetImportInfo *)self optOutOfThinning];
+  idiom = [(TDNamedAssetImportInfo *)self idiom];
+  subtype = [(TDNamedAssetImportInfo *)self subtype];
+  scaleFactor = [(TDNamedAssetImportInfo *)self scaleFactor];
+  renditionType = [(TDNamedAssetImportInfo *)self renditionType];
+  resizingMode = [(TDNamedAssetImportInfo *)self resizingMode];
+  isTemplate = [(TDNamedAssetImportInfo *)self isTemplate];
+  preservesVectorRepresentation = [(TDNamedAssetImportInfo *)self preservesVectorRepresentation];
+  templateRenderingMode = [(TDNamedAssetImportInfo *)self templateRenderingMode];
+  optOutOfThinning = [(TDNamedAssetImportInfo *)self optOutOfThinning];
   [(TDNamedAssetImportInfo *)self alignmentRect];
   v36 = NSStringFromRect(v63);
-  v35 = [(TDNamedAssetImportInfo *)self sizeClassHorizontal];
-  v34 = [(TDNamedAssetImportInfo *)self sizeClassVertical];
-  v33 = [(TDNamedAssetImportInfo *)self isFlippable];
-  v32 = [(TDNamedAssetImportInfo *)self memoryClass];
-  v31 = [(TDNamedAssetImportInfo *)self graphicsFeatureSetClass];
-  v30 = [(TDNamedAssetImportInfo *)self compressionType];
+  sizeClassHorizontal = [(TDNamedAssetImportInfo *)self sizeClassHorizontal];
+  sizeClassVertical = [(TDNamedAssetImportInfo *)self sizeClassVertical];
+  isFlippable = [(TDNamedAssetImportInfo *)self isFlippable];
+  memoryClass = [(TDNamedAssetImportInfo *)self memoryClass];
+  graphicsFeatureSetClass = [(TDNamedAssetImportInfo *)self graphicsFeatureSetClass];
+  compressionType = [(TDNamedAssetImportInfo *)self compressionType];
   [(TDNamedAssetImportInfo *)self lossyCompressionQuality];
   v12 = v11;
   v29 = [(NSSet *)[(TDNamedAssetImportInfo *)self tags] description];
-  v28 = [(TDNamedAssetImportInfo *)self universalTypeIdentifier];
+  universalTypeIdentifier = [(TDNamedAssetImportInfo *)self universalTypeIdentifier];
   v27 = [(NSArray *)[(TDNamedAssetImportInfo *)self containedImageNames] description];
   [(TDNamedAssetImportInfo *)self canvasSize];
   v26 = NSStringFromSize(v62);
   v25 = [(NSArray *)[(TDNamedAssetImportInfo *)self layerReferences] description];
-  v24 = [(TDNamedAssetImportInfo *)self renditionSubtype];
-  v13 = [(TDNamedAssetImportInfo *)self compressionType];
-  v14 = [(TDNamedAssetImportInfo *)self cubeMap];
-  v15 = [(TDNamedAssetImportInfo *)self textureWidth];
-  v16 = [(TDNamedAssetImportInfo *)self textureHeight];
-  v17 = [(TDNamedAssetImportInfo *)self texturePixelFormat];
-  v18 = [(TDNamedAssetImportInfo *)self textureInfos];
+  renditionSubtype = [(TDNamedAssetImportInfo *)self renditionSubtype];
+  compressionType2 = [(TDNamedAssetImportInfo *)self compressionType];
+  cubeMap = [(TDNamedAssetImportInfo *)self cubeMap];
+  textureWidth = [(TDNamedAssetImportInfo *)self textureWidth];
+  textureHeight = [(TDNamedAssetImportInfo *)self textureHeight];
+  texturePixelFormat = [(TDNamedAssetImportInfo *)self texturePixelFormat];
+  textureInfos = [(TDNamedAssetImportInfo *)self textureInfos];
   v19 = [(NSValue *)[(TDNamedAssetImportInfo *)self iconSize] description];
-  v20 = [(TDNamedAssetImportInfo *)self fontName];
+  fontName = [(TDNamedAssetImportInfo *)self fontName];
   [(TDNamedAssetImportInfo *)self fontSize];
-  v22 = [v56 stringWithFormat:@"\n\tname: %@ \n\tnameIdentifier: %d \n\tappearance: %@ \n\tappearanceIdentifier: %d \n\tlocalization: %@ \n\tlocalizationIdentifier: %d \n\tfileURL: %@ \n\tmodificationDate: %@   \n\tidiom: %d \n\tsubtype: %d \n\tscaleFactor: %d \n\tsliceInsets: %@ \n\trenditionType: %d  \n\tresizingMode: %d \n\tresizableSliceSize: %@    \n\tisTemplate: %d \n\tpreservesVectorRepresentation: %d\n\ttemplateRenderingMode: %d \n\toptOutOfThinning: %d \n\talignmentRect: %@ \n\tsizeClassHorizontal: %d \n\tsizeClassVertical: %d  \n\tdisplayGamut: %@ \n\tlayoutDirection: %@   \n\tisFlippable: %d   \n\tmemoryClass: %d \n\tgraphicsFeatureSetClass: %d \n\tcompressionType: %d \n\tlossyCompressionQuality: %f    \n\ttags: %@ \n\tuniversalTypeIdentifier: %@ \n\tcontainedImageNames: %@    \n\tcanvasSize: %@ \n\tlayerReferences: %@ \n\trenditionSubtype: %d \n\tcompressionType: %d\n\tcubeMap: %d\n\ttextureWidth: %d\n\ttextureHeight: %d\n\ttexturePixelFormat: %d textureImportInfos:%@ \n\ticonSize: %@\n\tfontName: %@\n\tfontSize: %d\n\tcolorSpaceId: %d", v55, v54, v52, v51, v49, v48, v47, v46, v45, v44, v43, v58, v42, v41, v57, v40, v39, v38, v37, v36, v35, v34, v50, v53, v33, v32, v31, v30, v12, v29, v28, v27, v26, v25, v24, v13, v14, v15, v16, v17, v18, v19, v20, v21, -[TDNamedAssetImportInfo colorSpaceID](self, "colorSpaceID")];
+  v22 = [v56 stringWithFormat:@"\n\tname: %@ \n\tnameIdentifier: %d \n\tappearance: %@ \n\tappearanceIdentifier: %d \n\tlocalization: %@ \n\tlocalizationIdentifier: %d \n\tfileURL: %@ \n\tmodificationDate: %@   \n\tidiom: %d \n\tsubtype: %d \n\tscaleFactor: %d \n\tsliceInsets: %@ \n\trenditionType: %d  \n\tresizingMode: %d \n\tresizableSliceSize: %@    \n\tisTemplate: %d \n\tpreservesVectorRepresentation: %d\n\ttemplateRenderingMode: %d \n\toptOutOfThinning: %d \n\talignmentRect: %@ \n\tsizeClassHorizontal: %d \n\tsizeClassVertical: %d  \n\tdisplayGamut: %@ \n\tlayoutDirection: %@   \n\tisFlippable: %d   \n\tmemoryClass: %d \n\tgraphicsFeatureSetClass: %d \n\tcompressionType: %d \n\tlossyCompressionQuality: %f    \n\ttags: %@ \n\tuniversalTypeIdentifier: %@ \n\tcontainedImageNames: %@    \n\tcanvasSize: %@ \n\tlayerReferences: %@ \n\trenditionSubtype: %d \n\tcompressionType: %d\n\tcubeMap: %d\n\ttextureWidth: %d\n\ttextureHeight: %d\n\ttexturePixelFormat: %d textureImportInfos:%@ \n\ticonSize: %@\n\tfontName: %@\n\tfontSize: %d\n\tcolorSpaceId: %d", name, nameIdentifier, appearanceName, appearanceIdentifier, localizationName, localizationIdentifier, v47, v46, idiom, subtype, scaleFactor, v58, renditionType, resizingMode, v57, isTemplate, preservesVectorRepresentation, templateRenderingMode, optOutOfThinning, v36, sizeClassHorizontal, sizeClassVertical, v50, v53, isFlippable, memoryClass, graphicsFeatureSetClass, compressionType, v12, v29, universalTypeIdentifier, v27, v26, v25, renditionSubtype, compressionType2, cubeMap, textureWidth, textureHeight, texturePixelFormat, textureInfos, v19, fontName, v21, -[TDNamedAssetImportInfo colorSpaceID](self, "colorSpaceID")];
   return [MEMORY[0x277CCACA8] stringWithFormat:@"%@  %@", v59, v22];
 }
 
@@ -303,17 +303,17 @@
 
 - (__n128)transformation
 {
-  result = *(a1 + 592);
-  v2 = *(a1 + 608);
-  v3 = *(a1 + 624);
-  v4 = *(a1 + 640);
+  result = *(self + 592);
+  v2 = *(self + 608);
+  v3 = *(self + 624);
+  v4 = *(self + 640);
   return result;
 }
 
-- (__n128)setTransformation:(__n128)a3
+- (__n128)setTransformation:(__n128)transformation
 {
   result[37] = a2;
-  result[38] = a3;
+  result[38] = transformation;
   result[39] = a4;
   result[40] = a5;
   return result;

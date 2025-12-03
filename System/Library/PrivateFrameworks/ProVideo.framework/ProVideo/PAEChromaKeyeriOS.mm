@@ -1,20 +1,20 @@
 @interface PAEChromaKeyeriOS
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEChromaKeyeriOS)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEChromaKeyeriOS)initWithAPIManager:(id)manager;
 - (id)properties;
-- (void)createLutForNode:(void *)a3 input:(int)a4 rect:(const HGRect *)a5 omKeyer:(void *)a6;
+- (void)createLutForNode:(void *)node input:(int)input rect:(const HGRect *)rect omKeyer:(void *)keyer;
 - (void)dealloc;
 @end
 
 @implementation PAEChromaKeyeriOS
 
-- (PAEChromaKeyeriOS)initWithAPIManager:(id)a3
+- (PAEChromaKeyeriOS)initWithAPIManager:(id)manager
 {
   v6.receiver = self;
   v6.super_class = PAEChromaKeyeriOS;
-  v3 = [(PAESharedDefaultBase *)&v6 initWithAPIManager:a3];
+  v3 = [(PAESharedDefaultBase *)&v6 initWithAPIManager:manager];
   v3->_matteTools = objc_alloc_init(PAEKeyerMatteTools);
   v4 = objc_alloc_init(PAEKeyerPreprocess);
   v3->_preprocessTools = v4;
@@ -76,20 +76,20 @@ uint64_t __31__PAEChromaKeyeriOS_properties__block_invoke()
   return 1;
 }
 
-- (void)createLutForNode:(void *)a3 input:(int)a4 rect:(const HGRect *)a5 omKeyer:(void *)a6
+- (void)createLutForNode:(void *)node input:(int)input rect:(const HGRect *)rect omKeyer:(void *)keyer
 {
-  v8 = *&a4;
+  v8 = *&input;
   v11 = HGObject::operator new(0x80uLL);
-  HGBitmap::HGBitmap(v11, *&a5->var0, *&a5->var2, 28);
+  HGBitmap::HGBitmap(v11, *&rect->var0, *&rect->var2, 28);
   v12 = 0;
   v13 = *(v11 + 10);
   v14 = 0.0;
   do
   {
     v15 = v14 / 255.0;
-    OMKeyer2D::getAlphaLuma(a6, v15);
-    v16 = *(a6 + 15);
-    v17 = ((*(a6 + 16) - v16) >> 2);
+    OMKeyer2D::getAlphaLuma(keyer, v15);
+    v16 = *(keyer + 15);
+    v17 = ((*(keyer + 16) - v16) >> 2);
     *v13 = v18;
     v19 = v17 + -1.0;
     v20 = rintf((v17 + -1.0) * v15);
@@ -104,7 +104,7 @@ uint64_t __31__PAEChromaKeyeriOS_properties__block_invoke()
     }
 
     *(v13 + 4) = *v16;
-    *(v13 + 8) = OMKeyer2D::getAlphaSatOffset(a6, v12);
+    *(v13 + 8) = OMKeyer2D::getAlphaSatOffset(keyer, v12);
     v13 += 16;
     v14 = v14 + 1.0;
     ++v12;
@@ -112,7 +112,7 @@ uint64_t __31__PAEChromaKeyeriOS_properties__block_invoke()
 
   while (v12 != 256);
   v21 = HGObject::operator new(0x80uLL);
-  HGTexture::HGTexture(v21, *a5, v11);
+  HGTexture::HGTexture(v21, *rect, v11);
   lutsBitmapLoaderCache = self->_lutsBitmapLoaderCache;
   if (lutsBitmapLoaderCache)
   {
@@ -125,12 +125,12 @@ uint64_t __31__PAEChromaKeyeriOS_properties__block_invoke()
   (*(*v21 + 24))(v21);
   (*(*v11 + 24))(v11);
   v24 = self->_lutsBitmapLoaderCache;
-  v25 = *(*a3 + 120);
+  v25 = *(*node + 120);
 
-  v25(a3, v8, v24);
+  v25(node, v8, v24);
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v25[2] = *MEMORY[0x277D85DE8];
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
@@ -142,9 +142,9 @@ uint64_t __31__PAEChromaKeyeriOS_properties__block_invoke()
   }
 
   v11 = v10;
-  if (a4)
+  if (input)
   {
-    [a4 heliumRef];
+    [input heliumRef];
     v22 = v23;
     if (v23)
     {
@@ -163,26 +163,26 @@ uint64_t __31__PAEChromaKeyeriOS_properties__block_invoke()
 
   v21 = 0;
 LABEL_8:
-  if (-[PAESharedDefaultBase getRenderMode:](self, "getRenderMode:", a5->var0.var1) && [a4 imageType] == 3)
+  if (-[PAESharedDefaultBase getRenderMode:](self, "getRenderMode:", info->var0.var1) && [input imageType] == 3)
   {
     v19 = 0x3FF0000000000000;
     v20 = 0;
     v18 = 0x3FF0000000000000;
-    [v9 getLevelsBlack:&v20 White:&v19 Gamma:&v18 fromParm:26 atTime:a5->var0.var1];
+    [v9 getLevelsBlack:&v20 White:&v19 Gamma:&v18 fromParm:26 atTime:info->var0.var1];
     v16 = 0;
     v17 = 0;
     v15 = 0;
-    [v8 getRedValue:&v24 greenValue:&v24.f64[1] blueValue:v25 fromParm:1 atFxTime:a5->var0.var1];
+    [v8 getRedValue:&v24 greenValue:&v24.f64[1] blueValue:v25 fromParm:1 atFxTime:info->var0.var1];
     if ([v11 colorPrimaries] == 1)
     {
-      [v8 getRedValue:&v24 greenValue:&v24.f64[1] blueValue:v25 fromParm:5 atFxTime:a5->var0.var1];
+      [v8 getRedValue:&v24 greenValue:&v24.f64[1] blueValue:v25 fromParm:5 atFxTime:info->var0.var1];
       v24 = vmulq_f64(v24, vdupq_n_s64(0x3FD1FA3F40000000uLL));
       v25[0] = v25[0] * 0.280898869;
     }
 
-    [v8 getFloatValue:&v17 fromParm:2 atFxTime:a5->var0.var1];
-    [v8 getFloatValue:&v16 fromParm:3 atFxTime:a5->var0.var1];
-    [v8 getFloatValue:&v15 fromParm:4 atFxTime:a5->var0.var1];
+    [v8 getFloatValue:&v17 fromParm:2 atFxTime:info->var0.var1];
+    [v8 getFloatValue:&v16 fromParm:3 atFxTime:info->var0.var1];
+    [v8 getFloatValue:&v15 fromParm:4 atFxTime:info->var0.var1];
     OMSamples::OMSamples(v14);
   }
 
@@ -205,13 +205,13 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

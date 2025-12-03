@@ -1,9 +1,9 @@
 @interface CPLCloudKitReschedulerCoordinator
-+ (id)_cloudKitReschedulerManagerForLibraryWithIdentifier:(id)a3 involvedProcesses:(id)a4 relatedApplications:(id)a5;
-+ (id)cloudKitReschedulerManagerForLibraryWithIdentifier:(id)a3 involvedProcesses:(id)a4 relatedApplications:(id)a5;
++ (id)_cloudKitReschedulerManagerForLibraryWithIdentifier:(id)identifier involvedProcesses:(id)processes relatedApplications:(id)applications;
++ (id)cloudKitReschedulerManagerForLibraryWithIdentifier:(id)identifier involvedProcesses:(id)processes relatedApplications:(id)applications;
 + (void)_saveRegisteredTaskIdentifiers;
 + (void)beginRegisteringKnownReschedulerManager;
-+ (void)dropCloudKitReschedulerManagerForLibraryWithIdentifier:(id)a3;
++ (void)dropCloudKitReschedulerManagerForLibraryWithIdentifier:(id)identifier;
 + (void)endRegisteringKnownReschedulerManagers;
 @end
 
@@ -13,19 +13,19 @@
 {
   if ((byte_1002C4FD0 & 1) == 0)
   {
-    v4 = [qword_1002C4FE8 allObjects];
+    allObjects = [qword_1002C4FE8 allObjects];
     v3 = +[NSUserDefaults standardUserDefaults];
-    [v3 setObject:v4 forKey:@"_CPLRegisteredTaskIdentifiers"];
+    [v3 setObject:allObjects forKey:@"_CPLRegisteredTaskIdentifiers"];
   }
 }
 
-+ (id)_cloudKitReschedulerManagerForLibraryWithIdentifier:(id)a3 involvedProcesses:(id)a4 relatedApplications:(id)a5
++ (id)_cloudKitReschedulerManagerForLibraryWithIdentifier:(id)identifier involvedProcesses:(id)processes relatedApplications:(id)applications
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = CPLLibraryIdentifierSystemLibrary;
-  v9 = a5;
-  v10 = a4;
-  LODWORD(v8) = [v7 isEqualToString:v8];
+  applicationsCopy = applications;
+  processesCopy = processes;
+  LODWORD(v8) = [identifierCopy isEqualToString:v8];
   v11 = [CPLBGSTReschedulerManager alloc];
   if (v8)
   {
@@ -35,20 +35,20 @@
 
   else
   {
-    v12 = [CPLBGSTReschedulerManager taskIdentifierForLibraryIdentifier:v7];
+    v12 = [CPLBGSTReschedulerManager taskIdentifierForLibraryIdentifier:identifierCopy];
     +[CPLBGSTReschedulerManager groupNameForAppLibrarySync];
   }
   v13 = ;
-  v14 = [(CPLBGSTReschedulerManager *)v11 initWithTaskIdentifier:v12 involvedProcesses:v10 relatedApplications:v9 groupName:v13];
+  v14 = [(CPLBGSTReschedulerManager *)v11 initWithTaskIdentifier:v12 involvedProcesses:processesCopy relatedApplications:applicationsCopy groupName:v13];
 
   return v14;
 }
 
-+ (id)cloudKitReschedulerManagerForLibraryWithIdentifier:(id)a3 involvedProcesses:(id)a4 relatedApplications:(id)a5
++ (id)cloudKitReschedulerManagerForLibraryWithIdentifier:(id)identifier involvedProcesses:(id)processes relatedApplications:(id)applications
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  processesCopy = processes;
+  applicationsCopy = applications;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -59,14 +59,14 @@
   v18[1] = 3221225472;
   v19 = sub_10002B6DC;
   v20 = &unk_1002734D0;
-  v12 = v9;
+  v12 = identifierCopy;
   v25 = a2;
-  v26 = a1;
+  selfCopy = self;
   v21 = v12;
   v24 = &v27;
-  v13 = v10;
+  v13 = processesCopy;
   v22 = v13;
-  v14 = v11;
+  v14 = applicationsCopy;
   v23 = v14;
   v15 = v18;
   os_unfair_lock_lock(&stru_1002C4FD4);
@@ -79,7 +79,7 @@
   return v16;
 }
 
-+ (void)dropCloudKitReschedulerManagerForLibraryWithIdentifier:(id)a3
++ (void)dropCloudKitReschedulerManagerForLibraryWithIdentifier:(id)identifier
 {
   v12[0] = 0;
   v12[1] = v12;
@@ -92,9 +92,9 @@
   v7 = sub_10002BB1C;
   v8 = &unk_1002734F8;
   v10 = v12;
-  v4 = a3;
-  v9 = v4;
-  v11 = a1;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  selfCopy = self;
   v5 = v6;
   os_unfair_lock_lock(&stru_1002C4FD4);
   v7(v5);
@@ -110,7 +110,7 @@
   v4 = sub_10002BC60;
   v5 = &unk_100273518;
   v6 = a2;
-  v7 = a1;
+  selfCopy = self;
   v2 = v3;
   os_unfair_lock_lock(&stru_1002C4FD4);
   v4(v2);
@@ -128,7 +128,7 @@
   v4 = sub_10002BD84;
   v5 = &unk_100273540;
   v6 = v8;
-  v7 = a1;
+  selfCopy = self;
   v2 = v3;
   os_unfair_lock_lock(&stru_1002C4FD4);
   v4(v2);

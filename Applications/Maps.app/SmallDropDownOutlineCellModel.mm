@@ -1,7 +1,7 @@
 @interface SmallDropDownOutlineCellModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SmallDropDownOutlineCellDelegate)delegate;
-- (SmallDropDownOutlineCellModel)initWithButtonTitle:(id)a3 dropDownTitles:(id)a4 selectedIndex:(int64_t)a5 delegate:(id)a6 backgroundModel:(id)a7;
+- (SmallDropDownOutlineCellModel)initWithButtonTitle:(id)title dropDownTitles:(id)titles selectedIndex:(int64_t)index delegate:(id)delegate backgroundModel:(id)model;
 @end
 
 @implementation SmallDropDownOutlineCellModel
@@ -13,40 +13,40 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(SmallDropDownOutlineCellModel *)v6 buttonTitle];
-    v8 = v7;
-    if (v7 == self->_buttonTitle || [(NSString *)v7 isEqual:?])
+    buttonTitle = [(SmallDropDownOutlineCellModel *)v6 buttonTitle];
+    v8 = buttonTitle;
+    if (buttonTitle == self->_buttonTitle || [(NSString *)buttonTitle isEqual:?])
     {
-      v9 = [(SmallDropDownOutlineCellModel *)v6 dropDownTitles];
-      v10 = v9;
-      if ((v9 == self->_dropDownTitles || [(NSArray *)v9 isEqual:?]) && [(SmallDropDownOutlineCellModel *)v6 selectedIndex]== self->_selectedIndex)
+      dropDownTitles = [(SmallDropDownOutlineCellModel *)v6 dropDownTitles];
+      v10 = dropDownTitles;
+      if ((dropDownTitles == self->_dropDownTitles || [(NSArray *)dropDownTitles isEqual:?]) && [(SmallDropDownOutlineCellModel *)v6 selectedIndex]== self->_selectedIndex)
       {
-        v11 = [(SmallDropDownOutlineCellModel *)v6 delegate];
+        delegate = [(SmallDropDownOutlineCellModel *)v6 delegate];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        if (v11 == WeakRetained || [v11 isEqual:WeakRetained])
+        if (delegate == WeakRetained || [delegate isEqual:WeakRetained])
         {
-          v13 = [(SmallDropDownOutlineCellModel *)v6 backgroundModel];
-          v14 = v13;
-          if (v13 == self->_backgroundModel)
+          backgroundModel = [(SmallDropDownOutlineCellModel *)v6 backgroundModel];
+          v14 = backgroundModel;
+          if (backgroundModel == self->_backgroundModel)
           {
             v15 = 1;
           }
 
           else
           {
-            v15 = [(SidebarOutlineCellBackgroundModel *)v13 isEqual:?];
+            v15 = [(SidebarOutlineCellBackgroundModel *)backgroundModel isEqual:?];
           }
         }
 
@@ -76,28 +76,28 @@
   return v15;
 }
 
-- (SmallDropDownOutlineCellModel)initWithButtonTitle:(id)a3 dropDownTitles:(id)a4 selectedIndex:(int64_t)a5 delegate:(id)a6 backgroundModel:(id)a7
+- (SmallDropDownOutlineCellModel)initWithButtonTitle:(id)title dropDownTitles:(id)titles selectedIndex:(int64_t)index delegate:(id)delegate backgroundModel:(id)model
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  titleCopy = title;
+  titlesCopy = titles;
+  delegateCopy = delegate;
+  modelCopy = model;
   v22.receiver = self;
   v22.super_class = SmallDropDownOutlineCellModel;
   v16 = [(SmallDropDownOutlineCellModel *)&v22 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [titleCopy copy];
     buttonTitle = v16->_buttonTitle;
     v16->_buttonTitle = v17;
 
-    v19 = [v13 copy];
+    v19 = [titlesCopy copy];
     dropDownTitles = v16->_dropDownTitles;
     v16->_dropDownTitles = v19;
 
-    v16->_selectedIndex = a5;
-    objc_storeWeak(&v16->_delegate, v14);
-    objc_storeStrong(&v16->_backgroundModel, a7);
+    v16->_selectedIndex = index;
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    objc_storeStrong(&v16->_backgroundModel, model);
   }
 
   return v16;

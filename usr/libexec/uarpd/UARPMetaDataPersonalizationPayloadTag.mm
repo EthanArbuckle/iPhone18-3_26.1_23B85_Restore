@@ -1,7 +1,7 @@
 @interface UARPMetaDataPersonalizationPayloadTag
 - (UARPMetaDataPersonalizationPayloadTag)init;
-- (UARPMetaDataPersonalizationPayloadTag)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataPersonalizationPayloadTag)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataPersonalizationPayloadTag)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataPersonalizationPayloadTag)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -25,22 +25,22 @@
   return v3;
 }
 
-- (UARPMetaDataPersonalizationPayloadTag)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataPersonalizationPayloadTag)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataPersonalizationPayloadTag *)self init];
   v7 = v6;
   if (v6)
   {
     v15.receiver = v6;
     v15.super_class = UARPMetaDataPersonalizationPayloadTag;
-    v8 = [(UARPMetaData *)&v15 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v15 stringFromPlistValue:valueCopy];
     v9 = v8;
     if (v8)
     {
       v7->super._tlvLength = [v8 length];
-      v10 = [v9 UTF8String];
-      v11 = [[UARPComponentTag alloc] initWithChar1:*v10 char2:v10[1] char3:v10[2] char4:v10[3]];
+      uTF8String = [v9 UTF8String];
+      v11 = [[UARPComponentTag alloc] initWithChar1:*uTF8String char2:uTF8String[1] char3:uTF8String[2] char4:uTF8String[3]];
       tag = v7->_tag;
       v7->_tag = v11;
 
@@ -61,14 +61,14 @@
   return v13;
 }
 
-- (UARPMetaDataPersonalizationPayloadTag)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataPersonalizationPayloadTag)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataPersonalizationPayloadTag *)self init];
   v7 = v6;
   v8 = 0;
-  if (a3 == 4 && v6)
+  if (length == 4 && v6)
   {
-    v9 = [[UARPComponentTag alloc] initWithChar1:*a4 char2:*(a4 + 1) char3:*(a4 + 2) char4:*(a4 + 3)];
+    v9 = [[UARPComponentTag alloc] initWithChar1:*value char2:*(value + 1) char3:*(value + 2) char4:*(value + 3)];
     tag = v7->_tag;
     v7->_tag = v9;
 
@@ -90,9 +90,9 @@
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
+  tlvName = [(UARPMetaData *)self tlvName];
   v4 = [(UARPMetaDataPersonalizationPayloadTag *)self tag];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, v4];
 
   return v5;
 }

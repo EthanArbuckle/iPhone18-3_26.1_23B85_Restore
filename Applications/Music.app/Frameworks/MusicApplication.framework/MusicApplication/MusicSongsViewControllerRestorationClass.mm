@@ -1,11 +1,11 @@
 @interface MusicSongsViewControllerRestorationClass
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4;
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder;
 - (MusicSongsViewControllerRestorationClass)init;
 @end
 
 @implementation MusicSongsViewControllerRestorationClass
 
-+ (id)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4
++ (id)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder
 {
   v4 = [objc_allocWithZone(type metadata accessor for SongsViewController()) init];
 

@@ -1,18 +1,18 @@
 @interface PCDictionaryEncoder
-+ (id)decodeToDictionary:(id)a3;
-+ (id)encodeDictionary:(id)a3;
++ (id)decodeToDictionary:(id)dictionary;
++ (id)encodeDictionary:(id)dictionary;
 @end
 
 @implementation PCDictionaryEncoder
 
-+ (id)encodeDictionary:(id)a3
++ (id)encodeDictionary:(id)dictionary
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v10 = 0;
-    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:&v10];
+    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryCopy options:0 error:&v10];
     v5 = v10;
     if (v5 || !v4)
     {
@@ -43,14 +43,14 @@
   return v6;
 }
 
-+ (id)decodeToDictionary:(id)a3
++ (id)decodeToDictionary:(id)dictionary
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v10 = 0;
-    v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v3 options:0 error:&v10];
+    v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dictionaryCopy options:0 error:&v10];
     v5 = v10;
     if (v5 || !v4)
     {

@@ -1,80 +1,80 @@
 @interface BKAppearanceViewController
-+ (int)_fontSizeToSegmentIndex:(float)a3;
-- (BKAppearanceViewController)initWithNibName:(id)a3 bundle:(id)a4;
++ (int)_fontSizeToSegmentIndex:(float)index;
+- (BKAppearanceViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (BKAppearanceViewControllerDelegate)delegate;
 - (BOOL)_shouldShowAutoNightMode;
 - (BOOL)advancedFonts;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (CGSize)contentSize;
 - (NSArray)fonts;
 - (UIStackView)themeContainer;
 - (UISwitch)autoNightModeSwitch;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_themeButtonImageForTheme:(int64_t)a3 selected:(BOOL)a4;
-- (id)_themeButtonImageWithColor:(id)a3 unselectedBorderColor:(id)a4 selected:(BOOL)a5;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_themeButtonImageForTheme:(int64_t)theme selected:(BOOL)selected;
+- (id)_themeButtonImageWithColor:(id)color unselectedBorderColor:(id)borderColor selected:(BOOL)selected;
 - (id)keyCommands;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (int)maxVisibleFonts;
-- (int64_t)colorPotOffsetMultiplier:(int64_t)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_changeAppearanceStyle:(unint64_t)a3;
+- (int64_t)colorPotOffsetMultiplier:(int64_t)multiplier;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_changeAppearanceStyle:(unint64_t)style;
 - (void)_restoreAutoNightModeSwitch;
-- (void)_sendActionsForAutoNightSwitchWithPreviousState:(BOOL)a3;
+- (void)_sendActionsForAutoNightSwitchWithPreviousState:(BOOL)state;
 - (void)_setPopoverScrolling;
 - (void)_turnAutoNightModeSwitchOff;
-- (void)appearanceFontViewController:(id)a3 didChangeToFontWithName:(id)a4;
+- (void)appearanceFontViewController:(id)controller didChangeToFontWithName:(id)name;
 - (void)appearanceShouldDismissPopover;
-- (void)changeFontSize:(id)a3;
-- (void)changeLegibility:(id)a3;
-- (void)changeLineHeight:(id)a3;
+- (void)changeFontSize:(id)size;
+- (void)changeLegibility:(id)legibility;
+- (void)changeLineHeight:(id)height;
 - (void)contentSizeCategoryDidChange;
-- (void)coordinator:(id)a3 observer:(id)a4 didChangeLayout:(unint64_t)a5;
+- (void)coordinator:(id)coordinator observer:(id)observer didChangeLayout:(unint64_t)layout;
 - (void)dealloc;
-- (void)decreaseFontSize:(id)a3;
-- (void)defaultFontSize:(id)a3;
+- (void)decreaseFontSize:(id)size;
+- (void)defaultFontSize:(id)size;
 - (void)disableAutoNightModeSwitch;
-- (void)dismissMenu:(id)a3;
+- (void)dismissMenu:(id)menu;
 - (void)enableAutoNightModeSwitch;
-- (void)fontSizeModifiedByOffset:(float)a3;
-- (void)handleAutoNightModeSwitch:(id)a3;
-- (void)increaseFontSize:(id)a3;
-- (void)lineHeightModifiedByOffset:(float)a3;
+- (void)fontSizeModifiedByOffset:(float)offset;
+- (void)handleAutoNightModeSwitch:(id)switch;
+- (void)increaseFontSize:(id)size;
+- (void)lineHeightModifiedByOffset:(float)offset;
 - (void)loadFonts;
 - (void)loadView;
-- (void)onScrollSwitch:(id)a3 notifyingCoordinator:(BOOL)a4;
+- (void)onScrollSwitch:(id)switch notifyingCoordinator:(BOOL)coordinator;
 - (void)releaseViews;
-- (void)setAppearanceStyle:(unint64_t)a3;
-- (void)setBook:(id)a3;
-- (void)setFonts:(id)a3;
-- (void)setLayout:(unint64_t)a3;
-- (void)setScrollModeOn:(BOOL)a3 notifyingCoordinator:(BOOL)a4;
-- (void)setStyle:(id)a3;
-- (void)setTheme:(id)a3;
-- (void)setThemeGray:(id)a3;
-- (void)setThemeNight:(id)a3;
-- (void)setThemeNormal:(id)a3;
-- (void)setThemeSepia:(id)a3;
+- (void)setAppearanceStyle:(unint64_t)style;
+- (void)setBook:(id)book;
+- (void)setFonts:(id)fonts;
+- (void)setLayout:(unint64_t)layout;
+- (void)setScrollModeOn:(BOOL)on notifyingCoordinator:(BOOL)coordinator;
+- (void)setStyle:(id)style;
+- (void)setTheme:(id)theme;
+- (void)setThemeGray:(id)gray;
+- (void)setThemeNight:(id)night;
+- (void)setThemeNormal:(id)normal;
+- (void)setThemeSepia:(id)sepia;
 - (void)stylizeForTheme;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateThemeButtons;
 - (void)updateUI;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BKAppearanceViewController
 
-- (BKAppearanceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKAppearanceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = BKAppearanceViewController;
-  v4 = [(BEAppearanceViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(BEAppearanceViewController *)&v10 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -150,8 +150,8 @@
 - (void)_setPopoverScrolling
 {
   v3 = (isPad() & 1) == 0 && !isPortrait() || +[UIFont bc_accessibilityFontSizesEnabled];
-  v4 = [(BEAppearanceViewController *)self tableView];
-  [v4 setScrollEnabled:v3];
+  tableView = [(BEAppearanceViewController *)self tableView];
+  [tableView setScrollEnabled:v3];
 }
 
 - (void)loadView
@@ -160,8 +160,8 @@
   v4.super_class = BKAppearanceViewController;
   [(BEAppearanceViewController *)&v4 loadView];
   [(BKAppearanceViewController *)self _setPopoverScrolling];
-  v3 = [(BEAppearanceViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"BKAppearanceTableViewCell"];
+  tableView = [(BEAppearanceViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"BKAppearanceTableViewCell"];
 }
 
 - (void)viewDidLoad
@@ -169,14 +169,14 @@
   v8.receiver = self;
   v8.super_class = BKAppearanceViewController;
   [(BEAppearanceViewController *)&v8 viewDidLoad];
-  v3 = [(BKAppearanceViewController *)self view];
-  [v3 setAccessibilityIgnoresInvertColors:1];
+  view = [(BKAppearanceViewController *)self view];
+  [view setAccessibilityIgnoresInvertColors:1];
 
-  v4 = [(BKAppearanceViewController *)self navigationController];
-  v5 = [v4 navigationBar];
+  navigationController = [(BKAppearanceViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
   v6 = objc_opt_new();
-  [v5 setBackgroundImage:v6 forBarMetrics:0];
+  [navigationBar setBackgroundImage:v6 forBarMetrics:0];
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 addObserver:self selector:"contentSizeCategoryDidChange" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -199,24 +199,24 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = BKAppearanceViewController;
   [(BEAppearanceViewController *)&v6 viewWillAppear:?];
-  v5 = [(BKAppearanceViewController *)self navigationController];
-  [v5 setNavigationBarHidden:1 animated:v3];
+  navigationController = [(BKAppearanceViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1 animated:appearCopy];
 
   [(BKAppearanceViewController *)self updateUI];
   [(BKAppearanceViewController *)self stylizeForTheme];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = BKAppearanceViewController;
-  [(BKAppearanceViewController *)&v6 viewDidAppear:a3];
+  [(BKAppearanceViewController *)&v6 viewDidAppear:appear];
   if (!self->_fonts)
   {
     v4 = dispatch_get_global_queue(0, 0);
@@ -231,8 +231,8 @@
 
 - (CGSize)contentSize
 {
-  v3 = [(BEAppearanceViewController *)self tableView];
-  v4 = [(BKAppearanceViewController *)self numberOfSectionsInTableView:v3];
+  tableView = [(BEAppearanceViewController *)self tableView];
+  v4 = [(BKAppearanceViewController *)self numberOfSectionsInTableView:tableView];
 
   if (v4 < 1)
   {
@@ -245,28 +245,28 @@
     v6 = 0.0;
     do
     {
-      v7 = [(BEAppearanceViewController *)self tableView];
-      v8 = [(BKAppearanceViewController *)self tableView:v7 numberOfRowsInSection:v5];
+      tableView2 = [(BEAppearanceViewController *)self tableView];
+      v8 = [(BKAppearanceViewController *)self tableView:tableView2 numberOfRowsInSection:v5];
 
       if (v8 >= 1)
       {
         for (i = 0; i != v8; ++i)
         {
-          v10 = [(BEAppearanceViewController *)self tableView];
+          tableView3 = [(BEAppearanceViewController *)self tableView];
           v11 = [NSIndexPath indexPathForRow:i inSection:v5];
-          [(BKAppearanceViewController *)self tableView:v10 heightForRowAtIndexPath:v11];
+          [(BKAppearanceViewController *)self tableView:tableView3 heightForRowAtIndexPath:v11];
           v13 = v12;
 
           v6 = v6 + v13;
         }
       }
 
-      v14 = [(BEAppearanceViewController *)self tableView];
-      [(BKAppearanceViewController *)self tableView:v14 heightForHeaderInSection:v5];
+      tableView4 = [(BEAppearanceViewController *)self tableView];
+      [(BKAppearanceViewController *)self tableView:tableView4 heightForHeaderInSection:v5];
       v16 = v6 + v15;
 
-      v17 = [(BEAppearanceViewController *)self tableView];
-      [(BKAppearanceViewController *)self tableView:v17 heightForFooterInSection:v5];
+      tableView5 = [(BEAppearanceViewController *)self tableView];
+      [(BKAppearanceViewController *)self tableView:tableView5 heightForFooterInSection:v5];
       v6 = v16 + v18;
 
       ++v5;
@@ -293,34 +293,34 @@
   return result;
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v4 = a3;
-  v5 = [(BKAppearanceViewController *)self theme];
+  themeCopy = theme;
+  theme = [(BKAppearanceViewController *)self theme];
 
-  if (v5 != v4)
+  if (theme != themeCopy)
   {
     v6.receiver = self;
     v6.super_class = BKAppearanceViewController;
-    [(BKAppearanceViewController *)&v6 setTheme:v4];
-    [(BKAppearanceFontViewController *)self->_fontVC setTheme:v4];
+    [(BKAppearanceViewController *)&v6 setTheme:themeCopy];
+    [(BKAppearanceFontViewController *)self->_fontVC setTheme:themeCopy];
     [(BKAppearanceViewController *)self stylizeForTheme];
   }
 }
 
-- (int64_t)colorPotOffsetMultiplier:(int64_t)a3
+- (int64_t)colorPotOffsetMultiplier:(int64_t)multiplier
 {
-  v4 = [(BKAppearanceViewController *)self view];
-  v5 = +[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [v4 semanticContentAttribute]);
+  view = [(BKAppearanceViewController *)self view];
+  v5 = +[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [view semanticContentAttribute]);
 
   if (v5 == UIUserInterfaceLayoutDirectionRightToLeft)
   {
-    return 3 - a3;
+    return 3 - multiplier;
   }
 
   else
   {
-    return a3;
+    return multiplier;
   }
 }
 
@@ -448,47 +448,47 @@
 
     [(UIButton *)self->_themeNightButton setAccessibilityIdentifier:@"theme well night"];
     [(UIStackView *)self->_themeContainer addArrangedSubview:self->_themeNightButton];
-    v84 = [(UIStackView *)self->_themeContainer widthAnchor];
+    widthAnchor = [(UIStackView *)self->_themeContainer widthAnchor];
     [(BKAppearanceViewController *)self appearanceColorPotSeparator];
     v61 = v60;
     [(BKAppearanceViewController *)self appearanceColorPotWidth];
-    v83 = [v84 constraintEqualToConstant:v62 * 4.0 + v61 * 3.0];
+    v83 = [widthAnchor constraintEqualToConstant:v62 * 4.0 + v61 * 3.0];
     v85[0] = v83;
-    v82 = [(UIStackView *)self->_themeContainer heightAnchor];
+    heightAnchor = [(UIStackView *)self->_themeContainer heightAnchor];
     [(BKAppearanceViewController *)self appearanceColorContainerHeight];
-    v81 = [v82 constraintEqualToConstant:?];
+    v81 = [heightAnchor constraintEqualToConstant:?];
     v85[1] = v81;
-    v80 = [(UIButton *)self->_themeWhiteButton widthAnchor];
+    widthAnchor2 = [(UIButton *)self->_themeWhiteButton widthAnchor];
     [(BKAppearanceViewController *)self appearanceColorPotWidth];
-    v79 = [v80 constraintEqualToConstant:?];
+    v79 = [widthAnchor2 constraintEqualToConstant:?];
     v85[2] = v79;
-    v78 = [(UIButton *)self->_themeWhiteButton heightAnchor];
+    heightAnchor2 = [(UIButton *)self->_themeWhiteButton heightAnchor];
     [(BKAppearanceViewController *)self appearanceColorPotHeight];
-    v77 = [v78 constraintEqualToConstant:?];
+    v77 = [heightAnchor2 constraintEqualToConstant:?];
     v85[3] = v77;
-    v76 = [(UIButton *)self->_themeSepiaButton widthAnchor];
+    widthAnchor3 = [(UIButton *)self->_themeSepiaButton widthAnchor];
     [(BKAppearanceViewController *)self appearanceColorPotWidth];
-    v75 = [v76 constraintEqualToConstant:?];
+    v75 = [widthAnchor3 constraintEqualToConstant:?];
     v85[4] = v75;
-    v74 = [(UIButton *)self->_themeSepiaButton heightAnchor];
+    heightAnchor3 = [(UIButton *)self->_themeSepiaButton heightAnchor];
     [(BKAppearanceViewController *)self appearanceColorPotHeight];
-    v73 = [v74 constraintEqualToConstant:?];
+    v73 = [heightAnchor3 constraintEqualToConstant:?];
     v85[5] = v73;
-    v72 = [(UIButton *)self->_themeGrayButton widthAnchor];
+    widthAnchor4 = [(UIButton *)self->_themeGrayButton widthAnchor];
     [(BKAppearanceViewController *)self appearanceColorPotWidth];
-    v63 = [v72 constraintEqualToConstant:?];
+    v63 = [widthAnchor4 constraintEqualToConstant:?];
     v85[6] = v63;
-    v64 = [(UIButton *)self->_themeGrayButton heightAnchor];
+    heightAnchor4 = [(UIButton *)self->_themeGrayButton heightAnchor];
     [(BKAppearanceViewController *)self appearanceColorPotHeight];
-    v65 = [v64 constraintEqualToConstant:?];
+    v65 = [heightAnchor4 constraintEqualToConstant:?];
     v85[7] = v65;
-    v66 = [(UIButton *)self->_themeNightButton widthAnchor];
+    widthAnchor5 = [(UIButton *)self->_themeNightButton widthAnchor];
     [(BKAppearanceViewController *)self appearanceColorPotWidth];
-    v67 = [v66 constraintEqualToConstant:?];
+    v67 = [widthAnchor5 constraintEqualToConstant:?];
     v85[8] = v67;
-    v68 = [(UIButton *)self->_themeNightButton heightAnchor];
+    heightAnchor5 = [(UIButton *)self->_themeNightButton heightAnchor];
     [(BKAppearanceViewController *)self appearanceColorPotHeight];
-    v69 = [v68 constraintEqualToConstant:?];
+    v69 = [heightAnchor5 constraintEqualToConstant:?];
     v85[9] = v69;
     v70 = [NSArray arrayWithObjects:v85 count:10];
     [NSLayoutConstraint activateConstraints:v70];
@@ -523,13 +523,13 @@
   return autoNightModeSwitch;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(BKAppearanceViewController *)self menuItems];
-  if (v4)
+  menuItems = [(BKAppearanceViewController *)self menuItems];
+  if (menuItems)
   {
-    v5 = [(BKAppearanceViewController *)self menuItems];
-    v6 = [v5 count];
+    menuItems2 = [(BKAppearanceViewController *)self menuItems];
+    v6 = [menuItems2 count];
   }
 
   else
@@ -540,10 +540,10 @@
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(BKAppearanceViewController *)self menuItems];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  menuItems = [(BKAppearanceViewController *)self menuItems];
+  v7 = [menuItems objectAtIndexedSubscript:section];
 
   if (v7 == @"BKAppearanceMenuItemFont")
   {
@@ -571,23 +571,23 @@
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   [(BEAppearanceViewController *)self appearanceRowHeight];
   v7 = v6;
-  v8 = [(BKAppearanceViewController *)self menuItems];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  menuItems = [(BKAppearanceViewController *)self menuItems];
+  v9 = [menuItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   if (v9 == @"BKAppearanceMenuItemTheme")
   {
-    if (![v5 row])
+    if (![pathCopy row])
     {
       v7 = 60.0;
       goto LABEL_16;
     }
 
-    if ([v5 row] != &dword_0 + 1)
+    if ([pathCopy row] != &dword_0 + 1)
     {
       goto LABEL_4;
     }
@@ -604,7 +604,7 @@ LABEL_11:
   }
 
 LABEL_4:
-  if (+[UIFont bc_accessibilityFontSizesEnabled](UIFont, "bc_accessibilityFontSizesEnabled") && v9 == @"BKAppearanceMenuItemFont" && [v5 row] == &dword_0 + 1)
+  if (+[UIFont bc_accessibilityFontSizesEnabled](UIFont, "bc_accessibilityFontSizesEnabled") && v9 == @"BKAppearanceMenuItemFont" && [pathCopy row] == &dword_0 + 1)
   {
     if (([UIFont bc_contentSizeCategoryIsGreaterThan:UIContentSizeCategoryAccessibilityExtraLarge]& 1) != 0)
     {
@@ -627,10 +627,10 @@ LABEL_16:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = 5.0;
-  if (!a4)
+  if (!section)
   {
     return 0.0;
   }
@@ -638,33 +638,33 @@ LABEL_16:
   return result;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    v5 = [(BEAppearanceViewController *)self tableViewHeaderView];
+    tableViewHeaderView = [(BEAppearanceViewController *)self tableViewHeaderView];
   }
 
   else
   {
-    v5 = 0;
+    tableViewHeaderView = 0;
   }
 
-  return v5;
+  return tableViewHeaderView;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"BKAppearanceTableViewCell" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"BKAppearanceTableViewCell" forIndexPath:pathCopy];
   if (v7)
   {
     v8 = v7;
-    v9 = [v7 textLabel];
-    [v9 setText:0];
+    textLabel = [v7 textLabel];
+    [textLabel setText:0];
 
-    v10 = [v8 detailTextLabel];
-    [v10 setText:0];
+    detailTextLabel = [v8 detailTextLabel];
+    [detailTextLabel setText:0];
 
     [v8 setAccessoryView:0];
     [v8 setAccessoryType:0];
@@ -672,10 +672,10 @@ LABEL_16:
     v108 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v11 = [v8 contentView];
-    v12 = [v11 subviews];
+    contentView = [v8 contentView];
+    subviews = [contentView subviews];
 
-    v13 = [v12 countByEnumeratingWithState:&v105 objects:v113 count:16];
+    v13 = [subviews countByEnumeratingWithState:&v105 objects:v113 count:16];
     if (v13)
     {
       v14 = v13;
@@ -686,13 +686,13 @@ LABEL_16:
         {
           if (*v106 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v105 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v105 objects:v113 count:16];
+        v14 = [subviews countByEnumeratingWithState:&v105 objects:v113 count:16];
       }
 
       while (v14);
@@ -704,34 +704,34 @@ LABEL_16:
     v8 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:@"BKAppearanceTableViewCell"];
   }
 
-  v17 = [v8 contentView];
-  v18 = [(BKAppearanceViewController *)self menuItems];
-  v19 = [v18 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  contentView2 = [v8 contentView];
+  menuItems = [(BKAppearanceViewController *)self menuItems];
+  v19 = [menuItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   if (v19 == @"BKAppearanceMenuItemBrightness")
   {
-    v20 = [(BEAppearanceViewController *)self brightnessSlider];
-    [v17 addSubview:v20];
-    v96 = [v20 leadingAnchor];
-    obj = [v17 layoutMarginsGuide];
-    v89 = [obj leadingAnchor];
-    v87 = [v96 constraintEqualToAnchor:v89];
+    brightnessSlider = [(BEAppearanceViewController *)self brightnessSlider];
+    [contentView2 addSubview:brightnessSlider];
+    leadingAnchor = [brightnessSlider leadingAnchor];
+    obj = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [obj leadingAnchor];
+    v87 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v112[0] = v87;
-    v84 = [v20 trailingAnchor];
-    v85 = [v17 layoutMarginsGuide];
-    v83 = [v85 trailingAnchor];
-    v82 = [v84 constraintEqualToAnchor:v83];
+    trailingAnchor = [brightnessSlider trailingAnchor];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v82 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v112[1] = v82;
-    [v20 topAnchor];
+    [brightnessSlider topAnchor];
     v21 = v91 = v19;
-    [v17 topAnchor];
-    v22 = v94 = v6;
+    [contentView2 topAnchor];
+    v22 = v94 = pathCopy;
     v23 = [v21 constraintEqualToAnchor:v22];
     v112[2] = v23;
-    v24 = [v20 bottomAnchor];
-    [v17 bottomAnchor];
-    v26 = v25 = v17;
-    v27 = [v24 constraintEqualToAnchor:v26 constant:-1.0];
+    bottomAnchor = [brightnessSlider bottomAnchor];
+    [contentView2 bottomAnchor];
+    v26 = v25 = contentView2;
+    v27 = [bottomAnchor constraintEqualToAnchor:v26 constant:-1.0];
     v112[3] = v27;
     v28 = v112;
     goto LABEL_18;
@@ -739,20 +739,20 @@ LABEL_16:
 
   if (v19 == @"BKAppearanceMenuItemFont")
   {
-    if ([v6 row])
+    if ([pathCopy row])
     {
-      if ([v6 row] != &dword_0 + 1)
+      if ([pathCopy row] != &dword_0 + 1)
       {
         goto LABEL_21;
       }
 
-      v90 = v17;
+      v90 = contentView2;
       v92 = v19;
-      v95 = v6;
+      v95 = pathCopy;
       v32 = AEBundle();
       v33 = [v32 localizedStringForKey:@"Fonts" value:&stru_1E7188 table:0];
-      v34 = [v8 textLabel];
-      [v34 setText:v33];
+      textLabel2 = [v8 textLabel];
+      [textLabel2 setText:v33];
 
       v35 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleHeadline scale:1];
       v36 = [UIImage systemImageNamed:@"chevron.forward"];
@@ -763,15 +763,15 @@ LABEL_16:
       v38 = [[UIImageView alloc] initWithImage:v37];
       [v8 setAccessoryView:v38];
 
-      v39 = [(BKAppearanceViewController *)self themePage];
-      v40 = [v39 tertiaryTextColor];
-      v41 = [v8 accessoryView];
-      [v41 setTintColor:v40];
+      themePage = [(BKAppearanceViewController *)self themePage];
+      tertiaryTextColor = [themePage tertiaryTextColor];
+      accessoryView = [v8 accessoryView];
+      [accessoryView setTintColor:tertiaryTextColor];
 
-      v42 = [(BKAppearanceViewController *)self themePage];
-      v43 = [v42 secondaryTextColor];
-      v44 = [v8 detailTextLabel];
-      [v44 setTextColor:v43];
+      themePage2 = [(BKAppearanceViewController *)self themePage];
+      secondaryTextColor = [themePage2 secondaryTextColor];
+      detailTextLabel2 = [v8 detailTextLabel];
+      [detailTextLabel2 setTextColor:secondaryTextColor];
 
       v103 = 0u;
       v104 = 0u;
@@ -797,11 +797,11 @@ LABEL_16:
           }
 
           v49 = *(*(&v101 + 1) + 8 * j);
-          v50 = self;
-          v51 = [(BKAppearanceViewController *)self style];
-          v52 = [v51 fontFamily];
-          v53 = [v49 familyName];
-          v54 = [v52 isEqualToString:v53];
+          selfCopy = self;
+          style = [(BKAppearanceViewController *)self style];
+          fontFamily = [style fontFamily];
+          familyName = [v49 familyName];
+          v54 = [fontFamily isEqualToString:familyName];
 
           if (v54)
           {
@@ -809,24 +809,24 @@ LABEL_16:
             {
               v55 = AEBundle();
               v56 = [v55 localizedStringForKey:@"Original" value:&stru_1E7188 table:0];
-              v57 = [v8 detailTextLabel];
-              [v57 setText:v56];
+              detailTextLabel3 = [v8 detailTextLabel];
+              [detailTextLabel3 setText:v56];
 
-              v58 = [v8 detailTextLabel];
-              v59 = [v58 font];
-              [v59 pointSize];
-              v60 = [UIFont systemFontOfSize:?];
-              v61 = [v8 detailTextLabel];
-              [v61 setFont:v60];
+              detailTextLabel4 = [v8 detailTextLabel];
+              font = [detailTextLabel4 font];
+              [font pointSize];
+              detailTextLabel10 = [UIFont systemFontOfSize:?];
+              detailTextLabel5 = [v8 detailTextLabel];
+              [detailTextLabel5 setFont:detailTextLabel10];
 
 LABEL_41:
               goto LABEL_42;
             }
 
-            v58 = [v49 displayName];
-            v62 = [v8 detailTextLabel];
-            v63 = [v62 font];
-            [v63 pointSize];
+            detailTextLabel4 = [v49 displayName];
+            detailTextLabel6 = [v8 detailTextLabel];
+            font2 = [detailTextLabel6 font];
+            [font2 pointSize];
             v65 = v64;
 
             if ([v49 kind] == &dword_4)
@@ -839,32 +839,32 @@ LABEL_41:
             {
               v66 = [UIFont systemFontOfSize:v65];
 LABEL_38:
-              v59 = v66;
+              font = v66;
             }
 
             else
             {
-              v67 = [v49 familyName];
-              v59 = [UIFont fontWithName:v67 size:v65];
+              familyName2 = [v49 familyName];
+              font = [UIFont fontWithName:familyName2 size:v65];
             }
 
-            v68 = [v8 detailTextLabel];
-            [v68 setText:v58];
+            detailTextLabel7 = [v8 detailTextLabel];
+            [detailTextLabel7 setText:detailTextLabel4];
 
-            v69 = [v59 bkEffectiveFontForText:v58];
-            v70 = [v8 detailTextLabel];
-            [v70 setFont:v69];
+            v69 = [font bkEffectiveFontForText:detailTextLabel4];
+            detailTextLabel8 = [v8 detailTextLabel];
+            [detailTextLabel8 setFont:v69];
 
-            v71 = [v8 detailTextLabel];
-            [v71 setLineBreakMode:4];
+            detailTextLabel9 = [v8 detailTextLabel];
+            [detailTextLabel9 setLineBreakMode:4];
 
-            v60 = [v8 detailTextLabel];
-            [v60 setNumberOfLines:1];
+            detailTextLabel10 = [v8 detailTextLabel];
+            [detailTextLabel10 setNumberOfLines:1];
             goto LABEL_41;
           }
 
 LABEL_42:
-          self = v50;
+          self = selfCopy;
         }
 
         v46 = [obja countByEnumeratingWithState:&v101 objects:v110 count:16];
@@ -873,86 +873,86 @@ LABEL_42:
 LABEL_44:
 
           v19 = v92;
-          v6 = v95;
-          v17 = v90;
+          pathCopy = v95;
+          contentView2 = v90;
           goto LABEL_21;
         }
       }
     }
 
-    v20 = [(BEAppearanceViewController *)self fontSizeButtons];
-    [v17 addSubview:v20];
-    v96 = [v20 leadingAnchor];
-    obj = [v17 layoutMarginsGuide];
-    v89 = [obj leadingAnchor];
-    v87 = [v96 constraintEqualToAnchor:v89];
+    brightnessSlider = [(BEAppearanceViewController *)self fontSizeButtons];
+    [contentView2 addSubview:brightnessSlider];
+    leadingAnchor = [brightnessSlider leadingAnchor];
+    obj = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [obj leadingAnchor];
+    v87 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v111[0] = v87;
-    v84 = [v20 trailingAnchor];
-    v85 = [v17 layoutMarginsGuide];
-    v83 = [v85 trailingAnchor];
-    v82 = [v84 constraintEqualToAnchor:v83];
+    trailingAnchor = [brightnessSlider trailingAnchor];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v82 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v111[1] = v82;
-    [v20 topAnchor];
+    [brightnessSlider topAnchor];
     v21 = v91 = v19;
-    [v17 topAnchor];
-    v22 = v94 = v6;
+    [contentView2 topAnchor];
+    v22 = v94 = pathCopy;
     v23 = [v21 constraintEqualToAnchor:v22];
     v111[2] = v23;
-    v24 = [v20 bottomAnchor];
-    [v17 bottomAnchor];
-    v26 = v25 = v17;
-    v27 = [v24 constraintEqualToAnchor:v26 constant:-1.0];
+    bottomAnchor = [brightnessSlider bottomAnchor];
+    [contentView2 bottomAnchor];
+    v26 = v25 = contentView2;
+    v27 = [bottomAnchor constraintEqualToAnchor:v26 constant:-1.0];
     v111[3] = v27;
     v28 = v111;
 LABEL_18:
     v29 = [NSArray arrayWithObjects:v28 count:4];
     [NSLayoutConstraint activateConstraints:v29];
 
-    v17 = v25;
-    v6 = v94;
+    contentView2 = v25;
+    pathCopy = v94;
 
     v19 = v91;
-    v30 = v96;
+    v30 = leadingAnchor;
     goto LABEL_19;
   }
 
   if (v19 == @"BKAppearanceMenuItemTheme")
   {
-    if ([v6 row])
+    if ([pathCopy row])
     {
-      if ([v6 row] != &dword_0 + 1)
+      if ([pathCopy row] != &dword_0 + 1)
       {
         goto LABEL_21;
       }
 
       v72 = AEBundle();
       v73 = [v72 localizedStringForKey:@"Auto-Night Theme" value:&stru_1E7188 table:0];
-      v74 = [v8 textLabel];
-      [v74 setText:v73];
+      textLabel3 = [v8 textLabel];
+      [textLabel3 setText:v73];
 
-      v20 = [(BKAppearanceViewController *)self autoNightModeSwitch];
-      [v8 setAccessoryView:v20];
+      brightnessSlider = [(BKAppearanceViewController *)self autoNightModeSwitch];
+      [v8 setAccessoryView:brightnessSlider];
 LABEL_20:
 
       goto LABEL_21;
     }
 
-    v20 = [(BKAppearanceViewController *)self themeContainer];
-    [v17 addSubview:v20];
-    objb = [v20 centerXAnchor];
-    v75 = [v17 centerXAnchor];
-    [objb constraintEqualToAnchor:v75];
+    brightnessSlider = [(BKAppearanceViewController *)self themeContainer];
+    [contentView2 addSubview:brightnessSlider];
+    objb = [brightnessSlider centerXAnchor];
+    centerXAnchor = [contentView2 centerXAnchor];
+    [objb constraintEqualToAnchor:centerXAnchor];
     v76 = v93 = v19;
     v109[0] = v76;
-    v77 = [v20 centerYAnchor];
-    [v17 centerYAnchor];
-    v79 = v78 = v17;
-    v80 = [v77 constraintEqualToAnchor:v79];
+    centerYAnchor = [brightnessSlider centerYAnchor];
+    [contentView2 centerYAnchor];
+    v79 = v78 = contentView2;
+    v80 = [centerYAnchor constraintEqualToAnchor:v79];
     v109[1] = v80;
     v81 = [NSArray arrayWithObjects:v109 count:2];
     [NSLayoutConstraint activateConstraints:v81];
 
-    v17 = v78;
+    contentView2 = v78;
     v19 = v93;
 
     v30 = objb;
@@ -976,22 +976,22 @@ LABEL_21:
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(BKAppearanceViewController *)self menuItems];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  menuItems = [(BKAppearanceViewController *)self menuItems];
+  v7 = [menuItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v8 = v7 == @"BKAppearanceMenuItemFont" && [v5 row] == &dword_0 + 1;
+  v8 = v7 == @"BKAppearanceMenuItemFont" && [pathCopy row] == &dword_0 + 1;
   return v8;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  if ([(BKAppearanceViewController *)self tableView:a3 shouldHighlightRowAtIndexPath:v6])
+  pathCopy = path;
+  if ([(BKAppearanceViewController *)self tableView:view shouldHighlightRowAtIndexPath:pathCopy])
   {
-    v7 = v6;
+    v7 = pathCopy;
   }
 
   else
@@ -1002,61 +1002,61 @@ LABEL_21:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v5 = [(BKAppearanceViewController *)self menuItems];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v13, "section")}];
+  pathCopy = path;
+  menuItems = [(BKAppearanceViewController *)self menuItems];
+  v6 = [menuItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  if (v6 == @"BKAppearanceMenuItemFont" && [v13 row] == &dword_0 + 1)
+  if (v6 == @"BKAppearanceMenuItemFont" && [pathCopy row] == &dword_0 + 1)
   {
-    v7 = [(BKAppearanceViewController *)self navigationController];
-    v8 = [v7 topViewController];
-    v9 = v8;
-    if (v8 == self->_fontVC)
+    navigationController = [(BKAppearanceViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
+    v9 = topViewController;
+    if (topViewController == self->_fontVC)
     {
     }
 
     else
     {
-      v10 = [(BKAppearanceViewController *)self navigationController];
-      v11 = [v10 viewControllers];
-      v12 = [v11 containsObject:self->_fontVC];
+      navigationController2 = [(BKAppearanceViewController *)self navigationController];
+      viewControllers = [navigationController2 viewControllers];
+      v12 = [viewControllers containsObject:self->_fontVC];
 
       if (v12)
       {
         goto LABEL_8;
       }
 
-      v7 = [(BKAppearanceViewController *)self navigationController];
-      [v7 pushViewController:self->_fontVC animated:1];
+      navigationController = [(BKAppearanceViewController *)self navigationController];
+      [navigationController pushViewController:self->_fontVC animated:1];
     }
   }
 
 LABEL_8:
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(BKAppearanceViewController *)self theme];
-  [v7 stylizeTableViewCell:v6];
+  cellCopy = cell;
+  theme = [(BKAppearanceViewController *)self theme];
+  [theme stylizeTableViewCell:cellCopy];
 
   v10 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1];
   [v10 _scaledValueForValue:18.0];
   v8 = [UIFont systemFontOfSize:?];
-  v9 = [v6 textLabel];
+  textLabel = [cellCopy textLabel];
 
-  [v9 setFont:v8];
+  [textLabel setFont:v8];
 }
 
-- (void)setBook:(id)a3
+- (void)setBook:(id)book
 {
-  v5 = a3;
-  if (self->_book != v5)
+  bookCopy = book;
+  if (self->_book != bookCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_book, a3);
+    v6 = bookCopy;
+    objc_storeStrong(&self->_book, book);
     [(BKAppearanceFontViewController *)self->_fontVC setBook:v6];
     if (self->_fonts)
     {
@@ -1064,24 +1064,24 @@ LABEL_8:
     }
 
     [(BKAppearanceViewController *)self loadFonts];
-    v5 = v6;
+    bookCopy = v6;
   }
 }
 
 - (void)loadFonts
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_fonts)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_fonts)
   {
-    v3 = [(BKAppearanceViewController *)v2 styleManager];
-    v4 = [v3 fonts];
-    v5 = [v4 mutableCopy];
+    styleManager = [(BKAppearanceViewController *)selfCopy styleManager];
+    fonts = [styleManager fonts];
+    v5 = [fonts mutableCopy];
 
-    v6 = [(BKAppearanceViewController *)v2 book];
-    LOBYTE(v4) = [v6 showOriginalFontOption];
+    book = [(BKAppearanceViewController *)selfCopy book];
+    LOBYTE(fonts) = [book showOriginalFontOption];
 
-    if ((v4 & 1) == 0)
+    if ((fonts & 1) == 0)
     {
       v17 = 0u;
       v18 = 0u;
@@ -1102,8 +1102,8 @@ LABEL_8:
             }
 
             v11 = *(*(&v15 + 1) + 8 * i);
-            v12 = [v11 familyName];
-            v13 = [v12 isEqualToString:&stru_1E7188];
+            familyName = [v11 familyName];
+            v13 = [familyName isEqualToString:&stru_1E7188];
 
             if (v13)
             {
@@ -1132,10 +1132,10 @@ LABEL_8:
 LABEL_14:
     }
 
-    [(BKAppearanceViewController *)v2 setFonts:v5, v15];
+    [(BKAppearanceViewController *)selfCopy setFonts:v5, v15];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)fonts
@@ -1150,72 +1150,72 @@ LABEL_14:
   return fonts;
 }
 
-- (void)setFonts:(id)a3
+- (void)setFonts:(id)fonts
 {
-  v10 = a3;
+  fontsCopy = fonts;
   if (![(NSArray *)self->_fonts isEqualToArray:?])
   {
-    [(BKAppearanceFontViewController *)self->_fontVC setFonts:v10];
-    v5 = [(BKAppearanceViewController *)self fontObserver];
+    [(BKAppearanceFontViewController *)self->_fontVC setFonts:fontsCopy];
+    fontObserver = [(BKAppearanceViewController *)self fontObserver];
     fonts = self->_fonts;
     if (fonts)
     {
       v7 = [NSIndexSet indexSetWithIndexesInRange:0, [(NSArray *)fonts count]];
-      [(NSArray *)self->_fonts removeObserver:v5 fromObjectsAtIndexes:v7 forKeyPath:@"state"];
-      [(NSArray *)self->_fonts removeObserver:v5 fromObjectsAtIndexes:v7 forKeyPath:@"downloadProgress"];
+      [(NSArray *)self->_fonts removeObserver:fontObserver fromObjectsAtIndexes:v7 forKeyPath:@"state"];
+      [(NSArray *)self->_fonts removeObserver:fontObserver fromObjectsAtIndexes:v7 forKeyPath:@"downloadProgress"];
       v8 = self->_fonts;
       self->_fonts = 0;
     }
 
-    if (v10)
+    if (fontsCopy)
     {
-      v9 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [v10 count]);
-      [v10 addObserver:v5 toObjectsAtIndexes:v9 forKeyPath:@"state" options:0 context:0];
-      [v10 addObserver:v5 toObjectsAtIndexes:v9 forKeyPath:@"downloadProgress" options:0 context:0];
-      objc_storeStrong(&self->_fonts, a3);
+      v9 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [fontsCopy count]);
+      [fontsCopy addObserver:fontObserver toObjectsAtIndexes:v9 forKeyPath:@"state" options:0 context:0];
+      [fontsCopy addObserver:fontObserver toObjectsAtIndexes:v9 forKeyPath:@"downloadProgress" options:0 context:0];
+      objc_storeStrong(&self->_fonts, fonts);
     }
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   if (![(ContentStyle *)self->_style isEqual:?])
   {
-    objc_storeStrong(&self->_style, a3);
+    objc_storeStrong(&self->_style, style);
     [(BKAppearanceViewController *)self updateUI];
   }
 }
 
-- (void)setLayout:(unint64_t)a3
+- (void)setLayout:(unint64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
+    self->_layout = layout;
     [(BKAppearanceViewController *)self updateUI];
   }
 }
 
-- (void)setAppearanceStyle:(unint64_t)a3
+- (void)setAppearanceStyle:(unint64_t)style
 {
-  if (self->_appearanceStyle != a3)
+  if (self->_appearanceStyle != style)
   {
-    self->_appearanceStyle = a3;
+    self->_appearanceStyle = style;
     [(BKAppearanceViewController *)self updateThemeButtons];
   }
 }
 
-- (void)_changeAppearanceStyle:(unint64_t)a3
+- (void)_changeAppearanceStyle:(unint64_t)style
 {
   [(BKAppearanceViewController *)self setAppearanceStyle:?];
   v5 = +[BCThemeCoordinator shared];
-  [v5 observer:self didChangeStyle:a3];
+  [v5 observer:self didChangeStyle:style];
 }
 
 - (void)_turnAutoNightModeSwitchOff
 {
-  v3 = [(UISwitch *)self->_autoNightModeSwitch isOn];
-  if (v3)
+  isOn = [(UISwitch *)self->_autoNightModeSwitch isOn];
+  if (isOn)
   {
     [(UISwitch *)self->_autoNightModeSwitch setOn:0 animated:1];
     v4 = +[NSUserDefaults standardUserDefaults];
@@ -1225,7 +1225,7 @@ LABEL_14:
   }
 
   v5 = +[NSUserDefaults standardUserDefaults];
-  [v5 setBool:v3 forKey:@"BKAppearanceAutoNightModeSwitchWasOnKey"];
+  [v5 setBool:isOn forKey:@"BKAppearanceAutoNightModeSwitchWasOnKey"];
 }
 
 - (void)_restoreAutoNightModeSwitch
@@ -1243,14 +1243,14 @@ LABEL_14:
   }
 }
 
-- (void)_sendActionsForAutoNightSwitchWithPreviousState:(BOOL)a3
+- (void)_sendActionsForAutoNightSwitchWithPreviousState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = +[NSUserDefaults standardUserDefaults];
   [v5 setBool:-[UISwitch isOn](self->_autoNightModeSwitch forKey:{"isOn"), @"BKAppearanceAutoNightModeSwitchWasOnKey"}];
 
-  v6 = [(BKAppearanceViewController *)self delegate];
-  [v6 appearanceViewController:self didChangeAutoNightMode:-[UISwitch isOn](self->_autoNightModeSwitch previousValue:{"isOn"), v3}];
+  delegate = [(BKAppearanceViewController *)self delegate];
+  [delegate appearanceViewController:self didChangeAutoNightMode:-[UISwitch isOn](self->_autoNightModeSwitch previousValue:{"isOn"), stateCopy}];
 }
 
 - (void)enableAutoNightModeSwitch
@@ -1271,15 +1271,15 @@ LABEL_14:
   }
 }
 
-- (void)setThemeNormal:(id)a3
+- (void)setThemeNormal:(id)normal
 {
-  v4 = [(BKAppearanceViewController *)self delegate];
-  [v4 appearanceViewController:self willChangeTheme:0];
+  delegate = [(BKAppearanceViewController *)self delegate];
+  [delegate appearanceViewController:self willChangeTheme:0];
 
   v5 = +[BCLightLevelController sharedInstance];
-  v6 = [v5 isLowLight];
+  isLowLight = [v5 isLowLight];
 
-  if ((v6 & 1) == 0)
+  if ((isLowLight & 1) == 0)
   {
     [(BKAppearanceViewController *)self enableAutoNightModeSwitch];
     [(BKAppearanceViewController *)self _restoreAutoNightModeSwitch];
@@ -1288,15 +1288,15 @@ LABEL_14:
   [(BKAppearanceViewController *)self _changeAppearanceStyle:0];
 }
 
-- (void)setThemeGray:(id)a3
+- (void)setThemeGray:(id)gray
 {
-  v4 = [(BKAppearanceViewController *)self delegate];
-  [v4 appearanceViewController:self willChangeTheme:2];
+  delegate = [(BKAppearanceViewController *)self delegate];
+  [delegate appearanceViewController:self willChangeTheme:2];
 
   v5 = +[BCLightLevelController sharedInstance];
-  v6 = [v5 isLowLight];
+  isLowLight = [v5 isLowLight];
 
-  if ((v6 & 1) == 0)
+  if ((isLowLight & 1) == 0)
   {
     [(BKAppearanceViewController *)self enableAutoNightModeSwitch];
     [(BKAppearanceViewController *)self _restoreAutoNightModeSwitch];
@@ -1305,15 +1305,15 @@ LABEL_14:
   [(BKAppearanceViewController *)self _changeAppearanceStyle:2];
 }
 
-- (void)setThemeSepia:(id)a3
+- (void)setThemeSepia:(id)sepia
 {
-  v4 = [(BKAppearanceViewController *)self delegate];
-  [v4 appearanceViewController:self willChangeTheme:1];
+  delegate = [(BKAppearanceViewController *)self delegate];
+  [delegate appearanceViewController:self willChangeTheme:1];
 
   v5 = +[BCLightLevelController sharedInstance];
-  v6 = [v5 isLowLight];
+  isLowLight = [v5 isLowLight];
 
-  if ((v6 & 1) == 0)
+  if ((isLowLight & 1) == 0)
   {
     [(BKAppearanceViewController *)self enableAutoNightModeSwitch];
     [(BKAppearanceViewController *)self _restoreAutoNightModeSwitch];
@@ -1322,15 +1322,15 @@ LABEL_14:
   [(BKAppearanceViewController *)self _changeAppearanceStyle:1];
 }
 
-- (void)setThemeNight:(id)a3
+- (void)setThemeNight:(id)night
 {
-  v4 = [(BKAppearanceViewController *)self delegate];
-  [v4 appearanceViewController:self willChangeTheme:3];
+  delegate = [(BKAppearanceViewController *)self delegate];
+  [delegate appearanceViewController:self willChangeTheme:3];
 
   v5 = +[BCLightLevelController sharedInstance];
-  v6 = [v5 isLowLight];
+  isLowLight = [v5 isLowLight];
 
-  if ((v6 & 1) == 0)
+  if ((isLowLight & 1) == 0)
   {
     [(BKAppearanceViewController *)self _turnAutoNightModeSwitchOff];
   }
@@ -1340,40 +1340,40 @@ LABEL_14:
 
 - (void)updateThemeButtons
 {
-  v3 = [(BKAppearanceViewController *)self appearanceStyle];
-  [(UIButton *)self->_themeWhiteButton setSelected:v3 == 0];
-  [(UIButton *)self->_themeSepiaButton setSelected:v3 == 1];
-  [(UIButton *)self->_themeGrayButton setSelected:v3 == 2];
+  appearanceStyle = [(BKAppearanceViewController *)self appearanceStyle];
+  [(UIButton *)self->_themeWhiteButton setSelected:appearanceStyle == 0];
+  [(UIButton *)self->_themeSepiaButton setSelected:appearanceStyle == 1];
+  [(UIButton *)self->_themeGrayButton setSelected:appearanceStyle == 2];
   themeNightButton = self->_themeNightButton;
 
-  [(UIButton *)themeNightButton setSelected:v3 == 3];
+  [(UIButton *)themeNightButton setSelected:appearanceStyle == 3];
 }
 
 - (BOOL)_shouldShowAutoNightMode
 {
   v2 = +[BCLightLevelController shared];
-  v3 = [v2 shouldMonitorLightLevel];
+  shouldMonitorLightLevel = [v2 shouldMonitorLightLevel];
 
-  return v3;
+  return shouldMonitorLightLevel;
 }
 
-- (void)appearanceFontViewController:(id)a3 didChangeToFontWithName:(id)a4
+- (void)appearanceFontViewController:(id)controller didChangeToFontWithName:(id)name
 {
-  v5 = a4;
-  v6 = [(BKAppearanceViewController *)self delegate];
-  [v6 appearanceViewController:self didChangeFont:v5];
+  nameCopy = name;
+  delegate = [(BKAppearanceViewController *)self delegate];
+  [delegate appearanceViewController:self didChangeFont:nameCopy];
 }
 
-- (void)changeFontSize:(id)a3
+- (void)changeFontSize:(id)size
 {
-  LODWORD(v4) = dword_193248[[a3 selectedSegmentIndex] == 0];
+  LODWORD(v4) = dword_193248[[size selectedSegmentIndex] == 0];
 
   [(BKAppearanceViewController *)self fontSizeModifiedByOffset:v4];
 }
 
-- (void)changeLineHeight:(id)a3
+- (void)changeLineHeight:(id)height
 {
-  LODWORD(v4) = dword_193248[[a3 selectedSegmentIndex] == 0];
+  LODWORD(v4) = dword_193248[[height selectedSegmentIndex] == 0];
 
   [(BKAppearanceViewController *)self lineHeightModifiedByOffset:v4];
 }
@@ -1398,9 +1398,9 @@ LABEL_14:
   return 5;
 }
 
-+ (int)_fontSizeToSegmentIndex:(float)a3
++ (int)_fontSizeToSegmentIndex:(float)index
 {
-  v3 = floorf(a3);
+  v3 = floorf(index);
   if (v3 == 12.0)
   {
     return 0;
@@ -1427,11 +1427,11 @@ LABEL_14:
   }
 }
 
-- (void)fontSizeModifiedByOffset:(float)a3
+- (void)fontSizeModifiedByOffset:(float)offset
 {
-  v5 = [(BKAppearanceViewController *)self styleManager];
-  [v5 fontSize];
-  v7 = roundf((v6 + a3) * 100.0) / 100.0;
+  styleManager = [(BKAppearanceViewController *)self styleManager];
+  [styleManager fontSize];
+  v7 = roundf((v6 + offset) * 100.0) / 100.0;
 
   v8 = 6.0;
   if (v7 <= 6.0)
@@ -1449,16 +1449,16 @@ LABEL_14:
     v9 = 0.1;
   }
 
-  v11 = [(BKAppearanceViewController *)self styleManager];
+  styleManager2 = [(BKAppearanceViewController *)self styleManager];
   *&v10 = v9;
-  [v11 setFontSize:v10];
+  [styleManager2 setFontSize:v10];
 }
 
-- (void)lineHeightModifiedByOffset:(float)a3
+- (void)lineHeightModifiedByOffset:(float)offset
 {
-  v5 = [(BKAppearanceViewController *)self styleManager];
-  [v5 lineHeight];
-  v7 = (roundf(v6 * 100.0) / 100.0) + a3;
+  styleManager = [(BKAppearanceViewController *)self styleManager];
+  [styleManager lineHeight];
+  v7 = (roundf(v6 * 100.0) / 100.0) + offset;
 
   v8 = 6.0;
   if (v7 <= 6.0)
@@ -1476,70 +1476,70 @@ LABEL_14:
     v9 = 0.1;
   }
 
-  v11 = [(BKAppearanceViewController *)self styleManager];
+  styleManager2 = [(BKAppearanceViewController *)self styleManager];
   *&v10 = v9;
-  [v11 setLineHeight:v10];
+  [styleManager2 setLineHeight:v10];
 }
 
-- (void)defaultFontSize:(id)a3
+- (void)defaultFontSize:(id)size
 {
-  v4 = [(BKAppearanceViewController *)self styleManager];
-  [v4 setDefaultFontSize];
+  styleManager = [(BKAppearanceViewController *)self styleManager];
+  [styleManager setDefaultFontSize];
 
-  v7 = [(BKAppearanceViewController *)self delegate];
-  v5 = [(BKAppearanceViewController *)self styleManager];
-  [v5 fontSize];
-  [v7 appearanceViewController:self didChangeFontSize:v6];
+  delegate = [(BKAppearanceViewController *)self delegate];
+  styleManager2 = [(BKAppearanceViewController *)self styleManager];
+  [styleManager2 fontSize];
+  [delegate appearanceViewController:self didChangeFontSize:v6];
 }
 
-- (void)increaseFontSize:(id)a3
+- (void)increaseFontSize:(id)size
 {
-  v4 = [(BKAppearanceViewController *)self styleManager];
-  [v4 increaseFontSize];
+  styleManager = [(BKAppearanceViewController *)self styleManager];
+  [styleManager increaseFontSize];
 
-  v7 = [(BKAppearanceViewController *)self delegate];
-  v5 = [(BKAppearanceViewController *)self styleManager];
-  [v5 fontSize];
-  [v7 appearanceViewController:self didChangeFontSize:v6];
+  delegate = [(BKAppearanceViewController *)self delegate];
+  styleManager2 = [(BKAppearanceViewController *)self styleManager];
+  [styleManager2 fontSize];
+  [delegate appearanceViewController:self didChangeFontSize:v6];
 }
 
-- (void)decreaseFontSize:(id)a3
+- (void)decreaseFontSize:(id)size
 {
-  v4 = [(BKAppearanceViewController *)self styleManager];
-  [v4 decreaseFontSize];
+  styleManager = [(BKAppearanceViewController *)self styleManager];
+  [styleManager decreaseFontSize];
 
-  v7 = [(BKAppearanceViewController *)self delegate];
-  v5 = [(BKAppearanceViewController *)self styleManager];
-  [v5 fontSize];
-  [v7 appearanceViewController:self didChangeFontSize:v6];
+  delegate = [(BKAppearanceViewController *)self delegate];
+  styleManager2 = [(BKAppearanceViewController *)self styleManager];
+  [styleManager2 fontSize];
+  [delegate appearanceViewController:self didChangeFontSize:v6];
 }
 
-- (void)changeLegibility:(id)a3
+- (void)changeLegibility:(id)legibility
 {
-  v6 = [(BKAppearanceViewController *)self styleManager];
-  v4 = [v6 optimizeLegibility];
-  v5 = [(BKAppearanceViewController *)self styleManager];
-  [v5 setOptimizeLegibility:v4 ^ 1];
+  styleManager = [(BKAppearanceViewController *)self styleManager];
+  optimizeLegibility = [styleManager optimizeLegibility];
+  styleManager2 = [(BKAppearanceViewController *)self styleManager];
+  [styleManager2 setOptimizeLegibility:optimizeLegibility ^ 1];
 }
 
 - (void)updateUI
 {
-  v24 = [(BKAppearanceViewController *)self styleManager];
-  v3 = [v24 canDecreaseFontSize];
-  v4 = [(BEAppearanceViewController *)self sizeSmallerButton];
-  [v4 setEnabled:v3];
+  styleManager = [(BKAppearanceViewController *)self styleManager];
+  canDecreaseFontSize = [styleManager canDecreaseFontSize];
+  sizeSmallerButton = [(BEAppearanceViewController *)self sizeSmallerButton];
+  [sizeSmallerButton setEnabled:canDecreaseFontSize];
 
-  v5 = [v24 canIncreaseFontSize];
-  v6 = [(BEAppearanceViewController *)self sizeLargerButton];
-  [v6 setEnabled:v5];
+  canIncreaseFontSize = [styleManager canIncreaseFontSize];
+  sizeLargerButton = [(BEAppearanceViewController *)self sizeLargerButton];
+  [sizeLargerButton setEnabled:canIncreaseFontSize];
 
   v7 = [(BKAppearanceViewController *)self layout]== &dword_0 + 2 || [(BKAppearanceViewController *)self layout]== &dword_0 + 3;
-  v8 = [(BEAppearanceViewController *)self scrollSwitch];
-  [v8 setOn:v7];
+  scrollSwitch = [(BEAppearanceViewController *)self scrollSwitch];
+  [scrollSwitch setOn:v7];
 
   [(BKAppearanceViewController *)self updateThemeButtons];
-  v9 = [(BEAppearanceViewController *)self tableView];
-  [v9 reloadData];
+  tableView = [(BEAppearanceViewController *)self tableView];
+  [tableView reloadData];
 
   [(BKAppearanceViewController *)self contentSize];
   [(BKAppearanceViewController *)self setPreferredContentSize:?];
@@ -1548,25 +1548,25 @@ LABEL_14:
   v13 = v12;
   [(BKAppearanceViewController *)self fontAppearanceWidthPadding];
   [(BKAppearanceFontViewController *)self->_fontVC setDesiredContentSize:v11 + v14, v13];
-  v15 = [(BKAppearanceViewController *)self navigationController];
-  v16 = [v15 topViewController];
+  navigationController = [(BKAppearanceViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v16)
+  if (topViewController)
   {
-    v17 = v16;
+    selfCopy = topViewController;
   }
 
   else
   {
-    v17 = self;
+    selfCopy = self;
   }
 
-  [(BKAppearanceViewController *)v17 preferredContentSize];
+  [(BKAppearanceViewController *)selfCopy preferredContentSize];
   v19 = v18;
   v21 = v20;
-  v22 = [(BKAppearanceViewController *)self presentingViewController];
-  v23 = [v22 presentedViewController];
-  [v23 setPreferredContentSize:{v19, v21}];
+  presentingViewController = [(BKAppearanceViewController *)self presentingViewController];
+  presentedViewController = [presentingViewController presentedViewController];
+  [presentedViewController setPreferredContentSize:{v19, v21}];
 }
 
 - (void)stylizeForTheme
@@ -1574,15 +1574,15 @@ LABEL_14:
   v32.receiver = self;
   v32.super_class = BKAppearanceViewController;
   [(BEAppearanceViewController *)&v32 stylizeForTheme];
-  v3 = [(BKAppearanceViewController *)self themePage];
-  v4 = [(BKAppearanceViewController *)self navigationController];
-  [v3 stylizeNavigationController:v4];
+  themePage = [(BKAppearanceViewController *)self themePage];
+  navigationController = [(BKAppearanceViewController *)self navigationController];
+  [themePage stylizeNavigationController:navigationController];
 
-  v5 = [(BEAppearanceViewController *)self tableView];
-  v6 = [v5 backgroundColor];
-  v7 = [(BKAppearanceViewController *)self navigationController];
-  v8 = [v7 navigationBar];
-  [v8 setBackgroundColor:v6];
+  tableView = [(BEAppearanceViewController *)self tableView];
+  backgroundColor = [tableView backgroundColor];
+  navigationController2 = [(BKAppearanceViewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
+  [navigationBar setBackgroundColor:backgroundColor];
 
   themeWhiteButton = self->_themeWhiteButton;
   v10 = [(BKAppearanceViewController *)self _whiteThemeButtonImageSelected:0];
@@ -1616,23 +1616,23 @@ LABEL_14:
   v24 = [(BKAppearanceViewController *)self _nightThemeButtonImageSelected:1];
   [(UIButton *)v23 setImage:v24 forState:4];
 
-  v25 = [v3 tableViewSeparatorColor];
-  v26 = [(BEAppearanceViewController *)self sizeSeparatorLine];
-  [v26 setBackgroundColor:v25];
+  tableViewSeparatorColor = [themePage tableViewSeparatorColor];
+  sizeSeparatorLine = [(BEAppearanceViewController *)self sizeSeparatorLine];
+  [sizeSeparatorLine setBackgroundColor:tableViewSeparatorColor];
 
-  v27 = [v3 switchColor];
-  v28 = [(BEAppearanceViewController *)self scrollSwitch];
-  [v28 setOnTintColor:v27];
+  switchColor = [themePage switchColor];
+  scrollSwitch = [(BEAppearanceViewController *)self scrollSwitch];
+  [scrollSwitch setOnTintColor:switchColor];
 
-  v29 = [v3 switchColor];
-  v30 = [(BKAppearanceViewController *)self autoNightModeSwitch];
-  [v30 setOnTintColor:v29];
+  switchColor2 = [themePage switchColor];
+  autoNightModeSwitch = [(BKAppearanceViewController *)self autoNightModeSwitch];
+  [autoNightModeSwitch setOnTintColor:switchColor2];
 
-  v31 = [(BEAppearanceViewController *)self tableView];
-  [v31 reloadData];
+  tableView2 = [(BEAppearanceViewController *)self tableView];
+  [tableView2 reloadData];
 }
 
-- (void)handleAutoNightModeSwitch:(id)a3
+- (void)handleAutoNightModeSwitch:(id)switch
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = kIMThemeAutoNightModeOnKey;
@@ -1642,30 +1642,30 @@ LABEL_14:
   [v7 setBool:v6 ^ 1 forKey:v5];
 
   [IMTheme setAutoNightModeEnabled:v6 ^ 1];
-  v8 = [(BKAppearanceViewController *)self delegate];
-  [v8 appearanceViewController:self didChangeAutoNightMode:-[UISwitch isOn](self->_autoNightModeSwitch previousValue:{"isOn"), v6}];
+  delegate = [(BKAppearanceViewController *)self delegate];
+  [delegate appearanceViewController:self didChangeAutoNightMode:-[UISwitch isOn](self->_autoNightModeSwitch previousValue:{"isOn"), v6}];
 
   v9 = +[NSUserDefaults standardUserDefaults];
   [v9 setBool:-[UISwitch isOn](self->_autoNightModeSwitch forKey:{"isOn"), @"BKAppearanceAutoNightModeSwitchWasOnKey"}];
 }
 
-- (void)onScrollSwitch:(id)a3 notifyingCoordinator:(BOOL)a4
+- (void)onScrollSwitch:(id)switch notifyingCoordinator:(BOOL)coordinator
 {
-  v4 = a4;
-  v6 = [(BEAppearanceViewController *)self scrollSwitch];
-  -[BKAppearanceViewController setScrollModeOn:notifyingCoordinator:](self, "setScrollModeOn:notifyingCoordinator:", [v6 isOn], v4);
+  coordinatorCopy = coordinator;
+  scrollSwitch = [(BEAppearanceViewController *)self scrollSwitch];
+  -[BKAppearanceViewController setScrollModeOn:notifyingCoordinator:](self, "setScrollModeOn:notifyingCoordinator:", [scrollSwitch isOn], coordinatorCopy);
 }
 
-- (void)setScrollModeOn:(BOOL)a3 notifyingCoordinator:(BOOL)a4
+- (void)setScrollModeOn:(BOOL)on notifyingCoordinator:(BOOL)coordinator
 {
-  v4 = a4;
-  if (a3)
+  coordinatorCopy = coordinator;
+  if (on)
   {
-    v6 = [(BKAppearanceViewController *)self book];
-    v7 = [v6 scrollModeOrientation];
+    book = [(BKAppearanceViewController *)self book];
+    scrollModeOrientation = [book scrollModeOrientation];
 
-    v8 = [(BKAppearanceViewController *)self layout];
-    if (v7)
+    layout = [(BKAppearanceViewController *)self layout];
+    if (scrollModeOrientation)
     {
       v9 = 2;
     }
@@ -1675,14 +1675,14 @@ LABEL_14:
       v9 = 3;
     }
 
-    if (v7)
+    if (scrollModeOrientation)
     {
-      v10 = v8 != 2;
+      v10 = layout != 2;
     }
 
     else
     {
-      v10 = v8 != 3;
+      v10 = layout != 3;
     }
   }
 
@@ -1693,17 +1693,17 @@ LABEL_14:
   }
 
   [(BKAppearanceViewController *)self setLayout:v9];
-  if (v4 && v10)
+  if (coordinatorCopy && v10)
   {
     v11 = +[BCThemeCoordinator shared];
     [v11 observer:self didChangeLayout:{-[BKAppearanceViewController layout](self, "layout")}];
   }
 }
 
-- (void)coordinator:(id)a3 observer:(id)a4 didChangeLayout:(unint64_t)a5
+- (void)coordinator:(id)coordinator observer:(id)observer didChangeLayout:(unint64_t)layout
 {
-  v6 = (a5 & 0xFFFFFFFFFFFFFFFELL) == 2;
-  v7 = [(BEAppearanceViewController *)self scrollSwitch:a3];
+  v6 = (layout & 0xFFFFFFFFFFFFFFFELL) == 2;
+  v7 = [(BEAppearanceViewController *)self scrollSwitch:coordinator];
   [v7 setOn:v6];
 
   [(BKAppearanceViewController *)self onScrollSwitch:0 notifyingCoordinator:0];
@@ -1720,36 +1720,36 @@ LABEL_14:
   return v2;
 }
 
-- (void)dismissMenu:(id)a3
+- (void)dismissMenu:(id)menu
 {
   [(BKAppearanceViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v4 = [(BKAppearanceViewController *)self delegate];
-  [v4 appearanceViewControllerShouldDismiss];
+  delegate = [(BKAppearanceViewController *)self delegate];
+  [delegate appearanceViewControllerShouldDismiss];
 }
 
-- (id)_themeButtonImageForTheme:(int64_t)a3 selected:(BOOL)a4
+- (id)_themeButtonImageForTheme:(int64_t)theme selected:(BOOL)selected
 {
-  v4 = a4;
-  v6 = [IMThemePage themeForEPUBTheme:a3];
-  v7 = [v6 buttonFillColor];
-  v8 = [v6 keyColor];
-  if (!v4)
+  selectedCopy = selected;
+  v6 = [IMThemePage themeForEPUBTheme:theme];
+  buttonFillColor = [v6 buttonFillColor];
+  keyColor = [v6 keyColor];
+  if (!selectedCopy)
   {
-    v9 = [v6 separatorColor];
+    separatorColor = [v6 separatorColor];
 
-    v8 = v9;
+    keyColor = separatorColor;
   }
 
-  v10 = [(BKAppearanceViewController *)self _themeButtonImageWithColor:v7 unselectedBorderColor:v8 selected:v4];
+  v10 = [(BKAppearanceViewController *)self _themeButtonImageWithColor:buttonFillColor unselectedBorderColor:keyColor selected:selectedCopy];
 
   return v10;
 }
 
-- (id)_themeButtonImageWithColor:(id)a3 unselectedBorderColor:(id)a4 selected:(BOOL)a5
+- (id)_themeButtonImageWithColor:(id)color unselectedBorderColor:(id)borderColor selected:(BOOL)selected
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  selectedCopy = selected;
+  borderColorCopy = borderColor;
+  colorCopy = color;
   v9 = +[UIScreen mainScreen];
   [v9 scale];
   v11 = 1.0 / v10;
@@ -1757,17 +1757,17 @@ LABEL_14:
   v17.width = 46.0;
   v17.height = 46.0;
   UIGraphicsBeginImageContextWithOptions(v17, 0, 0.0);
-  if (v5)
+  if (selectedCopy)
   {
     v11 = 2.0;
   }
 
   v12 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, 46.0, 46.0];
-  [v7 setFill];
+  [borderColorCopy setFill];
 
   [v12 fill];
   v13 = [UIBezierPath bezierPathWithOvalInRect:v11, v11, v11 * -2.0 + 46.0, v11 * -2.0 + 46.0];
-  [v8 setFill];
+  [colorCopy setFill];
 
   [v13 fill];
   v14 = UIGraphicsGetImageFromCurrentImageContext();
@@ -1778,8 +1778,8 @@ LABEL_14:
 
 - (void)appearanceShouldDismissPopover
 {
-  v2 = [(BKAppearanceViewController *)self delegate];
-  [v2 appearanceViewControllerShouldDismiss];
+  delegate = [(BKAppearanceViewController *)self delegate];
+  [delegate appearanceViewControllerShouldDismiss];
 }
 
 - (BKAppearanceViewControllerDelegate)delegate

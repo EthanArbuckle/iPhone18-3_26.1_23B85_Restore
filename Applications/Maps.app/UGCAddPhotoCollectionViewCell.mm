@@ -1,13 +1,13 @@
 @interface UGCAddPhotoCollectionViewCell
 - (MUPhotoOptionsMenuButtonDelegate)delegate;
-- (UGCAddPhotoCollectionViewCell)initWithFrame:(CGRect)a3;
+- (UGCAddPhotoCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_contentSizeDidChange;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)photoOptionsMenuButtonDidSelectAddFromLibrary;
 - (void)photoOptionsMenuButtonDidSelectTakePhoto;
-- (void)setDimmed:(BOOL)a3;
-- (void)setPrefersMenu:(BOOL)a3;
+- (void)setDimmed:(BOOL)dimmed;
+- (void)setPrefersMenu:(BOOL)menu;
 @end
 
 @implementation UGCAddPhotoCollectionViewCell
@@ -31,21 +31,21 @@
   [WeakRetained photoOptionsMenuButtonDidSelectTakePhoto];
 }
 
-- (void)setPrefersMenu:(BOOL)a3
+- (void)setPrefersMenu:(BOOL)menu
 {
-  if (self->_prefersMenu != a3)
+  if (self->_prefersMenu != menu)
   {
-    self->_prefersMenu = a3;
+    self->_prefersMenu = menu;
     [(MUPhotoOptionsMenuButton *)self->_menuButton setUserInteractionEnabled:?];
   }
 }
 
-- (void)setDimmed:(BOOL)a3
+- (void)setDimmed:(BOOL)dimmed
 {
-  if (self->_dimmed != a3)
+  if (self->_dimmed != dimmed)
   {
-    self->_dimmed = a3;
-    [(UIView *)self->_maskView setHidden:!a3];
+    self->_dimmed = dimmed;
+    [(UIView *)self->_maskView setHidden:!dimmed];
     dimmed = self->_dimmed;
     menuButton = self->_menuButton;
 
@@ -61,99 +61,99 @@
 
 - (void)_setupConstraints
 {
-  v3 = [(UGCAddPhotoCollectionViewCell *)self contentView];
-  v74 = [(UILabel *)self->_cameraLabel leadingAnchor];
-  v73 = [(UIView *)self->_containerView leadingAnchor];
-  v72 = [v74 constraintEqualToAnchor:v73];
+  contentView = [(UGCAddPhotoCollectionViewCell *)self contentView];
+  leadingAnchor = [(UILabel *)self->_cameraLabel leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_containerView leadingAnchor];
+  v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v75[0] = v72;
-  v71 = [(UILabel *)self->_cameraLabel trailingAnchor];
-  v70 = [(UIView *)self->_containerView trailingAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70];
+  trailingAnchor = [(UILabel *)self->_cameraLabel trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_containerView trailingAnchor];
+  v69 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v75[1] = v69;
-  v68 = [(UIImageView *)self->_cameraGlyphView leadingAnchor];
-  v67 = [(UIView *)self->_containerView leadingAnchor];
-  v66 = [v68 constraintGreaterThanOrEqualToAnchor:v67];
+  leadingAnchor3 = [(UIImageView *)self->_cameraGlyphView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_containerView leadingAnchor];
+  v66 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
   v75[2] = v66;
-  v65 = [(UIImageView *)self->_cameraGlyphView trailingAnchor];
-  v64 = [(UIView *)self->_containerView trailingAnchor];
-  v63 = [v65 constraintLessThanOrEqualToAnchor:v64];
+  trailingAnchor3 = [(UIImageView *)self->_cameraGlyphView trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_containerView trailingAnchor];
+  v63 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
   v75[3] = v63;
-  v62 = [(UIImageView *)self->_cameraGlyphView centerXAnchor];
-  v61 = [(UIView *)self->_containerView centerXAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  centerXAnchor = [(UIImageView *)self->_cameraGlyphView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_containerView centerXAnchor];
+  v60 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v75[4] = v60;
-  v59 = [(UIImageView *)self->_cameraGlyphView bottomAnchor];
-  v58 = [(UILabel *)self->_cameraLabel topAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58 constant:-5.0];
+  bottomAnchor = [(UIImageView *)self->_cameraGlyphView bottomAnchor];
+  topAnchor = [(UILabel *)self->_cameraLabel topAnchor];
+  v57 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-5.0];
   v75[5] = v57;
-  v56 = [(UIImageView *)self->_cameraGlyphView topAnchor];
-  v55 = [(UIView *)self->_containerView topAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  topAnchor2 = [(UIImageView *)self->_cameraGlyphView topAnchor];
+  topAnchor3 = [(UIView *)self->_containerView topAnchor];
+  v54 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v75[6] = v54;
-  v53 = [(UILabel *)self->_cameraLabel centerXAnchor];
-  v52 = [(UIView *)self->_containerView centerXAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  centerXAnchor3 = [(UILabel *)self->_cameraLabel centerXAnchor];
+  centerXAnchor4 = [(UIView *)self->_containerView centerXAnchor];
+  v51 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v75[7] = v51;
-  v50 = [(UILabel *)self->_cameraLabel lastBaselineAnchor];
-  v49 = [(UIView *)self->_containerView bottomAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  lastBaselineAnchor = [(UILabel *)self->_cameraLabel lastBaselineAnchor];
+  bottomAnchor2 = [(UIView *)self->_containerView bottomAnchor];
+  v48 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor2];
   v75[8] = v48;
-  v47 = [(UIView *)self->_containerView centerXAnchor];
-  v46 = [v3 centerXAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  centerXAnchor5 = [(UIView *)self->_containerView centerXAnchor];
+  centerXAnchor6 = [contentView centerXAnchor];
+  v45 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v75[9] = v45;
-  v44 = [(UIView *)self->_containerView centerYAnchor];
-  v4 = v3;
-  v43 = [v3 centerYAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  centerYAnchor = [(UIView *)self->_containerView centerYAnchor];
+  v4 = contentView;
+  centerYAnchor2 = [contentView centerYAnchor];
+  v42 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v75[10] = v42;
-  v41 = [(UIView *)self->_containerView leadingAnchor];
-  v40 = [v3 leadingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  leadingAnchor5 = [(UIView *)self->_containerView leadingAnchor];
+  leadingAnchor6 = [contentView leadingAnchor];
+  v39 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v75[11] = v39;
-  v38 = [(UIView *)self->_containerView trailingAnchor];
-  v37 = [v3 trailingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  trailingAnchor5 = [(UIView *)self->_containerView trailingAnchor];
+  trailingAnchor6 = [contentView trailingAnchor];
+  v36 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v75[12] = v36;
-  v35 = [(UIView *)self->_containerView topAnchor];
-  v34 = [v3 topAnchor];
-  v33 = [v35 constraintGreaterThanOrEqualToAnchor:v34];
+  topAnchor4 = [(UIView *)self->_containerView topAnchor];
+  topAnchor5 = [contentView topAnchor];
+  v33 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5];
   v75[13] = v33;
-  v32 = [(UIView *)self->_containerView bottomAnchor];
-  v31 = [v3 bottomAnchor];
-  v30 = [v32 constraintLessThanOrEqualToAnchor:v31];
+  bottomAnchor3 = [(UIView *)self->_containerView bottomAnchor];
+  bottomAnchor4 = [contentView bottomAnchor];
+  v30 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
   v75[14] = v30;
-  v29 = [(UIView *)self->_maskView leadingAnchor];
-  v28 = [v3 leadingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  leadingAnchor7 = [(UIView *)self->_maskView leadingAnchor];
+  leadingAnchor8 = [contentView leadingAnchor];
+  v27 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v75[15] = v27;
-  v26 = [(UIView *)self->_maskView trailingAnchor];
-  v25 = [v3 trailingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  trailingAnchor7 = [(UIView *)self->_maskView trailingAnchor];
+  trailingAnchor8 = [contentView trailingAnchor];
+  v24 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v75[16] = v24;
-  v23 = [(UIView *)self->_maskView topAnchor];
-  v22 = [v3 topAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  topAnchor6 = [(UIView *)self->_maskView topAnchor];
+  topAnchor7 = [contentView topAnchor];
+  v21 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
   v75[17] = v21;
-  v20 = [(UIView *)self->_maskView bottomAnchor];
-  v19 = [v3 bottomAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  bottomAnchor5 = [(UIView *)self->_maskView bottomAnchor];
+  bottomAnchor6 = [contentView bottomAnchor];
+  v18 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v75[18] = v18;
-  v17 = [(MUPhotoOptionsMenuButton *)self->_menuButton leadingAnchor];
-  v16 = [v3 leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  leadingAnchor9 = [(MUPhotoOptionsMenuButton *)self->_menuButton leadingAnchor];
+  leadingAnchor10 = [contentView leadingAnchor];
+  v15 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v75[19] = v15;
-  v14 = [(MUPhotoOptionsMenuButton *)self->_menuButton trailingAnchor];
-  v5 = [v3 trailingAnchor];
-  v6 = [v14 constraintEqualToAnchor:v5];
+  trailingAnchor9 = [(MUPhotoOptionsMenuButton *)self->_menuButton trailingAnchor];
+  trailingAnchor10 = [contentView trailingAnchor];
+  v6 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v75[20] = v6;
-  v7 = [(MUPhotoOptionsMenuButton *)self->_menuButton topAnchor];
-  v8 = [v4 topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  topAnchor8 = [(MUPhotoOptionsMenuButton *)self->_menuButton topAnchor];
+  topAnchor9 = [v4 topAnchor];
+  v9 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
   v75[21] = v9;
-  v10 = [(MUPhotoOptionsMenuButton *)self->_menuButton bottomAnchor];
-  v11 = [v4 bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  bottomAnchor7 = [(MUPhotoOptionsMenuButton *)self->_menuButton bottomAnchor];
+  bottomAnchor8 = [v4 bottomAnchor];
+  v12 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v75[22] = v12;
   v13 = [NSArray arrayWithObjects:v75 count:23];
   [NSLayoutConstraint activateConstraints:v13];
@@ -186,10 +186,10 @@
   [(UILabel *)self->_cameraLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_cameraLabel setTextAlignment:1];
   [(UILabel *)self->_cameraLabel setNumberOfLines:0];
-  v15 = [(UGCAddPhotoCollectionViewCell *)self traitCollection];
-  v16 = [v15 userInterfaceIdiom];
+  traitCollection = [(UGCAddPhotoCollectionViewCell *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v16 != 5)
+  if (userInterfaceIdiom != 5)
   {
     v17 = +[NSBundle mainBundle];
     v18 = [v17 localizedStringForKey:@"Add Photo [Report an Issue]" value:@"localized string not found" table:0];
@@ -223,23 +223,23 @@
 
   [(MUPhotoOptionsMenuButton *)self->_menuButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MUPhotoOptionsMenuButton *)self->_menuButton setUserInteractionEnabled:self->_prefersMenu];
-  v29 = [(UGCAddPhotoCollectionViewCell *)self contentView];
-  [v29 addSubview:self->_containerView];
+  contentView = [(UGCAddPhotoCollectionViewCell *)self contentView];
+  [contentView addSubview:self->_containerView];
 
   [(UIView *)self->_containerView addSubview:self->_cameraLabel];
   [(UIView *)self->_containerView addSubview:self->_cameraGlyphView];
-  v30 = [(UGCAddPhotoCollectionViewCell *)self contentView];
-  [v30 addSubview:self->_maskView];
+  contentView2 = [(UGCAddPhotoCollectionViewCell *)self contentView];
+  [contentView2 addSubview:self->_maskView];
 
-  v31 = [(UGCAddPhotoCollectionViewCell *)self contentView];
-  [v31 addSubview:self->_menuButton];
+  contentView3 = [(UGCAddPhotoCollectionViewCell *)self contentView];
+  [contentView3 addSubview:self->_menuButton];
 }
 
-- (UGCAddPhotoCollectionViewCell)initWithFrame:(CGRect)a3
+- (UGCAddPhotoCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UGCAddPhotoCollectionViewCell;
-  v3 = [(UGCAddPhotoCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UGCAddPhotoCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

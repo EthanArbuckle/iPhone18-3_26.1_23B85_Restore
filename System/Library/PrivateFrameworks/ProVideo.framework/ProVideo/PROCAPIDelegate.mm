@@ -1,16 +1,16 @@
 @interface PROCAPIDelegate
-- (void)plugInManager:(id)a3 didLoadPlugIn:(id)a4;
+- (void)plugInManager:(id)manager didLoadPlugIn:(id)in;
 @end
 
 @implementation PROCAPIDelegate
 
-- (void)plugInManager:(id)a3 didLoadPlugIn:(id)a4
+- (void)plugInManager:(id)manager didLoadPlugIn:(id)in
 {
   callback = self->callback;
-  v5 = a4;
+  inCopy = in;
   userData = self->userData;
 
-  callback(v5, userData);
+  callback(inCopy, userData);
 }
 
 @end

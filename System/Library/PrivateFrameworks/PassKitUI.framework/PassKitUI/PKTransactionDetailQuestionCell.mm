@@ -1,27 +1,27 @@
 @interface PKTransactionDetailQuestionCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKTransactionDetailQuestionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKTransactionDetailQuestionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (PKTransactionDetailQuestionCellDelegate)questionDelegate;
 - (id)_createButton;
-- (void)_enableButtons:(BOOL)a3;
-- (void)_leadingButtonTapped:(id)a3;
-- (void)_trailingButtonTapped:(id)a3;
+- (void)_enableButtons:(BOOL)buttons;
+- (void)_leadingButtonTapped:(id)tapped;
+- (void)_trailingButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setTransaction:(id)a3 accountUserContact:(id)a4 submittingAnswer:(id)a5;
+- (void)setTransaction:(id)transaction accountUserContact:(id)contact submittingAnswer:(id)answer;
 @end
 
 @implementation PKTransactionDetailQuestionCell
 
-- (PKTransactionDetailQuestionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKTransactionDetailQuestionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v30.receiver = self;
   v30.super_class = PKTransactionDetailQuestionCell;
-  v4 = [(PKTransactionDetailQuestionCell *)&v30 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PKTransactionDetailQuestionCell *)&v30 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v4->_smallDevice = PKUIGetMinScreenWidthType() == 0;
-    v5 = [(PKTransactionDetailQuestionCell *)v4 contentView];
+    contentView = [(PKTransactionDetailQuestionCell *)v4 contentView];
     v6 = PKPassKitUIBundle();
     v29 = [v6 URLForResource:@"MessageAlert" withExtension:@"pdf"];
 
@@ -31,7 +31,7 @@
     imageView = v4->_imageView;
     v4->_imageView = v9;
 
-    [v5 addSubview:v4->_imageView];
+    [contentView addSubview:v4->_imageView];
     v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     title = v4->_title;
     v4->_title = v11;
@@ -44,11 +44,11 @@
     [(UILabel *)v4->_title setNumberOfLines:2];
     [(UILabel *)v4->_title setAdjustsFontSizeToFitWidth:1];
     v16 = v4->_title;
-    v17 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v16 setTextColor:v17];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v16 setTextColor:labelColor];
 
     [(UILabel *)v4->_title setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-    [v5 addSubview:v4->_title];
+    [contentView addSubview:v4->_title];
     v18 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     message = v4->_message;
     v4->_message = v18;
@@ -60,26 +60,26 @@
     [(UILabel *)v4->_message setNumberOfLines:0];
     [(UILabel *)v4->_message setAdjustsFontSizeToFitWidth:1];
     v22 = v4->_message;
-    v23 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v22 setTextColor:v23];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v22 setTextColor:labelColor2];
 
     [(UILabel *)v4->_message setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
     [(UILabel *)v4->_message setMinimumScaleFactor:0.8];
-    [v5 addSubview:v4->_message];
-    v24 = [(PKTransactionDetailQuestionCell *)v4 _createButton];
+    [contentView addSubview:v4->_message];
+    _createButton = [(PKTransactionDetailQuestionCell *)v4 _createButton];
     leadingButton = v4->_leadingButton;
-    v4->_leadingButton = v24;
+    v4->_leadingButton = _createButton;
 
     [(PKLegacyButtonInterface *)v4->_leadingButton addTarget:v4 action:sel__leadingButtonTapped_ forControlEvents:64];
     [(PKLegacyButtonInterface *)v4->_leadingButton setAccessibilityIdentifier:*MEMORY[0x1E69B98E0]];
-    [v5 addSubview:v4->_leadingButton];
-    v26 = [(PKTransactionDetailQuestionCell *)v4 _createButton];
+    [contentView addSubview:v4->_leadingButton];
+    _createButton2 = [(PKTransactionDetailQuestionCell *)v4 _createButton];
     trailingButton = v4->_trailingButton;
-    v4->_trailingButton = v26;
+    v4->_trailingButton = _createButton2;
 
     [(PKLegacyButtonInterface *)v4->_trailingButton addTarget:v4 action:sel__trailingButtonTapped_ forControlEvents:64];
     [(PKLegacyButtonInterface *)v4->_trailingButton setAccessibilityIdentifier:*MEMORY[0x1E69B9D30]];
-    [v5 addSubview:v4->_trailingButton];
+    [contentView addSubview:v4->_trailingButton];
   }
 
   return v4;
@@ -94,13 +94,13 @@
   [(PKTransactionDetailQuestionCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UILabel *)self->_title text];
+  height = fits.height;
+  width = fits.width;
+  text = [(UILabel *)self->_title text];
 
-  if (v6)
+  if (text)
   {
     self->_isTemplateLayout = 1;
     [(PKTransactionDetailQuestionCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height];
@@ -118,20 +118,20 @@
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   memset(&slice, 0, sizeof(slice));
-  remainder = a3;
-  v8 = [(PKTransactionDetailQuestionCell *)self traitCollection];
-  v9 = [v8 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v9);
+  remainder = bounds;
+  traitCollection = [(PKTransactionDetailQuestionCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v11 = [(PKTransactionDetailQuestionCell *)self _shouldReverseLayoutDirection];
-  if (v11)
+  _shouldReverseLayoutDirection = [(PKTransactionDetailQuestionCell *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v12 = CGRectMaxXEdge;
   }
@@ -141,7 +141,7 @@
     v12 = CGRectMinXEdge;
   }
 
-  if (v11)
+  if (_shouldReverseLayoutDirection)
   {
     v13 = CGRectMinXEdge;
   }
@@ -240,14 +240,14 @@
   return result;
 }
 
-- (void)setTransaction:(id)a3 accountUserContact:(id)a4 submittingAnswer:(id)a5
+- (void)setTransaction:(id)transaction accountUserContact:(id)contact submittingAnswer:(id)answer
 {
-  v31 = a3;
-  v9 = a4;
-  v10 = a5;
-  objc_storeStrong(&self->_transaction, a3);
-  objc_storeStrong(&self->_accountUserContact, a4);
-  objc_storeStrong(&self->_submittingAnswer, a5);
+  transactionCopy = transaction;
+  contactCopy = contact;
+  answerCopy = answer;
+  objc_storeStrong(&self->_transaction, transaction);
+  objc_storeStrong(&self->_accountUserContact, contact);
+  objc_storeStrong(&self->_submittingAnswer, answer);
   transaction = self->_transaction;
   if (transaction)
   {
@@ -255,14 +255,14 @@
     accountUserContact = self->_accountUserContact;
     if (accountUserContact)
     {
-      v13 = [(CNContact *)accountUserContact givenName];
+      givenName = [(CNContact *)accountUserContact givenName];
       title = self->_title;
       v15 = PKLocalizedFeatureString();
-      [(UILabel *)title setText:v15, v13];
+      [(UILabel *)title setText:v15, givenName];
 
       message = self->_message;
       v20 = PKLocalizedFeatureString();
-      [(UILabel *)message setText:v20, v13];
+      [(UILabel *)message setText:v20, givenName];
     }
 
     else
@@ -272,8 +272,8 @@
       [(UILabel *)v17 setText:v18];
 
       v19 = self->_message;
-      v13 = PKLocalizedFeatureString();
-      [(UILabel *)v19 setText:v13];
+      givenName = PKLocalizedFeatureString();
+      [(UILabel *)v19 setText:givenName];
     }
 
     leadingButton = self->_leadingButton;
@@ -335,10 +335,10 @@ LABEL_18:
   [(PKTransactionDetailQuestionCell *)self setNeedsLayout];
 }
 
-- (void)_trailingButtonTapped:(id)a3
+- (void)_trailingButtonTapped:(id)tapped
 {
-  v5 = [(PKPaymentTransaction *)self->_transaction unansweredQuestions];
-  if ([v5 count])
+  unansweredQuestions = [(PKPaymentTransaction *)self->_transaction unansweredQuestions];
+  if ([unansweredQuestions count])
   {
     [(PKTransactionDetailQuestionCell *)self _enableButtons:0];
     [(PKLegacyButtonInterface *)self->_trailingButton setShowSpinner:1];
@@ -347,10 +347,10 @@ LABEL_18:
   }
 }
 
-- (void)_leadingButtonTapped:(id)a3
+- (void)_leadingButtonTapped:(id)tapped
 {
-  v5 = [(PKPaymentTransaction *)self->_transaction unansweredQuestions];
-  if ([v5 count])
+  unansweredQuestions = [(PKPaymentTransaction *)self->_transaction unansweredQuestions];
+  if ([unansweredQuestions count])
   {
     [(PKTransactionDetailQuestionCell *)self _enableButtons:0];
     [(PKLegacyButtonInterface *)self->_leadingButton setShowSpinner:1];
@@ -359,34 +359,34 @@ LABEL_18:
   }
 }
 
-- (void)_enableButtons:(BOOL)a3
+- (void)_enableButtons:(BOOL)buttons
 {
-  v3 = a3;
+  buttonsCopy = buttons;
   [(PKLegacyButtonInterface *)self->_leadingButton setEnabled:?];
   trailingButton = self->_trailingButton;
 
-  [(PKLegacyButtonInterface *)trailingButton setEnabled:v3];
+  [(PKLegacyButtonInterface *)trailingButton setEnabled:buttonsCopy];
 }
 
 - (id)_createButton
 {
   v2 = PKCreateLargeSolidButton();
   [v2 setContentEdgeInsets:{12.0, 16.0, 12.0, 16.0}];
-  v3 = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
-  [v2 setTintColor:v3];
+  tertiarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
+  [v2 setTintColor:tertiarySystemGroupedBackgroundColor];
 
-  v4 = [MEMORY[0x1E69DC888] labelColor];
-  [v2 updateTitleColorWithColor:v4];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v2 updateTitleColorWithColor:labelColor];
 
-  v5 = [v2 titleLabel];
+  titleLabel = [v2 titleLabel];
   v6 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38]);
-  [v5 setFont:v6];
+  [titleLabel setFont:v6];
 
-  v7 = [v2 titleLabel];
-  [v7 setAdjustsFontSizeToFitWidth:1];
+  titleLabel2 = [v2 titleLabel];
+  [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-  v8 = [MEMORY[0x1E69DC888] labelColor];
-  [v2 updateActivityIndicatorColorWithColor:v8];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  [v2 updateActivityIndicatorColorWithColor:labelColor2];
 
   return v2;
 }

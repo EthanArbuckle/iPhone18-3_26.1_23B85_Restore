@@ -4,7 +4,7 @@
 - (MTLTexture)highlightTexture;
 - (MTLTexture)texture;
 - (TCButtonQuad)init;
-- (void)setTintColor:(CGColor *)a3;
+- (void)setTintColor:(CGColor *)color;
 @end
 
 @implementation TCButtonQuad
@@ -33,12 +33,12 @@
   return v3;
 }
 
-- (void)setTintColor:(CGColor *)a3
+- (void)setTintColor:(CGColor *)color
 {
   CGColorRelease(self->_tintColor);
-  self->_tintColor = a3;
+  self->_tintColor = color;
 
-  CGColorRetain(a3);
+  CGColorRetain(color);
 }
 
 - (CGPoint)position

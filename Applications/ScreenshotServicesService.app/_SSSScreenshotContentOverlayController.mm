@@ -4,7 +4,7 @@
 - (SSSScreenshot)screenshot;
 - (UIView)rulerHostView;
 - (_SSSScreenshotContentOverlayControllerDelegate)delegate;
-- (void)setGesturesEnabled:(BOOL)a3;
+- (void)setGesturesEnabled:(BOOL)enabled;
 @end
 
 @implementation _SSSScreenshotContentOverlayController
@@ -22,16 +22,16 @@
   return result;
 }
 
-- (void)setGesturesEnabled:(BOOL)a3
+- (void)setGesturesEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_gesturesEnabled = a3;
+  enabledCopy = enabled;
+  self->_gesturesEnabled = enabled;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(_SSSScreenshotContentOverlayController *)self gestureRecognizers];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  gestureRecognizers = [(_SSSScreenshotContentOverlayController *)self gestureRecognizers];
+  v5 = [gestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -43,15 +43,15 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setEnabled:v3];
+        [*(*(&v9 + 1) + 8 * v8) setEnabled:enabledCopy];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [gestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);

@@ -1,14 +1,14 @@
 @interface _BRSuffixToTypeMapping
-- (BOOL)appliesToType:(id)a3;
+- (BOOL)appliesToType:(id)type;
 @end
 
 @implementation _BRSuffixToTypeMapping
 
-- (BOOL)appliesToType:(id)a3
+- (BOOL)appliesToType:(id)type
 {
-  v4 = a3;
-  v5 = [(_BRSuffixToTypeMapping *)self type];
-  v6 = UTTypeConformsTo(v4, v5);
+  typeCopy = type;
+  type = [(_BRSuffixToTypeMapping *)self type];
+  v6 = UTTypeConformsTo(typeCopy, type);
 
   return v6 != 0;
 }

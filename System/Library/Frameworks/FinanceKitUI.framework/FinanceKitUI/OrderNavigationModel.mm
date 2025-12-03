@@ -1,6 +1,6 @@
 @interface OrderNavigationModel
 - (_TtC12FinanceKitUI20OrderNavigationModel)init;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
 @end
 
 @implementation OrderNavigationModel
@@ -20,9 +20,9 @@
   return v2;
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v27 = a6;
+  typeCopy = type;
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DF13040, &qword_238773EC8);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
@@ -37,14 +37,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v18 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v19 = self;
-  v20 = a5;
-  v21 = a7;
+  selfCopy = self;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   sub_23875F2E0();
   swift_unknownObjectRelease();
-  if (v20)
+  if (pathCopy)
   {
     sub_23875BE50();
 
@@ -58,7 +58,7 @@
     (*(*(v23 - 8) + 56))(v17, 1, 1, v23);
   }
 
-  if (v21)
+  if (indexPathCopy)
   {
     sub_23875BE50();
 
@@ -72,7 +72,7 @@
 
   v25 = sub_23875BE60();
   (*(*(v25 - 8) + 56))(v14, v24, 1, v25);
-  sub_238680E54(v28, v17, v27);
+  sub_238680E54(v28, v17, typeCopy);
 
   sub_238439884(v14, &qword_27DF13040, &qword_238773EC8);
   sub_238439884(v17, &qword_27DF13040, &qword_238773EC8);

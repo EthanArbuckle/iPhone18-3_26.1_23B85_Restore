@@ -1,20 +1,20 @@
 @interface PUOneUpContentTileProvider
-- (PUOneUpContentTileProvider)initWithMediaProvider:(id)a3;
-- (id)tileControllerForAsset:(id)a3 viewModel:(id)a4 tilingView:(id)a5;
-- (void)registerTileControllerClassesWithTilingView:(id)a3;
+- (PUOneUpContentTileProvider)initWithMediaProvider:(id)provider;
+- (id)tileControllerForAsset:(id)asset viewModel:(id)model tilingView:(id)view;
+- (void)registerTileControllerClassesWithTilingView:(id)view;
 @end
 
 @implementation PUOneUpContentTileProvider
 
-- (id)tileControllerForAsset:(id)a3 viewModel:(id)a4 tilingView:(id)a5
+- (id)tileControllerForAsset:(id)asset viewModel:(id)model tilingView:(id)view
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  assetCopy = asset;
+  modelCopy = model;
+  viewCopy = view;
+  v12 = viewCopy;
+  if (assetCopy)
   {
-    if (v11)
+    if (viewCopy)
     {
       goto LABEL_3;
     }
@@ -22,8 +22,8 @@
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PUOneUpContentTileProvider.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpContentTileProvider.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
 
     if (v12)
     {
@@ -31,27 +31,27 @@
     }
   }
 
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"PUOneUpContentTileProvider.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUOneUpContentTileProvider.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
 
 LABEL_3:
-  v13 = [v9 mediaType];
-  v14 = [v9 playbackStyle];
-  v15 = v9;
+  mediaType = [assetCopy mediaType];
+  playbackStyle = [assetCopy playbackStyle];
+  v15 = assetCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v15 px_isContentPreviewable];
+    px_isContentPreviewable = [v15 px_isContentPreviewable];
 
-    if (!v16)
+    if (!px_isContentPreviewable)
     {
       v17 = @"PUSensitiveAssetTileViewReuseIdentifier";
 LABEL_14:
       v20 = [v12 dequeueTileControllerWithReuseIdentifier:v17];
-      v21 = [(PUOneUpContentTileProvider *)self mediaProvider];
-      [v20 setMediaProvider:v21];
+      mediaProvider = [(PUOneUpContentTileProvider *)self mediaProvider];
+      [v20 setMediaProvider:mediaProvider];
 
-      [v20 setAssetViewModel:v10];
+      [v20 setAssetViewModel:modelCopy];
       goto LABEL_30;
     }
   }
@@ -60,7 +60,7 @@ LABEL_14:
   {
   }
 
-  if (v14 == 5 || v13 == 2)
+  if (playbackStyle == 5 || mediaType == 2)
   {
     v17 = @"PUVideoTileViewReuseIdentifier";
     goto LABEL_14;
@@ -74,7 +74,7 @@ LABEL_14:
 
       if ([v15 isAnimatedImage])
       {
-        v19 = 1;
+        isPhotoIrisPlaceholder = 1;
         goto LABEL_18;
       }
 
@@ -83,11 +83,11 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v19 = [v15 isPhotoIrisPlaceholder];
+    isPhotoIrisPlaceholder = [v15 isPhotoIrisPlaceholder];
 
     if (([v15 isAnimatedImage] & 1) == 0)
     {
-      if ((v19 & 1) == 0)
+      if ((isPhotoIrisPlaceholder & 1) == 0)
       {
         goto LABEL_21;
       }
@@ -104,17 +104,17 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = 0;
+    isPhotoIrisPlaceholder = 0;
   }
 
 LABEL_18:
   v22 = +[PUOneUpSettings sharedInstance];
-  v23 = [v22 allowGIFPlayback];
+  allowGIFPlayback = [v22 allowGIFPlayback];
 
   v24 = &PUAnimatedImageTileViewReuseIdentifier;
-  if ((v19 & 1) == 0)
+  if ((isPhotoIrisPlaceholder & 1) == 0)
   {
-    if (v23)
+    if (allowGIFPlayback)
     {
       goto LABEL_24;
     }
@@ -127,62 +127,62 @@ LABEL_21:
   v24 = &PUIrisImageTileViewReuseIdentifier;
 LABEL_24:
   v20 = [v12 dequeueTileControllerWithReuseIdentifier:*v24];
-  v25 = [(PUOneUpContentTileProvider *)self window];
-  if (!v25)
+  window = [(PUOneUpContentTileProvider *)self window];
+  if (!window)
   {
-    v26 = [v12 window];
-    v27 = v26;
-    if (v26)
+    window2 = [v12 window];
+    v27 = window2;
+    if (window2)
     {
-      v25 = v26;
+      window = window2;
     }
 
     else
     {
-      v28 = [MEMORY[0x1E69DC668] sharedApplication];
-      v29 = [v28 windows];
-      v25 = [v29 firstObject];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      windows = [mEMORY[0x1E69DC668] windows];
+      window = [windows firstObject];
     }
   }
 
-  v30 = [(PUOneUpContentTileProvider *)self mediaProvider];
-  [v20 setMediaProvider:v30];
+  mediaProvider2 = [(PUOneUpContentTileProvider *)self mediaProvider];
+  [v20 setMediaProvider:mediaProvider2];
 
-  v31 = [v25 px_imageModulationManager];
-  [v20 setImageModulationManager:v31];
+  px_imageModulationManager = [window px_imageModulationManager];
+  [v20 setImageModulationManager:px_imageModulationManager];
 
-  [v20 setAssetViewModel:v10];
+  [v20 setAssetViewModel:modelCopy];
 LABEL_30:
   [v20 setContentViewEnabled:1];
 
   return v20;
 }
 
-- (void)registerTileControllerClassesWithTilingView:(id)a3
+- (void)registerTileControllerClassesWithTilingView:(id)view
 {
-  v3 = a3;
-  [v3 registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUOneUpImageTileViewReuseIdentifier"];
-  [v3 registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUVideoTileViewReuseIdentifier"];
-  [v3 registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUIrisImageTileViewReuseIdentifier"];
-  [v3 registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUAnimatedImageTileViewReuseIdentifier"];
-  [v3 registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUSensitiveAssetTileViewReuseIdentifier"];
+  viewCopy = view;
+  [viewCopy registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUOneUpImageTileViewReuseIdentifier"];
+  [viewCopy registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUVideoTileViewReuseIdentifier"];
+  [viewCopy registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUIrisImageTileViewReuseIdentifier"];
+  [viewCopy registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUAnimatedImageTileViewReuseIdentifier"];
+  [viewCopy registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUSensitiveAssetTileViewReuseIdentifier"];
 }
 
-- (PUOneUpContentTileProvider)initWithMediaProvider:(id)a3
+- (PUOneUpContentTileProvider)initWithMediaProvider:(id)provider
 {
-  v6 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = PUOneUpContentTileProvider;
   v7 = [(PUOneUpContentTileProvider *)&v10 init];
   if (v7)
   {
-    if (!v6)
+    if (!providerCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:v7 file:@"PUOneUpContentTileProvider.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"PUOneUpContentTileProvider.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider != nil"}];
     }
 
-    objc_storeStrong(&v7->_mediaProvider, a3);
+    objc_storeStrong(&v7->_mediaProvider, provider);
   }
 
   return v7;

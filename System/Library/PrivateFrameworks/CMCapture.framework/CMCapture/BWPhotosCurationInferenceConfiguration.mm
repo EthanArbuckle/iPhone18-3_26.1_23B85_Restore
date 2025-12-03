@@ -1,15 +1,15 @@
 @interface BWPhotosCurationInferenceConfiguration
 + (id)configuration;
-- (BWPhotosCurationInferenceConfiguration)initWithInferenceType:(int)a3;
+- (BWPhotosCurationInferenceConfiguration)initWithInferenceType:(int)type;
 @end
 
 @implementation BWPhotosCurationInferenceConfiguration
 
-- (BWPhotosCurationInferenceConfiguration)initWithInferenceType:(int)a3
+- (BWPhotosCurationInferenceConfiguration)initWithInferenceType:(int)type
 {
   v4.receiver = self;
   v4.super_class = BWPhotosCurationInferenceConfiguration;
-  result = [(BWInferenceConfiguration *)&v4 initWithInferenceType:*&a3];
+  result = [(BWInferenceConfiguration *)&v4 initWithInferenceType:*&type];
   if (result)
   {
     *(&result->super._suppressTimeOutFailure + 3) = 0;

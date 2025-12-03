@@ -1,17 +1,17 @@
 @interface HDSummarySharingEntryEntity
-+ (BOOL)enumerateCodableEntriesWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5 handler:(id)a6;
-+ (BOOL)enumerateCodableEntriesWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6;
-+ (BOOL)insertOrReplaceCodableEntry:(id)a3 CNContactIdentifier:(id)a4 shouldPause:(BOOL)a5 syncProvenance:(int64_t)a6 transaction:(id)a7 error:(id *)a8;
-+ (BOOL)updateNotificationStatusForInvitiationWithUUID:(id)a3 newNotificationStatus:(int64_t)a4 dateModified:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)updateOwnerParticipant:(id)a3 cloudKitIdentifier:(id)a4 predicate:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)updateStatus:(int64_t)a3 dateModified:(id)a4 dateAccepted:(id)a5 predicate:(id)a6 profile:(id)a7 error:(id *)a8;
-+ (id)_pauseKeyForEntryUUIDString:(uint64_t)a1;
++ (BOOL)enumerateCodableEntriesWithPredicate:(id)predicate profile:(id)profile error:(id *)error handler:(id)handler;
++ (BOOL)enumerateCodableEntriesWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error handler:(id)handler;
++ (BOOL)insertOrReplaceCodableEntry:(id)entry CNContactIdentifier:(id)identifier shouldPause:(BOOL)pause syncProvenance:(int64_t)provenance transaction:(id)transaction error:(id *)error;
++ (BOOL)updateNotificationStatusForInvitiationWithUUID:(id)d newNotificationStatus:(int64_t)status dateModified:(id)modified profile:(id)profile error:(id *)error;
++ (BOOL)updateOwnerParticipant:(id)participant cloudKitIdentifier:(id)identifier predicate:(id)predicate profile:(id)profile error:(id *)error;
++ (BOOL)updateStatus:(int64_t)status dateModified:(id)modified dateAccepted:(id)accepted predicate:(id)predicate profile:(id)profile error:(id *)error;
++ (id)_pauseKeyForEntryUUIDString:(uint64_t)string;
 + (id)_propertiesForEntity;
-+ (id)anyWithUUID:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)codableWithRow:(HDSQLiteRow *)a3;
++ (id)anyWithUUID:(id)d transaction:(id)transaction error:(id *)error;
++ (id)codableWithRow:(HDSQLiteRow *)row;
 + (id)indices;
-+ (uint64_t)_readPauseStateForEntryWithUUIDString:(uint64_t)a1;
-+ (void)updatePauseStateForEntryWithUUID:(id)a3 shouldPause:(BOOL)a4;
++ (uint64_t)_readPauseStateForEntryWithUUIDString:(uint64_t)string;
++ (void)updatePauseStateForEntryWithUUID:(id)d shouldPause:(BOOL)pause;
 @end
 
 @implementation HDSummarySharingEntryEntity
@@ -66,23 +66,23 @@
   return v2;
 }
 
-+ (BOOL)insertOrReplaceCodableEntry:(id)a3 CNContactIdentifier:(id)a4 shouldPause:(BOOL)a5 syncProvenance:(int64_t)a6 transaction:(id)a7 error:(id *)a8
++ (BOOL)insertOrReplaceCodableEntry:(id)entry CNContactIdentifier:(id)identifier shouldPause:(BOOL)pause syncProvenance:(int64_t)provenance transaction:(id)transaction error:(id *)error
 {
-  v41 = a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  pauseCopy = pause;
+  entryCopy = entry;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   v14 = objc_opt_self();
-  v15 = [v13 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
   v16 = objc_alloc(MEMORY[0x277CCAD78]);
-  v17 = v11;
-  v18 = [v11 uuid];
-  v19 = [v16 initWithUUIDString:v18];
+  v17 = entryCopy;
+  uuid = [entryCopy uuid];
+  v19 = [v16 initWithUUIDString:uuid];
 
   v20 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" equalToValue:v19];
   v48 = 0;
-  v42 = v15;
-  v21 = [v14 propertyValueForAnyInDatabase:v15 property:@"date_modified" predicate:v20 error:&v48];
+  v42 = protectedDatabase;
+  v21 = [v14 propertyValueForAnyInDatabase:protectedDatabase property:@"date_modified" predicate:v20 error:&v48];
   v22 = v48;
   v23 = v22;
   if (v21)
@@ -116,9 +116,9 @@ LABEL_16:
       }
     }
 
-    v31 = [v13 protectedDatabase];
+    protectedDatabase2 = [transactionCopy protectedDatabase];
     [v14 _propertiesForEntity];
-    v33 = v32 = v12;
+    v33 = v32 = identifierCopy;
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __125__HDSummarySharingEntryEntity__insertOrReplaceCodableEntry_CNContactIdentifier_shouldPause_syncProvenance_transaction_error___block_invoke;
@@ -128,26 +128,26 @@ LABEL_16:
     v45 = v17;
     v38 = v32;
     v46 = v32;
-    v47 = a6;
-    v35 = [v14 insertOrReplaceEntity:1 database:v31 properties:v33 error:a8 bindingHandler:v43];
+    provenanceCopy = provenance;
+    v35 = [v14 insertOrReplaceEntity:1 database:protectedDatabase2 properties:v33 error:error bindingHandler:v43];
 
-    if (v41)
+    if (pauseCopy)
     {
       [v14 updatePauseStateForEntryWithUUID:v34 shouldPause:1];
     }
 
     v29 = v35 != 0;
 
-    v13 = v37;
-    v12 = v38;
+    transactionCopy = v37;
+    identifierCopy = v38;
     goto LABEL_16;
   }
 
-  if (a8)
+  if (error)
   {
     v30 = v22;
     v29 = 0;
-    *a8 = v23;
+    *error = v23;
   }
 
   else
@@ -244,27 +244,27 @@ void __125__HDSummarySharingEntryEntity__insertOrReplaceCodableEntry_CNContactId
   JUMPOUT(0x22AAC6B90);
 }
 
-+ (BOOL)updateStatus:(int64_t)a3 dateModified:(id)a4 dateAccepted:(id)a5 predicate:(id)a6 profile:(id)a7 error:(id *)a8
++ (BOOL)updateStatus:(int64_t)status dateModified:(id)modified dateAccepted:(id)accepted predicate:(id)predicate profile:(id)profile error:(id *)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = [a7 database];
+  modifiedCopy = modified;
+  acceptedCopy = accepted;
+  predicateCopy = predicate;
+  database = [profile database];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __94__HDSummarySharingEntryEntity_updateStatus_dateModified_dateAccepted_predicate_profile_error___block_invoke;
   v22[3] = &unk_2786145F8;
-  v23 = v16;
-  v24 = v14;
-  v25 = v15;
-  v26 = a1;
-  v27 = a3;
-  v18 = v15;
-  v19 = v14;
-  v20 = v16;
-  LOBYTE(a8) = [a1 performWriteTransactionWithHealthDatabase:v17 error:a8 block:v22];
+  v23 = predicateCopy;
+  v24 = modifiedCopy;
+  v25 = acceptedCopy;
+  selfCopy = self;
+  statusCopy = status;
+  v18 = acceptedCopy;
+  v19 = modifiedCopy;
+  v20 = predicateCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v22];
 
-  return a8;
+  return error;
 }
 
 uint64_t __94__HDSummarySharingEntryEntity_updateStatus_dateModified_dateAccepted_predicate_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -319,26 +319,26 @@ void __94__HDSummarySharingEntryEntity_updateStatus_dateModified_dateAccepted_pr
   JUMPOUT(0x22AAC6B90);
 }
 
-+ (BOOL)updateOwnerParticipant:(id)a3 cloudKitIdentifier:(id)a4 predicate:(id)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)updateOwnerParticipant:(id)participant cloudKitIdentifier:(id)identifier predicate:(id)predicate profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [a6 database];
+  participantCopy = participant;
+  identifierCopy = identifier;
+  predicateCopy = predicate;
+  database = [profile database];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __97__HDSummarySharingEntryEntity_updateOwnerParticipant_cloudKitIdentifier_predicate_profile_error___block_invoke;
   v20[3] = &unk_278613550;
-  v21 = v14;
-  v22 = v12;
-  v23 = v13;
-  v24 = a1;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
-  LOBYTE(a7) = [a1 performWriteTransactionWithHealthDatabase:v15 error:a7 block:v20];
+  v21 = predicateCopy;
+  v22 = participantCopy;
+  v23 = identifierCopy;
+  selfCopy = self;
+  v16 = identifierCopy;
+  v17 = participantCopy;
+  v18 = predicateCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v20];
 
-  return a7;
+  return error;
 }
 
 uint64_t __97__HDSummarySharingEntryEntity_updateOwnerParticipant_cloudKitIdentifier_predicate_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -386,24 +386,24 @@ void __97__HDSummarySharingEntryEntity_updateOwnerParticipant_cloudKitIdentifier
   JUMPOUT(0x22AAC6BA0);
 }
 
-+ (BOOL)updateNotificationStatusForInvitiationWithUUID:(id)a3 newNotificationStatus:(int64_t)a4 dateModified:(id)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)updateNotificationStatusForInvitiationWithUUID:(id)d newNotificationStatus:(int64_t)status dateModified:(id)modified profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = [a6 database];
+  dCopy = d;
+  modifiedCopy = modified;
+  database = [profile database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __127__HDSummarySharingEntryEntity_updateNotificationStatusForInvitiationWithUUID_newNotificationStatus_dateModified_profile_error___block_invoke;
   v18[3] = &unk_2786154B8;
-  v21 = a1;
-  v22 = a4;
-  v19 = v12;
-  v20 = v13;
-  v15 = v13;
-  v16 = v12;
-  LOBYTE(a7) = [a1 performWriteTransactionWithHealthDatabase:v14 error:a7 block:v18];
+  selfCopy = self;
+  statusCopy = status;
+  v19 = dCopy;
+  v20 = modifiedCopy;
+  v15 = modifiedCopy;
+  v16 = dCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v18];
 
-  return a7;
+  return error;
 }
 
 uint64_t __127__HDSummarySharingEntryEntity_updateNotificationStatusForInvitiationWithUUID_newNotificationStatus_dateModified_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -439,15 +439,15 @@ void __127__HDSummarySharingEntryEntity_updateNotificationStatusForInvitiationWi
   JUMPOUT(0x22AAC6B60);
 }
 
-+ (void)updatePauseStateForEntryWithUUID:(id)a3 shouldPause:(BOOL)a4
++ (void)updatePauseStateForEntryWithUUID:(id)d shouldPause:(BOOL)pause
 {
-  v4 = a4;
-  v6 = [a3 UUIDString];
-  v10 = [(HDSummarySharingEntryEntity *)a1 _pauseKeyForEntryUUIDString:v6];
+  pauseCopy = pause;
+  uUIDString = [d UUIDString];
+  v10 = [(HDSummarySharingEntryEntity *)self _pauseKeyForEntryUUIDString:uUIDString];
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v8 = v7;
-  if (v4)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v8 = standardUserDefaults;
+  if (pauseCopy)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [v8 setObject:v9 forKey:v10];
@@ -455,11 +455,11 @@ void __127__HDSummarySharingEntryEntity_updateNotificationStatusForInvitiationWi
 
   else
   {
-    [v7 removeObjectForKey:v10];
+    [standardUserDefaults removeObjectForKey:v10];
   }
 }
 
-+ (id)_pauseKeyForEntryUUIDString:(uint64_t)a1
++ (id)_pauseKeyForEntryUUIDString:(uint64_t)string
 {
   v2 = a2;
   objc_opt_self();
@@ -468,37 +468,37 @@ void __127__HDSummarySharingEntryEntity_updateNotificationStatusForInvitiationWi
   return v3;
 }
 
-+ (uint64_t)_readPauseStateForEntryWithUUIDString:(uint64_t)a1
++ (uint64_t)_readPauseStateForEntryWithUUIDString:(uint64_t)string
 {
   v2 = a2;
   v3 = objc_opt_self();
   v4 = [(HDSummarySharingEntryEntity *)v3 _pauseKeyForEntryUUIDString:v2];
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 objectForKey:v4];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:v4];
 
-  v7 = [v6 BOOLValue];
-  return v7;
+  bOOLValue = [v6 BOOLValue];
+  return bOOLValue;
 }
 
-+ (BOOL)enumerateCodableEntriesWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6
++ (BOOL)enumerateCodableEntriesWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error handler:(id)handler
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [a4 protectedDatabase];
-  v13 = [a1 queryWithDatabase:v12 predicate:v11];
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  protectedDatabase = [transaction protectedDatabase];
+  v13 = [self queryWithDatabase:protectedDatabase predicate:predicateCopy];
 
-  v14 = [a1 _propertiesForEntity];
+  _propertiesForEntity = [self _propertiesForEntity];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __94__HDSummarySharingEntryEntity_enumerateCodableEntriesWithPredicate_transaction_error_handler___block_invoke;
   v17[3] = &unk_278618B48;
-  v18 = v10;
-  v19 = a1;
-  v15 = v10;
-  LOBYTE(a5) = [v13 enumerateProperties:v14 error:a5 enumerationHandler:v17];
+  v18 = handlerCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  LOBYTE(error) = [v13 enumerateProperties:_propertiesForEntity error:error enumerationHandler:v17];
 
-  return a5;
+  return error;
 }
 
 uint64_t __94__HDSummarySharingEntryEntity_enumerateCodableEntriesWithPredicate_transaction_error_handler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -536,23 +536,23 @@ uint64_t __94__HDSummarySharingEntryEntity_enumerateCodableEntriesWithPredicate_
   return v13;
 }
 
-+ (BOOL)enumerateCodableEntriesWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5 handler:(id)a6
++ (BOOL)enumerateCodableEntriesWithPredicate:(id)predicate profile:(id)profile error:(id *)error handler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a4 database];
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  database = [profile database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__HDSummarySharingEntryEntity_enumerateCodableEntriesWithPredicate_profile_error_handler___block_invoke;
   v16[3] = &unk_27861B6E8;
-  v18 = v11;
-  v19 = a1;
-  v17 = v10;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a5) = [a1 performReadTransactionWithHealthDatabase:v12 error:a5 block:v16];
+  v18 = handlerCopy;
+  selfCopy = self;
+  v17 = predicateCopy;
+  v13 = handlerCopy;
+  v14 = predicateCopy;
+  LOBYTE(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a5;
+  return error;
 }
 
 uint64_t __90__HDSummarySharingEntryEntity_enumerateCodableEntriesWithPredicate_profile_error_handler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -609,7 +609,7 @@ uint64_t __90__HDSummarySharingEntryEntity_enumerateCodableEntriesWithPredicate_
   return v13;
 }
 
-+ (id)codableWithRow:(HDSQLiteRow *)a3
++ (id)codableWithRow:(HDSQLiteRow *)row
 {
   v15 = HDSQLiteColumnWithNameAsUUID();
   v14 = HDSQLiteColumnWithNameAsUUID();
@@ -636,14 +636,14 @@ uint64_t __90__HDSummarySharingEntryEntity_enumerateCodableEntriesWithPredicate_
   return v17;
 }
 
-+ (id)anyWithUUID:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)anyWithUUID:(id)d transaction:(id)transaction error:(id *)error
 {
   v8 = MEMORY[0x277D10B18];
-  v9 = a4;
-  v10 = [v8 predicateWithProperty:@"uuid" equalToValue:a3];
-  v11 = [v9 databaseForEntityClass:objc_opt_class()];
+  transactionCopy = transaction;
+  v10 = [v8 predicateWithProperty:@"uuid" equalToValue:d];
+  v11 = [transactionCopy databaseForEntityClass:objc_opt_class()];
 
-  v12 = [a1 anyInDatabase:v11 predicate:v10 error:a5];
+  v12 = [self anyInDatabase:v11 predicate:v10 error:error];
 
   return v12;
 }

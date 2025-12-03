@@ -1,22 +1,22 @@
 @interface DCDocumentCameraViewServiceSession
-- (DCDocumentCameraViewServiceSession)initWithCoder:(id)a3;
-- (DCDocumentCameraViewServiceSession)initWithSessionRequest:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DCDocumentCameraViewServiceSession)initWithCoder:(id)coder;
+- (DCDocumentCameraViewServiceSession)initWithSessionRequest:(id)request;
+- (void)encodeWithCoder:(id)coder;
 - (void)setup;
 @end
 
 @implementation DCDocumentCameraViewServiceSession
 
-- (DCDocumentCameraViewServiceSession)initWithSessionRequest:(id)a3
+- (DCDocumentCameraViewServiceSession)initWithSessionRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v8.receiver = self;
   v8.super_class = DCDocumentCameraViewServiceSession;
   v6 = [(DCDocumentCameraViewServiceSession *)&v8 init];
   if (v6)
   {
     v6->_viewServicePid = getpid();
-    objc_storeStrong(&v6->_sessionRequest, a3);
+    objc_storeStrong(&v6->_sessionRequest, request);
     [(DCDocumentCameraViewServiceSession *)v6 setup];
   }
 
@@ -25,25 +25,25 @@
 
 - (void)setup
 {
-  v3 = [(DCDocumentCameraViewServiceSession *)self sessionRequest];
-  v4 = [v3 cachesDirectorySandboxExtension];
-  v7 = [v4 fileURL];
+  sessionRequest = [(DCDocumentCameraViewServiceSession *)self sessionRequest];
+  cachesDirectorySandboxExtension = [sessionRequest cachesDirectorySandboxExtension];
+  fileURL = [cachesDirectorySandboxExtension fileURL];
 
-  v5 = [[ICDocCamImageCache alloc] initWithDataCryptorDelegate:0 cachesDirectoryURL:v7];
+  v5 = [[ICDocCamImageCache alloc] initWithDataCryptorDelegate:0 cachesDirectoryURL:fileURL];
   docCamImageCache = self->_docCamImageCache;
   self->_docCamImageCache = v5;
 }
 
-- (DCDocumentCameraViewServiceSession)initWithCoder:(id)a3
+- (DCDocumentCameraViewServiceSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DCDocumentCameraViewServiceSession;
   v5 = [(DCDocumentCameraViewServiceSession *)&v9 init];
   if (v5)
   {
-    v5->_viewServicePid = [v4 decodeInt32ForKey:@"kPIDFieldCodingKey"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSessionRequestFieldCodingKey"];
+    v5->_viewServicePid = [coderCopy decodeInt32ForKey:@"kPIDFieldCodingKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSessionRequestFieldCodingKey"];
     sessionRequest = v5->_sessionRequest;
     v5->_sessionRequest = v6;
 
@@ -53,12 +53,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[DCDocumentCameraViewServiceSession viewServicePid](self forKey:{"viewServicePid"), @"kPIDFieldCodingKey"}];
-  v5 = [(DCDocumentCameraViewServiceSession *)self sessionRequest];
-  [v4 encodeObject:v5 forKey:@"kSessionRequestFieldCodingKey"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[DCDocumentCameraViewServiceSession viewServicePid](self forKey:{"viewServicePid"), @"kPIDFieldCodingKey"}];
+  sessionRequest = [(DCDocumentCameraViewServiceSession *)self sessionRequest];
+  [coderCopy encodeObject:sessionRequest forKey:@"kSessionRequestFieldCodingKey"];
 }
 
 @end

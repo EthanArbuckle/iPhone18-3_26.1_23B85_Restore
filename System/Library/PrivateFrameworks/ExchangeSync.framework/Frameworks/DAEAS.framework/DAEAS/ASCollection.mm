@@ -7,16 +7,16 @@
 + (id)asParseRules;
 - (ASCollection)init;
 - (id)description;
-- (int)sniffableTypeForAccount:(id)a3;
+- (int)sniffableTypeForAccount:(id)account;
 - (int64_t)dataclass;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
-- (void)setChangedItems:(id)a3;
-- (void)setCollectionId:(id)a3;
-- (void)setDataclassString:(id)a3;
-- (void)setMoreAvailable:(id)a3;
-- (void)setResponseItems:(id)a3;
-- (void)setStatus:(id)a3;
-- (void)setSyncKey:(id)a3;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
+- (void)setChangedItems:(id)items;
+- (void)setCollectionId:(id)id;
+- (void)setDataclassString:(id)string;
+- (void)setMoreAvailable:(id)available;
+- (void)setResponseItems:(id)items;
+- (void)setStatus:(id)status;
+- (void)setSyncKey:(id)key;
 @end
 
 @implementation ASCollection
@@ -30,7 +30,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_23 = v2;
     acceptsTopLevelLeaves___haveChecked_23 = 1;
   }
@@ -47,7 +47,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_23 = v2;
     parsingLeafNode___haveChecked_23 = 1;
   }
@@ -64,7 +64,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_23 = v2;
     parsingWithSubItems___haveChecked_23 = 1;
   }
@@ -81,7 +81,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_23 = v2;
     frontingBasicTypes___haveChecked_23 = 1;
   }
@@ -98,7 +98,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_23 = v2;
     notifyOfUnknownTokens___haveChecked_23 = 1;
   }
@@ -134,42 +134,42 @@
 
     else
     {
-      v6 = [(ASItem *)self parent];
-      if (!v6)
+      parent = [(ASItem *)self parent];
+      if (!parent)
       {
         return self->_dataclass;
       }
 
-      v4 = v6;
+      v4 = parent;
       do
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [v4 dataclass];
-          self->_dataclass = v7;
-          if (v7)
+          dataclass = [v4 dataclass];
+          self->_dataclass = dataclass;
+          if (dataclass)
           {
             break;
           }
         }
 
-        v8 = [v4 parent];
+        parent2 = [v4 parent];
 
-        v4 = v8;
+        v4 = parent2;
       }
 
-      while (v8);
+      while (parent2);
     }
   }
 
   return self->_dataclass;
 }
 
-- (void)setDataclassString:(id)a3
+- (void)setDataclassString:(id)string
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"Email"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Email"])
   {
     v4 = 1;
 LABEL_9:
@@ -177,25 +177,25 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v5 isEqualToString:@"Contacts"])
+  if ([stringCopy isEqualToString:@"Contacts"])
   {
     v4 = 2;
     goto LABEL_9;
   }
 
-  if ([v5 isEqualToString:@"Tasks"])
+  if ([stringCopy isEqualToString:@"Tasks"])
   {
     v4 = 16;
     goto LABEL_9;
   }
 
-  if ([v5 isEqualToString:@"Calendar"])
+  if ([stringCopy isEqualToString:@"Calendar"])
   {
     v4 = 4;
     goto LABEL_9;
   }
 
-  if ([v5 isEqualToString:@"Notes"])
+  if ([stringCopy isEqualToString:@"Notes"])
   {
     v4 = 32;
     goto LABEL_9;
@@ -206,32 +206,32 @@ LABEL_10:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setChangedItems:(id)a3
+- (void)setChangedItems:(id)items
 {
-  v5 = a3;
-  if (self->_changedItems != v5)
+  itemsCopy = items;
+  if (self->_changedItems != itemsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_changedItems, a3);
-    v5 = v6;
+    v6 = itemsCopy;
+    objc_storeStrong(&self->_changedItems, items);
+    itemsCopy = v6;
   }
 }
 
-- (void)setResponseItems:(id)a3
+- (void)setResponseItems:(id)items
 {
-  v5 = a3;
-  if (self->_responseItems != v5)
+  itemsCopy = items;
+  if (self->_responseItems != itemsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_responseItems, a3);
-    v5 = v6;
+    v6 = itemsCopy;
+    objc_storeStrong(&self->_responseItems, items);
+    itemsCopy = v6;
   }
 }
 
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -261,7 +261,7 @@ LABEL_10:
     v113 = [[ASParseRule alloc] initWithMinimumNumber:0 maximumNumber:1209 codePage:0 token:10 objectClass:objc_opt_class() setterMethod:sel_addItem_ dataclass:2 callbackDict:0 streamCallbackDict:0 subclassRuleSet:0];
     v114 = [MEMORY[0x277CCABB0] numberWithInt:131082];
     v111 = [[ASParseRule alloc] initWithMinimumNumber:0 maximumNumber:1209 codePage:0 token:7 objectClass:objc_opt_class() setterMethod:sel_addItem_ dataclass:4 callbackDict:0 streamCallbackDict:0 subclassRuleSet:0];
-    aClass = a1;
+    aClass = self;
     v112 = [MEMORY[0x277CCABB0] numberWithInt:262151];
     v110 = [[ASParseRule alloc] initWithMinimumNumber:0 maximumNumber:1209 codePage:0 token:8 objectClass:objc_opt_class() setterMethod:sel_addItem_ dataclass:4 callbackDict:0 streamCallbackDict:0 subclassRuleSet:0];
     v109 = [MEMORY[0x277CCABB0] numberWithInt:262152];
@@ -370,12 +370,12 @@ LABEL_10:
   return v5;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v22 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = ASCollection;
-  [(ASItem *)&v17 parseASParseContext:a3 root:a4 parent:a5 callbackDict:a6 streamCallbackDict:a7 account:a8];
+  [(ASItem *)&v17 parseASParseContext:context root:root parent:parent callbackDict:dict streamCallbackDict:callbackDict account:account];
   parsingState = self->super._parsingState;
   if (parsingState >= 2)
   {
@@ -386,25 +386,25 @@ LABEL_10:
 
     else
     {
-      v11 = [(ASCollection *)self status];
-      v12 = [v11 intValue];
+      status = [(ASCollection *)self status];
+      intValue = [status intValue];
 
-      if (v12 == 1)
+      if (intValue == 1)
       {
-        v13 = [(ASCollection *)self syncKey];
+        syncKey = [(ASCollection *)self syncKey];
 
-        if (!v13)
+        if (!syncKey)
         {
           self->super._parsingState = 3;
           v14 = DALoggingwithCategory();
           v15 = *(MEMORY[0x277D03988] + 3);
           if (os_log_type_enabled(v14, v15))
           {
-            v16 = [(ASCollection *)self syncKey];
+            syncKey2 = [(ASCollection *)self syncKey];
             *buf = 67109378;
             v19 = 1;
             v20 = 2112;
-            v21 = v16;
+            v21 = syncKey2;
             _os_log_impl(&dword_24A0AC000, v14, v15, "We received a happy value for status (%d), but syncKey %@ is missing", buf, 0x12u);
           }
         }
@@ -415,14 +415,14 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (int)sniffableTypeForAccount:(id)a3
+- (int)sniffableTypeForAccount:(id)account
 {
   if (!self->_checkedShouldSniffInvites)
   {
     collectionId = self->_collectionId;
-    v5 = a3;
-    v6 = [v5 folderWithId:collectionId];
-    v7 = [v5 sniffableTypeForFolder:v6];
+    accountCopy = account;
+    v6 = [accountCopy folderWithId:collectionId];
+    v7 = [accountCopy sniffableTypeForFolder:v6];
 
     self->_sniffableType = v7;
     self->_checkedShouldSniffInvites = 1;
@@ -431,47 +431,47 @@ LABEL_10:
   return self->_sniffableType;
 }
 
-- (void)setSyncKey:(id)a3
+- (void)setSyncKey:(id)key
 {
-  v5 = a3;
-  if (self->_syncKey != v5)
+  keyCopy = key;
+  if (self->_syncKey != keyCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_syncKey, a3);
-    v5 = v6;
+    v6 = keyCopy;
+    objc_storeStrong(&self->_syncKey, key);
+    keyCopy = v6;
   }
 }
 
-- (void)setCollectionId:(id)a3
+- (void)setCollectionId:(id)id
 {
-  v5 = a3;
-  if (self->_collectionId != v5)
+  idCopy = id;
+  if (self->_collectionId != idCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_collectionId, a3);
-    v5 = v6;
+    v6 = idCopy;
+    objc_storeStrong(&self->_collectionId, id);
+    idCopy = v6;
   }
 }
 
-- (void)setStatus:(id)a3
+- (void)setStatus:(id)status
 {
-  v5 = a3;
-  if (self->_status != v5)
+  statusCopy = status;
+  if (self->_status != statusCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_status, a3);
-    v5 = v6;
+    v6 = statusCopy;
+    objc_storeStrong(&self->_status, status);
+    statusCopy = v6;
   }
 }
 
-- (void)setMoreAvailable:(id)a3
+- (void)setMoreAvailable:(id)available
 {
-  v5 = a3;
-  if (self->_moreAvailable != v5)
+  availableCopy = available;
+  if (self->_moreAvailable != availableCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_moreAvailable, a3);
-    v5 = v6;
+    v6 = availableCopy;
+    objc_storeStrong(&self->_moreAvailable, available);
+    availableCopy = v6;
   }
 }
 

@@ -1,18 +1,18 @@
 @interface CMContinuityCaptureEventQueue
-- (CMContinuityCaptureEventQueue)initWithActionDelegate:(id)a3 queue:(id)a4;
+- (CMContinuityCaptureEventQueue)initWithActionDelegate:(id)delegate queue:(id)queue;
 - (void)_dropStreamStartEventsForEntityIfApplicable;
 - (void)_notifyCompletion;
-- (void)enqueueEventAction:(unint64_t)a3 args:(id)a4;
+- (void)enqueueEventAction:(unint64_t)action args:(id)args;
 - (void)notifyCompletion;
-- (void)notifyCompletionForIdentifier:(id)a3;
-- (void)setEventCompletionExpectationForIdentifiers:(id)a3;
+- (void)notifyCompletionForIdentifier:(id)identifier;
+- (void)setEventCompletionExpectationForIdentifiers:(id)identifiers;
 @end
 
 @implementation CMContinuityCaptureEventQueue
 
-- (void)enqueueEventAction:(unint64_t)a3 args:(id)a4
+- (void)enqueueEventAction:(unint64_t)action args:(id)args
 {
-  v6 = a4;
+  argsCopy = args;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -20,10 +20,10 @@
   block[2] = __57__CMContinuityCaptureEventQueue_enqueueEventAction_args___block_invoke;
   block[3] = &unk_278D5CFF8;
   objc_copyWeak(v12, &location);
-  v12[1] = a3;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v12[1] = action;
+  v10 = argsCopy;
+  selfCopy = self;
+  v8 = argsCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v12);
@@ -74,9 +74,9 @@ void __57__CMContinuityCaptureEventQueue_enqueueEventAction_args___block_invoke(
   }
 }
 
-- (void)setEventCompletionExpectationForIdentifiers:(id)a3
+- (void)setEventCompletionExpectationForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -84,8 +84,8 @@ void __57__CMContinuityCaptureEventQueue_enqueueEventAction_args___block_invoke(
   block[2] = __77__CMContinuityCaptureEventQueue_setEventCompletionExpectationForIdentifiers___block_invoke;
   block[3] = &unk_278D5C0A8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -106,9 +106,9 @@ void __77__CMContinuityCaptureEventQueue_setEventCompletionExpectationForIdentif
   }
 }
 
-- (void)notifyCompletionForIdentifier:(id)a3
+- (void)notifyCompletionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -116,8 +116,8 @@ void __77__CMContinuityCaptureEventQueue_setEventCompletionExpectationForIdentif
   block[2] = __63__CMContinuityCaptureEventQueue_notifyCompletionForIdentifier___block_invoke;
   block[3] = &unk_278D5C0A8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -190,8 +190,8 @@ void __49__CMContinuityCaptureEventQueue_notifyCompletion__block_invoke(uint64_t
     return;
   }
 
-  v3 = [(NSMutableArray *)self->_eventQueue firstObject];
-  v4 = [v3 objectForKeyedSubscript:@"ContinuityCaptureArgs"];
+  firstObject = [(NSMutableArray *)self->_eventQueue firstObject];
+  v4 = [firstObject objectForKeyedSubscript:@"ContinuityCaptureArgs"];
 
   if (!v4 || [v4 count] < 3)
   {
@@ -220,9 +220,9 @@ void __49__CMContinuityCaptureEventQueue_notifyCompletion__block_invoke(uint64_t
     {
       v12 = [(NSMutableArray *)self->_eventQueue objectAtIndexedSubscript:v9];
       v13 = [v12 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
-      v14 = [v13 unsignedIntValue];
+      unsignedIntValue = [v13 unsignedIntValue];
 
-      if (v14 == 3)
+      if (unsignedIntValue == 3)
       {
         v15 = [(NSMutableArray *)self->_eventQueue objectAtIndexedSubscript:v9];
         v16 = [v15 objectForKeyedSubscript:@"ContinuityCaptureArgs"];
@@ -241,14 +241,14 @@ void __49__CMContinuityCaptureEventQueue_notifyCompletion__block_invoke(uint64_t
           {
             [(NSMutableArray *)self->_eventQueue objectAtIndexedSubscript:v9];
             v34 = v29 = v8;
-            v21 = [(NSMutableArray *)self->_eventQueue firstObject];
+            firstObject2 = [(NSMutableArray *)self->_eventQueue firstObject];
             *buf = 138412802;
-            v37 = self;
+            selfCopy3 = self;
             v38 = 2112;
             v39 = v34;
             v40 = 2112;
-            v41 = v21;
-            v22 = v21;
+            v41 = firstObject2;
+            v22 = firstObject2;
             _os_log_impl(&dword_242545000, v20, OS_LOG_TYPE_DEFAULT, "%@ Associated stop %@ for %@", buf, 0x20u);
 
             v8 = v29;
@@ -264,8 +264,8 @@ void __49__CMContinuityCaptureEventQueue_notifyCompletion__block_invoke(uint64_t
             goto LABEL_22;
           }
 
-          v23 = [v18 unsignedIntValue];
-          if (v23 != [v6 unsignedIntValue])
+          unsignedIntValue2 = [v18 unsignedIntValue];
+          if (unsignedIntValue2 != [v6 unsignedIntValue])
           {
             goto LABEL_22;
           }
@@ -274,13 +274,13 @@ void __49__CMContinuityCaptureEventQueue_notifyCompletion__block_invoke(uint64_t
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             v35 = [(NSMutableArray *)self->_eventQueue objectAtIndexedSubscript:v9];
-            v30 = [(NSMutableArray *)self->_eventQueue firstObject];
+            firstObject3 = [(NSMutableArray *)self->_eventQueue firstObject];
             *buf = 138412802;
-            v37 = self;
+            selfCopy3 = self;
             v38 = 2112;
             v39 = v35;
             v40 = 2112;
-            v41 = v30;
+            v41 = firstObject3;
             _os_log_impl(&dword_242545000, v20, OS_LOG_TYPE_DEFAULT, "%@ Associated start %@ for %@", buf, 0x20u);
           }
 
@@ -303,11 +303,11 @@ LABEL_23:
     v24 = CMContinuityCaptureLog(0);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(NSMutableArray *)self->_eventQueue firstObject];
+      firstObject4 = [(NSMutableArray *)self->_eventQueue firstObject];
       *buf = 138412546;
-      v37 = self;
+      selfCopy3 = self;
       v38 = 2112;
-      v39 = v25;
+      v39 = firstObject4;
       _os_log_impl(&dword_242545000, v24, OS_LOG_TYPE_DEFAULT, "%@ Dropping %@", buf, 0x16u);
     }
 
@@ -335,24 +335,24 @@ LABEL_33:
 {
   v3 = *a2;
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = v3;
   _os_log_debug_impl(&dword_242545000, log, OS_LOG_TYPE_DEBUG, "%@ pendingActions %@", &v4, 0x16u);
 }
 
-- (CMContinuityCaptureEventQueue)initWithActionDelegate:(id)a3 queue:(id)a4
+- (CMContinuityCaptureEventQueue)initWithActionDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = CMContinuityCaptureEventQueue;
   v8 = [(CMContinuityCaptureEventQueue *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_queue, queue);
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     eventQueue = v9->_eventQueue;
     v9->_eventQueue = v10;

@@ -1,15 +1,15 @@
 @interface UnitsInfo
 + (UnitsInfo)converterUnits;
-+ (UnitsInfo)unitsInfoWithDictionary:(id)a3;
++ (UnitsInfo)unitsInfoWithDictionary:(id)dictionary;
 - (UnitInfo)degreesInfo;
 - (UnitInfo)radiansInfo;
 - (UnitTypeInfo)angleInfo;
-- (UnitsInfo)initWithDictionary:(id)a3;
-- (id)infoForUnitID:(int)a3;
-- (id)infoForUnitName:(id)a3;
-- (id)infoForUnitType:(int)a3;
-- (id)infoForUnitTypeName:(id)a3;
-- (void)populateSubunitIDs:(id)a3 forUnit:(id)a4 visited:(id)a5;
+- (UnitsInfo)initWithDictionary:(id)dictionary;
+- (id)infoForUnitID:(int)d;
+- (id)infoForUnitName:(id)name;
+- (id)infoForUnitType:(int)type;
+- (id)infoForUnitTypeName:(id)name;
+- (void)populateSubunitIDs:(id)ds forUnit:(id)unit visited:(id)visited;
 @end
 
 @implementation UnitsInfo
@@ -58,60 +58,60 @@ void __27__UnitsInfo_converterUnits__block_invoke()
   return WeakRetained;
 }
 
-- (id)infoForUnitName:(id)a3
+- (id)infoForUnitName:(id)name
 {
-  v4 = a3;
-  v5 = [(UnitsInfo *)self unitNameToInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  unitNameToInfo = [(UnitsInfo *)self unitNameToInfo];
+  v6 = [unitNameToInfo objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (id)infoForUnitID:(int)a3
+- (id)infoForUnitID:(int)d
 {
-  if (a3 < 0 || (-[UnitsInfo unitIDToInfo](self, "unitIDToInfo"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= a3))
+  if (d < 0 || (-[UnitsInfo unitIDToInfo](self, "unitIDToInfo"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= d))
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(UnitsInfo *)self unitIDToInfo];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    unitIDToInfo = [(UnitsInfo *)self unitIDToInfo];
+    v8 = [unitIDToInfo objectAtIndexedSubscript:d];
   }
 
   return v8;
 }
 
-- (id)infoForUnitTypeName:(id)a3
+- (id)infoForUnitTypeName:(id)name
 {
-  v4 = a3;
-  v5 = [(UnitsInfo *)self unitTypeNameToInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  unitTypeNameToInfo = [(UnitsInfo *)self unitTypeNameToInfo];
+  v6 = [unitTypeNameToInfo objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (id)infoForUnitType:(int)a3
+- (id)infoForUnitType:(int)type
 {
-  if (a3 < 1 || (-[UnitsInfo unitTypeToInfo](self, "unitTypeToInfo"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= a3))
+  if (type < 1 || (-[UnitsInfo unitTypeToInfo](self, "unitTypeToInfo"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= type))
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(UnitsInfo *)self unitTypeToInfo];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    unitTypeToInfo = [(UnitsInfo *)self unitTypeToInfo];
+    v8 = [unitTypeToInfo objectAtIndexedSubscript:type];
   }
 
   return v8;
 }
 
-- (UnitsInfo)initWithDictionary:(id)a3
+- (UnitsInfo)initWithDictionary:(id)dictionary
 {
   v198 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v190.receiver = self;
   v190.super_class = UnitsInfo;
   v5 = [(UnitsInfo *)&v190 init];
@@ -132,21 +132,21 @@ void __27__UnitsInfo_converterUnits__block_invoke()
   v9 = objc_opt_new();
   [(UnitsInfo *)v5 setUnitTypeToInfo:v9];
 
-  v10 = [(UnitsInfo *)v5 unitIDToInfo];
+  unitIDToInfo = [(UnitsInfo *)v5 unitIDToInfo];
   v11 = objc_opt_new();
-  [v10 addObject:v11];
+  [unitIDToInfo addObject:v11];
 
-  v12 = [(UnitsInfo *)v5 unitTypeToInfo];
+  unitTypeToInfo = [(UnitsInfo *)v5 unitTypeToInfo];
   v13 = objc_opt_new();
-  [v12 addObject:v13];
+  [unitTypeToInfo addObject:v13];
 
   v134 = objc_opt_new();
   v186 = 0u;
   v187 = 0u;
   v188 = 0u;
   v189 = 0u;
-  v126 = v4;
-  obj = v4;
+  v126 = dictionaryCopy;
+  obj = dictionaryCopy;
   v14 = 0x1EDC2B000;
   v138 = [obj countByEnumeratingWithState:&v186 objects:v197 count:16];
   if (!v138)
@@ -199,11 +199,11 @@ void __27__UnitsInfo_converterUnits__block_invoke()
         [(UnitsInfo *)v5 setAngleInfo:v20];
       }
 
-      v22 = [(UnitsInfo *)v5 unitTypeNameToInfo];
-      [v22 setObject:v20 forKeyedSubscript:v18];
+      unitTypeNameToInfo = [(UnitsInfo *)v5 unitTypeNameToInfo];
+      [unitTypeNameToInfo setObject:v20 forKeyedSubscript:v18];
 
-      v23 = [(UnitsInfo *)v5 unitTypeToInfo];
-      [v23 addObject:v20];
+      unitTypeToInfo2 = [(UnitsInfo *)v5 unitTypeToInfo];
+      [unitTypeToInfo2 addObject:v20];
 
       v148 = objc_opt_new();
       [v20 setUnits:?];
@@ -235,8 +235,8 @@ void __27__UnitsInfo_converterUnits__block_invoke()
             if (([v14 + 4080 shouldSkipUnitName:v29] & 1) == 0)
             {
               v30 = [v24 objectForKeyedSubscript:v29];
-              v31 = [(UnitsInfo *)v5 unitIDToInfo];
-              v32 = [v31 count];
+              unitIDToInfo2 = [(UnitsInfo *)v5 unitIDToInfo];
+              v32 = [unitIDToInfo2 count];
 
               v33 = objc_opt_new();
               [v33 setUnitID:v32];
@@ -332,11 +332,11 @@ LABEL_34:
                 [(UnitsInfo *)v5 setRadiansInfo:v33];
               }
 
-              v45 = [(UnitsInfo *)v5 unitNameToInfo];
-              [v45 setObject:v33 forKeyedSubscript:v29];
+              unitNameToInfo = [(UnitsInfo *)v5 unitNameToInfo];
+              [unitNameToInfo setObject:v33 forKeyedSubscript:v29];
 
-              v46 = [(UnitsInfo *)v5 unitIDToInfo];
-              [v46 addObject:v33];
+              unitIDToInfo3 = [(UnitsInfo *)v5 unitIDToInfo];
+              [unitIDToInfo3 addObject:v33];
 
               [v148 addObject:v33];
               [v134 addObject:v29];
@@ -361,16 +361,16 @@ LABEL_34:
                 [v33 setBaseDenominator:{v53, v54}];
               }
 
-              v55 = [v20 baseUnit];
+              baseUnit = [v20 baseUnit];
               v27 = v144;
-              if (v55 || (v56 = [v33 baseNumerator], !__bid128_quiet_equal(v56, v57, 1uLL, 0x3040000000000000uLL, v165)))
+              if (baseUnit || (v56 = [v33 baseNumerator], !__bid128_quiet_equal(v56, v57, 1uLL, 0x3040000000000000uLL, v165)))
               {
               }
 
               else
               {
-                v58 = [v33 baseDenominator];
-                if (__bid128_quiet_equal(v58, v59, 1uLL, 0x3040000000000000uLL, v165))
+                baseDenominator = [v33 baseDenominator];
+                if (__bid128_quiet_equal(baseDenominator, v59, 1uLL, 0x3040000000000000uLL, v165))
                 {
                   [v33 setIsBaseUnit:1];
                   [v20 setBaseUnit:v33];
@@ -461,18 +461,18 @@ LABEL_63:
                 v70 = [v139 objectForKeyedSubscript:v69];
                 if ([v69 isEqualToString:@"Coefficient"])
                 {
-                  v71 = [v70 intValue];
-                  if (v71 >= 0)
+                  intValue = [v70 intValue];
+                  if (intValue >= 0)
                   {
-                    v72 = v71;
+                    v72 = intValue;
                   }
 
                   else
                   {
-                    v72 = -v71;
+                    v72 = -intValue;
                   }
 
-                  if (v71 < 0)
+                  if (intValue < 0)
                   {
                     v73 = 0xB040000000000000;
                   }
@@ -482,19 +482,19 @@ LABEL_63:
                     v73 = 0x3040000000000000;
                   }
 
-                  v74 = [(UnitsInfo *)v5 unitTypeNameToInfo];
-                  v75 = [v74 objectForKeyedSubscript:v63];
+                  unitTypeNameToInfo2 = [(UnitsInfo *)v5 unitTypeNameToInfo];
+                  v75 = [unitTypeNameToInfo2 objectForKeyedSubscript:v63];
                   [v75 setDecompositionCoefficient:{v72, v73}];
                 }
 
                 else
                 {
-                  v76 = [(UnitsInfo *)v5 unitNameToInfo];
-                  v74 = [v76 objectForKeyedSubscript:v69];
+                  unitNameToInfo2 = [(UnitsInfo *)v5 unitNameToInfo];
+                  unitTypeNameToInfo2 = [unitNameToInfo2 objectForKeyedSubscript:v69];
 
                   v77 = v67;
-                  v78 = &v170 + 2 * [v74 unitType];
-                  *v78 = [v74 unitID];
+                  v78 = &v170 + 2 * [unitTypeNameToInfo2 unitType];
+                  *v78 = [unitTypeNameToInfo2 unitID];
                   v78[1] = [v70 intValue];
                   v67 = v77;
                 }
@@ -506,8 +506,8 @@ LABEL_63:
             while (v66);
           }
 
-          v79 = [(UnitsInfo *)v5 unitTypeNameToInfo];
-          v80 = [v79 objectForKeyedSubscript:v63];
+          unitTypeNameToInfo3 = [(UnitsInfo *)v5 unitTypeNameToInfo];
+          v80 = [unitTypeNameToInfo3 objectForKeyedSubscript:v63];
           v165[4] = v174;
           v165[5] = v175;
           v165[6] = v176;
@@ -555,8 +555,8 @@ LABEL_63:
                 if (v87)
                 {
                   v88 = v87;
-                  v89 = [(UnitsInfo *)v5 unitNameToInfo];
-                  v90 = [v89 objectForKeyedSubscript:v88];
+                  unitNameToInfo3 = [(UnitsInfo *)v5 unitNameToInfo];
+                  v90 = [unitNameToInfo3 objectForKeyedSubscript:v88];
                 }
 
                 else
@@ -564,8 +564,8 @@ LABEL_63:
                   v90 = 0;
                 }
 
-                v91 = [(UnitsInfo *)v5 unitNameToInfo];
-                v92 = [v91 objectForKeyedSubscript:v86];
+                unitNameToInfo4 = [(UnitsInfo *)v5 unitNameToInfo];
+                v92 = [unitNameToInfo4 objectForKeyedSubscript:v86];
                 [v92 setBestEquivalent:v90];
 
                 v93 = [v149 objectForKeyedSubscript:@"NextSmallest"];
@@ -573,8 +573,8 @@ LABEL_63:
                 if (v93)
                 {
                   v94 = v93;
-                  v95 = [(UnitsInfo *)v5 unitNameToInfo];
-                  v96 = [v95 objectForKeyedSubscript:v94];
+                  unitNameToInfo5 = [(UnitsInfo *)v5 unitNameToInfo];
+                  v96 = [unitNameToInfo5 objectForKeyedSubscript:v94];
                 }
 
                 else
@@ -582,8 +582,8 @@ LABEL_63:
                   v96 = 0;
                 }
 
-                v97 = [(UnitsInfo *)v5 unitNameToInfo];
-                v98 = [v97 objectForKeyedSubscript:v86];
+                unitNameToInfo6 = [(UnitsInfo *)v5 unitNameToInfo];
+                v98 = [unitNameToInfo6 objectForKeyedSubscript:v86];
                 obja = v96;
                 [v98 setNextSmallest:v96];
 
@@ -615,8 +615,8 @@ LABEL_63:
                         }
 
                         v108 = *(*(&v157 + 1) + 8 * j);
-                        v109 = [(UnitsInfo *)v100 unitNameToInfo];
-                        v110 = [v109 objectForKeyedSubscript:v108];
+                        unitNameToInfo7 = [(UnitsInfo *)v100 unitNameToInfo];
+                        v110 = [unitNameToInfo7 objectForKeyedSubscript:v108];
 
                         if (v110)
                         {
@@ -639,8 +639,8 @@ LABEL_63:
                   }
 
                   v5 = v100;
-                  v112 = [(UnitsInfo *)v100 unitNameToInfo];
-                  v113 = [v112 objectForKeyedSubscript:v152];
+                  unitNameToInfo8 = [(UnitsInfo *)v100 unitNameToInfo];
+                  v113 = [unitNameToInfo8 objectForKeyedSubscript:v152];
                   [v113 setSubunitIDs:v101];
 
                   v14 = 0x1EDC2B000;
@@ -678,8 +678,8 @@ LABEL_63:
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
-  v115 = [(UnitsInfo *)v5 unitIDToInfo];
-  v116 = [v115 countByEnumeratingWithState:&v153 objects:v191 count:16];
+  unitIDToInfo4 = [(UnitsInfo *)v5 unitIDToInfo];
+  v116 = [unitIDToInfo4 countByEnumeratingWithState:&v153 objects:v191 count:16];
   if (v116)
   {
     v117 = v116;
@@ -690,14 +690,14 @@ LABEL_63:
       {
         if (*v154 != v118)
         {
-          objc_enumerationMutation(v115);
+          objc_enumerationMutation(unitIDToInfo4);
         }
 
         [(UnitsInfo *)v5 populateSubunitIDs:*(*(&v153 + 1) + 8 * k) forUnit:*(*(&v153 + 1) + 8 * k) visited:v114];
         [v114 removeAllObjects];
       }
 
-      v117 = [v115 countByEnumeratingWithState:&v153 objects:v191 count:16];
+      v117 = [unitIDToInfo4 countByEnumeratingWithState:&v153 objects:v191 count:16];
     }
 
     while (v117);
@@ -708,36 +708,36 @@ LABEL_63:
   v5->_unitNames = v120;
 
   v5->_unitTypeCount = v135;
-  v122 = [(UnitsInfo *)v5 unitIDToInfo];
-  v5->_unitCount = [v122 count];
+  unitIDToInfo5 = [(UnitsInfo *)v5 unitIDToInfo];
+  v5->_unitCount = [unitIDToInfo5 count];
 
   v123 = v5;
-  v4 = v126;
+  dictionaryCopy = v126;
 LABEL_123:
 
   v124 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (void)populateSubunitIDs:(id)a3 forUnit:(id)a4 visited:(id)a5
+- (void)populateSubunitIDs:(id)ds forUnit:(id)unit visited:(id)visited
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v8, "unitID")}];
-  if (([v10 containsObject:v11] & 1) == 0)
+  dsCopy = ds;
+  unitCopy = unit;
+  visitedCopy = visited;
+  v11 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(dsCopy, "unitID")}];
+  if (([visitedCopy containsObject:v11] & 1) == 0)
   {
-    [v10 addObject:v11];
-    v12 = [v9 allSubunitIDs];
-    [v12 addObject:v11];
+    [visitedCopy addObject:v11];
+    allSubunitIDs = [unitCopy allSubunitIDs];
+    [allSubunitIDs addObject:v11];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = [v8 subunitIDs];
-    v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    subunitIDs = [dsCopy subunitIDs];
+    v14 = [subunitIDs countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
     {
       v15 = v14;
@@ -749,17 +749,17 @@ LABEL_123:
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(subunitIDs);
           }
 
           v18 = -[UnitsInfo infoForUnitID:](self, "infoForUnitID:", [*(*(&v20 + 1) + 8 * v17) intValue]);
-          [(UnitsInfo *)self populateSubunitIDs:v18 forUnit:v9 visited:v10];
+          [(UnitsInfo *)self populateSubunitIDs:v18 forUnit:unitCopy visited:visitedCopy];
 
           ++v17;
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v15 = [subunitIDs countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v15);
@@ -769,10 +769,10 @@ LABEL_123:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (UnitsInfo)unitsInfoWithDictionary:(id)a3
++ (UnitsInfo)unitsInfoWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[UnitsInfo alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[UnitsInfo alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }

@@ -1,37 +1,37 @@
 @interface CKDAssetRecord
 - (BOOL)isEmpty;
-- (CKDAssetRecord)initWithRecordType:(id)a3 recordID:(id)a4;
+- (CKDAssetRecord)initWithRecordType:(id)type recordID:(id)d;
 - (NSArray)allMMCSItems;
 - (NSArray)allMMCSSectionItems;
 - (id)CKPropertiesDescription;
 - (id)allMMCSAndSectionItems;
 - (id)allRecordKeys;
 - (id)allRegularAndSectionAndRereferenceItems;
-- (id)allRegularAndSectionAndRereferenceItemsWithRecordKey:(id)a3;
+- (id)allRegularAndSectionAndRereferenceItemsWithRecordKey:(id)key;
 - (id)allRereferenceMMCSPackageItems;
 - (id)firstMMCSItemError;
 - (id)firstMMCSSectionItemError;
 - (unsigned)rerefSizeUpperBound;
 - (unsigned)sizeUpperBound;
-- (void)addMMCSItem:(id)a3;
-- (void)addMMCSSectionItem:(id)a3;
-- (void)addRereferencedMMCSPackageItem:(id)a3;
+- (void)addMMCSItem:(id)item;
+- (void)addMMCSSectionItem:(id)item;
+- (void)addRereferencedMMCSPackageItem:(id)item;
 @end
 
 @implementation CKDAssetRecord
 
-- (CKDAssetRecord)initWithRecordType:(id)a3 recordID:(id)a4
+- (CKDAssetRecord)initWithRecordType:(id)type recordID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = CKDAssetRecord;
   v9 = [(CKDAssetRecord *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_recordType, a3);
-    objc_storeStrong(&v10->_recordID, a4);
+    objc_storeStrong(&v9->_recordType, type);
+    objc_storeStrong(&v10->_recordID, d);
     v11 = objc_opt_new();
     itemsByRecordKey = v10->_itemsByRecordKey;
     v10->_itemsByRecordKey = v11;
@@ -87,11 +87,11 @@
   return v33;
 }
 
-- (void)addMMCSItem:(id)a3
+- (void)addMMCSItem:(id)item
 {
-  v22 = a3;
-  v8 = objc_msgSend_package(v22, v4, v5);
-  if (v8 && (objc_msgSend_isTemporary(v22, v6, v7) & 1) == 0)
+  itemCopy = item;
+  v8 = objc_msgSend_package(itemCopy, v4, v5);
+  if (v8 && (objc_msgSend_isTemporary(itemCopy, v6, v7) & 1) == 0)
   {
     __assert_rtn("[CKDAssetRecord addMMCSItem:]", "CKDAssetRecord.m", 53, "nil == item.package || item.isTemporary");
   }
@@ -100,45 +100,45 @@
   self->_sizeUpperBoundNumber = 0;
 
   itemsByRecordKey = self->_itemsByRecordKey;
-  v13 = objc_msgSend_recordKey(v22, v11, v12);
+  v13 = objc_msgSend_recordKey(itemCopy, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(itemsByRecordKey, v14, v13);
 
   if (!v15)
   {
     v15 = objc_opt_new();
     v17 = self->_itemsByRecordKey;
-    v20 = objc_msgSend_recordKey(v22, v18, v19);
+    v20 = objc_msgSend_recordKey(itemCopy, v18, v19);
     objc_msgSend_setObject_forKeyedSubscript_(v17, v21, v15, v20);
   }
 
-  objc_msgSend_addObject_(v15, v16, v22);
+  objc_msgSend_addObject_(v15, v16, itemCopy);
 }
 
-- (void)addRereferencedMMCSPackageItem:(id)a3
+- (void)addRereferencedMMCSPackageItem:(id)item
 {
-  v17 = a3;
+  itemCopy = item;
   sizeUpperBoundNumber = self->_sizeUpperBoundNumber;
   self->_sizeUpperBoundNumber = 0;
 
   rereferencedItemsByRecordKey = self->_rereferencedItemsByRecordKey;
-  v8 = objc_msgSend_recordKey(v17, v6, v7);
+  v8 = objc_msgSend_recordKey(itemCopy, v6, v7);
   v10 = objc_msgSend_objectForKeyedSubscript_(rereferencedItemsByRecordKey, v9, v8);
 
   if (!v10)
   {
     v10 = objc_opt_new();
     v12 = self->_rereferencedItemsByRecordKey;
-    v15 = objc_msgSend_recordKey(v17, v13, v14);
+    v15 = objc_msgSend_recordKey(itemCopy, v13, v14);
     objc_msgSend_setObject_forKeyedSubscript_(v12, v16, v10, v15);
   }
 
-  objc_msgSend_addObject_(v10, v11, v17);
+  objc_msgSend_addObject_(v10, v11, itemCopy);
 }
 
-- (void)addMMCSSectionItem:(id)a3
+- (void)addMMCSSectionItem:(id)item
 {
-  v20 = a3;
-  v6 = objc_msgSend_package(v20, v4, v5);
+  itemCopy = item;
+  v6 = objc_msgSend_package(itemCopy, v4, v5);
   if (!v6)
   {
     __assert_rtn("[CKDAssetRecord addMMCSSectionItem:]", "CKDAssetRecord.m", 76, "nil != item.package");
@@ -148,18 +148,18 @@
   self->_sizeUpperBoundNumber = 0;
 
   sectionItemsByRecordKey = self->_sectionItemsByRecordKey;
-  v11 = objc_msgSend_recordKey(v20, v9, v10);
+  v11 = objc_msgSend_recordKey(itemCopy, v9, v10);
   v13 = objc_msgSend_objectForKeyedSubscript_(sectionItemsByRecordKey, v12, v11);
 
   if (!v13)
   {
     v13 = objc_opt_new();
     v15 = self->_sectionItemsByRecordKey;
-    v18 = objc_msgSend_recordKey(v20, v16, v17);
+    v18 = objc_msgSend_recordKey(itemCopy, v16, v17);
     objc_msgSend_setObject_forKeyedSubscript_(v15, v19, v13, v18);
   }
 
-  objc_msgSend_addObject_(v13, v14, v20);
+  objc_msgSend_addObject_(v13, v14, itemCopy);
 }
 
 - (unsigned)sizeUpperBound
@@ -312,24 +312,24 @@
   return v6;
 }
 
-- (id)allRegularAndSectionAndRereferenceItemsWithRecordKey:(id)a3
+- (id)allRegularAndSectionAndRereferenceItemsWithRecordKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_new();
-  v8 = objc_msgSend_objectForKeyedSubscript_(self->_itemsByRecordKey, v6, v4);
+  v8 = objc_msgSend_objectForKeyedSubscript_(self->_itemsByRecordKey, v6, keyCopy);
   if (v8)
   {
     objc_msgSend_addObjectsFromArray_(v5, v7, v8);
   }
 
-  v9 = objc_msgSend_objectForKeyedSubscript_(self->_sectionItemsByRecordKey, v7, v4);
+  v9 = objc_msgSend_objectForKeyedSubscript_(self->_sectionItemsByRecordKey, v7, keyCopy);
 
   if (v9)
   {
     objc_msgSend_addObjectsFromArray_(v5, v10, v9);
   }
 
-  v11 = objc_msgSend_objectForKeyedSubscript_(self->_rereferencedItemsByRecordKey, v10, v4);
+  v11 = objc_msgSend_objectForKeyedSubscript_(self->_rereferencedItemsByRecordKey, v10, keyCopy);
 
   if (v11)
   {

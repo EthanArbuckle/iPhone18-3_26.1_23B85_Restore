@@ -2,14 +2,14 @@
 + (ICFolderListSectionIdentifier)systemSectionIdentifier;
 + (ICFolderListSectionIdentifier)tagSectionIdentifier;
 + (NSArray)sortDescriptors;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToICFolderListSectionIdentifier:(id)a3;
-- (ICFolderListSectionIdentifier)initWithObject:(id)a3;
-- (ICFolderListSectionIdentifier)initWithSectionType:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToICFolderListSectionIdentifier:(id)identifier;
+- (ICFolderListSectionIdentifier)initWithObject:(id)object;
+- (ICFolderListSectionIdentifier)initWithSectionType:(int64_t)type;
 - (NSString)description;
 - (NSString)expansionStateContext;
-- (int64_t)accountSectionTypeForLegacyAccount:(id)a3;
-- (int64_t)accountSectionTypeForModernAccount:(id)a3;
+- (int64_t)accountSectionTypeForLegacyAccount:(id)account;
+- (int64_t)accountSectionTypeForModernAccount:(id)account;
 - (unint64_t)hash;
 @end
 
@@ -49,10 +49,10 @@ uint64_t __53__ICFolderListSectionIdentifier_tagSectionIdentifier__block_invoke(
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICFolderListSectionIdentifier *)self sectionType];
-    v5 = [(ICFolderListSectionIdentifier *)self accountObjectID];
-    v6 = [v5 hash];
-    self->_hash = ICHashWithHashKeys(v4, v7, v8, v9, v10, v11, v12, v13, v6);
+    sectionType = [(ICFolderListSectionIdentifier *)self sectionType];
+    accountObjectID = [(ICFolderListSectionIdentifier *)self accountObjectID];
+    v6 = [accountObjectID hash];
+    self->_hash = ICHashWithHashKeys(sectionType, v7, v8, v9, v10, v11, v12, v13, v6);
 
     return self->_hash;
   }
@@ -72,22 +72,22 @@ uint64_t __53__ICFolderListSectionIdentifier_tagSectionIdentifier__block_invoke(
   return v3;
 }
 
-- (ICFolderListSectionIdentifier)initWithObject:(id)a3
+- (ICFolderListSectionIdentifier)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = ICFolderListSectionIdentifier;
   v5 = [(ICFolderListSectionIdentifier *)&v11 init];
   if (v5)
   {
-    v6 = [v4 managedObjectContext];
+    managedObjectContext = [objectCopy managedObjectContext];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __48__ICFolderListSectionIdentifier_initWithObject___block_invoke;
     v8[3] = &unk_1E8468F80;
-    v9 = v4;
+    v9 = objectCopy;
     v10 = v5;
-    [v6 performBlockAndWait:v8];
+    [managedObjectContext performBlockAndWait:v8];
   }
 
   return v5;
@@ -221,7 +221,7 @@ LABEL_15:
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (ICFolderListSectionIdentifier)initWithSectionType:(int64_t)a3
+- (ICFolderListSectionIdentifier)initWithSectionType:(int64_t)type
 {
   v11.receiver = self;
   v11.super_class = ICFolderListSectionIdentifier;
@@ -231,48 +231,48 @@ LABEL_15:
   {
     accountObjectID = v4->_accountObjectID;
     v4->_accountObjectID = 0;
-    v4->_sectionType = a3;
+    v4->_sectionType = type;
 
-    if (a3 > 5)
+    if (type > 5)
     {
-      switch(a3)
+      switch(type)
       {
         case 6:
-          v9 = [MEMORY[0x1E69B7658] localizedLocalAccountName];
+          localizedLocalAccountName = [MEMORY[0x1E69B7658] localizedLocalAccountName];
           goto LABEL_13;
         case 7:
           goto LABEL_4;
         case 8:
-          v9 = [MEMORY[0x1E69B7768] localizedSectionTitle];
+          localizedLocalAccountName = [MEMORY[0x1E69B7768] localizedSectionTitle];
 LABEL_13:
           title = v5->_title;
-          v5->_title = v9;
+          v5->_title = localizedLocalAccountName;
           goto LABEL_15;
       }
     }
 
     else
     {
-      if ((a3 - 2) < 4)
+      if ((type - 2) < 4)
       {
 LABEL_4:
         v7 = MEMORY[0x1E69B7A38];
-        title = NSStringFromICFolderListSectionType(a3);
+        title = NSStringFromICFolderListSectionType(type);
 LABEL_15:
 
         return v5;
       }
 
-      if (!a3)
+      if (!type)
       {
         title = v5->_title;
         v5->_title = &stru_1F4F94F00;
         goto LABEL_15;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
-        v9 = __ICLocalizedFrameworkString_impl(@"Quick Notes", @"Quick Notes", 0, 1);
+        localizedLocalAccountName = __ICLocalizedFrameworkString_impl(@"Quick Notes", @"Quick Notes", 0, 1);
         goto LABEL_13;
       }
     }
@@ -291,14 +291,14 @@ uint64_t __56__ICFolderListSectionIdentifier_systemSectionIdentifier__block_invo
 - (NSString)expansionStateContext
 {
   v3 = NSStringFromICFolderListSectionType([(ICFolderListSectionIdentifier *)self sectionType]);
-  v4 = [(ICFolderListSectionIdentifier *)self accountObjectID];
-  if (v4)
+  accountObjectID = [(ICFolderListSectionIdentifier *)self accountObjectID];
+  if (accountObjectID)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(ICFolderListSectionIdentifier *)self accountObjectID];
-    v7 = [v6 URIRepresentation];
-    v8 = [v7 absoluteString];
-    v9 = [v5 stringWithFormat:@"%@:%@", v3, v8];
+    accountObjectID2 = [(ICFolderListSectionIdentifier *)self accountObjectID];
+    uRIRepresentation = [accountObjectID2 URIRepresentation];
+    absoluteString = [uRIRepresentation absoluteString];
+    v9 = [v5 stringWithFormat:@"%@:%@", v3, absoluteString];
   }
 
   else
@@ -315,22 +315,22 @@ uint64_t __56__ICFolderListSectionIdentifier_systemSectionIdentifier__block_invo
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = NSStringFromICFolderListSectionType([(ICFolderListSectionIdentifier *)self sectionType]);
-  v7 = [(ICFolderListSectionIdentifier *)self accountObjectID];
-  v8 = [v3 stringWithFormat:@"<%@: %p, sectionType: %@, accountObjectID: %@>", v5, self, v6, v7];
+  accountObjectID = [(ICFolderListSectionIdentifier *)self accountObjectID];
+  v8 = [v3 stringWithFormat:@"<%@: %p, sectionType: %@, accountObjectID: %@>", v5, self, v6, accountObjectID];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     objc_opt_class();
     v6 = ICDynamicCast();
@@ -345,16 +345,16 @@ uint64_t __56__ICFolderListSectionIdentifier_systemSectionIdentifier__block_invo
   return v7;
 }
 
-- (BOOL)isEqualToICFolderListSectionIdentifier:(id)a3
+- (BOOL)isEqualToICFolderListSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICFolderListSectionIdentifier *)self sectionType];
-  v6 = [v4 sectionType];
-  v7 = [(ICFolderListSectionIdentifier *)self accountObjectID];
-  if (v7)
+  identifierCopy = identifier;
+  sectionType = [(ICFolderListSectionIdentifier *)self sectionType];
+  sectionType2 = [identifierCopy sectionType];
+  accountObjectID = [(ICFolderListSectionIdentifier *)self accountObjectID];
+  if (accountObjectID)
   {
-    v8 = [v4 accountObjectID];
-    v9 = v8 != 0;
+    accountObjectID2 = [identifierCopy accountObjectID];
+    v9 = accountObjectID2 != 0;
   }
 
   else
@@ -362,37 +362,37 @@ uint64_t __56__ICFolderListSectionIdentifier_systemSectionIdentifier__block_invo
     v9 = 0;
   }
 
-  v10 = [(ICFolderListSectionIdentifier *)self accountObjectID];
-  if (v10)
+  accountObjectID3 = [(ICFolderListSectionIdentifier *)self accountObjectID];
+  if (accountObjectID3)
   {
     v11 = 0;
   }
 
   else
   {
-    v12 = [v4 accountObjectID];
-    v11 = v12 == 0;
+    accountObjectID4 = [identifierCopy accountObjectID];
+    v11 = accountObjectID4 == 0;
   }
 
   if (v9)
   {
-    v13 = [(ICFolderListSectionIdentifier *)self accountObjectID];
-    v14 = [v4 accountObjectID];
-    v11 |= [v13 isEqual:v14];
+    accountObjectID5 = [(ICFolderListSectionIdentifier *)self accountObjectID];
+    accountObjectID6 = [identifierCopy accountObjectID];
+    v11 |= [accountObjectID5 isEqual:accountObjectID6];
   }
 
-  return (v5 == v6) & v11;
+  return (sectionType == sectionType2) & v11;
 }
 
-- (int64_t)accountSectionTypeForModernAccount:(id)a3
+- (int64_t)accountSectionTypeForModernAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 accountType] == 3)
+  accountCopy = account;
+  if ([accountCopy accountType] == 3)
   {
     v4 = 6;
   }
 
-  else if ([v3 isManaged])
+  else if ([accountCopy isManaged])
   {
     v4 = 3;
   }
@@ -405,16 +405,16 @@ uint64_t __56__ICFolderListSectionIdentifier_systemSectionIdentifier__block_invo
   return v4;
 }
 
-- (int64_t)accountSectionTypeForLegacyAccount:(id)a3
+- (int64_t)accountSectionTypeForLegacyAccount:(id)account
 {
-  v3 = [a3 legacyAccountType];
+  legacyAccountType = [account legacyAccountType];
   v4 = 7;
-  if (v3 == 1)
+  if (legacyAccountType == 1)
   {
     v4 = 4;
   }
 
-  if (v3 == 2)
+  if (legacyAccountType == 2)
   {
     return 5;
   }

@@ -1,41 +1,41 @@
 @interface PGSeasonMemoryGenerator
-+ (void)enumerateMomentNodesBySeasonInYearFromMomentNodes:(id)a3 loggingConnection:(id)a4 usingBlock:(id)a5;
-- (PGSeasonMemoryGenerator)initWithMemoryGenerationContext:(id)a3;
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
++ (void)enumerateMomentNodesBySeasonInYearFromMomentNodes:(id)nodes loggingConnection:(id)connection usingBlock:(id)block;
+- (PGSeasonMemoryGenerator)initWithMemoryGenerationContext:(id)context;
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGSeasonMemoryGenerator
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
   v24 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a7;
-  v12 = [v10 memoryFeatureNodes];
-  v13 = [(PGGraphNodeCollection *)PGGraphSeasonNodeCollection subsetInCollection:v12];
+  memoryCopy = memory;
+  contextCopy = context;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v13 = [(PGGraphNodeCollection *)PGGraphSeasonNodeCollection subsetInCollection:memoryFeatureNodes];
 
   if ([v13 count] == 1)
   {
-    v14 = [v13 anyNode];
-    v15 = [v14 name];
+    anyNode = [v13 anyNode];
+    name = [anyNode name];
 
     v16 = [PGSeasonMemoryTitleGenerator alloc];
-    v17 = [v10 memoryMomentNodes];
-    v18 = [v17 set];
-    v19 = [(PGSeasonMemoryTitleGenerator *)v16 initWithMomentNodes:v18 seasonName:v15 titleGenerationContext:v11];
+    memoryMomentNodes = [memoryCopy memoryMomentNodes];
+    v18 = [memoryMomentNodes set];
+    v19 = [(PGSeasonMemoryTitleGenerator *)v16 initWithMomentNodes:v18 seasonName:name titleGenerationContext:contextCopy];
   }
 
   else
   {
-    v20 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v23[0] = 67109120;
       v23[1] = [v13 count];
-      _os_log_error_impl(&dword_22F0FC000, v20, OS_LOG_TYPE_ERROR, "[PGSeasonMemoryGenerator] One season node expected, found %d", v23, 8u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGSeasonMemoryGenerator] One season node expected, found %d", v23, 8u);
     }
 
     v19 = 0;
@@ -46,58 +46,58 @@
   return v19;
 }
 
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph
 {
   v6.receiver = self;
   v6.super_class = PGSeasonMemoryGenerator;
-  v4 = [(PGMemoryGenerator *)&v6 keyAssetCurationOptionsWithTriggeredMemory:a3 inGraph:a4];
+  v4 = [(PGMemoryGenerator *)&v6 keyAssetCurationOptionsWithTriggeredMemory:memory inGraph:graph];
   [v4 setPrefilterAssetsWithFacesThreshold:2.22507386e-308];
 
   return v4;
 }
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:v6];
-  v8 = [v6 meNodeCollection];
-  v9 = [v8 homeOrWorkNodes];
-  v10 = [v9 addressNodes];
-  v11 = [v10 momentNodes];
-  v12 = [v7 collectionBySubtracting:v11];
+  blockCopy = block;
+  graphCopy = graph;
+  v7 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:graphCopy];
+  meNodeCollection = [graphCopy meNodeCollection];
+  homeOrWorkNodes = [meNodeCollection homeOrWorkNodes];
+  addressNodes = [homeOrWorkNodes addressNodes];
+  momentNodes = [addressNodes momentNodes];
+  v12 = [v7 collectionBySubtracting:momentNodes];
 
-  v13 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection nodesInGraph:v6];
-  v14 = [v13 momentNodes];
-  v15 = [v12 collectionByFormingUnionWith:v14];
+  v13 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection nodesInGraph:graphCopy];
+  momentNodes2 = [v13 momentNodes];
+  v15 = [v12 collectionByFormingUnionWith:momentNodes2];
 
   v17 = 0;
-  v16 = [(MAElementCollection *)[PGGraphFeatureNodeCollection alloc] initWithGraph:v6];
+  v16 = [(MAElementCollection *)[PGGraphFeatureNodeCollection alloc] initWithGraph:graphCopy];
 
-  v5[2](v5, v15, v16, &v17);
+  blockCopy[2](blockCopy, v15, v16, &v17);
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (type == 2)
   {
     result = 14001;
   }
 
   else
   {
-    v4 = a3;
-    v5 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    typeCopy = type;
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = 138412546;
       v10 = v8;
       v11 = 1024;
-      v12 = v4;
-      _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
+      v12 = typeCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
     }
 
     result = 0;
@@ -107,11 +107,11 @@
   return result;
 }
 
-- (PGSeasonMemoryGenerator)initWithMemoryGenerationContext:(id)a3
+- (PGSeasonMemoryGenerator)initWithMemoryGenerationContext:(id)context
 {
   v10.receiver = self;
   v10.super_class = PGSeasonMemoryGenerator;
-  v3 = [(PGMemoryGenerator *)&v10 initWithMemoryGenerationContext:a3];
+  v3 = [(PGMemoryGenerator *)&v10 initWithMemoryGenerationContext:context];
   v4 = v3;
   if (v3)
   {
@@ -137,15 +137,15 @@
   return v4;
 }
 
-+ (void)enumerateMomentNodesBySeasonInYearFromMomentNodes:(id)a3 loggingConnection:(id)a4 usingBlock:(id)a5
++ (void)enumerateMomentNodesBySeasonInYearFromMomentNodes:(id)nodes loggingConnection:(id)connection usingBlock:(id)block
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nodesCopy = nodes;
+  connectionCopy = connection;
+  blockCopy = block;
   if ([MEMORY[0x277D27690] currentLocaleSupportsSeasons])
   {
-    v10 = [v7 graph];
+    graph = [nodesCopy graph];
     v11 = MEMORY[0x277D22C90];
     v12 = +[PGGraphMomentNode dateOfMoment];
     v30[0] = v12;
@@ -154,7 +154,7 @@
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
     v15 = [v11 chain:v14];
 
-    v16 = [MEMORY[0x277D22BF8] adjacencyWithSources:v7 relation:v15 targetsClass:objc_opt_class()];
+    v16 = [MEMORY[0x277D22BF8] adjacencyWithSources:nodesCopy relation:v15 targetsClass:objc_opt_class()];
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -162,24 +162,24 @@
     v27[3] = &unk_2788898A0;
     v18 = v17;
     v28 = v18;
-    [v7 enumerateUniversalStartDatesUsingBlock:v27];
-    v19 = [v16 transposed];
+    [nodesCopy enumerateUniversalStartDatesUsingBlock:v27];
+    transposed = [v16 transposed];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __106__PGSeasonMemoryGenerator_enumerateMomentNodesBySeasonInYearFromMomentNodes_loggingConnection_usingBlock___block_invoke_2;
     v23[3] = &unk_278887228;
     v24 = v18;
-    v25 = v10;
-    v26 = v9;
-    v20 = v10;
+    v25 = graph;
+    v26 = blockCopy;
+    v20 = graph;
     v21 = v18;
-    [v19 enumerateTargetsBySourceWithBlock:v23];
+    [transposed enumerateTargetsBySourceWithBlock:v23];
   }
 
-  else if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  else if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_INFO, "[PGSeasonMemoryGenerator] Current locale does not support seasons, not generating season based memories.", buf, 2u);
+    _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_INFO, "[PGSeasonMemoryGenerator] Current locale does not support seasons, not generating season based memories.", buf, 2u);
   }
 
   v22 = *MEMORY[0x277D85DE8];

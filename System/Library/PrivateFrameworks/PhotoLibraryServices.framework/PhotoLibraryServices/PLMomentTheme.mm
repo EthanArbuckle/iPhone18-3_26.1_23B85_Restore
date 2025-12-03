@@ -1,18 +1,18 @@
 @interface PLMomentTheme
-+ (id)_fetchThemeNodeWithName:(id)a3 inContext:(id)a4;
-+ (id)_insertThemeWithName:(id)a3 inContext:(id)a4;
-+ (id)fetchExistingOrInsertThemeWithName:(id)a3 inContext:(id)a4;
-+ (id)momentThemeLabelInContext:(id)a3;
-+ (id)newNodeContainerWithManagedObjectContext:(id)a3;
-+ (id)noThemesLabelInContext:(id)a3;
-+ (id)predicateForThemeNodesWithName:(id)a3 inContext:(id)a4;
-+ (void)_resolveThemeEdgeCardinalityConstraintConflictsForNode:(id)a3;
-+ (void)_resolveThemeUniquenessConstraintConflictsForNode:(id)a3;
-+ (void)resolveConstraintConflictsForNode:(id)a3;
++ (id)_fetchThemeNodeWithName:(id)name inContext:(id)context;
++ (id)_insertThemeWithName:(id)name inContext:(id)context;
++ (id)fetchExistingOrInsertThemeWithName:(id)name inContext:(id)context;
++ (id)momentThemeLabelInContext:(id)context;
++ (id)newNodeContainerWithManagedObjectContext:(id)context;
++ (id)noThemesLabelInContext:(id)context;
++ (id)predicateForThemeNodesWithName:(id)name inContext:(id)context;
++ (void)_resolveThemeEdgeCardinalityConstraintConflictsForNode:(id)node;
++ (void)_resolveThemeUniquenessConstraintConflictsForNode:(id)node;
++ (void)resolveConstraintConflictsForNode:(id)node;
 - (NSString)themeName;
-- (PLMomentTheme)initWithNode:(id)a3;
+- (PLMomentTheme)initWithNode:(id)node;
 - (id)debugDescription;
-- (void)setThemeName:(id)a3;
+- (void)setThemeName:(id)name;
 @end
 
 @implementation PLMomentTheme
@@ -20,75 +20,75 @@
 - (id)debugDescription
 {
   v3 = [[PLDescriptionBuilder alloc] initWithObject:self style:3 indent:1];
-  v4 = [(PLMomentTheme *)self themeName];
-  [(PLDescriptionBuilder *)v3 appendName:@"themeName" object:v4];
+  themeName = [(PLMomentTheme *)self themeName];
+  [(PLDescriptionBuilder *)v3 appendName:@"themeName" object:themeName];
 
-  v5 = [(PLDescriptionBuilder *)v3 build];
+  build = [(PLDescriptionBuilder *)v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)setThemeName:(id)a3
+- (void)setThemeName:(id)name
 {
-  v4 = a3;
-  v5 = [(PLGraphNodeContainer *)self sourceNode];
-  v6 = [v5 valueWithCode:4000 createIfMissing:1];
+  nameCopy = name;
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v6 = [sourceNode valueWithCode:4000 createIfMissing:1];
 
-  [v6 setStringValue:v4];
+  [v6 setStringValue:nameCopy];
 }
 
 - (NSString)themeName
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 valueWithCode:4000];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v3 = [sourceNode valueWithCode:4000];
 
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
-- (PLMomentTheme)initWithNode:(id)a3
+- (PLMomentTheme)initWithNode:(id)node
 {
-  v5 = a3;
-  if (!v5)
+  nodeCopy = node;
+  if (!nodeCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:498 description:{@"Invalid parameter not satisfying: %@", @"node"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:498 description:{@"Invalid parameter not satisfying: %@", @"node"}];
   }
 
   v9.receiver = self;
   v9.super_class = PLMomentTheme;
-  v6 = [(PLGraphNodeContainer *)&v9 initWithNode:v5];
+  v6 = [(PLGraphNodeContainer *)&v9 initWithNode:nodeCopy];
 
   return v6;
 }
 
-+ (id)noThemesLabelInContext:(id)a3
++ (id)noThemesLabelInContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 pl_graphCache];
-  v5 = [v4 labelWithCode:1401 inContext:v3];
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v5 = [pl_graphCache labelWithCode:1401 inContext:contextCopy];
 
   return v5;
 }
 
-+ (id)momentThemeLabelInContext:(id)a3
++ (id)momentThemeLabelInContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 pl_graphCache];
-  v5 = [v4 labelWithCode:1400 inContext:v3];
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v5 = [pl_graphCache labelWithCode:1400 inContext:contextCopy];
 
   return v5;
 }
 
-+ (id)fetchExistingOrInsertThemeWithName:(id)a3 inContext:(id)a4
++ (id)fetchExistingOrInsertThemeWithName:(id)name inContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -96,8 +96,8 @@
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PLMomentTheme.m" lineNumber:524 description:{@"Invalid parameter not satisfying: %@", @"themeName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:524 description:{@"Invalid parameter not satisfying: %@", @"themeName"}];
 
     if (v9)
     {
@@ -105,11 +105,11 @@
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"PLMomentTheme.m" lineNumber:525 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:525 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
 LABEL_3:
-  v10 = [a1 _fetchThemeNodeWithName:v7 inContext:v9];
+  v10 = [self _fetchThemeNodeWithName:nameCopy inContext:v9];
   if (v10)
   {
     v11 = [[PLMomentTheme alloc] initWithNode:v10];
@@ -117,7 +117,7 @@ LABEL_3:
 
   else
   {
-    v11 = [a1 _insertThemeWithName:v7 inContext:v9];
+    v11 = [self _insertThemeWithName:nameCopy inContext:v9];
   }
 
   v12 = v11;
@@ -125,15 +125,15 @@ LABEL_3:
   return v12;
 }
 
-+ (id)predicateForThemeNodesWithName:(id)a3 inContext:(id)a4
++ (id)predicateForThemeNodesWithName:(id)name inContext:(id)context
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -141,8 +141,8 @@ LABEL_3:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"PLMomentTheme.m" lineNumber:509 description:{@"Invalid parameter not satisfying: %@", @"themeName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:509 description:{@"Invalid parameter not satisfying: %@", @"themeName"}];
 
     if (v9)
     {
@@ -150,14 +150,14 @@ LABEL_3:
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:a1 file:@"PLMomentTheme.m" lineNumber:510 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:510 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
 LABEL_3:
-  v10 = [a1 momentThemeLabelInContext:v9];
+  v10 = [self momentThemeLabelInContext:v9];
   v11 = MEMORY[0x1E696AB28];
   v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"primaryLabel", v10];
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(%K, $v, $v.%K = %d AND $v.%K = %@).@count = 1", @"values", @"nameCode", 4000, @"stringValue", v7, v12];
+  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(%K, $v, $v.%K = %d AND $v.%K = %@).@count = 1", @"values", @"nameCode", 4000, @"stringValue", nameCopy, v12];
   v19[1] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v15 = [v11 andPredicateWithSubpredicates:v14];
@@ -165,48 +165,48 @@ LABEL_3:
   return v15;
 }
 
-+ (void)resolveConstraintConflictsForNode:(id)a3
++ (void)resolveConstraintConflictsForNode:(id)node
 {
-  v4 = a3;
-  [a1 _resolveThemeUniquenessConstraintConflictsForNode:v4];
-  [a1 _resolveThemeEdgeCardinalityConstraintConflictsForNode:v4];
+  nodeCopy = node;
+  [self _resolveThemeUniquenessConstraintConflictsForNode:nodeCopy];
+  [self _resolveThemeEdgeCardinalityConstraintConflictsForNode:nodeCopy];
 }
 
-+ (id)newNodeContainerWithManagedObjectContext:(id)a3
++ (id)newNodeContainerWithManagedObjectContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PLMomentTheme.m" lineNumber:477 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:477 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v6 = [v5 pl_graphCache];
-  v7 = [v6 labelWithCode:1400 inContext:v5];
-  v8 = [PLGraphNode insertGraphNodeInContext:v5 withPrimaryLabel:v7];
-  v9 = [[a1 alloc] initWithNode:v8];
+  pl_graphCache = [contextCopy pl_graphCache];
+  v7 = [pl_graphCache labelWithCode:1400 inContext:contextCopy];
+  v8 = [PLGraphNode insertGraphNodeInContext:contextCopy withPrimaryLabel:v7];
+  v9 = [[self alloc] initWithNode:v8];
 
   return v9;
 }
 
-+ (void)_resolveThemeEdgeCardinalityConstraintConflictsForNode:(id)a3
++ (void)_resolveThemeEdgeCardinalityConstraintConflictsForNode:(id)node
 {
   v68 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
+  nodeCopy = node;
+  managedObjectContext = [nodeCopy managedObjectContext];
   v5 = +[PLGraphEdge fetchRequest];
-  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@ AND %K != nil", @"targetNode", v3, @"sourceMoment"];
+  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@ AND %K != nil", @"targetNode", nodeCopy, @"sourceMoment"];
   [v5 setPredicate:v6];
 
   v62 = 0;
-  v7 = [v4 executeFetchRequest:v5 error:&v62];
+  v7 = [managedObjectContext executeFetchRequest:v5 error:&v62];
   v8 = v62;
   v9 = v8;
   if (v7)
   {
     v37 = v8;
     v39 = v5;
-    v40 = v3;
+    v40 = nodeCopy;
     v10 = objc_alloc_init(MEMORY[0x1E696AB50]);
     v58 = 0u;
     v59 = 0u;
@@ -229,9 +229,9 @@ LABEL_3:
           }
 
           v16 = [*(*(&v58 + 1) + 8 * i) objectIDsForRelationshipNamed:@"sourceMoment"];
-          v17 = [v16 firstObject];
+          firstObject = [v16 firstObject];
 
-          [v10 addObject:v17];
+          [v10 addObject:firstObject];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v58 objects:v67 count:16];
@@ -327,7 +327,7 @@ LABEL_3:
                         _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_INFO, "theme node constraint conflict: deleting conflicting edge: %@", buf, 0xCu);
                       }
 
-                      [v4 deleteObject:v35];
+                      [managedObjectContext deleteObject:v35];
                     }
                   }
 
@@ -359,7 +359,7 @@ LABEL_3:
     }
 
     v5 = v39;
-    v3 = v40;
+    nodeCopy = v40;
     v9 = v37;
     v7 = v38;
   }
@@ -385,23 +385,23 @@ uint64_t __72__PLMomentTheme__resolveThemeEdgeCardinalityConstraintConflictsForN
   return v5;
 }
 
-+ (void)_resolveThemeUniquenessConstraintConflictsForNode:(id)a3
++ (void)_resolveThemeUniquenessConstraintConflictsForNode:(id)node
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 managedObjectContext];
-  if ([v4 isInserted])
+  nodeCopy = node;
+  managedObjectContext = [nodeCopy managedObjectContext];
+  if ([nodeCopy isInserted])
   {
-    v6 = [[PLMomentTheme alloc] initWithNode:v4];
-    v7 = [(PLMomentTheme *)v6 themeName];
-    if (v7)
+    v6 = [[PLMomentTheme alloc] initWithNode:nodeCopy];
+    themeName = [(PLMomentTheme *)v6 themeName];
+    if (themeName)
     {
       v8 = +[PLGraphNode fetchRequest];
-      v9 = [a1 predicateForThemeNodesWithName:v7 inContext:v5];
+      v9 = [self predicateForThemeNodesWithName:themeName inContext:managedObjectContext];
       [v8 setPredicate:v9];
 
       v15 = 0;
-      v10 = [v5 countForFetchRequest:v8 error:&v15];
+      v10 = [managedObjectContext countForFetchRequest:v8 error:&v15];
       v11 = v15;
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -420,7 +420,7 @@ uint64_t __72__PLMomentTheme__resolveThemeEdgeCardinalityConstraintConflictsForN
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v17 = v7;
+          v17 = themeName;
           _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_INFO, "theme node constraint conflict detected: more than 1 theme detected for name: %@", buf, 0xCu);
         }
 
@@ -428,24 +428,24 @@ uint64_t __72__PLMomentTheme__resolveThemeEdgeCardinalityConstraintConflictsForN
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v17 = v4;
+          v17 = nodeCopy;
           _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_INFO, "theme node constraint conflict: deleting theme node: %@", buf, 0xCu);
         }
 
-        [v5 deleteObject:v4];
+        [managedObjectContext deleteObject:nodeCopy];
       }
     }
   }
 }
 
-+ (id)_insertThemeWithName:(id)a3 inContext:(id)a4
++ (id)_insertThemeWithName:(id)name inContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -453,8 +453,8 @@ uint64_t __72__PLMomentTheme__resolveThemeEdgeCardinalityConstraintConflictsForN
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PLMomentTheme.m" lineNumber:383 description:{@"Invalid parameter not satisfying: %@", @"themeName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:383 description:{@"Invalid parameter not satisfying: %@", @"themeName"}];
 
     if (v9)
     {
@@ -462,28 +462,28 @@ uint64_t __72__PLMomentTheme__resolveThemeEdgeCardinalityConstraintConflictsForN
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"PLMomentTheme.m" lineNumber:384 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:384 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
 LABEL_3:
-  v10 = [a1 momentThemeLabelInContext:v9];
+  v10 = [self momentThemeLabelInContext:v9];
   v11 = [PLGraphNode insertGraphNodeInContext:v9 withPrimaryLabel:v10];
 
   v12 = [[PLMomentTheme alloc] initWithNode:v11];
-  [(PLMomentTheme *)v12 setThemeName:v7];
+  [(PLMomentTheme *)v12 setThemeName:nameCopy];
 
   return v12;
 }
 
-+ (id)_fetchThemeNodeWithName:(id)a3 inContext:(id)a4
++ (id)_fetchThemeNodeWithName:(id)name inContext:(id)context
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -491,8 +491,8 @@ LABEL_3:
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PLMomentTheme.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"themeName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"themeName"}];
 
     if (v9)
     {
@@ -500,12 +500,12 @@ LABEL_3:
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"PLMomentTheme.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
 LABEL_3:
   v10 = +[PLGraphNode fetchRequest];
-  v11 = [a1 predicateForThemeNodesWithName:v7 inContext:v9];
+  v11 = [self predicateForThemeNodesWithName:nameCopy inContext:v9];
   [v10 setPredicate:v11];
 
   v23[0] = @"values";
@@ -527,9 +527,9 @@ LABEL_3:
     }
   }
 
-  v16 = [v13 firstObject];
+  firstObject = [v13 firstObject];
 
-  return v16;
+  return firstObject;
 }
 
 @end

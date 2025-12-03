@@ -1,46 +1,46 @@
 @interface _UIDiffableDataSourceSectionControllerInternal
-- (_UIDiffableDataSourceSectionControllerInternal)initWithItemRenderers:(id)a3;
-- (_UIDiffableDataSourceSectionControllerInternal)initWithItemRenderers:(id)a3 associatedSectionIdentifiers:(id)a4;
-- (void)applySnapshot:(id)a3 toSection:(id)a4 animatingDifferences:(BOOL)a5 completion:(id)a6;
-- (void)applySnapshot:(id)a3 toSection:(id)a4 customAnimationsProvider:(id)a5;
-- (void)applySnapshot:(id)a3 toSection:(id)a4 viewPropertyAnimator:(id)a5 customAnimationsProvider:(id)a6;
+- (_UIDiffableDataSourceSectionControllerInternal)initWithItemRenderers:(id)renderers;
+- (_UIDiffableDataSourceSectionControllerInternal)initWithItemRenderers:(id)renderers associatedSectionIdentifiers:(id)identifiers;
+- (void)applySnapshot:(id)snapshot toSection:(id)section animatingDifferences:(BOOL)differences completion:(id)completion;
+- (void)applySnapshot:(id)snapshot toSection:(id)section customAnimationsProvider:(id)provider;
+- (void)applySnapshot:(id)snapshot toSection:(id)section viewPropertyAnimator:(id)animator customAnimationsProvider:(id)provider;
 @end
 
 @implementation _UIDiffableDataSourceSectionControllerInternal
 
-- (_UIDiffableDataSourceSectionControllerInternal)initWithItemRenderers:(id)a3
+- (_UIDiffableDataSourceSectionControllerInternal)initWithItemRenderers:(id)renderers
 {
   v4.receiver = self;
   v4.super_class = _UIDiffableDataSourceSectionControllerInternal;
-  return [(_UIDiffableDataSourceSectionController *)&v4 initWithItemRenderers:a3];
+  return [(_UIDiffableDataSourceSectionController *)&v4 initWithItemRenderers:renderers];
 }
 
-- (_UIDiffableDataSourceSectionControllerInternal)initWithItemRenderers:(id)a3 associatedSectionIdentifiers:(id)a4
+- (_UIDiffableDataSourceSectionControllerInternal)initWithItemRenderers:(id)renderers associatedSectionIdentifiers:(id)identifiers
 {
   v5.receiver = self;
   v5.super_class = _UIDiffableDataSourceSectionControllerInternal;
-  return [(_UIDiffableDataSourceSectionController *)&v5 initWithItemRenderers:a3 associatedSectionIdentifiers:a4];
+  return [(_UIDiffableDataSourceSectionController *)&v5 initWithItemRenderers:renderers associatedSectionIdentifiers:identifiers];
 }
 
-- (void)applySnapshot:(id)a3 toSection:(id)a4 animatingDifferences:(BOOL)a5 completion:(id)a6
+- (void)applySnapshot:(id)snapshot toSection:(id)section animatingDifferences:(BOOL)differences completion:(id)completion
 {
   v6.receiver = self;
   v6.super_class = _UIDiffableDataSourceSectionControllerInternal;
-  [(_UIDiffableDataSourceSectionController *)&v6 applySnapshot:a3 toSection:a4 animatingDifferences:a5 completion:a6];
+  [(_UIDiffableDataSourceSectionController *)&v6 applySnapshot:snapshot toSection:section animatingDifferences:differences completion:completion];
 }
 
-- (void)applySnapshot:(id)a3 toSection:(id)a4 customAnimationsProvider:(id)a5
+- (void)applySnapshot:(id)snapshot toSection:(id)section customAnimationsProvider:(id)provider
 {
   v5.receiver = self;
   v5.super_class = _UIDiffableDataSourceSectionControllerInternal;
-  [(_UIDiffableDataSourceSectionController *)&v5 applySnapshot:a3 toSection:a4 customAnimationsProvider:a5];
+  [(_UIDiffableDataSourceSectionController *)&v5 applySnapshot:snapshot toSection:section customAnimationsProvider:provider];
 }
 
-- (void)applySnapshot:(id)a3 toSection:(id)a4 viewPropertyAnimator:(id)a5 customAnimationsProvider:(id)a6
+- (void)applySnapshot:(id)snapshot toSection:(id)section viewPropertyAnimator:(id)animator customAnimationsProvider:(id)provider
 {
   v6.receiver = self;
   v6.super_class = _UIDiffableDataSourceSectionControllerInternal;
-  [(_UIDiffableDataSourceSectionController *)&v6 applySnapshot:a3 toSection:a4 viewPropertyAnimator:a5 customAnimationsProvider:a6];
+  [(_UIDiffableDataSourceSectionController *)&v6 applySnapshot:snapshot toSection:section viewPropertyAnimator:animator customAnimationsProvider:provider];
 }
 
 @end

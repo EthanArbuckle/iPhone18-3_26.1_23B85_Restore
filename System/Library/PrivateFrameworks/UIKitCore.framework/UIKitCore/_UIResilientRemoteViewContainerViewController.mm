@@ -1,15 +1,15 @@
 @interface _UIResilientRemoteViewContainerViewController
-+ (id)instantiateWithExtension:(id)a3 completion:(id)a4;
++ (id)instantiateWithExtension:(id)extension completion:(id)completion;
 - (CGRect)_defaultInitialViewFrame;
-- (_UIResilientRemoteViewContainerViewController)initWithExtension:(id)a3 completion:(id)a4;
-- (void)_displayError:(id)a3;
+- (_UIResilientRemoteViewContainerViewController)initWithExtension:(id)extension completion:(id)completion;
+- (void)_displayError:(id)error;
 - (void)_displayRemoteViewController;
 - (void)dealloc;
 - (void)endDelayingDisplayOfRemoteController;
 - (void)invalidate;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setContainedViewController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setContainedViewController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -17,13 +17,13 @@
 
 - (CGRect)_defaultInitialViewFrame
 {
-  v2 = [(UIViewController *)self _screen];
+  _screen = [(UIViewController *)self _screen];
   if (!__SplashBoardOverrideStatusBarOrientation)
   {
     [UIApp _safeInterfaceOrientationForNoWindow];
   }
 
-  [v2 _boundsForInterfaceOrientation:?];
+  [_screen _boundsForInterfaceOrientation:?];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -40,34 +40,34 @@
   return result;
 }
 
-+ (id)instantiateWithExtension:(id)a3 completion:(id)a4
++ (id)instantiateWithExtension:(id)extension completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithExtension:v7 completion:v6];
+  completionCopy = completion;
+  extensionCopy = extension;
+  v8 = [[self alloc] initWithExtension:extensionCopy completion:completionCopy];
 
   return v8;
 }
 
-- (_UIResilientRemoteViewContainerViewController)initWithExtension:(id)a3 completion:(id)a4
+- (_UIResilientRemoteViewContainerViewController)initWithExtension:(id)extension completion:(id)completion
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  extensionCopy = extension;
+  completionCopy = completion;
   v21.receiver = self;
   v21.super_class = _UIResilientRemoteViewContainerViewController;
   v8 = [(UIViewController *)&v21 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    [(_UIResilientRemoteViewContainerViewController *)v8 setExtension:v6];
+    [(_UIResilientRemoteViewContainerViewController *)v8 setExtension:extensionCopy];
     v10 = objc_alloc_init(_UIWaitingForRemoteViewContainerViewController);
     [(_UIResilientRemoteViewContainerViewController *)v9 setWaitingController:v10];
 
-    v11 = [(_UIResilientRemoteViewContainerViewController *)v9 waitingController];
-    [(_UIResilientRemoteViewContainerViewController *)v9 setContainedViewController:v11];
+    waitingController = [(_UIResilientRemoteViewContainerViewController *)v9 waitingController];
+    [(_UIResilientRemoteViewContainerViewController *)v9 setContainedViewController:waitingController];
 
-    if (v6)
+    if (extensionCopy)
     {
       [(UIViewController *)v9 _beginDelayingPresentation:0 cancellationHandler:3.0];
       objc_initWeak(&location, v9);
@@ -76,8 +76,8 @@
       v17[2] = __78___UIResilientRemoteViewContainerViewController_initWithExtension_completion___block_invoke;
       v17[3] = &unk_1E7102760;
       objc_copyWeak(&v19, &location);
-      v18 = v7;
-      [v6 instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] connectionHandler:v17];
+      v18 = completionCopy;
+      [extensionCopy instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] connectionHandler:v17];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);
@@ -118,11 +118,11 @@
   self->_delayingDisplayOfRemoteView = 0;
 }
 
-- (void)setContainedViewController:(id)a3
+- (void)setContainedViewController:(id)controller
 {
-  v11 = a3;
+  controllerCopy = controller;
   v5 = self->_containedViewController;
-  objc_storeStrong(&self->_containedViewController, a3);
+  objc_storeStrong(&self->_containedViewController, controller);
   [(UIViewController *)self->_containedViewController preferredContentSize];
   [(UIViewController *)self setPreferredContentSize:?];
   [(UIViewController *)self addChildViewController:self->_containedViewController];
@@ -135,12 +135,12 @@
 
   [(UIViewController *)v5 willMoveToParentViewController:0];
   [(UIViewController *)v5 removeFromParentViewController];
-  v7 = [(UIViewController *)self view];
-  v8 = [(UIViewController *)self->_containedViewController view];
-  [v7 addSubview:v8];
+  view = [(UIViewController *)self view];
+  view2 = [(UIViewController *)self->_containedViewController view];
+  [view addSubview:view2];
 
-  v9 = [(UIViewController *)v5 view];
-  [v9 removeFromSuperview];
+  view3 = [(UIViewController *)v5 view];
+  [view3 removeFromSuperview];
 
   containedViewController = self->_containedViewController;
   if (v6 > 1)
@@ -161,14 +161,14 @@
   v13.receiver = self;
   v13.super_class = _UIResilientRemoteViewContainerViewController;
   [(UIViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(UIViewController *)self view];
-  [v3 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIViewController *)self->_containedViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(UIViewController *)self->_containedViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)dealloc
@@ -189,27 +189,27 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = _UIResilientRemoteViewContainerViewController;
-  [(UIViewController *)&v6 viewDidAppear:a3];
-  v4 = [(_UIResilientRemoteViewContainerViewController *)self errorViewController];
+  [(UIViewController *)&v6 viewDidAppear:appear];
+  errorViewController = [(_UIResilientRemoteViewContainerViewController *)self errorViewController];
 
-  if (v4)
+  if (errorViewController)
   {
-    v5 = [(_UIResilientRemoteViewContainerViewController *)self errorViewController];
-    [(UIViewController *)self presentViewController:v5 animated:1 completion:0];
+    errorViewController2 = [(_UIResilientRemoteViewContainerViewController *)self errorViewController];
+    [(UIViewController *)self presentViewController:errorViewController2 animated:1 completion:0];
   }
 }
 
-- (void)_displayError:(id)a3
+- (void)_displayError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _UINSLocalizedStringWithDefaultValue(@"Internal error", @"Internal error");
-  v6 = [v4 localizedDescription];
+  localizedDescription = [errorCopy localizedDescription];
 
-  v7 = [UIAlertController alertControllerWithTitle:v5 message:v6 preferredStyle:1];
+  v7 = [UIAlertController alertControllerWithTitle:v5 message:localizedDescription preferredStyle:1];
 
   v8 = _UINSLocalizedStringWithDefaultValue(@"Cancel", @"Cancel");
   v11[0] = MEMORY[0x1E69E9820];
@@ -220,9 +220,9 @@
   v9 = [UIAlertAction actionWithTitle:v8 style:1 handler:v11];
   [v7 addAction:v9];
 
-  v10 = [(UIViewController *)self presentingViewController];
+  presentingViewController = [(UIViewController *)self presentingViewController];
 
-  if (v10)
+  if (presentingViewController)
   {
     [(UIViewController *)self presentViewController:v7 animated:1 completion:0];
   }
@@ -233,11 +233,11 @@
   }
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v4.receiver = self;
   v4.super_class = _UIResilientRemoteViewContainerViewController;
-  [(UIViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(UIViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:container];
   [(UIViewController *)self->_containedViewController preferredContentSize];
   [(UIViewController *)self setPreferredContentSize:?];
 }

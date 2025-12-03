@@ -1,18 +1,18 @@
 @interface BWDeferredContainerManagerBase
 + (void)initialize;
-- (BWDeferredContainerManagerBase)initWithQueuePriority:(unsigned int)a3;
-- (id)manifestForApplicationID:(id)a3 captureRequestIdentifier:(id)a4 err:(int *)a5;
-- (id)manifestsForApplicationID:(id)a3 err:(int *)a4;
-- (int)deleteContainerForApplicationID:(id)a3 captureRequestIdentifier:(id)a4;
-- (void)_containerURLForApplicationID:(uint64_t)a3 captureRequestIdentifier:(int)a4 processingContainer:(char *)a5 exists:(_BYTE *)a6 isDirectory:(void *)a7 resolvedApplicationID:;
-- (void)_insertUniqueManifestIntoTimeSortedArray:(uint64_t)a1 manifestArray:;
+- (BWDeferredContainerManagerBase)initWithQueuePriority:(unsigned int)priority;
+- (id)manifestForApplicationID:(id)d captureRequestIdentifier:(id)identifier err:(int *)err;
+- (id)manifestsForApplicationID:(id)d err:(int *)err;
+- (int)deleteContainerForApplicationID:(id)d captureRequestIdentifier:(id)identifier;
+- (void)_containerURLForApplicationID:(uint64_t)d captureRequestIdentifier:(int)identifier processingContainer:(char *)container exists:(_BYTE *)exists isDirectory:(void *)directory resolvedApplicationID:;
+- (void)_insertUniqueManifestIntoTimeSortedArray:(uint64_t)array manifestArray:;
 @end
 
 @implementation BWDeferredContainerManagerBase
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -21,7 +21,7 @@
   }
 }
 
-- (BWDeferredContainerManagerBase)initWithQueuePriority:(unsigned int)a3
+- (BWDeferredContainerManagerBase)initWithQueuePriority:(unsigned int)priority
 {
   v6.receiver = self;
   v6.super_class = BWDeferredContainerManagerBase;
@@ -81,75 +81,75 @@ uint64_t __89__BWDeferredContainerManagerBase__insertUniqueManifestIntoTimeSorte
   }
 }
 
-- (id)manifestsForApplicationID:(id)a3 err:(int *)a4
+- (id)manifestsForApplicationID:(id)d err:(int *)err
 {
-  if (a4)
+  if (err)
   {
-    *a4 = -16134;
+    *err = -16134;
   }
 
   return 0;
 }
 
-- (id)manifestForApplicationID:(id)a3 captureRequestIdentifier:(id)a4 err:(int *)a5
+- (id)manifestForApplicationID:(id)d captureRequestIdentifier:(id)identifier err:(int *)err
 {
   v14 = 0;
-  if (!a3)
+  if (!d)
   {
     [BWDeferredContainerManagerBase manifestForApplicationID:captureRequestIdentifier:err:];
-    v6 = 0;
+    identifierCopy = 0;
     goto LABEL_5;
   }
 
-  v6 = a4;
-  if (!a4)
+  identifierCopy = identifier;
+  if (!identifier)
   {
     [BWDeferredContainerManagerBase manifestForApplicationID:captureRequestIdentifier:err:];
     goto LABEL_5;
   }
 
   v13 = 0;
-  [(BWDeferredContainerManagerBase *)self _containerURLForApplicationID:a3 captureRequestIdentifier:a4 processingContainer:1 exists:0 isDirectory:0 resolvedApplicationID:&v13];
+  [(BWDeferredContainerManagerBase *)self _containerURLForApplicationID:d captureRequestIdentifier:identifier processingContainer:1 exists:0 isDirectory:0 resolvedApplicationID:&v13];
   v7 = MEMORY[0x1E695DFF8];
   v15[0] = @"/var/mobile/Media/Deferred/CaptureContainers";
   v15[1] = v13;
-  v15[2] = v6;
+  v15[2] = identifierCopy;
   v12[0] = [objc_msgSend(MEMORY[0x1E695DFF8] fileURLWithPathComponents:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v15, 3)), "path"}];
   v12[1] = @"manifest.plist";
   v8 = [v7 fileURLWithPathComponents:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v12, 2)}];
-  v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:v8 error:&v14];
-  if ([v6 count])
+  identifierCopy = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:v8 error:&v14];
+  if ([identifierCopy count])
   {
-    v9 = v6;
+    v9 = identifierCopy;
 LABEL_5:
-    v10 = 0;
+    code = 0;
     goto LABEL_10;
   }
 
   if (v14)
   {
-    v10 = [v14 code];
+    code = [v14 code];
   }
 
   else
   {
-    v10 = -16824;
+    code = -16824;
   }
 
 LABEL_10:
-  *a5 = v10;
-  return v6;
+  *err = code;
+  return identifierCopy;
 }
 
-- (int)deleteContainerForApplicationID:(id)a3 captureRequestIdentifier:(id)a4
+- (int)deleteContainerForApplicationID:(id)d captureRequestIdentifier:(id)identifier
 {
-  if (a3)
+  if (d)
   {
-    if (a4)
+    if (identifier)
     {
       v11 = 0;
       v10 = 0;
-      v6 = [(BWDeferredContainerManagerBase *)self _containerURLForApplicationID:a3 captureRequestIdentifier:a4 processingContainer:1 exists:&v10 isDirectory:0 resolvedApplicationID:&v11];
+      v6 = [(BWDeferredContainerManagerBase *)self _containerURLForApplicationID:d captureRequestIdentifier:identifier processingContainer:1 exists:&v10 isDirectory:0 resolvedApplicationID:&v11];
       if (v10 == 1)
       {
         deletionQueue = self->_deletionQueue;
@@ -158,7 +158,7 @@ LABEL_10:
         block[2] = __91__BWDeferredContainerManagerBase_deleteContainerForApplicationID_captureRequestIdentifier___block_invoke;
         block[3] = &unk_1E798FD58;
         block[4] = v11;
-        block[5] = a4;
+        block[5] = identifier;
         block[6] = v6;
         dispatch_async(deletionQueue, block);
       }
@@ -206,52 +206,52 @@ uint64_t __91__BWDeferredContainerManagerBase_deleteContainerForApplicationID_ca
   return result;
 }
 
-- (void)_containerURLForApplicationID:(uint64_t)a3 captureRequestIdentifier:(int)a4 processingContainer:(char *)a5 exists:(_BYTE *)a6 isDirectory:(void *)a7 resolvedApplicationID:
+- (void)_containerURLForApplicationID:(uint64_t)d captureRequestIdentifier:(int)identifier processingContainer:(char *)container exists:(_BYTE *)exists isDirectory:(void *)directory resolvedApplicationID:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12 = a2;
+  lastPathComponent = a2;
   v32 = @"/var/mobile/Media/Deferred/CaptureContainers";
   v33 = a2;
-  v34 = a3;
+  dCopy3 = d;
   v13 = [MEMORY[0x1E695DFF8] fileURLWithPathComponents:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v32, 3)}];
-  v14 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v42[0] = 0;
-  if ([v14 fileExistsAtPath:objc_msgSend(v13 isDirectory:{"path"), v42}])
+  if ([defaultManager fileExistsAtPath:objc_msgSend(v13 isDirectory:{"path"), v42}])
   {
     v15 = 1;
 LABEL_24:
-    v23 = [v12 copy];
+    v23 = [lastPathComponent copy];
     goto LABEL_25;
   }
 
-  if ([v12 isEqualToString:0x1F216ED50])
+  if ([lastPathComponent isEqualToString:0x1F216ED50])
   {
-    if (!a4)
+    if (!identifier)
     {
       goto LABEL_23;
     }
   }
 
-  else if (![v12 isEqualToString:0x1F2185190] || (a4 & 1) == 0)
+  else if (![lastPathComponent isEqualToString:0x1F2185190] || (identifier & 1) == 0)
   {
-    v28 = a4;
-    v29 = v12;
-    v30 = a5;
-    v31 = a7;
+    identifierCopy2 = identifier;
+    v29 = lastPathComponent;
+    containerCopy2 = container;
+    directoryCopy2 = directory;
     goto LABEL_21;
   }
 
-  v28 = a4;
-  v29 = v12;
-  v30 = a5;
-  v31 = a7;
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
+  identifierCopy2 = identifier;
+  v29 = lastPathComponent;
+  containerCopy2 = container;
+  directoryCopy2 = directory;
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/var/mobile/Media/Deferred/CaptureContainers"];
-  v18 = [v16 enumeratorAtURL:v17 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:5 errorHandler:0];
+  v18 = [defaultManager2 enumeratorAtURL:v17 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:5 errorHandler:0];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -270,17 +270,17 @@ LABEL_24:
           objc_enumerationMutation(v18);
         }
 
-        v12 = [*(*(&v38 + 1) + 8 * i) lastPathComponent];
-        if (([v12 isEqualToString:0x1F216ED50] & 1) == 0)
+        lastPathComponent = [*(*(&v38 + 1) + 8 * i) lastPathComponent];
+        if (([lastPathComponent isEqualToString:0x1F216ED50] & 1) == 0)
         {
           v32 = @"/var/mobile/Media/Deferred/CaptureContainers";
-          v33 = v12;
-          v34 = a3;
+          v33 = lastPathComponent;
+          dCopy3 = d;
           v13 = [MEMORY[0x1E695DFF8] fileURLWithPathComponents:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v32, 3)}];
-          if ([v14 fileExistsAtPath:objc_msgSend(v13 isDirectory:{"path"), v42}])
+          if ([defaultManager fileExistsAtPath:objc_msgSend(v13 isDirectory:{"path"), v42}])
           {
             v15 = 1;
-            a5 = v30;
+            container = containerCopy2;
             goto LABEL_24;
           }
         }
@@ -297,15 +297,15 @@ LABEL_24:
   }
 
 LABEL_21:
-  a5 = v30;
-  a7 = v31;
-  v12 = v29;
-  if ((v28 & 1) == 0)
+  container = containerCopy2;
+  directory = directoryCopy2;
+  lastPathComponent = v29;
+  if ((identifierCopy2 & 1) == 0)
   {
 LABEL_23:
     v32 = @"/var/mobile/Media/Deferred/CaptureContainers";
-    v33 = v12;
-    v34 = a3;
+    v33 = lastPathComponent;
+    dCopy3 = d;
     v13 = [MEMORY[0x1E695DFF8] fileURLWithPathComponents:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v32, 3)}];
     v15 = 0;
     goto LABEL_24;
@@ -338,27 +338,27 @@ LABEL_25:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (a5)
+  if (container)
   {
-    *a5 = v15;
+    *container = v15;
   }
 
-  if (a6)
+  if (exists)
   {
-    *a6 = v42[0];
+    *exists = v42[0];
   }
 
-  if (a7)
+  if (directory)
   {
-    *a7 = v23;
+    *directory = v23;
   }
 
   return v13;
 }
 
-- (void)_insertUniqueManifestIntoTimeSortedArray:(uint64_t)a1 manifestArray:
+- (void)_insertUniqueManifestIntoTimeSortedArray:(uint64_t)array manifestArray:
 {
-  if (a1)
+  if (array)
   {
     OUTLINED_FUNCTION_25_10();
     v3 = v1;

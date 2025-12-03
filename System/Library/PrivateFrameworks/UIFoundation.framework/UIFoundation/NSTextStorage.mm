@@ -1,32 +1,32 @@
 @interface NSTextStorage
-+ (NSTextStorage)allocWithZone:(_NSZone *)a3;
++ (NSTextStorage)allocWithZone:(_NSZone *)zone;
 + (void)initialize;
 - (BOOL)_shouldFixFontAttributes;
 - (BOOL)_shouldSetOriginalFontAttribute;
-- (BOOL)beginEditTrackingForContextRange:(_NSRange)a3;
+- (BOOL)beginEditTrackingForContextRange:(_NSRange)range;
 - (Class)_intentResolver;
 - (NSRange)editedRange;
 - (NSTextStorage)init;
-- (NSTextStorage)initWithCoder:(id)a3;
-- (_NSRange)_rangeByEstimatingAttributeFixingForRange:(_NSRange)a3;
+- (NSTextStorage)initWithCoder:(id)coder;
+- (_NSRange)_rangeByEstimatingAttributeFixingForRange:(_NSRange)range;
 - (_NSRange)endEditTracking;
 - (id)delegate;
-- (void)_fixAttributesInRange:(_NSRange)a3;
-- (void)_notifyEdited:(unint64_t)a3 range:(_NSRange)a4 changeInLength:(int64_t)a5 invalidatedRange:(_NSRange)a6;
-- (void)_setEditedRange:(_NSRange)a3;
+- (void)_fixAttributesInRange:(_NSRange)range;
+- (void)_notifyEdited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length invalidatedRange:(_NSRange)invalidatedRange;
+- (void)_setEditedRange:(_NSRange)range;
 - (void)addLayoutManager:(NSLayoutManager *)aLayoutManager;
 - (void)beginEditing;
-- (void)coordinateAccess:(id)a3;
-- (void)coordinateEditing:(id)a3;
-- (void)coordinateReading:(id)a3;
+- (void)coordinateAccess:(id)access;
+- (void)coordinateEditing:(id)editing;
+- (void)coordinateReading:(id)reading;
 - (void)dealloc;
 - (void)edited:(NSTextStorageEditActions)editedMask range:(NSRange)editedRange changeInLength:(NSInteger)delta;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)endEditing;
 - (void)ensureAttributesAreFixedInRange:(NSRange)range;
 - (void)finalize;
-- (void)fixFontAttributeInRange:(_NSRange)a3;
-- (void)fixGlyphInfoAttributeInRange:(_NSRange)a3;
+- (void)fixFontAttributeInRange:(_NSRange)range;
+- (void)fixGlyphInfoAttributeInRange:(_NSRange)range;
 - (void)fontSetChanged;
 - (void)invalidateAttributesInRange:(NSRange)range;
 - (void)processEditing;
@@ -202,8 +202,8 @@
 - (void)processEditing
 {
   v3 = [(NSMutableArray *)self->_layoutManagers count];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"NSTextStorageWillProcessEditingNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"NSTextStorageWillProcessEditingNotification" object:self];
   if (*(&self->_flags + 1))
   {
     [-[NSTextStorage delegate](self "delegate")];
@@ -212,7 +212,7 @@
   location = self->_editedRange.location;
   length = self->_editedRange.length;
   [(NSTextStorage *)self invalidateAttributesInRange:location, length];
-  [v4 postNotificationName:@"NSTextStorageDidProcessEditingNotification" object:self];
+  [defaultCenter postNotificationName:@"NSTextStorageDidProcessEditingNotification" object:self];
   if ((*(&self->_flags + 1) & 2) != 0)
   {
     [-[NSTextStorage delegate](self "delegate")];
@@ -252,23 +252,23 @@
   return result;
 }
 
-- (void)_setEditedRange:(_NSRange)a3
+- (void)_setEditedRange:(_NSRange)range
 {
   if (__NSAllowsMutableEditedRange == 1)
   {
-    self->_editedRange = a3;
+    self->_editedRange = range;
   }
 }
 
-+ (NSTextStorage)allocWithZone:(_NSZone *)a3
++ (NSTextStorage)allocWithZone:(_NSZone *)zone
 {
-  v4 = a1;
-  if (objc_opt_class() == a1)
+  selfCopy = self;
+  if (objc_opt_class() == self)
   {
-    v4 = objc_opt_class();
+    selfCopy = objc_opt_class();
   }
 
-  return NSAllocateObject(v4, 0, a3);
+  return NSAllocateObject(selfCopy, 0, zone);
 }
 
 uint64_t __24__NSTextStorage_dealloc__block_invoke(uint64_t a1, void *a2)
@@ -296,33 +296,33 @@ uint64_t __24__NSTextStorage_dealloc__block_invoke(uint64_t a1, void *a2)
   [(NSTextStorage *)&v3 finalize];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v5 = [(NSTextStorage *)self delegate];
+    delegate = [(NSTextStorage *)self delegate];
     v6.receiver = self;
     v6.super_class = NSTextStorage;
-    [(NSTextStorage *)&v6 encodeWithCoder:a3];
-    [a3 encodeConditionalObject:v5 forKey:@"NSDelegate"];
+    [(NSTextStorage *)&v6 encodeWithCoder:coder];
+    [coder encodeConditionalObject:delegate forKey:@"NSDelegate"];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = NSTextStorage;
-    [(NSTextStorage *)&v7 encodeWithCoder:a3];
+    [(NSTextStorage *)&v7 encodeWithCoder:coder];
   }
 }
 
-- (NSTextStorage)initWithCoder:(id)a3
+- (NSTextStorage)initWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     v8.receiver = self;
     v8.super_class = NSTextStorage;
-    v5 = [(NSTextStorage *)&v8 initWithCoder:a3];
-    v6 = [a3 decodeObjectForKey:@"NSDelegate"];
+    v5 = [(NSTextStorage *)&v8 initWithCoder:coder];
+    v6 = [coder decodeObjectForKey:@"NSDelegate"];
     if (v6)
     {
       [(NSTextStorage *)v5 setDelegate:v6];
@@ -335,7 +335,7 @@ uint64_t __24__NSTextStorage_dealloc__block_invoke(uint64_t a1, void *a2)
   {
     v9.receiver = self;
     v9.super_class = NSTextStorage;
-    return [(NSTextStorage *)&v9 initWithCoder:a3];
+    return [(NSTextStorage *)&v9 initWithCoder:coder];
   }
 
   return v5;
@@ -356,7 +356,7 @@ uint64_t __24__NSTextStorage_dealloc__block_invoke(uint64_t a1, void *a2)
 
 - (void)removeLayoutManager:(NSLayoutManager *)aLayoutManager
 {
-  v5 = self;
+  selfCopy = self;
   [(NSLayoutManager *)aLayoutManager setTextStorage:0];
   v6 = aLayoutManager;
   v7 = [(NSMutableArray *)self->_layoutManagers indexOfObjectIdenticalTo:aLayoutManager];
@@ -370,21 +370,21 @@ uint64_t __24__NSTextStorage_dealloc__block_invoke(uint64_t a1, void *a2)
   [(NSMutableArray *)layoutManagers count];
 }
 
-- (void)coordinateReading:(id)a3
+- (void)coordinateReading:(id)reading
 {
-  v5 = [(NSTextStorage *)self _lockForReading];
-  (*(a3 + 2))(a3, self);
-  if (v5)
+  _lockForReading = [(NSTextStorage *)self _lockForReading];
+  (*(reading + 2))(reading, self);
+  if (_lockForReading)
   {
 
     [(NSTextStorage *)self _unlock];
   }
 }
 
-- (void)coordinateEditing:(id)a3
+- (void)coordinateEditing:(id)editing
 {
   [(NSTextStorage *)self beginEditing];
-  (*(a3 + 2))(a3, self);
+  (*(editing + 2))(editing, self);
   [(NSTextStorage *)self endEditing];
 }
 
@@ -501,13 +501,13 @@ LABEL_22:
   }
 }
 
-- (_NSRange)_rangeByEstimatingAttributeFixingForRange:(_NSRange)a3
+- (_NSRange)_rangeByEstimatingAttributeFixingForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(NSTextStorage *)self string];
+  length = range.length;
+  location = range.location;
+  string = [(NSTextStorage *)self string];
 
-  v6 = [v5 paragraphRangeForRange:{location, length}];
+  v6 = [string paragraphRangeForRange:{location, length}];
   result.length = v7;
   result.location = v6;
   return result;
@@ -703,7 +703,7 @@ LABEL_22:
           v26 = v25 - v9;
         }
 
-        v27 = [(NSTextStorage *)self _lockForWriting];
+        _lockForWriting = [(NSTextStorage *)self _lockForWriting];
         flags = self->_flags;
         *(&self->_flags + 1) = ((*&flags & 0xFFFF0000) + 0x10000) >> 16;
         editedRange = self->_editedRange;
@@ -740,7 +740,7 @@ LABEL_22:
         self->_editedRange = v34;
         self->_editedDelta = editedDelta;
         *&self->_flags = v30;
-        if (v27)
+        if (_lockForWriting)
         {
 
           [(NSTextStorage *)self _unlock];
@@ -750,19 +750,19 @@ LABEL_22:
   }
 }
 
-- (void)_notifyEdited:(unint64_t)a3 range:(_NSRange)a4 changeInLength:(int64_t)a5 invalidatedRange:(_NSRange)a6
+- (void)_notifyEdited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length invalidatedRange:(_NSRange)invalidatedRange
 {
-  length = a6.length;
-  location = a6.location;
-  v9 = a4.length;
-  v10 = a4.location;
+  length = invalidatedRange.length;
+  location = invalidatedRange.location;
+  v9 = range.length;
+  v10 = range.location;
   v13 = [(NSMutableArray *)self->_layoutManagers count];
   if (v13)
   {
     v14 = v13 - 1;
     do
     {
-      [-[NSMutableArray objectAtIndex:](self->_layoutManagers objectAtIndex:{v14--), "processEditingForTextStorage:edited:range:changeInLength:invalidatedRange:", self, a3, v10, v9, a5, location, length}];
+      [-[NSMutableArray objectAtIndex:](self->_layoutManagers objectAtIndex:{v14--), "processEditingForTextStorage:edited:range:changeInLength:invalidatedRange:", self, edited, v10, v9, length, location, length}];
     }
 
     while (v14 != -1);
@@ -773,9 +773,9 @@ LABEL_22:
 
 - (void)fontSetChanged
 {
-  v3 = [(NSTextStorage *)self _lockForWriting];
+  _lockForWriting = [(NSTextStorage *)self _lockForWriting];
   [(NSTextStorage *)self invalidateAttributesInRange:0, [(NSTextStorage *)self length]];
-  if (v3)
+  if (_lockForWriting)
   {
 
     [(NSTextStorage *)self _unlock];
@@ -784,10 +784,10 @@ LABEL_22:
 
 - (void)setDelegate:(id)delegate
 {
-  v5 = [(NSTextStorage *)self delegate];
-  if (v5 != delegate)
+  delegate = [(NSTextStorage *)self delegate];
+  if (delegate != delegate)
   {
-    [(NSTextStorage *)v5 setDelegate:delegate];
+    [(NSTextStorage *)delegate setDelegate:delegate];
   }
 }
 
@@ -799,13 +799,13 @@ LABEL_22:
   shouldSetOriginalFontAttribute = self->_shouldSetOriginalFontAttribute;
   if ([(NSTextStorage *)self _attributeFixingInProgress])
   {
-    v3 = [(NSTextStorage *)self layoutManagers];
+    layoutManagers = [(NSTextStorage *)self layoutManagers];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __48__NSTextStorage__shouldSetOriginalFontAttribute__block_invoke;
     v6[3] = &unk_1E7267140;
     v6[4] = &v7;
-    [(NSArray *)v3 enumerateObjectsUsingBlock:v6];
+    [(NSArray *)layoutManagers enumerateObjectsUsingBlock:v6];
   }
 
   v4 = *(v8 + 24);
@@ -825,7 +825,7 @@ uint64_t __48__NSTextStorage__shouldSetOriginalFontAttribute__block_invoke(uint6
   return result;
 }
 
-- (void)fixFontAttributeInRange:(_NSRange)a3
+- (void)fixFontAttributeInRange:(_NSRange)range
 {
   if (self->_fontFixingDisabledCount <= 0)
   {
@@ -833,11 +833,11 @@ uint64_t __48__NSTextStorage__shouldSetOriginalFontAttribute__block_invoke(uint6
     v7 = v4;
     v5.receiver = self;
     v5.super_class = NSTextStorage;
-    [(NSMutableAttributedString *)&v5 fixFontAttributeInRange:a3.location, a3.length];
+    [(NSMutableAttributedString *)&v5 fixFontAttributeInRange:range.location, range.length];
   }
 }
 
-- (void)fixGlyphInfoAttributeInRange:(_NSRange)a3
+- (void)fixGlyphInfoAttributeInRange:(_NSRange)range
 {
   if (self->_fontFixingDisabledCount <= 0)
   {
@@ -845,31 +845,31 @@ uint64_t __48__NSTextStorage__shouldSetOriginalFontAttribute__block_invoke(uint6
     v7 = v4;
     v5.receiver = self;
     v5.super_class = NSTextStorage;
-    [(NSMutableAttributedString *)&v5 fixGlyphInfoAttributeInRange:a3.location, a3.length];
+    [(NSMutableAttributedString *)&v5 fixGlyphInfoAttributeInRange:range.location, range.length];
   }
 }
 
-- (void)_fixAttributesInRange:(_NSRange)a3
+- (void)_fixAttributesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(NSTextStorage *)self _shouldFixFontAttributes];
-  if (!v6)
+  length = range.length;
+  location = range.location;
+  _shouldFixFontAttributes = [(NSTextStorage *)self _shouldFixFontAttributes];
+  if (!_shouldFixFontAttributes)
   {
     ++self->_fontFixingDisabledCount;
   }
 
   [(NSMutableAttributedString *)self fixAttributesInRange:location, length];
-  if (!v6)
+  if (!_shouldFixFontAttributes)
   {
     --self->_fontFixingDisabledCount;
   }
 }
 
-- (BOOL)beginEditTrackingForContextRange:(_NSRange)a3
+- (BOOL)beginEditTrackingForContextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   if (self->_editingTracker)
@@ -907,7 +907,7 @@ uint64_t __48__NSTextStorage__shouldSetOriginalFontAttribute__block_invoke(uint6
   editingTracker = self->_editingTracker;
   if (editingTracker)
   {
-    v6 = [(NSWritingToolsEditTracker *)editingTracker currentContextRange];
+    currentContextRange = [(NSWritingToolsEditTracker *)editingTracker currentContextRange];
     v8 = v7;
     v9 = self->_editingTracker;
   }
@@ -916,21 +916,21 @@ uint64_t __48__NSTextStorage__shouldSetOriginalFontAttribute__block_invoke(uint6
   {
     v9 = 0;
     v8 = 0;
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    currentContextRange = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   self->_editingTracker = 0;
-  v10 = v6;
+  v10 = currentContextRange;
   v11 = v8;
   result.length = v11;
   result.location = v10;
   return result;
 }
 
-- (void)coordinateAccess:(id)a3
+- (void)coordinateAccess:(id)access
 {
   [(NSTextStorage *)self _lockForWriting];
-  (*(a3 + 2))(a3, self);
+  (*(access + 2))(access, self);
 
   [(NSTextStorage *)self _unlock];
 }

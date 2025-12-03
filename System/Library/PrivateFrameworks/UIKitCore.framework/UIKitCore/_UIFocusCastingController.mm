@@ -1,26 +1,26 @@
 @interface _UIFocusCastingController
-- (CGPoint)_castingPointInNormalizedFrame:(CGRect)a3 forHeading:(unint64_t)a4;
-- (CGPoint)_entryPointInNormalizedFrame:(CGRect)a3 forHeading:(unint64_t)a4;
-- (CGPoint)_movementPointInNormalizedFrame:(CGRect)a3;
+- (CGPoint)_castingPointInNormalizedFrame:(CGRect)frame forHeading:(unint64_t)heading;
+- (CGPoint)_entryPointInNormalizedFrame:(CGRect)frame forHeading:(unint64_t)heading;
+- (CGPoint)_movementPointInNormalizedFrame:(CGRect)frame;
 - (CGPoint)screenEntryPoint;
-- (CGRect)_castingFrameForFocusedNormalizedFrame:(CGRect)a3 heading:(unint64_t)a4;
-- (CGRect)castingFrameForFocusedItem:(id)a3 heading:(unint64_t)a4 inCoordinateSpace:(id)a5;
+- (CGRect)_castingFrameForFocusedNormalizedFrame:(CGRect)frame heading:(unint64_t)heading;
+- (CGRect)castingFrameForFocusedItem:(id)item heading:(unint64_t)heading inCoordinateSpace:(id)space;
 - (UIFocusSystem)focusSystem;
 - (_UIFocusCastingController)init;
 - (id)_focusEffectsControllerForFocusedItem;
 - (id)_normalizedCoordinateSpace;
-- (unint64_t)_axisForHeading:(unint64_t)a3;
+- (unint64_t)_axisForHeading:(unint64_t)heading;
 - (void)_createFocusMovementIndicator;
 - (void)_destroyFocusMovementIndicator;
 - (void)_positionFocusMovementIndicators;
 - (void)_startRememberingEntryPoint;
 - (void)_stopRememberingEntryPoint;
-- (void)_updateFocusItemFromNormalizedFrame:(CGRect)a3 toNormalizedFrame:(CGRect)a4 withHeading:(unint64_t)a5;
+- (void)_updateFocusItemFromNormalizedFrame:(CGRect)frame toNormalizedFrame:(CGRect)normalizedFrame withHeading:(unint64_t)heading;
 - (void)_updateFocusMovementIndicatorDisplay;
-- (void)forceUpdateFocusCastingFocusedRect:(CGRect)a3 coordinateSpace:(id)a4 heading:(unint64_t)a5;
+- (void)forceUpdateFocusCastingFocusedRect:(CGRect)rect coordinateSpace:(id)space heading:(unint64_t)heading;
 - (void)forgetEntryPoint;
-- (void)setEntryPointMemorizationTimeout:(double)a3;
-- (void)updateFocusCastingWithContext:(id)a3;
+- (void)setEntryPointMemorizationTimeout:(double)timeout;
+- (void)updateFocusCastingWithContext:(id)context;
 @end
 
 @implementation _UIFocusCastingController
@@ -41,26 +41,26 @@
   return result;
 }
 
-- (void)updateFocusCastingWithContext:(id)a3
+- (void)updateFocusCastingWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(_UIFocusCastingController *)self _normalizedCoordinateSpace];
-  if (v5)
+  contextCopy = context;
+  _normalizedCoordinateSpace = [(_UIFocusCastingController *)self _normalizedCoordinateSpace];
+  if (_normalizedCoordinateSpace)
   {
     v6 = *MEMORY[0x1E695F050];
     v7 = *(MEMORY[0x1E695F050] + 8);
     v9 = *(MEMORY[0x1E695F050] + 16);
     v8 = *(MEMORY[0x1E695F050] + 24);
-    v10 = [v4 previouslyFocusedItem];
+    previouslyFocusedItem = [contextCopy previouslyFocusedItem];
     v11 = v8;
     v12 = v9;
     v13 = v7;
     v14 = v6;
-    if (v10)
+    if (previouslyFocusedItem)
     {
-      v15 = v10;
-      v16 = [v4 previouslyFocusedItem];
-      v17 = [UIFocusSystem focusSystemForEnvironment:v16];
+      v15 = previouslyFocusedItem;
+      previouslyFocusedItem2 = [contextCopy previouslyFocusedItem];
+      v17 = [UIFocusSystem focusSystemForEnvironment:previouslyFocusedItem2];
 
       v11 = v8;
       v12 = v9;
@@ -68,25 +68,25 @@
       v14 = v6;
       if (v17)
       {
-        v18 = [v4 previouslyFocusedItem];
-        v14 = _UIFocusItemFrameInCoordinateSpace(v18, v5);
+        previouslyFocusedItem3 = [contextCopy previouslyFocusedItem];
+        v14 = _UIFocusItemFrameInCoordinateSpace(previouslyFocusedItem3, _normalizedCoordinateSpace);
         v13 = v19;
         v12 = v20;
         v11 = v21;
       }
     }
 
-    v22 = [v4 nextFocusedItem];
-    if (v22)
+    nextFocusedItem = [contextCopy nextFocusedItem];
+    if (nextFocusedItem)
     {
-      v23 = [v4 nextFocusedItem];
-      v6 = _UIFocusItemFrameInCoordinateSpace(v23, v5);
+      nextFocusedItem2 = [contextCopy nextFocusedItem];
+      v6 = _UIFocusItemFrameInCoordinateSpace(nextFocusedItem2, _normalizedCoordinateSpace);
       v7 = v24;
       v9 = v25;
       v8 = v26;
     }
 
-    -[_UIFocusCastingController _updateFocusItemFromNormalizedFrame:toNormalizedFrame:withHeading:](self, "_updateFocusItemFromNormalizedFrame:toNormalizedFrame:withHeading:", [v4 focusHeading], v14, v13, v12, v11, v6, v7, v9, v8);
+    -[_UIFocusCastingController _updateFocusItemFromNormalizedFrame:toNormalizedFrame:withHeading:](self, "_updateFocusItemFromNormalizedFrame:toNormalizedFrame:withHeading:", [contextCopy focusHeading], v14, v13, v12, v11, v6, v7, v9, v8);
   }
 
   else
@@ -104,11 +104,11 @@
   }
 }
 
-- (CGRect)castingFrameForFocusedItem:(id)a3 heading:(unint64_t)a4 inCoordinateSpace:(id)a5
+- (CGRect)castingFrameForFocusedItem:(id)item heading:(unint64_t)heading inCoordinateSpace:(id)space
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v8 && (([(_UIFocusCastingController *)self screenEntryPoint], v11 == INFINITY) ? (v12 = v10 == INFINITY) : (v12 = 0), v12))
+  itemCopy = item;
+  spaceCopy = space;
+  if (!itemCopy && (([(_UIFocusCastingController *)self screenEntryPoint], v11 == INFINITY) ? (v12 = v10 == INFINITY) : (v12 = 0), v12))
   {
     v19 = *MEMORY[0x1E695F050];
     v20 = *(MEMORY[0x1E695F050] + 8);
@@ -118,12 +118,12 @@
 
   else
   {
-    v13 = [(_UIFocusCastingController *)self _normalizedCoordinateSpace];
-    if (v13)
+    _normalizedCoordinateSpace = [(_UIFocusCastingController *)self _normalizedCoordinateSpace];
+    if (_normalizedCoordinateSpace)
     {
-      if (v8)
+      if (itemCopy)
       {
-        v14 = _UIFocusItemFrameInCoordinateSpace(v8, v13);
+        v14 = _UIFocusItemFrameInCoordinateSpace(itemCopy, _normalizedCoordinateSpace);
       }
 
       else
@@ -135,8 +135,8 @@
         v17 = 10.0;
       }
 
-      [(_UIFocusCastingController *)self _castingFrameForFocusedNormalizedFrame:a4 heading:v14, v15, v16, v17];
-      [v13 convertRect:v9 toCoordinateSpace:?];
+      [(_UIFocusCastingController *)self _castingFrameForFocusedNormalizedFrame:heading heading:v14, v15, v16, v17];
+      [_normalizedCoordinateSpace convertRect:spaceCopy toCoordinateSpace:?];
       v19 = v25;
       v20 = v26;
       v21 = v27;
@@ -174,13 +174,13 @@
   return result;
 }
 
-- (void)forceUpdateFocusCastingFocusedRect:(CGRect)a3 coordinateSpace:(id)a4 heading:(unint64_t)a5
+- (void)forceUpdateFocusCastingFocusedRect:(CGRect)rect coordinateSpace:(id)space heading:(unint64_t)heading
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
@@ -193,12 +193,12 @@
 
   else
   {
-    v12 = [(_UIFocusCastingController *)self _normalizedCoordinateSpace];
-    v13 = v12;
-    if (v12)
+    _normalizedCoordinateSpace = [(_UIFocusCastingController *)self _normalizedCoordinateSpace];
+    v13 = _normalizedCoordinateSpace;
+    if (_normalizedCoordinateSpace)
     {
-      [v12 convertRect:v11 fromCoordinateSpace:{x, y, width, height}];
-      [(_UIFocusCastingController *)self _updateFocusItemFromNormalizedFrame:a5 toNormalizedFrame:*MEMORY[0x1E695F050] withHeading:*(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), v14, v15, v16, v17];
+      [_normalizedCoordinateSpace convertRect:spaceCopy fromCoordinateSpace:{x, y, width, height}];
+      [(_UIFocusCastingController *)self _updateFocusItemFromNormalizedFrame:heading toNormalizedFrame:*MEMORY[0x1E695F050] withHeading:*(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), v14, v15, v16, v17];
     }
 
     else
@@ -219,22 +219,22 @@
 
 - (id)_normalizedCoordinateSpace
 {
-  v2 = [(_UIFocusCastingController *)self focusSystem];
-  v3 = [_UIFocusSystemSceneComponent sceneComponentForFocusSystem:v2];
-  v4 = [v3 coordinateSpace];
+  focusSystem = [(_UIFocusCastingController *)self focusSystem];
+  v3 = [_UIFocusSystemSceneComponent sceneComponentForFocusSystem:focusSystem];
+  coordinateSpace = [v3 coordinateSpace];
 
-  return v4;
+  return coordinateSpace;
 }
 
-- (CGRect)_castingFrameForFocusedNormalizedFrame:(CGRect)a3 heading:(unint64_t)a4
+- (CGRect)_castingFrameForFocusedNormalizedFrame:(CGRect)frame heading:(unint64_t)heading
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsNull(a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectIsNull(frame))
   {
-    [(_UIFocusCastingController *)self _castingPointInNormalizedFrame:a4 forHeading:x, y, width, height];
+    [(_UIFocusCastingController *)self _castingPointInNormalizedFrame:heading forHeading:x, y, width, height];
     v15 = v13;
     if (v13 == INFINITY && v14 == INFINITY)
     {
@@ -246,16 +246,16 @@
 
     v11 = fmin(width, 10.0);
     v12 = fmin(height, 10.0);
-    if ((a4 & 3) != 0)
+    if ((heading & 3) != 0)
     {
       v15 = v13 + v11 * -0.5;
-      if (a4)
+      if (heading)
       {
         v17 = 0.0;
         goto LABEL_17;
       }
 
-      if ((a4 & 2) != 0)
+      if ((heading & 2) != 0)
       {
         v25.origin.x = x;
         v25.origin.y = y;
@@ -289,15 +289,15 @@ LABEL_20:
       }
     }
 
-    else if ((a4 & 0xC) != 0)
+    else if ((heading & 0xC) != 0)
     {
       v24 = v14 + v12 * -0.5;
-      if ((a4 & 4) != 0)
+      if ((heading & 4) != 0)
       {
         v15 = 0.0;
       }
 
-      else if ((a4 & 8) != 0)
+      else if ((heading & 8) != 0)
       {
         v26.origin.x = x;
         v26.origin.y = y;
@@ -329,17 +329,17 @@ LABEL_21:
   return result;
 }
 
-- (void)_updateFocusItemFromNormalizedFrame:(CGRect)a3 toNormalizedFrame:(CGRect)a4 withHeading:(unint64_t)a5
+- (void)_updateFocusItemFromNormalizedFrame:(CGRect)frame toNormalizedFrame:(CGRect)normalizedFrame withHeading:(unint64_t)heading
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  if (CGRectIsNull(a4) || (a5 & 0xF) == 0)
+  height = normalizedFrame.size.height;
+  width = normalizedFrame.size.width;
+  y = normalizedFrame.origin.y;
+  x = normalizedFrame.origin.x;
+  v10 = frame.size.height;
+  v11 = frame.size.width;
+  v12 = frame.origin.y;
+  v13 = frame.origin.x;
+  if (CGRectIsNull(normalizedFrame) || (heading & 0xF) == 0)
   {
     [(_UIFocusCastingController *)self _stopRememberingEntryPoint];
     v19 = INFINITY;
@@ -361,18 +361,18 @@ LABEL_21:
 
   else
   {
-    [(_UIFocusCastingController *)self _castingFrameForFocusedNormalizedFrame:a5 heading:v13, v12, v11, v10];
+    [(_UIFocusCastingController *)self _castingFrameForFocusedNormalizedFrame:heading heading:v13, v12, v11, v10];
     v15 = v21;
     v16 = v22;
     v17 = v23;
     v18 = v24;
   }
 
-  if (_UIRectIntersectsRectAlongFocusHeading(a5, x, y, width, height, v15, v16, v17, v18))
+  if (_UIRectIntersectsRectAlongFocusHeading(heading, x, y, width, height, v15, v16, v17, v18))
   {
-    if ((a5 & 3) == 0)
+    if ((heading & 3) == 0)
     {
-      if ((a5 & 0xC) != 0)
+      if ((heading & 0xC) != 0)
       {
         v52.origin.x = v15;
         v52.origin.y = v16;
@@ -496,7 +496,7 @@ LABEL_16:
   [(_UIFocusCastingController *)self _startRememberingEntryPoint];
 LABEL_17:
   [(_UIFocusCastingController *)self setScreenEntryPoint:v19, v20, *&v37];
-  [(_UIFocusCastingController *)self setEntryPointAxis:[(_UIFocusCastingController *)self _axisForHeading:a5]];
+  [(_UIFocusCastingController *)self setEntryPointAxis:[(_UIFocusCastingController *)self _axisForHeading:heading]];
   if (_UIGetFocusCastingVisualization())
   {
 
@@ -504,29 +504,29 @@ LABEL_17:
   }
 }
 
-- (unint64_t)_axisForHeading:(unint64_t)a3
+- (unint64_t)_axisForHeading:(unint64_t)heading
 {
-  if ((a3 & 3) != 0)
+  if ((heading & 3) != 0)
   {
     return 2;
   }
 
   else
   {
-    return (a3 & 0xC) != 0;
+    return (heading & 0xC) != 0;
   }
 }
 
-- (CGPoint)_castingPointInNormalizedFrame:(CGRect)a3 forHeading:(unint64_t)a4
+- (CGPoint)_castingPointInNormalizedFrame:(CGRect)frame forHeading:(unint64_t)heading
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(_UIFocusCastingController *)self isRememberingEntryPoint])
   {
 
-    [(_UIFocusCastingController *)self _entryPointInNormalizedFrame:a4 forHeading:x, y, width, height];
+    [(_UIFocusCastingController *)self _entryPointInNormalizedFrame:heading forHeading:x, y, width, height];
   }
 
   else
@@ -572,28 +572,28 @@ LABEL_17:
   }
 }
 
-- (void)setEntryPointMemorizationTimeout:(double)a3
+- (void)setEntryPointMemorizationTimeout:(double)timeout
 {
-  self->_entryPointMemorizationTimeout = a3;
+  self->_entryPointMemorizationTimeout = timeout;
   [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self selector:sel_forgetEntryPoint object:0];
-  v5 = [(_UIFocusCastingController *)self isRememberingEntryPoint];
-  if (a3 > 0.0 && v5)
+  isRememberingEntryPoint = [(_UIFocusCastingController *)self isRememberingEntryPoint];
+  if (timeout > 0.0 && isRememberingEntryPoint)
   {
 
-    [(_UIFocusCastingController *)self performSelector:sel_forgetEntryPoint withObject:0 afterDelay:a3];
+    [(_UIFocusCastingController *)self performSelector:sel_forgetEntryPoint withObject:0 afterDelay:timeout];
   }
 }
 
-- (CGPoint)_entryPointInNormalizedFrame:(CGRect)a3 forHeading:(unint64_t)a4
+- (CGPoint)_entryPointInNormalizedFrame:(CGRect)frame forHeading:(unint64_t)heading
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(_UIFocusCastingController *)self screenEntryPoint];
   v11 = v10;
   v13 = v12;
-  v14 = [(_UIFocusCastingController *)self _axisForHeading:a4];
+  v14 = [(_UIFocusCastingController *)self _axisForHeading:heading];
   v15 = INFINITY;
   v16 = v11 == INFINITY && v13 == INFINITY;
   v17 = INFINITY;
@@ -636,17 +636,17 @@ LABEL_17:
   return result;
 }
 
-- (CGPoint)_movementPointInNormalizedFrame:(CGRect)a3
+- (CGPoint)_movementPointInNormalizedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(_UIFocusCastingController *)self _focusEffectsControllerForFocusedItem];
-  v8 = v7;
-  if (v7)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _focusEffectsControllerForFocusedItem = [(_UIFocusCastingController *)self _focusEffectsControllerForFocusedItem];
+  v8 = _focusEffectsControllerForFocusedItem;
+  if (_focusEffectsControllerForFocusedItem)
   {
-    [v7 displayOffset];
+    [_focusEffectsControllerForFocusedItem displayOffset];
     v10 = x + width * (v9 + 1.0) * 0.5;
     v12 = y + height * (v11 + 1.0) * 0.5;
   }
@@ -666,20 +666,20 @@ LABEL_17:
 
 - (id)_focusEffectsControllerForFocusedItem
 {
-  v3 = [(_UIFocusCastingController *)self focusSystem];
-  v4 = [v3 focusedItem];
-  v5 = _UIFocusEnvironmentContainingView(v4);
-  v6 = [v5 _window];
+  focusSystem = [(_UIFocusCastingController *)self focusSystem];
+  focusedItem = [focusSystem focusedItem];
+  v5 = _UIFocusEnvironmentContainingView(focusedItem);
+  _window = [v5 _window];
 
-  v7 = [v6 _focusEventRecognizer];
-  v8 = [v7 _motionEffectsController];
+  _focusEventRecognizer = [_window _focusEventRecognizer];
+  _motionEffectsController = [_focusEventRecognizer _motionEffectsController];
 
-  if (_UIGetFocusCastingVisualization() && v8)
+  if (_UIGetFocusCastingVisualization() && _motionEffectsController)
   {
-    [v8 addObserver:self];
+    [_motionEffectsController addObserver:self];
   }
 
-  return v8;
+  return _motionEffectsController;
 }
 
 - (void)_updateFocusMovementIndicatorDisplay
@@ -691,30 +691,30 @@ LABEL_17:
 
 - (void)_createFocusMovementIndicator
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.PineBoard"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.PineBoard"];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(_UIFocusCastingController *)self focusSystem];
-    v7 = [v6 focusedItem];
-    v8 = _UIFocusEnvironmentContainingView(v7);
-    v38 = [v8 _window];
+    focusSystem = [(_UIFocusCastingController *)self focusSystem];
+    focusedItem = [focusSystem focusedItem];
+    v8 = _UIFocusEnvironmentContainingView(focusedItem);
+    _window = [v8 _window];
 
-    v9 = [(_UIFocusCastingController *)self focusCastingIndicator];
-    v10 = [v9 window];
+    focusCastingIndicator = [(_UIFocusCastingController *)self focusCastingIndicator];
+    window = [focusCastingIndicator window];
 
-    if (v38 != v10)
+    if (_window != window)
     {
       [(_UIFocusCastingController *)self _destroyFocusMovementIndicator];
     }
 
-    if (v38)
+    if (_window)
     {
-      v11 = [(_UIFocusCastingController *)self focusCastingIndicator];
+      focusCastingIndicator2 = [(_UIFocusCastingController *)self focusCastingIndicator];
 
-      if (!v11)
+      if (!focusCastingIndicator2)
       {
         v12 = [UIView alloc];
         v13 = *MEMORY[0x1E695F058];
@@ -725,52 +725,52 @@ LABEL_17:
         [(_UIFocusCastingController *)self setFocusCastingIndicator:v17];
 
         v18 = [UIColor colorWithRed:0.543 green:1.11 blue:0.678 alpha:7.0];
-        v19 = [(_UIFocusCastingController *)self focusCastingIndicator];
-        [v19 setBackgroundColor:v18];
+        focusCastingIndicator3 = [(_UIFocusCastingController *)self focusCastingIndicator];
+        [focusCastingIndicator3 setBackgroundColor:v18];
 
-        v20 = [(_UIFocusCastingController *)self focusCastingIndicator];
-        v21 = [v20 layer];
-        [v21 setZPosition:100.0];
+        focusCastingIndicator4 = [(_UIFocusCastingController *)self focusCastingIndicator];
+        layer = [focusCastingIndicator4 layer];
+        [layer setZPosition:100.0];
 
-        v22 = [(_UIFocusCastingController *)self focusCastingIndicator];
-        [v22 setUserInteractionEnabled:0];
+        focusCastingIndicator5 = [(_UIFocusCastingController *)self focusCastingIndicator];
+        [focusCastingIndicator5 setUserInteractionEnabled:0];
 
-        v23 = [(_UIFocusCastingController *)self focusCastingIndicator];
-        [v38 addSubview:v23];
+        focusCastingIndicator6 = [(_UIFocusCastingController *)self focusCastingIndicator];
+        [_window addSubview:focusCastingIndicator6];
 
         v24 = [[UIView alloc] initWithFrame:v13, v14, v15, v16];
         [(_UIFocusCastingController *)self setFocusMovementIndicator:v24];
 
         v25 = [UIColor colorWithRed:1.11 green:0.543 blue:0.678 alpha:1.0];
-        v26 = [(_UIFocusCastingController *)self focusMovementIndicator];
-        [v26 setBackgroundColor:v25];
+        focusMovementIndicator = [(_UIFocusCastingController *)self focusMovementIndicator];
+        [focusMovementIndicator setBackgroundColor:v25];
 
-        v27 = [(_UIFocusCastingController *)self focusMovementIndicator];
-        v28 = [v27 layer];
-        [v28 setZPosition:100.0];
+        focusMovementIndicator2 = [(_UIFocusCastingController *)self focusMovementIndicator];
+        layer2 = [focusMovementIndicator2 layer];
+        [layer2 setZPosition:100.0];
 
-        v29 = [(_UIFocusCastingController *)self focusMovementIndicator];
-        [v29 setUserInteractionEnabled:0];
+        focusMovementIndicator3 = [(_UIFocusCastingController *)self focusMovementIndicator];
+        [focusMovementIndicator3 setUserInteractionEnabled:0];
 
-        v30 = [(_UIFocusCastingController *)self focusMovementIndicator];
-        [v38 addSubview:v30];
+        focusMovementIndicator4 = [(_UIFocusCastingController *)self focusMovementIndicator];
+        [_window addSubview:focusMovementIndicator4];
 
         v31 = [[UIView alloc] initWithFrame:v13, v14, v15, v16];
         [(_UIFocusCastingController *)self setFocusEntryIndicator:v31];
 
         v32 = [UIColor colorWithRed:0.678 green:0.543 blue:1.11 alpha:1.0];
-        v33 = [(_UIFocusCastingController *)self focusEntryIndicator];
-        [v33 setBackgroundColor:v32];
+        focusEntryIndicator = [(_UIFocusCastingController *)self focusEntryIndicator];
+        [focusEntryIndicator setBackgroundColor:v32];
 
-        v34 = [(_UIFocusCastingController *)self focusEntryIndicator];
-        v35 = [v34 layer];
-        [v35 setZPosition:100.0];
+        focusEntryIndicator2 = [(_UIFocusCastingController *)self focusEntryIndicator];
+        layer3 = [focusEntryIndicator2 layer];
+        [layer3 setZPosition:100.0];
 
-        v36 = [(_UIFocusCastingController *)self focusEntryIndicator];
-        [v36 setUserInteractionEnabled:0];
+        focusEntryIndicator3 = [(_UIFocusCastingController *)self focusEntryIndicator];
+        [focusEntryIndicator3 setUserInteractionEnabled:0];
 
-        v37 = [(_UIFocusCastingController *)self focusEntryIndicator];
-        [v38 addSubview:v37];
+        focusEntryIndicator4 = [(_UIFocusCastingController *)self focusEntryIndicator];
+        [_window addSubview:focusEntryIndicator4];
       }
     }
   }
@@ -778,34 +778,34 @@ LABEL_17:
 
 - (void)_positionFocusMovementIndicators
 {
-  v3 = [(_UIFocusCastingController *)self focusCastingIndicator];
+  focusCastingIndicator = [(_UIFocusCastingController *)self focusCastingIndicator];
 
-  if (v3)
+  if (focusCastingIndicator)
   {
-    v4 = [(_UIFocusCastingController *)self _normalizedCoordinateSpace];
-    if (v4)
+    _normalizedCoordinateSpace = [(_UIFocusCastingController *)self _normalizedCoordinateSpace];
+    if (_normalizedCoordinateSpace)
     {
-      v5 = [(_UIFocusCastingController *)self focusMovementIndicator];
-      [v5 setHidden:1];
+      focusMovementIndicator = [(_UIFocusCastingController *)self focusMovementIndicator];
+      [focusMovementIndicator setHidden:1];
 
-      v6 = [(_UIFocusCastingController *)self focusEntryIndicator];
-      [v6 setHidden:1];
+      focusEntryIndicator = [(_UIFocusCastingController *)self focusEntryIndicator];
+      [focusEntryIndicator setHidden:1];
 
-      v7 = [(_UIFocusCastingController *)self focusCastingIndicator];
-      [v7 setHidden:1];
+      focusCastingIndicator2 = [(_UIFocusCastingController *)self focusCastingIndicator];
+      [focusCastingIndicator2 setHidden:1];
 
-      v8 = [(_UIFocusCastingController *)self focusSystem];
-      v9 = [v8 focusedItem];
+      focusSystem = [(_UIFocusCastingController *)self focusSystem];
+      focusedItem = [focusSystem focusedItem];
 
-      v50.origin.x = _UIFocusItemFrameInCoordinateSpace(v9, v4);
+      v50.origin.x = _UIFocusItemFrameInCoordinateSpace(focusedItem, _normalizedCoordinateSpace);
       x = v50.origin.x;
       y = v50.origin.y;
       width = v50.size.width;
       height = v50.size.height;
       if (!CGRectIsNull(v50))
       {
-        v14 = [(_UIFocusCastingController *)self _focusEffectsControllerForFocusedItem];
-        [v14 displayOffset];
+        _focusEffectsControllerForFocusedItem = [(_UIFocusCastingController *)self _focusEffectsControllerForFocusedItem];
+        [_focusEffectsControllerForFocusedItem displayOffset];
         v16 = v15;
         v18 = v17;
 
@@ -853,33 +853,33 @@ LABEL_17:
         v33 = v32;
         v35 = v34;
         v36 = v31 == INFINITY && v29 == INFINITY;
-        v37 = [(_UIFocusCastingController *)self focusEntryIndicator];
-        [v37 setHidden:v36];
+        focusEntryIndicator2 = [(_UIFocusCastingController *)self focusEntryIndicator];
+        [focusEntryIndicator2 setHidden:v36];
 
-        v38 = [(_UIFocusCastingController *)self focusEntryIndicator];
-        [v38 setBounds:{0.0, 0.0, 20.0, 20.0}];
+        focusEntryIndicator3 = [(_UIFocusCastingController *)self focusEntryIndicator];
+        [focusEntryIndicator3 setBounds:{0.0, 0.0, 20.0, 20.0}];
 
-        v39 = [(_UIFocusCastingController *)self focusEntryIndicator];
-        [v39 setCenter:{v29, v31}];
+        focusEntryIndicator4 = [(_UIFocusCastingController *)self focusEntryIndicator];
+        [focusEntryIndicator4 setCenter:{v29, v31}];
 
         v40 = v27 == INFINITY && v25 == INFINITY;
-        v41 = [(_UIFocusCastingController *)self focusMovementIndicator];
-        [v41 setHidden:v40];
+        focusMovementIndicator2 = [(_UIFocusCastingController *)self focusMovementIndicator];
+        [focusMovementIndicator2 setHidden:v40];
 
-        v42 = [(_UIFocusCastingController *)self focusMovementIndicator];
-        [v42 setBounds:{0.0, 0.0, 25.0, 25.0}];
+        focusMovementIndicator3 = [(_UIFocusCastingController *)self focusMovementIndicator];
+        [focusMovementIndicator3 setBounds:{0.0, 0.0, 25.0, 25.0}];
 
-        v43 = [(_UIFocusCastingController *)self focusMovementIndicator];
-        [v43 setCenter:{v25, v27}];
+        focusMovementIndicator4 = [(_UIFocusCastingController *)self focusMovementIndicator];
+        [focusMovementIndicator4 setCenter:{v25, v27}];
 
-        v44 = [(_UIFocusCastingController *)self focusCastingIndicator];
-        [v44 setHidden:0];
+        focusCastingIndicator3 = [(_UIFocusCastingController *)self focusCastingIndicator];
+        [focusCastingIndicator3 setHidden:0];
 
-        v45 = [(_UIFocusCastingController *)self focusCastingIndicator];
-        [v45 setBounds:{0.0, 0.0, 30.0, 30.0}];
+        focusCastingIndicator4 = [(_UIFocusCastingController *)self focusCastingIndicator];
+        [focusCastingIndicator4 setBounds:{0.0, 0.0, 30.0, 30.0}];
 
-        v46 = [(_UIFocusCastingController *)self focusCastingIndicator];
-        [v46 setCenter:{v33, v35}];
+        focusCastingIndicator5 = [(_UIFocusCastingController *)self focusCastingIndicator];
+        [focusCastingIndicator5 setCenter:{v33, v35}];
       }
     }
 
@@ -901,32 +901,32 @@ LABEL_17:
 
 - (void)_destroyFocusMovementIndicator
 {
-  v3 = [(_UIFocusCastingController *)self focusMovementIndicator];
+  focusMovementIndicator = [(_UIFocusCastingController *)self focusMovementIndicator];
 
-  if (v3)
+  if (focusMovementIndicator)
   {
-    v4 = [(_UIFocusCastingController *)self focusMovementIndicator];
-    [v4 removeFromSuperview];
+    focusMovementIndicator2 = [(_UIFocusCastingController *)self focusMovementIndicator];
+    [focusMovementIndicator2 removeFromSuperview];
 
     [(_UIFocusCastingController *)self setFocusMovementIndicator:0];
   }
 
-  v5 = [(_UIFocusCastingController *)self focusEntryIndicator];
+  focusEntryIndicator = [(_UIFocusCastingController *)self focusEntryIndicator];
 
-  if (v5)
+  if (focusEntryIndicator)
   {
-    v6 = [(_UIFocusCastingController *)self focusEntryIndicator];
-    [v6 removeFromSuperview];
+    focusEntryIndicator2 = [(_UIFocusCastingController *)self focusEntryIndicator];
+    [focusEntryIndicator2 removeFromSuperview];
 
     [(_UIFocusCastingController *)self setFocusEntryIndicator:0];
   }
 
-  v7 = [(_UIFocusCastingController *)self focusCastingIndicator];
+  focusCastingIndicator = [(_UIFocusCastingController *)self focusCastingIndicator];
 
-  if (v7)
+  if (focusCastingIndicator)
   {
-    v8 = [(_UIFocusCastingController *)self focusCastingIndicator];
-    [v8 removeFromSuperview];
+    focusCastingIndicator2 = [(_UIFocusCastingController *)self focusCastingIndicator];
+    [focusCastingIndicator2 removeFromSuperview];
 
     [(_UIFocusCastingController *)self setFocusCastingIndicator:0];
   }

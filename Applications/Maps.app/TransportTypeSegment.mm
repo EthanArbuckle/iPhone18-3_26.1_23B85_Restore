@@ -1,10 +1,10 @@
 @interface TransportTypeSegment
-- (TransportTypeSegment)initWithTransportType:(int64_t)a3;
+- (TransportTypeSegment)initWithTransportType:(int64_t)type;
 - (void)_setupConstraints;
 - (void)_updateViews;
 - (void)didMoveToWindow;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation TransportTypeSegment
@@ -24,38 +24,38 @@
     +[UIColor tertiarySystemFillColor];
   }
   v3 = ;
-  v4 = [(TransportTypeSegment *)self iconView];
-  [v4 setTintColor:v17];
+  iconView = [(TransportTypeSegment *)self iconView];
+  [iconView setTintColor:v17];
 
   [(TransportTypeSegment *)self setBackgroundColor:v3];
   if ([(TransportTypeSegment *)self isSelected]&& sub_10000FA08(self) != 5)
   {
-    v14 = [(TransportTypeSegment *)self layer];
-    [v14 setShadowColor:0];
+    layer = [(TransportTypeSegment *)self layer];
+    [layer setShadowColor:0];
 
-    v15 = [(TransportTypeSegment *)self layer];
-    [v15 setShadowRadius:0.0];
+    layer2 = [(TransportTypeSegment *)self layer];
+    [layer2 setShadowRadius:0.0];
 
     height = CGSizeZero.height;
-    v12 = [(TransportTypeSegment *)self layer];
-    [v12 setShadowOffset:{CGSizeZero.width, height}];
+    layer3 = [(TransportTypeSegment *)self layer];
+    [layer3 setShadowOffset:{CGSizeZero.width, height}];
   }
 
   else
   {
     v5 = +[UIColor blackColor];
-    v6 = [v5 CGColor];
-    v7 = [(TransportTypeSegment *)self layer];
-    [v7 setShadowColor:v6];
+    cGColor = [v5 CGColor];
+    layer4 = [(TransportTypeSegment *)self layer];
+    [layer4 setShadowColor:cGColor];
 
-    v8 = [(TransportTypeSegment *)self layer];
-    [v8 setShadowRadius:4.0];
+    layer5 = [(TransportTypeSegment *)self layer];
+    [layer5 setShadowRadius:4.0];
 
-    v9 = [(TransportTypeSegment *)self layer];
-    [v9 setShadowOffset:{0.0, 1.0}];
+    layer6 = [(TransportTypeSegment *)self layer];
+    [layer6 setShadowOffset:{0.0, 1.0}];
 
-    v10 = [(TransportTypeSegment *)self layer];
-    [v10 setShadowPathIsBounds:1];
+    layer7 = [(TransportTypeSegment *)self layer];
+    [layer7 setShadowPathIsBounds:1];
 
     if ([(TransportTypeSegment *)self isSelected])
     {
@@ -67,26 +67,26 @@
       v11 = 0.0;
     }
 
-    v12 = [(TransportTypeSegment *)self layer];
+    layer3 = [(TransportTypeSegment *)self layer];
     *&v13 = v11;
-    [v12 setShadowOpacity:v13];
+    [layer3 setShadowOpacity:v13];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(TransportTypeSegment *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(TransportTypeSegment *)self isHighlighted]!= highlighted)
   {
     v7.receiver = self;
     v7.super_class = TransportTypeSegment;
-    [(TransportTypeSegment *)&v7 setHighlighted:v3];
-    v5 = [(TransportTypeSegment *)self window];
+    [(TransportTypeSegment *)&v7 setHighlighted:highlightedCopy];
+    window = [(TransportTypeSegment *)self window];
 
-    if (v5)
+    if (window)
     {
       v6 = 0.200000003;
-      if (!v3)
+      if (!highlightedCopy)
       {
         v6 = 1.0;
       }
@@ -96,17 +96,17 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(TransportTypeSegment *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(TransportTypeSegment *)self isSelected]!= selected)
   {
     v6.receiver = self;
     v6.super_class = TransportTypeSegment;
-    [(TransportTypeSegment *)&v6 setSelected:v3];
-    v5 = [(TransportTypeSegment *)self window];
+    [(TransportTypeSegment *)&v6 setSelected:selectedCopy];
+    window = [(TransportTypeSegment *)self window];
 
-    if (v5)
+    if (window)
     {
       [(TransportTypeSegment *)self _updateViews];
     }
@@ -118,9 +118,9 @@
   v4.receiver = self;
   v4.super_class = TransportTypeSegment;
   [(TransportTypeSegment *)&v4 didMoveToWindow];
-  v3 = [(TransportTypeSegment *)self window];
+  window = [(TransportTypeSegment *)self window];
 
-  if (v3)
+  if (window)
   {
     [(TransportTypeSegment *)self _updateViews];
   }
@@ -129,35 +129,35 @@
 - (void)_setupConstraints
 {
   v28 = objc_alloc_init(NSMutableArray);
-  v27 = [(TransportTypeSegment *)self iconView];
-  v26 = [v27 centerXAnchor];
-  v25 = [(TransportTypeSegment *)self centerXAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  iconView = [(TransportTypeSegment *)self iconView];
+  centerXAnchor = [iconView centerXAnchor];
+  centerXAnchor2 = [(TransportTypeSegment *)self centerXAnchor];
+  v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v29[0] = v24;
-  v23 = [(TransportTypeSegment *)self iconView];
-  v22 = [v23 centerYAnchor];
-  v21 = [(TransportTypeSegment *)self centerYAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  iconView2 = [(TransportTypeSegment *)self iconView];
+  centerYAnchor = [iconView2 centerYAnchor];
+  centerYAnchor2 = [(TransportTypeSegment *)self centerYAnchor];
+  v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v29[1] = v20;
-  v19 = [(TransportTypeSegment *)self iconView];
-  v18 = [v19 topAnchor];
-  v17 = [(TransportTypeSegment *)self topAnchor];
-  v16 = [v18 constraintGreaterThanOrEqualToAnchor:v17 constant:3.0];
+  iconView3 = [(TransportTypeSegment *)self iconView];
+  topAnchor = [iconView3 topAnchor];
+  topAnchor2 = [(TransportTypeSegment *)self topAnchor];
+  v16 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:3.0];
   v29[2] = v16;
-  v15 = [(TransportTypeSegment *)self iconView];
-  v14 = [v15 leadingAnchor];
-  v13 = [(TransportTypeSegment *)self leadingAnchor];
-  v3 = [v14 constraintGreaterThanOrEqualToAnchor:v13 constant:6.0];
+  iconView4 = [(TransportTypeSegment *)self iconView];
+  leadingAnchor = [iconView4 leadingAnchor];
+  leadingAnchor2 = [(TransportTypeSegment *)self leadingAnchor];
+  v3 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:6.0];
   v29[3] = v3;
-  v4 = [(TransportTypeSegment *)self bottomAnchor];
-  v5 = [(TransportTypeSegment *)self iconView];
-  v6 = [v5 bottomAnchor];
-  v7 = [v4 constraintGreaterThanOrEqualToAnchor:v6 constant:3.0];
+  bottomAnchor = [(TransportTypeSegment *)self bottomAnchor];
+  iconView5 = [(TransportTypeSegment *)self iconView];
+  bottomAnchor2 = [iconView5 bottomAnchor];
+  v7 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:3.0];
   v29[4] = v7;
-  v8 = [(TransportTypeSegment *)self trailingAnchor];
-  v9 = [(TransportTypeSegment *)self iconView];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintGreaterThanOrEqualToAnchor:v10 constant:6.0];
+  trailingAnchor = [(TransportTypeSegment *)self trailingAnchor];
+  iconView6 = [(TransportTypeSegment *)self iconView];
+  trailingAnchor2 = [iconView6 trailingAnchor];
+  v11 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:6.0];
   v29[5] = v11;
   v12 = [NSArray arrayWithObjects:v29 count:6];
   [v28 addObjectsFromArray:v12];
@@ -165,31 +165,31 @@
   [NSLayoutConstraint activateConstraints:v28];
 }
 
-- (TransportTypeSegment)initWithTransportType:(int64_t)a3
+- (TransportTypeSegment)initWithTransportType:(int64_t)type
 {
   v32.receiver = self;
   v32.super_class = TransportTypeSegment;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(TransportTypeSegment *)&v32 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v8 = v7;
-  if (v7)
+  height = [(TransportTypeSegment *)&v32 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v8 = height;
+  if (height)
   {
-    [(TransportTypeSegment *)v7 setClipsToBounds:0];
+    [(TransportTypeSegment *)height setClipsToBounds:0];
     v9 = +[UIColor clearColor];
     [(TransportTypeSegment *)v8 setBackgroundColor:v9];
 
     [(TransportTypeSegment *)v8 setExclusiveTouch:1];
     [(TransportTypeSegment *)v8 setShowsLargeContentViewer:1];
-    if ((a3 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v12 = 0;
     }
 
     else
     {
-      v10 = *(&off_101652DB0 + a3 - 1);
+      v10 = *(&off_101652DB0 + type - 1);
       v11 = +[NSBundle mainBundle];
       v12 = [v11 localizedStringForKey:v10 value:@"localized string not found" table:0];
     }
@@ -204,7 +204,7 @@
     [(TransportTypeSegment *)v8 setContentCompressionResistancePriority:1 forAxis:v15];
     LODWORD(v16) = 1148846080;
     [(TransportTypeSegment *)v8 setContentCompressionResistancePriority:0 forAxis:v16];
-    v8->_transportType = a3;
+    v8->_transportType = type;
     v17 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     iconView = v8->_iconView;
     v8->_iconView = v17;
@@ -212,9 +212,9 @@
     [(UIImageView *)v8->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v8->_iconView setContentMode:1];
     [(TransportTypeSegment *)v8 addSubview:v8->_iconView];
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         [(TransportTypeSegment *)v8 setAccessibilityIdentifier:@"DriveButton"];
         v19 = +[NSBundle mainBundle];
@@ -223,7 +223,7 @@
         goto LABEL_16;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         [(TransportTypeSegment *)v8 setAccessibilityIdentifier:@"WalkButton"];
         v19 = +[NSBundle mainBundle];
@@ -235,7 +235,7 @@
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 3:
           [(TransportTypeSegment *)v8 setAccessibilityIdentifier:@"TransitButton"];
@@ -265,7 +265,7 @@ LABEL_17:
           v27 = 3221225472;
           v28 = sub_100D65B7C;
           v29 = &unk_101661650;
-          v31 = a3;
+          typeCopy = type;
           v23 = v8;
           v30 = v23;
           dispatch_async(&_dispatch_main_q, &v26);

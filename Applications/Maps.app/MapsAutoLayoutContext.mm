@@ -1,42 +1,42 @@
 @interface MapsAutoLayoutContext
 - (MapsAutoLayoutContext)init;
-- (id)addConstraintWithItem:(id)a3 attribute:(int64_t)a4 relatedBy:(int64_t)a5 toItem:(id)a6 attribute:(int64_t)a7 multiplier:(double)a8 constant:(double)a9;
-- (id)addVisualFormat:(id)a3 withOptions:(unint64_t)a4;
-- (id)attribute:(int64_t)a3 isEqualToAttribute:(int64_t)a4 ofView:(id)a5;
-- (id)constrainView:(id)a3 attribute:(int64_t)a4 equalToView:(id)a5;
-- (id)constrainView:(id)a3 attribute:(int64_t)a4 lessThanView:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)heightOfView:(id)a3 isProportionalToHeightOfView:(id)a4 withRatio:(double)a5;
-- (id)widthOfView:(id)a3 isProportionalToWidthOfView:(id)a4 withRatio:(double)a5;
-- (void)addConstraints:(id)a3;
-- (void)addConstraintsToView:(id)a3 previousContext:(id)a4;
-- (void)addImmutableConstraintsToView:(id)a3;
-- (void)addMutableConstraints:(id)a3;
+- (id)addConstraintWithItem:(id)item attribute:(int64_t)attribute relatedBy:(int64_t)by toItem:(id)toItem attribute:(int64_t)a7 multiplier:(double)multiplier constant:(double)constant;
+- (id)addVisualFormat:(id)format withOptions:(unint64_t)options;
+- (id)attribute:(int64_t)attribute isEqualToAttribute:(int64_t)toAttribute ofView:(id)view;
+- (id)constrainView:(id)view attribute:(int64_t)attribute equalToView:(id)toView;
+- (id)constrainView:(id)view attribute:(int64_t)attribute lessThanView:(id)thanView;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)heightOfView:(id)view isProportionalToHeightOfView:(id)ofView withRatio:(double)ratio;
+- (id)widthOfView:(id)view isProportionalToWidthOfView:(id)ofView withRatio:(double)ratio;
+- (void)addConstraints:(id)constraints;
+- (void)addConstraintsToView:(id)view previousContext:(id)context;
+- (void)addImmutableConstraintsToView:(id)view;
+- (void)addMutableConstraints:(id)constraints;
 - (void)beginUpdateConstraints;
-- (void)designateConstraintsMutable:(id)a3;
-- (void)endUpdateConstraintsOnView:(id)a3;
-- (void)removeConstraint:(id)a3;
-- (void)removeConstraints:(id)a3;
-- (void)removeConstraintsFromView:(id)a3;
-- (void)removeImmutableConstraintsFromView:(id)a3;
-- (void)removeMutableConstraintsFromView:(id)a3;
-- (void)setTranslatesAutoResizingMaskIntoConstraints:(id)a3 value:(BOOL)a4;
+- (void)designateConstraintsMutable:(id)mutable;
+- (void)endUpdateConstraintsOnView:(id)view;
+- (void)removeConstraint:(id)constraint;
+- (void)removeConstraints:(id)constraints;
+- (void)removeConstraintsFromView:(id)view;
+- (void)removeImmutableConstraintsFromView:(id)view;
+- (void)removeMutableConstraintsFromView:(id)view;
+- (void)setTranslatesAutoResizingMaskIntoConstraints:(id)constraints value:(BOOL)value;
 @end
 
 @implementation MapsAutoLayoutContext
 
-- (void)endUpdateConstraintsOnView:(id)a3
+- (void)endUpdateConstraintsOnView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(NSArray *)self->_oldMutableConstraints count])
   {
-    [v5 removeConstraints:self->_oldMutableConstraints];
+    [viewCopy removeConstraints:self->_oldMutableConstraints];
   }
 
   if ([(NSMutableArray *)self->_mutableConstraints count])
   {
-    v4 = [(MapsAutoLayoutContext *)self mutableConstraints];
-    [v5 addConstraints:v4];
+    mutableConstraints = [(MapsAutoLayoutContext *)self mutableConstraints];
+    [viewCopy addConstraints:mutableConstraints];
   }
 }
 
@@ -48,123 +48,123 @@
   self->_mutableConstraints = v3;
 }
 
-- (void)addImmutableConstraintsToView:(id)a3
+- (void)addImmutableConstraintsToView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(NSMutableArray *)self->_constraints count])
   {
-    v4 = [(MapsAutoLayoutContext *)self constraints];
-    [v5 addConstraints:v4];
+    constraints = [(MapsAutoLayoutContext *)self constraints];
+    [viewCopy addConstraints:constraints];
   }
 }
 
-- (void)addConstraintsToView:(id)a3 previousContext:(id)a4
+- (void)addConstraintsToView:(id)view previousContext:(id)context
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  viewCopy = view;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (contextCopy)
   {
-    [v6 removeConstraintsFromView:v10];
+    [contextCopy removeConstraintsFromView:viewCopy];
   }
 
   if ([(NSMutableArray *)self->_constraints count])
   {
-    v8 = [(MapsAutoLayoutContext *)self constraints];
-    [v10 addConstraints:v8];
+    constraints = [(MapsAutoLayoutContext *)self constraints];
+    [viewCopy addConstraints:constraints];
   }
 
   if ([(NSMutableArray *)self->_mutableConstraints count])
   {
-    v9 = [(MapsAutoLayoutContext *)self mutableConstraints];
-    [v10 addConstraints:v9];
+    mutableConstraints = [(MapsAutoLayoutContext *)self mutableConstraints];
+    [viewCopy addConstraints:mutableConstraints];
   }
 }
 
-- (void)removeConstraintsFromView:(id)a3
+- (void)removeConstraintsFromView:(id)view
 {
-  v4 = a3;
-  [(MapsAutoLayoutContext *)self removeImmutableConstraintsFromView:v4];
-  [(MapsAutoLayoutContext *)self removeMutableConstraintsFromView:v4];
+  viewCopy = view;
+  [(MapsAutoLayoutContext *)self removeImmutableConstraintsFromView:viewCopy];
+  [(MapsAutoLayoutContext *)self removeMutableConstraintsFromView:viewCopy];
 }
 
-- (void)removeMutableConstraintsFromView:(id)a3
+- (void)removeMutableConstraintsFromView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(NSMutableArray *)self->_mutableConstraints count])
   {
-    v4 = [(MapsAutoLayoutContext *)self mutableConstraints];
-    [v5 removeConstraints:v4];
+    mutableConstraints = [(MapsAutoLayoutContext *)self mutableConstraints];
+    [viewCopy removeConstraints:mutableConstraints];
   }
 }
 
-- (void)removeImmutableConstraintsFromView:(id)a3
+- (void)removeImmutableConstraintsFromView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(NSMutableArray *)self->_constraints count])
   {
-    v4 = [(MapsAutoLayoutContext *)self constraints];
-    [v5 removeConstraints:v4];
+    constraints = [(MapsAutoLayoutContext *)self constraints];
+    [viewCopy removeConstraints:constraints];
   }
 }
 
-- (id)addConstraintWithItem:(id)a3 attribute:(int64_t)a4 relatedBy:(int64_t)a5 toItem:(id)a6 attribute:(int64_t)a7 multiplier:(double)a8 constant:(double)a9
+- (id)addConstraintWithItem:(id)item attribute:(int64_t)attribute relatedBy:(int64_t)by toItem:(id)toItem attribute:(int64_t)a7 multiplier:(double)multiplier constant:(double)constant
 {
-  v10 = [NSLayoutConstraint constraintWithItem:a3 attribute:a4 relatedBy:a5 toItem:a6 attribute:a7 multiplier:a8 constant:a9];
+  v10 = [NSLayoutConstraint constraintWithItem:item attribute:attribute relatedBy:by toItem:toItem attribute:a7 multiplier:multiplier constant:constant];
   [(MapsAutoLayoutContext *)self addConstraint:v10];
 
   return v10;
 }
 
-- (id)attribute:(int64_t)a3 isEqualToAttribute:(int64_t)a4 ofView:(id)a5
+- (id)attribute:(int64_t)attribute isEqualToAttribute:(int64_t)toAttribute ofView:(id)view
 {
-  v6 = [NSLayoutConstraint constraintWithItem:a5 attribute:a3 relatedBy:0 toItem:a5 attribute:a4 multiplier:1.0 constant:0.0];
+  v6 = [NSLayoutConstraint constraintWithItem:view attribute:attribute relatedBy:0 toItem:view attribute:toAttribute multiplier:1.0 constant:0.0];
   [(MapsAutoLayoutContext *)self addConstraint:v6];
 
   return v6;
 }
 
-- (id)widthOfView:(id)a3 isProportionalToWidthOfView:(id)a4 withRatio:(double)a5
+- (id)widthOfView:(id)view isProportionalToWidthOfView:(id)ofView withRatio:(double)ratio
 {
-  v6 = [NSLayoutConstraint constraintWithItem:a3 attribute:7 relatedBy:0 toItem:a4 attribute:7 multiplier:a5 constant:0.0];
+  v6 = [NSLayoutConstraint constraintWithItem:view attribute:7 relatedBy:0 toItem:ofView attribute:7 multiplier:ratio constant:0.0];
   [(MapsAutoLayoutContext *)self addConstraint:v6];
 
   return v6;
 }
 
-- (id)heightOfView:(id)a3 isProportionalToHeightOfView:(id)a4 withRatio:(double)a5
+- (id)heightOfView:(id)view isProportionalToHeightOfView:(id)ofView withRatio:(double)ratio
 {
-  v6 = [NSLayoutConstraint constraintWithItem:a3 attribute:8 relatedBy:0 toItem:a4 attribute:8 multiplier:a5 constant:0.0];
+  v6 = [NSLayoutConstraint constraintWithItem:view attribute:8 relatedBy:0 toItem:ofView attribute:8 multiplier:ratio constant:0.0];
   [(MapsAutoLayoutContext *)self addConstraint:v6];
 
   return v6;
 }
 
-- (id)constrainView:(id)a3 attribute:(int64_t)a4 lessThanView:(id)a5
+- (id)constrainView:(id)view attribute:(int64_t)attribute lessThanView:(id)thanView
 {
-  v6 = [NSLayoutConstraint constraintWithItem:a3 attribute:a4 relatedBy:-1 toItem:a5 attribute:a4 multiplier:1.0 constant:0.0];
+  v6 = [NSLayoutConstraint constraintWithItem:view attribute:attribute relatedBy:-1 toItem:thanView attribute:attribute multiplier:1.0 constant:0.0];
   [(MapsAutoLayoutContext *)self addConstraint:v6];
 
   return v6;
 }
 
-- (id)constrainView:(id)a3 attribute:(int64_t)a4 equalToView:(id)a5
+- (id)constrainView:(id)view attribute:(int64_t)attribute equalToView:(id)toView
 {
-  v6 = [NSLayoutConstraint constraintWithItem:a3 attribute:a4 relatedBy:0 toItem:a5 attribute:a4 multiplier:1.0 constant:0.0];
+  v6 = [NSLayoutConstraint constraintWithItem:view attribute:attribute relatedBy:0 toItem:toView attribute:attribute multiplier:1.0 constant:0.0];
   [(MapsAutoLayoutContext *)self addConstraint:v6];
 
   return v6;
 }
 
-- (void)setTranslatesAutoResizingMaskIntoConstraints:(id)a3 value:(BOOL)a4
+- (void)setTranslatesAutoResizingMaskIntoConstraints:(id)constraints value:(BOOL)value
 {
-  v4 = a4;
-  v5 = a3;
+  valueCopy = value;
+  constraintsCopy = constraints;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [constraintsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -176,37 +176,37 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(constraintsCopy);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setTranslatesAutoresizingMaskIntoConstraints:v4];
+        [*(*(&v10 + 1) + 8 * v9) setTranslatesAutoresizingMaskIntoConstraints:valueCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [constraintsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)addVisualFormat:(id)a3 withOptions:(unint64_t)a4
+- (id)addVisualFormat:(id)format withOptions:(unint64_t)options
 {
-  v5 = [NSLayoutConstraint constraintsWithVisualFormat:a3 options:a4 metrics:self->_metrics views:self->_views];
+  v5 = [NSLayoutConstraint constraintsWithVisualFormat:format options:options metrics:self->_metrics views:self->_views];
   [(MapsAutoLayoutContext *)self addConstraints:v5];
 
   return v5;
 }
 
-- (void)addMutableConstraints:(id)a3
+- (void)addMutableConstraints:(id)constraints
 {
-  v4 = a3;
+  constraintsCopy = constraints;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [constraintsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -218,7 +218,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(constraintsCopy);
         }
 
         [(MapsAutoLayoutContext *)self addMutableConstraint:*(*(&v9 + 1) + 8 * v8)];
@@ -226,21 +226,21 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [constraintsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addConstraints:(id)a3
+- (void)addConstraints:(id)constraints
 {
-  v4 = a3;
+  constraintsCopy = constraints;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [constraintsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -252,7 +252,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(constraintsCopy);
         }
 
         [(MapsAutoLayoutContext *)self addConstraint:*(*(&v9 + 1) + 8 * v8)];
@@ -260,47 +260,47 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [constraintsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)removeConstraint:(id)a3
+- (void)removeConstraint:(id)constraint
 {
   constraints = self->_constraints;
-  v5 = a3;
-  [(NSMutableArray *)constraints removeObject:v5];
-  [(NSMutableArray *)self->_mutableConstraints removeObject:v5];
+  constraintCopy = constraint;
+  [(NSMutableArray *)constraints removeObject:constraintCopy];
+  [(NSMutableArray *)self->_mutableConstraints removeObject:constraintCopy];
 }
 
-- (void)removeConstraints:(id)a3
+- (void)removeConstraints:(id)constraints
 {
   constraints = self->_constraints;
-  v5 = a3;
-  [(NSMutableArray *)constraints removeObjectsInArray:v5];
-  [(NSMutableArray *)self->_mutableConstraints removeObjectsInArray:v5];
+  constraintsCopy = constraints;
+  [(NSMutableArray *)constraints removeObjectsInArray:constraintsCopy];
+  [(NSMutableArray *)self->_mutableConstraints removeObjectsInArray:constraintsCopy];
 }
 
-- (void)designateConstraintsMutable:(id)a3
+- (void)designateConstraintsMutable:(id)mutable
 {
   constraints = self->_constraints;
-  v5 = a3;
-  [(NSMutableArray *)constraints removeObjectsInArray:v5];
-  [(MapsAutoLayoutContext *)self addMutableConstraints:v5];
+  mutableCopy = mutable;
+  [(NSMutableArray *)constraints removeObjectsInArray:mutableCopy];
+  [(MapsAutoLayoutContext *)self addMutableConstraints:mutableCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MapsAutoLayoutContext);
-  v5 = [(MapsAutoLayoutContext *)self constraints];
-  v6 = [v5 mutableCopy];
+  constraints = [(MapsAutoLayoutContext *)self constraints];
+  v6 = [constraints mutableCopy];
   constraints = v4->_constraints;
   v4->_constraints = v6;
 
-  v8 = [(MapsAutoLayoutContext *)self mutableConstraints];
-  v9 = [v8 mutableCopy];
+  mutableConstraints = [(MapsAutoLayoutContext *)self mutableConstraints];
+  v9 = [mutableConstraints mutableCopy];
   mutableConstraints = v4->_mutableConstraints;
   v4->_mutableConstraints = v9;
 
@@ -343,8 +343,8 @@
     v2->_views = v9;
 
     v11 = v2->_metrics;
-    v12 = [(MapsAutoLayoutContext *)v2 _defaultMetrics];
-    [(NSMutableDictionary *)v11 addEntriesFromDictionary:v12];
+    _defaultMetrics = [(MapsAutoLayoutContext *)v2 _defaultMetrics];
+    [(NSMutableDictionary *)v11 addEntriesFromDictionary:_defaultMetrics];
   }
 
   return v2;

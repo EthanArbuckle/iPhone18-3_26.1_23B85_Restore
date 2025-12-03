@@ -1,27 +1,27 @@
 @interface PUCropAspectViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)aspectButtonPressed:(id)a3;
+- (void)aspectButtonPressed:(id)pressed;
 - (void)updateAspectButtons;
 - (void)viewDidLoad;
 @end
 
 @implementation PUCropAspectViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"aspectButtons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"allAspectRatios" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"buttonContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropAspect" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropAspect" hasInstanceMethod:@"width" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUCropAspect" hasInstanceMethod:@"height" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"aspectButtonPressed:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"updateAspectButtons" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropToolController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"aspectButtons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"allAspectRatios" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"buttonContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropAspect" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropAspect" hasInstanceMethod:@"width" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUCropAspect" hasInstanceMethod:@"height" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"aspectButtonPressed:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"updateAspectButtons" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUCropAspectViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropToolController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -92,11 +92,11 @@ id __85__PUCropAspectViewControllerAccessibility__accessibilityLoadAccessibility
   [(PUCropAspectViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)aspectButtonPressed:(id)a3
+- (void)aspectButtonPressed:(id)pressed
 {
   v5.receiver = self;
   v5.super_class = PUCropAspectViewControllerAccessibility;
-  [(PUCropAspectViewControllerAccessibility *)&v5 aspectButtonPressed:a3];
+  [(PUCropAspectViewControllerAccessibility *)&v5 aspectButtonPressed:pressed];
   [(PUCropAspectViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
   v4 = [(PUCropAspectViewControllerAccessibility *)self safeValueForKey:@"delegate"];
   NSClassFromString(&cfstr_Pucroptoolcont_0.isa);

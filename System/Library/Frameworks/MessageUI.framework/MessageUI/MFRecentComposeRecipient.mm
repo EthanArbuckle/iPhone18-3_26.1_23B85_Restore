@@ -1,28 +1,28 @@
 @interface MFRecentComposeRecipient
-- (BOOL)isEqual:(id)a3;
-- (MFRecentComposeRecipient)initWithCoder:(id)a3;
-- (MFRecentComposeRecipient)initWithRecentContact:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MFRecentComposeRecipient)initWithCoder:(id)coder;
+- (MFRecentComposeRecipient)initWithRecentContact:(id)contact;
 - (id)description;
 - (id)placeholderName;
 @end
 
 @implementation MFRecentComposeRecipient
 
-- (MFRecentComposeRecipient)initWithRecentContact:(id)a3
+- (MFRecentComposeRecipient)initWithRecentContact:(id)contact
 {
-  v5 = a3;
-  v6 = [v5 person];
-  RecordID = ABRecordGetRecordID(v6);
-  v8 = [v5 property];
-  v9 = [v5 matchedIdentifier];
-  v10 = [v5 address];
+  contactCopy = contact;
+  person = [contactCopy person];
+  RecordID = ABRecordGetRecordID(person);
+  property = [contactCopy property];
+  matchedIdentifier = [contactCopy matchedIdentifier];
+  address = [contactCopy address];
   v15.receiver = self;
   v15.super_class = MFRecentComposeRecipient;
-  v11 = [(MFComposeRecipient *)&v15 initWithRecord:v6 recordID:RecordID property:v8 identifier:v9 address:v10];
+  v11 = [(MFComposeRecipient *)&v15 initWithRecord:person recordID:RecordID property:property identifier:matchedIdentifier address:address];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_recent, a3);
+    objc_storeStrong(&v11->_recent, contact);
     v13 = v12;
   }
 
@@ -37,17 +37,17 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 recentContact];
-    v6 = [v5 address];
-    v7 = [(MFRecentComposeRecipient *)self recentContact];
-    v8 = [v7 address];
-    v9 = [v6 isEqualToString:v8];
+    recentContact = [equalCopy recentContact];
+    address = [recentContact address];
+    recentContact2 = [(MFRecentComposeRecipient *)self recentContact];
+    address2 = [recentContact2 address];
+    v9 = [address isEqualToString:address2];
   }
 
   else
@@ -63,15 +63,15 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MFComposeRecipient *)self address];
-  v7 = [v3 stringWithFormat:@"<%@: %p> %@", v5, self, v6];
+  address = [(MFComposeRecipient *)self address];
+  v7 = [v3 stringWithFormat:@"<%@: %p> %@", v5, self, address];
 
   return v7;
 }
 
-- (MFRecentComposeRecipient)initWithCoder:(id)a3
+- (MFRecentComposeRecipient)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectForKey:@"recent"];
+  v4 = [coder decodeObjectForKey:@"recent"];
   v5 = [(MFRecentComposeRecipient *)self initWithRecentContact:v4];
 
   return v5;

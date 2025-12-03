@@ -1,27 +1,27 @@
 @interface IDSLocalMessageSentMetric
-- (IDSLocalMessageSentMetric)initWithService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 messageSize:(int64_t)a5 linkType:(unint64_t)a6 priority:(int64_t)a7;
+- (IDSLocalMessageSentMetric)initWithService:(id)service isToDefaultPairedDevice:(BOOL)device messageSize:(int64_t)size linkType:(unint64_t)type priority:(int64_t)priority;
 - (NSCopying)awdRepresentation;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSLocalMessageSentMetric
 
-- (IDSLocalMessageSentMetric)initWithService:(id)a3 isToDefaultPairedDevice:(BOOL)a4 messageSize:(int64_t)a5 linkType:(unint64_t)a6 priority:(int64_t)a7
+- (IDSLocalMessageSentMetric)initWithService:(id)service isToDefaultPairedDevice:(BOOL)device messageSize:(int64_t)size linkType:(unint64_t)type priority:(int64_t)priority
 {
-  v12 = a3;
+  serviceCopy = service;
   v17.receiver = self;
   v17.super_class = IDSLocalMessageSentMetric;
   v13 = [(IDSLocalMessageSentMetric *)&v17 init];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [serviceCopy copy];
     service = v13->_service;
     v13->_service = v14;
 
-    v13->_isToDefaultPairedDevice = a4;
-    v13->_messageSize = a5;
-    v13->_linkType = a6;
-    v13->_priority = a7;
+    v13->_isToDefaultPairedDevice = device;
+    v13->_messageSize = size;
+    v13->_linkType = type;
+    v13->_priority = priority;
   }
 
   return v13;
@@ -30,10 +30,10 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSLocalMessageSentMetric *)self service];
-  if (v4)
+  service = [(IDSLocalMessageSentMetric *)self service];
+  if (service)
   {
-    CFDictionarySetValue(v3, @"service", v4);
+    CFDictionarySetValue(v3, @"service", service);
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDSLocalMessageSentMetric isToDefaultPairedDevice](self, "isToDefaultPairedDevice")}];
@@ -66,8 +66,8 @@
 - (NSCopying)awdRepresentation
 {
   v3 = objc_alloc_init(CUTWeakLinkClass());
-  v4 = [(IDSLocalMessageSentMetric *)self service];
-  [v3 setService:v4];
+  service = [(IDSLocalMessageSentMetric *)self service];
+  [v3 setService:service];
 
   [v3 setIsToDefaultPairedDevice:{-[IDSLocalMessageSentMetric isToDefaultPairedDevice](self, "isToDefaultPairedDevice")}];
   [v3 setMessageSize:{-[IDSLocalMessageSentMetric messageSize](self, "messageSize")}];

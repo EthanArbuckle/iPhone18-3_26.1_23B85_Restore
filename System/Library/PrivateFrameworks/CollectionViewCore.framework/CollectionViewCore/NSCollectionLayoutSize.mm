@@ -1,17 +1,17 @@
 @interface NSCollectionLayoutSize
-+ (NSCollectionLayoutSize)sizeWithAbsoluteSize:(CGSize)a3;
++ (NSCollectionLayoutSize)sizeWithAbsoluteSize:(CGSize)size;
 + (NSCollectionLayoutSize)sizeWithContainerSize;
-+ (NSCollectionLayoutSize)sizeWithContainerWidthFactor:(double)a3 containerHeightFactor:(double)a4;
-+ (NSCollectionLayoutSize)sizeWithSize:(CGSize)a3 widthSemantic:(int64_t)a4 heightSemantic:(int64_t)a5;
-+ (NSCollectionLayoutSize)sizeWithWidth:(double)a3 widthSemantic:(int64_t)a4 height:(double)a5 heightSemantic:(int64_t)a6;
++ (NSCollectionLayoutSize)sizeWithContainerWidthFactor:(double)factor containerHeightFactor:(double)heightFactor;
++ (NSCollectionLayoutSize)sizeWithSize:(CGSize)size widthSemantic:(int64_t)semantic heightSemantic:(int64_t)heightSemantic;
++ (NSCollectionLayoutSize)sizeWithWidth:(double)width widthSemantic:(int64_t)semantic height:(double)height heightSemantic:(int64_t)heightSemantic;
 + (NSCollectionLayoutSize)sizeWithWidthDimension:(NSCollectionLayoutDimension *)width heightDimension:(NSCollectionLayoutDimension *)height;
-- (BOOL)_isEstimatedForAxis:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isEstimatedForAxis:(unint64_t)axis;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEstimated;
-- (CGSize)_effectiveSizeForContainer:(id)a3 displayScale:(double)a4 ignoringInsets:(BOOL)a5;
+- (CGSize)_effectiveSizeForContainer:(id)container displayScale:(double)scale ignoringInsets:(BOOL)insets;
 - (CGSize)size;
-- (NSCollectionLayoutSize)initWithSize:(CGSize)a3 widthSemantic:(int64_t)a4 heightSemantic:(int64_t)a5 width:(id)a6 height:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSCollectionLayoutSize)initWithSize:(CGSize)size widthSemantic:(int64_t)semantic heightSemantic:(int64_t)heightSemantic width:(id)width height:(id)height;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)_axesUniformAcrossSiblings;
 - (unint64_t)_containerSizeDependentAxes;
@@ -62,7 +62,7 @@
 {
   v3 = [NSCollectionLayoutDimension _dimensionWithDimension:1 semantic:1.0];
   v4 = [NSCollectionLayoutDimension _dimensionWithDimension:2 semantic:1.0];
-  v5 = [[a1 alloc] initWithSize:objc_msgSend(v3 widthSemantic:"semantic") heightSemantic:objc_msgSend(v4 width:"semantic") height:{v3, v4, 1.0, 1.0}];
+  v5 = [[self alloc] initWithSize:objc_msgSend(v3 widthSemantic:"semantic") heightSemantic:objc_msgSend(v4 width:"semantic") height:{v3, v4, 1.0, 1.0}];
 
   return v5;
 }
@@ -117,12 +117,12 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"{%@(%g), %@(%g)}", v5, *&self->_size.width, v7, *&self->_size.height, v2, v3];
 }
 
-- (NSCollectionLayoutSize)initWithSize:(CGSize)a3 widthSemantic:(int64_t)a4 heightSemantic:(int64_t)a5 width:(id)a6 height:(id)a7
+- (NSCollectionLayoutSize)initWithSize:(CGSize)size widthSemantic:(int64_t)semantic heightSemantic:(int64_t)heightSemantic width:(id)width height:(id)height
 {
-  height = a3.height;
-  width = a3.width;
-  v14 = a6;
-  v15 = a7;
+  height = size.height;
+  width = size.width;
+  widthCopy = width;
+  heightCopy = height;
   v19.receiver = self;
   v19.super_class = NSCollectionLayoutSize;
   v16 = [(NSCollectionLayoutSize *)&v19 init];
@@ -131,10 +131,10 @@
   {
     v16->_size.width = width;
     v16->_size.height = height;
-    v16->_widthSemantic = a4;
-    v16->_heightSemantic = a5;
-    objc_storeStrong(&v16->_widthDimension, a6);
-    objc_storeStrong(&v17->_heightDimension, a7);
+    v16->_widthSemantic = semantic;
+    v16->_heightSemantic = heightSemantic;
+    objc_storeStrong(&v16->_widthDimension, width);
+    objc_storeStrong(&v17->_heightDimension, height);
   }
 
   return v17;
@@ -144,75 +144,75 @@
 {
   v6 = height;
   v7 = width;
-  v8 = [(NSCollectionLayoutDimension *)v7 semantic];
-  v9 = [(NSCollectionLayoutDimension *)v6 semantic];
+  semantic = [(NSCollectionLayoutDimension *)v7 semantic];
+  semantic2 = [(NSCollectionLayoutDimension *)v6 semantic];
   [(NSCollectionLayoutDimension *)v7 dimension];
   v11 = v10;
   [(NSCollectionLayoutDimension *)v6 dimension];
-  v13 = [[a1 alloc] initWithSize:v8 widthSemantic:v9 heightSemantic:v7 width:v6 height:{v11, v12}];
+  v13 = [[self alloc] initWithSize:semantic widthSemantic:semantic2 heightSemantic:v7 width:v6 height:{v11, v12}];
 
   return v13;
 }
 
-+ (NSCollectionLayoutSize)sizeWithAbsoluteSize:(CGSize)a3
++ (NSCollectionLayoutSize)sizeWithAbsoluteSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [NSCollectionLayoutDimension _dimensionWithDimension:0 semantic:?];
   v7 = [NSCollectionLayoutDimension _dimensionWithDimension:0 semantic:height];
-  v8 = [[a1 alloc] initWithSize:0 widthSemantic:0 heightSemantic:v6 width:v7 height:{width, height}];
+  v8 = [[self alloc] initWithSize:0 widthSemantic:0 heightSemantic:v6 width:v7 height:{width, height}];
 
   return v8;
 }
 
-+ (NSCollectionLayoutSize)sizeWithContainerWidthFactor:(double)a3 containerHeightFactor:(double)a4
++ (NSCollectionLayoutSize)sizeWithContainerWidthFactor:(double)factor containerHeightFactor:(double)heightFactor
 {
   v7 = [NSCollectionLayoutDimension _dimensionWithDimension:1 semantic:?];
-  v8 = [NSCollectionLayoutDimension _dimensionWithDimension:2 semantic:a4];
-  v9 = [[a1 alloc] initWithSize:1 widthSemantic:2 heightSemantic:v7 width:v8 height:{a3, a4}];
+  v8 = [NSCollectionLayoutDimension _dimensionWithDimension:2 semantic:heightFactor];
+  v9 = [[self alloc] initWithSize:1 widthSemantic:2 heightSemantic:v7 width:v8 height:{factor, heightFactor}];
 
   return v9;
 }
 
-+ (NSCollectionLayoutSize)sizeWithSize:(CGSize)a3 widthSemantic:(int64_t)a4 heightSemantic:(int64_t)a5
++ (NSCollectionLayoutSize)sizeWithSize:(CGSize)size widthSemantic:(int64_t)semantic heightSemantic:(int64_t)heightSemantic
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10 = [NSCollectionLayoutDimension _dimensionWithDimension:1 semantic:?];
   v11 = [NSCollectionLayoutDimension _dimensionWithDimension:2 semantic:height];
-  v12 = [[a1 alloc] initWithSize:a4 widthSemantic:a5 heightSemantic:v10 width:v11 height:{width, height}];
+  v12 = [[self alloc] initWithSize:semantic widthSemantic:heightSemantic heightSemantic:v10 width:v11 height:{width, height}];
 
   return v12;
 }
 
-+ (NSCollectionLayoutSize)sizeWithWidth:(double)a3 widthSemantic:(int64_t)a4 height:(double)a5 heightSemantic:(int64_t)a6
++ (NSCollectionLayoutSize)sizeWithWidth:(double)width widthSemantic:(int64_t)semantic height:(double)height heightSemantic:(int64_t)heightSemantic
 {
   v11 = [NSCollectionLayoutDimension _dimensionWithDimension:1 semantic:?];
-  v12 = [NSCollectionLayoutDimension _dimensionWithDimension:2 semantic:a5];
-  v13 = [[a1 alloc] initWithSize:a4 widthSemantic:a6 heightSemantic:v11 width:v12 height:{a3, a5}];
+  v12 = [NSCollectionLayoutDimension _dimensionWithDimension:2 semantic:height];
+  v13 = [[self alloc] initWithSize:semantic widthSemantic:heightSemantic heightSemantic:v11 width:v12 height:{width, height}];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(NSCollectionLayoutSize *)self size];
   v6 = v5;
   v8 = v7;
-  v9 = [(NSCollectionLayoutSize *)self widthSemantic];
-  v10 = [(NSCollectionLayoutSize *)self heightSemantic];
-  v11 = [(NSCollectionLayoutSize *)self widthDimension];
-  v12 = [(NSCollectionLayoutSize *)self heightDimension];
-  v13 = [v4 initWithSize:v9 widthSemantic:v10 heightSemantic:v11 width:v12 height:{v6, v8}];
+  widthSemantic = [(NSCollectionLayoutSize *)self widthSemantic];
+  heightSemantic = [(NSCollectionLayoutSize *)self heightSemantic];
+  widthDimension = [(NSCollectionLayoutSize *)self widthDimension];
+  heightDimension = [(NSCollectionLayoutSize *)self heightDimension];
+  v13 = [v4 initWithSize:widthSemantic widthSemantic:heightSemantic heightSemantic:widthDimension width:heightDimension height:{v6, v8}];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -220,11 +220,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(NSCollectionLayoutSize *)self widthDimension], v5 = objc_claimAutoreleasedReturnValue(), [(NSCollectionLayoutSize *)v4 widthDimension], v6 = objc_claimAutoreleasedReturnValue(), v7 = __objectEqual(v5, v6), v6, v5, v7))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(NSCollectionLayoutSize *)self widthDimension], v5 = objc_claimAutoreleasedReturnValue(), [(NSCollectionLayoutSize *)equalCopy widthDimension], v6 = objc_claimAutoreleasedReturnValue(), v7 = __objectEqual(v5, v6), v6, v5, v7))
     {
-      v8 = [(NSCollectionLayoutSize *)self heightDimension];
-      v9 = [(NSCollectionLayoutSize *)v4 heightDimension];
-      v10 = __objectEqual(v8, v9);
+      heightDimension = [(NSCollectionLayoutSize *)self heightDimension];
+      heightDimension2 = [(NSCollectionLayoutSize *)equalCopy heightDimension];
+      v10 = __objectEqual(heightDimension, heightDimension2);
     }
 
     else
@@ -236,16 +236,16 @@
   return v10;
 }
 
-- (CGSize)_effectiveSizeForContainer:(id)a3 displayScale:(double)a4 ignoringInsets:(BOOL)a5
+- (CGSize)_effectiveSizeForContainer:(id)container displayScale:(double)scale ignoringInsets:(BOOL)insets
 {
-  v5 = a5;
-  v9 = a3;
-  [v9 contentInsets];
+  insetsCopy = insets;
+  containerCopy = container;
+  [containerCopy contentInsets];
   v14 = v12 + v13;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
-  *&v33[4] = a4;
-  if (v5)
+  *&v33[4] = scale;
+  if (insetsCopy)
   {
     v14 = 0.0;
   }
@@ -257,20 +257,20 @@
   v25 = __81__NSCollectionLayoutSize__effectiveSizeForContainer_displayScale_ignoringInsets___block_invoke_2;
   v26 = &unk_278DE5778;
   v15 = v10 + v11;
-  if (v5)
+  if (insetsCopy)
   {
     v15 = 0.0;
   }
 
-  v28 = self;
+  selfCopy = self;
   v29 = v33;
   v30 = v15;
   v31 = v14;
   v32 = a2;
-  v27 = v9;
+  v27 = containerCopy;
   width = self->_size.width;
   widthSemantic = self->_widthSemantic;
-  v18 = v9;
+  v18 = containerCopy;
   __81__NSCollectionLayoutSize__effectiveSizeForContainer_displayScale_ignoringInsets___block_invoke_2(v24, widthSemantic, width);
   v20 = v19;
   v21 = (v25)(v24, self->_heightSemantic, self->_size.height);
@@ -337,29 +337,29 @@ LABEL_10:
   v9(v5, v7);
 }
 
-- (BOOL)_isEstimatedForAxis:(unint64_t)a3
+- (BOOL)_isEstimatedForAxis:(unint64_t)axis
 {
-  if (a3 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (axis - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:2053 description:{@"Invalid parameter not satisfying: %@", @"axis == CVCAxisHorizontal || axis == CVCAxisVertical"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:2053 description:{@"Invalid parameter not satisfying: %@", @"axis == CVCAxisHorizontal || axis == CVCAxisVertical"}];
 
     goto LABEL_5;
   }
 
-  if (a3 != 2)
+  if (axis != 2)
   {
 LABEL_5:
-    v4 = [(NSCollectionLayoutSize *)self widthDimension];
+    widthDimension = [(NSCollectionLayoutSize *)self widthDimension];
     goto LABEL_6;
   }
 
-  v4 = [(NSCollectionLayoutSize *)self heightDimension];
+  widthDimension = [(NSCollectionLayoutSize *)self heightDimension];
 LABEL_6:
-  v7 = v4;
-  v8 = [v4 isEstimated];
+  v7 = widthDimension;
+  isEstimated = [widthDimension isEstimated];
 
-  return v8;
+  return isEstimated;
 }
 
 @end

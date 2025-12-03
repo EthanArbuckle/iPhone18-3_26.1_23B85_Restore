@@ -1,9 +1,9 @@
 @interface SFWebExtensionsController
-+ (void)_didDiscoverExtensions:(BOOL)a3;
-- (BOOL)_isExtensionBlockedByBlocklist:(id)a3 completionHandler:(id)a4;
-- (BOOL)_isExtensionBlockedByBlocklist:(id)a3 developerIdentifier:(id)a4;
++ (void)_didDiscoverExtensions:(BOOL)extensions;
+- (BOOL)_isExtensionBlockedByBlocklist:(id)blocklist completionHandler:(id)handler;
+- (BOOL)_isExtensionBlockedByBlocklist:(id)blocklist developerIdentifier:(id)identifier;
 - (BOOL)hasNamedProfiles;
-- (BOOL)hasUpdatedToolbarItemBadgeTextInTab:(id)a3;
+- (BOOL)hasUpdatedToolbarItemBadgeTextInTab:(id)tab;
 - (BOOL)parentalControlsAreEnabledForExtensions;
 - (NSArray)allContentBlockerManagers;
 - (NSArray)allWebExtensionControllers;
@@ -11,41 +11,41 @@
 - (SFWebExtensionControllerProfileDelegate)profileDelegate;
 - (UIViewController)viewControllerToPresentDialogsFrom;
 - (_SFNavigationIntentHandling)navigationIntentHandler;
-- (id)_allWindowsForWebExtension:(id)a3;
-- (id)_commandShortcutConflictAlertForExtension:(id)a3 conflict:(id)a4 okAction:(id)a5;
-- (id)_developerIdentifierForExtension:(id)a3 untrustedCodeSigningDictionary:(id)a4;
+- (id)_allWindowsForWebExtension:(id)extension;
+- (id)_commandShortcutConflictAlertForExtension:(id)extension conflict:(id)conflict okAction:(id)action;
+- (id)_developerIdentifierForExtension:(id)extension untrustedCodeSigningDictionary:(id)dictionary;
 - (id)_deviceUUIDString;
 - (id)_domainForDefaultSearchProvider;
-- (id)_findTabInAnyWindowWithID:(double)a3;
-- (id)_findWindowWithID:(double)a3;
+- (id)_findTabInAnyWindowWithID:(double)d;
+- (id)_findWindowWithID:(double)d;
 - (id)_safariShortVersion;
 - (id)_webViewConfiguration;
 - (id)allProfileExtensionsControllers;
-- (id)contentBlockerManagerForProfileServerID:(id)a3;
+- (id)contentBlockerManagerForProfileServerID:(id)d;
 - (id)lastFocusedWindow;
 - (id)profile;
 - (id)tabGroupManager;
-- (id)webExtensionsControllerForProfileServerID:(id)a3;
+- (id)webExtensionsControllerForProfileServerID:(id)d;
 - (unint64_t)recentlyInstalledExtensionCount;
-- (void)_clearNewTabPreferenceIfNecessaryForRemovedExtensionWithComposedIdentifier:(id)a3;
-- (void)_createNewTabInWindow:(id)a3 tabIndex:(id)a4 url:(id)a5 makeActive:(BOOL)a6 completionHandler:(id)a7;
-- (void)_extensionWithComposedIdentifier:(id)a3 wasEnabledOrDisabledByExtensionSettings:(BOOL)a4;
-- (void)_pinTab:(id)a3;
-- (void)_relateParentTab:(id)a3 toTab:(id)a4;
-- (void)_reportCommandShortcutConflictsForExtension:(id)a3 conflicts:(id)a4 presentingViewController:(id)a5 completionHandler:(id)a6;
-- (void)_showAccessRequestAlertForExtension:(id)a3 domains:(id)a4 callingAPIName:(id)a5 responseBlock:(id)a6;
-- (void)_updateExtensionsStateAfterExtensionSettingsWereUpdatedExternally:(id)a3 shouldUpdateExtensionPermissionsAndEnabledState:(BOOL)a4;
-- (void)didViewToolbarItemBadgesInTab:(id)a3;
-- (void)extensionSettingsWereUpdatedExternallyFromSettingsApp:(BOOL)a3;
-- (void)fireAppropriateTabMovementEventForTabState:(id)a3;
-- (void)fireAttachmentEventsForTabsWithPreviousTabPositions:(id)a3;
-- (void)fireOnMovedEventForTabsWithPreviousTabPositions:(id)a3 currentTabsPositions:(id)a4;
-- (void)hidePermissionBannerForExtension:(id)a3;
-- (void)reportCommandShortcutConflictsIfNecessaryForExtension:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5;
-- (void)setProcessPool:(id)a3;
-- (void)setViewControllerToPresentDialogsFrom:(id)a3;
-- (void)showPermissionBannerForExtension:(id)a3;
-- (void)webExtensionController:(id)a3 presentPopupForAction:(id)a4 forExtensionContext:(id)a5 completionHandler:(id)a6;
+- (void)_clearNewTabPreferenceIfNecessaryForRemovedExtensionWithComposedIdentifier:(id)identifier;
+- (void)_createNewTabInWindow:(id)window tabIndex:(id)index url:(id)url makeActive:(BOOL)active completionHandler:(id)handler;
+- (void)_extensionWithComposedIdentifier:(id)identifier wasEnabledOrDisabledByExtensionSettings:(BOOL)settings;
+- (void)_pinTab:(id)tab;
+- (void)_relateParentTab:(id)tab toTab:(id)toTab;
+- (void)_reportCommandShortcutConflictsForExtension:(id)extension conflicts:(id)conflicts presentingViewController:(id)controller completionHandler:(id)handler;
+- (void)_showAccessRequestAlertForExtension:(id)extension domains:(id)domains callingAPIName:(id)name responseBlock:(id)block;
+- (void)_updateExtensionsStateAfterExtensionSettingsWereUpdatedExternally:(id)externally shouldUpdateExtensionPermissionsAndEnabledState:(BOOL)state;
+- (void)didViewToolbarItemBadgesInTab:(id)tab;
+- (void)extensionSettingsWereUpdatedExternallyFromSettingsApp:(BOOL)app;
+- (void)fireAppropriateTabMovementEventForTabState:(id)state;
+- (void)fireAttachmentEventsForTabsWithPreviousTabPositions:(id)positions;
+- (void)fireOnMovedEventForTabsWithPreviousTabPositions:(id)positions currentTabsPositions:(id)tabsPositions;
+- (void)hidePermissionBannerForExtension:(id)extension;
+- (void)reportCommandShortcutConflictsIfNecessaryForExtension:(id)extension presentingViewController:(id)controller completionHandler:(id)handler;
+- (void)setProcessPool:(id)pool;
+- (void)setViewControllerToPresentDialogsFrom:(id)from;
+- (void)showPermissionBannerForExtension:(id)extension;
+- (void)webExtensionController:(id)controller presentPopupForAction:(id)action forExtensionContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation SFWebExtensionsController
@@ -53,28 +53,28 @@
 - (id)_webViewConfiguration
 {
   v3 = objc_alloc_init(MEMORY[0x1E69853A8]);
-  v4 = [(SFWebExtensionsController *)self applicationNameForUserAgent];
-  [v3 setApplicationNameForUserAgent:v4];
+  applicationNameForUserAgent = [(SFWebExtensionsController *)self applicationNameForUserAgent];
+  [v3 setApplicationNameForUserAgent:applicationNameForUserAgent];
 
-  v5 = [(SFWebExtensionsController *)self processPool];
-  [v3 setProcessPool:v5];
+  processPool = [(SFWebExtensionsController *)self processPool];
+  [v3 setProcessPool:processPool];
 
-  v6 = [MEMORY[0x1E6985350] safari_webExtensionUserContentController];
-  [v3 setUserContentController:v6];
+  safari_webExtensionUserContentController = [MEMORY[0x1E6985350] safari_webExtensionUserContentController];
+  [v3 setUserContentController:safari_webExtensionUserContentController];
 
   [v3 _setCrossOriginAccessControlCheckEnabled:0];
   [v3 _setGroupIdentifier:*MEMORY[0x1E69C9A40]];
   [v3 _setShouldRelaxThirdPartyCookieBlocking:1];
-  v7 = [v3 defaultWebpagePreferences];
-  [v7 _setAutoplayPolicy:1];
+  defaultWebpagePreferences = [v3 defaultWebpagePreferences];
+  [defaultWebpagePreferences _setAutoplayPolicy:1];
 
-  v8 = [(WBSExtensionsController *)self websiteDataStore];
-  [v3 setWebsiteDataStore:v8];
+  websiteDataStore = [(WBSExtensionsController *)self websiteDataStore];
+  [v3 setWebsiteDataStore:websiteDataStore];
 
   [v3 setShowsSystemScreenTimeBlockingView:0];
   v9 = _SFDeviceSupportsDesktopSitesByDefault();
-  v10 = [v3 defaultWebpagePreferences];
-  v11 = v10;
+  defaultWebpagePreferences2 = [v3 defaultWebpagePreferences];
+  v11 = defaultWebpagePreferences2;
   if (v9)
   {
     v12 = 2;
@@ -85,35 +85,35 @@
     v12 = 0;
   }
 
-  [v10 setPreferredContentMode:v12];
+  [defaultWebpagePreferences2 setPreferredContentMode:v12];
 
   v13 = _SFApplicationNameForDesktopUserAgent();
-  v14 = [v3 defaultWebpagePreferences];
-  [v14 _setApplicationNameForUserAgentWithModernCompatibility:v13];
+  defaultWebpagePreferences3 = [v3 defaultWebpagePreferences];
+  [defaultWebpagePreferences3 _setApplicationNameForUserAgentWithModernCompatibility:v13];
 
-  v15 = [v3 preferences];
-  [v15 _setShouldIgnoreMetaViewport:v9];
+  preferences = [v3 preferences];
+  [preferences _setShouldIgnoreMetaViewport:v9];
 
   return v3;
 }
 
 - (NSURL)extensionOverriddenStartPageURL
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v4 = [(WBSWebExtensionsController *)self tabOverridePreferencesManager];
-  if ([v4 isNewTabPageOverriddenByAnEnabledExtensionInUserDefaults:v3])
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  tabOverridePreferencesManager = [(WBSWebExtensionsController *)self tabOverridePreferencesManager];
+  if ([tabOverridePreferencesManager isNewTabPageOverriddenByAnEnabledExtensionInUserDefaults:safari_browserDefaults])
   {
-    v5 = [v4 extensionComposedIdentifierForNewTabPreferenceInDefaults:v3];
+    v5 = [tabOverridePreferencesManager extensionComposedIdentifierForNewTabPreferenceInDefaults:safari_browserDefaults];
     v6 = [(WBSWebExtensionsController *)self webExtensionForComposedIdentifier:v5];
-    v7 = [v6 newTabOverridePageURL];
+    newTabOverridePageURL = [v6 newTabOverridePageURL];
   }
 
   else
   {
-    v7 = 0;
+    newTabOverridePageURL = 0;
   }
 
-  return v7;
+  return newTabOverridePageURL;
 }
 
 - (id)allProfileExtensionsControllers
@@ -132,12 +132,12 @@
   return v4;
 }
 
-- (BOOL)_isExtensionBlockedByBlocklist:(id)a3 completionHandler:(id)a4
+- (BOOL)_isExtensionBlockedByBlocklist:(id)blocklist completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sf_bundleIdentifierForContainingApp];
-  v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v8 allowPlaceholder:0 error:0];
+  blocklistCopy = blocklist;
+  handlerCopy = handler;
+  sf_bundleIdentifierForContainingApp = [blocklistCopy sf_bundleIdentifierForContainingApp];
+  v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:sf_bundleIdentifierForContainingApp allowPlaceholder:0 error:0];
   if (v9)
   {
     blocklistQueue = self->_blocklistQueue;
@@ -156,8 +156,8 @@
     block[2] = __78__SFWebExtensionsController__isExtensionBlockedByBlocklist_completionHandler___block_invoke;
     block[3] = &unk_1E721CF88;
     v16 = v9;
-    v17 = v8;
-    v18 = v7;
+    v17 = sf_bundleIdentifierForContainingApp;
+    v18 = handlerCopy;
     dispatch_async(blocklistQueue, block);
   }
 
@@ -207,16 +207,16 @@ void __78__SFWebExtensionsController__isExtensionBlockedByBlocklist_completionHa
   (*(*(a1 + 48) + 16))();
 }
 
-- (BOOL)_isExtensionBlockedByBlocklist:(id)a3 developerIdentifier:(id)a4
+- (BOOL)_isExtensionBlockedByBlocklist:(id)blocklist developerIdentifier:(id)identifier
 {
-  v5 = a3;
+  blocklistCopy = blocklist;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __80__SFWebExtensionsController__isExtensionBlockedByBlocklist_developerIdentifier___block_invoke;
   v8[3] = &unk_1E721CFD8;
   v8[4] = self;
-  v6 = v5;
+  v6 = blocklistCopy;
   v9 = v6;
   objc_copyWeak(&v10, &location);
   LOBYTE(self) = [(SFWebExtensionsController *)self _isExtensionBlockedByBlocklist:v6 completionHandler:v8];
@@ -288,37 +288,37 @@ void __80__SFWebExtensionsController__isExtensionBlockedByBlocklist_developerIde
   }
 }
 
-- (void)extensionSettingsWereUpdatedExternallyFromSettingsApp:(BOOL)a3
+- (void)extensionSettingsWereUpdatedExternallyFromSettingsApp:(BOOL)app
 {
-  v3 = a3;
+  appCopy = app;
   if ([(SFWebExtensionsController *)self extensionsEnabled])
   {
     v5 = *MEMORY[0x1E69C9900];
     v9 = *(&self->super.super.super.isa + v5);
-    v6 = [(WBSExtensionsController *)self readExtensionsStateFromStorage];
-    v7 = [v6 mutableCopy];
+    readExtensionsStateFromStorage = [(WBSExtensionsController *)self readExtensionsStateFromStorage];
+    v7 = [readExtensionsStateFromStorage mutableCopy];
     v8 = *(&self->super.super.super.isa + v5);
     *(&self->super.super.super.isa + v5) = v7;
 
     if (*(&self->super.super.super.isa + v5))
     {
-      [(SFWebExtensionsController *)self _updateExtensionsStateAfterExtensionSettingsWereUpdatedExternally:v9 shouldUpdateExtensionPermissionsAndEnabledState:v3];
+      [(SFWebExtensionsController *)self _updateExtensionsStateAfterExtensionSettingsWereUpdatedExternally:v9 shouldUpdateExtensionPermissionsAndEnabledState:appCopy];
     }
   }
 }
 
-- (void)_updateExtensionsStateAfterExtensionSettingsWereUpdatedExternally:(id)a3 shouldUpdateExtensionPermissionsAndEnabledState:(BOOL)a4
+- (void)_updateExtensionsStateAfterExtensionSettingsWereUpdatedExternally:(id)externally shouldUpdateExtensionPermissionsAndEnabledState:(BOOL)state
 {
-  v6 = a3;
+  externallyCopy = externally;
   v7 = *(&self->super.super.super.isa + *MEMORY[0x1E69C9900]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __143__SFWebExtensionsController__updateExtensionsStateAfterExtensionSettingsWereUpdatedExternally_shouldUpdateExtensionPermissionsAndEnabledState___block_invoke;
   v9[3] = &unk_1E721D000;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = externallyCopy;
+  selfCopy = self;
+  stateCopy = state;
+  v8 = externallyCopy;
   [v7 enumerateKeysAndObjectsUsingBlock:v9];
 }
 
@@ -353,21 +353,21 @@ void __143__SFWebExtensionsController__updateExtensionsStateAfterExtensionSettin
   }
 }
 
-- (void)_extensionWithComposedIdentifier:(id)a3 wasEnabledOrDisabledByExtensionSettings:(BOOL)a4
+- (void)_extensionWithComposedIdentifier:(id)identifier wasEnabledOrDisabledByExtensionSettings:(BOOL)settings
 {
-  v4 = a4;
+  settingsCopy = settings;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(WBSExtensionsController *)self extensionWithComposedIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(WBSExtensionsController *)self extensionWithComposedIdentifier:identifierCopy];
   if (v7)
   {
-    if ([*(&self->super.super.super.isa + *MEMORY[0x1E69C98F8]) containsObject:v7] == v4)
+    if ([*(&self->super.super.super.isa + *MEMORY[0x1E69C98F8]) containsObject:v7] == settingsCopy)
     {
       v12 = WBS_LOG_CHANNEL_PREFIXWebExtensions();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        v13 = [v7 identifier];
-        [(SFWebExtensionsController *)v13 _extensionWithComposedIdentifier:v4 wasEnabledOrDisabledByExtensionSettings:&v14, v12];
+        identifier = [v7 identifier];
+        [(SFWebExtensionsController *)identifier _extensionWithComposedIdentifier:settingsCopy wasEnabledOrDisabledByExtensionSettings:&v14, v12];
       }
     }
 
@@ -376,42 +376,42 @@ void __143__SFWebExtensionsController__updateExtensionsStateAfterExtensionSettin
       v8 = WBS_LOG_CHANNEL_PREFIXWebExtensions();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [v7 identifier];
-        v10 = v9;
+        identifier2 = [v7 identifier];
+        v10 = identifier2;
         v11 = @"disabled";
-        if (v4)
+        if (settingsCopy)
         {
           v11 = @"enabled";
         }
 
         v14 = 138478083;
-        v15 = v9;
+        v15 = identifier2;
         v16 = 2114;
         v17 = v11;
         _os_log_impl(&dword_18B7AC000, v8, OS_LOG_TYPE_INFO, "Extension with identifier %{private}@ was %{public}@ by Settings", &v14, 0x16u);
       }
 
-      [(WBSExtensionsController *)self setExtension:v7 isEnabled:v4 skipSavingToStorage:1];
+      [(WBSExtensionsController *)self setExtension:v7 isEnabled:settingsCopy skipSavingToStorage:1];
     }
   }
 }
 
-- (void)showPermissionBannerForExtension:(id)a3
+- (void)showPermissionBannerForExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   queueOfExtensionsToShowInPermissionBanner = self->_queueOfExtensionsToShowInPermissionBanner;
-  v9 = v4;
+  v9 = extensionCopy;
   if (!queueOfExtensionsToShowInPermissionBanner)
   {
-    v6 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     v7 = self->_queueOfExtensionsToShowInPermissionBanner;
-    self->_queueOfExtensionsToShowInPermissionBanner = v6;
+    self->_queueOfExtensionsToShowInPermissionBanner = orderedSet;
 
     queueOfExtensionsToShowInPermissionBanner = self->_queueOfExtensionsToShowInPermissionBanner;
-    v4 = v9;
+    extensionCopy = v9;
   }
 
-  if (([(NSMutableOrderedSet *)queueOfExtensionsToShowInPermissionBanner containsObject:v4]& 1) == 0)
+  if (([(NSMutableOrderedSet *)queueOfExtensionsToShowInPermissionBanner containsObject:extensionCopy]& 1) == 0)
   {
     [(NSMutableOrderedSet *)self->_queueOfExtensionsToShowInPermissionBanner addObject:v9];
     if ([(NSMutableOrderedSet *)self->_queueOfExtensionsToShowInPermissionBanner count]== 1)
@@ -422,15 +422,15 @@ void __143__SFWebExtensionsController__updateExtensionsStateAfterExtensionSettin
   }
 }
 
-- (void)hidePermissionBannerForExtension:(id)a3
+- (void)hidePermissionBannerForExtension:(id)extension
 {
-  v6 = a3;
+  extensionCopy = extension;
   if (([(NSMutableOrderedSet *)self->_queueOfExtensionsToShowInPermissionBanner containsObject:?]& 1) != 0)
   {
-    v4 = [(SFWebExtensionsController *)self currentExtensionForPermissionBanner];
+    currentExtensionForPermissionBanner = [(SFWebExtensionsController *)self currentExtensionForPermissionBanner];
 
-    [(NSMutableOrderedSet *)self->_queueOfExtensionsToShowInPermissionBanner removeObject:v6];
-    if (v4 == v6)
+    [(NSMutableOrderedSet *)self->_queueOfExtensionsToShowInPermissionBanner removeObject:extensionCopy];
+    if (currentExtensionForPermissionBanner == extensionCopy)
     {
       WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x1E69C98F0]));
       [WeakRetained sfWebExtensionsControllerDidChangeExtensionForPermissionBanner:self];
@@ -438,17 +438,17 @@ void __143__SFWebExtensionsController__updateExtensionsStateAfterExtensionSettin
   }
 }
 
-- (void)didViewToolbarItemBadgesInTab:(id)a3
+- (void)didViewToolbarItemBadgesInTab:(id)tab
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tabCopy = tab;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(WBSExtensionsController *)self enabledExtensions];
+  enabledExtensions = [(WBSExtensionsController *)self enabledExtensions];
   v6 = 0;
-  v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [enabledExtensions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -460,20 +460,20 @@ void __143__SFWebExtensionsController__updateExtensionsStateAfterExtensionSettin
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(enabledExtensions);
         }
 
         v6 = [(WBSWebExtensionsController *)self webExtensionForExtension:*(*(&v12 + 1) + 8 * v9)];
 
-        v11 = [v6 toolbarItem];
-        [v11 didViewBadgeInTab:v4];
+        toolbarItem = [v6 toolbarItem];
+        [toolbarItem didViewBadgeInTab:tabCopy];
 
         ++v9;
         v10 = v6;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [enabledExtensions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -482,16 +482,16 @@ void __143__SFWebExtensionsController__updateExtensionsStateAfterExtensionSettin
   [v6 _validateToolbarItemInAllWindows];
 }
 
-- (BOOL)hasUpdatedToolbarItemBadgeTextInTab:(id)a3
+- (BOOL)hasUpdatedToolbarItemBadgeTextInTab:(id)tab
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tabCopy = tab;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(WBSExtensionsController *)self enabledExtensions];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  enabledExtensions = [(WBSExtensionsController *)self enabledExtensions];
+  v6 = [enabledExtensions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -501,12 +501,12 @@ void __143__SFWebExtensionsController__updateExtensionsStateAfterExtensionSettin
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(enabledExtensions);
         }
 
         v9 = [(WBSWebExtensionsController *)self webExtensionForExtension:*(*(&v14 + 1) + 8 * i)];
-        v10 = [v9 toolbarItem];
-        v11 = [v10 hasUpdatedBadgeTextInTab:v4];
+        toolbarItem = [v9 toolbarItem];
+        v11 = [toolbarItem hasUpdatedBadgeTextInTab:tabCopy];
 
         if (v11)
         {
@@ -515,7 +515,7 @@ void __143__SFWebExtensionsController__updateExtensionsStateAfterExtensionSettin
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [enabledExtensions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -531,79 +531,79 @@ LABEL_11:
   return v12;
 }
 
-- (void)reportCommandShortcutConflictsIfNecessaryForExtension:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5
+- (void)reportCommandShortcutConflictsIfNecessaryForExtension:(id)extension presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WBSWebExtensionsController *)self commandShortcutConflictsForExtension:v13];
+  extensionCopy = extension;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  v10 = [(WBSWebExtensionsController *)self commandShortcutConflictsForExtension:extensionCopy];
   v11 = v10;
   if (v10)
   {
     v12 = [v10 mutableCopy];
-    [(SFWebExtensionsController *)self _reportCommandShortcutConflictsForExtension:v13 conflicts:v12 presentingViewController:v8 completionHandler:v9];
+    [(SFWebExtensionsController *)self _reportCommandShortcutConflictsForExtension:extensionCopy conflicts:v12 presentingViewController:controllerCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)_reportCommandShortcutConflictsForExtension:(id)a3 conflicts:(id)a4 presentingViewController:(id)a5 completionHandler:(id)a6
+- (void)_reportCommandShortcutConflictsForExtension:(id)extension conflicts:(id)conflicts presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 firstObject];
-  if (v14)
+  extensionCopy = extension;
+  conflictsCopy = conflicts;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  firstObject = [conflictsCopy firstObject];
+  if (firstObject)
   {
-    [v11 removeObjectAtIndex:0];
+    [conflictsCopy removeObjectAtIndex:0];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __126__SFWebExtensionsController__reportCommandShortcutConflictsForExtension_conflicts_presentingViewController_completionHandler___block_invoke;
     v17[3] = &unk_1E721D028;
     v17[4] = self;
-    v18 = v10;
-    v19 = v11;
-    v15 = v12;
+    v18 = extensionCopy;
+    v19 = conflictsCopy;
+    v15 = controllerCopy;
     v20 = v15;
-    v21 = v13;
-    v16 = [(SFWebExtensionsController *)self _commandShortcutConflictAlertForExtension:v18 conflict:v14 okAction:v17];
+    v21 = handlerCopy;
+    v16 = [(SFWebExtensionsController *)self _commandShortcutConflictAlertForExtension:v18 conflict:firstObject okAction:v17];
     [v15 presentViewController:v16 animated:1 completion:0];
   }
 
   else
   {
-    v13[2](v13);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (id)_commandShortcutConflictAlertForExtension:(id)a3 conflict:(id)a4 okAction:(id)a5
+- (id)_commandShortcutConflictAlertForExtension:(id)extension conflict:(id)conflict okAction:(id)action
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  extensionCopy = extension;
+  conflictCopy = conflict;
+  actionCopy = action;
   v10 = _WBSLocalizedString();
-  v11 = [v7 displayShortName];
-  v12 = [v8 extensionDisplayShortName];
-  if ([v11 compare:v12] == 1)
+  displayShortName = [extensionCopy displayShortName];
+  extensionDisplayShortName = [conflictCopy extensionDisplayShortName];
+  if ([displayShortName compare:extensionDisplayShortName] == 1)
   {
-    [v8 extensionDisplayName];
+    [conflictCopy extensionDisplayName];
   }
 
   else
   {
-    [v7 displayName];
+    [extensionCopy displayName];
   }
   v13 = ;
 
   v14 = MEMORY[0x1E696AEC0];
   v15 = _WBSLocalizedString();
-  v16 = [v8 extensionDisplayName];
-  v17 = [v8 shortcut];
-  v18 = [v14 stringWithFormat:v15, v16, v17, v13];
+  extensionDisplayName = [conflictCopy extensionDisplayName];
+  shortcut = [conflictCopy shortcut];
+  v18 = [v14 stringWithFormat:v15, extensionDisplayName, shortcut, v13];
 
   v19 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v10 message:v18 preferredStyle:1];
   v20 = MEMORY[0x1E69DC648];
@@ -612,7 +612,7 @@ LABEL_11:
   v25[1] = 3221225472;
   v25[2] = __89__SFWebExtensionsController__commandShortcutConflictAlertForExtension_conflict_okAction___block_invoke;
   v25[3] = &unk_1E721D050;
-  v22 = v9;
+  v22 = actionCopy;
   v26 = v22;
   v23 = [v20 actionWithTitle:v21 style:0 handler:v25];
   [v19 addAction:v23];
@@ -622,18 +622,18 @@ LABEL_11:
 
 - (unint64_t)recentlyInstalledExtensionCount
 {
-  v3 = [(WBSExtensionsController *)self extensions];
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 safari_dateForKey:*MEMORY[0x1E69C9390]];
+  extensions = [(WBSExtensionsController *)self extensions];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults safari_dateForKey:*MEMORY[0x1E69C9390]];
 
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __60__SFWebExtensionsController_recentlyInstalledExtensionCount__block_invoke;
   v13 = &unk_1E721D078;
-  v14 = self;
+  selfCopy = self;
   v6 = v5;
   v15 = v6;
-  v7 = [v3 safari_filterObjectsUsingBlock:&v10];
+  v7 = [extensions safari_filterObjectsUsingBlock:&v10];
   v8 = [v7 count];
 
   return v8;
@@ -661,41 +661,41 @@ BOOL __60__SFWebExtensionsController_recentlyInstalledExtensionCount__block_invo
   return v4;
 }
 
-- (void)webExtensionController:(id)a3 presentPopupForAction:(id)a4 forExtensionContext:(id)a5 completionHandler:(id)a6
+- (void)webExtensionController:(id)controller presentPopupForAction:(id)action forExtensionContext:(id)context completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [MEMORY[0x1E69C98C8] webExtensionForWebKitExtensionContext:a5];
+  actionCopy = action;
+  handlerCopy = handler;
+  v11 = [MEMORY[0x1E69C98C8] webExtensionForWebKitExtensionContext:context];
   if (v11)
   {
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v11 toolbarItem];
-      v13 = [v12 popupWebViewInspectionNameForAction:v9];
-      [v9 setInspectionName:v13];
+      toolbarItem = [v11 toolbarItem];
+      v13 = [toolbarItem popupWebViewInspectionNameForAction:actionCopy];
+      [actionCopy setInspectionName:v13];
     }
 
     WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x1E69C98F0]));
-    v15 = [v9 associatedTab];
+    associatedTab = [actionCopy associatedTab];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __112__SFWebExtensionsController_webExtensionController_presentPopupForAction_forExtensionContext_completionHandler___block_invoke;
     v16[3] = &unk_1E721D0A0;
-    v17 = v10;
-    [WeakRetained sfWebExtensionsController:self showPopupOrPerSitePermissionsForExtension:v11 forTab:v15 completionHandler:v16];
+    v17 = handlerCopy;
+    [WeakRetained sfWebExtensionsController:self showPopupOrPerSitePermissionsForExtension:v11 forTab:associatedTab completionHandler:v16];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (id)_developerIdentifierForExtension:(id)a3 untrustedCodeSigningDictionary:(id)a4
+- (id)_developerIdentifierForExtension:(id)extension untrustedCodeSigningDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = objc_getAssociatedObject(v4, &developerIdentifierRepresentedObjectKey);
+  extensionCopy = extension;
+  v5 = objc_getAssociatedObject(extensionCopy, &developerIdentifierRepresentedObjectKey);
   if (v5)
   {
     v6 = v5;
@@ -710,16 +710,16 @@ BOOL __60__SFWebExtensionsController_recentlyInstalledExtensionCount__block_invo
       v7 = 0;
     }
 
-    v8 = v7;
+    teamIdentifier = v7;
 
     goto LABEL_22;
   }
 
   v9 = objc_alloc(MEMORY[0x1E69635D0]);
-  v10 = [v4 _plugIn];
-  v11 = [v10 uuid];
+  _plugIn = [extensionCopy _plugIn];
+  uuid = [_plugIn uuid];
   v23 = 0;
-  v12 = [v9 initWithUUID:v11 error:&v23];
+  v12 = [v9 initWithUUID:uuid error:&v23];
   v13 = v23;
 
   if (!v12)
@@ -727,55 +727,55 @@ BOOL __60__SFWebExtensionsController_recentlyInstalledExtensionCount__block_invo
     v16 = WBS_LOG_CHANNEL_PREFIXWebExtensions();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v4 identifier];
-      v18 = [v13 safari_privacyPreservingDescription];
-      [(SFWebExtensionsController *)v17 _developerIdentifierForExtension:v18 untrustedCodeSigningDictionary:buf, v16];
+      identifier = [extensionCopy identifier];
+      safari_privacyPreservingDescription = [v13 safari_privacyPreservingDescription];
+      [(SFWebExtensionsController *)identifier _developerIdentifierForExtension:safari_privacyPreservingDescription untrustedCodeSigningDictionary:buf, v16];
     }
 
-    v14 = [MEMORY[0x1E695DFB0] null];
-    objc_setAssociatedObject(v4, &developerIdentifierRepresentedObjectKey, v14, 1);
-    v8 = 0;
+    null = [MEMORY[0x1E695DFB0] null];
+    objc_setAssociatedObject(extensionCopy, &developerIdentifierRepresentedObjectKey, null, 1);
+    teamIdentifier = 0;
     goto LABEL_21;
   }
 
-  v14 = [v12 containingBundleRecord];
+  null = [v12 containingBundleRecord];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v19 = WBS_LOG_CHANNEL_PREFIXWebExtensions();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v4 identifier];
-      [(SFWebExtensionsController *)v20 _developerIdentifierForExtension:buf untrustedCodeSigningDictionary:v19];
+      identifier2 = [extensionCopy identifier];
+      [(SFWebExtensionsController *)identifier2 _developerIdentifierForExtension:buf untrustedCodeSigningDictionary:v19];
     }
 
-    v21 = [MEMORY[0x1E695DFB0] null];
-    objc_setAssociatedObject(v4, &developerIdentifierRepresentedObjectKey, v21, 1);
-    v8 = 0;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    objc_setAssociatedObject(extensionCopy, &developerIdentifierRepresentedObjectKey, null2, 1);
+    teamIdentifier = 0;
     goto LABEL_20;
   }
 
-  v8 = [v14 teamIdentifier];
-  if ([(__CFString *)v8 isEqualToString:@"0000000000"])
+  teamIdentifier = [null teamIdentifier];
+  if ([(__CFString *)teamIdentifier isEqualToString:@"0000000000"])
   {
 
     v15 = 0;
-    v8 = @"UNSIGNED";
+    teamIdentifier = @"UNSIGNED";
 LABEL_18:
-    v21 = v8;
+    null2 = teamIdentifier;
     goto LABEL_19;
   }
 
-  if (v8)
+  if (teamIdentifier)
   {
     v15 = 0;
     goto LABEL_18;
   }
 
-  v21 = [MEMORY[0x1E695DFB0] null];
+  null2 = [MEMORY[0x1E695DFB0] null];
   v15 = 1;
 LABEL_19:
-  objc_setAssociatedObject(v4, &developerIdentifierRepresentedObjectKey, v21, 1);
+  objc_setAssociatedObject(extensionCopy, &developerIdentifierRepresentedObjectKey, null2, 1);
   if (v15)
   {
 LABEL_20:
@@ -785,54 +785,54 @@ LABEL_21:
 
 LABEL_22:
 
-  return v8;
+  return teamIdentifier;
 }
 
-- (void)_createNewTabInWindow:(id)a3 tabIndex:(id)a4 url:(id)a5 makeActive:(BOOL)a6 completionHandler:(id)a7
+- (void)_createNewTabInWindow:(id)window tabIndex:(id)index url:(id)url makeActive:(BOOL)active completionHandler:(id)handler
 {
-  v7 = a6;
+  activeCopy = active;
   v12 = *MEMORY[0x1E69C98F0];
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  handlerCopy = handler;
+  urlCopy = url;
+  indexCopy = index;
+  windowCopy = window;
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + v12));
-  [WeakRetained sfWebExtensionsController:self createNewTabInWindow:v16 tabIndex:v15 url:v14 makeActive:v7 completionHandler:v13];
+  [WeakRetained sfWebExtensionsController:self createNewTabInWindow:windowCopy tabIndex:indexCopy url:urlCopy makeActive:activeCopy completionHandler:handlerCopy];
 }
 
-- (void)_pinTab:(id)a3
+- (void)_pinTab:(id)tab
 {
   v4 = *MEMORY[0x1E69C98F0];
-  v5 = a3;
+  tabCopy = tab;
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + v4));
-  [WeakRetained sfWebExtensionsController:self pinTab:v5];
+  [WeakRetained sfWebExtensionsController:self pinTab:tabCopy];
 }
 
-- (void)_relateParentTab:(id)a3 toTab:(id)a4
+- (void)_relateParentTab:(id)tab toTab:(id)toTab
 {
   v6 = *MEMORY[0x1E69C98F0];
-  v7 = a4;
-  v8 = a3;
+  toTabCopy = toTab;
+  tabCopy = tab;
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + v6));
-  [WeakRetained sfWebExtensionsController:self relateParentTab:v8 toTab:v7];
+  [WeakRetained sfWebExtensionsController:self relateParentTab:tabCopy toTab:toTabCopy];
 }
 
-- (id)_findTabInAnyWindowWithID:(double)a3
+- (id)_findTabInAnyWindowWithID:(double)d
 {
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x1E69C98F0]));
-  v6 = [WeakRetained sfWebExtensionsController:self tabWithID:a3];
+  v6 = [WeakRetained sfWebExtensionsController:self tabWithID:d];
 
   return v6;
 }
 
-- (void)fireAppropriateTabMovementEventForTabState:(id)a3
+- (void)fireAppropriateTabMovementEventForTabState:(id)state
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __72__SFWebExtensionsController_fireAppropriateTabMovementEventForTabState___block_invoke;
   v5[3] = &unk_1E721D0C8;
   v5[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v5];
+  [state enumerateKeysAndObjectsUsingBlock:v5];
   tabIDToTabPositionForTabsInTransit = self->_tabIDToTabPositionForTabsInTransit;
   self->_tabIDToTabPositionForTabsInTransit = 0;
 }
@@ -869,17 +869,17 @@ void __72__SFWebExtensionsController_fireAppropriateTabMovementEventForTabState_
   }
 }
 
-- (void)fireOnMovedEventForTabsWithPreviousTabPositions:(id)a3 currentTabsPositions:(id)a4
+- (void)fireOnMovedEventForTabsWithPreviousTabPositions:(id)positions currentTabsPositions:(id)tabsPositions
 {
-  v6 = a3;
+  positionsCopy = positions;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __98__SFWebExtensionsController_fireOnMovedEventForTabsWithPreviousTabPositions_currentTabsPositions___block_invoke;
   v8[3] = &unk_1E721D0F0;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
-  [a4 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = positionsCopy;
+  selfCopy = self;
+  v7 = positionsCopy;
+  [tabsPositions enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __98__SFWebExtensionsController_fireOnMovedEventForTabsWithPreviousTabPositions_currentTabsPositions___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -893,14 +893,14 @@ void __98__SFWebExtensionsController_fireOnMovedEventForTabsWithPreviousTabPosit
   [*(a1 + 40) didMoveTab:v8 fromIndex:objc_msgSend(v6 toIndex:{"index"), objc_msgSend(v5, "index")}];
 }
 
-- (void)fireAttachmentEventsForTabsWithPreviousTabPositions:(id)a3
+- (void)fireAttachmentEventsForTabsWithPreviousTabPositions:(id)positions
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __81__SFWebExtensionsController_fireAttachmentEventsForTabsWithPreviousTabPositions___block_invoke;
   v3[3] = &unk_1E721D0C8;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [positions enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 void __81__SFWebExtensionsController_fireAttachmentEventsForTabsWithPreviousTabPositions___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -915,24 +915,24 @@ void __81__SFWebExtensionsController_fireAttachmentEventsForTabsWithPreviousTabP
   [v8 didMoveTab:v7 fromWindowWithID:objc_msgSend(v5 indexInOldWindow:{"index"), v9}];
 }
 
-- (id)_findWindowWithID:(double)a3
+- (id)_findWindowWithID:(double)d
 {
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x1E69C98F0]));
-  v6 = [WeakRetained sfWebExtensionsController:self windowWithID:a3];
+  v6 = [WeakRetained sfWebExtensionsController:self windowWithID:d];
 
   return v6;
 }
 
-- (id)_allWindowsForWebExtension:(id)a3
+- (id)_allWindowsForWebExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x1E69C98F0]));
   v6 = [WeakRetained sfWebExtensionsControllerAllWindows:self];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__SFWebExtensionsController__allWindowsForWebExtension___block_invoke;
   v10[3] = &unk_1E721D118;
-  v7 = v4;
+  v7 = extensionCopy;
   v11 = v7;
   v8 = [v6 safari_filterObjectsUsingBlock:v10];
 
@@ -966,53 +966,53 @@ uint64_t __56__SFWebExtensionsController__allWindowsForWebExtension___block_invo
   return v4;
 }
 
-- (void)_clearNewTabPreferenceIfNecessaryForRemovedExtensionWithComposedIdentifier:(id)a3
+- (void)_clearNewTabPreferenceIfNecessaryForRemovedExtensionWithComposedIdentifier:(id)identifier
 {
-  v9 = a3;
-  v4 = [objc_opt_class() _extensionDefaults];
-  v5 = [(WBSWebExtensionsController *)self tabOverridePreferencesManager];
-  v6 = [v5 extensionComposedIdentifierForNewTabPreferenceInDefaults:v4];
-  v7 = [v6 isEqualToString:v9];
+  identifierCopy = identifier;
+  _extensionDefaults = [objc_opt_class() _extensionDefaults];
+  tabOverridePreferencesManager = [(WBSWebExtensionsController *)self tabOverridePreferencesManager];
+  v6 = [tabOverridePreferencesManager extensionComposedIdentifierForNewTabPreferenceInDefaults:_extensionDefaults];
+  v7 = [v6 isEqualToString:identifierCopy];
 
   if (v7)
   {
-    v8 = [(WBSWebExtensionsController *)self tabOverridePreferencesManager];
-    [v8 clearNewTabBehaviorInDefaults:v4 fromUserGesture:0];
+    tabOverridePreferencesManager2 = [(WBSWebExtensionsController *)self tabOverridePreferencesManager];
+    [tabOverridePreferencesManager2 clearNewTabBehaviorInDefaults:_extensionDefaults fromUserGesture:0];
   }
 }
 
-- (void)_showAccessRequestAlertForExtension:(id)a3 domains:(id)a4 callingAPIName:(id)a5 responseBlock:(id)a6
+- (void)_showAccessRequestAlertForExtension:(id)extension domains:(id)domains callingAPIName:(id)name responseBlock:(id)block
 {
-  v10 = a6;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __102__SFWebExtensionsController__showAccessRequestAlertForExtension_domains_callingAPIName_responseBlock___block_invoke;
   v12[3] = &unk_1E721D140;
-  v13 = v10;
-  v11 = v10;
-  [(SFWebExtensionsController *)self showAccessRequestDialogForExtension:a3 domains:a4 callingAPIName:a5 showMoreOptionsForAlwaysAllow:0 includeDenyButton:1 responseBlock:v12];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [(SFWebExtensionsController *)self showAccessRequestDialogForExtension:extension domains:domains callingAPIName:name showMoreOptionsForAlwaysAllow:0 includeDenyButton:1 responseBlock:v12];
 }
 
 - (id)_safariShortVersion
 {
   v2 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v3 = [v2 safari_shortVersion];
+  safari_shortVersion = [v2 safari_shortVersion];
 
-  return v3;
+  return safari_shortVersion;
 }
 
-- (void)setProcessPool:(id)a3
+- (void)setProcessPool:(id)pool
 {
-  v5 = a3;
-  v6 = v5;
+  poolCopy = pool;
+  v6 = poolCopy;
   processPool = self->_processPool;
-  if (v5)
+  if (poolCopy)
   {
-    if (processPool != v5)
+    if (processPool != poolCopy)
     {
-      objc_storeStrong(&self->_processPool, a3);
+      objc_storeStrong(&self->_processPool, pool);
       objc_initWeak(&location, self);
-      v8 = [objc_opt_class() _extensionDefaults];
+      _extensionDefaults = [objc_opt_class() _extensionDefaults];
       v9 = *MEMORY[0x1E69C91D0];
       v10 = MEMORY[0x1E69E96A0];
       v11 = MEMORY[0x1E69E96A0];
@@ -1021,7 +1021,7 @@ uint64_t __56__SFWebExtensionsController__allWindowsForWebExtension___block_invo
       v15[2] = __44__SFWebExtensionsController_setProcessPool___block_invoke;
       v15[3] = &unk_1E721D168;
       objc_copyWeak(&v16, &location);
-      v12 = [v8 safari_observeValueForKey:v9 onQueue:v10 notifyForInitialValue:1 handler:v15];
+      v12 = [_extensionDefaults safari_observeValueForKey:v9 onQueue:v10 notifyForInitialValue:1 handler:v15];
       stubUnsupportedAPIsUserDefaultObserver = self->_stubUnsupportedAPIsUserDefaultObserver;
       self->_stubUnsupportedAPIsUserDefaultObserver = v12;
 
@@ -1055,31 +1055,31 @@ void __44__SFWebExtensionsController_setProcessPool___block_invoke(uint64_t a1, 
 
 - (UIViewController)viewControllerToPresentDialogsFrom
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 keyWindow];
-  WeakRetained = [v4 rootViewController];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+  WeakRetained = [keyWindow rootViewController];
 
   if (WeakRetained)
   {
     while (1)
     {
-      v6 = [WeakRetained presentedViewController];
-      if (!v6)
+      presentedViewController = [WeakRetained presentedViewController];
+      if (!presentedViewController)
       {
         break;
       }
 
-      v7 = [WeakRetained presentedViewController];
-      v8 = [v7 isBeingDismissed];
+      presentedViewController2 = [WeakRetained presentedViewController];
+      isBeingDismissed = [presentedViewController2 isBeingDismissed];
 
-      if (v8)
+      if (isBeingDismissed)
       {
         break;
       }
 
-      v9 = [WeakRetained presentedViewController];
+      presentedViewController3 = [WeakRetained presentedViewController];
 
-      WeakRetained = v9;
+      WeakRetained = presentedViewController3;
     }
   }
 
@@ -1091,42 +1091,42 @@ void __44__SFWebExtensionsController_setProcessPool___block_invoke(uint64_t a1, 
   return WeakRetained;
 }
 
-- (void)setViewControllerToPresentDialogsFrom:(id)a3
+- (void)setViewControllerToPresentDialogsFrom:(id)from
 {
-  objc_storeWeak(&self->_viewControllerToPresentDialogsFrom, a3);
+  objc_storeWeak(&self->_viewControllerToPresentDialogsFrom, from);
 
   [(SFWebExtensionsController *)self cancelPresentedDialogIfNecessaryAndUnqueuePendingWebExtensionDialogs];
 }
 
 - (BOOL)parentalControlsAreEnabledForExtensions
 {
-  v2 = [MEMORY[0x1E69E20E8] sharedWebFilterSettings];
-  if ([v2 isWebFilterEnabled])
+  mEMORY[0x1E69E20E8] = [MEMORY[0x1E69E20E8] sharedWebFilterSettings];
+  if ([mEMORY[0x1E69E20E8] isWebFilterEnabled])
   {
-    v3 = 1;
+    usesAllowedSitesOnly = 1;
   }
 
   else
   {
-    v3 = [v2 usesAllowedSitesOnly];
+    usesAllowedSitesOnly = [mEMORY[0x1E69E20E8] usesAllowedSitesOnly];
   }
 
-  return v3;
+  return usesAllowedSitesOnly;
 }
 
-+ (void)_didDiscoverExtensions:(BOOL)a3
++ (void)_didDiscoverExtensions:(BOOL)extensions
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v4 setBool:v3 forKey:*MEMORY[0x1E69C9328]];
+  extensionsCopy = extensions;
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults setBool:extensionsCopy forKey:*MEMORY[0x1E69C9328]];
 }
 
 - (id)_deviceUUIDString
 {
   v2 = +[SFDeviceUtilities deviceUUID];
-  v3 = [v2 UUIDString];
+  uUIDString = [v2 UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)tabGroupManager
@@ -1147,16 +1147,16 @@ void __44__SFWebExtensionsController_setProcessPool___block_invoke(uint64_t a1, 
 
 - (id)profile
 {
-  v3 = [(WBSExtensionsController *)self profileServerID];
-  v4 = [(SFWebExtensionsController *)self tabGroupManager];
-  v5 = [v4 profiles];
+  profileServerID = [(WBSExtensionsController *)self profileServerID];
+  tabGroupManager = [(SFWebExtensionsController *)self tabGroupManager];
+  profiles = [tabGroupManager profiles];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __36__SFWebExtensionsController_profile__block_invoke;
   v9[3] = &unk_1E721D190;
-  v6 = v3;
+  v6 = profileServerID;
   v10 = v6;
-  v7 = [v5 safari_firstObjectPassingTest:v9];
+  v7 = [profiles safari_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -1172,20 +1172,20 @@ uint64_t __36__SFWebExtensionsController_profile__block_invoke(uint64_t a1, void
 
 - (BOOL)hasNamedProfiles
 {
-  v2 = [(SFWebExtensionsController *)self tabGroupManager];
-  v3 = [v2 namedProfiles];
-  v4 = [v3 count] != 0;
+  tabGroupManager = [(SFWebExtensionsController *)self tabGroupManager];
+  namedProfiles = [tabGroupManager namedProfiles];
+  v4 = [namedProfiles count] != 0;
 
   return v4;
 }
 
-- (id)webExtensionsControllerForProfileServerID:(id)a3
+- (id)webExtensionsControllerForProfileServerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_profileDelegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained sfWebExtensionsController:self forProfileServerID:v4];
+    v6 = [WeakRetained sfWebExtensionsController:self forProfileServerID:dCopy];
   }
 
   else
@@ -1196,13 +1196,13 @@ uint64_t __36__SFWebExtensionsController_profile__block_invoke(uint64_t a1, void
   return v6;
 }
 
-- (id)contentBlockerManagerForProfileServerID:(id)a3
+- (id)contentBlockerManagerForProfileServerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_profileDelegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained sfWebExtensionsControllerContentBlockerManager:self forProfileServerID:v4];
+    v6 = [WeakRetained sfWebExtensionsControllerContentBlockerManager:self forProfileServerID:dCopy];
   }
 
   else

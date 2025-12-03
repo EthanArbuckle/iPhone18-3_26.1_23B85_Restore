@@ -1,18 +1,18 @@
 @interface PUEditPluginActionActivity
-- (PUEditPluginActionActivity)initWithPlugin:(id)a3 systemImageName:(id)a4;
+- (PUEditPluginActionActivity)initWithPlugin:(id)plugin systemImageName:(id)name;
 @end
 
 @implementation PUEditPluginActionActivity
 
-- (PUEditPluginActionActivity)initWithPlugin:(id)a3 systemImageName:(id)a4
+- (PUEditPluginActionActivity)initWithPlugin:(id)plugin systemImageName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = PUEditPluginActionActivity;
-  v7 = [(PUEditPluginActivity *)&v11 initWithPlugin:a3];
+  v7 = [(PUEditPluginActivity *)&v11 initWithPlugin:plugin];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     internalSystemImageName = v7->_internalSystemImageName;
     v7->_internalSystemImageName = v8;
   }

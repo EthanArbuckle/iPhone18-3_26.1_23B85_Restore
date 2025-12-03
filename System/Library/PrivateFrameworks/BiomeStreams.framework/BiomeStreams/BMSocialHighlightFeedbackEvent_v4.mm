@@ -1,26 +1,26 @@
 @interface BMSocialHighlightFeedbackEvent_v4
-- (BMSocialHighlightFeedbackEvent_v4)initWithProto:(id)a3;
+- (BMSocialHighlightFeedbackEvent_v4)initWithProto:(id)proto;
 @end
 
 @implementation BMSocialHighlightFeedbackEvent_v4
 
-- (BMSocialHighlightFeedbackEvent_v4)initWithProto:(id)a3
+- (BMSocialHighlightFeedbackEvent_v4)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  protoCopy = proto;
+  if (protoCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = protoCopy;
     v6 = objc_alloc(MEMORY[0x1E695DF00]);
     [v5 feedbackCreationSecondsSinceReferenceDate];
     v7 = [v6 initWithTimeIntervalSinceReferenceDate:?];
     v8 = [BMRankableSocialHighlight alloc];
-    v9 = [v5 highlight];
-    v10 = [(BMRankableSocialHighlight *)v8 initWithProto:v9];
+    highlight = [v5 highlight];
+    v10 = [(BMRankableSocialHighlight *)v8 initWithProto:highlight];
 
-    v11 = [v5 clientIdentifier];
-    v12 = [v5 feedbackType];
-    v13 = v12;
-    if (v12 >= 0xC)
+    clientIdentifier = [v5 clientIdentifier];
+    feedbackType = [v5 feedbackType];
+    v13 = feedbackType;
+    if (feedbackType >= 0xC)
     {
       v16 = __biome_log_for_category();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -33,21 +33,21 @@
 
     else
     {
-      v14 = qword_184D27C60[v12];
+      v14 = qword_184D27C60[feedbackType];
     }
 
-    v17 = [(BMRankableSocialHighlight *)v10 clientVariant];
-    self = [(BMSocialHighlightFeedbackEvent *)self initWithClientIdentifier:v11 feedbackType:v14 feedbackCreationDate:v7 highlight:v10 clientVariant:v17];
+    clientVariant = [(BMRankableSocialHighlight *)v10 clientVariant];
+    self = [(BMSocialHighlightFeedbackEvent *)self initWithClientIdentifier:clientIdentifier feedbackType:v14 feedbackCreationDate:v7 highlight:v10 clientVariant:clientVariant];
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

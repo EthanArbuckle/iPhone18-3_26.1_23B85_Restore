@@ -1,53 +1,53 @@
 @interface HMDEventTriggerExecutionSession
 + (id)logCategory;
 - (BOOL)containsSecureActionSet;
-- (BOOL)needsUserConfirmationForDevice:(id)a3;
-- (HMDEventTriggerExecutionSession)initWithEventTrigger:(id)a3 predicateUtilities:(id)a4 triggerEvent:(id)a5 causingDevice:(id)a6 workQueue:(id)a7 actionSets:(id)a8 evaluationCondition:(id)a9 recurrences:(id)a10 endEvents:(id)a11 msgDispatcher:(id)a12;
+- (BOOL)needsUserConfirmationForDevice:(id)device;
+- (HMDEventTriggerExecutionSession)initWithEventTrigger:(id)trigger predicateUtilities:(id)utilities triggerEvent:(id)event causingDevice:(id)device workQueue:(id)queue actionSets:(id)sets evaluationCondition:(id)condition recurrences:(id)self0 endEvents:(id)self1 msgDispatcher:(id)self2;
 - (NSString)description;
-- (id)_monitoringEventsFromActionSetResponse:(id)a3;
-- (id)didOccurEvent:(id)a3 causingDevice:(id)a4;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)_monitoringEventsFromActionSetResponse:(id)response;
+- (id)didOccurEvent:(id)event causingDevice:(id)device;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)durationEndEvents;
-- (id)valueInActionSetWriteResponse:(id)a3 actionSetUUID:(id)a4 accUUID:(id)a5 serviceID:(id)a6 characteristicID:(id)a7;
+- (id)valueInActionSetWriteResponse:(id)response actionSetUUID:(id)d accUUID:(id)iD serviceID:(id)serviceID characteristicID:(id)characteristicID;
 - (void)_activateDurationEvents;
-- (void)_activateEvents:(id)a3;
+- (void)_activateEvents:(id)events;
 - (void)_activateMonitoringEvents;
-- (void)_addEvent:(id)a3 causingDevice:(id)a4;
-- (void)_callExecutionComplete:(id)a3 callDelegate:(BOOL)a4;
+- (void)_addEvent:(id)event causingDevice:(id)device;
+- (void)_callExecutionComplete:(id)complete callDelegate:(BOOL)delegate;
 - (void)_callExecutionCompleteIfNoMoreOutstandingRequests;
-- (void)_directlyExecuteActionSetsWithCompletionHandler:(id)a3;
+- (void)_directlyExecuteActionSetsWithCompletionHandler:(id)handler;
 - (void)_evaluateFiringTrigger;
-- (void)_executeTriggerAfterEvaluatingCondition:(id)a3;
-- (void)_handleActionSetExecutionResponse:(id)a3 actionSetError:(id)a4 completion:(id)a5;
-- (void)_handleMonitoringEvent:(id)a3;
+- (void)_executeTriggerAfterEvaluatingCondition:(id)condition;
+- (void)_handleActionSetExecutionResponse:(id)response actionSetError:(id)error completion:(id)completion;
+- (void)_handleMonitoringEvent:(id)event;
 - (void)_removeUserDialog;
 - (void)_restoreState;
-- (void)_submitAnalyticsData:(id)a3;
-- (void)_userResponse:(unint64_t)a3 device:(id)a4 completionHandler:(id)a5;
-- (void)addEvent:(id)a3 causingDevice:(id)a4;
+- (void)_submitAnalyticsData:(id)data;
+- (void)_userResponse:(unint64_t)response device:(id)device completionHandler:(id)handler;
+- (void)addEvent:(id)event causingDevice:(id)device;
 - (void)cancelSessionIfWaitingForUserResponse;
 - (void)evaluateFiringTrigger;
-- (void)handleSessionPlaybackStateUpdatedNotification:(id)a3;
+- (void)handleSessionPlaybackStateUpdatedNotification:(id)notification;
 - (void)postponeRestoreIfWaitingForEndEvent;
-- (void)setExecutionState:(unint64_t)a3;
-- (void)timerDidFire:(id)a3;
-- (void)userResponse:(unint64_t)a3 device:(id)a4 completionHandler:(id)a5;
+- (void)setExecutionState:(unint64_t)state;
+- (void)timerDidFire:(id)fire;
+- (void)userResponse:(unint64_t)response device:(id)device completionHandler:(id)handler;
 @end
 
 @implementation HMDEventTriggerExecutionSession
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDEventTriggerSession *)self workQueue];
+  fireCopy = fire;
+  workQueue = [(HMDEventTriggerSession *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__HMDEventTriggerExecutionSession_timerDidFire___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = fireCopy;
+  v6 = fireCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __48__HMDEventTriggerExecutionSession_timerDidFire___block_invoke(uint64_t a1)
@@ -135,18 +135,18 @@ void __48__HMDEventTriggerExecutionSession_timerDidFire___block_invoke(uint64_t 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)didOccurEvent:(id)a3 causingDevice:(id)a4
+- (id)didOccurEvent:(id)event causingDevice:(id)device
 {
-  v5 = a3;
-  v6 = [(HMDEventTriggerSession *)self workQueue];
+  eventCopy = event;
+  workQueue = [(HMDEventTriggerSession *)self workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__HMDEventTriggerExecutionSession_didOccurEvent_causingDevice___block_invoke;
   v9[3] = &unk_27868A750;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
-  dispatch_async(v6, v9);
+  v10 = eventCopy;
+  v7 = eventCopy;
+  dispatch_async(workQueue, v9);
 
   return 0;
 }
@@ -240,26 +240,26 @@ LABEL_17:
 - (void)_callExecutionCompleteIfNoMoreOutstandingRequests
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDEventTriggerExecutionSession *)self writeRequests];
-  if ([v3 count])
+  writeRequests = [(HMDEventTriggerExecutionSession *)self writeRequests];
+  if ([writeRequests count])
   {
 
 LABEL_4:
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [(HMDEventTriggerExecutionSession *)v7 writeRequests];
-      v11 = [v10 description];
-      v12 = [(HMDEventTriggerExecutionSession *)v7 mediaProfiles];
+      writeRequests2 = [(HMDEventTriggerExecutionSession *)selfCopy writeRequests];
+      v11 = [writeRequests2 description];
+      mediaProfiles = [(HMDEventTriggerExecutionSession *)selfCopy mediaProfiles];
       v18 = 138543874;
       v19 = v9;
       v20 = 2112;
       v21 = v11;
       v22 = 2112;
-      v23 = v12;
+      v23 = mediaProfiles;
       _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Not ending the trigger execution session because there are write requests left %@ or media profiles %@", &v18, 0x20u);
     }
 
@@ -267,8 +267,8 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v4 = [(HMDEventTriggerExecutionSession *)self mediaProfiles];
-  v5 = [v4 count];
+  mediaProfiles2 = [(HMDEventTriggerExecutionSession *)self mediaProfiles];
+  v5 = [mediaProfiles2 count];
 
   if (v5)
   {
@@ -276,7 +276,7 @@ LABEL_4:
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy2 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -287,26 +287,26 @@ LABEL_4:
   }
 
   objc_autoreleasePoolPop(v14);
-  [(HMDEventTriggerExecutionSession *)v15 _callExecutionComplete:0];
+  [(HMDEventTriggerExecutionSession *)selfCopy2 _callExecutionComplete:0];
 LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSessionPlaybackStateUpdatedNotification:(id)a3
+- (void)handleSessionPlaybackStateUpdatedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD09A8]];
-  v6 = [(HMDEventTriggerSession *)self workQueue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CD09A8]];
+  workQueue = [(HMDEventTriggerSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNotification___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v10 = v4;
+  v10 = userInfo;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = userInfo;
+  dispatch_async(workQueue, block);
 }
 
 void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNotification___block_invoke(uint64_t a1)
@@ -415,14 +415,14 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleMonitoringEvent:(id)a3
+- (void)_handleMonitoringEvent:(id)event
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = eventCopy;
   }
 
   else
@@ -431,14 +431,14 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
   }
 
   v6 = v5;
-  v27 = v4;
+  v27 = eventCopy;
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = [(HMDEventTriggerExecutionSession *)self writeRequests];
-  v8 = [v7 copy];
+  writeRequests = [(HMDEventTriggerExecutionSession *)self writeRequests];
+  v8 = [writeRequests copy];
 
   v9 = [v8 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v9)
@@ -457,14 +457,14 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
         }
 
         v13 = *(*(&v29 + 1) + 8 * v12);
-        v14 = [v6 characteristic];
-        v15 = [v14 service];
-        v16 = [v13 service];
+        characteristic = [v6 characteristic];
+        service = [characteristic service];
+        service2 = [v13 service];
 
-        if (v15 == v16)
+        if (service == service2)
         {
           v17 = objc_autoreleasePoolPush();
-          v18 = self;
+          selfCopy = self;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
@@ -487,8 +487,8 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
           }
 
           objc_autoreleasePoolPop(v17);
-          v25 = [(HMDEventTriggerExecutionSession *)v18 writeRequests];
-          [v25 removeObjectForKey:v13];
+          writeRequests2 = [(HMDEventTriggerExecutionSession *)selfCopy writeRequests];
+          [writeRequests2 removeObjectForKey:v13];
         }
 
         ++v12;
@@ -511,7 +511,7 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
   if ([(HMDEventTriggerExecutionSession *)self restoreInProgress])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -527,18 +527,18 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
   else
   {
     [(HMDEventTriggerExecutionSession *)self setRestoreInProgress:1];
-    v7 = [(HMDEventTriggerSession *)self eventTrigger];
-    v8 = [v7 home];
+    eventTrigger = [(HMDEventTriggerSession *)self eventTrigger];
+    home = [eventTrigger home];
 
-    if (v8)
+    if (home)
     {
-      v9 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v10 = [(HMDEventTriggerExecutionSession *)self writeRequests];
-      v11 = [v10 countByEnumeratingWithState:&v32 objects:v48 count:16];
+      writeRequests = [(HMDEventTriggerExecutionSession *)self writeRequests];
+      v11 = [writeRequests countByEnumeratingWithState:&v32 objects:v48 count:16];
       if (v11)
       {
         v12 = *v33;
@@ -549,36 +549,36 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
           {
             if (*v33 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(writeRequests);
             }
 
             v14 = *(*(&v32 + 1) + 8 * v13);
-            v15 = [(HMDEventTriggerExecutionSession *)self writeRequests];
-            v16 = [v15 objectForKey:v14];
-            [v9 addObject:v16];
+            writeRequests2 = [(HMDEventTriggerExecutionSession *)self writeRequests];
+            v16 = [writeRequests2 objectForKey:v14];
+            [array addObject:v16];
 
             ++v13;
           }
 
           while (v11 != v13);
-          v11 = [v10 countByEnumeratingWithState:&v32 objects:v48 count:16];
+          v11 = [writeRequests countByEnumeratingWithState:&v32 objects:v48 count:16];
         }
 
         while (v11);
       }
 
       objc_initWeak(&location, self);
-      v17 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy2 = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v21 = HMFGetLogIdentifier();
         v36 = 0uLL;
-        if (v17)
+        if (uUID)
         {
-          [v17 getUUIDBytes:&v36];
+          [uUID getUUIDBytes:&v36];
         }
 
         else
@@ -587,7 +587,7 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
         }
 
         v37 = v36;
-        v26 = [v9 count];
+        v26 = [array count];
         *buf = 138544386;
         v39 = v21;
         v40 = 1042;
@@ -595,7 +595,7 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
         v42 = 2098;
         v43 = &v37;
         v44 = 2114;
-        v45 = v19;
+        v45 = selfCopy2;
         v46 = 2048;
         v47 = v26;
         _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Executing write requests with identifier: %{public,uuid_t}.16P from event trigger execution session: %{public}@ count: %lu", buf, 0x30u);
@@ -607,9 +607,9 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
       v28[2] = __48__HMDEventTriggerExecutionSession__restoreState__block_invoke;
       v28[3] = &unk_278687F40;
       objc_copyWeak(&v30, &location);
-      v29 = v8;
-      [v29 writeCharacteristicValues:v9 source:3 biomeSource:0 identifier:v17 transport:0 qualityOfService:-1 withCompletionHandler:v28];
-      [(HMDEventTriggerExecutionSession *)v19 setExecutionState:5];
+      v29 = home;
+      [v29 writeCharacteristicValues:array source:3 biomeSource:0 identifier:uUID transport:0 qualityOfService:-1 withCompletionHandler:v28];
+      [(HMDEventTriggerExecutionSession *)selfCopy2 setExecutionState:5];
 
       objc_destroyWeak(&v30);
       objc_destroyWeak(&location);
@@ -618,7 +618,7 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy3 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
@@ -629,8 +629,8 @@ void __81__HMDEventTriggerExecutionSession_handleSessionPlaybackStateUpdatedNoti
       }
 
       objc_autoreleasePoolPop(v22);
-      v9 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-      [(HMDEventTriggerExecutionSession *)v23 _callExecutionComplete:v9];
+      array = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
+      [(HMDEventTriggerExecutionSession *)selfCopy3 _callExecutionComplete:array];
     }
   }
 
@@ -703,29 +703,29 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
 
 - (void)_removeUserDialog
 {
-  v3 = [(HMDEventTriggerExecutionSession *)self userConfirmationSession];
-  v4 = [(HMDEventTriggerExecutionSession *)self causingDevices];
-  [v3 _removeUserDialog:v4];
+  userConfirmationSession = [(HMDEventTriggerExecutionSession *)self userConfirmationSession];
+  causingDevices = [(HMDEventTriggerExecutionSession *)self causingDevices];
+  [userConfirmationSession _removeUserDialog:causingDevices];
 
-  v5 = [(HMDEventTriggerExecutionSession *)self causingDevices];
-  [v5 removeAllObjects];
+  causingDevices2 = [(HMDEventTriggerExecutionSession *)self causingDevices];
+  [causingDevices2 removeAllObjects];
 }
 
-- (void)_submitAnalyticsData:(id)a3
+- (void)_submitAnalyticsData:(id)data
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   context = objc_autoreleasePoolPush();
   v5 = MEMORY[0x277CBEB18];
-  v6 = [(HMDEventTriggerExecutionSession *)self triggerEvents];
-  v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  triggerEvents = [(HMDEventTriggerExecutionSession *)self triggerEvents];
+  v7 = [v5 arrayWithCapacity:{objc_msgSend(triggerEvents, "count")}];
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v8 = [(HMDEventTriggerExecutionSession *)self triggerEvents];
-  v9 = [v8 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  triggerEvents2 = [(HMDEventTriggerExecutionSession *)self triggerEvents];
+  v9 = [triggerEvents2 countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v9)
   {
     v10 = v9;
@@ -737,17 +737,17 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
       {
         if (*v45 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(triggerEvents2);
         }
 
-        v13 = [*(*(&v44 + 1) + 8 * v12) analyticsTriggerEventData];
-        [v7 addObject:v13];
+        analyticsTriggerEventData = [*(*(&v44 + 1) + 8 * v12) analyticsTriggerEventData];
+        [v7 addObject:analyticsTriggerEventData];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v44 objects:v49 count:16];
+      v10 = [triggerEvents2 countByEnumeratingWithState:&v44 objects:v49 count:16];
     }
 
     while (v10);
@@ -756,24 +756,24 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
   v14 = [HomeKitEventTriggerExecutionSessionLogEvent alloc];
   [(HMDEventTriggerExecutionSession *)self executionStartTime];
   v16 = v15;
-  v17 = [(HMDEventTriggerSession *)self sessionID];
-  v18 = [v17 UUIDString];
-  v19 = [(HomeKitEventTriggerExecutionSessionLogEvent *)v14 initWithStartTime:v18 sessionID:v16];
+  sessionID = [(HMDEventTriggerSession *)self sessionID];
+  uUIDString = [sessionID UUIDString];
+  v19 = [(HomeKitEventTriggerExecutionSessionLogEvent *)v14 initWithStartTime:uUIDString sessionID:v16];
 
   v20 = [v7 copy];
-  v21 = [(HomeKitEventTriggerExecutionSessionLogEvent *)v19 analyticsData];
-  [v21 setTriggerEvents:v20];
+  analyticsData = [(HomeKitEventTriggerExecutionSessionLogEvent *)v19 analyticsData];
+  [analyticsData setTriggerEvents:v20];
 
   v22 = MEMORY[0x277CBEB18];
-  v23 = [(HMDEventTriggerExecutionSession *)self endEvents];
-  v24 = [v22 arrayWithCapacity:{objc_msgSend(v23, "count")}];
+  endEvents = [(HMDEventTriggerExecutionSession *)self endEvents];
+  v24 = [v22 arrayWithCapacity:{objc_msgSend(endEvents, "count")}];
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v25 = [(HMDEventTriggerExecutionSession *)self endEvents];
-  v26 = [v25 countByEnumeratingWithState:&v40 objects:v48 count:16];
+  endEvents2 = [(HMDEventTriggerExecutionSession *)self endEvents];
+  v26 = [endEvents2 countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v26)
   {
     v27 = v26;
@@ -785,50 +785,50 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
       {
         if (*v41 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(endEvents2);
         }
 
-        v30 = [*(*(&v40 + 1) + 8 * v29) analyticsTriggerEventData];
-        [v24 addObject:v30];
+        analyticsTriggerEventData2 = [*(*(&v40 + 1) + 8 * v29) analyticsTriggerEventData];
+        [v24 addObject:analyticsTriggerEventData2];
 
         ++v29;
       }
 
       while (v27 != v29);
-      v27 = [v25 countByEnumeratingWithState:&v40 objects:v48 count:16];
+      v27 = [endEvents2 countByEnumeratingWithState:&v40 objects:v48 count:16];
     }
 
     while (v27);
   }
 
   v31 = [v24 copy];
-  v32 = [(HomeKitEventTriggerExecutionSessionLogEvent *)v19 analyticsData];
-  [v32 setEndEvents:v31];
+  analyticsData2 = [(HomeKitEventTriggerExecutionSessionLogEvent *)v19 analyticsData];
+  [analyticsData2 setEndEvents:v31];
 
-  v33 = [(HMDEventTriggerExecutionSession *)self executionState];
-  v34 = [(HomeKitEventTriggerExecutionSessionLogEvent *)v19 analyticsData];
-  [v34 setExecutionState:v33];
+  executionState = [(HMDEventTriggerExecutionSession *)self executionState];
+  analyticsData3 = [(HomeKitEventTriggerExecutionSessionLogEvent *)v19 analyticsData];
+  [analyticsData3 setExecutionState:executionState];
 
-  v35 = [v4 code];
-  v36 = [(HomeKitEventTriggerExecutionSessionLogEvent *)v19 analyticsData];
-  [v36 setResultErrorCode:v35];
+  code = [dataCopy code];
+  analyticsData4 = [(HomeKitEventTriggerExecutionSessionLogEvent *)v19 analyticsData];
+  [analyticsData4 setResultErrorCode:code];
 
   v37 = +[HMDMetricsManager sharedLogEventSubmitter];
-  [v37 submitLogEvent:v19 error:v4];
+  [v37 submitLogEvent:v19 error:dataCopy];
 
   objc_autoreleasePoolPop(context);
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_callExecutionComplete:(id)a3 callDelegate:(BOOL)a4
+- (void)_callExecutionComplete:(id)complete callDelegate:(BOOL)delegate
 {
-  v4 = a4;
+  delegateCopy = delegate;
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  completeCopy = complete;
   if ([(HMDEventTriggerExecutionSession *)self executionCompleteCalled])
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -847,8 +847,8 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v11 = [(HMDEventTriggerExecutionSession *)self triggerEvents];
-    v12 = [v11 countByEnumeratingWithState:&v42 objects:v51 count:16];
+    triggerEvents = [(HMDEventTriggerExecutionSession *)self triggerEvents];
+    v12 = [triggerEvents countByEnumeratingWithState:&v42 objects:v51 count:16];
     if (v12)
     {
       v13 = v12;
@@ -859,7 +859,7 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
         {
           if (*v43 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(triggerEvents);
           }
 
           v16 = *(*(&v42 + 1) + 8 * i);
@@ -881,7 +881,7 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v42 objects:v51 count:16];
+        v13 = [triggerEvents countByEnumeratingWithState:&v42 objects:v51 count:16];
       }
 
       while (v13);
@@ -889,11 +889,11 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
 
     [(HMDEventTriggerExecutionSession *)self _removeUserDialog];
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
-    v37 = v6;
-    if (v4)
+    v37 = completeCopy;
+    if (delegateCopy)
     {
       if (v22)
       {
@@ -901,13 +901,13 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
         *buf = 138543618;
         v48 = v23;
         v49 = 2114;
-        v50 = v6;
+        v50 = completeCopy;
         _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@Informing that trigger action set execution is complete with error %{public}@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v19);
-      v24 = [(HMDEventTriggerSession *)v20 eventTrigger];
-      [v24 executionComplete:v20 error:v6];
+      eventTrigger = [(HMDEventTriggerSession *)selfCopy2 eventTrigger];
+      [eventTrigger executionComplete:selfCopy2 error:completeCopy];
     }
 
     else
@@ -923,13 +923,13 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
       objc_autoreleasePoolPop(v19);
     }
 
-    [(HMDEventTriggerExecutionSession *)v20 setSecureTriggerConfirmationTimer:0];
+    [(HMDEventTriggerExecutionSession *)selfCopy2 setSecureTriggerConfirmationTimer:0];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v26 = [(HMDEventTriggerExecutionSession *)v20 endEvents];
-    v27 = [v26 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    endEvents = [(HMDEventTriggerExecutionSession *)selfCopy2 endEvents];
+    v27 = [endEvents countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v27)
     {
       v28 = v27;
@@ -940,12 +940,12 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
         {
           if (*v39 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(endEvents);
           }
 
           v31 = *(*(&v38 + 1) + 8 * j);
           v32 = objc_autoreleasePoolPush();
-          v33 = v20;
+          v33 = selfCopy2;
           v34 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
           {
@@ -961,62 +961,62 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
           [v31 _activate:0 completionHandler:0];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        v28 = [endEvents countByEnumeratingWithState:&v38 objects:v46 count:16];
       }
 
       while (v28);
     }
 
-    v6 = v37;
+    completeCopy = v37;
     if (!v37)
     {
-      [(HMDEventTriggerExecutionSession *)v20 setExecutionState:6];
+      [(HMDEventTriggerExecutionSession *)selfCopy2 setExecutionState:6];
     }
 
-    [(HMDEventTriggerExecutionSession *)v20 setExecutionCompleteCalled:1];
-    [(HMDEventTriggerExecutionSession *)v20 _submitAnalyticsData:v37];
+    [(HMDEventTriggerExecutionSession *)selfCopy2 setExecutionCompleteCalled:1];
+    [(HMDEventTriggerExecutionSession *)selfCopy2 _submitAnalyticsData:v37];
   }
 
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (id)valueInActionSetWriteResponse:(id)a3 actionSetUUID:(id)a4 accUUID:(id)a5 serviceID:(id)a6 characteristicID:(id)a7
+- (id)valueInActionSetWriteResponse:(id)response actionSetUUID:(id)d accUUID:(id)iD serviceID:(id)serviceID characteristicID:(id)characteristicID
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = [a3 hmf_dictionaryForKey:a4];
-  v15 = [v14 hmf_dictionaryForKey:v13];
+  characteristicIDCopy = characteristicID;
+  serviceIDCopy = serviceID;
+  iDCopy = iD;
+  v14 = [response hmf_dictionaryForKey:d];
+  v15 = [v14 hmf_dictionaryForKey:iDCopy];
 
-  v16 = [v15 hmf_dictionaryForKey:v12];
+  v16 = [v15 hmf_dictionaryForKey:serviceIDCopy];
 
-  v17 = [v16 hmf_dictionaryForKey:v11];
+  v17 = [v16 hmf_dictionaryForKey:characteristicIDCopy];
 
   v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277CD21B8]];
 
   return v18;
 }
 
-- (id)_monitoringEventsFromActionSetResponse:(id)a3
+- (id)_monitoringEventsFromActionSetResponse:(id)response
 {
   v131 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v90 = [MEMORY[0x277CBEB18] array];
-  v5 = [(HMDEventTriggerSession *)self eventTrigger];
-  v91 = [v5 home];
+  responseCopy = response;
+  array = [MEMORY[0x277CBEB18] array];
+  eventTrigger = [(HMDEventTriggerSession *)self eventTrigger];
+  home = [eventTrigger home];
 
   v117 = 0u;
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
-  obj = v4;
+  obj = responseCopy;
   v75 = [obj countByEnumeratingWithState:&v115 objects:v130 count:16];
   if (v75)
   {
     v74 = *v116;
     v6 = *MEMORY[0x277CD21E8];
     v96 = *MEMORY[0x277CD21B8];
-    v94 = self;
+    selfCopy = self;
     v77 = *MEMORY[0x277CD21E8];
     do
     {
@@ -1063,7 +1063,7 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
                 v14 = [v9 hmf_dictionaryForKey:v13];
                 v98 = v13;
                 v15 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v13];
-                v16 = [v91 accessoryWithUUID:v15];
+                v16 = [home accessoryWithUUID:v15];
 
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
@@ -1082,7 +1082,7 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
                 if (!v18)
                 {
                   v19 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v98];
-                  v20 = [v91 mediaProfileWithUUID:v19];
+                  v20 = [home mediaProfileWithUUID:v19];
 
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
@@ -1099,8 +1099,8 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
 
                   if (v22)
                   {
-                    v23 = [v22 uniqueIdentifier];
-                    v24 = [v86 objectForKey:v23];
+                    uniqueIdentifier = [v22 uniqueIdentifier];
+                    v24 = [v86 objectForKey:uniqueIdentifier];
 
                     if ([v24 playbackState] == 1)
                     {
@@ -1108,8 +1108,8 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
                       goto LABEL_69;
                     }
 
-                    v25 = [(HMDEventTriggerExecutionSession *)self mediaProfiles];
-                    [v25 addObject:v22];
+                    mediaProfiles = [(HMDEventTriggerExecutionSession *)self mediaProfiles];
+                    [mediaProfiles addObject:v22];
                   }
                 }
 
@@ -1167,7 +1167,7 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
                             {
                               v34 = [v97 objectForKey:v30];
                               v35 = [v34 objectForKey:v96];
-                              v36 = [v33 type];
+                              type = [v33 type];
                               v37 = isRestoreSupportedForCharacteristic();
 
                               if (!v37)
@@ -1178,7 +1178,7 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
                               if (v35 && ([v35 isEqual:MEMORY[0x277CBEC28]] & 1) == 0)
                               {
                                 v67 = objc_autoreleasePoolPush();
-                                v68 = self;
+                                selfCopy2 = self;
                                 v69 = HMFGetOSLogHandle();
                                 if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
                                 {
@@ -1195,15 +1195,15 @@ uint64_t __48__HMDEventTriggerExecutionSession__restoreState__block_invoke_4(uin
 
                               else
                               {
-                                v38 = [v33 authorizationData];
-                                v39 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v33 value:MEMORY[0x277CBEC28] authorizationData:v38 type:1];
+                                authorizationData = [v33 authorizationData];
+                                v39 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v33 value:MEMORY[0x277CBEC28] authorizationData:authorizationData type:1];
 
-                                v40 = [(HMDEventTriggerExecutionSession *)self writeRequests];
-                                [v40 setObject:v39 forKey:v33];
+                                writeRequests = [(HMDEventTriggerExecutionSession *)self writeRequests];
+                                [writeRequests setObject:v39 forKey:v33];
 
 LABEL_39:
                                 v41 = objc_autoreleasePoolPush();
-                                v42 = self;
+                                selfCopy3 = self;
                                 v43 = HMFGetOSLogHandle();
                                 if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
                                 {
@@ -1233,12 +1233,12 @@ LABEL_39:
                                 }
 
                                 objc_autoreleasePoolPop(v41);
-                                v48 = [(HMDEventTriggerExecutionSession *)v42 valueInActionSetWriteResponse:obj actionSetUUID:v92 accUUID:v98 serviceID:v102 characteristicID:v30];
+                                v48 = [(HMDEventTriggerExecutionSession *)selfCopy3 valueInActionSetWriteResponse:obj actionSetUUID:v92 accUUID:v98 serviceID:v102 characteristicID:v30];
                                 if (v48)
                                 {
                                   v49 = [HMDCharacteristicEventModel alloc];
-                                  v50 = [MEMORY[0x277CCAD78] UUID];
-                                  v51 = [(HMDBackingStoreModelObject *)v49 initWithUUID:v50];
+                                  uUID = [MEMORY[0x277CCAD78] UUID];
+                                  v51 = [(HMDBackingStoreModelObject *)v49 initWithUUID:uUID];
 
                                   [(HMDCharacteristicEventModel *)v51 setAccessory:v98];
                                   v52 = HAPInstanceIDFromValue();
@@ -1248,17 +1248,17 @@ LABEL_39:
                                   [(HMDCharacteristicEventModel *)v51 setCharacteristicID:v53];
 
                                   [(HMDCharacteristicEventModel *)v51 setEventValue:v48];
-                                  v54 = [(HMDCharacteristicEvent *)[HMDCharacteristicMonitorEvent alloc] initWithModel:v51 home:v91];
+                                  v54 = [(HMDCharacteristicEvent *)[HMDCharacteristicMonitorEvent alloc] initWithModel:v51 home:home];
                                   if (v54)
                                   {
-                                    [v90 addObject:v54];
-                                    self = v94;
+                                    [array addObject:v54];
+                                    self = selfCopy;
                                   }
 
                                   else
                                   {
                                     v63 = objc_autoreleasePoolPush();
-                                    v64 = v42;
+                                    v64 = selfCopy3;
                                     v65 = HMFGetOSLogHandle();
                                     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
                                     {
@@ -1274,14 +1274,14 @@ LABEL_39:
                                     }
 
                                     objc_autoreleasePoolPop(v63);
-                                    self = v94;
+                                    self = selfCopy;
                                   }
                                 }
 
                                 else
                                 {
                                   v59 = objc_autoreleasePoolPush();
-                                  v60 = v42;
+                                  v60 = selfCopy3;
                                   v61 = HMFGetOSLogHandle();
                                   if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
                                   {
@@ -1294,7 +1294,7 @@ LABEL_39:
                                   }
 
                                   objc_autoreleasePoolPop(v59);
-                                  self = v94;
+                                  self = selfCopy;
                                 }
 
                                 v27 = v102;
@@ -1304,7 +1304,7 @@ LABEL_39:
                             }
 
                             v55 = objc_autoreleasePoolPush();
-                            v56 = self;
+                            selfCopy4 = self;
                             v57 = HMFGetOSLogHandle();
                             if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
                             {
@@ -1377,19 +1377,19 @@ LABEL_69:
 
   v72 = *MEMORY[0x277D85DE8];
 
-  return v90;
+  return array;
 }
 
-- (void)_activateEvents:(id)a3
+- (void)_activateEvents:(id)events
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDEventTriggerSession *)self eventTrigger];
+  eventsCopy = events;
+  eventTrigger = [(HMDEventTriggerSession *)self eventTrigger];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v4;
+  obj = eventsCopy;
   v6 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -1406,9 +1406,9 @@ LABEL_69:
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
-        v11 = [v5 msgDispatcher];
-        v12 = [(HMDEventTriggerSession *)self workQueue];
-        [v10 configure:v5 messageDispatcher:v11 queue:v12 delegate:self];
+        msgDispatcher = [eventTrigger msgDispatcher];
+        workQueue = [(HMDEventTriggerSession *)self workQueue];
+        [v10 configure:eventTrigger messageDispatcher:msgDispatcher queue:workQueue delegate:self];
 
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
@@ -1477,27 +1477,27 @@ uint64_t __51__HMDEventTriggerExecutionSession__activateEvents___block_invoke_2(
 
 - (void)_activateMonitoringEvents
 {
-  v3 = [(HMDEventTriggerExecutionSession *)self monitorEvents];
-  [(HMDEventTriggerExecutionSession *)self _activateEvents:v3];
+  monitorEvents = [(HMDEventTriggerExecutionSession *)self monitorEvents];
+  [(HMDEventTriggerExecutionSession *)self _activateEvents:monitorEvents];
 }
 
 - (void)_activateDurationEvents
 {
-  v3 = [(HMDEventTriggerExecutionSession *)self durationEndEvents];
-  [(HMDEventTriggerExecutionSession *)self _activateEvents:v3];
+  durationEndEvents = [(HMDEventTriggerExecutionSession *)self durationEndEvents];
+  [(HMDEventTriggerExecutionSession *)self _activateEvents:durationEndEvents];
 }
 
-- (void)_handleActionSetExecutionResponse:(id)a3 actionSetError:(id)a4 completion:(id)a5
+- (void)_handleActionSetExecutionResponse:(id)response actionSetError:(id)error completion:(id)completion
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDEventTriggerSession *)self eventTrigger];
-  [v11 triggerFired];
+  responseCopy = response;
+  errorCopy = error;
+  completionCopy = completion;
+  eventTrigger = [(HMDEventTriggerSession *)self eventTrigger];
+  [eventTrigger triggerFired];
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -1505,31 +1505,31 @@ uint64_t __51__HMDEventTriggerExecutionSession__activateEvents___block_invoke_2(
     *v51 = 138543874;
     *&v51[4] = v15;
     *&v51[12] = 2112;
-    *&v51[14] = v9;
+    *&v51[14] = errorCopy;
     v52 = 2112;
-    v53 = v8;
+    v53 = responseCopy;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Action set execution responded with error %@ and response %@", v51, 0x20u);
   }
 
   objc_autoreleasePoolPop(v12);
-  v16 = _Block_copy(v10);
+  v16 = _Block_copy(completionCopy);
   v17 = v16;
   if (v16)
   {
-    (*(v16 + 2))(v16, v9);
+    (*(v16 + 2))(v16, errorCopy);
   }
 
-  if (v9)
+  if (errorCopy)
   {
-    v18 = [v9 domain];
-    if ([v18 isEqualToString:*MEMORY[0x277CCFD28]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCFD28]])
     {
-      v19 = [v9 code];
+      code = [errorCopy code];
 
-      if (v19 == 64)
+      if (code == 64)
       {
         v20 = objc_autoreleasePoolPush();
-        v21 = v13;
+        v21 = selfCopy;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
@@ -1548,21 +1548,21 @@ uint64_t __51__HMDEventTriggerExecutionSession__activateEvents___block_invoke_2(
     {
     }
 
-    v33 = v13;
-    v34 = v9;
+    v33 = selfCopy;
+    v34 = errorCopy;
 LABEL_22:
     [(HMDEventTriggerExecutionSession *)v33 _callExecutionComplete:v34, *v51];
     goto LABEL_27;
   }
 
 LABEL_11:
-  v24 = [(HMDEventTriggerExecutionSession *)v13 endEvents];
-  v25 = [v24 count];
+  endEvents = [(HMDEventTriggerExecutionSession *)selfCopy endEvents];
+  v25 = [endEvents count];
 
   if (!v25)
   {
     v35 = objc_autoreleasePoolPush();
-    v36 = v13;
+    v36 = selfCopy;
     v37 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
@@ -1584,29 +1584,29 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v26 = [(HMDEventTriggerExecutionSession *)v13 _monitoringEventsFromActionSetResponse:v8];
-  [(HMDEventTriggerExecutionSession *)v13 setMonitorEvents:v26];
+  v26 = [(HMDEventTriggerExecutionSession *)selfCopy _monitoringEventsFromActionSetResponse:responseCopy];
+  [(HMDEventTriggerExecutionSession *)selfCopy setMonitorEvents:v26];
 
   v27 = objc_autoreleasePoolPush();
-  v28 = v13;
+  v28 = selfCopy;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
     v30 = HMFGetLogIdentifier();
-    v31 = [(HMDEventTriggerExecutionSession *)v28 monitorEvents];
+    monitorEvents = [(HMDEventTriggerExecutionSession *)v28 monitorEvents];
     *v51 = 138543618;
     *&v51[4] = v30;
     *&v51[12] = 2112;
-    *&v51[14] = v31;
+    *&v51[14] = monitorEvents;
     _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_INFO, "%{public}@Created monitoring events %@", v51, 0x16u);
   }
 
   objc_autoreleasePoolPop(v27);
-  v32 = [(HMDEventTriggerExecutionSession *)v28 writeRequests];
-  if (![v32 count])
+  writeRequests = [(HMDEventTriggerExecutionSession *)v28 writeRequests];
+  if (![writeRequests count])
   {
-    v40 = [(HMDEventTriggerExecutionSession *)v28 mediaProfiles];
-    v41 = [v40 count];
+    mediaProfiles = [(HMDEventTriggerExecutionSession *)v28 mediaProfiles];
+    v41 = [mediaProfiles count];
 
     if (v41)
     {
@@ -1647,32 +1647,32 @@ LABEL_24:
   v47 = [v46 initWithTimeInterval:1 options:startCharacteristicsMonitorWaitPeriod];
   [(HMDEventTriggerExecutionSession *)v43 setStartCharacteristicsMonitorTimer:v47];
 
-  v48 = [(HMDEventTriggerExecutionSession *)v43 startCharacteristicsMonitorTimer];
-  [v48 setDelegate:v43];
+  startCharacteristicsMonitorTimer = [(HMDEventTriggerExecutionSession *)v43 startCharacteristicsMonitorTimer];
+  [startCharacteristicsMonitorTimer setDelegate:v43];
 
-  v49 = [(HMDEventTriggerExecutionSession *)v43 startCharacteristicsMonitorTimer];
-  [v49 resume];
+  startCharacteristicsMonitorTimer2 = [(HMDEventTriggerExecutionSession *)v43 startCharacteristicsMonitorTimer];
+  [startCharacteristicsMonitorTimer2 resume];
 
 LABEL_27:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_directlyExecuteActionSetsWithCompletionHandler:(id)a3
+- (void)_directlyExecuteActionSetsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(HMDEventTriggerExecutionSession *)self setActionSetExecutionInProgress:1];
   [(HMDEventTriggerExecutionSession *)self setSecureTriggerConfirmationTimer:0];
   objc_initWeak(&location, self);
-  v5 = [(HMDEventTriggerSession *)self eventTrigger];
-  v6 = [(HMDEventTriggerExecutionSession *)self actionSets];
+  eventTrigger = [(HMDEventTriggerSession *)self eventTrigger];
+  actionSets = [(HMDEventTriggerExecutionSession *)self actionSets];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __83__HMDEventTriggerExecutionSession__directlyExecuteActionSetsWithCompletionHandler___block_invoke;
   v8[3] = &unk_278689728;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = handlerCopy;
   v9 = v7;
-  [v5 _executeActionSets:v6 captureCurrentState:1 completionHandler:v8];
+  [eventTrigger _executeActionSets:actionSets captureCurrentState:1 completionHandler:v8];
 
   [(HMDEventTriggerExecutionSession *)self setExecutionState:3];
   objc_destroyWeak(&v10);
@@ -1718,20 +1718,20 @@ void __83__HMDEventTriggerExecutionSession__directlyExecuteActionSetsWithComplet
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addEvent:(id)a3 causingDevice:(id)a4
+- (void)_addEvent:(id)event causingDevice:(id)device
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  deviceCopy = device;
   if ([(HMDEventTriggerExecutionSession *)self executionState]> 2)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = HMDEventTriggerExecutionStateAsString([(HMDEventTriggerExecutionSession *)v17 executionState]);
+      v20 = HMDEventTriggerExecutionStateAsString([(HMDEventTriggerExecutionSession *)selfCopy executionState]);
       v33 = 138543618;
       v34 = v19;
       v35 = 2112;
@@ -1743,11 +1743,11 @@ void __83__HMDEventTriggerExecutionSession__directlyExecuteActionSetsWithComplet
     goto LABEL_9;
   }
 
-  v8 = [(HMDEventTriggerExecutionSession *)self causingDevices];
-  v9 = [v8 containsObject:v7];
+  causingDevices = [(HMDEventTriggerExecutionSession *)self causingDevices];
+  v9 = [causingDevices containsObject:deviceCopy];
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy2 = self;
   v12 = HMFGetOSLogHandle();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
   if (v9)
@@ -1758,7 +1758,7 @@ void __83__HMDEventTriggerExecutionSession__directlyExecuteActionSetsWithComplet
       v33 = 138543618;
       v34 = v14;
       v35 = 2112;
-      v36 = v7;
+      v36 = deviceCopy;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Device is already in the causing devices list, %@", &v33, 0x16u);
     }
 
@@ -1774,21 +1774,21 @@ LABEL_9:
     v33 = 138543618;
     v34 = v21;
     v35 = 2112;
-    v36 = v7;
+    v36 = deviceCopy;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Adding device to ask for confirmation, %@", &v33, 0x16u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v22 = [(HMDEventTriggerExecutionSession *)v11 causingDevices];
-  [v22 addObject:v7];
+  causingDevices2 = [(HMDEventTriggerExecutionSession *)selfCopy2 causingDevices];
+  [causingDevices2 addObject:deviceCopy];
 
-  v23 = [(HMDEventTriggerExecutionSession *)v11 triggerEvents];
-  v24 = [v23 containsObject:v6];
+  triggerEvents = [(HMDEventTriggerExecutionSession *)selfCopy2 triggerEvents];
+  v24 = [triggerEvents containsObject:eventCopy];
 
   if ((v24 & 1) == 0)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v11;
+    v26 = selfCopy2;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
@@ -1796,53 +1796,53 @@ LABEL_9:
       v33 = 138543618;
       v34 = v28;
       v35 = 2112;
-      v36 = v6;
+      v36 = eventCopy;
       _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_INFO, "%{public}@Adding event as an additional event, %@", &v33, 0x16u);
     }
 
     objc_autoreleasePoolPop(v25);
-    v29 = [(HMDEventTriggerExecutionSession *)v26 triggerEvents];
-    [v29 addObject:v6];
+    triggerEvents2 = [(HMDEventTriggerExecutionSession *)v26 triggerEvents];
+    [triggerEvents2 addObject:eventCopy];
   }
 
-  v30 = [(HMDEventTriggerExecutionSession *)v11 userConfirmationSession];
-  [v30 askForUserPermission:v7];
+  userConfirmationSession = [(HMDEventTriggerExecutionSession *)selfCopy2 userConfirmationSession];
+  [userConfirmationSession askForUserPermission:deviceCopy];
 
-  v31 = [(HMDEventTriggerExecutionSession *)v11 secureTriggerConfirmationTimer];
-  [v31 resume];
+  secureTriggerConfirmationTimer = [(HMDEventTriggerExecutionSession *)selfCopy2 secureTriggerConfirmationTimer];
+  [secureTriggerConfirmationTimer resume];
 
 LABEL_17:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEvent:(id)a3 causingDevice:(id)a4
+- (void)addEvent:(id)event causingDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDEventTriggerSession *)self workQueue];
+  eventCopy = event;
+  deviceCopy = device;
+  workQueue = [(HMDEventTriggerSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__HMDEventTriggerExecutionSession_addEvent_causingDevice___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventCopy;
+  v13 = deviceCopy;
+  v9 = deviceCopy;
+  v10 = eventCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)_userResponse:(unint64_t)a3 device:(id)a4 completionHandler:(id)a5
+- (void)_userResponse:(unint64_t)response device:(id)device completionHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMDEventTriggerExecutionSession *)self secureTriggerConfirmationTimer];
+  deviceCopy = device;
+  handlerCopy = handler;
+  secureTriggerConfirmationTimer = [(HMDEventTriggerExecutionSession *)self secureTriggerConfirmationTimer];
 
-  if (!v10)
+  if (!secureTriggerConfirmationTimer)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -1853,7 +1853,7 @@ LABEL_17:
     }
 
     objc_autoreleasePoolPop(v20);
-    v17 = _Block_copy(v9);
+    v17 = _Block_copy(handlerCopy);
     if (!v17)
     {
       goto LABEL_12;
@@ -1864,12 +1864,12 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  v11 = [(HMDEventTriggerExecutionSession *)self actionSetExecutionInProgress];
+  actionSetExecutionInProgress = [(HMDEventTriggerExecutionSession *)self actionSetExecutionInProgress];
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy2 = self;
   v14 = HMFGetOSLogHandle();
   v15 = v14;
-  if (v11)
+  if (actionSetExecutionInProgress)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1880,7 +1880,7 @@ LABEL_17:
     }
 
     objc_autoreleasePoolPop(v12);
-    v17 = _Block_copy(v9);
+    v17 = _Block_copy(handlerCopy);
     if (!v17)
     {
       goto LABEL_12;
@@ -1899,23 +1899,23 @@ LABEL_12:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v26 = HMFGetLogIdentifier();
-    v27 = HMDUserConfirmationResponseAsString(a3);
+    v27 = HMDUserConfirmationResponseAsString(response);
     v49 = 138543874;
     v50 = v26;
     v51 = 2112;
-    v52 = v8;
+    v52 = deviceCopy;
     v53 = 2112;
     v54 = v27;
     _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Received response from %@ with %@", &v49, 0x20u);
   }
 
   objc_autoreleasePoolPop(v12);
-  if (a3 > 2)
+  if (response > 2)
   {
-    if (a3 == 3)
+    if (response == 3)
     {
       v43 = objc_autoreleasePoolPush();
-      v36 = v13;
+      v36 = selfCopy2;
       v44 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
       {
@@ -1926,7 +1926,7 @@ LABEL_12:
       }
 
       objc_autoreleasePoolPop(v43);
-      v46 = _Block_copy(v9);
+      v46 = _Block_copy(handlerCopy);
       v47 = v46;
       if (v46)
       {
@@ -1938,17 +1938,17 @@ LABEL_12:
       goto LABEL_35;
     }
 
-    if (a3 != 4)
+    if (response != 4)
     {
       goto LABEL_13;
     }
 
 LABEL_24:
-    v32 = [(HMDEventTriggerExecutionSession *)v13 causingDevices];
-    [v32 removeObject:v8];
+    causingDevices = [(HMDEventTriggerExecutionSession *)selfCopy2 causingDevices];
+    [causingDevices removeObject:deviceCopy];
 
-    v33 = [(HMDEventTriggerExecutionSession *)v13 causingDevices];
-    v34 = [v33 count];
+    causingDevices2 = [(HMDEventTriggerExecutionSession *)selfCopy2 causingDevices];
+    v34 = [causingDevices2 count];
 
     if (v34)
     {
@@ -1956,7 +1956,7 @@ LABEL_24:
     }
 
     v35 = objc_autoreleasePoolPush();
-    v36 = v13;
+    v36 = selfCopy2;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
@@ -1967,7 +1967,7 @@ LABEL_24:
     }
 
     objc_autoreleasePoolPop(v35);
-    v39 = _Block_copy(v9);
+    v39 = _Block_copy(handlerCopy);
     v40 = v39;
     if (v39)
     {
@@ -1983,15 +1983,15 @@ LABEL_35:
     goto LABEL_13;
   }
 
-  if (a3 == 1)
+  if (response == 1)
   {
     goto LABEL_24;
   }
 
-  if (a3 == 2)
+  if (response == 2)
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = v13;
+    v29 = selfCopy2;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
@@ -2003,7 +2003,7 @@ LABEL_35:
 
     objc_autoreleasePoolPop(v28);
     [(HMDEventTriggerExecutionSession *)v29 _removeUserDialog];
-    [(HMDEventTriggerExecutionSession *)v29 _directlyExecuteActionSetsWithCompletionHandler:v9];
+    [(HMDEventTriggerExecutionSession *)v29 _directlyExecuteActionSetsWithCompletionHandler:handlerCopy];
   }
 
 LABEL_13:
@@ -2011,34 +2011,34 @@ LABEL_13:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userResponse:(unint64_t)a3 device:(id)a4 completionHandler:(id)a5
+- (void)userResponse:(unint64_t)response device:(id)device completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMDEventTriggerSession *)self workQueue];
+  deviceCopy = device;
+  handlerCopy = handler;
+  workQueue = [(HMDEventTriggerSession *)self workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__HMDEventTriggerExecutionSession_userResponse_device_completionHandler___block_invoke;
   v13[3] = &unk_278688B30;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = deviceCopy;
+  v15 = handlerCopy;
+  responseCopy = response;
+  v11 = handlerCopy;
+  v12 = deviceCopy;
+  dispatch_async(workQueue, v13);
 }
 
 - (id)durationEndEvents
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(HMDEventTriggerExecutionSession *)self endEvents];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  endEvents = [(HMDEventTriggerExecutionSession *)self endEvents];
+  v5 = [endEvents countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2049,7 +2049,7 @@ LABEL_13:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(endEvents);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -2068,11 +2068,11 @@ LABEL_13:
 
         if (v11)
         {
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [endEvents countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -2080,18 +2080,18 @@ LABEL_13:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (void)postponeRestoreIfWaitingForEndEvent
 {
-  v3 = [(HMDEventTriggerSession *)self workQueue];
+  workQueue = [(HMDEventTriggerSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__HMDEventTriggerExecutionSession_postponeRestoreIfWaitingForEndEvent__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __70__HMDEventTriggerExecutionSession_postponeRestoreIfWaitingForEndEvent__block_invoke(uint64_t a1)
@@ -2121,13 +2121,13 @@ uint64_t __70__HMDEventTriggerExecutionSession_postponeRestoreIfWaitingForEndEve
 
 - (void)cancelSessionIfWaitingForUserResponse
 {
-  v3 = [(HMDEventTriggerSession *)self workQueue];
+  workQueue = [(HMDEventTriggerSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__HMDEventTriggerExecutionSession_cancelSessionIfWaitingForUserResponse__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __72__HMDEventTriggerExecutionSession_cancelSessionIfWaitingForUserResponse__block_invoke(uint64_t a1)
@@ -2162,8 +2162,8 @@ void __72__HMDEventTriggerExecutionSession_cancelSessionIfWaitingForUserResponse
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HMDEventTriggerExecutionSession *)self actionSets];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  actionSets = [(HMDEventTriggerExecutionSession *)self actionSets];
+  v3 = [actionSets countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -2173,7 +2173,7 @@ void __72__HMDEventTriggerExecutionSession_cancelSessionIfWaitingForUserResponse
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(actionSets);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) containsSecureCharacteristic])
@@ -2183,7 +2183,7 @@ void __72__HMDEventTriggerExecutionSession_cancelSessionIfWaitingForUserResponse
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [actionSets countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -2199,12 +2199,12 @@ LABEL_11:
   return v3;
 }
 
-- (void)_executeTriggerAfterEvaluatingCondition:(id)a3
+- (void)_executeTriggerAfterEvaluatingCondition:(id)condition
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  conditionCopy = condition;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2212,20 +2212,20 @@ LABEL_11:
     *buf = 138543618;
     v53 = v8;
     v54 = 2112;
-    v55 = v4;
+    v55 = conditionCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Going to evaluate the trigger After evaluating : %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v4)
+  if (conditionCopy)
   {
     v50 = @"THIS_OBJECT";
-    v9 = [(HMDEventTriggerExecutionSession *)v6 predicateUtilities];
-    v51 = v9;
+    predicateUtilities = [(HMDEventTriggerExecutionSession *)selfCopy predicateUtilities];
+    v51 = predicateUtilities;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = v6;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -2238,9 +2238,9 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v11);
-    [v4 allowEvaluation];
-    v15 = [(HMDEventTriggerExecutionSession *)v12 predicateUtilities];
-    v16 = [v4 evaluateWithObject:v15 substitutionVariables:v10];
+    [conditionCopy allowEvaluation];
+    predicateUtilities2 = [(HMDEventTriggerExecutionSession *)v12 predicateUtilities];
+    v16 = [conditionCopy evaluateWithObject:predicateUtilities2 substitutionVariables:v10];
 
     if ((v16 & 1) == 0)
     {
@@ -2263,15 +2263,15 @@ LABEL_11:
     }
   }
 
-  v17 = [(HMDEventTriggerExecutionSession *)v6 causingDevices];
-  if ([v17 count])
+  causingDevices = [(HMDEventTriggerExecutionSession *)selfCopy causingDevices];
+  if ([causingDevices count])
   {
-    v18 = [(HMDEventTriggerExecutionSession *)v6 containsSecureActionSet];
+    containsSecureActionSet = [(HMDEventTriggerExecutionSession *)selfCopy containsSecureActionSet];
 
-    if (v18)
+    if (containsSecureActionSet)
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = v6;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -2286,8 +2286,8 @@ LABEL_11:
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v23 = [(HMDEventTriggerExecutionSession *)v20 causingDevices];
-      v24 = [v23 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      causingDevices2 = [(HMDEventTriggerExecutionSession *)v20 causingDevices];
+      v24 = [causingDevices2 countByEnumeratingWithState:&v45 objects:v49 count:16];
       if (v24)
       {
         v25 = v24;
@@ -2299,33 +2299,33 @@ LABEL_11:
           {
             if (*v46 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(causingDevices2);
             }
 
             v28 = *(*(&v45 + 1) + 8 * v27);
-            v29 = [(HMDEventTriggerExecutionSession *)v20 userConfirmationSession];
-            [v29 askForUserPermission:v28];
+            userConfirmationSession = [(HMDEventTriggerExecutionSession *)v20 userConfirmationSession];
+            [userConfirmationSession askForUserPermission:v28];
 
             ++v27;
           }
 
           while (v25 != v27);
-          v25 = [v23 countByEnumeratingWithState:&v45 objects:v49 count:16];
+          v25 = [causingDevices2 countByEnumeratingWithState:&v45 objects:v49 count:16];
         }
 
         while (v25);
       }
 
       v30 = [HMDTriggerConfirmationTimer alloc];
-      v31 = [(HMDEventTriggerSession *)v20 sessionID];
-      v32 = [(HMDTriggerConfirmationTimer *)v30 initWithExecutionSessionID:v31 timeoutInterval:secureTriggerUserResponseTimeoutInSeconds];
+      sessionID = [(HMDEventTriggerSession *)v20 sessionID];
+      v32 = [(HMDTriggerConfirmationTimer *)v30 initWithExecutionSessionID:sessionID timeoutInterval:secureTriggerUserResponseTimeoutInSeconds];
       [(HMDEventTriggerExecutionSession *)v20 setSecureTriggerConfirmationTimer:v32];
 
-      v33 = [(HMDEventTriggerExecutionSession *)v20 secureTriggerConfirmationTimer];
-      [v33 setDelegate:v20];
+      secureTriggerConfirmationTimer = [(HMDEventTriggerExecutionSession *)v20 secureTriggerConfirmationTimer];
+      [secureTriggerConfirmationTimer setDelegate:v20];
 
-      v34 = [(HMDEventTriggerExecutionSession *)v20 secureTriggerConfirmationTimer];
-      [v34 resume];
+      secureTriggerConfirmationTimer2 = [(HMDEventTriggerExecutionSession *)v20 secureTriggerConfirmationTimer];
+      [secureTriggerConfirmationTimer2 resume];
 
       [(HMDEventTriggerExecutionSession *)v20 setExecutionState:2];
       goto LABEL_27;
@@ -2337,7 +2337,7 @@ LABEL_11:
   }
 
   v40 = objc_autoreleasePoolPush();
-  v41 = v6;
+  v41 = selfCopy;
   v42 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
   {
@@ -2357,51 +2357,51 @@ LABEL_27:
 - (void)_evaluateFiringTrigger
 {
   v85 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDEventTriggerExecutionSession *)self recurrences];
-  v3 = [v2 count];
+  recurrences = [(HMDEventTriggerExecutionSession *)self recurrences];
+  v3 = [recurrences count];
 
   if (!v3)
   {
     goto LABEL_6;
   }
 
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 components:512 fromDate:v5];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [currentCalendar components:512 fromDate:date];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [(HMDEventTriggerExecutionSession *)v8 recurrences];
+    recurrences2 = [(HMDEventTriggerExecutionSession *)selfCopy recurrences];
     *buf = 138543874;
     v80 = v10;
     v81 = 2112;
-    v82 = v11;
+    v82 = recurrences2;
     v83 = 2112;
     v84 = v6;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@recurrences : %@, dateComponents: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [(HMDEventTriggerExecutionSession *)v8 recurrences];
-  v13 = [v12 containsObject:v6];
+  recurrences3 = [(HMDEventTriggerExecutionSession *)selfCopy recurrences];
+  v13 = [recurrences3 containsObject:v6];
 
   if (v13)
   {
 
 LABEL_6:
-    v14 = [(HMDEventTriggerExecutionSession *)self evaluationCondition];
+    evaluationCondition = [(HMDEventTriggerExecutionSession *)self evaluationCondition];
 
-    if (v14)
+    if (evaluationCondition)
     {
-      v58 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-      v15 = [(HMDEventTriggerExecutionSession *)self predicateUtilities];
-      v16 = [(HMDEventTriggerExecutionSession *)self evaluationCondition];
+      strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      predicateUtilities = [(HMDEventTriggerExecutionSession *)self predicateUtilities];
+      evaluationCondition2 = [(HMDEventTriggerExecutionSession *)self evaluationCondition];
       v76 = 0;
-      v57 = [v15 rewritePredicate:v16 currentCharacteristicInPredicate:&v76 characteristicsToRead:v58 homePresence:0];
+      v57 = [predicateUtilities rewritePredicate:evaluationCondition2 currentCharacteristicInPredicate:&v76 characteristicsToRead:strongToStrongObjectsMapTable homePresence:0];
       v56 = v76;
 
       v17 = objc_autoreleasePoolPush();
@@ -2410,25 +2410,25 @@ LABEL_6:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v19 = HMFGetLogIdentifier();
-        v20 = [(HMDEventTriggerExecutionSession *)val evaluationCondition];
+        evaluationCondition3 = [(HMDEventTriggerExecutionSession *)val evaluationCondition];
         *buf = 138543874;
         v80 = v19;
         v81 = 2112;
-        v82 = v20;
+        v82 = evaluationCondition3;
         v83 = 2112;
         v84 = v57;
         _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Evaluation condition : %@, Re-written predicate : %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v17);
-      if ([v58 count])
+      if ([strongToStrongObjectsMapTable count])
       {
-        v21 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v74 = 0u;
         v75 = 0u;
         v72 = 0u;
         v73 = 0u;
-        obj = v58;
+        obj = strongToStrongObjectsMapTable;
         v22 = [obj countByEnumeratingWithState:&v72 objects:v78 count:16];
         if (v22)
         {
@@ -2450,11 +2450,11 @@ LABEL_6:
               if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
               {
                 v29 = HMFGetLogIdentifier();
-                v30 = [v24 name];
+                name = [v24 name];
                 *buf = 138543618;
                 v80 = v29;
                 v81 = 2112;
-                v82 = v30;
+                v82 = name;
                 _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_INFO, "%{public}@Going to read characteristics from accessory %@", buf, 0x16u);
               }
 
@@ -2478,7 +2478,7 @@ LABEL_6:
                     }
 
                     v35 = [HMDCharacteristicRequest requestWithCharacteristic:*(*(&v68 + 1) + 8 * j)];
-                    [v21 addObject:v35];
+                    [array addObject:v35];
                   }
 
                   v32 = [v31 countByEnumeratingWithState:&v68 objects:v77 count:16];
@@ -2495,18 +2495,18 @@ LABEL_6:
         }
 
         objc_initWeak(&location, val);
-        v36 = [(HMDEventTriggerSession *)val eventTrigger];
-        v37 = [v36 home];
+        eventTrigger = [(HMDEventTriggerSession *)val eventTrigger];
+        home = [eventTrigger home];
         v38 = [(HMDEventTriggerExecutionSession *)val description];
         v63[0] = MEMORY[0x277D85DD0];
         v63[1] = 3221225472;
         v63[2] = __57__HMDEventTriggerExecutionSession__evaluateFiringTrigger__block_invoke;
         v63[3] = &unk_278689460;
         objc_copyWeak(&v66, &location);
-        v39 = v21;
+        v39 = array;
         v64 = v39;
         v65 = v57;
-        [v37 readCharacteristicValues:v39 source:3 sourceForLogging:v38 qualityOfService:-1 withCompletionHandler:v63];
+        [home readCharacteristicValues:v39 source:3 sourceForLogging:v38 qualityOfService:-1 withCompletionHandler:v63];
 
         [(HMDEventTriggerExecutionSession *)val setExecutionState:1];
         v40 = objc_autoreleasePoolPush();
@@ -2540,12 +2540,12 @@ LABEL_6:
     }
 
     v50 = objc_autoreleasePoolPush();
-    v51 = self;
+    selfCopy2 = self;
     v52 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
     {
       v53 = HMFGetLogIdentifier();
-      v54 = HMDEventTriggerExecutionStateAsString([(HMDEventTriggerExecutionSession *)v51 executionState]);
+      v54 = HMDEventTriggerExecutionStateAsString([(HMDEventTriggerExecutionSession *)selfCopy2 executionState]);
       *buf = 138543618;
       v80 = v53;
       v81 = 2112;
@@ -2558,7 +2558,7 @@ LABEL_6:
   }
 
   v45 = objc_autoreleasePoolPush();
-  v46 = v8;
+  v46 = selfCopy;
   v47 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
   {
@@ -2655,26 +2655,26 @@ void __57__HMDEventTriggerExecutionSession__evaluateFiringTrigger__block_invoke(
 
 - (void)evaluateFiringTrigger
 {
-  v3 = [(HMDEventTriggerSession *)self workQueue];
+  workQueue = [(HMDEventTriggerSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HMDEventTriggerExecutionSession_evaluateFiringTrigger__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)setExecutionState:(unint64_t)a3
+- (void)setExecutionState:(unint64_t)state
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = HMDEventTriggerExecutionStateAsString([(HMDEventTriggerExecutionSession *)v6 executionState]);
-    v10 = HMDEventTriggerExecutionStateAsString(a3);
+    v9 = HMDEventTriggerExecutionStateAsString([(HMDEventTriggerExecutionSession *)selfCopy executionState]);
+    v10 = HMDEventTriggerExecutionStateAsString(state);
     v12 = 138543874;
     v13 = v8;
     v14 = 2114;
@@ -2685,39 +2685,39 @@ void __57__HMDEventTriggerExecutionSession__evaluateFiringTrigger__block_invoke(
   }
 
   objc_autoreleasePoolPop(v5);
-  v6->_executionState = a3;
+  selfCopy->_executionState = state;
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v19.receiver = self;
   v19.super_class = HMDEventTriggerExecutionSession;
-  v4 = [(HMDEventTriggerSession *)&v19 dumpStateWithPrivacyLevel:a3];
+  v4 = [(HMDEventTriggerSession *)&v19 dumpStateWithPrivacyLevel:level];
   v5 = [v4 mutableCopy];
 
-  v6 = [(HMDEventTriggerExecutionSession *)self triggerEvents];
-  v7 = [v6 description];
+  triggerEvents = [(HMDEventTriggerExecutionSession *)self triggerEvents];
+  v7 = [triggerEvents description];
   [v5 setObject:v7 forKeyedSubscript:@"triggering event"];
 
-  v8 = [(HMDEventTriggerExecutionSession *)self monitorEvents];
-  v9 = [v8 description];
+  monitorEvents = [(HMDEventTriggerExecutionSession *)self monitorEvents];
+  v9 = [monitorEvents description];
   [v5 setObject:v9 forKeyedSubscript:@"monitored events"];
 
   [(HMDEventTriggerExecutionSession *)self restoreInProgress];
   v10 = HMFBooleanToString();
   [v5 setObject:v10 forKeyedSubscript:@"restore in progress"];
 
-  v11 = [(HMDEventTriggerExecutionSession *)self writeRequests];
-  v12 = [v11 description];
+  writeRequests = [(HMDEventTriggerExecutionSession *)self writeRequests];
+  v12 = [writeRequests description];
   [v5 setObject:v12 forKeyedSubscript:@"restore writes"];
 
-  v13 = [(HMDEventTriggerExecutionSession *)self mediaProfiles];
-  v14 = [v13 description];
+  mediaProfiles = [(HMDEventTriggerExecutionSession *)self mediaProfiles];
+  v14 = [mediaProfiles description];
   [v5 setObject:v14 forKeyedSubscript:@"pause media profiles"];
 
-  v15 = [(HMDEventTriggerExecutionSession *)self secureTriggerConfirmationTimer];
-  v16 = [v15 description];
+  secureTriggerConfirmationTimer = [(HMDEventTriggerExecutionSession *)self secureTriggerConfirmationTimer];
+  v16 = [secureTriggerConfirmationTimer description];
   [v5 setObject:v16 forKeyedSubscript:@"trigger confirmation timer"];
 
   v17 = [v5 copy];
@@ -2725,35 +2725,35 @@ void __57__HMDEventTriggerExecutionSession__evaluateFiringTrigger__block_invoke(
   return v17;
 }
 
-- (BOOL)needsUserConfirmationForDevice:(id)a3
+- (BOOL)needsUserConfirmationForDevice:(id)device
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDEventTriggerExecutionSession *)self causingDevices];
-  v6 = [v5 count];
+  deviceCopy = device;
+  causingDevices = [(HMDEventTriggerExecutionSession *)self causingDevices];
+  causingDevices2 = [causingDevices count];
 
-  if (v6)
+  if (causingDevices2)
   {
-    v7 = [v4 device];
-    v8 = [v7 account];
+    device = [deviceCopy device];
+    account = [device account];
 
-    if (v8)
+    if (account)
     {
-      v6 = [(HMDEventTriggerExecutionSession *)self causingDevices];
+      causingDevices2 = [(HMDEventTriggerExecutionSession *)self causingDevices];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __66__HMDEventTriggerExecutionSession_needsUserConfirmationForDevice___block_invoke;
       v15[3] = &unk_278687A10;
-      v16 = v7;
-      v9 = [v6 na_firstObjectPassingTest:v15];
+      v16 = device;
+      v9 = [causingDevices2 na_firstObjectPassingTest:v15];
 
-      LOBYTE(v6) = v9 == 0;
+      LOBYTE(causingDevices2) = v9 == 0;
     }
 
     else
     {
-      v6 = objc_autoreleasePoolPush();
-      v10 = self;
+      causingDevices2 = objc_autoreleasePoolPush();
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -2761,17 +2761,17 @@ void __57__HMDEventTriggerExecutionSession__evaluateFiringTrigger__block_invoke(
         *buf = 138543618;
         v18 = v12;
         v19 = 2112;
-        v20 = v7;
+        v20 = device;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Unable to find account for causing device %@, but will still fall back to sending user confirmation", buf, 0x16u);
       }
 
-      objc_autoreleasePoolPop(v6);
-      LOBYTE(v6) = 1;
+      objc_autoreleasePoolPop(causingDevices2);
+      LOBYTE(causingDevices2) = 1;
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v6;
+  return causingDevices2;
 }
 
 uint64_t __66__HMDEventTriggerExecutionSession_needsUserConfirmationForDevice___block_invoke(uint64_t a1, void *a2)
@@ -2786,50 +2786,50 @@ uint64_t __66__HMDEventTriggerExecutionSession_needsUserConfirmationForDevice___
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDEventTriggerSession *)self logString];
-  v4 = [v2 stringWithFormat:@"[Trigger Execution Session: %@]", v3];
+  logString = [(HMDEventTriggerSession *)self logString];
+  v4 = [v2 stringWithFormat:@"[Trigger Execution Session: %@]", logString];
 
   return v4;
 }
 
-- (HMDEventTriggerExecutionSession)initWithEventTrigger:(id)a3 predicateUtilities:(id)a4 triggerEvent:(id)a5 causingDevice:(id)a6 workQueue:(id)a7 actionSets:(id)a8 evaluationCondition:(id)a9 recurrences:(id)a10 endEvents:(id)a11 msgDispatcher:(id)a12
+- (HMDEventTriggerExecutionSession)initWithEventTrigger:(id)trigger predicateUtilities:(id)utilities triggerEvent:(id)event causingDevice:(id)device workQueue:(id)queue actionSets:(id)sets evaluationCondition:(id)condition recurrences:(id)self0 endEvents:(id)self1 msgDispatcher:(id)self2
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  obj = a4;
-  v52 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v51 = a8;
-  v50 = a9;
-  v49 = a10;
-  v48 = a11;
-  v21 = v19;
-  v22 = a12;
-  v23 = [MEMORY[0x277CCAD78] UUID];
+  triggerCopy = trigger;
+  obj = utilities;
+  utilitiesCopy = utilities;
+  eventCopy = event;
+  deviceCopy = device;
+  queueCopy = queue;
+  setsCopy = sets;
+  conditionCopy = condition;
+  recurrencesCopy = recurrences;
+  eventsCopy = events;
+  v21 = deviceCopy;
+  dispatcherCopy = dispatcher;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v55.receiver = self;
   v55.super_class = HMDEventTriggerExecutionSession;
-  v54 = v20;
-  v24 = [(HMDEventTriggerSession *)&v55 initWithSessionID:v23 eventTrigger:v17 workQueue:v20 msgDispatcher:v22];
+  v54 = queueCopy;
+  v24 = [(HMDEventTriggerSession *)&v55 initWithSessionID:uUID eventTrigger:triggerCopy workQueue:queueCopy msgDispatcher:dispatcherCopy];
 
   if (v24)
   {
-    v57[0] = v18;
+    v57[0] = eventCopy;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:1];
     v26 = [v25 mutableCopy];
     triggerEvents = v24->_triggerEvents;
     v24->_triggerEvents = v26;
 
     objc_storeStrong(&v24->_predicateUtilities, obj);
-    objc_storeStrong(&v24->_actionSets, a8);
-    objc_storeStrong(&v24->_evaluationCondition, a9);
-    objc_storeStrong(&v24->_recurrences, a10);
-    objc_storeStrong(&v24->_endEvents, a11);
+    objc_storeStrong(&v24->_actionSets, sets);
+    objc_storeStrong(&v24->_evaluationCondition, condition);
+    objc_storeStrong(&v24->_recurrences, recurrences);
+    objc_storeStrong(&v24->_endEvents, events);
     v24->_restoreInProgress = 0;
-    v28 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     writeRequests = v24->_writeRequests;
-    v24->_writeRequests = v28;
+    v24->_writeRequests = strongToStrongObjectsMapTable;
 
     v30 = objc_alloc_init(MEMORY[0x277CBEB58]);
     mediaProfiles = v24->_mediaProfiles;
@@ -2847,13 +2847,13 @@ uint64_t __66__HMDEventTriggerExecutionSession_needsUserConfirmationForDevice___
       v24->_causingDevices = v34;
 
       v36 = [HMDEventTriggerDevice alloc];
-      v37 = [v17 home];
-      v38 = [(HMDEventTriggerDevice *)v36 initWithCurrentDeviceForHome:v37];
+      home = [triggerCopy home];
+      v38 = [(HMDEventTriggerDevice *)v36 initWithCurrentDeviceForHome:home];
 
       v39 = [HMDEventTriggerUserConfirmationSession alloc];
       [(HMDEventTriggerSession *)v24 sessionID];
       v41 = v40 = v21;
-      v42 = [(HMDEventTriggerUserConfirmationSession *)v39 initWithSessionID:v41 eventTrigger:v17 workQueue:v54 msgDispatcher:v22 requestingDevice:v38];
+      v42 = [(HMDEventTriggerUserConfirmationSession *)v39 initWithSessionID:v41 eventTrigger:triggerCopy workQueue:v54 msgDispatcher:dispatcherCopy requestingDevice:v38];
       userConfirmationSession = v24->_userConfirmationSession;
       v24->_userConfirmationSession = v42;
 
@@ -2861,8 +2861,8 @@ uint64_t __66__HMDEventTriggerExecutionSession_needsUserConfirmationForDevice___
       [(HMDEventTriggerUserConfirmationSession *)v24->_userConfirmationSession setExecutionSession:v24];
     }
 
-    v44 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v44 addObserver:v24 selector:sel_handleSessionPlaybackStateUpdatedNotification_ name:@"HMDMediaSessionDidUpdatePlaybackStateNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v24 selector:sel_handleSessionPlaybackStateUpdatedNotification_ name:@"HMDMediaSessionDidUpdatePlaybackStateNotification" object:0];
   }
 
   v45 = *MEMORY[0x277D85DE8];

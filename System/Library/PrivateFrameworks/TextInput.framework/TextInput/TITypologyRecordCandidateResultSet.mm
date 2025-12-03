@@ -1,37 +1,37 @@
 @interface TITypologyRecordCandidateResultSet
-- (TITypologyRecordCandidateResultSet)initWithCoder:(id)a3;
+- (TITypologyRecordCandidateResultSet)initWithCoder:(id)coder;
 - (id)shortDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeContextFromKeyboardState;
-- (void)replaceDocumentState:(id)a3;
+- (void)replaceDocumentState:(id)state;
 @end
 
 @implementation TITypologyRecordCandidateResultSet
 
-- (void)replaceDocumentState:(id)a3
+- (void)replaceDocumentState:(id)state
 {
-  v4 = a3;
-  v5 = [(TITypologyRecordCandidateResultSet *)self keyboardState];
-  [v5 setDocumentState:v4];
+  stateCopy = state;
+  keyboardState = [(TITypologyRecordCandidateResultSet *)self keyboardState];
+  [keyboardState setDocumentState:stateCopy];
 }
 
 - (id)shortDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(TITypologyRecordCandidateResultSet *)self resultSet];
-  v5 = [v4 uncommittedText];
-  v6 = [v3 stringWithFormat:@"CANDIDATES for %@:", v5];
+  resultSet = [(TITypologyRecordCandidateResultSet *)self resultSet];
+  uncommittedText = [resultSet uncommittedText];
+  v6 = [v3 stringWithFormat:@"CANDIDATES for %@:", uncommittedText];
 
-  v7 = [(TITypologyRecordCandidateResultSet *)self resultSet];
-  v8 = [v7 candidates];
+  resultSet2 = [(TITypologyRecordCandidateResultSet *)self resultSet];
+  candidates = [resultSet2 candidates];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __54__TITypologyRecordCandidateResultSet_shortDescription__block_invoke;
   v12[3] = &unk_1E6F4BF48;
   v9 = v6;
   v13 = v9;
-  v14 = self;
-  [v8 enumerateObjectsUsingBlock:v12];
+  selfCopy = self;
+  [candidates enumerateObjectsUsingBlock:v12];
 
   v10 = v9;
   return v9;
@@ -67,38 +67,38 @@ void __54__TITypologyRecordCandidateResultSet_shortDescription__block_invoke(uin
 
 - (void)removeContextFromKeyboardState
 {
-  v3 = [(TITypologyRecordCandidateResultSet *)self keyboardState];
-  v4 = [v3 copy];
+  keyboardState = [(TITypologyRecordCandidateResultSet *)self keyboardState];
+  v4 = [keyboardState copy];
 
   [v4 setInputContextHistory:0];
   [(TITypologyRecordCandidateResultSet *)self setKeyboardState:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = TITypologyRecordCandidateResultSet;
-  [(TITypologyRecord *)&v6 encodeWithCoder:v4];
+  [(TITypologyRecord *)&v6 encodeWithCoder:coderCopy];
   v5 = objc_autoreleasePoolPush();
-  [v4 encodeObject:self->_keyboardState forKey:@"keyboardState"];
-  [v4 encodeObject:self->_resultSet forKey:@"resultSet"];
+  [coderCopy encodeObject:self->_keyboardState forKey:@"keyboardState"];
+  [coderCopy encodeObject:self->_resultSet forKey:@"resultSet"];
   objc_autoreleasePoolPop(v5);
 }
 
-- (TITypologyRecordCandidateResultSet)initWithCoder:(id)a3
+- (TITypologyRecordCandidateResultSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TITypologyRecordCandidateResultSet;
-  v5 = [(TITypologyRecord *)&v11 initWithCoder:v4];
+  v5 = [(TITypologyRecord *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
     keyboardState = v5->_keyboardState;
     v5->_keyboardState = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resultSet"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resultSet"];
     resultSet = v5->_resultSet;
     v5->_resultSet = v8;
   }

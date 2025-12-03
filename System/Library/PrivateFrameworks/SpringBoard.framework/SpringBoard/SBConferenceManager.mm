@@ -7,7 +7,7 @@
 - (BOOL)inFaceTimeVideo;
 - (SBConferenceManager)init;
 - (id)currentFaceTimeCall;
-- (void)_faceTimeStateChanged:(id)a3;
+- (void)_faceTimeStateChanged:(id)changed;
 - (void)dealloc;
 - (void)endFaceTime;
 @end
@@ -33,35 +33,35 @@
 
 - (BOOL)activeFaceTimeCallExists
 {
-  v2 = [(SBConferenceManager *)self activeFaceTimeCall];
-  v3 = v2 != 0;
+  activeFaceTimeCall = [(SBConferenceManager *)self activeFaceTimeCall];
+  v3 = activeFaceTimeCall != 0;
 
   return v3;
 }
 
 - (BOOL)inFaceTime
 {
-  v2 = [(SBConferenceManager *)self currentFaceTimeCall];
-  v3 = v2 != 0;
+  currentFaceTimeCall = [(SBConferenceManager *)self currentFaceTimeCall];
+  v3 = currentFaceTimeCall != 0;
 
   return v3;
 }
 
 - (id)currentFaceTimeCall
 {
-  v3 = [(SBConferenceManager *)self activeFaceTimeCall];
-  v4 = v3;
-  if (v3)
+  activeFaceTimeCall = [(SBConferenceManager *)self activeFaceTimeCall];
+  v4 = activeFaceTimeCall;
+  if (activeFaceTimeCall)
   {
-    v5 = v3;
+    incomingFaceTimeCall = activeFaceTimeCall;
   }
 
   else
   {
-    v5 = [(SBConferenceManager *)self incomingFaceTimeCall];
+    incomingFaceTimeCall = [(SBConferenceManager *)self incomingFaceTimeCall];
   }
 
-  v6 = v5;
+  v6 = incomingFaceTimeCall;
 
   return v6;
 }
@@ -81,14 +81,14 @@
     objc_copyWeak(&v10, &location);
     v2->_faceTimeCapabilityUpdateToken = MGRegisterForUpdates();
 
-    v4 = [MEMORY[0x277D07D70] sharedInstance];
-    [v4 addListenerID:@"com.apple.springboard" forService:0];
+    mEMORY[0x277D07D70] = [MEMORY[0x277D07D70] sharedInstance];
+    [mEMORY[0x277D07D70] addListenerID:@"com.apple.springboard" forService:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__faceTimeStateChanged_ name:*MEMORY[0x277D6F038] object:0];
-    v6 = [MEMORY[0x277D6EDF8] sharedInstance];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__faceTimeStateChanged_ name:*MEMORY[0x277D6F038] object:0];
+    mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
     sharedCallCenter = v2->_sharedCallCenter;
-    v2->_sharedCallCenter = v6;
+    v2->_sharedCallCenter = mEMORY[0x277D6EDF8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -110,26 +110,26 @@ void __27__SBConferenceManager_init__block_invoke(uint64_t a1)
 
 - (BOOL)faceTimeIsAvailable
 {
-  v2 = [MEMORY[0x277D07D70] sharedInstance];
-  v3 = [v2 availabilityForListenerID:@"com.apple.springboard" forService:0] == 1;
+  mEMORY[0x277D07D70] = [MEMORY[0x277D07D70] sharedInstance];
+  v3 = [mEMORY[0x277D07D70] availabilityForListenerID:@"com.apple.springboard" forService:0] == 1;
 
   return v3;
 }
 
 - (BOOL)faceTimeInvitationExists
 {
-  v2 = [(SBConferenceManager *)self incomingFaceTimeCall];
-  v3 = v2 != 0;
+  incomingFaceTimeCall = [(SBConferenceManager *)self incomingFaceTimeCall];
+  v3 = incomingFaceTimeCall != 0;
 
   return v3;
 }
 
 - (BOOL)inFaceTimeVideo
 {
-  v2 = [(SBConferenceManager *)self currentFaceTimeCall];
-  v3 = [v2 isVideo];
+  currentFaceTimeCall = [(SBConferenceManager *)self currentFaceTimeCall];
+  isVideo = [currentFaceTimeCall isVideo];
 
-  return v3;
+  return isVideo;
 }
 
 - (void)dealloc
@@ -139,8 +139,8 @@ void __27__SBConferenceManager_init__block_invoke(uint64_t a1)
     MGCancelNotifications();
   }
 
-  v3 = [MEMORY[0x277D07D70] sharedInstance];
-  [v3 removeListenerID:@"com.apple.springboard" forService:0];
+  mEMORY[0x277D07D70] = [MEMORY[0x277D07D70] sharedInstance];
+  [mEMORY[0x277D07D70] removeListenerID:@"com.apple.springboard" forService:0];
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
   v4.receiver = self;
@@ -148,40 +148,40 @@ void __27__SBConferenceManager_init__block_invoke(uint64_t a1)
   [(SBConferenceManager *)&v4 dealloc];
 }
 
-- (void)_faceTimeStateChanged:(id)a3
+- (void)_faceTimeStateChanged:(id)changed
 {
-  v16 = a3;
-  v4 = [(SBConferenceManager *)self currentFaceTimeCall];
-  v5 = v4;
-  if (v4)
+  changedCopy = changed;
+  currentFaceTimeCall = [(SBConferenceManager *)self currentFaceTimeCall];
+  v5 = currentFaceTimeCall;
+  if (currentFaceTimeCall)
   {
-    v6 = v4;
+    object = currentFaceTimeCall;
   }
 
   else
   {
-    v6 = [v16 object];
+    object = [changedCopy object];
   }
 
-  v7 = v6;
+  v7 = object;
 
   if ([v7 isVideo])
   {
-    v8 = [v7 status];
-    if (v8 == 6 || !v8)
+    status = [v7 status];
+    if (status == 6 || !status)
     {
       v9 = +[SBTelephonyManager sharedTelephonyManager];
-      v10 = [v9 inCall];
+      inCall = [v9 inCall];
 
-      if ((v10 & 1) == 0)
+      if ((inCall & 1) == 0)
       {
         v11 = +[SBLockScreenManager sharedInstance];
-        v12 = [v11 isUILocked];
+        isUILocked = [v11 isUILocked];
 
-        if (v12)
+        if (isUILocked)
         {
-          v13 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v13 postNotificationName:@"SBLockScreenFacetimeCallUINeedsUpdateNotification" object:self];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter postNotificationName:@"SBLockScreenFacetimeCallUINeedsUpdateNotification" object:self];
         }
       }
     }
@@ -190,19 +190,19 @@ void __27__SBConferenceManager_init__block_invoke(uint64_t a1)
     v14 = +[SBIdleTimerGlobalCoordinator sharedInstance];
     [v14 resetIdleTimerForReason:@"SBConference:FaceTimeChanged"];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 postNotificationName:@"SBFaceTimeStateChangedNotification" object:self];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"SBFaceTimeStateChangedNotification" object:self];
   }
 }
 
 - (void)endFaceTime
 {
-  v3 = [(SBConferenceManager *)self currentFaceTimeCall];
-  if (v3)
+  currentFaceTimeCall = [(SBConferenceManager *)self currentFaceTimeCall];
+  if (currentFaceTimeCall)
   {
-    v4 = v3;
-    [(TUCallCenter *)self->_sharedCallCenter disconnectCall:v3];
-    v3 = v4;
+    v4 = currentFaceTimeCall;
+    [(TUCallCenter *)self->_sharedCallCenter disconnectCall:currentFaceTimeCall];
+    currentFaceTimeCall = v4;
   }
 }
 

@@ -1,9 +1,9 @@
 @interface CMCaptureSpatialAudioMetadataSampleGenerator
 + (void)initialize;
 - (CMCaptureSpatialAudioMetadataSampleGenerator)init;
-- (int)analyzeAudioSample:(opaqueCMSampleBuffer *)a3;
+- (int)analyzeAudioSample:(opaqueCMSampleBuffer *)sample;
 - (opaqueCMSampleBuffer)newTimedMetadataSampleBufferAndResetAnalyzer;
-- (void)consumeMessage:(id)a3 fromOutput:(id)a4;
+- (void)consumeMessage:(id)message fromOutput:(id)output;
 - (void)dealloc;
 - (void)resetAnalyzer;
 @end
@@ -12,7 +12,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     fig_note_initialize_category_with_default_work_cf();
 
@@ -153,12 +153,12 @@ LABEL_8:
   *&self->_lastKnownDuration.flags = v6;
 }
 
-- (void)consumeMessage:(id)a3 fromOutput:(id)a4
+- (void)consumeMessage:(id)message fromOutput:(id)output
 {
-  if (*(a3 + 2) == 2 && *(a3 + 3) == 1)
+  if (*(message + 2) == 2 && *(message + 3) == 1)
   {
-    v6 = [a3 sampleBuffer];
-    if (CMSampleBufferGetDataBuffer(v6))
+    sampleBuffer = [message sampleBuffer];
+    if (CMSampleBufferGetDataBuffer(sampleBuffer))
     {
       FigSimpleMutexLock();
       timedMedataSampleBuffer = self->_timedMedataSampleBuffer;
@@ -168,23 +168,23 @@ LABEL_8:
         self->_timedMedataSampleBuffer = 0;
       }
 
-      self->_timedMedataSampleBuffer = CFRetain(v6);
+      self->_timedMedataSampleBuffer = CFRetain(sampleBuffer);
 
       FigSimpleMutexUnlock();
     }
   }
 }
 
-- (int)analyzeAudioSample:(opaqueCMSampleBuffer *)a3
+- (int)analyzeAudioSample:(opaqueCMSampleBuffer *)sample
 {
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  FormatDescription = CMSampleBufferGetFormatDescription(sample);
   if (CMFormatDescriptionGetMediaType(FormatDescription) != 1936684398)
   {
     return -12780;
   }
 
   memset(&v15, 0, sizeof(v15));
-  CMSampleBufferGetPresentationTimeStamp(&v15, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v15, sample);
   if ((v15.flags & 1) == 0)
   {
     return -12780;
@@ -195,7 +195,7 @@ LABEL_8:
   {
 LABEL_8:
     memset(&v13, 0, sizeof(v13));
-    CMSampleBufferGetDuration(&v13, a3);
+    CMSampleBufferGetDuration(&v13, sample);
     if (v13.flags)
     {
       *(&self->_lastAnalyzedPTS.epoch + 4) = *&v13.value;
@@ -208,7 +208,7 @@ LABEL_8:
       {
 LABEL_14:
         *(&self->_analyzedFirstBuffer + 4) = v15;
-        [(BWAudioRemixAnalysisMetadataNode *)self->_audioRemixAnalysisMetadataNode renderSampleBuffer:a3 forInput:[(BWNode *)self->_audioRemixAnalysisMetadataNode input]];
+        [(BWAudioRemixAnalysisMetadataNode *)self->_audioRemixAnalysisMetadataNode renderSampleBuffer:sample forInput:[(BWNode *)self->_audioRemixAnalysisMetadataNode input]];
         return 0;
       }
 

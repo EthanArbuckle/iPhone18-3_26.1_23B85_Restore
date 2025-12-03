@@ -1,42 +1,42 @@
 @interface CADLocalXPCProxyObject
-- (CADLocalXPCProxyObject)initWithWrappedObject:(id)a3 queue:(id)a4 errorHandler:(id)a5 synchronous:(BOOL)a6 connection:(id)a7;
-- (id)_replacementArgumentValueForURLWrapper:(id)a3;
-- (id)_updatedArgumentValueForArgumentValue:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)_fixupArgumentsForInvocation:(id)a3;
-- (void)_forwardInvocationAsynchronously:(id)a3;
-- (void)_forwardInvocationSynchronously:(id)a3;
-- (void)forwardInvocation:(id)a3;
+- (CADLocalXPCProxyObject)initWithWrappedObject:(id)object queue:(id)queue errorHandler:(id)handler synchronous:(BOOL)synchronous connection:(id)connection;
+- (id)_replacementArgumentValueForURLWrapper:(id)wrapper;
+- (id)_updatedArgumentValueForArgumentValue:(id)value;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)_fixupArgumentsForInvocation:(id)invocation;
+- (void)_forwardInvocationAsynchronously:(id)asynchronously;
+- (void)_forwardInvocationSynchronously:(id)synchronously;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation CADLocalXPCProxyObject
 
-- (CADLocalXPCProxyObject)initWithWrappedObject:(id)a3 queue:(id)a4 errorHandler:(id)a5 synchronous:(BOOL)a6 connection:(id)a7
+- (CADLocalXPCProxyObject)initWithWrappedObject:(id)object queue:(id)queue errorHandler:(id)handler synchronous:(BOOL)synchronous connection:(id)connection
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  objectCopy = object;
+  queueCopy = queue;
+  handlerCopy = handler;
+  connectionCopy = connection;
   v22.receiver = self;
   v22.super_class = CADLocalXPCProxyObject;
   v17 = [(CADLocalXPCProxyObject *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_wrappedObject, a3);
-    objc_storeStrong(&v18->_queue, a4);
-    v19 = MEMORY[0x22AA4DCD0](v15);
+    objc_storeStrong(&v17->_wrappedObject, object);
+    objc_storeStrong(&v18->_queue, queue);
+    v19 = MEMORY[0x22AA4DCD0](handlerCopy);
     errorHandler = v18->_errorHandler;
     v18->_errorHandler = v19;
 
-    v18->_synchronous = a6;
-    objc_storeWeak(&v18->_connection, v16);
+    v18->_synchronous = synchronous;
+    objc_storeWeak(&v18->_connection, connectionCopy);
   }
 
   return v18;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = CADLocalXPCProxyObject;
@@ -49,7 +49,7 @@
 
   else
   {
-    v7 = [self->_wrappedObject methodSignatureForSelector:a3];
+    v7 = [self->_wrappedObject methodSignatureForSelector:selector];
   }
 
   v8 = v7;
@@ -57,22 +57,22 @@
   return v8;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v7 = a3;
+  invocationCopy = invocation;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v5 = [WeakRetained isValid];
+  isValid = [WeakRetained isValid];
 
-  if (v5)
+  if (isValid)
   {
     if (self->_synchronous)
     {
-      [(CADLocalXPCProxyObject *)self _forwardInvocationSynchronously:v7];
+      [(CADLocalXPCProxyObject *)self _forwardInvocationSynchronously:invocationCopy];
     }
 
     else
     {
-      [(CADLocalXPCProxyObject *)self _forwardInvocationAsynchronously:v7];
+      [(CADLocalXPCProxyObject *)self _forwardInvocationAsynchronously:invocationCopy];
     }
   }
 
@@ -83,25 +83,25 @@
   }
 }
 
-- (void)_forwardInvocationSynchronously:(id)a3
+- (void)_forwardInvocationSynchronously:(id)synchronously
 {
-  v4 = a3;
-  [v4 setTarget:self->_wrappedObject];
-  [(CADLocalXPCProxyObject *)self _fixupArgumentsForInvocation:v4];
+  synchronouslyCopy = synchronously;
+  [synchronouslyCopy setTarget:self->_wrappedObject];
+  [(CADLocalXPCProxyObject *)self _fixupArgumentsForInvocation:synchronouslyCopy];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__11;
   v25 = __Block_byref_object_dispose__11;
   v26 = 0;
-  v5 = [MEMORY[0x277CF7820] replyBlockArgumentIndex:v4];
+  v5 = [MEMORY[0x277CF7820] replyBlockArgumentIndex:synchronouslyCopy];
   v6 = 0;
   v20 = 0;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = dispatch_group_create();
     dispatch_group_enter(v7);
-    v8 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:v4];
+    v8 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:synchronouslyCopy];
     _Block_signature(v8);
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
@@ -112,7 +112,7 @@
     v6 = v7;
     v18 = v6;
     v20 = __NSMakeSpecialForwardingCaptureBlock();
-    [v4 setArgument:&v20 atIndex:v5];
+    [synchronouslyCopy setArgument:&v20 atIndex:v5];
   }
 
   queue = self->_queue;
@@ -120,7 +120,7 @@
   block[1] = 3221225472;
   block[2] = __58__CADLocalXPCProxyObject__forwardInvocationSynchronously___block_invoke_2;
   block[3] = &unk_27851AAD8;
-  v10 = v4;
+  v10 = synchronouslyCopy;
   v12 = v10;
   dispatch_sync(queue, block);
   if (v6)
@@ -150,37 +150,37 @@ void __58__CADLocalXPCProxyObject__forwardInvocationSynchronously___block_invoke
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)_forwardInvocationAsynchronously:(id)a3
+- (void)_forwardInvocationAsynchronously:(id)asynchronously
 {
-  v4 = a3;
-  [v4 setTarget:self->_wrappedObject];
-  [(CADLocalXPCProxyObject *)self _fixupArgumentsForInvocation:v4];
-  v5 = [MEMORY[0x277CF7820] replyBlockArgumentIndex:v4];
+  asynchronouslyCopy = asynchronously;
+  [asynchronouslyCopy setTarget:self->_wrappedObject];
+  [(CADLocalXPCProxyObject *)self _fixupArgumentsForInvocation:asynchronouslyCopy];
+  v5 = [MEMORY[0x277CF7820] replyBlockArgumentIndex:asynchronouslyCopy];
   v19 = 0;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5;
-    v7 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:v4];
+    v7 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:asynchronouslyCopy];
     _Block_signature(v7);
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __59__CADLocalXPCProxyObject__forwardInvocationAsynchronously___block_invoke;
     v16 = &unk_27851AE48;
     v17 = v7;
-    v18 = self;
+    selfCopy = self;
     v8 = v7;
     v19 = __NSMakeSpecialForwardingCaptureBlock();
-    [v4 setArgument:&v19 atIndex:v6];
+    [asynchronouslyCopy setArgument:&v19 atIndex:v6];
   }
 
-  [v4 retainArguments];
+  [asynchronouslyCopy retainArguments];
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__CADLocalXPCProxyObject__forwardInvocationAsynchronously___block_invoke_4;
   v11[3] = &unk_27851AAD8;
-  v12 = v4;
-  v10 = v4;
+  v12 = asynchronouslyCopy;
+  v10 = asynchronouslyCopy;
   dispatch_async(queue, v11);
 }
 
@@ -221,17 +221,17 @@ uint64_t __59__CADLocalXPCProxyObject__forwardInvocationAsynchronously___block_i
   return [v2 invoke];
 }
 
-- (void)_fixupArgumentsForInvocation:(id)a3
+- (void)_fixupArgumentsForInvocation:(id)invocation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 methodSignature];
-  if ([v5 numberOfArguments])
+  invocationCopy = invocation;
+  methodSignature = [invocationCopy methodSignature];
+  if ([methodSignature numberOfArguments])
   {
     v6 = 0;
     do
     {
-      v7 = [v5 getArgumentTypeAtIndex:v6];
+      v7 = [methodSignature getArgumentTypeAtIndex:v6];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
@@ -254,7 +254,7 @@ uint64_t __59__CADLocalXPCProxyObject__forwardInvocationAsynchronously___block_i
             if (!strcmp(v7, [*(*(&v18 + 1) + 8 * v11) UTF8String]))
             {
               v17 = 0;
-              [v4 getArgument:&v17 atIndex:v6];
+              [invocationCopy getArgument:&v17 atIndex:v6];
               if (v17)
               {
                 v12 = [(CADLocalXPCProxyObject *)self _updatedArgumentValueForArgumentValue:?];
@@ -263,7 +263,7 @@ uint64_t __59__CADLocalXPCProxyObject__forwardInvocationAsynchronously___block_i
                 {
                   v13 = CFRetain(v12);
                   CFAutorelease(v13);
-                  [v4 setArgument:&v16 atIndex:v6];
+                  [invocationCopy setArgument:&v16 atIndex:v6];
                 }
               }
             }
@@ -282,26 +282,26 @@ uint64_t __59__CADLocalXPCProxyObject__forwardInvocationAsynchronously___block_i
       ++v6;
     }
 
-    while ([v5 numberOfArguments] != v6);
+    while ([methodSignature numberOfArguments] != v6);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_updatedArgumentValueForArgumentValue:(id)a3
+- (id)_updatedArgumentValueForArgumentValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CADLocalXPCProxyObject *)self _replacementArgumentValueForURLWrapper:v4];
+    v5 = [(CADLocalXPCProxyObject *)self _replacementArgumentValueForURLWrapper:valueCopy];
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = valueCopy;
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
@@ -328,7 +328,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v4;
+    v9 = valueCopy;
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
@@ -400,18 +400,18 @@ void __64__CADLocalXPCProxyObject__updatedArgumentValueForArgumentValue___block_
   }
 }
 
-- (id)_replacementArgumentValueForURLWrapper:(id)a3
+- (id)_replacementArgumentValueForURLWrapper:(id)wrapper
 {
-  v3 = a3;
+  wrapperCopy = wrapper;
   if (CalDatabaseIsCurrentProcessCalaccessd())
   {
-    v4 = v3;
+    v4 = wrapperCopy;
   }
 
   else
   {
     v5 = [CADEmulatedSecurityScopedURLWrapper alloc];
-    v6 = [v3 url];
+    v6 = [wrapperCopy url];
     v4 = [(CADEmulatedSecurityScopedURLWrapper *)v5 initWithOriginalURL:v6];
   }
 

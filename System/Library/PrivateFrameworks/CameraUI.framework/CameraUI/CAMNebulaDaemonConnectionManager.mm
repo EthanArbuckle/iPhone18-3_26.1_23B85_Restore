@@ -1,36 +1,36 @@
 @interface CAMNebulaDaemonConnectionManager
 + (id)_daemonProtocolInterface;
-- (CAMNebulaDaemonConnectionManager)initWithConnection:(id)a3 name:(id)a4 bundleIdentifier:(id)a5 queue:(id)a6 clientAccess:(id)a7 allowedProtocol:(id)a8;
+- (CAMNebulaDaemonConnectionManager)initWithConnection:(id)connection name:(id)name bundleIdentifier:(id)identifier queue:(id)queue clientAccess:(id)access allowedProtocol:(id)protocol;
 - (CAMNebulaDaemonConnectionManagerDelegate)delegate;
 - (NSString)description;
-- (id)_targetsForSelector:(SEL)a3;
-- (void)_getProxyForExecutingBlock:(id)a3;
-- (void)addTarget:(id)a3 forProtocol:(id)a4;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
-- (void)forceStopTimelapseCaptureWithReasons:(int64_t)a3;
-- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)a3;
+- (id)_targetsForSelector:(SEL)selector;
+- (void)_getProxyForExecutingBlock:(id)block;
+- (void)addTarget:(id)target forProtocol:(id)protocol;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)forceStopTimelapseCaptureWithReasons:(int64_t)reasons;
+- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)result;
 - (void)pingAfterInterruption;
 @end
 
 @implementation CAMNebulaDaemonConnectionManager
 
-- (CAMNebulaDaemonConnectionManager)initWithConnection:(id)a3 name:(id)a4 bundleIdentifier:(id)a5 queue:(id)a6 clientAccess:(id)a7 allowedProtocol:(id)a8
+- (CAMNebulaDaemonConnectionManager)initWithConnection:(id)connection name:(id)name bundleIdentifier:(id)identifier queue:(id)queue clientAccess:(id)access allowedProtocol:(id)protocol
 {
-  v15 = a3;
-  v16 = a4;
-  v35 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  connectionCopy = connection;
+  nameCopy = name;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  accessCopy = access;
+  protocolCopy = protocol;
   v40.receiver = self;
   v40.super_class = CAMNebulaDaemonConnectionManager;
   v20 = [(CAMNebulaDaemonConnectionManager *)&v40 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_bundleIdentifier, a5);
-    objc_storeStrong(&v21->__connection, a3);
-    v22 = [v16 copy];
+    objc_storeStrong(&v20->_bundleIdentifier, identifier);
+    objc_storeStrong(&v21->__connection, connection);
+    v22 = [nameCopy copy];
     name = v21->__name;
     v21->__name = v22;
 
@@ -38,12 +38,12 @@
     tasksPerIdentifier = v21->__tasksPerIdentifier;
     v21->__tasksPerIdentifier = v24;
 
-    objc_storeStrong(&v21->__queue, a6);
-    v26 = [v18 copy];
+    objc_storeStrong(&v21->__queue, queue);
+    v26 = [accessCopy copy];
     clientAccess = v21->_clientAccess;
     v21->_clientAccess = v26;
 
-    objc_storeStrong(&v21->_allowedProtocol, a8);
+    objc_storeStrong(&v21->_allowedProtocol, protocol);
     v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
     registeredTargets = v21->__registeredTargets;
     v21->__registeredTargets = v28;
@@ -52,22 +52,22 @@
     registeredProtocols = v21->__registeredProtocols;
     v21->__registeredProtocols = v30;
 
-    v32 = [objc_opt_class() _daemonProtocolInterface];
-    v33 = [objc_opt_class() _clientProtocolInterface];
-    [v15 setExportedObject:v21];
-    [v15 setExportedInterface:v32];
-    [v15 setRemoteObjectInterface:v33];
-    [v15 _setQueue:v21->__queue];
-    [v15 setDelegate:v21];
-    objc_initWeak(&location, v15);
+    _daemonProtocolInterface = [objc_opt_class() _daemonProtocolInterface];
+    _clientProtocolInterface = [objc_opt_class() _clientProtocolInterface];
+    [connectionCopy setExportedObject:v21];
+    [connectionCopy setExportedInterface:_daemonProtocolInterface];
+    [connectionCopy setRemoteObjectInterface:_clientProtocolInterface];
+    [connectionCopy _setQueue:v21->__queue];
+    [connectionCopy setDelegate:v21];
+    objc_initWeak(&location, connectionCopy);
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __112__CAMNebulaDaemonConnectionManager_initWithConnection_name_bundleIdentifier_queue_clientAccess_allowedProtocol___block_invoke;
     v36[3] = &unk_1E76F7DC0;
     objc_copyWeak(&v38, &location);
     v37 = v21;
-    [v15 setInvalidationHandler:v36];
-    [v15 resume];
+    [connectionCopy setInvalidationHandler:v36];
+    [connectionCopy resume];
 
     objc_destroyWeak(&v38);
     objc_destroyWeak(&location);
@@ -100,21 +100,21 @@ void __112__CAMNebulaDaemonConnectionManager_initWithConnection_name_bundleIdent
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   name = self->__name;
-  v6 = [(NSXPCConnection *)self->__connection processIdentifier];
+  processIdentifier = [(NSXPCConnection *)self->__connection processIdentifier];
   v7 = NSStringFromProtocol(self->_allowedProtocol);
-  v8 = [v3 stringWithFormat:@"<%@ %p '%@' pid: %d allowed: %@>", v4, self, name, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@ %p '%@' pid: %d allowed: %@>", v4, self, name, processIdentifier, v7];
 
   return v8;
 }
 
-- (void)addTarget:(id)a3 forProtocol:(id)a4
+- (void)addTarget:(id)target forProtocol:(id)protocol
 {
-  if (a3 && a4)
+  if (target && protocol)
   {
     registeredTargets = self->__registeredTargets;
-    v7 = a4;
-    [(NSMutableArray *)registeredTargets addObject:a3];
-    [(NSMutableArray *)self->__registeredProtocols addObject:v7];
+    protocolCopy = protocol;
+    [(NSMutableArray *)registeredTargets addObject:target];
+    [(NSMutableArray *)self->__registeredProtocols addObject:protocolCopy];
   }
 }
 
@@ -129,24 +129,24 @@ void __112__CAMNebulaDaemonConnectionManager_initWithConnection_name_bundleIdent
   return v2;
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v5 = a5;
+  replyCopy = reply;
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v5)
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  v11 = invocationCopy;
+  if (replyCopy)
   {
-    [v10 invoke];
+    [invocationCopy invoke];
   }
 
   else
   {
-    v12 = [v10 selector];
-    if (protocol_getMethodDescription(self->_allowedProtocol, v12, 1, 1).name)
+    selector = [invocationCopy selector];
+    if (protocol_getMethodDescription(self->_allowedProtocol, selector, 1, 1).name)
     {
-      v13 = [(CAMNebulaDaemonConnectionManager *)self _targetsForSelector:v12];
+      v13 = [(CAMNebulaDaemonConnectionManager *)self _targetsForSelector:selector];
       if ([v13 count])
       {
         v14 = os_transaction_create();
@@ -174,7 +174,7 @@ void __112__CAMNebulaDaemonConnectionManager_initWithConnection_name_bundleIdent
       {
         v17 = NSStringFromSelector(a2);
         *buf = 138543618;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = v17;
         _os_log_impl(&dword_1A3640000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ tried to call %{public}@ but is not allowed to", buf, 0x16u);
@@ -217,7 +217,7 @@ void __72__CAMNebulaDaemonConnectionManager_connection_handleInvocation_isReply_
   }
 }
 
-- (id)_targetsForSelector:(SEL)a3
+- (id)_targetsForSelector:(SEL)selector
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = [(NSMutableArray *)self->__registeredProtocols count];
@@ -228,14 +228,14 @@ void __72__CAMNebulaDaemonConnectionManager_connection_handleInvocation_isReply_
     {
       v9 = [(NSMutableArray *)self->__registeredTargets objectAtIndexedSubscript:i];
       v10 = [(NSMutableArray *)self->__registeredProtocols objectAtIndexedSubscript:i];
-      if (protocol_getMethodDescription(v10, a3, 1, 1).name)
+      if (protocol_getMethodDescription(v10, selector, 1, 1).name)
       {
         [v5 addObject:v9];
       }
     }
   }
 
-  if (sel_pingAfterInterruption == a3)
+  if (sel_pingAfterInterruption == selector)
   {
     [v5 addObject:self];
   }
@@ -253,9 +253,9 @@ void __72__CAMNebulaDaemonConnectionManager_connection_handleInvocation_isReply_
   }
 }
 
-- (void)_getProxyForExecutingBlock:(id)a3
+- (void)_getProxyForExecutingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   queue = self->__queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -263,8 +263,8 @@ void __72__CAMNebulaDaemonConnectionManager_connection_handleInvocation_isReply_
   block[2] = __63__CAMNebulaDaemonConnectionManager__getProxyForExecutingBlock___block_invoke;
   block[3] = &unk_1E76FA3A0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -314,25 +314,25 @@ void __63__CAMNebulaDaemonConnectionManager__getProxyForExecutingBlock___block_i
   *(v5 + 40) = v3;
 }
 
-- (void)forceStopTimelapseCaptureWithReasons:(int64_t)a3
+- (void)forceStopTimelapseCaptureWithReasons:(int64_t)reasons
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __73__CAMNebulaDaemonConnectionManager_forceStopTimelapseCaptureWithReasons___block_invoke;
   v3[3] = &__block_descriptor_40_e53_v24__0___CAMNebulaDaemonClientProtocol__8__NSError_16l;
-  v3[4] = a3;
+  v3[4] = reasons;
   [(CAMNebulaDaemonConnectionManager *)self _getProxyForExecutingBlock:v3];
 }
 
-- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)a3
+- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __91__CAMNebulaDaemonConnectionManager_nebulaDaemonDidCompleteLocalVideoPersistenceWithResult___block_invoke;
   v6[3] = &unk_1E76FA3E8;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(CAMNebulaDaemonConnectionManager *)self _getProxyForExecutingBlock:v6];
 }
 

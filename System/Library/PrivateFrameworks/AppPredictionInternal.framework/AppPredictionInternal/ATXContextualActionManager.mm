@@ -1,9 +1,9 @@
 @interface ATXContextualActionManager
 - (ATXContextualActionManager)init;
-- (ATXContextualActionManager)initWithStaticActions:(id)a3;
+- (ATXContextualActionManager)initWithStaticActions:(id)actions;
 - (double)getIntervalSinceOldestEvent;
 - (id)getAllCounts;
-- (id)getCountsForContext:(id)a3;
+- (id)getCountsForContext:(id)context;
 - (void)_getActionsFromLastMonth;
 - (void)_updateCacheIfNeeded;
 @end
@@ -21,19 +21,19 @@
     actionCountCache = v2->actionCountCache;
     v2->actionCountCache = v3;
 
-    v5 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     actionCountCacheCreationDate = v2->actionCountCacheCreationDate;
-    v2->actionCountCacheCreationDate = v5;
+    v2->actionCountCacheCreationDate = distantPast;
   }
 
   return v2;
 }
 
-- (id)getCountsForContext:(id)a3
+- (id)getCountsForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(ATXContextualActionManager *)self _updateCacheIfNeeded];
-  v5 = [(ATXContextualActionCountCache *)self->actionCountCache getCountsForContext:v4];
+  v5 = [(ATXContextualActionCountCache *)self->actionCountCache getCountsForContext:contextCopy];
 
   return v5;
 }
@@ -49,8 +49,8 @@
 - (double)getIntervalSinceOldestEvent
 {
   [(ATXContextualActionManager *)self _updateCacheIfNeeded];
-  v3 = [(ATXContextualActionCountCache *)self->actionCountCache oldestAction];
-  [v3 timeIntervalSinceNow];
+  oldestAction = [(ATXContextualActionCountCache *)self->actionCountCache oldestAction];
+  [oldestAction timeIntervalSinceNow];
   v5 = -v4;
 
   return v5;
@@ -102,10 +102,10 @@
   self->actionCountCache = v5;
 }
 
-- (ATXContextualActionManager)initWithStaticActions:(id)a3
+- (ATXContextualActionManager)initWithStaticActions:(id)actions
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionsCopy = actions;
   v21.receiver = self;
   v21.super_class = ATXContextualActionManager;
   v5 = [(ATXContextualActionManager *)&v21 init];
@@ -119,7 +119,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v4;
+    v8 = actionsCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v9)
     {
@@ -145,9 +145,9 @@
       while (v10);
     }
 
-    v13 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     actionCountCacheCreationDate = v5->actionCountCacheCreationDate;
-    v5->actionCountCacheCreationDate = v13;
+    v5->actionCountCacheCreationDate = distantFuture;
   }
 
   v15 = *MEMORY[0x277D85DE8];

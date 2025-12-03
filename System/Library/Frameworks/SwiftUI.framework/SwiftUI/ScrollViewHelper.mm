@@ -1,14 +1,14 @@
 @interface ScrollViewHelper
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (_TtC7SwiftUI16ScrollViewHelper)init;
-- (id)accessibilityAttributedScrollStatusForScrollView:(id)a3;
-- (id)accessibilityScrollStatusForScrollView:(id)a3;
-- (void)_updateCycleIdleUntil:(unint64_t)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (id)accessibilityAttributedScrollStatusForScrollView:(id)view;
+- (id)accessibilityScrollStatusForScrollView:(id)view;
+- (void)_updateCycleIdleUntil:(unint64_t)until;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation ScrollViewHelper
@@ -20,29 +20,29 @@
   return result;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v3 = self;
+  selfCopy = self;
   ScrollViewHelper.willStartPanning()();
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  targetOffset = *a5;
-  v8 = self;
+  y = velocity.y;
+  x = velocity.x;
+  targetOffset = *offset;
+  selfCopy = self;
   ScrollViewHelper.mayEndPanning(velocity:targetOffset:)(__PAIR128__(*&y, *&x), &targetOffset);
-  *a5 = targetOffset;
+  *offset = targetOffset;
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v5 = self;
-  ScrollViewHelper.didEndPanning(willDecelerate:)(a4);
+  selfCopy = self;
+  ScrollViewHelper.didEndPanning(willDecelerate:)(decelerate);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   *(&self->super.isa + OBJC_IVAR____TtC7SwiftUI16ScrollViewHelper_lastPhase) = 0;
   v3 = self + OBJC_IVAR____TtC7SwiftUI16ScrollViewHelper_lastTargetOffsetState;
@@ -52,14 +52,14 @@
   *(v3 + 3) = 0u;
   v3[66] = 0;
   *(v3 + 32) = 512;
-  v5 = self;
+  selfCopy = self;
   ScrollViewHelper.updateGraphState(isPreferred:)(0);
-  v4 = (&v5->super.isa + OBJC_IVAR____TtC7SwiftUI16ScrollViewHelper_decelerationBias);
+  v4 = (&selfCopy->super.isa + OBJC_IVAR____TtC7SwiftUI16ScrollViewHelper_decelerationBias);
   *v4 = 0;
   v4[1] = 0;
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   *(&self->super.isa + OBJC_IVAR____TtC7SwiftUI16ScrollViewHelper_isAnimationCheckPending) = 1;
   *(&self->super.isa + OBJC_IVAR____TtC7SwiftUI16ScrollViewHelper_lastPhase) = 0;
@@ -70,11 +70,11 @@
   *(v3 + 3) = 0u;
   v3[66] = 0;
   *(v3 + 32) = 512;
-  v4 = self;
+  selfCopy = self;
   ScrollViewHelper.updateGraphState(isPreferred:)(0);
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
   v4 = self + OBJC_IVAR____TtC7SwiftUI16ScrollViewHelper_delegate;
   result = 1;
@@ -83,7 +83,7 @@
     v5 = *(v4 + 1);
     ObjectType = swift_getObjectType();
     v7 = *(v5 + 24);
-    v8 = self;
+    selfCopy = self;
     LOBYTE(v5) = v7(ObjectType, v5);
     swift_unknownObjectRelease();
 
@@ -96,20 +96,20 @@
   return result;
 }
 
-- (void)_updateCycleIdleUntil:(unint64_t)a3
+- (void)_updateCycleIdleUntil:(unint64_t)until
 {
-  v3 = self;
+  selfCopy = self;
   ScrollViewHelper.prefetch(until:)();
 }
 
-- (id)accessibilityScrollStatusForScrollView:(id)a3
+- (id)accessibilityScrollStatusForScrollView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 swiftUI_accessibilityScrollStatus];
-  if (v4)
+  viewCopy = view;
+  swiftUI_accessibilityScrollStatus = [viewCopy swiftUI_accessibilityScrollStatus];
+  if (swiftUI_accessibilityScrollStatus)
   {
-    v5 = v4;
-    v6 = (*(v4 + 2))();
+    v5 = swiftUI_accessibilityScrollStatus;
+    v6 = (*(swiftUI_accessibilityScrollStatus + 2))();
     if (v6)
     {
       v7 = v6;
@@ -132,14 +132,14 @@ LABEL_6:
   return v12;
 }
 
-- (id)accessibilityAttributedScrollStatusForScrollView:(id)a3
+- (id)accessibilityAttributedScrollStatusForScrollView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 swiftUI_accessibilityAttributedScrollStatus];
-  if (v4)
+  viewCopy = view;
+  swiftUI_accessibilityAttributedScrollStatus = [viewCopy swiftUI_accessibilityAttributedScrollStatus];
+  if (swiftUI_accessibilityAttributedScrollStatus)
   {
-    v5 = v4;
-    v6 = (*(v4 + 2))();
+    v5 = swiftUI_accessibilityAttributedScrollStatus;
+    v6 = (*(swiftUI_accessibilityAttributedScrollStatus + 2))();
 
     _Block_release(v5);
   }

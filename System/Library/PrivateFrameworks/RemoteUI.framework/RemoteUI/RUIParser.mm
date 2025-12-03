@@ -1,57 +1,57 @@
 @interface RUIParser
-- (RUIParser)initWithBaseURL:(id)a3 style:(id)a4 delegate:(id)a5 decodingUserInfo:(id)a6;
-- (RUIParser)initWithDelegate:(id)a3;
-- (RUIParser)initWithXML:(id)a3 baseURL:(id)a4 style:(id)a5 delegate:(id)a6;
-- (RUIParser)initWithXML:(id)a3 baseURL:(id)a4 style:(id)a5 delegate:(id)a6 decodingUserInfo:(id)a7;
+- (RUIParser)initWithBaseURL:(id)l style:(id)style delegate:(id)delegate decodingUserInfo:(id)info;
+- (RUIParser)initWithDelegate:(id)delegate;
+- (RUIParser)initWithXML:(id)l baseURL:(id)rL style:(id)style delegate:(id)delegate;
+- (RUIParser)initWithXML:(id)l baseURL:(id)rL style:(id)style delegate:(id)delegate decodingUserInfo:(id)info;
 - (RUIParserDelegate)delegate;
-- (id)objectModelParser:(id)a3 createPageWithName:(id)a4 attributes:(id)a5;
-- (id)parseXML:(id)a3;
-- (void)parseObjectModelWithXMLElement:(id)a3;
+- (id)objectModelParser:(id)parser createPageWithName:(id)name attributes:(id)attributes;
+- (id)parseXML:(id)l;
+- (void)parseObjectModelWithXMLElement:(id)element;
 @end
 
 @implementation RUIParser
 
-- (RUIParser)initWithXML:(id)a3 baseURL:(id)a4 style:(id)a5 delegate:(id)a6
+- (RUIParser)initWithXML:(id)l baseURL:(id)rL style:(id)style delegate:(id)delegate
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  delegateCopy = delegate;
+  styleCopy = style;
+  rLCopy = rL;
+  lCopy = l;
   v14 = objc_opt_new();
-  v15 = [(RUIParser *)self initWithXML:v13 baseURL:v12 style:v11 delegate:v10 decodingUserInfo:v14];
+  v15 = [(RUIParser *)self initWithXML:lCopy baseURL:rLCopy style:styleCopy delegate:delegateCopy decodingUserInfo:v14];
 
   return v15;
 }
 
-- (RUIParser)initWithDelegate:(id)a3
+- (RUIParser)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = RUIParser;
   v5 = [(RUIParser *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (RUIParser)initWithBaseURL:(id)a3 style:(id)a4 delegate:(id)a5 decodingUserInfo:(id)a6
+- (RUIParser)initWithBaseURL:(id)l style:(id)style delegate:(id)delegate decodingUserInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  styleCopy = style;
+  delegateCopy = delegate;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = RUIParser;
   v14 = [(RUIParser *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_delegate, v12);
-    v16 = [[RUIObjectModelParser alloc] initWithBaseURL:v10 style:v11 delegate:v15 decodingUserInfo:v13];
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    v16 = [[RUIObjectModelParser alloc] initWithBaseURL:lCopy style:styleCopy delegate:v15 decodingUserInfo:infoCopy];
     objectModelParser = v15->_objectModelParser;
     v15->_objectModelParser = v16;
   }
@@ -59,25 +59,25 @@
   return v15;
 }
 
-- (RUIParser)initWithXML:(id)a3 baseURL:(id)a4 style:(id)a5 delegate:(id)a6 decodingUserInfo:(id)a7
+- (RUIParser)initWithXML:(id)l baseURL:(id)rL style:(id)style delegate:(id)delegate decodingUserInfo:(id)info
 {
-  v12 = a3;
-  v13 = [(RUIParser *)self initWithBaseURL:a4 style:a5 delegate:a6 decodingUserInfo:a7];
+  lCopy = l;
+  v13 = [(RUIParser *)self initWithBaseURL:rL style:style delegate:delegate decodingUserInfo:info];
   v14 = v13;
   if (v13)
   {
-    v15 = [(RUIParser *)v13 parseXML:v12];
+    v15 = [(RUIParser *)v13 parseXML:lCopy];
     [(RUIParser *)v14 parseObjectModelWithXMLElement:v15];
   }
 
   return v14;
 }
 
-- (void)parseObjectModelWithXMLElement:(id)a3
+- (void)parseObjectModelWithXMLElement:(id)element
 {
-  [(RUIObjectModelParser *)self->_objectModelParser parseXMLElement:a3];
-  v9 = [(RUIObjectModelParser *)self->_objectModelParser error];
-  v4 = [(RUIObjectModelParser *)self->_objectModelParser uiObjectModel];
+  [(RUIObjectModelParser *)self->_objectModelParser parseXMLElement:element];
+  error = [(RUIObjectModelParser *)self->_objectModelParser error];
+  uiObjectModel = [(RUIObjectModelParser *)self->_objectModelParser uiObjectModel];
   error = self->_error;
   p_error = &self->_error;
   v5 = error;
@@ -88,21 +88,21 @@
 
   else
   {
-    v8 = v9;
+    v8 = error;
   }
 
   objc_storeStrong(p_error, v8);
   *(p_error - 24) = *p_error == 0;
-  [v4 parseDidFinish];
+  [uiObjectModel parseDidFinish];
 }
 
-- (id)parseXML:(id)a3
+- (id)parseXML:(id)l
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
-  v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  lCopy = l;
+  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:lCopy encoding:4];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v7 = [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (![v7 length])
   {
@@ -118,12 +118,12 @@
 
     v9 = [@"<xmlui action=push/>" dataUsingEncoding:4];
 
-    v4 = v9;
+    lCopy = v9;
   }
 
   v10 = objc_alloc_init(RUIXMLSanitizer);
   v22 = 0;
-  v11 = [(RUIXMLSanitizer *)v10 sanitizedXMLElementWithData:v4 error:&v22];
+  v11 = [(RUIXMLSanitizer *)v10 sanitizedXMLElementWithData:lCopy error:&v22];
   v12 = v22;
   v21 = 0;
   v13 = [(RUIXMLSanitizer *)v10 logStringWithXMLString:v5 error:&v21];
@@ -177,17 +177,17 @@ LABEL_11:
   return v11;
 }
 
-- (id)objectModelParser:(id)a3 createPageWithName:(id)a4 attributes:(id)a5
+- (id)objectModelParser:(id)parser createPageWithName:(id)name attributes:(id)attributes
 {
-  v7 = a4;
-  v8 = a5;
+  nameCopy = name;
+  attributesCopy = attributes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    v12 = [v11 parser:self createPageWithName:v7 attributes:v8];
+    v12 = [v11 parser:self createPageWithName:nameCopy attributes:attributesCopy];
   }
 
   else

@@ -1,21 +1,21 @@
 @interface EditorialSearchResultContentView
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation EditorialSearchResultContentView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_259C5C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_25AC9C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_25AC9C(change);
 }
 
 @end

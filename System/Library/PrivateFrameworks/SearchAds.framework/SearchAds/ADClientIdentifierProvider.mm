@@ -1,6 +1,6 @@
 @interface ADClientIdentifierProvider
 - (ADClientIdentifierProvider)init;
-- (id)getIdentifiersWithType:(int64_t)a3;
+- (id)getIdentifiersWithType:(int64_t)type;
 - (void)notificationReceived;
 @end
 
@@ -25,11 +25,11 @@
   return v11;
 }
 
-- (id)getIdentifiersWithType:(int64_t)a3
+- (id)getIdentifiersWithType:(int64_t)type
 {
   v7 = *(&self->super.isa + OBJC_IVAR___ADClientIdentifierProvider_lock);
   sub_264E560B4();
-  v4 = self;
+  selfCopy = self;
 
   sub_264E51798(&qword_27FFB6EF8, &qword_264E57E10);
   sub_264E560C4();
@@ -44,7 +44,7 @@
 {
   v4 = *(&self->super.isa + OBJC_IVAR___ADClientIdentifierProvider_lock);
   sub_264E560B4();
-  v3 = self;
+  selfCopy = self;
 
   sub_264E560C4();
 }

@@ -1,16 +1,16 @@
 @interface PSUIPlanPendingTransferActivatingTableCell
-- (PSUIPlanPendingTransferActivatingTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PSUIPlanPendingTransferActivatingTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_setStatusLabelText;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSUIPlanPendingTransferActivatingTableCell
 
-- (PSUIPlanPendingTransferActivatingTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSUIPlanPendingTransferActivatingTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = PSUIPlanPendingTransferActivatingTableCell;
-  v4 = [(PSUIDanglingPlanTableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSUIDanglingPlanTableCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
@@ -24,28 +24,28 @@
   return v4;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v23.receiver = self;
   v23.super_class = PSUIPlanPendingTransferActivatingTableCell;
-  v4 = a3;
-  [(PSUIDanglingPlanTableCell *)&v23 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:*MEMORY[0x277D3FE70]];
+  specifierCopy = specifier;
+  [(PSUIDanglingPlanTableCell *)&v23 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:*MEMORY[0x277D3FE70]];
 
   v6 = +[PSUICellularPlanManagerCache sharedInstance];
   v7 = [v6 planPendingTransferFromReference:v5];
   planPendingTransfer = self->_planPendingTransfer;
   self->_planPendingTransfer = v7;
 
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v11 = self->_planPendingTransfer;
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v12 = [(CTCellularPlanPendingTransfer *)v11 carrierName];
-    v13 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer deviceName];
-    v14 = [v13 length];
+    carrierName = [(CTCellularPlanPendingTransfer *)v11 carrierName];
+    deviceName = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer deviceName];
+    v14 = [deviceName length];
 
     if (!v14)
     {
@@ -54,26 +54,26 @@
     }
 
     v15 = MEMORY[0x277CCACA8];
-    v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v17 = [v16 localizedStringForKey:@"USED_ON_%@" value:&stru_287733598 table:@"Gemini-Gemini"];
-    v18 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer deviceName];
-    v19 = [v15 stringWithFormat:v17, v18];
+    phoneNumber = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v17 = [phoneNumber localizedStringForKey:@"USED_ON_%@" value:&stru_287733598 table:@"Gemini-Gemini"];
+    deviceName2 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer deviceName];
+    v19 = [v15 stringWithFormat:v17, deviceName2];
   }
 
   else
   {
-    v20 = [(CTCellularPlanPendingTransfer *)v11 planLabel];
-    v12 = [v20 label];
+    planLabel = [(CTCellularPlanPendingTransfer *)v11 planLabel];
+    carrierName = [planLabel label];
 
-    v16 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer phoneNumber];
-    v19 = [SettingsCellularUtils formattedPhoneNumber:v16];
+    phoneNumber = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer phoneNumber];
+    v19 = [SettingsCellularUtils formattedPhoneNumber:phoneNumber];
   }
 
 LABEL_6:
-  [(PSUIDanglingPlanTableCell *)self _setLabel:v12 andPhoneNumber:v19];
-  v21 = [(PSUIPlanPendingTransferActivatingTableCell *)self _setStatusLabelText];
-  v22 = [(PSUIDanglingPlanTableCell *)self statusLabel];
-  [v22 setText:v21];
+  [(PSUIDanglingPlanTableCell *)self _setLabel:carrierName andPhoneNumber:v19];
+  _setStatusLabelText = [(PSUIPlanPendingTransferActivatingTableCell *)self _setStatusLabelText];
+  statusLabel = [(PSUIDanglingPlanTableCell *)self statusLabel];
+  [statusLabel setText:_setStatusLabelText];
 
   [(PSUIPlanPendingTransferActivatingTableCell *)self setNeedsLayout];
 }

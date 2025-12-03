@@ -1,24 +1,24 @@
 @interface UIColor
-+ (id)hexValuedColor:(id)a3 colorSpace:(__CFString *)a4 error:(id *)a5;
++ (id)hexValuedColor:(id)color colorSpace:(__CFString *)space error:(id *)error;
 @end
 
 @implementation UIColor
 
-+ (id)hexValuedColor:(id)a3 colorSpace:(__CFString *)a4 error:(id *)a5
++ (id)hexValuedColor:(id)color colorSpace:(__CFString *)space error:(id *)error
 {
-  v7 = a3;
-  if ([v7 hasPrefix:@"#"] && objc_msgSend(v7, "length") >= 2)
+  colorCopy = color;
+  if ([colorCopy hasPrefix:@"#"] && objc_msgSend(colorCopy, "length") >= 2)
   {
-    v8 = [v7 substringFromIndex:1];
+    v8 = [colorCopy substringFromIndex:1];
 
-    v7 = v8;
+    colorCopy = v8;
   }
 
-  v9 = [v7 length];
+  v9 = [colorCopy length];
   if (v9 == 3)
   {
-    v21 = a4;
-    v22 = a5;
+    spaceCopy2 = space;
+    errorCopy2 = error;
     v10 = 1;
 LABEL_8:
     v11 = 0;
@@ -26,7 +26,7 @@ LABEL_8:
     v13 = 1;
     do
     {
-      v14 = [v7 substringWithRange:{v11, v10}];
+      v14 = [colorCopy substringWithRange:{v11, v10}];
       v15 = v14;
       if (v9 == 3)
       {
@@ -48,7 +48,7 @@ LABEL_8:
     while (v12 != 24);
     if (v13)
     {
-      if (kCGColorSpaceDisplayP3 == v21)
+      if (kCGColorSpaceDisplayP3 == spaceCopy2)
       {
         [UIColor colorWithDisplayP3Red:v24 green:v25 blue:v26 alpha:1.0];
       }
@@ -61,8 +61,8 @@ LABEL_8:
       goto LABEL_21;
     }
 
-    a5 = v22;
-    if (v22)
+    error = errorCopy2;
+    if (errorCopy2)
     {
       goto LABEL_16;
     }
@@ -70,19 +70,19 @@ LABEL_8:
     goto LABEL_18;
   }
 
-  if ([v7 length] == 6)
+  if ([colorCopy length] == 6)
   {
-    v21 = a4;
-    v22 = a5;
+    spaceCopy2 = space;
+    errorCopy2 = error;
     v10 = 2;
     goto LABEL_8;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_16:
     [NSError errorWithDomain:@"com.apple.diagnostics.invalidHexValue" code:-1 userInfo:0];
-    *a5 = v19 = 0;
+    *error = v19 = 0;
     goto LABEL_21;
   }
 

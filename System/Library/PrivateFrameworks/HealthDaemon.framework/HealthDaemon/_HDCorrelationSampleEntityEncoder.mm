@@ -1,15 +1,15 @@
 @interface _HDCorrelationSampleEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
 @end
 
 @implementation _HDCorrelationSampleEntityEncoder
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {
@@ -25,12 +25,12 @@
   return v10;
 }
 
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v9 = [objc_alloc(MEMORY[0x277CCD240]) _init];
-  if (-[_HDCorrelationSampleEntityEncoder applyPropertiesToObject:persistentID:row:error:](self, "applyPropertiesToObject:persistentID:row:error:", v9, a3, a4, a5) && ([v9 objects], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v11))
+  _init = [objc_alloc(MEMORY[0x277CCD240]) _init];
+  if (-[_HDCorrelationSampleEntityEncoder applyPropertiesToObject:persistentID:row:error:](self, "applyPropertiesToObject:persistentID:row:error:", _init, d, row, error) && ([_init objects], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v11))
   {
-    v12 = v9;
+    v12 = _init;
   }
 
   else
@@ -41,25 +41,25 @@
   return v12;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  LODWORD(a5) = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  LODWORD(row) = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
-  if (a5)
+  if (row)
   {
-    v12 = [(HDEntityEncoder *)self profile];
-    v13 = [HDAssociationEntity objectIDsForAssociationEntityWithPersistentID:a4 profile:v12 error:a6];
+    profile = [(HDEntityEncoder *)self profile];
+    v13 = [HDAssociationEntity objectIDsForAssociationEntityWithPersistentID:d profile:profile error:error];
 
     v14 = v13 != 0;
     if (v13)
     {
-      v15 = [(HDEntityEncoder *)self profile];
+      profile2 = [(HDEntityEncoder *)self profile];
       v16 = v13;
-      v17 = v15;
+      v17 = profile2;
       objc_opt_self();
-      v18 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v19 = [MEMORY[0x277CBEB58] set];
       v41 = v17;
       v20 = [(HDDataEntity *)HDQuantitySampleSeriesEntity entityEnumeratorWithProfile:v17];
@@ -75,7 +75,7 @@
       v23 = v16;
       v40 = v22;
       v46 = v22;
-      v24 = v18;
+      v24 = array;
       v47 = v24;
       [v20 enumerateWithError:v48 handler:v45];
       v25 = v48[0];
@@ -92,8 +92,8 @@
         [(HDDataEntity *)HDCategorySampleEntity entityEnumeratorWithProfile:v41];
         v28 = v39 = v23;
 
-        v29 = [v38 allObjects];
-        v30 = HDDataEntityPredicateForRowIDs(v29);
+        allObjects = [v38 allObjects];
+        v30 = HDDataEntityPredicateForRowIDs(allObjects);
         [v28 setPredicate:v30];
 
         v44 = v25;
@@ -112,16 +112,16 @@
         v25 = v32;
       }
 
-      v34 = [(HDEntityEncoder *)self authorizationFilter];
-      v35 = v34;
-      if (v34)
+      authorizationFilter = [(HDEntityEncoder *)self authorizationFilter];
+      v35 = authorizationFilter;
+      if (authorizationFilter)
       {
-        v36 = (*(v34 + 16))(v34, v24);
+        v36 = (*(authorizationFilter + 16))(authorizationFilter, v24);
 
         v24 = v36;
       }
 
-      [v10 _addCorrelatedObjects:v24];
+      [objectCopy _addCorrelatedObjects:v24];
     }
   }
 

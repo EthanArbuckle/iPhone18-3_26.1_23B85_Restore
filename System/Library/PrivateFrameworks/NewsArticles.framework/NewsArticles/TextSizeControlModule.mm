@@ -9,7 +9,7 @@
 {
   __swift_project_boxed_opaque_existential_1((&self->super.isa + OBJC_IVAR____TtC12NewsArticles21TextSizeControlModule_resolver), *&self->resolver[OBJC_IVAR____TtC12NewsArticles21TextSizeControlModule_resolver + 16]);
   type metadata accessor for TextSizeControlViewController();
-  v3 = self;
+  selfCopy = self;
   result = sub_1D7D28D1C();
   if (result)
   {

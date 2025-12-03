@@ -1,31 +1,31 @@
 @interface _HFSetContainer
-+ (id)containerWithObject:(id)a3 atIndex:(unint64_t)a4 comparator:(id)a5 hashGenerator:(id)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)containerWithObject:(id)object atIndex:(unint64_t)index comparator:(id)comparator hashGenerator:(id)generator;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation _HFSetContainer
 
-+ (id)containerWithObject:(id)a3 atIndex:(unint64_t)a4 comparator:(id)a5 hashGenerator:(id)a6
++ (id)containerWithObject:(id)object atIndex:(unint64_t)index comparator:(id)comparator hashGenerator:(id)generator
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  generatorCopy = generator;
+  comparatorCopy = comparator;
+  objectCopy = object;
   v12 = objc_alloc_init(_HFSetContainer);
-  [(_HFSetContainer *)v12 setObject:v11];
+  [(_HFSetContainer *)v12 setObject:objectCopy];
 
-  [(_HFSetContainer *)v12 setIndex:a4];
-  [(_HFSetContainer *)v12 setComparator:v10];
+  [(_HFSetContainer *)v12 setIndex:index];
+  [(_HFSetContainer *)v12 setComparator:comparatorCopy];
 
-  [(_HFSetContainer *)v12 setHashGenerator:v9];
+  [(_HFSetContainer *)v12 setHashGenerator:generatorCopy];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -35,19 +35,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_HFSetContainer *)v4 object];
-      v6 = [(_HFSetContainer *)self comparator];
-      if (v6)
+      object = [(_HFSetContainer *)equalCopy object];
+      comparator = [(_HFSetContainer *)self comparator];
+      if (comparator)
       {
-        v7 = [(_HFSetContainer *)self comparator];
-        v8 = [(_HFSetContainer *)self object];
-        v9 = (v7)[2](v7, v8, v5);
+        comparator2 = [(_HFSetContainer *)self comparator];
+        object2 = [(_HFSetContainer *)self object];
+        v9 = (comparator2)[2](comparator2, object2, object);
       }
 
       else
       {
-        v7 = [(_HFSetContainer *)self object];
-        v9 = [v7 isEqual:v5];
+        comparator2 = [(_HFSetContainer *)self object];
+        v9 = [comparator2 isEqual:object];
       }
     }
 
@@ -62,18 +62,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_HFSetContainer *)self hashGenerator];
-  if (v3)
+  hashGenerator = [(_HFSetContainer *)self hashGenerator];
+  if (hashGenerator)
   {
-    v4 = [(_HFSetContainer *)self hashGenerator];
-    v5 = [(_HFSetContainer *)self object];
-    v6 = (v4)[2](v4, v5);
+    hashGenerator2 = [(_HFSetContainer *)self hashGenerator];
+    object = [(_HFSetContainer *)self object];
+    v6 = (hashGenerator2)[2](hashGenerator2, object);
   }
 
   else
   {
-    v4 = [(_HFSetContainer *)self object];
-    v6 = [v4 hash];
+    hashGenerator2 = [(_HFSetContainer *)self object];
+    v6 = [hashGenerator2 hash];
   }
 
   return v6;

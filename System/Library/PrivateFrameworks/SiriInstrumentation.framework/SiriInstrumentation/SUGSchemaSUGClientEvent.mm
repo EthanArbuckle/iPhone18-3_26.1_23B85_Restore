@@ -1,10 +1,10 @@
 @interface SUGSchemaSUGClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (SUGSchemaSUGClientEvent)initWithDictionary:(id)a3;
-- (SUGSchemaSUGClientEvent)initWithJSON:(id)a3;
+- (SUGSchemaSUGClientEvent)initWithDictionary:(id)dictionary;
+- (SUGSchemaSUGClientEvent)initWithJSON:(id)n;
 - (SUGSchemaSUGEngagementMetricReported)engagementMetricReported;
 - (SUGSchemaSUGEngagementReported)engagementReported;
 - (SUGSchemaSUGFilteringStepContext)filteringStepContext;
@@ -17,7 +17,7 @@
 - (SUGSchemaSUGSuggestionsUIActivity)uiActivity;
 - (SUGSchemaSUGSuggestionsUIActivityTier1)uiActivityTier1;
 - (SUGSchemaSUGTypingWindowEnded)typingWindowEnded;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -36,32 +36,32 @@
 - (void)deleteTypingWindowEnded;
 - (void)deleteUiActivity;
 - (void)deleteUiActivityTier1;
-- (void)setEngagementMetricReported:(id)a3;
-- (void)setEngagementReported:(id)a3;
-- (void)setFilteringStepContext:(id)a3;
-- (void)setGenerationStepContext:(id)a3;
-- (void)setRankingStepContext:(id)a3;
-- (void)setRequestContext:(id)a3;
-- (void)setResolutionStepContext:(id)a3;
-- (void)setSugGeneratedTier1:(id)a3;
-- (void)setSuggestionsGenerated:(id)a3;
-- (void)setTypingWindowEnded:(id)a3;
-- (void)setUiActivity:(id)a3;
-- (void)setUiActivityTier1:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEngagementMetricReported:(id)reported;
+- (void)setEngagementReported:(id)reported;
+- (void)setFilteringStepContext:(id)context;
+- (void)setGenerationStepContext:(id)context;
+- (void)setRankingStepContext:(id)context;
+- (void)setRequestContext:(id)context;
+- (void)setResolutionStepContext:(id)context;
+- (void)setSugGeneratedTier1:(id)tier1;
+- (void)setSuggestionsGenerated:(id)generated;
+- (void)setTypingWindowEnded:(id)ended;
+- (void)setUiActivity:(id)activity;
+- (void)setUiActivityTier1:(id)tier1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SUGSchemaSUGClientEvent
 
-- (SUGSchemaSUGClientEvent)initWithDictionary:(id)a3
+- (SUGSchemaSUGClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v41.receiver = self;
   v41.super_class = SUGSchemaSUGClientEvent;
   v5 = [(SUGSchemaSUGClientEvent *)&v41 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       [(SUGSchemaSUGClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"suggestionsGenerated"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"suggestionsGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
       [(SUGSchemaSUGClientEvent *)v5 setSuggestionsGenerated:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"engagementReported"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"engagementReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
       [(SUGSchemaSUGClientEvent *)v5 setEngagementReported:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"requestContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"requestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,7 +93,7 @@
       [(SUGSchemaSUGClientEvent *)v5 setRequestContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"generationStepContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"generationStepContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
       [(SUGSchemaSUGClientEvent *)v5 setGenerationStepContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"resolutionStepContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"resolutionStepContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,7 +110,7 @@
     }
 
     v36 = v16;
-    v18 = [v4 objectForKeyedSubscript:@"filteringStepContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"filteringStepContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,7 +119,7 @@
     }
 
     v40 = v6;
-    v20 = [v4 objectForKeyedSubscript:{@"rankingStepContext", v18}];
+    v20 = [dictionaryCopy objectForKeyedSubscript:{@"rankingStepContext", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
     }
 
     v39 = v8;
-    v22 = [v4 objectForKeyedSubscript:@"engagementMetricReported"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"engagementMetricReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,7 +138,7 @@
 
     v37 = v14;
     v38 = v10;
-    v24 = [v4 objectForKeyedSubscript:@"uiActivity"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"uiActivity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -147,7 +147,7 @@
     }
 
     v26 = v12;
-    v27 = [v4 objectForKeyedSubscript:@"typingWindowEnded"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"typingWindowEnded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -155,7 +155,7 @@
       [(SUGSchemaSUGClientEvent *)v5 setTypingWindowEnded:v28];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"sugGeneratedTier1"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"sugGeneratedTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -163,7 +163,7 @@
       [(SUGSchemaSUGClientEvent *)v5 setSugGeneratedTier1:v30];
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"uiActivityTier1"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"uiActivityTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -177,30 +177,30 @@
   return v5;
 }
 
-- (SUGSchemaSUGClientEvent)initWithJSON:(id)a3
+- (SUGSchemaSUGClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SUGSchemaSUGClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SUGSchemaSUGClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SUGSchemaSUGClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -213,218 +213,218 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_engagementMetricReported)
   {
-    v4 = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    engagementMetricReported = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
+    dictionaryRepresentation = [engagementMetricReported dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"engagementMetricReported"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"engagementMetricReported"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"engagementMetricReported"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"engagementMetricReported"];
     }
   }
 
   if (self->_engagementReported)
   {
-    v7 = [(SUGSchemaSUGClientEvent *)self engagementReported];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    engagementReported = [(SUGSchemaSUGClientEvent *)self engagementReported];
+    dictionaryRepresentation2 = [engagementReported dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"engagementReported"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"engagementReported"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"engagementReported"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"engagementReported"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v10 = [(SUGSchemaSUGClientEvent *)self eventMetadata];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    eventMetadata = [(SUGSchemaSUGClientEvent *)self eventMetadata];
+    dictionaryRepresentation3 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"eventMetadata"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_filteringStepContext)
   {
-    v13 = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    filteringStepContext = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
+    dictionaryRepresentation4 = [filteringStepContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"filteringStepContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"filteringStepContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"filteringStepContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"filteringStepContext"];
     }
   }
 
   if (self->_generationStepContext)
   {
-    v16 = [(SUGSchemaSUGClientEvent *)self generationStepContext];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    generationStepContext = [(SUGSchemaSUGClientEvent *)self generationStepContext];
+    dictionaryRepresentation5 = [generationStepContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"generationStepContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"generationStepContext"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"generationStepContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"generationStepContext"];
     }
   }
 
   if (self->_rankingStepContext)
   {
-    v19 = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    rankingStepContext = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
+    dictionaryRepresentation6 = [rankingStepContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"rankingStepContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"rankingStepContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"rankingStepContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"rankingStepContext"];
     }
   }
 
   if (self->_requestContext)
   {
-    v22 = [(SUGSchemaSUGClientEvent *)self requestContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    requestContext = [(SUGSchemaSUGClientEvent *)self requestContext];
+    dictionaryRepresentation7 = [requestContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"requestContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"requestContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"requestContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"requestContext"];
     }
   }
 
   if (self->_resolutionStepContext)
   {
-    v25 = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    resolutionStepContext = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
+    dictionaryRepresentation8 = [resolutionStepContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"resolutionStepContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"resolutionStepContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"resolutionStepContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"resolutionStepContext"];
     }
   }
 
   if (self->_sugGeneratedTier1)
   {
-    v28 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    sugGeneratedTier1 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
+    dictionaryRepresentation9 = [sugGeneratedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"sugGeneratedTier1"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"sugGeneratedTier1"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"sugGeneratedTier1"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"sugGeneratedTier1"];
     }
   }
 
   if (self->_suggestionsGenerated)
   {
-    v31 = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    suggestionsGenerated = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
+    dictionaryRepresentation10 = [suggestionsGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"suggestionsGenerated"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"suggestionsGenerated"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"suggestionsGenerated"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"suggestionsGenerated"];
     }
   }
 
   if (self->_typingWindowEnded)
   {
-    v34 = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    typingWindowEnded = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
+    dictionaryRepresentation11 = [typingWindowEnded dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"typingWindowEnded"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"typingWindowEnded"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"typingWindowEnded"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"typingWindowEnded"];
     }
   }
 
   if (self->_uiActivity)
   {
-    v37 = [(SUGSchemaSUGClientEvent *)self uiActivity];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    uiActivity = [(SUGSchemaSUGClientEvent *)self uiActivity];
+    dictionaryRepresentation12 = [uiActivity dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"uiActivity"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"uiActivity"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"uiActivity"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"uiActivity"];
     }
   }
 
   if (self->_uiActivityTier1)
   {
-    v40 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    uiActivityTier1 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
+    dictionaryRepresentation13 = [uiActivityTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"uiActivityTier1"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"uiActivityTier1"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"uiActivityTier1"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"uiActivityTier1"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -444,34 +444,34 @@
   return v13 ^ v14 ^ [(SUGSchemaSUGSuggestionsUIActivityTier1 *)self->_uiActivityTier1 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_68;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_68;
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v8 = [(SUGSchemaSUGClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(SUGSchemaSUGClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(SUGSchemaSUGClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(SUGSchemaSUGClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -483,20 +483,20 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
-  v7 = [v4 suggestionsGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
+  eventMetadata2 = [equalCopy suggestionsGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v13 = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
-  if (v13)
+  suggestionsGenerated = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
+  if (suggestionsGenerated)
   {
-    v14 = v13;
-    v15 = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
-    v16 = [v4 suggestionsGenerated];
-    v17 = [v15 isEqual:v16];
+    v14 = suggestionsGenerated;
+    suggestionsGenerated2 = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
+    suggestionsGenerated3 = [equalCopy suggestionsGenerated];
+    v17 = [suggestionsGenerated2 isEqual:suggestionsGenerated3];
 
     if (!v17)
     {
@@ -508,20 +508,20 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self engagementReported];
-  v7 = [v4 engagementReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self engagementReported];
+  eventMetadata2 = [equalCopy engagementReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v18 = [(SUGSchemaSUGClientEvent *)self engagementReported];
-  if (v18)
+  engagementReported = [(SUGSchemaSUGClientEvent *)self engagementReported];
+  if (engagementReported)
   {
-    v19 = v18;
-    v20 = [(SUGSchemaSUGClientEvent *)self engagementReported];
-    v21 = [v4 engagementReported];
-    v22 = [v20 isEqual:v21];
+    v19 = engagementReported;
+    engagementReported2 = [(SUGSchemaSUGClientEvent *)self engagementReported];
+    engagementReported3 = [equalCopy engagementReported];
+    v22 = [engagementReported2 isEqual:engagementReported3];
 
     if (!v22)
     {
@@ -533,20 +533,20 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self requestContext];
-  v7 = [v4 requestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self requestContext];
+  eventMetadata2 = [equalCopy requestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v23 = [(SUGSchemaSUGClientEvent *)self requestContext];
-  if (v23)
+  requestContext = [(SUGSchemaSUGClientEvent *)self requestContext];
+  if (requestContext)
   {
-    v24 = v23;
-    v25 = [(SUGSchemaSUGClientEvent *)self requestContext];
-    v26 = [v4 requestContext];
-    v27 = [v25 isEqual:v26];
+    v24 = requestContext;
+    requestContext2 = [(SUGSchemaSUGClientEvent *)self requestContext];
+    requestContext3 = [equalCopy requestContext];
+    v27 = [requestContext2 isEqual:requestContext3];
 
     if (!v27)
     {
@@ -558,20 +558,20 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self generationStepContext];
-  v7 = [v4 generationStepContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self generationStepContext];
+  eventMetadata2 = [equalCopy generationStepContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v28 = [(SUGSchemaSUGClientEvent *)self generationStepContext];
-  if (v28)
+  generationStepContext = [(SUGSchemaSUGClientEvent *)self generationStepContext];
+  if (generationStepContext)
   {
-    v29 = v28;
-    v30 = [(SUGSchemaSUGClientEvent *)self generationStepContext];
-    v31 = [v4 generationStepContext];
-    v32 = [v30 isEqual:v31];
+    v29 = generationStepContext;
+    generationStepContext2 = [(SUGSchemaSUGClientEvent *)self generationStepContext];
+    generationStepContext3 = [equalCopy generationStepContext];
+    v32 = [generationStepContext2 isEqual:generationStepContext3];
 
     if (!v32)
     {
@@ -583,20 +583,20 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
-  v7 = [v4 resolutionStepContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
+  eventMetadata2 = [equalCopy resolutionStepContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v33 = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
-  if (v33)
+  resolutionStepContext = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
+  if (resolutionStepContext)
   {
-    v34 = v33;
-    v35 = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
-    v36 = [v4 resolutionStepContext];
-    v37 = [v35 isEqual:v36];
+    v34 = resolutionStepContext;
+    resolutionStepContext2 = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
+    resolutionStepContext3 = [equalCopy resolutionStepContext];
+    v37 = [resolutionStepContext2 isEqual:resolutionStepContext3];
 
     if (!v37)
     {
@@ -608,20 +608,20 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
-  v7 = [v4 filteringStepContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
+  eventMetadata2 = [equalCopy filteringStepContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v38 = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
-  if (v38)
+  filteringStepContext = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
+  if (filteringStepContext)
   {
-    v39 = v38;
-    v40 = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
-    v41 = [v4 filteringStepContext];
-    v42 = [v40 isEqual:v41];
+    v39 = filteringStepContext;
+    filteringStepContext2 = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
+    filteringStepContext3 = [equalCopy filteringStepContext];
+    v42 = [filteringStepContext2 isEqual:filteringStepContext3];
 
     if (!v42)
     {
@@ -633,20 +633,20 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
-  v7 = [v4 rankingStepContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
+  eventMetadata2 = [equalCopy rankingStepContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v43 = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
-  if (v43)
+  rankingStepContext = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
+  if (rankingStepContext)
   {
-    v44 = v43;
-    v45 = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
-    v46 = [v4 rankingStepContext];
-    v47 = [v45 isEqual:v46];
+    v44 = rankingStepContext;
+    rankingStepContext2 = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
+    rankingStepContext3 = [equalCopy rankingStepContext];
+    v47 = [rankingStepContext2 isEqual:rankingStepContext3];
 
     if (!v47)
     {
@@ -658,20 +658,20 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
-  v7 = [v4 engagementMetricReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
+  eventMetadata2 = [equalCopy engagementMetricReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v48 = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
-  if (v48)
+  engagementMetricReported = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
+  if (engagementMetricReported)
   {
-    v49 = v48;
-    v50 = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
-    v51 = [v4 engagementMetricReported];
-    v52 = [v50 isEqual:v51];
+    v49 = engagementMetricReported;
+    engagementMetricReported2 = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
+    engagementMetricReported3 = [equalCopy engagementMetricReported];
+    v52 = [engagementMetricReported2 isEqual:engagementMetricReported3];
 
     if (!v52)
     {
@@ -683,20 +683,20 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self uiActivity];
-  v7 = [v4 uiActivity];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self uiActivity];
+  eventMetadata2 = [equalCopy uiActivity];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v53 = [(SUGSchemaSUGClientEvent *)self uiActivity];
-  if (v53)
+  uiActivity = [(SUGSchemaSUGClientEvent *)self uiActivity];
+  if (uiActivity)
   {
-    v54 = v53;
-    v55 = [(SUGSchemaSUGClientEvent *)self uiActivity];
-    v56 = [v4 uiActivity];
-    v57 = [v55 isEqual:v56];
+    v54 = uiActivity;
+    uiActivity2 = [(SUGSchemaSUGClientEvent *)self uiActivity];
+    uiActivity3 = [equalCopy uiActivity];
+    v57 = [uiActivity2 isEqual:uiActivity3];
 
     if (!v57)
     {
@@ -708,20 +708,20 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
-  v7 = [v4 typingWindowEnded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
+  eventMetadata2 = [equalCopy typingWindowEnded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v58 = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
-  if (v58)
+  typingWindowEnded = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
+  if (typingWindowEnded)
   {
-    v59 = v58;
-    v60 = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
-    v61 = [v4 typingWindowEnded];
-    v62 = [v60 isEqual:v61];
+    v59 = typingWindowEnded;
+    typingWindowEnded2 = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
+    typingWindowEnded3 = [equalCopy typingWindowEnded];
+    v62 = [typingWindowEnded2 isEqual:typingWindowEnded3];
 
     if (!v62)
     {
@@ -733,20 +733,20 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
-  v7 = [v4 sugGeneratedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
+  eventMetadata2 = [equalCopy sugGeneratedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_67;
   }
 
-  v63 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
-  if (v63)
+  sugGeneratedTier1 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
+  if (sugGeneratedTier1)
   {
-    v64 = v63;
-    v65 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
-    v66 = [v4 sugGeneratedTier1];
-    v67 = [v65 isEqual:v66];
+    v64 = sugGeneratedTier1;
+    sugGeneratedTier12 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
+    sugGeneratedTier13 = [equalCopy sugGeneratedTier1];
+    v67 = [sugGeneratedTier12 isEqual:sugGeneratedTier13];
 
     if (!v67)
     {
@@ -758,12 +758,12 @@
   {
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
-  v7 = [v4 uiActivityTier1];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
+  eventMetadata2 = [equalCopy uiActivityTier1];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v68 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
-    if (!v68)
+    uiActivityTier1 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
+    if (!uiActivityTier1)
     {
 
 LABEL_71:
@@ -771,10 +771,10 @@ LABEL_71:
       goto LABEL_69;
     }
 
-    v69 = v68;
-    v70 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
-    v71 = [v4 uiActivityTier1];
-    v72 = [v70 isEqual:v71];
+    v69 = uiActivityTier1;
+    uiActivityTier12 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
+    uiActivityTier13 = [equalCopy uiActivityTier1];
+    v72 = [uiActivityTier12 isEqual:uiActivityTier13];
 
     if (v72)
     {
@@ -794,114 +794,114 @@ LABEL_69:
   return v73;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v31 = a3;
-  v4 = [(SUGSchemaSUGClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(SUGSchemaSUGClientEvent *)self eventMetadata];
+    eventMetadata2 = [(SUGSchemaSUGClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
+  suggestionsGenerated = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
 
-  if (v6)
+  if (suggestionsGenerated)
   {
-    v7 = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
+    suggestionsGenerated2 = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SUGSchemaSUGClientEvent *)self engagementReported];
+  engagementReported = [(SUGSchemaSUGClientEvent *)self engagementReported];
 
-  if (v8)
+  if (engagementReported)
   {
-    v9 = [(SUGSchemaSUGClientEvent *)self engagementReported];
+    engagementReported2 = [(SUGSchemaSUGClientEvent *)self engagementReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(SUGSchemaSUGClientEvent *)self requestContext];
+  requestContext = [(SUGSchemaSUGClientEvent *)self requestContext];
 
-  if (v10)
+  if (requestContext)
   {
-    v11 = [(SUGSchemaSUGClientEvent *)self requestContext];
+    requestContext2 = [(SUGSchemaSUGClientEvent *)self requestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(SUGSchemaSUGClientEvent *)self generationStepContext];
+  generationStepContext = [(SUGSchemaSUGClientEvent *)self generationStepContext];
 
-  if (v12)
+  if (generationStepContext)
   {
-    v13 = [(SUGSchemaSUGClientEvent *)self generationStepContext];
+    generationStepContext2 = [(SUGSchemaSUGClientEvent *)self generationStepContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
+  resolutionStepContext = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
 
-  if (v14)
+  if (resolutionStepContext)
   {
-    v15 = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
+    resolutionStepContext2 = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
+  filteringStepContext = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
 
-  if (v16)
+  if (filteringStepContext)
   {
-    v17 = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
+    filteringStepContext2 = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
+  rankingStepContext = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
 
-  if (v18)
+  if (rankingStepContext)
   {
-    v19 = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
+    rankingStepContext2 = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
+  engagementMetricReported = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
 
-  if (v20)
+  if (engagementMetricReported)
   {
-    v21 = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
+    engagementMetricReported2 = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(SUGSchemaSUGClientEvent *)self uiActivity];
+  uiActivity = [(SUGSchemaSUGClientEvent *)self uiActivity];
 
-  if (v22)
+  if (uiActivity)
   {
-    v23 = [(SUGSchemaSUGClientEvent *)self uiActivity];
+    uiActivity2 = [(SUGSchemaSUGClientEvent *)self uiActivity];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
+  typingWindowEnded = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
 
-  if (v24)
+  if (typingWindowEnded)
   {
-    v25 = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
+    typingWindowEnded2 = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
+  sugGeneratedTier1 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
 
-  if (v26)
+  if (sugGeneratedTier1)
   {
-    v27 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
+    sugGeneratedTier12 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
+  uiActivityTier1 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
 
-  v29 = v31;
-  if (v28)
+  v29 = toCopy;
+  if (uiActivityTier1)
   {
-    v30 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
+    uiActivityTier12 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
     PBDataWriterWriteSubmessage();
 
-    v29 = v31;
+    v29 = toCopy;
   }
 }
 
@@ -930,9 +930,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setUiActivityTier1:(id)a3
+- (void)setUiActivityTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   suggestionsGenerated = self->_suggestionsGenerated;
   self->_suggestionsGenerated = 0;
 
@@ -967,14 +967,14 @@ LABEL_69:
   self->_sugGeneratedTier1 = 0;
 
   v16 = 112;
-  if (!v4)
+  if (!tier1Copy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   uiActivityTier1 = self->_uiActivityTier1;
-  self->_uiActivityTier1 = v4;
+  self->_uiActivityTier1 = tier1Copy;
 }
 
 - (void)deleteSugGeneratedTier1
@@ -1002,9 +1002,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setSugGeneratedTier1:(id)a3
+- (void)setSugGeneratedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   suggestionsGenerated = self->_suggestionsGenerated;
   self->_suggestionsGenerated = 0;
 
@@ -1039,14 +1039,14 @@ LABEL_69:
   self->_uiActivityTier1 = 0;
 
   v16 = 111;
-  if (!v4)
+  if (!tier1Copy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   sugGeneratedTier1 = self->_sugGeneratedTier1;
-  self->_sugGeneratedTier1 = v4;
+  self->_sugGeneratedTier1 = tier1Copy;
 }
 
 - (void)deleteTypingWindowEnded
@@ -1074,9 +1074,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setTypingWindowEnded:(id)a3
+- (void)setTypingWindowEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   suggestionsGenerated = self->_suggestionsGenerated;
   self->_suggestionsGenerated = 0;
 
@@ -1111,14 +1111,14 @@ LABEL_69:
   self->_uiActivityTier1 = 0;
 
   v16 = 110;
-  if (!v4)
+  if (!endedCopy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   typingWindowEnded = self->_typingWindowEnded;
-  self->_typingWindowEnded = v4;
+  self->_typingWindowEnded = endedCopy;
 }
 
 - (void)deleteUiActivity
@@ -1146,9 +1146,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setUiActivity:(id)a3
+- (void)setUiActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   suggestionsGenerated = self->_suggestionsGenerated;
   self->_suggestionsGenerated = 0;
 
@@ -1183,14 +1183,14 @@ LABEL_69:
   self->_uiActivityTier1 = 0;
 
   v16 = 109;
-  if (!v4)
+  if (!activityCopy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   uiActivity = self->_uiActivity;
-  self->_uiActivity = v4;
+  self->_uiActivity = activityCopy;
 }
 
 - (void)deleteEngagementMetricReported
@@ -1218,9 +1218,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setEngagementMetricReported:(id)a3
+- (void)setEngagementMetricReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   suggestionsGenerated = self->_suggestionsGenerated;
   self->_suggestionsGenerated = 0;
 
@@ -1255,14 +1255,14 @@ LABEL_69:
   self->_uiActivityTier1 = 0;
 
   v16 = 108;
-  if (!v4)
+  if (!reportedCopy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   engagementMetricReported = self->_engagementMetricReported;
-  self->_engagementMetricReported = v4;
+  self->_engagementMetricReported = reportedCopy;
 }
 
 - (void)deleteRankingStepContext
@@ -1290,9 +1290,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setRankingStepContext:(id)a3
+- (void)setRankingStepContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   suggestionsGenerated = self->_suggestionsGenerated;
   self->_suggestionsGenerated = 0;
 
@@ -1327,14 +1327,14 @@ LABEL_69:
   self->_uiActivityTier1 = 0;
 
   v16 = 107;
-  if (!v4)
+  if (!contextCopy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   rankingStepContext = self->_rankingStepContext;
-  self->_rankingStepContext = v4;
+  self->_rankingStepContext = contextCopy;
 }
 
 - (void)deleteFilteringStepContext
@@ -1362,9 +1362,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setFilteringStepContext:(id)a3
+- (void)setFilteringStepContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   suggestionsGenerated = self->_suggestionsGenerated;
   self->_suggestionsGenerated = 0;
 
@@ -1399,14 +1399,14 @@ LABEL_69:
   self->_uiActivityTier1 = 0;
 
   v16 = 106;
-  if (!v4)
+  if (!contextCopy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   filteringStepContext = self->_filteringStepContext;
-  self->_filteringStepContext = v4;
+  self->_filteringStepContext = contextCopy;
 }
 
 - (void)deleteResolutionStepContext
@@ -1434,9 +1434,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setResolutionStepContext:(id)a3
+- (void)setResolutionStepContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   suggestionsGenerated = self->_suggestionsGenerated;
   self->_suggestionsGenerated = 0;
 
@@ -1471,14 +1471,14 @@ LABEL_69:
   self->_uiActivityTier1 = 0;
 
   v16 = 105;
-  if (!v4)
+  if (!contextCopy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   resolutionStepContext = self->_resolutionStepContext;
-  self->_resolutionStepContext = v4;
+  self->_resolutionStepContext = contextCopy;
 }
 
 - (void)deleteGenerationStepContext
@@ -1506,9 +1506,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setGenerationStepContext:(id)a3
+- (void)setGenerationStepContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   suggestionsGenerated = self->_suggestionsGenerated;
   self->_suggestionsGenerated = 0;
 
@@ -1543,14 +1543,14 @@ LABEL_69:
   self->_uiActivityTier1 = 0;
 
   v16 = 104;
-  if (!v4)
+  if (!contextCopy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   generationStepContext = self->_generationStepContext;
-  self->_generationStepContext = v4;
+  self->_generationStepContext = contextCopy;
 }
 
 - (void)deleteRequestContext
@@ -1578,9 +1578,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setRequestContext:(id)a3
+- (void)setRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   suggestionsGenerated = self->_suggestionsGenerated;
   self->_suggestionsGenerated = 0;
 
@@ -1615,14 +1615,14 @@ LABEL_69:
   self->_uiActivityTier1 = 0;
 
   v16 = 103;
-  if (!v4)
+  if (!contextCopy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   requestContext = self->_requestContext;
-  self->_requestContext = v4;
+  self->_requestContext = contextCopy;
 }
 
 - (void)deleteEngagementReported
@@ -1650,9 +1650,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setEngagementReported:(id)a3
+- (void)setEngagementReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   suggestionsGenerated = self->_suggestionsGenerated;
   self->_suggestionsGenerated = 0;
 
@@ -1687,14 +1687,14 @@ LABEL_69:
   self->_uiActivityTier1 = 0;
 
   v16 = 102;
-  if (!v4)
+  if (!reportedCopy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   engagementReported = self->_engagementReported;
-  self->_engagementReported = v4;
+  self->_engagementReported = reportedCopy;
 }
 
 - (void)deleteSuggestionsGenerated
@@ -1722,9 +1722,9 @@ LABEL_69:
   return v3;
 }
 
-- (void)setSuggestionsGenerated:(id)a3
+- (void)setSuggestionsGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   engagementReported = self->_engagementReported;
   self->_engagementReported = 0;
 
@@ -1759,179 +1759,179 @@ LABEL_69:
   self->_uiActivityTier1 = 0;
 
   v16 = 101;
-  if (!v4)
+  if (!generatedCopy)
   {
     v16 = 0;
   }
 
   self->_whichEvent_Type = v16;
   suggestionsGenerated = self->_suggestionsGenerated;
-  self->_suggestionsGenerated = v4;
+  self->_suggestionsGenerated = generatedCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(SUGSchemaSUGClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 0xB)
+  whichEvent_Type = [(SUGSchemaSUGClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0xB)
   {
     return @"com.apple.aiml.siri.sug.SUGClientEvent";
   }
 
   else
   {
-    return off_1E78E7B38[v2 - 101];
+    return off_1E78E7B38[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v46.receiver = self;
   v46.super_class = SUGSchemaSUGClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v46 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v46 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(SUGSchemaSUGClientEvent *)self deleteSugGeneratedTier1];
     [(SUGSchemaSUGClientEvent *)self deleteUiActivityTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(SUGSchemaSUGClientEvent *)self deleteSugGeneratedTier1];
     [(SUGSchemaSUGClientEvent *)self deleteUiActivityTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(SUGSchemaSUGClientEvent *)self deleteSugGeneratedTier1];
     [(SUGSchemaSUGClientEvent *)self deleteUiActivityTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(SUGSchemaSUGClientEvent *)self deleteSugGeneratedTier1];
     [(SUGSchemaSUGClientEvent *)self deleteUiActivityTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(SUGSchemaSUGClientEvent *)self deleteSugGeneratedTier1];
     [(SUGSchemaSUGClientEvent *)self deleteUiActivityTier1];
   }
 
-  v6 = [(SUGSchemaSUGClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SUGSchemaSUGClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  suggestionsGenerated = [(SUGSchemaSUGClientEvent *)self suggestionsGenerated];
+  v10 = [suggestionsGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SUGSchemaSUGClientEvent *)self deleteSuggestionsGenerated];
   }
 
-  v12 = [(SUGSchemaSUGClientEvent *)self engagementReported];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  engagementReported = [(SUGSchemaSUGClientEvent *)self engagementReported];
+  v13 = [engagementReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SUGSchemaSUGClientEvent *)self deleteEngagementReported];
   }
 
-  v15 = [(SUGSchemaSUGClientEvent *)self requestContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  requestContext = [(SUGSchemaSUGClientEvent *)self requestContext];
+  v16 = [requestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(SUGSchemaSUGClientEvent *)self deleteRequestContext];
   }
 
-  v18 = [(SUGSchemaSUGClientEvent *)self generationStepContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  generationStepContext = [(SUGSchemaSUGClientEvent *)self generationStepContext];
+  v19 = [generationStepContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(SUGSchemaSUGClientEvent *)self deleteGenerationStepContext];
   }
 
-  v21 = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  resolutionStepContext = [(SUGSchemaSUGClientEvent *)self resolutionStepContext];
+  v22 = [resolutionStepContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(SUGSchemaSUGClientEvent *)self deleteResolutionStepContext];
   }
 
-  v24 = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  filteringStepContext = [(SUGSchemaSUGClientEvent *)self filteringStepContext];
+  v25 = [filteringStepContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(SUGSchemaSUGClientEvent *)self deleteFilteringStepContext];
   }
 
-  v27 = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  rankingStepContext = [(SUGSchemaSUGClientEvent *)self rankingStepContext];
+  v28 = [rankingStepContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(SUGSchemaSUGClientEvent *)self deleteRankingStepContext];
   }
 
-  v30 = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  engagementMetricReported = [(SUGSchemaSUGClientEvent *)self engagementMetricReported];
+  v31 = [engagementMetricReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(SUGSchemaSUGClientEvent *)self deleteEngagementMetricReported];
   }
 
-  v33 = [(SUGSchemaSUGClientEvent *)self uiActivity];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  uiActivity = [(SUGSchemaSUGClientEvent *)self uiActivity];
+  v34 = [uiActivity applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(SUGSchemaSUGClientEvent *)self deleteUiActivity];
   }
 
-  v36 = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  typingWindowEnded = [(SUGSchemaSUGClientEvent *)self typingWindowEnded];
+  v37 = [typingWindowEnded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(SUGSchemaSUGClientEvent *)self deleteTypingWindowEnded];
   }
 
-  v39 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  sugGeneratedTier1 = [(SUGSchemaSUGClientEvent *)self sugGeneratedTier1];
+  v40 = [sugGeneratedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(SUGSchemaSUGClientEvent *)self deleteSugGeneratedTier1];
   }
 
-  v42 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  uiActivityTier1 = [(SUGSchemaSUGClientEvent *)self uiActivityTier1];
+  v43 = [uiActivityTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(SUGSchemaSUGClientEvent *)self deleteUiActivityTier1];
   }
@@ -1949,65 +1949,65 @@ LABEL_69:
 
 - (id)getComponentId
 {
-  v2 = [(SUGSchemaSUGClientEvent *)self eventMetadata];
-  v3 = [v2 sugId];
+  eventMetadata = [(SUGSchemaSUGClientEvent *)self eventMetadata];
+  sugId = [eventMetadata sugId];
 
-  if (!v3)
+  if (!sugId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [sugId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [sugId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = sugId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(SUGSchemaSUGClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 0xB)
+  whichEvent_Type = [(SUGSchemaSUGClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0xB)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EB208[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EB208[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 0xB)
+  if (tag - 101 > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EB268[a3 - 101];
+    return off_1E78EB268[tag - 101];
   }
 }
 

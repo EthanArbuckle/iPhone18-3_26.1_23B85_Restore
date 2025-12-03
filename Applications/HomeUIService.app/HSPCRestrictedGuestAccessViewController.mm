@@ -1,19 +1,19 @@
 @interface HSPCRestrictedGuestAccessViewController
-- (HSPCRestrictedGuestAccessViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCRestrictedGuestAccessViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
 @end
 
 @implementation HSPCRestrictedGuestAccessViewController
 
-- (HSPCRestrictedGuestAccessViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCRestrictedGuestAccessViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a3;
+  coordinatorCopy = coordinator;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10004FE98;
   v20[3] = &unk_1000C6648;
-  v7 = a4;
-  v21 = v7;
+  configCopy = config;
+  v21 = configCopy;
   v8 = objc_retainBlock(v20);
   v19.receiver = self;
   v19.super_class = HSPCRestrictedGuestAccessViewController;
@@ -21,18 +21,18 @@
   v10 = v9;
   if (v9)
   {
-    [(HSPCRestrictedGuestAccessViewController *)v9 setConfig:v7];
-    [(HSPCRestrictedGuestAccessViewController *)v10 setCoordinator:v6];
+    [(HSPCRestrictedGuestAccessViewController *)v9 setConfig:configCopy];
+    [(HSPCRestrictedGuestAccessViewController *)v10 setCoordinator:coordinatorCopy];
     v11 = HULocalizedString();
     [(HSPCRestrictedGuestAccessViewController *)v10 setTitle:v11];
 
-    v12 = [v7 addedAccessory];
-    v13 = [v12 hf_categoryOrPrimaryServiceType];
+    addedAccessory = [configCopy addedAccessory];
+    hf_categoryOrPrimaryServiceType = [addedAccessory hf_categoryOrPrimaryServiceType];
 
     v14 = +[UIDevice currentDevice];
-    v15 = [v14 name];
+    name = [v14 name];
     v16 = HULocalizedCategoryOrPrimaryServiceTypeStringWithFormat();
-    [(HSPCRestrictedGuestAccessViewController *)v10 setSubtitle:v16, v15];
+    [(HSPCRestrictedGuestAccessViewController *)v10 setSubtitle:v16, name];
 
     v17 = [(HSPCRestrictedGuestAccessViewController *)v10 addProminentButtonWithTitleKey:@"HUContinueTitle" target:v10 futureSelector:"commitConfiguration"];
   }

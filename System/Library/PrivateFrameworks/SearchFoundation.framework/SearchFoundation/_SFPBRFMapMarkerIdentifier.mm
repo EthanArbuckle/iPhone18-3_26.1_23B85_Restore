@@ -1,43 +1,43 @@
 @interface _SFPBRFMapMarkerIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFMapMarkerIdentifier)initWithDictionary:(id)a3;
-- (_SFPBRFMapMarkerIdentifier)initWithFacade:(id)a3;
-- (_SFPBRFMapMarkerIdentifier)initWithJSON:(id)a3;
+- (_SFPBRFMapMarkerIdentifier)initWithDictionary:(id)dictionary;
+- (_SFPBRFMapMarkerIdentifier)initWithFacade:(id)facade;
+- (_SFPBRFMapMarkerIdentifier)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setMuid:(id)a3;
-- (void)setResultProviderID:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setMuid:(id)muid;
+- (void)setResultProviderID:(id)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFMapMarkerIdentifier
 
-- (_SFPBRFMapMarkerIdentifier)initWithFacade:(id)a3
+- (_SFPBRFMapMarkerIdentifier)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFMapMarkerIdentifier *)self init];
   if (v5)
   {
-    v6 = [v4 muid];
+    muid = [facadeCopy muid];
 
-    if (v6)
+    if (muid)
     {
-      v7 = [v4 muid];
-      [(_SFPBRFMapMarkerIdentifier *)v5 setMuid:v7];
+      muid2 = [facadeCopy muid];
+      [(_SFPBRFMapMarkerIdentifier *)v5 setMuid:muid2];
     }
 
-    v8 = [v4 resultProviderID];
+    resultProviderID = [facadeCopy resultProviderID];
 
-    if (v8)
+    if (resultProviderID)
     {
-      v9 = [v4 resultProviderID];
-      [(_SFPBRFMapMarkerIdentifier *)v5 setResultProviderID:v9];
+      resultProviderID2 = [facadeCopy resultProviderID];
+      [(_SFPBRFMapMarkerIdentifier *)v5 setResultProviderID:resultProviderID2];
     }
 
-    if ([v4 hasIsForCameraPositionOnly])
+    if ([facadeCopy hasIsForCameraPositionOnly])
     {
-      -[_SFPBRFMapMarkerIdentifier setIsForCameraPositionOnly:](v5, "setIsForCameraPositionOnly:", [v4 isForCameraPositionOnly]);
+      -[_SFPBRFMapMarkerIdentifier setIsForCameraPositionOnly:](v5, "setIsForCameraPositionOnly:", [facadeCopy isForCameraPositionOnly]);
     }
 
     v10 = v5;
@@ -46,15 +46,15 @@
   return v5;
 }
 
-- (_SFPBRFMapMarkerIdentifier)initWithDictionary:(id)a3
+- (_SFPBRFMapMarkerIdentifier)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = _SFPBRFMapMarkerIdentifier;
   v5 = [(_SFPBRFMapMarkerIdentifier *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"muid"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"muid"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(_SFPBRFMapMarkerIdentifier *)v5 setMuid:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resultProviderID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resultProviderID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       [(_SFPBRFMapMarkerIdentifier *)v5 setResultProviderID:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isForCameraPositionOnly"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isForCameraPositionOnly"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,30 +83,30 @@
   return v5;
 }
 
-- (_SFPBRFMapMarkerIdentifier)initWithJSON:(id)a3
+- (_SFPBRFMapMarkerIdentifier)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFMapMarkerIdentifier *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFMapMarkerIdentifier *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFMapMarkerIdentifier *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -119,28 +119,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_isForCameraPositionOnly)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBRFMapMarkerIdentifier isForCameraPositionOnly](self, "isForCameraPositionOnly")}];
-    [v3 setObject:v4 forKeyedSubscript:@"isForCameraPositionOnly"];
+    [dictionary setObject:v4 forKeyedSubscript:@"isForCameraPositionOnly"];
   }
 
   if (self->_muid)
   {
-    v5 = [(_SFPBRFMapMarkerIdentifier *)self muid];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"muid"];
+    muid = [(_SFPBRFMapMarkerIdentifier *)self muid];
+    v6 = [muid copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"muid"];
   }
 
   if (self->_resultProviderID)
   {
-    v7 = [(_SFPBRFMapMarkerIdentifier *)self resultProviderID];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"resultProviderID"];
+    resultProviderID = [(_SFPBRFMapMarkerIdentifier *)self resultProviderID];
+    v8 = [resultProviderID copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"resultProviderID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,28 +156,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBRFMapMarkerIdentifier *)self muid];
-  v6 = [v4 muid];
-  if ((v5 != 0) == (v6 == 0))
+  muid = [(_SFPBRFMapMarkerIdentifier *)self muid];
+  muid2 = [equalCopy muid];
+  if ((muid != 0) == (muid2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBRFMapMarkerIdentifier *)self muid];
-  if (v7)
+  muid3 = [(_SFPBRFMapMarkerIdentifier *)self muid];
+  if (muid3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFMapMarkerIdentifier *)self muid];
-    v10 = [v4 muid];
-    v11 = [v9 isEqual:v10];
+    v8 = muid3;
+    muid4 = [(_SFPBRFMapMarkerIdentifier *)self muid];
+    muid5 = [equalCopy muid];
+    v11 = [muid4 isEqual:muid5];
 
     if (!v11)
     {
@@ -189,24 +189,24 @@
   {
   }
 
-  v5 = [(_SFPBRFMapMarkerIdentifier *)self resultProviderID];
-  v6 = [v4 resultProviderID];
-  if ((v5 != 0) != (v6 == 0))
+  muid = [(_SFPBRFMapMarkerIdentifier *)self resultProviderID];
+  muid2 = [equalCopy resultProviderID];
+  if ((muid != 0) != (muid2 == 0))
   {
-    v12 = [(_SFPBRFMapMarkerIdentifier *)self resultProviderID];
-    if (!v12)
+    resultProviderID = [(_SFPBRFMapMarkerIdentifier *)self resultProviderID];
+    if (!resultProviderID)
     {
 
 LABEL_15:
       isForCameraPositionOnly = self->_isForCameraPositionOnly;
-      v17 = isForCameraPositionOnly == [v4 isForCameraPositionOnly];
+      v17 = isForCameraPositionOnly == [equalCopy isForCameraPositionOnly];
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBRFMapMarkerIdentifier *)self resultProviderID];
-    v15 = [v4 resultProviderID];
-    v16 = [v14 isEqual:v15];
+    v13 = resultProviderID;
+    resultProviderID2 = [(_SFPBRFMapMarkerIdentifier *)self resultProviderID];
+    resultProviderID3 = [equalCopy resultProviderID];
+    v16 = [resultProviderID2 isEqual:resultProviderID3];
 
     if (v16)
     {
@@ -226,17 +226,17 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBRFMapMarkerIdentifier *)self muid];
-  if (v4)
+  toCopy = to;
+  muid = [(_SFPBRFMapMarkerIdentifier *)self muid];
+  if (muid)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBRFMapMarkerIdentifier *)self resultProviderID];
-  if (v5)
+  resultProviderID = [(_SFPBRFMapMarkerIdentifier *)self resultProviderID];
+  if (resultProviderID)
   {
     PBDataWriterWriteStringField();
   }
@@ -247,18 +247,18 @@ LABEL_13:
   }
 }
 
-- (void)setResultProviderID:(id)a3
+- (void)setResultProviderID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   resultProviderID = self->_resultProviderID;
   self->_resultProviderID = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setMuid:(id)a3
+- (void)setMuid:(id)muid
 {
-  v4 = [a3 copy];
+  v4 = [muid copy];
   muid = self->_muid;
   self->_muid = v4;
 

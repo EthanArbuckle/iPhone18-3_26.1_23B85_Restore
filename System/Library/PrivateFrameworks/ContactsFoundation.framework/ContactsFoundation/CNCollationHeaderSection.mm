@@ -1,18 +1,18 @@
 @interface CNCollationHeaderSection
-- (CNCollationHeaderSection)initWithKey:(id)a3 localizedName:(id)a4 ICUSortKey:(id)a5;
+- (CNCollationHeaderSection)initWithKey:(id)key localizedName:(id)name ICUSortKey:(id)sortKey;
 @end
 
 @implementation CNCollationHeaderSection
 
-- (CNCollationHeaderSection)initWithKey:(id)a3 localizedName:(id)a4 ICUSortKey:(id)a5
+- (CNCollationHeaderSection)initWithKey:(id)key localizedName:(id)name ICUSortKey:(id)sortKey
 {
-  v8 = a5;
+  sortKeyCopy = sortKey;
   v14.receiver = self;
   v14.super_class = CNCollationHeaderSection;
-  v9 = [(CNCollationSection *)&v14 initWithKey:a3 localizedName:a4];
+  v9 = [(CNCollationSection *)&v14 initWithKey:key localizedName:name];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [sortKeyCopy copy];
     ICUSortKey = v9->_ICUSortKey;
     v9->_ICUSortKey = v10;
 

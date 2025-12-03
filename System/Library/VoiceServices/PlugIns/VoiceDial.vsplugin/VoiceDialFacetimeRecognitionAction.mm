@@ -1,21 +1,21 @@
 @interface VoiceDialFacetimeRecognitionAction
-- (VoiceDialFacetimeRecognitionAction)initWithContactInfo:(id)a3 uid:(int)a4;
+- (VoiceDialFacetimeRecognitionAction)initWithContactInfo:(id)info uid:(int)uid;
 - (id)perform;
 @end
 
 @implementation VoiceDialFacetimeRecognitionAction
 
-- (VoiceDialFacetimeRecognitionAction)initWithContactInfo:(id)a3 uid:(int)a4
+- (VoiceDialFacetimeRecognitionAction)initWithContactInfo:(id)info uid:(int)uid
 {
-  v7 = a3;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = VoiceDialFacetimeRecognitionAction;
   v8 = [(VoiceDialFacetimeRecognitionAction *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_contactInfo, a3);
-    v9->_abID = a4;
+    objc_storeStrong(&v8->_contactInfo, info);
+    v9->_abID = uid;
   }
 
   return v9;
@@ -43,16 +43,16 @@
     v7 = objc_alloc_init(MEMORY[0x29EDB8BB0]);
     v8 = [v7 contactFromPersonID:self->_abID keysToFetch:MEMORY[0x29EDB8E90]];
 
-    v9 = [v8 identifier];
+    identifier = [v8 identifier];
     v10 = objc_alloc_init(MEMORY[0x29EDC6F80]);
     v11 = objc_alloc(MEMORY[0x29EDC6F98]);
-    v12 = [v10 faceTimeProvider];
-    v13 = [v11 initWithProvider:v12];
+    faceTimeProvider = [v10 faceTimeProvider];
+    v13 = [v11 initWithProvider:faceTimeProvider];
 
     v14 = [MEMORY[0x29EDC6FA0] handleWithDestinationID:self->_contactInfo];
     [v13 setHandle:v14];
 
-    [v13 setContactIdentifier:v9];
+    [v13 setContactIdentifier:identifier];
     [v13 setOriginatingUIType:42];
     v15 = PHDefaultLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -71,10 +71,10 @@
 
   v21.receiver = self;
   v21.super_class = VoiceDialFacetimeRecognitionAction;
-  v18 = [(VSRecognitionURLAction *)&v21 perform];
+  perform = [(VSRecognitionURLAction *)&v21 perform];
   v19 = *MEMORY[0x29EDCA608];
 
-  return v18;
+  return perform;
 }
 
 @end

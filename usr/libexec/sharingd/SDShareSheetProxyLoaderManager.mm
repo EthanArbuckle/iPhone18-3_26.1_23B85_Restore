@@ -1,23 +1,23 @@
 @interface SDShareSheetProxyLoaderManager
-- (SDShareSheetProxyLoaderManager)initWithSessionIdentifier:(id)a3;
+- (SDShareSheetProxyLoaderManager)initWithSessionIdentifier:(id)identifier;
 - (SDShareSheetProxyLoaderManagerDelegate)delegate;
-- (id)_existingLoaderForSectionType:(int64_t)a3;
-- (void)_scheduleLoadingBlock:(id)a3 synchronously:(BOOL)a4;
-- (void)loadProxySection:(id)a3;
-- (void)proxyLoader:(id)a3 didLoadProxiesWithResult:(id)a4;
+- (id)_existingLoaderForSectionType:(int64_t)type;
+- (void)_scheduleLoadingBlock:(id)block synchronously:(BOOL)synchronously;
+- (void)loadProxySection:(id)section;
+- (void)proxyLoader:(id)loader didLoadProxiesWithResult:(id)result;
 @end
 
 @implementation SDShareSheetProxyLoaderManager
 
-- (SDShareSheetProxyLoaderManager)initWithSessionIdentifier:(id)a3
+- (SDShareSheetProxyLoaderManager)initWithSessionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = SDShareSheetProxyLoaderManager;
   v5 = [(SDShareSheetProxyLoaderManager *)&v17 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
@@ -39,10 +39,10 @@
   return v5;
 }
 
-- (void)loadProxySection:(id)a3
+- (void)loadProxySection:(id)section
 {
-  v4 = a3;
-  v5 = -[SDShareSheetProxyLoaderManager _existingLoaderForSectionType:](self, "_existingLoaderForSectionType:", [v4 type]);
+  sectionCopy = section;
+  v5 = -[SDShareSheetProxyLoaderManager _existingLoaderForSectionType:](self, "_existingLoaderForSectionType:", [sectionCopy type]);
   if (v5)
   {
     v6 = share_sheet_log();
@@ -56,20 +56,20 @@
     [v5 cancel];
   }
 
-  v7 = [[SDShareSheetProxyLoader alloc] initWithProxySection:v4];
+  v7 = [[SDShareSheetProxyLoader alloc] initWithProxySection:sectionCopy];
   [(SDShareSheetProxyLoader *)v7 setDelegate:self];
-  v8 = [(SDShareSheetProxyLoaderManager *)self loaders];
-  [v8 addObject:v7];
+  loaders = [(SDShareSheetProxyLoaderManager *)self loaders];
+  [loaders addObject:v7];
 
-  v9 = [v4 initialBatchSize];
+  initialBatchSize = [sectionCopy initialBatchSize];
   v10 = +[SDStatusMonitor sharedMonitor];
-  v11 = [v10 asynchronousProxyLoadingEnabled];
+  asynchronousProxyLoadingEnabled = [v10 asynchronousProxyLoadingEnabled];
 
   v12 = share_sheet_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v18 = v9;
+    v18 = initialBatchSize;
     v19 = 2112;
     v20 = v7;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "new proxy loader with initial batch size:%ld %@", buf, 0x16u);
@@ -80,19 +80,19 @@
   v14[2] = sub_1001BD280;
   v14[3] = &unk_1008CFD30;
   v15 = v7;
-  v16 = v9;
+  v16 = initialBatchSize;
   v13 = v7;
-  [(SDShareSheetProxyLoaderManager *)self _scheduleLoadingBlock:v14 synchronously:(v9 != 0) & ~v11];
+  [(SDShareSheetProxyLoaderManager *)self _scheduleLoadingBlock:v14 synchronously:(initialBatchSize != 0) & ~asynchronousProxyLoadingEnabled];
 }
 
-- (id)_existingLoaderForSectionType:(int64_t)a3
+- (id)_existingLoaderForSectionType:(int64_t)type
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(SDShareSheetProxyLoaderManager *)self loaders];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  loaders = [(SDShareSheetProxyLoaderManager *)self loaders];
+  v5 = [loaders countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -103,21 +103,21 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(loaders);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 proxySection];
-        v11 = [v10 type];
+        proxySection = [v9 proxySection];
+        type = [proxySection type];
 
-        if (v11 == a3)
+        if (type == type)
         {
           v12 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [loaders countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -133,34 +133,34 @@ LABEL_11:
   return v12;
 }
 
-- (void)_scheduleLoadingBlock:(id)a3 synchronously:(BOOL)a4
+- (void)_scheduleLoadingBlock:(id)block synchronously:(BOOL)synchronously
 {
   loadingQueue = self->_loadingQueue;
-  if (a4)
+  if (synchronously)
   {
-    dispatch_sync(loadingQueue, a3);
+    dispatch_sync(loadingQueue, block);
   }
 
   else
   {
-    dispatch_async(loadingQueue, a3);
+    dispatch_async(loadingQueue, block);
   }
 }
 
-- (void)proxyLoader:(id)a3 didLoadProxiesWithResult:(id)a4
+- (void)proxyLoader:(id)loader didLoadProxiesWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  loaderCopy = loader;
+  resultCopy = result;
   publishingQueue = self->_publishingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001BD680;
   block[3] = &unk_1008CE900;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = loaderCopy;
+  v13 = resultCopy;
+  selfCopy = self;
+  v9 = resultCopy;
+  v10 = loaderCopy;
   dispatch_async(publishingQueue, block);
 }
 

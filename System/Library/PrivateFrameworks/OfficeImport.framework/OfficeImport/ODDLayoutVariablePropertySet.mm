@@ -11,11 +11,11 @@
 {
   v6.receiver = self;
   v6.super_class = ODDLayoutVariablePropertySet;
-  v2 = [(OADProperties *)&v6 initWithDefaults];
-  v3 = v2;
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v6 initWithDefaults];
+  v3 = initWithDefaults;
+  if (initWithDefaults)
   {
-    [(ODDLayoutVariablePropertySet *)v2 setDirection:0];
+    [(ODDLayoutVariablePropertySet *)initWithDefaults setDirection:0];
     v4 = v3;
   }
 

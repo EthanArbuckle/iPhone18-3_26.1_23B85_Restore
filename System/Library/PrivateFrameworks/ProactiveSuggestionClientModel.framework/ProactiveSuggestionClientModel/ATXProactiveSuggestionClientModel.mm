@@ -1,26 +1,26 @@
 @interface ATXProactiveSuggestionClientModel
-+ (BOOL)clientModelTypeIsEligibleForShortcutConversion:(int64_t)a3;
-+ (id)clientModelIdFromClientModelType:(int64_t)a3;
-+ (id)clientModelIdsFromClientModelTypesArray:(id)a3;
-+ (int64_t)actionConversionTypeForClientModelType:(int64_t)a3;
-+ (int64_t)clientModelTypeFromClientModelId:(id)a3;
++ (BOOL)clientModelTypeIsEligibleForShortcutConversion:(int64_t)conversion;
++ (id)clientModelIdFromClientModelType:(int64_t)type;
++ (id)clientModelIdsFromClientModelTypesArray:(id)array;
++ (int64_t)actionConversionTypeForClientModelType:(int64_t)type;
++ (int64_t)clientModelTypeFromClientModelId:(id)id;
 + (void)refreshBlendingLayer;
-+ (void)refreshBlendingLayerWithReason:(id)a3;
-- (ATXProactiveSuggestionClientModel)initWithClientModelId:(id)a3 requestDelegate:(id)a4;
-- (ATXProactiveSuggestionClientModel)initWithClientModelId:(id)a3 requestDelegate:(id)a4 blendingLayerServer:(id)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)clientModelMismatchErrorResponseForRequest:(id)a3 clientModelId:(id)a4;
-- (id)emptyResponseForRequest:(id)a3;
++ (void)refreshBlendingLayerWithReason:(id)reason;
+- (ATXProactiveSuggestionClientModel)initWithClientModelId:(id)id requestDelegate:(id)delegate;
+- (ATXProactiveSuggestionClientModel)initWithClientModelId:(id)id requestDelegate:(id)delegate blendingLayerServer:(id)server;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)clientModelMismatchErrorResponseForRequest:(id)request clientModelId:(id)id;
+- (id)emptyResponseForRequest:(id)request;
 - (void)dealloc;
-- (void)pingWithCompletion:(id)a3;
-- (void)retrieveCurrentSuggestionsWithReply:(id)a3;
+- (void)pingWithCompletion:(id)completion;
+- (void)retrieveCurrentSuggestionsWithReply:(id)reply;
 - (void)setupRemoteClientXPCConnection;
-- (void)setupXPCListenerWithClientModelId:(id)a3;
-- (void)suggestionsForContextualActionSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5;
-- (void)suggestionsForIntentSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5;
-- (void)suggestionsForInteractionSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5;
-- (void)transmitSuggestionsToReceiver:(id)a3 feedbackMetadata:(id)a4 completionHandler:(id)a5;
-- (void)updateSuggestions:(id)a3 feedbackMetadata:(id)a4 completionHandler:(id)a5;
+- (void)setupXPCListenerWithClientModelId:(id)id;
+- (void)suggestionsForContextualActionSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply;
+- (void)suggestionsForIntentSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply;
+- (void)suggestionsForInteractionSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply;
+- (void)transmitSuggestionsToReceiver:(id)receiver feedbackMetadata:(id)metadata completionHandler:(id)handler;
+- (void)updateSuggestions:(id)suggestions feedbackMetadata:(id)metadata completionHandler:(id)handler;
 @end
 
 @implementation ATXProactiveSuggestionClientModel
@@ -34,34 +34,34 @@
   [(ATXProactiveSuggestionClientModel *)&v3 dealloc];
 }
 
-- (ATXProactiveSuggestionClientModel)initWithClientModelId:(id)a3 requestDelegate:(id)a4
+- (ATXProactiveSuggestionClientModel)initWithClientModelId:(id)id requestDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  delegateCopy = delegate;
   [(ATXProactiveSuggestionClientModel *)self setupRemoteClientXPCConnection];
-  v8 = [(ATXProactiveSuggestionClientModel *)self remoteAsyncBlendingLayerServer];
-  if (v7)
+  remoteAsyncBlendingLayerServer = [(ATXProactiveSuggestionClientModel *)self remoteAsyncBlendingLayerServer];
+  if (delegateCopy)
   {
-    v9 = [v6 copy];
+    v9 = [idCopy copy];
     [(ATXProactiveSuggestionClientModel *)self setupXPCListenerWithClientModelId:v9];
   }
 
-  v10 = [(ATXProactiveSuggestionClientModel *)self initWithClientModelId:v6 requestDelegate:v7 blendingLayerServer:v8];
+  v10 = [(ATXProactiveSuggestionClientModel *)self initWithClientModelId:idCopy requestDelegate:delegateCopy blendingLayerServer:remoteAsyncBlendingLayerServer];
 
   return v10;
 }
 
-- (ATXProactiveSuggestionClientModel)initWithClientModelId:(id)a3 requestDelegate:(id)a4 blendingLayerServer:(id)a5
+- (ATXProactiveSuggestionClientModel)initWithClientModelId:(id)id requestDelegate:(id)delegate blendingLayerServer:(id)server
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  delegateCopy = delegate;
+  serverCopy = server;
   v11 = __atxlog_handle_blending();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = v8;
+    v19 = idCopy;
     _os_log_impl(&dword_1DEFC4000, v11, OS_LOG_TYPE_DEFAULT, "Creating a ProactiveSuggestionClientModel object for clientModelId: %{public}@", buf, 0xCu);
   }
 
@@ -70,12 +70,12 @@
   v12 = [(ATXProactiveSuggestionClientModel *)&v17 init];
   if (v12)
   {
-    v13 = [v8 copy];
+    v13 = [idCopy copy];
     clientModelId = v12->_clientModelId;
     v12->_clientModelId = v13;
 
-    objc_storeStrong(&v12->_requestDelegate, a4);
-    objc_storeStrong(&v12->_blendingLayerServer, a5);
+    objc_storeStrong(&v12->_requestDelegate, delegate);
+    objc_storeStrong(&v12->_blendingLayerServer, server);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -100,8 +100,8 @@
   v7 = self->_xpcConnection;
   v8 = v6;
   [(NSXPCConnection *)v7 setInterruptionHandler:v10];
-  v9 = [(NSXPCConnection *)self->_xpcConnection interruptionHandler];
-  [(NSXPCConnection *)self->_xpcConnection setInvalidationHandler:v9];
+  interruptionHandler = [(NSXPCConnection *)self->_xpcConnection interruptionHandler];
+  [(NSXPCConnection *)self->_xpcConnection setInvalidationHandler:interruptionHandler];
 
   [(NSXPCConnection *)self->_xpcConnection resume];
 }
@@ -115,13 +115,13 @@ void __67__ATXProactiveSuggestionClientModel_setupRemoteClientXPCConnection__blo
   }
 }
 
-- (void)setupXPCListenerWithClientModelId:(id)a3
+- (void)setupXPCListenerWithClientModelId:(id)id
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v8 = [[v4 alloc] initWithFormat:@"com.apple.proactive.SuggestionRequest.%@", v5];
+  idCopy = id;
+  idCopy = [[v4 alloc] initWithFormat:@"com.apple.proactive.SuggestionRequest.%@", idCopy];
 
-  v6 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:v8];
+  v6 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:idCopy];
   xpcListener = self->_xpcListener;
   self->_xpcListener = v6;
 
@@ -139,9 +139,9 @@ void __67__ATXProactiveSuggestionClientModel_remoteAsyncBlendingLayerServer__blo
   }
 }
 
-- (void)transmitSuggestionsToReceiver:(id)a3 feedbackMetadata:(id)a4 completionHandler:(id)a5
+- (void)transmitSuggestionsToReceiver:(id)receiver feedbackMetadata:(id)metadata completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   blendingLayerServer = self->_blendingLayerServer;
   clientModelId = self->_clientModelId;
   v12[0] = MEMORY[0x1E69E9820];
@@ -149,9 +149,9 @@ void __67__ATXProactiveSuggestionClientModel_remoteAsyncBlendingLayerServer__blo
   v12[2] = __102__ATXProactiveSuggestionClientModel_transmitSuggestionsToReceiver_feedbackMetadata_completionHandler___block_invoke;
   v12[3] = &unk_1E86A45D8;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
-  [(ATXProactiveSuggestionClientModelXPCInterface *)blendingLayerServer clientModelUpdatedSuggestions:a3 feedbackMetadata:a4 clientModelId:clientModelId completion:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [(ATXProactiveSuggestionClientModelXPCInterface *)blendingLayerServer clientModelUpdatedSuggestions:receiver feedbackMetadata:metadata clientModelId:clientModelId completion:v12];
 }
 
 void __102__ATXProactiveSuggestionClientModel_transmitSuggestionsToReceiver_feedbackMetadata_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -176,12 +176,12 @@ void __102__ATXProactiveSuggestionClientModel_transmitSuggestionsToReceiver_feed
   v5();
 }
 
-- (void)updateSuggestions:(id)a3 feedbackMetadata:(id)a4 completionHandler:(id)a5
+- (void)updateSuggestions:(id)suggestions feedbackMetadata:(id)metadata completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  suggestionsCopy = suggestions;
+  handlerCopy = handler;
+  metadataCopy = metadata;
   v11 = __atxlog_handle_blending();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -189,7 +189,7 @@ void __102__ATXProactiveSuggestionClientModel_transmitSuggestionsToReceiver_feed
     v18 = 138543618;
     v19 = clientModelId;
     v20 = 2048;
-    v21 = [v8 count];
+    v21 = [suggestionsCopy count];
     _os_log_impl(&dword_1DEFC4000, v11, OS_LOG_TYPE_DEFAULT, "Blending: (%{public}@) Updating suggestions. Client Model produced %lu new suggestions.", &v18, 0x16u);
   }
 
@@ -202,7 +202,7 @@ void __102__ATXProactiveSuggestionClientModel_transmitSuggestionsToReceiver_feed
     _os_log_impl(&dword_1DEFC4000, v13, OS_LOG_TYPE_DEFAULT, "Blending: (%{public}@) Transmiting...", &v18, 0xCu);
   }
 
-  [(ATXProactiveSuggestionClientModel *)self transmitSuggestionsToReceiver:v8 feedbackMetadata:v10 completionHandler:v9];
+  [(ATXProactiveSuggestionClientModel *)self transmitSuggestionsToReceiver:suggestionsCopy feedbackMetadata:metadataCopy completionHandler:handlerCopy];
   v15 = __atxlog_handle_blending();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -215,9 +215,9 @@ void __102__ATXProactiveSuggestionClientModel_transmitSuggestionsToReceiver_feed
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)retrieveCurrentSuggestionsWithReply:(id)a3
+- (void)retrieveCurrentSuggestionsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   blendingLayerServer = self->_blendingLayerServer;
   clientModelId = self->_clientModelId;
   v8[0] = MEMORY[0x1E69E9820];
@@ -225,8 +225,8 @@ void __102__ATXProactiveSuggestionClientModel_transmitSuggestionsToReceiver_feed
   v8[2] = __73__ATXProactiveSuggestionClientModel_retrieveCurrentSuggestionsWithReply___block_invoke;
   v8[3] = &unk_1E86A4620;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = replyCopy;
+  v7 = replyCopy;
   [(ATXProactiveSuggestionClientModelXPCInterface *)blendingLayerServer retrieveSuggestionsForClientModelId:clientModelId reply:v8];
 }
 
@@ -246,10 +246,10 @@ void __73__ATXProactiveSuggestionClientModel_retrieveCurrentSuggestionsWithReply
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)clientModelIdFromClientModelType:(int64_t)a3
++ (id)clientModelIdFromClientModelType:(int64_t)type
 {
   result = @"atx_anchor_model";
-  switch(a3)
+  switch(type)
   {
     case 0:
       v4 = __atxlog_handle_blending();
@@ -420,16 +420,16 @@ void __73__ATXProactiveSuggestionClientModel_retrieveCurrentSuggestionsWithReply
   return result;
 }
 
-+ (id)clientModelIdsFromClientModelTypesArray:(id)a3
++ (id)clientModelIdsFromClientModelTypesArray:(id)array
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -460,27 +460,27 @@ void __73__ATXProactiveSuggestionClientModel_retrieveCurrentSuggestionsWithReply
   return v11;
 }
 
-+ (int64_t)clientModelTypeFromClientModelId:(id)a3
++ (int64_t)clientModelTypeFromClientModelId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   if (clientModelTypeFromClientModelId__onceToken != -1)
   {
     +[ATXProactiveSuggestionClientModel clientModelTypeFromClientModelId:];
   }
 
-  v4 = [clientModelTypeFromClientModelId__clientModelMap objectForKeyedSubscript:v3];
+  v4 = [clientModelTypeFromClientModelId__clientModelMap objectForKeyedSubscript:idCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __70__ATXProactiveSuggestionClientModel_clientModelTypeFromClientModelId___block_invoke()
@@ -498,16 +498,16 @@ void __70__ATXProactiveSuggestionClientModel_clientModelTypeFromClientModelId___
   }
 }
 
-+ (BOOL)clientModelTypeIsEligibleForShortcutConversion:(int64_t)a3
++ (BOOL)clientModelTypeIsEligibleForShortcutConversion:(int64_t)conversion
 {
-  if (a3 <= 0x32)
+  if (conversion <= 0x32)
   {
-    if (((1 << a3) & 0x37FFFC003F754) != 0 || ((1 << a3) & 0x80003FFC0000) != 0)
+    if (((1 << conversion) & 0x37FFFC003F754) != 0 || ((1 << conversion) & 0x80003FFC0000) != 0)
     {
       return 0;
     }
 
-    if (a3 == 50)
+    if (conversion == 50)
     {
       v4 = __atxlog_handle_blending();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -521,7 +521,7 @@ LABEL_11:
     }
   }
 
-  if (!a3)
+  if (!conversion)
   {
     v4 = __atxlog_handle_blending();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -535,10 +535,10 @@ LABEL_11:
   return 1;
 }
 
-+ (int64_t)actionConversionTypeForClientModelType:(int64_t)a3
++ (int64_t)actionConversionTypeForClientModelType:(int64_t)type
 {
-  v3 = a3 - 1;
-  if (a3 - 1) < 0xB && ((0x455u >> v3))
+  v3 = type - 1;
+  if (type - 1) < 0xB && ((0x455u >> v3))
   {
     return qword_1DF03AB10[v3];
   }
@@ -552,10 +552,10 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = __atxlog_handle_blending();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -567,16 +567,16 @@ LABEL_11:
 
   if (self->_requestDelegate)
   {
-    v8 = [v5 valueForEntitlement:@"com.apple.proactive.ProactiveSuggestionClientModel.xpc"];
+    v8 = [connectionCopy valueForEntitlement:@"com.apple.proactive.ProactiveSuggestionClientModel.xpc"];
     if (v8 && (objc_opt_respondsToSelector() & 1) != 0 && ([v8 BOOLValue] & 1) != 0)
     {
       v9 = ATXProactiveSuggestionRealTimeProviderXPCInterface();
-      [v5 setExportedInterface:v9];
+      [connectionCopy setExportedInterface:v9];
 
-      [v5 setExportedObject:self];
-      [v5 setInterruptionHandler:&__block_literal_global_190];
-      [v5 setInvalidationHandler:&__block_literal_global_193];
-      [v5 resume];
+      [connectionCopy setExportedObject:self];
+      [connectionCopy setInterruptionHandler:&__block_literal_global_190];
+      [connectionCopy setInvalidationHandler:&__block_literal_global_193];
+      [connectionCopy resume];
       v10 = 1;
     }
 
@@ -619,133 +619,133 @@ void __72__ATXProactiveSuggestionClientModel_listener_shouldAcceptNewConnection_
   }
 }
 
-- (void)suggestionsForInteractionSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5
+- (void)suggestionsForInteractionSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([(NSString *)self->_clientModelId isEqualToString:v8])
+  requestCopy = request;
+  idCopy = id;
+  replyCopy = reply;
+  if ([(NSString *)self->_clientModelId isEqualToString:idCopy])
   {
     requestDelegate = self->_requestDelegate;
     if (objc_opt_respondsToSelector())
     {
-      [(ATXProactiveSuggestionRealTimeProviderDelegateProtocol *)self->_requestDelegate suggestionsForInteractionSuggestionRequest:v13 clientModelId:v8 reply:v9];
+      [(ATXProactiveSuggestionRealTimeProviderDelegateProtocol *)self->_requestDelegate suggestionsForInteractionSuggestionRequest:requestCopy clientModelId:idCopy reply:replyCopy];
       goto LABEL_7;
     }
 
-    v11 = [(ATXProactiveSuggestionClientModel *)self emptyResponseForRequest:v13];
+    v11 = [(ATXProactiveSuggestionClientModel *)self emptyResponseForRequest:requestCopy];
   }
 
   else
   {
-    v11 = [(ATXProactiveSuggestionClientModel *)self clientModelMismatchErrorResponseForRequest:v13 clientModelId:v8];
+    v11 = [(ATXProactiveSuggestionClientModel *)self clientModelMismatchErrorResponseForRequest:requestCopy clientModelId:idCopy];
   }
 
   v12 = v11;
-  v9[2](v9, v11);
+  replyCopy[2](replyCopy, v11);
 
 LABEL_7:
 }
 
-- (void)suggestionsForContextualActionSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5
+- (void)suggestionsForContextualActionSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([(NSString *)self->_clientModelId isEqualToString:v8])
+  requestCopy = request;
+  idCopy = id;
+  replyCopy = reply;
+  if ([(NSString *)self->_clientModelId isEqualToString:idCopy])
   {
     requestDelegate = self->_requestDelegate;
     if (objc_opt_respondsToSelector())
     {
-      [(ATXProactiveSuggestionRealTimeProviderDelegateProtocol *)self->_requestDelegate suggestionsForContextualActionSuggestionRequest:v13 clientModelId:v8 reply:v9];
+      [(ATXProactiveSuggestionRealTimeProviderDelegateProtocol *)self->_requestDelegate suggestionsForContextualActionSuggestionRequest:requestCopy clientModelId:idCopy reply:replyCopy];
       goto LABEL_7;
     }
 
-    v11 = [(ATXProactiveSuggestionClientModel *)self emptyResponseForRequest:v13];
+    v11 = [(ATXProactiveSuggestionClientModel *)self emptyResponseForRequest:requestCopy];
   }
 
   else
   {
-    v11 = [(ATXProactiveSuggestionClientModel *)self clientModelMismatchErrorResponseForRequest:v13 clientModelId:v8];
+    v11 = [(ATXProactiveSuggestionClientModel *)self clientModelMismatchErrorResponseForRequest:requestCopy clientModelId:idCopy];
   }
 
   v12 = v11;
-  v9[2](v9, v11);
+  replyCopy[2](replyCopy, v11);
 
 LABEL_7:
 }
 
-- (void)suggestionsForIntentSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5
+- (void)suggestionsForIntentSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([(NSString *)self->_clientModelId isEqualToString:v8])
+  requestCopy = request;
+  idCopy = id;
+  replyCopy = reply;
+  if ([(NSString *)self->_clientModelId isEqualToString:idCopy])
   {
     requestDelegate = self->_requestDelegate;
     if (objc_opt_respondsToSelector())
     {
-      [(ATXProactiveSuggestionRealTimeProviderDelegateProtocol *)self->_requestDelegate suggestionsForIntentSuggestionRequest:v13 clientModelId:v8 reply:v9];
+      [(ATXProactiveSuggestionRealTimeProviderDelegateProtocol *)self->_requestDelegate suggestionsForIntentSuggestionRequest:requestCopy clientModelId:idCopy reply:replyCopy];
       goto LABEL_7;
     }
 
-    v11 = [(ATXProactiveSuggestionClientModel *)self emptyResponseForRequest:v13];
+    v11 = [(ATXProactiveSuggestionClientModel *)self emptyResponseForRequest:requestCopy];
   }
 
   else
   {
-    v11 = [(ATXProactiveSuggestionClientModel *)self clientModelMismatchErrorResponseForRequest:v13 clientModelId:v8];
+    v11 = [(ATXProactiveSuggestionClientModel *)self clientModelMismatchErrorResponseForRequest:requestCopy clientModelId:idCopy];
   }
 
   v12 = v11;
-  v9[2](v9, v11);
+  replyCopy[2](replyCopy, v11);
 
 LABEL_7:
 }
 
-- (void)pingWithCompletion:(id)a3
+- (void)pingWithCompletion:(id)completion
 {
-  v8 = a3;
+  completionCopy = completion;
   requestDelegate = self->_requestDelegate;
   if (objc_opt_respondsToSelector() & 1) != 0 || (v5 = self->_requestDelegate, (objc_opt_respondsToSelector()))
   {
-    v6 = v8[2];
+    v6 = completionCopy[2];
   }
 
   else
   {
     v7 = self->_requestDelegate;
     objc_opt_respondsToSelector();
-    v6 = v8[2];
+    v6 = completionCopy[2];
   }
 
   v6();
 }
 
-- (id)emptyResponseForRequest:(id)a3
+- (id)emptyResponseForRequest:(id)request
 {
-  v3 = a3;
-  v4 = [[ATXSuggestionRequestResponse alloc] initWithSuggestions:0 feedbackMetadata:0 originalRequest:v3 responseCode:1 error:0];
+  requestCopy = request;
+  v4 = [[ATXSuggestionRequestResponse alloc] initWithSuggestions:0 feedbackMetadata:0 originalRequest:requestCopy responseCode:1 error:0];
 
   return v4;
 }
 
-- (id)clientModelMismatchErrorResponseForRequest:(id)a3 clientModelId:(id)a4
+- (id)clientModelMismatchErrorResponseForRequest:(id)request clientModelId:(id)id
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AEC0];
   clientModelId = self->_clientModelId;
-  v7 = a3;
-  v8 = [v5 stringWithFormat:@"Wrong delegate for request. Expected %@ but found %@.", a4, clientModelId];
+  requestCopy = request;
+  clientModelId = [v5 stringWithFormat:@"Wrong delegate for request. Expected %@ but found %@.", id, clientModelId];
   v9 = [ATXSuggestionRequestResponse alloc];
   v10 = MEMORY[0x1E696ABC0];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   v18 = *MEMORY[0x1E696A578];
-  v19[0] = v8;
+  v19[0] = clientModelId;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
   v14 = [v10 errorWithDomain:v12 code:5 userInfo:v13];
-  v15 = [(ATXSuggestionRequestResponse *)v9 initWithSuggestions:0 feedbackMetadata:0 originalRequest:v7 responseCode:3 error:v14];
+  v15 = [(ATXSuggestionRequestResponse *)v9 initWithSuggestions:0 feedbackMetadata:0 originalRequest:requestCopy responseCode:3 error:v14];
 
   v16 = *MEMORY[0x1E69E9840];
 
@@ -754,31 +754,31 @@ LABEL_7:
 
 + (void)refreshBlendingLayer
 {
-  v2 = [@"com.apple.duetexpertd.clientModelRefreshBlendingLayer" UTF8String];
+  uTF8String = [@"com.apple.duetexpertd.clientModelRefreshBlendingLayer" UTF8String];
 
-  notify_post(v2);
+  notify_post(uTF8String);
 }
 
-+ (void)refreshBlendingLayerWithReason:(id)a3
++ (void)refreshBlendingLayerWithReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  reasonCopy = reason;
   v4 = __atxlog_handle_blending();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v3;
+    v11 = reasonCopy;
     _os_log_impl(&dword_1DEFC4000, v4, OS_LOG_TYPE_DEFAULT, "Sending refresh blending notification with reason: %@", &v10, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  v6 = [v5 processName];
-  v7 = [v6 isEqualToString:@"duetexpertd"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v7 = [processName isEqualToString:@"duetexpertd"];
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"com.apple.duetexpertd.clientModelRefreshBlendingLayer" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.duetexpertd.clientModelRefreshBlendingLayer" object:0];
   }
 
   else

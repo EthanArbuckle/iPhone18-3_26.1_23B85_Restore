@@ -1,10 +1,10 @@
 @interface CCHomeContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCHome)home;
 - (CCHomeAccessory)accessory;
-- (CCHomeContent)initWithEntity:(id)a3 entityType:(unsigned int)a4 error:(id *)a5;
-- (CCHomeContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (CCHomeContent)initWithEntity:(id)entity entityType:(unsigned int)type error:(id *)error;
+- (CCHomeContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCHomeRoom)room;
 - (CCHomeScene)scene;
 - (CCHomeService)service;
@@ -12,21 +12,21 @@
 - (CCHomeTrigger)trigger;
 - (CCHomeZone)zone;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCHomeContent
 
-- (CCHomeContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCHomeContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v55[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"home"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"home"];
     if (v9)
     {
       v55[0] = 0;
@@ -45,7 +45,7 @@ LABEL_72:
       v9 = v10;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"zone"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"zone"];
     if (v12)
     {
       v54 = 0;
@@ -64,7 +64,7 @@ LABEL_71:
       v12 = v13;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"room"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"room"];
     if (v10)
     {
       v53 = 0;
@@ -83,7 +83,7 @@ LABEL_70:
       v10 = v15;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"service"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"service"];
     if (v13)
     {
       v52 = 0;
@@ -102,10 +102,10 @@ LABEL_69:
       v13 = v17;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"serviceGroup"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"serviceGroup"];
     if (v15)
     {
-      v45 = self;
+      selfCopy = self;
       v51 = 0;
       v19 = v15;
       v15 = [[CCHomeServiceGroup alloc] initWithJSONDictionary:v15 error:&v51];
@@ -117,16 +117,16 @@ LABEL_69:
         CCSetError();
         v25 = 0;
         v15 = v19;
-        self = v45;
+        self = selfCopy;
 LABEL_68:
 
         goto LABEL_69;
       }
 
-      self = v45;
+      self = selfCopy;
     }
 
-    v21 = [v6 objectForKeyedSubscript:@"scene"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"scene"];
     v44 = v15;
     if (v21)
     {
@@ -156,7 +156,7 @@ LABEL_67:
     }
 
     v43 = v24;
-    v26 = [v6 objectForKeyedSubscript:@"trigger"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"trigger"];
     if (v26)
     {
       v49 = 0;
@@ -179,7 +179,7 @@ LABEL_67:
       v47 = 0;
     }
 
-    v29 = [v6 objectForKeyedSubscript:@"accessory"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"accessory"];
     if (!v29)
     {
       v32 = 0;
@@ -270,7 +270,7 @@ LABEL_45:
         v42 = v34;
       }
 
-      v25 = [[CCHomeContent alloc] initWithEntity:v27 entityType:v42 error:a4];
+      v25 = [[CCHomeContent alloc] initWithEntity:v27 entityType:v42 error:error];
       goto LABEL_66;
     }
 
@@ -303,9 +303,9 @@ LABEL_73:
       goto LABEL_25;
     }
 
-    v5 = [(CCHomeContent *)self home];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"home"];
+    home = [(CCHomeContent *)self home];
+    jsonDictionary = [home jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"home"];
 
     entityType = self->_entityType;
   }
@@ -318,8 +318,8 @@ LABEL_73:
     }
 
     v7 = [(CCHomeContent *)self zone];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"zone"];
+    jsonDictionary2 = [v7 jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"zone"];
 
     entityType = self->_entityType;
   }
@@ -331,9 +331,9 @@ LABEL_73:
       goto LABEL_25;
     }
 
-    v9 = [(CCHomeContent *)self room];
-    v10 = [v9 jsonDictionary];
-    [v3 setObject:v10 forKeyedSubscript:@"room"];
+    room = [(CCHomeContent *)self room];
+    jsonDictionary3 = [room jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"room"];
 
     entityType = self->_entityType;
   }
@@ -345,9 +345,9 @@ LABEL_73:
       goto LABEL_25;
     }
 
-    v11 = [(CCHomeContent *)self service];
-    v12 = [v11 jsonDictionary];
-    [v3 setObject:v12 forKeyedSubscript:@"service"];
+    service = [(CCHomeContent *)self service];
+    jsonDictionary4 = [service jsonDictionary];
+    [v3 setObject:jsonDictionary4 forKeyedSubscript:@"service"];
 
     entityType = self->_entityType;
   }
@@ -359,9 +359,9 @@ LABEL_73:
       goto LABEL_25;
     }
 
-    v13 = [(CCHomeContent *)self serviceGroup];
-    v14 = [v13 jsonDictionary];
-    [v3 setObject:v14 forKeyedSubscript:@"serviceGroup"];
+    serviceGroup = [(CCHomeContent *)self serviceGroup];
+    jsonDictionary5 = [serviceGroup jsonDictionary];
+    [v3 setObject:jsonDictionary5 forKeyedSubscript:@"serviceGroup"];
 
     entityType = self->_entityType;
   }
@@ -373,9 +373,9 @@ LABEL_73:
       goto LABEL_25;
     }
 
-    v15 = [(CCHomeContent *)self scene];
-    v16 = [v15 jsonDictionary];
-    [v3 setObject:v16 forKeyedSubscript:@"scene"];
+    scene = [(CCHomeContent *)self scene];
+    jsonDictionary6 = [scene jsonDictionary];
+    [v3 setObject:jsonDictionary6 forKeyedSubscript:@"scene"];
 
     entityType = self->_entityType;
   }
@@ -387,18 +387,18 @@ LABEL_73:
       goto LABEL_25;
     }
 
-    v17 = [(CCHomeContent *)self trigger];
-    v18 = [v17 jsonDictionary];
-    [v3 setObject:v18 forKeyedSubscript:@"trigger"];
+    trigger = [(CCHomeContent *)self trigger];
+    jsonDictionary7 = [trigger jsonDictionary];
+    [v3 setObject:jsonDictionary7 forKeyedSubscript:@"trigger"];
 
     entityType = self->_entityType;
   }
 
   if (entityType == 8 && self->_accessory)
   {
-    v19 = [(CCHomeContent *)self accessory];
-    v20 = [v19 jsonDictionary];
-    [v3 setObject:v20 forKeyedSubscript:@"accessory"];
+    accessory = [(CCHomeContent *)self accessory];
+    jsonDictionary8 = [accessory jsonDictionary];
+    [v3 setObject:jsonDictionary8 forKeyedSubscript:@"accessory"];
   }
 
 LABEL_25:
@@ -407,58 +407,58 @@ LABEL_25:
   return v21;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v14 = a3;
+  blockCopy = block;
   if (self->_home)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7691 subMessageValue:self->_home];
-    v14[2](v14, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_zone)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7692 subMessageValue:self->_zone];
-    v14[2](v14, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_room)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7693 subMessageValue:self->_room];
-    v14[2](v14, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_service)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7694 subMessageValue:self->_service];
-    v14[2](v14, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_serviceGroup)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7695 subMessageValue:self->_serviceGroup];
-    v14[2](v14, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_scene)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7696 subMessageValue:self->_scene];
-    v14[2](v14, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_trigger)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7697 subMessageValue:self->_trigger];
-    v14[2](v14, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
-  v12 = v14;
+  v12 = blockCopy;
   if (self->_accessory)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7698 subMessageValue:self->_accessory];
-    v14[2](v14, v13);
+    blockCopy[2](blockCopy, v13);
 
-    v12 = v14;
+    v12 = blockCopy;
   }
 }
 
@@ -518,10 +518,10 @@ LABEL_25:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -931,11 +931,11 @@ LABEL_65:
   return v97;
 }
 
-- (CCHomeContent)initWithEntity:(id)a3 entityType:(unsigned int)a4 error:(id *)a5
+- (CCHomeContent)initWithEntity:(id)entity entityType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  entityCopy = entity;
   v9 = objc_opt_new();
-  if (v8 && a4 == 1)
+  if (entityCopy && type == 1)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -947,11 +947,11 @@ LABEL_65:
 
 LABEL_34:
     CCSetError();
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_35;
   }
 
-  if (v8 && a4 == 2)
+  if (entityCopy && type == 2)
   {
     objc_opt_class();
     v12 = CCValidateIsInstanceOfExpectedClass();
@@ -964,7 +964,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (v8 && a4 == 3)
+  if (entityCopy && type == 3)
   {
     objc_opt_class();
     v13 = CCValidateIsInstanceOfExpectedClass();
@@ -977,7 +977,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (v8 && a4 == 4)
+  if (entityCopy && type == 4)
   {
     objc_opt_class();
     v14 = CCValidateIsInstanceOfExpectedClass();
@@ -990,7 +990,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (v8 && a4 == 5)
+  if (entityCopy && type == 5)
   {
     objc_opt_class();
     v15 = CCValidateIsInstanceOfExpectedClass();
@@ -1003,7 +1003,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (v8 && a4 == 6)
+  if (entityCopy && type == 6)
   {
     objc_opt_class();
     v16 = CCValidateIsInstanceOfExpectedClass();
@@ -1016,7 +1016,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (v8 && a4 == 7)
+  if (entityCopy && type == 7)
   {
     objc_opt_class();
     v17 = CCValidateIsInstanceOfExpectedClass();
@@ -1030,7 +1030,7 @@ LABEL_34:
   }
 
   v11 = 0;
-  if (!v8 || a4 != 8)
+  if (!entityCopy || type != 8)
   {
     goto LABEL_33;
   }
@@ -1045,29 +1045,29 @@ LABEL_34:
   }
 
 LABEL_32:
-  v19 = [v8 data];
+  data = [entityCopy data];
   CCPBDataWriterWriteDataField();
 
 LABEL_33:
-  v20 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v20 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v21 = self;
+  selfCopy = self;
 LABEL_35:
 
-  return v21;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 - 7690) > 0x14)
+  if ((identifier - 7690) > 0x14)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73E75E8[(a3 - 7690)];
+    return off_1E73E75E8[(identifier - 7690)];
   }
 }
 

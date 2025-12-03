@@ -1,41 +1,41 @@
 @interface _PASZoneSupport
-+ (id)copyArray:(id)a3 toZone:(_NSZone *)a4;
-+ (id)copyData:(id)a3 toZone:(_NSZone *)a4;
-+ (id)copyDate:(id)a3 toZone:(_NSZone *)a4;
-+ (id)copyDictionary:(id)a3 toZone:(_NSZone *)a4;
-+ (id)copyNumber:(id)a3 toZone:(_NSZone *)a4;
-+ (id)copySet:(id)a3 toZone:(_NSZone *)a4;
-+ (id)copyString:(id)a3 toZone:(_NSZone *)a4;
-+ (id)copyUUID:(id)a3 toZone:(_NSZone *)a4;
-+ (id)deepCopyObject:(id)a3 toZone:(_NSZone *)a4 strategy:(id)a5;
-+ (id)mutableCopyArray:(id)a3 toZone:(_NSZone *)a4;
-+ (id)mutableCopyData:(id)a3 toZone:(_NSZone *)a4;
-+ (id)mutableCopyDictionary:(id)a3 toZone:(_NSZone *)a4;
-+ (id)mutableCopySet:(id)a3 toZone:(_NSZone *)a4;
-+ (id)mutableCopyString:(id)a3 toZone:(_NSZone *)a4;
-+ (id)newMutableArrayInZone:(_NSZone *)a3 capacity:(unint64_t)a4;
-+ (id)newMutableDataInZone:(_NSZone *)a3 capacity:(unint64_t)a4;
-+ (id)newMutableDataInZone:(_NSZone *)a3 length:(unint64_t)a4;
-+ (id)newMutableDictionaryInZone:(_NSZone *)a3 capacity:(unint64_t)a4;
-+ (id)newMutableSetInZone:(_NSZone *)a3 capacity:(unint64_t)a4;
-+ (id)newMutableStringInZone:(_NSZone *)a3 capacity:(unint64_t)a4;
++ (id)copyArray:(id)array toZone:(_NSZone *)zone;
++ (id)copyData:(id)data toZone:(_NSZone *)zone;
++ (id)copyDate:(id)date toZone:(_NSZone *)zone;
++ (id)copyDictionary:(id)dictionary toZone:(_NSZone *)zone;
++ (id)copyNumber:(id)number toZone:(_NSZone *)zone;
++ (id)copySet:(id)set toZone:(_NSZone *)zone;
++ (id)copyString:(id)string toZone:(_NSZone *)zone;
++ (id)copyUUID:(id)d toZone:(_NSZone *)zone;
++ (id)deepCopyObject:(id)object toZone:(_NSZone *)zone strategy:(id)strategy;
++ (id)mutableCopyArray:(id)array toZone:(_NSZone *)zone;
++ (id)mutableCopyData:(id)data toZone:(_NSZone *)zone;
++ (id)mutableCopyDictionary:(id)dictionary toZone:(_NSZone *)zone;
++ (id)mutableCopySet:(id)set toZone:(_NSZone *)zone;
++ (id)mutableCopyString:(id)string toZone:(_NSZone *)zone;
++ (id)newMutableArrayInZone:(_NSZone *)zone capacity:(unint64_t)capacity;
++ (id)newMutableDataInZone:(_NSZone *)zone capacity:(unint64_t)capacity;
++ (id)newMutableDataInZone:(_NSZone *)zone length:(unint64_t)length;
++ (id)newMutableDictionaryInZone:(_NSZone *)zone capacity:(unint64_t)capacity;
++ (id)newMutableSetInZone:(_NSZone *)zone capacity:(unint64_t)capacity;
++ (id)newMutableStringInZone:(_NSZone *)zone capacity:(unint64_t)capacity;
 @end
 
 @implementation _PASZoneSupport
 
-+ (id)deepCopyObject:(id)a3 toZone:(_NSZone *)a4 strategy:(id)a5
++ (id)deepCopyObject:(id)object toZone:(_NSZone *)zone strategy:(id)strategy
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
+  strategyCopy = strategy;
+  objectCopy = object;
   v10 = objc_autoreleasePoolPush();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v35 = v8;
+    v35 = strategyCopy;
     v37 = v10;
-    v11 = v9;
-    v12 = [a1 newMutableArrayInZone:a4 capacity:{objc_msgSend(v11, "count")}];
+    v11 = objectCopy;
+    v12 = [self newMutableArrayInZone:zone capacity:{objc_msgSend(v11, "count")}];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
@@ -55,7 +55,7 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [a1 deepCopyObject:*(*(&v50 + 1) + 8 * i) toZone:a4 strategy:*&a5];
+          v18 = [self deepCopyObject:*(*(&v50 + 1) + 8 * i) toZone:zone strategy:*&strategy];
           [v12 addObject:v18];
         }
 
@@ -72,7 +72,7 @@
 
     else
     {
-      v19 = [a1 copyArray:v12 toZone:a4];
+      v19 = [self copyArray:v12 toZone:zone];
     }
 
     v24 = v19;
@@ -85,29 +85,29 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = v9;
-    v21 = [a1 newMutableDictionaryInZone:a4 capacity:{objc_msgSend(v20, "count")}];
+    v20 = objectCopy;
+    v21 = [self newMutableDictionaryInZone:zone capacity:{objc_msgSend(v20, "count")}];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __50___PASZoneSupport_deepCopyObject_toZone_strategy___block_invoke;
     v43[3] = &unk_1E77F1BB8;
-    v45 = a1;
-    v46 = a4;
-    v47 = v8;
-    v49 = *(&a5 + 3);
-    v48 = *&a5 >> 8;
+    selfCopy = self;
+    zoneCopy = zone;
+    v47 = strategyCopy;
+    v49 = *(&strategy + 3);
+    v48 = *&strategy >> 8;
     v22 = v21;
     v44 = v22;
     [v20 enumerateKeysAndObjectsUsingBlock:v43];
 
-    if ((v8 & 2) != 0)
+    if ((strategyCopy & 2) != 0)
     {
       v23 = v22;
     }
 
     else
     {
-      v23 = [a1 copyDictionary:v22 toZone:a4];
+      v23 = [self copyDictionary:v22 toZone:zone];
     }
 
     v24 = v23;
@@ -118,10 +118,10 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v36 = v8;
+    v36 = strategyCopy;
     v38 = v10;
-    v25 = v9;
-    v12 = [a1 newMutableSetInZone:a4 capacity:{objc_msgSend(v25, "count")}];
+    v25 = objectCopy;
+    v12 = [self newMutableSetInZone:zone capacity:{objc_msgSend(v25, "count")}];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -141,7 +141,7 @@ LABEL_16:
             objc_enumerationMutation(v13);
           }
 
-          v30 = [a1 deepCopyObject:*(*(&v39 + 1) + 8 * j) toZone:a4 strategy:*&a5];
+          v30 = [self deepCopyObject:*(*(&v39 + 1) + 8 * j) toZone:zone strategy:*&strategy];
           [v12 addObject:v30];
         }
 
@@ -159,7 +159,7 @@ LABEL_16:
 
     else
     {
-      v31 = [a1 copySet:v12 toZone:a4];
+      v31 = [self copySet:v12 toZone:zone];
     }
 
     v24 = v31;
@@ -169,14 +169,14 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ((v8 & 0x10) != 0)
+    if ((strategyCopy & 0x10) != 0)
     {
-      v32 = [a1 mutableCopyData:v9 toZone:a4];
+      v32 = [self mutableCopyData:objectCopy toZone:zone];
     }
 
     else
     {
-      v32 = [a1 copyData:v9 toZone:a4];
+      v32 = [self copyData:objectCopy toZone:zone];
     }
   }
 
@@ -185,14 +185,14 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ((v8 & 8) != 0)
+      if ((strategyCopy & 8) != 0)
       {
-        v32 = [a1 mutableCopyString:v9 toZone:a4];
+        v32 = [self mutableCopyString:objectCopy toZone:zone];
       }
 
       else
       {
-        v32 = [a1 copyString:v9 toZone:a4];
+        v32 = [self copyString:objectCopy toZone:zone];
       }
     }
 
@@ -201,7 +201,7 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v32 = [a1 copyNumber:v9 toZone:a4];
+        v32 = [self copyNumber:objectCopy toZone:zone];
       }
 
       else
@@ -209,7 +209,7 @@ LABEL_16:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v32 = [a1 copyDate:v9 toZone:a4];
+          v32 = [self copyDate:objectCopy toZone:zone];
         }
 
         else
@@ -217,22 +217,22 @@ LABEL_16:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v32 = [a1 copyUUID:v9 toZone:a4];
+            v32 = [self copyUUID:objectCopy toZone:zone];
           }
 
-          else if ((v8 & 0x20) != 0 && [v9 conformsToProtocol:&unk_1F1B32940])
+          else if ((strategyCopy & 0x20) != 0 && [objectCopy conformsToProtocol:&unk_1F1B32940])
           {
-            v32 = [v9 mutableCopyWithZone:a4];
+            v32 = [objectCopy mutableCopyWithZone:zone];
           }
 
-          else if ([v9 conformsToProtocol:&unk_1F1B32328])
+          else if ([objectCopy conformsToProtocol:&unk_1F1B32328])
           {
-            v32 = [v9 copyWithZone:a4];
+            v32 = [objectCopy copyWithZone:zone];
           }
 
           else
           {
-            v32 = v9;
+            v32 = objectCopy;
           }
         }
       }
@@ -248,63 +248,63 @@ LABEL_52:
   return v24;
 }
 
-+ (id)copyUUID:(id)a3 toZone:(_NSZone *)a4
++ (id)copyUUID:(id)d toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (!a4 || MEMORY[0x1AC5662F0]() == a4)
+  dCopy = d;
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
-    v8 = [v7 copy];
+    v8 = [dCopy copy];
   }
 
   else
   {
-    v11 = CFUUIDGetUUIDBytes(v7);
-    v8 = CFUUIDCreateFromUUIDBytes(a4, v11);
+    v11 = CFUUIDGetUUIDBytes(dCopy);
+    v8 = CFUUIDCreateFromUUIDBytes(zone, v11);
     if (!v8)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:258 description:@"Unexpected CFUUIDCreateFromUUIDBytes() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:258 description:@"Unexpected CFUUIDCreateFromUUIDBytes() failure"];
     }
   }
 
   return v8;
 }
 
-+ (id)copyDate:(id)a3 toZone:(_NSZone *)a4
++ (id)copyDate:(id)date toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (a4 && MEMORY[0x1AC5662F0]() != a4 && malloc_size(v7))
+  dateCopy = date;
+  if (zone && MEMORY[0x1AC5662F0]() != zone && malloc_size(dateCopy))
   {
-    v8 = MEMORY[0x1AC565F20](v7);
-    v9 = CFDateCreate(a4, v8);
+    v8 = MEMORY[0x1AC565F20](dateCopy);
+    v9 = CFDateCreate(zone, v8);
     if (!v9)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:246 description:@"Unexpected CFDateCreate() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:246 description:@"Unexpected CFDateCreate() failure"];
     }
   }
 
   else
   {
-    v9 = [v7 copy];
+    v9 = [dateCopy copy];
   }
 
   return v9;
 }
 
-+ (id)copyNumber:(id)a3 toZone:(_NSZone *)a4
++ (id)copyNumber:(id)number toZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (a4 && MEMORY[0x1AC5662F0]() != a4 && malloc_size(v7))
+  numberCopy = number;
+  if (zone && MEMORY[0x1AC5662F0]() != zone && malloc_size(numberCopy))
   {
-    ByteSize = CFNumberGetByteSize(v7);
+    ByteSize = CFNumberGetByteSize(numberCopy);
     v9 = ByteSize + 7;
     memptr = 0;
     v23 = 0;
     if ((ByteSize + 7) > 0x400)
     {
-      v16 = CFNumberGetByteSize(v7);
+      v16 = CFNumberGetByteSize(numberCopy);
       v17 = malloc_type_posix_memalign(&memptr, 8uLL, v16, 0xE69E64A3uLL);
       LOBYTE(v23) = 0;
       if (v17)
@@ -323,19 +323,19 @@ LABEL_52:
       bzero(v10, v9);
     }
 
-    Type = CFNumberGetType(v7);
-    if (!CFNumberGetValue(v7, Type, v10))
+    Type = CFNumberGetType(numberCopy);
+    if (!CFNumberGetValue(numberCopy, Type, v10))
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:231 description:@"Unexpected value conversion error from CFNumberGetValue"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:231 description:@"Unexpected value conversion error from CFNumberGetValue"];
     }
 
-    v12 = CFNumberGetType(v7);
-    v13 = CFNumberCreate(a4, v12, v10);
+    v12 = CFNumberGetType(numberCopy);
+    v13 = CFNumberCreate(zone, v12, v10);
     if (!v13)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:233 description:@"Unexpected CFNumberCreate() failure"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:233 description:@"Unexpected CFNumberCreate() failure"];
     }
 
     if (v9 >= 0x401)
@@ -346,350 +346,350 @@ LABEL_52:
 
   else
   {
-    v13 = [(__CFNumber *)v7 copy];
+    v13 = [(__CFNumber *)numberCopy copy];
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-+ (id)mutableCopyData:(id)a3 toZone:(_NSZone *)a4
++ (id)mutableCopyData:(id)data toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (!a4 || MEMORY[0x1AC5662F0]() == a4)
+  dataCopy = data;
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
-    MutableCopy = [v7 mutableCopy];
+    MutableCopy = [dataCopy mutableCopy];
   }
 
   else
   {
-    MutableCopy = CFDataCreateMutableCopy(a4, 0, v7);
+    MutableCopy = CFDataCreateMutableCopy(zone, 0, dataCopy);
     if (!MutableCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:218 description:@"Unexpected CFDataCreateMutableCopy() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:218 description:@"Unexpected CFDataCreateMutableCopy() failure"];
     }
   }
 
   return MutableCopy;
 }
 
-+ (id)copyData:(id)a3 toZone:(_NSZone *)a4
++ (id)copyData:(id)data toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (!a4 || MEMORY[0x1AC5662F0]() == a4)
+  dataCopy = data;
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
-    Copy = [v7 copy];
+    Copy = [dataCopy copy];
   }
 
   else
   {
-    Copy = CFDataCreateCopy(a4, v7);
+    Copy = CFDataCreateCopy(zone, dataCopy);
     if (!Copy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:207 description:@"Unexpected CFDataCreateCopy() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:207 description:@"Unexpected CFDataCreateCopy() failure"];
     }
   }
 
   return Copy;
 }
 
-+ (id)newMutableDataInZone:(_NSZone *)a3 length:(unint64_t)a4
++ (id)newMutableDataInZone:(_NSZone *)zone length:(unint64_t)length
 {
-  if (!a3 || MEMORY[0x1AC5662F0]() == a3)
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
     v10 = objc_alloc(MEMORY[0x1E695DF88]);
 
-    return [v10 initWithLength:a4];
+    return [v10 initWithLength:length];
   }
 
   else
   {
-    Mutable = CFDataCreateMutable(a3, 0);
+    Mutable = CFDataCreateMutable(zone, 0);
     if (!Mutable)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:195 description:@"Unexpected CFDataCreateMutable() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:195 description:@"Unexpected CFDataCreateMutable() failure"];
     }
 
-    CFDataSetLength(Mutable, a4);
+    CFDataSetLength(Mutable, length);
     return Mutable;
   }
 }
 
-+ (id)newMutableDataInZone:(_NSZone *)a3 capacity:(unint64_t)a4
++ (id)newMutableDataInZone:(_NSZone *)zone capacity:(unint64_t)capacity
 {
-  if (!a3 || MEMORY[0x1AC5662F0]() == a3)
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
     v10 = objc_alloc(MEMORY[0x1E695DF88]);
 
-    return [v10 initWithCapacity:a4];
+    return [v10 initWithCapacity:capacity];
   }
 
   else
   {
-    Mutable = CFDataCreateMutable(a3, 0);
+    Mutable = CFDataCreateMutable(zone, 0);
     if (!Mutable)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:184 description:@"Unexpected CFDataCreateMutable() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:184 description:@"Unexpected CFDataCreateMutable() failure"];
     }
 
     return Mutable;
   }
 }
 
-+ (id)mutableCopyString:(id)a3 toZone:(_NSZone *)a4
++ (id)mutableCopyString:(id)string toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (!a4 || MEMORY[0x1AC5662F0]() == a4)
+  stringCopy = string;
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
-    MutableCopy = [(__CFString *)v7 mutableCopy];
+    MutableCopy = [(__CFString *)stringCopy mutableCopy];
   }
 
   else
   {
-    MutableCopy = CFStringCreateMutableCopy(a4, 0, v7);
+    MutableCopy = CFStringCreateMutableCopy(zone, 0, stringCopy);
     if (!MutableCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:167 description:@"Unexpected CFStringCreateMutableCopy() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:167 description:@"Unexpected CFStringCreateMutableCopy() failure"];
     }
   }
 
   return MutableCopy;
 }
 
-+ (id)copyString:(id)a3 toZone:(_NSZone *)a4
++ (id)copyString:(id)string toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (a4 && MEMORY[0x1AC5662F0]() != a4 && malloc_size(v7))
+  stringCopy = string;
+  if (zone && MEMORY[0x1AC5662F0]() != zone && malloc_size(stringCopy))
   {
-    Copy = CFStringCreateCopy(a4, v7);
+    Copy = CFStringCreateCopy(zone, stringCopy);
     if (!Copy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:156 description:@"Unexpected CFStringCreateCopy() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:156 description:@"Unexpected CFStringCreateCopy() failure"];
     }
   }
 
   else
   {
-    Copy = [(__CFString *)v7 copy];
+    Copy = [(__CFString *)stringCopy copy];
   }
 
   return Copy;
 }
 
-+ (id)newMutableStringInZone:(_NSZone *)a3 capacity:(unint64_t)a4
++ (id)newMutableStringInZone:(_NSZone *)zone capacity:(unint64_t)capacity
 {
-  if (!a3 || MEMORY[0x1AC5662F0]() == a3)
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
     v10 = objc_alloc(MEMORY[0x1E696AD60]);
 
-    return [v10 initWithCapacity:a4];
+    return [v10 initWithCapacity:capacity];
   }
 
   else
   {
-    Mutable = CFStringCreateMutable(a3, 0);
+    Mutable = CFStringCreateMutable(zone, 0);
     if (!Mutable)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:143 description:@"Unexpected CFStringCreateMutable() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:143 description:@"Unexpected CFStringCreateMutable() failure"];
     }
 
     return Mutable;
   }
 }
 
-+ (id)mutableCopySet:(id)a3 toZone:(_NSZone *)a4
++ (id)mutableCopySet:(id)set toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (!a4 || MEMORY[0x1AC5662F0]() == a4)
+  setCopy = set;
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
-    MutableCopy = [v7 mutableCopy];
+    MutableCopy = [setCopy mutableCopy];
   }
 
   else
   {
-    MutableCopy = CFSetCreateMutableCopy(a4, 0, v7);
+    MutableCopy = CFSetCreateMutableCopy(zone, 0, setCopy);
     if (!MutableCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:126 description:@"Unexpected CFSetCreateCopy() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:126 description:@"Unexpected CFSetCreateCopy() failure"];
     }
   }
 
   return MutableCopy;
 }
 
-+ (id)copySet:(id)a3 toZone:(_NSZone *)a4
++ (id)copySet:(id)set toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (!a4 || MEMORY[0x1AC5662F0]() == a4)
+  setCopy = set;
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
-    Copy = [v7 copy];
+    Copy = [setCopy copy];
   }
 
   else
   {
-    Copy = CFSetCreateCopy(a4, v7);
+    Copy = CFSetCreateCopy(zone, setCopy);
     if (!Copy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:115 description:@"Unexpected CFSetCreateCopy() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:115 description:@"Unexpected CFSetCreateCopy() failure"];
     }
   }
 
   return Copy;
 }
 
-+ (id)newMutableSetInZone:(_NSZone *)a3 capacity:(unint64_t)a4
++ (id)newMutableSetInZone:(_NSZone *)zone capacity:(unint64_t)capacity
 {
-  if (!a3 || MEMORY[0x1AC5662F0]() == a3)
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
     v10 = objc_alloc(MEMORY[0x1E695DFA8]);
 
-    return [v10 initWithCapacity:a4];
+    return [v10 initWithCapacity:capacity];
   }
 
   else
   {
-    Mutable = CFSetCreateMutable(a3, a4, MEMORY[0x1E695E9F8]);
+    Mutable = CFSetCreateMutable(zone, capacity, MEMORY[0x1E695E9F8]);
     if (!Mutable)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:104 description:@"Unexpected CFSetCreateMutable() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:104 description:@"Unexpected CFSetCreateMutable() failure"];
     }
 
     return Mutable;
   }
 }
 
-+ (id)mutableCopyDictionary:(id)a3 toZone:(_NSZone *)a4
++ (id)mutableCopyDictionary:(id)dictionary toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (!a4 || MEMORY[0x1AC5662F0]() == a4)
+  dictionaryCopy = dictionary;
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
-    MutableCopy = [v7 mutableCopy];
+    MutableCopy = [dictionaryCopy mutableCopy];
   }
 
   else
   {
-    MutableCopy = CFDictionaryCreateMutableCopy(a4, 0, v7);
+    MutableCopy = CFDictionaryCreateMutableCopy(zone, 0, dictionaryCopy);
     if (!MutableCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:88 description:@"Unexpected CFDictionaryCreateMutableCopy() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:88 description:@"Unexpected CFDictionaryCreateMutableCopy() failure"];
     }
   }
 
   return MutableCopy;
 }
 
-+ (id)copyDictionary:(id)a3 toZone:(_NSZone *)a4
++ (id)copyDictionary:(id)dictionary toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (!a4 || MEMORY[0x1AC5662F0]() == a4)
+  dictionaryCopy = dictionary;
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
-    Copy = [v7 copy];
+    Copy = [dictionaryCopy copy];
   }
 
   else
   {
-    Copy = CFDictionaryCreateCopy(a4, v7);
+    Copy = CFDictionaryCreateCopy(zone, dictionaryCopy);
     if (!Copy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:77 description:@"Unexpected CFDictionaryCreateCopy() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:77 description:@"Unexpected CFDictionaryCreateCopy() failure"];
     }
   }
 
   return Copy;
 }
 
-+ (id)newMutableDictionaryInZone:(_NSZone *)a3 capacity:(unint64_t)a4
++ (id)newMutableDictionaryInZone:(_NSZone *)zone capacity:(unint64_t)capacity
 {
-  if (!a3 || MEMORY[0x1AC5662F0]() == a3)
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
     v10 = objc_alloc(MEMORY[0x1E695DF90]);
 
-    return [v10 initWithCapacity:a4];
+    return [v10 initWithCapacity:capacity];
   }
 
   else
   {
-    Mutable = CFDictionaryCreateMutable(a3, a4, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
+    Mutable = CFDictionaryCreateMutable(zone, capacity, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
     if (!Mutable)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:66 description:@"Unexpected CFDictionaryCreateMutable() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:66 description:@"Unexpected CFDictionaryCreateMutable() failure"];
     }
 
     return Mutable;
   }
 }
 
-+ (id)mutableCopyArray:(id)a3 toZone:(_NSZone *)a4
++ (id)mutableCopyArray:(id)array toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (!a4 || MEMORY[0x1AC5662F0]() == a4)
+  arrayCopy = array;
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
-    MutableCopy = [v7 mutableCopy];
+    MutableCopy = [arrayCopy mutableCopy];
   }
 
   else
   {
-    MutableCopy = CFArrayCreateMutableCopy(a4, 0, v7);
+    MutableCopy = CFArrayCreateMutableCopy(zone, 0, arrayCopy);
     if (!MutableCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:49 description:@"Unexpected CFArrayCreateMutableCopy() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:49 description:@"Unexpected CFArrayCreateMutableCopy() failure"];
     }
   }
 
   return MutableCopy;
 }
 
-+ (id)copyArray:(id)a3 toZone:(_NSZone *)a4
++ (id)copyArray:(id)array toZone:(_NSZone *)zone
 {
-  v7 = a3;
-  if (!a4 || MEMORY[0x1AC5662F0]() == a4)
+  arrayCopy = array;
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
-    Copy = [v7 copy];
+    Copy = [arrayCopy copy];
   }
 
   else
   {
-    Copy = CFArrayCreateCopy(a4, v7);
+    Copy = CFArrayCreateCopy(zone, arrayCopy);
     if (!Copy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:38 description:@"Unexpected CFArrayCreateCopy() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:38 description:@"Unexpected CFArrayCreateCopy() failure"];
     }
   }
 
   return Copy;
 }
 
-+ (id)newMutableArrayInZone:(_NSZone *)a3 capacity:(unint64_t)a4
++ (id)newMutableArrayInZone:(_NSZone *)zone capacity:(unint64_t)capacity
 {
-  if (!a3 || MEMORY[0x1AC5662F0]() == a3)
+  if (!zone || MEMORY[0x1AC5662F0]() == zone)
   {
     v10 = objc_alloc(MEMORY[0x1E695DF70]);
 
-    return [v10 initWithCapacity:a4];
+    return [v10 initWithCapacity:capacity];
   }
 
   else
   {
-    Mutable = CFArrayCreateMutable(a3, a4, MEMORY[0x1E695E9C0]);
+    Mutable = CFArrayCreateMutable(zone, capacity, MEMORY[0x1E695E9C0]);
     if (!Mutable)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"_PASZoneSupport.m" lineNumber:27 description:@"Unexpected CFArrayCreateMutable() failure"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASZoneSupport.m" lineNumber:27 description:@"Unexpected CFArrayCreateMutable() failure"];
     }
 
     return Mutable;

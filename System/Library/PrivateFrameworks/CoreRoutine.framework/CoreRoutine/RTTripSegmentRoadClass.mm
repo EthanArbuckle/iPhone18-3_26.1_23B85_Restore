@@ -1,27 +1,27 @@
 @interface RTTripSegmentRoadClass
-- (BOOL)isEqual:(id)a3;
-- (RTTripSegmentRoadClass)initWithCoder:(id)a3;
-- (RTTripSegmentRoadClass)initWithDateInterval:(id)a3 distanceInterval:(id)a4 geoRoadClass:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (RTTripSegmentRoadClass)initWithCoder:(id)coder;
+- (RTTripSegmentRoadClass)initWithDateInterval:(id)interval distanceInterval:(id)distanceInterval geoRoadClass:(int64_t)class;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTTripSegmentRoadClass
 
-- (RTTripSegmentRoadClass)initWithDateInterval:(id)a3 distanceInterval:(id)a4 geoRoadClass:(int64_t)a5
+- (RTTripSegmentRoadClass)initWithDateInterval:(id)interval distanceInterval:(id)distanceInterval geoRoadClass:(int64_t)class
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  intervalCopy = interval;
+  distanceIntervalCopy = distanceInterval;
+  v11 = distanceIntervalCopy;
+  if (!intervalCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
 LABEL_12:
 
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
@@ -32,7 +32,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  if (!v10)
+  if (!distanceIntervalCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -51,9 +51,9 @@ LABEL_15:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dateInterval, a3);
-    objc_storeStrong(&v13->_distanceInterval, a4);
-    v13->_geoRoadClass = a5;
+    objc_storeStrong(&v12->_dateInterval, interval);
+    objc_storeStrong(&v13->_distanceInterval, distanceInterval);
+    v13->_geoRoadClass = class;
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       v14 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -67,49 +67,49 @@ LABEL_15:
   }
 
   self = v13;
-  v15 = self;
+  selfCopy = self;
 LABEL_13:
 
   v18 = *MEMORY[0x1E69E9840];
-  return v15;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dateInterval = self->_dateInterval;
-  v5 = a3;
-  [v5 encodeObject:dateInterval forKey:@"dateInterval"];
-  [v5 encodeObject:self->_distanceInterval forKey:@"distanceInterval"];
-  [v5 encodeInt64:self->_geoRoadClass forKey:@"geoRoadClass"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_distanceInterval forKey:@"distanceInterval"];
+  [coderCopy encodeInt64:self->_geoRoadClass forKey:@"geoRoadClass"];
 }
 
-- (RTTripSegmentRoadClass)initWithCoder:(id)a3
+- (RTTripSegmentRoadClass)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"distanceInterval"];
-  v7 = [v4 decodeIntForKey:@"geoRoadClass"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"distanceInterval"];
+  v7 = [coderCopy decodeIntForKey:@"geoRoadClass"];
 
   v8 = [(RTTripSegmentRoadClass *)self initWithDateInterval:v5 distanceInterval:v6 geoRoadClass:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()];
   dateInterval = self->_dateInterval;
-  v7 = [v4 dateInterval];
-  v8 = [(NSDateInterval *)dateInterval isEqual:v7];
+  dateInterval = [equalCopy dateInterval];
+  v8 = [(NSDateInterval *)dateInterval isEqual:dateInterval];
 
   distanceInterval = self->_distanceInterval;
-  v10 = [v4 distanceInterval];
-  v11 = [(RTDistanceInterval *)distanceInterval isEqual:v10];
+  distanceInterval = [equalCopy distanceInterval];
+  v11 = [(RTDistanceInterval *)distanceInterval isEqual:distanceInterval];
 
   geoRoadClass = self->_geoRoadClass;
-  v13 = [v4 geoRoadClass];
+  geoRoadClass = [equalCopy geoRoadClass];
 
-  v14 = geoRoadClass == v13 && v11;
+  v14 = geoRoadClass == geoRoadClass && v11;
   if (!v8)
   {
     v14 = 0;

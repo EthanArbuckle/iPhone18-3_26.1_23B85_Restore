@@ -1,10 +1,10 @@
 @interface CVAIMUCalibration
 + (id)classes;
-+ (id)withData:(id)a3;
-- (CVAIMUCalibration)initWithCoder:(id)a3;
++ (id)withData:(id)data;
+- (CVAIMUCalibration)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVAIMUCalibration
@@ -25,11 +25,11 @@
   return v3;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVAIMUCalibration classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -47,38 +47,38 @@
   return v6;
 }
 
-- (CVAIMUCalibration)initWithCoder:(id)a3
+- (CVAIMUCalibration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CVAIMUCalibration;
   v5 = [(CVAIMUCalibration *)&v21 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectForKey:@"nc"];
+    v7 = [coderCopy decodeObjectForKey:@"nc"];
     noiseCharacteristics = v5->_noiseCharacteristics;
     v5->_noiseCharacteristics = v7;
 
-    v9 = [v4 decodeObjectForKey:@"gr"];
+    v9 = [coderCopy decodeObjectForKey:@"gr"];
     gravity = v5->_gravity;
     v5->_gravity = v9;
 
-    [v4 decodeDoubleForKey:@"atc"];
+    [coderCopy decodeDoubleForKey:@"atc"];
     v5->_accelTimestampCorrection = v11;
-    v12 = [v4 decodeObjectForKey:@"ac"];
+    v12 = [coderCopy decodeObjectForKey:@"ac"];
     accelConversion = v5->_accelConversion;
     v5->_accelConversion = v12;
 
-    v14 = [v4 decodeObjectForKey:@"gc"];
+    v14 = [coderCopy decodeObjectForKey:@"gc"];
     gyroConversion = v5->_gyroConversion;
     v5->_gyroConversion = v14;
 
-    v16 = [v4 decodeObjectForKey:@"r"];
+    v16 = [coderCopy decodeObjectForKey:@"r"];
     imuToIMURotation = v5->_imuToIMURotation;
     v5->_imuToIMURotation = v16;
 
-    v18 = [v4 decodeObjectForKey:@"t"];
+    v18 = [coderCopy decodeObjectForKey:@"t"];
     imuToIMUTranslation = v5->_imuToIMUTranslation;
     v5->_imuToIMUTranslation = v18;
 
@@ -88,17 +88,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v5 encodeObject:self->_noiseCharacteristics forKey:@"nc"];
-  [v5 encodeObject:self->_gravity forKey:@"gr"];
-  [v5 encodeDouble:@"atc" forKey:self->_accelTimestampCorrection];
-  [v5 encodeObject:self->_accelConversion forKey:@"ac"];
-  [v5 encodeObject:self->_gyroConversion forKey:@"gc"];
-  [v5 encodeObject:self->_imuToIMURotation forKey:@"r"];
-  [v5 encodeObject:self->_imuToIMUTranslation forKey:@"t"];
+  [coderCopy encodeObject:self->_noiseCharacteristics forKey:@"nc"];
+  [coderCopy encodeObject:self->_gravity forKey:@"gr"];
+  [coderCopy encodeDouble:@"atc" forKey:self->_accelTimestampCorrection];
+  [coderCopy encodeObject:self->_accelConversion forKey:@"ac"];
+  [coderCopy encodeObject:self->_gyroConversion forKey:@"gc"];
+  [coderCopy encodeObject:self->_imuToIMURotation forKey:@"r"];
+  [coderCopy encodeObject:self->_imuToIMUTranslation forKey:@"t"];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -131,8 +131,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVAIMUCalibration *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVAIMUCalibration *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

@@ -1,119 +1,119 @@
 @interface UIWebView
-+ (id)_relativePathFromAbsolutePath:(id)a3 removingPathComponents:(unint64_t)a4;
++ (id)_relativePathFromAbsolutePath:(id)path removingPathComponents:(unint64_t)components;
 + (void)_fixPathsForSandboxDirectoryChange;
 + (void)_updatePersistentStoragePaths;
 + (void)initialize;
-- (BOOL)_webView:(id)a3 previewIsAllowedForPosition:(CGPoint)a4;
+- (BOOL)_webView:(id)view previewIsAllowedForPosition:(CGPoint)position;
 - (BOOL)canGoBack;
 - (BOOL)canGoForward;
-- (BOOL)webView:(id)a3 resource:(id)a4 canAuthenticateAgainstProtectionSpace:(id)a5 forDataSource:(id)a6;
-- (BOOL)webView:(id)a3 runJavaScriptConfirmPanelWithMessage:(id)a4 initiatedByFrame:(id)a5;
+- (BOOL)webView:(id)view resource:(id)resource canAuthenticateAgainstProtectionSpace:(id)space forDataSource:(id)source;
+- (BOOL)webView:(id)view runJavaScriptConfirmPanelWithMessage:(id)message initiatedByFrame:(id)frame;
 - (CGFloat)gapBetweenPages;
 - (CGFloat)pageLength;
-- (CGImage)newSnapshotWithRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGImage)newSnapshotWithRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)stringByEvaluatingJavaScriptFromString:(NSString *)script;
 - (NSUInteger)pageCount;
 - (NSURLRequest)request;
 - (UIWebPaginationMode)paginationMode;
-- (UIWebView)initWithCoder:(id)a3;
-- (UIWebView)initWithFrame:(CGRect)a3;
-- (id)_initWithFrame:(CGRect)a3 enableReachability:(BOOL)a4;
-- (id)_initWithWebView:(id)a3;
-- (id)_webView:(id)a3 presentationRectsForPreview:(id)a4;
-- (id)_webView:(id)a3 presentationSnapshotForPreview:(id)a4;
-- (id)_webView:(id)a3 previewViewControllerForURL:(id)a4;
-- (id)viewForZoomingInScrollView:(id)a3;
-- (id)webThreadWebView:(id)a3 resource:(id)a4 willSendRequest:(id)a5 redirectResponse:(id)a6 fromDataSource:(id)a7;
-- (id)webView:(id)a3 connectionPropertiesForResource:(id)a4 dataSource:(id)a5;
-- (id)webView:(id)a3 identifierForInitialRequest:(id)a4 fromDataSource:(id)a5;
-- (id)webView:(id)a3 runJavaScriptTextInputPanelWithPrompt:(id)a4 defaultText:(id)a5 initiatedByFrame:(id)a6;
+- (UIWebView)initWithCoder:(id)coder;
+- (UIWebView)initWithFrame:(CGRect)frame;
+- (id)_initWithFrame:(CGRect)frame enableReachability:(BOOL)reachability;
+- (id)_initWithWebView:(id)view;
+- (id)_webView:(id)view presentationRectsForPreview:(id)preview;
+- (id)_webView:(id)view presentationSnapshotForPreview:(id)preview;
+- (id)_webView:(id)view previewViewControllerForURL:(id)l;
+- (id)viewForZoomingInScrollView:(id)view;
+- (id)webThreadWebView:(id)view resource:(id)resource willSendRequest:(id)request redirectResponse:(id)response fromDataSource:(id)source;
+- (id)webView:(id)view connectionPropertiesForResource:(id)resource dataSource:(id)source;
+- (id)webView:(id)view identifierForInitialRequest:(id)request fromDataSource:(id)source;
+- (id)webView:(id)view runJavaScriptTextInputPanelWithPrompt:(id)prompt defaultText:(id)text initiatedByFrame:(id)frame;
 - (void)_beginRotation;
 - (void)_didCompleteScrolling;
-- (void)_didRotate:(id)a3;
+- (void)_didRotate:(id)rotate;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_finishRotation;
 - (void)_frameOrBoundsChanged;
-- (void)_populateArchivedSubviews:(id)a3;
-- (void)_reportError:(id)a3;
+- (void)_populateArchivedSubviews:(id)subviews;
+- (void)_reportError:(id)error;
 - (void)_rescaleDocument;
-- (void)_setDrawInWebThread:(BOOL)a3;
-- (void)_setDrawsCheckeredPattern:(BOOL)a3;
-- (void)_setOverridesOrientationChangeEventHandling:(BOOL)a3;
+- (void)_setDrawInWebThread:(BOOL)thread;
+- (void)_setDrawsCheckeredPattern:(BOOL)pattern;
+- (void)_setOverridesOrientationChangeEventHandling:(BOOL)handling;
 - (void)_setRichTextReaderViewportSettings;
 - (void)_setScalesPageToFitViewportSettings;
-- (void)_setSelectionEnabled:(BOOL)a3;
+- (void)_setSelectionEnabled:(BOOL)enabled;
 - (void)_updateBrowserViewExposedScrollViewRect;
 - (void)_updateCheckeredPattern;
 - (void)_updateOpaqueAndBackgroundColor;
 - (void)_updateRequest;
 - (void)_updateScrollViewInsetAdjustmentBehavior;
-- (void)_updateScrollerViewForInputView:(id)a3;
+- (void)_updateScrollerViewForInputView:(id)view;
 - (void)_updateViewSettings;
-- (void)_webView:(id)a3 commitPreview:(id)a4;
-- (void)_webView:(id)a3 didDismissPreview:(id)a4 committing:(BOOL)a5;
-- (void)_webView:(id)a3 willPresentPreview:(id)a4;
-- (void)_webViewCommonInitWithWebView:(id)a3 scalesPageToFit:(BOOL)a4;
+- (void)_webView:(id)view commitPreview:(id)preview;
+- (void)_webView:(id)view didDismissPreview:(id)preview committing:(BOOL)committing;
+- (void)_webView:(id)view willPresentPreview:(id)preview;
+- (void)_webViewCommonInitWithWebView:(id)view scalesPageToFit:(BOOL)fit;
 - (void)dealloc;
-- (void)decodeRestorableStateWithCoder:(id)a3;
-- (void)encodeRestorableStateWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)decodeRestorableStateWithCoder:(id)coder;
+- (void)encodeRestorableStateWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)goBack;
 - (void)goForward;
 - (void)reload;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWasRemoved:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWasRemoved:(id)removed;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setBackgroundColor:(id)color;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 - (void)setGapBetweenPages:(CGFloat)gapBetweenPages;
-- (void)setOpaque:(BOOL)a3;
+- (void)setOpaque:(BOOL)opaque;
 - (void)setPageLength:(CGFloat)pageLength;
 - (void)setPaginationBreakingMode:(UIWebPaginationBreakingMode)paginationBreakingMode;
 - (void)setPaginationMode:(UIWebPaginationMode)paginationMode;
 - (void)setScalesPageToFit:(BOOL)scalesPageToFit;
-- (void)webView:(id)a3 decidePolicyForGeolocationRequestFromOrigin:(id)a4 frame:(id)a5 listener:(id)a6;
-- (void)webView:(id)a3 decidePolicyForMIMEType:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7;
-- (void)webView:(id)a3 decidePolicyForNewWindowAction:(id)a4 request:(id)a5 newFrameName:(id)a6 decisionListener:(id)a7;
-- (void)webView:(id)a3 didChangeLocationWithinPageForFrame:(id)a4;
-- (void)webView:(id)a3 didClearWindowObject:(id)a4 forFrame:(id)a5;
-- (void)webView:(id)a3 didCommitLoadForFrame:(id)a4;
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4 forFrame:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalLoadWithError:(id)a4 forFrame:(id)a5;
-- (void)webView:(id)a3 didFinishLoadForFrame:(id)a4;
-- (void)webView:(id)a3 didFirstLayoutInFrame:(id)a4;
-- (void)webView:(id)a3 didReceiveTitle:(id)a4 forFrame:(id)a5;
-- (void)webView:(id)a3 didStartProvisionalLoadForFrame:(id)a4;
-- (void)webView:(id)a3 exceededApplicationCacheOriginQuotaForSecurityOrigin:(id)a4 totalSpaceNeeded:(unint64_t)a5;
-- (void)webView:(id)a3 frame:(id)a4 exceededDatabaseQuotaForSecurityOrigin:(id)a5 database:(id)a6;
-- (void)webView:(id)a3 printFrameView:(id)a4;
-- (void)webView:(id)a3 resource:(id)a4 didCancelAuthenticationChallenge:(id)a5 fromDataSource:(id)a6;
-- (void)webView:(id)a3 resource:(id)a4 didFailLoadingWithError:(id)a5 fromDataSource:(id)a6;
-- (void)webView:(id)a3 resource:(id)a4 didFinishLoadingFromDataSource:(id)a5;
-- (void)webView:(id)a3 resource:(id)a4 didReceiveAuthenticationChallenge:(id)a5 fromDataSource:(id)a6;
-- (void)webView:(id)a3 runJavaScriptAlertPanelWithMessage:(id)a4 initiatedByFrame:(id)a5;
-- (void)webViewClose:(id)a3;
-- (void)webViewMainFrameDidFinishLoad:(id)a3;
-- (void)webViewSupportedOrientationsUpdated:(id)a3;
+- (void)webView:(id)view decidePolicyForGeolocationRequestFromOrigin:(id)origin frame:(id)frame listener:(id)listener;
+- (void)webView:(id)view decidePolicyForMIMEType:(id)type request:(id)request frame:(id)frame decisionListener:(id)listener;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener;
+- (void)webView:(id)view decidePolicyForNewWindowAction:(id)action request:(id)request newFrameName:(id)name decisionListener:(id)listener;
+- (void)webView:(id)view didChangeLocationWithinPageForFrame:(id)frame;
+- (void)webView:(id)view didClearWindowObject:(id)object forFrame:(id)frame;
+- (void)webView:(id)view didCommitLoadForFrame:(id)frame;
+- (void)webView:(id)view didFailLoadWithError:(id)error forFrame:(id)frame;
+- (void)webView:(id)view didFailProvisionalLoadWithError:(id)error forFrame:(id)frame;
+- (void)webView:(id)view didFinishLoadForFrame:(id)frame;
+- (void)webView:(id)view didFirstLayoutInFrame:(id)frame;
+- (void)webView:(id)view didReceiveTitle:(id)title forFrame:(id)frame;
+- (void)webView:(id)view didStartProvisionalLoadForFrame:(id)frame;
+- (void)webView:(id)view exceededApplicationCacheOriginQuotaForSecurityOrigin:(id)origin totalSpaceNeeded:(unint64_t)needed;
+- (void)webView:(id)view frame:(id)frame exceededDatabaseQuotaForSecurityOrigin:(id)origin database:(id)database;
+- (void)webView:(id)view printFrameView:(id)frameView;
+- (void)webView:(id)view resource:(id)resource didCancelAuthenticationChallenge:(id)challenge fromDataSource:(id)source;
+- (void)webView:(id)view resource:(id)resource didFailLoadingWithError:(id)error fromDataSource:(id)source;
+- (void)webView:(id)view resource:(id)resource didFinishLoadingFromDataSource:(id)source;
+- (void)webView:(id)view resource:(id)resource didReceiveAuthenticationChallenge:(id)challenge fromDataSource:(id)source;
+- (void)webView:(id)view runJavaScriptAlertPanelWithMessage:(id)message initiatedByFrame:(id)frame;
+- (void)webViewClose:(id)close;
+- (void)webViewMainFrameDidFinishLoad:(id)load;
+- (void)webViewSupportedOrientationsUpdated:(id)updated;
 @end
 
 @implementation UIWebView
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     _UIApplicationLoadWebKit();
   }
 }
 
-- (void)_didRotate:(id)a3
+- (void)_didRotate:(id)rotate
 {
   internal = self->_internal;
   if ((*(internal + 40) & 4) == 0 && [(UIView *)internal->browserView window])
@@ -276,8 +276,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UIWebView *)self _scrollView];
-    if (([v3 _contentInsetAdjustmentBehaviorWasExternallyOverridden] & 1) == 0)
+    _scrollView = [(UIWebView *)self _scrollView];
+    if (([_scrollView _contentInsetAdjustmentBehaviorWasExternallyOverridden] & 1) == 0)
     {
       if (*(self->_internal + 41))
       {
@@ -289,34 +289,34 @@
         v4 = 2;
       }
 
-      [v3 _setContentInsetAdjustmentBehaviorInternal:v4];
+      [_scrollView _setContentInsetAdjustmentBehaviorInternal:v4];
     }
   }
 }
 
 - (void)_updateBrowserViewExposedScrollViewRect
 {
-  v3 = [(UIWebView *)self _scrollView];
-  [v3 bounds];
+  _scrollView = [(UIWebView *)self _scrollView];
+  [_scrollView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 adjustedContentInset];
+  [_scrollView adjustedContentInset];
   v13 = v5 + v12;
   v15 = v7 + v14;
   v17 = v9 - (v12 + v16);
   v19 = v11 - (v14 + v18);
-  v20 = [(UIWebView *)self _browserView];
+  _browserView = [(UIWebView *)self _browserView];
 
-  [v20 setExposedScrollViewRect:{v13, v15, v17, v19}];
+  [_browserView setExposedScrollViewRect:{v13, v15, v17, v19}];
 }
 
-+ (id)_relativePathFromAbsolutePath:(id)a3 removingPathComponents:(unint64_t)a4
++ (id)_relativePathFromAbsolutePath:(id)path removingPathComponents:(unint64_t)components
 {
-  v5 = [a3 componentsSeparatedByString:@"/"];
+  v5 = [path componentsSeparatedByString:@"/"];
   v6 = [v5 count];
-  if (v6 <= a4)
+  if (v6 <= components)
   {
     return &stru_1EFB14550;
   }
@@ -325,52 +325,52 @@
   v8 = &stru_1EFB14550;
   do
   {
-    v8 = -[__CFString stringByAppendingPathComponent:](v8, "stringByAppendingPathComponent:", [v5 objectAtIndex:a4++]);
+    v8 = -[__CFString stringByAppendingPathComponent:](v8, "stringByAppendingPathComponent:", [v5 objectAtIndex:components++]);
   }
 
-  while (v7 != a4);
+  while (v7 != components);
   return v8;
 }
 
 + (void)_fixPathsForSandboxDirectoryChange
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = *MEMORY[0x1E69E3028];
-  v4 = [v2 objectForKey:*MEMORY[0x1E69E3028]];
+  v4 = [standardUserDefaults objectForKey:*MEMORY[0x1E69E3028]];
   v5 = MEMORY[0x1E69E2FE0];
-  v6 = [v2 objectForKey:*MEMORY[0x1E69E2FE0]];
+  v6 = [standardUserDefaults objectForKey:*MEMORY[0x1E69E2FE0]];
   if (v4 | v6)
   {
     v7 = v6;
     if ([v4 hasPrefix:@"/var/mobile/Applications/"])
     {
-      [v2 removeObjectForKey:v3];
+      [standardUserDefaults removeObjectForKey:v3];
       v4 = 0;
     }
 
     if ([v7 hasPrefix:@"/var/mobile/Applications/"])
     {
-      [v2 removeObjectForKey:*v5];
+      [standardUserDefaults removeObjectForKey:*v5];
       v7 = 0;
     }
 
     v8 = NSHomeDirectory();
     if ([v4 isEqualToString:v8])
     {
-      [v2 removeObjectForKey:v3];
+      [standardUserDefaults removeObjectForKey:v3];
       v4 = 0;
     }
 
     if ([v7 isEqualToString:v8])
     {
-      [v2 removeObjectForKey:*v5];
+      [standardUserDefaults removeObjectForKey:*v5];
       v7 = 0;
     }
 
     v9 = [(NSArray *)[(NSString *)v8 componentsSeparatedByString:@"/"] count];
     if (v4 && [v4 rangeOfString:v8 options:8] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v2 setObject:-[NSString stringByAppendingPathComponent:](v8 forKey:{"stringByAppendingPathComponent:", +[UIWebView _relativePathFromAbsolutePath:removingPathComponents:](UIWebView, "_relativePathFromAbsolutePath:removingPathComponents:", v4, v9)), v3}];
+      [standardUserDefaults setObject:-[NSString stringByAppendingPathComponent:](v8 forKey:{"stringByAppendingPathComponent:", +[UIWebView _relativePathFromAbsolutePath:removingPathComponents:](UIWebView, "_relativePathFromAbsolutePath:removingPathComponents:", v4, v9)), v3}];
     }
 
     if (v7 && [v7 rangeOfString:v8 options:8] == 0x7FFFFFFFFFFFFFFFLL)
@@ -378,7 +378,7 @@
       v10 = [(NSString *)v8 stringByAppendingPathComponent:[UIWebView _relativePathFromAbsolutePath:v7 removingPathComponents:v9]];
       v11 = *v5;
 
-      [v2 setObject:v10 forKey:v11];
+      [standardUserDefaults setObject:v10 forKey:v11];
     }
   }
 }
@@ -464,7 +464,7 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   return [v2 removeItemAtPath:v3 error:0];
 }
 
-- (void)_webViewCommonInitWithWebView:(id)a3 scalesPageToFit:(BOOL)a4
+- (void)_webViewCommonInitWithWebView:(id)view scalesPageToFit:(BOOL)fit
 {
   +[UIWebView _updatePersistentStoragePaths];
   self->_internal = objc_alloc_init(UIWebViewInternal);
@@ -475,9 +475,9 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   v12 = v11;
   v14 = v13;
   v15 = [UIWebBrowserView alloc];
-  if (a3)
+  if (view)
   {
-    v16 = [(UIWebBrowserView *)v15 initWithWebView:a3 frame:v8, v10, v12, v14];
+    v16 = [(UIWebBrowserView *)v15 initWithWebView:view frame:v8, v10, v12, v14];
   }
 
   else
@@ -493,7 +493,7 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   [(UIScrollView *)self->_internal->scroller _forceDelegateScrollViewDidZoom:1];
   [(UIView *)self->_internal->scroller addSubview:self->_internal->browserView];
   [(UIView *)self->_internal->scroller setAutoresizingMask:16];
-  *(self->_internal + 40) = *(self->_internal + 40) & 0xFE | a4;
+  *(self->_internal + 40) = *(self->_internal + 40) & 0xFE | fit;
   self->_internal->checkeredPatternView = [[UICheckeredPatternView alloc] initWithFrame:v8, v10, v12, v14];
   *(self->_internal + 40) &= ~8u;
   [(UIWebView *)self _updateCheckeredPattern];
@@ -505,21 +505,21 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   [(UIWebDocumentView *)self->_internal->browserView setDelegate:self];
   [(UIWebDocumentView *)self->_internal->browserView setSmoothsFonts:1];
   [(UIWebView *)self _updateOpaqueAndBackgroundColor];
-  v18 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
   self->_internal->webViewDelegate = [[UIWebViewWebViewDelegate alloc] initWithUIWebView:self];
-  [v18 setFrameLoadDelegate:self->_internal->webViewDelegate];
-  [v18 setPolicyDelegate:self->_internal->webViewDelegate];
-  [v18 setUIDelegate:self->_internal->webViewDelegate];
-  [v18 setResourceLoadDelegate:self->_internal->webViewDelegate];
-  [v18 _setFontFallbackPrefersPictographs:0];
-  [v18 _setUseDarkAppearance:-[UIWebView _effectiveAppearanceIsDark](self useElevatedUserInterfaceLevel:{"_effectiveAppearanceIsDark"), -[UIWebView _effectiveTraitsUseElevatedUserInterfaceLevel](self, "_effectiveTraitsUseElevatedUserInterfaceLevel")}];
-  [objc_msgSend(v18 "window")];
-  v19 = [v18 preferences];
-  [v19 setOfflineWebApplicationCacheEnabled:1];
-  [v19 _setLocalStorageDatabasePath:{objc_msgSend(MEMORY[0x1E69E2FA8], "_storageDirectoryPath")}];
+  [webView setFrameLoadDelegate:self->_internal->webViewDelegate];
+  [webView setPolicyDelegate:self->_internal->webViewDelegate];
+  [webView setUIDelegate:self->_internal->webViewDelegate];
+  [webView setResourceLoadDelegate:self->_internal->webViewDelegate];
+  [webView _setFontFallbackPrefersPictographs:0];
+  [webView _setUseDarkAppearance:-[UIWebView _effectiveAppearanceIsDark](self useElevatedUserInterfaceLevel:{"_effectiveAppearanceIsDark"), -[UIWebView _effectiveTraitsUseElevatedUserInterfaceLevel](self, "_effectiveTraitsUseElevatedUserInterfaceLevel")}];
+  [objc_msgSend(webView "window")];
+  preferences = [webView preferences];
+  [preferences setOfflineWebApplicationCacheEnabled:1];
+  [preferences _setLocalStorageDatabasePath:{objc_msgSend(MEMORY[0x1E69E2FA8], "_storageDirectoryPath")}];
   WebKitGetMinimumZoomFontSize();
-  [v19 _setMinimumZoomFontSize:?];
-  [v19 _setAllowMultiElementImplicitFormSubmission:0];
+  [preferences _setMinimumZoomFontSize:?];
+  [preferences _setAllowMultiElementImplicitFormSubmission:0];
   [(UIView *)self addSubview:self->_internal->scroller];
   [(UIWebView *)self _updateViewSettings];
   [(UIWebDocumentView *)self->_internal->browserView _setDocumentType:4];
@@ -549,18 +549,18 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   if (objc_opt_respondsToSelector())
   {
 
-    [v18 _installVisualIdentificationOverlayForViewIfNeeded:self kind:@"UIWebView"];
+    [webView _installVisualIdentificationOverlayForViewIfNeeded:self kind:@"UIWebView"];
   }
 }
 
-- (id)_initWithFrame:(CGRect)a3 enableReachability:(BOOL)a4
+- (id)_initWithFrame:(CGRect)frame enableReachability:(BOOL)reachability
 {
   v7.receiver = self;
   v7.super_class = UIWebView;
-  v5 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
-    if (!a4)
+    if (!reachability)
     {
       [MEMORY[0x1E69E2FB8] _doNotStartObservingNetworkReachability];
     }
@@ -571,11 +571,11 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   return v5;
 }
 
-- (UIWebView)initWithFrame:(CGRect)a3
+- (UIWebView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIWebView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -585,22 +585,22 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   return v4;
 }
 
-- (UIWebView)initWithCoder:(id)a3
+- (UIWebView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UIWebView;
   v4 = [(UIView *)&v6 initWithCoder:?];
   if (v4)
   {
-    -[UIWebView _webViewCommonInitWithWebView:scalesPageToFit:](v4, "_webViewCommonInitWithWebView:scalesPageToFit:", 0, [a3 decodeBoolForKey:@"UIScalesPageToFit"]);
-    v4->_internal->delegate = [a3 decodeObjectForKey:@"UIDelegate"];
-    -[UIWebDocumentView setDataDetectorTypes:](v4->_internal->browserView, "setDataDetectorTypes:", [a3 decodeIntegerForKey:@"UIDataDetectorTypes"]);
+    -[UIWebView _webViewCommonInitWithWebView:scalesPageToFit:](v4, "_webViewCommonInitWithWebView:scalesPageToFit:", 0, [coder decodeBoolForKey:@"UIScalesPageToFit"]);
+    v4->_internal->delegate = [coder decodeObjectForKey:@"UIDelegate"];
+    -[UIWebDocumentView setDataDetectorTypes:](v4->_internal->browserView, "setDataDetectorTypes:", [coder decodeIntegerForKey:@"UIDataDetectorTypes"]);
   }
 
   return v4;
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
   v6.receiver = self;
   v6.super_class = UIWebView;
@@ -610,39 +610,39 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   {
     if (internal->scroller)
     {
-      [a3 removeObject:?];
+      [subviews removeObject:?];
     }
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = UIWebView;
   [(UIView *)&v7 encodeWithCoder:?];
-  [a3 encodeConditionalObject:self->_internal->delegate forKey:@"UIDelegate"];
+  [coder encodeConditionalObject:self->_internal->delegate forKey:@"UIDelegate"];
   internal = self->_internal;
   if (*(internal + 40))
   {
-    [a3 encodeBool:1 forKey:@"UIScalesPageToFit"];
+    [coder encodeBool:1 forKey:@"UIScalesPageToFit"];
     internal = self->_internal;
   }
 
-  v6 = [(UIWebDocumentView *)internal->browserView dataDetectorTypes];
-  if (v6)
+  dataDetectorTypes = [(UIWebDocumentView *)internal->browserView dataDetectorTypes];
+  if (dataDetectorTypes)
   {
-    [a3 encodeInteger:v6 forKey:@"UIDataDetectorTypes"];
+    [coder encodeInteger:dataDetectorTypes forKey:@"UIDataDetectorTypes"];
   }
 }
 
 - (void)dealloc
 {
   WebThreadLock();
-  v3 = [(UIWebDocumentView *)self->_internal->browserView webView];
-  [v3 _clearDelegates];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
+  [webView _clearDelegates];
   [(UIWebViewWebViewDelegate *)self->_internal->webViewDelegate _clearUIWebView];
 
-  [objc_msgSend(v3 "window")];
+  [objc_msgSend(webView "window")];
   [(UIScrollView *)self->_internal->scroller setDelegate:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -689,10 +689,10 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
 
 - (void)reload
 {
-  v2 = [(UIWebDocumentView *)self->_internal->browserView webView];
-  if (v2)
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
+  if (webView)
   {
-    v3 = v2;
+    v3 = webView;
     WebThreadLock();
     if ([v3 mainFrameURL])
     {
@@ -714,32 +714,32 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
 
 - (void)goBack
 {
-  v2 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
 
-  [v2 goBack:0];
+  [webView goBack:0];
 }
 
 - (void)goForward
 {
-  v2 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
 
-  [v2 goForward:0];
+  [webView goForward:0];
 }
 
 - (BOOL)canGoBack
 {
   WebThreadLock();
-  v3 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
 
-  return [v3 canGoBack];
+  return [webView canGoBack];
 }
 
 - (BOOL)canGoForward
 {
   WebThreadLock();
-  v3 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
 
-  return [v3 canGoForward];
+  return [webView canGoForward];
 }
 
 - (void)_updateCheckeredPattern
@@ -764,16 +764,16 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
 - (void)_dynamicUserInterfaceTraitDidChange
 {
   WebThreadLock();
-  v3 = [(UIWebDocumentView *)self->_internal->browserView webView];
-  v4 = [(UIWebView *)self _effectiveAppearanceIsDark];
-  v5 = [(UIWebView *)self _effectiveTraitsUseElevatedUserInterfaceLevel];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
+  _effectiveAppearanceIsDark = [(UIWebView *)self _effectiveAppearanceIsDark];
+  _effectiveTraitsUseElevatedUserInterfaceLevel = [(UIWebView *)self _effectiveTraitsUseElevatedUserInterfaceLevel];
 
-  [v3 _setUseDarkAppearance:v4 useElevatedUserInterfaceLevel:v5];
+  [webView _setUseDarkAppearance:_effectiveAppearanceIsDark useElevatedUserInterfaceLevel:_effectiveTraitsUseElevatedUserInterfaceLevel];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIScrollView *)self->_internal->scroller contentSize:a3.width];
+  [(UIScrollView *)self->_internal->scroller contentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
@@ -868,12 +868,12 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -886,12 +886,12 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -911,7 +911,7 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   {
     [(UIWebDocumentView *)internal->browserView setOpaque:0];
     browserView = self->_internal->browserView;
-    v6 = +[UIColor clearColor];
+    backgroundColor = +[UIColor clearColor];
   }
 
   else
@@ -920,51 +920,51 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
     [(UIView *)self->_internal->browserView setBackgroundColor:[(UIView *)self backgroundColor]];
     browserView = [(UIWebPDFViewHandler *)self->_internal->pdfHandler pdfView];
     [(UIView *)browserView setOpaque:[(UIView *)self isOpaque]];
-    v6 = [(UIView *)self backgroundColor];
+    backgroundColor = [(UIView *)self backgroundColor];
   }
 
-  [(UIView *)browserView setBackgroundColor:v6];
+  [(UIView *)browserView setBackgroundColor:backgroundColor];
   v7 = self->_internal->browserView;
-  v8 = [(UIView *)self isOpaque];
+  isOpaque = [(UIView *)self isOpaque];
 
-  [(UIWebDocumentView *)v7 setDrawsBackground:v8];
+  [(UIWebDocumentView *)v7 setDrawsBackground:isOpaque];
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
-  v5 = [(UIView *)self isOpaque];
+  opaqueCopy = opaque;
+  isOpaque = [(UIView *)self isOpaque];
   v6.receiver = self;
   v6.super_class = UIWebView;
-  [(UIView *)&v6 setOpaque:v3];
+  [(UIView *)&v6 setOpaque:opaqueCopy];
   if (self->_internal)
   {
-    if (v5 != [(UIView *)self isOpaque])
+    if (isOpaque != [(UIView *)self isOpaque])
     {
       [(UIWebView *)self _updateOpaqueAndBackgroundColor];
     }
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = [(UIView *)self backgroundColor];
+  backgroundColor = [(UIView *)self backgroundColor];
   v6.receiver = self;
   v6.super_class = UIWebView;
-  [(UIView *)&v6 setBackgroundColor:a3];
+  [(UIView *)&v6 setBackgroundColor:color];
   if (self->_internal)
   {
-    if (![(UIColor *)v5 isEqual:[(UIView *)self backgroundColor]])
+    if (![(UIColor *)backgroundColor isEqual:[(UIView *)self backgroundColor]])
     {
       [(UIWebView *)self _updateOpaqueAndBackgroundColor];
     }
   }
 }
 
-- (BOOL)_webView:(id)a3 previewIsAllowedForPosition:(CGPoint)a4
+- (BOOL)_webView:(id)view previewIsAllowedForPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
@@ -975,11 +975,11 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   else
   {
 
-    return [a3 _previewAllowedForPosition:{x, y}];
+    return [view _previewAllowedForPosition:{x, y}];
   }
 }
 
-- (id)_webView:(id)a3 previewViewControllerForURL:(id)a4
+- (id)_webView:(id)view previewViewControllerForURL:(id)l
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -988,90 +988,90 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
 
   delegate = self->_internal->delegate;
 
-  return [(UIWebViewDelegate *)delegate uiWebView:self previewViewControllerForURL:a4];
+  return [(UIWebViewDelegate *)delegate uiWebView:self previewViewControllerForURL:l];
 }
 
-- (void)_webView:(id)a3 willPresentPreview:(id)a4
+- (void)_webView:(id)view willPresentPreview:(id)preview
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self willPresentPreview:a4];
+    [(UIWebViewDelegate *)delegate uiWebView:self willPresentPreview:preview];
   }
 }
 
-- (void)_webView:(id)a3 didDismissPreview:(id)a4 committing:(BOOL)a5
+- (void)_webView:(id)view didDismissPreview:(id)preview committing:(BOOL)committing
 {
-  v5 = a5;
+  committingCopy = committing;
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self didDismissPreview:a4 committing:v5];
+    [(UIWebViewDelegate *)delegate uiWebView:self didDismissPreview:preview committing:committingCopy];
   }
 }
 
-- (void)_webView:(id)a3 commitPreview:(id)a4
+- (void)_webView:(id)view commitPreview:(id)preview
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self commitPreview:a4];
+    [(UIWebViewDelegate *)delegate uiWebView:self commitPreview:preview];
   }
 }
 
-- (id)_webView:(id)a3 presentationSnapshotForPreview:(id)a4
+- (id)_webView:(id)view presentationSnapshotForPreview:(id)preview
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    return [(UIWebViewDelegate *)delegate uiWebView:self presentationSnapshotForPreview:a4];
+    return [(UIWebViewDelegate *)delegate uiWebView:self presentationSnapshotForPreview:preview];
   }
 
   else
   {
-    v8 = [(UIWebView *)self _documentView];
+    _documentView = [(UIWebView *)self _documentView];
 
-    return [v8 _presentationSnapshotForPreview];
+    return [_documentView _presentationSnapshotForPreview];
   }
 }
 
-- (id)_webView:(id)a3 presentationRectsForPreview:(id)a4
+- (id)_webView:(id)view presentationRectsForPreview:(id)preview
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    return [(UIWebViewDelegate *)delegate uiWebView:self presentationRectsForPreview:a4];
+    return [(UIWebViewDelegate *)delegate uiWebView:self presentationRectsForPreview:preview];
   }
 
   else
   {
-    v8 = [(UIWebView *)self _documentView];
+    _documentView = [(UIWebView *)self _documentView];
 
-    return [v8 _presentationRectsForPreview];
+    return [_documentView _presentationRectsForPreview];
   }
 }
 
-- (void)_updateScrollerViewForInputView:(id)a3
+- (void)_updateScrollerViewForInputView:(id)view
 {
-  v4 = [(UIWebView *)self _browserView];
+  _browserView = [(UIWebView *)self _browserView];
 
-  [v4 _updateScrollerViewForInputView:a3];
+  [_browserView _updateScrollerViewForInputView:view];
 }
 
-- (void)webViewMainFrameDidFinishLoad:(id)a3
+- (void)webViewMainFrameDidFinishLoad:(id)load
 {
-  [(UIWebPDFViewHandler *)self->_internal->pdfHandler updateViewHierarchyForDocumentViewLoadComplete:a3];
+  [(UIWebPDFViewHandler *)self->_internal->pdfHandler updateViewHierarchyForDocumentViewLoadComplete:load];
   [(UIWebView *)self _updateCheckeredPattern];
 
   [(UIWebView *)self _updateOpaqueAndBackgroundColor];
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
   result = [(UIWebPDFViewHandler *)self->_internal->pdfHandler pdfView];
   if (!result)
@@ -1082,9 +1082,9 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   return result;
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  if (![(UIWebPDFViewHandler *)self->_internal->pdfHandler pdfView:a3])
+  if (![(UIWebPDFViewHandler *)self->_internal->pdfHandler pdfView:zooming])
   {
     browserView = self->_internal->browserView;
 
@@ -1092,7 +1092,7 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   }
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
   if (![(UIWebPDFViewHandler *)self->_internal->pdfHandler pdfView])
   {
@@ -1102,9 +1102,9 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   }
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  if (![(UIWebPDFViewHandler *)self->_internal->pdfHandler pdfView:a3])
+  if (![(UIWebPDFViewHandler *)self->_internal->pdfHandler pdfView:zooming])
   {
     [(UIWebBrowserView *)self->_internal->browserView redrawScaledDocument];
     browserView = self->_internal->browserView;
@@ -1113,7 +1113,7 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   if (![(UIWebPDFViewHandler *)self->_internal->pdfHandler pdfView])
   {
@@ -1127,94 +1127,94 @@ uint64_t __42__UIWebView__updatePersistentStoragePaths__block_invoke_2(uint64_t 
 {
   if (![(UIWebPDFViewHandler *)self->_internal->pdfHandler pdfView])
   {
-    v3 = [(UIWebView *)self _browserView];
+    _browserView = [(UIWebView *)self _browserView];
 
-    [v3 didEndScroll];
+    [_browserView didEndScroll];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(UIWebView *)self _didCompleteScrolling];
   }
 }
 
-- (void)scrollViewWasRemoved:(id)a3
+- (void)scrollViewWasRemoved:(id)removed
 {
   if (![(UIWebPDFViewHandler *)self->_internal->pdfHandler pdfView])
   {
-    v4 = [(UIWebView *)self _browserView];
+    _browserView = [(UIWebView *)self _browserView];
 
-    [v4 scrollViewWasRemoved];
+    [_browserView scrollViewWasRemoved];
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate webView:self didFailLoadWithError:a3];
+    [(UIWebViewDelegate *)delegate webView:self didFailLoadWithError:error];
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNewWindowAction:(id)a4 request:(id)a5 newFrameName:(id)a6 decisionListener:(id)a7
+- (void)webView:(id)view decidePolicyForNewWindowAction:(id)action request:(id)request newFrameName:(id)name decisionListener:(id)listener
 {
-  v12 = [-[UIWebDocumentView webView](self->_internal->browserView webView];
+  webView = [-[UIWebDocumentView webView](self->_internal->browserView webView];
 
-  [(UIWebView *)self webView:a3 decidePolicyForNavigationAction:a4 request:a5 frame:v12 decisionListener:a7];
+  [(UIWebView *)self webView:view decidePolicyForNavigationAction:action request:request frame:webView decisionListener:listener];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener
 {
   v27 = *MEMORY[0x1E69E9840];
-  v11 = [a5 URL];
-  v12 = [v11 iTunesStoreURL];
-  if (v12)
+  v11 = [request URL];
+  iTunesStoreURL = [v11 iTunesStoreURL];
+  if (iTunesStoreURL)
   {
-    v13 = [a5 mutableCopy];
-    [v13 setURL:v12];
-    v14 = v13;
+    requestCopy = [request mutableCopy];
+    [requestCopy setURL:iTunesStoreURL];
+    v14 = requestCopy;
   }
 
   else
   {
     v14 = 0;
-    v13 = a5;
+    requestCopy = request;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [objc_msgSend(a4 objectForKey:{*MEMORY[0x1E69E2FD0]), "intValue"}];
+    v15 = [objc_msgSend(action objectForKey:{*MEMORY[0x1E69E2FD0]), "intValue"}];
     v16 = v15 >= 5 ? 5 : v15;
-    if (([(UIWebViewDelegate *)self->_internal->delegate webView:self shouldStartLoadWithRequest:a5 navigationType:v16]& 1) == 0 || v12 && ([(UIWebViewDelegate *)self->_internal->delegate webView:self shouldStartLoadWithRequest:v14 navigationType:v16]& 1) == 0)
+    if (([(UIWebViewDelegate *)self->_internal->delegate webView:self shouldStartLoadWithRequest:request navigationType:v16]& 1) == 0 || iTunesStoreURL && ([(UIWebViewDelegate *)self->_internal->delegate webView:self shouldStartLoadWithRequest:v14 navigationType:v16]& 1) == 0)
     {
       goto LABEL_15;
     }
   }
 
-  if (v12)
+  if (iTunesStoreURL)
   {
-    v11 = v12;
+    v11 = iTunesStoreURL;
   }
 
-  v17 = [a4 objectForKey:*MEMORY[0x1E69E2FC8]];
+  v17 = [action objectForKey:*MEMORY[0x1E69E2FC8]];
   v18 = [v17 objectForKey:*MEMORY[0x1E69E2FE8]];
   if (v18)
   {
-    if ([UIWebURLAction performDefaultActionForURL:v11 andDOMNode:v18 withAllowedTypes:-3 forFrame:a6 inView:self])
+    if ([UIWebURLAction performDefaultActionForURL:v11 andDOMNode:v18 withAllowedTypes:-3 forFrame:frame inView:self])
     {
 LABEL_15:
 
-      [a7 ignore];
+      [listener ignore];
       return;
     }
   }
 
-  if (([MEMORY[0x1E69E2FB8] _canHandleRequest:v13] & 1) == 0 && objc_msgSend(v11, "isSpringboardHandledURL"))
+  if (([MEMORY[0x1E69E2FB8] _canHandleRequest:requestCopy] & 1) == 0 && objc_msgSend(v11, "isSpringboardHandledURL"))
   {
     v24[0] = 0;
     if (!TelephonyUtilitiesLibraryCore_frameworkLibrary_1)
@@ -1240,9 +1240,9 @@ LABEL_15:
 
     else
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void *TelephonyUtilitiesLibrary(void)"];
-      v19 = [v21 handleFailureInFunction:v22 file:@"UIWebView.m" lineNumber:78 description:{@"%s", v24[0]}];
+      v19 = [currentHandler handleFailureInFunction:v22 file:@"UIWebView.m" lineNumber:78 description:{@"%s", v24[0]}];
       __break(1u);
     }
 
@@ -1266,78 +1266,78 @@ LABEL_24:
     v11 = v20;
 LABEL_33:
     [UIApp _openURL:v11 originatingView:self completionHandler:0];
-    [a7 ignore];
+    [listener ignore];
     return;
   }
 
-  [a7 use];
+  [listener use];
 }
 
-- (void)webView:(id)a3 decidePolicyForMIMEType:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7
+- (void)webView:(id)view decidePolicyForMIMEType:(id)type request:(id)request frame:(id)frame decisionListener:(id)listener
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self decidePolicyForMIMEType:a4 request:a5 frame:a6 decisionListener:a7];
+    [(UIWebViewDelegate *)delegate uiWebView:self decidePolicyForMIMEType:type request:request frame:frame decisionListener:listener];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69E2F38] sharedPolicyDelegate];
+    mEMORY[0x1E69E2F38] = [MEMORY[0x1E69E2F38] sharedPolicyDelegate];
     if (objc_opt_respondsToSelector())
     {
 
-      [v14 webView:a3 decidePolicyForMIMEType:a4 request:a5 frame:a6 decisionListener:a7];
+      [mEMORY[0x1E69E2F38] webView:view decidePolicyForMIMEType:type request:request frame:frame decisionListener:listener];
     }
   }
 }
 
-- (void)webView:(id)a3 frame:(id)a4 exceededDatabaseQuotaForSecurityOrigin:(id)a5 database:(id)a6
+- (void)webView:(id)view frame:(id)frame exceededDatabaseQuotaForSecurityOrigin:(id)origin database:(id)database
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self frame:a4 exceededDatabaseQuotaForSecurityOrigin:a5 database:a6];
+    [(UIWebViewDelegate *)delegate uiWebView:self frame:frame exceededDatabaseQuotaForSecurityOrigin:origin database:database];
   }
 
   else
   {
-    v11 = [a5 databaseQuotaManager];
+    databaseQuotaManager = [origin databaseQuotaManager];
 
-    [v11 setQuota:52428800];
+    [databaseQuotaManager setQuota:52428800];
   }
 }
 
-- (void)webView:(id)a3 exceededApplicationCacheOriginQuotaForSecurityOrigin:(id)a4 totalSpaceNeeded:(unint64_t)a5
+- (void)webView:(id)view exceededApplicationCacheOriginQuotaForSecurityOrigin:(id)origin totalSpaceNeeded:(unint64_t)needed
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self exceededApplicationCacheOriginQuotaForSecurityOrigin:a4 totalSpaceNeeded:a5];
+    [(UIWebViewDelegate *)delegate uiWebView:self exceededApplicationCacheOriginQuotaForSecurityOrigin:origin totalSpaceNeeded:needed];
   }
 
   else
   {
-    v9 = [a4 applicationCacheQuotaManager];
+    applicationCacheQuotaManager = [origin applicationCacheQuotaManager];
 
-    [v9 setQuota:52428800];
+    [applicationCacheQuotaManager setQuota:52428800];
   }
 }
 
-- (void)webView:(id)a3 printFrameView:(id)a4
+- (void)webView:(id)view printFrameView:(id)frameView
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self printFrameView:a4];
+    [(UIWebViewDelegate *)delegate uiWebView:self printFrameView:frameView];
   }
 }
 
-- (void)webViewSupportedOrientationsUpdated:(id)a3
+- (void)webViewSupportedOrientationsUpdated:(id)updated
 {
   if (objc_opt_respondsToSelector())
   {
@@ -1355,9 +1355,9 @@ LABEL_33:
   self->_internal->request = v3;
 }
 
-- (void)webView:(id)a3 didStartProvisionalLoadForFrame:(id)a4
+- (void)webView:(id)view didStartProvisionalLoadForFrame:(id)frame
 {
-  [(UIWebView *)self _updateRequest:a3];
+  [(UIWebView *)self _updateRequest:view];
   [(UIWebBrowserView *)self->_internal->browserView resignFirstResponder];
   *(self->_internal + 40) |= 2u;
   if (objc_opt_respondsToSelector())
@@ -1368,27 +1368,27 @@ LABEL_33:
   }
 }
 
-- (void)webView:(id)a3 didCommitLoadForFrame:(id)a4
+- (void)webView:(id)view didCommitLoadForFrame:(id)frame
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self didCommitLoadForFrame:a4];
+    [(UIWebViewDelegate *)delegate uiWebView:self didCommitLoadForFrame:frame];
   }
 }
 
-- (void)webView:(id)a3 didReceiveTitle:(id)a4 forFrame:(id)a5
+- (void)webView:(id)view didReceiveTitle:(id)title forFrame:(id)frame
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self didReceiveTitle:a4 forFrame:a5];
+    [(UIWebViewDelegate *)delegate uiWebView:self didReceiveTitle:title forFrame:frame];
   }
 }
 
-- (id)webView:(id)a3 connectionPropertiesForResource:(id)a4 dataSource:(id)a5
+- (id)webView:(id)view connectionPropertiesForResource:(id)resource dataSource:(id)source
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -1397,56 +1397,56 @@ LABEL_33:
 
   delegate = self->_internal->delegate;
 
-  return [(UIWebViewDelegate *)delegate uiWebView:self connectionPropertiesForResource:a4 dataSource:a5];
+  return [(UIWebViewDelegate *)delegate uiWebView:self connectionPropertiesForResource:resource dataSource:source];
 }
 
-- (id)webThreadWebView:(id)a3 resource:(id)a4 willSendRequest:(id)a5 redirectResponse:(id)a6 fromDataSource:(id)a7
+- (id)webThreadWebView:(id)view resource:(id)resource willSendRequest:(id)request redirectResponse:(id)response fromDataSource:(id)source
 {
-  v7 = a5;
-  v14 = a4;
-  v15 = self;
-  v12 = a6;
-  v13 = a5;
-  v11 = a7;
+  requestCopy = request;
+  resourceCopy = resource;
+  selfCopy = self;
+  responseCopy = response;
+  requestCopy2 = request;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
     NSInvocation = WebThreadMakeNSInvocation();
-    [NSInvocation setArgument:&v15 atIndex:2];
-    [NSInvocation setArgument:&v14 atIndex:3];
-    [NSInvocation setArgument:&v13 atIndex:4];
-    [NSInvocation setArgument:&v12 atIndex:5];
-    [NSInvocation setArgument:&v11 atIndex:6];
+    [NSInvocation setArgument:&selfCopy atIndex:2];
+    [NSInvocation setArgument:&resourceCopy atIndex:3];
+    [NSInvocation setArgument:&requestCopy2 atIndex:4];
+    [NSInvocation setArgument:&responseCopy atIndex:5];
+    [NSInvocation setArgument:&sourceCopy atIndex:6];
     WebThreadCallDelegate();
     v10 = 0;
     [NSInvocation getReturnValue:&v10];
     return v10;
   }
 
-  return v7;
+  return requestCopy;
 }
 
-- (void)webView:(id)a3 didClearWindowObject:(id)a4 forFrame:(id)a5
+- (void)webView:(id)view didClearWindowObject:(id)object forFrame:(id)frame
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self didClearWindowObject:a4 forFrame:a5];
+    [(UIWebViewDelegate *)delegate uiWebView:self didClearWindowObject:object forFrame:frame];
   }
 }
 
-- (void)webView:(id)a3 didFailProvisionalLoadWithError:(id)a4 forFrame:(id)a5
+- (void)webView:(id)view didFailProvisionalLoadWithError:(id)error forFrame:(id)frame
 {
-  [(UIWebView *)self _updateRequest:a3];
+  [(UIWebView *)self _updateRequest:view];
   *(self->_internal + 40) &= ~2u;
 
-  [(UIWebView *)self _reportError:a4];
+  [(UIWebView *)self _reportError:error];
 }
 
-- (void)webView:(id)a3 didFinishLoadForFrame:(id)a4
+- (void)webView:(id)view didFinishLoadForFrame:(id)frame
 {
   [(UIWebView *)self _updateRequest];
-  if ([a3 mainFrame] == a4)
+  if ([view mainFrame] == frame)
   {
     *(self->_internal + 40) &= ~2u;
     internal = self->_internal;
@@ -1464,25 +1464,25 @@ LABEL_33:
   }
 }
 
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4 forFrame:(id)a5
+- (void)webView:(id)view didFailLoadWithError:(id)error forFrame:(id)frame
 {
-  [(UIWebView *)self _updateRequest:a3];
+  [(UIWebView *)self _updateRequest:view];
   *(self->_internal + 40) &= ~2u;
 
-  [(UIWebView *)self _reportError:a4];
+  [(UIWebView *)self _reportError:error];
 }
 
-- (void)webView:(id)a3 didFirstLayoutInFrame:(id)a4
+- (void)webView:(id)view didFirstLayoutInFrame:(id)frame
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self didFirstLayoutInFrame:a4];
+    [(UIWebViewDelegate *)delegate uiWebView:self didFirstLayoutInFrame:frame];
   }
 }
 
-- (void)webViewClose:(id)a3
+- (void)webViewClose:(id)close
 {
   if (objc_opt_respondsToSelector())
   {
@@ -1492,9 +1492,9 @@ LABEL_33:
   }
 }
 
-- (void)webView:(id)a3 runJavaScriptAlertPanelWithMessage:(id)a4 initiatedByFrame:(id)a5
+- (void)webView:(id)view runJavaScriptAlertPanelWithMessage:(id)message initiatedByFrame:(id)frame
 {
-  v6 = [UIAlertController alertControllerWithTitle:javaScriptDialogTitle(a5) message:a4 preferredStyle:1];
+  v6 = [UIAlertController alertControllerWithTitle:javaScriptDialogTitle(frame) message:message preferredStyle:1];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1510,16 +1510,16 @@ LABEL_33:
   v8 = *MEMORY[0x1E695D918];
   while ((v12[3] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v9 runMode:v8 beforeDate:{objc_msgSend(MEMORY[0x1E695DF00], "distantPast")}];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop runMode:v8 beforeDate:{objc_msgSend(MEMORY[0x1E695DF00], "distantPast")}];
   }
 
   _Block_object_dispose(&v11, 8);
 }
 
-- (BOOL)webView:(id)a3 runJavaScriptConfirmPanelWithMessage:(id)a4 initiatedByFrame:(id)a5
+- (BOOL)webView:(id)view runJavaScriptConfirmPanelWithMessage:(id)message initiatedByFrame:(id)frame
 {
-  v6 = [UIAlertController alertControllerWithTitle:javaScriptDialogTitle(a5) message:a4 preferredStyle:1];
+  v6 = [UIAlertController alertControllerWithTitle:javaScriptDialogTitle(frame) message:message preferredStyle:1];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -1547,8 +1547,8 @@ LABEL_33:
   v9 = *MEMORY[0x1E695D918];
   while ((v20[3] & 1) == 0)
   {
-    v10 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v10 runMode:v9 beforeDate:{objc_msgSend(MEMORY[0x1E695DF00], "distantPast")}];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop runMode:v9 beforeDate:{objc_msgSend(MEMORY[0x1E695DF00], "distantPast")}];
   }
 
   v11 = *(v16 + 24);
@@ -1564,9 +1564,9 @@ uint64_t __75__UIWebView_webView_runJavaScriptConfirmPanelWithMessage_initiatedB
   return result;
 }
 
-- (id)webView:(id)a3 runJavaScriptTextInputPanelWithPrompt:(id)a4 defaultText:(id)a5 initiatedByFrame:(id)a6
+- (id)webView:(id)view runJavaScriptTextInputPanelWithPrompt:(id)prompt defaultText:(id)text initiatedByFrame:(id)frame
 {
-  v7 = [UIAlertController alertControllerWithTitle:javaScriptDialogTitle(a6) message:a4 preferredStyle:1];
+  v7 = [UIAlertController alertControllerWithTitle:javaScriptDialogTitle(frame) message:prompt preferredStyle:1];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1595,8 +1595,8 @@ uint64_t __75__UIWebView_webView_runJavaScriptConfirmPanelWithMessage_initiatedB
   v10 = *MEMORY[0x1E695D918];
   while ((v21[3] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v11 runMode:v10 beforeDate:{objc_msgSend(MEMORY[0x1E695DF00], "distantPast")}];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop runMode:v10 beforeDate:{objc_msgSend(MEMORY[0x1E695DF00], "distantPast")}];
   }
 
   if (*(v17 + 24) == 1)
@@ -1621,30 +1621,30 @@ uint64_t __88__UIWebView_webView_runJavaScriptTextInputPanelWithPrompt_defaultTe
   return result;
 }
 
-- (void)webView:(id)a3 decidePolicyForGeolocationRequestFromOrigin:(id)a4 frame:(id)a5 listener:(id)a6
+- (void)webView:(id)view decidePolicyForGeolocationRequestFromOrigin:(id)origin frame:(id)frame listener:(id)listener
 {
   if (self->_internal->delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self decidePolicyForGeolocationRequestFromOrigin:a4 frame:a5 listener:a6];
+    [(UIWebViewDelegate *)delegate uiWebView:self decidePolicyForGeolocationRequestFromOrigin:origin frame:frame listener:listener];
   }
 
   else
   {
     v12 = +[UIWebGeolocationPolicyDecider sharedPolicyDecider];
 
-    [v12 webView:a3 decidePolicyForGeolocationRequestFromOrigin:a4 frame:a5 listener:a6];
+    [v12 webView:view decidePolicyForGeolocationRequestFromOrigin:origin frame:frame listener:listener];
   }
 }
 
-- (id)webView:(id)a3 identifierForInitialRequest:(id)a4 fromDataSource:(id)a5
+- (id)webView:(id)view identifierForInitialRequest:(id)request fromDataSource:(id)source
 {
   if (self->_internal->delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     delegate = self->_internal->delegate;
 
-    return [(UIWebViewDelegate *)delegate uiWebView:self identifierForInitialRequest:a4 fromDataSource:a5];
+    return [(UIWebViewDelegate *)delegate uiWebView:self identifierForInitialRequest:request fromDataSource:source];
   }
 
   else
@@ -1655,72 +1655,72 @@ uint64_t __88__UIWebView_webView_runJavaScriptTextInputPanelWithPrompt_defaultTe
   }
 }
 
-- (void)webView:(id)a3 resource:(id)a4 didFinishLoadingFromDataSource:(id)a5
+- (void)webView:(id)view resource:(id)resource didFinishLoadingFromDataSource:(id)source
 {
   if (self->_internal->delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self resource:a4 didFinishLoadingFromDataSource:a5];
+    [(UIWebViewDelegate *)delegate uiWebView:self resource:resource didFinishLoadingFromDataSource:source];
   }
 }
 
-- (void)webView:(id)a3 resource:(id)a4 didFailLoadingWithError:(id)a5 fromDataSource:(id)a6
+- (void)webView:(id)view resource:(id)resource didFailLoadingWithError:(id)error fromDataSource:(id)source
 {
   if (self->_internal->delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self resource:a4 didFailLoadingWithError:a5 fromDataSource:a6];
+    [(UIWebViewDelegate *)delegate uiWebView:self resource:resource didFailLoadingWithError:error fromDataSource:source];
   }
 }
 
-- (void)webView:(id)a3 resource:(id)a4 didReceiveAuthenticationChallenge:(id)a5 fromDataSource:(id)a6
+- (void)webView:(id)view resource:(id)resource didReceiveAuthenticationChallenge:(id)challenge fromDataSource:(id)source
 {
   if (self->_internal->delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self resource:a4 didReceiveAuthenticationChallenge:a5 fromDataSource:a6];
+    [(UIWebViewDelegate *)delegate uiWebView:self resource:resource didReceiveAuthenticationChallenge:challenge fromDataSource:source];
   }
 
-  else if (![a5 previousFailureCount])
+  else if (![challenge previousFailureCount])
   {
-    v11 = [a5 protectionSpace];
+    protectionSpace = [challenge protectionSpace];
     v12 = [objc_msgSend(MEMORY[0x1E695AC50] "sharedCredentialStorage")];
     if (v12)
     {
       v13 = v12;
-      v14 = [a5 sender];
+      sender = [challenge sender];
 
-      [v14 useCredential:v13 forAuthenticationChallenge:a5];
+      [sender useCredential:v13 forAuthenticationChallenge:challenge];
     }
   }
 }
 
-- (void)webView:(id)a3 resource:(id)a4 didCancelAuthenticationChallenge:(id)a5 fromDataSource:(id)a6
+- (void)webView:(id)view resource:(id)resource didCancelAuthenticationChallenge:(id)challenge fromDataSource:(id)source
 {
   if (self->_internal->delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     delegate = self->_internal->delegate;
 
-    [(UIWebViewDelegate *)delegate uiWebView:self resource:a4 didCancelAuthenticationChallenge:a5 fromDataSource:a6];
+    [(UIWebViewDelegate *)delegate uiWebView:self resource:resource didCancelAuthenticationChallenge:challenge fromDataSource:source];
   }
 }
 
-- (BOOL)webView:(id)a3 resource:(id)a4 canAuthenticateAgainstProtectionSpace:(id)a5 forDataSource:(id)a6
+- (BOOL)webView:(id)view resource:(id)resource canAuthenticateAgainstProtectionSpace:(id)space forDataSource:(id)source
 {
   if (self->_internal->delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     delegate = self->_internal->delegate;
 
-    return [(UIWebViewDelegate *)delegate uiWebView:self resource:a4 canAuthenticateAgainstProtectionSpace:a5 forDataSource:a6];
+    return [(UIWebViewDelegate *)delegate uiWebView:self resource:resource canAuthenticateAgainstProtectionSpace:space forDataSource:source];
   }
 
   else
   {
-    v12 = [a5 authenticationMethod];
-    if ([v12 isEqualToString:*MEMORY[0x1E695AB48]] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", *MEMORY[0x1E695AB58]) & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", *MEMORY[0x1E695AB60]) & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", *MEMORY[0x1E695AB50]))
+    authenticationMethod = [space authenticationMethod];
+    if ([authenticationMethod isEqualToString:*MEMORY[0x1E695AB48]] & 1) != 0 || (objc_msgSend(authenticationMethod, "isEqualToString:", *MEMORY[0x1E695AB58]) & 1) != 0 || (objc_msgSend(authenticationMethod, "isEqualToString:", *MEMORY[0x1E695AB60]) & 1) != 0 || (objc_msgSend(authenticationMethod, "isEqualToString:", *MEMORY[0x1E695AB50]))
     {
       return 1;
     }
@@ -1729,28 +1729,28 @@ uint64_t __88__UIWebView_webView_runJavaScriptTextInputPanelWithPrompt_defaultTe
     {
       v13 = *MEMORY[0x1E695AB68];
 
-      return [v12 isEqualToString:v13];
+      return [authenticationMethod isEqualToString:v13];
     }
   }
 }
 
-- (void)webView:(id)a3 didChangeLocationWithinPageForFrame:(id)a4
+- (void)webView:(id)view didChangeLocationWithinPageForFrame:(id)frame
 {
-  if ([a3 mainFrame] == a4)
+  if ([view mainFrame] == frame)
   {
-    v6 = [objc_msgSend(objc_msgSend(objc_msgSend(a4 "dataSource")];
+    v6 = [objc_msgSend(objc_msgSend(objc_msgSend(frame "dataSource")];
     pdfHandler = self->_internal->pdfHandler;
 
     [(UIWebPDFViewHandler *)pdfHandler handleScrollToAnchor:v6];
   }
 }
 
-- (CGImage)newSnapshotWithRect:(CGRect)a3
+- (CGImage)newSnapshotWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   WebThreadLock();
   [(UIWebTiledView *)self->_internal->browserView layoutTilesNow];
   v9.receiver = self;
@@ -1758,24 +1758,24 @@ uint64_t __88__UIWebView_webView_runJavaScriptTextInputPanelWithPrompt_defaultTe
   return [(UIView *)&v9 newSnapshotWithRect:x, y, width, height];
 }
 
-- (id)_initWithWebView:(id)a3
+- (id)_initWithWebView:(id)view
 {
-  [a3 frame];
+  [view frame];
   v8.receiver = self;
   v8.super_class = UIWebView;
   v5 = [(UIView *)&v8 initWithFrame:?];
   v6 = v5;
   if (v5)
   {
-    [(UIWebView *)v5 _webViewCommonInitWithWebView:a3 scalesPageToFit:0];
+    [(UIWebView *)v5 _webViewCommonInitWithWebView:view scalesPageToFit:0];
   }
 
   return v6;
 }
 
-- (void)_setOverridesOrientationChangeEventHandling:(BOOL)a3
+- (void)_setOverridesOrientationChangeEventHandling:(BOOL)handling
 {
-  if (a3)
+  if (handling)
   {
     v3 = 4;
   }
@@ -1788,14 +1788,14 @@ uint64_t __88__UIWebView_webView_runJavaScriptTextInputPanelWithPrompt_defaultTe
   *(self->_internal + 40) = *(self->_internal + 40) & 0xFB | v3;
 }
 
-- (void)_setDrawsCheckeredPattern:(BOOL)a3
+- (void)_setDrawsCheckeredPattern:(BOOL)pattern
 {
   internal = self->_internal;
   v8 = *(internal + 40);
-  if (((((v8 & 8) == 0) ^ a3) & 1) == 0)
+  if (((((v8 & 8) == 0) ^ pattern) & 1) == 0)
   {
     v11 = v3;
-    if (a3)
+    if (pattern)
     {
       v10 = 8;
     }
@@ -1812,9 +1812,9 @@ uint64_t __88__UIWebView_webView_runJavaScriptTextInputPanelWithPrompt_defaultTe
   }
 }
 
-- (void)_setSelectionEnabled:(BOOL)a3
+- (void)_setSelectionEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 16;
   }
@@ -1827,9 +1827,9 @@ uint64_t __88__UIWebView_webView_runJavaScriptTextInputPanelWithPrompt_defaultTe
   *(self->_internal + 40) = *(self->_internal + 40) & 0xEF | v3;
 }
 
-- (void)_setDrawInWebThread:(BOOL)a3
+- (void)_setDrawInWebThread:(BOOL)thread
 {
-  if (a3)
+  if (thread)
   {
     v3 = 32;
   }
@@ -1903,93 +1903,93 @@ uint64_t __88__UIWebView_webView_runJavaScriptTextInputPanelWithPrompt_defaultTe
 
   WebThreadLock();
   [(UIWebDocumentView *)self->_internal->browserView setShouldIgnoreCustomViewport:v4];
-  v6 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
 
-  [v6 _setPaginationMode:v5];
+  [webView _setPaginationMode:v5];
 }
 
 - (void)setPaginationBreakingMode:(UIWebPaginationBreakingMode)paginationBreakingMode
 {
   WebThreadLock();
-  v5 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
 
-  [v5 _setPaginationBehavesLikeColumns:paginationBreakingMode == UIWebPaginationBreakingModeColumn];
+  [webView _setPaginationBehavesLikeColumns:paginationBreakingMode == UIWebPaginationBreakingModeColumn];
 }
 
 - (CGFloat)pageLength
 {
   WebThreadLock();
-  v3 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
 
-  [v3 _pageLength];
+  [webView _pageLength];
   return result;
 }
 
 - (void)setPageLength:(CGFloat)pageLength
 {
   WebThreadLock();
-  v5 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
 
-  [v5 _setPageLength:pageLength];
+  [webView _setPageLength:pageLength];
 }
 
 - (CGFloat)gapBetweenPages
 {
   WebThreadLock();
-  v3 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
 
-  [v3 _gapBetweenPages];
+  [webView _gapBetweenPages];
   return result;
 }
 
 - (void)setGapBetweenPages:(CGFloat)gapBetweenPages
 {
   WebThreadLock();
-  v5 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
 
-  [v5 _setGapBetweenPages:gapBetweenPages];
+  [webView _setGapBetweenPages:gapBetweenPages];
 }
 
 - (NSUInteger)pageCount
 {
   WebThreadLock();
-  v3 = [(UIWebDocumentView *)self->_internal->browserView webView];
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
 
-  return [v3 _pageCount];
+  return [webView _pageCount];
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
   WebThreadLock();
-  v5 = [(UIWebDocumentView *)self->_internal->browserView webView];
-  if (v5)
+  webView = [(UIWebDocumentView *)self->_internal->browserView webView];
+  if (webView)
   {
-    v6 = v5;
+    v6 = webView;
     [(UIWebDocumentView *)self->_internal->browserView saveStateToCurrentHistoryItem];
-    [a3 encodeObject:objc_msgSend(objc_msgSend(v6 forKey:{"backForwardList"), "dictionaryRepresentation"), @"kBackForwardDictionaryKey"}];
+    [coder encodeObject:objc_msgSend(objc_msgSend(v6 forKey:{"backForwardList"), "dictionaryRepresentation"), @"kBackForwardDictionaryKey"}];
   }
 
   v7.receiver = self;
   v7.super_class = UIWebView;
-  [(UIResponder *)&v7 encodeRestorableStateWithCoder:a3];
+  [(UIResponder *)&v7 encodeRestorableStateWithCoder:coder];
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
-  v9 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, objc_opt_class(), 0), @"kBackForwardDictionaryKey"}];
+  v9 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, objc_opt_class(), 0), @"kBackForwardDictionaryKey"}];
   if (v9)
   {
     v10 = v9;
     WebThreadLock();
-    v11 = [(UIWebDocumentView *)self->_internal->browserView webView];
-    if (v11)
+    webView = [(UIWebDocumentView *)self->_internal->browserView webView];
+    if (webView)
     {
-      v12 = v11;
-      [objc_msgSend(v11 "backForwardList")];
+      v12 = webView;
+      [objc_msgSend(webView "backForwardList")];
       v13 = [objc_msgSend(objc_msgSend(v12 "backForwardList")];
       if (v13)
       {
@@ -2002,7 +2002,7 @@ uint64_t __88__UIWebView_webView_runJavaScriptTextInputPanelWithPrompt_defaultTe
 
   v15.receiver = self;
   v15.super_class = UIWebView;
-  [(UIResponder *)&v15 decodeRestorableStateWithCoder:a3];
+  [(UIResponder *)&v15 decodeRestorableStateWithCoder:coder];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface GKCloudPlayer
 + (void)getCurrentSignedInPlayerForContainer:(NSString *)containerName completionHandler:(void *)handler;
-- (BOOL)isEqual:(id)a3;
-- (GKCloudPlayer)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (GKCloudPlayer)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GKCloudPlayer
@@ -29,35 +29,35 @@
   v5[2](v5, 0, v6);
 }
 
-- (GKCloudPlayer)initWithCoder:(id)a3
+- (GKCloudPlayer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = GKCloudPlayer;
   v5 = [(GKCloudPlayer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(GKCloudPlayer *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(GKCloudPlayer *)v5 setName:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GKCloudPlayer *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(GKCloudPlayer *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(GKCloudPlayer *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(GKCloudPlayer *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -70,17 +70,17 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKCloudPlayer *)self identifier];
-    v7 = [v5 identifier];
+    v5 = equalCopy;
+    identifier = [(GKCloudPlayer *)self identifier];
+    identifier2 = [v5 identifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -93,8 +93,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GKCloudPlayer *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(GKCloudPlayer *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -105,9 +105,9 @@
   v9.receiver = self;
   v9.super_class = GKCloudPlayer;
   v4 = [(GKCloudPlayer *)&v9 description];
-  v5 = [(GKCloudPlayer *)self identifier];
-  v6 = [(GKCloudPlayer *)self name];
-  v7 = [v3 stringWithFormat:@"%@, id: %@, name: %@", v4, v5, v6];
+  identifier = [(GKCloudPlayer *)self identifier];
+  name = [(GKCloudPlayer *)self name];
+  v7 = [v3 stringWithFormat:@"%@, id: %@, name: %@", v4, identifier, name];
 
   return v7;
 }

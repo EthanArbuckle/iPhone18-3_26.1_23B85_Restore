@@ -1,16 +1,16 @@
 @interface RemoteBundleLoader
-- (RemoteBundleLoader)initWithTask:(unsigned int)a3;
-- (void)_lookupFunctionAddresses:(_CSTypeRef)a3;
+- (RemoteBundleLoader)initWithTask:(unsigned int)task;
+- (void)_lookupFunctionAddresses:(_CSTypeRef)addresses;
 - (void)dealloc;
-- (void)scheduleLibraryLoad:(id)a3 calling:(id)a4 arguments:(id)a5 callback:(id)a6;
+- (void)scheduleLibraryLoad:(id)load calling:(id)calling arguments:(id)arguments callback:(id)callback;
 @end
 
 @implementation RemoteBundleLoader
 
-- (void)_lookupFunctionAddresses:(_CSTypeRef)a3
+- (void)_lookupFunctionAddresses:(_CSTypeRef)addresses
 {
-  opaque_2 = a3._opaque_2;
-  opaque_1 = a3._opaque_1;
+  opaque_2 = addresses._opaque_2;
+  opaque_1 = addresses._opaque_1;
   dispatch_assert_queue_V2(self->_symbolLookupQueue);
   if (!self->_attemptedSymbolLookup)
   {
@@ -82,7 +82,7 @@
   }
 }
 
-- (RemoteBundleLoader)initWithTask:(unsigned int)a3
+- (RemoteBundleLoader)initWithTask:(unsigned int)task
 {
   v48.receiver = self;
   v48.super_class = RemoteBundleLoader;
@@ -93,10 +93,10 @@
     goto LABEL_16;
   }
 
-  if (a3 - 1 < 0xFFFFFFFE)
+  if (task - 1 < 0xFFFFFFFE)
   {
-    v5->_targetTask = a3;
-    if (!pid_for_task(a3, &v5->_targetPid))
+    v5->_targetTask = task;
+    if (!pid_for_task(task, &v5->_targetPid))
     {
       v8 = MEMORY[0x277CCA8D8];
       v9 = objc_opt_self();
@@ -136,7 +136,7 @@
       v43 = &unk_278EF3900;
       v20 = v19;
       v44 = v20;
-      v46 = a3;
+      taskCopy = task;
       objc_copyWeak(&v45, &location);
       v21 = CSSymbolicatorCreateWithTaskFlagsAndNotification();
       v23 = v22;
@@ -240,22 +240,22 @@ LABEL_17:
   [(RemoteBundleLoader *)&v7 dealloc];
 }
 
-- (void)scheduleLibraryLoad:(id)a3 calling:(id)a4 arguments:(id)a5 callback:(id)a6
+- (void)scheduleLibraryLoad:(id)load calling:(id)calling arguments:(id)arguments callback:(id)callback
 {
   v119[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10)
+  loadCopy = load;
+  callingCopy = calling;
+  argumentsCopy = arguments;
+  callbackCopy = callback;
+  v14 = callbackCopy;
+  if (loadCopy)
   {
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
-    v16 = [v15 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v16 = [defaultManager fileExistsAtPath:loadCopy];
 
     if (v16)
     {
-      if (v11)
+      if (callingCopy)
       {
         *task_info_out = 0u;
         v92 = 0u;
@@ -274,30 +274,30 @@ LABEL_17:
             (v14)[2](v14, v21);
           }
 
-          v22 = MEMORY[0x277CBEBF8];
+          loadCopy = MEMORY[0x277CBEBF8];
           goto LABEL_38;
         }
 
         v80 = v14;
         v107 = *task_info_out;
         v108 = v92;
-        v42 = v10;
+        v42 = loadCopy;
         v43 = [MEMORY[0x277CBEB58] setWithObject:v42];
-        v44 = [v42 stringByResolvingSymlinksInPath];
-        v45 = [v44 stringByDeletingLastPathComponent];
+        stringByResolvingSymlinksInPath = [v42 stringByResolvingSymlinksInPath];
+        stringByDeletingLastPathComponent = [stringByResolvingSymlinksInPath stringByDeletingLastPathComponent];
 
-        v46 = [v42 UTF8String];
+        uTF8String = [v42 UTF8String];
         callback[0] = MEMORY[0x277D85DD0];
         callback[1] = 3221225472;
         callback[2] = sub_247FDC05C;
         callback[3] = &unk_278EF39E8;
         v47 = v42;
         v98 = v47;
-        v79 = v45;
+        v79 = stringByDeletingLastPathComponent;
         v99 = v79;
         v48 = v43;
         v100 = v48;
-        v49 = macho_for_each_slice(v46, callback);
+        v49 = macho_for_each_slice(uTF8String, callback);
         v78 = v48;
         if (!v49)
         {
@@ -314,7 +314,7 @@ LABEL_17:
         if (v53)
         {
           v54 = v53;
-          v22 = 0;
+          loadCopy = 0;
           v55 = v53;
         }
 
@@ -322,8 +322,8 @@ LABEL_17:
         {
 LABEL_25:
           v75 = v47;
-          v76 = v12;
-          v77 = v11;
+          v76 = argumentsCopy;
+          v77 = callingCopy;
           v53 = objc_opt_new();
           v93 = 0u;
           v94 = 0u;
@@ -361,7 +361,7 @@ LABEL_25:
                   v55 = [v69 errorWithDomain:@"RemoteBundleLoaderError" code:2 userInfo:v71];
                   v72 = v55;
 
-                  v22 = 0;
+                  loadCopy = 0;
                   goto LABEL_41;
                 }
 
@@ -384,10 +384,10 @@ LABEL_25:
 
           v53 = v53;
           v55 = 0;
-          v22 = v53;
+          loadCopy = v53;
 LABEL_41:
-          v12 = v76;
-          v11 = v77;
+          argumentsCopy = v76;
+          callingCopy = v77;
           v47 = v75;
         }
 
@@ -420,10 +420,10 @@ LABEL_12:
           block[3] = &unk_278EF3970;
           block[4] = self;
           v88 = v14;
-          v83 = v10;
-          v84 = v22;
-          v85 = v11;
-          v86 = v12;
+          v83 = loadCopy;
+          v84 = loadCopy;
+          v85 = callingCopy;
+          v86 = argumentsCopy;
           v87 = v30;
           dispatch_async(injectionQueue, block);
 
@@ -478,8 +478,8 @@ LABEL_37:
       {
         v23 = MEMORY[0x277CCA9B8];
         v109 = *MEMORY[0x277CCA450];
-        v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"No function specified"];
-        v110 = v22;
+        loadCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No function specified"];
+        v110 = loadCopy;
         v24 = MEMORY[0x277CBEAC0];
         v25 = &v110;
         v26 = &v109;
@@ -489,10 +489,10 @@ LABEL_37:
 
     else
     {
-      [v10 UTF8String];
+      [loadCopy UTF8String];
       if (_dyld_shared_cache_real_path())
       {
-        v22 = MEMORY[0x277CBEBF8];
+        loadCopy = MEMORY[0x277CBEBF8];
         goto LABEL_12;
       }
 
@@ -500,8 +500,8 @@ LABEL_37:
       {
         v23 = MEMORY[0x277CCA9B8];
         v111 = *MEMORY[0x277CCA450];
-        v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"No dylib found at path: %@", v10];
-        v112 = v22;
+        loadCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No dylib found at path: %@", loadCopy];
+        v112 = loadCopy;
         v24 = MEMORY[0x277CBEAC0];
         v25 = &v112;
         v26 = &v111;
@@ -510,12 +510,12 @@ LABEL_37:
     }
   }
 
-  else if (v13)
+  else if (callbackCopy)
   {
     v23 = MEMORY[0x277CCA9B8];
     v113 = *MEMORY[0x277CCA450];
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"No dylib path specified"];
-    v114 = v22;
+    loadCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No dylib path specified"];
+    v114 = loadCopy;
     v24 = MEMORY[0x277CBEAC0];
     v25 = &v114;
     v26 = &v113;

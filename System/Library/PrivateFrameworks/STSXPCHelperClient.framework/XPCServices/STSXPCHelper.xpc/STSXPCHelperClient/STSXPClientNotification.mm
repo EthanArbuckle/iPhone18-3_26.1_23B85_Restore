@@ -1,36 +1,36 @@
 @interface STSXPClientNotification
 - (void)dealloc;
-- (void)getRemoteTransceiverProxyXPCEndpointWithType:(unint64_t)a3 callback:(id)a4;
-- (void)iso18013ReaderSendSessionData:(id)a3 status:(id)a4 callback:(id)a5;
-- (void)iso18013ReaderSendSessionEstablishment:(id)a3 callback:(id)a4;
+- (void)getRemoteTransceiverProxyXPCEndpointWithType:(unint64_t)type callback:(id)callback;
+- (void)iso18013ReaderSendSessionData:(id)data status:(id)status callback:(id)callback;
+- (void)iso18013ReaderSendSessionEstablishment:(id)establishment callback:(id)callback;
 - (void)sendConnectionHandoverCompleted;
 - (void)sendConnectionHandoverStarted;
-- (void)sendCredentialSelect:(id)a3 callback:(id)a4;
-- (void)sendRawDataToAlternativeCarrier:(id)a3 callback:(id)a4;
-- (void)startHandoffWithCompletion:(id)a3;
+- (void)sendCredentialSelect:(id)select callback:(id)callback;
+- (void)sendRawDataToAlternativeCarrier:(id)carrier callback:(id)callback;
+- (void)startHandoffWithCompletion:(id)completion;
 @end
 
 @implementation STSXPClientNotification
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_xpc;
   }
 
   [(STSXPClientNotification *)self invalidate];
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = STSXPClientNotification;
   [(STSXPClientNotification *)&v3 dealloc];
 }
 
-- (void)sendRawDataToAlternativeCarrier:(id)a3 callback:(id)a4
+- (void)sendRawDataToAlternativeCarrier:(id)carrier callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  sub_10002483C(OS_LOG_TYPE_INFO, 0, "[STSXPClientNotification sendRawDataToAlternativeCarrier:callback:]", 179, self, @"data: %@", v8, v9, v6);
+  carrierCopy = carrier;
+  callbackCopy = callback;
+  sub_10002483C(OS_LOG_TYPE_INFO, 0, "[STSXPClientNotification sendRawDataToAlternativeCarrier:callback:]", 179, self, @"data: %@", v8, v9, carrierCopy);
   if (self && (WeakRetained = objc_loadWeakRetained(&self->_alternativeCarrier)) != 0)
   {
     v13 = WeakRetained;
@@ -41,8 +41,8 @@
     v16[3] = &unk_100058AA8;
     objc_copyWeak(&v18, &location);
     v16[4] = self;
-    v17 = v7;
-    [v13 altCarrierSendData:v6 completion:v16];
+    v17 = callbackCopy;
+    [v13 altCarrierSendData:carrierCopy completion:v16];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -56,7 +56,7 @@
     v14 = [NSDictionary dictionaryWithObjects:&location forKeys:&v19 count:1];
     v13 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:2 userInfo:v14];
 
-    (*(v7 + 2))(v7, v13);
+    (*(callbackCopy + 2))(callbackCopy, v13);
   }
 }
 
@@ -80,11 +80,11 @@
   [v4 postISOHandoverEvent:v3 prepOnly:0];
 }
 
-- (void)getRemoteTransceiverProxyXPCEndpointWithType:(unint64_t)a3 callback:(id)a4
+- (void)getRemoteTransceiverProxyXPCEndpointWithType:(unint64_t)type callback:(id)callback
 {
-  v6 = a4;
-  v8 = v6;
-  if (!a3)
+  callbackCopy = callback;
+  v8 = callbackCopy;
+  if (!type)
   {
     if (self)
     {
@@ -98,7 +98,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     if (self)
     {
@@ -111,14 +111,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6[2](v6, 0);
+  callbackCopy[2](callbackCopy, 0);
 LABEL_10:
 }
 
-- (void)sendCredentialSelect:(id)a3 callback:(id)a4
+- (void)sendCredentialSelect:(id)select callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  selectCopy = select;
+  callbackCopy = callback;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPClientNotification sendCredentialSelect:callback:]", 253, self, &stru_100059C08, v8, v9, v11);
   if (self)
   {
@@ -129,15 +129,15 @@ LABEL_10:
   v12[1] = 3221225472;
   v12[2] = sub_10000CD68;
   v12[3] = &unk_100058AD0;
-  v13 = v7;
-  v10 = v7;
-  [(STSXPClientNotification *)self receivedCredentialSelection:v6 callback:v12];
+  v13 = callbackCopy;
+  v10 = callbackCopy;
+  [(STSXPClientNotification *)self receivedCredentialSelection:selectCopy callback:v12];
 }
 
-- (void)iso18013ReaderSendSessionEstablishment:(id)a3 callback:(id)a4
+- (void)iso18013ReaderSendSessionEstablishment:(id)establishment callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  establishmentCopy = establishment;
+  callbackCopy = callback;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPClientNotification iso18013ReaderSendSessionEstablishment:callback:]", 267, self, &stru_100059C08, v8, v9, v18);
   if (!self || (WeakRetained = objc_loadWeakRetained(&self->_alternativeCarrier), WeakRetained, !WeakRetained))
   {
@@ -149,11 +149,11 @@ LABEL_10:
 LABEL_7:
     v15 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:v17 userInfo:v16];
 
-    v7[2](v7, v15);
+    callbackCopy[2](callbackCopy, v15);
     goto LABEL_8;
   }
 
-  if (![v6 length])
+  if (![establishmentCopy length])
   {
     sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[STSXPClientNotification iso18013ReaderSendSessionEstablishment:callback:]", 275, self, @"SessionEstablishment is empty", v13, v14, v19);
     v20 = NSLocalizedDescriptionKey;
@@ -164,20 +164,20 @@ LABEL_7:
   }
 
   v15 = objc_loadWeakRetained(&self->_delegate);
-  [v15 iso18013ReaderSendSessionEstablishment:v6 callback:v7];
+  [v15 iso18013ReaderSendSessionEstablishment:establishmentCopy callback:callbackCopy];
 LABEL_8:
 }
 
-- (void)iso18013ReaderSendSessionData:(id)a3 status:(id)a4 callback:(id)a5
+- (void)iso18013ReaderSendSessionData:(id)data status:(id)status callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  statusCopy = status;
+  callbackCopy = callback;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPClientNotification iso18013ReaderSendSessionData:status:callback:]", 286, self, &stru_100059C08, v11, v12, v18);
   if (self && (v15 = objc_loadWeakRetained(&self->_alternativeCarrier), v15, v15))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained iso18013ReaderSendSessionData:v8 status:v9 callback:v10];
+    [WeakRetained iso18013ReaderSendSessionData:dataCopy status:statusCopy callback:callbackCopy];
   }
 
   else
@@ -188,20 +188,20 @@ LABEL_8:
     v17 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     WeakRetained = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:2 userInfo:v17];
 
-    v10[2](v10, WeakRetained);
+    callbackCopy[2](callbackCopy, WeakRetained);
   }
 }
 
-- (void)startHandoffWithCompletion:(id)a3
+- (void)startHandoffWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (self)
   {
     self = objc_loadWeakRetained(&self->_delegate);
   }
 
-  v4 = [(STSXPClientNotification *)self startHandoff];
-  v5[2](v5, v4);
+  startHandoff = [(STSXPClientNotification *)self startHandoff];
+  completionCopy[2](completionCopy, startHandoff);
 }
 
 @end

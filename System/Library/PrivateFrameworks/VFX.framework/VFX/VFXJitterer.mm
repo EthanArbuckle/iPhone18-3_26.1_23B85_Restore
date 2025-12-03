@@ -1,17 +1,17 @@
 @interface VFXJitterer
-- (VFXJitterer)initWithDelegate:(id)a3;
+- (VFXJitterer)initWithDelegate:(id)delegate;
 - (void)dealloc;
 - (void)delegateWillDie;
 - (void)jitter;
 - (void)restart;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 - (void)stopIfNeeded;
 - (void)update;
 @end
 
 @implementation VFXJitterer
 
-- (VFXJitterer)initWithDelegate:(id)a3
+- (VFXJitterer)initWithDelegate:(id)delegate
 {
   v10.receiver = self;
   v10.super_class = VFXJitterer;
@@ -19,7 +19,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_delegate, a3);
+    objc_storeWeak(&v4->_delegate, delegate);
     v5->_restartSourceIsSuspended = 1;
     v5->_state = 3;
     v9[0] = 0;
@@ -81,20 +81,20 @@
   dispatch_sync(v3, &unk_1F24ED378);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    if (a3)
+    if (enabled)
     {
       self->_enabled = 1;
 
-      objc_msgSend_restart(self, a2, a3, v3);
+      objc_msgSend_restart(self, a2, enabled, v3);
     }
 
     else
     {
-      objc_msgSend_stopIfNeeded(self, a2, a3, v3);
+      objc_msgSend_stopIfNeeded(self, a2, enabled, v3);
       self->_enabled = 0;
     }
   }

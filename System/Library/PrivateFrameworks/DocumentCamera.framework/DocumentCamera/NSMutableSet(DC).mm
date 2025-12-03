@@ -9,20 +9,20 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dc_removeNonNilObject:()DC
 {
   if (a3)
   {
-    return [a1 removeObject:?];
+    return [self removeObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

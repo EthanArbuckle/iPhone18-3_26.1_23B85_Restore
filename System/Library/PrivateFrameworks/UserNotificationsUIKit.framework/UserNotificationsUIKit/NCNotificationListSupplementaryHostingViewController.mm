@@ -1,54 +1,54 @@
 @interface NCNotificationListSupplementaryHostingViewController
-- (BOOL)_useDefaultLookForColor:(id)a3 materialRecipe:(int64_t)a4 containsUnmanagedContent:(BOOL)a5;
+- (BOOL)_useDefaultLookForColor:(id)color materialRecipe:(int64_t)recipe containsUnmanagedContent:(BOOL)content;
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)adjustsFontForContentSizeCategory;
 - (BOOL)isHostedViewControllerUserInteractionEnabled;
 - (BOOL)supportsMitosis;
 - (BOOL)unmanagedBackdropContrast;
 - (CGSize)preferredContentSize;
-- (NCNotificationListSupplementaryHostingViewController)initWithHostedViewController:(id)a3 sectionIdentifier:(id)a4;
+- (NCNotificationListSupplementaryHostingViewController)initWithHostedViewController:(id)controller sectionIdentifier:(id)identifier;
 - (NCNotificationListSupplementaryHostingViewControllerDelegate)delegate;
 - (PLPlatterView)platterView;
 - (double)glassSmoothness;
 - (double)rootScrollVelocity;
 - (id)_logDescription;
-- (id)_sanitizedColorFromDeveloperProvidedColor:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_sanitizedColorFromDeveloperProvidedColor:(id)color;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)apparentZDistanceToUser;
 - (int64_t)backgroundGlassId;
 - (unint64_t)backgroundGlassState;
 - (unint64_t)glassMode;
-- (void)_configureAuxiliaryViewAnimated:(BOOL)a3;
-- (void)_configureHostingViewAnimated:(BOOL)a3;
-- (void)_preferredContentSizeDidChangeForChildViewController:(id)a3;
-- (void)_showAuxiliaryOptionsView:(BOOL)a3;
-- (void)configureStackDimmingForTransform:(CGAffineTransform *)a3;
+- (void)_configureAuxiliaryViewAnimated:(BOOL)animated;
+- (void)_configureHostingViewAnimated:(BOOL)animated;
+- (void)_preferredContentSizeDidChangeForChildViewController:(id)controller;
+- (void)_showAuxiliaryOptionsView:(BOOL)view;
+- (void)configureStackDimmingForTransform:(CGAffineTransform *)transform;
 - (void)loadView;
 - (void)removeLightEffectsIfNeeded;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setApparentZDistanceToUser:(int64_t)a3;
-- (void)setConfiguration:(id)a3 animated:(BOOL)a4;
-- (void)setContentVisible:(BOOL)a3;
-- (void)setGlassMode:(unint64_t)a3;
-- (void)setHostedViewControllerUserInteractionEnabled:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setMaterialRecipe:(int64_t)a3;
-- (void)setMaterialTintColor:(id)a3;
-- (void)setRootScrollVelocity:(double)a3;
-- (void)setSupportsMitosis:(BOOL)a3;
-- (void)setUnmanagedBackdropContrast:(BOOL)a3;
-- (void)supplementaryHostingViewWasTapped:(id)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setApparentZDistanceToUser:(int64_t)user;
+- (void)setConfiguration:(id)configuration animated:(BOOL)animated;
+- (void)setContentVisible:(BOOL)visible;
+- (void)setGlassMode:(unint64_t)mode;
+- (void)setHostedViewControllerUserInteractionEnabled:(BOOL)enabled;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setMaterialRecipe:(int64_t)recipe;
+- (void)setMaterialTintColor:(id)color;
+- (void)setRootScrollVelocity:(double)velocity;
+- (void)setSupportsMitosis:(BOOL)mitosis;
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast;
+- (void)supplementaryHostingViewWasTapped:(id)tapped;
 @end
 
 @implementation NCNotificationListSupplementaryHostingViewController
 
-- (NCNotificationListSupplementaryHostingViewController)initWithHostedViewController:(id)a3 sectionIdentifier:(id)a4
+- (NCNotificationListSupplementaryHostingViewController)initWithHostedViewController:(id)controller sectionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = NCNotificationListSupplementaryHostingViewController;
   v9 = [(NCNotificationListSupplementaryHostingViewController *)&v13 initWithNibName:0 bundle:0];
@@ -58,27 +58,27 @@
     materialGroupNameBase = v9->_materialGroupNameBase;
     v9->_materialGroupNameBase = 0;
 
-    objc_storeStrong(&v10->_hostedViewController, a3);
+    objc_storeStrong(&v10->_hostedViewController, controller);
     [(NCNotificationListSupplementaryHostingViewController *)v10 addChildViewController:v10->_hostedViewController];
     [(UIViewController *)v10->_hostedViewController didMoveToParentViewController:v10];
-    objc_storeStrong(&v10->_sectionIdentifier, a4);
+    objc_storeStrong(&v10->_sectionIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(NCNotificationListSupplementaryHostingViewController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(NCNotificationListSupplementaryHostingViewController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -86,8 +86,8 @@
   v10[3] = &unk_27836F560;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -106,56 +106,56 @@ void __94__NCNotificationListSupplementaryHostingViewController_descriptionBuild
 
 - (id)succinctDescription
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(NCNotificationListSupplementaryHostingViewController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NCNotificationListSupplementaryHostingViewController *)self configuration];
-  v5 = [v3 appendObject:v4 withName:@"configuration" skipIfNil:1];
+  configuration = [(NCNotificationListSupplementaryHostingViewController *)self configuration];
+  v5 = [v3 appendObject:configuration withName:@"configuration" skipIfNil:1];
 
-  v6 = [(NCNotificationListSupplementaryHostingViewController *)self hostedViewController];
-  v7 = [v3 appendObject:v6 withName:@"hostedViewController"];
+  hostedViewController = [(NCNotificationListSupplementaryHostingViewController *)self hostedViewController];
+  v7 = [v3 appendObject:hostedViewController withName:@"hostedViewController"];
 
   return v3;
 }
 
-- (void)setHostedViewControllerUserInteractionEnabled:(BOOL)a3
+- (void)setHostedViewControllerUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v4 setHostedViewUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView setHostedViewUserInteractionEnabled:enabledCopy];
 }
 
 - (BOOL)isHostedViewControllerUserInteractionEnabled
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v3 = [v2 isHostedViewUserInteractionEnabled];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  isHostedViewUserInteractionEnabled = [_hostingView isHostedViewUserInteractionEnabled];
 
-  return v3;
+  return isHostedViewUserInteractionEnabled;
 }
 
-- (void)setConfiguration:(id)a3 animated:(BOOL)a4
+- (void)setConfiguration:(id)configuration animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 copy];
+  animatedCopy = animated;
+  configurationCopy = configuration;
+  v7 = [configurationCopy copy];
   configuration = self->_configuration;
   self->_configuration = v7;
 
-  v9 = [v6 tintColor];
-  if (-[NCNotificationListSupplementaryHostingViewController _useDefaultLookForColor:materialRecipe:containsUnmanagedContent:](self, "_useDefaultLookForColor:materialRecipe:containsUnmanagedContent:", v9, [v6 materialRecipe], objc_msgSend(v6, "containsUnmanagedContent")))
+  tintColor = [configurationCopy tintColor];
+  if (-[NCNotificationListSupplementaryHostingViewController _useDefaultLookForColor:materialRecipe:containsUnmanagedContent:](self, "_useDefaultLookForColor:materialRecipe:containsUnmanagedContent:", tintColor, [configurationCopy materialRecipe], objc_msgSend(configurationCopy, "containsUnmanagedContent")))
   {
     materialTintColor = self->_materialTintColor;
     self->_materialTintColor = 0;
 
-    v11 = [(NCNotificationListSupplementaryHostingViewController *)self _defaultTextColor];
+    _defaultTextColor = [(NCNotificationListSupplementaryHostingViewController *)self _defaultTextColor];
     textColor = self->_textColor;
-    self->_textColor = v11;
+    self->_textColor = _defaultTextColor;
 
     self->_materialRecipe = 1;
     v13 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.1];
@@ -167,7 +167,7 @@ void __94__NCNotificationListSupplementaryHostingViewController_descriptionBuild
   }
 
   self->_materialRecipe = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration materialRecipe];
-  objc_storeStrong(&self->_materialTintColor, v9);
+  objc_storeStrong(&self->_materialTintColor, tintColor);
   v29 = 0.0;
   v30 = 0.0;
   v15 = self->_materialTintColor;
@@ -193,20 +193,20 @@ LABEL_9:
   self->_auxiliaryOptionsBackgroundColor = v16;
 
   objc_storeStrong(&self->_auxiliaryOptionsBackgroundCompositingFilter, *v17);
-  v19 = [v6 textColor];
-  v20 = [(NCNotificationListSupplementaryHostingViewController *)self _sanitizedColorFromDeveloperProvidedColor:v19];
+  textColor = [configurationCopy textColor];
+  v20 = [(NCNotificationListSupplementaryHostingViewController *)self _sanitizedColorFromDeveloperProvidedColor:textColor];
   v21 = v20;
   if (v20)
   {
-    v22 = v20;
+    whiteColor = v20;
   }
 
   else
   {
-    v22 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v23 = v22;
+  v23 = whiteColor;
 
   v27 = 0;
   v28 = 0.0;
@@ -231,7 +231,7 @@ LABEL_9:
   self->_textColor = v23;
 
 LABEL_19:
-  [(NCNotificationListSupplementaryHostingViewController *)self _configureHostingViewAnimated:v4];
+  [(NCNotificationListSupplementaryHostingViewController *)self _configureHostingViewAnimated:animatedCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -241,36 +241,36 @@ LABEL_19:
 
 - (PLPlatterView)platterView
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v3 = [v2 platterView];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  platterView = [_hostingView platterView];
 
-  return v3;
+  return platterView;
 }
 
-- (void)setContentVisible:(BOOL)a3
+- (void)setContentVisible:(BOOL)visible
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_contentVisible != a3)
+  if (self->_contentVisible != visible)
   {
-    v3 = a3;
+    visibleCopy = visible;
     v5 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(NCNotificationListSupplementaryHostingViewController *)self _logDescription];
+      _logDescription = [(NCNotificationListSupplementaryHostingViewController *)self _logDescription];
       v8 = NSStringFromBOOL();
       v10 = 138543618;
-      v11 = v7;
+      v11 = _logDescription;
       v12 = 2114;
       v13 = v8;
       _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting content visible %{public}@", &v10, 0x16u);
     }
 
-    self->_contentVisible = v3;
+    self->_contentVisible = visibleCopy;
     v9 = self->_hostedViewController;
     if (objc_opt_respondsToSelector())
     {
-      [(UIViewController *)v9 notificationListSupplementaryViewPresentableContentWillBecomeVisible:v3];
+      [(UIViewController *)v9 notificationListSupplementaryViewPresentableContentWillBecomeVisible:visibleCopy];
     }
   }
 }
@@ -283,7 +283,7 @@ LABEL_19:
   return result;
 }
 
-- (void)_preferredContentSizeDidChangeForChildViewController:(id)a3
+- (void)_preferredContentSizeDidChangeForChildViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -303,13 +303,13 @@ LABEL_19:
   v4 = objc_alloc_init(NCNotificationListSupplementaryHostingView);
   [(NCNotificationListSupplementaryHostingViewController *)self setView:v4];
   [(NCNotificationListSupplementaryHostingView *)v4 setDelegate:self];
-  v3 = [(UIViewController *)self->_hostedViewController view];
-  [(NCNotificationListSupplementaryHostingView *)v4 setHostedView:v3];
+  view = [(UIViewController *)self->_hostedViewController view];
+  [(NCNotificationListSupplementaryHostingView *)v4 setHostedView:view];
 
   [(NCNotificationListSupplementaryHostingViewController *)self _configureHostingViewAnimated:0];
 }
 
-- (void)supplementaryHostingViewWasTapped:(id)a3
+- (void)supplementaryHostingViewWasTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -326,143 +326,143 @@ LABEL_19:
 
 - (BOOL)adjustsFontForContentSizeCategory
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v3 = [v2 adjustsFontForContentSizeCategory];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  adjustsFontForContentSizeCategory = [_hostingView adjustsFontForContentSizeCategory];
 
-  return v3;
+  return adjustsFontForContentSizeCategory;
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
-  v4 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v4 setAdjustsFontForContentSizeCategory:v3];
+  categoryCopy = category;
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView setAdjustsFontForContentSizeCategory:categoryCopy];
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v2 adjustForContentSizeCategoryChange];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView adjustForContentSizeCategoryChange];
 
   return 1;
 }
 
-- (void)setMaterialRecipe:(int64_t)a3
+- (void)setMaterialRecipe:(int64_t)recipe
 {
-  self->_materialRecipe = a3;
-  v4 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v4 setMaterialRecipe:self->_materialRecipe];
+  self->_materialRecipe = recipe;
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView setMaterialRecipe:self->_materialRecipe];
 }
 
-- (void)setMaterialTintColor:(id)a3
+- (void)setMaterialTintColor:(id)color
 {
-  objc_storeStrong(&self->_materialTintColor, a3);
-  v5 = a3;
-  v6 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v6 setMaterialTintColor:self->_materialTintColor];
+  objc_storeStrong(&self->_materialTintColor, color);
+  colorCopy = color;
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView setMaterialTintColor:self->_materialTintColor];
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  objc_storeStrong(&self->_materialGroupNameBase, a3);
-  v5 = a3;
-  v6 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v6 setMaterialGroupNameBase:self->_materialGroupNameBase];
+  objc_storeStrong(&self->_materialGroupNameBase, base);
+  baseCopy = base;
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView setMaterialGroupNameBase:self->_materialGroupNameBase];
 }
 
 - (int64_t)apparentZDistanceToUser
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v3 = [v2 apparentZDistanceToUser];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  apparentZDistanceToUser = [_hostingView apparentZDistanceToUser];
 
-  return v3;
+  return apparentZDistanceToUser;
 }
 
-- (void)setApparentZDistanceToUser:(int64_t)a3
+- (void)setApparentZDistanceToUser:(int64_t)user
 {
-  v4 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v4 setApparentZDistanceToUser:a3];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView setApparentZDistanceToUser:user];
 }
 
 - (double)rootScrollVelocity
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v2 rootScrollVelocity];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView rootScrollVelocity];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setRootScrollVelocity:(double)a3
+- (void)setRootScrollVelocity:(double)velocity
 {
-  v4 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v4 setRootScrollVelocity:a3];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView setRootScrollVelocity:velocity];
 }
 
 - (unint64_t)glassMode
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v3 = [v2 glassMode];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  glassMode = [_hostingView glassMode];
 
-  return v3;
+  return glassMode;
 }
 
-- (void)setGlassMode:(unint64_t)a3
+- (void)setGlassMode:(unint64_t)mode
 {
-  v4 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v4 setGlassMode:a3];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView setGlassMode:mode];
 }
 
 - (BOOL)supportsMitosis
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v3 = [v2 supportsMitosis];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  supportsMitosis = [_hostingView supportsMitosis];
 
-  return v3;
+  return supportsMitosis;
 }
 
-- (void)setSupportsMitosis:(BOOL)a3
+- (void)setSupportsMitosis:(BOOL)mitosis
 {
-  v3 = a3;
-  v4 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v4 setSupportsMitosis:v3];
+  mitosisCopy = mitosis;
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView setSupportsMitosis:mitosisCopy];
 }
 
 - (BOOL)unmanagedBackdropContrast
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v3 = [v2 unmanagedBackdropContrast];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  unmanagedBackdropContrast = [_hostingView unmanagedBackdropContrast];
 
-  return v3;
+  return unmanagedBackdropContrast;
 }
 
-- (void)setUnmanagedBackdropContrast:(BOOL)a3
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast
 {
-  v3 = a3;
-  v4 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v4 setUnmanagedBackdropContrast:v3];
+  contrastCopy = contrast;
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView setUnmanagedBackdropContrast:contrastCopy];
 }
 
 - (unint64_t)backgroundGlassState
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v3 = [v2 backgroundGlassState];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  backgroundGlassState = [_hostingView backgroundGlassState];
 
-  return v3;
+  return backgroundGlassState;
 }
 
 - (int64_t)backgroundGlassId
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v3 = [v2 backgroundGlassId];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  backgroundGlassId = [_hostingView backgroundGlassId];
 
-  return v3;
+  return backgroundGlassId;
 }
 
 - (double)glassSmoothness
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v2 glassSmoothness];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView glassSmoothness];
   v4 = v3;
 
   return v4;
@@ -470,47 +470,47 @@ LABEL_19:
 
 - (void)removeLightEffectsIfNeeded
 {
-  v2 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  [v2 removeLightEffectsIfNeeded];
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  [_hostingView removeLightEffectsIfNeeded];
 }
 
-- (void)configureStackDimmingForTransform:(CGAffineTransform *)a3
+- (void)configureStackDimmingForTransform:(CGAffineTransform *)transform
 {
-  v4 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v5 = *&a3->c;
-  v6[0] = *&a3->a;
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  v5 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v5;
-  v6[2] = *&a3->tx;
-  [v4 configureStackDimmingForTransform:v6];
+  v6[2] = *&transform->tx;
+  [_hostingView configureStackDimmingForTransform:v6];
 }
 
-- (void)_configureHostingViewAnimated:(BOOL)a3
+- (void)_configureHostingViewAnimated:(BOOL)animated
 {
   if (self->_configuration)
   {
-    v3 = a3;
-    v5 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-    [v5 setMaterialRecipe:self->_materialRecipe];
-    [v5 setMaterialTintColor:self->_materialTintColor];
-    [v5 setMaterialGroupNameBase:self->_materialGroupNameBase];
-    [v5 setClipsToBounds:{-[NCNotificationListSupplementaryViewConfiguration containsUnmanagedContent](self->_configuration, "containsUnmanagedContent")}];
-    [(NCNotificationListSupplementaryHostingViewController *)self _configureAuxiliaryViewAnimated:v3];
+    animatedCopy = animated;
+    _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+    [_hostingView setMaterialRecipe:self->_materialRecipe];
+    [_hostingView setMaterialTintColor:self->_materialTintColor];
+    [_hostingView setMaterialGroupNameBase:self->_materialGroupNameBase];
+    [_hostingView setClipsToBounds:{-[NCNotificationListSupplementaryViewConfiguration containsUnmanagedContent](self->_configuration, "containsUnmanagedContent")}];
+    [(NCNotificationListSupplementaryHostingViewController *)self _configureAuxiliaryViewAnimated:animatedCopy];
   }
 }
 
-- (void)_configureAuxiliaryViewAnimated:(BOOL)a3
+- (void)_configureAuxiliaryViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v6 = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration auxiliaryOptionActions];
-  LODWORD(v7) = v6 != 0;
+  animatedCopy = animated;
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  auxiliaryOptionActions = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration auxiliaryOptionActions];
+  LODWORD(v7) = auxiliaryOptionActions != 0;
 
-  v8 = [v5 auxiliaryOptionActions];
-  v9 = v8 != 0;
+  auxiliaryOptionActions2 = [_hostingView auxiliaryOptionActions];
+  v9 = auxiliaryOptionActions2 != 0;
 
   v10 = v7 ^ v9;
-  v11 = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration auxiliaryOptionActions];
-  v12 = [v5 auxiliaryOptionActions];
+  auxiliaryOptionActions3 = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration auxiliaryOptionActions];
+  auxiliaryOptionActions4 = [_hostingView auxiliaryOptionActions];
   if (BSEqualArrays())
   {
     v13 = 1;
@@ -519,17 +519,17 @@ LABEL_19:
   else
   {
     [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration auxiliaryOptionsSummaryText];
-    v7 = v20 = v3;
-    [v5 auxiliaryOptionsSummaryText];
+    v7 = v20 = animatedCopy;
+    [_hostingView auxiliaryOptionsSummaryText];
     v14 = v10;
-    v16 = v15 = v5;
+    v16 = v15 = _hostingView;
     v13 = BSEqualStrings();
 
-    v5 = v15;
+    _hostingView = v15;
     v10 = v14;
 
-    LOBYTE(v7) = v6 != 0;
-    v3 = v20;
+    LOBYTE(v7) = auxiliaryOptionActions != 0;
+    animatedCopy = v20;
   }
 
   objc_initWeak(location, self);
@@ -541,11 +541,11 @@ LABEL_19:
   v31 = v10;
   v32 = v13;
   v17 = _Block_copy(aBlock);
-  if (v3 && v10)
+  if (animatedCopy && v10)
   {
-    v18 = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration containsUnmanagedContent];
-    [v5 setClipsToBounds:1];
-    if (v6)
+    containsUnmanagedContent = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration containsUnmanagedContent];
+    [_hostingView setClipsToBounds:1];
+    if (auxiliaryOptionActions)
     {
       [(NCNotificationListSupplementaryHostingViewController *)self _showAuxiliaryOptionsView:1];
     }
@@ -555,7 +555,7 @@ LABEL_19:
     v26[1] = 3221225472;
     v26[2] = __88__NCNotificationListSupplementaryHostingViewController__configureAuxiliaryViewAnimated___block_invoke_2;
     v26[3] = &unk_27836F898;
-    v27 = v5;
+    v27 = _hostingView;
     v28 = v7;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -564,14 +564,14 @@ LABEL_19:
     v24 = v7;
     v21[4] = self;
     v22 = v27;
-    v25 = v18;
+    v25 = containsUnmanagedContent;
     v23 = v17;
     [v19 animateWithDuration:v26 animations:v21 completion:0.25];
   }
 
   else
   {
-    [(NCNotificationListSupplementaryHostingViewController *)self _showAuxiliaryOptionsView:v6 != 0];
+    [(NCNotificationListSupplementaryHostingViewController *)self _showAuxiliaryOptionsView:auxiliaryOptionActions != 0];
     v17[2](v17);
   }
 
@@ -614,45 +614,45 @@ uint64_t __88__NCNotificationListSupplementaryHostingViewController__configureAu
   return result;
 }
 
-- (void)_showAuxiliaryOptionsView:(BOOL)a3
+- (void)_showAuxiliaryOptionsView:(BOOL)view
 {
-  v3 = a3;
-  v7 = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
-  v5 = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration auxiliaryOptionActions];
-  [v7 setAuxiliaryOptionActions:v5];
+  viewCopy = view;
+  _hostingView = [(NCNotificationListSupplementaryHostingViewController *)self _hostingView];
+  auxiliaryOptionActions = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration auxiliaryOptionActions];
+  [_hostingView setAuxiliaryOptionActions:auxiliaryOptionActions];
 
-  v6 = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration auxiliaryOptionsSummaryText];
-  [v7 setAuxiliaryOptionsSummaryText:v6];
+  auxiliaryOptionsSummaryText = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration auxiliaryOptionsSummaryText];
+  [_hostingView setAuxiliaryOptionsSummaryText:auxiliaryOptionsSummaryText];
 
-  [v7 setAuxiliaryOptionsVisible:v3];
-  [v7 setAuxiliaryOptionsTextColor:self->_textColor];
-  [v7 setMaterialTintColor:self->_materialTintColor];
-  [v7 setAuxiliaryOptionsBackgroundColor:self->_auxiliaryOptionsBackgroundColor];
-  [v7 setAuxiliaryOptionsBackgroundCompositingFilter:self->_auxiliaryOptionsBackgroundCompositingFilter];
-  [v7 setMaterialRecipe:self->_materialRecipe];
-  [v7 setMaterialGroupNameBase:self->_materialGroupNameBase];
+  [_hostingView setAuxiliaryOptionsVisible:viewCopy];
+  [_hostingView setAuxiliaryOptionsTextColor:self->_textColor];
+  [_hostingView setMaterialTintColor:self->_materialTintColor];
+  [_hostingView setAuxiliaryOptionsBackgroundColor:self->_auxiliaryOptionsBackgroundColor];
+  [_hostingView setAuxiliaryOptionsBackgroundCompositingFilter:self->_auxiliaryOptionsBackgroundCompositingFilter];
+  [_hostingView setMaterialRecipe:self->_materialRecipe];
+  [_hostingView setMaterialGroupNameBase:self->_materialGroupNameBase];
 }
 
-- (BOOL)_useDefaultLookForColor:(id)a3 materialRecipe:(int64_t)a4 containsUnmanagedContent:(BOOL)a5
+- (BOOL)_useDefaultLookForColor:(id)color materialRecipe:(int64_t)recipe containsUnmanagedContent:(BOOL)content
 {
-  if (!a5)
+  if (!content)
   {
     return 0;
   }
 
   v6 = MEMORY[0x277D75348];
-  v7 = a3;
-  v8 = [v6 systemBackgroundColor];
-  v9 = [v7 isEqual:v8];
+  colorCopy = color;
+  systemBackgroundColor = [v6 systemBackgroundColor];
+  v9 = [colorCopy isEqual:systemBackgroundColor];
 
-  if (v7)
+  if (colorCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = a4 >= 2;
+    v10 = recipe >= 2;
   }
 
   v11 = !v10;
@@ -669,31 +669,31 @@ uint64_t __88__NCNotificationListSupplementaryHostingViewController__configureAu
   return v12;
 }
 
-- (id)_sanitizedColorFromDeveloperProvidedColor:(id)a3
+- (id)_sanitizedColorFromDeveloperProvidedColor:(id)color
 {
-  v4 = a3;
-  if (a3)
+  colorCopy = color;
+  if (color)
   {
     var8[0] = 0.0;
     v6 = 0.0;
     v7 = 0.0;
-    [a3 getRed:var8 green:&v7 blue:&v6 alpha:0];
-    v4 = [MEMORY[0x277D75348] colorWithRed:var8[0] green:v7 blue:v6 alpha:1.0];
+    [color getRed:var8 green:&v7 blue:&v6 alpha:0];
+    colorCopy = [MEMORY[0x277D75348] colorWithRed:var8[0] green:v7 blue:v6 alpha:1.0];
     v3 = var8[2];
   }
 
-  return v4;
+  return colorCopy;
 }
 
 - (id)_logDescription
 {
-  v3 = [(NCNotificationListSupplementaryHostingViewController *)self configuration];
-  v4 = [v3 groupingIdentifier];
-  v5 = v4;
+  configuration = [(NCNotificationListSupplementaryHostingViewController *)self configuration];
+  groupingIdentifier = [configuration groupingIdentifier];
+  v5 = groupingIdentifier;
   v6 = @"<Group w/ No ID>";
-  if (v4)
+  if (groupingIdentifier)
   {
-    v6 = v4;
+    v6 = groupingIdentifier;
   }
 
   v7 = v6;

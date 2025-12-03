@@ -5,14 +5,14 @@
 - (CGRect)px_backdropPrimaryOcclusionRect;
 - (CGRect)px_callServicesOcclusionRect;
 - (CGRect)px_floatingObscurableBounds;
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout;
 - (CGRect)px_minimumTitleBounds;
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout;
 - (CGRect)px_preferredTitleBounds;
 - (CGRect)px_salientContentRectangle;
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3;
-- (_PUWallpaperDebugRenderingEnvironment)initWithPosterConfiguration:(id)a3 assetDirectory:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout;
+- (_PUWallpaperDebugRenderingEnvironment)initWithPosterConfiguration:(id)configuration assetDirectory:(id)directory;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _PUWallpaperDebugRenderingEnvironment
@@ -117,7 +117,7 @@
   return result;
 }
 
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout
 {
   [(_PUWallpaperDebugRenderingEnvironment *)self px_minimumTitleBounds];
   v10 = v4;
@@ -134,7 +134,7 @@
   return result;
 }
 
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout
 {
   [(_PUWallpaperDebugRenderingEnvironment *)self px_minimumTitleBounds];
   [(_PUWallpaperDebugRenderingEnvironment *)self containerFrame];
@@ -148,9 +148,9 @@
   return result;
 }
 
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout
 {
-  [(_PUWallpaperDebugRenderingEnvironment *)self px_minimumTitleBoundsForLayout:a3];
+  [(_PUWallpaperDebugRenderingEnvironment *)self px_minimumTitleBoundsForLayout:layout];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -190,18 +190,18 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_PUWallpaperDebugRenderingEnvironment alloc];
-  v5 = [(_PUWallpaperDebugRenderingEnvironment *)self posterConfiguration];
-  v6 = [(_PUWallpaperDebugRenderingEnvironment *)self assetDirectory];
-  v7 = [(_PUWallpaperDebugRenderingEnvironment *)v4 initWithPosterConfiguration:v5 assetDirectory:v6];
+  posterConfiguration = [(_PUWallpaperDebugRenderingEnvironment *)self posterConfiguration];
+  assetDirectory = [(_PUWallpaperDebugRenderingEnvironment *)self assetDirectory];
+  v7 = [(_PUWallpaperDebugRenderingEnvironment *)v4 initWithPosterConfiguration:posterConfiguration assetDirectory:assetDirectory];
 
   *(v7 + 8) = [(_PUWallpaperDebugRenderingEnvironment *)self px_isSnapshot];
   *(v7 + 9) = [(_PUWallpaperDebugRenderingEnvironment *)self px_isPreview];
   *(v7 + 24) = [(_PUWallpaperDebugRenderingEnvironment *)self px_significantEventsCounter];
-  v8 = [(_PUWallpaperDebugRenderingEnvironment *)self px_traitCollection];
-  v9 = [v8 copy];
+  px_traitCollection = [(_PUWallpaperDebugRenderingEnvironment *)self px_traitCollection];
+  v9 = [px_traitCollection copy];
   v10 = *(v7 + 32);
   *(v7 + 32) = v9;
 
@@ -225,22 +225,22 @@
   return v7;
 }
 
-- (_PUWallpaperDebugRenderingEnvironment)initWithPosterConfiguration:(id)a3 assetDirectory:(id)a4
+- (_PUWallpaperDebugRenderingEnvironment)initWithPosterConfiguration:(id)configuration assetDirectory:(id)directory
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  directoryCopy = directory;
   v29.receiver = self;
   v29.super_class = _PUWallpaperDebugRenderingEnvironment;
   v9 = [(_PUWallpaperDebugRenderingEnvironment *)&v29 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_posterConfiguration, a3);
+    objc_storeStrong(&v9->_posterConfiguration, configuration);
     v10->_titleHeightAdjustmentAmount = 1.0;
-    if (v8)
+    if (directoryCopy)
     {
-      v11 = v8;
+      v11 = directoryCopy;
     }
 
     else
@@ -251,16 +251,16 @@
       v11 = [v14 URLByAppendingPathComponent:@"PhotosPosterRendering"];
     }
 
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
-    v16 = [v7 media];
-    v17 = [v16 firstObject];
-    v18 = [v17 assetUUID];
-    v19 = [v11 URLByAppendingPathComponent:v18];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    media = [configurationCopy media];
+    firstObject = [media firstObject];
+    assetUUID = [firstObject assetUUID];
+    v19 = [v11 URLByAppendingPathComponent:assetUUID];
 
-    v20 = [v19 path];
-    LOBYTE(v17) = [v15 fileExistsAtPath:v20];
+    path = [v19 path];
+    LOBYTE(firstObject) = [defaultManager fileExistsAtPath:path];
 
-    if (v17)
+    if (firstObject)
     {
       v21 = 0;
     }
@@ -268,12 +268,12 @@
     else
     {
       v28 = 0;
-      [v15 createDirectoryAtURL:v19 withIntermediateDirectories:1 attributes:0 error:&v28];
+      [defaultManager createDirectoryAtURL:v19 withIntermediateDirectories:1 attributes:0 error:&v28];
       v21 = v28;
     }
 
     v27 = v21;
-    v22 = [v7 saveToURL:v11 error:&v27];
+    v22 = [configurationCopy saveToURL:v11 error:&v27];
     v23 = v27;
 
     if (v22)

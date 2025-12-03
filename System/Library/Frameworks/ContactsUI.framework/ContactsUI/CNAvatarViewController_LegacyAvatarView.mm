@@ -1,15 +1,15 @@
 @interface CNAvatarViewController_LegacyAvatarView
 - (CNAvatarView)avatarView;
-- (CNAvatarViewController_LegacyAvatarView)initWithSettings:(id)a3;
+- (CNAvatarViewController_LegacyAvatarView)initWithSettings:(id)settings;
 - (NSObject)delegate;
 - (id)descriptorForRequiredKeys;
-- (id)presentingViewControllerForAvatarView:(id)a3;
-- (void)didUpdateContentForAvatarView:(id)a3;
+- (id)presentingViewControllerForAvatarView:(id)view;
+- (void)didUpdateContentForAvatarView:(id)view;
 - (void)loadView;
-- (void)setAllowStaleRendering:(BOOL)a3;
-- (void)setContacts:(id)a3;
-- (void)setThreeDTouchEnabled:(BOOL)a3;
-- (void)updateViewWithGroupIdentity:(id)a3;
+- (void)setAllowStaleRendering:(BOOL)rendering;
+- (void)setContacts:(id)contacts;
+- (void)setThreeDTouchEnabled:(BOOL)enabled;
+- (void)updateViewWithGroupIdentity:(id)identity;
 @end
 
 @implementation CNAvatarViewController_LegacyAvatarView
@@ -24,25 +24,25 @@
 - (void)loadView
 {
   v3 = [CNAvatarView alloc];
-  v4 = [(CNAvatarViewController_LegacyAvatarView *)self imageRenderer];
-  v5 = [(CNAvatarViewController_LegacyAvatarView *)self isThreeDTouchEnabled];
-  v6 = [(CNAvatarViewController_LegacyAvatarView *)self contactStore];
-  v7 = [(CNAvatarViewController_LegacyAvatarView *)self style];
-  v8 = [(CNAvatarViewController_LegacyAvatarView *)self schedulerProvider];
-  v13 = [(CNAvatarView *)v3 initWithImageRenderer:v4 threeDTouchEnabled:v5 contactStore:v6 style:v7 schedulerProvider:v8 backgroundStyle:0 personaId:self->_personaId];
+  imageRenderer = [(CNAvatarViewController_LegacyAvatarView *)self imageRenderer];
+  isThreeDTouchEnabled = [(CNAvatarViewController_LegacyAvatarView *)self isThreeDTouchEnabled];
+  contactStore = [(CNAvatarViewController_LegacyAvatarView *)self contactStore];
+  style = [(CNAvatarViewController_LegacyAvatarView *)self style];
+  schedulerProvider = [(CNAvatarViewController_LegacyAvatarView *)self schedulerProvider];
+  v13 = [(CNAvatarView *)v3 initWithImageRenderer:imageRenderer threeDTouchEnabled:isThreeDTouchEnabled contactStore:contactStore style:style schedulerProvider:schedulerProvider backgroundStyle:0 personaId:self->_personaId];
 
   [(CNAvatarViewController_LegacyAvatarView *)self setView:v13];
   [(CNAvatarViewController_LegacyAvatarView *)self setAvatarView:v13];
-  v9 = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
-  [v9 setDelegate:self];
+  avatarView = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
+  [avatarView setDelegate:self];
 
-  v10 = [(CNAvatarViewController_LegacyAvatarView *)self contacts];
+  contacts = [(CNAvatarViewController_LegacyAvatarView *)self contacts];
 
-  if (v10)
+  if (contacts)
   {
-    v11 = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
-    v12 = [(CNAvatarViewController_LegacyAvatarView *)self contacts];
-    [v11 setContacts:v12];
+    avatarView2 = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
+    contacts2 = [(CNAvatarViewController_LegacyAvatarView *)self contacts];
+    [avatarView2 setContacts:contacts2];
   }
 }
 
@@ -53,102 +53,102 @@
   return WeakRetained;
 }
 
-- (void)didUpdateContentForAvatarView:(id)a3
+- (void)didUpdateContentForAvatarView:(id)view
 {
-  v4 = [(CNAvatarViewController_LegacyAvatarView *)self delegate];
+  delegate = [(CNAvatarViewController_LegacyAvatarView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNAvatarViewController_LegacyAvatarView *)self delegate];
-    [v6 didUpdateContentForAvatarViewController:self];
+    delegate2 = [(CNAvatarViewController_LegacyAvatarView *)self delegate];
+    [delegate2 didUpdateContentForAvatarViewController:self];
   }
 }
 
-- (id)presentingViewControllerForAvatarView:(id)a3
+- (id)presentingViewControllerForAvatarView:(id)view
 {
-  v4 = [(CNAvatarViewController *)self objectViewControllerDelegate];
-  v5 = [v4 hostingViewControllerForController:self];
+  objectViewControllerDelegate = [(CNAvatarViewController *)self objectViewControllerDelegate];
+  selfCopy = [objectViewControllerDelegate hostingViewControllerForController:self];
 
-  if (!v5)
+  if (!selfCopy)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
-  v9 = a3;
-  v4 = [v9 copy];
+  contactsCopy = contacts;
+  v4 = [contactsCopy copy];
   contacts = self->_contacts;
   self->_contacts = v4;
 
-  v7 = v9;
-  if (v9)
+  v7 = contactsCopy;
+  if (contactsCopy)
   {
-    v6 = [(CNAvatarViewController_LegacyAvatarView *)self isViewLoaded];
-    v7 = v9;
-    if (v6)
+    isViewLoaded = [(CNAvatarViewController_LegacyAvatarView *)self isViewLoaded];
+    v7 = contactsCopy;
+    if (isViewLoaded)
     {
-      v8 = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
-      [v8 setContacts:v9];
+      avatarView = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
+      [avatarView setContacts:contactsCopy];
 
-      v7 = v9;
+      v7 = contactsCopy;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](isViewLoaded, v7);
 }
 
-- (void)setAllowStaleRendering:(BOOL)a3
+- (void)setAllowStaleRendering:(BOOL)rendering
 {
-  v3 = a3;
-  v4 = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
-  [v4 setAllowStaleRendering:v3];
+  renderingCopy = rendering;
+  avatarView = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
+  [avatarView setAllowStaleRendering:renderingCopy];
 }
 
-- (void)updateViewWithGroupIdentity:(id)a3
+- (void)updateViewWithGroupIdentity:(id)identity
 {
-  v6 = a3;
-  v4 = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
-  v5 = [v4 updateViewWithGroupIdentity:v6];
+  identityCopy = identity;
+  avatarView = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
+  v5 = [avatarView updateViewWithGroupIdentity:identityCopy];
 }
 
-- (void)setThreeDTouchEnabled:(BOOL)a3
+- (void)setThreeDTouchEnabled:(BOOL)enabled
 {
-  if (self->_threeDTouchEnabled != a3)
+  if (self->_threeDTouchEnabled != enabled)
   {
-    v4 = a3;
-    self->_threeDTouchEnabled = a3;
-    v5 = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
-    [v5 setThreeDTouchEnabled:v4];
+    enabledCopy = enabled;
+    self->_threeDTouchEnabled = enabled;
+    avatarView = [(CNAvatarViewController_LegacyAvatarView *)self avatarView];
+    [avatarView setThreeDTouchEnabled:enabledCopy];
   }
 }
 
-- (CNAvatarViewController_LegacyAvatarView)initWithSettings:(id)a3
+- (CNAvatarViewController_LegacyAvatarView)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v13.receiver = self;
   v13.super_class = CNAvatarViewController_LegacyAvatarView;
-  v5 = [(CNAvatarViewController *)&v13 initWithSettings:v4];
+  v5 = [(CNAvatarViewController *)&v13 initWithSettings:settingsCopy];
   if (v5)
   {
-    v6 = [v4 likenessRenderer];
+    likenessRenderer = [settingsCopy likenessRenderer];
     imageRenderer = v5->_imageRenderer;
-    v5->_imageRenderer = v6;
+    v5->_imageRenderer = likenessRenderer;
 
-    v5->_threeDTouchEnabled = [v4 threeDTouchEnabled];
-    v8 = [v4 schedulerProvider];
+    v5->_threeDTouchEnabled = [settingsCopy threeDTouchEnabled];
+    schedulerProvider = [settingsCopy schedulerProvider];
     schedulerProvider = v5->_schedulerProvider;
-    v5->_schedulerProvider = v8;
+    v5->_schedulerProvider = schedulerProvider;
 
-    v5->_personaId = [v4 personaId];
-    v5->_style = [v4 style];
-    v10 = [v4 contactStore];
+    v5->_personaId = [settingsCopy personaId];
+    v5->_style = [settingsCopy style];
+    contactStore = [settingsCopy contactStore];
     contactStore = v5->_contactStore;
-    v5->_contactStore = v10;
+    v5->_contactStore = contactStore;
   }
 
   return v5;
@@ -156,9 +156,9 @@
 
 - (id)descriptorForRequiredKeys
 {
-  v2 = [(CNAvatarViewController_LegacyAvatarView *)self isThreeDTouchEnabled];
+  isThreeDTouchEnabled = [(CNAvatarViewController_LegacyAvatarView *)self isThreeDTouchEnabled];
 
-  return [CNAvatarView descriptorForRequiredKeysWithThreeDTouchEnabled:v2];
+  return [CNAvatarView descriptorForRequiredKeysWithThreeDTouchEnabled:isThreeDTouchEnabled];
 }
 
 @end

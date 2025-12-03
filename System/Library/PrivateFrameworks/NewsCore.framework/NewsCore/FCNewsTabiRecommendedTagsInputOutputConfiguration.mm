@@ -1,5 +1,5 @@
 @interface FCNewsTabiRecommendedTagsInputOutputConfiguration
-- (FCNewsTabiRecommendedTagsInputOutputConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiRecommendedTagsInputOutputConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,34 +8,34 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiRecommendedTagsInputOutputConfiguration *)self contextFeatureKey];
-  [v3 appendFormat:@"\n\tcontextFeatureKey: %@;", v4];
+  contextFeatureKey = [(FCNewsTabiRecommendedTagsInputOutputConfiguration *)self contextFeatureKey];
+  [v3 appendFormat:@"\n\tcontextFeatureKey: %@;", contextFeatureKey];
 
-  v5 = [(FCNewsTabiRecommendedTagsInputOutputConfiguration *)self recommendationsOutputName];
-  [v3 appendFormat:@"\n\trecommendationsOutputName: %@;", v5];
+  recommendationsOutputName = [(FCNewsTabiRecommendedTagsInputOutputConfiguration *)self recommendationsOutputName];
+  [v3 appendFormat:@"\n\trecommendationsOutputName: %@;", recommendationsOutputName];
 
-  v6 = [(FCNewsTabiRecommendedTagsInputOutputConfiguration *)self recommendationsScoreOutputName];
-  [v3 appendFormat:@"\n\trecommendationsScoreOutputName: %@;", v6];
+  recommendationsScoreOutputName = [(FCNewsTabiRecommendedTagsInputOutputConfiguration *)self recommendationsScoreOutputName];
+  [v3 appendFormat:@"\n\trecommendationsScoreOutputName: %@;", recommendationsScoreOutputName];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiRecommendedTagsInputOutputConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiRecommendedTagsInputOutputConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"contextFeatureKey", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"contextFeatureKey", 0);
   v6 = v5;
   if (v5)
   {
     v7 = v5;
-    v8 = FCAppConfigurationStringValue(v4, @"recommendationsOutputName", 0);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"recommendationsOutputName", 0);
     v9 = v8;
     if (v8)
     {
       v10 = v8;
-      v11 = FCAppConfigurationStringValue(v4, @"recommendationsScoreOutputName", 0);
+      v11 = FCAppConfigurationStringValue(dictionaryCopy, @"recommendationsScoreOutputName", 0);
       v12 = v11;
       if (v11)
       {
@@ -53,27 +53,27 @@
 
         self = p_isa;
 
-        v16 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v16 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v16 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

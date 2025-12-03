@@ -1,17 +1,17 @@
 @interface PXCGImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXCGImage)init;
-- (PXCGImage)initWithCGImage:(CGImage *)a3;
+- (PXCGImage)initWithCGImage:(CGImage *)image;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation PXCGImage
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -21,8 +21,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PXCGImage *)v4 image];
-      v6 = v5 == [(PXCGImage *)self image];
+      image = [(PXCGImage *)equalCopy image];
+      v6 = image == [(PXCGImage *)self image];
     }
 
     else
@@ -36,9 +36,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXCGImage *)self image];
+  image = [(PXCGImage *)self image];
 
-  return CFHash(v2);
+  return CFHash(image);
 }
 
 - (void)dealloc
@@ -49,14 +49,14 @@
   [(PXCGImage *)&v3 dealloc];
 }
 
-- (PXCGImage)initWithCGImage:(CGImage *)a3
+- (PXCGImage)initWithCGImage:(CGImage *)image
 {
   v6.receiver = self;
   v6.super_class = PXCGImage;
   v4 = [(PXCGImage *)&v6 init];
   if (v4)
   {
-    v4->_image = CGImageRetain(a3);
+    v4->_image = CGImageRetain(image);
   }
 
   return v4;
@@ -64,8 +64,8 @@
 
 - (PXCGImage)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCGImage.m" lineNumber:16 description:{@"%s is not available as initializer", "-[PXCGImage init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCGImage.m" lineNumber:16 description:{@"%s is not available as initializer", "-[PXCGImage init]"}];
 
   abort();
 }

@@ -1,7 +1,7 @@
 @interface HMDAccessCodeSetupLogEvent
 - (HMDAccessCodeSetupLogEvent)init;
 - (NSDictionary)coreAnalyticsEventDictionary;
-- (void)submitFailureWithReason:(unint64_t)a3 error:(id)a4;
+- (void)submitFailureWithReason:(unint64_t)reason error:(id)error;
 - (void)submitSuccess;
 @end
 
@@ -9,17 +9,17 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMMLogEvent durationMilliseconds](self, "durationMilliseconds")}];
-  [v3 setObject:v4 forKeyedSubscript:@"duration"];
+  [dictionary setObject:v4 forKeyedSubscript:@"duration"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessCodeSetupLogEvent success](self, "success")}];
-  [v3 setObject:v5 forKeyedSubscript:@"success"];
+  [dictionary setObject:v5 forKeyedSubscript:@"success"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAccessCodeSetupLogEvent failureReason](self, "failureReason")}];
-  [v3 setObject:v6 forKeyedSubscript:@"failureReason"];
+  [dictionary setObject:v6 forKeyedSubscript:@"failureReason"];
 
-  v7 = [v3 copy];
+  v7 = [dictionary copy];
 
   return v7;
 }
@@ -32,13 +32,13 @@
   [v3 submitLogEvent:self];
 }
 
-- (void)submitFailureWithReason:(unint64_t)a3 error:(id)a4
+- (void)submitFailureWithReason:(unint64_t)reason error:(id)error
 {
-  self->_failureReason = a3;
+  self->_failureReason = reason;
   self->_success = 0;
-  v5 = a4;
+  errorCopy = error;
   v6 = +[HMDMetricsManager sharedLogEventSubmitter];
-  [v6 submitLogEvent:self error:v5];
+  [v6 submitLogEvent:self error:errorCopy];
 }
 
 - (HMDAccessCodeSetupLogEvent)init

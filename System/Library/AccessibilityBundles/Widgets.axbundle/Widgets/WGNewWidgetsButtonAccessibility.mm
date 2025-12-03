@@ -1,16 +1,16 @@
 @interface WGNewWidgetsButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityLabel;
 @end
 
 @implementation WGNewWidgetsButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WGNewWidgetsButton" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WGNewWidgetsButton" hasInstanceVariable:@"_overlayButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WGNewWidgetsButton" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WGNewWidgetsButton" hasInstanceVariable:@"_overlayButton" withType:"UIButton"];
 }
 
 - (id)accessibilityLabel
@@ -25,9 +25,9 @@
 - (BOOL)accessibilityActivate
 {
   v2 = [(WGNewWidgetsButtonAccessibility *)self safeValueForKey:@"_overlayButton"];
-  v3 = [v2 accessibilityActivate];
+  accessibilityActivate = [v2 accessibilityActivate];
 
-  return v3;
+  return accessibilityActivate;
 }
 
 @end

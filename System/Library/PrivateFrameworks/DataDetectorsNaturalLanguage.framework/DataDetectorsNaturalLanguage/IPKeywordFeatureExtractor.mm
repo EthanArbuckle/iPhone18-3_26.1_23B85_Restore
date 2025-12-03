@@ -1,22 +1,22 @@
 @interface IPKeywordFeatureExtractor
-- (id)_matchingKeywordsForRegex:(id)a3 inText:(id)a4 message:(id)a5 eventType:(id)a6 keywordType:(unint64_t)a7;
-- (id)featuresForTextString:(id)a3 inMessageUnit:(id)a4 context:(id)a5;
-- (id)matchesForTextString:(id)a3 inMessageUnit:(id)a4 eventType:(id)a5;
-- (id)matchesForTextString:(id)a3 inMessageUnit:(id)a4 eventType:(id)a5 keywordType:(unint64_t)a6;
+- (id)_matchingKeywordsForRegex:(id)regex inText:(id)text message:(id)message eventType:(id)type keywordType:(unint64_t)keywordType;
+- (id)featuresForTextString:(id)string inMessageUnit:(id)unit context:(id)context;
+- (id)matchesForTextString:(id)string inMessageUnit:(id)unit eventType:(id)type;
+- (id)matchesForTextString:(id)string inMessageUnit:(id)unit eventType:(id)type keywordType:(unint64_t)keywordType;
 - (id)queue;
 @end
 
 @implementation IPKeywordFeatureExtractor
 
-- (id)featuresForTextString:(id)a3 inMessageUnit:(id)a4 context:(id)a5
+- (id)featuresForTextString:(id)string inMessageUnit:(id)unit context:(id)context
 {
   v55 = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v7 = a4;
-  v31 = a5;
+  stringCopy = string;
+  unitCopy = unit;
+  contextCopy = context;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v40 = v7;
-  v33 = [v7 bestLanguageID];
+  v40 = unitCopy;
+  bestLanguageID = [unitCopy bestLanguageID];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -38,7 +38,7 @@
         v37 = v9;
         v10 = *(*(&v49 + 1) + 8 * v9);
         context = objc_autoreleasePoolPush();
-        v35 = +[IPEventClassificationType taxonomyForLanguageID:clusterType:](IPEventClassificationType, "taxonomyForLanguageID:clusterType:", v33, [v10 integerValue]);
+        v35 = +[IPEventClassificationType taxonomyForLanguageID:clusterType:](IPEventClassificationType, "taxonomyForLanguageID:clusterType:", bestLanguageID, [v10 integerValue]);
         v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v35, 0}];
         if ([v11 count])
         {
@@ -46,9 +46,9 @@
           do
           {
             v12 = objc_autoreleasePoolPush();
-            v13 = [v11 firstObject];
+            firstObject = [v11 firstObject];
             [v11 removeObjectAtIndex:0];
-            v14 = [(IPKeywordFeatureExtractor *)self matchesForTextString:v41 inMessageUnit:v40 eventType:v13];
+            v14 = [(IPKeywordFeatureExtractor *)self matchesForTextString:stringCopy inMessageUnit:v40 eventType:firstObject];
             if ([v14 count])
             {
               v42 = v14;
@@ -75,9 +75,9 @@
                     v19 = *(*(&v45 + 1) + 8 * i);
                     v20 = objc_autoreleasePoolPush();
                     v21 = MEMORY[0x277CCACA8];
-                    v22 = [v19 matchRange];
+                    matchRange = [v19 matchRange];
                     [v19 matchRange];
-                    v24 = [v21 stringWithFormat:@"%lu-%lu-%lu", v22, v23, objc_msgSend(v19, "type")];
+                    v24 = [v21 stringWithFormat:@"%lu-%lu-%lu", matchRange, v23, objc_msgSend(v19, "type")];
                     v25 = [v8 objectForKeyedSubscript:v24];
 
                     if (!v25)
@@ -86,7 +86,7 @@
                     }
 
                     v26 = [v8 objectForKeyedSubscript:v24];
-                    [v26 addEventType:v13];
+                    [v26 addEventType:firstObject];
 
                     objc_autoreleasePoolPop(v20);
                   }
@@ -97,9 +97,9 @@
                 while (v16);
               }
 
-              v27 = [v13 children];
+              children = [firstObject children];
               v11 = v38;
-              [v38 addObjectsFromArray:v27];
+              [v38 addObjectsFromArray:children];
 
               v14 = v42;
               v12 = v43;
@@ -122,27 +122,27 @@
     while (v34);
   }
 
-  v28 = [v8 allValues];
+  allValues = [v8 allValues];
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v28;
+  return allValues;
 }
 
-- (id)matchesForTextString:(id)a3 inMessageUnit:(id)a4 eventType:(id)a5
+- (id)matchesForTextString:(id)string inMessageUnit:(id)unit eventType:(id)type
 {
   v72 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IPKeywordFeatureExtractor *)self matchesForTextString:v8 inMessageUnit:v9 eventType:v10 keywordType:2];
+  stringCopy = string;
+  unitCopy = unit;
+  typeCopy = type;
+  v11 = [(IPKeywordFeatureExtractor *)self matchesForTextString:stringCopy inMessageUnit:unitCopy eventType:typeCopy keywordType:2];
   v51 = [v11 mutableCopy];
 
-  v45 = v8;
-  v46 = self;
-  v43 = v10;
-  v44 = v9;
-  [(IPKeywordFeatureExtractor *)self matchesForTextString:v8 inMessageUnit:v9 eventType:v10 keywordType:0];
+  v45 = stringCopy;
+  selfCopy = self;
+  v43 = typeCopy;
+  v44 = unitCopy;
+  [(IPKeywordFeatureExtractor *)self matchesForTextString:stringCopy inMessageUnit:unitCopy eventType:typeCopy keywordType:0];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
@@ -182,11 +182,11 @@
               }
 
               v21 = *(*(&v60 + 1) + 8 * j);
-              v22 = [v15 matchRange];
+              matchRange = [v15 matchRange];
               v24 = v23;
               v76.location = [v21 matchRange];
               v76.length = v25;
-              v74.location = v22;
+              v74.location = matchRange;
               v74.length = v24;
               if (NSIntersectionRange(v74, v76).length)
               {
@@ -216,7 +216,7 @@ LABEL_16:
     while (v13);
   }
 
-  [(IPKeywordFeatureExtractor *)v46 matchesForTextString:v45 inMessageUnit:v44 eventType:v43 keywordType:1];
+  [(IPKeywordFeatureExtractor *)selfCopy matchesForTextString:v45 inMessageUnit:v44 eventType:v43 keywordType:1];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
@@ -256,11 +256,11 @@ LABEL_16:
               }
 
               v35 = *(*(&v52 + 1) + 8 * m);
-              v36 = [v29 matchRange];
+              matchRange2 = [v29 matchRange];
               v38 = v37;
               v77.location = [v35 matchRange];
               v77.length = v39;
-              v75.location = v36;
+              v75.location = matchRange2;
               v75.length = v38;
               if (NSIntersectionRange(v75, v77).length)
               {
@@ -297,24 +297,24 @@ LABEL_33:
   return v40;
 }
 
-- (id)matchesForTextString:(id)a3 inMessageUnit:(id)a4 eventType:(id)a5 keywordType:(unint64_t)a6
+- (id)matchesForTextString:(id)string inMessageUnit:(id)unit eventType:(id)type keywordType:(unint64_t)keywordType
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  switch(a6)
+  stringCopy = string;
+  unitCopy = unit;
+  typeCopy = type;
+  v13 = typeCopy;
+  switch(keywordType)
   {
     case 2uLL:
-      v14 = [v12 titleKeywords];
+      titleKeywords = [typeCopy titleKeywords];
       goto LABEL_7;
     case 1uLL:
-      v14 = [v12 genericPatternKeywords];
+      titleKeywords = [typeCopy genericPatternKeywords];
       goto LABEL_7;
     case 0uLL:
-      v14 = [v12 patternKeywords];
+      titleKeywords = [typeCopy patternKeywords];
 LABEL_7:
-      v15 = v14;
+      v15 = titleKeywords;
       goto LABEL_9;
   }
 
@@ -323,9 +323,9 @@ LABEL_9:
   if ([v15 count])
   {
     v16 = MEMORY[0x277CCACA8];
-    v17 = [v13 identifier];
-    v18 = [v13 language];
-    v19 = [v16 stringWithFormat:@"%@-%@-%@-%lu", v17, v18, @"keywords", a6];
+    identifier = [v13 identifier];
+    language = [v13 language];
+    keywordType = [v16 stringWithFormat:@"%@-%@-%@-%lu", identifier, language, @"keywords", keywordType];
 
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -334,9 +334,9 @@ LABEL_9:
     v20 = v13;
     v26 = v20;
     v27 = v15;
-    v21 = [IPRegexToolbox regularExpressionWithKey:v19 generator:v25];
-    v22 = [v11 originalMessage];
-    v23 = [(IPKeywordFeatureExtractor *)self _matchingKeywordsForRegex:v21 inText:v10 message:v22 eventType:v20 keywordType:a6];
+    v21 = [IPRegexToolbox regularExpressionWithKey:keywordType generator:v25];
+    originalMessage = [unitCopy originalMessage];
+    v23 = [(IPKeywordFeatureExtractor *)self _matchingKeywordsForRegex:v21 inText:stringCopy message:originalMessage eventType:v20 keywordType:keywordType];
   }
 
   else
@@ -386,15 +386,15 @@ id __86__IPKeywordFeatureExtractor_matchesForTextString_inMessageUnit_eventType_
   return v4;
 }
 
-- (id)_matchingKeywordsForRegex:(id)a3 inText:(id)a4 message:(id)a5 eventType:(id)a6 keywordType:(unint64_t)a7
+- (id)_matchingKeywordsForRegex:(id)regex inText:(id)text message:(id)message eventType:(id)type keywordType:(unint64_t)keywordType
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v37 = a6;
+  regexCopy = regex;
+  textCopy = text;
+  typeCopy = type;
   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v34 = v9;
-  [IPRegexToolbox matchingKeywordResultsForRegex:v9 inString:v10 needsToLowercase:0];
+  v34 = regexCopy;
+  [IPRegexToolbox matchingKeywordResultsForRegex:regexCopy inString:textCopy needsToLowercase:0];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -415,21 +415,21 @@ id __86__IPKeywordFeatureExtractor_matchesForTextString_inMessageUnit_eventType_
         }
 
         v15 = *(*(&v39 + 1) + 8 * v14);
-        v16 = [v15 range];
-        if (![IPRegexToolbox isRangeInsideQuotationMarks:v16 text:v17 limitToSurroundingText:v10, 1])
+        range = [v15 range];
+        if (![IPRegexToolbox isRangeInsideQuotationMarks:range text:v17 limitToSurroundingText:textCopy, 1])
         {
-          v18 = [v15 range];
+          range2 = [v15 range];
           v20 = v19;
-          v21 = [v37 language];
-          v22 = [IPRegexToolbox isRangeNearbyExclusionKeyword:v18 text:v20 limitToSurroundingText:v10 language:1, v21];
+          language = [typeCopy language];
+          v22 = [IPRegexToolbox isRangeNearbyExclusionKeyword:range2 text:v20 limitToSurroundingText:textCopy language:1, language];
 
           if (!v22)
           {
-            v28 = [v15 range];
-            v24 = [v10 substringWithRange:{v28, v29}];
-            v30 = [v15 range];
-            v27 = [IPFeatureKeyword featureKeywordWithType:a7 string:v24 matchRange:v30, v31];
-            [v27 setTextUnit:v10];
+            range3 = [v15 range];
+            v24 = [textCopy substringWithRange:{range3, v29}];
+            range4 = [v15 range];
+            v27 = [IPFeatureKeyword featureKeywordWithType:keywordType string:v24 matchRange:range4, v31];
+            [v27 setTextUnit:textCopy];
             [v36 addObject:v27];
             goto LABEL_16;
           }
@@ -451,8 +451,8 @@ id __86__IPKeywordFeatureExtractor_matchesForTextString_inMessageUnit_eventType_
             if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
             {
               v24 = v23;
-              v25 = [v15 range];
-              v27 = [v10 substringWithRange:{v25, v26}];
+              range5 = [v15 range];
+              v27 = [textCopy substringWithRange:{range5, v26}];
               *buf = 138412290;
               v44 = v27;
               _os_log_impl(&dword_2485E4000, v24, OS_LOG_TYPE_INFO, "      --> not counted because too close to an exclusion keyword [%@] #EventClassification", buf, 0xCu);

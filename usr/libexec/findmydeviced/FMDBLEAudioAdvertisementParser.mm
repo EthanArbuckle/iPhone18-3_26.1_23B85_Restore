@@ -1,15 +1,15 @@
 @interface FMDBLEAudioAdvertisementParser
-+ (id)airPodsConfigurationDictWithBleDevice:(id)a3;
-+ (id)configurationDictWithBleDevice:(id)a3 supportedAccessoryProfile:(int64_t)a4;
-+ (id)primaryBeaconForBeacons:(id)a3;
-+ (id)stereoPairConfigurationDictWithBleDevice:(id)a3;
++ (id)airPodsConfigurationDictWithBleDevice:(id)device;
++ (id)configurationDictWithBleDevice:(id)device supportedAccessoryProfile:(int64_t)profile;
++ (id)primaryBeaconForBeacons:(id)beacons;
++ (id)stereoPairConfigurationDictWithBleDevice:(id)device;
 @end
 
 @implementation FMDBLEAudioAdvertisementParser
 
-+ (id)primaryBeaconForBeacons:(id)a3
++ (id)primaryBeaconForBeacons:(id)beacons
 {
-  v3 = a3;
+  beaconsCopy = beacons;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -28,7 +28,7 @@
   v7[3] = &unk_1002D02D0;
   v7[4] = &v8;
   v7[5] = &v14;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [beaconsCopy enumerateObjectsUsingBlock:v7];
   v4 = v15[5];
   if (!v4)
   {
@@ -43,22 +43,22 @@
   return v5;
 }
 
-+ (id)configurationDictWithBleDevice:(id)a3 supportedAccessoryProfile:(int64_t)a4
++ (id)configurationDictWithBleDevice:(id)device supportedAccessoryProfile:(int64_t)profile
 {
-  v6 = a3;
-  if (a4 == 2)
+  deviceCopy = device;
+  if (profile == 2)
   {
-    v7 = [FMDBLEAudioAdvertisementParser stereoPairConfigurationDictWithBleDevice:v6];
+    v7 = [FMDBLEAudioAdvertisementParser stereoPairConfigurationDictWithBleDevice:deviceCopy];
   }
 
-  else if (a4 == 1)
+  else if (profile == 1)
   {
-    v7 = [FMDBLEAudioAdvertisementParser airPodsConfigurationDictWithBleDevice:v6];
+    v7 = [FMDBLEAudioAdvertisementParser airPodsConfigurationDictWithBleDevice:deviceCopy];
   }
 
   else
   {
-    if (a4)
+    if (profile)
     {
       goto LABEL_8;
     }
@@ -72,17 +72,17 @@ LABEL_8:
   return v4;
 }
 
-+ (id)airPodsConfigurationDictWithBleDevice:(id)a3
++ (id)airPodsConfigurationDictWithBleDevice:(id)device
 {
-  v3 = a3;
-  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 rssi]);
-  v5 = [v3 bluetoothAddress];
-  v6 = [v5 fm_MACAddressString];
+  deviceCopy = device;
+  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [deviceCopy rssi]);
+  bluetoothAddress = [deviceCopy bluetoothAddress];
+  fm_MACAddressString = [bluetoothAddress fm_MACAddressString];
 
-  v58 = v3;
-  v7 = [v3 advertisementFields];
-  v8 = [v7 objectForKeyedSubscript:@"cc"];
-  v9 = [v7 objectForKeyedSubscript:@"aState"];
+  v58 = deviceCopy;
+  advertisementFields = [deviceCopy advertisementFields];
+  v8 = [advertisementFields objectForKeyedSubscript:@"cc"];
+  v9 = [advertisementFields objectForKeyedSubscript:@"aState"];
   v10 = v9;
   if (v9)
   {
@@ -107,18 +107,18 @@ LABEL_8:
     v13 = [v12 isEqualToNumber:&off_1002E7BE8];
   }
 
-  v61 = v6;
+  v61 = fm_MACAddressString;
   v62 = v13;
   v60 = v4;
-  v63 = [v7 objectForKeyedSubscript:@"hsStatus"];
-  v14 = [v63 unsignedIntValue];
-  v69 = dword_100312D94 & v14;
-  v15 = dword_100312D80 & v14;
-  v16 = dword_100312D84 & v14;
-  v17 = dword_100312D8C & v14;
-  v18 = dword_100312D88 & v14;
-  v19 = dword_100312D90 & v14;
-  v20 = dword_100312D98 & v14;
+  v63 = [advertisementFields objectForKeyedSubscript:@"hsStatus"];
+  unsignedIntValue = [v63 unsignedIntValue];
+  v69 = dword_100312D94 & unsignedIntValue;
+  v15 = dword_100312D80 & unsignedIntValue;
+  v16 = dword_100312D84 & unsignedIntValue;
+  v17 = dword_100312D8C & unsignedIntValue;
+  v18 = dword_100312D88 & unsignedIntValue;
+  v19 = dword_100312D90 & unsignedIntValue;
+  v20 = dword_100312D98 & unsignedIntValue;
   v21 = sub_100002880();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
@@ -231,11 +231,11 @@ LABEL_8:
 
   v68 = v29;
 
-  v30 = [v7 objectForKeyedSubscript:@"lc"];
-  v31 = [v30 BOOLValue];
+  v30 = [advertisementFields objectForKeyedSubscript:@"lc"];
+  bOOLValue = [v30 BOOLValue];
 
   v32 = v28;
-  if (v31)
+  if (bOOLValue)
   {
     v33 = 2;
   }
@@ -255,7 +255,7 @@ LABEL_8:
     v34 = 0;
   }
 
-  v65 = v7;
+  v65 = advertisementFields;
   v56 = v28;
   if (!v15)
   {
@@ -334,8 +334,8 @@ LABEL_54:
   [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v45 setInEarStatus:v67];
   [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v45 setOnHeadStatus:500];
   [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v45 setAvailability:v57];
-  v48 = [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v45 name];
-  [v42 setObject:v45 forKeyedSubscript:v48];
+  name = [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v45 name];
+  [v42 setObject:v45 forKeyedSubscript:name];
 
   if (v15)
   {
@@ -364,33 +364,33 @@ LABEL_54:
     [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v51 setInEarStatus:v66];
     [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v51 setOnHeadStatus:500];
     [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v51 setAvailability:v55];
-    v53 = [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v51 name];
-    [v42 setObject:v51 forKeyedSubscript:v53];
+    name2 = [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v51 name];
+    [v42 setObject:v51 forKeyedSubscript:name2];
   }
 
   return v42;
 }
 
-+ (id)stereoPairConfigurationDictWithBleDevice:(id)a3
++ (id)stereoPairConfigurationDictWithBleDevice:(id)device
 {
-  v3 = a3;
-  v66 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 rssi]);
-  v4 = [v3 bluetoothAddress];
-  v65 = [v4 fm_MACAddressString];
+  deviceCopy = device;
+  v66 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [deviceCopy rssi]);
+  bluetoothAddress = [deviceCopy bluetoothAddress];
+  fm_MACAddressString = [bluetoothAddress fm_MACAddressString];
 
-  v5 = [v3 advertisementFields];
-  v6 = [v5 objectForKeyedSubscript:@"cc"];
-  v7 = [v5 objectForKeyedSubscript:@"cc"];
-  v8 = [v5 objectForKeyedSubscript:@"ccR"];
-  v9 = [v5 objectForKeyedSubscript:@"ccC"];
-  v10 = [v5 objectForKeyedSubscript:@"hbT"];
+  advertisementFields = [deviceCopy advertisementFields];
+  v6 = [advertisementFields objectForKeyedSubscript:@"cc"];
+  v7 = [advertisementFields objectForKeyedSubscript:@"cc"];
+  v8 = [advertisementFields objectForKeyedSubscript:@"ccR"];
+  v9 = [advertisementFields objectForKeyedSubscript:@"ccC"];
+  v10 = [advertisementFields objectForKeyedSubscript:@"hbT"];
   v11 = objc_opt_new();
   v64 = v7;
-  v12 = [v7 stringValue];
-  v13 = v12;
-  if (v12)
+  stringValue = [v7 stringValue];
+  v13 = stringValue;
+  if (stringValue)
   {
-    v14 = v12;
+    v14 = stringValue;
   }
 
   else
@@ -401,11 +401,11 @@ LABEL_54:
   [v11 setColorCodeLeft:v14];
 
   v63 = v8;
-  v15 = [v8 stringValue];
-  v16 = v15;
-  if (v15)
+  stringValue2 = [v8 stringValue];
+  v16 = stringValue2;
+  if (stringValue2)
   {
-    v17 = v15;
+    v17 = stringValue2;
   }
 
   else
@@ -416,11 +416,11 @@ LABEL_54:
   [v11 setColorCodeRight:v17];
 
   v62 = v9;
-  v18 = [v9 stringValue];
-  v19 = v18;
-  if (v18)
+  stringValue3 = [v9 stringValue];
+  v19 = stringValue3;
+  if (stringValue3)
   {
-    v20 = v18;
+    v20 = stringValue3;
   }
 
   else
@@ -431,11 +431,11 @@ LABEL_54:
   [v11 setColorCodeCase:v20];
 
   v61 = v10;
-  v21 = [v10 stringValue];
-  v22 = v21;
-  if (v21)
+  stringValue4 = [v10 stringValue];
+  v22 = stringValue4;
+  if (stringValue4)
   {
-    v23 = v21;
+    v23 = stringValue4;
   }
 
   else
@@ -445,7 +445,7 @@ LABEL_54:
 
   [v11 setHeadbandType:v23];
 
-  v24 = [v5 objectForKeyedSubscript:@"aState"];
+  v24 = [advertisementFields objectForKeyedSubscript:@"aState"];
   v25 = v24;
   if (v24)
   {
@@ -470,21 +470,21 @@ LABEL_54:
   }
 
   v54 = v28;
-  v29 = [v5 objectForKeyedSubscript:@"hsStatus"];
+  v29 = [advertisementFields objectForKeyedSubscript:@"hsStatus"];
   v59 = v29;
   if (v29)
   {
-    v30 = [v29 unsignedIntValue];
-    v31 = (dword_100312D84 & v30) != 0;
+    unsignedIntValue = [v29 unsignedIntValue];
+    v31 = (dword_100312D84 & unsignedIntValue) != 0;
     v32 = 1;
-    if ((dword_100312D84 & v30) != 0)
+    if ((dword_100312D84 & unsignedIntValue) != 0)
     {
       v32 = 2;
     }
 
     v56 = v32;
-    v33 = (dword_100312D88 & v30) != 0;
-    v34 = (dword_100312D9C & v30) != 0;
+    v33 = (dword_100312D88 & unsignedIntValue) != 0;
+    v34 = (dword_100312D9C & unsignedIntValue) != 0;
   }
 
   else
@@ -515,12 +515,12 @@ LABEL_54:
   v36 = sub_100002880();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
-    v37 = [v6 stringValue];
-    v38 = v37;
+    stringValue5 = [v6 stringValue];
+    v38 = stringValue5;
     v39 = v6;
-    if (v37)
+    if (stringValue5)
     {
-      v40 = v37;
+      v40 = stringValue5;
     }
 
     else
@@ -528,36 +528,36 @@ LABEL_54:
       v40 = &stru_1002DCE08;
     }
 
-    v41 = [v11 colorCodeLeft];
-    v42 = [v11 colorCodeRight];
+    colorCodeLeft = [v11 colorCodeLeft];
+    colorCodeRight = [v11 colorCodeRight];
     [v11 colorCodeCase];
-    v43 = v53 = v3;
-    v44 = [v11 headbandType];
+    v43 = v53 = deviceCopy;
+    headbandType = [v11 headbandType];
     *buf = 138413314;
     *v68 = v40;
     v6 = v39;
     *&v68[8] = 2112;
-    v69 = v41;
+    v69 = colorCodeLeft;
     *v70 = 2112;
-    *&v70[2] = v42;
+    *&v70[2] = colorCodeRight;
     v71 = 2112;
     v72 = v43;
     v73 = 2112;
-    v74 = v44;
+    v74 = headbandType;
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "StereoPair StyleDescriptor ColorCode %@ ColorLeft %@ ColorRight %@ ColorCase %@ HeadbandType %@", buf, 0x34u);
 
-    v3 = v53;
+    deviceCopy = v53;
   }
 
   v45 = objc_alloc_init(NSMutableDictionary);
   v46 = objc_alloc_init(FMDBluetoothDiscoveryAdvertisementConfiguration);
   [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 setName:@"monaural"];
   [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 setRssi:v66];
-  [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 setAddress:v65];
+  [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 setAddress:fm_MACAddressString];
   [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 setColorCode:v6];
   [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 setAudioStateStatus:v54];
   [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 setLidClosedStatus:0];
-  v47 = [[FMDBLEBeaconIdentifier alloc] initWithBLEDevice:v3 other:0];
+  v47 = [[FMDBLEBeaconIdentifier alloc] initWithBLEDevice:deviceCopy other:0];
   [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 setBeaconIdentifier:v47];
 
   [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 setPrimary:1];
@@ -598,8 +598,8 @@ LABEL_54:
   }
 
   [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 setOnHeadStatus:v50];
-  v51 = [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 name];
-  [v45 setObject:v46 forKeyedSubscript:v51];
+  name = [(FMDBluetoothDiscoveryAdvertisementConfiguration *)v46 name];
+  [v45 setObject:v46 forKeyedSubscript:name];
 
   return v45;
 }

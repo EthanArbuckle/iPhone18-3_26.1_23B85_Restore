@@ -1,17 +1,17 @@
 @interface SSDownloadAuthenticationChallengeSender
-- (SSDownloadAuthenticationChallengeSender)initWithAuthenticationSession:(id)a3;
+- (SSDownloadAuthenticationChallengeSender)initWithAuthenticationSession:(id)session;
 - (SSDownloadAuthenticationSession)authenticationSession;
-- (void)cancelAuthenticationChallenge:(id)a3;
-- (void)continueWithoutCredentialForAuthenticationChallenge:(id)a3;
+- (void)cancelAuthenticationChallenge:(id)challenge;
+- (void)continueWithoutCredentialForAuthenticationChallenge:(id)challenge;
 - (void)dealloc;
-- (void)performDefaultHandlingForAuthenticationChallenge:(id)a3;
-- (void)rejectProtectionSpaceAndContinueWithChallenge:(id)a3;
-- (void)useCredential:(id)a3 forAuthenticationChallenge:(id)a4;
+- (void)performDefaultHandlingForAuthenticationChallenge:(id)challenge;
+- (void)rejectProtectionSpaceAndContinueWithChallenge:(id)challenge;
+- (void)useCredential:(id)credential forAuthenticationChallenge:(id)challenge;
 @end
 
 @implementation SSDownloadAuthenticationChallengeSender
 
-- (SSDownloadAuthenticationChallengeSender)initWithAuthenticationSession:(id)a3
+- (SSDownloadAuthenticationChallengeSender)initWithAuthenticationSession:(id)session
 {
   v6.receiver = self;
   v6.super_class = SSDownloadAuthenticationChallengeSender;
@@ -19,7 +19,7 @@
   if (v4)
   {
     v4->_dispatchQueue = dispatch_queue_create("com.apple.StoreServices.SSDownloadAuthenticationChallengeSender", 0);
-    v4->_session = a3;
+    v4->_session = session;
   }
 
   return v4;
@@ -62,39 +62,39 @@ id __64__SSDownloadAuthenticationChallengeSender_authenticationSession__block_in
   return result;
 }
 
-- (void)cancelAuthenticationChallenge:(id)a3
+- (void)cancelAuthenticationChallenge:(id)challenge
 {
-  v3 = [(SSDownloadAuthenticationChallengeSender *)self authenticationSession];
+  authenticationSession = [(SSDownloadAuthenticationChallengeSender *)self authenticationSession];
 
-  [(SSDownloadAuthenticationSession *)v3 _finishWithType:1000 credential:0];
+  [(SSDownloadAuthenticationSession *)authenticationSession _finishWithType:1000 credential:0];
 }
 
-- (void)continueWithoutCredentialForAuthenticationChallenge:(id)a3
+- (void)continueWithoutCredentialForAuthenticationChallenge:(id)challenge
 {
-  v3 = [(SSDownloadAuthenticationChallengeSender *)self authenticationSession];
+  authenticationSession = [(SSDownloadAuthenticationChallengeSender *)self authenticationSession];
 
-  [(SSDownloadAuthenticationSession *)v3 _finishWithType:1001 credential:0];
+  [(SSDownloadAuthenticationSession *)authenticationSession _finishWithType:1001 credential:0];
 }
 
-- (void)performDefaultHandlingForAuthenticationChallenge:(id)a3
+- (void)performDefaultHandlingForAuthenticationChallenge:(id)challenge
 {
-  v3 = [(SSDownloadAuthenticationChallengeSender *)self authenticationSession];
+  authenticationSession = [(SSDownloadAuthenticationChallengeSender *)self authenticationSession];
 
-  [(SSDownloadAuthenticationSession *)v3 _finishWithType:1003 credential:0];
+  [(SSDownloadAuthenticationSession *)authenticationSession _finishWithType:1003 credential:0];
 }
 
-- (void)rejectProtectionSpaceAndContinueWithChallenge:(id)a3
+- (void)rejectProtectionSpaceAndContinueWithChallenge:(id)challenge
 {
-  v3 = [(SSDownloadAuthenticationChallengeSender *)self authenticationSession];
+  authenticationSession = [(SSDownloadAuthenticationChallengeSender *)self authenticationSession];
 
-  [(SSDownloadAuthenticationSession *)v3 _finishWithType:1004 credential:0];
+  [(SSDownloadAuthenticationSession *)authenticationSession _finishWithType:1004 credential:0];
 }
 
-- (void)useCredential:(id)a3 forAuthenticationChallenge:(id)a4
+- (void)useCredential:(id)credential forAuthenticationChallenge:(id)challenge
 {
-  v5 = [(SSDownloadAuthenticationChallengeSender *)self authenticationSession:a3];
+  v5 = [(SSDownloadAuthenticationChallengeSender *)self authenticationSession:credential];
 
-  [(SSDownloadAuthenticationSession *)v5 _finishWithType:1002 credential:a3];
+  [(SSDownloadAuthenticationSession *)v5 _finishWithType:1002 credential:credential];
 }
 
 @end

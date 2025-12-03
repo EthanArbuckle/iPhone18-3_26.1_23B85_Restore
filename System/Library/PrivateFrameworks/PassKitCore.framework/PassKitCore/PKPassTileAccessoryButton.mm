@@ -1,37 +1,37 @@
 @interface PKPassTileAccessoryButton
-+ (id)createWithTitle:(id)a3 spinnerEnabled:(BOOL)a4;
-- (BOOL)_isEqual:(id)a3;
-- (BOOL)_setUpWithDictionary:(id)a3;
-- (PKPassTileAccessoryButton)initWithCoder:(id)a3;
-- (id)createResolvedAccessoryWithBundle:(id)a3 privateBundle:(id)a4;
++ (id)createWithTitle:(id)title spinnerEnabled:(BOOL)enabled;
+- (BOOL)_isEqual:(id)equal;
+- (BOOL)_setUpWithDictionary:(id)dictionary;
+- (PKPassTileAccessoryButton)initWithCoder:(id)coder;
+- (id)createResolvedAccessoryWithBundle:(id)bundle privateBundle:(id)privateBundle;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileAccessoryButton
 
-+ (id)createWithTitle:(id)a3 spinnerEnabled:(BOOL)a4
++ (id)createWithTitle:(id)title spinnerEnabled:(BOOL)enabled
 {
-  v5 = a3;
+  titleCopy = title;
   v6 = [PKPassTileAccessory _createForType:0 resolved:1];
-  v7 = [v5 copy];
+  v7 = [titleCopy copy];
 
   v8 = v6[4];
   v6[4] = v7;
 
-  *(v6 + 24) = a4;
+  *(v6 + 24) = enabled;
 
   return v6;
 }
 
-- (BOOL)_setUpWithDictionary:(id)a3
+- (BOOL)_setUpWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKPassTileAccessoryButton;
-  if (-[PKPassTileAccessory _setUpWithDictionary:](&v9, sel__setUpWithDictionary_, v4) && ([v4 PKStringForKey:@"title"], v5 = objc_claimAutoreleasedReturnValue(), title = self->_title, self->_title = v5, title, self->_title))
+  if (-[PKPassTileAccessory _setUpWithDictionary:](&v9, sel__setUpWithDictionary_, dictionaryCopy) && ([dictionaryCopy PKStringForKey:@"title"], v5 = objc_claimAutoreleasedReturnValue(), title = self->_title, self->_title = v5, title, self->_title))
   {
-    self->_spinnerEnabled = [v4 PKBoolForKey:@"spinnerEnabled"];
+    self->_spinnerEnabled = [dictionaryCopy PKBoolForKey:@"spinnerEnabled"];
     v7 = 1;
   }
 
@@ -43,14 +43,14 @@
   return v7;
 }
 
-- (id)createResolvedAccessoryWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedAccessoryWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
   v12.receiver = self;
   v12.super_class = PKPassTileAccessoryButton;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPassTileAccessory *)&v12 createResolvedAccessoryWithBundle:v7 privateBundle:v6];
-  v9 = PKLocalizedPassStringForPassBundle(self->_title, v7, v6);
+  privateBundleCopy = privateBundle;
+  bundleCopy = bundle;
+  v8 = [(PKPassTileAccessory *)&v12 createResolvedAccessoryWithBundle:bundleCopy privateBundle:privateBundleCopy];
+  v9 = PKLocalizedPassStringForPassBundle(self->_title, bundleCopy, privateBundleCopy);
 
   v10 = v8[4];
   v8[4] = v9;
@@ -59,32 +59,32 @@
   return v8;
 }
 
-- (PKPassTileAccessoryButton)initWithCoder:(id)a3
+- (PKPassTileAccessoryButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPassTileAccessoryButton;
-  v5 = [(PKPassTileAccessory *)&v9 initWithCoder:v4];
+  v5 = [(PKPassTileAccessory *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v5->_spinnerEnabled = [v4 decodeBoolForKey:@"spinnerEnabled"];
+    v5->_spinnerEnabled = [coderCopy decodeBoolForKey:@"spinnerEnabled"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassTileAccessoryButton;
-  v4 = a3;
-  [(PKPassTileAccessory *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_title forKey:{@"title", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_spinnerEnabled forKey:@"spinnerEnabled"];
+  coderCopy = coder;
+  [(PKPassTileAccessory *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_title forKey:{@"title", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_spinnerEnabled forKey:@"spinnerEnabled"];
 }
 
 - (unint64_t)hash
@@ -97,14 +97,14 @@
   return SipHash();
 }
 
-- (BOOL)_isEqual:(id)a3
+- (BOOL)_isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = PKPassTileAccessoryButton;
-  if ([(PKPassTileAccessory *)&v14 _isEqual:v4])
+  if ([(PKPassTileAccessory *)&v14 _isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     title = self->_title;
     v7 = v5[4];
     v8 = title;

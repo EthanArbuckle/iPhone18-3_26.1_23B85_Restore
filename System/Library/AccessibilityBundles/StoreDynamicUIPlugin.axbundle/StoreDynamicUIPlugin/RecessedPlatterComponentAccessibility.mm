@@ -1,26 +1,26 @@
 @interface RecessedPlatterComponentAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation RecessedPlatterComponentAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"StoreDynamicUIPlugin.RecessedPlatterComponent" hasSwiftField:@"titleLabel" withSwiftType:"DynamicLabel"];
-  [v3 validateClass:@"StoreDynamicUIPlugin.RecessedPlatterComponent" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicLabel"];
-  [v3 validateClass:@"StoreDynamicUIPlugin.RecessedPlatterComponent" hasSwiftField:@"gridView" withSwiftType:"ServicesGridView"];
-  [v3 validateClass:@"StoreDynamicUIPlugin.ServicesGridView" hasSwiftField:@"serviceViews" withSwiftType:"Array<ServiceDetailView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"StoreDynamicUIPlugin.RecessedPlatterComponent" hasSwiftField:@"titleLabel" withSwiftType:"DynamicLabel"];
+  [validationsCopy validateClass:@"StoreDynamicUIPlugin.RecessedPlatterComponent" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicLabel"];
+  [validationsCopy validateClass:@"StoreDynamicUIPlugin.RecessedPlatterComponent" hasSwiftField:@"gridView" withSwiftType:"ServicesGridView"];
+  [validationsCopy validateClass:@"StoreDynamicUIPlugin.ServicesGridView" hasSwiftField:@"serviceViews" withSwiftType:"Array<ServiceDetailView>"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(RecessedPlatterComponentAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(RecessedPlatterComponentAccessibility *)self safeSwiftValueForKey:@"subtitleLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = [(RecessedPlatterComponentAccessibility *)self safeSwiftValueForKey:@"gridView"];
   v8 = [v7 safeSwiftArrayForKey:@"serviceViews"];

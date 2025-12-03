@@ -1,8 +1,8 @@
 @interface PHTransientAssetCollectionOptions
 - (PHTransientAssetCollectionOptions)init;
-- (PHTransientAssetCollectionOptions)initWithAssetFetchResult:(id)a3;
-- (PHTransientAssetCollectionOptions)initWithFetchOptions:(id)a3;
-- (PHTransientAssetCollectionOptions)initWithPhotoLibrary:(id)a3;
+- (PHTransientAssetCollectionOptions)initWithAssetFetchResult:(id)result;
+- (PHTransientAssetCollectionOptions)initWithFetchOptions:(id)options;
+- (PHTransientAssetCollectionOptions)initWithPhotoLibrary:(id)library;
 - (id)_init;
 @end
 
@@ -27,49 +27,49 @@
 
 - (PHTransientAssetCollectionOptions)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLMethodNotImplementedException();
   objc_exception_throw(v3);
 }
 
-- (PHTransientAssetCollectionOptions)initWithFetchOptions:(id)a3
+- (PHTransientAssetCollectionOptions)initWithFetchOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(PHTransientAssetCollectionOptions *)self _init];
-  if (v5)
+  optionsCopy = options;
+  _init = [(PHTransientAssetCollectionOptions *)self _init];
+  if (_init)
   {
-    v6 = [PHQuery queryForAssetsWithOptions:v4];
-    query = v5->_query;
-    v5->_query = v6;
+    v6 = [PHQuery queryForAssetsWithOptions:optionsCopy];
+    query = _init->_query;
+    _init->_query = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-- (PHTransientAssetCollectionOptions)initWithAssetFetchResult:(id)a3
+- (PHTransientAssetCollectionOptions)initWithAssetFetchResult:(id)result
 {
-  v5 = a3;
-  v6 = [(PHTransientAssetCollectionOptions *)self _init];
-  v7 = v6;
-  if (v6)
+  resultCopy = result;
+  _init = [(PHTransientAssetCollectionOptions *)self _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 11, a3);
-    v8 = [v5 photoLibrary];
+    objc_storeStrong(_init + 11, result);
+    photoLibrary = [resultCopy photoLibrary];
     photoLibrary = v7->_photoLibrary;
-    v7->_photoLibrary = v8;
+    v7->_photoLibrary = photoLibrary;
   }
 
   return v7;
 }
 
-- (PHTransientAssetCollectionOptions)initWithPhotoLibrary:(id)a3
+- (PHTransientAssetCollectionOptions)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = [(PHTransientAssetCollectionOptions *)self _init];
-  v7 = v6;
-  if (v6)
+  libraryCopy = library;
+  _init = [(PHTransientAssetCollectionOptions *)self _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 13, a3);
+    objc_storeStrong(_init + 13, library);
   }
 
   return v7;

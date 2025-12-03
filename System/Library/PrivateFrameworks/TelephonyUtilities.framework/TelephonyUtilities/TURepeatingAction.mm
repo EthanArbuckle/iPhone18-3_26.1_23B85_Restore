@@ -1,18 +1,18 @@
 @interface TURepeatingAction
-- (TURepeatingAction)initWithAction:(id)a3;
+- (TURepeatingAction)initWithAction:(id)action;
 @end
 
 @implementation TURepeatingAction
 
-- (TURepeatingAction)initWithAction:(id)a3
+- (TURepeatingAction)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = TURepeatingAction;
   v5 = [(TURepeatingAction *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(actionCopy);
     action = v5->_action;
     v5->_action = v6;
   }

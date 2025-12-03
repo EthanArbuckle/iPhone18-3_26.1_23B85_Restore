@@ -1,11 +1,11 @@
 @interface GKAppMetadataCache
-- (GKAppMetadataCache)initWithPlayerID:(id)a3 language:(id)a4 error:(id *)a5;
-- (void)deleteAllWithCompletionHandler:(id)a3;
+- (GKAppMetadataCache)initWithPlayerID:(id)d language:(id)language error:(id *)error;
+- (void)deleteAllWithCompletionHandler:(id)handler;
 @end
 
 @implementation GKAppMetadataCache
 
-- (GKAppMetadataCache)initWithPlayerID:(id)a3 language:(id)a4 error:(id *)a5
+- (GKAppMetadataCache)initWithPlayerID:(id)d language:(id)language error:(id *)error
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -13,9 +13,9 @@
   return result;
 }
 
-- (void)deleteAllWithCompletionHandler:(id)a3
+- (void)deleteAllWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;

@@ -1,8 +1,8 @@
 @interface PhotosURLRedirectRequest
 - (BOOL)_checkAndAlertSubscribedStreamsLimitReached;
-- (PhotosURLRedirectRequest)initWithDestinationURL:(id)a3 rootController:(id)a4;
+- (PhotosURLRedirectRequest)initWithDestinationURL:(id)l rootController:(id)controller;
 - (void)_navigateToSharedAlbumActivityFeed;
-- (void)_showAlertForError:(unint64_t)a3;
+- (void)_showAlertForError:(unint64_t)error;
 - (void)performRequest;
 @end
 
@@ -14,13 +14,13 @@
   {
     v3 = +[PLPhotoSharingHelper sharingPersonID];
     v4 = +[PLAccountStore pl_sharedAccountStore];
-    v5 = [v4 cachedPrimaryAppleAccount];
+    cachedPrimaryAppleAccount = [v4 cachedPrimaryAppleAccount];
 
-    if (v5)
+    if (cachedPrimaryAppleAccount)
     {
       v6 = +[PHPhotoLibrary px_deprecated_appPhotoLibrary];
-      v7 = [v6 photoLibraryURL];
-      v8 = [PLPhotoSharingHelper sharedStreamsEnabledForPhotoLibraryURL:v7];
+      photoLibraryURL = [v6 photoLibraryURL];
+      v8 = [PLPhotoSharingHelper sharedStreamsEnabledForPhotoLibraryURL:photoLibraryURL];
 
       if (v8)
       {
@@ -57,17 +57,17 @@
         goto LABEL_13;
       }
 
-      v9 = self;
+      selfCopy2 = self;
       v10 = 2;
     }
 
     else
     {
-      v9 = self;
+      selfCopy2 = self;
       v10 = 1;
     }
 
-    [(PhotosURLRedirectRequest *)v9 _showAlertForError:v10];
+    [(PhotosURLRedirectRequest *)selfCopy2 _showAlertForError:v10];
 LABEL_13:
 
     return;
@@ -94,8 +94,8 @@ LABEL_13:
     [v7 addAction:v9];
 
     v10 = +[UIApplication sharedApplication];
-    v11 = [v10 px_firstKeyWindow];
-    [v11 pl_presentViewController:v7 animated:1];
+    px_firstKeyWindow = [v10 px_firstKeyWindow];
+    [px_firstKeyWindow pl_presentViewController:v7 animated:1];
   }
 
   return v3;
@@ -121,21 +121,21 @@ LABEL_13:
     v4 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = [v3 publicDescription];
+      publicDescription = [v3 publicDescription];
       *buf = 138543362;
-      v10 = v5;
+      v10 = publicDescription;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "Failed to programmatically navigate to %{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)_showAlertForError:(unint64_t)a3
+- (void)_showAlertForError:(unint64_t)error
 {
-  if (a3 > 1)
+  if (error > 1)
   {
-    if (a3 != 2)
+    if (error != 2)
     {
-      if (a3 == 3)
+      if (error == 3)
       {
         v5 = PLLocalizedFrameworkString();
         v19 = PLLocalizedFrameworkString();
@@ -144,7 +144,7 @@ LABEL_13:
         goto LABEL_12;
       }
 
-      if (a3 == 4)
+      if (error == 4)
       {
         v5 = PLLocalizedFrameworkString();
         v6 = [UIAlertController alertControllerWithTitle:v5 message:0 preferredStyle:1];
@@ -185,9 +185,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a3)
+  if (error)
   {
-    if (a3 != 1)
+    if (error != 1)
     {
       goto LABEL_18;
     }
@@ -239,14 +239,14 @@ LABEL_14:
   dispatch_after(v21, &_dispatch_main_q, block);
 }
 
-- (PhotosURLRedirectRequest)initWithDestinationURL:(id)a3 rootController:(id)a4
+- (PhotosURLRedirectRequest)initWithDestinationURL:(id)l rootController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  lCopy = l;
+  controllerCopy = controller;
+  v9 = controllerCopy;
+  if (lCopy)
   {
-    if (v8)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -279,11 +279,11 @@ LABEL_3:
       invitationToken = v11->_invitationToken;
       v11->_invitationToken = v12;
 
-      objc_storeStrong(&v11->_rootController, a4);
+      objc_storeStrong(&v11->_rootController, controller);
     }
 
     self = v11;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -292,14 +292,14 @@ LABEL_3:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v21 = v7;
+      v21 = lCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Invalid URL: %@", buf, 0xCu);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 @end

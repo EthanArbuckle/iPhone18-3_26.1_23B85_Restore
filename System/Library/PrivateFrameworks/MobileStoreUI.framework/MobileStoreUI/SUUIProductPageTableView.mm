@@ -1,23 +1,23 @@
 @interface SUUIProductPageTableView
-- (void)_addContentSubview:(id)a3 atBack:(BOOL)a4;
-- (void)setProductPageHeaderView:(id)a3;
+- (void)_addContentSubview:(id)subview atBack:(BOOL)back;
+- (void)setProductPageHeaderView:(id)view;
 @end
 
 @implementation SUUIProductPageTableView
 
-- (void)setProductPageHeaderView:(id)a3
+- (void)setProductPageHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   productPageHeaderView = self->_productPageHeaderView;
-  v7 = v5;
-  if (productPageHeaderView != v5)
+  v7 = viewCopy;
+  if (productPageHeaderView != viewCopy)
   {
     if ([(UIView *)productPageHeaderView isDescendantOfView:self])
     {
       [(UIView *)self->_productPageHeaderView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_productPageHeaderView, a3);
+    objc_storeStrong(&self->_productPageHeaderView, view);
     if (self->_productPageHeaderView)
     {
       [(SUUIProductPageTableView *)self addSubview:?];
@@ -25,18 +25,18 @@
   }
 }
 
-- (void)_addContentSubview:(id)a3 atBack:(BOOL)a4
+- (void)_addContentSubview:(id)subview atBack:(BOOL)back
 {
-  v4 = a4;
+  backCopy = back;
   v10.receiver = self;
   v10.super_class = SUUIProductPageTableView;
-  v6 = a3;
-  [(SUUIProductPageTableView *)&v10 _addContentSubview:v6 atBack:v4];
+  subviewCopy = subview;
+  [(SUUIProductPageTableView *)&v10 _addContentSubview:subviewCopy atBack:backCopy];
   productPageHeaderView = self->_productPageHeaderView;
 
   if (productPageHeaderView)
   {
-    v8 = productPageHeaderView == v6;
+    v8 = productPageHeaderView == subviewCopy;
   }
 
   else

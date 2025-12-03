@@ -2,7 +2,7 @@
 - (BOOL)_canAttemptJoin;
 - (BOOL)_networkNameIsValid;
 - (BOOL)_passwordIsValid;
-- (CBAlternateNetworkViewController)initWithScanResult:(id)a3 prepopulatedPassword:(id)a4 prepopulatedSSID:(id)a5;
+- (CBAlternateNetworkViewController)initWithScanResult:(id)result prepopulatedPassword:(id)password prepopulatedSSID:(id)d;
 - (id)_networkNameSpecifier;
 - (id)_passwordSpecifier;
 - (id)_securitySpecifier;
@@ -10,64 +10,64 @@
 - (id)password;
 - (id)requiresPassword;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_checkoutAndPostAssociationCompletedNotificationWithError:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_checkoutAndPostAssociationCompletedNotificationWithError:(id)error;
 - (void)_cleanUp;
 - (void)_deregisterNotifications;
-- (void)_enableLeftBarButtonItem:(BOOL)a3;
-- (void)_enableRightBarButtonItem:(BOOL)a3;
-- (void)_enableUI:(BOOL)a3;
-- (void)_handleAssociationEvent:(id)a3;
+- (void)_enableLeftBarButtonItem:(BOOL)item;
+- (void)_enableRightBarButtonItem:(BOOL)item;
+- (void)_enableUI:(BOOL)i;
+- (void)_handleAssociationEvent:(id)event;
 - (void)_joinTapped;
-- (void)_keyboardWillPresent:(id)a3;
-- (void)_networkJoinRetryTimerFired:(id)a3;
-- (void)_presentFailedAssociationAlertWithTitle:(id)a3 message:(id)a4;
+- (void)_keyboardWillPresent:(id)present;
+- (void)_networkJoinRetryTimerFired:(id)fired;
+- (void)_presentFailedAssociationAlertWithTitle:(id)title message:(id)message;
 - (void)_registerForNotifications;
-- (void)_returnKeyTapped:(id)a3;
-- (void)_setReturnKeyEnabled:(BOOL)a3;
+- (void)_returnKeyTapped:(id)tapped;
+- (void)_setReturnKeyEnabled:(BOOL)enabled;
 - (void)_setupNavBar;
 - (void)_updateReturnKey;
-- (void)cancelTapped:(id)a3;
+- (void)cancelTapped:(id)tapped;
 - (void)dealloc;
-- (void)joinTapped:(id)a3;
-- (void)setRequiresPassword:(id)a3;
-- (void)textFieldDidChange:(id)a3;
+- (void)joinTapped:(id)tapped;
+- (void)setRequiresPassword:(id)password;
+- (void)textFieldDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CBAlternateNetworkViewController
 
-- (CBAlternateNetworkViewController)initWithScanResult:(id)a3 prepopulatedPassword:(id)a4 prepopulatedSSID:(id)a5
+- (CBAlternateNetworkViewController)initWithScanResult:(id)result prepopulatedPassword:(id)password prepopulatedSSID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resultCopy = result;
+  passwordCopy = password;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = CBAlternateNetworkViewController;
   v12 = [(CBAlternateNetworkViewController *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    v12->_otherNetworkViewActive = v9 == 0;
-    if (v9)
+    v12->_otherNetworkViewActive = resultCopy == 0;
+    if (resultCopy)
     {
-      v14 = [v9 networkName];
+      networkName = [resultCopy networkName];
       networkName = v13->_networkName;
-      v13->_networkName = v14;
+      v13->_networkName = networkName;
 
-      objc_storeStrong(&v13->_scanResult, a3);
+      objc_storeStrong(&v13->_scanResult, result);
     }
 
-    if (v11 && !v13->_networkName)
+    if (dCopy && !v13->_networkName)
     {
-      objc_storeStrong(&v13->_networkName, a5);
+      objc_storeStrong(&v13->_networkName, d);
     }
 
-    if (v10)
+    if (passwordCopy)
     {
-      objc_storeStrong(&v13->_networkPassword, a4);
+      objc_storeStrong(&v13->_networkPassword, password);
     }
 
     v13->_joining = 0;
@@ -94,9 +94,9 @@
 
 - (void)_setupNavBar
 {
-  v5 = [(CBAlternateNetworkViewController *)self otherNetworkViewActive];
-  v6 = v5;
-  if (v5)
+  otherNetworkViewActive = [(CBAlternateNetworkViewController *)self otherNetworkViewActive];
+  v6 = otherNetworkViewActive;
+  if (otherNetworkViewActive)
   {
     v7 = +[NSBundle mainBundle];
     [v7 localizedStringForKey:@"OTHER_NETWORK_PROMPT" value:&stru_10007EAB0 table:0];
@@ -106,12 +106,12 @@
   {
     v7 = +[NSBundle mainBundle];
     v2 = [v7 localizedStringForKey:@"ENCRYPTED_NETWORK_PROMPT" value:&stru_10007EAB0 table:0];
-    v3 = [(CBAlternateNetworkViewController *)self networkName];
-    [NSString stringWithFormat:v2, v3];
+    networkName = [(CBAlternateNetworkViewController *)self networkName];
+    [NSString stringWithFormat:v2, networkName];
   }
   v8 = ;
-  v9 = [(CBAlternateNetworkViewController *)self navigationItem];
-  [v9 setPrompt:v8];
+  navigationItem = [(CBAlternateNetworkViewController *)self navigationItem];
+  [navigationItem setPrompt:v8];
 
   if ((v6 & 1) == 0)
   {
@@ -119,10 +119,10 @@
     v8 = v2;
   }
 
-  v10 = [(CBAlternateNetworkViewController *)self otherNetworkViewActive];
+  otherNetworkViewActive2 = [(CBAlternateNetworkViewController *)self otherNetworkViewActive];
   v11 = +[NSBundle mainBundle];
   v12 = v11;
-  if (v10)
+  if (otherNetworkViewActive2)
   {
     v13 = @"OTHER_NETWORK_TITLE";
   }
@@ -133,8 +133,8 @@
   }
 
   v14 = [v11 localizedStringForKey:v13 value:&stru_10007EAB0 table:0];
-  v15 = [(CBAlternateNetworkViewController *)self navigationItem];
-  [v15 setTitle:v14];
+  navigationItem2 = [(CBAlternateNetworkViewController *)self navigationItem];
+  [navigationItem2 setTitle:v14];
 
   v22 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelTapped:"];
   v16 = [UIBarButtonItem alloc];
@@ -142,18 +142,18 @@
   v18 = [v17 localizedStringForKey:@"JOIN" value:&stru_10007EAB0 table:0];
   v19 = [v16 initWithTitle:v18 style:2 target:self action:"joinTapped:"];
 
-  v20 = [(CBAlternateNetworkViewController *)self navigationItem];
-  [v20 setLeftBarButtonItem:v22];
+  navigationItem3 = [(CBAlternateNetworkViewController *)self navigationItem];
+  [navigationItem3 setLeftBarButtonItem:v22];
 
-  v21 = [(CBAlternateNetworkViewController *)self navigationItem];
-  [v21 setRightBarButtonItem:v19];
+  navigationItem4 = [(CBAlternateNetworkViewController *)self navigationItem];
+  [navigationItem4 setRightBarButtonItem:v19];
 
   [(CBAlternateNetworkViewController *)self _enableRightBarButtonItem:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -163,7 +163,7 @@
 
   v22.receiver = self;
   v22.super_class = CBAlternateNetworkViewController;
-  [(CBAlternateNetworkViewController *)&v22 viewWillAppear:v3];
+  [(CBAlternateNetworkViewController *)&v22 viewWillAppear:appearCopy];
   [(CBAlternateNetworkViewController *)self _registerForNotifications];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"PASSWORD" value:&stru_10007EAB0 table:0];
@@ -172,9 +172,9 @@
   v8 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CBAlternateNetworkViewController *)self indexToSelect];
+    indexToSelect = [(CBAlternateNetworkViewController *)self indexToSelect];
     *buf = 134217984;
-    v24 = v9;
+    v24 = indexToSelect;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Index to be selected %ld", buf, 0xCu);
   }
 
@@ -187,23 +187,23 @@
     v12 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(CBAlternateNetworkViewController *)self indexToSelect];
+      indexToSelect2 = [(CBAlternateNetworkViewController *)self indexToSelect];
       *buf = 134217984;
-      v24 = v13;
+      v24 = indexToSelect2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Not found. New index to be selected %ld", buf, 0xCu);
     }
 
-    v14 = [(CBAlternateNetworkViewController *)self networkNameCell];
+    networkNameCell = [(CBAlternateNetworkViewController *)self networkNameCell];
   }
 
   else
   {
-    v14 = [(CBAlternateNetworkViewController *)self passwordCell];
+    networkNameCell = [(CBAlternateNetworkViewController *)self passwordCell];
   }
 
-  v15 = v14;
-  v16 = [v14 textField];
-  [(CBAlternateNetworkViewController *)self setCurrentlyActiveTextField:v16];
+  v15 = networkNameCell;
+  textField = [networkNameCell textField];
+  [(CBAlternateNetworkViewController *)self setCurrentlyActiveTextField:textField];
 
   v17 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__table];
   v18 = [(CBAlternateNetworkViewController *)self indexPathForIndex:[(CBAlternateNetworkViewController *)self indexToSelect]];
@@ -211,13 +211,13 @@
   [v19 becomeFirstResponder];
 
   [(CBAlternateNetworkViewController *)self _updateReturnKey];
-  v20 = [(CBAlternateNetworkViewController *)self networkPassword];
+  networkPassword = [(CBAlternateNetworkViewController *)self networkPassword];
 
-  if (v20)
+  if (networkPassword)
   {
     [(CBAlternateNetworkViewController *)self setRequiresPassword:&__kCFBooleanTrue];
-    v21 = [(CBAlternateNetworkViewController *)self networkPassword];
-    [(CBAlternateNetworkViewController *)self setPassword:v21];
+    networkPassword2 = [(CBAlternateNetworkViewController *)self networkPassword];
+    [(CBAlternateNetworkViewController *)self setPassword:networkPassword2];
   }
 }
 
@@ -266,9 +266,9 @@
   [v7 removeObserver:self name:@"CBWiFiManagerDidAssociateToEncryptedNetworkNotification" object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -278,7 +278,7 @@
 
   v6.receiver = self;
   v6.super_class = CBAlternateNetworkViewController;
-  [(CBAlternateNetworkViewController *)&v6 viewWillDisappear:v3];
+  [(CBAlternateNetworkViewController *)&v6 viewWillDisappear:disappearCopy];
   [(CBAlternateNetworkViewController *)self _cleanUp];
 }
 
@@ -306,9 +306,9 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Cleaning up Alternate View Controller…", buf, 2u);
   }
 
-  v4 = [(CBAlternateNetworkViewController *)self joinTimer];
+  joinTimer = [(CBAlternateNetworkViewController *)self joinTimer];
 
-  if (v4)
+  if (joinTimer)
   {
     v5 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -317,8 +317,8 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Invalidating join timer…", v13, 2u);
     }
 
-    v6 = [(CBAlternateNetworkViewController *)self joinTimer];
-    [v6 invalidate];
+    joinTimer2 = [(CBAlternateNetworkViewController *)self joinTimer];
+    [joinTimer2 invalidate];
 
     [(CBAlternateNetworkViewController *)self setJoinTimer:0];
   }
@@ -349,7 +349,7 @@
   [(CBAlternateNetworkViewController *)self _deregisterNotifications];
 }
 
-- (void)_keyboardWillPresent:(id)a3
+- (void)_keyboardWillPresent:(id)present
 {
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -361,7 +361,7 @@
   [(CBAlternateNetworkViewController *)self _updateReturnKey];
 }
 
-- (void)_returnKeyTapped:(id)a3
+- (void)_returnKeyTapped:(id)tapped
 {
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -375,23 +375,23 @@
   block[2] = sub_1000325F0;
   block[3] = &unk_10007D540;
   block[4] = self;
-  v5 = self;
+  selfCopy = self;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_handleAssociationEvent:(id)a3
+- (void)_handleAssociationEvent:(id)event
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000328C4;
   v4[3] = &unk_10007D640;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  eventCopy = event;
+  v3 = eventCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)_networkJoinRetryTimerFired:(id)a3
+- (void)_networkJoinRetryTimerFired:(id)fired
 {
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -400,12 +400,12 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Network Join Retry timeout fired…", buf, 2u);
   }
 
-  v5 = [(CBAlternateNetworkViewController *)self joinTimer];
+  joinTimer = [(CBAlternateNetworkViewController *)self joinTimer];
 
-  if (v5)
+  if (joinTimer)
   {
-    v6 = [(CBAlternateNetworkViewController *)self joinTimer];
-    [v6 invalidate];
+    joinTimer2 = [(CBAlternateNetworkViewController *)self joinTimer];
+    [joinTimer2 invalidate];
 
     [(CBAlternateNetworkViewController *)self setJoinTimer:0];
   }
@@ -420,16 +420,16 @@
 
     v17 = +[NSBundle mainBundle];
     v18 = [v17 localizedStringForKey:@"FAILED_NETWORK_PROMPT" value:&stru_10007EAB0 table:0];
-    v19 = [(CBAlternateNetworkViewController *)self networkName];
-    v20 = [NSString stringWithFormat:v18, v19];
-    v21 = [(CBAlternateNetworkViewController *)self navigationItem];
-    [v21 setPrompt:v20];
+    networkName = [(CBAlternateNetworkViewController *)self networkName];
+    v20 = [NSString stringWithFormat:v18, networkName];
+    navigationItem = [(CBAlternateNetworkViewController *)self navigationItem];
+    [navigationItem setPrompt:v20];
 
     [(CBAlternateNetworkViewController *)self _enableUI:1];
     v22 = +[NSBundle mainBundle];
     v23 = [v22 localizedStringForKey:@"UNABLE_TO_JOIN_TITLE" value:&stru_10007EAB0 table:0];
-    v24 = [(CBAlternateNetworkViewController *)self networkName];
-    v25 = [NSString stringWithFormat:v23, v24];
+    networkName2 = [(CBAlternateNetworkViewController *)self networkName];
+    v25 = [NSString stringWithFormat:v23, networkName2];
     v26 = +[NSBundle mainBundle];
     v27 = [v26 localizedStringForKey:@"TRY_AGAIN_MESSAGE" value:&stru_10007EAB0 table:0];
     [(CBAlternateNetworkViewController *)self _presentFailedAssociationAlertWithTitle:v25 message:v27];
@@ -441,9 +441,9 @@
     v7 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CBAlternateNetworkViewController *)self retryJoinAttemptCount];
+      retryJoinAttemptCount = [(CBAlternateNetworkViewController *)self retryJoinAttemptCount];
       *buf = 134217984;
-      v29 = v8;
+      v29 = retryJoinAttemptCount;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Join Retry Attempt [#%lu]", buf, 0xCu);
     }
 
@@ -451,7 +451,7 @@
   }
 }
 
-- (void)cancelTapped:(id)a3
+- (void)cancelTapped:(id)tapped
 {
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -464,7 +464,7 @@
   [(CBAlternateNetworkViewController *)self _checkoutAndPostAssociationCompletedNotificationWithError:v5];
 }
 
-- (void)joinTapped:(id)a3
+- (void)joinTapped:(id)tapped
 {
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -491,10 +491,10 @@
     [(CBAlternateNetworkViewController *)self setJoining:1];
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"JOINING_NETWORK_PROMPT" value:&stru_10007EAB0 table:0];
-    v7 = [(CBAlternateNetworkViewController *)self networkName];
-    v8 = [NSString stringWithFormat:v6, v7];
-    v9 = [(CBAlternateNetworkViewController *)self navigationItem];
-    [v9 setPrompt:v8];
+    networkName = [(CBAlternateNetworkViewController *)self networkName];
+    v8 = [NSString stringWithFormat:v6, networkName];
+    navigationItem = [(CBAlternateNetworkViewController *)self navigationItem];
+    [navigationItem setPrompt:v8];
 
     [(CBAlternateNetworkViewController *)self _enableUI:0];
     v10 = CheckerBoardLogHandleForCategory();
@@ -504,18 +504,18 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Dismissing the keyboard…", v22, 2u);
     }
 
-    v11 = [(CBAlternateNetworkViewController *)self currentlyActiveTextField];
-    [v11 resignFirstResponder];
+    currentlyActiveTextField = [(CBAlternateNetworkViewController *)self currentlyActiveTextField];
+    [currentlyActiveTextField resignFirstResponder];
 
     v4 = +[CBWiFiManager sharedInstance];
     if ([(CBAlternateNetworkViewController *)self otherNetworkViewActive])
     {
-      v12 = [(CBAlternateNetworkViewController *)self networkRequiresPassword];
-      v13 = [v12 BOOLValue];
+      networkRequiresPassword = [(CBAlternateNetworkViewController *)self networkRequiresPassword];
+      bOOLValue = [networkRequiresPassword BOOLValue];
 
       v14 = CheckerBoardLogHandleForCategory();
       v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-      if ((v13 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         if (v15)
         {
@@ -523,8 +523,8 @@
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Network is [non-]hidden and open", v21, 2u);
         }
 
-        v16 = [(CBAlternateNetworkViewController *)self networkName];
-        [v4 associateToHiddenUnencryptedNetworkWithName:v16];
+        networkName2 = [(CBAlternateNetworkViewController *)self networkName];
+        [v4 associateToHiddenUnencryptedNetworkWithName:networkName2];
         goto LABEL_20;
       }
 
@@ -534,9 +534,9 @@
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Network is [non-]hidden and encrypted", v20, 2u);
       }
 
-      v16 = [(CBAlternateNetworkViewController *)self networkName];
-      v17 = [(CBAlternateNetworkViewController *)self networkPassword];
-      [v4 associateToHiddenEncryptedNetworkWithName:v16 password:v17];
+      networkName2 = [(CBAlternateNetworkViewController *)self networkName];
+      networkPassword = [(CBAlternateNetworkViewController *)self networkPassword];
+      [v4 associateToHiddenEncryptedNetworkWithName:networkName2 password:networkPassword];
     }
 
     else
@@ -548,9 +548,9 @@
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Network is non-hidden and encrypted", v19, 2u);
       }
 
-      v16 = [(CBAlternateNetworkViewController *)self scanResult];
-      v17 = [(CBAlternateNetworkViewController *)self networkPassword];
-      [v4 associateToEncryptedNetworkWithScanResult:v16 password:v17];
+      networkName2 = [(CBAlternateNetworkViewController *)self scanResult];
+      networkPassword = [(CBAlternateNetworkViewController *)self networkPassword];
+      [v4 associateToEncryptedNetworkWithScanResult:networkName2 password:networkPassword];
     }
 
 LABEL_20:
@@ -567,9 +567,9 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  [(CBAlternateNetworkViewController *)self setCurrentlyActiveTextField:a3];
+  [(CBAlternateNetworkViewController *)self setCurrentlyActiveTextField:change];
 
   [(CBAlternateNetworkViewController *)self _updateReturnKey];
 }
@@ -581,37 +581,37 @@ LABEL_21:
   {
     if ([(CBAlternateNetworkViewController *)self otherNetworkViewActive])
     {
-      v4 = [(CBAlternateNetworkViewController *)self _securitySpecifier];
-      v22 = v4;
+      _securitySpecifier = [(CBAlternateNetworkViewController *)self _securitySpecifier];
+      v22 = _securitySpecifier;
       v5 = [NSArray arrayWithObjects:&v22 count:1];
       [(CBAlternateNetworkViewController *)self setHiddenNetworkWithNoPasswordGroup:v5];
 
-      v6 = [(CBAlternateNetworkViewController *)self _securitySpecifier];
-      v21[0] = v6;
-      v7 = [(CBAlternateNetworkViewController *)self _passwordSpecifier];
-      v21[1] = v7;
+      _securitySpecifier2 = [(CBAlternateNetworkViewController *)self _securitySpecifier];
+      v21[0] = _securitySpecifier2;
+      _passwordSpecifier = [(CBAlternateNetworkViewController *)self _passwordSpecifier];
+      v21[1] = _passwordSpecifier;
       v8 = [NSArray arrayWithObjects:v21 count:2];
       [(CBAlternateNetworkViewController *)self setHiddenNetworkWithPasswordGroup:v8];
 
-      v9 = [(CBAlternateNetworkViewController *)self hiddenNetworkWithNoPasswordGroup];
-      [(CBAlternateNetworkViewController *)self setCurrentSecurityGroup:v9];
+      hiddenNetworkWithNoPasswordGroup = [(CBAlternateNetworkViewController *)self hiddenNetworkWithNoPasswordGroup];
+      [(CBAlternateNetworkViewController *)self setCurrentSecurityGroup:hiddenNetworkWithNoPasswordGroup];
 
-      v10 = [(CBAlternateNetworkViewController *)self _networkNameSpecifier];
-      v20[0] = v10;
-      v11 = [(CBAlternateNetworkViewController *)self _groupSeparatorSpecifier];
-      v20[1] = v11;
+      _networkNameSpecifier = [(CBAlternateNetworkViewController *)self _networkNameSpecifier];
+      v20[0] = _networkNameSpecifier;
+      _groupSeparatorSpecifier = [(CBAlternateNetworkViewController *)self _groupSeparatorSpecifier];
+      v20[1] = _groupSeparatorSpecifier;
       v12 = [NSArray arrayWithObjects:v20 count:2];
       v13 = *&self->PSListController_opaque[v3];
       *&self->PSListController_opaque[v3] = v12;
 
-      v14 = [(CBAlternateNetworkViewController *)self currentSecurityGroup];
-      [(CBAlternateNetworkViewController *)self addSpecifiersFromArray:v14];
+      currentSecurityGroup = [(CBAlternateNetworkViewController *)self currentSecurityGroup];
+      [(CBAlternateNetworkViewController *)self addSpecifiersFromArray:currentSecurityGroup];
     }
 
     else
     {
-      v14 = [(CBAlternateNetworkViewController *)self _passwordSpecifier];
-      v19 = v14;
+      currentSecurityGroup = [(CBAlternateNetworkViewController *)self _passwordSpecifier];
+      v19 = currentSecurityGroup;
       v15 = [NSArray arrayWithObjects:&v19 count:1];
       v16 = *&self->PSListController_opaque[v3];
       *&self->PSListController_opaque[v3] = v15;
@@ -660,11 +660,11 @@ LABEL_21:
 
 - (id)name
 {
-  v2 = [(CBAlternateNetworkViewController *)self networkName];
-  v3 = v2;
-  if (v2)
+  networkName = [(CBAlternateNetworkViewController *)self networkName];
+  v3 = networkName;
+  if (networkName)
   {
-    v4 = v2;
+    v4 = networkName;
   }
 
   else
@@ -677,31 +677,31 @@ LABEL_21:
   return v4;
 }
 
-- (void)setRequiresPassword:(id)a3
+- (void)setRequiresPassword:(id)password
 {
-  [(CBAlternateNetworkViewController *)self setNetworkRequiresPassword:a3];
-  v4 = [(CBAlternateNetworkViewController *)self networkRequiresPassword];
-  v5 = [v4 BOOLValue];
+  [(CBAlternateNetworkViewController *)self setNetworkRequiresPassword:password];
+  networkRequiresPassword = [(CBAlternateNetworkViewController *)self networkRequiresPassword];
+  bOOLValue = [networkRequiresPassword BOOLValue];
 
-  v6 = [(CBAlternateNetworkViewController *)self currentSecurityGroup];
-  [(CBAlternateNetworkViewController *)self removeContiguousSpecifiers:v6];
+  currentSecurityGroup = [(CBAlternateNetworkViewController *)self currentSecurityGroup];
+  [(CBAlternateNetworkViewController *)self removeContiguousSpecifiers:currentSecurityGroup];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v7 = [(CBAlternateNetworkViewController *)self hiddenNetworkWithPasswordGroup];
-    [(CBAlternateNetworkViewController *)self addSpecifiersFromArray:v7];
+    hiddenNetworkWithPasswordGroup = [(CBAlternateNetworkViewController *)self hiddenNetworkWithPasswordGroup];
+    [(CBAlternateNetworkViewController *)self addSpecifiersFromArray:hiddenNetworkWithPasswordGroup];
 
-    v10 = [(CBAlternateNetworkViewController *)self hiddenNetworkWithPasswordGroup];
-    [(CBAlternateNetworkViewController *)self setCurrentSecurityGroup:v10];
+    hiddenNetworkWithPasswordGroup2 = [(CBAlternateNetworkViewController *)self hiddenNetworkWithPasswordGroup];
+    [(CBAlternateNetworkViewController *)self setCurrentSecurityGroup:hiddenNetworkWithPasswordGroup2];
   }
 
   else
   {
-    v8 = [(CBAlternateNetworkViewController *)self hiddenNetworkWithNoPasswordGroup];
-    [(CBAlternateNetworkViewController *)self addSpecifiersFromArray:v8];
+    hiddenNetworkWithNoPasswordGroup = [(CBAlternateNetworkViewController *)self hiddenNetworkWithNoPasswordGroup];
+    [(CBAlternateNetworkViewController *)self addSpecifiersFromArray:hiddenNetworkWithNoPasswordGroup];
 
-    v9 = [(CBAlternateNetworkViewController *)self hiddenNetworkWithNoPasswordGroup];
-    [(CBAlternateNetworkViewController *)self setCurrentSecurityGroup:v9];
+    hiddenNetworkWithNoPasswordGroup2 = [(CBAlternateNetworkViewController *)self hiddenNetworkWithNoPasswordGroup];
+    [(CBAlternateNetworkViewController *)self setCurrentSecurityGroup:hiddenNetworkWithNoPasswordGroup2];
 
     [(CBAlternateNetworkViewController *)self setNetworkPassword:0];
   }
@@ -709,11 +709,11 @@ LABEL_21:
 
 - (id)requiresPassword
 {
-  v2 = [(CBAlternateNetworkViewController *)self networkRequiresPassword];
-  v3 = v2;
-  if (v2)
+  networkRequiresPassword = [(CBAlternateNetworkViewController *)self networkRequiresPassword];
+  v3 = networkRequiresPassword;
+  if (networkRequiresPassword)
   {
-    v4 = v2;
+    v4 = networkRequiresPassword;
   }
 
   else
@@ -728,11 +728,11 @@ LABEL_21:
 
 - (id)password
 {
-  v2 = [(CBAlternateNetworkViewController *)self networkPassword];
-  v3 = v2;
-  if (v2)
+  networkPassword = [(CBAlternateNetworkViewController *)self networkPassword];
+  v3 = networkPassword;
+  if (networkPassword)
   {
-    v4 = v2;
+    v4 = networkPassword;
   }
 
   else
@@ -745,29 +745,29 @@ LABEL_21:
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v21.receiver = self;
   v21.super_class = CBAlternateNetworkViewController;
-  v6 = a4;
-  v7 = [(CBAlternateNetworkViewController *)&v21 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(CBAlternateNetworkViewController *)self indexForIndexPath:v6, v21.receiver, v21.super_class];
+  pathCopy = path;
+  v7 = [(CBAlternateNetworkViewController *)&v21 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(CBAlternateNetworkViewController *)self indexForIndexPath:pathCopy, v21.receiver, v21.super_class];
 
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 textField];
-    v11 = v10;
-    if (v10)
+    textField = [v7 textField];
+    v11 = textField;
+    if (textField)
     {
-      [v10 addTarget:self action:"textFieldDidChange:" forControlEvents:0x20000];
+      [textField addTarget:self action:"textFieldDidChange:" forControlEvents:0x20000];
     }
 
-    v12 = [v9 identifier];
+    identifier = [v9 identifier];
     v13 = +[NSBundle mainBundle];
     v14 = [v13 localizedStringForKey:@"OTHER_NETWORK_NAME" value:&stru_10007EAB0 table:0];
-    v15 = [v12 isEqualToString:v14];
+    v15 = [identifier isEqualToString:v14];
 
     if (v15)
     {
@@ -779,7 +779,7 @@ LABEL_21:
     {
       v17 = +[NSBundle mainBundle];
       v18 = [v17 localizedStringForKey:@"PASSWORD" value:&stru_10007EAB0 table:0];
-      v19 = [v12 isEqualToString:v18];
+      v19 = [identifier isEqualToString:v18];
 
       if (!v19)
       {
@@ -803,14 +803,14 @@ LABEL_10:
   return v7;
 }
 
-- (void)_enableLeftBarButtonItem:(BOOL)a3
+- (void)_enableLeftBarButtonItem:(BOOL)item
 {
-  v3 = a3;
+  itemCopy = item;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"disabled";
-    if (v3)
+    if (itemCopy)
     {
       v6 = @"enabled";
     }
@@ -820,19 +820,19 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Left bar button is %@", &v9, 0xCu);
   }
 
-  v7 = [(CBAlternateNetworkViewController *)self navigationItem];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setEnabled:v3];
+  navigationItem = [(CBAlternateNetworkViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:itemCopy];
 }
 
-- (void)_enableRightBarButtonItem:(BOOL)a3
+- (void)_enableRightBarButtonItem:(BOOL)item
 {
-  v3 = a3;
+  itemCopy = item;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"disabled";
-    if (v3)
+    if (itemCopy)
     {
       v6 = @"enabled";
     }
@@ -842,40 +842,40 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Right bar button is %@", &v9, 0xCu);
   }
 
-  v7 = [(CBAlternateNetworkViewController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:v3];
+  navigationItem = [(CBAlternateNetworkViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:itemCopy];
 }
 
-- (void)_setReturnKeyEnabled:(BOOL)a3
+- (void)_setReturnKeyEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = enabledCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Enabling return key %d", v6, 8u);
   }
 
   v5 = +[UIKeyboard activeKeyboard];
-  [v5 setReturnKeyEnabled:v3];
+  [v5 setReturnKeyEnabled:enabledCopy];
 }
 
-- (void)_enableUI:(BOOL)a3
+- (void)_enableUI:(BOOL)i
 {
-  v3 = a3;
+  iCopy = i;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v3;
+    v8[1] = iCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Enabling UI (%d)", v8, 8u);
   }
 
-  [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] setUserInteractionEnabled:v3];
-  [(CBAlternateNetworkViewController *)self _enableLeftBarButtonItem:v3];
-  if (v3)
+  [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] setUserInteractionEnabled:iCopy];
+  [(CBAlternateNetworkViewController *)self _enableLeftBarButtonItem:iCopy];
+  if (iCopy)
   {
     [(CBAlternateNetworkViewController *)self _updateReturnKey];
     v6 = CheckerBoardLogHandleForCategory();
@@ -885,8 +885,8 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "I'm bringing keyboard back", v8, 2u);
     }
 
-    v7 = [(CBAlternateNetworkViewController *)self currentlyActiveTextField];
-    [v7 becomeFirstResponder];
+    currentlyActiveTextField = [(CBAlternateNetworkViewController *)self currentlyActiveTextField];
+    [currentlyActiveTextField becomeFirstResponder];
   }
 
   else
@@ -905,68 +905,68 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Updating [Return] key…", v20, 2u);
   }
 
-  v4 = [(CBAlternateNetworkViewController *)self networkNameCell];
-  v5 = [v4 textField];
+  networkNameCell = [(CBAlternateNetworkViewController *)self networkNameCell];
+  textField = [networkNameCell textField];
 
-  v6 = [(CBAlternateNetworkViewController *)self passwordCell];
-  v7 = [v6 textField];
+  passwordCell = [(CBAlternateNetworkViewController *)self passwordCell];
+  textField2 = [passwordCell textField];
 
-  if (v5)
+  if (textField)
   {
-    v8 = [v5 text];
-    [(CBAlternateNetworkViewController *)self setName:v8];
+    text = [textField text];
+    [(CBAlternateNetworkViewController *)self setName:text];
   }
 
-  if (v7)
+  if (textField2)
   {
-    v9 = [v7 text];
-    [(CBAlternateNetworkViewController *)self setPassword:v9];
+    text2 = [textField2 text];
+    [(CBAlternateNetworkViewController *)self setPassword:text2];
   }
 
-  v10 = [(CBAlternateNetworkViewController *)self _canAttemptJoin];
+  _canAttemptJoin = [(CBAlternateNetworkViewController *)self _canAttemptJoin];
   if ([(CBAlternateNetworkViewController *)self otherNetworkViewActive])
   {
-    v11 = [(CBAlternateNetworkViewController *)self networkName];
-    if ([v11 length])
+    networkName = [(CBAlternateNetworkViewController *)self networkName];
+    if ([networkName length])
     {
-      v12 = [(CBAlternateNetworkViewController *)self currentlyActiveTextField];
-      v13 = [v12 textInputTraits];
-      if ([v13 returnKeyType])
+      currentlyActiveTextField = [(CBAlternateNetworkViewController *)self currentlyActiveTextField];
+      textInputTraits = [currentlyActiveTextField textInputTraits];
+      if ([textInputTraits returnKeyType])
       {
-        v14 = [(CBAlternateNetworkViewController *)self scanResult];
-        if ([v14 isSecure])
+        scanResult = [(CBAlternateNetworkViewController *)self scanResult];
+        if ([scanResult isSecure])
         {
-          v15 = [(CBAlternateNetworkViewController *)self _passwordIsValid];
+          _passwordIsValid = [(CBAlternateNetworkViewController *)self _passwordIsValid];
         }
 
         else
         {
-          v15 = 1;
+          _passwordIsValid = 1;
         }
       }
 
       else
       {
-        v15 = 1;
+        _passwordIsValid = 1;
       }
     }
 
     else
     {
-      v15 = 0;
+      _passwordIsValid = 0;
     }
   }
 
   else
   {
-    v15 = [(CBAlternateNetworkViewController *)self _passwordIsValid];
+    _passwordIsValid = [(CBAlternateNetworkViewController *)self _passwordIsValid];
   }
 
-  [(CBAlternateNetworkViewController *)self _enableRightBarButtonItem:v10];
-  [(CBAlternateNetworkViewController *)self _setReturnKeyEnabled:v10 | v15];
-  v16 = [v5 textInputTraits];
-  v17 = [(CBAlternateNetworkViewController *)self scanResult];
-  if ([v17 isSecure])
+  [(CBAlternateNetworkViewController *)self _enableRightBarButtonItem:_canAttemptJoin];
+  [(CBAlternateNetworkViewController *)self _setReturnKeyEnabled:_canAttemptJoin | _passwordIsValid];
+  textInputTraits2 = [textField textInputTraits];
+  scanResult2 = [(CBAlternateNetworkViewController *)self scanResult];
+  if ([scanResult2 isSecure])
   {
     v18 = 0;
   }
@@ -976,16 +976,16 @@ LABEL_10:
     v18 = 3;
   }
 
-  [v16 setReturnKeyType:v18];
+  [textInputTraits2 setReturnKeyType:v18];
 
-  v19 = [v7 textInputTraits];
-  [v19 setReturnKeyType:3];
+  textInputTraits3 = [textField2 textInputTraits];
+  [textInputTraits3 setReturnKeyType:3];
 }
 
-- (void)_presentFailedAssociationAlertWithTitle:(id)a3 message:(id)a4
+- (void)_presentFailedAssociationAlertWithTitle:(id)title message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
+  messageCopy = message;
+  titleCopy = title;
   v8 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -993,7 +993,7 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Presenting failed association alert", v13, 2u);
   }
 
-  v9 = [UIAlertController alertControllerWithTitle:v7 message:v6 preferredStyle:1];
+  v9 = [UIAlertController alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
 
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"DISMISS" value:&stru_10007EAB0 table:0];
@@ -1003,9 +1003,9 @@ LABEL_10:
   [(CBAlternateNetworkViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)_checkoutAndPostAssociationCompletedNotificationWithError:(id)a3
+- (void)_checkoutAndPostAssociationCompletedNotificationWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1015,9 +1015,9 @@ LABEL_10:
 
   v5 = +[NSMutableDictionary dictionary];
   v6 = v5;
-  if (v3)
+  if (errorCopy)
   {
-    [v5 setObject:v3 forKeyedSubscript:@"CBWiFiManagerErrorKey"];
+    [v5 setObject:errorCopy forKeyedSubscript:@"CBWiFiManagerErrorKey"];
   }
 
   v7 = +[NSNotificationCenter defaultCenter];
@@ -1030,44 +1030,44 @@ LABEL_10:
   {
     if ([(CBAlternateNetworkViewController *)self _networkNameIsValid])
     {
-      v3 = [(CBAlternateNetworkViewController *)self scanResult];
-      if ([v3 isSecure])
+      scanResult = [(CBAlternateNetworkViewController *)self scanResult];
+      if ([scanResult isSecure])
       {
-        v4 = [(CBAlternateNetworkViewController *)self _passwordIsValid];
+        _passwordIsValid = [(CBAlternateNetworkViewController *)self _passwordIsValid];
       }
 
       else
       {
-        v4 = 1;
+        _passwordIsValid = 1;
       }
     }
 
     else
     {
-      v4 = 0;
+      _passwordIsValid = 0;
     }
   }
 
   else
   {
-    v4 = [(CBAlternateNetworkViewController *)self _passwordIsValid];
+    _passwordIsValid = [(CBAlternateNetworkViewController *)self _passwordIsValid];
   }
 
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v4;
+    v7[1] = _passwordIsValid;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Allowing join %d", v7, 8u);
   }
 
-  return v4;
+  return _passwordIsValid;
 }
 
 - (BOOL)_networkNameIsValid
 {
-  v2 = [(CBAlternateNetworkViewController *)self networkName];
-  v3 = [v2 length];
+  networkName = [(CBAlternateNetworkViewController *)self networkName];
+  v3 = [networkName length];
 
   v4 = CheckerBoardLogHandleForCategory();
   v5 = v3 - 1;
@@ -1083,16 +1083,16 @@ LABEL_10:
 
 - (BOOL)_passwordIsValid
 {
-  v3 = [(CBAlternateNetworkViewController *)self networkPassword];
-  v4 = [(CBAlternateNetworkViewController *)self networkPassword];
-  v5 = [v4 length];
+  networkPassword = [(CBAlternateNetworkViewController *)self networkPassword];
+  networkPassword2 = [(CBAlternateNetworkViewController *)self networkPassword];
+  v5 = [networkPassword2 length];
 
   v6 = [NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEFabcdef"];
-  v7 = [v6 invertedSet];
+  invertedSet = [v6 invertedSet];
 
-  v8 = [v3 rangeOfCharacterFromSet:v7];
-  v9 = [(CBAlternateNetworkViewController *)self scanResult];
-  if ([v9 isWPA])
+  v8 = [networkPassword rangeOfCharacterFromSet:invertedSet];
+  scanResult = [(CBAlternateNetworkViewController *)self scanResult];
+  if ([scanResult isWPA])
   {
 
 LABEL_4:
@@ -1101,10 +1101,10 @@ LABEL_4:
     goto LABEL_14;
   }
 
-  v10 = [(CBAlternateNetworkViewController *)self scanResult];
-  v11 = [v10 isWPA2];
+  scanResult2 = [(CBAlternateNetworkViewController *)self scanResult];
+  isWPA2 = [scanResult2 isWPA2];
 
-  if (v11)
+  if (isWPA2)
   {
     goto LABEL_4;
   }

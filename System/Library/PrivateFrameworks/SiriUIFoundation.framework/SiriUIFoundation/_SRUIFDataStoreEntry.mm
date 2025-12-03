@@ -1,25 +1,25 @@
 @interface _SRUIFDataStoreEntry
-- (_SRUIFDataStoreEntry)initWithPropertyListRepresentation:(id)a3 error:(id *)p_isa;
-- (_SRUIFDataStoreEntry)initWithType:(int64_t)a3 value:(id)a4;
+- (_SRUIFDataStoreEntry)initWithPropertyListRepresentation:(id)representation error:(id *)p_isa;
+- (_SRUIFDataStoreEntry)initWithType:(int64_t)type value:(id)value;
 - (id)_propertyListStringForType;
-- (id)_valueForPropertyListRepresentation:(id)a3 type:(int64_t)a4;
+- (id)_valueForPropertyListRepresentation:(id)representation type:(int64_t)type;
 - (id)_valuePropertyListRepresentation;
 - (id)propertyListRepresentation;
 @end
 
 @implementation _SRUIFDataStoreEntry
 
-- (_SRUIFDataStoreEntry)initWithType:(int64_t)a3 value:(id)a4
+- (_SRUIFDataStoreEntry)initWithType:(int64_t)type value:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = _SRUIFDataStoreEntry;
   v8 = [(_SRUIFDataStoreEntry *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_value, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_value, value);
   }
 
   return v9;
@@ -45,32 +45,32 @@
   {
     v3 = MEMORY[0x277CBEB38];
     v4 = value;
-    v5 = [v3 dictionary];
-    v6 = [v4 imageData];
-    [v5 setObject:v6 forKey:@"PNGData"];
+    dictionary = [v3 dictionary];
+    imageData = [v4 imageData];
+    [dictionary setObject:imageData forKey:@"PNGData"];
 
     v7 = MEMORY[0x277CCABB0];
     [v4 scale];
     v9 = v8;
 
     v10 = [v7 numberWithDouble:v9];
-    [v5 setObject:v10 forKey:@"Scale"];
+    [dictionary setObject:v10 forKey:@"Scale"];
   }
 
   else
   {
-    v5 = value;
+    dictionary = value;
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_valueForPropertyListRepresentation:(id)a3 type:(int64_t)a4
+- (id)_valueForPropertyListRepresentation:(id)representation type:(int64_t)type
 {
-  v5 = a3;
-  if (a4 == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  representationCopy = representation;
+  if (type == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = v5;
+    v6 = representationCopy;
     v7 = objc_alloc_init(SRUIFImagePNGData);
     v8 = [v6 objectForKey:@"PNGData"];
     [(SRUIFImagePNGData *)v7 setImageData:v8];
@@ -91,20 +91,20 @@
 
 - (id)propertyListRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:&unk_287A18BE8 forKey:@"Version"];
-  v4 = [(_SRUIFDataStoreEntry *)self _propertyListStringForType];
-  [v3 setObject:v4 forKey:@"Type"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:&unk_287A18BE8 forKey:@"Version"];
+  _propertyListStringForType = [(_SRUIFDataStoreEntry *)self _propertyListStringForType];
+  [dictionary setObject:_propertyListStringForType forKey:@"Type"];
 
-  v5 = [(_SRUIFDataStoreEntry *)self _valuePropertyListRepresentation];
-  [v3 setObject:v5 forKey:@"Value"];
+  _valuePropertyListRepresentation = [(_SRUIFDataStoreEntry *)self _valuePropertyListRepresentation];
+  [dictionary setObject:_valuePropertyListRepresentation forKey:@"Value"];
 
-  return v3;
+  return dictionary;
 }
 
-- (_SRUIFDataStoreEntry)initWithPropertyListRepresentation:(id)a3 error:(id *)p_isa
+- (_SRUIFDataStoreEntry)initWithPropertyListRepresentation:(id)representation error:(id *)p_isa
 {
-  v6 = a3;
+  representationCopy = representation;
   v7 = objc_alloc_init(SRUIFDictionarySchema);
   v8 = [SRUIFCoercion typeAssertionWithClass:objc_opt_class()];
   [(SRUIFDictionarySchema *)v7 setObjectCoercion:v8 forKey:@"Version"];
@@ -112,11 +112,11 @@
   v9 = [SRUIFCoercion typeAssertionWithClass:objc_opt_class()];
   [(SRUIFDictionarySchema *)v7 setObjectCoercion:v9 forKey:@"Type"];
 
-  v10 = [(SRUIFDictionarySchema *)v7 coerceObject:v6 error:p_isa];
+  v10 = [(SRUIFDictionarySchema *)v7 coerceObject:representationCopy error:p_isa];
   v11 = [v10 objectForKey:@"Version"];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
 
-  if (v12 == 1)
+  if (integerValue == 1)
   {
     v13 = [v10 objectForKey:@"Type"];
     v14 = [(_SRUIFDataStoreEntry *)self _typeForPropertyListString:v13];
@@ -132,8 +132,8 @@
 
     else if (p_isa)
     {
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to decode value for data store entry %@", v6];
-      *p_isa = [SRUIFConversationError errorWithCode:300 localizedFailureReason:v17];
+      representationCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to decode value for data store entry %@", representationCopy];
+      *p_isa = [SRUIFConversationError errorWithCode:300 localizedFailureReason:representationCopy];
 
       p_isa = 0;
     }

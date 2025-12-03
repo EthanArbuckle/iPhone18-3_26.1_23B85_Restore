@@ -1,31 +1,31 @@
 @interface PLSuggestionComputeJournalEntryPayload
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4;
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4 suggestionTypes:(id)a5;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name suggestionTypes:(id)types;
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
-+ (id)payloadAdapterForManagedObject:(id)a3;
++ (id)payloadAdapterForManagedObject:(id)object;
 + (id)payloadClassID;
 + (id)persistedPropertyNamesForEntityNames;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
-- (BOOL)insertWithAssets:(id)a3 inManagedObjectContext:(id)a4;
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
+- (BOOL)insertWithAssets:(id)assets inManagedObjectContext:(id)context;
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property;
 - (NSSet)assetIdentifiers;
 - (NSString)keyAssetUUID;
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4;
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property;
 - (int64_t)assetIdentifierType;
 - (unint64_t)assetIdentifierCount;
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5;
-- (void)setKeyAssetUUID:(id)a3;
-- (void)setLocalAssetIdentifierForCloudIdentifiers:(id)a3;
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder;
+- (void)setKeyAssetUUID:(id)d;
+- (void)setLocalAssetIdentifierForCloudIdentifiers:(id)identifiers;
 @end
 
 @implementation PLSuggestionComputeJournalEntryPayload
 
 + (id)payloadClassID
 {
-  v2 = [a1 entityName];
-  v3 = [v2 stringByAppendingString:@"Compute"];
+  entityName = [self entityName];
+  v3 = [entityName stringByAppendingString:@"Compute"];
 
   return v3;
 }
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __57__PLSuggestionComputeJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_99739 != -1)
   {
     dispatch_once(&modelProperties_onceToken_99739, block);
@@ -130,9 +130,9 @@ uint64_t __57__PLSuggestionComputeJournalEntryPayload_modelProperties__block_inv
   return v11;
 }
 
-- (void)setKeyAssetUUID:(id)a3
+- (void)setKeyAssetUUID:(id)d
 {
-  v4 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:a3];
+  v4 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:d];
   [(NSMutableDictionary *)self->super._payloadAttributes setObject:v4 forKeyedSubscript:@"keyAsset"];
 }
 
@@ -147,22 +147,22 @@ uint64_t __57__PLSuggestionComputeJournalEntryPayload_modelProperties__block_inv
 - (int64_t)assetIdentifierType
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"assetIDType"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setLocalAssetIdentifierForCloudIdentifiers:(id)a3
+- (void)setLocalAssetIdentifierForCloudIdentifiers:(id)identifiers
 {
-  v5 = [a3 allValues];
-  v4 = [v5 firstObject];
-  [(PLSuggestionComputeJournalEntryPayload *)self setKeyAssetUUID:v4];
+  allValues = [identifiers allValues];
+  firstObject = [allValues firstObject];
+  [(PLSuggestionComputeJournalEntryPayload *)self setKeyAssetUUID:firstObject];
 }
 
 - (unint64_t)assetIdentifierCount
 {
-  v2 = [(PLSuggestionComputeJournalEntryPayload *)self keyAssetUUID];
-  v3 = v2 != 0;
+  keyAssetUUID = [(PLSuggestionComputeJournalEntryPayload *)self keyAssetUUID];
+  v3 = keyAssetUUID != 0;
 
   return v3;
 }
@@ -170,32 +170,32 @@ uint64_t __57__PLSuggestionComputeJournalEntryPayload_modelProperties__block_inv
 - (NSSet)assetIdentifiers
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(PLSuggestionComputeJournalEntryPayload *)self keyAssetUUID];
-  if (v4)
+  keyAssetUUID = [(PLSuggestionComputeJournalEntryPayload *)self keyAssetUUID];
+  if (keyAssetUUID)
   {
-    [v3 addObject:v4];
+    [v3 addObject:keyAssetUUID];
   }
 
   return v3;
 }
 
-- (BOOL)insertWithAssets:(id)a3 inManagedObjectContext:(id)a4
+- (BOOL)insertWithAssets:(id)assets inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v9 = [v8 payloadIDString];
-  v10 = [PLSuggestion suggestionWithUUID:v9 inManagedObjectContext:v7];
+  assetsCopy = assets;
+  contextCopy = context;
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  v10 = [PLSuggestion suggestionWithUUID:payloadIDString inManagedObjectContext:contextCopy];
 
   if (!v10)
   {
-    v10 = [(PLManagedObject *)PLSuggestion insertInManagedObjectContext:v7];
-    v11 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-    v12 = [v11 payloadIDString];
-    [v10 setUuid:v12];
+    v10 = [(PLManagedObject *)PLSuggestion insertInManagedObjectContext:contextCopy];
+    payloadID2 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+    payloadIDString2 = [payloadID2 payloadIDString];
+    [v10 setUuid:payloadIDString2];
 
     [(PLManagedObjectJournalEntryPayload *)self applyPayloadToManagedObject:v10 payloadAttributesToUpdate:0];
-    [v10 setKeyAssets:v6];
+    [v10 setKeyAssets:assetsCopy];
     [v10 setRestoreType:1];
     [v10 updateStartAndEndDate];
   }
@@ -203,26 +203,26 @@ uint64_t __57__PLSuggestionComputeJournalEntryPayload_modelProperties__block_inv
   return 1;
 }
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if (![v9 isEqualToKey:@"keyAsset"])
+  valueCopy = value;
+  propertyCopy = property;
+  dictionaryValueCopy = dictionaryValue;
+  if (![propertyCopy isEqualToKey:@"keyAsset"])
   {
     v15.receiver = self;
     v15.super_class = PLSuggestionComputeJournalEntryPayload;
-    v13 = [(PLManagedObjectJournalEntryPayload *)&v15 comparePayloadValue:v8 toObjectDictionaryValue:v10 forPayloadProperty:v9];
+    v13 = [(PLManagedObjectJournalEntryPayload *)&v15 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy];
     goto LABEL_13;
   }
 
-  v11 = [v10 firstObject];
+  firstObject = [dictionaryValueCopy firstObject];
 
   if ([(PLSuggestionComputeJournalEntryPayload *)self assetIdentifierType])
   {
     if ([(PLSuggestionComputeJournalEntryPayload *)self assetIdentifierType]!= 1)
     {
-      v10 = 0;
+      dictionaryValueCopy = 0;
       goto LABEL_9;
     }
 
@@ -234,11 +234,11 @@ uint64_t __57__PLSuggestionComputeJournalEntryPayload_modelProperties__block_inv
     v12 = @"uuid";
   }
 
-  v10 = [v11 objectForKeyedSubscript:v12];
+  dictionaryValueCopy = [firstObject objectForKeyedSubscript:v12];
 LABEL_9:
-  if (v8 | v10)
+  if (valueCopy | dictionaryValueCopy)
   {
-    v13 = [v10 isEqualToString:v8];
+    v13 = [dictionaryValueCopy isEqualToString:valueCopy];
   }
 
   else
@@ -250,15 +250,15 @@ LABEL_13:
   return v13;
 }
 
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToKey:@"keyAsset"])
+  attributesCopy = attributes;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"keyAsset"])
   {
-    v8 = [v7 key];
+    v8 = [propertyCopy key];
 
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v9];
   }
 
@@ -266,63 +266,63 @@ LABEL_13:
   {
     v12.receiver = self;
     v12.super_class = PLSuggestionComputeJournalEntryPayload;
-    v10 = [(PLManagedObjectJournalEntryPayload *)&v12 payloadValueFromAttributes:v6 forPayloadProperty:v7];
+    v10 = [(PLManagedObjectJournalEntryPayload *)&v12 payloadValueFromAttributes:attributesCopy forPayloadProperty:propertyCopy];
   }
 
   return v10;
 }
 
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([v8 isEqualToString:@"keyAsset"])
+  keyCopy = key;
+  builderCopy = builder;
+  valueCopy = value;
+  if ([keyCopy isEqualToString:@"keyAsset"])
   {
-    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v10];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:valueCopy];
 
     v13.receiver = self;
     v13.super_class = PLSuggestionComputeJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:v8 value:v11 toDescriptionBuilder:v9];
-    v10 = v11;
+    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:keyCopy value:v11 toDescriptionBuilder:builderCopy];
+    valueCopy = v11;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = PLSuggestionComputeJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:v8 value:v10 toDescriptionBuilder:v9];
+    [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:keyCopy value:valueCopy toDescriptionBuilder:builderCopy];
   }
 }
 
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v13 isEqualToKey:@"keyAsset"])
+  attributesCopy = attributes;
+  nilAttributesCopy = nilAttributes;
+  objectCopy = object;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"keyAsset"])
   {
-    v14 = [v12 keyAssets];
-    v15 = [v14 anyObject];
+    keyAssets = [objectCopy keyAssets];
+    anyObject = [keyAssets anyObject];
 
-    v16 = [v15 cloudAssetGUID];
-    if (v16)
+    cloudAssetGUID = [anyObject cloudAssetGUID];
+    if (cloudAssetGUID)
     {
-      [v15 cloudAssetGUID];
+      [anyObject cloudAssetGUID];
     }
 
     else
     {
-      [v15 uuid];
+      [anyObject uuid];
     }
     v18 = ;
     v19 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:v18];
-    v20 = [v13 key];
-    [v10 setObject:v19 forKeyedSubscript:v20];
+    v20 = [propertyCopy key];
+    [attributesCopy setObject:v19 forKeyedSubscript:v20];
 
-    v21 = [v15 cloudAssetGUID];
-    if (v21)
+    cloudAssetGUID2 = [anyObject cloudAssetGUID];
+    if (cloudAssetGUID2)
     {
       v22 = &unk_1F0FBE6C8;
     }
@@ -332,7 +332,7 @@ LABEL_13:
       v22 = &unk_1F0FBE6E0;
     }
 
-    [v10 setObject:v22 forKeyedSubscript:@"assetIDType"];
+    [attributesCopy setObject:v22 forKeyedSubscript:@"assetIDType"];
 
     v17 = 1;
   }
@@ -341,45 +341,45 @@ LABEL_13:
   {
     v24.receiver = self;
     v24.super_class = PLSuggestionComputeJournalEntryPayload;
-    v17 = [(PLManagedObjectJournalEntryPayload *)&v24 updatePayloadAttributes:v10 andNilAttributes:v11 withManagedObject:v12 forPayloadProperty:v13];
+    v17 = [(PLManagedObjectJournalEntryPayload *)&v24 updatePayloadAttributes:attributesCopy andNilAttributes:nilAttributesCopy withManagedObject:objectCopy forPayloadProperty:propertyCopy];
   }
 
   return v17;
 }
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4 suggestionTypes:(id)a5
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name suggestionTypes:(id)types
 {
-  v7 = a3;
-  if (a4)
+  dictionaryCopy = dictionary;
+  if (name)
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = a5;
-    v10 = [v7 objectForKeyedSubscript:@"type"];
-    v11 = [v9 containsObject:v10];
+    typesCopy = types;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"type"];
+    v11 = [typesCopy containsObject:v10];
 
     if (v11)
     {
       v12 = [@"keyAssets" stringByAppendingPathExtension:@"uuid"];
-      v13 = [v7 objectForKeyedSubscript:v12];
+      v13 = [dictionaryCopy objectForKeyedSubscript:v12];
 
       if ([v13 count] == 1)
       {
-        v14 = [v13 firstObject];
+        firstObject = [v13 firstObject];
         v15 = [@"keyAssets" stringByAppendingPathExtension:@"cloudAssetGUID"];
-        v16 = [v7 objectForKeyedSubscript:v15];
-        v17 = [v16 firstObject];
+        v16 = [dictionaryCopy objectForKeyedSubscript:v15];
+        firstObject2 = [v16 firstObject];
 
         v18 = [@"keyAssets" stringByAppendingPathExtension:@"trashedState"];
-        v19 = [v7 objectForKeyedSubscript:v18];
-        v20 = [v19 firstObject];
+        v19 = [dictionaryCopy objectForKeyedSubscript:v18];
+        firstObject3 = [v19 firstObject];
 
-        if (v14 | v17)
+        if (firstObject | firstObject2)
         {
-          v8 = [v20 integerValue] == 0;
+          v8 = [firstObject3 integerValue] == 0;
         }
 
         else
@@ -403,22 +403,22 @@ LABEL_13:
   return v8;
 }
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 supportedSuggestionTypes];
-  LOBYTE(a1) = [a1 isValidForPersistenceWithObjectDictionary:v7 additionalEntityName:v6 suggestionTypes:v8];
+  nameCopy = name;
+  dictionaryCopy = dictionary;
+  supportedSuggestionTypes = [self supportedSuggestionTypes];
+  LOBYTE(self) = [self isValidForPersistenceWithObjectDictionary:dictionaryCopy additionalEntityName:nameCopy suggestionTypes:supportedSuggestionTypes];
 
-  return a1;
+  return self;
 }
 
-+ (id)payloadAdapterForManagedObject:(id)a3
++ (id)payloadAdapterForManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [PLSuggestionComputePayloadAdapter alloc];
-  v6 = [a1 supportedSuggestionTypes];
-  v7 = [(PLSuggestionComputePayloadAdapter *)v5 initWithManagedObject:v4 suggestionTypes:v6];
+  supportedSuggestionTypes = [self supportedSuggestionTypes];
+  v7 = [(PLSuggestionComputePayloadAdapter *)v5 initWithManagedObject:objectCopy suggestionTypes:supportedSuggestionTypes];
 
   return v7;
 }
@@ -429,7 +429,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __78__PLSuggestionComputeJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_99737 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_99737, block);

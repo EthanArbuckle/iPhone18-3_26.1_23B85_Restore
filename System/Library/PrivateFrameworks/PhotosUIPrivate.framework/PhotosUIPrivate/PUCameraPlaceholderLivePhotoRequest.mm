@@ -1,21 +1,21 @@
 @interface PUCameraPlaceholderLivePhotoRequest
-- (PUCameraPlaceholderLivePhotoRequest)initWithAsset:(id)a3 resultHandler:(id)a4;
+- (PUCameraPlaceholderLivePhotoRequest)initWithAsset:(id)asset resultHandler:(id)handler;
 @end
 
 @implementation PUCameraPlaceholderLivePhotoRequest
 
-- (PUCameraPlaceholderLivePhotoRequest)initWithAsset:(id)a3 resultHandler:(id)a4
+- (PUCameraPlaceholderLivePhotoRequest)initWithAsset:(id)asset resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = PUCameraPlaceholderLivePhotoRequest;
   v9 = [(PUCameraPlaceholderLivePhotoRequest *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_asset, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_asset, asset);
+    v11 = [handlerCopy copy];
     resultHandler = v10->_resultHandler;
     v10->_resultHandler = v11;
   }

@@ -1,57 +1,57 @@
 @interface DCPresentmentProposalReaderMetadata
-- (DCPresentmentProposalReaderMetadata)initWithCoder:(id)a3;
-- (DCPresentmentProposalReaderMetadata)initWithIdentifier:(id)a3 organization:(id)a4 organizationalUnit:(id)a5 iconData:(id)a6 iconURL:(id)a7 iconMediaType:(id)a8 privacyPolicyURL:(id)a9 merchantCategoryCode:(id)a10;
+- (DCPresentmentProposalReaderMetadata)initWithCoder:(id)coder;
+- (DCPresentmentProposalReaderMetadata)initWithIdentifier:(id)identifier organization:(id)organization organizationalUnit:(id)unit iconData:(id)data iconURL:(id)l iconMediaType:(id)type privacyPolicyURL:(id)rL merchantCategoryCode:(id)self0;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DCPresentmentProposalReaderMetadata
 
-- (DCPresentmentProposalReaderMetadata)initWithIdentifier:(id)a3 organization:(id)a4 organizationalUnit:(id)a5 iconData:(id)a6 iconURL:(id)a7 iconMediaType:(id)a8 privacyPolicyURL:(id)a9 merchantCategoryCode:(id)a10
+- (DCPresentmentProposalReaderMetadata)initWithIdentifier:(id)identifier organization:(id)organization organizationalUnit:(id)unit iconData:(id)data iconURL:(id)l iconMediaType:(id)type privacyPolicyURL:(id)rL merchantCategoryCode:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  identifierCopy = identifier;
+  organizationCopy = organization;
+  unitCopy = unit;
+  dataCopy = data;
+  lCopy = l;
+  typeCopy = type;
+  rLCopy = rL;
+  codeCopy = code;
   v42.receiver = self;
   v42.super_class = DCPresentmentProposalReaderMetadata;
   v24 = [(DCPresentmentProposalReaderMetadata *)&v42 init];
   if (v24)
   {
-    v25 = [v16 copy];
+    v25 = [identifierCopy copy];
     identifier = v24->_identifier;
     v24->_identifier = v25;
 
-    v27 = [v17 copy];
+    v27 = [organizationCopy copy];
     organization = v24->_organization;
     v24->_organization = v27;
 
-    v29 = [v18 copy];
+    v29 = [unitCopy copy];
     organizationalUnit = v24->_organizationalUnit;
     v24->_organizationalUnit = v29;
 
-    v31 = [v19 copy];
+    v31 = [dataCopy copy];
     iconData = v24->_iconData;
     v24->_iconData = v31;
 
-    v33 = [v20 copy];
+    v33 = [lCopy copy];
     iconURL = v24->_iconURL;
     v24->_iconURL = v33;
 
-    v35 = [v21 copy];
+    v35 = [typeCopy copy];
     iconMediaType = v24->_iconMediaType;
     v24->_iconMediaType = v35;
 
-    v37 = [v22 copy];
+    v37 = [rLCopy copy];
     privacyPolicyURL = v24->_privacyPolicyURL;
     v24->_privacyPolicyURL = v37;
 
-    v39 = [v23 copy];
+    v39 = [codeCopy copy];
     merchantCategoryCode = v24->_merchantCategoryCode;
     v24->_merchantCategoryCode = v39;
   }
@@ -59,43 +59,43 @@
   return v24;
 }
 
-- (DCPresentmentProposalReaderMetadata)initWithCoder:(id)a3
+- (DCPresentmentProposalReaderMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = DCPresentmentProposalReaderMetadata;
   v5 = [(DCPresentmentProposalReaderMetadata *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:0x28586CDC0];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:0x28586CDC0];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:0x28586D460];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:0x28586D460];
     organization = v5->_organization;
     v5->_organization = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:0x28586D480];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:0x28586D480];
     organizationalUnit = v5->_organizationalUnit;
     v5->_organizationalUnit = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:0x28586D4A0];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:0x28586D4A0];
     iconData = v5->_iconData;
     v5->_iconData = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:0x28586D4C0];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:0x28586D4C0];
     iconURL = v5->_iconURL;
     v5->_iconURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:0x28586D4E0];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:0x28586D4E0];
     iconMediaType = v5->_iconMediaType;
     v5->_iconMediaType = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:0x28586D500];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:0x28586D500];
     privacyPolicyURL = v5->_privacyPolicyURL;
     v5->_privacyPolicyURL = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:0x28586D520];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:0x28586D520];
     merchantCategoryCode = v5->_merchantCategoryCode;
     v5->_merchantCategoryCode = v20;
   }
@@ -103,18 +103,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:0x28586CDC0];
-  [v5 encodeObject:self->_organization forKey:0x28586D460];
-  [v5 encodeObject:self->_organizationalUnit forKey:0x28586D480];
-  [v5 encodeObject:self->_iconData forKey:0x28586D4A0];
-  [v5 encodeObject:self->_iconURL forKey:0x28586D4C0];
-  [v5 encodeObject:self->_iconMediaType forKey:0x28586D4E0];
-  [v5 encodeObject:self->_privacyPolicyURL forKey:0x28586D500];
-  [v5 encodeObject:self->_merchantCategoryCode forKey:0x28586D520];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:0x28586CDC0];
+  [coderCopy encodeObject:self->_organization forKey:0x28586D460];
+  [coderCopy encodeObject:self->_organizationalUnit forKey:0x28586D480];
+  [coderCopy encodeObject:self->_iconData forKey:0x28586D4A0];
+  [coderCopy encodeObject:self->_iconURL forKey:0x28586D4C0];
+  [coderCopy encodeObject:self->_iconMediaType forKey:0x28586D4E0];
+  [coderCopy encodeObject:self->_privacyPolicyURL forKey:0x28586D500];
+  [coderCopy encodeObject:self->_merchantCategoryCode forKey:0x28586D520];
 }
 
 - (id)description
@@ -125,13 +125,13 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p ", v5, self];;
 
-  v7 = [(DCPresentmentProposalReaderMetadata *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(DCPresentmentProposalReaderMetadata *)self dictionaryRepresentation];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [v7 allKeys];
-  v9 = [v8 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [dictionaryRepresentation allKeys];
+  v9 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   obj = v9;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -149,9 +149,9 @@
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v7 objectForKeyedSubscript:v14];
-        v16 = [MEMORY[0x277CBEB68] null];
-        if ([v15 isEqual:v16])
+        v15 = [dictionaryRepresentation objectForKeyedSubscript:v14];
+        null = [MEMORY[0x277CBEB68] null];
+        if ([v15 isEqual:null])
         {
           v17 = 0;
         }

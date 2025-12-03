@@ -1,7 +1,7 @@
 @interface PersonalizedAutocompleteRankerResponse
 - (NSArray)sections;
 - (_TtC4Maps38PersonalizedAutocompleteRankerResponse)init;
-- (id)init:(id)a3 experimentMetadata:(id)a4 modelMetadata:(id)a5 responseStatus:(int64_t)a6;
+- (id)init:(id)init experimentMetadata:(id)metadata modelMetadata:(id)modelMetadata responseStatus:(int64_t)status;
 @end
 
 @implementation PersonalizedAutocompleteRankerResponse
@@ -15,17 +15,17 @@
   return v2.super.isa;
 }
 
-- (id)init:(id)a3 experimentMetadata:(id)a4 modelMetadata:(id)a5 responseStatus:(int64_t)a6
+- (id)init:(id)init experimentMetadata:(id)metadata modelMetadata:(id)modelMetadata responseStatus:(int64_t)status
 {
   sub_100014C84(0, &qword_1019167F0);
   *(self + OBJC_IVAR____TtC4Maps38PersonalizedAutocompleteRankerResponse_sections) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  *(self + OBJC_IVAR____TtC4Maps38PersonalizedAutocompleteRankerResponse_experimentMetadata) = a4;
-  *(self + OBJC_IVAR____TtC4Maps38PersonalizedAutocompleteRankerResponse_modelMetadata) = a5;
-  *(self + OBJC_IVAR____TtC4Maps38PersonalizedAutocompleteRankerResponse_responseStatus) = a6;
+  *(self + OBJC_IVAR____TtC4Maps38PersonalizedAutocompleteRankerResponse_experimentMetadata) = metadata;
+  *(self + OBJC_IVAR____TtC4Maps38PersonalizedAutocompleteRankerResponse_modelMetadata) = modelMetadata;
+  *(self + OBJC_IVAR____TtC4Maps38PersonalizedAutocompleteRankerResponse_responseStatus) = status;
   v13.receiver = self;
   v13.super_class = type metadata accessor for PersonalizedAutocompleteRankerResponse();
-  v10 = a4;
-  v11 = a5;
+  metadataCopy = metadata;
+  modelMetadataCopy = modelMetadata;
   return [(PersonalizedAutocompleteRankerResponse *)&v13 init];
 }
 

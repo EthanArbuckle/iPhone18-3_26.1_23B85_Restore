@@ -1,26 +1,26 @@
 @interface UIViewController
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
 - (void)finishSwitchTestIfNeeded;
-- (void)willStartTest:(id)a3;
+- (void)willStartTest:(id)test;
 @end
 
 @implementation UIViewController
 
-- (void)willStartTest:(id)a3
+- (void)willStartTest:(id)test
 {
-  v3 = a3;
-  if (([v3 hasPrefix:@"ColdSwitch"] & 1) != 0 || objc_msgSend(v3, "hasPrefix:", @"WarmSwitch"))
+  testCopy = test;
+  if (([testCopy hasPrefix:@"ColdSwitch"] & 1) != 0 || objc_msgSend(testCopy, "hasPrefix:", @"WarmSwitch"))
   {
-    [UIApp startedTest:v3];
+    [UIApp startedTest:testCopy];
   }
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v5 = a3;
-  if (([v5 hasPrefix:@"ColdSwitch"] & 1) != 0 || objc_msgSend(v5, "hasPrefix:", @"WarmSwitch"))
+  testCopy = test;
+  if (([testCopy hasPrefix:@"ColdSwitch"] & 1) != 0 || objc_msgSend(testCopy, "hasPrefix:", @"WarmSwitch"))
   {
-    objc_storeStrong(&__CurrentTestName_0, a3);
+    objc_storeStrong(&__CurrentTestName_0, test);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,11 +68,11 @@
       }
     }
 
-    v8 = [UIApp rootViewController];
-    v9 = [v8 baseViewController];
+    rootViewController = [UIApp rootViewController];
+    baseViewController = [rootViewController baseViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v9 switchToTab:v6];
+      [baseViewController switchToTab:v6];
     }
 
     v7 = 1;

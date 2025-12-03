@@ -6,8 +6,8 @@
 
 - (uint64_t)nthIndexIgnoringExtensionCandidates:()TIWordSearchCangjie
 {
-  v4 = [a1 candidates];
-  v5 = [v4 count];
+  candidates = [self candidates];
+  v5 = [candidates count];
   v6 = 0;
   if (v5 && a3)
   {
@@ -15,15 +15,15 @@
     v6 = 0;
     do
     {
-      v8 = [v4 objectAtIndexedSubscript:v6];
-      v9 = [v8 isExtensionCandidate];
+      v8 = [candidates objectAtIndexedSubscript:v6];
+      isExtensionCandidate = [v8 isExtensionCandidate];
 
       if (++v6 >= v7)
       {
         break;
       }
 
-      a3 -= v9 ^ 1u;
+      a3 -= isExtensionCandidate ^ 1u;
     }
 
     while (a3);

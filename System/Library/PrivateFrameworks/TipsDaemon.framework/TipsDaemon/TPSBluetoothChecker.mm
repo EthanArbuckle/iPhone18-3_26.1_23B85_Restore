@@ -1,8 +1,8 @@
 @interface TPSBluetoothChecker
-+ (BOOL)bluetoothPairedWithTag:(id)a3 withPairedPeers:(id)a4;
-+ (id)bluetoothPairedForProductIDs:(id)a3 minimumVersion:(id)a4 withPairedDevices:(id)a5;
++ (BOOL)bluetoothPairedWithTag:(id)tag withPairedPeers:(id)peers;
++ (id)bluetoothPairedForProductIDs:(id)ds minimumVersion:(id)version withPairedDevices:(id)devices;
 + (id)sharedInstance;
-- (BOOL)bluetoothPairedWithTag:(id)a3;
+- (BOOL)bluetoothPairedWithTag:(id)tag;
 - (NSArray)pairedDevices;
 - (NSArray)pairedPeers;
 - (TPSBluetoothChecker)init;
@@ -56,16 +56,16 @@ uint64_t __37__TPSBluetoothChecker_sharedInstance__block_invoke()
 - (void)initializeBTManager
 {
   v3 = MEMORY[0x277CF3248];
-  v4 = [(TPSBluetoothChecker *)self devicesAccessQueue];
-  [v3 setSharedInstanceQueue:v4];
+  devicesAccessQueue = [(TPSBluetoothChecker *)self devicesAccessQueue];
+  [v3 setSharedInstanceQueue:devicesAccessQueue];
 
-  v5 = [(TPSBluetoothChecker *)self devicesAccessQueue];
+  devicesAccessQueue2 = [(TPSBluetoothChecker *)self devicesAccessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__TPSBluetoothChecker_initializeBTManager__block_invoke;
   block[3] = &unk_2789AFAB0;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(devicesAccessQueue2, block);
 }
 
 void __42__TPSBluetoothChecker_initializeBTManager__block_invoke(uint64_t a1)
@@ -102,14 +102,14 @@ void __41__TPSBluetoothChecker_devicesAccessQueue__block_invoke()
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(TPSBluetoothChecker *)self peersAccessQueue];
+  peersAccessQueue = [(TPSBluetoothChecker *)self peersAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__TPSBluetoothChecker_pairedPeers__block_invoke;
   v6[3] = &unk_2789B0140;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(peersAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -135,14 +135,14 @@ void __34__TPSBluetoothChecker_pairedPeers__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(TPSBluetoothChecker *)self devicesAccessQueue];
+  devicesAccessQueue = [(TPSBluetoothChecker *)self devicesAccessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__TPSBluetoothChecker_pairedDevices__block_invoke;
   v6[3] = &unk_2789B0140;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(devicesAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -159,19 +159,19 @@ void __36__TPSBluetoothChecker_pairedDevices__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)bluetoothPairedWithTag:(id)a3
+- (BOOL)bluetoothPairedWithTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(TPSBluetoothChecker *)self pairedPeers];
-  LOBYTE(self) = [objc_opt_class() bluetoothPairedWithTag:v4 withPairedPeers:v5];
+  tagCopy = tag;
+  pairedPeers = [(TPSBluetoothChecker *)self pairedPeers];
+  LOBYTE(self) = [objc_opt_class() bluetoothPairedWithTag:tagCopy withPairedPeers:pairedPeers];
 
   return self;
 }
 
-+ (BOOL)bluetoothPairedWithTag:(id)a3 withPairedPeers:(id)a4
++ (BOOL)bluetoothPairedWithTag:(id)tag withPairedPeers:(id)peers
 {
-  v5 = a3;
-  v6 = a4;
+  tagCopy = tag;
+  peersCopy = peers;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -181,9 +181,9 @@ void __36__TPSBluetoothChecker_pairedDevices__block_invoke(uint64_t a1)
   v10[2] = __62__TPSBluetoothChecker_bluetoothPairedWithTag_withPairedPeers___block_invoke;
   v10[3] = &unk_2789B0860;
   v12 = &v13;
-  v7 = v5;
+  v7 = tagCopy;
   v11 = v7;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [peersCopy enumerateObjectsUsingBlock:v10];
   v8 = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
@@ -201,35 +201,35 @@ void __62__TPSBluetoothChecker_bluetoothPairedWithTag_withPairedPeers___block_in
   }
 }
 
-+ (id)bluetoothPairedForProductIDs:(id)a3 minimumVersion:(id)a4 withPairedDevices:(id)a5
++ (id)bluetoothPairedForProductIDs:(id)ds minimumVersion:(id)version withPairedDevices:(id)devices
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  versionCopy = version;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__3;
   v25 = __Block_byref_object_dispose__3;
   v26 = 0;
-  v9 = a5;
-  v10 = v9;
-  if ([v7 count] >= 2)
+  devicesCopy = devices;
+  v10 = devicesCopy;
+  if ([dsCopy count] >= 2)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __85__TPSBluetoothChecker_bluetoothPairedForProductIDs_minimumVersion_withPairedDevices___block_invoke;
     v19[3] = &unk_2789B0888;
-    v20 = v7;
-    v10 = [v9 sortedArrayUsingComparator:v19];
+    v20 = dsCopy;
+    v10 = [devicesCopy sortedArrayUsingComparator:v19];
   }
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__TPSBluetoothChecker_bluetoothPairedForProductIDs_minimumVersion_withPairedDevices___block_invoke_2;
   v15[3] = &unk_2789B08B0;
-  v11 = v7;
+  v11 = dsCopy;
   v16 = v11;
-  v12 = v8;
+  v12 = versionCopy;
   v17 = v12;
   v18 = &v21;
   [v10 enumerateObjectsUsingBlock:v15];

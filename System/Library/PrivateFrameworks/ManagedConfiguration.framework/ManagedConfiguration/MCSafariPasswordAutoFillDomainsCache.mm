@@ -1,6 +1,6 @@
 @interface MCSafariPasswordAutoFillDomainsCache
 + (id)sharedCache;
-- (BOOL)isSafariPasswordAutoFillAllowedForURL:(id)a3;
+- (BOOL)isSafariPasswordAutoFillAllowedForURL:(id)l;
 - (MCSafariPasswordAutoFillDomainsCache)init;
 - (void)memberQueueRereadCache;
 - (void)rereadCache;
@@ -39,13 +39,13 @@ uint64_t __51__MCSafariPasswordAutoFillDomainsCache_sharedCache__block_invoke()
     v2->_memberQueue = v3;
 
     objc_initWeak(&location, v2);
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __44__MCSafariPasswordAutoFillDomainsCache_init__block_invoke;
     v11[3] = &unk_1E77D1E38;
     objc_copyWeak(&v12, &location);
-    v6 = [v5 addObserverForName:@"com.apple.managedconfiguration.effectivesettingschanged" object:0 queue:0 usingBlock:v11];
+    v6 = [defaultCenter addObserverForName:@"com.apple.managedconfiguration.effectivesettingschanged" object:0 queue:0 usingBlock:v11];
 
     v7 = v2->_memberQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -68,24 +68,24 @@ void __44__MCSafariPasswordAutoFillDomainsCache_init__block_invoke(uint64_t a1)
   [WeakRetained rereadCache];
 }
 
-- (BOOL)isSafariPasswordAutoFillAllowedForURL:(id)a3
+- (BOOL)isSafariPasswordAutoFillAllowedForURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     *buf = 0;
     v13 = buf;
     v14 = 0x2020000000;
     v15 = 0;
-    v5 = [(MCSafariPasswordAutoFillDomainsCache *)self memberQueue];
+    memberQueue = [(MCSafariPasswordAutoFillDomainsCache *)self memberQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __78__MCSafariPasswordAutoFillDomainsCache_isSafariPasswordAutoFillAllowedForURL___block_invoke;
     block[3] = &unk_1E77D1E60;
     block[4] = self;
     v11 = buf;
-    v10 = v4;
-    dispatch_sync(v5, block);
+    v10 = lCopy;
+    dispatch_sync(memberQueue, block);
 
     v6 = v13[24];
     _Block_object_dispose(buf, 8);
@@ -164,13 +164,13 @@ LABEL_12:
 
 - (void)rereadCache
 {
-  v3 = [(MCSafariPasswordAutoFillDomainsCache *)self memberQueue];
+  memberQueue = [(MCSafariPasswordAutoFillDomainsCache *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__MCSafariPasswordAutoFillDomainsCache_rereadCache__block_invoke;
   block[3] = &unk_1E77D0180;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(memberQueue, block);
 }
 
 - (void)memberQueueRereadCache
@@ -181,18 +181,18 @@ LABEL_12:
 
   if (v4)
   {
-    v5 = [(MCSafariPasswordAutoFillDomainsCache *)self memberQueueCache];
+    memberQueueCache = [(MCSafariPasswordAutoFillDomainsCache *)self memberQueueCache];
 
-    if (v5)
+    if (memberQueueCache)
     {
-      v6 = [(MCSafariPasswordAutoFillDomainsCache *)self memberQueueCache];
-      [v6 removeAllObjects];
+      memberQueueCache2 = [(MCSafariPasswordAutoFillDomainsCache *)self memberQueueCache];
+      [memberQueueCache2 removeAllObjects];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DF70] array];
-      [(MCSafariPasswordAutoFillDomainsCache *)self setMemberQueueCache:v6];
+      memberQueueCache2 = [MEMORY[0x1E695DF70] array];
+      [(MCSafariPasswordAutoFillDomainsCache *)self setMemberQueueCache:memberQueueCache2];
     }
 
     v7 = [v4 sortedArrayUsingComparator:&__block_literal_global_9];
@@ -216,8 +216,8 @@ LABEL_12:
           }
 
           v12 = [[MCDomainsCacheEntry alloc] initWithPattern:*(*(&v15 + 1) + 8 * v11)];
-          v13 = [(MCSafariPasswordAutoFillDomainsCache *)self memberQueueCache];
-          [v13 addObject:v12];
+          memberQueueCache3 = [(MCSafariPasswordAutoFillDomainsCache *)self memberQueueCache];
+          [memberQueueCache3 addObject:v12];
 
           ++v11;
         }

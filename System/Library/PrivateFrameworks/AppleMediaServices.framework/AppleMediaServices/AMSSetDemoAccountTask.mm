@@ -1,15 +1,15 @@
 @interface AMSSetDemoAccountTask
-- (AMSSetDemoAccountTask)initWithUsername:(id)a3 password:(id)a4 accountStore:(id)a5;
+- (AMSSetDemoAccountTask)initWithUsername:(id)username password:(id)password accountStore:(id)store;
 - (id)performTask;
 @end
 
 @implementation AMSSetDemoAccountTask
 
-- (AMSSetDemoAccountTask)initWithUsername:(id)a3 password:(id)a4 accountStore:(id)a5
+- (AMSSetDemoAccountTask)initWithUsername:(id)username password:(id)password accountStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  usernameCopy = username;
+  passwordCopy = password;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = AMSSetDemoAccountTask;
   v12 = [(AMSTask *)&v17 init];
@@ -19,16 +19,16 @@
     clientInfo = v12->_clientInfo;
     v12->_clientInfo = v13;
 
-    objc_storeStrong(&v12->_password, a4);
-    objc_storeStrong(&v12->_username, a3);
-    v15 = v11;
-    if (!v11)
+    objc_storeStrong(&v12->_password, password);
+    objc_storeStrong(&v12->_username, username);
+    ams_sharedAccountStore = storeCopy;
+    if (!storeCopy)
     {
-      v15 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+      ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
     }
 
-    objc_storeStrong(&v12->_accountStore, v15);
-    if (!v11)
+    objc_storeStrong(&v12->_accountStore, ams_sharedAccountStore);
+    if (!storeCopy)
     {
     }
   }

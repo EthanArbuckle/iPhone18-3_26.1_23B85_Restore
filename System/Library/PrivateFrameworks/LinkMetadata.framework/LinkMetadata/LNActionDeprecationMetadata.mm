@@ -1,22 +1,22 @@
 @interface LNActionDeprecationMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNActionDeprecationMetadata)initWithCoder:(id)a3;
-- (LNActionDeprecationMetadata)initWithMessageText:(id)a3 replacedByIntentIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNActionDeprecationMetadata)initWithCoder:(id)coder;
+- (LNActionDeprecationMetadata)initWithMessageText:(id)text replacedByIntentIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionDeprecationMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -25,10 +25,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNActionDeprecationMetadata *)self messageText];
-    v8 = [(LNActionDeprecationMetadata *)v6 messageText];
-    v9 = v7;
-    v10 = v8;
+    messageText = [(LNActionDeprecationMetadata *)self messageText];
+    messageText2 = [(LNActionDeprecationMetadata *)v6 messageText];
+    v9 = messageText;
+    v10 = messageText2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -55,10 +55,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNActionDeprecationMetadata *)self replacedByIntentIdentifier];
-    v16 = [(LNActionDeprecationMetadata *)v6 replacedByIntentIdentifier];
-    v14 = v15;
-    v17 = v16;
+    replacedByIntentIdentifier = [(LNActionDeprecationMetadata *)self replacedByIntentIdentifier];
+    replacedByIntentIdentifier2 = [(LNActionDeprecationMetadata *)v6 replacedByIntentIdentifier];
+    v14 = replacedByIntentIdentifier;
+    v17 = replacedByIntentIdentifier2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -85,10 +85,10 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNActionDeprecationMetadata *)self messageText];
-  v4 = [v3 hash];
-  v5 = [(LNActionDeprecationMetadata *)self replacedByIntentIdentifier];
-  v6 = [v5 hash];
+  messageText = [(LNActionDeprecationMetadata *)self messageText];
+  v4 = [messageText hash];
+  replacedByIntentIdentifier = [(LNActionDeprecationMetadata *)self replacedByIntentIdentifier];
+  v6 = [replacedByIntentIdentifier hash];
 
   return v6 ^ v4;
 }
@@ -98,61 +98,61 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNActionDeprecationMetadata *)self messageText];
-  v7 = [(LNActionDeprecationMetadata *)self replacedByIntentIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@: %p, message: %@, replacedByIntentIdentifier: %@>", v5, self, v6, v7];
+  messageText = [(LNActionDeprecationMetadata *)self messageText];
+  replacedByIntentIdentifier = [(LNActionDeprecationMetadata *)self replacedByIntentIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@: %p, message: %@, replacedByIntentIdentifier: %@>", v5, self, messageText, replacedByIntentIdentifier];
 
   return v8;
 }
 
-- (LNActionDeprecationMetadata)initWithCoder:(id)a3
+- (LNActionDeprecationMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"messageText"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messageText"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"replacedByIntentIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"replacedByIntentIdentifier"];
     self = [(LNActionDeprecationMetadata *)self initWithMessageText:v5 replacedByIntentIdentifier:v6];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNActionDeprecationMetadata *)self messageText];
-  [v4 encodeObject:v5 forKey:@"messageText"];
+  coderCopy = coder;
+  messageText = [(LNActionDeprecationMetadata *)self messageText];
+  [coderCopy encodeObject:messageText forKey:@"messageText"];
 
-  v6 = [(LNActionDeprecationMetadata *)self replacedByIntentIdentifier];
-  [v4 encodeObject:v6 forKey:@"replacedByIntentIdentifier"];
+  replacedByIntentIdentifier = [(LNActionDeprecationMetadata *)self replacedByIntentIdentifier];
+  [coderCopy encodeObject:replacedByIntentIdentifier forKey:@"replacedByIntentIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(LNActionDeprecationMetadata *)self messageText];
-  v6 = [(LNActionDeprecationMetadata *)self replacedByIntentIdentifier];
-  v7 = [v4 initWithMessageText:v5 replacedByIntentIdentifier:v6];
+  messageText = [(LNActionDeprecationMetadata *)self messageText];
+  replacedByIntentIdentifier = [(LNActionDeprecationMetadata *)self replacedByIntentIdentifier];
+  v7 = [v4 initWithMessageText:messageText replacedByIntentIdentifier:replacedByIntentIdentifier];
 
   return v7;
 }
 
-- (LNActionDeprecationMetadata)initWithMessageText:(id)a3 replacedByIntentIdentifier:(id)a4
+- (LNActionDeprecationMetadata)initWithMessageText:(id)text replacedByIntentIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  textCopy = text;
+  identifierCopy = identifier;
+  if (!textCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LNActionDeprecationMetadata.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"messageText"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionDeprecationMetadata.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"messageText"}];
   }
 
   v17.receiver = self;
@@ -160,11 +160,11 @@ LABEL_21:
   v9 = [(LNActionDeprecationMetadata *)&v17 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [textCopy copy];
     messageText = v9->_messageText;
     v9->_messageText = v10;
 
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     replacedByIntentIdentifier = v9->_replacedByIntentIdentifier;
     v9->_replacedByIntentIdentifier = v12;
 

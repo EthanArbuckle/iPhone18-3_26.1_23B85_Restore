@@ -1,29 +1,29 @@
 @interface HUFaceRecognitionLibraryListViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUFaceRecognitionLibraryListViewController)initWithHome:(id)a3;
-- (HUFaceRecognitionLibraryListViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
-- (id)presentFaceRecognitionAddPersonSettingsForUnknownPersonEvent:(id)a3 animated:(BOOL)a4;
-- (id)presentFaceRecognitionPersonSettingsForPerson:(id)a3 personManager:(id)a4 animated:(BOOL)a5;
-- (id)trailingSwipeActionsForItem:(id)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUFaceRecognitionLibraryListViewController)initWithHome:(id)home;
+- (HUFaceRecognitionLibraryListViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
+- (id)presentFaceRecognitionAddPersonSettingsForUnknownPersonEvent:(id)event animated:(BOOL)animated;
+- (id)presentFaceRecognitionPersonSettingsForPerson:(id)person personManager:(id)manager animated:(BOOL)animated;
+- (id)trailingSwipeActionsForItem:(id)item;
 - (void)dealloc;
 - (void)dismissTextViewController;
-- (void)personEditorViewController:(id)a3 didUpdateItem:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)personEditorViewController:(id)controller didUpdateItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUFaceRecognitionLibraryListViewController
 
-- (HUFaceRecognitionLibraryListViewController)initWithHome:(id)a3
+- (HUFaceRecognitionLibraryListViewController)initWithHome:(id)home
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[HUFaceRecognitionLibraryListItemManager alloc] initWithHome:v4 delegate:0];
+  homeCopy = home;
+  v5 = [[HUFaceRecognitionLibraryListItemManager alloc] initWithHome:homeCopy delegate:0];
   v21.receiver = self;
   v21.super_class = HUFaceRecognitionLibraryListViewController;
   v6 = [(HUItemTableViewController *)&v21 initWithItemManager:v5 tableViewStyle:1];
@@ -34,13 +34,13 @@
     v8 = _HULocalizedStringWithDefaultValue(@"HUFaceRecognitionViewControllerTitle", @"HUFaceRecognitionViewControllerTitle", 1);
     [(HUFaceRecognitionLibraryListViewController *)v7 setTitle:v8];
 
-    v9 = [MEMORY[0x277D146E8] sharedDispatcher];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v4 hf_allCameraProfiles];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    hf_allCameraProfiles = [homeCopy hf_allCameraProfiles];
+    v11 = [hf_allCameraProfiles countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -52,17 +52,17 @@
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(hf_allCameraProfiles);
           }
 
-          v15 = [*(*(&v17 + 1) + 8 * v14) clipManager];
-          [v9 addObservationForCameraClipManager:v15];
+          clipManager = [*(*(&v17 + 1) + 8 * v14) clipManager];
+          [mEMORY[0x277D146E8] addObservationForCameraClipManager:clipManager];
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v12 = [hf_allCameraProfiles countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v12);
@@ -72,28 +72,28 @@
   return v7;
 }
 
-- (HUFaceRecognitionLibraryListViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUFaceRecognitionLibraryListViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHome_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUFaceRecognitionLibraryListViewController.m" lineNumber:58 description:{@"%s is unavailable; use %@ instead", "-[HUFaceRecognitionLibraryListViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUFaceRecognitionLibraryListViewController.m" lineNumber:58 description:{@"%s is unavailable; use %@ instead", "-[HUFaceRecognitionLibraryListViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = HUFaceRecognitionLibraryListViewController;
-  [(HUItemTableViewController *)&v8 viewDidAppear:a3];
-  v4 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
-  v5 = [v4 firstFastUpdateFuture];
+  [(HUItemTableViewController *)&v8 viewDidAppear:appear];
+  listItemManager = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
+  firstFastUpdateFuture = [listItemManager firstFastUpdateFuture];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__HUFaceRecognitionLibraryListViewController_viewDidAppear___block_invoke;
   v7[3] = &unk_277DBBEB0;
   v7[4] = self;
-  v6 = [v5 addCompletionBlock:v7];
+  v6 = [firstFastUpdateFuture addCompletionBlock:v7];
 }
 
 void __60__HUFaceRecognitionLibraryListViewController_viewDidAppear___block_invoke(uint64_t a1)
@@ -102,31 +102,31 @@ void __60__HUFaceRecognitionLibraryListViewController_viewDidAppear___block_invo
   [v1 setRecentsLimit:-1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUFaceRecognitionLibraryListViewController;
-  [(HUItemTableViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
-  [v4 sendAnalyticsEvent];
+  [(HUItemTableViewController *)&v5 viewWillDisappear:disappear];
+  listItemManager = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
+  [listItemManager sendAnalyticsEvent];
 }
 
-- (id)presentFaceRecognitionPersonSettingsForPerson:(id)a3 personManager:(id)a4 animated:(BOOL)a5
+- (id)presentFaceRecognitionPersonSettingsForPerson:(id)person personManager:(id)manager animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HUItemTableViewController *)self hu_preloadContent];
+  personCopy = person;
+  managerCopy = manager;
+  hu_preloadContent = [(HUItemTableViewController *)self hu_preloadContent];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __115__HUFaceRecognitionLibraryListViewController_presentFaceRecognitionPersonSettingsForPerson_personManager_animated___block_invoke;
   v15[3] = &unk_277DB9190;
-  v18 = a5;
+  animatedCopy = animated;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = [v10 flatMap:v15];
+  v16 = personCopy;
+  v17 = managerCopy;
+  v11 = managerCopy;
+  v12 = personCopy;
+  v13 = [hu_preloadContent flatMap:v15];
 
   return v13;
 }
@@ -153,15 +153,15 @@ id __115__HUFaceRecognitionLibraryListViewController_presentFaceRecognitionPerso
   return v9;
 }
 
-- (id)presentFaceRecognitionAddPersonSettingsForUnknownPersonEvent:(id)a3 animated:(BOOL)a4
+- (id)presentFaceRecognitionAddPersonSettingsForUnknownPersonEvent:(id)event animated:(BOOL)animated
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  eventCopy = event;
+  v6 = eventCopy;
+  if (eventCopy)
   {
-    v7 = [v5 faceClassification];
-    if (v7)
+    faceClassification = [eventCopy faceClassification];
+    if (faceClassification)
     {
       objc_opt_class();
       v8 = v6;
@@ -178,34 +178,34 @@ id __115__HUFaceRecognitionLibraryListViewController_presentFaceRecognitionPerso
       v10 = v9;
 
       v11 = objc_alloc(MEMORY[0x277D14680]);
-      v12 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
-      v13 = [v12 home];
-      v14 = [v11 initWithSignificantEvent:v10 home:v13];
+      listItemManager = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
+      home = [listItemManager home];
+      v14 = [v11 initWithSignificantEvent:v10 home:home];
 
       v15 = [[HUFaceRecognitionPersonEditorViewController alloc] initWithPersonLikeItem:v14];
       [(HUFaceRecognitionPersonEditorViewController *)v15 setDelegate:self];
-      v16 = [(HUItemTableViewController *)self itemManager];
-      v17 = [v16 home];
-      [v17 personManager];
-      v18 = v30 = v7;
-      v19 = [v18 UUID];
+      itemManager = [(HUItemTableViewController *)self itemManager];
+      home2 = [itemManager home];
+      [home2 personManager];
+      v18 = v30 = faceClassification;
+      uUID = [v18 UUID];
 
-      v20 = [(HUFaceRecognitionLibraryListViewController *)self navigationController];
-      v21 = [v20 hu_pushPreloadableViewController:v15 animated:1];
+      navigationController = [(HUFaceRecognitionLibraryListViewController *)self navigationController];
+      v21 = [navigationController hu_pushPreloadableViewController:v15 animated:1];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __116__HUFaceRecognitionLibraryListViewController_presentFaceRecognitionAddPersonSettingsForUnknownPersonEvent_animated___block_invoke;
       v31[3] = &unk_277DC44E8;
-      v32 = v19;
+      v32 = uUID;
       v33 = v10;
       v34 = v15;
       v35 = v8;
       v22 = v15;
       v23 = v10;
-      v24 = v19;
-      v25 = [v21 flatMap:v31];
+      v24 = uUID;
+      futureWithNoResult = [v21 flatMap:v31];
 
-      v7 = v30;
+      faceClassification = v30;
     }
 
     else
@@ -220,7 +220,7 @@ id __115__HUFaceRecognitionLibraryListViewController_presentFaceRecognitionPerso
 
       v28 = MEMORY[0x277D2C900];
       v14 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
-      v25 = [v28 futureWithError:v14];
+      futureWithNoResult = [v28 futureWithError:v14];
     }
   }
 
@@ -233,10 +233,10 @@ id __115__HUFaceRecognitionLibraryListViewController_presentFaceRecognitionPerso
       _os_log_impl(&dword_20CEB6000, v26, OS_LOG_TYPE_DEFAULT, "No event provided; add person settings not supported", buf, 2u);
     }
 
-    v25 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v25;
+  return futureWithNoResult;
 }
 
 id __116__HUFaceRecognitionLibraryListViewController_presentFaceRecognitionAddPersonSettingsForUnknownPersonEvent_animated___block_invoke(uint64_t a1)
@@ -260,28 +260,28 @@ id __116__HUFaceRecognitionLibraryListViewController_presentFaceRecognitionAddPe
   return v5;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
-  v7 = [a4 section];
-  v8 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
-  v9 = [v8 knownToHomeItem];
-  v10 = [v6 isEqual:v9];
+  itemCopy = item;
+  section = [path section];
+  listItemManager = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
+  knownToHomeItem = [listItemManager knownToHomeItem];
+  v10 = [itemCopy isEqual:knownToHomeItem];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(HUItemTableViewController *)self itemManager];
-    v12 = [v11 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionLibrariesSection"];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    v12 = [itemManager sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionLibrariesSection"];
 
-    if (v7 != v12)
+    if (section != v12)
     {
-      v13 = [(HUItemTableViewController *)self itemManager];
-      v14 = [v13 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionSettingSwitchSection"];
+      itemManager2 = [(HUItemTableViewController *)self itemManager];
+      v14 = [itemManager2 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionSettingSwitchSection"];
 
-      if (v7 != v14)
+      if (section != v14)
       {
-        v15 = [(HUItemTableViewController *)self itemManager];
-        [v15 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionRecentVisitorsSectionIdentifier"];
+        itemManager3 = [(HUItemTableViewController *)self itemManager];
+        [itemManager3 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionRecentVisitorsSectionIdentifier"];
       }
     }
   }
@@ -291,14 +291,14 @@ id __116__HUFaceRecognitionLibraryListViewController_presentFaceRecognitionAddPe
   return v16;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v9 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v6 = v9;
+    v6 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -315,23 +315,23 @@ id __116__HUFaceRecognitionLibraryListViewController_presentFaceRecognitionAddPe
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
+  pathCopy = path;
   v57.receiver = self;
   v57.super_class = HUFaceRecognitionLibraryListViewController;
-  [(HUItemTableViewController *)&v57 updateCell:v10 forItem:v11 indexPath:v12 animated:v6];
-  v13 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
-  v14 = [v13 knownToHomeItem];
-  v15 = [v11 isEqual:v14];
+  [(HUItemTableViewController *)&v57 updateCell:cellCopy forItem:itemCopy indexPath:pathCopy animated:animatedCopy];
+  listItemManager = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
+  knownToHomeItem = [listItemManager knownToHomeItem];
+  v15 = [itemCopy isEqual:knownToHomeItem];
 
   if (v15)
   {
     objc_opt_class();
-    v16 = v10;
+    v16 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v17 = v16;
@@ -345,12 +345,12 @@ id __116__HUFaceRecognitionLibraryListViewController_presentFaceRecognitionAddPe
     v18 = v17;
 
     [v18 setHideIcon:1];
-    v19 = [v11 latestResults];
-    v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D13EC0]];
-    v21 = [v20 BOOLValue];
+    latestResults = [itemCopy latestResults];
+    v20 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EC0]];
+    bOOLValue = [v20 BOOLValue];
 
-    [v16 setAccessoryType:v21 ^ 1u];
-    if (v21)
+    [v16 setAccessoryType:bOOLValue ^ 1u];
+    if (bOOLValue)
     {
       v22 = 0;
     }
@@ -366,14 +366,14 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v23 = [(HUItemTableViewController *)self itemManager];
-  v24 = [v23 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionLibrariesSection"];
-  v25 = [v12 section];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v24 = [itemManager sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionLibrariesSection"];
+  section = [pathCopy section];
 
-  if (v24 == v25)
+  if (v24 == section)
   {
     objc_opt_class();
-    v26 = v11;
+    v26 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v27 = v26;
@@ -386,16 +386,16 @@ LABEL_29:
 
     v18 = v27;
 
-    v28 = [(HUItemTableViewController *)self itemManager];
-    v29 = [v28 home];
-    v30 = [v29 currentUser];
-    v31 = [v18 user];
-    v32 = [v30 isEqual:v31];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    home = [itemManager2 home];
+    currentUser = [home currentUser];
+    user = [v18 user];
+    v32 = [currentUser isEqual:user];
 
-    [v10 setAccessoryType:v32];
-    [v10 setUserInteractionEnabled:v32];
+    [cellCopy setAccessoryType:v32];
+    [cellCopy setUserInteractionEnabled:v32];
     objc_opt_class();
-    v33 = v10;
+    v33 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v34 = v33;
@@ -416,14 +416,14 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v36 = [(HUItemTableViewController *)self itemManager];
-  v37 = [v36 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionRecentVisitorsSectionIdentifier"];
-  v38 = [v12 section];
+  itemManager3 = [(HUItemTableViewController *)self itemManager];
+  v37 = [itemManager3 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionRecentVisitorsSectionIdentifier"];
+  section2 = [pathCopy section];
 
-  if (v37 == v38)
+  if (v37 == section2)
   {
     objc_opt_class();
-    v39 = v10;
+    v39 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v40 = v39;
@@ -437,49 +437,49 @@ LABEL_29:
     v18 = v40;
 
     [v18 setAvatarSize:44.0];
-    v41 = [MEMORY[0x277D756E0] cellConfiguration];
-    v42 = [v11 latestResults];
-    v43 = [v42 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+    latestResults2 = [itemCopy latestResults];
+    v43 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
     if (v43)
     {
-      [v41 setText:v43];
+      [cellConfiguration setText:v43];
     }
 
     else
     {
       v44 = _HULocalizedStringWithDefaultValue(@"HUFaceRecognitionPersonNameCellUnknownPerson", @"HUFaceRecognitionPersonNameCellUnknownPerson", 1);
-      [v41 setText:v44];
+      [cellConfiguration setText:v44];
     }
 
-    v45 = [v11 latestResults];
-    v46 = [v45 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
-    [v41 setSecondaryText:v46];
+    latestResults3 = [itemCopy latestResults];
+    v46 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+    [cellConfiguration setSecondaryText:v46];
 
-    v47 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v48 = [v41 secondaryTextProperties];
-    [v48 setColor:v47];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    secondaryTextProperties = [cellConfiguration secondaryTextProperties];
+    [secondaryTextProperties setColor:secondaryLabelColor];
 
-    v49 = [v11 latestResults];
+    latestResults4 = [itemCopy latestResults];
     v50 = *MEMORY[0x277D13CF0];
-    v51 = [v49 objectForKeyedSubscript:*MEMORY[0x277D13CF0]];
+    v51 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13CF0]];
 
     if (v51)
     {
-      v52 = [v11 latestResults];
-      v53 = [v52 objectForKeyedSubscript:v50];
-      [v41 setImage:v53];
+      latestResults5 = [itemCopy latestResults];
+      v53 = [latestResults5 objectForKeyedSubscript:v50];
+      [cellConfiguration setImage:v53];
 
-      v54 = [v41 imageProperties];
-      [v54 setCornerRadius:22.0];
+      imageProperties = [cellConfiguration imageProperties];
+      [imageProperties setCornerRadius:22.0];
 
-      v55 = [v41 imageProperties];
-      [v55 setMaximumSize:{44.0, 44.0}];
+      imageProperties2 = [cellConfiguration imageProperties];
+      [imageProperties2 setMaximumSize:{44.0, 44.0}];
 
-      v56 = [v41 imageProperties];
-      [v56 setReservedLayoutSize:{44.0, 44.0}];
+      imageProperties3 = [cellConfiguration imageProperties];
+      [imageProperties3 setReservedLayoutSize:{44.0, 44.0}];
     }
 
-    [v39 setContentConfiguration:v41];
+    [v39 setContentConfiguration:cellConfiguration];
     [v39 setAccessoryType:1];
 
     goto LABEL_29;
@@ -488,50 +488,50 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v40.receiver = self;
   v40.super_class = HUFaceRecognitionLibraryListViewController;
-  [(HUItemTableViewController *)&v40 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(HUItemTableViewController *)self itemManager];
-  v8 = [v7 displayedItemAtIndexPath:v6];
+  [(HUItemTableViewController *)&v40 tableView:view didSelectRowAtIndexPath:pathCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v8 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  v9 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
-  v10 = [v9 knownToHomeItem];
-  v11 = [v8 isEqual:v10];
+  listItemManager = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
+  knownToHomeItem = [listItemManager knownToHomeItem];
+  v11 = [v8 isEqual:knownToHomeItem];
 
   if (v11)
   {
-    v12 = [v8 latestResults];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13EC0]];
-    v14 = [v13 BOOLValue];
+    latestResults = [v8 latestResults];
+    v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EC0]];
+    bOOLValue = [v13 BOOLValue];
 
-    if ((v14 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v15 = [HUFaceRecognitionKnownToHomeViewController alloc];
-      v16 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
-      v17 = [v16 home];
-      v18 = [(HUFaceRecognitionKnownToHomeViewController *)v15 initWithHome:v17];
+      listItemManager2 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
+      home = [listItemManager2 home];
+      v18 = [(HUFaceRecognitionKnownToHomeViewController *)v15 initWithHome:home];
 
 LABEL_15:
-      v30 = [(HUFaceRecognitionLibraryListViewController *)self navigationController];
-      v39 = [(HUFaceRecognitionUserPhotosLibrarySettingsViewController *)v30 hu_pushPreloadableViewController:v18 animated:1];
+      navigationController = [(HUFaceRecognitionLibraryListViewController *)self navigationController];
+      v39 = [(HUFaceRecognitionUserPhotosLibrarySettingsViewController *)navigationController hu_pushPreloadableViewController:v18 animated:1];
       goto LABEL_16;
     }
   }
 
   else
   {
-    v19 = [v6 section];
-    v20 = [(HUItemTableViewController *)self itemManager];
-    v21 = [v20 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionLibrariesSection"];
+    section = [pathCopy section];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    v21 = [itemManager2 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionLibrariesSection"];
 
-    if (v19 == v21)
+    if (section == v21)
     {
       objc_opt_class();
-      v22 = [(HUItemTableViewController *)self itemManager];
-      v23 = [v22 displayedItemAtIndexPath:v6];
+      itemManager3 = [(HUItemTableViewController *)self itemManager];
+      v23 = [itemManager3 displayedItemAtIndexPath:pathCopy];
       if (objc_opt_isKindOfClass())
       {
         v24 = v23;
@@ -544,20 +544,20 @@ LABEL_15:
 
       v18 = v24;
 
-      v25 = [(HUFaceRecognitionPersonEditorViewController *)v18 user];
-      v26 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
-      v27 = [v26 home];
-      v28 = [v27 currentUser];
-      v29 = [v25 isEqual:v28];
+      user = [(HUFaceRecognitionPersonEditorViewController *)v18 user];
+      listItemManager3 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
+      home2 = [listItemManager3 home];
+      currentUser = [home2 currentUser];
+      v29 = [user isEqual:currentUser];
 
       if (!v29)
       {
         goto LABEL_17;
       }
 
-      v30 = [[HUFaceRecognitionUserPhotosLibrarySettingsViewController alloc] initWithUserPhotosLibraryItem:v18];
-      v31 = [(HUFaceRecognitionLibraryListViewController *)self navigationController];
-      v32 = [v31 hu_pushPreloadableViewController:v30 animated:1];
+      navigationController = [[HUFaceRecognitionUserPhotosLibrarySettingsViewController alloc] initWithUserPhotosLibraryItem:v18];
+      navigationController2 = [(HUFaceRecognitionLibraryListViewController *)self navigationController];
+      v32 = [navigationController2 hu_pushPreloadableViewController:navigationController animated:1];
 
 LABEL_16:
 LABEL_17:
@@ -565,11 +565,11 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v33 = [v6 section];
-    v34 = [(HUItemTableViewController *)self itemManager];
-    v35 = [v34 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionRecentVisitorsSectionIdentifier"];
+    section2 = [pathCopy section];
+    itemManager4 = [(HUItemTableViewController *)self itemManager];
+    v35 = [itemManager4 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionRecentVisitorsSectionIdentifier"];
 
-    if (v33 == v35)
+    if (section2 == v35)
     {
       v36 = v8;
       if ([v36 conformsToProtocol:&unk_2825BD540])
@@ -593,31 +593,31 @@ LABEL_17:
 LABEL_18:
 }
 
-- (id)trailingSwipeActionsForItem:(id)a3
+- (id)trailingSwipeActionsForItem:(id)item
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v48 = self;
+    selfCopy = self;
     v49 = 2112;
-    v50 = v4;
+    v50 = itemCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@: User swiped for trailing actions on item: %@", buf, 0x16u);
   }
 
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 indexPathForItem:v4];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager indexPathForItem:itemCopy];
 
-  v8 = [v7 section];
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionRecentVisitorsSectionIdentifier"];
+  section = [v7 section];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  v10 = [itemManager2 sectionIndexForDisplayedSectionIdentifier:@"HUFaceRecognitionRecentVisitorsSectionIdentifier"];
 
-  if (v8 == v10)
+  if (section == v10)
   {
     objc_opt_class();
-    v11 = v4;
+    v11 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
@@ -630,11 +630,11 @@ LABEL_18:
 
     v13 = v12;
 
-    v14 = [v11 latestResults];
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    latestResults = [v11 latestResults];
+    v15 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
 
-    v16 = [v13 cameraProfile];
-    v17 = [v16 clipManager];
+    cameraProfile = [v13 cameraProfile];
+    clipManager = [cameraProfile clipManager];
 
     if ([v15 length])
     {
@@ -645,8 +645,8 @@ LABEL_18:
       v41[2] = __74__HUFaceRecognitionLibraryListViewController_trailingSwipeActionsForItem___block_invoke;
       v41[3] = &unk_277DC4560;
       v42 = v13;
-      v43 = v17;
-      v44 = self;
+      v43 = clipManager;
+      selfCopy2 = self;
       v26 = [v25 contextualActionWithStyle:1 title:v24 handler:v41];
       v46 = v26;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
@@ -656,11 +656,11 @@ LABEL_18:
 
     else
     {
-      v30 = [v11 latestResults];
-      v24 = [v30 objectForKeyedSubscript:*MEMORY[0x277D14060]];
+      latestResults2 = [v11 latestResults];
+      v24 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D14060]];
 
-      v31 = [v11 latestResults];
-      v28 = [v31 objectForKeyedSubscript:*MEMORY[0x277D13CE8]];
+      latestResults3 = [v11 latestResults];
+      v28 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13CE8]];
 
       if (v24 || [v28 count])
       {
@@ -671,9 +671,9 @@ LABEL_18:
         v36[2] = __74__HUFaceRecognitionLibraryListViewController_trailingSwipeActionsForItem___block_invoke_114;
         v36[3] = &unk_277DC45B0;
         v37 = v13;
-        v38 = self;
+        selfCopy3 = self;
         v39 = v11;
-        v40 = v17;
+        v40 = clipManager;
         v33 = [v35 contextualActionWithStyle:1 title:v32 handler:v36];
 
         v45 = v33;
@@ -890,10 +890,10 @@ void __74__HUFaceRecognitionLibraryListViewController_trailingSwipeActionsForIte
   }
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v7 = a3;
+  onCopy = on;
+  cellCopy = cell;
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -901,15 +901,15 @@ void __74__HUFaceRecognitionLibraryListViewController_trailingSwipeActionsForIte
   aBlock[3] = &unk_277DC45D8;
   objc_copyWeak(v50, location);
   v50[1] = a2;
-  v8 = v7;
+  v8 = cellCopy;
   v49 = v8;
   v9 = _Block_copy(aBlock);
-  if (v4)
+  if (onCopy)
   {
-    v10 = [(HUItemTableViewController *)self itemManager];
-    v11 = [v10 home];
-    v12 = [v11 hf_allCameraProfilesWithSmartMotionRecordingEnabled];
-    v13 = [v12 count];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    home = [itemManager home];
+    hf_allCameraProfilesWithSmartMotionRecordingEnabled = [home hf_allCameraProfilesWithSmartMotionRecordingEnabled];
+    v13 = [hf_allCameraProfilesWithSmartMotionRecordingEnabled count];
 
     if (v13)
     {
@@ -975,20 +975,20 @@ void __74__HUFaceRecognitionLibraryListViewController_trailingSwipeActionsForIte
   }
 
 LABEL_9:
-  v32 = [(HUFaceRecognitionLibraryListViewController *)self tableView];
-  v33 = [v32 indexPathForCell:v8];
+  tableView = [(HUFaceRecognitionLibraryListViewController *)self tableView];
+  v33 = [tableView indexPathForCell:v8];
 
-  v34 = [(HUItemTableViewController *)self itemManager];
-  v35 = [v34 displayedItemAtIndexPath:v33];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  v35 = [itemManager2 displayedItemAtIndexPath:v33];
 
-  v36 = [v35 latestResults];
+  latestResults = [v35 latestResults];
   v37 = *MEMORY[0x277D13F68];
-  v38 = [v36 objectForKey:*MEMORY[0x277D13F68]];
+  v38 = [latestResults objectForKey:*MEMORY[0x277D13F68]];
 
   if (v38)
   {
-    v39 = [v35 latestResults];
-    v40 = [v39 objectForKeyedSubscript:v37];
+    latestResults2 = [v35 latestResults];
+    v40 = [latestResults2 objectForKeyedSubscript:v37];
   }
 
   else
@@ -996,7 +996,7 @@ LABEL_9:
     v40 = 0;
   }
 
-  [MEMORY[0x277D143D8] sendSwitchCellToggleEventForItem:v35 isOn:v4 title:v40 fromSourceViewController:self];
+  [MEMORY[0x277D143D8] sendSwitchCellToggleEventForItem:v35 isOn:onCopy title:v40 fromSourceViewController:self];
 
   objc_destroyWeak(v50);
   objc_destroyWeak(location);
@@ -1049,22 +1049,22 @@ void __67__HUFaceRecognitionLibraryListViewController_switchCell_didTurnOn___blo
   [*(a1 + 32) setOn:(*(a1 + 40) & 1) == 0 animated:1];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138412546;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
-    v29 = v7;
+    v29 = lCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v26, 0x16u);
   }
 
-  v9 = [MEMORY[0x277CBEBC0] hf_faceRecognitionPrivacyURL];
-  v10 = [v7 isEqual:v9];
+  hf_faceRecognitionPrivacyURL = [MEMORY[0x277CBEBC0] hf_faceRecognitionPrivacyURL];
+  v10 = [lCopy isEqual:hf_faceRecognitionPrivacyURL];
 
   if (v10)
   {
@@ -1087,16 +1087,16 @@ void __67__HUFaceRecognitionLibraryListViewController_switchCell_didTurnOn___blo
     v20 = _HULocalizedStringWithDefaultValue(@"HUFaceRecognitionLearnMoreAnalysisSectionBody", @"HUFaceRecognitionLearnMoreAnalysisSectionBody", 1);
     [v13 addSectionWithHeader:v19 content:v20];
 
-    v21 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     v22 = _HULocalizedStringWithDefaultValue(@"HUDoneTitle", @"HUDoneTitle", 1);
-    [v21 setTitle:v22 forState:0];
+    [boldButton setTitle:v22 forState:0];
 
-    [v21 addTarget:self action:sel_dismissTextViewController forControlEvents:64];
-    v23 = [v13 buttonTray];
-    [v23 addButton:v21];
+    [boldButton addTarget:self action:sel_dismissTextViewController forControlEvents:64];
+    buttonTray = [v13 buttonTray];
+    [buttonTray addButton:boldButton];
 
-    v24 = [(HUFaceRecognitionLibraryListViewController *)self navigationController];
-    [v24 presentViewController:v13 animated:1 completion:0];
+    navigationController = [(HUFaceRecognitionLibraryListViewController *)self navigationController];
+    [navigationController presentViewController:v13 animated:1 completion:0];
   }
 
   return 0;
@@ -1104,16 +1104,16 @@ void __67__HUFaceRecognitionLibraryListViewController_switchCell_didTurnOn___blo
 
 - (void)dismissTextViewController
 {
-  v2 = [(HUFaceRecognitionLibraryListViewController *)self navigationController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(HUFaceRecognitionLibraryListViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)personEditorViewController:(id)a3 didUpdateItem:(id)a4
+- (void)personEditorViewController:(id)controller didUpdateItem:(id)item
 {
-  v14 = a4;
-  if ([v14 conformsToProtocol:&unk_2824C0788])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_2824C0788])
   {
-    v6 = v14;
+    v6 = itemCopy;
   }
 
   else
@@ -1122,32 +1122,32 @@ void __67__HUFaceRecognitionLibraryListViewController_switchCell_didTurnOn___blo
   }
 
   v7 = v6;
-  v8 = [v7 homeKitObject];
+  homeKitObject = [v7 homeKitObject];
 
-  v9 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
-  v10 = [v9 matchingItemForHomeKitObject:v8];
+  listItemManager = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
+  v10 = [listItemManager matchingItemForHomeKitObject:homeKitObject];
 
   if (v10)
   {
-    v11 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
+    listItemManager2 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
     v12 = [MEMORY[0x277CBEB98] setWithObject:v10];
-    v13 = [v11 updateResultsForItems:v12 senderSelector:a2];
+    v13 = [listItemManager2 updateResultsForItems:v12 senderSelector:a2];
   }
 }
 
 - (void)dealloc
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
-  v4 = [v3 home];
+  listItemManager = [(HUFaceRecognitionLibraryListViewController *)self listItemManager];
+  home = [listItemManager home];
 
-  v5 = [MEMORY[0x277D146E8] sharedDispatcher];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v4 hf_allCameraProfiles];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  hf_allCameraProfiles = [home hf_allCameraProfiles];
+  v7 = [hf_allCameraProfiles countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1159,17 +1159,17 @@ void __67__HUFaceRecognitionLibraryListViewController_switchCell_didTurnOn___blo
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(hf_allCameraProfiles);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) clipManager];
-        [v5 removeObservationForCameraClipManager:v11];
+        clipManager = [*(*(&v13 + 1) + 8 * v10) clipManager];
+        [mEMORY[0x277D146E8] removeObservationForCameraClipManager:clipManager];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [hf_allCameraProfiles countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);

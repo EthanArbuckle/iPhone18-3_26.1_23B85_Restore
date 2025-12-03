@@ -1,27 +1,27 @@
 @interface NSBundle
-+ (id)_gkBundleIdentifierFromAuditToken:(id *)a3;
-+ (id)_gkBundleIdentifierFromConnection:(id)a3;
-+ (id)_gkBundleIdentifierFromPID:(int)a3;
-+ (id)_gkBundleIdentifierOrProcessNameForPID:(int)a3;
-+ (id)_gkBundleInfoWithPID:(int)a3;
-+ (id)_gkBundleWithIdentifier:(id)a3;
-+ (id)_gkBundleWithPID:(int)a3;
-+ (id)_gkLocalizedMessageFromDictionary:(id)a3 forBundleID:(id)a4;
-+ (id)_gkLocalizedMessageFromPushDictionary:(id)a3 forBundleID:(id)a4;
-+ (id)executablePathForPid:(int)a3;
-+ (id)executableURLForPid:(int)a3;
++ (id)_gkBundleIdentifierFromAuditToken:(id *)token;
++ (id)_gkBundleIdentifierFromConnection:(id)connection;
++ (id)_gkBundleIdentifierFromPID:(int)d;
++ (id)_gkBundleIdentifierOrProcessNameForPID:(int)d;
++ (id)_gkBundleInfoWithPID:(int)d;
++ (id)_gkBundleWithIdentifier:(id)identifier;
++ (id)_gkBundleWithPID:(int)d;
++ (id)_gkLocalizedMessageFromDictionary:(id)dictionary forBundleID:(id)d;
++ (id)_gkLocalizedMessageFromPushDictionary:(id)dictionary forBundleID:(id)d;
++ (id)executablePathForPid:(int)pid;
++ (id)executableURLForPid:(int)pid;
 - (BOOL)_gkIsBadgingEnabled;
 - (BOOL)_gkIsGameCenterEnabled;
 @end
 
 @implementation NSBundle
 
-+ (id)_gkBundleIdentifierOrProcessNameForPID:(int)a3
++ (id)_gkBundleIdentifierOrProcessNameForPID:(int)d
 {
-  v4 = [objc_opt_class() executablePathForPid:*&a3];
+  v4 = [objc_opt_class() executablePathForPid:*&d];
   if (!v4)
   {
-    v11 = 0;
+    lastPathComponent = 0;
     goto LABEL_29;
   }
 
@@ -35,7 +35,7 @@
     if (v9)
     {
       v10 = v9;
-      v11 = CFBundleGetIdentifier(v9);
+      lastPathComponent = CFBundleGetIdentifier(v9);
       if (!os_log_GKGeneral)
       {
         v12 = GKOSLoggers();
@@ -45,13 +45,13 @@
       if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v26 = v11;
+        v26 = lastPathComponent;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Getting bundleId from bundleURL %@", buf, 0xCu);
       }
 
       CFRelease(v10);
       CFRelease(v8);
-      if (v11)
+      if (lastPathComponent)
       {
         goto LABEL_28;
       }
@@ -70,7 +70,7 @@
   }
 
   v15 = v14;
-  v11 = [(__CFDictionary *)v14 objectForKey:@"CFBundleIdentifier"];
+  lastPathComponent = [(__CFDictionary *)v14 objectForKey:@"CFBundleIdentifier"];
   if (!os_log_GKGeneral)
   {
     v16 = GKOSLoggers();
@@ -84,15 +84,15 @@
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Getting bundleId from plist in binary %@", buf, 0xCu);
   }
 
-  if (!v11)
+  if (!lastPathComponent)
   {
 LABEL_23:
-    if (!proc_name(a3, buf, 0x400u))
+    if (!proc_name(d, buf, 0x400u))
     {
       goto LABEL_24;
     }
 
-    v11 = [NSString stringWithUTF8String:buf];
+    lastPathComponent = [NSString stringWithUTF8String:buf];
     if (!os_log_GKGeneral)
     {
       v18 = GKOSLoggers();
@@ -102,14 +102,14 @@ LABEL_23:
     if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
     {
       v23 = 138412290;
-      v24 = v11;
+      v24 = lastPathComponent;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Getting bundleID in debug from pid/procname %@", &v23, 0xCu);
     }
 
-    if (!v11)
+    if (!lastPathComponent)
     {
 LABEL_24:
-      v11 = [(__CFString *)v4 lastPathComponent];
+      lastPathComponent = [(__CFString *)v4 lastPathComponent];
       if (!os_log_GKGeneral)
       {
         v20 = GKOSLoggers();
@@ -119,7 +119,7 @@ LABEL_24:
       if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v26 = v11;
+        v26 = lastPathComponent;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Getting bundleId from process name %@", buf, 0xCu);
       }
     }
@@ -130,12 +130,12 @@ LABEL_28:
   objc_autoreleasePoolPop(v5);
 LABEL_29:
 
-  return v11;
+  return lastPathComponent;
 }
 
-+ (id)executablePathForPid:(int)a3
++ (id)executablePathForPid:(int)pid
 {
-  v3 = proc_pidpath(a3, buffer, 0x1000u);
+  v3 = proc_pidpath(pid, buffer, 0x1000u);
   if (v3 < 1)
   {
     v4 = 0;
@@ -149,9 +149,9 @@ LABEL_29:
   return v4;
 }
 
-+ (id)executableURLForPid:(int)a3
++ (id)executableURLForPid:(int)pid
 {
-  v3 = [objc_opt_class() executablePathForPid:*&a3];
+  v3 = [objc_opt_class() executablePathForPid:*&pid];
   if (v3)
   {
     v4 = [NSURL fileURLWithPath:v3];
@@ -165,26 +165,26 @@ LABEL_29:
   return v4;
 }
 
-+ (id)_gkBundleWithIdentifier:(id)a3
++ (id)_gkBundleWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[GKApplicationWorkspace defaultWorkspace];
-  v5 = [v4 applicationProxyForBundleID:v3];
+  v5 = [v4 applicationProxyForBundleID:identifierCopy];
 
-  v6 = [v5 bundle];
+  bundle = [v5 bundle];
 
-  return v6;
+  return bundle;
 }
 
-+ (id)_gkBundleWithPID:(int)a3
++ (id)_gkBundleWithPID:(int)d
 {
-  v4 = [objc_opt_class() executableURLForPid:*&a3];
+  v4 = [objc_opt_class() executableURLForPid:*&d];
   if (v4)
   {
     v5 = _CFBundleCopyBundleURLForExecutableURL();
     if (v5)
     {
-      v6 = [a1 bundleWithURL:v5];
+      v6 = [self bundleWithURL:v5];
     }
 
     else
@@ -201,9 +201,9 @@ LABEL_29:
   return v6;
 }
 
-+ (id)_gkBundleInfoWithPID:(int)a3
++ (id)_gkBundleInfoWithPID:(int)d
 {
-  v3 = [objc_opt_class() executableURLForPid:*&a3];
+  v3 = [objc_opt_class() executableURLForPid:*&d];
   v4 = v3;
   if (v3)
   {
@@ -218,14 +218,14 @@ LABEL_29:
   return v5;
 }
 
-+ (id)_gkBundleIdentifierFromPID:(int)a3
++ (id)_gkBundleIdentifierFromPID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v4 = [NSBundle _gkBundleWithPID:?];
   if (v4)
   {
     v5 = v4;
-    v6 = [v4 bundleIdentifier];
+    bundleIdentifier = [v4 bundleIdentifier];
     v7 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
     {
@@ -235,7 +235,7 @@ LABEL_29:
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_10028DE48(v6, v7, v9, v10, v11, v12, v13, v14);
+      sub_10028DE48(bundleIdentifier, v7, v9, v10, v11, v12, v13, v14);
     }
 
 LABEL_6:
@@ -250,7 +250,7 @@ LABEL_6:
     v16 = [v15 objectForKey:@"CFBundleIdentifier"];
     if (v16)
     {
-      v6 = v16;
+      bundleIdentifier = v16;
       v17 = os_log_GKGeneral;
       if (!os_log_GKGeneral)
       {
@@ -260,24 +260,24 @@ LABEL_6:
 
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        sub_10028DEB4(v6, v17, v19, v20, v21, v22, v23, v24);
+        sub_10028DEB4(bundleIdentifier, v17, v19, v20, v21, v22, v23, v24);
       }
 
       goto LABEL_6;
     }
   }
 
-  v6 = 0;
+  bundleIdentifier = 0;
 LABEL_14:
 
-  return v6;
+  return bundleIdentifier;
 }
 
-+ (id)_gkBundleIdentifierFromAuditToken:(id *)a3
++ (id)_gkBundleIdentifierFromAuditToken:(id *)token
 {
   error = 0;
-  v4 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v4 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v4;
   if (CPCopyBundleIdentifierAndTeamFromAuditToken())
   {
@@ -297,8 +297,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v14 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v14 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v14;
   v15 = SecTaskCreateWithAuditToken(0, &token);
   if (!v15)
@@ -358,13 +358,13 @@ LABEL_15:
   return v5;
 }
 
-+ (id)_gkBundleIdentifierFromConnection:(id)a3
++ (id)_gkBundleIdentifierFromConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -372,13 +372,13 @@ LABEL_15:
     memset(v9, 0, sizeof(v9));
   }
 
-  v6 = [a1 _gkBundleIdentifierFromAuditToken:v9];
+  v6 = [self _gkBundleIdentifierFromAuditToken:v9];
   if (!v6)
   {
-    v7 = [v5 processIdentifier];
-    if (v7)
+    processIdentifier = [v5 processIdentifier];
+    if (processIdentifier)
     {
-      v6 = [a1 _gkBundleIdentifierFromPID:v7];
+      v6 = [self _gkBundleIdentifierFromPID:processIdentifier];
     }
 
     else
@@ -390,19 +390,19 @@ LABEL_15:
   return v6;
 }
 
-+ (id)_gkLocalizedMessageFromDictionary:(id)a3 forBundleID:(id)a4
++ (id)_gkLocalizedMessageFromDictionary:(id)dictionary forBundleID:(id)d
 {
-  v5 = a4;
-  if (!a3)
+  dCopy = d;
+  if (!dictionary)
   {
     v12 = 0;
     goto LABEL_11;
   }
 
-  v6 = a3;
-  v7 = [v6 objectForKey:@"loc-key"];
-  v8 = [v6 objectForKey:@"loc-args"];
-  v9 = [v6 objectForKey:@"loc-default"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKey:@"loc-key"];
+  v8 = [dictionaryCopy objectForKey:@"loc-args"];
+  v9 = [dictionaryCopy objectForKey:@"loc-default"];
 
   if (!v9)
   {
@@ -410,8 +410,8 @@ LABEL_15:
   }
 
   v10 = +[NSBundle mainBundle];
-  v11 = [v10 bundleIdentifier];
-  if ([v11 isEqualToString:v5])
+  bundleIdentifier = [v10 bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:dCopy])
   {
 
 LABEL_9:
@@ -420,14 +420,14 @@ LABEL_9:
   }
 
   v13 = +[GKApplicationWorkspace defaultWorkspace];
-  v14 = [v13 applicationIsInstalled:v5];
+  v14 = [v13 applicationIsInstalled:dCopy];
 
   if (!v14)
   {
     goto LABEL_9;
   }
 
-  v15 = [NSBundle _gkBundleWithIdentifier:v5];
+  v15 = [NSBundle _gkBundleWithIdentifier:dCopy];
 LABEL_10:
   v16 = v15;
   v12 = [v15 _gkLocalizedStringForKey:v7 defaultValue:v9 arguments:v8];
@@ -437,15 +437,15 @@ LABEL_11:
   return v12;
 }
 
-+ (id)_gkLocalizedMessageFromPushDictionary:(id)a3 forBundleID:(id)a4
++ (id)_gkLocalizedMessageFromPushDictionary:(id)dictionary forBundleID:(id)d
 {
-  v5 = a4;
-  if (a3)
+  dCopy = d;
+  if (dictionary)
   {
-    v6 = a3;
-    v7 = [v6 objectForKeyedSubscript:@"k"];
-    v8 = [v6 objectForKeyedSubscript:@"a"];
-    v9 = [v6 objectForKeyedSubscript:@"d"];
+    dictionaryCopy = dictionary;
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"k"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"a"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"d"];
 
     if (!v9)
     {
@@ -453,9 +453,9 @@ LABEL_11:
     }
 
     v10 = +[GKApplicationWorkspace defaultWorkspace];
-    v11 = [v10 applicationIsInstalled:v5];
+    v11 = [v10 applicationIsInstalled:dCopy];
 
-    if (v11 && ([NSBundle _gkBundleWithIdentifier:v5], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v11 && ([NSBundle _gkBundleWithIdentifier:dCopy], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v13 = v12;
       v14 = [v12 _gkLocalizedStringForKey:v7 defaultValue:v9 arguments:v8];
@@ -477,9 +477,9 @@ LABEL_11:
 
 - (BOOL)_gkIsGameCenterEnabled
 {
-  v2 = [(NSBundle *)self bundleIdentifier];
+  bundleIdentifier = [(NSBundle *)self bundleIdentifier];
   v3 = +[GKApplicationWorkspace defaultWorkspace];
-  v4 = [v3 applicationProxyForBundleID:v2];
+  v4 = [v3 applicationProxyForBundleID:bundleIdentifier];
 
   LOBYTE(v3) = [v4 isGameCenterEnabled];
   return v3;
@@ -487,8 +487,8 @@ LABEL_11:
 
 - (BOOL)_gkIsBadgingEnabled
 {
-  v2 = [(NSBundle *)self infoDictionary];
-  v3 = [v2 objectForKey:@"GKGameCenterBadgingDisabled"];
+  infoDictionary = [(NSBundle *)self infoDictionary];
+  v3 = [infoDictionary objectForKey:@"GKGameCenterBadgingDisabled"];
 
   if (v3)
   {

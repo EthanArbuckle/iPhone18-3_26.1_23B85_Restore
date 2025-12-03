@@ -1,11 +1,11 @@
 @interface BGSystemTaskCheckpoints
-+ (BOOL)reportCustomCheckpoint:(unint64_t)a3 forTask:(id)a4 error:(id *)a5;
-+ (BOOL)reportFeatureCheckpoint:(unint64_t)a3 forFeature:(unint64_t)a4 atDate:(id)a5 error:(id *)a6;
-+ (BOOL)validateFeatureCheckpoint:(unint64_t)a3;
++ (BOOL)reportCustomCheckpoint:(unint64_t)checkpoint forTask:(id)task error:(id *)error;
++ (BOOL)reportFeatureCheckpoint:(unint64_t)checkpoint forFeature:(unint64_t)feature atDate:(id)date error:(id *)error;
++ (BOOL)validateFeatureCheckpoint:(unint64_t)checkpoint;
 + (id)logger;
 + (id)sharedInstance;
 - (BGSystemTaskCheckpoints)init;
-- (BOOL)reportProgressForTaskWithName:(id)a3 withGlobalTarget:(unint64_t)a4 completed:(unint64_t)a5 atDate:(id)a6 category:(unint64_t)a7 subCategory:(id)a8 error:(id *)a9;
+- (BOOL)reportProgressForTaskWithName:(id)name withGlobalTarget:(unint64_t)target completed:(unint64_t)completed atDate:(id)date category:(unint64_t)category subCategory:(id)subCategory error:(id *)error;
 @end
 
 @implementation BGSystemTaskCheckpoints
@@ -29,27 +29,27 @@ uint64_t __33__BGSystemTaskCheckpoints_logger__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)reportFeatureCheckpoint:(unint64_t)a3 forFeature:(unint64_t)a4 atDate:(id)a5 error:(id *)a6
++ (BOOL)reportFeatureCheckpoint:(unint64_t)checkpoint forFeature:(unint64_t)feature atDate:(id)date error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a5;
+  dateCopy = date;
   v10 = +[BGSystemTaskCheckpoints logger];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v24 = a3;
+    checkpointCopy = checkpoint;
     v25 = 2048;
-    v26 = a4;
+    checkpointCopy2 = feature;
     v27 = 2112;
-    v28 = v9;
+    featureCopy2 = dateCopy;
     _os_log_impl(&dword_1B236A000, v10, OS_LOG_TYPE_DEFAULT, "Received feature checkpoint %lu for feature %lu at: %@", buf, 0x20u);
   }
 
-  if ([BGSystemTaskCheckpoints validateFeatureCheckpoint:a3])
+  if ([BGSystemTaskCheckpoints validateFeatureCheckpoint:checkpoint])
   {
-    if (v9)
+    if (dateCopy)
     {
-      v11 = v9;
+      v11 = dateCopy;
     }
 
     else
@@ -58,9 +58,9 @@ uint64_t __33__BGSystemTaskCheckpoints_logger__block_invoke()
     }
 
     v15 = v11;
-    v17 = [MEMORY[0x1E699A4B8] sharedScheduler];
+    mEMORY[0x1E699A4B8] = [MEMORY[0x1E699A4B8] sharedScheduler];
     v22 = 0;
-    v16 = [v17 reportFeatureCheckpoint:a3 forFeature:a4 atDate:v15 error:&v22];
+    v16 = [mEMORY[0x1E699A4B8] reportFeatureCheckpoint:checkpoint forFeature:feature atDate:v15 error:&v22];
     v13 = v22;
 
     if ((v16 & 1) == 0)
@@ -69,20 +69,20 @@ uint64_t __33__BGSystemTaskCheckpoints_logger__block_invoke()
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v24 = v13;
+        checkpointCopy = v13;
         v25 = 2048;
-        v26 = a3;
+        checkpointCopy2 = checkpoint;
         v27 = 2048;
-        v28 = a4;
+        featureCopy2 = feature;
         v29 = 2112;
         v30 = v15;
         _os_log_error_impl(&dword_1B236A000, v18, OS_LOG_TYPE_ERROR, "Error: %@ feature checkpoint %lu for feature %lu at %@", buf, 0x2Au);
       }
 
-      if (a6)
+      if (error)
       {
         v19 = v13;
-        *a6 = v13;
+        *error = v13;
       }
     }
   }
@@ -91,16 +91,16 @@ uint64_t __33__BGSystemTaskCheckpoints_logger__block_invoke()
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:100 userInfo:0];
     v13 = v12;
-    if (a6)
+    if (error)
     {
       v14 = v12;
-      *a6 = v13;
+      *error = v13;
     }
 
     v15 = +[BGSystemTaskCheckpoints logger];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [BGSystemTaskCheckpoints reportFeatureCheckpoint:v13 forFeature:a3 atDate:v15 error:?];
+      [BGSystemTaskCheckpoints reportFeatureCheckpoint:v13 forFeature:checkpoint atDate:v15 error:?];
     }
 
     v16 = 0;
@@ -110,23 +110,23 @@ uint64_t __33__BGSystemTaskCheckpoints_logger__block_invoke()
   return v16;
 }
 
-+ (BOOL)reportCustomCheckpoint:(unint64_t)a3 forTask:(id)a4 error:(id *)a5
++ (BOOL)reportCustomCheckpoint:(unint64_t)checkpoint forTask:(id)task error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  taskCopy = task;
   v8 = +[BGSystemTaskCheckpoints logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v18 = a3;
+    checkpointCopy = checkpoint;
     v19 = 2112;
-    v20 = v7;
+    checkpointCopy2 = taskCopy;
     _os_log_impl(&dword_1B236A000, v8, OS_LOG_TYPE_DEFAULT, "Received custom checkpoint %lu for task %@", buf, 0x16u);
   }
 
-  v9 = [MEMORY[0x1E699A4B8] sharedScheduler];
+  mEMORY[0x1E699A4B8] = [MEMORY[0x1E699A4B8] sharedScheduler];
   v16 = 0;
-  v10 = [v9 reportCustomCheckpoint:a3 forTask:v7 error:&v16];
+  v10 = [mEMORY[0x1E699A4B8] reportCustomCheckpoint:checkpoint forTask:taskCopy error:&v16];
   v11 = v16;
 
   if ((v10 & 1) == 0)
@@ -135,18 +135,18 @@ uint64_t __33__BGSystemTaskCheckpoints_logger__block_invoke()
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v18 = v11;
+      checkpointCopy = v11;
       v19 = 2048;
-      v20 = a3;
+      checkpointCopy2 = checkpoint;
       v21 = 2112;
-      v22 = v7;
+      v22 = taskCopy;
       _os_log_error_impl(&dword_1B236A000, v12, OS_LOG_TYPE_ERROR, "Error: %@ custom checkpoint %lu for task %@", buf, 0x20u);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -160,7 +160,7 @@ uint64_t __33__BGSystemTaskCheckpoints_logger__block_invoke()
   block[1] = 3221225472;
   block[2] = __41__BGSystemTaskCheckpoints_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -195,12 +195,12 @@ uint64_t __41__BGSystemTaskCheckpoints_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)reportProgressForTaskWithName:(id)a3 withGlobalTarget:(unint64_t)a4 completed:(unint64_t)a5 atDate:(id)a6 category:(unint64_t)a7 subCategory:(id)a8 error:(id *)a9
+- (BOOL)reportProgressForTaskWithName:(id)name withGlobalTarget:(unint64_t)target completed:(unint64_t)completed atDate:(id)date category:(unint64_t)category subCategory:(id)subCategory error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a6;
-  v17 = a8;
+  nameCopy = name;
+  dateCopy = date;
+  subCategoryCopy = subCategory;
   v44 = 0;
   v45 = &v44;
   v46 = 0x2020000000;
@@ -218,13 +218,13 @@ uint64_t __41__BGSystemTaskCheckpoints_sharedInstance__block_invoke(uint64_t a1)
   v29 = &unk_1E7B24078;
   v33 = &v38;
   v34 = &v44;
-  v35 = a5;
-  v36 = a4;
-  v37 = a7;
-  v19 = v17;
+  completedCopy = completed;
+  targetCopy = target;
+  categoryCopy = category;
+  v19 = subCategoryCopy;
   v30 = v19;
-  v31 = self;
-  v20 = v15;
+  selfCopy = self;
+  v20 = nameCopy;
   v32 = v20;
   dispatch_sync(queue, &v26);
   if ((v45[3] & 1) == 0)
@@ -236,19 +236,19 @@ uint64_t __41__BGSystemTaskCheckpoints_sharedInstance__block_invoke(uint64_t a1)
       *buf = 138413314;
       v49 = v25;
       v50 = 2048;
-      v51 = a5;
+      completedCopy2 = completed;
       v52 = 2048;
-      v53 = a4;
+      targetCopy2 = target;
       v54 = 2048;
-      v55 = a7;
+      categoryCopy2 = category;
       v56 = 2112;
       v57 = v19;
       _os_log_error_impl(&dword_1B236A000, v21, OS_LOG_TYPE_ERROR, "Error: %@ Completed %lu [Target:%lu] for workload %lu, subcategory %@", buf, 0x34u);
     }
 
-    if (a9)
+    if (error)
     {
-      *a9 = v39[5];
+      *error = v39[5];
     }
   }
 
@@ -459,12 +459,12 @@ void __118__BGSystemTaskCheckpoints_reportProgressForTaskWithName_withGlobalTarg
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)validateFeatureCheckpoint:(unint64_t)a3
++ (BOOL)validateFeatureCheckpoint:(unint64_t)checkpoint
 {
   result = 1;
-  if (a3 - 8 > 0x3E || ((1 << (a3 - 8)) & 0x4010040100401007) == 0)
+  if (checkpoint - 8 > 0x3E || ((1 << (checkpoint - 8)) & 0x4010040100401007) == 0)
   {
-    return a3 - 1 < 4;
+    return checkpoint - 1 < 4;
   }
 
   return result;

@@ -12,7 +12,7 @@
     return 0.0;
   }
 
-  [a1 _exteriorDismissPadding];
+  [self _exteriorDismissPadding];
   return result;
 }
 
@@ -22,7 +22,7 @@
   if (result)
   {
 
-    return [a1 _setExteriorDismissPadding:a2];
+    return [self _setExteriorDismissPadding:a2];
   }
 
   return result;

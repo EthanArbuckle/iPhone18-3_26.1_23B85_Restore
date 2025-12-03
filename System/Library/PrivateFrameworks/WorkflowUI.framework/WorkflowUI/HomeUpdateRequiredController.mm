@@ -1,5 +1,5 @@
 @interface HomeUpdateRequiredController
-- (_TtC10WorkflowUI28HomeUpdateRequiredController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10WorkflowUI28HomeUpdateRequiredController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)cancelTapped;
 - (void)viewDidLoad;
 @end
@@ -8,24 +8,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_27478001C();
 }
 
 - (void)cancelTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_274780584();
 }
 
-- (_TtC10WorkflowUI28HomeUpdateRequiredController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10WorkflowUI28HomeUpdateRequiredController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_2747805E4();
 }
 

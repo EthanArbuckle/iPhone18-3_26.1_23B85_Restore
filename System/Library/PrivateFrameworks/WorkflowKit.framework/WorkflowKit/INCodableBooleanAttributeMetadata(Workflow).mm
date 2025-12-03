@@ -37,7 +37,7 @@
     }
   }
 
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = &off_1F4B001E0;
   v10 = objc_msgSendSuper2(&v15, sel_wf_parameterStateForIntentValue_parameterDefinition_, v9, v7);
 LABEL_8:
@@ -50,14 +50,14 @@ LABEL_8:
 - (id)wf_updatedParameterDefinition:()Workflow forCodableAttribute:localizer:
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &off_1F4B001E0;
   v2 = objc_msgSendSuper2(&v14, sel_wf_updatedParameterDefinition_forCodableAttribute_localizer_);
-  v3 = [a1 defaultValue];
-  v4 = v3;
-  if (v3)
+  defaultValue = [self defaultValue];
+  v4 = defaultValue;
+  if (defaultValue)
   {
-    v5 = v3;
+    v5 = defaultValue;
   }
 
   else
@@ -71,10 +71,10 @@ LABEL_8:
   v7 = [v2 definitionByAddingEntriesInDictionary:v6];
 
   v15[0] = @"OnDisplayName";
-  v8 = [[WFINCodableBooleanAttributeDisplayName alloc] initWithAttribute:a1 isOn:1];
+  v8 = [[WFINCodableBooleanAttributeDisplayName alloc] initWithAttribute:self isOn:1];
   v15[1] = @"OffDisplayName";
   v16[0] = v8;
-  v9 = [[WFINCodableBooleanAttributeDisplayName alloc] initWithAttribute:a1 isOn:0];
+  v9 = [[WFINCodableBooleanAttributeDisplayName alloc] initWithAttribute:self isOn:0];
   v16[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v11 = [v7 definitionByAddingEntriesInDictionary:v10];

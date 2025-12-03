@@ -1,19 +1,19 @@
 @interface AWDMPTCPConnectionInterfaceReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)postConnectSubflowFailureErrorsAtIndex:(unint64_t)a3;
+- (int)postConnectSubflowFailureErrorsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDataOutKB:(BOOL)a3;
-- (void)setHasPostConnectTcpFallbackCount:(BOOL)a3;
-- (void)setHasSecondaryFlowFailureCount:(BOOL)a3;
-- (void)setHasSecondaryFlowSuccessCount:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDataOutKB:(BOOL)b;
+- (void)setHasPostConnectTcpFallbackCount:(BOOL)count;
+- (void)setHasSecondaryFlowFailureCount:(BOOL)count;
+- (void)setHasSecondaryFlowSuccessCount:(BOOL)count;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMPTCPConnectionInterfaceReport
@@ -27,9 +27,9 @@
   [(AWDMPTCPConnectionInterfaceReport *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -42,21 +42,21 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)postConnectSubflowFailureErrorsAtIndex:(unint64_t)a3
+- (int)postConnectSubflowFailureErrorsAtIndex:(unint64_t)index
 {
   p_postConnectSubflowFailureErrors = &self->_postConnectSubflowFailureErrors;
   count = self->_postConnectSubflowFailureErrors.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_postConnectSubflowFailureErrors->list[a3];
+  return p_postConnectSubflowFailureErrors->list[index];
 }
 
-- (void)setHasDataOutKB:(BOOL)a3
+- (void)setHasDataOutKB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 2;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSecondaryFlowSuccessCount:(BOOL)a3
+- (void)setHasSecondaryFlowSuccessCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -84,9 +84,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSecondaryFlowFailureCount:(BOOL)a3
+- (void)setHasSecondaryFlowFailureCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -99,9 +99,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPostConnectTcpFallbackCount:(BOOL)a3
+- (void)setHasPostConnectTcpFallbackCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -123,23 +123,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   interfaceName = self->_interfaceName;
   if (interfaceName)
   {
-    [v3 setObject:interfaceName forKey:@"interface_name"];
+    [dictionary setObject:interfaceName forKey:@"interface_name"];
   }
 
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"post_connect_subflow_failure_errors"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"post_connect_subflow_failure_errors"];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_dataInKB), @"data_in_KB"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_dataInKB), @"data_in_KB"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -158,7 +158,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_dataOutKB), @"data_out_KB"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_dataOutKB), @"data_out_KB"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -169,17 +169,17 @@ LABEL_8:
     }
 
 LABEL_15:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_secondaryFlowFailureCount), @"secondary_flow_failure_count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_secondaryFlowFailureCount), @"secondary_flow_failure_count"}];
     if ((*&self->_has & 0x20) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_10;
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_secondaryFlowSuccessCount), @"secondary_flow_success_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_secondaryFlowSuccessCount), @"secondary_flow_success_count"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -190,13 +190,13 @@ LABEL_9:
   if ((has & 0x20) != 0)
   {
 LABEL_10:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_postConnectTcpFallbackCount), @"post_connect_tcp_fallback_count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_postConnectTcpFallbackCount), @"post_connect_tcp_fallback_count"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 4) != 0)
   {
@@ -288,29 +288,29 @@ LABEL_18:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 4) != 0)
   {
-    *(a3 + 6) = self->_timestamp;
-    *(a3 + 76) |= 4u;
+    *(to + 6) = self->_timestamp;
+    *(to + 76) |= 4u;
   }
 
   if (self->_interfaceName)
   {
-    [a3 setInterfaceName:?];
+    [to setInterfaceName:?];
   }
 
   if ([(AWDMPTCPConnectionInterfaceReport *)self postConnectSubflowFailureErrorsCount])
   {
-    [a3 clearPostConnectSubflowFailureErrors];
-    v5 = [(AWDMPTCPConnectionInterfaceReport *)self postConnectSubflowFailureErrorsCount];
-    if (v5)
+    [to clearPostConnectSubflowFailureErrors];
+    postConnectSubflowFailureErrorsCount = [(AWDMPTCPConnectionInterfaceReport *)self postConnectSubflowFailureErrorsCount];
+    if (postConnectSubflowFailureErrorsCount)
     {
-      v6 = v5;
+      v6 = postConnectSubflowFailureErrorsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addPostConnectSubflowFailureErrors:{-[AWDMPTCPConnectionInterfaceReport postConnectSubflowFailureErrorsAtIndex:](self, "postConnectSubflowFailureErrorsAtIndex:", i)}];
+        [to addPostConnectSubflowFailureErrors:{-[AWDMPTCPConnectionInterfaceReport postConnectSubflowFailureErrorsAtIndex:](self, "postConnectSubflowFailureErrorsAtIndex:", i)}];
       }
     }
   }
@@ -318,8 +318,8 @@ LABEL_18:
   has = self->_has;
   if (has)
   {
-    *(a3 + 4) = self->_dataInKB;
-    *(a3 + 76) |= 1u;
+    *(to + 4) = self->_dataInKB;
+    *(to + 76) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -338,8 +338,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(a3 + 5) = self->_dataOutKB;
-  *(a3 + 76) |= 2u;
+  *(to + 5) = self->_dataOutKB;
+  *(to + 76) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -353,8 +353,8 @@ LABEL_12:
   }
 
 LABEL_18:
-  *(a3 + 17) = self->_secondaryFlowSuccessCount;
-  *(a3 + 76) |= 0x10u;
+  *(to + 17) = self->_secondaryFlowSuccessCount;
+  *(to + 76) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -368,21 +368,21 @@ LABEL_13:
   }
 
 LABEL_19:
-  *(a3 + 16) = self->_secondaryFlowFailureCount;
-  *(a3 + 76) |= 8u;
+  *(to + 16) = self->_secondaryFlowFailureCount;
+  *(to + 76) |= 8u;
   if ((*&self->_has & 0x20) == 0)
   {
     return;
   }
 
 LABEL_14:
-  *(a3 + 72) = self->_postConnectTcpFallbackCount;
-  *(a3 + 76) |= 0x20u;
+  *(to + 72) = self->_postConnectTcpFallbackCount;
+  *(to + 76) |= 0x20u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -390,7 +390,7 @@ LABEL_14:
     *(v5 + 76) |= 4u;
   }
 
-  *(v6 + 56) = [(NSString *)self->_interfaceName copyWithZone:a3];
+  *(v6 + 56) = [(NSString *)self->_interfaceName copyWithZone:zone];
   PBRepeatedInt32Copy();
   has = self->_has;
   if (has)
@@ -457,87 +457,87 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
-    v6 = *(a3 + 76);
+    v6 = *(equal + 76);
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 76) & 4) == 0 || self->_timestamp != *(a3 + 6))
+      if ((*(equal + 76) & 4) == 0 || self->_timestamp != *(equal + 6))
       {
         goto LABEL_32;
       }
     }
 
-    else if ((*(a3 + 76) & 4) != 0)
+    else if ((*(equal + 76) & 4) != 0)
     {
       goto LABEL_32;
     }
 
     interfaceName = self->_interfaceName;
-    if (!(interfaceName | *(a3 + 7)) || (IsEqual = [(NSString *)interfaceName isEqual:?]) != 0)
+    if (!(interfaceName | *(equal + 7)) || (IsEqual = [(NSString *)interfaceName isEqual:?]) != 0)
     {
       IsEqual = PBRepeatedInt32IsEqual();
       if (IsEqual)
       {
         if (*&self->_has)
         {
-          if ((*(a3 + 76) & 1) == 0 || self->_dataInKB != *(a3 + 4))
+          if ((*(equal + 76) & 1) == 0 || self->_dataInKB != *(equal + 4))
           {
             goto LABEL_32;
           }
         }
 
-        else if (*(a3 + 76))
+        else if (*(equal + 76))
         {
           goto LABEL_32;
         }
 
         if ((*&self->_has & 2) != 0)
         {
-          if ((*(a3 + 76) & 2) == 0 || self->_dataOutKB != *(a3 + 5))
+          if ((*(equal + 76) & 2) == 0 || self->_dataOutKB != *(equal + 5))
           {
             goto LABEL_32;
           }
         }
 
-        else if ((*(a3 + 76) & 2) != 0)
+        else if ((*(equal + 76) & 2) != 0)
         {
           goto LABEL_32;
         }
 
         if ((*&self->_has & 0x10) != 0)
         {
-          if ((*(a3 + 76) & 0x10) == 0 || self->_secondaryFlowSuccessCount != *(a3 + 17))
+          if ((*(equal + 76) & 0x10) == 0 || self->_secondaryFlowSuccessCount != *(equal + 17))
           {
             goto LABEL_32;
           }
         }
 
-        else if ((*(a3 + 76) & 0x10) != 0)
+        else if ((*(equal + 76) & 0x10) != 0)
         {
           goto LABEL_32;
         }
 
         if ((*&self->_has & 8) != 0)
         {
-          if ((*(a3 + 76) & 8) == 0 || self->_secondaryFlowFailureCount != *(a3 + 16))
+          if ((*(equal + 76) & 8) == 0 || self->_secondaryFlowFailureCount != *(equal + 16))
           {
             goto LABEL_32;
           }
         }
 
-        else if ((*(a3 + 76) & 8) != 0)
+        else if ((*(equal + 76) & 8) != 0)
         {
           goto LABEL_32;
         }
 
-        LOBYTE(IsEqual) = (*(a3 + 76) & 0x20) == 0;
+        LOBYTE(IsEqual) = (*(equal + 76) & 0x20) == 0;
         if ((*&self->_has & 0x20) != 0)
         {
-          if ((*(a3 + 76) & 0x20) == 0)
+          if ((*(equal + 76) & 0x20) == 0)
           {
 LABEL_32:
             LOBYTE(IsEqual) = 0;
@@ -546,13 +546,13 @@ LABEL_32:
 
           if (self->_postConnectTcpFallbackCount)
           {
-            if ((*(a3 + 72) & 1) == 0)
+            if ((*(equal + 72) & 1) == 0)
             {
               goto LABEL_32;
             }
           }
 
-          else if (*(a3 + 72))
+          else if (*(equal + 72))
           {
             goto LABEL_32;
           }
@@ -646,35 +646,35 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 76) & 4) != 0)
+  if ((*(from + 76) & 4) != 0)
   {
-    self->_timestamp = *(a3 + 6);
+    self->_timestamp = *(from + 6);
     *&self->_has |= 4u;
   }
 
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(AWDMPTCPConnectionInterfaceReport *)self setInterfaceName:?];
   }
 
-  v5 = [a3 postConnectSubflowFailureErrorsCount];
-  if (v5)
+  postConnectSubflowFailureErrorsCount = [from postConnectSubflowFailureErrorsCount];
+  if (postConnectSubflowFailureErrorsCount)
   {
-    v6 = v5;
+    v6 = postConnectSubflowFailureErrorsCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDMPTCPConnectionInterfaceReport addPostConnectSubflowFailureErrors:](self, "addPostConnectSubflowFailureErrors:", [a3 postConnectSubflowFailureErrorsAtIndex:i]);
+      -[AWDMPTCPConnectionInterfaceReport addPostConnectSubflowFailureErrors:](self, "addPostConnectSubflowFailureErrors:", [from postConnectSubflowFailureErrorsAtIndex:i]);
     }
   }
 
-  v8 = *(a3 + 76);
+  v8 = *(from + 76);
   if (v8)
   {
-    self->_dataInKB = *(a3 + 4);
+    self->_dataInKB = *(from + 4);
     *&self->_has |= 1u;
-    v8 = *(a3 + 76);
+    v8 = *(from + 76);
     if ((v8 & 2) == 0)
     {
 LABEL_10:
@@ -687,14 +687,14 @@ LABEL_10:
     }
   }
 
-  else if ((*(a3 + 76) & 2) == 0)
+  else if ((*(from + 76) & 2) == 0)
   {
     goto LABEL_10;
   }
 
-  self->_dataOutKB = *(a3 + 5);
+  self->_dataOutKB = *(from + 5);
   *&self->_has |= 2u;
-  v8 = *(a3 + 76);
+  v8 = *(from + 76);
   if ((v8 & 0x10) == 0)
   {
 LABEL_11:
@@ -707,9 +707,9 @@ LABEL_11:
   }
 
 LABEL_17:
-  self->_secondaryFlowSuccessCount = *(a3 + 17);
+  self->_secondaryFlowSuccessCount = *(from + 17);
   *&self->_has |= 0x10u;
-  v8 = *(a3 + 76);
+  v8 = *(from + 76);
   if ((v8 & 8) == 0)
   {
 LABEL_12:
@@ -722,15 +722,15 @@ LABEL_12:
   }
 
 LABEL_18:
-  self->_secondaryFlowFailureCount = *(a3 + 16);
+  self->_secondaryFlowFailureCount = *(from + 16);
   *&self->_has |= 8u;
-  if ((*(a3 + 76) & 0x20) == 0)
+  if ((*(from + 76) & 0x20) == 0)
   {
     return;
   }
 
 LABEL_13:
-  self->_postConnectTcpFallbackCount = *(a3 + 72);
+  self->_postConnectTcpFallbackCount = *(from + 72);
   *&self->_has |= 0x20u;
 }
 

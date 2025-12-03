@@ -1,13 +1,13 @@
 @interface IFTSchemaIFTSystemPromptResolutionInput
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaIFTRequestContentHeadGestureContent)headGesture;
 - (IFTSchemaIFTRequestContentSpeechContent)speech;
 - (IFTSchemaIFTRequestContentTextContent)text;
 - (IFTSchemaIFTRequestContentTouchContent)touch;
-- (IFTSchemaIFTSystemPromptResolutionInput)initWithDictionary:(id)a3;
-- (IFTSchemaIFTSystemPromptResolutionInput)initWithJSON:(id)a3;
+- (IFTSchemaIFTSystemPromptResolutionInput)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTSystemPromptResolutionInput)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -15,24 +15,24 @@
 - (void)deleteSpeech;
 - (void)deleteText;
 - (void)deleteTouch;
-- (void)setHeadGesture:(id)a3;
-- (void)setSpeech:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTouch:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setHeadGesture:(id)gesture;
+- (void)setSpeech:(id)speech;
+- (void)setText:(id)text;
+- (void)setTouch:(id)touch;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTSystemPromptResolutionInput
 
-- (IFTSchemaIFTSystemPromptResolutionInput)initWithDictionary:(id)a3
+- (IFTSchemaIFTSystemPromptResolutionInput)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = IFTSchemaIFTSystemPromptResolutionInput;
   v5 = [(IFTSchemaIFTSystemPromptResolutionInput *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"touch"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"touch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(IFTSchemaIFTSystemPromptResolutionInput *)v5 setTouch:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"headGesture"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"headGesture"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(IFTSchemaIFTSystemPromptResolutionInput *)v5 setHeadGesture:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"text"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"text"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(IFTSchemaIFTSystemPromptResolutionInput *)v5 setText:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"speech"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"speech"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTSystemPromptResolutionInput)initWithJSON:(id)a3
+- (IFTSchemaIFTSystemPromptResolutionInput)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTSystemPromptResolutionInput *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTSystemPromptResolutionInput *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTSystemPromptResolutionInput *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,74 +106,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_headGesture)
   {
-    v4 = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    headGesture = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
+    dictionaryRepresentation = [headGesture dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"headGesture"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"headGesture"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"headGesture"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"headGesture"];
     }
   }
 
   if (self->_speech)
   {
-    v7 = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    speech = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
+    dictionaryRepresentation2 = [speech dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"speech"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"speech"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"speech"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"speech"];
     }
   }
 
   if (self->_text)
   {
-    v10 = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    text = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
+    dictionaryRepresentation3 = [text dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"text"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"text"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"text"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"text"];
     }
   }
 
   if (self->_touch)
   {
-    v13 = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    touch = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
+    dictionaryRepresentation4 = [touch dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"touch"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"touch"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"touch"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"touch"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -184,34 +184,34 @@
   return v4 ^ v5 ^ [(IFTSchemaIFTRequestContentSpeechContent *)self->_speech hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   whichOneof_Systempromptresolutioninput = self->_whichOneof_Systempromptresolutioninput;
-  if (whichOneof_Systempromptresolutioninput != [v4 whichOneof_Systempromptresolutioninput])
+  if (whichOneof_Systempromptresolutioninput != [equalCopy whichOneof_Systempromptresolutioninput])
   {
     goto LABEL_23;
   }
 
-  v6 = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
-  v7 = [v4 touch];
-  if ((v6 != 0) == (v7 == 0))
+  touch = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
+  touch2 = [equalCopy touch];
+  if ((touch != 0) == (touch2 == 0))
   {
     goto LABEL_22;
   }
 
-  v8 = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
-  if (v8)
+  touch3 = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
+  if (touch3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
-    v11 = [v4 touch];
-    v12 = [v10 isEqual:v11];
+    v9 = touch3;
+    touch4 = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
+    touch5 = [equalCopy touch];
+    v12 = [touch4 isEqual:touch5];
 
     if (!v12)
     {
@@ -223,20 +223,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
-  v7 = [v4 headGesture];
-  if ((v6 != 0) == (v7 == 0))
+  touch = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
+  touch2 = [equalCopy headGesture];
+  if ((touch != 0) == (touch2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
-  if (v13)
+  headGesture = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
+  if (headGesture)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
-    v16 = [v4 headGesture];
-    v17 = [v15 isEqual:v16];
+    v14 = headGesture;
+    headGesture2 = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
+    headGesture3 = [equalCopy headGesture];
+    v17 = [headGesture2 isEqual:headGesture3];
 
     if (!v17)
     {
@@ -248,20 +248,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
-  v7 = [v4 text];
-  if ((v6 != 0) == (v7 == 0))
+  touch = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
+  touch2 = [equalCopy text];
+  if ((touch != 0) == (touch2 == 0))
   {
     goto LABEL_22;
   }
 
-  v18 = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
-  if (v18)
+  text = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
+  if (text)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
-    v21 = [v4 text];
-    v22 = [v20 isEqual:v21];
+    v19 = text;
+    text2 = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
+    text3 = [equalCopy text];
+    v22 = [text2 isEqual:text3];
 
     if (!v22)
     {
@@ -273,12 +273,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
-  v7 = [v4 speech];
-  if ((v6 != 0) != (v7 == 0))
+  touch = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
+  touch2 = [equalCopy speech];
+  if ((touch != 0) != (touch2 == 0))
   {
-    v23 = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
-    if (!v23)
+    speech = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
+    if (!speech)
     {
 
 LABEL_26:
@@ -286,10 +286,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v24 = v23;
-    v25 = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
-    v26 = [v4 speech];
-    v27 = [v25 isEqual:v26];
+    v24 = speech;
+    speech2 = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
+    speech3 = [equalCopy speech];
+    v27 = [speech2 isEqual:speech3];
 
     if (v27)
     {
@@ -309,42 +309,42 @@ LABEL_24:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
+  toCopy = to;
+  touch = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
 
-  if (v4)
+  if (touch)
   {
-    v5 = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
+    touch2 = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
+  headGesture = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
 
-  if (v6)
+  if (headGesture)
   {
-    v7 = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
+    headGesture2 = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
+  text = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
 
-  if (v8)
+  if (text)
   {
-    v9 = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
+    text2 = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
+  speech = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (speech)
   {
-    v12 = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
+    speech2 = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
@@ -373,9 +373,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setSpeech:(id)a3
+- (void)setSpeech:(id)speech
 {
-  v4 = a3;
+  speechCopy = speech;
   touch = self->_touch;
   self->_touch = 0;
 
@@ -385,9 +385,9 @@ LABEL_24:
   text = self->_text;
   self->_text = 0;
 
-  self->_whichOneof_Systempromptresolutioninput = 4 * (v4 != 0);
+  self->_whichOneof_Systempromptresolutioninput = 4 * (speechCopy != 0);
   speech = self->_speech;
-  self->_speech = v4;
+  self->_speech = speechCopy;
 }
 
 - (void)deleteText
@@ -415,9 +415,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   touch = self->_touch;
   self->_touch = 0;
 
@@ -428,14 +428,14 @@ LABEL_24:
   self->_speech = 0;
 
   v8 = 3;
-  if (!v4)
+  if (!textCopy)
   {
     v8 = 0;
   }
 
   self->_whichOneof_Systempromptresolutioninput = v8;
   text = self->_text;
-  self->_text = v4;
+  self->_text = textCopy;
 }
 
 - (void)deleteHeadGesture
@@ -463,9 +463,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setHeadGesture:(id)a3
+- (void)setHeadGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   touch = self->_touch;
   self->_touch = 0;
 
@@ -475,9 +475,9 @@ LABEL_24:
   speech = self->_speech;
   self->_speech = 0;
 
-  self->_whichOneof_Systempromptresolutioninput = 2 * (v4 != 0);
+  self->_whichOneof_Systempromptresolutioninput = 2 * (gestureCopy != 0);
   headGesture = self->_headGesture;
-  self->_headGesture = v4;
+  self->_headGesture = gestureCopy;
 }
 
 - (void)deleteTouch
@@ -505,9 +505,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setTouch:(id)a3
+- (void)setTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   headGesture = self->_headGesture;
   self->_headGesture = 0;
 
@@ -517,49 +517,49 @@ LABEL_24:
   speech = self->_speech;
   self->_speech = 0;
 
-  self->_whichOneof_Systempromptresolutioninput = v4 != 0;
+  self->_whichOneof_Systempromptresolutioninput = touchCopy != 0;
   touch = self->_touch;
-  self->_touch = v4;
+  self->_touch = touchCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = IFTSchemaIFTSystemPromptResolutionInput;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  touch = [(IFTSchemaIFTSystemPromptResolutionInput *)self touch];
+  v7 = [touch applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTSystemPromptResolutionInput *)self deleteTouch];
   }
 
-  v9 = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  headGesture = [(IFTSchemaIFTSystemPromptResolutionInput *)self headGesture];
+  v10 = [headGesture applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTSystemPromptResolutionInput *)self deleteHeadGesture];
   }
 
-  v12 = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  text = [(IFTSchemaIFTSystemPromptResolutionInput *)self text];
+  v13 = [text applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTSystemPromptResolutionInput *)self deleteText];
   }
 
-  v15 = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  speech = [(IFTSchemaIFTSystemPromptResolutionInput *)self speech];
+  v16 = [speech applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(IFTSchemaIFTSystemPromptResolutionInput *)self deleteSpeech];
   }

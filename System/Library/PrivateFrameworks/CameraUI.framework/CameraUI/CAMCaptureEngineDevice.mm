@@ -1,21 +1,21 @@
 @interface CAMCaptureEngineDevice
 - (AVCaptureDeviceInput)captureDeviceInput;
 - (CAMCaptureEngine)_captureEngine;
-- (CAMCaptureEngineDevice)initWithEngine:(id)a3 captureDevice:(id)a4;
+- (CAMCaptureEngineDevice)initWithEngine:(id)engine captureDevice:(id)device;
 - (CAMCaptureEngineDeviceSystemAction)systemDeviceActionDelegate;
-- (id)_deviceFormatForDynamicAspectRatioWithGraphConfiguration:(id)a3 deviceIsSecondary:(BOOL)a4;
-- (id)_highestQualityDeviceFormatForVideoConfiguration:(int64_t)a3 videoEncodingBehavior:(int64_t)a4 colorSpace:(int64_t)a5 requireVideoBinned:(BOOL)a6;
-- (id)_highestQualitySessionPresetForVideoConfiguration:(int64_t)a3 videoEncodingBehavior:(int64_t)a4 colorSpace:(int64_t)a5;
-- (id)_panoramaDeviceFormatForConfiguration:(id)a3;
-- (id)_photoBasedModeDeviceFormatWithCaptureSession:(id)a3;
-- (id)_photoBasedModeSessionPresetWithCaptureSession:(id)a3;
-- (id)_portraitModeDeviceFormatWithCaptureSession:(id)a3;
-- (id)_portraitModeSessionPresetWithCaptureSession:(id)a3;
+- (id)_deviceFormatForDynamicAspectRatioWithGraphConfiguration:(id)configuration deviceIsSecondary:(BOOL)secondary;
+- (id)_highestQualityDeviceFormatForVideoConfiguration:(int64_t)configuration videoEncodingBehavior:(int64_t)behavior colorSpace:(int64_t)space requireVideoBinned:(BOOL)binned;
+- (id)_highestQualitySessionPresetForVideoConfiguration:(int64_t)configuration videoEncodingBehavior:(int64_t)behavior colorSpace:(int64_t)space;
+- (id)_panoramaDeviceFormatForConfiguration:(id)configuration;
+- (id)_photoBasedModeDeviceFormatWithCaptureSession:(id)session;
+- (id)_photoBasedModeSessionPresetWithCaptureSession:(id)session;
+- (id)_portraitModeDeviceFormatWithCaptureSession:(id)session;
+- (id)_portraitModeSessionPresetWithCaptureSession:(id)session;
 - (id)_preferredTimelapseSessionPreset;
-- (id)_timelapseDeviceFormatWithCaptureSession:(id)a3;
-- (id)_timelapseSessionPresetWithCaptureSession:(id)a3;
-- (id)videoDeviceFormatForGraphConfiguration:(id)a3 captureSession:(id)a4 deviceIsSecondary:(BOOL)a5;
-- (id)videoDevicePresetForGraphConfiguration:(id)a3 captureSession:(id)a4;
+- (id)_timelapseDeviceFormatWithCaptureSession:(id)session;
+- (id)_timelapseSessionPresetWithCaptureSession:(id)session;
+- (id)videoDeviceFormatForGraphConfiguration:(id)configuration captureSession:(id)session deviceIsSecondary:(BOOL)secondary;
+- (id)videoDevicePresetForGraphConfiguration:(id)configuration captureSession:(id)session;
 - (void)captureDeviceInput;
 @end
 
@@ -26,17 +26,17 @@
   captureDeviceInput = self->_captureDeviceInput;
   if (!captureDeviceInput)
   {
-    v4 = [(CAMCaptureEngineDevice *)self captureDevice];
+    captureDevice = [(CAMCaptureEngineDevice *)self captureDevice];
     WeakRetained = objc_loadWeakRetained(&self->__captureEngine);
-    v6 = [v4 deviceType];
-    v7 = [WeakRetained prewarmedVideoDeviceInput:v6 position:objc_msgSend(v4 device:{"position"), v4}];
+    deviceType = [captureDevice deviceType];
+    v7 = [WeakRetained prewarmedVideoDeviceInput:deviceType position:objc_msgSend(captureDevice device:{"position"), captureDevice}];
     v8 = self->_captureDeviceInput;
     self->_captureDeviceInput = v7;
 
     if (!self->_captureDeviceInput)
     {
       v14 = 0;
-      v9 = [MEMORY[0x1E69870B0] deviceInputWithDevice:v4 error:&v14];
+      v9 = [MEMORY[0x1E69870B0] deviceInputWithDevice:captureDevice error:&v14];
       v10 = v14;
       v11 = self->_captureDeviceInput;
       self->_captureDeviceInput = v9;
@@ -46,7 +46,7 @@
         v12 = os_log_create("com.apple.camera", "Camera");
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          [(CAMCaptureEngineDevice *)v4 captureDeviceInput];
+          [(CAMCaptureEngineDevice *)captureDevice captureDeviceInput];
         }
       }
     }
@@ -57,14 +57,14 @@
   return captureDeviceInput;
 }
 
-- (CAMCaptureEngineDevice)initWithEngine:(id)a3 captureDevice:(id)a4
+- (CAMCaptureEngineDevice)initWithEngine:(id)engine captureDevice:(id)device
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, engine);
+  deviceCopy = device;
   v7 = objc_loadWeakRetained(&location);
 
-  v8 = 0;
-  if (v6 && v7)
+  selfCopy = 0;
+  if (deviceCopy && v7)
   {
     v35.receiver = self;
     v35.super_class = CAMCaptureEngineDevice;
@@ -74,7 +74,7 @@
       v9 = objc_loadWeakRetained(&location);
       objc_storeWeak(&self->__captureEngine, v9);
 
-      objc_storeStrong(&self->_captureDevice, a4);
+      objc_storeStrong(&self->_captureDevice, device);
       v10 = objc_loadWeakRetained(&location);
       LODWORD(v9) = [v10 controlsSupported];
 
@@ -102,7 +102,7 @@
         v29 = __55__CAMCaptureEngineDevice_initWithEngine_captureDevice___block_invoke_2;
         v30 = &unk_1E76F7E90;
         objc_copyWeak(&v31, &from);
-        v18 = [v17 initWithDevice:v6 action:&v27];
+        v18 = [v17 initWithDevice:deviceCopy action:&v27];
         systemLensSelector = self->_systemLensSelector;
         self->_systemLensSelector = v18;
 
@@ -125,17 +125,17 @@
       self->__cachedDynamicAspectRatioFormat = v24;
 
       self = self;
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   objc_destroyWeak(&location);
-  return v8;
+  return selfCopy;
 }
 
 void __55__CAMCaptureEngineDevice_initWithEngine_captureDevice___block_invoke(uint64_t a1, float a2)
@@ -156,34 +156,34 @@ void __55__CAMCaptureEngineDevice_initWithEngine_captureDevice___block_invoke_2(
   [v4 captureEngineDevice:v5 didChangeLensSelectorZoomFactor:v6];
 }
 
-- (id)_photoBasedModeSessionPresetWithCaptureSession:(id)a3
+- (id)_photoBasedModeSessionPresetWithCaptureSession:(id)session
 {
-  v4 = [(CAMCaptureEngineDevice *)self _photoBasedModeDeviceFormatWithCaptureSession:a3];
+  v4 = [(CAMCaptureEngineDevice *)self _photoBasedModeDeviceFormatWithCaptureSession:session];
 
   if (v4)
   {
-    v5 = 0;
+    _preferredPhotoBasedModeSessionPreset = 0;
   }
 
   else
   {
-    v5 = [(CAMCaptureEngineDevice *)self _preferredPhotoBasedModeSessionPreset];
+    _preferredPhotoBasedModeSessionPreset = [(CAMCaptureEngineDevice *)self _preferredPhotoBasedModeSessionPreset];
   }
 
-  return v5;
+  return _preferredPhotoBasedModeSessionPreset;
 }
 
-- (id)_photoBasedModeDeviceFormatWithCaptureSession:(id)a3
+- (id)_photoBasedModeDeviceFormatWithCaptureSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 useMultiCamSession];
+  useMultiCamSession = [v5 useMultiCamSession];
 
-  if (v6)
+  if (useMultiCamSession)
   {
-    v7 = [(CAMCaptureEngineDevice *)self captureDevice];
-    v8 = [(CAMCaptureEngineDevice *)self _preferredPhotoBasedModeSessionPreset];
-    v9 = [v4 deviceFormatForSessionPreset:v8 device:v7];
+    captureDevice = [(CAMCaptureEngineDevice *)self captureDevice];
+    _preferredPhotoBasedModeSessionPreset = [(CAMCaptureEngineDevice *)self _preferredPhotoBasedModeSessionPreset];
+    v9 = [sessionCopy deviceFormatForSessionPreset:_preferredPhotoBasedModeSessionPreset device:captureDevice];
   }
 
   else
@@ -194,21 +194,21 @@ void __55__CAMCaptureEngineDevice_initWithEngine_captureDevice___block_invoke_2(
   return v9;
 }
 
-- (id)_highestQualityDeviceFormatForVideoConfiguration:(int64_t)a3 videoEncodingBehavior:(int64_t)a4 colorSpace:(int64_t)a5 requireVideoBinned:(BOOL)a6
+- (id)_highestQualityDeviceFormatForVideoConfiguration:(int64_t)configuration videoEncodingBehavior:(int64_t)behavior colorSpace:(int64_t)space requireVideoBinned:(BOOL)binned
 {
-  v6 = a6;
-  v11 = [(CAMCaptureEngineDevice *)self _videoDeviceFormatForVideoConfiguration];
-  v12 = [(CAMCaptureEngineDevice *)self _keyForVideoConfiguration:a3 videoEncodingBehavior:a4 colorSpace:a5 requireVideoBinned:v6];
+  binnedCopy = binned;
+  _videoDeviceFormatForVideoConfiguration = [(CAMCaptureEngineDevice *)self _videoDeviceFormatForVideoConfiguration];
+  v12 = [(CAMCaptureEngineDevice *)self _keyForVideoConfiguration:configuration videoEncodingBehavior:behavior colorSpace:space requireVideoBinned:binnedCopy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __127__CAMCaptureEngineDevice__highestQualityDeviceFormatForVideoConfiguration_videoEncodingBehavior_colorSpace_requireVideoBinned___block_invoke;
   v15[3] = &unk_1E76F7EB8;
   v15[4] = self;
-  v15[5] = a3;
-  v15[6] = a4;
-  v15[7] = a5;
-  v16 = v6;
-  v13 = [v11 objectForKey:v12 memoizationBlock:v15];
+  v15[5] = configuration;
+  v15[6] = behavior;
+  v15[7] = space;
+  v16 = binnedCopy;
+  v13 = [_videoDeviceFormatForVideoConfiguration objectForKey:v12 memoizationBlock:v15];
 
   return v13;
 }
@@ -224,20 +224,20 @@ id __127__CAMCaptureEngineDevice__highestQualityDeviceFormatForVideoConfiguratio
   return v3;
 }
 
-- (id)_highestQualitySessionPresetForVideoConfiguration:(int64_t)a3 videoEncodingBehavior:(int64_t)a4 colorSpace:(int64_t)a5
+- (id)_highestQualitySessionPresetForVideoConfiguration:(int64_t)configuration videoEncodingBehavior:(int64_t)behavior colorSpace:(int64_t)space
 {
-  v9 = [(CAMCaptureEngineDevice *)self _videoSessionPresetForVideoConfiguration];
-  v10 = [(CAMCaptureEngineDevice *)self _keyForVideoConfiguration:a3 videoEncodingBehavior:a4 colorSpace:a5 requireVideoBinned:0];
+  _videoSessionPresetForVideoConfiguration = [(CAMCaptureEngineDevice *)self _videoSessionPresetForVideoConfiguration];
+  v10 = [(CAMCaptureEngineDevice *)self _keyForVideoConfiguration:configuration videoEncodingBehavior:behavior colorSpace:space requireVideoBinned:0];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __109__CAMCaptureEngineDevice__highestQualitySessionPresetForVideoConfiguration_videoEncodingBehavior_colorSpace___block_invoke;
   v13[3] = &unk_1E76F7EE0;
   v13[4] = self;
-  v13[5] = a3;
-  v13[6] = a4;
-  v13[7] = a5;
+  v13[5] = configuration;
+  v13[6] = behavior;
+  v13[7] = space;
   v14 = 0;
-  v11 = [v9 objectForKey:v10 memoizationBlock:v13];
+  v11 = [_videoSessionPresetForVideoConfiguration objectForKey:v10 memoizationBlock:v13];
 
   return v11;
 }
@@ -253,14 +253,14 @@ id __109__CAMCaptureEngineDevice__highestQualitySessionPresetForVideoConfigurati
   return v3;
 }
 
-- (id)_panoramaDeviceFormatForConfiguration:(id)a3
+- (id)_panoramaDeviceFormatForConfiguration:(id)configuration
 {
   cachedPanoramaDeviceFormat = self->__cachedPanoramaDeviceFormat;
   if (!cachedPanoramaDeviceFormat)
   {
-    v5 = a3;
-    v6 = [(CAMCaptureEngineDevice *)self captureDevice];
-    v7 = [v6 cameraPanoramaFormatForConfiguration:v5];
+    configurationCopy = configuration;
+    captureDevice = [(CAMCaptureEngineDevice *)self captureDevice];
+    v7 = [captureDevice cameraPanoramaFormatForConfiguration:configurationCopy];
 
     v8 = self->__cachedPanoramaDeviceFormat;
     self->__cachedPanoramaDeviceFormat = v7;
@@ -271,31 +271,31 @@ id __109__CAMCaptureEngineDevice__highestQualitySessionPresetForVideoConfigurati
   return cachedPanoramaDeviceFormat;
 }
 
-- (id)_timelapseSessionPresetWithCaptureSession:(id)a3
+- (id)_timelapseSessionPresetWithCaptureSession:(id)session
 {
-  v4 = [(CAMCaptureEngineDevice *)self _timelapseDeviceFormatWithCaptureSession:a3];
+  v4 = [(CAMCaptureEngineDevice *)self _timelapseDeviceFormatWithCaptureSession:session];
 
   if (v4)
   {
-    v5 = 0;
+    _preferredTimelapseSessionPreset = 0;
   }
 
   else
   {
-    v5 = [(CAMCaptureEngineDevice *)self _preferredTimelapseSessionPreset];
+    _preferredTimelapseSessionPreset = [(CAMCaptureEngineDevice *)self _preferredTimelapseSessionPreset];
   }
 
-  return v5;
+  return _preferredTimelapseSessionPreset;
 }
 
 - (id)_preferredTimelapseSessionPreset
 {
-  v2 = [(CAMCaptureEngineDevice *)self captureDevice];
+  captureDevice = [(CAMCaptureEngineDevice *)self captureDevice];
   v3 = *MEMORY[0x1E6986AC8];
-  if (([v2 supportsAVCaptureSessionPreset:*MEMORY[0x1E6986AC8]] & 1) == 0)
+  if (([captureDevice supportsAVCaptureSessionPreset:*MEMORY[0x1E6986AC8]] & 1) == 0)
   {
     v3 = *MEMORY[0x1E6986AC0];
-    if (![v2 supportsAVCaptureSessionPreset:*MEMORY[0x1E6986AC0]])
+    if (![captureDevice supportsAVCaptureSessionPreset:*MEMORY[0x1E6986AC0]])
     {
       v3 = *MEMORY[0x1E6986AD8];
     }
@@ -306,17 +306,17 @@ id __109__CAMCaptureEngineDevice__highestQualitySessionPresetForVideoConfigurati
   return v3;
 }
 
-- (id)_timelapseDeviceFormatWithCaptureSession:(id)a3
+- (id)_timelapseDeviceFormatWithCaptureSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 useMultiCamSession];
+  useMultiCamSession = [v5 useMultiCamSession];
 
-  if (v6)
+  if (useMultiCamSession)
   {
-    v7 = [(CAMCaptureEngineDevice *)self captureDevice];
-    v8 = [(CAMCaptureEngineDevice *)self _preferredTimelapseSessionPreset];
-    v9 = [v4 deviceFormatForSessionPreset:v8 device:v7];
+    captureDevice = [(CAMCaptureEngineDevice *)self captureDevice];
+    _preferredTimelapseSessionPreset = [(CAMCaptureEngineDevice *)self _preferredTimelapseSessionPreset];
+    v9 = [sessionCopy deviceFormatForSessionPreset:_preferredTimelapseSessionPreset device:captureDevice];
   }
 
   else
@@ -327,41 +327,41 @@ id __109__CAMCaptureEngineDevice__highestQualitySessionPresetForVideoConfigurati
   return v9;
 }
 
-- (id)_portraitModeSessionPresetWithCaptureSession:(id)a3
+- (id)_portraitModeSessionPresetWithCaptureSession:(id)session
 {
-  v4 = [(CAMCaptureEngineDevice *)self _portraitModeDeviceFormatWithCaptureSession:a3];
+  v4 = [(CAMCaptureEngineDevice *)self _portraitModeDeviceFormatWithCaptureSession:session];
 
   if (v4)
   {
-    v5 = 0;
+    _preferredPortraitModeSessionPreset = 0;
   }
 
   else
   {
-    v5 = [(CAMCaptureEngineDevice *)self _preferredPortraitModeSessionPreset];
+    _preferredPortraitModeSessionPreset = [(CAMCaptureEngineDevice *)self _preferredPortraitModeSessionPreset];
   }
 
-  return v5;
+  return _preferredPortraitModeSessionPreset;
 }
 
-- (id)_portraitModeDeviceFormatWithCaptureSession:(id)a3
+- (id)_portraitModeDeviceFormatWithCaptureSession:(id)session
 {
-  v4 = a3;
-  v5 = [(CAMCaptureEngineDevice *)self captureDevice];
+  sessionCopy = session;
+  captureDevice = [(CAMCaptureEngineDevice *)self captureDevice];
   v6 = +[CAMCaptureCapabilities capabilities];
-  v7 = [v6 usePortraitFrontFacingZoomedCaptureDeviceFormat];
+  usePortraitFrontFacingZoomedCaptureDeviceFormat = [v6 usePortraitFrontFacingZoomedCaptureDeviceFormat];
 
-  if (!self->__cachedPortraitDeviceFormat && v7 && [v5 position] == 2)
+  if (!self->__cachedPortraitDeviceFormat && usePortraitFrontFacingZoomedCaptureDeviceFormat && [captureDevice position] == 2)
   {
-    v8 = [v5 cam_formatForPortraitFrontFacingZoomed];
+    cam_formatForPortraitFrontFacingZoomed = [captureDevice cam_formatForPortraitFrontFacingZoomed];
     cachedPortraitDeviceFormat = self->__cachedPortraitDeviceFormat;
-    self->__cachedPortraitDeviceFormat = v8;
+    self->__cachedPortraitDeviceFormat = cam_formatForPortraitFrontFacingZoomed;
   }
 
   v10 = +[CAMCaptureCapabilities capabilities];
-  v11 = [v10 useMultiCamSession];
+  useMultiCamSession = [v10 useMultiCamSession];
   v12 = self->__cachedPortraitDeviceFormat;
-  if (v11)
+  if (useMultiCamSession)
   {
     v13 = v12 == 0;
   }
@@ -373,8 +373,8 @@ id __109__CAMCaptureEngineDevice__highestQualitySessionPresetForVideoConfigurati
 
   if (v13)
   {
-    v14 = [(CAMCaptureEngineDevice *)self _preferredPortraitModeSessionPreset];
-    v15 = [v4 deviceFormatForSessionPreset:v14 device:v5];
+    _preferredPortraitModeSessionPreset = [(CAMCaptureEngineDevice *)self _preferredPortraitModeSessionPreset];
+    v15 = [sessionCopy deviceFormatForSessionPreset:_preferredPortraitModeSessionPreset device:captureDevice];
     v16 = self->__cachedPortraitDeviceFormat;
     self->__cachedPortraitDeviceFormat = v15;
 
@@ -386,45 +386,45 @@ id __109__CAMCaptureEngineDevice__highestQualitySessionPresetForVideoConfigurati
   return v12;
 }
 
-- (id)_deviceFormatForDynamicAspectRatioWithGraphConfiguration:(id)a3 deviceIsSecondary:(BOOL)a4
+- (id)_deviceFormatForDynamicAspectRatioWithGraphConfiguration:(id)configuration deviceIsSecondary:(BOOL)secondary
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  configurationCopy = configuration;
+  v7 = configurationCopy;
+  if (secondary)
   {
-    v8 = [v6 secondaryDeviceVideoConfiguration];
-    v9 = [v7 secondaryDeviceVideoDynamicAspectRatio];
-    v10 = [v7 secondaryDeviceColorSpace];
-    v11 = [v7 isSecondaryDeviceVideoBinned];
+    secondaryDeviceVideoConfiguration = [configurationCopy secondaryDeviceVideoConfiguration];
+    secondaryDeviceVideoDynamicAspectRatio = [v7 secondaryDeviceVideoDynamicAspectRatio];
+    secondaryDeviceColorSpace = [v7 secondaryDeviceColorSpace];
+    isSecondaryDeviceVideoBinned = [v7 isSecondaryDeviceVideoBinned];
   }
 
   else
   {
-    v8 = [v6 videoConfiguration];
-    v9 = [v7 videoDynamicAspectRatio];
-    v10 = [v7 colorSpace];
-    v11 = [v7 isVideoBinned];
+    secondaryDeviceVideoConfiguration = [configurationCopy videoConfiguration];
+    secondaryDeviceVideoDynamicAspectRatio = [v7 videoDynamicAspectRatio];
+    secondaryDeviceColorSpace = [v7 colorSpace];
+    isSecondaryDeviceVideoBinned = [v7 isVideoBinned];
   }
 
-  v12 = v11;
+  v12 = isSecondaryDeviceVideoBinned;
   v13 = +[CAMCaptureCapabilities capabilities];
-  v14 = [v13 useSquareFormatForDynamicAspectRatioForMode:objc_msgSend(v7 videoConfiguration:{"mode"), v8}];
+  v14 = [v13 useSquareFormatForDynamicAspectRatioForMode:objc_msgSend(v7 videoConfiguration:{"mode"), secondaryDeviceVideoConfiguration}];
 
-  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"videoConfiguration=%lu, encoding=%lu, colorSpace=%lu, videoDynamicAspectRatio=%lu useSquareFormat=%d requireVideoBinned=%d", v8, objc_msgSend(v7, "videoEncodingBehavior"), v10, v9, v14, v12];
-  v16 = [(CAMCaptureEngineDevice *)self _cachedDynamicAspectRatioFormat];
+  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"videoConfiguration=%lu, encoding=%lu, colorSpace=%lu, videoDynamicAspectRatio=%lu useSquareFormat=%d requireVideoBinned=%d", secondaryDeviceVideoConfiguration, objc_msgSend(v7, "videoEncodingBehavior"), secondaryDeviceColorSpace, secondaryDeviceVideoDynamicAspectRatio, v14, v12];
+  _cachedDynamicAspectRatioFormat = [(CAMCaptureEngineDevice *)self _cachedDynamicAspectRatioFormat];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __101__CAMCaptureEngineDevice__deviceFormatForDynamicAspectRatioWithGraphConfiguration_deviceIsSecondary___block_invoke;
   v20[3] = &unk_1E76F7F08;
   v20[4] = self;
   v21 = v7;
-  v22 = v8;
-  v23 = v10;
-  v24 = v9;
+  v22 = secondaryDeviceVideoConfiguration;
+  v23 = secondaryDeviceColorSpace;
+  v24 = secondaryDeviceVideoDynamicAspectRatio;
   v25 = v14;
   v26 = v12;
   v17 = v7;
-  v18 = [v16 objectForKey:v15 memoizationBlock:v20];
+  v18 = [_cachedDynamicAspectRatioFormat objectForKey:v15 memoizationBlock:v20];
 
   return v18;
 }
@@ -437,72 +437,72 @@ id __101__CAMCaptureEngineDevice__deviceFormatForDynamicAspectRatioWithGraphConf
   return v3;
 }
 
-- (id)videoDeviceFormatForGraphConfiguration:(id)a3 captureSession:(id)a4 deviceIsSecondary:(BOOL)a5
+- (id)videoDeviceFormatForGraphConfiguration:(id)configuration captureSession:(id)session deviceIsSecondary:(BOOL)secondary
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 mode];
+  secondaryCopy = secondary;
+  configurationCopy = configuration;
+  sessionCopy = session;
+  mode = [configurationCopy mode];
   v11 = 0;
-  if (v10 > 4)
+  if (mode > 4)
   {
-    if (v10 <= 6)
+    if (mode <= 6)
     {
-      if (v10 == 5)
+      if (mode == 5)
       {
-        [(CAMCaptureEngineDevice *)self _timelapseDeviceFormatWithCaptureSession:v9];
+        [(CAMCaptureEngineDevice *)self _timelapseDeviceFormatWithCaptureSession:sessionCopy];
       }
 
       else
       {
-        [(CAMCaptureEngineDevice *)self _portraitModeDeviceFormatWithCaptureSession:v9];
+        [(CAMCaptureEngineDevice *)self _portraitModeDeviceFormatWithCaptureSession:sessionCopy];
       }
       v12 = ;
       goto LABEL_26;
     }
 
-    if (v10 == 7)
+    if (mode == 7)
     {
 LABEL_13:
-      if (v5)
+      if (secondaryCopy)
       {
-        if (![v8 secondaryDeviceVideoDynamicAspectRatio])
+        if (![configurationCopy secondaryDeviceVideoDynamicAspectRatio])
         {
           goto LABEL_22;
         }
       }
 
-      else if (![v8 videoDynamicAspectRatio])
+      else if (![configurationCopy videoDynamicAspectRatio])
       {
         goto LABEL_22;
       }
 
-      v12 = [(CAMCaptureEngineDevice *)self _deviceFormatForDynamicAspectRatioWithGraphConfiguration:v8 deviceIsSecondary:v5];
+      v12 = [(CAMCaptureEngineDevice *)self _deviceFormatForDynamicAspectRatioWithGraphConfiguration:configurationCopy deviceIsSecondary:secondaryCopy];
 LABEL_26:
       v11 = v12;
       goto LABEL_27;
     }
 
-    if (v10 == 8)
+    if (mode == 8)
     {
       goto LABEL_22;
     }
 
-    if (v10 != 9)
+    if (mode != 9)
     {
       goto LABEL_27;
     }
 
 LABEL_16:
-    v12 = [(CAMCaptureEngineDevice *)self _photoBasedModeDeviceFormatWithCaptureSession:v9];
+    v12 = [(CAMCaptureEngineDevice *)self _photoBasedModeDeviceFormatWithCaptureSession:sessionCopy];
     goto LABEL_26;
   }
 
-  if (v10 <= 1)
+  if (mode <= 1)
   {
-    if (v10)
+    if (mode)
     {
-      if (v10 != 1)
+      if (mode != 1)
       {
         goto LABEL_27;
       }
@@ -513,28 +513,28 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (v10 == 2)
+  if (mode == 2)
   {
 LABEL_22:
-    if (v5)
+    if (secondaryCopy)
     {
-      v13 = [v8 secondaryDeviceVideoConfiguration];
-      v14 = [v8 secondaryDeviceColorSpace];
-      v15 = [v8 isSecondaryDeviceVideoBinned];
+      secondaryDeviceVideoConfiguration = [configurationCopy secondaryDeviceVideoConfiguration];
+      secondaryDeviceColorSpace = [configurationCopy secondaryDeviceColorSpace];
+      isSecondaryDeviceVideoBinned = [configurationCopy isSecondaryDeviceVideoBinned];
     }
 
     else
     {
-      v13 = [v8 videoConfiguration];
-      v14 = [v8 colorSpace];
-      v15 = [v8 isVideoBinned];
+      secondaryDeviceVideoConfiguration = [configurationCopy videoConfiguration];
+      secondaryDeviceColorSpace = [configurationCopy colorSpace];
+      isSecondaryDeviceVideoBinned = [configurationCopy isVideoBinned];
     }
 
-    v12 = -[CAMCaptureEngineDevice _highestQualityDeviceFormatForVideoConfiguration:videoEncodingBehavior:colorSpace:requireVideoBinned:](self, "_highestQualityDeviceFormatForVideoConfiguration:videoEncodingBehavior:colorSpace:requireVideoBinned:", v13, [v8 videoEncodingBehavior], v14, v15);
+    v12 = -[CAMCaptureEngineDevice _highestQualityDeviceFormatForVideoConfiguration:videoEncodingBehavior:colorSpace:requireVideoBinned:](self, "_highestQualityDeviceFormatForVideoConfiguration:videoEncodingBehavior:colorSpace:requireVideoBinned:", secondaryDeviceVideoConfiguration, [configurationCopy videoEncodingBehavior], secondaryDeviceColorSpace, isSecondaryDeviceVideoBinned);
     goto LABEL_26;
   }
 
-  if (v10 != 3)
+  if (mode != 3)
   {
     goto LABEL_16;
   }
@@ -547,32 +547,32 @@ LABEL_27:
   return v11;
 }
 
-- (id)videoDevicePresetForGraphConfiguration:(id)a3 captureSession:(id)a4
+- (id)videoDevicePresetForGraphConfiguration:(id)configuration captureSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mode];
+  configurationCopy = configuration;
+  sessionCopy = session;
+  mode = [configurationCopy mode];
   v9 = 0;
-  if (v8 > 4)
+  if (mode > 4)
   {
-    if (v8 <= 6)
+    if (mode <= 6)
     {
-      if (v8 == 5)
+      if (mode == 5)
       {
-        [(CAMCaptureEngineDevice *)self _timelapseSessionPresetWithCaptureSession:v7];
+        [(CAMCaptureEngineDevice *)self _timelapseSessionPresetWithCaptureSession:sessionCopy];
       }
 
       else
       {
-        [(CAMCaptureEngineDevice *)self _portraitModeSessionPresetWithCaptureSession:v7];
+        [(CAMCaptureEngineDevice *)self _portraitModeSessionPresetWithCaptureSession:sessionCopy];
       }
       v10 = ;
       goto LABEL_11;
     }
 
-    if ((v8 - 7) >= 2)
+    if ((mode - 7) >= 2)
     {
-      if (v8 != 9)
+      if (mode != 9)
       {
         goto LABEL_12;
       }
@@ -581,19 +581,19 @@ LABEL_27:
     }
 
 LABEL_10:
-    v10 = -[CAMCaptureEngineDevice _highestQualitySessionPresetForVideoConfiguration:videoEncodingBehavior:colorSpace:](self, "_highestQualitySessionPresetForVideoConfiguration:videoEncodingBehavior:colorSpace:", [v6 videoConfiguration], objc_msgSend(v6, "videoEncodingBehavior"), objc_msgSend(v6, "colorSpace"));
+    v10 = -[CAMCaptureEngineDevice _highestQualitySessionPresetForVideoConfiguration:videoEncodingBehavior:colorSpace:](self, "_highestQualitySessionPresetForVideoConfiguration:videoEncodingBehavior:colorSpace:", [configurationCopy videoConfiguration], objc_msgSend(configurationCopy, "videoEncodingBehavior"), objc_msgSend(configurationCopy, "colorSpace"));
     goto LABEL_11;
   }
 
-  if ((v8 - 1) < 2)
+  if ((mode - 1) < 2)
   {
     goto LABEL_10;
   }
 
-  if (!v8 || v8 == 4)
+  if (!mode || mode == 4)
   {
 LABEL_9:
-    v10 = [(CAMCaptureEngineDevice *)self _photoBasedModeSessionPresetWithCaptureSession:v7];
+    v10 = [(CAMCaptureEngineDevice *)self _photoBasedModeSessionPresetWithCaptureSession:sessionCopy];
 LABEL_11:
     v9 = v10;
   }
@@ -621,7 +621,7 @@ LABEL_12:
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2114;
   v6 = a2;
   _os_log_error_impl(&dword_1A3640000, log, OS_LOG_TYPE_ERROR, "Creating an AVCaptureDeviceInput for the captureDevice (%{public}@) failed: (%{public}@)", &v3, 0x16u);

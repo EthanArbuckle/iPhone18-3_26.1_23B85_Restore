@@ -35,7 +35,7 @@
   _Block_object_dispose(&v29, 8);
   if (v10)
   {
-    v12 = [a1 layer];
+    layer = [self layer];
     if ([v10 hasPrefix:@"layer."])
     {
       v13 = [v10 substringFromIndex:{objc_msgSend(@"layer.", "length")}];
@@ -52,12 +52,12 @@
       v17 = [v15 subarrayWithRange:{0, v16 + 1}];
       v18 = [v17 componentsJoinedByString:@"."];
 
-      v19 = [a1 valueForKeyPath:v18];
+      v19 = [self valueForKeyPath:v18];
 
       [v15 removeObjectsInRange:{0, v16 + 1}];
       v20 = [v15 componentsJoinedByString:@"."];
 
-      v12 = v19;
+      layer = v19;
       v10 = v20;
     }
 
@@ -70,29 +70,29 @@
 
   else
   {
-    v12 = 0;
+    layer = 0;
   }
 
-  return v12;
+  return layer;
 }
 
 - (BOOL)sbsa_isPropertyActivelyC2AnimatingForKeyPath:()SBSAC2PropertyAnimating
 {
   v4 = a3;
   v16 = 0;
-  v5 = [a1 _sbsa_deepestLayerAndCALayerRelativeKeyPathForUIKeyPath:v4 caLayerRelativeKeyPath:&v16];
+  v5 = [self _sbsa_deepestLayerAndCALayerRelativeKeyPathForUIKeyPath:v4 caLayerRelativeKeyPath:&v16];
   v6 = v16;
-  v7 = [v5 presentationModifiers];
+  presentationModifiers = [v5 presentationModifiers];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__UIView_SBSAC2PropertyAnimating__sbsa_isPropertyActivelyC2AnimatingForKeyPath___block_invoke;
   v12[3] = &unk_2783B14F0;
   v13 = v6;
-  v14 = a1;
+  selfCopy = self;
   v15 = v4;
   v8 = v4;
   v9 = v6;
-  v10 = [v7 bs_firstObjectPassingTest:v12];
+  v10 = [presentationModifiers bs_firstObjectPassingTest:v12];
 
   return v10 != 0;
 }
@@ -102,24 +102,24 @@
   v56 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v54 = 0;
-  v5 = [a1 _sbsa_deepestLayerAndCALayerRelativeKeyPathForUIKeyPath:v4 caLayerRelativeKeyPath:&v54];
+  v5 = [self _sbsa_deepestLayerAndCALayerRelativeKeyPathForUIKeyPath:v4 caLayerRelativeKeyPath:&v54];
   v6 = v54;
   v44 = v5;
-  v7 = [v5 presentationModifiers];
+  presentationModifiers = [v5 presentationModifiers];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __76__UIView_SBSAC2PropertyAnimating__sbsa_presentationModifierValueForKeyPath___block_invoke;
   v52[3] = &unk_2783AE468;
   v43 = v6;
   v53 = v43;
-  v8 = [v7 bs_firstObjectPassingTest:v52];
+  v8 = [presentationModifiers bs_firstObjectPassingTest:v52];
 
-  v9 = [v8 value];
+  value = [v8 value];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = [a1 _independentlyAnimatableMemberKeyPathsForPropertyKeyPath:v4];
+  obj = [self _independentlyAnimatableMemberKeyPathsForPropertyKeyPath:v4];
   v10 = [obj countByEnumeratingWithState:&v48 objects:v55 count:16];
   if (v10)
   {
@@ -135,7 +135,7 @@
         }
 
         v14 = *(*(&v48 + 1) + 8 * i);
-        v15 = [v44 presentationModifiers];
+        presentationModifiers2 = [v44 presentationModifiers];
         v45[0] = MEMORY[0x277D85DD0];
         v45[1] = 3221225472;
         v45[2] = __76__UIView_SBSAC2PropertyAnimating__sbsa_presentationModifierValueForKeyPath___block_invoke_2;
@@ -143,20 +143,20 @@
         v16 = v43;
         v46 = v16;
         v47 = v14;
-        v17 = [v15 bs_firstObjectPassingTest:v45];
+        v17 = [presentationModifiers2 bs_firstObjectPassingTest:v45];
 
-        v18 = [v17 value];
-        v19 = v18;
-        if (v17 && v18)
+        value2 = [v17 value];
+        v19 = value2;
+        if (v17 && value2)
         {
-          if (!v9)
+          if (!value)
           {
-            v9 = [v44 valueForKey:v16];
+            value = [v44 valueForKey:v16];
           }
 
           if ([v4 containsString:@"center"])
           {
-            [v9 bs_CGPointValue];
+            [value bs_CGPointValue];
             v21 = v20;
             v23 = v22;
             if (BSEqualObjects())
@@ -181,7 +181,7 @@
               goto LABEL_27;
             }
 
-            [v9 bs_CGRectValue];
+            [value bs_CGRectValue];
             v28 = v27;
             v30 = v29;
             v32 = v31;
@@ -215,7 +215,7 @@
 
           v39 = v26;
 
-          v9 = v39;
+          value = v39;
         }
 
 LABEL_27:
@@ -227,8 +227,8 @@ LABEL_27:
     while (v11);
   }
 
-  v40 = v9;
-  return v9;
+  v40 = value;
+  return value;
 }
 
 @end

@@ -5,17 +5,17 @@
 - (void)completeCurrentReport;
 - (void)incrementWatchAddedNotificationCount;
 - (void)incrementWatchRemovedNotificationCount;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDWatchConnectivityLogEventManager
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDWatchConnectivityLogEventManager *)self watchConnectivityLogEventManagerTimer];
+  fireCopy = fire;
+  watchConnectivityLogEventManagerTimer = [(HMDWatchConnectivityLogEventManager *)self watchConnectivityLogEventManagerTimer];
 
-  if (v5 == v4)
+  if (watchConnectivityLogEventManagerTimer == fireCopy)
   {
 
     [(HMDWatchConnectivityLogEventManager *)self completeCurrentReport];

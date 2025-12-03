@@ -1,69 +1,69 @@
 @interface TransportButton
-- (void)didBeginHold:(id)a3;
-- (void)didDragExit:(id)a3;
-- (void)didTapInside:(id)a3;
+- (void)didBeginHold:(id)hold;
+- (void)didDragExit:(id)exit;
+- (void)didTapInside:(id)inside;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation TransportButton
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = type metadata accessor for TransportButton();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(TransportButton *)&v9 isEnabled];
-  v8.receiver = v6;
+  selfCopy = self;
+  isEnabled = [(TransportButton *)&v9 isEnabled];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(TransportButton *)&v8 setEnabled:v3];
-  if (v7 != [(TransportButton *)v6 isEnabled])
+  [(TransportButton *)&v8 setEnabled:enabledCopy];
+  if (isEnabled != [(TransportButton *)selfCopy isEnabled])
   {
     sub_1A22E337C();
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5 = type metadata accessor for TransportButton();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(TransportButton *)&v9 isHighlighted];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHighlighted = [(TransportButton *)&v9 isHighlighted];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(TransportButton *)&v8 setHighlighted:v3];
-  sub_1A22E232C(v7);
+  [(TransportButton *)&v8 setHighlighted:highlightedCopy];
+  sub_1A22E232C(isHighlighted);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A22E2EB0();
 }
 
-- (void)didTapInside:(id)a3
+- (void)didTapInside:(id)inside
 {
-  v4 = a3;
-  v5 = self;
+  insideCopy = inside;
+  selfCopy = self;
   sub_1A22E3DB0();
 }
 
-- (void)didBeginHold:(id)a3
+- (void)didBeginHold:(id)hold
 {
-  v4 = a3;
-  v5 = self;
+  holdCopy = hold;
+  selfCopy = self;
   sub_1A22E3E94();
 }
 
-- (void)didDragExit:(id)a3
+- (void)didDragExit:(id)exit
 {
-  v4 = a3;
-  v5 = self;
+  exitCopy = exit;
+  selfCopy = self;
   sub_1A22E3C14();
 }
 

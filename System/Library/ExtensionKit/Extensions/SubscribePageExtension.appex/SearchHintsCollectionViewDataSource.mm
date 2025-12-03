@@ -1,20 +1,20 @@
 @interface SearchHintsCollectionViewDataSource
 - (_TtC22SubscribePageExtension35SearchHintsCollectionViewDataSource)init;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 @end
 
 @implementation SearchHintsCollectionViewDataSource
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_100748DC4();
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v5 = sub_1007417F4();
   v6 = *(v5 - 8);
@@ -22,12 +22,12 @@
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100741744();
   type metadata accessor for SearchHintCollectionViewCell();
-  v9 = a3;
+  viewCopy = view;
   sub_1007539D4();
   v10 = sub_100753064();
 
   isa = sub_100741704().super.isa;
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:isa];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:isa];
 
   (*(v6 + 8))(v8, v5);
 

@@ -1,72 +1,72 @@
 @interface WFSettingsViewProvider
 - (WFSettingsViewProvider)init;
-- (id)certificateViewControllerWithContext:(id)a3;
-- (id)credentialsViewControllerWithContext:(id)a3;
-- (id)networkDetailsViewControllerWithContext:(id)a3;
-- (id)otherNetworkViewControllerWithContext:(id)a3 appearanceProxy:(id)a4;
-- (void)didDismissNetworkViewController:(id)a3 forContext:(id)a4;
+- (id)certificateViewControllerWithContext:(id)context;
+- (id)credentialsViewControllerWithContext:(id)context;
+- (id)networkDetailsViewControllerWithContext:(id)context;
+- (id)otherNetworkViewControllerWithContext:(id)context appearanceProxy:(id)proxy;
+- (void)didDismissNetworkViewController:(id)controller forContext:(id)context;
 @end
 
 @implementation WFSettingsViewProvider
 
-- (id)credentialsViewControllerWithContext:(id)a3
+- (id)credentialsViewControllerWithContext:(id)context
 {
   v4 = MEMORY[0x277D7B9F0];
-  v5 = a3;
+  contextCopy = context;
   v6 = [v4 alloc];
   v7 = WFCurrentDeviceCapability();
-  v8 = [MEMORY[0x277D7B980] defaultAppearanceProxy];
-  v9 = [v6 initWithCredentialsProviderContext:v5 deviceCapability:v7 appearanceProxy:v8];
+  defaultAppearanceProxy = [MEMORY[0x277D7B980] defaultAppearanceProxy];
+  v9 = [v6 initWithCredentialsProviderContext:contextCopy deviceCapability:v7 appearanceProxy:defaultAppearanceProxy];
 
-  [(NSMapTable *)self->_credentialsViewControllerMap setObject:v9 forKey:v5];
+  [(NSMapTable *)self->_credentialsViewControllerMap setObject:v9 forKey:contextCopy];
 
   return v9;
 }
 
-- (id)certificateViewControllerWithContext:(id)a3
+- (id)certificateViewControllerWithContext:(id)context
 {
   v3 = MEMORY[0x277D7BA08];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCertificateProviderContext:v4];
+  contextCopy = context;
+  v5 = [[v3 alloc] initWithCertificateProviderContext:contextCopy];
 
   return v5;
 }
 
-- (id)networkDetailsViewControllerWithContext:(id)a3
+- (id)networkDetailsViewControllerWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[WFSettingsController alloc] initWithDetailsContext:v4];
+  contextCopy = context;
+  v5 = [[WFSettingsController alloc] initWithDetailsContext:contextCopy];
 
   [(WFSettingsViewProvider *)self setSettingsController:v5];
-  v6 = [(WFSettingsViewProvider *)self settingsController];
-  v7 = [v6 settingsViewController];
+  settingsController = [(WFSettingsViewProvider *)self settingsController];
+  settingsViewController = [settingsController settingsViewController];
 
-  return v7;
+  return settingsViewController;
 }
 
-- (id)otherNetworkViewControllerWithContext:(id)a3 appearanceProxy:(id)a4
+- (id)otherNetworkViewControllerWithContext:(id)context appearanceProxy:(id)proxy
 {
   v4 = MEMORY[0x277D7B9F0];
-  v5 = a3;
+  contextCopy = context;
   v6 = [v4 alloc];
   v7 = WFCurrentDeviceCapability();
-  v8 = [MEMORY[0x277D7B980] defaultAppearanceProxy];
-  v9 = [v6 initWithOtherNetworkProviderContext:v5 deviceCapability:v7 appearanceProxy:v8];
+  defaultAppearanceProxy = [MEMORY[0x277D7B980] defaultAppearanceProxy];
+  v9 = [v6 initWithOtherNetworkProviderContext:contextCopy deviceCapability:v7 appearanceProxy:defaultAppearanceProxy];
 
-  [v9 setDelegate:v5];
+  [v9 setDelegate:contextCopy];
 
   return v9;
 }
 
-- (void)didDismissNetworkViewController:(id)a3 forContext:(id)a4
+- (void)didDismissNetworkViewController:(id)controller forContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(WFSettingsViewProvider *)self credentialsViewControllerMap];
-    [v6 removeObjectForKey:v5];
+    credentialsViewControllerMap = [(WFSettingsViewProvider *)self credentialsViewControllerMap];
+    [credentialsViewControllerMap removeObjectForKey:contextCopy];
   }
 
   else
@@ -74,11 +74,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(WFSettingsViewProvider *)self settingsController];
-      v8 = [v7 settingsViewController];
-      v9 = [v8 detailViewControllerVisible];
+      settingsController = [(WFSettingsViewProvider *)self settingsController];
+      settingsViewController = [settingsController settingsViewController];
+      detailViewControllerVisible = [settingsViewController detailViewControllerVisible];
 
-      if (v9)
+      if (detailViewControllerVisible)
       {
         v10 = WFLogForCategory(0);
         v11 = OSLogForWFLogLevel(3uLL);
@@ -89,9 +89,9 @@
           _os_log_impl(&dword_273ECD000, v10, v11, "%s: settings view controller has detail view controller visible, popping navigation controller", &v15, 0xCu);
         }
 
-        v12 = [(WFSettingsViewProvider *)self settingsController];
-        v13 = [v12 settingsViewController];
-        [v13 wf_popViewControllerAnimated:1];
+        settingsController2 = [(WFSettingsViewProvider *)self settingsController];
+        settingsViewController2 = [settingsController2 settingsViewController];
+        [settingsViewController2 wf_popViewControllerAnimated:1];
       }
 
       [(WFSettingsViewProvider *)self setSettingsController:0];

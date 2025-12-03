@@ -9,15 +9,15 @@
 + (id)defaultProgressBarLayout
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 2)
+  if (userInterfaceIdiom == 2)
   {
     [v2 setHeight:10.0];
     [v2 setPadding:{2.0, 2.0, 2.0, 2.0}];
-    v5 = [MEMORY[0x1E69DC888] vui_progressBarFillColor];
-    [v2 setFillColor:v5];
+    vui_progressBarFillColor = [MEMORY[0x1E69DC888] vui_progressBarFillColor];
+    [v2 setFillColor:vui_progressBarFillColor];
 
     [v2 setCornerRadius:5.0];
     [v2 setShouldProgressBarUseRoundCorner:1];
@@ -32,8 +32,8 @@
     v6 = [MEMORY[0x1E69DC888] colorWithRed:0.847058824 green:0.847058824 blue:0.847058824 alpha:0.4];
     [v2 setTintColor:v6];
 
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    [v2 setFillColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v2 setFillColor:whiteColor];
 
     [v2 setShouldProgressBarUseRoundCorner:1];
     [v2 setUseMaterial:0];

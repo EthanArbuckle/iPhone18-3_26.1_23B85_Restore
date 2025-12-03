@@ -1,29 +1,29 @@
 @interface PADInternalAuditDataRepository
 - (_TtC10CoreIDVPAD30PADInternalAuditDataRepository)init;
-- (void)storeClassifierResult:(id)a3 imageData:(id)a4;
-- (void)storeFACPoseBuffer:(__CVBuffer *)a3 identifier:(id)a4 values:(id)a5;
-- (void)storePRDBuffer:(__CVBuffer *)a3 name:(id)a4;
-- (void)storeTAValues:(id)a3;
-- (void)storeUnencryptedVideoFrom:(id)a3;
+- (void)storeClassifierResult:(id)result imageData:(id)data;
+- (void)storeFACPoseBuffer:(__CVBuffer *)buffer identifier:(id)identifier values:(id)values;
+- (void)storePRDBuffer:(__CVBuffer *)buffer name:(id)name;
+- (void)storeTAValues:(id)values;
+- (void)storeUnencryptedVideoFrom:(id)from;
 @end
 
 @implementation PADInternalAuditDataRepository
 
-- (void)storeClassifierResult:(id)a3 imageData:(id)a4
+- (void)storeClassifierResult:(id)result imageData:(id)data
 {
-  if (a4)
+  if (data)
   {
-    v7 = a3;
-    v8 = self;
-    v9 = a4;
+    resultCopy = result;
+    selfCopy = self;
+    dataCopy = data;
     v10 = sub_2456CAED8();
     v12 = v11;
   }
 
   else
   {
-    v13 = a3;
-    v14 = self;
+    resultCopy2 = result;
+    selfCopy2 = self;
     v10 = 0;
     v12 = 0xF000000000000000;
   }
@@ -55,7 +55,7 @@
   sub_245697AFC(v17);
 }
 
-- (void)storeUnencryptedVideoFrom:(id)a3
+- (void)storeUnencryptedVideoFrom:(id)from
 {
   v4 = sub_2456CAE98();
   v5 = *(v4 - 8);
@@ -64,46 +64,46 @@
   sub_2456CAE68();
   if (*(&self->super.isa + OBJC_IVAR____TtC10CoreIDVPAD30PADInternalAuditDataRepository_dataRecorder))
   {
-    v8 = self;
+    selfCopy = self;
     sub_2456A0F78();
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
   }
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)storePRDBuffer:(__CVBuffer *)a3 name:(id)a4
+- (void)storePRDBuffer:(__CVBuffer *)buffer name:(id)name
 {
   v6 = sub_2456CB008();
   v8 = v7;
   if (*(&self->super.isa + OBJC_IVAR____TtC10CoreIDVPAD30PADInternalAuditDataRepository_dataRecorder))
   {
     v9 = v6;
-    v10 = a3;
-    v11 = self;
-    sub_2456A14AC(v10, v9, v8);
+    bufferCopy = buffer;
+    selfCopy = self;
+    sub_2456A14AC(bufferCopy, v9, v8);
   }
 }
 
-- (void)storeFACPoseBuffer:(__CVBuffer *)a3 identifier:(id)a4 values:(id)a5
+- (void)storeFACPoseBuffer:(__CVBuffer *)buffer identifier:(id)identifier values:(id)values
 {
   v8 = sub_2456CB008();
   v10 = v9;
-  v11 = a3;
-  v12 = a5;
-  v13 = self;
-  sub_2456B21EC(v11, v8, v10, v12);
+  bufferCopy = buffer;
+  valuesCopy = values;
+  selfCopy = self;
+  sub_2456B21EC(bufferCopy, v8, v10, valuesCopy);
 }
 
-- (void)storeTAValues:(id)a3
+- (void)storeTAValues:(id)values
 {
-  v4 = a3;
-  v5 = self;
-  sub_2456B24BC(v4);
+  valuesCopy = values;
+  selfCopy = self;
+  sub_2456B24BC(valuesCopy);
 }
 
 - (_TtC10CoreIDVPAD30PADInternalAuditDataRepository)init

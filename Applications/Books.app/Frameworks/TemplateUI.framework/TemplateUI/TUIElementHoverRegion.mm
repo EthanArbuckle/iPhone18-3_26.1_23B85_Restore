@@ -1,15 +1,15 @@
 @interface TUIElementHoverRegion
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementHoverRegion
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a3;
-  v9 = [a5 stringForAttribute:138 node:var0];
-  [v8 setRegionName:v9];
+  var0 = node.var0;
+  boxCopy = box;
+  v9 = [attributes stringForAttribute:138 node:var0];
+  [boxCopy setRegionName:v9];
 }
 
 @end

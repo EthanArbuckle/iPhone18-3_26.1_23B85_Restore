@@ -7,7 +7,7 @@
 - (id)pageInfo;
 - (id)previousTargetLastColumn;
 - (int64_t)modelRootIndex;
-- (void)inflateBodyLayout:(id)a3;
+- (void)inflateBodyLayout:(id)layout;
 @end
 
 @implementation TPPaginatedBodyInfo
@@ -80,10 +80,10 @@
   return v18;
 }
 
-- (void)inflateBodyLayout:(id)a3
+- (void)inflateBodyLayout:(id)layout
 {
-  v4 = a3;
-  v10 = objc_msgSend_info(v4, v5, v6, v7, v8, v9);
+  layoutCopy = layout;
+  v10 = objc_msgSend_info(layoutCopy, v5, v6, v7, v8, v9);
 
   if (v10 != self)
   {
@@ -97,7 +97,7 @@
 
   v45 = objc_msgSend_pageInfo(self, v11, v12, v13, v14, v15);
   v39 = objc_msgSend_pageController(v45, v34, v35, v36, v37, v38);
-  objc_msgSend_i_inflateColumnsInBodyLayout_(v39, v40, v41, v42, v43, v44, v4);
+  objc_msgSend_i_inflateColumnsInBodyLayout_(v39, v40, v41, v42, v43, v44, layoutCopy);
 }
 
 - (int64_t)modelRootIndex

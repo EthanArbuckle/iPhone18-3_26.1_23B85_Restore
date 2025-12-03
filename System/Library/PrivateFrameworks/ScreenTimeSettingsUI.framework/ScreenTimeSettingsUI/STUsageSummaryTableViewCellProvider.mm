@@ -1,40 +1,40 @@
 @interface STUsageSummaryTableViewCellProvider
-+ (id)usageSummaryTableViewCellForUserDSID:(id)a3;
++ (id)usageSummaryTableViewCellForUserDSID:(id)d;
 - (BOOL)shouldShowUsageSummaryForUser;
 - (STUsageDetailsViewModelCoordinator)usageCoordinator;
-- (STUsageSummaryTableViewCellProvider)initWithUserDSID:(id)a3;
+- (STUsageSummaryTableViewCellProvider)initWithUserDSID:(id)d;
 - (id)usageSummaryTableViewCellForUser;
-- (void)_deviceIdentifierDidChangeTo:(id)a3;
-- (void)_usageReportDidChangeFrom:(id)a3 to:(id)a4;
+- (void)_deviceIdentifierDidChangeTo:(id)to;
+- (void)_usageReportDidChangeFrom:(id)from to:(id)to;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)refresh;
 - (void)shouldShowUsageSummaryForUser;
 @end
 
 @implementation STUsageSummaryTableViewCellProvider
 
-+ (id)usageSummaryTableViewCellForUserDSID:(id)a3
++ (id)usageSummaryTableViewCellForUserDSID:(id)d
 {
-  v3 = a3;
-  v4 = [[STUsageSummaryTableViewCellProvider alloc] initWithUserDSID:v3];
+  dCopy = d;
+  v4 = [[STUsageSummaryTableViewCellProvider alloc] initWithUserDSID:dCopy];
 
-  v5 = [(STUsageSummaryTableViewCellProvider *)v4 usageSummaryTableViewCellForUser];
+  usageSummaryTableViewCellForUser = [(STUsageSummaryTableViewCellProvider *)v4 usageSummaryTableViewCellForUser];
 
-  return v5;
+  return usageSummaryTableViewCellForUser;
 }
 
-- (STUsageSummaryTableViewCellProvider)initWithUserDSID:(id)a3
+- (STUsageSummaryTableViewCellProvider)initWithUserDSID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = STUsageSummaryTableViewCellProvider;
   v6 = [(STUsageSummaryTableViewCellProvider *)&v18 init];
-  objc_storeStrong(&v6->_userDSID, a3);
+  objc_storeStrong(&v6->_userDSID, d);
   v7 = +[_TtC20ScreenTimeSettingsUI23STUsageDetailsSelection shared];
-  v8 = [v7 deviceIdentifierForChildUserDSID:v5];
-  v9 = [v7 usageReportTypeForChildUserDSID:v5];
-  v10 = [[STRootViewModelCoordinator alloc] initWithUserDSID:v5 deviceIdentifier:v8 usageReportType:v9 usageContext:0];
+  v8 = [v7 deviceIdentifierForChildUserDSID:dCopy];
+  v9 = [v7 usageReportTypeForChildUserDSID:dCopy];
+  v10 = [[STRootViewModelCoordinator alloc] initWithUserDSID:dCopy deviceIdentifier:v8 usageReportType:v9 usageContext:0];
   rootCoordinator = v6->_rootCoordinator;
   v6->_rootCoordinator = v10;
 
@@ -45,7 +45,7 @@
   v15[2] = __56__STUsageSummaryTableViewCellProvider_initWithUserDSID___block_invoke;
   v15[3] = &unk_279B7D8A8;
   objc_copyWeak(&v16, &location);
-  v12 = [v7 observeDeviceIdentifierChangesForChildUserDSID:v5 onChange:v15];
+  v12 = [v7 observeDeviceIdentifierChangesForChildUserDSID:dCopy onChange:v15];
   usageDetailsSelectionObservation = v6->_usageDetailsSelectionObservation;
   v6->_usageDetailsSelectionObservation = v12;
 
@@ -70,30 +70,30 @@ void __56__STUsageSummaryTableViewCellProvider_initWithUserDSID___block_invoke(u
   [(STUsageSummaryTableViewCellProvider *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == "KVOContextUsageSummaryTableViewCellProvider")
+  changeCopy = change;
+  if (context == "KVOContextUsageSummaryTableViewCellProvider")
   {
-    v12 = a3;
+    pathCopy = path;
     [(STUsageSummaryTableViewCellProvider *)self rootCoordinator];
 
-    v13 = [v12 isEqualToString:@"usageDetailsCoordinator.viewModel.selectedWeekUsageReport"];
+    v13 = [pathCopy isEqualToString:@"usageDetailsCoordinator.viewModel.selectedWeekUsageReport"];
     if (v13)
     {
-      v14 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null)
       {
 
         v14 = 0;
       }
 
-      v16 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v17 = [MEMORY[0x277CBEB68] null];
+      v16 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v16 == v17)
+      if (v16 == null2)
       {
 
         v16 = 0;
@@ -107,36 +107,36 @@ void __56__STUsageSummaryTableViewCellProvider_initWithUserDSID___block_invoke(u
   {
     v18.receiver = self;
     v18.super_class = STUsageSummaryTableViewCellProvider;
-    v11 = a3;
-    [(STUsageSummaryTableViewCellProvider *)&v18 observeValueForKeyPath:v11 ofObject:a4 change:v10 context:a6];
+    pathCopy2 = path;
+    [(STUsageSummaryTableViewCellProvider *)&v18 observeValueForKeyPath:pathCopy2 ofObject:object change:changeCopy context:context];
   }
 }
 
-- (void)_usageReportDidChangeFrom:(id)a3 to:(id)a4
+- (void)_usageReportDidChangeFrom:(id)from to:(id)to
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6 != v9 && ([v9 isEqual:v6] & 1) == 0)
+  fromCopy = from;
+  toCopy = to;
+  if (toCopy != fromCopy && ([fromCopy isEqual:toCopy] & 1) == 0)
   {
-    v7 = [(STUsageSummaryTableViewCellProvider *)self legacyUsageCell];
-    v8 = [(STUsageSummaryTableViewCellProvider *)self usageCoordinator];
-    [v7 setValue:v8];
+    legacyUsageCell = [(STUsageSummaryTableViewCellProvider *)self legacyUsageCell];
+    usageCoordinator = [(STUsageSummaryTableViewCellProvider *)self usageCoordinator];
+    [legacyUsageCell setValue:usageCoordinator];
   }
 }
 
-- (void)_deviceIdentifierDidChangeTo:(id)a3
+- (void)_deviceIdentifierDidChangeTo:(id)to
 {
-  v4 = a3;
-  v5 = [(STUsageSummaryTableViewCellProvider *)self legacyUsageCell];
+  toCopy = to;
+  legacyUsageCell = [(STUsageSummaryTableViewCellProvider *)self legacyUsageCell];
 
-  if (v5)
+  if (legacyUsageCell)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __68__STUsageSummaryTableViewCellProvider__deviceIdentifierDidChangeTo___block_invoke;
     v6[3] = &unk_279B7CAE0;
     v6[4] = self;
-    v7 = v4;
+    v7 = toCopy;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 }
@@ -178,26 +178,26 @@ void __68__STUsageSummaryTableViewCellProvider__deviceIdentifierDidChangeTo___bl
 
 - (BOOL)shouldShowUsageSummaryForUser
 {
-  v3 = [(STUsageSummaryTableViewCellProvider *)self rootCoordinator];
-  v4 = [v3 viewModel];
-  if ([v4 hasWatchOSDevicesOnly])
+  rootCoordinator = [(STUsageSummaryTableViewCellProvider *)self rootCoordinator];
+  viewModel = [rootCoordinator viewModel];
+  if ([viewModel hasWatchOSDevicesOnly])
   {
-    v5 = 0;
+    isScreenTimeEnabled = 0;
   }
 
   else
   {
-    v6 = [(STUsageSummaryTableViewCellProvider *)self rootCoordinator];
-    v7 = [v6 viewModel];
-    v5 = [v7 isScreenTimeEnabled];
+    rootCoordinator2 = [(STUsageSummaryTableViewCellProvider *)self rootCoordinator];
+    viewModel2 = [rootCoordinator2 viewModel];
+    isScreenTimeEnabled = [viewModel2 isScreenTimeEnabled];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [(STUsageSummaryTableViewCellProvider *)v5 shouldShowUsageSummaryForUser];
+    [(STUsageSummaryTableViewCellProvider *)isScreenTimeEnabled shouldShowUsageSummaryForUser];
   }
 
-  return v5;
+  return isScreenTimeEnabled;
 }
 
 - (id)usageSummaryTableViewCellForUser
@@ -213,9 +213,9 @@ void __68__STUsageSummaryTableViewCellProvider__deviceIdentifierDidChangeTo___bl
 
 - (void)refresh
 {
-  v3 = [(STUsageSummaryTableViewCellProvider *)self legacyUsageCell];
+  legacyUsageCell = [(STUsageSummaryTableViewCellProvider *)self legacyUsageCell];
 
-  if (v3)
+  if (legacyUsageCell)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -261,10 +261,10 @@ void __46__STUsageSummaryTableViewCellProvider_refresh__block_invoke_2(uint64_t 
 
 - (STUsageDetailsViewModelCoordinator)usageCoordinator
 {
-  v2 = [(STUsageSummaryTableViewCellProvider *)self rootCoordinator];
-  v3 = [v2 usageDetailsCoordinator];
+  rootCoordinator = [(STUsageSummaryTableViewCellProvider *)self rootCoordinator];
+  usageDetailsCoordinator = [rootCoordinator usageDetailsCoordinator];
 
-  return v3;
+  return usageDetailsCoordinator;
 }
 
 void __68__STUsageSummaryTableViewCellProvider__deviceIdentifierDidChangeTo___block_invoke_2_cold_1(uint64_t a1, NSObject *a2)
@@ -279,7 +279,7 @@ void __68__STUsageSummaryTableViewCellProvider__deviceIdentifierDidChangeTo___bl
 {
   v4 = *MEMORY[0x277D85DE8];
   v1 = @"No";
-  if (a1)
+  if (self)
   {
     v1 = @"Yes";
   }

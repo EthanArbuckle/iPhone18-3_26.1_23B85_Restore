@@ -1,24 +1,24 @@
 @interface VCControlChannelDialog
-- (BOOL)sendReliableMessage:(id)a3 withTopic:(id)a4 timeout:(id)a5 withOptions:(id)a6;
-- (BOOL)sendReliableMessageInternal:(id)a3 withTopic:(id)a4 timeout:(id)a5 useFastRetries:(BOOL)a6 withOptions:(id)a7;
-- (BOOL)sendUnreliableMessage:(id)a3 withTopic:(id)a4 sessionID:(unsigned int)a5 participantID:(id)a6 transactionDelegate:(id)a7;
-- (VCControlChannelDialog)initWithSessionID:(unsigned int)a3 participantID:(id)a4 participantUUID:(id)a5 participantConfig:(id *)a6 transactionDelegate:(id)a7;
+- (BOOL)sendReliableMessage:(id)message withTopic:(id)topic timeout:(id)timeout withOptions:(id)options;
+- (BOOL)sendReliableMessageInternal:(id)internal withTopic:(id)topic timeout:(id)timeout useFastRetries:(BOOL)retries withOptions:(id)options;
+- (BOOL)sendUnreliableMessage:(id)message withTopic:(id)topic sessionID:(unsigned int)d participantID:(id)iD transactionDelegate:(id)delegate;
+- (VCControlChannelDialog)initWithSessionID:(unsigned int)d participantID:(id)iD participantUUID:(id)uID participantConfig:(id *)config transactionDelegate:(id)delegate;
 - (id)handshakeOperationQueue;
-- (void)cacheOutgoingMessage:(id)a3 topic:(id)a4 timeout:(id)a5 withOptions:(id)a6;
-- (void)checkForSignificantHandshakeDelayWithDelegate:(id)a3;
-- (void)confirmTransaction:(id)a3;
+- (void)cacheOutgoingMessage:(id)message topic:(id)topic timeout:(id)timeout withOptions:(id)options;
+- (void)checkForSignificantHandshakeDelayWithDelegate:(id)delegate;
+- (void)confirmTransaction:(id)transaction;
 - (void)dealloc;
-- (void)doHandshakeWithMessage:(id)a3 topic:(id)a4 afterDelay:(double)a5 withOptions:(id)a6;
+- (void)doHandshakeWithMessage:(id)message topic:(id)topic afterDelay:(double)delay withOptions:(id)options;
 - (void)flushActiveTransactions;
-- (void)removeTransactionForTransactionID:(int)a3;
+- (void)removeTransactionForTransactionID:(int)d;
 - (void)resetHandshake;
 - (void)sendAllCachedMessagesAndDisableHandshakeWhenDone;
-- (void)startHandshakeWithMessage:(id)a3 topic:(id)a4 withOptions:(id)a5;
+- (void)startHandshakeWithMessage:(id)message topic:(id)topic withOptions:(id)options;
 @end
 
 @implementation VCControlChannelDialog
 
-- (VCControlChannelDialog)initWithSessionID:(unsigned int)a3 participantID:(id)a4 participantUUID:(id)a5 participantConfig:(id *)a6 transactionDelegate:(id)a7
+- (VCControlChannelDialog)initWithSessionID:(unsigned int)d participantID:(id)iD participantUUID:(id)uID participantConfig:(id *)config transactionDelegate:(id)delegate
 {
   v42 = *MEMORY[0x1E69E9840];
   v29.receiver = self;
@@ -27,15 +27,15 @@
   v13 = v12;
   if (v12)
   {
-    v12->_sessionID = a3;
-    v12->_participantID = [a4 copy];
-    v13->_participantUUID = [a5 copy];
-    v13->_weakTransactionDelegate = objc_storeWeak(&v13->_weakTransactionDelegate, a7);
+    v12->_sessionID = d;
+    v12->_participantID = [iD copy];
+    v13->_participantUUID = [uID copy];
+    v13->_weakTransactionDelegate = objc_storeWeak(&v13->_weakTransactionDelegate, delegate);
     v13->_transactions = objc_alloc_init(MEMORY[0x1E695DF90]);
     v13->_cachedMessages = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v13->_handshakeOperationQueue = dispatch_queue_create("com.apple.AVConference.VCControlChannelDialog.handshakeOperationQueue", v14);
-    v13->_handshakeEnabled = a6->var5;
+    v13->_handshakeEnabled = config->var5;
     v13->_handshakeStartTime = NAN;
     [(VCControlChannelDialog *)v13 resetHandshake];
     if (objc_opt_class() == v13)
@@ -176,12 +176,12 @@ LABEL_14:
   objc_sync_exit(self);
   if (transactions)
   {
-    v4 = [(NSMutableDictionary *)transactions allKeys];
+    allKeys = [(NSMutableDictionary *)transactions allKeys];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v8 count:16];
+    v5 = [allKeys countByEnumeratingWithState:&v9 objects:v8 count:16];
     if (v5)
     {
       v6 = *v10;
@@ -192,14 +192,14 @@ LABEL_14:
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           [-[NSMutableDictionary objectForKeyedSubscript:](transactions objectForKeyedSubscript:{*(*(&v9 + 1) + 8 * v7++)), "flushTransaction"}];
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v9 objects:v8 count:16];
+        v5 = [allKeys countByEnumeratingWithState:&v9 objects:v8 count:16];
       }
 
       while (v5);
@@ -207,9 +207,9 @@ LABEL_14:
   }
 }
 
-- (void)removeTransactionForTransactionID:(int)a3
+- (void)removeTransactionForTransactionID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v27 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
   -[NSMutableDictionary removeObjectForKey:](self->_transactions, "removeObjectForKey:", [objc_msgSend(MEMORY[0x1E696AD98] numberWithInt:{v3), "stringValue"}]);
@@ -277,7 +277,7 @@ LABEL_13:
           v21 = 2112;
           v22 = v5;
           v23 = 2048;
-          v24 = self;
+          selfCopy2 = self;
           v25 = 1024;
           v26 = v3;
           v9 = " [%s] %s:%d %@(%p) removeTransactionForTransactionID: transactionID='%d' removed from list of transactions";
@@ -298,7 +298,7 @@ LABEL_13:
         v21 = 2112;
         v22 = v5;
         v23 = 2048;
-        v24 = self;
+        selfCopy2 = self;
         v25 = 1024;
         v26 = v3;
         _os_log_debug_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) removeTransactionForTransactionID: transactionID='%d' removed from list of transactions", &v15, 0x36u);
@@ -309,19 +309,19 @@ LABEL_13:
   objc_sync_exit(self);
 }
 
-- (void)doHandshakeWithMessage:(id)a3 topic:(id)a4 afterDelay:(double)a5 withOptions:(id)a6
+- (void)doHandshakeWithMessage:(id)message topic:(id)topic afterDelay:(double)delay withOptions:(id)options
 {
   block[8] = *MEMORY[0x1E69E9840];
-  v10 = dispatch_time(0, (a5 * 1000000000.0));
+  v10 = dispatch_time(0, (delay * 1000000000.0));
   handshakeOperationQueue = self->_handshakeOperationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__VCControlChannelDialog_doHandshakeWithMessage_topic_afterDelay_withOptions___block_invoke;
   block[3] = &unk_1E85F3B00;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a6;
+  block[5] = message;
+  block[6] = topic;
+  block[7] = options;
   dispatch_after(v10, handshakeOperationQueue, block);
 }
 
@@ -512,11 +512,11 @@ LABEL_17:
   }
 }
 
-- (void)checkForSignificantHandshakeDelayWithDelegate:(id)a3
+- (void)checkForSignificantHandshakeDelayWithDelegate:(id)delegate
 {
   if (self->_isHandshakeCommenced && micro() - self->_handshakeStartTime > 30.0)
   {
-    [a3 reportSignificantHandshakeDelaySymptomForParticipantID:self->_participantID];
+    [delegate reportSignificantHandshakeDelaySymptomForParticipantID:self->_participantID];
     self->_handshakeStartTime = NAN;
   }
 }
@@ -743,7 +743,7 @@ uint64_t __74__VCControlChannelDialog_sendAllCachedMessagesAndDisableHandshakeWh
   return objc_sync_exit(v2);
 }
 
-- (void)startHandshakeWithMessage:(id)a3 topic:(id)a4 withOptions:(id)a5
+- (void)startHandshakeWithMessage:(id)message topic:(id)topic withOptions:(id)options
 {
   v26[1] = *MEMORY[0x1E69E9840];
   self->_isHandshakeCommenced = 1;
@@ -774,9 +774,9 @@ uint64_t __74__VCControlChannelDialog_sendAllCachedMessagesAndDisableHandshakeWh
         *&v22[10] = 2112;
         *&v22[12] = participantID;
         *&v22[20] = 2112;
-        *&v22[22] = a4;
+        *&v22[22] = topic;
         *&v22[30] = 2112;
-        v23 = a3;
+        messageCopy = message;
         v14 = " [%s] %s:%d Started handshake for session '%d' with participant '%@' using topic '%@', message '%@'";
         v15 = v11;
         v16 = 64;
@@ -819,11 +819,11 @@ LABEL_11:
         *&v22[24] = 1024;
         *&v22[26] = v19;
         *&v22[30] = 2112;
-        v23 = v20;
+        messageCopy = v20;
         *v24 = 2112;
-        *&v24[2] = a4;
+        *&v24[2] = topic;
         *&v24[10] = 2112;
-        *&v24[12] = a3;
+        *&v24[12] = message;
         v14 = " [%s] %s:%d %@(%p) Started handshake for session '%d' with participant '%@' using topic '%@', message '%@'";
         v15 = v18;
         v16 = 84;
@@ -832,17 +832,17 @@ LABEL_11:
     }
   }
 
-  [(VCControlChannelDialog *)self doHandshakeWithMessage:a3 topic:a4 afterDelay:a5 withOptions:0.0, *v21, *&v21[16], *v22, *&v22[16], v23, *v24, *&v24[16]];
+  [(VCControlChannelDialog *)self doHandshakeWithMessage:message topic:topic afterDelay:options withOptions:0.0, *v21, *&v21[16], *v22, *&v22[16], messageCopy, *v24, *&v24[16]];
 }
 
-- (void)cacheOutgoingMessage:(id)a3 topic:(id)a4 timeout:(id)a5 withOptions:(id)a6
+- (void)cacheOutgoingMessage:(id)message topic:(id)topic timeout:(id)timeout withOptions:(id)options
 {
   v38 = *MEMORY[0x1E69E9840];
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v11 setObject:a4 forKeyedSubscript:@"CachedTopic"];
-  [v11 setObject:a3 forKeyedSubscript:@"CachedMessage"];
-  [v11 setObject:a6 forKeyedSubscript:@"CachedOptions"];
-  [v11 setObject:a5 forKeyedSubscript:@"Temeout"];
+  [v11 setObject:topic forKeyedSubscript:@"CachedTopic"];
+  [v11 setObject:message forKeyedSubscript:@"CachedMessage"];
+  [v11 setObject:options forKeyedSubscript:@"CachedOptions"];
+  [v11 setObject:timeout forKeyedSubscript:@"Temeout"];
   [(NSMutableArray *)self->_cachedMessages addObject:v11];
 
   if (objc_opt_class() == self)
@@ -866,9 +866,9 @@ LABEL_11:
         *&v31[4] = 2112;
         *&v31[6] = participantID;
         *&v31[14] = 2112;
-        *&v31[16] = a4;
+        *&v31[16] = topic;
         v32 = 2112;
-        v33 = a3;
+        messageCopy = message;
         v17 = " [%s] %s:%d cacheOutgoingMessage: Cached a new message for sessionID='%d', _participantID='%@', topic='%@', reliable message='%@' ";
         v18 = v14;
         v19 = 64;
@@ -911,11 +911,11 @@ LABEL_11:
         *&v31[18] = 1024;
         *&v31[20] = v22;
         v32 = 2112;
-        v33 = v23;
+        messageCopy = v23;
         v34 = 2112;
-        v35 = a4;
+        topicCopy = topic;
         v36 = 2112;
-        v37 = a3;
+        messageCopy2 = message;
         v17 = " [%s] %s:%d %@(%p) cacheOutgoingMessage: Cached a new message for sessionID='%d', _participantID='%@', topic='%@', reliable message='%@' ";
         v18 = v21;
         v19 = 84;
@@ -925,13 +925,13 @@ LABEL_11:
   }
 }
 
-- (BOOL)sendReliableMessage:(id)a3 withTopic:(id)a4 timeout:(id)a5 withOptions:(id)a6
+- (BOOL)sendReliableMessage:(id)message withTopic:(id)topic timeout:(id)timeout withOptions:(id)options
 {
-  if (a4)
+  if (topic)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (!a3 && (isKindOfClass & 1) != 0)
+    if (!message && (isKindOfClass & 1) != 0)
     {
       [VCControlChannelDialog sendReliableMessage:withTopic:timeout:withOptions:];
       return v13;
@@ -944,12 +944,12 @@ LABEL_11:
       {
         if (self->_isHandshakeCommenced)
         {
-          [(VCControlChannelDialog *)self cacheOutgoingMessage:a3 topic:a4 timeout:a5 withOptions:a6];
+          [(VCControlChannelDialog *)self cacheOutgoingMessage:message topic:topic timeout:timeout withOptions:options];
         }
 
         else
         {
-          [(VCControlChannelDialog *)self startHandshakeWithMessage:a3 topic:a4 withOptions:a6];
+          [(VCControlChannelDialog *)self startHandshakeWithMessage:message topic:topic withOptions:options];
         }
 
         objc_sync_exit(self);
@@ -960,7 +960,7 @@ LABEL_11:
       {
         objc_sync_exit(self);
 
-        return [(VCControlChannelDialog *)self sendReliableMessageInternal:a3 withTopic:a4 timeout:a5 useFastRetries:0 withOptions:a6];
+        return [(VCControlChannelDialog *)self sendReliableMessageInternal:message withTopic:topic timeout:timeout useFastRetries:0 withOptions:options];
       }
     }
   }
@@ -972,16 +972,16 @@ LABEL_11:
   }
 }
 
-- (BOOL)sendReliableMessageInternal:(id)a3 withTopic:(id)a4 timeout:(id)a5 useFastRetries:(BOOL)a6 withOptions:(id)a7
+- (BOOL)sendReliableMessageInternal:(id)internal withTopic:(id)topic timeout:(id)timeout useFastRetries:(BOOL)retries withOptions:(id)options
 {
-  v8 = a6;
+  retriesCopy = retries;
   v73 = *MEMORY[0x1E69E9840];
   v13 = MEMORY[0x1E1289F20](&self->_weakTransactionDelegate, a2);
   objc_sync_enter(v13);
-  v14 = [v13 nextTransactionID];
+  nextTransactionID = [v13 nextTransactionID];
   objc_sync_exit(v13);
   objc_sync_enter(self);
-  v57 = [(VCControlChannelDialog *)self newDataFromMessage:a3 topic:a4 transactionID:v14 isReliable:1 transactionDelegate:v13];
+  v57 = [(VCControlChannelDialog *)self newDataFromMessage:internal topic:topic transactionID:nextTransactionID isReliable:1 transactionDelegate:v13];
   if (!v57)
   {
     if (objc_opt_class() == self)
@@ -1034,7 +1034,7 @@ LABEL_52:
     goto LABEL_50;
   }
 
-  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_transactions, "objectForKeyedSubscript:", [objc_msgSend(MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{v14), "stringValue"}]))
+  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_transactions, "objectForKeyedSubscript:", [objc_msgSend(MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{nextTransactionID), "stringValue"}]))
   {
     if (objc_opt_class() == self)
     {
@@ -1063,7 +1063,7 @@ LABEL_52:
       *&v66[4] = 2112;
       *&v66[6] = participantID;
       *&v66[14] = 2048;
-      *&v66[16] = v14;
+      *&v66[16] = nextTransactionID;
       v48 = " [%s] %s:%d sendReliableMessageInternal: attempt to send duplicate transaction detected for _sessionID='%d', _participantID='%@', transactionID='%llu'. Aborted send...";
       v49 = v45;
       v50 = 54;
@@ -1110,7 +1110,7 @@ LABEL_52:
       v67 = 2112;
       v68 = v56;
       v69 = 2048;
-      v70 = v14;
+      v70 = nextTransactionID;
       v48 = " [%s] %s:%d %@(%p) sendReliableMessageInternal: attempt to send duplicate transaction detected for _sessionID='%d', _participantID='%@', transactionID='%llu'. Aborted send...";
       v49 = v54;
       v50 = 74;
@@ -1147,7 +1147,7 @@ LABEL_52:
     *&v66[4] = 2112;
     *&v66[6] = v19;
     *&v66[14] = 2048;
-    *&v66[16] = v14;
+    *&v66[16] = nextTransactionID;
     v67 = 2112;
     v68 = v57;
     v20 = " [%s] %s:%d sendReliableMessageInternal: creating a new transaction for _sessionID='%d', _participantID='%@', transactionID='%llu', data='%@'";
@@ -1196,7 +1196,7 @@ LABEL_52:
     v67 = 2112;
     v68 = v26;
     v69 = 2048;
-    v70 = v14;
+    v70 = nextTransactionID;
     v71 = 2112;
     v72 = v57;
     v20 = " [%s] %s:%d %@(%p) sendReliableMessageInternal: creating a new transaction for _sessionID='%d', _participantID='%@', transactionID='%llu', data='%@'";
@@ -1206,13 +1206,13 @@ LABEL_52:
 
   _os_log_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_DEFAULT, v20, buf, v22);
 LABEL_14:
-  v27 = [[VCControlChannelTransaction alloc] initWithTransportSessionID:self->_sessionID participantID:self->_participantID transactionID:v14 transactionDelegate:v13];
+  v27 = [[VCControlChannelTransaction alloc] initWithTransportSessionID:self->_sessionID participantID:self->_participantID transactionID:nextTransactionID transactionDelegate:v13];
   if (v27)
   {
     objc_sync_enter(self);
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_transactions, "setObject:forKeyedSubscript:", v27, [objc_msgSend(MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{v14), "stringValue"}]);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_transactions, "setObject:forKeyedSubscript:", v27, [objc_msgSend(MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{nextTransactionID), "stringValue"}]);
     objc_sync_exit(self);
-    v28 = [(VCControlChannelTransaction *)v27 sendReliableMessage:v57 sessionID:self->_sessionID participantID:self->_participantID timeout:a5 useFastRetries:v8 withOptions:a7];
+    v28 = [(VCControlChannelTransaction *)v27 sendReliableMessage:v57 sessionID:self->_sessionID participantID:self->_participantID timeout:timeout useFastRetries:retriesCopy withOptions:options];
 
     if (objc_opt_class() == self)
     {
@@ -1241,7 +1241,7 @@ LABEL_14:
       *&v66[4] = 2112;
       *&v66[6] = v33;
       *&v66[14] = 2048;
-      *&v66[16] = v14;
+      *&v66[16] = nextTransactionID;
       v67 = 2112;
       v68 = v57;
       v34 = " [%s] %s:%d sendReliableMessageInternal: Remove transaction for _sessionID='%d', _participantID='%@', transactionID='%llu', data='%@'";
@@ -1290,7 +1290,7 @@ LABEL_14:
       v67 = 2112;
       v68 = v40;
       v69 = 2048;
-      v70 = v14;
+      v70 = nextTransactionID;
       v71 = 2112;
       v72 = v57;
       v34 = " [%s] %s:%d %@(%p) sendReliableMessageInternal: Remove transaction for _sessionID='%d', _participantID='%@', transactionID='%llu', data='%@'";
@@ -1305,7 +1305,7 @@ LABEL_26:
     v58[2] = __99__VCControlChannelDialog_sendReliableMessageInternal_withTopic_timeout_useFastRetries_withOptions___block_invoke;
     v58[3] = &unk_1E85F40E0;
     v58[4] = self;
-    v58[5] = v14;
+    v58[5] = nextTransactionID;
     [v13 scheduleAfter:4 block:v58];
     goto LABEL_27;
   }
@@ -1322,14 +1322,14 @@ LABEL_27:
   return v28;
 }
 
-- (BOOL)sendUnreliableMessage:(id)a3 withTopic:(id)a4 sessionID:(unsigned int)a5 participantID:(id)a6 transactionDelegate:(id)a7
+- (BOOL)sendUnreliableMessage:(id)message withTopic:(id)topic sessionID:(unsigned int)d participantID:(id)iD transactionDelegate:(id)delegate
 {
-  v9 = *&a5;
+  v9 = *&d;
   v39 = *MEMORY[0x1E69E9840];
-  objc_sync_enter(a7);
-  v13 = [a7 nextTransactionID];
-  objc_sync_exit(a7);
-  v14 = [(VCControlChannelDialog *)self newDataFromMessage:a3 topic:a4 transactionID:v13 isReliable:0 transactionDelegate:a7];
+  objc_sync_enter(delegate);
+  nextTransactionID = [delegate nextTransactionID];
+  objc_sync_exit(delegate);
+  v14 = [(VCControlChannelDialog *)self newDataFromMessage:message topic:topic transactionID:nextTransactionID isReliable:0 transactionDelegate:delegate];
   if (!v14)
   {
     [VCControlChannelDialog sendUnreliableMessage:withTopic:sessionID:participantID:transactionDelegate:];
@@ -1337,7 +1337,7 @@ LABEL_27:
     goto LABEL_13;
   }
 
-  v15 = +[VCControlChannelTransaction sendUnreliableMessage:sessionID:participantID:transactionID:transactionDelegate:withOptions:](VCControlChannelTransaction, "sendUnreliableMessage:sessionID:participantID:transactionID:transactionDelegate:withOptions:", v14, v9, a6, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v13], a7, 0);
+  v15 = +[VCControlChannelTransaction sendUnreliableMessage:sessionID:participantID:transactionID:transactionDelegate:withOptions:](VCControlChannelTransaction, "sendUnreliableMessage:sessionID:participantID:transactionID:transactionDelegate:withOptions:", v14, v9, iD, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:nextTransactionID], delegate, 0);
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1355,11 +1355,11 @@ LABEL_27:
         v31 = 1024;
         *v32 = v9;
         *&v32[4] = 2112;
-        *&v32[6] = a6;
+        *&v32[6] = iD;
         *&v32[14] = 2048;
-        *&v32[16] = v13;
+        *&v32[16] = nextTransactionID;
         v33 = 2112;
-        v34 = a3;
+        iDCopy = message;
         v19 = " [%s] %s:%d Dialog send unreliable message for sessionID='%d', participantID='%@', transactionID='%llu', message='%@'";
         v20 = v18;
         v21 = 64;
@@ -1400,11 +1400,11 @@ LABEL_12:
         *&v32[18] = 1024;
         *&v32[20] = v9;
         v33 = 2112;
-        v34 = a6;
+        iDCopy = iD;
         v35 = 2048;
-        v36 = v13;
+        v36 = nextTransactionID;
         v37 = 2112;
-        v38 = a3;
+        messageCopy2 = message;
         v19 = " [%s] %s:%d %@(%p) Dialog send unreliable message for sessionID='%d', participantID='%@', transactionID='%llu', message='%@'";
         v20 = v23;
         v21 = 84;
@@ -1418,11 +1418,11 @@ LABEL_13:
   return v15;
 }
 
-- (void)confirmTransaction:(id)a3
+- (void)confirmTransaction:(id)transaction
 {
   v35 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_transactions, "objectForKeyedSubscript:", [a3 stringValue]);
+  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_transactions, "objectForKeyedSubscript:", [transaction stringValue]);
   objc_sync_exit(self);
   v6 = objc_opt_class();
   if (v5)
@@ -1454,7 +1454,7 @@ LABEL_13:
       *&v32[10] = 2112;
       *&v32[12] = participantID;
       *&v32[20] = 2112;
-      *&v32[22] = a3;
+      *&v32[22] = transaction;
       v13 = " [%s] %s:%d confirmTransaction: Found matching transaction for _sessionID='%d', participantID='%@', transactionID='%@'";
       v14 = v10;
       v15 = 54;
@@ -1501,7 +1501,7 @@ LABEL_13:
       *&v32[30] = 2112;
       v33 = v19;
       LOWORD(v34) = 2112;
-      *(&v34 + 2) = a3;
+      *(&v34 + 2) = transaction;
       v13 = " [%s] %s:%d %@(%p) confirmTransaction: Found matching transaction for _sessionID='%d', participantID='%@', transactionID='%@'";
       v14 = v17;
       v15 = 74;
@@ -1535,7 +1535,7 @@ LABEL_16:
         *&v32[10] = 2112;
         *&v32[12] = v23;
         *&v32[20] = 2112;
-        *&v32[22] = a3;
+        *&v32[22] = transaction;
         v24 = " [%s] %s:%d confirmTransaction: Could not find matching transaction for _sessionID='%d', participantID='%@', transactionID='%@'";
         v25 = v21;
         v26 = 54;
@@ -1580,7 +1580,7 @@ LABEL_25:
         *&v32[30] = 2112;
         v33 = v30;
         LOWORD(v34) = 2112;
-        *(&v34 + 2) = a3;
+        *(&v34 + 2) = transaction;
         v24 = " [%s] %s:%d %@(%p) confirmTransaction: Could not find matching transaction for _sessionID='%d', participantID='%@', transactionID='%@'";
         v25 = v28;
         v26 = 74;

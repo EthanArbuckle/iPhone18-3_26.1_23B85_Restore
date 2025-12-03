@@ -1,8 +1,8 @@
 @interface MKDirectionsResponse
-+ (id)_responseWithGEODirectionsRouteResponse:(id)a3 routeRequest:(id)a4 request:(id)a5 origin:(id)a6 destination:(id)a7 error:(id *)a8;
++ (id)_responseWithGEODirectionsRouteResponse:(id)response routeRequest:(id)request request:(id)a5 origin:(id)origin destination:(id)destination error:(id *)error;
 - (NSString)_incidentDescription;
 - (NSURL)_mapsURL;
-- (id)_initWithGEORouteResponse:(id)a3 routeRequest:(id)a4 request:(id)a5 origin:(id)a6 destination:(id)a7;
+- (id)_initWithGEORouteResponse:(id)response routeRequest:(id)request request:(id)a5 origin:(id)origin destination:(id)destination;
 @end
 
 @implementation MKDirectionsResponse
@@ -15,8 +15,8 @@
   v11[1] = destination;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   v9 = @"MKLaunchOptionsLaunchIntoRoute";
-  v5 = [(GEODirectionsResponse *)self->_geoResponse data];
-  v10 = v5;
+  data = [(GEODirectionsResponse *)self->_geoResponse data];
+  v10 = data;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v7 = [MKMapItem urlForMapItems:v4 options:v6];
 
@@ -40,14 +40,14 @@
   return v4;
 }
 
-- (id)_initWithGEORouteResponse:(id)a3 routeRequest:(id)a4 request:(id)a5 origin:(id)a6 destination:(id)a7
+- (id)_initWithGEORouteResponse:(id)response routeRequest:(id)request request:(id)a5 origin:(id)origin destination:(id)destination
 {
   v85[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
+  responseCopy = response;
+  requestCopy = request;
   v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  originCopy = origin;
+  destinationCopy = destination;
   v80.receiver = self;
   v80.super_class = MKDirectionsResponse;
   v18 = [(MKDirectionsResponse *)&v80 init];
@@ -57,45 +57,45 @@
     goto LABEL_36;
   }
 
-  objc_storeStrong(&v18->_geoResponse, a3);
-  v20 = [v16 geoMapItem];
-  v21 = [MKMapItem _itemWithGeoMapItem:v20];
+  objc_storeStrong(&v18->_geoResponse, response);
+  geoMapItem = [originCopy geoMapItem];
+  v21 = [MKMapItem _itemWithGeoMapItem:geoMapItem];
   v22 = p_isa[2];
   p_isa[2] = v21;
 
-  v23 = [v17 geoMapItem];
-  v24 = [MKMapItem _itemWithGeoMapItem:v23];
+  geoMapItem2 = [destinationCopy geoMapItem];
+  v24 = [MKMapItem _itemWithGeoMapItem:geoMapItem2];
   v25 = p_isa[3];
   p_isa[3] = v24;
 
-  v26 = [p_isa[2] name];
-  if (!v26 || (v27 = v26, [p_isa[2] name], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "length"), v28, v27, !v29))
+  name = [p_isa[2] name];
+  if (!name || (v27 = name, [p_isa[2] name], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "length"), v28, v27, !v29))
   {
-    v30 = [v15 source];
-    v31 = [v30 name];
-    [p_isa[2] setName:v31];
+    source = [v15 source];
+    name2 = [source name];
+    [p_isa[2] setName:name2];
   }
 
-  v32 = [p_isa[3] name];
-  if (!v32 || (v33 = v32, [p_isa[3] name], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "length"), v34, v33, !v35))
+  name3 = [p_isa[3] name];
+  if (!name3 || (v33 = name3, [p_isa[3] name], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "length"), v34, v33, !v35))
   {
-    v36 = [v15 destination];
-    v37 = [v36 name];
-    [p_isa[3] setName:v37];
+    destination = [v15 destination];
+    name4 = [destination name];
+    [p_isa[3] setName:name4];
   }
 
   if ([v15 _includeRoutePoints])
   {
     v69 = v15;
     v38 = objc_alloc(MEMORY[0x1E69A2538]);
-    v68 = v16;
-    v85[0] = v16;
-    v85[1] = v17;
-    v66 = v17;
+    v68 = originCopy;
+    v85[0] = originCopy;
+    v85[1] = destinationCopy;
+    v66 = destinationCopy;
     v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:2];
-    v70 = v14;
-    v40 = [v14 routeAttributes];
-    v41 = [v38 initWithWaypoints:v39 routeAttributes:v40 directionsResponse:v13];
+    v70 = requestCopy;
+    routeAttributes = [requestCopy routeAttributes];
+    v41 = [v38 initWithWaypoints:v39 routeAttributes:routeAttributes directionsResponse:responseCopy];
 
     v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -104,8 +104,8 @@
     v78 = 0u;
     v79 = 0u;
     v65 = v41;
-    v44 = [v41 allRoutes];
-    v45 = [v44 countByEnumeratingWithState:&v76 objects:v84 count:16];
+    allRoutes = [v41 allRoutes];
+    v45 = [allRoutes countByEnumeratingWithState:&v76 objects:v84 count:16];
     if (v45)
     {
       v46 = v45;
@@ -116,17 +116,17 @@
         {
           if (*v77 != v47)
           {
-            objc_enumerationMutation(v44);
+            objc_enumerationMutation(allRoutes);
           }
 
           v49 = *(*(&v76 + 1) + 8 * i);
-          v50 = [v49 routeType];
+          routeType = [v49 routeType];
           v51 = v43;
-          if (v50)
+          if (routeType)
           {
-            v52 = [v49 routeType];
+            routeType2 = [v49 routeType];
             v51 = v42;
-            if (v52 != 1)
+            if (routeType2 != 1)
             {
               continue;
             }
@@ -135,14 +135,14 @@
           [v51 addObject:v49];
         }
 
-        v46 = [v44 countByEnumeratingWithState:&v76 objects:v84 count:16];
+        v46 = [allRoutes countByEnumeratingWithState:&v76 objects:v84 count:16];
       }
 
       while (v46);
     }
 
     v67 = p_isa;
-    v71 = v13;
+    v71 = responseCopy;
 
     [v43 addObjectsFromArray:v42];
     v53 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v43, "count")}];
@@ -203,11 +203,11 @@
     v67[4] = v53;
     p_isa = v67;
 
-    v14 = v70;
-    v13 = v71;
-    v16 = v68;
+    requestCopy = v70;
+    responseCopy = v71;
+    originCopy = v68;
     v15 = v69;
-    v17 = v66;
+    destinationCopy = v66;
   }
 
   if ([p_isa[4] count])
@@ -224,17 +224,17 @@ LABEL_36:
   return v63;
 }
 
-+ (id)_responseWithGEODirectionsRouteResponse:(id)a3 routeRequest:(id)a4 request:(id)a5 origin:(id)a6 destination:(id)a7 error:(id *)a8
++ (id)_responseWithGEODirectionsRouteResponse:(id)response routeRequest:(id)request request:(id)a5 origin:(id)origin destination:(id)destination error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
+  responseCopy = response;
+  requestCopy = request;
   v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if ([v14 routesCount] || objc_msgSend(v14, "waypointRoutesCount"))
+  originCopy = origin;
+  destinationCopy = destination;
+  if ([responseCopy routesCount] || objc_msgSend(responseCopy, "waypointRoutesCount"))
   {
-    v19 = [[a1 alloc] _initWithGEORouteResponse:v14 routeRequest:v15 request:v16 origin:v17 destination:v18];
-    if (!a8)
+    v19 = [[self alloc] _initWithGEORouteResponse:responseCopy routeRequest:requestCopy request:v16 origin:originCopy destination:destinationCopy];
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -243,7 +243,7 @@ LABEL_36:
   else
   {
     v19 = 0;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -252,7 +252,7 @@ LABEL_36:
   if (!v19)
   {
     v20 = objc_alloc(MEMORY[0x1E696ABC0]);
-    *a8 = [v20 initWithDomain:MKErrorDomain code:5 userInfo:0];
+    *error = [v20 initWithDomain:MKErrorDomain code:5 userInfo:0];
   }
 
 LABEL_6:

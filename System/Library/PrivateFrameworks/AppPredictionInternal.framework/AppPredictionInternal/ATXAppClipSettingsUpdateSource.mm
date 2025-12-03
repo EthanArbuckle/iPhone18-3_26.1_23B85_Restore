@@ -14,12 +14,12 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   v6 = __atxlog_handle_default();
@@ -29,7 +29,7 @@
     v8 = NSStringFromClass(v7);
     v9 = v8;
     v10 = @"NO";
-    if (v5)
+    if (bOOLValue)
     {
       v10 = @"YES";
     }
@@ -43,7 +43,7 @@
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = WeakRetained;
-  if (v5)
+  if (bOOLValue)
   {
     [WeakRetained tryUpdatePredictionsDefaultIntervalWithReason:4];
   }

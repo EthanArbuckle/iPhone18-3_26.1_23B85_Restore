@@ -1,24 +1,24 @@
 @interface NVRAMHelper
-- (BOOL)clearNVRAM:(id)a3;
+- (BOOL)clearNVRAM:(id)m;
 - (BOOL)hasALPMClock;
 - (BOOL)syncNVRAM;
-- (BOOL)writeNVRAM:(id)a3 :(id)a4;
+- (BOOL)writeNVRAM:(id)m :(id)a4;
 - (NVRAMHelper)init;
-- (NVRAMHelper)initWithLog:(id)a3;
-- (id)readNVRAM:(id)a3;
+- (NVRAMHelper)initWithLog:(id)log;
+- (id)readNVRAM:(id)m;
 - (unsigned)createOptionsRef;
 - (void)dealloc;
-- (void)releaseOptionsRef:(unsigned int)a3;
+- (void)releaseOptionsRef:(unsigned int)ref;
 @end
 
 @implementation NVRAMHelper
 
-- (id)readNVRAM:(id)a3
+- (id)readNVRAM:(id)m
 {
-  v4 = a3;
-  if (v4)
+  mCopy = m;
+  if (mCopy)
   {
-    CFProperty = IORegistryEntryCreateCFProperty(self->optionsRef, v4, kCFAllocatorDefault, 0);
+    CFProperty = IORegistryEntryCreateCFProperty(self->optionsRef, mCopy, kCFAllocatorDefault, 0);
     if (CFProperty)
     {
       v6 = CFProperty;
@@ -49,11 +49,11 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)writeNVRAM:(id)a3 :(id)a4
+- (BOOL)writeNVRAM:(id)m :(id)a4
 {
-  v6 = a3;
+  mCopy = m;
   v7 = a4;
-  v8 = [(NVRAMHelper *)self readNVRAM:v6];
+  v8 = [(NVRAMHelper *)self readNVRAM:mCopy];
   v9 = [v8 isEqualToString:v7];
   logs = self->logs;
   v11 = os_log_type_enabled(logs, OS_LOG_TYPE_DEBUG);
@@ -62,7 +62,7 @@ LABEL_10:
     if (v11)
     {
       v14 = 138412802;
-      v15 = v6;
+      v15 = mCopy;
       v16 = 2112;
       v17 = v8;
       v18 = 2112;
@@ -78,7 +78,7 @@ LABEL_10:
     if (v11)
     {
       v14 = 138412802;
-      v15 = v6;
+      v15 = mCopy;
       v16 = 2112;
       v17 = v8;
       v18 = 2112;
@@ -86,7 +86,7 @@ LABEL_10:
       _os_log_debug_impl(&_mh_execute_header, logs, OS_LOG_TYPE_DEBUG, "Updating %@ from value %@ to value %@", &v14, 0x20u);
     }
 
-    if (IORegistryEntrySetCFProperty(self->optionsRef, v6, [v7 dataUsingEncoding:4]))
+    if (IORegistryEntrySetCFProperty(self->optionsRef, mCopy, [v7 dataUsingEncoding:4]))
     {
       if (os_log_type_enabled(self->logs, OS_LOG_TYPE_ERROR))
       {
@@ -139,10 +139,10 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)clearNVRAM:(id)a3
+- (BOOL)clearNVRAM:(id)m
 {
-  v4 = a3;
-  v5 = IORegistryEntrySetCFProperty(self->optionsRef, @"IONVRAM-DELETEWRET-PROPERTY", v4);
+  mCopy = m;
+  v5 = IORegistryEntrySetCFProperty(self->optionsRef, @"IONVRAM-DELETEWRET-PROPERTY", mCopy);
   if (v5)
   {
     if (os_log_type_enabled(self->logs, OS_LOG_TYPE_ERROR))
@@ -170,11 +170,11 @@ LABEL_8:
   return v3;
 }
 
-- (void)releaseOptionsRef:(unsigned int)a3
+- (void)releaseOptionsRef:(unsigned int)ref
 {
-  if (a3)
+  if (ref)
   {
-    IOObjectRelease(a3);
+    IOObjectRelease(ref);
   }
 }
 
@@ -239,9 +239,9 @@ LABEL_8:
   return v3;
 }
 
-- (NVRAMHelper)initWithLog:(id)a3
+- (NVRAMHelper)initWithLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v9.receiver = self;
   v9.super_class = NVRAMHelper;
   v5 = [(NVRAMHelper *)&v9 init];
@@ -250,9 +250,9 @@ LABEL_8:
   {
     v5->syncPending = 0;
     v5->optionsRef = [(NVRAMHelper *)v5 createOptionsRef];
-    if (v4)
+    if (logCopy)
     {
-      v7 = v4;
+      v7 = logCopy;
     }
 
     else

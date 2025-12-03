@@ -1,63 +1,63 @@
 @interface _NSPredicateUtilities
-+ (BOOL)_isReservedWordInParser:(id)a3;
-+ (NSNumber)_convertStringToNumber:(uint64_t)a1;
-+ (NSString)_parserableCollectionDescription:(uint64_t)a1;
-+ (NSString)_parserableDateDescription:(uint64_t)a1;
-+ (NSString)_parserableStringDescription:(uint64_t)a1;
++ (BOOL)_isReservedWordInParser:(id)parser;
++ (NSNumber)_convertStringToNumber:(uint64_t)number;
++ (NSString)_parserableCollectionDescription:(uint64_t)description;
++ (NSString)_parserableDateDescription:(uint64_t)description;
++ (NSString)_parserableStringDescription:(uint64_t)description;
 + (id)_compoundPredicateClassesForSecureCoding;
 + (id)_constantValueClassesForSecureCoding;
 + (id)_expressionClassesForSecureCoding;
 + (id)_extendedExpressionClassesForSecureCoding;
 + (id)_operatorClassesForSecureCoding;
 + (id)_predicateClassesForSecureCoding;
-+ (id)abs:(id)a3;
-+ (id)add:(id)a3 to:(id)a4;
-+ (id)average:(id)a3;
-+ (id)bitwiseAnd:(id)a3 with:(id)a4;
-+ (id)bitwiseOr:(id)a3 with:(id)a4;
-+ (id)bitwiseXor:(id)a3 with:(id)a4;
-+ (id)canonical:(id)a3;
-+ (id)castObject:(id)a3 toType:(id)a4;
-+ (id)ceiling:(id)a3;
-+ (id)count:(id)a3;
-+ (id)distanceToLocation:(id)a3 fromLocation:(id)a4;
-+ (id)divide:(id)a3 by:(id)a4;
-+ (id)exp:(id)a3;
-+ (id)floor:(id)a3;
-+ (id)from:(id)a3 subtract:(id)a4;
-+ (id)groupConcat:(id)a3 separator:(id)a4;
-+ (id)leftshift:(id)a3 by:(id)a4;
-+ (id)length:(id)a3;
-+ (id)ln:(id)a3;
-+ (id)log:(id)a3;
-+ (id)lowercase:(id)a3;
-+ (id)max:(id)a3;
-+ (id)median:(id)a3;
-+ (id)min:(id)a3;
-+ (id)mode:(id)a3;
-+ (id)modulus:(id)a3 by:(id)a4;
-+ (id)multiply:(id)a3 by:(id)a4;
-+ (id)objectFrom:(id)a3 withIndex:(id)a4;
-+ (id)onesComplement:(id)a3;
-+ (id)raise:(id)a3 toPower:(id)a4;
++ (id)abs:(id)abs;
++ (id)add:(id)add to:(id)to;
++ (id)average:(id)average;
++ (id)bitwiseAnd:(id)and with:(id)with;
++ (id)bitwiseOr:(id)or with:(id)with;
++ (id)bitwiseXor:(id)xor with:(id)with;
++ (id)canonical:(id)canonical;
++ (id)castObject:(id)object toType:(id)type;
++ (id)ceiling:(id)ceiling;
++ (id)count:(id)count;
++ (id)distanceToLocation:(id)location fromLocation:(id)fromLocation;
++ (id)divide:(id)divide by:(id)by;
++ (id)exp:(id)exp;
++ (id)floor:(id)floor;
++ (id)from:(id)from subtract:(id)subtract;
++ (id)groupConcat:(id)concat separator:(id)separator;
++ (id)leftshift:(id)leftshift by:(id)by;
++ (id)length:(id)length;
++ (id)ln:(id)ln;
++ (id)log:(id)log;
++ (id)lowercase:(id)lowercase;
++ (id)max:(id)max;
++ (id)median:(id)median;
++ (id)min:(id)min;
++ (id)mode:(id)mode;
++ (id)modulus:(id)modulus by:(id)by;
++ (id)multiply:(id)multiply by:(id)by;
++ (id)objectFrom:(id)from withIndex:(id)index;
++ (id)onesComplement:(id)complement;
++ (id)raise:(id)raise toPower:(id)power;
 + (id)random;
-+ (id)randomn:(id)a3;
-+ (id)rightshift:(id)a3 by:(id)a4;
-+ (id)sqrt:(id)a3;
-+ (id)stddev:(id)a3;
-+ (id)sum:(id)a3;
-+ (id)tokenize:(id)a3 using:(id)a4;
-+ (id)trunc:(id)a3;
-+ (id)uppercase:(id)a3;
-+ (uint64_t)_getCommonTypeFor:(uint64_t)a1;
-+ (uint64_t)_getITypeFor:(uint64_t)a1;
-+ (uint64_t)_predicateEnforceRestrictionsOnKeyPath:(uint64_t)a3 withOperand:(uint64_t)a4 forComponentName:;
-+ (uint64_t)_predicateEnforceRestrictionsOnSelector:(uint64_t)a3 withOperand:(BOOL *)a4 isKVC:(uint64_t)a5 forComponentName:;
-+ (uint64_t)_predicateEnforceRestrictionsOnTarget:(uint64_t)a3 forComponentName:;
++ (id)randomn:(id)randomn;
++ (id)rightshift:(id)rightshift by:(id)by;
++ (id)sqrt:(id)sqrt;
++ (id)stddev:(id)stddev;
++ (id)sum:(id)sum;
++ (id)tokenize:(id)tokenize using:(id)using;
++ (id)trunc:(id)trunc;
++ (id)uppercase:(id)uppercase;
++ (uint64_t)_getCommonTypeFor:(uint64_t)for;
++ (uint64_t)_getITypeFor:(uint64_t)for;
++ (uint64_t)_predicateEnforceRestrictionsOnKeyPath:(uint64_t)path withOperand:(uint64_t)operand forComponentName:;
++ (uint64_t)_predicateEnforceRestrictionsOnSelector:(uint64_t)selector withOperand:(BOOL *)operand isKVC:(uint64_t)c forComponentName:;
++ (uint64_t)_predicateEnforceRestrictionsOnTarget:(uint64_t)target forComponentName:;
 + (uint64_t)_predicateSecurityAction;
-+ (void)_collapseAndTokenize:(uint64_t)a3 flags:(void *)a4 locale:;
-+ (void)_doTokenization:(const __CFLocale *)a3 locale:;
-+ (void)_processAndTokenize:(uint64_t)a3 flags:(const __CFLocale *)a4 locale:;
++ (void)_collapseAndTokenize:(uint64_t)tokenize flags:(void *)flags locale:;
++ (void)_doTokenization:(const __CFLocale *)tokenization locale:;
++ (void)_processAndTokenize:(uint64_t)tokenize flags:(const __CFLocale *)flags locale:;
 + (void)initialize;
 @end
 
@@ -65,7 +65,7 @@
 
 + (void)initialize
 {
-  if (_NSPredicateUtilities == a1 && _NSCoderGetTrustRestrictions() != 2)
+  if (_NSPredicateUtilities == self && _NSCoderGetTrustRestrictions() != 2)
   {
     v2 = _CFPredicatePolicyData_getFlags() | 8;
 
@@ -136,7 +136,7 @@
   return result;
 }
 
-+ (uint64_t)_predicateEnforceRestrictionsOnTarget:(uint64_t)a3 forComponentName:
++ (uint64_t)_predicateEnforceRestrictionsOnTarget:(uint64_t)target forComponentName:
 {
   v18 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -176,7 +176,7 @@ LABEL_17:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
         {
           v14 = 138412546;
-          v15 = a3;
+          targetCopy = target;
           v16 = 2114;
           v17 = v5;
           _os_log_fault_impl(&dword_18075C000, v12, OS_LOG_TYPE_FAULT, "NSPredicate: Use of %@ with instance of '%{public}@' is forbidden.", &v14, 0x16u);
@@ -241,17 +241,17 @@ LABEL_25:
   return 1;
 }
 
-+ (uint64_t)_predicateEnforceRestrictionsOnSelector:(uint64_t)a3 withOperand:(BOOL *)a4 isKVC:(uint64_t)a5 forComponentName:
++ (uint64_t)_predicateEnforceRestrictionsOnSelector:(uint64_t)selector withOperand:(BOOL *)operand isKVC:(uint64_t)c forComponentName:
 {
   v18 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v9 = NSStringFromSelector(a2);
   objc_opt_self();
   v10 = [*(_CFPredicatePolicyData() + 32) objectForKey:v9];
-  if (v10 || (objc_opt_self(), ![_CFPredicatePolicyRestrictedSelectors() objectForKey:v9]) && ((objc_opt_self(), (_CFPredicatePolicyData_getFlags() & 8) == 0) || (objc_opt_class(), (objc_opt_respondsToSelector() & 1) == 0) || (objc_opt_self(), objc_msgSend(*(_CFPredicatePolicyData() + 24), "objectForKey:", v9))) || (objc_opt_self(), objc_msgSend(*(_CFPredicatePolicyData() + 40), "objectForKey:", v9)) && (objc_opt_self(), (_CFPredicatePolicyData_getFlags() & 8) == 0) || (v12 = -[NSString isEqualToString:](v9, "isEqualToString:", @"class"), a3) && v12 && (objc_opt_isKindOfClass() & 1) != 0)
+  if (v10 || (objc_opt_self(), ![_CFPredicatePolicyRestrictedSelectors() objectForKey:v9]) && ((objc_opt_self(), (_CFPredicatePolicyData_getFlags() & 8) == 0) || (objc_opt_class(), (objc_opt_respondsToSelector() & 1) == 0) || (objc_opt_self(), objc_msgSend(*(_CFPredicatePolicyData() + 24), "objectForKey:", v9))) || (objc_opt_self(), objc_msgSend(*(_CFPredicatePolicyData() + 40), "objectForKey:", v9)) && (objc_opt_self(), (_CFPredicatePolicyData_getFlags() & 8) == 0) || (v12 = -[NSString isEqualToString:](v9, "isEqualToString:", @"class"), selector) && v12 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     result = 0;
-    if (!a4)
+    if (!operand)
     {
       return result;
     }
@@ -264,28 +264,28 @@ LABEL_25:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
   {
     v14 = 138412546;
-    v15 = a5;
+    cCopy = c;
     v16 = 2114;
     v17 = v9;
     _os_log_fault_impl(&dword_18075C000, v13, OS_LOG_TYPE_FAULT, "NSPredicate: %@ with selector '%{public}@' is forbidden.", &v14, 0x16u);
   }
 
   result = 1;
-  if (a4)
+  if (operand)
   {
 LABEL_3:
-    *a4 = v10 != 0;
+    *operand = v10 != 0;
   }
 
   return result;
 }
 
-+ (uint64_t)_predicateEnforceRestrictionsOnKeyPath:(uint64_t)a3 withOperand:(uint64_t)a4 forComponentName:
++ (uint64_t)_predicateEnforceRestrictionsOnKeyPath:(uint64_t)path withOperand:(uint64_t)operand forComponentName:
 {
   v33 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v6 = objc_autoreleasePoolPush();
-  if (a3)
+  if (path)
   {
     v7 = objc_opt_isKindOfClass() ^ 1;
   }
@@ -335,7 +335,7 @@ LABEL_3:
         v19 = NSSelectorFromString(v17);
         if (v19)
         {
-          v20 = [_NSPredicateUtilities _predicateEnforceRestrictionsOnSelector:v19 withOperand:a3 isKVC:0 forComponentName:a4];
+          v20 = [_NSPredicateUtilities _predicateEnforceRestrictionsOnSelector:v19 withOperand:path isKVC:0 forComponentName:operand];
           v21 = v20;
           if (v14 == v13)
           {
@@ -395,7 +395,7 @@ LABEL_25:
   return v23;
 }
 
-+ (uint64_t)_getITypeFor:(uint64_t)a1
++ (uint64_t)_getITypeFor:(uint64_t)for
 {
   objc_opt_self();
   if (!a2)
@@ -428,7 +428,7 @@ LABEL_9:
   return 1;
 }
 
-+ (uint64_t)_getCommonTypeFor:(uint64_t)a1
++ (uint64_t)_getCommonTypeFor:(uint64_t)for
 {
   v25[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -502,10 +502,10 @@ LABEL_20:
   return 3;
 }
 
-+ (id)sum:(id)a3
++ (id)sum:(id)sum
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (((_NSIsNSArray() & 1) != 0 || (_NSIsNSSet() & 1) != 0 || _NSIsNSOrderedSet()) && ![a3 count])
+  if (((_NSIsNSArray() & 1) != 0 || (_NSIsNSSet() & 1) != 0 || _NSIsNSOrderedSet()) && ![sum count])
   {
 
     return [NSNumber numberWithInteger:0];
@@ -513,14 +513,14 @@ LABEL_20:
 
   else
   {
-    v4 = [_NSPredicateUtilities _getCommonTypeFor:a3];
+    v4 = [_NSPredicateUtilities _getCommonTypeFor:sum];
     if (v4 == 1)
     {
       v30 = 0uLL;
       v31 = 0uLL;
       v28 = 0uLL;
       v29 = 0uLL;
-      v12 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      v12 = [sum countByEnumeratingWithState:&v28 objects:v27 count:16];
       if (v12)
       {
         v13 = v12;
@@ -532,13 +532,13 @@ LABEL_20:
           {
             if (*v29 != v15)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(sum);
             }
 
             v14 += [*(*(&v28 + 1) + 8 * i) unsignedLongLongValue];
           }
 
-          v13 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+          v13 = [sum countByEnumeratingWithState:&v28 objects:v27 count:16];
         }
 
         while (v13);
@@ -558,7 +558,7 @@ LABEL_20:
       v26 = 0uLL;
       v23 = 0uLL;
       v24 = 0uLL;
-      v17 = [a3 countByEnumeratingWithState:&v23 objects:v22 count:16];
+      v17 = [sum countByEnumeratingWithState:&v23 objects:v22 count:16];
       if (v17)
       {
         v18 = v17;
@@ -570,13 +570,13 @@ LABEL_20:
           {
             if (*v24 != v20)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(sum);
             }
 
             v19 += [*(*(&v23 + 1) + 8 * j) longLongValue];
           }
 
-          v18 = [a3 countByEnumeratingWithState:&v23 objects:v22 count:16];
+          v18 = [sum countByEnumeratingWithState:&v23 objects:v22 count:16];
         }
 
         while (v18);
@@ -596,7 +596,7 @@ LABEL_20:
       v36 = 0uLL;
       v33 = 0uLL;
       v34 = 0uLL;
-      v5 = [a3 countByEnumeratingWithState:&v33 objects:v32 count:16];
+      v5 = [sum countByEnumeratingWithState:&v33 objects:v32 count:16];
       if (v5)
       {
         v6 = v5;
@@ -608,14 +608,14 @@ LABEL_20:
           {
             if (*v34 != v7)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(sum);
             }
 
             [*(*(&v33 + 1) + 8 * k) doubleValue];
             v8 = v8 + v10;
           }
 
-          v6 = [a3 countByEnumeratingWithState:&v33 objects:v32 count:16];
+          v6 = [sum countByEnumeratingWithState:&v33 objects:v32 count:16];
         }
 
         while (v6);
@@ -631,45 +631,45 @@ LABEL_20:
   }
 }
 
-+ (id)count:(id)a3
++ (id)count:(id)count
 {
   if ((_NSIsNSArray() & 1) == 0 && (_NSIsNSSet() & 1) == 0 && (_NSIsNSOrderedSet() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Invoked count with non-collection parameter." userInfo:0]);
   }
 
-  v4 = [a3 count];
+  v4 = [count count];
 
   return [NSNumber numberWithInteger:v4];
 }
 
-+ (id)min:(id)a3
++ (id)min:(id)min
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (![a3 count])
+  if (![min count])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Invoked min with empty collection." userInfo:0]);
   }
 
-  v4 = [_NSPredicateUtilities _getCommonTypeFor:a3];
+  v4 = [_NSPredicateUtilities _getCommonTypeFor:min];
   if (_NSIsNSArray())
   {
-    v5 = [a3 lastObject];
+    lastObject = [min lastObject];
   }
 
   else
   {
-    v5 = [a3 anyObject];
+    lastObject = [min anyObject];
   }
 
   if (v4 == 1)
   {
-    v16 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [lastObject unsignedLongLongValue];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v17 = [a3 countByEnumeratingWithState:&v34 objects:v33 count:16];
+    v17 = [min countByEnumeratingWithState:&v34 objects:v33 count:16];
     if (v17)
     {
       v18 = v17;
@@ -680,33 +680,33 @@ LABEL_20:
         {
           if (*v35 != v19)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(min);
           }
 
           v21 = *(*(&v34 + 1) + 8 * i);
-          if ([v21 unsignedLongLongValue] < v16)
+          if ([v21 unsignedLongLongValue] < unsignedLongLongValue)
           {
-            v16 = [v21 unsignedLongLongValue];
+            unsignedLongLongValue = [v21 unsignedLongLongValue];
           }
         }
 
-        v18 = [a3 countByEnumeratingWithState:&v34 objects:v33 count:16];
+        v18 = [min countByEnumeratingWithState:&v34 objects:v33 count:16];
       }
 
       while (v18);
     }
 
-    return [NSNumber numberWithUnsignedLongLong:v16];
+    return [NSNumber numberWithUnsignedLongLong:unsignedLongLongValue];
   }
 
   else if (v4)
   {
-    v22 = [v5 longLongValue];
+    longLongValue = [lastObject longLongValue];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v23 = [a3 countByEnumeratingWithState:&v29 objects:v28 count:16];
+    v23 = [min countByEnumeratingWithState:&v29 objects:v28 count:16];
     if (v23)
     {
       v24 = v23;
@@ -717,34 +717,34 @@ LABEL_20:
         {
           if (*v30 != v25)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(min);
           }
 
           v27 = *(*(&v29 + 1) + 8 * j);
-          if ([v27 longLongValue] < v22)
+          if ([v27 longLongValue] < longLongValue)
           {
-            v22 = [v27 longLongValue];
+            longLongValue = [v27 longLongValue];
           }
         }
 
-        v24 = [a3 countByEnumeratingWithState:&v29 objects:v28 count:16];
+        v24 = [min countByEnumeratingWithState:&v29 objects:v28 count:16];
       }
 
       while (v24);
     }
 
-    return [NSNumber numberWithLongLong:v22];
+    return [NSNumber numberWithLongLong:longLongValue];
   }
 
   else
   {
-    [v5 doubleValue];
+    [lastObject doubleValue];
     v7 = v6;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v39 objects:v38 count:16];
+    v8 = [min countByEnumeratingWithState:&v39 objects:v38 count:16];
     if (v8)
     {
       v9 = v8;
@@ -755,7 +755,7 @@ LABEL_20:
         {
           if (*v40 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(min);
           }
 
           v12 = *(*(&v39 + 1) + 8 * k);
@@ -767,7 +767,7 @@ LABEL_20:
           }
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v39 objects:v38 count:16];
+        v9 = [min countByEnumeratingWithState:&v39 objects:v38 count:16];
       }
 
       while (v9);
@@ -777,33 +777,33 @@ LABEL_20:
   }
 }
 
-+ (id)max:(id)a3
++ (id)max:(id)max
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (![a3 count])
+  if (![max count])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Invoked max with empty collection." userInfo:0]);
   }
 
-  v4 = [_NSPredicateUtilities _getCommonTypeFor:a3];
+  v4 = [_NSPredicateUtilities _getCommonTypeFor:max];
   if (_NSIsNSArray())
   {
-    v5 = [a3 lastObject];
+    lastObject = [max lastObject];
   }
 
   else
   {
-    v5 = [a3 anyObject];
+    lastObject = [max anyObject];
   }
 
   if (v4 == 1)
   {
-    v16 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [lastObject unsignedLongLongValue];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v17 = [a3 countByEnumeratingWithState:&v34 objects:v33 count:16];
+    v17 = [max countByEnumeratingWithState:&v34 objects:v33 count:16];
     if (v17)
     {
       v18 = v17;
@@ -814,33 +814,33 @@ LABEL_20:
         {
           if (*v35 != v19)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(max);
           }
 
           v21 = *(*(&v34 + 1) + 8 * i);
-          if ([v21 unsignedLongLongValue] > v16)
+          if ([v21 unsignedLongLongValue] > unsignedLongLongValue)
           {
-            v16 = [v21 unsignedLongLongValue];
+            unsignedLongLongValue = [v21 unsignedLongLongValue];
           }
         }
 
-        v18 = [a3 countByEnumeratingWithState:&v34 objects:v33 count:16];
+        v18 = [max countByEnumeratingWithState:&v34 objects:v33 count:16];
       }
 
       while (v18);
     }
 
-    return [NSNumber numberWithUnsignedLongLong:v16];
+    return [NSNumber numberWithUnsignedLongLong:unsignedLongLongValue];
   }
 
   else if (v4)
   {
-    v22 = [v5 longLongValue];
+    longLongValue = [lastObject longLongValue];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v23 = [a3 countByEnumeratingWithState:&v29 objects:v28 count:16];
+    v23 = [max countByEnumeratingWithState:&v29 objects:v28 count:16];
     if (v23)
     {
       v24 = v23;
@@ -851,34 +851,34 @@ LABEL_20:
         {
           if (*v30 != v25)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(max);
           }
 
           v27 = *(*(&v29 + 1) + 8 * j);
-          if ([v27 longLongValue] > v22)
+          if ([v27 longLongValue] > longLongValue)
           {
-            v22 = [v27 longLongValue];
+            longLongValue = [v27 longLongValue];
           }
         }
 
-        v24 = [a3 countByEnumeratingWithState:&v29 objects:v28 count:16];
+        v24 = [max countByEnumeratingWithState:&v29 objects:v28 count:16];
       }
 
       while (v24);
     }
 
-    return [NSNumber numberWithLongLong:v22];
+    return [NSNumber numberWithLongLong:longLongValue];
   }
 
   else
   {
-    [v5 doubleValue];
+    [lastObject doubleValue];
     v7 = v6;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v39 objects:v38 count:16];
+    v8 = [max countByEnumeratingWithState:&v39 objects:v38 count:16];
     if (v8)
     {
       v9 = v8;
@@ -889,7 +889,7 @@ LABEL_20:
         {
           if (*v40 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(max);
           }
 
           v12 = *(*(&v39 + 1) + 8 * k);
@@ -901,7 +901,7 @@ LABEL_20:
           }
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v39 objects:v38 count:16];
+        v9 = [max countByEnumeratingWithState:&v39 objects:v38 count:16];
       }
 
       while (v9);
@@ -911,34 +911,34 @@ LABEL_20:
   }
 }
 
-+ (id)average:(id)a3
++ (id)average:(id)average
 {
-  v4 = [a1 sum:?];
-  v5 = [_NSPredicateUtilities _getCommonTypeFor:a3];
+  v4 = [self sum:?];
+  v5 = [_NSPredicateUtilities _getCommonTypeFor:average];
   if (v5 == 1)
   {
-    v7 = [v4 unsignedLongLongValue];
+    unsignedLongLongValue = [v4 unsignedLongLongValue];
   }
 
   else if (v5)
   {
-    v7 = [v4 longLongValue];
+    unsignedLongLongValue = [v4 longLongValue];
   }
 
   else
   {
     [v4 doubleValue];
-    v7 = v6;
+    unsignedLongLongValue = v6;
   }
 
-  v8 = v7 / [a3 count];
+  v8 = unsignedLongLongValue / [average count];
 
   return [NSNumber numberWithDouble:v8];
 }
 
-+ (id)median:(id)a3
++ (id)median:(id)median
 {
-  v3 = [a3 sortedArrayUsingSelector:sel_compare_];
+  v3 = [median sortedArrayUsingSelector:sel_compare_];
   v4 = [v3 count];
   v5 = [v3 count] >> 1;
   if (v4)
@@ -965,16 +965,16 @@ LABEL_20:
 
     if (v10 == 1)
     {
-      v16 = [v6 unsignedLongLongValue];
-      v17 = ([v7 unsignedLongLongValue] + v16) >> 1;
+      unsignedLongLongValue = [v6 unsignedLongLongValue];
+      v17 = ([v7 unsignedLongLongValue] + unsignedLongLongValue) >> 1;
 
       return [NSNumber numberWithUnsignedLongLong:v17];
     }
 
     else if (v10)
     {
-      v18 = [v6 longLongValue];
-      v19 = ([v7 longLongValue] + v18) / 2;
+      longLongValue = [v6 longLongValue];
+      v19 = ([v7 longLongValue] + longLongValue) / 2;
 
       return [NSNumber numberWithLongLong:v19];
     }
@@ -991,12 +991,12 @@ LABEL_20:
   }
 }
 
-+ (id)mode:(id)a3
++ (id)mode:(id)mode
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = [_NSPredicateUtilities _getCommonTypeFor:a3];
-  v5 = [a3 sortedArrayUsingSelector:sel_compare_];
-  v6 = [MEMORY[0x1E695DF70] array];
+  v4 = [_NSPredicateUtilities _getCommonTypeFor:mode];
+  v5 = [mode sortedArrayUsingSelector:sel_compare_];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -1020,17 +1020,17 @@ LABEL_20:
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
-        if (![v6 count])
+        if (![array count])
         {
           ++v10;
-          [v6 addObject:v9];
+          [array addObject:v9];
           continue;
         }
 
         if (v4 == 1)
         {
-          v18 = [v14 unsignedLongLongValue];
-          v19 = [v9 unsignedLongLongValue];
+          unsignedLongLongValue = [v14 unsignedLongLongValue];
+          unsignedLongLongValue2 = [v9 unsignedLongLongValue];
         }
 
         else
@@ -1048,11 +1048,11 @@ LABEL_20:
             goto LABEL_10;
           }
 
-          v18 = [v14 longLongValue];
-          v19 = [v9 longLongValue];
+          unsignedLongLongValue = [v14 longLongValue];
+          unsignedLongLongValue2 = [v9 longLongValue];
         }
 
-        if (v18 != v19)
+        if (unsignedLongLongValue != unsignedLongLongValue2)
         {
 LABEL_16:
           v10 = 1;
@@ -1064,14 +1064,14 @@ LABEL_10:
         {
           if (v10 == v11)
           {
-            [v6 addObject:v9];
+            [array addObject:v9];
             v10 = v11;
           }
         }
 
         else
         {
-          v6 = [MEMORY[0x1E695DF70] arrayWithObject:v9];
+          array = [MEMORY[0x1E695DF70] arrayWithObject:v9];
           v11 = v10;
         }
       }
@@ -1082,19 +1082,19 @@ LABEL_10:
     while (v8);
   }
 
-  return v6;
+  return array;
 }
 
-+ (id)stddev:(id)a3
++ (id)stddev:(id)stddev
 {
   v18 = *MEMORY[0x1E69E9840];
-  [objc_msgSend(a1 "average:"doubleValue"")];
+  [objc_msgSend(self "average:"doubleValue"")];
   v5 = v4;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  v6 = [stddev countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1106,14 +1106,14 @@ LABEL_10:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(stddev);
         }
 
         [*(*(&v14 + 1) + 8 * i) doubleValue];
         v9 = v9 + (v5 - v11) * (v5 - v11);
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v7 = [stddev countByEnumeratingWithState:&v14 objects:v13 count:16];
     }
 
     while (v7);
@@ -1124,10 +1124,10 @@ LABEL_10:
     v9 = 0.0;
   }
 
-  return +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", sqrt(v9 / [a3 count]));
+  return +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", sqrt(v9 / [stddev count]));
 }
 
-+ (id)add:(id)a3 to:(id)a4
++ (id)add:(id)add to:(id)to
 {
   v32[1] = *MEMORY[0x1E69E9840];
   v6 = _NSIsNSDate();
@@ -1136,8 +1136,8 @@ LABEL_10:
   v9 = _NSIsNSNumber();
   if (v7 && v9)
   {
-    v10 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [a3 objCType]);
-    v11 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [a4 objCType]);
+    v10 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [add objCType]);
+    v11 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [to objCType]);
     if (v10 >= v11)
     {
       v12 = v11;
@@ -1150,25 +1150,25 @@ LABEL_10:
 
     if (v12 == 1)
     {
-      v24 = [a3 unsignedLongLongValue];
-      v25 = [a4 unsignedLongLongValue] + v24;
+      unsignedLongLongValue = [add unsignedLongLongValue];
+      v25 = [to unsignedLongLongValue] + unsignedLongLongValue;
 
       return [NSNumber numberWithUnsignedLongLong:v25];
     }
 
     else if (v12)
     {
-      v26 = [a3 longLongValue];
-      v27 = [a4 longLongValue] + v26;
+      longLongValue = [add longLongValue];
+      v27 = [to longLongValue] + longLongValue;
 
       return [NSNumber numberWithLongLong:v27];
     }
 
     else
     {
-      [a3 doubleValue];
+      [add doubleValue];
       v14 = v13;
-      [a4 doubleValue];
+      [to doubleValue];
       v16 = v14 + v15;
 
       return [NSNumber numberWithDouble:v16];
@@ -1180,9 +1180,9 @@ LABEL_10:
     if ((v6 & v9) == 1)
     {
       v18 = MEMORY[0x1E695DF00];
-      [a3 timeIntervalSinceReferenceDate];
+      [add timeIntervalSinceReferenceDate];
       v20 = v19;
-      [a4 doubleValue];
+      [to doubleValue];
     }
 
     else
@@ -1191,17 +1191,17 @@ LABEL_10:
       {
         v28 = MEMORY[0x1E695DF30];
         v29 = *MEMORY[0x1E695D940];
-        v30[1] = a3;
+        v30[1] = add;
         v31 = @"Parameters";
-        v30[0] = a4;
+        v30[0] = to;
         v32[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
         objc_exception_throw([v28 exceptionWithName:v29 reason:@"incompatible parameters passed to mathematical function" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v32, &v31, 1)}]);
       }
 
       v18 = MEMORY[0x1E695DF00];
-      [a3 doubleValue];
+      [add doubleValue];
       v20 = v22;
-      [a4 timeIntervalSinceReferenceDate];
+      [to timeIntervalSinceReferenceDate];
     }
 
     v23 = v20 + v21;
@@ -1210,7 +1210,7 @@ LABEL_10:
   }
 }
 
-+ (id)from:(id)a3 subtract:(id)a4
++ (id)from:(id)from subtract:(id)subtract
 {
   v32[1] = *MEMORY[0x1E69E9840];
   v6 = _NSIsNSDate();
@@ -1219,8 +1219,8 @@ LABEL_10:
   v9 = _NSIsNSNumber();
   if (v7 && v9)
   {
-    v10 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [a3 objCType]);
-    v11 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [a4 objCType]);
+    v10 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [from objCType]);
+    v11 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [subtract objCType]);
     if (v10 >= v11)
     {
       v12 = v11;
@@ -1233,8 +1233,8 @@ LABEL_10:
 
     if (v12 == 1)
     {
-      v24 = [a3 unsignedLongLongValue];
-      v25 = v24 - [a4 unsignedLongLongValue];
+      unsignedLongLongValue = [from unsignedLongLongValue];
+      v25 = unsignedLongLongValue - [subtract unsignedLongLongValue];
 
       return [NSNumber numberWithUnsignedLongLong:v25];
     }
@@ -1243,17 +1243,17 @@ LABEL_10:
     {
       if (!v12)
       {
-        [a3 doubleValue];
+        [from doubleValue];
         v14 = v13;
-        [a4 doubleValue];
+        [subtract doubleValue];
 LABEL_11:
         v17 = v14 - v15;
 
         return [NSNumber numberWithDouble:v17];
       }
 
-      v26 = [a3 longLongValue];
-      v27 = v26 - [a4 longLongValue];
+      longLongValue = [from longLongValue];
+      v27 = longLongValue - [subtract longLongValue];
 
       return [NSNumber numberWithLongLong:v27];
     }
@@ -1263,9 +1263,9 @@ LABEL_11:
   {
     if ((v6 & v8) == 1)
     {
-      [a3 timeIntervalSinceReferenceDate];
+      [from timeIntervalSinceReferenceDate];
       v14 = v16;
-      [a4 timeIntervalSinceReferenceDate];
+      [subtract timeIntervalSinceReferenceDate];
       goto LABEL_11;
     }
 
@@ -1273,39 +1273,39 @@ LABEL_11:
     {
       v28 = MEMORY[0x1E695DF30];
       v29 = *MEMORY[0x1E695D940];
-      v30[1] = a3;
+      v30[1] = from;
       v31 = @"Parameters";
-      v30[0] = a4;
+      v30[0] = subtract;
       v32[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
       objc_exception_throw([v28 exceptionWithName:v29 reason:@"incompatible parameters passed to mathematical function" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v32, &v31, 1)}]);
     }
 
     v19 = MEMORY[0x1E695DF00];
-    [a3 timeIntervalSinceReferenceDate];
+    [from timeIntervalSinceReferenceDate];
     v21 = v20;
-    [a4 doubleValue];
+    [subtract doubleValue];
     v23 = v21 - v22;
 
     return [v19 dateWithTimeIntervalSinceReferenceDate:v23];
   }
 }
 
-+ (id)multiply:(id)a3 by:(id)a4
++ (id)multiply:(id)multiply by:(id)by
 {
   v22[1] = *MEMORY[0x1E69E9840];
   if (!_NSIsNSNumber() || (_NSIsNSNumber() & 1) == 0)
   {
     v18 = MEMORY[0x1E695DF30];
     v19 = *MEMORY[0x1E695D940];
-    v20[1] = a4;
+    v20[1] = by;
     v21 = @"Parameters";
-    v20[0] = a3;
+    v20[0] = multiply;
     v22[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     objc_exception_throw([v18 exceptionWithName:v19 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v22, &v21, 1)}]);
   }
 
-  v6 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [a3 objCType]);
-  v7 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [a4 objCType]);
+  v6 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [multiply objCType]);
+  v7 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [by objCType]);
   if (v6 >= v7)
   {
     v8 = v7;
@@ -1318,47 +1318,47 @@ LABEL_11:
 
   if (v8 == 1)
   {
-    v14 = [a3 unsignedLongLongValue];
-    v15 = [a4 unsignedLongLongValue] * v14;
+    unsignedLongLongValue = [multiply unsignedLongLongValue];
+    v15 = [by unsignedLongLongValue] * unsignedLongLongValue;
 
     return [NSNumber numberWithUnsignedLongLong:v15];
   }
 
   else if (v8)
   {
-    v16 = [a3 longLongValue];
-    v17 = [a4 longLongValue] * v16;
+    longLongValue = [multiply longLongValue];
+    v17 = [by longLongValue] * longLongValue;
 
     return [NSNumber numberWithLongLong:v17];
   }
 
   else
   {
-    [a3 doubleValue];
+    [multiply doubleValue];
     v10 = v9;
-    [a4 doubleValue];
+    [by doubleValue];
     v12 = v10 * v11;
 
     return [NSNumber numberWithDouble:v12];
   }
 }
 
-+ (id)divide:(id)a3 by:(id)a4
++ (id)divide:(id)divide by:(id)by
 {
   v24[1] = *MEMORY[0x1E69E9840];
   if (!_NSIsNSNumber() || (_NSIsNSNumber() & 1) == 0)
   {
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695D940];
-    v22[1] = a4;
+    v22[1] = by;
     v23 = @"Parameters";
-    v22[0] = a3;
+    v22[0] = divide;
     v24[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
     objc_exception_throw([v20 exceptionWithName:v21 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v24, &v23, 1)}]);
   }
 
-  v6 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [a3 objCType]);
-  v7 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [a4 objCType]);
+  v6 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [divide objCType]);
+  v7 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [by objCType]);
   if (v6 >= v7)
   {
     v8 = v7;
@@ -1371,11 +1371,11 @@ LABEL_11:
 
   if (v8 == 1)
   {
-    v14 = [a3 unsignedLongLongValue];
-    v15 = [a4 unsignedLongLongValue];
-    if (v15)
+    unsignedLongLongValue = [divide unsignedLongLongValue];
+    unsignedLongLongValue2 = [by unsignedLongLongValue];
+    if (unsignedLongLongValue2)
     {
-      v16 = v14 / v15;
+      v16 = unsignedLongLongValue / unsignedLongLongValue2;
     }
 
     else
@@ -1388,11 +1388,11 @@ LABEL_11:
 
   else if (v8)
   {
-    v17 = [a3 longLongValue];
-    v18 = [a4 longLongValue];
-    if (v18)
+    longLongValue = [divide longLongValue];
+    longLongValue2 = [by longLongValue];
+    if (longLongValue2)
     {
-      v19 = v17 / v18;
+      v19 = longLongValue / longLongValue2;
     }
 
     else
@@ -1405,31 +1405,31 @@ LABEL_11:
 
   else
   {
-    [a3 doubleValue];
+    [divide doubleValue];
     v10 = v9;
-    [a4 doubleValue];
+    [by doubleValue];
     v12 = v10 / v11;
 
     return [NSNumber numberWithDouble:v12];
   }
 }
 
-+ (id)modulus:(id)a3 by:(id)a4
++ (id)modulus:(id)modulus by:(id)by
 {
   v24[1] = *MEMORY[0x1E69E9840];
   if (!_NSIsNSNumber() || (_NSIsNSNumber() & 1) == 0)
   {
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695D940];
-    v22[1] = a4;
+    v22[1] = by;
     v23 = @"Parameters";
-    v22[0] = a3;
+    v22[0] = modulus;
     v24[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
     objc_exception_throw([v20 exceptionWithName:v21 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v24, &v23, 1)}]);
   }
 
-  v6 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [a3 objCType]);
-  v7 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [a4 objCType]);
+  v6 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [modulus objCType]);
+  v7 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [by objCType]);
   if (v6 >= v7)
   {
     v8 = v7;
@@ -1442,11 +1442,11 @@ LABEL_11:
 
   if (v8 == 1)
   {
-    v14 = [a3 unsignedLongLongValue];
-    v15 = [a4 unsignedLongLongValue];
-    if (v15)
+    unsignedLongLongValue = [modulus unsignedLongLongValue];
+    unsignedLongLongValue2 = [by unsignedLongLongValue];
+    if (unsignedLongLongValue2)
     {
-      v16 = v14 % v15;
+      v16 = unsignedLongLongValue % unsignedLongLongValue2;
     }
 
     else
@@ -1459,11 +1459,11 @@ LABEL_11:
 
   else if (v8)
   {
-    v17 = [a3 longLongValue];
-    v18 = [a4 longLongValue];
-    if (v18)
+    longLongValue = [modulus longLongValue];
+    longLongValue2 = [by longLongValue];
+    if (longLongValue2)
     {
-      v19 = v17 % v18;
+      v19 = longLongValue % longLongValue2;
     }
 
     else
@@ -1476,216 +1476,216 @@ LABEL_11:
 
   else
   {
-    [a3 doubleValue];
+    [modulus doubleValue];
     v10 = v9;
-    [a4 doubleValue];
+    [by doubleValue];
     v12 = fmod(v10, v11);
 
     return [NSNumber numberWithDouble:v12];
   }
 }
 
-+ (id)sqrt:(id)a3
++ (id)sqrt:(id)sqrt
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if ((_NSIsNSNumber() & 1) == 0)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = a3;
+    sqrtCopy = sqrt;
     v10 = @"Parameters";
-    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
+    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&sqrtCopy count:1];
     objc_exception_throw([v7 exceptionWithName:v8 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}]);
   }
 
-  [a3 doubleValue];
+  [sqrt doubleValue];
   v5 = sqrt(v4);
 
   return [NSNumber numberWithDouble:v5];
 }
 
-+ (id)log:(id)a3
++ (id)log:(id)log
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if ((_NSIsNSNumber() & 1) == 0)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = a3;
+    logCopy = log;
     v10 = @"Parameters";
-    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
+    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&logCopy count:1];
     objc_exception_throw([v7 exceptionWithName:v8 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}]);
   }
 
-  [a3 doubleValue];
+  [log doubleValue];
   v5 = log10(v4);
 
   return [NSNumber numberWithDouble:v5];
 }
 
-+ (id)ln:(id)a3
++ (id)ln:(id)ln
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if ((_NSIsNSNumber() & 1) == 0)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = a3;
+    lnCopy = ln;
     v10 = @"Parameters";
-    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
+    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&lnCopy count:1];
     objc_exception_throw([v7 exceptionWithName:v8 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}]);
   }
 
-  [a3 doubleValue];
+  [ln doubleValue];
   v5 = log(v4);
 
   return [NSNumber numberWithDouble:v5];
 }
 
-+ (id)raise:(id)a3 toPower:(id)a4
++ (id)raise:(id)raise toPower:(id)power
 {
   v15[1] = *MEMORY[0x1E69E9840];
   if ((_NSIsNSNumber() & 1) == 0)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
-    v13 = a3;
+    raiseCopy = raise;
     v14 = @"Parameters";
-    v15[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
+    v15[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&raiseCopy count:1];
     objc_exception_throw([v11 exceptionWithName:v12 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v15, &v14, 1)}]);
   }
 
-  [a3 doubleValue];
+  [raise doubleValue];
   v7 = v6;
-  [a4 doubleValue];
+  [power doubleValue];
   v9 = pow(v7, v8);
 
   return [NSNumber numberWithDouble:v9];
 }
 
-+ (id)exp:(id)a3
++ (id)exp:(id)exp
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if ((_NSIsNSNumber() & 1) == 0)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = a3;
+    expCopy = exp;
     v10 = @"Parameters";
-    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
+    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&expCopy count:1];
     objc_exception_throw([v7 exceptionWithName:v8 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}]);
   }
 
-  [a3 doubleValue];
+  [exp doubleValue];
   v5 = exp(v4);
 
   return [NSNumber numberWithDouble:v5];
 }
 
-+ (id)floor:(id)a3
++ (id)floor:(id)floor
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if ((_NSIsNSNumber() & 1) == 0)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = a3;
+    floorCopy = floor;
     v10 = @"Parameters";
-    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
+    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&floorCopy count:1];
     objc_exception_throw([v7 exceptionWithName:v8 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}]);
   }
 
-  [a3 doubleValue];
+  [floor doubleValue];
   v5 = floor(v4);
 
   return [NSNumber numberWithDouble:v5];
 }
 
-+ (id)ceiling:(id)a3
++ (id)ceiling:(id)ceiling
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if ((_NSIsNSNumber() & 1) == 0)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = a3;
+    ceilingCopy = ceiling;
     v10 = @"Parameters";
-    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
+    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&ceilingCopy count:1];
     objc_exception_throw([v7 exceptionWithName:v8 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}]);
   }
 
-  [a3 doubleValue];
+  [ceiling doubleValue];
   v5 = ceil(v4);
 
   return [NSNumber numberWithDouble:v5];
 }
 
-+ (id)abs:(id)a3
++ (id)abs:(id)abs
 {
   v13[1] = *MEMORY[0x1E69E9840];
   if ((_NSIsNSNumber() & 1) == 0)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
-    v11 = a3;
+    absCopy = abs;
     v12 = @"Parameters";
-    v13[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
+    v13[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&absCopy count:1];
     objc_exception_throw([v9 exceptionWithName:v10 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v13, &v12, 1)}]);
   }
 
-  v4 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [a3 objCType]);
+  v4 = +[_NSPredicateUtilities _getITypeFor:](_NSPredicateUtilities, [abs objCType]);
   if (v4 == 1)
   {
-    return a3;
+    return abs;
   }
 
   if (v4 == 2)
   {
-    v5 = [a3 longLongValue];
-    if ((v5 & 0x8000000000000000) == 0)
+    longLongValue = [abs longLongValue];
+    if ((longLongValue & 0x8000000000000000) == 0)
     {
-      return a3;
+      return abs;
     }
 
-    return [NSNumber numberWithLongLong:-v5];
+    return [NSNumber numberWithLongLong:-longLongValue];
   }
 
   else
   {
-    [a3 doubleValue];
+    [abs doubleValue];
     v8 = fabs(v7);
 
     return [NSNumber numberWithDouble:v8];
   }
 }
 
-+ (id)trunc:(id)a3
++ (id)trunc:(id)trunc
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if ((_NSIsNSNumber() & 1) == 0)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
-    v9 = a3;
+    truncCopy = trunc;
     v10 = @"Parameters";
-    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
+    v11[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&truncCopy count:1];
     objc_exception_throw([v7 exceptionWithName:v8 reason:@"mathematical functions require NSNumber parameters" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}]);
   }
 
-  [a3 doubleValue];
+  [trunc doubleValue];
   v5 = trunc(v4);
 
   return [NSNumber numberWithDouble:v5];
 }
 
-+ (void)_doTokenization:(const __CFLocale *)a3 locale:
++ (void)_doTokenization:(const __CFLocale *)tokenization locale:
 {
-  v5 = a3 == 0;
+  v5 = tokenization == 0;
   v15 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v16.length = [(__CFString *)a2 length];
   v16.location = 0;
-  v6 = CFStringTokenizerCreate(*MEMORY[0x1E695E480], a2, v16, 4 * v5, a3);
+  v6 = CFStringTokenizerCreate(*MEMORY[0x1E695E480], a2, v16, 4 * v5, tokenization);
   Token = CFStringTokenizerAdvanceToNextToken(v6);
   v8 = [MEMORY[0x1E695DFA8] set];
   v9 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
@@ -1714,13 +1714,13 @@ LABEL_11:
   return v8;
 }
 
-+ (void)_processAndTokenize:(uint64_t)a3 flags:(const __CFLocale *)a4 locale:
++ (void)_processAndTokenize:(uint64_t)tokenize flags:(const __CFLocale *)flags locale:
 {
   objc_opt_self();
-  if (a3)
+  if (tokenize)
   {
-    v7 = [_NSPredicateOperatorUtilities newStringFrom:a2 usingUnicodeTransforms:a3];
-    v8 = [_NSPredicateUtilities _doTokenization:v7 locale:a4];
+    v7 = [_NSPredicateOperatorUtilities newStringFrom:a2 usingUnicodeTransforms:tokenize];
+    v8 = [_NSPredicateUtilities _doTokenization:v7 locale:flags];
 
     return v8;
   }
@@ -1728,11 +1728,11 @@ LABEL_11:
   else
   {
 
-    return [_NSPredicateUtilities _doTokenization:a2 locale:a4];
+    return [_NSPredicateUtilities _doTokenization:a2 locale:flags];
   }
 }
 
-+ (void)_collapseAndTokenize:(uint64_t)a3 flags:(void *)a4 locale:
++ (void)_collapseAndTokenize:(uint64_t)tokenize flags:(void *)flags locale:
 {
   v20 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -1765,7 +1765,7 @@ LABEL_11:
         objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Unable to tokenize : %@", v12), 0}]);
       }
 
-      v13 = [_NSPredicateUtilities _processAndTokenize:v12 flags:a3 locale:a4];
+      v13 = [_NSPredicateUtilities _processAndTokenize:v12 flags:tokenize locale:flags];
       if (v9)
       {
         [v9 unionSet:v13];
@@ -1784,18 +1784,18 @@ LABEL_11:
   return v9;
 }
 
-+ (id)tokenize:(id)a3 using:(id)a4
++ (id)tokenize:(id)tokenize using:(id)using
 {
-  if ([a4 rangeOfString:@"n"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(a4, "rangeOfString:", @"N") != 0x7FFFFFFFFFFFFFFFLL)
+  if ([using rangeOfString:@"n"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(using, "rangeOfString:", @"N") != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_9;
   }
 
-  if ([a4 rangeOfString:@"c"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a4, "rangeOfString:", @"C") == 0x7FFFFFFFFFFFFFFFLL)
+  if ([using rangeOfString:@"c"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(using, "rangeOfString:", @"C") == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([a4 rangeOfString:@"d"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a4, "rangeOfString:", @"D") == 0x7FFFFFFFFFFFFFFFLL)
+    if ([using rangeOfString:@"d"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(using, "rangeOfString:", @"D") == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ([a4 rangeOfString:@"l"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(a4, "rangeOfString:", @"L") != 0x7FFFFFFFFFFFFFFFLL)
+      if ([using rangeOfString:@"l"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(using, "rangeOfString:", @"L") != 0x7FFFFFFFFFFFFFFFLL)
       {
         v6 = +[_NSPredicateOperatorUtilities retainedLocale];
         goto LABEL_10;
@@ -1821,7 +1821,7 @@ LABEL_10:
 LABEL_11:
   if (_NSIsNSString())
   {
-    v8 = [_NSPredicateUtilities _processAndTokenize:a3 flags:v7 locale:v6];
+    v8 = [_NSPredicateUtilities _processAndTokenize:tokenize flags:v7 locale:v6];
   }
 
   else
@@ -1829,10 +1829,10 @@ LABEL_11:
     if ((_NSIsNSArray() & 1) == 0 && (_NSIsNSSet() & 1) == 0 && !_NSIsNSOrderedSet())
     {
 
-      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Unable to tokenize : %@", a3), 0}]);
+      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Unable to tokenize : %@", tokenize), 0}]);
     }
 
-    v8 = [_NSPredicateUtilities _collapseAndTokenize:a3 flags:v7 locale:v6];
+    v8 = [_NSPredicateUtilities _collapseAndTokenize:tokenize flags:v7 locale:v6];
   }
 
   v9 = v8;
@@ -1840,48 +1840,48 @@ LABEL_11:
   return v9;
 }
 
-+ (id)uppercase:(id)a3
++ (id)uppercase:(id)uppercase
 {
   if ((_NSIsNSString() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can't uppercase non-string" userInfo:0]);
   }
 
-  return [a3 uppercaseString];
+  return [uppercase uppercaseString];
 }
 
-+ (id)lowercase:(id)a3
++ (id)lowercase:(id)lowercase
 {
   if ((_NSIsNSString() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can't lowercase non-string" userInfo:0]);
   }
 
-  return [a3 lowercaseString];
+  return [lowercase lowercaseString];
 }
 
-+ (id)length:(id)a3
++ (id)length:(id)length
 {
   if ((_NSIsNSString() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can't apply length: to a non-string" userInfo:0]);
   }
 
-  v4 = [a3 length];
+  v4 = [length length];
 
   return [NSNumber numberWithUnsignedInteger:v4];
 }
 
-+ (NSNumber)_convertStringToNumber:(uint64_t)a1
++ (NSNumber)_convertStringToNumber:(uint64_t)number
 {
   v9 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v3 = [a2 UTF8String];
+  uTF8String = [a2 UTF8String];
   v8 = 0;
-  if (strchr(v3, 46))
+  if (strchr(uTF8String, 46))
   {
-    v4 = strtod_l(v3, &v8, 0);
-    if (!v8 || v8 == v3 || *v8 || (result = [NSNumber numberWithDouble:v4]) == 0)
+    v4 = strtod_l(uTF8String, &v8, 0);
+    if (!v8 || v8 == uTF8String || *v8 || (result = [NSNumber numberWithDouble:v4]) == 0)
     {
 LABEL_10:
       v7 = [NSDecimalNumber decimalNumberWithString:a2, v4, v8, v9];
@@ -1899,13 +1899,13 @@ LABEL_10:
 
   else
   {
-    v6 = strtoll_l(v3, &v8, 0, 0);
+    v6 = strtoll_l(uTF8String, &v8, 0, 0);
     if (!v8)
     {
       goto LABEL_10;
     }
 
-    if (v8 == v3)
+    if (v8 == uTF8String)
     {
       goto LABEL_10;
     }
@@ -1925,19 +1925,19 @@ LABEL_10:
   return result;
 }
 
-+ (id)castObject:(id)a3 toType:(id)a4
++ (id)castObject:(id)object toType:(id)type
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!type)
   {
-    return a3;
+    return object;
   }
 
-  if (![@"Class" isEqualToString:a4])
+  if (![@"Class" isEqualToString:type])
   {
-    if ([a4 isNSString])
+    if ([type isNSString])
     {
-      v11 = [a4 description];
+      v11 = [type description];
       objc_opt_self();
       if (![*(_CFPredicatePolicyData() + 16) objectForKey:v11])
       {
@@ -1946,11 +1946,11 @@ LABEL_10:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
         {
           *buf = 138543874;
-          v31 = a4;
+          objectCopy3 = type;
           v32 = 2114;
-          v33 = a3;
+          objectCopy2 = object;
           v34 = 2114;
-          v35 = a4;
+          typeCopy4 = type;
           _os_log_fault_impl(&dword_18075C000, v12, OS_LOG_TYPE_FAULT, "NSPredicate: Using NSExpression CAST(x,'%{public}@') is deprecated and will be removed in a future release.  '%{public}@' should not be cast into the unknown type '%{public}@'", buf, 0x20u);
         }
 
@@ -1967,7 +1967,7 @@ LABEL_10:
         v14 = v13;
         if ([(objc_class *)v13 isSubclassOfClass:__NSStringClass])
         {
-          return [a3 description];
+          return [object description];
         }
 
         if ([(objc_class *)v14 isSubclassOfClass:objc_opt_self()])
@@ -1975,18 +1975,18 @@ LABEL_10:
           if (_NSIsNSNumber())
           {
             v16 = MEMORY[0x1E695DF00];
-            [a3 doubleValue];
+            [object doubleValue];
             return [v16 dateWithTimeIntervalSinceReferenceDate:?];
           }
 
           if (_NSIsNSString())
           {
-            return [MEMORY[0x1E695DF00] dateWithNaturalLanguageString:a3];
+            return [MEMORY[0x1E695DF00] dateWithNaturalLanguageString:object];
           }
 
           if (_NSIsNSDate())
           {
-            return a3;
+            return object;
           }
         }
 
@@ -1994,7 +1994,7 @@ LABEL_10:
         {
           if ([(objc_class *)v14 isSubclassOfClass:objc_opt_self()])
           {
-            v7 = +[NSDecimalNumber decimalNumberWithString:](NSDecimalNumber, "decimalNumberWithString:", [a3 description]);
+            v7 = +[NSDecimalNumber decimalNumberWithString:](NSDecimalNumber, "decimalNumberWithString:", [object description]);
             if (![(NSDecimalNumber *)v7 isEqual:+[NSDecimalNumber notANumber]])
             {
               return v7;
@@ -2007,7 +2007,7 @@ LABEL_10:
           {
             if ([(objc_class *)v14 isSubclassOfClass:objc_opt_self()])
             {
-              v18 = -[NSSymbolicExpression initWithString:]([NSSymbolicExpression alloc], "initWithString:", [a3 description]);
+              v18 = -[NSSymbolicExpression initWithString:]([NSSymbolicExpression alloc], "initWithString:", [object description]);
             }
 
             else
@@ -2022,11 +2022,11 @@ LABEL_10:
               if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
               {
                 *buf = 138543874;
-                v31 = a4;
+                objectCopy3 = type;
                 v32 = 2114;
-                v33 = a3;
+                objectCopy2 = object;
                 v34 = 2114;
-                v35 = a4;
+                typeCopy4 = type;
                 _os_log_fault_impl(&dword_18075C000, v19, OS_LOG_TYPE_FAULT, "NSPredicate: Using NSExpression CAST(x,'%{public}@') is deprecated and will be removed in a future release.  '%{public}@' should not be cast into type '%{public}@' through initWithString", buf, 0x20u);
               }
 
@@ -2037,7 +2037,7 @@ LABEL_10:
               }
 
               v20 = NSAllocateObject(v14, 0, 0);
-              -[NSSymbolicExpression initWithString:](v20, "initWithString:", [a3 description]);
+              -[NSSymbolicExpression initWithString:](v20, "initWithString:", [object description]);
               v18 = v20;
             }
 
@@ -2046,13 +2046,13 @@ LABEL_10:
 
           if (_NSIsNSDate())
           {
-            [a3 timeIntervalSinceReferenceDate];
+            [object timeIntervalSinceReferenceDate];
             return [NSNumber numberWithDouble:?];
           }
 
           if (_NSIsNSString())
           {
-            v15 = [_NSPredicateUtilities _convertStringToNumber:a3];
+            v15 = [_NSPredicateUtilities _convertStringToNumber:object];
             if (v15)
             {
               return v15;
@@ -2061,14 +2061,14 @@ LABEL_10:
 
           else if (_NSIsNSNumber())
           {
-            return a3;
+            return object;
           }
         }
 
 LABEL_51:
         v21 = MEMORY[0x1E695DF30];
         v22 = *MEMORY[0x1E695D930];
-        v23 = [NSString stringWithFormat:@"Don't know how to cast (%@) into type %@", a3, a4];
+        type = [NSString stringWithFormat:@"Don't know how to cast (%@) into type %@", object, type];
         v24 = v21;
         v25 = v22;
         goto LABEL_58;
@@ -2076,17 +2076,17 @@ LABEL_51:
 
       v26 = MEMORY[0x1E695DF30];
       v27 = *MEMORY[0x1E695D930];
-      v28 = [NSString stringWithFormat:@"Cannot cast to class %@ which does not exist", a4];
+      type2 = [NSString stringWithFormat:@"Cannot cast to class %@ which does not exist", type];
     }
 
     else
     {
       v26 = MEMORY[0x1E695DF30];
       v27 = *MEMORY[0x1E695D930];
-      v28 = [NSString stringWithFormat:@"Cannot cast to unknown class %@", a4];
+      type2 = [NSString stringWithFormat:@"Cannot cast to unknown class %@", type];
     }
 
-    v23 = v28;
+    type = type2;
     v24 = v26;
     goto LABEL_57;
   }
@@ -2096,7 +2096,7 @@ LABEL_51:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
   {
     *buf = 138543362;
-    v31 = a3;
+    objectCopy3 = object;
     _os_log_fault_impl(&dword_18075C000, v6, OS_LOG_TYPE_FAULT, "NSPredicate: Using NSExpression CAST(x,'Class') is deprecated and will be removed in a future release.  '%{public}@' should not be cast into a Class object", buf, 0xCu);
   }
 
@@ -2106,31 +2106,31 @@ LABEL_51:
     +[_NSPredicateUtilities _predicateSecurityAction];
   }
 
-  if (![a3 isNSString])
+  if (![object isNSString])
   {
     goto LABEL_54;
   }
 
   objc_opt_self();
-  if ([_CFPredicatePolicyRestrictedClasses() objectForKey:a3])
+  if ([_CFPredicatePolicyRestrictedClasses() objectForKey:object])
   {
     +[_NSPredicateUtilities _predicateSecurityAction];
 LABEL_54:
     v29 = MEMORY[0x1E695DF30];
     v27 = *MEMORY[0x1E695D930];
-    v23 = [NSString stringWithFormat:@"Cannot cast non string value %@", a3];
+    type = [NSString stringWithFormat:@"Cannot cast non string value %@", object];
     v24 = v29;
 LABEL_57:
     v25 = v27;
 LABEL_58:
-    objc_exception_throw([v24 exceptionWithName:v25 reason:v23 userInfo:0]);
+    objc_exception_throw([v24 exceptionWithName:v25 reason:type userInfo:0]);
   }
 
-  v7 = NSClassFromString(a3);
+  v7 = NSClassFromString(object);
   if (v7)
   {
     objc_opt_self();
-    if (![*(_CFPredicatePolicyData() + 16) objectForKey:a3])
+    if (![*(_CFPredicatePolicyData() + 16) objectForKey:object])
     {
       Superclass = class_getSuperclass(v7);
       if (Superclass)
@@ -2163,7 +2163,7 @@ LABEL_58:
   return [NSNumber numberWithDouble:v2];
 }
 
-+ (id)randomn:(id)a3
++ (id)randomn:(id)randomn
 {
   if ((_nspredicaterandomnumberseeded & 1) == 0)
   {
@@ -2172,12 +2172,12 @@ LABEL_58:
   }
 
   v4 = random();
-  v5 = v4 % [a3 longValue];
+  v5 = v4 % [randomn longValue];
 
   return [NSNumber numberWithLong:v5];
 }
 
-+ (id)objectFrom:(id)a3 withIndex:(id)a4
++ (id)objectFrom:(id)from withIndex:(id)index
 {
   if ((_NSIsNSArray() & 1) == 0 && !_NSIsNSOrderedSet())
   {
@@ -2187,14 +2187,14 @@ LABEL_58:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 
-        return [a3 member:a4];
+        return [from member:index];
       }
 
-      v9 = [a4 constantValue];
-      if (![@"FIRST" caseInsensitiveCompare:v9] || !objc_msgSend(@"LAST", "caseInsensitiveCompare:", v9))
+      constantValue = [index constantValue];
+      if (![@"FIRST" caseInsensitiveCompare:constantValue] || !objc_msgSend(@"LAST", "caseInsensitiveCompare:", constantValue))
       {
 
-        return [a3 anyObject];
+        return [from anyObject];
       }
 
       goto LABEL_18;
@@ -2205,51 +2205,51 @@ LABEL_58:
       objc_opt_self();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [a4 constantValue];
-        v13 = [a3 allKeys];
-        if ([@"FIRST" caseInsensitiveCompare:v12])
+        constantValue2 = [index constantValue];
+        allKeys = [from allKeys];
+        if ([@"FIRST" caseInsensitiveCompare:constantValue2])
         {
-          if ([@"LAST" caseInsensitiveCompare:v12])
+          if ([@"LAST" caseInsensitiveCompare:constantValue2])
           {
-            v10 = v12;
+            v10 = constantValue2;
             goto LABEL_19;
           }
 
-          v17 = [v13 lastObject];
+          lastObject = [allKeys lastObject];
         }
 
         else
         {
-          if (![v13 count])
+          if (![allKeys count])
           {
             return 0;
           }
 
-          v17 = [v13 objectAtIndex:0];
+          lastObject = [allKeys objectAtIndex:0];
         }
 
-        v16 = v17;
-        v15 = a3;
+        indexCopy = lastObject;
+        fromCopy2 = from;
       }
 
       else
       {
-        v15 = a3;
-        v16 = a4;
+        fromCopy2 = from;
+        indexCopy = index;
       }
 
-      return [v15 objectForKey:v16];
+      return [fromCopy2 objectForKey:indexCopy];
     }
 
-    v11 = [NSString stringWithFormat:@"The object %@ is NOT a collection.  Cannot retrieve item at index: %@", a3, a4];
+    index = [NSString stringWithFormat:@"The object %@ is NOT a collection.  Cannot retrieve item at index: %@", from, index];
 LABEL_33:
-    if (v11)
+    if (index)
     {
-      v18 = v11;
-      v19 = [MEMORY[0x1E695DF90] dictionary];
-      [v19 setObject:a3 forKey:@"list"];
-      [v19 setObject:a4 forKey:@"index"];
-      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v18 userInfo:v19]);
+      v18 = index;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:from forKey:@"list"];
+      [dictionary setObject:index forKey:@"index"];
+      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v18 userInfo:dictionary]);
     }
 
     return 0;
@@ -2257,54 +2257,54 @@ LABEL_33:
 
   if (_NSIsNSNumber())
   {
-    v6 = [a4 integerValue];
-    v7 = a3;
+    integerValue = [index integerValue];
+    fromCopy4 = from;
 LABEL_5:
 
-    return [v7 objectAtIndex:v6];
+    return [fromCopy4 objectAtIndex:integerValue];
   }
 
   objc_opt_self();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [NSString stringWithFormat:@"The symbolic index %@ is unknown.", a4, v20];
+    index = [NSString stringWithFormat:@"The symbolic index %@ is unknown.", index, v20];
     goto LABEL_33;
   }
 
-  v9 = [a4 constantValue];
-  if (![@"FIRST" caseInsensitiveCompare:v9])
+  constantValue = [index constantValue];
+  if (![@"FIRST" caseInsensitiveCompare:constantValue])
   {
-    if ([a3 count])
+    if ([from count])
     {
-      v7 = a3;
-      v6 = 0;
+      fromCopy4 = from;
+      integerValue = 0;
       goto LABEL_5;
     }
 
     return 0;
   }
 
-  if (![@"LAST" caseInsensitiveCompare:v9])
+  if (![@"LAST" caseInsensitiveCompare:constantValue])
   {
 
-    return [a3 lastObject];
+    return [from lastObject];
   }
 
 LABEL_18:
-  v10 = v9;
+  v10 = constantValue;
 LABEL_19:
   if ([@"SIZE" caseInsensitiveCompare:v10])
   {
-    v11 = [NSString stringWithFormat:@"The index %@ is NOT appropriate for a collection of type: %@", a4, objc_opt_class()];
+    index = [NSString stringWithFormat:@"The index %@ is NOT appropriate for a collection of type: %@", index, objc_opt_class()];
     goto LABEL_33;
   }
 
-  v14 = [a3 count];
+  v14 = [from count];
 
   return [NSNumber numberWithLong:v14];
 }
 
-+ (id)distanceToLocation:(id)a3 fromLocation:(id)a4
++ (id)distanceToLocation:(id)location fromLocation:(id)fromLocation
 {
   if (!objc_lookUpClass("CLLocation"))
   {
@@ -2323,101 +2323,101 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  [a3 distanceFromLocation:a4];
+  [location distanceFromLocation:fromLocation];
 
   return [NSNumber numberWithDouble:?];
 }
 
-+ (id)canonical:(id)a3
++ (id)canonical:(id)canonical
 {
   if ((_NSIsNSString() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can't canonicalize non-strings" userInfo:0]);
   }
 
-  v4 = [_NSPredicateOperatorUtilities newStringFrom:a3 usingUnicodeTransforms:387];
+  v4 = [_NSPredicateOperatorUtilities newStringFrom:canonical usingUnicodeTransforms:387];
 
   return v4;
 }
 
-+ (id)bitwiseAnd:(id)a3 with:(id)a4
++ (id)bitwiseAnd:(id)and with:(id)with
 {
   if (!_NSIsNSNumber() || (_NSIsNSNumber() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can't do bit operators on non-numbers" userInfo:0]);
   }
 
-  v6 = [a3 integerValue];
-  v7 = [a4 integerValue] & v6;
+  integerValue = [and integerValue];
+  v7 = [with integerValue] & integerValue;
 
   return [NSNumber numberWithInteger:v7];
 }
 
-+ (id)bitwiseOr:(id)a3 with:(id)a4
++ (id)bitwiseOr:(id)or with:(id)with
 {
   if (!_NSIsNSNumber() || (_NSIsNSNumber() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can't do bit operators on non-numbers" userInfo:0]);
   }
 
-  v6 = [a3 integerValue];
-  v7 = [a4 integerValue] | v6;
+  integerValue = [or integerValue];
+  v7 = [with integerValue] | integerValue;
 
   return [NSNumber numberWithInteger:v7];
 }
 
-+ (id)bitwiseXor:(id)a3 with:(id)a4
++ (id)bitwiseXor:(id)xor with:(id)with
 {
   if (!_NSIsNSNumber() || (_NSIsNSNumber() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can't do bit operators on non-numbers" userInfo:0]);
   }
 
-  v6 = [a3 integerValue];
-  v7 = [a4 integerValue] ^ v6;
+  integerValue = [xor integerValue];
+  v7 = [with integerValue] ^ integerValue;
 
   return [NSNumber numberWithInteger:v7];
 }
 
-+ (id)leftshift:(id)a3 by:(id)a4
++ (id)leftshift:(id)leftshift by:(id)by
 {
   if (!_NSIsNSNumber() || (_NSIsNSNumber() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can't do bit operators on non-numbers" userInfo:0]);
   }
 
-  v6 = [a3 integerValue];
-  v7 = v6 << [a4 integerValue];
+  integerValue = [leftshift integerValue];
+  v7 = integerValue << [by integerValue];
 
   return [NSNumber numberWithInteger:v7];
 }
 
-+ (id)rightshift:(id)a3 by:(id)a4
++ (id)rightshift:(id)rightshift by:(id)by
 {
   if (!_NSIsNSNumber() || (_NSIsNSNumber() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can't do bit operators on non-numbers" userInfo:0]);
   }
 
-  v6 = [a3 integerValue];
-  v7 = v6 >> [a4 integerValue];
+  integerValue = [rightshift integerValue];
+  v7 = integerValue >> [by integerValue];
 
   return [NSNumber numberWithInteger:v7];
 }
 
-+ (id)onesComplement:(id)a3
++ (id)onesComplement:(id)complement
 {
   if ((_NSIsNSNumber() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can't do bit operators on non-numbers" userInfo:0]);
   }
 
-  v4 = ~[a3 integerValue];
+  v4 = ~[complement integerValue];
 
   return [NSNumber numberWithInteger:v4];
 }
 
-+ (id)groupConcat:(id)a3 separator:(id)a4
++ (id)groupConcat:(id)concat separator:(id)separator
 {
   if ((_NSIsNSArray() & 1) == 0)
   {
@@ -2436,10 +2436,10 @@ LABEL_8:
     objc_exception_throw([v7 exceptionWithName:v8 reason:v9 userInfo:0]);
   }
 
-  return [a3 componentsJoinedByString:a4];
+  return [concat componentsJoinedByString:separator];
 }
 
-+ (BOOL)_isReservedWordInParser:(id)a3
++ (BOOL)_isReservedWordInParser:(id)parser
 {
   if ((_qfqp2_InitializedGlobals & 1) == 0)
   {
@@ -2447,12 +2447,12 @@ LABEL_8:
   }
 
   v4 = _qfqp2_ReservedWords;
-  v5 = [a3 uppercaseString];
+  uppercaseString = [parser uppercaseString];
 
-  return [v4 containsObject:v5];
+  return [v4 containsObject:uppercaseString];
 }
 
-+ (NSString)_parserableStringDescription:(uint64_t)a1
++ (NSString)_parserableStringDescription:(uint64_t)description
 {
   objc_opt_self();
   v3 = [(NSString *)NSMutableString stringWithString:a2];
@@ -2461,14 +2461,14 @@ LABEL_8:
   return [NSString stringWithFormat:@"%@", v3];
 }
 
-+ (NSString)_parserableDateDescription:(uint64_t)a1
++ (NSString)_parserableDateDescription:(uint64_t)description
 {
   objc_opt_self();
   [a2 timeIntervalSinceReferenceDate];
   return [NSString stringWithFormat:@"CAST(%f, NSDate)", v3];
 }
 
-+ (NSString)_parserableCollectionDescription:(uint64_t)a1
++ (NSString)_parserableCollectionDescription:(uint64_t)description
 {
   v18 = *MEMORY[0x1E69E9840];
   objc_opt_self();

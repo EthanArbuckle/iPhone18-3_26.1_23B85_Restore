@@ -1,6 +1,6 @@
 @interface MSMessageLayout
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MSMessageLayout
@@ -12,7 +12,7 @@
   return [(MSMessageLayout *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [MSMessageLayout alloc];
 

@@ -1,25 +1,25 @@
 @interface _UIViewServiceDeputyManager
-+ (id)exportedInterfaceSupportingDeputyInterfaces:(id)a3;
++ (id)exportedInterfaceSupportingDeputyInterfaces:(id)interfaces;
 + (void)initialize;
-- (Class)_deputyClassForConnectionSelector:(SEL)a3;
+- (Class)_deputyClassForConnectionSelector:(SEL)selector;
 - (_UIViewServiceDeputyManager)init;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)__requestConnectionToDeputyOfClass:(Class)a3 fromHostObject:(id)a4 replyHandler:(id)a5;
-- (void)_invalidateUnconditionallyThen:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)__requestConnectionToDeputyOfClass:(Class)class fromHostObject:(id)object replyHandler:(id)handler;
+- (void)_invalidateUnconditionallyThen:(id)then;
 - (void)_objc_initiateDealloc;
-- (void)checkDeputyForRotation:(id)a3;
+- (void)checkDeputyForRotation:(id)rotation;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)registerDeputyClass:(Class)a3 withConnectionHandler:(id)a4;
-- (void)unregisterDeputyClass:(Class)a3;
-- (void)viewControllerOperator:(id)a3 didCreateServiceViewControllerOfClass:(Class)a4;
+- (void)forwardInvocation:(id)invocation;
+- (void)registerDeputyClass:(Class)class withConnectionHandler:(id)handler;
+- (void)unregisterDeputyClass:(Class)class;
+- (void)viewControllerOperator:(id)operator didCreateServiceViewControllerOfClass:(Class)class;
 @end
 
 @implementation _UIViewServiceDeputyManager
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     _class_setCustomDeallocInitiation();
@@ -28,13 +28,13 @@
 
 - (void)_objc_initiateDealloc
 {
-  v3 = [(_UIAsyncInvocation *)self->_invalidationInvocation invoke];
+  invoke = [(_UIAsyncInvocation *)self->_invalidationInvocation invoke];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __52___UIViewServiceDeputyManager__objc_initiateDealloc__block_invoke;
   v4[3] = &__block_descriptor_40_e5_v8__0ls32l8;
   v4[4] = self;
-  [v3 whenCompleteDo:v4];
+  [invoke whenCompleteDo:v4];
 }
 
 - (_UIViewServiceDeputyManager)init
@@ -76,27 +76,27 @@
   [(_UIViewServiceDeputyManager *)&v3 dealloc];
 }
 
-- (void)_invalidateUnconditionallyThen:(id)a3
+- (void)_invalidateUnconditionallyThen:(id)then
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __62___UIViewServiceDeputyManager__invalidateUnconditionallyThen___block_invoke;
   v4[3] = &unk_1E7128A60;
-  v4[4] = a3;
+  v4[4] = then;
   v4[5] = self;
   dispatch_async(queue, v4);
 }
 
-+ (id)exportedInterfaceSupportingDeputyInterfaces:(id)a3
++ (id)exportedInterfaceSupportingDeputyInterfaces:(id)interfaces
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(interfaces, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v5 = [interfaces countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -107,13 +107,13 @@
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(interfaces);
         }
 
         [v4 addObject:{objc_msgSend(*(*(&v22 + 1) + 8 * i), "connectionProtocol")}];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [interfaces countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
@@ -125,7 +125,7 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [a3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v10 = [interfaces countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -136,24 +136,24 @@
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(interfaces);
         }
 
         v14 = *(*(&v18 + 1) + 8 * j);
-        v15 = [v14 hostObjectInterface];
-        if (v15)
+        hostObjectInterface = [v14 hostObjectInterface];
+        if (hostObjectInterface)
         {
-          [v9 setInterface:v15 forSelector:objc_msgSend(v14 argumentIndex:"connectionSelector") ofReply:{0, 0}];
+          [v9 setInterface:hostObjectInterface forSelector:objc_msgSend(v14 argumentIndex:"connectionSelector") ofReply:{0, 0}];
         }
 
-        v16 = [v14 exportedInterface];
-        if (v16)
+        exportedInterface = [v14 exportedInterface];
+        if (exportedInterface)
         {
-          [v9 setInterface:v16 forSelector:objc_msgSend(v14 argumentIndex:"connectionSelector") ofReply:{0, 1}];
+          [v9 setInterface:exportedInterface forSelector:objc_msgSend(v14 argumentIndex:"connectionSelector") ofReply:{0, 1}];
         }
       }
 
-      v11 = [a3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v11 = [interfaces countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v11);
@@ -162,7 +162,7 @@
   return v9;
 }
 
-- (Class)_deputyClassForConnectionSelector:(SEL)a3
+- (Class)_deputyClassForConnectionSelector:(SEL)selector
 {
   v17 = *MEMORY[0x1E69E9840];
   [(NSLock *)self->_connectionHandlersLock lock];
@@ -186,7 +186,7 @@ LABEL_3:
       }
 
       v10 = NSClassFromString(*(*(&v12 + 1) + 8 * v9));
-      if (sel_isEqual(a3, [-[objc_class XPCInterface](v10 "XPCInterface")]))
+      if (sel_isEqual(selector, [-[objc_class XPCInterface](v10 "XPCInterface")]))
       {
         break;
       }
@@ -214,9 +214,9 @@ LABEL_9:
   return v10;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  result = [(_UIViewServiceDeputyManager *)self _deputyClassForConnectionSelector:a3];
+  result = [(_UIViewServiceDeputyManager *)self _deputyClassForConnectionSelector:selector];
   if (result)
   {
     v4 = objc_opt_class();
@@ -227,7 +227,7 @@ LABEL_9:
   return result;
 }
 
-- (void)__requestConnectionToDeputyOfClass:(Class)a3 fromHostObject:(id)a4 replyHandler:(id)a5
+- (void)__requestConnectionToDeputyOfClass:(Class)class fromHostObject:(id)object replyHandler:(id)handler
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -235,41 +235,41 @@ LABEL_9:
   block[2] = __94___UIViewServiceDeputyManager___requestConnectionToDeputyOfClass_fromHostObject_replyHandler___block_invoke;
   block[3] = &unk_1E7128E88;
   block[4] = self;
-  block[5] = a3;
-  block[7] = a5;
+  block[5] = class;
+  block[7] = handler;
   block[8] = a2;
-  block[6] = a4;
+  block[6] = object;
   dispatch_async(queue, block);
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = -[_UIViewServiceDeputyManager _deputyClassForConnectionSelector:](self, "_deputyClassForConnectionSelector:", [a3 selector]);
+  v5 = -[_UIViewServiceDeputyManager _deputyClassForConnectionSelector:](self, "_deputyClassForConnectionSelector:", [invocation selector]);
   if (v5)
   {
     v6 = v5;
     v7 = 0;
     v8 = 0;
-    [a3 getArgument:&v8 atIndex:2];
-    [a3 getArgument:&v7 atIndex:3];
+    [invocation getArgument:&v8 atIndex:2];
+    [invocation getArgument:&v7 atIndex:3];
     [(_UIViewServiceDeputyManager *)self __requestConnectionToDeputyOfClass:v6 fromHostObject:v8 replyHandler:v7];
   }
 }
 
-- (void)registerDeputyClass:(Class)a3 withConnectionHandler:(id)a4
+- (void)registerDeputyClass:(Class)class withConnectionHandler:(id)handler
 {
-  v8 = NSStringFromClass(a3);
+  v8 = NSStringFromClass(class);
   [(NSLock *)self->_connectionHandlersLock lock];
   if ([(NSMutableDictionary *)self->_connectionHandlers objectForKey:v8])
   {
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(a2);
-    NSLog(&cfstr_Newdeputyclass.isa, v9, v10, a3);
+    NSLog(&cfstr_Newdeputyclass.isa, v9, v10, class);
   }
 
   else
   {
-    -[NSMutableDictionary setObject:forKey:](self->_connectionHandlers, "setObject:forKey:", [a4 copy], v8);
+    -[NSMutableDictionary setObject:forKey:](self->_connectionHandlers, "setObject:forKey:", [handler copy], v8);
     if (objc_opt_respondsToSelector())
     {
       v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableDictionary count](self->_connectionHandlers, "count")}];
@@ -287,10 +287,10 @@ LABEL_9:
   [(NSLock *)self->_connectionHandlersLock unlock];
 }
 
-- (void)unregisterDeputyClass:(Class)a3
+- (void)unregisterDeputyClass:(Class)class
 {
   [(NSLock *)self->_connectionHandlersLock lock];
-  v5 = NSStringFromClass(a3);
+  v5 = NSStringFromClass(class);
   v6 = [(NSMutableDictionary *)self->_connectionHandlers objectForKey:v5];
   [(NSMutableDictionary *)self->_connectionHandlers removeObjectForKey:v5];
   if (objc_opt_respondsToSelector())
@@ -309,10 +309,10 @@ LABEL_9:
   [(NSLock *)self->_connectionHandlersLock unlock];
 }
 
-- (void)checkDeputyForRotation:(id)a3
+- (void)checkDeputyForRotation:(id)rotation
 {
   v27 = *MEMORY[0x1E69E9840];
-  if ([a3 conformsToProtocol:&unk_1F00EBF40])
+  if ([rotation conformsToProtocol:&unk_1F00EBF40])
   {
     v23 = 0u;
     v24 = 0u;
@@ -336,7 +336,7 @@ LABEL_9:
           v10 = *(*(&v21 + 1) + 8 * i);
           if ([v10 conformsToProtocol:&unk_1F00E9F50])
           {
-            [a3 addDeputyRotationDelegate:v10];
+            [rotation addDeputyRotationDelegate:v10];
           }
         }
 
@@ -347,7 +347,7 @@ LABEL_9:
     }
   }
 
-  if ([a3 conformsToProtocol:&unk_1F00E9F50])
+  if ([rotation conformsToProtocol:&unk_1F00E9F50])
   {
     v19 = 0u;
     v20 = 0u;
@@ -371,7 +371,7 @@ LABEL_9:
           v16 = *(*(&v17 + 1) + 8 * j);
           if ([v16 conformsToProtocol:&unk_1F00EBF40])
           {
-            [v16 addDeputyRotationDelegate:a3];
+            [v16 addDeputyRotationDelegate:rotation];
           }
         }
 
@@ -383,16 +383,16 @@ LABEL_9:
   }
 }
 
-- (void)viewControllerOperator:(id)a3 didCreateServiceViewControllerOfClass:(Class)a4
+- (void)viewControllerOperator:(id)operator didCreateServiceViewControllerOfClass:(Class)class
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __92___UIViewServiceDeputyManager_viewControllerOperator_didCreateServiceViewControllerOfClass___block_invoke;
   v4[3] = &unk_1E7128F28;
   v4[4] = self;
-  v4[5] = a4;
-  v4[6] = a3;
-  [(_UIViewServiceDeputyManager *)self registerDeputyClass:a4 withConnectionHandler:v4];
+  v4[5] = class;
+  v4[6] = operator;
+  [(_UIViewServiceDeputyManager *)self registerDeputyClass:class withConnectionHandler:v4];
 }
 
 @end

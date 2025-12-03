@@ -6,10 +6,10 @@
 
 - (id)scrollView
 {
-  v2 = [(PadWeekViewScrollTest *)self controller];
-  v3 = [v2 verticalScrollView];
+  controller = [(PadWeekViewScrollTest *)self controller];
+  verticalScrollView = [controller verticalScrollView];
 
-  return v3;
+  return verticalScrollView;
 }
 
 @end

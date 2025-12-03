@@ -1,14 +1,14 @@
 @interface STCommunicationSafetyAnalyticsTipContentInterface
-+ (id)makeCommunicationSafetyAnalyticsTipViewControllerWithActionBlock:(id)a3 dismissTipBlock:(id)a4;
++ (id)makeCommunicationSafetyAnalyticsTipViewControllerWithActionBlock:(id)block dismissTipBlock:(id)tipBlock;
 - (_TtC16ScreenTimeUICore49STCommunicationSafetyAnalyticsTipContentInterface)init;
 @end
 
 @implementation STCommunicationSafetyAnalyticsTipContentInterface
 
-+ (id)makeCommunicationSafetyAnalyticsTipViewControllerWithActionBlock:(id)a3 dismissTipBlock:(id)a4
++ (id)makeCommunicationSafetyAnalyticsTipViewControllerWithActionBlock:(id)block dismissTipBlock:(id)tipBlock
 {
-  v5 = _Block_copy(a3);
-  v6 = _Block_copy(a4);
+  v5 = _Block_copy(block);
+  v6 = _Block_copy(tipBlock);
   v7 = swift_allocObject();
   *(v7 + 16) = v5;
   v8 = swift_allocObject();

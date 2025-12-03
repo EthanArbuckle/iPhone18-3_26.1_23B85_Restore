@@ -1,6 +1,6 @@
 @interface PLDuplicateDetectorLivePhotoContextData
-+ (id)dataWithSubtype:(signed __int16)a3 isSharedLibrary:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)dataWithSubtype:(signed __int16)subtype isSharedLibrary:(BOOL)library;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -12,27 +12,27 @@
   v9.receiver = self;
   v9.super_class = PLDuplicateDetectorLivePhotoContextData;
   v3 = [(PLDuplicateDetectorLivePhotoContextData *)&v9 description];
-  v4 = [(PLDuplicateDetectorLivePhotoContextData *)self subtype];
-  v5 = [(PLDuplicateDetectorLivePhotoContextData *)self isSharedLibrary];
+  subtype = [(PLDuplicateDetectorLivePhotoContextData *)self subtype];
+  isSharedLibrary = [(PLDuplicateDetectorLivePhotoContextData *)self isSharedLibrary];
   v6 = @"NO";
-  if (v5)
+  if (isSharedLibrary)
   {
     v6 = @"YES";
   }
 
-  v7 = [v3 stringByAppendingFormat:@" subType: %d, isSharedLibrary: %@", v4, v6];
+  v7 = [v3 stringByAppendingFormat:@" subType: %d, isSharedLibrary: %@", subtype, v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PLDuplicateDetectorLivePhotoContextData *)self subtype];
-  if (v5 == [v4 subtype])
+  equalCopy = equal;
+  subtype = [(PLDuplicateDetectorLivePhotoContextData *)self subtype];
+  if (subtype == [equalCopy subtype])
   {
-    v6 = [(PLDuplicateDetectorLivePhotoContextData *)self isSharedLibrary];
-    v7 = v6 ^ [v4 isSharedLibrary] ^ 1;
+    isSharedLibrary = [(PLDuplicateDetectorLivePhotoContextData *)self isSharedLibrary];
+    v7 = isSharedLibrary ^ [equalCopy isSharedLibrary] ^ 1;
   }
 
   else
@@ -64,13 +64,13 @@
   return v8 + v4;
 }
 
-+ (id)dataWithSubtype:(signed __int16)a3 isSharedLibrary:(BOOL)a4
++ (id)dataWithSubtype:(signed __int16)subtype isSharedLibrary:(BOOL)library
 {
-  v4 = a4;
-  v5 = a3;
+  libraryCopy = library;
+  subtypeCopy = subtype;
   v6 = objc_alloc_init(PLDuplicateDetectorLivePhotoContextData);
-  [(PLDuplicateDetectorLivePhotoContextData *)v6 setSubtype:v5];
-  [(PLDuplicateDetectorLivePhotoContextData *)v6 setIsSharedLibrary:v4];
+  [(PLDuplicateDetectorLivePhotoContextData *)v6 setSubtype:subtypeCopy];
+  [(PLDuplicateDetectorLivePhotoContextData *)v6 setIsSharedLibrary:libraryCopy];
 
   return v6;
 }

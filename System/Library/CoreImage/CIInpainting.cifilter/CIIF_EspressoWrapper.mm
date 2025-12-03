@@ -1,14 +1,14 @@
 @interface CIIF_EspressoWrapper
 + (id)cache;
-+ (id)cachedEspressoWrapper:(id)a3;
++ (id)cachedEspressoWrapper:(id)wrapper;
 + (void)clearCache;
 - (BOOL)buildWait;
-- (BOOL)hasBlob:(const char *)a3;
+- (BOOL)hasBlob:(const char *)blob;
 - (BOOL)loadWait;
-- (CIIF_EspressoWrapper)initWithPath:(id)a3;
-- (int)bind:(const char *)a3 buffer:(__CVBuffer *)a4;
+- (CIIF_EspressoWrapper)initWithPath:(id)path;
+- (int)bind:(const char *)bind buffer:(__CVBuffer *)buffer;
 - (int)execute;
-- (int)executeAsync:(id)a3;
+- (int)executeAsync:(id)async;
 - (void)buildAsync;
 - (void)dealloc;
 - (void)loadAsync;
@@ -28,15 +28,15 @@
   return v3;
 }
 
-- (CIIF_EspressoWrapper)initWithPath:(id)a3
+- (CIIF_EspressoWrapper)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = CIIF_EspressoWrapper;
   v5 = [(CIIF_EspressoWrapper *)&v11 init];
   path = v5->_path;
-  v5->_path = v4;
-  v7 = v4;
+  v5->_path = pathCopy;
+  v7 = pathCopy;
 
   v8 = dispatch_queue_create("CIIF_EspressoWrapper", 0);
   queue = v5->_queue;
@@ -45,23 +45,23 @@
   return v5;
 }
 
-+ (id)cachedEspressoWrapper:(id)a3
++ (id)cachedEspressoWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = [a1 cache];
-  v6 = [v5 objectForKey:v4];
+  wrapperCopy = wrapper;
+  cache = [self cache];
+  v6 = [cache objectForKey:wrapperCopy];
 
   if (!v6)
   {
-    v7 = [[a1 alloc] initWithPath:v4];
+    v7 = [[self alloc] initWithPath:wrapperCopy];
     if (!v7)
     {
       sub_B8C4();
     }
 
     v6 = v7;
-    v8 = [a1 cache];
-    [v8 setObject:v6 forKey:v4];
+    cache2 = [self cache];
+    [cache2 setObject:v6 forKey:wrapperCopy];
   }
 
   return v6;
@@ -69,8 +69,8 @@
 
 + (void)clearCache
 {
-  v2 = [a1 cache];
-  [v2 removeAllObjects];
+  cache = [self cache];
+  [cache removeAllObjects];
 }
 
 - (void)dealloc
@@ -173,15 +173,15 @@
   return 1;
 }
 
-- (int)bind:(const char *)a3 buffer:(__CVBuffer *)a4
+- (int)bind:(const char *)bind buffer:(__CVBuffer *)buffer
 {
   if (![(CIIF_EspressoWrapper *)self buildWait])
   {
     return -1;
   }
 
-  v7 = [(CIIF_EspressoWrapper *)self plan];
-  v8 = [(CIIF_EspressoWrapper *)self planIdx];
+  plan = [(CIIF_EspressoWrapper *)self plan];
+  planIdx = [(CIIF_EspressoWrapper *)self planIdx];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -201,16 +201,16 @@
     sub_BBC0();
   }
 
-  return v9(v7, v8, a3, a4);
+  return v9(plan, planIdx, bind, buffer);
 }
 
-- (BOOL)hasBlob:(const char *)a3
+- (BOOL)hasBlob:(const char *)blob
 {
-  v5 = [(CIIF_EspressoWrapper *)self loadWait];
-  if (v5)
+  loadWait = [(CIIF_EspressoWrapper *)self loadWait];
+  if (loadWait)
   {
-    v6 = [(CIIF_EspressoWrapper *)self plan];
-    v7 = [(CIIF_EspressoWrapper *)self planIdx];
+    plan = [(CIIF_EspressoWrapper *)self plan];
+    planIdx = [(CIIF_EspressoWrapper *)self planIdx];
     v11[0] = 0;
     memset(v17, 0, sizeof(v17));
     v13 = 0;
@@ -237,10 +237,10 @@
       sub_BC38();
     }
 
-    LOBYTE(v5) = (v8)(v6, v7, a3, v11, v17) == 0;
+    LOBYTE(loadWait) = (v8)(plan, planIdx, blob, v11, v17) == 0;
   }
 
-  return v5;
+  return loadWait;
 }
 
 - (int)execute
@@ -250,7 +250,7 @@
     return -1;
   }
 
-  v3 = [(CIIF_EspressoWrapper *)self plan];
+  plan = [(CIIF_EspressoWrapper *)self plan];
   [(CIIF_EspressoWrapper *)self planIdx];
   v7 = 0;
   v8 = &v7;
@@ -271,22 +271,22 @@
     sub_BCB0();
   }
 
-  return v4(v3);
+  return v4(plan);
 }
 
-- (int)executeAsync:(id)a3
+- (int)executeAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   if ([(CIIF_EspressoWrapper *)self buildWait])
   {
-    v5 = [(CIIF_EspressoWrapper *)self plan];
+    plan = [(CIIF_EspressoWrapper *)self plan];
     [(CIIF_EspressoWrapper *)self planIdx];
     v6 = dispatch_queue_create(0, 0);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_B134;
     v14[3] = &unk_14610;
-    v15 = v4;
+    v15 = asyncCopy;
     v7 = v6;
     v8 = v14;
     v21 = 0;
@@ -314,7 +314,7 @@
       sub_BD28();
     }
 
-    v12 = v9(v5, v7, v8);
+    v12 = v9(plan, v7, v8);
   }
 
   else

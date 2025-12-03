@@ -1,10 +1,10 @@
 @interface MIBUSerializer
-- (BOOL)_serializeError:(id)a3 withErrorCodeTag:(id)a4 errorDomainTag:(id)a5 errorDescriptionTag:(id)a6 underlyingErrorTag:(id)a7;
-- (BOOL)serialize:(id)a3 withValue:(id)a4;
+- (BOOL)_serializeError:(id)error withErrorCodeTag:(id)tag errorDomainTag:(id)domainTag errorDescriptionTag:(id)descriptionTag underlyingErrorTag:(id)errorTag;
+- (BOOL)serialize:(id)serialize withValue:(id)value;
 - (MIBUSerializer)init;
-- (id)_getInnermostNSError:(id)a3;
-- (id)_serializeValue:(id)a3 forTag:(id)a4;
-- (id)_toJsonData:(id)a3;
+- (id)_getInnermostNSError:(id)error;
+- (id)_serializeValue:(id)value forTag:(id)tag;
+- (id)_toJsonData:(id)data;
 @end
 
 @implementation MIBUSerializer
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (BOOL)serialize:(id)a3 withValue:(id)a4
+- (BOOL)serialize:(id)serialize withValue:(id)value
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serializeCopy = serialize;
+  valueCopy = value;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -39,10 +39,10 @@
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy_;
   v24[4] = __Block_byref_object_dispose_;
-  v8 = v7;
+  v8 = valueCopy;
   v25 = v8;
   objc_initWeak(&location, self);
-  v9 = [v6 count];
+  v9 = [serializeCopy count];
   v10 = v9 == [v8 count];
   if (v10)
   {
@@ -53,7 +53,7 @@
     objc_copyWeak(&v22, &location);
     v20 = v24;
     v21 = &v26;
-    [v6 enumerateObjectsUsingBlock:&v16];
+    [serializeCopy enumerateObjectsUsingBlock:&v16];
     objc_destroyWeak(&v22);
     v11 = v27[5];
     if (!v11 || ![v11 length])
@@ -62,17 +62,17 @@
       goto LABEL_7;
     }
 
-    v12 = [(MIBUSerializer *)self data];
-    [v12 appendData:v27[5]];
+    data = [(MIBUSerializer *)self data];
+    [data appendData:v27[5]];
   }
 
   else
   {
     v15 = [MIBUSerializer serialize:buf withValue:?];
-    v12 = *buf;
+    data = *buf;
     if (v15)
     {
-      -[MIBUSerializer serialize:withValue:].cold.2(buf, [v8 count], objc_msgSend(v6, "count"), *buf);
+      -[MIBUSerializer serialize:withValue:].cold.2(buf, [v8 count], objc_msgSend(serializeCopy, "count"), *buf);
     }
   }
 
@@ -285,14 +285,14 @@ void __41__MIBUSerializer__serializeValue_forTag___block_invoke_46()
   }
 }
 
-- (id)_getInnermostNSError:(id)a3
+- (id)_getInnermostNSError:(id)error
 {
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v4 = v3;
-    v5 = [v3 userInfo];
-    v6 = [v5 objectForKey:@"NSUnderlyingError"];
+    v4 = errorCopy;
+    userInfo = [errorCopy userInfo];
+    v6 = [userInfo objectForKey:@"NSUnderlyingError"];
 
     if (v6)
     {
@@ -300,8 +300,8 @@ void __41__MIBUSerializer__serializeValue_forTag___block_invoke_46()
       {
         v7 = v6;
 
-        v8 = [v7 userInfo];
-        v6 = [v8 objectForKey:@"NSUnderlyingError"];
+        userInfo2 = [v7 userInfo];
+        v6 = [userInfo2 objectForKey:@"NSUnderlyingError"];
 
         v4 = v7;
       }
@@ -323,13 +323,13 @@ void __41__MIBUSerializer__serializeValue_forTag___block_invoke_46()
   return v7;
 }
 
-- (id)_toJsonData:(id)a3
+- (id)_toJsonData:(id)data
 {
-  v3 = a3;
-  if (v3 && [MEMORY[0x277CCAAA0] isValidJSONObject:v3])
+  dataCopy = data;
+  if (dataCopy && [MEMORY[0x277CCAAA0] isValidJSONObject:dataCopy])
   {
     v15 = 0;
-    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v3 options:0 error:&v15];
+    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dataCopy options:0 error:&v15];
     v5 = v15;
     if (v4)
     {
@@ -376,32 +376,32 @@ void __30__MIBUSerializer__toJsonData___block_invoke()
   }
 }
 
-- (BOOL)_serializeError:(id)a3 withErrorCodeTag:(id)a4 errorDomainTag:(id)a5 errorDescriptionTag:(id)a6 underlyingErrorTag:(id)a7
+- (BOOL)_serializeError:(id)error withErrorCodeTag:(id)tag errorDomainTag:(id)domainTag errorDescriptionTag:(id)descriptionTag underlyingErrorTag:(id)errorTag
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v62 = a7;
+  errorCopy = error;
+  tagCopy = tag;
+  domainTagCopy = domainTag;
+  descriptionTagCopy = descriptionTag;
+  errorTagCopy = errorTag;
   v16 = objc_autoreleasePoolPush();
-  v17 = [(MIBUSerializer *)self data];
-  v18 = [v17 copy];
+  data = [(MIBUSerializer *)self data];
+  v18 = [data copy];
 
-  v19 = [v12 description];
+  v19 = [errorCopy description];
   v20 = &stru_286AC3C40;
   v61 = v16;
   if (v19)
   {
-    v20 = [v12 description];
+    v20 = [errorCopy description];
   }
 
-  v64 = v15;
-  v65 = v13;
-  v63 = v14;
-  if (!v12)
+  v64 = descriptionTagCopy;
+  v65 = tagCopy;
+  v63 = domainTagCopy;
+  if (!errorCopy)
   {
-    v73[0] = v13;
+    v73[0] = tagCopy;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:{1, v20}];
     v38 = [(MIBUSerializer *)self serialize:v37 withValue:&unk_286AC8400];
 
@@ -416,11 +416,11 @@ LABEL_13:
       [MIBUSerializer _serializeError:withErrorCodeTag:errorDomainTag:errorDescriptionTag:underlyingErrorTag:];
     }
 
-    v14 = v63;
+    domainTagCopy = v63;
     v39 = MIBUConnObj;
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_ERROR))
     {
-      [(MIBUSerializer *)v12 _serializeError:v39 withErrorCodeTag:v40 errorDomainTag:v41 errorDescriptionTag:v42 underlyingErrorTag:v43, v44, v45];
+      [(MIBUSerializer *)errorCopy _serializeError:v39 withErrorCodeTag:v40 errorDomainTag:v41 errorDescriptionTag:v42 underlyingErrorTag:v43, v44, v45];
     }
 
     v29 = 0;
@@ -428,9 +428,9 @@ LABEL_13:
     goto LABEL_32;
   }
 
-  v21 = [v12 domain];
+  domain = [errorCopy domain];
 
-  if (!v21)
+  if (!domain)
   {
     [MIBUSerializer _serializeError:v18 withErrorCodeTag:&v66 errorDomainTag:&v67 errorDescriptionTag:&v68 underlyingErrorTag:?];
     v29 = v66;
@@ -443,14 +443,14 @@ LABEL_32:
     goto LABEL_30;
   }
 
-  v72[0] = v13;
-  v72[1] = v14;
-  v72[2] = v15;
+  v72[0] = tagCopy;
+  v72[1] = domainTagCopy;
+  v72[2] = descriptionTagCopy;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:3];
-  v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v12, "code")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   v71[0] = v23;
-  v24 = [v12 domain];
-  v71[1] = v24;
+  domain2 = [errorCopy domain];
+  v71[1] = domain2;
   v71[2] = v20;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:3];
   v26 = [(MIBUSerializer *)self serialize:v22 withValue:v25];
@@ -461,10 +461,10 @@ LABEL_32:
   }
 
 LABEL_6:
-  v27 = [(MIBUSerializer *)self data];
-  v28 = [v27 copy];
+  data2 = [(MIBUSerializer *)self data];
+  v28 = [data2 copy];
 
-  v29 = [(MIBUSerializer *)self _getInnermostNSError:v12];
+  v29 = [(MIBUSerializer *)self _getInnermostNSError:errorCopy];
   if (!v29)
   {
     v46 = 0;
@@ -473,12 +473,12 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v30 = [MEMORY[0x277CBEB38] dictionary];
-  v31 = [v29 domain];
-  v32 = v31;
-  if (v31)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  domain3 = [v29 domain];
+  v32 = domain3;
+  if (domain3)
   {
-    v33 = v31;
+    v33 = domain3;
   }
 
   else
@@ -486,31 +486,31 @@ LABEL_28:
     v33 = &stru_286AC3C40;
   }
 
-  [v30 setObject:v33 forKeyedSubscript:v63];
+  [dictionary setObject:v33 forKeyedSubscript:v63];
 
   v34 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v29, "code")}];
-  [v30 setObject:v34 forKeyedSubscript:v65];
+  [dictionary setObject:v34 forKeyedSubscript:v65];
 
   v35 = [v29 description];
   if (v35)
   {
     v36 = [v29 description];
-    [v30 setObject:v36 forKeyedSubscript:v64];
+    [dictionary setObject:v36 forKeyedSubscript:v64];
   }
 
   else
   {
-    [v30 setObject:&stru_286AC3C40 forKeyedSubscript:v64];
+    [dictionary setObject:&stru_286AC3C40 forKeyedSubscript:v64];
   }
 
-  v46 = [(MIBUSerializer *)self _toJsonData:v30];
+  v46 = [(MIBUSerializer *)self _toJsonData:dictionary];
   if (!v46)
   {
 
     goto LABEL_28;
   }
 
-  v70 = v62;
+  v70 = errorTagCopy;
   v47 = 1;
   v48 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
   v69 = v46;
@@ -519,7 +519,7 @@ LABEL_28:
 
   if (!v50)
   {
-    v14 = v63;
+    domainTagCopy = v63;
     if (MIBUOnceToken != -1)
     {
       [MIBUSerializer _serializeError:withErrorCodeTag:errorDomainTag:errorDescriptionTag:underlyingErrorTag:];
@@ -537,7 +537,7 @@ LABEL_28:
   }
 
 LABEL_29:
-  v14 = v63;
+  domainTagCopy = v63;
   v16 = v61;
 LABEL_30:
 
@@ -594,17 +594,17 @@ void __105__MIBUSerializer__serializeError_withErrorCodeTag_errorDomainTag_error
   }
 }
 
-- (id)_serializeValue:(id)a3 forTag:(id)a4
+- (id)_serializeValue:(id)value forTag:(id)tag
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  tagCopy = tag;
   v31[4] = 0;
-  *v31 = [v6 charValue];
-  v7 = [MIBUSerializationUtil typeForTag:v6];
+  *v31 = [tagCopy charValue];
+  v7 = [MIBUSerializationUtil typeForTag:tagCopy];
   if (v7)
   {
-    v8 = [MIBUSerializationUtil maxLengthForTag:v6];
+    v8 = [MIBUSerializationUtil maxLengthForTag:tagCopy];
     if (v8)
     {
       switch([v7 unsignedIntValue])
@@ -615,8 +615,8 @@ void __105__MIBUSerializer__serializeError_withErrorCodeTag_errorDomainTag_error
           objc_opt_class();
           if (OUTLINED_FUNCTION_6_2())
           {
-            v9 = v5;
-            v10 = [v9 longLongValue];
+            v9 = valueCopy;
+            longLongValue = [v9 longLongValue];
             goto LABEL_16;
           }
 
@@ -636,7 +636,7 @@ void __105__MIBUSerializer__serializeError_withErrorCodeTag_errorDomainTag_error
           objc_opt_class();
           if (OUTLINED_FUNCTION_6_2())
           {
-            v9 = v5;
+            v9 = valueCopy;
             [v9 doubleValue];
             v30 = v11;
             goto LABEL_17;
@@ -658,7 +658,7 @@ void __105__MIBUSerializer__serializeError_withErrorCodeTag_errorDomainTag_error
           objc_opt_class();
           if (OUTLINED_FUNCTION_6_2())
           {
-            v15 = [v5 dataUsingEncoding:4];
+            v15 = [valueCopy dataUsingEncoding:4];
             goto LABEL_20;
           }
 
@@ -678,7 +678,7 @@ void __105__MIBUSerializer__serializeError_withErrorCodeTag_errorDomainTag_error
           objc_opt_class();
           if (OUTLINED_FUNCTION_6_2())
           {
-            v15 = v5;
+            v15 = valueCopy;
 LABEL_20:
             v13 = v15;
             goto LABEL_21;
@@ -700,10 +700,10 @@ LABEL_20:
           objc_opt_class();
           if (OUTLINED_FUNCTION_6_2())
           {
-            v9 = v5;
-            v10 = [v9 unsignedLongLongValue];
+            v9 = valueCopy;
+            longLongValue = [v9 unsignedLongLongValue];
 LABEL_16:
-            v30 = v10;
+            v30 = longLongValue;
 LABEL_17:
             v13 = [MEMORY[0x277CBEA90] dataWithBytes:&v30 length:{objc_msgSend(v8, "unsignedIntValue", v30)}];
 
@@ -720,17 +720,17 @@ LABEL_21:
               if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_ERROR))
               {
                 v21 = v16;
-                v22 = [v6 charValue];
+                charValue = [tagCopy charValue];
                 v23 = [v13 length];
-                v24 = [v8 unsignedIntValue];
+                unsignedIntValue = [v8 unsignedIntValue];
                 *buf = 67109890;
-                v33 = v22;
+                unsignedIntValue2 = charValue;
                 v34 = 2114;
                 v35 = v13;
                 v36 = 2048;
                 v37 = v23;
                 v38 = 1024;
-                v39 = v24;
+                v39 = unsignedIntValue;
                 _os_log_error_impl(&dword_259ABF000, v21, OS_LOG_TYPE_ERROR, "Truncating tag 0x%X - %{public}@ with data length %ld to %d", buf, 0x22u);
               }
 
@@ -781,7 +781,7 @@ LABEL_32:
 
           v25 = v12;
           *buf = 67109120;
-          v33 = [v7 unsignedIntValue];
+          unsignedIntValue2 = [v7 unsignedIntValue];
           _os_log_error_impl(&dword_259ABF000, v25, OS_LOG_TYPE_ERROR, "Unrecognized serialization data type: 0x%X", buf, 8u);
           goto LABEL_32;
       }

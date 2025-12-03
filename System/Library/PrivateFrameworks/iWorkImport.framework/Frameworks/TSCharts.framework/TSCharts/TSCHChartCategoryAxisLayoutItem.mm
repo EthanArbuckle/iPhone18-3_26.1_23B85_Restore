@@ -2,7 +2,7 @@
 - (CGRect)protected_layoutSpaceRectForAllLabels;
 - (id)protected_layoutSpaceHalosForAllLabels;
 - (id)protected_layoutSpaceKnobsForAllLabels;
-- (id)renderersWithRep:(id)a3;
+- (id)renderersWithRep:(id)rep;
 - (void)buildSubTree;
 - (void)p_layoutLabelsNow;
 @end
@@ -324,12 +324,12 @@ LABEL_18:
   objc_msgSend_setLayoutSize_(v109, v107, v105, v106, v108);
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v5 = objc_opt_new();
   v6 = [TSCHChartCategoryAxisRenderer alloc];
-  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, v4, self);
+  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, repCopy, self);
 
   objc_msgSend_addObject_(v5, v12, v13, v14, v15, v11);
 

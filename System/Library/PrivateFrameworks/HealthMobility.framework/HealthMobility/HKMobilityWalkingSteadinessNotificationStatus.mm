@@ -1,14 +1,14 @@
 @interface HKMobilityWalkingSteadinessNotificationStatus
-- (BOOL)isEqual:(id)a3;
-- (HKMobilityWalkingSteadinessNotificationStatus)initWithCoder:(id)a3;
-- (HKMobilityWalkingSteadinessNotificationStatus)initWithState:(int64_t)a3 unavailableReasons:(int64_t)a4 fitnessTrackingEnabled:(BOOL)a5 healthNotificationsDisabled:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (HKMobilityWalkingSteadinessNotificationStatus)initWithCoder:(id)coder;
+- (HKMobilityWalkingSteadinessNotificationStatus)initWithState:(int64_t)state unavailableReasons:(int64_t)reasons fitnessTrackingEnabled:(BOOL)enabled healthNotificationsDisabled:(BOOL)disabled;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMobilityWalkingSteadinessNotificationStatus
 
-- (HKMobilityWalkingSteadinessNotificationStatus)initWithState:(int64_t)a3 unavailableReasons:(int64_t)a4 fitnessTrackingEnabled:(BOOL)a5 healthNotificationsDisabled:(BOOL)a6
+- (HKMobilityWalkingSteadinessNotificationStatus)initWithState:(int64_t)state unavailableReasons:(int64_t)reasons fitnessTrackingEnabled:(BOOL)enabled healthNotificationsDisabled:(BOOL)disabled
 {
   v14.receiver = self;
   v14.super_class = HKMobilityWalkingSteadinessNotificationStatus;
@@ -16,20 +16,20 @@
   v11 = v10;
   if (v10)
   {
-    v10->_state = a3;
-    v10->_notificationUnavailableReasons = a4;
-    v10->_fitnessTrackingEnabled = a5;
-    v10->_healthNotificationsDisabled = a6;
+    v10->_state = state;
+    v10->_notificationUnavailableReasons = reasons;
+    v10->_fitnessTrackingEnabled = enabled;
+    v10->_healthNotificationsDisabled = disabled;
     v12 = v10;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -39,7 +39,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_state == v5->_state && self->_notificationUnavailableReasons == v5->_notificationUnavailableReasons && self->_fitnessTrackingEnabled == v5->_fitnessTrackingEnabled && self->_healthNotificationsDisabled == v5->_healthNotificationsDisabled;
     }
 
@@ -63,28 +63,28 @@
   return v5 ^ v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
-  v5 = a3;
-  [v5 encodeInteger:state forKey:@"State"];
-  [v5 encodeInteger:self->_notificationUnavailableReasons forKey:@"NotificationUnavailableReasons"];
-  [v5 encodeBool:self->_fitnessTrackingEnabled forKey:@"FitnessTrackingEnabled"];
-  [v5 encodeBool:self->_healthNotificationsDisabled forKey:@"HealthNotificationsDisabled"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:state forKey:@"State"];
+  [coderCopy encodeInteger:self->_notificationUnavailableReasons forKey:@"NotificationUnavailableReasons"];
+  [coderCopy encodeBool:self->_fitnessTrackingEnabled forKey:@"FitnessTrackingEnabled"];
+  [coderCopy encodeBool:self->_healthNotificationsDisabled forKey:@"HealthNotificationsDisabled"];
 }
 
-- (HKMobilityWalkingSteadinessNotificationStatus)initWithCoder:(id)a3
+- (HKMobilityWalkingSteadinessNotificationStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKMobilityWalkingSteadinessNotificationStatus;
   v5 = [(HKMobilityWalkingSteadinessNotificationStatus *)&v7 init];
   if (v5)
   {
-    v5->_state = [v4 decodeIntegerForKey:@"State"];
-    v5->_notificationUnavailableReasons = [v4 decodeIntegerForKey:@"NotificationUnavailableReasons"];
-    v5->_fitnessTrackingEnabled = [v4 decodeBoolForKey:@"FitnessTrackingEnabled"];
-    v5->_healthNotificationsDisabled = [v4 decodeBoolForKey:@"HealthNotificationsDisabled"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"State"];
+    v5->_notificationUnavailableReasons = [coderCopy decodeIntegerForKey:@"NotificationUnavailableReasons"];
+    v5->_fitnessTrackingEnabled = [coderCopy decodeBoolForKey:@"FitnessTrackingEnabled"];
+    v5->_healthNotificationsDisabled = [coderCopy decodeBoolForKey:@"HealthNotificationsDisabled"];
   }
 
   return v5;

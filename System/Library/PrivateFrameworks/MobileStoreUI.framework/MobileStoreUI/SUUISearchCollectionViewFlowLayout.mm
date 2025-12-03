@@ -1,7 +1,7 @@
 @interface SUUISearchCollectionViewFlowLayout
 - (SUUISearchCollectionViewFlowLayout)init;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (void)prepareLayout;
 @end
 
@@ -21,12 +21,12 @@
   return v2;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v30.receiver = self;
   v30.super_class = SUUISearchCollectionViewFlowLayout;
   v8 = [(SUUIItemGridCollectionViewLayout *)&v30 layoutAttributesForElementsInRect:?];
@@ -124,27 +124,27 @@
   return v9;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  kindCopy = kind;
   [(UICollectionViewFlowLayout *)self itemSize];
   v9 = v8;
   v11 = v10;
-  v12 = [v6 indexAtPosition:0];
+  v12 = [pathCopy indexAtPosition:0];
   v13 = [objc_msgSend(objc_opt_class() "layoutAttributesClass")];
 
   [v13 setZIndex:1];
-  LODWORD(v6) = [v7 isEqualToString:@"b"];
+  LODWORD(pathCopy) = [kindCopy isEqualToString:@"b"];
 
-  if (v6)
+  if (pathCopy)
   {
     horizontalPadding = self->_horizontalPadding;
     v15 = self->_headerSize.height + (v12 + 1) * v11;
     [(UICollectionView *)self->_collectionView frame];
     v17 = v16 + self->_horizontalPadding * -2.0;
-    v18 = [MEMORY[0x277D759A0] mainScreen];
-    [v18 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v20 = 1.0 / v19;
   }
 
@@ -152,8 +152,8 @@
   {
     horizontalPadding = v9 * v12;
     v15 = self->_verticalPadding + self->_headerSize.height;
-    v18 = [MEMORY[0x277D759A0] mainScreen];
-    [v18 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v17 = 1.0 / v21;
     v22 = 6;
     if (!self->_backfills)
@@ -174,9 +174,9 @@
   v13.receiver = self;
   v13.super_class = SUUISearchCollectionViewFlowLayout;
   [(UICollectionViewFlowLayout *)&v13 prepareLayout];
-  v3 = [(SUUISearchCollectionViewFlowLayout *)self collectionView];
+  collectionView = [(SUUISearchCollectionViewFlowLayout *)self collectionView];
   collectionView = self->_collectionView;
-  self->_collectionView = v3;
+  self->_collectionView = collectionView;
 
   [(UICollectionView *)self->_collectionView frame];
   v6 = v5;

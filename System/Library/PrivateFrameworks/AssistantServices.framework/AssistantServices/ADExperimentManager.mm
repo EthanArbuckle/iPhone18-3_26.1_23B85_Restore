@@ -1,56 +1,56 @@
 @interface ADExperimentManager
-+ (BOOL)logAssetSetExperiment:(id)a3 trialData:(id)a4 experimentsEmitted:(id)a5;
-+ (id)abExperimentFromExperimentAllocationStatus:(id)a3;
++ (BOOL)logAssetSetExperiment:(id)experiment trialData:(id)data experimentsEmitted:(id)emitted;
++ (id)abExperimentFromExperimentAllocationStatus:(id)status;
 + (id)assetSets;
 + (id)configurationForInvocationFeedback;
 + (id)configurationForSiriVOXSounds;
 + (id)configurationForSiriVOXTapToSiriBehavior;
-+ (id)expExperimentFromExperimentAllocationStatus:(id)a3;
-+ (id)expExperimentWithExperimentIdentifiers:(id)a3 status:(int)a4 trialNamespace:(id)a5;
-+ (id)experimentIdentifiersTrialProject:(id)a3 trialNamespace:(id)a4;
-+ (id)filterExperiments:(id)a3 experimentsEmitted:(id)a4 namespaceAssetSet:(id)a5;
-+ (id)getActiveABExperimentsFromProvider:(id)a3 environment:(int)a4 retries:(unint64_t)a5;
-+ (id)getActiveEXPExperimentsFromProvider:(id)a3 environment:(int)a4 retries:(unint64_t)a5;
-+ (id)getAllEXPExperimentsFromProvider:(id)a3 cursor:(id)a4 environment:(int)a5 fromDate:(id)a6 retries:(unint64_t)a7 experimentsEmitted:(id)a8 namespaceAssetSet:(id)a9;
-+ (id)namespaceAssetSet:(id)a3;
++ (id)expExperimentFromExperimentAllocationStatus:(id)status;
++ (id)expExperimentWithExperimentIdentifiers:(id)identifiers status:(int)status trialNamespace:(id)namespace;
++ (id)experimentIdentifiersTrialProject:(id)project trialNamespace:(id)namespace;
++ (id)filterExperiments:(id)experiments experimentsEmitted:(id)emitted namespaceAssetSet:(id)set;
++ (id)getActiveABExperimentsFromProvider:(id)provider environment:(int)environment retries:(unint64_t)retries;
++ (id)getActiveEXPExperimentsFromProvider:(id)provider environment:(int)environment retries:(unint64_t)retries;
++ (id)getAllEXPExperimentsFromProvider:(id)provider cursor:(id)cursor environment:(int)environment fromDate:(id)date retries:(unint64_t)retries experimentsEmitted:(id)emitted namespaceAssetSet:(id)set;
++ (id)namespaceAssetSet:(id)set;
 + (id)serverConfigurationInfoForVoiceSelectionExperiment;
 + (id)sharedManager;
-+ (id)treatmentAllocationStatusToString:(int)a3;
-+ (int)treatmentAllocationStatusFromAllocationStatusType:(unsigned __int8)a3;
-+ (void)emitUpdatedExperiments:(id)a3;
-+ (void)tracerAllocationsWithQueue:(id)a3;
++ (id)treatmentAllocationStatusToString:(int)string;
++ (int)treatmentAllocationStatusFromAllocationStatusType:(unsigned __int8)type;
++ (void)emitUpdatedExperiments:(id)experiments;
++ (void)tracerAllocationsWithQueue:(id)queue;
 - (ADExperimentManager)init;
-- (BOOL)_isEndingGroupIdentifier:(id)a3 validForConfiguration:(id)a4;
+- (BOOL)_isEndingGroupIdentifier:(id)identifier validForConfiguration:(id)configuration;
 - (id)_buildConfigurationsByIdentifier;
 - (id)_buildContext;
 - (id)_buildServerConfigurationInfosByIdentifier;
-- (id)_createExperimentForExperimentConfiguration:(id)a3 experimentIdentifier:(id)a4;
-- (id)_experimentForExperimentConfiguration:(id)a3;
-- (id)_experimentIdentifierForConfigurationIdentifier:(id)a3;
-- (id)_experimentOverrideForExperimentConfiguration:(id)a3;
-- (id)_fallbackConfigurationForEndedExperimentWithIdentifier:(id)a3 experimentState:(id)a4;
-- (id)_fetchCachedServerConfigurationForConfigurationInfo:(id)a3;
-- (id)_fetchDictionaryWithFileURL:(id)a3;
+- (id)_createExperimentForExperimentConfiguration:(id)configuration experimentIdentifier:(id)identifier;
+- (id)_experimentForExperimentConfiguration:(id)configuration;
+- (id)_experimentIdentifierForConfigurationIdentifier:(id)identifier;
+- (id)_experimentOverrideForExperimentConfiguration:(id)configuration;
+- (id)_fallbackConfigurationForEndedExperimentWithIdentifier:(id)identifier experimentState:(id)state;
+- (id)_fetchCachedServerConfigurationForConfigurationInfo:(id)info;
+- (id)_fetchDictionaryWithFileURL:(id)l;
 - (id)_getConfigurationsByIdentifier;
 - (id)_getContext;
-- (id)_getExperimentStateForServerConfigurationInfo:(id)a3;
+- (id)_getExperimentStateForServerConfigurationInfo:(id)info;
 - (id)_getServerConfigurationInfosByIdentifier;
-- (id)_groupOverrideIdentifierForExperimentConfiguration:(id)a3;
+- (id)_groupOverrideIdentifierForExperimentConfiguration:(id)configuration;
 - (id)configurations;
 - (id)context;
-- (unint64_t)_experimentGroupHashForExperimentConfiguration:(id)a3 experimentIdentifier:(id)a4;
-- (void)_logDidVendExperiment:(id)a3 fetchDetails:(id)a4 error:(id)a5;
-- (void)_remoteFetchConfigMetadataWithServerConfigurationInfo:(id)a3 completion:(id)a4;
-- (void)_resolveDataTaskForURLSession:(id)a3 URL:(id)a4 completion:(id)a5;
-- (void)_serverConfigurationForServerConfigurationInfo:(id)a3 completion:(id)a4;
-- (void)_setExperimentIdentifier:(id)a3 forConfigurationIdentifier:(id)a4;
-- (void)_setExperimentState:(id)a3 forServerConfigurationInfo:(id)a4;
-- (void)_storeServerConfig:(id)a3 completion:(id)a4;
-- (void)getConfigurationsWithCompletion:(id)a3;
-- (void)getContextWithCompletion:(id)a3;
-- (void)getExperimentForConfigurationIdentifier:(id)a3 completion:(id)a4;
-- (void)resetExperimentForConfigurationIdentifier:(id)a3 completion:(id)a4;
-- (void)synchronizeExperimentConfigurationsIfApplicableWithCompletion:(id)a3;
+- (unint64_t)_experimentGroupHashForExperimentConfiguration:(id)configuration experimentIdentifier:(id)identifier;
+- (void)_logDidVendExperiment:(id)experiment fetchDetails:(id)details error:(id)error;
+- (void)_remoteFetchConfigMetadataWithServerConfigurationInfo:(id)info completion:(id)completion;
+- (void)_resolveDataTaskForURLSession:(id)session URL:(id)l completion:(id)completion;
+- (void)_serverConfigurationForServerConfigurationInfo:(id)info completion:(id)completion;
+- (void)_setExperimentIdentifier:(id)identifier forConfigurationIdentifier:(id)configurationIdentifier;
+- (void)_setExperimentState:(id)state forServerConfigurationInfo:(id)info;
+- (void)_storeServerConfig:(id)config completion:(id)completion;
+- (void)getConfigurationsWithCompletion:(id)completion;
+- (void)getContextWithCompletion:(id)completion;
+- (void)getExperimentForConfigurationIdentifier:(id)identifier completion:(id)completion;
+- (void)resetExperimentForConfigurationIdentifier:(id)identifier completion:(id)completion;
+- (void)synchronizeExperimentConfigurationsIfApplicableWithCompletion:(id)completion;
 @end
 
 @implementation ADExperimentManager
@@ -64,13 +64,13 @@
   return v4;
 }
 
-+ (void)emitUpdatedExperiments:(id)a3
++ (void)emitUpdatedExperiments:(id)experiments
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  experimentsCopy = experiments;
+  v4 = experimentsCopy;
+  if (experimentsCopy)
   {
-    if ([v3 count])
+    if ([experimentsCopy count])
     {
       v5 = objc_alloc_init(EXPSiriSchemaEXPAllocationChangelogSnapshot);
       [v5 setAllocations:v4];
@@ -104,72 +104,72 @@
   }
 }
 
-+ (BOOL)logAssetSetExperiment:(id)a3 trialData:(id)a4 experimentsEmitted:(id)a5
++ (BOOL)logAssetSetExperiment:(id)experiment trialData:(id)data experimentsEmitted:(id)emitted
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 objectForKeyedSubscript:@"TrialProject"];
+  experimentCopy = experiment;
+  dataCopy = data;
+  emittedCopy = emitted;
+  v10 = [dataCopy objectForKeyedSubscript:@"TrialProject"];
   if (v10)
   {
     v11 = v10;
-    v12 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
+    v12 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
 
     if (v12)
     {
       v13 = +[UAFAssetSetManager sharedManager];
-      v14 = [v13 retrieveAssetSet:v7 usages:0];
+      v14 = [v13 retrieveAssetSet:experimentCopy usages:0];
 
-      v15 = [v8 objectForKeyedSubscript:@"TrialProject"];
-      v16 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
+      v15 = [dataCopy objectForKeyedSubscript:@"TrialProject"];
+      v16 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
       v17 = [ADExperimentManager experimentIdentifiersTrialProject:v15 trialNamespace:v16];
 
       v18 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
       {
         v19 = v18;
-        v20 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
-        v21 = [v14 experimentId];
-        v22 = [v17 experimentId];
-        v23 = [v17 treatmentId];
+        v20 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
+        experimentId = [v14 experimentId];
+        experimentId2 = [v17 experimentId];
+        treatmentId = [v17 treatmentId];
         *buf = 136316674;
         v80 = "+[ADExperimentManager(Tracer) logAssetSetExperiment:trialData:experimentsEmitted:]";
         v81 = 2112;
-        v82 = v7;
+        v82 = experimentCopy;
         v83 = 2112;
         v84 = v20;
         v85 = 2112;
-        v86 = v21;
+        v86 = experimentId;
         v87 = 2112;
-        v88 = v22;
+        v88 = experimentId2;
         v89 = 2112;
-        v90 = v23;
+        v90 = treatmentId;
         v91 = 1024;
-        v92 = [v17 deploymentId];
+        deploymentId = [v17 deploymentId];
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%s AssetSet %@ (%@), experimentId %@. Trial info: experimentId %@, treatmentId %@, deploymentId %d", buf, 0x44u);
       }
 
-      v24 = [v14 experimentId];
-      if (v24 && (v25 = v24, [v14 experimentId], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "isEqualToString:", &stru_10051F508), v26, v25, !v27))
+      experimentId3 = [v14 experimentId];
+      if (experimentId3 && (v25 = experimentId3, [v14 experimentId], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "isEqualToString:", &stru_10051F508), v26, v25, !v27))
       {
         v29 = 0;
       }
 
       else
       {
-        v28 = [v17 experimentId];
+        experimentId4 = [v17 experimentId];
 
-        if (!v28)
+        if (!experimentId4)
         {
           v55 = AFSiriLogContextConnection;
           if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
           {
             v56 = v55;
-            v57 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
+            v57 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
             *buf = 136315650;
             v80 = "+[ADExperimentManager(Tracer) logAssetSetExperiment:trialData:experimentsEmitted:]";
             v81 = 2112;
-            v82 = v7;
+            v82 = experimentCopy;
             v83 = 2112;
             v84 = v57;
             _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "%s AssetSet %@ (%@), experiment not activated. Trial experiment not activated", buf, 0x20u);
@@ -182,8 +182,8 @@
         v29 = 1;
       }
 
-      v35 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
-      v36 = [v9 objectForKey:v35];
+      v35 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
+      v36 = [emittedCopy objectForKey:v35];
 
       if (v29 && !v36)
       {
@@ -191,16 +191,16 @@
         if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
         {
           v38 = v37;
-          v39 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
-          v40 = [v17 experimentId];
+          v39 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
+          experimentId5 = [v17 experimentId];
           *buf = 136315906;
           v80 = "+[ADExperimentManager(Tracer) logAssetSetExperiment:trialData:experimentsEmitted:]";
           v81 = 2112;
-          v82 = v7;
+          v82 = experimentCopy;
           v83 = 2112;
           v84 = v39;
           v85 = 2112;
-          v86 = v40;
+          v86 = experimentId5;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "%s AssetSet %@ (%@), experiment not activated. Trial experiment %@ activated", buf, 0x2Au);
 
 LABEL_37:
@@ -227,21 +227,21 @@ LABEL_38:
         if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
         {
           v43 = v42;
-          v44 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
-          v45 = [v17 experimentId];
+          v44 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
+          experimentId6 = [v17 experimentId];
           *buf = 136315906;
           v80 = "+[ADExperimentManager(Tracer) logAssetSetExperiment:trialData:experimentsEmitted:]";
           v81 = 2112;
-          v82 = v7;
+          v82 = experimentCopy;
           v83 = 2112;
           v84 = v44;
           v85 = 2112;
-          v86 = v45;
+          v86 = experimentId6;
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "%s AssetSet %@ (%@), experiment deactivated, Trial experiment %@ activated", buf, 0x2Au);
         }
 
         v46 = objc_alloc_init(NSMutableArray);
-        v47 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
+        v47 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
         v48 = [ADExperimentManager expExperimentWithExperimentIdentifiers:v17 status:3 trialNamespace:v47];
 
         [v46 addObject:v48];
@@ -250,27 +250,27 @@ LABEL_38:
         if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
         {
           v50 = v49;
-          [v8 objectForKeyedSubscript:@"TrialNamespace"];
+          [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
           v51 = v78 = v36;
-          v52 = [v17 experimentId];
+          experimentId7 = [v17 experimentId];
           *buf = 136315906;
           v80 = "+[ADExperimentManager(Tracer) logAssetSetExperiment:trialData:experimentsEmitted:]";
           v81 = 2112;
-          v82 = v7;
+          v82 = experimentCopy;
           v83 = 2112;
           v84 = v51;
           v85 = 2112;
-          v86 = v52;
+          v86 = experimentId7;
           _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "%s AssetSet %@ (%@), experiment %@ deactivated, logging emitted", buf, 0x2Au);
 
           v36 = v78;
         }
 
-        v53 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
-        [v9 removeObjectForKey:v53];
+        v53 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
+        [emittedCopy removeObjectForKey:v53];
 
         v54 = +[ADPreferences sharedPreferences];
-        [v54 setExperimentsUAFEmitted:v9];
+        [v54 setExperimentsUAFEmitted:emittedCopy];
 
 LABEL_26:
         v34 = 1;
@@ -280,16 +280,16 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      v58 = [v14 experimentId];
-      v59 = [v17 experimentId];
-      v60 = [v58 isEqualToString:v59];
+      experimentId8 = [v14 experimentId];
+      experimentId9 = [v17 experimentId];
+      v60 = [experimentId8 isEqualToString:experimentId9];
 
       if (v60)
       {
         if (!v36)
         {
           v46 = objc_alloc_init(NSMutableArray);
-          v68 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
+          v68 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
           v69 = [ADExperimentManager expExperimentWithExperimentIdentifiers:"expExperimentWithExperimentIdentifiers:status:trialNamespace:" status:? trialNamespace:?];
 
           v77 = v69;
@@ -299,27 +299,27 @@ LABEL_40:
           if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
           {
             v71 = v70;
-            v72 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
-            v73 = [v14 experimentId];
+            v72 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
+            experimentId10 = [v14 experimentId];
             *buf = 136315906;
             v80 = "+[ADExperimentManager(Tracer) logAssetSetExperiment:trialData:experimentsEmitted:]";
             v81 = 2112;
-            v82 = v7;
+            v82 = experimentCopy;
             v83 = 2112;
             v84 = v72;
             v85 = 2112;
-            v86 = v73;
+            v86 = experimentId10;
             _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_INFO, "%s AssetSet %@ (%@), experiment %@ activated, logging emitted", buf, 0x2Au);
 
             v36 = 0;
           }
 
-          v74 = [v17 experimentId];
-          v75 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
-          [v9 setObject:v74 forKey:v75];
+          experimentId11 = [v17 experimentId];
+          v75 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
+          [emittedCopy setObject:experimentId11 forKey:v75];
 
           v76 = +[ADPreferences sharedPreferences];
-          [v76 setExperimentsUAFEmitted:v9];
+          [v76 setExperimentsUAFEmitted:emittedCopy];
 
           goto LABEL_26;
         }
@@ -331,16 +331,16 @@ LABEL_40:
         }
 
         v38 = v61;
-        v62 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
-        v63 = [v14 experimentId];
+        v62 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
+        experimentId12 = [v14 experimentId];
         *buf = 136315906;
         v80 = "+[ADExperimentManager(Tracer) logAssetSetExperiment:trialData:experimentsEmitted:]";
         v81 = 2112;
-        v82 = v7;
+        v82 = experimentCopy;
         v83 = 2112;
         v84 = v62;
         v85 = 2112;
-        v86 = v63;
+        v86 = experimentId12;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "%s AssetSet %@ (%@), experiment %@ activated, logging already emitted", buf, 0x2Au);
       }
 
@@ -353,19 +353,19 @@ LABEL_40:
         }
 
         v38 = v64;
-        v65 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
-        v63 = [v14 experimentId];
-        v66 = [v17 experimentId];
+        v65 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
+        experimentId12 = [v14 experimentId];
+        experimentId13 = [v17 experimentId];
         *buf = 136316162;
         v80 = "+[ADExperimentManager(Tracer) logAssetSetExperiment:trialData:experimentsEmitted:]";
         v81 = 2112;
-        v82 = v7;
+        v82 = experimentCopy;
         v83 = 2112;
         v84 = v65;
         v85 = 2112;
-        v86 = v63;
+        v86 = experimentId12;
         v87 = 2112;
-        v88 = v66;
+        v88 = experimentId13;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "%s AssetSet %@ (%@), experiment %@ doesn't match Trial experiment %@", buf, 0x34u);
       }
 
@@ -377,12 +377,12 @@ LABEL_40:
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v31 = v30;
-    v32 = [v8 objectForKeyedSubscript:@"TrialProject"];
-    v33 = [v8 objectForKeyedSubscript:@"TrialNamespace"];
+    v32 = [dataCopy objectForKeyedSubscript:@"TrialProject"];
+    v33 = [dataCopy objectForKeyedSubscript:@"TrialNamespace"];
     *buf = 136315906;
     v80 = "+[ADExperimentManager(Tracer) logAssetSetExperiment:trialData:experimentsEmitted:]";
     v81 = 2112;
-    v82 = v7;
+    v82 = experimentCopy;
     v83 = 2112;
     v84 = v32;
     v85 = 2112;
@@ -396,22 +396,22 @@ LABEL_41:
   return v34;
 }
 
-+ (id)treatmentAllocationStatusToString:(int)a3
++ (id)treatmentAllocationStatusToString:(int)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_100515160 + (a3 - 1));
+    return *(&off_100515160 + (string - 1));
   }
 }
 
-+ (int)treatmentAllocationStatusFromAllocationStatusType:(unsigned __int8)a3
++ (int)treatmentAllocationStatusFromAllocationStatusType:(unsigned __int8)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     v3 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -421,35 +421,35 @@ LABEL_41:
       _os_log_error_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "%s Allocation Status Type Unknown", &v5, 0xCu);
     }
 
-    *&a3 = 0;
+    *&type = 0;
   }
 
-  return a3;
+  return type;
 }
 
-+ (id)expExperimentWithExperimentIdentifiers:(id)a3 status:(int)a4 trialNamespace:(id)a5
++ (id)expExperimentWithExperimentIdentifiers:(id)identifiers status:(int)status trialNamespace:(id)namespace
 {
   v5 = 0;
-  if (a3 && a5)
+  if (identifiers && namespace)
   {
-    v6 = *&a4;
-    v8 = a5;
-    v9 = a3;
+    v6 = *&status;
+    namespaceCopy = namespace;
+    identifiersCopy = identifiers;
     v5 = objc_alloc_init(EXPSchemaEXPTrialExperiment);
-    v10 = [v9 experimentId];
-    [v5 setExperimentId:v10];
+    experimentId = [identifiersCopy experimentId];
+    [v5 setExperimentId:experimentId];
 
     v11 = [NSUUID alloc];
-    v12 = [v9 treatmentId];
-    v13 = [v11 initWithUUIDString:v12];
+    treatmentId = [identifiersCopy treatmentId];
+    v13 = [v11 initWithUUIDString:treatmentId];
 
     v14 = [[SISchemaUUID alloc] initWithNSUUID:v13];
     [v5 setTreatmentId:v14];
 
-    LODWORD(v14) = [v9 deploymentId];
+    LODWORD(v14) = [identifiersCopy deploymentId];
     [v5 setDeploymentId:v14];
     [v5 setAllocationStatus:v6];
-    [v5 setExperimentNamespace:v8];
+    [v5 setExperimentNamespace:namespaceCopy];
 
     v15 = +[NSDate date];
     [v15 timeIntervalSince1970];
@@ -459,40 +459,40 @@ LABEL_41:
   return v5;
 }
 
-+ (id)expExperimentFromExperimentAllocationStatus:(id)a3
++ (id)expExperimentFromExperimentAllocationStatus:(id)status
 {
-  v4 = a3;
-  if (v4)
+  statusCopy = status;
+  if (statusCopy)
   {
     v5 = objc_alloc_init(EXPSchemaEXPTrialExperiment);
-    v6 = [v4 experimentId];
-    [v5 setExperimentId:v6];
+    experimentId = [statusCopy experimentId];
+    [v5 setExperimentId:experimentId];
 
     v7 = [NSUUID alloc];
-    v8 = [v4 treatmentId];
-    v9 = [v7 initWithUUIDString:v8];
+    treatmentId = [statusCopy treatmentId];
+    v9 = [v7 initWithUUIDString:treatmentId];
 
     v10 = [[SISchemaUUID alloc] initWithNSUUID:v9];
     [v5 setTreatmentId:v10];
 
-    [v5 setDeploymentId:{objc_msgSend(v4, "deploymentId")}];
-    [v5 setAllocationStatus:{objc_msgSend(a1, "treatmentAllocationStatusFromAllocationStatusType:", objc_msgSend(v4, "type"))}];
-    v11 = [v4 namespaces];
-    v12 = [v11 count];
+    [v5 setDeploymentId:{objc_msgSend(statusCopy, "deploymentId")}];
+    [v5 setAllocationStatus:{objc_msgSend(self, "treatmentAllocationStatusFromAllocationStatusType:", objc_msgSend(statusCopy, "type"))}];
+    namespaces = [statusCopy namespaces];
+    v12 = [namespaces count];
 
     if (v12)
     {
-      v13 = [v4 namespaces];
-      v14 = [v13 firstObject];
+      namespaces2 = [statusCopy namespaces];
+      firstObject = [namespaces2 firstObject];
 
-      v15 = [v14 name];
-      [v5 setExperimentNamespace:v15];
+      name = [firstObject name];
+      [v5 setExperimentNamespace:name];
 
-      [v5 setCompatibilityVersion:{objc_msgSend(v14, "compatibilityVersion")}];
+      [v5 setCompatibilityVersion:{objc_msgSend(firstObject, "compatibilityVersion")}];
     }
 
-    v16 = [v4 date];
-    [v16 timeIntervalSince1970];
+    date = [statusCopy date];
+    [date timeIntervalSince1970];
     [v5 setLastUpdatedAtInMs:(v17 * 1000.0)];
   }
 
@@ -504,17 +504,17 @@ LABEL_41:
   return v5;
 }
 
-+ (id)filterExperiments:(id)a3 experimentsEmitted:(id)a4 namespaceAssetSet:(id)a5
++ (id)filterExperiments:(id)experiments experimentsEmitted:(id)emitted namespaceAssetSet:(id)set
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  experimentsCopy = experiments;
+  emittedCopy = emitted;
+  setCopy = set;
   v54 = objc_opt_new();
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v7;
+  obj = experimentsCopy;
   v10 = [obj countByEnumeratingWithState:&v55 objects:v67 count:16];
   if (v10)
   {
@@ -522,7 +522,7 @@ LABEL_41:
     v13 = *v56;
     *&v11 = 136315906;
     v51 = v11;
-    v52 = v8;
+    v52 = emittedCopy;
     do
     {
       for (i = 0; i != v12; i = i + 1)
@@ -533,34 +533,34 @@ LABEL_41:
         }
 
         v15 = *(*(&v55 + 1) + 8 * i);
-        v16 = [v15 experimentNamespace];
-        v17 = [v9 objectForKeyedSubscript:v16];
+        experimentNamespace = [v15 experimentNamespace];
+        v17 = [setCopy objectForKeyedSubscript:experimentNamespace];
         if (v17)
         {
           v18 = v17;
-          v19 = [v15 allocationStatus];
+          allocationStatus = [v15 allocationStatus];
 
-          if (v19 == 2)
+          if (allocationStatus == 2)
           {
             v20 = +[UAFAssetSetManager sharedManager];
-            v21 = [v9 objectForKeyedSubscript:v16];
+            v21 = [setCopy objectForKeyedSubscript:experimentNamespace];
             v22 = [v20 retrieveAssetSet:v21 usages:0];
 
-            v23 = [v22 experimentId];
-            if (!v23 || (v24 = v23, [v22 experimentId], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", &stru_10051F508), v25, v24, (v26 & 1) != 0))
+            experimentId = [v22 experimentId];
+            if (!experimentId || (v24 = experimentId, [v22 experimentId], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", &stru_10051F508), v25, v24, (v26 & 1) != 0))
             {
               v27 = AFSiriLogContextConnection;
               if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
               {
                 v28 = v27;
-                v29 = [v15 experimentNamespace];
-                v30 = [v15 experimentId];
+                experimentNamespace2 = [v15 experimentNamespace];
+                experimentId2 = [v15 experimentId];
                 *buf = 136315650;
                 v60 = "+[ADExperimentManager(Tracer) filterExperiments:experimentsEmitted:namespaceAssetSet:]";
                 v61 = 2112;
-                v62 = v29;
+                v62 = experimentNamespace2;
                 v63 = 2112;
-                v64 = v30;
+                v64 = experimentId2;
                 v31 = v28;
                 v32 = "%s AssetSet namespace %@ Trial experiment %@ activated. AssetSet experiment not activated.";
                 goto LABEL_15;
@@ -569,8 +569,8 @@ LABEL_41:
               goto LABEL_16;
             }
 
-            v8 = v52;
-            v33 = [v52 objectForKey:v16];
+            emittedCopy = v52;
+            v33 = [v52 objectForKey:experimentNamespace];
 
             if (v33)
             {
@@ -578,14 +578,14 @@ LABEL_41:
               if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
               {
                 v28 = v34;
-                v29 = [v15 experimentNamespace];
-                v30 = [v15 experimentId];
+                experimentNamespace2 = [v15 experimentNamespace];
+                experimentId2 = [v15 experimentId];
                 *buf = 136315650;
                 v60 = "+[ADExperimentManager(Tracer) filterExperiments:experimentsEmitted:namespaceAssetSet:]";
                 v61 = 2112;
-                v62 = v29;
+                v62 = experimentNamespace2;
                 v63 = 2112;
-                v64 = v30;
+                v64 = experimentId2;
                 v31 = v28;
                 v32 = "%s AssetSet namespace %@ Trial experiment %@ activated. AssetSet experiment activated. Logging already emitted.";
 LABEL_15:
@@ -594,65 +594,65 @@ LABEL_15:
 
 LABEL_16:
 
-              v8 = v52;
+              emittedCopy = v52;
               goto LABEL_28;
             }
 
-            v35 = [v15 experimentId];
-            [v52 setObject:v35 forKey:v16];
+            experimentId3 = [v15 experimentId];
+            [v52 setObject:experimentId3 forKey:experimentNamespace];
 
             v36 = AFSiriLogContextConnection;
             if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
             {
               v37 = v36;
-              v38 = [v15 experimentNamespace];
-              v39 = [v15 experimentId];
+              experimentNamespace3 = [v15 experimentNamespace];
+              experimentId4 = [v15 experimentId];
               *buf = 136315650;
               v60 = "+[ADExperimentManager(Tracer) filterExperiments:experimentsEmitted:namespaceAssetSet:]";
               v61 = 2112;
-              v62 = v38;
+              v62 = experimentNamespace3;
               v63 = 2112;
-              v64 = v39;
+              v64 = experimentId4;
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "%s AssetSet namespace %@ Trial experiment %@ activated. AssetSet experiment activated.", buf, 0x20u);
 
-              v8 = v52;
+              emittedCopy = v52;
             }
           }
         }
 
-        v40 = [v9 objectForKeyedSubscript:v16];
+        v40 = [setCopy objectForKeyedSubscript:experimentNamespace];
         if (v40)
         {
           v41 = v40;
-          v42 = [v8 objectForKey:v16];
+          v42 = [emittedCopy objectForKey:experimentNamespace];
           if (v42)
           {
             v43 = v42;
-            v44 = [v15 allocationStatus];
+            allocationStatus2 = [v15 allocationStatus];
 
-            if (v44 != 2)
+            if (allocationStatus2 != 2)
             {
               v45 = AFSiriLogContextConnection;
               if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
               {
                 v46 = v45;
-                v47 = [v15 experimentNamespace];
-                v48 = [v15 experimentId];
+                experimentNamespace4 = [v15 experimentNamespace];
+                experimentId5 = [v15 experimentId];
                 v49 = +[ADExperimentManager treatmentAllocationStatusToString:](ADExperimentManager, "treatmentAllocationStatusToString:", [v15 allocationStatus]);
                 *buf = v51;
                 v60 = "+[ADExperimentManager(Tracer) filterExperiments:experimentsEmitted:namespaceAssetSet:]";
                 v61 = 2112;
-                v62 = v47;
+                v62 = experimentNamespace4;
                 v63 = 2112;
-                v64 = v48;
+                v64 = experimentId5;
                 v65 = 2112;
                 v66 = v49;
                 _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "%s AssetSet namespace %@ Trial experiment %@ status update: %@", buf, 0x2Au);
 
-                v8 = v52;
+                emittedCopy = v52;
               }
 
-              [v8 removeObjectForKey:v16];
+              [emittedCopy removeObjectForKey:experimentNamespace];
             }
           }
 
@@ -674,22 +674,22 @@ LABEL_28:
   return v54;
 }
 
-+ (id)abExperimentFromExperimentAllocationStatus:(id)a3
++ (id)abExperimentFromExperimentAllocationStatus:(id)status
 {
-  if (a3)
+  if (status)
   {
-    v3 = a3;
+    statusCopy = status;
     v4 = objc_alloc_init(SAABTestExperiment);
-    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d", [v3 deploymentId]);
+    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d", [statusCopy deploymentId]);
     [v4 setDeploymentId:v5];
 
-    v6 = [v3 experimentId];
-    v7 = [NSString stringWithFormat:@"%@", v6];
+    experimentId = [statusCopy experimentId];
+    v7 = [NSString stringWithFormat:@"%@", experimentId];
     [v4 setExperimentId:v7];
 
-    v8 = [v3 treatmentId];
+    treatmentId = [statusCopy treatmentId];
 
-    v9 = [NSString stringWithFormat:@"%@", v8];
+    v9 = [NSString stringWithFormat:@"%@", treatmentId];
     [v4 setTreatmentId:v9];
   }
 
@@ -701,14 +701,14 @@ LABEL_28:
   return v4;
 }
 
-+ (id)getAllEXPExperimentsFromProvider:(id)a3 cursor:(id)a4 environment:(int)a5 fromDate:(id)a6 retries:(unint64_t)a7 experimentsEmitted:(id)a8 namespaceAssetSet:(id)a9
++ (id)getAllEXPExperimentsFromProvider:(id)provider cursor:(id)cursor environment:(int)environment fromDate:(id)date retries:(unint64_t)retries experimentsEmitted:(id)emitted namespaceAssetSet:(id)set
 {
-  v12 = *&a5;
-  v31 = a3;
-  v30 = a4;
-  v15 = a6;
-  v16 = a8;
-  v17 = a9;
+  v12 = *&environment;
+  providerCopy = provider;
+  cursorCopy = cursor;
+  dateCopy = date;
+  emittedCopy = emitted;
+  setCopy = set;
   v18 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
@@ -717,10 +717,10 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if (v31)
+  if (providerCopy)
   {
-    v28 = v17;
-    v29 = v16;
+    v28 = setCopy;
+    v29 = emittedCopy;
     v19 = objc_alloc_init(NSMutableArray);
     v20 = 0;
     v21 = 1;
@@ -733,12 +733,12 @@ LABEL_28:
       v32[1] = 3221225472;
       v32[2] = sub_1001BC1C8;
       v32[3] = &unk_100515140;
-      v35 = a1;
-      v33 = v15;
+      selfCopy = self;
+      v33 = dateCopy;
       v36 = v12;
       v22 = v19;
       v34 = v22;
-      v23 = [v31 enumerateExperimentStatusesForEnvironment:v12 startingFromCursor:v30 error:&v37 block:v32];
+      v23 = [providerCopy enumerateExperimentStatusesForEnvironment:v12 startingFromCursor:cursorCopy error:&v37 block:v32];
       v20 = v37;
       if (v20)
       {
@@ -752,7 +752,7 @@ LABEL_28:
           v42 = 2048;
           v43 = v21;
           v44 = 2048;
-          v45 = a7 + 1;
+          v45 = retries + 1;
           v46 = 2112;
           v47 = v20;
           _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%s Error enumerating updated EXP experiments for environment %d. Execution %lu of %lu tries. Error: %@", buf, 0x30u);
@@ -765,19 +765,19 @@ LABEL_28:
       }
     }
 
-    while (v21++ <= a7);
+    while (v21++ <= retries);
     if (v20)
     {
       v26 = 0;
-      v17 = v28;
-      v16 = v29;
+      setCopy = v28;
+      emittedCopy = v29;
     }
 
     else
     {
-      v17 = v28;
-      v16 = v29;
-      v26 = [a1 filterExperiments:v22 experimentsEmitted:v29 namespaceAssetSet:v28];
+      setCopy = v28;
+      emittedCopy = v29;
+      v26 = [self filterExperiments:v22 experimentsEmitted:v29 namespaceAssetSet:v28];
     }
   }
 
@@ -789,10 +789,10 @@ LABEL_28:
   return v26;
 }
 
-+ (id)getActiveEXPExperimentsFromProvider:(id)a3 environment:(int)a4 retries:(unint64_t)a5
++ (id)getActiveEXPExperimentsFromProvider:(id)provider environment:(int)environment retries:(unint64_t)retries
 {
-  v6 = *&a4;
-  v24 = a3;
+  v6 = *&environment;
+  providerCopy = provider;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
@@ -801,14 +801,14 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if (v24)
+  if (providerCopy)
   {
     v8 = objc_alloc_init(NSMutableArray);
     v9 = +[ADExperimentManager assetSets];
     v10 = [ADExperimentManager namespaceAssetSet:v9];
 
     v11 = 0;
-    v22 = a5 + 1;
+    v22 = retries + 1;
     v12 = 1;
     *&v13 = 136316162;
     v21 = v13;
@@ -821,13 +821,13 @@ LABEL_28:
       v25[1] = 3221225472;
       v25[2] = sub_1001BC6C0;
       v25[3] = &unk_100515118;
-      v28 = a1;
+      selfCopy = self;
       v14 = v10;
       v26 = v14;
       v29 = v6;
       v15 = v8;
       v27 = v15;
-      [v24 enumerateActiveExperimentsForEnvironment:v6 error:&v30 block:v25];
+      [providerCopy enumerateActiveExperimentsForEnvironment:v6 error:&v30 block:v25];
       v11 = v30;
       if (v11)
       {
@@ -854,7 +854,7 @@ LABEL_28:
       }
     }
 
-    while (v12++ <= a5);
+    while (v12++ <= retries);
     if (v11)
     {
       v18 = 0;
@@ -876,10 +876,10 @@ LABEL_28:
   return v19;
 }
 
-+ (id)getActiveABExperimentsFromProvider:(id)a3 environment:(int)a4 retries:(unint64_t)a5
++ (id)getActiveABExperimentsFromProvider:(id)provider environment:(int)environment retries:(unint64_t)retries
 {
-  v6 = *&a4;
-  v24 = a3;
+  v6 = *&environment;
+  providerCopy = provider;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
@@ -888,14 +888,14 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if (v24)
+  if (providerCopy)
   {
     v8 = objc_alloc_init(NSMutableArray);
     v9 = +[ADExperimentManager assetSets];
     v10 = [ADExperimentManager namespaceAssetSet:v9];
 
     v11 = 0;
-    v22 = a5 + 1;
+    v22 = retries + 1;
     v12 = 1;
     *&v13 = 136316162;
     v21 = v13;
@@ -908,13 +908,13 @@ LABEL_28:
       v25[1] = 3221225472;
       v25[2] = sub_1001BCD94;
       v25[3] = &unk_100515118;
-      v28 = a1;
+      selfCopy = self;
       v14 = v10;
       v26 = v14;
       v29 = v6;
       v15 = v8;
       v27 = v15;
-      [v24 enumerateActiveExperimentsForEnvironment:v6 error:&v30 block:v25];
+      [providerCopy enumerateActiveExperimentsForEnvironment:v6 error:&v30 block:v25];
       v11 = v30;
       if (v11)
       {
@@ -941,7 +941,7 @@ LABEL_28:
       }
     }
 
-    while (v12++ <= a5);
+    while (v12++ <= retries);
     if (v11)
     {
       v18 = 0;
@@ -963,14 +963,14 @@ LABEL_28:
   return v19;
 }
 
-+ (id)experimentIdentifiersTrialProject:(id)a3 trialNamespace:(id)a4
++ (id)experimentIdentifiersTrialProject:(id)project trialNamespace:(id)namespace
 {
-  v5 = a4;
-  v6 = [TRIProject projectIdFromName:a3];
+  namespaceCopy = namespace;
+  v6 = [TRIProject projectIdFromName:project];
   if (v6 && (v7 = v6, TRIProject_ProjectId_IsValidValue()))
   {
     v8 = [TRIClient clientWithIdentifier:v7];
-    v9 = [v8 experimentIdentifiersWithNamespaceName:v5];
+    v9 = [v8 experimentIdentifiersWithNamespaceName:namespaceCopy];
   }
 
   else
@@ -981,9 +981,9 @@ LABEL_28:
   return v9;
 }
 
-+ (void)tracerAllocationsWithQueue:(id)a3
++ (void)tracerAllocationsWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
@@ -997,24 +997,24 @@ LABEL_28:
   v8[1] = 3221225472;
   v8[2] = sub_1001BD2DC;
   v8[3] = &unk_10051D770;
-  v9 = v4;
-  v10 = a1;
-  v7 = v4;
+  v9 = queueCopy;
+  selfCopy = self;
+  v7 = queueCopy;
   [v6 scheduleUnlockedWork:v8];
 }
 
-+ (id)namespaceAssetSet:(id)a3
++ (id)namespaceAssetSet:(id)set
 {
-  if (a3)
+  if (set)
   {
-    v3 = a3;
+    setCopy = set;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1001BE02C;
     v6[3] = &unk_1005150A0;
     v4 = objc_opt_new();
     v7 = v4;
-    [v3 enumerateKeysAndObjectsUsingBlock:v6];
+    [setCopy enumerateKeysAndObjectsUsingBlock:v6];
   }
 
   else
@@ -1037,25 +1037,25 @@ LABEL_28:
   return v2;
 }
 
-- (void)_setExperimentState:(id)a3 forServerConfigurationInfo:(id)a4
+- (void)_setExperimentState:(id)state forServerConfigurationInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  stateCopy = state;
   v9 = +[ADPreferences sharedPreferences];
-  v7 = [v6 buildDictionaryRepresentation];
+  buildDictionaryRepresentation = [stateCopy buildDictionaryRepresentation];
 
-  v8 = [v5 configurationIdentifier];
+  configurationIdentifier = [infoCopy configurationIdentifier];
 
-  [v9 setExperimentState:v7 forConfigurationIdentifier:v8];
+  [v9 setExperimentState:buildDictionaryRepresentation forConfigurationIdentifier:configurationIdentifier];
 }
 
-- (id)_getExperimentStateForServerConfigurationInfo:(id)a3
+- (id)_getExperimentStateForServerConfigurationInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = +[ADPreferences sharedPreferences];
-  v5 = [v3 configurationIdentifier];
+  configurationIdentifier = [infoCopy configurationIdentifier];
 
-  v6 = [v4 getExperimentStateForConfigurationIdentifier:v5];
+  v6 = [v4 getExperimentStateForConfigurationIdentifier:configurationIdentifier];
 
   if (v6)
   {
@@ -1070,10 +1070,10 @@ LABEL_28:
   return v7;
 }
 
-- (id)_fetchDictionaryWithFileURL:(id)a3
+- (id)_fetchDictionaryWithFileURL:(id)l
 {
   v8 = 0;
-  v3 = [NSDictionary dictionaryWithContentsOfURL:a3 error:&v8];
+  v3 = [NSDictionary dictionaryWithContentsOfURL:l error:&v8];
   v4 = v8;
   if (v4)
   {
@@ -1098,10 +1098,10 @@ LABEL_28:
   return v6;
 }
 
-- (id)_fetchCachedServerConfigurationForConfigurationInfo:(id)a3
+- (id)_fetchCachedServerConfigurationForConfigurationInfo:(id)info
 {
-  v4 = [a3 configurationIdentifier];
-  v5 = [v4 stringByAppendingString:@".plist"];
+  configurationIdentifier = [info configurationIdentifier];
+  v5 = [configurationIdentifier stringByAppendingString:@".plist"];
 
   v6 = AFUserSupportDirectoryPath();
   v7 = [v6 stringByAppendingPathComponent:v5];
@@ -1121,12 +1121,12 @@ LABEL_28:
   return v10;
 }
 
-- (void)_storeServerConfig:(id)a3 completion:(id)a4
+- (void)_storeServerConfig:(id)config completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 identifier];
-  v8 = [v7 stringByAppendingString:@".plist"];
+  configCopy = config;
+  completionCopy = completion;
+  identifier = [configCopy identifier];
+  v8 = [identifier stringByAppendingString:@".plist"];
 
   v9 = AFUserSupportDirectoryPath();
   v10 = [v9 stringByAppendingPathComponent:v8];
@@ -1143,12 +1143,12 @@ LABEL_28:
     }
 
     v13 = [AFError errorWithCode:3309];
-    v6[2](v6, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
-  v14 = [v5 buildDictionaryRepresentation];
+  buildDictionaryRepresentation = [configCopy buildDictionaryRepresentation];
   v20 = 0;
-  v15 = [v14 writeToURL:v11 error:&v20];
+  v15 = [buildDictionaryRepresentation writeToURL:v11 error:&v20];
   v16 = v20;
 
   v17 = 0;
@@ -1168,25 +1168,25 @@ LABEL_28:
     }
   }
 
-  v6[2](v6, v17);
+  completionCopy[2](completionCopy, v17);
 }
 
-- (void)_resolveDataTaskForURLSession:(id)a3 URL:(id)a4 completion:(id)a5
+- (void)_resolveDataTaskForURLSession:(id)session URL:(id)l completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001CB854;
   v9[3] = &unk_100515CA8;
-  v10 = a5;
-  v7 = v10;
-  v8 = [a3 dataTaskWithURL:a4 completionHandler:v9];
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = [session dataTaskWithURL:l completionHandler:v9];
   [v8 resume];
 }
 
-- (void)_remoteFetchConfigMetadataWithServerConfigurationInfo:(id)a3 completion:(id)a4
+- (void)_remoteFetchConfigMetadataWithServerConfigurationInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   session = self->_session;
   if (!session)
   {
@@ -1200,41 +1200,41 @@ LABEL_28:
     session = self->_session;
   }
 
-  v12 = [v6 configurationURL];
+  configurationURL = [infoCopy configurationURL];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001CB9AC;
   v15[3] = &unk_100515C80;
-  v16 = v6;
-  v17 = v7;
-  v13 = v6;
-  v14 = v7;
-  [(ADExperimentManager *)self _resolveDataTaskForURLSession:session URL:v12 completion:v15];
+  v16 = infoCopy;
+  v17 = completionCopy;
+  v13 = infoCopy;
+  v14 = completionCopy;
+  [(ADExperimentManager *)self _resolveDataTaskForURLSession:session URL:configurationURL completion:v15];
 }
 
-- (id)_fallbackConfigurationForEndedExperimentWithIdentifier:(id)a3 experimentState:(id)a4
+- (id)_fallbackConfigurationForEndedExperimentWithIdentifier:(id)identifier experimentState:(id)state
 {
-  v5 = a4;
-  v6 = a3;
+  stateCopy = state;
+  identifierCopy = identifier;
   v7 = [AFExperimentGroup alloc];
-  v8 = [v5 endingGroupIdentifier];
-  v9 = [v7 initWithIdentifier:v8 allocation:100 properties:0];
+  endingGroupIdentifier = [stateCopy endingGroupIdentifier];
+  v9 = [v7 initWithIdentifier:endingGroupIdentifier allocation:100 properties:0];
 
   v10 = [AFExperimentConfiguration alloc];
-  v11 = [v5 version];
+  version = [stateCopy version];
 
-  v12 = [v10 initWithType:2 identifier:v6 version:v11 controlGroup:v9 experimentGroups:&__NSArray0__struct salt:@"salt"];
+  v12 = [v10 initWithType:2 identifier:identifierCopy version:version controlGroup:v9 experimentGroups:&__NSArray0__struct salt:@"salt"];
 
   return v12;
 }
 
-- (BOOL)_isEndingGroupIdentifier:(id)a3 validForConfiguration:(id)a4
+- (BOOL)_isEndingGroupIdentifier:(id)identifier validForConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 controlGroup];
-  v8 = [v7 identifier];
-  v9 = [v8 isEqualToString:v5];
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  controlGroup = [configurationCopy controlGroup];
+  identifier = [controlGroup identifier];
+  v9 = [identifier isEqualToString:identifierCopy];
 
   if (v9)
   {
@@ -1247,8 +1247,8 @@ LABEL_28:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v11 = [v6 experimentGroups];
-    v10 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    experimentGroups = [configurationCopy experimentGroups];
+    v10 = [experimentGroups countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v12 = *v18;
@@ -1258,11 +1258,11 @@ LABEL_28:
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(experimentGroups);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) identifier];
-          v15 = [v14 isEqualToString:v5];
+          identifier2 = [*(*(&v17 + 1) + 8 * i) identifier];
+          v15 = [identifier2 isEqualToString:identifierCopy];
 
           if (v15)
           {
@@ -1271,7 +1271,7 @@ LABEL_28:
           }
         }
 
-        v10 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [experimentGroups countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v10)
         {
           continue;
@@ -1287,36 +1287,36 @@ LABEL_13:
   return v10;
 }
 
-- (void)_serverConfigurationForServerConfigurationInfo:(id)a3 completion:(id)a4
+- (void)_serverConfigurationForServerConfigurationInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ADExperimentManager *)self _getExperimentStateForServerConfigurationInfo:v6];
+  infoCopy = info;
+  completionCopy = completion;
+  v8 = [(ADExperimentManager *)self _getExperimentStateForServerConfigurationInfo:infoCopy];
   if (![v8 didEnd])
   {
-    [v6 maxTimeToSync];
+    [infoCopy maxTimeToSync];
     v12 = v11;
-    v13 = [v8 lastSyncDate];
-    [v13 timeIntervalSinceNow];
+    lastSyncDate = [v8 lastSyncDate];
+    [lastSyncDate timeIntervalSinceNow];
     v15 = v14;
 
     if (v8 && v12 >= -v15)
     {
-      v16 = [(ADExperimentManager *)self _getConfigurationsByIdentifier];
-      v17 = [v6 configurationIdentifier];
-      v9 = [v16 objectForKey:v17];
+      _getConfigurationsByIdentifier = [(ADExperimentManager *)self _getConfigurationsByIdentifier];
+      configurationIdentifier = [infoCopy configurationIdentifier];
+      configurationIdentifier2 = [_getConfigurationsByIdentifier objectForKey:configurationIdentifier];
 
-      if (v9)
+      if (configurationIdentifier2)
       {
 LABEL_8:
-        (*(v7 + 2))(v7, v9, 0, 0);
+        (*(completionCopy + 2))(completionCopy, configurationIdentifier2, 0, 0);
         goto LABEL_9;
       }
 
-      v18 = [(ADExperimentManager *)self _fetchCachedServerConfigurationForConfigurationInfo:v6];
+      v18 = [(ADExperimentManager *)self _fetchCachedServerConfigurationForConfigurationInfo:infoCopy];
       if (v18)
       {
-        v9 = v18;
+        configurationIdentifier2 = v18;
         goto LABEL_8;
       }
     }
@@ -1326,58 +1326,58 @@ LABEL_8:
     v19[2] = sub_1001CC468;
     v19[3] = &unk_1005173D8;
     v19[4] = self;
-    v21 = v7;
-    v20 = v6;
+    v21 = completionCopy;
+    v20 = infoCopy;
     [(ADExperimentManager *)self _remoteFetchConfigMetadataWithServerConfigurationInfo:v20 completion:v19];
 
     goto LABEL_11;
   }
 
-  v9 = [v6 configurationIdentifier];
-  v10 = [(ADExperimentManager *)self _fallbackConfigurationForEndedExperimentWithIdentifier:v9 experimentState:v8];
-  (*(v7 + 2))(v7, v10, 0, 0);
+  configurationIdentifier2 = [infoCopy configurationIdentifier];
+  v10 = [(ADExperimentManager *)self _fallbackConfigurationForEndedExperimentWithIdentifier:configurationIdentifier2 experimentState:v8];
+  (*(completionCopy + 2))(completionCopy, v10, 0, 0);
 
 LABEL_9:
 LABEL_11:
 }
 
-- (void)_setExperimentIdentifier:(id)a3 forConfigurationIdentifier:(id)a4
+- (void)_setExperimentIdentifier:(id)identifier forConfigurationIdentifier:(id)configurationIdentifier
 {
-  v5 = a4;
-  v6 = a3;
+  configurationIdentifierCopy = configurationIdentifier;
+  identifierCopy = identifier;
   v7 = +[ADPreferences sharedPreferences];
-  [v7 setExperimentIdentifier:v6 forConfigurationIdentifier:v5];
+  [v7 setExperimentIdentifier:identifierCopy forConfigurationIdentifier:configurationIdentifierCopy];
 
   [v7 synchronize];
 }
 
-- (id)_experimentIdentifierForConfigurationIdentifier:(id)a3
+- (id)_experimentIdentifierForConfigurationIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[ADPreferences sharedPreferences];
-  v5 = [v4 experimentIdentifierForConfigurationIdentifier:v3];
+  v5 = [v4 experimentIdentifierForConfigurationIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (unint64_t)_experimentGroupHashForExperimentConfiguration:(id)a3 experimentIdentifier:(id)a4
+- (unint64_t)_experimentGroupHashForExperimentConfiguration:(id)configuration experimentIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [a4 dataUsingEncoding:4];
-  v7 = [v5 salt];
+  configurationCopy = configuration;
+  v6 = [identifier dataUsingEncoding:4];
+  salt = [configurationCopy salt];
 
-  v8 = [v7 dataUsingEncoding:4];
+  v8 = [salt dataUsingEncoding:4];
   v9 = AFSecurityDigestData();
   v10 = [v9 hash];
 
   return v10;
 }
 
-- (id)_createExperimentForExperimentConfiguration:(id)a3 experimentIdentifier:(id)a4
+- (id)_createExperimentForExperimentConfiguration:(id)configuration experimentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ADExperimentManager *)self _experimentOverrideForExperimentConfiguration:v6];
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  v8 = [(ADExperimentManager *)self _experimentOverrideForExperimentConfiguration:configurationCopy];
   v9 = v8;
   if (v8)
   {
@@ -1386,13 +1386,13 @@ LABEL_11:
 
   else
   {
-    v11 = [(ADExperimentManager *)self _experimentGroupHashForExperimentConfiguration:v6 experimentIdentifier:v7];
+    v11 = [(ADExperimentManager *)self _experimentGroupHashForExperimentConfiguration:configurationCopy experimentIdentifier:identifierCopy];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v12 = [v6 allGroups];
-    v13 = [v12 countByEnumeratingWithState:&v40 objects:v47 count:16];
+    allGroups = [configurationCopy allGroups];
+    v13 = [allGroups countByEnumeratingWithState:&v40 objects:v47 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1404,13 +1404,13 @@ LABEL_11:
         {
           if (*v41 != v16)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allGroups);
           }
 
           v15 += [*(*(&v40 + 1) + 8 * i) allocation];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v40 objects:v47 count:16];
+        v14 = [allGroups countByEnumeratingWithState:&v40 objects:v47 count:16];
       }
 
       while (v14);
@@ -1431,8 +1431,8 @@ LABEL_11:
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v18 = [v6 allGroups];
-    v19 = [v18 countByEnumeratingWithState:&v36 objects:v46 count:16];
+    allGroups2 = [configurationCopy allGroups];
+    v19 = [allGroups2 countByEnumeratingWithState:&v36 objects:v46 count:16];
     if (v19)
     {
       v20 = v19;
@@ -1444,7 +1444,7 @@ LABEL_15:
       {
         if (*v37 != v22)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(allGroups2);
         }
 
         v24 = *(*(&v36 + 1) + 8 * v23);
@@ -1456,7 +1456,7 @@ LABEL_15:
 
         if (v20 == ++v23)
         {
-          v20 = [v18 countByEnumeratingWithState:&v36 objects:v46 count:16];
+          v20 = [allGroups2 countByEnumeratingWithState:&v36 objects:v46 count:16];
           if (v20)
           {
             goto LABEL_15;
@@ -1466,9 +1466,9 @@ LABEL_15:
         }
       }
 
-      v25 = v24;
+      firstObject = v24;
 
-      if (v25)
+      if (firstObject)
       {
         goto LABEL_29;
       }
@@ -1487,34 +1487,34 @@ LABEL_21:
       _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%s Unable to select deployment group based on allocation.", buf, 0xCu);
     }
 
-    v27 = [v6 controlGroup];
-    v28 = v27;
-    if (v27)
+    controlGroup = [configurationCopy controlGroup];
+    v28 = controlGroup;
+    if (controlGroup)
     {
-      v25 = v27;
+      firstObject = controlGroup;
     }
 
     else
     {
-      v29 = [v6 experimentGroups];
-      v25 = [v29 firstObject];
+      experimentGroups = [configurationCopy experimentGroups];
+      firstObject = [experimentGroups firstObject];
     }
 
 LABEL_29:
     v30 = [AFExperiment alloc];
-    v31 = [v6 identifier];
-    v32 = [v6 version];
-    v33 = [v25 identifier];
-    v34 = [v25 properties];
-    v10 = [v30 initWithConfigurationIdentifier:v31 configurationVersion:v32 deploymentGroupIdentifier:v33 deploymentGroupProperties:v34 deploymentReason:1];
+    identifier = [configurationCopy identifier];
+    version = [configurationCopy version];
+    identifier2 = [firstObject identifier];
+    properties = [firstObject properties];
+    v10 = [v30 initWithConfigurationIdentifier:identifier configurationVersion:version deploymentGroupIdentifier:identifier2 deploymentGroupProperties:properties deploymentReason:1];
   }
 
   return v10;
 }
 
-- (id)_groupOverrideIdentifierForExperimentConfiguration:(id)a3
+- (id)_groupOverrideIdentifierForExperimentConfiguration:(id)configuration
 {
-  [a3 identifier];
+  [configuration identifier];
   v3 = _AFPreferencesValueForKey();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1530,19 +1530,19 @@ LABEL_29:
   return v4;
 }
 
-- (id)_experimentOverrideForExperimentConfiguration:(id)a3
+- (id)_experimentOverrideForExperimentConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(ADExperimentManager *)self _groupOverrideIdentifierForExperimentConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [(ADExperimentManager *)self _groupOverrideIdentifierForExperimentConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = [v4 controlGroup];
-    v7 = [v6 identifier];
-    v8 = [v5 isEqualToString:v7];
+    controlGroup = [configurationCopy controlGroup];
+    identifier = [controlGroup identifier];
+    v8 = [v5 isEqualToString:identifier];
 
     if (v8)
     {
-      v9 = v6;
+      v9 = controlGroup;
     }
 
     else
@@ -1551,8 +1551,8 @@ LABEL_29:
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v10 = [v4 experimentGroups];
-      v9 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      experimentGroups = [configurationCopy experimentGroups];
+      v9 = [experimentGroups countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v9)
       {
         v11 = *v24;
@@ -1562,12 +1562,12 @@ LABEL_29:
           {
             if (*v24 != v11)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(experimentGroups);
             }
 
             v13 = *(*(&v23 + 1) + 8 * i);
-            v14 = [v13 identifier];
-            v15 = [v5 isEqualToString:v14];
+            identifier2 = [v13 identifier];
+            v15 = [v5 isEqualToString:identifier2];
 
             if (v15)
             {
@@ -1576,7 +1576,7 @@ LABEL_29:
             }
           }
 
-          v9 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v9 = [experimentGroups countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v9)
           {
             continue;
@@ -1592,11 +1592,11 @@ LABEL_15:
     if (v9)
     {
       v16 = [AFExperiment alloc];
-      v17 = [v4 identifier];
-      v18 = [v4 version];
-      v19 = [v9 identifier];
-      v20 = [v9 properties];
-      v21 = [v16 initWithConfigurationIdentifier:v17 configurationVersion:v18 deploymentGroupIdentifier:v19 deploymentGroupProperties:v20 deploymentReason:2];
+      identifier3 = [configurationCopy identifier];
+      version = [configurationCopy version];
+      identifier4 = [v9 identifier];
+      properties = [v9 properties];
+      v21 = [v16 initWithConfigurationIdentifier:identifier3 configurationVersion:version deploymentGroupIdentifier:identifier4 deploymentGroupProperties:properties deploymentReason:2];
 
       goto LABEL_19;
     }
@@ -1613,41 +1613,41 @@ LABEL_19:
   return v21;
 }
 
-- (void)resetExperimentForConfigurationIdentifier:(id)a3 completion:(id)a4
+- (void)resetExperimentForConfigurationIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001CD28C;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (id)_experimentForExperimentConfiguration:(id)a3
+- (id)_experimentForExperimentConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(ADExperimentManager *)self _experimentIdentifierForConfigurationIdentifier:v5];
+  configurationCopy = configuration;
+  identifier = [configurationCopy identifier];
+  v6 = [(ADExperimentManager *)self _experimentIdentifierForConfigurationIdentifier:identifier];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v7 = SiriCoreUUIDStringCreate();
 
-    v8 = [v4 identifier];
-    [(ADExperimentManager *)self _setExperimentIdentifier:v7 forConfigurationIdentifier:v8];
+    identifier2 = [configurationCopy identifier];
+    [(ADExperimentManager *)self _setExperimentIdentifier:v7 forConfigurationIdentifier:identifier2];
 
     v6 = v7;
   }
 
-  v9 = [(ADExperimentManager *)self _createExperimentForExperimentConfiguration:v4 experimentIdentifier:v6];
+  v9 = [(ADExperimentManager *)self _createExperimentForExperimentConfiguration:configurationCopy experimentIdentifier:v6];
 
   return v9;
 }
@@ -1655,18 +1655,18 @@ LABEL_19:
 - (id)_buildContext
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(ADExperimentManager *)self _getConfigurationsByIdentifier];
+  _getConfigurationsByIdentifier = [(ADExperimentManager *)self _getConfigurationsByIdentifier];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_1001CD5F8;
   v12 = &unk_100515C18;
-  v13 = self;
+  selfCopy = self;
   v14 = v3;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v9];
+  [_getConfigurationsByIdentifier enumerateKeysAndObjectsUsingBlock:&v9];
 
   v6 = [AFExperimentContext alloc];
-  v7 = [v6 initWithExperimentsByConfigurationIdentifier:{v5, v9, v10, v11, v12, v13}];
+  v7 = [v6 initWithExperimentsByConfigurationIdentifier:{v5, v9, v10, v11, v12, selfCopy}];
 
   return v7;
 }
@@ -1676,9 +1676,9 @@ LABEL_19:
   currentContext = self->_currentContext;
   if (!currentContext)
   {
-    v4 = [(ADExperimentManager *)self _buildContext];
+    _buildContext = [(ADExperimentManager *)self _buildContext];
     v5 = self->_currentContext;
-    self->_currentContext = v4;
+    self->_currentContext = _buildContext;
 
     currentContext = self->_currentContext;
   }
@@ -1710,10 +1710,10 @@ LABEL_19:
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 configurationIdentifier];
-        if (v9)
+        configurationIdentifier = [v8 configurationIdentifier];
+        if (configurationIdentifier)
         {
-          [v2 setObject:v8 forKey:v9];
+          [v2 setObject:v8 forKey:configurationIdentifier];
         }
 
         else
@@ -1772,13 +1772,13 @@ LABEL_19:
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        if (v14)
+        identifier = [v13 identifier];
+        if (identifier)
         {
-          v15 = [v13 controlGroup];
-          if (v15)
+          controlGroup = [v13 controlGroup];
+          if (controlGroup)
           {
-            [v6 setObject:v13 forKey:v14];
+            [v6 setObject:v13 forKey:identifier];
           }
 
           else
@@ -1823,9 +1823,9 @@ LABEL_19:
   serverConfigurationInfoByIdentifier = self->_serverConfigurationInfoByIdentifier;
   if (!serverConfigurationInfoByIdentifier)
   {
-    v4 = [(ADExperimentManager *)self _buildServerConfigurationInfosByIdentifier];
+    _buildServerConfigurationInfosByIdentifier = [(ADExperimentManager *)self _buildServerConfigurationInfosByIdentifier];
     v5 = self->_serverConfigurationInfoByIdentifier;
-    self->_serverConfigurationInfoByIdentifier = v4;
+    self->_serverConfigurationInfoByIdentifier = _buildServerConfigurationInfosByIdentifier;
 
     serverConfigurationInfoByIdentifier = self->_serverConfigurationInfoByIdentifier;
   }
@@ -1838,9 +1838,9 @@ LABEL_19:
   configurationsByIdentifier = self->_configurationsByIdentifier;
   if (!configurationsByIdentifier)
   {
-    v4 = [(ADExperimentManager *)self _buildConfigurationsByIdentifier];
+    _buildConfigurationsByIdentifier = [(ADExperimentManager *)self _buildConfigurationsByIdentifier];
     v5 = self->_configurationsByIdentifier;
-    self->_configurationsByIdentifier = v4;
+    self->_configurationsByIdentifier = _buildConfigurationsByIdentifier;
 
     configurationsByIdentifier = self->_configurationsByIdentifier;
   }
@@ -1848,32 +1848,32 @@ LABEL_19:
   return configurationsByIdentifier;
 }
 
-- (void)_logDidVendExperiment:(id)a3 fetchDetails:(id)a4 error:(id)a5
+- (void)_logDidVendExperiment:(id)experiment fetchDetails:(id)details error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v12 = a5;
-  v13 = v7;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
-  v11 = v12;
+  experimentCopy = experiment;
+  detailsCopy = details;
+  errorCopy = error;
+  v13 = experimentCopy;
+  v14 = detailsCopy;
+  v9 = detailsCopy;
+  v10 = experimentCopy;
+  v11 = errorCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)getExperimentForConfigurationIdentifier:(id)a3 completion:(id)a4
+- (void)getExperimentForConfigurationIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
     +[NSDate now];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1001CE04C;
     v16 = v15[3] = &unk_100515BC8;
-    v17 = self;
-    v18 = v7;
+    selfCopy = self;
+    v18 = completionCopy;
     v8 = v16;
     v9 = objc_retainBlock(v15);
     queue = self->_queue;
@@ -1882,25 +1882,25 @@ LABEL_19:
     v12[2] = sub_1001CE1A0;
     v12[3] = &unk_10051E088;
     v12[4] = self;
-    v13 = v6;
+    v13 = identifierCopy;
     v14 = v9;
     v11 = v9;
     dispatch_async(queue, v12);
   }
 }
 
-- (void)synchronizeExperimentConfigurationsIfApplicableWithCompletion:(id)a3
+- (void)synchronizeExperimentConfigurationsIfApplicableWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(ADExperimentManager *)self _getServerConfigurationInfosByIdentifier];
-  v6 = [v5 allValues];
+  _getServerConfigurationInfosByIdentifier = [(ADExperimentManager *)self _getServerConfigurationInfosByIdentifier];
+  allValues = [_getServerConfigurationInfosByIdentifier allValues];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  obj = allValues;
+  v7 = [allValues countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (!v7)
   {
     goto LABEL_19;
@@ -1925,11 +1925,11 @@ LABEL_19:
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
         {
           v15 = v14;
-          v16 = [v11 configurationIdentifier];
+          configurationIdentifier = [v11 configurationIdentifier];
           *buf = 136315394;
           v28 = "[ADExperimentManager synchronizeExperimentConfigurationsIfApplicableWithCompletion:]";
           v29 = 2112;
-          v30 = v16;
+          v30 = configurationIdentifier;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s Not Synchronizing experiment %@ since user is not yet a participant.", buf, 0x16u);
         }
 
@@ -1944,18 +1944,18 @@ LABEL_19:
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
         {
           v18 = v17;
-          v19 = [v11 configurationIdentifier];
+          configurationIdentifier2 = [v11 configurationIdentifier];
           *buf = 136315394;
           v28 = "[ADExperimentManager synchronizeExperimentConfigurationsIfApplicableWithCompletion:]";
           v29 = 2112;
-          v30 = v19;
+          v30 = configurationIdentifier2;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s Not synchronizing. %@ experiment ended", buf, 0x16u);
         }
 
 LABEL_16:
-        if (v4)
+        if (completionCopy)
         {
-          v4[2](v4, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         goto LABEL_19;
@@ -1966,7 +1966,7 @@ LABEL_16:
       v21[2] = sub_1001CE774;
       v21[3] = &unk_100515BF0;
       v21[4] = v11;
-      v22 = v4;
+      v22 = completionCopy;
       [(ADExperimentManager *)self _serverConfigurationForServerConfigurationInfo:v11 completion:v21];
     }
 
@@ -1982,11 +1982,11 @@ LABEL_16:
 LABEL_19:
 }
 
-- (void)getContextWithCompletion:(id)a3
+- (void)getContextWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1994,7 +1994,7 @@ LABEL_19:
     v7[2] = sub_1001CE9D8;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -2021,11 +2021,11 @@ LABEL_19:
   return v3;
 }
 
-- (void)getConfigurationsWithCompletion:(id)a3
+- (void)getConfigurationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -2033,7 +2033,7 @@ LABEL_19:
     v7[2] = sub_1001CEC2C;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }

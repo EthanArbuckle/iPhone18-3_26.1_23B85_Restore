@@ -21,9 +21,9 @@
 
 - (uint64_t)ReplayData)
 {
-  v1 = *a1;
+  v1 = *self;
 
-  return a1;
+  return self;
 }
 
 @end

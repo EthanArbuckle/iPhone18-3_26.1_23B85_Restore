@@ -1,29 +1,29 @@
 @interface BRCStateUpdateCoalescer
 - (BOOL)_cancelAndReleaseUpdateTimerIfExists;
-- (BRCStateUpdateCoalescer)initWithCallbackQueue:(id)a3 timerMinDelay:(double)a4 timerMaxDelay:(double)a5 stableStateMinThreshold:(double)a6;
+- (BRCStateUpdateCoalescer)initWithCallbackQueue:(id)queue timerMinDelay:(double)delay timerMaxDelay:(double)maxDelay stableStateMinThreshold:(double)threshold;
 - (double)_timeSinceLastCompletedTimer;
 - (id)description;
-- (void)_setupCoalesceUpdateTimerWithUtilityHandlerBlock:(id)a3;
+- (void)_setupCoalesceUpdateTimerWithUtilityHandlerBlock:(id)block;
 - (void)reset;
-- (void)updateStateWithCoalescing:(id)a3 oldState:(BOOL)a4 newState:(BOOL)a5;
+- (void)updateStateWithCoalescing:(id)coalescing oldState:(BOOL)state newState:(BOOL)newState;
 @end
 
 @implementation BRCStateUpdateCoalescer
 
-- (BRCStateUpdateCoalescer)initWithCallbackQueue:(id)a3 timerMinDelay:(double)a4 timerMaxDelay:(double)a5 stableStateMinThreshold:(double)a6
+- (BRCStateUpdateCoalescer)initWithCallbackQueue:(id)queue timerMinDelay:(double)delay timerMaxDelay:(double)maxDelay stableStateMinThreshold:(double)threshold
 {
-  v11 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = BRCStateUpdateCoalescer;
   v12 = [(BRCStateUpdateCoalescer *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_callbackQueue, a3);
-    v13->_timerDelay = a4;
-    v13->_timerMinDelay = a4;
-    v13->_timerMaxDelay = a5;
-    v13->_stableStateMinThreshold = a6;
+    objc_storeStrong(&v12->_callbackQueue, queue);
+    v13->_timerDelay = delay;
+    v13->_timerMinDelay = delay;
+    v13->_timerMaxDelay = maxDelay;
+    v13->_stableStateMinThreshold = threshold;
   }
 
   return v13;
@@ -76,9 +76,9 @@
   return coalesceUpdateTimer != 0;
 }
 
-- (void)_setupCoalesceUpdateTimerWithUtilityHandlerBlock:(id)a3
+- (void)_setupCoalesceUpdateTimerWithUtilityHandlerBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_callbackQueue);
   [(BRCStateUpdateCoalescer *)self _cancelAndReleaseUpdateTimerIfExists];
   if (self->_coalesceUpdateTimer)
@@ -103,7 +103,7 @@
   v19[4] = self;
   v12 = v10;
   v20 = v12;
-  v13 = v4;
+  v13 = blockCopy;
   v21 = v13;
   v14 = v11;
   v15 = v19;
@@ -148,34 +148,34 @@ intptr_t __76__BRCStateUpdateCoalescer__setupCoalesceUpdateTimerWithUtilityHandl
   return result;
 }
 
-- (void)updateStateWithCoalescing:(id)a3 oldState:(BOOL)a4 newState:(BOOL)a5
+- (void)updateStateWithCoalescing:(id)coalescing oldState:(BOOL)state newState:(BOOL)newState
 {
-  v6 = a4;
-  v8 = a3;
+  stateCopy = state;
+  coalescingCopy = coalescing;
   dispatch_assert_queue_V2(self->_callbackQueue);
-  if (a5)
+  if (newState)
   {
-    if (v6)
+    if (stateCopy)
     {
       if (self->_coalesceUpdateTimer)
       {
         [BRCStateUpdateCoalescer updateStateWithCoalescing:oldState:newState:];
       }
 
-      v8[2](v8);
+      coalescingCopy[2](coalescingCopy);
     }
 
     else
     {
-      [(BRCStateUpdateCoalescer *)self _setupCoalesceUpdateTimerWithUtilityHandlerBlock:v8];
+      [(BRCStateUpdateCoalescer *)self _setupCoalesceUpdateTimerWithUtilityHandlerBlock:coalescingCopy];
     }
 
     goto LABEL_15;
   }
 
-  v9 = [(BRCStateUpdateCoalescer *)self _cancelAndReleaseUpdateTimerIfExists];
-  v8[2](v8);
-  if (!v6)
+  _cancelAndReleaseUpdateTimerIfExists = [(BRCStateUpdateCoalescer *)self _cancelAndReleaseUpdateTimerIfExists];
+  coalescingCopy[2](coalescingCopy);
+  if (!stateCopy)
   {
     goto LABEL_10;
   }
@@ -184,7 +184,7 @@ intptr_t __76__BRCStateUpdateCoalescer__setupCoalesceUpdateTimerWithUtilityHandl
   {
     self->_timerDelay = self->_timerMinDelay;
 LABEL_10:
-    if (!v9)
+    if (!_cancelAndReleaseUpdateTimerIfExists)
     {
       goto LABEL_15;
     }

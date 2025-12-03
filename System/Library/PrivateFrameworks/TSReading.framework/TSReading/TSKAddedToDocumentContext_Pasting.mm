@@ -1,7 +1,7 @@
 @interface TSKAddedToDocumentContext_Pasting
 - (TSKAddedToDocumentContext_Pasting)init;
 - (void)dealloc;
-- (void)setTableIDMap:(__CFDictionary *)a3;
+- (void)setTableIDMap:(__CFDictionary *)map;
 @end
 
 @implementation TSKAddedToDocumentContext_Pasting
@@ -32,11 +32,11 @@
   [(TSKAddedToDocumentContext_Pasting *)&v4 dealloc];
 }
 
-- (void)setTableIDMap:(__CFDictionary *)a3
+- (void)setTableIDMap:(__CFDictionary *)map
 {
-  if (a3)
+  if (map)
   {
-    CFRetain(a3);
+    CFRetain(map);
   }
 
   mTableIDMap = self->mTableIDMap;
@@ -45,7 +45,7 @@
     CFRelease(mTableIDMap);
   }
 
-  self->mTableIDMap = a3;
+  self->mTableIDMap = map;
 }
 
 @end

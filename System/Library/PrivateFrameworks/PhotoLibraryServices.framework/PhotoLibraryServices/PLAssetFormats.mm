@@ -1,13 +1,13 @@
 @interface PLAssetFormats
-+ (CGSize)sizeForFormat:(unsigned __int16)a3;
-+ (id)descriptionForImageFormat:(unsigned __int16)a3;
++ (CGSize)sizeForFormat:(unsigned __int16)format;
++ (id)descriptionForImageFormat:(unsigned __int16)format;
 @end
 
 @implementation PLAssetFormats
 
-+ (CGSize)sizeForFormat:(unsigned __int16)a3
++ (CGSize)sizeForFormat:(unsigned __int16)format
 {
-  if (a3)
+  if (format)
   {
     v3 = [MEMORY[0x1E69BF260] formatWithID:?];
     [v3 size];
@@ -28,20 +28,20 @@
   return result;
 }
 
-+ (id)descriptionForImageFormat:(unsigned __int16)a3
++ (id)descriptionForImageFormat:(unsigned __int16)format
 {
-  if (a3)
+  if (format)
   {
     v3 = [MEMORY[0x1E69BF260] formatWithID:?];
-    v4 = [v3 shortDescription];
+    shortDescription = [v3 shortDescription];
   }
 
   else
   {
-    v4 = @"0-PLUnknownImageFormat";
+    shortDescription = @"0-PLUnknownImageFormat";
   }
 
-  return v4;
+  return shortDescription;
 }
 
 @end

@@ -7,9 +7,9 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 cloudKitStartMigrationURL];
+  cloudKitStartMigrationURL = [v2 cloudKitStartMigrationURL];
 
-  return v3;
+  return cloudKitStartMigrationURL;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface MNNavigationServiceCallbackParameters
-- (MNNavigationServiceCallbackParameters)initWithCoder:(id)a3;
+- (MNNavigationServiceCallbackParameters)initWithCoder:(id)coder;
 - (unint64_t)type;
 @end
 
 @implementation MNNavigationServiceCallbackParameters
 
-- (MNNavigationServiceCallbackParameters)initWithCoder:(id)a3
+- (MNNavigationServiceCallbackParameters)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = MNNavigationServiceCallbackParameters;

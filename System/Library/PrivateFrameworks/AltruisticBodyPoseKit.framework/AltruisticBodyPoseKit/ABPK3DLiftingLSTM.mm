@@ -3,14 +3,14 @@
 - (ABPK3DLiftingLSTM)init;
 - (BOOL)initMLNetwork;
 - (id).cxx_construct;
-- (int)runLiftingModelWithData:(id)a3 atTimestamp:(double)a4;
-- (int)runLiftingModelWithData:(id)a3 imageResolution:(CGSize)a4 deviceOrientation:(int64_t)a5 atTimestamp:(double)a6;
-- (int)runLiftingModelWithRawDetectionXYVisbility:(const void *)a3 with2DReferenceResults:(id)a4 atTimestamp:(double)a5 exportDebuggingData:(BOOL)a6;
-- (void)_adjustBoneLength:(void *)a3;
+- (int)runLiftingModelWithData:(id)data atTimestamp:(double)timestamp;
+- (int)runLiftingModelWithData:(id)data imageResolution:(CGSize)resolution deviceOrientation:(int64_t)orientation atTimestamp:(double)timestamp;
+- (int)runLiftingModelWithRawDetectionXYVisbility:(const void *)visbility with2DReferenceResults:(id)results atTimestamp:(double)timestamp exportDebuggingData:(BOOL)data;
+- (void)_adjustBoneLength:(void *)length;
 - (void)resetCellStateAndHiddenStateInput;
 - (void)resetInputCellStateBuffer;
 - (void)resetInputHiddenStateBuffer;
-- (void)saveDataToFilePath:(ABPK3DLiftingLSTM *)self with2DInput:(SEL)a2 withLSTMOutput:(id)a3 withPostprocessedLiftingResults:(const void *)a4;
+- (void)saveDataToFilePath:(ABPK3DLiftingLSTM *)self with2DInput:(SEL)input withLSTMOutput:(id)output withPostprocessedLiftingResults:(const void *)results;
 @end
 
 @implementation ABPK3DLiftingLSTM
@@ -69,65 +69,65 @@ LABEL_5:
     _os_log_impl(&dword_23EDDC000, v3, OS_LOG_TYPE_DEBUG, " ABPK3DLifting: Initializing ML Network - LSTM ", v16, 2u);
   }
 
-  v4 = [(ABPKMLModelConfiguration3DLiftingLSTM *)self->_mlConfigLSTM compiledMLModelPath];
-  if (v4)
+  compiledMLModelPath = [(ABPKMLModelConfiguration3DLiftingLSTM *)self->_mlConfigLSTM compiledMLModelPath];
+  if (compiledMLModelPath)
   {
-    v5 = [(ABPKMLModelConfiguration3DLiftingLSTM *)self->_mlConfigLSTM inputTensorNames];
+    inputTensorNames = [(ABPKMLModelConfiguration3DLiftingLSTM *)self->_mlConfigLSTM inputTensorNames];
     inputTensorLSTMNames = self->_inputTensorLSTMNames;
-    self->_inputTensorLSTMNames = v5;
+    self->_inputTensorLSTMNames = inputTensorNames;
 
-    v7 = [(ABPKMLModelConfiguration3DLiftingLSTM *)self->_mlConfigLSTM outputTensorNames];
+    outputTensorNames = [(ABPKMLModelConfiguration3DLiftingLSTM *)self->_mlConfigLSTM outputTensorNames];
     outputTensorLSTMNames = self->_outputTensorLSTMNames;
-    self->_outputTensorLSTMNames = v7;
+    self->_outputTensorLSTMNames = outputTensorNames;
 
     self->_useEspressoV2 = 1;
-    v9 = [[ABPKMLNetworkV2 alloc] initWithNetworkPath:v4 networkConfig:@"main" inputNames:self->_inputTensorLSTMNames outputNames:self->_outputTensorLSTMNames useSurface:0];
+    v9 = [[ABPKMLNetworkV2 alloc] initWithNetworkPath:compiledMLModelPath networkConfig:@"main" inputNames:self->_inputTensorLSTMNames outputNames:self->_outputTensorLSTMNames useSurface:0];
     networkV2 = self->_networkV2;
     self->_networkV2 = v9;
 
-    v11 = [(ABPKMLNetworkV2 *)self->_networkV2 inputBuffers];
+    inputBuffers = [(ABPKMLNetworkV2 *)self->_networkV2 inputBuffers];
     inputBufferDict = self->_inputBufferDict;
-    self->_inputBufferDict = v11;
+    self->_inputBufferDict = inputBuffers;
 
-    v13 = [(ABPKMLNetworkV2 *)self->_networkV2 outputBuffers];
+    outputBuffers = [(ABPKMLNetworkV2 *)self->_networkV2 outputBuffers];
     outputBufferDict = self->_outputBufferDict;
-    self->_outputBufferDict = v13;
+    self->_outputBufferDict = outputBuffers;
   }
 
-  return v4 != 0;
+  return compiledMLModelPath != 0;
 }
 
-- (int)runLiftingModelWithData:(id)a3 atTimestamp:(double)a4
+- (int)runLiftingModelWithData:(id)data atTimestamp:(double)timestamp
 {
-  v6 = a3;
-  if ([v6 rotation] && objc_msgSend(v6, "rotation") != 180)
+  dataCopy = data;
+  if ([dataCopy rotation] && objc_msgSend(dataCopy, "rotation") != 180)
   {
-    [v6 imageResolution];
+    [dataCopy imageResolution];
     v9 = v10;
-    [v6 imageResolution];
+    [dataCopy imageResolution];
     v7 = v11;
   }
 
   else
   {
-    [v6 imageResolution];
+    [dataCopy imageResolution];
     v9 = v8;
   }
 
-  v12 = [(ABPK3DLiftingLSTM *)self runLiftingModelWithData:v6 imageResolution:1 deviceOrientation:v9 atTimestamp:v7, a4];
+  timestamp = [(ABPK3DLiftingLSTM *)self runLiftingModelWithData:dataCopy imageResolution:1 deviceOrientation:v9 atTimestamp:v7, timestamp];
 
-  return v12;
+  return timestamp;
 }
 
-- (int)runLiftingModelWithData:(id)a3 imageResolution:(CGSize)a4 deviceOrientation:(int64_t)a5 atTimestamp:(double)a6
+- (int)runLiftingModelWithData:(id)data imageResolution:(CGSize)resolution deviceOrientation:(int64_t)orientation atTimestamp:(double)timestamp
 {
-  height = a4.height;
-  width = a4.width;
+  height = resolution.height;
+  width = resolution.width;
   *&v21._anon_20[8] = *MEMORY[0x277D85DE8];
-  v21.super.isa = *&a4.width;
-  *v21._anon_8 = a4.height;
-  v11 = a3;
-  [(ABPK3DLiftingLSTM *)self _startPrepareLiftingLSTMInputSignpostWithTimestamp:a6];
+  v21.super.isa = *&resolution.width;
+  *v21._anon_8 = resolution.height;
+  dataCopy = data;
+  [(ABPK3DLiftingLSTM *)self _startPrepareLiftingLSTMInputSignpostWithTimestamp:timestamp];
   v12 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -141,22 +141,22 @@ LABEL_5:
   v13 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [v11 rotation];
+    rotation = [dataCopy rotation];
     *&v21._anon_8[8] = 134217984;
-    *&v21._anon_8[12] = v14;
+    *&v21._anon_8[12] = rotation;
     _os_log_impl(&dword_23EDDC000, v13, OS_LOG_TYPE_DEBUG, " runLiftingModelWithData rotation: %ld ", &v21._anon_8[8], 0xCu);
   }
 
-  abpk::GetRawDetectionXYVisbilityWithRawDetection2D(v11, &v21, v15, &v21._anon_8[8]);
-  abpk::Normalize2DCoordinatesSquareCrop(&v21._anon_8[8], &v21, a5);
+  abpk::GetRawDetectionXYVisbilityWithRawDetection2D(dataCopy, &v21, v15, &v21._anon_8[8]);
+  abpk::Normalize2DCoordinatesSquareCrop(&v21._anon_8[8], &v21, orientation);
   if (!self->_setUpStatus)
   {
     [(ABPK3DLiftingLSTM *)self updateInputImageResolution:*&v21.super.isa, *v21._anon_8];
     self->_setUpStatus = 1;
   }
 
-  [(ABPK3DLiftingLSTM *)self _endPrepareLiftingLSTMInputSignpostWithTimestamp:a6];
-  if ([(ABPK3DLiftingLSTM *)self runLiftingModelWithRawDetectionXYVisbility:&v21._anon_8[8] with2DReferenceResults:v11 atTimestamp:0 exportDebuggingData:a6])
+  [(ABPK3DLiftingLSTM *)self _endPrepareLiftingLSTMInputSignpostWithTimestamp:timestamp];
+  if ([(ABPK3DLiftingLSTM *)self runLiftingModelWithRawDetectionXYVisbility:&v21._anon_8[8] with2DReferenceResults:dataCopy atTimestamp:0 exportDebuggingData:timestamp])
   {
     v16 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -208,9 +208,9 @@ LABEL_5:
   [(ABPK3DLiftingLSTM *)self resetInputHiddenStateBuffer];
 }
 
-- (int)runLiftingModelWithRawDetectionXYVisbility:(const void *)a3 with2DReferenceResults:(id)a4 atTimestamp:(double)a5 exportDebuggingData:(BOOL)a6
+- (int)runLiftingModelWithRawDetectionXYVisbility:(const void *)visbility with2DReferenceResults:(id)results atTimestamp:(double)timestamp exportDebuggingData:(BOOL)data
 {
-  a4;
+  results;
   v9 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -244,45 +244,45 @@ LABEL_5:
   v26 = [(NSArray *)self->_outputTensorLSTMNames objectAtIndexedSubscript:2];
   v27 = [(NSMutableDictionary *)v25 objectForKeyedSubscript:v26];
 
-  v28 = [v12 bytes];
-  v29 = [v12 strideChannels];
-  v30 = (*a3 + 8);
+  bytes = [v12 bytes];
+  strideChannels = [v12 strideChannels];
+  v30 = (*visbility + 8);
   v31 = 16;
   do
   {
     _S0 = *(v30 - 2);
     __asm { FCVT            H0, S0 }
 
-    *v28 = _S0;
+    *bytes = _S0;
     _S0 = *(v30 - 1);
     __asm { FCVT            H0, S0 }
 
-    v28[v29] = _S0;
+    bytes[strideChannels] = _S0;
     v38 = *v30;
     v30 += 3;
     _S0 = v38;
     __asm { FCVT            H0, S0 }
 
-    v28[2 * v29] = _S0;
-    v28 += 3 * v29;
+    bytes[2 * strideChannels] = _S0;
+    bytes += 3 * strideChannels;
     --v31;
   }
 
   while (v31);
   memcpy([v15 bytes], objc_msgSend(v24, "bytes"), objc_msgSend(v24, "size"));
   memcpy([v18 bytes], objc_msgSend(v27, "bytes"), objc_msgSend(v27, "size"));
-  [(ABPK3DLiftingLSTM *)self _startRunLiftingLSTMModelSignpostWithTimestamp:a5];
+  [(ABPK3DLiftingLSTM *)self _startRunLiftingLSTMModelSignpostWithTimestamp:timestamp];
   [(ABPKMLNetworkV2 *)self->_networkV2 execute];
-  [(ABPK3DLiftingLSTM *)self _endRunLiftingLSTMModelSignpostWithTimestamp:a5];
-  [(ABPK3DLiftingLSTM *)self _startPostProcessFor3DLiftingLSTMModelDataSignpostWithTimestamp:a5];
-  v40 = [v21 bytes];
-  v41 = [v21 strideChannels];
+  [(ABPK3DLiftingLSTM *)self _endRunLiftingLSTMModelSignpostWithTimestamp:timestamp];
+  [(ABPK3DLiftingLSTM *)self _startPostProcessFor3DLiftingLSTMModelDataSignpostWithTimestamp:timestamp];
+  bytes2 = [v21 bytes];
+  strideChannels2 = [v21 strideChannels];
   end = buf.__end_;
-  v43 = 2 * v41;
+  v43 = 2 * strideChannels2;
   v44 = 48;
   while (1)
   {
-    _H0 = *v40;
+    _H0 = *bytes2;
     __asm { FCVT            S9, H0 }
 
     if (end >= buf.__end_cap_.__value_)
@@ -339,7 +339,7 @@ LABEL_5:
     }
 
     buf.__end_ = end;
-    v40 = (v40 + v43);
+    bytes2 = (bytes2 + v43);
     if (!--v44)
     {
       v58 = 0uLL;
@@ -378,11 +378,11 @@ LABEL_5:
   return self->_liftingResultAsModelPoses.__begin_;
 }
 
-- (void)saveDataToFilePath:(ABPK3DLiftingLSTM *)self with2DInput:(SEL)a2 withLSTMOutput:(id)a3 withPostprocessedLiftingResults:(const void *)a4
+- (void)saveDataToFilePath:(ABPK3DLiftingLSTM *)self with2DInput:(SEL)input withLSTMOutput:(id)output withPostprocessedLiftingResults:(const void *)results
 {
   v6 = v5;
   v7 = v4;
-  v46 = a3;
+  outputCopy = output;
   v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -398,9 +398,9 @@ LABEL_5:
   v45 = v11;
   v47 = v10;
   v48 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v16 = *a4;
-  v17 = *(a4 + 1);
-  if (*a4 != v17)
+  v16 = *results;
+  v17 = *(results + 1);
+  if (*results != v17)
   {
     do
     {
@@ -471,10 +471,10 @@ LABEL_5:
   [v12 setObject:v50 forKeyedSubscript:@"lifting_model_lstm_output_plus_000_hip_at_index_0"];
   [v12 setObject:v49 forKeyedSubscript:@"lifting_model_output_postprocessed_final"];
   [v47 setObject:v12 forKeyedSubscript:@"output"];
-  [v47 writeToFile:v46 atomically:0];
+  [v47 writeToFile:outputCopy atomically:0];
 }
 
-- (void)_adjustBoneLength:(void *)a3
+- (void)_adjustBoneLength:(void *)length
 {
   v5 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -486,7 +486,7 @@ LABEL_5:
   v25 = 0;
   v26 = 0;
   v27 = 0;
-  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(&v25, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(&v25, *length, *(length + 1), (*(length + 1) - *length) >> 4);
   *buf = 0;
   v19 = buf;
   v20 = 0x6012000000;
@@ -520,7 +520,7 @@ LABEL_5:
     v13 = vsubq_f32(v25[v11], v25[v12]);
     v14 = vmulq_f32(v13, v13);
     v14.f32[0] = sqrtf(v14.f32[2] + vaddv_f32(*v14.f32));
-    *(*a3 + 16 * v11) = vmlaq_n_f32(*(*a3 + 16 * v12), vdivq_f32(v13, vdupq_lane_s32(*v14.f32, 0)), [ABPK3DLiftingLSTM _adjustBoneLength:]::bones[v11] * 1000.0);
+    *(*length + 16 * v11) = vmlaq_n_f32(*(*length + 16 * v12), vdivq_f32(v13, vdupq_lane_s32(*v14.f32, 0)), [ABPK3DLiftingLSTM _adjustBoneLength:]::bones[v11] * 1000.0);
     v15 = self->_abpkLiftingSkeletonDefinition;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;

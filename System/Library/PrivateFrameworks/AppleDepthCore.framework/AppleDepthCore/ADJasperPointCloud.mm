@@ -1,42 +1,42 @@
 @interface ADJasperPointCloud
-+ (BOOL)prepareDataBuffer:(__CVBuffer *)a3 forLength:(int)a4 additionalDataSize:(unint64_t)a5;
-+ (id)makeWithDataBuffer:(__CVBuffer *)a3;
-+ (id)pointCloudByMergingPointClouds:(id)a3;
-+ (id)pointCloudByMergingPointClouds:(id)a3 applyingTransforms:(id *)a4 projectingToCamera:(id)a5;
-+ (id)pointCloudFromCSV:(id)a3;
-+ (id)pointCloudFromFile:(id)a3;
-+ (id)pointCloudFromJSPP:(id)a3;
-+ (int64_t)getKeyForName:(id)a3;
-+ (unint64_t)requiredStorageBytesForLength:(int)a3 additionalDataSize:(unint64_t)a4;
-+ (void)setEmulatedDevice:(id)a3;
-+ (void)setPerformanceOverrides:(id)a3;
-- (ADJasperPointCloud)initWithDataBuffer:(__CVBuffer *)a3;
-- (ADJasperPointCloud)initWithDictionaryRepresentation:(id)a3;
-- (ADJasperPointCloud)initWithLength:(int)a3;
-- (ADJasperPointCloud)initWithLength:(int)a3 storage:(__CVBuffer *)a4;
-- (ADJasperPointCloud)initWithPointCloud:(id)a3;
-- (ADJasperPointCloud)initWithPreparedStorage:(void *)a3 storageSize:(unint64_t)a4;
-- (BOOL)pointCloudToCSV:(id)a3 atomically:(BOOL)a4;
-- (BOOL)pointCloudToImageFile:(id)a3 uti:(id)a4 atomically:(BOOL)a5;
-- (BOOL)pointCloudToJSPP:(id)a3 atomically:(BOOL)a4;
++ (BOOL)prepareDataBuffer:(__CVBuffer *)buffer forLength:(int)length additionalDataSize:(unint64_t)size;
++ (id)makeWithDataBuffer:(__CVBuffer *)buffer;
++ (id)pointCloudByMergingPointClouds:(id)clouds;
++ (id)pointCloudByMergingPointClouds:(id)clouds applyingTransforms:(id *)transforms projectingToCamera:(id)camera;
++ (id)pointCloudFromCSV:(id)v;
++ (id)pointCloudFromFile:(id)file;
++ (id)pointCloudFromJSPP:(id)p;
++ (int64_t)getKeyForName:(id)name;
++ (unint64_t)requiredStorageBytesForLength:(int)length additionalDataSize:(unint64_t)size;
++ (void)setEmulatedDevice:(id)device;
++ (void)setPerformanceOverrides:(id)overrides;
+- (ADJasperPointCloud)initWithDataBuffer:(__CVBuffer *)buffer;
+- (ADJasperPointCloud)initWithDictionaryRepresentation:(id)representation;
+- (ADJasperPointCloud)initWithLength:(int)length;
+- (ADJasperPointCloud)initWithLength:(int)length storage:(__CVBuffer *)storage;
+- (ADJasperPointCloud)initWithPointCloud:(id)cloud;
+- (ADJasperPointCloud)initWithPreparedStorage:(void *)storage storageSize:(unint64_t)size;
+- (BOOL)pointCloudToCSV:(id)v atomically:(BOOL)atomically;
+- (BOOL)pointCloudToImageFile:(id)file uti:(id)uti atomically:(BOOL)atomically;
+- (BOOL)pointCloudToJSPP:(id)p atomically:(BOOL)atomically;
 - (BOOL)reset;
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4;
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically;
 - (CGImage)cgImageRepresentation;
-- (__CVBuffer)createVisualizationOnImage:(__CVBuffer *)a3;
+- (__CVBuffer)createVisualizationOnImage:(__CVBuffer *)image;
 - (id).cxx_construct;
 - (id)additionalData;
 - (id)debugQuickLookObject;
 - (id)dictionaryRepresentation;
-- (id)imageRepresentationForUTI:(id)a3;
-- (id)initByMergingPointClouds:(id)a3;
+- (id)imageRepresentationForUTI:(id)i;
+- (id)initByMergingPointClouds:(id)clouds;
 - (id)mutableCopy;
-- (id)pointCloudByApplyingFilter:(id)a3;
-- (id)pointCloudByChangingPointOfViewByTransform:(void *)a3 to:;
-- (id)pointCloudByChangingPointOfViewFrom:(id)a3 to:(id)a4;
+- (id)pointCloudByApplyingFilter:(id)filter;
+- (id)pointCloudByChangingPointOfViewByTransform:(void *)transform to:;
+- (id)pointCloudByChangingPointOfViewFrom:(id)from to:(id)to;
 - (int)length;
 - (int)size;
-- (int64_t)projectJasperPointsFilteredBy:(id)a3 croppedBy:(CGRect)a4 rotatedBy:(int64_t)a5 andScaledInto:(__CVBuffer *)a6;
-- (int64_t)projectJasperPointsFilteredBy:(id)a3 croppedBy:(CGRect)a4 rotatedBy:(int64_t)a5 andScaledMergingWith:(__CVBuffer *)a6;
+- (int64_t)projectJasperPointsFilteredBy:(id)by croppedBy:(CGRect)croppedBy rotatedBy:(int64_t)rotatedBy andScaledInto:(__CVBuffer *)into;
+- (int64_t)projectJasperPointsFilteredBy:(id)by croppedBy:(CGRect)croppedBy rotatedBy:(int64_t)rotatedBy andScaledMergingWith:(__CVBuffer *)with;
 - (void)dealloc;
 @end
 
@@ -56,20 +56,20 @@
 
 - (id)debugQuickLookObject
 {
-  v2 = [(ADJasperPointCloud *)self cgImageRepresentation];
+  cgImageRepresentation = [(ADJasperPointCloud *)self cgImageRepresentation];
 
-  return debugQuickLookObjectFromCGImage(v2);
+  return debugQuickLookObjectFromCGImage(cgImageRepresentation);
 }
 
-- (BOOL)pointCloudToImageFile:(id)a3 uti:(id)a4 atomically:(BOOL)a5
+- (BOOL)pointCloudToImageFile:(id)file uti:(id)uti atomically:(BOOL)atomically
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(ADJasperPointCloud *)self imageRepresentationForUTI:a4];
+  atomicallyCopy = atomically;
+  fileCopy = file;
+  v9 = [(ADJasperPointCloud *)self imageRepresentationForUTI:uti];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 writeToFile:v8 atomically:v5];
+    v11 = [v9 writeToFile:fileCopy atomically:atomicallyCopy];
   }
 
   else
@@ -80,17 +80,17 @@
   return v11;
 }
 
-- (id)imageRepresentationForUTI:(id)a3
+- (id)imageRepresentationForUTI:(id)i
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB28] data];
+  iCopy = i;
+  data = [MEMORY[0x277CBEB28] data];
   image = [(ADJasperPointCloud *)self cgImageRepresentation];
   Mutable = CFDataCreateMutable(0, 0);
-  v8 = CGImageDestinationCreateWithData(v5, v4, 1uLL, 0);
+  v8 = CGImageDestinationCreateWithData(data, iCopy, 1uLL, 0);
   CGImageDestinationAddImage(v8, image, 0);
   if (CGImageDestinationFinalize(v8))
   {
-    v6 = v5;
+    v6 = data;
   }
 
   else
@@ -107,16 +107,16 @@
 
 - (CGImage)cgImageRepresentation
 {
-  v2 = [(ADJasperPointCloud *)self createVisualization];
+  createVisualization = [(ADJasperPointCloud *)self createVisualization];
 
-  return PixelBufferUtils::pixelBufferToCGImage(v2, v3);
+  return PixelBufferUtils::pixelBufferToCGImage(createVisualization, v3);
 }
 
-- (__CVBuffer)createVisualizationOnImage:(__CVBuffer *)a3
+- (__CVBuffer)createVisualizationOnImage:(__CVBuffer *)image
 {
-  if (a3)
+  if (image)
   {
-    PixelBufferUtils::createConvertedPixelBufferFormat(a3, 0x42475241, 0);
+    PixelBufferUtils::createConvertedPixelBufferFormat(image, 0x42475241, 0);
     goto LABEL_18;
   }
 
@@ -184,44 +184,44 @@ LABEL_18:
   return v21;
 }
 
-- (id)pointCloudByApplyingFilter:(id)a3
+- (id)pointCloudByApplyingFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v5 = [[ADMutableJasperPointCloud alloc] initWithCapacity:[(ADJasperPointCloud *)self length]];
   if (v5)
   {
-    v6 = [v4 echoMode];
-    [v4 confidenceThreshold];
+    echoMode = [filterCopy echoMode];
+    [filterCopy confidenceThreshold];
     v8 = v7;
-    [v4 minDistance];
+    [filterCopy minDistance];
     v10 = v9;
-    [v4 maxDistance];
+    [filterCopy maxDistance];
     v12 = v11;
-    [v4 shortRangeDepthThreshold];
+    [filterCopy shortRangeDepthThreshold];
     v14 = v13;
-    [v4 shortRangeConfidenceThreshold];
-    appledepth::JasperPointCloud::initByApplyingFilters(&v5->super._pc, &self->_pc, v6, [v4 bankIDMask], v8, v10, v12, v14, v15);
+    [filterCopy shortRangeConfidenceThreshold];
+    appledepth::JasperPointCloud::initByApplyingFilters(&v5->super._pc, &self->_pc, echoMode, [filterCopy bankIDMask], v8, v10, v12, v14, v15);
     v16 = v5;
   }
 
   return v5;
 }
 
-+ (void)setEmulatedDevice:(id)a3
++ (void)setEmulatedDevice:(id)device
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  deviceCopy = device;
+  v4 = deviceCopy;
+  if (deviceCopy)
   {
-    v5 = [v3 UTF8String];
+    uTF8String = [deviceCopy UTF8String];
   }
 
   else
   {
-    v5 = "";
+    uTF8String = "";
   }
 
-  std::string::basic_string[abi:ne200100]<0>(&__p, v5);
+  std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String);
   appledepth::JasperPointCloud::setEmulatedDevice(&__p);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -229,10 +229,10 @@ LABEL_18:
   }
 }
 
-+ (void)setPerformanceOverrides:(id)a3
++ (void)setPerformanceOverrides:(id)overrides
 {
-  v3 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v3 UTF8String]);
+  overridesCopy = overrides;
+  std::string::basic_string[abi:ne200100]<0>(__p, [overridesCopy UTF8String]);
   appledepth::JasperPointCloud::initPerformanceOverrides(__p);
   if (v5 < 0)
   {
@@ -240,20 +240,20 @@ LABEL_18:
   }
 }
 
-+ (id)pointCloudByMergingPointClouds:(id)a3 applyingTransforms:(id *)a4 projectingToCamera:(id)a5
++ (id)pointCloudByMergingPointClouds:(id)clouds applyingTransforms:(id *)transforms projectingToCamera:(id)camera
 {
-  v7 = a3;
-  v8 = a5;
+  cloudsCopy = clouds;
+  cameraCopy = camera;
   v9 = [ADJasperPointCloud alloc];
   if (v9)
   {
-    std::vector<appledepth::JasperPointCloud const*>::vector[abi:ne200100](&__p, [v7 count]);
+    std::vector<appledepth::JasperPointCloud const*>::vector[abi:ne200100](&__p, [cloudsCopy count]);
     if (v24 != __p)
     {
       v10 = 0;
       do
       {
-        v11 = [v7 objectAtIndexedSubscript:v10];
+        v11 = [cloudsCopy objectAtIndexedSubscript:v10];
         *(__p + v10) = v11 + 8;
 
         ++v10;
@@ -262,15 +262,15 @@ LABEL_18:
       while (v10 < (v24 - __p) >> 3);
     }
 
-    v12 = [v7 count];
+    v12 = [cloudsCopy count];
     if (appledepth::JasperPointCloud::initByMerging(&v9->_pc, v12, __p))
     {
       v13 = 0;
       v14 = 0;
-      v15 = (a4 + 32);
-      while (v14 < [v7 count])
+      v15 = (transforms + 32);
+      while (v14 < [cloudsCopy count])
       {
-        v16 = [v7 objectAtIndexedSubscript:v14];
+        v16 = [cloudsCopy objectAtIndexedSubscript:v14];
         v17 = [v16 length];
 
         v18 = v9->_pc.m_header + 16 * v13 + *(v9->_pc.m_header + 2);
@@ -282,8 +282,8 @@ LABEL_18:
 
       v20 = [(ADJasperPointCloud *)v9 length];
       m_header = v9->_pc.m_header;
-      [v8 project:v20 points:m_header + *(m_header + 2) outUndistortedPixels:m_header + *(m_header + 5) outR:m_header + *(m_header + 6)];
-      [v8 distort:-[ADJasperPointCloud length](v9 undistortedPixels:"length") outDistorted:{v9->_pc.m_header + *(v9->_pc.m_header + 5), v9->_pc.m_header + *(v9->_pc.m_header + 4)}];
+      [cameraCopy project:v20 points:m_header + *(m_header + 2) outUndistortedPixels:m_header + *(m_header + 5) outR:m_header + *(m_header + 6)];
+      [cameraCopy distort:-[ADJasperPointCloud length](v9 undistortedPixels:"length") outDistorted:{v9->_pc.m_header + *(v9->_pc.m_header + 5), v9->_pc.m_header + *(v9->_pc.m_header + 4)}];
       v19 = v9;
     }
 
@@ -307,33 +307,33 @@ LABEL_18:
   return v19;
 }
 
-+ (id)pointCloudByMergingPointClouds:(id)a3
++ (id)pointCloudByMergingPointClouds:(id)clouds
 {
-  v3 = a3;
-  v4 = [[ADJasperPointCloud alloc] initByMergingPointClouds:v3];
+  cloudsCopy = clouds;
+  v4 = [[ADJasperPointCloud alloc] initByMergingPointClouds:cloudsCopy];
 
   return v4;
 }
 
-+ (id)pointCloudFromFile:(id)a3
++ (id)pointCloudFromFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 lowercaseString];
-  v5 = [v4 hasSuffix:@".csv"];
+  fileCopy = file;
+  lowercaseString = [fileCopy lowercaseString];
+  v5 = [lowercaseString hasSuffix:@".csv"];
 
   if (v5)
   {
-    v6 = [ADJasperPointCloud pointCloudFromCSV:v3];
+    v6 = [ADJasperPointCloud pointCloudFromCSV:fileCopy];
   }
 
   else
   {
-    v7 = [v3 lowercaseString];
-    v8 = [v7 hasSuffix:@".jspp"];
+    lowercaseString2 = [fileCopy lowercaseString];
+    v8 = [lowercaseString2 hasSuffix:@".jspp"];
 
     if (!v8)
     {
-      v10 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v3];
+      v10 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:fileCopy];
       if (v10)
       {
         v9 = [[ADJasperPointCloud alloc] initWithDictionaryRepresentation:v10];
@@ -352,7 +352,7 @@ LABEL_18:
       goto LABEL_11;
     }
 
-    v6 = [ADJasperPointCloud pointCloudFromJSPP:v3];
+    v6 = [ADJasperPointCloud pointCloudFromJSPP:fileCopy];
   }
 
   v9 = v6;
@@ -368,19 +368,19 @@ LABEL_12:
   return v9;
 }
 
-+ (id)pointCloudFromJSPP:(id)a3
++ (id)pointCloudFromJSPP:(id)p
 {
-  v3 = [MEMORY[0x277CBEB28] dataWithContentsOfFile:a3];
+  v3 = [MEMORY[0x277CBEB28] dataWithContentsOfFile:p];
   v4 = -[ADJasperPointCloud initWithPreparedStorage:storageSize:]([ADJasperPointCloud alloc], "initWithPreparedStorage:storageSize:", [v3 mutableBytes], objc_msgSend(v3, "length"));
   v5 = [[ADJasperPointCloud alloc] initWithPointCloud:v4];
 
   return v5;
 }
 
-+ (id)pointCloudFromCSV:(id)a3
++ (id)pointCloudFromCSV:(id)v
 {
   v83 = *MEMORY[0x277D85DE8];
-  v75 = a3;
+  vCopy = v;
   v77 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:? encoding:? error:?];
   v4 = 0;
   if (v4)
@@ -408,8 +408,8 @@ LABEL_12:
       *v82 = v6;
       *v80 = v6;
       v7 = [v76 objectAtIndexedSubscript:0];
-      v8 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v70 = [v7 stringByTrimmingCharactersInSet:v8];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v70 = [v7 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       v9 = [v70 componentsSeparatedByString:{@", "}];
       v10 = 0;
@@ -417,7 +417,7 @@ LABEL_12:
       while (v10 < [v9 count])
       {
         v12 = [v9 objectAtIndexedSubscript:v10];
-        v13 = [a1 getKeyForName:v12];
+        v13 = [self getKeyForName:v12];
 
         if (v13 < 15)
         {
@@ -645,10 +645,10 @@ LABEL_53:
   return v5;
 }
 
-+ (int64_t)getKeyForName:(id)a3
++ (int64_t)getKeyForName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = +[ADJasperPointCloud JasperCSVAttributeNamesCannonicalOrder];
   for (i = 0; i < [v4 count]; ++i)
   {
@@ -671,9 +671,9 @@ LABEL_53:
             objc_enumerationMutation(v6);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * v9) lowercaseString];
-          v11 = [v3 lowercaseString];
-          v12 = [v10 isEqualToString:v11];
+          lowercaseString = [*(*(&v14 + 1) + 8 * v9) lowercaseString];
+          lowercaseString2 = [nameCopy lowercaseString];
+          v12 = [lowercaseString isEqualToString:lowercaseString2];
 
           if (v12)
           {
@@ -702,16 +702,16 @@ LABEL_13:
   return i;
 }
 
-+ (id)makeWithDataBuffer:(__CVBuffer *)a3
++ (id)makeWithDataBuffer:(__CVBuffer *)buffer
 {
-  v3 = [[ADJasperPointCloud alloc] initWithDataBuffer:a3];
+  v3 = [[ADJasperPointCloud alloc] initWithDataBuffer:buffer];
 
   return v3;
 }
 
-+ (BOOL)prepareDataBuffer:(__CVBuffer *)a3 forLength:(int)a4 additionalDataSize:(unint64_t)a5
++ (BOOL)prepareDataBuffer:(__CVBuffer *)buffer forLength:(int)length additionalDataSize:(unint64_t)size
 {
-  if (!a3)
+  if (!buffer)
   {
     return 0;
   }
@@ -732,81 +732,81 @@ LABEL_13:
   IOSurfaceLock(v8, 0, 0);
   BaseAddress = IOSurfaceGetBaseAddress(v8);
   DataSize = CVDataBufferGetDataSize();
-  v12 = appledepth::JasperPointCloud::prepareStorage(BaseAddress, DataSize, a4, a5);
+  v12 = appledepth::JasperPointCloud::prepareStorage(BaseAddress, DataSize, length, size);
   IOSurfaceUnlock(v8, 0, 0);
   return v12;
 }
 
-+ (unint64_t)requiredStorageBytesForLength:(int)a3 additionalDataSize:(unint64_t)a4
++ (unint64_t)requiredStorageBytesForLength:(int)length additionalDataSize:(unint64_t)size
 {
   v7[11] = *MEMORY[0x277D85DE8];
   v6 = 0;
-  calculateOffsetsForLength(a3, v7, &v6);
-  return v6 + a4;
+  calculateOffsetsForLength(length, v7, &v6);
+  return v6 + size;
 }
 
-- (id)pointCloudByChangingPointOfViewByTransform:(void *)a3 to:
+- (id)pointCloudByChangingPointOfViewByTransform:(void *)transform to:
 {
-  v4 = a3;
+  transformCopy = transform;
   v5 = objc_alloc(objc_opt_class());
   if (v5)
   {
-    appledepth::JasperPointCloud::initByCloning((v5 + 8), (a1 + 8));
+    appledepth::JasperPointCloud::initByCloning((v5 + 8), (self + 8));
   }
 
   return 0;
 }
 
-- (id)pointCloudByChangingPointOfViewFrom:(id)a3 to:(id)a4
+- (id)pointCloudByChangingPointOfViewFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 getTransformationTo:v7];
-  v8 = [(ADJasperPointCloud *)self pointCloudByChangingPointOfViewByTransform:v7 to:?];
+  fromCopy = from;
+  toCopy = to;
+  [fromCopy getTransformationTo:toCopy];
+  v8 = [(ADJasperPointCloud *)self pointCloudByChangingPointOfViewByTransform:toCopy to:?];
 
   return v8;
 }
 
-- (int64_t)projectJasperPointsFilteredBy:(id)a3 croppedBy:(CGRect)a4 rotatedBy:(int64_t)a5 andScaledMergingWith:(__CVBuffer *)a6
+- (int64_t)projectJasperPointsFilteredBy:(id)by croppedBy:(CGRect)croppedBy rotatedBy:(int64_t)rotatedBy andScaledMergingWith:(__CVBuffer *)with
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = [v12 echoMode];
-  [v12 confidenceThreshold];
+  height = croppedBy.size.height;
+  width = croppedBy.size.width;
+  y = croppedBy.origin.y;
+  x = croppedBy.origin.x;
+  byCopy = by;
+  echoMode = [byCopy echoMode];
+  [byCopy confidenceThreshold];
   v15 = v14;
-  [v12 minDistance];
+  [byCopy minDistance];
   v17 = v16;
-  [v12 maxDistance];
+  [byCopy maxDistance];
   v19 = v18;
-  [v12 shortRangeDepthThreshold];
+  [byCopy shortRangeDepthThreshold];
   v21 = v20;
-  [v12 shortRangeConfidenceThreshold];
-  v23 = appledepth::JasperPointCloud::projectJasperPoints(&self->_pc, a5, v13, [v12 bankIDMask], objc_msgSend(v12, "duplicateProjectedSpotsMode"), a6, 0, x, y, width, height, v15, v17, v19, v21, v22);
+  [byCopy shortRangeConfidenceThreshold];
+  v23 = appledepth::JasperPointCloud::projectJasperPoints(&self->_pc, rotatedBy, echoMode, [byCopy bankIDMask], objc_msgSend(byCopy, "duplicateProjectedSpotsMode"), with, 0, x, y, width, height, v15, v17, v19, v21, v22);
 
   return v23;
 }
 
-- (int64_t)projectJasperPointsFilteredBy:(id)a3 croppedBy:(CGRect)a4 rotatedBy:(int64_t)a5 andScaledInto:(__CVBuffer *)a6
+- (int64_t)projectJasperPointsFilteredBy:(id)by croppedBy:(CGRect)croppedBy rotatedBy:(int64_t)rotatedBy andScaledInto:(__CVBuffer *)into
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = [v12 echoMode];
-  [v12 confidenceThreshold];
+  height = croppedBy.size.height;
+  width = croppedBy.size.width;
+  y = croppedBy.origin.y;
+  x = croppedBy.origin.x;
+  byCopy = by;
+  echoMode = [byCopy echoMode];
+  [byCopy confidenceThreshold];
   v15 = v14;
-  [v12 minDistance];
+  [byCopy minDistance];
   v17 = v16;
-  [v12 maxDistance];
+  [byCopy maxDistance];
   v19 = v18;
-  [v12 shortRangeDepthThreshold];
+  [byCopy shortRangeDepthThreshold];
   v21 = v20;
-  [v12 shortRangeConfidenceThreshold];
-  v23 = appledepth::JasperPointCloud::projectJasperPoints(&self->_pc, a5, v13, [v12 bankIDMask], objc_msgSend(v12, "duplicateProjectedSpotsMode"), a6, 1, x, y, width, height, v15, v17, v19, v21, v22);
+  [byCopy shortRangeConfidenceThreshold];
+  v23 = appledepth::JasperPointCloud::projectJasperPoints(&self->_pc, rotatedBy, echoMode, [byCopy bankIDMask], objc_msgSend(byCopy, "duplicateProjectedSpotsMode"), into, 1, x, y, width, height, v15, v17, v19, v21, v22);
 
   return v23;
 }
@@ -864,18 +864,18 @@ LABEL_13:
   }
 }
 
-- (id)initByMergingPointClouds:(id)a3
+- (id)initByMergingPointClouds:(id)clouds
 {
-  v4 = a3;
-  if ([v4 count])
+  cloudsCopy = clouds;
+  if ([cloudsCopy count])
   {
-    std::vector<appledepth::JasperPointCloud const*>::vector[abi:ne200100](&__p, [v4 count]);
+    std::vector<appledepth::JasperPointCloud const*>::vector[abi:ne200100](&__p, [cloudsCopy count]);
     if (v11 != __p)
     {
       v5 = 0;
       do
       {
-        v6 = [v4 objectAtIndexedSubscript:v5];
+        v6 = [cloudsCopy objectAtIndexedSubscript:v5];
         *(__p + v5) = v6 + 8;
 
         ++v5;
@@ -884,15 +884,15 @@ LABEL_13:
       while (v5 < (v11 - __p) >> 3);
     }
 
-    v7 = [v4 count];
+    v7 = [cloudsCopy count];
     if (appledepth::JasperPointCloud::initByMerging(&self->_pc, v7, __p))
     {
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
 
     if (__p)
@@ -904,21 +904,21 @@ LABEL_13:
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (ADJasperPointCloud)initWithDictionaryRepresentation:(id)a3
+- (ADJasperPointCloud)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = ADJasperPointCloud;
   v5 = [(ADJasperPointCloud *)&v11 init];
   v6 = v5;
   v7 = v5;
-  if (!v5 || (appledepth::JasperPointCloud::initWithDictionaryRepresentation(&v5->_pc, v4) & 1) != 0 && (m_header = v7->_pc.m_header) != 0 && *(m_header + 1))
+  if (!v5 || (appledepth::JasperPointCloud::initWithDictionaryRepresentation(&v5->_pc, representationCopy) & 1) != 0 && (m_header = v7->_pc.m_header) != 0 && *(m_header + 1))
   {
     appledepth::JasperPointCloud::applyPerformanceOverrides(&v6->_pc);
     v9 = v7;
@@ -939,15 +939,15 @@ LABEL_13:
   return DictionaryRepresentation;
 }
 
-- (ADJasperPointCloud)initWithPointCloud:(id)a3
+- (ADJasperPointCloud)initWithPointCloud:(id)cloud
 {
-  v4 = a3;
+  cloudCopy = cloud;
   v8.receiver = self;
   v8.super_class = ADJasperPointCloud;
   v5 = [(ADJasperPointCloud *)&v8 init];
   if (v5)
   {
-    appledepth::JasperPointCloud::initByCloning(&v5->_pc, (v4 + 8));
+    appledepth::JasperPointCloud::initByCloning(&v5->_pc, (cloudCopy + 8));
   }
 
   v6 = 0;
@@ -991,51 +991,51 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 lowercaseString];
-  v8 = [v7 hasSuffix:@".csv"];
+  atomicallyCopy = atomically;
+  fileCopy = file;
+  lowercaseString = [fileCopy lowercaseString];
+  v8 = [lowercaseString hasSuffix:@".csv"];
 
   if (v8)
   {
-    v9 = [(ADJasperPointCloud *)self pointCloudToCSV:v6 atomically:v4];
+    v9 = [(ADJasperPointCloud *)self pointCloudToCSV:fileCopy atomically:atomicallyCopy];
 LABEL_10:
     v16 = v9;
     goto LABEL_11;
   }
 
-  v10 = [v6 lowercaseString];
-  v11 = [v10 hasSuffix:@".jspp"];
+  lowercaseString2 = [fileCopy lowercaseString];
+  v11 = [lowercaseString2 hasSuffix:@".jspp"];
 
   if (v11)
   {
-    v9 = [(ADJasperPointCloud *)self pointCloudToJSPP:v6 atomically:v4];
+    v9 = [(ADJasperPointCloud *)self pointCloudToJSPP:fileCopy atomically:atomicallyCopy];
     goto LABEL_10;
   }
 
-  v12 = [v6 lowercaseString];
-  if ([v12 hasSuffix:@".jpeg"])
+  lowercaseString3 = [fileCopy lowercaseString];
+  if ([lowercaseString3 hasSuffix:@".jpeg"])
   {
 
 LABEL_8:
     v15 = @"public.jpeg";
 LABEL_9:
-    v9 = [(ADJasperPointCloud *)self pointCloudToImageFile:v6 uti:v15 atomically:v4];
+    v9 = [(ADJasperPointCloud *)self pointCloudToImageFile:fileCopy uti:v15 atomically:atomicallyCopy];
     goto LABEL_10;
   }
 
-  v13 = [v6 lowercaseString];
-  v14 = [v13 hasSuffix:@".jpg"];
+  lowercaseString4 = [fileCopy lowercaseString];
+  v14 = [lowercaseString4 hasSuffix:@".jpg"];
 
   if (v14)
   {
     goto LABEL_8;
   }
 
-  v18 = [v6 lowercaseString];
-  v19 = [v18 hasSuffix:@".png"];
+  lowercaseString5 = [fileCopy lowercaseString];
+  v19 = [lowercaseString5 hasSuffix:@".png"];
 
   if (v19)
   {
@@ -1043,11 +1043,11 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v20 = [(ADJasperPointCloud *)self dictionaryRepresentation];
-  v21 = v20;
-  if (v20)
+  dictionaryRepresentation = [(ADJasperPointCloud *)self dictionaryRepresentation];
+  v21 = dictionaryRepresentation;
+  if (dictionaryRepresentation)
   {
-    v16 = [v20 writeToFile:v6 atomically:v4];
+    v16 = [dictionaryRepresentation writeToFile:fileCopy atomically:atomicallyCopy];
   }
 
   else
@@ -1059,11 +1059,11 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)pointCloudToJSPP:(id)a3 atomically:(BOOL)a4
+- (BOOL)pointCloudToJSPP:(id)p atomically:(BOOL)atomically
 {
-  v4 = a4;
+  atomicallyCopy = atomically;
   v14[11] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pCopy = p;
   v7 = MEMORY[0x277CBEA90];
   m_header = self->_pc.m_header;
   m_capacity = self->_pc.m_capacity;
@@ -1071,16 +1071,16 @@ LABEL_11:
   v13 = 0;
   calculateOffsetsForLength(m_capacity, v14, &v13);
   v11 = [v7 dataWithBytes:m_header length:v13 + v10];
-  LOBYTE(v4) = [v11 writeToFile:v6 atomically:v4];
+  LOBYTE(atomicallyCopy) = [v11 writeToFile:pCopy atomically:atomicallyCopy];
 
-  return v4;
+  return atomicallyCopy;
 }
 
-- (BOOL)pointCloudToCSV:(id)a3 atomically:(BOOL)a4
+- (BOOL)pointCloudToCSV:(id)v atomically:(BOOL)atomically
 {
-  v4 = a4;
+  atomicallyCopy = atomically;
   v31 = *MEMORY[0x277D85DE8];
-  v23 = a3;
+  vCopy = v;
   v24 = +[ADJasperPointCloud JasperCSVAttributeNamesCannonicalOrder];
   m_header = self->_pc.m_header;
   if (m_header)
@@ -1094,7 +1094,7 @@ LABEL_11:
   }
 
   v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:v7];
-  v22 = v4;
+  v22 = atomicallyCopy;
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v24, "count")}];
   v28 = 0u;
   v29 = 0u;
@@ -1152,45 +1152,45 @@ LABEL_11:
   }
 
   v19 = [v25 componentsJoinedByString:@"\r\n"];
-  v20 = [v19 writeToFile:v23 atomically:v22 encoding:1 error:0];
+  v20 = [v19 writeToFile:vCopy atomically:v22 encoding:1 error:0];
 
   return v20;
 }
 
-- (ADJasperPointCloud)initWithLength:(int)a3 storage:(__CVBuffer *)a4
+- (ADJasperPointCloud)initWithLength:(int)length storage:(__CVBuffer *)storage
 {
-  v5 = self;
-  if (a4)
+  selfCopy = self;
+  if (storage)
   {
-    if (![ADJasperPointCloud prepareDataBuffer:a4 forLength:*&a3])
+    if (![ADJasperPointCloud prepareDataBuffer:storage forLength:*&length])
     {
       v7 = 0;
       goto LABEL_7;
     }
 
-    v6 = [(ADJasperPointCloud *)v5 initWithDataBuffer:a4];
+    v6 = [(ADJasperPointCloud *)selfCopy initWithDataBuffer:storage];
   }
 
   else
   {
-    v6 = [(ADJasperPointCloud *)self initWithLength:*&a3];
+    v6 = [(ADJasperPointCloud *)self initWithLength:*&length];
   }
 
-  v5 = v6;
-  v7 = v5;
+  selfCopy = v6;
+  v7 = selfCopy;
 LABEL_7:
 
   return v7;
 }
 
-- (ADJasperPointCloud)initWithLength:(int)a3
+- (ADJasperPointCloud)initWithLength:(int)length
 {
   v7.receiver = self;
   v7.super_class = ADJasperPointCloud;
   v4 = [(ADJasperPointCloud *)&v7 init];
   if (v4)
   {
-    appledepth::JasperPointCloud::initWithLength(&v4->_pc, a3);
+    appledepth::JasperPointCloud::initWithLength(&v4->_pc, length);
   }
 
   v5 = 0;
@@ -1198,10 +1198,10 @@ LABEL_7:
   return v5;
 }
 
-- (ADJasperPointCloud)initWithDataBuffer:(__CVBuffer *)a3
+- (ADJasperPointCloud)initWithDataBuffer:(__CVBuffer *)buffer
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = buffer;
+  if (buffer)
   {
     IOSurface = CVDataBufferGetIOSurface();
     v6 = IOSurface;
@@ -1213,30 +1213,30 @@ LABEL_7:
       IOSurfaceUnlock(v6, 0, 0);
       if (v9)
       {
-        v9->_dataBuffer = CVBufferRetain(v3);
+        v9->_dataBuffer = CVBufferRetain(selfCopy);
         appledepth::JasperPointCloud::applyPerformanceOverrides(&v9->_pc);
       }
 
       self = v9;
-      v3 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (ADJasperPointCloud)initWithPreparedStorage:(void *)a3 storageSize:(unint64_t)a4
+- (ADJasperPointCloud)initWithPreparedStorage:(void *)storage storageSize:(unint64_t)size
 {
   v10.receiver = self;
   v10.super_class = ADJasperPointCloud;
-  v5 = [(ADJasperPointCloud *)&v10 init:a3];
+  v5 = [(ADJasperPointCloud *)&v10 init:storage];
   v6 = v5;
-  if (v5 && !appledepth::JasperPointCloud::initWithPreparedStorage(&v5->_pc, a3))
+  if (v5 && !appledepth::JasperPointCloud::initWithPreparedStorage(&v5->_pc, storage))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {

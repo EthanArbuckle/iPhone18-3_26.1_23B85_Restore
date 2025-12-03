@@ -1,46 +1,46 @@
 @interface ICQiCloudFooterSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (ICQiCloudFooterSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (ICQiCloudFooterSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (NSArray)specifiers;
 - (id)_buildSubscriptionSpecifiers;
 - (id)_buildiCloudPlusSpecifiers;
-- (id)_stringForSpecifier:(id)a3;
+- (id)_stringForSpecifier:(id)specifier;
 - (id)account;
-- (void)_beginLoadingSpecifier:(id)a3;
+- (void)_beginLoadingSpecifier:(id)specifier;
 - (void)_fetchStorageSummary;
 - (void)_finishLoadingSpecifier;
-- (void)_handleICQLink:(id)a3 forSpecifier:(id)a4;
-- (void)_launchFamilyUsageFlowWithURL:(id)a3;
-- (void)_launchFlowForSpecifier:(id)a3;
+- (void)_handleICQLink:(id)link forSpecifier:(id)specifier;
+- (void)_launchFamilyUsageFlowWithURL:(id)l;
+- (void)_launchFlowForSpecifier:(id)specifier;
 - (void)_launchLegacyPurchaseFlow;
-- (void)_launchUpgradeFlowWithICQLink:(id)a3;
-- (void)_launchUpgradeFlowWithURL:(id)a3;
+- (void)_launchUpgradeFlowWithICQLink:(id)link;
+- (void)_launchUpgradeFlowWithURL:(id)l;
 - (void)_postQuotaDidChangeNotification;
 - (void)_reloadSpecifiers;
-- (void)_setupSpecifier:(id)a3;
+- (void)_setupSpecifier:(id)specifier;
 - (void)_startFamilySharing;
 - (void)dealloc;
-- (void)loadFailed:(id)a3 withError:(id)a4;
-- (void)loadFinished:(id)a3;
-- (void)loadStarted:(id)a3;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
+- (void)loadFailed:(id)failed withError:(id)error;
+- (void)loadFinished:(id)finished;
+- (void)loadStarted:(id)started;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
 @end
 
 @implementation ICQiCloudFooterSpecifierProvider
 
-- (ICQiCloudFooterSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4
+- (ICQiCloudFooterSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = ICQiCloudFooterSpecifierProvider;
   v9 = [(ICQiCloudFooterSpecifierProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeWeak(&v10->_listController, v8);
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeWeak(&v10->_listController, presenterCopy);
   }
 
   return v10;
@@ -48,8 +48,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -68,8 +68,8 @@
 
 - (NSArray)specifiers
 {
-  v3 = [(ICQiCloudFooterSpecifierProvider *)self account];
-  v4 = [v3 aa_isAccountClass:*MEMORY[0x277CEC688]];
+  account = [(ICQiCloudFooterSpecifierProvider *)self account];
+  v4 = [account aa_isAccountClass:*MEMORY[0x277CEC688]];
 
   if (v4)
   {
@@ -77,11 +77,11 @@
     if (!specifiers)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v7 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-      [v6 addObject:v7];
+      emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+      [v6 addObject:emptyGroupSpecifier];
 
-      v8 = [(ICQiCloudFooterSpecifierProvider *)self _buildSubscriptionSpecifiers];
-      [v6 addObjectsFromArray:v8];
+      _buildSubscriptionSpecifiers = [(ICQiCloudFooterSpecifierProvider *)self _buildSubscriptionSpecifiers];
+      [v6 addObjectsFromArray:_buildSubscriptionSpecifiers];
 
       v9 = [v6 copy];
       v10 = self->_specifiers;
@@ -112,28 +112,28 @@
   v45 = *MEMORY[0x277D85DE8];
   v38 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v3 = objc_alloc(MEMORY[0x277D7F338]);
-  v4 = [(ICQiCloudFooterSpecifierProvider *)self account];
-  v5 = [v3 initWithAccount:v4];
+  account = [(ICQiCloudFooterSpecifierProvider *)self account];
+  v5 = [v3 initWithAccount:account];
 
-  v6 = [v5 cachedStorageSummary];
+  cachedStorageSummary = [v5 cachedStorageSummary];
   storageSummary = self->_storageSummary;
-  self->_storageSummary = v6;
+  self->_storageSummary = cachedStorageSummary;
 
-  v8 = [(ICQCloudStorageSummary *)self->_storageSummary subscriptionInfo];
-  v9 = [v8 specifiersInfo];
+  subscriptionInfo = [(ICQCloudStorageSummary *)self->_storageSummary subscriptionInfo];
+  specifiersInfo = [subscriptionInfo specifiersInfo];
 
-  if (v9)
+  if (specifiersInfo)
   {
-    v10 = [(ICQiCloudFooterSpecifierProvider *)self account];
-    v11 = [v10 aa_isManagedAppleID];
+    account2 = [(ICQiCloudFooterSpecifierProvider *)self account];
+    aa_isManagedAppleID = [account2 aa_isManagedAppleID];
 
-    if (v11)
+    if (aa_isManagedAppleID)
     {
-      v12 = _ICQGetLogSystem();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      specifiersInfo2 = _ICQGetLogSystem();
+      if (os_log_type_enabled(specifiersInfo2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_275623000, v12, OS_LOG_TYPE_DEFAULT, "Subscription specifiers are not displayed for MAID accounts.", buf, 2u);
+        _os_log_impl(&dword_275623000, specifiersInfo2, OS_LOG_TYPE_DEFAULT, "Subscription specifiers are not displayed for MAID accounts.", buf, 2u);
       }
     }
 
@@ -143,10 +143,10 @@
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v13 = [(ICQCloudStorageSummary *)self->_storageSummary subscriptionInfo];
-      v12 = [v13 specifiersInfo];
+      subscriptionInfo2 = [(ICQCloudStorageSummary *)self->_storageSummary subscriptionInfo];
+      specifiersInfo2 = [subscriptionInfo2 specifiersInfo];
 
-      v14 = [v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v14 = [specifiersInfo2 countByEnumeratingWithState:&v39 objects:v44 count:16];
       if (v14)
       {
         v15 = v14;
@@ -161,54 +161,54 @@
           {
             if (*v40 != v16)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(specifiersInfo2);
             }
 
             v18 = *(*(&v39 + 1) + 8 * i);
-            v19 = [v18 identifier];
-            v20 = [v19 isEqualToString:@"ICLOUD_PLUS_INFO"];
+            identifier = [v18 identifier];
+            v20 = [identifier isEqualToString:@"ICLOUD_PLUS_INFO"];
 
             if (v20)
             {
-              v21 = [(ICQiCloudFooterSpecifierProvider *)self _buildiCloudPlusSpecifiers];
-              [v38 addObjectsFromArray:v21];
+              _buildiCloudPlusSpecifiers = [(ICQiCloudFooterSpecifierProvider *)self _buildiCloudPlusSpecifiers];
+              [v38 addObjectsFromArray:_buildiCloudPlusSpecifiers];
             }
 
             else
             {
               v22 = MEMORY[0x277D3FAD8];
-              v23 = [v18 title];
-              v21 = [v22 preferenceSpecifierNamed:v23 target:self set:0 get:sel__stringForSpecifier_ detail:0 cell:2 edit:0];
+              title = [v18 title];
+              _buildiCloudPlusSpecifiers = [v22 preferenceSpecifierNamed:title target:self set:0 get:sel__stringForSpecifier_ detail:0 cell:2 edit:0];
 
-              v24 = [v18 identifier];
-              [v21 setObject:v24 forKeyedSubscript:v37];
+              identifier2 = [v18 identifier];
+              [_buildiCloudPlusSpecifiers setObject:identifier2 forKeyedSubscript:v37];
 
-              v25 = [v18 actionURL];
-              [v21 setObject:v25 forKeyedSubscript:@"ICQUISpecifierKeyServerUIURL"];
+              actionURL = [v18 actionURL];
+              [_buildiCloudPlusSpecifiers setObject:actionURL forKeyedSubscript:@"ICQUISpecifierKeyServerUIURL"];
 
-              v26 = [v18 icqLink];
-              [v21 setObject:v26 forKeyedSubscript:@"ICQUISpecifierKeyICQLink"];
+              icqLink = [v18 icqLink];
+              [_buildiCloudPlusSpecifiers setObject:icqLink forKeyedSubscript:@"ICQUISpecifierKeyICQLink"];
 
-              v27 = [v18 title];
-              [v21 setObject:v27 forKeyedSubscript:v36];
+              title2 = [v18 title];
+              [_buildiCloudPlusSpecifiers setObject:title2 forKeyedSubscript:v36];
 
-              v28 = [v18 subTitle];
-              [v21 setObject:v28 forKeyedSubscript:v35];
+              subTitle = [v18 subTitle];
+              [_buildiCloudPlusSpecifiers setObject:subTitle forKeyedSubscript:v35];
 
-              v29 = [v18 type];
-              [v21 setObject:v29 forKeyedSubscript:@"SPECIFIER_TYPE"];
+              type = [v18 type];
+              [_buildiCloudPlusSpecifiers setObject:type forKeyedSubscript:@"SPECIFIER_TYPE"];
 
-              v30 = [v18 iconURL];
-              v31 = [_ICQUIHelperFunctions scaledImageURL:v30];
-              [v21 setObject:v31 forKeyedSubscript:@"ICON_URL"];
+              iconURL = [v18 iconURL];
+              v31 = [_ICQUIHelperFunctions scaledImageURL:iconURL];
+              [_buildiCloudPlusSpecifiers setObject:v31 forKeyedSubscript:@"ICON_URL"];
 
-              [v21 setControllerLoadAction:sel__launchFlowForSpecifier_];
-              [(ICQiCloudFooterSpecifierProvider *)self _setupSpecifier:v21];
-              [v38 addObject:v21];
+              [_buildiCloudPlusSpecifiers setControllerLoadAction:sel__launchFlowForSpecifier_];
+              [(ICQiCloudFooterSpecifierProvider *)self _setupSpecifier:_buildiCloudPlusSpecifiers];
+              [v38 addObject:_buildiCloudPlusSpecifiers];
             }
           }
 
-          v15 = [v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
+          v15 = [specifiersInfo2 countByEnumeratingWithState:&v39 objects:v44 count:16];
         }
 
         while (v15);
@@ -219,8 +219,8 @@
 
   else
   {
-    v12 = _ICQGetLogSystem();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    specifiersInfo2 = _ICQGetLogSystem();
+    if (os_log_type_enabled(specifiersInfo2, OS_LOG_TYPE_ERROR))
     {
       [ICQiCloudFooterSpecifierProvider _buildSubscriptionSpecifiers];
     }
@@ -231,19 +231,19 @@
   return v32;
 }
 
-- (void)_setupSpecifier:(id)a3
+- (void)_setupSpecifier:(id)specifier
 {
-  v12 = a3;
-  v3 = [v12 objectForKeyedSubscript:@"SPECIFIER_TYPE"];
+  specifierCopy = specifier;
+  v3 = [specifierCopy objectForKeyedSubscript:@"SPECIFIER_TYPE"];
   if ([v3 isEqualToString:@"LINK_CELL"])
   {
-    [v12 setCellType:13];
-    [v12 setButtonAction:sel__launchFlowForSpecifier_];
+    [specifierCopy setCellType:13];
+    [specifierCopy setButtonAction:sel__launchFlowForSpecifier_];
   }
 
   else if ([v3 isEqualToString:@"SUBTITLE_CELL"])
   {
-    [v12 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
+    [specifierCopy setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
   }
 
   else
@@ -251,19 +251,19 @@
     [v3 isEqualToString:@"DETAIL_LABEL_CELL"];
   }
 
-  v4 = [v12 objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
+  v4 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
   if ([v4 isEqualToString:@"STORAGE_UPGRADE"])
   {
     v5 = objc_opt_class();
     v6 = MEMORY[0x277D3FE58];
 LABEL_10:
-    [v12 setObject:v5 forKeyedSubscript:*v6];
+    [specifierCopy setObject:v5 forKeyedSubscript:*v6];
     goto LABEL_11;
   }
 
   if ([v4 isEqualToString:@"MANAGE_PLAN"])
   {
-    [v12 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
+    [specifierCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
     v5 = *MEMORY[0x277D3FD38];
     v6 = MEMORY[0x277D3FFD8];
     goto LABEL_10;
@@ -271,13 +271,13 @@ LABEL_10:
 
   if ([v4 isEqualToString:@"ICLOUD_PLUS_INFO"])
   {
-    v7 = [v12 objectForKeyedSubscript:@"ICON_URL"];
+    v7 = [specifierCopy objectForKeyedSubscript:@"ICON_URL"];
     if (v7)
     {
-      [v12 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
+      [specifierCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
       v8 = MEMORY[0x277D40030];
 LABEL_20:
-      [v12 setObject:v7 forKeyedSubscript:*v8];
+      [specifierCopy setObject:v7 forKeyedSubscript:*v8];
     }
   }
 
@@ -322,24 +322,24 @@ LABEL_11:
       icloudPlusSpecifierProvider = self->_icloudPlusSpecifierProvider;
     }
 
-    v6 = [(AAUISpecifierProvider *)icloudPlusSpecifierProvider specifiers];
+    specifiers = [(AAUISpecifierProvider *)icloudPlusSpecifierProvider specifiers];
   }
 
   else
   {
-    v6 = MEMORY[0x277CBEBF8];
+    specifiers = MEMORY[0x277CBEBF8];
   }
 
-  return v6;
+  return specifiers;
 }
 
-- (id)_stringForSpecifier:(id)a3
+- (id)_stringForSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"SPECIFIER_TYPE"];
+  specifierCopy = specifier;
+  v4 = [specifierCopy objectForKeyedSubscript:@"SPECIFIER_TYPE"];
   if ([v4 isEqualToString:@"DETAIL_LABEL_CELL"])
   {
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D40160]];
+    v5 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D40160]];
   }
 
   else
@@ -350,12 +350,12 @@ LABEL_11:
   return v5;
 }
 
-- (void)_launchFlowForSpecifier:(id)a3
+- (void)_launchFlowForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(ICQiCloudFooterSpecifierProvider *)self _beginLoadingSpecifier:v4];
-  v5 = [v4 objectForKeyedSubscript:@"ICQUISpecifierKeyICQLink"];
+  [(ICQiCloudFooterSpecifierProvider *)self _beginLoadingSpecifier:specifierCopy];
+  v5 = [specifierCopy objectForKeyedSubscript:@"ICQUISpecifierKeyICQLink"];
   if (!v5)
   {
     v6 = _ICQGetLogSystem();
@@ -365,16 +365,16 @@ LABEL_11:
       _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "No icqLink found, falling back to old identifier/url based handling.", v16, 2u);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"ICQUISpecifierKeyServerUIURL"];
-    v8 = [v4 identifier];
-    if ([v8 isEqualToString:@"STORAGE_UPGRADE"])
+    v7 = [specifierCopy objectForKeyedSubscript:@"ICQUISpecifierKeyServerUIURL"];
+    identifier = [specifierCopy identifier];
+    if ([identifier isEqualToString:@"STORAGE_UPGRADE"])
     {
 
       goto LABEL_8;
     }
 
-    v9 = [v4 identifier];
-    v10 = [v9 isEqualToString:@"MANAGE_PLAN"];
+    identifier2 = [specifierCopy identifier];
+    v10 = [identifier2 isEqualToString:@"MANAGE_PLAN"];
 
     if (v10)
     {
@@ -392,8 +392,8 @@ LABEL_8:
       goto LABEL_21;
     }
 
-    v11 = [v4 identifier];
-    v12 = [v11 isEqualToString:@"FAMILY_SHARING"];
+    identifier3 = [specifierCopy identifier];
+    v12 = [identifier3 isEqualToString:@"FAMILY_SHARING"];
 
     if (v12)
     {
@@ -403,8 +403,8 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v13 = [v4 identifier];
-    v14 = [v13 isEqualToString:@"FAMILY_USAGE"];
+    identifier4 = [specifierCopy identifier];
+    v14 = [identifier4 isEqualToString:@"FAMILY_USAGE"];
 
     if (v14)
     {
@@ -426,7 +426,7 @@ LABEL_21:
       v15 = _ICQGetLogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [ICQiCloudFooterSpecifierProvider _launchFlowForSpecifier:v4];
+        [ICQiCloudFooterSpecifierProvider _launchFlowForSpecifier:specifierCopy];
       }
     }
 
@@ -434,31 +434,31 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  [(ICQiCloudFooterSpecifierProvider *)self _handleICQLink:v5 forSpecifier:v4];
+  [(ICQiCloudFooterSpecifierProvider *)self _handleICQLink:v5 forSpecifier:specifierCopy];
 LABEL_22:
 }
 
-- (void)_handleICQLink:(id)a3 forSpecifier:(id)a4
+- (void)_handleICQLink:(id)link forSpecifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  specifierCopy = specifier;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = linkCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = specifierCopy;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "Handling ICQLink: %@ forSpecifier: %@", &v12, 0x16u);
   }
 
-  v9 = [v6 action];
-  if (v9 > 118)
+  action = [linkCopy action];
+  if (action > 118)
   {
-    if ((v9 - 120) >= 2)
+    if ((action - 120) >= 2)
     {
-      if (v9 == 119)
+      if (action == 119)
       {
         [(ICQiCloudFooterSpecifierProvider *)self _launchLegacyPurchaseFlow];
         goto LABEL_17;
@@ -468,15 +468,15 @@ LABEL_22:
     }
 
 LABEL_9:
-    [(ICQiCloudFooterSpecifierProvider *)self _launchUpgradeFlowWithICQLink:v6];
+    [(ICQiCloudFooterSpecifierProvider *)self _launchUpgradeFlowWithICQLink:linkCopy];
     goto LABEL_17;
   }
 
-  switch(v9)
+  switch(action)
   {
     case 'n':
-      v10 = [v6 actionURL];
-      [(ICQiCloudFooterSpecifierProvider *)self _launchFamilyUsageFlowWithURL:v10];
+      actionURL = [linkCopy actionURL];
+      [(ICQiCloudFooterSpecifierProvider *)self _launchFamilyUsageFlowWithURL:actionURL];
 
       goto LABEL_17;
     case 'o':
@@ -497,10 +497,10 @@ LABEL_13:
 LABEL_17:
 }
 
-- (void)_launchUpgradeFlowWithURL:(id)a3
+- (void)_launchUpgradeFlowWithURL:(id)l
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   if (self->_upgradeFlowManager)
   {
     v5 = _ICQGetLogSystem();
@@ -513,7 +513,7 @@ LABEL_17:
   else
   {
     v5 = objc_alloc_init(MEMORY[0x277D7F388]);
-    [v5 _updateRequestedServerUIURLWithURL:v4];
+    [v5 _updateRequestedServerUIURLWithURL:lCopy];
     v6 = [[ICQUpgradeFlowManager alloc] initWithOffer:v5];
     upgradeFlowManager = self->_upgradeFlowManager;
     self->_upgradeFlowManager = v6;
@@ -523,18 +523,18 @@ LABEL_17:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = lCopy;
       _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "Launching freshmint upgrade flow with url: %@", &v9, 0xCu);
     }
 
-    [(ICQUpgradeFlowManager *)self->_upgradeFlowManager _beginRemoteFlowWithURL:v4];
+    [(ICQUpgradeFlowManager *)self->_upgradeFlowManager _beginRemoteFlowWithURL:lCopy];
   }
 }
 
-- (void)_launchUpgradeFlowWithICQLink:(id)a3
+- (void)_launchUpgradeFlowWithICQLink:(id)link
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  linkCopy = link;
   if (self->_upgradeFlowManager)
   {
     v5 = _ICQGetLogSystem();
@@ -556,13 +556,13 @@ LABEL_17:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = linkCopy;
       _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "Launching freshmint upgrade flow with icqLink: %@", &v11, 0xCu);
     }
 
     v9 = self->_upgradeFlowManager;
     WeakRetained = objc_loadWeakRetained(&self->_listController);
-    [(ICQUpgradeFlowManager *)v9 beginRemoteUpgradeFlowWithICQLink:v4 presenter:WeakRetained];
+    [(ICQUpgradeFlowManager *)v9 beginRemoteUpgradeFlowWithICQLink:linkCopy presenter:WeakRetained];
   }
 }
 
@@ -631,8 +631,8 @@ LABEL_17:
   v22 = __Block_byref_object_dispose__8;
   v11 = objc_alloc(getFACircleStateControllerClass());
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v13 = [WeakRetained navigationController];
-  v23 = [v11 initWithPresenter:v13];
+  navigationController = [WeakRetained navigationController];
+  v23 = [v11 initWithPresenter:navigationController];
 
   v14 = *(v19 + 40);
   v16[0] = MEMORY[0x277D85DD0];
@@ -678,27 +678,27 @@ void __55__ICQiCloudFooterSpecifierProvider__startFamilySharing__block_invoke(ui
   }
 }
 
-- (void)_launchFamilyUsageFlowWithURL:(id)a3
+- (void)_launchFamilyUsageFlowWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   ruiDelegate = self->_ruiDelegate;
-  v12 = v4;
+  v12 = lCopy;
   if (!ruiDelegate)
   {
     v6 = [ICQPreferencesRemoteUIDelegate alloc];
     WeakRetained = objc_loadWeakRetained(&self->_listController);
-    v8 = [WeakRetained navigationController];
-    v9 = [(ICQiCloudFooterSpecifierProvider *)self account];
-    v10 = [(ICQPreferencesRemoteUIDelegate *)v6 initWithNavigationController:v8 initialAction:0 account:v9];
+    navigationController = [WeakRetained navigationController];
+    account = [(ICQiCloudFooterSpecifierProvider *)self account];
+    v10 = [(ICQPreferencesRemoteUIDelegate *)v6 initWithNavigationController:navigationController initialAction:0 account:account];
     v11 = self->_ruiDelegate;
     self->_ruiDelegate = v10;
 
     [(ICQPreferencesRemoteUIDelegate *)self->_ruiDelegate setDelegate:self];
-    v4 = v12;
+    lCopy = v12;
     ruiDelegate = self->_ruiDelegate;
   }
 
-  [(ICQPreferencesRemoteUIDelegate *)ruiDelegate loadURL:v4 postBody:0 additionalHeaders:0];
+  [(ICQPreferencesRemoteUIDelegate *)ruiDelegate loadURL:lCopy postBody:0 additionalHeaders:0];
 }
 
 - (void)_launchLegacyPurchaseFlow
@@ -767,8 +767,8 @@ void __61__ICQiCloudFooterSpecifierProvider__launchLegacyPurchaseFlow__block_inv
   v10 = __Block_byref_object_copy__8;
   v11 = __Block_byref_object_dispose__8;
   v3 = objc_alloc(MEMORY[0x277D7F338]);
-  v4 = [(ICQiCloudFooterSpecifierProvider *)self account];
-  v12 = [v3 initWithAccount:v4];
+  account = [(ICQiCloudFooterSpecifierProvider *)self account];
+  v12 = [v3 initWithAccount:account];
 
   [v8[5] setShouldIgnoreCache:1];
   v5 = v8[5];
@@ -822,7 +822,7 @@ void __56__ICQiCloudFooterSpecifierProvider__fetchStorageSummary__block_invoke(u
   [WeakRetained reloadSpecifiersForProvider:self oldSpecifiers:v4 animated:0];
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -837,7 +837,7 @@ void __56__ICQiCloudFooterSpecifierProvider__fetchStorageSummary__block_invoke(u
   self->_upgradeFlowManager = 0;
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -865,13 +865,13 @@ void __56__ICQiCloudFooterSpecifierProvider__fetchStorageSummary__block_invoke(u
     _os_log_impl(&dword_275623000, v2, OS_LOG_TYPE_DEFAULT, "%s refreshing quota storage info", &v4, 0xCu);
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"QuotaDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"QuotaDidChange" object:0];
 }
 
-- (void)loadFailed:(id)a3 withError:(id)a4
+- (void)loadFailed:(id)failed withError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -881,7 +881,7 @@ void __56__ICQiCloudFooterSpecifierProvider__fetchStorageSummary__block_invoke(u
   [(ICQiCloudFooterSpecifierProvider *)self _finishLoadingSpecifier];
 }
 
-- (void)loadFinished:(id)a3
+- (void)loadFinished:(id)finished
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -893,7 +893,7 @@ void __56__ICQiCloudFooterSpecifierProvider__fetchStorageSummary__block_invoke(u
   [(ICQiCloudFooterSpecifierProvider *)self _finishLoadingSpecifier];
 }
 
-- (void)loadStarted:(id)a3
+- (void)loadStarted:(id)started
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -926,13 +926,13 @@ void __59__ICQiCloudFooterSpecifierProvider__finishLoadingSpecifier__block_invok
   *(v3 + 72) = 0;
 }
 
-- (void)_beginLoadingSpecifier:(id)a3
+- (void)_beginLoadingSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   activeSpecifier = self->_activeSpecifier;
-  self->_activeSpecifier = v4;
-  v6 = v4;
+  self->_activeSpecifier = specifierCopy;
+  v6 = specifierCopy;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained specifierProvider:self willBeginLoadingSpecifier:v6];

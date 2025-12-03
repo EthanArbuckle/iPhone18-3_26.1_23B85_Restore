@@ -1,29 +1,29 @@
 @interface HMDPrimaryResidentDiscoveryManagerDefaultDataSource
 - (HMDPrimaryResidentDiscoveryManagerDefaultDataSource)init;
 - (id)createBackoffTimer;
-- (id)createPrimaryResidentDiscoveryOperationWithContext:(id)a3;
-- (id)remoteDeviceMonitorFromContext:(id)a3;
-- (id)transportStartFutureFromContext:(id)a3;
+- (id)createPrimaryResidentDiscoveryOperationWithContext:(id)context;
+- (id)remoteDeviceMonitorFromContext:(id)context;
+- (id)transportStartFutureFromContext:(id)context;
 @end
 
 @implementation HMDPrimaryResidentDiscoveryManagerDefaultDataSource
 
-- (id)transportStartFutureFromContext:(id)a3
+- (id)transportStartFutureFromContext:(id)context
 {
-  v3 = [a3 messageDispatcher];
-  v4 = [v3 secureRemoteTransport];
-  v5 = [v4 startFuture];
+  messageDispatcher = [context messageDispatcher];
+  secureRemoteTransport = [messageDispatcher secureRemoteTransport];
+  startFuture = [secureRemoteTransport startFuture];
 
-  return v5;
+  return startFuture;
 }
 
-- (id)remoteDeviceMonitorFromContext:(id)a3
+- (id)remoteDeviceMonitorFromContext:(id)context
 {
-  v3 = [a3 messageDispatcher];
-  v4 = [v3 secureRemoteTransport];
-  v5 = [v4 deviceMonitor];
+  messageDispatcher = [context messageDispatcher];
+  secureRemoteTransport = [messageDispatcher secureRemoteTransport];
+  deviceMonitor = [secureRemoteTransport deviceMonitor];
 
-  return v5;
+  return deviceMonitor;
 }
 
 - (id)createBackoffTimer
@@ -33,14 +33,14 @@
   return v2;
 }
 
-- (id)createPrimaryResidentDiscoveryOperationWithContext:(id)a3
+- (id)createPrimaryResidentDiscoveryOperationWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [HMDPrimaryResidentDiscoveryOperation alloc];
-  v5 = [v3 home];
-  v6 = [v3 messageDispatcher];
+  home = [contextCopy home];
+  messageDispatcher = [contextCopy messageDispatcher];
   v7 = +[HMDFeaturesDataSource defaultDataSource];
-  v8 = [(HMDPrimaryResidentDiscoveryOperation *)v4 initWithHome:v5 messageDispatcher:v6 featuresDataSource:v7 context:v3];
+  v8 = [(HMDPrimaryResidentDiscoveryOperation *)v4 initWithHome:home messageDispatcher:messageDispatcher featuresDataSource:v7 context:contextCopy];
 
   return v8;
 }
@@ -52,9 +52,9 @@
   v2 = [(HMDPrimaryResidentDiscoveryManagerDefaultDataSource *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     notificationCenter = v2->_notificationCenter;
-    v2->_notificationCenter = v3;
+    v2->_notificationCenter = defaultCenter;
 
     v5 = +[HMDMetricsManager sharedLogEventSubmitter];
     logEventSubmitter = v2->_logEventSubmitter;

@@ -8,27 +8,27 @@
 - (id)cmsCoded
 {
   v2 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:4];
-  v3 = [a1 activityType];
-  if (v3)
+  activityType = [self activityType];
+  if (activityType)
   {
-    [v2 setValue:v3 forKey:@"activityType"];
+    [v2 setValue:activityType forKey:@"activityType"];
   }
 
-  v4 = [a1 expirationDate];
-  v5 = v4;
-  if (v4)
+  expirationDate = [self expirationDate];
+  v5 = expirationDate;
+  if (expirationDate)
   {
-    v6 = [v4 cmsCoded];
-    [v2 setValue:v6 forKey:@"expirationDate"];
+    cmsCoded = [expirationDate cmsCoded];
+    [v2 setValue:cmsCoded forKey:@"expirationDate"];
   }
 
-  v7 = [a1 userInfo];
-  v8 = [v7 count];
+  userInfo = [self userInfo];
+  v8 = [userInfo count];
 
   if (v8)
   {
-    v9 = [a1 userInfo];
-    v10 = _userInfoValueToJSONValue(v9);
+    userInfo2 = [self userInfo];
+    v10 = _userInfoValueToJSONValue(userInfo2);
     [v2 setValue:v10 forKey:@"userInfo"];
   }
 

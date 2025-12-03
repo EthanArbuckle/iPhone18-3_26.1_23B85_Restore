@@ -1,16 +1,16 @@
 @interface FBSDisplayIdentity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMainRootDisplay;
 - (FBSDisplayIdentity)init;
-- (FBSDisplayIdentity)initWithCoder:(id)a3;
-- (FBSDisplayIdentity)initWithXPCDictionary:(id)a3;
+- (FBSDisplayIdentity)initWithCoder:(id)coder;
+- (FBSDisplayIdentity)initWithXPCDictionary:(id)dictionary;
 - (FBSDisplayIdentity)rootIdentity;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)_initWithType:(int64_t)a3 UIKitMainLike:(BOOL)a4 displayID:(unsigned int)a5 connectionType:(int64_t)a6 connectionSeed:(unsigned int)a7 pid:(int)a8 external:(BOOL)a9 uniqueIdentifier:(id)a10 secure:(BOOL)a11 root:(id)a12;
+- (id)_initWithType:(int64_t)type UIKitMainLike:(BOOL)like displayID:(unsigned int)d connectionType:(int64_t)connectionType connectionSeed:(unsigned int)seed pid:(int)pid external:(BOOL)external uniqueIdentifier:(id)self0 secure:(BOOL)self1 root:(id)self2;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation FBSDisplayIdentity
@@ -40,14 +40,14 @@
 
 - (BOOL)isMainRootDisplay
 {
-  v3 = [(FBSDisplayIdentity *)self isRootIdentity];
-  if (v3)
+  isRootIdentity = [(FBSDisplayIdentity *)self isRootIdentity];
+  if (isRootIdentity)
   {
 
-    LOBYTE(v3) = [(FBSDisplayIdentity *)self isMainDisplay];
+    LOBYTE(isRootIdentity) = [(FBSDisplayIdentity *)self isMainDisplay];
   }
 
-  return v3;
+  return isRootIdentity;
 }
 
 - (NSString)description
@@ -139,7 +139,7 @@ LABEL_11:
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSDisplay.m";
     v16 = 1024;
@@ -153,10 +153,10 @@ LABEL_11:
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithType:(int64_t)a3 UIKitMainLike:(BOOL)a4 displayID:(unsigned int)a5 connectionType:(int64_t)a6 connectionSeed:(unsigned int)a7 pid:(int)a8 external:(BOOL)a9 uniqueIdentifier:(id)a10 secure:(BOOL)a11 root:(id)a12
+- (id)_initWithType:(int64_t)type UIKitMainLike:(BOOL)like displayID:(unsigned int)d connectionType:(int64_t)connectionType connectionSeed:(unsigned int)seed pid:(int)pid external:(BOOL)external uniqueIdentifier:(id)self0 secure:(BOOL)self1 root:(id)self2
 {
-  v18 = a10;
-  v19 = a12;
+  identifierCopy = identifier;
+  rootCopy = root;
   v20 = objc_opt_class();
   if (v20 != objc_opt_class())
   {
@@ -169,42 +169,42 @@ LABEL_11:
   v22 = v21;
   if (v21)
   {
-    v23 = 0;
-    v21->_displayID = a5;
-    v21->_type = a3;
-    v21->_connectionType = a6;
-    if (a3 && a3 != 7)
+    seedCopy = 0;
+    v21->_displayID = d;
+    v21->_type = type;
+    v21->_connectionType = connectionType;
+    if (type && type != 7)
     {
-      v23 = a7;
+      seedCopy = seed;
     }
 
-    v21->_mainLike = a4;
-    v24 = a8 & ~(a8 >> 31);
-    if (a3 != 1)
+    v21->_mainLike = like;
+    v24 = pid & ~(pid >> 31);
+    if (type != 1)
     {
       v24 = 0;
     }
 
-    v21->_connectionSeed = v23;
+    v21->_connectionSeed = seedCopy;
     v21->_pid = v24;
-    v21->_external = a9;
-    v25 = [v18 copy];
+    v21->_external = external;
+    v25 = [identifierCopy copy];
     uniqueIdentifier = v22->_uniqueIdentifier;
     v22->_uniqueIdentifier = v25;
 
-    v22->_secure = a11;
-    objc_storeStrong(&v22->_rootIdentity, a12);
+    v22->_secure = secure;
+    objc_storeStrong(&v22->_rootIdentity, root);
   }
 
   return v22;
 }
 
-- (FBSDisplayIdentity)initWithCoder:(id)a3
+- (FBSDisplayIdentity)initWithCoder:(id)coder
 {
-  v3 = a3;
-  if ([v3 containsValueForKey:@"type"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"type"])
   {
-    v4 = [v3 decodeIntegerForKey:@"type"];
+    v4 = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   else
@@ -212,7 +212,7 @@ LABEL_11:
     v4 = -1;
   }
 
-  if (![v3 containsValueForKey:@"connectionType"])
+  if (![coderCopy containsValueForKey:@"connectionType"])
   {
     v17 = -1;
     if (v4)
@@ -228,15 +228,15 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v17 = [v3 decodeIntegerForKey:@"connectionType"];
+  v17 = [coderCopy decodeIntegerForKey:@"connectionType"];
   if (!v4)
   {
     goto LABEL_9;
   }
 
 LABEL_6:
-  v5 = [v3 decodeBoolForKey:@"mainLike"];
-  v6 = [v3 decodeInt32ForKey:@"displayID"];
+  v5 = [coderCopy decodeBoolForKey:@"mainLike"];
+  v6 = [coderCopy decodeInt32ForKey:@"displayID"];
   if (v4 == 7)
   {
     v7 = 0;
@@ -245,18 +245,18 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [v3 decodeInt32ForKey:@"connectionSeed"];
+  v7 = [coderCopy decodeInt32ForKey:@"connectionSeed"];
   if (v4 != 1)
   {
     goto LABEL_12;
   }
 
-  v8 = [v3 decodeInt32ForKey:@"pid"];
+  v8 = [coderCopy decodeInt32ForKey:@"pid"];
 LABEL_13:
-  v9 = [v3 decodeBoolForKey:@"external"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
-  v11 = [v3 decodeBoolForKey:@"secure"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"root"];
+  v9 = [coderCopy decodeBoolForKey:@"external"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
+  v11 = [coderCopy decodeBoolForKey:@"secure"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"root"];
   LOBYTE(v16) = v11;
   LOBYTE(v15) = v9;
   v13 = [(FBSDisplayIdentity *)self _initWithType:v4 UIKitMainLike:v5 displayID:v6 connectionType:v17 connectionSeed:v7 pid:v8 external:v15 uniqueIdentifier:v10 secure:v16 root:v12];
@@ -264,59 +264,59 @@ LABEL_13:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:self->_type forKey:@"type"];
-  [v7 encodeInteger:self->_connectionType forKey:@"connectionType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_connectionType forKey:@"connectionType"];
   if (self->_type)
   {
     if (self->_mainLike)
     {
-      [v7 encodeBool:1 forKey:@"mainLike"];
+      [coderCopy encodeBool:1 forKey:@"mainLike"];
     }
 
-    [v7 encodeInt32:self->_displayID forKey:@"displayID"];
-    [v7 encodeInt32:self->_connectionSeed forKey:@"connectionSeed"];
+    [coderCopy encodeInt32:self->_displayID forKey:@"displayID"];
+    [coderCopy encodeInt32:self->_connectionSeed forKey:@"connectionSeed"];
     if (self->_type == 1 && self->_pid >= 1)
     {
-      [v7 encodeInt32:? forKey:?];
+      [coderCopy encodeInt32:? forKey:?];
     }
   }
 
   if (self->_external)
   {
-    [v7 encodeBool:1 forKey:@"external"];
+    [coderCopy encodeBool:1 forKey:@"external"];
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
-  v5 = v7;
+  v5 = coderCopy;
   if (uniqueIdentifier)
   {
-    [v7 encodeObject:uniqueIdentifier forKey:@"uniqueID"];
-    v5 = v7;
+    [coderCopy encodeObject:uniqueIdentifier forKey:@"uniqueID"];
+    v5 = coderCopy;
   }
 
   if (self->_secure)
   {
-    [v7 encodeBool:1 forKey:@"secure"];
-    v5 = v7;
+    [coderCopy encodeBool:1 forKey:@"secure"];
+    v5 = coderCopy;
   }
 
   rootIdentity = self->_rootIdentity;
   if (rootIdentity)
   {
-    [v7 encodeObject:rootIdentity forKey:@"root"];
-    v5 = v7;
+    [coderCopy encodeObject:rootIdentity forKey:@"root"];
+    v5 = coderCopy;
   }
 }
 
-- (FBSDisplayIdentity)initWithXPCDictionary:(id)a3
+- (FBSDisplayIdentity)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v5 = xpc_dictionary_get_value(v4, [@"type" UTF8String]);
+    v5 = xpc_dictionary_get_value(dictionaryCopy, [@"type" UTF8String]);
     v6 = v5;
     v7 = MEMORY[0x1E69E9EB0];
     if (v5 && object_getClass(v5) == v7)
@@ -329,7 +329,7 @@ LABEL_13:
       value = -1;
     }
 
-    v10 = xpc_dictionary_get_value(v4, [@"connectionType" UTF8String]);
+    v10 = xpc_dictionary_get_value(dictionaryCopy, [@"connectionType" UTF8String]);
     v11 = v10;
     if (v10 && object_getClass(v10) == v7)
     {
@@ -338,16 +338,16 @@ LABEL_13:
 
     if (value)
     {
-      xpc_dictionary_get_BOOL(v4, [@"mainLike" UTF8String]);
-      xpc_dictionary_get_uint64(v4, [@"displayID" UTF8String]);
-      xpc_dictionary_get_uint64(v4, [@"connectionSeed" UTF8String]);
+      xpc_dictionary_get_BOOL(dictionaryCopy, [@"mainLike" UTF8String]);
+      xpc_dictionary_get_uint64(dictionaryCopy, [@"displayID" UTF8String]);
+      xpc_dictionary_get_uint64(dictionaryCopy, [@"connectionSeed" UTF8String]);
       if (value == 1)
       {
-        xpc_dictionary_get_int64(v4, [@"pid" UTF8String]);
+        xpc_dictionary_get_int64(dictionaryCopy, [@"pid" UTF8String]);
       }
     }
 
-    xpc_dictionary_get_BOOL(v4, [@"external" UTF8String]);
+    xpc_dictionary_get_BOOL(dictionaryCopy, [@"external" UTF8String]);
     [@"uniqueID" UTF8String];
     BSDeserializeStringFromXPCDictionaryWithKey();
   }
@@ -359,13 +359,13 @@ LABEL_13:
   return v9;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    xdict = v4;
-    xpc_dictionary_set_int64(v4, [@"type" UTF8String], self->_type);
+    xdict = dictionaryCopy;
+    xpc_dictionary_set_int64(dictionaryCopy, [@"type" UTF8String], self->_type);
     xpc_dictionary_set_int64(xdict, [@"connectionType" UTF8String], self->_connectionType);
     if (self->_type)
     {
@@ -398,7 +398,7 @@ LABEL_13:
       xpc_dictionary_set_BOOL(xdict, [@"secure" UTF8String], 1);
     }
 
-    v4 = xdict;
+    dictionaryCopy = xdict;
     if (self->_rootIdentity)
     {
       [@"root" UTF8String];
@@ -407,10 +407,10 @@ LABEL_13:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -418,7 +418,7 @@ LABEL_13:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_type == v4->_type && self->_mainLike == v4->_mainLike && self->_displayID == v4->_displayID && self->_connectionSeed == v4->_connectionSeed && self->_pid == v4->_pid && self->_external == v4->_external)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_type == equalCopy->_type && self->_mainLike == equalCopy->_mainLike && self->_displayID == equalCopy->_displayID && self->_connectionSeed == equalCopy->_connectionSeed && self->_pid == equalCopy->_pid && self->_external == equalCopy->_external)
     {
       BSEqualObjects();
     }

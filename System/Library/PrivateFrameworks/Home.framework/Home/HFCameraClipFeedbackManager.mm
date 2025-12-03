@@ -1,30 +1,30 @@
 @interface HFCameraClipFeedbackManager
-+ (void)donateAllCameraClipsForCameraProfile:(id)a3 completion:(id)a4;
-+ (void)donateCameraClip:(id)a3 forCameraProfile:(id)a4 completion:(id)a5;
-+ (void)donateCameraClip:(id)a3 forCameraProfile:(id)a4 processName:(id)a5 completion:(id)a6;
++ (void)donateAllCameraClipsForCameraProfile:(id)profile completion:(id)completion;
++ (void)donateCameraClip:(id)clip forCameraProfile:(id)profile completion:(id)completion;
++ (void)donateCameraClip:(id)clip forCameraProfile:(id)profile processName:(id)name completion:(id)completion;
 @end
 
 @implementation HFCameraClipFeedbackManager
 
-+ (void)donateCameraClip:(id)a3 forCameraProfile:(id)a4 completion:(id)a5
++ (void)donateCameraClip:(id)clip forCameraProfile:(id)profile completion:(id)completion
 {
   v8 = MEMORY[0x277CCAC38];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 processInfo];
-  v13 = [v12 processName];
+  completionCopy = completion;
+  profileCopy = profile;
+  clipCopy = clip;
+  processInfo = [v8 processInfo];
+  processName = [processInfo processName];
 
-  [a1 donateCameraClip:v11 forCameraProfile:v10 processName:v13 completion:v9];
+  [self donateCameraClip:clipCopy forCameraProfile:profileCopy processName:processName completion:completionCopy];
 }
 
-+ (void)donateCameraClip:(id)a3 forCameraProfile:(id)a4 processName:(id)a5 completion:(id)a6
++ (void)donateCameraClip:(id)clip forCameraProfile:(id)profile processName:(id)name completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [a3 uniqueIdentifier];
-  v13 = [v12 copy];
+  profileCopy = profile;
+  nameCopy = name;
+  completionCopy = completion;
+  uniqueIdentifier = [clip uniqueIdentifier];
+  v13 = [uniqueIdentifier copy];
 
   v14 = [MEMORY[0x277CBEB98] setWithObject:v13];
   v15 = dispatch_get_global_queue(-32768, 0);
@@ -32,14 +32,14 @@
   v20[1] = 3221225472;
   v20[2] = __88__HFCameraClipFeedbackManager_donateCameraClip_forCameraProfile_processName_completion___block_invoke;
   v20[3] = &unk_277DF67D0;
-  v21 = v9;
+  v21 = profileCopy;
   v22 = v14;
-  v23 = v10;
-  v24 = v11;
-  v16 = v11;
-  v17 = v10;
+  v23 = nameCopy;
+  v24 = completionCopy;
+  v16 = completionCopy;
+  v17 = nameCopy;
   v18 = v14;
-  v19 = v9;
+  v19 = profileCopy;
   dispatch_async(v15, v20);
 }
 
@@ -72,19 +72,19 @@ void __88__HFCameraClipFeedbackManager_donateCameraClip_forCameraProfile_process
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-+ (void)donateAllCameraClipsForCameraProfile:(id)a3 completion:(id)a4
++ (void)donateAllCameraClipsForCameraProfile:(id)profile completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  profileCopy = profile;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(-32768, 0);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__HFCameraClipFeedbackManager_donateAllCameraClipsForCameraProfile_completion___block_invoke;
   v10[3] = &unk_277DF34D0;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = profileCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = profileCopy;
   dispatch_async(v7, v10);
 }
 

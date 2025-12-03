@@ -16,21 +16,21 @@
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [NSError(HKHTTP) hk_HTTPErrorRepresentingResponse:a2 request:a1];
+        [NSError(HKHTTP) hk_HTTPErrorRepresentingResponse:a2 request:self];
       }
     }
 
     v10 = [MEMORY[0x1E696AC68] localizedStringForStatusCode:{objc_msgSend(v7, "statusCode")}];
-    v11 = [v10 capitalizedString];
+    capitalizedString = [v10 capitalizedString];
 
     if ([v7 statusCode] < 100 || objc_msgSend(v7, "statusCode") >= 600)
     {
 
-      v11 = @"Invalid Status Code";
+      capitalizedString = @"Invalid Status Code";
     }
 
     v21 = *MEMORY[0x1E696A578];
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld %@", objc_msgSend(v7, "statusCode"), v11];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld %@", objc_msgSend(v7, "statusCode"), capitalizedString];
     v22[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v14 = [v13 mutableCopy];
@@ -44,12 +44,12 @@
 
     if (v7)
     {
-      v17 = [v7 allHeaderFields];
-      v18 = [v17 copy];
+      allHeaderFields = [v7 allHeaderFields];
+      v18 = [allHeaderFields copy];
       [v14 setObject:v18 forKeyedSubscript:@"HKHTTPErrorResponseHeaderFields"];
     }
 
-    v9 = [a1 errorWithDomain:@"HKHTTPErrorDomain" code:objc_msgSend(v7 userInfo:{"statusCode"), v14}];
+    v9 = [self errorWithDomain:@"HKHTTPErrorDomain" code:objc_msgSend(v7 userInfo:{"statusCode"), v14}];
   }
 
   else

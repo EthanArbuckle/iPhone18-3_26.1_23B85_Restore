@@ -1,13 +1,13 @@
 @interface CHIdentifyLowAlignmentConfidenceColumnsStep
-- (id)process:(id)a3 options:(id)a4;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHIdentifyLowAlignmentConfidenceColumnsStep
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v123 = *MEMORY[0x1E69E9840];
-  v116 = a3;
+  processCopy = process;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -20,7 +20,7 @@
     _os_log_impl(&dword_18366B000, v4, OS_LOG_TYPE_DEBUG, "CHIdentifyLowAlignmentConfidenceColumnsStep is running", buf, 2u);
   }
 
-  v10 = objc_msgSend_result(v116, v5, v6, v7, v8, v9);
+  v10 = objc_msgSend_result(processCopy, v5, v6, v7, v8, v9);
   v16 = objc_msgSend_tokenColumns(v10, v11, v12, v13, v14, v15);
   v22 = objc_msgSend_count(v16, v17, v18, v19, v20, v21);
   v23 = v22 != 0;
@@ -138,7 +138,7 @@ LABEL_21:
 
   objc_msgSend_setChangeableTokenColumnCount_(v10, v110, v23, v111, v112, v113);
 
-  return v116;
+  return processCopy;
 }
 
 @end

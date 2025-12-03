@@ -1,20 +1,20 @@
 @interface DTSysmonCPUUsageEntry
-- (DTSysmonCPUUsageEntry)initWithTotal:(double)a3 user:(double)a4 system:(double)a5 nice:(double)a6;
+- (DTSysmonCPUUsageEntry)initWithTotal:(double)total user:(double)user system:(double)system nice:(double)nice;
 @end
 
 @implementation DTSysmonCPUUsageEntry
 
-- (DTSysmonCPUUsageEntry)initWithTotal:(double)a3 user:(double)a4 system:(double)a5 nice:(double)a6
+- (DTSysmonCPUUsageEntry)initWithTotal:(double)total user:(double)user system:(double)system nice:(double)nice
 {
   v11.receiver = self;
   v11.super_class = DTSysmonCPUUsageEntry;
   result = [(DTSysmonCPUUsageEntry *)&v11 init];
   if (result)
   {
-    result->_totalLoad = a3;
-    result->_userLoad = a4;
-    result->_systemLoad = a5;
-    result->_niceLoad = a6;
+    result->_totalLoad = total;
+    result->_userLoad = user;
+    result->_systemLoad = system;
+    result->_niceLoad = nice;
   }
 
   return result;

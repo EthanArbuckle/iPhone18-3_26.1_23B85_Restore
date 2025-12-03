@@ -1,91 +1,91 @@
 @interface PKPaymentOffersController
 + (PKPaymentOffersController)sharedInstance;
-- (BOOL)_criteriaIdentifierIsEligible:(id)a3;
+- (BOOL)_criteriaIdentifierIsEligible:(id)eligible;
 - (BOOL)_eligibleToFetchMerchandising;
 - (BOOL)_eligibleToFetchPaymentOfferCatalog;
-- (BOOL)_handleNewCatalog:(id)a3 isServerFetch:(BOOL)a4;
-- (BOOL)_handleOffersChangedForPassUniqueID:(id)a3 didRemove:(BOOL)a4;
-- (BOOL)_paymentOfferCriteriaToKeep:(id)a3;
-- (BOOL)didFetchMerchandisingOfferForPassUniqueID:(id)a3;
-- (BOOL)hasAnyEligiblePaymentOfferCriteriaOfType:(unint64_t)a3;
-- (BOOL)hasSeenLanguageDisclosureForCriteriaForIdentifier:(id)a3;
-- (PKPaymentOffersController)initWithPaymentService:(id)a3 paymentWebService:(id)a4 configuration:(id)a5;
-- (id)_criteriaEligibilityConfigurationForCriteria:(id)a3;
+- (BOOL)_handleNewCatalog:(id)catalog isServerFetch:(BOOL)fetch;
+- (BOOL)_handleOffersChangedForPassUniqueID:(id)d didRemove:(BOOL)remove;
+- (BOOL)_paymentOfferCriteriaToKeep:(id)keep;
+- (BOOL)didFetchMerchandisingOfferForPassUniqueID:(id)d;
+- (BOOL)hasAnyEligiblePaymentOfferCriteriaOfType:(unint64_t)type;
+- (BOOL)hasSeenLanguageDisclosureForCriteriaForIdentifier:(id)identifier;
+- (PKPaymentOffersController)initWithPaymentService:(id)service paymentWebService:(id)webService configuration:(id)configuration;
+- (id)_criteriaEligibilityConfigurationForCriteria:(id)criteria;
 - (id)_eligibleCatalogItems;
-- (id)_eligiblePaymentOfferCriteriaForPassUniqueID:(id)a3;
+- (id)_eligiblePaymentOfferCriteriaForPassUniqueID:(id)d;
 - (id)_initSharedInstance;
-- (id)_initWithPaymentService:(id)a3 paymentWebService:(id)a4 configuration:(id)a5;
-- (id)_redeemablePaymentRewardsBalanceFrom:(id)a3;
-- (id)dynamicContentPageForCriteriaIdentifier:(id)a3 pageType:(unint64_t)a4;
-- (id)eligiblePaymentOfferCriteriaForPassUniqueID:(id)a3 type:(unint64_t)a4;
-- (id)eligiblePaymentOfferCriteriaNoAssociatedPassWithType:(unint64_t)a3;
+- (id)_initWithPaymentService:(id)service paymentWebService:(id)webService configuration:(id)configuration;
+- (id)_redeemablePaymentRewardsBalanceFrom:(id)from;
+- (id)dynamicContentPageForCriteriaIdentifier:(id)identifier pageType:(unint64_t)type;
+- (id)eligiblePaymentOfferCriteriaForPassUniqueID:(id)d type:(unint64_t)type;
+- (id)eligiblePaymentOfferCriteriaNoAssociatedPassWithType:(unint64_t)type;
 - (id)eligiblePaymentOfferInstallmentCriteriaRequiringSetup;
-- (id)fallbackSelectedPaymentOfferForType:(unint64_t)a3;
+- (id)fallbackSelectedPaymentOfferForType:(unint64_t)type;
 - (id)fetchedAndInflightMerchandisingIdentifiers;
-- (id)ineligibleDetailsForCriteria:(id)a3;
-- (id)loadingDetailsForPaymentOffersForCriteriaIdentifier:(id)a3 passUniqueID:(id)a4;
-- (id)loadingDetailsForRewardsBalanceForCriteriaIdentifier:(id)a3 passUniqueID:(id)a4;
-- (id)merchandisingIdentifiersForCriteriaIdentifiers:(id)a3;
-- (id)merchandisingOfferForMerchandisingIdentifier:(id)a3;
-- (id)merchandisingOfferForPassUniqueID:(id)a3;
-- (id)paymentOfferCollectionForCriteriaIdentifier:(id)a3 passUniqueID:(id)a4;
-- (id)paymentOfferCriteriaForIdentifier:(id)a3;
-- (id)paymentOfferCriteriaForPassUniqueID:(id)a3;
-- (id)paymentOfferCriteriaForPassUniqueID:(id)a3 type:(unint64_t)a4;
+- (id)ineligibleDetailsForCriteria:(id)criteria;
+- (id)loadingDetailsForPaymentOffersForCriteriaIdentifier:(id)identifier passUniqueID:(id)d;
+- (id)loadingDetailsForRewardsBalanceForCriteriaIdentifier:(id)identifier passUniqueID:(id)d;
+- (id)merchandisingIdentifiersForCriteriaIdentifiers:(id)identifiers;
+- (id)merchandisingOfferForMerchandisingIdentifier:(id)identifier;
+- (id)merchandisingOfferForPassUniqueID:(id)d;
+- (id)paymentOfferCollectionForCriteriaIdentifier:(id)identifier passUniqueID:(id)d;
+- (id)paymentOfferCriteriaForIdentifier:(id)identifier;
+- (id)paymentOfferCriteriaForPassUniqueID:(id)d;
+- (id)paymentOfferCriteriaForPassUniqueID:(id)d type:(unint64_t)type;
 - (id)paymentOfferInstallmentCriteriaRequiringSetup;
-- (id)preferredLocalizationLanguageForCriteriaIdentifier:(id)a3;
-- (id)rewardsBalanceForPassUniqueID:(id)a3;
-- (unint64_t)preconfiguredInstallmentOfferStateForPassUniqueID:(id)a3;
-- (void)_accessObserversWithHandler:(id)a3;
-- (void)_addPaymentOffersControllerMerchandisingRequest:(id)a3;
-- (void)_addPaymentOffersControllerRequest:(id)a3;
+- (id)preferredLocalizationLanguageForCriteriaIdentifier:(id)identifier;
+- (id)rewardsBalanceForPassUniqueID:(id)d;
+- (unint64_t)preconfiguredInstallmentOfferStateForPassUniqueID:(id)d;
+- (void)_accessObserversWithHandler:(id)handler;
+- (void)_addPaymentOffersControllerMerchandisingRequest:(id)request;
+- (void)_addPaymentOffersControllerRequest:(id)request;
 - (void)_executeNextPaymentOffersControllerMerchandisingRequestIfPossible;
 - (void)_executeNextPaymentOffersControllerRequestIfPossible;
-- (void)_fetchDeviceMetadataFields:(unint64_t)a3 completion:(id)a4;
+- (void)_fetchDeviceMetadataFields:(unint64_t)fields completion:(id)completion;
 - (void)_informObserversPaymentOfferCatalogChanged;
 - (void)_informObserversPaymentOfferDynamicContentChanged;
 - (void)_informObserversPaymentOfferMerchandisingChanged;
-- (void)_informObserversPaymentOffersChangedForPassUniqueID:(id)a3;
-- (void)_informObserversSelectedPaymentOfferChangedForPassUniqueID:(id)a3;
-- (void)_performCancelRequest:(id)a3 completion:(id)a4;
-- (void)_performCatalogRequest:(id)a3 completion:(id)a4;
-- (void)_performConfirmRequest:(id)a3 completion:(id)a4;
-- (void)_performDynamicContentRequest:(id)a3 completion:(id)a4;
-- (void)_performMerchandisingRequest:(id)a3 completion:(id)a4;
-- (void)_performPaymentOffersRequest:(id)a3 completion:(id)a4;
-- (void)_performRewardsBalanceRequest:(id)a3 completion:(id)a4;
-- (void)_performSelectRequest:(id)a3 completion:(id)a4;
+- (void)_informObserversPaymentOffersChangedForPassUniqueID:(id)d;
+- (void)_informObserversSelectedPaymentOfferChangedForPassUniqueID:(id)d;
+- (void)_performCancelRequest:(id)request completion:(id)completion;
+- (void)_performCatalogRequest:(id)request completion:(id)completion;
+- (void)_performConfirmRequest:(id)request completion:(id)completion;
+- (void)_performDynamicContentRequest:(id)request completion:(id)completion;
+- (void)_performMerchandisingRequest:(id)request completion:(id)completion;
+- (void)_performPaymentOffersRequest:(id)request completion:(id)completion;
+- (void)_performRewardsBalanceRequest:(id)request completion:(id)completion;
+- (void)_performSelectRequest:(id)request completion:(id)completion;
 - (void)_printCatalogEligibilityDebugDetails;
-- (void)_updateCatalogLoadingState:(unint64_t)a3;
-- (void)_updateLoadingDetailsState:(id)a3 criteriaIdentifier:(id)a4 passUniqueID:(id)a5 requestType:(unint64_t)a6;
-- (void)_updatePreconfiguredInstallmentOfferStateForPassUniqueID:(id)a3;
-- (void)_updatePreferredLanguageForSelectedOffer:(id)a3;
-- (void)cancelOfferRequestWithCompletion:(id)a3;
+- (void)_updateCatalogLoadingState:(unint64_t)state;
+- (void)_updateLoadingDetailsState:(id)state criteriaIdentifier:(id)identifier passUniqueID:(id)d requestType:(unint64_t)type;
+- (void)_updatePreconfiguredInstallmentOfferStateForPassUniqueID:(id)d;
+- (void)_updatePreferredLanguageForSelectedOffer:(id)offer;
+- (void)cancelOfferRequestWithCompletion:(id)completion;
 - (void)clearCurrentSelectedPaymentOfferDetails;
-- (void)confirmOfferRequestWithCompletion:(id)a3;
-- (void)didEndContactlessPaymentSessionForPassUniqueID:(id)a3;
+- (void)confirmOfferRequestWithCompletion:(id)completion;
+- (void)didEndContactlessPaymentSessionForPassUniqueID:(id)d;
 - (void)didReceiveValidMerchantSession;
-- (void)markLanguageDisclosureAsSeenForCriteriaForIdentifier:(id)a3;
-- (void)paymentOfferCatalogChangedFromPush:(id)a3;
-- (void)registerObserver:(id)a3;
+- (void)markLanguageDisclosureAsSeenForCriteriaForIdentifier:(id)identifier;
+- (void)paymentOfferCatalogChangedFromPush:(id)push;
+- (void)registerObserver:(id)observer;
 - (void)removeCachedMerchandising;
 - (void)removeCachedPaymentOffers;
-- (void)resetLoadingDetailsForPaymentOffersForCriteriaIdentifier:(id)a3 passUniqueID:(id)a4;
-- (void)selectOfferRequestWithCompletion:(id)a3;
-- (void)selectedPaymentOfferRemoved:(id)a3 passUniqueID:(id)a4;
-- (void)selectedPaymentOfferUpdated:(id)a3 passUniqueID:(id)a4;
-- (void)setSelectedPassUniqueID:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)updateCurrentSelectedPaymentOffer:(id)a3 updateReason:(unint64_t)a4;
-- (void)updateDynamicContentPageForCriteriaIdentifier:(id)a3 pageTypes:(id)a4 completion:(id)a5;
-- (void)updateMerchandisingDetailsIfNecessaryForMerchandisingIdentifiers:(id)a3;
-- (void)updatePaymentOfferCatalogIfNecessaryWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)updatePaymentOfferCatalogWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)updatePaymentOffersForCriteriaIdentifier:(id)a3 selectedPassDetails:(id)a4 reason:(unint64_t)a5 completion:(id)a6;
+- (void)resetLoadingDetailsForPaymentOffersForCriteriaIdentifier:(id)identifier passUniqueID:(id)d;
+- (void)selectOfferRequestWithCompletion:(id)completion;
+- (void)selectedPaymentOfferRemoved:(id)removed passUniqueID:(id)d;
+- (void)selectedPaymentOfferUpdated:(id)updated passUniqueID:(id)d;
+- (void)setSelectedPassUniqueID:(id)d;
+- (void)unregisterObserver:(id)observer;
+- (void)updateCurrentSelectedPaymentOffer:(id)offer updateReason:(unint64_t)reason;
+- (void)updateDynamicContentPageForCriteriaIdentifier:(id)identifier pageTypes:(id)types completion:(id)completion;
+- (void)updateMerchandisingDetailsIfNecessaryForMerchandisingIdentifiers:(id)identifiers;
+- (void)updatePaymentOfferCatalogIfNecessaryWithReason:(unint64_t)reason completion:(id)completion;
+- (void)updatePaymentOfferCatalogWithReason:(unint64_t)reason completion:(id)completion;
+- (void)updatePaymentOffersForCriteriaIdentifier:(id)identifier selectedPassDetails:(id)details reason:(unint64_t)reason completion:(id)completion;
 - (void)updatePreconfiguredOfferStateForAllPasses;
-- (void)updateRewardsBalanceForPass:(id)a3 criteriaIdentifier:(id)a4 completion:(id)a5;
-- (void)updateSessionDetails:(id)a3;
-- (void)willConsumeSelectedPaymentOfferForPassUniqueID:(id)a3;
+- (void)updateRewardsBalanceForPass:(id)pass criteriaIdentifier:(id)identifier completion:(id)completion;
+- (void)updateSessionDetails:(id)details;
+- (void)willConsumeSelectedPaymentOfferForPassUniqueID:(id)d;
 @end
 
 @implementation PKPaymentOffersController
@@ -115,24 +115,24 @@
   return v6;
 }
 
-- (PKPaymentOffersController)initWithPaymentService:(id)a3 paymentWebService:(id)a4 configuration:(id)a5
+- (PKPaymentOffersController)initWithPaymentService:(id)service paymentWebService:(id)webService configuration:(id)configuration
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PKPaymentOffersController alloc] _initWithPaymentService:v10 paymentWebService:v9 configuration:v8];
+  configurationCopy = configuration;
+  webServiceCopy = webService;
+  serviceCopy = service;
+  v11 = [[PKPaymentOffersController alloc] _initWithPaymentService:serviceCopy paymentWebService:webServiceCopy configuration:configurationCopy];
 
   return v11;
 }
 
-- (id)_initWithPaymentService:(id)a3 paymentWebService:(id)a4 configuration:(id)a5
+- (id)_initWithPaymentService:(id)service paymentWebService:(id)webService configuration:(id)configuration
 {
   v64 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = 0;
-  if (v9 && v10)
+  serviceCopy = service;
+  webServiceCopy = webService;
+  configurationCopy = configuration;
+  selfCopy = 0;
+  if (serviceCopy && webServiceCopy)
   {
     v62.receiver = self;
     v62.super_class = PKPaymentOffersController;
@@ -140,14 +140,14 @@
     v14 = v13;
     if (v13)
     {
-      objc_storeStrong(&v13->_paymentService, a3);
+      objc_storeStrong(&v13->_paymentService, service);
       [(PKPaymentService *)v14->_paymentService registerObserver:v14];
-      objc_storeStrong(&v14->_paymentWebService, a4);
-      v15 = [v10 context];
-      v16 = [v15 primaryRegion];
-      v17 = [v16 paymentOffersServiceURL];
+      objc_storeStrong(&v14->_paymentWebService, webService);
+      context = [webServiceCopy context];
+      primaryRegion = [context primaryRegion];
+      paymentOffersServiceURL = [primaryRegion paymentOffersServiceURL];
       baseURL = v14->_baseURL;
-      v14->_baseURL = v17;
+      v14->_baseURL = paymentOffersServiceURL;
 
       if (!v14->_baseURL)
       {
@@ -155,10 +155,10 @@
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v19 = [v15 regions];
-        v20 = [v19 allValues];
+        regions = [context regions];
+        allValues = [regions allValues];
 
-        v21 = [v20 countByEnumeratingWithState:&v58 objects:v63 count:16];
+        v21 = [allValues countByEnumeratingWithState:&v58 objects:v63 count:16];
         if (v21)
         {
           v22 = v21;
@@ -169,20 +169,20 @@
             {
               if (*v59 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(allValues);
               }
 
-              v25 = [*(*(&v58 + 1) + 8 * i) paymentOffersServiceURL];
-              if (v25)
+              paymentOffersServiceURL2 = [*(*(&v58 + 1) + 8 * i) paymentOffersServiceURL];
+              if (paymentOffersServiceURL2)
               {
                 v26 = v14->_baseURL;
-                v14->_baseURL = v25;
+                v14->_baseURL = paymentOffersServiceURL2;
 
                 goto LABEL_15;
               }
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v58 objects:v63 count:16];
+            v22 = [allValues countByEnumeratingWithState:&v58 objects:v63 count:16];
             if (v22)
             {
               continue;
@@ -196,9 +196,9 @@ LABEL_15:
       }
 
       v14->_lockObservers._os_unfair_lock_opaque = 0;
-      v27 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+      pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
       observers = v14->_observers;
-      v14->_observers = v27;
+      v14->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
       v29 = objc_alloc_init(MEMORY[0x1E695DFA0]);
       queuedRequests = v14->_queuedRequests;
@@ -257,24 +257,24 @@ LABEL_15:
       rewardsBalancesForPassUniqueID = v14->_rewardsBalancesForPassUniqueID;
       v14->_rewardsBalancesForPassUniqueID = v55;
 
-      [(PKPaymentOffersController *)v14 updateSessionDetails:v11];
+      [(PKPaymentOffersController *)v14 updateSessionDetails:configurationCopy];
     }
 
     self = v14;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)updateSessionDetails:(id)a3
+- (void)updateSessionDetails:(id)details
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  detailsCopy = details;
   p_configuration = &self->_configuration;
-  if (self->_configuration != v5)
+  if (self->_configuration != detailsCopy)
   {
-    objc_storeStrong(&self->_configuration, a3);
+    objc_storeStrong(&self->_configuration, details);
     v7 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -294,60 +294,60 @@ LABEL_15:
       {
         if (!self->_catalog)
         {
-          v10 = [(PKPaymentService *)self->_paymentService paymentOffersCatalog];
+          paymentOffersCatalog = [(PKPaymentService *)self->_paymentService paymentOffersCatalog];
           catalog = self->_catalog;
-          self->_catalog = v10;
+          self->_catalog = paymentOffersCatalog;
         }
 
-        v12 = [*p_configuration passUniqueID];
-        if ([*p_configuration context] != 1 || !v12)
+        passUniqueID = [*p_configuration passUniqueID];
+        if ([*p_configuration context] != 1 || !passUniqueID)
         {
           goto LABEL_41;
         }
 
-        [(PKPaymentOffersController *)self setSelectedPassUniqueID:v12];
-        v13 = [(PKPaymentService *)self->_paymentService allSelectedPaymentOffersForPassUniqueID:v12];
+        [(PKPaymentOffersController *)self setSelectedPassUniqueID:passUniqueID];
+        v13 = [(PKPaymentService *)self->_paymentService allSelectedPaymentOffersForPassUniqueID:passUniqueID];
         v14 = self->_allSelectedInStorePaymentOffers;
         self->_allSelectedInStorePaymentOffers = v13;
 
-        v15 = [(NSArray *)self->_allSelectedInStorePaymentOffers firstObject];
-        v16 = v15;
-        if (v15 && ((v17 = self->_catalog, [v15 criteriaIdentifier], v18 = objc_claimAutoreleasedReturnValue(), -[PKPaymentOfferCatalog criteriaWithIdentifier:](v17, "criteriaWithIdentifier:", v18), v19 = objc_claimAutoreleasedReturnValue(), v18, objc_msgSend(v19, "type") != 1) ? (v20 = 0) : (v20 = v19), v21 = v20, v19, v21))
+        firstObject = [(NSArray *)self->_allSelectedInStorePaymentOffers firstObject];
+        v16 = firstObject;
+        if (firstObject && ((v17 = self->_catalog, [firstObject criteriaIdentifier], v18 = objc_claimAutoreleasedReturnValue(), -[PKPaymentOfferCatalog criteriaWithIdentifier:](v17, "criteriaWithIdentifier:", v18), v19 = objc_claimAutoreleasedReturnValue(), v18, objc_msgSend(v19, "type") != 1) ? (v20 = 0) : (v20 = v19), v21 = v20, v19, v21))
         {
           if ([v21 suppressPayInFull])
           {
-            v22 = v16;
+            firstObject2 = v16;
             if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
             {
               v33 = 138412290;
-              v34 = v22;
+              v34 = firstObject2;
               _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Auto selecting cached selected offer since suppressPayInFull is true %@", &v33, 0xCu);
             }
 
 LABEL_31:
-            v25 = [v16 criteriaIdentifier];
-            v26 = [(PKPaymentOffersController *)self _criteriaIdentifierIsEligible:v25];
+            criteriaIdentifier = [v16 criteriaIdentifier];
+            v26 = [(PKPaymentOffersController *)self _criteriaIdentifierIsEligible:criteriaIdentifier];
 
             if (v26)
             {
-              if ([v22 storageType] == 1)
+              if ([firstObject2 storageType] == 1)
               {
-                v27 = [v22 installmentSelectedPaymentOffer];
-                v28 = [v27 userEnteredAmount];
+                installmentSelectedPaymentOffer = [firstObject2 installmentSelectedPaymentOffer];
+                userEnteredAmount = [installmentSelectedPaymentOffer userEnteredAmount];
 
-                if (v28)
+                if (userEnteredAmount)
                 {
                   v29 = *p_configuration;
-                  v30 = [v28 amount];
-                  [v29 updateTransactionAmount:v30];
+                  amount = [userEnteredAmount amount];
+                  [v29 updateTransactionAmount:amount];
 
                   v31 = *p_configuration;
-                  v32 = [v28 currency];
-                  [v31 updateCurrencyCode:v32];
+                  currency = [userEnteredAmount currency];
+                  [v31 updateCurrencyCode:currency];
                 }
               }
 
-              [(PKPaymentOffersController *)self updateCurrentSelectedPaymentOffer:v22 updateReason:11];
+              [(PKPaymentOffersController *)self updateCurrentSelectedPaymentOffer:firstObject2 updateReason:11];
             }
 
             else
@@ -355,7 +355,7 @@ LABEL_31:
               if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
               {
                 v33 = 138412290;
-                v34 = v22;
+                v34 = firstObject2;
                 _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Cannot auto select offer since the criteria isnt eligible: %@", &v33, 0xCu);
               }
             }
@@ -374,11 +374,11 @@ LABEL_41:
 
         if ([v16 isSticky])
         {
-          v22 = v16;
+          firstObject2 = v16;
           if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
           {
             v33 = 138412290;
-            v34 = v22;
+            v34 = firstObject2;
             _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Auto selecting cached selected offer since it is sticky %@", &v33, 0xCu);
           }
 
@@ -391,22 +391,22 @@ LABEL_41:
           v24 = [v23 pk_firstObjectPassingTest:&__block_literal_global_108];
           if (v24)
           {
-            v22 = [v23 firstObject];
+            firstObject2 = [v23 firstObject];
             if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
             {
               v33 = 138412290;
-              v34 = v22;
+              v34 = firstObject2;
               _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Auto selecting cached default installment selected offer %@", &v33, 0xCu);
             }
           }
 
           else
           {
-            v22 = 0;
+            firstObject2 = 0;
           }
         }
 
-        if (!v22)
+        if (!firstObject2)
         {
           goto LABEL_40;
         }
@@ -419,30 +419,30 @@ LABEL_41:
 LABEL_42:
 }
 
-- (void)updateCurrentSelectedPaymentOffer:(id)a3 updateReason:(unint64_t)a4
+- (void)updateCurrentSelectedPaymentOffer:(id)offer updateReason:(unint64_t)reason
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(PKPaymentOffersController *)self _updatePreferredLanguageForSelectedOffer:v6];
-  v7 = [v6 installmentSelectedPaymentOffer];
-  v8 = [v7 userEnteredAmount];
+  offerCopy = offer;
+  [(PKPaymentOffersController *)self _updatePreferredLanguageForSelectedOffer:offerCopy];
+  installmentSelectedPaymentOffer = [offerCopy installmentSelectedPaymentOffer];
+  userEnteredAmount = [installmentSelectedPaymentOffer userEnteredAmount];
 
-  if (v8)
+  if (userEnteredAmount)
   {
-    [(PKPaymentOffersSessionDetails *)self->_configuration setUserEnteredAmount:v8];
+    [(PKPaymentOffersSessionDetails *)self->_configuration setUserEnteredAmount:userEnteredAmount];
     if ([(PKPaymentOffersSessionDetails *)self->_configuration context]== 1)
     {
-      v9 = [(PKPaymentOffersSessionDetails *)self->_configuration transactionAmount];
+      transactionAmount = [(PKPaymentOffersSessionDetails *)self->_configuration transactionAmount];
 
-      if (!v9)
+      if (!transactionAmount)
       {
         configuration = self->_configuration;
-        v11 = [v8 amount];
-        [(PKPaymentOffersSessionDetails *)configuration updateTransactionAmount:v11];
+        amount = [userEnteredAmount amount];
+        [(PKPaymentOffersSessionDetails *)configuration updateTransactionAmount:amount];
 
         v12 = self->_configuration;
-        v13 = [v8 currency];
-        [(PKPaymentOffersSessionDetails *)v12 updateCurrencyCode:v13];
+        currency = [userEnteredAmount currency];
+        [(PKPaymentOffersSessionDetails *)v12 updateCurrencyCode:currency];
       }
     }
   }
@@ -450,23 +450,23 @@ LABEL_42:
   selectedPassUniqueID = self->_selectedPassUniqueID;
   if (selectedPassUniqueID)
   {
-    v15 = selectedPassUniqueID;
+    passUniqueID = selectedPassUniqueID;
   }
 
   else
   {
-    v15 = [v6 passUniqueID];
+    passUniqueID = [offerCopy passUniqueID];
   }
 
-  v16 = v15;
-  v17 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
-  [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails updateCurrentSelectedPaymentOffer:v6 selectedPassUniqueID:v16 updateReason:a4];
-  v18 = [v6 criteriaIdentifier];
-  v19 = [v6 sessionIdentifier];
-  v20 = v19;
-  if (v18 && v19)
+  v16 = passUniqueID;
+  selectedPaymentOffer = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
+  [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails updateCurrentSelectedPaymentOffer:offerCopy selectedPassUniqueID:v16 updateReason:reason];
+  criteriaIdentifier = [offerCopy criteriaIdentifier];
+  sessionIdentifier = [offerCopy sessionIdentifier];
+  v20 = sessionIdentifier;
+  if (criteriaIdentifier && sessionIdentifier)
   {
-    v21 = [(NSMutableDictionary *)self->_sessionIdentifierForCriteriaIdentifier objectForKeyedSubscript:v18];
+    v21 = [(NSMutableDictionary *)self->_sessionIdentifierForCriteriaIdentifier objectForKeyedSubscript:criteriaIdentifier];
     v22 = v21;
     if (v21)
     {
@@ -481,46 +481,46 @@ LABEL_42:
         v30 = 138412802;
         v31 = v22;
         v32 = 2112;
-        v33 = v18;
+        v33 = criteriaIdentifier;
         v34 = 2112;
         v35 = v20;
         _os_log_impl(&dword_1AD337000, v23, OS_LOG_TYPE_DEFAULT, "There is a mismatch between the current defined sessionID %@ for criteriaID %@ and the newly selected payment offer sessionID %@. Using the sessionID on the selected offer.", &v30, 0x20u);
       }
     }
 
-    [(NSMutableDictionary *)self->_sessionIdentifierForCriteriaIdentifier setObject:v20 forKeyedSubscript:v18];
+    [(NSMutableDictionary *)self->_sessionIdentifierForCriteriaIdentifier setObject:v20 forKeyedSubscript:criteriaIdentifier];
 LABEL_17:
   }
 
   [(PKPaymentOffersController *)self _updatePreconfiguredInstallmentOfferState];
-  v24 = [(PKPaymentOffersSessionDetails *)self->_configuration context];
-  if (a4 != 11 && v24 == 1)
+  context = [(PKPaymentOffersSessionDetails *)self->_configuration context];
+  if (reason != 11 && context == 1)
   {
-    if (v6 && v17)
+    if (offerCopy && selectedPaymentOffer)
     {
-      if ([v17 isEqual:v6])
+      if ([selectedPaymentOffer isEqual:offerCopy])
       {
         goto LABEL_28;
       }
     }
 
-    else if (v17 == v6)
+    else if (selectedPaymentOffer == offerCopy)
     {
       goto LABEL_28;
     }
 
-    v25 = [MEMORY[0x1E695DF00] date];
-    [v6 updateUserSelectionDate:v25];
+    date = [MEMORY[0x1E695DF00] date];
+    [offerCopy updateUserSelectionDate:date];
 
     v26 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       v30 = 138412290;
-      v31 = v6;
+      v31 = offerCopy;
       _os_log_impl(&dword_1AD337000, v26, OS_LOG_TYPE_DEFAULT, "Inserting the newly selected offer into the local database: %@", &v30, 0xCu);
     }
 
-    v27 = [(PKPaymentService *)self->_paymentService updateSelectedPaymentOffer:v6 forPassUniqueID:v16];
+    v27 = [(PKPaymentService *)self->_paymentService updateSelectedPaymentOffer:offerCopy forPassUniqueID:v16];
     v28 = [(PKPaymentService *)self->_paymentService allSelectedPaymentOffersForPassUniqueID:v16];
     allSelectedInStorePaymentOffers = self->_allSelectedInStorePaymentOffers;
     self->_allSelectedInStorePaymentOffers = v28;
@@ -536,57 +536,57 @@ LABEL_28:
   [(PKPaymentOffersController *)self _updatePreconfiguredInstallmentOfferState];
 }
 
-- (void)updatePaymentOfferCatalogIfNecessaryWithReason:(unint64_t)a3 completion:(id)a4
+- (void)updatePaymentOfferCatalogIfNecessaryWithReason:(unint64_t)reason completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   if ([(PKPaymentOfferCatalog *)self->_catalog isOutOfDate])
   {
-    v7 = [(PKPaymentOffersSessionDetails *)self->_configuration context];
-    if (v7 && v7 != 2)
+    context = [(PKPaymentOffersSessionDetails *)self->_configuration context];
+    if (context && context != 2)
     {
-      if (v7 != 1 || ((-[PKPaymentOffersSessionDetails passUniqueID](self->_configuration, "passUniqueID"), (v9 = objc_claimAutoreleasedReturnValue()) != 0) || (-[PKPaymentOffersControllerSelectedOfferDetails selectedPassUniqueID](self->_selectedOfferDetails, "selectedPassUniqueID"), (v9 = objc_claimAutoreleasedReturnValue()) != 0)) && (v10 = v9, -[PKPaymentOffersController eligiblePaymentOfferCriteriaForPassUniqueID:](self, "eligiblePaymentOfferCriteriaForPassUniqueID:", v9), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 count], v11, v10, v12))
+      if (context != 1 || ((-[PKPaymentOffersSessionDetails passUniqueID](self->_configuration, "passUniqueID"), (v9 = objc_claimAutoreleasedReturnValue()) != 0) || (-[PKPaymentOffersControllerSelectedOfferDetails selectedPassUniqueID](self->_selectedOfferDetails, "selectedPassUniqueID"), (v9 = objc_claimAutoreleasedReturnValue()) != 0)) && (v10 = v9, -[PKPaymentOffersController eligiblePaymentOfferCriteriaForPassUniqueID:](self, "eligiblePaymentOfferCriteriaForPassUniqueID:", v9), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 count], v11, v10, v12))
       {
         v13 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = PKPaymentOfferCatalogUpdateReasonToString(a3);
-          v15 = [(PKPaymentOfferCatalog *)self->_catalog lastUpdated];
+          v14 = PKPaymentOfferCatalogUpdateReasonToString(reason);
+          lastUpdated = [(PKPaymentOfferCatalog *)self->_catalog lastUpdated];
           v17 = 138412546;
           v18 = v14;
           v19 = 2112;
-          v20 = v15;
+          v20 = lastUpdated;
           _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Updating payment offer catalog for reason %@ since it is out of date. Last updated: %@", &v17, 0x16u);
         }
 
-        v16 = [[PKPaymentOffersControllerRequest alloc] initPaymentOfferCatalogRequestWithCatalogUpdateReason:a3 completion:v6];
+        v16 = [[PKPaymentOffersControllerRequest alloc] initPaymentOfferCatalogRequestWithCatalogUpdateReason:reason completion:completionCopy];
         [(PKPaymentOffersController *)self _addPaymentOffersControllerRequest:v16];
       }
     }
   }
 }
 
-- (void)updatePaymentOfferCatalogWithReason:(unint64_t)a3 completion:(id)a4
+- (void)updatePaymentOfferCatalogWithReason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a4;
-  v7 = [[PKPaymentOffersControllerRequest alloc] initPaymentOfferCatalogRequestWithCatalogUpdateReason:a3 completion:v6];
+  completionCopy = completion;
+  v7 = [[PKPaymentOffersControllerRequest alloc] initPaymentOfferCatalogRequestWithCatalogUpdateReason:reason completion:completionCopy];
 
   [(PKPaymentOffersController *)self _addPaymentOffersControllerRequest:v7];
 }
 
-- (void)updatePaymentOffersForCriteriaIdentifier:(id)a3 selectedPassDetails:(id)a4 reason:(unint64_t)a5 completion:(id)a6
+- (void)updatePaymentOffersForCriteriaIdentifier:(id)identifier selectedPassDetails:(id)details reason:(unint64_t)reason completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[PKPaymentOffersControllerRequest alloc] initPaymentOfferRequestWithCriteriaIdentifierIdentifier:v12 selectedPassDetails:v11 reason:a5 completion:v10];
+  completionCopy = completion;
+  detailsCopy = details;
+  identifierCopy = identifier;
+  v13 = [[PKPaymentOffersControllerRequest alloc] initPaymentOfferRequestWithCriteriaIdentifierIdentifier:identifierCopy selectedPassDetails:detailsCopy reason:reason completion:completionCopy];
 
   [(PKPaymentOffersController *)self _addPaymentOffersControllerRequest:v13];
 }
 
-- (id)paymentOfferCollectionForCriteriaIdentifier:(id)a3 passUniqueID:(id)a4
+- (id)paymentOfferCollectionForCriteriaIdentifier:(id)identifier passUniqueID:(id)d
 {
-  v5 = PKPaymentOffersControllerGenerateCacheKey(a3, a4);
+  v5 = PKPaymentOffersControllerGenerateCacheKey(identifier, d);
   if (v5)
   {
     v6 = [(NSMutableDictionary *)self->_paymentOffersForCriteriaIdentifier objectForKeyedSubscript:v5];
@@ -600,12 +600,12 @@ LABEL_28:
   return v6;
 }
 
-- (id)dynamicContentPageForCriteriaIdentifier:(id)a3 pageType:(unint64_t)a4
+- (id)dynamicContentPageForCriteriaIdentifier:(id)identifier pageType:(unint64_t)type
 {
-  if (a3)
+  if (identifier)
   {
     v5 = [(NSMutableDictionary *)self->_dynamicContentPagesByCriteriaIdentifier objectForKeyedSubscript:?];
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     v7 = [v5 objectForKeyedSubscript:v6];
   }
 
@@ -617,12 +617,12 @@ LABEL_28:
   return v7;
 }
 
-- (void)updateDynamicContentPageForCriteriaIdentifier:(id)a3 pageTypes:(id)a4 completion:(id)a5
+- (void)updateDynamicContentPageForCriteriaIdentifier:(id)identifier pageTypes:(id)types completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PKPaymentOffersControllerRequest alloc] initDynamicContentRequestWithCriteriaIdentifier:v10 pageTypes:v9 completion:v8];
+  completionCopy = completion;
+  typesCopy = types;
+  identifierCopy = identifier;
+  v11 = [[PKPaymentOffersControllerRequest alloc] initDynamicContentRequestWithCriteriaIdentifier:identifierCopy pageTypes:typesCopy completion:completionCopy];
 
   [(PKPaymentOffersController *)self _addPaymentOffersControllerRequest:v11];
 }
@@ -645,14 +645,14 @@ LABEL_28:
 - (void)updatePreconfiguredOfferStateForAllPasses
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_preconfiguredInstallmentStateForPassUniqueID allKeys];
-  if ([v3 count])
+  allKeys = [(NSMutableDictionary *)self->_preconfiguredInstallmentStateForPassUniqueID allKeys];
+  if ([allKeys count])
   {
     v4 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v3;
+      v17 = allKeys;
       _os_log_impl(&dword_1AD337000, v4, OS_LOG_TYPE_DEFAULT, "Recomputing preconfigured offer state for all cached passes %@", buf, 0xCu);
     }
 
@@ -660,7 +660,7 @@ LABEL_28:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v3;
+    v5 = allKeys;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -706,12 +706,12 @@ LABEL_28:
   }
 }
 
-- (void)setSelectedPassUniqueID:(id)a3
+- (void)setSelectedPassUniqueID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   selectedPassUniqueID = self->_selectedPassUniqueID;
-  v7 = v5;
+  v7 = dCopy;
   v8 = selectedPassUniqueID;
   v9 = v8;
   if (v8 == v7)
@@ -742,7 +742,7 @@ LABEL_28:
       _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "PKPaymentOffersController updated selected pass uniqueID: %@", &v14, 0xCu);
     }
 
-    objc_storeStrong(&self->_selectedPassUniqueID, a3);
+    objc_storeStrong(&self->_selectedPassUniqueID, d);
     [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails updatedSelectedPassUniqueID:v7];
     self->_consumingSelectedPaymentOffer = 0;
     [(PKPaymentOffersController *)self _updatePreconfiguredInstallmentOfferState];
@@ -754,34 +754,34 @@ LABEL_28:
 LABEL_11:
 }
 
-- (void)willConsumeSelectedPaymentOfferForPassUniqueID:(id)a3
+- (void)willConsumeSelectedPaymentOfferForPassUniqueID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self->_selectedPassUniqueID;
-  v6 = v4;
+  dCopy = d;
+  selectedPaymentOffer = self->_selectedPassUniqueID;
+  v6 = dCopy;
   v7 = v6;
-  if (v5 == v6)
+  if (selectedPaymentOffer == v6)
   {
 
 LABEL_7:
     self->_consumingSelectedPaymentOffer = 1;
-    v5 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
-    v9 = [(NSString *)v5 criteriaIdentifier];
+    selectedPaymentOffer = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
+    criteriaIdentifier = [(NSString *)selectedPaymentOffer criteriaIdentifier];
     v10 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
       v14 = v7;
       v15 = 2112;
-      v16 = v9;
+      v16 = criteriaIdentifier;
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Clearing cached session identifiers and payment offers for pass %@, criteriaIdentifier %@", &v13, 0x16u);
     }
 
-    v11 = PKPaymentOffersControllerGenerateCacheKey(v9, v7);
-    if (v9)
+    v11 = PKPaymentOffersControllerGenerateCacheKey(criteriaIdentifier, v7);
+    if (criteriaIdentifier)
     {
-      [(NSMutableDictionary *)self->_sessionIdentifierForCriteriaIdentifier setObject:0 forKeyedSubscript:v9];
+      [(NSMutableDictionary *)self->_sessionIdentifierForCriteriaIdentifier setObject:0 forKeyedSubscript:criteriaIdentifier];
     }
 
     if (v11)
@@ -797,9 +797,9 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  if (v6 && v5)
+  if (v6 && selectedPaymentOffer)
   {
-    v8 = [(NSString *)v5 isEqualToString:v6];
+    v8 = [(NSString *)selectedPaymentOffer isEqualToString:v6];
 
     if (!v8)
     {
@@ -813,12 +813,12 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)didEndContactlessPaymentSessionForPassUniqueID:(id)a3
+- (void)didEndContactlessPaymentSessionForPassUniqueID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = self->_selectedPassUniqueID;
-  v6 = v4;
+  v6 = dCopy;
   v7 = v6;
   if (v5 == v6)
   {
@@ -872,21 +872,21 @@ LABEL_12:
   [(PKPaymentOffersController *)self _executeNextPaymentOffersControllerMerchandisingRequestIfPossible];
 }
 
-- (id)fallbackSelectedPaymentOfferForType:(unint64_t)a3
+- (id)fallbackSelectedPaymentOfferForType:(unint64_t)type
 {
-  v5 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
+  selectedPaymentOffer = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
   v6 = [(NSArray *)self->_allSelectedInStorePaymentOffers mutableCopy];
   v7 = v6;
-  if (v5)
+  if (selectedPaymentOffer)
   {
-    v8 = [v6 indexOfObject:v5];
+    v8 = [v6 indexOfObject:selectedPaymentOffer];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __65__PKPaymentOffersController_fallbackSelectedPaymentOfferForType___block_invoke;
       v15[3] = &unk_1E79CEF48;
-      v16 = v5;
+      v16 = selectedPaymentOffer;
       v9 = [v7 indexOfObjectPassingTest:v15];
 
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
@@ -908,13 +908,13 @@ LABEL_7:
   v14[1] = 3221225472;
   v14[2] = __65__PKPaymentOffersController_fallbackSelectedPaymentOfferForType___block_invoke_2;
   v14[3] = &__block_descriptor_40_e39_B32__0__PKSelectedPaymentOffer_8Q16_B24l;
-  v14[4] = a3;
+  v14[4] = type;
   v10 = [v7 pk_objectsPassingTest:v14];
   v11 = [v10 mutableCopy];
 
-  v12 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
 BOOL __65__PKPaymentOffersController_fallbackSelectedPaymentOfferForType___block_invoke(uint64_t a1, void *a2)
@@ -951,9 +951,9 @@ BOOL __65__PKPaymentOffersController_fallbackSelectedPaymentOfferForType___block
   return v7;
 }
 
-- (id)loadingDetailsForPaymentOffersForCriteriaIdentifier:(id)a3 passUniqueID:(id)a4
+- (id)loadingDetailsForPaymentOffersForCriteriaIdentifier:(id)identifier passUniqueID:(id)d
 {
-  v5 = PKPaymentOffersControllerGenerateCacheKey(a3, a4);
+  v5 = PKPaymentOffersControllerGenerateCacheKey(identifier, d);
   if (v5)
   {
     v6 = [(NSMutableDictionary *)self->_requestLoadingDetails objectForKeyedSubscript:&unk_1F23B4CA0];
@@ -968,12 +968,12 @@ BOOL __65__PKPaymentOffersController_fallbackSelectedPaymentOfferForType___block
   return v7;
 }
 
-- (void)resetLoadingDetailsForPaymentOffersForCriteriaIdentifier:(id)a3 passUniqueID:(id)a4
+- (void)resetLoadingDetailsForPaymentOffersForCriteriaIdentifier:(id)identifier passUniqueID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
-    v5 = PKPaymentOffersControllerGenerateCacheKey(a3, a4);
+    v5 = PKPaymentOffersControllerGenerateCacheKey(identifier, d);
     v6 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -987,9 +987,9 @@ BOOL __65__PKPaymentOffersController_fallbackSelectedPaymentOfferForType___block
   }
 }
 
-- (id)loadingDetailsForRewardsBalanceForCriteriaIdentifier:(id)a3 passUniqueID:(id)a4
+- (id)loadingDetailsForRewardsBalanceForCriteriaIdentifier:(id)identifier passUniqueID:(id)d
 {
-  v5 = PKPaymentOffersControllerGenerateCacheKey(a3, a4);
+  v5 = PKPaymentOffersControllerGenerateCacheKey(identifier, d);
   if (v5)
   {
     v6 = [(NSMutableDictionary *)self->_requestLoadingDetails objectForKeyedSubscript:&unk_1F23B4CB8];
@@ -1004,11 +1004,11 @@ BOOL __65__PKPaymentOffersController_fallbackSelectedPaymentOfferForType___block
   return v7;
 }
 
-- (void)_updateCatalogLoadingState:(unint64_t)a3
+- (void)_updateCatalogLoadingState:(unint64_t)state
 {
   catalogLoadingState = self->_catalogLoadingState;
-  self->_catalogLoadingState = a3;
-  if (catalogLoadingState != a3)
+  self->_catalogLoadingState = state;
+  if (catalogLoadingState != state)
   {
     [(PKPaymentOffersController *)self _updatePreconfiguredInstallmentOfferState];
 
@@ -1016,15 +1016,15 @@ BOOL __65__PKPaymentOffersController_fallbackSelectedPaymentOfferForType___block
   }
 }
 
-- (void)_updateLoadingDetailsState:(id)a3 criteriaIdentifier:(id)a4 passUniqueID:(id)a5 requestType:(unint64_t)a6
+- (void)_updateLoadingDetailsState:(id)state criteriaIdentifier:(id)identifier passUniqueID:(id)d requestType:(unint64_t)type
 {
-  v10 = a3;
-  if (a4)
+  stateCopy = state;
+  if (identifier)
   {
-    v22 = v10;
-    v11 = PKPaymentOffersControllerGenerateCacheKey(a4, a5);
+    v22 = stateCopy;
+    v11 = PKPaymentOffersControllerGenerateCacheKey(identifier, d);
     requestLoadingDetails = self->_requestLoadingDetails;
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     v14 = [(NSMutableDictionary *)requestLoadingDetails objectForKeyedSubscript:v13];
 
     v15 = [v14 objectForKeyedSubscript:v11];
@@ -1034,12 +1034,12 @@ BOOL __65__PKPaymentOffersController_fallbackSelectedPaymentOfferForType___block
       {
         v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
         v17 = self->_requestLoadingDetails;
-        v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+        v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
         [(NSMutableDictionary *)v17 setObject:v16 forKeyedSubscript:v18];
       }
 
       v19 = self->_requestLoadingDetails;
-      v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+      v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
       v21 = [(NSMutableDictionary *)v19 objectForKeyedSubscript:v20];
       [v21 setObject:v22 forKeyedSubscript:v11];
 
@@ -1047,51 +1047,51 @@ BOOL __65__PKPaymentOffersController_fallbackSelectedPaymentOfferForType___block
       [(PKPaymentOffersController *)self _updatePreconfiguredInstallmentOfferState];
     }
 
-    v10 = v22;
+    stateCopy = v22;
   }
 }
 
-- (unint64_t)preconfiguredInstallmentOfferStateForPassUniqueID:(id)a3
+- (unint64_t)preconfiguredInstallmentOfferStateForPassUniqueID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_preconfiguredInstallmentStateForPassUniqueID objectForKeyedSubscript:v4];
-    v6 = [v5 integerValue];
+    v5 = [(NSMutableDictionary *)self->_preconfiguredInstallmentStateForPassUniqueID objectForKeyedSubscript:dCopy];
+    integerValue = [v5 integerValue];
 
-    if (!v6)
+    if (!integerValue)
     {
-      [(PKPaymentOffersController *)self _updatePreconfiguredInstallmentOfferStateForPassUniqueID:v4];
-      v7 = [(NSMutableDictionary *)self->_preconfiguredInstallmentStateForPassUniqueID objectForKeyedSubscript:v4];
-      v6 = [v7 integerValue];
+      [(PKPaymentOffersController *)self _updatePreconfiguredInstallmentOfferStateForPassUniqueID:dCopy];
+      v7 = [(NSMutableDictionary *)self->_preconfiguredInstallmentStateForPassUniqueID objectForKeyedSubscript:dCopy];
+      integerValue = [v7 integerValue];
     }
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (void)_updatePreconfiguredInstallmentOfferStateForPassUniqueID:(id)a3
+- (void)_updatePreconfiguredInstallmentOfferStateForPassUniqueID:(id)d
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     goto LABEL_18;
   }
 
-  v5 = [(PKPaymentOffersController *)self paymentOfferCriteriaForPassUniqueID:v4 type:1];
-  v6 = [v5 identifier];
+  v5 = [(PKPaymentOffersController *)self paymentOfferCriteriaForPassUniqueID:dCopy type:1];
+  identifier = [v5 identifier];
   v7 = [(PKPaymentOffersController *)self ineligibleDetailsForCriteria:v5];
-  v8 = [(PKPaymentOffersController *)self loadingDetailsForPaymentOffersForCriteriaIdentifier:v6 passUniqueID:v4];
-  v9 = [(NSMutableDictionary *)self->_preconfiguredInstallmentStateForPassUniqueID objectForKeyedSubscript:v4];
-  v10 = [v9 integerValue];
+  v8 = [(PKPaymentOffersController *)self loadingDetailsForPaymentOffersForCriteriaIdentifier:identifier passUniqueID:dCopy];
+  v9 = [(NSMutableDictionary *)self->_preconfiguredInstallmentStateForPassUniqueID objectForKeyedSubscript:dCopy];
+  integerValue = [v9 integerValue];
 
-  if (!v6)
+  if (!identifier)
   {
     goto LABEL_11;
   }
@@ -1122,40 +1122,40 @@ BOOL __65__PKPaymentOffersController_fallbackSelectedPaymentOfferForType___block
     goto LABEL_37;
   }
 
-  v11 = [v8 state];
-  if (v11 > 1)
+  state = [v8 state];
+  if (state > 1)
   {
-    if (v11 == 2)
+    if (state == 2)
     {
       v12 = 10;
       goto LABEL_13;
     }
 
-    v12 = v10;
-    if (v11 == 3)
+    v12 = integerValue;
+    if (state == 3)
     {
-      v17 = [(PKPaymentOffersController *)self paymentOfferCollectionForCriteriaIdentifier:v6 passUniqueID:v4];
+      v17 = [(PKPaymentOffersController *)self paymentOfferCollectionForCriteriaIdentifier:identifier passUniqueID:dCopy];
       v18 = v17;
       if (v17)
       {
-        v19 = [v17 installmentAssessment];
-        v20 = [(NSMutableDictionary *)self->_sessionIdentifierForCriteriaIdentifier objectForKeyedSubscript:v6];
-        v31 = [v19 selectedOfferIdentifier];
-        v32 = v19;
-        v21 = [v19 isEligible];
+        installmentAssessment = [v17 installmentAssessment];
+        v20 = [(NSMutableDictionary *)self->_sessionIdentifierForCriteriaIdentifier objectForKeyedSubscript:identifier];
+        selectedOfferIdentifier = [installmentAssessment selectedOfferIdentifier];
+        v32 = installmentAssessment;
+        isEligible = [installmentAssessment isEligible];
         v12 = 7;
         v30 = v20;
-        if (v21 && v20)
+        if (isEligible && v20)
         {
-          if ([v31 length] && (objc_msgSend(v32, "installmentOfferWithIdentifier:", v31), v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
+          if ([selectedOfferIdentifier length] && (objc_msgSend(v32, "installmentOfferWithIdentifier:", selectedOfferIdentifier), v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
           {
             v12 = 6;
           }
 
           else
           {
-            v23 = [v32 offers];
-            v24 = [v23 count];
+            offers = [v32 offers];
+            v24 = [offers count];
 
             if (v24 == 1)
             {
@@ -1182,9 +1182,9 @@ LABEL_37:
       goto LABEL_13;
     }
 
-    v25 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPassUniqueID];
-    v26 = v4;
-    v27 = v25;
+    selectedPassUniqueID = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPassUniqueID];
+    v26 = dCopy;
+    v27 = selectedPassUniqueID;
     v28 = v27;
     if (v27 == v26)
     {
@@ -1207,9 +1207,9 @@ LABEL_47:
       }
     }
 
-    v29 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails hasSelectedOtherOffersAfterPreconfiguredInstallmentOffer];
+    hasSelectedOtherOffersAfterPreconfiguredInstallmentOffer = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails hasSelectedOtherOffersAfterPreconfiguredInstallmentOffer];
 
-    if (v29)
+    if (hasSelectedOtherOffersAfterPreconfiguredInstallmentOffer)
     {
       v12 = 9;
     }
@@ -1217,69 +1217,69 @@ LABEL_47:
     goto LABEL_13;
   }
 
-  if (!v11)
+  if (!state)
   {
 LABEL_11:
     v12 = 2;
     goto LABEL_13;
   }
 
-  v12 = v10;
-  if (v11 != 1)
+  v12 = integerValue;
+  if (state != 1)
   {
     goto LABEL_37;
   }
 
   v12 = 3;
 LABEL_13:
-  if (v12 != v10)
+  if (v12 != integerValue)
   {
     v13 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = PKPaymentOffersControllerPreconfiguredInstallmentOfferStateToString(v10);
+      v14 = PKPaymentOffersControllerPreconfiguredInstallmentOfferStateToString(integerValue);
       v15 = PKPaymentOffersControllerPreconfiguredInstallmentOfferStateToString(v12);
       *buf = 138412802;
       v35 = v14;
       v36 = 2112;
       v37 = v15;
       v38 = 2112;
-      v39 = v4;
+      v39 = dCopy;
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "PKPaymentOffersController: Updating preconfigured installment offer state from %@ to %@ for pass %@", buf, 0x20u);
     }
 
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-    [(NSMutableDictionary *)self->_preconfiguredInstallmentStateForPassUniqueID setObject:v16 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_preconfiguredInstallmentStateForPassUniqueID setObject:v16 forKeyedSubscript:dCopy];
 
-    [(PKPaymentOffersController *)self _informObserversPaymentOffersChangedForPassUniqueID:v4];
+    [(PKPaymentOffersController *)self _informObserversPaymentOffersChangedForPassUniqueID:dCopy];
   }
 
 LABEL_18:
 }
 
-- (id)eligiblePaymentOfferCriteriaForPassUniqueID:(id)a3 type:(unint64_t)a4
+- (id)eligiblePaymentOfferCriteriaForPassUniqueID:(id)d type:(unint64_t)type
 {
-  v5 = [(PKPaymentOffersController *)self _eligiblePaymentOfferCriteriaForPassUniqueID:a3];
+  v5 = [(PKPaymentOffersController *)self _eligiblePaymentOfferCriteriaForPassUniqueID:d];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __78__PKPaymentOffersController_eligiblePaymentOfferCriteriaForPassUniqueID_type___block_invoke;
   v8[3] = &__block_descriptor_40_e32_B16__0__PKPaymentOfferCriteria_8l;
-  v8[4] = a4;
+  v8[4] = type;
   v6 = [v5 pk_firstObjectPassingTest:v8];
 
   return v6;
 }
 
-- (id)paymentOfferCriteriaForPassUniqueID:(id)a3 type:(unint64_t)a4
+- (id)paymentOfferCriteriaForPassUniqueID:(id)d type:(unint64_t)type
 {
-  if (a3)
+  if (d)
   {
     v5 = [(PKPaymentOffersController *)self _eligiblePaymentOfferCriteriaForPassUniqueID:?];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __70__PKPaymentOffersController_paymentOfferCriteriaForPassUniqueID_type___block_invoke;
     v8[3] = &__block_descriptor_40_e32_B16__0__PKPaymentOfferCriteria_8l;
-    v8[4] = a4;
+    v8[4] = type;
     v6 = [v5 pk_firstObjectPassingTest:v8];
   }
 
@@ -1291,30 +1291,30 @@ LABEL_18:
   return v6;
 }
 
-- (id)eligiblePaymentOfferCriteriaNoAssociatedPassWithType:(unint64_t)a3
+- (id)eligiblePaymentOfferCriteriaNoAssociatedPassWithType:(unint64_t)type
 {
   v4 = [(PKPaymentOffersController *)self _eligiblePaymentOfferCriteriaForPassUniqueID:0];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__PKPaymentOffersController_eligiblePaymentOfferCriteriaNoAssociatedPassWithType___block_invoke;
   v7[3] = &__block_descriptor_40_e39_B32__0__PKPaymentOfferCriteria_8Q16_B24l;
-  v7[4] = a3;
+  v7[4] = type;
   v5 = [v4 pk_objectsPassingTest:v7];
 
   return v5;
 }
 
-- (id)paymentOfferCriteriaForPassUniqueID:(id)a3
+- (id)paymentOfferCriteriaForPassUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [(PKPaymentOffersController *)self _eligibleCatalogItems];
+  dCopy = d;
+  _eligibleCatalogItems = [(PKPaymentOffersController *)self _eligibleCatalogItems];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__PKPaymentOffersController_paymentOfferCriteriaForPassUniqueID___block_invoke;
   v9[3] = &unk_1E79CEFD0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 pk_objectsPassingTest:v9];
+  v10 = dCopy;
+  v6 = dCopy;
+  v7 = [_eligibleCatalogItems pk_objectsPassingTest:v9];
 
   return v7;
 }
@@ -1353,8 +1353,8 @@ uint64_t __65__PKPaymentOffersController_paymentOfferCriteriaForPassUniqueID___b
 
 - (id)paymentOfferInstallmentCriteriaRequiringSetup
 {
-  v2 = [(PKPaymentOffersController *)self _eligibleCatalogItems];
-  v3 = [v2 pk_objectsPassingTest:&__block_literal_global_125];
+  _eligibleCatalogItems = [(PKPaymentOffersController *)self _eligibleCatalogItems];
+  v3 = [_eligibleCatalogItems pk_objectsPassingTest:&__block_literal_global_125];
 
   return v3;
 }
@@ -1376,17 +1376,17 @@ BOOL __74__PKPaymentOffersController_paymentOfferInstallmentCriteriaRequiringSet
   return v4;
 }
 
-- (id)paymentOfferCriteriaForIdentifier:(id)a3
+- (id)paymentOfferCriteriaForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKPaymentOffersController *)self _eligibleCatalogItems];
+  identifierCopy = identifier;
+  _eligibleCatalogItems = [(PKPaymentOffersController *)self _eligibleCatalogItems];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__PKPaymentOffersController_paymentOfferCriteriaForIdentifier___block_invoke;
   v9[3] = &unk_1E79CA320;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 pk_firstObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [_eligibleCatalogItems pk_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -1415,18 +1415,18 @@ uint64_t __63__PKPaymentOffersController_paymentOfferCriteriaForIdentifier___blo
   return v8;
 }
 
-- (id)_eligiblePaymentOfferCriteriaForPassUniqueID:(id)a3
+- (id)_eligiblePaymentOfferCriteriaForPassUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [(PKPaymentOffersController *)self _eligibleCatalogItems];
+  dCopy = d;
+  _eligibleCatalogItems = [(PKPaymentOffersController *)self _eligibleCatalogItems];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74__PKPaymentOffersController__eligiblePaymentOfferCriteriaForPassUniqueID___block_invoke;
   v9[3] = &unk_1E79CF018;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
-  v7 = [v5 pk_objectsPassingTest:v9];
+  v10 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
+  v7 = [_eligibleCatalogItems pk_objectsPassingTest:v9];
 
   return v7;
 }
@@ -1470,18 +1470,18 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)_criteriaIdentifierIsEligible:(id)a3
+- (BOOL)_criteriaIdentifierIsEligible:(id)eligible
 {
-  v4 = a3;
-  if (v4)
+  eligibleCopy = eligible;
+  if (eligibleCopy)
   {
-    v5 = [(PKPaymentOffersController *)self _eligibleCatalogItems];
+    _eligibleCatalogItems = [(PKPaymentOffersController *)self _eligibleCatalogItems];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59__PKPaymentOffersController__criteriaIdentifierIsEligible___block_invoke;
     v8[3] = &unk_1E79CA320;
-    v9 = v4;
-    v6 = [v5 pk_containsObjectPassingTest:v8];
+    v9 = eligibleCopy;
+    v6 = [_eligibleCatalogItems pk_containsObjectPassingTest:v8];
   }
 
   else
@@ -1510,26 +1510,26 @@ uint64_t __59__PKPaymentOffersController__criteriaIdentifierIsEligible___block_i
   return v6;
 }
 
-- (id)ineligibleDetailsForCriteria:(id)a3
+- (id)ineligibleDetailsForCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   v28 = 0;
-  v5 = [(PKPaymentOffersController *)self _criteriaEligibilityConfigurationForCriteria:v4];
-  v6 = [v4 identifier];
-  v7 = [(PKPaymentOffersController *)self preferredLocalizationLanguageForCriteriaIdentifier:v6];
+  v5 = [(PKPaymentOffersController *)self _criteriaEligibilityConfigurationForCriteria:criteriaCopy];
+  identifier = [criteriaCopy identifier];
+  v7 = [(PKPaymentOffersController *)self preferredLocalizationLanguageForCriteriaIdentifier:identifier];
 
-  v8 = [(PKPaymentOffersSessionDetails *)self->_configuration originURL];
+  originURL = [(PKPaymentOffersSessionDetails *)self->_configuration originURL];
 
   if (!v5)
   {
-    v18 = v8 != 0;
+    v18 = originURL != 0;
     v19 = 1;
 LABEL_14:
-    v20 = [PKPaymentOfferCriteriaIneligibleDetails ineligibleDetailsWithReason:v19 preferredLanguage:v7 criteria:v4 isWebPaymentRequest:v18];
+    v20 = [PKPaymentOfferCriteriaIneligibleDetails ineligibleDetailsWithReason:v19 preferredLanguage:v7 criteria:criteriaCopy isWebPaymentRequest:v18];
     goto LABEL_18;
   }
 
-  if (([v4 eligibleWithConfiguration:v5 ineligibleReason:&v28] & 1) == 0)
+  if (([criteriaCopy eligibleWithConfiguration:v5 ineligibleReason:&v28] & 1) == 0)
   {
     if (v28 > 0x12)
     {
@@ -1541,57 +1541,57 @@ LABEL_14:
       v19 = qword_1ADB9A408[v28];
     }
 
-    v18 = v8 != 0;
+    v18 = originURL != 0;
     goto LABEL_14;
   }
 
-  v9 = [v4 identifier];
-  v10 = [v4 associatedPassUniqueID];
-  v11 = PKPaymentOffersControllerGenerateCacheKey(v9, v10);
+  identifier2 = [criteriaCopy identifier];
+  associatedPassUniqueID = [criteriaCopy associatedPassUniqueID];
+  v11 = PKPaymentOffersControllerGenerateCacheKey(identifier2, associatedPassUniqueID);
 
   v12 = [(NSMutableDictionary *)self->_paymentOffersForCriteriaIdentifier objectForKeyedSubscript:v11];
-  v13 = [v4 type];
-  if (v13)
+  type = [criteriaCopy type];
+  if (type)
   {
-    if (v13 == 1)
+    if (type == 1)
     {
-      v14 = [v12 installmentAssessment];
-      v15 = v14;
-      if (v14 && ([v14 isEligible] & 1) == 0)
+      installmentAssessment = [v12 installmentAssessment];
+      v15 = installmentAssessment;
+      if (installmentAssessment && ([installmentAssessment isEligible] & 1) == 0)
       {
-        v22 = [v15 offerEligibility];
-        if ((v22 - 1) >= 0xA)
+        offerEligibility = [v15 offerEligibility];
+        if ((offerEligibility - 1) >= 0xA)
         {
           v23 = 1;
         }
 
         else
         {
-          v23 = qword_1ADB9A4A0[v22 - 1];
+          v23 = qword_1ADB9A4A0[offerEligibility - 1];
         }
 
         v27 = v23;
-        v24 = [v15 dynamicContent];
-        v25 = [v24 dynamicContentPageForPageType:5];
-        v26 = [v25 subtitle];
+        dynamicContent = [v15 dynamicContent];
+        v25 = [dynamicContent dynamicContentPageForPageType:5];
+        subtitle = [v25 subtitle];
 
-        v20 = [PKPaymentOfferCriteriaIneligibleDetails ineligibleDetailsWithReason:v27 preferredLanguage:v7 overrideDisplayString:v26 criteria:v4 isWebPaymentRequest:v8 != 0];
+        v20 = [PKPaymentOfferCriteriaIneligibleDetails ineligibleDetailsWithReason:v27 preferredLanguage:v7 overrideDisplayString:subtitle criteria:criteriaCopy isWebPaymentRequest:originURL != 0];
 
         goto LABEL_17;
       }
     }
 
-    v16 = v8 != 0;
+    v16 = originURL != 0;
     v17 = 0;
   }
 
   else
   {
-    v16 = v8 != 0;
+    v16 = originURL != 0;
     v17 = 1;
   }
 
-  v20 = [PKPaymentOfferCriteriaIneligibleDetails ineligibleDetailsWithReason:v17 preferredLanguage:v7 criteria:v4 isWebPaymentRequest:v16];
+  v20 = [PKPaymentOfferCriteriaIneligibleDetails ineligibleDetailsWithReason:v17 preferredLanguage:v7 criteria:criteriaCopy isWebPaymentRequest:v16];
 LABEL_17:
 
 LABEL_18:
@@ -1599,18 +1599,18 @@ LABEL_18:
   return v20;
 }
 
-- (BOOL)hasAnyEligiblePaymentOfferCriteriaOfType:(unint64_t)a3
+- (BOOL)hasAnyEligiblePaymentOfferCriteriaOfType:(unint64_t)type
 {
-  v5 = [(PKPaymentOffersController *)self _eligibleCatalogItems];
+  _eligibleCatalogItems = [(PKPaymentOffersController *)self _eligibleCatalogItems];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__PKPaymentOffersController_hasAnyEligiblePaymentOfferCriteriaOfType___block_invoke;
   v7[3] = &unk_1E79CA2B0;
   v7[4] = self;
-  v7[5] = a3;
-  LOBYTE(a3) = [v5 pk_containsObjectPassingTest:v7];
+  v7[5] = type;
+  LOBYTE(type) = [_eligibleCatalogItems pk_containsObjectPassingTest:v7];
 
-  return a3;
+  return type;
 }
 
 uint64_t __70__PKPaymentOffersController_hasAnyEligiblePaymentOfferCriteriaOfType___block_invoke(uint64_t a1, void *a2)
@@ -1630,61 +1630,61 @@ uint64_t __70__PKPaymentOffersController_hasAnyEligiblePaymentOfferCriteriaOfTyp
   return v5;
 }
 
-- (BOOL)hasSeenLanguageDisclosureForCriteriaForIdentifier:(id)a3
+- (BOOL)hasSeenLanguageDisclosureForCriteriaForIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
   v3 = [(NSMutableDictionary *)self->_languageDisclosuresSeenForCriteriaIdentifier objectForKeyedSubscript:?];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)markLanguageDisclosureAsSeenForCriteriaForIdentifier:(id)a3
+- (void)markLanguageDisclosureAsSeenForCriteriaForIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = identifierCopy;
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Updating language disclosure as seen for criteria identifier: %@", &v6, 0xCu);
     }
 
-    [(NSMutableDictionary *)self->_languageDisclosuresSeenForCriteriaIdentifier setObject:MEMORY[0x1E695E118] forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_languageDisclosuresSeenForCriteriaIdentifier setObject:MEMORY[0x1E695E118] forKeyedSubscript:identifierCopy];
   }
 }
 
-- (id)preferredLocalizationLanguageForCriteriaIdentifier:(id)a3
+- (id)preferredLocalizationLanguageForCriteriaIdentifier:(id)identifier
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PKPassKitBundle();
-  v6 = [v5 preferredLocalizations];
-  v7 = [v6 firstObject];
-  v8 = v7;
+  preferredLocalizations = [v5 preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
+  v8 = firstObject;
   v9 = @"en";
-  if (v7)
+  if (firstObject)
   {
-    v9 = v7;
+    v9 = firstObject;
   }
 
   v10 = v9;
 
-  v11 = [(PKPaymentOffersController *)self paymentOfferCriteriaForIdentifier:v4];
+  v11 = [(PKPaymentOffersController *)self paymentOfferCriteriaForIdentifier:identifierCopy];
   if (!v11)
   {
     v15 = v10;
     goto LABEL_40;
   }
 
-  v12 = [(NSMutableDictionary *)self->_preferredLanguageForCriteriaIdentifier objectForKeyedSubscript:v4];
+  v12 = [(NSMutableDictionary *)self->_preferredLanguageForCriteriaIdentifier objectForKeyedSubscript:identifierCopy];
   v13 = v12;
   if (!v12)
   {
@@ -1695,20 +1695,20 @@ uint64_t __70__PKPaymentOffersController_hasAnyEligiblePaymentOfferCriteriaOfTyp
     }
 
     v45 = v11;
-    v56 = [v45 supportedLanguages];
-    v51 = v4;
-    v49 = v6;
+    supportedLanguages = [v45 supportedLanguages];
+    v51 = identifierCopy;
+    v49 = preferredLocalizations;
     v50 = v5;
     v47 = v11;
     v48 = v10;
-    v46 = self;
-    if ([v56 count])
+    selfCopy = self;
+    if ([supportedLanguages count])
     {
       v75 = 0u;
       v76 = 0u;
       v73 = 0u;
       v74 = 0u;
-      v16 = v6;
+      v16 = preferredLocalizations;
       v57 = [v16 countByEnumeratingWithState:&v73 objects:v84 count:16];
       if (v57)
       {
@@ -1729,7 +1729,7 @@ uint64_t __70__PKPaymentOffersController_hasAnyEligiblePaymentOfferCriteriaOfTyp
             v70 = 0u;
             v71 = 0u;
             v72 = 0u;
-            v19 = v56;
+            v19 = supportedLanguages;
             v20 = [v19 countByEnumeratingWithState:&v69 objects:v83 count:16];
             if (v20)
             {
@@ -1803,12 +1803,12 @@ LABEL_33:
 
         while (v57);
 
-        v4 = v51;
-        v6 = v49;
+        identifierCopy = v51;
+        preferredLocalizations = v49;
         v5 = v50;
         v11 = v47;
         v10 = v48;
-        v30 = v46;
+        v30 = selfCopy;
         if (v15)
         {
           goto LABEL_72;
@@ -1820,12 +1820,12 @@ LABEL_33:
       }
     }
 
-    v60 = [v5 localizations];
+    localizations = [v5 localizations];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    obja = v56;
+    obja = supportedLanguages;
     v58 = [obja countByEnumeratingWithState:&v65 objects:v82 count:16];
     if (v58)
     {
@@ -1844,7 +1844,7 @@ LABEL_33:
           v62 = 0u;
           v63 = 0u;
           v64 = 0u;
-          v34 = v60;
+          v34 = localizations;
           v35 = [v34 countByEnumeratingWithState:&v61 objects:v81 count:16];
           if (v35)
           {
@@ -1902,8 +1902,8 @@ LABEL_64:
               goto LABEL_65;
             }
 
-            v4 = v51;
-            v6 = v49;
+            identifierCopy = v51;
+            preferredLocalizations = v49;
             v5 = v50;
             v10 = v48;
             goto LABEL_71;
@@ -1935,15 +1935,15 @@ LABEL_65:
 
     v10 = v48;
     v15 = v48;
-    v4 = v51;
-    v6 = v49;
+    identifierCopy = v51;
+    preferredLocalizations = v49;
     v5 = v50;
 LABEL_71:
-    v30 = v46;
+    v30 = selfCopy;
     v11 = v47;
     v13 = 0;
 LABEL_72:
-    [(NSMutableDictionary *)v30->_preferredLanguageForCriteriaIdentifier setObject:v15 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)v30->_preferredLanguageForCriteriaIdentifier setObject:v15 forKeyedSubscript:identifierCopy];
 
     goto LABEL_39;
   }
@@ -1958,17 +1958,17 @@ LABEL_40:
   return v15;
 }
 
-- (id)merchandisingIdentifiersForCriteriaIdentifiers:(id)a3
+- (id)merchandisingIdentifiersForCriteriaIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(PKPaymentOffersController *)self _eligibleCatalogItems];
+  identifiersCopy = identifiers;
+  _eligibleCatalogItems = [(PKPaymentOffersController *)self _eligibleCatalogItems];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__PKPaymentOffersController_merchandisingIdentifiersForCriteriaIdentifiers___block_invoke;
   v10[3] = &unk_1E79CF040;
-  v6 = v4;
+  v6 = identifiersCopy;
   v11 = v6;
-  v7 = [v5 pk_createArrayBySafelyApplyingBlock:v10];
+  v7 = [_eligibleCatalogItems pk_createArrayBySafelyApplyingBlock:v10];
 
   if ([v7 count])
   {
@@ -2023,8 +2023,8 @@ id __76__PKPaymentOffersController_merchandisingIdentifiersForCriteriaIdentifier
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v21 + 1) + 8 * i) merchandisingIdentifiers];
-        [v3 unionSet:v9];
+        merchandisingIdentifiers = [*(*(&v21 + 1) + 8 * i) merchandisingIdentifiers];
+        [v3 unionSet:merchandisingIdentifiers];
       }
 
       v6 = [(NSMutableOrderedSet *)v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
@@ -2052,8 +2052,8 @@ id __76__PKPaymentOffersController_merchandisingIdentifiersForCriteriaIdentifier
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * j) merchandisingIdentifiers];
-        [v3 unionSet:v15];
+        merchandisingIdentifiers2 = [*(*(&v17 + 1) + 8 * j) merchandisingIdentifiers];
+        [v3 unionSet:merchandisingIdentifiers2];
       }
 
       v12 = [(NSMutableOrderedSet *)v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
@@ -2065,41 +2065,41 @@ id __76__PKPaymentOffersController_merchandisingIdentifiersForCriteriaIdentifier
   return v3;
 }
 
-- (void)updateMerchandisingDetailsIfNecessaryForMerchandisingIdentifiers:(id)a3
+- (void)updateMerchandisingDetailsIfNecessaryForMerchandisingIdentifiers:(id)identifiers
 {
-  v11 = a3;
-  v4 = [(PKPaymentOffersController *)self _eligibleToFetchMerchandising];
-  v5 = v11;
-  if (v4)
+  identifiersCopy = identifiers;
+  _eligibleToFetchMerchandising = [(PKPaymentOffersController *)self _eligibleToFetchMerchandising];
+  v5 = identifiersCopy;
+  if (_eligibleToFetchMerchandising)
   {
     if (self->_catalog)
     {
-      v6 = [v11 count];
-      v5 = v11;
+      v6 = [identifiersCopy count];
+      v5 = identifiersCopy;
       if (v6)
       {
-        v7 = [v11 mutableCopy];
+        v7 = [identifiersCopy mutableCopy];
         [v7 minusSet:self->_fetchedMerchandisingIdentifiers];
         if ([v7 count])
         {
           v8 = [PKPaymentOffersControllerMerchandisingRequest alloc];
-          v9 = [(PKPaymentOffersSessionDetails *)self->_configuration transactionAmount];
-          v10 = [(PKPaymentOffersControllerMerchandisingRequest *)v8 initWithMerchandisingIdentifiers:v7 amount:v9];
+          transactionAmount = [(PKPaymentOffersSessionDetails *)self->_configuration transactionAmount];
+          v10 = [(PKPaymentOffersControllerMerchandisingRequest *)v8 initWithMerchandisingIdentifiers:v7 amount:transactionAmount];
 
           [(PKPaymentOffersController *)self _addPaymentOffersControllerMerchandisingRequest:v10];
         }
 
-        v5 = v11;
+        v5 = identifiersCopy;
       }
     }
   }
 }
 
-- (void)_addPaymentOffersControllerMerchandisingRequest:(id)a3
+- (void)_addPaymentOffersControllerMerchandisingRequest:(id)request
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
     v20 = 0u;
     v21 = 0u;
@@ -2120,7 +2120,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v18 + 1) + 8 * v9) coalesceWithRequest:v4])
+        if ([*(*(&v18 + 1) + 8 * v9) coalesceWithRequest:requestCopy])
         {
           goto LABEL_19;
         }
@@ -2157,7 +2157,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v14 + 1) + 8 * v13) coalesceWithRequest:{v4, v14}])
+        if ([*(*(&v14 + 1) + 8 * v13) coalesceWithRequest:{requestCopy, v14}])
         {
           break;
         }
@@ -2181,7 +2181,7 @@ LABEL_19:
 
 LABEL_18:
 
-    [(NSMutableOrderedSet *)self->_queuedMerchandisingRequests addObject:v4];
+    [(NSMutableOrderedSet *)self->_queuedMerchandisingRequests addObject:requestCopy];
     [(PKPaymentOffersController *)self _executeNextPaymentOffersControllerMerchandisingRequestIfPossible];
   }
 
@@ -2191,8 +2191,8 @@ LABEL_20:
 - (void)_executeNextPaymentOffersControllerMerchandisingRequestIfPossible
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableOrderedSet *)self->_queuedMerchandisingRequests firstObject];
-  if (v3)
+  firstObject = [(NSMutableOrderedSet *)self->_queuedMerchandisingRequests firstObject];
+  if (firstObject)
   {
     if ([(PKPaymentOffersSessionDetails *)self->_configuration shouldUseMerchantSession]&& !self->_didReceiveValidMerchantSession)
     {
@@ -2200,20 +2200,20 @@ LABEL_20:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v13 = v3;
+        v13 = firstObject;
         _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Waiting to start next payment offers controller request until a valid merchant session is received. %@", buf, 0xCu);
       }
     }
 
     else
     {
-      [(NSMutableOrderedSet *)self->_inflightMerchandisingRequests addObject:v3];
+      [(NSMutableOrderedSet *)self->_inflightMerchandisingRequests addObject:firstObject];
       [(NSMutableOrderedSet *)self->_queuedMerchandisingRequests removeObjectAtIndex:0];
       v4 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v13 = v3;
+        v13 = firstObject;
         _os_log_impl(&dword_1AD337000, v4, OS_LOG_TYPE_DEFAULT, "Adding incoming payment offers controller merchandising request onto inflight list %@", buf, 0xCu);
       }
 
@@ -2223,7 +2223,7 @@ LABEL_20:
       v8 = __94__PKPaymentOffersController__executeNextPaymentOffersControllerMerchandisingRequestIfPossible__block_invoke;
       v9 = &unk_1E79CDC10;
       objc_copyWeak(&v11, buf);
-      v10 = v3;
+      v10 = firstObject;
       [(PKPaymentOffersController *)self _performMerchandisingRequest:v10 completion:&v6];
       [(PKPaymentOffersController *)self _executeNextPaymentOffersControllerRequestIfPossible:v6];
 
@@ -2252,24 +2252,24 @@ void __94__PKPaymentOffersController__executeNextPaymentOffersControllerMerchand
   }
 }
 
-- (void)_performMerchandisingRequest:(id)a3 completion:(id)a4
+- (void)_performMerchandisingRequest:(id)request completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__PKPaymentOffersController__performMerchandisingRequest_completion___block_invoke;
   aBlock[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v21 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [v6 merchandisingIdentifiers];
-  v11 = v10;
-  if (v6 && [v10 count])
+  merchandisingIdentifiers = [requestCopy merchandisingIdentifiers];
+  v11 = merchandisingIdentifiers;
+  if (requestCopy && [merchandisingIdentifiers count])
   {
-    v12 = [(PKPaymentOfferCatalog *)self->_catalog eligibleMerchandisingIdentifiersThatNeedProvisioning];
-    v13 = [v12 mutableCopy];
+    eligibleMerchandisingIdentifiersThatNeedProvisioning = [(PKPaymentOfferCatalog *)self->_catalog eligibleMerchandisingIdentifiersThatNeedProvisioning];
+    v13 = [eligibleMerchandisingIdentifiersThatNeedProvisioning mutableCopy];
 
     [v13 intersectSet:v11];
     v14 = PKLogFacilityTypeGetObject(7uLL);
@@ -2397,9 +2397,9 @@ LABEL_14:
 LABEL_18:
 }
 
-- (id)merchandisingOfferForMerchandisingIdentifier:(id)a3
+- (id)merchandisingOfferForMerchandisingIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(PKPaymentOfferMerchandisingOfferDetails *)self->_currentMerchandisingOfferDetails offerForMerchandisingIdentifier:?];
   }
@@ -2412,18 +2412,18 @@ LABEL_18:
   return v4;
 }
 
-- (id)merchandisingOfferForPassUniqueID:(id)a3
+- (id)merchandisingOfferForPassUniqueID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = [(PKPaymentOfferCatalog *)self->_catalog capabilityForPassUniqueID:?];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 merchandisingIdentifier];
-      if (v6)
+      merchandisingIdentifier = [v4 merchandisingIdentifier];
+      if (merchandisingIdentifier)
       {
-        v7 = [(PKPaymentOfferMerchandisingOfferDetails *)self->_currentMerchandisingOfferDetails offerForMerchandisingIdentifier:v6];
+        v7 = [(PKPaymentOfferMerchandisingOfferDetails *)self->_currentMerchandisingOfferDetails offerForMerchandisingIdentifier:merchandisingIdentifier];
       }
 
       else
@@ -2446,9 +2446,9 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)didFetchMerchandisingOfferForPassUniqueID:(id)a3
+- (BOOL)didFetchMerchandisingOfferForPassUniqueID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
@@ -2457,10 +2457,10 @@ LABEL_18:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 merchandisingIdentifier];
-    if (v6)
+    merchandisingIdentifier = [v4 merchandisingIdentifier];
+    if (merchandisingIdentifier)
     {
-      v7 = [(NSMutableSet *)self->_fetchedMerchandisingIdentifiers containsObject:v6];
+      v7 = [(NSMutableSet *)self->_fetchedMerchandisingIdentifiers containsObject:merchandisingIdentifier];
     }
 
     else
@@ -2477,46 +2477,46 @@ LABEL_18:
   return v7;
 }
 
-- (void)selectOfferRequestWithCompletion:(id)a3
+- (void)selectOfferRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [PKPaymentOffersControllerRequest alloc];
-  v6 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
-  v7 = [v6 criteriaIdentifier];
-  v8 = [(PKPaymentOffersControllerRequest *)v5 initSelectRequestWithCriteriaIdentifier:v7 completion:v4];
+  selectedPaymentOffer = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
+  criteriaIdentifier = [selectedPaymentOffer criteriaIdentifier];
+  v8 = [(PKPaymentOffersControllerRequest *)v5 initSelectRequestWithCriteriaIdentifier:criteriaIdentifier completion:completionCopy];
 
   [(PKPaymentOffersController *)self _addPaymentOffersControllerRequest:v8];
 }
 
-- (void)cancelOfferRequestWithCompletion:(id)a3
+- (void)cancelOfferRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [PKPaymentOffersControllerRequest alloc];
-  v6 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
-  v7 = [v6 criteriaIdentifier];
-  v8 = [(PKPaymentOffersControllerRequest *)v5 initCancelRequestWithCriteriaIdentifier:v7 completion:v4];
+  selectedPaymentOffer = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
+  criteriaIdentifier = [selectedPaymentOffer criteriaIdentifier];
+  v8 = [(PKPaymentOffersControllerRequest *)v5 initCancelRequestWithCriteriaIdentifier:criteriaIdentifier completion:completionCopy];
 
   [(PKPaymentOffersController *)self _addPaymentOffersControllerRequest:v8];
 }
 
-- (void)confirmOfferRequestWithCompletion:(id)a3
+- (void)confirmOfferRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [PKPaymentOffersControllerRequest alloc];
-  v6 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
-  v7 = [v6 criteriaIdentifier];
-  v8 = [(PKPaymentOffersControllerRequest *)v5 initConfirmRequestWithCriteriaIdentifier:v7 rewardsRedemptionIntent:0 completion:v4];
+  selectedPaymentOffer = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
+  criteriaIdentifier = [selectedPaymentOffer criteriaIdentifier];
+  v8 = [(PKPaymentOffersControllerRequest *)v5 initConfirmRequestWithCriteriaIdentifier:criteriaIdentifier rewardsRedemptionIntent:0 completion:completionCopy];
 
   [(PKPaymentOffersController *)self _addPaymentOffersControllerRequest:v8];
 }
 
-- (void)_addPaymentOffersControllerRequest:(id)a3
+- (void)_addPaymentOffersControllerRequest:(id)request
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
-    if ([(PKPaymentOffersControllerRequest *)self->_currentRequest coalesceWithRequest:v4])
+    if ([(PKPaymentOffersControllerRequest *)self->_currentRequest coalesceWithRequest:requestCopy])
     {
       v5 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(&v5->super.super, OS_LOG_TYPE_DEFAULT))
@@ -2552,7 +2552,7 @@ LABEL_19:
             }
 
             v11 = *(*(&v14 + 1) + 8 * i);
-            if ([(PKPaymentOffersControllerRequest *)v11 coalesceWithRequest:v4, v14])
+            if ([(PKPaymentOffersControllerRequest *)v11 coalesceWithRequest:requestCopy, v14])
             {
               v13 = PKLogFacilityTypeGetObject(7uLL);
               if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2576,12 +2576,12 @@ LABEL_19:
         }
       }
 
-      [(NSMutableOrderedSet *)self->_queuedRequests addObject:v4];
+      [(NSMutableOrderedSet *)self->_queuedRequests addObject:requestCopy];
       v12 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v4;
+        v20 = requestCopy;
         _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Adding incoming payment offers controller request onto queued list %@", buf, 0xCu);
       }
 
@@ -2596,21 +2596,21 @@ LABEL_19:
   p_currentRequest = &self->_currentRequest;
   if (!self->_currentRequest)
   {
-    v4 = [(NSMutableOrderedSet *)self->_queuedRequests firstObject];
-    if ([(PKPaymentOffersSessionDetails *)self->_configuration shouldUseMerchantSession]&& !self->_didReceiveValidMerchantSession && [(PKPaymentOffersControllerRequest *)v4 requestRequiresMerchantDetails])
+    firstObject = [(NSMutableOrderedSet *)self->_queuedRequests firstObject];
+    if ([(PKPaymentOffersSessionDetails *)self->_configuration shouldUseMerchantSession]&& !self->_didReceiveValidMerchantSession && [(PKPaymentOffersControllerRequest *)firstObject requestRequiresMerchantDetails])
     {
       v5 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v13 = v4;
+        v13 = firstObject;
         _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Waiting to start next payment offers controller request until a valid merchant session is received. %@", buf, 0xCu);
       }
     }
 
     else
     {
-      objc_storeStrong(p_currentRequest, v4);
+      objc_storeStrong(p_currentRequest, firstObject);
       v6 = *p_currentRequest;
       if (*p_currentRequest)
       {
@@ -2630,17 +2630,17 @@ LABEL_19:
         aBlock[3] = &unk_1E79CF0B8;
         objc_copyWeak(&v11, buf);
         v8 = _Block_copy(aBlock);
-        v9 = [(PKPaymentOffersControllerRequest *)self->_currentRequest type];
-        if (v9 <= 2)
+        type = [(PKPaymentOffersControllerRequest *)self->_currentRequest type];
+        if (type <= 2)
         {
-          if (v9)
+          if (type)
           {
-            if (v9 == 1)
+            if (type == 1)
             {
               [(PKPaymentOffersController *)self _performPaymentOffersRequest:self->_currentRequest completion:v8];
             }
 
-            else if (v9 == 2)
+            else if (type == 2)
             {
               [(PKPaymentOffersController *)self _performDynamicContentRequest:self->_currentRequest completion:v8];
             }
@@ -2652,20 +2652,20 @@ LABEL_19:
           }
         }
 
-        else if (v9 > 4)
+        else if (type > 4)
         {
-          if (v9 == 5)
+          if (type == 5)
           {
             [(PKPaymentOffersController *)self _performCancelRequest:self->_currentRequest completion:v8];
           }
 
-          else if (v9 == 6)
+          else if (type == 6)
           {
             [(PKPaymentOffersController *)self _performRewardsBalanceRequest:self->_currentRequest completion:v8];
           }
         }
 
-        else if (v9 == 3)
+        else if (type == 3)
         {
           [(PKPaymentOffersController *)self _performConfirmRequest:self->_currentRequest completion:v8];
         }
@@ -2758,11 +2758,11 @@ void __81__PKPaymentOffersController__executeNextPaymentOffersControllerRequestI
   {
     if (self->_baseURL)
     {
-      v4 = [(PKPaymentOffersSessionDetails *)self->_configuration context];
-      if (v4 == 3 || v4 == 0)
+      context = [(PKPaymentOffersSessionDetails *)self->_configuration context];
+      if (context == 3 || context == 0)
       {
-        v6 = [(PKPaymentOffersSessionDetails *)self->_configuration currencyCode];
-        if (!v6)
+        currencyCode = [(PKPaymentOffersSessionDetails *)self->_configuration currencyCode];
+        if (!currencyCode)
         {
           v7 = PKLogFacilityTypeGetObject(7uLL);
           if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2816,8 +2816,8 @@ LABEL_19:
 
 - (BOOL)_eligibleToFetchMerchandising
 {
-  v3 = [(PKPaymentOffersController *)self _eligibleToFetchPaymentOfferCatalog];
-  if (v3)
+  _eligibleToFetchPaymentOfferCatalog = [(PKPaymentOffersController *)self _eligibleToFetchPaymentOfferCatalog];
+  if (_eligibleToFetchPaymentOfferCatalog)
   {
     if (PKHideCardBenefitMerchandisingOffers())
     {
@@ -2826,8 +2826,8 @@ LABEL_19:
       {
 LABEL_11:
 
-        LOBYTE(v3) = 0;
-        return v3;
+        LOBYTE(_eligibleToFetchPaymentOfferCatalog) = 0;
+        return _eligibleToFetchPaymentOfferCatalog;
       }
 
       v12 = 0;
@@ -2842,8 +2842,8 @@ LABEL_11:
       v9 = PKHideCardBenefitRewards();
       if (!v7 || !v8 || !v9)
       {
-        LOBYTE(v3) = [(PKPaymentOffersSessionDetails *)self->_configuration context]- 4 < 0xFFFFFFFFFFFFFFFDLL;
-        return v3;
+        LOBYTE(_eligibleToFetchPaymentOfferCatalog) = [(PKPaymentOffersSessionDetails *)self->_configuration context]- 4 < 0xFFFFFFFFFFFFFFFDLL;
+        return _eligibleToFetchPaymentOfferCatalog;
       }
 
       v4 = PKLogFacilityTypeGetObject(7uLL);
@@ -2861,35 +2861,35 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  return v3;
+  return _eligibleToFetchPaymentOfferCatalog;
 }
 
 - (id)_eligibleCatalogItems
 {
-  v3 = [(PKPaymentOfferCatalog *)self->_catalog catalog];
-  v4 = [v3 allObjects];
+  catalog = [(PKPaymentOfferCatalog *)self->_catalog catalog];
+  allObjects = [catalog allObjects];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PKPaymentOffersController__eligibleCatalogItems__block_invoke;
   v7[3] = &unk_1E79CEFD0;
   v7[4] = self;
-  v5 = [v4 pk_objectsPassingTest:v7];
+  v5 = [allObjects pk_objectsPassingTest:v7];
 
   return v5;
 }
 
-- (BOOL)_paymentOfferCriteriaToKeep:(id)a3
+- (BOOL)_paymentOfferCriteriaToKeep:(id)keep
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (!v5)
+  keepCopy = keep;
+  type = [keepCopy type];
+  if (!type)
   {
     goto LABEL_10;
   }
 
-  if (v5 != 2)
+  if (type != 2)
   {
-    if (v5 != 1)
+    if (type != 1)
     {
       goto LABEL_8;
     }
@@ -2901,9 +2901,9 @@ LABEL_11:
 
     if (!PKHideCardBenefitPayLater())
     {
-      v6 = [v4 associatedPassUniqueID];
+      associatedPassUniqueID = [keepCopy associatedPassUniqueID];
 
-      if (v6 || !PKHidePayLaterOptions())
+      if (associatedPassUniqueID || !PKHidePayLaterOptions())
       {
         goto LABEL_8;
       }
@@ -2926,13 +2926,13 @@ LABEL_11:
   return v7;
 }
 
-- (void)_performCatalogRequest:(id)a3 completion:(id)a4
+- (void)_performCatalogRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type])
+  requestCopy = request;
+  completionCopy = completion;
+  if ([requestCopy type])
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
@@ -2954,20 +2954,20 @@ LABEL_11:
     v15[2] = __63__PKPaymentOffersController__performCatalogRequest_completion___block_invoke;
     v15[3] = &unk_1E79CF130;
     objc_copyWeak(&v20, &location);
-    v16 = v6;
-    v17 = self;
+    v16 = requestCopy;
+    selfCopy = self;
     v18 = v22;
     v19 = v24;
     [(PKAsyncUnaryOperationComposer *)v8 addOperation:v15];
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __63__PKPaymentOffersController__performCatalogRequest_completion___block_invoke_151;
     v11[3] = &unk_1E79CF158;
-    v12 = v7;
+    v12 = completionCopy;
     v13 = v24;
     v14 = v22;
-    v10 = [(PKAsyncUnaryOperationComposer *)v8 evaluateWithInput:v9 completion:v11];
+    v10 = [(PKAsyncUnaryOperationComposer *)v8 evaluateWithInput:null completion:v11];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -3100,21 +3100,21 @@ void __63__PKPaymentOffersController__performCatalogRequest_completion___block_i
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (BOOL)_handleNewCatalog:(id)a3 isServerFetch:(BOOL)a4
+- (BOOL)_handleNewCatalog:(id)catalog isServerFetch:(BOOL)fetch
 {
-  v4 = a4;
+  fetchCopy = fetch;
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  catalogCopy = catalog;
   hasFetchedCatalogFromServer = self->_hasFetchedCatalogFromServer;
   v9 = self->_catalog;
-  objc_storeStrong(&self->_catalog, a3);
-  if (v4)
+  objc_storeStrong(&self->_catalog, catalog);
+  if (fetchCopy)
   {
     self->_hasFetchedCatalogFromServer = 1;
     [(PKPaymentOffersController *)self _updateCatalogLoadingState:3];
   }
 
-  if (v7)
+  if (catalogCopy)
   {
     v10 = v9 == 0;
   }
@@ -3125,13 +3125,13 @@ void __63__PKPaymentOffersController__performCatalogRequest_completion___block_i
   }
 
   v11 = !v10;
-  if (v10 || ![(PKPaymentOfferCatalog *)v9 isEqualIgnoringLastUpdatedDate:v7])
+  if (v10 || ![(PKPaymentOfferCatalog *)v9 isEqualIgnoringLastUpdatedDate:catalogCopy])
   {
     v15 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v25 = 138412290;
-      v26 = v7;
+      v26 = catalogCopy;
       _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Payment Offer Catalog has changed: %@", &v25, 0xCu);
     }
 
@@ -3143,7 +3143,7 @@ void __63__PKPaymentOffersController__performCatalogRequest_completion___block_i
       goto LABEL_33;
     }
 
-    if (!v7 || v9)
+    if (!catalogCopy || v9)
     {
       if (!v11)
       {
@@ -3153,15 +3153,15 @@ LABEL_33:
       }
 
       v19 = [(PKPaymentOfferCatalog *)v9 capabilityForPassUniqueID:v13];
-      v20 = [v19 supportsMerchandising];
+      supportsMerchandising = [v19 supportsMerchandising];
 
-      v21 = [(NSString *)v7 capabilityForPassUniqueID:v13];
-      v22 = [v21 supportsMerchandising];
+      v21 = [(NSString *)catalogCopy capabilityForPassUniqueID:v13];
+      supportsMerchandising2 = [v21 supportsMerchandising];
 
       v23 = [MEMORY[0x1E695DFD8] setWithObject:v13];
-      v17 = [(NSString *)v7 eligibleMerchandisingIdentifiersForPassUniqueIDs:v23];
+      v17 = [(NSString *)catalogCopy eligibleMerchandisingIdentifiersForPassUniqueIDs:v23];
 
-      if (!v20 && v22 && v17)
+      if (!supportsMerchandising && supportsMerchandising2 && v17)
       {
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
@@ -3180,7 +3180,7 @@ LABEL_31:
     else
     {
       v16 = [MEMORY[0x1E695DFD8] setWithObject:v13];
-      v17 = [(NSString *)v7 eligibleMerchandisingIdentifiersForPassUniqueIDs:v16];
+      v17 = [(NSString *)catalogCopy eligibleMerchandisingIdentifiersForPassUniqueIDs:v16];
 
       if ([v17 count])
       {
@@ -3220,25 +3220,25 @@ LABEL_34:
   return v14;
 }
 
-- (void)_performPaymentOffersRequest:(id)a3 completion:(id)a4
+- (void)_performPaymentOffersRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 1)
+  requestCopy = request;
+  completionCopy = completion;
+  if ([requestCopy type] == 1)
   {
-    v8 = [v6 criteriaIdentifier];
-    v9 = [v6 selectedPassDetails];
-    v10 = [v9 passUniqueID];
-    v11 = [v6 updateReason];
-    v12 = [(PKPaymentOffersController *)self paymentOfferCriteriaForIdentifier:v8];
+    criteriaIdentifier = [requestCopy criteriaIdentifier];
+    selectedPassDetails = [requestCopy selectedPassDetails];
+    passUniqueID = [selectedPassDetails passUniqueID];
+    updateReason = [requestCopy updateReason];
+    v12 = [(PKPaymentOffersController *)self paymentOfferCriteriaForIdentifier:criteriaIdentifier];
     v48[0] = 0;
     v48[1] = v48;
     v48[2] = 0x3032000000;
     v48[3] = __Block_byref_object_copy__20;
     v48[4] = __Block_byref_object_dispose__20;
-    if (v8)
+    if (criteriaIdentifier)
     {
-      v13 = [(NSMutableDictionary *)self->_sessionIdentifierForCriteriaIdentifier objectForKeyedSubscript:v8];
+      v13 = [(NSMutableDictionary *)self->_sessionIdentifierForCriteriaIdentifier objectForKeyedSubscript:criteriaIdentifier];
     }
 
     else
@@ -3259,7 +3259,7 @@ LABEL_34:
     v45 = 0;
     v14 = objc_alloc_init(PKAsyncUnaryOperationComposer);
     objc_initWeak(&location, self);
-    if ([v6 updateReason] == 7 && objc_msgSend(v12, "type") == 1 && (objc_msgSend(v12, "hasPreconfiguredOffers") & 1) == 0)
+    if ([requestCopy updateReason] == 7 && objc_msgSend(v12, "type") == 1 && (objc_msgSend(v12, "hasPreconfiguredOffers") & 1) == 0)
     {
       v18 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -3268,16 +3268,16 @@ LABEL_34:
         _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "PKPaymentOffersController requested to load payment offers the cached catalog had hasPreconfiguredOffers as true. But the updated catalog cache has hasPreconfiguredOffers as false. Cancelling this payment offers request.", buf, 2u);
       }
 
-      if (v7)
+      if (completionCopy)
       {
-        (*(v7 + 2))(v7, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
       }
     }
 
     else
     {
       v15 = [PKPaymentOffersControllerLoadingDetails loadingDetailsWithState:1];
-      [(PKPaymentOffersController *)self _updateLoadingDetailsState:v15 criteriaIdentifier:v8 passUniqueID:v10 requestType:1];
+      [(PKPaymentOffersController *)self _updateLoadingDetailsState:v15 criteriaIdentifier:criteriaIdentifier passUniqueID:passUniqueID requestType:1];
 
       *buf = 0;
       v38 = buf;
@@ -3285,7 +3285,7 @@ LABEL_34:
       v40 = __Block_byref_object_copy__20;
       v41 = __Block_byref_object_dispose__20;
       v42 = 0;
-      if (!v10)
+      if (!passUniqueID)
       {
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
@@ -3304,26 +3304,26 @@ LABEL_34:
       v23[3] = &unk_1E79CF248;
       objc_copyWeak(v34, &location);
       v24 = v12;
-      v25 = v8;
+      v25 = criteriaIdentifier;
       v30 = v44;
-      v26 = v10;
+      v26 = passUniqueID;
       v31 = v48;
-      v27 = v9;
-      v34[1] = v11;
+      v27 = selectedPassDetails;
+      v34[1] = updateReason;
       v32 = buf;
       v33 = v46;
-      v28 = v6;
-      v29 = self;
+      v28 = requestCopy;
+      selfCopy = self;
       [(PKAsyncUnaryOperationComposer *)v14 addOperation:v23];
-      v16 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __69__PKPaymentOffersController__performPaymentOffersRequest_completion___block_invoke_167;
       v19[3] = &unk_1E79CF158;
-      v20 = v7;
+      v20 = completionCopy;
       v21 = v46;
       v22 = v44;
-      v17 = [(PKAsyncUnaryOperationComposer *)v14 evaluateWithInput:v16 completion:v19];
+      v17 = [(PKAsyncUnaryOperationComposer *)v14 evaluateWithInput:null completion:v19];
 
       objc_destroyWeak(v34);
       _Block_object_dispose(buf, 8);
@@ -3338,7 +3338,7 @@ LABEL_34:
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -3802,12 +3802,12 @@ void __69__PKPaymentOffersController__performPaymentOffersRequest_completion___b
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_performConfirmRequest:(id)a3 completion:(id)a4
+- (void)_performConfirmRequest:(id)request completion:(id)completion
 {
   v83[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 3)
+  requestCopy = request;
+  completionCopy = completion;
+  if ([requestCopy type] == 3)
   {
     v67 = 0;
     v68 = &v67;
@@ -3815,73 +3815,73 @@ void __69__PKPaymentOffersController__performPaymentOffersRequest_completion___b
     v70 = __Block_byref_object_copy__20;
     v71 = __Block_byref_object_dispose__20;
     v72 = 0;
-    v8 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
-    v9 = [v6 criteriaIdentifier];
-    v10 = v9;
-    if (v9)
+    selectedPaymentOffer = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
+    criteriaIdentifier = [requestCopy criteriaIdentifier];
+    v10 = criteriaIdentifier;
+    if (criteriaIdentifier)
     {
-      v11 = v9;
+      criteriaIdentifier2 = criteriaIdentifier;
     }
 
     else
     {
-      v11 = [v8 criteriaIdentifier];
+      criteriaIdentifier2 = [selectedPaymentOffer criteriaIdentifier];
     }
 
-    v12 = v11;
+    v12 = criteriaIdentifier2;
 
-    v13 = [v8 sessionIdentifier];
+    sessionIdentifier = [selectedPaymentOffer sessionIdentifier];
     v14 = [(PKPaymentOfferCatalog *)self->_catalog criteriaWithIdentifier:v12];
-    v15 = [v14 type];
+    type = [v14 type];
 
-    if (v15 == 2)
+    if (type == 2)
     {
       v16 = 3;
     }
 
     else
     {
-      v16 = 2 * (v15 == 1);
+      v16 = 2 * (type == 1);
     }
 
     if (v12)
     {
-      if (v8)
+      if (selectedPaymentOffer)
       {
-        if (v13)
+        if (sessionIdentifier)
         {
           v17 = objc_alloc_init(PKPaymentOfferWebServiceConfirmOffer);
           [(PKPaymentOfferWebServiceConfirmOffer *)v17 setBaseURL:self->_baseURL];
           [(PKPaymentOfferWebServiceConfirmOffer *)v17 setCriteriaIdentifier:v12];
-          v18 = [v8 selectedOfferIdentifier];
-          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setSelectedOfferIdentifier:v18];
+          selectedOfferIdentifier = [selectedPaymentOffer selectedOfferIdentifier];
+          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setSelectedOfferIdentifier:selectedOfferIdentifier];
 
-          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setSessionIdentifier:v13];
+          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setSessionIdentifier:sessionIdentifier];
           [(PKPaymentOfferWebServiceConfirmOffer *)v17 setSelectionType:v16];
           [(PKPaymentOfferWebServiceConfirmOffer *)v17 setEventType:3];
-          v19 = [v8 passDetails];
-          v20 = [v19 passSerialNumber];
-          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setPassSerialNumber:v20];
+          passDetails = [selectedPaymentOffer passDetails];
+          passSerialNumber = [passDetails passSerialNumber];
+          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setPassSerialNumber:passSerialNumber];
 
-          v21 = [v8 passDetails];
-          v22 = [v21 passTypeIdentifier];
-          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setPassTypeIdentifier:v22];
+          passDetails2 = [selectedPaymentOffer passDetails];
+          passTypeIdentifier = [passDetails2 passTypeIdentifier];
+          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setPassTypeIdentifier:passTypeIdentifier];
 
-          v23 = [v8 passDetails];
-          v24 = [v23 primaryAccountIdentifier];
-          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setFpanIdentifier:v24];
+          passDetails3 = [selectedPaymentOffer passDetails];
+          primaryAccountIdentifier = [passDetails3 primaryAccountIdentifier];
+          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setFpanIdentifier:primaryAccountIdentifier];
 
-          v25 = [v8 passDetails];
-          v26 = [v25 dpanIdentifier];
-          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setDpanIdentifier:v26];
+          passDetails4 = [selectedPaymentOffer passDetails];
+          dpanIdentifier = [passDetails4 dpanIdentifier];
+          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setDpanIdentifier:dpanIdentifier];
 
-          v27 = [(PKPaymentOffersSessionDetails *)self->_configuration transactionDetails];
-          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setTransactionDetails:v27];
+          transactionDetails = [(PKPaymentOffersSessionDetails *)self->_configuration transactionDetails];
+          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setTransactionDetails:transactionDetails];
 
-          v28 = [(PKPaymentOfferWebServiceConfirmOffer *)v17 rewardsRedemptionIntent];
-          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setRewardsRedemptionIntent:v28];
+          rewardsRedemptionIntent = [(PKPaymentOfferWebServiceConfirmOffer *)v17 rewardsRedemptionIntent];
+          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setRewardsRedemptionIntent:rewardsRedemptionIntent];
 
-          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setSelectedOffer:v8];
+          [(PKPaymentOfferWebServiceConfirmOffer *)v17 setSelectedOffer:selectedPaymentOffer];
           [(PKPaymentOfferWebServiceConfirmOffer *)v17 setContext:[(PKPaymentOffersSessionDetails *)self->_configuration context]];
           v29 = objc_alloc_init(PKAsyncUnaryOperationComposer);
           *&buf = 0;
@@ -3920,18 +3920,18 @@ void __69__PKPaymentOffersController__performPaymentOffersRequest_completion___b
           v52[2] = __63__PKPaymentOffersController__performConfirmRequest_completion___block_invoke_3_186;
           v52[3] = &unk_1E79CF3D8;
           objc_copyWeak(&v56, &location);
-          v54 = self;
+          selfCopy = self;
           v55 = v65;
-          v53 = v8;
+          v53 = selectedPaymentOffer;
           [(PKAsyncUnaryOperationComposer *)v29 addOperation:v52];
-          v31 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
           v49[0] = MEMORY[0x1E69E9820];
           v49[1] = 3221225472;
           v49[2] = __63__PKPaymentOffersController__performConfirmRequest_completion___block_invoke_8;
           v49[3] = &unk_1E79CB818;
-          v50 = v7;
+          v50 = completionCopy;
           v51 = &v67;
-          v32 = [(PKAsyncUnaryOperationComposer *)v29 evaluateWithInput:v31 completion:v49];
+          v32 = [(PKAsyncUnaryOperationComposer *)v29 evaluateWithInput:null completion:v49];
 
           objc_destroyWeak(&v56);
           objc_destroyWeak(&v58);
@@ -3947,7 +3947,7 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot fetch call confirm with no sessionIdentifier defined for selected offer %@", v8];
+        v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot fetch call confirm with no sessionIdentifier defined for selected offer %@", selectedPaymentOffer];
         v37 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
@@ -4032,11 +4032,11 @@ LABEL_29:
     v34[5] = v38;
 LABEL_28:
 
-    (*(v7 + 2))(v7, 0, v68[5]);
+    (*(completionCopy + 2))(completionCopy, 0, v68[5]);
     goto LABEL_29;
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 LABEL_30:
 }
 
@@ -4391,12 +4391,12 @@ void __63__PKPaymentOffersController__performConfirmRequest_completion___block_i
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
-- (void)_performSelectRequest:(id)a3 completion:(id)a4
+- (void)_performSelectRequest:(id)request completion:(id)completion
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 4)
+  requestCopy = request;
+  completionCopy = completion;
+  if ([requestCopy type] == 4)
   {
     v54 = 0;
     v55 = &v54;
@@ -4404,51 +4404,51 @@ void __63__PKPaymentOffersController__performConfirmRequest_completion___block_i
     v57 = __Block_byref_object_copy__20;
     v58 = __Block_byref_object_dispose__20;
     v59 = 0;
-    v8 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
-    v9 = [v6 criteriaIdentifier];
-    v10 = v9;
-    if (v9)
+    selectedPaymentOffer = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
+    criteriaIdentifier = [requestCopy criteriaIdentifier];
+    v10 = criteriaIdentifier;
+    if (criteriaIdentifier)
     {
-      v11 = v9;
+      criteriaIdentifier2 = criteriaIdentifier;
     }
 
     else
     {
-      v11 = [v8 criteriaIdentifier];
+      criteriaIdentifier2 = [selectedPaymentOffer criteriaIdentifier];
     }
 
-    v12 = v11;
+    v12 = criteriaIdentifier2;
 
-    v13 = [v8 sessionIdentifier];
-    v14 = v13;
+    sessionIdentifier = [selectedPaymentOffer sessionIdentifier];
+    v14 = sessionIdentifier;
     if (v12)
     {
-      if (v8)
+      if (selectedPaymentOffer)
       {
-        if (v13)
+        if (sessionIdentifier)
         {
           v15 = objc_alloc_init(PKPaymentOfferWebServiceSelectedOffer);
           [(PKPaymentOfferWebServiceSelectedOffer *)v15 setBaseURL:self->_baseURL];
           [(PKPaymentOfferWebServiceSelectedOffer *)v15 setCriteriaIdentifier:v12];
-          v16 = [v8 selectedOfferIdentifier];
-          [(PKPaymentOfferWebServiceSelectedOffer *)v15 setOfferIdentifier:v16];
+          selectedOfferIdentifier = [selectedPaymentOffer selectedOfferIdentifier];
+          [(PKPaymentOfferWebServiceSelectedOffer *)v15 setOfferIdentifier:selectedOfferIdentifier];
 
           [(PKPaymentOfferWebServiceSelectedOffer *)v15 setSessionIdentifier:v14];
-          v17 = [v8 passDetails];
-          v18 = [v17 passSerialNumber];
-          [(PKPaymentOfferWebServiceSelectedOffer *)v15 setPassSerialNumber:v18];
+          passDetails = [selectedPaymentOffer passDetails];
+          passSerialNumber = [passDetails passSerialNumber];
+          [(PKPaymentOfferWebServiceSelectedOffer *)v15 setPassSerialNumber:passSerialNumber];
 
-          v19 = [v8 passDetails];
-          v20 = [v19 passTypeIdentifier];
-          [(PKPaymentOfferWebServiceSelectedOffer *)v15 setPassTypeIdentifier:v20];
+          passDetails2 = [selectedPaymentOffer passDetails];
+          passTypeIdentifier = [passDetails2 passTypeIdentifier];
+          [(PKPaymentOfferWebServiceSelectedOffer *)v15 setPassTypeIdentifier:passTypeIdentifier];
 
-          v21 = [v8 passDetails];
-          v22 = [v21 primaryAccountIdentifier];
-          [(PKPaymentOfferWebServiceSelectedOffer *)v15 setFpanIdentifier:v22];
+          passDetails3 = [selectedPaymentOffer passDetails];
+          primaryAccountIdentifier = [passDetails3 primaryAccountIdentifier];
+          [(PKPaymentOfferWebServiceSelectedOffer *)v15 setFpanIdentifier:primaryAccountIdentifier];
 
-          v23 = [v8 passDetails];
-          v24 = [v23 dpanIdentifier];
-          [(PKPaymentOfferWebServiceSelectedOffer *)v15 setDpanIdentifier:v24];
+          passDetails4 = [selectedPaymentOffer passDetails];
+          dpanIdentifier = [passDetails4 dpanIdentifier];
+          [(PKPaymentOfferWebServiceSelectedOffer *)v15 setDpanIdentifier:dpanIdentifier];
 
           v25 = objc_alloc_init(PKAsyncUnaryOperationComposer);
           objc_initWeak(location, self);
@@ -4460,17 +4460,17 @@ void __63__PKPaymentOffersController__performConfirmRequest_completion___block_i
           v26 = v15;
           v49 = v26;
           v52 = &v54;
-          v50 = v8;
-          v51 = self;
+          v50 = selectedPaymentOffer;
+          selfCopy = self;
           [(PKAsyncUnaryOperationComposer *)v25 addOperation:v48];
-          v27 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
           v45[0] = MEMORY[0x1E69E9820];
           v45[1] = 3221225472;
           v45[2] = __62__PKPaymentOffersController__performSelectRequest_completion___block_invoke_191;
           v45[3] = &unk_1E79CB818;
-          v46 = v7;
+          v46 = completionCopy;
           v47 = &v54;
-          v28 = [(PKAsyncUnaryOperationComposer *)v25 evaluateWithInput:v27 completion:v45];
+          v28 = [(PKAsyncUnaryOperationComposer *)v25 evaluateWithInput:null completion:v45];
 
           objc_destroyWeak(&v53);
           objc_destroyWeak(location);
@@ -4481,7 +4481,7 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot fetch call confirm with no sessionIdentifier defined for selected offer %@", v8];
+        v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot fetch call confirm with no sessionIdentifier defined for selected offer %@", selectedPaymentOffer];
         v33 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
@@ -4566,11 +4566,11 @@ LABEL_26:
     v30[5] = v34;
 LABEL_25:
 
-    (*(v7 + 2))(v7, 0, v55[5]);
+    (*(completionCopy + 2))(completionCopy, 0, v55[5]);
     goto LABEL_26;
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 LABEL_27:
 }
 
@@ -4703,12 +4703,12 @@ void __62__PKPaymentOffersController__performSelectRequest_completion___block_in
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
-- (void)_performCancelRequest:(id)a3 completion:(id)a4
+- (void)_performCancelRequest:(id)request completion:(id)completion
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 5)
+  requestCopy = request;
+  completionCopy = completion;
+  if ([requestCopy type] == 5)
   {
     v58 = 0;
     v59 = &v58;
@@ -4720,51 +4720,51 @@ void __62__PKPaymentOffersController__performSelectRequest_completion___block_in
     v56[1] = v56;
     v56[2] = 0x2020000000;
     v57 = 0;
-    v8 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
-    v9 = [v6 criteriaIdentifier];
-    v10 = v9;
-    if (v9)
+    selectedPaymentOffer = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
+    criteriaIdentifier = [requestCopy criteriaIdentifier];
+    v10 = criteriaIdentifier;
+    if (criteriaIdentifier)
     {
-      v11 = v9;
+      criteriaIdentifier2 = criteriaIdentifier;
     }
 
     else
     {
-      v11 = [v8 criteriaIdentifier];
+      criteriaIdentifier2 = [selectedPaymentOffer criteriaIdentifier];
     }
 
-    v12 = v11;
+    v12 = criteriaIdentifier2;
 
-    v13 = [v8 sessionIdentifier];
-    v14 = v13;
+    sessionIdentifier = [selectedPaymentOffer sessionIdentifier];
+    v14 = sessionIdentifier;
     if (v12)
     {
-      if (v8)
+      if (selectedPaymentOffer)
       {
-        if (v13)
+        if (sessionIdentifier)
         {
           v15 = objc_alloc_init(PKPaymentOfferWebServiceCancel);
           [(PKPaymentOfferWebServiceCancel *)v15 setBaseURL:self->_baseURL];
           [(PKPaymentOfferWebServiceCancel *)v15 setCriteriaIdentifier:v12];
-          v16 = [v8 selectedOfferIdentifier];
-          [(PKPaymentOfferWebServiceCancel *)v15 setSelectedOfferIdentifier:v16];
+          selectedOfferIdentifier = [selectedPaymentOffer selectedOfferIdentifier];
+          [(PKPaymentOfferWebServiceCancel *)v15 setSelectedOfferIdentifier:selectedOfferIdentifier];
 
           [(PKPaymentOfferWebServiceCancel *)v15 setSessionIdentifier:v14];
-          v17 = [v8 passDetails];
-          v18 = [v17 passSerialNumber];
-          [(PKPaymentOfferWebServiceCancel *)v15 setPassSerialNumber:v18];
+          passDetails = [selectedPaymentOffer passDetails];
+          passSerialNumber = [passDetails passSerialNumber];
+          [(PKPaymentOfferWebServiceCancel *)v15 setPassSerialNumber:passSerialNumber];
 
-          v19 = [v8 passDetails];
-          v20 = [v19 passTypeIdentifier];
-          [(PKPaymentOfferWebServiceCancel *)v15 setPassTypeIdentifier:v20];
+          passDetails2 = [selectedPaymentOffer passDetails];
+          passTypeIdentifier = [passDetails2 passTypeIdentifier];
+          [(PKPaymentOfferWebServiceCancel *)v15 setPassTypeIdentifier:passTypeIdentifier];
 
-          v21 = [v8 passDetails];
-          v22 = [v21 primaryAccountIdentifier];
-          [(PKPaymentOfferWebServiceCancel *)v15 setFpanIdentifier:v22];
+          passDetails3 = [selectedPaymentOffer passDetails];
+          primaryAccountIdentifier = [passDetails3 primaryAccountIdentifier];
+          [(PKPaymentOfferWebServiceCancel *)v15 setFpanIdentifier:primaryAccountIdentifier];
 
-          v23 = [v8 passDetails];
-          v24 = [v23 dpanIdentifier];
-          [(PKPaymentOfferWebServiceCancel *)v15 setDpanIdentifier:v24];
+          passDetails4 = [selectedPaymentOffer passDetails];
+          dpanIdentifier = [passDetails4 dpanIdentifier];
+          [(PKPaymentOfferWebServiceCancel *)v15 setDpanIdentifier:dpanIdentifier];
 
           v25 = objc_alloc_init(PKAsyncUnaryOperationComposer);
           objc_initWeak(location, self);
@@ -4776,19 +4776,19 @@ void __62__PKPaymentOffersController__performSelectRequest_completion___block_in
           v26 = v15;
           v50 = v26;
           v53 = &v58;
-          v51 = v8;
+          v51 = selectedPaymentOffer;
           v52 = v12;
           v54 = v56;
           [(PKAsyncUnaryOperationComposer *)v25 addOperation:v49];
-          v27 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
           v45[0] = MEMORY[0x1E69E9820];
           v45[1] = 3221225472;
           v45[2] = __62__PKPaymentOffersController__performCancelRequest_completion___block_invoke_195;
           v45[3] = &unk_1E79CF158;
-          v46 = v7;
+          v46 = completionCopy;
           v47 = v56;
           v48 = &v58;
-          v28 = [(PKAsyncUnaryOperationComposer *)v25 evaluateWithInput:v27 completion:v45];
+          v28 = [(PKAsyncUnaryOperationComposer *)v25 evaluateWithInput:null completion:v45];
 
           objc_destroyWeak(&v55);
           objc_destroyWeak(location);
@@ -4800,7 +4800,7 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot fetch call confirm with no sessionIdentifier defined for selected offer %@", v8];
+        v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot fetch call confirm with no sessionIdentifier defined for selected offer %@", selectedPaymentOffer];
         v33 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
@@ -4885,11 +4885,11 @@ LABEL_26:
     v30[5] = v34;
 LABEL_25:
 
-    (*(v7 + 2))(v7, 0, v59[5]);
+    (*(completionCopy + 2))(completionCopy, 0, v59[5]);
     goto LABEL_26;
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 LABEL_27:
 }
 
@@ -5006,14 +5006,14 @@ void __62__PKPaymentOffersController__performCancelRequest_completion___block_in
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_performDynamicContentRequest:(id)a3 completion:(id)a4
+- (void)_performDynamicContentRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 2)
+  requestCopy = request;
+  completionCopy = completion;
+  if ([requestCopy type] == 2)
   {
-    v8 = [(PKPaymentOffersControllerRequest *)self->_currentRequest criteriaIdentifier];
-    v9 = [(PKPaymentOffersControllerRequest *)self->_currentRequest dynamicPageTypes];
+    criteriaIdentifier = [(PKPaymentOffersControllerRequest *)self->_currentRequest criteriaIdentifier];
+    dynamicPageTypes = [(PKPaymentOffersControllerRequest *)self->_currentRequest dynamicPageTypes];
     v29[0] = 0;
     v29[1] = v29;
     v29[2] = 0x2020000000;
@@ -5027,29 +5027,29 @@ void __62__PKPaymentOffersController__performCancelRequest_completion___block_in
     v10 = objc_alloc_init(PKAsyncUnaryOperationComposer);
     objc_initWeak(&location, self);
     v11 = [PKPaymentOffersControllerLoadingDetails loadingDetailsWithState:1];
-    [(PKPaymentOffersController *)self _updateLoadingDetailsState:v11 criteriaIdentifier:v8 passUniqueID:0 requestType:2];
+    [(PKPaymentOffersController *)self _updateLoadingDetailsState:v11 criteriaIdentifier:criteriaIdentifier passUniqueID:0 requestType:2];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __70__PKPaymentOffersController__performDynamicContentRequest_completion___block_invoke;
     v20[3] = &unk_1E79CF568;
     objc_copyWeak(&v25, &location);
-    v12 = v8;
+    v12 = criteriaIdentifier;
     v21 = v12;
     v23 = v27;
-    v13 = v9;
+    v13 = dynamicPageTypes;
     v22 = v13;
     v24 = v29;
     [(PKAsyncUnaryOperationComposer *)v10 addOperation:v20];
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __70__PKPaymentOffersController__performDynamicContentRequest_completion___block_invoke_203;
     v16[3] = &unk_1E79CF158;
-    v17 = v7;
+    v17 = completionCopy;
     v18 = v29;
     v19 = v27;
-    v15 = [(PKAsyncUnaryOperationComposer *)v10 evaluateWithInput:v14 completion:v16];
+    v15 = [(PKAsyncUnaryOperationComposer *)v10 evaluateWithInput:null completion:v16];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&location);
@@ -5060,7 +5060,7 @@ void __62__PKPaymentOffersController__performCancelRequest_completion___block_in
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -5340,38 +5340,38 @@ void __70__PKPaymentOffersController__performDynamicContentRequest_completion___
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_updatePreferredLanguageForSelectedOffer:(id)a3
+- (void)_updatePreferredLanguageForSelectedOffer:(id)offer
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 criteriaIdentifier];
-  if ([v4 type] == 1)
+  offerCopy = offer;
+  criteriaIdentifier = [offerCopy criteriaIdentifier];
+  if ([offerCopy type] == 1)
   {
-    v6 = [(PKPaymentOffersController *)self preferredLocalizationLanguageForCriteriaIdentifier:v5];
+    v6 = [(PKPaymentOffersController *)self preferredLocalizationLanguageForCriteriaIdentifier:criteriaIdentifier];
     if (v6)
     {
       v7 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [v4 selectedOfferIdentifier];
+        selectedOfferIdentifier = [offerCopy selectedOfferIdentifier];
         v10 = 138412546;
-        v11 = v8;
+        v11 = selectedOfferIdentifier;
         v12 = 2112;
         v13 = v6;
         _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Setting preferred language for selected offer %@ as %@", &v10, 0x16u);
       }
 
-      v9 = [v4 installmentAssessment];
-      [v9 populatePreferredLanguage:v6];
+      installmentAssessment = [offerCopy installmentAssessment];
+      [installmentAssessment populatePreferredLanguage:v6];
     }
   }
 }
 
-- (void)_fetchDeviceMetadataFields:(unint64_t)a3 completion:(id)a4
+- (void)_fetchDeviceMetadataFields:(unint64_t)fields completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v7 = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
   if (objc_opt_respondsToSelector())
   {
     paymentWebService = self->_paymentWebService;
@@ -5380,15 +5380,15 @@ void __70__PKPaymentOffersController__performDynamicContentRequest_completion___
     v9[2] = __67__PKPaymentOffersController__fetchDeviceMetadataFields_completion___block_invoke;
     v9[3] = &unk_1E79CF590;
     objc_copyWeak(&v11, &location);
-    v10 = v6;
-    [v7 paymentWebService:paymentWebService deviceMetadataWithFields:a3 completion:v9];
+    v10 = completionCopy;
+    [targetDevice paymentWebService:paymentWebService deviceMetadataWithFields:fields completion:v9];
 
     objc_destroyWeak(&v11);
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   objc_destroyWeak(&location);
@@ -5422,29 +5422,29 @@ void __67__PKPaymentOffersController__fetchDeviceMetadataFields_completion___blo
   }
 }
 
-- (id)_criteriaEligibilityConfigurationForCriteria:(id)a3
+- (id)_criteriaEligibilityConfigurationForCriteria:(id)criteria
 {
-  v4 = [a3 type];
-  if (v4 == 2)
+  type = [criteria type];
+  if (type == 2)
   {
     v12 = [PKPaymentOfferRewardsCriteriaEligibilityConfiguration alloc];
-    v5 = [(PKPaymentOffersSessionDetails *)self->_configuration transactionAmount];
-    v6 = [(PKPaymentOffersSessionDetails *)self->_configuration currencyCode];
-    v7 = [(PKPaymentOffersSessionDetails *)self->_configuration merchantCountryCode];
-    v11 = [(PKPaymentOfferRewardsCriteriaEligibilityConfiguration *)v12 initWithAmount:v5 currencyCode:v6 merchantCountryCode:v7 context:[(PKPaymentOffersSessionDetails *)self->_configuration context] options:[(PKPaymentOffersSessionDetails *)self->_configuration options]];
+    transactionAmount = [(PKPaymentOffersSessionDetails *)self->_configuration transactionAmount];
+    currencyCode = [(PKPaymentOffersSessionDetails *)self->_configuration currencyCode];
+    merchantCountryCode = [(PKPaymentOffersSessionDetails *)self->_configuration merchantCountryCode];
+    v11 = [(PKPaymentOfferRewardsCriteriaEligibilityConfiguration *)v12 initWithAmount:transactionAmount currencyCode:currencyCode merchantCountryCode:merchantCountryCode context:[(PKPaymentOffersSessionDetails *)self->_configuration context] options:[(PKPaymentOffersSessionDetails *)self->_configuration options]];
     goto LABEL_5;
   }
 
-  if (v4 == 1)
+  if (type == 1)
   {
     v14 = [PKPaymentOfferInstallmentCriteriaEligibilityConfiguration alloc];
-    v5 = [(PKPaymentOffersSessionDetails *)self->_configuration transactionAmount];
-    v6 = [(PKPaymentOffersSessionDetails *)self->_configuration currencyCode];
-    v7 = [(PKPaymentOffersSessionDetails *)self->_configuration merchantCountryCode];
-    v8 = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
-    v9 = [v8 deviceRegion];
-    v10 = [(PKPaymentOffersSessionDetails *)self->_configuration supportedNetworks];
-    v11 = [(PKPaymentOfferInstallmentCriteriaEligibilityConfiguration *)v14 initWithAmount:v5 currencyCode:v6 merchantCountryCode:v7 deviceRegion:v9 supportedNetworks:v10 merchantCapabilities:[(PKPaymentOffersSessionDetails *)self->_configuration merchantCapabilities] payLaterSuppressionMode:[(PKPaymentOffersSessionDetails *)self->_configuration payLaterSuppressionMode] context:[(PKPaymentOffersSessionDetails *)self->_configuration context] options:[(PKPaymentOffersSessionDetails *)self->_configuration options]];
+    transactionAmount = [(PKPaymentOffersSessionDetails *)self->_configuration transactionAmount];
+    currencyCode = [(PKPaymentOffersSessionDetails *)self->_configuration currencyCode];
+    merchantCountryCode = [(PKPaymentOffersSessionDetails *)self->_configuration merchantCountryCode];
+    targetDevice = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
+    deviceRegion = [targetDevice deviceRegion];
+    supportedNetworks = [(PKPaymentOffersSessionDetails *)self->_configuration supportedNetworks];
+    v11 = [(PKPaymentOfferInstallmentCriteriaEligibilityConfiguration *)v14 initWithAmount:transactionAmount currencyCode:currencyCode merchantCountryCode:merchantCountryCode deviceRegion:deviceRegion supportedNetworks:supportedNetworks merchantCapabilities:[(PKPaymentOffersSessionDetails *)self->_configuration merchantCapabilities] payLaterSuppressionMode:[(PKPaymentOffersSessionDetails *)self->_configuration payLaterSuppressionMode] context:[(PKPaymentOffersSessionDetails *)self->_configuration context] options:[(PKPaymentOffersSessionDetails *)self->_configuration options]];
 
 LABEL_5:
     goto LABEL_7;
@@ -5493,9 +5493,9 @@ LABEL_7:
         v11 = [(PKPaymentOffersController *)self _paymentOfferCriteriaToKeep:v8];
         if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [v8 identifier];
-          v13 = [v8 associatedPassUniqueID];
-          v14 = self;
+          identifier = [v8 identifier];
+          associatedPassUniqueID = [v8 associatedPassUniqueID];
+          selfCopy = self;
           v15 = v5;
           v16 = v6;
           if (v10)
@@ -5517,14 +5517,14 @@ LABEL_7:
             v20 = @"YES";
           }
 
-          v29 = v12;
+          v29 = identifier;
           v30 = 2112;
-          v31 = v13;
+          v31 = associatedPassUniqueID;
           v32 = 2112;
           v33 = v17;
           v6 = v16;
           v5 = v15;
-          self = v14;
+          self = selfCopy;
           v3 = log;
           v34 = 2112;
           v35 = v18;
@@ -5541,48 +5541,48 @@ LABEL_7:
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lockObservers);
     [(NSHashTable *)self->_observers addObject:v5];
     os_unfair_lock_unlock(&self->_lockObservers);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lockObservers);
     [(NSHashTable *)self->_observers removeObject:v5];
     os_unfair_lock_unlock(&self->_lockObservers);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)_accessObserversWithHandler:(id)a3
+- (void)_accessObserversWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     os_unfair_lock_lock(&self->_lockObservers);
-    v5 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_lockObservers);
     replyQueue = self->_replyQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __57__PKPaymentOffersController__accessObserversWithHandler___block_invoke;
     v8[3] = &unk_1E79C4A40;
-    v9 = v5;
-    v10 = v4;
-    v7 = v5;
+    v9 = allObjects;
+    v10 = handlerCopy;
+    v7 = allObjects;
     dispatch_async(replyQueue, v8);
   }
 }
@@ -5641,16 +5641,16 @@ void __71__PKPaymentOffersController__informObserversPaymentOfferCatalogChanged_
   }
 }
 
-- (void)_informObserversPaymentOffersChangedForPassUniqueID:(id)a3
+- (void)_informObserversPaymentOffersChangedForPassUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __81__PKPaymentOffersController__informObserversPaymentOffersChangedForPassUniqueID___block_invoke;
   v6[3] = &unk_1E79CF5E0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(PKPaymentOffersController *)self _accessObserversWithHandler:v6];
 }
 
@@ -5663,16 +5663,16 @@ void __81__PKPaymentOffersController__informObserversPaymentOffersChangedForPass
   }
 }
 
-- (void)_informObserversSelectedPaymentOfferChangedForPassUniqueID:(id)a3
+- (void)_informObserversSelectedPaymentOfferChangedForPassUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __88__PKPaymentOffersController__informObserversSelectedPaymentOfferChangedForPassUniqueID___block_invoke;
   v6[3] = &unk_1E79CF5E0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(PKPaymentOffersController *)self _accessObserversWithHandler:v6];
 }
 
@@ -5723,17 +5723,17 @@ void __77__PKPaymentOffersController__informObserversPaymentOfferMerchandisingCh
   }
 }
 
-- (void)selectedPaymentOfferUpdated:(id)a3 passUniqueID:(id)a4
+- (void)selectedPaymentOfferUpdated:(id)updated passUniqueID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__PKPaymentOffersController_selectedPaymentOfferUpdated_passUniqueID___block_invoke;
   block[3] = &unk_1E79C54B8;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v9);
@@ -5751,20 +5751,20 @@ void __70__PKPaymentOffersController_selectedPaymentOfferUpdated_passUniqueID___
   }
 }
 
-- (void)selectedPaymentOfferRemoved:(id)a3 passUniqueID:(id)a4
+- (void)selectedPaymentOfferRemoved:(id)removed passUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  dCopy = d;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__PKPaymentOffersController_selectedPaymentOfferRemoved_passUniqueID___block_invoke;
   v10[3] = &unk_1E79C9528;
   objc_copyWeak(&v13, &location);
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = dCopy;
+  v12 = removedCopy;
+  v8 = removedCopy;
+  v9 = dCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
   objc_destroyWeak(&v13);
@@ -5805,17 +5805,17 @@ void __70__PKPaymentOffersController_selectedPaymentOfferRemoved_passUniqueID___
   }
 }
 
-- (void)paymentOfferCatalogChangedFromPush:(id)a3
+- (void)paymentOfferCatalogChangedFromPush:(id)push
 {
-  v4 = a3;
+  pushCopy = push;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__PKPaymentOffersController_paymentOfferCatalogChangedFromPush___block_invoke;
   block[3] = &unk_1E79C54B8;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = pushCopy;
+  v5 = pushCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -5833,18 +5833,18 @@ void __64__PKPaymentOffersController_paymentOfferCatalogChangedFromPush___block_
   }
 }
 
-- (BOOL)_handleOffersChangedForPassUniqueID:(id)a3 didRemove:(BOOL)a4
+- (BOOL)_handleOffersChangedForPassUniqueID:(id)d didRemove:(BOOL)remove
 {
-  v4 = a4;
+  removeCopy = remove;
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   if ([(PKPaymentOffersSessionDetails *)self->_configuration context]!= 1)
   {
     goto LABEL_19;
   }
 
   selectedPassUniqueID = self->_selectedPassUniqueID;
-  v8 = v6;
+  v8 = dCopy;
   v9 = selectedPassUniqueID;
   v10 = v9;
   if (v9 == v8)
@@ -5874,26 +5874,26 @@ void __64__PKPaymentOffersController_paymentOfferCatalogChangedFromPush___block_
     allSelectedInStorePaymentOffers = self->_allSelectedInStorePaymentOffers;
     self->_allSelectedInStorePaymentOffers = v12;
 
-    v14 = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
-    v15 = v14;
-    if (v4)
+    selectedPaymentOffer = [(PKPaymentOffersControllerSelectedOfferDetails *)self->_selectedOfferDetails selectedPaymentOffer];
+    v15 = selectedPaymentOffer;
+    if (removeCopy)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = v14;
+      v16 = selectedPaymentOffer;
     }
 
     v36 = v16;
-    v17 = [(NSArray *)self->_allSelectedInStorePaymentOffers firstObject];
+    firstObject = [(NSArray *)self->_allSelectedInStorePaymentOffers firstObject];
     v37 = [(NSArray *)self->_allSelectedInStorePaymentOffers pk_objectsPassingTest:&__block_literal_global_228];
     v18 = [v37 pk_firstObjectPassingTest:&__block_literal_global_230_0];
     catalog = self->_catalog;
-    v20 = v17;
-    v21 = [v17 criteriaIdentifier];
-    v22 = [(PKPaymentOfferCatalog *)catalog criteriaWithIdentifier:v21];
+    v20 = firstObject;
+    criteriaIdentifier = [firstObject criteriaIdentifier];
+    v22 = [(PKPaymentOfferCatalog *)catalog criteriaWithIdentifier:criteriaIdentifier];
 
     v38 = v22;
     if ([v22 type] == 1)
@@ -5911,25 +5911,25 @@ void __64__PKPaymentOffersController_paymentOfferCatalogChangedFromPush___block_
     if (!v15 && v18)
     {
       v26 = v37;
-      v27 = [v37 firstObject];
+      firstObject2 = [v37 firstObject];
 LABEL_24:
       v30 = v36;
 LABEL_25:
 
-      v30 = v27;
+      v30 = firstObject2;
       goto LABEL_26;
     }
 
     v26 = v37;
     if (v15 && !v20)
     {
-      v27 = 0;
+      firstObject2 = 0;
       goto LABEL_24;
     }
 
-    v33 = [v15 type];
+    type = [v15 type];
     v30 = v36;
-    if (v33 != [v20 type] || (v34 = objc_msgSend(v25, "storageType"), v34 != objc_msgSend(v20, "storageType")))
+    if (type != [v20 type] || (v34 = objc_msgSend(v25, "storageType"), v34 != objc_msgSend(v20, "storageType")))
     {
       if (v20 && !v18 && v24)
       {
@@ -5947,9 +5947,9 @@ LABEL_25:
           {
             if ([v25 storageType] == 1 && !objc_msgSend(v20, "storageType"))
             {
-              v35 = [v20 userSelectionDate];
+              userSelectionDate = [v20 userSelectionDate];
 
-              if (v35)
+              if (userSelectionDate)
               {
                 goto LABEL_39;
               }
@@ -5995,7 +5995,7 @@ LABEL_42:
     }
 
 LABEL_39:
-    v27 = v20;
+    firstObject2 = v20;
     goto LABEL_25;
   }
 
@@ -6014,23 +6014,23 @@ BOOL __75__PKPaymentOffersController__handleOffersChangedForPassUniqueID_didRemo
   return v3;
 }
 
-- (void)updateRewardsBalanceForPass:(id)a3 criteriaIdentifier:(id)a4 completion:(id)a5
+- (void)updateRewardsBalanceForPass:(id)pass criteriaIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [[PKSelectedPaymentOfferPaymentPassDetails alloc] initWithPaymentPass:v10];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  passCopy = pass;
+  v12 = [[PKSelectedPaymentOfferPaymentPassDetails alloc] initWithPaymentPass:passCopy];
 
-  v11 = [[PKPaymentOffersControllerRequest alloc] initRewardsBalanceWithCriteriaIdentifier:v9 selectedPassDetails:v12 completion:v8];
+  v11 = [[PKPaymentOffersControllerRequest alloc] initRewardsBalanceWithCriteriaIdentifier:identifierCopy selectedPassDetails:v12 completion:completionCopy];
   [(PKPaymentOffersController *)self _addPaymentOffersControllerRequest:v11];
 }
 
-- (id)rewardsBalanceForPassUniqueID:(id)a3
+- (id)rewardsBalanceForPassUniqueID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_rewardsBalancesForPassUniqueID objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_rewardsBalancesForPassUniqueID objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -6040,7 +6040,7 @@ BOOL __75__PKPaymentOffersController__handleOffersChangedForPassUniqueID_didRemo
 
   if (![v5 count])
   {
-    v6 = [(PKPaymentService *)self->_paymentService paymentRewardsBalancesWithPassUniqueIdentifier:v4];
+    v6 = [(PKPaymentService *)self->_paymentService paymentRewardsBalancesWithPassUniqueIdentifier:dCopy];
 
     v5 = v6;
   }
@@ -6050,12 +6050,12 @@ BOOL __75__PKPaymentOffersController__handleOffersChangedForPassUniqueID_didRemo
   return v7;
 }
 
-- (void)_performRewardsBalanceRequest:(id)a3 completion:(id)a4
+- (void)_performRewardsBalanceRequest:(id)request completion:(id)completion
 {
   v72[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 6)
+  requestCopy = request;
+  completionCopy = completion;
+  if ([requestCopy type] == 6)
   {
     v62[0] = 0;
     v62[1] = v62;
@@ -6067,30 +6067,30 @@ BOOL __75__PKPaymentOffersController__handleOffersChangedForPassUniqueID_didRemo
     v59 = __Block_byref_object_copy__20;
     v60 = __Block_byref_object_dispose__20;
     v61 = 0;
-    v8 = [v6 criteriaIdentifier];
-    v9 = [v6 selectedPassDetails];
-    v10 = [v9 primaryAccountIdentifier];
+    criteriaIdentifier = [requestCopy criteriaIdentifier];
+    selectedPassDetails = [requestCopy selectedPassDetails];
+    primaryAccountIdentifier = [selectedPassDetails primaryAccountIdentifier];
 
-    v11 = [v6 selectedPassDetails];
-    v12 = [v11 passUniqueID];
+    selectedPassDetails2 = [requestCopy selectedPassDetails];
+    passUniqueID = [selectedPassDetails2 passUniqueID];
 
     v32 = [(PKPaymentOffersSessionDetails *)self->_configuration copy];
-    if (v8)
+    if (criteriaIdentifier)
     {
-      if (v10)
+      if (primaryAccountIdentifier)
       {
         v13 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v8;
+          *(&buf + 4) = criteriaIdentifier;
           _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Fetching Merchant specific Payment Rewards Balance for %@", &buf, 0xCu);
         }
 
         v14 = objc_alloc_init(PKAsyncUnaryOperationComposer);
         objc_initWeak(&location, self);
         v15 = [PKPaymentOffersControllerLoadingDetails loadingDetailsWithState:1];
-        [(PKPaymentOffersController *)self _updateLoadingDetailsState:v15 criteriaIdentifier:v8 passUniqueID:v12 requestType:6];
+        [(PKPaymentOffersController *)self _updateLoadingDetailsState:v15 criteriaIdentifier:criteriaIdentifier passUniqueID:passUniqueID requestType:6];
 
         *&buf = 0;
         *(&buf + 1) = &buf;
@@ -6109,12 +6109,12 @@ BOOL __75__PKPaymentOffersController__handleOffersChangedForPassUniqueID_didRemo
         v44[2] = __70__PKPaymentOffersController__performRewardsBalanceRequest_completion___block_invoke;
         v44[3] = &unk_1E79CF680;
         objc_copyWeak(&v52, &location);
-        v16 = v12;
+        v16 = passUniqueID;
         v45 = v16;
         v49 = &v56;
         p_buf = &buf;
-        v46 = v10;
-        v17 = v8;
+        v46 = primaryAccountIdentifier;
+        v17 = criteriaIdentifier;
         v47 = v17;
         v48 = v32;
         v51 = v53;
@@ -6131,14 +6131,14 @@ BOOL __75__PKPaymentOffersController__handleOffersChangedForPassUniqueID_didRemo
         v38 = v17;
         v42 = v62;
         [(PKAsyncUnaryOperationComposer *)v14 addOperation:v36];
-        v18 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
         v33[2] = __70__PKPaymentOffersController__performRewardsBalanceRequest_completion___block_invoke_246;
         v33[3] = &unk_1E79CB818;
-        v34 = v7;
+        v34 = completionCopy;
         v35 = &v56;
-        v19 = [(PKAsyncUnaryOperationComposer *)v14 evaluateWithInput:v18 completion:v33];
+        v19 = [(PKAsyncUnaryOperationComposer *)v14 evaluateWithInput:null completion:v33];
 
         objc_destroyWeak(&v43);
         objc_destroyWeak(&v52);
@@ -6206,7 +6206,7 @@ BOOL __75__PKPaymentOffersController__handleOffersChangedForPassUniqueID_didRemo
     v21[5] = v24;
 LABEL_18:
 
-    (*(v7 + 2))(v7, 0, v57[5]);
+    (*(completionCopy + 2))(completionCopy, 0, v57[5]);
 LABEL_19:
 
     _Block_object_dispose(&v56, 8);
@@ -6214,7 +6214,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 LABEL_20:
 }
 
@@ -6518,21 +6518,21 @@ void __70__PKPaymentOffersController__performRewardsBalanceRequest_completion___
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
-- (id)_redeemablePaymentRewardsBalanceFrom:(id)a3
+- (id)_redeemablePaymentRewardsBalanceFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 pk_firstObjectPassingTest:&__block_literal_global_250];
-  if (v4 || ![v3 count])
+  fromCopy = from;
+  v4 = [fromCopy pk_firstObjectPassingTest:&__block_literal_global_250];
+  if (v4 || ![fromCopy count])
   {
-    v5 = v4;
+    firstObject = v4;
   }
 
   else
   {
-    v5 = [v3 firstObject];
+    firstObject = [fromCopy firstObject];
   }
 
-  v6 = v5;
+  v6 = firstObject;
 
   return v6;
 }

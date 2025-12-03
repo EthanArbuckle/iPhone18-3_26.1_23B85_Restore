@@ -1,69 +1,69 @@
 @interface _IDSConnection
 - (BOOL)_isAccountInValidRegistrationStateToAcceptMessages;
-- (BOOL)_isDestinationSingleLocalAddress:(id)a3;
-- (BOOL)_shouldAcceptIncomingType:(id)a3 forTopic:(id)a4 localURI:(id)a5 remoteURI:(id)a6 validateAliases:(BOOL)a7 guid:(id)a8;
+- (BOOL)_isDestinationSingleLocalAddress:(id)address;
+- (BOOL)_shouldAcceptIncomingType:(id)type forTopic:(id)topic localURI:(id)i remoteURI:(id)rI validateAliases:(BOOL)aliases guid:(id)guid;
 - (BOOL)isActive;
-- (BOOL)sendData:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendInvitation:(id)a3 toDestination:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendInvitationUpdate:(id)a3 toDestination:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendMessage:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendProtobuf:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendServerMessage:(id)a3 command:(id)a4;
+- (BOOL)sendData:(id)data toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendInvitation:(id)invitation toDestination:(id)destination priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendInvitationUpdate:(id)update toDestination:(id)destination priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendMessage:(id)message toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendProtobuf:(id)protobuf toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendServerMessage:(id)message command:(id)command;
 - (IDSAccount)account;
-- (_IDSConnection)initWithAccount:(id)a3 commands:(id)a4 indirectDelegateCallouts:(BOOL)a5 delegateContext:(id)a6;
+- (_IDSConnection)initWithAccount:(id)account commands:(id)commands indirectDelegateCallouts:(BOOL)callouts delegateContext:(id)context;
 - (id)_activeDevice;
 - (id)_defaultPairedDevice;
 - (id)_init;
-- (id)_sendWithParameters:(id)a3 options:(id)a4 loggingType:(id)a5 loggingDataSize:(unint64_t)a6;
+- (id)_sendWithParameters:(id)parameters options:(id)options loggingType:(id)type loggingDataSize:(unint64_t)size;
 - (id)daemonListener;
-- (void)_callDelegatesRespondingToSelector:(SEL)a3 withPreCallbacksBlock:(id)a4 callbackBlock:(id)a5 postCallbacksBlock:(id)a6 group:(id)a7;
+- (void)_callDelegatesRespondingToSelector:(SEL)selector withPreCallbacksBlock:(id)block callbackBlock:(id)callbackBlock postCallbacksBlock:(id)callbacksBlock group:(id)group;
 - (void)_connect;
-- (void)_handleLastCallForPendingIdentifier:(id)a3 callbackID:(id)a4;
-- (void)_replaceSentinelInSendParameters:(id)a3 withCurrentActiveDevice:(id)a4;
+- (void)_handleLastCallForPendingIdentifier:(id)identifier callbackID:(id)d;
+- (void)_replaceSentinelInSendParameters:(id)parameters withCurrentActiveDevice:(id)device;
 - (void)_resendPendingSends;
-- (void)_sendMissingMessageMetric:(id)a3;
-- (void)_setTemporaryMessageContext:(id)a3;
-- (void)accessoryDataReceived:(id)a3 withGUID:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8;
-- (void)accessoryReportMessageReceived:(id)a3 accessoryID:(id)a4 controllerID:(id)a5 withGUID:(id)a6 forTopic:(id)a7 toURI:(id)a8 fromURI:(id)a9 context:(id)a10;
-- (void)account:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)account:(id)a3 devicesChanged:(id)a4;
-- (void)account:(id)a3 isActiveChanged:(BOOL)a4;
-- (void)account:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)addDelegate:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)checkTransportLogWithReason:(int64_t)a3;
-- (void)connection:(id)a3 incomingAckWithIdentifier:(id)a4 forTopic:(id)a5 toIdentifier:(id)a6 fromIdentifier:(id)a7 hasBeenDeliveredWithContext:(id)a8 isAppAck:(BOOL)a9;
-- (void)connection:(id)a3 incomingDataFromDirectConnection:(id)a4 withGUID:(id)a5 forTopic:(id)a6 toIdentifier:(id)a7 fromID:(id)a8 context:(id)a9;
-- (void)connection:(id)a3 incomingGUIDAckFromDirectConnection:(id)a4;
-- (void)connection:(id)a3 incomingMessageFromDirectConnection:(id)a4 withGUID:(id)a5 forTopic:(id)a6 toIdentifier:(id)a7 fromID:(id)a8 context:(id)a9;
-- (void)connection:(id)a3 incomingProtobufFromDirectConnection:(id)a4 withGUID:(id)a5 forTopic:(id)a6 toIdentifier:(id)a7 fromID:(id)a8 context:(id)a9;
-- (void)connection:(id)a3 messageSendFailed:(id)a4 responseCode:(int64_t)a5;
+- (void)_sendMissingMessageMetric:(id)metric;
+- (void)_setTemporaryMessageContext:(id)context;
+- (void)accessoryDataReceived:(id)received withGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context;
+- (void)accessoryReportMessageReceived:(id)received accessoryID:(id)d controllerID:(id)iD withGUID:(id)uID forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)self0;
+- (void)account:(id)account connectedDevicesChanged:(id)changed;
+- (void)account:(id)account devicesChanged:(id)changed;
+- (void)account:(id)account isActiveChanged:(BOOL)changed;
+- (void)account:(id)account nearbyDevicesChanged:(id)changed;
+- (void)addDelegate:(id)delegate queue:(id)queue completion:(id)completion;
+- (void)checkTransportLogWithReason:(int64_t)reason;
+- (void)connection:(id)connection incomingAckWithIdentifier:(id)identifier forTopic:(id)topic toIdentifier:(id)toIdentifier fromIdentifier:(id)fromIdentifier hasBeenDeliveredWithContext:(id)context isAppAck:(BOOL)ack;
+- (void)connection:(id)connection incomingDataFromDirectConnection:(id)directConnection withGUID:(id)d forTopic:(id)topic toIdentifier:(id)identifier fromID:(id)iD context:(id)context;
+- (void)connection:(id)connection incomingGUIDAckFromDirectConnection:(id)directConnection;
+- (void)connection:(id)connection incomingMessageFromDirectConnection:(id)directConnection withGUID:(id)d forTopic:(id)topic toIdentifier:(id)identifier fromID:(id)iD context:(id)context;
+- (void)connection:(id)connection incomingProtobufFromDirectConnection:(id)directConnection withGUID:(id)d forTopic:(id)topic toIdentifier:(id)identifier fromID:(id)iD context:(id)context;
+- (void)connection:(id)connection messageSendFailed:(id)failed responseCode:(int64_t)code;
 - (void)createDirectMessageConnectionIfNeeded;
 - (void)daemonConnected;
-- (void)dataReceived:(id)a3 withGUID:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8;
+- (void)dataReceived:(id)received withGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context;
 - (void)dealloc;
-- (void)didCancelMessageWithSuccess:(BOOL)a3 onAccount:(id)a4 error:(id)a5 identifier:(id)a6;
-- (void)didFlushCacheForService:(id)a3 remoteURI:(id)a4 fromURI:(id)a5 guid:(id)a6;
-- (void)didFlushCacheFromKTPeerUpdateForService:(id)a3 peerURI:(id)a4;
-- (void)didSendOpportunisticDataWithIdentifier:(id)a3 onAccount:(id)a4 toIDs:(id)a5;
-- (void)incomingInvitation:(id)a3 withGUID:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8;
-- (void)incomingInvitationUpdate:(id)a3 withGUID:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8;
-- (void)inviteDroppedWithPayload:(id)a3 forTopic:(id)a4 sessionID:(id)a5 toIdentifier:(id)a6 fromID:(id)a7 error:(id)a8;
-- (void)messageIdentifier:(id)a3 alternateCallbackID:(id)a4 forAccount:(id)a5 willSendToDestinations:(id)a6 skippedDestinations:(id)a7 registrationPropertyToDestinations:(id)a8;
-- (void)messageIdentifier:(id)a3 forTopic:(id)a4 toURI:(id)a5 fromURI:(id)a6 hasBeenDeliveredWithContext:(id)a7;
-- (void)messageIdentifierInner:(id)a3 alternateCallbackID:(id)a4 forAccount:(id)a5 updatedWithResponseCode:(int64_t)a6 error:(id)a7 lastCall:(BOOL)a8 context:(id)a9 isDirectMessage:(BOOL)a10;
-- (void)messageReceived:(id)a3 withGUID:(id)a4 withPayload:(id)a5 forTopic:(id)a6 toURI:(id)a7 fromURI:(id)a8 context:(id)a9;
-- (void)opportunisticDataReceived:(id)a3 withIdentifier:(id)a4 fromURI:(id)a5 context:(id)a6;
-- (void)pendingIncomingMessageWithGUID:(id)a3 forTopic:(id)a4 toURI:(id)a5 fromURI:(id)a6 context:(id)a7;
-- (void)pendingResourceWithMetadata:(id)a3 guid:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8;
-- (void)protobufReceived:(id)a3 withGUID:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8;
-- (void)receivedBatchMessage:(id)a3 forTopic:(id)a4;
-- (void)receivedGroupSessionParticipantDataUpdate:(id)a3 forTopic:(id)a4 toIdentifier:(id)a5 fromID:(id)a6;
-- (void)receivedGroupSessionParticipantUpdate:(id)a3 forTopic:(id)a4 toIdentifier:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)receivedMetadataForDirectMessaging:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)sessionInvitationReceivedWithPayload:(id)a3 forTopic:(id)a4 sessionID:(id)a5 toIdentifier:(id)a6 fromID:(id)a7 transportType:(id)a8;
-- (void)setDelegateCapabilities:(unsigned int)a3;
-- (void)xpcObject:(id)a3 objectContext:(id)a4;
+- (void)didCancelMessageWithSuccess:(BOOL)success onAccount:(id)account error:(id)error identifier:(id)identifier;
+- (void)didFlushCacheForService:(id)service remoteURI:(id)i fromURI:(id)rI guid:(id)guid;
+- (void)didFlushCacheFromKTPeerUpdateForService:(id)service peerURI:(id)i;
+- (void)didSendOpportunisticDataWithIdentifier:(id)identifier onAccount:(id)account toIDs:(id)ds;
+- (void)incomingInvitation:(id)invitation withGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context;
+- (void)incomingInvitationUpdate:(id)update withGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context;
+- (void)inviteDroppedWithPayload:(id)payload forTopic:(id)topic sessionID:(id)d toIdentifier:(id)identifier fromID:(id)iD error:(id)error;
+- (void)messageIdentifier:(id)identifier alternateCallbackID:(id)d forAccount:(id)account willSendToDestinations:(id)destinations skippedDestinations:(id)skippedDestinations registrationPropertyToDestinations:(id)toDestinations;
+- (void)messageIdentifier:(id)identifier forTopic:(id)topic toURI:(id)i fromURI:(id)rI hasBeenDeliveredWithContext:(id)context;
+- (void)messageIdentifierInner:(id)inner alternateCallbackID:(id)d forAccount:(id)account updatedWithResponseCode:(int64_t)code error:(id)error lastCall:(BOOL)call context:(id)context isDirectMessage:(BOOL)self0;
+- (void)messageReceived:(id)received withGUID:(id)d withPayload:(id)payload forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context;
+- (void)opportunisticDataReceived:(id)received withIdentifier:(id)identifier fromURI:(id)i context:(id)context;
+- (void)pendingIncomingMessageWithGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context;
+- (void)pendingResourceWithMetadata:(id)metadata guid:(id)guid forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context;
+- (void)protobufReceived:(id)received withGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context;
+- (void)receivedBatchMessage:(id)message forTopic:(id)topic;
+- (void)receivedGroupSessionParticipantDataUpdate:(id)update forTopic:(id)topic toIdentifier:(id)identifier fromID:(id)d;
+- (void)receivedGroupSessionParticipantUpdate:(id)update forTopic:(id)topic toIdentifier:(id)identifier fromID:(id)d context:(id)context;
+- (void)receivedMetadataForDirectMessaging:(id)messaging;
+- (void)removeDelegate:(id)delegate;
+- (void)sessionInvitationReceivedWithPayload:(id)payload forTopic:(id)topic sessionID:(id)d toIdentifier:(id)identifier fromID:(id)iD transportType:(id)type;
+- (void)setDelegateCapabilities:(unsigned int)capabilities;
+- (void)xpcObject:(id)object objectContext:(id)context;
 @end
 
 @implementation _IDSConnection
@@ -71,12 +71,12 @@
 - (IDSAccount)account
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2EAF8();
     }
@@ -94,11 +94,11 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(_IDSConnection *)self account];
-  v3 = [v2 _internal];
-  v4 = [v3 devices];
+  account = [(_IDSConnection *)self account];
+  _internal = [account _internal];
+  devices = [_internal devices];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -108,7 +108,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -119,7 +119,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -139,12 +139,12 @@ LABEL_11:
 - (void)daemonConnected
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F814();
     }
@@ -157,12 +157,12 @@ LABEL_11:
 {
   v33 = *MEMORY[0x1E69E9840];
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F774();
     }
@@ -194,25 +194,25 @@ LABEL_11:
         v12 = +[IDSLogging IDSConnection];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v11 identifier];
-          v14 = [v11 alternateCallbackID];
+          identifier = [v11 identifier];
+          alternateCallbackID = [v11 alternateCallbackID];
           *buf = v20;
-          v27 = self;
+          selfCopy = self;
           v28 = 2112;
-          v29 = v13;
+          v29 = identifier;
           v30 = 2112;
-          v31 = v14;
+          v31 = alternateCallbackID;
           _os_log_impl(&dword_1959FF000, v12, OS_LOG_TYPE_DEFAULT, "%@ resending %@ alternate %@ due to daemon disconnection.", buf, 0x20u);
         }
 
-        v15 = [v11 dictionaryRepresentation];
-        v16 = [v15 copy];
+        dictionaryRepresentation = [v11 dictionaryRepresentation];
+        v16 = [dictionaryRepresentation copy];
 
-        v17 = [(_IDSConnection *)self daemonController];
-        [v17 setCurXPCMessagePriority:{objc_msgSend(v11, "priority")}];
+        daemonController = [(_IDSConnection *)self daemonController];
+        [daemonController setCurXPCMessagePriority:{objc_msgSend(v11, "priority")}];
 
-        v18 = [(_IDSConnection *)self daemonController];
-        [v18 sendMessageWithSendParameters:v16];
+        daemonController2 = [(_IDSConnection *)self daemonController];
+        [daemonController2 sendMessageWithSendParameters:v16];
       }
 
       v8 = [(IMOrderedMutableDictionary *)obj countByEnumeratingWithState:&v22 objects:v32 count:16];
@@ -227,21 +227,21 @@ LABEL_11:
 - (void)_connect
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F5E4();
     }
   }
 
-  v6 = [(IDSAccount *)self->_account _internal];
-  v7 = [v6 serviceName];
+  _internal = [(IDSAccount *)self->_account _internal];
+  serviceName = [_internal serviceName];
 
-  if (!v7)
+  if (!serviceName)
   {
     v13 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -252,15 +252,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [(_IDSConnection *)self daemonController];
-  v9 = [v8 hasListenerForID:self->_serviceToken];
+  daemonController = [(_IDSConnection *)self daemonController];
+  v9 = [daemonController hasListenerForID:self->_serviceToken];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(_IDSConnection *)self daemonController];
+    daemonController2 = [(_IDSConnection *)self daemonController];
     serviceToken = self->_serviceToken;
-    v12 = [MEMORY[0x1E695DFD8] setWithObject:v7];
-    LOBYTE(serviceToken) = [v10 addListenerID:serviceToken services:v12 commands:self->_commands];
+    v12 = [MEMORY[0x1E695DFD8] setWithObject:serviceName];
+    LOBYTE(serviceToken) = [daemonController2 addListenerID:serviceToken services:v12 commands:self->_commands];
 
     if ((serviceToken & 1) == 0)
     {
@@ -278,24 +278,24 @@ LABEL_12:
 - (id)daemonListener
 {
   v2 = +[IDSDaemonController sharedInstance];
-  v3 = [v2 listener];
+  listener = [v2 listener];
 
-  return v3;
+  return listener;
 }
 
 - (BOOL)_isAccountInValidRegistrationStateToAcceptMessages
 {
-  v3 = [(_IDSConnection *)self account];
-  v4 = [v3 _internal];
+  account = [(_IDSConnection *)self account];
+  _internal = [account _internal];
 
-  v5 = [v4 isActive];
-  if ([v4 isInTransientRegistrationState])
+  isActive = [_internal isActive];
+  if ([_internal isInTransientRegistrationState])
   {
-    v6 = [v4 registrationCertificate];
-    if (v6)
+    registrationCertificate = [_internal registrationCertificate];
+    if (registrationCertificate)
     {
-      v7 = [v4 primaryServiceName];
-      v8 = [(_IDSConnection *)self _canServiceNameAcceptMessagesInTransientRegistrationState:v7];
+      primaryServiceName = [_internal primaryServiceName];
+      v8 = [(_IDSConnection *)self _canServiceNameAcceptMessagesInTransientRegistrationState:primaryServiceName];
     }
 
     else
@@ -309,7 +309,7 @@ LABEL_12:
     v8 = 0;
   }
 
-  return v8 | v5;
+  return v8 | isActive;
 }
 
 - (id)_init
@@ -319,12 +319,12 @@ LABEL_12:
   return [(_IDSConnection *)&v3 init];
 }
 
-- (_IDSConnection)initWithAccount:(id)a3 commands:(id)a4 indirectDelegateCallouts:(BOOL)a5 delegateContext:(id)a6
+- (_IDSConnection)initWithAccount:(id)account commands:(id)commands indirectDelegateCallouts:(BOOL)callouts delegateContext:(id)context
 {
   v44 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  accountCopy = account;
+  commandsCopy = commands;
+  contextCopy = context;
   if (_IDSRunningInDaemon())
   {
     v14 = +[IDSLogging IDSConnection];
@@ -333,18 +333,18 @@ LABEL_12:
       sub_195B2E9C8();
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v16 = +[IDSInternalQueueController sharedInstance];
-    v17 = [v16 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v16 assertQueueIsCurrent];
 
-    if (v17)
+    if (assertQueueIsCurrent)
     {
-      v18 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B2E928();
       }
@@ -358,38 +358,38 @@ LABEL_12:
       v20 = +[IDSLogging IDSConnection];
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v11 _internal];
-        v22 = [v21 serviceName];
+        _internal = [accountCopy _internal];
+        serviceName = [_internal serviceName];
         *buf = 134218242;
         v41 = v19;
         v42 = 2112;
-        v43 = v22;
+        v43 = serviceName;
         _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "_IDSConnection - initing {self: %p, account.serviceName: %@}", buf, 0x16u);
       }
 
-      v19->_indirectDelegateCallouts = a5;
+      v19->_indirectDelegateCallouts = callouts;
       v23 = [MEMORY[0x1E696AEC0] copyStringGUIDForObject:v19];
       serviceToken = v19->_serviceToken;
       v19->_serviceToken = v23;
 
       *&v19->_incomingMessageLoggingSequence = 0;
-      v25 = [v12 copy];
+      v25 = [commandsCopy copy];
       commands = v19->_commands;
       v19->_commands = v25;
 
-      objc_storeStrong(&v19->_account, a3);
-      v27 = [(IDSAccount *)v19->_account _internal];
+      objc_storeStrong(&v19->_account, account);
+      _internal2 = [(IDSAccount *)v19->_account _internal];
       v28 = +[IDSInternalQueueController sharedInstance];
-      v29 = [v28 queue];
-      [v27 addDelegate:v19 queue:v29];
+      queue = [v28 queue];
+      [_internal2 addDelegate:v19 queue:queue];
 
-      v30 = [MEMORY[0x1E6995700] weakRefWithObject:v13];
+      v30 = [MEMORY[0x1E6995700] weakRefWithObject:contextCopy];
       delegateContext = v19->_delegateContext;
       v19->_delegateContext = v30;
 
       v19->_wakingDowngradeCount = 0;
-      v32 = [(_IDSConnection *)v19 daemonListener];
-      [v32 addHandler:v19];
+      daemonListener = [(_IDSConnection *)v19 daemonListener];
+      [daemonListener addHandler:v19];
 
       [(_IDSConnection *)v19 _connect];
       directMessageConnection = v19->_directMessageConnection;
@@ -398,17 +398,17 @@ LABEL_12:
       directMessagingMetadata = v19->_directMessagingMetadata;
       v19->_directMessagingMetadata = 0;
 
-      v35 = [MEMORY[0x1E69A6160] sharedInstance];
+      mEMORY[0x1E69A6160] = [MEMORY[0x1E69A6160] sharedInstance];
       systemMonitor = v19->_systemMonitor;
-      v19->_systemMonitor = v35;
+      v19->_systemMonitor = mEMORY[0x1E69A6160];
     }
 
     self = v19;
-    v15 = self;
+    selfCopy = self;
   }
 
   v37 = *MEMORY[0x1E69E9840];
-  return v15;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -418,15 +418,15 @@ LABEL_12:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_INFO, "Account delegate has been cleaned up via weak references %p", buf, 0xCu);
   }
 
-  v4 = [(_IDSConnection *)self daemonController];
-  [v4 removeListenerID:self->_serviceToken];
+  daemonController = [(_IDSConnection *)self daemonController];
+  [daemonController removeListenerID:self->_serviceToken];
 
-  v5 = [(_IDSConnection *)self daemonListener];
-  [v5 removeHandler:self];
+  daemonListener = [(_IDSConnection *)self daemonListener];
+  [daemonListener removeHandler:self];
 
   v7.receiver = self;
   v7.super_class = _IDSConnection;
@@ -439,12 +439,12 @@ LABEL_12:
   if (_IDSSupportsDirectMessaging())
   {
     v3 = +[IDSInternalQueueController sharedInstance];
-    v4 = [v3 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-    if (v4)
+    if (assertQueueIsCurrent)
     {
-      v5 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B2EA58();
       }
@@ -453,21 +453,21 @@ LABEL_12:
     if (!self->_directMessageConnection)
     {
       v6 = [IDSDirectMessageConnection alloc];
-      v7 = [(IDSAccount *)self->_account _internal];
-      v8 = [v7 serviceName];
+      _internal = [(IDSAccount *)self->_account _internal];
+      serviceName = [_internal serviceName];
       v9 = +[IDSInternalQueueController sharedInstance];
-      v10 = [v9 queue];
-      v11 = [(IDSDirectMessageConnection *)v6 initWithServiceName:v8 queue:v10 delegate:self];
+      queue = [v9 queue];
+      v11 = [(IDSDirectMessageConnection *)v6 initWithServiceName:serviceName queue:queue delegate:self];
       directMessageConnection = self->_directMessageConnection;
       self->_directMessageConnection = v11;
 
       directMessagingMetadata = self->_directMessagingMetadata;
       if (!directMessagingMetadata || ![(NSDictionary *)directMessagingMetadata count])
       {
-        v14 = [(_IDSConnection *)self daemonListener];
-        v15 = [v14 getDirectMessagingMetadataDictionary];
+        daemonListener = [(_IDSConnection *)self daemonListener];
+        getDirectMessagingMetadataDictionary = [daemonListener getDirectMessagingMetadataDictionary];
         v16 = self->_directMessagingMetadata;
-        self->_directMessagingMetadata = v15;
+        self->_directMessagingMetadata = getDirectMessagingMetadataDictionary;
       }
 
       if ([(NSDictionary *)self->_directMessagingMetadata count])
@@ -476,9 +476,9 @@ LABEL_12:
       }
 
       v17 = self->_directMessageConnection;
-      v18 = [(IDSAccount *)self->_account _internal];
-      v19 = [v18 connectedDevices];
-      [(IDSDirectMessageConnection *)v17 updateConnectedDevices:v19];
+      _internal2 = [(IDSAccount *)self->_account _internal];
+      connectedDevices = [_internal2 connectedDevices];
+      [(IDSDirectMessageConnection *)v17 updateConnectedDevices:connectedDevices];
     }
   }
 }
@@ -486,21 +486,21 @@ LABEL_12:
 - (BOOL)isActive
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2EB98();
     }
   }
 
-  v6 = [(IDSAccount *)self->_account _internal];
-  v7 = [v6 isActive];
+  _internal = [(IDSAccount *)self->_account _internal];
+  isActive = [_internal isActive];
 
-  return v7;
+  return isActive;
 }
 
 - (id)_defaultPairedDevice
@@ -510,11 +510,11 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(_IDSConnection *)self account];
-  v3 = [v2 _internal];
-  v4 = [v3 devices];
+  account = [(_IDSConnection *)self account];
+  _internal = [account _internal];
+  devices = [_internal devices];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -524,7 +524,7 @@ LABEL_12:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -535,7 +535,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -552,39 +552,39 @@ LABEL_11:
   return v5;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)addDelegate:(id)delegate queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = +[IDSInternalQueueController sharedInstance];
-  v12 = [v11 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v11 assertQueueIsCurrent];
 
-  if (v12)
+  if (assertQueueIsCurrent)
   {
-    v13 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2EC38();
     }
   }
 
-  if (v8 && v9)
+  if (delegateCopy && queueCopy)
   {
-    v14 = [(NSMapTable *)self->_delegateToInfo objectForKey:v8];
+    v14 = [(NSMapTable *)self->_delegateToInfo objectForKey:delegateCopy];
 
     if (!v14)
     {
       if (!self->_delegateToInfo)
       {
-        v15 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+        weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
         delegateToInfo = self->_delegateToInfo;
-        self->_delegateToInfo = v15;
+        self->_delegateToInfo = weakToStrongObjectsMapTable;
       }
 
       v17 = objc_alloc_init(MEMORY[0x1E69A5228]);
-      [v17 setQueue:v9];
-      [(NSMapTable *)self->_delegateToInfo setObject:v17 forKey:v8];
+      [v17 setQueue:queueCopy];
+      [(NSMapTable *)self->_delegateToInfo setObject:v17 forKey:delegateCopy];
     }
 
     v20[0] = MEMORY[0x1E69E9820];
@@ -596,22 +596,22 @@ LABEL_11:
     v19 = v18;
     if (v18)
     {
-      (*(v18 + 16))(v18, v10);
+      (*(v18 + 16))(v18, completionCopy);
     }
 
-    else if (v10)
+    else if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    [(NSMapTable *)self->_delegateToInfo removeObjectForKey:v4];
+    [(NSMapTable *)self->_delegateToInfo removeObjectForKey:delegateCopy];
     if (![(NSMapTable *)self->_delegateToInfo count])
     {
       delegateToInfo = self->_delegateToInfo;
@@ -622,25 +622,25 @@ LABEL_11:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_callDelegatesRespondingToSelector:(SEL)a3 withPreCallbacksBlock:(id)a4 callbackBlock:(id)a5 postCallbacksBlock:(id)a6 group:(id)a7
+- (void)_callDelegatesRespondingToSelector:(SEL)selector withPreCallbacksBlock:(id)block callbackBlock:(id)callbackBlock postCallbacksBlock:(id)callbacksBlock group:(id)group
 {
   v67 = *MEMORY[0x1E69E9840];
-  v50 = a4;
-  v12 = a5;
-  v49 = a6;
-  v13 = a7;
-  v14 = v13;
-  v51 = v12;
-  if (v12)
+  blockCopy = block;
+  callbackBlockCopy = callbackBlock;
+  callbacksBlockCopy = callbacksBlock;
+  groupCopy = group;
+  groupCopy6 = groupCopy;
+  v51 = callbackBlockCopy;
+  if (callbackBlockCopy)
   {
-    group = v13;
+    group = groupCopy;
     v15 = +[IDSInternalQueueController sharedInstance];
-    v16 = [v15 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v15 assertQueueIsCurrent];
 
-    if (v16)
+    if (assertQueueIsCurrent)
     {
-      v17 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B2ECD8();
       }
@@ -681,7 +681,7 @@ LABEL_11:
             v28 = 1;
           }
 
-          if (!v28 && (!a3 || (objc_opt_respondsToSelector() & 1) != 0))
+          if (!v28 && (!selector || (objc_opt_respondsToSelector() & 1) != 0))
           {
             [v18 addObject:v25];
             [v19 addObject:v27];
@@ -695,7 +695,7 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(context);
-    v14 = group;
+    groupCopy6 = group;
     if ([v18 count])
     {
       v29 = 1;
@@ -708,63 +708,63 @@ LABEL_11:
         [v19 removeObjectAtIndex:0];
         objc_autoreleasePoolPop(v30);
         v33 = [v18 count];
-        v34 = [v32 queue];
-        if (v14)
+        queue = [v32 queue];
+        if (groupCopy6)
         {
-          dispatch_group_enter(v14);
+          dispatch_group_enter(groupCopy6);
         }
 
         v35 = +[IDSInternalQueueController sharedInstance];
-        v36 = [v35 queue];
+        queue2 = [v35 queue];
 
-        if (v34 == v36)
+        if (queue == queue2)
         {
-          if (a3)
+          if (selector)
           {
-            v14 = group;
-            if (v50 != 0 && (v29 & 1) != 0)
+            groupCopy6 = group;
+            if (blockCopy != 0 && (v29 & 1) != 0)
             {
-              v50[2](v50, 1);
+              blockCopy[2](blockCopy, 1);
             }
 
             (v51)[2](v51, v31);
-            if (v49 && !v33)
+            if (callbacksBlockCopy && !v33)
             {
-              v49[2](v49, 1);
+              callbacksBlockCopy[2](callbacksBlockCopy, 1);
             }
           }
 
           else
           {
             (v51)[2](v51, v31);
-            v14 = group;
+            groupCopy6 = group;
           }
 
           v43 = objc_opt_self();
           v44 = objc_opt_self();
-          if (!v14)
+          if (!groupCopy6)
           {
             goto LABEL_42;
           }
         }
 
-        else if (v34)
+        else if (queue)
         {
           v53[0] = MEMORY[0x1E69E9820];
           v53[1] = 3221225472;
           v53[2] = sub_195A72124;
           v53[3] = &unk_1E7440E10;
-          v59 = a3;
+          selectorCopy = selector;
           v60 = v29 & 1;
-          v56 = v50;
+          v56 = blockCopy;
           v57 = v51;
           v54 = v31;
           v61 = v33 == 0;
-          v58 = v49;
+          v58 = callbacksBlockCopy;
           v55 = v32;
           v37 = MEMORY[0x19A8BBEF0](v53);
           v38 = v37;
-          if (v34 == MEMORY[0x1E69E96A0])
+          if (queue == MEMORY[0x1E69E96A0])
           {
             v39 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v37);
           }
@@ -776,15 +776,15 @@ LABEL_11:
 
           v42 = v39;
 
-          v14 = group;
+          groupCopy6 = group;
           if (group)
           {
-            dispatch_group_async(group, v34, v42);
+            dispatch_group_async(group, queue, v42);
           }
 
           else
           {
-            dispatch_async(v34, v42);
+            dispatch_async(queue, v42);
           }
 
           if (!group)
@@ -797,14 +797,14 @@ LABEL_11:
         {
           v40 = objc_opt_self();
           v41 = objc_opt_self();
-          v14 = group;
+          groupCopy6 = group;
           if (!group)
           {
             goto LABEL_42;
           }
         }
 
-        dispatch_group_leave(v14);
+        dispatch_group_leave(groupCopy6);
 LABEL_42:
 
         v29 = 0;
@@ -820,46 +820,46 @@ LABEL_42:
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegateCapabilities:(unsigned int)a3
+- (void)setDelegateCapabilities:(unsigned int)capabilities
 {
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2ED78();
     }
   }
 
-  self->_delegateCapabilities = a3;
+  self->_delegateCapabilities = capabilities;
 }
 
-- (id)_sendWithParameters:(id)a3 options:(id)a4 loggingType:(id)a5 loggingDataSize:(unint64_t)a6
+- (id)_sendWithParameters:(id)parameters options:(id)options loggingType:(id)type loggingDataSize:(unint64_t)size
 {
-  v216 = a6;
+  sizeCopy = size;
   v243 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E696AEC0] stringGUID];
+  parametersCopy = parameters;
+  optionsCopy = options;
+  typeCopy = type;
+  stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
   v13 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v232 = v12;
+    *v232 = stringGUID;
     _os_log_impl(&dword_1959FF000, v13, OS_LOG_TYPE_DEFAULT, "!setState guid=%@", buf, 0xCu);
   }
 
-  v14 = [v10 objectForKey:@"IDSSendMessageOptionUUID"];
+  v14 = [optionsCopy objectForKey:@"IDSSendMessageOptionUUID"];
   if (v14)
   {
     v15 = v14;
     v16 = JWUUIDPushObjectToString();
 
-    v12 = v16;
+    stringGUID = v16;
   }
 
   else
@@ -867,7 +867,7 @@ LABEL_42:
     v15 = IDSGetUUIDData();
   }
 
-  if (_IDSSupportsDirectMessaging() && [IDSDirectMessageConnection isDirectMessagingRequested:v10]&& !self->_directMessageConnection)
+  if (_IDSSupportsDirectMessaging() && [IDSDirectMessageConnection isDirectMessagingRequested:optionsCopy]&& !self->_directMessageConnection)
   {
     [(_IDSConnection *)self createDirectMessageConnectionIfNeeded];
   }
@@ -875,50 +875,50 @@ LABEL_42:
   directMessageConnection = self->_directMessageConnection;
   if (directMessageConnection)
   {
-    v18 = [(_IDSConnection *)self _activeDevice];
-    v19 = [(IDSDirectMessageConnection *)directMessageConnection isMessageEligible:v9 options:v10 destinationDevice:v18];
+    _activeDevice = [(_IDSConnection *)self _activeDevice];
+    v19 = [(IDSDirectMessageConnection *)directMessageConnection isMessageEligible:parametersCopy options:optionsCopy destinationDevice:_activeDevice];
 
     if (v19)
     {
-      v20 = [(IDSAccount *)self->_account _internal];
-      v21 = [v20 uniqueID];
+      _internal = [(IDSAccount *)self->_account _internal];
+      uniqueID = [_internal uniqueID];
 
-      v225 = v21;
-      [v9 setAccountUUID:v21];
-      v22 = [v10 objectForKey:@"IDSSendMessageOptionWantsClientAcknowledgement"];
-      [v9 setWantsAppAck:{objc_msgSend(v22, "BOOLValue")}];
+      v225 = uniqueID;
+      [parametersCopy setAccountUUID:uniqueID];
+      v22 = [optionsCopy objectForKey:@"IDSSendMessageOptionWantsClientAcknowledgement"];
+      [parametersCopy setWantsAppAck:{objc_msgSend(v22, "BOOLValue")}];
 
-      v23 = [v10 objectForKey:@"IDSSendMessageOptionExpectsPeerResponse"];
-      [v9 setExpectsPeerResponse:{objc_msgSend(v23, "BOOLValue")}];
+      v23 = [optionsCopy objectForKey:@"IDSSendMessageOptionExpectsPeerResponse"];
+      [parametersCopy setExpectsPeerResponse:{objc_msgSend(v23, "BOOLValue")}];
 
-      [v9 setMessageUUID:v15];
-      [v9 setIdentifier:v12];
-      v24 = [v10 objectForKey:@"IDSSendMessageOptionPeerResponseIdentifier"];
-      [v9 setPeerResponseIdentifier:v24];
+      [parametersCopy setMessageUUID:v15];
+      [parametersCopy setIdentifier:stringGUID];
+      v24 = [optionsCopy objectForKey:@"IDSSendMessageOptionPeerResponseIdentifier"];
+      [parametersCopy setPeerResponseIdentifier:v24];
 
-      v25 = [v10 objectForKey:@"IDSSendMessageOptionQueueOneIdentifier"];
-      [v9 setQueueOneIdentifier:v25];
+      v25 = [optionsCopy objectForKey:@"IDSSendMessageOptionQueueOneIdentifier"];
+      [parametersCopy setQueueOneIdentifier:v25];
 
-      v26 = [v10 objectForKey:@"IDSSendMessageOptionTopLevelDictionary"];
-      [v9 setUseDictAsTopLevel:{objc_msgSend(v26, "BOOLValue")}];
+      v26 = [optionsCopy objectForKey:@"IDSSendMessageOptionTopLevelDictionary"];
+      [parametersCopy setUseDictAsTopLevel:{objc_msgSend(v26, "BOOLValue")}];
 
-      v27 = [v10 objectForKey:@"IDSSendMessageOptionRequireBluetooth"];
-      [v9 setRequireBluetooth:{objc_msgSend(v27, "BOOLValue")}];
+      v27 = [optionsCopy objectForKey:@"IDSSendMessageOptionRequireBluetooth"];
+      [parametersCopy setRequireBluetooth:{objc_msgSend(v27, "BOOLValue")}];
 
-      [(IDSDirectMessageConnection *)self->_directMessageConnection sendMessageWithParameters:v9 options:v10];
-      v28 = v12;
+      [(IDSDirectMessageConnection *)self->_directMessageConnection sendMessageWithParameters:parametersCopy options:optionsCopy];
+      v28 = stringGUID;
       goto LABEL_172;
     }
   }
 
   v223 = v15;
-  v219 = v11;
+  v219 = typeCopy;
   v29 = objc_alloc(MEMORY[0x1E69A5408]);
-  v227 = self;
-  v30 = [(_IDSConnection *)self account];
-  v31 = [v30 _internal];
-  v32 = [v31 serviceName];
-  v33 = [v29 initWithServiceIdentifier:v32];
+  selfCopy = self;
+  account = [(_IDSConnection *)self account];
+  _internal2 = [account _internal];
+  serviceName = [_internal2 serviceName];
+  v33 = [v29 initWithServiceIdentifier:serviceName];
 
   if (CUTIsInternalInstall())
   {
@@ -926,30 +926,30 @@ LABEL_42:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *v232 = v12;
+      *v232 = stringGUID;
       _os_log_impl(&dword_1959FF000, v34, OS_LOG_TYPE_DEFAULT, "sendMessage - Inspecting message {%@} payload for security issues", buf, 0xCu);
     }
 
     v35 = MEMORY[0x1E69A5358];
-    v36 = [v9 message];
-    [v35 inspectPayload:v36 messageGuid:v12];
+    message = [parametersCopy message];
+    [v35 inspectPayload:message messageGuid:stringGUID];
   }
 
-  v37 = [v10 objectForKey:?];
-  [v9 setDataToEncrypt:v37];
+  v37 = [optionsCopy objectForKey:?];
+  [parametersCopy setDataToEncrypt:v37];
 
-  v38 = [v10 objectForKey:@"IDSSendMessageOptionWantsResponse"];
-  [v9 setWantsResponse:{objc_msgSend(v38, "BOOLValue")}];
+  v38 = [optionsCopy objectForKey:@"IDSSendMessageOptionWantsResponse"];
+  [parametersCopy setWantsResponse:{objc_msgSend(v38, "BOOLValue")}];
 
-  v39 = [v10 objectForKey:@"IDSSendMessageOptionWantsProgress"];
-  [v9 setWantsProgress:{objc_msgSend(v39, "BOOLValue")}];
+  v39 = [optionsCopy objectForKey:@"IDSSendMessageOptionWantsProgress"];
+  [parametersCopy setWantsProgress:{objc_msgSend(v39, "BOOLValue")}];
 
-  v40 = [v10 objectForKey:@"IDSSendMessageOptionFromID"];
-  [v9 setFromID:v40];
+  v40 = [optionsCopy objectForKey:@"IDSSendMessageOptionFromID"];
+  [parametersCopy setFromID:v40];
 
-  [v10 objectForKey:@"IDSSendMessageOptionTimeout"];
-  v41 = [v10 objectForKey:@"IDSSendMessageOptionTimeout"];
-  v226 = v12;
+  [optionsCopy objectForKey:@"IDSSendMessageOptionTimeout"];
+  v41 = [optionsCopy objectForKey:@"IDSSendMessageOptionTimeout"];
+  v226 = stringGUID;
   v222 = v41;
   if (v41)
   {
@@ -961,20 +961,20 @@ LABEL_42:
     v42 = 180.0;
   }
 
-  [v9 setTimeout:v42];
+  [parametersCopy setTimeout:v42];
   v43 = MEMORY[0x19A8BACA0](@"allowlistedidsservices");
   objc_opt_class();
   v225 = v33;
   v215 = v43;
   if (objc_opt_isKindOfClass())
   {
-    v44 = [(_IDSConnection *)v227 account];
-    v45 = [v44 _internal];
-    v46 = [v45 pushTopic];
-    v47 = [v43 containsObject:v46];
+    account2 = [(_IDSConnection *)selfCopy account];
+    _internal3 = [account2 _internal];
+    pushTopic = [_internal3 pushTopic];
+    v47 = [v43 containsObject:pushTopic];
 
-    v48 = [v10 objectForKey:@"IDSSendMessageOptionNonWaking"];
-    [v9 setNonWaking:{objc_msgSend(v48, "BOOLValue")}];
+    v48 = [optionsCopy objectForKey:@"IDSSendMessageOptionNonWaking"];
+    [parametersCopy setNonWaking:{objc_msgSend(v48, "BOOLValue")}];
 
     if (v47)
     {
@@ -984,75 +984,75 @@ LABEL_42:
 
   else
   {
-    v49 = [v10 objectForKey:@"IDSSendMessageOptionNonWaking"];
-    [v9 setNonWaking:{objc_msgSend(v49, "BOOLValue")}];
+    v49 = [optionsCopy objectForKey:@"IDSSendMessageOptionNonWaking"];
+    [parametersCopy setNonWaking:{objc_msgSend(v49, "BOOLValue")}];
   }
 
-  v50 = [v9 destinations];
-  v51 = [(_IDSConnection *)v227 _isDestinationSingleLocalAddress:v50];
+  destinations = [parametersCopy destinations];
+  v51 = [(_IDSConnection *)selfCopy _isDestinationSingleLocalAddress:destinations];
 
   if (v51)
   {
-    if ([v9 priority] == 300 && (objc_msgSend(v33, "allowUrgentMessages") & 1) == 0)
+    if ([parametersCopy priority] == 300 && (objc_msgSend(v33, "allowUrgentMessages") & 1) == 0)
     {
-      [v9 setPriority:200];
+      [parametersCopy setPriority:200];
       v52 = +[IDSTransportLog IDSConnection];
       if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
       {
-        v53 = [(_IDSConnection *)v227 account];
-        v54 = [v53 _internal];
-        v55 = [v54 pushTopic];
+        account3 = [(_IDSConnection *)selfCopy account];
+        _internal4 = [account3 _internal];
+        pushTopic2 = [_internal4 pushTopic];
         *buf = 138412546;
-        *v232 = v12;
+        *v232 = stringGUID;
         *&v232[8] = 2112;
-        *v233 = v55;
+        *v233 = pushTopic2;
         _os_log_impl(&dword_1959FF000, v52, OS_LOG_TYPE_DEFAULT, "Downgrading priority of message with GUID %@ to Default from Urgent, The client %@ is not configured to send urgent messages", buf, 0x16u);
       }
     }
 
     if (([v33 allowWakingMessages] & 1) == 0)
     {
-      [(_IDSConnection *)v227 setWakingDowngradeCount:[(_IDSConnection *)v227 wakingDowngradeCount]+ 1];
+      [(_IDSConnection *)selfCopy setWakingDowngradeCount:[(_IDSConnection *)selfCopy wakingDowngradeCount]+ 1];
       v56 = +[IDSTransportLog IDSConnection];
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
-        v57 = [(_IDSConnection *)v227 account];
-        v58 = [v57 _internal];
-        v59 = [v58 pushTopic];
-        v60 = [(_IDSConnection *)v227 wakingDowngradeCount];
+        account4 = [(_IDSConnection *)selfCopy account];
+        _internal5 = [account4 _internal];
+        pushTopic3 = [_internal5 pushTopic];
+        wakingDowngradeCount = [(_IDSConnection *)selfCopy wakingDowngradeCount];
         *buf = 138412802;
-        *v232 = v12;
+        *v232 = stringGUID;
         *&v232[8] = 2112;
-        *v233 = v59;
+        *v233 = pushTopic3;
         *&v233[8] = 1024;
-        LODWORD(v234) = v60;
+        LODWORD(v234) = wakingDowngradeCount;
         _os_log_impl(&dword_1959FF000, v56, OS_LOG_TYPE_DEFAULT, "Downgrading waking status of message with GUID %@ to non-waking, the client %@ is not configured to send waking messages.  Total messages downgraded: %u", buf, 0x1Cu);
       }
 
-      [v9 setNonWaking:1];
+      [parametersCopy setNonWaking:1];
     }
   }
 
 LABEL_34:
-  v61 = [v10 objectForKey:@"IDSSendMessageOptionEnforceRemoteTimeouts"];
+  v61 = [optionsCopy objectForKey:@"IDSSendMessageOptionEnforceRemoteTimeouts"];
 
   if (v61)
   {
-    v61 = [v10 objectForKey:@"IDSSendMessageOptionEnforceRemoteTimeouts"];
-    v62 = [v61 BOOLValue];
+    v61 = [optionsCopy objectForKey:@"IDSSendMessageOptionEnforceRemoteTimeouts"];
+    bOOLValue = [v61 BOOLValue];
 
-    LODWORD(v61) = v62 ^ 1;
+    LODWORD(v61) = bOOLValue ^ 1;
   }
 
   else
   {
-    v62 = 0;
+    bOOLValue = 0;
   }
 
-  v63 = [v33 blockRemoteTimeouts];
+  blockRemoteTimeouts = [v33 blockRemoteTimeouts];
   if (v222)
   {
-    v64 = v63;
+    v64 = blockRemoteTimeouts;
   }
 
   else
@@ -1060,156 +1060,156 @@ LABEL_34:
     v64 = 1;
   }
 
-  if (((v64 | v61) & 1) == 0 || v62)
+  if (((v64 | v61) & 1) == 0 || bOOLValue)
   {
-    [v9 setEnforceRemoteTimeouts:1];
+    [parametersCopy setEnforceRemoteTimeouts:1];
   }
 
-  v65 = [v10 objectForKey:@"IDSSendMessageOptionAccessToken"];
+  v65 = [optionsCopy objectForKey:@"IDSSendMessageOptionAccessToken"];
 
   if (v65)
   {
-    v66 = [v10 objectForKey:@"IDSSendMessageOptionAccessToken"];
-    [v9 setAccessToken:v66];
+    v66 = [optionsCopy objectForKey:@"IDSSendMessageOptionAccessToken"];
+    [parametersCopy setAccessToken:v66];
   }
 
-  v67 = [v10 objectForKey:@"IDSSendMessageOptionHomeKitMessage"];
-  v68 = [v67 BOOLValue];
+  v67 = [optionsCopy objectForKey:@"IDSSendMessageOptionHomeKitMessage"];
+  bOOLValue2 = [v67 BOOLValue];
 
-  if (v68)
+  if (bOOLValue2)
   {
-    [v9 setHomeKitPayload:1];
+    [parametersCopy setHomeKitPayload:1];
   }
 
-  v69 = [v10 objectForKey:@"IDSSendMessageOptionSubServiceKey"];
+  v69 = [optionsCopy objectForKey:@"IDSSendMessageOptionSubServiceKey"];
   if ([v69 length])
   {
-    [v9 setSubService:v69];
+    [parametersCopy setSubService:v69];
   }
 
   v213 = v69;
-  v70 = [v10 objectForKey:@"IDSSendMessageOptionFakeMessage"];
-  [v9 setFakeMessage:{objc_msgSend(v70, "BOOLValue")}];
+  v70 = [optionsCopy objectForKey:@"IDSSendMessageOptionFakeMessage"];
+  [parametersCopy setFakeMessage:{objc_msgSend(v70, "BOOLValue")}];
 
-  v71 = [v10 objectForKey:@"IDSSendMessageOptionDisableAliasValidation"];
-  [v9 setDisableAliasValidation:{objc_msgSend(v71, "BOOLValue")}];
+  v71 = [optionsCopy objectForKey:@"IDSSendMessageOptionDisableAliasValidation"];
+  [parametersCopy setDisableAliasValidation:{objc_msgSend(v71, "BOOLValue")}];
 
-  v218 = [v10 objectForKey:@"IDSSendMessageOptionCommand"];
-  [v9 setCommand:?];
-  v72 = [v10 objectForKey:@"IDSSendMessageOptionWantsClientAcknowledgement"];
-  [v9 setWantsAppAck:{objc_msgSend(v72, "BOOLValue")}];
+  v218 = [optionsCopy objectForKey:@"IDSSendMessageOptionCommand"];
+  [parametersCopy setCommand:?];
+  v72 = [optionsCopy objectForKey:@"IDSSendMessageOptionWantsClientAcknowledgement"];
+  [parametersCopy setWantsAppAck:{objc_msgSend(v72, "BOOLValue")}];
 
-  v73 = [v10 objectForKey:@"IDSSendMessageOptionWantsDeliveryStatus"];
-  [v9 setWantsDeliveryStatus:{objc_msgSend(v73, "BOOLValue")}];
+  v73 = [optionsCopy objectForKey:@"IDSSendMessageOptionWantsDeliveryStatus"];
+  [parametersCopy setWantsDeliveryStatus:{objc_msgSend(v73, "BOOLValue")}];
 
-  v74 = [v10 objectForKey:@"IDSSendMessageOptionWantsCertifiedDelivery"];
-  [v9 setWantsCertifiedDelivery:{objc_msgSend(v74, "BOOLValue")}];
+  v74 = [optionsCopy objectForKey:@"IDSSendMessageOptionWantsCertifiedDelivery"];
+  [parametersCopy setWantsCertifiedDelivery:{objc_msgSend(v74, "BOOLValue")}];
 
-  v75 = [v10 objectForKey:@"IDSSendMessageOptionDeliveryStatusContext"];
-  [v9 setDeliveryStatusContext:v75];
+  v75 = [optionsCopy objectForKey:@"IDSSendMessageOptionDeliveryStatusContext"];
+  [parametersCopy setDeliveryStatusContext:v75];
 
-  [v9 setMessageUUID:v223];
-  v76 = [v10 objectForKey:@"IDSSendMessageOptionAlternateCallbackIdentifier"];
-  [v9 setAlternateCallbackID:v76];
+  [parametersCopy setMessageUUID:v223];
+  v76 = [optionsCopy objectForKey:@"IDSSendMessageOptionAlternateCallbackIdentifier"];
+  [parametersCopy setAlternateCallbackID:v76];
 
-  v77 = [v10 objectForKey:@"IDSSendMessageOptionOriginalTimestampKey"];
-  [v9 setOriginalTimestamp:v77];
+  v77 = [optionsCopy objectForKey:@"IDSSendMessageOptionOriginalTimestampKey"];
+  [parametersCopy setOriginalTimestamp:v77];
 
-  v78 = [v10 objectForKey:@"IDSSendMessageOptionEncryptPayload"];
-  [v9 setEncryptPayload:{objc_msgSend(v78, "BOOLValue")}];
+  v78 = [optionsCopy objectForKey:@"IDSSendMessageOptionEncryptPayload"];
+  [parametersCopy setEncryptPayload:{objc_msgSend(v78, "BOOLValue")}];
 
-  v79 = [v10 objectForKey:@"IDSSendMessageOptionCompressPayload"];
+  v79 = [optionsCopy objectForKey:@"IDSSendMessageOptionCompressPayload"];
   v212 = v79;
   if (v79)
   {
-    v80 = [v79 BOOLValue];
+    bOOLValue3 = [v79 BOOLValue];
   }
 
   else
   {
-    v80 = 1;
+    bOOLValue3 = 1;
   }
 
-  [v9 setCompressPayload:v80];
-  v81 = [v10 objectForKey:@"IDSSendMessageOptionForceLocalDelivery"];
+  [parametersCopy setCompressPayload:bOOLValue3];
+  v81 = [optionsCopy objectForKey:@"IDSSendMessageOptionForceLocalDelivery"];
   if ([v81 BOOLValue])
   {
-    v82 = 1;
+    bOOLValue4 = 1;
   }
 
   else
   {
-    v83 = [v10 objectForKey:@"IDSSendMessageOptionLocalDelivery"];
+    v83 = [optionsCopy objectForKey:@"IDSSendMessageOptionLocalDelivery"];
     if ([v83 BOOLValue])
     {
-      v82 = 1;
+      bOOLValue4 = 1;
     }
 
     else
     {
-      v84 = [v10 objectForKey:@"IDSSendMessageOptionRequireBluetooth"];
-      v82 = [v84 BOOLValue];
+      v84 = [optionsCopy objectForKey:@"IDSSendMessageOptionRequireBluetooth"];
+      bOOLValue4 = [v84 BOOLValue];
     }
   }
 
-  [v9 setLocalDelivery:v82];
-  v85 = [v10 objectForKey:@"IDSSendMessageOptionAllowCloudDeliveryKey"];
-  [v9 setAllowCloudDelivery:{objc_msgSend(v85, "BOOLValue")}];
+  [parametersCopy setLocalDelivery:bOOLValue4];
+  v85 = [optionsCopy objectForKey:@"IDSSendMessageOptionAllowCloudDeliveryKey"];
+  [parametersCopy setAllowCloudDelivery:{objc_msgSend(v85, "BOOLValue")}];
 
-  v86 = [v10 objectForKey:@"IDSSendMessageOptionRequireBluetooth"];
-  [v9 setRequireBluetooth:{objc_msgSend(v86, "BOOLValue")}];
+  v86 = [optionsCopy objectForKey:@"IDSSendMessageOptionRequireBluetooth"];
+  [parametersCopy setRequireBluetooth:{objc_msgSend(v86, "BOOLValue")}];
 
-  v87 = [v10 objectForKey:@"IDSSendMessageOptionRequireLocalWiFi"];
-  [v9 setRequireLocalWiFi:{objc_msgSend(v87, "BOOLValue")}];
+  v87 = [optionsCopy objectForKey:@"IDSSendMessageOptionRequireLocalWiFi"];
+  [parametersCopy setRequireLocalWiFi:{objc_msgSend(v87, "BOOLValue")}];
 
-  v88 = [v10 objectForKey:@"IDSSendMessageOptionTopLevelDictionary"];
-  [v9 setUseDictAsTopLevel:{objc_msgSend(v88, "BOOLValue")}];
+  v88 = [optionsCopy objectForKey:@"IDSSendMessageOptionTopLevelDictionary"];
+  [parametersCopy setUseDictAsTopLevel:{objc_msgSend(v88, "BOOLValue")}];
 
-  v89 = [v10 objectForKey:@"IDSSendMessageOptionExpectsPeerResponse"];
-  [v9 setExpectsPeerResponse:{objc_msgSend(v89, "BOOLValue")}];
+  v89 = [optionsCopy objectForKey:@"IDSSendMessageOptionExpectsPeerResponse"];
+  [parametersCopy setExpectsPeerResponse:{objc_msgSend(v89, "BOOLValue")}];
 
-  v90 = [v10 objectForKey:@"IDSSendMessageOptionPeerResponseIdentifier"];
-  [v9 setPeerResponseIdentifier:v90];
+  v90 = [optionsCopy objectForKey:@"IDSSendMessageOptionPeerResponseIdentifier"];
+  [parametersCopy setPeerResponseIdentifier:v90];
 
-  v91 = [v10 objectForKey:@"IDSSendMessageOptionAlwaysSkipSelfKey"];
-  [v9 setAlwaysSkipSelf:{objc_msgSend(v91, "BOOLValue")}];
+  v91 = [optionsCopy objectForKey:@"IDSSendMessageOptionAlwaysSkipSelfKey"];
+  [parametersCopy setAlwaysSkipSelf:{objc_msgSend(v91, "BOOLValue")}];
 
-  v92 = [v10 objectForKey:@"IDSSendMessageOptionForceQuery"];
-  [v9 setForceQuery:{objc_msgSend(v92, "integerValue")}];
+  v92 = [optionsCopy objectForKey:@"IDSSendMessageOptionForceQuery"];
+  [parametersCopy setForceQuery:{objc_msgSend(v92, "integerValue")}];
 
-  v93 = [v10 objectForKey:@"IDSSendMessageOptionAlwaysIncludeSelfKey"];
-  [v9 setAlwaysIncludeSelf:{objc_msgSend(v93, "BOOLValue")}];
+  v93 = [optionsCopy objectForKey:@"IDSSendMessageOptionAlwaysIncludeSelfKey"];
+  [parametersCopy setAlwaysIncludeSelf:{objc_msgSend(v93, "BOOLValue")}];
 
-  v94 = [v10 objectForKey:@"IDSSendMessageOptionWantsFirewallDonation"];
-  [v9 setWantsFirewallDonation:{objc_msgSend(v94, "BOOLValue")}];
+  v94 = [optionsCopy objectForKey:@"IDSSendMessageOptionWantsFirewallDonation"];
+  [parametersCopy setWantsFirewallDonation:{objc_msgSend(v94, "BOOLValue")}];
 
-  v224 = [v10 objectForKey:@"IDSSendMessageOptionPushPriority"];
+  v224 = [optionsCopy objectForKey:@"IDSSendMessageOptionPushPriority"];
   if (v224)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && ([v224 integerValue], (_IDSIsValidPushPriority()))
     {
-      [v9 setPushPriority:v224];
+      [parametersCopy setPushPriority:v224];
     }
 
     else
     {
-      v95 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v95, OS_LOG_TYPE_FAULT))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
       {
         sub_195B2EE18();
       }
     }
   }
 
-  v96 = [v10 objectForKey:@"IDSSendMessageOptionDeliveryMinimumTimeDelayKey"];
+  v96 = [optionsCopy objectForKey:@"IDSSendMessageOptionDeliveryMinimumTimeDelayKey"];
   if (v96)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || [v96 longLongValue] < 0)
     {
-      v98 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v98, OS_LOG_TYPE_FAULT))
+      registration2 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_FAULT))
       {
         sub_195B2EE18();
       }
@@ -1217,20 +1217,20 @@ LABEL_34:
 
     else
     {
-      v97 = [v96 unsignedLongLongValue];
-      v98 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v97];
-      [v9 setDeliveryMinimumTimeDelay:v98];
+      unsignedLongLongValue = [v96 unsignedLongLongValue];
+      registration2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unsignedLongLongValue];
+      [parametersCopy setDeliveryMinimumTimeDelay:registration2];
     }
   }
 
-  v99 = [v10 objectForKey:@"IDSSendMessageOptionDeliveryMinimumTimeKey"];
+  v99 = [optionsCopy objectForKey:@"IDSSendMessageOptionDeliveryMinimumTimeKey"];
   if (v99)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || [v99 longLongValue] < 0)
     {
-      v101 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v101, OS_LOG_TYPE_FAULT))
+      registration3 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration3, OS_LOG_TYPE_FAULT))
       {
         sub_195B2EE18();
       }
@@ -1239,177 +1239,177 @@ LABEL_34:
     else
     {
       [v99 doubleValue];
-      v101 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:(v100 * 1000.0)];
-      [v9 setDeliveryMinimumTime:v101];
+      registration3 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:(v100 * 1000.0)];
+      [parametersCopy setDeliveryMinimumTime:registration3];
     }
   }
 
-  v220 = [v10 objectForKey:@"IDSSendMessageOptionSendModeKey"];
+  v220 = [optionsCopy objectForKey:@"IDSSendMessageOptionSendModeKey"];
   if (v220)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && ([v220 integerValue], (_IDSIsValidSendMode()))
     {
-      [v9 setSendMode:v220];
+      [parametersCopy setSendMode:v220];
     }
 
     else
     {
-      v102 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v102, OS_LOG_TYPE_FAULT))
+      registration4 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration4, OS_LOG_TYPE_FAULT))
       {
         sub_195B2EE18();
       }
     }
   }
 
-  v103 = [v10 objectForKey:@"IDSSendMessageOptionPublicMessageIntent"];
+  v103 = [optionsCopy objectForKey:@"IDSSendMessageOptionPublicMessageIntent"];
   if (v103)
   {
-    [v9 setCommandContext:v103];
+    [parametersCopy setCommandContext:v103];
   }
 
   v211 = v103;
-  v221 = [v10 objectForKey:@"IDSSendMessageOptionSendReasonKey"];
+  v221 = [optionsCopy objectForKey:@"IDSSendMessageOptionSendReasonKey"];
   if ([v221 length])
   {
     v104 = [MEMORY[0x1E69A53E8] createWithReasonString:v221];
     if (v104)
     {
-      [v9 setSendReasonContainer:v104];
+      [parametersCopy setSendReasonContainer:v104];
     }
 
     else
     {
-      v105 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v105, OS_LOG_TYPE_FAULT))
+      registration5 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration5, OS_LOG_TYPE_FAULT))
       {
         sub_195B2EE18();
       }
     }
   }
 
-  v106 = [v225 identifier];
-  if ([v106 isEqualToString:@"com.apple.madrid"] && objc_msgSend(v218, "isEqualToNumber:", &unk_1F0A29900))
+  identifier = [v225 identifier];
+  if ([identifier isEqualToString:@"com.apple.madrid"] && objc_msgSend(v218, "isEqualToNumber:", &unk_1F0A29900))
   {
-    v107 = [v9 message];
+    message2 = [parametersCopy message];
 
-    if (!v107)
+    if (!message2)
     {
       goto LABEL_100;
     }
 
-    v106 = [v10 objectForKey:@"IDSSendMessageOptionSendMetricsKey"];
+    identifier = [optionsCopy objectForKey:@"IDSSendMessageOptionSendMetricsKey"];
     v108 = objc_alloc(MEMORY[0x1E69A5328]);
-    v109 = [v225 identifier];
-    v110 = [v108 initWithType:0 guid:v12 service:v109 clientMetrics:v106];
+    identifier2 = [v225 identifier];
+    v110 = [v108 initWithType:0 guid:stringGUID service:identifier2 clientMetrics:identifier];
 
-    [v9 setSendMetric:v110];
+    [parametersCopy setSendMetric:v110];
   }
 
 LABEL_100:
-  v111 = [v10 objectForKey:@"IDSSendMessageOptionDuet"];
+  v111 = [optionsCopy objectForKey:@"IDSSendMessageOptionDuet"];
   if ([v111 BOOLValue])
   {
-    v112 = 1;
+    bOOLValue5 = 1;
   }
 
   else
   {
-    v113 = [v10 objectForKey:@"IDSSendMessageOptionNSURLSession"];
+    v113 = [optionsCopy objectForKey:@"IDSSendMessageOptionNSURLSession"];
     if ([v113 BOOLValue])
     {
-      v112 = 1;
+      bOOLValue5 = 1;
     }
 
     else
     {
-      [v10 objectForKey:@"IDSSendMessageOptionBypassDuet"];
+      [optionsCopy objectForKey:@"IDSSendMessageOptionBypassDuet"];
       v115 = v114 = v96;
-      v112 = [v115 BOOLValue];
+      bOOLValue5 = [v115 BOOLValue];
 
       v96 = v114;
     }
   }
 
-  v116 = [v10 objectForKey:@"IDSSendMessageOptionSockPuppet"];
+  v116 = [optionsCopy objectForKey:@"IDSSendMessageOptionSockPuppet"];
   if ([v116 BOOLValue])
   {
-    v117 = [v9 priority] == 200;
+    v117 = [parametersCopy priority] == 200;
 
-    v112 |= v117;
+    bOOLValue5 |= v117;
   }
 
   else
   {
   }
 
-  v118 = [v10 objectForKey:@"IDSSendMessageOptionAllowCloudDeliveryKey"];
+  v118 = [optionsCopy objectForKey:@"IDSSendMessageOptionAllowCloudDeliveryKey"];
   if ([v118 BOOLValue])
   {
-    v119 = [v9 priority] == 200;
+    v119 = [parametersCopy priority] == 200;
 
-    v112 |= v119;
+    bOOLValue5 |= v119;
   }
 
   else
   {
   }
 
-  v120 = [v10 objectForKey:@"IDSSendMessageOptionAllowCloudDeliveryKey"];
-  v121 = [v120 BOOLValue];
+  v120 = [optionsCopy objectForKey:@"IDSSendMessageOptionAllowCloudDeliveryKey"];
+  bOOLValue6 = [v120 BOOLValue];
 
-  if (v121)
+  if (bOOLValue6)
   {
-    v122 = [(_IDSConnection *)v227 _activeDevice];
-    v123 = v122;
-    if (v122 && ([v122 isConnected] & 1) == 0 && (objc_msgSend(v123, "isCloudConnected") & 1) == 0)
+    _activeDevice2 = [(_IDSConnection *)selfCopy _activeDevice];
+    v123 = _activeDevice2;
+    if (_activeDevice2 && ([_activeDevice2 isConnected] & 1) == 0 && (objc_msgSend(v123, "isCloudConnected") & 1) == 0)
     {
       v197 = v96;
       v124 = objc_alloc(MEMORY[0x1E695DF20]);
-      v125 = [(_IDSConnection *)v227 account];
-      v126 = [v125 _internal];
-      v127 = [v126 pushTopic];
-      v128 = [v124 initWithObjectsAndKeys:{v127, @"IDSClientBringsUpCloudMessaging", 0}];
+      account5 = [(_IDSConnection *)selfCopy account];
+      _internal6 = [account5 _internal];
+      pushTopic4 = [_internal6 pushTopic];
+      v128 = [v124 initWithObjectsAndKeys:{pushTopic4, @"IDSClientBringsUpCloudMessaging", 0}];
 
       IDSPowerLogDictionary();
-      v129 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v129, OS_LOG_TYPE_DEFAULT))
+      registration6 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration6, OS_LOG_TYPE_DEFAULT))
       {
-        v130 = [(_IDSConnection *)v227 account];
-        v131 = [v130 _internal];
-        v132 = [v131 pushTopic];
+        account6 = [(_IDSConnection *)selfCopy account];
+        _internal7 = [account6 _internal];
+        pushTopic5 = [_internal7 pushTopic];
         *buf = 138412546;
-        *v232 = v132;
+        *v232 = pushTopic5;
         *&v232[8] = 2112;
         *v233 = v226;
-        _os_log_impl(&dword_1959FF000, v129, OS_LOG_TYPE_DEFAULT, "Client %@ is forcing QR for Cloud Message with GUID %@", buf, 0x16u);
+        _os_log_impl(&dword_1959FF000, registration6, OS_LOG_TYPE_DEFAULT, "Client %@ is forcing QR for Cloud Message with GUID %@", buf, 0x16u);
       }
 
       v96 = v197;
     }
   }
 
-  [v9 setBypassDuet:v112 & 1];
-  v133 = [v10 objectForKey:@"IDSSendMessageOptionNonCloudWakingKey"];
-  [v9 setNonCloudWaking:{objc_msgSend(v133, "BOOLValue")}];
+  [parametersCopy setBypassDuet:bOOLValue5 & 1];
+  v133 = [optionsCopy objectForKey:@"IDSSendMessageOptionNonCloudWakingKey"];
+  [parametersCopy setNonCloudWaking:{objc_msgSend(v133, "BOOLValue")}];
 
-  v134 = [v10 objectForKey:@"IDSSendMessageOptionLiveMessageDelivery"];
-  [v9 setLiveMessageDelivery:{objc_msgSend(v134, "BOOLValue")}];
+  v134 = [optionsCopy objectForKey:@"IDSSendMessageOptionLiveMessageDelivery"];
+  [parametersCopy setLiveMessageDelivery:{objc_msgSend(v134, "BOOLValue")}];
 
-  v135 = [v10 objectForKey:@"IDSSendMessageOptionDropMessageIndicator"];
-  [v9 setDropMessageIndicatorCommand:v135];
+  v135 = [optionsCopy objectForKey:@"IDSSendMessageOptionDropMessageIndicator"];
+  [parametersCopy setDropMessageIndicatorCommand:v135];
 
-  v136 = [v10 objectForKey:@"IDSSendMessageOptionFireAndForget"];
-  v137 = [v136 BOOLValue];
+  v136 = [optionsCopy objectForKey:@"IDSSendMessageOptionFireAndForget"];
+  bOOLValue7 = [v136 BOOLValue];
 
-  [v9 setFireAndForget:v137];
-  if ((v137 & 1) != 0 || ([v10 objectForKey:@"IDSSendMessageOptionMapTile"], v138 = objc_claimAutoreleasedReturnValue(), v139 = objc_msgSend(v138, "BOOLValue"), v138, v139))
+  [parametersCopy setFireAndForget:bOOLValue7];
+  if ((bOOLValue7 & 1) != 0 || ([optionsCopy objectForKey:@"IDSSendMessageOptionMapTile"], v138 = objc_claimAutoreleasedReturnValue(), v139 = objc_msgSend(v138, "BOOLValue"), v138, v139))
   {
-    [v9 setBypassStorage:1];
+    [parametersCopy setBypassStorage:1];
   }
 
-  v140 = [v10 objectForKey:@"IDSSendMessageOptionQueueOneIdentifier"];
+  v140 = [optionsCopy objectForKey:@"IDSSendMessageOptionQueueOneIdentifier"];
   if (v140)
   {
     objc_opt_class();
@@ -1425,33 +1425,33 @@ LABEL_100:
     }
   }
 
-  v142 = [v10 objectForKey:@"IDSSendMessageOptionActivityContinuation"];
-  v143 = [v142 BOOLValue];
+  v142 = [optionsCopy objectForKey:@"IDSSendMessageOptionActivityContinuation"];
+  bOOLValue8 = [v142 BOOLValue];
 
-  if (v143)
+  if (bOOLValue8)
   {
-    [v9 setActivityContinuation:1];
+    [parametersCopy setActivityContinuation:1];
     if (!v140)
     {
       v140 = @"IDSActivityContinuationIdentifier";
     }
   }
 
-  v144 = [v10 objectForKey:@"IDSSendMessageOptionTethering"];
-  v145 = [v144 BOOLValue];
+  v144 = [optionsCopy objectForKey:@"IDSSendMessageOptionTethering"];
+  bOOLValue9 = [v144 BOOLValue];
 
-  if (v145)
+  if (bOOLValue9)
   {
-    [v9 setLocalDelivery:1];
+    [parametersCopy setLocalDelivery:1];
   }
 
-  v146 = [v10 objectForKey:@"IDSSendMessageOptionOpportunisticDuet"];
-  v147 = [v146 BOOLValue];
+  v146 = [optionsCopy objectForKey:@"IDSSendMessageOptionOpportunisticDuet"];
+  bOOLValue10 = [v146 BOOLValue];
 
-  if (v147)
+  if (bOOLValue10)
   {
-    [v9 setNonWaking:1];
-    [v9 setLocalDelivery:1];
+    [parametersCopy setNonWaking:1];
+    [parametersCopy setLocalDelivery:1];
     if (!v140)
     {
       v140 = @"IDSOpportunisticDuetIdentifier";
@@ -1463,120 +1463,120 @@ LABEL_100:
   if (v140)
   {
 LABEL_138:
-    [v9 setQueueOneIdentifier:v140];
+    [parametersCopy setQueueOneIdentifier:v140];
   }
 
-  v148 = [v10 objectForKey:@"IDSSendMessageOptionForceEncryptionOff"];
-  [v9 setForceEncryptionOff:{objc_msgSend(v148, "BOOLValue")}];
+  v148 = [optionsCopy objectForKey:@"IDSSendMessageOptionForceEncryptionOff"];
+  [parametersCopy setForceEncryptionOff:{objc_msgSend(v148, "BOOLValue")}];
 
-  v149 = [v10 objectForKey:@"IDSSendMessageOptionKTVerificationUUIDKey"];
+  v149 = [optionsCopy objectForKey:@"IDSSendMessageOptionKTVerificationUUIDKey"];
   if (v149)
   {
-    [v9 setKeyTransparencyURIVerificationMap:v149];
+    [parametersCopy setKeyTransparencyURIVerificationMap:v149];
   }
 
   v210 = v149;
-  v150 = [v10 objectForKey:@"IDSSendMessageOptionGoupUUIDKey"];
-  v151 = [v10 objectForKey:@"IDSSendMessageOptionTimestampKey"];
-  v152 = [v151 stringValue];
+  v150 = [optionsCopy objectForKey:@"IDSSendMessageOptionGoupUUIDKey"];
+  v151 = [optionsCopy objectForKey:@"IDSSendMessageOptionTimestampKey"];
+  stringValue = [v151 stringValue];
 
-  if (v150 && v152)
+  if (v150 && stringValue)
   {
-    [v9 setGroupSessionUUID:v150];
-    [v9 setDedupeTimestamp:v152];
+    [parametersCopy setGroupSessionUUID:v150];
+    [parametersCopy setDedupeTimestamp:stringValue];
   }
 
-  v208 = v152;
+  v208 = stringValue;
   v209 = v150;
-  v153 = [v10 objectForKey:@"IDSSendMessageOptionDuetIdentifiersOverride"];
-  v154 = [v153 allObjects];
-  [v9 setDuetIdentifiersOverride:v154];
+  v153 = [optionsCopy objectForKey:@"IDSSendMessageOptionDuetIdentifiersOverride"];
+  allObjects = [v153 allObjects];
+  [parametersCopy setDuetIdentifiersOverride:allObjects];
 
-  v155 = [v10 objectForKey:@"IDSSendMessageOptionMetricReportIdentifier"];
-  if (!v155)
+  firstObject = [optionsCopy objectForKey:@"IDSSendMessageOptionMetricReportIdentifier"];
+  if (!firstObject)
   {
-    v156 = [v153 allObjects];
-    v157 = [v156 sortedArrayUsingComparator:&unk_1F09E6140];
+    allObjects2 = [v153 allObjects];
+    v157 = [allObjects2 sortedArrayUsingComparator:&unk_1F09E6140];
 
-    v155 = [v157 firstObject];
+    firstObject = [v157 firstObject];
   }
 
   v207 = v153;
-  [v9 setMetricReportIdentifier:v155];
-  v205 = [v10 objectForKey:@"IDSSendMessageOptionInterestingRegistrationProperties"];
-  v158 = [v205 allObjects];
-  [v9 setInterestingRegistrationProperties:v158];
+  [parametersCopy setMetricReportIdentifier:firstObject];
+  v205 = [optionsCopy objectForKey:@"IDSSendMessageOptionInterestingRegistrationProperties"];
+  allObjects3 = [v205 allObjects];
+  [parametersCopy setInterestingRegistrationProperties:allObjects3];
 
-  v204 = [v10 objectForKey:@"IDSSendMessageOptionRequireAllRegistrationProperties"];
-  v159 = [v204 allObjects];
-  [v9 setRequireAllRegistrationProperties:v159];
+  v204 = [optionsCopy objectForKey:@"IDSSendMessageOptionRequireAllRegistrationProperties"];
+  allObjects4 = [v204 allObjects];
+  [parametersCopy setRequireAllRegistrationProperties:allObjects4];
 
-  v203 = [v10 objectForKey:@"IDSSendMessageOptionRequireLackOfRegistrationProperties"];
-  v160 = [v203 allObjects];
-  [v9 setRequireLackOfRegistrationProperties:v160];
+  v203 = [optionsCopy objectForKey:@"IDSSendMessageOptionRequireLackOfRegistrationProperties"];
+  allObjects5 = [v203 allObjects];
+  [parametersCopy setRequireLackOfRegistrationProperties:allObjects5];
 
-  [v9 setIdentifier:v226];
-  v161 = [(IDSAccount *)v227->_account _internal];
-  v162 = [v161 uniqueID];
+  [parametersCopy setIdentifier:v226];
+  _internal8 = [(IDSAccount *)selfCopy->_account _internal];
+  uniqueID2 = [_internal8 uniqueID];
 
-  v202 = v162;
-  [v9 setAccountUUID:v162];
-  v163 = [(_IDSConnection *)v227 _activeDevice];
-  v164 = [v9 destinations];
-  v165 = [v164 destinationURIs];
-  LODWORD(v162) = [v165 containsObject:*MEMORY[0x1E69A4B50]];
+  v202 = uniqueID2;
+  [parametersCopy setAccountUUID:uniqueID2];
+  _activeDevice3 = [(_IDSConnection *)selfCopy _activeDevice];
+  destinations2 = [parametersCopy destinations];
+  destinationURIs = [destinations2 destinationURIs];
+  LODWORD(uniqueID2) = [destinationURIs containsObject:*MEMORY[0x1E69A4B50]];
 
-  if (v162 && v163 && ([v163 relationship] & 2) == 0)
+  if (uniqueID2 && _activeDevice3 && ([_activeDevice3 relationship] & 2) == 0)
   {
-    [(_IDSConnection *)v227 _replaceSentinelInSendParameters:v9 withCurrentActiveDevice:v163];
+    [(_IDSConnection *)selfCopy _replaceSentinelInSendParameters:parametersCopy withCurrentActiveDevice:_activeDevice3];
   }
 
-  v217 = [v9 destinations];
+  destinations3 = [parametersCopy destinations];
   v200 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:? requiringSecureCoding:? error:?];
-  [v9 setGroupData:?];
-  [v9 setDestinations:0];
-  if (!v227->_pendingSends)
+  [parametersCopy setGroupData:?];
+  [parametersCopy setDestinations:0];
+  if (!selfCopy->_pendingSends)
   {
     v166 = objc_alloc_init(MEMORY[0x1E69A6120]);
-    pendingSends = v227->_pendingSends;
-    v227->_pendingSends = v166;
+    pendingSends = selfCopy->_pendingSends;
+    selfCopy->_pendingSends = v166;
   }
 
-  v168 = [v9 alternateCallbackID];
-  v169 = v168;
-  if (v168)
+  alternateCallbackID = [parametersCopy alternateCallbackID];
+  v169 = alternateCallbackID;
+  if (alternateCallbackID)
   {
-    v170 = v168;
+    identifier3 = alternateCallbackID;
   }
 
   else
   {
-    v170 = [v9 identifier];
+    identifier3 = [parametersCopy identifier];
   }
 
-  v201 = v163;
+  v201 = _activeDevice3;
 
-  if (v9)
+  if (parametersCopy)
   {
-    [(IMOrderedMutableDictionary *)v227->_pendingSends setOrderedObject:v9 forKey:v170];
+    [(IMOrderedMutableDictionary *)selfCopy->_pendingSends setOrderedObject:parametersCopy forKey:identifier3];
   }
 
-  v199 = v170;
+  v199 = identifier3;
   v171 = +[IDSLogging GUIDTRACE];
   if (os_log_type_enabled(v171, OS_LOG_TYPE_DEFAULT))
   {
-    v172 = [(IDSAccount *)v227->_account _internal];
-    v173 = [v172 serviceName];
+    _internal9 = [(IDSAccount *)selfCopy->_account _internal];
+    serviceName2 = [_internal9 serviceName];
     *buf = 138412546;
     *v232 = v226;
     *&v232[8] = 2112;
-    *v233 = v173;
+    *v233 = serviceName2;
     _os_log_impl(&dword_1959FF000, v171, OS_LOG_TYPE_DEFAULT, "OUTGOING-CLIENT_REQUEST:%@ SERVICE:%@", buf, 0x16u);
   }
 
-  v206 = v155;
+  v206 = firstObject;
 
-  v174 = [v10 mutableCopy];
+  v174 = [optionsCopy mutableCopy];
   [v174 removeObjectForKey:@"IDSSendMessageOptionDataToEncrypt"];
   v175 = +[IDSTransportLog IDSConnection];
   if (os_log_type_enabled(v175, OS_LOG_TYPE_DEFAULT))
@@ -1593,38 +1593,38 @@ LABEL_138:
       v176 = @"unknown type";
     }
 
-    v177 = [(IDSAccount *)v227->_account _internal];
-    v178 = [v177 serviceName];
-    v179 = [v9 deliveryMinimumTime];
+    _internal10 = [(IDSAccount *)selfCopy->_account _internal];
+    serviceName3 = [_internal10 serviceName];
+    deliveryMinimumTime = [parametersCopy deliveryMinimumTime];
     v180 = @"YES";
-    if (!v179)
+    if (!deliveryMinimumTime)
     {
-      v196 = [v9 deliveryMinimumTimeDelay];
-      if (!v196)
+      deliveryMinimumTimeDelay = [parametersCopy deliveryMinimumTimeDelay];
+      if (!deliveryMinimumTimeDelay)
       {
         v180 = @"NO";
       }
     }
 
-    v181 = [(IMOrderedMutableDictionary *)v227->_pendingSends count];
+    v181 = [(IMOrderedMutableDictionary *)selfCopy->_pendingSends count];
     *buf = 138414082;
     *v232 = v176;
     *&v232[8] = 2114;
-    *v233 = v178;
+    *v233 = serviceName3;
     *&v233[8] = 2114;
     v234 = v226;
     *v235 = 2112;
-    *&v235[2] = v217;
+    *&v235[2] = destinations3;
     *v236 = 2112;
     *&v236[2] = v180;
     v237 = 2112;
     v238 = v174;
     v239 = 1024;
-    v240 = v216;
+    v240 = sizeCopy;
     v241 = 2048;
     v242 = v181;
     _os_log_impl(&dword_1959FF000, v175, OS_LOG_TYPE_DEFAULT, "Client request to send %@ on service: %{public}@   guid: %{public}@   to destinations: %@  isScheduled? : %@  options: %@    size: %d] (%lu pending)", buf, 0x4Eu);
-    if (!v179)
+    if (!deliveryMinimumTime)
     {
     }
 
@@ -1637,14 +1637,14 @@ LABEL_138:
   v182 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v226];
   [v182 getUUIDBytes:v230];
 
-  v183 = [MEMORY[0x1E69A5270] CrossLayerLogging];
-  if (os_log_type_enabled(v183, OS_LOG_TYPE_DEFAULT))
+  crossLayerLogging = [MEMORY[0x1E69A5270] CrossLayerLogging];
+  if (os_log_type_enabled(crossLayerLogging, OS_LOG_TYPE_DEFAULT))
   {
-    v184 = [(IDSAccount *)v227->_account _internal];
-    [v184 serviceName];
+    _internal11 = [(IDSAccount *)selfCopy->_account _internal];
+    [_internal11 serviceName];
     v186 = v185 = v96;
-    outgoingMessageLoggingSequence = v227->_outgoingMessageLoggingSequence;
-    v227->_outgoingMessageLoggingSequence = outgoingMessageLoggingSequence + 1;
+    outgoingMessageLoggingSequence = selfCopy->_outgoingMessageLoggingSequence;
+    selfCopy->_outgoingMessageLoggingSequence = outgoingMessageLoggingSequence + 1;
     *buf = 67110658;
     *v232 = 120;
     *&v232[4] = 1024;
@@ -1654,61 +1654,61 @@ LABEL_138:
     v234 = 0x832000000100412;
     *v235 = v230;
     *&v235[8] = 1024;
-    *v236 = v216;
+    *v236 = sizeCopy;
     *&v236[4] = 1024;
     *&v236[6] = outgoingMessageLoggingSequence;
-    _os_log_impl(&dword_1959FF000, v183, OS_LOG_TYPE_DEFAULT, "5 {curProtocol: %hhu, prevProtocol: %hhu, prevBundleID: %@, curUUID: %{public,uuid_t}.16P, curPktLen: %u, logSeqn: %hhu}", buf, 0x34u);
+    _os_log_impl(&dword_1959FF000, crossLayerLogging, OS_LOG_TYPE_DEFAULT, "5 {curProtocol: %hhu, prevProtocol: %hhu, prevBundleID: %@, curUUID: %{public,uuid_t}.16P, curPktLen: %u, logSeqn: %hhu}", buf, 0x34u);
 
     v96 = v185;
   }
 
-  v188 = [v9 dictionaryRepresentation];
-  v189 = [v188 copy];
+  dictionaryRepresentation = [parametersCopy dictionaryRepresentation];
+  v189 = [dictionaryRepresentation copy];
 
-  v190 = [(_IDSConnection *)v227 daemonController];
-  [v190 setCurXPCMessagePriority:{objc_msgSend(v9, "priority")}];
+  daemonController = [(_IDSConnection *)selfCopy daemonController];
+  [daemonController setCurXPCMessagePriority:{objc_msgSend(parametersCopy, "priority")}];
 
-  v191 = [(_IDSConnection *)v227 daemonController];
+  daemonController2 = [(_IDSConnection *)selfCopy daemonController];
   v228[0] = MEMORY[0x1E69E9820];
   v228[1] = 3221225472;
   v228[2] = sub_195A7419C;
   v228[3] = &unk_1E7440E58;
   v192 = v189;
   v229 = v192;
-  [v191 forwardMethodWithBoostedPriority:v228];
+  [daemonController2 forwardMethodWithBoostedPriority:v228];
 
-  v12 = v226;
+  stringGUID = v226;
   v193 = v226;
 
-  v11 = v219;
+  typeCopy = v219;
   v15 = v223;
 LABEL_172:
 
   v194 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return stringGUID;
 }
 
-- (BOOL)_isDestinationSingleLocalAddress:(id)a3
+- (BOOL)_isDestinationSingleLocalAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(_IDSConnection *)self account];
-  v6 = [v5 accountType];
+  addressCopy = address;
+  account = [(_IDSConnection *)self account];
+  accountType = [account accountType];
 
-  if (v6 == 2 && ([v4 destinationURIs], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 == 1))
+  if (accountType == 2 && ([addressCopy destinationURIs], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 == 1))
   {
-    v9 = [v4 destinationURIs];
-    if ([v9 containsObject:*MEMORY[0x1E69A4B50]])
+    destinationURIs = [addressCopy destinationURIs];
+    if ([destinationURIs containsObject:*MEMORY[0x1E69A4B50]])
     {
       v10 = 1;
     }
 
     else
     {
-      v11 = [v4 destinationURIs];
-      v12 = [(_IDSConnection *)self _activeDevice];
-      v13 = IDSCopyIDForDevice(v12);
-      v10 = [v11 containsObject:v13];
+      destinationURIs2 = [addressCopy destinationURIs];
+      _activeDevice = [(_IDSConnection *)self _activeDevice];
+      v13 = IDSCopyIDForDevice(_activeDevice);
+      v10 = [destinationURIs2 containsObject:v13];
     }
   }
 
@@ -1720,56 +1720,56 @@ LABEL_172:
   return v10;
 }
 
-- (void)_replaceSentinelInSendParameters:(id)a3 withCurrentActiveDevice:(id)a4
+- (void)_replaceSentinelInSendParameters:(id)parameters withCurrentActiveDevice:(id)device
 {
   v5 = MEMORY[0x1E695DFA8];
-  v6 = a4;
-  v7 = a3;
+  deviceCopy = device;
+  parametersCopy = parameters;
   v8 = [v5 alloc];
-  v9 = [v7 destinations];
-  v10 = [v9 destinationURIs];
-  v13 = [v8 initWithSet:v10];
+  destinations = [parametersCopy destinations];
+  destinationURIs = [destinations destinationURIs];
+  v13 = [v8 initWithSet:destinationURIs];
 
-  v11 = IDSCopyIDForDevice(v6);
+  v11 = IDSCopyIDForDevice(deviceCopy);
   [v13 removeObject:*MEMORY[0x1E69A4B50]];
   [v13 addObject:v11];
   v12 = [MEMORY[0x1E69A5240] destinationWithStrings:v13];
-  [v7 setDestinations:v12];
+  [parametersCopy setDestinations:v12];
 }
 
-- (BOOL)sendProtobuf:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendProtobuf:(id)protobuf toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
   v66 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  protobufCopy = protobuf;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v15 = +[IDSInternalQueueController sharedInstance];
-  v16 = [v15 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v15 assertQueueIsCurrent];
 
-  if (v16)
+  if (assertQueueIsCurrent)
   {
-    v17 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2EF38();
     }
   }
 
-  v53 = a8;
-  v18 = [v14 objectForKey:@"IDSSendMessageOptionSkipPayloadCheck"];
-  v19 = [v18 BOOLValue];
+  errorCopy = error;
+  v18 = [optionsCopy objectForKey:@"IDSSendMessageOptionSkipPayloadCheck"];
+  bOOLValue = [v18 BOOLValue];
 
-  v20 = [v13 destinationURIs];
-  v21 = [v20 count];
+  destinationURIs = [destinationsCopy destinationURIs];
+  v21 = [destinationURIs count];
 
-  v56 = v14;
-  v52 = self;
+  v56 = optionsCopy;
+  selfCopy = self;
   if (v21)
   {
-    v22 = [(IDSAccount *)self->_account _internal];
-    v23 = [v22 isActive];
+    _internal = [(IDSAccount *)self->_account _internal];
+    isActive = [_internal isActive];
 
-    if (v23)
+    if (isActive)
     {
       v24 = 0;
     }
@@ -1779,7 +1779,7 @@ LABEL_172:
       v24 = 8;
     }
 
-    if (v23)
+    if (isActive)
     {
       v25 = 0;
     }
@@ -1789,10 +1789,10 @@ LABEL_172:
       v25 = @"Cannot send with an inactive account";
     }
 
-    if (!(v19 & 1 | ((v23 & 1) == 0)))
+    if (!(bOOLValue & 1 | ((isActive & 1) == 0)))
     {
-      v26 = [v12 data];
-      v27 = [v26 length];
+      data = [protobufCopy data];
+      v27 = [data length];
 
       if (v27 <= 0x500000)
       {
@@ -1826,9 +1826,9 @@ LABEL_172:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v55 = v13;
-  v28 = [v13 destinationURIs];
-  v29 = [v28 countByEnumeratingWithState:&v57 objects:v65 count:16];
+  v55 = destinationsCopy;
+  destinationURIs2 = [destinationsCopy destinationURIs];
+  v29 = [destinationURIs2 countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (v29)
   {
     v30 = v29;
@@ -1839,7 +1839,7 @@ LABEL_172:
       {
         if (*v58 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(destinationURIs2);
         }
 
         v33 = *(*(&v57 + 1) + 8 * i);
@@ -1852,7 +1852,7 @@ LABEL_172:
         }
       }
 
-      v30 = [v28 countByEnumeratingWithState:&v57 objects:v65 count:16];
+      v30 = [destinationURIs2 countByEnumeratingWithState:&v57 objects:v65 count:16];
     }
 
     while (v30);
@@ -1861,9 +1861,9 @@ LABEL_172:
   if (v25)
   {
     v35 = 0;
-    v37 = a7;
+    identifierCopy2 = identifier;
     v36 = v55;
-    if (!a7)
+    if (!identifier)
     {
       goto LABEL_32;
     }
@@ -1871,21 +1871,21 @@ LABEL_172:
     goto LABEL_31;
   }
 
-  v44 = [(IDSAccount *)v52->_account _internal];
-  v45 = [v44 uniqueID];
+  _internal2 = [(IDSAccount *)selfCopy->_account _internal];
+  uniqueID = [_internal2 uniqueID];
 
-  v37 = a7;
+  identifierCopy2 = identifier;
   v36 = v55;
-  if (v45)
+  if (uniqueID)
   {
     v46 = objc_alloc_init(MEMORY[0x1E69A53E0]);
-    [v46 setPriority:a5];
+    [v46 setPriority:priority];
     [v46 setDestinations:v55];
-    v47 = [v12 dictionaryRepresentation];
-    [v46 setProtobuf:v47];
+    dictionaryRepresentation = [protobufCopy dictionaryRepresentation];
+    [v46 setProtobuf:dictionaryRepresentation];
 
-    v48 = [v12 data];
-    v35 = -[_IDSConnection _sendWithParameters:options:loggingType:loggingDataSize:](v52, "_sendWithParameters:options:loggingType:loggingDataSize:", v46, v56, @"protobuf", [v48 length]);
+    data2 = [protobufCopy data];
+    v35 = -[_IDSConnection _sendWithParameters:options:loggingType:loggingDataSize:](selfCopy, "_sendWithParameters:options:loggingType:loggingDataSize:", v46, v56, @"protobuf", [data2 length]);
     v49 = v35;
 
     v25 = 0;
@@ -1896,9 +1896,9 @@ LABEL_172:
     v46 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      account = v52->_account;
+      account = selfCopy->_account;
       *buf = 138412546;
-      v62 = v52;
+      v62 = selfCopy;
       v63 = 2112;
       v64 = account;
       _os_log_impl(&dword_1959FF000, v46, OS_LOG_TYPE_DEFAULT, "sendPayload - could not find account uniqueID! self: %@ account: %@", buf, 0x16u);
@@ -1909,11 +1909,11 @@ LABEL_172:
     v24 = 7;
   }
 
-  if (a7)
+  if (identifier)
   {
 LABEL_31:
     v38 = v35;
-    *v37 = v35;
+    *identifierCopy2 = v35;
   }
 
 LABEL_32:
@@ -1922,10 +1922,10 @@ LABEL_32:
     v39 = objc_alloc(MEMORY[0x1E695DF20]);
     v40 = [v39 initWithObjectsAndKeys:{v25, *MEMORY[0x1E696A578], 0}];
     v41 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:v24 userInfo:v40];
-    if (v53)
+    if (errorCopy)
     {
       v41 = v41;
-      *v53 = v41;
+      *errorCopy = v41;
     }
   }
 
@@ -1933,27 +1933,27 @@ LABEL_32:
   return v25 == 0;
 }
 
-- (BOOL)sendMessage:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendMessage:(id)message toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  v10 = a4;
-  v55 = a6;
+  messageCopy = message;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v11 = +[IDSInternalQueueController sharedInstance];
-  v12 = [v11 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v11 assertQueueIsCurrent];
 
-  if (v12)
+  if (assertQueueIsCurrent)
   {
-    v13 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2EFD8();
     }
   }
 
-  v53 = [v55 objectForKey:@"IDSSendMessageOptionTopLevelDictionary"];
-  v14 = [v10 destinationURIs];
-  v15 = [v14 count] == 0;
+  v53 = [optionsCopy objectForKey:@"IDSSendMessageOptionTopLevelDictionary"];
+  destinationURIs = [destinationsCopy destinationURIs];
+  v15 = [destinationURIs count] == 0;
 
   if (v15)
   {
@@ -1961,13 +1961,13 @@ LABEL_32:
     v19 = 1;
   }
 
-  else if (([v53 BOOLValue] & 1) != 0 || objc_msgSend(v54, "count"))
+  else if (([v53 BOOLValue] & 1) != 0 || objc_msgSend(messageCopy, "count"))
   {
-    v16 = [(_IDSConnection *)self account];
-    v17 = [v16 _internal];
-    v18 = [v17 isActive];
+    account = [(_IDSConnection *)self account];
+    _internal = [account _internal];
+    isActive = [_internal isActive];
 
-    if (v18)
+    if (isActive)
     {
       v19 = 0;
     }
@@ -1977,7 +1977,7 @@ LABEL_32:
       v19 = 8;
     }
 
-    if (v18)
+    if (isActive)
     {
       v20 = 0;
     }
@@ -1998,8 +1998,8 @@ LABEL_32:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v21 = [v10 destinationURIs];
-  v22 = [v21 countByEnumeratingWithState:&v56 objects:v68 count:16];
+  destinationURIs2 = [destinationsCopy destinationURIs];
+  v22 = [destinationURIs2 countByEnumeratingWithState:&v56 objects:v68 count:16];
   if (v22)
   {
     v23 = *v57;
@@ -2009,7 +2009,7 @@ LABEL_32:
       {
         if (*v57 != v23)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(destinationURIs2);
         }
 
         v25 = *(*(&v56 + 1) + 8 * i);
@@ -2022,7 +2022,7 @@ LABEL_32:
         }
       }
 
-      v22 = [v21 countByEnumeratingWithState:&v56 objects:v68 count:16];
+      v22 = [destinationURIs2 countByEnumeratingWithState:&v56 objects:v68 count:16];
     }
 
     while (v22);
@@ -2034,18 +2034,18 @@ LABEL_32:
     goto LABEL_48;
   }
 
-  v28 = [(_IDSConnection *)self account];
-  v29 = [v28 _internal];
-  v30 = [v29 uniqueID];
+  account2 = [(_IDSConnection *)self account];
+  _internal2 = [account2 _internal];
+  uniqueID = [_internal2 uniqueID];
 
-  if (!v30)
+  if (!uniqueID)
   {
     v33 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       account = self->_account;
       *buf = 138412546;
-      v61 = self;
+      selfCopy = self;
       v62 = 2112;
       v63 = account;
       _os_log_impl(&dword_1959FF000, v33, OS_LOG_TYPE_DEFAULT, "sendPayload - could not find account uniqueID! self: %@ account: %@", buf, 0x16u);
@@ -2057,12 +2057,12 @@ LABEL_32:
     goto LABEL_47;
   }
 
-  v31 = [v55 objectForKey:@"IDSSendMessageOptionSkipPayloadCheck"];
-  v32 = [v31 BOOLValue];
+  v31 = [optionsCopy objectForKey:@"IDSSendMessageOptionSkipPayloadCheck"];
+  bOOLValue = [v31 BOOLValue];
 
-  if ((v32 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v33 = [MEMORY[0x1E696AE40] dataWithPropertyList:v54 format:200 options:0 error:0];
+    v33 = [MEMORY[0x1E696AE40] dataWithPropertyList:messageCopy format:200 options:0 error:0];
     if ([v33 length]<= 0x500000)
     {
       if (v33)
@@ -2090,18 +2090,18 @@ LABEL_32:
 
   v33 = 0;
 LABEL_36:
-  v35 = [v55 mutableCopy];
+  v35 = [optionsCopy mutableCopy];
   [v35 removeObjectForKey:@"IDSSendMessageOptionDataToEncrypt"];
   v36 = +[IDSTransportLog IDSConnection];
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
     v37 = @"Sync";
-    if (a5 == 200)
+    if (priority == 200)
     {
       v37 = @"Default";
     }
 
-    if (a5 == 300)
+    if (priority == 300)
     {
       v38 = @"URGENT";
     }
@@ -2111,34 +2111,34 @@ LABEL_36:
       v38 = v37;
     }
 
-    v39 = [(IDSAccount *)self->_account _internal];
-    v40 = [v39 serviceName];
+    _internal3 = [(IDSAccount *)self->_account _internal];
+    serviceName = [_internal3 serviceName];
     *buf = 138544130;
-    v61 = v38;
+    selfCopy = v38;
     v62 = 2114;
-    v63 = v40;
+    v63 = serviceName;
     v64 = 2112;
-    v65 = v10;
+    v65 = destinationsCopy;
     v66 = 2112;
     v67 = v35;
     _os_log_impl(&dword_1959FF000, v36, OS_LOG_TYPE_DEFAULT, "Client request to send %{public}@ message (dictionary) service: %{public}@  to destinations: %@   options: %@]", buf, 0x2Au);
   }
 
   v41 = objc_alloc_init(MEMORY[0x1E69A53E0]);
-  [v41 setPriority:a5];
-  [v41 setDestinations:v10];
-  [v41 setMessage:v54];
-  v27 = -[_IDSConnection _sendWithParameters:options:loggingType:loggingDataSize:](self, "_sendWithParameters:options:loggingType:loggingDataSize:", v41, v55, @"message (dictionary)", [v54 count]);
+  [v41 setPriority:priority];
+  [v41 setDestinations:destinationsCopy];
+  [v41 setMessage:messageCopy];
+  v27 = -[_IDSConnection _sendWithParameters:options:loggingType:loggingDataSize:](self, "_sendWithParameters:options:loggingType:loggingDataSize:", v41, optionsCopy, @"message (dictionary)", [messageCopy count]);
   v42 = v27;
 
   v20 = 0;
 LABEL_47:
 
 LABEL_48:
-  if (a7)
+  if (identifier)
   {
     v43 = v27;
-    *a7 = v27;
+    *identifier = v27;
   }
 
   if (v20)
@@ -2146,10 +2146,10 @@ LABEL_48:
     v44 = objc_alloc(MEMORY[0x1E695DF20]);
     v45 = [v44 initWithObjectsAndKeys:{v20, *MEMORY[0x1E696A578], 0}];
     v46 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:v19 userInfo:v45];
-    if (a8)
+    if (error)
     {
       v46 = v46;
-      *a8 = v46;
+      *error = v46;
     }
   }
 
@@ -2157,39 +2157,39 @@ LABEL_48:
   return v20 == 0;
 }
 
-- (BOOL)sendData:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendData:(id)data toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  dataCopy = data;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v15 = +[IDSInternalQueueController sharedInstance];
-  v16 = [v15 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v15 assertQueueIsCurrent];
 
-  if (v16)
+  if (assertQueueIsCurrent)
   {
-    v17 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F0E4();
     }
   }
 
-  v51 = a8;
-  v54 = v14;
-  v18 = [v14 objectForKey:@"IDSSendMessageOptionSkipPayloadCheck"];
-  v19 = [v18 BOOLValue];
+  errorCopy = error;
+  v54 = optionsCopy;
+  v18 = [optionsCopy objectForKey:@"IDSSendMessageOptionSkipPayloadCheck"];
+  bOOLValue = [v18 BOOLValue];
 
-  v20 = [v13 destinationURIs];
-  v21 = [v20 count];
+  destinationURIs = [destinationsCopy destinationURIs];
+  v21 = [destinationURIs count];
 
-  v50 = self;
+  selfCopy = self;
   if (v21)
   {
-    v22 = [(IDSAccount *)self->_account _internal];
-    v23 = [v22 isActive];
+    _internal = [(IDSAccount *)self->_account _internal];
+    isActive = [_internal isActive];
 
-    if (v23)
+    if (isActive)
     {
       v24 = 0;
     }
@@ -2199,7 +2199,7 @@ LABEL_48:
       v24 = 8;
     }
 
-    if (v23)
+    if (isActive)
     {
       v25 = 0;
     }
@@ -2209,9 +2209,9 @@ LABEL_48:
       v25 = @"Cannot send with an inactive account";
     }
 
-    if (!(v19 & 1 | ((v23 & 1) == 0)))
+    if (!(bOOLValue & 1 | ((isActive & 1) == 0)))
     {
-      v26 = [v12 length];
+      v26 = [dataCopy length];
       if (v26 <= 0x500000)
       {
         v24 = 0;
@@ -2244,9 +2244,9 @@ LABEL_48:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v53 = v13;
-  v27 = [v13 destinationURIs];
-  v28 = [v27 countByEnumeratingWithState:&v55 objects:v63 count:16];
+  v53 = destinationsCopy;
+  destinationURIs2 = [destinationsCopy destinationURIs];
+  v28 = [destinationURIs2 countByEnumeratingWithState:&v55 objects:v63 count:16];
   if (v28)
   {
     v29 = v28;
@@ -2257,7 +2257,7 @@ LABEL_48:
       {
         if (*v56 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(destinationURIs2);
         }
 
         v32 = *(*(&v55 + 1) + 8 * i);
@@ -2270,7 +2270,7 @@ LABEL_48:
         }
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v55 objects:v63 count:16];
+      v29 = [destinationURIs2 countByEnumeratingWithState:&v55 objects:v63 count:16];
     }
 
     while (v29);
@@ -2280,9 +2280,9 @@ LABEL_48:
   {
     v34 = 0;
     v35 = v53;
-    v36 = v14;
-    v37 = a7;
-    if (!a7)
+    v36 = optionsCopy;
+    identifierCopy2 = identifier;
+    if (!identifier)
     {
       goto LABEL_32;
     }
@@ -2290,18 +2290,18 @@ LABEL_48:
     goto LABEL_31;
   }
 
-  v44 = [(IDSAccount *)v50->_account _internal];
-  v45 = [v44 uniqueID];
+  _internal2 = [(IDSAccount *)selfCopy->_account _internal];
+  uniqueID = [_internal2 uniqueID];
 
-  v37 = a7;
+  identifierCopy2 = identifier;
   v35 = v53;
-  if (v45)
+  if (uniqueID)
   {
     v46 = objc_alloc_init(MEMORY[0x1E69A53E0]);
-    [v46 setPriority:a5];
+    [v46 setPriority:priority];
     [v46 setDestinations:v53];
-    [v46 setData:v12];
-    v34 = -[_IDSConnection _sendWithParameters:options:loggingType:loggingDataSize:](v50, "_sendWithParameters:options:loggingType:loggingDataSize:", v46, v54, @"data", [v12 length]);
+    [v46 setData:dataCopy];
+    v34 = -[_IDSConnection _sendWithParameters:options:loggingType:loggingDataSize:](selfCopy, "_sendWithParameters:options:loggingType:loggingDataSize:", v46, v54, @"data", [dataCopy length]);
     v47 = v34;
     v25 = 0;
   }
@@ -2311,9 +2311,9 @@ LABEL_48:
     v46 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      account = v50->_account;
+      account = selfCopy->_account;
       *buf = 138412546;
-      v60 = v50;
+      v60 = selfCopy;
       v61 = 2112;
       v62 = account;
       _os_log_impl(&dword_1959FF000, v46, OS_LOG_TYPE_DEFAULT, "sendPayload - could not find account uniqueID! self: %@ account: %@", buf, 0x16u);
@@ -2325,11 +2325,11 @@ LABEL_48:
   }
 
   v36 = v54;
-  if (a7)
+  if (identifier)
   {
 LABEL_31:
     v38 = v34;
-    *v37 = v34;
+    *identifierCopy2 = v34;
   }
 
 LABEL_32:
@@ -2338,10 +2338,10 @@ LABEL_32:
     v39 = objc_alloc(MEMORY[0x1E695DF20]);
     v40 = [v39 initWithObjectsAndKeys:{v25, *MEMORY[0x1E696A578], 0}];
     v41 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:v24 userInfo:v40];
-    if (v51)
+    if (errorCopy)
     {
       v41 = v41;
-      *v51 = v41;
+      *errorCopy = v41;
     }
   }
 
@@ -2349,37 +2349,37 @@ LABEL_32:
   return v25 == 0;
 }
 
-- (BOOL)sendInvitation:(id)a3 toDestination:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendInvitation:(id)invitation toDestination:(id)destination priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
   v75 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v64 = a6;
+  invitationCopy = invitation;
+  destinationCopy = destination;
+  optionsCopy = options;
   v14 = +[IDSInternalQueueController sharedInstance];
-  v15 = [v14 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v14 assertQueueIsCurrent];
 
-  if (v15)
+  if (assertQueueIsCurrent)
   {
-    v16 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F184();
     }
   }
 
-  v17 = [v13 destinationURIs];
-  v18 = [v17 count];
+  destinationURIs = [destinationCopy destinationURIs];
+  v18 = [destinationURIs count];
 
   if (v18)
   {
-    v19 = [(IDSAccount *)self->_account _internal];
-    v20 = [v19 isActive];
+    _internal = [(IDSAccount *)self->_account _internal];
+    isActive = [_internal isActive];
 
-    if (v20)
+    if (isActive)
     {
       v21 = [MEMORY[0x1E695DF00] now];
-      v22 = [(_IDSConnection *)v12 expirationDate];
-      v23 = [v21 compare:v22];
+      expirationDate = [(_IDSConnection *)invitationCopy expirationDate];
+      v23 = [v21 compare:expirationDate];
 
       if (v23 == 1)
       {
@@ -2415,14 +2415,14 @@ LABEL_32:
     v24 = 1;
   }
 
-  v62 = a8;
+  errorCopy = error;
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v65 = v13;
-  v26 = [v13 destinationURIs];
-  v27 = [v26 countByEnumeratingWithState:&v66 objects:v74 count:16];
+  v65 = destinationCopy;
+  destinationURIs2 = [destinationCopy destinationURIs];
+  v27 = [destinationURIs2 countByEnumeratingWithState:&v66 objects:v74 count:16];
   if (v27)
   {
     v28 = v27;
@@ -2433,7 +2433,7 @@ LABEL_32:
       {
         if (*v67 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(destinationURIs2);
         }
 
         v31 = *(*(&v66 + 1) + 8 * i);
@@ -2446,7 +2446,7 @@ LABEL_32:
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v66 objects:v74 count:16];
+      v28 = [destinationURIs2 countByEnumeratingWithState:&v66 objects:v74 count:16];
     }
 
     while (v28);
@@ -2456,29 +2456,29 @@ LABEL_32:
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v71 = v12;
+    selfCopy = invitationCopy;
     _os_log_impl(&dword_1959FF000, v33, OS_LOG_TYPE_DEFAULT, "sendInvitation - preparing to send invitation : %@", buf, 0xCu);
   }
 
   v34 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v35 = [(_IDSConnection *)v12 uniqueID];
-  v36 = [v35 UUIDString];
-  [(IDSAccount *)v34 setValue:v36 forKey:*MEMORY[0x1E69A49E0]];
+  uniqueID = [(_IDSConnection *)invitationCopy uniqueID];
+  uUIDString = [uniqueID UUIDString];
+  [(IDSAccount *)v34 setValue:uUIDString forKey:*MEMORY[0x1E69A49E0]];
 
-  v37 = [(_IDSConnection *)v12 context];
-  v38 = [v37 payload];
-  [(IDSAccount *)v34 setValue:v38 forKey:*MEMORY[0x1E69A49A8]];
+  context = [(_IDSConnection *)invitationCopy context];
+  payload = [context payload];
+  [(IDSAccount *)v34 setValue:payload forKey:*MEMORY[0x1E69A49A8]];
 
-  v39 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_IDSConnection state](v12, "state")}];
+  v39 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_IDSConnection state](invitationCopy, "state")}];
   [(IDSAccount *)v34 setValue:v39 forKey:*MEMORY[0x1E69A49D8]];
 
-  v40 = [(_IDSConnection *)v12 expirationDate];
+  expirationDate2 = [(_IDSConnection *)invitationCopy expirationDate];
 
-  if (v40)
+  if (expirationDate2)
   {
     v41 = MEMORY[0x1E696AD98];
-    v42 = [(_IDSConnection *)v12 expirationDate];
-    [v42 timeIntervalSince1970];
+    expirationDate3 = [(_IDSConnection *)invitationCopy expirationDate];
+    [expirationDate3 timeIntervalSince1970];
     v43 = [v41 numberWithDouble:?];
     [(IDSAccount *)v34 setValue:v43 forKey:*MEMORY[0x1E69A49C0]];
   }
@@ -2486,10 +2486,10 @@ LABEL_32:
   v44 = +[IDSLogging IDSConnection];
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
   {
-    v45 = [(_IDSConnection *)v12 uniqueID];
-    v46 = [v45 UUIDString];
+    uniqueID2 = [(_IDSConnection *)invitationCopy uniqueID];
+    uUIDString2 = [uniqueID2 UUIDString];
     *buf = 138412546;
-    v71 = v46;
+    selfCopy = uUIDString2;
     v72 = 2112;
     v73 = v34;
     _os_log_impl(&dword_1959FF000, v44, OS_LOG_TYPE_DEFAULT, "sendInvitation - invitation payload for id {%@}: %@", buf, 0x16u);
@@ -2498,24 +2498,24 @@ LABEL_32:
   if (v25)
   {
     v47 = 0;
-    v49 = v64;
+    v49 = optionsCopy;
     v48 = v65;
   }
 
   else
   {
-    v50 = [(IDSAccount *)self->_account _internal];
-    v51 = [v50 uniqueID];
+    _internal2 = [(IDSAccount *)self->_account _internal];
+    uniqueID3 = [_internal2 uniqueID];
 
-    if (v51)
+    if (uniqueID3)
     {
       v52 = objc_alloc_init(MEMORY[0x1E69A53E0]);
-      [v52 setPriority:a5];
+      [v52 setPriority:priority];
       v48 = v65;
       [v52 setDestinations:v65];
       [v52 setMessage:v34];
-      v49 = v64;
-      v47 = [(_IDSConnection *)self _sendWithParameters:v52 options:v64 loggingType:@"invitation (send)" loggingDataSize:[(IDSAccount *)v34 count]];
+      v49 = optionsCopy;
+      v47 = [(_IDSConnection *)self _sendWithParameters:v52 options:optionsCopy loggingType:@"invitation (send)" loggingDataSize:[(IDSAccount *)v34 count]];
       v53 = v47;
       v25 = 0;
     }
@@ -2527,7 +2527,7 @@ LABEL_32:
       {
         account = self->_account;
         *buf = 138412546;
-        v71 = self;
+        selfCopy = self;
         v72 = 2112;
         v73 = account;
         _os_log_impl(&dword_1959FF000, v52, OS_LOG_TYPE_DEFAULT, "sendInvitation - could not find account uniqueID! self: %@ account: %@", buf, 0x16u);
@@ -2536,15 +2536,15 @@ LABEL_32:
       v47 = 0;
       v25 = @"Could not find account uniqueID!";
       v24 = 7;
-      v49 = v64;
+      v49 = optionsCopy;
       v48 = v65;
     }
   }
 
-  if (a7)
+  if (identifier)
   {
     v55 = v47;
-    *a7 = v47;
+    *identifier = v47;
   }
 
   if (v25)
@@ -2552,10 +2552,10 @@ LABEL_32:
     v56 = objc_alloc(MEMORY[0x1E695DF20]);
     v57 = [v56 initWithObjectsAndKeys:{v25, *MEMORY[0x1E696A578], 0}];
     v58 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:v24 userInfo:v57];
-    if (v62)
+    if (errorCopy)
     {
       v58 = v58;
-      *v62 = v58;
+      *errorCopy = v58;
     }
   }
 
@@ -2563,37 +2563,37 @@ LABEL_32:
   return v25 == 0;
 }
 
-- (BOOL)sendInvitationUpdate:(id)a3 toDestination:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendInvitationUpdate:(id)update toDestination:(id)destination priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
   v75 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v64 = a6;
+  updateCopy = update;
+  destinationCopy = destination;
+  optionsCopy = options;
   v14 = +[IDSInternalQueueController sharedInstance];
-  v15 = [v14 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v14 assertQueueIsCurrent];
 
-  if (v15)
+  if (assertQueueIsCurrent)
   {
-    v16 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F224();
     }
   }
 
-  v17 = [v13 destinationURIs];
-  v18 = [v17 count];
+  destinationURIs = [destinationCopy destinationURIs];
+  v18 = [destinationURIs count];
 
   if (v18)
   {
-    v19 = [(IDSAccount *)self->_account _internal];
-    v20 = [v19 isActive];
+    _internal = [(IDSAccount *)self->_account _internal];
+    isActive = [_internal isActive];
 
-    if (v20)
+    if (isActive)
     {
       v21 = [MEMORY[0x1E695DF00] now];
-      v22 = [(_IDSConnection *)v12 expirationDate];
-      v23 = [v21 compare:v22];
+      expirationDate = [(_IDSConnection *)updateCopy expirationDate];
+      v23 = [v21 compare:expirationDate];
 
       if (v23 == 1)
       {
@@ -2629,14 +2629,14 @@ LABEL_32:
     v24 = 1;
   }
 
-  v62 = a8;
+  errorCopy = error;
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v65 = v13;
-  v26 = [v13 destinationURIs];
-  v27 = [v26 countByEnumeratingWithState:&v66 objects:v74 count:16];
+  v65 = destinationCopy;
+  destinationURIs2 = [destinationCopy destinationURIs];
+  v27 = [destinationURIs2 countByEnumeratingWithState:&v66 objects:v74 count:16];
   if (v27)
   {
     v28 = v27;
@@ -2647,7 +2647,7 @@ LABEL_32:
       {
         if (*v67 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(destinationURIs2);
         }
 
         v31 = *(*(&v66 + 1) + 8 * i);
@@ -2660,7 +2660,7 @@ LABEL_32:
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v66 objects:v74 count:16];
+      v28 = [destinationURIs2 countByEnumeratingWithState:&v66 objects:v74 count:16];
     }
 
     while (v28);
@@ -2670,29 +2670,29 @@ LABEL_32:
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v71 = v12;
+    selfCopy = updateCopy;
     _os_log_impl(&dword_1959FF000, v33, OS_LOG_TYPE_DEFAULT, "sendInvitationUpdate - preparing to send invitation : %@", buf, 0xCu);
   }
 
   v34 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v35 = [(_IDSConnection *)v12 uniqueID];
-  v36 = [v35 UUIDString];
-  [(IDSAccount *)v34 setValue:v36 forKey:*MEMORY[0x1E69A49E0]];
+  uniqueID = [(_IDSConnection *)updateCopy uniqueID];
+  uUIDString = [uniqueID UUIDString];
+  [(IDSAccount *)v34 setValue:uUIDString forKey:*MEMORY[0x1E69A49E0]];
 
-  v37 = [(_IDSConnection *)v12 context];
-  v38 = [v37 payload];
-  [(IDSAccount *)v34 setValue:v38 forKey:*MEMORY[0x1E69A49A8]];
+  context = [(_IDSConnection *)updateCopy context];
+  payload = [context payload];
+  [(IDSAccount *)v34 setValue:payload forKey:*MEMORY[0x1E69A49A8]];
 
-  v39 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_IDSConnection state](v12, "state")}];
+  v39 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_IDSConnection state](updateCopy, "state")}];
   [(IDSAccount *)v34 setValue:v39 forKey:*MEMORY[0x1E69A49D8]];
 
-  v40 = [(_IDSConnection *)v12 expirationDate];
+  expirationDate2 = [(_IDSConnection *)updateCopy expirationDate];
 
-  if (v40)
+  if (expirationDate2)
   {
     v41 = MEMORY[0x1E696AD98];
-    v42 = [(_IDSConnection *)v12 expirationDate];
-    [v42 timeIntervalSince1970];
+    expirationDate3 = [(_IDSConnection *)updateCopy expirationDate];
+    [expirationDate3 timeIntervalSince1970];
     v43 = [v41 numberWithDouble:?];
     [(IDSAccount *)v34 setValue:v43 forKey:*MEMORY[0x1E69A49C0]];
   }
@@ -2700,10 +2700,10 @@ LABEL_32:
   v44 = +[IDSLogging IDSConnection];
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
   {
-    v45 = [(_IDSConnection *)v12 uniqueID];
-    v46 = [v45 UUIDString];
+    uniqueID2 = [(_IDSConnection *)updateCopy uniqueID];
+    uUIDString2 = [uniqueID2 UUIDString];
     *buf = 138412546;
-    v71 = v46;
+    selfCopy = uUIDString2;
     v72 = 2112;
     v73 = v34;
     _os_log_impl(&dword_1959FF000, v44, OS_LOG_TYPE_DEFAULT, "sendInvitationUpdate - invitation payload for id {%@}: %@", buf, 0x16u);
@@ -2712,24 +2712,24 @@ LABEL_32:
   if (v25)
   {
     v47 = 0;
-    v49 = v64;
+    v49 = optionsCopy;
     v48 = v65;
   }
 
   else
   {
-    v50 = [(IDSAccount *)self->_account _internal];
-    v51 = [v50 uniqueID];
+    _internal2 = [(IDSAccount *)self->_account _internal];
+    uniqueID3 = [_internal2 uniqueID];
 
-    if (v51)
+    if (uniqueID3)
     {
       v52 = objc_alloc_init(MEMORY[0x1E69A53E0]);
-      [v52 setPriority:a5];
+      [v52 setPriority:priority];
       v48 = v65;
       [v52 setDestinations:v65];
       [v52 setMessage:v34];
-      v49 = v64;
-      v47 = [(_IDSConnection *)self _sendWithParameters:v52 options:v64 loggingType:@"invitation (update)" loggingDataSize:[(IDSAccount *)v34 count]];
+      v49 = optionsCopy;
+      v47 = [(_IDSConnection *)self _sendWithParameters:v52 options:optionsCopy loggingType:@"invitation (update)" loggingDataSize:[(IDSAccount *)v34 count]];
       v53 = v47;
       v25 = 0;
     }
@@ -2741,7 +2741,7 @@ LABEL_32:
       {
         account = self->_account;
         *buf = 138412546;
-        v71 = self;
+        selfCopy = self;
         v72 = 2112;
         v73 = account;
         _os_log_impl(&dword_1959FF000, v52, OS_LOG_TYPE_DEFAULT, "sendInvitationUpdate - could not find account uniqueID! self: %@ account: %@", buf, 0x16u);
@@ -2750,15 +2750,15 @@ LABEL_32:
       v47 = 0;
       v25 = @"Could not find account uniqueID!";
       v24 = 7;
-      v49 = v64;
+      v49 = optionsCopy;
       v48 = v65;
     }
   }
 
-  if (a7)
+  if (identifier)
   {
     v55 = v47;
-    *a7 = v47;
+    *identifier = v47;
   }
 
   if (v25)
@@ -2766,10 +2766,10 @@ LABEL_32:
     v56 = objc_alloc(MEMORY[0x1E695DF20]);
     v57 = [v56 initWithObjectsAndKeys:{v25, *MEMORY[0x1E696A578], 0}];
     v58 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"com.apple.identityservices.error" code:v24 userInfo:v57];
-    if (v62)
+    if (errorCopy)
     {
       v58 = v58;
-      *v62 = v58;
+      *errorCopy = v58;
     }
   }
 
@@ -2777,46 +2777,46 @@ LABEL_32:
   return v25 == 0;
 }
 
-- (BOOL)sendServerMessage:(id)a3 command:(id)a4
+- (BOOL)sendServerMessage:(id)message command:(id)command
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  commandCopy = command;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F2C4();
     }
   }
 
-  if (v7 && [v6 count])
+  if (commandCopy && [messageCopy count])
   {
-    v11 = [(IDSAccount *)self->_account _internal];
-    v12 = [v11 uniqueID];
+    _internal = [(IDSAccount *)self->_account _internal];
+    uniqueID = [_internal uniqueID];
 
-    v13 = [(_IDSConnection *)self daemonController];
-    [v13 sendServerMessage:v6 command:v7 usingAccountWithUniqueID:v12];
+    daemonController = [(_IDSConnection *)self daemonController];
+    [daemonController sendServerMessage:messageCopy command:commandCopy usingAccountWithUniqueID:uniqueID];
 
     v14 = 1;
   }
 
   else
   {
-    v12 = +[IDSLogging IDSConnection];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    uniqueID = +[IDSLogging IDSConnection];
+    if (os_log_type_enabled(uniqueID, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412802;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
-      v20 = v6;
+      v20 = messageCopy;
       v21 = 2112;
-      v22 = v7;
-      _os_log_error_impl(&dword_1959FF000, v12, OS_LOG_TYPE_ERROR, "%@ asked to send server message %@ with command %@ - invalid value!", &v17, 0x20u);
+      v22 = commandCopy;
+      _os_log_error_impl(&dword_1959FF000, uniqueID, OS_LOG_TYPE_ERROR, "%@ asked to send server message %@ with command %@ - invalid value!", &v17, 0x20u);
     }
 
     v14 = 0;
@@ -2826,33 +2826,33 @@ LABEL_32:
   return v14;
 }
 
-- (void)connection:(id)a3 incomingAckWithIdentifier:(id)a4 forTopic:(id)a5 toIdentifier:(id)a6 fromIdentifier:(id)a7 hasBeenDeliveredWithContext:(id)a8 isAppAck:(BOOL)a9
+- (void)connection:(id)connection incomingAckWithIdentifier:(id)identifier forTopic:(id)topic toIdentifier:(id)toIdentifier fromIdentifier:(id)fromIdentifier hasBeenDeliveredWithContext:(id)context isAppAck:(BOOL)ack
 {
   v31 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (self->_directMessageConnection == v15)
+  connectionCopy = connection;
+  identifierCopy = identifier;
+  topicCopy = topic;
+  toIdentifierCopy = toIdentifier;
+  fromIdentifierCopy = fromIdentifier;
+  contextCopy = context;
+  if (self->_directMessageConnection == connectionCopy)
   {
     v21 = +[IDSLogging IDSConnection];
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-    if (a9)
+    if (ack)
     {
       if (v22)
       {
         *buf = 138412546;
-        v28 = v15;
+        v28 = connectionCopy;
         v29 = 2112;
-        v30 = v16;
+        v30 = identifierCopy;
         _os_log_impl(&dword_1959FF000, v21, OS_LOG_TYPE_DEFAULT, "incomingAppLevelAckFromDirectConnection: %@ guid %@", buf, 0x16u);
       }
 
-      v23 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v18];
-      v24 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v19];
-      [(_IDSConnection *)self messageIdentifier:v16 forTopic:v17 toURI:v23 fromURI:v24 hasBeenDeliveredWithContext:v20];
+      _internal = [MEMORY[0x1E69A5428] URIWithPrefixedURI:toIdentifierCopy];
+      uniqueID = [MEMORY[0x1E69A5428] URIWithPrefixedURI:fromIdentifierCopy];
+      [(_IDSConnection *)self messageIdentifier:identifierCopy forTopic:topicCopy toURI:_internal fromURI:uniqueID hasBeenDeliveredWithContext:contextCopy];
     }
 
     else
@@ -2860,156 +2860,156 @@ LABEL_32:
       if (v22)
       {
         *buf = 138412546;
-        v28 = v15;
+        v28 = connectionCopy;
         v29 = 2112;
-        v30 = v16;
+        v30 = identifierCopy;
         _os_log_impl(&dword_1959FF000, v21, OS_LOG_TYPE_DEFAULT, "incomingAckFromDirectConnection: %@ guid %@", buf, 0x16u);
       }
 
-      v23 = [(IDSAccount *)self->_account _internal];
-      v24 = [v23 uniqueID];
+      _internal = [(IDSAccount *)self->_account _internal];
+      uniqueID = [_internal uniqueID];
       LOBYTE(v26) = 1;
-      [(_IDSConnection *)self messageIdentifierInner:v16 alternateCallbackID:0 forAccount:v24 updatedWithResponseCode:0 error:0 lastCall:1 context:v20 isDirectMessage:v26];
+      [(_IDSConnection *)self messageIdentifierInner:identifierCopy alternateCallbackID:0 forAccount:uniqueID updatedWithResponseCode:0 error:0 lastCall:1 context:contextCopy isDirectMessage:v26];
     }
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 incomingDataFromDirectConnection:(id)a4 withGUID:(id)a5 forTopic:(id)a6 toIdentifier:(id)a7 fromID:(id)a8 context:(id)a9
+- (void)connection:(id)connection incomingDataFromDirectConnection:(id)directConnection withGUID:(id)d forTopic:(id)topic toIdentifier:(id)identifier fromID:(id)iD context:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a5;
-  if (self->_directMessageConnection == v15)
+  connectionCopy = connection;
+  dCopy = d;
+  if (self->_directMessageConnection == connectionCopy)
   {
-    v17 = a9;
-    v18 = a8;
-    v19 = a7;
-    v20 = a6;
-    v21 = a4;
+    contextCopy = context;
+    iDCopy = iD;
+    identifierCopy = identifier;
+    topicCopy = topic;
+    directConnectionCopy = directConnection;
     v22 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138412546;
-      v27 = v15;
+      v27 = connectionCopy;
       v28 = 2112;
-      v29 = v16;
+      v29 = dCopy;
       _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "incomingDataFromDirectConnection: %@ guid %@", &v26, 0x16u);
     }
 
-    v23 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v19];
+    v23 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:identifierCopy];
 
-    v24 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v18];
+    v24 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:iDCopy];
 
-    [(_IDSConnection *)self dataReceived:v21 withGUID:v16 forTopic:v20 toURI:v23 fromURI:v24 context:v17];
+    [(_IDSConnection *)self dataReceived:directConnectionCopy withGUID:dCopy forTopic:topicCopy toURI:v23 fromURI:v24 context:contextCopy];
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 incomingMessageFromDirectConnection:(id)a4 withGUID:(id)a5 forTopic:(id)a6 toIdentifier:(id)a7 fromID:(id)a8 context:(id)a9
+- (void)connection:(id)connection incomingMessageFromDirectConnection:(id)directConnection withGUID:(id)d forTopic:(id)topic toIdentifier:(id)identifier fromID:(id)iD context:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  if (self->_directMessageConnection == v15)
+  connectionCopy = connection;
+  if (self->_directMessageConnection == connectionCopy)
   {
-    v16 = a9;
-    v17 = a8;
-    v18 = a7;
-    v19 = a6;
-    v20 = a5;
-    v21 = a4;
+    contextCopy = context;
+    iDCopy = iD;
+    identifierCopy = identifier;
+    topicCopy = topic;
+    dCopy = d;
+    directConnectionCopy = directConnection;
     v22 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v15;
+      v27 = connectionCopy;
       _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "incomingMessageFromDirectConnection: %@", buf, 0xCu);
     }
 
-    v23 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v18];
+    v23 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:identifierCopy];
 
-    v24 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v17];
+    v24 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:iDCopy];
 
-    [(_IDSConnection *)self messageReceived:0 withGUID:v20 withPayload:v21 forTopic:v19 toURI:v23 fromURI:v24 context:v16];
+    [(_IDSConnection *)self messageReceived:0 withGUID:dCopy withPayload:directConnectionCopy forTopic:topicCopy toURI:v23 fromURI:v24 context:contextCopy];
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 incomingProtobufFromDirectConnection:(id)a4 withGUID:(id)a5 forTopic:(id)a6 toIdentifier:(id)a7 fromID:(id)a8 context:(id)a9
+- (void)connection:(id)connection incomingProtobufFromDirectConnection:(id)directConnection withGUID:(id)d forTopic:(id)topic toIdentifier:(id)identifier fromID:(id)iD context:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  if (self->_directMessageConnection == v15)
+  connectionCopy = connection;
+  if (self->_directMessageConnection == connectionCopy)
   {
-    v16 = a9;
-    v17 = a8;
-    v18 = a7;
-    v19 = a6;
-    v20 = a5;
-    v21 = a4;
+    contextCopy = context;
+    iDCopy = iD;
+    identifierCopy = identifier;
+    topicCopy = topic;
+    dCopy = d;
+    directConnectionCopy = directConnection;
     v22 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138412290;
-      v27 = v15;
+      v27 = connectionCopy;
       _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "incomingProtobufFromDirectConnection: %@", &v26, 0xCu);
     }
 
-    v23 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v18];
+    v23 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:identifierCopy];
 
-    v24 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v17];
+    v24 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:iDCopy];
 
-    [(_IDSConnection *)self protobufReceived:v21 withGUID:v20 forTopic:v19 toURI:v23 fromURI:v24 context:v16];
+    [(_IDSConnection *)self protobufReceived:directConnectionCopy withGUID:dCopy forTopic:topicCopy toURI:v23 fromURI:v24 context:contextCopy];
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 incomingGUIDAckFromDirectConnection:(id)a4
+- (void)connection:(id)connection incomingGUIDAckFromDirectConnection:(id)directConnection
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  directConnectionCopy = directConnection;
   v7 = +[IDSLogging IDSConnection];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = connectionCopy;
     v11 = 2112;
-    v12 = v6;
+    v12 = directConnectionCopy;
     _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "incomingGUIDAckFromDirectConnection: %@/%@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 messageSendFailed:(id)a4 responseCode:(int64_t)a5
+- (void)connection:(id)connection messageSendFailed:(id)failed responseCode:(int64_t)code
 {
-  if (self->_directMessageConnection == a3)
+  if (self->_directMessageConnection == connection)
   {
     account = self->_account;
-    v9 = a4;
-    v14 = [(IDSAccount *)account _internal];
-    v10 = [v14 uniqueID];
+    failedCopy = failed;
+    _internal = [(IDSAccount *)account _internal];
+    uniqueID = [_internal uniqueID];
     v11 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v12 = [v11 initWithDomain:*MEMORY[0x1E69A5098] code:a5 userInfo:0];
+    v12 = [v11 initWithDomain:*MEMORY[0x1E69A5098] code:code userInfo:0];
     LOBYTE(v13) = 1;
-    [(_IDSConnection *)self messageIdentifierInner:v9 alternateCallbackID:0 forAccount:v10 updatedWithResponseCode:a5 error:v12 lastCall:1 context:0 isDirectMessage:v13];
+    [(_IDSConnection *)self messageIdentifierInner:failedCopy alternateCallbackID:0 forAccount:uniqueID updatedWithResponseCode:code error:v12 lastCall:1 context:0 isDirectMessage:v13];
   }
 }
 
-- (void)account:(id)a3 isActiveChanged:(BOOL)a4
+- (void)account:(id)account isActiveChanged:(BOOL)changed
 {
   v6 = +[IDSInternalQueueController sharedInstance];
-  v7 = [v6 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-  if (v7)
+  if (assertQueueIsCurrent)
   {
-    v8 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F364();
     }
@@ -3020,20 +3020,20 @@ LABEL_32:
   v9[2] = sub_195A76ACC;
   v9[3] = &unk_1E7440E80;
   v9[4] = self;
-  v10 = a4;
+  changedCopy = changed;
   [(_IDSConnection *)self _callDelegatesWithBlock:v9];
 }
 
-- (void)account:(id)a3 devicesChanged:(id)a4
+- (void)account:(id)account devicesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = +[IDSInternalQueueController sharedInstance];
-  v7 = [v6 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-  if (v7)
+  if (assertQueueIsCurrent)
   {
-    v8 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F404();
     }
@@ -3043,27 +3043,27 @@ LABEL_32:
   v12 = 3221225472;
   v13 = sub_195A76C50;
   v14 = &unk_1E7440EA8;
-  v15 = self;
-  v9 = v5;
+  selfCopy = self;
+  v9 = changedCopy;
   v16 = v9;
   [(_IDSConnection *)self _callDelegatesWithBlock:&v11];
   directMessageConnection = self->_directMessageConnection;
   if (directMessageConnection)
   {
-    [(IDSDirectMessageConnection *)directMessageConnection updateConnectedDevices:v9, v11, v12, v13, v14, v15];
+    [(IDSDirectMessageConnection *)directMessageConnection updateConnectedDevices:v9, v11, v12, v13, v14, selfCopy];
   }
 }
 
-- (void)account:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)account:(id)account nearbyDevicesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = +[IDSInternalQueueController sharedInstance];
-  v7 = [v6 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-  if (v7)
+  if (assertQueueIsCurrent)
   {
-    v8 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F4A4();
     }
@@ -3073,27 +3073,27 @@ LABEL_32:
   v12 = 3221225472;
   v13 = sub_195A76DD4;
   v14 = &unk_1E7440EA8;
-  v15 = self;
-  v9 = v5;
+  selfCopy = self;
+  v9 = changedCopy;
   v16 = v9;
   [(_IDSConnection *)self _callDelegatesWithBlock:&v11];
   directMessageConnection = self->_directMessageConnection;
   if (directMessageConnection)
   {
-    [(IDSDirectMessageConnection *)directMessageConnection updateConnectedDevices:v9, v11, v12, v13, v14, v15];
+    [(IDSDirectMessageConnection *)directMessageConnection updateConnectedDevices:v9, v11, v12, v13, v14, selfCopy];
   }
 }
 
-- (void)account:(id)a3 connectedDevicesChanged:(id)a4
+- (void)account:(id)account connectedDevicesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = +[IDSInternalQueueController sharedInstance];
-  v7 = [v6 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-  if (v7)
+  if (assertQueueIsCurrent)
   {
-    v8 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F544();
     }
@@ -3103,29 +3103,29 @@ LABEL_32:
   v12 = 3221225472;
   v13 = sub_195A76F58;
   v14 = &unk_1E7440EA8;
-  v15 = self;
-  v9 = v5;
+  selfCopy = self;
+  v9 = changedCopy;
   v16 = v9;
   [(_IDSConnection *)self _callDelegatesWithBlock:&v11];
   directMessageConnection = self->_directMessageConnection;
   if (directMessageConnection)
   {
-    [(IDSDirectMessageConnection *)directMessageConnection updateConnectedDevices:v9, v11, v12, v13, v14, v15];
+    [(IDSDirectMessageConnection *)directMessageConnection updateConnectedDevices:v9, v11, v12, v13, v14, selfCopy];
   }
 }
 
-- (void)_handleLastCallForPendingIdentifier:(id)a3 callbackID:(id)a4
+- (void)_handleLastCallForPendingIdentifier:(id)identifier callbackID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  identifierCopy = identifier;
+  dCopy = d;
+  if (identifierCopy)
   {
-    [(IMOrderedMutableDictionary *)self->_pendingSends removeOrderedObjectForKey:v8];
+    [(IMOrderedMutableDictionary *)self->_pendingSends removeOrderedObjectForKey:identifierCopy];
   }
 
-  if (v6)
+  if (dCopy)
   {
-    [(IMOrderedMutableDictionary *)self->_pendingSends removeOrderedObjectForKey:v6];
+    [(IMOrderedMutableDictionary *)self->_pendingSends removeOrderedObjectForKey:dCopy];
   }
 
   if (![(IMOrderedMutableDictionary *)self->_pendingSends count])
@@ -3135,82 +3135,82 @@ LABEL_32:
   }
 }
 
-- (void)messageIdentifierInner:(id)a3 alternateCallbackID:(id)a4 forAccount:(id)a5 updatedWithResponseCode:(int64_t)a6 error:(id)a7 lastCall:(BOOL)a8 context:(id)a9 isDirectMessage:(BOOL)a10
+- (void)messageIdentifierInner:(id)inner alternateCallbackID:(id)d forAccount:(id)account updatedWithResponseCode:(int64_t)code error:(id)error lastCall:(BOOL)call context:(id)context isDirectMessage:(BOOL)self0
 {
-  v10 = a8;
+  callCopy = call;
   v90 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v63 = a7;
-  v19 = a9;
+  innerCopy = inner;
+  dCopy = d;
+  accountCopy = account;
+  errorCopy = error;
+  contextCopy = context;
   v20 = +[IDSInternalQueueController sharedInstance];
-  v21 = [v20 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v20 assertQueueIsCurrent];
 
-  if (v21)
+  if (assertQueueIsCurrent)
   {
-    v22 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F8B4();
     }
   }
 
-  v23 = [(IDSAccount *)self->_account _internal];
-  v24 = [v23 uniqueID];
+  _internal = [(IDSAccount *)self->_account _internal];
+  uniqueID = [_internal uniqueID];
   v25 = IMAreObjectsLogicallySame();
 
   if (v25)
   {
-    v61 = v17;
+    v61 = dCopy;
     v26 = 0x1E743D000uLL;
     v27 = +[IDSLogging GUIDTRACE];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       v28 = @"NO";
       *buf = 138412802;
-      v73 = v16;
-      if (v10)
+      selfCopy2 = innerCopy;
+      if (callCopy)
       {
         v28 = @"YES";
       }
 
       v74 = 2048;
-      v75 = a6;
+      codeCopy = code;
       v76 = 2112;
       v77 = v28;
       _os_log_impl(&dword_1959FF000, v27, OS_LOG_TYPE_DEFAULT, "OUTGOING-UPDATE:%@ CODE:%ld LASTCALL:%@", buf, 0x20u);
     }
 
     v60 = self->_messageContext;
-    v62 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:v19 boostContext:v60];
+    v62 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:contextCopy boostContext:v60];
     v29 = 0x1E743D000uLL;
     v30 = +[IDSTransportLog IDSConnection];
     v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
-    if (a6 == 29)
+    if (code == 29)
     {
       if (v31)
       {
-        v32 = [v19 objectForKey:*MEMORY[0x1E69A4E80]];
-        v33 = [v19 objectForKey:*MEMORY[0x1E69A4E78]];
-        v34 = [v19 objectForKey:*MEMORY[0x1E69A4E88]];
+        v32 = [contextCopy objectForKey:*MEMORY[0x1E69A4E80]];
+        v33 = [contextCopy objectForKey:*MEMORY[0x1E69A4E78]];
+        v34 = [contextCopy objectForKey:*MEMORY[0x1E69A4E88]];
         v35 = v34;
         *buf = 138414338;
         v36 = @"NO";
-        v73 = self;
+        selfCopy2 = self;
         v74 = 2114;
-        if (v10)
+        if (callCopy)
         {
           v36 = @"YES";
         }
 
-        v75 = v16;
+        codeCopy = innerCopy;
         v76 = 2112;
         v77 = v61;
         v78 = 2048;
-        v79 = 29;
+        codeCopy2 = 29;
         v80 = 2114;
-        v81 = v63;
+        v81 = errorCopy;
         v82 = 2114;
         v83 = v32;
         v84 = 2114;
@@ -3228,7 +3228,7 @@ LABEL_32:
 
     else if (v31)
     {
-      if (v10)
+      if (callCopy)
       {
         v37 = @"YES";
       }
@@ -3238,33 +3238,33 @@ LABEL_32:
         v37 = @"NO";
       }
 
-      v38 = [v62 endpointState];
+      endpointState = [v62 endpointState];
       *buf = 138413826;
-      v73 = self;
+      selfCopy2 = self;
       v74 = 2114;
-      v75 = v16;
+      codeCopy = innerCopy;
       v76 = 2112;
-      v77 = v17;
+      v77 = dCopy;
       v78 = 2048;
-      v79 = a6;
+      codeCopy2 = code;
       v80 = 2114;
-      v81 = v63;
+      v81 = errorCopy;
       v82 = 2112;
       v83 = v37;
       v29 = 0x1E743D000uLL;
       v84 = 2048;
-      v85 = v38;
+      v85 = endpointState;
       _os_log_impl(&dword_1959FF000, v30, OS_LOG_TYPE_DEFAULT, "%@ outgoing message guid response: %{public}@  callbackID: %@  response code: %ld   error: %{public}@   lastCall: %@  endpointState: %ld", buf, 0x48u);
     }
 
-    if (a6 != 11 && !v10)
+    if (code != 11 && !callCopy)
     {
       goto LABEL_22;
     }
 
-    v17 = v61;
-    [(_IDSConnection *)self _handleLastCallForPendingIdentifier:v16 callbackID:v61];
-    if (a6 == 11)
+    dCopy = v61;
+    [(_IDSConnection *)self _handleLastCallForPendingIdentifier:innerCopy callbackID:v61];
+    if (code == 11)
     {
       goto LABEL_35;
     }
@@ -3276,37 +3276,37 @@ LABEL_32:
     v29 = v56;
     if (v58)
     {
-      [_IDSConnection didCancelMessageWithSuccess:"didCancelMessageWithSuccess:onAccount:error:identifier:" onAccount:(a6 | v63) == 0 error:v18 identifier:?];
+      [_IDSConnection didCancelMessageWithSuccess:"didCancelMessageWithSuccess:onAccount:error:identifier:" onAccount:(code | errorCopy) == 0 error:accountCopy identifier:?];
     }
 
     else
     {
 LABEL_22:
-      v39 = [*(v29 + 1456) IDSConnection];
-      if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+      iDSConnection = [*(v29 + 1456) IDSConnection];
+      if (os_log_type_enabled(iDSConnection, OS_LOG_TYPE_DEFAULT))
       {
-        v40 = [v62 serverReceivedTime];
+        serverReceivedTime = [v62 serverReceivedTime];
         [v62 serverTimestamp];
         v42 = v41 = v26;
         *buf = 138412546;
-        v73 = v40;
+        selfCopy2 = serverReceivedTime;
         v74 = 2112;
-        v75 = v42;
-        _os_log_impl(&dword_1959FF000, v39, OS_LOG_TYPE_DEFAULT, "Server Timestamp for UpdatedWithResponseCode? { serverReceivedTime: %@, serverTimestamp: %@}", buf, 0x16u);
+        codeCopy = v42;
+        _os_log_impl(&dword_1959FF000, iDSConnection, OS_LOG_TYPE_DEFAULT, "Server Timestamp for UpdatedWithResponseCode? { serverReceivedTime: %@, serverTimestamp: %@}", buf, 0x16u);
 
         v26 = v41;
       }
 
-      v59 = a6 == 0;
-      v43 = sub_195A0AAB0(v63);
+      v59 = code == 0;
+      v43 = sub_195A0AAB0(errorCopy);
       v44 = v43;
-      v45 = !v10;
-      if (a6 && (v45 & 1) == 0 && !v43)
+      v45 = !callCopy;
+      if (code && (v45 & 1) == 0 && !v43)
       {
-        v46 = [*(v26 + 1160) IDSConnection];
-        if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
+        iDSConnection2 = [*(v26 + 1160) IDSConnection];
+        if (os_log_type_enabled(iDSConnection2, OS_LOG_TYPE_ERROR))
         {
-          sub_195B2F954(v46);
+          sub_195B2F954(iDSConnection2);
         }
 
         v47 = objc_alloc(MEMORY[0x1E695DF20]);
@@ -3319,56 +3319,56 @@ LABEL_22:
       v64[2] = sub_195A77778;
       v64[3] = &unk_1E7440ED0;
       v64[4] = self;
-      v49 = v16;
+      v49 = innerCopy;
       v65 = v49;
       v50 = v61;
       v66 = v50;
-      v69 = a6;
+      codeCopy3 = code;
       v51 = v44;
       v67 = v51;
-      v70 = v10;
+      v70 = callCopy;
       v68 = v62;
       v71 = v59;
       [(_IDSConnection *)self _callDelegatesWithBlock:v64];
-      if (((v45 | a10) & 1) == 0)
+      if (((v45 | message) & 1) == 0)
       {
-        v52 = [(_IDSConnection *)self daemonController];
-        v53 = [(IDSAccount *)self->_account _internal];
-        v54 = [v53 uniqueID];
-        [v52 acknowledgeOutgoingMessageWithGUID:v49 alternateCallbackID:v50 forAccountWithUniqueID:v54];
+        daemonController = [(_IDSConnection *)self daemonController];
+        _internal2 = [(IDSAccount *)self->_account _internal];
+        uniqueID2 = [_internal2 uniqueID];
+        [daemonController acknowledgeOutgoingMessageWithGUID:v49 alternateCallbackID:v50 forAccountWithUniqueID:uniqueID2];
       }
     }
 
-    v17 = v61;
+    dCopy = v61;
 LABEL_35:
   }
 
   v55 = *MEMORY[0x1E69E9840];
 }
 
-- (void)messageIdentifier:(id)a3 alternateCallbackID:(id)a4 forAccount:(id)a5 willSendToDestinations:(id)a6 skippedDestinations:(id)a7 registrationPropertyToDestinations:(id)a8
+- (void)messageIdentifier:(id)identifier alternateCallbackID:(id)d forAccount:(id)account willSendToDestinations:(id)destinations skippedDestinations:(id)skippedDestinations registrationPropertyToDestinations:(id)toDestinations
 {
   v49 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  destinationsCopy = destinations;
+  skippedDestinationsCopy = skippedDestinations;
+  toDestinationsCopy = toDestinations;
+  accountCopy = account;
   v20 = +[IDSInternalQueueController sharedInstance];
-  v21 = [v20 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v20 assertQueueIsCurrent];
 
-  if (v21)
+  if (assertQueueIsCurrent)
   {
-    v22 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2F998();
     }
   }
 
-  v23 = [(IDSAccount *)self->_account _internal];
-  v24 = [v23 uniqueID];
+  _internal = [(IDSAccount *)self->_account _internal];
+  uniqueID = [_internal uniqueID];
   v25 = IMAreObjectsLogicallySame();
 
   if (v25)
@@ -3376,15 +3376,15 @@ LABEL_35:
     v26 = +[IDSTransportLog IDSConnection];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v16, "count")}];
-      v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v17, "count")}];
-      v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v18, "count")}];
+      v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(destinationsCopy, "count")}];
+      v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(skippedDestinationsCopy, "count")}];
+      v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(toDestinationsCopy, "count")}];
       *buf = 138413570;
-      v38 = self;
+      selfCopy = self;
       v39 = 2112;
-      v40 = v14;
+      v40 = identifierCopy;
       v41 = 2112;
-      v42 = v15;
+      v42 = dCopy;
       v43 = 2112;
       v44 = v27;
       v45 = 2112;
@@ -3399,41 +3399,41 @@ LABEL_35:
     v31[2] = sub_195A77C84;
     v31[3] = &unk_1E7440EF8;
     v31[4] = self;
-    v32 = v14;
-    v33 = v15;
-    v34 = v16;
-    v35 = v17;
-    v36 = v18;
+    v32 = identifierCopy;
+    v33 = dCopy;
+    v34 = destinationsCopy;
+    v35 = skippedDestinationsCopy;
+    v36 = toDestinationsCopy;
     [(_IDSConnection *)self _callDelegatesWithBlock:v31];
   }
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)messageIdentifier:(id)a3 forTopic:(id)a4 toURI:(id)a5 fromURI:(id)a6 hasBeenDeliveredWithContext:(id)a7
+- (void)messageIdentifier:(id)identifier forTopic:(id)topic toURI:(id)i fromURI:(id)rI hasBeenDeliveredWithContext:(id)context
 {
   v54 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v37 = a6;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
+  identifierCopy = identifier;
+  rICopy = rI;
+  contextCopy = context;
+  iCopy = i;
+  topicCopy = topic;
   v16 = +[IDSInternalQueueController sharedInstance];
-  LODWORD(a5) = [v16 assertQueueIsCurrent];
+  LODWORD(i) = [v16 assertQueueIsCurrent];
 
-  if (a5)
+  if (i)
   {
-    v17 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2FA38();
     }
   }
 
   v18 = self->_messageContext;
-  v19 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:v13 boostContext:v18];
-  v20 = [v19 outgoingResponseIdentifier];
-  v21 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"app-level ack" forTopic:v15 localURI:v14 remoteURI:0 validateAliases:1 guid:v20];
+  v19 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:contextCopy boostContext:v18];
+  outgoingResponseIdentifier = [v19 outgoingResponseIdentifier];
+  v21 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"app-level ack" forTopic:topicCopy localURI:iCopy remoteURI:0 validateAliases:1 guid:outgoingResponseIdentifier];
 
   if (v21)
   {
@@ -3441,11 +3441,11 @@ LABEL_35:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v49 = self;
+      selfCopy = self;
       v50 = 2112;
-      v51 = v12;
+      v51 = identifierCopy;
       v52 = 2112;
-      v53 = v13;
+      v53 = contextCopy;
       _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "%@ received app-level ack with identifier %@ context %@", buf, 0x20u);
     }
 
@@ -3456,82 +3456,82 @@ LABEL_35:
     v44[2] = sub_195A78190;
     v44[3] = &unk_1E7440F20;
     v44[4] = self;
-    v36 = v12;
-    v45 = v12;
-    v46 = v37;
-    v47 = v13;
+    v36 = identifierCopy;
+    v45 = identifierCopy;
+    v46 = rICopy;
+    v47 = contextCopy;
     [(_IDSConnection *)self _callDelegatesWithBlock:v44 group:v23];
-    v24 = [v19 storageGuid];
-    v25 = [v19 broadcastTime];
+    storageGuid = [v19 storageGuid];
+    broadcastTime = [v19 broadcastTime];
 
-    if (v25)
+    if (broadcastTime)
     {
       v26 = MEMORY[0x1E696AD98];
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v28 = v27;
-      v29 = [v19 broadcastTime];
-      [v29 doubleValue];
-      v25 = [v26 numberWithDouble:v28 - v30];
+      broadcastTime2 = [v19 broadcastTime];
+      [broadcastTime2 doubleValue];
+      broadcastTime = [v26 numberWithDouble:v28 - v30];
     }
 
     v31 = +[IDSInternalQueueController sharedInstance];
-    v32 = [v31 queue];
+    queue = [v31 queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_195A78210;
     block[3] = &unk_1E743EF38;
-    v39 = v24;
-    v40 = v25;
-    v41 = self;
-    v42 = v20;
+    v39 = storageGuid;
+    v40 = broadcastTime;
+    selfCopy2 = self;
+    v42 = outgoingResponseIdentifier;
     v43 = v19;
-    v33 = v25;
-    v34 = v24;
-    dispatch_group_notify(v23, v32, block);
+    v33 = broadcastTime;
+    v34 = storageGuid;
+    dispatch_group_notify(v23, queue, block);
 
     dispatch_group_leave(v23);
-    v12 = v36;
+    identifierCopy = v36;
   }
 
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didSendOpportunisticDataWithIdentifier:(id)a3 onAccount:(id)a4 toIDs:(id)a5
+- (void)didSendOpportunisticDataWithIdentifier:(id)identifier onAccount:(id)account toIDs:(id)ds
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  accountCopy = account;
+  dsCopy = ds;
   v11 = +[IDSInternalQueueController sharedInstance];
-  v12 = [v11 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v11 assertQueueIsCurrent];
 
-  if (v12)
+  if (assertQueueIsCurrent)
   {
-    v13 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2FAD8();
     }
   }
 
-  v14 = [(IDSAccount *)self->_account _internal];
-  v15 = [v14 uniqueID];
+  _internal = [(IDSAccount *)self->_account _internal];
+  uniqueID = [_internal uniqueID];
   v16 = IMAreObjectsLogicallySame();
 
   if (v16)
   {
-    v17 = [MEMORY[0x1E69A5270] opportunistic];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    opportunistic = [MEMORY[0x1E69A5270] opportunistic];
+    if (os_log_type_enabled(opportunistic, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v23 = self;
+      selfCopy = self;
       v24 = 2112;
-      v25 = v8;
+      v25 = identifierCopy;
       v26 = 2112;
-      v27 = v9;
+      v27 = accountCopy;
       v28 = 2112;
-      v29 = v10;
-      _os_log_impl(&dword_1959FF000, v17, OS_LOG_TYPE_DEFAULT, "Recieved did send opportunistic data {connection: %@, identifier: %@, accountID: %@, toIDs: %@}", buf, 0x2Au);
+      v29 = dsCopy;
+      _os_log_impl(&dword_1959FF000, opportunistic, OS_LOG_TYPE_DEFAULT, "Recieved did send opportunistic data {connection: %@, identifier: %@, accountID: %@, toIDs: %@}", buf, 0x2Au);
     }
 
     v19[0] = MEMORY[0x1E69E9820];
@@ -3539,27 +3539,27 @@ LABEL_35:
     v19[2] = sub_195A78520;
     v19[3] = &unk_1E7440F48;
     v19[4] = self;
-    v20 = v8;
-    v21 = v10;
+    v20 = identifierCopy;
+    v21 = dsCopy;
     [(_IDSConnection *)self _callDelegatesWithBlock:v19];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didCancelMessageWithSuccess:(BOOL)a3 onAccount:(id)a4 error:(id)a5 identifier:(id)a6
+- (void)didCancelMessageWithSuccess:(BOOL)success onAccount:(id)account error:(id)error identifier:(id)identifier
 {
-  v7 = a3;
+  successCopy = success;
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a6;
+  errorCopy = error;
+  identifierCopy = identifier;
   v11 = +[IDSInternalQueueController sharedInstance];
-  v12 = [v11 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v11 assertQueueIsCurrent];
 
-  if (v12)
+  if (assertQueueIsCurrent)
   {
-    v13 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2FB78();
     }
@@ -3570,8 +3570,8 @@ LABEL_35:
   {
     v15 = @"NO";
     *buf = 138413058;
-    v24 = self;
-    if (v7)
+    selfCopy = self;
+    if (successCopy)
     {
       v15 = @"YES";
     }
@@ -3579,9 +3579,9 @@ LABEL_35:
     v25 = 2112;
     v26 = v15;
     v27 = 2112;
-    v28 = v9;
+    v28 = errorCopy;
     v29 = 2112;
-    v30 = v10;
+    v30 = identifierCopy;
     _os_log_impl(&dword_1959FF000, v14, OS_LOG_TYPE_DEFAULT, "%@: didCancelMessageWithSuccess: %@ error: %@ identifier %@", buf, 0x2Au);
   }
 
@@ -3589,112 +3589,112 @@ LABEL_35:
   v19[1] = 3221225472;
   v19[2] = sub_195A7877C;
   v19[3] = &unk_1E7440F70;
-  v22 = v7;
+  v22 = successCopy;
   v19[4] = self;
-  v20 = v9;
-  v21 = v10;
-  v16 = v10;
-  v17 = v9;
+  v20 = errorCopy;
+  v21 = identifierCopy;
+  v16 = identifierCopy;
+  v17 = errorCopy;
   [(_IDSConnection *)self _callDelegatesWithBlock:v19];
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setTemporaryMessageContext:(id)a3
+- (void)_setTemporaryMessageContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   messageContext = self->_messageContext;
   p_messageContext = &self->_messageContext;
-  if (messageContext != v5)
+  if (messageContext != contextCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_messageContext, a3);
-    v5 = v8;
+    v8 = contextCopy;
+    objc_storeStrong(p_messageContext, context);
+    contextCopy = v8;
   }
 }
 
-- (BOOL)_shouldAcceptIncomingType:(id)a3 forTopic:(id)a4 localURI:(id)a5 remoteURI:(id)a6 validateAliases:(BOOL)a7 guid:(id)a8
+- (BOOL)_shouldAcceptIncomingType:(id)type forTopic:(id)topic localURI:(id)i remoteURI:(id)rI validateAliases:(BOOL)aliases guid:(id)guid
 {
-  v9 = a7;
+  aliasesCopy = aliases;
   v132 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v99 = self;
-  v19 = [(_IDSConnection *)self account];
-  v20 = [v19 _internal];
-  v21 = [v20 pushTopic];
-  v22 = [(__CFString *)v15 isEqualToIgnoringCase:v21];
+  typeCopy = type;
+  topicCopy = topic;
+  iCopy = i;
+  rICopy = rI;
+  guidCopy = guid;
+  selfCopy = self;
+  account = [(_IDSConnection *)self account];
+  _internal = [account _internal];
+  pushTopic = [_internal pushTopic];
+  v22 = [(__CFString *)topicCopy isEqualToIgnoringCase:pushTopic];
 
   if ((v22 & 1) == 0)
   {
     v49 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
     {
-      v50 = [(IDSAccount *)v99->_account _internal];
-      v51 = [v50 pushTopic];
+      _internal2 = [(IDSAccount *)selfCopy->_account _internal];
+      pushTopic2 = [_internal2 pushTopic];
       *buf = 134218754;
-      v115 = v99;
+      v115 = selfCopy;
       v116 = 2112;
-      v117 = v14;
+      v117 = typeCopy;
       v118 = 2112;
-      v119 = v15;
+      v119 = topicCopy;
       v120 = 2112;
-      v121 = v51;
+      v121 = pushTopic2;
       _os_log_impl(&dword_1959FF000, v49, OS_LOG_TYPE_DEFAULT, "_IDSConnection incoming topic for another connection {self: %p, type: %@, topic: %@, self.topic: %@}", buf, 0x2Au);
     }
 
     goto LABEL_53;
   }
 
-  if (v9)
+  if (aliasesCopy)
   {
-    v92 = v18;
-    v95 = v14;
-    v97 = v15;
+    v92 = guidCopy;
+    v95 = typeCopy;
+    v97 = topicCopy;
     v111 = 0u;
     v112 = 0u;
     v109 = 0u;
     v110 = 0u;
-    v23 = [(_IDSConnection *)v99 account];
-    v24 = [v23 _internal];
-    v25 = [v24 handles];
+    account2 = [(_IDSConnection *)selfCopy account];
+    _internal3 = [account2 _internal];
+    handles = [_internal3 handles];
 
-    v26 = [v25 countByEnumeratingWithState:&v109 objects:v131 count:16];
+    v26 = [handles countByEnumeratingWithState:&v109 objects:v131 count:16];
     if (v26)
     {
       v27 = v26;
       v28 = *v110;
       while (2)
       {
-        v29 = v17;
+        v29 = rICopy;
         for (i = 0; i != v27; ++i)
         {
           if (*v110 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(handles);
           }
 
           v31 = [*(*(&v109 + 1) + 8 * i) URI];
-          v32 = [v31 unprefixedURI];
-          v33 = [(__CFString *)v16 unprefixedURI];
-          v34 = [v32 isEqualToString:v33];
+          unprefixedURI = [v31 unprefixedURI];
+          unprefixedURI2 = [(__CFString *)iCopy unprefixedURI];
+          v34 = [unprefixedURI isEqualToString:unprefixedURI2];
 
           if (v34)
           {
 
-            v14 = v95;
-            v15 = v97;
-            v17 = v29;
-            v18 = v92;
+            typeCopy = v95;
+            topicCopy = v97;
+            rICopy = v29;
+            guidCopy = v92;
             goto LABEL_24;
           }
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v109 objects:v131 count:16];
-        v17 = v29;
+        v27 = [handles countByEnumeratingWithState:&v109 objects:v131 count:16];
+        rICopy = v29;
         if (v27)
         {
           continue;
@@ -3704,39 +3704,39 @@ LABEL_35:
       }
     }
 
-    v35 = [(__CFString *)v16 prefixedURI];
-    v36 = [v35 _appearsToBePseudonymID];
+    prefixedURI = [(__CFString *)iCopy prefixedURI];
+    _appearsToBePseudonymID = [prefixedURI _appearsToBePseudonymID];
 
-    if (v36)
+    if (_appearsToBePseudonymID)
     {
       v107 = 0u;
       v108 = 0u;
       v105 = 0u;
       v106 = 0u;
-      v37 = [(_IDSConnection *)v99 account];
-      v38 = [v37 _internal];
-      v39 = [v38 pseudonyms];
+      account3 = [(_IDSConnection *)selfCopy account];
+      _internal4 = [account3 _internal];
+      pseudonyms = [_internal4 pseudonyms];
 
-      v40 = [v39 countByEnumeratingWithState:&v105 objects:v130 count:16];
+      v40 = [pseudonyms countByEnumeratingWithState:&v105 objects:v130 count:16];
       if (v40)
       {
         v41 = v40;
-        v81 = v17;
+        v81 = rICopy;
         v42 = *v106;
-        v18 = v92;
+        guidCopy = v92;
         while (2)
         {
           for (j = 0; j != v41; ++j)
           {
             if (*v106 != v42)
             {
-              objc_enumerationMutation(v39);
+              objc_enumerationMutation(pseudonyms);
             }
 
             v44 = [*(*(&v105 + 1) + 8 * j) URI];
-            v45 = [v44 prefixedURI];
-            v46 = [(__CFString *)v16 unprefixedURI];
-            v47 = [v45 isEqualToString:v46];
+            prefixedURI2 = [v44 prefixedURI];
+            unprefixedURI3 = [(__CFString *)iCopy unprefixedURI];
+            v47 = [prefixedURI2 isEqualToString:unprefixedURI3];
 
             if (v47)
             {
@@ -3745,7 +3745,7 @@ LABEL_35:
             }
           }
 
-          v41 = [v39 countByEnumeratingWithState:&v105 objects:v130 count:16];
+          v41 = [pseudonyms countByEnumeratingWithState:&v105 objects:v130 count:16];
           if (v41)
           {
             continue;
@@ -3756,52 +3756,52 @@ LABEL_35:
 
         v48 = 0;
 LABEL_62:
-        v17 = v81;
+        rICopy = v81;
       }
 
       else
       {
         v48 = 0;
-        v18 = v92;
+        guidCopy = v92;
       }
 
-      v14 = v95;
-      v15 = v97;
+      typeCopy = v95;
+      topicCopy = v97;
     }
 
     else
     {
       v48 = 0;
-      v14 = v95;
-      v15 = v97;
-      v18 = v92;
+      typeCopy = v95;
+      topicCopy = v97;
+      guidCopy = v92;
     }
 
-    if (v16 && (v48 & 1) == 0)
+    if (iCopy && (v48 & 1) == 0)
     {
       v49 = +[IDSLogging IDSConnection_oversize];
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
-        v96 = [(IDSAccount *)v99->_account _internal];
-        v77 = [v96 handles];
-        v78 = [(IDSAccount *)v99->_account uniqueID];
-        v79 = [(IDSAccount *)v99->_account _internal];
-        v80 = [v79 pseudonyms];
+        _internal5 = [(IDSAccount *)selfCopy->_account _internal];
+        handles2 = [_internal5 handles];
+        uniqueID = [(IDSAccount *)selfCopy->_account uniqueID];
+        _internal6 = [(IDSAccount *)selfCopy->_account _internal];
+        pseudonyms2 = [_internal6 pseudonyms];
         *buf = 134219266;
-        v115 = v99;
+        v115 = selfCopy;
         v116 = 2112;
-        v117 = v14;
+        v117 = typeCopy;
         v118 = 2112;
-        v119 = v16;
+        v119 = iCopy;
         v120 = 2112;
-        v121 = v77;
+        v121 = handles2;
         v122 = 2112;
-        v123 = v78;
+        v123 = uniqueID;
         v124 = 2112;
-        v125 = v80;
+        v125 = pseudonyms2;
         _os_log_impl(&dword_1959FF000, v49, OS_LOG_TYPE_DEFAULT, "_IDSConnection incoming handle for another connection {self: %p, type: %@, localURI: %@, self.aliases: %@, account.uuid: %@, self.pseudonyms: %@}", buf, 0x3Eu);
 
-        v15 = v97;
+        topicCopy = v97;
       }
 
 LABEL_53:
@@ -3811,15 +3811,15 @@ LABEL_53:
   }
 
 LABEL_24:
-  if (![(_IDSConnection *)v99 _isAccountInValidRegistrationStateToAcceptMessages])
+  if (![(_IDSConnection *)selfCopy _isAccountInValidRegistrationStateToAcceptMessages])
   {
     v63 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
     {
-      v91 = [(IDSAccount *)v99->_account _internal];
-      v94 = [v91 uniqueID];
-      v90 = [(IDSAccount *)v99->_account _internal];
-      if ([v90 isActive])
+      _internal7 = [(IDSAccount *)selfCopy->_account _internal];
+      uniqueID2 = [_internal7 uniqueID];
+      _internal8 = [(IDSAccount *)selfCopy->_account _internal];
+      if ([_internal8 isActive])
       {
         v64 = @"YES";
       }
@@ -3830,8 +3830,8 @@ LABEL_24:
       }
 
       v86 = v64;
-      v89 = [(IDSAccount *)v99->_account _internal];
-      if ([v89 registrationStatus] == 5)
+      _internal9 = [(IDSAccount *)selfCopy->_account _internal];
+      if ([_internal9 registrationStatus] == 5)
       {
         v65 = @"YES";
       }
@@ -3842,8 +3842,8 @@ LABEL_24:
       }
 
       v84 = v65;
-      v88 = [(IDSAccount *)v99->_account _internal];
-      if ([v88 accountType] == 2)
+      _internal10 = [(IDSAccount *)selfCopy->_account _internal];
+      if ([_internal10 accountType] == 2)
       {
         v66 = @"YES";
       }
@@ -3854,16 +3854,16 @@ LABEL_24:
       }
 
       v83 = v66;
-      v87 = [(IDSAccount *)v99->_account _internal];
-      v67 = [v87 primaryServiceName];
-      v85 = [(IDSAccount *)v99->_account _internal];
-      v68 = v18;
-      v69 = v17;
-      v70 = [v85 registrationStatus];
-      v71 = [(IDSAccount *)v99->_account _internal];
-      v72 = [v71 registrationCertificate];
+      _internal11 = [(IDSAccount *)selfCopy->_account _internal];
+      primaryServiceName = [_internal11 primaryServiceName];
+      _internal12 = [(IDSAccount *)selfCopy->_account _internal];
+      v68 = guidCopy;
+      v69 = rICopy;
+      registrationStatus = [_internal12 registrationStatus];
+      _internal13 = [(IDSAccount *)selfCopy->_account _internal];
+      registrationCertificate = [_internal13 registrationCertificate];
       *buf = 138414082;
-      if (v72)
+      if (registrationCertificate)
       {
         v73 = @"YES";
       }
@@ -3873,9 +3873,9 @@ LABEL_24:
         v73 = @"NO";
       }
 
-      v115 = v14;
+      v115 = typeCopy;
       v116 = 2112;
-      v117 = v94;
+      v117 = uniqueID2;
       v118 = 2112;
       v119 = v86;
       v120 = 2112;
@@ -3883,70 +3883,70 @@ LABEL_24:
       v122 = 2112;
       v123 = v83;
       v124 = 2112;
-      v125 = v67;
+      v125 = primaryServiceName;
       v126 = 2048;
-      v127 = v70;
-      v17 = v69;
-      v18 = v68;
+      v127 = registrationStatus;
+      rICopy = v69;
+      guidCopy = v68;
       v128 = 2112;
       v129 = v73;
       _os_log_impl(&dword_1959FF000, v63, OS_LOG_TYPE_DEFAULT, "Ignoring %@, account is not configured: %@    isActive: %@  isRegistered: %@  isLocal: %@  serviceIdentifier: %@  registrationStatus: %ld  registrationCert: %@", buf, 0x52u);
     }
 
-    v49 = [objc_alloc(MEMORY[0x1E69A5338]) initWithReason:703 guid:v18 service:v15 additionalInformation:0];
-    [(_IDSConnection *)v99 _sendMissingMessageMetric:v49];
+    v49 = [objc_alloc(MEMORY[0x1E69A5338]) initWithReason:703 guid:guidCopy service:topicCopy additionalInformation:0];
+    [(_IDSConnection *)selfCopy _sendMissingMessageMetric:v49];
     goto LABEL_53;
   }
 
-  if (!v17)
+  if (!rICopy)
   {
     v62 = 1;
     goto LABEL_55;
   }
 
-  v52 = [(__CFString *)v17 unprefixedURI];
+  unprefixedURI4 = [(__CFString *)rICopy unprefixedURI];
   v104 = 0;
-  v53 = [v52 _stripPotentialTokenURIWithToken:&v104];
+  v53 = [unprefixedURI4 _stripPotentialTokenURIWithToken:&v104];
   v49 = v104;
 
   if (v49 && v53)
   {
-    v93 = v18;
-    v98 = v15;
+    v93 = guidCopy;
+    v98 = topicCopy;
     v102 = 0u;
     v103 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v54 = [(IDSAccount *)v99->_account _internal];
-    v55 = [v54 suppressedDevices];
+    _internal14 = [(IDSAccount *)selfCopy->_account _internal];
+    suppressedDevices = [_internal14 suppressedDevices];
 
-    v56 = [v55 countByEnumeratingWithState:&v100 objects:v113 count:16];
+    v56 = [suppressedDevices countByEnumeratingWithState:&v100 objects:v113 count:16];
     if (v56)
     {
       v57 = v56;
       v58 = *v101;
-      v82 = v17;
+      v82 = rICopy;
       while (2)
       {
         for (k = 0; k != v57; ++k)
         {
           if (*v101 != v58)
           {
-            objc_enumerationMutation(v55);
+            objc_enumerationMutation(suppressedDevices);
           }
 
-          v60 = [*(*(&v100 + 1) + 8 * k) _internal];
-          v61 = [v60 pushToken];
+          _internal15 = [*(*(&v100 + 1) + 8 * k) _internal];
+          pushToken = [_internal15 pushToken];
 
-          if ([v61 isEqualToData:v49])
+          if ([pushToken isEqualToData:v49])
           {
             v76 = +[IDSTransportLog IDSConnection];
-            v15 = v98;
-            v17 = v82;
+            topicCopy = v98;
+            rICopy = v82;
             if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412802;
-              v115 = v14;
+              v115 = typeCopy;
               v116 = 2112;
               v117 = v98;
               v118 = 2112;
@@ -3955,13 +3955,13 @@ LABEL_24:
             }
 
             v62 = 0;
-            v18 = v93;
+            guidCopy = v93;
             goto LABEL_54;
           }
         }
 
-        v57 = [v55 countByEnumeratingWithState:&v100 objects:v113 count:16];
-        v17 = v82;
+        v57 = [suppressedDevices countByEnumeratingWithState:&v100 objects:v113 count:16];
+        rICopy = v82;
         if (v57)
         {
           continue;
@@ -3971,8 +3971,8 @@ LABEL_24:
       }
     }
 
-    v15 = v98;
-    v18 = v93;
+    topicCopy = v98;
+    guidCopy = v93;
   }
 
   v62 = 1;
@@ -3983,49 +3983,49 @@ LABEL_55:
   return v62;
 }
 
-- (void)opportunisticDataReceived:(id)a3 withIdentifier:(id)a4 fromURI:(id)a5 context:(id)a6
+- (void)opportunisticDataReceived:(id)received withIdentifier:(id)identifier fromURI:(id)i context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  receivedCopy = received;
+  identifierCopy = identifier;
+  iCopy = i;
   v13 = MEMORY[0x1E69A5320];
   v14 = self->_messageContext;
-  v15 = a6;
-  v16 = [[v13 alloc] initWithDictionary:v15 boostContext:v14];
+  contextCopy = context;
+  v16 = [[v13 alloc] initWithDictionary:contextCopy boostContext:v14];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = sub_195A792D4;
   v21[3] = &unk_1E7440F98;
   v21[4] = self;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
+  v22 = receivedCopy;
+  v23 = identifierCopy;
+  v24 = iCopy;
   v25 = v16;
   v17 = v16;
-  v18 = v12;
-  v19 = v11;
-  v20 = v10;
+  v18 = iCopy;
+  v19 = identifierCopy;
+  v20 = receivedCopy;
   [(_IDSConnection *)self _callDelegatesWithBlock:v21];
 }
 
-- (void)messageReceived:(id)a3 withGUID:(id)a4 withPayload:(id)a5 forTopic:(id)a6 toURI:(id)a7 fromURI:(id)a8 context:(id)a9
+- (void)messageReceived:(id)received withGUID:(id)d withPayload:(id)payload forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context
 {
   v92 = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  v53 = a4;
-  v56 = a5;
-  v58 = a6;
-  v57 = a7;
-  v59 = a8;
-  v54 = a9;
+  receivedCopy = received;
+  dCopy = d;
+  payloadCopy = payload;
+  topicCopy = topic;
+  iCopy = i;
+  rICopy = rI;
+  contextCopy = context;
   v15 = +[IDSInternalQueueController sharedInstance];
-  LODWORD(a7) = [v15 assertQueueIsCurrent];
+  LODWORD(i) = [v15 assertQueueIsCurrent];
 
-  if (a7)
+  if (i)
   {
-    v16 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2FC18();
     }
@@ -4036,35 +4036,35 @@ LABEL_55:
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v81, &state);
   v55 = self->_messageContext;
-  v60 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:v54 boostContext:v55];
-  v17 = [v60 outgoingResponseIdentifier];
-  v18 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"message" forTopic:v58 localURI:v57 remoteURI:v59 validateAliases:1 guid:v17];
+  v60 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:contextCopy boostContext:v55];
+  outgoingResponseIdentifier = [v60 outgoingResponseIdentifier];
+  v18 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"message" forTopic:topicCopy localURI:iCopy remoteURI:rICopy validateAliases:1 guid:outgoingResponseIdentifier];
 
   if (v18)
   {
     v19 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v56 count];
+      v20 = [payloadCopy count];
       *buf = 138413570;
       *v84 = self;
       *&v84[8] = 2112;
-      v85 = v53;
+      v85 = dCopy;
       *v86 = 2112;
-      *&v86[2] = v58;
+      *&v86[2] = topicCopy;
       *v87 = 2112;
-      *&v87[2] = v59;
+      *&v87[2] = rICopy;
       v88 = 2112;
-      v89 = v57;
+      v89 = iCopy;
       v90 = 1024;
       v91 = v20;
       _os_log_impl(&dword_1959FF000, v19, OS_LOG_TYPE_DEFAULT, "%@ received message: %@  topic %@  from: %@  to: %@  payload items: %d", buf, 0x3Au);
     }
 
-    v51 = v53;
+    v51 = dCopy;
     if ([v51 length])
     {
-      v50 = v51;
+      incomingResponseIdentifier = v51;
       if ([v51 length])
       {
 LABEL_13:
@@ -4072,13 +4072,13 @@ LABEL_13:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *v84 = v50;
+          *v84 = incomingResponseIdentifier;
           *&v84[8] = 2112;
-          v85 = v58;
+          v85 = topicCopy;
           _os_log_impl(&dword_1959FF000, v21, OS_LOG_TYPE_DEFAULT, "INCOMING-CLIENT_MESSAGE:%@ SERVICE:%@", buf, 0x16u);
         }
 
-        v22 = [v56 count];
+        v22 = [payloadCopy count];
         v23 = v22;
         if (v22 > 0x7FFE)
         {
@@ -4098,8 +4098,8 @@ LABEL_13:
           v24 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v51];
           [v24 getUUIDBytes:v82];
 
-          v25 = [MEMORY[0x1E69A5270] CrossLayerLogging];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+          crossLayerLogging = [MEMORY[0x1E69A5270] CrossLayerLogging];
+          if (os_log_type_enabled(crossLayerLogging, OS_LOG_TYPE_DEFAULT))
           {
             incomingMessageLoggingSequence = self->_incomingMessageLoggingSequence;
             self->_incomingMessageLoggingSequence = incomingMessageLoggingSequence + 1;
@@ -4113,7 +4113,7 @@ LABEL_13:
             *v87 = v23;
             *&v87[4] = 1024;
             *&v87[6] = incomingMessageLoggingSequence;
-            _os_log_impl(&dword_1959FF000, v25, OS_LOG_TYPE_DEFAULT, "9 {curProtocol: %hhu, nextProtocol: %hhu, curUUID: %{public,uuid_t}.16P, curPktLen: %u, logSeqn: %hhu}", buf, 0x2Au);
+            _os_log_impl(&dword_1959FF000, crossLayerLogging, OS_LOG_TYPE_DEFAULT, "9 {curProtocol: %hhu, nextProtocol: %hhu, curUUID: %{public,uuid_t}.16P, curPktLen: %u, logSeqn: %hhu}", buf, 0x2Au);
           }
         }
 
@@ -4133,9 +4133,9 @@ LABEL_13:
         v77[2] = sub_195A79BA0;
         v77[3] = &unk_1E7440F48;
         v77[4] = self;
-        v29 = v56;
+        v29 = payloadCopy;
         v78 = v29;
-        v30 = v59;
+        v30 = rICopy;
         v79 = v30;
         [(_IDSConnection *)self _callDelegatesWithBlock:v77 group:v28];
         v73[0] = MEMORY[0x1E69E9820];
@@ -4154,7 +4154,7 @@ LABEL_13:
         v69[2] = sub_195A79C9C;
         v69[3] = &unk_1E7440F20;
         v69[4] = self;
-        v70 = v52;
+        v70 = receivedCopy;
         v33 = v31;
         v71 = v33;
         v34 = v32;
@@ -4162,18 +4162,18 @@ LABEL_13:
         [(_IDSConnection *)self _callDelegatesWithBlock:v69 group:v28];
         if (v28)
         {
-          v35 = [v34 wantsAppAck];
-          v49 = [v34 isDirectMessage];
-          v36 = [v34 outgoingResponseIdentifier];
-          v37 = [v34 broadcastTime];
+          wantsAppAck = [v34 wantsAppAck];
+          isDirectMessage = [v34 isDirectMessage];
+          outgoingResponseIdentifier2 = [v34 outgoingResponseIdentifier];
+          broadcastTime = [v34 broadcastTime];
 
-          if (v37)
+          if (broadcastTime)
           {
             v38 = MEMORY[0x1E696AD98];
             [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
             v40 = v39;
-            v41 = [v34 broadcastTime];
-            [v41 doubleValue];
+            broadcastTime2 = [v34 broadcastTime];
+            [broadcastTime2 doubleValue];
             v43 = [v38 numberWithDouble:v40 - v42];
           }
 
@@ -4183,22 +4183,22 @@ LABEL_13:
           }
 
           v44 = +[IDSInternalQueueController sharedInstance];
-          v45 = [v44 queue];
+          queue = [v44 queue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = sub_195A79D1C;
           block[3] = &unk_1E7440FC0;
-          v67 = v35;
-          v68 = v49;
+          v67 = wantsAppAck;
+          v68 = isDirectMessage;
           block[4] = self;
-          v62 = v36;
+          v62 = outgoingResponseIdentifier2;
           v63 = v34;
           v64 = v33;
           v65 = v51;
           v66 = v43;
           v46 = v43;
-          v47 = v36;
-          dispatch_group_notify(v28, v45, block);
+          v47 = outgoingResponseIdentifier2;
+          dispatch_group_notify(v28, queue, block);
 
           dispatch_group_leave(v28);
         }
@@ -4206,12 +4206,12 @@ LABEL_13:
         goto LABEL_31;
       }
 
-      v50 = [v60 incomingResponseIdentifier];
+      incomingResponseIdentifier = [v60 incomingResponseIdentifier];
     }
 
     else
     {
-      v50 = [v60 outgoingResponseIdentifier];
+      incomingResponseIdentifier = [v60 outgoingResponseIdentifier];
     }
 
     goto LABEL_13;
@@ -4225,32 +4225,32 @@ LABEL_31:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receivedBatchMessage:(id)a3 forTopic:(id)a4
+- (void)receivedBatchMessage:(id)message forTopic:(id)topic
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v32 = a4;
+  messageCopy = message;
+  topicCopy = topic;
   v6 = +[IDSInternalQueueController sharedInstance];
-  v7 = [v6 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-  if (v7)
+  if (assertQueueIsCurrent)
   {
-    v8 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2FCBC();
     }
   }
 
-  if ([(_IDSConnection *)self _shouldAcceptIncomingType:@"batch message" forTopic:v32 localURI:0 remoteURI:0 validateAliases:0 guid:0])
+  if ([(_IDSConnection *)self _shouldAcceptIncomingType:@"batch message" forTopic:topicCopy localURI:0 remoteURI:0 validateAliases:0 guid:0])
   {
     [MEMORY[0x1E695DF70] array];
-    v29 = v28 = v5;
+    v29 = v28 = messageCopy;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = [v5 messages];
+    obj = [messageCopy messages];
     v9 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
     if (v9)
     {
@@ -4266,17 +4266,17 @@ LABEL_31:
           }
 
           v13 = *(*(&v35 + 1) + 8 * i);
-          v14 = [v13 messageContext];
+          messageContext = [v13 messageContext];
           v15 = MEMORY[0x1E69A5428];
-          v16 = [v14 toID];
-          v17 = [v15 URIWithPrefixedURI:v16];
+          toID = [messageContext toID];
+          v17 = [v15 URIWithPrefixedURI:toID];
 
           v18 = MEMORY[0x1E69A5428];
-          v19 = [v14 fromID];
-          v20 = [v18 URIWithPrefixedURI:v19];
+          fromID = [messageContext fromID];
+          v20 = [v18 URIWithPrefixedURI:fromID];
 
-          v21 = [v14 originalGUID];
-          if ([(_IDSConnection *)self _shouldAcceptIncomingType:@"message" forTopic:v32 localURI:v17 remoteURI:v20 validateAliases:1 guid:v21])
+          originalGUID = [messageContext originalGUID];
+          if ([(_IDSConnection *)self _shouldAcceptIncomingType:@"message" forTopic:topicCopy localURI:v17 remoteURI:v20 validateAliases:1 guid:originalGUID])
           {
             [v29 addObject:v13];
           }
@@ -4289,19 +4289,19 @@ LABEL_31:
     }
 
     v22 = objc_alloc(MEMORY[0x1E69A52C8]);
-    v5 = v28;
-    v23 = [v28 context];
-    v24 = [v22 initWithMessages:v29 service:v32 context:v23];
+    messageCopy = v28;
+    context = [v28 context];
+    v24 = [v22 initWithMessages:v29 service:topicCopy context:context];
 
     v25 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v40 = self;
+      selfCopy = self;
       v41 = 2112;
       v42 = v24;
       v43 = 2112;
-      v44 = v32;
+      v44 = topicCopy;
       _os_log_impl(&dword_1959FF000, v25, OS_LOG_TYPE_DEFAULT, "%@: received batch message: %@ topic: %@", buf, 0x20u);
     }
 
@@ -4318,34 +4318,34 @@ LABEL_31:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dataReceived:(id)a3 withGUID:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8
+- (void)dataReceived:(id)received withGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context
 {
   v81 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  receivedCopy = received;
+  dCopy = d;
+  topicCopy = topic;
+  iCopy = i;
+  rICopy = rI;
+  contextCopy = context;
   v20 = +[IDSInternalQueueController sharedInstance];
-  LODWORD(a6) = [v20 assertQueueIsCurrent];
+  LODWORD(i) = [v20 assertQueueIsCurrent];
 
-  if (a6)
+  if (i)
   {
-    v21 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2FD5C();
     }
   }
 
   v22 = self->_messageContext;
-  v23 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:v19 boostContext:v22];
+  v23 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:contextCopy boostContext:v22];
 
-  v24 = [v23 outgoingResponseIdentifier];
-  if ([(_IDSConnection *)self _shouldAcceptIncomingType:@"data" forTopic:v16 localURI:v17 remoteURI:v18 validateAliases:1 guid:v24])
+  outgoingResponseIdentifier = [v23 outgoingResponseIdentifier];
+  if ([(_IDSConnection *)self _shouldAcceptIncomingType:@"data" forTopic:topicCopy localURI:iCopy remoteURI:rICopy validateAliases:1 guid:outgoingResponseIdentifier])
   {
-    v58 = v24;
+    v58 = outgoingResponseIdentifier;
     v55 = v22;
     v25 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -4353,17 +4353,17 @@ LABEL_31:
       *buf = 138413314;
       *v75 = self;
       *&v75[8] = 2112;
-      v76 = v15;
+      v76 = dCopy;
       *v77 = 2112;
-      *&v77[2] = v16;
+      *&v77[2] = topicCopy;
       *v78 = 2112;
-      *&v78[2] = v18;
+      *&v78[2] = rICopy;
       v79 = 2112;
-      v80 = v17;
+      v80 = iCopy;
       _os_log_impl(&dword_1959FF000, v25, OS_LOG_TYPE_DEFAULT, "%@ received data: %@ topic %@  from: %@  to: %@", buf, 0x34u);
     }
 
-    v26 = v15;
+    v26 = dCopy;
     if ([v26 length])
     {
       v59 = v26;
@@ -4377,11 +4377,11 @@ LABEL_13:
           *buf = 138412546;
           *v75 = v59;
           *&v75[8] = 2112;
-          v76 = v16;
+          v76 = topicCopy;
           _os_log_impl(&dword_1959FF000, v28, OS_LOG_TYPE_DEFAULT, "INCOMING-CLIENT_DATA:%@ SERVICE:%@", buf, 0x16u);
         }
 
-        v29 = [v14 length];
+        v29 = [receivedCopy length];
         if (v29 <= 0x7FFE)
         {
           v30 = v29;
@@ -4390,8 +4390,8 @@ LABEL_13:
           v31 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v59];
           [v31 getUUIDBytes:v73];
 
-          v32 = [MEMORY[0x1E69A5270] CrossLayerLogging];
-          if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+          crossLayerLogging = [MEMORY[0x1E69A5270] CrossLayerLogging];
+          if (os_log_type_enabled(crossLayerLogging, OS_LOG_TYPE_DEFAULT))
           {
             incomingMessageLoggingSequence = self->_incomingMessageLoggingSequence;
             self->_incomingMessageLoggingSequence = incomingMessageLoggingSequence + 1;
@@ -4405,11 +4405,11 @@ LABEL_13:
             *v78 = v30;
             *&v78[4] = 1024;
             *&v78[6] = incomingMessageLoggingSequence;
-            _os_log_impl(&dword_1959FF000, v32, OS_LOG_TYPE_DEFAULT, "9 {curProtocol: %hhu, nextProtocol: %hhu, curUUID: %{public,uuid_t}.16P, curPktLen: %u, logSeqn: %hhu}", buf, 0x2Au);
+            _os_log_impl(&dword_1959FF000, crossLayerLogging, OS_LOG_TYPE_DEFAULT, "9 {curProtocol: %hhu, nextProtocol: %hhu, curUUID: %{public,uuid_t}.16P, curPktLen: %u, logSeqn: %hhu}", buf, 0x2Au);
           }
         }
 
-        v57 = v17;
+        v57 = iCopy;
         if (self->_indirectDelegateCallouts)
         {
           v34 = 0;
@@ -4426,30 +4426,30 @@ LABEL_13:
         v69[2] = sub_195A7A924;
         v69[3] = &unk_1E7440F20;
         v69[4] = self;
-        v35 = v14;
+        v35 = receivedCopy;
         v70 = v35;
-        v56 = v18;
-        v36 = v18;
+        v56 = rICopy;
+        v36 = rICopy;
         v71 = v36;
         v37 = v23;
         v72 = v37;
         [(_IDSConnection *)self _callDelegatesWithBlock:v69 group:v34];
         if (v34)
         {
-          v51 = v16;
-          v52 = v15;
-          v53 = v14;
-          v50 = [v37 wantsAppAck];
-          v38 = [v37 isDirectMessage];
-          v39 = [v37 broadcastTime];
+          v51 = topicCopy;
+          v52 = dCopy;
+          v53 = receivedCopy;
+          wantsAppAck = [v37 wantsAppAck];
+          isDirectMessage = [v37 isDirectMessage];
+          broadcastTime = [v37 broadcastTime];
 
-          if (v39)
+          if (broadcastTime)
           {
             v40 = MEMORY[0x1E696AD98];
             [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
             v42 = v41;
-            v43 = [v37 broadcastTime];
-            [v43 doubleValue];
+            broadcastTime2 = [v37 broadcastTime];
+            [broadcastTime2 doubleValue];
             v45 = [v40 numberWithDouble:v42 - v44];
           }
 
@@ -4459,13 +4459,13 @@ LABEL_13:
           }
 
           v46 = +[IDSInternalQueueController sharedInstance];
-          v47 = [v46 queue];
+          queue = [v46 queue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = sub_195A7A9A4;
           block[3] = &unk_1E7440FE8;
-          v67 = v50;
-          v68 = v38;
+          v67 = wantsAppAck;
+          v68 = isDirectMessage;
           block[4] = self;
           v61 = v58;
           v62 = v37;
@@ -4474,30 +4474,30 @@ LABEL_13:
           v65 = v45;
           v66 = v35;
           v48 = v45;
-          dispatch_group_notify(v34, v47, block);
+          dispatch_group_notify(v34, queue, block);
 
           dispatch_group_leave(v34);
-          v15 = v52;
-          v14 = v53;
-          v16 = v51;
+          dCopy = v52;
+          receivedCopy = v53;
+          topicCopy = v51;
         }
 
-        v18 = v56;
-        v17 = v57;
+        rICopy = v56;
+        iCopy = v57;
         v22 = v55;
-        v24 = v58;
+        outgoingResponseIdentifier = v58;
         goto LABEL_28;
       }
 
-      v27 = [v23 incomingResponseIdentifier];
+      incomingResponseIdentifier = [v23 incomingResponseIdentifier];
     }
 
     else
     {
-      v27 = [v23 outgoingResponseIdentifier];
+      incomingResponseIdentifier = [v23 outgoingResponseIdentifier];
     }
 
-    v59 = v27;
+    v59 = incomingResponseIdentifier;
 
     goto LABEL_13;
   }
@@ -4507,56 +4507,56 @@ LABEL_28:
   v49 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accessoryDataReceived:(id)a3 withGUID:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8
+- (void)accessoryDataReceived:(id)received withGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context
 {
   v72 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v48 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  receivedCopy = received;
+  dCopy = d;
+  topicCopy = topic;
+  iCopy = i;
+  rICopy = rI;
+  contextCopy = context;
   v19 = +[IDSInternalQueueController sharedInstance];
-  v20 = [v19 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v19 assertQueueIsCurrent];
 
-  if (v20)
+  if (assertQueueIsCurrent)
   {
-    v21 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2FDFC();
     }
   }
 
   v22 = self->_messageContext;
-  v23 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:v18 boostContext:v22];
+  v23 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:contextCopy boostContext:v22];
 
-  v24 = [v23 outgoingResponseIdentifier];
-  if ([(_IDSConnection *)self _shouldAcceptIncomingType:@"data" forTopic:v15 localURI:v16 remoteURI:v17 validateAliases:0 guid:v24])
+  outgoingResponseIdentifier = [v23 outgoingResponseIdentifier];
+  if ([(_IDSConnection *)self _shouldAcceptIncomingType:@"data" forTopic:topicCopy localURI:iCopy remoteURI:rICopy validateAliases:0 guid:outgoingResponseIdentifier])
   {
-    v45 = v15;
-    v47 = v14;
-    v25 = [(_IDSConnection *)self account];
-    v26 = [v25 _internal];
-    v27 = [v26 accountType];
+    v45 = topicCopy;
+    v47 = receivedCopy;
+    account = [(_IDSConnection *)self account];
+    _internal = [account _internal];
+    accountType = [_internal accountType];
 
     v28 = +[IDSLogging IDSConnection];
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-    if (v27 == 1)
+    if (accountType == 1)
     {
-      v15 = v45;
+      topicCopy = v45;
       if (v29)
       {
         *buf = 138413314;
-        v63 = self;
+        selfCopy = self;
         v64 = 2112;
-        v65 = v48;
+        v65 = dCopy;
         v66 = 2112;
         v67 = v45;
         v68 = 2112;
-        v69 = v17;
+        v69 = rICopy;
         v70 = 2112;
-        v71 = v16;
+        v71 = iCopy;
         _os_log_impl(&dword_1959FF000, v28, OS_LOG_TYPE_DEFAULT, "%@ received Accessory data: %@ topic %@  from: %@  to: %@", buf, 0x34u);
       }
 
@@ -4578,7 +4578,7 @@ LABEL_28:
       v58[4] = self;
       v30 = v47;
       v59 = v30;
-      v44 = v17;
+      v44 = rICopy;
       v60 = v44;
       v31 = v23;
       v61 = v31;
@@ -4586,19 +4586,19 @@ LABEL_28:
       if (v28)
       {
         v43 = v30;
-        v42 = [v31 wantsAppAck];
-        v32 = [v31 broadcastTime];
+        wantsAppAck = [v31 wantsAppAck];
+        broadcastTime = [v31 broadcastTime];
 
-        if (v32)
+        if (broadcastTime)
         {
           v33 = MEMORY[0x1E696AD98];
           [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
           v35 = v34;
-          v36 = [v31 broadcastTime];
-          [v36 doubleValue];
+          broadcastTime2 = [v31 broadcastTime];
+          [broadcastTime2 doubleValue];
           v41 = [v33 numberWithDouble:v35 - v37];
 
-          v15 = v45;
+          topicCopy = v45;
         }
 
         else
@@ -4607,21 +4607,21 @@ LABEL_28:
         }
 
         v46 = +[IDSInternalQueueController sharedInstance];
-        v38 = [v46 queue];
+        queue = [v46 queue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = sub_195A7B100;
         block[3] = &unk_1E7441010;
-        v57 = v42;
+        v57 = wantsAppAck;
         v50 = v31;
-        v51 = self;
-        v52 = v24;
+        selfCopy2 = self;
+        v52 = outgoingResponseIdentifier;
         v53 = v44;
-        v54 = v48;
+        v54 = dCopy;
         v55 = v41;
         v56 = v43;
         v39 = v41;
-        dispatch_group_notify(v28, v38, block);
+        dispatch_group_notify(v28, queue, block);
 
         dispatch_group_leave(v28);
       }
@@ -4635,59 +4635,59 @@ LABEL_28:
         _os_log_impl(&dword_1959FF000, v28, OS_LOG_TYPE_DEFAULT, "Accessory data commands are only supported on AppleID accounts, This one is not for me.", buf, 2u);
       }
 
-      v15 = v45;
+      topicCopy = v45;
     }
 
-    v14 = v47;
+    receivedCopy = v47;
   }
 
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accessoryReportMessageReceived:(id)a3 accessoryID:(id)a4 controllerID:(id)a5 withGUID:(id)a6 forTopic:(id)a7 toURI:(id)a8 fromURI:(id)a9 context:(id)a10
+- (void)accessoryReportMessageReceived:(id)received accessoryID:(id)d controllerID:(id)iD withGUID:(id)uID forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)self0
 {
   v71 = *MEMORY[0x1E69E9840];
-  v46 = a3;
-  v16 = a4;
-  v17 = a5;
-  v47 = a6;
-  v44 = a7;
-  v45 = a8;
-  v18 = a9;
-  v19 = a10;
+  receivedCopy = received;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
+  topicCopy = topic;
+  iCopy = i;
+  rICopy = rI;
+  contextCopy = context;
   v20 = +[IDSInternalQueueController sharedInstance];
-  LODWORD(a6) = [v20 assertQueueIsCurrent];
+  LODWORD(uID) = [v20 assertQueueIsCurrent];
 
-  if (a6)
+  if (uID)
   {
-    v21 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2FE9C();
     }
   }
 
   v22 = self->_messageContext;
-  v23 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:v19 boostContext:v22];
+  v23 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:contextCopy boostContext:v22];
 
-  v24 = [v23 outgoingResponseIdentifier];
-  v26 = v44;
-  v25 = v45;
-  if ([(_IDSConnection *)self _shouldAcceptIncomingType:@"accessoryReportMessage" forTopic:v44 localURI:v45 remoteURI:v18 validateAliases:0 guid:v24])
+  outgoingResponseIdentifier = [v23 outgoingResponseIdentifier];
+  v26 = topicCopy;
+  v25 = iCopy;
+  if ([(_IDSConnection *)self _shouldAcceptIncomingType:@"accessoryReportMessage" forTopic:topicCopy localURI:iCopy remoteURI:rICopy validateAliases:0 guid:outgoingResponseIdentifier])
   {
     v27 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413314;
-      v62 = self;
+      selfCopy = self;
       v63 = 2112;
-      v64 = v47;
+      v64 = uIDCopy;
       v65 = 2112;
-      v66 = v44;
+      v66 = topicCopy;
       v67 = 2112;
-      v68 = v18;
+      v68 = rICopy;
       v69 = 2112;
-      v70 = v45;
+      v70 = iCopy;
       _os_log_impl(&dword_1959FF000, v27, OS_LOG_TYPE_DEFAULT, "%@ received Accessory Report Message: %@ topic %@  from: %@  to: %@", buf, 0x34u);
     }
 
@@ -4707,26 +4707,26 @@ LABEL_28:
     v56[2] = sub_195A7B748;
     v56[3] = &unk_1E7440F98;
     v56[4] = self;
-    v57 = v46;
-    v58 = v16;
-    v59 = v17;
+    v57 = receivedCopy;
+    v58 = dCopy;
+    v59 = iDCopy;
     v29 = v23;
     v60 = v29;
     [(_IDSConnection *)self _callDelegatesWithBlock:v56 group:v28];
     if (v28)
     {
-      v42 = v17;
-      v43 = v16;
-      v41 = [v29 wantsAppAck];
-      v30 = [v29 broadcastTime];
+      v42 = iDCopy;
+      v43 = dCopy;
+      wantsAppAck = [v29 wantsAppAck];
+      broadcastTime = [v29 broadcastTime];
 
-      if (v30)
+      if (broadcastTime)
       {
         v31 = MEMORY[0x1E696AD98];
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
         v33 = v32;
-        v34 = [v29 broadcastTime];
-        [v34 doubleValue];
+        broadcastTime2 = [v29 broadcastTime];
+        [broadcastTime2 doubleValue];
         v36 = [v31 numberWithDouble:v33 - v35];
       }
 
@@ -4736,55 +4736,55 @@ LABEL_28:
       }
 
       v37 = +[IDSInternalQueueController sharedInstance];
-      v38 = [v37 queue];
+      queue = [v37 queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = sub_195A7B7C8;
       block[3] = &unk_1E7441038;
-      v55 = v41;
+      v55 = wantsAppAck;
       v49 = v29;
-      v50 = self;
-      v51 = v24;
-      v52 = v18;
-      v53 = v47;
+      selfCopy2 = self;
+      v51 = outgoingResponseIdentifier;
+      v52 = rICopy;
+      v53 = uIDCopy;
       v54 = v36;
       v39 = v36;
-      dispatch_group_notify(v28, v38, block);
+      dispatch_group_notify(v28, queue, block);
 
       dispatch_group_leave(v28);
-      v17 = v42;
-      v16 = v43;
-      v26 = v44;
+      iDCopy = v42;
+      dCopy = v43;
+      v26 = topicCopy;
     }
 
-    v25 = v45;
+    v25 = iCopy;
   }
 
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)incomingInvitation:(id)a3 withGUID:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8
+- (void)incomingInvitation:(id)invitation withGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a7;
+  invitationCopy = invitation;
+  rICopy = rI;
   v15 = self->_messageContext;
   v16 = MEMORY[0x1E69A5320];
-  v17 = a8;
-  v18 = a6;
-  v19 = a5;
-  v20 = [[v16 alloc] initWithDictionary:v17 boostContext:v15];
+  contextCopy = context;
+  iCopy = i;
+  topicCopy = topic;
+  v20 = [[v16 alloc] initWithDictionary:contextCopy boostContext:v15];
 
-  v21 = [v20 outgoingResponseIdentifier];
-  LODWORD(v17) = [(_IDSConnection *)self _shouldAcceptIncomingType:@"message" forTopic:v19 localURI:v18 remoteURI:v14 validateAliases:1 guid:v21];
+  outgoingResponseIdentifier = [v20 outgoingResponseIdentifier];
+  LODWORD(contextCopy) = [(_IDSConnection *)self _shouldAcceptIncomingType:@"message" forTopic:topicCopy localURI:iCopy remoteURI:rICopy validateAliases:1 guid:outgoingResponseIdentifier];
 
-  if (v17)
+  if (contextCopy)
   {
     v22 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v13;
+      v29 = invitationCopy;
       _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "incomingInvitation - received incoming invitation message : %@", buf, 0xCu);
     }
 
@@ -4793,8 +4793,8 @@ LABEL_28:
     v24[2] = sub_195A7BB88;
     v24[3] = &unk_1E7440F20;
     v24[4] = self;
-    v25 = v13;
-    v26 = v14;
+    v25 = invitationCopy;
+    v26 = rICopy;
     v27 = v20;
     [(_IDSConnection *)self _callDelegatesWithBlock:v24];
   }
@@ -4802,28 +4802,28 @@ LABEL_28:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)incomingInvitationUpdate:(id)a3 withGUID:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8
+- (void)incomingInvitationUpdate:(id)update withGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a7;
+  updateCopy = update;
+  rICopy = rI;
   v15 = self->_messageContext;
   v16 = MEMORY[0x1E69A5320];
-  v17 = a8;
-  v18 = a6;
-  v19 = a5;
-  v20 = [[v16 alloc] initWithDictionary:v17 boostContext:v15];
+  contextCopy = context;
+  iCopy = i;
+  topicCopy = topic;
+  v20 = [[v16 alloc] initWithDictionary:contextCopy boostContext:v15];
 
-  v21 = [v20 outgoingResponseIdentifier];
-  LODWORD(v17) = [(_IDSConnection *)self _shouldAcceptIncomingType:@"message" forTopic:v19 localURI:v18 remoteURI:v14 validateAliases:1 guid:v21];
+  outgoingResponseIdentifier = [v20 outgoingResponseIdentifier];
+  LODWORD(contextCopy) = [(_IDSConnection *)self _shouldAcceptIncomingType:@"message" forTopic:topicCopy localURI:iCopy remoteURI:rICopy validateAliases:1 guid:outgoingResponseIdentifier];
 
-  if (v17)
+  if (contextCopy)
   {
     v22 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v13;
+      v29 = updateCopy;
       _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "incomingInvitationUpdate - received incoming invitation message : %@", buf, 0xCu);
     }
 
@@ -4832,8 +4832,8 @@ LABEL_28:
     v24[2] = sub_195A7BE18;
     v24[3] = &unk_1E7440F20;
     v24[4] = self;
-    v25 = v13;
-    v26 = v14;
+    v25 = updateCopy;
+    v26 = rICopy;
     v27 = v20;
     [(_IDSConnection *)self _callDelegatesWithBlock:v24];
   }
@@ -4841,43 +4841,43 @@ LABEL_28:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)protobufReceived:(id)a3 withGUID:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8
+- (void)protobufReceived:(id)received withGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context
 {
   v81[2] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v62 = a7;
-  v17 = a8;
-  v18 = a6;
+  receivedCopy = received;
+  dCopy = d;
+  topicCopy = topic;
+  rICopy = rI;
+  contextCopy = context;
+  iCopy = i;
   v19 = +[IDSInternalQueueController sharedInstance];
-  LODWORD(a5) = [v19 assertQueueIsCurrent];
+  LODWORD(topic) = [v19 assertQueueIsCurrent];
 
-  if (a5)
+  if (topic)
   {
-    v20 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B2FF3C();
     }
   }
 
   v21 = self->_messageContext;
-  v22 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:v17 boostContext:v21];
-  v23 = [v17 objectForKey:@"IDSMessageContextSequenceNumberKey"];
+  v22 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:contextCopy boostContext:v21];
+  v23 = [contextCopy objectForKey:@"IDSMessageContextSequenceNumberKey"];
 
   [v23 unsignedIntegerValue];
   kdebug_trace();
 
-  v24 = [v22 outgoingResponseIdentifier];
-  v25 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"protobuf" forTopic:v16 localURI:v18 remoteURI:v62 validateAliases:1 guid:v24];
+  outgoingResponseIdentifier = [v22 outgoingResponseIdentifier];
+  v25 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"protobuf" forTopic:topicCopy localURI:iCopy remoteURI:rICopy validateAliases:1 guid:outgoingResponseIdentifier];
 
-  if (v14 && v25)
+  if (receivedCopy && v25)
   {
-    v61 = v16;
-    v26 = [objc_alloc(MEMORY[0x1E69A5388]) initWithDictionary:v14];
+    v61 = topicCopy;
+    v26 = [objc_alloc(MEMORY[0x1E69A5388]) initWithDictionary:receivedCopy];
     [v26 setContext:v22];
-    v27 = v15;
+    v27 = dCopy;
     if ([v27 length])
     {
       v28 = v27;
@@ -4898,19 +4898,19 @@ LABEL_12:
 
         v60 = v28;
 
-        v31 = [v22 totalBytes];
-        v32 = [v31 longValue];
+        totalBytes = [v22 totalBytes];
+        longValue = [totalBytes longValue];
 
-        v57 = v15;
-        if (v32 <= 0x7FFE)
+        v57 = dCopy;
+        if (longValue <= 0x7FFE)
         {
           v81[0] = 0xAAAAAAAAAAAAAAAALL;
           v81[1] = 0xAAAAAAAAAAAAAAAALL;
           v33 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v60];
           [v33 getUUIDBytes:v81];
 
-          v34 = [MEMORY[0x1E69A5270] CrossLayerLogging];
-          if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+          crossLayerLogging = [MEMORY[0x1E69A5270] CrossLayerLogging];
+          if (os_log_type_enabled(crossLayerLogging, OS_LOG_TYPE_DEFAULT))
           {
             incomingMessageLoggingSequence = self->_incomingMessageLoggingSequence;
             self->_incomingMessageLoggingSequence = incomingMessageLoggingSequence + 1;
@@ -4921,10 +4921,10 @@ LABEL_12:
             v78 = 0x832000000100412;
             *v79 = v81;
             *&v79[8] = 1024;
-            *v80 = v32;
+            *v80 = longValue;
             *&v80[4] = 1024;
             *&v80[6] = incomingMessageLoggingSequence;
-            _os_log_impl(&dword_1959FF000, v34, OS_LOG_TYPE_DEFAULT, "9 {curProtocol: %hhu, nextProtocol: %hhu, curUUID: %{public,uuid_t}.16P, curPktLen: %u, logSeqn: %hhu}", buf, 0x2Au);
+            _os_log_impl(&dword_1959FF000, crossLayerLogging, OS_LOG_TYPE_DEFAULT, "9 {curProtocol: %hhu, nextProtocol: %hhu, curUUID: %{public,uuid_t}.16P, curPktLen: %u, logSeqn: %hhu}", buf, 0x2Au);
           }
         }
 
@@ -4938,11 +4938,11 @@ LABEL_12:
           *v79 = 2112;
           *&v79[2] = @"(unknown)";
           *v80 = 2112;
-          *&v80[2] = v62;
+          *&v80[2] = rICopy;
           _os_log_impl(&dword_1959FF000, v36, OS_LOG_TYPE_DEFAULT, "Client received protobuf from daemon %@ for topic: %@  messageID: %@  fromID: %@", buf, 0x2Au);
         }
 
-        v58 = v14;
+        v58 = receivedCopy;
 
         if (self->_indirectDelegateCallouts)
         {
@@ -4962,7 +4962,7 @@ LABEL_12:
         v72[4] = self;
         v38 = v26;
         v73 = v38;
-        v39 = v62;
+        v39 = rICopy;
         v74 = v39;
         v40 = v22;
         v75 = v40;
@@ -4977,59 +4977,59 @@ LABEL_12:
             _os_log_impl(&dword_1959FF000, v41, OS_LOG_TYPE_DEFAULT, "Ack'ing message %@ to daemon that client got it", buf, 0xCu);
           }
 
-          v55 = [v40 wantsAppAck];
-          v54 = [v40 isDirectMessage];
-          v42 = [v40 outgoingResponseIdentifier];
-          v43 = [v40 broadcastTime];
+          wantsAppAck = [v40 wantsAppAck];
+          isDirectMessage = [v40 isDirectMessage];
+          outgoingResponseIdentifier2 = [v40 outgoingResponseIdentifier];
+          broadcastTime = [v40 broadcastTime];
 
-          if (v43)
+          if (broadcastTime)
           {
             v44 = MEMORY[0x1E696AD98];
             [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
             v46 = v45;
-            v47 = [v40 broadcastTime];
-            [v47 doubleValue];
-            v43 = [v44 numberWithDouble:v46 - v48];
+            broadcastTime2 = [v40 broadcastTime];
+            [broadcastTime2 doubleValue];
+            broadcastTime = [v44 numberWithDouble:v46 - v48];
           }
 
           v49 = +[IDSInternalQueueController sharedInstance];
-          v50 = [v49 queue];
+          queue = [v49 queue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = sub_195A7C6B8;
           block[3] = &unk_1E7440FE8;
-          v70 = v55;
-          v71 = v54;
+          v70 = wantsAppAck;
+          v71 = isDirectMessage;
           block[4] = self;
-          v64 = v42;
+          v64 = outgoingResponseIdentifier2;
           v65 = v40;
           v66 = v39;
           v67 = v59;
-          v68 = v43;
+          v68 = broadcastTime;
           v69 = v38;
-          v51 = v43;
-          v52 = v42;
-          dispatch_group_notify(v37, v50, block);
+          v51 = broadcastTime;
+          v52 = outgoingResponseIdentifier2;
+          dispatch_group_notify(v37, queue, block);
 
           dispatch_group_leave(v37);
         }
 
-        v15 = v57;
-        v14 = v58;
-        v16 = v61;
+        dCopy = v57;
+        receivedCopy = v58;
+        topicCopy = v61;
         v21 = v56;
         goto LABEL_30;
       }
 
-      v29 = [v22 incomingResponseIdentifier];
+      incomingResponseIdentifier = [v22 incomingResponseIdentifier];
     }
 
     else
     {
-      v29 = [v22 outgoingResponseIdentifier];
+      incomingResponseIdentifier = [v22 outgoingResponseIdentifier];
     }
 
-    v28 = v29;
+    v28 = incomingResponseIdentifier;
 
     goto LABEL_12;
   }
@@ -5039,18 +5039,18 @@ LABEL_30:
   v53 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receivedMetadataForDirectMessaging:(id)a3
+- (void)receivedMetadataForDirectMessaging:(id)messaging
 {
-  v5 = a3;
+  messagingCopy = messaging;
   if (_IDSSupportsDirectMessaging())
   {
     v6 = +[IDSInternalQueueController sharedInstance];
-    v7 = [v6 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-    if (v7)
+    if (assertQueueIsCurrent)
     {
-      v8 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B2FFDC();
       }
@@ -5059,18 +5059,18 @@ LABEL_30:
     directMessageConnection = self->_directMessageConnection;
     if (directMessageConnection)
     {
-      [(IDSDirectMessageConnection *)directMessageConnection updateMetadata:v5];
+      [(IDSDirectMessageConnection *)directMessageConnection updateMetadata:messagingCopy];
     }
 
-    objc_storeStrong(&self->_directMessagingMetadata, a3);
+    objc_storeStrong(&self->_directMessagingMetadata, messaging);
   }
 }
 
-- (void)xpcObject:(id)a3 objectContext:(id)a4
+- (void)xpcObject:(id)object objectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  objectCopy = object;
+  contextCopy = context;
+  if (objectCopy)
   {
     v8 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -5078,9 +5078,9 @@ LABEL_30:
       sub_195B3007C();
     }
 
-    if (v7)
+    if (contextCopy)
     {
-      Value = CFDictionaryGetValue(v7, @"object-type");
+      Value = CFDictionaryGetValue(contextCopy, @"object-type");
     }
 
     else
@@ -5092,14 +5092,14 @@ LABEL_30:
     {
       if (self->_directMessageConnection || ([(_IDSConnection *)self createDirectMessageConnectionIfNeeded], self->_directMessageConnection))
       {
-        string_ptr = xpc_string_get_string_ptr(v6);
+        string_ptr = xpc_string_get_string_ptr(objectCopy);
         if (string_ptr)
         {
           v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string_ptr];
-          if (v7)
+          if (contextCopy)
           {
-            v12 = CFDictionaryGetValue(v7, @"object-flags");
-            v13 = CFDictionaryGetValue(v7, @"object-recipient");
+            v12 = CFDictionaryGetValue(contextCopy, @"object-flags");
+            v13 = CFDictionaryGetValue(contextCopy, @"object-recipient");
           }
 
           else
@@ -5141,27 +5141,27 @@ LABEL_30:
   }
 }
 
-- (void)didFlushCacheForService:(id)a3 remoteURI:(id)a4 fromURI:(id)a5 guid:(id)a6
+- (void)didFlushCacheForService:(id)service remoteURI:(id)i fromURI:(id)rI guid:(id)guid
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  iCopy = i;
+  rICopy = rI;
+  guidCopy = guid;
   v14 = +[IDSInternalQueueController sharedInstance];
-  v15 = [v14 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v14 assertQueueIsCurrent];
 
-  if (v15)
+  if (assertQueueIsCurrent)
   {
-    v16 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B301FC();
     }
   }
 
-  v17 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v12];
-  v18 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"flush cache notification" forTopic:v10 localURI:v17 remoteURI:0 validateAliases:1 guid:v13];
+  v17 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:rICopy];
+  v18 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"flush cache notification" forTopic:serviceCopy localURI:v17 remoteURI:0 validateAliases:1 guid:guidCopy];
 
   if (v18)
   {
@@ -5169,13 +5169,13 @@ LABEL_30:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v26 = v10;
+      v26 = serviceCopy;
       v27 = 2112;
-      v28 = v11;
+      v28 = iCopy;
       v29 = 2112;
-      v30 = v12;
+      v30 = rICopy;
       v31 = 2112;
-      v32 = v13;
+      v32 = guidCopy;
       _os_log_impl(&dword_1959FF000, v19, OS_LOG_TYPE_DEFAULT, "Client received notification that cache was flushed { service: %@, remoteURI: %@, fromURI: %@, guid: %@ }", buf, 0x2Au);
     }
 
@@ -5184,27 +5184,27 @@ LABEL_30:
     v21[2] = sub_195A7CDF0;
     v21[3] = &unk_1E7440F20;
     v21[4] = self;
-    v22 = v11;
-    v23 = v12;
-    v24 = v13;
+    v22 = iCopy;
+    v23 = rICopy;
+    v24 = guidCopy;
     [(_IDSConnection *)self _callDelegatesWithBlock:v21];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didFlushCacheFromKTPeerUpdateForService:(id)a3 peerURI:(id)a4
+- (void)didFlushCacheFromKTPeerUpdateForService:(id)service peerURI:(id)i
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  iCopy = i;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3029C();
     }
@@ -5214,9 +5214,9 @@ LABEL_30:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v6;
+    v17 = serviceCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = iCopy;
     _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "Client received notification that cache was flushed from KT peer update { service: %@, peerURI: %@ }", buf, 0x16u);
   }
 
@@ -5225,41 +5225,41 @@ LABEL_30:
   v14[2] = sub_195A7D00C;
   v14[3] = &unk_1E7440EA8;
   v14[4] = self;
-  v15 = v7;
-  v12 = v7;
+  v15 = iCopy;
+  v12 = iCopy;
   [(_IDSConnection *)self _callDelegatesWithBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pendingIncomingMessageWithGUID:(id)a3 forTopic:(id)a4 toURI:(id)a5 fromURI:(id)a6 context:(id)a7
+- (void)pendingIncomingMessageWithGUID:(id)d forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = a5;
+  dCopy = d;
+  topicCopy = topic;
+  rICopy = rI;
+  contextCopy = context;
+  iCopy = i;
   v17 = +[IDSInternalQueueController sharedInstance];
-  LODWORD(a5) = [v17 assertQueueIsCurrent];
+  LODWORD(i) = [v17 assertQueueIsCurrent];
 
-  if (a5)
+  if (i)
   {
-    v18 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3033C();
     }
   }
 
   v19 = self->_messageContext;
-  v20 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:v15 boostContext:v19];
+  v20 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:contextCopy boostContext:v19];
 
-  v21 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"pending" forTopic:v13 localURI:v16 remoteURI:v14 validateAliases:1 guid:v12];
+  v21 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"pending" forTopic:topicCopy localURI:iCopy remoteURI:rICopy validateAliases:1 guid:dCopy];
   if (v21)
   {
-    [v20 setOriginalGUID:v12];
-    v22 = v12;
+    [v20 setOriginalGUID:dCopy];
+    v22 = dCopy;
     if ([v22 length])
     {
       v23 = v22;
@@ -5272,7 +5272,7 @@ LABEL_11:
           *buf = 138412546;
           v33 = v23;
           v34 = 2112;
-          v35 = v13;
+          v35 = topicCopy;
           _os_log_impl(&dword_1959FF000, v25, OS_LOG_TYPE_DEFAULT, "INCOMING-CLIENT_PENDING:%@ SERVICE:%@", buf, 0x16u);
         }
 
@@ -5282,11 +5282,11 @@ LABEL_11:
           *buf = 138413058;
           v33 = v22;
           v34 = 2112;
-          v35 = v13;
+          v35 = topicCopy;
           v36 = 2112;
           v37 = @"(unknown)";
           v38 = 2112;
-          v39 = v14;
+          v39 = rICopy;
           _os_log_impl(&dword_1959FF000, v26, OS_LOG_TYPE_DEFAULT, "Client received pending incoming message from daemon %@ for topic: %@  messageID: %@  fromID: %@", buf, 0x2Au);
         }
 
@@ -5297,7 +5297,7 @@ LABEL_11:
           v29[2] = sub_195A7D3F8;
           v29[3] = &unk_1E7440F48;
           v29[4] = self;
-          v30 = v14;
+          v30 = rICopy;
           v31 = v20;
           [(_IDSConnection *)self _callDelegatesWithBlock:v29];
         }
@@ -5315,15 +5315,15 @@ LABEL_11:
         goto LABEL_21;
       }
 
-      v24 = [v20 incomingResponseIdentifier];
+      incomingResponseIdentifier = [v20 incomingResponseIdentifier];
     }
 
     else
     {
-      v24 = [v20 outgoingResponseIdentifier];
+      incomingResponseIdentifier = [v20 outgoingResponseIdentifier];
     }
 
-    v23 = v24;
+    v23 = incomingResponseIdentifier;
 
     goto LABEL_11;
   }
@@ -5333,35 +5333,35 @@ LABEL_21:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pendingResourceWithMetadata:(id)a3 guid:(id)a4 forTopic:(id)a5 toURI:(id)a6 fromURI:(id)a7 context:(id)a8
+- (void)pendingResourceWithMetadata:(id)metadata guid:(id)guid forTopic:(id)topic toURI:(id)i fromURI:(id)rI context:(id)context
 {
   v45 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a6;
+  metadataCopy = metadata;
+  guidCopy = guid;
+  topicCopy = topic;
+  rICopy = rI;
+  contextCopy = context;
+  iCopy = i;
   v20 = +[IDSInternalQueueController sharedInstance];
-  LODWORD(a6) = [v20 assertQueueIsCurrent];
+  LODWORD(i) = [v20 assertQueueIsCurrent];
 
-  if (a6)
+  if (i)
   {
-    v21 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B303DC();
     }
   }
 
   v22 = self->_messageContext;
-  v23 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:v18 boostContext:v22];
+  v23 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:contextCopy boostContext:v22];
 
-  v24 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"pending" forTopic:v16 localURI:v19 remoteURI:v17 validateAliases:1 guid:v15];
+  v24 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"pending" forTopic:topicCopy localURI:iCopy remoteURI:rICopy validateAliases:1 guid:guidCopy];
   if (v24)
   {
-    [v23 setOriginalGUID:v15];
-    v25 = v15;
+    [v23 setOriginalGUID:guidCopy];
+    v25 = guidCopy;
     if ([v25 length])
     {
       v30 = v25;
@@ -5374,7 +5374,7 @@ LABEL_11:
           *buf = 138412546;
           v38 = v31;
           v39 = 2112;
-          v40 = v16;
+          v40 = topicCopy;
           _os_log_impl(&dword_1959FF000, v27, OS_LOG_TYPE_DEFAULT, "INCOMING-CLIENT_RESOURCE_PENDING:%@ SERVICE:%@", buf, 0x16u);
         }
 
@@ -5384,11 +5384,11 @@ LABEL_11:
           *buf = 138413058;
           v38 = v25;
           v39 = 2112;
-          v40 = v16;
+          v40 = topicCopy;
           v41 = 2112;
           v42 = @"(unknown)";
           v43 = 2112;
-          v44 = v17;
+          v44 = rICopy;
           _os_log_impl(&dword_1959FF000, v28, OS_LOG_TYPE_DEFAULT, "Client received pending resource message from daemon %@ for topic: %@  messageID: %@  fromID: %@", buf, 0x2Au);
         }
 
@@ -5397,24 +5397,24 @@ LABEL_11:
         v32[2] = sub_195A7D7CC;
         v32[3] = &unk_1E7440F98;
         v32[4] = self;
-        v33 = v14;
+        v33 = metadataCopy;
         v34 = v25;
-        v35 = v17;
+        v35 = rICopy;
         v36 = v23;
         [(_IDSConnection *)self _callDelegatesWithBlock:v32];
 
         goto LABEL_16;
       }
 
-      v26 = [v23 incomingResponseIdentifier];
+      incomingResponseIdentifier = [v23 incomingResponseIdentifier];
     }
 
     else
     {
-      v26 = [v23 outgoingResponseIdentifier];
+      incomingResponseIdentifier = [v23 outgoingResponseIdentifier];
     }
 
-    v30 = v26;
+    v30 = incomingResponseIdentifier;
 
     goto LABEL_11;
   }
@@ -5424,30 +5424,30 @@ LABEL_16:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sessionInvitationReceivedWithPayload:(id)a3 forTopic:(id)a4 sessionID:(id)a5 toIdentifier:(id)a6 fromID:(id)a7 transportType:(id)a8
+- (void)sessionInvitationReceivedWithPayload:(id)payload forTopic:(id)topic sessionID:(id)d toIdentifier:(id)identifier fromID:(id)iD transportType:(id)type
 {
   v68 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v48 = a8;
+  payloadCopy = payload;
+  topicCopy = topic;
+  dCopy = d;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  typeCopy = type;
   v19 = +[IDSInternalQueueController sharedInstance];
-  LODWORD(a5) = [v19 assertQueueIsCurrent];
+  LODWORD(d) = [v19 assertQueueIsCurrent];
 
-  if (a5)
+  if (d)
   {
-    v20 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3047C();
     }
   }
 
-  v21 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v17];
-  v22 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v18];
-  v23 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"session invitation" forTopic:v15 localURI:v21 remoteURI:v22 validateAliases:1 guid:0];
+  v21 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:identifierCopy];
+  v22 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:iDCopy];
+  v23 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"session invitation" forTopic:topicCopy localURI:v21 remoteURI:v22 validateAliases:1 guid:0];
 
   if (v23)
   {
@@ -5455,36 +5455,36 @@ LABEL_16:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413570;
-      v57 = v14;
+      v57 = payloadCopy;
       v58 = 2112;
-      v59 = v15;
+      v59 = topicCopy;
       v60 = 2112;
-      v61 = v16;
+      v61 = dCopy;
       v62 = 2112;
-      v63 = v17;
+      v63 = identifierCopy;
       v64 = 2112;
-      v65 = v18;
+      v65 = iDCopy;
       v66 = 2112;
-      v67 = v48;
+      v67 = typeCopy;
       _os_log_impl(&dword_1959FF000, v24, OS_LOG_TYPE_DEFAULT, "Received incoming invitation %@ forTopic %@ sessionID %@ toIdentifier %@ fromID %@ transportType %@", buf, 0x3Eu);
     }
 
-    v25 = v16;
-    v47 = v15;
+    v25 = dCopy;
+    v47 = topicCopy;
 
     v26 = *MEMORY[0x1E69A4A00];
-    v27 = [v14 objectForKey:*MEMORY[0x1E69A4A00]];
+    v27 = [payloadCopy objectForKey:*MEMORY[0x1E69A4A00]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v28 = MEMORY[0x1E695DEF0];
-      v29 = [v14 objectForKey:v26];
+      v29 = [payloadCopy objectForKey:v26];
       v30 = [v28 _IDSDataFromBase64String:v29];
     }
 
     else
     {
-      v29 = [v14 objectForKey:v26];
+      v29 = [payloadCopy objectForKey:v26];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -5492,7 +5492,7 @@ LABEL_16:
         goto LABEL_14;
       }
 
-      v30 = [v14 objectForKey:v26];
+      v30 = [payloadCopy objectForKey:v26];
     }
 
     v31 = v30;
@@ -5500,8 +5500,8 @@ LABEL_14:
 
     objc_opt_class();
     v32 = *MEMORY[0x1E69A4A08];
-    v33 = [v14 objectForKey:v32];
-    v46 = v17;
+    v33 = [payloadCopy objectForKey:v32];
+    v46 = identifierCopy;
     if (objc_opt_isKindOfClass())
     {
       v34 = v33;
@@ -5511,8 +5511,8 @@ LABEL_14:
     {
       if (v33)
       {
-        v35 = [MEMORY[0x1E69A6138] registration];
-        if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
+        registration = [MEMORY[0x1E69A6138] registration];
+        if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
         {
           sub_195B3051C();
         }
@@ -5530,8 +5530,8 @@ LABEL_14:
     v37 = v25;
     v38 = v25;
     v50 = v38;
-    v51 = v18;
-    v52 = v48;
+    v51 = iDCopy;
+    v52 = typeCopy;
     v53 = v34;
     v54 = v31;
     v55 = v36;
@@ -5539,60 +5539,60 @@ LABEL_14:
     v40 = v31;
     v41 = v34;
     [(_IDSConnection *)self _callDelegatesWithBlock:v49];
-    v42 = [(_IDSConnection *)self daemonController];
-    v43 = [(_IDSConnection *)self daemonController];
-    v44 = [v43 listenerID];
-    [v42 acknowledgeSessionID:v38 clientID:v44];
+    daemonController = [(_IDSConnection *)self daemonController];
+    daemonController2 = [(_IDSConnection *)self daemonController];
+    listenerID = [daemonController2 listenerID];
+    [daemonController acknowledgeSessionID:v38 clientID:listenerID];
 
-    v16 = v37;
-    v17 = v46;
-    v15 = v47;
+    dCopy = v37;
+    identifierCopy = v46;
+    topicCopy = v47;
   }
 
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (void)inviteDroppedWithPayload:(id)a3 forTopic:(id)a4 sessionID:(id)a5 toIdentifier:(id)a6 fromID:(id)a7 error:(id)a8
+- (void)inviteDroppedWithPayload:(id)payload forTopic:(id)topic sessionID:(id)d toIdentifier:(id)identifier fromID:(id)iD error:(id)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v41 = a8;
+  payloadCopy = payload;
+  topicCopy = topic;
+  dCopy = d;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  errorCopy = error;
   v19 = +[IDSInternalQueueController sharedInstance];
-  v20 = [v19 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v19 assertQueueIsCurrent];
 
-  if (v20)
+  if (assertQueueIsCurrent)
   {
-    v21 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B30584();
     }
   }
 
-  v22 = v17;
-  v23 = v15;
+  v22 = identifierCopy;
+  v23 = topicCopy;
   v24 = *MEMORY[0x1E69A4A00];
-  v25 = [v14 objectForKey:*MEMORY[0x1E69A4A00]];
+  v25 = [payloadCopy objectForKey:*MEMORY[0x1E69A4A00]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v26 = MEMORY[0x1E695DEF0];
-    v27 = [v14 objectForKey:v24];
+    v27 = [payloadCopy objectForKey:v24];
     v28 = [v26 _IDSDataFromBase64String:v27];
 LABEL_9:
     v29 = v28;
     goto LABEL_11;
   }
 
-  v27 = [v14 objectForKey:v24];
+  v27 = [payloadCopy objectForKey:v24];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v28 = [v14 objectForKey:v24];
+    v28 = [payloadCopy objectForKey:v24];
     goto LABEL_9;
   }
 
@@ -5605,15 +5605,15 @@ LABEL_11:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413314;
-    v48 = v14;
+    v48 = payloadCopy;
     v49 = 2112;
     v50 = v31;
     v51 = 2112;
-    v52 = v16;
+    v52 = dCopy;
     v53 = 2112;
     v54 = v22;
     v55 = 2112;
-    v56 = v18;
+    v56 = iDCopy;
     _os_log_impl(&dword_1959FF000, v30, OS_LOG_TYPE_DEFAULT, "Received incoming invitation but dropped %@ forTopic %@ sessionID %@ toIdentifier %@ fromID %@", buf, 0x34u);
   }
 
@@ -5622,60 +5622,60 @@ LABEL_11:
   v42[2] = sub_195A7E0DC;
   v42[3] = &unk_1E7440F98;
   v42[4] = self;
-  v43 = v16;
-  v44 = v18;
+  v43 = dCopy;
+  v44 = iDCopy;
   v45 = v29;
-  v46 = v41;
-  v33 = v41;
+  v46 = errorCopy;
+  v33 = errorCopy;
   v34 = v29;
-  v35 = v18;
-  v36 = v16;
+  v35 = iDCopy;
+  v36 = dCopy;
   [(_IDSConnection *)self _callDelegatesWithBlock:v42];
-  v37 = [(_IDSConnection *)self daemonController];
-  v38 = [(_IDSConnection *)self daemonController];
-  v39 = [v38 listenerID];
-  [v37 acknowledgeSessionID:v36 clientID:v39];
+  daemonController = [(_IDSConnection *)self daemonController];
+  daemonController2 = [(_IDSConnection *)self daemonController];
+  listenerID = [daemonController2 listenerID];
+  [daemonController acknowledgeSessionID:v36 clientID:listenerID];
 
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receivedGroupSessionParticipantUpdate:(id)a3 forTopic:(id)a4 toIdentifier:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)receivedGroupSessionParticipantUpdate:(id)update forTopic:(id)topic toIdentifier:(id)identifier fromID:(id)d context:(id)context
 {
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a6;
+  updateCopy = update;
+  topicCopy = topic;
+  identifierCopy = identifier;
+  contextCopy = context;
+  dCopy = d;
   v17 = +[IDSInternalQueueController sharedInstance];
-  v18 = [v17 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v17 assertQueueIsCurrent];
 
-  if (v18)
+  if (assertQueueIsCurrent)
   {
-    v19 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B30624();
     }
   }
 
-  v20 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v14];
-  v21 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v16];
+  v20 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:identifierCopy];
+  v21 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:dCopy];
 
-  v22 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"group session participant update" forTopic:v13 localURI:v20 remoteURI:v21 validateAliases:1 guid:0];
+  v22 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"group session participant update" forTopic:topicCopy localURI:v20 remoteURI:v21 validateAliases:1 guid:0];
   if (v22)
   {
     v23 = self->_messageContext;
-    v24 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:v15 boostContext:v23];
+    v24 = [objc_alloc(MEMORY[0x1E69A5320]) initWithDictionary:contextCopy boostContext:v23];
     v25 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v34 = v13;
+      v34 = topicCopy;
       _os_log_impl(&dword_1959FF000, v25, OS_LOG_TYPE_DEFAULT, "Received incoming group session participant update forTopic %@", buf, 0xCu);
     }
 
-    v26 = [objc_alloc(MEMORY[0x1E69A52A0]) initWithDictionaryRepresentation:v12];
+    v26 = [objc_alloc(MEMORY[0x1E69A52A0]) initWithDictionaryRepresentation:updateCopy];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = sub_195A7E3F0;
@@ -5691,40 +5691,40 @@ LABEL_11:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receivedGroupSessionParticipantDataUpdate:(id)a3 forTopic:(id)a4 toIdentifier:(id)a5 fromID:(id)a6
+- (void)receivedGroupSessionParticipantDataUpdate:(id)update forTopic:(id)topic toIdentifier:(id)identifier fromID:(id)d
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  updateCopy = update;
+  topicCopy = topic;
+  identifierCopy = identifier;
+  dCopy = d;
   v14 = +[IDSInternalQueueController sharedInstance];
-  v15 = [v14 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v14 assertQueueIsCurrent];
 
-  if (v15)
+  if (assertQueueIsCurrent)
   {
-    v16 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B306C4();
     }
   }
 
-  v17 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v12];
-  v18 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v13];
+  v17 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:identifierCopy];
+  v18 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:dCopy];
 
-  v19 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"group session participant data update" forTopic:v11 localURI:v17 remoteURI:v18 validateAliases:1 guid:0];
+  v19 = [(_IDSConnection *)self _shouldAcceptIncomingType:@"group session participant data update" forTopic:topicCopy localURI:v17 remoteURI:v18 validateAliases:1 guid:0];
   if (v19)
   {
     v20 = +[IDSLogging IDSConnection];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v11;
+      v27 = topicCopy;
       _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "Received incoming group session participant data update forTopic %@", buf, 0xCu);
     }
 
-    v21 = [objc_alloc(MEMORY[0x1E69A52A0]) initWithDictionaryRepresentation:v10];
+    v21 = [objc_alloc(MEMORY[0x1E69A52A0]) initWithDictionaryRepresentation:updateCopy];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = sub_195A7E6A8;
@@ -5738,16 +5738,16 @@ LABEL_11:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkTransportLogWithReason:(int64_t)a3
+- (void)checkTransportLogWithReason:(int64_t)reason
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B30764();
     }
@@ -5757,7 +5757,7 @@ LABEL_11:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v12 = a3;
+    reasonCopy = reason;
     _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "checkTransportLog {reason: %ld}", buf, 0xCu);
   }
 
@@ -5766,19 +5766,19 @@ LABEL_11:
   v10[2] = sub_195A7E888;
   v10[3] = &unk_1E7441088;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = reason;
   [(_IDSConnection *)self _callDelegatesWithBlock:v10];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendMissingMessageMetric:(id)a3
+- (void)_sendMissingMessageMetric:(id)metric
 {
-  v6 = a3;
-  if ([v6 shouldReportMetric])
+  metricCopy = metric;
+  if ([metricCopy shouldReportMetric])
   {
-    v4 = [v6 payload];
-    v5 = [v6 command];
-    [(_IDSConnection *)self sendServerMessage:v4 command:v5];
+    payload = [metricCopy payload];
+    command = [metricCopy command];
+    [(_IDSConnection *)self sendServerMessage:payload command:command];
   }
 }
 

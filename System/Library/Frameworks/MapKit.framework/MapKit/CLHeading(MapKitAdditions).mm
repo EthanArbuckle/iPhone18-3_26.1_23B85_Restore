@@ -9,33 +9,33 @@
 
 - (uint64_t)heading
 {
-  [a1 trueHeading];
+  [self trueHeading];
   if (v2 >= 0.0)
   {
 
-    return [a1 trueHeading];
+    return [self trueHeading];
   }
 
   else
   {
 
-    return [a1 magneticHeading];
+    return [self magneticHeading];
   }
 }
 
 - (id)compactDescription
 {
-  if ([a1 hasGeomagneticVector])
+  if ([self hasGeomagneticVector])
   {
-    [a1 shortDescription];
+    [self shortDescription];
   }
 
   else
   {
     v3 = MEMORY[0x1E696AEC0];
-    [a1 heading];
+    [self heading];
     v5 = v4;
-    [a1 headingAccuracy];
+    [self headingAccuracy];
     [v3 stringWithFormat:@"%+.1f ±%.0f°", v5, v6];
   }
   v2 = ;
@@ -45,19 +45,19 @@
 
 - (BOOL)hasGeomagneticVector
 {
-  [a1 x];
+  [self x];
   if (v2 != 0.0)
   {
     return 1;
   }
 
-  [a1 y];
+  [self y];
   if (v3 != 0.0)
   {
     return 1;
   }
 
-  [a1 z];
+  [self z];
   return v5 != 0.0;
 }
 
@@ -69,7 +69,7 @@
   v9 = 0;
   v5 = a2;
   v6 = a3;
-  return [a1 initWithClientHeading:v4];
+  return [self initWithClientHeading:v4];
 }
 
 @end

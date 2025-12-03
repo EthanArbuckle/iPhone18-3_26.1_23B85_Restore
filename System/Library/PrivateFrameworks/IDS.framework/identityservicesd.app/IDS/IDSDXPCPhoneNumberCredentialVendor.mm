@@ -1,20 +1,20 @@
 @interface IDSDXPCPhoneNumberCredentialVendor
-- (IDSDXPCPhoneNumberCredentialVendor)initWithQueue:(id)a3 connection:(id)a4;
+- (IDSDXPCPhoneNumberCredentialVendor)initWithQueue:(id)queue connection:(id)connection;
 - (id)phoneUserRegistry;
 - (id)registrationConductor;
 - (id)userStore;
-- (void)fetchPhoneNumbersOfType:(int64_t)a3 withCompletion:(id)a4;
-- (void)registry:(id)a3 serviceType:(int64_t)a4 identifier:(id)a5 failedIdentificationWithRegistrationReason:(int64_t)a6;
-- (void)registry:(id)a3 serviceType:(int64_t)a4 identifier:(id)a5 identifiedPhoneNumber:(id)a6 token:(id)a7 tokenType:(int64_t)a8;
-- (void)requestPhoneNumberCredentialForService:(int64_t)a3 simLabelID:(id)a4 requestOption:(int64_t)a5 withCompletion:(id)a6;
+- (void)fetchPhoneNumbersOfType:(int64_t)type withCompletion:(id)completion;
+- (void)registry:(id)registry serviceType:(int64_t)type identifier:(id)identifier failedIdentificationWithRegistrationReason:(int64_t)reason;
+- (void)registry:(id)registry serviceType:(int64_t)type identifier:(id)identifier identifiedPhoneNumber:(id)number token:(id)token tokenType:(int64_t)tokenType;
+- (void)requestPhoneNumberCredentialForService:(int64_t)service simLabelID:(id)d requestOption:(int64_t)option withCompletion:(id)completion;
 @end
 
 @implementation IDSDXPCPhoneNumberCredentialVendor
 
-- (IDSDXPCPhoneNumberCredentialVendor)initWithQueue:(id)a3 connection:(id)a4
+- (IDSDXPCPhoneNumberCredentialVendor)initWithQueue:(id)queue connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  connectionCopy = connection;
   v16.receiver = self;
   v16.super_class = IDSDXPCPhoneNumberCredentialVendor;
   v9 = [(IDSDXPCPhoneNumberCredentialVendor *)&v16 init];
@@ -23,9 +23,9 @@
     goto LABEL_4;
   }
 
-  if ([v8 hasEntitlement:kIDSPhoneNumberCredentialVendorEntitlement])
+  if ([connectionCopy hasEntitlement:kIDSPhoneNumberCredentialVendorEntitlement])
   {
-    objc_storeStrong(&v9->_queue, a3);
+    objc_storeStrong(&v9->_queue, queue);
     v10 = objc_alloc_init(NSMutableArray);
     requests = v9->_requests;
     v9->_requests = v10;
@@ -51,76 +51,76 @@ LABEL_8:
 - (id)registrationConductor
 {
   v2 = +[IDSDaemon sharedInstance];
-  v3 = [v2 registrationConductor];
+  registrationConductor = [v2 registrationConductor];
 
-  return v3;
+  return registrationConductor;
 }
 
 - (id)phoneUserRegistry
 {
-  v2 = [(IDSDXPCPhoneNumberCredentialVendor *)self registrationConductor];
-  v3 = [v2 phoneUserRegistry];
+  registrationConductor = [(IDSDXPCPhoneNumberCredentialVendor *)self registrationConductor];
+  phoneUserRegistry = [registrationConductor phoneUserRegistry];
 
-  return v3;
+  return phoneUserRegistry;
 }
 
 - (id)userStore
 {
-  v2 = [(IDSDXPCPhoneNumberCredentialVendor *)self registrationConductor];
-  v3 = [v2 userStore];
+  registrationConductor = [(IDSDXPCPhoneNumberCredentialVendor *)self registrationConductor];
+  userStore = [registrationConductor userStore];
 
-  return v3;
+  return userStore;
 }
 
-- (void)requestPhoneNumberCredentialForService:(int64_t)a3 simLabelID:(id)a4 requestOption:(int64_t)a5 withCompletion:(id)a6
+- (void)requestPhoneNumberCredentialForService:(int64_t)service simLabelID:(id)d requestOption:(int64_t)option withCompletion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  dCopy = d;
+  completionCopy = completion;
   v12 = +[IMRGLog sms];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [NSNumber numberWithInteger:a3];
-    v14 = [NSNumber numberWithInteger:a5];
+    v13 = [NSNumber numberWithInteger:service];
+    v14 = [NSNumber numberWithInteger:option];
     v19 = 138412802;
     v20 = v13;
     v21 = 2112;
-    v22 = v10;
+    v22 = dCopy;
     v23 = 2112;
     v24 = v14;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Client requested phone number credential. { serviceType: %@, labelID: %@, requestOption: %@ }", &v19, 0x20u);
   }
 
-  v15 = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
-  [v15 addListener:self];
+  phoneUserRegistry = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
+  [phoneUserRegistry addListener:self];
 
   requests = self->_requests;
-  v17 = [[IDSPhoneNumberRequest alloc] initWithService:a3 labelID:v10 completion:v11];
+  v17 = [[IDSPhoneNumberRequest alloc] initWithService:service labelID:dCopy completion:completionCopy];
 
   [(NSMutableArray *)requests addObject:v17];
-  v18 = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
-  [v18 requestPhoneNumberIdentificationForServiceType:a3 withUniqueIdentifier:v10 requestOption:a5];
+  phoneUserRegistry2 = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
+  [phoneUserRegistry2 requestPhoneNumberIdentificationForServiceType:service withUniqueIdentifier:dCopy requestOption:option];
 }
 
-- (void)fetchPhoneNumbersOfType:(int64_t)a3 withCompletion:(id)a4
+- (void)fetchPhoneNumbersOfType:(int64_t)type withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = +[IMRGLog sms];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [NSNumber numberWithInteger:a3];
+    v8 = [NSNumber numberWithInteger:type];
     *buf = 138412290;
     v48 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Client requested fetch phone numbers of type: %@", buf, 0xCu);
   }
 
-  if ((a3 & 3) != 0 || !v6)
+  if ((type & 3) != 0 || !completionCopy)
   {
     v10 = +[NSMutableArray array];
-    if (a3)
+    if (type)
     {
-      v34 = self;
-      v12 = [(IDSDXPCPhoneNumberCredentialVendor *)self userStore];
-      v13 = [v12 usersWithRealm:0];
+      selfCopy = self;
+      userStore = [(IDSDXPCPhoneNumberCredentialVendor *)self userStore];
+      v13 = [userStore usersWithRealm:0];
 
       v41 = 0u;
       v42 = 0u;
@@ -144,8 +144,8 @@ LABEL_8:
 
             v19 = *(*(&v39 + 1) + 8 * v18);
             v20 = [IDSPhoneNumberFetchResult alloc];
-            v21 = [v19 phoneNumber];
-            v22 = [v20 initWithTelURI:v21 fetchType:1];
+            phoneNumber = [v19 phoneNumber];
+            v22 = [v20 initWithTelURI:phoneNumber fetchType:1];
 
             [v10 addObject:v22];
             v18 = v18 + 1;
@@ -158,20 +158,20 @@ LABEL_8:
         while (v16);
       }
 
-      self = v34;
+      self = selfCopy;
     }
 
-    if ((a3 & 2) != 0)
+    if ((type & 2) != 0)
     {
-      v23 = [(IDSDXPCPhoneNumberCredentialVendor *)self registrationConductor];
-      v24 = [v23 stewieCoordinator];
+      registrationConductor = [(IDSDXPCPhoneNumberCredentialVendor *)self registrationConductor];
+      stewieCoordinator = [registrationConductor stewieCoordinator];
 
-      v25 = [v24 persistedCompanionPhoneNumbers];
+      persistedCompanionPhoneNumbers = [stewieCoordinator persistedCompanionPhoneNumbers];
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v26 = [v25 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v26 = [persistedCompanionPhoneNumbers countByEnumeratingWithState:&v35 objects:v43 count:16];
       if (v26)
       {
         v27 = v26;
@@ -183,27 +183,27 @@ LABEL_8:
           {
             if (*v36 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(persistedCompanionPhoneNumbers);
             }
 
             v30 = *(*(&v35 + 1) + 8 * v29);
             v31 = [IDSPhoneNumberFetchResult alloc];
-            v32 = [v30 prefixedURI];
-            v33 = [v31 initWithTelURI:v32 fetchType:2];
+            prefixedURI = [v30 prefixedURI];
+            v33 = [v31 initWithTelURI:prefixedURI fetchType:2];
 
             [v10 addObject:v33];
             v29 = v29 + 1;
           }
 
           while (v27 != v29);
-          v27 = [v25 countByEnumeratingWithState:&v35 objects:v43 count:16];
+          v27 = [persistedCompanionPhoneNumbers countByEnumeratingWithState:&v35 objects:v43 count:16];
         }
 
         while (v27);
       }
     }
 
-    v6[2](v6, v10, 0);
+    completionCopy[2](completionCopy, v10, 0);
   }
 
   else
@@ -213,28 +213,28 @@ LABEL_8:
     v46 = @"No valid fetch type provided.";
     v10 = [NSDictionary dictionaryWithObjects:&v46 forKeys:&v45 count:1];
     v11 = [NSError errorWithDomain:v9 code:2 userInfo:v10];
-    (v6)[2](v6, 0, v11);
+    (completionCopy)[2](completionCopy, 0, v11);
   }
 }
 
-- (void)registry:(id)a3 serviceType:(int64_t)a4 identifier:(id)a5 identifiedPhoneNumber:(id)a6 token:(id)a7 tokenType:(int64_t)a8
+- (void)registry:(id)registry serviceType:(int64_t)type identifier:(id)identifier identifiedPhoneNumber:(id)number token:(id)token tokenType:(int64_t)tokenType
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  identifierCopy = identifier;
+  numberCopy = number;
+  tokenCopy = token;
   v14 = +[IMRGLog sms];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [NSNumber numberWithInteger:a4];
-    v16 = [NSNumber numberWithInteger:a8];
+    v15 = [NSNumber numberWithInteger:type];
+    v16 = [NSNumber numberWithInteger:tokenType];
     *buf = 138413314;
     v46 = v15;
     v47 = 2112;
-    v48 = v11;
+    v48 = identifierCopy;
     v49 = 2112;
-    v50 = v12;
+    v50 = numberCopy;
     v51 = 2112;
-    v52 = v13;
+    v52 = tokenCopy;
     v53 = 2112;
     v54 = v16;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "PhoneNumberCredentialVendor received registry success callback. { serviceType: %@, identifier: %@, phoneNumber: %@, token: %@, tokenType: %@ }", buf, 0x34u);
@@ -252,7 +252,7 @@ LABEL_8:
     v39 = *v41;
     *&v19 = 138412546;
     v34 = v19;
-    v35 = v13;
+    v35 = tokenCopy;
     v36 = v17;
     do
     {
@@ -264,36 +264,36 @@ LABEL_8:
         }
 
         v22 = *(*(&v40 + 1) + 8 * i);
-        v23 = [v22 labelID];
-        v24 = [v11 isEqualToString:v23];
+        labelID = [v22 labelID];
+        v24 = [identifierCopy isEqualToString:labelID];
 
-        if (v24 && -[IDSDXPCPhoneNumberCredentialVendor doesServiceType:supportCredentialType:](self, "doesServiceType:supportCredentialType:", [v22 serviceType], a8))
+        if (v24 && -[IDSDXPCPhoneNumberCredentialVendor doesServiceType:supportCredentialType:](self, "doesServiceType:supportCredentialType:", [v22 serviceType], tokenType))
         {
-          v25 = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
-          [v25 cancelPhoneNumberIdentificationForServiceType:a4 withUniqueIdentifier:v11];
+          phoneUserRegistry = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
+          [phoneUserRegistry cancelPhoneNumberIdentificationForServiceType:type withUniqueIdentifier:identifierCopy];
 
-          v26 = [v22 completion];
-          v27 = [[IDSPhoneNumberCredential alloc] initWithTelURI:v12 credential:v13 credentialType:a8];
+          completion = [v22 completion];
+          v27 = [[IDSPhoneNumberCredential alloc] initWithTelURI:numberCopy credential:tokenCopy credentialType:tokenType];
           v28 = +[IMRGLog sms];
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = v11;
-            v30 = self;
-            v31 = v12;
-            v32 = objc_retainBlock(v26);
+            v29 = identifierCopy;
+            selfCopy = self;
+            v31 = numberCopy;
+            v32 = objc_retainBlock(completion);
             *buf = v34;
             v46 = v27;
             v47 = 2112;
             v48 = v32;
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "PhoneNumberCredentialVendor calling back to client with success. { credential: %@, completion: %@}", buf, 0x16u);
 
-            v12 = v31;
-            self = v30;
-            v11 = v29;
-            v13 = v35;
+            numberCopy = v31;
+            self = selfCopy;
+            identifierCopy = v29;
+            tokenCopy = v35;
           }
 
-          (v26)[2](v26, v27, 0);
+          (completion)[2](completion, v27, 0);
           [(NSMutableArray *)self->_requests removeObject:v22];
 
           v17 = v36;
@@ -308,23 +308,23 @@ LABEL_8:
 
   if (![(NSMutableArray *)self->_requests count])
   {
-    v33 = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
-    [v33 removeListener:self];
+    phoneUserRegistry2 = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
+    [phoneUserRegistry2 removeListener:self];
   }
 }
 
-- (void)registry:(id)a3 serviceType:(int64_t)a4 identifier:(id)a5 failedIdentificationWithRegistrationReason:(int64_t)a6
+- (void)registry:(id)registry serviceType:(int64_t)type identifier:(id)identifier failedIdentificationWithRegistrationReason:(int64_t)reason
 {
-  v9 = a5;
+  identifierCopy = identifier;
   v10 = +[IMRGLog sms];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v30 = [NSNumber numberWithInteger:a4];
-    v31 = [NSNumber numberWithInteger:a6];
+    v30 = [NSNumber numberWithInteger:type];
+    v31 = [NSNumber numberWithInteger:reason];
     *buf = 138412802;
     v41 = v30;
     v42 = 2112;
-    v43 = v9;
+    v43 = identifierCopy;
     v44 = 2112;
     v45 = v31;
     _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "PhoneNumberCredentialVendor received registry error callback. { serviceType: %@, identifier: %@, registrationError: %@ }", buf, 0x20u);
@@ -354,36 +354,36 @@ LABEL_8:
         }
 
         v17 = *(*(&v35 + 1) + 8 * i);
-        v18 = [v17 labelID];
-        v19 = [v9 isEqualToString:v18];
+        labelID = [v17 labelID];
+        v19 = [identifierCopy isEqualToString:labelID];
 
-        if (v19 && [v17 serviceType] == a4)
+        if (v19 && [v17 serviceType] == type)
         {
-          v20 = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
-          [v20 cancelPhoneNumberIdentificationForServiceType:a4 withUniqueIdentifier:v9];
+          phoneUserRegistry = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
+          [phoneUserRegistry cancelPhoneNumberIdentificationForServiceType:type withUniqueIdentifier:identifierCopy];
 
-          v21 = [v17 completion];
+          completion = [v17 completion];
           v22 = +[IMRGLog sms];
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = v9;
-            v24 = a4;
+            v23 = identifierCopy;
+            typeCopy = type;
             v25 = v11;
-            v26 = self;
-            v27 = objc_retainBlock(v21);
+            selfCopy = self;
+            v27 = objc_retainBlock(completion);
             *buf = v32;
             v41 = v27;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "PhoneNumberCredentialVendor calling back to client with error. { completion: %@ }", buf, 0xCu);
 
-            self = v26;
+            self = selfCopy;
             v11 = v25;
-            a4 = v24;
-            v9 = v23;
+            type = typeCopy;
+            identifierCopy = v23;
             v15 = v33;
           }
 
           v28 = [NSError errorWithDomain:v34 code:1 userInfo:0];
-          (v21)[2](v21, 0, v28);
+          (completion)[2](completion, 0, v28);
 
           [(NSMutableArray *)self->_requests removeObject:v17];
         }
@@ -397,8 +397,8 @@ LABEL_8:
 
   if (![(NSMutableArray *)self->_requests count])
   {
-    v29 = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
-    [v29 removeListener:self];
+    phoneUserRegistry2 = [(IDSDXPCPhoneNumberCredentialVendor *)self phoneUserRegistry];
+    [phoneUserRegistry2 removeListener:self];
   }
 }
 

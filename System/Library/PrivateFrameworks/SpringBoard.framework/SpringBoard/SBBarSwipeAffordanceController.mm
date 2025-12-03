@@ -1,20 +1,20 @@
 @interface SBBarSwipeAffordanceController
-- (SBBarSwipeAffordanceController)initWithZStackParticipantIdentifier:(int64_t)a3 windowScene:(id)a4;
+- (SBBarSwipeAffordanceController)initWithZStackParticipantIdentifier:(int64_t)identifier windowScene:(id)scene;
 - (SBBarSwipeAffordanceControllingDelegate)delegate;
 - (SBHomeGrabberPointerClickDelegate)pointerClickDelegate;
 - (SBWindowScene)windowScene;
 - (void)_beginTryingToBecomeActiveAffordance;
-- (void)_keyboardDidShow:(id)a3;
-- (void)_setKeyboardHomeAffordanceVisible:(BOOL)a3;
+- (void)_keyboardDidShow:(id)show;
+- (void)_setKeyboardHomeAffordanceVisible:(BOOL)visible;
 - (void)_stopTryingToBecomeActiveAffordance;
 - (void)_updateActiveState;
 - (void)dealloc;
-- (void)setActivationPolicyForParticipantsBelow:(int64_t)a3;
-- (void)setAllowsTouchesToPassThrough:(BOOL)a3;
-- (void)setSuppressAffordance:(BOOL)a3;
-- (void)setWantsToBeActiveAffordance:(BOOL)a3;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
-- (void)zStackParticipantDidChange:(id)a3;
+- (void)setActivationPolicyForParticipantsBelow:(int64_t)below;
+- (void)setAllowsTouchesToPassThrough:(BOOL)through;
+- (void)setSuppressAffordance:(BOOL)affordance;
+- (void)setWantsToBeActiveAffordance:(BOOL)affordance;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
+- (void)zStackParticipantDidChange:(id)change;
 @end
 
 @implementation SBBarSwipeAffordanceController
@@ -24,8 +24,8 @@
   if (!self->_zStackParticipant && self->_zStackParticipantIdentifier != 30)
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v4 = [WeakRetained zStackResolver];
-    v5 = [v4 acquireParticipantWithIdentifier:self->_zStackParticipantIdentifier delegate:self];
+    zStackResolver = [WeakRetained zStackResolver];
+    v5 = [zStackResolver acquireParticipantWithIdentifier:self->_zStackParticipantIdentifier delegate:self];
     zStackParticipant = self->_zStackParticipant;
     self->_zStackParticipant = v5;
 
@@ -55,56 +55,56 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
 
   v5.receiver = self;
   v5.super_class = SBBarSwipeAffordanceController;
   [(SBBarSwipeAffordanceController *)&v5 dealloc];
 }
 
-- (SBBarSwipeAffordanceController)initWithZStackParticipantIdentifier:(int64_t)a3 windowScene:(id)a4
+- (SBBarSwipeAffordanceController)initWithZStackParticipantIdentifier:(int64_t)identifier windowScene:(id)scene
 {
-  v7 = a4;
+  sceneCopy = scene;
   v17.receiver = self;
   v17.super_class = SBBarSwipeAffordanceController;
   v8 = [(SBBarSwipeAffordanceController *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    v8->_zStackParticipantIdentifier = a3;
-    if (!v7)
+    v8->_zStackParticipantIdentifier = identifier;
+    if (!sceneCopy)
     {
       [SBBarSwipeAffordanceController initWithZStackParticipantIdentifier:a2 windowScene:v8];
     }
 
-    objc_storeWeak(&v9->_windowScene, v7);
-    v10 = [v7 systemGestureManager];
+    objc_storeWeak(&v9->_windowScene, sceneCopy);
+    systemGestureManager = [sceneCopy systemGestureManager];
     v11 = [SBBarSwipeAffordanceView alloc];
-    v12 = [(SBBarSwipeAffordanceView *)v11 initWithFrame:v10 systemGestureManager:1 enableGestures:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    v12 = [(SBBarSwipeAffordanceView *)v11 initWithFrame:systemGestureManager systemGestureManager:1 enableGestures:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     barSwipeAffordanceView = v9->_barSwipeAffordanceView;
     v9->_barSwipeAffordanceView = v12;
 
     v9->_activationPolicyForParticipantsBelow = 1;
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v9 selector:sel__keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v9 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
   }
 
   return v9;
 }
 
-- (void)setWantsToBeActiveAffordance:(BOOL)a3
+- (void)setWantsToBeActiveAffordance:(BOOL)affordance
 {
-  if (self->_wantsToBeActiveAffordance != a3)
+  if (self->_wantsToBeActiveAffordance != affordance)
   {
-    self->_wantsToBeActiveAffordance = a3;
-    if (a3)
+    self->_wantsToBeActiveAffordance = affordance;
+    if (affordance)
     {
       [(SBBarSwipeAffordanceController *)self _beginTryingToBecomeActiveAffordance];
     }
@@ -116,57 +116,57 @@
   }
 }
 
-- (void)setSuppressAffordance:(BOOL)a3
+- (void)setSuppressAffordance:(BOOL)affordance
 {
-  if (self->_suppressAffordance != a3)
+  if (self->_suppressAffordance != affordance)
   {
-    self->_suppressAffordance = a3;
+    self->_suppressAffordance = affordance;
     [(SBBarSwipeAffordanceController *)self _updateActiveState];
   }
 }
 
-- (void)setAllowsTouchesToPassThrough:(BOOL)a3
+- (void)setAllowsTouchesToPassThrough:(BOOL)through
 {
-  if (self->_allowsTouchesToPassThrough != a3)
+  if (self->_allowsTouchesToPassThrough != through)
   {
-    self->_allowsTouchesToPassThrough = a3;
+    self->_allowsTouchesToPassThrough = through;
     [(SBBarSwipeAffordanceView *)self->_barSwipeAffordanceView setAllowsTouchesToPassThrough:?];
   }
 }
 
-- (void)setActivationPolicyForParticipantsBelow:(int64_t)a3
+- (void)setActivationPolicyForParticipantsBelow:(int64_t)below
 {
-  if (self->_activationPolicyForParticipantsBelow != a3)
+  if (self->_activationPolicyForParticipantsBelow != below)
   {
-    self->_activationPolicyForParticipantsBelow = a3;
+    self->_activationPolicyForParticipantsBelow = below;
     [(SBFZStackParticipant *)self->_zStackParticipant setNeedsUpdatePreferencesWithReason:@"activationPolicyForParticipantsBelow changed"];
   }
 }
 
-- (void)zStackParticipantDidChange:(id)a3
+- (void)zStackParticipantDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   [(SBBarSwipeAffordanceController *)self _updateActiveState];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained zStackParticipantDidChange:v5];
+    [WeakRetained zStackParticipantDidChange:changeCopy];
   }
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v8 = a3;
-  v6 = a4;
+  participantCopy = participant;
+  preferencesCopy = preferences;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained zStackParticipant:v8 updatePreferences:v6];
+    [WeakRetained zStackParticipant:participantCopy updatePreferences:preferencesCopy];
   }
 
   else
   {
-    [v6 setActivationPolicyForParticipantsBelow:self->_activationPolicyForParticipantsBelow];
+    [preferencesCopy setActivationPolicyForParticipantsBelow:self->_activationPolicyForParticipantsBelow];
   }
 }
 
@@ -181,10 +181,10 @@
   }
 }
 
-- (void)_keyboardDidShow:(id)a3
+- (void)_keyboardDidShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v5 CGRectValue];
   IsEmpty = CGRectIsEmpty(v8);
 
@@ -195,14 +195,14 @@
   }
 }
 
-- (void)_setKeyboardHomeAffordanceVisible:(BOOL)a3
+- (void)_setKeyboardHomeAffordanceVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(SBBarSwipeAffordanceView *)self->_barSwipeAffordanceView keyboardHomeAffordanceAssertion];
+  visibleCopy = visible;
+  keyboardHomeAffordanceAssertion = [(SBBarSwipeAffordanceView *)self->_barSwipeAffordanceView keyboardHomeAffordanceAssertion];
 
-  if (v3)
+  if (visibleCopy)
   {
-    if (!v5)
+    if (!keyboardHomeAffordanceAssertion)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
@@ -214,7 +214,7 @@
     }
   }
 
-  else if (v5)
+  else if (keyboardHomeAffordanceAssertion)
   {
     v8 = self->_barSwipeAffordanceView;
 

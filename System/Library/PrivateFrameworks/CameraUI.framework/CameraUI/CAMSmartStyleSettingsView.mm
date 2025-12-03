@@ -1,65 +1,65 @@
 @interface CAMSmartStyleSettingsView
-+ (id)_descriptionForStylePreset:(int64_t)a3;
++ (id)_descriptionForStylePreset:(int64_t)preset;
 + (id)confirmButtonConfiguration;
 + (id)showAssetsButtonConfiguration;
-+ (void)_updateButtonConfiguration:(id)a3;
++ (void)_updateButtonConfiguration:(id)configuration;
 - (BOOL)scrollEnabled;
-- (CAMSmartStyleSettingsView)initWithDelegate:(id)a3 stylePresets:(id)a4 selectedIndex:(int64_t)a5;
+- (CAMSmartStyleSettingsView)initWithDelegate:(id)delegate stylePresets:(id)presets selectedIndex:(int64_t)index;
 - (CAMSmartStyleSettingsViewDelegate)delegate;
 - (CEKSmartStyle)_selectedStyle;
 - (double)_desiredCarouselRatio;
 - (id)_assetButtonConfiguration;
-- (id)_centerSquareOfImage:(id)a3 appliesScale:(BOOL)a4;
+- (id)_centerSquareOfImage:(id)image appliesScale:(BOOL)scale;
 - (id)_confirmButtonTitle;
-- (id)_debugStringForStage:(unint64_t)a3;
-- (id)_fontWithTextStyle:(id)a3 traits:(unsigned int)a4;
+- (id)_debugStringForStage:(unint64_t)stage;
+- (id)_fontWithTextStyle:(id)style traits:(unsigned int)traits;
 - (id)_newInstructionLabel;
 - (id)_newSecondaryButton;
 - (id)_secondaryButtonConfiguration;
 - (id)_selectedStyleDescription;
 - (id)_showGridButtonConfiguration;
 - (id)_titleCheckmarkView;
-- (id)_titleLabelWithText:(id)a3;
+- (id)_titleLabelWithText:(id)text;
 - (int64_t)_selectedStylePreset;
 - (unint64_t)_firstNeededTuneStage;
 - (void)_addConstraints;
 - (void)_advanceToTuneStageIfPossible;
-- (void)_beginAssetSelection:(id)a3;
+- (void)_beginAssetSelection:(id)selection;
 - (void)_createNeededStylePages;
-- (void)_dpadControlUpdated:(id)a3;
-- (void)_handleConfirmButton:(id)a3;
-- (void)_handleCustomizeButton:(id)a3;
-- (void)_handlePageControlValueChanged:(id)a3;
-- (void)_handleStylePickerTap:(id)a3;
+- (void)_dpadControlUpdated:(id)updated;
+- (void)_handleConfirmButton:(id)button;
+- (void)_handleCustomizeButton:(id)button;
+- (void)_handlePageControlValueChanged:(id)changed;
+- (void)_handleStylePickerTap:(id)tap;
 - (void)_intensitySliderUpdated;
 - (void)_layoutMaskedViews;
-- (void)_moveToNextStageIfAllowedAnimated:(BOOL)a3;
+- (void)_moveToNextStageIfAllowedAnimated:(BOOL)animated;
 - (void)_performHaptics;
 - (void)_playChooseInstructionAnimations;
 - (void)_playTuneInstructionAnimations;
 - (void)_prepareHaptics;
 - (void)_resetCurrentStyleToDefaults;
-- (void)_setAnimationSequence:(id)a3;
-- (void)_setBooleanPreference:(BOOL)a3 forKey:(id)a4;
-- (void)_setPreviewViewControllersExpandedItemIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)_setStage:(unint64_t)a3 animated:(BOOL)a4;
-- (void)_setStageButtonsEnabled:(BOOL)a3 forReason:(id)a4;
-- (void)_setVisiblePreviewIndex:(int64_t)a3 updatePageControl:(BOOL)a4 updateStylePicker:(BOOL)a5 animated:(BOOL)a6 notifyDelegate:(BOOL)a7;
+- (void)_setAnimationSequence:(id)sequence;
+- (void)_setBooleanPreference:(BOOL)preference forKey:(id)key;
+- (void)_setPreviewViewControllersExpandedItemIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)_setStage:(unint64_t)stage animated:(BOOL)animated;
+- (void)_setStageButtonsEnabled:(BOOL)enabled forReason:(id)reason;
+- (void)_setVisiblePreviewIndex:(int64_t)index updatePageControl:(BOOL)control updateStylePicker:(BOOL)picker animated:(BOOL)animated notifyDelegate:(BOOL)delegate;
 - (void)_stageUpdates;
 - (void)_updateConfirmButtonTitle;
-- (void)_updateDpadForPresetType:(int64_t)a3 animated:(BOOL)a4;
-- (void)_updateForStageAnimated:(BOOL)a3 scrollToTop:(BOOL)a4;
-- (void)_updatePreviewAdjustmentsFromCurrentSliderValues:(BOOL)a3 updateModelValues:(BOOL)a4;
+- (void)_updateDpadForPresetType:(int64_t)type animated:(BOOL)animated;
+- (void)_updateForStageAnimated:(BOOL)animated scrollToTop:(BOOL)top;
+- (void)_updatePreviewAdjustmentsFromCurrentSliderValues:(BOOL)values updateModelValues:(BOOL)modelValues;
 - (void)_updatePreviewPageDots;
 - (void)_updateScrollViewEnablement;
-- (void)_updateShowGridButtonAnimated:(BOOL)a3;
+- (void)_updateShowGridButtonAnimated:(BOOL)animated;
 - (void)didMoveToWindow;
 - (void)flashScrollIndicators;
 - (void)layoutSubviews;
-- (void)scrollViewDidLayoutSubviews:(id)a3;
-- (void)semanticStylePickerDidChangeSelectedStyle:(id)a3;
-- (void)semanticStylePickerDidScroll:(id)a3;
-- (void)setScrollEnabled:(BOOL)a3;
+- (void)scrollViewDidLayoutSubviews:(id)subviews;
+- (void)semanticStylePickerDidChangeSelectedStyle:(id)style;
+- (void)semanticStylePickerDidScroll:(id)scroll;
+- (void)setScrollEnabled:(BOOL)enabled;
 - (void)speedUpFadeInAnimations;
 - (void)stopAllAnimations;
 - (void)updateImageViews;
@@ -67,19 +67,19 @@
 
 @implementation CAMSmartStyleSettingsView
 
-- (CAMSmartStyleSettingsView)initWithDelegate:(id)a3 stylePresets:(id)a4 selectedIndex:(int64_t)a5
+- (CAMSmartStyleSettingsView)initWithDelegate:(id)delegate stylePresets:(id)presets selectedIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  delegateCopy = delegate;
+  presetsCopy = presets;
   v100.receiver = self;
   v100.super_class = CAMSmartStyleSettingsView;
   v10 = [(CAMSmartStyleSettingsView *)&v100 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v8);
-    v12 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(CAMSmartStyleSettingsView *)v11 setBackgroundColor:v12];
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(CAMSmartStyleSettingsView *)v11 setBackgroundColor:systemBackgroundColor];
 
     v13 = objc_alloc_init(CAMScrollViewWithLayoutDelegate);
     scrollView = v11->__scrollView;
@@ -109,33 +109,33 @@
     descriptionBottomConstraints = v11->__descriptionBottomConstraints;
     v11->__descriptionBottomConstraints = v23;
 
-    if ([v9 count] >= a5)
+    if ([presetsCopy count] >= index)
     {
-      v25 = a5;
+      indexCopy = index;
     }
 
     else
     {
-      v25 = 0;
+      indexCopy = 0;
     }
 
-    v26 = [v9 objectAtIndexedSubscript:v25];
-    v27 = [v26 integerValue];
+    v26 = [presetsCopy objectAtIndexedSubscript:indexCopy];
+    integerValue = [v26 integerValue];
 
     WeakRetained = objc_loadWeakRetained(&v11->_delegate);
-    v29 = [WeakRetained settingsView:v11 requestsStyleForPresetType:v27];
+    v29 = [WeakRetained settingsView:v11 requestsStyleForPresetType:integerValue];
 
-    v30 = [v9 copy];
+    v30 = [presetsCopy copy];
     styleTypes = v11->__styleTypes;
     v11->__styleTypes = v30;
 
-    if (v25 > 0 || ([v29 isNeutral] & 1) == 0)
+    if (indexCopy > 0 || ([v29 isNeutral] & 1) == 0)
     {
       [(CAMSmartStyleSettingsView *)v11 _setDidCompleteChooseInstructions:1];
     }
 
     v91 = v29;
-    v11->_visiblePreviewIndex = v25;
+    v11->_visiblePreviewIndex = indexCopy;
     v11->__stage = 0;
     v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
     previewViewControllersByStyleIndex = v11->__previewViewControllersByStyleIndex;
@@ -170,16 +170,16 @@
 
     [(CAMSemanticStylePicker *)v11->__stylePicker setDelegate:v11];
     [(CAMSemanticStylePicker *)v11->__stylePicker setNumberOfStyles:[(NSArray *)v11->__styleTypes count]];
-    [(CAMSemanticStylePicker *)v11->__stylePicker setSelectedStyleIndex:v25];
+    [(CAMSemanticStylePicker *)v11->__stylePicker setSelectedStyleIndex:indexCopy];
     [(CAMSemanticStylePicker *)v11->__stylePicker setHidesSelfWhenNotExpanded:0];
     [(CAMSemanticStylePicker *)v11->__stylePicker setExpanded:1];
     [(CAMSemanticStylePicker *)v11->__stylePicker setSpacerWidth:3.0];
     [(CAMSemanticStylePicker *)v11->__stylePicker setMaterial:4];
-    v41 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(CAMSemanticStylePicker *)v11->__stylePicker setMaterialColor:v41];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(CAMSemanticStylePicker *)v11->__stylePicker setMaterialColor:systemBackgroundColor2];
 
-    v42 = [(CAMSemanticStylePicker *)v11->__stylePicker pageControl];
-    [v42 setHidden:1];
+    pageControl = [(CAMSemanticStylePicker *)v11->__stylePicker pageControl];
+    [pageControl setHidden:1];
 
     v43 = v11->__stylePicker;
     v44 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v11 action:sel__handleStylePickerTap_];
@@ -194,23 +194,23 @@
     v46 = v11;
     v99 = v46;
     [(NSArray *)v45 enumerateObjectsUsingBlock:v98];
-    v92 = v8;
-    if (v25 >= [(NSArray *)v11->__styleTypes count])
+    v92 = delegateCopy;
+    if (indexCopy >= [(NSArray *)v11->__styleTypes count])
     {
       v47 = &unk_1F16C7DC0;
     }
 
     else
     {
-      v47 = [(NSArray *)v11->__styleTypes objectAtIndexedSubscript:v25];
+      v47 = [(NSArray *)v11->__styleTypes objectAtIndexedSubscript:indexCopy];
     }
 
-    v48 = [v47 integerValue];
+    integerValue2 = [v47 integerValue];
     v49 = [objc_alloc(MEMORY[0x1E69C42C0]) initWithSize:{125.0, 125.0}];
     dpadControl = v46->__dpadControl;
     v46->__dpadControl = v49;
 
-    [v8 addChildViewController:v46->__dpadControl toView:v11->__scrollView];
+    [delegateCopy addChildViewController:v46->__dpadControl toView:v11->__scrollView];
     objc_initWeak(&location, v46);
     v51 = [objc_alloc(MEMORY[0x1E69C42D0]) initWithTone:0.0 color:0.0 palette:1.0];
     styleValuesPlatterView = v46->__styleValuesPlatterView;
@@ -223,10 +223,10 @@
     objc_copyWeak(&v96, &location);
     [(PEPhotoStyleValuesPlatterView *)v46->__styleValuesPlatterView setResetAction:v95];
     [(CAMScrollViewWithLayoutDelegate *)v11->__scrollView addSubview:v46->__styleValuesPlatterView];
-    v53 = [(PEPhotoStyleDPad *)v46->__dpadControl view];
-    [v53 layoutIfNeeded];
+    view = [(PEPhotoStyleDPad *)v46->__dpadControl view];
+    [view layoutIfNeeded];
 
-    [(CAMSmartStyleSettingsView *)v46 _updateDpadForPresetType:v48 animated:0];
+    [(CAMSmartStyleSettingsView *)v46 _updateDpadForPresetType:integerValue2 animated:0];
     v93[0] = MEMORY[0x1E69E9820];
     v93[1] = 3221225472;
     v93[2] = __73__CAMSmartStyleSettingsView_initWithDelegate_stylePresets_selectedIndex___block_invoke_2_220;
@@ -241,34 +241,34 @@
     [(UIPageControl *)v46->__previewPageDots setAllowsContinuousInteraction:1];
     [(UIPageControl *)v46->__previewPageDots setNumberOfPages:[(NSArray *)v11->__styleTypes count]];
     [(CAMSmartStyleSettingsView *)v46 _updatePreviewPageDots];
-    v56 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(UIPageControl *)v46->__previewPageDots setPageIndicatorTintColor:v56];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(UIPageControl *)v46->__previewPageDots setPageIndicatorTintColor:systemGrayColor];
 
-    v57 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIPageControl *)v46->__previewPageDots setCurrentPageIndicatorTintColor:v57];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIPageControl *)v46->__previewPageDots setCurrentPageIndicatorTintColor:labelColor];
 
     [(UIPageControl *)v46->__previewPageDots addTarget:v46 action:sel__handlePageControlValueChanged_ forControlEvents:4096];
     [(UIPageControl *)v46->__previewPageDots addTarget:v46 action:sel__handlePageControlTouchDown_ forControlEvents:1];
     [(CAMScrollViewWithLayoutDelegate *)v11->__scrollView addSubview:v46->__previewPageDots];
     v58 = MEMORY[0x1E69DC738];
-    v59 = [(CAMSmartStyleSettingsView *)v46 _assetButtonConfiguration];
-    v60 = [v58 buttonWithConfiguration:v59 primaryAction:0];
+    _assetButtonConfiguration = [(CAMSmartStyleSettingsView *)v46 _assetButtonConfiguration];
+    v60 = [v58 buttonWithConfiguration:_assetButtonConfiguration primaryAction:0];
     selectAssetsButton = v46->__selectAssetsButton;
     v46->__selectAssetsButton = v60;
 
     [(UIButton *)v46->__selectAssetsButton addTarget:v46 action:sel__beginAssetSelection_ forControlEvents:64];
     [(CAMScrollViewWithLayoutDelegate *)v11->__scrollView addSubview:v46->__selectAssetsButton];
     v62 = MEMORY[0x1E69DC738];
-    v63 = [(CAMSmartStyleSettingsView *)v46 _showGridButtonConfiguration];
-    v64 = [v62 buttonWithConfiguration:v63 primaryAction:0];
+    _showGridButtonConfiguration = [(CAMSmartStyleSettingsView *)v46 _showGridButtonConfiguration];
+    v64 = [v62 buttonWithConfiguration:_showGridButtonConfiguration primaryAction:0];
     showGridButton = v46->__showGridButton;
     v46->__showGridButton = v64;
 
     [(UIButton *)v46->__showGridButton addTarget:v46 action:sel__handleShowGridButton_ forControlEvents:64];
     [(CAMScrollViewWithLayoutDelegate *)v11->__scrollView addSubview:v46->__showGridButton];
-    v66 = [(CAMSmartStyleSettingsView *)v46 _newInstructionLabel];
+    _newInstructionLabel = [(CAMSmartStyleSettingsView *)v46 _newInstructionLabel];
     chooseInstructionLabel = v46->__chooseInstructionLabel;
-    v46->__chooseInstructionLabel = v66;
+    v46->__chooseInstructionLabel = _newInstructionLabel;
 
     v68 = CAMLocalizedFrameworkString(@"SMART_STYLES_SETTINGS_CHOOSE_INSTRUCTION", 0);
     [(UILabel *)v46->__chooseInstructionLabel setText:v68];
@@ -280,29 +280,29 @@
     chooseInstructionArrow = v46->__chooseInstructionArrow;
     v46->__chooseInstructionArrow = v71;
 
-    v73 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIImageView *)v46->__chooseInstructionArrow setTintColor:v73];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIImageView *)v46->__chooseInstructionArrow setTintColor:secondaryLabelColor];
 
     [(CAMScrollViewWithLayoutDelegate *)v11->__scrollView addSubview:v46->__chooseInstructionArrow];
-    v74 = [(CAMSmartStyleSettingsView *)v46 _newInstructionLabel];
+    _newInstructionLabel2 = [(CAMSmartStyleSettingsView *)v46 _newInstructionLabel];
     tuneInstructionLabel = v46->__tuneInstructionLabel;
-    v46->__tuneInstructionLabel = v74;
+    v46->__tuneInstructionLabel = _newInstructionLabel2;
 
     v76 = CAMLocalizedFrameworkString(@"SMART_STYLES_SETTINGS_TUNE_INSTRUCTION", 0);
     [(UILabel *)v46->__tuneInstructionLabel setText:v76];
 
     [(CAMScrollViewWithLayoutDelegate *)v11->__scrollView addSubview:v46->__tuneInstructionLabel];
     v77 = MEMORY[0x1E69DC738];
-    v78 = [objc_opt_class() confirmButtonConfiguration];
-    v79 = [v77 buttonWithConfiguration:v78 primaryAction:0];
+    confirmButtonConfiguration = [objc_opt_class() confirmButtonConfiguration];
+    v79 = [v77 buttonWithConfiguration:confirmButtonConfiguration primaryAction:0];
     confirmButton = v46->__confirmButton;
     v46->__confirmButton = v79;
 
     [(UIButton *)v46->__confirmButton addTarget:v46 action:sel__handleConfirmButton_ forControlEvents:64];
     [(CAMScrollViewWithLayoutDelegate *)v11->__scrollView addSubview:v46->__confirmButton];
-    v81 = [(CAMSmartStyleSettingsView *)v46 _newSecondaryButton];
+    _newSecondaryButton = [(CAMSmartStyleSettingsView *)v46 _newSecondaryButton];
     customizeButton = v46->__customizeButton;
-    v46->__customizeButton = v81;
+    v46->__customizeButton = _newSecondaryButton;
 
     v83 = v46->__customizeButton;
     v84 = CAMLocalizedFrameworkString(@"SMART_STYLES_SETTINGS_CUSTOMIZE", 0);
@@ -319,9 +319,9 @@
     }
 
     v85 = +[CAMCaptureCapabilities capabilities];
-    v86 = [v85 allowHaptics];
+    allowHaptics = [v85 allowHaptics];
 
-    if (v86)
+    if (allowHaptics)
     {
       v87 = +[CAMFeedbackController sharedController];
       feedbackController = v46->__feedbackController;
@@ -332,7 +332,7 @@
     objc_destroyWeak(&v96);
     objc_destroyWeak(&location);
 
-    v8 = v92;
+    delegateCopy = v92;
   }
 
   return v11;
@@ -432,22 +432,22 @@ void __73__CAMSmartStyleSettingsView_initWithDelegate_stylePresets_selectedIndex
 - (id)_newSecondaryButton
 {
   v2 = MEMORY[0x1E69DC738];
-  v3 = [(CAMSmartStyleSettingsView *)self _secondaryButtonConfiguration];
-  v4 = [v2 buttonWithConfiguration:v3 primaryAction:0];
+  _secondaryButtonConfiguration = [(CAMSmartStyleSettingsView *)self _secondaryButtonConfiguration];
+  v4 = [v2 buttonWithConfiguration:_secondaryButtonConfiguration primaryAction:0];
 
-  v5 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v4 setTitleColor:v5 forState:0];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [v4 setTitleColor:systemBlueColor forState:0];
 
   return v4;
 }
 
 - (void)_createNeededStylePages
 {
-  v3 = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
+  _previewViewControllersByStyleIndex = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMSmartStyleSettingsView visiblePreviewIndex](self, "visiblePreviewIndex")}];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [_previewViewControllersByStyleIndex objectForKeyedSubscript:v4];
 
-  v6 = [(CAMSmartStyleSettingsView *)self _styleClippingContainerViews];
+  _styleClippingContainerViews = [(CAMSmartStyleSettingsView *)self _styleClippingContainerViews];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__CAMSmartStyleSettingsView__createNeededStylePages__block_invoke;
@@ -455,7 +455,7 @@ void __73__CAMSmartStyleSettingsView_initWithDelegate_stylePresets_selectedIndex
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  [v6 enumerateObjectsUsingBlock:v8];
+  [_styleClippingContainerViews enumerateObjectsUsingBlock:v8];
 }
 
 void __52__CAMSmartStyleSettingsView__createNeededStylePages__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -498,40 +498,40 @@ void __52__CAMSmartStyleSettingsView__createNeededStylePages__block_invoke(uint6
 
 - (BOOL)scrollEnabled
 {
-  v2 = [(CAMSmartStyleSettingsView *)self _stylePicker];
-  v3 = [v2 scrollEnabled];
+  _stylePicker = [(CAMSmartStyleSettingsView *)self _stylePicker];
+  scrollEnabled = [_stylePicker scrollEnabled];
 
-  return v3;
+  return scrollEnabled;
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(CAMSmartStyleSettingsView *)self _stylePicker];
-  [v4 setScrollEnabled:v3];
+  enabledCopy = enabled;
+  _stylePicker = [(CAMSmartStyleSettingsView *)self _stylePicker];
+  [_stylePicker setScrollEnabled:enabledCopy];
 }
 
 - (void)updateImageViews
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMSmartStyleSettingsView *)self window];
+  window = [(CAMSmartStyleSettingsView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
+    _previewViewControllersByStyleIndex = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMSmartStyleSettingsView visiblePreviewIndex](self, "visiblePreviewIndex")}];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    v6 = [_previewViewControllersByStyleIndex objectForKeyedSubscript:v5];
 
     [v6 updateViewsWithLoadResults];
     if ([v6 didFinishRendering])
     {
-      v7 = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
+      _previewViewControllersByStyleIndex2 = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __45__CAMSmartStyleSettingsView_updateImageViews__block_invoke;
       v9[3] = &unk_1E76FBD30;
       v10 = v6;
-      [v7 enumerateKeysAndObjectsUsingBlock:v9];
+      [_previewViewControllersByStyleIndex2 enumerateKeysAndObjectsUsingBlock:v9];
 
       v8 = v10;
     }
@@ -542,7 +542,7 @@ void __52__CAMSmartStyleSettingsView__createNeededStylePages__block_invoke(uint6
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v12 = [(CAMSmartStyleSettingsView *)self visiblePreviewIndex];
+        visiblePreviewIndex = [(CAMSmartStyleSettingsView *)self visiblePreviewIndex];
         _os_log_impl(&dword_1A3640000, v8, OS_LOG_TYPE_DEFAULT, "Skipping updates to other pages while waiting to set resources on page: %lu", buf, 0xCu);
       }
     }
@@ -562,108 +562,108 @@ uint64_t __45__CAMSmartStyleSettingsView_updateImageViews__block_invoke(uint64_t
 - (void)stopAllAnimations
 {
   [(CAMSmartStyleSettingsView *)self _setAnimationSequence:0];
-  v3 = [(CAMSmartStyleSettingsView *)self _dpadControl];
-  [v3 setPulsingValueIndicator:0];
+  _dpadControl = [(CAMSmartStyleSettingsView *)self _dpadControl];
+  [_dpadControl setPulsingValueIndicator:0];
 }
 
 - (void)speedUpFadeInAnimations
 {
-  v2 = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
-  [v2 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_36];
+  _previewViewControllersByStyleIndex = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
+  [_previewViewControllersByStyleIndex enumerateKeysAndObjectsUsingBlock:&__block_literal_global_36];
 }
 
 - (void)flashScrollIndicators
 {
-  v3 = [(CAMSmartStyleSettingsView *)self _scrollView];
-  v4 = [v3 isScrollEnabled];
+  _scrollView = [(CAMSmartStyleSettingsView *)self _scrollView];
+  isScrollEnabled = [_scrollView isScrollEnabled];
 
-  if (v4)
+  if (isScrollEnabled)
   {
-    v5 = [(CAMSmartStyleSettingsView *)self _scrollView];
-    [v5 flashScrollIndicators];
+    _scrollView2 = [(CAMSmartStyleSettingsView *)self _scrollView];
+    [_scrollView2 flashScrollIndicators];
   }
 }
 
-- (void)_setVisiblePreviewIndex:(int64_t)a3 updatePageControl:(BOOL)a4 updateStylePicker:(BOOL)a5 animated:(BOOL)a6 notifyDelegate:(BOOL)a7
+- (void)_setVisiblePreviewIndex:(int64_t)index updatePageControl:(BOOL)control updateStylePicker:(BOOL)picker animated:(BOOL)animated notifyDelegate:(BOOL)delegate
 {
-  if (self->_visiblePreviewIndex != a3)
+  if (self->_visiblePreviewIndex != index)
   {
-    v7 = a7;
-    v8 = a6;
-    v9 = a5;
-    self->_visiblePreviewIndex = a3;
-    if (a4)
+    delegateCopy = delegate;
+    animatedCopy = animated;
+    pickerCopy = picker;
+    self->_visiblePreviewIndex = index;
+    if (control)
     {
       [(CAMSmartStyleSettingsView *)self _updatePreviewPageDots];
     }
 
-    if (v9)
+    if (pickerCopy)
     {
-      v12 = [(CAMSmartStyleSettingsView *)self _stylePicker];
-      [v12 setSelectedStyleIndex:a3 animated:v8];
+      _stylePicker = [(CAMSmartStyleSettingsView *)self _stylePicker];
+      [_stylePicker setSelectedStyleIndex:index animated:animatedCopy];
     }
 
     [(CAMSmartStyleSettingsView *)self _createNeededStylePages];
-    v13 = [(CAMSmartStyleSettingsView *)self _styleTypes];
-    v14 = [v13 objectAtIndexedSubscript:a3];
-    v15 = [v14 integerValue];
+    _styleTypes = [(CAMSmartStyleSettingsView *)self _styleTypes];
+    v14 = [_styleTypes objectAtIndexedSubscript:index];
+    integerValue = [v14 integerValue];
 
-    [(CAMSmartStyleSettingsView *)self _updateDpadForPresetType:v15 animated:v8];
+    [(CAMSmartStyleSettingsView *)self _updateDpadForPresetType:integerValue animated:animatedCopy];
     [(CAMSmartStyleSettingsView *)self _updatePreviewAdjustmentsFromCurrentSliderValues:0 updateModelValues:0];
-    if (v7)
+    if (delegateCopy)
     {
-      v16 = [(CAMSmartStyleSettingsView *)self delegate];
-      [v16 settingsView:self didChangeToStylePreset:v15];
+      delegate = [(CAMSmartStyleSettingsView *)self delegate];
+      [delegate settingsView:self didChangeToStylePreset:integerValue];
     }
   }
 }
 
 - (void)_updatePreviewPageDots
 {
-  v3 = [(CAMSmartStyleSettingsView *)self visiblePreviewIndex];
+  visiblePreviewIndex = [(CAMSmartStyleSettingsView *)self visiblePreviewIndex];
   previewPageDots = self->__previewPageDots;
 
-  [(UIPageControl *)previewPageDots setCurrentPage:v3];
+  [(UIPageControl *)previewPageDots setCurrentPage:visiblePreviewIndex];
 }
 
-- (id)_centerSquareOfImage:(id)a3 appliesScale:(BOOL)a4
+- (id)_centerSquareOfImage:(id)image appliesScale:(BOOL)scale
 {
-  v4 = a4;
-  v6 = a3;
+  scaleCopy = scale;
+  imageCopy = image;
   v7 = 1.0;
-  if (v4)
+  if (scaleCopy)
   {
-    v8 = [(CAMSmartStyleSettingsView *)self window];
-    v9 = [v8 windowScene];
-    v10 = [v9 screen];
-    [v10 scale];
+    window = [(CAMSmartStyleSettingsView *)self window];
+    windowScene = [window windowScene];
+    screen = [windowScene screen];
+    [screen scale];
     v7 = v11;
   }
 
-  [v6 size];
+  [imageCopy size];
   v13 = v7 * v12;
-  [v6 size];
+  [imageCopy size];
   v15 = fmin(v13, v7 * v14);
-  Width = CGImageGetWidth([v6 CGImage]);
-  v17 = (CGImageGetHeight([v6 CGImage]) - v15) * 0.5;
-  v18 = [v6 CGImage];
+  Width = CGImageGetWidth([imageCopy CGImage]);
+  v17 = (CGImageGetHeight([imageCopy CGImage]) - v15) * 0.5;
+  cGImage = [imageCopy CGImage];
   v23.origin.x = (Width - v15) * 0.5;
   v23.origin.y = v17;
   v23.size.width = v15;
   v23.size.height = v15;
-  v19 = CGImageCreateWithImageInRect(v18, v23);
+  v19 = CGImageCreateWithImageInRect(cGImage, v23);
   v20 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v19];
   CGImageRelease(v19);
 
   return v20;
 }
 
-- (void)_updateForStageAnimated:(BOOL)a3 scrollToTop:(BOOL)a4
+- (void)_updateForStageAnimated:(BOOL)animated scrollToTop:(BOOL)top
 {
-  v5 = a3;
+  animatedCopy = animated;
   [(CAMSmartStyleSettingsView *)self _setStageButtonsEnabled:0 forReason:@"StageUpdate"];
   v7 = 0.35;
-  if (!v5)
+  if (!animatedCopy)
   {
     v7 = 0.0;
   }
@@ -673,7 +673,7 @@ uint64_t __45__CAMSmartStyleSettingsView_updateImageViews__block_invoke(uint64_t
   v9[2] = __65__CAMSmartStyleSettingsView__updateForStageAnimated_scrollToTop___block_invoke;
   v9[3] = &unk_1E76F7850;
   v9[4] = self;
-  v10 = a4;
+  topCopy = top;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__CAMSmartStyleSettingsView__updateForStageAnimated_scrollToTop___block_invoke_2;
@@ -697,17 +697,17 @@ void __65__CAMSmartStyleSettingsView__updateForStageAnimated_scrollToTop___block
   }
 }
 
-- (void)_setStageButtonsEnabled:(BOOL)a3 forReason:(id)a4
+- (void)_setStageButtonsEnabled:(BOOL)enabled forReason:(id)reason
 {
   stageButtonSuppressionReasons = self->__stageButtonSuppressionReasons;
-  if (a3)
+  if (enabled)
   {
-    [(NSMutableSet *)stageButtonSuppressionReasons removeObject:a4];
+    [(NSMutableSet *)stageButtonSuppressionReasons removeObject:reason];
   }
 
   else
   {
-    [(NSMutableSet *)stageButtonSuppressionReasons addObject:a4];
+    [(NSMutableSet *)stageButtonSuppressionReasons addObject:reason];
   }
 }
 
@@ -759,27 +759,27 @@ void __65__CAMSmartStyleSettingsView__updateForStageAnimated_scrollToTop___block
   [(UILabel *)self->__tuneInstructionLabel setAlpha:v11];
   [(NSLayoutConstraint *)self->__tuneInstructionLabelBottomConstraint setActive:v10];
   [(CAMSmartStyleSettingsView *)self _updateShowGridButtonAnimated:0];
-  v13 = [(CAMSmartStyleSettingsView *)self _styleDescriptionLabels];
+  _styleDescriptionLabels = [(CAMSmartStyleSettingsView *)self _styleDescriptionLabels];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __42__CAMSmartStyleSettingsView__stageUpdates__block_invoke;
   v19[3] = &unk_1E76FBD78;
   v20 = stage < 2;
   v19[4] = self;
-  [v13 enumerateObjectsUsingBlock:v19];
+  [_styleDescriptionLabels enumerateObjectsUsingBlock:v19];
 
   [(CAMSmartStyleSettingsView *)self _updatePreviewPageDots];
-  v14 = [(PEPhotoStyleDPad *)self->__dpadControl view];
-  [v14 setAlpha:v11];
+  view = [(PEPhotoStyleDPad *)self->__dpadControl view];
+  [view setAlpha:v11];
 
   [(PEPhotoStyleValuesPlatterView *)self->__styleValuesPlatterView setAlpha:v11];
-  v15 = [(CAMSmartStyleSettingsView *)self _intensitySliders];
+  _intensitySliders = [(CAMSmartStyleSettingsView *)self _intensitySliders];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __42__CAMSmartStyleSettingsView__stageUpdates__block_invoke_2;
   v17[3] = &__block_descriptor_33_e42_v32__0__PEPhotoStylePaletteSlider_8Q16_B24l;
   v18 = v10;
-  [v15 enumerateObjectsUsingBlock:v17];
+  [_intensitySliders enumerateObjectsUsingBlock:v17];
 
   [(CAMSmartStyleSettingsView *)self _updateConfirmButtonTitle];
   [(UIButton *)self->__confirmButton setAlpha:v8];
@@ -812,15 +812,15 @@ void __42__CAMSmartStyleSettingsView__stageUpdates__block_invoke(uint64_t a1, vo
   [v7 setActive:v6];
 }
 
-- (void)_updateShowGridButtonAnimated:(BOOL)a3
+- (void)_updateShowGridButtonAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = 0.0;
   if (self->__stage <= 3)
   {
-    v6 = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
+    _previewViewControllersByStyleIndex = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
     v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMSmartStyleSettingsView visiblePreviewIndex](self, "visiblePreviewIndex")}];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    v8 = [_previewViewControllersByStyleIndex objectForKeyedSubscript:v7];
 
     if ([v8 expandedItemIndex] == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -838,7 +838,7 @@ void __42__CAMSmartStyleSettingsView__stageUpdates__block_invoke(uint64_t a1, vo
   v10[0] = MEMORY[0x1E69E9820];
   v10[2] = __59__CAMSmartStyleSettingsView__updateShowGridButtonAnimated___block_invoke;
   v10[3] = &unk_1E76F7A38;
-  if (!v3)
+  if (!animatedCopy)
   {
     v9 = 0.0;
   }
@@ -851,9 +851,9 @@ void __42__CAMSmartStyleSettingsView__stageUpdates__block_invoke(uint64_t a1, vo
 - (int64_t)_selectedStylePreset
 {
   v2 = [(NSArray *)self->__styleTypes objectAtIndexedSubscript:[(CAMSmartStyleSettingsView *)self visiblePreviewIndex]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (CEKSmartStyle)_selectedStyle
@@ -867,48 +867,48 @@ void __42__CAMSmartStyleSettingsView__stageUpdates__block_invoke(uint64_t a1, vo
 - (id)_selectedStyleDescription
 {
   v3 = objc_opt_class();
-  v4 = [(CAMSmartStyleSettingsView *)self _selectedStylePreset];
+  _selectedStylePreset = [(CAMSmartStyleSettingsView *)self _selectedStylePreset];
 
-  return [v3 _descriptionForStylePreset:v4];
+  return [v3 _descriptionForStylePreset:_selectedStylePreset];
 }
 
-+ (id)_descriptionForStylePreset:(int64_t)a3
++ (id)_descriptionForStylePreset:(int64_t)preset
 {
-  if (a3 <= 5)
+  if (preset <= 5)
   {
-    if (a3 > 2)
+    if (preset > 2)
     {
       v6 = @"SMART_STYLES_SETTINGS_DESCRIPTION_BLUSH_WARM";
       v7 = @"SMART_STYLES_SETTINGS_DESCRIPTION_GOLD_WARM";
       v9 = @"SMART_STYLES_SETTINGS_DESCRIPTION_COOL";
-      if (a3 != 5)
+      if (preset != 5)
       {
         v9 = 0;
       }
 
-      if (a3 != 4)
+      if (preset != 4)
       {
         v7 = v9;
       }
 
-      v8 = a3 == 3;
+      v8 = preset == 3;
     }
 
     else
     {
-      if (!a3)
+      if (!preset)
       {
         goto LABEL_3;
       }
 
       v6 = @"SMART_STYLES_SETTINGS_DESCRIPTION_STANDARD";
       v7 = @"SMART_STYLES_SETTINGS_DESCRIPTION_TAN_WARM";
-      if (a3 != 2)
+      if (preset != 2)
       {
         v7 = 0;
       }
 
-      v8 = a3 == 1;
+      v8 = preset == 1;
     }
 
 LABEL_19:
@@ -925,16 +925,16 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  if ((a3 - 7) >= 9)
+  if ((preset - 7) >= 9)
   {
     v6 = @"SMART_STYLES_SETTINGS_DESCRIPTION_NEUTRAL";
     v7 = @"SMART_STYLES_SETTINGS_DESCRIPTION_BRIGHT_POP";
-    if (a3 != 16)
+    if (preset != 16)
     {
       v7 = 0;
     }
 
-    v8 = a3 == 6;
+    v8 = preset == 6;
     goto LABEL_19;
   }
 
@@ -942,7 +942,7 @@ LABEL_3:
   v4 = os_log_create("com.apple.camera", "SmartStyleSettings");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(CAMSmartStyleSettingsView *)a3 _descriptionForStylePreset:v4];
+    [(CAMSmartStyleSettingsView *)preset _descriptionForStylePreset:v4];
   }
 
   v5 = 0;
@@ -954,18 +954,18 @@ LABEL_22:
 
 - (id)_confirmButtonTitle
 {
-  v2 = [(CAMSmartStyleSettingsView *)self _selectedStyle];
-  if ([v2 presetType] == 1 && objc_msgSend(v2, "isCustomized"))
+  _selectedStyle = [(CAMSmartStyleSettingsView *)self _selectedStyle];
+  if ([_selectedStyle presetType] == 1 && objc_msgSend(_selectedStyle, "isCustomized"))
   {
-    v3 = CEKLocalizedFrameworkString();
+    displayName = CEKLocalizedFrameworkString();
   }
 
   else
   {
-    v3 = [v2 displayName];
+    displayName = [_selectedStyle displayName];
   }
 
-  v4 = v3;
+  v4 = displayName;
   v5 = CAMLocalizedFrameworkString(@"SMART_STYLES_SETTINGS_CONFIRM_STYLE_FORMAT", 0);
   v6 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:0, v4];
 
@@ -975,17 +975,17 @@ LABEL_22:
 - (void)_updateConfirmButtonTitle
 {
   confirmButton = self->__confirmButton;
-  v3 = [(CAMSmartStyleSettingsView *)self _confirmButtonTitle];
-  [(UIButton *)confirmButton setTitle:v3 forState:0];
+  _confirmButtonTitle = [(CAMSmartStyleSettingsView *)self _confirmButtonTitle];
+  [(UIButton *)confirmButton setTitle:_confirmButtonTitle forState:0];
 }
 
-- (void)_beginAssetSelection:(id)a3
+- (void)_beginAssetSelection:(id)selection
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained settingsViewRequestsUserAssetSelection:self];
 }
 
-- (void)_dpadControlUpdated:(id)a3
+- (void)_dpadControlUpdated:(id)updated
 {
   [(CAMSmartStyleSettingsView *)self _updatePreviewAdjustmentsFromCurrentSliderValues:1 updateModelValues:1];
 
@@ -1001,16 +1001,16 @@ LABEL_22:
 
 - (void)_resetCurrentStyleToDefaults
 {
-  v3 = [(CAMSmartStyleSettingsView *)self visiblePreviewIndex];
-  v9 = [(NSArray *)self->__styleTypes objectAtIndexedSubscript:v3];
-  v4 = [v9 integerValue];
-  v5 = [(CAMSmartStyleSettingsView *)self _dpadControl];
-  v6 = [(CAMSmartStyleSettingsView *)self _intensitySliders];
-  v7 = [v6 objectAtIndexedSubscript:v3];
+  visiblePreviewIndex = [(CAMSmartStyleSettingsView *)self visiblePreviewIndex];
+  v9 = [(NSArray *)self->__styleTypes objectAtIndexedSubscript:visiblePreviewIndex];
+  integerValue = [v9 integerValue];
+  _dpadControl = [(CAMSmartStyleSettingsView *)self _dpadControl];
+  _intensitySliders = [(CAMSmartStyleSettingsView *)self _intensitySliders];
+  v7 = [_intensitySliders objectAtIndexedSubscript:visiblePreviewIndex];
 
-  v8 = [objc_alloc(MEMORY[0x1E6993890]) initWithPresetType:v4];
+  v8 = [objc_alloc(MEMORY[0x1E6993890]) initWithPresetType:integerValue];
   [CAMSmartStyleUtilities slider2DValueForStyle:v8 limitRangeForSystemStyles:1];
-  [v5 setValue:?];
+  [_dpadControl setValue:?];
   [v8 castIntensity];
   [v7 setValue:?];
   [(CAMSmartStyleSettingsView *)self _updatePreviewAdjustmentsFromCurrentSliderValues:1 updateModelValues:1];
@@ -1027,64 +1027,64 @@ LABEL_22:
   }
 }
 
-- (void)_updatePreviewAdjustmentsFromCurrentSliderValues:(BOOL)a3 updateModelValues:(BOOL)a4
+- (void)_updatePreviewAdjustmentsFromCurrentSliderValues:(BOOL)values updateModelValues:(BOOL)modelValues
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CAMSmartStyleSettingsView *)self visiblePreviewIndex];
-  v21 = [(NSArray *)self->__styleTypes objectAtIndexedSubscript:v7];
-  v8 = [v21 integerValue];
-  v9 = [(CAMSmartStyleSettingsView *)self _styleValuesPlatterView];
-  if (v5)
+  modelValuesCopy = modelValues;
+  valuesCopy = values;
+  visiblePreviewIndex = [(CAMSmartStyleSettingsView *)self visiblePreviewIndex];
+  v21 = [(NSArray *)self->__styleTypes objectAtIndexedSubscript:visiblePreviewIndex];
+  integerValue = [v21 integerValue];
+  _styleValuesPlatterView = [(CAMSmartStyleSettingsView *)self _styleValuesPlatterView];
+  if (valuesCopy)
   {
     WeakRetained = [(CAMSmartStyleSettingsView *)self _dpadControl];
-    v11 = [(CAMSmartStyleSettingsView *)self _intensitySliders];
-    v12 = [v11 objectAtIndexedSubscript:v7];
+    _intensitySliders = [(CAMSmartStyleSettingsView *)self _intensitySliders];
+    v12 = [_intensitySliders objectAtIndexedSubscript:visiblePreviewIndex];
 
     [WeakRetained value];
     [CAMSmartStyleUtilities colorAndToneBiasForSlider2DValue:1 limitRangeForSystemStyles:?];
     v13 = objc_alloc(MEMORY[0x1E6993890]);
     [v12 value];
-    v14 = [v13 initWithPresetType:v8 castIntensity:? toneBias:? colorBias:?];
+    v14 = [v13 initWithPresetType:integerValue castIntensity:? toneBias:? colorBias:?];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v14 = [WeakRetained settingsView:self requestsStyleForPresetType:v8];
+    v14 = [WeakRetained settingsView:self requestsStyleForPresetType:integerValue];
   }
 
-  v15 = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-  v17 = [v15 objectForKeyedSubscript:v16];
+  _previewViewControllersByStyleIndex = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:visiblePreviewIndex];
+  v17 = [_previewViewControllersByStyleIndex objectForKeyedSubscript:v16];
 
   [v17 updateWithStyle:v14];
   v18 = [objc_alloc(MEMORY[0x1E6993890]) initWithPresetType:{objc_msgSend(v14, "presetType")}];
   LODWORD(v16) = [v14 isEqualToSmartStyle:v18];
   v19 = self->__stage != 2;
   [v14 toneBias];
-  [v9 setTone:?];
+  [_styleValuesPlatterView setTone:?];
   [v14 colorBias];
-  [v9 setColor:?];
+  [_styleValuesPlatterView setColor:?];
   [v14 castIntensity];
-  [v9 setPalette:?];
-  [v9 setHidePaletteLabel:{objc_msgSend(MEMORY[0x1E6993890], "canCustomizeCastIntensityForCastType:", objc_msgSend(v14, "castType")) ^ 1}];
-  [v9 setHideResetButton:0];
-  [v9 setIsResetButtonEnabled:v19 & ~v16];
-  if (v4)
+  [_styleValuesPlatterView setPalette:?];
+  [_styleValuesPlatterView setHidePaletteLabel:{objc_msgSend(MEMORY[0x1E6993890], "canCustomizeCastIntensityForCastType:", objc_msgSend(v14, "castType")) ^ 1}];
+  [_styleValuesPlatterView setHideResetButton:0];
+  [_styleValuesPlatterView setIsResetButtonEnabled:v19 & ~v16];
+  if (modelValuesCopy)
   {
     v20 = objc_loadWeakRetained(&self->_delegate);
-    [v20 settingsView:self didUpdateStyle:v14 forPresetType:v8];
+    [v20 settingsView:self didUpdateStyle:v14 forPresetType:integerValue];
   }
 }
 
-- (void)_updateDpadForPresetType:(int64_t)a3 animated:(BOOL)a4
+- (void)_updateDpadForPresetType:(int64_t)type animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v19 = [WeakRetained settingsView:self requestsStyleForPresetType:a3];
+  v19 = [WeakRetained settingsView:self requestsStyleForPresetType:type];
 
-  v8 = [objc_alloc(MEMORY[0x1E6993890]) initWithPresetType:a3];
+  v8 = [objc_alloc(MEMORY[0x1E6993890]) initWithPresetType:type];
   [CAMSmartStyleUtilities slider2DValueForStyle:v19 limitRangeForSystemStyles:1];
   v10 = v9;
   v12 = v11;
@@ -1092,15 +1092,15 @@ LABEL_22:
   v14 = v13;
   v16 = v15;
   [(CAMSmartStyleSettingsView *)self _settingDpadValue:1];
-  [(PEPhotoStyleDPad *)self->__dpadControl setValue:v4 animated:v10, v12];
-  [(PEPhotoStyleDPad *)self->__dpadControl setDefaultValue:v4 animated:v14, v16];
+  [(PEPhotoStyleDPad *)self->__dpadControl setValue:animatedCopy animated:v10, v12];
+  [(PEPhotoStyleDPad *)self->__dpadControl setDefaultValue:animatedCopy animated:v14, v16];
   [(CAMSmartStyleSettingsView *)self _settingDpadValue:0];
-  v17 = +[CAMCaptureConversions PISemanticStyleCastForCEKCastType:](CAMCaptureConversions, "PISemanticStyleCastForCEKCastType:", [MEMORY[0x1E6993890] castTypeForPresetType:a3]);
-  v18 = [(CAMSmartStyleSettingsView *)self _dpadControl];
-  [v18 setGradientCast:v17];
+  v17 = +[CAMCaptureConversions PISemanticStyleCastForCEKCastType:](CAMCaptureConversions, "PISemanticStyleCastForCEKCastType:", [MEMORY[0x1E6993890] castTypeForPresetType:type]);
+  _dpadControl = [(CAMSmartStyleSettingsView *)self _dpadControl];
+  [_dpadControl setGradientCast:v17];
 }
 
-- (void)_handleConfirmButton:(id)a3
+- (void)_handleConfirmButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained settingsViewDidConfirmStyle:self];
@@ -1109,14 +1109,14 @@ LABEL_22:
   [v5 settingsViewRequestsDismiss:self completion:0];
 }
 
-- (void)_handleCustomizeButton:(id)a3
+- (void)_handleCustomizeButton:(id)button
 {
   [(CAMSmartStyleSettingsView *)self _setStage:[(CAMSmartStyleSettingsView *)self _firstNeededTuneStage] animated:1];
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 hostProcess];
+  hostProcess = [v3 hostProcess];
 
   v5 = CAMSmartStylesOnboardingCameraAppDidTapCustomize;
-  if (v4)
+  if (hostProcess)
   {
     v5 = CAMSmartStylesOnboardingSettingsDidTapCustomize;
   }
@@ -1125,29 +1125,29 @@ LABEL_22:
   [CAMPreferencesUtilities setBool:1 inCameraDomainForKey:v6];
 }
 
-- (id)_debugStringForStage:(unint64_t)a3
+- (id)_debugStringForStage:(unint64_t)stage
 {
-  if (a3 > 3)
+  if (stage > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E76FBEC0[a3];
+    return off_1E76FBEC0[stage];
   }
 }
 
-- (void)_setStage:(unint64_t)a3 animated:(BOOL)a4
+- (void)_setStage:(unint64_t)stage animated:(BOOL)animated
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->__stage != a3)
+  if (self->__stage != stage)
   {
-    v4 = a4;
+    animatedCopy = animated;
     v7 = os_log_create("com.apple.camera", "SmartStyleSettings");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CAMSmartStyleSettingsView *)self _debugStringForStage:a3];
+      v8 = [(CAMSmartStyleSettingsView *)self _debugStringForStage:stage];
       v10 = 138543362;
       v11 = v8;
       _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "Settings: changing stage to %{public}@", &v10, 0xCu);
@@ -1157,25 +1157,25 @@ LABEL_22:
     [(PEPhotoStyleDPad *)self->__dpadControl setPulsingValueIndicator:0];
     [(CAMSmartStyleSettingsView *)self layoutIfNeeded];
     stage = self->__stage;
-    self->__stage = a3;
-    if (a3 == 2)
+    self->__stage = stage;
+    if (stage == 2)
     {
       [(CAMSmartStyleSettingsView *)self _playTuneInstructionAnimations];
     }
 
-    else if (a3 == 3)
+    else if (stage == 3)
     {
       [(CAMSmartStyleSettingsView *)self _setDidCompleteTuneInstructions:1];
       [(CAMSmartStyleSettingsView *)self _updatePreviewAdjustmentsFromCurrentSliderValues:0 updateModelValues:0];
     }
 
-    [(CAMSmartStyleSettingsView *)self _updateForStageAnimated:v4 scrollToTop:[(CAMSmartStyleSettingsView *)self _userFacingContentPageNumberForStage:stage]!= [(CAMSmartStyleSettingsView *)self _userFacingContentPageNumberForStage:a3]];
+    [(CAMSmartStyleSettingsView *)self _updateForStageAnimated:animatedCopy scrollToTop:[(CAMSmartStyleSettingsView *)self _userFacingContentPageNumberForStage:stage]!= [(CAMSmartStyleSettingsView *)self _userFacingContentPageNumberForStage:stage]];
   }
 }
 
-- (void)_moveToNextStageIfAllowedAnimated:(BOOL)a3
+- (void)_moveToNextStageIfAllowedAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(CAMSmartStyleSettingsView *)self _isBlockingStageButtons])
   {
     stage = self->__stage;
@@ -1192,7 +1192,7 @@ LABEL_22:
         break;
     }
 
-    [(CAMSmartStyleSettingsView *)self _setStage:stage animated:v3];
+    [(CAMSmartStyleSettingsView *)self _setStage:stage animated:animatedCopy];
   }
 }
 
@@ -1203,8 +1203,8 @@ LABEL_22:
     return 3;
   }
 
-  v4 = [(CAMSmartStyleSettingsView *)self _selectedStyle];
-  if ([v4 isCustomized])
+  _selectedStyle = [(CAMSmartStyleSettingsView *)self _selectedStyle];
+  if ([_selectedStyle isCustomized])
   {
     v3 = 3;
   }
@@ -1217,19 +1217,19 @@ LABEL_22:
   return v3;
 }
 
-- (void)_setAnimationSequence:(id)a3
+- (void)_setAnimationSequence:(id)sequence
 {
-  v5 = a3;
+  sequenceCopy = sequence;
   animationSequence = self->__animationSequence;
-  if (animationSequence != v5)
+  if (animationSequence != sequenceCopy)
   {
-    v7 = v5;
+    v7 = sequenceCopy;
     [(CEKAnimationSequence *)animationSequence stopAllAnimations];
-    objc_storeStrong(&self->__animationSequence, a3);
-    v5 = v7;
+    objc_storeStrong(&self->__animationSequence, sequence);
+    sequenceCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](animationSequence, v5);
+  MEMORY[0x1EEE66BB8](animationSequence, sequenceCopy);
 }
 
 - (void)_playChooseInstructionAnimations
@@ -1250,8 +1250,8 @@ LABEL_22:
   v7 = [objc_alloc(MEMORY[0x1E6993810]) initWithAnimations:v6 completionHandler:&__block_literal_global_326];
   [(CAMSmartStyleSettingsView *)self _setAnimationSequence:v7];
 
-  v8 = [(CAMSmartStyleSettingsView *)self _animationSequence];
-  [v8 start];
+  _animationSequence = [(CAMSmartStyleSettingsView *)self _animationSequence];
+  [_animationSequence start];
 }
 
 uint64_t __61__CAMSmartStyleSettingsView__playChooseInstructionAnimations__block_invoke_2(uint64_t a1, double a2)
@@ -1265,10 +1265,10 @@ uint64_t __61__CAMSmartStyleSettingsView__playChooseInstructionAnimations__block
 - (void)_playTuneInstructionAnimations
 {
   v34[4] = *MEMORY[0x1E69E9840];
-  v3 = [(CAMSmartStyleSettingsView *)self _selectedStyle];
-  [v3 colorBias];
+  _selectedStyle = [(CAMSmartStyleSettingsView *)self _selectedStyle];
+  [_selectedStyle colorBias];
   v5 = v4;
-  [v3 toneBias];
+  [_selectedStyle toneBias];
   [CAMSmartStyleUtilities slider2DValueForColorBias:1 toneBias:v5 limitRangeForSystemStyles:v6];
   v8 = v7;
   v10 = v9;
@@ -1285,9 +1285,9 @@ uint64_t __61__CAMSmartStyleSettingsView__playChooseInstructionAnimations__block
   v30[1] = 3221225472;
   v30[2] = __59__CAMSmartStyleSettingsView__playTuneInstructionAnimations__block_invoke_2;
   v30[3] = &unk_1E76FBE08;
-  v14 = v3;
+  v14 = _selectedStyle;
   v31 = v14;
-  v32 = self;
+  selfCopy = self;
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __59__CAMSmartStyleSettingsView__playTuneInstructionAnimations__block_invoke_3;
@@ -1305,7 +1305,7 @@ uint64_t __61__CAMSmartStyleSettingsView__playChooseInstructionAnimations__block
   v26[2] = __59__CAMSmartStyleSettingsView__playTuneInstructionAnimations__block_invoke_5;
   v26[3] = &unk_1E76FBE08;
   v27 = v14;
-  v28 = self;
+  selfCopy2 = self;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __59__CAMSmartStyleSettingsView__playTuneInstructionAnimations__block_invoke_6;
@@ -1327,8 +1327,8 @@ uint64_t __61__CAMSmartStyleSettingsView__playChooseInstructionAnimations__block
   v22 = [v21 initWithAnimations:v20 completionHandler:v24];
   [(CAMSmartStyleSettingsView *)self _setAnimationSequence:v22];
 
-  v23 = [(CAMSmartStyleSettingsView *)self _animationSequence];
-  [v23 start];
+  _animationSequence = [(CAMSmartStyleSettingsView *)self _animationSequence];
+  [_animationSequence start];
 }
 
 uint64_t __59__CAMSmartStyleSettingsView__playTuneInstructionAnimations__block_invoke_2(uint64_t a1, double a2)
@@ -1407,13 +1407,13 @@ uint64_t __59__CAMSmartStyleSettingsView__playTuneInstructionAnimations__block_i
 
 - (void)_layoutMaskedViews
 {
-  v3 = [(CAMSmartStyleSettingsView *)self _stylePicker];
-  [v3 frame];
+  _stylePicker = [(CAMSmartStyleSettingsView *)self _stylePicker];
+  [_stylePicker frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CAMSmartStyleSettingsView *)self _styleClippingContainerViews];
+  _styleClippingContainerViews = [(CAMSmartStyleSettingsView *)self _styleClippingContainerViews];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __47__CAMSmartStyleSettingsView__layoutMaskedViews__block_invoke;
@@ -1422,10 +1422,10 @@ uint64_t __59__CAMSmartStyleSettingsView__playTuneInstructionAnimations__block_i
   v18 = v7;
   v19 = v9;
   v20 = v11;
-  v15 = v3;
-  v16 = self;
-  v13 = v3;
-  [v12 enumerateObjectsUsingBlock:v14];
+  v15 = _stylePicker;
+  selfCopy = self;
+  v13 = _stylePicker;
+  [_styleClippingContainerViews enumerateObjectsUsingBlock:v14];
 }
 
 void __47__CAMSmartStyleSettingsView__layoutMaskedViews__block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -1469,8 +1469,8 @@ void __47__CAMSmartStyleSettingsView__layoutMaskedViews__block_invoke(uint64_t a
   v151 = 0u;
   v152 = 0u;
   v153 = 0u;
-  v3 = [(CAMSmartStyleSettingsView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v150 objects:v156 count:16];
+  subviews = [(CAMSmartStyleSettingsView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v150 objects:v156 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1482,14 +1482,14 @@ void __47__CAMSmartStyleSettingsView__layoutMaskedViews__block_invoke(uint64_t a
       {
         if (*v151 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v150 + 1) + 8 * v7++) setTranslatesAutoresizingMaskIntoConstraints:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v150 objects:v156 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v150 objects:v156 count:16];
     }
 
     while (v5);
@@ -1499,10 +1499,10 @@ void __47__CAMSmartStyleSettingsView__layoutMaskedViews__block_invoke(uint64_t a
   v149 = 0u;
   v146 = 0u;
   v147 = 0u;
-  v8 = [(CAMSmartStyleSettingsView *)self _scrollView];
-  v9 = [v8 subviews];
+  _scrollView = [(CAMSmartStyleSettingsView *)self _scrollView];
+  subviews2 = [_scrollView subviews];
 
-  v10 = [v9 countByEnumeratingWithState:&v146 objects:v155 count:16];
+  v10 = [subviews2 countByEnumeratingWithState:&v146 objects:v155 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1514,201 +1514,201 @@ void __47__CAMSmartStyleSettingsView__layoutMaskedViews__block_invoke(uint64_t a
       {
         if (*v147 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews2);
         }
 
         [*(*(&v146 + 1) + 8 * v13++) setTranslatesAutoresizingMaskIntoConstraints:0];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v146 objects:v155 count:16];
+      v11 = [subviews2 countByEnumeratingWithState:&v146 objects:v155 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [(CAMSemanticStylePicker *)self->__stylePicker topAnchor];
-  v15 = [(UIImageView *)self->__chooseInstructionArrow bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:12.0];
+  topAnchor = [(CAMSemanticStylePicker *)self->__stylePicker topAnchor];
+  bottomAnchor = [(UIImageView *)self->__chooseInstructionArrow bottomAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:12.0];
   pickerTopConstraintChooseStages = self->__pickerTopConstraintChooseStages;
   self->__pickerTopConstraintChooseStages = v16;
 
-  v18 = [(CAMSemanticStylePicker *)self->__stylePicker topAnchor];
-  v19 = [(PEPhotoStyleValuesPlatterView *)self->__styleValuesPlatterView bottomAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:12.0];
+  topAnchor2 = [(CAMSemanticStylePicker *)self->__stylePicker topAnchor];
+  bottomAnchor2 = [(PEPhotoStyleValuesPlatterView *)self->__styleValuesPlatterView bottomAnchor];
+  v20 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:12.0];
   pickerTopConstraintTuneStages = self->__pickerTopConstraintTuneStages;
   self->__pickerTopConstraintTuneStages = v20;
 
-  v22 = [(UIImageView *)self->__chooseInstructionArrow centerXAnchor];
-  v23 = [(UIPageControl *)self->__previewPageDots centerXAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  centerXAnchor = [(UIImageView *)self->__chooseInstructionArrow centerXAnchor];
+  centerXAnchor2 = [(UIPageControl *)self->__previewPageDots centerXAnchor];
+  v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   chooseInstructionArrowXConstraint = self->__chooseInstructionArrowXConstraint;
   self->__chooseInstructionArrowXConstraint = v24;
 
-  v26 = [(UILabel *)self->__tuneInstructionLabel lastBaselineAnchor];
-  v27 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView bottomAnchor];
-  v28 = [v26 constraintLessThanOrEqualToAnchor:v27];
+  lastBaselineAnchor = [(UILabel *)self->__tuneInstructionLabel lastBaselineAnchor];
+  bottomAnchor3 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView bottomAnchor];
+  v28 = [lastBaselineAnchor constraintLessThanOrEqualToAnchor:bottomAnchor3];
   tuneInstructionLabelBottomConstraint = self->__tuneInstructionLabelBottomConstraint;
   self->__tuneInstructionLabelBottomConstraint = v28;
 
-  v30 = [(CAMSmartStyleSettingsView *)self _dpadControl];
-  v31 = [(CAMSmartStyleSettingsView *)self _styleTypes];
+  _dpadControl = [(CAMSmartStyleSettingsView *)self _dpadControl];
+  _styleTypes = [(CAMSmartStyleSettingsView *)self _styleTypes];
   v143[0] = MEMORY[0x1E69E9820];
   v143[1] = 3221225472;
   v143[2] = __44__CAMSmartStyleSettingsView__addConstraints__block_invoke;
   v143[3] = &unk_1E76FBE80;
   v143[4] = self;
-  v144 = v30;
+  v144 = _dpadControl;
   v145 = xmmword_1A3A6A110;
-  v141 = v30;
-  [v31 enumerateObjectsUsingBlock:v143];
+  v141 = _dpadControl;
+  [_styleTypes enumerateObjectsUsingBlock:v143];
 
-  v32 = [(CAMSmartStyleSettingsView *)self _intensitySliders];
-  v142 = [v32 firstObject];
+  _intensitySliders = [(CAMSmartStyleSettingsView *)self _intensitySliders];
+  firstObject = [_intensitySliders firstObject];
 
-  v33 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView contentLayoutGuide];
-  v34 = [v33 heightAnchor];
-  v35 = [(CAMSmartStyleSettingsView *)self safeAreaLayoutGuide];
-  v36 = [v35 heightAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36];
+  contentLayoutGuide = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView contentLayoutGuide];
+  heightAnchor = [contentLayoutGuide heightAnchor];
+  safeAreaLayoutGuide = [(CAMSmartStyleSettingsView *)self safeAreaLayoutGuide];
+  heightAnchor2 = [safeAreaLayoutGuide heightAnchor];
+  v37 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
 
   LODWORD(v38) = 1132003328;
   v131 = v37;
   [v37 setPriority:v38];
   v101 = MEMORY[0x1E696ACD8];
-  v140 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView leadingAnchor];
-  v139 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
-  v138 = [v140 constraintEqualToAnchor:v139];
+  leadingAnchor = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView leadingAnchor];
+  leadingAnchor2 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
+  v138 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v154[0] = v138;
-  v137 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView trailingAnchor];
-  v136 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
-  v135 = [v137 constraintEqualToAnchor:v136];
+  trailingAnchor = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView trailingAnchor];
+  trailingAnchor2 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
+  v135 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v154[1] = v135;
-  v134 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView topAnchor];
-  v133 = [(CAMSmartStyleSettingsView *)self topAnchor];
-  v132 = [v134 constraintEqualToAnchor:v133];
+  topAnchor3 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView topAnchor];
+  topAnchor4 = [(CAMSmartStyleSettingsView *)self topAnchor];
+  v132 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v154[2] = v132;
-  v130 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView bottomAnchor];
-  v129 = [(CAMSmartStyleSettingsView *)self bottomAnchor];
-  v128 = [v130 constraintEqualToAnchor:v129];
+  bottomAnchor4 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView bottomAnchor];
+  bottomAnchor5 = [(CAMSmartStyleSettingsView *)self bottomAnchor];
+  v128 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v154[3] = v128;
-  v127 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView contentLayoutGuide];
-  v125 = [v127 heightAnchor];
-  v126 = [(CAMSmartStyleSettingsView *)self safeAreaLayoutGuide];
-  v124 = [v126 heightAnchor];
-  v123 = [v125 constraintGreaterThanOrEqualToAnchor:v124];
+  contentLayoutGuide2 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView contentLayoutGuide];
+  heightAnchor3 = [contentLayoutGuide2 heightAnchor];
+  safeAreaLayoutGuide2 = [(CAMSmartStyleSettingsView *)self safeAreaLayoutGuide];
+  heightAnchor4 = [safeAreaLayoutGuide2 heightAnchor];
+  v123 = [heightAnchor3 constraintGreaterThanOrEqualToAnchor:heightAnchor4];
   v154[4] = v123;
   v154[5] = v37;
-  v122 = [(CAMSemanticStylePicker *)self->__stylePicker topAnchor];
-  v121 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView topAnchor];
-  v120 = [v122 constraintGreaterThanOrEqualToAnchor:v121];
+  topAnchor5 = [(CAMSemanticStylePicker *)self->__stylePicker topAnchor];
+  topAnchor6 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView topAnchor];
+  v120 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6];
   v154[6] = v120;
-  v119 = [(CAMSemanticStylePicker *)self->__stylePicker leadingAnchor];
-  v118 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
-  v117 = [v119 constraintEqualToAnchor:v118];
+  leadingAnchor3 = [(CAMSemanticStylePicker *)self->__stylePicker leadingAnchor];
+  leadingAnchor4 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
+  v117 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v154[7] = v117;
-  v116 = [(CAMSemanticStylePicker *)self->__stylePicker trailingAnchor];
-  v115 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
-  v114 = [v116 constraintEqualToAnchor:v115];
+  trailingAnchor3 = [(CAMSemanticStylePicker *)self->__stylePicker trailingAnchor];
+  trailingAnchor4 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
+  v114 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v154[8] = v114;
-  v113 = [(CAMSemanticStylePicker *)self->__stylePicker heightAnchor];
-  v112 = [(CAMSemanticStylePicker *)self->__stylePicker widthAnchor];
+  heightAnchor5 = [(CAMSemanticStylePicker *)self->__stylePicker heightAnchor];
+  widthAnchor = [(CAMSemanticStylePicker *)self->__stylePicker widthAnchor];
   [(CAMSmartStyleSettingsView *)self _desiredCarouselRatio];
-  v111 = [v113 constraintEqualToAnchor:v112 multiplier:?];
+  v111 = [heightAnchor5 constraintEqualToAnchor:widthAnchor multiplier:?];
   v154[9] = v111;
-  v110 = [(PEPhotoStyleValuesPlatterView *)self->__styleValuesPlatterView centerXAnchor];
-  v109 = [(CAMSmartStyleSettingsView *)self centerXAnchor];
-  v108 = [v110 constraintEqualToAnchor:v109];
+  centerXAnchor3 = [(PEPhotoStyleValuesPlatterView *)self->__styleValuesPlatterView centerXAnchor];
+  centerXAnchor4 = [(CAMSmartStyleSettingsView *)self centerXAnchor];
+  v108 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v154[10] = v108;
-  v107 = [(PEPhotoStyleValuesPlatterView *)self->__styleValuesPlatterView topAnchor];
-  v106 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView topAnchor];
-  v105 = [v107 constraintEqualToAnchor:v106 constant:12.0];
+  topAnchor7 = [(PEPhotoStyleValuesPlatterView *)self->__styleValuesPlatterView topAnchor];
+  topAnchor8 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView topAnchor];
+  v105 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:12.0];
   v154[11] = v105;
-  v104 = [(PEPhotoStyleValuesPlatterView *)self->__styleValuesPlatterView leadingAnchor];
-  v103 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
-  v102 = [v104 constraintEqualToAnchor:v103 constant:28.0];
+  leadingAnchor5 = [(PEPhotoStyleValuesPlatterView *)self->__styleValuesPlatterView leadingAnchor];
+  leadingAnchor6 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
+  v102 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:28.0];
   v154[12] = v102;
-  v100 = [(PEPhotoStyleValuesPlatterView *)self->__styleValuesPlatterView trailingAnchor];
-  v99 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
-  v98 = [v100 constraintEqualToAnchor:v99 constant:-28.0];
+  trailingAnchor5 = [(PEPhotoStyleValuesPlatterView *)self->__styleValuesPlatterView trailingAnchor];
+  trailingAnchor6 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
+  v98 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-28.0];
   v154[13] = v98;
-  v97 = [(UIPageControl *)self->__previewPageDots topAnchor];
-  v94 = [(CAMSemanticStylePicker *)self->__stylePicker bottomAnchor];
-  v93 = [v97 constraintEqualToAnchor:v94 constant:12.0];
+  topAnchor9 = [(UIPageControl *)self->__previewPageDots topAnchor];
+  bottomAnchor6 = [(CAMSemanticStylePicker *)self->__stylePicker bottomAnchor];
+  v93 = [topAnchor9 constraintEqualToAnchor:bottomAnchor6 constant:12.0];
   v154[14] = v93;
-  v91 = [(UIPageControl *)self->__previewPageDots centerXAnchor];
-  v90 = [(CAMSmartStyleSettingsView *)self centerXAnchor];
-  v89 = [v91 constraintEqualToAnchor:v90];
+  centerXAnchor5 = [(UIPageControl *)self->__previewPageDots centerXAnchor];
+  centerXAnchor6 = [(CAMSmartStyleSettingsView *)self centerXAnchor];
+  v89 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v154[15] = v89;
-  v88 = [(UIButton *)self->__selectAssetsButton bottomAnchor];
-  v87 = [(CAMSemanticStylePicker *)self->__stylePicker bottomAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87 constant:-12.0];
+  bottomAnchor7 = [(UIButton *)self->__selectAssetsButton bottomAnchor];
+  bottomAnchor8 = [(CAMSemanticStylePicker *)self->__stylePicker bottomAnchor];
+  v86 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:-12.0];
   v154[16] = v86;
-  v85 = [(UIButton *)self->__selectAssetsButton leadingAnchor];
-  v84 = [(CAMSemanticStylePicker *)self->__stylePicker leadingAnchor];
-  v83 = [v85 constraintEqualToAnchor:v84 constant:24.0];
+  leadingAnchor7 = [(UIButton *)self->__selectAssetsButton leadingAnchor];
+  leadingAnchor8 = [(CAMSemanticStylePicker *)self->__stylePicker leadingAnchor];
+  v83 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:24.0];
   v154[17] = v83;
-  v82 = [(UIButton *)self->__showGridButton topAnchor];
-  v81 = [(CAMSemanticStylePicker *)self->__stylePicker topAnchor];
-  v80 = [v82 constraintEqualToAnchor:v81 constant:8.0];
+  topAnchor10 = [(UIButton *)self->__showGridButton topAnchor];
+  topAnchor11 = [(CAMSemanticStylePicker *)self->__stylePicker topAnchor];
+  v80 = [topAnchor10 constraintEqualToAnchor:topAnchor11 constant:8.0];
   v154[18] = v80;
-  v79 = [(UIButton *)self->__showGridButton leadingAnchor];
-  v78 = [(CAMSemanticStylePicker *)self->__stylePicker leadingAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78 constant:20.0];
+  leadingAnchor9 = [(UIButton *)self->__showGridButton leadingAnchor];
+  leadingAnchor10 = [(CAMSemanticStylePicker *)self->__stylePicker leadingAnchor];
+  v77 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:20.0];
   v154[19] = v77;
-  v76 = [(UILabel *)self->__chooseInstructionLabel topAnchor];
-  v75 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView topAnchor];
-  v74 = [v76 constraintEqualToAnchor:v75 constant:12.0];
+  topAnchor12 = [(UILabel *)self->__chooseInstructionLabel topAnchor];
+  topAnchor13 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView topAnchor];
+  v74 = [topAnchor12 constraintEqualToAnchor:topAnchor13 constant:12.0];
   v154[20] = v74;
-  v73 = [(UILabel *)self->__chooseInstructionLabel leadingAnchor];
-  v72 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72 constant:28.0];
+  leadingAnchor11 = [(UILabel *)self->__chooseInstructionLabel leadingAnchor];
+  leadingAnchor12 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
+  v71 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:28.0];
   v154[21] = v71;
-  v70 = [(UILabel *)self->__chooseInstructionLabel trailingAnchor];
-  v69 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69 constant:-28.0];
+  trailingAnchor7 = [(UILabel *)self->__chooseInstructionLabel trailingAnchor];
+  trailingAnchor8 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
+  v68 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-28.0];
   v154[22] = v68;
-  v96 = [(UIImageView *)self->__chooseInstructionArrow centerYAnchor];
-  v67 = [(UILabel *)self->__chooseInstructionLabel bottomAnchor];
-  v66 = [v96 constraintEqualToAnchor:v67 constant:20.0];
+  centerYAnchor = [(UIImageView *)self->__chooseInstructionArrow centerYAnchor];
+  bottomAnchor9 = [(UILabel *)self->__chooseInstructionLabel bottomAnchor];
+  v66 = [centerYAnchor constraintEqualToAnchor:bottomAnchor9 constant:20.0];
   v39 = self->__chooseInstructionArrowXConstraint;
   v154[23] = v66;
   v154[24] = v39;
-  v95 = [(UILabel *)self->__tuneInstructionLabel topAnchor];
-  v65 = [v142 bottomAnchor];
-  v64 = [v95 constraintEqualToAnchor:v65 constant:12.0];
+  topAnchor14 = [(UILabel *)self->__tuneInstructionLabel topAnchor];
+  bottomAnchor10 = [firstObject bottomAnchor];
+  v64 = [topAnchor14 constraintEqualToAnchor:bottomAnchor10 constant:12.0];
   v154[25] = v64;
-  v63 = [(UILabel *)self->__tuneInstructionLabel leadingAnchor];
-  v62 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62 constant:28.0];
+  leadingAnchor13 = [(UILabel *)self->__tuneInstructionLabel leadingAnchor];
+  leadingAnchor14 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
+  v61 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14 constant:28.0];
   v154[26] = v61;
-  v92 = [(UILabel *)self->__tuneInstructionLabel trailingAnchor];
-  v60 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
-  v59 = [v92 constraintEqualToAnchor:v60 constant:-28.0];
+  trailingAnchor9 = [(UILabel *)self->__tuneInstructionLabel trailingAnchor];
+  trailingAnchor10 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
+  v59 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-28.0];
   v154[27] = v59;
-  v58 = [(UIButton *)self->__confirmButton leadingAnchor];
-  v57 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57 constant:28.0];
+  leadingAnchor15 = [(UIButton *)self->__confirmButton leadingAnchor];
+  leadingAnchor16 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
+  v56 = [leadingAnchor15 constraintEqualToAnchor:leadingAnchor16 constant:28.0];
   v154[28] = v56;
-  v55 = [(UIButton *)self->__confirmButton trailingAnchor];
-  v54 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54 constant:-28.0];
+  trailingAnchor11 = [(UIButton *)self->__confirmButton trailingAnchor];
+  trailingAnchor12 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
+  v53 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12 constant:-28.0];
   v154[29] = v53;
-  v52 = [(UIButton *)self->__customizeButton leadingAnchor];
-  v51 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51 constant:28.0];
+  leadingAnchor17 = [(UIButton *)self->__customizeButton leadingAnchor];
+  leadingAnchor18 = [(CAMSmartStyleSettingsView *)self leadingAnchor];
+  v50 = [leadingAnchor17 constraintEqualToAnchor:leadingAnchor18 constant:28.0];
   v154[30] = v50;
-  v40 = [(UIButton *)self->__customizeButton trailingAnchor];
-  v41 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41 constant:-28.0];
+  trailingAnchor13 = [(UIButton *)self->__customizeButton trailingAnchor];
+  trailingAnchor14 = [(CAMSmartStyleSettingsView *)self trailingAnchor];
+  v42 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14 constant:-28.0];
   v154[31] = v42;
-  v43 = [(UIButton *)self->__customizeButton bottomAnchor];
-  v44 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView bottomAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44 constant:-0.0];
+  bottomAnchor11 = [(UIButton *)self->__customizeButton bottomAnchor];
+  bottomAnchor12 = [(CAMScrollViewWithLayoutDelegate *)self->__scrollView bottomAnchor];
+  v45 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12 constant:-0.0];
   v154[32] = v45;
-  v46 = [(UIButton *)self->__confirmButton bottomAnchor];
-  v47 = [(UIButton *)self->__customizeButton topAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47 constant:-10.0];
+  bottomAnchor13 = [(UIButton *)self->__confirmButton bottomAnchor];
+  topAnchor15 = [(UIButton *)self->__customizeButton topAnchor];
+  v48 = [bottomAnchor13 constraintEqualToAnchor:topAnchor15 constant:-10.0];
   v154[33] = v48;
   v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v154 count:34];
   [v101 activateConstraints:v49];
@@ -1824,21 +1824,21 @@ void __44__CAMSmartStyleSettingsView__addConstraints__block_invoke(uint64_t a1, 
   v2 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDB0]];
   v3 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.circle" withConfiguration:v2];
   v4 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v3];
-  v5 = [MEMORY[0x1E69DC888] systemGreenColor];
-  [v4 setTintColor:v5];
+  systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+  [v4 setTintColor:systemGreenColor];
 
   return v4;
 }
 
-- (id)_titleLabelWithText:(id)a3
+- (id)_titleLabelWithText:(id)text
 {
   v3 = MEMORY[0x1E69DB880];
   v4 = *MEMORY[0x1E69DDDB0];
-  v5 = a3;
+  textCopy = text;
   v6 = [v3 preferredFontDescriptorWithTextStyle:v4 addingSymbolicTraits:32770 options:0];
   v7 = [MEMORY[0x1E69DB878] fontWithDescriptor:v6 size:0.0];
   v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  [v8 setText:v5];
+  [v8 setText:textCopy];
 
   [v8 setFont:v7];
   [v8 setNumberOfLines:0];
@@ -1849,57 +1849,57 @@ void __44__CAMSmartStyleSettingsView__addConstraints__block_invoke(uint64_t a1, 
 
 - (id)_assetButtonConfiguration
 {
-  v2 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  [v2 setCornerStyle:4];
-  [v2 setButtonSize:3];
-  v3 = [MEMORY[0x1E69DC888] blackColor];
-  v4 = [v3 colorWithAlphaComponent:0.3];
-  [v2 setBaseBackgroundColor:v4];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  [filledButtonConfiguration setCornerStyle:4];
+  [filledButtonConfiguration setButtonSize:3];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v4 = [blackColor colorWithAlphaComponent:0.3];
+  [filledButtonConfiguration setBaseBackgroundColor:v4];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setBaseForegroundColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [filledButtonConfiguration setBaseForegroundColor:whiteColor];
 
   v6 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:14.0];
   v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"photo.on.rectangle" withConfiguration:v6];
-  [v2 setImage:v7];
+  [filledButtonConfiguration setImage:v7];
 
-  [v2 setContentInsets:{12.0, 12.0, 12.0, 12.0}];
+  [filledButtonConfiguration setContentInsets:{12.0, 12.0, 12.0, 12.0}];
 
-  return v2;
+  return filledButtonConfiguration;
 }
 
 - (id)_showGridButtonConfiguration
 {
-  v2 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
-  [v2 setButtonSize:3];
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setBaseForegroundColor:v3];
+  borderlessButtonConfiguration = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
+  [borderlessButtonConfiguration setButtonSize:3];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [borderlessButtonConfiguration setBaseForegroundColor:whiteColor];
 
   v4 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:16.0];
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"square.grid.2x2.fill" withConfiguration:v4];
-  [v2 setImage:v5];
+  [borderlessButtonConfiguration setImage:v5];
 
-  [v2 setContentInsets:{12.0, 12.0, 12.0, 12.0}];
+  [borderlessButtonConfiguration setContentInsets:{12.0, 12.0, 12.0, 12.0}];
 
-  return v2;
+  return borderlessButtonConfiguration;
 }
 
-+ (void)_updateButtonConfiguration:(id)a3
++ (void)_updateButtonConfiguration:(id)configuration
 {
   v3 = MEMORY[0x1E69DB880];
   v4 = *MEMORY[0x1E69DDD40];
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = [v3 preferredFontDescriptorWithTextStyle:v4 addingSymbolicTraits:0 options:0];
   v7 = [MEMORY[0x1E69DB878] fontWithDescriptor:v6 size:0.0];
-  [v5 setContentInsets:{16.0, 16.0, 16.0, 16.0}];
-  [v5 setCornerStyle:4];
+  [configurationCopy setContentInsets:{16.0, 16.0, 16.0, 16.0}];
+  [configurationCopy setCornerStyle:4];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__CAMSmartStyleSettingsView__updateButtonConfiguration___block_invoke;
   v9[3] = &unk_1E76FBBD0;
   v10 = v7;
   v8 = v7;
-  [v5 setTitleTextAttributesTransformer:v9];
+  [configurationCopy setTitleTextAttributesTransformer:v9];
 }
 
 id __56__CAMSmartStyleSettingsView__updateButtonConfiguration___block_invoke(uint64_t a1, void *a2)
@@ -1912,79 +1912,79 @@ id __56__CAMSmartStyleSettingsView__updateButtonConfiguration___block_invoke(uin
 
 + (id)confirmButtonConfiguration
 {
-  v3 = [MEMORY[0x1E69DC740] tintedGlassButtonConfiguration];
-  [a1 _updateButtonConfiguration:v3];
+  tintedGlassButtonConfiguration = [MEMORY[0x1E69DC740] tintedGlassButtonConfiguration];
+  [self _updateButtonConfiguration:tintedGlassButtonConfiguration];
 
-  return v3;
+  return tintedGlassButtonConfiguration;
 }
 
 + (id)showAssetsButtonConfiguration
 {
-  v3 = [MEMORY[0x1E69DC740] glassButtonConfiguration];
-  [a1 _updateButtonConfiguration:v3];
+  glassButtonConfiguration = [MEMORY[0x1E69DC740] glassButtonConfiguration];
+  [self _updateButtonConfiguration:glassButtonConfiguration];
 
-  return v3;
+  return glassButtonConfiguration;
 }
 
 - (id)_secondaryButtonConfiguration
 {
-  v2 = [MEMORY[0x1E69DC740] glassButtonConfiguration];
-  [objc_opt_class() _updateButtonConfiguration:v2];
+  glassButtonConfiguration = [MEMORY[0x1E69DC740] glassButtonConfiguration];
+  [objc_opt_class() _updateButtonConfiguration:glassButtonConfiguration];
 
-  return v2;
+  return glassButtonConfiguration;
 }
 
-- (id)_fontWithTextStyle:(id)a3 traits:(unsigned int)a4
+- (id)_fontWithTextStyle:(id)style traits:(unsigned int)traits
 {
-  v4 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:a3 addingSymbolicTraits:*&a4 options:0];
+  v4 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   v5 = [MEMORY[0x1E69DB878] fontWithDescriptor:v4 size:0.0];
 
   return v5;
 }
 
-- (void)_handleStylePickerTap:(id)a3
+- (void)_handleStylePickerTap:(id)tap
 {
-  v9 = a3;
-  v4 = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
+  tapCopy = tap;
+  _previewViewControllersByStyleIndex = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CAMSmartStyleSettingsView visiblePreviewIndex](self, "visiblePreviewIndex")}];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [_previewViewControllersByStyleIndex objectForKeyedSubscript:v5];
 
-  v7 = [v6 view];
+  view = [v6 view];
   objc_opt_class();
   LOBYTE(v5) = objc_opt_isKindOfClass();
 
   if (v5)
   {
-    v8 = [v6 view];
-    [v8 handleTap:v9];
-    -[CAMSmartStyleSettingsView _setPreviewViewControllersExpandedItemIndex:animated:](self, "_setPreviewViewControllersExpandedItemIndex:animated:", [v8 expandedItemIndex], 1);
+    view2 = [v6 view];
+    [view2 handleTap:tapCopy];
+    -[CAMSmartStyleSettingsView _setPreviewViewControllersExpandedItemIndex:animated:](self, "_setPreviewViewControllersExpandedItemIndex:animated:", [view2 expandedItemIndex], 1);
     [(CAMSmartStyleSettingsView *)self _updateShowGridButtonAnimated:1];
   }
 }
 
-- (void)_setPreviewViewControllersExpandedItemIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)_setPreviewViewControllersExpandedItemIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
+  animatedCopy = animated;
+  _previewViewControllersByStyleIndex = [(CAMSmartStyleSettingsView *)self _previewViewControllersByStyleIndex];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __82__CAMSmartStyleSettingsView__setPreviewViewControllersExpandedItemIndex_animated___block_invoke;
   v8[3] = &__block_descriptor_41_e61_v32__0__NSNumber_8__CAMSmartStylePreviewViewController_16_B24l;
-  v8[4] = a3;
-  v9 = v4;
-  [v7 enumerateKeysAndObjectsUsingBlock:v8];
+  v8[4] = index;
+  v9 = animatedCopy;
+  [_previewViewControllersByStyleIndex enumerateKeysAndObjectsUsingBlock:v8];
 
-  [(CAMSmartStyleSettingsView *)self _updateShowGridButtonAnimated:v4];
+  [(CAMSmartStyleSettingsView *)self _updateShowGridButtonAnimated:animatedCopy];
 }
 
-- (void)semanticStylePickerDidChangeSelectedStyle:(id)a3
+- (void)semanticStylePickerDidChangeSelectedStyle:(id)style
 {
-  -[CAMSmartStyleSettingsView _setVisiblePreviewIndex:updatePageControl:updateStylePicker:animated:notifyDelegate:](self, "_setVisiblePreviewIndex:updatePageControl:updateStylePicker:animated:notifyDelegate:", [a3 selectedStyleIndex], 1, 0, 1, 1);
+  -[CAMSmartStyleSettingsView _setVisiblePreviewIndex:updatePageControl:updateStylePicker:animated:notifyDelegate:](self, "_setVisiblePreviewIndex:updatePageControl:updateStylePicker:animated:notifyDelegate:", [style selectedStyleIndex], 1, 0, 1, 1);
 
   [(CAMSmartStyleSettingsView *)self _updateConfirmButtonTitle];
 }
 
-- (void)semanticStylePickerDidScroll:(id)a3
+- (void)semanticStylePickerDidScroll:(id)scroll
 {
   [(CAMSmartStyleSettingsView *)self _layoutMaskedViews];
   [(CAMSmartStyleSettingsView *)self _setDidCompleteChooseInstructions:1];
@@ -1994,24 +1994,24 @@ id __56__CAMSmartStyleSettingsView__updateButtonConfiguration___block_invoke(uin
 
 - (void)_prepareHaptics
 {
-  v2 = [(CAMSmartStyleSettingsView *)self _feedbackController];
-  [v2 prepareDiscreteFeedback:0];
+  _feedbackController = [(CAMSmartStyleSettingsView *)self _feedbackController];
+  [_feedbackController prepareDiscreteFeedback:0];
 }
 
 - (void)_performHaptics
 {
-  v2 = [(CAMSmartStyleSettingsView *)self _feedbackController];
-  [v2 performDiscreteFeedback:0];
+  _feedbackController = [(CAMSmartStyleSettingsView *)self _feedbackController];
+  [_feedbackController performDiscreteFeedback:0];
 }
 
-- (void)_handlePageControlValueChanged:(id)a3
+- (void)_handlePageControlValueChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   [(CAMSmartStyleSettingsView *)self _performHaptics];
   [(CAMSmartStyleSettingsView *)self _prepareHaptics];
-  v5 = [v4 interactionState];
+  interactionState = [changedCopy interactionState];
 
-  [(CAMSmartStyleSettingsView *)self _setVisiblePreviewIndex:[(CAMSmartStyleSettingsView *)self _previewIndexFromPageDots] updatePageControl:0 updateStylePicker:1 animated:v5 == 1 notifyDelegate:1];
+  [(CAMSmartStyleSettingsView *)self _setVisiblePreviewIndex:[(CAMSmartStyleSettingsView *)self _previewIndexFromPageDots] updatePageControl:0 updateStylePicker:1 animated:interactionState == 1 notifyDelegate:1];
 
   [(CAMSmartStyleSettingsView *)self _updateConfirmButtonTitle];
 }
@@ -2046,19 +2046,19 @@ id __56__CAMSmartStyleSettingsView__updateButtonConfiguration___block_invoke(uin
   [(CAMScrollViewWithLayoutDelegate *)v9 setScrollEnabled:v8 > v7];
 }
 
-- (void)scrollViewDidLayoutSubviews:(id)a3
+- (void)scrollViewDidLayoutSubviews:(id)subviews
 {
   [(CAMSmartStyleSettingsView *)self _layoutMaskedViews];
 
   [(CAMSmartStyleSettingsView *)self _updateScrollViewEnablement];
 }
 
-- (void)_setBooleanPreference:(BOOL)a3 forKey:(id)a4
+- (void)_setBooleanPreference:(BOOL)preference forKey:(id)key
 {
-  v4 = a3;
+  preferenceCopy = preference;
   v5 = MEMORY[0x1E696AD98];
-  v6 = a4;
-  CFPreferencesSetAppValue(v6, [v5 numberWithBool:v4], @"com.apple.camera");
+  keyCopy = key;
+  CFPreferencesSetAppValue(keyCopy, [v5 numberWithBool:preferenceCopy], @"com.apple.camera");
 
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }

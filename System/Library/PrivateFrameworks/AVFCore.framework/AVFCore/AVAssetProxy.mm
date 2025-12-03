@@ -1,50 +1,50 @@
 @interface AVAssetProxy
-+ (id)assetProxyWithPropertyList:(id)a3;
-+ (id)makePropertyListForMovieProxyHeader:(id)a3 name:(id)a4 prefersNominalDurations:(BOOL)a5;
-- (AVAssetProxy)initWithPropertyList:(id)a3;
++ (id)assetProxyWithPropertyList:(id)list;
++ (id)makePropertyListForMovieProxyHeader:(id)header name:(id)name prefersNominalDurations:(BOOL)durations;
+- (AVAssetProxy)initWithPropertyList:(id)list;
 - (id)tracks;
 - (void)dealloc;
 @end
 
 @implementation AVAssetProxy
 
-+ (id)makePropertyListForMovieProxyHeader:(id)a3 name:(id)a4 prefersNominalDurations:(BOOL)a5
++ (id)makePropertyListForMovieProxyHeader:(id)header name:(id)name prefersNominalDurations:(BOOL)durations
 {
-  v5 = a3;
-  if (a3)
+  headerCopy = header;
+  if (header)
   {
-    v6 = a5;
-    v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a3, @"moop", objc_msgSend(MEMORY[0x1E696AD98], "numberWithShort:", 1), @"mpvr", 0}];
-    v5 = v8;
-    if (v6)
+    durationsCopy = durations;
+    v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{header, @"moop", objc_msgSend(MEMORY[0x1E696AD98], "numberWithShort:", 1), @"mpvr", 0}];
+    headerCopy = v8;
+    if (durationsCopy)
     {
       [v8 setObject:MEMORY[0x1E695E118] forKey:@"prefers-nominal-durations"];
     }
 
-    if (a4)
+    if (name)
     {
-      [v5 setObject:a4 forKey:@"name"];
+      [headerCopy setObject:name forKey:@"name"];
     }
   }
 
-  return v5;
+  return headerCopy;
 }
 
-+ (id)assetProxyWithPropertyList:(id)a3
++ (id)assetProxyWithPropertyList:(id)list
 {
-  v3 = [[a1 alloc] initWithPropertyList:a3];
+  v3 = [[self alloc] initWithPropertyList:list];
 
   return v3;
 }
 
-- (AVAssetProxy)initWithPropertyList:(id)a3
+- (AVAssetProxy)initWithPropertyList:(id)list
 {
   v9.receiver = self;
   v9.super_class = AVAssetProxy;
   v4 = [(AVAsset *)&v9 init];
   if (v4)
   {
-    if (![a3 objectForKey:@"moop"])
+    if (![list objectForKey:@"moop"])
     {
       goto LABEL_13;
     }
@@ -58,16 +58,16 @@
 
     CFRetain(v5);
     v4->_assetProxy->makeTracksArrayOnce = objc_alloc_init(AVDispatchOnce);
-    v6 = [a3 objectForKey:@"name"];
+    v6 = [list objectForKey:@"name"];
     if (v6)
     {
       [MEMORY[0x1E695DF20] dictionaryWithObject:v6 forKey:*MEMORY[0x1E6971028]];
     }
 
     figAssetCreationFlagsForAssetReferenceRestrictions(2);
-    if ([objc_msgSend(a3 objectForKey:{@"mpvr", "shortValue"}])
+    if ([objc_msgSend(list objectForKey:{@"mpvr", "shortValue"}])
     {
-      [objc_msgSend(a3 objectForKey:{@"prefers-nominal-durations", "BOOLValue"}];
+      [objc_msgSend(list objectForKey:{@"prefers-nominal-durations", "BOOLValue"}];
     }
 
     v7 = FigAssetRemoteCreateWithMovieProxyData();

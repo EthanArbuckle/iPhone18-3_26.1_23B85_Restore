@@ -3,20 +3,20 @@
 - (void)executePlatformFunction;
 - (void)performNewFrameActions;
 - (void)performPostDispatchFrameBoundaryActions;
-- (void)setEngine:(id)a3;
+- (void)setEngine:(id)engine;
 @end
 
 @implementation DYEAGLOverridingFunctionPlayer
 
-- (void)setEngine:(id)a3
+- (void)setEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v7.receiver = self;
   v7.super_class = DYEAGLOverridingFunctionPlayer;
-  [(DYEAGLOverridingFunctionPlayer *)&v7 setEngine:v4];
-  v5 = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__engine] experimentResultsGenerator];
+  [(DYEAGLOverridingFunctionPlayer *)&v7 setEngine:engineCopy];
+  experimentResultsGenerator = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__engine] experimentResultsGenerator];
   experimentResultsGenerator = self->_experimentResultsGenerator;
-  self->_experimentResultsGenerator = v5;
+  self->_experimentResultsGenerator = experimentResultsGenerator;
 }
 
 - (void)executeGraphicsFunction

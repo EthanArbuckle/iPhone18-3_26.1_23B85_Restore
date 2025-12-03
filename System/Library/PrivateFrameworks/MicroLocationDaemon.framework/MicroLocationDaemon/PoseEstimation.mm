@@ -7,7 +7,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   PoseEstimation.debugDescription.getter();
 
   v3 = sub_259212830();

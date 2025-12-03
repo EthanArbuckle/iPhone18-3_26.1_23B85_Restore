@@ -1,14 +1,14 @@
 @interface WiFiUsageBssDetails
-+ (id)bssWithIdentifier:(id)a3 channel:(int64_t)a4 channelFlags:(unint64_t)a5 rssi:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOnChannel:(id)a3;
++ (id)bssWithIdentifier:(id)identifier channel:(int64_t)channel channelFlags:(unint64_t)flags rssi:(int64_t)rssi;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOnChannel:(id)channel;
 - (NSString)apProfile;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)eventDictionary:(BOOL)a3;
+- (id)eventDictionary:(BOOL)dictionary;
 - (id)redactedDescription;
 - (unint64_t)hash;
-- (void)updateMLORuntimeConfig:(id *)a3;
+- (void)updateMLORuntimeConfig:(id *)config;
 @end
 
 @implementation WiFiUsageBssDetails
@@ -34,11 +34,11 @@
   return apProfile;
 }
 
-+ (id)bssWithIdentifier:(id)a3 channel:(int64_t)a4 channelFlags:(unint64_t)a5 rssi:(int64_t)a6
++ (id)bssWithIdentifier:(id)identifier channel:(int64_t)channel channelFlags:(unint64_t)flags rssi:(int64_t)rssi
 {
-  v9 = a3;
+  identifierCopy = identifier;
   LOBYTE(v12) = 0;
-  v10 = [objc_opt_class() bssWithIdentifier:v9 apProfile:0 apMode:0 phyMode:0 channel:a4 channelFlags:a5 channelWidth:0.0 rssi:0.0 latitude:0 longitude:a6 isEdgeBss:v12];
+  v10 = [objc_opt_class() bssWithIdentifier:identifierCopy apProfile:0 apMode:0 phyMode:0 channel:channel channelFlags:flags channelWidth:0.0 rssi:0.0 latitude:0 longitude:rssi isEdgeBss:v12];
 
   return v10;
 }
@@ -64,14 +64,14 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
   bssid = self->_bssid;
-  v6 = [(WiFiUsageBssDetails *)self apProfile];
+  apProfile = [(WiFiUsageBssDetails *)self apProfile];
   channelWidth = self->_channelWidth;
   LOBYTE(v10) = self->_isEdgeBss;
-  v8 = [v4 bssWithIdentifier:bssid apProfile:v6 apMode:self->_apMode phyMode:self->_phyMode channel:self->_channel channelFlags:self->_channelFlags channelWidth:self->_locationLatitude rssi:self->_locationLongitude latitude:channelWidth longitude:self->_rssi isEdgeBss:v10];
+  v8 = [v4 bssWithIdentifier:bssid apProfile:apProfile apMode:self->_apMode phyMode:self->_phyMode channel:self->_channel channelFlags:self->_channelFlags channelWidth:self->_locationLatitude rssi:self->_locationLongitude latitude:channelWidth longitude:self->_rssi isEdgeBss:v10];
 
   [v8 setHasAppleIE:self->_hasAppleIE];
   [v8 setHasInterworkingIE:self->_hasInterworkingIE];
@@ -94,21 +94,21 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WiFiUsageBssDetails *)self bssid];
-  v3 = [v2 hash];
+  bssid = [(WiFiUsageBssDetails *)self bssid];
+  v3 = [bssid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WiFiUsageBssDetails *)self bssid];
-    v6 = [v4 bssid];
-    v7 = [v5 isEqualToString:v6];
+    bssid = [(WiFiUsageBssDetails *)self bssid];
+    bssid2 = [equalCopy bssid];
+    v7 = [bssid isEqualToString:bssid2];
   }
 
   else
@@ -119,13 +119,13 @@
   return v7;
 }
 
-- (id)eventDictionary:(BOOL)a3
+- (id)eventDictionary:(BOOL)dictionary
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = v5;
-  if (!a3)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = dictionary;
+  if (!dictionary)
   {
-    [v5 setObject:self->_bssid forKeyedSubscript:@"NetworkBssIdentifier"];
+    [dictionary setObject:self->_bssid forKeyedSubscript:@"NetworkBssIdentifier"];
   }
 
   if (self->_bssid)
@@ -194,14 +194,14 @@
   return v6;
 }
 
-- (BOOL)isOnChannel:(id)a3
+- (BOOL)isOnChannel:(id)channel
 {
-  v4 = a3;
-  v5 = v4;
+  channelCopy = channel;
+  v5 = channelCopy;
   band = self->_band;
   if (!band)
   {
-    if ([v4 is2_4GHz])
+    if ([channelCopy is2_4GHz])
     {
       goto LABEL_7;
     }
@@ -211,7 +211,7 @@
 
   if (band == 2)
   {
-    if ([v4 is6GHz])
+    if ([channelCopy is6GHz])
     {
       goto LABEL_7;
     }
@@ -221,7 +221,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (band != 1 || ([v4 is5GHz] & 1) == 0)
+  if (band != 1 || ([channelCopy is5GHz] & 1) == 0)
   {
     goto LABEL_9;
   }
@@ -233,17 +233,17 @@ LABEL_10:
   return v7;
 }
 
-- (void)updateMLORuntimeConfig:(id *)a3
+- (void)updateMLORuntimeConfig:(id *)config
 {
-  [(WiFiUsageBssDetails *)self setCurrentMloLinksCount:a3->var0];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:a3->var3];
+  [(WiFiUsageBssDetails *)self setCurrentMloLinksCount:config->var0];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:config->var3];
   [(WiFiUsageBssDetails *)self setMloTrafficSwitchEnabled:v5];
 
-  [(WiFiUsageBssDetails *)self setCurrentMloPreferredBand:a3->var2];
+  [(WiFiUsageBssDetails *)self setCurrentMloPreferredBand:config->var2];
   v6 = objc_autoreleasePoolPush();
   v7 = objc_opt_new();
   v8 = 0;
-  var1 = a3->var1;
+  var1 = config->var1;
   do
   {
     if (var1[v8] != 3)

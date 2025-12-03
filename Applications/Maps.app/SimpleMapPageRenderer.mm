@@ -1,20 +1,20 @@
 @interface SimpleMapPageRenderer
 - (CGRect)overviewRect;
-- (SimpleMapPageRenderer)initWithMapView:(id)a3;
-- (void)_setTitlesWithMapItem:(id)a3;
-- (void)drawContentForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
-- (void)drawTopContentInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4;
-- (void)prepareForDrawingPages:(_NSRange)a3;
+- (SimpleMapPageRenderer)initWithMapView:(id)view;
+- (void)_setTitlesWithMapItem:(id)item;
+- (void)drawContentForPageAtIndex:(int64_t)index inRect:(CGRect)rect;
+- (void)drawTopContentInRect:(CGRect)rect forPageAtIndex:(int64_t)index;
+- (void)prepareForDrawingPages:(_NSRange)pages;
 @end
 
 @implementation SimpleMapPageRenderer
 
-- (void)drawContentForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawContentForPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(MapPageRenderer *)self visibleMapRect];
   v9 = v8;
   v11 = v10;
@@ -29,11 +29,11 @@
   v44.x = v43.x + v19;
   v44.y = v43.y;
   self->_widthInMeters = MKMetersBetweenMapPoints(v43, v44);
-  v20 = [(MapPageRenderer *)self snapshotBlock];
-  v21 = v20;
-  if (v20)
+  snapshotBlock = [(MapPageRenderer *)self snapshotBlock];
+  v21 = snapshotBlock;
+  if (snapshotBlock)
   {
-    (*(v20 + 16))(v20);
+    (*(snapshotBlock + 16))(snapshotBlock);
   }
 
   v39 = 0;
@@ -70,9 +70,9 @@
   }
 
   v32 = +[UIPrintInteractionController sharedPrintController];
-  v33 = [v32 printPageRenderer];
+  printPageRenderer = [v32 printPageRenderer];
 
-  if (v33)
+  if (printPageRenderer)
   {
     v34 = +[UIPrintInteractionController sharedPrintController];
     [v34 _enableManualPrintPage:0];
@@ -81,25 +81,25 @@
     v35 = [[MapScaleCell alloc] initWithDistanceInMeters:self->_widthInMeters];
     [(SimpleMapPageRenderer *)self overviewRect];
     [(MapScaleCell *)v35 drawInRect:?];
-    [(SimpleMapPageRenderer *)self drawTopContentInRect:a3 forPageAtIndex:x, y, width, height];
+    [(SimpleMapPageRenderer *)self drawTopContentInRect:index forPageAtIndex:x, y, width, height];
   }
 
   _Block_object_dispose(&v39, 8);
 }
 
-- (void)drawTopContentInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4
+- (void)drawTopContentInRect:(CGRect)rect forPageAtIndex:(int64_t)index
 {
   self->super._topContentIconType = 7;
   v4.receiver = self;
   v4.super_class = SimpleMapPageRenderer;
-  [(MapPageRenderer *)&v4 drawTopContentInRect:a4 forPageAtIndex:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MapPageRenderer *)&v4 drawTopContentInRect:index forPageAtIndex:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 }
 
-- (void)_setTitlesWithMapItem:(id)a3
+- (void)_setTitlesWithMapItem:(id)item
 {
-  v19 = a3;
-  v4 = [v19 _geoAddress];
-  v5 = [v4 structuredAddress];
+  itemCopy = item;
+  _geoAddress = [itemCopy _geoAddress];
+  structuredAddress = [_geoAddress structuredAddress];
 
   widthInMeters = self->_widthInMeters;
   title = self->super._title;
@@ -108,92 +108,92 @@
   subTitle = self->super._subTitle;
   self->super._subTitle = 0;
 
-  v9 = [v5 areaOfInterests];
-  v10 = v9;
-  if (v9)
+  areaOfInterests = [structuredAddress areaOfInterests];
+  v10 = areaOfInterests;
+  if (areaOfInterests)
   {
-    v11 = [v9 objectAtIndexedSubscript:0];
+    inlandWater = [areaOfInterests objectAtIndexedSubscript:0];
 LABEL_16:
     v13 = self->super._title;
-    self->super._title = v11;
+    self->super._title = inlandWater;
 
     goto LABEL_17;
   }
 
-  if ([v5 hasInlandWater])
+  if ([structuredAddress hasInlandWater])
   {
-    v11 = [v5 inlandWater];
+    inlandWater = [structuredAddress inlandWater];
     goto LABEL_16;
   }
 
-  if ([v5 hasOcean])
+  if ([structuredAddress hasOcean])
   {
-    v11 = [v5 ocean];
+    inlandWater = [structuredAddress ocean];
     goto LABEL_16;
   }
 
-  v12 = [v19 _addressFormattedAsCity];
+  _addressFormattedAsCity = [itemCopy _addressFormattedAsCity];
 
-  if (v12 && widthInMeters < 300000.0)
+  if (_addressFormattedAsCity && widthInMeters < 300000.0)
   {
-    v11 = [v19 _addressFormattedAsCity];
+    inlandWater = [itemCopy _addressFormattedAsCity];
     goto LABEL_16;
   }
 
-  if ([v5 hasSubLocality] && widthInMeters < 300000.0)
+  if ([structuredAddress hasSubLocality] && widthInMeters < 300000.0)
   {
-    v11 = [v5 subLocality];
+    inlandWater = [structuredAddress subLocality];
     goto LABEL_16;
   }
 
-  if ([v5 hasSubAdministrativeArea] && widthInMeters < 300000.0)
+  if ([structuredAddress hasSubAdministrativeArea] && widthInMeters < 300000.0)
   {
-    v11 = [v5 subAdministrativeArea];
+    inlandWater = [structuredAddress subAdministrativeArea];
     goto LABEL_16;
   }
 
-  if ([v5 hasAdministrativeArea])
+  if ([structuredAddress hasAdministrativeArea])
   {
-    v15 = [v5 administrativeArea];
+    administrativeArea = [structuredAddress administrativeArea];
     v16 = self->super._title;
-    self->super._title = v15;
+    self->super._title = administrativeArea;
 
     goto LABEL_21;
   }
 
-  if ([v5 hasCountry])
+  if ([structuredAddress hasCountry])
   {
-    v18 = [v5 country];
+    country = [structuredAddress country];
     v17 = self->super._title;
-    self->super._title = v18;
+    self->super._title = country;
     goto LABEL_24;
   }
 
 LABEL_17:
-  if (![v5 hasAdministrativeArea])
+  if (![structuredAddress hasAdministrativeArea])
   {
 LABEL_21:
-    if (![v5 hasCountry])
+    if (![structuredAddress hasCountry])
     {
       goto LABEL_25;
     }
 
-    v14 = [v5 country];
+    country2 = [structuredAddress country];
     goto LABEL_23;
   }
 
-  v14 = [v5 administrativeArea];
+  country2 = [structuredAddress administrativeArea];
 LABEL_23:
   v17 = self->super._subTitle;
-  self->super._subTitle = v14;
+  self->super._subTitle = country2;
 LABEL_24:
 
 LABEL_25:
 }
 
-- (void)prepareForDrawingPages:(_NSRange)a3
+- (void)prepareForDrawingPages:(_NSRange)pages
 {
-  [(MKMapView *)self->super._mapView _zoomLevel:a3.location];
+  [(MKMapView *)self->super._mapView _zoomLevel:pages.location];
   self->super._zoomLevel = v4;
   [(MapPageRenderer *)self visibleMapRect];
   v9.x = v5 + v6 * 0.5;
@@ -234,16 +234,16 @@ LABEL_25:
   return CGRectIntersection(*&v20, *&v23);
 }
 
-- (SimpleMapPageRenderer)initWithMapView:(id)a3
+- (SimpleMapPageRenderer)initWithMapView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = SimpleMapPageRenderer;
   v5 = [(MapPageRenderer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MapPageRenderer *)v5 setMapView:v4];
+    [(MapPageRenderer *)v5 setMapView:viewCopy];
   }
 
   return v6;

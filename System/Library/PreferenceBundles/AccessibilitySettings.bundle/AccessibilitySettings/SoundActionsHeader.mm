@@ -1,15 +1,15 @@
 @interface SoundActionsHeader
-- (SoundActionsHeader)initWithFrame:(CGRect)a3;
+- (SoundActionsHeader)initWithFrame:(CGRect)frame;
 - (void)_setupVisualizerView;
 @end
 
 @implementation SoundActionsHeader
 
-- (SoundActionsHeader)initWithFrame:(CGRect)a3
+- (SoundActionsHeader)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SoundActionsHeader;
-  v3 = [(SoundActionsHeader *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SoundActionsHeader *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,8 +36,8 @@
   [(SoundActionsPracticeVisualizerView *)self->_visualizerView setAccessibilityHint:v6];
 
   v7 = self->_visualizerView;
-  v8 = [(SoundActionsPracticeVisualizerView *)v7 accessibilityTraits];
-  [(SoundActionsPracticeVisualizerView *)v7 setAccessibilityTraits:UIAccessibilityTraitImage | v8];
+  accessibilityTraits = [(SoundActionsPracticeVisualizerView *)v7 accessibilityTraits];
+  [(SoundActionsPracticeVisualizerView *)v7 setAccessibilityTraits:UIAccessibilityTraitImage | accessibilityTraits];
   [(SoundActionsPracticeVisualizerView *)self->_visualizerView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(SoundActionsHeader *)self addSubview:self->_visualizerView];
   v9 = [NSLayoutConstraint constraintWithItem:self->_visualizerView attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:20.0];

@@ -19,7 +19,7 @@
 
   else
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: nil string parameter", _NSMethodExceptionProem(a1, a2)}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: nil string parameter", _NSMethodExceptionProem(self, a2)}];
   }
 
   if (([a3 isAbsolutePath] & 1) == 0)
@@ -27,7 +27,7 @@
     [a3 stringByStandardizingPath];
   }
 
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -40,7 +40,7 @@
       goto LABEL_15;
     }
 
-    v11 = object_getClass(a1);
+    v11 = object_getClass(self);
     if (qword_1ED43FC18 != -1)
     {
       dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -49,7 +49,7 @@
     if (v11 != qword_1ED43FC10)
     {
 LABEL_15:
-      v14.receiver = a1;
+      v14.receiver = self;
       v14.super_class = NSURL_0;
       v9 = objc_msgSendSuper2(&v14, sel_init);
       if (!v9)
@@ -78,9 +78,9 @@ LABEL_15:
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (qword_1ED43FBF0 != a1)
+  if (qword_1ED43FBF0 != self)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"%@: object already initialized", _NSMethodExceptionProem(a1, a2)}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"%@: object already initialized", _NSMethodExceptionProem(self, a2)}];
   }
 
   v9 = _CFURLCreateWithFileSystemPathCachingResourcePropertiesForKeys();
@@ -107,7 +107,7 @@ LABEL_26:
 
 + (id)_fileURLWithPath:()NSURLPrivate cachingResourceValuesForKeys:error:
 {
-  v5 = [objc_allocWithZone(a1) _initFileURLWithPath:a3 cachingResourceValuesForKeys:a4 error:a5];
+  v5 = [objc_allocWithZone(self) _initFileURLWithPath:a3 cachingResourceValuesForKeys:a4 error:a5];
 
   return v5;
 }

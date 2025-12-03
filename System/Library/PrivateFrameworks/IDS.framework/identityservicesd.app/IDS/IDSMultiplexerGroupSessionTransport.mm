@@ -1,21 +1,21 @@
 @interface IDSMultiplexerGroupSessionTransport
-- (BOOL)_tryConsumeQUICShortHeaderPacketBuffer:(id *)a3;
-- (BOOL)addListenerConnection:(id)a3;
-- (BOOL)tryConsumePacketBuffer:(id *)a3;
-- (IDSMultiplexerGroupSessionTransport)initWithIdentifier:(id)a3;
-- (id)routeClientConnections:(id)a3;
-- (void)cancelClientConnection:(id)a3;
+- (BOOL)_tryConsumeQUICShortHeaderPacketBuffer:(id *)buffer;
+- (BOOL)addListenerConnection:(id)connection;
+- (BOOL)tryConsumePacketBuffer:(id *)buffer;
+- (IDSMultiplexerGroupSessionTransport)initWithIdentifier:(id)identifier;
+- (id)routeClientConnections:(id)connections;
+- (void)cancelClientConnection:(id)connection;
 - (void)invalidate;
-- (void)purgeQUICConnectionsForParticipants:(id)a3;
-- (void)resetConnectionForPacketBuffer:(id *)a3;
-- (void)setPacketBufferReadHandler:(id)a3;
+- (void)purgeQUICConnectionsForParticipants:(id)participants;
+- (void)resetConnectionForPacketBuffer:(id *)buffer;
+- (void)setPacketBufferReadHandler:(id)handler;
 @end
 
 @implementation IDSMultiplexerGroupSessionTransport
 
-- (IDSMultiplexerGroupSessionTransport)initWithIdentifier:(id)a3
+- (IDSMultiplexerGroupSessionTransport)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = IDSMultiplexerGroupSessionTransport;
   v6 = [(IDSMultiplexerGroupSessionTransport *)&v19 init];
@@ -39,7 +39,7 @@
     listeners = v7->_listeners;
     v7->_listeners = v14;
 
-    objc_storeStrong(&v7->_identifier, a3);
+    objc_storeStrong(&v7->_identifier, identifier);
     v16 = [[NSMapTable alloc] initWithKeyOptions:0 valueOptions:1282 capacity:20];
     fanoutEncryptionMKIToReceivingStateMap = v7->_fanoutEncryptionMKIToReceivingStateMap;
     v7->_fanoutEncryptionMKIToReceivingStateMap = v16;
@@ -48,10 +48,10 @@
   return v7;
 }
 
-- (void)cancelClientConnection:(id)a3
+- (void)cancelClientConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
+  connectionCopy = connection;
+  v5 = connectionCopy;
   if (atomic_load_explicit(&self->_invalidated, memory_order_acquire))
   {
     v6 = +[IDSFoundationLog Multiplexer];
@@ -64,39 +64,39 @@
     goto LABEL_24;
   }
 
-  if ([v4 isTCP])
+  if ([connectionCopy isTCP])
   {
-    v7 = [v5 remoteTCPSYN];
+    remoteTCPSYN = [v5 remoteTCPSYN];
 
-    if (v7)
+    if (remoteTCPSYN)
     {
       v8 = _IDSLinkPacketBufferCreate();
       *(v8 + 536) |= 1u;
       *(v8 + 488) = [v5 context];
       v9 = *v8;
       **v8 = 2009124602;
-      v10 = [v5 portsSignature];
-      v11 = HIBYTE(v10);
-      v12 = HIWORD(v10);
-      v13 = [v5 portsSignature];
+      portsSignature = [v5 portsSignature];
+      v11 = HIBYTE(portsSignature);
+      v12 = HIWORD(portsSignature);
+      portsSignature2 = [v5 portsSignature];
       v9[4] = v11;
       v9[5] = v12;
-      v9[6] = HIBYTE(v13);
-      v9[7] = v13;
-      v14 = [v5 remoteTCPSYN];
-      v15 = [v14 unsignedLongValue];
+      v9[6] = HIBYTE(portsSignature2);
+      v9[7] = portsSignature2;
+      remoteTCPSYN2 = [v5 remoteTCPSYN];
+      unsignedLongValue = [remoteTCPSYN2 unsignedLongValue];
 
-      v9[8] = HIBYTE(v15);
-      v9[9] = BYTE2(v15);
-      v9[10] = BYTE1(v15);
-      v9[11] = v15;
+      v9[8] = HIBYTE(unsignedLongValue);
+      v9[9] = BYTE2(unsignedLongValue);
+      v9[10] = BYTE1(unsignedLongValue);
+      v9[11] = unsignedLongValue;
       *(v8 + 16) = &v9[-*v8 + 12];
       *(v8 + 536) |= 0x4000u;
       kdebug_trace();
-      LOBYTE(v15) = (*(self->_readHandler + 2))();
+      LOBYTE(unsignedLongValue) = (*(self->_readHandler + 2))();
       v16 = +[IDSFoundationLog Multiplexer];
       v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-      if (v15)
+      if (unsignedLongValue)
       {
         if (v17)
         {
@@ -195,9 +195,9 @@ LABEL_12:
 LABEL_24:
 }
 
-- (id)routeClientConnections:(id)a3
+- (id)routeClientConnections:(id)connections
 {
-  v4 = a3;
+  connectionsCopy = connections;
   explicit = atomic_load_explicit(&self->_invalidated, memory_order_acquire);
   v6 = &IDSRegistrationControlErrorDomain_ptr;
   v7 = +[IDSFoundationLog Multiplexer];
@@ -207,7 +207,7 @@ LABEL_24:
     if (v8)
     {
       *buf = 138412290;
-      *v59 = v4;
+      *v59 = connectionsCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "GroupSessionTransport routing %@", buf, 0xCu);
     }
 
@@ -215,15 +215,15 @@ LABEL_24:
     v57 = 0u;
     v55 = 0u;
     v54 = 0u;
-    v45 = v4;
-    obj = v4;
+    v45 = connectionsCopy;
+    obj = connectionsCopy;
     v48 = [obj countByEnumeratingWithState:&v54 objects:v61 count:16];
     if (!v48)
     {
 LABEL_38:
 
       v9 = obj;
-      v4 = v45;
+      connectionsCopy = v45;
       goto LABEL_39;
     }
 
@@ -238,10 +238,10 @@ LABEL_9:
       }
 
       v11 = *(*(&v54 + 1) + 8 * v10);
-      v12 = [v11 multiplexerParams];
-      v13 = [v12 participantID];
+      multiplexerParams = [v11 multiplexerParams];
+      participantID = [multiplexerParams participantID];
 
-      if (!v13)
+      if (!participantID)
       {
         v24 = v6;
         os_unfair_lock_lock(&self->_lock);
@@ -265,8 +265,8 @@ LABEL_9:
               }
 
               v30 = *(*(&v50 + 1) + 8 * i);
-              v31 = [v30 localPort];
-              if (v31 == [v11 localPort])
+              localPort = [v30 localPort];
+              if (localPort == [v11 localPort])
               {
                 [v11 setContext:{objc_msgSend(v30, "context")}];
               }
@@ -283,31 +283,31 @@ LABEL_9:
         goto LABEL_32;
       }
 
-      v14 = [v11 multiplexerParams];
-      v15 = [v14 salt];
+      multiplexerParams2 = [v11 multiplexerParams];
+      salt = [multiplexerParams2 salt];
 
-      if (!v15)
+      if (!salt)
       {
         break;
       }
 
       participantIDToAliasConverter = self->_participantIDToAliasConverter;
-      v17 = [v11 multiplexerParams];
-      v18 = [v17 participantID];
-      v19 = [v11 multiplexerParams];
-      v20 = [v19 salt];
-      v21 = [(IDSMultiplexerTransportParticipantIDConverter *)participantIDToAliasConverter participantIDForAlias:v18 salt:v20];
+      multiplexerParams3 = [v11 multiplexerParams];
+      participantID2 = [multiplexerParams3 participantID];
+      multiplexerParams4 = [v11 multiplexerParams];
+      salt2 = [multiplexerParams4 salt];
+      v21 = [(IDSMultiplexerTransportParticipantIDConverter *)participantIDToAliasConverter participantIDForAlias:participantID2 salt:salt2];
 
       v22 = +[IMLockdownManager sharedInstance];
-      LODWORD(v17) = [v22 isInternalInstall];
+      LODWORD(multiplexerParams3) = [v22 isInternalInstall];
 
-      if (v17 && IMGetDomainBoolForKeyWithDefaultValue())
+      if (multiplexerParams3 && IMGetDomainBoolForKeyWithDefaultValue())
       {
-        v23 = [v6[240] Multiplexer];
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+        multiplexer = [v6[240] Multiplexer];
+        if (os_log_type_enabled(multiplexer, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Internal: failParticipantIDTranslation triggers participant ID being set to 0 for aliases", buf, 2u);
+          _os_log_impl(&_mh_execute_header, multiplexer, OS_LOG_TYPE_DEFAULT, "Internal: failParticipantIDTranslation triggers participant ID being set to 0 for aliases", buf, 2u);
         }
       }
 
@@ -315,17 +315,17 @@ LABEL_9:
       {
         [v11 setContext:v21];
 LABEL_32:
-        v33 = [v11 context];
-        v34 = [v6[240] Multiplexer];
-        if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+        context = [v11 context];
+        multiplexer2 = [v6[240] Multiplexer];
+        if (os_log_type_enabled(multiplexer2, OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [v11 portsSignature];
-          v36 = [v11 context];
+          portsSignature = [v11 portsSignature];
+          context2 = [v11 context];
           *buf = 67109376;
-          *v59 = v35;
+          *v59 = portsSignature;
           *&v59[4] = 2048;
-          *&v59[6] = v36;
-          _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "[IDSSessionMultiplexer routeClientConnections] portsSignature:%08X participantID:%llu", buf, 0x12u);
+          *&v59[6] = context2;
+          _os_log_impl(&_mh_execute_header, multiplexer2, OS_LOG_TYPE_DEFAULT, "[IDSSessionMultiplexer routeClientConnections] portsSignature:%08X participantID:%llu", buf, 0x12u);
         }
 
         os_unfair_lock_lock(&self->_lock);
@@ -334,7 +334,7 @@ LABEL_32:
         [(NSMutableArray *)portSignatures addObject:v38];
 
         participantIDs = self->_participantIDs;
-        v40 = [NSNumber numberWithUnsignedLongLong:v33];
+        v40 = [NSNumber numberWithUnsignedLongLong:context];
         [(NSMutableArray *)participantIDs addObject:v40];
 
         [(NSMutableArray *)self->_routedConnections addObject:v11];
@@ -345,7 +345,7 @@ LABEL_32:
         v49[3] = &unk_100BDB518;
         v49[4] = self;
         v49[5] = v11;
-        v49[6] = v33;
+        v49[6] = context;
         v41 = objc_retainBlock(v49);
         [v11 setPacketBufferReadHandler:v41];
         v42 = +[IDSGroupSessionMultiplexer sharedInstance];
@@ -372,8 +372,8 @@ LABEL_36:
       }
     }
 
-    v32 = [v11 multiplexerParams];
-    [v11 setContext:{objc_msgSend(v32, "participantID")}];
+    multiplexerParams5 = [v11 multiplexerParams];
+    [v11 setContext:{objc_msgSend(multiplexerParams5, "participantID")}];
 
     goto LABEL_32;
   }
@@ -390,7 +390,7 @@ LABEL_39:
   return v9;
 }
 
-- (void)setPacketBufferReadHandler:(id)a3
+- (void)setPacketBufferReadHandler:(id)handler
 {
   if (atomic_load_explicit(&self->_invalidated, memory_order_acquire))
   {
@@ -404,7 +404,7 @@ LABEL_39:
 
   else
   {
-    v5 = objc_retainBlock(a3);
+    v5 = objc_retainBlock(handler);
     readHandler = self->_readHandler;
     self->_readHandler = v5;
 
@@ -412,7 +412,7 @@ LABEL_39:
   }
 }
 
-- (void)resetConnectionForPacketBuffer:(id *)a3
+- (void)resetConnectionForPacketBuffer:(id *)buffer
 {
   if (atomic_load_explicit(&self->_invalidated, memory_order_acquire))
   {
@@ -428,13 +428,13 @@ LABEL_4:
     return;
   }
 
-  var2 = a3->var2;
+  var2 = buffer->var2;
   if (var2 <= 3)
   {
     v3 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = sub_10050F958(a3->var0, a3->var2);
+      v6 = sub_10050F958(buffer->var0, buffer->var2);
       LODWORD(buf) = 136315138;
       *(&buf + 4) = v6;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Control packet doesn't have enough bytes %s", &buf, 0xCu);
@@ -443,7 +443,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  var0 = a3->var0;
+  var0 = buffer->var0;
   if (var2 < 8)
   {
     v9 = 0;
@@ -467,7 +467,7 @@ LABEL_4:
   v16[2] = sub_10040C2C4;
   v16[3] = &unk_100BDB540;
   v16[5] = &buf;
-  v16[6] = a3;
+  v16[6] = buffer;
   v19 = v10;
   v17 = v11;
   v18 = v9;
@@ -478,7 +478,7 @@ LABEL_4:
     v13 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = sub_10050F958(a3->var0, a3->var2);
+      v15 = sub_10050F958(buffer->var0, buffer->var2);
       *v20 = 67109378;
       v21 = v11;
       v22 = 2080;
@@ -498,9 +498,9 @@ LABEL_4:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)purgeQUICConnectionsForParticipants:(id)a3
+- (void)purgeQUICConnectionsForParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   if (atomic_load_explicit(&self->_invalidated, memory_order_acquire))
   {
     v5 = +[IDSFoundationLog Multiplexer];
@@ -536,10 +536,10 @@ LABEL_4:
           v11 = +[IDSFoundationLog Multiplexer];
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
-            v12 = [v10 isQUIC];
+            isQUIC = [v10 isQUIC];
             *buf = 138412802;
             v13 = @"NO";
-            if (v12)
+            if (isQUIC)
             {
               v13 = @"YES";
             }
@@ -548,13 +548,13 @@ LABEL_4:
             v23 = 2112;
             v24 = v13;
             v25 = 2112;
-            v26 = v4;
+            v26 = participantsCopy;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "purgeQUICConnectionsForParticipants: checking connection %@ isQUIC: %@ for participants %@", buf, 0x20u);
           }
 
           if ([v10 isQUIC])
           {
-            if (!v4 || (+[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v10 context]), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v4, "containsObject:", v14), v14, v15))
+            if (!participantsCopy || (+[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v10 context]), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(participantsCopy, "containsObject:", v14), v14, v15))
             {
               v16 = +[IDSGroupSessionMultiplexer sharedInstance];
               [v16 resetConnection:v10];
@@ -574,9 +574,9 @@ LABEL_4:
   }
 }
 
-- (BOOL)addListenerConnection:(id)a3
+- (BOOL)addListenerConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   explicit = atomic_load_explicit(&self->_invalidated, memory_order_acquire);
   if (explicit)
   {
@@ -591,18 +591,18 @@ LABEL_4:
   else
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableArray *)self->_listeners addObject:v4];
+    [(NSMutableArray *)self->_listeners addObject:connectionCopy];
     os_unfair_lock_unlock(&self->_lock);
     v7 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       listeners = self->_listeners;
       *buf = 138412802;
-      v19 = v4;
+      v19 = connectionCopy;
       v20 = 2112;
       v21 = listeners;
       v22 = 2112;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "added listener connection %@ to listeners %@\nLocalMUXTransport %@", buf, 0x20u);
     }
 
@@ -610,23 +610,23 @@ LABEL_4:
     v13 = 3221225472;
     v14 = sub_10040C9C8;
     v15 = &unk_100BDB568;
-    v16 = self;
-    v9 = v4;
+    selfCopy2 = self;
+    v9 = connectionCopy;
     v17 = v9;
     v10 = objc_retainBlock(&v12);
-    [v9 setPacketBufferReadHandler:{v10, v12, v13, v14, v15, v16}];
+    [v9 setPacketBufferReadHandler:{v10, v12, v13, v14, v15, selfCopy2}];
     [v9 startReadOnTransportThread];
   }
 
   return (explicit & 1) == 0;
 }
 
-- (BOOL)_tryConsumeQUICShortHeaderPacketBuffer:(id *)a3
+- (BOOL)_tryConsumeQUICShortHeaderPacketBuffer:(id *)buffer
 {
   if ([(NSMutableArray *)self->_routedConnections count])
   {
     v5 = [(NSMutableArray *)self->_routedConnections objectAtIndexedSubscript:0];
-    [v5 writePacketBuffer:a3];
+    [v5 writePacketBuffer:buffer];
   }
 
   else
@@ -642,7 +642,7 @@ LABEL_4:
   return 1;
 }
 
-- (BOOL)tryConsumePacketBuffer:(id *)a3
+- (BOOL)tryConsumePacketBuffer:(id *)buffer
 {
   if (atomic_load_explicit(&self->_invalidated, memory_order_acquire))
   {
@@ -658,12 +658,12 @@ LABEL_8:
     return 0;
   }
 
-  if (a3->var2 <= 3)
+  if (buffer->var2 <= 3)
   {
     v3 = +[IDSFoundationLog Multiplexer];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      var2 = a3->var2;
+      var2 = buffer->var2;
       *buf = 134217984;
       *v59 = var2;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "not enough header %ld to consume", buf, 0xCu);
@@ -672,7 +672,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v8 = bswap32(*a3->var0);
+  v8 = bswap32(*buffer->var0);
   if (v8 == -87113609)
   {
     IDSLinkPacketBufferAddBufferStart();
@@ -684,11 +684,11 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "header %08X is is control packet", buf, 8u);
     }
 
-    [(IDSMultiplexerGroupSessionTransport *)self resetConnectionForPacketBuffer:a3];
+    [(IDSMultiplexerGroupSessionTransport *)self resetConnectionForPacketBuffer:buffer];
     return 1;
   }
 
-  if (!a3->var15)
+  if (!buffer->var15)
   {
     if (v8 != -87133353)
     {
@@ -696,19 +696,19 @@ LABEL_8:
     }
 
     kdebug_trace();
-    var4 = a3->var24[0].var4;
+    var4 = buffer->var24[0].var4;
     if (var4 || byte_100CD3D60)
     {
       IDSLinkPacketBufferAddBufferStart();
       goto LABEL_23;
     }
 
-    if (a3->var2 <= 33)
+    if (buffer->var2 <= 33)
     {
       v27 = +[IDSFoundationLog Multiplexer];
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = a3->var2;
+        v28 = buffer->var2;
         *buf = 134217984;
         *v59 = v28;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "packet is fanout but doest not have enough bytes for encryption header %ld", buf, 0xCu);
@@ -717,12 +717,12 @@ LABEL_8:
       return 1;
     }
 
-    v45 = *(a3->var0 + 2);
-    v29 = *(a3->var0 + 6);
-    v30 = *(a3->var0 + 7);
-    v31 = *(a3->var0 + 8);
-    v32 = *(a3->var0 + 9);
-    v33 = [[NSUUID alloc] initWithUUIDBytes:a3->var0 + 10];
+    v45 = *(buffer->var0 + 2);
+    v29 = *(buffer->var0 + 6);
+    v30 = *(buffer->var0 + 7);
+    v31 = *(buffer->var0 + 8);
+    v32 = *(buffer->var0 + 9);
+    v33 = [[NSUUID alloc] initWithUUIDBytes:buffer->var0 + 10];
     value = 0xAAAAAAAAAAAAAAAALL;
     if (NSMapMember(self->_fanoutEncryptionMKIToReceivingStateMap, v33, 0, &value))
     {
@@ -757,17 +757,17 @@ LABEL_8:
     }
 
     IDSLinkPacketBufferAddBufferStart();
-    v38 = sub_10050CB8C(v34, bswap32(v45) >> 16, a3->var0, a3->var2, 0);
+    v38 = sub_10050CB8C(v34, bswap32(v45) >> 16, buffer->var0, buffer->var2, 0);
     if (!v38)
     {
 
 LABEL_23:
-      if (a3->var2 <= 3)
+      if (buffer->var2 <= 3)
       {
         v11 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = a3->var2;
+          v12 = buffer->var2;
           *buf = 134217984;
           *v59 = v12;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Cannot retrieve port signature, invalid packetBuffer size: %ld", buf, 0xCu);
@@ -776,8 +776,8 @@ LABEL_23:
         return 1;
       }
 
-      v13 = *a3->var0;
-      v14 = __rev16(*(a3->var0 + 1));
+      v13 = *buffer->var0;
+      v14 = __rev16(*(buffer->var0 + 1));
       v15 = __PAIR64__(v14, bswap32(v13)) >> 16;
       os_unfair_lock_lock(&self->_lock);
       value = 0;
@@ -828,7 +828,7 @@ LABEL_23:
               }
 
               v25 = *(*(&v46 + 1) + 8 * i);
-              if ([v25 tryConsumePacketBuffer:a3])
+              if ([v25 tryConsumePacketBuffer:buffer])
               {
                 [v25 setContext:var4];
                 goto LABEL_54;
@@ -848,7 +848,7 @@ LABEL_23:
         v17 = +[IDSFoundationLog Multiplexer];
         if (os_log_type_enabled(&v17->super.super, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = sub_10050F958(a3->var0, a3->var2);
+          v26 = sub_10050F958(buffer->var0, buffer->var2);
           *buf = 67110146;
           *v59 = v44;
           *&v59[4] = 1024;
@@ -868,17 +868,17 @@ LABEL_23:
       v17 = [(NSMutableArray *)self->_routedConnections objectAtIndexedSubscript:?];
       if ([(NSMutableArray *)v17 isTCP])
       {
-        v18 = [(NSMutableArray *)v17 remoteTCPSYN];
-        v19 = v18 == 0;
+        remoteTCPSYN = [(NSMutableArray *)v17 remoteTCPSYN];
+        v19 = remoteTCPSYN == 0;
 
         if (v19)
         {
-          if (a3->var2 <= 19)
+          if (buffer->var2 <= 19)
           {
             v35 = +[IDSFoundationLog Multiplexer];
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
             {
-              v36 = a3->var2;
+              v36 = buffer->var2;
               *buf = 134217984;
               *v59 = v36;
               _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "connection is tcp but packet does not have enough bytes for header %ld", buf, 0xCu);
@@ -887,9 +887,9 @@ LABEL_23:
             goto LABEL_54;
           }
 
-          if ((a3->var0[13] & 2) != 0)
+          if ((buffer->var0[13] & 2) != 0)
           {
-            v40 = bswap32(*(a3->var0 + 1));
+            v40 = bswap32(*(buffer->var0 + 1));
             v41 = [NSNumber numberWithUnsignedInt:v40];
             [(NSMutableArray *)v17 setRemoteTCPSYN:v41];
 
@@ -906,7 +906,7 @@ LABEL_23:
         }
       }
 
-      [(NSMutableArray *)v17 writePacketBuffer:a3];
+      [(NSMutableArray *)v17 writePacketBuffer:buffer];
 LABEL_54:
 
       _Block_object_dispose(&value, 8);

@@ -1,16 +1,16 @@
 @interface STStorageGroupSizeOperation
-+ (id)operationForOperations:(id)a3;
++ (id)operationForOperations:(id)operations;
 - (void)cancel;
 - (void)main;
 @end
 
 @implementation STStorageGroupSizeOperation
 
-+ (id)operationForOperations:(id)a3
++ (id)operationForOperations:(id)operations
 {
-  v3 = a3;
+  operationsCopy = operations;
   v4 = objc_alloc_init(STStorageGroupSizeOperation);
-  [(STStorageGroupSizeOperation *)v4 setOperations:v3];
+  [(STStorageGroupSizeOperation *)v4 setOperations:operationsCopy];
 
   return v4;
 }
@@ -18,15 +18,15 @@
 - (void)main
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(STStorageGroupSizeOperation *)self operations];
-  v4 = [MEMORY[0x277CCABD8] currentQueue];
-  [v4 addOperations:v3 waitUntilFinished:1];
+  operations = [(STStorageGroupSizeOperation *)self operations];
+  currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+  [currentQueue addOperations:operations waitUntilFinished:1];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = operations;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -44,13 +44,13 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 error];
+        error = [v12 error];
 
-        if (v13)
+        if (error)
         {
-          v14 = [v12 error];
+          error2 = [v12 error];
 
-          v8 = v14;
+          v8 = error2;
         }
 
         v9 += [v12 size];
@@ -77,12 +77,12 @@
 - (void)cancel
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(STStorageGroupSizeOperation *)self operations];
+  operations = [(STStorageGroupSizeOperation *)self operations];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [operations countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -94,14 +94,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(operations);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) cancel];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [operations countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);

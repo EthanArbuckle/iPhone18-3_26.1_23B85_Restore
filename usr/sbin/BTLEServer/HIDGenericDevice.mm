@@ -1,5 +1,5 @@
 @interface HIDGenericDevice
-- (HIDGenericDevice)initWithProperties:(id)a3 reports:(id)a4;
+- (HIDGenericDevice)initWithProperties:(id)properties reports:(id)reports;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
@@ -7,12 +7,12 @@
 
 @implementation HIDGenericDevice
 
-- (HIDGenericDevice)initWithProperties:(id)a3 reports:(id)a4
+- (HIDGenericDevice)initWithProperties:(id)properties reports:(id)reports
 {
-  v6 = a3;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = HIDGenericDevice;
-  v7 = [(HIDBluetoothDevice *)&v11 initWithProperties:v6 reports:a4];
+  v7 = [(HIDBluetoothDevice *)&v11 initWithProperties:propertiesCopy reports:reports];
   if (v7)
   {
     v8 = IOHIDUserDeviceCreateWithOptions();
@@ -51,11 +51,11 @@
   v5.receiver = self;
   v5.super_class = HIDGenericDevice;
   [(HIDBluetoothDevice *)&v5 start];
-  v3 = [(HIDBluetoothDevice *)self allocHIDQueue];
-  [(HIDGenericDevice *)self setQueue:v3];
+  allocHIDQueue = [(HIDBluetoothDevice *)self allocHIDQueue];
+  [(HIDGenericDevice *)self setQueue:allocHIDQueue];
 
   [(HIDGenericDevice *)self device];
-  v4 = [(HIDGenericDevice *)self queue];
+  queue = [(HIDGenericDevice *)self queue];
   IOHIDUserDeviceScheduleWithDispatchQueue();
 
   [(HIDBluetoothDevice *)self notifyDidStart];
@@ -67,14 +67,14 @@
   v6.super_class = HIDGenericDevice;
   [(HIDBluetoothDevice *)&v6 stop];
   [(HIDGenericDevice *)self device];
-  v3 = [(HIDGenericDevice *)self queue];
+  queue = [(HIDGenericDevice *)self queue];
   IOHIDUserDeviceUnscheduleFromDispatchQueue();
 
-  v4 = [(HIDGenericDevice *)self queue];
-  dispatch_set_context(v4, self);
+  queue2 = [(HIDGenericDevice *)self queue];
+  dispatch_set_context(queue2, self);
 
-  v5 = [(HIDGenericDevice *)self queue];
-  dispatch_set_finalizer_f(v5, j__objc_msgSend_notifyDidStop_2);
+  queue3 = [(HIDGenericDevice *)self queue];
+  dispatch_set_finalizer_f(queue3, j__objc_msgSend_notifyDidStop_2);
 
   [(HIDGenericDevice *)self setQueue:0];
 }

@@ -19,7 +19,7 @@
 
 - (uint64_t)bcs_BOOLForKey:()BarcodeSupportExtras defaultValue:
 {
-  v5 = [a1 objectForKey:?];
+  v5 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

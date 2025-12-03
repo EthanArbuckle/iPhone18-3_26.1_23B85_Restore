@@ -1,5 +1,5 @@
 @interface HMDProcessExitInfoLogEvent
-- (HMDProcessExitInfoLogEvent)initWithExitType:(id)a3 reason:(id)a4;
+- (HMDProcessExitInfoLogEvent)initWithExitType:(id)type reason:(id)reason;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -9,8 +9,8 @@
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"exitType";
-  v3 = [(HMDProcessExitInfoLogEvent *)self exitType];
-  if (v3)
+  exitType = [(HMDProcessExitInfoLogEvent *)self exitType];
+  if (exitType)
   {
     [(HMDProcessExitInfoLogEvent *)self exitType];
   }
@@ -22,8 +22,8 @@
   v4 = ;
   v11[0] = v4;
   v10[1] = @"exitReason";
-  v5 = [(HMDProcessExitInfoLogEvent *)self exitReason];
-  if (v5)
+  exitReason = [(HMDProcessExitInfoLogEvent *)self exitReason];
+  if (exitReason)
   {
     [(HMDProcessExitInfoLogEvent *)self exitReason];
   }
@@ -43,18 +43,18 @@
   return v7;
 }
 
-- (HMDProcessExitInfoLogEvent)initWithExitType:(id)a3 reason:(id)a4
+- (HMDProcessExitInfoLogEvent)initWithExitType:(id)type reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  reasonCopy = reason;
   v12.receiver = self;
   v12.super_class = HMDProcessExitInfoLogEvent;
   v9 = [(HMMLogEvent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_exitType, a3);
-    objc_storeStrong(&v10->_exitReason, a4);
+    objc_storeStrong(&v9->_exitType, type);
+    objc_storeStrong(&v10->_exitReason, reason);
   }
 
   return v10;

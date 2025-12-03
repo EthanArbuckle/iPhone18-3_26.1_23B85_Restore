@@ -1,23 +1,23 @@
 @interface ConceptFeedItemTitleView
 - (NSLayoutYAxisAnchor)lastBaselineAnchor;
-- (void)traitCollectionDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4;
+- (void)traitCollectionDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection;
 @end
 
 @implementation ConceptFeedItemTitleView
 
 - (NSLayoutYAxisAnchor)lastBaselineAnchor
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI24ConceptFeedItemTitleView_titleLabel) lastBaselineAnchor];
+  lastBaselineAnchor = [*(&self->super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI24ConceptFeedItemTitleView_titleLabel) lastBaselineAnchor];
 
-  return v2;
+  return lastBaselineAnchor;
 }
 
-- (void)traitCollectionDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4
+- (void)traitCollectionDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  sub_1D10BC268(a4);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_1D10BC268(collection);
   swift_unknownObjectRelease();
 }
 

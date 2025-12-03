@@ -2,7 +2,7 @@
 - (TSCH3DCachedLabelBoundsArray)init;
 - (id).cxx_construct;
 - (tvec3<float>)offset;
-- (void)enumerateLabelBoundsUsingBlock:(id)a3;
+- (void)enumerateLabelBoundsUsingBlock:(id)block;
 @end
 
 @implementation TSCH3DCachedLabelBoundsArray
@@ -25,10 +25,10 @@
   return v3;
 }
 
-- (void)enumerateLabelBoundsUsingBlock:(id)a3
+- (void)enumerateLabelBoundsUsingBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v21 = 0;
   v17 = 0u;
   v18 = 0u;
@@ -48,7 +48,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v4[2](v4, *(*(&v17 + 1) + 8 * v12), &v21);
+      blockCopy[2](blockCopy, *(*(&v17 + 1) + 8 * v12), &v21);
       if (v21)
       {
         break;

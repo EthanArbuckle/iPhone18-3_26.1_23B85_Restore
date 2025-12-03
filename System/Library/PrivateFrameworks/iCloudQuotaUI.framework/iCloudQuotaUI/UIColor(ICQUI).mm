@@ -18,131 +18,131 @@
 
 + (id)colorFromString:()ICQUI
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"red"])
+  lowercaseString = [a3 lowercaseString];
+  if ([lowercaseString isEqualToString:@"red"])
   {
-    v4 = [MEMORY[0x277D75348] redColor];
+    redColor = [MEMORY[0x277D75348] redColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"orange"])
+  if ([lowercaseString isEqualToString:@"orange"])
   {
-    v4 = [MEMORY[0x277D75348] orangeColor];
+    redColor = [MEMORY[0x277D75348] orangeColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"yellow"])
+  if ([lowercaseString isEqualToString:@"yellow"])
   {
-    v4 = [MEMORY[0x277D75348] yellowColor];
+    redColor = [MEMORY[0x277D75348] yellowColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"green"])
+  if ([lowercaseString isEqualToString:@"green"])
   {
-    v4 = [MEMORY[0x277D75348] greenColor];
+    redColor = [MEMORY[0x277D75348] greenColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"mint"])
+  if ([lowercaseString isEqualToString:@"mint"])
   {
-    v4 = [MEMORY[0x277D75348] systemMintColor];
+    redColor = [MEMORY[0x277D75348] systemMintColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"teal"])
+  if ([lowercaseString isEqualToString:@"teal"])
   {
-    v4 = [MEMORY[0x277D75348] systemTealColor];
+    redColor = [MEMORY[0x277D75348] systemTealColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"cyan"])
+  if ([lowercaseString isEqualToString:@"cyan"])
   {
-    v4 = [MEMORY[0x277D75348] cyanColor];
+    redColor = [MEMORY[0x277D75348] cyanColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"blue"])
+  if ([lowercaseString isEqualToString:@"blue"])
   {
-    v4 = [MEMORY[0x277D75348] blueColor];
+    redColor = [MEMORY[0x277D75348] blueColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"indigo"])
+  if ([lowercaseString isEqualToString:@"indigo"])
   {
-    v4 = [MEMORY[0x277D75348] systemIndigoColor];
+    redColor = [MEMORY[0x277D75348] systemIndigoColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"purple"])
+  if ([lowercaseString isEqualToString:@"purple"])
   {
-    v4 = [MEMORY[0x277D75348] purpleColor];
+    redColor = [MEMORY[0x277D75348] purpleColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"pink"])
+  if ([lowercaseString isEqualToString:@"pink"])
   {
-    v4 = [MEMORY[0x277D75348] systemPinkColor];
+    redColor = [MEMORY[0x277D75348] systemPinkColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"brown"])
+  if ([lowercaseString isEqualToString:@"brown"])
   {
-    v4 = [MEMORY[0x277D75348] brownColor];
+    redColor = [MEMORY[0x277D75348] brownColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"white"])
+  if ([lowercaseString isEqualToString:@"white"])
   {
     v5 = MEMORY[0x277D75348];
 LABEL_27:
-    v4 = [v5 whiteColor];
+    redColor = [v5 whiteColor];
     goto LABEL_42;
   }
 
-  if ([v3 isEqualToString:@"gray"])
+  if ([lowercaseString isEqualToString:@"gray"])
   {
-    v4 = [MEMORY[0x277D75348] grayColor];
+    redColor = [MEMORY[0x277D75348] grayColor];
   }
 
-  else if ([v3 isEqualToString:@"black"])
+  else if ([lowercaseString isEqualToString:@"black"])
   {
-    v4 = [MEMORY[0x277D75348] blackColor];
+    redColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  else if ([v3 isEqualToString:@"primary"])
+  else if ([lowercaseString isEqualToString:@"primary"])
   {
-    v4 = [MEMORY[0x277D75348] labelColor];
+    redColor = [MEMORY[0x277D75348] labelColor];
   }
 
-  else if ([v3 isEqualToString:@"secondary"])
+  else if ([lowercaseString isEqualToString:@"secondary"])
   {
-    v4 = [MEMORY[0x277D75348] secondaryLabelColor];
+    redColor = [MEMORY[0x277D75348] secondaryLabelColor];
   }
 
-  else if ([v3 isEqualToString:@"tertiary"])
+  else if ([lowercaseString isEqualToString:@"tertiary"])
   {
-    v4 = [MEMORY[0x277D75348] tertiaryLabelColor];
+    redColor = [MEMORY[0x277D75348] tertiaryLabelColor];
   }
 
-  else if ([v3 isEqualToString:@"quaternary"])
+  else if ([lowercaseString isEqualToString:@"quaternary"])
   {
-    v4 = [MEMORY[0x277D75348] quaternaryLabelColor];
+    redColor = [MEMORY[0x277D75348] quaternaryLabelColor];
   }
 
   else
   {
-    v6 = [v3 isEqualToString:@"accent"];
+    v6 = [lowercaseString isEqualToString:@"accent"];
     v5 = MEMORY[0x277D75348];
     if (!v6)
     {
       goto LABEL_27;
     }
 
-    v4 = [MEMORY[0x277D75348] tintColor];
+    redColor = [MEMORY[0x277D75348] tintColor];
   }
 
 LABEL_42:
-  v7 = v4;
+  v7 = redColor;
 
   return v7;
 }

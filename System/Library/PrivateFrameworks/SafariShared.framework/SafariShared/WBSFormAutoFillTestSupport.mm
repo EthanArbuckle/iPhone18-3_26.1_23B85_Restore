@@ -1,26 +1,26 @@
 @interface WBSFormAutoFillTestSupport
-+ (id)stringRepresentationFromMetadataProvider:(id)a3;
++ (id)stringRepresentationFromMetadataProvider:(id)provider;
 @end
 
 @implementation WBSFormAutoFillTestSupport
 
-+ (id)stringRepresentationFromMetadataProvider:(id)a3
++ (id)stringRepresentationFromMetadataProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [v3 formCount];
-  if (v4)
+  providerCopy = provider;
+  formCount = [providerCopy formCount];
+  if (formCount)
   {
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
-    v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:formCount];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __71__WBSFormAutoFillTestSupport_stringRepresentationFromMetadataProvider___block_invoke;
     v22[3] = &unk_1E7FC5AC8;
     v23 = v5;
-    v7 = v6;
+    v7 = strongToStrongObjectsMapTable;
     v24 = v7;
     v8 = v5;
-    [v3 enumerateFormsAndFramesUsingBlock:v22];
+    [providerCopy enumerateFormsAndFramesUsingBlock:v22];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __71__WBSFormAutoFillTestSupport_stringRepresentationFromMetadataProvider___block_invoke_2;

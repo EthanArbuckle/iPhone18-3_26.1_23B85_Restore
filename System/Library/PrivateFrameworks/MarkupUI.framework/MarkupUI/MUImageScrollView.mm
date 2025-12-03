@@ -1,23 +1,23 @@
 @interface MUImageScrollView
-- (void)_centerContentIfNecessaryAdjustingContentOffset:(BOOL)a3;
+- (void)_centerContentIfNecessaryAdjustingContentOffset:(BOOL)offset;
 - (void)centerContentIgnoringInsets;
 @end
 
 @implementation MUImageScrollView
 
-- (void)_centerContentIfNecessaryAdjustingContentOffset:(BOOL)a3
+- (void)_centerContentIfNecessaryAdjustingContentOffset:(BOOL)offset
 {
-  v3 = a3;
+  offsetCopy = offset;
   [(MUImageScrollView *)self contentSize];
   v6 = v5;
   [(MUImageScrollView *)self bounds];
   v8 = v7;
-  v9 = [(MUImageScrollView *)self delegate];
-  v10 = [v9 centersIgnoringContentInsets];
+  delegate = [(MUImageScrollView *)self delegate];
+  centersIgnoringContentInsets = [delegate centersIgnoringContentInsets];
   v11.receiver = self;
   v11.super_class = MUImageScrollView;
-  [(MUImageScrollView *)&v11 _centerContentIfNecessaryAdjustingContentOffset:v3];
-  if (v10 && v6 <= v8 && ([(MUImageScrollView *)self isZooming]& 1) == 0)
+  [(MUImageScrollView *)&v11 _centerContentIfNecessaryAdjustingContentOffset:offsetCopy];
+  if (centersIgnoringContentInsets && v6 <= v8 && ([(MUImageScrollView *)self isZooming]& 1) == 0)
   {
     [(MUImageScrollView *)self centerContentIgnoringInsets];
   }
@@ -25,9 +25,9 @@
 
 - (void)centerContentIgnoringInsets
 {
-  v4 = [(MUImageScrollView *)self delegate];
+  delegate = [(MUImageScrollView *)self delegate];
   [(MUImageScrollView *)self bounds];
-  v3 = [v4 viewForZoomingInScrollView:self];
+  v3 = [delegate viewForZoomingInScrollView:self];
   [v3 frame];
   UIRectCenteredYInRect();
   [v3 setFrame:?];

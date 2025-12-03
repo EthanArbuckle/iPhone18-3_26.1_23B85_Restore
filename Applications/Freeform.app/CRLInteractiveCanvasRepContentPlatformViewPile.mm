@@ -1,25 +1,25 @@
 @interface CRLInteractiveCanvasRepContentPlatformViewPile
-- (BOOL)isContentEqualToContentOfRepContentPile:(id)a3;
+- (BOOL)isContentEqualToContentOfRepContentPile:(id)pile;
 - (CGRect)contentPlatformViewFrame;
 - (CGRect)contentPlatformViewMaskRect;
-- (CRLInteractiveCanvasRepContentPlatformViewPile)initWithRep:(id)a3 kind:(unint64_t)a4;
+- (CRLInteractiveCanvasRepContentPlatformViewPile)initWithRep:(id)rep kind:(unint64_t)kind;
 - (CRLPlatformView)contentPlatformView;
 - (NSString)description;
 @end
 
 @implementation CRLInteractiveCanvasRepContentPlatformViewPile
 
-- (CRLInteractiveCanvasRepContentPlatformViewPile)initWithRep:(id)a3 kind:(unint64_t)a4
+- (CRLInteractiveCanvasRepContentPlatformViewPile)initWithRep:(id)rep kind:(unint64_t)kind
 {
-  v7 = a3;
+  repCopy = rep;
   v11.receiver = self;
   v11.super_class = CRLInteractiveCanvasRepContentPlatformViewPile;
   v8 = [(CRLInteractiveCanvasRepContentPlatformViewPile *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_rep, a3);
-    v9->_kind = a4;
+    objc_storeStrong(&v8->_rep, rep);
+    v9->_kind = kind;
   }
 
   return v9;
@@ -41,16 +41,16 @@
   return [NSString stringWithFormat:@"<%@ %p rep=%@ kind=%@>", objc_opt_class(), self, self->_rep, v3];
 }
 
-- (BOOL)isContentEqualToContentOfRepContentPile:(id)a3
+- (BOOL)isContentEqualToContentOfRepContentPile:(id)pile
 {
-  if (self == a3)
+  if (self == pile)
   {
     return 1;
   }
 
-  v4 = a3;
+  pileCopy = pile;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, pileCopy);
 
   v7 = v6 && self->_rep == *(v6 + 8) && self->_kind == *(v6 + 16);
   return v7;
@@ -87,18 +87,18 @@
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:306 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  v6 = 0;
+  additionalPlatformViewOverRenderable = 0;
   kind = self->_kind;
   if (kind > 1)
   {
     if (kind == 2)
     {
-      v6 = [(CRLCanvasRep *)self->_rep additionalPlatformViewOverRenderable];
+      additionalPlatformViewOverRenderable = [(CRLCanvasRep *)self->_rep additionalPlatformViewOverRenderable];
     }
 
     else if (kind == 3)
     {
-      v6 = [(CRLCanvasRep *)self->_rep additionalPlatformViewOverChildRenderables];
+      additionalPlatformViewOverRenderable = [(CRLCanvasRep *)self->_rep additionalPlatformViewOverChildRenderables];
     }
   }
 
@@ -106,16 +106,16 @@
   {
     if (kind == 1)
     {
-      v6 = [(CRLCanvasRep *)self->_rep contentPlatformView];
+      additionalPlatformViewOverRenderable = [(CRLCanvasRep *)self->_rep contentPlatformView];
     }
   }
 
   else
   {
-    v6 = [(CRLCanvasRep *)self->_rep additionalPlatformViewUnderRenderable];
+    additionalPlatformViewOverRenderable = [(CRLCanvasRep *)self->_rep additionalPlatformViewUnderRenderable];
   }
 
-  return v6;
+  return additionalPlatformViewOverRenderable;
 }
 
 - (CGRect)contentPlatformViewFrame
@@ -131,10 +131,10 @@
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  v6 = [(CRLCanvasRep *)self->_rep parentRep];
-  if (v6)
+  parentRep = [(CRLCanvasRep *)self->_rep parentRep];
+  if (parentRep)
   {
-    v7 = v6;
+    v7 = parentRep;
     do
     {
       if ([v7 masksToBounds])
@@ -179,12 +179,12 @@
         }
       }
 
-      v12 = [v7 parentRep];
+      parentRep2 = [v7 parentRep];
 
-      v7 = v12;
+      v7 = parentRep2;
     }
 
-    while (v12);
+    while (parentRep2);
   }
 
   v13 = x;

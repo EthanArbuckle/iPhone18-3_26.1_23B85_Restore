@@ -1,36 +1,36 @@
 @interface UIDictationDeleteButton
-- (UIDictationDeleteButton)initWithFrame:(CGRect)a3 actionHandler:(id)a4 tintColor:(id)a5;
-- (void)commonInitWithActionHandler:(id)a3 tintColor:(id)a4;
+- (UIDictationDeleteButton)initWithFrame:(CGRect)frame actionHandler:(id)handler tintColor:(id)color;
+- (void)commonInitWithActionHandler:(id)handler tintColor:(id)color;
 - (void)layoutSubviews;
 @end
 
 @implementation UIDictationDeleteButton
 
-- (UIDictationDeleteButton)initWithFrame:(CGRect)a3 actionHandler:(id)a4 tintColor:(id)a5
+- (UIDictationDeleteButton)initWithFrame:(CGRect)frame actionHandler:(id)handler tintColor:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  handlerCopy = handler;
+  colorCopy = color;
   v16.receiver = self;
   v16.super_class = UIDictationDeleteButton;
-  v13 = [(UIView *)&v16 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(UIView *)&v16 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    [(UIDictationDeleteButton *)v13 commonInitWithActionHandler:v11 tintColor:v12];
+    [(UIDictationDeleteButton *)height commonInitWithActionHandler:handlerCopy tintColor:colorCopy];
   }
 
   return v14;
 }
 
-- (void)commonInitWithActionHandler:(id)a3 tintColor:(id)a4
+- (void)commonInitWithActionHandler:(id)handler tintColor:(id)color
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  colorCopy = color;
+  handlerCopy = handler;
   v30 = [UIBlurEffect effectWithStyle:8];
   v8 = [[UIVisualEffectView alloc] initWithEffect:v30];
   blurView = self->_blurView;
@@ -38,14 +38,14 @@
 
   [(UIView *)self->_blurView setUserInteractionEnabled:0];
   [(UIView *)self addSubview:self->_blurView];
-  v10 = [[_UIDictationInternalButton alloc] initWithHandler:v7];
+  v10 = [[_UIDictationInternalButton alloc] initWithHandler:handlerCopy];
 
   button = self->_button;
   self->_button = v10;
 
   v12 = +[UIButtonConfiguration borderlessButtonConfiguration];
   v13 = [UIImage systemImageNamed:@"delete.backward.fill"];
-  v14 = [v13 imageWithTintColor:v6 renderingMode:1];
+  v14 = [v13 imageWithTintColor:colorCopy renderingMode:1];
 
   [v12 setImage:v14];
   [v12 setCornerStyle:3];
@@ -53,29 +53,29 @@
   [(UIButton *)self->_button setConfiguration:v12];
   [(UIView *)self->_button setTranslatesAutoresizingMaskIntoConstraints:0];
   v15 = +[UIColor blackColor];
-  v16 = [v15 CGColor];
-  v17 = [(UIView *)self->_button layer];
-  [v17 setShadowColor:v16];
+  cGColor = [v15 CGColor];
+  layer = [(UIView *)self->_button layer];
+  [layer setShadowColor:cGColor];
 
-  v18 = [(UIView *)self->_button layer];
+  layer2 = [(UIView *)self->_button layer];
   LODWORD(v19) = 0.25;
-  [v18 setShadowOpacity:v19];
+  [layer2 setShadowOpacity:v19];
 
-  v20 = [(UIView *)self->_button layer];
-  [v20 setShadowOffset:{0.0, 0.0}];
+  layer3 = [(UIView *)self->_button layer];
+  [layer3 setShadowOffset:{0.0, 0.0}];
 
-  v21 = [(UIView *)self->_button layer];
-  [v21 setShadowRadius:8.0];
+  layer4 = [(UIView *)self->_button layer];
+  [layer4 setShadowRadius:8.0];
 
   [(UIView *)self addSubview:self->_button];
   v22 = MEMORY[0x1E69977A0];
-  v23 = [(UIView *)self->_button centerXAnchor];
-  v24 = [(UIView *)self centerXAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  centerXAnchor = [(UIView *)self->_button centerXAnchor];
+  centerXAnchor2 = [(UIView *)self centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v31[0] = v25;
-  v26 = [(UIView *)self->_button centerYAnchor];
-  v27 = [(UIView *)self centerYAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  centerYAnchor = [(UIView *)self->_button centerYAnchor];
+  centerYAnchor2 = [(UIView *)self centerYAnchor];
+  v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v31[1] = v28;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
   [v22 activateConstraints:v29];
@@ -86,19 +86,19 @@
   v26.receiver = self;
   v26.super_class = UIDictationDeleteButton;
   [(UIView *)&v26 layoutSubviews];
-  v3 = [(UIDictationDeleteButton *)self button];
-  [v3 layoutIfNeeded];
+  button = [(UIDictationDeleteButton *)self button];
+  [button layoutIfNeeded];
 
-  v4 = [(UIDictationDeleteButton *)self button];
-  v5 = [v4 imageView];
-  [v5 frame];
+  button2 = [(UIDictationDeleteButton *)self button];
+  imageView = [button2 imageView];
+  [imageView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(UIDictationDeleteButton *)self button];
-  [v14 convertRect:self toView:{v7, v9, v11, v13}];
+  button3 = [(UIDictationDeleteButton *)self button];
+  [button3 convertRect:self toView:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;

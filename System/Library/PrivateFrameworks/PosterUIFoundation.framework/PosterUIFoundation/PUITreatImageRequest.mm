@@ -1,22 +1,22 @@
 @interface PUITreatImageRequest
 + (NSSet)secureCodableTreatmentClasses;
-- (BOOL)configureState:(PUIRenderState *)a3 error:(id *)a4;
+- (BOOL)configureState:(PUIRenderState *)state error:(id *)error;
 - (CGSize)imagePixelSize;
 - (CGSize)requestedOutputSizeInPixels;
-- (CGSize)requestedOutputSizeInPointsAtScale:(double)a3;
-- (PUITreatImageRequest)initWithCoder:(id)a3;
-- (PUITreatImageRequest)initWithImage:(CGImage *)a3 scale:(double)a4 downscaleFactor:(double)a5 treatment:(id)a6;
-- (PUITreatImageRequest)initWithImage:(id)a3 downscaleFactor:(double)a4 treatment:(id)a5;
+- (CGSize)requestedOutputSizeInPointsAtScale:(double)scale;
+- (PUITreatImageRequest)initWithCoder:(id)coder;
+- (PUITreatImageRequest)initWithImage:(CGImage *)image scale:(double)scale downscaleFactor:(double)factor treatment:(id)treatment;
+- (PUITreatImageRequest)initWithImage:(id)image downscaleFactor:(double)factor treatment:(id)treatment;
 - (id)CIImage;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)treatmentOptions;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)setIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation PUITreatImageRequest
@@ -46,16 +46,16 @@ void __53__PUITreatImageRequest_secureCodableTreatmentClasses__block_invoke()
   secureCodableTreatmentClasses_result = v2;
 }
 
-- (PUITreatImageRequest)initWithImage:(CGImage *)a3 scale:(double)a4 downscaleFactor:(double)a5 treatment:(id)a6
+- (PUITreatImageRequest)initWithImage:(CGImage *)image scale:(double)scale downscaleFactor:(double)factor treatment:(id)treatment
 {
-  v11 = a6;
+  treatmentCopy = treatment;
   v12 = [(PUITreatImageRequest *)self init];
   if (v12)
   {
-    v12->_image = CGImageRetain(a3);
-    v12->_scale = a4;
-    v12->_downscaleFactor = a5;
-    objc_storeStrong(&v12->_treatment, a6);
+    v12->_image = CGImageRetain(image);
+    v12->_scale = scale;
+    v12->_downscaleFactor = factor;
+    objc_storeStrong(&v12->_treatment, treatment);
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
@@ -67,20 +67,20 @@ void __53__PUITreatImageRequest_secureCodableTreatmentClasses__block_invoke()
   return v12;
 }
 
-- (PUITreatImageRequest)initWithImage:(id)a3 downscaleFactor:(double)a4 treatment:(id)a5
+- (PUITreatImageRequest)initWithImage:(id)image downscaleFactor:(double)factor treatment:(id)treatment
 {
-  v9 = a3;
-  v10 = a5;
+  imageCopy = image;
+  treatmentCopy = treatment;
   v11 = [(PUITreatImageRequest *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_codableImage, a3);
-    [v9 scale];
+    objc_storeStrong(&v11->_codableImage, image);
+    [imageCopy scale];
     v12->_scale = v13;
-    v12->_image = CGImageRetain([v9 CGImage]);
-    v12->_downscaleFactor = a4;
-    objc_storeStrong(&v12->_treatment, a5);
+    v12->_image = CGImageRetain([imageCopy CGImage]);
+    v12->_downscaleFactor = factor;
+    objc_storeStrong(&v12->_treatment, treatment);
     v14 = MEMORY[0x1E696AEC0];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
@@ -92,11 +92,11 @@ void __53__PUITreatImageRequest_secureCodableTreatmentClasses__block_invoke()
   return v12;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    self->_identifier = [a3 copy];
+    self->_identifier = [identifier copy];
   }
 
   else
@@ -120,7 +120,7 @@ void __53__PUITreatImageRequest_secureCodableTreatmentClasses__block_invoke()
   [(PUITreatImageRequest *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   codableImage = self->_codableImage;
   v6 = [PUITreatImageRequest allocWithZone:?];
@@ -128,7 +128,7 @@ void __53__PUITreatImageRequest_secureCodableTreatmentClasses__block_invoke()
   {
     v7 = self->_codableImage;
     downscaleFactor = self->_downscaleFactor;
-    v9 = [(PUIImageTreatment *)self->_treatment copyWithZone:a3];
+    v9 = [(PUIImageTreatment *)self->_treatment copyWithZone:zone];
     v10 = [(PUITreatImageRequest *)v6 initWithImage:v7 downscaleFactor:v9 treatment:downscaleFactor];
   }
 
@@ -137,7 +137,7 @@ void __53__PUITreatImageRequest_secureCodableTreatmentClasses__block_invoke()
     image = self->_image;
     scale = self->_scale;
     v13 = self->_downscaleFactor;
-    v9 = [(PUIImageTreatment *)self->_treatment copyWithZone:a3];
+    v9 = [(PUIImageTreatment *)self->_treatment copyWithZone:zone];
     v10 = [(PUITreatImageRequest *)v6 initWithImage:image scale:v9 downscaleFactor:scale treatment:v13];
   }
 
@@ -146,11 +146,11 @@ void __53__PUITreatImageRequest_secureCodableTreatmentClasses__block_invoke()
   return v14;
 }
 
-- (CGSize)requestedOutputSizeInPointsAtScale:(double)a3
+- (CGSize)requestedOutputSizeInPointsAtScale:(double)scale
 {
   [(PUITreatImageRequest *)self requestedOutputSizeInPixels];
-  v5 = v4 * a3;
-  v7 = v6 * a3;
+  v5 = v4 * scale;
+  v7 = v6 * scale;
   result.height = v7;
   result.width = v5;
   return result;
@@ -197,25 +197,25 @@ void __53__PUITreatImageRequest_secureCodableTreatmentClasses__block_invoke()
   return v5;
 }
 
-- (BOOL)configureState:(PUIRenderState *)a3 error:(id *)a4
+- (BOOL)configureState:(PUIRenderState *)state error:(id *)error
 {
   v7 = +[PUIImageContainerLayer layer];
-  v8 = [MEMORY[0x1E69DC888] magentaColor];
-  [v7 setBackgroundColor:{objc_msgSend(v8, "CGColor")}];
+  magentaColor = [MEMORY[0x1E69DC888] magentaColor];
+  [v7 setBackgroundColor:{objc_msgSend(magentaColor, "CGColor")}];
 
   [v7 setDelegate:self];
-  v9 = [(PUITreatImageRequest *)self treatmentOptions];
-  v10 = [v7 imageLayer];
-  [v10 setContents:self->_image];
+  treatmentOptions = [(PUITreatImageRequest *)self treatmentOptions];
+  imageLayer = [v7 imageLayer];
+  [imageLayer setContents:self->_image];
 
   [v7 setNeedsLayout];
   v11 = [(PUITreatImageRequest *)self usesCoreImageForTreatment:self->_treatment];
   if (v11)
   {
-    v12 = [(PUITreatImageRequest *)self CIImage];
+    cIImage = [(PUITreatImageRequest *)self CIImage];
     treatment = self->_treatment;
     v31 = 0;
-    v14 = [(PUIImageTreatment *)treatment applyToImage:v12 options:v9 error:&v31];
+    v14 = [(PUIImageTreatment *)treatment applyToImage:cIImage options:treatmentOptions error:&v31];
     v15 = v31;
   }
 
@@ -227,7 +227,7 @@ void __53__PUITreatImageRequest_secureCodableTreatmentClasses__block_invoke()
 
   v16 = self->_treatment;
   v30 = 0;
-  v17 = [(PUIImageTreatment *)v16 commitToRenderingTree:v7 options:v9 error:&v30];
+  v17 = [(PUIImageTreatment *)v16 commitToRenderingTree:v7 options:treatmentOptions error:&v30];
   v18 = v30;
   v19 = v18;
   if (v14)
@@ -246,56 +246,56 @@ void __53__PUITreatImageRequest_secureCodableTreatmentClasses__block_invoke()
     [(PUITreatImageRequest *)self requestedOutputSizeInPixels];
     *&v26 = v22;
     *(&v26 + 1) = v23;
-    [v9 reducedScale];
+    [treatmentOptions reducedScale];
     v27 = v24;
     v28 = v7;
     v29 = v14;
-    __copy_assignment_8_8_t0w24_s24_s32(a3, &v26);
+    __copy_assignment_8_8_t0w24_s24_s32(state, &v26);
   }
 
-  else if (a4)
+  else if (error)
   {
     if (v15)
     {
       v18 = v15;
     }
 
-    *a4 = v18;
+    *error = v18;
   }
 
   return v21 & 1;
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v5 = a3;
-  v3 = [v5 superlayer];
-  v4 = v3;
-  if (v3)
+  layerCopy = layer;
+  superlayer = [layerCopy superlayer];
+  v4 = superlayer;
+  if (superlayer)
   {
-    [v3 bounds];
-    [v5 setFrame:?];
+    [superlayer bounds];
+    [layerCopy setFrame:?];
   }
 }
 
-- (PUITreatImageRequest)initWithCoder:(id)a3
+- (PUITreatImageRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PUITreatImageRequest *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    [v4 decodeDoubleForKey:@"DownscaleFactor"];
+    [coderCopy decodeDoubleForKey:@"DownscaleFactor"];
     v5->_downscaleFactor = v8;
-    v9 = [objc_opt_class() secureCodableTreatmentClasses];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"Treatment"];
+    secureCodableTreatmentClasses = [objc_opt_class() secureCodableTreatmentClasses];
+    v10 = [coderCopy decodeObjectOfClasses:secureCodableTreatmentClasses forKey:@"Treatment"];
     treatment = v5->_treatment;
     v5->_treatment = v10;
 
-    if (!v5->_treatment || ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"Image"], v12 = objc_claimAutoreleasedReturnValue(), codableImage = v5->_codableImage, v5->_codableImage = v12, codableImage, (v14 = v5->_codableImage) == 0))
+    if (!v5->_treatment || ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Image"], v12 = objc_claimAutoreleasedReturnValue(), codableImage = v5->_codableImage, v5->_codableImage = v12, codableImage, (v14 = v5->_codableImage) == 0))
     {
       v16 = 0;
       goto LABEL_7;
@@ -312,58 +312,58 @@ LABEL_7:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   codableImage = self->_codableImage;
-  v8 = v4;
+  v8 = coderCopy;
   if (!codableImage)
   {
     v6 = [[PUICodableImage alloc] initWithCGImage:self->_image scale:0 error:self->_scale];
     v7 = self->_codableImage;
     self->_codableImage = v6;
 
-    v4 = v8;
+    coderCopy = v8;
     codableImage = self->_codableImage;
   }
 
-  [v4 encodeObject:codableImage forKey:@"Image"];
+  [coderCopy encodeObject:codableImage forKey:@"Image"];
   [v8 encodeObject:self->_treatment forKey:@"Treatment"];
   [v8 encodeDouble:@"DownscaleFactor" forKey:self->_downscaleFactor];
   [v8 encodeObject:self->_identifier forKey:@"Identifier"];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PUITreatImageRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PUITreatImageRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v5 = [(PUITreatImageRequest *)self identifier];
-  [v4 appendString:v5 withName:@"identifier"];
+  identifier = [(PUITreatImageRequest *)self identifier];
+  [v4 appendString:identifier withName:@"identifier"];
 
   v6 = [v4 appendObject:-[PUITreatImageRequest image](self withName:{"image"), @"image"}];
   [(PUITreatImageRequest *)self scale];
   v7 = [v4 appendDouble:@"scale" withName:3 decimalPrecision:?];
   [(PUITreatImageRequest *)self downscaleFactor];
   v8 = [v4 appendDouble:@"downscaleFactor" withName:3 decimalPrecision:?];
-  v9 = [(PUITreatImageRequest *)self treatment];
-  v10 = [v4 appendObject:v9 withName:@"treatment"];
+  treatment = [(PUITreatImageRequest *)self treatment];
+  v10 = [v4 appendObject:treatment withName:@"treatment"];
 
   return v4;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(PUITreatImageRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PUITreatImageRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)treatmentOptions

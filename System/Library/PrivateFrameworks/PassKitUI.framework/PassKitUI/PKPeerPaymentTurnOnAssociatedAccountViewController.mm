@@ -1,32 +1,32 @@
 @interface PKPeerPaymentTurnOnAssociatedAccountViewController
 - (PKPeerPaymentAssociatedAccountSetupDelegate)delegate;
-- (PKPeerPaymentTurnOnAssociatedAccountViewController)initWithFamilyMember:(id)a3 familyCollection:(id)a4 delegate:(id)a5 passLibraryDataProvider:(id)a6 context:(int64_t)a7 setupType:(int64_t)a8;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (PKPeerPaymentTurnOnAssociatedAccountViewController)initWithFamilyMember:(id)member familyCollection:(id)collection delegate:(id)delegate passLibraryDataProvider:(id)provider context:(int64_t)context setupType:(int64_t)type;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPeerPaymentTurnOnAssociatedAccountViewController
 
-- (PKPeerPaymentTurnOnAssociatedAccountViewController)initWithFamilyMember:(id)a3 familyCollection:(id)a4 delegate:(id)a5 passLibraryDataProvider:(id)a6 context:(int64_t)a7 setupType:(int64_t)a8
+- (PKPeerPaymentTurnOnAssociatedAccountViewController)initWithFamilyMember:(id)member familyCollection:(id)collection delegate:(id)delegate passLibraryDataProvider:(id)provider context:(int64_t)context setupType:(int64_t)type
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  memberCopy = member;
+  collectionCopy = collection;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v23.receiver = self;
   v23.super_class = PKPeerPaymentTurnOnAssociatedAccountViewController;
   v19 = [(PKPeerPaymentTurnOnAssociatedAccountViewController *)&v23 initWithStyle:2];
   v20 = v19;
   if (v19)
   {
-    v19->_setupType = a8;
-    objc_storeStrong(&v19->_familyMember, a3);
-    objc_storeStrong(&v20->_familyCollection, a4);
-    objc_storeWeak(&v20->_delegate, v17);
-    v20->_context = a7;
-    objc_storeStrong(&v20->_passLibraryDataProvider, a6);
+    v19->_setupType = type;
+    objc_storeStrong(&v19->_familyMember, member);
+    objc_storeStrong(&v20->_familyCollection, collection);
+    objc_storeWeak(&v20->_delegate, delegateCopy);
+    v20->_context = context;
+    objc_storeStrong(&v20->_passLibraryDataProvider, provider);
     if (v20->_context == 3)
     {
       PKLocalizedPeerPaymentString(&cfstr_PeerPaymentFam.isa);
@@ -48,49 +48,49 @@
   v4.receiver = self;
   v4.super_class = PKPeerPaymentTurnOnAssociatedAccountViewController;
   [(PKPeerPaymentTurnOnAssociatedAccountViewController *)&v4 viewDidLoad];
-  v3 = [(PKPeerPaymentTurnOnAssociatedAccountViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"CellReuseIdentifier"];
+  tableView = [(PKPeerPaymentTurnOnAssociatedAccountViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"CellReuseIdentifier"];
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(PKFamilyMember *)self->_familyMember firstName:a3];
+  v4 = [(PKFamilyMember *)self->_familyMember firstName:view];
   v5 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTur_2.isa, &stru_1F3BD5BF0.isa, v4);
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:a4];
-  v5 = [v4 textLabel];
+  v4 = [view dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:path];
+  textLabel = [v4 textLabel];
   v6 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTur_3.isa);
-  [v5 setText:v6];
+  [textLabel setText:v6];
 
-  v7 = [v4 textLabel];
-  v8 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v7 setTextColor:v8];
+  textLabel2 = [v4 textLabel];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [textLabel2 setTextColor:systemBlueColor];
 
   [v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9C30]];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  [a3 deselectRowAtIndexPath:a4 animated:1];
-  v5 = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
-  v6 = [v5 isOrganizer];
+  [view deselectRowAtIndexPath:path animated:1];
+  currentUser = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
+  isOrganizer = [currentUser isOrganizer];
 
-  if (v6)
+  if (isOrganizer)
   {
     v7 = [PKPeerPaymentAddAssociatedAccountViewController alloc];
     familyMember = self->_familyMember;
     familyCollection = self->_familyCollection;
-    v10 = [MEMORY[0x1E69B9020] sharedService];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
     passLibraryDataProvider = self->_passLibraryDataProvider;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v20 = [(PKPeerPaymentAddAssociatedAccountViewController *)v7 initWithFamilyMember:familyMember familyCollection:familyCollection webService:v10 passLibraryDataProvider:passLibraryDataProvider delegate:WeakRetained context:self->_context setupType:self->_setupType];
+    v20 = [(PKPeerPaymentAddAssociatedAccountViewController *)v7 initWithFamilyMember:familyMember familyCollection:familyCollection webService:mEMORY[0x1E69B9020] passLibraryDataProvider:passLibraryDataProvider delegate:WeakRetained context:self->_context setupType:self->_setupType];
 
     v13 = [[PKNavigationController alloc] initWithRootViewController:v20];
     [(PKNavigationController *)v13 setModalInPresentation:1];

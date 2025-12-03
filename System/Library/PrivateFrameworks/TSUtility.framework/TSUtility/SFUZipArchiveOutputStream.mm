@@ -1,51 +1,51 @@
 @interface SFUZipArchiveOutputStream
-+ (unint64_t)approximateBytesForEntryHeaderWithName:(id)a3;
-- (BOOL)canRemoveEntryWithName:(id)a3;
-- (SFUZipArchiveOutputStream)initWithOutputStream:(id)a3 cryptoKey:(id)a4 passphraseHint:(id)a5;
-- (SFUZipArchiveOutputStream)initWithPath:(id)a3 cryptoKey:(id)a4 passphraseHint:(id)a5;
-- (id)beginUncompressedUnknownSizeEntryWithName:(id)a3;
-- (id)entriesAtPath:(id)a3;
++ (unint64_t)approximateBytesForEntryHeaderWithName:(id)name;
+- (BOOL)canRemoveEntryWithName:(id)name;
+- (SFUZipArchiveOutputStream)initWithOutputStream:(id)stream cryptoKey:(id)key passphraseHint:(id)hint;
+- (SFUZipArchiveOutputStream)initWithPath:(id)path cryptoKey:(id)key passphraseHint:(id)hint;
+- (id)beginUncompressedUnknownSizeEntryWithName:(id)name;
+- (id)entriesAtPath:(id)path;
 - (id)entryNames;
-- (unint64_t)writeLocalFileHeaderForEntry:(id)a3;
-- (unsigned)crc32ForEntry:(id)a3;
-- (void)beginEntryWithName:(id)a3 isCompressed:(BOOL)a4 uncompressedSize:(unint64_t)a5;
+- (unint64_t)writeLocalFileHeaderForEntry:(id)entry;
+- (unsigned)crc32ForEntry:(id)entry;
+- (void)beginEntryWithName:(id)name isCompressed:(BOOL)compressed uncompressedSize:(unint64_t)size;
 - (void)close;
 - (void)coalesceAndTruncateFreeSpace;
 - (void)dealloc;
 - (void)finishEntry;
-- (void)moveToPath:(id)a3;
-- (void)removeEntryWithName:(id)a3;
+- (void)moveToPath:(id)path;
+- (void)removeEntryWithName:(id)name;
 - (void)reset;
-- (void)setCrc32ForCurrentEntry:(unsigned int)a3;
-- (void)setEncryptedDocumentUuid:(id)a3;
-- (void)writeBuffer:(const char *)a3 size:(unint64_t)a4;
-- (void)writeCentralFileHeaderUsingEntry:(id)a3 isFirstEntry:(BOOL)a4;
-- (void)writeEndOfCentralDirectoryWithOffset:(int64_t)a3;
-- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)a3;
-- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)a3;
+- (void)setCrc32ForCurrentEntry:(unsigned int)entry;
+- (void)setEncryptedDocumentUuid:(id)uuid;
+- (void)writeBuffer:(const char *)buffer size:(unint64_t)size;
+- (void)writeCentralFileHeaderUsingEntry:(id)entry isFirstEntry:(BOOL)firstEntry;
+- (void)writeEndOfCentralDirectoryWithOffset:(int64_t)offset;
+- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)offset;
+- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)offset;
 @end
 
 @implementation SFUZipArchiveOutputStream
 
-+ (unint64_t)approximateBytesForEntryHeaderWithName:(id)a3
++ (unint64_t)approximateBytesForEntryHeaderWithName:(id)name
 {
-  v3 = [a3 UTF8String];
-  if (v3)
+  uTF8String = [name UTF8String];
+  if (uTF8String)
   {
-    v3 = strlen(v3);
+    uTF8String = strlen(uTF8String);
   }
 
-  return (v3 + 30);
+  return (uTF8String + 30);
 }
 
-- (SFUZipArchiveOutputStream)initWithOutputStream:(id)a3 cryptoKey:(id)a4 passphraseHint:(id)a5
+- (SFUZipArchiveOutputStream)initWithOutputStream:(id)stream cryptoKey:(id)key passphraseHint:(id)hint
 {
   v8 = [(SFUZipArchiveOutputStream *)self init];
   if (v8)
   {
-    v8->mOutputStream = a3;
-    v8->mCryptoKey = a4;
-    v8->mPassphraseHint = [SFUCryptoUtils encodePassphraseHint:a5];
+    v8->mOutputStream = stream;
+    v8->mCryptoKey = key;
+    v8->mPassphraseHint = [SFUCryptoUtils encodePassphraseHint:hint];
     v8->mEntries = objc_alloc_init(MEMORY[0x277CBEB18]);
     v8->mFreeList = objc_alloc_init(MEMORY[0x277CBEB18]);
     v9 = malloc_type_malloc(0x38uLL, 0x100004077774924uLL);
@@ -59,11 +59,11 @@
   return v8;
 }
 
-- (SFUZipArchiveOutputStream)initWithPath:(id)a3 cryptoKey:(id)a4 passphraseHint:(id)a5
+- (SFUZipArchiveOutputStream)initWithPath:(id)path cryptoKey:(id)key passphraseHint:(id)hint
 {
-  v8 = [[SFUMoveableFileOutputStream alloc] initWithPath:a3];
+  v8 = [[SFUMoveableFileOutputStream alloc] initWithPath:path];
 
-  return [(SFUZipArchiveOutputStream *)self initWithOutputStream:v8 cryptoKey:a4 passphraseHint:a5];
+  return [(SFUZipArchiveOutputStream *)self initWithOutputStream:v8 cryptoKey:key passphraseHint:hint];
 }
 
 - (void)dealloc
@@ -74,9 +74,9 @@
   [(SFUZipArchiveOutputStream *)&v3 dealloc];
 }
 
-- (void)beginEntryWithName:(id)a3 isCompressed:(BOOL)a4 uncompressedSize:(unint64_t)a5
+- (void)beginEntryWithName:(id)name isCompressed:(BOOL)compressed uncompressedSize:(unint64_t)size
 {
-  v6 = a4;
+  compressedCopy = compressed;
   if (!self->mOutputStream)
   {
     v9 = +[TSUAssertionHandler currentHandler];
@@ -87,18 +87,18 @@
   [(SFUZipArchiveOutputStream *)self finishEntry];
   if (self->mCryptoKey)
   {
-    a5 = [SFUCryptoOutputStream encodedLengthForDataLength:a5 key:?];
+    size = [SFUCryptoOutputStream encodedLengthForDataLength:size key:?];
   }
 
   v11 = objc_alloc_init(SFUZipOutputEntry);
   self->mCurrentEntry = v11;
   [(NSMutableArray *)self->mEntries addObject:v11];
 
-  v12 = [a3 UTF8String];
-  self->mCurrentEntry->name = [a3 copy];
-  if (v12)
+  uTF8String = [name UTF8String];
+  self->mCurrentEntry->name = [name copy];
+  if (uTF8String)
   {
-    v13 = strlen(v12);
+    v13 = strlen(uTF8String);
   }
 
   else
@@ -107,17 +107,17 @@
   }
 
   self->mCurrentEntry->utf8NameLength = v13;
-  self->mCurrentEntry->isCompressed = v6;
+  self->mCurrentEntry->isCompressed = compressedCopy;
   self->mCurrentEntry->isEncrypted = self->mCryptoKey != 0;
   self->mCurrentEntry->time = SFUZipCurrentDosTime();
-  self->mCurrentEntry->is64Bit = a5 > 0xFFC2F6FF;
-  if (!v6 && [(SFUMoveableFileOutputStream *)self->mOutputStream canSeek])
+  self->mCurrentEntry->is64Bit = size > 0xFFC2F6FF;
+  if (!compressedCopy && [(SFUMoveableFileOutputStream *)self->mOutputStream canSeek])
   {
     mCurrentEntry = self->mCurrentEntry;
     v15 = mCurrentEntry->utf8NameLength + 30;
     v16 = mCurrentEntry->is64Bit ? 20 : 0;
     v17 = v15 + v16;
-    if (!__CFADD__(a5, v15 + v16))
+    if (!__CFADD__(size, v15 + v16))
     {
       v18 = [(NSMutableArray *)self->mFreeList count];
       if (v18)
@@ -125,7 +125,7 @@
         v19 = v18;
         v20 = 0;
         v21 = 0;
-        v22 = v17 + a5;
+        v22 = v17 + size;
         do
         {
           v23 = [(NSMutableArray *)self->mFreeList objectAtIndex:v20];
@@ -169,7 +169,7 @@ LABEL_26:
   if (self->mCurrentEntry->isEncrypted)
   {
     v26 = [[SFUCryptoOutputStream alloc] initForEncryptionWithOutputStream:self->mOutputStream key:self->mCryptoKey computeCrc32:1];
-    if (!v6)
+    if (!compressedCopy)
     {
 LABEL_30:
       self->mEntryOutputStream = v26;
@@ -180,7 +180,7 @@ LABEL_30:
   else
   {
     v26 = self->mOutputStream;
-    if (!v6)
+    if (!compressedCopy)
     {
       goto LABEL_30;
     }
@@ -190,9 +190,9 @@ LABEL_30:
   self->mEntryOutputStream = [[SFUZipDeflateOutputStream alloc] initWithOutputStream:v26];
 }
 
-- (id)beginUncompressedUnknownSizeEntryWithName:(id)a3
+- (id)beginUncompressedUnknownSizeEntryWithName:(id)name
 {
-  [(SFUZipArchiveOutputStream *)self beginUnknownSizeEntryWithName:a3 isCompressed:0];
+  [(SFUZipArchiveOutputStream *)self beginUnknownSizeEntryWithName:name isCompressed:0];
   self->mCurrentEntry->isWrittenDirectlyToFile = 1;
   v4 = [[SFUOffsetOutputStream alloc] initWithOutputStream:self->mEntryOutputStream];
   if (self->mCurrentEntry->isEncrypted)
@@ -205,19 +205,19 @@ LABEL_30:
   return v4;
 }
 
-- (void)setCrc32ForCurrentEntry:(unsigned int)a3
+- (void)setCrc32ForCurrentEntry:(unsigned int)entry
 {
   mCurrentEntry = self->mCurrentEntry;
   if (mCurrentEntry)
   {
     if (mCurrentEntry->isWrittenDirectlyToFile)
     {
-      mCurrentEntry->crc = a3;
+      mCurrentEntry->crc = entry;
     }
   }
 }
 
-- (void)writeBuffer:(const char *)a3 size:(unint64_t)a4
+- (void)writeBuffer:(const char *)buffer size:(unint64_t)size
 {
   if (self->mCurrentEntry)
   {
@@ -228,12 +228,12 @@ LABEL_30:
       [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/SFUZipArchiveOutputStream.m"), 326, @"Zip output stream is closed."}];
     }
 
-    [(SFUOutputStream *)self->mEntryOutputStream writeBuffer:a3 size:a4];
-    self->mCurrentEntry->uncompressedSize += a4;
+    [(SFUOutputStream *)self->mEntryOutputStream writeBuffer:buffer size:size];
+    self->mCurrentEntry->uncompressedSize += size;
     mCurrentEntry = self->mCurrentEntry;
     if (!mCurrentEntry->isEncrypted)
     {
-      if (a4 >= 0xFFFFFFFF)
+      if (size >= 0xFFFFFFFF)
       {
         v11 = +[TSUAssertionHandler currentHandler];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SFUZipArchiveOutputStream writeBuffer:size:]"];
@@ -241,7 +241,7 @@ LABEL_30:
         mCurrentEntry = self->mCurrentEntry;
       }
 
-      self->mCurrentEntry->crc = crc32(mCurrentEntry->crc, a3, a4);
+      self->mCurrentEntry->crc = crc32(mCurrentEntry->crc, buffer, size);
     }
   }
 
@@ -252,7 +252,7 @@ LABEL_30:
   }
 }
 
-- (BOOL)canRemoveEntryWithName:(id)a3
+- (BOOL)canRemoveEntryWithName:(id)name
 {
   v5 = [(NSMutableArray *)self->mEntries count];
   if (!v5)
@@ -265,7 +265,7 @@ LABEL_30:
   do
   {
     v8 = [(NSMutableArray *)self->mEntries objectAtIndex:v7];
-    if ([*(v8 + 8) isEqualToString:a3])
+    if ([*(v8 + 8) isEqualToString:name])
     {
       v9 = v8;
     }
@@ -296,11 +296,11 @@ LABEL_30:
 LABEL_14:
   v12 = +[TSUAssertionHandler currentHandler];
   v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SFUZipArchiveOutputStream canRemoveEntryWithName:]"];
-  [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/SFUZipArchiveOutputStream.m"), 357, @"Can't find entry named: %@", a3}];
+  [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/SFUZipArchiveOutputStream.m"), 357, @"Can't find entry named: %@", name}];
   return 0;
 }
 
-- (void)removeEntryWithName:(id)a3
+- (void)removeEntryWithName:(id)name
 {
   if (!self->mOutputStream)
   {
@@ -310,7 +310,7 @@ LABEL_14:
   }
 
   mCurrentEntry = self->mCurrentEntry;
-  if (mCurrentEntry && [(NSString *)mCurrentEntry->name isEqualToString:a3])
+  if (mCurrentEntry && [(NSString *)mCurrentEntry->name isEqualToString:name])
   {
     v8 = self->mCurrentEntry;
     [(SFUZipArchiveOutputStream *)self finishEntry];
@@ -324,7 +324,7 @@ LABEL_14:
 LABEL_19:
       v18 = +[TSUAssertionHandler currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SFUZipArchiveOutputStream removeEntryWithName:]"];
-      [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/SFUZipArchiveOutputStream.m"), 388, @"Can't find entry named: %@", a3}];
+      [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/SFUZipArchiveOutputStream.m"), 388, @"Can't find entry named: %@", name}];
       return;
     }
 
@@ -333,7 +333,7 @@ LABEL_19:
     do
     {
       v8 = [(NSMutableArray *)self->mEntries objectAtIndex:v11];
-      if (![(NSString *)v8->name isEqualToString:a3])
+      if (![(NSString *)v8->name isEqualToString:name])
       {
         v8 = 0;
       }
@@ -362,11 +362,11 @@ LABEL_19:
   [(NSMutableArray *)self->mEntries removeObject:v8];
   if (v8 == self->mLastEntryInFile)
   {
-    v20 = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
+    offset = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
     [(SFUMoveableFileOutputStream *)self->mOutputStream truncateToLength:v8->offset];
-    if (v20 < v8->offset)
+    if (offset < v8->offset)
     {
-      [(SFUMoveableFileOutputStream *)self->mOutputStream seekToOffset:v20 whence:0];
+      [(SFUMoveableFileOutputStream *)self->mOutputStream seekToOffset:offset whence:0];
     }
 
     self->mLastEntryInFile = 0;
@@ -412,21 +412,21 @@ LABEL_19:
     else
     {
 
-      [SFUZipException raise:@"SFUZipOutputError" format:@"Removing entry named %@ produced free space that is too small.", a3];
+      [SFUZipException raise:@"SFUZipOutputError" format:@"Removing entry named %@ produced free space that is too small.", name];
     }
   }
 }
 
-- (void)setEncryptedDocumentUuid:(id)a3
+- (void)setEncryptedDocumentUuid:(id)uuid
 {
   if (!self->mOutputStream)
   {
     [SFUZipException raise:@"SFUZipOutputError" format:@"Tried to set encrypted document UUID after writing finished."];
   }
 
-  v5 = a3;
+  uuidCopy = uuid;
 
-  self->mEncryptedDocumentUuid = a3;
+  self->mEncryptedDocumentUuid = uuid;
 }
 
 - (void)close
@@ -454,11 +454,11 @@ LABEL_19:
       [(NSMutableArray *)self->mEntries addObject:v10];
 
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@".iWTrash/%08X", ++v8];
-      v12 = [v11 UTF8String];
+      uTF8String = [v11 UTF8String];
       self->mCurrentEntry->name = [v11 copy];
-      if (v12)
+      if (uTF8String)
       {
-        v13 = strlen(v12);
+        v13 = strlen(uTF8String);
       }
 
       else
@@ -498,34 +498,34 @@ LABEL_19:
     }
   }
 
-  v16 = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
+  offset = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
   [(NSMutableArray *)self->mEntries sortUsingSelector:sel_compareByOffset_];
-  v17 = [(NSMutableArray *)self->mEntries objectEnumerator];
-  v18 = [v17 nextObject];
-  if (v18)
+  objectEnumerator = [(NSMutableArray *)self->mEntries objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    [(SFUZipArchiveOutputStream *)self writeCentralFileHeaderUsingEntry:v18 isFirstEntry:1];
+    [(SFUZipArchiveOutputStream *)self writeCentralFileHeaderUsingEntry:nextObject isFirstEntry:1];
   }
 
-  v19 = [v17 nextObject];
-  if (v19)
+  nextObject2 = [objectEnumerator nextObject];
+  if (nextObject2)
   {
-    v20 = v19;
+    nextObject3 = nextObject2;
     do
     {
-      [(SFUZipArchiveOutputStream *)self writeCentralFileHeaderUsingEntry:v20 isFirstEntry:0];
-      v20 = [v17 nextObject];
+      [(SFUZipArchiveOutputStream *)self writeCentralFileHeaderUsingEntry:nextObject3 isFirstEntry:0];
+      nextObject3 = [objectEnumerator nextObject];
     }
 
-    while (v20);
+    while (nextObject3);
   }
 
-  [(SFUZipArchiveOutputStream *)self writeEndOfCentralDirectoryWithOffset:v16];
+  [(SFUZipArchiveOutputStream *)self writeEndOfCentralDirectoryWithOffset:offset];
 
   self->mOutputStream = 0;
 }
 
-- (void)moveToPath:(id)a3
+- (void)moveToPath:(id)path
 {
   if (!self->mOutputStream)
   {
@@ -535,10 +535,10 @@ LABEL_19:
   }
 
   [(SFUZipArchiveOutputStream *)self finishEntry];
-  v7 = [(SFUMoveableFileOutputStream *)self->mOutputStream path];
-  if (![(SFUMoveableFileOutputStream *)self->mOutputStream moveToPath:a3])
+  path = [(SFUMoveableFileOutputStream *)self->mOutputStream path];
+  if (![(SFUMoveableFileOutputStream *)self->mOutputStream moveToPath:path])
   {
-    [SFUZipException raise:@"SFUZipOutputError" format:@"Could not move output stream from %@ to %@", v7, a3];
+    [SFUZipException raise:@"SFUZipOutputError" format:@"Could not move output stream from %@ to %@", path, path];
   }
 }
 
@@ -557,30 +557,30 @@ LABEL_19:
   return v4;
 }
 
-- (id)entriesAtPath:(id)a3
+- (id)entriesAtPath:(id)path
 {
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableArray count](self->mEntries, "count")}];
-  v6 = [[SFUZipArchiveFileDataRepresentation alloc] initWithPath:a3];
-  v7 = [(NSMutableArray *)self->mEntries objectEnumerator];
-  v8 = [v7 nextObject];
-  if (v8)
+  v6 = [[SFUZipArchiveFileDataRepresentation alloc] initWithPath:path];
+  objectEnumerator = [(NSMutableArray *)self->mEntries objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v9 = v8;
+    nextObject2 = nextObject;
     do
     {
-      v10 = [[SFUZipEntry alloc] initWithDataRepresentation:v6 compressionMethod:*(v9 + 24) compressedSize:*(v9 + 32) uncompressedSize:*(v9 + 40) offset:*(v9 + 48) crc:*(v9 + 64)];
+      v10 = [[SFUZipEntry alloc] initWithDataRepresentation:v6 compressionMethod:*(nextObject2 + 24) compressedSize:*(nextObject2 + 32) uncompressedSize:*(nextObject2 + 40) offset:*(nextObject2 + 48) crc:*(nextObject2 + 64)];
       v11 = v10;
-      if (*(v9 + 25) == 1)
+      if (*(nextObject2 + 25) == 1)
       {
         [(SFUZipEntry *)v10 setCryptoKey:self->mCryptoKey];
       }
 
-      [v5 setObject:v11 forKey:*(v9 + 8)];
+      [v5 setObject:v11 forKey:*(nextObject2 + 8)];
 
-      v9 = [v7 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v9);
+    while (nextObject2);
   }
 
   return v5;
@@ -601,7 +601,7 @@ LABEL_19:
   [(SFUMoveableFileOutputStream *)mOutputStream truncateToLength:0];
 }
 
-- (unsigned)crc32ForEntry:(id)a3
+- (unsigned)crc32ForEntry:(id)entry
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -625,7 +625,7 @@ LABEL_19:
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        if ([(NSString *)v10->name isEqualToString:a3])
+        if ([(NSString *)v10->name isEqualToString:entry])
         {
           if (v10 == self->mCurrentEntry)
           {
@@ -767,9 +767,9 @@ LABEL_19:
 
     if (self->mCurrentFreeSpace)
     {
-      v13 = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
+      offset = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
       v14 = self->mCurrentEntry;
-      v15 = v13 - v14->offset;
+      v15 = offset - v14->offset;
       mCurrentFreeSpace = self->mCurrentFreeSpace;
       length = mCurrentFreeSpace->length;
       if (v15 > length)
@@ -921,11 +921,11 @@ LABEL_50:
       }
 
       [(SFUMoveableFileOutputStream *)self->mOutputStream seekToOffset:0 whence:2];
-      v15 = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
-      v16 = [(NSMutableArray *)self->mFreeList lastObject];
-      if (v15 - *(v16 + 16) == *(v16 + 8))
+      offset = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
+      lastObject = [(NSMutableArray *)self->mFreeList lastObject];
+      if (offset - *(lastObject + 16) == *(lastObject + 8))
       {
-        v17 = v16;
+        v17 = lastObject;
         [(SFUMoveableFileOutputStream *)self->mOutputStream truncateToLength:?];
         self->mFreeBytes -= *(v17 + 16);
         [(NSMutableArray *)self->mFreeList removeLastObject];
@@ -961,7 +961,7 @@ LABEL_50:
   }
 }
 
-- (unint64_t)writeLocalFileHeaderForEntry:(id)a3
+- (unint64_t)writeLocalFileHeaderForEntry:(id)entry
 {
   mBuffer = self->mBuffer;
   *mBuffer = 67324752;
@@ -977,7 +977,7 @@ LABEL_50:
   }
 
   *(mBuffer + 3) = v6;
-  if (*(a3 + 24))
+  if (*(entry + 24))
   {
     v7 = 25452;
   }
@@ -987,7 +987,7 @@ LABEL_50:
     v7 = 25451;
   }
 
-  if (*(a3 + 24))
+  if (*(entry + 24))
   {
     v8 = 8;
   }
@@ -997,20 +997,20 @@ LABEL_50:
     v8 = 0;
   }
 
-  if (*(a3 + 25))
+  if (*(entry + 25))
   {
     v8 = v7;
   }
 
   *(mBuffer + 4) = v8;
-  *(mBuffer + 10) = *(a3 + 7);
+  *(mBuffer + 10) = *(entry + 7);
   *(mBuffer + 14) = 0;
   *(mBuffer + 22) = 0;
-  v9 = *(a3 + 2);
+  v9 = *(entry + 2);
   if (v9 >= 0x10000)
   {
-    [SFUZipException raise:@"SFUZipOutputError" format:@"File name %@ is too long", *(a3 + 1)];
-    v9 = *(a3 + 2);
+    [SFUZipException raise:@"SFUZipOutputError" format:@"File name %@ is too long", *(entry + 1)];
+    v9 = *(entry + 2);
   }
 
   if (v9 >= 0xFFFF)
@@ -1019,7 +1019,7 @@ LABEL_50:
   }
 
   *(mBuffer + 13) = v9;
-  if (*(a3 + 69))
+  if (*(entry + 69))
   {
     v10 = 20;
   }
@@ -1030,10 +1030,10 @@ LABEL_50:
   }
 
   *(mBuffer + 14) = v10;
-  *(a3 + 6) = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
+  *(entry + 6) = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
   [(SFUMoveableFileOutputStream *)self->mOutputStream writeBuffer:self->mBuffer size:30];
-  -[SFUMoveableFileOutputStream writeBuffer:size:](self->mOutputStream, "writeBuffer:size:", [*(a3 + 1) UTF8String], *(a3 + 2));
-  if (*(a3 + 69) == 1)
+  -[SFUMoveableFileOutputStream writeBuffer:size:](self->mOutputStream, "writeBuffer:size:", [*(entry + 1) UTF8String], *(entry + 2));
+  if (*(entry + 69) == 1)
   {
     v11 = self->mBuffer;
     *v11 = 1048577;
@@ -1042,17 +1042,17 @@ LABEL_50:
     [(SFUMoveableFileOutputStream *)self->mOutputStream writeBuffer:self->mBuffer size:20];
   }
 
-  return v10 + 30 + *(a3 + 2);
+  return v10 + 30 + *(entry + 2);
 }
 
-- (void)writeCentralFileHeaderUsingEntry:(id)a3 isFirstEntry:(BOOL)a4
+- (void)writeCentralFileHeaderUsingEntry:(id)entry isFirstEntry:(BOOL)firstEntry
 {
-  v40 = a4;
+  firstEntryCopy = firstEntry;
   mBuffer = self->mBuffer;
-  v7 = *(a3 + 4);
-  v8 = *(a3 + 5);
-  v9 = *(a3 + 2);
-  v10 = *(a3 + 6);
+  v7 = *(entry + 4);
+  v8 = *(entry + 5);
+  v9 = *(entry + 2);
+  v10 = *(entry + 6);
   *mBuffer = 33639248;
   *(mBuffer + 1) = 1310782;
   if ([(SFUMoveableFileOutputStream *)self->mOutputStream canSeek])
@@ -1066,7 +1066,7 @@ LABEL_50:
   }
 
   *(mBuffer + 4) = v11;
-  if (*(a3 + 24))
+  if (*(entry + 24))
   {
     v12 = 25452;
   }
@@ -1076,7 +1076,7 @@ LABEL_50:
     v12 = 25451;
   }
 
-  if (*(a3 + 24))
+  if (*(entry + 24))
   {
     v13 = 8;
   }
@@ -1086,14 +1086,14 @@ LABEL_50:
     v13 = 0;
   }
 
-  if (*(a3 + 25))
+  if (*(entry + 25))
   {
     v13 = v12;
   }
 
   *(mBuffer + 5) = v13;
-  *(mBuffer + 3) = *(a3 + 7);
-  *(mBuffer + 4) = *(a3 + 16);
+  *(mBuffer + 3) = *(entry + 7);
+  *(mBuffer + 4) = *(entry + 16);
   v14 = HIDWORD(v7);
   if (HIDWORD(v7))
   {
@@ -1102,7 +1102,7 @@ LABEL_50:
 
   else
   {
-    v15 = *(a3 + 8);
+    v15 = *(entry + 8);
   }
 
   *(mBuffer + 5) = v15;
@@ -1114,7 +1114,7 @@ LABEL_50:
 
   else
   {
-    v17 = *(a3 + 10);
+    v17 = *(entry + 10);
   }
 
   *(mBuffer + 6) = v17;
@@ -1125,7 +1125,7 @@ LABEL_50:
 
   else
   {
-    v18 = *(a3 + 8);
+    v18 = *(entry + 8);
   }
 
   *(mBuffer + 14) = v18;
@@ -1164,7 +1164,7 @@ LABEL_50:
   }
 
   v38 = v24;
-  if (self->mCryptoKey && v40)
+  if (self->mCryptoKey && firstEntryCopy)
   {
     v25 = [SFUCryptoUtils generatePassphraseVerifierForKey:"generatePassphraseVerifierForKey:verifierVersion:" verifierVersion:?];
     v23 += [v25 length] + 8;
@@ -1203,12 +1203,12 @@ LABEL_39:
 
   else
   {
-    v29 = *(a3 + 12);
+    v29 = *(entry + 12);
   }
 
   *(mBuffer + 42) = v29;
   [(SFUMoveableFileOutputStream *)self->mOutputStream writeBuffer:self->mBuffer size:46];
-  -[SFUMoveableFileOutputStream writeBuffer:size:](self->mOutputStream, "writeBuffer:size:", [*(a3 + 1) UTF8String], *(a3 + 2));
+  -[SFUMoveableFileOutputStream writeBuffer:size:](self->mOutputStream, "writeBuffer:size:", [*(entry + 1) UTF8String], *(entry + 2));
   if (!v20)
   {
     goto LABEL_51;
@@ -1219,7 +1219,7 @@ LABEL_39:
   *(v30 + 1) = v38;
   if (v16)
   {
-    *(v30 + 4) = *(a3 + 5);
+    *(v30 + 4) = *(entry + 5);
     v31 = v30 + 12;
     if (!v14)
     {
@@ -1233,20 +1233,20 @@ LABEL_39:
   if (v14)
   {
 LABEL_47:
-    *v31 = *(a3 + 4);
+    *v31 = *(entry + 4);
     v31 += 8;
   }
 
 LABEL_48:
   if (v21)
   {
-    *v31 = *(a3 + 6);
+    *v31 = *(entry + 6);
     v31 += 8;
   }
 
   [(SFUMoveableFileOutputStream *)self->mOutputStream writeBuffer:self->mBuffer size:v31 - self->mBuffer];
 LABEL_51:
-  if (self->mCryptoKey && v40)
+  if (self->mCryptoKey && firstEntryCopy)
   {
     v32 = self->mBuffer;
     *v32 = 25453;
@@ -1272,24 +1272,24 @@ LABEL_51:
       *(v34 + 1) = *"iwuu";
       [SFUMoveableFileOutputStream writeBuffer:"writeBuffer:size:" size:?];
       mOutputStream = self->mOutputStream;
-      v36 = [(NSData *)v28 bytes];
+      bytes = [(NSData *)v28 bytes];
       v37 = [(NSData *)v28 length];
 
-      [(SFUMoveableFileOutputStream *)mOutputStream writeBuffer:v36 size:v37];
+      [(SFUMoveableFileOutputStream *)mOutputStream writeBuffer:bytes size:v37];
     }
   }
 }
 
-- (void)writeEndOfCentralDirectoryWithOffset:(int64_t)a3
+- (void)writeEndOfCentralDirectoryWithOffset:(int64_t)offset
 {
-  v5 = [(SFUMoveableFileOutputStream *)self->mOutputStream offset]- a3;
+  v5 = [(SFUMoveableFileOutputStream *)self->mOutputStream offset]- offset;
   v6 = [(NSMutableArray *)self->mEntries count];
   v7 = v6;
-  if (a3 > 0xFFFFFFFFLL || (!(v6 >> 16) ? (v8 = HIDWORD(v5) == 0) : (v8 = 0), !v8))
+  if (offset > 0xFFFFFFFFLL || (!(v6 >> 16) ? (v8 = HIDWORD(v5) == 0) : (v8 = 0), !v8))
   {
-    v9 = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
-    [(SFUZipArchiveOutputStream *)self writeZip64EndOfCentralDirectoryWithOffset:a3];
-    [(SFUZipArchiveOutputStream *)self writeZip64EndOfCentralDirectoryLocatorWithOffset:v9];
+    offset = [(SFUMoveableFileOutputStream *)self->mOutputStream offset];
+    [(SFUZipArchiveOutputStream *)self writeZip64EndOfCentralDirectoryWithOffset:offset];
+    [(SFUZipArchiveOutputStream *)self writeZip64EndOfCentralDirectoryLocatorWithOffset:offset];
   }
 
   mBuffer = self->mBuffer;
@@ -1303,8 +1303,8 @@ LABEL_51:
 
   *(mBuffer + 4) = v11;
   *(mBuffer + 5) = v11;
-  v12 = -1;
-  if (a3 > 0xFFFFFFFFLL)
+  offsetCopy = -1;
+  if (offset > 0xFFFFFFFFLL)
   {
     v13 = -1;
   }
@@ -1314,13 +1314,13 @@ LABEL_51:
     v13 = v5;
   }
 
-  if (a3 < 0xFFFFFFFFLL)
+  if (offset < 0xFFFFFFFFLL)
   {
-    v12 = a3;
+    offsetCopy = offset;
   }
 
   *(mBuffer + 3) = v13;
-  *(mBuffer + 4) = v12;
+  *(mBuffer + 4) = offsetCopy;
   *(mBuffer + 10) = 0;
   mOutputStream = self->mOutputStream;
   v15 = self->mBuffer;
@@ -1328,7 +1328,7 @@ LABEL_51:
   [(SFUMoveableFileOutputStream *)mOutputStream writeBuffer:v15 size:22];
 }
 
-- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)a3
+- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)offset
 {
   mBuffer = self->mBuffer;
   *mBuffer = 101075792;
@@ -1338,20 +1338,20 @@ LABEL_51:
   v6 = [(NSMutableArray *)self->mEntries count];
   *(mBuffer + 3) = v6;
   *(mBuffer + 4) = v6;
-  *(mBuffer + 5) = [(SFUMoveableFileOutputStream *)self->mOutputStream offset]- a3;
-  *(mBuffer + 6) = a3;
+  *(mBuffer + 5) = [(SFUMoveableFileOutputStream *)self->mOutputStream offset]- offset;
+  *(mBuffer + 6) = offset;
   mOutputStream = self->mOutputStream;
   v8 = self->mBuffer;
 
   [(SFUMoveableFileOutputStream *)mOutputStream writeBuffer:v8 size:56];
 }
 
-- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)a3
+- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)offset
 {
   mBuffer = self->mBuffer;
   *mBuffer = 117853008;
   *(mBuffer + 1) = 0;
-  *(mBuffer + 1) = a3;
+  *(mBuffer + 1) = offset;
   *(mBuffer + 4) = 1;
   [(SFUMoveableFileOutputStream *)self->mOutputStream writeBuffer:self->mBuffer size:20];
 }

@@ -1,9 +1,9 @@
 @interface CMDiagramSegmentedPieMapper
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4;
-- (id)_suggestedBoundsForNodeAtIndex:(unint64_t)a3;
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index;
+- (id)_suggestedBoundsForNodeAtIndex:(unint64_t)index;
 - (int)pointCount;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapChildrenAt:(id)a3 withState:(id)a4;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapChildrenAt:(id)at withState:(id)state;
 @end
 
 @implementation CMDiagramSegmentedPieMapper
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v22 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   [(CMDiagramShapeMapper *)self setDefaultFonSize];
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
   v11 = v7;
@@ -67,33 +67,33 @@
   mOrientedBounds = self->super.super.super.mOrientedBounds;
   self->super.super.super.mOrientedBounds = v17;
 
-  v19 = [MEMORY[0x277CCA878] transform];
+  transform = [MEMORY[0x277CCA878] transform];
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
   v21 = v20;
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
-  [v19 translateXBy:v21 yBy:?];
-  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:v19];
-  [(CMDiagramSegmentedPieMapper *)self mapChildrenAt:v22 withState:v6];
+  [transform translateXBy:v21 yBy:?];
+  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:transform];
+  [(CMDiagramSegmentedPieMapper *)self mapChildrenAt:atCopy withState:stateCopy];
   [(CMDrawingContext *)self->super.super.mDrawingContext restoreLastTransform];
 }
 
-- (void)mapChildrenAt:(id)a3 withState:(id)a4
+- (void)mapChildrenAt:(id)at withState:(id)state
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-  v8 = [v7 children];
+  atCopy = at;
+  stateCopy = state;
+  documentPoint = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+  children = [documentPoint children];
 
-  v9 = [(CMDiagramSegmentedPieMapper *)self pointCount];
-  if (v9)
+  pointCount = [(CMDiagramSegmentedPieMapper *)self pointCount];
+  if (pointCount)
   {
     v10 = 0;
-    v11 = v9;
-    v12 = v9;
+    v11 = pointCount;
+    v12 = pointCount;
     v13 = 2;
     do
     {
-      v14 = [v8 objectAtIndex:v10];
+      v14 = [children objectAtIndex:v10];
       v15 = [(CMDiagramSegmentedPieMapper *)self _suggestedBoundsForNodeAtIndex:v10];
       v16 = [(CMDiagramPointMapper *)[CMDiagramPointSegmentedPieMapper alloc] initWithPoint:v14 drawingContext:self->super.super.mDrawingContext orientedBounds:v15 parent:self];
       [(CMDiagramPointSegmentedPieMapper *)v16 setStartAngle:1.57079633 - (v13 - 2) * 3.14159265 / v12];
@@ -105,7 +105,7 @@
 
       [(CMDiagramPointSegmentedPieMapper *)v16 setSegmentIndex:v17 - 1];
       [(CMDiagramPointSegmentedPieMapper *)v16 setSegmentCount:v11];
-      [(CMDiagramPointSegmentedPieMapper *)v16 mapAt:v19 withState:v6];
+      [(CMDiagramPointSegmentedPieMapper *)v16 mapAt:atCopy withState:stateCopy];
 
       v13 += 2;
       v10 = v17;
@@ -115,17 +115,17 @@
   }
 }
 
-- (id)_suggestedBoundsForNodeAtIndex:(unint64_t)a3
+- (id)_suggestedBoundsForNodeAtIndex:(unint64_t)index
 {
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
 
   return [OADOrientedBounds orientedBoundsWithBounds:0.0, 0.0];
 }
 
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index
 {
-  v4 = [(CMDiagramSegmentedPieMapper *)self _suggestedBoundsForNodeAtIndex:0, a4];
-  [v4 bounds];
+  index = [(CMDiagramSegmentedPieMapper *)self _suggestedBoundsForNodeAtIndex:0, index];
+  [index bounds];
   v6 = v5 / 6.0;
   v8 = v7 / 6.0;
 

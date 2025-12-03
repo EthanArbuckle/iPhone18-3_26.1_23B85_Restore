@@ -1,5 +1,5 @@
 @interface MKTransitDepartureServiceGapFormatterResult
-- (MKTransitDepartureServiceGapFormatterResult)initWithFormat:(id)a3 dateDescription:(id)a4 dateFormat:(unint64_t)a5;
+- (MKTransitDepartureServiceGapFormatterResult)initWithFormat:(id)format dateDescription:(id)description dateFormat:(unint64_t)dateFormat;
 - (NSString)formattedString;
 @end
 
@@ -20,24 +20,24 @@
   return v2;
 }
 
-- (MKTransitDepartureServiceGapFormatterResult)initWithFormat:(id)a3 dateDescription:(id)a4 dateFormat:(unint64_t)a5
+- (MKTransitDepartureServiceGapFormatterResult)initWithFormat:(id)format dateDescription:(id)description dateFormat:(unint64_t)dateFormat
 {
-  v8 = a3;
-  v9 = a4;
+  formatCopy = format;
+  descriptionCopy = description;
   v16.receiver = self;
   v16.super_class = MKTransitDepartureServiceGapFormatterResult;
   v10 = [(MKTransitDepartureServiceGapFormatterResult *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [formatCopy copy];
     format = v10->_format;
     v10->_format = v11;
 
-    v13 = [v9 copy];
+    v13 = [descriptionCopy copy];
     dateDescription = v10->_dateDescription;
     v10->_dateDescription = v13;
 
-    v10->_dateFormat = a5;
+    v10->_dateFormat = dateFormat;
   }
 
   return v10;

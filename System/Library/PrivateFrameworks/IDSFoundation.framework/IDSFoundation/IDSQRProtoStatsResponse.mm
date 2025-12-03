@@ -1,22 +1,22 @@
 @interface IDSQRProtoStatsResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasReceivedPackets:(BOOL)a3;
-- (void)setHasSentPackets:(BOOL)a3;
-- (void)setHasUplinkBandwidth:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasReceivedPackets:(BOOL)packets;
+- (void)setHasSentPackets:(BOOL)packets;
+- (void)setHasUplinkBandwidth:(BOOL)bandwidth;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoStatsResponse
 
-- (void)setHasSentPackets:(BOOL)a3
+- (void)setHasSentPackets:(BOOL)packets
 {
-  if (a3)
+  if (packets)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasReceivedPackets:(BOOL)a3
+- (void)setHasReceivedPackets:(BOOL)packets
 {
-  if (a3)
+  if (packets)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUplinkBandwidth:(BOOL)a3
+- (void)setHasUplinkBandwidth:(BOOL)bandwidth
 {
-  if (a3)
+  if (bandwidth)
   {
     v3 = 8;
   }
@@ -65,23 +65,23 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoStatsResponse;
   v4 = [(IDSQRProtoStatsResponse *)&v8 description];
-  v5 = [(IDSQRProtoStatsResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoStatsResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_clientTimestampNtp];
-  [v3 setObject:v4 forKey:@"client_timestamp_ntp"];
+  [dictionary setObject:v4 forKey:@"client_timestamp_ntp"];
 
   has = self->_has;
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_serverTimestampMs];
-    [v3 setObject:v8 forKey:@"server_timestamp_ms"];
+    [dictionary setObject:v8 forKey:@"server_timestamp_ms"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -102,7 +102,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_sentPackets];
-  [v3 setObject:v9 forKey:@"sent_packets"];
+  [dictionary setObject:v9 forKey:@"sent_packets"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -118,23 +118,23 @@ LABEL_4:
 
 LABEL_11:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_receivedPackets];
-  [v3 setObject:v10 forKey:@"received_packets"];
+  [dictionary setObject:v10 forKey:@"received_packets"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_uplinkBandwidth];
-    [v3 setObject:v6 forKey:@"uplink_bandwidth"];
+    [dictionary setObject:v6 forKey:@"uplink_bandwidth"];
   }
 
 LABEL_6:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   has = self->_has;
   if (has)
@@ -182,15 +182,15 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[4] = self->_clientTimestampNtp;
+  toCopy = to;
+  toCopy[4] = self->_clientTimestampNtp;
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_serverTimestampMs;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = self->_serverTimestampMs;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -209,8 +209,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = self->_sentPackets;
-  *(v4 + 32) |= 4u;
+  toCopy[6] = self->_sentPackets;
+  *(toCopy + 32) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -224,21 +224,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[5] = self->_receivedPackets;
-  *(v4 + 32) |= 2u;
+  toCopy[5] = self->_receivedPackets;
+  *(toCopy + 32) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    v4[7] = self->_uplinkBandwidth;
-    *(v4 + 32) |= 8u;
+    toCopy[7] = self->_uplinkBandwidth;
+    *(toCopy + 32) |= 8u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 4) = self->_clientTimestampNtp;
   has = self->_has;
   if (has)
@@ -291,23 +291,23 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_clientTimestampNtp != *(v4 + 4))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_clientTimestampNtp != *(equalCopy + 4))
   {
     goto LABEL_22;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_serverTimestampMs != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_serverTimestampMs != *(equalCopy + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_22:
     v5 = 0;
@@ -316,34 +316,34 @@ LABEL_22:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_sentPackets != *(v4 + 6))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_sentPackets != *(equalCopy + 6))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_22;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_receivedPackets != *(v4 + 5))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_receivedPackets != *(equalCopy + 5))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_22;
   }
 
-  v5 = (*(v4 + 32) & 8) == 0;
+  v5 = (*(equalCopy + 32) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) == 0 || self->_uplinkBandwidth != *(v4 + 7))
+    if ((*(equalCopy + 32) & 8) == 0 || self->_uplinkBandwidth != *(equalCopy + 7))
     {
       goto LABEL_22;
     }
@@ -402,16 +402,16 @@ LABEL_9:
   return v2 ^ v3 ^ v4 ^ v5 ^ (2654435761 * self->_clientTimestampNtp);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_clientTimestampNtp = *(v4 + 4);
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  self->_clientTimestampNtp = *(fromCopy + 4);
+  v5 = *(fromCopy + 32);
   if (v5)
   {
-    self->_serverTimestampMs = *(v4 + 1);
+    self->_serverTimestampMs = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -424,14 +424,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 4) == 0)
+  else if ((*(fromCopy + 32) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sentPackets = *(v4 + 6);
+  self->_sentPackets = *(fromCopy + 6);
   *&self->_has |= 4u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -444,12 +444,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_receivedPackets = *(v4 + 5);
+  self->_receivedPackets = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if ((*(v4 + 32) & 8) != 0)
+  if ((*(fromCopy + 32) & 8) != 0)
   {
 LABEL_5:
-    self->_uplinkBandwidth = *(v4 + 7);
+    self->_uplinkBandwidth = *(fromCopy + 7);
     *&self->_has |= 8u;
   }
 

@@ -1,14 +1,14 @@
 @interface MTRPluginUpdateControllerConfigMetric
-+ (id)updateControllerConfigMetricForHome:(id)a3 remoteMessageID:(id)a4;
++ (id)updateControllerConfigMetricForHome:(id)home remoteMessageID:(id)d;
 @end
 
 @implementation MTRPluginUpdateControllerConfigMetric
 
-+ (id)updateControllerConfigMetricForHome:(id)a3 remoteMessageID:(id)a4
++ (id)updateControllerConfigMetricForHome:(id)home remoteMessageID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(MTRPluginMetric *)[MTRPluginUpdateControllerConfigMetric alloc] initMetricWithName:@"com.apple.matter.updateControllerConfigMetric" device:0 homeID:v6 remoteMessageID:v5];
+  dCopy = d;
+  homeCopy = home;
+  v7 = [(MTRPluginMetric *)[MTRPluginUpdateControllerConfigMetric alloc] initMetricWithName:@"com.apple.matter.updateControllerConfigMetric" device:0 homeID:homeCopy remoteMessageID:dCopy];
 
   return v7;
 }

@@ -1,14 +1,14 @@
 @interface WFWorkflowConflict
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation WFWorkflowConflict
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -18,14 +18,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WFWorkflowConflict *)self localWorkflowID];
-      v7 = [(WFWorkflowConflict *)v5 localWorkflowID];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      localWorkflowID = [(WFWorkflowConflict *)self localWorkflowID];
+      localWorkflowID2 = [(WFWorkflowConflict *)v5 localWorkflowID];
+      if ([localWorkflowID isEqual:localWorkflowID2])
       {
-        v8 = [(WFWorkflowConflict *)self remoteWorkflowID];
-        v9 = [(WFWorkflowConflict *)v5 remoteWorkflowID];
-        v10 = [v8 isEqual:v9];
+        remoteWorkflowID = [(WFWorkflowConflict *)self remoteWorkflowID];
+        remoteWorkflowID2 = [(WFWorkflowConflict *)v5 remoteWorkflowID];
+        v10 = [remoteWorkflowID isEqual:remoteWorkflowID2];
       }
 
       else
@@ -48,9 +48,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFWorkflowConflict *)self localWorkflowID];
-  v7 = [(WFWorkflowConflict *)self remoteWorkflowID];
-  v8 = [v3 stringWithFormat:@"<%@ %p local: (%@) remote: (%@)>", v5, self, v6, v7];
+  localWorkflowID = [(WFWorkflowConflict *)self localWorkflowID];
+  remoteWorkflowID = [(WFWorkflowConflict *)self remoteWorkflowID];
+  v8 = [v3 stringWithFormat:@"<%@ %p local: (%@) remote: (%@)>", v5, self, localWorkflowID, remoteWorkflowID];
 
   return v8;
 }

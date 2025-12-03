@@ -1,21 +1,21 @@
 @interface CHManagedHandle
-+ (id)managedHandleForHandle:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)managedHandlesForHandles:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedHandleForHandle:(id)handle inManagedObjectContext:(id)context;
++ (id)managedHandlesForHandles:(id)handles inManagedObjectContext:(id)context;
 - (CHHandle)chHandle;
-- (id)copyWithContext:(id)a3;
+- (id)copyWithContext:(id)context;
 @end
 
 @implementation CHManagedHandle
 
 - (CHHandle)chHandle
 {
-  v3 = [(CHManagedHandle *)self value];
-  if (v3 && (v4 = [(CHManagedHandle *)self type], (v4 - 1) <= 2))
+  value = [(CHManagedHandle *)self value];
+  if (value && (v4 = [(CHManagedHandle *)self type], (v4 - 1) <= 2))
   {
     v5 = v4;
     v6 = [CHHandle alloc];
-    v7 = [(CHManagedHandle *)self normalizedValue];
-    v8 = [(CHHandle *)v6 initWithType:v5 value:v3 normalizedValue:v7];
+    normalizedValue = [(CHManagedHandle *)self normalizedValue];
+    v8 = [(CHHandle *)v6 initWithType:v5 value:value normalizedValue:normalizedValue];
   }
 
   else
@@ -26,22 +26,22 @@
   return v8;
 }
 
-+ (id)managedHandleForHandle:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedHandleForHandle:(id)handle inManagedObjectContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 persistentStoreCoordinator];
-  v8 = [v7 managedObjectModel];
+  handleCopy = handle;
+  contextCopy = context;
+  persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
 
-  if (v8)
+  if (managedObjectModel)
   {
-    v9 = [v8 entitiesByName];
-    v10 = [v9 objectForKeyedSubscript:@"Handle"];
+    entitiesByName = [managedObjectModel entitiesByName];
+    v10 = [entitiesByName objectForKeyedSubscript:@"Handle"];
 
     if (v10)
     {
-      v11 = [objc_alloc(objc_opt_class()) initWithEntity:v10 insertIntoManagedObjectContext:v6];
+      v11 = [objc_alloc(objc_opt_class()) initWithEntity:v10 insertIntoManagedObjectContext:contextCopy];
     }
 
     else
@@ -52,20 +52,20 @@
         v18 = 138543618;
         v19 = @"Handle";
         v20 = 2114;
-        v21 = v6;
+        v21 = contextCopy;
         _os_log_impl(&dword_1C3E90000, v13, OS_LOG_TYPE_DEFAULT, "Could not find entity description with name %{public}@ in managed object context %{public}@. Falling back to convenience initializer.", &v18, 0x16u);
       }
 
-      v11 = [objc_alloc(objc_opt_class()) initWithContext:v6];
+      v11 = [objc_alloc(objc_opt_class()) initWithContext:contextCopy];
     }
 
     v12 = v11;
-    v14 = [v5 normalizedValue];
-    [v12 setNormalizedValue:v14];
+    normalizedValue = [handleCopy normalizedValue];
+    [v12 setNormalizedValue:normalizedValue];
 
-    [v12 setType:{objc_msgSend(v5, "type")}];
-    v15 = [v5 value];
-    [v12 setValue:v15];
+    [v12 setType:{objc_msgSend(handleCopy, "type")}];
+    value = [handleCopy value];
+    [v12 setValue:value];
   }
 
   else
@@ -78,17 +78,17 @@
   return v12;
 }
 
-+ (id)managedHandlesForHandles:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedHandlesForHandles:(id)handles inManagedObjectContext:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v6, "count")}];
+  handlesCopy = handles;
+  contextCopy = context;
+  v8 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(handlesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = handlesCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -103,7 +103,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [a1 managedHandleForHandle:*(*(&v18 + 1) + 8 * i) inManagedObjectContext:{v7, v18}];
+        v14 = [self managedHandleForHandle:*(*(&v18 + 1) + 8 * i) inManagedObjectContext:{contextCopy, v18}];
         if (v14)
         {
           [v8 addObject:v14];
@@ -122,13 +122,13 @@
   return v15;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [DBManager entityDescriptionHavingName:@"Handle" forContext:v4];
+  contextCopy = context;
+  v5 = [DBManager entityDescriptionHavingName:@"Handle" forContext:contextCopy];
   if (v5)
   {
-    v6 = [objc_alloc(objc_opt_class()) initWithEntity:v5 insertIntoManagedObjectContext:v4];
+    v6 = [objc_alloc(objc_opt_class()) initWithEntity:v5 insertIntoManagedObjectContext:contextCopy];
   }
 
   else
@@ -138,19 +138,19 @@
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CHManagedHandle(Additions) *)v4 copyWithContext:v8];
+      [(CHManagedHandle(Additions) *)contextCopy copyWithContext:v8];
     }
 
-    v6 = [objc_alloc(objc_opt_class()) initWithContext:v4];
+    v6 = [objc_alloc(objc_opt_class()) initWithContext:contextCopy];
   }
 
   v9 = v6;
-  v10 = [(CHManagedHandle *)self normalizedValue];
-  [v9 setNormalizedValue:v10];
+  normalizedValue = [(CHManagedHandle *)self normalizedValue];
+  [v9 setNormalizedValue:normalizedValue];
 
   [v9 setType:{-[CHManagedHandle type](self, "type")}];
-  v11 = [(CHManagedHandle *)self value];
-  [v9 setValue:v11];
+  value = [(CHManagedHandle *)self value];
+  [v9 setValue:value];
 
   return v9;
 }

@@ -1,16 +1,16 @@
 @interface _UIActiveViewServiceSessionTracker
 + (id)sharedTracker;
 - (_UIActiveViewServiceSessionTracker)init;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (id)viewServiceSessionForHostedWindow:(uint64_t)a3 inUserInterfaceIdiom:;
+- (id)viewServiceSessionForHostedWindow:(uint64_t)window inUserInterfaceIdiom:;
 - (uint64_t)hasTrackedSessions;
-- (void)_notifyChangeOfTopEvaluatedObjectIfNeededForIdiom:(id *)a3 withSortedActivityRecords:(uint64_t)a4 mutatedByBlock:;
+- (void)_notifyChangeOfTopEvaluatedObjectIfNeededForIdiom:(id *)idiom withSortedActivityRecords:(uint64_t)records mutatedByBlock:;
 - (void)dealloc;
-- (void)handleViewServiceActivity:(_BYTE *)a3 inHostedWindow:(__CFString *)a4 fromProvider:(uint64_t)a5 forSessionActivityRecord:;
-- (void)mostActiveViewServiceSessionForUserInterfaceIdiom:(void *)a1;
+- (void)handleViewServiceActivity:(_BYTE *)activity inHostedWindow:(__CFString *)window fromProvider:(uint64_t)provider forSessionActivityRecord:;
+- (void)mostActiveViewServiceSessionForUserInterfaceIdiom:(void *)idiom;
 @end
 
 @implementation _UIActiveViewServiceSessionTracker
@@ -29,17 +29,17 @@
 
 - (uint64_t)hasTrackedSessions
 {
-  v1 = a1;
+  selfCopy = self;
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ([*(a1 + 8) count])
+    if ([*(self + 8) count])
     {
       v14 = 0u;
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v2 = *(v1 + 8);
+      v2 = *(selfCopy + 8);
       v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v3)
       {
@@ -55,7 +55,7 @@
               objc_enumerationMutation(v2);
             }
 
-            v7 = [*(v1 + 8) objectForKey:{*(*(&v12 + 1) + 8 * v6), v12}];
+            v7 = [*(selfCopy + 8) objectForKey:{*(*(&v12 + 1) + 8 * v6), v12}];
             if (v7)
             {
               v8 = v7;
@@ -63,7 +63,7 @@
 
               if (v9)
               {
-                v1 = 1;
+                selfCopy = 1;
                 goto LABEL_16;
               }
             }
@@ -79,7 +79,7 @@
         while (v10);
       }
 
-      v1 = 0;
+      selfCopy = 0;
 LABEL_16:
     }
 
@@ -89,13 +89,13 @@ LABEL_16:
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (_UIActiveViewServiceSessionTracker)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIActiveViewServiceSessionTracker.m" lineNumber:417 description:{@"%s: init is not allowed on %@", "-[_UIActiveViewServiceSessionTracker init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIActiveViewServiceSessionTracker.m" lineNumber:417 description:{@"%s: init is not allowed on %@", "-[_UIActiveViewServiceSessionTracker init]", objc_opt_class()}];
 
   return 0;
 }
@@ -108,10 +108,10 @@ LABEL_16:
   [(_UIActiveViewServiceSessionTracker *)&v3 dealloc];
 }
 
-- (void)_notifyChangeOfTopEvaluatedObjectIfNeededForIdiom:(id *)a3 withSortedActivityRecords:(uint64_t)a4 mutatedByBlock:
+- (void)_notifyChangeOfTopEvaluatedObjectIfNeededForIdiom:(id *)idiom withSortedActivityRecords:(uint64_t)records mutatedByBlock:
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = [(_UIEvaluatedObjectCache *)a3 topEvaluatedObject];
+  topEvaluatedObject = [(_UIEvaluatedObjectCache *)idiom topEvaluatedObject];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("ViewServiceSessionActivityTracking", &qword_1ED49C790);
   if (*CategoryCachedImpl)
   {
@@ -120,17 +120,17 @@ LABEL_16:
     {
       v16 = v15;
       v17 = _NSStringFromUIUserInterfaceIdiom(a2);
-      v18 = [v8 succinctDescription];
+      succinctDescription = [topEvaluatedObject succinctDescription];
       *buf = 138412546;
       v26 = v17;
       v27 = 2112;
-      v28 = v18;
+      v28 = succinctDescription;
       _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_ERROR, "mostActiveViewServiceSession for %@: current: %@", buf, 0x16u);
     }
   }
 
-  (*(a4 + 16))(a4);
-  v10 = [(_UIEvaluatedObjectCache *)a3 topEvaluatedObject];
+  (*(records + 16))(records);
+  topEvaluatedObject2 = [(_UIEvaluatedObjectCache *)idiom topEvaluatedObject];
   v11 = __UILogGetCategoryCachedImpl("ViewServiceSessionActivityTracking", &qword_1ED49C798);
   if (*v11)
   {
@@ -139,55 +139,55 @@ LABEL_16:
     {
       v20 = v19;
       v21 = _NSStringFromUIUserInterfaceIdiom(a2);
-      v22 = [v10 succinctDescription];
+      succinctDescription2 = [topEvaluatedObject2 succinctDescription];
       *buf = 138412546;
       v26 = v21;
       v27 = 2112;
-      v28 = v22;
+      v28 = succinctDescription2;
       _os_log_impl(&dword_188A29000, v20, OS_LOG_TYPE_ERROR, "mostActiveViewServiceSession for %@: new: %@", buf, 0x16u);
     }
   }
 
-  if (v10 != v8)
+  if (topEvaluatedObject2 != topEvaluatedObject)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithInteger:{a2, @"_UIActiveViewServiceSessionChangingIdiomKey"}];
     v24 = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 postNotificationName:@"_UIActiveViewServiceSessionDidChangeNotification" object:a1 userInfo:v13];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIActiveViewServiceSessionDidChangeNotification" object:self userInfo:v13];
   }
 }
 
-- (void)handleViewServiceActivity:(_BYTE *)a3 inHostedWindow:(__CFString *)a4 fromProvider:(uint64_t)a5 forSessionActivityRecord:
+- (void)handleViewServiceActivity:(_BYTE *)activity inHostedWindow:(__CFString *)window fromProvider:(uint64_t)provider forSessionActivityRecord:
 {
   v79 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if (a5 && *(a5 + 16) != 1)
+  if (provider && *(provider + 16) != 1)
   {
-    WeakRetained = objc_loadWeakRetained((a5 + 24));
+    WeakRetained = objc_loadWeakRetained((provider + 24));
     v13 = a2 != 0;
     v63 = a2 == 2;
     v14 = a2 != 2;
-    IsPrimary = _UIActiveViewServiceSessionProviderIsPrimary(a4);
+    IsPrimary = _UIActiveViewServiceSessionProviderIsPrimary(window);
     v65 = a2;
-    if (a3 && [a3 _isHostedInAnotherProcess])
+    if (activity && [activity _isHostedInAnotherProcess])
     {
-      v16 = (a3[89] & 8) == 0;
+      v16 = (activity[89] & 8) == 0;
       if (!WeakRetained)
       {
 LABEL_17:
         v21 = IsPrimary;
         v64 = WeakRetained;
-        v22 = *(a5 + 56);
-        v23 = [(__CFString *)a4 _sessionIdentifier];
+        v22 = *(provider + 56);
+        _sessionIdentifier = [(__CFString *)window _sessionIdentifier];
         v24 = v13 & (v14 | v21);
         v25 = v22;
-        v26 = v23;
+        v26 = _sessionIdentifier;
         v27 = v26;
         if (v25 == v26)
         {
@@ -206,29 +206,29 @@ LABEL_17:
         WeakRetained = v64;
         if (v24 & v16) == 1 && (v28)
         {
-          v29 = *(a5 + 40);
-          *(a5 + 40) = v65;
-          objc_storeWeak((a5 + 32), a4);
-          *(a5 + 48) = mach_absolute_time();
-          v30 = objc_loadWeakRetained((a5 + 72));
+          v29 = *(provider + 40);
+          *(provider + 40) = v65;
+          objc_storeWeak((provider + 32), window);
+          *(provider + 48) = mach_absolute_time();
+          v30 = objc_loadWeakRetained((provider + 72));
 
-          if (v30 != a3)
+          if (v30 != activity)
           {
-            [(_UIViewServiceSessionActivityRecord *)a5 associateHostedWindow:a3];
+            [(_UIViewServiceSessionActivityRecord *)provider associateHostedWindow:activity];
           }
 
           if (((v65 == 2) & v21) == 1)
           {
-            v31 = a4;
-            v32 = [(__CFString *)v31 _effectiveViewControllerAppearState];
-            v33 = v32;
-            v35 = v32 != 3 && v32 != 0;
+            windowCopy = window;
+            _effectiveViewControllerAppearState = [(__CFString *)windowCopy _effectiveViewControllerAppearState];
+            v33 = _effectiveViewControllerAppearState;
+            v35 = _effectiveViewControllerAppearState != 3 && _effectiveViewControllerAppearState != 0;
             v61 = v35;
             v36 = MEMORY[0x1E696AEC0];
-            v37 = _NSStringFromUIViewControllerAppearState(v32);
+            v37 = _NSStringFromUIViewControllerAppearState(_effectiveViewControllerAppearState);
             v62 = [v36 stringWithFormat:@"appearState: %@ ", v37];;
 
-            *(a5 + 20) = v33;
+            *(provider + 20) = v33;
           }
 
           else
@@ -250,77 +250,77 @@ LABEL_17:
               v39 = off_1E70F63B8[v65 - 1];
             }
 
-            if (a3)
+            if (activity)
             {
               v40 = MEMORY[0x1E696AEC0];
-              v41 = a3;
+              activityCopy = activity;
               v42 = objc_opt_class();
               v43 = NSStringFromClass(v42);
-              v44 = [v40 stringWithFormat:@"<%@: %p>", v43, v41];
+              activityCopy = [v40 stringWithFormat:@"<%@: %p>", v43, activityCopy];
             }
 
             else
             {
-              v44 = @"(nil)";
+              activityCopy = @"(nil)";
             }
 
-            v45 = v44;
-            if (a4)
+            v45 = activityCopy;
+            if (window)
             {
               v46 = MEMORY[0x1E696AEC0];
-              v47 = a4;
+              windowCopy2 = window;
               v48 = objc_opt_class();
               v49 = NSStringFromClass(v48);
-              v50 = [v46 stringWithFormat:@"<%@: %p>", v49, v47];
+              windowCopy2 = [v46 stringWithFormat:@"<%@: %p>", v49, windowCopy2];
             }
 
             else
             {
-              v50 = @"(nil)";
+              windowCopy2 = @"(nil)";
             }
 
-            v51 = *(a5 + 56);
+            v51 = *(provider + 56);
             *buf = 138544386;
             *&buf[4] = v39;
             *&buf[12] = 2112;
             *&buf[14] = v62;
             *&buf[22] = 2114;
-            v74 = v45;
+            windowCopy3 = v45;
             v75 = 2114;
-            v76 = v50;
+            providerCopy = windowCopy2;
             v77 = 2114;
             v78 = v51;
-            v52 = v50;
+            v52 = windowCopy2;
             _os_log_impl(&dword_188A29000, v38, OS_LOG_TYPE_DEFAULT, "Activity: %{public}@; %@window: %{public}@; provider: %{public}@; session: %{public}@", buf, 0x34u);
           }
 
-          v53 = *(a5 + 64);
+          v53 = *(provider + 64);
           v54 = [MEMORY[0x1E696AD98] numberWithInteger:v53];
-          v55 = a1[1];
+          v55 = self[1];
           if (!v55)
           {
             v56 = objc_opt_new();
-            v57 = a1[1];
-            a1[1] = v56;
+            v57 = self[1];
+            self[1] = v56;
 
-            v55 = a1[1];
+            v55 = self[1];
           }
 
           v58 = [v55 objectForKey:v54];
           if (!v58)
           {
-            objc_initWeak(&location, a1);
+            objc_initWeak(&location, self);
             *buf = MEMORY[0x1E69E9820];
             *&buf[8] = 3221225472;
             *&buf[16] = __65___UIActiveViewServiceSessionTracker__createEvaluatedObjectCache__block_invoke;
-            v74 = &unk_1E70F6348;
+            windowCopy3 = &unk_1E70F6348;
             objc_copyWeak(&v75, &location);
             v59 = _Block_copy(buf);
             v58 = [[_UIEvaluatedObjectCache alloc] initWithSortComparator:v59 evaluationBlock:?];
 
             objc_destroyWeak(&v75);
             objc_destroyWeak(&location);
-            [a1[1] setObject:v58 forKey:v54];
+            [self[1] setObject:v58 forKey:v54];
           }
 
           v66[0] = MEMORY[0x1E69E9820];
@@ -328,23 +328,23 @@ LABEL_17:
           v66[2] = __117___UIActiveViewServiceSessionTracker_handleViewServiceActivity_inHostedWindow_fromProvider_forSessionActivityRecord___block_invoke;
           v66[3] = &unk_1E70F6370;
           v66[4] = v64;
-          v66[5] = a5;
-          v66[6] = a1;
+          v66[5] = provider;
+          v66[6] = self;
           v67 = v58;
           v68 = v29;
           v69 = v65;
           v70 = v63;
           v71 = v61;
           v60 = v58;
-          [(_UIActiveViewServiceSessionTracker *)a1 _notifyChangeOfTopEvaluatedObjectIfNeededForIdiom:v53 withSortedActivityRecords:v60 mutatedByBlock:v66];
+          [(_UIActiveViewServiceSessionTracker *)self _notifyChangeOfTopEvaluatedObjectIfNeededForIdiom:v53 withSortedActivityRecords:v60 mutatedByBlock:v66];
 
           WeakRetained = v64;
           goto LABEL_53;
         }
 
 LABEL_13:
-        v17 = [MEMORY[0x1E696AAA8] currentHandler];
-        v18 = v17;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v18 = currentHandler;
         if (v65 > 4)
         {
           v19 = &stru_1EFB14550;
@@ -355,7 +355,7 @@ LABEL_13:
           v19 = off_1E70F6390[v65];
         }
 
-        [v17 handleFailureInMethod:sel_handleViewServiceActivity_inHostedWindow_fromProvider_forSessionActivityRecord_ object:a1 file:@"_UIActiveViewServiceSessionTracker.m" lineNumber:528 description:{@"Invalid state: activity: %@; window: %@; provider: %@; session: %@", v19, a3, a4, a5}];
+        [currentHandler handleFailureInMethod:sel_handleViewServiceActivity_inHostedWindow_fromProvider_forSessionActivityRecord_ object:self file:@"_UIActiveViewServiceSessionTracker.m" lineNumber:528 description:{@"Invalid state: activity: %@; window: %@; provider: %@; session: %@", v19, activity, window, provider}];
 
 LABEL_53:
         return;
@@ -371,7 +371,7 @@ LABEL_53:
       }
     }
 
-    if (WeakRetained != a1)
+    if (WeakRetained != self)
     {
       goto LABEL_13;
     }
@@ -395,39 +395,39 @@ LABEL_53:
     *buf = 138544130;
     *&buf[4] = v10;
     *&buf[12] = 2114;
-    *&buf[14] = a3;
+    *&buf[14] = activity;
     *&buf[22] = 2114;
-    v74 = a4;
+    windowCopy3 = window;
     v75 = 2114;
-    v76 = a5;
+    providerCopy = provider;
     v20 = v9;
     _os_log_impl(&dword_188A29000, v20, OS_LOG_TYPE_ERROR, "Invalid session activity record was provided to handleViewServiceActivity: activity: %{public}@; window: %{public}@; provider: %{public}@; session: %{public}@", buf, 0x2Au);
   }
 }
 
-- (void)mostActiveViewServiceSessionForUserInterfaceIdiom:(void *)a1
+- (void)mostActiveViewServiceSessionForUserInterfaceIdiom:(void *)idiom
 {
-  v2 = a1;
-  if (a1)
+  idiomCopy = idiom;
+  if (idiom)
   {
     v3 = _UIActiveViewServiceSessionEffectiveIdiomForIdiom(a2);
-    v4 = v2[1];
+    v4 = idiomCopy[1];
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:v3];
     v6 = [v4 objectForKey:v5];
 
-    v2 = [(_UIEvaluatedObjectCache *)v6 topEvaluatedObject];
+    idiomCopy = [(_UIEvaluatedObjectCache *)v6 topEvaluatedObject];
   }
 
-  return v2;
+  return idiomCopy;
 }
 
-- (id)viewServiceSessionForHostedWindow:(uint64_t)a3 inUserInterfaceIdiom:
+- (id)viewServiceSessionForHostedWindow:(uint64_t)window inUserInterfaceIdiom:
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v5 = _UIActiveViewServiceSessionEffectiveIdiomForIdiom(a3);
-    v6 = *(a1 + 8);
+    v5 = _UIActiveViewServiceSessionEffectiveIdiomForIdiom(window);
+    v6 = *(self + 8);
     v7 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
     v8 = [v6 objectForKey:v7];
 
@@ -435,8 +435,8 @@ LABEL_53:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [(_UIEvaluatedObjectCache *)v8 sortedObjects];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    sortedObjects = [(_UIEvaluatedObjectCache *)v8 sortedObjects];
+    v10 = [sortedObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -448,7 +448,7 @@ LABEL_53:
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(sortedObjects);
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
@@ -469,7 +469,7 @@ LABEL_53:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [sortedObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v11);
@@ -491,40 +491,40 @@ LABEL_53:
 
 - (id)succinctDescription
 {
-  v2 = [(_UIActiveViewServiceSessionTracker *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIActiveViewServiceSessionTracker *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIActiveViewServiceSessionTracker *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIActiveViewServiceSessionTracker *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIActiveViewServiceSessionTracker *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIActiveViewServiceSessionTracker *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   if ([(NSMutableDictionary *)self->_sortedActivityRecordsByIdiom count])
   {
-    [v5 setActiveMultilinePrefix:a3];
+    [v5 setActiveMultilinePrefix:prefix];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __76___UIActiveViewServiceSessionTracker_descriptionBuilderWithMultilinePrefix___block_invoke;
     v8[3] = &unk_1E70F35B8;
     v9 = v5;
-    v10 = self;
+    selfCopy = self;
     v6 = [v9 modifyBody:v8];
   }
 

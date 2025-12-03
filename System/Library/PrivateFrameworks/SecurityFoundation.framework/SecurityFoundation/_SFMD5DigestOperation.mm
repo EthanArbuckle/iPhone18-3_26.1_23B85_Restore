@@ -1,22 +1,22 @@
 @interface _SFMD5DigestOperation
-+ (id)digest:(id)a3;
++ (id)digest:(id)digest;
 - (NSData)hashValue;
 - (_SFMD5DigestOperation)init;
-- (_SFMD5DigestOperation)initWithCoder:(id)a3;
-- (void)addData:(id)a3;
+- (_SFMD5DigestOperation)initWithCoder:(id)coder;
+- (void)addData:(id)data;
 @end
 
 @implementation _SFMD5DigestOperation
 
-+ (id)digest:(id)a3
++ (id)digest:(id)digest
 {
-  v3 = a3;
+  digestCopy = digest;
   v4 = objc_alloc_init(_SFMD5DigestOperation);
-  [(_SFMD5DigestOperation *)v4 addData:v3];
+  [(_SFMD5DigestOperation *)v4 addData:digestCopy];
 
-  v5 = [(_SFMD5DigestOperation *)v4 hashValue];
+  hashValue = [(_SFMD5DigestOperation *)v4 hashValue];
 
-  return v5;
+  return hashValue;
 }
 
 - (_SFMD5DigestOperation)init
@@ -36,7 +36,7 @@
   return v2;
 }
 
-- (_SFMD5DigestOperation)initWithCoder:(id)a3
+- (_SFMD5DigestOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _SFMD5DigestOperation;
@@ -54,15 +54,15 @@
   return v2;
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
   md5DigestOperationInternal = self->_md5DigestOperationInternal;
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v8 = [dataCopy2 length];
 
-  CC_MD5_Update((md5DigestOperationInternal + 8), v7, v8);
+  CC_MD5_Update((md5DigestOperationInternal + 8), bytes, v8);
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface BKAlternateSystemAppServer
 + (id)sharedInstance;
 - (BKAlternateSystemAppServer)init;
-- (BOOL)_queue_listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_queue_listener:(id)_queue_listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)_handleInterruptedOrInvalidatedConnection;
 - (void)blockSystemAppForAlternateSystemApp;
 - (void)dealloc;
-- (void)openAlternateSystemAppWithBundleID:(id)a3;
-- (void)terminateAlternateSystemAppWithBundleID:(id)a3;
+- (void)openAlternateSystemAppWithBundleID:(id)d;
+- (void)terminateAlternateSystemAppWithBundleID:(id)d;
 - (void)unblockSystemAppForAlternateSystemApp;
 @end
 
 @implementation BKAlternateSystemAppServer
 
-- (void)terminateAlternateSystemAppWithBundleID:(id)a3
+- (void)terminateAlternateSystemAppWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = BKLogAlternateSystemApp();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Server] Received request to terminate alternate system app %{public}@", buf, 0xCu);
   }
 
@@ -29,20 +29,20 @@
   v8[1] = 3221225472;
   v8[2] = sub_10008C98C;
   v8[3] = &unk_1000FD128;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = dCopy;
+  selfCopy = self;
+  v7 = dCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)openAlternateSystemAppWithBundleID:(id)a3
+- (void)openAlternateSystemAppWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = BKLogAlternateSystemApp();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Server] Received request to open alternate system app %{public}@", buf, 0xCu);
   }
 
@@ -52,8 +52,8 @@
   v8[2] = sub_10008CC20;
   v8[3] = &unk_1000FD128;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dCopy;
+  v7 = dCopy;
   dispatch_async(queue, v8);
 }
 
@@ -93,17 +93,17 @@
   dispatch_async(queue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = BKLogAlternateSystemApp();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v6;
+    *&buf[4] = listenerCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v7;
+    *&buf[14] = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[Server] Got a connection request on listener %{public}@: connection %{public}@", buf, 0x16u);
   }
 
@@ -117,11 +117,11 @@
   v14[2] = sub_10008D5C8;
   v14[3] = &unk_1000FCBD0;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = listenerCopy;
+  v16 = connectionCopy;
   v17 = buf;
-  v10 = v7;
-  v11 = v6;
+  v10 = connectionCopy;
+  v11 = listenerCopy;
   dispatch_sync(queue, v14);
   v12 = *(*&buf[8] + 24);
 
@@ -129,14 +129,14 @@
   return v12;
 }
 
-- (BOOL)_queue_listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)_queue_listener:(id)_queue_listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  _queue_listenerCopy = _queue_listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else

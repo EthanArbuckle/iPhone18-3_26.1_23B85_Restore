@@ -1,19 +1,19 @@
 @interface CAReportingPerformanceObject
-- (CAReportingPerformanceObject)initWithProcessIdentifiers:(id)a3;
+- (CAReportingPerformanceObject)initWithProcessIdentifiers:(id)identifiers;
 - (id).cxx_construct;
 - (id)endAndReturnPerformanceMetrics;
 - (void)abandon;
 - (void)begin;
-- (void)setConfiguration:(id)a3;
-- (void)setSessions:(void *)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setSessions:(void *)sessions;
 @end
 
 @implementation CAReportingPerformanceObject
 
-- (CAReportingPerformanceObject)initWithProcessIdentifiers:(id)a3
+- (CAReportingPerformanceObject)initWithProcessIdentifiers:(id)identifiers
 {
   v23 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  identifiersCopy = identifiers;
   if (CAReportingUtilityIsInternalBuild())
   {
     v21.receiver = self;
@@ -31,7 +31,7 @@
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = v4;
+      v8 = identifiersCopy;
       v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v9)
       {
@@ -47,8 +47,8 @@
             }
 
             v12 = *(*(&v17 + 1) + 8 * v11);
-            v13 = [(CAReportingPerformanceObject *)v5 processIdentifiers];
-            [v13 addObject:v12];
+            processIdentifiers = [(CAReportingPerformanceObject *)v5 processIdentifiers];
+            [processIdentifiers addObject:v12];
 
             ++v11;
           }
@@ -62,26 +62,26 @@
     }
 
     self = v5;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v15 = *MEMORY[0x29EDCA608];
-  return v14;
+  return selfCopy;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v23 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = [(CAReportingPerformanceObject *)self sessionsLock];
-  [v6 lock];
+  configurationCopy = configuration;
+  sessionsLock = [(CAReportingPerformanceObject *)self sessionsLock];
+  [sessionsLock lock];
 
-  objc_storeStrong(&self->_configuration, a3);
+  objc_storeStrong(&self->_configuration, configuration);
   v7 = [(NSDictionary *)self->_configuration objectForKey:@"CAReportingPerfProcesses"];
 
   if (v7)
@@ -106,13 +106,13 @@
           }
 
           v12 = *(*(&v18 + 1) + 8 * v11);
-          v13 = [(CAReportingPerformanceObject *)self processIdentifiers];
-          v14 = [v13 containsObject:v12];
+          processIdentifiers = [(CAReportingPerformanceObject *)self processIdentifiers];
+          v14 = [processIdentifiers containsObject:v12];
 
           if ((v14 & 1) == 0)
           {
-            v15 = [(CAReportingPerformanceObject *)self processIdentifiers];
-            [v15 addObject:v12];
+            processIdentifiers2 = [(CAReportingPerformanceObject *)self processIdentifiers];
+            [processIdentifiers2 addObject:v12];
           }
 
           ++v11;
@@ -126,8 +126,8 @@
     }
   }
 
-  v16 = [(CAReportingPerformanceObject *)self sessionsLock];
-  [v16 unlock];
+  sessionsLock2 = [(CAReportingPerformanceObject *)self sessionsLock];
+  [sessionsLock2 unlock];
 
   v17 = *MEMORY[0x29EDCA608];
 }
@@ -135,11 +135,11 @@
 - (void)begin
 {
   v65 = *MEMORY[0x29EDCA608];
-  v2 = [(CAReportingPerformanceObject *)self sessionsLock];
-  [v2 lock];
+  sessionsLock = [(CAReportingPerformanceObject *)self sessionsLock];
+  [sessionsLock lock];
 
-  v3 = [(CAReportingPerformanceObject *)self sessions];
-  if (v3[1] != *v3)
+  sessions = [(CAReportingPerformanceObject *)self sessions];
+  if (sessions[1] != *sessions)
   {
     v4 = 0;
     do
@@ -169,36 +169,36 @@
         }
       }
 
-      v8 = [(CAReportingPerformanceObject *)self sessions];
+      sessions2 = [(CAReportingPerformanceObject *)self sessions];
       ++v4;
     }
 
-    while (v4 < (v8[1] - *v8) >> 3);
+    while (v4 < (sessions2[1] - *sessions2) >> 3);
   }
 
-  v9 = [(CAReportingPerformanceObject *)self sessions];
-  v9[1] = *v9;
-  v10 = [(CAReportingPerformanceObject *)self sessions];
-  v11 = [(CAReportingPerformanceObject *)self processIdentifiers];
-  std::vector<pc_session *>::reserve(v10, [v11 count]);
+  sessions3 = [(CAReportingPerformanceObject *)self sessions];
+  sessions3[1] = *sessions3;
+  sessions4 = [(CAReportingPerformanceObject *)self sessions];
+  processIdentifiers = [(CAReportingPerformanceObject *)self processIdentifiers];
+  std::vector<pc_session *>::reserve(sessions4, [processIdentifiers count]);
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v12 = [(CAReportingPerformanceObject *)self processIdentifiers];
-  v13 = [v12 countByEnumeratingWithState:&v54 objects:v64 count:16];
+  processIdentifiers2 = [(CAReportingPerformanceObject *)self processIdentifiers];
+  v13 = [processIdentifiers2 countByEnumeratingWithState:&v54 objects:v64 count:16];
   if (v13)
   {
     v14 = *v55;
-    v46 = v12;
+    v46 = processIdentifiers2;
     do
     {
       for (i = 0; i != v13; ++i)
       {
         if (*v55 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(processIdentifiers2);
         }
 
         v16 = *(*(&v54 + 1) + 8 * i);
@@ -345,19 +345,19 @@ LABEL_21:
 
         else
         {
-          v29 = [(CAReportingPerformanceObject *)self sessions];
-          v30 = v29;
-          v32 = v29[1];
-          v31 = v29[2];
+          sessions5 = [(CAReportingPerformanceObject *)self sessions];
+          v30 = sessions5;
+          v32 = sessions5[1];
+          v31 = sessions5[2];
           if (v32 >= v31)
           {
-            v34 = (v32 - *v29) >> 3;
+            v34 = (v32 - *sessions5) >> 3;
             if ((v34 + 1) >> 61)
             {
               std::vector<pc_session *>::__throw_length_error[abi:ne200100]();
             }
 
-            v35 = v31 - *v29;
+            v35 = v31 - *sessions5;
             v36 = v35 >> 2;
             if (v35 >> 2 <= (v34 + 1))
             {
@@ -376,15 +376,15 @@ LABEL_21:
 
             if (v37)
             {
-              std::__allocate_at_least[abi:ne200100]<std::allocator<pc_session *>>(v29, v37);
+              std::__allocate_at_least[abi:ne200100]<std::allocator<pc_session *>>(sessions5, v37);
             }
 
             v38 = (8 * v34);
             *v38 = v18;
             v33 = 8 * v34 + 8;
-            v39 = v29[1] - *v29;
+            v39 = sessions5[1] - *sessions5;
             v40 = v38 - v39;
-            memcpy(v38 - v39, *v29, v39);
+            memcpy(v38 - v39, *sessions5, v39);
             v41 = *v30;
             *v30 = v40;
             v30[1] = v33;
@@ -394,7 +394,7 @@ LABEL_21:
               operator delete(v41);
             }
 
-            v12 = v46;
+            processIdentifiers2 = v46;
           }
 
           else
@@ -407,7 +407,7 @@ LABEL_21:
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v54 objects:v64 count:16];
+      v13 = [processIdentifiers2 countByEnumeratingWithState:&v54 objects:v64 count:16];
     }
 
     while (v13);
@@ -427,8 +427,8 @@ LABEL_21:
     _os_log_impl(&dword_296C89000, v43, OS_LOG_TYPE_DEFAULT, "%25s:%-5d CAReportingPerformanceObject action=begin", &__p, 0x12u);
   }
 
-  v44 = [(CAReportingPerformanceObject *)self sessionsLock];
-  [v44 unlock];
+  sessionsLock2 = [(CAReportingPerformanceObject *)self sessionsLock];
+  [sessionsLock2 unlock];
 
   v45 = *MEMORY[0x29EDCA608];
 }
@@ -447,16 +447,16 @@ LABEL_21:
     [CAReportingPerformanceObject endAndReturnPerformanceMetrics];
   }
 
-  v3 = [(CAReportingPerformanceObject *)self sessionsLock];
-  [v3 lock];
+  sessionsLock = [(CAReportingPerformanceObject *)self sessionsLock];
+  [sessionsLock lock];
 
   v4 = 0;
   *&v5 = 136315394;
   v34 = v5;
   while (1)
   {
-    v6 = [(CAReportingPerformanceObject *)self sessions];
-    if (v4 >= (v6[1] - *v6) >> 3)
+    sessions = [(CAReportingPerformanceObject *)self sessions];
+    if (v4 >= (sessions[1] - *sessions) >> 3)
     {
       break;
     }
@@ -534,9 +534,9 @@ LABEL_21:
 
         if ([CAReportingPerformanceObject endAndReturnPerformanceMetrics]::perfWriterEnabled == 1)
         {
-          v19 = [(CAReportingPerformanceObject *)self hostApplicationDisplayID];
+          hostApplicationDisplayID = [(CAReportingPerformanceObject *)self hostApplicationDisplayID];
           v20 = [v37[5] objectForKeyedSubscript:v16];
-          [v20 setObject:v19 forKeyedSubscript:@"HostApplicationDisplayID"];
+          [v20 setObject:hostApplicationDisplayID forKeyedSubscript:@"HostApplicationDisplayID"];
 
           v21 = CAReportingUtilityGenerateServiceNameFromServiceType(self->_serviceType);
           v22 = [v37[5] objectForKeyedSubscript:v16];
@@ -599,8 +599,8 @@ LABEL_21:
     ++v4;
   }
 
-  v28 = [(CAReportingPerformanceObject *)self sessions];
-  v28[1] = *v28;
+  sessions2 = [(CAReportingPerformanceObject *)self sessions];
+  sessions2[1] = *sessions2;
   v29 = *AA_PerformanceUtilityCategory();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
@@ -611,8 +611,8 @@ LABEL_21:
     _os_log_impl(&dword_296C89000, v29, OS_LOG_TYPE_DEFAULT, "%25s:%-5d CAReportingPerformanceObject action=destroy", &__p, 0x12u);
   }
 
-  v30 = [(CAReportingPerformanceObject *)self sessionsLock];
-  [v30 unlock];
+  sessionsLock2 = [(CAReportingPerformanceObject *)self sessionsLock];
+  [sessionsLock2 unlock];
 
   v31 = v37[5];
   _Block_object_dispose(&v36, 8);
@@ -665,14 +665,14 @@ void __62__CAReportingPerformanceObject_endAndReturnPerformanceMetrics__block_in
 - (void)abandon
 {
   v35 = *MEMORY[0x29EDCA608];
-  v3 = [(CAReportingPerformanceObject *)self sessionsLock];
-  [v3 lock];
+  sessionsLock = [(CAReportingPerformanceObject *)self sessionsLock];
+  [sessionsLock lock];
 
-  v4 = [(CAReportingPerformanceObject *)self sessions];
-  if (*v4 != v4[1])
+  sessions = [(CAReportingPerformanceObject *)self sessions];
+  if (*sessions != sessions[1])
   {
-    v5 = [(CAReportingPerformanceObject *)self sessions];
-    if (v5[1] != *v5)
+    sessions2 = [(CAReportingPerformanceObject *)self sessions];
+    if (sessions2[1] != *sessions2)
     {
       v7 = 0;
       *&v6 = 136315906;
@@ -729,24 +729,24 @@ void __62__CAReportingPerformanceObject_endAndReturnPerformanceMetrics__block_in
           }
         }
 
-        v14 = [(CAReportingPerformanceObject *)self sessions];
+        sessions3 = [(CAReportingPerformanceObject *)self sessions];
         ++v7;
       }
 
-      while (v7 < (v14[1] - *v14) >> 3);
+      while (v7 < (sessions3[1] - *sessions3) >> 3);
     }
 
-    v15 = [(CAReportingPerformanceObject *)self sessions];
-    v15[1] = *v15;
+    sessions4 = [(CAReportingPerformanceObject *)self sessions];
+    sessions4[1] = *sessions4;
   }
 
-  v16 = [(CAReportingPerformanceObject *)self processIdentifiers];
-  v17 = [v16 count] == 0;
+  processIdentifiers = [(CAReportingPerformanceObject *)self processIdentifiers];
+  v17 = [processIdentifiers count] == 0;
 
   if (!v17)
   {
-    v18 = [(CAReportingPerformanceObject *)self processIdentifiers];
-    [v18 removeAllObjects];
+    processIdentifiers2 = [(CAReportingPerformanceObject *)self processIdentifiers];
+    [processIdentifiers2 removeAllObjects];
   }
 
   v19 = *AA_PerformanceUtilityCategory();
@@ -759,18 +759,18 @@ void __62__CAReportingPerformanceObject_endAndReturnPerformanceMetrics__block_in
     _os_log_impl(&dword_296C89000, v19, OS_LOG_TYPE_DEFAULT, "%25s:%-5d CAReportingPerformanceObject action=abandon", &__p, 0x12u);
   }
 
-  v20 = [(CAReportingPerformanceObject *)self sessionsLock];
-  [v20 unlock];
+  sessionsLock2 = [(CAReportingPerformanceObject *)self sessionsLock];
+  [sessionsLock2 unlock];
 
   v21 = *MEMORY[0x29EDCA608];
 }
 
-- (void)setSessions:(void *)a3
+- (void)setSessions:(void *)sessions
 {
   p_sessions = &self->_sessions;
-  if (p_sessions != a3)
+  if (p_sessions != sessions)
   {
-    std::vector<pc_session *>::__assign_with_size[abi:ne200100]<pc_session **,pc_session **>(p_sessions, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 3);
+    std::vector<pc_session *>::__assign_with_size[abi:ne200100]<pc_session **,pc_session **>(p_sessions, *sessions, *(sessions + 1), (*(sessions + 1) - *sessions) >> 3);
   }
 }
 

@@ -1,10 +1,10 @@
 @interface AXMotionCuesService
 + (AXMotionCuesService)sharedInstance;
 - (AXMotionCuesService)init;
-- (id)userInterfaceClient:(id)a3 accessQueueForProcessingMessageWithIdentifier:(int64_t)a4;
-- (id)userInterfaceClient:(id)a3 processMessageFromServer:(id)a4 withIdentifier:(int64_t)a5 error:(id *)a6;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
-- (void)simulateDeviceMotion:(id)a3;
+- (id)userInterfaceClient:(id)client accessQueueForProcessingMessageWithIdentifier:(int64_t)identifier;
+- (id)userInterfaceClient:(id)client processMessageFromServer:(id)server withIdentifier:(int64_t)identifier error:(id *)error;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
+- (void)simulateDeviceMotion:(id)motion;
 @end
 
 @implementation AXMotionCuesService
@@ -35,19 +35,19 @@
   return [(AXMotionCuesService *)&v8 init];
 }
 
-- (void)simulateDeviceMotion:(id)a3
+- (void)simulateDeviceMotion:(id)motion
 {
   v4 = sub_23D61F760();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   AXMotionCuesService.simulateDeviceMotion(_:)(v8);
 }
 
-- (id)userInterfaceClient:(id)a3 processMessageFromServer:(id)a4 withIdentifier:(int64_t)a5 error:(id *)a6
+- (id)userInterfaceClient:(id)client processMessageFromServer:(id)server withIdentifier:(int64_t)identifier error:(id *)error
 {
-  if (a4)
+  if (server)
   {
     v9 = sub_23D61F720();
   }
@@ -57,27 +57,27 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  sub_23D61EE28(v9, a5);
+  clientCopy = client;
+  selfCopy = self;
+  sub_23D61EE28(v9, identifier);
 
   v12 = sub_23D61F710();
 
   return v12;
 }
 
-- (id)userInterfaceClient:(id)a3 accessQueueForProcessingMessageWithIdentifier:(int64_t)a4
+- (id)userInterfaceClient:(id)client accessQueueForProcessingMessageWithIdentifier:(int64_t)identifier
 {
-  v4 = [objc_opt_self() mainAccessQueue];
+  mainAccessQueue = [objc_opt_self() mainAccessQueue];
 
-  return v4;
+  return mainAccessQueue;
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
-  v5 = a3;
-  v6 = self;
-  AXMotionCuesService.connectionWithServiceWasInterrupted(forUserInterfaceClient:)(a3);
+  clientCopy = client;
+  selfCopy = self;
+  AXMotionCuesService.connectionWithServiceWasInterrupted(forUserInterfaceClient:)(client);
 }
 
 @end

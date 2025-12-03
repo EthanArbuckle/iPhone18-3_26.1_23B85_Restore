@@ -1,17 +1,17 @@
 @interface IDSQRProtoParticipantStatusMapEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)participantStatusAsString:(int)a3;
-- (int)StringAsParticipantStatus:(id)a3;
+- (id)participantStatusAsString:(int)string;
+- (int)StringAsParticipantStatus:(id)status;
 - (int)participantStatus;
 - (unint64_t)hash;
-- (unint64_t)participantIdsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)participantIdsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoParticipantStatusMapEntry
@@ -37,35 +37,35 @@
   }
 }
 
-- (id)participantStatusAsString:(int)a3
+- (id)participantStatusAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E77E18B8[a3];
+    v4 = off_1E77E18B8[string];
   }
 
   return v4;
 }
 
-- (int)StringAsParticipantStatus:(id)a3
+- (int)StringAsParticipantStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HOST"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"HOST"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PERFORMER"])
+  else if ([statusCopy isEqualToString:@"PERFORMER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVE_AUDIENCE"])
+  else if ([statusCopy isEqualToString:@"ACTIVE_AUDIENCE"])
   {
     v4 = 2;
   }
@@ -78,20 +78,20 @@
   return v4;
 }
 
-- (unint64_t)participantIdsAtIndex:(unint64_t)a3
+- (unint64_t)participantIdsAtIndex:(unint64_t)index
 {
   p_participantIds = &self->_participantIds;
   count = self->_participantIds.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_participantIds->list[a3];
+  return p_participantIds->list[index];
 }
 
 - (id)description
@@ -100,15 +100,15 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoParticipantStatusMapEntry;
   v4 = [(IDSQRProtoParticipantStatusMapEntry *)&v8 description];
-  v5 = [(IDSQRProtoParticipantStatusMapEntry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoParticipantStatusMapEntry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     participantStatus = self->_participantStatus;
@@ -122,23 +122,23 @@
       v5 = off_1E77E18B8[participantStatus];
     }
 
-    [v3 setObject:v5 forKey:@"participant_status"];
+    [dictionary setObject:v5 forKey:@"participant_status"];
   }
 
   v6 = PBRepeatedUInt64NSArray();
-  [v3 setObject:v6 forKey:@"participant_ids"];
+  [dictionary setObject:v6 forKey:@"participant_ids"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   p_participantIds = &self->_participantIds;
@@ -148,7 +148,7 @@
     do
     {
       PBDataWriterWriteUint64Field();
-      v4 = v7;
+      toCopy = v7;
       ++v6;
     }
 
@@ -156,23 +156,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_participantStatus;
-    *(v4 + 36) |= 1u;
+    toCopy[8] = self->_participantStatus;
+    *(toCopy + 36) |= 1u;
   }
 
-  v8 = v4;
+  v8 = toCopy;
   if ([(IDSQRProtoParticipantStatusMapEntry *)self participantIdsCount])
   {
     [v8 clearParticipantIds];
-    v5 = [(IDSQRProtoParticipantStatusMapEntry *)self participantIdsCount];
-    if (v5)
+    participantIdsCount = [(IDSQRProtoParticipantStatusMapEntry *)self participantIdsCount];
+    if (participantIdsCount)
     {
-      v6 = v5;
+      v6 = participantIdsCount;
       for (i = 0; i != v6; ++i)
       {
         [v8 addParticipantIds:{-[IDSQRProtoParticipantStatusMapEntry participantIdsAtIndex:](self, "participantIdsAtIndex:", i)}];
@@ -181,9 +181,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -195,23 +195,23 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_participantStatus != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_participantStatus != *(equalCopy + 8))
     {
       goto LABEL_8;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_8:
     IsEqual = 0;
@@ -239,20 +239,20 @@ LABEL_9:
   return PBRepeatedUInt64Hash() ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[9])
+  fromCopy = from;
+  if (fromCopy[9])
   {
-    self->_participantStatus = v4[8];
+    self->_participantStatus = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  v8 = v4;
-  v5 = [v4 participantIdsCount];
-  if (v5)
+  v8 = fromCopy;
+  participantIdsCount = [fromCopy participantIdsCount];
+  if (participantIdsCount)
   {
-    v6 = v5;
+    v6 = participantIdsCount;
     for (i = 0; i != v6; ++i)
     {
       -[IDSQRProtoParticipantStatusMapEntry addParticipantIds:](self, "addParticipantIds:", [v8 participantIdsAtIndex:i]);

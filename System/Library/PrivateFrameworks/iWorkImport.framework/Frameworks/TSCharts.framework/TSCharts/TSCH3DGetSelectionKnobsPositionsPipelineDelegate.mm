@@ -1,29 +1,29 @@
 @interface TSCH3DGetSelectionKnobsPositionsPipelineDelegate
-- (BOOL)p_labelSelectedForType:(int)a3 alignment:(unint64_t)a4 elementIndex:(int64_t)a5;
-- (BOOL)willProcessSeries:(id)a3 sceneObject:(id)a4 pipeline:(id)a5;
-- (BOOL)willSubmitLabelType:(int)a3 boundsIndex:(int64_t)a4 alignment:(unint64_t)a5 elementIndex:(unint64_t)a6 forSceneObject:(id)a7;
-- (TSCH3DGetSelectionKnobsPositionsPipelineDelegate)initWithRep:(id)a3 selection:(id)a4;
+- (BOOL)p_labelSelectedForType:(int)type alignment:(unint64_t)alignment elementIndex:(int64_t)index;
+- (BOOL)willProcessSeries:(id)series sceneObject:(id)object pipeline:(id)pipeline;
+- (BOOL)willSubmitLabelType:(int)type boundsIndex:(int64_t)index alignment:(unint64_t)alignment elementIndex:(unint64_t)elementIndex forSceneObject:(id)object;
+- (TSCH3DGetSelectionKnobsPositionsPipelineDelegate)initWithRep:(id)rep selection:(id)selection;
 - (id)p_selectedSeries;
-- (void)addLabelBoundsForMerging:(CGRect)a3;
-- (void)didRunForScene:(id)a3 pipeline:(id)a4;
-- (void)labelsResourcesSessionWillBeginForSceneObject:(id)a3 pipeline:(id)a4;
-- (void)willRunForScene:(id)a3 pipeline:(id)a4;
+- (void)addLabelBoundsForMerging:(CGRect)merging;
+- (void)didRunForScene:(id)scene pipeline:(id)pipeline;
+- (void)labelsResourcesSessionWillBeginForSceneObject:(id)object pipeline:(id)pipeline;
+- (void)willRunForScene:(id)scene pipeline:(id)pipeline;
 @end
 
 @implementation TSCH3DGetSelectionKnobsPositionsPipelineDelegate
 
-- (TSCH3DGetSelectionKnobsPositionsPipelineDelegate)initWithRep:(id)a3 selection:(id)a4
+- (TSCH3DGetSelectionKnobsPositionsPipelineDelegate)initWithRep:(id)rep selection:(id)selection
 {
-  v6 = a3;
-  v7 = a4;
+  repCopy = rep;
+  selectionCopy = selection;
   v19.receiver = self;
   v19.super_class = TSCH3DGetSelectionKnobsPositionsPipelineDelegate;
   v8 = [(TSCH3DGetSelectionKnobsPositionsPipelineDelegate *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_rep, v6);
-    v14 = objc_msgSend_copy(v7, v10, v11, v12, v13);
+    objc_storeWeak(&v8->_rep, repCopy);
+    v14 = objc_msgSend_copy(selectionCopy, v10, v11, v12, v13);
     selection = v9->_selection;
     v9->_selection = v14;
 
@@ -35,9 +35,9 @@
   return v9;
 }
 
-- (void)willRunForScene:(id)a3 pipeline:(id)a4
+- (void)willRunForScene:(id)scene pipeline:(id)pipeline
 {
-  obj = a3;
+  obj = scene;
   if (objc_msgSend_count(self->_labelsBoundsForMerging, v5, v6, v7, v8))
   {
     v13 = MEMORY[0x277D81150];
@@ -63,10 +63,10 @@
   objc_storeWeak(&self->_scene, obj);
 }
 
-- (void)didRunForScene:(id)a3 pipeline:(id)a4
+- (void)didRunForScene:(id)scene pipeline:(id)pipeline
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sceneCopy = scene;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -101,7 +101,7 @@
 
   objc_msgSend_removeAllObjects(self->_labelsBoundsForMerging, v23, v24, v25, v26);
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v28 = WeakRetained == v5;
+  v28 = WeakRetained == sceneCopy;
 
   if (!v28)
   {
@@ -109,7 +109,7 @@
     v34 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, v30, v31, v32, "[TSCH3DGetSelectionKnobsPositionsPipelineDelegate didRunForScene:pipeline:]");
     v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v35, v36, v37, v38, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DGetSelectionKnobsPositionsPipeline.mm");
     v40 = objc_loadWeakRetained(&self->_scene);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v33, v41, v42, v43, v44, v34, v39, 172, 0, "delegate scene mismatch %@ should be %@", v5, v40, v49);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v33, v41, v42, v43, v44, v34, v39, 172, 0, "delegate scene mismatch %@ should be %@", sceneCopy, v40, v49);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v45, v46, v47, v48);
   }
@@ -117,23 +117,23 @@
   objc_storeWeak(&self->_scene, 0);
 }
 
-- (BOOL)willProcessSeries:(id)a3 sceneObject:(id)a4 pipeline:(id)a5
+- (BOOL)willProcessSeries:(id)series sceneObject:(id)object pipeline:(id)pipeline
 {
-  v6 = a3;
+  seriesCopy = series;
   v11 = objc_msgSend_p_selectedSeries(self, v7, v8, v9, v10);
-  v16 = objc_msgSend_index(v6, v12, v13, v14, v15);
+  v16 = objc_msgSend_index(seriesCopy, v12, v13, v14, v15);
   v21 = objc_msgSend_containsIndex_(v11, v17, v18, v19, v20, v16);
 
   return v21 ^ 1;
 }
 
-- (void)addLabelBoundsForMerging:(CGRect)a3
+- (void)addLabelBoundsForMerging:(CGRect)merging
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v26 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], a2, a3.origin.x, a3.origin.y, a3.size.width, self->_currentLabelType);
+  height = merging.size.height;
+  width = merging.size.width;
+  y = merging.origin.y;
+  x = merging.origin.x;
+  v26 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], a2, merging.origin.x, merging.origin.y, merging.size.width, self->_currentLabelType);
   v13 = objc_msgSend_objectForKey_(self->_labelsBoundsForMerging, v8, v9, v10, v11);
   if (!v13)
   {
@@ -146,17 +146,17 @@
   objc_msgSend_addBounds_(v13, v12, x, y, width, height);
 }
 
-- (void)labelsResourcesSessionWillBeginForSceneObject:(id)a3 pipeline:(id)a4
+- (void)labelsResourcesSessionWillBeginForSceneObject:(id)object pipeline:(id)pipeline
 {
-  v17 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], a2, v4, v5, v6, self->_currentLabelType, a4);
+  v17 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], a2, v4, v5, v6, self->_currentLabelType, pipeline);
   v12 = objc_msgSend_objectForKey_(self->_labelsBoundsForMerging, v8, v9, v10, v11);
   objc_msgSend_addNewBoundsArray(v12, v13, v14, v15, v16);
 }
 
-- (BOOL)willSubmitLabelType:(int)a3 boundsIndex:(int64_t)a4 alignment:(unint64_t)a5 elementIndex:(unint64_t)a6 forSceneObject:(id)a7
+- (BOOL)willSubmitLabelType:(int)type boundsIndex:(int64_t)index alignment:(unint64_t)alignment elementIndex:(unint64_t)elementIndex forSceneObject:(id)object
 {
-  v9 = *&a3;
-  v11 = a7;
+  v9 = *&type;
+  objectCopy = object;
   if (v9 == 6)
   {
     v12 = 3;
@@ -181,7 +181,7 @@
   }
 
   v33 = objc_loadWeakRetained(&self->_scene);
-  self->_knobsMode = objc_msgSend_knobsModeForLabelType_scene_(v11, v34, v35, v36, v37, v9, v33);
+  self->_knobsMode = objc_msgSend_knobsModeForLabelType_scene_(objectCopy, v34, v35, v36, v37, v9, v33);
 
   v42 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v38, v39, v40, v41, self->_currentLabelType);
   v47 = objc_msgSend_objectForKey_(self->_labelsBoundsForMerging, v43, v44, v45, v46, v42);
@@ -190,25 +190,25 @@
   {
     v53 = MEMORY[0x277D81150];
     v54 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v48, v49, v50, v51, "[TSCH3DGetSelectionKnobsPositionsPipelineDelegate willSubmitLabelType:boundsIndex:alignment:elementIndex:forSceneObject:]");
-    v76 = a6;
+    elementIndexCopy = elementIndex;
     v59 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v55, v56, v57, v58, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DGetSelectionKnobsPositionsPipeline.mm");
     knobsMode = self->_knobsMode;
     v65 = objc_msgSend_knobsMode(v52, v61, v62, v63, v64);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v53, v66, v67, v68, v69, v54, v59, 245, 0, "knobs mode mismatch mode %lu should be %lu", knobsMode, v65);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v70, v71, v72, v73);
-    a6 = v76;
+    elementIndex = elementIndexCopy;
   }
 
-  v74 = objc_msgSend_p_labelSelectedForType_alignment_elementIndex_(self, v48, v49, v50, v51, v9, a5, a6);
+  v74 = objc_msgSend_p_labelSelectedForType_alignment_elementIndex_(self, v48, v49, v50, v51, v9, alignment, elementIndex);
 
   return v74 ^ 1;
 }
 
-- (BOOL)p_labelSelectedForType:(int)a3 alignment:(unint64_t)a4 elementIndex:(int64_t)a5
+- (BOOL)p_labelSelectedForType:(int)type alignment:(unint64_t)alignment elementIndex:(int64_t)index
 {
   v147[1] = *MEMORY[0x277D85DE8];
-  v11 = objc_msgSend_array(MEMORY[0x277CBEA60], a2, v5, v6, v7, *&a3, a4);
+  v11 = objc_msgSend_array(MEMORY[0x277CBEA60], a2, v5, v6, v7, *&type, alignment);
   WeakRetained = objc_loadWeakRetained(&self->_rep);
   v17 = objc_msgSend_chartInfo(WeakRetained, v13, v14, v15, v16);
   v22 = objc_msgSend_chart(v17, v18, v19, v20, v21);
@@ -253,9 +253,9 @@
   }
 
   v137 = 0;
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 0:
         v137 = objc_msgSend_chartTitleType(TSCHSelectionPathType, v74, v75, v76, v77);
@@ -272,9 +272,9 @@
 
   else
   {
-    if (a3 <= 4)
+    if (type <= 4)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         v137 = objc_msgSend_axisLabelsType(TSCHSelectionPathType, v74, v75, v76, v77);
 LABEL_17:
@@ -287,10 +287,10 @@ LABEL_25:
       goto LABEL_20;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       v137 = objc_msgSend_seriesValueLabelType(TSCHSelectionPathType, v74, v75, v76, v77);
-      v87 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v83, v84, v85, v86, a5);
+      v87 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v83, v84, v85, v86, index);
       v145 = v87;
       v92 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v88, v89, v90, v91, &v145, 1);
 
@@ -301,7 +301,7 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
 LABEL_20:
       v137 = objc_msgSend_axisLabelsType(TSCHSelectionPathType, v74, v75, v76, v77);

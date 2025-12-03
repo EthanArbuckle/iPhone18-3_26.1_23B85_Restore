@@ -1,16 +1,16 @@
 @interface HMDConfigurationMessagePolicy
-+ (id)policyWithOperationTypes:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)policyWithOperationTypes:(unint64_t)types;
+- (BOOL)isEqual:(id)equal;
 - (HMDConfigurationMessagePolicy)init;
-- (id)__initWithOperationTypes:(unint64_t)a3;
+- (id)__initWithOperationTypes:(unint64_t)types;
 @end
 
 @implementation HMDConfigurationMessagePolicy
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -20,7 +20,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -31,8 +31,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDConfigurationMessagePolicy *)self operationTypes];
-      v8 = v7 == [(HMDConfigurationMessagePolicy *)v6 operationTypes];
+      operationTypes = [(HMDConfigurationMessagePolicy *)self operationTypes];
+      v8 = operationTypes == [(HMDConfigurationMessagePolicy *)v6 operationTypes];
     }
 
     else
@@ -44,14 +44,14 @@
   return v8;
 }
 
-- (id)__initWithOperationTypes:(unint64_t)a3
+- (id)__initWithOperationTypes:(unint64_t)types
 {
   v5.receiver = self;
   v5.super_class = HMDConfigurationMessagePolicy;
   result = [(HMDConfigurationMessagePolicy *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = types;
   }
 
   return result;
@@ -70,9 +70,9 @@
   objc_exception_throw(v7);
 }
 
-+ (id)policyWithOperationTypes:(unint64_t)a3
++ (id)policyWithOperationTypes:(unint64_t)types
 {
-  v3 = [[a1 alloc] __initWithOperationTypes:a3];
+  v3 = [[self alloc] __initWithOperationTypes:types];
 
   return v3;
 }

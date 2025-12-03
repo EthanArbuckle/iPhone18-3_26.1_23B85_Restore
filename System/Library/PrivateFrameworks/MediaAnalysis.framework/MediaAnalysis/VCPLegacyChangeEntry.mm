@@ -1,7 +1,7 @@
 @interface VCPLegacyChangeEntry
 - ($66BD1C5E7A9131B7E50B573777372F49)summaryTimeRange;
 - (void)publish;
-- (void)setSummaryTimeRange:(id *)a3;
+- (void)setSummaryTimeRange:(id *)range;
 @end
 
 @implementation VCPLegacyChangeEntry
@@ -13,20 +13,20 @@
     v3 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v3))
     {
-      v4 = [(PHAsset *)self->_asset localIdentifier];
+      localIdentifier = [(PHAsset *)self->_asset localIdentifier];
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = localIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v3, "   [%@] Publishing PHAssetPropertySetMediaAnalysis", buf, 0xCu);
     }
   }
 
   v5 = +[MADStateHandler sharedStateHandler];
-  v6 = [(PHAsset *)self->_asset localIdentifier];
-  [v5 addBreadcrumb:{@"[%@] Publishing PHAssetPropertySetMediaAnalysis", v6}];
+  localIdentifier2 = [(PHAsset *)self->_asset localIdentifier];
+  [v5 addBreadcrumb:{@"[%@] Publishing PHAssetPropertySetMediaAnalysis", localIdentifier2}];
 
   v7 = [PHAssetChangeRequest changeRequestForAsset:self->_asset];
-  v8 = [(PHAsset *)self->_asset vcp_modificationDate];
-  [v7 setMediaAnalysisTimeStamp:v8];
+  vcp_modificationDate = [(PHAsset *)self->_asset vcp_modificationDate];
+  [v7 setMediaAnalysisTimeStamp:vcp_modificationDate];
 
   [v7 setMediaAnalysisVersion:self->_mediaAnalysisVersion];
   [v7 setMediaAnalysisImageVersion:SLOWORD(self->_mediaAnalysisVersion)];
@@ -46,11 +46,11 @@
       v11 = VCPLogToOSLogType[7];
       if (os_log_type_enabled(&_os_log_default, v11))
       {
-        v12 = [(PHAsset *)self->_asset localIdentifier];
+        localIdentifier3 = [(PHAsset *)self->_asset localIdentifier];
         analysisStage = self->_analysisStage;
         v14 = [(NSData *)self->_computeSyncPayload length];
         *buf = 138412802;
-        *&buf[4] = v12;
+        *&buf[4] = localIdentifier3;
         *&buf[12] = 1024;
         *&buf[14] = analysisStage;
         *&buf[18] = 1024;
@@ -70,11 +70,11 @@
   return self;
 }
 
-- (void)setSummaryTimeRange:(id *)a3
+- (void)setSummaryTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_summaryTimeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_summaryTimeRange.duration.timescale = *&range->var1.var1;
   *&self->_summaryTimeRange.start.epoch = v4;
   *&self->_summaryTimeRange.start.value = v3;
 }

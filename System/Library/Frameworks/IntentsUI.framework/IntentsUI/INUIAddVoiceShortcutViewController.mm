@@ -4,8 +4,8 @@
 - (id)delegate;
 - (void)loadView;
 - (void)remoteViewControllerDidCancel;
-- (void)remoteViewControllerDidCreateVoiceShortcut:(id)a3 error:(id)a4;
-- (void)setChildViewController:(id)a3;
+- (void)remoteViewControllerDidCreateVoiceShortcut:(id)shortcut error:(id)error;
+- (void)setChildViewController:(id)controller;
 @end
 
 @implementation INUIAddVoiceShortcutViewController
@@ -19,50 +19,50 @@
 
 - (void)remoteViewControllerDidCancel
 {
-  v3 = [(INUIAddVoiceShortcutViewController *)self delegate];
-  [v3 addVoiceShortcutViewControllerDidCancel:self];
+  delegate = [(INUIAddVoiceShortcutViewController *)self delegate];
+  [delegate addVoiceShortcutViewControllerDidCancel:self];
 }
 
-- (void)remoteViewControllerDidCreateVoiceShortcut:(id)a3 error:(id)a4
+- (void)remoteViewControllerDidCreateVoiceShortcut:(id)shortcut error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(INUIAddVoiceShortcutViewController *)self delegate];
-  [v8 addVoiceShortcutViewController:self didFinishWithVoiceShortcut:v7 error:v6];
+  errorCopy = error;
+  shortcutCopy = shortcut;
+  delegate = [(INUIAddVoiceShortcutViewController *)self delegate];
+  [delegate addVoiceShortcutViewController:self didFinishWithVoiceShortcut:shortcutCopy error:errorCopy];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotificationName:@"com.apple.IntentsUI.INUIAddVoiceShortcutViewController.didAddVoiceShortcut" object:v7];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.IntentsUI.INUIAddVoiceShortcutViewController.didAddVoiceShortcut" object:shortcutCopy];
 }
 
-- (void)setChildViewController:(id)a3
+- (void)setChildViewController:(id)controller
 {
-  v4 = a3;
-  v11 = [(INUIAddVoiceShortcutViewController *)self currentChildViewController];
-  if (v11)
+  controllerCopy = controller;
+  currentChildViewController = [(INUIAddVoiceShortcutViewController *)self currentChildViewController];
+  if (currentChildViewController)
   {
-    [v11 willMoveToParentViewController:0];
-    v5 = [v11 view];
-    [v5 removeFromSuperview];
+    [currentChildViewController willMoveToParentViewController:0];
+    view = [currentChildViewController view];
+    [view removeFromSuperview];
 
-    [v11 removeFromParentViewController];
+    [currentChildViewController removeFromParentViewController];
   }
 
-  [v4 willMoveToParentViewController:self];
-  [(INUIAddVoiceShortcutViewController *)self addChildViewController:v4];
-  v6 = [v4 view];
-  v7 = [(INUIAddVoiceShortcutViewController *)self view];
-  [v7 bounds];
-  [v6 setFrame:?];
+  [controllerCopy willMoveToParentViewController:self];
+  [(INUIAddVoiceShortcutViewController *)self addChildViewController:controllerCopy];
+  view2 = [controllerCopy view];
+  view3 = [(INUIAddVoiceShortcutViewController *)self view];
+  [view3 bounds];
+  [view2 setFrame:?];
 
-  v8 = [v4 view];
-  [v8 setAutoresizingMask:18];
+  view4 = [controllerCopy view];
+  [view4 setAutoresizingMask:18];
 
-  v9 = [(INUIAddVoiceShortcutViewController *)self view];
-  v10 = [v4 view];
-  [v9 addSubview:v10];
+  view5 = [(INUIAddVoiceShortcutViewController *)self view];
+  view6 = [controllerCopy view];
+  [view5 addSubview:view6];
 
-  [v4 didMoveToParentViewController:self];
-  [(INUIAddVoiceShortcutViewController *)self setCurrentChildViewController:v4];
+  [controllerCopy didMoveToParentViewController:self];
+  [(INUIAddVoiceShortcutViewController *)self setCurrentChildViewController:controllerCopy];
 }
 
 - (void)loadView
@@ -77,11 +77,11 @@
 - (INUIAddVoiceShortcutViewController)initWithShortcut:(INShortcut *)shortcut
 {
   v5 = shortcut;
-  v6 = [(INShortcut *)v5 intent];
-  v7 = [(INShortcut *)v5 userActivity];
-  v8 = v7 == 0;
+  intent = [(INShortcut *)v5 intent];
+  userActivity = [(INShortcut *)v5 userActivity];
+  v8 = userActivity == 0;
 
-  if ((v6 != 0) != v8)
+  if ((intent != 0) != v8)
   {
     v9 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"INshortcut must have either intent xor userActivity" userInfo:0];
     [v9 raise];
@@ -168,7 +168,7 @@ void __55__INUIAddVoiceShortcutViewController_initWithShortcut___block_invoke_6(
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     MEMORY[0x282122D80]();

@@ -1,7 +1,7 @@
 @interface PressHoldDetailedViewController
-- (_TtC19HeadphoneSettingsUI31PressHoldDetailedViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19HeadphoneSettingsUI31PressHoldDetailedViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation PressHoldDetailedViewController
@@ -26,7 +26,7 @@
   return v4;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   MEMORY[0x1E69E5928](self);
   v3 = sub_1AC30910C();
@@ -34,14 +34,14 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (_TtC19HeadphoneSettingsUI31PressHoldDetailedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19HeadphoneSettingsUI31PressHoldDetailedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  if (a3)
+  MEMORY[0x1E69E5928](name);
+  MEMORY[0x1E69E5928](bundle);
+  if (name)
   {
     sub_1AC30A92C();
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](name);
   }
 
   sub_1AC2F31C8();

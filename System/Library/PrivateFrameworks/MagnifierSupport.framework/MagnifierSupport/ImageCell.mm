@@ -1,10 +1,10 @@
 @interface ImageCell
-- (_TtC16MagnifierSupport9ImageCell)initWithCoder:(id)a3;
+- (_TtC16MagnifierSupport9ImageCell)initWithCoder:(id)coder;
 @end
 
 @implementation ImageCell
 
-- (_TtC16MagnifierSupport9ImageCell)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport9ImageCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport9ImageCell_filter) = 12;
   v3 = OBJC_IVAR____TtC16MagnifierSupport9ImageCell_imageView;

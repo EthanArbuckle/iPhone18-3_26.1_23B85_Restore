@@ -1,31 +1,31 @@
 @interface BMBookmarkablePublisher
-+ (BOOL)isPipelineBookmarkable:(id)a3;
-+ (id)bookmarkablePublishersFromPublishers:(id)a3;
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
++ (BOOL)isPipelineBookmarkable:(id)bookmarkable;
++ (id)bookmarkablePublishersFromPublishers:(id)publishers;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
 - (NSArray)bookmarkableUpstreams;
 - (id)bookmarkNode;
-- (id)bufferWithSize:(unint64_t)a3 prefetch:(unint64_t)a4 whenFull:(unint64_t)a5;
+- (id)bufferWithSize:(unint64_t)size prefetch:(unint64_t)prefetch whenFull:(unint64_t)full;
 - (id)collect;
-- (id)correlateWithCurrent:(id)a3 comparator:(id)a4 correlateHandler:(id)a5;
-- (id)filterWithIsIncluded:(id)a3;
-- (id)flatMapWithTransform:(id)a3;
-- (id)groupByKey:(id)a3;
+- (id)correlateWithCurrent:(id)current comparator:(id)comparator correlateHandler:(id)handler;
+- (id)filterWithIsIncluded:(id)included;
+- (id)flatMapWithTransform:(id)transform;
+- (id)groupByKey:(id)key;
 - (id)last;
-- (id)mapWithTransform:(id)a3;
-- (id)mergeWithOther:(id)a3;
-- (id)mergeWithOthers:(id)a3;
+- (id)mapWithTransform:(id)transform;
+- (id)mergeWithOther:(id)other;
+- (id)mergeWithOthers:(id)others;
 - (id)multicast;
-- (id)multicastCreateSubject:(id)a3;
-- (id)multicastSubject:(id)a3;
-- (id)orderedMergeWithOther:(id)a3 comparator:(id)a4;
-- (id)orderedMergeWithOthers:(id)a3 comparator:(id)a4;
-- (id)reduce:(id)a3;
-- (id)reduceWithInitial:(id)a3 nextPartialResult:(id)a4;
-- (id)scanWithInitial:(id)a3 nextPartialResult:(id)a4;
-- (id)validateBookmarkNode:(id)a3;
-- (id)withBookmark:(id)a3;
-- (void)applyBookmarkNode:(id)a3;
-- (void)subscribe:(id)a3;
+- (id)multicastCreateSubject:(id)subject;
+- (id)multicastSubject:(id)subject;
+- (id)orderedMergeWithOther:(id)other comparator:(id)comparator;
+- (id)orderedMergeWithOthers:(id)others comparator:(id)comparator;
+- (id)reduce:(id)reduce;
+- (id)reduceWithInitial:(id)initial nextPartialResult:(id)result;
+- (id)scanWithInitial:(id)initial nextPartialResult:(id)result;
+- (id)validateBookmarkNode:(id)node;
+- (id)withBookmark:(id)bookmark;
+- (void)applyBookmarkNode:(id)node;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BMBookmarkablePublisher
@@ -39,8 +39,8 @@
   v21 = 0u;
   v22 = 0u;
   v4 = objc_opt_class();
-  v5 = [(BPSPublisher *)self upstreamPublishers];
-  v6 = [v4 bookmarkablePublishersFromPublishers:v5];
+  upstreamPublishers = [(BPSPublisher *)self upstreamPublishers];
+  v6 = [v4 bookmarkablePublishersFromPublishers:upstreamPublishers];
 
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
@@ -56,8 +56,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v19 + 1) + 8 * i) bookmarkNode];
-        [v3 addObject:v11];
+        bookmarkNode = [*(*(&v19 + 1) + 8 * i) bookmarkNode];
+        [v3 addObject:bookmarkNode];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -67,10 +67,10 @@
   }
 
   v12 = [BMBookmarkNode alloc];
-  v13 = [(BMBookmarkablePublisher *)self bookmark];
+  bookmark = [(BMBookmarkablePublisher *)self bookmark];
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
-  v16 = [(BMBookmarkNode *)v12 initWithValue:v13 upstreams:v3 name:v15];
+  v16 = [(BMBookmarkNode *)v12 initWithValue:bookmark upstreams:v3 name:v15];
 
   v17 = *MEMORY[0x1E69E9840];
 
@@ -91,19 +91,19 @@
   return v2;
 }
 
-- (id)correlateWithCurrent:(id)a3 comparator:(id)a4 correlateHandler:(id)a5
+- (id)correlateWithCurrent:(id)current comparator:(id)comparator correlateHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  currentCopy = current;
+  comparatorCopy = comparator;
+  handlerCopy = handler;
   if (BPSPipelineSupportsPullBasedPublishers(self))
   {
-    v11 = [BPSCorrelate correlatePublisherChainWithPrior:self current:v8 comparator:v9 correlateHandler:v10];
+    v11 = [BPSCorrelate correlatePublisherChainWithPrior:self current:currentCopy comparator:comparatorCopy correlateHandler:handlerCopy];
   }
 
   else
   {
-    v11 = [[BPSCorrelate alloc] initWithPrior:self current:v8 comparator:v9 correlateHandler:v10];
+    v11 = [[BPSCorrelate alloc] initWithPrior:self current:currentCopy comparator:comparatorCopy correlateHandler:handlerCopy];
   }
 
   v12 = v11;
@@ -111,14 +111,14 @@
   return v12;
 }
 
-- (id)mergeWithOthers:(id)a3
+- (id)mergeWithOthers:(id)others
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = self;
+  selfCopy = self;
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
-  v5 = [v3 arrayWithObjects:&v10 count:1];
-  v6 = [v5 arrayByAddingObjectsFromArray:{v4, v10, v11}];
+  othersCopy = others;
+  v5 = [v3 arrayWithObjects:&selfCopy count:1];
+  v6 = [v5 arrayByAddingObjectsFromArray:{othersCopy, selfCopy, v11}];
 
   v7 = [[BPSMergeMany alloc] initWithPublishers:v6];
   v8 = *MEMORY[0x1E69E9840];
@@ -126,88 +126,88 @@
   return v7;
 }
 
-- (id)mergeWithOther:(id)a3
+- (id)mergeWithOther:(id)other
 {
-  v4 = a3;
-  v5 = [[BPSMerge alloc] initWithA:self b:v4];
+  otherCopy = other;
+  v5 = [[BPSMerge alloc] initWithA:self b:otherCopy];
 
   return v5;
 }
 
-- (id)scanWithInitial:(id)a3 nextPartialResult:(id)a4
+- (id)scanWithInitial:(id)initial nextPartialResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BPSScan alloc] initWithUpstream:self initialResult:v7 nextPartialResult:v6];
+  resultCopy = result;
+  initialCopy = initial;
+  v8 = [[BPSScan alloc] initWithUpstream:self initialResult:initialCopy nextPartialResult:resultCopy];
 
   return v8;
 }
 
-- (id)reduceWithInitial:(id)a3 nextPartialResult:(id)a4
+- (id)reduceWithInitial:(id)initial nextPartialResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BPSReduce alloc] initWithUpstream:self initialResult:v7 nextPartialResult:v6];
+  resultCopy = result;
+  initialCopy = initial;
+  v8 = [[BPSReduce alloc] initWithUpstream:self initialResult:initialCopy nextPartialResult:resultCopy];
 
   return v8;
 }
 
-- (id)reduce:(id)a3
+- (id)reduce:(id)reduce
 {
-  v4 = a3;
+  reduceCopy = reduce;
   v5 = [BPSReduce alloc];
-  v6 = [v4 accumulator];
-  v7 = [v4 closure];
+  accumulator = [reduceCopy accumulator];
+  closure = [reduceCopy closure];
 
-  v8 = [(BPSReduce *)v5 initWithUpstream:self initialResult:v6 nextPartialResult:v7];
-
-  return v8;
-}
-
-- (id)mapWithTransform:(id)a3
-{
-  v4 = a3;
-  v5 = [[BPSMap alloc] initWithUpstream:self transform:v4];
-
-  return v5;
-}
-
-- (id)filterWithIsIncluded:(id)a3
-{
-  v4 = a3;
-  v5 = [[BPSFilter alloc] initWithUpstream:self isIncluded:v4];
-
-  return v5;
-}
-
-- (id)flatMapWithTransform:(id)a3
-{
-  v4 = a3;
-  v5 = [[BPSFlatMap alloc] initWithUpstream:self maxPublishers:1 transform:v4];
-
-  return v5;
-}
-
-- (id)orderedMergeWithOther:(id)a3 comparator:(id)a4
-{
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BPSOrderedMerge alloc] initWithA:self b:v7 comparator:v6];
+  v8 = [(BPSReduce *)v5 initWithUpstream:self initialResult:accumulator nextPartialResult:closure];
 
   return v8;
 }
 
-- (id)orderedMergeWithOthers:(id)a3 comparator:(id)a4
+- (id)mapWithTransform:(id)transform
+{
+  transformCopy = transform;
+  v5 = [[BPSMap alloc] initWithUpstream:self transform:transformCopy];
+
+  return v5;
+}
+
+- (id)filterWithIsIncluded:(id)included
+{
+  includedCopy = included;
+  v5 = [[BPSFilter alloc] initWithUpstream:self isIncluded:includedCopy];
+
+  return v5;
+}
+
+- (id)flatMapWithTransform:(id)transform
+{
+  transformCopy = transform;
+  v5 = [[BPSFlatMap alloc] initWithUpstream:self maxPublishers:1 transform:transformCopy];
+
+  return v5;
+}
+
+- (id)orderedMergeWithOther:(id)other comparator:(id)comparator
+{
+  comparatorCopy = comparator;
+  otherCopy = other;
+  v8 = [[BPSOrderedMerge alloc] initWithA:self b:otherCopy comparator:comparatorCopy];
+
+  return v8;
+}
+
+- (id)orderedMergeWithOthers:(id)others comparator:(id)comparator
 {
   v14 = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 arrayWithObjects:&v13 count:1];
-  v9 = [v8 arrayByAddingObjectsFromArray:{v7, v13, v14}];
+  comparatorCopy = comparator;
+  othersCopy = others;
+  v8 = [v5 arrayWithObjects:&selfCopy count:1];
+  v9 = [v8 arrayByAddingObjectsFromArray:{othersCopy, selfCopy, v14}];
 
-  v10 = [[BPSOrderedMerge alloc] initWithPublishers:v9 comparator:v6];
+  v10 = [[BPSOrderedMerge alloc] initWithPublishers:v9 comparator:comparatorCopy];
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
@@ -220,36 +220,36 @@
   return v2;
 }
 
-- (id)multicastSubject:(id)a3
+- (id)multicastSubject:(id)subject
 {
-  v4 = a3;
+  subjectCopy = subject;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__BMBookmarkablePublisher_BPSOperators__multicastSubject___block_invoke;
   v8[3] = &unk_1E8320C30;
-  v9 = v4;
-  v5 = v4;
+  v9 = subjectCopy;
+  v5 = subjectCopy;
   v6 = [(BMBookmarkablePublisher *)self multicastCreateSubject:v8];
 
   return v6;
 }
 
-- (id)multicastCreateSubject:(id)a3
+- (id)multicastCreateSubject:(id)subject
 {
-  v4 = a3;
-  v5 = [[BPSMulticast alloc] initWithUpstream:self createSubject:v4];
+  subjectCopy = subject;
+  v5 = [[BPSMulticast alloc] initWithUpstream:self createSubject:subjectCopy];
 
   return v5;
 }
 
-- (id)bufferWithSize:(unint64_t)a3 prefetch:(unint64_t)a4 whenFull:(unint64_t)a5
+- (id)bufferWithSize:(unint64_t)size prefetch:(unint64_t)prefetch whenFull:(unint64_t)full
 {
-  v5 = [[BPSBuffer alloc] initWithUpstream:self size:a3 prefetch:a4 whenFull:a5];
+  v5 = [[BPSBuffer alloc] initWithUpstream:self size:size prefetch:prefetch whenFull:full];
 
   return v5;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -257,10 +257,10 @@
   [v3 raise:v4 format:{@"Override method %@ in subclass %@", v5, objc_opt_class()}];
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v7 = a3;
-  if ([a4 count])
+  publisherCopy = publisher;
+  if ([upstreams count])
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D930];
@@ -268,19 +268,19 @@
     [v8 raise:v9 format:{@"Override method %@ in subclass %@", v10, objc_opt_class()}];
   }
 
-  return v7;
+  return publisherCopy;
 }
 
-- (id)withBookmark:(id)a3
+- (id)withBookmark:(id)bookmark
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  bookmarkCopy = bookmark;
+  if (bookmarkCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v6 = __biome_log_for_category();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(BMBookmarkablePublisher *)v4 withBookmark:v6];
+      [(BMBookmarkablePublisher *)bookmarkCopy withBookmark:v6];
     }
 
     v5 = 0;
@@ -288,31 +288,31 @@
 
   else
   {
-    v5 = v4;
+    v5 = bookmarkCopy;
   }
 
   v38 = [MEMORY[0x1E695E0F0] mutableCopy];
-  v7 = [(BMBookmarkablePublisher *)self bookmarkableUpstreams];
-  if ([v7 count])
+  bookmarkableUpstreams = [(BMBookmarkablePublisher *)self bookmarkableUpstreams];
+  if ([bookmarkableUpstreams count])
   {
     v9 = 0;
     *&v8 = 138412546;
     v37 = v8;
     while (1)
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      v11 = [(BMBookmarkablePublisher *)self canStoreInternalStateInBookmark];
-      if (!v5 || !v11)
+      null = [MEMORY[0x1E695DFB0] null];
+      canStoreInternalStateInBookmark = [(BMBookmarkablePublisher *)self canStoreInternalStateInBookmark];
+      if (!v5 || !canStoreInternalStateInBookmark)
       {
         break;
       }
 
-      v12 = [v5 upstreams];
+      upstreams = [v5 upstreams];
 
-      if (!v12)
+      if (!upstreams)
       {
-        v15 = __biome_log_for_category();
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        upstreams3 = __biome_log_for_category();
+        if (os_log_type_enabled(upstreams3, OS_LOG_TYPE_ERROR))
         {
           [(BMBookmarkablePublisher *)&v43 withBookmark:v44];
         }
@@ -320,8 +320,8 @@
         goto LABEL_21;
       }
 
-      v13 = [v5 upstreams];
-      v14 = [v13 count];
+      upstreams2 = [v5 upstreams];
+      v14 = [upstreams2 count];
 
       if (v14 <= v9)
       {
@@ -331,18 +331,18 @@
           [(BMBookmarkablePublisher *)&v41 withBookmark:v42];
         }
 
-        v17 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
         goto LABEL_20;
       }
 
-      v15 = [v5 upstreams];
-      v16 = [v15 objectAtIndexedSubscript:v9];
+      upstreams3 = [v5 upstreams];
+      v16 = [upstreams3 objectAtIndexedSubscript:v9];
 
-      v10 = v16;
+      null = v16;
 LABEL_21:
 
-      v19 = [MEMORY[0x1E695DFB0] null];
-      v20 = [v10 isEqual:v19];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      v20 = [null isEqual:null3];
 
       if (v20)
       {
@@ -350,32 +350,32 @@ LABEL_21:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
           *buf = v37;
-          v46 = v4;
+          v46 = bookmarkCopy;
           v47 = 2112;
-          v48 = self;
+          selfCopy = self;
           _os_log_debug_impl(&dword_1C871B000, v21, OS_LOG_TYPE_DEBUG, "Null bookmark:\n%@ for publisher:%@", buf, 0x16u);
         }
       }
 
-      v22 = [MEMORY[0x1E695DFB0] null];
-      if ([v10 isEqual:v22])
+      null4 = [MEMORY[0x1E695DFB0] null];
+      if ([null isEqual:null4])
       {
         v23 = 0;
       }
 
       else
       {
-        v23 = v10;
+        v23 = null;
       }
 
       v24 = v23;
 
-      v25 = [v7 objectAtIndexedSubscript:v9];
+      v25 = [bookmarkableUpstreams objectAtIndexedSubscript:v9];
       v26 = [v25 conformsToProtocol:&unk_1F4872E18];
 
       if (v26)
       {
-        v27 = [v7 objectAtIndexedSubscript:v9];
+        v27 = [bookmarkableUpstreams objectAtIndexedSubscript:v9];
         v28 = [v27 withBookmark:v24];
         [v38 addObject:v28];
       }
@@ -389,29 +389,29 @@ LABEL_21:
         }
       }
 
-      if (++v9 >= [v7 count])
+      if (++v9 >= [bookmarkableUpstreams count])
       {
         goto LABEL_33;
       }
     }
 
-    v17 = v5;
+    null2 = v5;
 LABEL_20:
-    v15 = v10;
-    v10 = v17;
+    upstreams3 = null;
+    null = null2;
     goto LABEL_21;
   }
 
 LABEL_33:
   v29 = objc_opt_class();
-  v30 = [v5 value];
-  v31 = [v29 publisherWithPublisher:self upstreams:v38 bookmarkState:v30];
+  value = [v5 value];
+  v31 = [v29 publisherWithPublisher:self upstreams:v38 bookmarkState:value];
 
   if ([(BMBookmarkablePublisher *)self canStorePassThroughValueInBookmark])
   {
     v32 = [BMBookmarkWrapper alloc];
-    v33 = [v5 value];
-    v34 = [(BMBookmarkWrapper *)v32 initWithUpstream:v31 initialState:v33];
+    value2 = [v5 value];
+    v34 = [(BMBookmarkWrapper *)v32 initWithUpstream:v31 initialState:value2];
   }
 
   else
@@ -434,16 +434,16 @@ LABEL_33:
   return 0;
 }
 
-+ (id)bookmarkablePublishersFromPublishers:(id)a3
++ (id)bookmarkablePublishersFromPublishers:(id)publishers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  publishersCopy = publishers;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = publishersCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -477,13 +477,13 @@ LABEL_33:
   return v11;
 }
 
-+ (BOOL)isPipelineBookmarkable:(id)a3
++ (BOOL)isPipelineBookmarkable:(id)bookmarkable
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v21[0] = v4;
+  bookmarkableCopy = bookmarkable;
+  v21[0] = bookmarkableCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-  v6 = [a1 bookmarkablePublishersFromPublishers:v5];
+  v6 = [self bookmarkablePublishersFromPublishers:v5];
   v7 = [v6 count];
 
   if (v7)
@@ -492,8 +492,8 @@ LABEL_33:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v4 upstreamPublishers];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    upstreamPublishers = [bookmarkableCopy upstreamPublishers];
+    v9 = [upstreamPublishers countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -505,13 +505,13 @@ LABEL_33:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(upstreamPublishers);
           }
 
-          v12 &= [a1 isPipelineBookmarkable:*(*(&v16 + 1) + 8 * i)];
+          v12 &= [self isPipelineBookmarkable:*(*(&v16 + 1) + 8 * i)];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [upstreamPublishers countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
@@ -532,10 +532,10 @@ LABEL_33:
   return v12;
 }
 
-- (id)validateBookmarkNode:(id)a3
+- (id)validateBookmarkNode:(id)node
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nodeCopy = node;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -551,18 +551,18 @@ LABEL_33:
     goto LABEL_8;
   }
 
-  v5 = [v4 name];
+  name = [nodeCopy name];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if ((v8 & 1) == 0)
   {
     v22 = objc_alloc(MEMORY[0x1E696AEC0]);
     v23 = objc_opt_class();
     v24 = objc_opt_class();
-    v25 = [v4 name];
-    v11 = [v22 initWithFormat:@"%@ expected publisher with name %@, but received %@", v23, v24, v25];
+    name2 = [nodeCopy name];
+    v11 = [v22 initWithFormat:@"%@ expected publisher with name %@, but received %@", v23, v24, name2];
 
     v26 = MEMORY[0x1E696ABC0];
     v46 = *MEMORY[0x1E696A578];
@@ -573,17 +573,17 @@ LABEL_33:
   }
 
   v9 = objc_opt_class();
-  v10 = [(BPSPublisher *)self upstreamPublishers];
-  v11 = [v9 bookmarkablePublishersFromPublishers:v10];
+  upstreamPublishers = [(BPSPublisher *)self upstreamPublishers];
+  v11 = [v9 bookmarkablePublishersFromPublishers:upstreamPublishers];
 
-  v12 = [v4 upstreams];
-  v13 = [v12 count];
+  upstreams = [nodeCopy upstreams];
+  v13 = [upstreams count];
   v14 = [v11 count];
 
   if (v13 == v14)
   {
-    v15 = [v4 value];
-    v16 = [(BMBookmarkablePublisher *)self validateBookmark:v15];
+    value = [nodeCopy value];
+    v16 = [(BMBookmarkablePublisher *)self validateBookmark:value];
 
     if (v16)
     {
@@ -604,7 +604,7 @@ LABEL_8:
     v35[1] = 3221225472;
     v35[2] = __48__BMBookmarkablePublisher_validateBookmarkNode___block_invoke;
     v35[3] = &unk_1E8320F48;
-    v36 = v4;
+    v36 = nodeCopy;
     v37 = &v38;
     [v11 enumerateObjectsUsingBlock:v35];
     v27 = v39[5];
@@ -616,8 +616,8 @@ LABEL_8:
   {
     v30 = objc_alloc(MEMORY[0x1E696AEC0]);
     v31 = objc_opt_class();
-    v32 = [v4 upstreams];
-    v16 = [v30 initWithFormat:@"%@ expected publisher upstream count %lu, but received %lu", v31, objc_msgSend(v32, "count"), objc_msgSend(v11, "count")];
+    upstreams2 = [nodeCopy upstreams];
+    v16 = [v30 initWithFormat:@"%@ expected publisher upstream count %lu, but received %lu", v31, objc_msgSend(upstreams2, "count"), objc_msgSend(v11, "count")];
 
     v33 = MEMORY[0x1E696ABC0];
     v44 = *MEMORY[0x1E696A578];
@@ -650,24 +650,24 @@ void __48__BMBookmarkablePublisher_validateBookmarkNode___block_invoke(uint64_t 
   }
 }
 
-- (void)applyBookmarkNode:(id)a3
+- (void)applyBookmarkNode:(id)node
 {
-  v4 = a3;
-  v5 = [(BMBookmarkablePublisher *)self validateBookmarkNode:v4];
+  nodeCopy = node;
+  v5 = [(BMBookmarkablePublisher *)self validateBookmarkNode:nodeCopy];
 
   if (!v5)
   {
-    v6 = [v4 value];
-    [(BMBookmarkablePublisher *)self applyBookmark:v6];
+    value = [nodeCopy value];
+    [(BMBookmarkablePublisher *)self applyBookmark:value];
 
     v7 = objc_opt_class();
-    v8 = [(BPSPublisher *)self upstreamPublishers];
-    v9 = [v7 bookmarkablePublishersFromPublishers:v8];
+    upstreamPublishers = [(BPSPublisher *)self upstreamPublishers];
+    v9 = [v7 bookmarkablePublishersFromPublishers:upstreamPublishers];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __45__BMBookmarkablePublisher_applyBookmarkNode___block_invoke;
     v10[3] = &unk_1E8320C58;
-    v11 = v4;
+    v11 = nodeCopy;
     [v9 enumerateObjectsUsingBlock:v10];
   }
 }
@@ -681,18 +681,18 @@ void __45__BMBookmarkablePublisher_applyBookmarkNode___block_invoke(uint64_t a1,
   [v5 applyBookmarkNode:v6];
 }
 
-- (id)groupByKey:(id)a3
+- (id)groupByKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __47__BMBookmarkablePublisher_GroupBy__groupByKey___block_invoke;
   v16[3] = &unk_1E83210B0;
-  v5 = v4;
+  v5 = keyCopy;
   v17 = v5;
   v6 = [(BMBookmarkablePublisher *)self mapWithTransform:v16];
-  v7 = [(BMBookmarkablePublisher *)self multicast];
-  v8 = BPSPipelineSupportsPullBasedPublishers(v7);
+  multicast = [(BMBookmarkablePublisher *)self multicast];
+  v8 = BPSPipelineSupportsPullBasedPublishers(multicast);
 
   if (v8)
   {

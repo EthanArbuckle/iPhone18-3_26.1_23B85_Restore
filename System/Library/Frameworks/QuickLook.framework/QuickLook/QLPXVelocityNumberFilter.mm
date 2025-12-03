@@ -1,6 +1,6 @@
 @interface QLPXVelocityNumberFilter
 + (id)gestureVelocityFilter;
-- (QLPXVelocityNumberFilter)initWithInput:(double)a3;
+- (QLPXVelocityNumberFilter)initWithInput:(double)input;
 - (double)updatedOutput;
 @end
 
@@ -8,18 +8,18 @@
 
 + (id)gestureVelocityFilter
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v2[14] = 0x3F80624DE0000000;
   v2[15] = 0x3FE8000000000000;
 
   return v2;
 }
 
-- (QLPXVelocityNumberFilter)initWithInput:(double)a3
+- (QLPXVelocityNumberFilter)initWithInput:(double)input
 {
   v4.receiver = self;
   v4.super_class = QLPXVelocityNumberFilter;
-  result = [(QLPXNumberFilter *)&v4 initWithInput:a3];
+  result = [(QLPXNumberFilter *)&v4 initWithInput:input];
   if (result)
   {
     result->_minimumSampleInterval = 0.00000011920929;

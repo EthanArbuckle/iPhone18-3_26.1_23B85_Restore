@@ -2,11 +2,11 @@
 + (id)defaultManager;
 - (OKProducerPresetsManager)init;
 - (id)_defaultPresetsByName;
-- (id)_presetsByNameForFamily:(id)a3;
+- (id)_presetsByNameForFamily:(id)family;
 - (id)defaultPresets;
-- (id)defaultPresetsForFamily:(id)a3;
-- (id)presetForUniqueIdentifier:(id)a3;
-- (id)presetsForFamily:(id)a3;
+- (id)defaultPresetsForFamily:(id)family;
+- (id)presetForUniqueIdentifier:(id)identifier;
+- (id)presetsForFamily:(id)family;
 - (void)dealloc;
 @end
 
@@ -56,31 +56,31 @@ OKProducerPresetsManager *__42__OKProducerPresetsManager_defaultManager__block_i
   [(OKProducerPresetsManager *)&v4 dealloc];
 }
 
-- (id)_presetsByNameForFamily:(id)a3
+- (id)_presetsByNameForFamily:(id)family
 {
   presetsByFamily = self->_presetsByFamily;
   objc_sync_enter(presetsByFamily);
-  v6 = [(NSMutableDictionary *)self->_presetsByFamily objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_presetsByFamily objectForKey:family];
   if (!v6)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "URLForResource:withExtension:", @"OKProducerPresets", @"plist"}];
     if (v8)
     {
-      v9 = [v8 objectForKey:a3];
+      v9 = [v8 objectForKey:family];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __52__OKProducerPresetsManager__presetsByNameForFamily___block_invoke;
       v11[3] = &unk_279C8ED98;
-      v11[4] = a3;
-      v11[5] = v7;
+      v11[4] = family;
+      v11[5] = dictionary;
       [v9 enumerateKeysAndObjectsUsingBlock:v11];
     }
 
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v7];
+    v6 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
     if (v6)
     {
-      [(NSMutableDictionary *)self->_presetsByFamily setObject:v6 forKey:a3];
+      [(NSMutableDictionary *)self->_presetsByFamily setObject:v6 forKey:family];
     }
   }
 
@@ -121,15 +121,15 @@ LABEL_7:
   v4 = [(NSMutableDictionary *)self->_presetsByFamily objectForKey:@"DEFAULT"];
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v6 = [+[OKProducerManager defaultManager](OKProducerManager "defaultManager")];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __49__OKProducerPresetsManager__defaultPresetsByName__block_invoke;
     v8[3] = &unk_279C8EDC0;
-    v8[4] = v5;
+    v8[4] = dictionary;
     [v6 enumerateObjectsUsingBlock:v8];
-    v4 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v5];
+    v4 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
     if (v4)
     {
       [(NSMutableDictionary *)self->_presetsByFamily setObject:v4 forKey:@"DEFAULT"];
@@ -166,19 +166,19 @@ LABEL_7:
   return MEMORY[0x2821F96F8](v4, v5);
 }
 
-- (id)presetsForFamily:(id)a3
+- (id)presetsForFamily:(id)family
 {
   presetsByFamily = self->_presetsByFamily;
   objc_sync_enter(presetsByFamily);
-  v6 = [-[OKProducerPresetsManager _presetsByNameForFamily:](self _presetsByNameForFamily:{a3), "allValues"}];
+  v6 = [-[OKProducerPresetsManager _presetsByNameForFamily:](self _presetsByNameForFamily:{family), "allValues"}];
   objc_sync_exit(presetsByFamily);
   return v6;
 }
 
-- (id)defaultPresetsForFamily:(id)a3
+- (id)defaultPresetsForFamily:(id)family
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(OKProducerPresetsManager *)self presetsForFamily:a3];
+  v3 = [(OKProducerPresetsManager *)self presetsForFamily:family];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -219,9 +219,9 @@ LABEL_3:
   }
 }
 
-- (id)presetForUniqueIdentifier:(id)a3
+- (id)presetForUniqueIdentifier:(id)identifier
 {
-  v5 = [objc_msgSend(a3 componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "characterSetWithCharactersInString:", @"-", "firstObject"}];
+  v5 = [objc_msgSend(identifier componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "characterSetWithCharactersInString:", @"-", "firstObject"}];
   if (!v5)
   {
     return 0;
@@ -233,7 +233,7 @@ LABEL_3:
     return 0;
   }
 
-  return [v6 objectForKey:a3];
+  return [v6 objectForKey:identifier];
 }
 
 - (id)defaultPresets

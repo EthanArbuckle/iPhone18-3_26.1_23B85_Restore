@@ -1,13 +1,13 @@
 @interface _NTKPhotoIndexGenerator
-- (_NTKPhotoIndexGenerator)initWithSize:(int64_t)a3;
+- (_NTKPhotoIndexGenerator)initWithSize:(int64_t)size;
 - (int64_t)nextRandom;
 - (int64_t)nextSequential;
-- (void)setIndex:(int64_t)a3;
+- (void)setIndex:(int64_t)index;
 @end
 
 @implementation _NTKPhotoIndexGenerator
 
-- (_NTKPhotoIndexGenerator)initWithSize:(int64_t)a3
+- (_NTKPhotoIndexGenerator)initWithSize:(int64_t)size
 {
   v8.receiver = self;
   v8.super_class = _NTKPhotoIndexGenerator;
@@ -18,19 +18,19 @@
     stepSizes = v4->_stepSizes;
     v4->_stepSizes = &unk_28418AE88;
 
-    v5->_n = a3;
+    v5->_n = size;
     v5->_count = 0;
-    v5->_prevIndex = a3 - 1;
+    v5->_prevIndex = size - 1;
   }
 
   return v5;
 }
 
-- (void)setIndex:(int64_t)a3
+- (void)setIndex:(int64_t)index
 {
-  if (self->_n > a3)
+  if (self->_n > index)
   {
-    self->_prevIndex = a3;
+    self->_prevIndex = index;
   }
 }
 
@@ -55,15 +55,15 @@
           do
           {
             v8 = [(NSArray *)self->_stepSizes objectAtIndexedSubscript:arc4random() % [(NSArray *)self->_stepSizes count]];
-            v9 = [v8 integerValue];
+            integerValue = [v8 integerValue];
           }
 
-          while (v9 == self->_step);
+          while (integerValue == self->_step);
           n = self->_n;
         }
 
-        while (v9 == n);
-        self->_step = v9;
+        while (integerValue == n);
+        self->_step = integerValue;
         count = self->_count;
         if (!count)
         {

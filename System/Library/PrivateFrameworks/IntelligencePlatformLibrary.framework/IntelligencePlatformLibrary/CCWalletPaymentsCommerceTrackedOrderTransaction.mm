@@ -1,29 +1,29 @@
 @interface CCWalletPaymentsCommerceTrackedOrderTransaction
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCWalletPaymentsCommerceTrackedOrderTransaction)initWithAmount:(id)a3 isoCurrencyCode:(id)a4 paymentMethod:(id)a5 transactionIdenifier:(id)a6 error:(id *)a7;
-- (CCWalletPaymentsCommerceTrackedOrderTransaction)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCWalletPaymentsCommerceTrackedOrderTransaction)initWithAmount:(id)amount isoCurrencyCode:(id)code paymentMethod:(id)method transactionIdenifier:(id)idenifier error:(id *)error;
+- (CCWalletPaymentsCommerceTrackedOrderTransaction)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCWalletPaymentsCommerceTrackedOrderTransactionPaymentMethod)paymentMethod;
 - (NSString)amount;
 - (NSString)isoCurrencyCode;
 - (NSString)transactionIdenifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletPaymentsCommerceTrackedOrderTransaction
 
-- (CCWalletPaymentsCommerceTrackedOrderTransaction)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletPaymentsCommerceTrackedOrderTransaction)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v18[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"amount"];
-    v10 = [v6 objectForKeyedSubscript:@"isoCurrencyCode"];
-    v11 = [v6 objectForKeyedSubscript:@"paymentMethod"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"amount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isoCurrencyCode"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"paymentMethod"];
     if (v11)
     {
       v12 = v11;
@@ -45,8 +45,8 @@
       v13 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"transactionIdenifier"];
-    v16 = [[CCWalletPaymentsCommerceTrackedOrderTransaction alloc] initWithAmount:v9 isoCurrencyCode:v10 paymentMethod:v13 transactionIdenifier:v15 error:a4];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"transactionIdenifier"];
+    v16 = [[CCWalletPaymentsCommerceTrackedOrderTransaction alloc] initWithAmount:v9 isoCurrencyCode:v10 paymentMethod:v13 transactionIdenifier:v15 error:error];
     v12 = v13;
 LABEL_10:
 
@@ -65,27 +65,27 @@ LABEL_11:
   v3 = objc_opt_new();
   if (self->_amount)
   {
-    v4 = [(CCWalletPaymentsCommerceTrackedOrderTransaction *)self amount];
-    [v3 setObject:v4 forKeyedSubscript:@"amount"];
+    amount = [(CCWalletPaymentsCommerceTrackedOrderTransaction *)self amount];
+    [v3 setObject:amount forKeyedSubscript:@"amount"];
   }
 
   if (self->_isoCurrencyCode)
   {
-    v5 = [(CCWalletPaymentsCommerceTrackedOrderTransaction *)self isoCurrencyCode];
-    [v3 setObject:v5 forKeyedSubscript:@"isoCurrencyCode"];
+    isoCurrencyCode = [(CCWalletPaymentsCommerceTrackedOrderTransaction *)self isoCurrencyCode];
+    [v3 setObject:isoCurrencyCode forKeyedSubscript:@"isoCurrencyCode"];
   }
 
   if (self->_paymentMethod)
   {
-    v6 = [(CCWalletPaymentsCommerceTrackedOrderTransaction *)self paymentMethod];
-    v7 = [v6 jsonDictionary];
-    [v3 setObject:v7 forKeyedSubscript:@"paymentMethod"];
+    paymentMethod = [(CCWalletPaymentsCommerceTrackedOrderTransaction *)self paymentMethod];
+    jsonDictionary = [paymentMethod jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"paymentMethod"];
   }
 
   if (self->_transactionIdenifier)
   {
-    v8 = [(CCWalletPaymentsCommerceTrackedOrderTransaction *)self transactionIdenifier];
-    [v3 setObject:v8 forKeyedSubscript:@"transactionIdenifier"];
+    transactionIdenifier = [(CCWalletPaymentsCommerceTrackedOrderTransaction *)self transactionIdenifier];
+    [v3 setObject:transactionIdenifier forKeyedSubscript:@"transactionIdenifier"];
   }
 
   v9 = [v3 copy];
@@ -93,34 +93,34 @@ LABEL_11:
   return v9;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v10 = a3;
+  blockCopy = block;
   if (self->_amount)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8010 stringValue:self->_amount];
-    v10[2](v10, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_isoCurrencyCode)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8011 stringValue:self->_isoCurrencyCode];
-    v10[2](v10, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_paymentMethod)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8012 subMessageValue:self->_paymentMethod];
-    v10[2](v10, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
-  v8 = v10;
+  v8 = blockCopy;
   if (self->_transactionIdenifier)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8016 stringValue:self->_transactionIdenifier];
-    v10[2](v10, v9);
+    blockCopy[2](blockCopy, v9);
 
-    v8 = v10;
+    v8 = blockCopy;
   }
 }
 
@@ -152,10 +152,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -331,15 +331,15 @@ LABEL_42:
   return v36;
 }
 
-- (CCWalletPaymentsCommerceTrackedOrderTransaction)initWithAmount:(id)a3 isoCurrencyCode:(id)a4 paymentMethod:(id)a5 transactionIdenifier:(id)a6 error:(id *)a7
+- (CCWalletPaymentsCommerceTrackedOrderTransaction)initWithAmount:(id)amount isoCurrencyCode:(id)code paymentMethod:(id)method transactionIdenifier:(id)idenifier error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  amountCopy = amount;
+  codeCopy = code;
+  methodCopy = method;
+  idenifierCopy = idenifier;
   v16 = objc_opt_new();
   v17 = 0x1E696A000uLL;
-  if (v12)
+  if (amountCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -350,24 +350,24 @@ LABEL_42:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v13)
+    if (!codeCopy)
     {
 LABEL_4:
       v20 = v19;
-      if (v14)
+      if (methodCopy)
       {
         goto LABEL_5;
       }
 
 LABEL_12:
       v19 = v20;
-      if (!v15)
+      if (!idenifierCopy)
       {
 LABEL_15:
-        v27 = [v16 immutableData];
-        self = [(CCItemMessage *)self initWithData:v27 error:a7];
+        immutableData = [v16 immutableData];
+        self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-        v23 = self;
+        selfCopy = self;
         goto LABEL_17;
       }
 
@@ -378,7 +378,7 @@ LABEL_15:
   else
   {
     v19 = 0;
-    if (!v13)
+    if (!codeCopy)
     {
       goto LABEL_4;
     }
@@ -395,7 +395,7 @@ LABEL_15:
 
   CCPBDataWriterWriteStringField();
   v17 = 0x1E696A000uLL;
-  if (!v14)
+  if (!methodCopy)
   {
     goto LABEL_12;
   }
@@ -407,11 +407,11 @@ LABEL_5:
 
   if (v21)
   {
-    v22 = [v14 data];
+    data = [methodCopy data];
     CCPBDataWriterWriteDataField();
 
     v17 = 0x1E696A000;
-    if (!v15)
+    if (!idenifierCopy)
     {
       goto LABEL_15;
     }
@@ -432,17 +432,17 @@ LABEL_13:
 
 LABEL_16:
     CCSetError();
-    v23 = 0;
+    selfCopy = 0;
     v19 = v20;
     goto LABEL_17;
   }
 
 LABEL_8:
   CCSetError();
-  v23 = 0;
+  selfCopy = 0;
 LABEL_17:
 
-  return v23;
+  return selfCopy;
 }
 
 @end

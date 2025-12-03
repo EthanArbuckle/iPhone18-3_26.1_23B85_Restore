@@ -1,13 +1,13 @@
 @interface InAppMessagesMetricsDelegate
 - (_TtC22SubscribePageExtension28InAppMessagesMetricsDelegate)init;
-- (void)messageDidReportMetricsEvent:(id)a3 eventProperties:(id)a4;
+- (void)messageDidReportMetricsEvent:(id)event eventProperties:(id)properties;
 @end
 
 @implementation InAppMessagesMetricsDelegate
 
-- (void)messageDidReportMetricsEvent:(id)a3 eventProperties:(id)a4
+- (void)messageDidReportMetricsEvent:(id)event eventProperties:(id)properties
 {
-  v19 = self;
+  selfCopy = self;
   v20 = sub_100752B34();
   v5 = *(v20 - 8);
   __chkstk_darwin(v20);
@@ -21,8 +21,8 @@
   __chkstk_darwin(v12);
   v15 = &v17 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100752F44();
-  v18 = a3;
-  v16 = v19;
+  eventCopy = event;
+  v16 = selfCopy;
 
   sub_1007524C4();
   (*(v9 + 16))(v11, v16 + OBJC_IVAR____TtC22SubscribePageExtension28InAppMessagesMetricsDelegate_metricsPipeline, v8);

@@ -1,11 +1,11 @@
 @interface TSWPTextMagnifierTimeWeightedPoint
-- (BOOL)historyCovers:(double)a3;
+- (BOOL)historyCovers:(double)covers;
 - (CGPoint)weightedPoint;
-- (CGSize)displacementInInterval:(double)a3;
-- (CGSize)displacementInInterval:(double)a3 priorTo:(double)a4;
-- (double)distanceCoveredInInterval:(double)a3;
-- (double)distanceCoveredInInterval:(double)a3 priorTo:(double)a4;
-- (void)addPoint:(CGPoint)a3;
+- (CGSize)displacementInInterval:(double)interval;
+- (CGSize)displacementInInterval:(double)interval priorTo:(double)to;
+- (double)distanceCoveredInInterval:(double)interval;
+- (double)distanceCoveredInInterval:(double)interval priorTo:(double)to;
+- (void)addPoint:(CGPoint)point;
 - (void)clearHistory;
 @end
 
@@ -27,10 +27,10 @@
   while (v3);
 }
 
-- (void)addPoint:(CGPoint)a3
+- (void)addPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   Current = CFAbsoluteTimeGetCurrent();
   m_index = self->m_index;
   v8 = (self + 24 * m_index);
@@ -102,7 +102,7 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)historyCovers:(double)a3
+- (BOOL)historyCovers:(double)covers
 {
   Current = CFAbsoluteTimeGetCurrent();
   m_index = self->m_index;
@@ -123,7 +123,7 @@ LABEL_13:
       return 0;
     }
 
-    if (Current - v11 > a3)
+    if (Current - v11 > covers)
     {
       break;
     }
@@ -139,7 +139,7 @@ LABEL_13:
   return 1;
 }
 
-- (double)distanceCoveredInInterval:(double)a3
+- (double)distanceCoveredInInterval:(double)interval
 {
   CFAbsoluteTimeGetCurrent();
 
@@ -147,7 +147,7 @@ LABEL_13:
   return result;
 }
 
-- (CGSize)displacementInInterval:(double)a3
+- (CGSize)displacementInInterval:(double)interval
 {
   CFAbsoluteTimeGetCurrent();
 
@@ -157,7 +157,7 @@ LABEL_13:
   return result;
 }
 
-- (CGSize)displacementInInterval:(double)a3 priorTo:(double)a4
+- (CGSize)displacementInInterval:(double)interval priorTo:(double)to
 {
   v6 = *MEMORY[0x277CBF3A8];
   v7 = *(MEMORY[0x277CBF3A8] + 8);
@@ -178,8 +178,8 @@ LABEL_13:
 
     v16 = *(v14 - 1);
     v17 = *v14 == *(MEMORY[0x277CBF348] + 8) && v16 == *MEMORY[0x277CBF348];
-    v18 = a4 - v15;
-    if (v17 || v18 > a3)
+    v18 = to - v15;
+    if (v17 || v18 > interval)
     {
       break;
     }
@@ -209,7 +209,7 @@ LABEL_13:
   return result;
 }
 
-- (double)distanceCoveredInInterval:(double)a3 priorTo:(double)a4
+- (double)distanceCoveredInInterval:(double)interval priorTo:(double)to
 {
   v6 = *MEMORY[0x277CBF348];
   v7 = *(MEMORY[0x277CBF348] + 8);
@@ -228,8 +228,8 @@ LABEL_13:
     }
 
     v15 = *v13 == v7 && *(v13 - 1) == v6;
-    v16 = a4 - v14;
-    if (v15 || v16 > a3)
+    v16 = to - v14;
+    if (v15 || v16 > interval)
     {
       break;
     }

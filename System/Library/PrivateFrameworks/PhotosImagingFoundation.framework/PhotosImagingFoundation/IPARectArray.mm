@@ -1,28 +1,28 @@
 @interface IPARectArray
 + (id)rectArray;
-+ (id)rectArrayWithRect:(CGRect)a3;
-- (CGRect)rectAtIndex:(unint64_t)a3;
++ (id)rectArrayWithRect:(CGRect)rect;
+- (CGRect)rectAtIndex:(unint64_t)index;
 - (IPARectArray)init;
-- (IPARectArray)initWithRect:(CGRect)a3;
-- (IPARectArray)initWithRectArray:(id)a3;
+- (IPARectArray)initWithRect:(CGRect)rect;
+- (IPARectArray)initWithRectArray:(id)array;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)enumerateRects:(id)a3;
+- (void)enumerateRects:(id)rects;
 @end
 
 @implementation IPARectArray
 
-- (void)enumerateRects:(id)a3
+- (void)enumerateRects:(id)rects
 {
-  v6 = a3;
+  rectsCopy = rects;
   imp = self->_imp;
   v5 = *imp;
   if (*imp != imp[1])
   {
     do
     {
-      v6[2](*v5, v5[1], v5[2], v5[3]);
+      rectsCopy[2](*v5, v5[1], v5[2], v5[3]);
       v5 += 4;
     }
 
@@ -30,15 +30,15 @@
   }
 }
 
-- (CGRect)rectAtIndex:(unint64_t)a3
+- (CGRect)rectAtIndex:(unint64_t)index
 {
   v3 = *self->_imp;
-  if (a3 >= ((*(self->_imp + 1) - v3) >> 5))
+  if (index >= ((*(self->_imp + 1) - v3) >> 5))
   {
     std::vector<PA::Rect>::__throw_out_of_range[abi:ne200100]();
   }
 
-  v4 = (v3 + 32 * a3);
+  v4 = (v3 + 32 * index);
   v5 = *v4;
   v6 = v4[1];
   v7 = v4[2];
@@ -50,35 +50,35 @@
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [IPAMutableRectArray allocWithZone:a3];
+  v4 = [IPAMutableRectArray allocWithZone:zone];
 
   return [(IPARectArray *)v4 initWithRectArray:self];
 }
 
-+ (id)rectArrayWithRect:(CGRect)a3
++ (id)rectArrayWithRect:(CGRect)rect
 {
-  v3 = [[a1 alloc] initWithRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [[self alloc] initWithRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   return v3;
 }
 
 + (id)rectArray
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __27__IPARectArray_description__block_invoke;
   v11[3] = &unk_279A263C8;
-  v4 = v3;
+  v4 = array;
   v12 = v4;
   [(IPARectArray *)self enumerateRects:v11];
   v5 = MEMORY[0x277CCACA8];
@@ -117,10 +117,10 @@ void __27__IPARectArray_description__block_invoke(uint64_t a1, double a2, double
   [(IPARectArray *)&v5 dealloc];
 }
 
-- (IPARectArray)initWithRectArray:(id)a3
+- (IPARectArray)initWithRectArray:(id)array
 {
-  v4 = a3;
-  if (v4)
+  arrayCopy = array;
+  if (arrayCopy)
   {
     v6.receiver = self;
     v6.super_class = IPARectArray;
@@ -141,7 +141,7 @@ void __27__IPARectArray_description__block_invoke(uint64_t a1, double a2, double
   return result;
 }
 
-- (IPARectArray)initWithRect:(CGRect)a3
+- (IPARectArray)initWithRect:(CGRect)rect
 {
   v4.receiver = self;
   v4.super_class = IPARectArray;

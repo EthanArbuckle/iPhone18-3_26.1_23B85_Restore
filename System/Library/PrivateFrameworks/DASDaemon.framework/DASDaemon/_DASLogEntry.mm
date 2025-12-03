@@ -1,20 +1,20 @@
 @interface _DASLogEntry
-+ (id)logEntryForDate:(id)a3 category:(id)a4 message:(id)a5;
++ (id)logEntryForDate:(id)date category:(id)category message:(id)message;
 - (id)description;
 @end
 
 @implementation _DASLogEntry
 
-+ (id)logEntryForDate:(id)a3 category:(id)a4 message:(id)a5
++ (id)logEntryForDate:(id)date category:(id)category message:(id)message
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  messageCopy = message;
+  categoryCopy = category;
+  dateCopy = date;
   v10 = objc_alloc_init(objc_opt_class());
-  [v10 setDate:v9];
+  [v10 setDate:dateCopy];
 
-  [v10 setCategory:v8];
-  [v10 setMessage:v7];
+  [v10 setCategory:categoryCopy];
+  [v10 setMessage:messageCopy];
 
   return v10;
 }

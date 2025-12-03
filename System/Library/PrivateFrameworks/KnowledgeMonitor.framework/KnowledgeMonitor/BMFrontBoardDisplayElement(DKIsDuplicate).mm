@@ -11,14 +11,14 @@
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [a1 identifier];
-    if (v7 || ([v6 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    identifier = [self identifier];
+    if (identifier || ([v6 identifier], (bundleIdentifier2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [a1 identifier];
-      v9 = [v6 identifier];
-      v10 = [v8 isEqualToString:v9];
+      identifier2 = [self identifier];
+      identifier3 = [v6 identifier];
+      v10 = [identifier2 isEqualToString:identifier3];
 
-      if (v7)
+      if (identifier)
       {
 
         if (!v10)
@@ -37,21 +37,21 @@
       }
     }
 
-    v12 = [a1 bundleIdentifier];
-    if (!v12)
+    bundleIdentifier = [self bundleIdentifier];
+    if (!bundleIdentifier)
     {
-      v3 = [v6 bundleIdentifier];
-      if (!v3)
+      bundleIdentifier2 = [v6 bundleIdentifier];
+      if (!bundleIdentifier2)
       {
         goto LABEL_15;
       }
     }
 
-    v13 = [a1 bundleIdentifier];
-    v14 = [v6 bundleIdentifier];
-    v15 = [v13 isEqualToString:v14];
+    bundleIdentifier3 = [self bundleIdentifier];
+    bundleIdentifier4 = [v6 bundleIdentifier];
+    v15 = [bundleIdentifier3 isEqualToString:bundleIdentifier4];
 
-    if (v12)
+    if (bundleIdentifier)
     {
 
       if (!v15)
@@ -60,44 +60,44 @@
       }
 
 LABEL_15:
-      v16 = [a1 elementType];
-      if (v16 != [v6 elementType])
+      elementType = [self elementType];
+      if (elementType != [v6 elementType])
       {
         goto LABEL_20;
       }
 
-      v17 = [a1 layoutRole];
-      if (v17 != [v6 layoutRole])
+      layoutRole = [self layoutRole];
+      if (layoutRole != [v6 layoutRole])
       {
         goto LABEL_20;
       }
 
-      v18 = [a1 level];
-      if (v18 != [v6 level])
+      level = [self level];
+      if (level != [v6 level])
       {
         goto LABEL_20;
       }
 
-      v19 = [a1 hasKeyboardFocus];
-      if (v19 != [v6 hasKeyboardFocus])
+      hasKeyboardFocus = [self hasKeyboardFocus];
+      if (hasKeyboardFocus != [v6 hasKeyboardFocus])
       {
         goto LABEL_20;
       }
 
-      v20 = [a1 isUIApplicationElement];
-      if (v20 != [v6 isUIApplicationElement])
+      isUIApplicationElement = [self isUIApplicationElement];
+      if (isUIApplicationElement != [v6 isUIApplicationElement])
       {
         goto LABEL_20;
       }
 
-      v22 = [a1 display];
-      if (v22 || ([v6 display], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      display = [self display];
+      if (display || ([v6 display], (bundleIdentifier2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v23 = [a1 display];
-        v24 = [v6 display];
-        v11 = [v23 isEqual:v24];
+        display2 = [self display];
+        display3 = [v6 display];
+        v11 = [display2 isEqual:display3];
 
-        if (v22)
+        if (display)
         {
 LABEL_29:
 

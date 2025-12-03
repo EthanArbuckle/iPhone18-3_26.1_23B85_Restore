@@ -2,16 +2,16 @@
 + (id)sharedInstance;
 - (WLKConfigurationManager)init;
 - (id)_config;
-- (id)_configurationWithOptions:(int64_t)a3 cachePolicy:(unint64_t)a4 queryParameters:(id)a5;
+- (id)_configurationWithOptions:(int64_t)options cachePolicy:(unint64_t)policy queryParameters:(id)parameters;
 - (id)_init;
-- (id)_stringForCachePolicy:(unint64_t)a3;
+- (id)_stringForCachePolicy:(unint64_t)policy;
 - (id)_utsk;
-- (void)_fetchConfigurationWithOptions:(int64_t)a3 cachePolicy:(unint64_t)a4 queryParameters:(id)a5 completion:(id)a6;
+- (void)_fetchConfigurationWithOptions:(int64_t)options cachePolicy:(unint64_t)policy queryParameters:(id)parameters completion:(id)completion;
 - (void)_invalidateCache;
 - (void)_invalidateNetworkCache;
-- (void)_setConfig:(id)a3;
-- (void)_setUtsk:(id)a3;
-- (void)fetchConfigurationWithOptions:(int64_t)a3 cachePolicy:(unint64_t)a4 queryParameters:(id)a5 completion:(id)a6;
+- (void)_setConfig:(id)config;
+- (void)_setUtsk:(id)utsk;
+- (void)fetchConfigurationWithOptions:(int64_t)options cachePolicy:(unint64_t)policy queryParameters:(id)parameters completion:(id)completion;
 @end
 
 @implementation WLKConfigurationManager
@@ -63,8 +63,8 @@ void __41__WLKConfigurationManager_sharedInstance__block_invoke()
     fetchQueue = v3->_fetchQueue;
     v3->_fetchQueue = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v3 selector:sel__handleLibraryDidChangeNotification_ name:@"WLKAppLibraryDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__handleLibraryDidChangeNotification_ name:@"WLKAppLibraryDidChangeNotification" object:0];
 
     v8 = [[WLKSharedFileStorage alloc] initWithFileName:@"serverConfiguration.plist" class:objc_opt_class()];
     fileCache = v3->_fileCache;
@@ -90,30 +90,30 @@ void __41__WLKConfigurationManager_sharedInstance__block_invoke()
   return 0;
 }
 
-- (void)fetchConfigurationWithOptions:(int64_t)a3 cachePolicy:(unint64_t)a4 queryParameters:(id)a5 completion:(id)a6
+- (void)fetchConfigurationWithOptions:(int64_t)options cachePolicy:(unint64_t)policy queryParameters:(id)parameters completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  if (!v11)
+  parametersCopy = parameters;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [WLKConfigurationManager fetchConfigurationWithOptions:cachePolicy:queryParameters:completion:];
   }
 
-  v12 = v11;
-  v13 = [(WLKConfigurationManager *)self _config];
-  v14 = v13;
-  if (a4 > 3)
+  v12 = completionCopy;
+  _config = [(WLKConfigurationManager *)self _config];
+  v14 = _config;
+  if (policy > 3)
   {
-    if (a4 == 4)
+    if (policy == 4)
     {
-      if (v13 && ([v13 isValidIgnoringExpiration] & 1) != 0)
+      if (_config && ([_config isValidIgnoringExpiration] & 1) != 0)
       {
         goto LABEL_5;
       }
     }
 
-    else if (a4 == 5)
+    else if (policy == 5)
     {
       v17 = WLKNetworkingLogObject();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -138,21 +138,21 @@ void __41__WLKConfigurationManager_sharedInstance__block_invoke()
     }
   }
 
-  else if (a4 - 1 >= 2)
+  else if (policy - 1 >= 2)
   {
-    if (!a4 && v13 && [v13 isValid])
+    if (!policy && _config && [_config isValid])
     {
       goto LABEL_5;
     }
   }
 
-  else if (v13)
+  else if (_config)
   {
 LABEL_5:
     v15 = WLKNetworkingLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(WLKConfigurationManager *)self _stringForCachePolicy:a4];
+      v16 = [(WLKConfigurationManager *)self _stringForCachePolicy:policy];
       v23 = 138412290;
       v24 = v16;
       _os_log_impl(&dword_272A0F000, v15, OS_LOG_TYPE_DEFAULT, "WLKConfigurationManager - PreCheck: Use memory cache immediately, cachePolicy: %@", &v23, 0xCu);
@@ -165,28 +165,28 @@ LABEL_5:
   v20 = WLKNetworkingLogObject();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(WLKConfigurationManager *)self _stringForCachePolicy:a4];
+    v21 = [(WLKConfigurationManager *)self _stringForCachePolicy:policy];
     v23 = 138412290;
     v24 = v21;
     _os_log_impl(&dword_272A0F000, v20, OS_LOG_TYPE_DEFAULT, "WLKConfigurationManager - PreCheck: Enter fetchQueue to fetch configuration, cachePolicy: %@", &v23, 0xCu);
   }
 
-  [(WLKConfigurationManager *)self _fetchConfigurationWithOptions:a3 cachePolicy:a4 queryParameters:v10 completion:v12];
+  [(WLKConfigurationManager *)self _fetchConfigurationWithOptions:options cachePolicy:policy queryParameters:parametersCopy completion:v12];
 LABEL_24:
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchConfigurationWithOptions:(int64_t)a3 cachePolicy:(unint64_t)a4 queryParameters:(id)a5 completion:(id)a6
+- (void)_fetchConfigurationWithOptions:(int64_t)options cachePolicy:(unint64_t)policy queryParameters:(id)parameters completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __97__WLKConfigurationManager__fetchConfigurationWithOptions_cachePolicy_queryParameters_completion___block_invoke;
   v22[3] = &unk_279E5E8A8;
-  v23 = v11;
-  v12 = v11;
+  v23 = completionCopy;
+  v12 = completionCopy;
   v13 = MEMORY[0x2743D2DF0](v22);
   objc_initWeak(&location, self);
   fetchQueue = self->_fetchQueue;
@@ -195,12 +195,12 @@ LABEL_24:
   v17[2] = __97__WLKConfigurationManager__fetchConfigurationWithOptions_cachePolicy_queryParameters_completion___block_invoke_2;
   v17[3] = &unk_279E5F040;
   objc_copyWeak(v20, &location);
-  v20[1] = a4;
-  v20[2] = a3;
-  v18 = v10;
+  v20[1] = policy;
+  v20[2] = options;
+  v18 = parametersCopy;
   v19 = v13;
   v17[4] = self;
-  v15 = v10;
+  v15 = parametersCopy;
   v16 = v13;
   dispatch_async(fetchQueue, v17);
 
@@ -551,9 +551,9 @@ void __97__WLKConfigurationManager__fetchConfigurationWithOptions_cachePolicy_qu
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_configurationWithOptions:(int64_t)a3 cachePolicy:(unint64_t)a4 queryParameters:(id)a5
+- (id)_configurationWithOptions:(int64_t)options cachePolicy:(unint64_t)policy queryParameters:(id)parameters
 {
-  v8 = a5;
+  parametersCopy = parameters;
   dispatch_assert_queue_not_V2(MEMORY[0x277D85CD0]);
   v17 = 0;
   v18 = &v17;
@@ -569,7 +569,7 @@ void __97__WLKConfigurationManager__fetchConfigurationWithOptions_cachePolicy_qu
   v16 = &v17;
   v10 = v9;
   v15 = v10;
-  [(WLKConfigurationManager *)self fetchConfigurationWithOptions:a3 cachePolicy:a4 queryParameters:v8 completion:v14];
+  [(WLKConfigurationManager *)self fetchConfigurationWithOptions:options cachePolicy:policy queryParameters:parametersCopy completion:v14];
   v11 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(v10, v11);
   v12 = v18[5];
@@ -593,42 +593,42 @@ void __81__WLKConfigurationManager__configurationWithOptions_cachePolicy_queryPa
 - (id)_utsk
 {
   os_unfair_lock_lock(&__accessLock);
-  v3 = [(WLKServerConfigurationResponse *)self->_config utsk];
-  v4 = [v3 copy];
+  utsk = [(WLKServerConfigurationResponse *)self->_config utsk];
+  v4 = [utsk copy];
 
   os_unfair_lock_unlock(&__accessLock);
 
   return v4;
 }
 
-- (void)_setUtsk:(id)a3
+- (void)_setUtsk:(id)utsk
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  utskCopy = utsk;
   os_unfair_lock_lock(&__accessLock);
-  v5 = [(WLKServerConfigurationResponse *)self->_config utsk];
-  if (v5 && (v6 = v5, -[WLKServerConfigurationResponse utsk](self->_config, "utsk"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqualToString:v4], v7, v6, (v8 & 1) == 0))
+  utsk = [(WLKServerConfigurationResponse *)self->_config utsk];
+  if (utsk && (v6 = utsk, -[WLKServerConfigurationResponse utsk](self->_config, "utsk"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqualToString:utskCopy], v7, v6, (v8 & 1) == 0))
   {
     v9 = WLKNetworkingLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(WLKServerConfigurationResponse *)self->_config utsk];
+      utsk2 = [(WLKServerConfigurationResponse *)self->_config utsk];
       v17 = 138412546;
-      v18 = v10;
+      v18 = utsk2;
       v19 = 2112;
-      v20 = v4;
+      v20 = utskCopy;
       _os_log_impl(&dword_272A0F000, v9, OS_LOG_TYPE_DEFAULT, "WLKConfigurationManager - Handling UTSK change: %@ -> %@", &v17, 0x16u);
     }
 
-    v11 = [(WLKServerConfigurationResponse *)self->_config configurationResponseByReplacingUTSK:v4];
+    v11 = [(WLKServerConfigurationResponse *)self->_config configurationResponseByReplacingUTSK:utskCopy];
     config = self->_config;
     self->_config = v11;
     v13 = v11;
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    v15 = [(WLKServerConfigurationResponse *)self->_config responseDictionary];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    responseDictionary = [(WLKServerConfigurationResponse *)self->_config responseDictionary];
 
-    [v14 postNotificationName:@"WLKServerConfigurationUTSKDidChangeNotification" object:v15];
+    [defaultCenter postNotificationName:@"WLKServerConfigurationUTSKDidChangeNotification" object:responseDictionary];
     os_unfair_lock_unlock(&__accessLock);
     [(WLKConfigurationManager *)self _invalidateCache];
   }
@@ -641,16 +641,16 @@ void __81__WLKConfigurationManager__configurationWithOptions_cachePolicy_queryPa
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setConfig:(id)a3
+- (void)_setConfig:(id)config
 {
-  v6 = a3;
+  configCopy = config;
   os_unfair_lock_lock(&__accessLock);
-  objc_storeStrong(&self->_config, a3);
+  objc_storeStrong(&self->_config, config);
   os_unfair_lock_unlock(&__accessLock);
-  if (v6)
+  if (configCopy)
   {
     v5 = +[WLKStoredConfigurationManager sharedInstance];
-    [v5 _updateConfiguration:v6];
+    [v5 _updateConfiguration:configCopy];
   }
 }
 
@@ -702,16 +702,16 @@ void __50__WLKConfigurationManager__invalidateNetworkCache__block_invoke(uint64_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_stringForCachePolicy:(unint64_t)a3
+- (id)_stringForCachePolicy:(unint64_t)policy
 {
-  if (a3 > 5)
+  if (policy > 5)
   {
     return @"Unmapped";
   }
 
   else
   {
-    return off_279E5F088[a3];
+    return off_279E5F088[policy];
   }
 }
 

@@ -1,13 +1,13 @@
 @interface THWReviewImageMultipleChoiceLayout
 - (CGRect)contentFrame;
-- (CGRect)p_frameForChoiceIndex:(unint64_t)a3;
+- (CGRect)p_frameForChoiceIndex:(unint64_t)index;
 - (CGSize)minContentSize;
 - (CGSize)p_imageSize;
-- (THWReviewImageMultipleChoiceLayout)initWithQuestion:(id)a3 index:(unint64_t)a4 delegate:(id)a5;
+- (THWReviewImageMultipleChoiceLayout)initWithQuestion:(id)question index:(unint64_t)index delegate:(id)delegate;
 - (id)computeLayoutGeometry;
 - (id)dependentLayouts;
-- (id)layoutForChoiceIndex:(unint64_t)a3;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutForChoiceIndex:(unint64_t)index;
+- (id)layoutGeometryForLayout:(id)layout;
 - (unint64_t)columnCount;
 - (unint64_t)rowCount;
 - (void)dealloc;
@@ -18,7 +18,7 @@
 
 @implementation THWReviewImageMultipleChoiceLayout
 
-- (THWReviewImageMultipleChoiceLayout)initWithQuestion:(id)a3 index:(unint64_t)a4 delegate:(id)a5
+- (THWReviewImageMultipleChoiceLayout)initWithQuestion:(id)question index:(unint64_t)index delegate:(id)delegate
 {
   v12.receiver = self;
   v12.super_class = THWReviewImageMultipleChoiceLayout;
@@ -29,9 +29,9 @@
     size = CGRectNull.size;
     v8->_contentFrame.origin = CGRectNull.origin;
     v8->_contentFrame.size = size;
-    v8->_questionIndex = a4;
-    v8->_question = a3;
-    v9->_delegate = a5;
+    v8->_questionIndex = index;
+    v8->_question = question;
+    v9->_delegate = delegate;
     [(THWReviewImageMultipleChoiceLayout *)v9 p_setupAnswerLayouts];
   }
 
@@ -217,7 +217,7 @@ LABEL_23:
   return v3;
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   v4 = TSUProtocolCast();
   if (!v4)
@@ -237,16 +237,16 @@ LABEL_23:
   return v11;
 }
 
-- (id)layoutForChoiceIndex:(unint64_t)a3
+- (id)layoutForChoiceIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_answerLayouts count]<= a3)
+  if ([(NSArray *)self->_answerLayouts count]<= index)
   {
     return 0;
   }
 
   answerLayouts = self->_answerLayouts;
 
-  return [(NSArray *)answerLayouts objectAtIndex:a3];
+  return [(NSArray *)answerLayouts objectAtIndex:index];
 }
 
 - (void)p_setupAnswerLayouts
@@ -276,8 +276,8 @@ LABEL_23:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(THWReviewQuestion *)self->_question choices];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  choices = [(THWReviewQuestion *)self->_question choices];
+  v5 = [(NSArray *)choices countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -288,20 +288,20 @@ LABEL_23:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(choices);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) contentImage];
-        if (v9)
+        contentImage = [*(*(&v14 + 1) + 8 * i) contentImage];
+        if (contentImage)
         {
-          [v9 size];
+          [contentImage size];
           width = v10;
           height = v11;
           goto LABEL_11;
         }
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [(NSArray *)choices countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -319,30 +319,30 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)p_frameForChoiceIndex:(unint64_t)a3
+- (CGRect)p_frameForChoiceIndex:(unint64_t)index
 {
   [(THWReviewImageMultipleChoiceLayout *)self contentFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(THWReviewImageMultipleChoiceLayout *)self rowCount];
-  v14 = [(THWReviewImageMultipleChoiceLayout *)self columnCount];
-  v15 = (v10 + (v14 - 1) * -6.0) / v14;
+  rowCount = [(THWReviewImageMultipleChoiceLayout *)self rowCount];
+  columnCount = [(THWReviewImageMultipleChoiceLayout *)self columnCount];
+  v15 = (v10 + (columnCount - 1) * -6.0) / columnCount;
   v16 = floorf(v15);
-  v17 = ldiv(a3, v14);
+  v17 = ldiv(index, columnCount);
   v18 = v6 + v17.rem * (v16 + 6.0);
-  if (v17.quot + 1 >= v13)
+  if (v17.quot + 1 >= rowCount)
   {
     v19 = [(NSArray *)[(THWReviewQuestion *)self->_question choices] count];
     v20 = v18 + floorf(v16 * 0.5);
-    if (v14 * v13 != v19)
+    if (columnCount * rowCount != v19)
     {
       v18 = v20;
     }
   }
 
-  v21 = (v12 + (v13 - 1) * -6.0) / v13;
+  v21 = (v12 + (rowCount - 1) * -6.0) / rowCount;
   v22 = floorf(v21);
   v23 = v8 + v17.quot * (v22 + 6.0);
   v24 = v18;

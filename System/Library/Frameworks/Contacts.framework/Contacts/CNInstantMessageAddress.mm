@@ -1,15 +1,15 @@
 @interface CNInstantMessageAddress
-+ (CNInstantMessageAddress)instantMessageAddressWithDictionaryRepresentation:(id)a3;
++ (CNInstantMessageAddress)instantMessageAddressWithDictionaryRepresentation:(id)representation;
 + (NSString)localizedStringForService:(NSString *)service;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValid:(id *)a3;
-- (CNInstantMessageAddress)initWithCoder:(id)a3;
-- (CNInstantMessageAddress)initWithUsername:(id)a3 userIdentifier:(id)a4 service:(id)a5 teamIdentifier:(id)a6 bundleIdentifiers:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValid:(id *)valid;
+- (CNInstantMessageAddress)initWithCoder:(id)coder;
+- (CNInstantMessageAddress)initWithUsername:(id)username userIdentifier:(id)identifier service:(id)service teamIdentifier:(id)teamIdentifier bundleIdentifiers:(id)identifiers;
 - (NSString)description;
 - (id)dictionaryRepresentation;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNInstantMessageAddress
@@ -19,17 +19,17 @@
   v4 = MEMORY[0x1E6996750];
   v5 = MEMORY[0x1E696AAE8];
   v6 = service;
-  v7 = [v5 bundleForClass:a1];
+  v7 = [v5 bundleForClass:self];
   v8 = [v4 localizedStringForString:v6 bundle:v7 table:@"MessagingServices" returningNilIfNotFound:0];
 
   return v8;
 }
 
-+ (CNInstantMessageAddress)instantMessageAddressWithDictionaryRepresentation:(id)a3
++ (CNInstantMessageAddress)instantMessageAddressWithDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = +[CN instantMessageAddressFromDictionaryTransform];
-  v5 = (v4)[2](v4, v3);
+  v5 = (v4)[2](v4, representationCopy);
 
   return v5;
 }
@@ -42,45 +42,45 @@
   return v4;
 }
 
-- (CNInstantMessageAddress)initWithUsername:(id)a3 userIdentifier:(id)a4 service:(id)a5 teamIdentifier:(id)a6 bundleIdentifiers:(id)a7
+- (CNInstantMessageAddress)initWithUsername:(id)username userIdentifier:(id)identifier service:(id)service teamIdentifier:(id)teamIdentifier bundleIdentifiers:(id)identifiers
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  usernameCopy = username;
+  identifierCopy = identifier;
+  serviceCopy = service;
+  teamIdentifierCopy = teamIdentifier;
+  identifiersCopy = identifiers;
   v30.receiver = self;
   v30.super_class = CNInstantMessageAddress;
   v17 = [(CNInstantMessageAddress *)&v30 init];
   if (v17)
   {
     v18 = &stru_1F094DAB0;
-    if (!v14)
+    if (!serviceCopy)
     {
-      v14 = &stru_1F094DAB0;
+      serviceCopy = &stru_1F094DAB0;
     }
 
-    if (v12)
+    if (usernameCopy)
     {
-      v18 = [v12 copy];
+      v18 = [usernameCopy copy];
     }
 
     username = v17->_username;
     v17->_username = &v18->isa;
 
-    v20 = [v13 copy];
+    v20 = [identifierCopy copy];
     userIdentifier = v17->_userIdentifier;
     v17->_userIdentifier = v20;
 
-    v22 = [(__CFString *)v14 copy];
+    v22 = [(__CFString *)serviceCopy copy];
     service = v17->_service;
     v17->_service = v22;
 
-    v24 = [v15 copy];
+    v24 = [teamIdentifierCopy copy];
     teamIdentifier = v17->_teamIdentifier;
     v17->_teamIdentifier = v24;
 
-    v26 = [v16 copy];
+    v26 = [identifiersCopy copy];
     bundleIdentifiers = v17->_bundleIdentifiers;
     v17->_bundleIdentifiers = v26;
 
@@ -90,43 +90,43 @@
   return v17;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CNMutableInstantMessageAddress alloc];
-  v5 = [(CNInstantMessageAddress *)self username];
-  v6 = [(CNInstantMessageAddress *)self userIdentifier];
-  v7 = [(CNInstantMessageAddress *)self service];
-  v8 = [(CNInstantMessageAddress *)self teamIdentifier];
-  v9 = [(CNInstantMessageAddress *)self bundleIdentifiers];
-  v10 = [(CNInstantMessageAddress *)v4 initWithUsername:v5 userIdentifier:v6 service:v7 teamIdentifier:v8 bundleIdentifiers:v9];
+  username = [(CNInstantMessageAddress *)self username];
+  userIdentifier = [(CNInstantMessageAddress *)self userIdentifier];
+  service = [(CNInstantMessageAddress *)self service];
+  teamIdentifier = [(CNInstantMessageAddress *)self teamIdentifier];
+  bundleIdentifiers = [(CNInstantMessageAddress *)self bundleIdentifiers];
+  v10 = [(CNInstantMessageAddress *)v4 initWithUsername:username userIdentifier:userIdentifier service:service teamIdentifier:teamIdentifier bundleIdentifiers:bundleIdentifiers];
 
   return v10;
 }
 
-- (CNInstantMessageAddress)initWithCoder:(id)a3
+- (CNInstantMessageAddress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = CNInstantMessageAddress;
   v5 = [(CNInstantMessageAddress *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_username"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_username"];
     v7 = [v6 copy];
     username = v5->_username;
     v5->_username = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_userIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_userIdentifier"];
     v10 = [v9 copy];
     userIdentifier = v5->_userIdentifier;
     v5->_userIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_service"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_service"];
     v13 = [v12 copy];
     service = v5->_service;
     v5->_service = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_teamIdentifier"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_teamIdentifier"];
     v16 = [v15 copy];
     teamIdentifier = v5->_teamIdentifier;
     v5->_teamIdentifier = v16;
@@ -134,7 +134,7 @@
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"_bundleIdentifiers"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"_bundleIdentifiers"];
     v22 = [v21 copy];
     bundleIdentifiers = v5->_bundleIdentifiers;
     v5->_bundleIdentifiers = v22;
@@ -145,15 +145,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   username = self->_username;
-  v5 = a3;
-  [v5 encodeObject:username forKey:@"_username"];
-  [v5 encodeObject:self->_userIdentifier forKey:@"_userIdentifier"];
-  [v5 encodeObject:self->_service forKey:@"_service"];
-  [v5 encodeObject:self->_teamIdentifier forKey:@"_teamIdentifier"];
-  [v5 encodeObject:self->_bundleIdentifiers forKey:@"_bundleIdentifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:username forKey:@"_username"];
+  [coderCopy encodeObject:self->_userIdentifier forKey:@"_userIdentifier"];
+  [coderCopy encodeObject:self->_service forKey:@"_service"];
+  [coderCopy encodeObject:self->_teamIdentifier forKey:@"_teamIdentifier"];
+  [coderCopy encodeObject:self->_bundleIdentifiers forKey:@"_bundleIdentifiers"];
 }
 
 - (NSString)description
@@ -164,14 +164,14 @@
   v6 = [v3 appendName:@"service" object:self->_service];
   v7 = [v3 appendName:@"teamIdentifier" object:self->_teamIdentifier];
   v8 = [v3 appendName:@"bundleIdentifiers" object:self->_bundleIdentifiers];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v24[0] = MEMORY[0x1E69E9820];
@@ -179,7 +179,7 @@
   v24[2] = __35__CNInstantMessageAddress_isEqual___block_invoke;
   v24[3] = &unk_1E7412228;
   v24[4] = self;
-  v25 = v4;
+  v25 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __35__CNInstantMessageAddress_isEqual___block_invoke_2;
@@ -349,7 +349,7 @@ uint64_t __31__CNInstantMessageAddress_hash__block_invoke_5(uint64_t a1)
   return v3;
 }
 
-- (BOOL)isValid:(id *)a3
+- (BOOL)isValid:(id *)valid
 {
   if (isValid__cn_once_token_0_0 != -1)
   {
@@ -369,7 +369,7 @@ uint64_t __31__CNInstantMessageAddress_hash__block_invoke_5(uint64_t a1)
     [CNInstantMessageAddress isValid:];
   }
 
-  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2_0 error:a3];
+  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2_0 error:valid];
 
   return v8;
 }

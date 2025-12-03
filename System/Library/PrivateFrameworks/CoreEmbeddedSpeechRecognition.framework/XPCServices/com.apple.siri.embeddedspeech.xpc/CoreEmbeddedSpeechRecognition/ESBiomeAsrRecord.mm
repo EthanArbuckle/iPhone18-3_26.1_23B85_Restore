@@ -1,8 +1,8 @@
 @interface ESBiomeAsrRecord
 - (BOOL)qualify;
-- (ESBiomeAsrRecord)initWithAsrId:(id)a3 interactionId:(id)a4 language:(id)a5 taskName:(id)a6 samplingRate:(unint64_t)a7;
+- (ESBiomeAsrRecord)initWithAsrId:(id)id interactionId:(id)interactionId language:(id)language taskName:(id)name samplingRate:(unint64_t)rate;
 - (void)sendEvent;
-- (void)setCorrectedText:(id)a3 interactionId:(id)a4;
+- (void)setCorrectedText:(id)text interactionId:(id)id;
 @end
 
 @implementation ESBiomeAsrRecord
@@ -12,12 +12,12 @@
   if ([(ESBiomeAsrRecord *)self qualify])
   {
     v3 = BiomeLibrary();
-    v4 = [v3 Dictation];
-    v5 = [v4 UserEdit];
+    dictation = [v3 Dictation];
+    userEdit = [dictation UserEdit];
 
-    if (v5)
+    if (userEdit)
     {
-      v26 = v5;
+      v26 = userEdit;
       v6 = [BMDictationUserEditRequestMetadata alloc];
       language = self->_language;
       taskName = self->_taskName;
@@ -29,7 +29,7 @@
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v24 = self;
+      selfCopy = self;
       obj = self->_selectedAlternatives;
       v10 = [(NSArray *)obj countByEnumeratingWithState:&v29 objects:v39 count:16];
       if (v10)
@@ -67,7 +67,7 @@
         while (v11);
       }
 
-      v21 = [[BMDictationUserEdit alloc] initWithAsrID:v24->_asrId interactionID:v24->_interactionId metadata:v25 startIndex:0 endIndex:0 correctedText:v24->_correctedText recognizedText:v24->_recognizedText recognizedTokens:v24->_recognizedTokens alternativeSelections:v27];
+      v21 = [[BMDictationUserEdit alloc] initWithAsrID:selfCopy->_asrId interactionID:selfCopy->_interactionId metadata:v25 startIndex:0 endIndex:0 correctedText:selfCopy->_correctedText recognizedText:selfCopy->_recognizedText recognizedTokens:selfCopy->_recognizedTokens alternativeSelections:v27];
       v22 = AFSiriLogContextSpeech;
       if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
       {
@@ -78,9 +78,9 @@
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%s Donating edit record to Biome: %@", buf, 0x16u);
       }
 
-      v5 = v26;
-      v23 = [v26 source];
-      [v23 sendEvent:v21];
+      userEdit = v26;
+      source = [v26 source];
+      [source sendEvent:v21];
     }
   }
 }
@@ -112,44 +112,44 @@
   return v3;
 }
 
-- (void)setCorrectedText:(id)a3 interactionId:(id)a4
+- (void)setCorrectedText:(id)text interactionId:(id)id
 {
-  v8 = a3;
-  if ([a4 isEqualToString:self->_interactionId])
+  textCopy = text;
+  if ([id isEqualToString:self->_interactionId])
   {
-    v6 = [v8 copy];
+    v6 = [textCopy copy];
     correctedText = self->_correctedText;
     self->_correctedText = v6;
   }
 }
 
-- (ESBiomeAsrRecord)initWithAsrId:(id)a3 interactionId:(id)a4 language:(id)a5 taskName:(id)a6 samplingRate:(unint64_t)a7
+- (ESBiomeAsrRecord)initWithAsrId:(id)id interactionId:(id)interactionId language:(id)language taskName:(id)name samplingRate:(unint64_t)rate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  idCopy = id;
+  interactionIdCopy = interactionId;
+  languageCopy = language;
+  nameCopy = name;
   v31.receiver = self;
   v31.super_class = ESBiomeAsrRecord;
   v16 = [(ESBiomeAsrRecord *)&v31 init];
   if (v16)
   {
-    if (![v15 isEqualToString:@"Dictation"])
+    if (![nameCopy isEqualToString:@"Dictation"])
     {
       goto LABEL_11;
     }
 
-    if (![v12 length])
+    if (![idCopy length])
     {
       goto LABEL_11;
     }
 
-    if (![v13 length])
+    if (![interactionIdCopy length])
     {
       goto LABEL_11;
     }
 
-    if (![v14 length])
+    if (![languageCopy length])
     {
       goto LABEL_11;
     }
@@ -160,32 +160,32 @@
     }
 
     v17 = +[AFPreferences sharedPreferences];
-    v18 = [v17 isDictationHIPAACompliant];
+    isDictationHIPAACompliant = [v17 isDictationHIPAACompliant];
 
-    if ((v18 & 1) != 0 || (+[AFPreferences sharedPreferences](AFPreferences, "sharedPreferences"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 siriDataSharingOptInStatus], v19, v20 != 1))
+    if ((isDictationHIPAACompliant & 1) != 0 || (+[AFPreferences sharedPreferences](AFPreferences, "sharedPreferences"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 siriDataSharingOptInStatus], v19, v20 != 1))
     {
 LABEL_11:
       v29 = 0;
       goto LABEL_12;
     }
 
-    v21 = [v12 copy];
+    v21 = [idCopy copy];
     asrId = v16->_asrId;
     v16->_asrId = v21;
 
-    v23 = [v13 copy];
+    v23 = [interactionIdCopy copy];
     interactionId = v16->_interactionId;
     v16->_interactionId = v23;
 
-    v25 = [v14 copy];
+    v25 = [languageCopy copy];
     language = v16->_language;
     v16->_language = v25;
 
-    v27 = [v15 copy];
+    v27 = [nameCopy copy];
     taskName = v16->_taskName;
     v16->_taskName = v27;
 
-    v16->_samplingRate = a7;
+    v16->_samplingRate = rate;
   }
 
   v29 = v16;

@@ -6,7 +6,7 @@
 
 - (uint64_t)wlk_deepHash
 {
-  v1 = WLKSortDictionaries(a1);
+  v1 = WLKSortDictionaries(self);
   if (([MEMORY[0x277CCAC58] propertyList:v1 isValidForFormat:100] & 1) == 0)
   {
     v2 = [MEMORY[0x277CBEAD8] exceptionWithName:@"WLKHashingAdditions - wlk_deepHash" reason:@"wlk_deepHash only supports property list object graphs" userInfo:0];

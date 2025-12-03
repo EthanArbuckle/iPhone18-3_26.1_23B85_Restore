@@ -8,10 +8,10 @@
 {
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = [a1 keyPath];
-  v7 = [a1 operatorType];
-  v8 = [a1 value];
-  v9 = [v5 filterForKeyPath:v6 operatorType:v7 value:v8 dataTypes:v4];
+  keyPath = [self keyPath];
+  operatorType = [self operatorType];
+  value = [self value];
+  v9 = [v5 filterForKeyPath:keyPath operatorType:operatorType value:value dataTypes:v4];
 
   return v9;
 }

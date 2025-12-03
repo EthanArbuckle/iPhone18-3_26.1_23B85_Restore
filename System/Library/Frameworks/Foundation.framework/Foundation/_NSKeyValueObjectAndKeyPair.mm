@@ -1,23 +1,23 @@
 @interface _NSKeyValueObjectAndKeyPair
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)objectWasDeallocated;
 - (_Unwind_Exception)newCurrentValue;
 - (id)description;
-- (id)initWithObject:(void *)a3 key:(uint64_t)a4 context:;
+- (id)initWithObject:(void *)object key:(uint64_t)key context:;
 - (void)dealloc;
 @end
 
 @implementation _NSKeyValueObjectAndKeyPair
 
-- (id)initWithObject:(void *)a3 key:(uint64_t)a4 context:
+- (id)initWithObject:(void *)object key:(uint64_t)key context:
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = _NSKeyValueObjectAndKeyPair;
   v7 = objc_msgSendSuper2(&v10, sel_init);
   if (v7)
@@ -27,8 +27,8 @@
       *(v7 + 2) = a2;
       *(v7 + 3) = object_getClass(a2);
       objc_storeWeak(v7 + 1, a2);
-      v8 = [a3 copy];
-      *(v7 + 4) = a4;
+      v8 = [object copy];
+      *(v7 + 4) = key;
       *(v7 + 5) = v8;
       return v7;
     }
@@ -51,48 +51,48 @@
 
 - (BOOL)objectWasDeallocated
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_autoreleasePoolPush();
-    v1 = objc_loadWeak((v1 + 8)) == 0;
+    selfCopy = objc_loadWeak((selfCopy + 8)) == 0;
     objc_autoreleasePoolPop(v2);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (_Unwind_Exception)newCurrentValue
 {
-  v1 = exception_object;
+  null = exception_object;
   if (exception_object)
   {
     v2 = objc_autoreleasePoolPush();
-    v3 = objc_loadWeak(&v1->exception_cleanup);
+    v3 = objc_loadWeak(&null->exception_cleanup);
     if (v3)
     {
-      v1 = [v3 valueForKey:v1[1].exception_cleanup];
-      if (!v1)
+      null = [v3 valueForKey:null[1].exception_cleanup];
+      if (!null)
       {
-        v1 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
     }
 
     else
     {
-      v1 = 0;
+      null = 0;
     }
 
-    v4 = v1;
+    v4 = null;
     objc_autoreleasePoolPop(v2);
   }
 
-  return v1;
+  return null;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -103,13 +103,13 @@
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_objectPointer != *(a3 + 2))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_objectPointer != *(equal + 2))
   {
     return 0;
   }
 
   key = self->_key;
-  v6 = *(a3 + 5);
+  v6 = *(equal + 5);
 
   return [(NSString *)key isEqualToString:v6];
 }
@@ -118,9 +118,9 @@
 {
   objectPointer = self->_objectPointer;
   objectClass = self->_objectClass;
-  v5 = [(_NSKeyValueObjectAndKeyPair *)self objectWasDeallocated];
+  objectWasDeallocated = [(_NSKeyValueObjectAndKeyPair *)self objectWasDeallocated];
   v6 = @"live";
-  if (v5)
+  if (objectWasDeallocated)
   {
     v6 = @"deallocated";
   }

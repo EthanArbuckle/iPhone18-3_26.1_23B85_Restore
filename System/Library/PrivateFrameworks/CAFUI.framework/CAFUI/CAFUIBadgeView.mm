@@ -1,14 +1,14 @@
 @interface CAFUIBadgeView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC5CAFUI14CAFUIBadgeView)initWithCoder:(id)a3;
-- (_TtC5CAFUI14CAFUIBadgeView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC5CAFUI14CAFUIBadgeView)initWithCoder:(id)coder;
+- (_TtC5CAFUI14CAFUIBadgeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CAFUIBadgeView
 
-- (_TtC5CAFUI14CAFUIBadgeView)initWithCoder:(id)a3
+- (_TtC5CAFUI14CAFUIBadgeView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5CAFUI14CAFUIBadgeView____lazy_storage___label) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -18,7 +18,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFUIBadgeView.label.getter();
   [v3 intrinsicContentSize];
   v5 = v4;
@@ -31,11 +31,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = CAFUIBadgeView.label.getter();
   [v6 sizeThatFits_];
   v8 = v7;
@@ -54,12 +54,12 @@
   v5.super_class = type metadata accessor for CAFUIBadgeView();
   v2 = v5.receiver;
   [(CAFUIBadgeView *)&v5 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 bounds];
-  [v3 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
-- (_TtC5CAFUI14CAFUIBadgeView)initWithFrame:(CGRect)a3
+- (_TtC5CAFUI14CAFUIBadgeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

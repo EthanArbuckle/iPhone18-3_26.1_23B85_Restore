@@ -1,6 +1,6 @@
 @interface PCSupportRouter
 - (PCSupportRouter)init;
-- (id)actionReceiverForConnection:(id)a3;
+- (id)actionReceiverForConnection:(id)connection;
 @end
 
 @implementation PCSupportRouter
@@ -28,11 +28,11 @@
   return v2;
 }
 
-- (id)actionReceiverForConnection:(id)a3
+- (id)actionReceiverForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [v3 hasEntitlement:@"com.apple.developer.healthkit"];
-  v5 = [v3 hasEntitlement:@"com.apple.developer.homekit"];
+  connectionCopy = connection;
+  v4 = [connectionCopy hasEntitlement:@"com.apple.developer.healthkit"];
+  v5 = [connectionCopy hasEntitlement:@"com.apple.developer.homekit"];
   if ((v4 & 1) != 0 || v5)
   {
     v7 = APLogForCategory();
@@ -47,7 +47,7 @@
 
   else
   {
-    v6 = [[PCSupportReceiver alloc] initWithConnection:v3];
+    v6 = [[PCSupportReceiver alloc] initWithConnection:connectionCopy];
   }
 
   return v6;

@@ -1,31 +1,31 @@
 @interface RemoteConversationService
-- (void)acceptInitialInputWithInputIdentifier:(id)a3 speechData:(id)a4 reply:(id)a5;
-- (void)acceptWithInputData:(id)a3 speechData:(id)a4 reply:(id)a5;
-- (void)canHandleWithInputData:(id)a3 rcId:(id)a4 reply:(id)a5;
-- (void)cancelWithCancellationReason:(int64_t)a3 reply:(id)a4;
-- (void)commitWithBridge:(id)a3 reply:(id)a4;
-- (void)drainAsyncWorkWithReply:(id)a3;
-- (void)ensureReadyWithReply:(id)a3;
-- (void)flexibleExecutionSupportOptionsWithReply:(id)a3;
-- (void)isCorrectableWithReply:(id)a3;
-- (void)isEmptyWithReply:(id)a3;
-- (void)paraphraseWithReply:(id)a3;
-- (void)prepareWithBridge:(id)a3 reply:(id)a4;
-- (void)resetWithReply:(id)a3;
-- (void)startTurnFromCacheWithExecutionRequestId:(id)a3 bridge:(id)a4 reply:(id)a5;
-- (void)startTurnWithTurnData:(id)a3 bridge:(id)a4 reply:(id)a5;
-- (void)warmupWithRefId:(id)a3 reply:(id)a4;
+- (void)acceptInitialInputWithInputIdentifier:(id)identifier speechData:(id)data reply:(id)reply;
+- (void)acceptWithInputData:(id)data speechData:(id)speechData reply:(id)reply;
+- (void)canHandleWithInputData:(id)data rcId:(id)id reply:(id)reply;
+- (void)cancelWithCancellationReason:(int64_t)reason reply:(id)reply;
+- (void)commitWithBridge:(id)bridge reply:(id)reply;
+- (void)drainAsyncWorkWithReply:(id)reply;
+- (void)ensureReadyWithReply:(id)reply;
+- (void)flexibleExecutionSupportOptionsWithReply:(id)reply;
+- (void)isCorrectableWithReply:(id)reply;
+- (void)isEmptyWithReply:(id)reply;
+- (void)paraphraseWithReply:(id)reply;
+- (void)prepareWithBridge:(id)bridge reply:(id)reply;
+- (void)resetWithReply:(id)reply;
+- (void)startTurnFromCacheWithExecutionRequestId:(id)id bridge:(id)bridge reply:(id)reply;
+- (void)startTurnWithTurnData:(id)data bridge:(id)bridge reply:(id)reply;
+- (void)warmupWithRefId:(id)id reply:(id)reply;
 @end
 
 @implementation RemoteConversationService
 
-- (void)resetWithReply:(id)a3
+- (void)resetWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v19 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(reply);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = one-time initialization token for executor;
@@ -59,26 +59,26 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v8, &closure #1 in RemoteConversationService.reset(reply:)partial apply, v18);
 }
 
-- (void)startTurnFromCacheWithExecutionRequestId:(id)a3 bridge:(id)a4 reply:(id)a5
+- (void)startTurnFromCacheWithExecutionRequestId:(id)id bridge:(id)bridge reply:(id)reply
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(reply);
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   v10 = swift_allocObject();
   *(v10 + 16) = v6;
   swift_unknownObjectRetain();
 
-  RemoteConversationService.startTurnFromCache(executionRequestId:bridge:reply:)(v7, v9, a4, partial apply for thunk for @escaping @callee_unowned @convention(block) @Sendable (@unowned ObjCBool, @unowned NSError?) -> (), v10);
+  RemoteConversationService.startTurnFromCache(executionRequestId:bridge:reply:)(v7, v9, bridge, partial apply for thunk for @escaping @callee_unowned @convention(block) @Sendable (@unowned ObjCBool, @unowned NSError?) -> (), v10);
   swift_unknownObjectRelease();
 }
 
-- (void)commitWithBridge:(id)a3 reply:(id)a4
+- (void)commitWithBridge:(id)bridge reply:(id)reply
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v9 = &v20 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = one-time initialization token for executor;
@@ -112,13 +112,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v9, &closure #1 in RemoteConversationService.commit(bridge:reply:)partial apply, v19);
 }
 
-- (void)prepareWithBridge:(id)a3 reply:(id)a4
+- (void)prepareWithBridge:(id)bridge reply:(id)reply
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v9 = &v20 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = one-time initialization token for executor;
@@ -152,13 +152,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v9, &closure #1 in RemoteConversationService.prepare(bridge:reply:)partial apply, v19);
 }
 
-- (void)isEmptyWithReply:(id)a3
+- (void)isEmptyWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v19 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(reply);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = one-time initialization token for executor;
@@ -192,29 +192,29 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v8, &closure #1 in RemoteConversationService.isEmpty(reply:)partial apply, v18);
 }
 
-- (void)acceptInitialInputWithInputIdentifier:(id)a3 speechData:(id)a4 reply:(id)a5
+- (void)acceptInitialInputWithInputIdentifier:(id)identifier speechData:(id)data reply:(id)reply
 {
   v7 = type metadata accessor for UUID();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
   MEMORY[0x1EEE9AC00](v7);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(reply);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
-  v14 = a4;
+  dataCopy = data;
 
-  RemoteConversationService.acceptInitialInput(inputIdentifier:speechData:reply:)(v11, v14, thunk for @escaping @callee_unowned @convention(block) @Sendable (@unowned FlowExtensionUserInputResultXPC) -> ()partial apply, v13);
+  RemoteConversationService.acceptInitialInput(inputIdentifier:speechData:reply:)(v11, dataCopy, thunk for @escaping @callee_unowned @convention(block) @Sendable (@unowned FlowExtensionUserInputResultXPC) -> ()partial apply, v13);
 
   (*(v8 + 8))(v11, v7);
 }
 
-- (void)canHandleWithInputData:(id)a3 rcId:(id)a4 reply:(id)a5
+- (void)canHandleWithInputData:(id)data rcId:(id)id reply:(id)reply
 {
-  v7 = _Block_copy(a5);
-  v8 = a3;
-  v9 = a4;
+  v7 = _Block_copy(reply);
+  dataCopy = data;
+  idCopy = id;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -229,13 +229,13 @@
   outlined consume of Data._Representation(v10, v12);
 }
 
-- (void)ensureReadyWithReply:(id)a3
+- (void)ensureReadyWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v19 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(reply);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = one-time initialization token for executor;
@@ -269,13 +269,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v8, &closure #1 in RemoteConversationService.ensureReady(reply:)partial apply, v18);
 }
 
-- (void)warmupWithRefId:(id)a3 reply:(id)a4
+- (void)warmupWithRefId:(id)id reply:(id)reply
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v9 = &v23 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   v14 = swift_allocObject();
@@ -313,14 +313,14 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v9, &closure #1 in RemoteConversationService.warmup(refId:reply:)partial apply, v22);
 }
 
-- (void)cancelWithCancellationReason:(int64_t)a3 reply:(id)a4
+- (void)cancelWithCancellationReason:(int64_t)reason reply:(id)reply
 {
   isa = self->super.isa;
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v9 = *(*(v8 - 8) + 64);
   MEMORY[0x1EEE9AC00](v8 - 8);
   v11 = &v22 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(reply);
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
   v14 = one-time initialization token for executor;
@@ -350,48 +350,48 @@
   v21[4] = self;
   v21[5] = thunk for @escaping @callee_unowned @convention(block) @Sendable () -> ()partial apply;
   v21[6] = v13;
-  v21[7] = a3;
+  v21[7] = reason;
   v21[8] = isa;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v11, &closure #1 in RemoteConversationService.cancel(cancellationReason:reply:)partial apply, v21);
 }
 
-- (void)startTurnWithTurnData:(id)a3 bridge:(id)a4 reply:(id)a5
+- (void)startTurnWithTurnData:(id)data bridge:(id)bridge reply:(id)reply
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(reply);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  v9 = a3;
+  dataCopy = data;
   swift_unknownObjectRetain();
 
-  RemoteConversationService.startTurn(turnData:bridge:reply:)(v9, a4, thunk for @escaping @callee_unowned @convention(block) @Sendable (@unowned NSError?) -> ()partial apply, v8);
+  RemoteConversationService.startTurn(turnData:bridge:reply:)(dataCopy, bridge, thunk for @escaping @callee_unowned @convention(block) @Sendable (@unowned NSError?) -> ()partial apply, v8);
 
   swift_unknownObjectRelease();
 }
 
-- (void)acceptWithInputData:(id)a3 speechData:(id)a4 reply:(id)a5
+- (void)acceptWithInputData:(id)data speechData:(id)speechData reply:(id)reply
 {
-  v7 = _Block_copy(a5);
-  v8 = a3;
-  v9 = a4;
+  v7 = _Block_copy(reply);
+  dataCopy = data;
+  speechDataCopy = speechData;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
   v13 = swift_allocObject();
   *(v13 + 16) = v7;
-  RemoteConversationService.accept(inputData:speechData:reply:)(v10, v12, v9, partial apply for thunk for @escaping @callee_unowned @convention(block) @Sendable (@unowned ConversationFlexibleExecutionSupportXPC) -> (), v13);
+  RemoteConversationService.accept(inputData:speechData:reply:)(v10, v12, speechDataCopy, partial apply for thunk for @escaping @callee_unowned @convention(block) @Sendable (@unowned ConversationFlexibleExecutionSupportXPC) -> (), v13);
 
   outlined consume of Data._Representation(v10, v12);
 }
 
-- (void)paraphraseWithReply:(id)a3
+- (void)paraphraseWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v19 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(reply);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = one-time initialization token for executor;
@@ -425,13 +425,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v8, &closure #1 in RemoteConversationService.paraphrase(reply:)partial apply, v18);
 }
 
-- (void)drainAsyncWorkWithReply:(id)a3
+- (void)drainAsyncWorkWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v17 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(reply);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = type metadata accessor for TaskPriority();
@@ -456,13 +456,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v8, &closure #1 in RemoteConversationService.drainAsyncWork(reply:)partial apply, v16);
 }
 
-- (void)flexibleExecutionSupportOptionsWithReply:(id)a3
+- (void)flexibleExecutionSupportOptionsWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v19 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(reply);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = one-time initialization token for executor;
@@ -496,13 +496,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v8, &closure #1 in RemoteConversationService.flexibleExecutionSupportOptions(reply:)partial apply, v18);
 }
 
-- (void)isCorrectableWithReply:(id)a3
+- (void)isCorrectableWithReply:(id)reply
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v19 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(reply);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = one-time initialization token for executor;

@@ -1,24 +1,24 @@
 @interface CPLServerFeedbackRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addMessages:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMessages:(id)messages;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CPLServerFeedbackRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -47,13 +47,13 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     messages = self->_messages;
-    if (messages | v4[1])
+    if (messages | equalCopy[1])
     {
       v6 = [(NSMutableArray *)messages isEqual:?];
     }
@@ -72,10 +72,10 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -96,7 +96,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addMessages:v11];
 
         ++v10;
@@ -113,29 +113,29 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(CPLServerFeedbackRequest *)self messagesCount])
   {
-    [v8 clearMessages];
-    v4 = [(CPLServerFeedbackRequest *)self messagesCount];
-    if (v4)
+    [toCopy clearMessages];
+    messagesCount = [(CPLServerFeedbackRequest *)self messagesCount];
+    if (messagesCount)
     {
-      v5 = v4;
+      v5 = messagesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(CPLServerFeedbackRequest *)self messagesAtIndex:i];
-        [v8 addMessages:v7];
+        [toCopy addMessages:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -174,7 +174,7 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_messages count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_messages, "count")}];
@@ -197,8 +197,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -207,12 +207,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"messages"];
+    [dictionary setObject:v4 forKey:@"messages"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -221,28 +221,28 @@
   v8.receiver = self;
   v8.super_class = CPLServerFeedbackRequest;
   v4 = [(CPLServerFeedbackRequest *)&v8 description];
-  v5 = [(CPLServerFeedbackRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CPLServerFeedbackRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addMessages:(id)a3
+- (void)addMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   messages = self->_messages;
-  v8 = v4;
+  v8 = messagesCopy;
   if (!messages)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_messages;
     self->_messages = v6;
 
-    v4 = v8;
+    messagesCopy = v8;
     messages = self->_messages;
   }
 
-  [(NSMutableArray *)messages addObject:v4];
+  [(NSMutableArray *)messages addObject:messagesCopy];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface IFTSchemaIFTStatementResultPayload
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTStatementResultPayload)initWithDictionary:(id)a3;
-- (IFTSchemaIFTStatementResultPayload)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTStatementResultPayload)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTStatementResultPayload)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTStatementResultPayload
 
-- (IFTSchemaIFTStatementResultPayload)initWithDictionary:(id)a3
+- (IFTSchemaIFTStatementResultPayload)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = IFTSchemaIFTStatementResultPayload;
   v5 = [(IFTSchemaIFTStatementResultPayload *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"outcome"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"outcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(IFTSchemaIFTStatementResultPayload *)v5 setOutcome:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"response"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"response"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTStatementResultPayload)initWithJSON:(id)a3
+- (IFTSchemaIFTStatementResultPayload)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTStatementResultPayload *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTStatementResultPayload *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTStatementResultPayload *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_outcome)
   {
-    v4 = [(IFTSchemaIFTStatementResultPayload *)self outcome];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    outcome = [(IFTSchemaIFTStatementResultPayload *)self outcome];
+    dictionaryRepresentation = [outcome dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"outcome"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"outcome"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"outcome"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"outcome"];
     }
   }
 
   if (self->_response)
   {
-    v7 = [(IFTSchemaIFTStatementResultPayload *)self response];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    response = [(IFTSchemaIFTStatementResultPayload *)self response];
+    dictionaryRepresentation2 = [response dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"response"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"response"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"response"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"response"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(IFTSchemaIFTStatementResultPayload *)self outcome];
-  v6 = [v4 outcome];
-  if ((v5 != 0) == (v6 == 0))
+  outcome = [(IFTSchemaIFTStatementResultPayload *)self outcome];
+  outcome2 = [equalCopy outcome];
+  if ((outcome != 0) == (outcome2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(IFTSchemaIFTStatementResultPayload *)self outcome];
-  if (v7)
+  outcome3 = [(IFTSchemaIFTStatementResultPayload *)self outcome];
+  if (outcome3)
   {
-    v8 = v7;
-    v9 = [(IFTSchemaIFTStatementResultPayload *)self outcome];
-    v10 = [v4 outcome];
-    v11 = [v9 isEqual:v10];
+    v8 = outcome3;
+    outcome4 = [(IFTSchemaIFTStatementResultPayload *)self outcome];
+    outcome5 = [equalCopy outcome];
+    v11 = [outcome4 isEqual:outcome5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(IFTSchemaIFTStatementResultPayload *)self response];
-  v6 = [v4 response];
-  if ((v5 != 0) != (v6 == 0))
+  outcome = [(IFTSchemaIFTStatementResultPayload *)self response];
+  outcome2 = [equalCopy response];
+  if ((outcome != 0) != (outcome2 == 0))
   {
-    v12 = [(IFTSchemaIFTStatementResultPayload *)self response];
-    if (!v12)
+    response = [(IFTSchemaIFTStatementResultPayload *)self response];
+    if (!response)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(IFTSchemaIFTStatementResultPayload *)self response];
-    v15 = [v4 response];
-    v16 = [v14 isEqual:v15];
+    v13 = response;
+    response2 = [(IFTSchemaIFTStatementResultPayload *)self response];
+    response3 = [equalCopy response];
+    v16 = [response2 isEqual:response3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(IFTSchemaIFTStatementResultPayload *)self outcome];
+  toCopy = to;
+  outcome = [(IFTSchemaIFTStatementResultPayload *)self outcome];
 
-  if (v4)
+  if (outcome)
   {
-    v5 = [(IFTSchemaIFTStatementResultPayload *)self outcome];
+    outcome2 = [(IFTSchemaIFTStatementResultPayload *)self outcome];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTStatementResultPayload *)self response];
+  response = [(IFTSchemaIFTStatementResultPayload *)self response];
 
-  if (v6)
+  if (response)
   {
-    v7 = [(IFTSchemaIFTStatementResultPayload *)self response];
+    response2 = [(IFTSchemaIFTStatementResultPayload *)self response];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTStatementResultPayload;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTStatementResultPayload *)self outcome];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  outcome = [(IFTSchemaIFTStatementResultPayload *)self outcome];
+  v7 = [outcome applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTStatementResultPayload *)self deleteOutcome];
   }
 
-  v9 = [(IFTSchemaIFTStatementResultPayload *)self response];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  response = [(IFTSchemaIFTStatementResultPayload *)self response];
+  v10 = [response applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTStatementResultPayload *)self deleteResponse];
   }

@@ -1,21 +1,21 @@
 @interface MTNetworkMediaManifest
 + (id)activityTypeSuffix;
-+ (void)createManifestForActivity:(id)a3 completion:(id)a4;
-+ (void)fetchPlayerItemsFor:(id)a3 completion:(id)a4;
++ (void)createManifestForActivity:(id)activity completion:(id)completion;
++ (void)fetchPlayerItemsFor:(id)for completion:(id)completion;
 - (MTNetworkMediaManifest)init;
-- (MTNetworkMediaManifest)initWithAssetInfo:(id)a3;
-- (MTNetworkMediaManifest)initWithEpisodeAdamId:(id)a3 assetInfo:(id)a4;
-- (MTNetworkMediaManifest)initWithEpisodeAdamIds:(id)a3 assetInfo:(id)a4;
-- (MTNetworkMediaManifest)initWithItems:(id)a3;
-- (MTNetworkMediaManifest)initWithPodcastAdamId:(id)a3 assetInfo:(id)a4;
-- (MTNetworkMediaManifest)initWithStationId:(id)a3 assetInfo:(id)a4;
+- (MTNetworkMediaManifest)initWithAssetInfo:(id)info;
+- (MTNetworkMediaManifest)initWithEpisodeAdamId:(id)id assetInfo:(id)info;
+- (MTNetworkMediaManifest)initWithEpisodeAdamIds:(id)ids assetInfo:(id)info;
+- (MTNetworkMediaManifest)initWithItems:(id)items;
+- (MTNetworkMediaManifest)initWithPodcastAdamId:(id)id assetInfo:(id)info;
+- (MTNetworkMediaManifest)initWithStationId:(id)id assetInfo:(id)info;
 - (NSArray)initialEpisodeUuids;
 - (NSArray)itemIdsDebug;
 - (NSString)initialPodcastUuid;
-- (id)parseEpisodeAssetInfo:(id)a3 error:(id *)a4;
+- (id)parseEpisodeAssetInfo:(id)info error:(id *)error;
 - (unint64_t)currentIndex;
-- (void)load:(id)a3;
-- (void)setCurrentIndex:(unint64_t)a3;
+- (void)load:(id)load;
+- (void)setCurrentIndex:(unint64_t)index;
 @end
 
 @implementation MTNetworkMediaManifest
@@ -27,15 +27,15 @@
   return v2;
 }
 
-- (MTNetworkMediaManifest)initWithAssetInfo:(id)a3
+- (MTNetworkMediaManifest)initWithAssetInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v3 = self;
+    selfCopy = self;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v4 = String._bridgeToObjectiveC()();
 
-    self = v3;
+    self = selfCopy;
   }
 
   else
@@ -48,13 +48,13 @@
   return v5;
 }
 
-- (MTNetworkMediaManifest)initWithEpisodeAdamId:(id)a3 assetInfo:(id)a4
+- (MTNetworkMediaManifest)initWithEpisodeAdamId:(id)id assetInfo:(id)info
 {
-  if (!a3)
+  if (!id)
   {
     v5 = 0;
     v7 = 0;
-    if (a4)
+    if (info)
     {
       goto LABEL_3;
     }
@@ -67,7 +67,7 @@ LABEL_5:
 
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  if (!a4)
+  if (!info)
   {
     goto LABEL_5;
   }
@@ -78,13 +78,13 @@ LABEL_3:
   return sub_1001EE144(v5, v7, v8, v10);
 }
 
-- (MTNetworkMediaManifest)initWithEpisodeAdamIds:(id)a3 assetInfo:(id)a4
+- (MTNetworkMediaManifest)initWithEpisodeAdamIds:(id)ids assetInfo:(id)info
 {
-  v4 = a4;
-  if (!a3)
+  infoCopy = info;
+  if (!ids)
   {
     v5 = 0;
-    if (a4)
+    if (info)
     {
       goto LABEL_3;
     }
@@ -95,30 +95,30 @@ LABEL_5:
   }
 
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  if (!v4)
+  if (!infoCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  infoCopy = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 LABEL_6:
   v8 = objc_allocWithZone(type metadata accessor for NetworkMediaManifest());
-  v9 = sub_1001EE5D4(0, 0, v5, 0, 0, v4, v7);
+  v9 = sub_1001EE5D4(0, 0, v5, 0, 0, infoCopy, v7);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v9;
 }
 
-- (MTNetworkMediaManifest)initWithPodcastAdamId:(id)a3 assetInfo:(id)a4
+- (MTNetworkMediaManifest)initWithPodcastAdamId:(id)id assetInfo:(id)info
 {
-  v4 = a4;
-  if (!a3)
+  infoCopy = info;
+  if (!id)
   {
     v5 = 0;
     v7 = 0;
-    if (a4)
+    if (info)
     {
       goto LABEL_3;
     }
@@ -130,30 +130,30 @@ LABEL_5:
 
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  if (!v4)
+  if (!infoCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  infoCopy = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
 LABEL_6:
   v10 = objc_allocWithZone(type metadata accessor for NetworkMediaManifest());
-  v11 = sub_1001EE5D4(v5, v7, 0, 0, 0, v4, v9);
+  v11 = sub_1001EE5D4(v5, v7, 0, 0, 0, infoCopy, v9);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v11;
 }
 
-- (MTNetworkMediaManifest)initWithStationId:(id)a3 assetInfo:(id)a4
+- (MTNetworkMediaManifest)initWithStationId:(id)id assetInfo:(id)info
 {
-  v4 = a4;
-  if (!a3)
+  infoCopy = info;
+  if (!id)
   {
     v5 = 0;
     v7 = 0;
-    if (a4)
+    if (info)
     {
       goto LABEL_3;
     }
@@ -165,25 +165,25 @@ LABEL_5:
 
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  if (!v4)
+  if (!infoCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  infoCopy = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
 LABEL_6:
   v10 = objc_allocWithZone(type metadata accessor for NetworkMediaManifest());
-  v11 = sub_1001EE5D4(0, 0, 0, v5, v7, v4, v9);
+  v11 = sub_1001EE5D4(0, 0, 0, v5, v7, infoCopy, v9);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v11;
 }
 
-- (void)load:(id)a3
+- (void)load:(id)load
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(load);
   if (v4)
   {
     v5 = v4;
@@ -198,18 +198,18 @@ LABEL_6:
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1001EF2E4(v7, v6);
   sub_1000112B4(v7);
 }
 
-+ (void)fetchPlayerItemsFor:(id)a3 completion:(id)a4
++ (void)fetchPlayerItemsFor:(id)for completion:(id)completion
 {
   v5 = type metadata accessor for MediaRequest.ContentType();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v15 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(completion);
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   if (v9)
   {
@@ -241,7 +241,7 @@ LABEL_6:
 
 - (NSArray)initialEpisodeUuids
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001F1C2C();
 
   if (v3)
@@ -259,7 +259,7 @@ LABEL_6:
 
 - (NSString)initialPodcastUuid
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F1F0C();
   v4 = v3;
 
@@ -276,9 +276,9 @@ LABEL_6:
   return v5;
 }
 
-- (id)parseEpisodeAssetInfo:(id)a3 error:(id *)a4
+- (id)parseEpisodeAssetInfo:(id)info error:(id *)error
 {
-  if (a3)
+  if (info)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -290,7 +290,7 @@ LABEL_6:
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1001F260C(v5, v7);
 
   type metadata accessor for ServerPodcastEpisode();
@@ -306,25 +306,25 @@ LABEL_6:
   return [(MTNetworkMediaManifest *)&v3 currentIndex];
 }
 
-- (void)setCurrentIndex:(unint64_t)a3
+- (void)setCurrentIndex:(unint64_t)index
 {
-  v4 = self;
-  if ([(MTNetworkMediaManifest *)v4 currentIndex]== a3)
+  selfCopy = self;
+  if ([(MTNetworkMediaManifest *)selfCopy currentIndex]== index)
   {
   }
 
   else
   {
-    v5.receiver = v4;
+    v5.receiver = selfCopy;
     v5.super_class = type metadata accessor for NetworkMediaManifest();
-    [(MTNetworkMediaManifest *)&v5 setCurrentIndex:a3];
+    [(MTNetworkMediaManifest *)&v5 setCurrentIndex:index];
     sub_1001F62C0(0, 0);
   }
 }
 
 - (NSArray)itemIdsDebug
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F564C();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -332,7 +332,7 @@ LABEL_6:
   return v3.super.isa;
 }
 
-- (MTNetworkMediaManifest)initWithItems:(id)a3
+- (MTNetworkMediaManifest)initWithItems:(id)items
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -346,12 +346,12 @@ LABEL_6:
   return result;
 }
 
-+ (void)createManifestForActivity:(id)a3 completion:(id)a4
++ (void)createManifestForActivity:(id)activity completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   _Block_copy(v5);
-  v6 = a3;
-  sub_1001F69FC(v6, v5);
+  activityCopy = activity;
+  sub_1001F69FC(activityCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

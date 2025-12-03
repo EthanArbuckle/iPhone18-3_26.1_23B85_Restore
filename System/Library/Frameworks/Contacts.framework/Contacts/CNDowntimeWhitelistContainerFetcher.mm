@@ -2,7 +2,7 @@
 + (OS_os_log)os_log;
 - (CNContainer)primaryiCloudContainer;
 - (CNDowntimeWhitelistContainerFetcher)init;
-- (CNDowntimeWhitelistContainerFetcher)initWithContactStore:(id)a3 accountStore:(id)a4 notificationCenter:(id)a5;
+- (CNDowntimeWhitelistContainerFetcher)initWithContactStore:(id)store accountStore:(id)accountStore notificationCenter:(id)center;
 - (id)fetchPrimaryiCloudCardDAVAccountIdentifier;
 - (id)fetchPrimaryiCloudCardDAVContainer;
 - (void)beginObservingChangeNotifications;
@@ -54,27 +54,27 @@ uint64_t __45__CNDowntimeWhitelistContainerFetcher_os_log__block_invoke()
 - (CNDowntimeWhitelistContainerFetcher)init
 {
   v3 = objc_alloc_init(CNContactStore);
-  v4 = [MEMORY[0x1E6959A48] defaultStore];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  v6 = [(CNDowntimeWhitelistContainerFetcher *)self initWithContactStore:v3 accountStore:v4 notificationCenter:v5];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v6 = [(CNDowntimeWhitelistContainerFetcher *)self initWithContactStore:v3 accountStore:defaultStore notificationCenter:defaultCenter];
 
   return v6;
 }
 
-- (CNDowntimeWhitelistContainerFetcher)initWithContactStore:(id)a3 accountStore:(id)a4 notificationCenter:(id)a5
+- (CNDowntimeWhitelistContainerFetcher)initWithContactStore:(id)store accountStore:(id)accountStore notificationCenter:(id)center
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  accountStoreCopy = accountStore;
+  centerCopy = center;
   v16.receiver = self;
   v16.super_class = CNDowntimeWhitelistContainerFetcher;
   v12 = [(CNDowntimeWhitelistContainerFetcher *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contactStore, a3);
-    objc_storeStrong(&v13->_accountStore, a4);
-    objc_storeStrong(&v13->_notificationCenter, a5);
+    objc_storeStrong(&v12->_contactStore, store);
+    objc_storeStrong(&v13->_accountStore, accountStore);
+    objc_storeStrong(&v13->_notificationCenter, center);
     [(CNDowntimeWhitelistContainerFetcher *)v13 beginObservingChangeNotifications];
     v14 = v13;
   }
@@ -140,65 +140,65 @@ id __61__CNDowntimeWhitelistContainerFetcher_primaryiCloudContainer__block_invok
 - (id)fetchPrimaryiCloudCardDAVContainer
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&dword_1954A0000, v3, OS_LOG_TYPE_INFO, "will fetch primary iCloud CardDAV container", buf, 2u);
+    _os_log_impl(&dword_1954A0000, os_log, OS_LOG_TYPE_INFO, "will fetch primary iCloud CardDAV container", buf, 2u);
   }
 
-  v4 = [(CNDowntimeWhitelistContainerFetcher *)self fetchPrimaryiCloudCardDAVAccountIdentifier];
-  v5 = [CNContainer predicateForContainersInAccountWithExternalIdentifier:v4];
-  v6 = [(CNDowntimeWhitelistContainerFetcher *)self contactStore];
+  fetchPrimaryiCloudCardDAVAccountIdentifier = [(CNDowntimeWhitelistContainerFetcher *)self fetchPrimaryiCloudCardDAVAccountIdentifier];
+  v5 = [CNContainer predicateForContainersInAccountWithExternalIdentifier:fetchPrimaryiCloudCardDAVAccountIdentifier];
+  contactStore = [(CNDowntimeWhitelistContainerFetcher *)self contactStore];
   v15 = 0;
-  v7 = [v6 containersMatchingPredicate:v5 error:&v15];
+  v7 = [contactStore containersMatchingPredicate:v5 error:&v15];
   v8 = v15;
 
-  LOBYTE(v6) = (*(*MEMORY[0x1E6996530] + 16))();
-  v9 = [objc_opt_class() os_log];
-  v10 = v9;
-  if (v6)
+  LOBYTE(contactStore) = (*(*MEMORY[0x1E6996530] + 16))();
+  os_log2 = [objc_opt_class() os_log];
+  v10 = os_log2;
+  if (contactStore)
   {
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
-      [(CNDowntimeWhitelistContainerFetcher *)v4 fetchPrimaryiCloudCardDAVContainer];
+      [(CNDowntimeWhitelistContainerFetcher *)fetchPrimaryiCloudCardDAVAccountIdentifier fetchPrimaryiCloudCardDAVContainer];
     }
 
-    v11 = 0;
+    firstObject2 = 0;
   }
 
   else
   {
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_INFO))
     {
-      v12 = [v7 firstObject];
-      v13 = [v12 identifier];
+      firstObject = [v7 firstObject];
+      identifier = [firstObject identifier];
       *buf = 138543618;
-      v17 = v13;
+      v17 = identifier;
       v18 = 2114;
-      v19 = v4;
+      v19 = fetchPrimaryiCloudCardDAVAccountIdentifier;
       _os_log_impl(&dword_1954A0000, v10, OS_LOG_TYPE_INFO, "found primary CardDAV container with identifier %{public}@ for primary CardDAV account with identifier %{public}@", buf, 0x16u);
     }
 
-    v11 = [v7 firstObject];
+    firstObject2 = [v7 firstObject];
   }
 
-  return v11;
+  return firstObject2;
 }
 
 - (id)fetchPrimaryiCloudCardDAVAccountIdentifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [(CNDowntimeWhitelistContainerFetcher *)self accountStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 childCardDAVAccountIdentifier];
+  accountStore = [(CNDowntimeWhitelistContainerFetcher *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
+  childCardDAVAccountIdentifier = [aa_primaryAppleAccount childCardDAVAccountIdentifier];
 
-  LOBYTE(v2) = (*(*MEMORY[0x1E6996568] + 16))();
-  v5 = [objc_opt_class() os_log];
-  v6 = v5;
-  if (v2)
+  LOBYTE(accountStore) = (*(*MEMORY[0x1E6996568] + 16))();
+  os_log = [objc_opt_class() os_log];
+  v6 = os_log;
+  if (accountStore)
   {
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [(CNDowntimeWhitelistContainerFetcher *)v6 fetchPrimaryiCloudCardDAVAccountIdentifier];
     }
@@ -208,14 +208,14 @@ id __61__CNDowntimeWhitelistContainerFetcher_primaryiCloudContainer__block_invok
 
   else
   {
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = childCardDAVAccountIdentifier;
       _os_log_impl(&dword_1954A0000, v6, OS_LOG_TYPE_INFO, "found primary CardDAV account identifier %{public}@", &v9, 0xCu);
     }
 
-    v7 = v4;
+    v7 = childCardDAVAccountIdentifier;
   }
 
   return v7;
@@ -225,7 +225,7 @@ id __61__CNDowntimeWhitelistContainerFetcher_primaryiCloudContainer__block_invok
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2114;
   v6 = a2;
   _os_log_error_impl(&dword_1954A0000, log, OS_LOG_TYPE_ERROR, "error fetching primary CardDAV container for account with identifier %{public}@: %{public}@", &v3, 0x16u);

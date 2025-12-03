@@ -1,6 +1,6 @@
 @interface FCNotificationItemListRecordSource
 - (id)nonLocalizableKeys;
-- (id)recordFromCKRecord:(id)a3 base:(id)a4;
+- (id)recordFromCKRecord:(id)record base:(id)base;
 @end
 
 @implementation FCNotificationItemListRecordSource
@@ -26,21 +26,21 @@ uint64_t __56__FCNotificationItemListRecordSource_nonLocalizableKeys__block_invo
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)recordFromCKRecord:(id)a3 base:(id)a4
+- (id)recordFromCKRecord:(id)record base:(id)base
 {
   v5 = MEMORY[0x1E69B6ED0];
-  v6 = a4;
-  v7 = a3;
+  baseCopy = base;
+  recordCopy = record;
   v8 = objc_alloc_init(v5);
-  [v8 setBase:v6];
+  [v8 setBase:baseCopy];
 
-  v9 = [v7 objectForKeyedSubscript:@"notificationItemIDs"];
+  v9 = [recordCopy objectForKeyedSubscript:@"notificationItemIDs"];
   [v8 setNotificationItemIDs:v9];
 
-  v10 = [v7 objectForKeyedSubscript:@"notificationSource"];
+  v10 = [recordCopy objectForKeyedSubscript:@"notificationSource"];
   [v8 setNotificationSource:FCNotificationSourceFromString(v10)];
 
-  v11 = [v7 objectForKeyedSubscript:@"algoID"];
+  v11 = [recordCopy objectForKeyedSubscript:@"algoID"];
 
   [v8 setAlgoID:v11];
 

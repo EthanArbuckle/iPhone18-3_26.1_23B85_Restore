@@ -1,18 +1,18 @@
 @interface VCCaptionsLanguageDetectorResults
-+ (id)unarchivedTranscriptionFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (VCCaptionsLanguageDetectorResults)initWithCoder:(id)a3;
-- (VCCaptionsLanguageDetectorResults)initWithDetectedLanguageCode:(id)a3 dominantLocale:(id)a4 dominantLocaleConfidence:(double)a5 utteranceStartTimestamp:(double)a6 utteranceDuration:(double)a7;
-- (VCCaptionsLanguageDetectorResults)initWithSFLanguageDetectorResult:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)unarchivedTranscriptionFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (VCCaptionsLanguageDetectorResults)initWithCoder:(id)coder;
+- (VCCaptionsLanguageDetectorResults)initWithDetectedLanguageCode:(id)code dominantLocale:(id)locale dominantLocaleConfidence:(double)confidence utteranceStartTimestamp:(double)timestamp utteranceDuration:(double)duration;
+- (VCCaptionsLanguageDetectorResults)initWithSFLanguageDetectorResult:(id)result;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VCCaptionsLanguageDetectorResults
 
-- (VCCaptionsLanguageDetectorResults)initWithDetectedLanguageCode:(id)a3 dominantLocale:(id)a4 dominantLocaleConfidence:(double)a5 utteranceStartTimestamp:(double)a6 utteranceDuration:(double)a7
+- (VCCaptionsLanguageDetectorResults)initWithDetectedLanguageCode:(id)code dominantLocale:(id)locale dominantLocaleConfidence:(double)confidence utteranceStartTimestamp:(double)timestamp utteranceDuration:(double)duration
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -20,29 +20,29 @@
   v12 = [(VCCaptionsLanguageDetectorResults *)&v14 init];
   if (v12)
   {
-    v12->_detectedLanguageCode = a3;
-    v12->_dominantLocale = a4;
-    v12->_dominantLocaleConfidence = a5;
-    v12->_utteranceStartTimestamp = a6;
-    v12->_utteranceDuration = a7;
+    v12->_detectedLanguageCode = code;
+    v12->_dominantLocale = locale;
+    v12->_dominantLocaleConfidence = confidence;
+    v12->_utteranceStartTimestamp = timestamp;
+    v12->_utteranceDuration = duration;
   }
 
   return v12;
 }
 
-- (VCCaptionsLanguageDetectorResults)initWithSFLanguageDetectorResult:(id)a3
+- (VCCaptionsLanguageDetectorResults)initWithSFLanguageDetectorResult:(id)result
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = [a3 detectedLanguageCode];
-  v6 = [objc_msgSend(objc_msgSend(a3 "alternatives")];
-  [objc_msgSend(objc_msgSend(a3 "alternatives")];
+  detectedLanguageCode = [result detectedLanguageCode];
+  v6 = [objc_msgSend(objc_msgSend(result "alternatives")];
+  [objc_msgSend(objc_msgSend(result "alternatives")];
   v8 = v7;
-  if (a3)
+  if (result)
   {
-    [a3 range];
+    [result range];
     time = v12;
     Seconds = CMTimeGetSeconds(&time);
-    [a3 range];
+    [result range];
   }
 
   else
@@ -53,10 +53,10 @@
   }
 
   time = *&v11[1];
-  return [(VCCaptionsLanguageDetectorResults *)self initWithDetectedLanguageCode:v5 dominantLocale:v6 dominantLocaleConfidence:v8 utteranceStartTimestamp:Seconds utteranceDuration:CMTimeGetSeconds(&time)];
+  return [(VCCaptionsLanguageDetectorResults *)self initWithDetectedLanguageCode:detectedLanguageCode dominantLocale:v6 dominantLocaleConfidence:v8 utteranceStartTimestamp:Seconds utteranceDuration:CMTimeGetSeconds(&time)];
 }
 
-+ (id)unarchivedTranscriptionFromData:(id)a3 error:(id *)a4
++ (id)unarchivedTranscriptionFromData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
@@ -66,7 +66,7 @@
   v11 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
   v12 = MEMORY[0x1E696ACD0];
 
-  return [v12 _strictlyUnarchivedObjectOfClasses:v11 fromData:a3 error:a4];
+  return [v12 _strictlyUnarchivedObjectOfClasses:v11 fromData:data error:error];
 }
 
 - (void)dealloc
@@ -78,9 +78,9 @@
   [(VCCaptionsLanguageDetectorResults *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   detectedLanguageCode = self->_detectedLanguageCode;
   dominantLocale = self->_dominantLocale;
   dominantLocaleConfidence = self->_dominantLocaleConfidence;
@@ -90,18 +90,18 @@
   return [v4 initWithDetectedLanguageCode:detectedLanguageCode dominantLocale:dominantLocale dominantLocaleConfidence:dominantLocaleConfidence utteranceStartTimestamp:utteranceStartTimestamp utteranceDuration:utteranceDuration];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_detectedLanguageCode forKey:@"detectedLanguageCode"];
-  [a3 encodeObject:-[NSLocale localeIdentifier](self->_dominantLocale forKey:{"localeIdentifier"), @"localeIdentifier"}];
-  [a3 encodeDouble:@"dominantLocaleConfidence" forKey:self->_dominantLocaleConfidence];
-  [a3 encodeDouble:@"utteranceStartTimestamp" forKey:self->_utteranceStartTimestamp];
+  [coder encodeObject:self->_detectedLanguageCode forKey:@"detectedLanguageCode"];
+  [coder encodeObject:-[NSLocale localeIdentifier](self->_dominantLocale forKey:{"localeIdentifier"), @"localeIdentifier"}];
+  [coder encodeDouble:@"dominantLocaleConfidence" forKey:self->_dominantLocaleConfidence];
+  [coder encodeDouble:@"utteranceStartTimestamp" forKey:self->_utteranceStartTimestamp];
   utteranceDuration = self->_utteranceDuration;
 
-  [a3 encodeDouble:@"utteranceDuration" forKey:utteranceDuration];
+  [coder encodeDouble:@"utteranceDuration" forKey:utteranceDuration];
 }
 
-- (VCCaptionsLanguageDetectorResults)initWithCoder:(id)a3
+- (VCCaptionsLanguageDetectorResults)initWithCoder:(id)coder
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -109,27 +109,27 @@
   v4 = [(VCCaptionsLanguageDetectorResults *)&v11 init];
   if (v4)
   {
-    if ([a3 containsValueForKey:@"detectedLanguageCode"])
+    if ([coder containsValueForKey:@"detectedLanguageCode"])
     {
-      v4->_detectedLanguageCode = [objc_msgSend(a3 decodeObjectForKey:{@"detectedLanguageCode", "copy"}];
-      if ([a3 containsValueForKey:@"localeIdentifier"])
+      v4->_detectedLanguageCode = [objc_msgSend(coder decodeObjectForKey:{@"detectedLanguageCode", "copy"}];
+      if ([coder containsValueForKey:@"localeIdentifier"])
       {
-        v5 = [a3 decodeObjectForKey:@"localeIdentifier"];
+        v5 = [coder decodeObjectForKey:@"localeIdentifier"];
         v6 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:v5];
         if (v6)
         {
           v4->_dominantLocale = v6;
-          if ([a3 containsValueForKey:@"dominantLocaleConfidence"])
+          if ([coder containsValueForKey:@"dominantLocaleConfidence"])
           {
-            [a3 decodeDoubleForKey:@"dominantLocaleConfidence"];
+            [coder decodeDoubleForKey:@"dominantLocaleConfidence"];
             v4->_dominantLocaleConfidence = v7;
-            if ([a3 containsValueForKey:@"utteranceStartTimestamp"])
+            if ([coder containsValueForKey:@"utteranceStartTimestamp"])
             {
-              [a3 decodeDoubleForKey:@"utteranceStartTimestamp"];
+              [coder decodeDoubleForKey:@"utteranceStartTimestamp"];
               v4->_utteranceStartTimestamp = v8;
-              if ([a3 containsValueForKey:@"utteranceDuration"])
+              if ([coder containsValueForKey:@"utteranceDuration"])
               {
-                [a3 decodeDoubleForKey:@"utteranceDuration"];
+                [coder decodeDoubleForKey:@"utteranceDuration"];
                 v4->_utteranceDuration = v9;
                 return v4;
               }
@@ -182,30 +182,30 @@
   detectedLanguageCode = self->_detectedLanguageCode;
   if (detectedLanguageCode)
   {
-    v6 = [[(NSString *)detectedLanguageCode description] UTF8String];
+    uTF8String = [[(NSString *)detectedLanguageCode description] UTF8String];
   }
 
   else
   {
-    v6 = "<nil>";
+    uTF8String = "<nil>";
   }
 
   if ([(NSLocale *)self->_dominantLocale localeIdentifier])
   {
-    v7 = [[(NSString *)[(NSLocale *)self->_dominantLocale localeIdentifier] description] UTF8String];
+    uTF8String2 = [[(NSString *)[(NSLocale *)self->_dominantLocale localeIdentifier] description] UTF8String];
   }
 
   else
   {
-    v7 = "<nil>";
+    uTF8String2 = "<nil>";
   }
 
-  return [v3 stringWithFormat:@"{ %@ detectedLanguageCode=%s, dominantLocale=%s, dominantLocaleConfidence=%f, utteranceStartTimestamp=%f, utteranceDuration=%f }", v4, v6, v7, *&self->_dominantLocaleConfidence, *&self->_utteranceStartTimestamp, *&self->_utteranceDuration];
+  return [v3 stringWithFormat:@"{ %@ detectedLanguageCode=%s, dominantLocale=%s, dominantLocaleConfidence=%f, utteranceStartTimestamp=%f, utteranceDuration=%f }", v4, uTF8String, uTF8String2, *&self->_dominantLocaleConfidence, *&self->_utteranceStartTimestamp, *&self->_utteranceDuration];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -215,25 +215,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [objc_msgSend(a3 "detectedLanguageCode")];
+      v5 = [objc_msgSend(equal "detectedLanguageCode")];
       if (v5)
       {
-        v5 = [objc_msgSend(objc_msgSend(a3 "dominantLocale")];
+        v5 = [objc_msgSend(objc_msgSend(equal "dominantLocale")];
         if (v5)
         {
-          [a3 dominantLocaleConfidence];
+          [equal dominantLocaleConfidence];
           v7 = v6;
           [(VCCaptionsLanguageDetectorResults *)self utteranceStartTimestamp];
           v5 = VCMathUtils_DoubleEqualWithAccuracy(v7, v8, 0.0000625);
           if (v5)
           {
-            [a3 utteranceStartTimestamp];
+            [equal utteranceStartTimestamp];
             v10 = v9;
             [(VCCaptionsLanguageDetectorResults *)self utteranceStartTimestamp];
             v5 = VCMathUtils_DoubleEqualWithAccuracy(v10, v11, 0.0000625);
             if (v5)
             {
-              [a3 utteranceDuration];
+              [equal utteranceDuration];
               v13 = v12;
               [(VCCaptionsLanguageDetectorResults *)self utteranceDuration];
 

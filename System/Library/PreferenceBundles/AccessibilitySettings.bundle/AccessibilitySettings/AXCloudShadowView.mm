@@ -1,18 +1,18 @@
 @interface AXCloudShadowView
-- (AXCloudShadowView)initWithFrame:(CGRect)a3;
+- (AXCloudShadowView)initWithFrame:(CGRect)frame;
 - (id)resizableShadowImage;
 - (void)layoutSubviews;
 @end
 
 @implementation AXCloudShadowView
 
-- (AXCloudShadowView)initWithFrame:(CGRect)a3
+- (AXCloudShadowView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = AXCloudShadowView;
-  v3 = [(AXCloudShadowView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(AXCloudShadowView *)v3 resizableShadowImage];
-  v5 = [[UIImageView alloc] initWithImage:v4];
+  v3 = [(AXCloudShadowView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  resizableShadowImage = [(AXCloudShadowView *)v3 resizableShadowImage];
+  v5 = [[UIImageView alloc] initWithImage:resizableShadowImage];
   imageView = v3->_imageView;
   v3->_imageView = v5;
 
@@ -136,10 +136,10 @@
   v25 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.600000024];
 
   CGContextSaveGState(CurrentContext);
-  v26 = [v25 CGColor];
+  cGColor = [v25 CGColor];
   v32.width = 0.0;
   v32.height = 1.0;
-  CGContextSetShadowWithColor(CurrentContext, v32, 18.0, v26);
+  CGContextSetShadowWithColor(CurrentContext, v32, 18.0, cGColor);
   [v25 setFill];
   CGContextSaveGState(CurrentContext);
   CGContextAddPath(CurrentContext, v24);

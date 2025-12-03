@@ -1,7 +1,7 @@
 @interface SNNMILSourceLocation
-+ (id)locationOrEmpty:(id)a3;
++ (id)locationOrEmpty:(id)empty;
 - (SNNMILSourceLocation)init;
-- (SNNMILSourceLocation)initWithFilename:(id)a3 line:(unint64_t)a4 column:(unint64_t)a5;
+- (SNNMILSourceLocation)initWithFilename:(id)filename line:(unint64_t)line column:(unint64_t)column;
 - (unique_ptr<MIL::Location,)milLocation;
 @end
 
@@ -16,28 +16,28 @@
   return result;
 }
 
-- (SNNMILSourceLocation)initWithFilename:(id)a3 line:(unint64_t)a4 column:(unint64_t)a5
+- (SNNMILSourceLocation)initWithFilename:(id)filename line:(unint64_t)line column:(unint64_t)column
 {
-  v8 = a3;
+  filenameCopy = filename;
   v12.receiver = self;
   v12.super_class = SNNMILSourceLocation;
   v9 = [(SNNMILSourceLocation *)&v12 init];
   v9->_isLocationKnown = 1;
   filename = v9->_filename;
-  v9->_filename = v8;
+  v9->_filename = filenameCopy;
 
-  v9->_line = a4;
-  v9->_column = a5;
+  v9->_line = line;
+  v9->_column = column;
   return v9;
 }
 
-+ (id)locationOrEmpty:(id)a3
++ (id)locationOrEmpty:(id)empty
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  emptyCopy = empty;
+  v4 = emptyCopy;
+  if (emptyCopy)
   {
-    v5 = v3;
+    v5 = emptyCopy;
   }
 
   else

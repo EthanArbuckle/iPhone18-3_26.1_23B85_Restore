@@ -1,23 +1,23 @@
 @interface AWDMETRICSKCellularPowerLogWcdmaPagingDRXCycle
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsDataPreferred:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPagingDrxCycle:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsDataPreferred:(BOOL)preferred;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPagingDrxCycle:(BOOL)cycle;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogWcdmaPagingDRXCycle
 
-- (void)setHasPagingDrxCycle:(BOOL)a3
+- (void)setHasPagingDrxCycle:(BOOL)cycle
 {
-  if (a3)
+  if (cycle)
   {
     v3 = 4;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 2;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsDataPreferred:(BOOL)a3
+- (void)setHasIsDataPreferred:(BOOL)preferred
 {
-  if (a3)
+  if (preferred)
   {
     v3 = 16;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogWcdmaPagingDRXCycle;
   v4 = [(AWDMETRICSKCellularPowerLogWcdmaPagingDRXCycle *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogWcdmaPagingDRXCycle *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogWcdmaPagingDRXCycle *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v9 forKey:@"timestamp"];
+    [dictionary setObject:v9 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -115,7 +115,7 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_pagingDrxCycle];
-  [v3 setObject:v10 forKey:@"paging_drx_cycle"];
+  [dictionary setObject:v10 forKey:@"paging_drx_cycle"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -131,34 +131,34 @@ LABEL_4:
 
 LABEL_15:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-  [v3 setObject:v11 forKey:@"subs_id"];
+  [dictionary setObject:v11 forKey:@"subs_id"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_numSubs];
-    [v3 setObject:v5 forKey:@"num_subs"];
+    [dictionary setObject:v5 forKey:@"num_subs"];
   }
 
 LABEL_6:
   plmn = self->_plmn;
   if (plmn)
   {
-    [v3 setObject:plmn forKey:@"plmn"];
+    [dictionary setObject:plmn forKey:@"plmn"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDataPreferred];
-    [v3 setObject:v7 forKey:@"is_data_preferred"];
+    [dictionary setObject:v7 forKey:@"is_data_preferred"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -219,14 +219,14 @@ LABEL_6:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -245,8 +245,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 5) = self->_pagingDrxCycle;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 5) = self->_pagingDrxCycle;
+  *(toCopy + 40) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -260,33 +260,33 @@ LABEL_4:
   }
 
 LABEL_15:
-  *(v4 + 8) = self->_subsId;
-  *(v4 + 40) |= 8u;
+  *(toCopy + 8) = self->_subsId;
+  *(toCopy + 40) |= 8u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_5:
-    *(v4 + 4) = self->_numSubs;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 4) = self->_numSubs;
+    *(toCopy + 40) |= 2u;
   }
 
 LABEL_6:
   if (self->_plmn)
   {
-    v6 = v4;
-    [v4 setPlmn:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setPlmn:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 36) = self->_isDataPreferred;
-    *(v4 + 40) |= 0x10u;
+    *(toCopy + 36) = self->_isDataPreferred;
+    *(toCopy + 40) |= 0x10u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -336,7 +336,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(NSData *)self->_plmn copyWithZone:a3];
+  v8 = [(NSData *)self->_plmn copyWithZone:zone];
   v9 = *(v6 + 24);
   *(v6 + 24) = v8;
 
@@ -349,70 +349,70 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_pagingDrxCycle != *(v4 + 5))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_pagingDrxCycle != *(equalCopy + 5))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_subsId != *(v4 + 8))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_subsId != *(equalCopy + 8))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_numSubs != *(v4 + 4))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_numSubs != *(equalCopy + 4))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_27;
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 3))
+  if (plmn | *(equalCopy + 3))
   {
     if (![(NSData *)plmn isEqual:?])
     {
@@ -420,7 +420,7 @@ LABEL_6:
     }
 
     has = self->_has;
-    v6 = *(v4 + 40);
+    v6 = *(equalCopy + 40);
   }
 
   v8 = (v6 & 0x10) == 0;
@@ -430,13 +430,13 @@ LABEL_6:
     {
       if (self->_isDataPreferred)
       {
-        if ((*(v4 + 36) & 1) == 0)
+        if ((*(equalCopy + 36) & 1) == 0)
         {
           goto LABEL_27;
         }
       }
 
-      else if (*(v4 + 36))
+      else if (*(equalCopy + 36))
       {
         goto LABEL_27;
       }
@@ -520,15 +520,15 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v8 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -541,14 +541,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 40) & 4) == 0)
+  else if ((*(fromCopy + 40) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_pagingDrxCycle = *(v4 + 5);
+  self->_pagingDrxCycle = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -561,26 +561,26 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_subsId = *(v4 + 8);
+  self->_subsId = *(fromCopy + 8);
   *&self->_has |= 8u;
-  if ((*(v4 + 40) & 2) != 0)
+  if ((*(fromCopy + 40) & 2) != 0)
   {
 LABEL_5:
-    self->_numSubs = *(v4 + 4);
+    self->_numSubs = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
 LABEL_6:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(AWDMETRICSKCellularPowerLogWcdmaPagingDRXCycle *)self setPlmn:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 40) & 0x10) != 0)
+  if ((*(fromCopy + 40) & 0x10) != 0)
   {
-    self->_isDataPreferred = *(v4 + 36);
+    self->_isDataPreferred = *(fromCopy + 36);
     *&self->_has |= 0x10u;
   }
 }

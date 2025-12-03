@@ -1,19 +1,19 @@
 @interface IFImage
-+ (id)css_imageWithWebClip:(id)a3;
++ (id)css_imageWithWebClip:(id)clip;
 - (NSData)css_PNGRepresentation;
 @end
 
 @implementation IFImage
 
-+ (id)css_imageWithWebClip:(id)a3
++ (id)css_imageWithWebClip:(id)clip
 {
-  v4 = [a3 iconImage];
-  v5 = [v4 CGImage];
-  if (v5)
+  iconImage = [clip iconImage];
+  cGImage = [iconImage CGImage];
+  if (cGImage)
   {
-    v6 = v5;
-    v7 = [a1 alloc];
-    [v4 scale];
+    v6 = cGImage;
+    v7 = [self alloc];
+    [iconImage scale];
     v8 = [v7 initWithCGImage:v6 scale:?];
   }
 
@@ -27,15 +27,15 @@
 
 - (NSData)css_PNGRepresentation
 {
-  v3 = [(IFImage *)self CGImage];
-  if (v3)
+  cGImage = [(IFImage *)self CGImage];
+  if (cGImage)
   {
     [(IFImage *)self scale];
-    v4 = [UIImage imageWithCGImage:v3 scale:0 orientation:?];
-    v3 = UIImagePNGRepresentation(v4);
+    v4 = [UIImage imageWithCGImage:cGImage scale:0 orientation:?];
+    cGImage = UIImagePNGRepresentation(v4);
   }
 
-  return v3;
+  return cGImage;
 }
 
 @end

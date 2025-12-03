@@ -1,18 +1,18 @@
 @interface HMDHAPAccessoryConnectionCoordinator
 + (id)logCategory;
-- (HMDHAPAccessoryConnectionCoordinator)initWithHome:(id)a3 notificationCenter:(id)a4;
+- (HMDHAPAccessoryConnectionCoordinator)initWithHome:(id)home notificationCenter:(id)center;
 - (id)logIdentifier;
-- (void)_disableDisconnectOnIdleWithAccessoriesAndConnect:(BOOL)a3;
+- (void)_disableDisconnectOnIdleWithAccessoriesAndConnect:(BOOL)connect;
 - (void)_enableDisconnectOnIdleWithAccessories;
-- (void)configureWithIsResidentCapable:(BOOL)a3;
+- (void)configureWithIsResidentCapable:(BOOL)capable;
 - (void)evaluateAccessoryConnectionStatus;
-- (void)handleCurrentResidentChanged:(id)a3;
-- (void)handleIsResidentFirstAccessoryCommunicationEnabledDidChangeNotification:(id)a3;
-- (void)handlePrimaryResidentChanged:(id)a3;
-- (void)handleResidentAddRemove:(id)a3;
+- (void)handleCurrentResidentChanged:(id)changed;
+- (void)handleIsResidentFirstAccessoryCommunicationEnabledDidChangeNotification:(id)notification;
+- (void)handlePrimaryResidentChanged:(id)changed;
+- (void)handleResidentAddRemove:(id)remove;
 - (void)handleResidentChangedOnNonResident;
-- (void)handleResidentStatusChanged:(id)a3;
-- (void)handleResidentUpdated:(id)a3;
+- (void)handleResidentStatusChanged:(id)changed;
+- (void)handleResidentUpdated:(id)updated;
 @end
 
 @implementation HMDHAPAccessoryConnectionCoordinator
@@ -29,10 +29,10 @@
     WeakRetained = 0;
   }
 
-  v3 = [WeakRetained uuid];
-  v4 = [v3 UUIDString];
+  uuid = [WeakRetained uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (void)_enableDisconnectOnIdleWithAccessories
@@ -53,8 +53,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [WeakRetained hapAccessories];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  hapAccessories = [WeakRetained hapAccessories];
+  v5 = [hapAccessories countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -64,7 +64,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(hapAccessories);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -74,7 +74,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [hapAccessories countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -84,12 +84,12 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_disableDisconnectOnIdleWithAccessoriesAndConnect:(BOOL)a3
+- (void)_disableDisconnectOnIdleWithAccessoriesAndConnect:(BOOL)connect
 {
-  v3 = a3;
+  connectCopy = connect;
   v29 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v22 = self;
+  selfCopy = self;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_home);
@@ -105,8 +105,8 @@
   v23 = 0u;
   v24 = 0u;
   v21 = WeakRetained;
-  v6 = [WeakRetained hapAccessories];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  hapAccessories = [WeakRetained hapAccessories];
+  v7 = [hapAccessories countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
     v9 = *v24;
@@ -118,7 +118,7 @@
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(hapAccessories);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
@@ -127,15 +127,15 @@
           [v11 setShouldDisconnectOnIdle:0];
         }
 
-        if (v3)
+        if (connectCopy)
         {
-          v12 = [v11 bridge];
-          v13 = v12 == 0;
+          bridge = [v11 bridge];
+          v13 = bridge == 0;
 
           if (v13)
           {
             v14 = objc_autoreleasePoolPush();
-            v15 = v22;
+            v15 = selfCopy;
             v16 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
             {
@@ -153,13 +153,13 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v7 = [hapAccessories countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v7);
   }
 
-  os_unfair_lock_unlock(&v22->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v19 = *MEMORY[0x277D85DE8];
 }
 
@@ -177,7 +177,7 @@
   }
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -204,8 +204,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [WeakRetained hapAccessories];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  hapAccessories = [WeakRetained hapAccessories];
+  v12 = [hapAccessories countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -216,13 +216,13 @@
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(hapAccessories);
         }
 
         [*(*(&v17 + 1) + 8 * i) checkHAPSessionRestore];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [hapAccessories countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
@@ -230,21 +230,21 @@
 
   if (defaultAccessoryShouldDisconnectOnIdleForHome(WeakRetained))
   {
-    [(HMDHAPAccessoryConnectionCoordinator *)v5 _enableDisconnectOnIdleWithAccessories];
+    [(HMDHAPAccessoryConnectionCoordinator *)selfCopy _enableDisconnectOnIdleWithAccessories];
   }
 
   else
   {
-    -[HMDHAPAccessoryConnectionCoordinator _disableDisconnectOnIdleWithAccessoriesAndConnect:](v5, "_disableDisconnectOnIdleWithAccessoriesAndConnect:", [WeakRetained isCurrentDevicePrimaryResident]);
+    -[HMDHAPAccessoryConnectionCoordinator _disableDisconnectOnIdleWithAccessoriesAndConnect:](selfCopy, "_disableDisconnectOnIdleWithAccessoriesAndConnect:", [WeakRetained isCurrentDevicePrimaryResident]);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePrimaryResidentChanged:(id)a3
+- (void)handlePrimaryResidentChanged:(id)changed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_home);
@@ -255,12 +255,12 @@
     WeakRetained = 0;
   }
 
-  v6 = [WeakRetained isCurrentDeviceAvailableResident];
+  isCurrentDeviceAvailableResident = [WeakRetained isCurrentDeviceAvailableResident];
 
-  if (v6)
+  if (isCurrentDeviceAvailableResident)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -271,7 +271,7 @@
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDHAPAccessoryConnectionCoordinator *)v8 evaluateAccessoryConnectionStatus];
+    [(HMDHAPAccessoryConnectionCoordinator *)selfCopy evaluateAccessoryConnectionStatus];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -281,14 +281,14 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    if (v4)
+    if (selfCopy)
     {
-      WeakRetained = objc_loadWeakRetained(&v4->_home);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_home);
     }
 
     else
@@ -296,10 +296,10 @@
       WeakRetained = 0;
     }
 
-    v8 = [WeakRetained name];
-    if (v4)
+    name = [WeakRetained name];
+    if (selfCopy)
     {
-      v9 = objc_loadWeakRetained(&v4->_home);
+      v9 = objc_loadWeakRetained(&selfCopy->_home);
     }
 
     else
@@ -307,37 +307,37 @@
       v9 = 0;
     }
 
-    v10 = [v9 uuid];
-    v11 = [v10 UUIDString];
+    uuid = [v9 uuid];
+    uUIDString = [uuid UUIDString];
     v13 = 138543874;
     v14 = v6;
     v15 = 2112;
-    v16 = v8;
+    v16 = name;
     v17 = 2112;
-    v18 = v11;
+    v18 = uUIDString;
     _os_log_impl(&dword_2531F8000, v5, OS_LOG_TYPE_INFO, "%{public}@A resident device was updated for home %@(%@), evaluating current non-resident device connection status with accessories", &v13, 0x20u);
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDHAPAccessoryConnectionCoordinator *)v4 evaluateAccessoryConnectionStatus];
+  [(HMDHAPAccessoryConnectionCoordinator *)selfCopy evaluateAccessoryConnectionStatus];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCurrentResidentChanged:(id)a3
+- (void)handleCurrentResidentChanged:(id)changed
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    [v4 isEnabled];
+    [changedCopy isEnabled];
     v9 = HMFBooleanToString();
-    if (v6)
+    if (selfCopy)
     {
-      WeakRetained = objc_loadWeakRetained(&v6->_home);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_home);
     }
 
     else
@@ -357,17 +357,17 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDHAPAccessoryConnectionCoordinator *)v6 evaluateAccessoryConnectionStatus];
+  [(HMDHAPAccessoryConnectionCoordinator *)selfCopy evaluateAccessoryConnectionStatus];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleIsResidentFirstAccessoryCommunicationEnabledDidChangeNotification:(id)a3
+- (void)handleIsResidentFirstAccessoryCommunicationEnabledDidChangeNotification:(id)notification
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -378,16 +378,16 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDHAPAccessoryConnectionCoordinator *)v6 evaluateAccessoryConnectionStatus];
+  [(HMDHAPAccessoryConnectionCoordinator *)selfCopy evaluateAccessoryConnectionStatus];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleResidentUpdated:(id)a3
+- (void)handleResidentUpdated:(id)updated
 {
-  v10 = a3;
-  v4 = [v10 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"HMDResidentDeviceManagerResidentDeviceNotificationKey"];
+  updatedCopy = updated;
+  userInfo = [updatedCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"HMDResidentDeviceManagerResidentDeviceNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -418,19 +418,19 @@
 
   WeakRetained = 0;
 LABEL_7:
-  v9 = [WeakRetained isCurrentDeviceAvailableResident];
+  isCurrentDeviceAvailableResident = [WeakRetained isCurrentDeviceAvailableResident];
 
-  if ((v9 & 1) == 0)
+  if ((isCurrentDeviceAvailableResident & 1) == 0)
   {
     [(HMDHAPAccessoryConnectionCoordinator *)self handleResidentChangedOnNonResident];
   }
 }
 
-- (void)handleResidentAddRemove:(id)a3
+- (void)handleResidentAddRemove:(id)remove
 {
-  v10 = a3;
-  v4 = [v10 userInfo];
-  v5 = [v4 objectForKey:@"HMDResidentDeviceManagerResidentDeviceNotificationKey"];
+  removeCopy = remove;
+  userInfo = [removeCopy userInfo];
+  v5 = [userInfo objectForKey:@"HMDResidentDeviceManagerResidentDeviceNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -467,9 +467,9 @@ LABEL_7:
 
   WeakRetained = 0;
 LABEL_9:
-  v9 = [WeakRetained isCurrentDeviceAvailableResident];
+  isCurrentDeviceAvailableResident = [WeakRetained isCurrentDeviceAvailableResident];
 
-  if ((v9 & 1) == 0)
+  if ((isCurrentDeviceAvailableResident & 1) == 0)
   {
     [(HMDHAPAccessoryConnectionCoordinator *)self handleResidentChangedOnNonResident];
   }
@@ -477,14 +477,14 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)handleResidentStatusChanged:(id)a3
+- (void)handleResidentStatusChanged:(id)changed
 {
-  v9 = a3;
-  v4 = [v9 object];
+  changedCopy = changed;
+  object = [changedCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -516,9 +516,9 @@ LABEL_11:
 
   WeakRetained = 0;
 LABEL_9:
-  v8 = [WeakRetained isCurrentDeviceAvailableResident];
+  isCurrentDeviceAvailableResident = [WeakRetained isCurrentDeviceAvailableResident];
 
-  if ((v8 & 1) == 0)
+  if ((isCurrentDeviceAvailableResident & 1) == 0)
   {
     [(HMDHAPAccessoryConnectionCoordinator *)self handleResidentChangedOnNonResident];
   }
@@ -526,14 +526,14 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)configureWithIsResidentCapable:(BOOL)a3
+- (void)configureWithIsResidentCapable:(BOOL)capable
 {
-  v3 = a3;
-  v4 = self;
+  capableCopy = capable;
+  selfCopy = self;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_home);
-    self = objc_getProperty(v4, v5, 24, 1);
+    self = objc_getProperty(selfCopy, v5, 24, 1);
   }
 
   else
@@ -541,10 +541,10 @@ LABEL_11:
     WeakRetained = 0;
   }
 
-  [(HMDHAPAccessoryConnectionCoordinator *)self addObserver:v4 selector:sel_handleResidentStatusChanged_ name:@"HMDResidentDeviceEnabledStateChangedNotification" object:0];
-  if (v4)
+  [(HMDHAPAccessoryConnectionCoordinator *)self addObserver:selfCopy selector:sel_handleResidentStatusChanged_ name:@"HMDResidentDeviceEnabledStateChangedNotification" object:0];
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v6, 24, 1);
+    Property = objc_getProperty(selfCopy, v6, 24, 1);
   }
 
   else
@@ -552,11 +552,11 @@ LABEL_11:
     Property = 0;
   }
 
-  [Property addObserver:v4 selector:sel_handleResidentAddRemove_ name:@"HMDResidentDeviceManagerAddResidentNotification" object:0];
-  if (v4)
+  [Property addObserver:selfCopy selector:sel_handleResidentAddRemove_ name:@"HMDResidentDeviceManagerAddResidentNotification" object:0];
+  if (selfCopy)
   {
-    [objc_getProperty(v4 v8];
-    v10 = objc_getProperty(v4, v9, 24, 1);
+    [objc_getProperty(selfCopy v8];
+    v10 = objc_getProperty(selfCopy, v9, 24, 1);
   }
 
   else
@@ -565,10 +565,10 @@ LABEL_11:
     v10 = 0;
   }
 
-  [v10 addObserver:v4 selector:sel_handleIsResidentFirstAccessoryCommunicationEnabledDidChangeNotification_ name:@"HMDHomeIsResidentFirstAccessoryCommunicationEnabledDidChangeNotification" object:WeakRetained];
-  if (v4)
+  [v10 addObserver:selfCopy selector:sel_handleIsResidentFirstAccessoryCommunicationEnabledDidChangeNotification_ name:@"HMDHomeIsResidentFirstAccessoryCommunicationEnabledDidChangeNotification" object:WeakRetained];
+  if (selfCopy)
   {
-    v12 = objc_getProperty(v4, v11, 24, 1);
+    v12 = objc_getProperty(selfCopy, v11, 24, 1);
   }
 
   else
@@ -576,8 +576,8 @@ LABEL_11:
     v12 = 0;
   }
 
-  v13 = !v3;
-  if (v3)
+  v13 = !capableCopy;
+  if (capableCopy)
   {
     v14 = sel_handlePrimaryResidentChanged_;
   }
@@ -598,14 +598,14 @@ LABEL_11:
   }
 
   v16 = v12;
-  v17 = [WeakRetained residentDeviceManager];
-  [v16 addObserver:v4 selector:v14 name:v15 object:v17];
+  residentDeviceManager = [WeakRetained residentDeviceManager];
+  [v16 addObserver:selfCopy selector:v14 name:v15 object:residentDeviceManager];
 
   if (isiPadDevice())
   {
-    if (v4)
+    if (selfCopy)
     {
-      v19 = objc_getProperty(v4, v18, 24, 1);
+      v19 = objc_getProperty(selfCopy, v18, 24, 1);
     }
 
     else
@@ -614,25 +614,25 @@ LABEL_11:
     }
 
     v20 = v19;
-    v21 = [WeakRetained residentDeviceManager];
-    [v20 addObserver:v4 selector:sel_handleResidentUpdated_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:v21];
+    residentDeviceManager2 = [WeakRetained residentDeviceManager];
+    [v20 addObserver:selfCopy selector:sel_handleResidentUpdated_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:residentDeviceManager2];
   }
 
-  [(HMDHAPAccessoryConnectionCoordinator *)v4 evaluateAccessoryConnectionStatus];
+  [(HMDHAPAccessoryConnectionCoordinator *)selfCopy evaluateAccessoryConnectionStatus];
 }
 
-- (HMDHAPAccessoryConnectionCoordinator)initWithHome:(id)a3 notificationCenter:(id)a4
+- (HMDHAPAccessoryConnectionCoordinator)initWithHome:(id)home notificationCenter:(id)center
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  centerCopy = center;
   v11.receiver = self;
   v11.super_class = HMDHAPAccessoryConnectionCoordinator;
   v8 = [(HMDHAPAccessoryConnectionCoordinator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_home, v6);
-    objc_storeStrong(&v9->_notificationCenter, a4);
+    objc_storeWeak(&v8->_home, homeCopy);
+    objc_storeStrong(&v9->_notificationCenter, center);
     v9->_lock._os_unfair_lock_opaque = 0;
   }
 

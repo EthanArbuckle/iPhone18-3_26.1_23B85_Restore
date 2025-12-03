@@ -1,16 +1,16 @@
 @interface AdComponentView
-- (_TtC12NewsArticles15AdComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6;
-- (void)presentComponentWithChanges:(id)a3;
-- (void)receivedInfo:(id)a3 fromLayoutingPhaseWithIdentifier:(id)a4;
+- (_TtC12NewsArticles15AdComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory;
+- (void)presentComponentWithChanges:(id)changes;
+- (void)receivedInfo:(id)info fromLayoutingPhaseWithIdentifier:(id)identifier;
 - (void)renderContents;
-- (void)visibilityStateDidChangeFromState:(int64_t)a3;
+- (void)visibilityStateDidChangeFromState:(int64_t)state;
 @end
 
 @implementation AdComponentView
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
-  v3 = *&a3.var0;
+  v3 = *&changes.var0;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
@@ -20,15 +20,15 @@
 
 - (void)renderContents
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D79FA5A4();
 }
 
-- (void)receivedInfo:(id)a3 fromLayoutingPhaseWithIdentifier:(id)a4
+- (void)receivedInfo:(id)info fromLayoutingPhaseWithIdentifier:(id)identifier
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_1D7D3138C();
   swift_unknownObjectRelease();
   v8 = sub_1D7D3034C();
@@ -39,13 +39,13 @@
   __swift_destroy_boxed_opaque_existential_1(v11);
 }
 
-- (void)visibilityStateDidChangeFromState:(int64_t)a3
+- (void)visibilityStateDidChangeFromState:(int64_t)state
 {
-  v4 = self;
-  sub_1D79FAB4C(a3);
+  selfCopy = self;
+  sub_1D79FAB4C(state);
 }
 
-- (_TtC12NewsArticles15AdComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6
+- (_TtC12NewsArticles15AdComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

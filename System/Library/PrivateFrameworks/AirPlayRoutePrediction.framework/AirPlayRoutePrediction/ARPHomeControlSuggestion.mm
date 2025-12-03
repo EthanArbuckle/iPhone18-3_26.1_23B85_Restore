@@ -1,42 +1,42 @@
 @interface ARPHomeControlSuggestion
-- (ARPHomeControlSuggestion)initWithCoder:(id)a3;
-- (ARPHomeControlSuggestion)initWithHomeUUID:(id)a3 targetUUID:(id)a4 accessoryServiceUUID:(id)a5 type:(int64_t)a6 score:(double)a7 computedScore:(double)a8 suggestionReason:(id)a9;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ARPHomeControlSuggestion)initWithCoder:(id)coder;
+- (ARPHomeControlSuggestion)initWithHomeUUID:(id)d targetUUID:(id)iD accessoryServiceUUID:(id)uID type:(int64_t)type score:(double)score computedScore:(double)computedScore suggestionReason:(id)reason;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARPHomeControlSuggestion
 
-- (ARPHomeControlSuggestion)initWithHomeUUID:(id)a3 targetUUID:(id)a4 accessoryServiceUUID:(id)a5 type:(int64_t)a6 score:(double)a7 computedScore:(double)a8 suggestionReason:(id)a9
+- (ARPHomeControlSuggestion)initWithHomeUUID:(id)d targetUUID:(id)iD accessoryServiceUUID:(id)uID type:(int64_t)type score:(double)score computedScore:(double)computedScore suggestionReason:(id)reason
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a9;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
+  reasonCopy = reason;
   v30.receiver = self;
   v30.super_class = ARPHomeControlSuggestion;
   v20 = [(ARPHomeControlSuggestion *)&v30 init];
   if (v20)
   {
-    v21 = [v16 copy];
+    v21 = [dCopy copy];
     homeUUID = v20->_homeUUID;
     v20->_homeUUID = v21;
 
-    v23 = [v17 copy];
+    v23 = [iDCopy copy];
     targetUUID = v20->_targetUUID;
     v20->_targetUUID = v23;
 
-    v25 = [v18 copy];
+    v25 = [uIDCopy copy];
     accessoryServiceUUID = v20->_accessoryServiceUUID;
     v20->_accessoryServiceUUID = v25;
 
-    v20->_type = a6;
-    v20->_score = a7;
-    v20->_computedScore = a8;
-    v27 = [v19 copy];
+    v20->_type = type;
+    v20->_score = score;
+    v20->_computedScore = computedScore;
+    v27 = [reasonCopy copy];
     suggestionReason = v20->_suggestionReason;
     v20->_suggestionReason = v27;
   }
@@ -44,60 +44,60 @@
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ARPHomeControlSuggestion *)self type];
+  coderCopy = coder;
+  type = [(ARPHomeControlSuggestion *)self type];
   v6 = NSStringFromSelector(sel_type);
-  [v4 encodeInteger:v5 forKey:v6];
+  [coderCopy encodeInteger:type forKey:v6];
 
   [(ARPHomeControlSuggestion *)self score];
   v8 = v7;
   v9 = NSStringFromSelector(sel_score);
-  [v4 encodeDouble:v9 forKey:v8];
+  [coderCopy encodeDouble:v9 forKey:v8];
 
-  v10 = [(ARPHomeControlSuggestion *)self homeUUID];
+  homeUUID = [(ARPHomeControlSuggestion *)self homeUUID];
   v11 = NSStringFromSelector(sel_homeUUID);
-  [v4 encodeObject:v10 forKey:v11];
+  [coderCopy encodeObject:homeUUID forKey:v11];
 
-  v12 = [(ARPHomeControlSuggestion *)self targetUUID];
+  targetUUID = [(ARPHomeControlSuggestion *)self targetUUID];
   v13 = NSStringFromSelector(sel_targetUUID);
-  [v4 encodeObject:v12 forKey:v13];
+  [coderCopy encodeObject:targetUUID forKey:v13];
 
-  v14 = [(ARPHomeControlSuggestion *)self accessoryServiceUUID];
+  accessoryServiceUUID = [(ARPHomeControlSuggestion *)self accessoryServiceUUID];
   v15 = NSStringFromSelector(sel_accessoryServiceUUID);
-  [v4 encodeObject:v14 forKey:v15];
+  [coderCopy encodeObject:accessoryServiceUUID forKey:v15];
 
-  v17 = [(ARPHomeControlSuggestion *)self suggestionReason];
+  suggestionReason = [(ARPHomeControlSuggestion *)self suggestionReason];
   v16 = NSStringFromSelector(sel_suggestionReason);
-  [v4 encodeObject:v17 forKey:v16];
+  [coderCopy encodeObject:suggestionReason forKey:v16];
 }
 
-- (ARPHomeControlSuggestion)initWithCoder:(id)a3
+- (ARPHomeControlSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_type);
-  v6 = [v4 decodeIntForKey:v5];
+  v6 = [coderCopy decodeIntForKey:v5];
 
   v7 = NSStringFromSelector(sel_score);
-  [v4 decodeDoubleForKey:v7];
+  [coderCopy decodeDoubleForKey:v7];
   v9 = v8;
 
   v10 = objc_opt_class();
   v11 = NSStringFromSelector(sel_homeUUID);
-  v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+  v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
 
   v13 = objc_opt_class();
   v14 = NSStringFromSelector(sel_targetUUID);
-  v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+  v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
 
   v16 = objc_opt_class();
   v17 = NSStringFromSelector(sel_accessoryServiceUUID);
-  v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+  v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
 
   v19 = objc_opt_class();
   v20 = NSStringFromSelector(sel_suggestionReason);
-  v21 = [v4 decodeObjectOfClass:v19 forKey:v20];
+  v21 = [coderCopy decodeObjectOfClass:v19 forKey:v20];
 
   v22 = [(ARPHomeControlSuggestion *)self initWithHomeUUID:v12 targetUUID:v15 accessoryServiceUUID:v18 type:v6 score:v21 suggestionReason:v9];
   return v22;
@@ -110,64 +110,64 @@
   return v4 ^ [(NSString *)self->_accessoryServiceUUID hash]^ self->_type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v25 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(ARPHomeControlSuggestion *)self homeUUID];
-        if (!v7)
+        homeUUID = [(ARPHomeControlSuggestion *)self homeUUID];
+        if (!homeUUID)
         {
           goto LABEL_20;
         }
 
-        v8 = v7;
-        v9 = [(ARPHomeControlSuggestion *)self targetUUID];
-        if (v9)
+        v8 = homeUUID;
+        targetUUID = [(ARPHomeControlSuggestion *)self targetUUID];
+        if (targetUUID)
         {
-          v10 = v9;
-          v11 = [(ARPHomeControlSuggestion *)v6 homeUUID];
-          if (v11)
+          v10 = targetUUID;
+          homeUUID2 = [(ARPHomeControlSuggestion *)v6 homeUUID];
+          if (homeUUID2)
           {
-            v12 = v11;
-            v13 = [(ARPHomeControlSuggestion *)v6 targetUUID];
-            if (v13)
+            v12 = homeUUID2;
+            targetUUID2 = [(ARPHomeControlSuggestion *)v6 targetUUID];
+            if (targetUUID2)
             {
-              v14 = v13;
-              v15 = [(ARPHomeControlSuggestion *)self accessoryServiceUUID];
-              if (v15)
+              v14 = targetUUID2;
+              accessoryServiceUUID = [(ARPHomeControlSuggestion *)self accessoryServiceUUID];
+              if (accessoryServiceUUID)
               {
-                v16 = v15;
-                v17 = [(ARPHomeControlSuggestion *)v6 accessoryServiceUUID];
+                v16 = accessoryServiceUUID;
+                accessoryServiceUUID2 = [(ARPHomeControlSuggestion *)v6 accessoryServiceUUID];
 
-                if (v17)
+                if (accessoryServiceUUID2)
                 {
-                  v18 = [(ARPHomeControlSuggestion *)self homeUUID];
-                  v19 = [(ARPHomeControlSuggestion *)v6 homeUUID];
-                  if ([v18 isEqualToString:v19])
+                  homeUUID3 = [(ARPHomeControlSuggestion *)self homeUUID];
+                  homeUUID4 = [(ARPHomeControlSuggestion *)v6 homeUUID];
+                  if ([homeUUID3 isEqualToString:homeUUID4])
                   {
-                    v20 = [(ARPHomeControlSuggestion *)self targetUUID];
-                    v21 = [(ARPHomeControlSuggestion *)v6 targetUUID];
-                    if ([v20 isEqualToString:v21])
+                    targetUUID3 = [(ARPHomeControlSuggestion *)self targetUUID];
+                    targetUUID4 = [(ARPHomeControlSuggestion *)v6 targetUUID];
+                    if ([targetUUID3 isEqualToString:targetUUID4])
                     {
-                      v22 = [(ARPHomeControlSuggestion *)self accessoryServiceUUID];
-                      v23 = [(ARPHomeControlSuggestion *)v6 accessoryServiceUUID];
-                      if ([v22 isEqualToString:v23])
+                      accessoryServiceUUID3 = [(ARPHomeControlSuggestion *)self accessoryServiceUUID];
+                      accessoryServiceUUID4 = [(ARPHomeControlSuggestion *)v6 accessoryServiceUUID];
+                      if ([accessoryServiceUUID3 isEqualToString:accessoryServiceUUID4])
                       {
-                        v24 = [(ARPHomeControlSuggestion *)self type];
-                        v25 = v24 == [(ARPHomeControlSuggestion *)v6 type];
+                        type = [(ARPHomeControlSuggestion *)self type];
+                        v25 = type == [(ARPHomeControlSuggestion *)v6 type];
                       }
 
                       else
@@ -185,15 +185,15 @@
                 }
 
 LABEL_20:
-                v26 = [(ARPHomeControlSuggestion *)self homeUUID];
-                if (!v26)
+                homeUUID5 = [(ARPHomeControlSuggestion *)self homeUUID];
+                if (!homeUUID5)
                 {
                   goto LABEL_27;
                 }
 
-                v18 = v26;
-                v27 = [(ARPHomeControlSuggestion *)self targetUUID];
-                if (!v27)
+                homeUUID3 = homeUUID5;
+                targetUUID5 = [(ARPHomeControlSuggestion *)self targetUUID];
+                if (!targetUUID5)
                 {
                   v25 = 0;
 LABEL_35:
@@ -201,17 +201,17 @@ LABEL_35:
                   goto LABEL_36;
                 }
 
-                v19 = v27;
-                v28 = [(ARPHomeControlSuggestion *)v6 homeUUID];
-                if (!v28)
+                homeUUID4 = targetUUID5;
+                homeUUID6 = [(ARPHomeControlSuggestion *)v6 homeUUID];
+                if (!homeUUID6)
                 {
                   goto LABEL_28;
                 }
 
-                v29 = v28;
-                v30 = [(ARPHomeControlSuggestion *)v6 targetUUID];
+                v29 = homeUUID6;
+                targetUUID6 = [(ARPHomeControlSuggestion *)v6 targetUUID];
 
-                if (!v30)
+                if (!targetUUID6)
                 {
 LABEL_27:
                   v25 = 0;
@@ -220,16 +220,16 @@ LABEL_36:
                   goto LABEL_37;
                 }
 
-                v18 = [(ARPHomeControlSuggestion *)self homeUUID];
-                v19 = [(ARPHomeControlSuggestion *)v6 homeUUID];
-                if ([v18 isEqualToString:v19])
+                homeUUID3 = [(ARPHomeControlSuggestion *)self homeUUID];
+                homeUUID4 = [(ARPHomeControlSuggestion *)v6 homeUUID];
+                if ([homeUUID3 isEqualToString:homeUUID4])
                 {
-                  v20 = [(ARPHomeControlSuggestion *)self targetUUID];
-                  v21 = [(ARPHomeControlSuggestion *)v6 targetUUID];
-                  if ([v20 isEqualToString:v21])
+                  targetUUID3 = [(ARPHomeControlSuggestion *)self targetUUID];
+                  targetUUID4 = [(ARPHomeControlSuggestion *)v6 targetUUID];
+                  if ([targetUUID3 isEqualToString:targetUUID4])
                   {
-                    v31 = [(ARPHomeControlSuggestion *)self type];
-                    v25 = v31 == [(ARPHomeControlSuggestion *)v6 type];
+                    type2 = [(ARPHomeControlSuggestion *)self type];
+                    v25 = type2 == [(ARPHomeControlSuggestion *)v6 type];
 LABEL_33:
 
                     goto LABEL_34;
@@ -262,23 +262,23 @@ LABEL_37:
   return v25;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ARPHomeControlSuggestion allocWithZone:?]];
   [(ARPHomeControlSuggestion *)v4 setType:[(ARPHomeControlSuggestion *)self type]];
-  v5 = [(ARPHomeControlSuggestion *)self homeUUID];
-  [(ARPHomeControlSuggestion *)v4 setHomeUUID:v5];
+  homeUUID = [(ARPHomeControlSuggestion *)self homeUUID];
+  [(ARPHomeControlSuggestion *)v4 setHomeUUID:homeUUID];
 
-  v6 = [(ARPHomeControlSuggestion *)self targetUUID];
-  [(ARPHomeControlSuggestion *)v4 setTargetUUID:v6];
+  targetUUID = [(ARPHomeControlSuggestion *)self targetUUID];
+  [(ARPHomeControlSuggestion *)v4 setTargetUUID:targetUUID];
 
-  v7 = [(ARPHomeControlSuggestion *)self accessoryServiceUUID];
-  [(ARPHomeControlSuggestion *)v4 setAccessoryServiceUUID:v7];
+  accessoryServiceUUID = [(ARPHomeControlSuggestion *)self accessoryServiceUUID];
+  [(ARPHomeControlSuggestion *)v4 setAccessoryServiceUUID:accessoryServiceUUID];
 
   [(ARPHomeControlSuggestion *)self score];
   [(ARPHomeControlSuggestion *)v4 setScore:?];
-  v8 = [(ARPHomeControlSuggestion *)self suggestionReason];
-  [(ARPHomeControlSuggestion *)v4 setSuggestionReason:v8];
+  suggestionReason = [(ARPHomeControlSuggestion *)self suggestionReason];
+  [(ARPHomeControlSuggestion *)v4 setSuggestionReason:suggestionReason];
 
   return v4;
 }
@@ -287,15 +287,15 @@ LABEL_37:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ARPHomeControlSuggestion *)self suggestionReason];
-  v6 = [(ARPHomeControlSuggestion *)self homeUUID];
-  v7 = [(ARPHomeControlSuggestion *)self targetUUID];
-  v8 = [(ARPHomeControlSuggestion *)self accessoryServiceUUID];
+  suggestionReason = [(ARPHomeControlSuggestion *)self suggestionReason];
+  homeUUID = [(ARPHomeControlSuggestion *)self homeUUID];
+  targetUUID = [(ARPHomeControlSuggestion *)self targetUUID];
+  accessoryServiceUUID = [(ARPHomeControlSuggestion *)self accessoryServiceUUID];
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ARPHomeControlSuggestion type](self, "type")}];
   v10 = MEMORY[0x277CCABB0];
   [(ARPHomeControlSuggestion *)self score];
   v11 = [v10 numberWithDouble:?];
-  v12 = [v3 stringWithFormat:@"<%@ %p> reason: %@, homeUUID: %@, targetUUID: %@, accessoryServiceUUID: %@, type: %@, score: %@", v4, self, v5, v6, v7, v8, v9, v11];
+  v12 = [v3 stringWithFormat:@"<%@ %p> reason: %@, homeUUID: %@, targetUUID: %@, accessoryServiceUUID: %@, type: %@, score: %@", v4, self, suggestionReason, homeUUID, targetUUID, accessoryServiceUUID, v9, v11];
 
   return v12;
 }

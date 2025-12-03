@@ -1,18 +1,18 @@
 @interface PSGInternalServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation PSGInternalServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v4 = MEMORY[0x277CCAE90];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [v4 interfaceWithProtocol:&unk_28734D6D8];
   v7 = MEMORY[0x277D42660];
   v8 = objc_opt_new();
   v9 = psg_default_log_handle();
-  LOBYTE(v7) = [v7 shouldAcceptConnection:v5 serviceName:@"com.apple.private.psg.internal" whitelistedServerInterface:v6 whitelistedClientInterface:0 requestHandler:v8 validateConnection:&__block_literal_global_87 setupClientProxy:0 interruptionHandler:&__block_literal_global_13 invalidationHandler:&__block_literal_global_15 logHandle:v9];
+  LOBYTE(v7) = [v7 shouldAcceptConnection:connectionCopy serviceName:@"com.apple.private.psg.internal" whitelistedServerInterface:v6 whitelistedClientInterface:0 requestHandler:v8 validateConnection:&__block_literal_global_87 setupClientProxy:0 interruptionHandler:&__block_literal_global_13 invalidationHandler:&__block_literal_global_15 logHandle:v9];
 
   return v7;
 }

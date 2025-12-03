@@ -1,40 +1,40 @@
 @interface SFSaveToFilesActivity
-- (BOOL)_dismissActivityFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (SFSaveToFilesActivity)initWithActivityItemProviderCollection:(id)a3 customizationController:(id)a4;
-- (void)saveToFilesOperation:(id)a3 didFinishWithSuccess:(BOOL)a4;
-- (void)saveToFilesOperation:(id)a3 presentViewController:(id)a4;
+- (BOOL)_dismissActivityFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (SFSaveToFilesActivity)initWithActivityItemProviderCollection:(id)collection customizationController:(id)controller;
+- (void)saveToFilesOperation:(id)operation didFinishWithSuccess:(BOOL)success;
+- (void)saveToFilesOperation:(id)operation presentViewController:(id)controller;
 @end
 
 @implementation SFSaveToFilesActivity
 
-- (SFSaveToFilesActivity)initWithActivityItemProviderCollection:(id)a3 customizationController:(id)a4
+- (SFSaveToFilesActivity)initWithActivityItemProviderCollection:(id)collection customizationController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = SFSaveToFilesActivity;
   v8 = [(UIActivity *)&v13 init];
   if (v8)
   {
-    v9 = [[_SFSaveToFilesOperation alloc] initWithActivityItemProviderCollection:v6];
+    v9 = [[_SFSaveToFilesOperation alloc] initWithActivityItemProviderCollection:collectionCopy];
     operation = v8->_operation;
     v8->_operation = v9;
 
     [(_SFSaveToFilesOperation *)v8->_operation setDelegate:v8];
-    objc_storeStrong(&v8->_customizationController, a4);
+    objc_storeStrong(&v8->_customizationController, controller);
     v11 = v8;
   }
 
   return v8;
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  self->_presentAnimated = a4;
-  v7 = a5;
-  objc_storeWeak(&self->_presenterViewController, a3);
-  v8 = _Block_copy(v7);
+  self->_presentAnimated = animated;
+  completionCopy = completion;
+  objc_storeWeak(&self->_presenterViewController, controller);
+  v8 = _Block_copy(completionCopy);
 
   presentationCompletionHandler = self->_presentationCompletionHandler;
   self->_presentationCompletionHandler = v8;
@@ -43,16 +43,16 @@
   return 1;
 }
 
-- (BOOL)_dismissActivityFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_dismissActivityFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (controllerCopy)
   {
-    v10 = v8;
+    v10 = controllerCopy;
 LABEL_4:
-    [(UIViewController *)v10 dismissViewControllerAnimated:v6 completion:v9];
+    [(UIViewController *)v10 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 
     v11 = 1;
     goto LABEL_5;
@@ -64,9 +64,9 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 
   v11 = 0;
@@ -75,27 +75,27 @@ LABEL_5:
   return v11;
 }
 
-- (void)saveToFilesOperation:(id)a3 presentViewController:(id)a4
+- (void)saveToFilesOperation:(id)operation presentViewController:(id)controller
 {
-  objc_storeStrong(&self->_presentedViewController, a4);
-  v8 = a4;
+  objc_storeStrong(&self->_presentedViewController, controller);
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_presenterViewController);
-  [WeakRetained presentViewController:v8 animated:self->_presentAnimated completion:self->_presentationCompletionHandler];
+  [WeakRetained presentViewController:controllerCopy animated:self->_presentAnimated completion:self->_presentationCompletionHandler];
 
   presentationCompletionHandler = self->_presentationCompletionHandler;
   self->_presentationCompletionHandler = 0;
 }
 
-- (void)saveToFilesOperation:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)saveToFilesOperation:(id)operation didFinishWithSuccess:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   operation = self->_operation;
   self->_operation = 0;
 
   presentationCompletionHandler = self->_presentationCompletionHandler;
   self->_presentationCompletionHandler = 0;
 
-  [(_SFActivity *)self activityDidFinish:v4];
+  [(_SFActivity *)self activityDidFinish:successCopy];
 }
 
 @end

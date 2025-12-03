@@ -38,11 +38,11 @@
   v8[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = SBSUIInCallSceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v7 initialActionHandlers];
+  initialActionHandlers = [(UIApplicationSceneSpecification *)&v7 initialActionHandlers];
   v3 = objc_alloc_init(SBSUIInCallWindowSceneBSActionsHandler);
   v8[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  v5 = [v2 arrayByAddingObjectsFromArray:v4];
+  v5 = [initialActionHandlers arrayByAddingObjectsFromArray:v4];
 
   return v5;
 }
@@ -52,11 +52,11 @@
   v8[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = SBSUIInCallSceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v7 initialSettingsDiffActions];
+  initialSettingsDiffActions = [(UIApplicationSceneSpecification *)&v7 initialSettingsDiffActions];
   v3 = objc_alloc_init(SBSUIInCallWindowSceneSettingsDiffAction);
   v8[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  v5 = [v2 arrayByAddingObjectsFromArray:v4];
+  v5 = [initialSettingsDiffActions arrayByAddingObjectsFromArray:v4];
 
   return v5;
 }

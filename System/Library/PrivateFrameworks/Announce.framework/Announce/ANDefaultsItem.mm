@@ -1,17 +1,17 @@
 @interface ANDefaultsItem
-+ (id)itemWithValue:(id)a3 userInfo:(id)a4;
++ (id)itemWithValue:(id)value userInfo:(id)info;
 @end
 
 @implementation ANDefaultsItem
 
-+ (id)itemWithValue:(id)a3 userInfo:(id)a4
++ (id)itemWithValue:(id)value userInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  valueCopy = value;
   v7 = objc_opt_new();
-  [v7 setDefaultValue:v6];
+  [v7 setDefaultValue:valueCopy];
 
-  [v7 setUserInfo:v5];
+  [v7 setUserInfo:infoCopy];
 
   return v7;
 }

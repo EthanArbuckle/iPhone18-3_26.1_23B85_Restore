@@ -1,18 +1,18 @@
 @interface CompactYearViewController
 - (Class)multipleMonthViewClass;
 - (unint64_t)monthsPerRow;
-- (void)updatePalette:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)updatePalette:(id)palette;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CompactYearViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CompactYearViewController;
-  [(YearViewController *)&v7 viewDidAppear:a3];
+  [(YearViewController *)&v7 viewDidAppear:appear];
   v3 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
@@ -25,11 +25,11 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(MainViewController *)self setDisableRotationTimings:1];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -43,9 +43,9 @@
   v13[3] = &unk_100210688;
   v16 = width;
   v17 = height;
-  v9 = v7;
+  v9 = coordinatorCopy;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v10 = objc_retainBlock(v13);
   if (v9)
   {
@@ -68,7 +68,7 @@
 
 - (Class)multipleMonthViewClass
 {
-  v2 = [(CompactYearViewController *)self traitCollection];
+  traitCollection = [(CompactYearViewController *)self traitCollection];
   EKUIUsesLargeTextYearView();
   v3 = objc_opt_class();
 
@@ -77,7 +77,7 @@
 
 - (unint64_t)monthsPerRow
 {
-  v2 = [(CompactYearViewController *)self traitCollection];
+  traitCollection = [(CompactYearViewController *)self traitCollection];
   if (EKUIUsesLargeTextYearView())
   {
     v3 = 2;
@@ -91,17 +91,17 @@
   return v3;
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
-  v3 = a3;
-  [v3 setWeekdayHeaderVisible:0];
-  [v3 setWeekdayHeaderFillsHalfWidth:0];
-  [v3 setTodayButtonVisible:0];
-  [v3 setDateStringVisible:CalSolariumEnabled()];
-  [v3 setDividerLineVisible:CalSolariumEnabled()];
-  [v3 setDayScrubberController:0];
-  [v3 setFocusBannerPlacement:CalSolariumEnabled() ^ 1];
-  [v3 layoutIfNeeded];
+  paletteCopy = palette;
+  [paletteCopy setWeekdayHeaderVisible:0];
+  [paletteCopy setWeekdayHeaderFillsHalfWidth:0];
+  [paletteCopy setTodayButtonVisible:0];
+  [paletteCopy setDateStringVisible:CalSolariumEnabled()];
+  [paletteCopy setDividerLineVisible:CalSolariumEnabled()];
+  [paletteCopy setDayScrubberController:0];
+  [paletteCopy setFocusBannerPlacement:CalSolariumEnabled() ^ 1];
+  [paletteCopy layoutIfNeeded];
 }
 
 @end

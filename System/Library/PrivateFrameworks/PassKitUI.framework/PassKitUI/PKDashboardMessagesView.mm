@@ -1,37 +1,37 @@
 @interface PKDashboardMessagesView
-- (BOOL)isActionPresentedAsButtonCellForMessage:(id)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardMessagesView)initWithFrame:(CGRect)a3;
-- (PKDashboardMessagesView)initWithInsets:(UIEdgeInsets)a3;
+- (BOOL)isActionPresentedAsButtonCellForMessage:(id)message;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardMessagesView)initWithFrame:(CGRect)frame;
+- (PKDashboardMessagesView)initWithInsets:(UIEdgeInsets)insets;
 - (PKDashboardMessagesViewDelegate)delegate;
-- (double)_actionCellHeightForSize:(CGSize)a3;
-- (double)_maxHeightForSize:(CGSize)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_messageForTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_configureActionCell:(id)a3 withMessage:(id)a4;
-- (void)_configureMessageCell:(id)a3 withMessage:(id)a4 leftContentInset:(double)a5;
-- (void)_pageControlChanged:(id)a3;
+- (double)_actionCellHeightForSize:(CGSize)size;
+- (double)_maxHeightForSize:(CGSize)size;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_messageForTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_configureActionCell:(id)cell withMessage:(id)message;
+- (void)_configureMessageCell:(id)cell withMessage:(id)message leftContentInset:(double)inset;
+- (void)_pageControlChanged:(id)changed;
 - (void)_reportCurrentMessageViewed;
-- (void)_switchPrimaryIndexToIndex:(unint64_t)a3;
+- (void)_switchPrimaryIndexToIndex:(unint64_t)index;
 - (void)_updateSizeCacheIfNecessary;
 - (void)layoutSubviews;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateWithMessages:(id)a3 currentIndex:(unint64_t)a4;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateWithMessages:(id)messages currentIndex:(unint64_t)index;
 @end
 
 @implementation PKDashboardMessagesView
 
-- (PKDashboardMessagesView)initWithInsets:(UIEdgeInsets)a3
+- (PKDashboardMessagesView)initWithInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v7 = [(PKDashboardMessagesView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v8 = v7;
   if (v7)
@@ -46,12 +46,12 @@
   return v8;
 }
 
-- (PKDashboardMessagesView)initWithFrame:(CGRect)a3
+- (PKDashboardMessagesView)initWithFrame:(CGRect)frame
 {
   v31[1] = *MEMORY[0x1E69E9840];
   v30.receiver = self;
   v30.super_class = PKDashboardMessagesView;
-  v3 = [(PKDashboardMessagesView *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardMessagesView *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -81,14 +81,14 @@
     pageControl = v4->_pageControl;
     v4->_pageControl = v13;
 
-    v15 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIPageControl *)v4->_pageControl setCurrentPageIndicatorTintColor:v15];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIPageControl *)v4->_pageControl setCurrentPageIndicatorTintColor:labelColor];
     v16 = v4->_pageControl;
-    v17 = [v15 colorWithAlphaComponent:0.3];
+    v17 = [labelColor colorWithAlphaComponent:0.3];
     [(UIPageControl *)v16 setPageIndicatorTintColor:v17];
 
-    v18 = [(UIPageControl *)v4->_pageControl layer];
-    [v18 setOpacity:0.0];
+    layer = [(UIPageControl *)v4->_pageControl layer];
+    [layer setOpacity:0.0];
 
     [(UIPageControl *)v4->_pageControl addTarget:v4 action:sel__pageControlChanged_ forControlEvents:4096];
     [(PKDashboardMessagesView *)v4 addSubview:v4->_pageControl];
@@ -162,8 +162,8 @@ uint64_t __41__PKDashboardMessagesView_initWithFrame___block_invoke(uint64_t a1,
         }
 
         tablesViews = self->_tablesViews;
-        v17 = [*(*(&v27 + 1) + 8 * i) identifier];
-        v18 = [(NSMutableDictionary *)tablesViews objectForKey:v17];
+        identifier = [*(*(&v27 + 1) + 8 * i) identifier];
+        v18 = [(NSMutableDictionary *)tablesViews objectForKey:identifier];
 
         [v18 reloadData];
         v19 = v8 - self->_insets.top - self->_insets.bottom;
@@ -213,10 +213,10 @@ uint64_t __41__PKDashboardMessagesView_initWithFrame___block_invoke(uint64_t a1,
   [(PKDashboardMessagesView *)self _updateSizeCacheIfNecessary];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKDashboardMessagesView *)self _maxHeightForSize:a3.width, a3.height];
+  width = fits.width;
+  [(PKDashboardMessagesView *)self _maxHeightForSize:fits.width, fits.height];
   v6 = v5;
   if ([(NSOrderedSet *)self->_messages count]<= 1)
   {
@@ -248,10 +248,10 @@ uint64_t __41__PKDashboardMessagesView_initWithFrame___block_invoke(uint64_t a1,
   }
 }
 
-- (double)_actionCellHeightForSize:(CGSize)a3
+- (double)_actionCellHeightForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21 = *MEMORY[0x1E69E9840];
   v6 = objc_autoreleasePoolPush();
   v16 = 0u;
@@ -300,10 +300,10 @@ LABEL_11:
   return v9;
 }
 
-- (double)_maxHeightForSize:(CGSize)a3
+- (double)_maxHeightForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v36 = *MEMORY[0x1E69E9840];
   v6 = objc_autoreleasePoolPush();
   left = self->_insets.left;
@@ -340,8 +340,8 @@ LABEL_11:
         else
         {
           tablesViews = self->_tablesViews;
-          v18 = [v16 identifier];
-          v19 = [(NSMutableDictionary *)tablesViews objectForKey:v18];
+          identifier = [v16 identifier];
+          v19 = [(NSMutableDictionary *)tablesViews objectForKey:identifier];
 
           sampleMessageCell = self->_sampleMessageCell;
           [v19 separatorInset];
@@ -395,10 +395,10 @@ LABEL_11:
   return v14 + top + bottom;
 }
 
-- (void)updateWithMessages:(id)a3 currentIndex:(unint64_t)a4
+- (void)updateWithMessages:(id)messages currentIndex:(unint64_t)index
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  messagesCopy = messages;
   self->_widthForLastSizeCache = 0.0;
   [(PKDashboardMessagesView *)self bounds];
   v8 = v7;
@@ -406,13 +406,13 @@ LABEL_11:
   v12 = v11;
   v14 = v13;
   v45 = 408;
-  objc_storeStrong(&self->_messages, a3);
+  objc_storeStrong(&self->_messages, messages);
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v16 = v6;
+  v16 = messagesCopy;
   v17 = [v16 countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v17)
   {
@@ -428,20 +428,20 @@ LABEL_11:
           objc_enumerationMutation(v16);
         }
 
-        v22 = [*(*(&v53 + 1) + 8 * i) identifier];
-        [v15 addObject:v22];
-        v23 = [(NSMutableDictionary *)self->_tablesViews objectForKey:v22];
+        identifier = [*(*(&v53 + 1) + 8 * i) identifier];
+        [v15 addObject:identifier];
+        v23 = [(NSMutableDictionary *)self->_tablesViews objectForKey:identifier];
         if (!v23)
         {
           v23 = [objc_alloc(MEMORY[0x1E69DD020]) initWithFrame:0 style:{v8, v10, v12, v14}];
           [v23 pkui_setMaskType:3];
           [(UIScrollView *)self->_scrollView addSubview:v23];
-          [(NSMutableDictionary *)self->_tablesViews setObject:v23 forKey:v22];
+          [(NSMutableDictionary *)self->_tablesViews setObject:v23 forKey:identifier];
           [v23 setScrollEnabled:0];
           [v23 setDelegate:self];
           [v23 setDataSource:self];
-          v24 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-          [v23 setBackgroundColor:v24];
+          secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+          [v23 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
           [v23 setRowHeight:v20];
           [v23 setEstimatedRowHeight:60.0];
@@ -461,7 +461,7 @@ LABEL_11:
     while (v18);
   }
 
-  v25 = [(NSMutableDictionary *)self->_tablesViews allKeys];
+  allKeys = [(NSMutableDictionary *)self->_tablesViews allKeys];
   v26 = MEMORY[0x1E696AE18];
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
@@ -470,7 +470,7 @@ LABEL_11:
   v27 = v15;
   v52 = v27;
   v28 = [v26 predicateWithBlock:v51];
-  v29 = [v25 filteredArrayUsingPredicate:v28];
+  v29 = [allKeys filteredArrayUsingPredicate:v28];
 
   v49 = 0u;
   v50 = 0u;
@@ -503,17 +503,17 @@ LABEL_11:
 
   [(NSMutableDictionary *)self->_tablesViews removeObjectsForKeys:v30];
   -[UIScrollView setScrollEnabled:](self->_scrollView, "setScrollEnabled:", [v16 count] > 1);
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v36 = 0;
+    indexCopy = 0;
   }
 
   else
   {
-    v36 = a4;
+    indexCopy = index;
   }
 
-  self->_primaryIndex = v36;
+  self->_primaryIndex = indexCopy;
   v37 = [*(&self->super.super.super.isa + v45) count];
   if (self->_primaryIndex >= v37)
   {
@@ -521,8 +521,8 @@ LABEL_11:
   }
 
   [(PKDashboardMessagesView *)self _reportCurrentMessageViewed];
-  v38 = [(UIPageControl *)self->_pageControl layer];
-  [v38 opacity];
+  layer = [(UIPageControl *)self->_pageControl layer];
+  [layer opacity];
   v40 = *&v39;
   v41 = 0.0;
   if (v37 >= 2)
@@ -536,11 +536,11 @@ LABEL_11:
   {
     v42 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
     [v42 pkui_updateForAdditiveAnimationFromScalar:v40 toScalar:v41];
-    v43 = [v38 pkui_addAdditiveAnimation:v42];
+    v43 = [layer pkui_addAdditiveAnimation:v42];
   }
 
   *&v39 = v41;
-  [v38 setOpacity:v39];
+  [layer setOpacity:v39];
   [(PKDashboardMessagesView *)self setNeedsLayout];
   [(PKDashboardMessagesView *)self layoutIfNeeded];
   scrollView = self->_scrollView;
@@ -548,10 +548,10 @@ LABEL_11:
   [(UIScrollView *)scrollView setContentOffset:?];
 }
 
-- (id)_messageForTableView:(id)a3
+- (id)_messageForTableView:(id)view
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -573,10 +573,10 @@ LABEL_11:
 
         v10 = *(*(&v16 + 1) + 8 * i);
         tablesViews = self->_tablesViews;
-        v12 = [v10 identifier];
-        v13 = [(NSMutableDictionary *)tablesViews objectForKey:v12];
+        identifier = [v10 identifier];
+        v13 = [(NSMutableDictionary *)tablesViews objectForKey:identifier];
 
-        if (v13 == v4)
+        if (v13 == viewCopy)
         {
           v14 = v10;
 
@@ -607,9 +607,9 @@ LABEL_11:
   if (v3 >= 1 && self->_primaryIndex < v3)
   {
     v4 = [(NSOrderedSet *)self->_messages objectAtIndex:?];
-    v5 = [(PKDashboardMessagesView *)self superview];
-    v6 = v5;
-    if (v5 && v4)
+    superview = [(PKDashboardMessagesView *)self superview];
+    v6 = superview;
+    if (superview && v4)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v8 = [WeakRetained messagesView:self shouldEnqueueEventForView:v4];
@@ -621,11 +621,11 @@ LABEL_11:
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
         _ReportAnalyticsEventForMessage(v9, v4);
 
-        v10 = [v4 actionOnViewed];
-        v11 = v10;
-        if (v10)
+        actionOnViewed = [v4 actionOnViewed];
+        v11 = actionOnViewed;
+        if (actionOnViewed)
         {
-          (*(v10 + 16))(v10);
+          (*(actionOnViewed + 16))(actionOnViewed);
         }
       }
     }
@@ -636,9 +636,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)isActionPresentedAsButtonCellForMessage:(id)a3
+- (BOOL)isActionPresentedAsButtonCellForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   if (_UISolariumFeatureFlagEnabled())
   {
     v4 = 0;
@@ -646,10 +646,10 @@ LABEL_11:
 
   else
   {
-    v5 = [v3 actionOnButtonPress];
-    if (v5)
+    actionOnButtonPress = [messageCopy actionOnButtonPress];
+    if (actionOnButtonPress)
     {
-      v4 = [v3 type] != 2;
+      v4 = [messageCopy type] != 2;
     }
 
     else
@@ -661,20 +661,20 @@ LABEL_11:
   return v4;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(PKDashboardMessagesView *)self _messageForTableView:a3];
+  v3 = [(PKDashboardMessagesView *)self _messageForTableView:view];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKDashboardMessagesView *)self _messageForTableView:a3, a4];
-  if (v5)
+  section = [(PKDashboardMessagesView *)self _messageForTableView:view, section];
+  if (section)
   {
-    if ([(PKDashboardMessagesView *)self isActionPresentedAsButtonCellForMessage:v5])
+    if ([(PKDashboardMessagesView *)self isActionPresentedAsButtonCellForMessage:section])
     {
       v6 = 2;
     }
@@ -693,51 +693,51 @@ LABEL_11:
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKDashboardMessagesView *)self _messageForTableView:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(PKDashboardMessagesView *)self _messageForTableView:viewCopy];
   if ([v8 type] == 2)
   {
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"engagementCellIdentifier" forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:@"engagementCellIdentifier" forIndexPath:pathCopy];
     [(PKDashboardMessagesView *)self _configureEngagementCell:v9 withMessage:v8];
   }
 
   else
   {
-    v10 = [v7 row];
+    v10 = [pathCopy row];
     if (v10 == 1)
     {
-      v9 = [v6 dequeueReusableCellWithIdentifier:@"actionCellIdentifier" forIndexPath:v7];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:@"actionCellIdentifier" forIndexPath:pathCopy];
       [(PKDashboardMessagesView *)self _configureActionCell:v9 withMessage:v8];
     }
 
     else if (v10)
     {
-      v9 = [v6 dequeueReusableCellWithIdentifier:@"messageCellIdentifier" forIndexPath:v7];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:@"messageCellIdentifier" forIndexPath:pathCopy];
     }
 
     else
     {
-      v9 = [v6 dequeueReusableCellWithIdentifier:@"messageCellIdentifier" forIndexPath:v7];
-      [v6 separatorInset];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:@"messageCellIdentifier" forIndexPath:pathCopy];
+      [viewCopy separatorInset];
       [(PKDashboardMessagesView *)self _configureMessageCell:v9 withMessage:v8 leftContentInset:v11];
     }
   }
 
-  v12 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  [v9 setBackgroundColor:v12];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  [v9 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
   return v9;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(PKDashboardMessagesView *)self _messageForTableView:a3];
+  pathCopy = path;
+  v7 = [(PKDashboardMessagesView *)self _messageForTableView:view];
   v8 = [(PKDashboardMessagesView *)self isActionPresentedAsButtonCellForMessage:v7];
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   if (v8)
   {
@@ -751,38 +751,38 @@ LABEL_11:
 
   else
   {
-    v10 = [v7 actionOnMessagePress];
-    v9 = v10 != 0;
+    actionOnMessagePress = [v7 actionOnMessagePress];
+    v9 = actionOnMessagePress != 0;
   }
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKDashboardMessagesView *)self _messageForTableView:v7];
-  if ([v6 row] < 1)
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(PKDashboardMessagesView *)self _messageForTableView:viewCopy];
+  if ([pathCopy row] < 1)
   {
-    v18 = [v8 actionOnMessagePress];
-    v19 = [v7 cellForRowAtIndexPath:v6];
-    (v18)[2](v18, v19);
+    actionOnMessagePress = [v8 actionOnMessagePress];
+    v19 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    (actionOnMessagePress)[2](actionOnMessagePress, v19);
 
-    v20 = [v8 actionOnMessagePress];
-    v21 = _ReportableActionOnButtonPressedForMessageWithAction(v8, v20);
+    actionOnMessagePress2 = [v8 actionOnMessagePress];
+    v21 = _ReportableActionOnButtonPressedForMessageWithAction(v8, actionOnMessagePress2);
 
-    [v7 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 
   else
   {
-    v9 = [v8 actionOnButtonPress];
-    v10 = [v7 cellForRowAtIndexPath:v6];
-    (v9)[2](v9, v10);
+    actionOnButtonPress = [v8 actionOnButtonPress];
+    v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    (actionOnButtonPress)[2](actionOnButtonPress, v10);
 
-    [v7 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     v11 = *MEMORY[0x1E69BA6F0];
     v12 = *MEMORY[0x1E69BA440];
     v22[0] = *MEMORY[0x1E69BA680];
@@ -790,31 +790,31 @@ LABEL_11:
     v13 = *MEMORY[0x1E69BA570];
     v23[0] = v11;
     v23[1] = v13;
-    v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
-    v14 = [v8 additionalEventAnalyticsOnButtonPress];
+    viewCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
+    additionalEventAnalyticsOnButtonPress = [v8 additionalEventAnalyticsOnButtonPress];
 
-    if (v14)
+    if (additionalEventAnalyticsOnButtonPress)
     {
-      v15 = [v7 mutableCopy];
-      v16 = [v8 additionalEventAnalyticsOnButtonPress];
-      [v15 addEntriesFromDictionary:v16];
+      v15 = [viewCopy mutableCopy];
+      additionalEventAnalyticsOnButtonPress2 = [v8 additionalEventAnalyticsOnButtonPress];
+      [v15 addEntriesFromDictionary:additionalEventAnalyticsOnButtonPress2];
 
       v17 = [v15 copy];
-      v7 = v17;
+      viewCopy = v17;
     }
 
-    _ReportAnalyticsEventForMessage(v7, v8);
+    _ReportAnalyticsEventForMessage(viewCopy, v8);
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   [(PKDashboardMessagesView *)self _updateSizeCacheIfNecessary];
-  if ([v7 row])
+  if ([pathCopy row])
   {
-    if ([v7 row] == 1)
+    if ([pathCopy row] == 1)
     {
       actionCellHeight = self->_actionCellHeight;
     }
@@ -827,7 +827,7 @@ LABEL_11:
 
   else
   {
-    v9 = [(PKDashboardMessagesView *)self _messageForTableView:v6];
+    v9 = [(PKDashboardMessagesView *)self _messageForTableView:viewCopy];
     v10 = [(PKDashboardMessagesView *)self isActionPresentedAsButtonCellForMessage:v9];
     actionCellHeight = self->_maxTableViewHeight;
     if (v10)
@@ -839,43 +839,43 @@ LABEL_11:
   return actionCellHeight;
 }
 
-- (void)_configureMessageCell:(id)a3 withMessage:(id)a4 leftContentInset:(double)a5
+- (void)_configureMessageCell:(id)cell withMessage:(id)message leftContentInset:(double)inset
 {
-  v7 = a4;
-  v8 = [a3 dashboardMessageView];
-  [v8 setLeftContentInset:a5];
-  [v8 updateWithMessage:v7];
+  messageCopy = message;
+  dashboardMessageView = [cell dashboardMessageView];
+  [dashboardMessageView setLeftContentInset:inset];
+  [dashboardMessageView updateWithMessage:messageCopy];
 }
 
-- (void)_configureActionCell:(id)a3 withMessage:(id)a4
+- (void)_configureActionCell:(id)cell withMessage:(id)message
 {
-  v5 = a4;
-  v6 = [a3 actionView];
-  [v6 updateWithMessage:v5];
+  messageCopy = message;
+  actionView = [cell actionView];
+  [actionView updateWithMessage:messageCopy];
 }
 
-- (void)_switchPrimaryIndexToIndex:(unint64_t)a3
+- (void)_switchPrimaryIndexToIndex:(unint64_t)index
 {
-  if (self->_primaryIndex != a3)
+  if (self->_primaryIndex != index)
   {
-    self->_primaryIndex = a3;
+    self->_primaryIndex = index;
     [(UIPageControl *)self->_pageControl setCurrentPage:?];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)
     {
       v4 = [(NSOrderedSet *)self->_messages objectAtIndex:self->_primaryIndex];
-      v5 = [v4 identifier];
-      [WeakRetained messagesView:self scrolledToMessageWithIdentifier:v5];
+      identifier = [v4 identifier];
+      [WeakRetained messagesView:self scrolledToMessageWithIdentifier:identifier];
     }
 
     [(PKDashboardMessagesView *)self _reportCurrentMessageViewed];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  [(UIScrollView *)self->_scrollView contentOffset:a3];
+  x = velocity.x;
+  [(UIScrollView *)self->_scrollView contentOffset:dragging];
   v9 = [(PKDashboardMessagesView *)self _indexAtContentOffset:v8 + self->_currentWidth * 0.5];
   v10 = v9;
   if (v9 == self->_primaryIndex)
@@ -889,22 +889,22 @@ LABEL_11:
   }
 
   [(PKDashboardMessagesView *)self _startOfItemAtIndex:v10];
-  a5->x = v14;
-  a5->y = 0.0;
+  offset->x = v14;
+  offset->y = 0.0;
 
   [(PKDashboardMessagesView *)self _switchPrimaryIndexToIndex:v10];
 }
 
-- (void)_pageControlChanged:(id)a3
+- (void)_pageControlChanged:(id)changed
 {
-  v4 = [(UIPageControl *)self->_pageControl currentPage];
-  if (v4 < [(NSOrderedSet *)self->_messages count])
+  currentPage = [(UIPageControl *)self->_pageControl currentPage];
+  if (currentPage < [(NSOrderedSet *)self->_messages count])
   {
     scrollView = self->_scrollView;
-    [(PKDashboardMessagesView *)self _startOfItemAtIndex:v4];
+    [(PKDashboardMessagesView *)self _startOfItemAtIndex:currentPage];
     [(UIScrollView *)scrollView setContentOffset:1 animated:?];
 
-    [(PKDashboardMessagesView *)self _switchPrimaryIndexToIndex:v4];
+    [(PKDashboardMessagesView *)self _switchPrimaryIndexToIndex:currentPage];
   }
 }
 

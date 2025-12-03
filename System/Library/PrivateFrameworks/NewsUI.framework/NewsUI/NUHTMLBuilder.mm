@@ -1,15 +1,15 @@
 @interface NUHTMLBuilder
 - (NUHTMLBuilder)init;
 - (id)HTML;
-- (id)URLEncode:(id)a3;
+- (id)URLEncode:(id)encode;
 - (id)appendBreak;
-- (id)appendHTML:(id)a3;
-- (id)appendLink:(id)a3 withURL:(id)a4;
-- (id)appendParagraph:(id)a3;
-- (id)appendParagraphText:(id)a3;
-- (id)appendStrong:(id)a3;
-- (id)appendText:(id)a3;
-- (id)encodeHTMLEntities:(id)a3;
+- (id)appendHTML:(id)l;
+- (id)appendLink:(id)link withURL:(id)l;
+- (id)appendParagraph:(id)paragraph;
+- (id)appendParagraphText:(id)text;
+- (id)appendStrong:(id)strong;
+- (id)appendText:(id)text;
+- (id)encodeHTMLEntities:(id)entities;
 - (id)fullHTML;
 @end
 
@@ -32,8 +32,8 @@
 
 - (id)HTML
 {
-  v2 = [(NUHTMLBuilder *)self string];
-  v3 = [v2 copy];
+  string = [(NUHTMLBuilder *)self string];
+  v3 = [string copy];
 
   return v3;
 }
@@ -41,86 +41,86 @@
 - (id)fullHTML
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(NUHTMLBuilder *)self string];
-  v4 = [v2 stringWithFormat:@"<html><body>%@</body></html>", v3];
+  string = [(NUHTMLBuilder *)self string];
+  v4 = [v2 stringWithFormat:@"<html><body>%@</body></html>", string];
 
   return v4;
 }
 
 - (id)appendBreak
 {
-  v3 = [(NUHTMLBuilder *)self string];
-  [v3 appendString:@"<br />"];
+  string = [(NUHTMLBuilder *)self string];
+  [string appendString:@"<br />"];
 
   return self;
 }
 
-- (id)appendStrong:(id)a3
+- (id)appendStrong:(id)strong
 {
-  v4 = a3;
-  v5 = [(NUHTMLBuilder *)self string];
-  v6 = [(NUHTMLBuilder *)self encodeHTMLEntities:v4];
+  strongCopy = strong;
+  string = [(NUHTMLBuilder *)self string];
+  v6 = [(NUHTMLBuilder *)self encodeHTMLEntities:strongCopy];
 
-  [v5 appendFormat:@"<strong>%@</strong>", v6];
+  [string appendFormat:@"<strong>%@</strong>", v6];
   return self;
 }
 
-- (id)appendParagraph:(id)a3
+- (id)appendParagraph:(id)paragraph
 {
-  v4 = a3;
-  v5 = [(NUHTMLBuilder *)self string];
-  v6 = [v4 HTML];
+  paragraphCopy = paragraph;
+  string = [(NUHTMLBuilder *)self string];
+  hTML = [paragraphCopy HTML];
 
-  [v5 appendFormat:@"<p>%@</p>", v6];
+  [string appendFormat:@"<p>%@</p>", hTML];
   return self;
 }
 
-- (id)appendParagraphText:(id)a3
+- (id)appendParagraphText:(id)text
 {
-  v4 = a3;
-  v5 = [(NUHTMLBuilder *)self string];
-  v6 = [(NUHTMLBuilder *)self encodeHTMLEntities:v4];
+  textCopy = text;
+  string = [(NUHTMLBuilder *)self string];
+  v6 = [(NUHTMLBuilder *)self encodeHTMLEntities:textCopy];
 
-  [v5 appendFormat:@"<p>%@</p>", v6];
+  [string appendFormat:@"<p>%@</p>", v6];
   return self;
 }
 
-- (id)appendLink:(id)a3 withURL:(id)a4
+- (id)appendLink:(id)link withURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NUHTMLBuilder *)self string];
-  v9 = [(NUHTMLBuilder *)self URLEncode:v6];
+  lCopy = l;
+  linkCopy = link;
+  string = [(NUHTMLBuilder *)self string];
+  v9 = [(NUHTMLBuilder *)self URLEncode:lCopy];
 
-  v10 = [(NUHTMLBuilder *)self encodeHTMLEntities:v7];
+  v10 = [(NUHTMLBuilder *)self encodeHTMLEntities:linkCopy];
 
-  [v8 appendFormat:@"<a href=%@>%@</a>", v9, v10];
+  [string appendFormat:@"<a href=%@>%@</a>", v9, v10];
   return self;
 }
 
-- (id)appendText:(id)a3
+- (id)appendText:(id)text
 {
-  v4 = a3;
-  v5 = [(NUHTMLBuilder *)self string];
-  v6 = [(NUHTMLBuilder *)self encodeHTMLEntities:v4];
+  textCopy = text;
+  string = [(NUHTMLBuilder *)self string];
+  v6 = [(NUHTMLBuilder *)self encodeHTMLEntities:textCopy];
 
-  [v5 appendFormat:@"%@", v6];
+  [string appendFormat:@"%@", v6];
   return self;
 }
 
-- (id)appendHTML:(id)a3
+- (id)appendHTML:(id)l
 {
-  v4 = a3;
-  v5 = [(NUHTMLBuilder *)self string];
-  v6 = [v4 HTML];
+  lCopy = l;
+  string = [(NUHTMLBuilder *)self string];
+  hTML = [lCopy HTML];
 
-  [v5 appendString:v6];
+  [string appendString:hTML];
   return self;
 }
 
-- (id)encodeHTMLEntities:(id)a3
+- (id)encodeHTMLEntities:(id)entities
 {
-  v3 = [a3 mutableCopy];
+  v3 = [entities mutableCopy];
   [v3 replaceOccurrencesOfString:@"&" withString:@"&amp;" options:2 range:{0, objc_msgSend(v3, "length")}];
   [v3 replaceOccurrencesOfString:@" withString:@"&quot;" options:2 range:{0, objc_msgSend(v3, "length"")}];
   [v3 replaceOccurrencesOfString:@"'" withString:@"&#x27;" options:2 range:{0, objc_msgSend(v3, "length")}];
@@ -131,12 +131,12 @@
   return v4;
 }
 
-- (id)URLEncode:(id)a3
+- (id)URLEncode:(id)encode
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 URLQueryAllowedCharacterSet];
-  v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v5];
+  encodeCopy = encode;
+  uRLQueryAllowedCharacterSet = [v3 URLQueryAllowedCharacterSet];
+  v6 = [encodeCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   return v6;
 }

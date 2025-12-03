@@ -1,98 +1,98 @@
 @interface LibcoreIoPosix
-+ (int)throwIfMinusOneWithNSString:(id)a3 withInt:(int)a4;
-- (BOOL)accessWithNSString:(id)a3 withInt:(int)a4;
-- (BOOL)canAccessWithNSString:(id)a3 withInt:(int)a4;
-- (BOOL)isattyWithJavaIoFileDescriptor:(id)a3;
-- (id)acceptWithJavaIoFileDescriptor:(id)a3 withJavaNetInetSocketAddress:(id)a4;
-- (id)dup2WithJavaIoFileDescriptor:(id)a3 withInt:(int)a4;
-- (id)dupWithJavaIoFileDescriptor:(id)a3;
-- (id)fstatWithJavaIoFileDescriptor:(id)a3;
-- (id)gai_strerrorWithInt:(int)a3;
-- (id)getaddrinfoWithNSString:(id)a3 withLibcoreIoStructAddrinfo:(id)a4;
-- (id)getnameinfoWithJavaNetInetAddress:(id)a3 withInt:(int)a4;
-- (id)getsocknameWithJavaIoFileDescriptor:(id)a3;
-- (id)getsockoptInAddrWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (id)getsockoptLingerWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (id)getsockoptTimevalWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (id)if_indextonameWithInt:(int)a3;
-- (id)inet_ptonWithInt:(int)a3 withNSString:(id)a4;
++ (int)throwIfMinusOneWithNSString:(id)string withInt:(int)int;
+- (BOOL)accessWithNSString:(id)string withInt:(int)int;
+- (BOOL)canAccessWithNSString:(id)string withInt:(int)int;
+- (BOOL)isattyWithJavaIoFileDescriptor:(id)descriptor;
+- (id)acceptWithJavaIoFileDescriptor:(id)descriptor withJavaNetInetSocketAddress:(id)address;
+- (id)dup2WithJavaIoFileDescriptor:(id)descriptor withInt:(int)int;
+- (id)dupWithJavaIoFileDescriptor:(id)descriptor;
+- (id)fstatWithJavaIoFileDescriptor:(id)descriptor;
+- (id)gai_strerrorWithInt:(int)int;
+- (id)getaddrinfoWithNSString:(id)string withLibcoreIoStructAddrinfo:(id)addrinfo;
+- (id)getnameinfoWithJavaNetInetAddress:(id)address withInt:(int)int;
+- (id)getsocknameWithJavaIoFileDescriptor:(id)descriptor;
+- (id)getsockoptInAddrWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt;
+- (id)getsockoptLingerWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt;
+- (id)getsockoptTimevalWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt;
+- (id)if_indextonameWithInt:(int)int;
+- (id)inet_ptonWithInt:(int)int withNSString:(id)string;
 - (id)pipe;
-- (id)realpathWithNSString:(id)a3;
-- (id)socketWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5;
-- (id)statvfsWithNSString:(id)a3;
-- (id)strerrorWithInt:(int)a3;
+- (id)realpathWithNSString:(id)string;
+- (id)socketWithInt:(int)int withInt:(int)withInt withInt:(int)a5;
+- (id)statvfsWithNSString:(id)string;
+- (id)strerrorWithInt:(int)int;
 - (id)uname;
-- (int)fcntlFlockWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withLibcoreIoStructFlock:(id)a5;
-- (int)fcntlLongWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withLong:(int64_t)a5;
-- (int)fcntlVoidWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4;
-- (int)getsockoptByteWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (int)getsockoptIntWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (int)ioctlIntWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withLibcoreUtilMutableInt:(id)a5;
-- (int)pollWithLibcoreIoStructPollfdArray:(id)a3 withInt:(int)a4;
-- (int)preadWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4 withLong:(int64_t)a5;
-- (int)pwriteWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4 withLong:(int64_t)a5;
-- (int)readWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4;
-- (int)readvWithJavaIoFileDescriptor:(id)a3 withNSObjectArray:(id)a4 withIntArray:(id)a5 withIntArray:(id)a6;
-- (int)recvfromWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4 withInt:(int)a5 withJavaNetInetSocketAddress:(id)a6;
-- (int)sendtoWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4 withInt:(int)a5 withJavaNetInetAddress:(id)a6 withInt:(int)a7;
-- (int)writeWithJavaIoFileDescriptor:(id)a3 withByteArray:(id)a4 withInt:(int)a5 withInt:(int)a6;
-- (int)writeWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4;
-- (int)writevWithJavaIoFileDescriptor:(id)a3 withNSObjectArray:(id)a4 withIntArray:(id)a5 withIntArray:(id)a6;
-- (int64_t)lseekWithJavaIoFileDescriptor:(id)a3 withLong:(int64_t)a4 withInt:(int)a5;
-- (int64_t)mmapWithLong:(int64_t)a3 withLong:(int64_t)a4 withInt:(int)a5 withInt:(int)a6 withJavaIoFileDescriptor:(id)a7 withLong:(int64_t)a8;
-- (int64_t)sendfileWithJavaIoFileDescriptor:(id)a3 withJavaIoFileDescriptor:(id)a4 withLibcoreUtilMutableLong:(id)a5 withLong:(int64_t)a6;
-- (int64_t)sysconfWithInt:(int)a3;
-- (void)bindWithJavaIoFileDescriptor:(id)a3 withJavaNetInetAddress:(id)a4 withInt:(int)a5;
-- (void)chmodWithNSString:(id)a3 withInt:(int)a4;
-- (void)chownWithNSString:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)closeWithJavaIoFileDescriptor:(id)a3;
-- (void)connectWithJavaIoFileDescriptor:(id)a3 withJavaNetInetAddress:(id)a4 withInt:(int)a5;
-- (void)fchmodWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4;
-- (void)fchownWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)fdatasyncWithJavaIoFileDescriptor:(id)a3;
-- (void)fsyncWithJavaIoFileDescriptor:(id)a3;
-- (void)ftruncateWithJavaIoFileDescriptor:(id)a3 withLong:(int64_t)a4;
-- (void)listenWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4;
-- (void)mincoreWithLong:(int64_t)a3 withLong:(int64_t)a4 withByteArray:(id)a5;
-- (void)mkdirWithNSString:(id)a3 withInt:(int)a4;
-- (void)mlockWithLong:(int64_t)a3 withLong:(int64_t)a4;
-- (void)msyncWithLong:(int64_t)a3 withLong:(int64_t)a4 withInt:(int)a5;
-- (void)munlockWithLong:(int64_t)a3 withLong:(int64_t)a4;
-- (void)munmapWithLong:(int64_t)a3 withLong:(int64_t)a4;
-- (void)removeWithNSString:(id)a3;
-- (void)renameWithNSString:(id)a3 withNSString:(id)a4;
-- (void)setsockoptByteWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6;
-- (void)setsockoptGroupReqWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withLibcoreIoStructGroupReq:(id)a6;
-- (void)setsockoptGroupSourceReqWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withLibcoreIoStructGroupSourceReq:(id)a6;
-- (void)setsockoptIfreqWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withNSString:(id)a6;
-- (void)setsockoptIntWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6;
-- (void)setsockoptIpMreqnWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6;
-- (void)setsockoptLingerWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withLibcoreIoStructLinger:(id)a6;
-- (void)setsockoptTimevalWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withLibcoreIoStructTimeval:(id)a6;
-- (void)shutdownWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4;
-- (void)socketpairWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5 withJavaIoFileDescriptor:(id)a6 withJavaIoFileDescriptor:(id)a7;
-- (void)symlinkWithNSString:(id)a3 withNSString:(id)a4;
-- (void)tcdrainWithJavaIoFileDescriptor:(id)a3;
+- (int)fcntlFlockWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withLibcoreIoStructFlock:(id)flock;
+- (int)fcntlLongWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withLong:(int64_t)long;
+- (int)fcntlVoidWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int;
+- (int)getsockoptByteWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt;
+- (int)getsockoptIntWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt;
+- (int)ioctlIntWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withLibcoreUtilMutableInt:(id)mutableInt;
+- (int)pollWithLibcoreIoStructPollfdArray:(id)array withInt:(int)int;
+- (int)preadWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer withLong:(int64_t)long;
+- (int)pwriteWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer withLong:(int64_t)long;
+- (int)readWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer;
+- (int)readvWithJavaIoFileDescriptor:(id)descriptor withNSObjectArray:(id)array withIntArray:(id)intArray withIntArray:(id)withIntArray;
+- (int)recvfromWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer withInt:(int)int withJavaNetInetSocketAddress:(id)address;
+- (int)sendtoWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer withInt:(int)int withJavaNetInetAddress:(id)address withInt:(int)withInt;
+- (int)writeWithJavaIoFileDescriptor:(id)descriptor withByteArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (int)writeWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer;
+- (int)writevWithJavaIoFileDescriptor:(id)descriptor withNSObjectArray:(id)array withIntArray:(id)intArray withIntArray:(id)withIntArray;
+- (int64_t)lseekWithJavaIoFileDescriptor:(id)descriptor withLong:(int64_t)long withInt:(int)int;
+- (int64_t)mmapWithLong:(int64_t)long withLong:(int64_t)withLong withInt:(int)int withInt:(int)withInt withJavaIoFileDescriptor:(id)descriptor withLong:(int64_t)a8;
+- (int64_t)sendfileWithJavaIoFileDescriptor:(id)descriptor withJavaIoFileDescriptor:(id)fileDescriptor withLibcoreUtilMutableLong:(id)long withLong:(int64_t)withLong;
+- (int64_t)sysconfWithInt:(int)int;
+- (void)bindWithJavaIoFileDescriptor:(id)descriptor withJavaNetInetAddress:(id)address withInt:(int)int;
+- (void)chmodWithNSString:(id)string withInt:(int)int;
+- (void)chownWithNSString:(id)string withInt:(int)int withInt:(int)withInt;
+- (void)closeWithJavaIoFileDescriptor:(id)descriptor;
+- (void)connectWithJavaIoFileDescriptor:(id)descriptor withJavaNetInetAddress:(id)address withInt:(int)int;
+- (void)fchmodWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int;
+- (void)fchownWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt;
+- (void)fdatasyncWithJavaIoFileDescriptor:(id)descriptor;
+- (void)fsyncWithJavaIoFileDescriptor:(id)descriptor;
+- (void)ftruncateWithJavaIoFileDescriptor:(id)descriptor withLong:(int64_t)long;
+- (void)listenWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int;
+- (void)mincoreWithLong:(int64_t)long withLong:(int64_t)withLong withByteArray:(id)array;
+- (void)mkdirWithNSString:(id)string withInt:(int)int;
+- (void)mlockWithLong:(int64_t)long withLong:(int64_t)withLong;
+- (void)msyncWithLong:(int64_t)long withLong:(int64_t)withLong withInt:(int)int;
+- (void)munlockWithLong:(int64_t)long withLong:(int64_t)withLong;
+- (void)munmapWithLong:(int64_t)long withLong:(int64_t)withLong;
+- (void)removeWithNSString:(id)string;
+- (void)renameWithNSString:(id)string withNSString:(id)sString;
+- (void)setsockoptByteWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withInt:(int)a6;
+- (void)setsockoptGroupReqWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withLibcoreIoStructGroupReq:(id)req;
+- (void)setsockoptGroupSourceReqWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withLibcoreIoStructGroupSourceReq:(id)req;
+- (void)setsockoptIfreqWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withNSString:(id)string;
+- (void)setsockoptIntWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withInt:(int)a6;
+- (void)setsockoptIpMreqnWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withInt:(int)a6;
+- (void)setsockoptLingerWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withLibcoreIoStructLinger:(id)linger;
+- (void)setsockoptTimevalWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withLibcoreIoStructTimeval:(id)timeval;
+- (void)shutdownWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int;
+- (void)socketpairWithInt:(int)int withInt:(int)withInt withInt:(int)a5 withJavaIoFileDescriptor:(id)descriptor withJavaIoFileDescriptor:(id)fileDescriptor;
+- (void)symlinkWithNSString:(id)string withNSString:(id)sString;
+- (void)tcdrainWithJavaIoFileDescriptor:(id)descriptor;
 @end
 
 @implementation LibcoreIoPosix
 
-+ (int)throwIfMinusOneWithNSString:(id)a3 withInt:(int)a4
++ (int)throwIfMinusOneWithNSString:(id)string withInt:(int)int
 {
-  if (a4 == -1)
+  if (int == -1)
   {
     v6 = __error();
-    sub_1001FB6D0(a3, *v6);
+    sub_1001FB6D0(string, *v6);
   }
 
-  return a4;
+  return int;
 }
 
-- (id)acceptWithJavaIoFileDescriptor:(id)a3 withJavaNetInetSocketAddress:(id)a4
+- (id)acceptWithJavaIoFileDescriptor:(id)descriptor withJavaNetInetSocketAddress:(id)address
 {
   v17 = 128;
   memset(v18, 0, sizeof(v18));
-  if (a4)
+  if (address)
   {
     v6 = v18;
   }
@@ -102,7 +102,7 @@
     v6 = 0;
   }
 
-  if (a4)
+  if (address)
   {
     v7 = &v17;
   }
@@ -114,11 +114,11 @@
 
   while (1)
   {
-    v8 = [a3 getInt$];
+    v8 = [descriptor getInt$];
     v9 = v8;
     LibcoreIoAsynchronousCloseMonitor_newAsynchronousSocketCloseMonitorWithInt_(v8);
     v10 = accept(v9, v6, v7);
-    v11 = [a3 getInt$];
+    v11 = [descriptor getInt$];
     if (v10 != -1)
     {
       break;
@@ -140,7 +140,7 @@ LABEL_16:
     }
   }
 
-  if (sub_1001FB898(v11, a4, v18))
+  if (sub_1001FB898(v11, address, v18))
   {
     v15 = objc_alloc_init(JavaIoFileDescriptor);
     [(JavaIoFileDescriptor *)v15 setInt$WithInt:v10];
@@ -155,17 +155,17 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)accessWithNSString:(id)a3 withInt:(int)a4
+- (BOOL)accessWithNSString:(id)string withInt:(int)int
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  v5 = absolutePath(a3);
+  v5 = absolutePath(string);
   while (1)
   {
-    v6 = access(v5, a4);
+    v6 = access(v5, int);
     if (v6 != -1)
     {
       break;
@@ -182,7 +182,7 @@ LABEL_16:
   return v6 == 0;
 }
 
-- (void)bindWithJavaIoFileDescriptor:(id)a3 withJavaNetInetAddress:(id)a4 withInt:(int)a5
+- (void)bindWithJavaIoFileDescriptor:(id)descriptor withJavaNetInetAddress:(id)address withInt:(int)int
 {
   v19 = 0u;
   v20 = 0u;
@@ -193,11 +193,11 @@ LABEL_16:
   v13 = 0;
   v14 = 0u;
   v12 = 0;
-  sub_1001FB420(a4, a5, &v13, &v12, 1);
+  sub_1001FB420(address, int, &v13, &v12, 1);
   v6 = v12;
   while (1)
   {
-    v7 = [a3 getInt$];
+    v7 = [descriptor getInt$];
     v8 = v7;
     LibcoreIoAsynchronousCloseMonitor_newAsynchronousSocketCloseMonitorWithInt_(v7);
     if (bind(v8, &v13, v6) != -1)
@@ -205,7 +205,7 @@ LABEL_16:
       break;
     }
 
-    if ([a3 getInt$] == -1)
+    if ([descriptor getInt$] == -1)
     {
       v11 = [[JavaNetSocketException alloc] initWithNSString:@"Socket closed"];
 LABEL_8:
@@ -222,30 +222,30 @@ LABEL_8:
   }
 }
 
-- (BOOL)canAccessWithNSString:(id)a3 withInt:(int)a4
+- (BOOL)canAccessWithNSString:(id)string withInt:(int)int
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  v5 = absolutePath(a3);
+  v5 = absolutePath(string);
   do
   {
-    v6 = access(v5, a4);
+    v6 = access(v5, int);
   }
 
   while (v6 == -1 && *__error() == 4);
   return v6 == 0;
 }
 
-- (void)chmodWithNSString:(id)a3 withInt:(int)a4
+- (void)chmodWithNSString:(id)string withInt:(int)int
 {
-  if (a3)
+  if (string)
   {
-    v4 = a4;
-    v5 = absolutePath(a3);
-    while (chmod(v5, v4) == -1)
+    intCopy = int;
+    v5 = absolutePath(string);
+    while (chmod(v5, intCopy) == -1)
     {
       if (*__error() != 4)
       {
@@ -256,12 +256,12 @@ LABEL_8:
   }
 }
 
-- (void)chownWithNSString:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)chownWithNSString:(id)string withInt:(int)int withInt:(int)withInt
 {
-  if (a3)
+  if (string)
   {
-    v7 = absolutePath(a3);
-    while (chown(v7, a4, a5) == -1)
+    v7 = absolutePath(string);
+    while (chown(v7, int, withInt) == -1)
     {
       if (*__error() != 4)
       {
@@ -272,10 +272,10 @@ LABEL_8:
   }
 }
 
-- (void)closeWithJavaIoFileDescriptor:(id)a3
+- (void)closeWithJavaIoFileDescriptor:(id)descriptor
 {
-  v4 = [a3 getInt$];
-  [a3 setInt$WithInt:0xFFFFFFFFLL];
+  v4 = [descriptor getInt$];
+  [descriptor setInt$WithInt:0xFFFFFFFFLL];
   if (close(v4) == -1)
   {
     v5 = __error();
@@ -283,7 +283,7 @@ LABEL_8:
   }
 }
 
-- (void)connectWithJavaIoFileDescriptor:(id)a3 withJavaNetInetAddress:(id)a4 withInt:(int)a5
+- (void)connectWithJavaIoFileDescriptor:(id)descriptor withJavaNetInetAddress:(id)address withInt:(int)int
 {
   v19 = 0u;
   v20 = 0u;
@@ -294,11 +294,11 @@ LABEL_8:
   v13 = 0;
   v14 = 0u;
   v12 = 0;
-  sub_1001FB420(a4, a5, &v13, &v12, 1);
+  sub_1001FB420(address, int, &v13, &v12, 1);
   v6 = v12;
   while (1)
   {
-    v7 = [a3 getInt$];
+    v7 = [descriptor getInt$];
     v8 = v7;
     LibcoreIoAsynchronousCloseMonitor_newAsynchronousSocketCloseMonitorWithInt_(v7);
     if (connect(v8, &v13, v6) != -1)
@@ -306,7 +306,7 @@ LABEL_8:
       break;
     }
 
-    if ([a3 getInt$] == -1)
+    if ([descriptor getInt$] == -1)
     {
       v11 = [[JavaNetSocketException alloc] initWithNSString:@"Socket closed"];
 LABEL_8:
@@ -323,11 +323,11 @@ LABEL_8:
   }
 }
 
-- (id)dupWithJavaIoFileDescriptor:(id)a3
+- (id)dupWithJavaIoFileDescriptor:(id)descriptor
 {
   while (1)
   {
-    v4 = dup([a3 getInt$]);
+    v4 = dup([descriptor getInt$]);
     if (v4 != -1)
     {
       break;
@@ -346,11 +346,11 @@ LABEL_8:
   return v7;
 }
 
-- (id)dup2WithJavaIoFileDescriptor:(id)a3 withInt:(int)a4
+- (id)dup2WithJavaIoFileDescriptor:(id)descriptor withInt:(int)int
 {
   while (1)
   {
-    v6 = dup2([a3 getInt$], a4);
+    v6 = dup2([descriptor getInt$], int);
     if (v6 != -1)
     {
       break;
@@ -369,10 +369,10 @@ LABEL_8:
   return v9;
 }
 
-- (void)fchmodWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4
+- (void)fchmodWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int
 {
-  v4 = a4;
-  while (fchmod([a3 getInt$], v4) == -1)
+  intCopy = int;
+  while (fchmod([descriptor getInt$], intCopy) == -1)
   {
     if (*__error() != 4)
     {
@@ -382,9 +382,9 @@ LABEL_8:
   }
 }
 
-- (void)fchownWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)fchownWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt
 {
-  while (fchown([a3 getInt$], a4, a5) == -1)
+  while (fchown([descriptor getInt$], int, withInt) == -1)
   {
     if (*__error() != 4)
     {
@@ -394,17 +394,17 @@ LABEL_8:
   }
 }
 
-- (int)fcntlFlockWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withLibcoreIoStructFlock:(id)a5
+- (int)fcntlFlockWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withLibcoreIoStructFlock:(id)flock
 {
-  v16 = *(a5 + 4);
-  v17 = *(a5 + 5);
-  v8 = *(a5 + 3);
-  v13 = *(a5 + 2);
+  v16 = *(flock + 4);
+  v17 = *(flock + 5);
+  v8 = *(flock + 3);
+  v13 = *(flock + 2);
   v14 = v8;
-  v15 = *(a5 + 8);
+  v15 = *(flock + 8);
   while (1)
   {
-    result = fcntl([a3 getInt$], a4, &v13);
+    result = fcntl([descriptor getInt$], int, &v13);
     if (result != -1)
     {
       break;
@@ -418,20 +418,20 @@ LABEL_8:
     }
   }
 
-  *(a5 + 4) = v16;
-  *(a5 + 5) = v17;
+  *(flock + 4) = v16;
+  *(flock + 5) = v17;
   v12 = v14;
-  *(a5 + 2) = v13;
-  *(a5 + 3) = v12;
-  *(a5 + 8) = v15;
+  *(flock + 2) = v13;
+  *(flock + 3) = v12;
+  *(flock + 8) = v15;
   return result;
 }
 
-- (int)fcntlLongWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withLong:(int64_t)a5
+- (int)fcntlLongWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withLong:(int64_t)long
 {
   while (1)
   {
-    result = fcntl([a3 getInt$], a4, a5);
+    result = fcntl([descriptor getInt$], int, long);
     if (result != -1)
     {
       break;
@@ -447,11 +447,11 @@ LABEL_8:
   return result;
 }
 
-- (int)fcntlVoidWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4
+- (int)fcntlVoidWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int
 {
   while (1)
   {
-    result = fcntl([a3 getInt$], a4);
+    result = fcntl([descriptor getInt$], int);
     if (result != -1)
     {
       break;
@@ -467,9 +467,9 @@ LABEL_8:
   return result;
 }
 
-- (void)fdatasyncWithJavaIoFileDescriptor:(id)a3
+- (void)fdatasyncWithJavaIoFileDescriptor:(id)descriptor
 {
-  while (fsync([a3 getInt$]) == -1)
+  while (fsync([descriptor getInt$]) == -1)
   {
     if (*__error() != 4)
     {
@@ -479,10 +479,10 @@ LABEL_8:
   }
 }
 
-- (id)fstatWithJavaIoFileDescriptor:(id)a3
+- (id)fstatWithJavaIoFileDescriptor:(id)descriptor
 {
   memset(&v6, 0, sizeof(v6));
-  while (fstat([a3 getInt$], &v6) == -1)
+  while (fstat([descriptor getInt$], &v6) == -1)
   {
     if (*__error() != 4)
     {
@@ -494,9 +494,9 @@ LABEL_8:
   return sub_1001FC258(&v6.st_dev);
 }
 
-- (void)fsyncWithJavaIoFileDescriptor:(id)a3
+- (void)fsyncWithJavaIoFileDescriptor:(id)descriptor
 {
-  while (fsync([a3 getInt$]) == -1)
+  while (fsync([descriptor getInt$]) == -1)
   {
     if (*__error() != 4)
     {
@@ -506,9 +506,9 @@ LABEL_8:
   }
 }
 
-- (void)ftruncateWithJavaIoFileDescriptor:(id)a3 withLong:(int64_t)a4
+- (void)ftruncateWithJavaIoFileDescriptor:(id)descriptor withLong:(int64_t)long
 {
-  while (ftruncate([a3 getInt$], a4) == -1)
+  while (ftruncate([descriptor getInt$], long) == -1)
   {
     if (*__error() != 4)
     {
@@ -518,29 +518,29 @@ LABEL_8:
   }
 }
 
-- (id)gai_strerrorWithInt:(int)a3
+- (id)gai_strerrorWithInt:(int)int
 {
-  v3 = gai_strerror(a3);
+  v3 = gai_strerror(int);
 
   return [NSString stringWithUTF8String:v3];
 }
 
-- (id)getaddrinfoWithNSString:(id)a3 withLibcoreIoStructAddrinfo:(id)a4
+- (id)getaddrinfoWithNSString:(id)string withLibcoreIoStructAddrinfo:(id)addrinfo
 {
-  v4 = a3;
-  if (a3)
+  stringCopy = string;
+  if (string)
   {
-    v5 = *(a4 + 3);
-    v6 = *(a4 + 4);
-    v28.ai_flags = *(a4 + 2);
+    v5 = *(addrinfo + 3);
+    v6 = *(addrinfo + 4);
+    v28.ai_flags = *(addrinfo + 2);
     v28.ai_family = v5;
-    v7 = *(a4 + 5);
+    v7 = *(addrinfo + 5);
     memset(&v28.ai_addrlen, 0, 32);
     v28.ai_socktype = v6;
     v28.ai_protocol = v7;
     v27 = 0;
     *__error() = 0;
-    v8 = getaddrinfo([(IOSObjectArray *)v4 UTF8String], 0, &v28, &v27);
+    v8 = getaddrinfo([(IOSObjectArray *)stringCopy UTF8String], 0, &v28, &v27);
     if (v8)
     {
       objc_exception_throw([[LibcoreIoGaiException alloc] initWithNSString:@"getaddrinfo" withInt:v8]);
@@ -572,7 +572,7 @@ LABEL_8:
     while (v9);
     if (v10)
     {
-      v4 = [IOSObjectArray arrayWithLength:v10 type:JavaNetInetAddress_class_()];
+      stringCopy = [IOSObjectArray arrayWithLength:v10 type:JavaNetInetAddress_class_()];
       v13 = v27;
       if (v27)
       {
@@ -611,7 +611,7 @@ LABEL_8:
               goto LABEL_24;
             }
 
-            [(IOSObjectArray *)v4 replaceObjectAtIndex:v14++ withObject:v24];
+            [(IOSObjectArray *)stringCopy replaceObjectAtIndex:v14++ withObject:v24];
           }
 
           else
@@ -642,10 +642,10 @@ LABEL_24:
     }
   }
 
-  return v4;
+  return stringCopy;
 }
 
-- (id)getnameinfoWithJavaNetInetAddress:(id)a3 withInt:(int)a4
+- (id)getnameinfoWithJavaNetInetAddress:(id)address withInt:(int)int
 {
   v15 = 0u;
   v16 = 0u;
@@ -656,9 +656,9 @@ LABEL_24:
   v9 = 0;
   v10 = 0u;
   v7 = 0;
-  sub_1001FB420(a3, 0, &v9, &v7, 0);
+  sub_1001FB420(address, 0, &v9, &v7, 0);
   *__error() = 0;
-  v5 = getnameinfo(&v9, v7, v8, 0x401u, 0, 0, a4);
+  v5 = getnameinfo(&v9, v7, v8, 0x401u, 0, 0, int);
   if (v5)
   {
     objc_exception_throw([[LibcoreIoGaiException alloc] initWithNSString:@"getnameinfo" withInt:v5]);
@@ -667,9 +667,9 @@ LABEL_24:
   return [NSString stringWithUTF8String:v8];
 }
 
-- (id)getsocknameWithJavaIoFileDescriptor:(id)a3
+- (id)getsocknameWithJavaIoFileDescriptor:(id)descriptor
 {
-  v3 = [a3 getInt$];
+  v3 = [descriptor getInt$];
   v8 = 128;
   v10 = 0;
   v11 = 0u;
@@ -700,11 +700,11 @@ LABEL_24:
   return result;
 }
 
-- (int)getsockoptByteWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (int)getsockoptByteWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt
 {
   v11 = 0;
   v10 = 1;
-  while (getsockopt([a3 getInt$], a4, a5, &v11, &v10) == -1)
+  while (getsockopt([descriptor getInt$], int, withInt, &v11, &v10) == -1)
   {
     if (*__error() != 4)
     {
@@ -716,12 +716,12 @@ LABEL_24:
   return v11;
 }
 
-- (id)getsockoptInAddrWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (id)getsockoptInAddrWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt
 {
   memset(v11, 0, sizeof(v11));
   BYTE1(v11[0]) = 2;
   v10 = 4;
-  while (getsockopt([a3 getInt$], a4, a5, v11 + 4, &v10) == -1)
+  while (getsockopt([descriptor getInt$], int, withInt, v11 + 4, &v10) == -1)
   {
     if (*__error() != 4)
     {
@@ -733,11 +733,11 @@ LABEL_24:
   return sockaddrToInetAddress(v11, 0);
 }
 
-- (int)getsockoptIntWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (int)getsockoptIntWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt
 {
   v10 = 4;
   v11 = 0;
-  while (getsockopt([a3 getInt$], a4, a5, &v11, &v10) == -1)
+  while (getsockopt([descriptor getInt$], int, withInt, &v11, &v10) == -1)
   {
     if (*__error() != 4)
     {
@@ -749,11 +749,11 @@ LABEL_24:
   return v11;
 }
 
-- (id)getsockoptLingerWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (id)getsockoptLingerWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt
 {
   v11 = 8;
   v12 = 0;
-  while (getsockopt([a3 getInt$], a4, a5, &v12, &v11) == -1)
+  while (getsockopt([descriptor getInt$], int, withInt, &v12, &v11) == -1)
   {
     if (*__error() != 4)
     {
@@ -766,12 +766,12 @@ LABEL_24:
   return [(LibcoreIoStructLinger *)v9 initWithInt:v12 withInt:HIDWORD(v12)];
 }
 
-- (id)getsockoptTimevalWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (id)getsockoptTimevalWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt
 {
   v11 = 16;
   v12 = 0;
   v13 = 0;
-  while (getsockopt([a3 getInt$], a4, a5, &v12, &v11) == -1)
+  while (getsockopt([descriptor getInt$], int, withInt, &v12, &v11) == -1)
   {
     if (*__error() != 4)
     {
@@ -784,9 +784,9 @@ LABEL_24:
   return [(LibcoreIoStructTimeval *)v9 initWithLong:v12 withLong:v13];
 }
 
-- (id)if_indextonameWithInt:(int)a3
+- (id)if_indextonameWithInt:(int)int
 {
-  result = if_indextoname(a3, v4);
+  result = if_indextoname(int, v4);
   if (result)
   {
     return [NSString stringWithUTF8String:result];
@@ -795,30 +795,30 @@ LABEL_24:
   return result;
 }
 
-- (id)inet_ptonWithInt:(int)a3 withNSString:(id)a4
+- (id)inet_ptonWithInt:(int)int withNSString:(id)string
 {
-  if (!a4)
+  if (!string)
   {
     return 0;
   }
 
-  v4 = a3;
-  if (inet_pton(a3, [a4 UTF8String], &v7) != 1)
+  intCopy = int;
+  if (inet_pton(int, [string UTF8String], &v7) != 1)
   {
     return 0;
   }
 
-  v6[1] = v4;
+  v6[1] = intCopy;
   return sockaddrToInetAddress(v6, 0);
 }
 
-- (int)ioctlIntWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withLibcoreUtilMutableInt:(id)a5
+- (int)ioctlIntWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withLibcoreUtilMutableInt:(id)mutableInt
 {
-  v10 = *(a5 + 2);
-  v7 = a4;
+  v10 = *(mutableInt + 2);
+  intCopy = int;
   while (1)
   {
-    result = ioctl([a3 getInt$], v7, &v10);
+    result = ioctl([descriptor getInt$], intCopy, &v10);
     if (result != -1)
     {
       break;
@@ -831,26 +831,26 @@ LABEL_24:
     }
   }
 
-  *(a5 + 2) = v10;
+  *(mutableInt + 2) = v10;
   return result;
 }
 
-- (BOOL)isattyWithJavaIoFileDescriptor:(id)a3
+- (BOOL)isattyWithJavaIoFileDescriptor:(id)descriptor
 {
   do
   {
-    v4 = isatty([a3 getInt$]);
+    v4 = isatty([descriptor getInt$]);
   }
 
   while (v4 == -1 && *__error() == 4);
   return v4 == 1;
 }
 
-- (int64_t)lseekWithJavaIoFileDescriptor:(id)a3 withLong:(int64_t)a4 withInt:(int)a5
+- (int64_t)lseekWithJavaIoFileDescriptor:(id)descriptor withLong:(int64_t)long withInt:(int)int
 {
   do
   {
-    v8 = lseek([a3 getInt$], a4, a5);
+    v8 = lseek([descriptor getInt$], long, int);
   }
 
   while (v8 == -1 && *__error() == 4);
@@ -864,9 +864,9 @@ LABEL_24:
   return v8;
 }
 
-- (void)listenWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4
+- (void)listenWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int
 {
-  while (listen([a3 getInt$], a4) == -1)
+  while (listen([descriptor getInt$], int) == -1)
   {
     if (*__error() != 4)
     {
@@ -876,9 +876,9 @@ LABEL_24:
   }
 }
 
-- (void)mincoreWithLong:(int64_t)a3 withLong:(int64_t)a4 withByteArray:(id)a5
+- (void)mincoreWithLong:(int64_t)long withLong:(int64_t)withLong withByteArray:(id)array
 {
-  while (mincore(a3, a4, a5 + 12) == -1)
+  while (mincore(long, withLong, array + 12) == -1)
   {
     if (*__error() != 4)
     {
@@ -888,13 +888,13 @@ LABEL_24:
   }
 }
 
-- (void)mkdirWithNSString:(id)a3 withInt:(int)a4
+- (void)mkdirWithNSString:(id)string withInt:(int)int
 {
-  if (a3)
+  if (string)
   {
-    v4 = a4;
-    v5 = absolutePath(a3);
-    while (mkdir(v5, v4) == -1)
+    intCopy = int;
+    v5 = absolutePath(string);
+    while (mkdir(v5, intCopy) == -1)
     {
       if (*__error() != 4)
       {
@@ -905,9 +905,9 @@ LABEL_24:
   }
 }
 
-- (void)mlockWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (void)mlockWithLong:(int64_t)long withLong:(int64_t)withLong
 {
-  while (mlock(a3, a4) == -1)
+  while (mlock(long, withLong) == -1)
   {
     if (*__error() != 4)
     {
@@ -917,9 +917,9 @@ LABEL_24:
   }
 }
 
-- (int64_t)mmapWithLong:(int64_t)a3 withLong:(int64_t)a4 withInt:(int)a5 withInt:(int)a6 withJavaIoFileDescriptor:(id)a7 withLong:(int64_t)a8
+- (int64_t)mmapWithLong:(int64_t)long withLong:(int64_t)withLong withInt:(int)int withInt:(int)withInt withJavaIoFileDescriptor:(id)descriptor withLong:(int64_t)a8
 {
-  result = mmap(a3, a4, a5, a6, [a7 getInt$], a8);
+  result = mmap(long, withLong, int, withInt, [descriptor getInt$], a8);
   if (result == -1)
   {
     v9 = __error();
@@ -930,9 +930,9 @@ LABEL_24:
   return result;
 }
 
-- (void)msyncWithLong:(int64_t)a3 withLong:(int64_t)a4 withInt:(int)a5
+- (void)msyncWithLong:(int64_t)long withLong:(int64_t)withLong withInt:(int)int
 {
-  while (msync(a3, a4, a5) == -1)
+  while (msync(long, withLong, int) == -1)
   {
     if (*__error() != 4)
     {
@@ -942,9 +942,9 @@ LABEL_24:
   }
 }
 
-- (void)munlockWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (void)munlockWithLong:(int64_t)long withLong:(int64_t)withLong
 {
-  while (munlock(a3, a4) == -1)
+  while (munlock(long, withLong) == -1)
   {
     if (*__error() != 4)
     {
@@ -954,9 +954,9 @@ LABEL_24:
   }
 }
 
-- (void)munmapWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (void)munmapWithLong:(int64_t)long withLong:(int64_t)withLong
 {
-  while (munmap(a3, a4) == -1)
+  while (munmap(long, withLong) == -1)
   {
     if (*__error() != 4)
     {
@@ -987,14 +987,14 @@ LABEL_24:
   return v3;
 }
 
-- (int)pollWithLibcoreIoStructPollfdArray:(id)a3 withInt:(int)a4
+- (int)pollWithLibcoreIoStructPollfdArray:(id)array withInt:(int)int
 {
-  v6 = *(a3 + 2);
+  v6 = *(array + 2);
   v7 = malloc_type_calloc(v6, 8uLL, 0x100004000313F17uLL);
   v8 = v7;
   if (v6 < 1)
   {
-    v14 = poll(v7, v6, a4);
+    v14 = poll(v7, v6, int);
     if (v14 != -1)
     {
       goto LABEL_13;
@@ -1010,7 +1010,7 @@ LABEL_14:
   p_events = &v7->events;
   do
   {
-    v11 = [a3 objectAtIndex:v9];
+    v11 = [array objectAtIndex:v9];
     if (v11)
     {
       v12 = v11;
@@ -1023,7 +1023,7 @@ LABEL_14:
   }
 
   while (v6 != v9);
-  v13 = poll(v8, v6, a4);
+  v13 = poll(v8, v6, int);
   if (v13 == -1)
   {
     goto LABEL_14;
@@ -1034,7 +1034,7 @@ LABEL_14:
   p_revents = &v8->revents;
   do
   {
-    v17 = [a3 objectAtIndex:v15];
+    v17 = [array objectAtIndex:v15];
     if (v17)
     {
       v17[9] = *p_revents;
@@ -1050,99 +1050,99 @@ LABEL_13:
   return v14;
 }
 
-- (int)preadWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4 withLong:(int64_t)a5
+- (int)preadWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer withLong:(int64_t)long
 {
-  if (!a4)
+  if (!buffer)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a4 isDirect])
+  if ([buffer isDirect])
   {
-    v8 = [a4 position];
-    v9 = [a4 remaining];
-    v10 = a3;
-    v11 = a4;
-    v12 = v8;
+    position = [buffer position];
+    remaining = [buffer remaining];
+    descriptorCopy2 = descriptor;
+    bufferCopy = buffer;
+    v12 = position;
   }
 
   else
   {
-    v13 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(a4);
-    v14 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(a4);
-    v15 = [a4 position];
-    v9 = [a4 remaining];
-    v12 = v15 + v14;
-    v10 = a3;
-    v11 = v13;
+    v13 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(buffer);
+    v14 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(buffer);
+    position2 = [buffer position];
+    remaining = [buffer remaining];
+    v12 = position2 + v14;
+    descriptorCopy2 = descriptor;
+    bufferCopy = v13;
   }
 
-  return sub_1001FD7D8(v10, v11, v12, v9, a5);
+  return sub_1001FD7D8(descriptorCopy2, bufferCopy, v12, remaining, long);
 }
 
-- (int)pwriteWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4 withLong:(int64_t)a5
+- (int)pwriteWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer withLong:(int64_t)long
 {
-  if (!a4)
+  if (!buffer)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a4 isDirect])
+  if ([buffer isDirect])
   {
-    v8 = [a4 position];
-    v9 = [a4 remaining];
-    v10 = a3;
-    v11 = a4;
-    v12 = v8;
+    position = [buffer position];
+    remaining = [buffer remaining];
+    descriptorCopy2 = descriptor;
+    bufferCopy = buffer;
+    v12 = position;
   }
 
   else
   {
-    v13 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(a4);
-    v14 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(a4);
-    v15 = [a4 position];
-    v9 = [a4 remaining];
-    v12 = v15 + v14;
-    v10 = a3;
-    v11 = v13;
+    v13 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(buffer);
+    v14 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(buffer);
+    position2 = [buffer position];
+    remaining = [buffer remaining];
+    v12 = position2 + v14;
+    descriptorCopy2 = descriptor;
+    bufferCopy = v13;
   }
 
-  return sub_1001FD9EC(v10, v11, v12, v9, a5);
+  return sub_1001FD9EC(descriptorCopy2, bufferCopy, v12, remaining, long);
 }
 
-- (int)readWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4
+- (int)readWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer
 {
-  if (!a4)
+  if (!buffer)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a4 isDirect])
+  if ([buffer isDirect])
   {
-    v6 = [a4 position];
-    v7 = [a4 remaining];
-    v8 = a3;
-    v9 = a4;
-    v10 = v6;
+    position = [buffer position];
+    remaining = [buffer remaining];
+    descriptorCopy2 = descriptor;
+    bufferCopy = buffer;
+    v10 = position;
   }
 
   else
   {
-    v11 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(a4);
-    v12 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(a4);
-    v13 = [a4 position];
-    v7 = [a4 remaining];
-    v10 = v13 + v12;
-    v8 = a3;
-    v9 = v11;
+    v11 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(buffer);
+    v12 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(buffer);
+    position2 = [buffer position];
+    remaining = [buffer remaining];
+    v10 = position2 + v12;
+    descriptorCopy2 = descriptor;
+    bufferCopy = v11;
   }
 
-  return sub_1001FDC18(v8, v9, v10, v7);
+  return sub_1001FDC18(descriptorCopy2, bufferCopy, v10, remaining);
 }
 
-- (int)readvWithJavaIoFileDescriptor:(id)a3 withNSObjectArray:(id)a4 withIntArray:(id)a5 withIntArray:(id)a6
+- (int)readvWithJavaIoFileDescriptor:(id)descriptor withNSObjectArray:(id)array withIntArray:(id)intArray withIntArray:(id)withIntArray
 {
-  v9 = *(a4 + 2);
+  v9 = *(array + 2);
   v10 = malloc_type_malloc(16 * v9, 0x1080040FC6463CFuLL);
   v11 = v10;
   if (v9 >= 1)
@@ -1153,7 +1153,7 @@ LABEL_13:
     do
     {
       v15 = v14;
-      v16 = [a4 objectAtIndex:v12];
+      v16 = [array objectAtIndex:v12];
       if (!v16)
       {
         JreThrowNullPointerException();
@@ -1195,20 +1195,20 @@ LABEL_20:
         }
       }
 
-      v20 = *(a5 + 2);
+      v20 = *(intArray + 2);
       if (v12 >= v20)
       {
         IOSArray_throwOutOfBoundsWithMsg(v20, v12);
       }
 
-      *(p_iov_len - 1) = &v19[*(a5 + 4 * v12 + *v14)];
-      v21 = *(a6 + 2);
+      *(p_iov_len - 1) = &v19[*(intArray + 4 * v12 + *v14)];
+      v21 = *(withIntArray + 2);
       if (v12 >= v21)
       {
         IOSArray_throwOutOfBoundsWithMsg(v21, v12);
       }
 
-      *p_iov_len = *(a6 + 4 * v12 + *v14);
+      *p_iov_len = *(withIntArray + 4 * v12 + *v14);
       p_iov_len += 2;
       ++v12;
     }
@@ -1218,7 +1218,7 @@ LABEL_20:
 
   while (1)
   {
-    v22 = readv([a3 getInt$], v11, v9);
+    v22 = readv([descriptor getInt$], v11, v9);
     if (v22 != -1)
     {
       break;
@@ -1237,18 +1237,18 @@ LABEL_21:
   return v22;
 }
 
-- (id)realpathWithNSString:(id)a3
+- (id)realpathWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
   v4 = +[NSFileManager defaultManager];
-  v5 = [a3 stringByStandardizingPath];
-  if ([(NSFileManager *)v4 fileExistsAtPath:v5])
+  stringByStandardizingPath = [string stringByStandardizingPath];
+  if ([(NSFileManager *)v4 fileExistsAtPath:stringByStandardizingPath])
   {
-    v6 = realpath_DARWIN_EXTSN([a3 UTF8String], 0);
+    v6 = realpath_DARWIN_EXTSN([string UTF8String], 0);
     if (!v6)
     {
       v9 = __error();
@@ -1257,48 +1257,48 @@ LABEL_21:
     }
 
     v7 = v6;
-    v5 = [+[NSFileManager defaultManager](NSFileManager stringWithFileSystemRepresentation:"stringWithFileSystemRepresentation:length:" length:v7, strlen(v7)];
+    stringByStandardizingPath = [+[NSFileManager defaultManager](NSFileManager stringWithFileSystemRepresentation:"stringWithFileSystemRepresentation:length:" length:v7, strlen(v7)];
     free(v7);
   }
 
-  return v5;
+  return stringByStandardizingPath;
 }
 
-- (int)recvfromWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4 withInt:(int)a5 withJavaNetInetSocketAddress:(id)a6
+- (int)recvfromWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer withInt:(int)int withJavaNetInetSocketAddress:(id)address
 {
-  if (!a4)
+  if (!buffer)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a4 isDirect])
+  if ([buffer isDirect])
   {
-    v10 = [a4 position];
-    v11 = [a4 remaining];
-    v12 = a3;
-    v13 = a4;
-    v14 = v10;
+    position = [buffer position];
+    remaining = [buffer remaining];
+    descriptorCopy2 = descriptor;
+    bufferCopy = buffer;
+    v14 = position;
   }
 
   else
   {
-    v15 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(a4);
-    v16 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(a4);
-    v17 = [a4 position];
-    v11 = [a4 remaining];
-    v14 = v17 + v16;
-    v12 = a3;
-    v13 = v15;
+    v15 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(buffer);
+    v16 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(buffer);
+    position2 = [buffer position];
+    remaining = [buffer remaining];
+    v14 = position2 + v16;
+    descriptorCopy2 = descriptor;
+    bufferCopy = v15;
   }
 
-  return sub_1001FE100(v12, v13, v14, v11, a5, a6);
+  return sub_1001FE100(descriptorCopy2, bufferCopy, v14, remaining, int, address);
 }
 
-- (void)removeWithNSString:(id)a3
+- (void)removeWithNSString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = absolutePath(a3);
+    v4 = absolutePath(string);
     while (remove(v4, v3) == -1)
     {
       if (*__error() != 4)
@@ -1310,12 +1310,12 @@ LABEL_21:
   }
 }
 
-- (void)renameWithNSString:(id)a3 withNSString:(id)a4
+- (void)renameWithNSString:(id)string withNSString:(id)sString
 {
-  if (a3 && a4)
+  if (string && sString)
   {
-    v5 = absolutePath(a3);
-    v7 = absolutePath(a4);
+    v5 = absolutePath(string);
+    v7 = absolutePath(sString);
     while (1)
     {
       rename(v5, v7, v6);
@@ -1333,12 +1333,12 @@ LABEL_21:
   }
 }
 
-- (int64_t)sendfileWithJavaIoFileDescriptor:(id)a3 withJavaIoFileDescriptor:(id)a4 withLibcoreUtilMutableLong:(id)a5 withLong:(int64_t)a6
+- (int64_t)sendfileWithJavaIoFileDescriptor:(id)descriptor withJavaIoFileDescriptor:(id)fileDescriptor withLibcoreUtilMutableLong:(id)long withLong:(int64_t)withLong
 {
   v19 = 0;
-  if (a5)
+  if (long)
   {
-    v19 = *(a5 + 1);
+    v19 = *(long + 1);
     v10 = &v19;
   }
 
@@ -1349,14 +1349,14 @@ LABEL_21:
 
   while (1)
   {
-    v11 = [a3 getInt$];
-    v12 = [a4 getInt$];
-    v20 = a6;
+    v11 = [descriptor getInt$];
+    v12 = [fileDescriptor getInt$];
+    withLongCopy = withLong;
     if (v10)
     {
-      v13 = sendfile(v12, v11, *v10, &v20, 0, 0);
-      v14 = v20;
-      if (v13 != -1 && v20 != 0xFFFFFFFFLL)
+      v13 = sendfile(v12, v11, *v10, &withLongCopy, 0, 0);
+      v14 = withLongCopy;
+      if (v13 != -1 && withLongCopy != 0xFFFFFFFFLL)
       {
         break;
       }
@@ -1366,7 +1366,7 @@ LABEL_21:
     {
       v14 = -1;
       v16 = 1;
-      if (!a5)
+      if (!long)
       {
         goto LABEL_13;
       }
@@ -1376,10 +1376,10 @@ LABEL_21:
   }
 
   v16 = 0;
-  if (a5)
+  if (long)
   {
 LABEL_12:
-    *(a5 + 1) = v19;
+    *(long + 1) = v19;
   }
 
 LABEL_13:
@@ -1392,40 +1392,40 @@ LABEL_13:
   return v14;
 }
 
-- (int)sendtoWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4 withInt:(int)a5 withJavaNetInetAddress:(id)a6 withInt:(int)a7
+- (int)sendtoWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer withInt:(int)int withJavaNetInetAddress:(id)address withInt:(int)withInt
 {
-  if (!a4)
+  if (!buffer)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a4 isDirect])
+  if ([buffer isDirect])
   {
-    v12 = [a4 position];
-    v13 = [a4 remaining];
-    v14 = a3;
-    v15 = a4;
-    v16 = v12;
+    position = [buffer position];
+    remaining = [buffer remaining];
+    descriptorCopy2 = descriptor;
+    bufferCopy = buffer;
+    v16 = position;
   }
 
   else
   {
-    v17 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(a4);
-    v18 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(a4);
-    v19 = [a4 position];
-    v13 = [a4 remaining];
-    v16 = v19 + v18;
-    v14 = a3;
-    v15 = v17;
+    v17 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(buffer);
+    v18 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(buffer);
+    position2 = [buffer position];
+    remaining = [buffer remaining];
+    v16 = position2 + v18;
+    descriptorCopy2 = descriptor;
+    bufferCopy = v17;
   }
 
-  return sub_1001FE608(v14, v15, v16, v13, a5, a6, a7);
+  return sub_1001FE608(descriptorCopy2, bufferCopy, v16, remaining, int, address, withInt);
 }
 
-- (void)setsockoptByteWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6
+- (void)setsockoptByteWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withInt:(int)a6
 {
   v10 = a6;
-  while (setsockopt([a3 getInt$], a4, a5, &v10, 1u) == -1)
+  while (setsockopt([descriptor getInt$], int, withInt, &v10, 1u) == -1)
   {
     if (*__error() != 4)
     {
@@ -1435,7 +1435,7 @@ LABEL_13:
   }
 }
 
-- (void)setsockoptGroupReqWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withLibcoreIoStructGroupReq:(id)a6
+- (void)setsockoptGroupReqWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withLibcoreIoStructGroupReq:(id)req
 {
   v28 = 0u;
   v27 = 0u;
@@ -1445,9 +1445,9 @@ LABEL_13:
   v23 = 0u;
   v22 = 0u;
   v21 = 0u;
-  v20 = *(a6 + 2);
-  sub_1001FB420(*(a6 + 2), 0, &v21, &v10, 0);
-  while (setsockopt([a3 getInt$], a4, a5, &v20, 0x84u) == -1)
+  v20 = *(req + 2);
+  sub_1001FB420(*(req + 2), 0, &v21, &v10, 0);
+  while (setsockopt([descriptor getInt$], int, withInt, &v20, 0x84u) == -1)
   {
     if (*__error() != 4)
     {
@@ -1467,7 +1467,7 @@ LABEL_8:
       v13 = v22;
       v14 = v23;
       v15 = v24;
-      while (setsockopt([a3 getInt$], a4, a5, &v11, 0x88u) == -1)
+      while (setsockopt([descriptor getInt$], int, withInt, &v11, 0x88u) == -1)
       {
         if (*__error() != 4)
         {
@@ -1480,7 +1480,7 @@ LABEL_8:
   }
 }
 
-- (void)setsockoptGroupSourceReqWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withLibcoreIoStructGroupSourceReq:(id)a6
+- (void)setsockoptGroupSourceReqWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withLibcoreIoStructGroupSourceReq:(id)req
 {
   v45 = 0u;
   v44 = 0u;
@@ -1498,10 +1498,10 @@ LABEL_8:
   v32 = 0u;
   v31 = 0u;
   v30 = 0u;
-  v29 = *(a6 + 2);
-  sub_1001FB420(*(a6 + 2), 0, &v30, &v11, 0);
-  sub_1001FB420(*(a6 + 3), 0, &v38, &v11, 0);
-  while (setsockopt([a3 getInt$], a4, a5, &v29, 0x104u) == -1)
+  v29 = *(req + 2);
+  sub_1001FB420(*(req + 2), 0, &v30, &v11, 0);
+  sub_1001FB420(*(req + 3), 0, &v38, &v11, 0);
+  while (setsockopt([descriptor getInt$], int, withInt, &v29, 0x104u) == -1)
   {
     if (*__error() != 4)
     {
@@ -1529,7 +1529,7 @@ LABEL_8:
       v27 = v44;
       v26 = v43;
       v25 = v42;
-      while (setsockopt([a3 getInt$], a4, a5, &v12, 0x108u) == -1)
+      while (setsockopt([descriptor getInt$], int, withInt, &v12, 0x108u) == -1)
       {
         if (*__error() != 4)
         {
@@ -1542,15 +1542,15 @@ LABEL_8:
   }
 }
 
-- (void)setsockoptIfreqWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withNSString:(id)a6
+- (void)setsockoptIfreqWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withNSString:(id)string
 {
-  if (a6)
+  if (string)
   {
     v11 = 0;
     v12 = 0;
-    strncpy(__dst, [a6 UTF8String], 0x10uLL);
+    strncpy(__dst, [string UTF8String], 0x10uLL);
     __dst[15] = 0;
-    while (setsockopt([a3 getInt$], a4, a5, __dst, 0x20u) == -1)
+    while (setsockopt([descriptor getInt$], int, withInt, __dst, 0x20u) == -1)
     {
       if (*__error() != 4)
       {
@@ -1561,10 +1561,10 @@ LABEL_8:
   }
 }
 
-- (void)setsockoptIntWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6
+- (void)setsockoptIntWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withInt:(int)a6
 {
   v10 = a6;
-  while (setsockopt([a3 getInt$], a4, a5, &v10, 4u) == -1)
+  while (setsockopt([descriptor getInt$], int, withInt, &v10, 4u) == -1)
   {
     if (*__error() != 4)
     {
@@ -1574,11 +1574,11 @@ LABEL_8:
   }
 }
 
-- (void)setsockoptIpMreqnWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6
+- (void)setsockoptIpMreqnWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withInt:(int)a6
 {
   v10 = 0;
   LODWORD(v11) = a6;
-  while (setsockopt([a3 getInt$], a4, a5, &v10, 0xCu) == -1)
+  while (setsockopt([descriptor getInt$], int, withInt, &v10, 0xCu) == -1)
   {
     if (*__error() != 4)
     {
@@ -1588,12 +1588,12 @@ LABEL_8:
   }
 }
 
-- (void)setsockoptLingerWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withLibcoreIoStructLinger:(id)a6
+- (void)setsockoptLingerWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withLibcoreIoStructLinger:(id)linger
 {
-  v9 = *(a6 + 3);
-  v11[0] = *(a6 + 2);
+  v9 = *(linger + 3);
+  v11[0] = *(linger + 2);
   v11[1] = v9;
-  while (setsockopt([a3 getInt$], a4, a5, v11, 8u) == -1)
+  while (setsockopt([descriptor getInt$], int, withInt, v11, 8u) == -1)
   {
     if (*__error() != 4)
     {
@@ -1603,12 +1603,12 @@ LABEL_8:
   }
 }
 
-- (void)setsockoptTimevalWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4 withInt:(int)a5 withLibcoreIoStructTimeval:(id)a6
+- (void)setsockoptTimevalWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int withInt:(int)withInt withLibcoreIoStructTimeval:(id)timeval
 {
-  v10 = *(a6 + 1);
+  v10 = *(timeval + 1);
   v11 = 0;
-  LODWORD(v11) = *(a6 + 2);
-  while (setsockopt([a3 getInt$], a4, a5, &v10, 0x10u) == -1)
+  LODWORD(v11) = *(timeval + 2);
+  while (setsockopt([descriptor getInt$], int, withInt, &v10, 0x10u) == -1)
   {
     if (*__error() != 4)
     {
@@ -1618,9 +1618,9 @@ LABEL_8:
   }
 }
 
-- (void)shutdownWithJavaIoFileDescriptor:(id)a3 withInt:(int)a4
+- (void)shutdownWithJavaIoFileDescriptor:(id)descriptor withInt:(int)int
 {
-  while (shutdown([a3 getInt$], a4) == -1)
+  while (shutdown([descriptor getInt$], int) == -1)
   {
     if (*__error() != 4)
     {
@@ -1630,11 +1630,11 @@ LABEL_8:
   }
 }
 
-- (id)socketWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5
+- (id)socketWithInt:(int)int withInt:(int)withInt withInt:(int)a5
 {
   while (1)
   {
-    v8 = socket(a3, a4, a5);
+    v8 = socket(int, withInt, a5);
     if (v8 != -1)
     {
       break;
@@ -1653,9 +1653,9 @@ LABEL_8:
   return v11;
 }
 
-- (void)socketpairWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5 withJavaIoFileDescriptor:(id)a6 withJavaIoFileDescriptor:(id)a7
+- (void)socketpairWithInt:(int)int withInt:(int)withInt withInt:(int)a5 withJavaIoFileDescriptor:(id)descriptor withJavaIoFileDescriptor:(id)fileDescriptor
 {
-  while (socketpair(a3, a4, a5, v13) == -1)
+  while (socketpair(int, withInt, a5, v13) == -1)
   {
     if (*__error() != 4)
     {
@@ -1664,18 +1664,18 @@ LABEL_8:
     }
   }
 
-  [a6 setInt$WithInt:v13[0]];
-  [a7 setInt$WithInt:v13[1]];
+  [descriptor setInt$WithInt:v13[0]];
+  [fileDescriptor setInt$WithInt:v13[1]];
 }
 
-- (id)statvfsWithNSString:(id)a3
+- (id)statvfsWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  v3 = absolutePath(a3);
+  v3 = absolutePath(string);
   memset(&v9, 0, sizeof(v9));
   while (statvfs(v3, &v9) == -1)
   {
@@ -1693,20 +1693,20 @@ LABEL_8:
   return v7;
 }
 
-- (id)strerrorWithInt:(int)a3
+- (id)strerrorWithInt:(int)int
 {
-  if (strerror_r(a3, __strerrbuf, 0x400uLL))
+  if (strerror_r(int, __strerrbuf, 0x400uLL))
   {
-    snprintf(__strerrbuf, 0x400uLL, "errno %d", a3);
+    snprintf(__strerrbuf, 0x400uLL, "errno %d", int);
   }
 
   return [NSString stringWithUTF8String:__strerrbuf];
 }
 
-- (int64_t)sysconfWithInt:(int)a3
+- (int64_t)sysconfWithInt:(int)int
 {
   *__error() = 0;
-  v4 = sysconf(a3);
+  v4 = sysconf(int);
   if (v4 == -1 && *__error() == 22)
   {
     v6 = __error();
@@ -1717,13 +1717,13 @@ LABEL_8:
   return v4;
 }
 
-- (void)symlinkWithNSString:(id)a3 withNSString:(id)a4
+- (void)symlinkWithNSString:(id)string withNSString:(id)sString
 {
-  if (a3 && a4)
+  if (string && sString)
   {
-    v5 = [a3 UTF8String];
-    v6 = [a4 UTF8String];
-    while (symlink(v5, v6) == -1)
+    uTF8String = [string UTF8String];
+    uTF8String2 = [sString UTF8String];
+    while (symlink(uTF8String, uTF8String2) == -1)
     {
       if (*__error() != 4)
       {
@@ -1734,9 +1734,9 @@ LABEL_8:
   }
 }
 
-- (void)tcdrainWithJavaIoFileDescriptor:(id)a3
+- (void)tcdrainWithJavaIoFileDescriptor:(id)descriptor
 {
-  while (tcdrain([a3 getInt$]) == -1)
+  while (tcdrain([descriptor getInt$]) == -1)
   {
     if (*__error() != 4)
     {
@@ -1761,52 +1761,52 @@ LABEL_8:
   return [[LibcoreIoStructUtsname alloc] initWithNSString:v3 withNSString:[NSString withNSString:"stringWithUTF8String:" withNSString:v4.nodename withNSString:*v4.sysname stringWithUTF8String:*&v4.sysname[32], *&v4.sysname[48], *&v4.sysname[64], *&v4.sysname[80], *&v4.sysname[96], *&v4.sysname[112], *&v4.sysname[128], *&v4.sysname[144], *&v4.sysname[160], *&v4.sysname[176], *&v4.sysname[192], *&v4.sysname[208], *&v4.sysname[224], *&v4.sysname[240]], [NSString stringWithUTF8String:v4.release], [NSString stringWithUTF8String:v4.version], [NSString stringWithUTF8String:v4.machine]];
 }
 
-- (int)writeWithJavaIoFileDescriptor:(id)a3 withJavaNioByteBuffer:(id)a4
+- (int)writeWithJavaIoFileDescriptor:(id)descriptor withJavaNioByteBuffer:(id)buffer
 {
-  if (!a4)
+  if (!buffer)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a4 isDirect])
+  if ([buffer isDirect])
   {
-    v6 = [a4 position];
-    v7 = [a4 remaining];
-    v8 = a3;
-    v9 = a4;
-    v10 = v6;
+    position = [buffer position];
+    remaining = [buffer remaining];
+    descriptorCopy2 = descriptor;
+    bufferCopy = buffer;
+    v10 = position;
   }
 
   else
   {
-    v11 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(a4);
-    v12 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(a4);
-    v13 = [a4 position];
-    v7 = [a4 remaining];
-    v10 = v13 + v12;
-    v8 = a3;
-    v9 = v11;
+    v11 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(buffer);
+    v12 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(buffer);
+    position2 = [buffer position];
+    remaining = [buffer remaining];
+    v10 = position2 + v12;
+    descriptorCopy2 = descriptor;
+    bufferCopy = v11;
   }
 
-  return sub_1001FF640(v8, v9, v10, v7);
+  return sub_1001FF640(descriptorCopy2, bufferCopy, v10, remaining);
 }
 
-- (int)writeWithJavaIoFileDescriptor:(id)a3 withByteArray:(id)a4 withInt:(int)a5 withInt:(int)a6
+- (int)writeWithJavaIoFileDescriptor:(id)descriptor withByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  if (!a4)
+  if (!array)
   {
     return -1;
   }
 
-  if ((a6 | a5) < 0 || a6 + a5 > *(a4 + 2))
+  if ((withInt | int) < 0 || withInt + int > *(array + 2))
   {
     IOSArray_throwOutOfBounds();
   }
 
-  v8 = a4 + a5;
+  v8 = array + int;
   while (1)
   {
-    result = write([a3 getInt$], v8 + 12, a6);
+    result = write([descriptor getInt$], v8 + 12, withInt);
     if (result != -1)
     {
       break;
@@ -1822,9 +1822,9 @@ LABEL_8:
   return result;
 }
 
-- (int)writevWithJavaIoFileDescriptor:(id)a3 withNSObjectArray:(id)a4 withIntArray:(id)a5 withIntArray:(id)a6
+- (int)writevWithJavaIoFileDescriptor:(id)descriptor withNSObjectArray:(id)array withIntArray:(id)intArray withIntArray:(id)withIntArray
 {
-  v9 = *(a4 + 2);
+  v9 = *(array + 2);
   v10 = malloc_type_malloc(16 * v9, 0x1080040FC6463CFuLL);
   v11 = v10;
   if (v9 >= 1)
@@ -1835,7 +1835,7 @@ LABEL_8:
     do
     {
       v15 = v14;
-      v16 = [a4 objectAtIndex:v12];
+      v16 = [array objectAtIndex:v12];
       if (!v16)
       {
         JreThrowNullPointerException();
@@ -1877,20 +1877,20 @@ LABEL_20:
         }
       }
 
-      v20 = *(a5 + 2);
+      v20 = *(intArray + 2);
       if (v12 >= v20)
       {
         IOSArray_throwOutOfBoundsWithMsg(v20, v12);
       }
 
-      *(p_iov_len - 1) = &v19[*(a5 + 4 * v12 + *v14)];
-      v21 = *(a6 + 2);
+      *(p_iov_len - 1) = &v19[*(intArray + 4 * v12 + *v14)];
+      v21 = *(withIntArray + 2);
       if (v12 >= v21)
       {
         IOSArray_throwOutOfBoundsWithMsg(v21, v12);
       }
 
-      *p_iov_len = *(a6 + 4 * v12 + *v14);
+      *p_iov_len = *(withIntArray + 4 * v12 + *v14);
       p_iov_len += 2;
       ++v12;
     }
@@ -1900,7 +1900,7 @@ LABEL_20:
 
   while (1)
   {
-    v22 = writev([a3 getInt$], v11, v9);
+    v22 = writev([descriptor getInt$], v11, v9);
     if (v22 != -1)
     {
       break;

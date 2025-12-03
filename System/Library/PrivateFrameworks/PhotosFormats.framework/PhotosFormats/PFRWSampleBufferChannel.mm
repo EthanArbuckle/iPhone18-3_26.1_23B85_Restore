@@ -1,8 +1,8 @@
 @interface PFRWSampleBufferChannel
-- (PFRWSampleBufferChannel)initWithAssetReaderOutput:(id)a3 assetWriterInput:(id)a4 useAdaptor:(BOOL)a5;
+- (PFRWSampleBufferChannel)initWithAssetReaderOutput:(id)output assetWriterInput:(id)input useAdaptor:(BOOL)adaptor;
 - (void)callCompletionHandlerIfNecessary;
 - (void)cancel;
-- (void)startWithDelegate:(id)a3 completionHandler:(id)a4;
+- (void)startWithDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation PFRWSampleBufferChannel
@@ -18,23 +18,23 @@
   dispatch_async(serializationQueue, block);
 }
 
-- (void)startWithDelegate:(id)a3 completionHandler:(id)a4
+- (void)startWithDelegate:(id)delegate completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  delegateCopy = delegate;
+  v7 = [handler copy];
   completionHandler = self->completionHandler;
   self->completionHandler = v7;
 
-  v9 = [(PFRWSampleBufferChannel *)self assetWriterInput];
+  assetWriterInput = [(PFRWSampleBufferChannel *)self assetWriterInput];
   serializationQueue = self->serializationQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__PFRWSampleBufferChannel_startWithDelegate_completionHandler___block_invoke;
   v12[3] = &unk_1E7B66D98;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v9 requestMediaDataWhenReadyOnQueue:serializationQueue usingBlock:v12];
+  v13 = delegateCopy;
+  v11 = delegateCopy;
+  [assetWriterInput requestMediaDataWhenReadyOnQueue:serializationQueue usingBlock:v12];
 }
 
 void __63__PFRWSampleBufferChannel_startWithDelegate_completionHandler___block_invoke(uint64_t a1)
@@ -107,12 +107,12 @@ void __63__PFRWSampleBufferChannel_startWithDelegate_completionHandler___block_i
 
 - (void)callCompletionHandlerIfNecessary
 {
-  v3 = [(PFRWSampleBufferChannel *)self finished];
+  finished = [(PFRWSampleBufferChannel *)self finished];
   [(PFRWSampleBufferChannel *)self setFinished:1];
-  if (!v3)
+  if (!finished)
   {
-    v4 = [(PFRWSampleBufferChannel *)self assetWriterInput];
-    [v4 markAsFinished];
+    assetWriterInput = [(PFRWSampleBufferChannel *)self assetWriterInput];
+    [assetWriterInput markAsFinished];
 
     v7 = MEMORY[0x1B8C64C40](self->completionHandler);
     completionHandler = self->completionHandler;
@@ -127,28 +127,28 @@ void __63__PFRWSampleBufferChannel_startWithDelegate_completionHandler___block_i
   }
 }
 
-- (PFRWSampleBufferChannel)initWithAssetReaderOutput:(id)a3 assetWriterInput:(id)a4 useAdaptor:(BOOL)a5
+- (PFRWSampleBufferChannel)initWithAssetReaderOutput:(id)output assetWriterInput:(id)input useAdaptor:(BOOL)adaptor
 {
-  v5 = a5;
+  adaptorCopy = adaptor;
   v21[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  outputCopy = output;
+  inputCopy = input;
   v19.receiver = self;
   v19.super_class = PFRWSampleBufferChannel;
   v11 = [(PFRWSampleBufferChannel *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_assetReaderOutput, a3);
-    objc_storeStrong(&v12->_assetWriterInput, a4);
+    objc_storeStrong(&v11->_assetReaderOutput, output);
+    objc_storeStrong(&v12->_assetWriterInput, input);
     v12->_finished = 0;
-    v12->_useAdaptor = v5;
-    if (v5)
+    v12->_useAdaptor = adaptorCopy;
+    if (adaptorCopy)
     {
       v20 = *MEMORY[0x1E6966130];
       v21[0] = &unk_1F2AAAF18;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      v14 = [MEMORY[0x1E6987F08] assetWriterInputPixelBufferAdaptorWithAssetWriterInput:v10 sourcePixelBufferAttributes:v13];
+      v14 = [MEMORY[0x1E6987F08] assetWriterInputPixelBufferAdaptorWithAssetWriterInput:inputCopy sourcePixelBufferAttributes:v13];
       adaptor = v12->_adaptor;
       v12->_adaptor = v14;
     }

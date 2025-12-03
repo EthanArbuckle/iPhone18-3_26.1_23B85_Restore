@@ -1,28 +1,28 @@
 @interface SUScriptAppleAccount
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (ACAccount)nativeAccount;
 - (ACAccountStore)nativeAccountStore;
-- (SUScriptAppleAccount)initWithACAccount:(id)a3 accountStore:(id)a4;
+- (SUScriptAppleAccount)initWithACAccount:(id)account accountStore:(id)store;
 - (SUScriptAppleAccountCredential)credential;
 - (SUScriptAppleAccountType)accountType;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
-- (void)setAgeVerificationExpirationDate:(id)a3 completionHandler:(id)a4;
+- (void)setAgeVerificationExpirationDate:(id)date completionHandler:(id)handler;
 @end
 
 @implementation SUScriptAppleAccount
 
-- (SUScriptAppleAccount)initWithACAccount:(id)a3 accountStore:(id)a4
+- (SUScriptAppleAccount)initWithACAccount:(id)account accountStore:(id)store
 {
   v8.receiver = self;
   v8.super_class = SUScriptAppleAccount;
   v6 = [(SUScriptObject *)&v8 init];
   if (v6)
   {
-    v6->_account = a3;
-    v6->_accountStore = a4;
+    v6->_account = account;
+    v6->_accountStore = store;
   }
 
   return v6;
@@ -49,23 +49,23 @@
   return v2;
 }
 
-- (void)setAgeVerificationExpirationDate:(id)a3 completionHandler:(id)a4
+- (void)setAgeVerificationExpirationDate:(id)date completionHandler:(id)handler
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    handler = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!a4)
+    if (!handler)
     {
 LABEL_8:
-      [a4 setThisObject:self];
-      v7 = [a3 copyDate];
-      [v7 timeIntervalSince1970];
+      [handler setThisObject:self];
+      copyDate = [date copyDate];
+      [copyDate timeIntervalSince1970];
       account = self->_account;
       v10 = [MEMORY[0x1E696AD98] numberWithLongLong:v8];
       [(ACAccount *)account ams_setAccountFlagValue:v10 forAccountFlag:*MEMORY[0x1E698C498]];
@@ -75,7 +75,7 @@ LABEL_8:
       v13[2] = __75__SUScriptAppleAccount_setAgeVerificationExpirationDate_completionHandler___block_invoke;
       v13[3] = &unk_1E8166000;
       v13[4] = self;
-      v13[5] = a4;
+      v13[5] = handler;
       [v11 addFinishBlock:v13];
 
       return;
@@ -84,7 +84,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      a4 = [[SUScriptFunction alloc] initWithScriptObject:a4];
+      handler = [[SUScriptFunction alloc] initWithScriptObject:handler];
       goto LABEL_8;
     }
   }
@@ -147,49 +147,49 @@ void __75__SUScriptAppleAccount_setAgeVerificationExpirationDate_completionHandl
 
 - (SUScriptAppleAccountType)accountType
 {
-  v3 = [(ACAccount *)self->_account accountType];
-  if (v3)
+  accountType = [(ACAccount *)self->_account accountType];
+  if (accountType)
   {
-    v3 = [[SUScriptAppleAccountType alloc] initWithACAccountType:v3];
-    [(SUScriptObject *)self checkInScriptObject:v3];
+    accountType = [[SUScriptAppleAccountType alloc] initWithACAccountType:accountType];
+    [(SUScriptObject *)self checkInScriptObject:accountType];
   }
 
-  return v3;
+  return accountType;
 }
 
 - (SUScriptAppleAccountCredential)credential
 {
-  v3 = [(ACAccount *)self->_account credential];
-  if (v3)
+  credential = [(ACAccount *)self->_account credential];
+  if (credential)
   {
-    v3 = [[SUScriptAppleAccountCredential alloc] initWithACAccountCredential:v3];
-    [(SUScriptObject *)self checkInScriptObject:v3];
+    credential = [[SUScriptAppleAccountCredential alloc] initWithACAccountCredential:credential];
+    [(SUScriptObject *)self checkInScriptObject:credential];
   }
 
-  return v3;
+  return credential;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_68 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptAppleAccount;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_51, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_51, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptAppleAccount;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -199,14 +199,14 @@ void __75__SUScriptAppleAccount_setAgeVerificationExpirationDate_completionHandl
 {
   v4.receiver = self;
   v4.super_class = SUScriptAppleAccount;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_68 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_68 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_51 = sel_reload;
     unk_1EBF3B770 = @"reload";

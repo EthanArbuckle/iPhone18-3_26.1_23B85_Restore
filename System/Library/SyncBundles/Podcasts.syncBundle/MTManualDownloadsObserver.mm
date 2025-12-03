@@ -1,27 +1,27 @@
 @interface MTManualDownloadsObserver
-- (MTManualDownloadsObserver)initWithDelegate:(id)a3;
+- (MTManualDownloadsObserver)initWithDelegate:(id)delegate;
 - (MTManualDownloadsObserverDelegate)delegate;
 - (void)_createFRC;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controller:(id)a3 didChangeSection:(id)a4 atIndex:(unint64_t)a5 forChangeType:(unint64_t)a6;
-- (void)controllerDidChangeContent:(id)a3;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controller:(id)controller didChangeSection:(id)section atIndex:(unint64_t)index forChangeType:(unint64_t)type;
+- (void)controllerDidChangeContent:(id)content;
 - (void)extensionAccessDidChange;
 @end
 
 @implementation MTManualDownloadsObserver
 
-- (MTManualDownloadsObserver)initWithDelegate:(id)a3
+- (MTManualDownloadsObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = MTManualDownloadsObserver;
   v5 = [(MTManualDownloadsObserver *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(MTManualDownloadsObserver *)v5 setDelegate:v4];
-    v7 = [sub_123C() sharedInstance];
-    [v7 addObserver:v6];
+    [(MTManualDownloadsObserver *)v5 setDelegate:delegateCopy];
+    sharedInstance = [sub_123C() sharedInstance];
+    [sharedInstance addObserver:v6];
 
     [(MTManualDownloadsObserver *)v6 _createFRC];
   }
@@ -29,27 +29,27 @@
   return v6;
 }
 
-- (void)controller:(id)a3 didChangeSection:(id)a4 atIndex:(unint64_t)a5 forChangeType:(unint64_t)a6
+- (void)controller:(id)controller didChangeSection:(id)section atIndex:(unint64_t)index forChangeType:(unint64_t)type
 {
-  if (a6 - 1 <= 1)
+  if (type - 1 <= 1)
   {
-    [(MTManualDownloadsObserver *)self setHasChanges:1, a4, a5];
+    [(MTManualDownloadsObserver *)self setHasChanges:1, section, index];
   }
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  if (a6 - 1 <= 2)
+  if (type - 1 <= 2)
   {
-    [(MTManualDownloadsObserver *)self setHasChanges:1, a4, a5];
+    [(MTManualDownloadsObserver *)self setHasChanges:1, object, path];
   }
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   if ([(MTManualDownloadsObserver *)self hasChanges])
   {
-    v4 = [(MTManualDownloadsObserver *)self delegate];
+    delegate = [(MTManualDownloadsObserver *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
@@ -61,18 +61,18 @@
         _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "MTManualDownloadsObserver manual downloads did change", v8, 2u);
       }
 
-      v7 = [(MTManualDownloadsObserver *)self delegate];
-      [v7 manualDownloadsDidChange];
+      delegate2 = [(MTManualDownloadsObserver *)self delegate];
+      [delegate2 manualDownloadsDidChange];
     }
   }
 }
 
 - (void)extensionAccessDidChange
 {
-  v3 = [sub_123C() sharedInstance];
-  v4 = [v3 isReady];
+  sharedInstance = [sub_123C() sharedInstance];
+  isReady = [sharedInstance isReady];
 
-  if (v4)
+  if (isReady)
   {
     v5 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -91,10 +91,10 @@
 
   if (!v3)
   {
-    v4 = [sub_123C() sharedInstance];
-    v5 = [v4 isReady];
+    sharedInstance = [sub_123C() sharedInstance];
+    isReady = [sharedInstance isReady];
 
-    if (v5)
+    if (isReady)
     {
       v6 = _MTLogCategoryDatabase();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -187,10 +187,10 @@
 
       v24 = v23;
       _Block_object_dispose(&v37, 8);
-      v25 = [v23 sharedInstance];
-      v26 = [v25 privateQueueContext];
+      sharedInstance2 = [v23 sharedInstance];
+      privateQueueContext = [sharedInstance2 privateQueueContext];
       v27 = sub_1A8C();
-      v28 = [v22 initWithFetchRequest:v10 managedObjectContext:v26 sectionNameKeyPath:v27 cacheName:0];
+      v28 = [v22 initWithFetchRequest:v10 managedObjectContext:privateQueueContext sectionNameKeyPath:v27 cacheName:0];
       [(MTManualDownloadsObserver *)self setFrc:v28];
 
       v29 = [(MTManualDownloadsObserver *)self frc];

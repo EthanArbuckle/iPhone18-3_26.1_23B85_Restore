@@ -1,30 +1,30 @@
 @interface SBProactiveHomeScreenSuggestionProvider
 - (SBHIconManager)iconManager;
-- (SBProactiveHomeScreenSuggestionProvider)initWithIconManager:(id)a3;
-- (id)_iconDataSourceInIcon:(id)a3 withUniqueIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 widgetKind:(id)a6 suggestionSource:(int64_t)a7;
-- (id)_makeDataSourceForAtxWidget:(id)a3;
+- (SBProactiveHomeScreenSuggestionProvider)initWithIconManager:(id)manager;
+- (id)_iconDataSourceInIcon:(id)icon withUniqueIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier widgetKind:(id)kind suggestionSource:(int64_t)source;
+- (id)_makeDataSourceForAtxWidget:(id)widget;
 - (id)_supportedElementClasses;
 - (id)iconModel;
 - (id)rootFolder;
-- (void)addObserver:(id)a3;
-- (void)processUpdatedPredictions:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)processUpdatedPredictions:(id)predictions;
 - (void)updatePredictions;
 @end
 
 @implementation SBProactiveHomeScreenSuggestionProvider
 
-- (SBProactiveHomeScreenSuggestionProvider)initWithIconManager:(id)a3
+- (SBProactiveHomeScreenSuggestionProvider)initWithIconManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SBProactiveHomeScreenSuggestionProvider;
   v5 = [(SBProactiveHomeScreenSuggestionProvider *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_iconManager, v4);
-    v7 = [MEMORY[0x277CEB5A0] sharedInstance];
-    [v7 registerObserver:v6];
+    objc_storeWeak(&v5->_iconManager, managerCopy);
+    mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+    [mEMORY[0x277CEB5A0] registerObserver:v6];
 
     [(SBProactiveHomeScreenSuggestionProvider *)v6 updatePredictions];
   }
@@ -34,18 +34,18 @@
 
 - (id)iconModel
 {
-  v2 = [(SBProactiveHomeScreenSuggestionProvider *)self iconManager];
-  v3 = [v2 iconModel];
+  iconManager = [(SBProactiveHomeScreenSuggestionProvider *)self iconManager];
+  iconModel = [iconManager iconModel];
 
-  return v3;
+  return iconModel;
 }
 
 - (id)rootFolder
 {
-  v2 = [(SBProactiveHomeScreenSuggestionProvider *)self iconModel];
-  v3 = [v2 rootFolder];
+  iconModel = [(SBProactiveHomeScreenSuggestionProvider *)self iconModel];
+  rootFolder = [iconModel rootFolder];
 
-  return v3;
+  return rootFolder;
 }
 
 - (void)updatePredictions
@@ -57,13 +57,13 @@
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "fetching new home screen predictions", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CEB5A0] sharedInstance];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __60__SBProactiveHomeScreenSuggestionProvider_updatePredictions__block_invoke;
   v5[3] = &unk_2783B9270;
   v5[4] = self;
-  [v4 homeScreenPredictionWithReply:v5];
+  [mEMORY[0x277CEB5A0] homeScreenPredictionWithReply:v5];
 }
 
 void __60__SBProactiveHomeScreenSuggestionProvider_updatePredictions__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -107,18 +107,18 @@ uint64_t __60__SBProactiveHomeScreenSuggestionProvider_updatePredictions__block_
   }
 }
 
-- (void)processUpdatedPredictions:(id)a3
+- (void)processUpdatedPredictions:(id)predictions
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionsCopy = predictions;
   v5 = SBLogProactiveHome();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SBProactiveHomeScreenSuggestionProvider *)v4 processUpdatedPredictions:v5];
+    [(SBProactiveHomeScreenSuggestionProvider *)predictionsCopy processUpdatedPredictions:v5];
   }
 
-  v6 = [(SBProactiveHomeScreenSuggestionProvider *)self currentPrediction];
-  [(SBProactiveHomeScreenSuggestionProvider *)self setCurrentPrediction:v4];
+  currentPrediction = [(SBProactiveHomeScreenSuggestionProvider *)self currentPrediction];
+  [(SBProactiveHomeScreenSuggestionProvider *)self setCurrentPrediction:predictionsCopy];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -155,17 +155,17 @@ uint64_t __60__SBProactiveHomeScreenSuggestionProvider_updatePredictions__block_
     while (v9);
   }
 
-  v13 = [(SBProactiveHomeScreenSuggestionProvider *)self rootFolder];
+  rootFolder = [(SBProactiveHomeScreenSuggestionProvider *)self rootFolder];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __69__SBProactiveHomeScreenSuggestionProvider_processUpdatedPredictions___block_invoke;
   v16[3] = &unk_2783B92C0;
-  v17 = v4;
-  v18 = v6;
-  v19 = self;
-  v14 = v6;
-  v15 = v4;
-  [v13 enumerateAllIconsUsingBlock:v16];
+  v17 = predictionsCopy;
+  v18 = currentPrediction;
+  selfCopy = self;
+  v14 = currentPrediction;
+  v15 = predictionsCopy;
+  [rootFolder enumerateAllIconsUsingBlock:v16];
 }
 
 void __69__SBProactiveHomeScreenSuggestionProvider_processUpdatedPredictions___block_invoke(uint64_t a1, void *a2)
@@ -438,22 +438,22 @@ uint64_t __69__SBProactiveHomeScreenSuggestionProvider_processUpdatedPredictions
   return v4;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 - (id)_supportedElementClasses
@@ -469,25 +469,25 @@ uint64_t __69__SBProactiveHomeScreenSuggestionProvider_processUpdatedPredictions
   return v8;
 }
 
-- (id)_iconDataSourceInIcon:(id)a3 withUniqueIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 widgetKind:(id)a6 suggestionSource:(int64_t)a7
+- (id)_iconDataSourceInIcon:(id)icon withUniqueIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier widgetKind:(id)kind suggestionSource:(int64_t)source
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  if (a4)
+  iconCopy = icon;
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
+  if (identifier)
   {
-    v15 = [v12 firstIconDataSourceWithUniqueIdentifier:a4];
+    v15 = [iconCopy firstIconDataSourceWithUniqueIdentifier:identifier];
 LABEL_3:
     v16 = v15;
     goto LABEL_8;
   }
 
-  v17 = [MEMORY[0x277D66148] elementClassWithIdentifier:v13];
+  v17 = [MEMORY[0x277D66148] elementClassWithIdentifier:bundleIdentifierCopy];
   if (v17)
   {
     v18 = v17;
-    v19 = [(SBProactiveHomeScreenSuggestionProvider *)self _supportedElementClasses];
-    v20 = [v19 containsObject:v18];
+    _supportedElementClasses = [(SBProactiveHomeScreenSuggestionProvider *)self _supportedElementClasses];
+    v20 = [_supportedElementClasses containsObject:v18];
 
     if (v20)
     {
@@ -495,9 +495,9 @@ LABEL_3:
       v26[1] = 3221225472;
       v26[2] = __140__SBProactiveHomeScreenSuggestionProvider__iconDataSourceInIcon_withUniqueIdentifier_extensionBundleIdentifier_widgetKind_suggestionSource___block_invoke;
       v26[3] = &__block_descriptor_48_e32_B16__0___SBLeafIconDataSource__8lu40l8;
-      v26[4] = a7;
+      v26[4] = source;
       v26[5] = v18;
-      v15 = [v12 firstIconDataSourcePassingTest:v26];
+      v15 = [iconCopy firstIconDataSourcePassingTest:v26];
       goto LABEL_3;
     }
   }
@@ -506,10 +506,10 @@ LABEL_3:
   v22[1] = 3221225472;
   v22[2] = __140__SBProactiveHomeScreenSuggestionProvider__iconDataSourceInIcon_withUniqueIdentifier_extensionBundleIdentifier_widgetKind_suggestionSource___block_invoke_2;
   v22[3] = &unk_2783B9308;
-  v25 = a7;
-  v23 = v13;
-  v24 = v14;
-  v16 = [v12 firstWidgetPassingTest:v22];
+  sourceCopy = source;
+  v23 = bundleIdentifierCopy;
+  v24 = kindCopy;
+  v16 = [iconCopy firstWidgetPassingTest:v22];
 
 LABEL_8:
 
@@ -570,37 +570,37 @@ uint64_t __140__SBProactiveHomeScreenSuggestionProvider__iconDataSourceInIcon_wi
   return v9;
 }
 
-- (id)_makeDataSourceForAtxWidget:(id)a3
+- (id)_makeDataSourceForAtxWidget:(id)widget
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  widgetCopy = widget;
   v5 = MEMORY[0x277D66148];
-  v6 = [v4 extensionBundleId];
-  v7 = [v5 elementClassWithIdentifier:v6];
+  extensionBundleId = [widgetCopy extensionBundleId];
+  v7 = [v5 elementClassWithIdentifier:extensionBundleId];
 
-  if (!v7 || (-[SBProactiveHomeScreenSuggestionProvider _supportedElementClasses](self, "_supportedElementClasses"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:v7], v8, !v9) || (v10 = [v7 alloc], objc_msgSend(v4, "widgetUniqueId"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "initWithUniqueIdentifier:", v11), v11, v13 = objc_msgSend(v12, "copyWithSuggestionSource:", 1), v12, !v13))
+  if (!v7 || (-[SBProactiveHomeScreenSuggestionProvider _supportedElementClasses](self, "_supportedElementClasses"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:v7], v8, !v9) || (v10 = [v7 alloc], objc_msgSend(widgetCopy, "widgetUniqueId"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "initWithUniqueIdentifier:", v11), v11, v13 = objc_msgSend(v12, "copyWithSuggestionSource:", 1), v12, !v13))
   {
-    v14 = [v4 widgetKind];
+    widgetKind = [widgetCopy widgetKind];
 
-    if (v14)
+    if (widgetKind)
     {
       v15 = objc_alloc(MEMORY[0x277D66320]);
-      v16 = [v4 widgetUniqueId];
-      v17 = [v4 widgetKind];
-      v18 = [v4 extensionBundleId];
-      v19 = [v4 appBundleId];
-      v20 = [v15 initWithUniqueIdentifier:v16 kind:v17 extensionBundleIdentifier:v18 containerBundleIdentifier:v19];
+      widgetUniqueId = [widgetCopy widgetUniqueId];
+      widgetKind2 = [widgetCopy widgetKind];
+      extensionBundleId2 = [widgetCopy extensionBundleId];
+      appBundleId = [widgetCopy appBundleId];
+      v20 = [v15 initWithUniqueIdentifier:widgetUniqueId kind:widgetKind2 extensionBundleIdentifier:extensionBundleId2 containerBundleIdentifier:appBundleId];
 
       v13 = [v20 copyWithSuggestionSource:1];
       v21 = SBLogWidgets();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v20 extensionBundleIdentifier];
-        v23 = [v20 uniqueIdentifier];
+        extensionBundleIdentifier = [v20 extensionBundleIdentifier];
+        uniqueIdentifier = [v20 uniqueIdentifier];
         v25 = 138543618;
-        v26 = v22;
+        v26 = extensionBundleIdentifier;
         v27 = 2114;
-        v28 = v23;
+        v28 = uniqueIdentifier;
         _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "Widget %{public}@ %{public}@ created for home screen suggestion.", &v25, 0x16u);
       }
     }

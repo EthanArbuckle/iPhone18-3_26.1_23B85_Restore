@@ -1,36 +1,36 @@
 @interface OADPlaceholderColor
-- (BOOL)isEqual:(id)a3;
-- (id)colorForStyleColor:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)colorForStyleColor:(id)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation OADPlaceholderColor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(OADColor *)self transforms];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  transforms = [(OADColor *)self transforms];
+  v7 = [transforms copyWithZone:zone];
   [v5 setTransforms:v7];
 
   return v5;
 }
 
-- (id)colorForStyleColor:(id)a3
+- (id)colorForStyleColor:(id)color
 {
-  v4 = a3;
-  v5 = [(OADColor *)self transforms];
-  v6 = [v4 transforms];
-  if (v5 && [v5 count] && (!v6 || !objc_msgSend(v6, "count")))
+  colorCopy = color;
+  transforms = [(OADColor *)self transforms];
+  transforms2 = [colorCopy transforms];
+  if (transforms && [transforms count] && (!transforms2 || !objc_msgSend(transforms2, "count")))
   {
-    v7 = [v4 copy];
+    v7 = [colorCopy copy];
 
-    v4 = v7;
-    [v7 setTransforms:v5];
+    colorCopy = v7;
+    [v7 setTransforms:transforms];
   }
 
-  return v4;
+  return colorCopy;
 }
 
 - (unint64_t)hash
@@ -40,15 +40,15 @@
   return [(OADColor *)&v3 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7.receiver = self;
     v7.super_class = OADPlaceholderColor;
-    v5 = [(OADColor *)&v7 isEqual:v4];
+    v5 = [(OADColor *)&v7 isEqual:equalCopy];
   }
 
   else

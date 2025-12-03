@@ -1,20 +1,20 @@
 @interface SGMIStagedLogRecord
-- (SGMIStagedLogRecord)initWithLog:(id)a3 isLogged:(BOOL)a4;
+- (SGMIStagedLogRecord)initWithLog:(id)log isLogged:(BOOL)logged;
 @end
 
 @implementation SGMIStagedLogRecord
 
-- (SGMIStagedLogRecord)initWithLog:(id)a3 isLogged:(BOOL)a4
+- (SGMIStagedLogRecord)initWithLog:(id)log isLogged:(BOOL)logged
 {
-  v7 = a3;
+  logCopy = log;
   v11.receiver = self;
   v11.super_class = SGMIStagedLogRecord;
   v8 = [(SGMIStagedLogRecord *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_log, a3);
-    v9->_isLogged = a4;
+    objc_storeStrong(&v8->_log, log);
+    v9->_isLogged = logged;
   }
 
   return v9;

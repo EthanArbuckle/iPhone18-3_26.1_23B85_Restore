@@ -1,51 +1,51 @@
 @interface SSDownload
-- (BOOL)addAsset:(id)a3 forType:(id)a4;
+- (BOOL)addAsset:(id)asset forType:(id)type;
 - (BOOL)isCancelable;
-- (BOOL)isEligibleForRestore:(id *)a3;
-- (BOOL)removeAsset:(id)a3;
+- (BOOL)isEligibleForRestore:(id *)restore;
+- (BOOL)removeAsset:(id)asset;
 - (NSDictionary)_localAssets;
-- (SSDownload)initWithDownloadMetadata:(id)a3;
-- (SSDownload)initWithPersistentIdentifier:(int64_t)a3;
+- (SSDownload)initWithDownloadMetadata:(id)metadata;
+- (SSDownload)initWithPersistentIdentifier:(int64_t)identifier;
 - (SSDownloadMetadata)metadata;
 - (SSDownloadPolicy)downloadPolicy;
 - (SSDownloadStatus)status;
 - (double)estimatedSecondsRemaining;
 - (double)percentComplete;
-- (id)_errorWithData:(id)a3;
-- (id)_errorWithXPCReply:(id)a3;
-- (id)_initWithLocalPropertyValues:(id)a3;
-- (id)_newAssetWithURL:(id)a3 assetType:(id)a4;
-- (id)assetsForType:(id)a3;
+- (id)_errorWithData:(id)data;
+- (id)_errorWithXPCReply:(id)reply;
+- (id)_initWithLocalPropertyValues:(id)values;
+- (id)_newAssetWithURL:(id)l assetType:(id)type;
+- (id)assetsForType:(id)type;
 - (id)copyXPCEncoding;
 - (id)failureError;
 - (id)networkConstraints;
 - (int64_t)bytesDownloaded;
 - (int64_t)bytesTotal;
 - (int64_t)downloadSizeLimit;
-- (void)_addCachedExternalValues:(id)a3;
-- (void)_addCachedPropertyValues:(id)a3;
-- (void)_applyPhase:(id)a3 toStatus:(id)a4;
+- (void)_addCachedExternalValues:(id)values;
+- (void)_addCachedPropertyValues:(id)values;
+- (void)_applyPhase:(id)phase toStatus:(id)status;
 - (void)_resetLocalIVars;
 - (void)_resetStatus;
 - (void)dealloc;
 - (void)pause;
-- (void)prioritizeAboveDownload:(id)a3 completionBlock:(id)a4;
+- (void)prioritizeAboveDownload:(id)download completionBlock:(id)block;
 - (void)restart;
 - (void)resume;
-- (void)setBackgroundNetworkingJobGroupName:(id)a3;
-- (void)setBackgroundNetworkingUserInitiated:(BOOL)a3;
-- (void)setDownloadHandler:(id)a3 completionBlock:(id)a4;
-- (void)setDownloadPolicy:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setNetworkConstraints:(id)a3;
-- (void)setValuesWithStoreDownloadMetadata:(id)a3;
+- (void)setBackgroundNetworkingJobGroupName:(id)name;
+- (void)setBackgroundNetworkingUserInitiated:(BOOL)initiated;
+- (void)setDownloadHandler:(id)handler completionBlock:(id)block;
+- (void)setDownloadPolicy:(id)policy;
+- (void)setMetadata:(id)metadata;
+- (void)setNetworkConstraints:(id)constraints;
+- (void)setValuesWithStoreDownloadMetadata:(id)metadata;
 @end
 
 @implementation SSDownload
 
-- (SSDownload)initWithPersistentIdentifier:(int64_t)a3
+- (SSDownload)initWithPersistentIdentifier:(int64_t)identifier
 {
-  v3 = [(SSEntity *)self _initWithPersistentIdentifier:a3];
+  v3 = [(SSEntity *)self _initWithPersistentIdentifier:identifier];
   v4 = v3;
   if (v3 && !v3->super._connection)
   {
@@ -67,9 +67,9 @@ SSXPCConnection *__43__SSDownload_initWithPersistentIdentifier___block_invoke()
   return result;
 }
 
-- (id)_initWithLocalPropertyValues:(id)a3
+- (id)_initWithLocalPropertyValues:(id)values
 {
-  v4 = SSXPCCreateCFObjectFromXPCObject(a3);
+  v4 = SSXPCCreateCFObjectFromXPCObject(values);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(__CFArray *)v4 objectForKey:@"0"]) != 0)
   {
@@ -122,7 +122,7 @@ SSXPCConnection *__43__SSDownload_initWithPersistentIdentifier___block_invoke()
   [(SSEntity *)&v3 dealloc];
 }
 
-- (BOOL)addAsset:(id)a3 forType:(id)a4
+- (BOOL)addAsset:(id)asset forType:(id)type
 {
   v15 = 0;
   v16 = &v15;
@@ -134,21 +134,21 @@ SSXPCConnection *__43__SSDownload_initWithPersistentIdentifier___block_invoke()
   v14[2] = __31__SSDownload_addAsset_forType___block_invoke;
   v14[3] = &unk_1E84AC588;
   v14[4] = self;
-  v14[5] = a4;
-  v14[6] = a3;
+  v14[5] = type;
+  v14[6] = asset;
   v14[7] = &v15;
   dispatch_sync(dispatchQueue, v14);
   if (*(v16 + 24) == 1)
   {
-    v8 = [a3 _legacyAssetType];
-    if (v8)
+    _legacyAssetType = [asset _legacyAssetType];
+    if (_legacyAssetType)
     {
-      if ([a4 isEqualToString:@"media"] && !-[SSEntity valueForProperty:](self, "valueForProperty:", @"1"))
+      if ([type isEqualToString:@"media"] && !-[SSEntity valueForProperty:](self, "valueForProperty:", @"1"))
       {
         v9 = &off_1E84AC830;
         v10 = 14;
         v11 = @"other";
-        while (*(v9 - 1) != v8)
+        while (*(v9 - 1) != _legacyAssetType)
         {
           v9 += 2;
           if (!--v10)
@@ -197,7 +197,7 @@ void __31__SSDownload_addAsset_forType___block_invoke(void *a1)
   }
 }
 
-- (id)assetsForType:(id)a3
+- (id)assetsForType:(id)type
 {
   v40 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -208,15 +208,15 @@ void __31__SSDownload_addAsset_forType___block_invoke(void *a1)
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -265,14 +265,14 @@ void __31__SSDownload_addAsset_forType___block_invoke(void *a1)
   block[6] = &v29;
   block[7] = &v35;
   block[4] = self;
-  block[5] = a3;
+  block[5] = type;
   dispatch_sync(dispatchQueue, block);
   if (v30[5])
   {
     v19 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v19, "0", 11);
     xpc_dictionary_set_int64(v19, "1", self->super._pid);
-    SSXPCDictionarySetCFObject(v19, "2", a3);
+    SSXPCDictionarySetCFObject(v19, "2", type);
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v21 = dispatch_semaphore_create(0);
     v22 = v30[5];
@@ -411,8 +411,8 @@ intptr_t __28__SSDownload_assetsForType___block_invoke_2(uint64_t a1, void *a2)
 - (BOOL)isCancelable
 {
   v9[5] = *MEMORY[0x1E69E9840];
-  v3 = [(SSEntity *)self _isManaged];
-  if (v3)
+  _isManaged = [(SSEntity *)self _isManaged];
+  if (_isManaged)
   {
     v9[0] = @"AA";
     v9[1] = @"P";
@@ -420,46 +420,46 @@ intptr_t __28__SSDownload_assetsForType___block_invoke_2(uint64_t a1, void *a2)
     v9[3] = @"I";
     v9[4] = @"9";
     [(SSEntity *)self getValues:v5 forProperties:v9 count:5];
-    if (!v5[0] || (v3 = [v5[0] BOOLValue]) != 0)
+    if (!v5[0] || (_isManaged = [v5[0] BOOLValue]) != 0)
     {
       if (v8 && !v5[1] || v6 && ([v6 BOOLValue] & 1) != 0)
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(_isManaged) = 0;
       }
 
       else if ([v7 isEqualToString:@"SSDownloadPhaseWaiting"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"SSDownloadPhaseDataRestore") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"SSDownloadPhaseDownloading") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"SSDownloadPhasePaused") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"SSDownloadPhasePreflight"))
       {
-        LOBYTE(v3) = 1;
+        LOBYTE(_isManaged) = 1;
       }
 
       else
       {
-        LOBYTE(v3) = [v7 isEqualToString:@"SSDownloadPhaseFailed"];
+        LOBYTE(_isManaged) = [v7 isEqualToString:@"SSDownloadPhaseFailed"];
       }
     }
   }
 
-  return v3;
+  return _isManaged;
 }
 
-- (BOOL)isEligibleForRestore:(id *)a3
+- (BOOL)isEligibleForRestore:(id *)restore
 {
   v4 = [[SSRestoreContentItem alloc] initWithRestoreDownload:self];
-  LOBYTE(a3) = [(SSRestoreContentItem *)v4 isEligibleForRestore:a3];
+  LOBYTE(restore) = [(SSRestoreContentItem *)v4 isEligibleForRestore:restore];
 
-  return a3;
+  return restore;
 }
 
 - (id)networkConstraints
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(SSNetworkConstraints);
-  v4 = [(SSDownloadPolicy *)[(SSDownload *)self downloadPolicy] policyRules];
+  policyRules = [(SSDownloadPolicy *)[(SSDownload *)self downloadPolicy] policyRules];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v5 = [(NSArray *)policyRules countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -470,17 +470,17 @@ intptr_t __28__SSDownload_assetsForType___block_invoke_2(uint64_t a1, void *a2)
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(policyRules);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v9 networkTypes];
-        v11 = [v9 downloadSizeLimit];
+        networkTypes = [v9 networkTypes];
+        downloadSizeLimit = [v9 downloadSizeLimit];
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v12 = [networkTypes countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v12)
         {
           v13 = v12;
@@ -491,20 +491,20 @@ intptr_t __28__SSDownload_assetsForType___block_invoke_2(uint64_t a1, void *a2)
             {
               if (*v18 != v14)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(networkTypes);
               }
 
-              -[SSNetworkConstraints setSizeLimit:forNetworkType:](v3, "setSizeLimit:forNetworkType:", v11, [*(*(&v17 + 1) + 8 * j) integerValue]);
+              -[SSNetworkConstraints setSizeLimit:forNetworkType:](v3, "setSizeLimit:forNetworkType:", downloadSizeLimit, [*(*(&v17 + 1) + 8 * j) integerValue]);
             }
 
-            v13 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v13 = [networkTypes countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v13);
         }
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [(NSArray *)policyRules countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
@@ -524,15 +524,15 @@ intptr_t __28__SSDownload_assetsForType___block_invoke_2(uint64_t a1, void *a2)
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -610,7 +610,7 @@ id __19__SSDownload_pause__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)prioritizeAboveDownload:(id)a3 completionBlock:(id)a4
+- (void)prioritizeAboveDownload:(id)download completionBlock:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -621,15 +621,15 @@ id __19__SSDownload_pause__block_invoke(uint64_t a1)
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -664,9 +664,9 @@ id __19__SSDownload_pause__block_invoke(uint64_t a1)
   v30 = __Block_byref_object_copy__0;
   v31 = __Block_byref_object_dispose__0;
   v32 = 0;
-  if (a3)
+  if (download)
   {
-    a3 = [a3 persistentIdentifier];
+    download = [download persistentIdentifier];
   }
 
   dispatchQueue = self->super._dispatchQueue;
@@ -676,33 +676,33 @@ id __19__SSDownload_pause__block_invoke(uint64_t a1)
   block[3] = &unk_1E84AC6E8;
   block[4] = self;
   block[5] = &v28;
-  block[6] = a3;
+  block[6] = download;
   dispatch_sync(dispatchQueue, block);
   if (*(*(&v28 + 1) + 40))
   {
     v21 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v21, "0", 28);
     xpc_dictionary_set_int64(v21, "1", self->super._pid);
-    xpc_dictionary_set_int64(v21, "2", a3);
+    xpc_dictionary_set_int64(v21, "2", download);
     v22 = *(*(&v28 + 1) + 40);
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __54__SSDownload_prioritizeAboveDownload_completionBlock___block_invoke_3;
     v25[3] = &unk_1E84AC760;
     v25[4] = self;
-    v25[5] = a4;
+    v25[5] = block;
     [v22 sendMessage:v21 withReply:v25];
     xpc_release(v21);
   }
 
-  else if (a4)
+  else if (block)
   {
     global_queue = dispatch_get_global_queue(0, 0);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __54__SSDownload_prioritizeAboveDownload_completionBlock___block_invoke_2;
     v26[3] = &unk_1E84AC710;
-    v26[4] = a4;
+    v26[4] = block;
     dispatch_async(global_queue, v26);
   }
 
@@ -735,7 +735,7 @@ void __54__SSDownload_prioritizeAboveDownload_completionBlock___block_invoke_3(u
   }
 }
 
-- (BOOL)removeAsset:(id)a3
+- (BOOL)removeAsset:(id)asset
 {
   v7 = 0;
   v8 = &v7;
@@ -747,7 +747,7 @@ void __54__SSDownload_prioritizeAboveDownload_completionBlock___block_invoke_3(u
   block[2] = __26__SSDownload_removeAsset___block_invoke;
   block[3] = &unk_1E84AC7B0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = asset;
   block[6] = &v7;
   dispatch_sync(dispatchQueue, block);
   v4 = *(v8 + 24);
@@ -873,13 +873,13 @@ id __21__SSDownload_restart__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setBackgroundNetworkingJobGroupName:(id)a3
+- (void)setBackgroundNetworkingJobGroupName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   [(SSEntity *)self setValue:v4 forProperty:@"s"];
 }
 
-- (void)setDownloadHandler:(id)a3 completionBlock:(id)a4
+- (void)setDownloadHandler:(id)handler completionBlock:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -890,15 +890,15 @@ id __21__SSDownload_restart__block_invoke(uint64_t a1)
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -947,9 +947,9 @@ id __21__SSDownload_restart__block_invoke(uint64_t a1)
     v21 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v21, "0", 23);
     xpc_dictionary_set_int64(v21, "1", self->super._pid);
-    if (a3)
+    if (handler)
     {
-      xpc_dictionary_set_int64(v21, "2", [a3 handlerIdentifier]);
+      xpc_dictionary_set_int64(v21, "2", [handler handlerIdentifier]);
     }
 
     v22 = *(*(&v29 + 1) + 40);
@@ -957,22 +957,22 @@ id __21__SSDownload_restart__block_invoke(uint64_t a1)
     v26[1] = 3221225472;
     v26[2] = __49__SSDownload_setDownloadHandler_completionBlock___block_invoke_3;
     v26[3] = &unk_1E84AC7E0;
-    v26[4] = a4;
+    v26[4] = block;
     [v22 sendMessage:v21 withReply:{v26, v24}];
     xpc_release(v21);
   }
 
   else
   {
-    -[SSEntity setValue:forProperty:](self, "setValue:forProperty:", [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(a3, "handlerIdentifier")}], @"O");
-    if (a4)
+    -[SSEntity setValue:forProperty:](self, "setValue:forProperty:", [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(handler, "handlerIdentifier")}], @"O");
+    if (block)
     {
       global_queue = dispatch_get_global_queue(0, 0);
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __49__SSDownload_setDownloadHandler_completionBlock___block_invoke_2;
       v27[3] = &unk_1E84AC710;
-      v27[4] = a4;
+      v27[4] = block;
       dispatch_async(global_queue, v27);
     }
   }
@@ -1013,25 +1013,25 @@ void __49__SSDownload_setDownloadHandler_completionBlock___block_invoke_3(uint64
   }
 }
 
-- (void)setDownloadPolicy:(id)a3
+- (void)setDownloadPolicy:(id)policy
 {
-  ArchivableData = SSCodingCreateArchivableData(a3);
+  ArchivableData = SSCodingCreateArchivableData(policy);
   v4 = objc_alloc(MEMORY[0x1E695DF20]);
-  v5 = ArchivableData;
+  null = ArchivableData;
   if (!ArchivableData)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v6 = [v4 initWithObjectsAndKeys:{v5, @"7", 0}];
+  v6 = [v4 initWithObjectsAndKeys:{null, @"7", 0}];
   [(SSEntity *)self setExternalValuesWithDictionary:v6];
 }
 
-- (void)setNetworkConstraints:(id)a3
+- (void)setNetworkConstraints:(id)constraints
 {
-  if (a3)
+  if (constraints)
   {
-    v4 = [[SSDownloadPolicy alloc] initWithNetworkConstraints:a3];
+    v4 = [[SSDownloadPolicy alloc] initWithNetworkConstraints:constraints];
     [(SSDownload *)self setDownloadPolicy:v4];
   }
 
@@ -1042,13 +1042,13 @@ void __49__SSDownload_setDownloadHandler_completionBlock___block_invoke_3(uint64
   }
 }
 
-- (void)setValuesWithStoreDownloadMetadata:(id)a3
+- (void)setValuesWithStoreDownloadMetadata:(id)metadata
 {
-  v4 = [a3 newDownloadProperties];
-  [(SSEntity *)self setValuesWithDictionary:v4];
+  newDownloadProperties = [metadata newDownloadProperties];
+  [(SSEntity *)self setValuesWithDictionary:newDownloadProperties];
 }
 
-- (void)_addCachedExternalValues:(id)a3
+- (void)_addCachedExternalValues:(id)values
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1056,7 +1056,7 @@ void __49__SSDownload_setDownloadHandler_completionBlock___block_invoke_3(uint64
   v4[2] = __39__SSDownload__addCachedExternalValues___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = values;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -1085,7 +1085,7 @@ void *__39__SSDownload__addCachedExternalValues___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_addCachedPropertyValues:(id)a3
+- (void)_addCachedPropertyValues:(id)values
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1093,7 +1093,7 @@ void *__39__SSDownload__addCachedExternalValues___block_invoke(uint64_t a1)
   v4[2] = __39__SSDownload__addCachedPropertyValues___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = values;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -1176,17 +1176,17 @@ LABEL_13:
   [(SSEntity *)&v3 _resetLocalIVars];
 }
 
-- (id)_newAssetWithURL:(id)a3 assetType:(id)a4
+- (id)_newAssetWithURL:(id)l assetType:(id)type
 {
-  v5 = [(SSURLRequestProperties *)[SSMutableURLRequestProperties alloc] initWithURL:a3];
+  v5 = [(SSURLRequestProperties *)[SSMutableURLRequestProperties alloc] initWithURL:l];
   [(SSMutableURLRequestProperties *)v5 setITunesStoreRequest:1];
   v6 = [[SSDownloadAsset alloc] initWithURLRequestProperties:v5];
-  [(SSEntity *)v6 setValue:a4 forProperty:@"e"];
+  [(SSEntity *)v6 setValue:type forProperty:@"e"];
 
   return v6;
 }
 
-- (SSDownload)initWithDownloadMetadata:(id)a3
+- (SSDownload)initWithDownloadMetadata:(id)metadata
 {
   v16.receiver = self;
   v16.super_class = SSDownload;
@@ -1194,11 +1194,11 @@ LABEL_13:
   v5 = v4;
   if (v4)
   {
-    [(SSDownload *)v4 setValuesWithStoreDownloadMetadata:a3];
-    v6 = [a3 sinfs];
-    if (v6)
+    [(SSDownload *)v4 setValuesWithStoreDownloadMetadata:metadata];
+    sinfs = [metadata sinfs];
+    if (sinfs)
     {
-      v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:v6 format:200 options:0 error:0];
+      v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:sinfs format:200 options:0 error:0];
     }
 
     else
@@ -1206,10 +1206,10 @@ LABEL_13:
       v7 = 0;
     }
 
-    v8 = [a3 primaryAssetURL];
-    if ([objc_msgSend(v8 "host")])
+    primaryAssetURL = [metadata primaryAssetURL];
+    if ([objc_msgSend(primaryAssetURL "host")])
     {
-      v9 = [(SSDownload *)v5 _newAssetWithURL:v8 assetType:@"media"];
+      v9 = [(SSDownload *)v5 _newAssetWithURL:primaryAssetURL assetType:@"media"];
       v10 = v9;
       if (v7)
       {
@@ -1219,17 +1219,17 @@ LABEL_13:
       [(SSDownload *)v5 addAsset:v10 forType:@"media"];
     }
 
-    v11 = [a3 fullSizeImageURL];
-    if ([objc_msgSend(v11 "host")])
+    fullSizeImageURL = [metadata fullSizeImageURL];
+    if ([objc_msgSend(fullSizeImageURL "host")])
     {
-      v12 = [(SSDownload *)v5 _newAssetWithURL:v11 assetType:@"artwork"];
+      v12 = [(SSDownload *)v5 _newAssetWithURL:fullSizeImageURL assetType:@"artwork"];
       [(SSDownload *)v5 addAsset:v12 forType:@"artwork"];
     }
 
-    v13 = [a3 podcastFeedURL];
-    if ([objc_msgSend(v13 "host")])
+    podcastFeedURL = [metadata podcastFeedURL];
+    if ([objc_msgSend(podcastFeedURL "host")])
     {
-      v14 = [(SSDownload *)v5 _newAssetWithURL:v13 assetType:@"xmlfeed"];
+      v14 = [(SSDownload *)v5 _newAssetWithURL:podcastFeedURL assetType:@"xmlfeed"];
       [(SSDownload *)v5 addAsset:v14 forType:@"xmlfeed"];
     }
   }
@@ -1277,20 +1277,20 @@ void __29__SSDownload_copyXPCEncoding__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setBackgroundNetworkingUserInitiated:(BOOL)a3
+- (void)setBackgroundNetworkingUserInitiated:(BOOL)initiated
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:(a3 - 1)];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:(initiated - 1)];
 
   [(SSDownload *)self setValue:v4 forKey:@"W"];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   [(SSDownload *)self setValuesWithStoreDownloadMetadata:?];
   metadata = self->_metadata;
   if (metadata)
   {
-    v6 = metadata == a3;
+    v6 = metadata == metadata;
   }
 
   else
@@ -1301,7 +1301,7 @@ void __29__SSDownload_copyXPCEncoding__block_invoke(uint64_t a1)
   if (!v6)
   {
 
-    self->_metadata = a3;
+    self->_metadata = metadata;
   }
 }
 
@@ -1429,23 +1429,23 @@ void __26__SSDownload__resetStatus__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_applyPhase:(id)a3 toStatus:(id)a4
+- (void)_applyPhase:(id)phase toStatus:(id)status
 {
-  [a4 setFailed:{objc_msgSend(a3, "isEqualToString:", @"SSDownloadPhaseFailed"}];
-  [a4 setPaused:{objc_msgSend(a3, "isEqualToString:", @"SSDownloadPhasePaused"}];
-  if ([a3 isEqualToString:@"SSDownloadPhaseInstalling"])
+  [status setFailed:{objc_msgSend(phase, "isEqualToString:", @"SSDownloadPhaseFailed"}];
+  [status setPaused:{objc_msgSend(phase, "isEqualToString:", @"SSDownloadPhasePaused"}];
+  if ([phase isEqualToString:@"SSDownloadPhaseInstalling"])
   {
     v6 = 1;
   }
 
-  else if ([a3 isEqualToString:@"SSDownloadPhaseDownloading"])
+  else if ([phase isEqualToString:@"SSDownloadPhaseDownloading"])
   {
     v6 = 2;
   }
 
   else
   {
-    if (![a3 isEqualToString:@"SSDownloadPhaseUploading"])
+    if (![phase isEqualToString:@"SSDownloadPhaseUploading"])
     {
       return;
     }
@@ -1453,16 +1453,16 @@ void __26__SSDownload__resetStatus__block_invoke(uint64_t a1)
     v6 = 3;
   }
 
-  [a4 setOperationType:v6];
+  [status setOperationType:v6];
 }
 
-- (id)_errorWithData:(id)a3
+- (id)_errorWithData:(id)data
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_class();
-    ObjectWithArchivedData = SSCodingCreateObjectWithArchivedData(a3, v4);
+    ObjectWithArchivedData = SSCodingCreateObjectWithArchivedData(data, v4);
   }
 
   else
@@ -1473,26 +1473,26 @@ void __26__SSDownload__resetStatus__block_invoke(uint64_t a1)
   return ObjectWithArchivedData;
 }
 
-- (id)_errorWithXPCReply:(id)a3
+- (id)_errorWithXPCReply:(id)reply
 {
-  if (!a3)
+  if (!reply)
   {
     goto LABEL_3;
   }
 
-  v4 = MEMORY[0x1DA6E0380](a3, a2);
+  v4 = MEMORY[0x1DA6E0380](reply, a2);
   v5 = MEMORY[0x1E69E9E80];
   if (v4 != MEMORY[0x1E69E9E80])
   {
     goto LABEL_3;
   }
 
-  if (xpc_dictionary_get_BOOL(a3, "0"))
+  if (xpc_dictionary_get_BOOL(reply, "0"))
   {
     return 0;
   }
 
-  value = xpc_dictionary_get_value(a3, "1");
+  value = xpc_dictionary_get_value(reply, "1");
   if (!value || (v8 = value, MEMORY[0x1DA6E0380]() != v5) || (result = [objc_alloc(MEMORY[0x1E696ABC0]) initWithXPCEncoding:v8]) == 0)
   {
 LABEL_3:

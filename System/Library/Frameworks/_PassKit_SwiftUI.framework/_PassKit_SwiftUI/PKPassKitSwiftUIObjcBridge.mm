@@ -1,111 +1,111 @@
 @interface PKPassKitSwiftUIObjcBridge
-+ (BOOL)checkPassID:(id)a3 pass:(id)a4;
-+ (BOOL)didAddPasses:(id)a3;
++ (BOOL)checkPassID:(id)d pass:(id)pass;
++ (BOOL)didAddPasses:(id)passes;
 + (BOOL)passbookHasBeenDeleted;
-+ (CGSize)passContentSize:(CGSize)a3;
++ (CGSize)passContentSize:(CGSize)size;
 + (id)appBundleIdentifer;
-+ (id)dynamicPaymentButtonForPaymentRequest:(id)a3 style:(int64_t)a4 size:(CGSize)a5 type:(int64_t)a6 interfaceStyle:(int64_t)a7;
-+ (id)dynamicPaymentButtonForType:(int64_t)a3 style:(int64_t)a4 size:(CGSize)a5 interfaceStyle:(int64_t)a6 action:(id)a7;
-+ (id)paymentPassForUniqueID:(id)a3;
-+ (id)sanitizedDeviceAccountNumberForPass:(id)a3;
-+ (id)sanitizedPrimaryAccountRepresentationForPass:(id)a3;
-+ (id)uiImageFromPDF:(id)a3 size:(CGSize)a4 scaleFactor:(double)a5;
++ (id)dynamicPaymentButtonForPaymentRequest:(id)request style:(int64_t)style size:(CGSize)size type:(int64_t)type interfaceStyle:(int64_t)interfaceStyle;
++ (id)dynamicPaymentButtonForType:(int64_t)type style:(int64_t)style size:(CGSize)size interfaceStyle:(int64_t)interfaceStyle action:(id)action;
++ (id)paymentPassForUniqueID:(id)d;
++ (id)sanitizedDeviceAccountNumberForPass:(id)pass;
++ (id)sanitizedPrimaryAccountRepresentationForPass:(id)pass;
++ (id)uiImageFromPDF:(id)f size:(CGSize)size scaleFactor:(double)factor;
 + (void)signpostIntervalBeginRenderSimpleButtonEvent;
 + (void)signpostIntervalEndRenderSimpleButtonEvent;
 @end
 
 @implementation PKPassKitSwiftUIObjcBridge
 
-+ (BOOL)didAddPasses:(id)a3
++ (BOOL)didAddPasses:(id)passes
 {
-  v3 = a3;
+  passesCopy = passes;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 succeeded];
+    succeeded = [passesCopy succeeded];
   }
 
   else
   {
-    v4 = 0;
+    succeeded = 0;
   }
 
-  return v4;
+  return succeeded;
 }
 
 + (BOOL)passbookHasBeenDeleted
 {
-  v2 = [MEMORY[0x277D37FC8] sharedInstance];
-  v3 = [v2 passbookHasBeenDeleted];
+  mEMORY[0x277D37FC8] = [MEMORY[0x277D37FC8] sharedInstance];
+  passbookHasBeenDeleted = [mEMORY[0x277D37FC8] passbookHasBeenDeleted];
 
-  return v3;
+  return passbookHasBeenDeleted;
 }
 
-+ (id)uiImageFromPDF:(id)a3 size:(CGSize)a4 scaleFactor:(double)a5
++ (id)uiImageFromPDF:(id)f size:(CGSize)size scaleFactor:(double)factor
 {
-  v5 = a3;
+  fCopy = f;
   PKUIScreenScale();
   v6 = PKUIImageFromPDF();
 
   return v6;
 }
 
-+ (id)sanitizedDeviceAccountNumberForPass:(id)a3
++ (id)sanitizedDeviceAccountNumberForPass:(id)pass
 {
-  v3 = [a3 paymentPass];
+  paymentPass = [pass paymentPass];
   v4 = PKSanitizedDeviceAccountNumberForPass();
 
   return v4;
 }
 
-+ (id)dynamicPaymentButtonForPaymentRequest:(id)a3 style:(int64_t)a4 size:(CGSize)a5 type:(int64_t)a6 interfaceStyle:(int64_t)a7
++ (id)dynamicPaymentButtonForPaymentRequest:(id)request style:(int64_t)style size:(CGSize)size type:(int64_t)type interfaceStyle:(int64_t)interfaceStyle
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v12 = MEMORY[0x277D38B38];
-  v13 = a3;
-  v14 = [[v12 alloc] initWithSize:a4 style:a6 type:a7 interfaceStyle:v13 request:0 action:{width, height}];
+  requestCopy = request;
+  v14 = [[v12 alloc] initWithSize:style style:type type:interfaceStyle interfaceStyle:requestCopy request:0 action:{width, height}];
 
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   return v14;
 }
 
-+ (id)dynamicPaymentButtonForType:(int64_t)a3 style:(int64_t)a4 size:(CGSize)a5 interfaceStyle:(int64_t)a6 action:(id)a7
++ (id)dynamicPaymentButtonForType:(int64_t)type style:(int64_t)style size:(CGSize)size interfaceStyle:(int64_t)interfaceStyle action:(id)action
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v12 = MEMORY[0x277D38B38];
-  v13 = a7;
-  v14 = [[v12 alloc] initWithSize:a4 style:a3 type:a6 interfaceStyle:0 request:v13 action:{width, height}];
+  actionCopy = action;
+  v14 = [[v12 alloc] initWithSize:style style:type type:interfaceStyle interfaceStyle:0 request:actionCopy action:{width, height}];
 
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   return v14;
 }
 
-+ (id)paymentPassForUniqueID:(id)a3
++ (id)paymentPassForUniqueID:(id)d
 {
   v3 = MEMORY[0x277D37FC8];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 passWithUniqueID:v4];
+  dCopy = d;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance passWithUniqueID:dCopy];
 
-  v7 = [v6 paymentPass];
+  paymentPass = [v6 paymentPass];
 
-  return v7;
+  return paymentPass;
 }
 
-+ (BOOL)checkPassID:(id)a3 pass:(id)a4
++ (BOOL)checkPassID:(id)d pass:(id)pass
 {
-  v5 = a3;
-  v6 = [a4 uniqueID];
-  v7 = [v5 uniqueID];
+  dCopy = d;
+  uniqueID = [pass uniqueID];
+  uniqueID2 = [dCopy uniqueID];
 
-  return v6 == v7;
+  return uniqueID == uniqueID2;
 }
 
-+ (CGSize)passContentSize:(CGSize)a3
++ (CGSize)passContentSize:(CGSize)size
 {
   v3 = PKPassFrontFaceContentSize();
 
@@ -115,9 +115,9 @@
   return result;
 }
 
-+ (id)sanitizedPrimaryAccountRepresentationForPass:(id)a3
++ (id)sanitizedPrimaryAccountRepresentationForPass:(id)pass
 {
-  v3 = [a3 paymentPass];
+  paymentPass = [pass paymentPass];
   v4 = PKSanitizedPrimaryAccountRepresentationForPass();
 
   return v4;
@@ -126,7 +126,7 @@
 + (void)signpostIntervalBeginRenderSimpleButtonEvent
 {
   v3 = PKLogFacilityTypeGetObject();
-  v4 = os_signpost_id_make_with_pointer(v3, a1);
+  v4 = os_signpost_id_make_with_pointer(v3, self);
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v5 = v4;
@@ -141,7 +141,7 @@
 + (void)signpostIntervalEndRenderSimpleButtonEvent
 {
   v3 = PKLogFacilityTypeGetObject();
-  v4 = os_signpost_id_make_with_pointer(v3, a1);
+  v4 = os_signpost_id_make_with_pointer(v3, self);
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v5 = v4;
@@ -155,10 +155,10 @@
 
 + (id)appBundleIdentifer
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

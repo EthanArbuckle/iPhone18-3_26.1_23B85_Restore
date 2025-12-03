@@ -1,18 +1,18 @@
 @interface PSResourceState_v2
-- (id)computeDesiredFrequency:(id)a3;
-- (id)init:(id)a3 withConfig:(id)a4;
-- (id)setupDefaultFrequencies:(id)a3;
-- (id)setupProducibleFrequencies:(id)a3;
-- (id)setupSupportedFrequencies:(id)a3;
+- (id)computeDesiredFrequency:(id)frequency;
+- (id)init:(id)init withConfig:(id)config;
+- (id)setupDefaultFrequencies:(id)frequencies;
+- (id)setupProducibleFrequencies:(id)frequencies;
+- (id)setupSupportedFrequencies:(id)frequencies;
 @end
 
 @implementation PSResourceState_v2
 
-- (id)setupSupportedFrequencies:(id)a3
+- (id)setupSupportedFrequencies:(id)frequencies
 {
-  v25 = a3;
-  v3 = [v25 supportedCadences];
-  v4 = [v3 count];
+  frequenciesCopy = frequencies;
+  supportedCadences = [frequenciesCopy supportedCadences];
+  v4 = [supportedCadences count];
 
   if (v4)
   {
@@ -41,7 +41,7 @@
           v29 = 0u;
           v26 = 0u;
           v27 = 0u;
-          obj = [v25 supportedCadences];
+          obj = [frequenciesCopy supportedCadences];
           v8 = [obj countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v8)
           {
@@ -63,15 +63,15 @@
 
                 else
                 {
-                  v12 = [v6 unsignedLongLongValue];
-                  v13 = v12 / [v11 unsignedLongLongValue];
+                  unsignedLongLongValue = [v6 unsignedLongLongValue];
+                  v13 = unsignedLongLongValue / [v11 unsignedLongLongValue];
                 }
 
-                v14 = [v25 supportedCadences];
-                v15 = [v14 objectForKey:v11];
-                v16 = [v15 unsignedLongLongValue];
+                supportedCadences2 = [frequenciesCopy supportedCadences];
+                v15 = [supportedCadences2 objectForKey:v11];
+                unsignedLongLongValue2 = [v15 unsignedLongLongValue];
 
-                v17 = [NSNumber numberWithUnsignedLongLong:4 * v16];
+                v17 = [NSNumber numberWithUnsignedLongLong:4 * unsignedLongLongValue2];
                 v18 = [NSNumber numberWithUnsignedLongLong:v13];
                 [v7 setObject:v17 forKeyedSubscript:v18];
               }
@@ -100,9 +100,9 @@
   return v21;
 }
 
-- (id)setupDefaultFrequencies:(id)a3
+- (id)setupDefaultFrequencies:(id)frequencies
 {
-  v3 = a3;
+  frequenciesCopy = frequencies;
   v16 = objc_alloc_init(NSMutableDictionary);
   v19 = 0u;
   v20 = 0u;
@@ -122,20 +122,20 @@
         }
 
         v7 = *(*(&v17 + 1) + 8 * i);
-        v8 = [v3 defaultStride];
-        v9 = 0xAAAAAAAAAAAAAAABLL * [v8 unsignedLongLongValue] < 0x5555555555555556;
+        defaultStride = [frequenciesCopy defaultStride];
+        v9 = 0xAAAAAAAAAAAAAAABLL * [defaultStride unsignedLongLongValue] < 0x5555555555555556;
 
         if (v9)
         {
-          v11 = [v3 defaultStride];
-          v12 = 0x5A / [v11 unsignedLongLongValue];
+          defaultStride2 = [frequenciesCopy defaultStride];
+          v12 = 0x5A / [defaultStride2 unsignedLongLongValue];
         }
 
         else
         {
-          v10 = [v7 unsignedLongLongValue];
-          v11 = [v3 defaultStride];
-          v12 = v10 / [v11 unsignedLongLongValue];
+          unsignedLongLongValue = [v7 unsignedLongLongValue];
+          defaultStride2 = [frequenciesCopy defaultStride];
+          v12 = unsignedLongLongValue / [defaultStride2 unsignedLongLongValue];
         }
 
         v13 = [NSNumber numberWithUnsignedLongLong:v12];
@@ -155,10 +155,10 @@
   return v16;
 }
 
-- (id)setupProducibleFrequencies:(id)a3
+- (id)setupProducibleFrequencies:(id)frequencies
 {
-  v19 = a3;
-  if ([v19 count])
+  frequenciesCopy = frequencies;
+  if ([frequenciesCopy count])
   {
     v3 = objc_alloc_init(NSMutableDictionary);
     v28 = 0u;
@@ -187,7 +187,7 @@
           v25 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v7 = v19;
+          v7 = frequenciesCopy;
           v8 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v8)
           {
@@ -209,8 +209,8 @@
 
                 else
                 {
-                  v12 = [v5 unsignedLongLongValue];
-                  v13 = v12 / [v11 unsignedLongLongValue];
+                  unsignedLongLongValue = [v5 unsignedLongLongValue];
+                  v13 = unsignedLongLongValue / [v11 unsignedLongLongValue];
                 }
 
                 v14 = [v3 objectForKeyedSubscript:v5];
@@ -243,27 +243,27 @@
   return v3;
 }
 
-- (id)init:(id)a3 withConfig:(id)a4
+- (id)init:(id)init withConfig:(id)config
 {
-  v32 = a3;
-  v33 = a4;
+  initCopy = init;
+  configCopy = config;
   v45.receiver = self;
   v45.super_class = PSResourceState_v2;
   v6 = [(PSResourceState_v2 *)&v45 init];
   v7 = v6;
   if (v6)
   {
-    [(PSResourceState_v2 *)v6 setResourceName:v32];
-    v8 = [(PSResourceState_v2 *)v7 setupSupportedFrequencies:v33];
+    [(PSResourceState_v2 *)v6 setResourceName:initCopy];
+    v8 = [(PSResourceState_v2 *)v7 setupSupportedFrequencies:configCopy];
     [(PSResourceState_v2 *)v7 setSupportedFrequencies:v8];
 
-    v9 = [(PSResourceState_v2 *)v7 setupDefaultFrequencies:v33];
+    v9 = [(PSResourceState_v2 *)v7 setupDefaultFrequencies:configCopy];
     [(PSResourceState_v2 *)v7 setDefaultFrequencies:v9];
 
     [(PSResourceState_v2 *)v7 setProviderFrequency:&off_100029A48];
     [(PSResourceState_v2 *)v7 setRequestedFrequencyToProvider:&off_100029A48];
-    v10 = [v33 baseMSGSyncID];
-    [(PSResourceState_v2 *)v7 setBaseMSGSyncID:v10];
+    baseMSGSyncID = [configCopy baseMSGSyncID];
+    [(PSResourceState_v2 *)v7 setBaseMSGSyncID:baseMSGSyncID];
 
     [(PSResourceState_v2 *)v7 setState:0];
     [(PSResourceState_v2 *)v7 setStrideChangeFrameID:0];
@@ -277,9 +277,9 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v13 = [(PSResourceState_v2 *)v7 supportedFrequencies];
-    obj = v13;
-    v14 = [v13 countByEnumeratingWithState:&v41 objects:v47 count:16];
+    supportedFrequencies = [(PSResourceState_v2 *)v7 supportedFrequencies];
+    obj = supportedFrequencies;
+    v14 = [supportedFrequencies countByEnumeratingWithState:&v41 objects:v47 count:16];
     if (v14)
     {
       v35 = *v42;
@@ -298,8 +298,8 @@
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v17 = [(PSResourceState_v2 *)v7 supportedFrequencies];
-          v18 = [v17 objectForKeyedSubscript:v16];
+          supportedFrequencies2 = [(PSResourceState_v2 *)v7 supportedFrequencies];
+          v18 = [supportedFrequencies2 objectForKeyedSubscript:v16];
 
           v19 = [v18 countByEnumeratingWithState:&v37 objects:v46 count:16];
           if (v19)
@@ -316,8 +316,8 @@
 
                 v22 = *(*(&v37 + 1) + 8 * j);
                 v23 = [NSNumber numberWithBool:0];
-                v24 = [(PSResourceState_v2 *)v7 guaranteedStrideChangeNotification];
-                [v24 setObject:v23 forKeyedSubscript:v22];
+                guaranteedStrideChangeNotification = [(PSResourceState_v2 *)v7 guaranteedStrideChangeNotification];
+                [guaranteedStrideChangeNotification setObject:v23 forKeyedSubscript:v22];
               }
 
               v19 = [v18 countByEnumeratingWithState:&v37 objects:v46 count:16];
@@ -327,21 +327,21 @@
           }
         }
 
-        v13 = obj;
+        supportedFrequencies = obj;
         v14 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
       }
 
       while (v14);
     }
 
-    v25 = [(PSResourceState_v2 *)v7 resourcesWithStrideChangeNotification];
-    v26 = [v25 containsObject:v32];
+    resourcesWithStrideChangeNotification = [(PSResourceState_v2 *)v7 resourcesWithStrideChangeNotification];
+    v26 = [resourcesWithStrideChangeNotification containsObject:initCopy];
 
     if (v26)
     {
       v27 = [NSNumber numberWithBool:1];
-      v28 = [(PSResourceState_v2 *)v7 guaranteedStrideChangeNotification];
-      [v28 setObject:v27 forKeyedSubscript:&off_100029A18];
+      guaranteedStrideChangeNotification2 = [(PSResourceState_v2 *)v7 guaranteedStrideChangeNotification];
+      [guaranteedStrideChangeNotification2 setObject:v27 forKeyedSubscript:&off_100029A18];
     }
 
     v29 = objc_alloc_init(NSMutableDictionary);
@@ -355,16 +355,16 @@
   return v7;
 }
 
-- (id)computeDesiredFrequency:(id)a3
+- (id)computeDesiredFrequency:(id)frequency
 {
-  v43 = a3;
-  v46 = self;
+  frequencyCopy = frequency;
+  selfCopy = self;
   if ([(NSMutableDictionary *)self->_consumersForFrequency count])
   {
     supportedFrequencies = self->_supportedFrequencies;
-    if (supportedFrequencies && v43)
+    if (supportedFrequencies && frequencyCopy)
     {
-      [(NSMutableDictionary *)supportedFrequencies objectForKeyedSubscript:v43];
+      [(NSMutableDictionary *)supportedFrequencies objectForKeyedSubscript:frequencyCopy];
       __src = 0;
       v58 = 0;
       v59 = 0;
@@ -385,7 +385,7 @@
               objc_enumerationMutation(obj);
             }
 
-            v8 = [*(*(&v53 + 1) + 8 * i) unsignedIntValue];
+            unsignedIntValue = [*(*(&v53 + 1) + 8 * i) unsignedIntValue];
             v9 = v58;
             if (v58 >= v59)
             {
@@ -419,7 +419,7 @@
                 sub_1000092C0(&__src, v16);
               }
 
-              *(4 * v13) = v8;
+              *(4 * v13) = unsignedIntValue;
               v10 = 4 * v13 + 4;
               memcpy(0, v11, v12);
               v17 = __src;
@@ -434,7 +434,7 @@
 
             else
             {
-              *v58 = v8;
+              *v58 = unsignedIntValue;
               v10 = (v9 + 4);
             }
 
@@ -455,18 +455,18 @@
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v44 = v46->_consumersForFrequency;
+      v44 = selfCopy->_consumersForFrequency;
       if ([(NSMutableDictionary *)v44 countByEnumeratingWithState:&v47 objects:v60 count:16])
       {
         *v48;
         *v48;
         v18 = **(&v47 + 1);
-        v19 = [**(&v47 + 1) name];
-        v20 = v19;
-        v21 = [v19 UTF8String];
-        [(NSMutableDictionary *)v46->_consumersForFrequency objectForKeyedSubscript:v18];
-        v22 = [objc_claimAutoreleasedReturnValue() unsignedIntValue];
-        v23 = strlen(v21);
+        name = [**(&v47 + 1) name];
+        v20 = name;
+        uTF8String = [name UTF8String];
+        [(NSMutableDictionary *)selfCopy->_consumersForFrequency objectForKeyedSubscript:v18];
+        unsignedIntValue2 = [objc_claimAutoreleasedReturnValue() unsignedIntValue];
+        v23 = strlen(uTF8String);
         if (v23 < 0x7FFFFFFFFFFFFFF8)
         {
           v24 = v23;
@@ -475,11 +475,11 @@
             __dst[23] = v23;
             if (v23)
             {
-              memmove(__dst, v21, v23);
+              memmove(__dst, uTF8String, v23);
             }
 
             __dst[v24] = 0;
-            v63 = v22;
+            v63 = unsignedIntValue2;
             sub_10000936C();
           }
 
@@ -597,11 +597,11 @@ LABEL_65:
         }
       }
 
-      v39 = [(PSResourceState_v2 *)v46 log];
+      v39 = [(PSResourceState_v2 *)selfCopy log];
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
-        resourceName = v46->_resourceName;
-        consumersForFrequency = v46->_consumersForFrequency;
+        resourceName = selfCopy->_resourceName;
+        consumersForFrequency = selfCopy->_consumersForFrequency;
         *__dst = 138412546;
         *&__dst[4] = resourceName;
         *&__dst[12] = 2112;

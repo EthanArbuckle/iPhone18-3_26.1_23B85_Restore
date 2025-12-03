@@ -1,18 +1,18 @@
 @interface TPSCellularNetworkController
 - (BOOL)isNetworkSelectionEnabled;
 - (TPSCellularNetworkController)init;
-- (TPSCellularNetworkController)initWithSubscriptionContext:(id)a3;
-- (id)networkItemAtIndex:(int64_t)a3;
-- (id)networkItemForNetwork:(id)a3;
-- (void)networkSelectionInfoChangedForRegistrationController:(id)a3;
-- (void)networksChangedForRegistrationController:(id)a3;
-- (void)selectNetworkItemAtIndex:(unint64_t)a3;
-- (void)setNetworkItems:(id)a3;
-- (void)setNetworkSelectionMode:(int64_t)a3;
-- (void)setNetworks:(id)a3;
-- (void)setSelectedNetworkItem:(id)a3;
-- (void)updateNetworkSelectionModeForNetworkSelectionInfo:(id)a3;
-- (void)updateSelectedNetworkForNetworkSelectionInfo:(id)a3;
+- (TPSCellularNetworkController)initWithSubscriptionContext:(id)context;
+- (id)networkItemAtIndex:(int64_t)index;
+- (id)networkItemForNetwork:(id)network;
+- (void)networkSelectionInfoChangedForRegistrationController:(id)controller;
+- (void)networksChangedForRegistrationController:(id)controller;
+- (void)selectNetworkItemAtIndex:(unint64_t)index;
+- (void)setNetworkItems:(id)items;
+- (void)setNetworkSelectionMode:(int64_t)mode;
+- (void)setNetworks:(id)networks;
+- (void)setSelectedNetworkItem:(id)item;
+- (void)updateNetworkSelectionModeForNetworkSelectionInfo:(id)info;
+- (void)updateSelectedNetworkForNetworkSelectionInfo:(id)info;
 @end
 
 @implementation TPSCellularNetworkController
@@ -24,24 +24,24 @@
   return 0;
 }
 
-- (TPSCellularNetworkController)initWithSubscriptionContext:(id)a3
+- (TPSCellularNetworkController)initWithSubscriptionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = TPSCellularNetworkController;
   v6 = [(TPSCellularNetworkController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionContext, a3);
-    v8 = [[TPSRegistrationTelephonyController alloc] initWithSubscriptionContext:v5];
+    objc_storeStrong(&v6->_subscriptionContext, context);
+    v8 = [[TPSRegistrationTelephonyController alloc] initWithSubscriptionContext:contextCopy];
     registrationController = v7->_registrationController;
     v7->_registrationController = v8;
 
     [(TPSRegistrationTelephonyController *)v7->_registrationController addDelegate:v7 queue:&_dispatch_main_q];
-    v10 = [(TPSRegistrationTelephonyController *)v7->_registrationController networkSelectionInfo];
+    networkSelectionInfo = [(TPSRegistrationTelephonyController *)v7->_registrationController networkSelectionInfo];
     networkSelectionInfo = v7->_networkSelectionInfo;
-    v7->_networkSelectionInfo = v10;
+    v7->_networkSelectionInfo = networkSelectionInfo;
 
     [(TPSCellularNetworkController *)v7 updateSelectedNetworkForNetworkSelectionInfo:v7->_networkSelectionInfo];
     [(TPSCellularNetworkController *)v7 updateNetworkSelectionModeForNetworkSelectionInfo:v7->_networkSelectionInfo];
@@ -50,49 +50,49 @@
   return v7;
 }
 
-- (void)setNetworkItems:(id)a3
+- (void)setNetworkItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   p_networkItems = &self->_networkItems;
-  if (self->_networkItems != v5)
+  if (self->_networkItems != itemsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_networkItems, a3);
+    v8 = itemsCopy;
+    objc_storeStrong(p_networkItems, items);
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 postNotificationName:@"TPSCellularNetworkControllerNetworkItemsDidChangeNotification" object:self];
 
-    v5 = v8;
+    itemsCopy = v8;
   }
 
-  _objc_release_x1(p_networkItems, v5);
+  _objc_release_x1(p_networkItems, itemsCopy);
 }
 
 - (BOOL)isNetworkSelectionEnabled
 {
-  v2 = [(TPSCellularNetworkController *)self networkSelectionInfo];
-  v3 = [v2 selectionMode] != 0;
+  networkSelectionInfo = [(TPSCellularNetworkController *)self networkSelectionInfo];
+  v3 = [networkSelectionInfo selectionMode] != 0;
 
   return v3;
 }
 
-- (void)setNetworkSelectionMode:(int64_t)a3
+- (void)setNetworkSelectionMode:(int64_t)mode
 {
-  if (self->_networkSelectionMode == a3)
+  if (self->_networkSelectionMode == mode)
   {
     return;
   }
 
-  self->_networkSelectionMode = a3;
-  if (a3 == 2)
+  self->_networkSelectionMode = mode;
+  if (mode == 2)
   {
-    v6 = [(TPSCellularNetworkController *)self registrationController];
-    [v6 fetchNetworkList];
+    registrationController = [(TPSCellularNetworkController *)self registrationController];
+    [registrationController fetchNetworkList];
     goto LABEL_9;
   }
 
-  if (a3 != 1)
+  if (mode != 1)
   {
-    if (!a3)
+    if (!mode)
     {
       [(TPSCellularNetworkController *)self setNetworks:?];
     }
@@ -101,12 +101,12 @@
   }
 
   [(TPSCellularNetworkController *)self setNetworks:0];
-  v5 = [(TPSCellularNetworkController *)self selectedNetworkItem];
+  selectedNetworkItem = [(TPSCellularNetworkController *)self selectedNetworkItem];
 
-  if (v5)
+  if (selectedNetworkItem)
   {
-    v6 = [(TPSCellularNetworkController *)self registrationController];
-    [v6 automaticallySelectNetwork];
+    registrationController = [(TPSCellularNetworkController *)self registrationController];
+    [registrationController automaticallySelectNetwork];
 LABEL_9:
   }
 
@@ -115,37 +115,37 @@ LABEL_10:
   [v7 postNotificationName:@"TPSCellularNetworkControllerNetworkSelectionModeDidChangeNotification" object:self];
 }
 
-- (void)setSelectedNetworkItem:(id)a3
+- (void)setSelectedNetworkItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   p_selectedNetworkItem = &self->_selectedNetworkItem;
-  if (self->_selectedNetworkItem != v5)
+  if (self->_selectedNetworkItem != itemCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_selectedNetworkItem, a3);
+    v8 = itemCopy;
+    objc_storeStrong(p_selectedNetworkItem, item);
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 postNotificationName:@"TPSCellularNetworkControllerSelectedNetworkItemDidChangeNotification" object:self];
 
-    v5 = v8;
+    itemCopy = v8;
   }
 
-  _objc_release_x1(p_selectedNetworkItem, v5);
+  _objc_release_x1(p_selectedNetworkItem, itemCopy);
 }
 
-- (void)setNetworks:(id)a3
+- (void)setNetworks:(id)networks
 {
-  v5 = a3;
-  if (self->_networks != v5)
+  networksCopy = networks;
+  if (self->_networks != networksCopy)
   {
-    objc_storeStrong(&self->_networks, a3);
-    if (v5)
+    objc_storeStrong(&self->_networks, networks);
+    if (networksCopy)
     {
-      v6 = [NSMutableArray arrayWithCapacity:[(NSArray *)v5 count]];
+      v6 = [NSMutableArray arrayWithCapacity:[(NSArray *)networksCopy count]];
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v7 = v5;
+      v7 = networksCopy;
       v8 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
@@ -180,9 +180,9 @@ LABEL_10:
   }
 }
 
-- (void)updateNetworkSelectionModeForNetworkSelectionInfo:(id)a3
+- (void)updateNetworkSelectionModeForNetworkSelectionInfo:(id)info
 {
-  if ([a3 selectionMode] == &dword_0 + 2)
+  if ([info selectionMode] == &dword_0 + 2)
   {
     v4 = 2;
   }
@@ -195,12 +195,12 @@ LABEL_10:
   [(TPSCellularNetworkController *)self setNetworkSelectionMode:v4];
 }
 
-- (void)updateSelectedNetworkForNetworkSelectionInfo:(id)a3
+- (void)updateSelectedNetworkForNetworkSelectionInfo:(id)info
 {
-  v4 = [a3 selection];
-  if (v4)
+  selection = [info selection];
+  if (selection)
   {
-    v5 = [(TPSCellularNetworkController *)self networkItemForNetwork:v4];
+    v5 = [(TPSCellularNetworkController *)self networkItemForNetwork:selection];
   }
 
   else
@@ -212,16 +212,16 @@ LABEL_10:
   [(TPSCellularNetworkController *)self setSelectedNetworkItem:v5];
 }
 
-- (id)networkItemAtIndex:(int64_t)a3
+- (id)networkItemAtIndex:(int64_t)index
 {
-  v4 = [(TPSCellularNetworkController *)self networkItems];
-  v5 = v4;
-  if (a3 < 0 || [v4 count] <= a3)
+  networkItems = [(TPSCellularNetworkController *)self networkItems];
+  v5 = networkItems;
+  if (index < 0 || [networkItems count] <= index)
   {
     v7 = TPSCellularNetworkLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_2FB0(a3, v7);
+      sub_2FB0(index, v7);
     }
 
     v6 = 0;
@@ -229,16 +229,16 @@ LABEL_10:
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    v6 = [v5 objectAtIndexedSubscript:index];
   }
 
   return v6;
 }
 
-- (void)selectNetworkItemAtIndex:(unint64_t)a3
+- (void)selectNetworkItemAtIndex:(unint64_t)index
 {
-  v5 = [(TPSCellularNetworkController *)self networks];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  networks = [(TPSCellularNetworkController *)self networks];
+  v6 = [networks objectAtIndexedSubscript:index];
 
   if (v6)
   {
@@ -250,30 +250,30 @@ LABEL_10:
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Requesting manual selection of network %@.", &v9, 0xCu);
     }
 
-    v8 = [(TPSCellularNetworkController *)self registrationController];
-    [v8 selectNetwork:v6];
+    registrationController = [(TPSCellularNetworkController *)self registrationController];
+    [registrationController selectNetwork:v6];
   }
 }
 
-- (id)networkItemForNetwork:(id)a3
+- (id)networkItemForNetwork:(id)network
 {
-  v3 = a3;
+  networkCopy = network;
   v4 = [TPSCellularNetworkItem alloc];
-  v5 = [v3 plmn];
-  v6 = [v3 name];
-  v7 = [v3 tps_localizedName];
+  plmn = [networkCopy plmn];
+  name = [networkCopy name];
+  tps_localizedName = [networkCopy tps_localizedName];
 
-  v8 = [(TPSCellularNetworkItem *)v4 initWithIdentifier:v5 name:v6 localizedName:v7];
+  v8 = [(TPSCellularNetworkItem *)v4 initWithIdentifier:plmn name:name localizedName:tps_localizedName];
 
   return v8;
 }
 
-- (void)networksChangedForRegistrationController:(id)a3
+- (void)networksChangedForRegistrationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(TPSCellularNetworkController *)self registrationController];
+  controllerCopy = controller;
+  registrationController = [(TPSCellularNetworkController *)self registrationController];
 
-  if (v5 == v4)
+  if (registrationController == controllerCopy)
   {
     v6 = TPSCellularNetworkLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -284,17 +284,17 @@ LABEL_10:
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%@ is handling networks changed delegate callback.", &v9, 0xCu);
     }
 
-    v8 = [v4 networks];
-    [(TPSCellularNetworkController *)self setNetworks:v8];
+    networks = [controllerCopy networks];
+    [(TPSCellularNetworkController *)self setNetworks:networks];
   }
 }
 
-- (void)networkSelectionInfoChangedForRegistrationController:(id)a3
+- (void)networkSelectionInfoChangedForRegistrationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(TPSCellularNetworkController *)self registrationController];
+  controllerCopy = controller;
+  registrationController = [(TPSCellularNetworkController *)self registrationController];
 
-  if (v5 == v4)
+  if (registrationController == controllerCopy)
   {
     v6 = TPSCellularNetworkLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -305,10 +305,10 @@ LABEL_10:
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%@ is handling networks selection information changed delegate callback.", &v9, 0xCu);
     }
 
-    v8 = [v4 networkSelectionInfo];
-    [(TPSCellularNetworkController *)self setNetworkSelectionInfo:v8];
-    [(TPSCellularNetworkController *)self updateSelectedNetworkForNetworkSelectionInfo:v8];
-    [(TPSCellularNetworkController *)self updateNetworkSelectionModeForNetworkSelectionInfo:v8];
+    networkSelectionInfo = [controllerCopy networkSelectionInfo];
+    [(TPSCellularNetworkController *)self setNetworkSelectionInfo:networkSelectionInfo];
+    [(TPSCellularNetworkController *)self updateSelectedNetworkForNetworkSelectionInfo:networkSelectionInfo];
+    [(TPSCellularNetworkController *)self updateNetworkSelectionModeForNetworkSelectionInfo:networkSelectionInfo];
   }
 }
 

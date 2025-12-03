@@ -1,13 +1,13 @@
 @interface SBDeviceApplicationSceneViewPlaceholderContentViewProvider
-- (BOOL)_checkApplicationRestorationState:(id)a3 useSnapshot:(BOOL *)a4;
-- (CGSize)_naturalSizeForOrientation:(int64_t)a3 referenceSize:(CGSize)result;
+- (BOOL)_checkApplicationRestorationState:(id)state useSnapshot:(BOOL *)snapshot;
+- (CGSize)_naturalSizeForOrientation:(int64_t)orientation referenceSize:(CGSize)result;
 - (SBScenePlaceholderContentViewProviderDelegate)delegate;
-- (id)_initWithApplication:(id)a3 userInterfaceStyleForDisplayConfigurationProvider:(id)a4;
-- (id)_loadLiveXIBViewForApplication:(id)a3;
-- (id)sceneView:(id)a3 requestsPlaceholderContentViewWithContext:(id)a4;
-- (int64_t)userInterfaceStyleForDisplayConfiguration:(id)a3;
-- (unint64_t)_contentTypeToSearchFromSceneHandle:(id)a3 withContext:(id)a4;
-- (void)_snapshotsDidChange:(id)a3;
+- (id)_initWithApplication:(id)application userInterfaceStyleForDisplayConfigurationProvider:(id)provider;
+- (id)_loadLiveXIBViewForApplication:(id)application;
+- (id)sceneView:(id)view requestsPlaceholderContentViewWithContext:(id)context;
+- (int64_t)userInterfaceStyleForDisplayConfiguration:(id)configuration;
+- (unint64_t)_contentTypeToSearchFromSceneHandle:(id)handle withContext:(id)context;
+- (void)_snapshotsDidChange:(id)change;
 - (void)dealloc;
 @end
 
@@ -15,8 +15,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   objc_storeWeak(&self->_delegate, 0);
   v4.receiver = self;
@@ -24,32 +24,32 @@
   [(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)&v4 dealloc];
 }
 
-- (id)_initWithApplication:(id)a3 userInterfaceStyleForDisplayConfigurationProvider:(id)a4
+- (id)_initWithApplication:(id)application userInterfaceStyleForDisplayConfigurationProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = SBDeviceApplicationSceneViewPlaceholderContentViewProvider;
   v8 = [(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_userInterfaceStyleForDisplayConfigurationProvider, a4);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v9 selector:sel__snapshotsDidChange_ name:@"SBApplicationSnapshotChangedNotification" object:v6];
+    objc_storeStrong(&v8->_userInterfaceStyleForDisplayConfigurationProvider, provider);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__snapshotsDidChange_ name:@"SBApplicationSnapshotChangedNotification" object:applicationCopy];
   }
 
   return v9;
 }
 
-- (void)_snapshotsDidChange:(id)a3
+- (void)_snapshotsDidChange:(id)change
 {
   BSDispatchQueueAssertMain();
   v4 = _snapshotsDidChange__i;
   if (!_snapshotsDidChange__i)
   {
-    v5 = [(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)self delegate];
-    [v5 placeholderContentViewProviderContentDidUpdate:self];
+    delegate = [(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)self delegate];
+    [delegate placeholderContentViewProviderContentDidUpdate:self];
 
     v6 = dispatch_time(0, 1000000000);
     block[0] = MEMORY[0x277D85DD0];
@@ -76,10 +76,10 @@ uint64_t __82__SBDeviceApplicationSceneViewPlaceholderContentViewProvider__snaps
   return result;
 }
 
-- (id)sceneView:(id)a3 requestsPlaceholderContentViewWithContext:(id)a4
+- (id)sceneView:(id)view requestsPlaceholderContentViewWithContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  contextCopy = context;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -87,15 +87,15 @@ uint64_t __82__SBDeviceApplicationSceneViewPlaceholderContentViewProvider__snaps
   }
 
   v9 = objc_opt_class();
-  v67 = SBSafeCast(v9, v8);
-  v10 = [v7 sceneHandle];
-  v64 = [v10 displayIdentity];
-  v11 = [v64 currentConfiguration];
-  [v7 referenceSize];
+  v67 = SBSafeCast(v9, contextCopy);
+  sceneHandle = [viewCopy sceneHandle];
+  displayIdentity = [sceneHandle displayIdentity];
+  currentConfiguration = [displayIdentity currentConfiguration];
+  [viewCopy referenceSize];
   v13 = v12;
   v15 = v14;
-  v16 = [v7 orientation];
-  v17 = [v10 application];
+  orientation = [viewCopy orientation];
+  application = [sceneHandle application];
   userInterfaceStyleForDisplayConfigurationProvider = self->_userInterfaceStyleForDisplayConfigurationProvider;
   if (!userInterfaceStyleForDisplayConfigurationProvider)
   {
@@ -103,26 +103,26 @@ uint64_t __82__SBDeviceApplicationSceneViewPlaceholderContentViewProvider__snaps
   }
 
   v63 = userInterfaceStyleForDisplayConfigurationProvider;
-  v66 = v11;
-  v19 = [v63 userInterfaceStyleForDisplayConfiguration:v11];
-  v20 = [v10 _windowScene];
-  v21 = [v20 switcherController];
+  v66 = currentConfiguration;
+  v19 = [v63 userInterfaceStyleForDisplayConfiguration:currentConfiguration];
+  _windowScene = [sceneHandle _windowScene];
+  switcherController = [_windowScene switcherController];
 
-  v62 = v21;
-  v22 = [v21 windowManagementContext];
-  if ([v22 isChamoisOrFlexibleWindowing])
+  v62 = switcherController;
+  windowManagementContext = [switcherController windowManagementContext];
+  if ([windowManagementContext isChamoisOrFlexibleWindowing])
   {
-    v65 = [v17 isClassic];
+    isClassic = [application isClassic];
   }
 
   else
   {
-    v65 = 0;
+    isClassic = 0;
   }
 
-  if (![v10 _mainSceneSupportsInterfaceOrientation:v16] || (v23 = v16) == 0)
+  if (![sceneHandle _mainSceneSupportsInterfaceOrientation:orientation] || (v23 = orientation) == 0)
   {
-    v23 = [v10 activationInterfaceOrientationForOrientation:v16];
+    v23 = [sceneHandle activationInterfaceOrientationForOrientation:orientation];
   }
 
   if (v23 <= 1)
@@ -135,44 +135,44 @@ uint64_t __82__SBDeviceApplicationSceneViewPlaceholderContentViewProvider__snaps
     v24 = v23;
   }
 
-  if ([v17 isClassic])
+  if ([application isClassic])
   {
-    [v17 defaultLaunchingSizeForDisplayConfiguration:v66];
+    [application defaultLaunchingSizeForDisplayConfiguration:v66];
     v13 = v25;
     v15 = v26;
   }
 
-  if (![v67 prefersLiveXIB] || !objc_msgSend(v17, "isSystemApplication") || (-[SBDeviceApplicationSceneViewPlaceholderContentViewProvider _loadLiveXIBViewForApplication:](self, "_loadLiveXIBViewForApplication:", v17), (v27 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![v67 prefersLiveXIB] || !objc_msgSend(application, "isSystemApplication") || (-[SBDeviceApplicationSceneViewPlaceholderContentViewProvider _loadLiveXIBViewForApplication:](self, "_loadLiveXIBViewForApplication:", application), (v27 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v28 = v19;
-    v29 = [v7 sceneHandle];
-    v30 = v8;
-    v31 = v29;
-    v59 = self;
+    sceneHandle2 = [viewCopy sceneHandle];
+    v30 = contextCopy;
+    v31 = sceneHandle2;
+    selfCopy = self;
     v61 = v30;
-    v32 = [(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)self _contentTypeToSearchFromSceneHandle:v29 withContext:?];
+    v32 = [(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)self _contentTypeToSearchFromSceneHandle:sceneHandle2 withContext:?];
 
-    v33 = [v67 requestedLaunchIdentifier];
-    if (!v33)
+    requestedLaunchIdentifier = [v67 requestedLaunchIdentifier];
+    if (!requestedLaunchIdentifier)
     {
-      v33 = (((v32 << 63) >> 63) & @"SBSuspendSnapshot");
+      requestedLaunchIdentifier = (((v32 << 63) >> 63) & @"SBSuspendSnapshot");
     }
 
-    v34 = [v10 displayEdgeInfoForLayoutEnvironment:{objc_msgSend(v67, "layoutEnvironment")}];
+    v34 = [sceneHandle displayEdgeInfoForLayoutEnvironment:{objc_msgSend(v67, "layoutEnvironment")}];
     [v66 pointScale];
     v60 = v34;
     v58 = v28;
     v35 = v24;
-    v36 = [v17 bestSnapshotWithImageName:v33 sceneHandle:v10 variantID:0 scale:1 referenceSize:v32 requireExactSize:-1 contentTypeMask:v24 statusBarStateMask:v67 launchingOrientation:v58 contentOverridesContext:v34 userInterfaceStyle:? displayEdgeInfo:?];
-    v37 = [v36 interfaceOrientation];
+    v36 = [application bestSnapshotWithImageName:requestedLaunchIdentifier sceneHandle:sceneHandle variantID:0 scale:1 referenceSize:v32 requireExactSize:-1 contentTypeMask:v24 statusBarStateMask:v67 launchingOrientation:v58 contentOverridesContext:v34 userInterfaceStyle:? displayEdgeInfo:?];
+    interfaceOrientation = [v36 interfaceOrientation];
     v38 = MEMORY[0x277CBF3A0];
-    if (v65)
+    if (isClassic)
     {
-      [v7 bounds];
+      [viewCopy bounds];
       v40 = v39;
       v42 = v41;
-      v43 = v59;
-      if ((v16 - 3) < 2 != (v37 - 3) < 2)
+      v43 = selfCopy;
+      if ((orientation - 3) < 2 != (interfaceOrientation - 3) < 2)
       {
         BSSizeSwap();
         v40 = v44;
@@ -189,37 +189,37 @@ uint64_t __82__SBDeviceApplicationSceneViewPlaceholderContentViewProvider__snaps
     {
       v40 = *(MEMORY[0x277CBF3A0] + 16);
       v42 = *(MEMORY[0x277CBF3A0] + 24);
-      v43 = v59;
+      v43 = selfCopy;
       if (v36)
       {
 LABEL_25:
         v46 = *v38;
         v47 = v38[1];
-        v48 = [v7 statusBarDescriptor];
-        v49 = -[SBDeviceApplicationSceneViewPlaceholderContentViewProvider _contentViewFromSceneHandle:displayConfiguration:orientation:snapshot:size:statusBarDescriptor:hasOrientationMismatchForClassicApp:customContainerBounds:](v43, "_contentViewFromSceneHandle:displayConfiguration:orientation:snapshot:size:statusBarDescriptor:hasOrientationMismatchForClassicApp:customContainerBounds:", v10, v66, v35, v36, v48, [v67 hasOrientationMismatchForClassicApp], v13, v15, v46, v47, v40, v42);
+        statusBarDescriptor = [viewCopy statusBarDescriptor];
+        v49 = -[SBDeviceApplicationSceneViewPlaceholderContentViewProvider _contentViewFromSceneHandle:displayConfiguration:orientation:snapshot:size:statusBarDescriptor:hasOrientationMismatchForClassicApp:customContainerBounds:](v43, "_contentViewFromSceneHandle:displayConfiguration:orientation:snapshot:size:statusBarDescriptor:hasOrientationMismatchForClassicApp:customContainerBounds:", sceneHandle, v66, v35, v36, statusBarDescriptor, [v67 hasOrientationMismatchForClassicApp], v13, v15, v46, v47, v40, v42);
 
-        [v7 referenceSize];
-        [(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)v43 _naturalSizeForOrientation:v16 referenceSize:?];
+        [viewCopy referenceSize];
+        [(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)v43 _naturalSizeForOrientation:orientation referenceSize:?];
         BSRectWithSize();
         v27 = [(BSUIOrientationTransformWrapperView *)[_SBDeviceApplicationSceneViewPlaceholderContentView alloc] initWithFrame:v50, v51, v52, v53];
         [(BSUIOrientationTransformWrapperView *)v27 addContentView:v49];
-        [(BSUIOrientationTransformWrapperView *)v27 setContainerOrientation:v16];
-        if (v65)
+        [(BSUIOrientationTransformWrapperView *)v27 setContainerOrientation:orientation];
+        if (isClassic)
         {
-          [(BSUIOrientationTransformWrapperView *)v27 setContentOrientation:v37];
+          [(BSUIOrientationTransformWrapperView *)v27 setContentOrientation:interfaceOrientation];
         }
 
         [(_SBDeviceApplicationSceneViewPlaceholderContentView *)v27 setClipsToBounds:1];
-        v54 = [v36 statusBarSettings];
-        v55 = [v54 style];
+        statusBarSettings = [v36 statusBarSettings];
+        style = [statusBarSettings style];
 
-        if (v55 == -1)
+        if (style == -1)
         {
-          v56 = [v17 info];
-          v55 = [v56 defaultStatusBarStyle];
+          info = [application info];
+          style = [info defaultStatusBarStyle];
         }
 
-        [(_SBDeviceApplicationSceneViewPlaceholderContentView *)v27 setStatusBarStyle:v55];
+        [(_SBDeviceApplicationSceneViewPlaceholderContentView *)v27 setStatusBarStyle:style];
 
         goto LABEL_32;
       }
@@ -228,38 +228,38 @@ LABEL_25:
     v27 = 0;
 LABEL_32:
 
-    v8 = v61;
+    contextCopy = v61;
   }
 
   return v27;
 }
 
-- (BOOL)_checkApplicationRestorationState:(id)a3 useSnapshot:(BOOL *)a4
+- (BOOL)_checkApplicationRestorationState:(id)state useSnapshot:(BOOL *)snapshot
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [v4 info];
+  stateCopy = state;
+  bundleIdentifier = [stateCopy bundleIdentifier];
+  info = [stateCopy info];
 
-  v7 = [v6 restorationArchiveContainerURL];
-  v8 = [v7 path];
+  restorationArchiveContainerURL = [info restorationArchiveContainerURL];
+  path = [restorationArchiveContainerURL path];
   v9 = _checkApplicationRestorationState();
 
   return v9;
 }
 
-- (int64_t)userInterfaceStyleForDisplayConfiguration:(id)a3
+- (int64_t)userInterfaceStyleForDisplayConfiguration:(id)configuration
 {
   v3 = SBApp;
-  v4 = [a3 identity];
-  v5 = [v3 userInterfaceStyleProviderForDisplay:v4];
-  v6 = [v5 currentStyle];
+  identity = [configuration identity];
+  v5 = [v3 userInterfaceStyleProviderForDisplay:identity];
+  currentStyle = [v5 currentStyle];
 
-  return v6;
+  return currentStyle;
 }
 
-- (CGSize)_naturalSizeForOrientation:(int64_t)a3 referenceSize:(CGSize)result
+- (CGSize)_naturalSizeForOrientation:(int64_t)orientation referenceSize:(CGSize)result
 {
-  if ((a3 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
     height = result.height;
   }
@@ -269,7 +269,7 @@ LABEL_32:
     height = result.width;
   }
 
-  if ((a3 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
     result.height = result.width;
   }
@@ -279,67 +279,67 @@ LABEL_32:
   return result;
 }
 
-- (id)_loadLiveXIBViewForApplication:(id)a3
+- (id)_loadLiveXIBViewForApplication:(id)application
 {
-  v5 = a3;
-  if (([v5 isSystemApplication] & 1) == 0)
+  applicationCopy = application;
+  if (([applicationCopy isSystemApplication] & 1) == 0)
   {
     [(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)a2 _loadLiveXIBViewForApplication:?];
   }
 
-  v6 = [v5 info];
-  v7 = [v6 launchInterfaceFileName];
+  info = [applicationCopy info];
+  launchInterfaceFileName = [info launchInterfaceFileName];
 
   v8 = MEMORY[0x277CCA8D8];
-  v9 = [v5 info];
+  info2 = [applicationCopy info];
 
-  v10 = [v9 bundleURL];
-  v11 = [v10 path];
-  v12 = [v8 bundleWithPath:v11];
+  bundleURL = [info2 bundleURL];
+  path = [bundleURL path];
+  v12 = [v8 bundleWithPath:path];
 
-  v13 = [MEMORY[0x277D757B0] nibWithNibName:v7 bundle:v12];
+  v13 = [MEMORY[0x277D757B0] nibWithNibName:launchInterfaceFileName bundle:v12];
   v14 = [v13 instantiateWithOwner:0 options:0];
-  v15 = [v14 firstObject];
+  firstObject = [v14 firstObject];
   objc_opt_class();
   v16 = 0;
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = firstObject;
   }
 
   return v16;
 }
 
-- (unint64_t)_contentTypeToSearchFromSceneHandle:(id)a3 withContext:(id)a4
+- (unint64_t)_contentTypeToSearchFromSceneHandle:(id)handle withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  contextCopy = context;
   v8 = objc_opt_class();
-  v9 = SBSafeCast(v8, v7);
-  v10 = [v7 canShowUserContent];
+  v9 = SBSafeCast(v8, contextCopy);
+  canShowUserContent = [contextCopy canShowUserContent];
 
-  if (!v10)
+  if (!canShowUserContent)
   {
     goto LABEL_6;
   }
 
-  v11 = [v6 _windowScene];
-  v12 = [v11 authenticationStatusProvider];
-  v13 = [v12 isAuthenticated];
+  _windowScene = [handleCopy _windowScene];
+  authenticationStatusProvider = [_windowScene authenticationStatusProvider];
+  isAuthenticated = [authenticationStatusProvider isAuthenticated];
 
-  if (!v13)
+  if (!isAuthenticated)
   {
     goto LABEL_6;
   }
 
-  v14 = [v9 preferredContentType];
-  if (!v14)
+  preferredContentType = [v9 preferredContentType];
+  if (!preferredContentType)
   {
-    v17 = [v6 application];
-    v18 = [v17 processState];
-    v19 = [v18 isRunning];
+    application = [handleCopy application];
+    processState = [application processState];
+    isRunning = [processState isRunning];
 
-    if (v19)
+    if (isRunning)
     {
 LABEL_9:
       v15 = -1;
@@ -348,9 +348,9 @@ LABEL_16:
       goto LABEL_7;
     }
 
-    [v6 hasMainSceneBeenForegroundAtLeastOnce];
+    [handleCopy hasMainSceneBeenForegroundAtLeastOnce];
     v22 = 0;
-    if ([(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)self _checkApplicationRestorationState:v17 useSnapshot:&v22])
+    if ([(SBDeviceApplicationSceneViewPlaceholderContentViewProvider *)self _checkApplicationRestorationState:application useSnapshot:&v22])
     {
       if (v22)
       {
@@ -360,10 +360,10 @@ LABEL_16:
 
     else if (_os_feature_enabled_impl())
     {
-      v20 = [v17 info];
-      v21 = [v20 supportsMultiwindow];
+      info = [application info];
+      supportsMultiwindow = [info supportsMultiwindow];
 
-      if (v21)
+      if (supportsMultiwindow)
       {
         goto LABEL_9;
       }
@@ -373,7 +373,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (v14 != 1)
+  if (preferredContentType != 1)
   {
 LABEL_6:
     v15 = 6;

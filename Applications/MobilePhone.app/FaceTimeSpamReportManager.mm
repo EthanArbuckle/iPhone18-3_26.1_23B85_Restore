@@ -1,14 +1,14 @@
 @interface FaceTimeSpamReportManager
-- (void)reportSpamWithCall:(id)a3;
+- (void)reportSpamWithCall:(id)call;
 @end
 
 @implementation FaceTimeSpamReportManager
 
-- (void)reportSpamWithCall:(id)a3
+- (void)reportSpamWithCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  FaceTimeSpamReportManager.reportSpam(call:)(v4);
+  callCopy = call;
+  selfCopy = self;
+  FaceTimeSpamReportManager.reportSpam(call:)(callCopy);
 }
 
 @end

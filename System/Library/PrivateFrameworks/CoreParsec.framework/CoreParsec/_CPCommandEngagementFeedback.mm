@@ -1,9 +1,9 @@
 @interface _CPCommandEngagementFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPCommandEngagementFeedback)init;
-- (_CPCommandEngagementFeedback)initWithFacade:(id)a3;
+- (_CPCommandEngagementFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPCommandEngagementFeedback
@@ -19,34 +19,34 @@
   return v8 ^ [(_CPPhotosAttributes *)self->_photosAttributes hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   commandType = self->_commandType;
-  if (commandType != [v4 commandType])
+  if (commandType != [equalCopy commandType])
   {
     goto LABEL_34;
   }
 
-  v6 = [(_CPCommandEngagementFeedback *)self commandDetail];
-  v7 = [v4 commandDetail];
-  if ((v6 != 0) == (v7 == 0))
+  commandDetail = [(_CPCommandEngagementFeedback *)self commandDetail];
+  commandDetail2 = [equalCopy commandDetail];
+  if ((commandDetail != 0) == (commandDetail2 == 0))
   {
     goto LABEL_33;
   }
 
-  v8 = [(_CPCommandEngagementFeedback *)self commandDetail];
-  if (v8)
+  commandDetail3 = [(_CPCommandEngagementFeedback *)self commandDetail];
+  if (commandDetail3)
   {
-    v9 = v8;
-    v10 = [(_CPCommandEngagementFeedback *)self commandDetail];
-    v11 = [v4 commandDetail];
-    v12 = [v10 isEqual:v11];
+    v9 = commandDetail3;
+    commandDetail4 = [(_CPCommandEngagementFeedback *)self commandDetail];
+    commandDetail5 = [equalCopy commandDetail];
+    v12 = [commandDetail4 isEqual:commandDetail5];
 
     if (!v12)
     {
@@ -59,25 +59,25 @@
   }
 
   uniqueButtonId = self->_uniqueButtonId;
-  if (uniqueButtonId != [v4 uniqueButtonId])
+  if (uniqueButtonId != [equalCopy uniqueButtonId])
   {
     goto LABEL_34;
   }
 
-  v6 = [(_CPCommandEngagementFeedback *)self cardSectionId];
-  v7 = [v4 cardSectionId];
-  if ((v6 != 0) == (v7 == 0))
+  commandDetail = [(_CPCommandEngagementFeedback *)self cardSectionId];
+  commandDetail2 = [equalCopy cardSectionId];
+  if ((commandDetail != 0) == (commandDetail2 == 0))
   {
     goto LABEL_33;
   }
 
-  v14 = [(_CPCommandEngagementFeedback *)self cardSectionId];
-  if (v14)
+  cardSectionId = [(_CPCommandEngagementFeedback *)self cardSectionId];
+  if (cardSectionId)
   {
-    v15 = v14;
-    v16 = [(_CPCommandEngagementFeedback *)self cardSectionId];
-    v17 = [v4 cardSectionId];
-    v18 = [v16 isEqual:v17];
+    v15 = cardSectionId;
+    cardSectionId2 = [(_CPCommandEngagementFeedback *)self cardSectionId];
+    cardSectionId3 = [equalCopy cardSectionId];
+    v18 = [cardSectionId2 isEqual:cardSectionId3];
 
     if (!v18)
     {
@@ -89,20 +89,20 @@
   {
   }
 
-  v6 = [(_CPCommandEngagementFeedback *)self result];
-  v7 = [v4 result];
-  if ((v6 != 0) == (v7 == 0))
+  commandDetail = [(_CPCommandEngagementFeedback *)self result];
+  commandDetail2 = [equalCopy result];
+  if ((commandDetail != 0) == (commandDetail2 == 0))
   {
     goto LABEL_33;
   }
 
-  v19 = [(_CPCommandEngagementFeedback *)self result];
-  if (v19)
+  result = [(_CPCommandEngagementFeedback *)self result];
+  if (result)
   {
-    v20 = v19;
-    v21 = [(_CPCommandEngagementFeedback *)self result];
-    v22 = [v4 result];
-    v23 = [v21 isEqual:v22];
+    v20 = result;
+    result2 = [(_CPCommandEngagementFeedback *)self result];
+    result3 = [equalCopy result];
+    v23 = [result2 isEqual:result3];
 
     if (!v23)
     {
@@ -115,25 +115,25 @@
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_34;
   }
 
-  v6 = [(_CPCommandEngagementFeedback *)self resultSectionId];
-  v7 = [v4 resultSectionId];
-  if ((v6 != 0) == (v7 == 0))
+  commandDetail = [(_CPCommandEngagementFeedback *)self resultSectionId];
+  commandDetail2 = [equalCopy resultSectionId];
+  if ((commandDetail != 0) == (commandDetail2 == 0))
   {
     goto LABEL_33;
   }
 
-  v25 = [(_CPCommandEngagementFeedback *)self resultSectionId];
-  if (v25)
+  resultSectionId = [(_CPCommandEngagementFeedback *)self resultSectionId];
+  if (resultSectionId)
   {
-    v26 = v25;
-    v27 = [(_CPCommandEngagementFeedback *)self resultSectionId];
-    v28 = [v4 resultSectionId];
-    v29 = [v27 isEqual:v28];
+    v26 = resultSectionId;
+    resultSectionId2 = [(_CPCommandEngagementFeedback *)self resultSectionId];
+    resultSectionId3 = [equalCopy resultSectionId];
+    v29 = [resultSectionId2 isEqual:resultSectionId3];
 
     if (!v29)
     {
@@ -146,40 +146,40 @@
   }
 
   triggerEvent = self->_triggerEvent;
-  if (triggerEvent != [v4 triggerEvent])
+  if (triggerEvent != [equalCopy triggerEvent])
   {
     goto LABEL_34;
   }
 
   contactActionType = self->_contactActionType;
-  if (contactActionType != [v4 contactActionType])
+  if (contactActionType != [equalCopy contactActionType])
   {
     goto LABEL_34;
   }
 
   didDisplayHandleOptions = self->_didDisplayHandleOptions;
-  if (didDisplayHandleOptions != [v4 didDisplayHandleOptions])
+  if (didDisplayHandleOptions != [equalCopy didDisplayHandleOptions])
   {
     goto LABEL_34;
   }
 
   didSelectFromOptionsMenu = self->_didSelectFromOptionsMenu;
-  if (didSelectFromOptionsMenu != [v4 didSelectFromOptionsMenu])
+  if (didSelectFromOptionsMenu != [equalCopy didSelectFromOptionsMenu])
   {
     goto LABEL_34;
   }
 
-  v6 = [(_CPCommandEngagementFeedback *)self photosAttributes];
-  v7 = [v4 photosAttributes];
-  if ((v6 != 0) == (v7 == 0))
+  commandDetail = [(_CPCommandEngagementFeedback *)self photosAttributes];
+  commandDetail2 = [equalCopy photosAttributes];
+  if ((commandDetail != 0) == (commandDetail2 == 0))
   {
 LABEL_33:
 
     goto LABEL_34;
   }
 
-  v34 = [(_CPCommandEngagementFeedback *)self photosAttributes];
-  if (!v34)
+  photosAttributes = [(_CPCommandEngagementFeedback *)self photosAttributes];
+  if (!photosAttributes)
   {
 
 LABEL_37:
@@ -187,10 +187,10 @@ LABEL_37:
     goto LABEL_35;
   }
 
-  v35 = v34;
-  v36 = [(_CPCommandEngagementFeedback *)self photosAttributes];
-  v37 = [v4 photosAttributes];
-  v38 = [v36 isEqual:v37];
+  v35 = photosAttributes;
+  photosAttributes2 = [(_CPCommandEngagementFeedback *)self photosAttributes];
+  photosAttributes3 = [equalCopy photosAttributes];
+  v38 = [photosAttributes2 isEqual:photosAttributes3];
 
   if (v38)
   {
@@ -204,18 +204,18 @@ LABEL_35:
   return v39;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v22 = a3;
+  toCopy = to;
   if ([(_CPCommandEngagementFeedback *)self commandType])
   {
     commandType = self->_commandType;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_CPCommandEngagementFeedback *)self commandDetail];
+  commandDetail = [(_CPCommandEngagementFeedback *)self commandDetail];
 
-  if (v5)
+  if (commandDetail)
   {
     commandDetail = self->_commandDetail;
     PBDataWriterWriteStringField();
@@ -227,19 +227,19 @@ LABEL_35:
     PBDataWriterWriteUint64Field();
   }
 
-  v8 = [(_CPCommandEngagementFeedback *)self cardSectionId];
+  cardSectionId = [(_CPCommandEngagementFeedback *)self cardSectionId];
 
-  if (v8)
+  if (cardSectionId)
   {
     cardSectionId = self->_cardSectionId;
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_CPCommandEngagementFeedback *)self result];
+  result = [(_CPCommandEngagementFeedback *)self result];
 
-  if (v10)
+  if (result)
   {
-    v11 = [(_CPCommandEngagementFeedback *)self result];
+    result2 = [(_CPCommandEngagementFeedback *)self result];
     PBDataWriterWriteSubmessage();
   }
 
@@ -249,9 +249,9 @@ LABEL_35:
     PBDataWriterWriteUint64Field();
   }
 
-  v13 = [(_CPCommandEngagementFeedback *)self resultSectionId];
+  resultSectionId = [(_CPCommandEngagementFeedback *)self resultSectionId];
 
-  if (v13)
+  if (resultSectionId)
   {
     resultSectionId = self->_resultSectionId;
     PBDataWriterWriteStringField();
@@ -281,15 +281,15 @@ LABEL_35:
     PBDataWriterWriteBOOLField();
   }
 
-  v19 = [(_CPCommandEngagementFeedback *)self photosAttributes];
+  photosAttributes = [(_CPCommandEngagementFeedback *)self photosAttributes];
 
-  v20 = v22;
-  if (v19)
+  v20 = toCopy;
+  if (photosAttributes)
   {
-    v21 = [(_CPCommandEngagementFeedback *)self photosAttributes];
+    photosAttributes2 = [(_CPCommandEngagementFeedback *)self photosAttributes];
     PBDataWriterWriteSubmessage();
 
-    v20 = v22;
+    v20 = toCopy;
   }
 }
 
@@ -307,69 +307,69 @@ LABEL_35:
   return v2;
 }
 
-- (_CPCommandEngagementFeedback)initWithFacade:(id)a3
+- (_CPCommandEngagementFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPCommandEngagementFeedback *)self init];
   if (v5)
   {
-    v6 = [v4 command];
-    -[_CPCommandEngagementFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v7 = [v4 result];
+    command = [facadeCopy command];
+    -[_CPCommandEngagementFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    result = [facadeCopy result];
 
-    if (v7)
+    if (result)
     {
       v8 = [_CPSearchResultForFeedback alloc];
-      v9 = [v4 result];
-      v10 = [(_CPSearchResultForFeedback *)v8 initWithFacade:v9];
+      result2 = [facadeCopy result];
+      v10 = [(_CPSearchResultForFeedback *)v8 initWithFacade:result2];
       [(_CPCommandEngagementFeedback *)v5 setResult:v10];
     }
 
-    v11 = [v4 button];
+    button = [facadeCopy button];
 
-    if (v11)
+    if (button)
     {
-      v12 = [v4 button];
-      -[_CPCommandEngagementFeedback setUniqueButtonId:](v5, "setUniqueButtonId:", [v12 uniqueId]);
+      button2 = [facadeCopy button];
+      -[_CPCommandEngagementFeedback setUniqueButtonId:](v5, "setUniqueButtonId:", [button2 uniqueId]);
     }
 
-    v13 = [v4 command];
+    command2 = [facadeCopy command];
 
-    if (v13)
+    if (command2)
     {
-      -[_CPCommandEngagementFeedback setCommandType:](v5, "setCommandType:", [v6 _cpCommandType]);
-      v14 = [v6 commandDetail];
-      [(_CPCommandEngagementFeedback *)v5 setCommandDetail:v14];
+      -[_CPCommandEngagementFeedback setCommandType:](v5, "setCommandType:", [command _cpCommandType]);
+      commandDetail = [command commandDetail];
+      [(_CPCommandEngagementFeedback *)v5 setCommandDetail:commandDetail];
     }
 
-    v15 = [v4 cardSection];
+    cardSection = [facadeCopy cardSection];
 
-    if (v15)
+    if (cardSection)
     {
-      v16 = [v4 cardSection];
-      v17 = [v16 cardSectionId];
-      [(_CPCommandEngagementFeedback *)v5 setCardSectionId:v17];
+      cardSection2 = [facadeCopy cardSection];
+      cardSectionId = [cardSection2 cardSectionId];
+      [(_CPCommandEngagementFeedback *)v5 setCardSectionId:cardSectionId];
     }
 
-    v18 = [v4 resultSection];
+    resultSection = [facadeCopy resultSection];
 
-    if (v18)
+    if (resultSection)
     {
-      v19 = [v4 resultSection];
-      v20 = [v19 identifier];
-      [(_CPCommandEngagementFeedback *)v5 setResultSectionId:v20];
+      resultSection2 = [facadeCopy resultSection];
+      identifier = [resultSection2 identifier];
+      [(_CPCommandEngagementFeedback *)v5 setResultSectionId:identifier];
     }
 
-    -[_CPCommandEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
+    -[_CPCommandEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = v6;
+      v21 = command;
       -[_CPCommandEngagementFeedback setContactActionType:](v5, "setContactActionType:", [v21 contactActionType]);
       -[_CPCommandEngagementFeedback setDidDisplayHandleOptions:](v5, "setDidDisplayHandleOptions:", [v21 didDisplayHandleOptions]);
-      v22 = [v21 didSelectFromOptionsMenu];
+      didSelectFromOptionsMenu = [v21 didSelectFromOptionsMenu];
 
-      [(_CPCommandEngagementFeedback *)v5 setDidSelectFromOptionsMenu:v22];
+      [(_CPCommandEngagementFeedback *)v5 setDidSelectFromOptionsMenu:didSelectFromOptionsMenu];
     }
 
     v23 = v5;

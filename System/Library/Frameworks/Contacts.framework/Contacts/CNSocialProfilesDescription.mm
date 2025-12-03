@@ -1,24 +1,24 @@
 @interface CNSocialProfilesDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (id)CNLabeledValueValueFromABMultiValueValue:(void *)a3;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (id)CNLabeledValueValueFromABMultiValueValue:(void *)value;
 - (id)summarizationKeys;
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNSocialProfilesDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 socialProfiles];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  socialProfiles = [contactCopy socialProfiles];
+  if (!socialProfiles)
   {
-    v4 = [v7 socialProfiles];
-    if (!v4)
+    socialProfiles2 = [otherCopy socialProfiles];
+    if (!socialProfiles2)
     {
       v11 = 1;
 LABEL_6:
@@ -27,11 +27,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 socialProfiles];
-  v10 = [v7 socialProfiles];
-  v11 = [v9 isEqual:v10];
+  socialProfiles3 = [contactCopy socialProfiles];
+  socialProfiles4 = [otherCopy socialProfiles];
+  v11 = [socialProfiles3 isEqual:socialProfiles4];
 
-  if (!v8)
+  if (!socialProfiles)
   {
     goto LABEL_6;
   }
@@ -41,11 +41,11 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  contactCopy = contact;
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
@@ -54,21 +54,21 @@ LABEL_7:
   {
   }
 
-  v9 = [v5 decodeObjectOfClasses:v7 forKey:{@"_socialProfiles", v12, v13}];
+  v9 = [coderCopy decodeObjectOfClasses:v7 forKey:{@"_socialProfiles", v12, v13}];
   v10 = [v9 copy];
-  v11 = v6[54];
-  v6[54] = v10;
+  v11 = contactCopy[54];
+  contactCopy[54] = v10;
 }
 
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue
 {
-  v5 = a4;
-  v6 = a3;
+  withValueCopy = withValue;
+  valueCopy = value;
   v7 = +[CN socialProfileToFoundationProfileTransform];
-  v8 = (v7)[2](v7, v6);
+  v8 = (v7)[2](v7, valueCopy);
 
   v9 = +[CN socialProfileToFoundationProfileTransform];
-  v10 = (v9)[2](v9, v5);
+  v10 = (v9)[2](v9, withValueCopy);
 
   LOBYTE(v9) = CNSocialProfileEquivalentValues();
   return v9;
@@ -95,17 +95,17 @@ uint64_t __48__CNSocialProfilesDescription_summarizationKeys__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A5B0];
+    *d = *MEMORY[0x1E698A5B0];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (id)CNLabeledValueValueFromABMultiValueValue:(void *)a3
+- (id)CNLabeledValueValueFromABMultiValueValue:(void *)value
 {
   if (CNLabeledValueValueFromABMultiValueValue__cn_once_token_4 != -1)
   {
@@ -113,7 +113,7 @@ uint64_t __48__CNSocialProfilesDescription_summarizationKeys__block_invoke()
   }
 
   v5 = CNLabeledValueValueFromABMultiValueValue__cn_once_object_4;
-  v6 = [(CNMultiValuePropertyDescription *)self CNLabeledValueValueFromABMultiValueValue:a3 destinationClass:objc_opt_class() settersByABKeys:v5];
+  v6 = [(CNMultiValuePropertyDescription *)self CNLabeledValueValueFromABMultiValueValue:value destinationClass:objc_opt_class() settersByABKeys:v5];
 
   return v6;
 }
@@ -164,16 +164,16 @@ void __79__CNSocialProfilesDescription_iOSAB__CNLabeledValueValueFromABMultiValu
   [v8 setService:v6];
 }
 
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value
 {
   v4 = ABMultiValueValueFromCNLabeledValueValue__cn_once_token_5;
-  v5 = a3;
+  valueCopy = value;
   if (v4 != -1)
   {
     [CNSocialProfilesDescription(iOSAB) ABMultiValueValueFromCNLabeledValueValue:];
   }
 
-  v6 = [(CNMultiValuePropertyDescription *)self ABMultiValueValueFromCNLabeledValueValue:v5 gettersByABKeys:ABMultiValueValueFromCNLabeledValueValue__cn_once_object_5];
+  v6 = [(CNMultiValuePropertyDescription *)self ABMultiValueValueFromCNLabeledValueValue:valueCopy gettersByABKeys:ABMultiValueValueFromCNLabeledValueValue__cn_once_object_5];
 
   return v6;
 }

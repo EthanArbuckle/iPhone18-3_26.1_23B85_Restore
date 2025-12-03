@@ -1,28 +1,28 @@
 @interface THNoteCardEmptyLayer
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (THNoteCardEmptyLayer)initWithStudyOptions:(id)a3 unfilteredContentAvailable:(BOOL)a4 darkMode:(BOOL)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (THNoteCardEmptyLayer)initWithStudyOptions:(id)options unfilteredContentAvailable:(BOOL)available darkMode:(BOOL)mode;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)p_setupHeadingLabel:(id)a3 bodyLabel:(id)a4;
+- (void)p_setupHeadingLabel:(id)label bodyLabel:(id)bodyLabel;
 - (void)p_setupWhenUnfilteredContentIsAvailable;
 - (void)p_setupWhenUnfilteredContentIsNotAvailable;
-- (void)setLayoutContext:(id)a3;
+- (void)setLayoutContext:(id)context;
 @end
 
 @implementation THNoteCardEmptyLayer
 
-- (THNoteCardEmptyLayer)initWithStudyOptions:(id)a3 unfilteredContentAvailable:(BOOL)a4 darkMode:(BOOL)a5
+- (THNoteCardEmptyLayer)initWithStudyOptions:(id)options unfilteredContentAvailable:(BOOL)available darkMode:(BOOL)mode
 {
-  v6 = a4;
+  availableCopy = available;
   v10.receiver = self;
   v10.super_class = THNoteCardEmptyLayer;
   v8 = [(THNoteCardEmptyLayer *)&v10 init];
   if (v8)
   {
-    v8->_studyOptions = a3;
-    v8->_isUnfilteredContentAvailable = v6;
-    v8->_darkMode = a5;
-    if (v6)
+    v8->_studyOptions = options;
+    v8->_isUnfilteredContentAvailable = availableCopy;
+    v8->_darkMode = mode;
+    if (availableCopy)
     {
       [(THNoteCardEmptyLayer *)v8 p_setupWhenUnfilteredContentIsAvailable];
     }
@@ -43,23 +43,23 @@
   [(THNoteCardBodyLayer *)&v3 dealloc];
 }
 
-- (void)setLayoutContext:(id)a3
+- (void)setLayoutContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = THNoteCardEmptyLayer;
   [(THNoteCardBodyLayer *)&v5 setLayoutContext:?];
-  [a3 scale];
+  [context scale];
   [(THMultiLineLabel *)self->_headingLabel setScale:?];
-  [a3 scale];
+  [context scale];
   [(THMultiLineLabel *)self->_bodyLabel setScale:?];
-  [a3 scale];
+  [context scale];
   [(THInteractiveButtonLayer *)self->_viewAllCardsButton setScale:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(THNoteCardLayoutContext *)[(THNoteCardBodyLayer *)self layoutContext:a3.width] noteCardBodyHeight];
+  width = fits.width;
+  [(THNoteCardLayoutContext *)[(THNoteCardBodyLayer *)self layoutContext:fits.width] noteCardBodyHeight];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -183,16 +183,16 @@
   [(THNoteCardEmptyLayer *)self p_setupHeadingLabel:v3 bodyLabel:v4];
 }
 
-- (void)p_setupHeadingLabel:(id)a3 bodyLabel:(id)a4
+- (void)p_setupHeadingLabel:(id)label bodyLabel:(id)bodyLabel
 {
   v7 = [THMultiLineLabel alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v11 = [(THMultiLineLabel *)v7 initWithFrame:CGRectZero.origin.x, y, width, height];
-  self->_headingLabel = v11;
-  [(THMultiLineLabel *)v11 setDelegate:self];
-  [(THMultiLineLabel *)self->_headingLabel setText:a3];
+  height = [(THMultiLineLabel *)v7 initWithFrame:CGRectZero.origin.x, y, width, height];
+  self->_headingLabel = height;
+  [(THMultiLineLabel *)height setDelegate:self];
+  [(THMultiLineLabel *)self->_headingLabel setText:label];
   [(THMultiLineLabel *)self->_headingLabel setFont:[TSUFont systemFontOfSize:50.0]];
   [(THMultiLineLabel *)self->_headingLabel setTextColor:THNoteCardEmptyHeadingTextColor(self->_darkMode)];
   -[THMultiLineLabel setBackgroundColor:](self->_headingLabel, "setBackgroundColor:", [+[TSUColor clearColor](TSUColor "clearColor")]);
@@ -204,10 +204,10 @@
   TSUScreenScale();
   [(THMultiLineLabel *)self->_headingLabel setContentsScale:?];
   [(THNoteCardEmptyLayer *)self addSublayer:self->_headingLabel];
-  v13 = [[THMultiLineLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  self->_bodyLabel = v13;
-  [(THMultiLineLabel *)v13 setDelegate:self];
-  [(THMultiLineLabel *)self->_bodyLabel setText:a4];
+  height2 = [[THMultiLineLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  self->_bodyLabel = height2;
+  [(THMultiLineLabel *)height2 setDelegate:self];
+  [(THMultiLineLabel *)self->_bodyLabel setText:bodyLabel];
   [(THMultiLineLabel *)self->_bodyLabel setFont:[TSUFont systemFontOfSize:25.0]];
   [(THMultiLineLabel *)self->_bodyLabel setTextColor:THNoteCardEmptyBodyTextColor(self->_darkMode)];
   -[THMultiLineLabel setBackgroundColor:](self->_bodyLabel, "setBackgroundColor:", [+[TSUColor clearColor](TSUColor "clearColor")]);

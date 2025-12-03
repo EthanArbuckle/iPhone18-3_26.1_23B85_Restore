@@ -1,7 +1,7 @@
 @interface BYODIcon
 + (id)customEmailDomainIcon;
-- (BYODIcon)initWithSymbolName:(id)a3;
-- (BYODIcon)initWithUIImage:(id)a3;
+- (BYODIcon)initWithSymbolName:(id)name;
+- (BYODIcon)initWithUIImage:(id)image;
 - (NSString)symbolName;
 - (UIImage)image;
 @end
@@ -26,15 +26,15 @@
   return v2;
 }
 
-- (BYODIcon)initWithSymbolName:(id)a3
+- (BYODIcon)initWithSymbolName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = BYODIcon;
   v5 = [(BYODIcon *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     symbolName = v5->_symbolName;
     v5->_symbolName = v6;
 
@@ -44,15 +44,15 @@
   return v5;
 }
 
-- (BYODIcon)initWithUIImage:(id)a3
+- (BYODIcon)initWithUIImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = BYODIcon;
   v5 = [(BYODIcon *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [imageCopy copy];
     image = v5->_image;
     v5->_image = v6;
 

@@ -1,7 +1,7 @@
 @interface CSBackgroundContentComponent
 - (BOOL)shouldDim;
 - (CSBackgroundContentComponent)init;
-- (void)setShouldDim:(BOOL)a3;
+- (void)setShouldDim:(BOOL)dim;
 @end
 
 @implementation CSBackgroundContentComponent
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (void)setShouldDim:(BOOL)a3
+- (void)setShouldDim:(BOOL)dim
 {
   v4 = BSSettingFlagForBool();
 

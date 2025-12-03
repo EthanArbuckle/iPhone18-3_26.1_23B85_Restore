@@ -1,9 +1,9 @@
 @interface PHAssetResourceUploadJobConfiguration
 + (id)entityKeyMap;
-+ (id)fetchAssetResourceUploadJobConfigurationWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-- (PHAssetResourceUploadJobConfiguration)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
++ (id)fetchAssetResourceUploadJobConfigurationWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
+- (PHAssetResourceUploadJobConfiguration)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (id)description;
 @end
 
@@ -20,18 +20,18 @@
   return v5;
 }
 
-- (PHAssetResourceUploadJobConfiguration)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHAssetResourceUploadJobConfiguration)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PHAssetResourceUploadJobConfiguration;
-  v9 = [(PHObject *)&v14 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHObject *)&v14 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"state"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"state"];
     v9->_state = [v10 unsignedIntegerValue];
 
-    v11 = [v8 objectForKeyedSubscript:@"bundleIdentifier"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
     bundleIdentifier = v9->_bundleIdentifier;
     v9->_bundleIdentifier = v11;
   }
@@ -39,21 +39,21 @@
   return v9;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  expressionCopy = expression;
   v6 = MEMORY[0x1E695DFD8];
   v13 = @"state";
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a4;
+  pathCopy = path;
   v9 = [v7 arrayWithObjects:&v13 count:1];
   v10 = [v6 setWithArray:{v9, v13, v14}];
 
-  LODWORD(v6) = [v10 containsObject:v8];
+  LODWORD(v6) = [v10 containsObject:pathCopy];
   if (v6)
   {
-    v11 = v5;
+    v11 = expressionCopy;
   }
 
   else
@@ -64,16 +64,16 @@
   return v11;
 }
 
-+ (id)fetchAssetResourceUploadJobConfigurationWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchAssetResourceUploadJobConfigurationWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __110__PHAssetResourceUploadJobConfiguration_fetchAssetResourceUploadJobConfigurationWithLocalIdentifiers_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = identifiersCopy;
+  v6 = identifiersCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -120,7 +120,7 @@ void __53__PHAssetResourceUploadJobConfiguration_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_16_40488 = v4;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   pl_dispatch_once();
   v3 = propertiesToFetchWithHint__pl_once_object_15_40502;

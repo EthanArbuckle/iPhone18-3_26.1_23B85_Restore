@@ -1,24 +1,24 @@
 @interface ULConfiguration
-- (BOOL)isEqual:(id)a3;
-- (ULConfiguration)initWithCoder:(id)a3;
-- (ULConfiguration)initWithContextLayers:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULConfiguration)initWithCoder:(id)coder;
+- (ULConfiguration)initWithContextLayers:(id)layers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULConfiguration
 
-- (ULConfiguration)initWithContextLayers:(id)a3
+- (ULConfiguration)initWithContextLayers:(id)layers
 {
-  v4 = a3;
+  layersCopy = layers;
   v8.receiver = self;
   v8.super_class = ULConfiguration;
   v5 = [(ULConfiguration *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ULConfiguration *)v5 setContextLayers:v4];
+    [(ULConfiguration *)v5 setContextLayers:layersCopy];
     [(ULConfiguration *)v6 setPredictionsUpdateType:1];
     [(ULConfiguration *)v6 setDeviceClass:0];
   }
@@ -26,33 +26,33 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(ULConfiguration *)self contextLayers];
-  v6 = [v4 initWithContextLayers:v5];
+  contextLayers = [(ULConfiguration *)self contextLayers];
+  v6 = [v4 initWithContextLayers:contextLayers];
 
   [v6 setPredictionsUpdateType:{-[ULConfiguration predictionsUpdateType](self, "predictionsUpdateType")}];
   [v6 setDeviceClass:{-[ULConfiguration deviceClass](self, "deviceClass")}];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contextLayers = self->_contextLayers;
-  v5 = a3;
-  [v5 encodeObject:contextLayers forKey:@"contextLayers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contextLayers forKey:@"contextLayers"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_predictionsUpdateType];
-  [v5 encodeObject:v6 forKey:@"predictionsUpdateType"];
+  [coderCopy encodeObject:v6 forKey:@"predictionsUpdateType"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_deviceClass];
-  [v5 encodeObject:v7 forKey:@"deviceClass"];
+  [coderCopy encodeObject:v7 forKey:@"deviceClass"];
 }
 
-- (ULConfiguration)initWithCoder:(id)a3
+- (ULConfiguration)initWithCoder:(id)coder
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = ULConfiguration;
   v5 = [(ULConfiguration *)&v18 init];
@@ -63,7 +63,7 @@
     v19[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"contextLayers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"contextLayers"];
 
     if (v9)
     {
@@ -72,20 +72,20 @@
       contextLayers = v5->_contextLayers;
       v5->_contextLayers = v10;
 
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictionsUpdateType"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictionsUpdateType"];
       v9 = v12;
       if (v12)
       {
-        v13 = [(ULConfiguration *)v12 unsignedIntValue];
+        unsignedIntValue = [(ULConfiguration *)v12 unsignedIntValue];
 
-        v5->_predictionsUpdateType = v13;
-        v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceClass"];
+        v5->_predictionsUpdateType = unsignedIntValue;
+        v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceClass"];
         v9 = v14;
         if (v14)
         {
-          v15 = [(ULConfiguration *)v14 unsignedIntValue];
+          unsignedIntValue2 = [(ULConfiguration *)v14 unsignedIntValue];
 
-          v5->_deviceClass = v15;
+          v5->_deviceClass = unsignedIntValue2;
           v9 = v5;
         }
       }
@@ -120,35 +120,35 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ULConfiguration *)self contextLayers];
-    v7 = [v5 contextLayers];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    contextLayers = [(ULConfiguration *)self contextLayers];
+    contextLayers2 = [v5 contextLayers];
+    if ([contextLayers isEqual:contextLayers2])
     {
     }
 
     else
     {
-      v9 = [(ULConfiguration *)self contextLayers];
-      v10 = [v5 contextLayers];
+      contextLayers3 = [(ULConfiguration *)self contextLayers];
+      contextLayers4 = [v5 contextLayers];
 
-      if (v9 != v10)
+      if (contextLayers3 != contextLayers4)
       {
         goto LABEL_8;
       }
     }
 
-    v11 = [(ULConfiguration *)self predictionsUpdateType];
-    if (v11 == [v5 predictionsUpdateType])
+    predictionsUpdateType = [(ULConfiguration *)self predictionsUpdateType];
+    if (predictionsUpdateType == [v5 predictionsUpdateType])
     {
-      v12 = [(ULConfiguration *)self deviceClass];
-      v8 = v12 == [v5 deviceClass];
+      deviceClass = [(ULConfiguration *)self deviceClass];
+      v8 = deviceClass == [v5 deviceClass];
 LABEL_9:
 
       goto LABEL_10;

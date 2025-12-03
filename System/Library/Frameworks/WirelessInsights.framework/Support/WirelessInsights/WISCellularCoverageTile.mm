@@ -1,24 +1,24 @@
 @interface WISCellularCoverageTile
 - (NSString)description;
 - (WISCellularCoverageTile)init;
-- (WISCellularCoverageTile)initWithLatitude:(double)a3 longitude:(double)a4 noServiceCount:(int64_t)a5 inServiceCount:(int64_t)a6 limitedServiceCount:(int64_t)a7 highestFrequencyRsrp:(id)a8 highestCountMCC:(int64_t)a9 highestCountMNC:(int64_t)a10 highestCountBand:(id)a11 highestCountARFCN:(id)a12 highestCountRAT:(int64_t)a13 highestCount:(int64_t)a14;
+- (WISCellularCoverageTile)initWithLatitude:(double)latitude longitude:(double)longitude noServiceCount:(int64_t)count inServiceCount:(int64_t)serviceCount limitedServiceCount:(int64_t)limitedServiceCount highestFrequencyRsrp:(id)rsrp highestCountMCC:(int64_t)c highestCountMNC:(int64_t)self0 highestCountBand:(id)self1 highestCountARFCN:(id)self2 highestCountRAT:(int64_t)self3 highestCount:(int64_t)self4;
 @end
 
 @implementation WISCellularCoverageTile
 
-- (WISCellularCoverageTile)initWithLatitude:(double)a3 longitude:(double)a4 noServiceCount:(int64_t)a5 inServiceCount:(int64_t)a6 limitedServiceCount:(int64_t)a7 highestFrequencyRsrp:(id)a8 highestCountMCC:(int64_t)a9 highestCountMNC:(int64_t)a10 highestCountBand:(id)a11 highestCountARFCN:(id)a12 highestCountRAT:(int64_t)a13 highestCount:(int64_t)a14
+- (WISCellularCoverageTile)initWithLatitude:(double)latitude longitude:(double)longitude noServiceCount:(int64_t)count inServiceCount:(int64_t)serviceCount limitedServiceCount:(int64_t)limitedServiceCount highestFrequencyRsrp:(id)rsrp highestCountMCC:(int64_t)c highestCountMNC:(int64_t)self0 highestCountBand:(id)self1 highestCountARFCN:(id)self2 highestCountRAT:(int64_t)self3 highestCount:(int64_t)self4
 {
-  v19 = a8;
-  v20 = a11;
-  v21 = a12;
-  v22 = sub_1001B7C90(a5, a6, a7, a8, a9, a10, a11, a12, a3, a4, a13, a14);
+  rsrpCopy = rsrp;
+  bandCopy = band;
+  nCopy = n;
+  v22 = sub_1001B7C90(count, serviceCount, limitedServiceCount, rsrp, c, nC, band, n, latitude, longitude, t, highestCount);
 
   return v22;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001A425C();
 
   v3 = String._bridgeToObjectiveC()();

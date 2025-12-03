@@ -17,8 +17,8 @@
 {
   v3 = MEMORY[0x1E696AAE8];
   v4 = a3;
-  v5 = [v3 _coreroutineBundle];
-  v6 = [v5 localizedStringForKey:v4 value:v4 table:0];
+  _coreroutineBundle = [v3 _coreroutineBundle];
+  v6 = [_coreroutineBundle localizedStringForKey:v4 value:v4 table:0];
 
   return v6;
 }

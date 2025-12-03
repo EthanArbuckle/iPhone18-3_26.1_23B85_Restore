@@ -1,22 +1,22 @@
 @interface SiriAnalyticsSensitiveConditionsObservers
-- (SiriAnalyticsSensitiveConditionsObservers)initWithQueue:(id)a3;
-- (void)addSensitiveConditionsObserver:(id)a3;
-- (void)pollAllObserversWithCompletion:(id)a3;
+- (SiriAnalyticsSensitiveConditionsObservers)initWithQueue:(id)queue;
+- (void)addSensitiveConditionsObserver:(id)observer;
+- (void)pollAllObserversWithCompletion:(id)completion;
 @end
 
 @implementation SiriAnalyticsSensitiveConditionsObservers
 
-- (void)pollAllObserversWithCompletion:(id)a3
+- (void)pollAllObserversWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__SiriAnalyticsSensitiveConditionsObservers_pollAllObserversWithCompletion___block_invoke;
   v7[3] = &unk_1E8587C90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -100,17 +100,17 @@ uint64_t __76__SiriAnalyticsSensitiveConditionsObservers_pollAllObserversWithCom
   return result;
 }
 
-- (void)addSensitiveConditionsObserver:(id)a3
+- (void)addSensitiveConditionsObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__SiriAnalyticsSensitiveConditionsObservers_addSensitiveConditionsObserver___block_invoke;
   v7[3] = &unk_1E8587870;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -149,16 +149,16 @@ uint64_t __76__SiriAnalyticsSensitiveConditionsObservers_addSensitiveConditionsO
   return result;
 }
 
-- (SiriAnalyticsSensitiveConditionsObservers)initWithQueue:(id)a3
+- (SiriAnalyticsSensitiveConditionsObservers)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SiriAnalyticsSensitiveConditionsObservers;
   v6 = [(SiriAnalyticsSensitiveConditionsObservers *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

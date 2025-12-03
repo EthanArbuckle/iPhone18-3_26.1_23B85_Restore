@@ -35,9 +35,9 @@
   }
 
   v4 = objc_opt_new();
-  v5 = [v3 recordID];
-  v6 = [v5 recordName];
-  [v4 setIdentifier:v6];
+  recordID = [v3 recordID];
+  recordName = [recordID recordName];
+  [v4 setIdentifier:recordName];
 
   v7 = [v3 objectForKeyedSubscript:@"issueID"];
   [v4 setIssueID:v7];
@@ -70,75 +70,75 @@
 
 - (void)setLastVisitedDate:()FCIssueReadingHistory
 {
-  v4 = [a3 pbDate];
-  [a1 setLastVisitedPBDate:v4];
+  pbDate = [a3 pbDate];
+  [self setLastVisitedPBDate:pbDate];
 }
 
 - (id)lastVisitedDate
 {
   v1 = MEMORY[0x1E695DF00];
-  v2 = [a1 lastVisitedPBDate];
-  v3 = [v1 dateWithPBDate:v2];
+  lastVisitedPBDate = [self lastVisitedPBDate];
+  v3 = [v1 dateWithPBDate:lastVisitedPBDate];
 
   return v3;
 }
 
 - (void)setLastBadgedDate:()FCIssueReadingHistory
 {
-  v4 = [a3 pbDate];
-  [a1 setLastBadgedPBDate:v4];
+  pbDate = [a3 pbDate];
+  [self setLastBadgedPBDate:pbDate];
 }
 
 - (id)lastBadgedDate
 {
   v1 = MEMORY[0x1E695DF00];
-  v2 = [a1 lastBadgedPBDate];
-  v3 = [v1 dateWithPBDate:v2];
+  lastBadgedPBDate = [self lastBadgedPBDate];
+  v3 = [v1 dateWithPBDate:lastBadgedPBDate];
 
   return v3;
 }
 
 - (void)setLastEngagedDate:()FCIssueReadingHistory
 {
-  v4 = [a3 pbDate];
-  [a1 setLastEngagedPBDate:v4];
+  pbDate = [a3 pbDate];
+  [self setLastEngagedPBDate:pbDate];
 }
 
 - (id)lastEngagedDate
 {
   v1 = MEMORY[0x1E695DF00];
-  v2 = [a1 lastEngagedPBDate];
-  v3 = [v1 dateWithPBDate:v2];
+  lastEngagedPBDate = [self lastEngagedPBDate];
+  v3 = [v1 dateWithPBDate:lastEngagedPBDate];
 
   return v3;
 }
 
 - (void)setLastSeenDate:()FCIssueReadingHistory
 {
-  v4 = [a3 pbDate];
-  [a1 setLastSeenPBDate:v4];
+  pbDate = [a3 pbDate];
+  [self setLastSeenPBDate:pbDate];
 }
 
 - (id)lastSeenDate
 {
   v1 = MEMORY[0x1E695DF00];
-  v2 = [a1 lastSeenPBDate];
-  v3 = [v1 dateWithPBDate:v2];
+  lastSeenPBDate = [self lastSeenPBDate];
+  v3 = [v1 dateWithPBDate:lastSeenPBDate];
 
   return v3;
 }
 
 - (void)setLastRemovedFromMyMagazinesDate:()FCIssueReadingHistory
 {
-  v4 = [a3 pbDate];
-  [a1 setLastRemovedFromMyMagazinesPBDate:v4];
+  pbDate = [a3 pbDate];
+  [self setLastRemovedFromMyMagazinesPBDate:pbDate];
 }
 
 - (id)lastRemovedFromMyMagazinesDate
 {
   v1 = MEMORY[0x1E695DF00];
-  v2 = [a1 lastRemovedFromMyMagazinesPBDate];
-  v3 = [v1 dateWithPBDate:v2];
+  lastRemovedFromMyMagazinesPBDate = [self lastRemovedFromMyMagazinesPBDate];
+  v3 = [v1 dateWithPBDate:lastRemovedFromMyMagazinesPBDate];
 
   return v3;
 }
@@ -151,33 +151,33 @@
   }
 
   v2 = objc_alloc(MEMORY[0x1E695BA70]);
-  v3 = [a1 identifier];
-  v4 = [v2 initWithRecordName:v3 zoneID:_MergedGlobals_195];
+  identifier = [self identifier];
+  v4 = [v2 initWithRecordName:identifier zoneID:_MergedGlobals_195];
 
   v5 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"IssueReadingHistoryItem" recordID:v4];
-  v6 = [a1 issueID];
-  [v5 setObject:v6 forKeyedSubscript:@"issueID"];
+  issueID = [self issueID];
+  [v5 setObject:issueID forKeyedSubscript:@"issueID"];
 
-  v7 = [a1 lastVisitedDate];
-  [v5 setObject:v7 forKeyedSubscript:@"lastVisited"];
+  lastVisitedDate = [self lastVisitedDate];
+  [v5 setObject:lastVisitedDate forKeyedSubscript:@"lastVisited"];
 
-  v8 = [a1 lastBadgedDate];
-  [v5 setObject:v8 forKeyedSubscript:@"lastBadged"];
+  lastBadgedDate = [self lastBadgedDate];
+  [v5 setObject:lastBadgedDate forKeyedSubscript:@"lastBadged"];
 
-  v9 = [a1 lastEngagedDate];
-  [v5 setObject:v9 forKeyedSubscript:@"lastEngaged"];
+  lastEngagedDate = [self lastEngagedDate];
+  [v5 setObject:lastEngagedDate forKeyedSubscript:@"lastEngaged"];
 
-  v10 = [a1 lastSeenDate];
-  [v5 setObject:v10 forKeyedSubscript:@"lastSeen"];
+  lastSeenDate = [self lastSeenDate];
+  [v5 setObject:lastSeenDate forKeyedSubscript:@"lastSeen"];
 
-  v11 = [a1 lastRemovedFromMyMagazinesDate];
-  [v5 setObject:v11 forKeyedSubscript:@"lastRemovedFromMyMagazines"];
+  lastRemovedFromMyMagazinesDate = [self lastRemovedFromMyMagazinesDate];
+  [v5 setObject:lastRemovedFromMyMagazinesDate forKeyedSubscript:@"lastRemovedFromMyMagazines"];
 
-  v12 = [a1 lastVisitedArticleID];
-  [v5 setObject:v12 forKeyedSubscript:@"lastVisitedArticleID"];
+  lastVisitedArticleID = [self lastVisitedArticleID];
+  [v5 setObject:lastVisitedArticleID forKeyedSubscript:@"lastVisitedArticleID"];
 
-  v13 = [a1 lastVisitedPageID];
-  [v5 setObject:v13 forKeyedSubscript:@"lastVisitedPageID"];
+  lastVisitedPageID = [self lastVisitedPageID];
+  [v5 setObject:lastVisitedPageID forKeyedSubscript:@"lastVisitedPageID"];
 
   return v5;
 }
@@ -186,7 +186,7 @@
 {
   v4 = a3;
   [v4 setValueType:{objc_msgSend(objc_opt_class(), "keyValuePairType")}];
-  [v4 setIssueReadingHistoryItem:a1];
+  [v4 setIssueReadingHistoryItem:self];
 }
 
 @end

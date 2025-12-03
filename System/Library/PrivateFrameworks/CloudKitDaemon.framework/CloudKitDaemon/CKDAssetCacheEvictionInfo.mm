@@ -1,10 +1,10 @@
 @interface CKDAssetCacheEvictionInfo
-- (CKDAssetCacheEvictionInfo)initWithForced:(BOOL)a3;
+- (CKDAssetCacheEvictionInfo)initWithForced:(BOOL)forced;
 @end
 
 @implementation CKDAssetCacheEvictionInfo
 
-- (CKDAssetCacheEvictionInfo)initWithForced:(BOOL)a3
+- (CKDAssetCacheEvictionInfo)initWithForced:(BOOL)forced
 {
   v11.receiver = self;
   v11.super_class = CKDAssetCacheEvictionInfo;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_forced = a3;
+    v4->_forced = forced;
     v6 = objc_opt_new();
     itemIDsToUnregister = v5->_itemIDsToUnregister;
     v5->_itemIDsToUnregister = v6;

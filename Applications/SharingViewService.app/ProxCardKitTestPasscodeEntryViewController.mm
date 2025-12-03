@@ -1,11 +1,11 @@
 @interface ProxCardKitTestPasscodeEntryViewController
-- (ProxCardKitTestPasscodeEntryViewController)initWithContentView:(id)a3;
-- (void)didCompleteTextEntry:(id)a3;
+- (ProxCardKitTestPasscodeEntryViewController)initWithContentView:(id)view;
+- (void)didCompleteTextEntry:(id)entry;
 @end
 
 @implementation ProxCardKitTestPasscodeEntryViewController
 
-- (void)didCompleteTextEntry:(id)a3
+- (void)didCompleteTextEntry:(id)entry
 {
   [(ProxCardKitTestPasscodeEntryViewController *)self showActivityIndicatorWithStatus:@"Waiting"];
   v4 = dispatch_time(0, 1000000000);
@@ -17,11 +17,11 @@
   dispatch_after(v4, &_dispatch_main_q, block);
 }
 
-- (ProxCardKitTestPasscodeEntryViewController)initWithContentView:(id)a3
+- (ProxCardKitTestPasscodeEntryViewController)initWithContentView:(id)view
 {
   v7.receiver = self;
   v7.super_class = ProxCardKitTestPasscodeEntryViewController;
-  v3 = [(ProxCardKitTestPasscodeEntryViewController *)&v7 initWithContentView:a3];
+  v3 = [(ProxCardKitTestPasscodeEntryViewController *)&v7 initWithContentView:view];
   v4 = v3;
   if (v3)
   {

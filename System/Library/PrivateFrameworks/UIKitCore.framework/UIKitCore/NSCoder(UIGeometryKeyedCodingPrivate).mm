@@ -9,13 +9,13 @@
 {
   v10 = a6;
   v11 = _NSStringFromCAFrameRateRange(a2, a3, a4);
-  [a1 encodeObject:v11 forKey:v10];
+  [self encodeObject:v11 forKey:v10];
 }
 
 - (float)_ui_decodeCAFrameRateRangeForKey:()UIGeometryKeyedCodingPrivate
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if (v5)
   {

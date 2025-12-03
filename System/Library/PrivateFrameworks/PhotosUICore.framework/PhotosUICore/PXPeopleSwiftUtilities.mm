@@ -1,35 +1,35 @@
 @interface PXPeopleSwiftUtilities
-+ (id)fetchAddPeopleCandidatesIn:(id)a3;
-+ (id)fetchAllSocialGroupDetailedDebugDescriptionFor:(id)a3;
-+ (id)untaggingViewControllerForFace:(id)a3;
-+ (int64_t)currentSortOrderFor:(id)a3;
-+ (void)setWithSortOrder:(int64_t)a3 to:(id)a4;
++ (id)fetchAddPeopleCandidatesIn:(id)in;
++ (id)fetchAllSocialGroupDetailedDebugDescriptionFor:(id)for;
++ (id)untaggingViewControllerForFace:(id)face;
++ (int64_t)currentSortOrderFor:(id)for;
++ (void)setWithSortOrder:(int64_t)order to:(id)to;
 @end
 
 @implementation PXPeopleSwiftUtilities
 
-+ (id)fetchAllSocialGroupDetailedDebugDescriptionFor:(id)a3
++ (id)fetchAllSocialGroupDetailedDebugDescriptionFor:(id)for
 {
-  v3 = a3;
-  sub_1A3D792E4(v3);
+  forCopy = for;
+  sub_1A3D792E4(forCopy);
 
   v4 = sub_1A524C634();
 
   return v4;
 }
 
-+ (int64_t)currentSortOrderFor:(id)a3
++ (int64_t)currentSortOrderFor:(id)for
 {
-  v3 = a3;
-  v4 = [v3 px_localDefaults];
-  v5 = [v4 numberForKey_];
-  if (v5)
+  forCopy = for;
+  px_localDefaults = [forCopy px_localDefaults];
+  numberForKey_ = [px_localDefaults numberForKey_];
+  if (numberForKey_)
   {
-    v6 = v5;
-    v7 = sub_1A3D79860([v5 integerValue]);
+    v6 = numberForKey_;
+    v7 = sub_1A3D79860([numberForKey_ integerValue]);
 
-    v3 = v4;
-    v4 = v6;
+    forCopy = px_localDefaults;
+    px_localDefaults = v6;
   }
 
   else
@@ -40,26 +40,26 @@
   return v7;
 }
 
-+ (void)setWithSortOrder:(int64_t)a3 to:(id)a4
++ (void)setWithSortOrder:(int64_t)order to:(id)to
 {
-  v5 = a4;
-  sub_1A3D79C1C(a3, v5);
+  toCopy = to;
+  sub_1A3D79C1C(order, toCopy);
 }
 
-+ (id)fetchAddPeopleCandidatesIn:(id)a3
++ (id)fetchAddPeopleCandidatesIn:(id)in
 {
-  v3 = a3;
-  v4 = sub_1A3D79D6C(v3, 0, 0);
+  inCopy = in;
+  v4 = sub_1A3D79D6C(inCopy, 0, 0);
   v6 = v5;
   v8 = v7;
 
   return v4;
 }
 
-+ (id)untaggingViewControllerForFace:(id)a3
++ (id)untaggingViewControllerForFace:(id)face
 {
-  v3 = a3;
-  v4 = sub_1A3D7A428(v3);
+  faceCopy = face;
+  v4 = sub_1A3D7A428(faceCopy);
 
   return v4;
 }

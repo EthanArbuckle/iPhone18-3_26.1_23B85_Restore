@@ -1,18 +1,18 @@
 @interface REPredictor
 + (id)availablePredictors;
 + (id)supportedFeatures;
-+ (id)systemPredictorsSupportingFeatureSet:(id)a3 relevanceEngine:(id)a4;
++ (id)systemPredictorsSupportingFeatureSet:(id)set relevanceEngine:(id)engine;
 - (NSCountedSet)outstandingActivities;
 - (id)_init;
 - (void)_performUpdate;
-- (void)beginActivity:(id)a3;
+- (void)beginActivity:(id)activity;
 - (void)beginUpdates;
 - (void)dealloc;
 - (void)endUpdates;
-- (void)enumerateInflectionFeatureValues:(id)a3;
-- (void)finishActivity:(id)a3;
-- (void)onQueue:(id)a3;
-- (void)onQueueSync:(id)a3;
+- (void)enumerateInflectionFeatureValues:(id)values;
+- (void)finishActivity:(id)activity;
+- (void)onQueue:(id)queue;
+- (void)onQueueSync:(id)sync;
 - (void)updateObservers;
 @end
 
@@ -49,19 +49,19 @@ void __34__REPredictor_availablePredictors__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)systemPredictorsSupportingFeatureSet:(id)a3 relevanceEngine:(id)a4
++ (id)systemPredictorsSupportingFeatureSet:(id)set relevanceEngine:(id)engine
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = a4;
+  setCopy = set;
+  engineCopy = engine;
   v7 = objc_alloc_init(REMutableFeatureSet);
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [a1 availablePredictors];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  availablePredictors = [self availablePredictors];
+  v10 = [availablePredictors countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -72,29 +72,29 @@ void __34__REPredictor_availablePredictors__block_invoke()
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(availablePredictors);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 supportedFeatures];
-        v16 = [v15 mutableCopy];
+        supportedFeatures = [v14 supportedFeatures];
+        v16 = [supportedFeatures mutableCopy];
 
-        [v16 intersetFeatureSet:v6];
+        [v16 intersetFeatureSet:setCopy];
         if ([v16 count])
         {
           [(REMutableFeatureSet *)v7 unionFeatureSet:v16];
-          v17 = [v14 sharedInstance];
-          [v8 addObject:v17];
+          sharedInstance = [v14 sharedInstance];
+          [array addObject:sharedInstance];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [availablePredictors countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v11);
   }
 
-  v18 = [[REPredictorManager alloc] initWithPredictors:v8 featureSet:v7 relevanceEngine:v21];
+  v18 = [[REPredictorManager alloc] initWithPredictors:array featureSet:v7 relevanceEngine:engineCopy];
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
@@ -104,8 +104,8 @@ void __34__REPredictor_availablePredictors__block_invoke()
 {
   v32.receiver = self;
   v32.super_class = REPredictor;
-  v2 = [(REObservableSingleton *)&v32 _init];
-  if (v2)
+  _init = [(REObservableSingleton *)&v32 _init];
+  if (_init)
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
@@ -118,22 +118,22 @@ void __34__REPredictor_availablePredictors__block_invoke()
     v6 = dispatch_queue_attr_make_with_qos_class(v5, QOS_CLASS_USER_INITIATED, 0);
 
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.RelevanceEngine.%@", v4];
-    v8 = [v7 UTF8String];
-    v9 = [_init_QueuePool nextAvailableQueue];
-    v10 = dispatch_queue_create_with_target_V2(v8, v6, v9);
-    v11 = v2[2];
-    v2[2] = v10;
+    uTF8String = [v7 UTF8String];
+    nextAvailableQueue = [_init_QueuePool nextAvailableQueue];
+    v10 = dispatch_queue_create_with_target_V2(uTF8String, v6, nextAvailableQueue);
+    v11 = _init[2];
+    _init[2] = v10;
 
     v12 = objc_opt_new();
-    v13 = v2[3];
-    v2[3] = v12;
+    v13 = _init[3];
+    _init[3] = v12;
 
-    *(v2 + 12) = 0;
+    *(_init + 12) = 0;
     v14 = [MEMORY[0x277CCA940] set];
-    v15 = v2[5];
-    v2[5] = v14;
+    v15 = _init[5];
+    _init[5] = v14;
 
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, _init);
     v16 = +[(RESingleton *)RERelevanceSignalUpdateScheduler];
     [objc_opt_class() updateInterval];
     v18 = v17;
@@ -144,19 +144,19 @@ void __34__REPredictor_availablePredictors__block_invoke()
     objc_copyWeak(&v30, &location);
     [v16 scheduleEventWithIdentifier:v4 updateFrequency:v29 completion:v18];
 
-    v19 = v2[2];
+    v19 = _init[2];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __20__REPredictor__init__block_invoke_3;
     v27[3] = &unk_2785F9A90;
     objc_copyWeak(&v28, &location);
     v20 = [REUpNextScheduler schedulerWithQueue:v19 delay:v27 updateBlock:0.1];
-    v21 = v2[4];
-    v2[4] = v20;
+    v21 = _init[4];
+    _init[4] = v20;
 
-    [v2 beginFetchingData];
+    [_init beginFetchingData];
     v22 = dispatch_time(0, 500000000);
-    v23 = v2[2];
+    v23 = _init[2];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __20__REPredictor__init__block_invoke_4;
@@ -169,7 +169,7 @@ void __34__REPredictor_availablePredictors__block_invoke()
     objc_destroyWeak(&location);
   }
 
-  return v2;
+  return _init;
 }
 
 uint64_t __20__REPredictor__init__block_invoke()
@@ -212,19 +212,19 @@ void __20__REPredictor__init__block_invoke_4(uint64_t a1)
   [(REPredictor *)&v6 dealloc];
 }
 
-- (void)onQueue:(id)a3
+- (void)onQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    dispatch_async(self->_queue, a3);
+    dispatch_async(self->_queue, queue);
   }
 }
 
-- (void)onQueueSync:(id)a3
+- (void)onQueueSync:(id)sync
 {
-  if (a3)
+  if (sync)
   {
-    dispatch_sync(self->_queue, a3);
+    dispatch_sync(self->_queue, sync);
   }
 }
 
@@ -250,10 +250,10 @@ void __30__REPredictor_updateObservers__block_invoke(uint64_t a1, void *a2)
 - (void)beginUpdates
 {
   os_unfair_lock_lock(&self->_predictorLock);
-  v3 = [(REPredictor *)self beginUpdatesCount];
-  [(REPredictor *)self setBeginUpdatesCount:v3 + 1];
+  beginUpdatesCount = [(REPredictor *)self beginUpdatesCount];
+  [(REPredictor *)self setBeginUpdatesCount:beginUpdatesCount + 1];
   os_unfair_lock_unlock(&self->_predictorLock);
-  if ((v3 & 0x8000000000000000) == 0)
+  if ((beginUpdatesCount & 0x8000000000000000) == 0)
   {
 
     [(REPredictor *)self _setRunning:1];
@@ -263,10 +263,10 @@ void __30__REPredictor_updateObservers__block_invoke(uint64_t a1, void *a2)
 - (void)endUpdates
 {
   os_unfair_lock_lock(&self->_predictorLock);
-  v3 = [(REPredictor *)self beginUpdatesCount];
-  [(REPredictor *)self setBeginUpdatesCount:v3 - 1];
+  beginUpdatesCount = [(REPredictor *)self beginUpdatesCount];
+  [(REPredictor *)self setBeginUpdatesCount:beginUpdatesCount - 1];
   os_unfair_lock_unlock(&self->_predictorLock);
-  if (v3 <= 1)
+  if (beginUpdatesCount <= 1)
   {
 
     [(REPredictor *)self _setRunning:0];
@@ -288,18 +288,18 @@ uint64_t __27__REPredictor__setRunning___block_invoke(uint64_t a1)
   }
 }
 
-- (void)enumerateInflectionFeatureValues:(id)a3
+- (void)enumerateInflectionFeatureValues:(id)values
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  valuesCopy = values;
+  if (valuesCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(REPredictor *)self engines];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    engines = [(REPredictor *)self engines];
+    v6 = [engines countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -310,22 +310,22 @@ uint64_t __27__REPredictor__setRunning___block_invoke(uint64_t a1)
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(engines);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 inflectionFeatureValues];
+          inflectionFeatureValues = [v10 inflectionFeatureValues];
           v14[0] = MEMORY[0x277D85DD0];
           v14[1] = 3221225472;
           v14[2] = __48__REPredictor_enumerateInflectionFeatureValues___block_invoke;
           v14[3] = &unk_2785FC1F0;
-          v12 = v4;
+          v12 = valuesCopy;
           v14[4] = v10;
           v15 = v12;
-          [v11 enumerateKeysAndObjectsUsingBlock:v14];
+          [inflectionFeatureValues enumerateKeysAndObjectsUsingBlock:v14];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [engines countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v7);
@@ -400,19 +400,19 @@ void __48__REPredictor_enumerateInflectionFeatureValues___block_invoke(uint64_t 
   [(REPredictor *)self finishFetchingData];
 }
 
-- (void)beginActivity:(id)a3
+- (void)beginActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   os_unfair_lock_lock(&self->_predictorLock);
-  [(NSCountedSet *)self->_activities addObject:v4];
+  [(NSCountedSet *)self->_activities addObject:activityCopy];
   os_unfair_lock_unlock(&self->_predictorLock);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__REPredictor_REActivityTracking__beginActivity___block_invoke;
   v6[3] = &unk_2785FC218;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = activityCopy;
+  v5 = activityCopy;
   [(REObservableSingleton *)self enumerateObservers:v6];
 }
 
@@ -425,19 +425,19 @@ void __49__REPredictor_REActivityTracking__beginActivity___block_invoke(uint64_t
   }
 }
 
-- (void)finishActivity:(id)a3
+- (void)finishActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   os_unfair_lock_lock(&self->_predictorLock);
-  [(NSCountedSet *)self->_activities removeObject:v4];
+  [(NSCountedSet *)self->_activities removeObject:activityCopy];
   os_unfair_lock_unlock(&self->_predictorLock);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__REPredictor_REActivityTracking__finishActivity___block_invoke;
   v6[3] = &unk_2785FC218;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = activityCopy;
+  v5 = activityCopy;
   [(REObservableSingleton *)self enumerateObservers:v6];
 }
 

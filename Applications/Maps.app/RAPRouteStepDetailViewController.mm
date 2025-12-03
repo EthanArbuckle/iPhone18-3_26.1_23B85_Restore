@@ -1,47 +1,47 @@
 @interface RAPRouteStepDetailViewController
 - (CLLocationCoordinate2D)startingCoordinateForMapPicker;
-- (RAPRouteStepDetailViewController)initWithReport:(id)a3 step:(id)a4 userPath:(id)a5 routeIndex:(unint64_t)a6 delegate:(id)a7;
+- (RAPRouteStepDetailViewController)initWithReport:(id)report step:(id)step userPath:(id)path routeIndex:(unint64_t)index delegate:(id)delegate;
 - (id)context;
 - (void)_dismiss;
-- (void)_saveManeuverIconWithCompletion:(id)a3;
-- (void)_saveMapImageWithCompletion:(id)a3;
+- (void)_saveManeuverIconWithCompletion:(id)completion;
+- (void)_saveMapImageWithCompletion:(id)completion;
 - (void)_submit;
-- (void)_submitPressed:(id)a3;
+- (void)_submitPressed:(id)pressed;
 - (void)_takeSnapshots;
-- (void)_updateAggregatedDataWithCompletion:(id)a3;
-- (void)_uploadForm:(id)a3;
-- (void)didReceiveMessageFromUserContentController:(id)a3 message:(id)a4 replyHandler:(id)a5;
+- (void)_updateAggregatedDataWithCompletion:(id)completion;
+- (void)_uploadForm:(id)form;
+- (void)didReceiveMessageFromUserContentController:(id)controller message:(id)message replyHandler:(id)handler;
 - (void)setupViews;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation RAPRouteStepDetailViewController
 
-- (void)didReceiveMessageFromUserContentController:(id)a3 message:(id)a4 replyHandler:(id)a5
+- (void)didReceiveMessageFromUserContentController:(id)controller message:(id)message replyHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  messageCopy = message;
+  handlerCopy = handler;
+  controllerCopy = controller;
   v11 = sub_100798874();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v23 = v8;
+    v23 = messageCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "didReceiveMessageFromUserContentController:message:replyHandler called with message: %@", buf, 0xCu);
   }
 
   v21.receiver = self;
   v21.super_class = RAPRouteStepDetailViewController;
-  [(RAPWebBundleBaseMapViewController *)&v21 didReceiveMessageFromUserContentController:v10 message:v8 replyHandler:v9];
+  [(RAPWebBundleBaseMapViewController *)&v21 didReceiveMessageFromUserContentController:controllerCopy message:messageCopy replyHandler:handlerCopy];
 
-  v12 = [v8 objectForKeyedSubscript:@"name"];
+  v12 = [messageCopy objectForKeyedSubscript:@"name"];
   v13 = [v12 isEqualToString:@"context"];
 
   if (v13)
   {
-    v14 = [v8 objectForKeyedSubscript:@"supportedLocales"];
+    v14 = [messageCopy objectForKeyedSubscript:@"supportedLocales"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -53,14 +53,14 @@
     locales = self->_locales;
     self->_locales = v14;
 
-    v17 = [(RAPRouteStepDetailViewController *)self context];
-    v18 = [v17 context];
-    v9[2](v9, v18, 0);
+    context = [(RAPRouteStepDetailViewController *)self context];
+    v17Context = [context context];
+    handlerCopy[2](handlerCopy, v17Context, 0);
   }
 
   else
   {
-    v19 = [v8 objectForKeyedSubscript:@"name"];
+    v19 = [messageCopy objectForKeyedSubscript:@"name"];
     v20 = [v19 isEqualToString:@"setValid"];
 
     if (v20)
@@ -84,14 +84,14 @@
   return result;
 }
 
-- (void)_uploadForm:(id)a3
+- (void)_uploadForm:(id)form
 {
-  v4 = a3;
-  v5 = [(RAPReport *)self->_report initialQuestion];
+  formCopy = form;
+  initialQuestion = [(RAPReport *)self->_report initialQuestion];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = initialQuestion;
   }
 
   else
@@ -103,7 +103,7 @@
 
   if (v7)
   {
-    [v7 setDynamicForm:v4];
+    [v7 setDynamicForm:formCopy];
     [v7 setReportedUserPath:self->_userPath];
     if (self->_mapSnapshot)
     {
@@ -187,15 +187,15 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "_cancelPressed, will pop to previous VC", v6, 2u);
   }
 
-  v4 = [(RAPRouteStepDetailViewController *)self navigationController];
-  v5 = [v4 popViewControllerAnimated:1];
+  navigationController = [(RAPRouteStepDetailViewController *)self navigationController];
+  v5 = [navigationController popViewControllerAnimated:1];
 
   [RAPAnalyticsManager captureRAPCancelActionFromReport:self->_report forMuid:0];
 }
 
-- (void)_updateAggregatedDataWithCompletion:(id)a3
+- (void)_updateAggregatedDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100798874();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -203,21 +203,21 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "_updateAggregatedDataWithCompletion will fetch latest aggregatedData.", buf, 2u);
   }
 
-  v6 = [(RAPWebBundleBaseViewController *)self webView];
+  webView = [(RAPWebBundleBaseViewController *)self webView];
   v7 = +[WKContentWorld pageWorld];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100628CF8;
   v9[3] = &unk_101624420;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v6 callAsyncJavaScript:@"return rapGetData()" arguments:0 inFrame:0 inContentWorld:v7 completionHandler:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [webView callAsyncJavaScript:@"return rapGetData()" arguments:0 inFrame:0 inContentWorld:v7 completionHandler:v9];
 }
 
-- (void)_submitPressed:(id)a3
+- (void)_submitPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = sub_100798874();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -236,29 +236,29 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_saveMapImageWithCompletion:(id)a3
+- (void)_saveMapImageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MKMapSnapshotOptions);
-  v6 = [(RAPRouteStepDetailViewController *)self view];
-  [v6 frame];
+  view = [(RAPRouteStepDetailViewController *)self view];
+  [view frame];
   v8 = v7 + -32.0;
 
   v69 = v8 * 0.453999996;
   v70 = v8;
   [v5 setSize:v8];
   [v5 setMapType:0];
-  v9 = [(GEOComposedRouteStep *)self->_step composedRoute];
-  [v5 _setComposedRouteForRouteLine:v9];
+  composedRoute = [(GEOComposedRouteStep *)self->_step composedRoute];
+  [v5 _setComposedRouteForRouteLine:composedRoute];
 
   if ([(GEOComposedRouteStep *)self->_step isArrivalStep])
   {
-    v10 = [(GEOComposedRouteStep *)self->_step composedRoute];
-    v11 = [v10 legIndexForStepIndex:{-[GEOComposedRouteStep stepIndex](self->_step, "stepIndex")}];
+    composedRoute2 = [(GEOComposedRouteStep *)self->_step composedRoute];
+    v11 = [composedRoute2 legIndexForStepIndex:{-[GEOComposedRouteStep stepIndex](self->_step, "stepIndex")}];
 
-    v12 = [(GEOComposedRouteStep *)self->_step composedRoute];
-    v13 = [v12 legs];
-    v14 = [v13 count];
+    composedRoute3 = [(GEOComposedRouteStep *)self->_step composedRoute];
+    legs = [composedRoute3 legs];
+    v14 = [legs count];
 
     if (v11 < v14)
     {
@@ -267,20 +267,20 @@
       [(GEOComposedRouteStep *)self->_step endGeoCoordinate];
       v18 = v17;
       v19 = [[VKCustomFeature alloc] initWithCoordinate:{v16, v17}];
-      v20 = [(GEOComposedRouteStep *)self->_step composedRoute];
-      v21 = [v20 legs];
-      v22 = [v21 objectAtIndexedSubscript:v11];
-      v23 = [v22 destination];
+      composedRoute4 = [(GEOComposedRouteStep *)self->_step composedRoute];
+      legs2 = [composedRoute4 legs];
+      v22 = [legs2 objectAtIndexedSubscript:v11];
+      destination = [v22 destination];
 
-      v24 = [v23 styleAttributes];
-      if (([v24 hasAttributes] & 1) == 0)
+      styleAttributes = [destination styleAttributes];
+      if (([styleAttributes hasAttributes] & 1) == 0)
       {
         v25 = +[GEOFeatureStyleAttributes markerStyleAttributes];
 
-        v24 = v25;
+        styleAttributes = v25;
       }
 
-      v26 = [v24 copy];
+      v26 = [styleAttributes copy];
 
       *buf = xmmword_101212BE0;
       [v26 replaceAttributes:buf count:2];
@@ -296,16 +296,16 @@
   if (step)
   {
     v30 = step;
-    v31 = [(GEOComposedRouteStep *)v30 composedRoute];
-    [v31 pointAtRouteCoordinate:{-[GEOComposedRouteStep maneuverStartRouteCoordinate](v30, "maneuverStartRouteCoordinate")}];
+    composedRoute5 = [(GEOComposedRouteStep *)v30 composedRoute];
+    [composedRoute5 pointAtRouteCoordinate:{-[GEOComposedRouteStep maneuverStartRouteCoordinate](v30, "maneuverStartRouteCoordinate")}];
     v68 = v32;
     v34 = v33;
     v36 = v35;
 
-    v37 = [(GEOComposedRouteStep *)v30 composedRoute];
-    v38 = [(GEOComposedRouteStep *)v30 endRouteCoordinate];
+    composedRoute6 = [(GEOComposedRouteStep *)v30 composedRoute];
+    endRouteCoordinate = [(GEOComposedRouteStep *)v30 endRouteCoordinate];
 
-    [v37 pointAtRouteCoordinate:v38];
+    [composedRoute6 pointAtRouteCoordinate:endRouteCoordinate];
     v67 = v39;
     v41 = v40;
     v43 = v42;
@@ -350,12 +350,12 @@
   mapSnapshotter = self->_mapSnapshotter;
   self->_mapSnapshotter = v61;
 
-  v63 = [(GEOComposedRouteStep *)self->_step stepIndex];
+  stepIndex = [(GEOComposedRouteStep *)self->_step stepIndex];
   v64 = sub_100798874();
   if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    *&buf[4] = v63;
+    *&buf[4] = stepIndex;
     _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_INFO, "Will create a snapshot of step with stepInde: %lu", buf, 0xCu);
   }
 
@@ -366,8 +366,8 @@
   v71[2] = sub_1006295E4;
   v71[3] = &unk_1016243F8;
   objc_copyWeak(v73, buf);
-  v73[1] = v63;
-  v66 = v4;
+  v73[1] = stepIndex;
+  v66 = completionCopy;
   v72 = v66;
   [(MKMapSnapshotter *)v65 startWithCompletionHandler:v71];
 
@@ -375,9 +375,9 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_saveManeuverIconWithCompletion:(id)a3
+- (void)_saveManeuverIconWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(33, 0);
   block[0] = _NSConcreteStackBlock;
@@ -385,8 +385,8 @@
   block[2] = sub_100629860;
   block[3] = &unk_101660648;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
@@ -459,28 +459,28 @@
 - (void)setupViews
 {
   v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_submitPressed:"];
-  v4 = [(RAPRouteStepDetailViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(RAPRouteStepDetailViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelPressed:"];
-  v6 = [(RAPRouteStepDetailViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  navigationItem2 = [(RAPRouteStepDetailViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v5];
 
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"[RAP Web UI] Report an Issue" value:@"localized string not found" table:0];
-  v9 = [(RAPRouteStepDetailViewController *)self navigationItem];
-  [v9 setTitle:v8];
+  navigationItem3 = [(RAPRouteStepDetailViewController *)self navigationItem];
+  [navigationItem3 setTitle:v8];
 
   v10.receiver = self;
   v10.super_class = RAPRouteStepDetailViewController;
   [(RAPWebBundleBaseViewController *)&v10 setupViews];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = RAPRouteStepDetailViewController;
-  [(RAPRouteStepDetailViewController *)&v4 viewDidDisappear:a3];
+  [(RAPRouteStepDetailViewController *)&v4 viewDidDisappear:disappear];
   if ([(RAPRouteStepDetailViewController *)self isMovingFromParentViewController])
   {
     [(RAPRouteStepDetailViewController *)self _updateAggregatedDataWithCompletion:0];
@@ -488,11 +488,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RAPRouteStepDetailViewController;
-  [(RAPRouteStepDetailViewController *)&v4 viewDidAppear:a3];
+  [(RAPRouteStepDetailViewController *)&v4 viewDidAppear:appear];
   [RAPAnalyticsManager captureRAPRevealActionFromReport:self->_report forMuid:0];
 }
 
@@ -504,24 +504,24 @@
   [(RAPRouteStepDetailViewController *)self _takeSnapshots];
 }
 
-- (RAPRouteStepDetailViewController)initWithReport:(id)a3 step:(id)a4 userPath:(id)a5 routeIndex:(unint64_t)a6 delegate:(id)a7
+- (RAPRouteStepDetailViewController)initWithReport:(id)report step:(id)step userPath:(id)path routeIndex:(unint64_t)index delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  reportCopy = report;
+  stepCopy = step;
+  pathCopy = path;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = RAPRouteStepDetailViewController;
-  v17 = [(RAPWebBundleBaseMapViewController *)&v20 initWithReport:v13];
+  v17 = [(RAPWebBundleBaseMapViewController *)&v20 initWithReport:reportCopy];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_report, a3);
-    objc_storeStrong(&v18->_step, a4);
-    objc_storeStrong(&v18->_userPath, a5);
-    v18->_isMissedStep = [v15 traversal] == 2;
-    v18->_routeIndex = a6;
-    objc_storeWeak(&v18->_delegate, v16);
+    objc_storeStrong(&v17->_report, report);
+    objc_storeStrong(&v18->_step, step);
+    objc_storeStrong(&v18->_userPath, path);
+    v18->_isMissedStep = [pathCopy traversal] == 2;
+    v18->_routeIndex = index;
+    objc_storeWeak(&v18->_delegate, delegateCopy);
   }
 
   return v18;

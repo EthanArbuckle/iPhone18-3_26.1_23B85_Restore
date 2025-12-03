@@ -1,23 +1,23 @@
 @interface STPersistentIDSMessageTransportMessageIdentifierMap
-+ (id)_loadMessageIdentifiersByPrimitiveIdentifierFromKeyValueStore:(id)a3;
++ (id)_loadMessageIdentifiersByPrimitiveIdentifierFromKeyValueStore:(id)store;
 - (NSNumber)numberOfEntries;
-- (STPersistentIDSMessageTransportMessageIdentifierMap)initWithKeyValueStore:(id)a3;
-- (id)messageIdentifierForPrimitiveMessageIdentifier:(id)a3;
-- (void)insertMessageIdentifier:(id)a3 forPrimitiveMessageIdentifier:(id)a4;
-- (void)removeMessageIdentifier:(id)a3;
-- (void)removePrimitiveMessageIdentifier:(id)a3;
+- (STPersistentIDSMessageTransportMessageIdentifierMap)initWithKeyValueStore:(id)store;
+- (id)messageIdentifierForPrimitiveMessageIdentifier:(id)identifier;
+- (void)insertMessageIdentifier:(id)identifier forPrimitiveMessageIdentifier:(id)messageIdentifier;
+- (void)removeMessageIdentifier:(id)identifier;
+- (void)removePrimitiveMessageIdentifier:(id)identifier;
 - (void)save;
 @end
 
 @implementation STPersistentIDSMessageTransportMessageIdentifierMap
 
-- (STPersistentIDSMessageTransportMessageIdentifierMap)initWithKeyValueStore:(id)a3
+- (STPersistentIDSMessageTransportMessageIdentifierMap)initWithKeyValueStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = STPersistentIDSMessageTransportMessageIdentifierMap;
   v5 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)&v17 init];
-  v6 = [STPersistentIDSMessageTransportMessageIdentifierMap _loadMessageIdentifiersByPrimitiveIdentifierFromKeyValueStore:v4];
+  v6 = [STPersistentIDSMessageTransportMessageIdentifierMap _loadMessageIdentifiersByPrimitiveIdentifierFromKeyValueStore:storeCopy];
   messageIdentifiersByPrimitiveIdentifier = v5->_messageIdentifiersByPrimitiveIdentifier;
   v5->_messageIdentifiersByPrimitiveIdentifier = v6;
 
@@ -34,16 +34,16 @@
   v16 = v11;
   [(NSMutableDictionary *)v10 enumerateKeysAndObjectsUsingBlock:v15];
   keyValueStore = v11->_keyValueStore;
-  v11->_keyValueStore = v4;
-  v13 = v4;
+  v11->_keyValueStore = storeCopy;
+  v13 = storeCopy;
 
   return v11;
 }
 
 - (NSNumber)numberOfEntries
 {
-  v2 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
-  v3 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v2 count]);
+  messageIdentifiersByPrimitiveIdentifier = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
+  v3 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [messageIdentifiersByPrimitiveIdentifier count]);
 
   return v3;
 }
@@ -51,38 +51,38 @@
 - (void)save
 {
   v3 = objc_opt_new();
-  v4 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
+  messageIdentifiersByPrimitiveIdentifier = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100052534;
   v10[3] = &unk_1001A4868;
   v5 = v3;
   v11 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [messageIdentifiersByPrimitiveIdentifier enumerateKeysAndObjectsUsingBlock:v10];
 
   v9 = 0;
   v6 = [NSPropertyListSerialization dataWithPropertyList:v5 format:200 options:0 error:&v9];
   v7 = v9;
   if (v6)
   {
-    v8 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self keyValueStore];
-    [v8 persistValue:v6 forKey:@"messageIdentifiersByPrimitiveIdentifier"];
+    keyValueStore = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self keyValueStore];
+    [keyValueStore persistValue:v6 forKey:@"messageIdentifiersByPrimitiveIdentifier"];
   }
 
   else
   {
-    v8 = +[STLog idsTransportMessageIdentifierMap];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    keyValueStore = +[STLog idsTransportMessageIdentifierMap];
+    if (os_log_type_enabled(keyValueStore, OS_LOG_TYPE_ERROR))
     {
       sub_100119584();
     }
   }
 }
 
-+ (id)_loadMessageIdentifiersByPrimitiveIdentifierFromKeyValueStore:(id)a3
++ (id)_loadMessageIdentifiersByPrimitiveIdentifierFromKeyValueStore:(id)store
 {
-  v3 = a3;
-  v4 = [v3 readValueForKey:@"messageIdentifiersByPrimitiveIdentifier"];
+  storeCopy = store;
+  v4 = [storeCopy readValueForKey:@"messageIdentifiersByPrimitiveIdentifier"];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -94,7 +94,7 @@
         sub_100119600();
       }
 
-      [v3 removeValueForKey:@"messageIdentifiersByPrimitiveIdentifier"];
+      [storeCopy removeValueForKey:@"messageIdentifiersByPrimitiveIdentifier"];
       v6 = +[NSUserDefaults standardUserDefaults];
       if ([v6 BOOLForKey:@"DidPurgeOversizedIdentifierMap"])
       {
@@ -168,62 +168,62 @@ LABEL_24:
   return v11;
 }
 
-- (void)insertMessageIdentifier:(id)a3 forPrimitiveMessageIdentifier:(id)a4
+- (void)insertMessageIdentifier:(id)identifier forPrimitiveMessageIdentifier:(id)messageIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 copy];
-  v9 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
-  [v9 setObject:v8 forKeyedSubscript:v6];
+  messageIdentifierCopy = messageIdentifier;
+  identifierCopy = identifier;
+  v8 = [identifierCopy copy];
+  messageIdentifiersByPrimitiveIdentifier = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
+  [messageIdentifiersByPrimitiveIdentifier setObject:v8 forKeyedSubscript:messageIdentifierCopy];
 
-  v10 = [v6 copy];
-  v11 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self primitiveIdentifiersByMessageIdentifier];
-  [v11 setObject:v10 forKeyedSubscript:v7];
+  v10 = [messageIdentifierCopy copy];
+  primitiveIdentifiersByMessageIdentifier = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self primitiveIdentifiersByMessageIdentifier];
+  [primitiveIdentifiersByMessageIdentifier setObject:v10 forKeyedSubscript:identifierCopy];
 
   [(STPersistentIDSMessageTransportMessageIdentifierMap *)self save];
 }
 
-- (void)removePrimitiveMessageIdentifier:(id)a3
+- (void)removePrimitiveMessageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
-  v8 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  messageIdentifiersByPrimitiveIdentifier = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
+  v8 = [messageIdentifiersByPrimitiveIdentifier objectForKeyedSubscript:identifierCopy];
 
-  v6 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
-  [v6 removeObjectForKey:v4];
+  messageIdentifiersByPrimitiveIdentifier2 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
+  [messageIdentifiersByPrimitiveIdentifier2 removeObjectForKey:identifierCopy];
 
   if (v8)
   {
-    v7 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self primitiveIdentifiersByMessageIdentifier];
-    [v7 removeObjectForKey:v8];
+    primitiveIdentifiersByMessageIdentifier = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self primitiveIdentifiersByMessageIdentifier];
+    [primitiveIdentifiersByMessageIdentifier removeObjectForKey:v8];
   }
 
   [(STPersistentIDSMessageTransportMessageIdentifierMap *)self save];
 }
 
-- (void)removeMessageIdentifier:(id)a3
+- (void)removeMessageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self primitiveIdentifiersByMessageIdentifier];
-  v8 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  primitiveIdentifiersByMessageIdentifier = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self primitiveIdentifiersByMessageIdentifier];
+  v8 = [primitiveIdentifiersByMessageIdentifier objectForKeyedSubscript:identifierCopy];
 
-  v6 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self primitiveIdentifiersByMessageIdentifier];
-  [v6 removeObjectForKey:v4];
+  primitiveIdentifiersByMessageIdentifier2 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self primitiveIdentifiersByMessageIdentifier];
+  [primitiveIdentifiersByMessageIdentifier2 removeObjectForKey:identifierCopy];
 
   if (v8)
   {
-    v7 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
-    [v7 removeObjectForKey:v8];
+    messageIdentifiersByPrimitiveIdentifier = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
+    [messageIdentifiersByPrimitiveIdentifier removeObjectForKey:v8];
   }
 
   [(STPersistentIDSMessageTransportMessageIdentifierMap *)self save];
 }
 
-- (id)messageIdentifierForPrimitiveMessageIdentifier:(id)a3
+- (id)messageIdentifierForPrimitiveMessageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  messageIdentifiersByPrimitiveIdentifier = [(STPersistentIDSMessageTransportMessageIdentifierMap *)self messageIdentifiersByPrimitiveIdentifier];
+  v6 = [messageIdentifiersByPrimitiveIdentifier objectForKeyedSubscript:identifierCopy];
 
   v7 = [v6 copy];
 

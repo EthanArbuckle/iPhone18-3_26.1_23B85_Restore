@@ -1,8 +1,8 @@
 @interface _UIPhysicalButtonBehaviorCameraShutterOptions
 + (id)behaviorOptions;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIPhysicalButtonBehaviorCameraShutterOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -10,11 +10,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
+  builder = [MEMORY[0x1E698E6B8] builder];
   v7.receiver = self;
   v7.super_class = _UIPhysicalButtonBehaviorCameraShutterOptions;
-  v4 = [v3 appendUnsignedInteger:{-[_UIPhysicalButtonBehaviorOptions hash](&v7, sel_hash)}];
-  v5 = [v3 hash];
+  v4 = [builder appendUnsignedInteger:{-[_UIPhysicalButtonBehaviorOptions hash](&v7, sel_hash)}];
+  v5 = [builder hash];
 
   return v5;
 }
@@ -28,25 +28,25 @@
 
 - (_UIPhysicalButtonBehaviorCameraShutterOptions)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:474 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonBehaviorCameraShutterOptions init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:474 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonBehaviorCameraShutterOptions init]", objc_opt_class()}];
 
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = _UIPhysicalButtonBehaviorCameraShutterOptions;
-  return [(_UIPhysicalButtonBehaviorOptions *)&v4 isEqual:a3];
+  return [(_UIPhysicalButtonBehaviorOptions *)&v4 isEqual:equal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UIPhysicalButtonBehaviorCameraShutterOptions alloc];
-  v5 = [(_UIPhysicalButtonBehaviorOptions *)self _behavior];
+  _behavior = [(_UIPhysicalButtonBehaviorOptions *)self _behavior];
 
-  return [(_UIPhysicalButtonBehaviorOptions *)v4 _initWithBehavior:v5];
+  return [(_UIPhysicalButtonBehaviorOptions *)v4 _initWithBehavior:_behavior];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface _PASSQLColumnMapping
-- (_PASSQLColumnMapping)initWithStatementPtr:(sqlite3_stmt *)a3;
-- (int)indexForColumnAlias:(const char *)a3;
-- (int)indexForColumnName:(const char *)a3 table:(const char *)uniqueTableName;
+- (_PASSQLColumnMapping)initWithStatementPtr:(sqlite3_stmt *)ptr;
+- (int)indexForColumnAlias:(const char *)alias;
+- (int)indexForColumnName:(const char *)name table:(const char *)uniqueTableName;
 - (void)_deallocState;
 - (void)_ensureColumnMappingExists;
 - (void)dealloc;
@@ -69,33 +69,33 @@
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (int)indexForColumnAlias:(const char *)a3
+- (int)indexForColumnAlias:(const char *)alias
 {
-  if (!a3 || !*a3)
+  if (!alias || !*alias)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"alias && alias[0]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"alias && alias[0]"}];
   }
 
   [(_PASSQLColumnMapping *)self _ensureColumnMappingExists];
-  v6 = strlen(a3);
-  StringWithSize = _PASCompactStringArrayFindStringWithSize(self->_columnAliases, a3, v6);
+  v6 = strlen(alias);
+  StringWithSize = _PASCompactStringArrayFindStringWithSize(self->_columnAliases, alias, v6);
   if (StringWithSize == -1)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:205 description:{@"Query does not reference column alias: %s", a3}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:205 description:{@"Query does not reference column alias: %s", alias}];
   }
 
   return StringWithSize;
 }
 
-- (int)indexForColumnName:(const char *)a3 table:(const char *)uniqueTableName
+- (int)indexForColumnName:(const char *)name table:(const char *)uniqueTableName
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a3 || !*a3)
+  if (!name || !*name)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"columnName && columnName[0]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"columnName && columnName[0]"}];
   }
 
   [(_PASSQLColumnMapping *)self _ensureColumnMappingExists];
@@ -104,14 +104,14 @@
     uniqueTableName = self->_uniqueTableName;
     if (!uniqueTableName)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:188 description:@"nil table name provided for query which references multiple tables"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:188 description:@"nil table name provided for query which references multiple tables"];
 
       uniqueTableName = self->_uniqueTableName;
     }
   }
 
-  v8 = strlen(a3);
+  v8 = strlen(name);
   v9 = strlen(uniqueTableName);
   v10 = v9;
   v11 = v8 + v9;
@@ -140,15 +140,15 @@
   }
 
   v14 = v25;
-  memcpy(v13, a3, v8);
+  memcpy(v13, name, v8);
   v13[v8] = 46;
   memcpy(&v13[v8 + 1], uniqueTableName, v10);
   v13[v8 + 1 + v10] = 0;
   StringWithSize = _PASCompactStringArrayFindStringWithSize(self->_tableColumnNamesFromSchema, v13, v11 + 1);
   if (StringWithSize == -1)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:194 description:{@"Query does not reference table-qualified column name: %s", v13}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:194 description:{@"Query does not reference table-qualified column name: %s", v13}];
 
     if (v14)
     {
@@ -178,14 +178,14 @@ LABEL_10:
   self->_uniqueTableName = 0;
 }
 
-- (_PASSQLColumnMapping)initWithStatementPtr:(sqlite3_stmt *)a3
+- (_PASSQLColumnMapping)initWithStatementPtr:(sqlite3_stmt *)ptr
 {
   v5.receiver = self;
   v5.super_class = _PASSQLColumnMapping;
   result = [(_PASSQLColumnMapping *)&v5 init];
   if (result)
   {
-    result->_stmt = a3;
+    result->_stmt = ptr;
   }
 
   return result;

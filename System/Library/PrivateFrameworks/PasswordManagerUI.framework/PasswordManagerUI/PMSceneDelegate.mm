@@ -1,33 +1,33 @@
 @interface PMSceneDelegate
-- (void)handleUpdateLockWindowVisibilitiesNotification:(id)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (void)handleUpdateLockWindowVisibilitiesNotification:(id)notification;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation PMSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_21C738290(v8, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_21C738290(sceneCopy, optionsCopy);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   sub_21C7066EC();
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = self;
-  v8 = [v6 type];
+  itemCopy = item;
+  selfCopy = self;
+  type = [itemCopy type];
   v9 = sub_21CB855C4();
   v11 = v10;
 
@@ -40,12 +40,12 @@
 
   else
   {
-    v13 = *(&v7->super.super.isa + OBJC_IVAR____TtC17PasswordManagerUI15PMSceneDelegate_selectedQuickAction);
+    v13 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC17PasswordManagerUI15PMSceneDelegate_selectedQuickAction);
     sub_21CB81D04();
   }
 }
 
-- (void)handleUpdateLockWindowVisibilitiesNotification:(id)a3
+- (void)handleUpdateLockWindowVisibilitiesNotification:(id)notification
 {
   v4 = sub_21CB807E4();
   v5 = *(v4 - 8);
@@ -53,7 +53,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21CB807B4();
-  v9 = self;
+  selfCopy = self;
   sub_21CB7F96C();
 
   (*(v5 + 8))(v8, v4);

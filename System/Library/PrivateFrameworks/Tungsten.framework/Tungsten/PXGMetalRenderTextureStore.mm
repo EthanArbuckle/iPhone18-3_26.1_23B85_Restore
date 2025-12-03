@@ -1,9 +1,9 @@
 @interface PXGMetalRenderTextureStore
 - (PXGMetalRenderTextureStore)init;
 - (void)_sortIfNeeded;
-- (void)addTexture:(id *)a3;
+- (void)addTexture:(id *)texture;
 - (void)dealloc;
-- (void)drawWithOrder:(unint64_t)a3 enumerationBlock:(id)a4;
+- (void)drawWithOrder:(unint64_t)order enumerationBlock:(id)block;
 - (void)prepareForRender;
 @end
 
@@ -129,21 +129,21 @@
   }
 }
 
-- (void)drawWithOrder:(unint64_t)a3 enumerationBlock:(id)a4
+- (void)drawWithOrder:(unint64_t)order enumerationBlock:(id)block
 {
-  v11 = a4;
+  blockCopy = block;
   [(PXGMetalRenderTextureStore *)self _sortIfNeeded];
   textures = self->_textures;
   count = self->_count;
-  if (a3 == 1)
+  if (order == 1)
   {
-    v8 = v11;
+    v8 = blockCopy;
     if (count >= 1)
     {
       do
       {
-        (v8)[2](v11, textures);
-        v8 = v11;
+        (v8)[2](blockCopy, textures);
+        v8 = blockCopy;
         textures = (textures + 64);
         --count;
       }
@@ -154,15 +154,15 @@
 
   else
   {
-    v8 = v11;
+    v8 = blockCopy;
     if (count >= 1)
     {
       v9 = count + 1;
       v10 = &textures[-1] + 64 * count - 16;
       do
       {
-        (v8)[2](v11, v10);
-        v8 = v11;
+        (v8)[2](blockCopy, v10);
+        v8 = blockCopy;
         --v9;
         v10 -= 64;
       }
@@ -172,7 +172,7 @@
   }
 }
 
-- (void)addTexture:(id *)a3
+- (void)addTexture:(id *)texture
 {
   count = self->_count;
   capacity = self->_capacity;
@@ -197,10 +197,10 @@
   }
 
   v11 = (textures + 64 * count);
-  v12 = *&a3->var0;
-  var2 = a3->var2;
-  v14 = *&a3[1].var0;
-  v11[2] = *&a3->var3;
+  v12 = *&texture->var0;
+  var2 = texture->var2;
+  v14 = *&texture[1].var0;
+  v11[2] = *&texture->var3;
   v11[3] = v14;
   *v11 = v12;
   v11[1] = var2;

@@ -1,8 +1,8 @@
 @interface _NUObservation
 - (_NUObservation)init;
-- (_NUObservation)initWithObserver:(id)a3 key:(int64_t)a4 queue:(id)a5 block:(id)a6;
+- (_NUObservation)initWithObserver:(id)observer key:(int64_t)key queue:(id)queue block:(id)block;
 - (id)observer;
-- (void)notifyWithBlock:(id)a3;
+- (void)notifyWithBlock:(id)block;
 @end
 
 @implementation _NUObservation
@@ -14,10 +14,10 @@
   return WeakRetained;
 }
 
-- (void)notifyWithBlock:(id)a3
+- (void)notifyWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   queue = self->_queue;
   if (queue)
   {
@@ -26,32 +26,32 @@
     v7[2] = __34___NUObservation_notifyWithBlock___block_invoke;
     v7[3] = &unk_1E810BA70;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(queue, v7);
   }
 
   else
   {
-    (*(v4 + 2))(v4, self->_block);
+    (*(blockCopy + 2))(blockCopy, self->_block);
   }
 }
 
-- (_NUObservation)initWithObserver:(id)a3 key:(int64_t)a4 queue:(id)a5 block:(id)a6
+- (_NUObservation)initWithObserver:(id)observer key:(int64_t)key queue:(id)queue block:(id)block
 {
-  v10 = a5;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = _NUObservation;
-  v11 = a6;
-  v12 = a3;
+  blockCopy = block;
+  observerCopy = observer;
   v13 = [(_NUObservation *)&v19 init];
-  objc_storeWeak(&v13->_observer, v12);
+  objc_storeWeak(&v13->_observer, observerCopy);
 
   queue = v13->_queue;
-  v13->_key = a4;
-  v13->_queue = v10;
-  v15 = v10;
+  v13->_key = key;
+  v13->_queue = queueCopy;
+  v15 = queueCopy;
 
-  v16 = [v11 copy];
+  v16 = [blockCopy copy];
   block = v13->_block;
   v13->_block = v16;
 
@@ -104,8 +104,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -121,8 +121,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

@@ -1,6 +1,6 @@
 @interface LoadingViewController
 - (UINavigationItem)navigationItem;
-- (_TtC19CoreDynamicUIPlugin21LoadingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19CoreDynamicUIPlugin21LoadingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -10,7 +10,7 @@
 
 - (UINavigationItem)navigationItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_4C730();
 
   return v3;
@@ -18,30 +18,30 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_4C7F4();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_4C908();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_4C988();
 }
 
-- (_TtC19CoreDynamicUIPlugin21LoadingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19CoreDynamicUIPlugin21LoadingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_8F5F4();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_4CFA0();
 }
 

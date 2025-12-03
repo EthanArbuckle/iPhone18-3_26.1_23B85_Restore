@@ -1,5 +1,5 @@
 @interface CAMPreciseTimer
-- (CAMPreciseTimer)initWithDelay:(double)a3 interval:(double)a4 handler:(id)a5;
+- (CAMPreciseTimer)initWithDelay:(double)delay interval:(double)interval handler:(id)handler;
 - (void)invalidate;
 - (void)start;
 @end
@@ -18,7 +18,7 @@
   v4 = v3;
   [(CAMPreciseTimer *)self interval];
   v6 = v5;
-  v7 = [(CAMPreciseTimer *)self _handler];
+  _handler = [(CAMPreciseTimer *)self _handler];
   v8 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
   v9 = dispatch_time(0, (v4 * 1000000000.0));
   dispatch_source_set_timer(v8, v9, (v6 * 1000000000.0), 0);
@@ -28,7 +28,7 @@
   handler[2] = __24__CAMPreciseTimer_start__block_invoke;
   handler[3] = &unk_1E76FA3A0;
   objc_copyWeak(&v13, &location);
-  v10 = v7;
+  v10 = _handler;
   v12 = v10;
   dispatch_source_set_event_handler(v8, handler);
   dispatch_resume(v8);
@@ -40,28 +40,28 @@
 
 - (void)invalidate
 {
-  v3 = [(CAMPreciseTimer *)self _currentTimer];
-  if (v3)
+  _currentTimer = [(CAMPreciseTimer *)self _currentTimer];
+  if (_currentTimer)
   {
-    v4 = v3;
-    dispatch_source_cancel(v3);
+    v4 = _currentTimer;
+    dispatch_source_cancel(_currentTimer);
     [(CAMPreciseTimer *)self _setCurrentTimer:0];
-    v3 = v4;
+    _currentTimer = v4;
   }
 }
 
-- (CAMPreciseTimer)initWithDelay:(double)a3 interval:(double)a4 handler:(id)a5
+- (CAMPreciseTimer)initWithDelay:(double)delay interval:(double)interval handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = CAMPreciseTimer;
   v9 = [(CAMPreciseTimer *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    v9->_delay = a3;
-    v9->_interval = a4;
-    v11 = [v8 copy];
+    v9->_delay = delay;
+    v9->_interval = interval;
+    v11 = [handlerCopy copy];
     handler = v10->__handler;
     v10->__handler = v11;
 

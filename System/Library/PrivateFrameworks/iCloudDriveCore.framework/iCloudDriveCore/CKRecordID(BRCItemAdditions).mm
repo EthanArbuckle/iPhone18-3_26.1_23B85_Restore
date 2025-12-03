@@ -22,11 +22,11 @@
 
 - (BOOL)brc_isZoneRootRecordID
 {
-  v1 = [a1 recordName];
+  recordName = [self recordName];
   v4 = 0;
-  if ([v1 hasPrefix:@"directory/"])
+  if ([recordName hasPrefix:@"directory/"])
   {
-    v2 = [v1 substringFromIndex:{objc_msgSend(@"directory/", "length")}];
+    v2 = [recordName substringFromIndex:{objc_msgSend(@"directory/", "length")}];
     v3 = [v2 isEqualToString:@"root"];
 
     if (v3)
@@ -40,25 +40,25 @@
 
 - (uint64_t)brc_isAppLibraryRootRecordID
 {
-  v1 = [a1 recordName];
-  v2 = [v1 hasPrefix:@"directory/appData_"];
+  recordName = [self recordName];
+  v2 = [recordName hasPrefix:@"directory/appData_"];
 
   return v2;
 }
 
 - (uint64_t)brc_isAppLibraryDocumentsRecordID
 {
-  v1 = [a1 recordName];
-  v2 = [v1 hasPrefix:@"directory/appDocuments_"];
+  recordName = [self recordName];
+  v2 = [recordName hasPrefix:@"directory/appDocuments_"];
 
   return v2;
 }
 
 - (void)sqliteBind:()BRCItemAdditions index:
 {
-  v7 = [a1 sqliteRepresentation];
-  v6 = v7;
-  sqlite3_bind_text(a3, a4, [v7 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  sqliteRepresentation = [self sqliteRepresentation];
+  v6 = sqliteRepresentation;
+  sqlite3_bind_text(a3, a4, [sqliteRepresentation UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 }
 
 + (uint64_t)newFromSqliteValue:()BRCItemAdditions
@@ -105,40 +105,40 @@
 
 - (id)brc_appLibraryRootZoneName
 {
-  if (([a1 brc_isAppLibraryRootRecordID] & 1) == 0)
+  if (([self brc_isAppLibraryRootRecordID] & 1) == 0)
   {
     [CKRecordID(BRCItemAdditions) brc_appLibraryRootZoneName];
   }
 
-  v2 = [a1 recordName];
-  v3 = [v2 substringFromIndex:{objc_msgSend(@"directory/appData_", "length")}];
+  recordName = [self recordName];
+  v3 = [recordName substringFromIndex:{objc_msgSend(@"directory/appData_", "length")}];
 
   return v3;
 }
 
 - (id)brc_appLibraryDocumentsZoneName
 {
-  if (([a1 brc_isAppLibraryDocumentsRecordID] & 1) == 0)
+  if (([self brc_isAppLibraryDocumentsRecordID] & 1) == 0)
   {
     [CKRecordID(BRCItemAdditions) brc_appLibraryDocumentsZoneName];
   }
 
-  v2 = [a1 recordName];
-  v3 = [v2 substringFromIndex:{objc_msgSend(@"directory/appDocuments_", "length")}];
+  recordName = [self recordName];
+  v3 = [recordName substringFromIndex:{objc_msgSend(@"directory/appDocuments_", "length")}];
 
   return v3;
 }
 
 - (uint64_t)brc_isDocumentsFolderRecordID
 {
-  if ([a1 brc_isAppLibraryDocumentsRecordID])
+  if ([self brc_isAppLibraryDocumentsRecordID])
   {
     return 1;
   }
 
-  v3 = [a1 recordName];
+  recordName = [self recordName];
   v4 = [@"directory/" stringByAppendingString:@"documents"];
-  v5 = [v3 hasPrefix:v4];
+  v5 = [recordName hasPrefix:v4];
 
   return v5;
 }
@@ -147,16 +147,16 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 recordName];
-  if ([v8 hasPrefix:@"directory/appDocuments_"])
+  recordName = [self recordName];
+  if ([recordName hasPrefix:@"directory/appDocuments_"])
   {
-    v9 = [v8 substringFromIndex:{objc_msgSend(@"directory/appDocuments_", "length")}];
+    v9 = [recordName substringFromIndex:{objc_msgSend(@"directory/appDocuments_", "length")}];
     v10 = [v7 appLibraryByID:v9];
-    v11 = [v10 dbRowID];
+    dbRowID = [v10 dbRowID];
 
-    if (v11)
+    if (dbRowID)
     {
-      v12 = [[BRCItemID alloc] initAsDocumentsWithAppLibraryRowID:v11];
+      v12 = [[BRCItemID alloc] initAsDocumentsWithAppLibraryRowID:dbRowID];
     }
 
     else
@@ -165,75 +165,75 @@
       v12 = 0;
     }
 
-    v6 = v11;
+    v6 = dbRowID;
     goto LABEL_26;
   }
 
-  if ([v8 hasPrefix:@"directory/appData_"])
+  if ([recordName hasPrefix:@"directory/appData_"])
   {
-    v13 = [v8 substringFromIndex:{objc_msgSend(@"directory/appData_", "length")}];
-    v14 = [v7 appLibraryByID:v13];
-    if (!v14)
+    zoneID = [recordName substringFromIndex:{objc_msgSend(@"directory/appData_", "length")}];
+    lastObject = [v7 appLibraryByID:zoneID];
+    if (!lastObject)
     {
       [CKRecordID(BRCItemAdditions) _itemIDWithLibraryRowID:zoneAppRetriever:];
     }
 
-    v15 = [v14 rootItemID];
+    rootItemID = [lastObject rootItemID];
 LABEL_9:
-    v12 = v15;
+    v12 = rootItemID;
 LABEL_20:
 
 LABEL_25:
     goto LABEL_26;
   }
 
-  if ([v8 hasPrefix:@"directory/"])
+  if ([recordName hasPrefix:@"directory/"])
   {
-    v13 = [a1 zoneID];
-    v14 = [objc_alloc(MEMORY[0x277CFAE60]) initWithRecordZoneID:v13];
-    if ([v14 isShared])
+    zoneID = [self zoneID];
+    lastObject = [objc_alloc(MEMORY[0x277CFAE60]) initWithRecordZoneID:zoneID];
+    if ([lastObject isShared])
     {
-      v16 = [v7 clientZoneByMangledID:v14];
-      v17 = [v16 dbRowID];
+      v16 = [v7 clientZoneByMangledID:lastObject];
+      dbRowID2 = [v16 dbRowID];
     }
 
     else
     {
-      v17 = 0;
+      dbRowID2 = 0;
     }
 
-    v19 = [v8 substringFromIndex:{objc_msgSend(@"directory/", "length")}];
+    v19 = [recordName substringFromIndex:{objc_msgSend(@"directory/", "length")}];
     v20 = v19;
-    if (!(v6 | v17) && (([v19 isEqualToString:BRCItemIDZoneRoot] & 1) != 0 || objc_msgSend(v20, "isEqualToString:", BRCItemIDDocuments)))
+    if (!(v6 | dbRowID2) && (([v19 isEqualToString:BRCItemIDZoneRoot] & 1) != 0 || objc_msgSend(v20, "isEqualToString:", BRCItemIDDocuments)))
     {
       [CKRecordID(BRCItemAdditions) _itemIDWithLibraryRowID:zoneAppRetriever:];
     }
 
-    v12 = [[BRCItemID alloc] initWithString:v20 libraryRowID:v6 sharedZoneRowID:v17];
+    v12 = [[BRCItemID alloc] initWithString:v20 libraryRowID:v6 sharedZoneRowID:dbRowID2];
 
     goto LABEL_20;
   }
 
-  if ([v8 hasPrefix:@"documentStructure/"])
+  if ([recordName hasPrefix:@"documentStructure/"])
   {
     v18 = @"documentStructure/";
 LABEL_23:
-    v13 = [v8 substringFromIndex:{-[__CFString length](v18, "length")}];
-    v21 = [[BRCItemID alloc] initWithUUIDString:v13];
+    zoneID = [recordName substringFromIndex:{-[__CFString length](v18, "length")}];
+    v21 = [[BRCItemID alloc] initWithUUIDString:zoneID];
 LABEL_24:
     v12 = v21;
     goto LABEL_25;
   }
 
-  if ([v8 hasPrefix:@"documentContent/"])
+  if ([recordName hasPrefix:@"documentContent/"])
   {
     v18 = @"documentContent/";
     goto LABEL_23;
   }
 
-  if ([v8 hasPrefix:@"alias/"])
+  if ([recordName hasPrefix:@"alias/"])
   {
-    v13 = [v8 substringFromIndex:{objc_msgSend(@"alias/", "length")}];
+    zoneID = [recordName substringFromIndex:{objc_msgSend(@"alias/", "length")}];
     if (!v6)
     {
       [CKRecordID(BRCItemAdditions) _itemIDWithLibraryRowID:zoneAppRetriever:];
@@ -242,32 +242,32 @@ LABEL_24:
     goto LABEL_34;
   }
 
-  if ([v8 hasPrefix:@"shareAlias/"])
+  if ([recordName hasPrefix:@"shareAlias/"])
   {
-    v13 = [v8 substringFromIndex:{objc_msgSend(@"shareAlias/", "length")}];
+    zoneID = [recordName substringFromIndex:{objc_msgSend(@"shareAlias/", "length")}];
 LABEL_34:
-    v21 = [[BRCItemID alloc] initWithAliasUUID:v13];
+    v21 = [[BRCItemID alloc] initWithAliasUUID:zoneID];
     goto LABEL_24;
   }
 
-  if ([v8 hasPrefix:@"symlink/"])
+  if ([recordName hasPrefix:@"symlink/"])
   {
     v18 = @"symlink/";
     goto LABEL_23;
   }
 
-  if ([v8 hasPrefix:@"finderBookmark/"])
+  if ([recordName hasPrefix:@"finderBookmark/"])
   {
     v18 = @"finderBookmark/";
     goto LABEL_23;
   }
 
-  if ([v8 hasPrefix:@"ppm_"])
+  if ([recordName hasPrefix:@"ppm_"])
   {
-    v23 = [a1 recordName];
-    v13 = [v23 componentsSeparatedByString:@"/"];
+    recordName2 = [self recordName];
+    zoneID = [recordName2 componentsSeparatedByString:@"/"];
 
-    if ([v13 count] != 2)
+    if ([zoneID count] != 2)
     {
       v26 = brc_bread_crumbs();
       v27 = brc_default_log();
@@ -280,8 +280,8 @@ LABEL_34:
       goto LABEL_25;
     }
 
-    v14 = [v13 lastObject];
-    v15 = [[BRCItemID alloc] initWithUUIDString:v14];
+    lastObject = [zoneID lastObject];
+    rootItemID = [[BRCItemID alloc] initWithUUIDString:lastObject];
     goto LABEL_9;
   }
 
@@ -302,7 +302,7 @@ LABEL_26:
 {
   v4 = a3;
   v10 = 0;
-  v5 = [a1 brc_itemIDWithZoneAppRetriever:v4 error:&v10];
+  v5 = [self brc_itemIDWithZoneAppRetriever:v4 error:&v10];
   if (!v5 && v10)
   {
     abc_report_panic_with_signature();
@@ -316,8 +316,8 @@ LABEL_26:
     }
 
     brc_append_system_info_to_message();
-    v9 = [objc_claimAutoreleasedReturnValue() UTF8String];
-    __assert_rtn("[CKRecordID(BRCItemAdditions) brc_itemIDWithZoneAppRetriever:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/sync/records/CKRecord+BRCItemAdditions.m", 714, v9);
+    uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+    __assert_rtn("[CKRecordID(BRCItemAdditions) brc_itemIDWithZoneAppRetriever:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/sync/records/CKRecord+BRCItemAdditions.m", 714, uTF8String);
   }
 
   return v5;
@@ -326,16 +326,16 @@ LABEL_26:
 - (void)brc_itemIDWithZoneAppRetriever:()BRCItemAdditions error:
 {
   v6 = a3;
-  v7 = [a1 zoneID];
-  v8 = [v7 zoneName];
-  if ([v8 isEqualToString:*MEMORY[0x277CFB070]])
+  zoneID = [self zoneID];
+  zoneName = [zoneID zoneName];
+  if ([zoneName isEqualToString:*MEMORY[0x277CFB070]])
   {
     v9 = 0;
     goto LABEL_5;
   }
 
-  v10 = [v7 ownerName];
-  v11 = [v10 isEqualToString:*MEMORY[0x277CBBF28]];
+  ownerName = [zoneID ownerName];
+  v11 = [ownerName isEqualToString:*MEMORY[0x277CBBF28]];
 
   if (!v11)
   {
@@ -343,17 +343,17 @@ LABEL_26:
     goto LABEL_7;
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CFAE60]) initWithRecordZoneID:v7];
-  v9 = [v6 appLibraryByMangledID:v8];
-  v12 = [v9 dbRowID];
+  zoneName = [objc_alloc(MEMORY[0x277CFAE60]) initWithRecordZoneID:zoneID];
+  v9 = [v6 appLibraryByMangledID:zoneName];
+  dbRowID = [v9 dbRowID];
 
-  if (v12)
+  if (dbRowID)
   {
 LABEL_5:
 
 LABEL_7:
-    v8 = [v9 dbRowID];
-    a4 = [a1 _itemIDWithLibraryRowID:v8 zoneAppRetriever:v6];
+    zoneName = [v9 dbRowID];
+    a4 = [self _itemIDWithLibraryRowID:zoneName zoneAppRetriever:v6];
     goto LABEL_8;
   }
 
@@ -364,13 +364,13 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:1004 description:{@"Can't find appLibrary corresponding to zoneID %@", v7, v16}];
+    [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:1004 description:{@"Can't find appLibrary corresponding to zoneID %@", zoneID, v16}];
     goto LABEL_14;
   }
 
   if (a4)
   {
-    [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:1004 description:{@"Found appLibrary %@ with invalid dbRowID for zoneID %@", v9, v7}];
+    [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:1004 description:{@"Found appLibrary %@ with invalid dbRowID for zoneID %@", v9, zoneID}];
     v14 = LABEL_14:;
     v15 = *a4;
     *a4 = v14;
@@ -385,28 +385,28 @@ LABEL_8:
 
 - (uint64_t)brc_itemType
 {
-  v1 = [a1 recordName];
-  if ([v1 hasPrefix:@"directory/"])
+  recordName = [self recordName];
+  if ([recordName hasPrefix:@"directory/"])
   {
     v2 = 0;
   }
 
-  else if ([v1 hasPrefix:@"documentStructure/"] & 1) != 0 || (objc_msgSend(v1, "hasPrefix:", @"documentContent/"))
+  else if ([recordName hasPrefix:@"documentStructure/"] & 1) != 0 || (objc_msgSend(recordName, "hasPrefix:", @"documentContent/"))
   {
     v2 = 1;
   }
 
-  else if ([v1 hasPrefix:@"alias/"] & 1) != 0 || (objc_msgSend(v1, "hasPrefix:", @"shareAlias/"))
+  else if ([recordName hasPrefix:@"alias/"] & 1) != 0 || (objc_msgSend(recordName, "hasPrefix:", @"shareAlias/"))
   {
     v2 = 3;
   }
 
-  else if ([v1 hasPrefix:@"symlink/"])
+  else if ([recordName hasPrefix:@"symlink/"])
   {
     v2 = 5;
   }
 
-  else if ([v1 hasPrefix:@"finderBookmark/"])
+  else if ([recordName hasPrefix:@"finderBookmark/"])
   {
     v2 = 6;
   }
@@ -430,14 +430,14 @@ LABEL_8:
 {
   v36 = *MEMORY[0x277D85DE8];
   v6 = a4;
-  v7 = [a1 recordName];
-  v8 = [v7 substringFromIndex:{objc_msgSend(@"ppm_", "length") - 1}];
-  v9 = [v8 pathComponents];
+  recordName = [self recordName];
+  v8 = [recordName substringFromIndex:{objc_msgSend(@"ppm_", "length") - 1}];
+  pathComponents = [v8 pathComponents];
 
-  v10 = [v9 objectAtIndexedSubscript:0];
-  v11 = [v9 objectAtIndexedSubscript:1];
-  v12 = [v6 zoneAppRetriever];
-  v13 = [v12 sharedServerZoneRowIDsByOwnerNamePrefix:v10];
+  v10 = [pathComponents objectAtIndexedSubscript:0];
+  v11 = [pathComponents objectAtIndexedSubscript:1];
+  zoneAppRetriever = [v6 zoneAppRetriever];
+  v13 = [zoneAppRetriever sharedServerZoneRowIDsByOwnerNamePrefix:v10];
 
   if ([v13 count])
   {
@@ -446,8 +446,8 @@ LABEL_8:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v15 = [v6 serverReadWriteDatabaseFacade];
-    v16 = [v15 zoneIDsEnumeratorForItemWithItemID:v14];
+    serverReadWriteDatabaseFacade = [v6 serverReadWriteDatabaseFacade];
+    v16 = [serverReadWriteDatabaseFacade zoneIDsEnumeratorForItemWithItemID:v14];
 
     v17 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v17)
@@ -468,12 +468,12 @@ LABEL_8:
           v21 = *(*(&v31 + 1) + 8 * i);
           if ([v13 containsObject:{v21, v29}])
           {
-            v23 = [v6 zoneAppRetriever];
-            v24 = [v23 serverZoneByRowID:v21];
-            v25 = [v24 asSharedZone];
+            zoneAppRetriever2 = [v6 zoneAppRetriever];
+            v24 = [zoneAppRetriever2 serverZoneByRowID:v21];
+            asSharedZone = [v24 asSharedZone];
 
-            v26 = v25;
-            *v29 = v25;
+            v26 = asSharedZone;
+            *v29 = asSharedZone;
 
             v22 = 1;
             goto LABEL_12;

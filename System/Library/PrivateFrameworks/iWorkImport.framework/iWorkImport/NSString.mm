@@ -1,14 +1,14 @@
 @interface NSString
-+ (id)customNumberFormatDecimalFormatStringWithDigits:(unsigned int)a3 digitString:(id)a4 includeDecimalSeparator:(BOOL)a5;
-+ (id)customNumberFormatDecimalTokenDisplayStringWithDigits:(unsigned int)a3 digitString:(id)a4;
-+ (id)customNumberFormatDecimalTokenRepresentedStringWithDigits:(unsigned int)a3 digitString:(id)a4;
-+ (id)customNumberFormatIntegerFormatStringWithDigits:(unsigned int)a3 digitString:(id)a4;
-+ (id)customNumberFormatIntegerTokenDisplayStringWithDigits:(unsigned int)a3 separator:(BOOL)a4 digitString:(id)a5;
-+ (id)customNumberFormatIntegerTokenRepresentedStringWithDigits:(unsigned int)a3 separator:(BOOL)a4 digitString:(id)a5;
-+ (id)customNumberFormatTokenStringOfType:(int)a3 content:(id)a4;
++ (id)customNumberFormatDecimalFormatStringWithDigits:(unsigned int)digits digitString:(id)string includeDecimalSeparator:(BOOL)separator;
++ (id)customNumberFormatDecimalTokenDisplayStringWithDigits:(unsigned int)digits digitString:(id)string;
++ (id)customNumberFormatDecimalTokenRepresentedStringWithDigits:(unsigned int)digits digitString:(id)string;
++ (id)customNumberFormatIntegerFormatStringWithDigits:(unsigned int)digits digitString:(id)string;
++ (id)customNumberFormatIntegerTokenDisplayStringWithDigits:(unsigned int)digits separator:(BOOL)separator digitString:(id)string;
++ (id)customNumberFormatIntegerTokenRepresentedStringWithDigits:(unsigned int)digits separator:(BOOL)separator digitString:(id)string;
++ (id)customNumberFormatTokenStringOfType:(int)type content:(id)content;
 + (id)sfu_numberSymbols;
 - (BOOL)isSpecialCustomNumberFormatToken;
-- (BOOL)isSpecialCustomNumberFormatTokenOfType:(int)a3;
+- (BOOL)isSpecialCustomNumberFormatTokenOfType:(int)type;
 - (id)currencyCodeFromCustomNumberFormatCurrencyToken;
 - (id)digitPlaceholderStringInDigitToken;
 - (id)sfu_createRangesOfEscapedCharactersInNumberFormatPattern;
@@ -29,12 +29,12 @@
 
 @implementation NSString
 
-+ (id)customNumberFormatTokenStringOfType:(int)a3 content:(id)a4
++ (id)customNumberFormatTokenStringOfType:(int)type content:(id)content
 {
-  v5 = sub_18A10(a3);
-  if (a4)
+  v5 = sub_18A10(type);
+  if (content)
   {
-    return [NSMutableString stringWithFormat:@"%C%C%@", word_9CC1A, v5, a4];
+    return [NSMutableString stringWithFormat:@"%C%C%@", word_9CC1A, v5, content];
   }
 
   else
@@ -54,7 +54,7 @@
   return word_9CC1A == v4;
 }
 
-- (BOOL)isSpecialCustomNumberFormatTokenOfType:(int)a3
+- (BOOL)isSpecialCustomNumberFormatTokenOfType:(int)type
 {
   if ([(NSString *)self length]< 2)
   {
@@ -68,7 +68,7 @@
   }
 
   v6 = [(NSString *)self characterAtIndex:1];
-  return sub_18A10(a3) == v6;
+  return sub_18A10(type) == v6;
 }
 
 - (unsigned)numberOfDigitsInCustomNumberFormatIntegerToken
@@ -123,12 +123,12 @@
   return v3;
 }
 
-+ (id)customNumberFormatIntegerTokenDisplayStringWithDigits:(unsigned int)a3 separator:(BOOL)a4 digitString:(id)a5
++ (id)customNumberFormatIntegerTokenDisplayStringWithDigits:(unsigned int)digits separator:(BOOL)separator digitString:(id)string
 {
-  v6 = a4;
+  separatorCopy = separator;
   v8 = +[NSMutableString string];
   v9 = sub_5220C(0);
-  if (a3 >= 1)
+  if (digits >= 1)
   {
     v10 = v9;
     v11 = 0;
@@ -136,14 +136,14 @@
     {
       if (v11)
       {
-        if (a3 % v10)
+        if (digits % v10)
         {
           v12 = 1;
         }
 
         else
         {
-          v12 = !v6;
+          v12 = !separatorCopy;
         }
 
         if (!v12)
@@ -152,34 +152,34 @@
         }
       }
 
-      [v8 appendString:a5];
+      [v8 appendString:string];
       ++v11;
-      v13 = __OFSUB__(a3--, 1);
+      v13 = __OFSUB__(digits--, 1);
     }
 
-    while (!(((a3 & 0x80000000) != 0) ^ v13 | (a3 == 0)));
+    while (!(((digits & 0x80000000) != 0) ^ v13 | (digits == 0)));
   }
 
   return v8;
 }
 
-+ (id)customNumberFormatIntegerTokenRepresentedStringWithDigits:(unsigned int)a3 separator:(BOOL)a4 digitString:(id)a5
++ (id)customNumberFormatIntegerTokenRepresentedStringWithDigits:(unsigned int)digits separator:(BOOL)separator digitString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [NSMutableString stringWithCapacity:a3];
-  if (v7 >= 1)
+  separatorCopy = separator;
+  digitsCopy = digits;
+  v8 = [NSMutableString stringWithCapacity:digits];
+  if (digitsCopy >= 1)
   {
     do
     {
-      [(NSMutableString *)v8 appendString:a5];
-      --v7;
+      [(NSMutableString *)v8 appendString:string];
+      --digitsCopy;
     }
 
-    while (v7);
+    while (digitsCopy);
   }
 
-  if (v6)
+  if (separatorCopy)
   {
     [(NSMutableString *)v8 appendString:@", "];
   }
@@ -187,15 +187,15 @@
   return [NSMutableString customNumberFormatTokenStringOfType:1 content:v8];
 }
 
-+ (id)customNumberFormatIntegerFormatStringWithDigits:(unsigned int)a3 digitString:(id)a4
++ (id)customNumberFormatIntegerFormatStringWithDigits:(unsigned int)digits digitString:(id)string
 {
   v6 = +[NSMutableString string];
-  if (a3 >= 1)
+  if (digits >= 1)
   {
-    v7 = a3 + 1;
+    v7 = digits + 1;
     do
     {
-      [v6 appendString:a4];
+      [v6 appendString:string];
       --v7;
     }
 
@@ -205,16 +205,16 @@
   return v6;
 }
 
-+ (id)customNumberFormatDecimalTokenDisplayStringWithDigits:(unsigned int)a3 digitString:(id)a4
++ (id)customNumberFormatDecimalTokenDisplayStringWithDigits:(unsigned int)digits digitString:(id)string
 {
   v6 = +[NSMutableString string];
   [v6 appendString:{-[NSLocale objectForKey:](+[NSLocale currentLocale](NSLocale, "currentLocale"), "objectForKey:", NSLocaleDecimalSeparator)}];
-  if (a3 >= 1)
+  if (digits >= 1)
   {
-    v7 = a3 + 1;
+    v7 = digits + 1;
     do
     {
-      [v6 appendString:a4];
+      [v6 appendString:string];
       --v7;
     }
 
@@ -224,15 +224,15 @@
   return v6;
 }
 
-+ (id)customNumberFormatDecimalTokenRepresentedStringWithDigits:(unsigned int)a3 digitString:(id)a4
++ (id)customNumberFormatDecimalTokenRepresentedStringWithDigits:(unsigned int)digits digitString:(id)string
 {
-  v6 = [NSMutableString stringWithCapacity:a3];
-  if ((a3 & 0x80000000) == 0)
+  v6 = [NSMutableString stringWithCapacity:digits];
+  if ((digits & 0x80000000) == 0)
   {
-    v7 = a3 + 1;
+    v7 = digits + 1;
     do
     {
-      [(NSMutableString *)v6 appendString:a4];
+      [(NSMutableString *)v6 appendString:string];
       --v7;
     }
 
@@ -242,22 +242,22 @@
   return [NSMutableString customNumberFormatTokenStringOfType:2 content:v6];
 }
 
-+ (id)customNumberFormatDecimalFormatStringWithDigits:(unsigned int)a3 digitString:(id)a4 includeDecimalSeparator:(BOOL)a5
++ (id)customNumberFormatDecimalFormatStringWithDigits:(unsigned int)digits digitString:(id)string includeDecimalSeparator:(BOOL)separator
 {
-  v5 = a5;
+  separatorCopy = separator;
   v8 = +[NSMutableString string];
   v9 = v8;
-  if (v5)
+  if (separatorCopy)
   {
     [v8 appendString:@"."];
   }
 
-  if (a3 >= 1)
+  if (digits >= 1)
   {
-    v10 = a3 + 1;
+    v10 = digits + 1;
     do
     {
-      [v9 appendString:a4];
+      [v9 appendString:string];
       --v10;
     }
 
@@ -318,7 +318,7 @@
 
 - (id)sfu_createStringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand
 {
-  v10 = self;
+  selfCopy = self;
   if (!qword_A4580)
   {
     qword_A4548 = [[NSString alloc] initWithFormat:@"%C", 45];
@@ -336,20 +336,20 @@
     [v2 appendString:qword_A4578];
     qword_A4580 = [NSCharacterSet characterSetWithCharactersInString:v2];
 
-    self = v10;
+    self = selfCopy;
   }
 
   v3 = [(NSString *)self rangeOfCharacterFromSet:?];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    return v10;
+    return selfCopy;
   }
 
   else
   {
     v5 = v3;
-    v6 = [(NSString *)v10 mutableCopy];
+    v6 = [(NSString *)selfCopy mutableCopy];
     v7 = [v6 length];
     v8 = (v7 - v5);
     [v6 replaceOccurrencesOfString:qword_A4550 withString:qword_A4548 options:0 range:{v5, v7 - v5}];
@@ -413,13 +413,13 @@
 
 - (id)sfu_stringByRemovingEscapedCharactersFromNumberFormatPattern
 {
-  v3 = [(NSString *)self sfu_createRangesOfEscapedCharactersInNumberFormatPattern];
-  if (!v3)
+  sfu_createRangesOfEscapedCharactersInNumberFormatPattern = [(NSString *)self sfu_createRangesOfEscapedCharactersInNumberFormatPattern];
+  if (!sfu_createRangesOfEscapedCharactersInNumberFormatPattern)
   {
     return self;
   }
 
-  v4 = v3;
+  v4 = sfu_createRangesOfEscapedCharactersInNumberFormatPattern;
   v5 = [NSMutableString stringWithString:self];
   v6 = [(NSString *)self length];
   if ([v4 count])
@@ -441,7 +441,7 @@
 
 - (int)sfu_indexOfNumberFormatSubpatternSeparator
 {
-  v3 = [(NSString *)self sfu_createRangesOfEscapedCharactersInNumberFormatPattern];
+  sfu_createRangesOfEscapedCharactersInNumberFormatPattern = [(NSString *)self sfu_createRangesOfEscapedCharactersInNumberFormatPattern];
   v4 = [(NSString *)self rangeOfString:@";" options:0 range:0, [(NSString *)self length]];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -452,7 +452,7 @@ LABEL_5:
   else
   {
     v5 = v4;
-    while (sub_51D04(v5, v3))
+    while (sub_51D04(v5, sfu_createRangesOfEscapedCharactersInNumberFormatPattern))
     {
       v5 = [(NSString *)self rangeOfString:@";" options:0 range:v5 + 1, [(NSString *)self length]- (v5 + 1)];
       if (v5 == 0x7FFFFFFFFFFFFFFFLL)
@@ -467,49 +467,49 @@ LABEL_5:
 
 - (id)sfu_positiveSubpatternOfNumberFormatPattern
 {
-  v3 = [(NSString *)self sfu_indexOfNumberFormatSubpatternSeparator];
-  if (v3 == -1)
+  sfu_indexOfNumberFormatSubpatternSeparator = [(NSString *)self sfu_indexOfNumberFormatSubpatternSeparator];
+  if (sfu_indexOfNumberFormatSubpatternSeparator == -1)
   {
     return self;
   }
 
-  return [(NSString *)self substringToIndex:v3];
+  return [(NSString *)self substringToIndex:sfu_indexOfNumberFormatSubpatternSeparator];
 }
 
 - (id)sfu_negativeSubpatternOfNumberFormatPattern
 {
-  v3 = [(NSString *)self sfu_indexOfNumberFormatSubpatternSeparator];
-  if (v3 == -1)
+  sfu_indexOfNumberFormatSubpatternSeparator = [(NSString *)self sfu_indexOfNumberFormatSubpatternSeparator];
+  if (sfu_indexOfNumberFormatSubpatternSeparator == -1)
   {
     return &stru_85620;
   }
 
-  return [(NSString *)self substringFromIndex:(v3 + 1)];
+  return [(NSString *)self substringFromIndex:(sfu_indexOfNumberFormatSubpatternSeparator + 1)];
 }
 
 - (id)sfu_numberPortionOfNumberFormatSubpattern
 {
-  v3 = [(NSString *)self sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
-  v4 = [(NSString *)self sfu_indexOfLastNonSuffixCharacterInNumberFormatSubpattern]- v3 + 1;
+  sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern = [(NSString *)self sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
+  v4 = [(NSString *)self sfu_indexOfLastNonSuffixCharacterInNumberFormatSubpattern]- sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern + 1;
 
-  return [(NSString *)self substringWithRange:v3, v4];
+  return [(NSString *)self substringWithRange:sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern, v4];
 }
 
 - (int)sfu_indexOfLastNonSuffixCharacterInNumberFormatSubpattern
 {
-  v3 = [(NSString *)self sfu_createRangesOfEscapedCharactersInNumberFormatPattern];
-  v4 = [objc_opt_class() sfu_numberSymbols];
+  sfu_createRangesOfEscapedCharactersInNumberFormatPattern = [(NSString *)self sfu_createRangesOfEscapedCharactersInNumberFormatPattern];
+  sfu_numberSymbols = [objc_opt_class() sfu_numberSymbols];
   v5 = [(NSString *)self length];
   while (1)
   {
-    v6 = [(NSString *)self rangeOfCharacterFromSet:v4 options:4 range:0, v5];
+    v6 = [(NSString *)self rangeOfCharacterFromSet:sfu_numberSymbols options:4 range:0, v5];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
     }
 
     v5 = v6;
-    if (!sub_51D04(v6, v3))
+    if (!sub_51D04(v6, sfu_createRangesOfEscapedCharactersInNumberFormatPattern))
     {
       goto LABEL_6;
     }
@@ -530,9 +530,9 @@ LABEL_6:
 
 - (int)sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern
 {
-  v3 = [(NSString *)self sfu_createRangesOfEscapedCharactersInNumberFormatPattern];
-  v4 = [objc_opt_class() sfu_numberSymbols];
-  v5 = [(NSString *)self rangeOfCharacterFromSet:v4 options:0 range:0, [(NSString *)self length]];
+  sfu_createRangesOfEscapedCharactersInNumberFormatPattern = [(NSString *)self sfu_createRangesOfEscapedCharactersInNumberFormatPattern];
+  sfu_numberSymbols = [objc_opt_class() sfu_numberSymbols];
+  v5 = [(NSString *)self rangeOfCharacterFromSet:sfu_numberSymbols options:0 range:0, [(NSString *)self length]];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_5:
@@ -542,9 +542,9 @@ LABEL_5:
   else
   {
     v6 = v5;
-    while (sub_51D04(v6, v3))
+    while (sub_51D04(v6, sfu_createRangesOfEscapedCharactersInNumberFormatPattern))
     {
-      v6 = [(NSString *)self rangeOfCharacterFromSet:v4 options:0 range:v6 + 1, [(NSString *)self length]- (v6 + 1)];
+      v6 = [(NSString *)self rangeOfCharacterFromSet:sfu_numberSymbols options:0 range:v6 + 1, [(NSString *)self length]- (v6 + 1)];
       if (v6 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_5;
@@ -557,9 +557,9 @@ LABEL_5:
 
 - (id)sfu_prefixOfNumberFormatSubpattern
 {
-  v3 = [(NSString *)self sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
+  sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern = [(NSString *)self sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
 
-  return [(NSString *)self substringToIndex:v3];
+  return [(NSString *)self substringToIndex:sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
 }
 
 @end

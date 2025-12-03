@@ -1,32 +1,32 @@
 @interface RemoteHandleObserverDelegateTrampoline
 - (_TtC12searchpartydP33_B6591815384A8DEB8885452F1FDF33D538RemoteHandleObserverDelegateTrampoline)init;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation RemoteHandleObserverDelegateTrampoline
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_100EF7CE0(v4, "FMRemoteUILauncher - Did activate handle %@", &unk_10165AB10, &unk_1013F17D8);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_100EF7CE0(activateCopy, "FMRemoteUILauncher - Did activate handle %@", &unk_10165AB10, &unk_1013F17D8);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
-  sub_100EF7CE0(v4, "Did deactivate handle %@", &unk_10165AAE8, &unk_1013F17C8);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  sub_100EF7CE0(deactivateCopy, "Did deactivate handle %@", &unk_10165AAE8, &unk_1013F17C8);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_100EF8124(v6, a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100EF8124(handleCopy, error);
 }
 
 - (_TtC12searchpartydP33_B6591815384A8DEB8885452F1FDF33D538RemoteHandleObserverDelegateTrampoline)init

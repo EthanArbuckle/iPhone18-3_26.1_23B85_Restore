@@ -1,17 +1,17 @@
 @interface THBookCoverViewController
-- (THBookCoverViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (THBookCoverViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)th_fetchCoverImage;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation THBookCoverViewController
 
-- (THBookCoverViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (THBookCoverViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = THBookCoverViewController;
-  v4 = [(THBookCoverViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(THBookCoverViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[UITraitCollection bc_allAPITraits];
@@ -26,26 +26,26 @@
   v7.receiver = self;
   v7.super_class = THBookCoverViewController;
   [(THBookCoverViewController *)&v7 viewDidLoad];
-  v3 = [(THBookCoverViewController *)self view];
+  view = [(THBookCoverViewController *)self view];
   v4 = [UIImageView alloc];
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   imageView = self->_imageView;
   self->_imageView = v5;
 
   [(UIImageView *)self->_imageView setAutoresizingMask:18];
   [(UIImageView *)self->_imageView setContentMode:1];
-  [v3 addSubview:self->_imageView];
+  [view addSubview:self->_imageView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = THBookCoverViewController;
-  [(THBookCoverViewController *)&v5 viewWillAppear:a3];
-  v4 = [(UIImageView *)self->_imageView image];
+  [(THBookCoverViewController *)&v5 viewWillAppear:appear];
+  image = [(UIImageView *)self->_imageView image];
 
-  if (!v4)
+  if (!image)
   {
     [(THBookCoverViewController *)self th_fetchCoverImage];
   }
@@ -53,30 +53,30 @@
 
 - (void)th_fetchCoverImage
 {
-  v3 = [(THAsset *)self->_asset assetID];
-  if ([v3 length])
+  assetID = [(THAsset *)self->_asset assetID];
+  if ([assetID length])
   {
-    v4 = [(THBookCoverViewController *)self traitCollection];
-    v5 = [v4 userInterfaceStyle] == &dword_0 + 2;
+    traitCollection = [(THBookCoverViewController *)self traitCollection];
+    v5 = [traitCollection userInterfaceStyle] == &dword_0 + 2;
 
     v6 = (v5 << 6);
     v7 = BCImageCacheLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_29CB00(v3, v7);
+      sub_29CB00(assetID, v7);
     }
 
-    v8 = [(THBookCoverViewController *)self view];
-    [v8 bounds];
-    v11 = [BICDescribedImage describedImageWithIdentifier:v3 size:v6 processingOptions:v9, v10];
+    view = [(THBookCoverViewController *)self view];
+    [view bounds];
+    v11 = [BICDescribedImage describedImageWithIdentifier:assetID size:v6 processingOptions:v9, v10];
 
     [v11 setRequestOptions:18];
     [v11 setPriority:6];
-    v12 = [(THAsset *)self->_asset title];
-    [v11 setTitle:v12];
+    title = [(THAsset *)self->_asset title];
+    [v11 setTitle:title];
 
-    v13 = [(THAsset *)self->_asset author];
-    [v11 setAuthor:v13];
+    author = [(THAsset *)self->_asset author];
+    [v11 setAuthor:author];
 
     v14 = [v11 copy];
     [v14 setRequestOptions:514];
@@ -121,8 +121,8 @@
     v20[3] = &unk_45BCD0;
     v23 = v33;
     v24 = v31;
-    v21 = v3;
-    v22 = self;
+    v21 = assetID;
+    selfCopy = self;
     dispatch_group_notify(v19, &_dispatch_main_q, v20);
 
     _Block_object_dispose(v31, 8);

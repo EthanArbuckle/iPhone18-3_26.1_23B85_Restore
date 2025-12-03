@@ -1,56 +1,56 @@
 @interface WFContentGraphViewController
 - (BOOL)useSmallBubbles;
-- (WFContentGraphViewController)initWithContentItem:(id)a3;
+- (WFContentGraphViewController)initWithContentItem:(id)item;
 - (void)loadView;
-- (void)panNode:(id)a3;
-- (void)tapNode:(id)a3;
+- (void)panNode:(id)node;
+- (void)tapNode:(id)node;
 - (void)viewDidLayoutSubviews;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation WFContentGraphViewController
 
-- (void)panNode:(id)a3
+- (void)panNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if ((v5 - 3) < 2)
+  nodeCopy = node;
+  state = [nodeCopy state];
+  if ((state - 3) < 2)
   {
     animator = self->_animator;
-    v7 = [v4 view];
-    [(CKForceLayoutAnimator *)animator releaseNode:v7];
+    view = [nodeCopy view];
+    [(CKForceLayoutAnimator *)animator releaseNode:view];
     goto LABEL_6;
   }
 
-  if (v5 == 2)
+  if (state == 2)
   {
-    v10 = [(CKForceLayoutAnimator *)self->_animator referenceView];
-    [v4 translationInView:v10];
+    referenceView = [(CKForceLayoutAnimator *)self->_animator referenceView];
+    [nodeCopy translationInView:referenceView];
     v12 = v11;
     v14 = v13;
 
-    v15 = [(CKForceLayoutAnimator *)self->_animator referenceView];
-    [v4 setTranslation:v15 inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+    referenceView2 = [(CKForceLayoutAnimator *)self->_animator referenceView];
+    [nodeCopy setTranslation:referenceView2 inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 
     memset(&v21, 0, sizeof(v21));
     CGAffineTransformMakeTranslation(&v21, v12, v14);
     v16 = self->_animator;
-    v17 = [v4 view];
-    v18 = [v4 view];
-    [v18 center];
-    [(CKForceLayoutAnimator *)v16 fixNode:v17 atPosition:vaddq_f64(*&v21.tx, vmlaq_n_f64(vmulq_n_f64(*&v21.c, v19), *&v21.a, v20))];
+    view2 = [nodeCopy view];
+    view3 = [nodeCopy view];
+    [view3 center];
+    [(CKForceLayoutAnimator *)v16 fixNode:view2 atPosition:vaddq_f64(*&v21.tx, vmlaq_n_f64(vmulq_n_f64(*&v21.c, v19), *&v21.a, v20))];
 
     [(CKForceLayoutAnimator *)self->_animator setAlpha:0.100000001];
     goto LABEL_8;
   }
 
-  if (v5 == 1)
+  if (state == 1)
   {
     v6 = self->_animator;
-    v7 = [v4 view];
-    v8 = [v4 view];
-    [v8 center];
-    [(CKForceLayoutAnimator *)v6 fixNode:v7 atPosition:?];
+    view = [nodeCopy view];
+    view4 = [nodeCopy view];
+    [view4 center];
+    [(CKForceLayoutAnimator *)v6 fixNode:view atPosition:?];
 
 LABEL_6:
   }
@@ -58,17 +58,17 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)tapNode:(id)a3
+- (void)tapNode:(id)node
 {
-  v4 = a3;
-  v5 = [(WFContentGraphViewController *)self presentedViewController];
-  if (v5)
+  nodeCopy = node;
+  presentedViewController = [(WFContentGraphViewController *)self presentedViewController];
+  if (presentedViewController)
   {
   }
 
   else if (!self->_coercing)
   {
-    v6 = [v4 view];
+    view = [nodeCopy view];
     v7 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale"];
     [v7 setFromValue:&unk_2850AB3F0];
     [v7 setToValue:&unk_2850AB400];
@@ -76,8 +76,8 @@ LABEL_8:
     LODWORD(v8) = 2139095039;
     [v7 setRepeatCount:v8];
     [v7 setAutoreverses:1];
-    v9 = [v6 layer];
-    [v9 addAnimation:v7 forKey:@"pulsate"];
+    layer = [view layer];
+    [layer addAnimation:v7 forKey:@"pulsate"];
 
     self->_coercing = 1;
     v10 = dispatch_get_global_queue(0, 0);
@@ -85,9 +85,9 @@ LABEL_8:
     v12[1] = 3221225472;
     v12[2] = __40__WFContentGraphViewController_tapNode___block_invoke;
     v12[3] = &unk_278C375A0;
-    v13 = v6;
-    v14 = self;
-    v11 = v6;
+    v13 = view;
+    selfCopy = self;
+    v11 = view;
     dispatch_async(v10, v12);
   }
 }
@@ -217,11 +217,11 @@ void __40__WFContentGraphViewController_tapNode___block_invoke_4(uint64_t a1)
   v7.receiver = self;
   v7.super_class = WFContentGraphViewController;
   [(WFContentGraphViewController *)&v7 viewDidLayoutSubviews];
-  v3 = [(WFContentGraphViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  v5 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v6 = [v5 colorWithAlphaComponent:0.95];
-  [v4 setBackgroundColor:v6];
+  navigationController = [(WFContentGraphViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  v6 = [systemBackgroundColor colorWithAlphaComponent:0.95];
+  [navigationBar setBackgroundColor:v6];
 }
 
 - (void)viewWillLayoutSubviews
@@ -240,30 +240,30 @@ void __40__WFContentGraphViewController_tapNode___block_invoke_4(uint64_t a1)
   v40.receiver = self;
   v40.super_class = WFContentGraphViewController;
   [(WFContentGraphViewController *)&v40 loadView];
-  v2 = [(WFContentGraphViewController *)self view];
-  [v2 setClipsToBounds:1];
+  view = [(WFContentGraphViewController *)self view];
+  [view setClipsToBounds:1];
 
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(WFContentGraphViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view2 = [(WFContentGraphViewController *)self view];
+  [view2 setBackgroundColor:systemBackgroundColor];
 
   v5 = [CKForceLayoutAnimator alloc];
-  v6 = [(WFContentGraphViewController *)self view];
-  v7 = [(CKForceLayoutAnimator *)v5 initWithReferenceView:v6];
+  view3 = [(WFContentGraphViewController *)self view];
+  v7 = [(CKForceLayoutAnimator *)v5 initWithReferenceView:view3];
   animator = self->_animator;
   self->_animator = v7;
 
-  v9 = [(WFContentGraphViewController *)self useSmallBubbles];
+  useSmallBubbles = [(WFContentGraphViewController *)self useSmallBubbles];
   v10 = 150.0;
-  if (v9)
+  if (useSmallBubbles)
   {
     v10 = 60.0;
   }
 
   [(CKForceLayoutAnimator *)self->_animator setLinkDistance:v10];
-  v11 = [(WFContentGraphViewController *)self useSmallBubbles];
+  useSmallBubbles2 = [(WFContentGraphViewController *)self useSmallBubbles];
   v12 = -5000.0;
-  if (v11)
+  if (useSmallBubbles2)
   {
     v12 = -1000.0;
   }
@@ -287,12 +287,12 @@ void __40__WFContentGraphViewController_tapNode___block_invoke_4(uint64_t a1)
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v14 = [(WFContentItem *)self->_contentItem allSupportedItemClasses];
-  v15 = [v14 countByEnumeratingWithState:&v29 objects:v41 count:16];
+  allSupportedItemClasses = [(WFContentItem *)self->_contentItem allSupportedItemClasses];
+  v15 = [allSupportedItemClasses countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v15)
   {
     v16 = *v30;
-    obj = v14;
+    obj = allSupportedItemClasses;
     do
     {
       for (i = 0; i != v15; ++i)
@@ -308,20 +308,20 @@ void __40__WFContentGraphViewController_tapNode___block_invoke_4(uint64_t a1)
         v21 = [MEMORY[0x277CFC298] new];
         v22 = [v19 searchForCoercingItem:contentItem toItemClass:v18 options:v21];
 
-        for (j = 0; ; j = v24)
+        for (j = 0; ; j = nextPathNode)
         {
-          v24 = [v22 nextPathNode];
+          nextPathNode = [v22 nextPathNode];
 
-          if (!v24)
+          if (!nextPathNode)
           {
             break;
           }
 
-          v25 = v13[2](v13, v24);
+          v25 = v13[2](v13, nextPathNode);
         }
       }
 
-      v14 = obj;
+      allSupportedItemClasses = obj;
       v15 = [obj countByEnumeratingWithState:&v29 objects:v41 count:16];
     }
 
@@ -484,19 +484,19 @@ uint64_t __40__WFContentGraphViewController_loadView__block_invoke_2(uint64_t a1
 
 - (BOOL)useSmallBubbles
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }
 
-- (WFContentGraphViewController)initWithContentItem:(id)a3
+- (WFContentGraphViewController)initWithContentItem:(id)item
 {
-  v6 = a3;
-  if (!v6)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFContentGraphViewController.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"contentItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentGraphViewController.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"contentItem"}];
   }
 
   v12.receiver = self;
@@ -505,7 +505,7 @@ uint64_t __40__WFContentGraphViewController_loadView__block_invoke_2(uint64_t a1
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_contentItem, a3);
+    objc_storeStrong(&v7->_contentItem, item);
     v9 = WFLocalizedString(@"Content Item Graph");
     [(WFContentGraphViewController *)v8 setTitle:v9];
   }

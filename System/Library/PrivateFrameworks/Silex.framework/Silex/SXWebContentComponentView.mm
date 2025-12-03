@@ -1,11 +1,11 @@
 @interface SXWebContentComponentView
-- (SXWebContentComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 containerViewController:(id)a7 configurationProvider:(id)a8 navigationManager:(id)a9 analyticsReporting:(id)a10 componentExposureMonitor:(id)a11 interactionManagerFactory:(id)a12 reachabilityProvider:(id)a13 resourceDataSource:(id)a14 loadingPolicyProvider:(id)a15 dataSourceProvider:(id)a16 layoutInvalidator:(id)a17;
+- (SXWebContentComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory containerViewController:(id)controller configurationProvider:(id)configurationProvider navigationManager:(id)manager analyticsReporting:(id)self0 componentExposureMonitor:(id)self1 interactionManagerFactory:(id)self2 reachabilityProvider:(id)self3 resourceDataSource:(id)self4 loadingPolicyProvider:(id)self5 dataSourceProvider:(id)self6 layoutInvalidator:(id)self7;
 - (id)createDisabledState;
 - (id)createErrorState;
 - (id)createLoadingState;
 - (id)createPresentationState;
 - (id)createStateMachine;
-- (id)foregroundColor:(int64_t)a3;
+- (id)foregroundColor:(int64_t)color;
 - (void)configure;
 - (void)configureComponentExposureMonitor;
 - (void)configureConfigurationProvider;
@@ -17,55 +17,55 @@
 - (void)layoutLoadingIndicator;
 - (void)layoutSubviews;
 - (void)layoutWebView;
-- (void)loadComponent:(id)a3;
+- (void)loadComponent:(id)component;
 - (void)loadWebContent;
-- (void)presentComponentWithChanges:(id)a3;
-- (void)presentWithHeight:(double)a3;
-- (void)reachabilityChanged:(BOOL)a3;
+- (void)presentComponentWithChanges:(id)changes;
+- (void)presentWithHeight:(double)height;
+- (void)reachabilityChanged:(BOOL)changed;
 - (void)reloadWebContent;
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4;
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state;
 @end
 
 @implementation SXWebContentComponentView
 
-- (SXWebContentComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 containerViewController:(id)a7 configurationProvider:(id)a8 navigationManager:(id)a9 analyticsReporting:(id)a10 componentExposureMonitor:(id)a11 interactionManagerFactory:(id)a12 reachabilityProvider:(id)a13 resourceDataSource:(id)a14 loadingPolicyProvider:(id)a15 dataSourceProvider:(id)a16 layoutInvalidator:(id)a17
+- (SXWebContentComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory containerViewController:(id)controller configurationProvider:(id)configurationProvider navigationManager:(id)manager analyticsReporting:(id)self0 componentExposureMonitor:(id)self1 interactionManagerFactory:(id)self2 reachabilityProvider:(id)self3 resourceDataSource:(id)self4 loadingPolicyProvider:(id)self5 dataSourceProvider:(id)self6 layoutInvalidator:(id)self7
 {
-  v48 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v44 = a7;
-  v43 = a8;
-  v42 = a9;
-  v41 = a10;
-  v40 = a11;
-  v25 = a12;
-  v45 = a13;
-  v39 = a14;
-  v38 = a15;
-  v37 = a16;
-  v36 = a17;
+  providerCopy = provider;
+  viewportCopy = viewport;
+  delegateCopy = delegate;
+  factoryCopy = factory;
+  controllerCopy = controller;
+  configurationProviderCopy = configurationProvider;
+  managerCopy = manager;
+  reportingCopy = reporting;
+  monitorCopy = monitor;
+  managerFactoryCopy = managerFactory;
+  reachabilityProviderCopy = reachabilityProvider;
+  sourceCopy = source;
+  policyProviderCopy = policyProvider;
+  sourceProviderCopy = sourceProvider;
+  invalidatorCopy = invalidator;
   v52.receiver = self;
   v52.super_class = SXWebContentComponentView;
-  v47 = v22;
-  v26 = [(SXComponentView *)&v52 initWithDOMObjectProvider:v48 viewport:v22 presentationDelegate:v23 componentStyleRendererFactory:v24];
+  v47 = viewportCopy;
+  v26 = [(SXComponentView *)&v52 initWithDOMObjectProvider:providerCopy viewport:viewportCopy presentationDelegate:delegateCopy componentStyleRendererFactory:factoryCopy];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_containerViewController, a7);
-    objc_storeStrong(&v27->_configurationProvider, a8);
-    objc_storeStrong(&v27->_componentExposureMonitor, a11);
-    objc_storeStrong(&v27->_navigationManager, a9);
-    objc_storeStrong(&v27->_analyticsReporting, a10);
-    v28 = [v25 interactionManagerForComponentView:v27];
+    objc_storeStrong(&v26->_containerViewController, controller);
+    objc_storeStrong(&v27->_configurationProvider, configurationProvider);
+    objc_storeStrong(&v27->_componentExposureMonitor, monitor);
+    objc_storeStrong(&v27->_navigationManager, manager);
+    objc_storeStrong(&v27->_analyticsReporting, reporting);
+    v28 = [managerFactoryCopy interactionManagerForComponentView:v27];
     interactionManager = v27->_interactionManager;
     v27->_interactionManager = v28;
 
-    objc_storeStrong(&v27->_reachabilityProvider, a13);
-    objc_storeStrong(&v27->_resourceDataSource, a14);
-    objc_storeStrong(&v27->_loadingPolicyProvider, a15);
-    objc_storeStrong(&v27->_dataSourceProvider, a16);
-    objc_storeStrong(&v27->_layoutInvalidator, a17);
+    objc_storeStrong(&v27->_reachabilityProvider, reachabilityProvider);
+    objc_storeStrong(&v27->_resourceDataSource, source);
+    objc_storeStrong(&v27->_loadingPolicyProvider, policyProvider);
+    objc_storeStrong(&v27->_dataSourceProvider, sourceProvider);
+    objc_storeStrong(&v27->_layoutInvalidator, invalidator);
     v30 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v27 action:sel_handleTap_];
     tapGestureRecognizer = v27->_tapGestureRecognizer;
     v27->_tapGestureRecognizer = v30;
@@ -121,46 +121,46 @@ void __348__SXWebContentComponentView_initWithDOMObjectProvider_viewport_present
   self->_loadingIndicator = v3;
 
   [(UIActivityIndicatorView *)self->_loadingIndicator startAnimating];
-  v5 = [(SXComponentView *)self contentView];
-  v6 = [(SXWebContentComponentView *)self loadingIndicator];
-  [v5 addSubview:v6];
+  contentView = [(SXComponentView *)self contentView];
+  loadingIndicator = [(SXWebContentComponentView *)self loadingIndicator];
+  [contentView addSubview:loadingIndicator];
 
   [(SXWebContentComponentView *)self configureViewController];
-  v7 = [(SXWebContentComponentView *)self createStateMachine];
+  createStateMachine = [(SXWebContentComponentView *)self createStateMachine];
   stateMachine = self->_stateMachine;
-  self->_stateMachine = v7;
+  self->_stateMachine = createStateMachine;
 
   [(SXWebContentComponentView *)self configurePresentationManager];
   [(SXWebContentComponentView *)self configureErrorProvider];
   [(SXWebContentComponentView *)self configureConfigurationProvider];
-  v9 = [(SXWebContentComponentView *)self stateMachine];
-  [v9 activate];
+  stateMachine = [(SXWebContentComponentView *)self stateMachine];
+  [stateMachine activate];
 }
 
-- (void)loadComponent:(id)a3
+- (void)loadComponent:(id)component
 {
   v12.receiver = self;
   v12.super_class = SXWebContentComponentView;
-  [(SXComponentView *)&v12 loadComponent:a3];
-  v4 = [(SXWebContentComponentView *)self loadingIndicator];
-  v5 = [(SXWebContentComponentView *)self traitCollection];
-  v6 = -[SXWebContentComponentView foregroundColor:](self, "foregroundColor:", [v5 userInterfaceStyle]);
-  [v4 setColor:v6];
+  [(SXComponentView *)&v12 loadComponent:component];
+  loadingIndicator = [(SXWebContentComponentView *)self loadingIndicator];
+  traitCollection = [(SXWebContentComponentView *)self traitCollection];
+  v6 = -[SXWebContentComponentView foregroundColor:](self, "foregroundColor:", [traitCollection userInterfaceStyle]);
+  [loadingIndicator setColor:v6];
 
-  v7 = [(SXWebContentComponentView *)self loadingPolicyProvider];
-  v8 = [v7 loadingPolicy];
+  loadingPolicyProvider = [(SXWebContentComponentView *)self loadingPolicyProvider];
+  loadingPolicy = [loadingPolicyProvider loadingPolicy];
 
-  if (v8 == 2)
+  if (loadingPolicy == 2)
   {
-    v9 = [(SXWebContentComponentView *)self stateMachine];
-    v10 = [v9 fireEventWithName:@"disable" withContext:0];
+    stateMachine = [(SXWebContentComponentView *)self stateMachine];
+    v10 = [stateMachine fireEventWithName:@"disable" withContext:0];
   }
 
   else
   {
     [(SXWebContentComponentView *)self loadWebContent];
-    v11 = [(SXComponentView *)self viewport];
-    [v11 addViewportChangeListener:self forOptions:8];
+    viewport = [(SXComponentView *)self viewport];
+    [viewport addViewportChangeListener:self forOptions:8];
 
     [(SXWebContentComponentView *)self configureComponentExposureMonitor];
   }
@@ -169,7 +169,7 @@ void __348__SXWebContentComponentView_initWithDOMObjectProvider_viewport_present
 - (void)configureComponentExposureMonitor
 {
   objc_initWeak(&location, self);
-  v3 = [(SXWebContentComponentView *)self componentExposureMonitor];
+  componentExposureMonitor = [(SXWebContentComponentView *)self componentExposureMonitor];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__SXWebContentComponentView_configureComponentExposureMonitor__block_invoke;
@@ -180,7 +180,7 @@ void __348__SXWebContentComponentView_initWithDOMObjectProvider_viewport_present
   v4[2] = __62__SXWebContentComponentView_configureComponentExposureMonitor__block_invoke_2;
   v4[3] = &unk_1E85005C0;
   objc_copyWeak(&v5, &location);
-  [v3 onExposureOf:self then:v6 when:v4];
+  [componentExposureMonitor onExposureOf:self then:v6 when:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&v7);
@@ -245,112 +245,112 @@ BOOL __62__SXWebContentComponentView_configureComponentExposureMonitor__block_in
 
 - (void)loadWebContent
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 resourceIdentifier];
+  component = [(SXComponentView *)self component];
+  resourceIdentifier = [component resourceIdentifier];
 
-  if (!v4)
+  if (!resourceIdentifier)
   {
-    v19 = [(SXComponentView *)self component];
-    v20 = [v19 URL];
+    component2 = [(SXComponentView *)self component];
+    v20 = [component2 URL];
 
     if (!v20)
     {
       return;
     }
 
-    v25 = [(SXWebContentComponentView *)self containerViewController];
-    v15 = [(SXComponentView *)self component];
-    v17 = [v15 URL];
-    v16 = v25;
-    v18 = v17;
+    containerViewController = [(SXWebContentComponentView *)self containerViewController];
+    component3 = [(SXComponentView *)self component];
+    containerViewController2 = [component3 URL];
+    containerViewController3 = containerViewController;
+    v18 = containerViewController2;
     goto LABEL_8;
   }
 
-  v5 = [(SXComponentView *)self DOMObjectProvider];
-  v6 = [(SXComponentView *)self component];
-  v7 = [v6 resourceIdentifier];
-  v25 = [v5 resourceForIdentifier:v7];
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component4 = [(SXComponentView *)self component];
+  resourceIdentifier2 = [component4 resourceIdentifier];
+  containerViewController = [dOMObjectProvider resourceForIdentifier:resourceIdentifier2];
 
-  v8 = [v25 HTML];
-  if (v8)
+  hTML = [containerViewController HTML];
+  if (hTML)
   {
-    v9 = v8;
-    v10 = [(SXWebContentComponentView *)self loadingPolicyProvider];
-    v11 = [v10 loadingPolicy];
+    v9 = hTML;
+    loadingPolicyProvider = [(SXWebContentComponentView *)self loadingPolicyProvider];
+    loadingPolicy = [loadingPolicyProvider loadingPolicy];
 
-    if (v11 != 1)
+    if (loadingPolicy != 1)
     {
-      v21 = [(SXWebContentComponentView *)self resourceDataSource];
-      v22 = [v25 baseURL];
-      v23 = [v21 translateURL:v22];
-      v15 = [v23 URLByAppendingPathComponent:&stru_1F532F6C0];
+      resourceDataSource = [(SXWebContentComponentView *)self resourceDataSource];
+      baseURL = [containerViewController baseURL];
+      v23 = [resourceDataSource translateURL:baseURL];
+      component3 = [v23 URLByAppendingPathComponent:&stru_1F532F6C0];
 
-      v17 = [(SXWebContentComponentView *)self containerViewController];
-      v24 = [v25 HTML];
-      [v17 loadHTMLString:v24 baseURL:v15];
+      containerViewController2 = [(SXWebContentComponentView *)self containerViewController];
+      hTML2 = [containerViewController HTML];
+      [containerViewController2 loadHTMLString:hTML2 baseURL:component3];
 
       goto LABEL_10;
     }
   }
 
-  v12 = [v25 URL];
+  v12 = [containerViewController URL];
 
   if (v12)
   {
-    v13 = [(SXWebContentComponentView *)self resourceDataSource];
-    v14 = [v25 URL];
-    v15 = [v13 translateURL:v14];
+    resourceDataSource2 = [(SXWebContentComponentView *)self resourceDataSource];
+    v14 = [containerViewController URL];
+    component3 = [resourceDataSource2 translateURL:v14];
 
-    v16 = [(SXWebContentComponentView *)self containerViewController];
-    v17 = v16;
-    v18 = v15;
+    containerViewController3 = [(SXWebContentComponentView *)self containerViewController];
+    containerViewController2 = containerViewController3;
+    v18 = component3;
 LABEL_8:
-    [v16 loadURL:v18];
+    [containerViewController3 loadURL:v18];
 LABEL_10:
   }
 }
 
 - (void)configureViewController
 {
-  v3 = [(SXWebContentComponentView *)self containerViewController];
-  v4 = [v3 view];
-  [v4 setHidden:1];
+  containerViewController = [(SXWebContentComponentView *)self containerViewController];
+  view = [containerViewController view];
+  [view setHidden:1];
 
-  v5 = [(SXComponentView *)self presentationDelegate];
-  v11 = [v5 presentingContentViewController];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  presentingContentViewController = [presentationDelegate presentingContentViewController];
 
-  v6 = [(SXWebContentComponentView *)self containerViewController];
-  [v11 addChildViewController:v6];
+  containerViewController2 = [(SXWebContentComponentView *)self containerViewController];
+  [presentingContentViewController addChildViewController:containerViewController2];
 
-  v7 = [(SXComponentView *)self contentView];
-  v8 = [(SXWebContentComponentView *)self containerViewController];
-  v9 = [v8 view];
-  [v7 addSubview:v9];
+  contentView = [(SXComponentView *)self contentView];
+  containerViewController3 = [(SXWebContentComponentView *)self containerViewController];
+  view2 = [containerViewController3 view];
+  [contentView addSubview:view2];
 
-  v10 = [(SXWebContentComponentView *)self containerViewController];
-  [v10 didMoveToParentViewController:v11];
+  containerViewController4 = [(SXWebContentComponentView *)self containerViewController];
+  [containerViewController4 didMoveToParentViewController:presentingContentViewController];
 }
 
 - (void)configurePresentationManager
 {
   objc_initWeak(&location, self);
-  v3 = [(SXWebContentComponentView *)self containerViewController];
-  v4 = [v3 presentationManager];
+  containerViewController = [(SXWebContentComponentView *)self containerViewController];
+  presentationManager = [containerViewController presentationManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__SXWebContentComponentView_configurePresentationManager__block_invoke;
   v9[3] = &unk_1E85005E8;
   objc_copyWeak(&v10, &location);
-  [v4 onPresentable:v9];
+  [presentationManager onPresentable:v9];
 
-  v5 = [(SXWebContentComponentView *)self containerViewController];
-  v6 = [v5 presentationManager];
+  containerViewController2 = [(SXWebContentComponentView *)self containerViewController];
+  presentationManager2 = [containerViewController2 presentationManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SXWebContentComponentView_configurePresentationManager__block_invoke_2;
   v7[3] = &unk_1E84FEC28;
   objc_copyWeak(&v8, &location);
-  [v6 onLoad:v7];
+  [presentationManager2 onLoad:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
@@ -381,14 +381,14 @@ void __57__SXWebContentComponentView_configurePresentationManager__block_invoke_
 - (void)configureErrorProvider
 {
   objc_initWeak(&location, self);
-  v3 = [(SXWebContentComponentView *)self containerViewController];
-  v4 = [v3 errorProvider];
+  containerViewController = [(SXWebContentComponentView *)self containerViewController];
+  errorProvider = [containerViewController errorProvider];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__SXWebContentComponentView_configureErrorProvider__block_invoke;
   v5[3] = &unk_1E8500610;
   objc_copyWeak(&v6, &location);
-  [v4 onError:v5];
+  [errorProvider onError:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -420,22 +420,22 @@ LABEL_5:
 
 - (void)configureConfigurationProvider
 {
-  v3 = [(SXWebContentComponentView *)self dataSourceProvider];
-  v4 = [(SXComponentView *)self component];
-  v5 = [v4 dataSourceReferences];
-  v6 = [v5 NSDictionary];
-  v7 = [v3 dataSourcesForReferences:v6];
+  dataSourceProvider = [(SXWebContentComponentView *)self dataSourceProvider];
+  component = [(SXComponentView *)self component];
+  dataSourceReferences = [component dataSourceReferences];
+  nSDictionary = [dataSourceReferences NSDictionary];
+  v7 = [dataSourceProvider dataSourcesForReferences:nSDictionary];
 
-  v8 = [(SXWebContentComponentView *)self configurationProvider];
-  v9 = [(SXComponentView *)self component];
-  v10 = [v9 URL];
-  v11 = [v8 configurationForSize:v7 dataSources:v10 sourceURL:{0.0, 0.0}];
+  configurationProvider = [(SXWebContentComponentView *)self configurationProvider];
+  component2 = [(SXComponentView *)self component];
+  v10 = [component2 URL];
+  v11 = [configurationProvider configurationForSize:v7 dataSources:v10 sourceURL:{0.0, 0.0}];
 
-  v12 = [(SXWebContentComponentView *)self containerViewController];
-  [v12 setConfiguration:v11];
+  containerViewController = [(SXWebContentComponentView *)self containerViewController];
+  [containerViewController setConfiguration:v11];
 
   objc_initWeak(&location, self);
-  v13 = [(SXWebContentComponentView *)self configurationProvider];
+  configurationProvider2 = [(SXWebContentComponentView *)self configurationProvider];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __59__SXWebContentComponentView_configureConfigurationProvider__block_invoke;
@@ -443,7 +443,7 @@ LABEL_5:
   objc_copyWeak(&v17, &location);
   v14 = v7;
   v16 = v14;
-  [v13 onChange:v15];
+  [configurationProvider2 onChange:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -468,69 +468,69 @@ void __59__SXWebContentComponentView_configureConfigurationProvider__block_invok
   [v14 setConfiguration:v15];
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
-  var0 = a3.var0;
-  v31 = a3;
+  var0 = changes.var0;
+  changesCopy = changes;
   v30.receiver = self;
   v30.super_class = SXWebContentComponentView;
-  [(SXComponentView *)&v30 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v30 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   if (var0)
   {
     [(SXWebContentComponentView *)self layout];
     [(SXWebContentComponentView *)self reloadWebContent];
   }
 
-  v5 = [(SXWebContentComponentView *)self invalidationPromise];
+  invalidationPromise = [(SXWebContentComponentView *)self invalidationPromise];
 
-  if (v5)
+  if (invalidationPromise)
   {
-    v6 = [MEMORY[0x1E696B098] value:&v31 withObjCType:"{?=BBB}"];
-    v7 = [(SXWebContentComponentView *)self invalidationPromise];
-    v8 = [v7 resolve];
-    (v8)[2](v8, v6);
+    v6 = [MEMORY[0x1E696B098] value:&changesCopy withObjCType:"{?=BBB}"];
+    invalidationPromise2 = [(SXWebContentComponentView *)self invalidationPromise];
+    resolve = [invalidationPromise2 resolve];
+    (resolve)[2](resolve, v6);
 
     [(SXWebContentComponentView *)self setInvalidationPromise:0];
   }
 
-  v9 = [(SXWebContentComponentView *)self dataSourceProvider];
-  v10 = [(SXComponentView *)self component];
-  v11 = [v10 dataSourceReferences];
-  v12 = [v11 NSDictionary];
-  v13 = [v9 dataSourcesForReferences:v12];
+  dataSourceProvider = [(SXWebContentComponentView *)self dataSourceProvider];
+  component = [(SXComponentView *)self component];
+  dataSourceReferences = [component dataSourceReferences];
+  nSDictionary = [dataSourceReferences NSDictionary];
+  v13 = [dataSourceProvider dataSourcesForReferences:nSDictionary];
 
-  v14 = [(SXComponentView *)self documentColumnLayout];
-  [v14 contentScaleFactor];
+  documentColumnLayout = [(SXComponentView *)self documentColumnLayout];
+  [documentColumnLayout contentScaleFactor];
   v16 = v15;
 
-  v17 = [(SXWebContentComponentView *)self containerViewController];
-  v18 = [v17 scaleManager];
-  [v18 setScale:v16];
+  containerViewController = [(SXWebContentComponentView *)self containerViewController];
+  scaleManager = [containerViewController scaleManager];
+  [scaleManager setScale:v16];
 
   [(SXComponentView *)self contentFrame];
   v26 = v20;
   v27 = v19;
   CGAffineTransformMakeScale(&v29, 1.0 / v16, 1.0 / v16);
   v28 = vmlaq_n_f64(vmulq_n_f64(*&v29.c, v26), *&v29.a, v27);
-  v21 = [(SXWebContentComponentView *)self configurationProvider];
-  v22 = [(SXComponentView *)self component];
-  v23 = [v22 URL];
-  v24 = [v21 configurationForSize:v13 dataSources:v23 sourceURL:*&v28];
+  configurationProvider = [(SXWebContentComponentView *)self configurationProvider];
+  component2 = [(SXComponentView *)self component];
+  v23 = [component2 URL];
+  v24 = [configurationProvider configurationForSize:v13 dataSources:v23 sourceURL:*&v28];
 
-  v25 = [(SXWebContentComponentView *)self containerViewController];
-  [v25 setConfiguration:v24];
+  containerViewController2 = [(SXWebContentComponentView *)self containerViewController];
+  [containerViewController2 setConfiguration:v24];
 }
 
 - (void)reloadWebContent
 {
-  v3 = [(SXWebContentComponentView *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"reload" withContext:0];
+  stateMachine = [(SXWebContentComponentView *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"reload" withContext:0];
 }
 
-- (void)presentWithHeight:(double)a3
+- (void)presentWithHeight:(double)height
 {
   [(SXComponentView *)self contentFrame];
-  v5 = CGRectGetHeight(v17) - a3;
+  v5 = CGRectGetHeight(v17) - height;
   if (v5 < 0.0)
   {
     v5 = -v5;
@@ -541,26 +541,26 @@ void __59__SXWebContentComponentView_configureConfigurationProvider__block_invok
     v7 = objc_alloc_init(MEMORY[0x1E69B68F0]);
     [(SXWebContentComponentView *)self setInvalidationPromise:v7];
 
-    v8 = [(SXWebContentComponentView *)self invalidationPromise];
-    v9 = [v8 promise];
+    invalidationPromise = [(SXWebContentComponentView *)self invalidationPromise];
+    promise = [invalidationPromise promise];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __47__SXWebContentComponentView_presentWithHeight___block_invoke;
     v15[3] = &unk_1E8500660;
     v15[4] = self;
-    *&v15[5] = a3;
-    v10 = [v9 then:v15];
+    *&v15[5] = height;
+    v10 = [promise then:v15];
 
-    v11 = [(SXWebContentComponentView *)self layoutInvalidator];
-    v12 = [(SXComponentView *)self component];
+    layoutInvalidator = [(SXWebContentComponentView *)self layoutInvalidator];
+    component = [(SXComponentView *)self component];
     [(SXComponentView *)self contentFrame];
-    v13 = [v11 invalidateComponent:v12 suggestedSize:{CGRectGetWidth(v18), a3}];
+    v13 = [layoutInvalidator invalidateComponent:component suggestedSize:{CGRectGetWidth(v18), height}];
   }
 
   else
   {
-    v14 = [(SXWebContentComponentView *)self stateMachine];
-    v6 = [v14 fireEventWithName:@"present" withContext:0];
+    stateMachine = [(SXWebContentComponentView *)self stateMachine];
+    v6 = [stateMachine fireEventWithName:@"present" withContext:0];
   }
 }
 
@@ -602,30 +602,30 @@ LABEL_6:
 
 - (id)createStateMachine
 {
-  v3 = [(SXWebContentComponentView *)self createLoadingState];
-  v4 = [(SXWebContentComponentView *)self createPresentationState];
-  v5 = [(SXWebContentComponentView *)self createErrorState];
-  v20 = [(SXWebContentComponentView *)self createDisabledState];
+  createLoadingState = [(SXWebContentComponentView *)self createLoadingState];
+  createPresentationState = [(SXWebContentComponentView *)self createPresentationState];
+  createErrorState = [(SXWebContentComponentView *)self createErrorState];
+  createDisabledState = [(SXWebContentComponentView *)self createDisabledState];
   v6 = objc_alloc(MEMORY[0x1E69B6910]);
-  v7 = [MEMORY[0x1E695DFD8] setWithObjects:{v3, v5, 0}];
-  v8 = [v6 initWithName:@"present" transitionFromStates:v7 toState:v4];
+  v7 = [MEMORY[0x1E695DFD8] setWithObjects:{createLoadingState, createErrorState, 0}];
+  v8 = [v6 initWithName:@"present" transitionFromStates:v7 toState:createPresentationState];
 
   v9 = objc_alloc(MEMORY[0x1E69B6910]);
-  v10 = [MEMORY[0x1E695DFD8] setWithObjects:{v3, v4, 0}];
-  v11 = [v9 initWithName:@"error" transitionFromStates:v10 toState:v5];
+  v10 = [MEMORY[0x1E695DFD8] setWithObjects:{createLoadingState, createPresentationState, 0}];
+  v11 = [v9 initWithName:@"error" transitionFromStates:v10 toState:createErrorState];
 
   v12 = objc_alloc(MEMORY[0x1E69B6910]);
-  v13 = [MEMORY[0x1E695DFD8] setWithObjects:{v4, 0}];
-  v14 = [v12 initWithName:@"reload" transitionFromStates:v13 toState:v3];
+  v13 = [MEMORY[0x1E695DFD8] setWithObjects:{createPresentationState, 0}];
+  v14 = [v12 initWithName:@"reload" transitionFromStates:v13 toState:createLoadingState];
 
   v15 = objc_alloc(MEMORY[0x1E69B6910]);
-  v16 = [MEMORY[0x1E695DFD8] setWithObjects:{v3, v4, v5, 0}];
-  v17 = [v15 initWithName:@"disable" transitionFromStates:v16 toState:v20];
+  v16 = [MEMORY[0x1E695DFD8] setWithObjects:{createLoadingState, createPresentationState, createErrorState, 0}];
+  v17 = [v15 initWithName:@"disable" transitionFromStates:v16 toState:createDisabledState];
 
-  v18 = [objc_alloc(MEMORY[0x1E69B6908]) initWithState:v3 withOwner:self];
-  [v18 addState:v4];
-  [v18 addState:v5];
-  [v18 addState:v20];
+  v18 = [objc_alloc(MEMORY[0x1E69B6908]) initWithState:createLoadingState withOwner:self];
+  [v18 addState:createPresentationState];
+  [v18 addState:createErrorState];
+  [v18 addState:createDisabledState];
   [v18 addEvent:v8];
   [v18 addEvent:v11];
   [v18 addEvent:v14];
@@ -811,63 +811,63 @@ void __45__SXWebContentComponentView_createErrorState__block_invoke_2(uint64_t a
 
 - (void)layoutLoadingIndicator
 {
-  v4 = [(SXWebContentComponentView *)self loadingIndicator];
+  loadingIndicator = [(SXWebContentComponentView *)self loadingIndicator];
   [(SXComponentView *)self contentFrame];
   MidX = CGRectGetMidX(v6);
   [(SXComponentView *)self contentFrame];
-  [v4 setCenter:{MidX, CGRectGetMidY(v7)}];
+  [loadingIndicator setCenter:{MidX, CGRectGetMidY(v7)}];
 }
 
 - (void)layoutWebView
 {
-  v4 = [(SXWebContentComponentView *)self containerViewController];
-  v3 = [v4 view];
+  containerViewController = [(SXWebContentComponentView *)self containerViewController];
+  view = [containerViewController view];
   [(SXComponentView *)self contentFrame];
-  [v3 setFrame:?];
+  [view setFrame:?];
 }
 
 - (void)layoutErrorView
 {
-  v4 = [(SXWebContentComponentView *)self errorLabel];
+  errorLabel = [(SXWebContentComponentView *)self errorLabel];
   [(SXComponentView *)self contentFrame];
   MidX = CGRectGetMidX(v6);
   [(SXComponentView *)self contentFrame];
-  [v4 setCenter:{MidX, CGRectGetMidY(v7)}];
+  [errorLabel setCenter:{MidX, CGRectGetMidY(v7)}];
 }
 
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state
 {
-  v5 = [(SXComponentView *)self viewport:a3];
-  v6 = [v5 appearState];
+  v5 = [(SXComponentView *)self viewport:viewport];
+  appearState = [v5 appearState];
 
-  if (v6 == 2)
+  if (appearState == 2)
   {
-    v8 = [(SXWebContentComponentView *)self containerViewController];
-    v7 = [v8 presentationManager];
-    [v7 refresh];
+    containerViewController = [(SXWebContentComponentView *)self containerViewController];
+    presentationManager = [containerViewController presentationManager];
+    [presentationManager refresh];
   }
 }
 
-- (void)reachabilityChanged:(BOOL)a3
+- (void)reachabilityChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     [(SXWebContentComponentView *)self loadWebContent];
-    v4 = [(SXWebContentComponentView *)self reachabilityProvider];
-    [v4 removeReachabilityObserver:self];
+    reachabilityProvider = [(SXWebContentComponentView *)self reachabilityProvider];
+    [reachabilityProvider removeReachabilityObserver:self];
   }
 }
 
-- (id)foregroundColor:(int64_t)a3
+- (id)foregroundColor:(int64_t)color
 {
-  v4 = [(SXComponentView *)self DOMObjectProvider];
-  v5 = [(SXComponentView *)self component];
-  v6 = [v4 componentStyleForComponent:v5];
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component = [(SXComponentView *)self component];
+  v6 = [dOMObjectProvider componentStyleForComponent:component];
 
   if (v6)
   {
-    v7 = [v6 backgroundColor];
-    [v7 _luminance];
+    backgroundColor = [v6 backgroundColor];
+    [backgroundColor _luminance];
     if (v8 > 0.7)
     {
       [MEMORY[0x1E69DC888] blackColor];
@@ -877,15 +877,15 @@ void __45__SXWebContentComponentView_createErrorState__block_invoke_2(uint64_t a
     {
       [MEMORY[0x1E69DC888] whiteColor];
     }
-    v9 = ;
+    labelColor = ;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  return v9;
+  return labelColor;
 }
 
 @end

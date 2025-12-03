@@ -1,14 +1,14 @@
 @interface WFSystemActionConfigurationViewController
-- (WFSystemActionConfigurationViewController)initWithCoder:(id)a3;
-- (WFSystemActionConfigurationViewController)initWithConfigurationContext:(id)a3;
+- (WFSystemActionConfigurationViewController)initWithCoder:(id)coder;
+- (WFSystemActionConfigurationViewController)initWithConfigurationContext:(id)context;
 - (WFSystemActionConfigurationViewControllerDelegate)delegate;
 - (_UIRemoteViewController)remoteViewController;
-- (void)configurationController:(id)a3 didFinishWithAction:(id)a4 error:(id)a5;
+- (void)configurationController:(id)controller didFinishWithAction:(id)action error:(id)error;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)installRemoteViewController:(id)a3 extension:(id)a4 extensionRequest:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)installRemoteViewController:(id)controller extension:(id)extension extensionRequest:(id)request;
 - (void)loadRemoteViewController;
-- (void)setSelectedAction:(id)a3;
+- (void)setSelectedAction:(id)action;
 @end
 
 @implementation WFSystemActionConfigurationViewController
@@ -27,77 +27,77 @@
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFSystemActionConfigurationViewController *)self configurationContext];
-  [v4 encodeObject:v5 forKey:@"configurationContext"];
+  coderCopy = coder;
+  configurationContext = [(WFSystemActionConfigurationViewController *)self configurationContext];
+  [coderCopy encodeObject:configurationContext forKey:@"configurationContext"];
 }
 
-- (WFSystemActionConfigurationViewController)initWithCoder:(id)a3
+- (WFSystemActionConfigurationViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configurationContext"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configurationContext"];
 
   if (v5)
   {
     self = [(WFSystemActionConfigurationViewController *)self initWithConfigurationContext:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)configurationController:(id)a3 didFinishWithAction:(id)a4 error:(id)a5
+- (void)configurationController:(id)controller didFinishWithAction:(id)action error:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  actionCopy = action;
+  errorCopy = error;
   v9 = getWFSystemActionConfigurationLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[WFSystemActionConfigurationViewController configurationController:didFinishWithAction:error:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = actionCopy;
     _os_log_impl(&dword_1C830A000, v9, OS_LOG_TYPE_DEFAULT, "%s Providing selected action to the client: %@", &v13, 0x16u);
   }
 
   selectedAction = self->_selectedAction;
-  self->_selectedAction = v7;
-  v11 = v7;
+  self->_selectedAction = actionCopy;
+  v11 = actionCopy;
 
-  v12 = [(WFSystemActionConfigurationViewController *)self delegate];
-  [v12 configurationController:self didFinishWithAction:v11 error:v8];
+  delegate = [(WFSystemActionConfigurationViewController *)self delegate];
+  [delegate configurationController:self didFinishWithAction:v11 error:errorCopy];
 }
 
-- (void)setSelectedAction:(id)a3
+- (void)setSelectedAction:(id)action
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  actionCopy = action;
   v6 = getWFSystemActionConfigurationLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[WFSystemActionConfigurationViewController setSelectedAction:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = actionCopy;
     _os_log_impl(&dword_1C830A000, v6, OS_LOG_TYPE_DEFAULT, "%s Client provided selected action: %@", &v10, 0x16u);
   }
 
-  objc_storeStrong(&self->_selectedAction, a3);
-  v7 = [(WFSystemActionConfigurationViewController *)self remoteViewController];
-  if (v7)
+  objc_storeStrong(&self->_selectedAction, action);
+  remoteViewController = [(WFSystemActionConfigurationViewController *)self remoteViewController];
+  if (remoteViewController)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = remoteViewController;
     }
 
     else
@@ -113,77 +113,77 @@
 
   v9 = v8;
 
-  [v9 setSelectedAction:v5];
+  [v9 setSelectedAction:actionCopy];
 }
 
-- (void)installRemoteViewController:(id)a3 extension:(id)a4 extensionRequest:(id)a5
+- (void)installRemoteViewController:(id)controller extension:(id)extension extensionRequest:(id)request
 {
   v52[4] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  controllerCopy = controller;
+  extensionCopy = extension;
+  requestCopy = request;
+  v11 = requestCopy;
   extension = self->_extension;
-  if (extension != v9 || self->_extensionRequest != v10)
+  if (extension != extensionCopy || self->_extensionRequest != requestCopy)
   {
     [(NSExtension *)self->_extension cancelExtensionRequestWithIdentifier:?];
     extension = self->_extension;
   }
 
-  self->_extension = v9;
-  v51 = v9;
+  self->_extension = extensionCopy;
+  v51 = extensionCopy;
 
   extensionRequest = self->_extensionRequest;
   self->_extensionRequest = v11;
   v50 = v11;
 
-  [(WFSystemActionConfigurationViewController *)self setRemoteViewController:v8];
-  [(WFSystemActionConfigurationViewController *)self addChildViewController:v8];
-  v15 = [(WFSystemActionConfigurationViewController *)self view];
-  [v15 bounds];
+  [(WFSystemActionConfigurationViewController *)self setRemoteViewController:controllerCopy];
+  [(WFSystemActionConfigurationViewController *)self addChildViewController:controllerCopy];
+  view = [(WFSystemActionConfigurationViewController *)self view];
+  [view bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [v8 view];
-  [v24 setFrame:{v17, v19, v21, v23}];
+  view2 = [controllerCopy view];
+  [view2 setFrame:{v17, v19, v21, v23}];
 
-  v25 = [v8 view];
-  [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [controllerCopy view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v26 = [(WFSystemActionConfigurationViewController *)self view];
-  v27 = [v8 view];
-  [v26 addSubview:v27];
+  view4 = [(WFSystemActionConfigurationViewController *)self view];
+  view5 = [controllerCopy view];
+  [view4 addSubview:view5];
 
   v39 = MEMORY[0x1E696ACD8];
-  v49 = [v8 view];
-  v47 = [v49 topAnchor];
-  v48 = [(WFSystemActionConfigurationViewController *)self view];
-  v46 = [v48 topAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  view6 = [controllerCopy view];
+  topAnchor = [view6 topAnchor];
+  view7 = [(WFSystemActionConfigurationViewController *)self view];
+  topAnchor2 = [view7 topAnchor];
+  v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v52[0] = v45;
-  v44 = [v8 view];
-  v42 = [v44 bottomAnchor];
-  v43 = [(WFSystemActionConfigurationViewController *)self view];
-  v41 = [v43 bottomAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  view8 = [controllerCopy view];
+  bottomAnchor = [view8 bottomAnchor];
+  view9 = [(WFSystemActionConfigurationViewController *)self view];
+  bottomAnchor2 = [view9 bottomAnchor];
+  v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v52[1] = v40;
-  v38 = [v8 view];
-  v36 = [v38 leadingAnchor];
-  v37 = [(WFSystemActionConfigurationViewController *)self view];
-  v28 = [v37 leadingAnchor];
-  v29 = [v36 constraintEqualToAnchor:v28];
+  view10 = [controllerCopy view];
+  leadingAnchor = [view10 leadingAnchor];
+  view11 = [(WFSystemActionConfigurationViewController *)self view];
+  leadingAnchor2 = [view11 leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v52[2] = v29;
-  v30 = [v8 view];
-  v31 = [v30 trailingAnchor];
-  v32 = [(WFSystemActionConfigurationViewController *)self view];
-  v33 = [v32 trailingAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  view12 = [controllerCopy view];
+  trailingAnchor = [view12 trailingAnchor];
+  view13 = [(WFSystemActionConfigurationViewController *)self view];
+  trailingAnchor2 = [view13 trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v52[3] = v34;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:4];
   [v39 activateConstraints:v35];
 
-  [v8 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
 - (void)loadRemoteViewController
@@ -218,8 +218,8 @@
     [v5 setRequestInterruptionBlock:v16];
     v7 = objc_alloc_init(MEMORY[0x1E696ABE0]);
     v22 = @"WFSystemActionConfigurationContextUserInfoKey";
-    v8 = [(WFSystemActionConfigurationViewController *)self configurationContext];
-    v23 = v8;
+    configurationContext = [(WFSystemActionConfigurationViewController *)self configurationContext];
+    v23 = configurationContext;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     [v7 setUserInfo:v9];
 
@@ -251,8 +251,8 @@
       _os_log_impl(&dword_1C830A000, v11, OS_LOG_TYPE_ERROR, "%s Failed to load a System Action Configuration Extension: %{public}@", buf, 0x16u);
     }
 
-    v12 = [(WFSystemActionConfigurationViewController *)self delegate];
-    [v12 configurationController:self didFinishWithAction:0 error:v6];
+    delegate = [(WFSystemActionConfigurationViewController *)self delegate];
+    [delegate configurationController:self didFinishWithAction:0 error:v6];
   }
 }
 
@@ -355,24 +355,24 @@ void __69__WFSystemActionConfigurationViewController_loadRemoteViewController__b
     _os_log_impl(&dword_1C830A000, v3, OS_LOG_TYPE_DEFAULT, "%s Destroying WFSystemActionConfigurationViewController", buf, 0xCu);
   }
 
-  v4 = [(WFSystemActionConfigurationViewController *)self extension];
-  v5 = [(WFSystemActionConfigurationViewController *)self extensionRequest];
-  [v4 cancelExtensionRequestWithIdentifier:v5];
+  extension = [(WFSystemActionConfigurationViewController *)self extension];
+  extensionRequest = [(WFSystemActionConfigurationViewController *)self extensionRequest];
+  [extension cancelExtensionRequestWithIdentifier:extensionRequest];
 
   v6.receiver = self;
   v6.super_class = WFSystemActionConfigurationViewController;
   [(WFSystemActionConfigurationViewController *)&v6 dealloc];
 }
 
-- (WFSystemActionConfigurationViewController)initWithConfigurationContext:(id)a3
+- (WFSystemActionConfigurationViewController)initWithConfigurationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = WFSystemActionConfigurationViewController;
   v5 = [(WFSystemActionConfigurationViewController *)&v10 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     configurationContext = v5->_configurationContext;
     v5->_configurationContext = v6;
 

@@ -1,22 +1,22 @@
 @interface FastMetalColorSampler
-+ (id)sharedPipelineStateForDevice:(id)a3;
++ (id)sharedPipelineStateForDevice:(id)device;
 - (FastMetalColorSampler)init;
-- (id)createTextureFromCIImage:(id)a3;
-- (id)sampleColors:(id)a3 sampleCount:(unint64_t)a4;
+- (id)createTextureFromCIImage:(id)image;
+- (id)sampleColors:(id)colors sampleCount:(unint64_t)count;
 - (void)setupMetal;
 @end
 
 @implementation FastMetalColorSampler
 
-+ (id)sharedPipelineStateForDevice:(id)a3
++ (id)sharedPipelineStateForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (sharedPipelineStateForDevice__onceToken != -1)
   {
     +[FastMetalColorSampler sharedPipelineStateForDevice:];
   }
 
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v3, "registryID")}];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(deviceCopy, "registryID")}];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -47,7 +47,7 @@
     v11[3] = &unk_1E7415ED0;
     v14 = &v18;
     v12 = v6;
-    v13 = v3;
+    v13 = deviceCopy;
     dispatch_barrier_sync(v9, v11);
     v8 = v19[5];
   }
@@ -174,29 +174,29 @@ LABEL_16:
   v3 = MTLCreateSystemDefaultDevice();
   [(FastMetalColorSampler *)self setDevice:v3];
 
-  v4 = [(FastMetalColorSampler *)self device];
+  device = [(FastMetalColorSampler *)self device];
 
-  if (v4)
+  if (device)
   {
-    v5 = [(FastMetalColorSampler *)self device];
-    v6 = [v5 newCommandQueue];
-    [(FastMetalColorSampler *)self setCommandQueue:v6];
+    device2 = [(FastMetalColorSampler *)self device];
+    newCommandQueue = [device2 newCommandQueue];
+    [(FastMetalColorSampler *)self setCommandQueue:newCommandQueue];
 
     v7 = MEMORY[0x1E695F620];
-    v8 = [(FastMetalColorSampler *)self device];
-    v9 = [v7 contextWithMTLDevice:v8];
+    device3 = [(FastMetalColorSampler *)self device];
+    v9 = [v7 contextWithMTLDevice:device3];
     [(FastMetalColorSampler *)self setCiContext:v9];
 
     v10 = objc_opt_class();
-    v11 = [(FastMetalColorSampler *)self device];
-    v12 = [v10 sharedPipelineStateForDevice:v11];
+    device4 = [(FastMetalColorSampler *)self device];
+    v12 = [v10 sharedPipelineStateForDevice:device4];
     [(FastMetalColorSampler *)self setPipelineState:v12];
 
-    v13 = [(FastMetalColorSampler *)self pipelineState];
+    pipelineState = [(FastMetalColorSampler *)self pipelineState];
 
     v14 = background_color_os_log();
     v15 = v14;
-    if (v13)
+    if (pipelineState)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
@@ -220,77 +220,77 @@ LABEL_16:
   }
 }
 
-- (id)sampleColors:(id)a3 sampleCount:(unint64_t)a4
+- (id)sampleColors:(id)colors sampleCount:(unint64_t)count
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(FastMetalColorSampler *)self device];
-  if (v7)
+  colorsCopy = colors;
+  device = [(FastMetalColorSampler *)self device];
+  if (device)
   {
-    v8 = v7;
-    v9 = [(FastMetalColorSampler *)self pipelineState];
+    v8 = device;
+    pipelineState = [(FastMetalColorSampler *)self pipelineState];
 
     v10 = 0;
-    if (v6 && v9)
+    if (colorsCopy && pipelineState)
     {
-      if (a4 >= 8)
+      if (count >= 8)
       {
-        v11 = 8;
+        countCopy = 8;
       }
 
       else
       {
-        v11 = a4;
+        countCopy = count;
       }
 
       v12 = objc_autoreleasePoolPush();
-      v13 = [(FastMetalColorSampler *)self createTextureFromCIImage:v6];
+      v13 = [(FastMetalColorSampler *)self createTextureFromCIImage:colorsCopy];
       if (!v13)
       {
         goto LABEL_17;
       }
 
-      v14 = [(FastMetalColorSampler *)self reusableOutputBuffer];
-      if (!v14 || (v15 = v14, v16 = [(FastMetalColorSampler *)self bufferCapacity], v15, v16 < 16 * v11))
+      reusableOutputBuffer = [(FastMetalColorSampler *)self reusableOutputBuffer];
+      if (!reusableOutputBuffer || (v15 = reusableOutputBuffer, v16 = [(FastMetalColorSampler *)self bufferCapacity], v15, v16 < 16 * countCopy))
       {
-        v17 = [(FastMetalColorSampler *)self device];
-        v18 = [v17 newBufferWithLength:128 options:0];
+        device2 = [(FastMetalColorSampler *)self device];
+        v18 = [device2 newBufferWithLength:128 options:0];
         [(FastMetalColorSampler *)self setReusableOutputBuffer:v18];
 
         [(FastMetalColorSampler *)self setBufferCapacity:128];
       }
 
-      v19 = [(FastMetalColorSampler *)self reusableOutputBuffer];
+      reusableOutputBuffer2 = [(FastMetalColorSampler *)self reusableOutputBuffer];
 
-      if (v19)
+      if (reusableOutputBuffer2)
       {
-        v20 = [(FastMetalColorSampler *)self commandQueue];
-        v21 = [v20 commandBuffer];
+        commandQueue = [(FastMetalColorSampler *)self commandQueue];
+        commandBuffer = [commandQueue commandBuffer];
 
-        v22 = [v21 computeCommandEncoder];
-        v23 = [(FastMetalColorSampler *)self pipelineState];
-        [v22 setComputePipelineState:v23];
+        computeCommandEncoder = [commandBuffer computeCommandEncoder];
+        pipelineState2 = [(FastMetalColorSampler *)self pipelineState];
+        [computeCommandEncoder setComputePipelineState:pipelineState2];
 
-        [v22 setTexture:v13 atIndex:0];
-        v24 = [(FastMetalColorSampler *)self reusableOutputBuffer];
-        [v22 setBuffer:v24 offset:0 atIndex:0];
+        [computeCommandEncoder setTexture:v13 atIndex:0];
+        reusableOutputBuffer3 = [(FastMetalColorSampler *)self reusableOutputBuffer];
+        [computeCommandEncoder setBuffer:reusableOutputBuffer3 offset:0 atIndex:0];
 
         *components = vdupq_n_s64(1uLL);
         *&v40.f64[0] = 1;
         v37 = xmmword_19567B080;
         v38 = 1;
-        [v22 dispatchThreadgroups:components threadsPerThreadgroup:&v37];
-        [v22 endEncoding];
-        [v21 commit];
-        [v21 waitUntilCompleted];
-        v25 = [(FastMetalColorSampler *)self reusableOutputBuffer];
-        v26 = [v25 contents];
+        [computeCommandEncoder dispatchThreadgroups:components threadsPerThreadgroup:&v37];
+        [computeCommandEncoder endEncoding];
+        [commandBuffer commit];
+        [commandBuffer waitUntilCompleted];
+        reusableOutputBuffer4 = [(FastMetalColorSampler *)self reusableOutputBuffer];
+        contents = [reusableOutputBuffer4 contents];
 
-        v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:v11];
+        v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:countCopy];
         DeviceRGB = CGColorSpaceCreateDeviceRGB();
-        if (a4)
+        if (count)
         {
-          v28 = (v26 + 8);
+          v28 = (contents + 8);
           __asm { FMOV            V8.2S, #1.0 }
 
           do
@@ -302,10 +302,10 @@ LABEL_16:
             [v10 addObject:v35];
             CGColorRelease(v35);
             v28 += 2;
-            --v11;
+            --countCopy;
           }
 
-          while (v11);
+          while (countCopy);
         }
 
         CGColorSpaceRelease(DeviceRGB);
@@ -329,10 +329,10 @@ LABEL_17:
   return v10;
 }
 
-- (id)createTextureFromCIImage:(id)a3
+- (id)createTextureFromCIImage:(id)image
 {
-  v4 = a3;
-  [v4 extent];
+  imageCopy = image;
+  [imageCopy extent];
   x = v26.origin.x;
   y = v26.origin.y;
   width = v26.size.width;
@@ -382,12 +382,12 @@ LABEL_17:
 
     v15 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:70 width:v13 height:v14 mipmapped:0];
     [v15 setUsage:3];
-    v16 = [(FastMetalColorSampler *)self device];
-    v9 = [v16 newTextureWithDescriptor:v15];
+    device = [(FastMetalColorSampler *)self device];
+    v9 = [device newTextureWithDescriptor:v15];
 
     if (v9)
     {
-      v17 = v4;
+      v17 = imageCopy;
       if (v10 != 1.0)
       {
         memset(&v24, 0, sizeof(v24));
@@ -399,8 +399,8 @@ LABEL_17:
       }
 
       DeviceRGB = CGColorSpaceCreateDeviceRGB();
-      v20 = [(FastMetalColorSampler *)self ciContext];
-      [v20 render:v17 toMTLTexture:v9 commandBuffer:0 bounds:DeviceRGB colorSpace:{0.0, 0.0, v13, v14}];
+      ciContext = [(FastMetalColorSampler *)self ciContext];
+      [ciContext render:v17 toMTLTexture:v9 commandBuffer:0 bounds:DeviceRGB colorSpace:{0.0, 0.0, v13, v14}];
 
       CGColorSpaceRelease(DeviceRGB);
       v21 = v9;

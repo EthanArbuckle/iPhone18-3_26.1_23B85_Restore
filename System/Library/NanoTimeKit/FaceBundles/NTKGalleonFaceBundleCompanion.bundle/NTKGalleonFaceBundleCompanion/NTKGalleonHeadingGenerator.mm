@@ -1,17 +1,17 @@
 @interface NTKGalleonHeadingGenerator
-+ (id)_compassDirectionForHeading:(unint64_t)a3;
++ (id)_compassDirectionForHeading:(unint64_t)heading;
 + (id)_generateHeadingStrings;
 + (id)sharedGenerator;
 - (id)_init;
-- (id)stringForHeading:(unint64_t)a3;
+- (id)stringForHeading:(unint64_t)heading;
 @end
 
 @implementation NTKGalleonHeadingGenerator
 
 + (id)sharedGenerator
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&qword_27E1DD6F0);
   if (!WeakRetained)
   {
@@ -20,7 +20,7 @@
     objc_storeWeak(&qword_27E1DD6F0, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
@@ -40,16 +40,16 @@
   return v5;
 }
 
-- (id)stringForHeading:(unint64_t)a3
+- (id)stringForHeading:(unint64_t)heading
 {
-  if (a3 == -1)
+  if (heading == -1)
   {
     v8 = objc_msgSend_objectForKey_(self->_lookup, a2, &unk_284EA7A70, v3);
   }
 
   else
   {
-    v5 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x277CCABB0], a2, a3 % 0x168, v3);
+    v5 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x277CCABB0], a2, heading % 0x168, v3);
     v8 = objc_msgSend_objectForKey_(self->_lookup, v6, v5, v7);
   }
 
@@ -64,7 +64,7 @@
   for (i = 0; i != 360; ++i)
   {
     v12 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v8, i, v9);
-    v15 = objc_msgSend__compassDirectionForHeading_(a1, v13, i, v14);
+    v15 = objc_msgSend__compassDirectionForHeading_(self, v13, i, v14);
     v18 = objc_msgSend_stringFromNumber_(v6, v16, v12, v17);
     v21 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v19, v10, v20, v18, v15);
     objc_msgSend_setObject_forKey_(v5, v22, v21, v12);
@@ -77,26 +77,26 @@
   return v28;
 }
 
-+ (id)_compassDirectionForHeading:(unint64_t)a3
++ (id)_compassDirectionForHeading:(unint64_t)heading
 {
-  if (a3 <= 0x16)
+  if (heading <= 0x16)
   {
     goto LABEL_2;
   }
 
-  if (a3 > 0x42)
+  if (heading > 0x42)
   {
-    if (a3 > 0x6F)
+    if (heading > 0x6F)
     {
-      if (a3 > 0x9C)
+      if (heading > 0x9C)
       {
-        if (a3 > 0xC9)
+        if (heading > 0xC9)
         {
-          if (a3 > 0xF6)
+          if (heading > 0xF6)
           {
-            if (a3 > 0x123)
+            if (heading > 0x123)
             {
-              if (a3 > 0x150)
+              if (heading > 0x150)
               {
 LABEL_2:
                 objc_msgSend_localizedStringForKey_comment_(NTKGalleonFaceBundle, a2, @"GALLEON_LABEL_NORTH", @"N");

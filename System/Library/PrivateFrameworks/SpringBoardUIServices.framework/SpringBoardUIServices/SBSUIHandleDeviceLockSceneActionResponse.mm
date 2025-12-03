@@ -1,29 +1,29 @@
 @interface SBSUIHandleDeviceLockSceneActionResponse
-- (SBSUIHandleDeviceLockSceneActionResponse)initWithDeviceLockHandlingResult:(int64_t)a3 error:(id)a4;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (SBSUIHandleDeviceLockSceneActionResponse)initWithDeviceLockHandlingResult:(int64_t)result error:(id)error;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (int64_t)deviceLockHandlingResult;
 @end
 
 @implementation SBSUIHandleDeviceLockSceneActionResponse
 
-- (SBSUIHandleDeviceLockSceneActionResponse)initWithDeviceLockHandlingResult:(int64_t)a3 error:(id)a4
+- (SBSUIHandleDeviceLockSceneActionResponse)initWithDeviceLockHandlingResult:(int64_t)result error:(id)error
 {
   v6 = MEMORY[0x1E698E700];
-  v7 = a4;
+  errorCopy = error;
   v8 = objc_alloc_init(v6);
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:result];
   [v8 setObject:v9 forSetting:2];
 
   v12.receiver = self;
   v12.super_class = SBSUIHandleDeviceLockSceneActionResponse;
-  v10 = [(SBSUIHandleDeviceLockSceneActionResponse *)&v12 initWithInfo:v8 error:v7];
+  v10 = [(SBSUIHandleDeviceLockSceneActionResponse *)&v12 initWithInfo:v8 error:errorCopy];
 
   return v10;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 2)
+  if (setting == 2)
   {
     return @"deviceLockHandlingResult";
   }
@@ -36,11 +36,11 @@
 
 - (int64_t)deviceLockHandlingResult
 {
-  v2 = [(SBSUIHandleDeviceLockSceneActionResponse *)self info];
-  v3 = [v2 objectForSetting:2];
-  v4 = [v3 integerValue];
+  info = [(SBSUIHandleDeviceLockSceneActionResponse *)self info];
+  v3 = [info objectForSetting:2];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 @end

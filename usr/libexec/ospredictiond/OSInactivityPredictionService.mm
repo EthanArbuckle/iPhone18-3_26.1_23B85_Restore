@@ -1,32 +1,32 @@
 @interface OSInactivityPredictionService
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)overriddenToUseTimeRestrictionFromHour:(int *)a3 toHour:(int *)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)overriddenToUseTimeRestrictionFromHour:(int *)hour toHour:(int *)toHour;
 - (BOOL)upgradePredictorIfNeeded;
 - (OSInactivityPredictionService)init;
 - (double)readOverriddenWaitTime;
 - (id)readOverriddenModelOutput;
-- (unint64_t)evaluatePredictorTypeWithLookahead:(double)a3 withIncrement:(double)a4 withActivity:(id)a5;
-- (void)backedUpDataWithHandler:(id)a3;
-- (void)deviceUsageDiagnosisWithHandler:(id)a3;
-- (void)fixModelOutput:(id)a3 withHandler:(id)a4;
-- (void)hasEnoughInactivityHistoryWithHandler:(id)a3;
-- (void)inactivityHistoryDiagnosisWithHandler:(id)a3;
-- (void)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withHandler:(id)a6;
-- (void)longInactivityPredictionResultWithOptions:(int64_t)a3 withHandler:(id)a4;
-- (void)modelDescriptionWithHandler:(id)a3;
-- (void)modelMetadataWithHandler:(id)a3;
-- (void)overrideRecommendedWaitTimeTo:(double)a3 withHandler:(id)a4;
-- (void)recommendedWaitTimeWithHandler:(id)a3;
+- (unint64_t)evaluatePredictorTypeWithLookahead:(double)lookahead withIncrement:(double)increment withActivity:(id)activity;
+- (void)backedUpDataWithHandler:(id)handler;
+- (void)deviceUsageDiagnosisWithHandler:(id)handler;
+- (void)fixModelOutput:(id)output withHandler:(id)handler;
+- (void)hasEnoughInactivityHistoryWithHandler:(id)handler;
+- (void)inactivityHistoryDiagnosisWithHandler:(id)handler;
+- (void)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withHandler:(id)handler;
+- (void)longInactivityPredictionResultWithOptions:(int64_t)options withHandler:(id)handler;
+- (void)modelDescriptionWithHandler:(id)handler;
+- (void)modelMetadataWithHandler:(id)handler;
+- (void)overrideRecommendedWaitTimeTo:(double)to withHandler:(id)handler;
+- (void)recommendedWaitTimeWithHandler:(id)handler;
 - (void)registerBackupTask;
-- (void)registerDeviceTypeEvalution:(BOOL)a3;
-- (void)restoreInactivityModelWithHandler:(id)a3;
-- (void)restoreRecommendedWaitTimeWithHandler:(id)a3;
-- (void)scheduleModelUpgradeAfterInterval:(double)a3;
-- (void)unfixModelOutputWithHandler:(id)a3;
-- (void)writeEvaluatedPredictorTypeToDefaults:(unint64_t)a3;
-- (void)writeOverriddenModelOutput:(id)a3;
-- (void)writeOverriddenWaitTime:(double)a3;
+- (void)registerDeviceTypeEvalution:(BOOL)evalution;
+- (void)restoreInactivityModelWithHandler:(id)handler;
+- (void)restoreRecommendedWaitTimeWithHandler:(id)handler;
+- (void)scheduleModelUpgradeAfterInterval:(double)interval;
+- (void)unfixModelOutputWithHandler:(id)handler;
+- (void)writeEvaluatedPredictorTypeToDefaults:(unint64_t)defaults;
+- (void)writeOverriddenModelOutput:(id)output;
+- (void)writeOverriddenWaitTime:(double)time;
 @end
 
 @implementation OSInactivityPredictionService
@@ -192,9 +192,9 @@ LABEL_21:
   xpc_activity_register("com.apple.osintelligence.inactivitybackup", XPC_ACTIVITY_CHECK_IN, handler);
 }
 
-- (unint64_t)evaluatePredictorTypeWithLookahead:(double)a3 withIncrement:(double)a4 withActivity:(id)a5
+- (unint64_t)evaluatePredictorTypeWithLookahead:(double)lookahead withIncrement:(double)increment withActivity:(id)activity
 {
-  v7 = a5;
+  activityCopy = activity;
   v8 = +[_OSInactivityPredictorTwoStage evaluator];
   v9 = +[_OSLockHistory sharedInstance];
   v10 = +[NSDate now];
@@ -204,11 +204,11 @@ LABEL_21:
   if ([v11 count])
   {
     p_superclass = longDurationModel.superclass;
-    if (a3 >= 0.0)
+    if (lookahead >= 0.0)
     {
       v38 = 0;
       v15 = 0.0;
-      while (!xpc_activity_should_defer(v7))
+      while (!xpc_activity_should_defer(activityCopy))
       {
         v16 = [NSDate dateWithTimeIntervalSinceNow:v15];
         if ([v9 didDateTakePlaceDuringRecentLongLocks:v16])
@@ -231,11 +231,11 @@ LABEL_21:
 
           else
           {
-            v21 = v7;
+            v21 = activityCopy;
             v22 = v8;
-            v23 = [v17 confidenceLevel];
+            confidenceLevel = [v17 confidenceLevel];
             v24 = p_superclass;
-            v25 = v23;
+            v25 = confidenceLevel;
             v26 = v24;
             v27 = v24[301];
             v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
@@ -255,7 +255,7 @@ LABEL_21:
               v38 = 1;
               p_superclass = v26;
               v8 = v22;
-              v7 = v21;
+              activityCopy = v21;
               goto LABEL_24;
             }
 
@@ -279,7 +279,7 @@ LABEL_21:
             v38 = v31;
             p_superclass = v26;
             v8 = v22;
-            v7 = v21;
+            activityCopy = v21;
           }
         }
 
@@ -296,8 +296,8 @@ LABEL_21:
           v18 = v16;
         }
 
-        v15 = v15 + a4;
-        if (v15 > a3)
+        v15 = v15 + increment;
+        if (v15 > lookahead)
         {
           goto LABEL_24;
         }
@@ -308,7 +308,7 @@ LABEL_21:
         sub_10005A100();
       }
 
-      if (!xpc_activity_set_state(v7, 5) && os_log_type_enabled(p_superclass[301], OS_LOG_TYPE_ERROR))
+      if (!xpc_activity_set_state(activityCopy, 5) && os_log_type_enabled(p_superclass[301], OS_LOG_TYPE_ERROR))
       {
         sub_10005A13C();
       }
@@ -352,12 +352,12 @@ LABEL_24:
   return v14;
 }
 
-- (void)registerDeviceTypeEvalution:(BOOL)a3
+- (void)registerDeviceTypeEvalution:(BOOL)evalution
 {
-  v3 = a3;
+  evalutionCopy = evalution;
   v5 = +[OSIntelligenceDefines inactivityUserDefaults];
   v6 = [v5 integerForKey:@"modelType"];
-  if (!v3 || v6 == 2)
+  if (!evalutionCopy || v6 == 2)
   {
     xpc_activity_unregister("com.apple.osintelligence.evaluateModelType");
     v20 = qword_1000B6968;
@@ -422,7 +422,7 @@ LABEL_24:
       v21[2] = sub_100006B6C;
       v21[3] = &unk_100094950;
       v22 = v8;
-      v23 = self;
+      selfCopy = self;
       v24 = v17;
       v25 = v14;
       v19 = v8;
@@ -431,19 +431,19 @@ LABEL_24:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.osintelligence.inactivity"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.osintelligence.inactivity"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v6 BOOLValue] & 1) != 0)
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____OSInactivityPredictionProtocol_Private];
-    [v5 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
     v8 = [[OSInactivityPredictionServiceXPCProxy alloc] initWithObserver:self];
-    [v5 setExportedObject:v8];
+    [connectionCopy setExportedObject:v8];
 
-    [v5 resume];
+    [connectionCopy resume];
     v9 = 1;
   }
 
@@ -460,38 +460,38 @@ LABEL_24:
   return v9;
 }
 
-- (void)modelDescriptionWithHandler:(id)a3
+- (void)modelDescriptionWithHandler:(id)handler
 {
-  v5 = a3;
-  v7 = [(OSInactivityPredictionService *)self predictor];
-  v6 = [v7 description];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  predictor = [(OSInactivityPredictionService *)self predictor];
+  v6 = [predictor description];
+  (*(handler + 2))(handlerCopy, v6);
 }
 
-- (void)modelMetadataWithHandler:(id)a3
+- (void)modelMetadataWithHandler:(id)handler
 {
-  v5 = a3;
-  v7 = [(OSInactivityPredictionService *)self predictor];
-  v6 = [v7 metadata];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  predictor = [(OSInactivityPredictionService *)self predictor];
+  metadata = [predictor metadata];
+  (*(handler + 2))(handlerCopy, metadata);
 }
 
-- (void)hasEnoughInactivityHistoryWithHandler:(id)a3
+- (void)hasEnoughInactivityHistoryWithHandler:(id)handler
 {
-  v4 = a3;
-  (*(a3 + 2))(v4, +[OSIntelligenceUtilities hasEnoughInactivityHistory]);
+  handlerCopy = handler;
+  (*(handler + 2))(handlerCopy, +[OSIntelligenceUtilities hasEnoughInactivityHistory]);
 }
 
-- (void)recommendedWaitTimeWithHandler:(id)a3
+- (void)recommendedWaitTimeWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(OSInactivityPredictionService *)self readOverriddenWaitTime];
   v6 = v5;
   if (v5 == -777.0)
   {
-    v15 = [(OSInactivityPredictionService *)self predictor];
-    [v15 recommendedWaitTime];
-    v4[2](v4);
+    predictor = [(OSInactivityPredictionService *)self predictor];
+    [predictor recommendedWaitTime];
+    handlerCopy[2](handlerCopy);
   }
 
   else
@@ -502,27 +502,27 @@ LABEL_24:
       sub_10005A24C(v7, v8, v9, v10, v11, v12, v13, v14);
     }
 
-    (v4[2])(v4, v6);
+    (handlerCopy[2])(handlerCopy, v6);
   }
 }
 
-- (void)inactivityHistoryDiagnosisWithHandler:(id)a3
+- (void)inactivityHistoryDiagnosisWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[OSIntelligenceUtilities userHistoryDiagnosis];
-  (*(a3 + 2))(v4, v5);
+  (*(handler + 2))(handlerCopy, v5);
 }
 
-- (void)deviceUsageDiagnosisWithHandler:(id)a3
+- (void)deviceUsageDiagnosisWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[OSIntelligenceUtilities deviceUsageDiagnosis];
-  (*(a3 + 2))(v4, v5);
+  (*(handler + 2))(handlerCopy, v5);
 }
 
-- (void)longInactivityPredictionResultWithOptions:(int64_t)a3 withHandler:(id)a4
+- (void)longInactivityPredictionResultWithOptions:(int64_t)options withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v27 = 0;
   if (![(OSInactivityPredictionService *)self overriddenToUseTimeRestrictionFromHour:&v27 + 4 toHour:&v27])
   {
@@ -533,7 +533,7 @@ LABEL_24:
   if (os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218496;
-    v29 = a3;
+    optionsCopy2 = options;
     v30 = 1024;
     *v31 = HIDWORD(v27);
     *&v31[4] = 1024;
@@ -549,33 +549,33 @@ LABEL_24:
     v25 = qword_1000B6968;
     if (os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_DEBUG))
     {
-      sub_10005A2BC(v25, a3);
+      sub_10005A2BC(v25, options);
     }
 
     v11 = [[_OSInactivityPredictorOutput alloc] initWithConfidenceLevel:0 andConfidenceValue:5 andPredictedDuration:0.0 andReason:0.0];
-    v6[2](v6, v11, 0);
+    handlerCopy[2](handlerCopy, v11, 0);
   }
 
   else
   {
 LABEL_5:
-    v10 = [(OSInactivityPredictionService *)self readOverriddenModelOutput];
-    if (v10)
+    readOverriddenModelOutput = [(OSInactivityPredictionService *)self readOverriddenModelOutput];
+    if (readOverriddenModelOutput)
     {
       if (os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_DEBUG))
       {
         sub_10005A380();
       }
 
-      v6[2](v6, v10, 0);
+      handlerCopy[2](handlerCopy, readOverriddenModelOutput, 0);
       v11 = 0;
     }
 
     else
     {
-      v12 = [(OSInactivityPredictionService *)self predictor];
+      predictor = [(OSInactivityPredictionService *)self predictor];
       v26 = 0;
-      v13 = [v12 longInactivityPredictionResultWithOptions:a3 withError:&v26];
+      v13 = [predictor longInactivityPredictionResultWithOptions:options withError:&v26];
       v11 = v26;
 
       if ([v13 confidenceLevel] == 2)
@@ -586,12 +586,12 @@ LABEL_5:
           v15 = +[OSIntelligenceDefines inactivityUserDefaults];
           if ([v15 BOOLForKey:@"showNotifications"])
           {
-            if (a3 == 1 || !a3 && ([v13 predictedDuration], v16 > 7200.0))
+            if (options == 1 || !options && ([v13 predictedDuration], v16 > 7200.0))
             {
               notificationManager = self->_notificationManager;
               [v13 predictedDuration];
               v19 = [NSDate dateWithTimeIntervalSinceNow:v18 * 3600.0];
-              v20 = [(_OSInactivityNotificationManager *)notificationManager postEngagedUntilDate:v19 inactivityOptions:a3];
+              v20 = [(_OSInactivityNotificationManager *)notificationManager postEngagedUntilDate:v19 inactivityOptions:options];
             }
           }
 
@@ -599,12 +599,12 @@ LABEL_5:
           if (os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_DEFAULT))
           {
             v22 = v21;
-            v23 = [(OSInactivityPredictionService *)self predictor];
-            v24 = [v23 predictorType];
+            predictor2 = [(OSInactivityPredictionService *)self predictor];
+            predictorType = [predictor2 predictorType];
             *buf = 134218498;
-            v29 = a3;
+            optionsCopy2 = options;
             v30 = 2112;
-            *v31 = v24;
+            *v31 = predictorType;
             *&v31[8] = 2112;
             v32 = v13;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "(%ld) %@ predicts %@", buf, 0x20u);
@@ -612,15 +612,15 @@ LABEL_5:
         }
       }
 
-      (v6)[2](v6, v13, v11);
+      (handlerCopy)[2](handlerCopy, v13, v11);
     }
   }
 }
 
-- (void)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withHandler:(id)a6
+- (void)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  dateCopy = date;
+  handlerCopy = handler;
   v22 = 0;
   if (![(OSInactivityPredictionService *)self overriddenToUseTimeRestrictionFromHour:&v22 + 4 toHour:&v22])
   {
@@ -632,7 +632,7 @@ LABEL_5:
     sub_10005A404(&v22 + 1, &v22);
   }
 
-  if (![OSIntelligenceUtilities isInputDateInTimeRange:v10 withEarlyTimeOfDay:SHIDWORD(v22) andLateTimeOfDay:v22])
+  if (![OSIntelligenceUtilities isInputDateInTimeRange:dateCopy withEarlyTimeOfDay:SHIDWORD(v22) andLateTimeOfDay:v22])
   {
     if (os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_DEBUG))
     {
@@ -640,21 +640,21 @@ LABEL_5:
     }
 
     v13 = [[_OSInactivityPredictorOutput alloc] initWithConfidenceLevel:0 andConfidenceValue:5 andPredictedDuration:0.0 andReason:0.0];
-    v11[2](v11, v13, 0);
+    handlerCopy[2](handlerCopy, v13, 0);
   }
 
   else
   {
 LABEL_5:
-    v12 = [(OSInactivityPredictionService *)self readOverriddenModelOutput];
-    if (v12)
+    readOverriddenModelOutput = [(OSInactivityPredictionService *)self readOverriddenModelOutput];
+    if (readOverriddenModelOutput)
     {
       if (os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_DEBUG))
       {
         sub_10005A4E8();
       }
 
-      v11[2](v11, v12, 0);
+      handlerCopy[2](handlerCopy, readOverriddenModelOutput, 0);
       v13 = 0;
     }
 
@@ -669,21 +669,21 @@ LABEL_5:
         }
       }
 
-      v15 = [(OSInactivityPredictionService *)self predictor];
+      predictor = [(OSInactivityPredictionService *)self predictor];
       v21 = 0;
-      v16 = [v15 longInactivityPredictionResultAtDate:v10 withTimeSinceInactive:a5 withOptions:&v21 withError:a4];
+      v16 = [predictor longInactivityPredictionResultAtDate:dateCopy withTimeSinceInactive:options withOptions:&v21 withError:inactive];
       v13 = v21;
 
       v17 = qword_1000B6968;
       if (os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_INFO))
       {
         v18 = v17;
-        v19 = [(OSInactivityPredictionService *)self predictor];
-        v20 = [v19 predictorType];
+        predictor2 = [(OSInactivityPredictionService *)self predictor];
+        predictorType = [predictor2 predictorType];
         *buf = 138412802;
-        v24 = v10;
+        v24 = dateCopy;
         v25 = 2112;
-        v26 = v20;
+        v26 = predictorType;
         v27 = 2112;
         v28 = v16;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "(At %@) %@ predicts %@", buf, 0x20u);
@@ -694,36 +694,36 @@ LABEL_5:
         sub_10005A550();
       }
 
-      (v11)[2](v11, v16, v13);
+      (handlerCopy)[2](handlerCopy, v16, v13);
     }
   }
 }
 
-- (void)fixModelOutput:(id)a3 withHandler:(id)a4
+- (void)fixModelOutput:(id)output withHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [NSString stringWithFormat:@"Fixed model output = %@", v10];
-  v8 = [(OSInactivityPredictionService *)self readOverriddenModelOutput];
-  if (v8)
+  outputCopy = output;
+  handlerCopy = handler;
+  outputCopy = [NSString stringWithFormat:@"Fixed model output = %@", outputCopy];
+  readOverriddenModelOutput = [(OSInactivityPredictionService *)self readOverriddenModelOutput];
+  if (readOverriddenModelOutput)
   {
-    v9 = [NSString stringWithFormat:@"Replaced fixed output %@ with %@", v8, v10];
+    outputCopy2 = [NSString stringWithFormat:@"Replaced fixed output %@ with %@", readOverriddenModelOutput, outputCopy];
 
-    v7 = v9;
+    outputCopy = outputCopy2;
   }
 
-  [(OSInactivityPredictionService *)self writeOverriddenModelOutput:v10];
-  v6[2](v6, v7);
+  [(OSInactivityPredictionService *)self writeOverriddenModelOutput:outputCopy];
+  handlerCopy[2](handlerCopy, outputCopy);
 }
 
-- (void)unfixModelOutputWithHandler:(id)a3
+- (void)unfixModelOutputWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(OSInactivityPredictionService *)self readOverriddenModelOutput];
-  v7 = v5;
-  if (v5)
+  handlerCopy = handler;
+  readOverriddenModelOutput = [(OSInactivityPredictionService *)self readOverriddenModelOutput];
+  v7 = readOverriddenModelOutput;
+  if (readOverriddenModelOutput)
   {
-    v6 = [NSString stringWithFormat:@"Unfixed model output (previously fixed to be %@)", v5];
+    v6 = [NSString stringWithFormat:@"Unfixed model output (previously fixed to be %@)", readOverriddenModelOutput];
   }
 
   else
@@ -732,66 +732,66 @@ LABEL_5:
   }
 
   [(OSInactivityPredictionService *)self writeOverriddenModelOutput:0];
-  v4[2](v4, v6);
+  handlerCopy[2](handlerCopy, v6);
 }
 
-- (void)overrideRecommendedWaitTimeTo:(double)a3 withHandler:(id)a4
+- (void)overrideRecommendedWaitTimeTo:(double)to withHandler:(id)handler
 {
-  if (a3 <= 0.0)
+  if (to <= 0.0)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 
   else
   {
-    v6 = a4;
-    [(OSInactivityPredictionService *)self writeOverriddenWaitTime:a3];
-    v6[2](v6, 1);
+    handlerCopy = handler;
+    [(OSInactivityPredictionService *)self writeOverriddenWaitTime:to];
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
-- (void)restoreRecommendedWaitTimeWithHandler:(id)a3
+- (void)restoreRecommendedWaitTimeWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(OSInactivityPredictionService *)self writeOverriddenWaitTime:-777.0];
-  v4[2](v4, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
-- (void)restoreInactivityModelWithHandler:(id)a3
+- (void)restoreInactivityModelWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[OSIntelligenceDefines inactivityUserDefaults];
   [v5 removeObjectForKey:@"modelType"];
 
   v6 = +[_OSInactivityPredictor predictor];
   [(OSInactivityPredictionService *)self setPredictor:v6];
 
-  v7 = [(OSInactivityPredictionService *)self predictor];
-  v4[2](v4, v7 != 0);
+  predictor = [(OSInactivityPredictionService *)self predictor];
+  handlerCopy[2](handlerCopy, predictor != 0);
 }
 
-- (void)backedUpDataWithHandler:(id)a3
+- (void)backedUpDataWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(_OSInactivityPredictionBackupManager);
   v5 = qword_1000B6968;
   if (os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(_OSInactivityPredictionBackupManager *)v4 hydrateBackup];
+    hydrateBackup = [(_OSInactivityPredictionBackupManager *)v4 hydrateBackup];
     v9 = 138412290;
-    v10 = v7;
+    v10 = hydrateBackup;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@", &v9, 0xCu);
   }
 
-  v8 = [(_OSInactivityPredictionBackupManager *)v4 hydrateBackup];
-  v3[2](v3, v8);
+  hydrateBackup2 = [(_OSInactivityPredictionBackupManager *)v4 hydrateBackup];
+  handlerCopy[2](handlerCopy, hydrateBackup2);
 }
 
-- (void)writeEvaluatedPredictorTypeToDefaults:(unint64_t)a3
+- (void)writeEvaluatedPredictorTypeToDefaults:(unint64_t)defaults
 {
   v4 = +[OSIntelligenceDefines inactivityUserDefaults];
-  [v4 setInteger:a3 forKey:@"predictorType"];
+  [v4 setInteger:defaults forKey:@"predictorType"];
 }
 
 - (id)readOverriddenModelOutput
@@ -827,14 +827,14 @@ LABEL_5:
   return v6;
 }
 
-- (void)writeOverriddenModelOutput:(id)a3
+- (void)writeOverriddenModelOutput:(id)output
 {
-  v3 = a3;
+  outputCopy = output;
   v4 = +[OSIntelligenceDefines inactivityUserDefaults];
-  if (v3)
+  if (outputCopy)
   {
     v6 = 0;
-    v5 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v6];
+    v5 = [NSKeyedArchiver archivedDataWithRootObject:outputCopy requiringSecureCoding:1 error:&v6];
     [v4 setObject:v5 forKey:@"overriddenModelOutput"];
   }
 
@@ -868,22 +868,22 @@ LABEL_5:
   return v5;
 }
 
-- (void)writeOverriddenWaitTime:(double)a3
+- (void)writeOverriddenWaitTime:(double)time
 {
   v4 = +[OSIntelligenceDefines inactivityUserDefaults];
   v5 = v4;
-  if (a3 == -777.0)
+  if (time == -777.0)
   {
     [v4 removeObjectForKey:@"overriddenWaitTime"];
   }
 
   else
   {
-    [v4 setDouble:@"overriddenWaitTime" forKey:a3];
+    [v4 setDouble:@"overriddenWaitTime" forKey:time];
   }
 }
 
-- (BOOL)overriddenToUseTimeRestrictionFromHour:(int *)a3 toHour:(int *)a4
+- (BOOL)overriddenToUseTimeRestrictionFromHour:(int *)hour toHour:(int *)toHour
 {
   v6 = +[OSIntelligenceDefines inactivityUserDefaults];
   v7 = [v6 objectForKey:@"overriddenBedtime"];
@@ -895,14 +895,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  *a3 = [v6 integerForKey:@"overriddenBedtime"];
+  *hour = [v6 integerForKey:@"overriddenBedtime"];
   v9 = [v6 integerForKey:@"overriddenWakeupTime"];
-  *a4 = v9;
-  if (*a3 > 0x17 || v9 >= 0x18)
+  *toHour = v9;
+  if (*hour > 0x17 || v9 >= 0x18)
   {
     if (os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_ERROR))
     {
-      sub_10005A680(a3, a4);
+      sub_10005A680(hour, toHour);
     }
 
     goto LABEL_8;
@@ -914,25 +914,25 @@ LABEL_9:
   return v10;
 }
 
-- (void)scheduleModelUpgradeAfterInterval:(double)a3
+- (void)scheduleModelUpgradeAfterInterval:(double)interval
 {
-  if (a3 < 86400.0)
+  if (interval < 86400.0)
   {
-    a3 = 86400.0;
+    interval = 86400.0;
   }
 
-  if (a3 <= 604800.0)
+  if (interval <= 604800.0)
   {
-    v3 = a3;
+    intervalCopy = interval;
   }
 
   else
   {
-    v3 = 604800.0;
+    intervalCopy = 604800.0;
   }
 
   objc_initWeak(&location, self);
-  v4 = dispatch_walltime(0, 1000000000 * vcvtpd_s64_f64(v3));
+  v4 = dispatch_walltime(0, 1000000000 * vcvtpd_s64_f64(intervalCopy));
   v5 = dispatch_get_global_queue(-2, 0);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -947,20 +947,20 @@ LABEL_9:
 
 - (BOOL)upgradePredictorIfNeeded
 {
-  v3 = [(OSInactivityPredictionService *)self predictor];
-  v4 = [v3 requireEnoughHistory];
+  predictor = [(OSInactivityPredictionService *)self predictor];
+  requireEnoughHistory = [predictor requireEnoughHistory];
 
-  if (v4)
+  if (requireEnoughHistory)
   {
     v5 = qword_1000B6968;
     v6 = 1;
     if (os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_INFO))
     {
       v7 = v5;
-      v8 = [(OSInactivityPredictionService *)self predictor];
-      v9 = [v8 predictorType];
+      predictor2 = [(OSInactivityPredictionService *)self predictor];
+      predictorType = [predictor2 predictorType];
       v33 = 138412290;
-      v34 = v9;
+      v34 = predictorType;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Predictor type is already history-aware: %@", &v33, 0xCu);
 
       goto LABEL_4;
@@ -1000,19 +1000,19 @@ LABEL_9:
         goto LABEL_15;
       }
 
-      v20 = [v19 predictorType];
-      v21 = [(OSInactivityPredictionService *)self predictor];
-      v22 = [v21 predictorType];
-      v23 = [v20 isEqualToString:v22];
+      predictorType2 = [v19 predictorType];
+      predictor3 = [(OSInactivityPredictionService *)self predictor];
+      predictorType3 = [predictor3 predictorType];
+      v23 = [predictorType2 isEqualToString:predictorType3];
 
       if (!v23)
       {
         [(OSInactivityPredictionService *)self setPredictor:v7];
-        v27 = [(OSInactivityPredictionService *)self predictor];
-        v28 = [v27 requireEnoughHistory];
+        predictor4 = [(OSInactivityPredictionService *)self predictor];
+        requireEnoughHistory2 = [predictor4 requireEnoughHistory];
 
         v29 = qword_1000B6968;
-        if (v28)
+        if (requireEnoughHistory2)
         {
           v6 = 1;
           if (!os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_INFO))
@@ -1020,12 +1020,12 @@ LABEL_9:
             goto LABEL_23;
           }
 
-          v9 = v29;
-          v30 = [(OSInactivityPredictionService *)self predictor];
-          v31 = [v30 predictorType];
+          predictorType = v29;
+          predictor5 = [(OSInactivityPredictionService *)self predictor];
+          predictorType4 = [predictor5 predictorType];
           v33 = 138412290;
-          v34 = v31;
-          _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Successfully upgraded the model to: %@", &v33, 0xCu);
+          v34 = predictorType4;
+          _os_log_impl(&_mh_execute_header, predictorType, OS_LOG_TYPE_INFO, "Successfully upgraded the model to: %@", &v33, 0xCu);
 
 LABEL_4:
 LABEL_23:
@@ -1046,9 +1046,9 @@ LABEL_15:
         if (os_log_type_enabled(qword_1000B6968, OS_LOG_TYPE_INFO))
         {
           v25 = v24;
-          v26 = [v7 predictorType];
+          predictorType5 = [v7 predictorType];
           v33 = 138412290;
-          v34 = v26;
+          v34 = predictorType5;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "New predictor is nil or type remains the same as old model: %@. Upgrade aborted.", &v33, 0xCu);
         }
       }

@@ -1,43 +1,43 @@
 @interface SRAssertion
-- (BOOL)isEqual:(id)a3;
-- (SRAssertion)initWithAssertionID:(id)a3;
-- (SRAssertion)initWithAssetType:(id)a3 language:(id)a4 deliveryType:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (SRAssertion)initWithAssertionID:(id)d;
+- (SRAssertion)initWithAssetType:(id)type language:(id)language deliveryType:(id)deliveryType;
 - (id)assertionID;
 - (unint64_t)hash;
 @end
 
 @implementation SRAssertion
 
-- (SRAssertion)initWithAssetType:(id)a3 language:(id)a4 deliveryType:(id)a5
+- (SRAssertion)initWithAssetType:(id)type language:(id)language deliveryType:(id)deliveryType
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  languageCopy = language;
+  deliveryTypeCopy = deliveryType;
   v15.receiver = self;
   v15.super_class = SRAssertion;
   v12 = [(SRAssertion *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assetType, a3);
-    objc_storeStrong(&v13->_language, a4);
-    objc_storeStrong(&v13->_deliveryType, a5);
+    objc_storeStrong(&v12->_assetType, type);
+    objc_storeStrong(&v13->_language, language);
+    objc_storeStrong(&v13->_deliveryType, deliveryType);
   }
 
   return v13;
 }
 
-- (SRAssertion)initWithAssertionID:(id)a3
+- (SRAssertion)initWithAssertionID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = SRAssertion;
   v6 = [(SRAssertion *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assertionID, a3);
-    v8 = [v5 componentsSeparatedByString:@":"];
+    objc_storeStrong(&v6->_assertionID, d);
+    v8 = [dCopy componentsSeparatedByString:@":"];
     if ([v8 count] == 4)
     {
       v9 = [v8 objectAtIndexedSubscript:0];
@@ -91,20 +91,20 @@ LABEL_9:
   return assertionID;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(SRAssertion *)self assertionID];
-  v6 = [v4 assertionID];
+  equalCopy = equal;
+  assertionID = [(SRAssertion *)self assertionID];
+  assertionID2 = [equalCopy assertionID];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(equalCopy) = [assertionID isEqualToString:assertionID2];
+  return equalCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SRAssertion *)self assertionID];
-  v3 = [v2 hash];
+  assertionID = [(SRAssertion *)self assertionID];
+  v3 = [assertionID hash];
 
   return v3;
 }

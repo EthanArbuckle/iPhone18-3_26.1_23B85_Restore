@@ -3,26 +3,26 @@
 - (BOOL)shouldShow;
 - (DSNavigationDelegate)delegate;
 - (DSPublicResourceSharingController)init;
-- (id)publicSharingTypeForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)publicSharingTypeForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_pushNextPane;
 - (void)_updateButton;
 - (void)_updateTitle;
 - (void)reloadTableViewData;
 - (void)stopAllSharing;
 - (void)stopSelectedSharing;
-- (void)stopSharingFailedWithError:(id)a3;
-- (void)stopSharingTypes:(id)a3 alertLabel:(id)a4 alertDetail:(id)a5;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)stopSharingFailedWithError:(id)error;
+- (void)stopSharingTypes:(id)types alertLabel:(id)label alertDetail:(id)detail;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation DSPublicResourceSharingController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLogPublicResourceSharingController = os_log_create("com.apple.DigitalSeparation", "DSPublicResourceSharingController");
 
@@ -73,14 +73,14 @@
 
 - (BOOL)shouldShow
 {
-  v3 = [(DSPublicResourceSharingController *)self delegate];
+  delegate = [(DSPublicResourceSharingController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 fetchedSharingPermissions];
-    [(DSPublicResourceSharingController *)self setPermissions:v4];
+    fetchedSharingPermissions = [delegate fetchedSharingPermissions];
+    [(DSPublicResourceSharingController *)self setPermissions:fetchedSharingPermissions];
 
-    v5 = [(DSPublicResourceSharingController *)self permissions];
-    v6 = [v5 publicSharingTypesCount] > 0;
+    permissions = [(DSPublicResourceSharingController *)self permissions];
+    v6 = [permissions publicSharingTypesCount] > 0;
   }
 
   else
@@ -93,16 +93,16 @@
 
 - (void)_pushNextPane
 {
-  v2 = [(DSPublicResourceSharingController *)self delegate];
-  [v2 pushNextPane];
+  delegate = [(DSPublicResourceSharingController *)self delegate];
+  [delegate pushNextPane];
 }
 
-- (void)stopSharingTypes:(id)a3 alertLabel:(id)a4 alertDetail:(id)a5
+- (void)stopSharingTypes:(id)types alertLabel:(id)label alertDetail:(id)detail
 {
-  v8 = a3;
+  typesCopy = types;
   v9 = MEMORY[0x277D75110];
-  v10 = a4;
-  v11 = [v9 alertControllerWithTitle:0 message:a5 preferredStyle:0];
+  labelCopy = label;
+  v11 = [v9 alertControllerWithTitle:0 message:detail preferredStyle:0];
   v12 = MEMORY[0x277D750F8];
   v13 = DSUILocStringForKey(@"CANCEL");
   v14 = [v12 actionWithTitle:v13 style:1 handler:&__block_literal_global_6];
@@ -112,12 +112,12 @@
   v19 = 3221225472;
   v20 = __77__DSPublicResourceSharingController_stopSharingTypes_alertLabel_alertDetail___block_invoke_2;
   v21 = &unk_278F75678;
-  v22 = self;
-  v23 = v8;
-  v16 = v8;
-  v17 = [v15 actionWithTitle:v10 style:2 handler:&v18];
+  selfCopy = self;
+  v23 = typesCopy;
+  v16 = typesCopy;
+  v17 = [v15 actionWithTitle:labelCopy style:2 handler:&v18];
 
-  [v11 addAction:{v17, v18, v19, v20, v21, v22}];
+  [v11 addAction:{v17, v18, v19, v20, v21, selfCopy}];
   [v11 addAction:v14];
   [(DSPublicResourceSharingController *)self presentViewController:v11 animated:1 completion:0];
 }
@@ -266,9 +266,9 @@ void __77__DSPublicResourceSharingController_stopSharingTypes_alertLabel_alertDe
 
 - (void)stopAllSharing
 {
-  v7 = [(DSPublicResourceSharingController *)self permissions];
-  v3 = [v7 allPublicSharingTypes];
-  v4 = [v3 copy];
+  permissions = [(DSPublicResourceSharingController *)self permissions];
+  allPublicSharingTypes = [permissions allPublicSharingTypes];
+  v4 = [allPublicSharingTypes copy];
   v5 = DSUILocStringForKey(@"STOP_ALL_PUBLIC_SHARING_ALERT_LABEL");
   v6 = DSUILocStringForKey(@"STOP_ALL_PUBLIC_SHARING_ALERT_DETAIL");
   [(DSPublicResourceSharingController *)self stopSharingTypes:v4 alertLabel:v5 alertDetail:v6];
@@ -276,35 +276,35 @@ void __77__DSPublicResourceSharingController_stopSharingTypes_alertLabel_alertDe
 
 - (void)stopSelectedSharing
 {
-  v6 = [(DSPublicResourceSharingController *)self selectedTypes];
-  v3 = [v6 allObjects];
+  selectedTypes = [(DSPublicResourceSharingController *)self selectedTypes];
+  allObjects = [selectedTypes allObjects];
   v4 = DSUILocStringForKey(@"STOP_ALL_PUBLIC_SHARING_ALERT_LABEL");
   v5 = DSUILocStringForKey(@"STOP_ALL_PUBLIC_SHARING_ALERT_DETAIL");
-  [(DSPublicResourceSharingController *)self stopSharingTypes:v3 alertLabel:v4 alertDetail:v5];
+  [(DSPublicResourceSharingController *)self stopSharingTypes:allObjects alertLabel:v4 alertDetail:v5];
 }
 
-- (void)stopSharingFailedWithError:(id)a3
+- (void)stopSharingFailedWithError:(id)error
 {
-  v4 = [MEMORY[0x277D75110] ds_alertControllerWithStopSharingError:a3];
+  v4 = [MEMORY[0x277D75110] ds_alertControllerWithStopSharingError:error];
   [(DSTableWelcomeController *)self presentErrorAlertController:v4];
 }
 
 - (void)_updateButton
 {
-  v3 = [(DSPublicResourceSharingController *)self selectedTypes];
-  v4 = [v3 count];
+  selectedTypes = [(DSPublicResourceSharingController *)self selectedTypes];
+  v4 = [selectedTypes count];
 
-  v5 = [(DSTableWelcomeController *)self boldButton];
-  [v5 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
   if (v4)
   {
-    v6 = [(DSTableWelcomeController *)self boldButton];
+    boldButton2 = [(DSTableWelcomeController *)self boldButton];
     v7 = DSUILocStringForKey(@"STOP_SHARING");
-    [v6 setTitle:v7 forState:0];
+    [boldButton2 setTitle:v7 forState:0];
 
-    v8 = [(DSTableWelcomeController *)self boldButton];
-    [v8 addTarget:self action:sel_stopSelectedSharing forControlEvents:64];
+    boldButton3 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton3 addTarget:self action:sel_stopSelectedSharing forControlEvents:64];
   }
 
   else
@@ -319,77 +319,77 @@ void __77__DSPublicResourceSharingController_stopSharingTypes_alertLabel_alertDe
       v9 = @"SKIP";
     }
 
-    v8 = DSUILocStringForKey(v9);
-    v10 = [(DSTableWelcomeController *)self boldButton];
-    [v10 setTitle:v8 forState:0];
+    boldButton3 = DSUILocStringForKey(v9);
+    boldButton4 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton4 setTitle:boldButton3 forState:0];
 
-    v11 = [(DSTableWelcomeController *)self boldButton];
-    [v11 addTarget:self action:sel__pushNextPane forControlEvents:64];
+    boldButton5 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton5 addTarget:self action:sel__pushNextPane forControlEvents:64];
   }
 
   [(DSTableWelcomeController *)self hideButtonsIfSearching];
 }
 
-- (id)publicSharingTypeForIndexPath:(id)a3
+- (id)publicSharingTypeForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(DSPublicResourceSharingController *)self permissions];
-  v6 = [v4 row];
+  pathCopy = path;
+  permissions = [(DSPublicResourceSharingController *)self permissions];
+  v6 = [pathCopy row];
 
-  v7 = [v5 publicSharingType:v6];
+  v7 = [permissions publicSharingType:v6];
 
   return v7;
 }
 
 - (void)reloadTableViewData
 {
-  v3 = [(DSPublicResourceSharingController *)self permissions];
-  [v3 sort];
+  permissions = [(DSPublicResourceSharingController *)self permissions];
+  [permissions sort];
 
-  v4 = [(DSPublicResourceSharingController *)self permissions];
-  -[DSTableWelcomeController setIsModelEmpty:](self, "setIsModelEmpty:", [v4 publicSharingTypesCount] == 0);
+  permissions2 = [(DSPublicResourceSharingController *)self permissions];
+  -[DSTableWelcomeController setIsModelEmpty:](self, "setIsModelEmpty:", [permissions2 publicSharingTypesCount] == 0);
 
-  v5 = [(OBTableWelcomeController *)self tableView];
+  tableView = [(OBTableWelcomeController *)self tableView];
   v6 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
-  [v5 reloadSections:v6 withRowAnimation:100];
+  [tableView reloadSections:v6 withRowAnimation:100];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 layoutIfNeeded];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 layoutIfNeeded];
 
   [(DSPublicResourceSharingController *)self _updateButton];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSPublicResourceSharingController *)self publicSharingTypeForIndexPath:v5];
-  v7 = [v6 displayName];
-  v8 = [v6 localizedDetailText];
-  v9 = [v6 iconForTable];
-  v10 = [(DSPublicResourceSharingController *)self selectedTypes];
-  v11 = [v10 containsObject:v6];
+  pathCopy = path;
+  v6 = [(DSPublicResourceSharingController *)self publicSharingTypeForIndexPath:pathCopy];
+  displayName = [v6 displayName];
+  localizedDetailText = [v6 localizedDetailText];
+  iconForTable = [v6 iconForTable];
+  selectedTypes = [(DSPublicResourceSharingController *)self selectedTypes];
+  v11 = [selectedTypes containsObject:v6];
 
   if (v11)
   {
-    v12 = [(OBTableWelcomeController *)self tableView];
-    [v12 selectRowAtIndexPath:v5 animated:1 scrollPosition:0];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    [tableView selectRowAtIndexPath:pathCopy animated:1 scrollPosition:0];
   }
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  v14 = [DSIconTableViewCell iconTableViewCellFromTableView:v13 withText:v7 detail:v8 icon:v9];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  v14 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView2 withText:displayName detail:localizedDetailText icon:iconForTable];
 
   [v14 setAccessoryType:0];
 
   return v14;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [(DSPublicResourceSharingController *)self permissions:a3];
-  v6 = [v5 publicSharingTypesCount];
+  v5 = [(DSPublicResourceSharingController *)self permissions:view];
+  publicSharingTypesCount = [v5 publicSharingTypesCount];
 
-  if (v6)
+  if (publicSharingTypesCount)
   {
     [(DSTableWelcomeController *)self hideNoSharingView];
     [(DSTableWelcomeController *)self setIsModelEmpty:0];
@@ -405,8 +405,8 @@ void __77__DSPublicResourceSharingController_stopSharingTypes_alertLabel_alertDe
     v27 = 0u;
     v28 = 0u;
     v24 = objc_alloc_init(MEMORY[0x277D054C8]);
-    v8 = [v24 sources];
-    v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    sources = [v24 sources];
+    v9 = [sources countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v9)
     {
       v10 = v9;
@@ -417,18 +417,18 @@ void __77__DSPublicResourceSharingController_stopSharingTypes_alertLabel_alertDe
         {
           if (*v26 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(sources);
           }
 
           v13 = MEMORY[0x277D054C0];
-          v14 = [*(*(&v25 + 1) + 8 * i) name];
-          v15 = [v13 sourceDescriptorForSource:v14];
-          v16 = [v15 localizedAppName];
+          name = [*(*(&v25 + 1) + 8 * i) name];
+          v15 = [v13 sourceDescriptorForSource:name];
+          localizedAppName = [v15 localizedAppName];
 
-          [v7 addObject:v16];
+          [v7 addObject:localizedAppName];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v10 = [sources countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v10);
@@ -445,42 +445,42 @@ void __77__DSPublicResourceSharingController_stopSharingTypes_alertLabel_alertDe
     [(DSTableWelcomeController *)self setIsModelEmpty:1];
     [(DSPublicResourceSharingController *)self _updateButton];
 
-    v6 = 0;
+    publicSharingTypesCount = 0;
   }
 
   v22 = *MEMORY[0x277D85DE8];
-  return v6;
+  return publicSharingTypesCount;
 }
 
 - (void)_updateTitle
 {
-  v3 = [(DSPublicResourceSharingController *)self headerView];
+  headerView = [(DSPublicResourceSharingController *)self headerView];
   v4 = DSUILocStringForKey(@"PUBLIC_SHARING_TITLE");
-  [v3 setTitle:v4];
+  [headerView setTitle:v4];
 
-  v6 = [(DSPublicResourceSharingController *)self headerView];
+  headerView2 = [(DSPublicResourceSharingController *)self headerView];
   v5 = DSUILocStringForKey(@"PUBLIC_SHARING_DETAIL");
-  [v6 setDetailText:v5];
+  [headerView2 setDetailText:v5];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSPublicResourceSharingController *)self selectedTypes];
-  v7 = [(DSPublicResourceSharingController *)self publicSharingTypeForIndexPath:v5];
+  pathCopy = path;
+  selectedTypes = [(DSPublicResourceSharingController *)self selectedTypes];
+  v7 = [(DSPublicResourceSharingController *)self publicSharingTypeForIndexPath:pathCopy];
 
-  [v6 addObject:v7];
+  [selectedTypes addObject:v7];
 
   [(DSPublicResourceSharingController *)self _updateButton];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSPublicResourceSharingController *)self selectedTypes];
-  v7 = [(DSPublicResourceSharingController *)self publicSharingTypeForIndexPath:v5];
+  pathCopy = path;
+  selectedTypes = [(DSPublicResourceSharingController *)self selectedTypes];
+  v7 = [(DSPublicResourceSharingController *)self publicSharingTypeForIndexPath:pathCopy];
 
-  [v6 removeObject:v7];
+  [selectedTypes removeObject:v7];
 
   [(DSPublicResourceSharingController *)self _updateButton];
 }

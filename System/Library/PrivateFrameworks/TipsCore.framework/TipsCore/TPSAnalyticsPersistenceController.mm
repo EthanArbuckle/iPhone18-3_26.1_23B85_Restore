@@ -1,66 +1,66 @@
 @interface TPSAnalyticsPersistenceController
 + (id)asMutableDictionary;
-+ (id)persistedObjectForKey:(id)a3;
-+ (void)persistDictionary:(id)a3;
-+ (void)persistObject:(id)a3 forKey:(id)a4;
++ (id)persistedObjectForKey:(id)key;
++ (void)persistDictionary:(id)dictionary;
++ (void)persistObject:(id)object forKey:(id)key;
 @end
 
 @implementation TPSAnalyticsPersistenceController
 
-+ (id)persistedObjectForKey:(id)a3
++ (id)persistedObjectForKey:(id)key
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 objectForKey:@"TPSAnalyticsStore"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"TPSAnalyticsStore"];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
   return v7;
 }
 
-+ (void)persistObject:(id)a3 forKey:(id)a4
++ (void)persistObject:(id)object forKey:(id)key
 {
   v5 = MEMORY[0x1E695E000];
-  v6 = a4;
-  v7 = a3;
-  v10 = [v5 standardUserDefaults];
-  v8 = [v10 objectForKey:@"TPSAnalyticsStore"];
+  keyCopy = key;
+  objectCopy = object;
+  standardUserDefaults = [v5 standardUserDefaults];
+  v8 = [standardUserDefaults objectForKey:@"TPSAnalyticsStore"];
   v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v8];
-  [v9 setObject:v7 forKeyedSubscript:v6];
+  [v9 setObject:objectCopy forKeyedSubscript:keyCopy];
 
-  [v10 setObject:v9 forKey:@"TPSAnalyticsStore"];
-  [v10 synchronize];
+  [standardUserDefaults setObject:v9 forKey:@"TPSAnalyticsStore"];
+  [standardUserDefaults synchronize];
 }
 
 + (id)asMutableDictionary
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"TPSAnalyticsStore"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"TPSAnalyticsStore"];
   v4 = [v3 mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    dictionary = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v7 = v6;
+  v7 = dictionary;
 
   return v7;
 }
 
-+ (void)persistDictionary:(id)a3
++ (void)persistDictionary:(id)dictionary
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"TPSAnalyticsStore"];
+  dictionaryCopy = dictionary;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:dictionaryCopy forKey:@"TPSAnalyticsStore"];
 
-  [v5 synchronize];
+  [standardUserDefaults synchronize];
 }
 
 @end

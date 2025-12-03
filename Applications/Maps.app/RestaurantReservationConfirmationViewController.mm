@@ -1,26 +1,26 @@
 @interface RestaurantReservationConfirmationViewController
 - (NSDateFormatter)dateFormatter;
 - (NSNumberFormatter)numberFormatter;
-- (RestaurantReservationConfirmationViewController)initWithUserBooking:(id)a3 mapItem:(id)a4 appName:(id)a5 analyticsCaptor:(id)a6;
+- (RestaurantReservationConfirmationViewController)initWithUserBooking:(id)booking mapItem:(id)item appName:(id)name analyticsCaptor:(id)captor;
 - (RestaurantReservationConfirmationViewControllerDelegate)reservationDelegate;
-- (id)confirmationSubtitleTextForUserBooking:(id)a3;
-- (id)dayAndRestaurantDescriptionForUserBooking:(id)a3;
-- (id)headerTextForUserBookingStatus:(unint64_t)a3;
-- (id)tableDescriptionForUserBooking:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)timeAndTableDescriptionForUserBooking:(id)a3;
-- (id)userInfoStringForGuest:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)confirmationSubtitleTextForUserBooking:(id)booking;
+- (id)dayAndRestaurantDescriptionForUserBooking:(id)booking;
+- (id)headerTextForUserBookingStatus:(unint64_t)status;
+- (id)tableDescriptionForUserBooking:(id)booking;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)timeAndTableDescriptionForUserBooking:(id)booking;
+- (id)userInfoStringForGuest:(id)guest;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)buildSections;
-- (void)checkUserBookingForRefresh:(id)a3;
-- (void)configureHeaderCell:(id)a3;
+- (void)checkUserBookingForRefresh:(id)refresh;
+- (void)configureHeaderCell:(id)cell;
 - (void)configureTableView;
 - (void)registerCellClasses;
 - (void)requestRefresh;
-- (void)reservationConfirmationHeaderCellAccessoryButtonWasTapped:(id)a3;
-- (void)setMapItem:(id)a3;
-- (void)setUserBooking:(id)a3;
+- (void)reservationConfirmationHeaderCellAccessoryButtonWasTapped:(id)tapped;
+- (void)setMapItem:(id)item;
+- (void)setUserBooking:(id)booking;
 - (void)setupConstraints;
 - (void)updateTheme;
 - (void)viewDidLoad;
@@ -37,13 +37,13 @@
 
 - (void)requestRefresh
 {
-  v3 = [(RestaurantReservationConfirmationViewController *)self reservationDelegate];
-  [v3 restaurantReservationConfirmationViewControllerRequestStatusUpdateForUserBooking:self];
+  reservationDelegate = [(RestaurantReservationConfirmationViewController *)self reservationDelegate];
+  [reservationDelegate restaurantReservationConfirmationViewControllerRequestStatusUpdateForUserBooking:self];
 }
 
-- (void)checkUserBookingForRefresh:(id)a3
+- (void)checkUserBookingForRefresh:(id)refresh
 {
-  if (![a3 status])
+  if (![refresh status])
   {
 
     [(RestaurantReservationConfirmationViewController *)self performSelector:"requestRefresh" withObject:0 afterDelay:20.0];
@@ -82,115 +82,115 @@
   return dateFormatter;
 }
 
-- (void)setUserBooking:(id)a3
+- (void)setUserBooking:(id)booking
 {
-  v6 = a3;
-  [(RestaurantReservationConfirmationViewController *)self checkUserBookingForRefresh:v6];
-  if (([v6 isEqual:self->_userBooking] & 1) == 0)
+  bookingCopy = booking;
+  [(RestaurantReservationConfirmationViewController *)self checkUserBookingForRefresh:bookingCopy];
+  if (([bookingCopy isEqual:self->_userBooking] & 1) == 0)
   {
-    objc_storeStrong(&self->_userBooking, a3);
-    v5 = [(RestaurantReservationConfirmationViewController *)self tableView];
-    [v5 reloadData];
+    objc_storeStrong(&self->_userBooking, booking);
+    tableView = [(RestaurantReservationConfirmationViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v5 = a3;
-  if (self->_mapItem != v5)
+  itemCopy = item;
+  if (self->_mapItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mapItem, a3);
-    v5 = v6;
+    v6 = itemCopy;
+    objc_storeStrong(&self->_mapItem, item);
+    itemCopy = v6;
   }
 }
 
-- (id)tableDescriptionForUserBooking:(id)a3
+- (id)tableDescriptionForUserBooking:(id)booking
 {
-  v4 = a3;
+  bookingCopy = booking;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"reservation_name_table_format" value:@"localized string not found" table:0];
 
   v7 = objc_alloc_init(NSPersonNameComponentsFormatter);
   [v7 setStyle:0];
-  v8 = [v4 guest];
-  v9 = [v8 nameComponents];
-  v10 = [v7 stringFromPersonNameComponents:v9];
+  guest = [bookingCopy guest];
+  nameComponents = [guest nameComponents];
+  v10 = [v7 stringFromPersonNameComponents:nameComponents];
 
   v11 = [NSString alloc];
-  v12 = [(RestaurantReservationConfirmationViewController *)self numberFormatter];
-  v13 = [v4 partySize];
+  numberFormatter = [(RestaurantReservationConfirmationViewController *)self numberFormatter];
+  partySize = [bookingCopy partySize];
 
-  v14 = [NSNumber numberWithUnsignedInteger:v13];
-  v15 = [v12 stringFromNumber:v14];
+  v14 = [NSNumber numberWithUnsignedInteger:partySize];
+  v15 = [numberFormatter stringFromNumber:v14];
   v16 = [v11 initWithFormat:v6, v10, v15];
 
   return v16;
 }
 
-- (id)dayAndRestaurantDescriptionForUserBooking:(id)a3
+- (id)dayAndRestaurantDescriptionForUserBooking:(id)booking
 {
-  v4 = a3;
+  bookingCopy = booking;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"reservation_day_restaurant_name_format_key" value:@"localized string not found" table:0];
 
   v7 = [NSString alloc];
-  v8 = [(RestaurantReservationConfirmationViewController *)self mapItem];
-  v9 = [v8 timeZone];
-  v10 = [v4 bookingDate];
+  mapItem = [(RestaurantReservationConfirmationViewController *)self mapItem];
+  timeZone = [mapItem timeZone];
+  bookingDate = [bookingCopy bookingDate];
 
-  v11 = [NSDate _maps_dayDescriptionStringShortDescription:1 timeZone:v9 bookingDate:v10];
-  v12 = [(RestaurantReservationConfirmationViewController *)self mapItem];
-  v13 = [v12 name];
-  v14 = [v7 initWithFormat:v6, v11, v13];
+  v11 = [NSDate _maps_dayDescriptionStringShortDescription:1 timeZone:timeZone bookingDate:bookingDate];
+  mapItem2 = [(RestaurantReservationConfirmationViewController *)self mapItem];
+  name = [mapItem2 name];
+  v14 = [v7 initWithFormat:v6, v11, name];
 
   return v14;
 }
 
-- (id)timeAndTableDescriptionForUserBooking:(id)a3
+- (id)timeAndTableDescriptionForUserBooking:(id)booking
 {
-  v4 = a3;
-  v5 = [(RestaurantReservationConfirmationViewController *)self mapItem];
-  v6 = [v5 timeZone];
-  v7 = [(RestaurantReservationConfirmationViewController *)self dateFormatter];
-  [v7 setTimeZone:v6];
+  bookingCopy = booking;
+  mapItem = [(RestaurantReservationConfirmationViewController *)self mapItem];
+  timeZone = [mapItem timeZone];
+  dateFormatter = [(RestaurantReservationConfirmationViewController *)self dateFormatter];
+  [dateFormatter setTimeZone:timeZone];
 
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"reservation_date_table_size_key" value:@"localized string not found" table:0];
 
-  v10 = [(RestaurantReservationConfirmationViewController *)self dateFormatter];
-  v11 = [v4 bookingDate];
-  v12 = [v10 stringFromDate:v11];
+  dateFormatter2 = [(RestaurantReservationConfirmationViewController *)self dateFormatter];
+  bookingDate = [bookingCopy bookingDate];
+  v12 = [dateFormatter2 stringFromDate:bookingDate];
 
   v13 = [NSString alloc];
-  v14 = [v4 partySize];
+  partySize = [bookingCopy partySize];
 
-  v15 = [v13 initWithFormat:v9, v12, v14];
+  v15 = [v13 initWithFormat:v9, v12, partySize];
 
   return v15;
 }
 
-- (id)confirmationSubtitleTextForUserBooking:(id)a3
+- (id)confirmationSubtitleTextForUserBooking:(id)booking
 {
-  v4 = a3;
-  v5 = [(RestaurantReservationConfirmationViewController *)self dayAndRestaurantDescriptionForUserBooking:v4];
-  v6 = [(RestaurantReservationConfirmationViewController *)self timeAndTableDescriptionForUserBooking:v4];
+  bookingCopy = booking;
+  v5 = [(RestaurantReservationConfirmationViewController *)self dayAndRestaurantDescriptionForUserBooking:bookingCopy];
+  v6 = [(RestaurantReservationConfirmationViewController *)self timeAndTableDescriptionForUserBooking:bookingCopy];
 
   v7 = [NSString stringWithFormat:@"%@\n%@", v5, v6];
 
   return v7;
 }
 
-- (id)userInfoStringForGuest:(id)a3
+- (id)userInfoStringForGuest:(id)guest
 {
-  v3 = a3;
+  guestCopy = guest;
   v4 = objc_opt_new();
-  v5 = [v3 nameComponents];
+  nameComponents = [guestCopy nameComponents];
 
-  if (v5)
+  if (nameComponents)
   {
-    v6 = [v3 nameComponents];
-    v7 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:v6 style:3 options:0];
+    nameComponents2 = [guestCopy nameComponents];
+    v7 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:nameComponents2 style:3 options:0];
 
     if ([v7 length])
     {
@@ -198,22 +198,22 @@
     }
   }
 
-  v8 = [v3 phoneNumber];
-  v9 = [v8 length];
+  phoneNumber = [guestCopy phoneNumber];
+  v9 = [phoneNumber length];
 
   if (v9)
   {
-    v10 = [v3 phoneNumber];
-    [v4 addObject:v10];
+    phoneNumber2 = [guestCopy phoneNumber];
+    [v4 addObject:phoneNumber2];
   }
 
-  v11 = [v3 emailAddress];
-  v12 = [v11 length];
+  emailAddress = [guestCopy emailAddress];
+  v12 = [emailAddress length];
 
   if (v12)
   {
-    v13 = [v3 emailAddress];
-    [v4 addObject:v13];
+    emailAddress2 = [guestCopy emailAddress];
+    [v4 addObject:emailAddress2];
   }
 
   v14 = [v4 componentsJoinedByString:@"\n"];
@@ -221,11 +221,11 @@
   return v14;
 }
 
-- (id)headerTextForUserBookingStatus:(unint64_t)a3
+- (id)headerTextForUserBookingStatus:(unint64_t)status
 {
-  if (a3 <= 2)
+  if (status <= 2)
   {
-    v4 = off_101637358[a3];
+    v4 = off_101637358[status];
     v5 = +[NSBundle mainBundle];
     v3 = [v5 localizedStringForKey:v4 value:@"localized string not found" table:0];
   }
@@ -233,13 +233,13 @@
   return v3;
 }
 
-- (void)reservationConfirmationHeaderCellAccessoryButtonWasTapped:(id)a3
+- (void)reservationConfirmationHeaderCellAccessoryButtonWasTapped:(id)tapped
 {
-  v4 = [(RestaurantReservationConfirmationViewController *)self analyticsCaptor];
-  [v4 captureBookedChangeReservation];
+  analyticsCaptor = [(RestaurantReservationConfirmationViewController *)self analyticsCaptor];
+  [analyticsCaptor captureBookedChangeReservation];
 
-  v5 = [(RestaurantReservationConfirmationViewController *)self reservationDelegate];
-  [v5 restaurantReservationConfirmationViewControllerDidSelectEditReservation:self];
+  reservationDelegate = [(RestaurantReservationConfirmationViewController *)self reservationDelegate];
+  [reservationDelegate restaurantReservationConfirmationViewControllerDidSelectEditReservation:self];
 }
 
 - (void)updateTheme
@@ -248,8 +248,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(RestaurantReservationConfirmationViewController *)self buttons];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  buttons = [(RestaurantReservationConfirmationViewController *)self buttons];
+  v4 = [buttons countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -261,83 +261,83 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(buttons);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(RestaurantReservationConfirmationViewController *)self theme];
-        v10 = [v9 controlTintColor];
-        [v8 setTintColor:v10];
+        theme = [(RestaurantReservationConfirmationViewController *)self theme];
+        controlTintColor = [theme controlTintColor];
+        [v8 setTintColor:controlTintColor];
 
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [buttons countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)configureHeaderCell:(id)a3
+- (void)configureHeaderCell:(id)cell
 {
-  v4 = a3;
-  [v4 setSubtitleType:1];
-  v5 = [(RestaurantReservationConfirmationViewController *)self userBooking];
-  v6 = -[RestaurantReservationConfirmationViewController headerTextForUserBookingStatus:](self, "headerTextForUserBookingStatus:", [v5 status]);
-  v7 = [v4 mainLabel];
-  [v7 setText:v6];
+  cellCopy = cell;
+  [cellCopy setSubtitleType:1];
+  userBooking = [(RestaurantReservationConfirmationViewController *)self userBooking];
+  v6 = -[RestaurantReservationConfirmationViewController headerTextForUserBookingStatus:](self, "headerTextForUserBookingStatus:", [userBooking status]);
+  mainLabel = [cellCopy mainLabel];
+  [mainLabel setText:v6];
 
-  v8 = [(RestaurantReservationConfirmationViewController *)self userBooking];
-  v9 = [(RestaurantReservationConfirmationViewController *)self confirmationSubtitleTextForUserBooking:v8];
-  v10 = [v4 subLabel];
-  [v10 setText:v9];
+  userBooking2 = [(RestaurantReservationConfirmationViewController *)self userBooking];
+  v9 = [(RestaurantReservationConfirmationViewController *)self confirmationSubtitleTextForUserBooking:userBooking2];
+  subLabel = [cellCopy subLabel];
+  [subLabel setText:v9];
 
-  [v4 setActionDelegate:self];
+  [cellCopy setActionDelegate:self];
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:@"reservation_change_reservation_key" value:@"localized string not found" table:0];
-  [v4 setAccessoryButtonTitle:v12];
+  [cellCopy setAccessoryButtonTitle:v12];
 
-  v13 = [v4 contentView];
-  [v13 layoutMargins];
+  contentView = [cellCopy contentView];
+  [contentView layoutMargins];
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [v4 contentView];
+  contentView2 = [cellCopy contentView];
 
-  [v20 setLayoutMargins:{v15, v17, 30.0, v19}];
+  [contentView2 setLayoutMargins:{v15, v17, 30.0, v19}];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section])
   {
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    v16 = [v6 dequeueReusableCellWithIdentifier:v20];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:v20];
 
     [(RestaurantReservationConfirmationViewController *)self configureHeaderCell:v16];
     goto LABEL_13;
   }
 
-  v8 = [v7 section];
-  v9 = v8 - 1;
-  if (v8 < 1 || (-[RestaurantReservationConfirmationViewController sections](self, "sections"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v9 >= v11))
+  section = [pathCopy section];
+  v9 = section - 1;
+  if (section < 1 || (-[RestaurantReservationConfirmationViewController sections](self, "sections"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v9 >= v11))
   {
     v16 = objc_opt_new();
     goto LABEL_13;
   }
 
-  v12 = [(RestaurantReservationConfirmationViewController *)self sections];
-  v13 = [v12 objectAtIndexedSubscript:v9];
+  sections = [(RestaurantReservationConfirmationViewController *)self sections];
+  v13 = [sections objectAtIndexedSubscript:v9];
 
-  if ([v7 row])
+  if ([pathCopy row])
   {
-    if ([v7 row] != 1)
+    if ([pathCopy row] != 1)
     {
       v16 = objc_opt_new();
       goto LABEL_12;
@@ -345,24 +345,24 @@
 
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v6 dequeueReusableCellWithIdentifier:v15];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:v15];
 
-    v17 = [v13 sectionText];
-    v18 = [v16 details];
-    [v18 setText:v17];
+    sectionText = [v13 sectionText];
+    details = [v16 details];
+    [details setText:sectionText];
   }
 
   else
   {
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    v16 = [v6 dequeueReusableCellWithIdentifier:v22];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:v22];
 
-    v23 = [v13 sectionTitle];
-    [v16 setText:v23];
+    sectionTitle = [v13 sectionTitle];
+    [v16 setText:sectionTitle];
 
-    v17 = +[UIColor secondaryLabelColor];
-    [v16 setTextColor:v17];
+    sectionText = +[UIColor secondaryLabelColor];
+    [v16 setTextColor:sectionText];
   }
 
 LABEL_12:
@@ -371,9 +371,9 @@ LABEL_13:
   return v16;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 2;
   }
@@ -384,10 +384,10 @@ LABEL_13:
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(RestaurantReservationConfirmationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(RestaurantReservationConfirmationViewController *)self sections];
+  v4 = [sections count];
 
   return v4 + 1;
 }
@@ -395,9 +395,9 @@ LABEL_13:
 - (void)buildSections
 {
   v40 = [NSMutableArray arrayWithCapacity:5];
-  v3 = [(RestaurantReservationConfirmationViewController *)self userBooking];
-  v4 = [v3 advisementText];
-  v5 = [v4 length];
+  userBooking = [(RestaurantReservationConfirmationViewController *)self userBooking];
+  advisementText = [userBooking advisementText];
+  v5 = [advisementText length];
 
   if (v5)
   {
@@ -406,16 +406,16 @@ LABEL_13:
     v8 = [v7 localizedStringForKey:@"reservations_from_restaurant_key" value:@"localized string not found" table:0];
     [v6 setSectionTitle:v8];
 
-    v9 = [(RestaurantReservationConfirmationViewController *)self userBooking];
-    v10 = [v9 advisementText];
-    [v6 setSectionText:v10];
+    userBooking2 = [(RestaurantReservationConfirmationViewController *)self userBooking];
+    advisementText2 = [userBooking2 advisementText];
+    [v6 setSectionText:advisementText2];
 
     [v40 addObject:v6];
   }
 
-  v11 = [(RestaurantReservationConfirmationViewController *)self userBooking];
-  v12 = [v11 guest];
-  v13 = [(RestaurantReservationConfirmationViewController *)self userInfoStringForGuest:v12];
+  userBooking3 = [(RestaurantReservationConfirmationViewController *)self userBooking];
+  guest = [userBooking3 guest];
+  v13 = [(RestaurantReservationConfirmationViewController *)self userInfoStringForGuest:guest];
   v14 = [v13 length];
 
   if (v14)
@@ -425,18 +425,18 @@ LABEL_13:
     v17 = [v16 localizedStringForKey:@"reservations_your_info_key" value:@"localized string not found" table:0];
     [v15 setSectionTitle:v17];
 
-    v18 = [(RestaurantReservationConfirmationViewController *)self userBooking];
-    v19 = [v18 guest];
-    v20 = [(RestaurantReservationConfirmationViewController *)self userInfoStringForGuest:v19];
+    userBooking4 = [(RestaurantReservationConfirmationViewController *)self userBooking];
+    guest2 = [userBooking4 guest];
+    v20 = [(RestaurantReservationConfirmationViewController *)self userInfoStringForGuest:guest2];
     [v15 setSectionText:v20];
 
     [v40 addObject:v15];
   }
 
-  v21 = [(RestaurantReservationConfirmationViewController *)self userBooking];
-  v22 = [v21 selectedOffer];
-  v23 = [v22 offerDetailText];
-  v24 = [v23 length];
+  userBooking5 = [(RestaurantReservationConfirmationViewController *)self userBooking];
+  selectedOffer = [userBooking5 selectedOffer];
+  offerDetailText = [selectedOffer offerDetailText];
+  v24 = [offerDetailText length];
 
   if (v24)
   {
@@ -445,17 +445,17 @@ LABEL_13:
     v27 = [v26 localizedStringForKey:@"reservations_selected_offer_key" value:@"localized string not found" table:0];
     [v25 setSectionTitle:v27];
 
-    v28 = [(RestaurantReservationConfirmationViewController *)self userBooking];
-    v29 = [v28 selectedOffer];
-    v30 = [v29 offerTitleText];
-    [v25 setSectionText:v30];
+    userBooking6 = [(RestaurantReservationConfirmationViewController *)self userBooking];
+    selectedOffer2 = [userBooking6 selectedOffer];
+    offerTitleText = [selectedOffer2 offerTitleText];
+    [v25 setSectionText:offerTitleText];
 
     [v40 addObject:v25];
   }
 
-  v31 = [(RestaurantReservationConfirmationViewController *)self userBooking];
-  v32 = [v31 guestProvidedSpecialRequestText];
-  v33 = [v32 length];
+  userBooking7 = [(RestaurantReservationConfirmationViewController *)self userBooking];
+  guestProvidedSpecialRequestText = [userBooking7 guestProvidedSpecialRequestText];
+  v33 = [guestProvidedSpecialRequestText length];
 
   if (v33)
   {
@@ -464,9 +464,9 @@ LABEL_13:
     v36 = [v35 localizedStringForKey:@"reservations_special_request_key" value:@"localized string not found" table:0];
     [v34 setSectionTitle:v36];
 
-    v37 = [(RestaurantReservationConfirmationViewController *)self userBooking];
-    v38 = [v37 guestProvidedSpecialRequestText];
-    [v34 setSectionText:v38];
+    userBooking8 = [(RestaurantReservationConfirmationViewController *)self userBooking];
+    guestProvidedSpecialRequestText2 = [userBooking8 guestProvidedSpecialRequestText];
+    [v34 setSectionText:guestProvidedSpecialRequestText2];
 
     [v40 addObject:v34];
   }
@@ -477,32 +477,32 @@ LABEL_13:
 
 - (void)setupConstraints
 {
-  v3 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(RestaurantReservationConfirmationViewController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v24 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  v22 = [v24 leadingAnchor];
-  v23 = [(RestaurantReservationConfirmationViewController *)self view];
-  v21 = [v23 leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  tableView2 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  leadingAnchor = [tableView2 leadingAnchor];
+  view = [(RestaurantReservationConfirmationViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v25[0] = v20;
-  v19 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  v17 = [v19 trailingAnchor];
-  v18 = [(RestaurantReservationConfirmationViewController *)self view];
-  v16 = [v18 trailingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  tableView3 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  trailingAnchor = [tableView3 trailingAnchor];
+  view2 = [(RestaurantReservationConfirmationViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v25[1] = v15;
-  v14 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  v4 = [v14 bottomAnchor];
-  v5 = [(RestaurantReservationConfirmationViewController *)self view];
-  v6 = [v5 bottomAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  tableView4 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  bottomAnchor = [tableView4 bottomAnchor];
+  view3 = [(RestaurantReservationConfirmationViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v25[2] = v7;
-  v8 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  v9 = [v8 topAnchor];
-  v10 = [(RestaurantReservationConfirmationViewController *)self view];
-  v11 = [v10 topAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  tableView5 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  topAnchor = [tableView5 topAnchor];
+  view4 = [(RestaurantReservationConfirmationViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v25[3] = v12;
   v13 = [NSArray arrayWithObjects:v25 count:4];
   [NSLayoutConstraint activateConstraints:v13];
@@ -510,23 +510,23 @@ LABEL_13:
 
 - (void)registerCellClasses
 {
-  v3 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  tableView = [(RestaurantReservationConfirmationViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 registerClass:v4 forCellReuseIdentifier:v6];
+  [tableView registerClass:v4 forCellReuseIdentifier:v6];
 
-  v7 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  tableView2 = [(RestaurantReservationConfirmationViewController *)self tableView];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v7 registerClass:v8 forCellReuseIdentifier:v10];
+  [tableView2 registerClass:v8 forCellReuseIdentifier:v10];
 
-  v14 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  tableView3 = [(RestaurantReservationConfirmationViewController *)self tableView];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  [v14 registerClass:v11 forCellReuseIdentifier:v13];
+  [tableView3 registerClass:v11 forCellReuseIdentifier:v13];
 }
 
 - (void)configureTableView
@@ -534,30 +534,30 @@ LABEL_13:
   v3 = [[UITableView alloc] initWithFrame:0 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(RestaurantReservationConfirmationViewController *)self setTableView:v3];
 
-  v4 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  [v4 setDelegate:self];
+  tableView = [(RestaurantReservationConfirmationViewController *)self tableView];
+  [tableView setDelegate:self];
 
-  v5 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  [v5 setDataSource:self];
+  tableView2 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  [tableView2 setDataSource:self];
 
-  v6 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  [v6 setRowHeight:UITableViewAutomaticDimension];
+  tableView3 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  [tableView3 setRowHeight:UITableViewAutomaticDimension];
 
-  v7 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  [v7 setSectionHeaderHeight:UITableViewAutomaticDimension];
+  tableView4 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  [tableView4 setSectionHeaderHeight:UITableViewAutomaticDimension];
 
-  v8 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  [v8 setEstimatedSectionHeaderHeight:0.0];
+  tableView5 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  [tableView5 setEstimatedSectionHeaderHeight:0.0];
 
-  v9 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  [v9 setSeparatorStyle:0];
+  tableView6 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  [tableView6 setSeparatorStyle:0];
 
-  v10 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  [v10 setAllowsSelection:0];
+  tableView7 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  [tableView7 setAllowsSelection:0];
 
-  v12 = [(RestaurantReservationConfirmationViewController *)self view];
-  v11 = [(RestaurantReservationConfirmationViewController *)self tableView];
-  [v12 addSubview:v11];
+  view = [(RestaurantReservationConfirmationViewController *)self view];
+  tableView8 = [(RestaurantReservationConfirmationViewController *)self tableView];
+  [view addSubview:tableView8];
 }
 
 - (void)viewDidLoad
@@ -571,22 +571,22 @@ LABEL_13:
   [(RestaurantReservationConfirmationViewController *)self buildSections];
 }
 
-- (RestaurantReservationConfirmationViewController)initWithUserBooking:(id)a3 mapItem:(id)a4 appName:(id)a5 analyticsCaptor:(id)a6
+- (RestaurantReservationConfirmationViewController)initWithUserBooking:(id)booking mapItem:(id)item appName:(id)name analyticsCaptor:(id)captor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  bookingCopy = booking;
+  itemCopy = item;
+  nameCopy = name;
+  captorCopy = captor;
   v17.receiver = self;
   v17.super_class = RestaurantReservationConfirmationViewController;
   v14 = [(RestaurantReservationConfirmationViewController *)&v17 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    [(RestaurantReservationConfirmationViewController *)v14 setUserBooking:v10];
-    [(RestaurantReservationConfirmationViewController *)v15 setMapItem:v11];
-    [(RestaurantReservationConfirmationViewController *)v15 setAppName:v12];
-    [(RestaurantReservationConfirmationViewController *)v15 setAnalyticsCaptor:v13];
+    [(RestaurantReservationConfirmationViewController *)v14 setUserBooking:bookingCopy];
+    [(RestaurantReservationConfirmationViewController *)v15 setMapItem:itemCopy];
+    [(RestaurantReservationConfirmationViewController *)v15 setAppName:nameCopy];
+    [(RestaurantReservationConfirmationViewController *)v15 setAnalyticsCaptor:captorCopy];
   }
 
   return v15;

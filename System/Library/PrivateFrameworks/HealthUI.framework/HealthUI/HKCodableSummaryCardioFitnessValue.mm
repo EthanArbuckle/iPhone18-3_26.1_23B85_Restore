@@ -1,20 +1,20 @@
 @interface HKCodableSummaryCardioFitnessValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDateData:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDateData:(BOOL)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryCardioFitnessValue
 
-- (void)setHasDateData:(BOOL)a3
+- (void)setHasDateData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 2;
   }
@@ -33,27 +33,27 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryCardioFitnessValue;
   v4 = [(HKCodableSummaryCardioFitnessValue *)&v8 description];
-  v5 = [(HKCodableSummaryCardioFitnessValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryCardioFitnessValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   value = self->_value;
   if (value)
   {
-    v5 = [(HKCodableQuantity *)value dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"value"];
+    dictionaryRepresentation = [(HKCodableQuantity *)value dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"value"];
   }
 
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_classificationRawValue];
-    [v3 setObject:v7 forKey:@"classificationRawValue"];
+    [dictionary setObject:v7 forKey:@"classificationRawValue"];
 
     has = self->_has;
   }
@@ -61,85 +61,85 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_dateData];
-    [v3 setObject:v8 forKey:@"dateData"];
+    [dictionary setObject:v8 forKey:@"dateData"];
   }
 
   levelViewDataConfiguration = self->_levelViewDataConfiguration;
   if (levelViewDataConfiguration)
   {
-    v10 = [(HKCodableLevelViewDataConfiguration *)levelViewDataConfiguration dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"levelViewDataConfiguration"];
+    dictionaryRepresentation2 = [(HKCodableLevelViewDataConfiguration *)levelViewDataConfiguration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"levelViewDataConfiguration"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_value)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_levelViewDataConfiguration)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_value)
   {
-    [v4 setValue:?];
-    v4 = v6;
+    [toCopy setValue:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_classificationRawValue;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_classificationRawValue;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_dateData;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = *&self->_dateData;
+    *(toCopy + 40) |= 2u;
   }
 
   if (self->_levelViewDataConfiguration)
   {
     [v6 setLevelViewDataConfiguration:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableQuantity *)self->_value copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableQuantity *)self->_value copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -157,23 +157,23 @@
     *(v5 + 40) |= 2u;
   }
 
-  v9 = [(HKCodableLevelViewDataConfiguration *)self->_levelViewDataConfiguration copyWithZone:a3];
+  v9 = [(HKCodableLevelViewDataConfiguration *)self->_levelViewDataConfiguration copyWithZone:zone];
   v10 = *(v5 + 24);
   *(v5 + 24) = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   value = self->_value;
-  if (value | *(v4 + 4))
+  if (value | *(equalCopy + 4))
   {
     if (![(HKCodableQuantity *)value isEqual:?])
     {
@@ -183,13 +183,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_classificationRawValue != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_classificationRawValue != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_16:
     v7 = 0;
@@ -198,19 +198,19 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_dateData != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_dateData != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   levelViewDataConfiguration = self->_levelViewDataConfiguration;
-  if (levelViewDataConfiguration | *(v4 + 3))
+  if (levelViewDataConfiguration | *(equalCopy + 3))
   {
     v7 = [(HKCodableLevelViewDataConfiguration *)levelViewDataConfiguration isEqual:?];
   }
@@ -276,12 +276,12 @@ LABEL_3:
   return v6 ^ v3 ^ v10 ^ [(HKCodableLevelViewDataConfiguration *)self->_levelViewDataConfiguration hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   value = self->_value;
-  v6 = *(v4 + 4);
-  v10 = v4;
+  v6 = *(fromCopy + 4);
+  v10 = fromCopy;
   if (value)
   {
     if (!v6)
@@ -302,24 +302,24 @@ LABEL_3:
     [(HKCodableSummaryCardioFitnessValue *)self setValue:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_7:
-  v7 = *(v4 + 40);
+  v7 = *(fromCopy + 40);
   if (v7)
   {
-    self->_classificationRawValue = *(v4 + 1);
+    self->_classificationRawValue = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 40);
+    v7 = *(fromCopy + 40);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_dateData = *(v4 + 2);
+    self->_dateData = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
   levelViewDataConfiguration = self->_levelViewDataConfiguration;
-  v9 = *(v4 + 3);
+  v9 = *(fromCopy + 3);
   if (levelViewDataConfiguration)
   {
     if (v9)

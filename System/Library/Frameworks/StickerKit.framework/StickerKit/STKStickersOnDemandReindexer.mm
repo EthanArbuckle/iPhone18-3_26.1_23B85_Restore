@@ -1,19 +1,19 @@
 @interface STKStickersOnDemandReindexer
-+ (void)reindexStickersIfNecessaryWithCompletionHandler:(id)a3;
++ (void)reindexStickersIfNecessaryWithCompletionHandler:(id)handler;
 - (STKStickersOnDemandReindexer)init;
 @end
 
 @implementation STKStickersOnDemandReindexer
 
-+ (void)reindexStickersIfNecessaryWithCompletionHandler:(id)a3
++ (void)reindexStickersIfNecessaryWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAFCD690);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  *(v9 + 24) = a1;
+  *(v9 + 24) = self;
   v10 = sub_19A7AB394();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
   v11 = swift_allocObject();

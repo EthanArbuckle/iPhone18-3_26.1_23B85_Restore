@@ -1,46 +1,46 @@
 @interface ADJasperColorInfieldCalibrationFlow
-- (ADJasperColorInfieldCalibrationFlow)initWithExecutor:(id)a3 andIntersessionData:(id)a4 andExtrinsicsFlowMode:(int64_t)a5;
-- (void)handleMatch:(id)a3;
-- (void)pushColor:(double)a3 pose:(double)a4 calibration:(double)a5 metadata:(double)a6 timestamp:(uint64_t)a7;
-- (void)pushPointCloud:(double)a3 pose:(double)a4 calibration:(double)a5 timestamp:(double)a6;
+- (ADJasperColorInfieldCalibrationFlow)initWithExecutor:(id)executor andIntersessionData:(id)data andExtrinsicsFlowMode:(int64_t)mode;
+- (void)handleMatch:(id)match;
+- (void)pushColor:(double)color pose:(double)pose calibration:(double)calibration metadata:(double)metadata timestamp:(uint64_t)timestamp;
+- (void)pushPointCloud:(double)cloud pose:(double)pose calibration:(double)calibration timestamp:(double)timestamp;
 @end
 
 @implementation ADJasperColorInfieldCalibrationFlow
 
-- (void)handleMatch:(id)a3
+- (void)handleMatch:(id)match
 {
-  v4 = a3;
-  v3 = [v4 matchedObjectsForStream:0];
+  matchCopy = match;
+  v3 = [matchCopy matchedObjectsForStream:0];
   [v3 firstObject];
   objc_claimAutoreleasedReturnValue();
 
-  [v4 matchedObjectsForStream:1];
+  [matchCopy matchedObjectsForStream:1];
   [objc_claimAutoreleasedReturnValue() count];
   operator new[]();
 }
 
-- (void)pushPointCloud:(double)a3 pose:(double)a4 calibration:(double)a5 timestamp:(double)a6
+- (void)pushPointCloud:(double)cloud pose:(double)pose calibration:(double)calibration timestamp:(double)timestamp
 {
-  v10 = [a1[5] pushData:a8 streamIndex:1 timestamp:a9 pose:a6 calibration:{a2, a3, a4, a5}];
+  v10 = [self[5] pushData:a8 streamIndex:1 timestamp:a9 pose:timestamp calibration:{a2, cloud, pose, calibration}];
   if (v10)
   {
-    [a1 handleMatch:v10];
+    [self handleMatch:v10];
   }
 }
 
-- (void)pushColor:(double)a3 pose:(double)a4 calibration:(double)a5 metadata:(double)a6 timestamp:(uint64_t)a7
+- (void)pushColor:(double)color pose:(double)pose calibration:(double)calibration metadata:(double)metadata timestamp:(uint64_t)timestamp
 {
-  v11 = [a1[5] pushData:a8 streamIndex:0 timestamp:a9 pose:a10 calibration:a6 meta:{a2, a3, a4, a5}];
+  v11 = [self[5] pushData:a8 streamIndex:0 timestamp:a9 pose:a10 calibration:metadata meta:{a2, color, pose, calibration}];
   if (v11)
   {
-    [a1 handleMatch:v11];
+    [self handleMatch:v11];
   }
 }
 
-- (ADJasperColorInfieldCalibrationFlow)initWithExecutor:(id)a3 andIntersessionData:(id)a4 andExtrinsicsFlowMode:(int64_t)a5
+- (ADJasperColorInfieldCalibrationFlow)initWithExecutor:(id)executor andIntersessionData:(id)data andExtrinsicsFlowMode:(int64_t)mode
 {
-  v9 = a3;
-  v10 = a4;
+  executorCopy = executor;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = ADJasperColorInfieldCalibrationFlow;
   v11 = [(ADJasperColorInfieldCalibrationFlow *)&v18 init];
@@ -48,9 +48,9 @@
   if (v11)
   {
     v11->_isFirstFrame = 1;
-    v11->_extrinsicsMode = a5;
-    objc_storeStrong(&v11->_intersessionData, a4);
-    objc_storeStrong(&v12->_executor, a3);
+    v11->_extrinsicsMode = mode;
+    objc_storeStrong(&v11->_intersessionData, data);
+    objc_storeStrong(&v12->_executor, executor);
     v13 = objc_opt_new();
     lastExecutionResult = v12->_lastExecutionResult;
     v12->_lastExecutionResult = v13;

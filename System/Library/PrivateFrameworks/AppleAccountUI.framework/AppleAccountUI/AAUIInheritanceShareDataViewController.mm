@@ -1,6 +1,6 @@
 @interface AAUIInheritanceShareDataViewController
-- (void)_addICloudBackupIconViewToView:(id)a3;
-- (void)_addICloudIconViewToView:(id)a3;
+- (void)_addICloudBackupIconViewToView:(id)view;
+- (void)_addICloudIconViewToView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -11,76 +11,76 @@
   v5.receiver = self;
   v5.super_class = AAUIInheritanceShareDataViewController;
   [(OBBaseWelcomeController *)&v5 viewDidLoad];
-  v3 = [(AAUIInheritanceShareDataViewController *)self headerView];
-  v4 = [v3 customIconContainerView];
+  headerView = [(AAUIInheritanceShareDataViewController *)self headerView];
+  customIconContainerView = [headerView customIconContainerView];
 
-  [(AAUIInheritanceShareDataViewController *)self _addICloudBackupIconViewToView:v4];
-  [(AAUIInheritanceShareDataViewController *)self _addICloudIconViewToView:v4];
+  [(AAUIInheritanceShareDataViewController *)self _addICloudBackupIconViewToView:customIconContainerView];
+  [(AAUIInheritanceShareDataViewController *)self _addICloudIconViewToView:customIconContainerView];
 }
 
-- (void)_addICloudBackupIconViewToView:(id)a3
+- (void)_addICloudBackupIconViewToView:(id)view
 {
   v22[4] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69A8A00];
-  v5 = a3;
+  viewCopy = view;
   v21 = [[v4 alloc] initWithType:@"com.apple.graphic-icon.icloud-backup"];
   v6 = [AAUIAsyncIconImageBridge hostingControllerWithIcon:v21 size:76.0, 76.0];
   [(AAUIInheritanceShareDataViewController *)self addChildViewController:v6];
-  v7 = [v6 view];
-  [v5 addSubview:v7];
+  view = [v6 view];
+  [viewCopy addSubview:view];
 
   [v6 didMoveToParentViewController:self];
-  v8 = [v6 view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [v6 view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
   v17 = MEMORY[0x1E696ACD8];
-  v20 = [v8 widthAnchor];
-  v19 = [v20 constraintEqualToConstant:76.0];
+  widthAnchor = [view2 widthAnchor];
+  v19 = [widthAnchor constraintEqualToConstant:76.0];
   v22[0] = v19;
-  v18 = [v8 centerXAnchor];
-  v9 = [v5 centerXAnchor];
-  v10 = [v18 constraintEqualToAnchor:v9 constant:-20.5];
+  centerXAnchor = [view2 centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:-20.5];
   v22[1] = v10;
-  v11 = [v8 heightAnchor];
-  v12 = [v11 constraintEqualToConstant:76.0];
+  heightAnchor = [view2 heightAnchor];
+  v12 = [heightAnchor constraintEqualToConstant:76.0];
   v22[2] = v12;
-  v13 = [v8 centerYAnchor];
-  v14 = [v5 centerYAnchor];
+  centerYAnchor = [view2 centerYAnchor];
+  centerYAnchor2 = [viewCopy centerYAnchor];
 
-  v15 = [v13 constraintEqualToAnchor:v14];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v22[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
   [v17 activateConstraints:v16];
 }
 
-- (void)_addICloudIconViewToView:(id)a3
+- (void)_addICloudIconViewToView:(id)view
 {
   v22[4] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69A8A00];
-  v5 = a3;
+  viewCopy = view;
   v21 = [[v4 alloc] initWithType:@"com.apple.application-icon.icloud"];
   v6 = [AAUIAsyncIconImageBridge hostingControllerWithIcon:v21 size:76.0, 76.0];
   [(AAUIInheritanceShareDataViewController *)self addChildViewController:v6];
-  v7 = [v6 view];
-  [v5 addSubview:v7];
+  view = [v6 view];
+  [viewCopy addSubview:view];
 
   [v6 didMoveToParentViewController:self];
-  v8 = [v6 view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [v6 view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
   v17 = MEMORY[0x1E696ACD8];
-  v20 = [v8 widthAnchor];
-  v19 = [v20 constraintEqualToConstant:76.0];
+  widthAnchor = [view2 widthAnchor];
+  v19 = [widthAnchor constraintEqualToConstant:76.0];
   v22[0] = v19;
-  v18 = [v8 centerXAnchor];
-  v9 = [v5 centerXAnchor];
-  v10 = [v18 constraintEqualToAnchor:v9 constant:20.5];
+  centerXAnchor = [view2 centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:20.5];
   v22[1] = v10;
-  v11 = [v8 heightAnchor];
-  v12 = [v11 constraintEqualToConstant:76.0];
+  heightAnchor = [view2 heightAnchor];
+  v12 = [heightAnchor constraintEqualToConstant:76.0];
   v22[2] = v12;
-  v13 = [v8 centerYAnchor];
-  v14 = [v5 centerYAnchor];
+  centerYAnchor = [view2 centerYAnchor];
+  centerYAnchor2 = [viewCopy centerYAnchor];
 
-  v15 = [v13 constraintEqualToAnchor:v14];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v22[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
   [v17 activateConstraints:v16];

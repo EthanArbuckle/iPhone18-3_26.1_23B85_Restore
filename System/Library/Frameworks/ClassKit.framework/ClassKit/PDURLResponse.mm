@@ -1,7 +1,7 @@
 @interface PDURLResponse
-- (id)createFileHandleForURL:(id)a3;
+- (id)createFileHandleForURL:(id)l;
 - (id)createResponseFileURL;
-- (void)_simulateHTTPResponseWithURL:(id)a3 statusCode:(int64_t)a4 headers:(id)a5;
+- (void)_simulateHTTPResponseWithURL:(id)l statusCode:(int64_t)code headers:(id)headers;
 - (void)cleanupFileResources;
 @end
 
@@ -9,8 +9,8 @@
 
 - (id)createResponseFileURL
 {
-  v2 = [(PDURLResponse *)self operationID];
-  v3 = [NSString stringWithFormat:@"%@-response.data", v2];
+  operationID = [(PDURLResponse *)self operationID];
+  v3 = [NSString stringWithFormat:@"%@-response.data", operationID];
 
   v4 = sub_1000E0594();
   v5 = sub_1000E0C78(v4);
@@ -19,10 +19,10 @@
   return v6;
 }
 
-- (id)createFileHandleForURL:(id)a3
+- (id)createFileHandleForURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
 LABEL_13:
     v11 = 0;
@@ -30,27 +30,27 @@ LABEL_13:
   }
 
   v5 = +[PDUserDefaults sharedDefaults];
-  v6 = [v5 enableVerboseLogging];
+  enableVerboseLogging = [v5 enableVerboseLogging];
 
-  if (v6)
+  if (enableVerboseLogging)
   {
     CLSInitLog();
     v7 = CLSLogOperations;
     if (os_log_type_enabled(CLSLogOperations, OS_LOG_TYPE_DEBUG))
     {
       v21 = v7;
-      v22 = [(PDURLResponse *)self operationID];
+      operationID = [(PDURLResponse *)self operationID];
       *buf = 138543618;
-      *&buf[4] = v22;
+      *&buf[4] = operationID;
       v30 = 2112;
-      v31 = v4;
+      v31 = lCopy;
       _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%{public}@ createFileHandleForURL responseDataURL:%@", buf, 0x16u);
     }
   }
 
   v8 = +[NSFileManager defaultManager];
-  v9 = [v4 path];
-  v10 = [v8 createFileAtPath:v9 contents:0 attributes:0];
+  path = [lCopy path];
+  v10 = [v8 createFileAtPath:path contents:0 attributes:0];
 
   if ((v10 & 1) == 0)
   {
@@ -59,11 +59,11 @@ LABEL_13:
     if (os_log_type_enabled(CLSLogOperations, OS_LOG_TYPE_ERROR))
     {
       v23 = v18;
-      v24 = [(PDURLResponse *)self operationID];
+      operationID2 = [(PDURLResponse *)self operationID];
       *buf = 138543618;
-      *&buf[4] = v24;
+      *&buf[4] = operationID2;
       v30 = 2114;
-      v31 = v4;
+      v31 = lCopy;
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%{public}@ createFileHandleForURL failed to create file at '%{public}@'", buf, 0x16u);
     }
 
@@ -71,7 +71,7 @@ LABEL_13:
   }
 
   v28 = 0;
-  v11 = [NSFileHandle fileHandleForWritingToURL:v4 error:&v28];
+  v11 = [NSFileHandle fileHandleForWritingToURL:lCopy error:&v28];
   v12 = v28;
   if (v11)
   {
@@ -87,11 +87,11 @@ LABEL_13:
       if (os_log_type_enabled(CLSLogOperations, OS_LOG_TYPE_DEFAULT))
       {
         v16 = v15;
-        v17 = [(PDURLResponse *)self operationID];
+        operationID3 = [(PDURLResponse *)self operationID];
         *buf = 138543874;
-        *&buf[4] = v17;
+        *&buf[4] = operationID3;
         v30 = 2114;
-        v31 = v4;
+        v31 = lCopy;
         v32 = 2114;
         v33 = v14;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ createFileHandleForURL failed to create fileHandle for file at '%{public}@' error:%{public}@", buf, 0x20u);
@@ -108,9 +108,9 @@ LABEL_13:
     if (os_log_type_enabled(CLSLogOperations, OS_LOG_TYPE_DEBUG))
     {
       v25 = v19;
-      v26 = [(PDURLResponse *)self operationID];
+      operationID4 = [(PDURLResponse *)self operationID];
       *buf = 138543618;
-      *&buf[4] = v26;
+      *&buf[4] = operationID4;
       v30 = 2112;
       v31 = v12;
       _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "%{public}@ createFileHandleForURL failed to open fileHandle error:%@", buf, 0x16u);
@@ -152,15 +152,15 @@ LABEL_17:
   responseFileURL = self->_responseFileURL;
   if (responseFileURL)
   {
-    v9 = [(NSURL *)responseFileURL path];
+    path = [(NSURL *)responseFileURL path];
     v10 = self->_responseFileURL;
     v11 = self->_responseFileURL;
     self->_responseFileURL = 0;
 
-    if (v9)
+    if (path)
     {
       v12 = +[NSFileManager defaultManager];
-      v13 = [v12 fileExistsAtPath:v9];
+      v13 = [v12 fileExistsAtPath:path];
 
       if (v13)
       {
@@ -190,18 +190,18 @@ LABEL_17:
   }
 }
 
-- (void)_simulateHTTPResponseWithURL:(id)a3 statusCode:(int64_t)a4 headers:(id)a5
+- (void)_simulateHTTPResponseWithURL:(id)l statusCode:(int64_t)code headers:(id)headers
 {
-  v11 = a3;
-  v8 = a5;
-  if (a4 == -1)
+  lCopy = l;
+  headersCopy = headers;
+  if (code == -1)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [[NSHTTPURLResponse alloc] initWithURL:v11 statusCode:a4 HTTPVersion:@"1.1" headerFields:v8];
+    v9 = [[NSHTTPURLResponse alloc] initWithURL:lCopy statusCode:code HTTPVersion:@"1.1" headerFields:headersCopy];
   }
 
   urlResponse = self->_urlResponse;

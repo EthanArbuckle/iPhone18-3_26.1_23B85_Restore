@@ -1,46 +1,46 @@
 @interface NSURL
 - (BOOL)isHTTP;
-- (id)changeSchemeTo:(int64_t)a3;
-- (id)changeSchemeToString:(id)a3;
-- (id)queryItemForKey:(id)a3;
-- (id)removeQueryItemForKey:(id)a3;
-- (id)setQueryItem:(id)a3 forKey:(id)a4;
+- (id)changeSchemeTo:(int64_t)to;
+- (id)changeSchemeToString:(id)string;
+- (id)queryItemForKey:(id)key;
+- (id)removeQueryItemForKey:(id)key;
+- (id)setQueryItem:(id)item forKey:(id)key;
 @end
 
 @implementation NSURL
 
-- (id)queryItemForKey:(id)a3
+- (id)queryItemForKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     [NSException raise:NSInvalidArgumentException format:@"%@ key cannot be nil", objc_opt_class()];
   }
 
   v5 = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:1];
-  v6 = [v5 queryItems];
+  queryItems = [v5 queryItems];
 
-  v7 = [NSPredicate predicateWithFormat:@"name = %@", v4];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
-  v9 = [v8 firstObject];
+  keyCopy = [NSPredicate predicateWithFormat:@"name = %@", keyCopy];
+  v8 = [queryItems filteredArrayUsingPredicate:keyCopy];
+  firstObject = [v8 firstObject];
 
-  v10 = [v9 value];
+  value = [firstObject value];
 
-  return v10;
+  return value;
 }
 
-- (id)removeQueryItemForKey:(id)a3
+- (id)removeQueryItemForKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     [NSException raise:NSInvalidArgumentException format:@"%@ key cannot be nil", objc_opt_class()];
   }
 
   v5 = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:0];
-  v6 = [v5 queryItems];
-  v7 = [NSPredicate predicateWithFormat:@"name != %@", v4];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
+  queryItems = [v5 queryItems];
+  keyCopy = [NSPredicate predicateWithFormat:@"name != %@", keyCopy];
+  v8 = [queryItems filteredArrayUsingPredicate:keyCopy];
   if ([v8 count])
   {
     v9 = v8;
@@ -57,13 +57,13 @@
   return v10;
 }
 
-- (id)setQueryItem:(id)a3 forKey:(id)a4
+- (id)setQueryItem:(id)item forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  itemCopy = item;
+  keyCopy = key;
+  if (keyCopy)
   {
-    if (v6)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -72,7 +72,7 @@
   else
   {
     [NSException raise:NSInvalidArgumentException format:@"%@ key cannot be nil", objc_opt_class()];
-    if (v6)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -80,48 +80,48 @@
 
   [NSException raise:NSInvalidArgumentException format:@"%@ value cannot be nil", objc_opt_class()];
 LABEL_3:
-  if ([v7 length])
+  if ([keyCopy length])
   {
     v8 = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:0];
-    v9 = [v8 queryItems];
-    if (v9)
+    queryItems = [v8 queryItems];
+    if (queryItems)
     {
-      v10 = [v8 queryItems];
+      queryItems2 = [v8 queryItems];
     }
 
     else
     {
-      v10 = &__NSArray0__struct;
+      queryItems2 = &__NSArray0__struct;
     }
 
-    v12 = [NSPredicate predicateWithFormat:@"name != %@", v7];
-    v13 = [v10 filteredArrayUsingPredicate:v12];
-    v14 = [NSURLQueryItem queryItemWithName:v7 value:v6];
+    keyCopy = [NSPredicate predicateWithFormat:@"name != %@", keyCopy];
+    v13 = [queryItems2 filteredArrayUsingPredicate:keyCopy];
+    v14 = [NSURLQueryItem queryItemWithName:keyCopy value:itemCopy];
     v15 = [v13 arrayByAddingObject:v14];
     [v8 setQueryItems:v15];
 
-    v11 = [v8 URL];
+    selfCopy = [v8 URL];
   }
 
   else
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (BOOL)isHTTP
 {
-  v2 = [(NSURL *)self scheme];
-  v3 = [v2 isEqualToString:@"http"];
+  scheme = [(NSURL *)self scheme];
+  v3 = [scheme isEqualToString:@"http"];
 
   return v3;
 }
 
-- (id)changeSchemeTo:(int64_t)a3
+- (id)changeSchemeTo:(int64_t)to
 {
-  switch(a3)
+  switch(to)
   {
     case 0:
       v3 = &off_10450;
@@ -132,35 +132,35 @@ LABEL_3:
     case 2:
       v3 = &off_10460;
 LABEL_7:
-      v4 = [(NSURL *)self changeSchemeToString:*v3];
+      selfCopy = [(NSURL *)self changeSchemeToString:*v3];
       goto LABEL_9;
   }
 
-  v4 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)changeSchemeToString:(id)a3
+- (id)changeSchemeToString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v5 = [(NSURL *)self absoluteString];
-    v6 = [(NSURL *)self scheme];
-    v7 = [v5 substringFromIndex:{objc_msgSend(v6, "length")}];
+    absoluteString = [(NSURL *)self absoluteString];
+    scheme = [(NSURL *)self scheme];
+    v7 = [absoluteString substringFromIndex:{objc_msgSend(scheme, "length")}];
 
-    v8 = [v4 stringByAppendingString:v7];
-    v9 = [NSURL URLWithString:v8];
+    v8 = [stringCopy stringByAppendingString:v7];
+    selfCopy = [NSURL URLWithString:v8];
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

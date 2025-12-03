@@ -1,18 +1,18 @@
 @interface PUISnapshotReadinessFBSSceneObserver
 - (FBSScene)scene;
 - (void)_check;
-- (void)_checkIfFBSSceneIsReadyForSnapshotting:(id)a3 force:(id)a4;
+- (void)_checkIfFBSSceneIsReadyForSnapshotting:(id)snapshotting force:(id)force;
 - (void)invalidate;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneWillInvalidate:(id)a3;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)sceneWillInvalidate:(id)invalidate;
 @end
 
 @implementation PUISnapshotReadinessFBSSceneObserver
 
 - (void)invalidate
 {
-  v3 = [(PUISnapshotReadinessFBSSceneObserver *)self scene];
-  [v3 removeObserver:self];
+  scene = [(PUISnapshotReadinessFBSSceneObserver *)self scene];
+  [scene removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PUISnapshotReadinessFBSSceneObserver;
@@ -26,29 +26,29 @@
   return WeakRetained;
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v5 = a3;
+  sceneCopy = scene;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__PUISnapshotReadinessFBSSceneObserver_scene_didUpdateClientSettings___block_invoke;
   v7[3] = &unk_1E78548A0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = sceneCopy;
+  v6 = sceneCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
-- (void)sceneWillInvalidate:(id)a3
+- (void)sceneWillInvalidate:(id)invalidate
 {
-  [(PUISnapshotReadinessFBSSceneObserver *)self _checkIfFBSSceneIsReadyForSnapshotting:a3 force:MEMORY[0x1E695E110]];
+  [(PUISnapshotReadinessFBSSceneObserver *)self _checkIfFBSSceneIsReadyForSnapshotting:invalidate force:MEMORY[0x1E695E110]];
 
   [(PUIPosterSnapshotReadinessSceneObserver *)self removeAllSnapshotObservers];
 }
 
-- (void)_checkIfFBSSceneIsReadyForSnapshotting:(id)a3 force:(id)a4
+- (void)_checkIfFBSSceneIsReadyForSnapshotting:(id)snapshotting force:(id)force
 {
-  v5 = [a3 pui_sceneIsReadyToSnapshot:{0, a4}];
+  v5 = [snapshotting pui_sceneIsReadyToSnapshot:{0, force}];
   if (v5 != [(PUIPosterSnapshotReadinessSceneObserver *)self isSceneReadyForSnapshotting])
   {
 
@@ -58,8 +58,8 @@
 
 - (void)_check
 {
-  v3 = [(PUISnapshotReadinessFBSSceneObserver *)self scene];
-  [(PUISnapshotReadinessFBSSceneObserver *)self _checkIfFBSSceneIsReadyForSnapshotting:v3 force:0];
+  scene = [(PUISnapshotReadinessFBSSceneObserver *)self scene];
+  [(PUISnapshotReadinessFBSSceneObserver *)self _checkIfFBSSceneIsReadyForSnapshotting:scene force:0];
 }
 
 @end

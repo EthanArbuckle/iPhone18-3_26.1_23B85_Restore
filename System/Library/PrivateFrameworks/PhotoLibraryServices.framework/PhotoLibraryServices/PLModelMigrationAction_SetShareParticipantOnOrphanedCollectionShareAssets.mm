@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_SetShareParticipantOnOrphanedCollectionShareAssets
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_SetShareParticipantOnOrphanedCollectionShareAssets
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -33,13 +33,13 @@
   v38[2] = __121__PLModelMigrationAction_SetShareParticipantOnOrphanedCollectionShareAssets_performActionWithManagedObjectContext_error___block_invoke;
   v38[3] = &unk_1E7568150;
   v38[4] = self;
-  v15 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v6 fetchRequest:v9 pendingParentUnitCount:0 error:&v39 processingBlock:v38];
+  v15 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:v9 pendingParentUnitCount:0 error:&v39 processingBlock:v38];
   v16 = v39;
   if (v41[3])
   {
-    v17 = [(PLModelMigrationActionCore *)self analyticsEventManager];
+    analyticsEventManager = [(PLModelMigrationActionCore *)self analyticsEventManager];
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46701 userInfo:0];
-    [v17 setPayloadValue:v18 forKey:*MEMORY[0x1E69BF6D8] onEventWithName:*MEMORY[0x1E69BF6D0]];
+    [analyticsEventManager setPayloadValue:v18 forKey:*MEMORY[0x1E69BF6D8] onEventWithName:*MEMORY[0x1E69BF6D0]];
   }
 
   v19 = PLMigrationGetLog();
@@ -47,8 +47,8 @@
 
   if (v20)
   {
-    v21 = [(PLModelMigrationActionCore *)self logger];
-    v22 = v21 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v22 = logger == 0;
 
     if (v22)
     {
@@ -94,10 +94,10 @@
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v33 = v16;
   v34 = v33;
-  if (v15 != 1 && a4)
+  if (v15 != 1 && error)
   {
     v35 = v33;
-    *a4 = v34;
+    *error = v34;
   }
 
   _Block_object_dispose(&v40, 8);

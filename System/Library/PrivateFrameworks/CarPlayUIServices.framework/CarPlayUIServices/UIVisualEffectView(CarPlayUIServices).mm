@@ -9,15 +9,15 @@
 {
   v0 = [MEMORY[0x277D75210] effectWithBlurRadius:50.0];
   v1 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v0];
-  v2 = [v1 layer];
-  [v2 setMaskedCorners:15];
+  layer = [v1 layer];
+  [layer setMaskedCorners:15];
 
   v3 = *MEMORY[0x277CDA138];
-  v4 = [v1 layer];
-  [v4 setCornerCurve:v3];
+  layer2 = [v1 layer];
+  [layer2 setCornerCurve:v3];
 
-  v5 = [v1 layer];
-  [v5 setMasksToBounds:1];
+  layer3 = [v1 layer];
+  [layer3 setMasksToBounds:1];
 
   return v1;
 }
@@ -26,15 +26,15 @@
 {
   v0 = [MEMORY[0x277D75210] effectWithStyle:8];
   v1 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v0];
-  v2 = [v1 layer];
-  [v2 setMaskedCorners:15];
+  layer = [v1 layer];
+  [layer setMaskedCorners:15];
 
   v3 = *MEMORY[0x277CDA138];
-  v4 = [v1 layer];
-  [v4 setCornerCurve:v3];
+  layer2 = [v1 layer];
+  [layer2 setCornerCurve:v3];
 
-  v5 = [v1 layer];
-  [v5 setMasksToBounds:1];
+  layer3 = [v1 layer];
+  [layer3 setMasksToBounds:1];
 
   return v1;
 }

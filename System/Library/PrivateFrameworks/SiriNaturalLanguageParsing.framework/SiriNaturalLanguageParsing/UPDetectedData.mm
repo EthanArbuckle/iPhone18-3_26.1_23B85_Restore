@@ -1,5 +1,5 @@
 @interface UPDetectedData
-- (UPDetectedData)initWithLabel:(id)a3 dataDetectorResult:(__CFArray *)a4;
+- (UPDetectedData)initWithLabel:(id)label dataDetectorResult:(__CFArray *)result;
 - (void)dealloc;
 @end
 
@@ -13,17 +13,17 @@
   [(UPDetectedData *)&v3 dealloc];
 }
 
-- (UPDetectedData)initWithLabel:(id)a3 dataDetectorResult:(__CFArray *)a4
+- (UPDetectedData)initWithLabel:(id)label dataDetectorResult:(__CFArray *)result
 {
-  v7 = a3;
+  labelCopy = label;
   v11.receiver = self;
   v11.super_class = UPDetectedData;
   v8 = [(UPDetectedData *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_label, a3);
-    v9->_dataDetectorResult = a4;
+    objc_storeStrong(&v8->_label, label);
+    v9->_dataDetectorResult = result;
   }
 
   return v9;

@@ -1,33 +1,33 @@
 @interface IMCoverUtilities
-+ (BOOL)isUndesirableImageData:(id)a3 error:(id *)a4;
++ (BOOL)isUndesirableImageData:(id)data error:(id *)error;
 @end
 
 @implementation IMCoverUtilities
 
-+ (BOOL)isUndesirableImageData:(id)a3 error:(id *)a4
++ (BOOL)isUndesirableImageData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 hash];
+  dataCopy = data;
+  v6 = [dataCopy hash];
   v7 = v6 == 254731557 || v6 == 153495661;
   if (v6 == 254731557 || v6 == 153495661)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:@"kIMCoverUtilitiesErrorDomain" code:-1000 userInfo:0];
+      *error = [NSError errorWithDomain:@"kIMCoverUtilitiesErrorDomain" code:-1000 userInfo:0];
     }
   }
 
   else
   {
-    v8 = CGImageSourceCreateWithData(v5, 0);
+    v8 = CGImageSourceCreateWithData(dataCopy, 0);
     if (v8)
     {
       v9 = v8;
       if (BKGenericBookCoverIsLegacyGenericBookCoverImageSource(v8))
       {
-        if (a4)
+        if (error)
         {
-          *a4 = [NSError errorWithDomain:@"kIMCoverUtilitiesErrorDomain" code:-1001 userInfo:0];
+          *error = [NSError errorWithDomain:@"kIMCoverUtilitiesErrorDomain" code:-1001 userInfo:0];
         }
 
         v7 = 1;

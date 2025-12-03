@@ -2,9 +2,9 @@
 - (_ECParsedHTMLNode)init;
 - (_NSRange)range;
 - (id)recursiveDescription;
-- (void)addRecursiveDescriptionWithLevel:(unint64_t)a3 toString:(id)a4;
-- (void)appendChild:(id)a3;
-- (void)collectDescendanceIntoArray:(id)a3;
+- (void)addRecursiveDescriptionWithLevel:(unint64_t)level toString:(id)string;
+- (void)appendChild:(id)child;
+- (void)collectDescendanceIntoArray:(id)array;
 - (void)dealloc;
 @end
 
@@ -35,7 +35,7 @@
   [(_ECParsedHTMLNode *)&v3 dealloc];
 }
 
-- (void)appendChild:(id)a3
+- (void)appendChild:(id)child
 {
   childNodes = self->_childNodes;
   if (childNodes)
@@ -50,51 +50,51 @@
     self->_childNodes = v6;
   }
 
-  [(NSMutableArray *)v6 addObject:a3];
+  [(NSMutableArray *)v6 addObject:child];
 
-  [a3 setParentNode:self];
+  [child setParentNode:self];
 }
 
 - (_NSRange)range
 {
-  v3 = [[(_ECParsedHTMLNode *)self firstChild] startLocation];
-  v4 = [[(_ECParsedHTMLNode *)self firstChild] endLocation]- v3;
-  v5 = v3;
+  startLocation = [[(_ECParsedHTMLNode *)self firstChild] startLocation];
+  v4 = [[(_ECParsedHTMLNode *)self firstChild] endLocation]- startLocation;
+  v5 = startLocation;
   result.length = v4;
   result.location = v5;
   return result;
 }
 
-- (void)collectDescendanceIntoArray:(id)a3
+- (void)collectDescendanceIntoArray:(id)array
 {
   v4 = [(NSMutableArray *)self->_childNodes mutableCopy];
   v6 = v4;
   while ([v4 count])
   {
-    v5 = [v6 firstObject];
-    [a3 addObject:v5];
-    [v6 addObjectsFromArray:*(v5 + 8)];
+    firstObject = [v6 firstObject];
+    [array addObject:firstObject];
+    [v6 addObjectsFromArray:*(firstObject + 8)];
     [v6 removeObjectAtIndex:0];
     v4 = v6;
   }
 }
 
-- (void)addRecursiveDescriptionWithLevel:(unint64_t)a3 toString:(id)a4
+- (void)addRecursiveDescriptionWithLevel:(unint64_t)level toString:(id)string
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (level)
   {
-    v7 = a3;
+    levelCopy = level;
     do
     {
-      [a4 appendString:@"| "];
-      --v7;
+      [string appendString:@"| "];
+      --levelCopy;
     }
 
-    while (v7);
+    while (levelCopy);
   }
 
-  [a4 appendFormat:@"%@\n", -[_ECParsedHTMLNode description](self, "description")];
+  [string appendFormat:@"%@\n", -[_ECParsedHTMLNode description](self, "description")];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -115,7 +115,7 @@
           objc_enumerationMutation(childNodes);
         }
 
-        [*(*(&v14 + 1) + 8 * v12++) addRecursiveDescriptionWithLevel:a3 + 1 toString:a4];
+        [*(*(&v14 + 1) + 8 * v12++) addRecursiveDescriptionWithLevel:level + 1 toString:string];
       }
 
       while (v10 != v12);
@@ -130,9 +130,9 @@
 
 - (id)recursiveDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [(_ECParsedHTMLNode *)self addRecursiveDescriptionWithLevel:0 toString:v3];
-  return v3;
+  string = [MEMORY[0x277CCAB68] string];
+  [(_ECParsedHTMLNode *)self addRecursiveDescriptionWithLevel:0 toString:string];
+  return string;
 }
 
 @end

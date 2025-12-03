@@ -1,21 +1,21 @@
 @interface AVTSectionItemTransition
-- (AVTSectionItemTransition)initWithModel:(id)a3 animated:(BOOL)a4 setupHandler:(id)a5 completionHandler:(id)a6 logger:(id)a7;
+- (AVTSectionItemTransition)initWithModel:(id)model animated:(BOOL)animated setupHandler:(id)handler completionHandler:(id)completionHandler logger:(id)logger;
 - (void)performTransition;
 @end
 
 @implementation AVTSectionItemTransition
 
-- (AVTSectionItemTransition)initWithModel:(id)a3 animated:(BOOL)a4 setupHandler:(id)a5 completionHandler:(id)a6 logger:(id)a7
+- (AVTSectionItemTransition)initWithModel:(id)model animated:(BOOL)animated setupHandler:(id)handler completionHandler:(id)completionHandler logger:(id)logger
 {
-  v10 = a4;
-  v13 = a3;
+  animatedCopy = animated;
+  modelCopy = model;
   v17.receiver = self;
   v17.super_class = AVTSectionItemTransition;
-  v14 = [(AVTTransition *)&v17 initWithModel:v13 animated:v10 setupHandler:a5 completionHandler:a6 logger:a7];
+  v14 = [(AVTTransition *)&v17 initWithModel:modelCopy animated:animatedCopy setupHandler:handler completionHandler:completionHandler logger:logger];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_sectionItemTransitionModel, a3);
+    objc_storeStrong(&v14->_sectionItemTransitionModel, model);
   }
 
   return v15;
@@ -40,17 +40,17 @@
 
   else
   {
-    v3 = [(AVTSectionItemTransition *)self sectionItemTransitionModel];
-    v4 = [v3 toLayer];
+    sectionItemTransitionModel = [(AVTSectionItemTransition *)self sectionItemTransitionModel];
+    toLayer = [sectionItemTransitionModel toLayer];
     LODWORD(v5) = 1.0;
-    [v4 setOpacity:v5];
+    [toLayer setOpacity:v5];
 
-    v6 = [(AVTSectionItemTransition *)self sectionItemTransitionModel];
-    v7 = [v6 fromLayer];
-    [v7 setOpacity:0.0];
+    sectionItemTransitionModel2 = [(AVTSectionItemTransition *)self sectionItemTransitionModel];
+    fromLayer = [sectionItemTransitionModel2 fromLayer];
+    [fromLayer setOpacity:0.0];
 
-    v8 = [(AVTTransition *)self completionHandler];
-    v8[2](v8, 1);
+    completionHandler = [(AVTTransition *)self completionHandler];
+    completionHandler[2](completionHandler, 1);
   }
 }
 

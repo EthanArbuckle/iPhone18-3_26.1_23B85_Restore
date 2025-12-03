@@ -1,59 +1,59 @@
 @interface SearchHomeDataDownloaderCache
-- (BOOL)keyIsValid:(id)a3;
-- (id)objectForKey:(id)a3;
-- (void)replaceCachedObject:(id)a3 withKey:(id)a4;
+- (BOOL)keyIsValid:(id)valid;
+- (id)objectForKey:(id)key;
+- (void)replaceCachedObject:(id)object withKey:(id)key;
 @end
 
 @implementation SearchHomeDataDownloaderCache
 
-- (BOOL)keyIsValid:(id)a3
+- (BOOL)keyIsValid:(id)valid
 {
-  v4 = a3;
-  [v4 timestamp];
+  validCopy = valid;
+  [validCopy timestamp];
   v6 = v5;
-  v7 = [(SearchHomeDataDownloaderCache *)self cachedKey];
-  [v7 timestamp];
+  cachedKey = [(SearchHomeDataDownloaderCache *)self cachedKey];
+  [cachedKey timestamp];
   v9 = v8;
 
-  v10 = [(SearchHomeDataDownloaderCache *)self cachedKey];
-  [v10 mapRect];
+  cachedKey2 = [(SearchHomeDataDownloaderCache *)self cachedKey];
+  [cachedKey2 mapRect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [v4 mapRect];
+  [validCopy mapRect];
   v24 = v12 != v22 || v14 != v19 || v16 != v20 || v18 != v21;
 
-  v25 = [v4 mapType];
-  v26 = [(SearchHomeDataDownloaderCache *)self cachedKey];
-  v27 = [v26 mapType];
+  mapType = [validCopy mapType];
+  cachedKey3 = [(SearchHomeDataDownloaderCache *)self cachedKey];
+  mapType2 = [cachedKey3 mapType];
 
-  v28 = [v4 lprPowerType];
-  if (v28)
+  lprPowerType = [validCopy lprPowerType];
+  if (lprPowerType)
   {
 LABEL_10:
-    v30 = [v4 lprPowerType];
-    if (v30)
+    lprPowerType2 = [validCopy lprPowerType];
+    if (lprPowerType2)
     {
-      v31 = v30;
-      v32 = [(SearchHomeDataDownloaderCache *)self cachedKey];
-      v33 = [v32 lprPowerType];
-      if (v33)
+      v31 = lprPowerType2;
+      cachedKey4 = [(SearchHomeDataDownloaderCache *)self cachedKey];
+      lprPowerType3 = [cachedKey4 lprPowerType];
+      if (lprPowerType3)
       {
-        v34 = v33;
-        [v4 lprPowerType];
-        v43 = v27;
-        v35 = v25;
+        v34 = lprPowerType3;
+        [validCopy lprPowerType];
+        v43 = mapType2;
+        v35 = mapType;
         v37 = v36 = v24;
-        v38 = [(SearchHomeDataDownloaderCache *)self cachedKey];
-        v39 = [v38 lprPowerType];
-        v40 = v37 == v39;
+        cachedKey5 = [(SearchHomeDataDownloaderCache *)self cachedKey];
+        lprPowerType4 = [cachedKey5 lprPowerType];
+        v40 = v37 == lprPowerType4;
 
         v24 = v36;
-        v25 = v35;
-        v27 = v43;
+        mapType = v35;
+        mapType2 = v43;
 
-        if (v28)
+        if (lprPowerType)
         {
           goto LABEL_19;
         }
@@ -63,7 +63,7 @@ LABEL_10:
     }
 
     v40 = 0;
-    if (v28)
+    if (lprPowerType)
     {
       goto LABEL_19;
     }
@@ -71,11 +71,11 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  v45 = [(SearchHomeDataDownloaderCache *)self cachedKey];
-  v29 = [v45 lprPowerType];
-  if (v29)
+  cachedKey6 = [(SearchHomeDataDownloaderCache *)self cachedKey];
+  lprPowerType5 = [cachedKey6 lprPowerType];
+  if (lprPowerType5)
   {
-    v44 = v29;
+    v44 = lprPowerType5;
     goto LABEL_10;
   }
 
@@ -84,7 +84,7 @@ LABEL_10:
 LABEL_18:
 
 LABEL_19:
-  if (v25 == v27)
+  if (mapType == mapType2)
   {
     v41 = (v6 - v9 < 900.0) & ~v24;
   }
@@ -97,31 +97,31 @@ LABEL_19:
   return v41 & v40;
 }
 
-- (void)replaceCachedObject:(id)a3 withKey:(id)a4
+- (void)replaceCachedObject:(id)object withKey:(id)key
 {
-  v6 = a3;
-  objc_storeStrong(&self->_cachedKey, a4);
-  v8 = a4;
+  objectCopy = object;
+  objc_storeStrong(&self->_cachedKey, key);
+  keyCopy = key;
   cachedResults = self->_cachedResults;
-  self->_cachedResults = v6;
+  self->_cachedResults = objectCopy;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SearchHomeDataDownloaderCache *)self cachedResults];
+  keyCopy = key;
+  cachedResults = [(SearchHomeDataDownloaderCache *)self cachedResults];
 
-  if (v5 && [(SearchHomeDataDownloaderCache *)self keyIsValid:v4])
+  if (cachedResults && [(SearchHomeDataDownloaderCache *)self keyIsValid:keyCopy])
   {
-    v6 = [(SearchHomeDataDownloaderCache *)self cachedResults];
+    cachedResults2 = [(SearchHomeDataDownloaderCache *)self cachedResults];
   }
 
   else
   {
-    v6 = 0;
+    cachedResults2 = 0;
   }
 
-  return v6;
+  return cachedResults2;
 }
 
 @end

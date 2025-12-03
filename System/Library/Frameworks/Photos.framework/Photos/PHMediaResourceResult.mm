@@ -1,6 +1,6 @@
 @interface PHMediaResourceResult
 - (BOOL)containsValidData;
-- (PHMediaResourceResult)initWithRequestID:(int)a3 assetResource:(id)a4;
+- (PHMediaResourceResult)initWithRequestID:(int)d assetResource:(id)resource;
 - (id)adjustmentData;
 - (id)allowedInfoKeys;
 - (id)exifOrientation;
@@ -62,32 +62,32 @@
 - (id)exifOrientation
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(PHAssetResource *)self->_assetResource orientation];
+  orientation = [(PHAssetResource *)self->_assetResource orientation];
 
-  return [v2 numberWithUnsignedInt:v3];
+  return [v2 numberWithUnsignedInt:orientation];
 }
 
 - (id)sanitizedInfoDictionary
 {
   if ([(PHAssetResource *)self->_assetResource type]== PHAssetResourceTypeAdjustmentData || [(PHAssetResource *)self->_assetResource type]== 16)
   {
-    v3 = [(PHMediaResourceResult *)self adjustmentData];
-    [(NSMutableDictionary *)self->super._mutableInfo setObject:v3 forKeyedSubscript:@"PHAdjustmentDataKey"];
+    adjustmentData = [(PHMediaResourceResult *)self adjustmentData];
+    [(NSMutableDictionary *)self->super._mutableInfo setObject:adjustmentData forKeyedSubscript:@"PHAdjustmentDataKey"];
   }
 
   v6.receiver = self;
   v6.super_class = PHMediaResourceResult;
-  v4 = [(PHCompositeMediaResult *)&v6 sanitizedInfoDictionary];
+  sanitizedInfoDictionary = [(PHCompositeMediaResult *)&v6 sanitizedInfoDictionary];
 
-  return v4;
+  return sanitizedInfoDictionary;
 }
 
 - (id)allowedInfoKeys
 {
   v6.receiver = self;
   v6.super_class = PHMediaResourceResult;
-  v3 = [(PHCompositeMediaResult *)&v6 allowedInfoKeys];
-  v4 = [v3 mutableCopy];
+  allowedInfoKeys = [(PHCompositeMediaResult *)&v6 allowedInfoKeys];
+  v4 = [allowedInfoKeys mutableCopy];
 
   if ([(PHAssetResource *)self->_assetResource type]== PHAssetResourceTypeAdjustmentData || [(PHAssetResource *)self->_assetResource type]== 16)
   {
@@ -104,23 +104,23 @@
     return 0;
   }
 
-  v2 = [(PHCompositeMediaResult *)self error];
-  v3 = v2 == 0;
+  error = [(PHCompositeMediaResult *)self error];
+  v3 = error == 0;
 
   return v3;
 }
 
-- (PHMediaResourceResult)initWithRequestID:(int)a3 assetResource:(id)a4
+- (PHMediaResourceResult)initWithRequestID:(int)d assetResource:(id)resource
 {
-  v5 = *&a3;
-  v7 = a4;
+  v5 = *&d;
+  resourceCopy = resource;
   v11.receiver = self;
   v11.super_class = PHMediaResourceResult;
   v8 = [(PHCompositeMediaResult *)&v11 initWithRequestID:v5];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_assetResource, a4);
+    objc_storeStrong(&v8->_assetResource, resource);
   }
 
   return v9;

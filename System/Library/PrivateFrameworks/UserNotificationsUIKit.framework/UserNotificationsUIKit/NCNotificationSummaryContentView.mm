@@ -1,18 +1,18 @@
 @interface NCNotificationSummaryContentView
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6;
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGRect)_adjustedRectForLabelLayoutFromRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCNotificationSummaryContentView)initWithFrame:(CGRect)a3;
+- (CGRect)_adjustedRectForLabelLayoutFromRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCNotificationSummaryContentView)initWithFrame:(CGRect)frame;
 - (double)_widthForIconsContainerView;
 - (id)_dateLabelFont;
 - (id)_dateLabelPreferredFont;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
-- (int64_t)_dateFormatStyleForDate:(id)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
+- (int64_t)_dateFormatStyleForDate:(id)date;
 - (unint64_t)_maximumNumberOfLinesForSummaryText;
-- (unint64_t)_numberOfLinesForSummaryTextInFrame:(CGRect)a3;
-- (unint64_t)_numberOfLinesForSummaryTitleTextInFrame:(CGRect)a3;
-- (void)_addShadowForIconView:(id)a3;
+- (unint64_t)_numberOfLinesForSummaryTextInFrame:(CGRect)frame;
+- (unint64_t)_numberOfLinesForSummaryTitleTextInFrame:(CGRect)frame;
+- (void)_addShadowForIconView:(id)view;
 - (void)_layoutSummaryDateLabel;
 - (void)_layoutSummaryIconsView;
 - (void)_layoutSummaryLabel;
@@ -23,69 +23,69 @@
 - (void)_updateTextAttributesForDateLabel;
 - (void)_updateTextAttributesForSummaryLabel;
 - (void)_updateTextAttributesForSummaryTitleLabel;
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6;
-- (void)_updateVisualStylingProvidersForIconViewIfNecessary:(id)a3;
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider;
+- (void)_updateVisualStylingProvidersForIconViewIfNecessary:(id)necessary;
 - (void)_updateVisualStylingProvidersForIconViewsIfNecessary;
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
-- (void)dateLabelDidChange:(id)a3;
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
+- (void)dateLabelDidChange:(id)change;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setSummary:(id)a3;
-- (void)setSummaryDate:(id)a3;
-- (void)setSummaryIconSymbolName:(id)a3;
-- (void)setSummaryIconViews:(id)a3;
-- (void)setSummaryLabelMaterialSecondary:(BOOL)a3;
-- (void)setSummaryTitle:(id)a3;
-- (void)setSummaryTitleFontName:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setSummary:(id)summary;
+- (void)setSummaryDate:(id)date;
+- (void)setSummaryIconSymbolName:(id)name;
+- (void)setSummaryIconViews:(id)views;
+- (void)setSummaryLabelMaterialSecondary:(BOOL)secondary;
+- (void)setSummaryTitle:(id)title;
+- (void)setSummaryTitleFontName:(id)name;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation NCNotificationSummaryContentView
 
-- (NCNotificationSummaryContentView)initWithFrame:(CGRect)a3
+- (NCNotificationSummaryContentView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = NCNotificationSummaryContentView;
-  v3 = [(NCNotificationSummaryContentView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCNotificationSummaryContentView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_adjustsFontForContentSizeCategory = 1;
-    v5 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v6 = [v5 preferredContentSizeCategory];
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
     preferredContentSizeCategory = v4->_preferredContentSizeCategory;
-    v4->_preferredContentSizeCategory = v6;
+    v4->_preferredContentSizeCategory = preferredContentSizeCategory;
   }
 
   return v4;
 }
 
-- (void)setSummaryLabelMaterialSecondary:(BOOL)a3
+- (void)setSummaryLabelMaterialSecondary:(BOOL)secondary
 {
-  if (self->_summaryLabelMaterialSecondary != a3)
+  if (self->_summaryLabelMaterialSecondary != secondary)
   {
-    self->_summaryLabelMaterialSecondary = a3;
+    self->_summaryLabelMaterialSecondary = secondary;
     summaryLabel = self->_summaryLabel;
     if (summaryLabel)
     {
-      v5 = [(NCNotificationSummaryContentView *)self isSummaryLabelMaterialSecondary];
+      isSummaryLabelMaterialSecondary = [(NCNotificationSummaryContentView *)self isSummaryLabelMaterialSecondary];
       v6 = [(NCNotificationSummaryContentView *)self visualStylingProviderForCategory:1];
-      [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:summaryLabel style:v5 visualStylingProvider:v6 outgoingProvider:0];
+      [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:summaryLabel style:isSummaryLabelMaterialSecondary visualStylingProvider:v6 outgoingProvider:0];
     }
   }
 }
 
-- (void)setSummaryTitle:(id)a3
+- (void)setSummaryTitle:(id)title
 {
-  v13 = a3;
-  v4 = [(NCNotificationSummaryContentView *)self summaryTitle];
+  titleCopy = title;
+  summaryTitle = [(NCNotificationSummaryContentView *)self summaryTitle];
   v5 = BSEqualStrings();
 
-  v6 = v13;
+  v6 = titleCopy;
   if ((v5 & 1) == 0)
   {
     summaryTitleLabel = self->_summaryTitleLabel;
-    if (v13)
+    if (titleCopy)
     {
       if (!summaryTitleLabel)
       {
@@ -100,7 +100,7 @@
         v11 = [(NCNotificationSummaryContentView *)self visualStylingProviderForCategory:1];
         [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:v10 style:0 visualStylingProvider:v11 outgoingProvider:0];
 
-        v6 = v13;
+        v6 = titleCopy;
         summaryTitleLabel = self->_summaryTitleLabel;
       }
 
@@ -120,17 +120,17 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)setSummary:(id)a3
+- (void)setSummary:(id)summary
 {
-  v14 = a3;
-  v4 = [(NCNotificationSummaryContentView *)self summary];
+  summaryCopy = summary;
+  summary = [(NCNotificationSummaryContentView *)self summary];
   v5 = BSEqualStrings();
 
-  v6 = v14;
+  v6 = summaryCopy;
   if ((v5 & 1) == 0)
   {
     summaryLabel = self->_summaryLabel;
-    if (v14)
+    if (summaryCopy)
     {
       if (!summaryLabel)
       {
@@ -142,11 +142,11 @@
         [(NCNotificationSummaryContentView *)self addSubview:self->_summaryLabel];
         [(NCNotificationSummaryContentView *)self _updateTextAttributesForSummaryLabel];
         v10 = self->_summaryLabel;
-        v11 = [(NCNotificationSummaryContentView *)self isSummaryLabelMaterialSecondary];
+        isSummaryLabelMaterialSecondary = [(NCNotificationSummaryContentView *)self isSummaryLabelMaterialSecondary];
         v12 = [(NCNotificationSummaryContentView *)self visualStylingProviderForCategory:1];
-        [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:v10 style:v11 visualStylingProvider:v12 outgoingProvider:0];
+        [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:v10 style:isSummaryLabelMaterialSecondary visualStylingProvider:v12 outgoingProvider:0];
 
-        v6 = v14;
+        v6 = summaryCopy;
         summaryLabel = self->_summaryLabel;
       }
 
@@ -166,11 +166,11 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)setSummaryIconViews:(id)a3
+- (void)setSummaryIconViews:(id)views
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(NCNotificationSummaryContentView *)self summaryIconViews];
+  viewsCopy = views;
+  summaryIconViews = [(NCNotificationSummaryContentView *)self summaryIconViews];
   v7 = BSEqualArrays();
 
   if ((v7 & 1) == 0)
@@ -221,8 +221,8 @@
       self->_summaryIconSymbolBackgroundView = 0;
     }
 
-    objc_storeStrong(&self->_iconViews, a3);
-    v17 = [v5 count];
+    objc_storeStrong(&self->_iconViews, views);
+    v17 = [viewsCopy count];
     summaryIconsContainerView = self->_summaryIconsContainerView;
     if (v17)
     {
@@ -268,27 +268,27 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
   [*(a1 + 32) _updateVisualStylingProvidersForIconViewIfNecessary:v5];
 }
 
-- (void)setSummaryTitleFontName:(id)a3
+- (void)setSummaryTitleFontName:(id)name
 {
-  objc_storeStrong(&self->_summaryTitleFontName, a3);
+  objc_storeStrong(&self->_summaryTitleFontName, name);
   [(NCNotificationSummaryContentView *)self _updateTextAttributesForSummaryTitleLabel];
 
   [(NCNotificationSummaryContentView *)self setNeedsLayout];
 }
 
-- (void)setSummaryDate:(id)a3
+- (void)setSummaryDate:(id)date
 {
-  v12 = a3;
+  dateCopy = date;
   if ((BSEqualObjects() & 1) == 0)
   {
     [(NCNotificationSummaryContentView *)self _tearDownDateLabelIfNecessary];
-    objc_storeStrong(&self->_summaryDate, a3);
-    if (v12)
+    objc_storeStrong(&self->_summaryDate, date);
+    if (dateCopy)
     {
-      v5 = [MEMORY[0x277CF0D50] sharedInstance];
+      mEMORY[0x277CF0D50] = [MEMORY[0x277CF0D50] sharedInstance];
       summaryDate = self->_summaryDate;
-      v7 = [MEMORY[0x277CBEA80] currentCalendar];
-      v8 = [v5 startLabelWithStartDate:summaryDate endDate:0 timeZone:0 allDay:objc_msgSend(v7 forStyle:{"isDateInToday:", v12) ^ 1, 0}];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v8 = [mEMORY[0x277CF0D50] startLabelWithStartDate:summaryDate endDate:0 timeZone:0 allDay:objc_msgSend(currentCalendar forStyle:{"isDateInToday:", dateCopy) ^ 1, 0}];
       summaryDateLabel = self->_summaryDateLabel;
       self->_summaryDateLabel = v8;
 
@@ -304,17 +304,17 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
   }
 }
 
-- (void)setSummaryIconSymbolName:(id)a3
+- (void)setSummaryIconSymbolName:(id)name
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(NSString *)self->_summaryIconSymbolName isEqualToString:v4])
+  nameCopy = name;
+  if (![(NSString *)self->_summaryIconSymbolName isEqualToString:nameCopy])
   {
     [(UIImageView *)self->_summaryIconSymbolImageView removeFromSuperview];
     summaryIconSymbolImageView = self->_summaryIconSymbolImageView;
     self->_summaryIconSymbolImageView = 0;
 
-    if (v4)
+    if (nameCopy)
     {
       iconViews = self->_iconViews;
       if (iconViews)
@@ -372,13 +372,13 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
         self->_summaryIconSymbolBackgroundView = v17;
 
         v19 = self->_summaryIconSymbolBackgroundView;
-        v20 = [MEMORY[0x277D75348] systemWhiteColor];
-        [(UIView *)v19 setBackgroundColor:v20];
+        systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+        [(UIView *)v19 setBackgroundColor:systemWhiteColor];
 
         v21 = self->_summaryIconSymbolBackgroundView;
-        v22 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+        isIconViewLeading = [(NCNotificationSummaryContentView *)self isIconViewLeading];
         v23 = 20.0;
-        if (v22)
+        if (isIconViewLeading)
         {
           v23 = 19.0;
         }
@@ -391,22 +391,22 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
       }
 
       v26 = MEMORY[0x277D755D0];
-      v27 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+      isIconViewLeading2 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
       v28 = 15.2;
-      if (!v27)
+      if (!isIconViewLeading2)
       {
         v28 = 16.0;
       }
 
       v29 = [v26 configurationWithPointSize:v28];
-      v30 = [MEMORY[0x277D755B8] _systemImageNamed:v4 withConfiguration:v29];
+      v30 = [MEMORY[0x277D755B8] _systemImageNamed:nameCopy withConfiguration:v29];
       v31 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v30];
       v32 = self->_summaryIconSymbolImageView;
       self->_summaryIconSymbolImageView = v31;
 
       v33 = self->_summaryIconSymbolImageView;
-      v34 = [MEMORY[0x277D75348] systemWhiteColor];
-      [(UIImageView *)v33 setTintColor:v34];
+      systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+      [(UIImageView *)v33 setTintColor:systemWhiteColor2];
 
       [(UIImageView *)self->_summaryIconSymbolImageView setContentMode:4];
       [(UIView *)self->_summaryIconsContainerView addSubview:self->_summaryIconSymbolImageView];
@@ -421,9 +421,9 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(NCNotificationSummaryContentView *)self _adjustedRectForLabelLayoutFromRect:0.0, 0.0, a3.width, a3.height];
+  [(NCNotificationSummaryContentView *)self _adjustedRectForLabelLayoutFromRect:0.0, 0.0, fits.width, fits.height];
   v8 = v4;
   v9 = v5;
   v10 = v6;
@@ -450,8 +450,8 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
     [(NCNotificationSummaryContentView *)self isIconViewLeading];
   }
 
-  v14 = [(NCNotificationSummaryContentView *)self traitCollection];
-  [v14 displayScale];
+  traitCollection = [(NCNotificationSummaryContentView *)self traitCollection];
+  [traitCollection displayScale];
   UICeilToScale();
 
   UISizeRoundToScale();
@@ -473,9 +473,9 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
 
 - (void)didMoveToWindow
 {
-  v3 = [(NCNotificationSummaryContentView *)self window];
+  window = [(NCNotificationSummaryContentView *)self window];
 
-  if (v3)
+  if (window)
   {
 
     [(NCNotificationSummaryContentView *)self adjustForContentSizeCategoryChange];
@@ -484,13 +484,13 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  v5 = UIContentSizeCategoryCompareToCategory(v4, self->_preferredContentSizeCategory);
+  v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, self->_preferredContentSizeCategory);
   if (v5)
   {
-    objc_storeStrong(&self->_preferredContentSizeCategory, v4);
+    objc_storeStrong(&self->_preferredContentSizeCategory, preferredContentSizeCategory);
     [(NCNotificationSummaryContentView *)self _updateTextAttributes];
     [(NCNotificationSummaryContentView *)self setNeedsLayout];
   }
@@ -498,7 +498,7 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
   return v5 != NSOrderedSame;
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   strokeVisualStylingProvider = self->_strokeVisualStylingProvider;
   if (strokeVisualStylingProvider)
@@ -510,30 +510,30 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
   {
     v6.receiver = self;
     v6.super_class = NCNotificationSummaryContentView;
-    v4 = [(NCNotificationSummaryContentView *)&v6 visualStylingProviderForCategory:a3];
+    v4 = [(NCNotificationSummaryContentView *)&v6 visualStylingProviderForCategory:category];
   }
 
   return v4;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
+  providerCopy = provider;
   strokeVisualStylingProvider = self->_strokeVisualStylingProvider;
-  if (strokeVisualStylingProvider != v6)
+  if (strokeVisualStylingProvider != providerCopy)
   {
-    v11 = v6;
-    v8 = v6;
+    v11 = providerCopy;
+    v8 = providerCopy;
     v9 = self->_strokeVisualStylingProvider;
     self->_strokeVisualStylingProvider = v8;
     v10 = strokeVisualStylingProvider;
 
-    [(NCNotificationSummaryContentView *)self _visualStylingProviderDidChange:self->_strokeVisualStylingProvider forCategory:a4 outgoingProvider:v10];
-    v6 = v11;
+    [(NCNotificationSummaryContentView *)self _visualStylingProviderDidChange:self->_strokeVisualStylingProvider forCategory:category outgoingProvider:v10];
+    providerCopy = v11;
   }
 }
 
-- (void)dateLabelDidChange:(id)a3
+- (void)dateLabelDidChange:(id)change
 {
   [(BSUIDateLabel *)self->_summaryDateLabel sizeToFit];
 
@@ -576,11 +576,11 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
     v25 = v24;
     [(NCNotificationSummaryContentView *)self _widthForIconsContainerView];
     v27 = v26;
-    v28 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
-    v29 = [(NCNotificationSummaryContentView *)self _shouldReverseLayoutDirection];
-    if (v28)
+    isIconViewLeading = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+    _shouldReverseLayoutDirection = [(NCNotificationSummaryContentView *)self _shouldReverseLayoutDirection];
+    if (isIconViewLeading)
     {
-      if (v29)
+      if (_shouldReverseLayoutDirection)
       {
         v40.origin.x = v4;
         v40.origin.y = v35;
@@ -595,7 +595,7 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
       }
     }
 
-    else if (v29)
+    else if (_shouldReverseLayoutDirection)
     {
       v41.origin.x = v4;
       v41.origin.y = v35;
@@ -655,11 +655,11 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
   v36 = v19;
   [(NCNotificationSummaryContentView *)self _widthForIconsContainerView];
   v21 = v20;
-  v22 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
-  v23 = [(NCNotificationSummaryContentView *)self _shouldReverseLayoutDirection];
-  if (v22)
+  isIconViewLeading = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+  _shouldReverseLayoutDirection = [(NCNotificationSummaryContentView *)self _shouldReverseLayoutDirection];
+  if (isIconViewLeading)
   {
-    if (v23)
+    if (_shouldReverseLayoutDirection)
     {
       v44.origin.x = v4;
       v44.origin.y = v6;
@@ -674,7 +674,7 @@ void __56__NCNotificationSummaryContentView_setSummaryIconViews___block_invoke(u
     }
   }
 
-  else if (v23)
+  else if (_shouldReverseLayoutDirection)
   {
     v45.origin.x = v4;
     v45.origin.y = v6;
@@ -728,18 +728,18 @@ LABEL_16:
 {
   if ([(NSArray *)self->_iconViews count]|| self->_summaryIconSymbolImageView)
   {
-    v3 = [(NCNotificationSummaryContentView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCNotificationSummaryContentView *)self _shouldReverseLayoutDirection];
     v24[0] = 0;
     v24[1] = v24;
     v24[2] = 0x2020000000;
     v4 = 0.0;
-    if (v3)
+    if (_shouldReverseLayoutDirection)
     {
       [(NCNotificationSummaryContentView *)self _widthForIconsContainerView];
       v6 = v5;
-      v7 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+      isIconViewLeading = [(NCNotificationSummaryContentView *)self isIconViewLeading];
       v8 = 40.0;
-      if (v7)
+      if (isIconViewLeading)
       {
         v8 = 38.0;
       }
@@ -757,15 +757,15 @@ LABEL_16:
       v22[3] = &unk_278372B70;
       v22[4] = self;
       v22[5] = v24;
-      v23 = v3;
+      v23 = _shouldReverseLayoutDirection;
       [(NSArray *)iconViews enumerateObjectsUsingBlock:v22];
     }
 
     else if (self->_summaryIconSymbolImageView)
     {
-      v10 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
-      v11 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
-      if (v10)
+      isIconViewLeading2 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+      isIconViewLeading3 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+      if (isIconViewLeading2)
       {
         v12 = 38.0;
       }
@@ -775,7 +775,7 @@ LABEL_16:
         v12 = 40.0;
       }
 
-      if (v11)
+      if (isIconViewLeading3)
       {
         v13 = 38.0;
       }
@@ -799,13 +799,13 @@ LABEL_16:
     [(NCNotificationSummaryContentView *)self _widthForIconsContainerView];
     if ([(NCNotificationSummaryContentView *)self isIconViewLeading])
     {
-      if (v3)
+      if (_shouldReverseLayoutDirection)
       {
         goto LABEL_21;
       }
     }
 
-    else if ((v3 & 1) == 0)
+    else if ((_shouldReverseLayoutDirection & 1) == 0)
     {
 LABEL_21:
       v25.origin.x = v15;
@@ -929,10 +929,10 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
 
     [(BSUIDateLabel *)self->_summaryDateLabel sizeThatFits:v19, v20];
     [(NCNotificationSummaryContentView *)self _widthForIconsContainerView];
-    v22 = [(NCNotificationSummaryContentView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCNotificationSummaryContentView *)self _shouldReverseLayoutDirection];
     if (IsAccessibilityCategory)
     {
-      if (v22)
+      if (_shouldReverseLayoutDirection)
       {
         v28.origin.x = v4;
         v28.origin.y = v6;
@@ -942,7 +942,7 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
       }
     }
 
-    else if ((v22 & 1) == 0)
+    else if ((_shouldReverseLayoutDirection & 1) == 0)
     {
       v29.origin.x = v4;
       v29.origin.y = v6;
@@ -963,29 +963,29 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
   }
 }
 
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider
 {
-  if (a3)
+  if (view)
   {
-    v9 = a5;
-    v10 = a3;
-    [a6 stopAutomaticallyUpdatingView:v10];
-    [v9 automaticallyUpdateView:v10 withStyle:a4];
+    providerCopy = provider;
+    viewCopy = view;
+    [outgoingProvider stopAutomaticallyUpdatingView:viewCopy];
+    [providerCopy automaticallyUpdateView:viewCopy withStyle:style];
   }
 }
 
-- (void)_updateVisualStylingProvidersForIconViewIfNecessary:(id)a3
+- (void)_updateVisualStylingProvidersForIconViewIfNecessary:(id)necessary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  necessaryCopy = necessary;
   if (objc_opt_respondsToSelector())
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v4 requiredVisualStyleCategories];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    requiredVisualStyleCategories = [necessaryCopy requiredVisualStyleCategories];
+    v6 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -997,18 +997,18 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(requiredVisualStyleCategories);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * v9) integerValue];
-          v11 = [(NCNotificationSummaryContentView *)self visualStylingProviderForCategory:v10];
-          [v4 setVisualStylingProvider:v11 forCategory:v10];
+          integerValue = [*(*(&v12 + 1) + 8 * v9) integerValue];
+          v11 = [(NCNotificationSummaryContentView *)self visualStylingProviderForCategory:integerValue];
+          [necessaryCopy setVisualStylingProvider:v11 forCategory:integerValue];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -1050,17 +1050,17 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
   }
 }
 
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
-  if (a4 == 1)
+  if (category == 1)
   {
     summaryLabel = self->_summaryLabel;
-    v9 = a5;
-    v10 = a3;
-    [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:summaryLabel style:[(NCNotificationSummaryContentView *)self isSummaryLabelMaterialSecondary] visualStylingProvider:v10 outgoingProvider:v9];
-    [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:self->_summaryTitleLabel style:0 visualStylingProvider:v10 outgoingProvider:v9];
-    [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:self->_summaryDateLabel style:1 visualStylingProvider:v10 outgoingProvider:v9];
-    [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:self->_summaryIconSymbolBackgroundView style:3 visualStylingProvider:v10 outgoingProvider:v9];
+    providerCopy = provider;
+    changeCopy = change;
+    [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:summaryLabel style:[(NCNotificationSummaryContentView *)self isSummaryLabelMaterialSecondary] visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+    [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:self->_summaryTitleLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+    [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:self->_summaryDateLabel style:1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+    [(NCNotificationSummaryContentView *)self _updateVisualStylingOfView:self->_summaryIconSymbolBackgroundView style:3 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
 
     [(NCNotificationSummaryContentView *)self _updateVisualStylingProvidersForIconViewsIfNecessary];
   }
@@ -1086,18 +1086,18 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
     }
 
     v5 = *v4;
-    v6 = [(NCNotificationSummaryContentView *)self summaryTitleFontName];
-    if (v6)
+    summaryTitleFontName = [(NCNotificationSummaryContentView *)self summaryTitleFontName];
+    if (summaryTitleFontName)
     {
       v7 = MEMORY[0x277D74300];
       v8 = MEMORY[0x277D74310];
-      v9 = [(NCNotificationSummaryContentView *)self traitCollection];
-      v10 = [v8 preferredFontDescriptorWithTextStyle:v5 compatibleWithTraitCollection:v9];
+      traitCollection = [(NCNotificationSummaryContentView *)self traitCollection];
+      v10 = [v8 preferredFontDescriptorWithTextStyle:v5 compatibleWithTraitCollection:traitCollection];
 
       [v10 pointSize];
-      v11 = [v7 fontWithName:v6 size:?];
+      v11 = [v7 fontWithName:summaryTitleFontName size:?];
 
-      v5 = v9;
+      v5 = traitCollection;
     }
 
     else
@@ -1138,8 +1138,8 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
   summaryDateLabel = self->_summaryDateLabel;
   if (summaryDateLabel)
   {
-    v4 = [(NCNotificationSummaryContentView *)self _dateLabelPreferredFont];
-    [(BSUIDateLabel *)summaryDateLabel setFont:v4];
+    _dateLabelPreferredFont = [(NCNotificationSummaryContentView *)self _dateLabelPreferredFont];
+    [(BSUIDateLabel *)summaryDateLabel setFont:_dateLabelPreferredFont];
 
     [(BSUIDateLabel *)self->_summaryDateLabel setNumberOfLines:1];
     [(BSUIDateLabel *)self->_summaryDateLabel setLineBreakMode:3];
@@ -1150,19 +1150,19 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
 
 - (id)_dateLabelFont
 {
-  v3 = [(BSUIDateLabel *)self->_summaryDateLabel font];
-  v4 = v3;
-  if (v3)
+  font = [(BSUIDateLabel *)self->_summaryDateLabel font];
+  v4 = font;
+  if (font)
   {
-    v5 = v3;
+    _dateLabelPreferredFont = font;
   }
 
   else
   {
-    v5 = [(NCNotificationSummaryContentView *)self _dateLabelPreferredFont];
+    _dateLabelPreferredFont = [(NCNotificationSummaryContentView *)self _dateLabelPreferredFont];
   }
 
-  v6 = v5;
+  v6 = _dateLabelPreferredFont;
 
   return v6;
 }
@@ -1176,22 +1176,22 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
   return [v2 _preferredFont:1 textStyle:v3 weight:0 additionalTraits:v4];
 }
 
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (font)
   {
-    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
 
   else
   {
-    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
   v7 = ;
   v16 = *MEMORY[0x277D74380];
   v14 = *MEMORY[0x277D74430];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:weight];
   v15 = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v17[0] = v9;
@@ -1203,17 +1203,17 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
   return v12;
 }
 
-- (unint64_t)_numberOfLinesForSummaryTitleTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForSummaryTitleTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   summaryTitleLabel = self->_summaryTitleLabel;
-  v9 = [(NCNotificationSummaryContentView *)self _maximumNumberOfLinesForSummaryTitleText];
+  _maximumNumberOfLinesForSummaryTitleText = [(NCNotificationSummaryContentView *)self _maximumNumberOfLinesForSummaryTitleText];
   drawingContext = self->_drawingContext;
 
-  return [(UILabel *)summaryTitleLabel unui_numberOfLinesInFrame:v9 maximum:drawingContext drawingContext:x, y, width, height];
+  return [(UILabel *)summaryTitleLabel unui_numberOfLinesInFrame:_maximumNumberOfLinesForSummaryTitleText maximum:drawingContext drawingContext:x, y, width, height];
 }
 
 - (unint64_t)_maximumNumberOfLinesForSummaryText
@@ -1229,42 +1229,42 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
   }
 }
 
-- (unint64_t)_numberOfLinesForSummaryTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForSummaryTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   summaryLabel = self->_summaryLabel;
-  v9 = [(NCNotificationSummaryContentView *)self _maximumNumberOfLinesForSummaryText];
+  _maximumNumberOfLinesForSummaryText = [(NCNotificationSummaryContentView *)self _maximumNumberOfLinesForSummaryText];
   drawingContext = self->_drawingContext;
 
-  return [(UILabel *)summaryLabel unui_numberOfLinesInFrame:v9 maximum:drawingContext drawingContext:x, y, width, height];
+  return [(UILabel *)summaryLabel unui_numberOfLinesInFrame:_maximumNumberOfLinesForSummaryText maximum:drawingContext drawingContext:x, y, width, height];
 }
 
 - (double)_widthForIconsContainerView
 {
-  v3 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+  isIconViewLeading = [(NCNotificationSummaryContentView *)self isIconViewLeading];
   v4 = [(NSArray *)self->_iconViews count];
   v5 = 0.0;
   if (v4 >= 2)
   {
     v6 = ([(NSArray *)self->_iconViews count]- 1);
-    v7 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
-    v8 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+    isIconViewLeading2 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+    isIconViewLeading3 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
     v9 = 15.2;
-    if (!v8)
+    if (!isIconViewLeading3)
     {
       v9 = 16.0;
     }
 
     v10 = 22.8;
-    if (!v8)
+    if (!isIconViewLeading3)
     {
       v10 = 24.0;
     }
 
-    if (!v7)
+    if (!isIconViewLeading2)
     {
       v9 = v10;
     }
@@ -1273,7 +1273,7 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
   }
 
   v11 = 40.0;
-  if (v3)
+  if (isIconViewLeading)
   {
     v11 = 38.0;
   }
@@ -1281,13 +1281,13 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
   return v11 + v5;
 }
 
-- (CGRect)_adjustedRectForLabelLayoutFromRect:(CGRect)a3
+- (CGRect)_adjustedRectForLabelLayoutFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = CGRectGetWidth(rect);
   [(NCNotificationSummaryContentView *)self horizontalLeadingMargin];
   v10 = v8 - v9;
   [(NCNotificationSummaryContentView *)self horizontalTrailingMargin];
@@ -1318,8 +1318,8 @@ double __59__NCNotificationSummaryContentView__layoutSummaryIconsView__block_inv
 {
   [(BSUIDateLabel *)self->_summaryDateLabel setDelegate:0];
   [(MTVisualStylingProvider *)self->_strokeVisualStylingProvider stopAutomaticallyUpdatingView:self->_summaryDateLabel];
-  v3 = [MEMORY[0x277CF0D50] sharedInstance];
-  [v3 recycleLabel:self->_summaryDateLabel];
+  mEMORY[0x277CF0D50] = [MEMORY[0x277CF0D50] sharedInstance];
+  [mEMORY[0x277CF0D50] recycleLabel:self->_summaryDateLabel];
 }
 
 - (void)_tearDownDateLabelIfNecessary
@@ -1345,24 +1345,24 @@ void __65__NCNotificationSummaryContentView__tearDownDateLabelIfNecessary__block
   }
 }
 
-- (int64_t)_dateFormatStyleForDate:(id)a3
+- (int64_t)_dateFormatStyleForDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 isDateInToday:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar isDateInToday:dateCopy];
 
   return v6;
 }
 
-- (void)_addShadowForIconView:(id)a3
+- (void)_addShadowForIconView:(id)view
 {
-  v4 = a3;
-  v15 = [v4 layer];
-  [v15 setShadowColor:CGColorGetConstantColor(*MEMORY[0x277CBF3B8])];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  [layer setShadowColor:CGColorGetConstantColor(*MEMORY[0x277CBF3B8])];
   LODWORD(v5) = 1049582633;
-  [v15 setShadowOpacity:v5];
-  [v15 setShadowRadius:2.0];
+  [layer setShadowOpacity:v5];
+  [layer setShadowRadius:2.0];
   if ([(NCNotificationSummaryContentView *)self isIconViewLeading])
   {
     v6 = 33.82;
@@ -1380,9 +1380,9 @@ void __65__NCNotificationSummaryContentView__tearDownDateLabelIfNecessary__block
 
   else
   {
-    v8 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+    isIconViewLeading = [(NCNotificationSummaryContentView *)self isIconViewLeading];
     v9 = 40.0;
-    if (v8)
+    if (isIconViewLeading)
     {
       v9 = 38.0;
     }
@@ -1390,14 +1390,14 @@ void __65__NCNotificationSummaryContentView__tearDownDateLabelIfNecessary__block
     v7 = v9 + v6 * -0.9;
   }
 
-  v10 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
+  isIconViewLeading2 = [(NCNotificationSummaryContentView *)self isIconViewLeading];
   v11 = 40.0;
-  if (v10)
+  if (isIconViewLeading2)
   {
     v11 = 38.0;
   }
 
-  [v15 setShadowOffset:{v7, (v11 - v6) * 0.5}];
+  [layer setShadowOffset:{v7, (v11 - v6) * 0.5}];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1412,7 +1412,7 @@ void __65__NCNotificationSummaryContentView__tearDownDateLabelIfNecessary__block
   }
 
   v14 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, v6, v6, v13}];
-  [v15 setShadowPath:{objc_msgSend(v14, "CGPath")}];
+  [layer setShadowPath:{objc_msgSend(v14, "CGPath")}];
 }
 
 @end

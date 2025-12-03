@@ -1,6 +1,6 @@
 @interface DESandboxExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DESandboxExtension
@@ -14,12 +14,12 @@
   return v5;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"DEExtensionAttachmentsParamDisplayNameKey"];
+  parametersCopy = parameters;
+  v5 = [parametersCopy objectForKey:@"DEExtensionAttachmentsParamDisplayNameKey"];
 
-  if (v5 && ([v4 objectForKeyedSubscript:@"DEExtensionAttachmentsParamDisplayNameKey"], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v5 && ([parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamDisplayNameKey"], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v8 = [NSString stringWithFormat:@".*Sandbox.*%@.*\\.(plist|ips).*", v6];

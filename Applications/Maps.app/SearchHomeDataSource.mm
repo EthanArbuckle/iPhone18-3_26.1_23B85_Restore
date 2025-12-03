@@ -1,57 +1,57 @@
 @interface SearchHomeDataSource
 - (BOOL)shouldShowNoRecentSearchesCell;
-- (BOOL)shouldShowSearchHomeTip:(id)a3;
+- (BOOL)shouldShowSearchHomeTip:(id)tip;
 - (BOOL)useSingleColumnLayout;
-- (SearchHomeDataSource)initWithCollectionView:(id)a3 parentViewController:(id)a4 updateLocation:(BOOL)a5 isSearchAlongRoute:(BOOL)a6 supportsFullTextSearch:(BOOL)a7;
-- (SearchHomeDataSource)initWithTableView:(id)a3 traits:(id)a4 supportsFullTextSearch:(BOOL)a5;
+- (SearchHomeDataSource)initWithCollectionView:(id)view parentViewController:(id)controller updateLocation:(BOOL)location isSearchAlongRoute:(BOOL)route supportsFullTextSearch:(BOOL)search;
+- (SearchHomeDataSource)initWithTableView:(id)view traits:(id)traits supportsFullTextSearch:(BOOL)search;
 - (SearchHomeDataSourceDelegate)searchHomeDataSourceDelegate;
 - (UICollectionViewLayout)collectionViewLayout;
-- (double)heightForFooterInSection:(int64_t)a3 dataProvider:(id)a4;
-- (double)heightForHeaderInSection:(int64_t)a3 dataProvider:(id)a4;
+- (double)heightForFooterInSection:(int64_t)section dataProvider:(id)provider;
+- (double)heightForHeaderInSection:(int64_t)section dataProvider:(id)provider;
 - (double)isTouristHereValue;
 - (id)_emptySection;
-- (id)_supplementaryViewForCollectionView:(id)a3 ofKind:(id)a4 atIndexPath:(id)a5;
+- (id)_supplementaryViewForCollectionView:(id)view ofKind:(id)kind atIndexPath:(id)path;
 - (id)analyticsSuggestions;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)dataProviderOfType:(int64_t)a3;
-- (id)dataProviderWithIdentifier:(id)a3;
-- (id)layoutProviderForDataProvider:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)dataProviderOfType:(int64_t)type;
+- (id)dataProviderWithIdentifier:(id)identifier;
+- (id)layoutProviderForDataProvider:(id)provider;
 - (id)newTraits;
-- (id)tableView:(id)a3 indexPath:(id)a4 identifier:(id)a5;
+- (id)tableView:(id)view indexPath:(id)path identifier:(id)identifier;
 - (unint64_t)_ppt_numberOfDataFetchers;
 - (void)_applySnapshotOnMainThread;
 - (void)_applyTableViewSnapshot;
-- (void)_hoverGestureRecognizerStateDidChange:(id)a3;
+- (void)_hoverGestureRecognizerStateDidChange:(id)change;
 - (void)_ppt_selectBrowseCities;
-- (void)_ppt_selectCategoryAtIndex:(unint64_t)a3;
+- (void)_ppt_selectCategoryAtIndex:(unint64_t)index;
 - (void)_ppt_selectExploreGuides;
 - (void)_ppt_selectFirstCuratedGuide;
 - (void)_ppt_selectFirstGuidePublisher;
 - (void)_ppt_selectSeeAllCuratedCollections;
-- (void)_updateRegionListForCachedKey:(id)a3 value:(BOOL)a4;
-- (void)addKeyCommand:(id)a3;
+- (void)_updateRegionListForCachedKey:(id)key value:(BOOL)value;
+- (void)addKeyCommand:(id)command;
 - (void)addToCollectionObserver;
-- (void)applySnapshotWithCompletion:(id)a3;
-- (void)collectionManager:(id)a3 contentDidChange:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)a3;
+- (void)applySnapshotWithCompletion:(id)completion;
+- (void)collectionManager:(id)manager contentDidChange:(id)change;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)collections;
 - (void)dealloc;
-- (void)didSelectBrowseCategoryAtIndex:(unint64_t)a3;
-- (void)didSelectCompactGuideModelAtIndex:(unint64_t)a3;
-- (void)didSelectGuideModelAtIndex:(unint64_t)a3 sectionIndex:(int64_t)a4;
-- (void)didSelectRecentAtIndex:(unint64_t)a3;
-- (void)didUpdateDataFetcher:(id)a3;
-- (void)performDeleteAnimationOnSectionWithIdentifier:(id)a3 itemAtIndex:(unint64_t)a4 dataProvider:(id)a5 animated:(BOOL)a6;
-- (void)reloadSectionOfType:(int64_t)a3;
+- (void)didSelectBrowseCategoryAtIndex:(unint64_t)index;
+- (void)didSelectCompactGuideModelAtIndex:(unint64_t)index;
+- (void)didSelectGuideModelAtIndex:(unint64_t)index sectionIndex:(int64_t)sectionIndex;
+- (void)didSelectRecentAtIndex:(unint64_t)index;
+- (void)didUpdateDataFetcher:(id)fetcher;
+- (void)performDeleteAnimationOnSectionWithIdentifier:(id)identifier itemAtIndex:(unint64_t)index dataProvider:(id)provider animated:(BOOL)animated;
+- (void)reloadSectionOfType:(int64_t)type;
 - (void)reorderKeyCommands;
 - (void)sendNoTypingACAnalytics;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 - (void)setNeedsUpdate;
-- (void)setShouldRemoveSearchHomeTip:(BOOL)a3;
+- (void)setShouldRemoveSearchHomeTip:(BOOL)tip;
 - (void)setupTableHeaderView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SearchHomeDataSource
@@ -63,7 +63,7 @@
   return WeakRetained;
 }
 
-- (void)didSelectRecentAtIndex:(unint64_t)a3
+- (void)didSelectRecentAtIndex:(unint64_t)index
 {
   v14 = 0;
   v15 = &v14;
@@ -71,32 +71,32 @@
   v17 = sub_100747B30;
   v18 = sub_100747B40;
   v19 = 0;
-  v5 = [(SearchHomeDataSource *)self dataProviders];
+  dataProviders = [(SearchHomeDataSource *)self dataProviders];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100747B48;
   v13[3] = &unk_101627FB8;
   v13[4] = &v14;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [dataProviders enumerateObjectsUsingBlock:v13];
 
   if (v15[5])
   {
-    v6 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-    v7 = [v6 snapshot];
+    collectionViewDiffableDataSource = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+    snapshot = [collectionViewDiffableDataSource snapshot];
 
-    v8 = [v7 sectionIdentifiers];
-    v9 = [v15[5] identifier];
-    v10 = [v8 indexOfObject:v9];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    identifier = [v15[5] identifier];
+    v10 = [sectionIdentifiers indexOfObject:identifier];
 
-    v11 = [NSIndexPath indexPathForRow:a3 inSection:v10];
-    v12 = [(DataSource *)self collectionView];
-    [(SearchHomeDataSource *)self collectionView:v12 didSelectItemAtIndexPath:v11];
+    v11 = [NSIndexPath indexPathForRow:index inSection:v10];
+    collectionView = [(DataSource *)self collectionView];
+    [(SearchHomeDataSource *)self collectionView:collectionView didSelectItemAtIndexPath:v11];
   }
 
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)didSelectCompactGuideModelAtIndex:(unint64_t)a3
+- (void)didSelectCompactGuideModelAtIndex:(unint64_t)index
 {
   v14 = 0;
   v15 = &v14;
@@ -104,26 +104,26 @@
   v17 = sub_100747B30;
   v18 = sub_100747B40;
   v19 = 0;
-  v5 = [(SearchHomeDataSource *)self dataProviders];
+  dataProviders = [(SearchHomeDataSource *)self dataProviders];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100747D84;
   v13[3] = &unk_101627FB8;
   v13[4] = &v14;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [dataProviders enumerateObjectsUsingBlock:v13];
 
   if (v15[5])
   {
-    v6 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-    v7 = [v6 snapshot];
+    collectionViewDiffableDataSource = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+    snapshot = [collectionViewDiffableDataSource snapshot];
 
-    v8 = [v7 sectionIdentifiers];
-    v9 = [v15[5] identifier];
-    v10 = [v8 indexOfObject:v9];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    identifier = [v15[5] identifier];
+    v10 = [sectionIdentifiers indexOfObject:identifier];
 
-    v11 = [NSIndexPath indexPathForRow:a3 inSection:v10];
-    v12 = [(DataSource *)self collectionView];
-    [(SearchHomeDataSource *)self collectionView:v12 didSelectItemAtIndexPath:v11];
+    v11 = [NSIndexPath indexPathForRow:index inSection:v10];
+    collectionView = [(DataSource *)self collectionView];
+    [(SearchHomeDataSource *)self collectionView:collectionView didSelectItemAtIndexPath:v11];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -132,12 +132,12 @@
 - (BOOL)useSingleColumnLayout
 {
   v2 = [(SearchHomeDataSource *)self dataProviderOfType:2];
-  v3 = [v2 wantsOneColumnLayout];
+  wantsOneColumnLayout = [v2 wantsOneColumnLayout];
 
-  return v3;
+  return wantsOneColumnLayout;
 }
 
-- (void)didSelectBrowseCategoryAtIndex:(unint64_t)a3
+- (void)didSelectBrowseCategoryAtIndex:(unint64_t)index
 {
   v14 = 0;
   v15 = &v14;
@@ -145,32 +145,32 @@
   v17 = sub_100747B30;
   v18 = sub_100747B40;
   v19 = 0;
-  v5 = [(SearchHomeDataSource *)self dataProviders];
+  dataProviders = [(SearchHomeDataSource *)self dataProviders];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100747FFC;
   v13[3] = &unk_101627FB8;
   v13[4] = &v14;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [dataProviders enumerateObjectsUsingBlock:v13];
 
   if (v15[5])
   {
-    v6 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-    v7 = [v6 snapshot];
+    collectionViewDiffableDataSource = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+    snapshot = [collectionViewDiffableDataSource snapshot];
 
-    v8 = [v7 sectionIdentifiers];
-    v9 = [v15[5] identifier];
-    v10 = [v8 indexOfObject:v9];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    identifier = [v15[5] identifier];
+    v10 = [sectionIdentifiers indexOfObject:identifier];
 
-    v11 = [NSIndexPath indexPathForRow:a3 inSection:v10];
-    v12 = [(DataSource *)self collectionView];
-    [(SearchHomeDataSource *)self collectionView:v12 didSelectItemAtIndexPath:v11];
+    v11 = [NSIndexPath indexPathForRow:index inSection:v10];
+    collectionView = [(DataSource *)self collectionView];
+    [(SearchHomeDataSource *)self collectionView:collectionView didSelectItemAtIndexPath:v11];
   }
 
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)didSelectGuideModelAtIndex:(unint64_t)a3 sectionIndex:(int64_t)a4
+- (void)didSelectGuideModelAtIndex:(unint64_t)index sectionIndex:(int64_t)sectionIndex
 {
   v11 = 0;
   v12 = &v11;
@@ -178,20 +178,20 @@
   v14 = sub_100747B30;
   v15 = sub_100747B40;
   v16 = 0;
-  v7 = [(SearchHomeDataSource *)self dataProviders];
+  dataProviders = [(SearchHomeDataSource *)self dataProviders];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1007481DC;
   v10[3] = &unk_101627E38;
   v10[4] = &v11;
-  v10[5] = a4;
-  [v7 enumerateObjectsUsingBlock:v10];
+  v10[5] = sectionIndex;
+  [dataProviders enumerateObjectsUsingBlock:v10];
 
   if (v12[5])
   {
-    v8 = [NSIndexPath indexPathForRow:a3 inSection:a4];
-    v9 = [(DataSource *)self collectionView];
-    [(SearchHomeDataSource *)self collectionView:v9 didSelectItemAtIndexPath:v8];
+    v8 = [NSIndexPath indexPathForRow:index inSection:sectionIndex];
+    collectionView = [(DataSource *)self collectionView];
+    [(SearchHomeDataSource *)self collectionView:collectionView didSelectItemAtIndexPath:v8];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -206,13 +206,13 @@
   [v4 addObserver:self];
 }
 
-- (void)collectionManager:(id)a3 contentDidChange:(id)a4
+- (void)collectionManager:(id)manager contentDidChange:(id)change
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SearchHomeDataSource *)self dataFetchers:a3];
+  v5 = [(SearchHomeDataSource *)self dataFetchers:manager];
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -264,8 +264,8 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(SearchHomeDataSource *)self dataProviders];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  dataProviders = [(SearchHomeDataSource *)self dataProviders];
+  v4 = [dataProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -276,29 +276,29 @@ LABEL_11:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dataProviders);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
         if ([v8 type] == 3)
         {
-          v9 = [v8 objects];
-          v10 = [v9 count];
+          objects = [v8 objects];
+          v10 = [objects count];
 
           if (v10)
           {
-            v11 = [v8 objects];
-            v12 = [v11 firstObject];
+            objects2 = [v8 objects];
+            firstObject = [objects2 firstObject];
 
-            v13 = [(DataSource *)self delegate];
-            [v13 dataSource:self itemTapped:v12];
+            delegate = [(DataSource *)self delegate];
+            [delegate dataSource:self itemTapped:firstObject];
 
             goto LABEL_12;
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [dataProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -313,8 +313,8 @@ LABEL_12:
 
 - (void)_ppt_selectBrowseCities
 {
-  v2 = [(SearchHomeDataSource *)self searchHomeDataSourceDelegate];
-  [v2 showCitySelector];
+  searchHomeDataSourceDelegate = [(SearchHomeDataSource *)self searchHomeDataSourceDelegate];
+  [searchHomeDataSourceDelegate showCitySelector];
 }
 
 - (void)_ppt_selectExploreGuides
@@ -323,11 +323,11 @@ LABEL_12:
   if (v3)
   {
     v6 = v3;
-    v4 = [v3 exploreGuides];
-    if (v4)
+    exploreGuides = [v3 exploreGuides];
+    if (exploreGuides)
     {
-      v5 = [(SearchHomeDataSource *)self searchHomeDataSourceDelegate];
-      [v5 showGuidesHomeFromExploreGuides:v4];
+      searchHomeDataSourceDelegate = [(SearchHomeDataSource *)self searchHomeDataSourceDelegate];
+      [searchHomeDataSourceDelegate showGuidesHomeFromExploreGuides:exploreGuides];
     }
 
     v3 = v6;
@@ -340,8 +340,8 @@ LABEL_12:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(SearchHomeDataSource *)self dataProviders];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  dataProviders = [(SearchHomeDataSource *)self dataProviders];
+  v4 = [dataProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -352,29 +352,29 @@ LABEL_12:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dataProviders);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
         if ([v8 type] == 4)
         {
-          v9 = [v8 objects];
-          v10 = [v9 count];
+          objects = [v8 objects];
+          v10 = [objects count];
 
           if (v10)
           {
-            v11 = [v8 objects];
-            v12 = [v11 firstObject];
+            objects2 = [v8 objects];
+            firstObject = [objects2 firstObject];
 
-            v13 = [(DataSource *)self delegate];
-            [v13 dataSource:self itemTapped:v12];
+            delegate = [(DataSource *)self delegate];
+            [delegate dataSource:self itemTapped:firstObject];
 
             goto LABEL_12;
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [dataProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -389,19 +389,19 @@ LABEL_12:
 
 - (void)_ppt_selectSeeAllCuratedCollections
 {
-  v2 = [(SearchHomeDataSource *)self searchHomeDataSourceDelegate];
-  [v2 seeAllTappedForCollections];
+  searchHomeDataSourceDelegate = [(SearchHomeDataSource *)self searchHomeDataSourceDelegate];
+  [searchHomeDataSourceDelegate seeAllTappedForCollections];
 }
 
 - (unint64_t)_ppt_numberOfDataFetchers
 {
-  v2 = [(SearchHomeDataSource *)self dataFetchers];
-  v3 = [v2 count];
+  dataFetchers = [(SearchHomeDataSource *)self dataFetchers];
+  v3 = [dataFetchers count];
 
   return v3;
 }
 
-- (void)_ppt_selectCategoryAtIndex:(unint64_t)a3
+- (void)_ppt_selectCategoryAtIndex:(unint64_t)index
 {
   v14 = 0;
   v15 = &v14;
@@ -409,28 +409,28 @@ LABEL_12:
   v17 = sub_100747B30;
   v18 = sub_100747B40;
   v19 = 0;
-  v5 = [(SearchHomeDataSource *)self dataProviders];
+  dataProviders = [(SearchHomeDataSource *)self dataProviders];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100748A70;
   v13[3] = &unk_101627FB8;
   v13[4] = &v14;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [dataProviders enumerateObjectsUsingBlock:v13];
 
   if (v15[5])
   {
-    v6 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-    v7 = [v6 snapshot];
+    collectionViewDiffableDataSource = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+    snapshot = [collectionViewDiffableDataSource snapshot];
 
-    v8 = [v7 sectionIdentifiers];
-    v9 = [v15[5] identifier];
-    v10 = [v8 indexOfObject:v9];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    identifier = [v15[5] identifier];
+    v10 = [sectionIdentifiers indexOfObject:identifier];
 
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [NSIndexPath indexPathForRow:a3 inSection:v10];
-      v12 = [(DataSource *)self collectionView];
-      [(SearchHomeDataSource *)self collectionView:v12 didSelectItemAtIndexPath:v11];
+      v11 = [NSIndexPath indexPathForRow:index inSection:v10];
+      collectionView = [(DataSource *)self collectionView];
+      [(SearchHomeDataSource *)self collectionView:collectionView didSelectItemAtIndexPath:v11];
     }
   }
 
@@ -443,55 +443,55 @@ LABEL_12:
   v13 = [v3 localizedStringForKey:@"[Offline Route Planning] Find Nearby" value:@"localized string not found" table:0];
 
   v4 = [[SectionHeaderTableViewHeaderFooterView alloc] initWithTitle:v13 isFirstNonEmptySection:1];
-  v5 = [(DataSource *)self tableView];
-  [v5 frame];
+  tableView = [(DataSource *)self tableView];
+  [tableView frame];
   Width = CGRectGetWidth(v15);
-  v7 = [(DataSource *)self tableView];
-  v8 = [v7 traitCollection];
-  [SectionHeaderTableViewHeaderFooterView heightWhenFirstNonEmptySection:1 title:v13 actionTitle:0 availableWidth:v8 traitCollection:Width];
+  tableView2 = [(DataSource *)self tableView];
+  traitCollection = [tableView2 traitCollection];
+  [SectionHeaderTableViewHeaderFooterView heightWhenFirstNonEmptySection:1 title:v13 actionTitle:0 availableWidth:traitCollection traitCollection:Width];
   v10 = v9;
 
-  v11 = [(DataSource *)self tableView];
-  [v11 frame];
+  tableView3 = [(DataSource *)self tableView];
+  [tableView3 frame];
   [(SectionHeaderTableViewHeaderFooterView *)v4 setBounds:0.0, 0.0, CGRectGetWidth(v16), v10];
 
   [(SectionHeaderTableViewHeaderFooterView *)v4 layoutIfNeeded];
-  v12 = [(DataSource *)self tableView];
-  [v12 setTableHeaderView:v4];
+  tableView4 = [(DataSource *)self tableView];
+  [tableView4 setTableHeaderView:v4];
 }
 
-- (id)tableView:(id)a3 indexPath:(id)a4 identifier:(id)a5
+- (id)tableView:(id)view indexPath:(id)path identifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SearchHomeDataSource *)self tableViewDiffableDataSource];
-  v12 = [v11 snapshot];
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
+  tableViewDiffableDataSource = [(SearchHomeDataSource *)self tableViewDiffableDataSource];
+  snapshot = [tableViewDiffableDataSource snapshot];
 
-  v13 = [v9 section];
-  v14 = [v12 sectionIdentifiers];
-  if ([v14 count])
+  section = [pathCopy section];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  if ([sectionIdentifiers count])
   {
-    v15 = [v12 sectionIdentifiers];
-    v16 = [v15 count];
+    sectionIdentifiers2 = [snapshot sectionIdentifiers];
+    v16 = [sectionIdentifiers2 count];
 
-    if (v13 < v16)
+    if (section < v16)
     {
-      v17 = [v12 sectionIdentifiers];
-      v18 = [v17 objectAtIndex:v13];
+      sectionIdentifiers3 = [snapshot sectionIdentifiers];
+      v18 = [sectionIdentifiers3 objectAtIndex:section];
 
       v19 = [(SearchHomeDataSource *)self dataProviderWithIdentifier:v18];
-      v20 = v10;
+      v20 = identifierCopy;
       if (objc_opt_respondsToSelector())
       {
-        v21 = [v19 viewModels];
-        v22 = [v21 count];
+        viewModels = [v19 viewModels];
+        v22 = [viewModels count];
 
         if (v22)
         {
-          v23 = [v19 viewModels];
-          v24 = [v9 row];
-          if (v24 >= [v23 count])
+          viewModels2 = [v19 viewModels];
+          v24 = [pathCopy row];
+          if (v24 >= [viewModels2 count])
           {
             v30 = sub_100067540();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -499,9 +499,9 @@ LABEL_12:
               *buf = 138412802;
               v33 = v18;
               v34 = 2112;
-              v35 = v9;
+              v35 = pathCopy;
               v36 = 2112;
-              v37 = v12;
+              v37 = snapshot;
               _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Error fetching SearchHome cell for section: %@, indexpath:%@, snapshot: %@", buf, 0x20u);
             }
 
@@ -509,8 +509,8 @@ LABEL_12:
             goto LABEL_15;
           }
 
-          v25 = [v19 viewModels];
-          v31 = [v25 objectAtIndex:{-[NSObject row](v9, "row")}];
+          viewModels3 = [v19 viewModels];
+          v31 = [viewModels3 objectAtIndex:{-[NSObject row](pathCopy, "row")}];
 
           v20 = v31;
         }
@@ -519,7 +519,7 @@ LABEL_12:
       v26 = [(SearchHomeDataSource *)self layoutProviderForDataProvider:v19];
       if (objc_opt_respondsToSelector())
       {
-        v27 = [v26 cellForRowAtIndexPath:v9 tableview:v8 item:v20];
+        v27 = [v26 cellForRowAtIndexPath:pathCopy tableview:viewCopy item:v20];
       }
 
       else
@@ -542,9 +542,9 @@ LABEL_15:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v33 = v9;
+    v33 = pathCopy;
     v34 = 2112;
-    v35 = v12;
+    v35 = snapshot;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Error fetching SearchHome section at indexpath: %@, snapshot: %@", buf, 0x16u);
   }
 
@@ -554,7 +554,7 @@ LABEL_16:
   return v28;
 }
 
-- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)a3
+- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)collections
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -566,14 +566,14 @@ LABEL_16:
 
 - (id)analyticsSuggestions
 {
-  v3 = [(SearchHomeDataSource *)self autocompleteContext];
+  autocompleteContext = [(SearchHomeDataSource *)self autocompleteContext];
 
-  if (v3)
+  if (autocompleteContext)
   {
-    v4 = [(SearchHomeDataSource *)self objectsForAnalytics];
-    v5 = [(SearchHomeDataSource *)self autocompleteContext];
-    v6 = [(SearchHomeDataSource *)self newTraits];
-    v7 = [MapsAnalyticsHelper acSuggestionEntriesFromAutoCompleteObjects:v4 context:v5 mapsSuggestionsInsights:0 skipReportASearchItems:1 traits:v6];
+    objectsForAnalytics = [(SearchHomeDataSource *)self objectsForAnalytics];
+    autocompleteContext2 = [(SearchHomeDataSource *)self autocompleteContext];
+    newTraits = [(SearchHomeDataSource *)self newTraits];
+    v7 = [MapsAnalyticsHelper acSuggestionEntriesFromAutoCompleteObjects:objectsForAnalytics context:autocompleteContext2 mapsSuggestionsInsights:0 skipReportASearchItems:1 traits:newTraits];
   }
 
   else
@@ -586,9 +586,9 @@ LABEL_16:
 
 - (void)sendNoTypingACAnalytics
 {
-  v4 = [(SearchHomeDataSource *)self analyticsManager];
-  v3 = [(SearchHomeDataSource *)self analyticsSuggestions];
-  [v4 autocompleteSessionsStartedWithVisibleSuggestions:v3];
+  analyticsManager = [(SearchHomeDataSource *)self analyticsManager];
+  analyticsSuggestions = [(SearchHomeDataSource *)self analyticsSuggestions];
+  [analyticsManager autocompleteSessionsStartedWithVisibleSuggestions:analyticsSuggestions];
 }
 
 - (void)reorderKeyCommands
@@ -596,29 +596,29 @@ LABEL_16:
   v3 = [NSMutableArray alloc];
   v4 = [(NSArray *)self->_keyCommands count];
   v5 = v3;
-  v6 = self;
+  selfCopy = self;
   v31 = [v5 initWithCapacity:v4];
   v7 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](self->_keyCommands, "count")}];
-  if ([(NSArray *)v6->_keyCommands count])
+  if ([(NSArray *)selfCopy->_keyCommands count])
   {
     v8 = 0;
     do
     {
-      v9 = [(NSArray *)v6->_keyCommands objectAtIndexedSubscript:v8];
-      v10 = [v9 propertyList];
-      v11 = [v10 objectForKeyedSubscript:@"section"];
-      v12 = [v11 unsignedIntegerValue];
+      v9 = [(NSArray *)selfCopy->_keyCommands objectAtIndexedSubscript:v8];
+      propertyList = [v9 propertyList];
+      v11 = [propertyList objectForKeyedSubscript:@"section"];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-      v13 = [NSString stringWithFormat:@"%lu:%lu", v12, v8];
+      v13 = [NSString stringWithFormat:@"%lu:%lu", unsignedIntegerValue, v8];
       [v7 addObject:v13];
 
       ++v8;
     }
 
-    while (v8 < [(NSArray *)v6->_keyCommands count]);
+    while (v8 < [(NSArray *)selfCopy->_keyCommands count]);
   }
 
-  v32 = v6;
+  v32 = selfCopy;
   [v7 sortUsingSelector:"localizedCaseInsensitiveCompare:"];
   v36 = 0u;
   v37 = 0u;
@@ -639,18 +639,18 @@ LABEL_16:
         }
 
         v15 = [*(*(&v34 + 1) + 8 * i) componentsSeparatedByString:@":"];
-        v16 = [v15 lastObject];
-        v17 = [v16 integerValue];
+        lastObject = [v15 lastObject];
+        integerValue = [lastObject integerValue];
 
-        v18 = [(NSArray *)v32->_keyCommands objectAtIndexedSubscript:v17];
-        v19 = [v18 title];
-        v20 = [v18 image];
-        v21 = [v18 action];
+        v18 = [(NSArray *)v32->_keyCommands objectAtIndexedSubscript:integerValue];
+        title = [v18 title];
+        image = [v18 image];
+        action = [v18 action];
         v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v31 count] + 1);
-        v23 = [v22 stringValue];
-        v24 = [v18 modifierFlags];
-        v25 = [v18 propertyList];
-        v26 = [UIKeyCommand commandWithTitle:v19 image:v20 action:v21 input:v23 modifierFlags:v24 propertyList:v25];
+        stringValue = [v22 stringValue];
+        modifierFlags = [v18 modifierFlags];
+        propertyList2 = [v18 propertyList];
+        v26 = [UIKeyCommand commandWithTitle:title image:image action:action input:stringValue modifierFlags:modifierFlags propertyList:propertyList2];
         [v31 addObject:v26];
       }
 
@@ -665,9 +665,9 @@ LABEL_16:
   v32->_keyCommands = v27;
 }
 
-- (void)addKeyCommand:(id)a3
+- (void)addKeyCommand:(id)command
 {
-  v12 = a3;
+  commandCopy = command;
   if ([(SearchHomeDataSource *)self needsToResetKeyCommands])
   {
     keyCommands = self->_keyCommands;
@@ -683,10 +683,10 @@ LABEL_16:
     while (1)
     {
       v7 = [(NSArray *)v5 objectAtIndexedSubscript:v6];
-      v8 = [v7 action];
-      v9 = [v12 action];
+      action = [v7 action];
+      action2 = [commandCopy action];
 
-      if (v8 == v9)
+      if (action == action2)
       {
         break;
       }
@@ -701,143 +701,143 @@ LABEL_16:
   else
   {
 LABEL_7:
-    v10 = [(NSArray *)v5 arrayByAddingObject:v12];
+    v10 = [(NSArray *)v5 arrayByAddingObject:commandCopy];
     v11 = self->_keyCommands;
     self->_keyCommands = v10;
   }
 }
 
-- (void)performDeleteAnimationOnSectionWithIdentifier:(id)a3 itemAtIndex:(unint64_t)a4 dataProvider:(id)a5 animated:(BOOL)a6
+- (void)performDeleteAnimationOnSectionWithIdentifier:(id)identifier itemAtIndex:(unint64_t)index dataProvider:(id)provider animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
-  v12 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-  v13 = [v12 snapshot];
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  collectionViewDiffableDataSource = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+  snapshot = [collectionViewDiffableDataSource snapshot];
 
-  v14 = [v13 numberOfItemsInSection:v10];
-  if (_UISolariumEnabled() && [v11 type] == 1)
+  v14 = [snapshot numberOfItemsInSection:identifierCopy];
+  if (_UISolariumEnabled() && [providerCopy type] == 1)
   {
-    v15 = [v11 objects];
-    v16 = [v15 firstObject];
-    v14 = [v16 count];
+    objects = [providerCopy objects];
+    firstObject = [objects firstObject];
+    v14 = [firstObject count];
   }
 
   if (v14 == 1)
   {
-    v24 = v10;
+    v24 = identifierCopy;
     v17 = [NSArray arrayWithObjects:&v24 count:1];
-    [v13 deleteSectionsWithIdentifiers:v17];
+    [snapshot deleteSectionsWithIdentifiers:v17];
   }
 
   else
   {
-    v17 = [v13 itemIdentifiersInSectionWithIdentifier:v10];
-    if (_UISolariumEnabled() && [v11 type] == 1)
+    v17 = [snapshot itemIdentifiersInSectionWithIdentifier:identifierCopy];
+    if (_UISolariumEnabled() && [providerCopy type] == 1)
     {
-      v18 = [v11 objects];
-      v19 = [v18 firstObject];
+      objects2 = [providerCopy objects];
+      firstObject2 = [objects2 firstObject];
 
-      v17 = v19;
+      v17 = firstObject2;
     }
 
-    v20 = [v17 objectAtIndex:a4];
+    v20 = [v17 objectAtIndex:index];
     v23 = v20;
     v21 = [NSArray arrayWithObjects:&v23 count:1];
-    [v13 deleteItemsWithIdentifiers:v21];
+    [snapshot deleteItemsWithIdentifiers:v21];
   }
 
-  v22 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-  [v22 applySnapshot:v13 animatingDifferences:v6];
+  collectionViewDiffableDataSource2 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+  [collectionViewDiffableDataSource2 applySnapshot:snapshot animatingDifferences:animatedCopy];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [(SearchHomeDataSource *)self tableViewDiffableDataSource];
-  v15 = [v7 snapshot];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  tableViewDiffableDataSource = [(SearchHomeDataSource *)self tableViewDiffableDataSource];
+  snapshot = [tableViewDiffableDataSource snapshot];
 
-  v8 = [v15 sectionIdentifiers];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "section")}];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v9 = [sectionIdentifiers objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   v10 = [(SearchHomeDataSource *)self dataProviderWithIdentifier:v9];
-  v11 = [v10 objects];
-  v12 = [v6 row];
+  objects = [v10 objects];
+  v12 = [pathCopy row];
 
-  v13 = [v11 objectAtIndex:v12];
+  v13 = [objects objectAtIndex:v12];
 
-  v14 = [(DataSource *)self delegate];
-  [v14 dataSource:self itemTapped:v13];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSource:self itemTapped:v13];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectItemAtIndexPath:v6 animated:1];
-  v7 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-  v8 = [v7 snapshot];
+  pathCopy = path;
+  [view deselectItemAtIndexPath:pathCopy animated:1];
+  collectionViewDiffableDataSource = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+  snapshot = [collectionViewDiffableDataSource snapshot];
 
-  v9 = [v8 sectionIdentifiers];
-  v10 = [v9 objectAtIndex:{objc_msgSend(v6, "section")}];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v10 = [sectionIdentifiers objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   v11 = [(SearchHomeDataSource *)self dataProviderWithIdentifier:v10];
-  v12 = [v11 type];
-  if (v12 <= 3)
+  type = [v11 type];
+  if (type <= 3)
   {
-    switch(v12)
+    switch(type)
     {
       case 1:
         v31 = _UISolariumEnabled();
-        v32 = [v11 objects];
-        v33 = v32;
+        objects = [v11 objects];
+        v33 = objects;
         if (v31)
         {
-          v34 = [v32 firstObject];
-          v15 = [v34 objectAtIndex:{objc_msgSend(v6, "row")}];
+          firstObject = [objects firstObject];
+          v15 = [firstObject objectAtIndex:{objc_msgSend(pathCopy, "row")}];
         }
 
         else
         {
-          v15 = [v32 objectAtIndex:{objc_msgSend(v6, "row")}];
+          v15 = [objects objectAtIndex:{objc_msgSend(pathCopy, "row")}];
         }
 
-        v42 = [(DataSource *)self delegate];
-        [v42 dataSource:self itemTapped:v15];
+        delegate = [(DataSource *)self delegate];
+        [delegate dataSource:self itemTapped:v15];
 
-        v25 = [(SearchHomeDataSource *)self analyticsManager];
-        v43 = [v6 row];
-        v44 = [(SearchHomeDataSource *)self analyticsSuggestions];
-        [v25 recentTappedAtIndex:v43 visibleSuggestions:v44];
+        analyticsManager = [(SearchHomeDataSource *)self analyticsManager];
+        v43 = [pathCopy row];
+        analyticsSuggestions = [(SearchHomeDataSource *)self analyticsSuggestions];
+        [analyticsManager recentTappedAtIndex:v43 visibleSuggestions:analyticsSuggestions];
 
         goto LABEL_25;
       case 2:
-        v38 = [v11 objects];
-        v39 = [v38 firstObject];
-        v15 = [v39 objectAtIndex:{objc_msgSend(v6, "row")}];
+        objects2 = [v11 objects];
+        firstObject2 = [objects2 firstObject];
+        v15 = [firstObject2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-        v40 = [(DataSource *)self delegate];
-        v41 = [v15 category];
-        [v40 dataSource:self itemTapped:v41];
+        delegate2 = [(DataSource *)self delegate];
+        category = [v15 category];
+        [delegate2 dataSource:self itemTapped:category];
 
-        v17 = [(SearchHomeDataSource *)self analyticsManager];
-        v18 = [v15 name];
-        [v17 browseCategoryTapped:v18];
+        analyticsManager2 = [(SearchHomeDataSource *)self analyticsManager];
+        name = [v15 name];
+        [analyticsManager2 browseCategoryTapped:name];
 LABEL_21:
 
         goto LABEL_22;
       case 3:
-        v19 = [v11 objects];
-        v20 = [v19 firstObject];
-        v15 = [v20 objectAtIndex:{objc_msgSend(v6, "row")}];
+        objects3 = [v11 objects];
+        firstObject3 = [objects3 firstObject];
+        v15 = [firstObject3 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-        v21 = [(DataSource *)self delegate];
-        [v21 dataSource:self itemTapped:v15];
+        delegate3 = [(DataSource *)self delegate];
+        [delegate3 dataSource:self itemTapped:v15];
 
         v22 = [v11 itemIsSaved:v15];
-        v17 = [(SearchHomeDataSource *)self analyticsManager];
-        v23 = [v15 collectionIdentifier];
-        [v17 curatedCollectionsTappedWithMuid:objc_msgSend(v23 horizontalIndex:"muid") isCurrentlySaved:{objc_msgSend(v6, "row"), v22}];
+        analyticsManager2 = [(SearchHomeDataSource *)self analyticsManager];
+        collectionIdentifier = [v15 collectionIdentifier];
+        [analyticsManager2 curatedCollectionsTappedWithMuid:objc_msgSend(collectionIdentifier horizontalIndex:"muid") isCurrentlySaved:{objc_msgSend(pathCopy, "row"), v22}];
 
 LABEL_22:
         goto LABEL_26;
@@ -846,39 +846,39 @@ LABEL_22:
 
   else
   {
-    if (v12 <= 5)
+    if (type <= 5)
     {
-      if (v12 == 4)
+      if (type == 4)
       {
-        v35 = [v11 objects];
-        v15 = [v35 objectAtIndex:{objc_msgSend(v6, "row")}];
+        objects4 = [v11 objects];
+        v15 = [objects4 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-        v36 = [(DataSource *)self delegate];
-        [v36 dataSource:self itemTapped:v15];
+        delegate4 = [(DataSource *)self delegate];
+        [delegate4 dataSource:self itemTapped:v15];
 
-        v17 = [(SearchHomeDataSource *)self analyticsManager];
-        v18 = [v15 identifier];
-        [v17 publisherTappedWithMuid:objc_msgSend(v18 verticalIndex:{"muid"), objc_msgSend(v6, "row")}];
+        analyticsManager2 = [(SearchHomeDataSource *)self analyticsManager];
+        name = [v15 identifier];
+        [analyticsManager2 publisherTappedWithMuid:objc_msgSend(name verticalIndex:{"muid"), objc_msgSend(pathCopy, "row")}];
       }
 
       else
       {
-        v13 = [v11 objects];
-        v14 = [v13 firstObject];
-        v15 = [v14 objectAtIndex:{objc_msgSend(v6, "row")}];
+        objects5 = [v11 objects];
+        firstObject4 = [objects5 firstObject];
+        v15 = [firstObject4 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-        v16 = [(DataSource *)self delegate];
-        [v16 dataSource:self itemTapped:v15];
+        delegate5 = [(DataSource *)self delegate];
+        [delegate5 dataSource:self itemTapped:v15];
 
-        v17 = [(SearchHomeDataSource *)self analyticsManager];
-        v18 = [v15 guideLocationIdentifier];
-        [v17 guideLocationTappedWithMuid:objc_msgSend(v18 horizontalIndex:{"muid"), objc_msgSend(v6, "row")}];
+        analyticsManager2 = [(SearchHomeDataSource *)self analyticsManager];
+        name = [v15 guideLocationIdentifier];
+        [analyticsManager2 guideLocationTappedWithMuid:objc_msgSend(name horizontalIndex:{"muid"), objc_msgSend(pathCopy, "row")}];
       }
 
       goto LABEL_21;
     }
 
-    if (v12 == 6)
+    if (type == 6)
     {
       v37 = sub_100798B6C();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -891,10 +891,10 @@ LABEL_22:
       [(SearchHomeDataSource *)self setNeedsUpdate];
     }
 
-    else if (v12 == 7)
+    else if (type == 7)
     {
-      v24 = [v11 objects];
-      v15 = [v24 objectAtIndex:{objc_msgSend(v6, "row")}];
+      objects6 = [v11 objects];
+      v15 = [objects6 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -904,14 +904,14 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v25 = v15;
-      v26 = [(DataSource *)self delegate];
-      v27 = [v25 collections];
-      [v26 dataSource:self itemTapped:v27];
+      analyticsManager = v15;
+      delegate6 = [(DataSource *)self delegate];
+      collections = [analyticsManager collections];
+      [delegate6 dataSource:self itemTapped:collections];
 
-      v28 = [v25 collections];
-      v29 = [v28 identifier];
-      v30 = [v29 isEqualToString:@"__internal_CollectionPlaceholderIdentifier"];
+      collections2 = [analyticsManager collections];
+      identifier = [collections2 identifier];
+      v30 = [identifier isEqualToString:@"__internal_CollectionPlaceholderIdentifier"];
 
       if (v30)
       {
@@ -927,19 +927,19 @@ LABEL_25:
 LABEL_27:
 }
 
-- (double)heightForFooterInSection:(int64_t)a3 dataProvider:(id)a4
+- (double)heightForFooterInSection:(int64_t)section dataProvider:(id)provider
 {
-  v5 = a4;
-  v6 = [(DataSource *)self collectionView];
-  if (sub_10000FA08(v6) == 5)
+  providerCopy = provider;
+  collectionView = [(DataSource *)self collectionView];
+  if (sub_10000FA08(collectionView) == 5)
   {
-    v7 = [v5 type];
+    type = [providerCopy type];
 
-    if (v7 == 1 && ![v5 entriesState])
+    if (type == 1 && ![providerCopy entriesState])
     {
-      v8 = [(DataSource *)self collectionView];
-      v9 = [v8 traitCollection];
-      [SectionFooterCollectionReusableView heightForFooterViewWithTraitCollection:v9];
+      collectionView2 = [(DataSource *)self collectionView];
+      traitCollection = [collectionView2 traitCollection];
+      [SectionFooterCollectionReusableView heightForFooterViewWithTraitCollection:traitCollection];
       v11 = v10;
 
       goto LABEL_11;
@@ -950,7 +950,7 @@ LABEL_27:
   {
   }
 
-  if ([v5 type] == 3 || (v11 = 0.0, MapsFeature_IsEnabled_Maps269()) && objc_msgSend(v5, "type") == 5 && (-[DataSource collectionView](self, "collectionView"), v13 = objc_claimAutoreleasedReturnValue(), v14 = sub_10000FA08(v13), v13, v14 != 5))
+  if ([providerCopy type] == 3 || (v11 = 0.0, MapsFeature_IsEnabled_Maps269()) && objc_msgSend(providerCopy, "type") == 5 && (-[DataSource collectionView](self, "collectionView"), v13 = objc_claimAutoreleasedReturnValue(), v14 = sub_10000FA08(v13), v13, v14 != 5))
   {
     +[ActionButtonCollectionReusableView estimatedHeight];
     v11 = v12;
@@ -961,19 +961,19 @@ LABEL_11:
   return v11;
 }
 
-- (double)heightForHeaderInSection:(int64_t)a3 dataProvider:(id)a4
+- (double)heightForHeaderInSection:(int64_t)section dataProvider:(id)provider
 {
-  v4 = a4;
-  v5 = [v4 objects];
-  if (![v5 count])
+  providerCopy = provider;
+  objects = [providerCopy objects];
+  if (![objects count])
   {
 
     goto LABEL_5;
   }
 
-  v6 = [v4 type];
+  type = [providerCopy type];
 
-  if (!v6)
+  if (!type)
   {
 LABEL_5:
     v8 = 0.0;
@@ -987,11 +987,11 @@ LABEL_6:
   return v8;
 }
 
-- (id)_supplementaryViewForCollectionView:(id)a3 ofKind:(id)a4 atIndexPath:(id)a5
+- (id)_supplementaryViewForCollectionView:(id)view ofKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 isEqualToString:UICollectionElementKindSectionFooter];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [kind isEqualToString:UICollectionElementKindSectionFooter];
   if (v9)
   {
     v10 = UICollectionElementKindSectionFooter;
@@ -1008,30 +1008,30 @@ LABEL_6:
     v11 = off_1015F6740;
   }
 
-  v12 = [(__objc2_class *)*v11 reuseIdentifier];
-  v13 = [v8 dequeueReusableSupplementaryViewOfKind:v10 withReuseIdentifier:v12 forIndexPath:v7];
+  reuseIdentifier = [(__objc2_class *)*v11 reuseIdentifier];
+  v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:v10 withReuseIdentifier:reuseIdentifier forIndexPath:pathCopy];
 
   [v13 setAlpha:0.0];
 
   return v13;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-  v12 = [v11 snapshot];
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  collectionViewDiffableDataSource = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+  snapshot = [collectionViewDiffableDataSource snapshot];
 
-  v13 = [v10 section];
-  v14 = [v12 sectionIdentifiers];
-  v15 = [v14 count];
+  section = [pathCopy section];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v15 = [sectionIdentifiers count];
 
-  if (v13 < v15)
+  if (section < v15)
   {
-    v16 = [v12 sectionIdentifiers];
-    v17 = [v16 objectAtIndex:v13];
+    sectionIdentifiers2 = [snapshot sectionIdentifiers];
+    v17 = [sectionIdentifiers2 objectAtIndex:section];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -1039,12 +1039,12 @@ LABEL_6:
     v78 = sub_100747B30;
     v79 = sub_100747B40;
     v80 = [(SearchHomeDataSource *)self dataProviderWithIdentifier:v17];
-    v18 = [(DataSource *)self collectionView];
-    if (sub_10000FA08(v18) == 5 && [*(*&buf[8] + 40) conformsToProtocol:&OBJC_PROTOCOL___SearchHomeDataProviderDeletable])
+    collectionView = [(DataSource *)self collectionView];
+    if (sub_10000FA08(collectionView) == 5 && [*(*&buf[8] + 40) conformsToProtocol:&OBJC_PROTOCOL___SearchHomeDataProviderDeletable])
     {
       v19 = UICollectionElementKindSectionFooter;
 
-      if (UICollectionElementKindSectionFooter == v9)
+      if (UICollectionElementKindSectionFooter == kindCopy)
       {
         v20 = *(*&buf[8] + 40);
         if ([v20 entriesState] == 1)
@@ -1055,7 +1055,7 @@ LABEL_6:
         else
         {
           v49 = +[SectionFooterCollectionReusableView reuseIdentifier];
-          v50 = [v8 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v49 forIndexPath:v10];
+          v50 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v49 forIndexPath:pathCopy];
 
           v66[0] = _NSConcreteStackBlock;
           v66[1] = 3221225472;
@@ -1079,17 +1079,17 @@ LABEL_6:
       v19 = UICollectionElementKindSectionFooter;
     }
 
-    if (!-[NSString isEqualToString:](v9, "isEqualToString:", v19) || [*(*&buf[8] + 40) type] != 3)
+    if (!-[NSString isEqualToString:](kindCopy, "isEqualToString:", v19) || [*(*&buf[8] + 40) type] != 3)
     {
-      v35 = [*(*&buf[8] + 40) objects];
-      if ([v35 count])
+      objects = [*(*&buf[8] + 40) objects];
+      if ([objects count])
       {
         v36 = [*(*&buf[8] + 40) type] == 0;
 
         if (!v36)
         {
-          v37 = [(SearchHomeDataSource *)self dataProviders];
-          v38 = [v37 indexOfObjectPassingTest:&stru_101627F90];
+          dataProviders = [(SearchHomeDataSource *)self dataProviders];
+          v38 = [dataProviders indexOfObjectPassingTest:&stru_101627F90];
 
           if (v38 == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -1098,8 +1098,8 @@ LABEL_6:
 
           else
           {
-            v42 = [(SearchHomeDataSource *)self dataProviders];
-            if (v38 >= [v42 count])
+            dataProviders2 = [(SearchHomeDataSource *)self dataProviders];
+            if (v38 >= [dataProviders2 count])
             {
               v39 = 0;
             }
@@ -1112,12 +1112,12 @@ LABEL_6:
           }
 
           v45 = +[_TtC4Maps33StandardSectionHeaderViewListCell reuseIdentifier];
-          v21 = [v8 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v45 forIndexPath:v10];
+          v21 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v45 forIndexPath:pathCopy];
 
-          v46 = [*(*&buf[8] + 40) title];
-          [v21 setTitle:v46];
+          title = [*(*&buf[8] + 40) title];
+          [v21 setTitle:title];
 
-          v47 = sub_10000FA08(v8);
+          v47 = sub_10000FA08(viewCopy);
           if (v39)
           {
             v48 = v47 == 5;
@@ -1197,37 +1197,37 @@ LABEL_6:
       {
         v41 = *(*&buf[8] + 40);
         *v69 = 138413058;
-        v70 = v9;
+        v70 = kindCopy;
         v71 = 2112;
         v72 = v17;
         v73 = 2112;
-        v74 = v12;
+        v74 = snapshot;
         v75 = 2112;
         v76 = v41;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "Unable to create a Supplementary View of kind : %@. Section Identifier: %@. Snapshot: %@. Data provider: %@", v69, 0x2Au);
       }
 
-      v21 = [(SearchHomeDataSource *)self _supplementaryViewForCollectionView:v8 ofKind:v9 atIndexPath:v10];
+      v21 = [(SearchHomeDataSource *)self _supplementaryViewForCollectionView:viewCopy ofKind:kindCopy atIndexPath:pathCopy];
       goto LABEL_46;
     }
 
     v56 = *(*&buf[8] + 40);
-    if (MapsFeature_IsEnabled_Maps269() && ([v56 exploreGuides], (v23 = objc_claimAutoreleasedReturnValue()) != 0) && (v24 = sub_10000FA08(v8) == 5, v23, !v24))
+    if (MapsFeature_IsEnabled_Maps269() && ([v56 exploreGuides], (v23 = objc_claimAutoreleasedReturnValue()) != 0) && (v24 = sub_10000FA08(viewCopy) == 5, v23, !v24))
     {
       v51 = +[MKExploreGuidesReusableView reuseIdentifier];
-      v21 = [v8 dequeueReusableSupplementaryViewOfKind:v19 withReuseIdentifier:v51 forIndexPath:v10];
+      v21 = [viewCopy dequeueReusableSupplementaryViewOfKind:v19 withReuseIdentifier:v51 forIndexPath:pathCopy];
 
       v52 = +[MKExploreGuidesReusableView reuseIdentifier];
       [v21 setAccessibilityLabel:v52];
 
       objc_initWeak(v69, self);
-      v53 = [v56 exploreGuides];
+      exploreGuides = [v56 exploreGuides];
       v64[0] = _NSConcreteStackBlock;
       v64[1] = 3221225472;
       v64[2] = sub_10074AD2C;
       v64[3] = &unk_101627F50;
       objc_copyWeak(&v65, v69);
-      [v21 configureWithExploreGuides:v53 tapHandler:v64];
+      [v21 configureWithExploreGuides:exploreGuides tapHandler:v64];
 
       objc_destroyWeak(&v65);
       objc_destroyWeak(v69);
@@ -1239,14 +1239,14 @@ LABEL_6:
       v55 = [v25 localizedStringForKey:@"[Search Home] See All Guides" value:@"localized string not found" table:0];
 
       v26 = +[ActionButtonCollectionReusableView reuseIdentifier];
-      v21 = [v8 dequeueReusableSupplementaryViewOfKind:v19 withReuseIdentifier:v26 forIndexPath:v10];
+      v21 = [viewCopy dequeueReusableSupplementaryViewOfKind:v19 withReuseIdentifier:v26 forIndexPath:pathCopy];
 
       v27 = +[ActionButtonCollectionReusableView reuseIdentifier];
       [v21 setAccessibilityIdentifier:v27];
 
-      v28 = [[MKPlaceCollectionsSizeController alloc] initWithDefaultCollectionsConfigurationUsingTraitCollections:v8 inContext:3];
-      v29 = [(DataSource *)self collectionView];
-      v30 = [v29 effectiveUserInterfaceLayoutDirection] == 1;
+      v28 = [[MKPlaceCollectionsSizeController alloc] initWithDefaultCollectionsConfigurationUsingTraitCollections:viewCopy inContext:3];
+      collectionView2 = [(DataSource *)self collectionView];
+      v30 = [collectionView2 effectiveUserInterfaceLayoutDirection] == 1;
 
       [v28 sectionInsets];
       if (v30)
@@ -1282,52 +1282,52 @@ LABEL_46:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    *&buf[4] = v9;
+    *&buf[4] = kindCopy;
     *&buf[12] = 2048;
-    *&buf[14] = v13;
+    *&buf[14] = section;
     *&buf[22] = 2112;
-    v78 = v12;
+    v78 = snapshot;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Unable to create a Supplementary View of kind : %@. Section Index : %lu. Snapshot: %@.", buf, 0x20u);
   }
 
-  v21 = [(SearchHomeDataSource *)self _supplementaryViewForCollectionView:v8 ofKind:v9 atIndexPath:v10];
+  v21 = [(SearchHomeDataSource *)self _supplementaryViewForCollectionView:viewCopy ofKind:kindCopy atIndexPath:pathCopy];
 LABEL_47:
 
   return v21;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-  v12 = [v11 snapshot];
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
+  collectionViewDiffableDataSource = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+  snapshot = [collectionViewDiffableDataSource snapshot];
 
-  v13 = [v12 sectionIdentifiers];
-  if ([v13 count])
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  if ([sectionIdentifiers count])
   {
-    v14 = [v9 section];
-    v15 = [v12 sectionIdentifiers];
-    v16 = [v15 count];
+    section = [pathCopy section];
+    sectionIdentifiers2 = [snapshot sectionIdentifiers];
+    v16 = [sectionIdentifiers2 count];
 
-    if (v14 < v16)
+    if (section < v16)
     {
-      v17 = [v12 sectionIdentifiers];
-      v18 = [v17 objectAtIndex:{-[NSObject section](v9, "section")}];
+      sectionIdentifiers3 = [snapshot sectionIdentifiers];
+      v18 = [sectionIdentifiers3 objectAtIndex:{-[NSObject section](pathCopy, "section")}];
 
       v19 = [(SearchHomeDataSource *)self dataProviderWithIdentifier:v18];
-      v20 = v10;
+      v20 = identifierCopy;
       if (objc_opt_respondsToSelector())
       {
-        v21 = [v19 viewModels];
-        v22 = [v21 count];
+        viewModels = [v19 viewModels];
+        v22 = [viewModels count];
 
         if (v22)
         {
-          v23 = [v19 viewModels];
-          v24 = [v9 row];
-          if (v24 >= [v23 count])
+          viewModels2 = [v19 viewModels];
+          v24 = [pathCopy row];
+          if (v24 >= [viewModels2 count])
           {
             v29 = sub_100067540();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -1335,9 +1335,9 @@ LABEL_47:
               *buf = 138412802;
               v32 = v18;
               v33 = 2112;
-              v34 = v9;
+              v34 = pathCopy;
               v35 = 2112;
-              v36 = v12;
+              v36 = snapshot;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Error fetching SearchHome cell for section: %@, indexpath:%@, snapshot: %@", buf, 0x20u);
             }
 
@@ -1345,15 +1345,15 @@ LABEL_47:
             goto LABEL_8;
           }
 
-          v25 = [v19 viewModels];
-          v30 = [v25 objectAtIndex:{-[NSObject row](v9, "row")}];
+          viewModels3 = [v19 viewModels];
+          v30 = [viewModels3 objectAtIndex:{-[NSObject row](pathCopy, "row")}];
 
           v20 = v30;
         }
       }
 
       v26 = [(SearchHomeDataSource *)self layoutProviderForDataProvider:v19];
-      v27 = [v26 cellForRowAtIndexPath:v9 collectionView:v8 item:v20];
+      v27 = [v26 cellForRowAtIndexPath:pathCopy collectionView:viewCopy item:v20];
 
 LABEL_8:
       goto LABEL_13;
@@ -1368,9 +1368,9 @@ LABEL_8:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v32 = v9;
+    v32 = pathCopy;
     v33 = 2112;
-    v34 = v12;
+    v34 = snapshot;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Error fetching SearchHome section at indexpath: %@, snapshot: %@", buf, 0x16u);
   }
 
@@ -1422,7 +1422,7 @@ LABEL_13:
   return v10;
 }
 
-- (id)dataProviderOfType:(int64_t)a3
+- (id)dataProviderOfType:(int64_t)type
 {
   v8 = 0;
   v9 = &v8;
@@ -1430,14 +1430,14 @@ LABEL_13:
   v11 = sub_100747B30;
   v12 = sub_100747B40;
   v13 = 0;
-  v4 = [(SearchHomeDataSource *)self dataProviders];
+  dataProviders = [(SearchHomeDataSource *)self dataProviders];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10074C3B8;
   v7[3] = &unk_101627E38;
   v7[4] = &v8;
-  v7[5] = a3;
-  [v4 enumerateObjectsUsingBlock:v7];
+  v7[5] = type;
+  [dataProviders enumerateObjectsUsingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1445,15 +1445,15 @@ LABEL_13:
   return v5;
 }
 
-- (id)dataProviderWithIdentifier:(id)a3
+- (id)dataProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SearchHomeDataSource *)self dataProviders];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dataProviders = [(SearchHomeDataSource *)self dataProviders];
+  v6 = [dataProviders countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1463,12 +1463,12 @@ LABEL_13:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dataProviders);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -1477,7 +1477,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [dataProviders countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -1492,15 +1492,15 @@ LABEL_11:
   return v6;
 }
 
-- (id)layoutProviderForDataProvider:(id)a3
+- (id)layoutProviderForDataProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(SearchHomeDataSource *)self layoutProviders];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  layoutProviders = [(SearchHomeDataSource *)self layoutProviders];
+  v6 = [layoutProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -1510,19 +1510,19 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(layoutProviders);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 type];
-        if (v10 == [v4 type])
+        type = [v9 type];
+        if (type == [providerCopy type])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [layoutProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1537,36 +1537,36 @@ LABEL_11:
   return v6;
 }
 
-- (void)reloadSectionOfType:(int64_t)a3
+- (void)reloadSectionOfType:(int64_t)type
 {
-  v4 = [(SearchHomeDataSource *)self dataProviderOfType:a3];
-  v5 = [v4 identifier];
+  v4 = [(SearchHomeDataSource *)self dataProviderOfType:type];
+  identifier = [v4 identifier];
 
-  v6 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-  v7 = [v6 snapshot];
+  collectionViewDiffableDataSource = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+  snapshot = [collectionViewDiffableDataSource snapshot];
 
-  if ([v5 length])
+  if ([identifier length])
   {
-    v8 = [v7 sectionIdentifiers];
-    v9 = [v8 containsObject:v5];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    v9 = [sectionIdentifiers containsObject:identifier];
 
     v10 = sub_100798B6C();
-    v11 = v10;
+    collectionViewDiffableDataSource2 = v10;
     if (v9)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v29 = v5;
-        _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Reloading section: %@", buf, 0xCu);
+        v29 = identifier;
+        _os_log_impl(&_mh_execute_header, collectionViewDiffableDataSource2, OS_LOG_TYPE_DEBUG, "Reloading section: %@", buf, 0xCu);
       }
 
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v12 = [(SearchHomeDataSource *)self dataProviders];
-      v13 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      dataProviders = [(SearchHomeDataSource *)self dataProviders];
+      v13 = [dataProviders countByEnumeratingWithState:&v22 objects:v27 count:16];
       if (v13)
       {
         v14 = v13;
@@ -1577,26 +1577,26 @@ LABEL_11:
           {
             if (*v23 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(dataProviders);
             }
 
             v17 = *(*(&v22 + 1) + 8 * i);
-            v18 = [v17 identifier];
-            v19 = [v18 isEqualToString:v5];
+            identifier2 = [v17 identifier];
+            v19 = [identifier2 isEqualToString:identifier];
 
             if (v19)
             {
-              v26 = v5;
+              v26 = identifier;
               v20 = [NSArray arrayWithObjects:&v26 count:1];
-              [v7 deleteItemsWithIdentifiers:v20];
-              v21 = [v17 objects];
-              [v7 appendItemsWithIdentifiers:v21 intoSectionWithIdentifier:v5];
+              [snapshot deleteItemsWithIdentifiers:v20];
+              objects = [v17 objects];
+              [snapshot appendItemsWithIdentifiers:objects intoSectionWithIdentifier:identifier];
 
               goto LABEL_17;
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+          v14 = [dataProviders countByEnumeratingWithState:&v22 objects:v27 count:16];
           if (v14)
           {
             continue;
@@ -1608,23 +1608,23 @@ LABEL_11:
 
 LABEL_17:
 
-      v11 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-      [v11 applySnapshot:v7 animatingDifferences:0];
+      collectionViewDiffableDataSource2 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+      [collectionViewDiffableDataSource2 applySnapshot:snapshot animatingDifferences:0];
     }
 
     else if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v29 = v5;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Unable to reload snapshot section named: %@ as it is not in the snapshot.", buf, 0xCu);
+      v29 = identifier;
+      _os_log_impl(&_mh_execute_header, collectionViewDiffableDataSource2, OS_LOG_TYPE_INFO, "Unable to reload snapshot section named: %@ as it is not in the snapshot.", buf, 0xCu);
     }
   }
 }
 
 - (double)isTouristHereValue
 {
-  v2 = [(SearchHomeDataSource *)self searchHomeDataSourceDelegate];
-  [v2 isTouristHereValue];
+  searchHomeDataSourceDelegate = [(SearchHomeDataSource *)self searchHomeDataSourceDelegate];
+  [searchHomeDataSourceDelegate isTouristHereValue];
   v4 = v3;
 
   return v4;
@@ -1644,10 +1644,10 @@ LABEL_17:
   if (!traits)
   {
 LABEL_9:
-    v7 = [(SearchHomeDataSource *)self searchHomeDataSourceDelegate];
-    v8 = [v7 newTraits];
+    searchHomeDataSourceDelegate = [(SearchHomeDataSource *)self searchHomeDataSourceDelegate];
+    newTraits = [searchHomeDataSourceDelegate newTraits];
 
-    return v8;
+    return newTraits;
   }
 
   v5 = self->_traits;
@@ -1655,9 +1655,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)didUpdateDataFetcher:(id)a3
+- (void)didUpdateDataFetcher:(id)fetcher
 {
-  v4 = a3;
+  fetcherCopy = fetcher;
   v5 = sub_10074D190();
   v6 = os_signpost_id_generate(v5);
 
@@ -1694,15 +1694,15 @@ LABEL_9:
           }
 
           v53 = v10;
-          v11 = [*(*(&v67 + 1) + 8 * v10) dataProviders];
-          v12 = v11;
-          if (v11)
+          dataProviders = [*(*(&v67 + 1) + 8 * v10) dataProviders];
+          v12 = dataProviders;
+          if (dataProviders)
           {
             v65 = 0u;
             v66 = 0u;
             v63 = 0u;
             v64 = 0u;
-            v13 = [v11 countByEnumeratingWithState:&v63 objects:v81 count:16];
+            v13 = [dataProviders countByEnumeratingWithState:&v63 objects:v81 count:16];
             if (v13)
             {
               v14 = v13;
@@ -1729,7 +1729,7 @@ LABEL_9:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    if ([(SearchHomeDataSource *)self shouldShowSearchHomeTip:v4])
+                    if ([(SearchHomeDataSource *)self shouldShowSearchHomeTip:fetcherCopy])
                     {
                       [v9 insertObject:v17 atIndex:0];
                     }
@@ -1761,22 +1761,22 @@ LABEL_9:
 
   else
   {
-    v45 = [(SearchHomeDataSource *)self dataFetchers];
+    dataFetchers = [(SearchHomeDataSource *)self dataFetchers];
     v73[0] = _NSConcreteStackBlock;
     v73[1] = 3221225472;
     v73[2] = sub_10074D1E4;
     v73[3] = &unk_101627E10;
     v46 = v9;
     v74 = v46;
-    [v45 enumerateObjectsUsingBlock:v73];
+    [dataFetchers enumerateObjectsUsingBlock:v73];
 
-    v47 = [(SearchHomeDataSource *)self dataFetchers];
+    dataFetchers2 = [(SearchHomeDataSource *)self dataFetchers];
     v71[0] = _NSConcreteStackBlock;
     v71[1] = 3221225472;
     v71[2] = sub_10074D280;
     v71[3] = &unk_101627E10;
     v72 = v46;
-    [v47 enumerateObjectsUsingBlock:v71];
+    [dataFetchers2 enumerateObjectsUsingBlock:v71];
   }
 
   v18 = [v9 copy];
@@ -1795,12 +1795,12 @@ LABEL_9:
     v19 = sub_100798B6C();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v21 = [(SearchHomeDataSource *)self dataProviders];
-      v22 = [(SearchHomeDataSource *)self layoutProviders];
+      dataProviders2 = [(SearchHomeDataSource *)self dataProviders];
+      layoutProviders = [(SearchHomeDataSource *)self layoutProviders];
       *buf = 138412546;
-      v78 = v21;
+      v78 = dataProviders2;
       v79 = 2112;
-      v80 = v22;
+      v80 = layoutProviders;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Data providers: %@ Layout providers :%@", buf, 0x16u);
     }
   }
@@ -1812,8 +1812,8 @@ LABEL_34:
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v24 = [(SearchHomeDataSource *)self dataProviders];
-  v25 = [v24 countByEnumeratingWithState:&v59 objects:v76 count:16];
+  dataProviders3 = [(SearchHomeDataSource *)self dataProviders];
+  v25 = [dataProviders3 countByEnumeratingWithState:&v59 objects:v76 count:16];
   if (v25)
   {
     v26 = v25;
@@ -1824,21 +1824,21 @@ LABEL_34:
       {
         if (*v60 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(dataProviders3);
         }
 
         v29 = *(*(&v59 + 1) + 8 * j);
         if (objc_opt_respondsToSelector())
         {
-          v30 = [v29 objectsForAnalytics];
-          if ([v30 count])
+          objectsForAnalytics = [v29 objectsForAnalytics];
+          if ([objectsForAnalytics count])
           {
-            [v23 addObjectsFromArray:v30];
+            [v23 addObjectsFromArray:objectsForAnalytics];
           }
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v59 objects:v76 count:16];
+      v26 = [dataProviders3 countByEnumeratingWithState:&v59 objects:v76 count:16];
     }
 
     while (v26);
@@ -1885,7 +1885,7 @@ LABEL_34:
 
   v42 = +[NSNotificationCenter defaultCenter];
 
-  [v42 postNotificationName:@"PPTTest_SearchHome_DidUpdateDataFetcher" object:v4];
+  [v42 postNotificationName:@"PPTTest_SearchHome_DidUpdateDataFetcher" object:fetcherCopy];
   v43 = sub_10074D190();
   v44 = v43;
   if (v49 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))
@@ -1895,15 +1895,15 @@ LABEL_34:
   }
 }
 
-- (void)_updateRegionListForCachedKey:(id)a3 value:(BOOL)a4
+- (void)_updateRegionListForCachedKey:(id)key value:(BOOL)value
 {
-  v4 = a4;
-  if ([a3 length] && MapsFeature_IsEnabled_NaturalSearchMaps())
+  valueCopy = value;
+  if ([key length] && MapsFeature_IsEnabled_NaturalSearchMaps())
   {
     v6 = GEOConfigGetDictionary();
     v7 = [NSMutableDictionary dictionaryWithDictionary:v6];
 
-    v8 = [NSNumber numberWithBool:v4];
+    v8 = [NSNumber numberWithBool:valueCopy];
     [v7 setObject:v8 forKeyedSubscript:self->_naturalSearchHomeCachedKey];
 
     GEOConfigSetDictionary();
@@ -1916,9 +1916,9 @@ LABEL_34:
   }
 }
 
-- (void)applySnapshotWithCompletion:(id)a3
+- (void)applySnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_10074D190();
   v6 = os_signpost_id_generate(v5);
 
@@ -1932,7 +1932,7 @@ LABEL_34:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "SearchHomeApplyingSnapshot", "", buf, 2u);
   }
 
-  v38 = v4;
+  v38 = completionCopy;
 
   v40 = objc_alloc_init(NSMutableArray);
   v39 = objc_alloc_init(NSDiffableDataSourceSnapshot);
@@ -1957,13 +1957,13 @@ LABEL_34:
         }
 
         v14 = *(*(&v42 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        if (v15)
+        identifier = [v14 identifier];
+        if (identifier)
         {
-          v16 = [v14 objects];
-          v17 = [v16 copy];
+          objects = [v14 objects];
+          v17 = [objects copy];
 
-          v18 = [v17 firstObject];
+          firstObject = [v17 firstObject];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -1991,17 +1991,17 @@ LABEL_34:
               goto LABEL_24;
             }
 
-            v57 = v15;
+            v57 = identifier;
             v24 = [v12[286] arrayWithObjects:&v57 count:1];
             [v39 appendSectionsWithIdentifiers:v24];
 
-            v25 = [v14 objects];
+            objects2 = [v14 objects];
             v12 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
-            [v39 appendItemsWithIdentifiers:v25 intoSectionWithIdentifier:v15];
+            [v39 appendItemsWithIdentifiers:objects2 intoSectionWithIdentifier:identifier];
 
-            v55 = v15;
-            v23 = [v14 objects];
-            v56 = v23;
+            v55 = identifier;
+            objects3 = [v14 objects];
+            v56 = objects3;
             v26 = [NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1];
             [v40 addObject:v26];
 
@@ -2010,15 +2010,15 @@ LABEL_34:
 
           if (([v14 type] != 6 || !-[SearchHomeDataSource shouldRemoveSearchHomeTip](self, "shouldRemoveSearchHomeTip")) && -[NSObject count](v17, "count"))
           {
-            v54 = v15;
+            v54 = identifier;
             v22 = [v12[286] arrayWithObjects:&v54 count:1];
             [v39 appendSectionsWithIdentifiers:v22];
 
-            [v39 appendItemsWithIdentifiers:v17 intoSectionWithIdentifier:v15];
-            v52 = v15;
+            [v39 appendItemsWithIdentifiers:v17 intoSectionWithIdentifier:identifier];
+            v52 = identifier;
             v53 = v17;
-            v23 = [NSDictionary dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-            [v40 addObject:v23];
+            objects3 = [NSDictionary dictionaryWithObjects:&v53 forKeys:&v52 count:1];
+            [v40 addObject:objects3];
 LABEL_23:
           }
         }
@@ -2044,8 +2044,8 @@ LABEL_24:
   }
 
   v27 = [v40 copy];
-  v28 = [(SearchHomeDataSource *)self cachedSnapshotObjects];
-  v29 = [v27 isEqualToArray:v28];
+  cachedSnapshotObjects = [(SearchHomeDataSource *)self cachedSnapshotObjects];
+  v29 = [v27 isEqualToArray:cachedSnapshotObjects];
 
   if ((v29 & 1) == 0)
   {
@@ -2053,19 +2053,19 @@ LABEL_24:
     v30 = sub_100798B6C();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
-      v31 = [(SearchHomeDataSource *)self dataProviders];
-      v32 = [(SearchHomeDataSource *)self layoutProviders];
+      dataProviders = [(SearchHomeDataSource *)self dataProviders];
+      layoutProviders = [(SearchHomeDataSource *)self layoutProviders];
       *buf = 138412802;
       v47 = v39;
       v48 = 2112;
-      v49 = v31;
+      v49 = dataProviders;
       v50 = 2112;
-      v51 = v32;
+      v51 = layoutProviders;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "The snapshot - (%@) will be applied, Data Providers : %@, Layout providers : %@", buf, 0x20u);
     }
 
-    v33 = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
-    [v33 applySnapshotUsingReloadData:v39];
+    collectionViewDiffableDataSource = [(SearchHomeDataSource *)self collectionViewDiffableDataSource];
+    [collectionViewDiffableDataSource applySnapshotUsingReloadData:v39];
   }
 
   v38[2](v38);
@@ -2088,9 +2088,9 @@ LABEL_24:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v30 = self;
-    v7 = [(SearchHomeDataSource *)self dataProviders];
-    v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    selfCopy = self;
+    dataProviders = [(SearchHomeDataSource *)self dataProviders];
+    v8 = [dataProviders countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2101,17 +2101,17 @@ LABEL_24:
         {
           if (*v32 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(dataProviders);
           }
 
           v12 = *(*(&v31 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [v12 objects];
-          v15 = [v14 copy];
+          identifier = [v12 identifier];
+          objects = [v12 objects];
+          v15 = [objects copy];
 
           if ([v15 count])
           {
-            v16 = v13 == 0;
+            v16 = identifier == 0;
           }
 
           else
@@ -2125,22 +2125,22 @@ LABEL_24:
             if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v38 = v13;
+              v38 = identifier;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "The section identifier - %@ and there are no objects to reload.", buf, 0xCu);
             }
           }
 
           else
           {
-            v35 = v13;
+            v35 = identifier;
             v18 = [NSArray arrayWithObjects:&v35 count:1];
             [v6 appendSectionsWithIdentifiers:v18];
 
-            [v6 appendItemsWithIdentifiers:v15 intoSectionWithIdentifier:v13];
+            [v6 appendItemsWithIdentifiers:v15 intoSectionWithIdentifier:identifier];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v9 = [dataProviders countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v9);
@@ -2149,18 +2149,18 @@ LABEL_24:
     v19 = sub_100798B6C();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [(SearchHomeDataSource *)v30 dataProviders];
-      v21 = [(SearchHomeDataSource *)v30 layoutProviders];
+      dataProviders2 = [(SearchHomeDataSource *)selfCopy dataProviders];
+      layoutProviders = [(SearchHomeDataSource *)selfCopy layoutProviders];
       *buf = 138412802;
       v38 = v6;
       v39 = 2112;
-      v40 = v20;
+      v40 = dataProviders2;
       v41 = 2112;
-      v42 = v21;
+      v42 = layoutProviders;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "The table view snapshot - (%@) will be applied, Data Providers : %@, Layout providers : %@", buf, 0x20u);
     }
 
-    [*(&v30->super.super.isa + v29) applySnapshotUsingReloadData:v6];
+    [*(&selfCopy->super.super.isa + v29) applySnapshotUsingReloadData:v6];
   }
 
   else
@@ -2191,14 +2191,14 @@ LABEL_24:
       }
 
       v26 = v25;
-      v27 = [(DataSource *)self tableView];
-      v28 = [v27 dataSource];
+      tableView = [(DataSource *)self tableView];
+      dataSource = [tableView dataSource];
       *buf = 138412802;
       v38 = v24;
       v39 = 2112;
       v40 = v26;
       v41 = 2112;
-      v42 = v28;
+      v42 = dataSource;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "The _tableViewDiffableDataSource is nil but the user is trying to add a stop in Route planning, The Maps Offline status: %@, Full text support: %@, Table view datasource: %@", buf, 0x20u);
     }
   }
@@ -2271,8 +2271,8 @@ LABEL_24:
     v8 = sub_100798B6C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(UICollectionViewDiffableDataSource *)self->_collectionViewDiffableDataSource collectionView];
-      [v9 contentSize];
+      collectionView = [(UICollectionViewDiffableDataSource *)self->_collectionViewDiffableDataSource collectionView];
+      [collectionView contentSize];
       v10 = NSStringFromSize(v27);
       *buf = 138412290;
       v16 = v10;
@@ -2320,8 +2320,8 @@ LABEL_24:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(SearchHomeDataSource *)self dataFetchers];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  dataFetchers = [(SearchHomeDataSource *)self dataFetchers];
+  v4 = [dataFetchers countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2332,7 +2332,7 @@ LABEL_3:
     {
       if (*v22 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(dataFetchers);
       }
 
       if (![*(*(&v21 + 1) + 8 * v7) isFetchingDataComplete])
@@ -2342,7 +2342,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v5 = [dataFetchers countByEnumeratingWithState:&v21 objects:v26 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -2361,8 +2361,8 @@ LABEL_9:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v3 = [(SearchHomeDataSource *)self dataProviders];
-    v8 = [v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    dataFetchers = [(SearchHomeDataSource *)self dataProviders];
+    v8 = [dataFetchers countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (!v8)
     {
       v15 = 1;
@@ -2377,14 +2377,14 @@ LABEL_11:
     {
       if (*v18 != v10)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(dataFetchers);
       }
 
       v12 = *(*(&v17 + 1) + 8 * v11);
       if ([v12 type])
       {
-        v13 = [v12 objects];
-        v14 = [v13 count];
+        objects = [v12 objects];
+        v14 = [objects count];
 
         if (v14)
         {
@@ -2394,7 +2394,7 @@ LABEL_11:
 
       if (v9 == ++v11)
       {
-        v9 = [v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v9 = [dataFetchers countByEnumeratingWithState:&v17 objects:v25 count:16];
         v15 = 1;
         if (v9)
         {
@@ -2412,18 +2412,18 @@ LABEL_20:
   return v15;
 }
 
-- (void)setShouldRemoveSearchHomeTip:(BOOL)a3
+- (void)setShouldRemoveSearchHomeTip:(BOOL)tip
 {
-  self->_shouldRemoveSearchHomeTip = a3;
-  if (a3)
+  self->_shouldRemoveSearchHomeTip = tip;
+  if (tip)
   {
     [(SearchHomeDataSource *)self _updateRegionListForCachedKey:self->_naturalSearchHomeCachedKey value:1];
   }
 }
 
-- (BOOL)shouldShowSearchHomeTip:(id)a3
+- (BOOL)shouldShowSearchHomeTip:(id)tip
 {
-  v4 = a3;
+  tipCopy = tip;
   if ((MapsFeature_IsEnabled_NaturalSearchMaps() & 1) == 0)
   {
     v5 = sub_100067540();
@@ -2466,22 +2466,22 @@ LABEL_7:
 
   if (![(NSString *)self->_naturalSearchHomeCachedKey length]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v13 = [v4 naturalSearchCachedKey];
+    naturalSearchCachedKey = [tipCopy naturalSearchCachedKey];
     naturalSearchHomeCachedKey = self->_naturalSearchHomeCachedKey;
-    self->_naturalSearchHomeCachedKey = v13;
+    self->_naturalSearchHomeCachedKey = naturalSearchCachedKey;
   }
 
   if ([(NSString *)self->_naturalSearchHomeCachedKey length])
   {
     v15 = [v12 objectForKeyedSubscript:self->_naturalSearchHomeCachedKey];
-    v16 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
 
-    if ((v16 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       [(SearchHomeDataSource *)self setShouldRemoveSearchHomeTip:0];
     }
 
-    v10 = v16 ^ 1;
+    v10 = bOOLValue ^ 1;
   }
 
   else
@@ -2493,13 +2493,13 @@ LABEL_18:
   return v10;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v17.receiver = self;
   v17.super_class = SearchHomeDataSource;
   [(DataSource *)&v17 setActive:?];
-  if (v3)
+  if (activeCopy)
   {
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 postNotificationName:@"PPTTest_SearchHome_DidSetActive" object:self];
@@ -2508,8 +2508,8 @@ LABEL_18:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(SearchHomeDataSource *)self dataFetchers];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    dataFetchers = [(SearchHomeDataSource *)self dataFetchers];
+    v7 = [dataFetchers countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2521,7 +2521,7 @@ LABEL_18:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(dataFetchers);
           }
 
           [*(*(&v13 + 1) + 8 * v10) fetchContent];
@@ -2529,7 +2529,7 @@ LABEL_18:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v8 = [dataFetchers countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v8);
@@ -2551,21 +2551,21 @@ LABEL_18:
   [(SearchHomeDataSource *)self setNeedsUpdate];
 }
 
-- (void)_hoverGestureRecognizerStateDidChange:(id)a3
+- (void)_hoverGestureRecognizerStateDidChange:(id)change
 {
-  v22 = a3;
-  if ([v22 _maps_isHovering])
+  changeCopy = change;
+  if ([changeCopy _maps_isHovering])
   {
-    v4 = [(DataSource *)self collectionView];
-    [v22 locationInView:v4];
+    collectionView = [(DataSource *)self collectionView];
+    [changeCopy locationInView:collectionView];
     v6 = v5;
     v8 = v7;
 
-    v9 = [(DataSource *)self collectionView];
-    v10 = [v9 indexPathForItemAtPoint:{v6, v8}];
+    collectionView2 = [(DataSource *)self collectionView];
+    v10 = [collectionView2 indexPathForItemAtPoint:{v6, v8}];
 
-    v11 = [(DataSource *)self collectionView];
-    v12 = [v11 cellForItemAtIndexPath:v10];
+    collectionView3 = [(DataSource *)self collectionView];
+    v12 = [collectionView3 cellForItemAtIndexPath:v10];
 
     if (v12 && ([v12 frame], v24.x = v6, v24.y = v8, CGRectContainsPoint(v25, v24)))
     {
@@ -2575,8 +2575,8 @@ LABEL_18:
         {
           v13 = 0;
 LABEL_13:
-          v18 = [(DataSource *)self collectionView];
-          [v18 selectItemAtIndexPath:v10 animated:0 scrollPosition:0];
+          collectionView4 = [(DataSource *)self collectionView];
+          [collectionView4 selectItemAtIndexPath:v10 animated:0 scrollPosition:0];
 
           objc_storeStrong(&self->_lastSelectedIndexPath, v10);
           if (v12)
@@ -2620,7 +2620,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if ([v22 state] == 3)
+  if ([changeCopy state] == 3)
   {
     v14 = self->_lastSelectedIndexPath;
     if (v14)
@@ -2630,36 +2630,36 @@ LABEL_12:
       self->_lastSelectedIndexPath = 0;
 
 LABEL_17:
-      v19 = [(DataSource *)self collectionView];
-      v20 = [v19 cellForItemAtIndexPath:v13];
+      collectionView5 = [(DataSource *)self collectionView];
+      v20 = [collectionView5 cellForItemAtIndexPath:v13];
 
       [v20 resignFirstResponder];
-      v21 = [(DataSource *)self collectionView];
-      [v21 deselectItemAtIndexPath:v13 animated:0];
+      collectionView6 = [(DataSource *)self collectionView];
+      [collectionView6 deselectItemAtIndexPath:v13 animated:0];
     }
   }
 
 LABEL_18:
 }
 
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v13 = a4;
-  v6 = [(DataSource *)self collectionView];
-  v7 = sub_10000FA08(v6);
+  contextCopy = context;
+  collectionView = [(DataSource *)self collectionView];
+  v7 = sub_10000FA08(collectionView);
 
   if (v7 == 5)
   {
-    v8 = [(DataSource *)self collectionView];
-    [v8 deselectItemAtIndexPath:self->_lastSelectedIndexPath animated:0];
+    collectionView2 = [(DataSource *)self collectionView];
+    [collectionView2 deselectItemAtIndexPath:self->_lastSelectedIndexPath animated:0];
 
-    v9 = [(DataSource *)self collectionView];
-    v10 = [v13 nextFocusedIndexPath];
-    [v9 selectItemAtIndexPath:v10 animated:0 scrollPosition:0];
+    collectionView3 = [(DataSource *)self collectionView];
+    nextFocusedIndexPath = [contextCopy nextFocusedIndexPath];
+    [collectionView3 selectItemAtIndexPath:nextFocusedIndexPath animated:0 scrollPosition:0];
 
-    v11 = [v13 nextFocusedIndexPath];
+    nextFocusedIndexPath2 = [contextCopy nextFocusedIndexPath];
     lastSelectedIndexPath = self->_lastSelectedIndexPath;
-    self->_lastSelectedIndexPath = v11;
+    self->_lastSelectedIndexPath = nextFocusedIndexPath2;
   }
 }
 
@@ -2673,16 +2673,16 @@ LABEL_18:
   [(SearchHomeDataSource *)&v4 dealloc];
 }
 
-- (SearchHomeDataSource)initWithCollectionView:(id)a3 parentViewController:(id)a4 updateLocation:(BOOL)a5 isSearchAlongRoute:(BOOL)a6 supportsFullTextSearch:(BOOL)a7
+- (SearchHomeDataSource)initWithCollectionView:(id)view parentViewController:(id)controller updateLocation:(BOOL)location isSearchAlongRoute:(BOOL)route supportsFullTextSearch:(BOOL)search
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  obj = a4;
+  searchCopy = search;
+  routeCopy = route;
+  locationCopy = location;
+  viewCopy = view;
+  obj = controller;
   v85.receiver = self;
   v85.super_class = SearchHomeDataSource;
-  v13 = [(DataSource *)&v85 initWithCollectionView:v12 updateLocation:v9];
+  v13 = [(DataSource *)&v85 initWithCollectionView:viewCopy updateLocation:locationCopy];
   val = v13;
   if (v13)
   {
@@ -2690,8 +2690,8 @@ LABEL_18:
     v13->_naturalSearchHomeCachedKey = 0;
 
     objc_storeWeak(&val->_parentViewController, obj);
-    [(SearchHomeDataSource *)val setSearchAlongRoute:v8];
-    [(SearchHomeDataSource *)val setSupportsFullTextSearch:v7];
+    [(SearchHomeDataSource *)val setSearchAlongRoute:routeCopy];
+    [(SearchHomeDataSource *)val setSupportsFullTextSearch:searchCopy];
     v68 = +[NSMutableArray array];
     v15 = +[MapsOfflineUIHelper sharedHelper];
     val->_isUsingOfflineMaps = [v15 isUsingOfflineMaps];
@@ -2739,7 +2739,7 @@ LABEL_18:
         objc_destroyWeak(&location);
       }
 
-      if ((_UISolariumEnabled() & 1) != 0 || ([v12 traitCollection], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "userInterfaceIdiom") == 5, v23, !v24))
+      if ((_UISolariumEnabled() & 1) != 0 || ([viewCopy traitCollection], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "userInterfaceIdiom") == 5, v23, !v24))
       {
         v25 = [[SearchHomeRecentSearchesLayoutProvider alloc] initWithParentViewController:obj];
       }
@@ -2759,13 +2759,13 @@ LABEL_18:
     v28 = val;
     if (val->_isUsingOfflineMaps)
     {
-      v29 = [(SearchHomeDataSource *)val searchAlongRoute];
+      searchAlongRoute = [(SearchHomeDataSource *)val searchAlongRoute];
       v28 = val;
-      if ((v29 & 1) == 0)
+      if ((searchAlongRoute & 1) == 0)
       {
-        v30 = [(SearchHomeDataSource *)val supportsFullTextSearch];
+        supportsFullTextSearch = [(SearchHomeDataSource *)val supportsFullTextSearch];
         v28 = val;
-        if ((v30 & 1) == 0)
+        if ((supportsFullTextSearch & 1) == 0)
         {
           v31 = objc_alloc_init(_TtC4Maps34SearchHomeUserGuidesLayoutProvider);
           [v70 addObject:v31];
@@ -2777,7 +2777,7 @@ LABEL_18:
 
     if (![(SearchHomeDataSource *)v28 searchAlongRoute])
     {
-      v32 = [[SearchHomeCuratedCollectionsLayoutProvider alloc] initWithTraitEnvironment:v12 parentViewController:obj];
+      v32 = [[SearchHomeCuratedCollectionsLayoutProvider alloc] initWithTraitEnvironment:viewCopy parentViewController:obj];
       [v70 addObject:v32];
 
       v33 = objc_alloc_init(SearchHomePublishersLayoutProvider);
@@ -2785,9 +2785,9 @@ LABEL_18:
 
       if (MapsFeature_IsEnabled_Maps269())
       {
-        if (sub_10000FA08(v12) != 5)
+        if (sub_10000FA08(viewCopy) != 5)
         {
-          v34 = [[SearchHomeCitiesLayoutProvider alloc] initWithTraitEnvironment:v12 parentViewController:obj];
+          v34 = [[SearchHomeCitiesLayoutProvider alloc] initWithTraitEnvironment:viewCopy parentViewController:obj];
           [v70 addObject:v34];
         }
       }
@@ -2821,8 +2821,8 @@ LABEL_18:
           v75 = 0u;
           v76 = 0u;
           v77 = 0u;
-          v40 = [v39 cellClasses];
-          v41 = [v40 countByEnumeratingWithState:&v74 objects:v86 count:16];
+          cellClasses = [v39 cellClasses];
+          v41 = [cellClasses countByEnumeratingWithState:&v74 objects:v86 count:16];
           if (v41)
           {
             v42 = *v75;
@@ -2833,18 +2833,18 @@ LABEL_18:
               {
                 if (*v75 != v42)
                 {
-                  objc_enumerationMutation(v40);
+                  objc_enumerationMutation(cellClasses);
                 }
 
                 v44 = *(*(&v74 + 1) + 8 * v43);
-                v45 = [v39 cellReuseIdentifier];
-                [v12 registerClass:v44 forCellWithReuseIdentifier:v45];
+                cellReuseIdentifier = [v39 cellReuseIdentifier];
+                [viewCopy registerClass:v44 forCellWithReuseIdentifier:cellReuseIdentifier];
 
                 v43 = v43 + 1;
               }
 
               while (v41 != v43);
-              v41 = [v40 countByEnumeratingWithState:&v74 objects:v86 count:16];
+              v41 = [cellClasses countByEnumeratingWithState:&v74 objects:v86 count:16];
             }
 
             while (v41);
@@ -2862,41 +2862,41 @@ LABEL_18:
 
     v46 = objc_opt_class();
     v47 = +[_TtC4Maps20SearchHomeRecentCell reuseIdentifier];
-    [v12 registerClass:v46 forCellWithReuseIdentifier:v47];
+    [viewCopy registerClass:v46 forCellWithReuseIdentifier:v47];
 
     v48 = objc_opt_class();
     v49 = +[_TtC4Maps33StandardSectionHeaderViewListCell reuseIdentifier];
-    [v12 registerClass:v48 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v49];
+    [viewCopy registerClass:v48 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v49];
 
     v50 = objc_opt_class();
     v51 = +[SectionFooterCollectionReusableView reuseIdentifier];
-    [v12 registerClass:v50 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v51];
+    [viewCopy registerClass:v50 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v51];
 
-    if (MapsFeature_IsEnabled_Maps269() && sub_10000FA08(v12) != 5 && ![(SearchHomeDataSource *)val searchAlongRoute])
+    if (MapsFeature_IsEnabled_Maps269() && sub_10000FA08(viewCopy) != 5 && ![(SearchHomeDataSource *)val searchAlongRoute])
     {
       v52 = objc_opt_class();
       v53 = +[MKExploreGuidesReusableView reuseIdentifier];
-      [v12 registerClass:v52 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v53];
+      [viewCopy registerClass:v52 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v53];
     }
 
     v54 = objc_opt_class();
     v55 = +[ActionButtonCollectionReusableView reuseIdentifier];
-    [v12 registerClass:v54 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v55];
+    [viewCopy registerClass:v54 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v55];
 
     v56 = [UICollectionViewDiffableDataSource alloc];
-    v57 = [(DataSource *)val collectionView];
+    collectionView = [(DataSource *)val collectionView];
     v58 = sub_1007CDFC8(val);
-    v59 = [v56 initWithCollectionView:v57 cellProvider:v58];
+    v59 = [v56 initWithCollectionView:collectionView cellProvider:v58];
     collectionViewDiffableDataSource = val->_collectionViewDiffableDataSource;
     val->_collectionViewDiffableDataSource = v59;
 
     v61 = sub_1007CE178(val);
     [(UICollectionViewDiffableDataSource *)val->_collectionViewDiffableDataSource setSupplementaryViewProvider:v61];
 
-    if (sub_10000FA08(v12) == 5)
+    if (sub_10000FA08(viewCopy) == 5)
     {
       v62 = [[UIHoverGestureRecognizer alloc] initWithTarget:val action:"_hoverGestureRecognizerStateDidChange:"];
-      [v12 addGestureRecognizer:v62];
+      [viewCopy addGestureRecognizer:v62];
     }
 
     else
@@ -2919,23 +2919,23 @@ LABEL_18:
   return val;
 }
 
-- (SearchHomeDataSource)initWithTableView:(id)a3 traits:(id)a4 supportsFullTextSearch:(BOOL)a5
+- (SearchHomeDataSource)initWithTableView:(id)view traits:(id)traits supportsFullTextSearch:(BOOL)search
 {
-  v5 = a5;
-  v8 = a3;
-  v35 = a4;
+  searchCopy = search;
+  viewCopy = view;
+  traitsCopy = traits;
   v44.receiver = self;
   v44.super_class = SearchHomeDataSource;
-  v9 = [(DataSource *)&v44 initWithTableView:v8 updateLocation:0];
+  v9 = [(DataSource *)&v44 initWithTableView:viewCopy updateLocation:0];
   v10 = v9;
   if (v9)
   {
     naturalSearchHomeCachedKey = v9->_naturalSearchHomeCachedKey;
     v9->_naturalSearchHomeCachedKey = 0;
 
-    v10->_supportsFullTextSearch = v5;
+    v10->_supportsFullTextSearch = searchCopy;
     v10->_routePlanning = 1;
-    objc_storeStrong(&v10->_traits, a4);
+    objc_storeStrong(&v10->_traits, traits);
     v36 = +[NSMutableArray array];
     v34 = [[SearchHomeDataDownloader alloc] initWithDelegate:v10 isSearchAlongRoute:[(SearchHomeDataSource *)v10 searchAlongRoute]];
     [v36 addObject:v34];
@@ -2950,19 +2950,19 @@ LABEL_18:
     layoutProviders = v10->_layoutProviders;
     v10->_layoutProviders = v15;
 
-    [v8 setDataSource:0];
-    [v8 setDelegate:v10];
+    [viewCopy setDataSource:0];
+    [viewCopy setDelegate:v10];
     [(SearchHomeDataSource *)v10 setupTableHeaderView];
     v17 = objc_opt_self();
     v18 = +[_TtC4Maps27BrowseCategoryTableViewCell identifier];
-    [v8 registerClass:v17 forCellReuseIdentifier:v18];
+    [viewCopy registerClass:v17 forCellReuseIdentifier:v18];
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v19 = [(SearchHomeDataSource *)v10 dataFetchers];
-    v20 = [v19 countByEnumeratingWithState:&v40 objects:v55 count:16];
+    dataFetchers = [(SearchHomeDataSource *)v10 dataFetchers];
+    v20 = [dataFetchers countByEnumeratingWithState:&v40 objects:v55 count:16];
     if (v20)
     {
       v21 = *v41;
@@ -2973,7 +2973,7 @@ LABEL_18:
         {
           if (*v41 != v21)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(dataFetchers);
           }
 
           [*(*(&v40 + 1) + 8 * v22) fetchContent];
@@ -2981,7 +2981,7 @@ LABEL_18:
         }
 
         while (v20 != v22);
-        v20 = [v19 countByEnumeratingWithState:&v40 objects:v55 count:16];
+        v20 = [dataFetchers countByEnumeratingWithState:&v40 objects:v55 count:16];
       }
 
       while (v20);
@@ -2994,7 +2994,7 @@ LABEL_18:
     v37[2] = sub_10074FA50;
     v37[3] = &unk_10162A430;
     objc_copyWeak(&v38, &location);
-    v24 = [v23 initWithTableView:v8 cellProvider:v37];
+    v24 = [v23 initWithTableView:viewCopy cellProvider:v37];
     tableViewDiffableDataSource = v10->_tableViewDiffableDataSource;
     v10->_tableViewDiffableDataSource = v24;
 
@@ -3002,26 +3002,26 @@ LABEL_18:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       v27 = @"NO";
-      if (v5)
+      if (searchCopy)
       {
         v27 = @"YES";
       }
 
       v28 = v27;
-      v29 = [(DataSource *)v10 tableView];
-      v30 = [(SearchHomeDataSource *)v10 dataProviders];
-      v31 = [(SearchHomeDataSource *)v10 layoutProviders];
-      v32 = [(SearchHomeDataSource *)v10 dataFetchers];
+      tableView = [(DataSource *)v10 tableView];
+      dataProviders = [(SearchHomeDataSource *)v10 dataProviders];
+      layoutProviders = [(SearchHomeDataSource *)v10 layoutProviders];
+      dataFetchers2 = [(SearchHomeDataSource *)v10 dataFetchers];
       *buf = 138413314;
       v46 = v28;
       v47 = 2112;
-      v48 = v29;
+      v48 = tableView;
       v49 = 2112;
-      v50 = v30;
+      v50 = dataProviders;
       v51 = 2112;
-      v52 = v31;
+      v52 = layoutProviders;
       v53 = 2112;
-      v54 = v32;
+      v54 = dataFetchers2;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Search home for Maps offline capability :%@, with tableView: %@, Data providers: %@, layout providers : %@, Data fectchers: %@", buf, 0x34u);
     }
 

@@ -1,35 +1,35 @@
 @interface NowPlayingControllerDelegate
 - (_TtC10ChronoCore28NowPlayingControllerDelegate)init;
-- (void)controller:(id)a3 clientPropertiesDidChangeFrom:(id)a4 to:(id)a5;
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5;
-- (void)controllerWillReloadForInvalidation:(id)a3;
+- (void)controller:(id)controller clientPropertiesDidChangeFrom:(id)from to:(id)to;
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to;
+- (void)controllerWillReloadForInvalidation:(id)invalidation;
 @end
 
 @implementation NowPlayingControllerDelegate
 
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to
 {
   if (swift_weakLoadStrong())
   {
-    v6 = self;
+    selfCopy = self;
     sub_224C6D4A0();
   }
 }
 
-- (void)controller:(id)a3 clientPropertiesDidChangeFrom:(id)a4 to:(id)a5
+- (void)controller:(id)controller clientPropertiesDidChangeFrom:(id)from to:(id)to
 {
   if (swift_weakLoadStrong())
   {
-    v6 = self;
+    selfCopy = self;
     sub_224C6D4A0();
   }
 }
 
-- (void)controllerWillReloadForInvalidation:(id)a3
+- (void)controllerWillReloadForInvalidation:(id)invalidation
 {
   if (swift_weakLoadStrong())
   {
-    v4 = self;
+    selfCopy = self;
     sub_224C6D4A0();
   }
 }

@@ -1,25 +1,25 @@
 @interface IPPublishedIdentityProgress
-- (IPPublishedIdentityProgress)initWithAppIdentity:(id)a3 observer:(id)a4;
+- (IPPublishedIdentityProgress)initWithAppIdentity:(id)identity observer:(id)observer;
 - (id)currentProgress;
-- (unint64_t)completedUnitCountForPhase:(unint64_t)a3;
+- (unint64_t)completedUnitCountForPhase:(unint64_t)phase;
 - (unint64_t)finalPhase;
 - (unint64_t)installPhase;
-- (unint64_t)totalUnitCountForPhase:(unint64_t)a3;
-- (void)finishProgressWithState:(unint64_t)a3;
-- (void)setCompletedUnitCount:(unint64_t)a3 forPhase:(unint64_t)a4;
-- (void)setFinalPhase:(unint64_t)a3;
-- (void)setInstallPhase:(unint64_t)a3;
-- (void)setTotalUnitCount:(unint64_t)a3 forPhase:(unint64_t)a4;
-- (void)setTotalUnitCountsForPhases:(id)a3;
+- (unint64_t)totalUnitCountForPhase:(unint64_t)phase;
+- (void)finishProgressWithState:(unint64_t)state;
+- (void)setCompletedUnitCount:(unint64_t)count forPhase:(unint64_t)phase;
+- (void)setFinalPhase:(unint64_t)phase;
+- (void)setInstallPhase:(unint64_t)phase;
+- (void)setTotalUnitCount:(unint64_t)count forPhase:(unint64_t)phase;
+- (void)setTotalUnitCountsForPhases:(id)phases;
 @end
 
 @implementation IPPublishedIdentityProgress
 
-- (IPPublishedIdentityProgress)initWithAppIdentity:(id)a3 observer:(id)a4
+- (IPPublishedIdentityProgress)initWithAppIdentity:(id)identity observer:(id)observer
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  observerCopy = observer;
   v22.receiver = self;
   v22.super_class = IPPublishedIdentityProgress;
   v8 = [(IPPublishedIdentityProgress *)&v22 init];
@@ -31,12 +31,12 @@
     progressData = v9->_progressData;
     v9->_progressData = v10;
 
-    v12 = [v6 copy];
+    v12 = [identityCopy copy];
     miIdentity = v9->_miIdentity;
     v9->_miIdentity = v12;
 
     v21 = 0;
-    v14 = IPLSIdentityFromMIIdentity(v6, &v21);
+    v14 = IPLSIdentityFromMIIdentity(identityCopy, &v21);
     v15 = v21;
     lsIdentity = v9->_lsIdentity;
     v9->_lsIdentity = v14;
@@ -46,18 +46,18 @@
       v17 = _IPServerLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
-        [(IPPublishedIdentityProgress *)v6 initWithAppIdentity:v15 observer:v17];
+        [(IPPublishedIdentityProgress *)identityCopy initWithAppIdentity:v15 observer:v17];
       }
     }
 
-    objc_storeWeak(&v9->_observer, v7);
+    objc_storeWeak(&v9->_observer, observerCopy);
     v18 = _IPDefaultLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = v6;
+      v24 = identityCopy;
       v25 = 2048;
-      v26 = v7;
+      v26 = observerCopy;
       _os_log_impl(&dword_254C69000, v18, OS_LOG_TYPE_DEFAULT, "Created published identity progress for %@, observer %p", buf, 0x16u);
     }
   }
@@ -97,7 +97,7 @@ uint64_t __46__IPPublishedIdentityProgress_currentProgress__block_invoke(uint64_
   return MEMORY[0x2821F96F8]();
 }
 
-- (unint64_t)completedUnitCountForPhase:(unint64_t)a3
+- (unint64_t)completedUnitCountForPhase:(unint64_t)phase
 {
   v6 = 0;
   v7 = &v6;
@@ -109,7 +109,7 @@ uint64_t __46__IPPublishedIdentityProgress_currentProgress__block_invoke(uint64_
   v5[3] = &unk_2797B1EA0;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = phase;
   IPDoWithLock(&self->_lock, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -123,7 +123,7 @@ uint64_t __58__IPPublishedIdentityProgress_completedUnitCountForPhase___block_in
   return result;
 }
 
-- (void)setCompletedUnitCount:(unint64_t)a3 forPhase:(unint64_t)a4
+- (void)setCompletedUnitCount:(unint64_t)count forPhase:(unint64_t)phase
 {
   v7 = 0;
   v8 = &v7;
@@ -135,8 +135,8 @@ uint64_t __58__IPPublishedIdentityProgress_completedUnitCountForPhase___block_in
   v6[1] = 3221225472;
   v6[2] = __62__IPPublishedIdentityProgress_setCompletedUnitCount_forPhase___block_invoke;
   v6[3] = &unk_2797B1EC8;
-  v6[6] = a3;
-  v6[7] = a4;
+  v6[6] = count;
+  v6[7] = phase;
   v6[4] = self;
   v6[5] = &v7;
   IPDoWithLock(&self->_lock, v6);
@@ -157,7 +157,7 @@ uint64_t __62__IPPublishedIdentityProgress_setCompletedUnitCount_forPhase___bloc
   return MEMORY[0x2821F96F8]();
 }
 
-- (unint64_t)totalUnitCountForPhase:(unint64_t)a3
+- (unint64_t)totalUnitCountForPhase:(unint64_t)phase
 {
   v6 = 0;
   v7 = &v6;
@@ -169,7 +169,7 @@ uint64_t __62__IPPublishedIdentityProgress_setCompletedUnitCount_forPhase___bloc
   v5[3] = &unk_2797B1EA0;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = phase;
   IPDoWithLock(&self->_lock, v5);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -183,12 +183,12 @@ uint64_t __54__IPPublishedIdentityProgress_totalUnitCountForPhase___block_invoke
   return result;
 }
 
-- (void)setTotalUnitCount:(unint64_t)a3 forPhase:(unint64_t)a4
+- (void)setTotalUnitCount:(unint64_t)count forPhase:(unint64_t)phase
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:phase];
   v10 = v6;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:count];
   v11[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   [(IPPublishedIdentityProgress *)self setTotalUnitCountsForPhases:v8];
@@ -196,22 +196,22 @@ uint64_t __54__IPPublishedIdentityProgress_totalUnitCountForPhase___block_invoke
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTotalUnitCountsForPhases:(id)a3
+- (void)setTotalUnitCountsForPhases:(id)phases
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  phasesCopy = phases;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__0;
   v27 = __Block_byref_object_dispose__0;
   v28 = 0;
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(phasesCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = phasesCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v29 count:16];
   if (v7)
   {
@@ -264,13 +264,13 @@ uint64_t __59__IPPublishedIdentityProgress_setTotalUnitCountsForPhases___block_i
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)finishProgressWithState:(unint64_t)a3
+- (void)finishProgressWithState:(unint64_t)state
 {
   WeakRetained = objc_loadWeakRetained(&self->_observer);
-  [WeakRetained identityProgress:self didFinishWithState:a3];
+  [WeakRetained identityProgress:self didFinishWithState:state];
 }
 
-- (void)setInstallPhase:(unint64_t)a3
+- (void)setInstallPhase:(unint64_t)phase
 {
   v6 = 0;
   v7 = &v6;
@@ -283,7 +283,7 @@ uint64_t __59__IPPublishedIdentityProgress_setTotalUnitCountsForPhases___block_i
   v5[2] = __47__IPPublishedIdentityProgress_setInstallPhase___block_invoke;
   v5[3] = &unk_2797B1F18;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = phase;
   v5[4] = self;
   IPDoWithLock(&self->_lock, v5);
   WeakRetained = objc_loadWeakRetained(&self->_observer);
@@ -328,7 +328,7 @@ uint64_t __43__IPPublishedIdentityProgress_installPhase__block_invoke(uint64_t a
   return result;
 }
 
-- (void)setFinalPhase:(unint64_t)a3
+- (void)setFinalPhase:(unint64_t)phase
 {
   v6 = 0;
   v7 = &v6;
@@ -341,7 +341,7 @@ uint64_t __43__IPPublishedIdentityProgress_installPhase__block_invoke(uint64_t a
   v5[2] = __45__IPPublishedIdentityProgress_setFinalPhase___block_invoke;
   v5[3] = &unk_2797B1F18;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = phase;
   v5[4] = self;
   IPDoWithLock(&self->_lock, v5);
   WeakRetained = objc_loadWeakRetained(&self->_observer);

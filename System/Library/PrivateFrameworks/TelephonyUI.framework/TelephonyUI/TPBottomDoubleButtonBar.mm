@@ -2,8 +2,8 @@
 - (double)_buttonWidth;
 - (void)_layoutButtons;
 - (void)layoutSubviews;
-- (void)setButton2:(id)a3 andStyle:(BOOL)a4;
-- (void)setButton:(id)a3 andStyle:(BOOL)a4;
+- (void)setButton2:(id)button2 andStyle:(BOOL)style;
+- (void)setButton:(id)button andStyle:(BOOL)style;
 @end
 
 @implementation TPBottomDoubleButtonBar
@@ -35,22 +35,22 @@
   return result;
 }
 
-- (void)setButton:(id)a3 andStyle:(BOOL)a4
+- (void)setButton:(id)button andStyle:(BOOL)style
 {
-  v4 = a4;
-  v7 = a3;
+  styleCopy = style;
+  buttonCopy = button;
   button = self->super._button;
-  v10 = v7;
-  if (button != v7)
+  v10 = buttonCopy;
+  if (button != buttonCopy)
   {
     [(TPButton *)button removeFromSuperview];
-    objc_storeStrong(&self->super._button, a3);
+    objc_storeStrong(&self->super._button, button);
     button = self->super._button;
   }
 
   if (button)
   {
-    v9 = !v4;
+    v9 = !styleCopy;
   }
 
   else
@@ -65,22 +65,22 @@
   }
 }
 
-- (void)setButton2:(id)a3 andStyle:(BOOL)a4
+- (void)setButton2:(id)button2 andStyle:(BOOL)style
 {
-  v4 = a4;
-  v7 = a3;
+  styleCopy = style;
+  button2Copy = button2;
   button2 = self->_button2;
-  v10 = v7;
-  if (button2 != v7)
+  v10 = button2Copy;
+  if (button2 != button2Copy)
   {
     [(TPButton *)button2 removeFromSuperview];
-    objc_storeStrong(&self->_button2, a3);
+    objc_storeStrong(&self->_button2, button2);
     button2 = self->_button2;
   }
 
   if (button2)
   {
-    v9 = !v4;
+    v9 = !styleCopy;
   }
 
   else

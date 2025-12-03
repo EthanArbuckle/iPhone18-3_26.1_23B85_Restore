@@ -1,49 +1,49 @@
 @interface MusicKit_SoftLinking_MPModelLibrarySearchScope
-+ (id)_topResultsRelationshipKeyForSpecificModelObjectType:(int64_t)a3;
-+ (id)scopeForTopResultsWithSpecificModelObjectTypeScopes:(id)a3;
-- (MusicKit_SoftLinking_MPModelLibrarySearchScope)initWithModelObjectType:(int64_t)a3;
-- (id)_initWithUnderlyingSearchScope:(id)a3 modelObjectType:(int64_t)a4;
++ (id)_topResultsRelationshipKeyForSpecificModelObjectType:(int64_t)type;
++ (id)scopeForTopResultsWithSpecificModelObjectTypeScopes:(id)scopes;
+- (MusicKit_SoftLinking_MPModelLibrarySearchScope)initWithModelObjectType:(int64_t)type;
+- (id)_initWithUnderlyingSearchScope:(id)scope modelObjectType:(int64_t)type;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibrarySearchScope
 
-- (id)_initWithUnderlyingSearchScope:(id)a3 modelObjectType:(int64_t)a4
+- (id)_initWithUnderlyingSearchScope:(id)scope modelObjectType:(int64_t)type
 {
-  v7 = a3;
+  scopeCopy = scope;
   v11.receiver = self;
   v11.super_class = MusicKit_SoftLinking_MPModelLibrarySearchScope;
   v8 = [(MusicKit_SoftLinking_MPModelLibrarySearchScope *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_underlyingSearchScope, a3);
-    v9->_modelObjectType = a4;
+    objc_storeStrong(&v8->_underlyingSearchScope, scope);
+    v9->_modelObjectType = type;
   }
 
   return v9;
 }
 
-- (MusicKit_SoftLinking_MPModelLibrarySearchScope)initWithModelObjectType:(int64_t)a3
+- (MusicKit_SoftLinking_MPModelLibrarySearchScope)initWithModelObjectType:(int64_t)type
 {
   v5 = [MusicKit_SoftLinking_MPModelRequest _supportedPropertiesForModelObjectType:?];
-  v6 = [MusicKit_SoftLinking_MPModelKind _modelKindForModelObjectType:a3];
+  v6 = [MusicKit_SoftLinking_MPModelKind _modelKindForModelObjectType:type];
   v7 = [objc_alloc(getMPModelLibrarySearchScopeClass()) initWithItemKind:v6 name:0 properties:v5];
-  v8 = [(MusicKit_SoftLinking_MPModelLibrarySearchScope *)self _initWithUnderlyingSearchScope:v7 modelObjectType:a3];
+  v8 = [(MusicKit_SoftLinking_MPModelLibrarySearchScope *)self _initWithUnderlyingSearchScope:v7 modelObjectType:type];
 
   return v8;
 }
 
-+ (id)scopeForTopResultsWithSpecificModelObjectTypeScopes:(id)a3
++ (id)scopeForTopResultsWithSpecificModelObjectTypeScopes:(id)scopes
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scopesCopy = scopes;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v4;
+  v7 = scopesCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v42 count:16];
   if (v8)
   {
@@ -58,15 +58,15 @@
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [a1 _topResultsRelationshipKeyForSpecificModelObjectType:{objc_msgSend(v11, "_modelObjectType", v29)}];
+        v12 = [self _topResultsRelationshipKeyForSpecificModelObjectType:{objc_msgSend(v11, "_modelObjectType", v29)}];
         if (v12)
         {
-          v13 = [v11 _underlyingSearchScope];
-          v14 = [v13 itemKind];
-          [v5 setObject:v14 forKeyedSubscript:v12];
+          _underlyingSearchScope = [v11 _underlyingSearchScope];
+          itemKind = [_underlyingSearchScope itemKind];
+          [v5 setObject:itemKind forKeyedSubscript:v12];
 
-          v15 = [v13 itemProperties];
-          [v6 setObject:v15 forKeyedSubscript:v12];
+          itemProperties = [_underlyingSearchScope itemProperties];
+          [v6 setObject:itemProperties forKeyedSubscript:v12];
         }
       }
 
@@ -120,31 +120,31 @@
   v24 = [v22 initWithProperties:MEMORY[0x277CBEBF8] relationships:v23];
 
   v25 = [objc_alloc(getMPModelLibrarySearchScopeClass()) initWithItemKind:v19 name:0 properties:v24];
-  v26 = [[a1 alloc] _initWithUnderlyingSearchScope:v25 modelObjectType:11];
+  v26 = [[self alloc] _initWithUnderlyingSearchScope:v25 modelObjectType:11];
 
   v27 = *MEMORY[0x277D85DE8];
 
   return v26;
 }
 
-+ (id)_topResultsRelationshipKeyForSpecificModelObjectType:(int64_t)a3
++ (id)_topResultsRelationshipKeyForSpecificModelObjectType:(int64_t)type
 {
   v3 = 0;
-  if (a3 <= 16)
+  if (type <= 16)
   {
     goto LABEL_10;
   }
 
-  if (a3 > 27)
+  if (type > 27)
   {
-    if (a3 == 28 || a3 == 32)
+    if (type == 28 || type == 32)
     {
 LABEL_19:
       v3 = getMPModelRelationshipGenericSong();
       goto LABEL_31;
     }
 
-    if (a3 != 33)
+    if (type != 33)
     {
       goto LABEL_31;
     }
@@ -170,9 +170,9 @@ LABEL_19:
 
     v3 = +[MusicKit_SoftLinking_MPModelLibrarySearchScope _topResultsRelationshipKeyForSpecificModelObjectType:];
 LABEL_10:
-    if (a3 <= 12)
+    if (type <= 12)
     {
-      if (!a3)
+      if (!type)
       {
         v11 = 0;
         v12 = &v11;
@@ -221,7 +221,7 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_31;
       }
@@ -248,9 +248,9 @@ LABEL_30:
       v3 = +[MusicKit_SoftLinking_MPModelLibrarySearchScope _topResultsRelationshipKeyForSpecificModelObjectType:];
     }
 
-    if (a3 != 13)
+    if (type != 13)
     {
-      if (a3 != 14)
+      if (type != 14)
       {
         goto LABEL_31;
       }
@@ -261,7 +261,7 @@ LABEL_30:
     goto LABEL_27;
   }
 
-  if (a3 == 17 || a3 == 22)
+  if (type == 17 || type == 22)
   {
     v3 = getMPModelRelationshipGenericPlaylist();
   }

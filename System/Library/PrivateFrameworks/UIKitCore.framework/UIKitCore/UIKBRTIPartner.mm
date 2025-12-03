@@ -1,130 +1,130 @@
 @interface UIKBRTIPartner
 + (void)registerTextOperationCustomInfo;
-- (BOOL)_performTextCheckingAnnotationOperations:(id)a3;
+- (BOOL)_performTextCheckingAnnotationOperations:(id)operations;
 - (BOOL)_remoteInputSystemRequiresDocumentStateForAutofill;
 - (BOOL)_remoteInputSystemRequiresDocumentStateUpdates;
 - (BOOL)_updateRTITraitsIfNecessary;
-- (BOOL)compareWaitingRTIOutputOperationResponseContext:(id)a3 andExchange:(id)a4;
+- (BOOL)compareWaitingRTIOutputOperationResponseContext:(id)context andExchange:(id)exchange;
 - (BOOL)documentTraitsDisableAutomaticKeyboardUI;
 - (BOOL)remoteTextInputClientHasActiveSession;
-- (BOOL)synchronousForwardKeyCommandsBeforePublicToUIHost:(id)a3;
-- (BOOL)synchronousForwardKeyCommandsToUIHost:(id)a3;
-- (BOOL)synchronousForwardKeyInputMethodCommandEventToUIHost:(id)a3 canHandleAppKeyCommand:(BOOL)a4;
+- (BOOL)synchronousForwardKeyCommandsBeforePublicToUIHost:(id)host;
+- (BOOL)synchronousForwardKeyCommandsToUIHost:(id)host;
+- (BOOL)synchronousForwardKeyInputMethodCommandEventToUIHost:(id)host canHandleAppKeyCommand:(BOOL)command;
 - (CGRect)_selectionClipRect;
-- (CGRect)convertRect:(CGRect)a3 from:(id)a4;
+- (CGRect)convertRect:(CGRect)rect from:(id)from;
 - (UIKBRTIPartner)init;
 - (UIKBRTIPartnerDelegate)partnerDelegate;
 - (UIKeyboardTaskSubqueue)keyboardTaskSubqueue;
-- (_NSRange)_relativeReplacementRangeForAnnotationOperation:(id)a3;
+- (_NSRange)_relativeReplacementRangeForAnnotationOperation:(id)operation;
 - (id)_defaultRTIMachNames;
 - (id)_newInputSystemAutoFillUIClient;
 - (id)_newInputSystemUIClient;
 - (id)_newRTIConnection;
 - (id)delegate;
-- (id)documentTextInRange:(id)a3 forInputDelegate:(id)a4;
-- (id)exchangeWaitingRTIOutputOperationResponseContext:(id)a3;
+- (id)documentTextInRange:(id)range forInputDelegate:(id)delegate;
+- (id)exchangeWaitingRTIOutputOperationResponseContext:(id)context;
 - (id)inputDelegate;
 - (id)inputDelegateView;
 - (id)insertionPointColor;
 - (id)payloadDelegate;
 - (id)textOperation_cancelChooseSupplementalItemToInsert;
-- (id)textOperation_chooseSupplementalItem:(id)a3 toReplaceText:(id)a4;
-- (id)textOperation_insertAutofillContent:(id)a3;
-- (id)textOperation_insertSupplementalCandidate:(id)a3 textToCommit:(id)a4;
-- (id)textOperation_insertionPointEnteredText:(id)a3 withSupplementalCandidate:(id)a4;
+- (id)textOperation_chooseSupplementalItem:(id)item toReplaceText:(id)text;
+- (id)textOperation_insertAutofillContent:(id)content;
+- (id)textOperation_insertSupplementalCandidate:(id)candidate textToCommit:(id)commit;
+- (id)textOperation_insertionPointEnteredText:(id)text withSupplementalCandidate:(id)candidate;
 - (id)textOperation_insertionPointExitedTextWithSupplementalItems;
-- (int64_t)_uiTextGranularityForRTITextGranularity:(int64_t)a3;
+- (int64_t)_uiTextGranularityForRTITextGranularity:(int64_t)granularity;
 - (unsigned)_ignoredReasonsForKeyboard;
-- (unsigned)_performKeyboardOutputOperations:(id)a3;
-- (void)_addAutocorrectStylingToDocumentState:(id)a3;
-- (void)_addCharacterRectsToDocumentState:(id)a3 textRange:(id)a4 offset:(int64_t)a5;
-- (void)_addFirstSelectionRectToDocumentState:(id)a3;
-- (void)_addMergedTextRectsToDocumentState:(id)a3 forWKContext:(id)a4 textInputView:(id)a5 granularity:(int64_t)a6;
-- (void)_addTextCheckingAnnotatedStringToDocumentState:(id)a3;
-- (void)_applicationDidRemoveDeactivationReason:(id)a3;
-- (void)_applicationWillAddDeactivationReason:(id)a3;
-- (void)_applicationWillSuspend:(id)a3;
+- (unsigned)_performKeyboardOutputOperations:(id)operations;
+- (void)_addAutocorrectStylingToDocumentState:(id)state;
+- (void)_addCharacterRectsToDocumentState:(id)state textRange:(id)range offset:(int64_t)offset;
+- (void)_addFirstSelectionRectToDocumentState:(id)state;
+- (void)_addMergedTextRectsToDocumentState:(id)state forWKContext:(id)context textInputView:(id)view granularity:(int64_t)granularity;
+- (void)_addTextCheckingAnnotatedStringToDocumentState:(id)state;
+- (void)_applicationDidRemoveDeactivationReason:(id)reason;
+- (void)_applicationWillAddDeactivationReason:(id)reason;
+- (void)_applicationWillSuspend:(id)suspend;
 - (void)_createRTIClient;
 - (void)_createRTIClientIfNecessary;
-- (void)_didAddSupplementalLexicon:(id)a3;
-- (void)_didCreateRTIClient:(id)a3;
-- (void)_didRemoveSupplementalLexiconWithIdentifier:(unint64_t)a3;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
-- (void)_performDocumentRequest:(id)a3 completion:(id)a4;
+- (void)_didAddSupplementalLexicon:(id)lexicon;
+- (void)_didCreateRTIClient:(id)client;
+- (void)_didRemoveSupplementalLexiconWithIdentifier:(unint64_t)identifier;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
+- (void)_performDocumentRequest:(id)request completion:(id)completion;
 - (void)_performQueuedSupplementalLexiconOperations;
-- (void)_queryDocumentRequest:(id)a3 completion:(id)a4;
-- (void)_queryUIKitDocumentRequest:(id)a3 completion:(id)a4;
-- (void)_queryWKDocumentRequest:(id)a3 completion:(id)a4;
-- (void)_queueSupplementalLexiconOperation:(unint64_t)a3 lexicon:(id)a4;
-- (void)_queued_performTextOperations:(id)a3 resultHandler:(id)a4;
+- (void)_queryDocumentRequest:(id)request completion:(id)completion;
+- (void)_queryUIKitDocumentRequest:(id)request completion:(id)completion;
+- (void)_queryWKDocumentRequest:(id)request completion:(id)completion;
+- (void)_queueSupplementalLexiconOperation:(unint64_t)operation lexicon:(id)lexicon;
+- (void)_queued_performTextOperations:(id)operations resultHandler:(id)handler;
 - (void)_updateGeometryObserverIfNecessary;
-- (void)_updateRTIAllowedAndNotify:(BOOL)a3 withReason:(id)a4;
-- (void)_updateRTIStateWithCompletion:(id)a3;
-- (void)_viewServiceHostDidBecomeActive:(id)a3;
-- (void)_viewServiceHostWillResignActive:(id)a3;
-- (void)addTextSuggestions:(id)a3;
-- (void)applyAssistantItem:(id)a3;
-- (void)applyRemoteDocumentStateIfNecessary:(id)a3 force:(BOOL)a4;
-- (void)applyRemoteDocumentTraitsIfNecessary:(id)a3 force:(BOOL)a4;
-- (void)beginAllowingRemoteTextInput:(id)a3;
-- (void)beginInputSessionWithIdentifier:(id)a3;
+- (void)_updateRTIAllowedAndNotify:(BOOL)notify withReason:(id)reason;
+- (void)_updateRTIStateWithCompletion:(id)completion;
+- (void)_viewServiceHostDidBecomeActive:(id)active;
+- (void)_viewServiceHostWillResignActive:(id)active;
+- (void)addTextSuggestions:(id)suggestions;
+- (void)applyAssistantItem:(id)item;
+- (void)applyRemoteDocumentStateIfNecessary:(id)necessary force:(BOOL)force;
+- (void)applyRemoteDocumentTraitsIfNecessary:(id)necessary force:(BOOL)force;
+- (void)beginAllowingRemoteTextInput:(id)input;
+- (void)beginInputSessionWithIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)defaultDocumentRequestDidChange:(id)a3;
-- (void)didAddSupplementalLexicon:(id)a3;
-- (void)didRemoveSupplementalLexicon:(id)a3;
-- (void)documentStateChanged:(BOOL)a3;
+- (void)defaultDocumentRequestDidChange:(id)change;
+- (void)didAddSupplementalLexicon:(id)lexicon;
+- (void)didRemoveSupplementalLexicon:(id)lexicon;
+- (void)documentStateChanged:(BOOL)changed;
 - (void)documentTraitsChanged;
-- (void)endAllowingRemoteTextInput:(id)a3 waitForReply:(BOOL)a4;
+- (void)endAllowingRemoteTextInput:(id)input waitForReply:(BOOL)reply;
 - (void)endInputSessionOnSwitchingApps;
-- (void)endInputSessionWithIdentifier:(id)a3 shouldResign:(BOOL)a4 waitForReply:(BOOL)a5;
+- (void)endInputSessionWithIdentifier:(id)identifier shouldResign:(BOOL)resign waitForReply:(BOOL)reply;
 - (void)ensureRTIConnection;
 - (void)finishCompletionHandlersIfNeeded;
-- (void)forwardApplicationOperation:(SEL)a3 object:(id)a4;
-- (void)forwardAutofillPayload:(id)a3 toPayloadDelegate:(id)a4;
-- (void)forwardClearForwardingInputDelegateAndResign:(BOOL)a3;
-- (void)forwardDictationEventToUIHost:(SEL)a3 withOptionalObject:(id)a4;
-- (void)forwardEventCallbackToRemoteSource_didChooseSupplementalItem:(id)a3 toReplaceText:(id)a4;
-- (void)forwardEventToRemoteSource_canSuggestSupplementalItemsForCurrentSelection:(BOOL)a3;
-- (void)forwardGrammarCorrectionEntries:(id)a3;
-- (void)forwardInputDestinationEventToUIHost:(SEL)a3 params:(id)a4;
-- (void)forwardKeyboardCameraEvent_startCameraInput:(id)a3;
-- (void)forwardKeyboardEventToUIHost:(id)a3;
-- (void)forwardKeyboardInputMode:(id)a3;
-- (void)forwardKeyboardOperation:(SEL)a3 object:(id)a4;
-- (void)forwardKeyboardSuppression:(BOOL)a3 suppressAssistantBar:(BOOL)a4;
-- (void)forwardScrollEventToUIHost:(SEL)a3 contentTransform:(CGAffineTransform *)a4 environmentTransform:(CGAffineTransform *)a5;
-- (void)forwardSelectorToUIHost:(SEL)a3 completionHandler:(id)a4;
-- (void)forwardTypologyLogURL:(id)a3;
-- (void)inputSession:(id)a3 didAddRTISupplementalLexicon:(id)a4;
-- (void)inputSession:(id)a3 didRemoveRTISupplementalLexicon:(id)a4;
-- (void)inputSession:(id)a3 documentStateDidChange:(id)a4 withMergeResult:(unint64_t)a5;
-- (void)inputSession:(id)a3 performInputOperation:(id)a4;
-- (void)inputSession:(id)a3 performInputOperation:(id)a4 withResponse:(id)a5;
-- (void)inputSession:(id)a3 textSuggestionsChanged:(id)a4;
+- (void)forwardApplicationOperation:(SEL)operation object:(id)object;
+- (void)forwardAutofillPayload:(id)payload toPayloadDelegate:(id)delegate;
+- (void)forwardClearForwardingInputDelegateAndResign:(BOOL)resign;
+- (void)forwardDictationEventToUIHost:(SEL)host withOptionalObject:(id)object;
+- (void)forwardEventCallbackToRemoteSource_didChooseSupplementalItem:(id)item toReplaceText:(id)text;
+- (void)forwardEventToRemoteSource_canSuggestSupplementalItemsForCurrentSelection:(BOOL)selection;
+- (void)forwardGrammarCorrectionEntries:(id)entries;
+- (void)forwardInputDestinationEventToUIHost:(SEL)host params:(id)params;
+- (void)forwardKeyboardCameraEvent_startCameraInput:(id)input;
+- (void)forwardKeyboardEventToUIHost:(id)host;
+- (void)forwardKeyboardInputMode:(id)mode;
+- (void)forwardKeyboardOperation:(SEL)operation object:(id)object;
+- (void)forwardKeyboardSuppression:(BOOL)suppression suppressAssistantBar:(BOOL)bar;
+- (void)forwardScrollEventToUIHost:(SEL)host contentTransform:(CGAffineTransform *)transform environmentTransform:(CGAffineTransform *)environmentTransform;
+- (void)forwardSelectorToUIHost:(SEL)host completionHandler:(id)handler;
+- (void)forwardTypologyLogURL:(id)l;
+- (void)inputSession:(id)session didAddRTISupplementalLexicon:(id)lexicon;
+- (void)inputSession:(id)session didRemoveRTISupplementalLexicon:(id)lexicon;
+- (void)inputSession:(id)session documentStateDidChange:(id)change withMergeResult:(unint64_t)result;
+- (void)inputSession:(id)session performInputOperation:(id)operation;
+- (void)inputSession:(id)session performInputOperation:(id)operation withResponse:(id)response;
+- (void)inputSession:(id)session textSuggestionsChanged:(id)changed;
 - (void)invalidate;
-- (void)performDocumentRequest:(id)a3 completion:(id)a4;
-- (void)performInputOperation:(id)a3;
-- (void)performTextOperations:(id)a3;
-- (void)performTextOperations:(id)a3 resultHandler:(id)a4;
-- (void)removeTextSuggestionsForSessionWithID:(id)a3;
+- (void)performDocumentRequest:(id)request completion:(id)completion;
+- (void)performInputOperation:(id)operation;
+- (void)performTextOperations:(id)operations;
+- (void)performTextOperations:(id)operations resultHandler:(id)handler;
+- (void)removeTextSuggestionsForSessionWithID:(id)d;
 - (void)restartCurrentSession;
-- (void)sendAutoFillDidInsertCallbacksWithTextOperations:(id)a3;
-- (void)setKeyboardTaskSubqueue:(id)a3;
-- (void)textSuggestionsChanged:(id)a3;
-- (void)updateAnimationForOptions:(id)a3;
-- (void)updateStateWithCompletion:(id)a3 updateTraits:(BOOL)a4;
-- (void)updateTextSuggestionsIfNecessary:(id)a3;
+- (void)sendAutoFillDidInsertCallbacksWithTextOperations:(id)operations;
+- (void)setKeyboardTaskSubqueue:(id)subqueue;
+- (void)textSuggestionsChanged:(id)changed;
+- (void)updateAnimationForOptions:(id)options;
+- (void)updateStateWithCompletion:(id)completion updateTraits:(BOOL)traits;
+- (void)updateTextSuggestionsIfNecessary:(id)necessary;
 @end
 
 @implementation UIKBRTIPartner
 
 - (BOOL)_remoteInputSystemRequiresDocumentStateUpdates
 {
-  v3 = [(UIKBRTIPartner *)self rtiClient];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
 
-  if (v3)
+  if (rtiClient)
   {
-    v4 = [(UIKBRTIPartner *)self rtiClient];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
     v5 = objc_opt_respondsToSelector();
 
     if ((v5 & 1) != 0 && (-[UIKBRTIPartner rtiClient](self, "rtiClient"), v6 = objc_claimAutoreleasedReturnValue(), [v6 serviceOptions], v7 = objc_claimAutoreleasedReturnValue(), v6, LOBYTE(v6) = objc_msgSend(v7, "displayOptions"), v7, (v6 & 4) != 0) || !+[UIKeyboard usesInputSystemUIForAutoFillOnly](UIKeyboard, "usesInputSystemUIForAutoFillOnly") || (v8 = -[UIKBRTIPartner _remoteInputSystemRequiresDocumentStateForAutofill](self, "_remoteInputSystemRequiresDocumentStateForAutofill")))
@@ -143,28 +143,28 @@
 
 - (BOOL)remoteTextInputClientHasActiveSession
 {
-  v3 = [(UIKBRTIPartner *)self rtiClient];
-  v4 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-  v5 = [v3 hasActiveSessionWithID:v4];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  v5 = [rtiClient hasActiveSessionWithID:currentSessionIdentifier];
 
   return v5;
 }
 
 - (BOOL)_remoteInputSystemRequiresDocumentStateForAutofill
 {
-  v3 = [(UIKBRTIPartner *)self rtiDocumentTraits];
-  if ([v3 autofillMode])
+  rtiDocumentTraits = [(UIKBRTIPartner *)self rtiDocumentTraits];
+  if ([rtiDocumentTraits autofillMode])
   {
-    v4 = 1;
+    isExplicitAutoFillMode = 1;
   }
 
   else
   {
-    v5 = [(UIKBRTIPartner *)self rtiDocumentTraits];
-    v4 = [v5 isExplicitAutoFillMode];
+    rtiDocumentTraits2 = [(UIKBRTIPartner *)self rtiDocumentTraits];
+    isExplicitAutoFillMode = [rtiDocumentTraits2 isExplicitAutoFillMode];
   }
 
-  return v4;
+  return isExplicitAutoFillMode;
 }
 
 - (id)_newRTIConnection
@@ -184,8 +184,8 @@
   else
   {
     v4 = objc_alloc(MEMORY[0x1E69C6F60]);
-    v5 = [(UIKBRTIPartner *)self _defaultRTIMachNames];
-    v6 = [v4 initWithMachNames:v5];
+    _defaultRTIMachNames = [(UIKBRTIPartner *)self _defaultRTIMachNames];
+    v6 = [v4 initWithMachNames:_defaultRTIMachNames];
 
     return v6;
   }
@@ -208,32 +208,32 @@
 - (BOOL)_updateRTITraitsIfNecessary
 {
   v211 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBRTIPartner *)self rtiClient];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
 
-  if (!v3)
+  if (!rtiClient)
   {
     return 0;
   }
 
   v4 = objc_alloc_init(MEMORY[0x1E69C6F40]);
-  v5 = [(UIKBRTIPartner *)self partnerDelegate];
-  v6 = [v5 keyboardState];
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  keyboardState = [partnerDelegate keyboardState];
 
-  v7 = [v6 textInputTraits];
-  v8 = [v7 copy];
+  textInputTraits = [keyboardState textInputTraits];
+  v8 = [textInputTraits copy];
   [v4 setTextInputTraits:v8];
 
-  v9 = [(UIKBRTIPartner *)self partnerDelegate];
-  v10 = [v9 delegateAsResponder];
+  partnerDelegate2 = [(UIKBRTIPartner *)self partnerDelegate];
+  delegateAsResponder = [partnerDelegate2 delegateAsResponder];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v10 textInputContextIdentifier];
-    [v4 setTextInputContextIdentifier:v11];
+    textInputContextIdentifier = [delegateAsResponder textInputContextIdentifier];
+    [v4 setTextInputContextIdentifier:textInputContextIdentifier];
   }
 
   v12 = +[UIKeyboardInputModeController sharedInputModeController];
-  v13 = [v12 textInputModeForResponder:v10];
+  v13 = [v12 textInputModeForResponder:delegateAsResponder];
 
   if (v13)
   {
@@ -245,15 +245,15 @@
   }
 
   v188 = v13;
-  v190 = self;
-  v192 = v10;
-  v15 = [v10 _additionalTextInputLocales];
-  v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v15, "count")}];
+  selfCopy = self;
+  v192 = delegateAsResponder;
+  _additionalTextInputLocales = [delegateAsResponder _additionalTextInputLocales];
+  v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(_additionalTextInputLocales, "count")}];
   v194 = 0u;
   v195 = 0u;
   v196 = 0u;
   v197 = 0u;
-  v17 = v15;
+  v17 = _additionalTextInputLocales;
   v18 = [v17 countByEnumeratingWithState:&v194 objects:v210 count:16];
   if (v18)
   {
@@ -268,8 +268,8 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v194 + 1) + 8 * i) localeIdentifier];
-        [v16 addObject:v22];
+        localeIdentifier = [*(*(&v194 + 1) + 8 * i) localeIdentifier];
+        [v16 addObject:localeIdentifier];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v194 objects:v210 count:16];
@@ -283,72 +283,72 @@
     [v4 setAdditionalLocaleIdentifiers:v16];
   }
 
-  v23 = [v6 recipientIdentifier];
-  [v4 setRecipientId:v23];
+  recipientIdentifier = [keyboardState recipientIdentifier];
+  [v4 setRecipientId:recipientIdentifier];
 
-  v24 = [v6 responseContext];
-  [v4 setResponseContext:v24];
+  responseContext = [keyboardState responseContext];
+  [v4 setResponseContext:responseContext];
 
-  v25 = [v6 inputContextHistory];
-  v26 = [v25 copy];
+  inputContextHistory = [keyboardState inputContextHistory];
+  v26 = [inputContextHistory copy];
   [v4 setInputContextHistory:v26];
 
-  v27 = [v6 supportedPayloadIds];
-  [v4 setSupportedPayloadIds:v27];
+  supportedPayloadIds = [keyboardState supportedPayloadIds];
+  [v4 setSupportedPayloadIds:supportedPayloadIds];
 
   v28 = +[UIKeyboardImpl activeInstance];
-  v29 = [v28 textInputTraits];
-  v30 = [v29 hidePrediction];
+  textInputTraits2 = [v28 textInputTraits];
+  hidePrediction = [textInputTraits2 hidePrediction];
 
-  v31 = [(UIKBRTIPartner *)v190 rtiDocumentTraits];
-  v193 = v30;
-  if (v31)
+  rtiDocumentTraits = [(UIKBRTIPartner *)selfCopy rtiDocumentTraits];
+  v193 = hidePrediction;
+  if (rtiDocumentTraits)
   {
-    v32 = [(UIKBRTIPartner *)v190 rtiDocumentTraits];
-    v193 = v30 | [v32 hidePrediction];
+    rtiDocumentTraits2 = [(UIKBRTIPartner *)selfCopy rtiDocumentTraits];
+    v193 = hidePrediction | [rtiDocumentTraits2 hidePrediction];
   }
 
-  [v4 setHidePrediction:v30];
+  [v4 setHidePrediction:hidePrediction];
   v33 = +[UIKeyboardImpl activeInstance];
-  v34 = [v33 textInputTraits];
-  v35 = [v34 disablePrediction];
+  textInputTraits3 = [v33 textInputTraits];
+  disablePrediction = [textInputTraits3 disablePrediction];
 
-  v36 = [(UIKBRTIPartner *)v190 rtiDocumentTraits];
-  if (v36)
+  rtiDocumentTraits3 = [(UIKBRTIPartner *)selfCopy rtiDocumentTraits];
+  if (rtiDocumentTraits3)
   {
-    v37 = [(UIKBRTIPartner *)v190 rtiDocumentTraits];
-    v193 |= v35 ^ [v37 disablePrediction];
+    rtiDocumentTraits4 = [(UIKBRTIPartner *)selfCopy rtiDocumentTraits];
+    v193 |= disablePrediction ^ [rtiDocumentTraits4 disablePrediction];
   }
 
-  [v4 setDisablePrediction:v35];
+  [v4 setDisablePrediction:disablePrediction];
   v38 = +[UIKeyboardImpl activeInstance];
-  v39 = [v38 inputDelegate];
-  v40 = [v39 textInputView];
-  [v4 setShouldReverseLayoutDirection:{objc_msgSend(v40, "_shouldReverseLayoutDirection")}];
+  inputDelegate = [v38 inputDelegate];
+  textInputView = [inputDelegate textInputView];
+  [v4 setShouldReverseLayoutDirection:{objc_msgSend(textInputView, "_shouldReverseLayoutDirection")}];
 
-  [v4 setAutofillMode:{objc_msgSend(v6, "autofillMode")}];
-  [v4 setAutofillSubMode:{objc_msgSend(v6, "autofillSubMode")}];
-  if ([v6 autofillMode] && objc_msgSend(v6, "autofillMode") != 8)
+  [v4 setAutofillMode:{objc_msgSend(keyboardState, "autofillMode")}];
+  [v4 setAutofillSubMode:{objc_msgSend(keyboardState, "autofillSubMode")}];
+  if ([keyboardState autofillMode] && objc_msgSend(keyboardState, "autofillMode") != 8)
   {
-    v41 = [(UIKBRTIPartner *)v190 partnerDelegate];
-    v42 = [v41 textContentTypeForCurrentInputDelegate];
-    v43 = [v4 textInputTraits];
-    [v43 setTextContentType:v42];
+    partnerDelegate3 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+    textContentTypeForCurrentInputDelegate = [partnerDelegate3 textContentTypeForCurrentInputDelegate];
+    textInputTraits4 = [v4 textInputTraits];
+    [textInputTraits4 setTextContentType:textContentTypeForCurrentInputDelegate];
   }
 
-  v44 = [v6 autofillContext];
-  [v4 setAutofillContext:v44];
+  autofillContext = [keyboardState autofillContext];
+  [v4 setAutofillContext:autofillContext];
 
   v45 = +[UIKeyboardImpl activeInstance];
-  v46 = [v45 _passwordRules];
-  [v4 setPasswordRules:v46];
+  _passwordRules = [v45 _passwordRules];
+  [v4 setPasswordRules:_passwordRules];
 
   v47 = +[UIKeyboardImpl activeInstance];
   [v4 setShouldLoadAutofillSignUp:{objc_msgSend(v47, "shouldLoadAutofillSignUpInputViewController")}];
 
-  if ([v6 supplementalLexiconIdentifier])
+  if ([keyboardState supplementalLexiconIdentifier])
   {
-    v48 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v6, "supplementalLexiconIdentifier")}];
+    v48 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(keyboardState, "supplementalLexiconIdentifier")}];
     v209 = v48;
     v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v209 count:1];
     [v4 setEnabledSupplementalLexiconIdentifiers:v49];
@@ -359,67 +359,67 @@
     [v4 setEnabledSupplementalLexiconIdentifiers:0];
   }
 
-  v191 = v6;
-  v51 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  [v4 setDelegateConformanceType:{objc_msgSend(v51, "delegateConformanceType")}];
+  v191 = keyboardState;
+  partnerDelegate4 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  [v4 setDelegateConformanceType:{objc_msgSend(partnerDelegate4, "delegateConformanceType")}];
 
-  v52 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  v53 = [v52 inputDelegate];
+  partnerDelegate5 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  inputDelegate2 = [partnerDelegate5 inputDelegate];
   v54 = objc_opt_respondsToSelector();
 
   if (v54)
   {
-    v55 = [(UIKBRTIPartner *)v190 partnerDelegate];
-    v56 = [v55 inputDelegate];
-    [v4 setDisableAutomaticKeyboardUI:{objc_msgSend(v56, "_disableAutomaticKeyboardUI")}];
+    partnerDelegate6 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+    inputDelegate3 = [partnerDelegate6 inputDelegate];
+    [v4 setDisableAutomaticKeyboardUI:{objc_msgSend(inputDelegate3, "_disableAutomaticKeyboardUI")}];
   }
 
-  v57 = [(UIKBRTIPartner *)v190 rtiClient];
-  if (v57)
+  rtiClient2 = [(UIKBRTIPartner *)selfCopy rtiClient];
+  if (rtiClient2)
   {
-    v58 = v57;
+    v58 = rtiClient2;
     v59 = +[UIKeyboard usesInputSystemUI];
 
     if (v59)
     {
       v60 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v61 = [v60 remoteInputViewHost];
+      remoteInputViewHost = [v60 remoteInputViewHost];
 
-      v62 = [v61 inputViewInfo];
-      v63 = [v62 rtiInputViewInfo];
-      [v4 setInputViewInfo:v63];
+      inputViewInfo = [remoteInputViewHost inputViewInfo];
+      rtiInputViewInfo = [inputViewInfo rtiInputViewInfo];
+      [v4 setInputViewInfo:rtiInputViewInfo];
 
-      v64 = [v61 assistantViewInfo];
-      v65 = [v64 rtiInputViewInfo];
-      [v4 setAssistantViewInfo:v65];
+      assistantViewInfo = [remoteInputViewHost assistantViewInfo];
+      rtiInputViewInfo2 = [assistantViewInfo rtiInputViewInfo];
+      [v4 setAssistantViewInfo:rtiInputViewInfo2];
 
-      v66 = [(UIKBRTIPartner *)v190 delegate];
-      v67 = [v61 remoteAssistantItemForResponder:v66];
+      delegate = [(UIKBRTIPartner *)selfCopy delegate];
+      v67 = [remoteInputViewHost remoteAssistantItemForResponder:delegate];
       [v4 setAssistantItem:v67];
     }
   }
 
-  v68 = [v192 _responderWindow];
-  v186 = [v68 windowScene];
-  v185 = [v186 _sceneIdentifier];
+  _responderWindow = [v192 _responderWindow];
+  windowScene = [_responderWindow windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
   [v4 setSceneID:?];
-  [v4 setContextID:{objc_msgSend(v68, "_contextId")}];
-  v187 = v68;
-  v69 = [v68 layer];
+  [v4 setContextID:{objc_msgSend(_responderWindow, "_contextId")}];
+  v187 = _responderWindow;
+  layer = [_responderWindow layer];
   [v4 setLayerID:CALayerGetRenderId()];
 
   if (objc_opt_respondsToSelector())
   {
     v70 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v71 = [v70 hardwareKeyboardExclusivityIdentifier];
-    [v4 setSceneExclusivityIdentifier:v71];
+    hardwareKeyboardExclusivityIdentifier = [v70 hardwareKeyboardExclusivityIdentifier];
+    [v4 setSceneExclusivityIdentifier:hardwareKeyboardExclusivityIdentifier];
   }
 
-  v72 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  [v72 updateDelegatePasteSupportIfNeeded];
+  partnerDelegate7 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  [partnerDelegate7 updateDelegatePasteSupportIfNeeded];
 
-  v73 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  [v4 setSupportsImagePaste:{objc_msgSend(v73, "delegateSupportsImagePaste")}];
+  partnerDelegate8 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  [v4 setSupportsImagePaste:{objc_msgSend(partnerDelegate8, "delegateSupportsImagePaste")}];
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -428,25 +428,25 @@
       goto LABEL_45;
     }
 
-    v74 = [(UIKBRTIPartner *)v190 partnerDelegate];
-    if ([v74 canInsertAdaptiveImageGlyph])
+    partnerDelegate9 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+    if ([partnerDelegate9 canInsertAdaptiveImageGlyph])
     {
       [v4 setSupportsEmojiImageTextAttachments:1];
       goto LABEL_44;
     }
 
-    v75 = [(UIKBRTIPartner *)v190 partnerDelegate];
-    [v4 setSupportsEmojiImageTextAttachments:{objc_msgSend(v75, "canInsertEmojiImageTextAttachment")}];
+    partnerDelegate10 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+    [v4 setSupportsEmojiImageTextAttachments:{objc_msgSend(partnerDelegate10, "canInsertEmojiImageTextAttachment")}];
 LABEL_43:
 
     goto LABEL_44;
   }
 
-  v74 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  if (![v74 canInsertAdaptiveImageGlyph])
+  partnerDelegate9 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  if (![partnerDelegate9 canInsertAdaptiveImageGlyph])
   {
-    v75 = [(UIKBRTIPartner *)v190 partnerDelegate];
-    [v4 setSupportsAdaptiveImageGlyph:{objc_msgSend(v75, "canInsertStickerAsTextInputPayload")}];
+    partnerDelegate10 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+    [v4 setSupportsAdaptiveImageGlyph:{objc_msgSend(partnerDelegate10, "canInsertStickerAsTextInputPayload")}];
     goto LABEL_43;
   }
 
@@ -454,65 +454,65 @@ LABEL_43:
 LABEL_44:
 
 LABEL_45:
-  v76 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  v77 = [v76 textInputTraits];
-  [v4 setDevicePasscodeEntry:{objc_msgSend(v77, "isDevicePasscodeEntry")}];
+  partnerDelegate11 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  textInputTraits5 = [partnerDelegate11 textInputTraits];
+  [v4 setDevicePasscodeEntry:{objc_msgSend(textInputTraits5, "isDevicePasscodeEntry")}];
 
-  v78 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  v79 = [v78 textInputTraits];
-  [v4 setDisableInputBars:{objc_msgSend(v79, "disableInputBars")}];
+  partnerDelegate12 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  textInputTraits6 = [partnerDelegate12 textInputTraits];
+  [v4 setDisableInputBars:{objc_msgSend(textInputTraits6, "disableInputBars")}];
 
   v80 = +[UIKeyboardImpl activeInstance];
-  v189 = [v80 delegateAsResponder];
+  delegateAsResponder2 = [v80 delegateAsResponder];
 
   v200[0] = 0x1EFB531F0;
   v81 = MEMORY[0x1E696AD98];
-  v82 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  v183 = [v82 textInputTraits];
-  v182 = [v81 numberWithBool:{objc_msgSend(v183, "forceFloatingKeyboard")}];
+  partnerDelegate13 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  textInputTraits7 = [partnerDelegate13 textInputTraits];
+  v182 = [v81 numberWithBool:{objc_msgSend(textInputTraits7, "forceFloatingKeyboard")}];
   v201[0] = v182;
   v200[1] = 0x1EFB53210;
   v83 = MEMORY[0x1E696AD98];
-  v181 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  v180 = [v181 textInputTraits];
-  v179 = [v83 numberWithBool:{objc_msgSend(v180, "forceDisableDictation")}];
+  partnerDelegate14 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  textInputTraits8 = [partnerDelegate14 textInputTraits];
+  v179 = [v83 numberWithBool:{objc_msgSend(textInputTraits8, "forceDisableDictation")}];
   v201[1] = v179;
   v200[2] = 0x1EFB53230;
   v84 = MEMORY[0x1E696AD98];
-  v178 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  v177 = [v178 textInputTraits];
-  v176 = [v84 numberWithBool:{objc_msgSend(v177, "useAutomaticEndpointing")}];
+  partnerDelegate15 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  textInputTraits9 = [partnerDelegate15 textInputTraits];
+  v176 = [v84 numberWithBool:{objc_msgSend(textInputTraits9, "useAutomaticEndpointing")}];
   v201[2] = v176;
   v200[3] = 0x1EFB53250;
   v85 = MEMORY[0x1E696AD98];
-  v175 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  v174 = [v175 textInputTraits];
-  v173 = [v85 numberWithBool:{objc_msgSend(v174, "acceptsDictationSearchResults")}];
+  partnerDelegate16 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  textInputTraits10 = [partnerDelegate16 textInputTraits];
+  v173 = [v85 numberWithBool:{objc_msgSend(textInputTraits10, "acceptsDictationSearchResults")}];
   v201[3] = v173;
   v200[4] = 0x1EFB53270;
   v86 = MEMORY[0x1E696AD98];
   NSClassFromString(&cfstr_Uisearchtextfi_4.isa);
-  v184 = v82;
+  v184 = partnerDelegate13;
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v146 = [(UIKBRTIPartner *)v190 partnerDelegate];
-    v145 = [v146 textInputTraits];
-    v87 = [v145 showDictationButton];
+    partnerDelegate17 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+    textInputTraits11 = [partnerDelegate17 textInputTraits];
+    showDictationButton = [textInputTraits11 showDictationButton];
   }
 
   else
   {
-    v87 = 0;
+    showDictationButton = 0;
   }
 
-  v171 = [v86 numberWithInt:v87];
+  v171 = [v86 numberWithInt:showDictationButton];
   v201[4] = v171;
   v200[5] = 0x1EFB532D0;
   v88 = MEMORY[0x1E696AD98];
-  v170 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  v169 = [v170 textInputTraits];
-  v168 = [v88 numberWithBool:{objc_msgSend(v169, "forceEnableDictation")}];
+  partnerDelegate18 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  textInputTraits12 = [partnerDelegate18 textInputTraits];
+  v168 = [v88 numberWithBool:{objc_msgSend(textInputTraits12, "forceEnableDictation")}];
   v201[5] = v168;
   v200[6] = 0x1EFB53290;
   v89 = MEMORY[0x1E696AD98];
@@ -555,64 +555,64 @@ LABEL_45:
   v201[11] = v95;
   v200[12] = 0x1EFB53430;
   v96 = MEMORY[0x1E696AD98];
-  if (v189 && _os_feature_enabled_impl())
+  if (delegateAsResponder2 && _os_feature_enabled_impl())
   {
-    v97 = [v189 _shouldDisplayWritingToolsCandidateOptions];
+    _shouldDisplayWritingToolsCandidateOptions = [delegateAsResponder2 _shouldDisplayWritingToolsCandidateOptions];
   }
 
   else
   {
-    v97 = 0;
+    _shouldDisplayWritingToolsCandidateOptions = 0;
   }
 
-  v157 = [v96 numberWithInt:v97];
+  v157 = [v96 numberWithInt:_shouldDisplayWritingToolsCandidateOptions];
   v201[12] = v157;
   v200[13] = 0x1EFB53450;
   v98 = MEMORY[0x1E696AD98];
-  if (v189)
+  if (delegateAsResponder2)
   {
-    v99 = [v189 _shouldDisplayLongFormSmartReplyCandidateOptions];
+    _shouldDisplayLongFormSmartReplyCandidateOptions = [delegateAsResponder2 _shouldDisplayLongFormSmartReplyCandidateOptions];
   }
 
   else
   {
-    v99 = 0;
+    _shouldDisplayLongFormSmartReplyCandidateOptions = 0;
   }
 
-  v156 = [v98 numberWithInt:v99];
+  v156 = [v98 numberWithInt:_shouldDisplayLongFormSmartReplyCandidateOptions];
   v201[13] = v156;
   v200[14] = 0x1EFB53470;
   v100 = MEMORY[0x1E696AD98];
-  if (v189)
+  if (delegateAsResponder2)
   {
-    v101 = [v189 _shouldDisplayGenmojiIfEnabled];
+    _shouldDisplayGenmojiIfEnabled = [delegateAsResponder2 _shouldDisplayGenmojiIfEnabled];
   }
 
   else
   {
-    v101 = 0;
+    _shouldDisplayGenmojiIfEnabled = 0;
   }
 
-  v202 = [v100 numberWithInt:v101];
+  v202 = [v100 numberWithInt:_shouldDisplayGenmojiIfEnabled];
   v200[15] = 0x1EFB53370;
-  *&v154[4] = v190->_cachedHasPreviousKeyResponder;
+  *&v154[4] = selfCopy->_cachedHasPreviousKeyResponder;
   v155 = v202;
   if (*&v154[4])
   {
     *v154 = 0;
-    cachedHasPreviousKeyResponder = v190->_cachedHasPreviousKeyResponder;
+    cachedHasPreviousKeyResponder = selfCopy->_cachedHasPreviousKeyResponder;
   }
 
   else
   {
     v103 = MEMORY[0x1E696AD98];
-    v104 = [v189 _previousKeyResponder];
-    *v154 = v104 != 0;
-    v144 = v104;
-    if (v104)
+    _previousKeyResponder = [delegateAsResponder2 _previousKeyResponder];
+    *v154 = _previousKeyResponder != 0;
+    v144 = _previousKeyResponder;
+    if (_previousKeyResponder)
     {
-      v141 = [v189 _previousKeyResponder];
-      v105 = v141 != v189;
+      _previousKeyResponder2 = [delegateAsResponder2 _previousKeyResponder];
+      v105 = _previousKeyResponder2 != delegateAsResponder2;
     }
 
     else
@@ -626,23 +626,23 @@ LABEL_45:
   v148 = cachedHasPreviousKeyResponder;
   v203 = cachedHasPreviousKeyResponder;
   v200[16] = 0x1EFB53390;
-  *&v153[4] = v190->_cachedHasNextKeyResponder;
+  *&v153[4] = selfCopy->_cachedHasNextKeyResponder;
   if (*&v153[4])
   {
     *v153 = 0;
-    cachedHasNextKeyResponder = v190->_cachedHasNextKeyResponder;
+    cachedHasNextKeyResponder = selfCopy->_cachedHasNextKeyResponder;
   }
 
   else
   {
     v107 = MEMORY[0x1E696AD98];
-    v108 = [v189 _nextKeyResponder];
-    *v153 = v108 != 0;
-    v143 = v108;
-    if (v108)
+    _nextKeyResponder = [delegateAsResponder2 _nextKeyResponder];
+    *v153 = _nextKeyResponder != 0;
+    v143 = _nextKeyResponder;
+    if (_nextKeyResponder)
     {
-      v140 = [v189 _nextKeyResponder];
-      v109 = v140 != v189;
+      _nextKeyResponder2 = [delegateAsResponder2 _nextKeyResponder];
+      v109 = _nextKeyResponder2 != delegateAsResponder2;
     }
 
     else
@@ -657,15 +657,15 @@ LABEL_45:
   v204 = cachedHasNextKeyResponder;
   v200[17] = 0x1EFB533B0;
   v110 = MEMORY[0x1E696AD98];
-  v152 = [(UIKBRTIPartner *)v190 partnerDelegate];
-  v151 = [v110 numberWithBool:{objc_msgSend(v152, "returnKeyEnabled")}];
+  partnerDelegate19 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  v151 = [v110 numberWithBool:{objc_msgSend(partnerDelegate19, "returnKeyEnabled")}];
   v205 = v151;
   v200[18] = 0x1EFB533D0;
-  pendingDisableBecomeFirstResponderParameters = v190->_pendingDisableBecomeFirstResponderParameters;
+  pendingDisableBecomeFirstResponderParameters = selfCopy->_pendingDisableBecomeFirstResponderParameters;
   if (pendingDisableBecomeFirstResponderParameters)
   {
     v150 = 0;
-    v112 = v190->_pendingDisableBecomeFirstResponderParameters;
+    v112 = selfCopy->_pendingDisableBecomeFirstResponderParameters;
   }
 
   else
@@ -676,16 +676,16 @@ LABEL_45:
     if (v150)
     {
       v139 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v138 = [v139 keyboardArbiterClient];
-      v114 = [v138 disableBecomeFirstResponder];
+      keyboardArbiterClient = [v139 keyboardArbiterClient];
+      disableBecomeFirstResponder = [keyboardArbiterClient disableBecomeFirstResponder];
     }
 
     else
     {
-      v114 = 0;
+      disableBecomeFirstResponder = 0;
     }
 
-    v142 = [v113 numberWithInt:v114];
+    v142 = [v113 numberWithInt:disableBecomeFirstResponder];
     v199 = v142;
     v112 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v199 forKeys:&v198 count:1];
   }
@@ -694,8 +694,8 @@ LABEL_45:
   v200[19] = 0x1EFB533F0;
   v115 = MEMORY[0x1E696AD98];
   v116 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v117 = [v116 existingContainerRootController];
-  v118 = [v115 numberWithInt:{objc_msgSend(v117, "hiddenCount")}];
+  existingContainerRootController = [v116 existingContainerRootController];
+  v118 = [v115 numberWithInt:{objc_msgSend(existingContainerRootController, "hiddenCount")}];
   v207 = v118;
   v200[20] = 0x1EFB53410;
   v119 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v191, "wordLearningEnabled")}];
@@ -763,40 +763,40 @@ LABEL_88:
   {
   }
 
-  v122 = [v4 userInfo];
-  v123 = [v122 objectForKeyedSubscript:0x1EFB53370];
-  v124 = v190->_cachedHasPreviousKeyResponder;
-  v190->_cachedHasPreviousKeyResponder = v123;
+  userInfo = [v4 userInfo];
+  v123 = [userInfo objectForKeyedSubscript:0x1EFB53370];
+  v124 = selfCopy->_cachedHasPreviousKeyResponder;
+  selfCopy->_cachedHasPreviousKeyResponder = v123;
 
-  v125 = [v4 userInfo];
-  v126 = [v125 objectForKeyedSubscript:0x1EFB53390];
-  v127 = v190->_cachedHasNextKeyResponder;
-  v190->_cachedHasNextKeyResponder = v126;
+  userInfo2 = [v4 userInfo];
+  v126 = [userInfo2 objectForKeyedSubscript:0x1EFB53390];
+  v127 = selfCopy->_cachedHasNextKeyResponder;
+  selfCopy->_cachedHasNextKeyResponder = v126;
 
   v128 = +[UIKeyboardImpl activeInstance];
-  v129 = [v128 textInputTraits];
-  [v4 setSingleLineDocument:{objc_msgSend(v129, "isSingleLineDocument")}];
+  textInputTraits13 = [v128 textInputTraits];
+  [v4 setSingleLineDocument:{objc_msgSend(textInputTraits13, "isSingleLineDocument")}];
 
   v130 = _UIMainBundleIdentifier();
   [v4 setBundleId:v130];
 
   if (v193 && +[UIKeyboard usesInputSystemUI])
   {
-    v131 = [(UIKBRTIPartner *)v190 delegate];
-    v132 = [v131 _responderWindow];
-    v133 = [v132 windowScene];
-    v134 = [v133 _synchronizeDrawingAndReturnFence];
-    [v4 setFenceHandle:v134];
+    delegate2 = [(UIKBRTIPartner *)selfCopy delegate];
+    _responderWindow2 = [delegate2 _responderWindow];
+    windowScene2 = [_responderWindow2 windowScene];
+    _synchronizeDrawingAndReturnFence = [windowScene2 _synchronizeDrawingAndReturnFence];
+    [v4 setFenceHandle:_synchronizeDrawingAndReturnFence];
 
     v121 = v192;
   }
 
-  v135 = [(UIKBRTIPartner *)v190 rtiDocumentTraits];
-  v136 = [v4 isEqual:v135] & (v193 ^ 1);
+  rtiDocumentTraits5 = [(UIKBRTIPartner *)selfCopy rtiDocumentTraits];
+  v136 = [v4 isEqual:rtiDocumentTraits5] & (v193 ^ 1);
 
   if ((v136 & 1) == 0)
   {
-    [(UIKBRTIPartner *)v190 setRtiDocumentTraits:v4];
+    [(UIKBRTIPartner *)selfCopy setRtiDocumentTraits:v4];
   }
 
   v50 = v136 ^ 1;
@@ -806,22 +806,22 @@ LABEL_88:
 
 - (id)inputDelegate
 {
-  v2 = [(UIKBRTIPartner *)self partnerDelegate];
-  v3 = [v2 inputDelegate];
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  inputDelegate = [partnerDelegate inputDelegate];
 
-  return v3;
+  return inputDelegate;
 }
 
 - (CGRect)_selectionClipRect
 {
-  v3 = [(UIKBRTIPartner *)self inputDelegate];
+  inputDelegate = [(UIKBRTIPartner *)self inputDelegate];
   v4 = objc_opt_respondsToSelector();
 
-  v5 = [(UIKBRTIPartner *)self inputDelegate];
-  v6 = v5;
+  inputDelegate2 = [(UIKBRTIPartner *)self inputDelegate];
+  inputDelegate3 = inputDelegate2;
   if (v4)
   {
-    [v5 selectionClipRect];
+    [inputDelegate2 selectionClipRect];
 LABEL_5:
     v12 = v7;
     v13 = v8;
@@ -835,8 +835,8 @@ LABEL_5:
 
   if (v11)
   {
-    v6 = [(UIKBRTIPartner *)self inputDelegate];
-    [v6 _selectionClipRect];
+    inputDelegate3 = [(UIKBRTIPartner *)self inputDelegate];
+    [inputDelegate3 _selectionClipRect];
     goto LABEL_5;
   }
 
@@ -851,9 +851,9 @@ LABEL_7:
   v26.size.height = v15;
   if (CGRectIsNull(v26))
   {
-    v16 = [(UIKBRTIPartner *)self inputDelegate];
-    v17 = [v16 textInputView];
-    [v17 bounds];
+    inputDelegate4 = [(UIKBRTIPartner *)self inputDelegate];
+    textInputView = [inputDelegate4 textInputView];
+    [textInputView bounds];
     v12 = v18;
     v13 = v19;
     v14 = v20;
@@ -874,13 +874,13 @@ LABEL_7:
 - (void)_performQueuedSupplementalLexiconOperations
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBRTIPartner *)self queuedSupplementalLexiconOperations];
+  queuedSupplementalLexiconOperations = [(UIKBRTIPartner *)self queuedSupplementalLexiconOperations];
   [(UIKBRTIPartner *)self setQueuedSupplementalLexiconOperations:0];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v3;
+  v4 = queuedSupplementalLexiconOperations;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -896,19 +896,19 @@ LABEL_7:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 type];
-        if (v10 == 1)
+        type = [v9 type];
+        if (type == 1)
         {
           -[UIKBRTIPartner _didRemoveSupplementalLexiconWithIdentifier:](self, "_didRemoveSupplementalLexiconWithIdentifier:", [v9 lexiconIdentifier]);
         }
 
-        else if (!v10)
+        else if (!type)
         {
-          v11 = [v9 lexicon];
-          if (v11)
+          lexicon = [v9 lexicon];
+          if (lexicon)
           {
-            v12 = [v9 lexicon];
-            [(UIKBRTIPartner *)self _didAddSupplementalLexicon:v12];
+            lexicon2 = [v9 lexicon];
+            [(UIKBRTIPartner *)self _didAddSupplementalLexicon:lexicon2];
           }
         }
       }
@@ -922,13 +922,13 @@ LABEL_7:
 
 - (void)_updateGeometryObserverIfNecessary
 {
-  v3 = [(UIKBRTIPartner *)self rtiClient];
-  v4 = [v3 defaultDocumentRequest];
-  if (v4)
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  defaultDocumentRequest = [rtiClient defaultDocumentRequest];
+  if (defaultDocumentRequest)
   {
-    v5 = [(UIKBRTIPartner *)self rtiClient];
-    v6 = [v5 defaultDocumentRequest];
-    v7 = ([v6 flags] & 4) == 0;
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    defaultDocumentRequest2 = [rtiClient2 defaultDocumentRequest];
+    v7 = ([defaultDocumentRequest2 flags] & 4) == 0;
   }
 
   else
@@ -946,8 +946,8 @@ LABEL_7:
     v8 = 0;
   }
 
-  v9 = [(UIKBRTIPartner *)self rtiClient];
-  if (![v9 isEnvironmentEnabled])
+  rtiClient3 = [(UIKBRTIPartner *)self rtiClient];
+  if (![rtiClient3 isEnvironmentEnabled])
   {
 
     if (!v8)
@@ -956,17 +956,17 @@ LABEL_7:
     }
 
 LABEL_21:
-    v17 = [(UIKBRTIPartner *)self inputDelegate];
-    v18 = [v17 textInputView];
-    [(UIView *)v18 _addGeometryChangeObserver:?];
+    inputDelegate = [(UIKBRTIPartner *)self inputDelegate];
+    textInputView = [inputDelegate textInputView];
+    [(UIView *)textInputView _addGeometryChangeObserver:?];
 
-    v15 = self;
+    selfCopy2 = self;
     v16 = 1;
     goto LABEL_22;
   }
 
-  v10 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-  if (v10 != 0 && !v7 && ![(UIKBRTIPartner *)self isObservingGeometry])
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  if (currentSessionIdentifier != 0 && !v7 && ![(UIKBRTIPartner *)self isObservingGeometry])
   {
 
     goto LABEL_21;
@@ -978,35 +978,35 @@ LABEL_21:
   }
 
 LABEL_13:
-  v20 = [(UIKBRTIPartner *)self rtiClient];
-  if (![v20 isEnvironmentEnabled])
+  rtiClient4 = [(UIKBRTIPartner *)self rtiClient];
+  if (![rtiClient4 isEnvironmentEnabled])
   {
-    v12 = [(UIKBRTIPartner *)self isObservingGeometry];
+    isObservingGeometry = [(UIKBRTIPartner *)self isObservingGeometry];
 
-    if (!v12)
+    if (!isObservingGeometry)
     {
       return;
     }
 
 LABEL_19:
-    v13 = [(UIKBRTIPartner *)self inputDelegate];
-    v14 = [v13 textInputView];
-    [(UIView *)v14 _removeGeometryChangeObserver:?];
+    inputDelegate2 = [(UIKBRTIPartner *)self inputDelegate];
+    textInputView2 = [inputDelegate2 textInputView];
+    [(UIView *)textInputView2 _removeGeometryChangeObserver:?];
 
-    v15 = self;
+    selfCopy2 = self;
     v16 = 0;
 LABEL_22:
 
-    [(UIKBRTIPartner *)v15 setIsObservingGeometry:v16];
+    [(UIKBRTIPartner *)selfCopy2 setIsObservingGeometry:v16];
     return;
   }
 
-  v11 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-  if (!v11)
+  currentSessionIdentifier2 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  if (!currentSessionIdentifier2)
   {
-    v19 = [(UIKBRTIPartner *)self isObservingGeometry];
+    isObservingGeometry2 = [(UIKBRTIPartner *)self isObservingGeometry];
 
-    if (!v19)
+    if (!isObservingGeometry2)
     {
       return;
     }
@@ -1040,8 +1040,8 @@ LABEL_22:
 
 - (void)_createRTIClientIfNecessary
 {
-  v3 = [(UIKBRTIPartner *)self rtiClient];
-  if (v3)
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  if (rtiClient)
   {
   }
 
@@ -1060,23 +1060,23 @@ LABEL_22:
 
 - (void)_createRTIClient
 {
-  v3 = [(UIKBRTIPartner *)self _newRTIConnection];
-  [(UIKBRTIPartner *)self setRtiClient:v3];
+  _newRTIConnection = [(UIKBRTIPartner *)self _newRTIConnection];
+  [(UIKBRTIPartner *)self setRtiClient:_newRTIConnection];
 
   if (_os_feature_enabled_impl())
   {
-    v4 = [(UIKBRTIPartner *)self rtiClient];
+    rtiClient = [(UIKBRTIPartner *)self rtiClient];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(UIKBRTIPartner *)self rtiClient];
-      [v6 addMachNames:&unk_1EFE2CD78];
+      rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+      [rtiClient2 addMachNames:&unk_1EFE2CD78];
     }
   }
 
-  v7 = [(UIKBRTIPartner *)self rtiClient];
-  [(UIKBRTIPartner *)self _didCreateRTIClient:v7];
+  rtiClient3 = [(UIKBRTIPartner *)self rtiClient];
+  [(UIKBRTIPartner *)self _didCreateRTIClient:rtiClient3];
 }
 
 + (void)registerTextOperationCustomInfo
@@ -1327,15 +1327,15 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
     rtiSessionMarkers = v3->_rtiSessionMarkers;
     v3->_rtiSessionMarkers = v5;
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v3 selector:sel__applicationWillSuspend_ name:@"UIApplicationSuspendedNotification" object:0];
-    [v7 addObserver:v3 selector:sel__viewServiceHostDidBecomeActive_ name:0x1EFBB4870 object:0];
-    [v7 addObserver:v3 selector:sel__viewServiceHostWillResignActive_ name:0x1EFBB4850 object:0];
-    [v7 addObserver:v3 selector:sel__viewServiceHostDidBecomeActive_ name:0x1EFBB4830 object:0];
-    [v7 addObserver:v3 selector:sel_documentTraitsChanged name:@"_UIHardwareKeyboardExclusivityIdentifierChangedNotification" object:0];
-    [v7 addObserver:v3 selector:sel__applicationWillAddDeactivationReason_ name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
-    [v7 addObserver:v3 selector:sel__applicationDidRemoveDeactivationReason_ name:@"_UIApplicationDidRemoveDeactivationReasonNotification" object:0];
-    [v7 addObserver:v3 selector:sel__screenModeDidChange_ name:@"UIScreenModeDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__applicationWillSuspend_ name:@"UIApplicationSuspendedNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel__viewServiceHostDidBecomeActive_ name:0x1EFBB4870 object:0];
+    [defaultCenter addObserver:v3 selector:sel__viewServiceHostWillResignActive_ name:0x1EFBB4850 object:0];
+    [defaultCenter addObserver:v3 selector:sel__viewServiceHostDidBecomeActive_ name:0x1EFBB4830 object:0];
+    [defaultCenter addObserver:v3 selector:sel_documentTraitsChanged name:@"_UIHardwareKeyboardExclusivityIdentifierChangedNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel__applicationWillAddDeactivationReason_ name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel__applicationDidRemoveDeactivationReason_ name:@"_UIApplicationDidRemoveDeactivationReasonNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel__screenModeDidChange_ name:@"UIScreenModeDidChangeNotification" object:0];
   }
 
   return v3;
@@ -1375,20 +1375,20 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
     CFRelease(wkRectTokenizer);
   }
 
-  v4 = [(UIKBRTIPartner *)self rtiClient];
-  if (v4)
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  if (rtiClient)
   {
-    v5 = v4;
-    v6 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    v5 = rtiClient;
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
 
-    if (v6)
+    if (currentSessionIdentifier)
     {
       [(UIKBRTIPartner *)self endInputSessionWithIdentifier:0];
     }
   }
 
-  v7 = [(UIKBRTIPartner *)self rtiClient];
-  [v7 invalidateConnections];
+  rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+  [rtiClient2 invalidateConnections];
 
   v10.receiver = self;
   v10.super_class = UIKBRTIPartner;
@@ -1410,21 +1410,21 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
     }
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIApplicationSuspendedNotification" object:0];
-  [v3 removeObserver:self name:0x1EFBB4870 object:0];
-  [v3 removeObserver:self name:0x1EFBB4850 object:0];
-  [v3 removeObserver:self name:0x1EFBB4830 object:0];
-  [v3 removeObserver:self name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
-  [v3 removeObserver:self name:@"_UIApplicationDidRemoveDeactivationReasonNotification" object:0];
-  [v3 removeObserver:self name:@"UIScreenModeDidChangeNotification" object:0];
-  v4 = [(UIKBRTIPartner *)self rtiClient];
-  if (v4)
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIApplicationSuspendedNotification" object:0];
+  [defaultCenter removeObserver:self name:0x1EFBB4870 object:0];
+  [defaultCenter removeObserver:self name:0x1EFBB4850 object:0];
+  [defaultCenter removeObserver:self name:0x1EFBB4830 object:0];
+  [defaultCenter removeObserver:self name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
+  [defaultCenter removeObserver:self name:@"_UIApplicationDidRemoveDeactivationReasonNotification" object:0];
+  [defaultCenter removeObserver:self name:@"UIScreenModeDidChangeNotification" object:0];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  if (rtiClient)
   {
-    v5 = v4;
-    v6 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    v5 = rtiClient;
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
 
-    if (v6)
+    if (currentSessionIdentifier)
     {
       [(UIKBRTIPartner *)self endInputSessionWithIdentifier:0];
     }
@@ -1438,30 +1438,30 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
 
 - (UIKeyboardTaskSubqueue)keyboardTaskSubqueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_keyboardTaskSubqueue;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_keyboardTaskSubqueue;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setKeyboardTaskSubqueue:(id)a3
+- (void)setKeyboardTaskSubqueue:(id)subqueue
 {
-  v4 = a3;
+  subqueueCopy = subqueue;
   obj = self;
   objc_sync_enter(obj);
   keyboardTaskSubqueue = obj->_keyboardTaskSubqueue;
-  obj->_keyboardTaskSubqueue = v4;
+  obj->_keyboardTaskSubqueue = subqueueCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)_applicationWillSuspend:(id)a3
+- (void)_applicationWillSuspend:(id)suspend
 {
-  v4 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
 
-  if (v4)
+  if (currentSessionIdentifier)
   {
     if (+[UIKeyboard usingEndInputSessionCompletion])
     {
@@ -1471,23 +1471,23 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
 
     else
     {
-      v5 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-      [(UIKBRTIPartner *)self endAllowingRemoteTextInput:v5];
+      currentSessionIdentifier2 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+      [(UIKBRTIPartner *)self endAllowingRemoteTextInput:currentSessionIdentifier2];
     }
   }
 }
 
-- (void)_viewServiceHostWillResignActive:(id)a3
+- (void)_viewServiceHostWillResignActive:(id)active
 {
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 existingContainerRootController];
-  [v5 takeKeyboardSnapshotIgnoringSpotlightCheck:0];
+  existingContainerRootController = [v4 existingContainerRootController];
+  [existingContainerRootController takeKeyboardSnapshotIgnoringSpotlightCheck:0];
 
   if (+[UIKeyboard usesInputSystemUIForAutoFillOnly])
   {
-    v6 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    v7 = [(UIKBRTIPartner *)self authenticatingSessionIdentifier];
-    v8 = [v6 isEqual:v7];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    authenticatingSessionIdentifier = [(UIKBRTIPartner *)self authenticatingSessionIdentifier];
+    v8 = [currentSessionIdentifier isEqual:authenticatingSessionIdentifier];
 
     if ((v8 & 1) == 0)
     {
@@ -1500,20 +1500,20 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
   [(UIKBRTIPartner *)self _updateRTIAllowedAndNotify:0 withReason:@"View service host resigned active"];
 }
 
-- (void)_viewServiceHostDidBecomeActive:(id)a3
+- (void)_viewServiceHostDidBecomeActive:(id)active
 {
   [(UIKBRTIPartner *)self setViewServiceStateIsActiveForRTI:1];
 
   [(UIKBRTIPartner *)self _updateRTIAllowedAndNotify:0 withReason:@"View service host became active"];
 }
 
-- (void)_applicationWillAddDeactivationReason:(id)a3
+- (void)_applicationWillAddDeactivationReason:(id)reason
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
-  v6 = [v5 integerValue];
+  userInfo = [reason userInfo];
+  v5 = [userInfo objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
+  integerValue = [v5 integerValue];
 
-  if (v6 == 4 && (+[UIKeyboard usesInputSystemUI](UIKeyboard, "usesInputSystemUI") || +[UIKeyboard usesInputSystemUIForAutoFillOnlyWithRTI]))
+  if (integerValue == 4 && (+[UIKeyboard usesInputSystemUI](UIKeyboard, "usesInputSystemUI") || +[UIKeyboard usesInputSystemUIForAutoFillOnlyWithRTI]))
   {
     self->_applicationDeactivationReasonAssistant = 1;
     if (self->_dontTakeKeyboardSnapshot)
@@ -1526,8 +1526,8 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
       }
 
       v8 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v9 = [v8 existingContainerRootController];
-      [v9 takeKeyboardSnapshotIgnoringSpotlightCheck:self->_applicationDeactivationReasonAssistant];
+      existingContainerRootController = [v8 existingContainerRootController];
+      [existingContainerRootController takeKeyboardSnapshotIgnoringSpotlightCheck:self->_applicationDeactivationReasonAssistant];
     }
   }
 
@@ -1535,24 +1535,24 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
   {
     if (+[UIKeyboard usesInputSystemUIForAutoFillOnly])
     {
-      v10 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-      v11 = [(UIKBRTIPartner *)self authenticatingSessionIdentifier];
-      v12 = [v10 isEqual:v11];
+      currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+      authenticatingSessionIdentifier = [(UIKBRTIPartner *)self authenticatingSessionIdentifier];
+      v12 = [currentSessionIdentifier isEqual:authenticatingSessionIdentifier];
 
-      if ((v12 & 1) == 0 && (v6 == 5 || v6 == 0))
+      if ((v12 & 1) == 0 && (integerValue == 5 || integerValue == 0))
       {
         [(UIKBRTIPartner *)self forwardInputDestinationEventToUIHost:sel_dismissAutoFillPanel];
       }
     }
 
-    if ((v6 - 1) <= 1)
+    if ((integerValue - 1) <= 1)
     {
       self->_dontTakeKeyboardSnapshot = 1;
     }
 
     if (+[UIKeyboard usesInputSystemUI])
     {
-      v14 = [UIApp _isActivatedIgnoringReasons:-[UIKBRTIPartner _ignoredReasonsForKeyboard](self withNewReason:{"_ignoredReasonsForKeyboard"), v6}];
+      v14 = [UIApp _isActivatedIgnoringReasons:-[UIKBRTIPartner _ignoredReasonsForKeyboard](self withNewReason:{"_ignoredReasonsForKeyboard"), integerValue}];
     }
 
     else
@@ -1563,12 +1563,12 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
     v15 = +[UIKeyboard usesInputSystemUIForAutoFillOnlyWithRTI];
     if (v15)
     {
-      LOBYTE(v15) = [UIApp _isActivatedIgnoringReasons:-[UIKBRTIPartner _ignoredReasonsForAutoFill](self withNewReason:{"_ignoredReasonsForAutoFill"), v6}];
+      LOBYTE(v15) = [UIApp _isActivatedIgnoringReasons:-[UIKBRTIPartner _ignoredReasonsForAutoFill](self withNewReason:{"_ignoredReasonsForAutoFill"), integerValue}];
     }
 
-    if ((v6 - 11) > 1)
+    if ((integerValue - 11) > 1)
     {
-      if (v6 != 5)
+      if (integerValue != 5)
       {
         [(UIKBRTIPartner *)self setApplicationStateIsActiveForRTI:(v14 | v15) & 1];
 
@@ -1581,11 +1581,11 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
       [(UIKBRTIPartner *)self setApplicationStateIsActiveForRTI:(v14 | v15) & 1];
       dontTakeKeyboardSnapshot = self->_dontTakeKeyboardSnapshot;
       v17 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v18 = [v17 existingContainerRootController];
-      v19 = v18;
+      existingContainerRootController2 = [v17 existingContainerRootController];
+      v19 = existingContainerRootController2;
       if (dontTakeKeyboardSnapshot)
       {
-        [v18 clearKeyboardSnapshot];
+        [existingContainerRootController2 clearKeyboardSnapshot];
 
         v17 = _UIKeyboardLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1597,7 +1597,7 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
 
       else
       {
-        [v18 takeKeyboardSnapshotIgnoringSpotlightCheck:self->_applicationDeactivationReasonAssistant];
+        [existingContainerRootController2 takeKeyboardSnapshotIgnoringSpotlightCheck:self->_applicationDeactivationReasonAssistant];
       }
 
       [(UIKBRTIPartner *)self _updateRTIAllowedAndNotify:0 withReason:@"Application suspended"];
@@ -1615,11 +1615,11 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
   }
 }
 
-- (void)_applicationDidRemoveDeactivationReason:(id)a3
+- (void)_applicationDidRemoveDeactivationReason:(id)reason
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
-  v6 = [v5 integerValue];
+  userInfo = [reason userInfo];
+  v5 = [userInfo objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
+  integerValue = [v5 integerValue];
 
   if (+[UIKeyboard usesInputSystemUI])
   {
@@ -1639,12 +1639,12 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
 
   if (((v7 | v8) & 1) == 0)
   {
-    if ((v6 - 11) < 2)
+    if ((integerValue - 11) < 2)
     {
       goto LABEL_11;
     }
 
-    if (v6 == 5)
+    if (integerValue == 5)
     {
       goto LABEL_19;
     }
@@ -1652,15 +1652,15 @@ void __49__UIKBRTIPartner_registerTextOperationCustomInfo__block_invoke()
     goto LABEL_17;
   }
 
-  v9 = [(UIKBRTIPartner *)self applicationStateIsActiveForRTI];
-  if ((v6 - 11) >= 2)
+  applicationStateIsActiveForRTI = [(UIKBRTIPartner *)self applicationStateIsActiveForRTI];
+  if ((integerValue - 11) >= 2)
   {
-    if (v6 == 5)
+    if (integerValue == 5)
     {
       goto LABEL_19;
     }
 
-    if (v9)
+    if (applicationStateIsActiveForRTI)
     {
       v11 = 1;
 LABEL_18:
@@ -1674,7 +1674,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v9)
+  if (!applicationStateIsActiveForRTI)
   {
 LABEL_11:
     v10 = [UIApp _isActivatedIgnoringReasons:{-[UIKBRTIPartner _ignoredReasonsForKeyboard](self, "_ignoredReasonsForKeyboard")}];
@@ -1692,50 +1692,50 @@ LABEL_19:
 
 - (id)delegate
 {
-  v2 = [(UIKBRTIPartner *)self partnerDelegate];
-  v3 = [v2 delegate];
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  delegate = [partnerDelegate delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (void)documentTraitsChanged
 {
   if ([(UIKBRTIPartner *)self _updateRTITraitsIfNecessary])
   {
-    v3 = [(UIKBRTIPartner *)self rtiClient];
-    v4 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    v5 = [(UIKBRTIPartner *)self rtiDocumentTraits];
-    [v3 remoteTextInputSessionWithID:v4 documentTraitsDidChange:v5];
+    rtiClient = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    rtiDocumentTraits = [(UIKBRTIPartner *)self rtiDocumentTraits];
+    [rtiClient remoteTextInputSessionWithID:currentSessionIdentifier documentTraitsDidChange:rtiDocumentTraits];
 
-    v7 = [(UIKBRTIPartner *)self rtiDocumentTraits];
-    v6 = [v7 fenceHandle];
-    [v6 invalidate];
+    rtiDocumentTraits2 = [(UIKBRTIPartner *)self rtiDocumentTraits];
+    fenceHandle = [rtiDocumentTraits2 fenceHandle];
+    [fenceHandle invalidate];
   }
 }
 
-- (void)updateAnimationForOptions:(id)a3
+- (void)updateAnimationForOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 nextAnimationStyle];
+  nextAnimationStyle = [v3 nextAnimationStyle];
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 setOffscreenDirection:{objc_msgSend(v4, "outDirection")}];
+    [optionsCopy setOffscreenDirection:{objc_msgSend(nextAnimationStyle, "outDirection")}];
   }
 }
 
-- (void)beginInputSessionWithIdentifier:(id)a3
+- (void)beginInputSessionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(UIKBRTIPartner *)self _createRTIClientIfNecessary];
-  [(UIKBRTIPartner *)self setCurrentSessionIdentifier:v4];
+  [(UIKBRTIPartner *)self setCurrentSessionIdentifier:identifierCopy];
   if (!+[UIKeyboard usingEndInputSessionCompletion])
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(UIKBRTIPartner *)self rtiSessionMarkers];
+    rtiSessionMarkers = [(UIKBRTIPartner *)self rtiSessionMarkers];
     v6 = objc_opt_new();
-    [v5 setObject:v6 forKey:v4];
+    [rtiSessionMarkers setObject:v6 forKey:identifierCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -1748,8 +1748,8 @@ LABEL_19:
   v21[1] = 3221225472;
   v21[2] = __50__UIKBRTIPartner_beginInputSessionWithIdentifier___block_invoke;
   v21[3] = &unk_1E70FFB90;
-  v7 = v4;
-  v23 = self;
+  v7 = identifierCopy;
+  selfCopy = self;
   v24 = &v25;
   v22 = v7;
   [(UIKBRTIPartner *)self updateStateWithCompletion:v21 updateTraits:0];
@@ -1758,9 +1758,9 @@ LABEL_19:
     *(v26 + 24) = v7 != 0;
     if (v7)
     {
-      v8 = [(UIKBRTIPartner *)self rtiDocumentState];
+      rtiDocumentState = [(UIKBRTIPartner *)self rtiDocumentState];
 
-      if (!v8)
+      if (!rtiDocumentState)
       {
         v9 = objc_alloc_init(MEMORY[0x1E69C6F38]);
         [(UIKBRTIPartner *)self setRtiDocumentState:v9];
@@ -1769,30 +1769,30 @@ LABEL_19:
       }
     }
 
-    v10 = [MEMORY[0x1E69C6F80] defaultBeginOptions];
+    defaultBeginOptions = [MEMORY[0x1E69C6F80] defaultBeginOptions];
     v11 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v12 = [v11 visualModeManager];
-    v13 = [v12 windowingModeEnabled];
+    visualModeManager = [v11 visualModeManager];
+    windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-    [v10 setEnhancedWindowingModeEnabled:v13];
+    [defaultBeginOptions setEnhancedWindowingModeEnabled:windowingModeEnabled];
     v14 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v15 = [v14 nextAnimationStyle];
-    LOBYTE(v13) = [v15 animated];
+    nextAnimationStyle = [v14 nextAnimationStyle];
+    LOBYTE(windowingModeEnabled) = [nextAnimationStyle animated];
 
-    if ((v13 & 1) == 0)
+    if ((windowingModeEnabled & 1) == 0)
     {
-      [v10 setAnimated:0];
+      [defaultBeginOptions setAnimated:0];
     }
 
-    [(UIKBRTIPartner *)self updateAnimationForOptions:v10];
-    v16 = [(UIKBRTIPartner *)self rtiClient];
-    v17 = [(UIKBRTIPartner *)self rtiDocumentTraits];
-    v18 = [(UIKBRTIPartner *)self rtiDocumentState];
-    [v16 beginRemoteTextInputSessionWithID:v7 options:v10 documentTraits:v17 initialDocumentState:v18];
+    [(UIKBRTIPartner *)self updateAnimationForOptions:defaultBeginOptions];
+    rtiClient = [(UIKBRTIPartner *)self rtiClient];
+    rtiDocumentTraits = [(UIKBRTIPartner *)self rtiDocumentTraits];
+    rtiDocumentState2 = [(UIKBRTIPartner *)self rtiDocumentState];
+    [rtiClient beginRemoteTextInputSessionWithID:v7 options:defaultBeginOptions documentTraits:rtiDocumentTraits initialDocumentState:rtiDocumentState2];
 
-    v19 = [(UIKBRTIPartner *)self rtiDocumentTraits];
-    v20 = [v19 fenceHandle];
-    [v20 invalidate];
+    rtiDocumentTraits2 = [(UIKBRTIPartner *)self rtiDocumentTraits];
+    fenceHandle = [rtiDocumentTraits2 fenceHandle];
+    [fenceHandle invalidate];
 
     [(UIKBRTIPartner *)self _updateGeometryObserverIfNecessary];
     [(UIKBRTIPartner *)self _performQueuedSupplementalLexiconOperations];
@@ -1926,15 +1926,15 @@ LABEL_18:
   }
 }
 
-- (void)endInputSessionWithIdentifier:(id)a3 shouldResign:(BOOL)a4 waitForReply:(BOOL)a5
+- (void)endInputSessionWithIdentifier:(id)identifier shouldResign:(BOOL)resign waitForReply:(BOOL)reply
 {
-  v5 = a5;
-  v6 = a4;
+  replyCopy = reply;
+  resignCopy = resign;
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  identifierCopy = identifier;
   if (+[UIKeyboard usesInputSystemUI])
   {
-    v9 = !v6;
+    v9 = !resignCopy;
   }
 
   else
@@ -1948,26 +1948,26 @@ LABEL_18:
     [v10 setShadowState:0];
   }
 
-  if (!v8)
+  if (!identifierCopy)
   {
-    v8 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    identifierCopy = [(UIKBRTIPartner *)self currentSessionIdentifier];
   }
 
-  v11 = [MEMORY[0x1E69C6F80] defaultOptions];
-  v12 = v11;
-  if (v11)
+  defaultOptions = [MEMORY[0x1E69C6F80] defaultOptions];
+  v12 = defaultOptions;
+  if (defaultOptions)
   {
-    [v11 setShouldResign:v6];
+    [defaultOptions setShouldResign:resignCopy];
     [(UIKBRTIPartner *)self updateAnimationForOptions:v12];
   }
 
-  if (v5 && ([(UIKBRTIPartner *)self rtiClient], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_opt_respondsToSelector(), v13, (v14 & 1) != 0))
+  if (replyCopy && ([(UIKBRTIPartner *)self rtiClient], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_opt_respondsToSelector(), v13, (v14 & 1) != 0))
   {
     v15 = _UIKeyboardInputSessionChangeLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v45 = v8;
+      v45 = identifierCopy;
       _os_log_debug_impl(&dword_188A29000, v15, OS_LOG_TYPE_DEBUG, "Waiting on response from -endRemoteTextInputSessionWithID:%@", buf, 0xCu);
     }
 
@@ -1976,17 +1976,17 @@ LABEL_18:
       dispatch_once(&qword_1ED49F508, &__block_literal_global_208);
     }
 
-    v16 = [(UIKBRTIPartner *)self partnerDelegate];
-    v17 = [v16 taskQueue];
+    partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+    taskQueue = [partnerDelegate taskQueue];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __74__UIKBRTIPartner_endInputSessionWithIdentifier_shouldResign_waitForReply___block_invoke_3;
     v41[3] = &unk_1E70FD208;
     v41[4] = self;
-    v18 = v8;
+    v18 = identifierCopy;
     v42 = v18;
     v43 = v12;
-    [v17 performSingleTask:v41 breadcrumb:_MergedGlobals_1203];
+    [taskQueue performSingleTask:v41 breadcrumb:_MergedGlobals_1203];
 
     v19 = _UIKeyboardInputSessionChangeLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -2003,8 +2003,8 @@ LABEL_18:
     v35 = 3221225472;
     v36 = __74__UIKBRTIPartner_endInputSessionWithIdentifier_shouldResign_waitForReply___block_invoke_214;
     v37 = &unk_1E70F6228;
-    v38 = self;
-    v20 = v8;
+    selfCopy = self;
+    v20 = identifierCopy;
     v39 = v20;
     v40 = v12;
     v21 = _Block_copy(&v34);
@@ -2034,23 +2034,23 @@ LABEL_18:
 
   [(UIKBRTIPartner *)self finishCompletionHandlersIfNeeded];
   [(UIKBRTIPartner *)self setCurrentSessionIdentifier:0];
-  v25 = [(UIKBRTIPartner *)self rtiDocumentTraits];
-  v26 = [v25 devicePasscodeEntry];
+  rtiDocumentTraits = [(UIKBRTIPartner *)self rtiDocumentTraits];
+  devicePasscodeEntry = [rtiDocumentTraits devicePasscodeEntry];
 
-  if (v26)
+  if (devicePasscodeEntry)
   {
     v27 = objc_alloc_init(MEMORY[0x1E69D9590]);
-    v28 = [(UIKBRTIPartner *)self rtiDocumentState];
-    [v28 setDocumentState:v27];
+    rtiDocumentState = [(UIKBRTIPartner *)self rtiDocumentState];
+    [rtiDocumentState setDocumentState:v27];
 
-    v29 = [(UIKBRTIPartner *)self rtiDocumentState];
-    LOBYTE(v28) = objc_opt_respondsToSelector();
+    rtiDocumentState2 = [(UIKBRTIPartner *)self rtiDocumentState];
+    LOBYTE(rtiDocumentState) = objc_opt_respondsToSelector();
 
-    if (v28)
+    if (rtiDocumentState)
     {
       v30 = objc_alloc_init(MEMORY[0x1E69D9568]);
-      v31 = [(UIKBRTIPartner *)self rtiDocumentState];
-      [v31 setAttributedDocumentState:v30];
+      rtiDocumentState3 = [(UIKBRTIPartner *)self rtiDocumentState];
+      [rtiDocumentState3 setAttributedDocumentState:v30];
     }
   }
 
@@ -2061,7 +2061,7 @@ LABEL_18:
   self->_cachedHasNextKeyResponder = 0;
 
   [(UIKBRTIPartner *)self _updateGeometryObserverIfNecessary];
-  [(UIKBRTIPartner *)self removeTextSuggestionsForSessionWithID:v8];
+  [(UIKBRTIPartner *)self removeTextSuggestionsForSessionWithID:identifierCopy];
 }
 
 void __74__UIKBRTIPartner_endInputSessionWithIdentifier_shouldResign_waitForReply___block_invoke()
@@ -2115,11 +2115,11 @@ void __74__UIKBRTIPartner_endInputSessionWithIdentifier_shouldResign_waitForRepl
   [v2 endRemoteTextInputSessionWithID:*(a1 + 40) options:*(a1 + 48)];
 }
 
-- (void)documentStateChanged:(BOOL)a3
+- (void)documentStateChanged:(BOOL)changed
 {
-  v5 = [(UIKBRTIPartner *)self rtiClient];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
 
-  if (v5)
+  if (rtiClient)
   {
     v6 = +[UIKeyboardImpl activeInstance];
     [v6 updateReturnKey:0];
@@ -2129,7 +2129,7 @@ void __74__UIKBRTIPartner_endInputSessionWithIdentifier_shouldResign_waitForRepl
     v7[2] = __39__UIKBRTIPartner_documentStateChanged___block_invoke;
     v7[3] = &unk_1E70F35E0;
     v7[4] = self;
-    v8 = a3;
+    changedCopy = changed;
     [(UIKBRTIPartner *)self updateStateWithCompletion:v7 updateTraits:1];
   }
 }
@@ -2153,156 +2153,156 @@ void __39__UIKBRTIPartner_documentStateChanged___block_invoke(uint64_t a1)
   [v7 invalidate];
 }
 
-- (void)performInputOperation:(id)a3
+- (void)performInputOperation:(id)operation
 {
-  v8 = a3;
-  v4 = [(UIKBRTIPartner *)self rtiClient];
+  operationCopy = operation;
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIKBRTIPartner *)self rtiClient];
-    v7 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v6 remoteTextInputSessionWithID:v7 performInputOperation:v8];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:operationCopy];
   }
 }
 
-- (void)forwardKeyboardSuppression:(BOOL)a3 suppressAssistantBar:(BOOL)a4
+- (void)forwardKeyboardSuppression:(BOOL)suppression suppressAssistantBar:(BOOL)bar
 {
-  v4 = a4;
-  v5 = a3;
+  barCopy = bar;
+  suppressionCopy = suppression;
   v15[2] = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E69C6F48]);
   v14[0] = @"suppressSoftwareKeyboard";
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:suppressionCopy];
   v14[1] = @"suppressAssistantBar";
   v15[0] = v8;
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:barCopy];
   v15[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
   [v7 setCustomInfo:v10];
 
   [v7 setCustomInfoType:@"UIUserPencilOperations"];
-  v11 = [(UIKBRTIPartner *)self rtiClient];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
   LOBYTE(v8) = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v12 = [(UIKBRTIPartner *)self rtiClient];
-    v13 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v12 remoteTextInputSessionWithID:v13 performInputOperation:v7];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v7];
   }
 }
 
-- (void)forwardApplicationOperation:(SEL)a3 object:(id)a4
+- (void)forwardApplicationOperation:(SEL)operation object:(id)object
 {
-  v13 = a4;
+  objectCopy = object;
   v6 = objc_alloc_init(MEMORY[0x1E69C6F48]);
-  [v6 setActionSelector:a3];
+  [v6 setActionSelector:operation];
   [v6 setCustomInfoType:@"UIKBRTICustomInfoTypeApplicationOperations"];
-  [v6 setCustomInfo:v13];
-  v7 = [(UIKBRTIPartner *)self rtiClient];
+  [v6 setCustomInfo:objectCopy];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(UIKBRTIPartner *)self rtiClient];
-    v10 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v9 remoteTextInputSessionWithID:v10 performInputOperation:v6];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v6];
   }
 
-  if (sel_setRemoteDisableBecomeFirstResponder_ == a3)
+  if (sel_setRemoteDisableBecomeFirstResponder_ == operation)
   {
-    v11 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    if (v11)
+    currentSessionIdentifier2 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    if (currentSessionIdentifier2)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = v13;
+      v12 = objectCopy;
     }
 
     objc_storeStrong(&self->_pendingDisableBecomeFirstResponderParameters, v12);
   }
 }
 
-- (void)forwardKeyboardInputMode:(id)a3
+- (void)forwardKeyboardInputMode:(id)mode
 {
   v4 = MEMORY[0x1E69C6F48];
-  v5 = a3;
+  modeCopy = mode;
   v9 = objc_alloc_init(v4);
   [v9 setCustomInfoType:@"UIUserPencilOperations"];
   [v9 setActionSelector:sel_setInputMode_];
-  [v9 setCustomInfo:v5];
+  [v9 setCustomInfo:modeCopy];
 
-  v6 = [(UIKBRTIPartner *)self rtiClient];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  LOBYTE(modeCopy) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (modeCopy)
   {
-    v7 = [(UIKBRTIPartner *)self rtiClient];
-    v8 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v7 remoteTextInputSessionWithID:v8 performInputOperation:v9];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v9];
   }
 }
 
-- (void)forwardClearForwardingInputDelegateAndResign:(BOOL)a3
+- (void)forwardClearForwardingInputDelegateAndResign:(BOOL)resign
 {
-  v3 = a3;
+  resignCopy = resign;
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69C6F48]);
   v13 = @"resign";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:resignCopy];
   v14[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   [v5 setCustomInfo:v7];
 
   [v5 setCustomInfoType:@"UIEmojiSearchOperations"];
-  v8 = [(UIKBRTIPartner *)self rtiClient];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
   LOBYTE(v7) = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v9 = [(UIKBRTIPartner *)self rtiClient];
-    v10 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v9 remoteTextInputSessionWithID:v10 performInputOperation:v5];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v5];
   }
 
   v11 = +[UIKeyboardImpl activeInstance];
-  v12 = [v11 inputDelegateManager];
-  [v12 setShouldRespectForwardingInputDelegate:0];
+  inputDelegateManager = [v11 inputDelegateManager];
+  [inputDelegateManager setShouldRespectForwardingInputDelegate:0];
 }
 
-- (void)forwardKeyboardEventToUIHost:(id)a3
+- (void)forwardKeyboardEventToUIHost:(id)host
 {
-  v9 = a3;
-  if (([v9 keyEventForwardedFromInputUIHost] & 1) == 0)
+  hostCopy = host;
+  if (([hostCopy keyEventForwardedFromInputUIHost] & 1) == 0)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69C6F48]);
-    [v4 setCustomInfo:v9];
+    [v4 setCustomInfo:hostCopy];
     [v4 setCustomInfoType:@"UIPhysicalKeyboardEvent"];
-    v5 = [(UIKBRTIPartner *)self rtiClient];
+    rtiClient = [(UIKBRTIPartner *)self rtiClient];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(UIKBRTIPartner *)self rtiClient];
-      v8 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-      [v7 remoteTextInputSessionWithID:v8 performInputOperation:v4];
+      rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+      currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+      [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v4];
     }
   }
 }
 
-- (BOOL)synchronousForwardKeyCommandsBeforePublicToUIHost:(id)a3
+- (BOOL)synchronousForwardKeyCommandsBeforePublicToUIHost:(id)host
 {
-  v4 = a3;
-  if (([v4 keyEventForwardedFromInputUIHost] & 1) == 0)
+  hostCopy = host;
+  if (([hostCopy keyEventForwardedFromInputUIHost] & 1) == 0)
   {
-    [v4 setKeyCommandHandlingBeforePublic:1];
+    [hostCopy setKeyCommandHandlingBeforePublic:1];
     v6 = objc_alloc_init(MEMORY[0x1E69C6F48]);
-    [v6 setCustomInfo:v4];
+    [v6 setCustomInfo:hostCopy];
     [v6 setCustomInfoType:@"UIPhysicalKeyboardEvent"];
     v27 = 0;
     v28 = &v27;
@@ -2312,20 +2312,20 @@ void __39__UIKBRTIPartner_documentStateChanged___block_invoke(uint64_t a1)
     v24 = &v23;
     v25 = 0x2020000000;
     v26 = 0;
-    v7 = [(UIKBRTIPartner *)self rtiClient];
-    if ([v7 isEnvironmentEnabled])
+    rtiClient = [(UIKBRTIPartner *)self rtiClient];
+    if ([rtiClient isEnvironmentEnabled])
     {
-      v8 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-      if (v8)
+      currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+      if (currentSessionIdentifier)
       {
-        v9 = [(UIKBRTIPartner *)self rtiClient];
+        rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
         v10 = objc_opt_respondsToSelector();
 
         if ((v10 & 1) == 0)
         {
 LABEL_12:
-          v16 = [(UIKBRTIPartner *)self partnerDelegate];
-          [v16 setInputModeSwitcherVisibleInRemote:*(v24 + 24)];
+          partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+          [partnerDelegate setInputModeSwitcherVisibleInRemote:*(v24 + 24)];
 
           v5 = *(v28 + 24);
 LABEL_13:
@@ -2336,20 +2336,20 @@ LABEL_13:
         }
 
         v11 = dispatch_semaphore_create(0);
-        v12 = [(UIKBRTIPartner *)self rtiClient];
-        v13 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+        rtiClient3 = [(UIKBRTIPartner *)self rtiClient];
+        currentSessionIdentifier2 = [(UIKBRTIPartner *)self currentSessionIdentifier];
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __68__UIKBRTIPartner_synchronousForwardKeyCommandsBeforePublicToUIHost___block_invoke;
         v19[3] = &unk_1E7117E88;
         v21 = &v27;
         v22 = &v23;
-        v7 = v11;
-        v20 = v7;
-        [v12 remoteTextInputSessionWithID:v13 performInputOperation:v6 withResponse:v19];
+        rtiClient = v11;
+        v20 = rtiClient;
+        [rtiClient3 remoteTextInputSessionWithID:currentSessionIdentifier2 performInputOperation:v6 withResponse:v19];
 
         v14 = dispatch_time(0, 2000000000);
-        if (dispatch_semaphore_wait(v7, v14))
+        if (dispatch_semaphore_wait(rtiClient, v14))
         {
           v15 = _UIKeyboardLog();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -2380,25 +2380,25 @@ intptr_t __68__UIKBRTIPartner_synchronousForwardKeyCommandsBeforePublicToUIHost_
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)synchronousForwardKeyCommandsToUIHost:(id)a3
+- (BOOL)synchronousForwardKeyCommandsToUIHost:(id)host
 {
-  v4 = a3;
-  if (([v4 keyEventForwardedFromInputUIHost] & 1) == 0)
+  hostCopy = host;
+  if (([hostCopy keyEventForwardedFromInputUIHost] & 1) == 0)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69C6F48]);
-    [v6 setCustomInfo:v4];
+    [v6 setCustomInfo:hostCopy];
     [v6 setCustomInfoType:@"UIWebKitOperations"];
     v21 = 0;
     v22 = &v21;
     v23 = 0x2020000000;
     v24 = 0;
-    v7 = [(UIKBRTIPartner *)self rtiClient];
-    if ([v7 isEnvironmentEnabled])
+    rtiClient = [(UIKBRTIPartner *)self rtiClient];
+    if ([rtiClient isEnvironmentEnabled])
     {
-      v8 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-      if (v8)
+      currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+      if (currentSessionIdentifier)
       {
-        v9 = [(UIKBRTIPartner *)self rtiClient];
+        rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
         v10 = objc_opt_respondsToSelector();
 
         if ((v10 & 1) == 0)
@@ -2412,19 +2412,19 @@ LABEL_13:
         }
 
         v11 = dispatch_semaphore_create(0);
-        v12 = [(UIKBRTIPartner *)self rtiClient];
-        v13 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+        rtiClient3 = [(UIKBRTIPartner *)self rtiClient];
+        currentSessionIdentifier2 = [(UIKBRTIPartner *)self currentSessionIdentifier];
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __56__UIKBRTIPartner_synchronousForwardKeyCommandsToUIHost___block_invoke;
         v18[3] = &unk_1E7117EB0;
         v20 = &v21;
-        v7 = v11;
-        v19 = v7;
-        [v12 remoteTextInputSessionWithID:v13 performInputOperation:v6 withResponse:v18];
+        rtiClient = v11;
+        v19 = rtiClient;
+        [rtiClient3 remoteTextInputSessionWithID:currentSessionIdentifier2 performInputOperation:v6 withResponse:v18];
 
         v14 = dispatch_time(0, 2000000000);
-        if (dispatch_semaphore_wait(v7, v14))
+        if (dispatch_semaphore_wait(rtiClient, v14))
         {
           v15 = _UIKeyboardLog();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -2448,18 +2448,18 @@ LABEL_14:
   return v5 & 1;
 }
 
-- (BOOL)synchronousForwardKeyInputMethodCommandEventToUIHost:(id)a3 canHandleAppKeyCommand:(BOOL)a4
+- (BOOL)synchronousForwardKeyInputMethodCommandEventToUIHost:(id)host canHandleAppKeyCommand:(BOOL)command
 {
-  v4 = a4;
+  commandCopy = command;
   v30[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  hostCopy = host;
   v7 = objc_alloc_init(MEMORY[0x1E69C6F48]);
   v29[0] = @"selector";
   v29[1] = @"keyEvent";
   v30[0] = @"_handleKeyInputMethodCommandForEvent:canHandleAppKeyCommand:";
-  v30[1] = v6;
+  v30[1] = hostCopy;
   v29[2] = @"canHandleAppKeyCommand";
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:commandCopy];
   v30[2] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:3];
 
@@ -2469,19 +2469,19 @@ LABEL_14:
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v10 = [(UIKBRTIPartner *)self rtiClient];
-  if (![v10 isEnvironmentEnabled])
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  if (![rtiClient isEnvironmentEnabled])
   {
     goto LABEL_9;
   }
 
-  v11 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-  if (!v11)
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  if (!currentSessionIdentifier)
   {
     goto LABEL_9;
   }
 
-  v12 = [(UIKBRTIPartner *)self rtiClient];
+  rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
   v13 = objc_opt_respondsToSelector();
 
   if ((v13 & 1) == 0)
@@ -2492,19 +2492,19 @@ LABEL_10:
   }
 
   v14 = dispatch_semaphore_create(0);
-  v15 = [(UIKBRTIPartner *)self rtiClient];
-  v16 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  rtiClient3 = [(UIKBRTIPartner *)self rtiClient];
+  currentSessionIdentifier2 = [(UIKBRTIPartner *)self currentSessionIdentifier];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __94__UIKBRTIPartner_synchronousForwardKeyInputMethodCommandEventToUIHost_canHandleAppKeyCommand___block_invoke;
   v22[3] = &unk_1E7117EB0;
   v24 = &v25;
-  v10 = v14;
-  v23 = v10;
-  [v15 remoteTextInputSessionWithID:v16 performInputOperation:v7 withResponse:v22];
+  rtiClient = v14;
+  v23 = rtiClient;
+  [rtiClient3 remoteTextInputSessionWithID:currentSessionIdentifier2 performInputOperation:v7 withResponse:v22];
 
   v17 = dispatch_time(0, 2000000000);
-  if (!dispatch_semaphore_wait(v10, v17))
+  if (!dispatch_semaphore_wait(rtiClient, v17))
   {
 
 LABEL_9:
@@ -2525,69 +2525,69 @@ LABEL_11:
   return v19 & 1;
 }
 
-- (void)forwardDictationEventToUIHost:(SEL)a3 withOptionalObject:(id)a4
+- (void)forwardDictationEventToUIHost:(SEL)host withOptionalObject:(id)object
 {
   v6 = MEMORY[0x1E69C6F48];
-  v7 = a4;
+  objectCopy = object;
   v11 = objc_alloc_init(v6);
-  [v11 setActionSelector:a3];
+  [v11 setActionSelector:host];
   [v11 setInputModality:2];
-  [v11 setCustomInfo:v7];
+  [v11 setCustomInfo:objectCopy];
 
   [v11 setCustomInfoType:@"UIDictationRemoteInputOperations"];
-  v8 = [(UIKBRTIPartner *)self rtiClient];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
   LOBYTE(v6) = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v9 = [(UIKBRTIPartner *)self rtiClient];
-    v10 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v9 remoteTextInputSessionWithID:v10 performInputOperation:v11];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v11];
   }
 }
 
-- (void)forwardInputDestinationEventToUIHost:(SEL)a3 params:(id)a4
+- (void)forwardInputDestinationEventToUIHost:(SEL)host params:(id)params
 {
   v6 = MEMORY[0x1E69C6F48];
-  v7 = a4;
+  paramsCopy = params;
   v11 = objc_alloc_init(v6);
-  [v11 setActionSelector:a3];
+  [v11 setActionSelector:host];
   [v11 setCustomInfoType:@"UIUserInteractionRemoteInputOperations"];
-  [v11 setCustomInfo:v7];
+  [v11 setCustomInfo:paramsCopy];
 
-  v8 = [(UIKBRTIPartner *)self rtiClient];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
   LOBYTE(v6) = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v9 = [(UIKBRTIPartner *)self rtiClient];
-    v10 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v9 remoteTextInputSessionWithID:v10 performInputOperation:v11];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v11];
   }
 }
 
-- (void)forwardSelectorToUIHost:(SEL)a3 completionHandler:(id)a4
+- (void)forwardSelectorToUIHost:(SEL)host completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_alloc_init(MEMORY[0x1E69C6F48]);
-  [v7 setActionSelector:a3];
-  v8 = [(UIKBRTIPartner *)self rtiClient];
-  if ([v8 isEnvironmentEnabled] && (-[UIKBRTIPartner currentSessionIdentifier](self, "currentSessionIdentifier"), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  [v7 setActionSelector:host];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  if ([rtiClient isEnvironmentEnabled] && (-[UIKBRTIPartner currentSessionIdentifier](self, "currentSessionIdentifier"), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
-    v11 = [(UIKBRTIPartner *)self rtiClient];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(UIKBRTIPartner *)self rtiClient];
-      v14 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+      rtiClient3 = [(UIKBRTIPartner *)self rtiClient];
+      currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_invoke;
       v15[3] = &unk_1E7118100;
-      v16 = v6;
-      [v13 remoteTextInputSessionWithID:v14 performInputOperation:v7 withResponse:v15];
+      v16 = handlerCopy;
+      [rtiClient3 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v7 withResponse:v15];
 
       goto LABEL_8;
     }
@@ -2597,9 +2597,9 @@ LABEL_11:
   {
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
 LABEL_8:
@@ -2616,40 +2616,40 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
   return result;
 }
 
-- (void)forwardKeyboardCameraEvent_startCameraInput:(id)a3
+- (void)forwardKeyboardCameraEvent_startCameraInput:(id)input
 {
   v4 = MEMORY[0x1E69C6F48];
-  v5 = a3;
+  inputCopy = input;
   v9 = objc_alloc_init(v4);
   [v9 setActionSelector:sel_handleRemoteKeyboardCameraEvent_startCameraInput_];
   [v9 setInputModality:1];
-  [v9 setCustomInfo:v5];
+  [v9 setCustomInfo:inputCopy];
 
   [v9 setCustomInfoType:@"UIKeyboardCameraRemoteInputOperations"];
-  v6 = [(UIKBRTIPartner *)self rtiClient];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  LOBYTE(inputCopy) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (inputCopy)
   {
-    v7 = [(UIKBRTIPartner *)self rtiClient];
-    v8 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v7 remoteTextInputSessionWithID:v8 performInputOperation:v9];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v9];
   }
 }
 
-- (void)forwardScrollEventToUIHost:(SEL)a3 contentTransform:(CGAffineTransform *)a4 environmentTransform:(CGAffineTransform *)a5
+- (void)forwardScrollEventToUIHost:(SEL)host contentTransform:(CGAffineTransform *)transform environmentTransform:(CGAffineTransform *)environmentTransform
 {
-  if (sel_textSelectionWillScroll == a3)
+  if (sel_textSelectionWillScroll == host)
   {
     v9 = 1;
   }
 
-  else if (sel_textSelectionScrolling == a3)
+  else if (sel_textSelectionScrolling == host)
   {
     v9 = 2;
   }
 
-  else if (sel_textSelectionDidScroll == a3)
+  else if (sel_textSelectionDidScroll == host)
   {
     v9 = 3;
   }
@@ -2662,41 +2662,41 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
   objc_opt_class();
   if (objc_opt_respondsToSelector())
   {
-    v10 = *&a4->c;
-    v18[0] = *&a4->a;
+    v10 = *&transform->c;
+    v18[0] = *&transform->a;
     v18[1] = v10;
-    v18[2] = *&a4->tx;
-    v11 = *&a5->c;
-    v17[0] = *&a5->a;
+    v18[2] = *&transform->tx;
+    v11 = *&environmentTransform->c;
+    v17[0] = *&environmentTransform->a;
     v17[1] = v11;
-    v17[2] = *&a5->tx;
+    v17[2] = *&environmentTransform->tx;
     v12 = [MEMORY[0x1E69C6F48] scrollingInputOperationWithType:v9 contentTransform:v18 environmentTransform:v17];
-    v13 = [(UIKBRTIPartner *)self rtiClient];
+    rtiClient = [(UIKBRTIPartner *)self rtiClient];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(UIKBRTIPartner *)self rtiClient];
-      v16 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-      [v15 remoteTextInputSessionWithID:v16 performInputOperation:v12];
+      rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+      currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+      [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v12];
     }
   }
 
   else
   {
 
-    [(UIKBRTIPartner *)self forwardInputDestinationEventToUIHost:a3];
+    [(UIKBRTIPartner *)self forwardInputDestinationEventToUIHost:host];
   }
 }
 
-- (void)forwardEventCallbackToRemoteSource_didChooseSupplementalItem:(id)a3 toReplaceText:(id)a4
+- (void)forwardEventCallbackToRemoteSource_didChooseSupplementalItem:(id)item toReplaceText:(id)text
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  itemCopy = item;
+  textCopy = text;
+  if (itemCopy)
   {
-    v8 = v6[1];
+    v8 = itemCopy[1];
   }
 
   else
@@ -2705,7 +2705,7 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
   }
 
   v9 = v8;
-  if (v7)
+  if (textCopy)
   {
     v10 = objc_alloc_init(MEMORY[0x1E69C6F48]);
     [v10 setCustomInfoType:@"UISupplementalLexiconInputOperations"];
@@ -2713,15 +2713,15 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
     v11 = NSStringFromSelector(sel_handleEventCallbackFromRemoteDestination_didChooseSupplementalItem_toReplaceText_);
     v19[0] = v11;
     v18[1] = @"supplementalItem";
-    v12 = v9;
+    null = v9;
     if (!v9)
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
     v18[2] = @"textToReplace";
-    v19[1] = v12;
-    v19[2] = v7;
+    v19[1] = null;
+    v19[2] = textCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:3];
     [v10 setCustomInfo:v13];
 
@@ -2729,21 +2729,21 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
     {
     }
 
-    v14 = [(UIKBRTIPartner *)self rtiClient];
+    rtiClient = [(UIKBRTIPartner *)self rtiClient];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(UIKBRTIPartner *)self rtiClient];
-      v17 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-      [v16 remoteTextInputSessionWithID:v17 performInputOperation:v10];
+      rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+      currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+      [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v10];
     }
   }
 }
 
-- (void)forwardEventToRemoteSource_canSuggestSupplementalItemsForCurrentSelection:(BOOL)a3
+- (void)forwardEventToRemoteSource_canSuggestSupplementalItemsForCurrentSelection:(BOOL)selection
 {
-  v3 = a3;
+  selectionCopy = selection;
   v13[2] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69C6F48]);
   [v5 setCustomInfoType:@"UISupplementalLexiconInputOperations"];
@@ -2751,43 +2751,43 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
   v6 = NSStringFromSelector(sel_handleEventFromRemoteDestination_canSuggestSupplementalItemsForCurrentSelection_);
   v12[1] = @"canSuggest";
   v13[0] = v6;
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:selectionCopy];
   v13[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   [v5 setCustomInfo:v8];
 
-  v9 = [(UIKBRTIPartner *)self rtiClient];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
   LOBYTE(v6) = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v10 = [(UIKBRTIPartner *)self rtiClient];
-    v11 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v10 remoteTextInputSessionWithID:v11 performInputOperation:v5];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v5];
   }
 }
 
-- (id)textOperation_insertSupplementalCandidate:(id)a3 textToCommit:(id)a4
+- (id)textOperation_insertSupplementalCandidate:(id)candidate textToCommit:(id)commit
 {
   v4 = 0;
   v16[3] = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (candidate && commit)
   {
     v7 = MEMORY[0x1E69C6FA8];
-    v8 = a4;
-    v9 = a3;
+    commitCopy = commit;
+    candidateCopy = candidate;
     v10 = [v7 alloc];
-    v11 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    v4 = [v10 initWithTargetSessionUUID:v11];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    v4 = [v10 initWithTargetSessionUUID:currentSessionIdentifier];
 
     [v4 setCustomInfoType:@"UISupplementalLexiconOperations"];
     v15[0] = @"selector";
     v12 = NSStringFromSelector(sel_handleEventFromRemoteSource_insertSupplementalCandidate_textToCommit_);
     v16[0] = v12;
-    v16[1] = v9;
+    v16[1] = candidateCopy;
     v15[1] = @"candidate";
     v15[2] = @"textToCommit";
-    v16[2] = v8;
+    v16[2] = commitCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
     [v4 setCustomInfo:v13];
@@ -2796,17 +2796,17 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
   return v4;
 }
 
-- (id)textOperation_chooseSupplementalItem:(id)a3 toReplaceText:(id)a4
+- (id)textOperation_chooseSupplementalItem:(id)item toReplaceText:(id)text
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  itemCopy = item;
+  textCopy = text;
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v6;
+  v9 = itemCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v10)
   {
@@ -2837,11 +2837,11 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
 
   v15 = [v8 count];
   v16 = 0;
-  if (v7 && v15)
+  if (textCopy && v15)
   {
     v17 = objc_alloc(MEMORY[0x1E69C6FA8]);
-    v18 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    v16 = [v17 initWithTargetSessionUUID:v18];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    v16 = [v17 initWithTargetSessionUUID:currentSessionIdentifier];
 
     [v16 setCustomInfoType:@"UISupplementalLexiconOperations"];
     v26[0] = @"selector";
@@ -2850,7 +2850,7 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
     v27[1] = v8;
     v26[1] = @"supplementalItems";
     v26[2] = @"textToReplace";
-    v27[2] = v7;
+    v27[2] = textCopy;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:3];
     [v16 setCustomInfo:v20];
   }
@@ -2862,8 +2862,8 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69C6FA8]);
-  v4 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-  v5 = [v3 initWithTargetSessionUUID:v4];
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  v5 = [v3 initWithTargetSessionUUID:currentSessionIdentifier];
 
   [v5 setCustomInfoType:@"UISupplementalLexiconOperations"];
   v9 = @"selector";
@@ -2875,26 +2875,26 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
   return v5;
 }
 
-- (id)textOperation_insertionPointEnteredText:(id)a3 withSupplementalCandidate:(id)a4
+- (id)textOperation_insertionPointEnteredText:(id)text withSupplementalCandidate:(id)candidate
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  candidateCopy = candidate;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v8 = objc_alloc(MEMORY[0x1E69C6FA8]);
-    v9 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    v10 = [v8 initWithTargetSessionUUID:v9];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    v10 = [v8 initWithTargetSessionUUID:currentSessionIdentifier];
 
     [v10 setCustomInfoType:@"UISupplementalLexiconOperations"];
     v14[0] = @"selector";
     v11 = NSStringFromSelector(sel_handleEventFromRemoteSource_insertionPointEnteredText_withSupplementalCandidate_);
     v15[0] = v11;
-    v15[1] = v6;
+    v15[1] = textCopy;
     v14[1] = @"text";
     v14[2] = @"candidate";
-    v15[2] = v7;
+    v15[2] = candidateCopy;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
     [v10 setCustomInfo:v12];
   }
@@ -2911,8 +2911,8 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69C6FA8]);
-  v4 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-  v5 = [v3 initWithTargetSessionUUID:v4];
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  v5 = [v3 initWithTargetSessionUUID:currentSessionIdentifier];
 
   [v5 setCustomInfoType:@"UISupplementalLexiconOperations"];
   v9 = @"selector";
@@ -2924,21 +2924,21 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
   return v5;
 }
 
-- (id)textOperation_insertAutofillContent:(id)a3
+- (id)textOperation_insertAutofillContent:(id)content
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69C6FA8];
-  v5 = a3;
+  contentCopy = content;
   v6 = [v4 alloc];
-  v7 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-  v8 = [v6 initWithTargetSessionUUID:v7];
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  v8 = [v6 initWithTargetSessionUUID:currentSessionIdentifier];
 
   [v8 setCustomInfoType:@"UIKBRTICustomInfoTypeAutofill"];
   v13[0] = @"selector";
   v9 = NSStringFromSelector(sel_handleEventFromRemoteSource_insertAutofillContent_);
   v13[1] = @"autofillContent";
   v14[0] = v9;
-  v10 = [v5 copy];
+  v10 = [contentCopy copy];
 
   v14[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -2949,90 +2949,90 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
 
 - (id)payloadDelegate
 {
-  v2 = [(UIKBRTIPartner *)self partnerDelegate];
-  v3 = [v2 inputSystemSourceSession];
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  inputSystemSourceSession = [partnerDelegate inputSystemSourceSession];
 
-  v4 = [v3 sessionIndependentPayloadDelegate];
+  sessionIndependentPayloadDelegate = [inputSystemSourceSession sessionIndependentPayloadDelegate];
 
-  return v4;
+  return sessionIndependentPayloadDelegate;
 }
 
-- (void)forwardAutofillPayload:(id)a3 toPayloadDelegate:(id)a4
+- (void)forwardAutofillPayload:(id)payload toPayloadDelegate:(id)delegate
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 count];
-  if (v6 && v7)
+  payloadCopy = payload;
+  delegateCopy = delegate;
+  v7 = [payloadCopy count];
+  if (delegateCopy && v7)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69C6F68]);
-    v9 = [(UIKBRTIPartner *)self textOperation_insertAutofillContent:v10];
+    v9 = [(UIKBRTIPartner *)self textOperation_insertAutofillContent:payloadCopy];
     [v8 setTextOperations:v9];
 
-    [v6 handleTextActionPayload:v8];
+    [delegateCopy handleTextActionPayload:v8];
   }
 }
 
-- (void)forwardKeyboardOperation:(SEL)a3 object:(id)a4
+- (void)forwardKeyboardOperation:(SEL)operation object:(id)object
 {
-  v9 = a4;
-  v6 = [(UIKBRTIPartner *)self partnerDelegate];
-  v7 = [v6 inputSystemSourceSession];
+  objectCopy = object;
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  inputSystemSourceSession = [partnerDelegate inputSystemSourceSession];
 
-  if (v7)
+  if (inputSystemSourceSession)
   {
-    v8 = [v7 textOperations];
-    [v8 setEditingActionSelector:a3];
-    [v8 setCustomInfoType:@"UIKBRTICustomInfoTypeKeyboardOperations"];
-    [v8 setCustomInfo:v9];
-    [v7 flushOperations];
+    textOperations = [inputSystemSourceSession textOperations];
+    [textOperations setEditingActionSelector:operation];
+    [textOperations setCustomInfoType:@"UIKBRTICustomInfoTypeKeyboardOperations"];
+    [textOperations setCustomInfo:objectCopy];
+    [inputSystemSourceSession flushOperations];
   }
 }
 
-- (void)forwardTypologyLogURL:(id)a3
+- (void)forwardTypologyLogURL:(id)l
 {
-  v7 = a3;
-  v4 = [(UIKBRTIPartner *)self partnerDelegate];
-  v5 = [v4 inputSystemSourceSession];
+  lCopy = l;
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  inputSystemSourceSession = [partnerDelegate inputSystemSourceSession];
 
-  if (v5)
+  if (inputSystemSourceSession)
   {
-    v6 = [v5 textOperations];
-    [v6 setCustomInfoType:@"UIKBRTICustomInfoTypeTypologyLogOperations"];
-    [v6 setCustomInfo:v7];
-    [v5 flushOperations];
+    textOperations = [inputSystemSourceSession textOperations];
+    [textOperations setCustomInfoType:@"UIKBRTICustomInfoTypeTypologyLogOperations"];
+    [textOperations setCustomInfo:lCopy];
+    [inputSystemSourceSession flushOperations];
   }
 }
 
-- (void)forwardGrammarCorrectionEntries:(id)a3
+- (void)forwardGrammarCorrectionEntries:(id)entries
 {
   v4 = MEMORY[0x1E69C6F48];
-  v5 = a3;
+  entriesCopy = entries;
   v9 = objc_alloc_init(v4);
   [v9 setActionSelector:sel_handleGrammarCorrectionEntries_];
-  [v9 setCustomInfo:v5];
+  [v9 setCustomInfo:entriesCopy];
 
   [v9 setCustomInfoType:@"UIKBRTICustomInfoTypeGrammarCorrectionOperations"];
-  v6 = [(UIKBRTIPartner *)self rtiClient];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  LOBYTE(entriesCopy) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (entriesCopy)
   {
-    v7 = [(UIKBRTIPartner *)self rtiClient];
-    v8 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v7 remoteTextInputSessionWithID:v8 performInputOperation:v9];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [rtiClient2 remoteTextInputSessionWithID:currentSessionIdentifier performInputOperation:v9];
   }
 }
 
-- (void)textSuggestionsChanged:(id)a3
+- (void)textSuggestionsChanged:(id)changed
 {
-  v9 = a3;
-  v4 = [(UIKBRTIPartner *)self _remoteInputSystemRequiresTextSuggestionUpdates];
-  v5 = v9;
-  if (v4)
+  changedCopy = changed;
+  _remoteInputSystemRequiresTextSuggestionUpdates = [(UIKBRTIPartner *)self _remoteInputSystemRequiresTextSuggestionUpdates];
+  v5 = changedCopy;
+  if (_remoteInputSystemRequiresTextSuggestionUpdates)
   {
-    if (v9)
+    if (changedCopy)
     {
-      v6 = [UITextSuggestion encodeTextSuggestions:v9];
+      v6 = [UITextSuggestion encodeTextSuggestions:changedCopy];
     }
 
     else
@@ -3040,164 +3040,164 @@ uint64_t __60__UIKBRTIPartner_forwardSelectorToUIHost_completionHandler___block_
       v6 = 0;
     }
 
-    v7 = [(UIKBRTIPartner *)self rtiClient];
-    v8 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v7 remoteTextInputSessionWithID:v8 textSuggestionsChanged:v6];
+    rtiClient = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [rtiClient remoteTextInputSessionWithID:currentSessionIdentifier textSuggestionsChanged:v6];
 
-    v5 = v9;
+    v5 = changedCopy;
   }
 }
 
-- (void)updateTextSuggestionsIfNecessary:(id)a3
+- (void)updateTextSuggestionsIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v12 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  necessaryCopy = necessary;
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
 
-  v5 = v12;
-  if (v12 == v4)
+  v5 = currentSessionIdentifier;
+  if (currentSessionIdentifier == necessaryCopy)
   {
-    v6 = [(UIKBRTIPartner *)self textSuggestions];
-    v7 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    v8 = [v6 objectForKey:v7];
+    textSuggestions = [(UIKBRTIPartner *)self textSuggestions];
+    currentSessionIdentifier2 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    v8 = [textSuggestions objectForKey:currentSessionIdentifier2];
 
     if (!v8)
     {
       return;
     }
 
-    v9 = [(UIKBRTIPartner *)self textSuggestions];
-    v10 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    v11 = [v9 objectForKey:v10];
+    textSuggestions2 = [(UIKBRTIPartner *)self textSuggestions];
+    currentSessionIdentifier3 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    v11 = [textSuggestions2 objectForKey:currentSessionIdentifier3];
     [(UIKBRTIPartner *)self textSuggestionsChanged:v11];
 
-    v13 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [(UIKBRTIPartner *)self removeTextSuggestionsForSessionWithID:v13];
-    v5 = v13;
+    currentSessionIdentifier4 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [(UIKBRTIPartner *)self removeTextSuggestionsForSessionWithID:currentSessionIdentifier4];
+    v5 = currentSessionIdentifier4;
   }
 }
 
-- (void)addTextSuggestions:(id)a3
+- (void)addTextSuggestions:(id)suggestions
 {
-  v9 = a3;
-  v4 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  suggestionsCopy = suggestions;
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
 
-  if (v4)
+  if (currentSessionIdentifier)
   {
-    v5 = [(UIKBRTIPartner *)self textSuggestions];
+    textSuggestions = [(UIKBRTIPartner *)self textSuggestions];
 
-    if (!v5)
+    if (!textSuggestions)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [(UIKBRTIPartner *)self setTextSuggestions:v6];
     }
 
-    v7 = [(UIKBRTIPartner *)self textSuggestions];
-    v8 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v7 setObject:v9 forKey:v8];
+    textSuggestions2 = [(UIKBRTIPartner *)self textSuggestions];
+    currentSessionIdentifier2 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [textSuggestions2 setObject:suggestionsCopy forKey:currentSessionIdentifier2];
   }
 }
 
-- (void)removeTextSuggestionsForSessionWithID:(id)a3
+- (void)removeTextSuggestionsForSessionWithID:(id)d
 {
-  v7 = a3;
-  v4 = [(UIKBRTIPartner *)self textSuggestions];
-  v5 = [v4 objectForKey:v7];
+  dCopy = d;
+  textSuggestions = [(UIKBRTIPartner *)self textSuggestions];
+  v5 = [textSuggestions objectForKey:dCopy];
 
   if (v5)
   {
-    v6 = [(UIKBRTIPartner *)self textSuggestions];
-    [v6 removeObjectForKey:v7];
+    textSuggestions2 = [(UIKBRTIPartner *)self textSuggestions];
+    [textSuggestions2 removeObjectForKey:dCopy];
   }
 }
 
-- (void)_queueSupplementalLexiconOperation:(unint64_t)a3 lexicon:(id)a4
+- (void)_queueSupplementalLexiconOperation:(unint64_t)operation lexicon:(id)lexicon
 {
-  v12 = a4;
-  v6 = [(UIKBRTIPartner *)self queuedSupplementalLexiconOperations];
+  lexiconCopy = lexicon;
+  queuedSupplementalLexiconOperations = [(UIKBRTIPartner *)self queuedSupplementalLexiconOperations];
 
-  if (!v6)
+  if (!queuedSupplementalLexiconOperations)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(UIKBRTIPartner *)self setQueuedSupplementalLexiconOperations:v7];
   }
 
-  v8 = v12;
-  if (v12)
+  v8 = lexiconCopy;
+  if (lexiconCopy)
   {
-    if (a3 == 1)
+    if (operation == 1)
     {
-      v9 = -[_UISupplementalLexiconOperation initRemoveOperationWithLexiconIdentifier:]([_UISupplementalLexiconOperation alloc], "initRemoveOperationWithLexiconIdentifier:", [v12[1] identifier]);
+      v9 = -[_UISupplementalLexiconOperation initRemoveOperationWithLexiconIdentifier:]([_UISupplementalLexiconOperation alloc], "initRemoveOperationWithLexiconIdentifier:", [lexiconCopy[1] identifier]);
     }
 
     else
     {
-      if (a3)
+      if (operation)
       {
         goto LABEL_10;
       }
 
-      v9 = [[_UISupplementalLexiconOperation alloc] initAddOperationWithLexicon:v12];
+      v9 = [[_UISupplementalLexiconOperation alloc] initAddOperationWithLexicon:lexiconCopy];
     }
 
     v10 = v9;
-    v8 = v12;
+    v8 = lexiconCopy;
     if (v10)
     {
-      v11 = [(UIKBRTIPartner *)self queuedSupplementalLexiconOperations];
-      [v11 addObject:v10];
+      queuedSupplementalLexiconOperations2 = [(UIKBRTIPartner *)self queuedSupplementalLexiconOperations];
+      [queuedSupplementalLexiconOperations2 addObject:v10];
 
-      v8 = v12;
+      v8 = lexiconCopy;
     }
   }
 
 LABEL_10:
 }
 
-- (void)didAddSupplementalLexicon:(id)a3
+- (void)didAddSupplementalLexicon:(id)lexicon
 {
-  v5 = a3;
-  v4 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  lexiconCopy = lexicon;
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
 
-  if (v4)
+  if (currentSessionIdentifier)
   {
-    [(UIKBRTIPartner *)self _didAddSupplementalLexicon:v5];
+    [(UIKBRTIPartner *)self _didAddSupplementalLexicon:lexiconCopy];
   }
 
   else
   {
-    [(UIKBRTIPartner *)self _queueSupplementalLexiconOperation:0 lexicon:v5];
+    [(UIKBRTIPartner *)self _queueSupplementalLexiconOperation:0 lexicon:lexiconCopy];
   }
 }
 
-- (void)didRemoveSupplementalLexicon:(id)a3
+- (void)didRemoveSupplementalLexicon:(id)lexicon
 {
-  v7 = a3;
-  v4 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  lexiconCopy = lexicon;
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
 
-  if (v4)
+  if (currentSessionIdentifier)
   {
-    v5 = v7[1];
+    v5 = lexiconCopy[1];
 
-    v6 = [v5 identifier];
+    identifier = [v5 identifier];
 
-    [(UIKBRTIPartner *)self _didRemoveSupplementalLexiconWithIdentifier:v6];
+    [(UIKBRTIPartner *)self _didRemoveSupplementalLexiconWithIdentifier:identifier];
   }
 
   else
   {
-    [(UIKBRTIPartner *)self _queueSupplementalLexiconOperation:1 lexicon:v7];
+    [(UIKBRTIPartner *)self _queueSupplementalLexiconOperation:1 lexicon:lexiconCopy];
   }
 }
 
-- (void)_didAddSupplementalLexicon:(id)a3
+- (void)_didAddSupplementalLexicon:(id)lexicon
 {
   v4 = MEMORY[0x1E69C6F98];
-  v5 = *(a3 + 1);
+  v5 = *(lexicon + 1);
   v8 = [[v4 alloc] initWithTISupplementalLexicon:v5 iconProvider:&__block_literal_global_309_1];
 
-  v6 = [(UIKBRTIPartner *)self rtiClient];
-  v7 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-  [v6 remoteTextInputSessionWithID:v7 didAddRTISupplementalLexicon:v8];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  [rtiClient remoteTextInputSessionWithID:currentSessionIdentifier didAddRTISupplementalLexicon:v8];
 }
 
 id __45__UIKBRTIPartner__didAddSupplementalLexicon___block_invoke(uint64_t a1, uint64_t a2)
@@ -3230,21 +3230,21 @@ id __45__UIKBRTIPartner__didAddSupplementalLexicon___block_invoke(uint64_t a1, u
   return v9;
 }
 
-- (void)_didRemoveSupplementalLexiconWithIdentifier:(unint64_t)a3
+- (void)_didRemoveSupplementalLexiconWithIdentifier:(unint64_t)identifier
 {
-  v6 = [(UIKBRTIPartner *)self rtiClient];
-  v5 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-  [v6 remoteTextInputSessionWithID:v5 didRemoveRTISupplementalLexiconWithIdentifier:a3];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  [rtiClient remoteTextInputSessionWithID:currentSessionIdentifier didRemoveRTISupplementalLexiconWithIdentifier:identifier];
 }
 
-- (void)_updateRTIAllowedAndNotify:(BOOL)a3 withReason:(id)a4
+- (void)_updateRTIAllowedAndNotify:(BOOL)notify withReason:(id)reason
 {
-  v4 = a3;
+  notifyCopy = notify;
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [objc_opt_self() mainScreen];
-  v8 = [v7 currentMode];
-  [v8 size];
+  reasonCopy = reason;
+  mainScreen = [objc_opt_self() mainScreen];
+  currentMode = [mainScreen currentMode];
+  [currentMode size];
   v10 = v9;
   v12 = v11;
 
@@ -3253,28 +3253,28 @@ id __45__UIKBRTIPartner__didAddSupplementalLexicon___block_invoke(uint64_t a1, u
   v15 = v14;
   if (v14)
   {
-    v16 = v14;
+    existingContainerWindow = v14;
   }
 
   else
   {
     v17 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v16 = [v17 existingContainerWindow];
+    existingContainerWindow = [v17 existingContainerWindow];
   }
 
-  v18 = [v16 _isHostedInAnotherProcess];
-  if (v18)
+  _isHostedInAnotherProcess = [existingContainerWindow _isHostedInAnotherProcess];
+  if (_isHostedInAnotherProcess)
   {
-    v19 = [(UIKBRTIPartner *)self viewServiceStateIsActiveForRTI];
+    viewServiceStateIsActiveForRTI = [(UIKBRTIPartner *)self viewServiceStateIsActiveForRTI];
   }
 
   else
   {
-    v19 = [(UIKBRTIPartner *)self applicationStateIsActiveForRTI];
+    viewServiceStateIsActiveForRTI = [(UIKBRTIPartner *)self applicationStateIsActiveForRTI];
   }
 
-  v20 = v13 & v19;
-  if (v4)
+  v20 = v13 & viewServiceStateIsActiveForRTI;
+  if (notifyCopy)
   {
     v21 = 2;
   }
@@ -3284,17 +3284,17 @@ id __45__UIKBRTIPartner__didAddSupplementalLexicon___block_invoke(uint64_t a1, u
     v21 = 0;
   }
 
-  v22 = [(UIKBRTIPartner *)self rtiClient];
-  if (![v22 isEnvironmentEnabled] || (v20 & 1) != 0)
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  if (![rtiClient isEnvironmentEnabled] || (v20 & 1) != 0)
   {
   }
 
   else
   {
 
-    if (v16)
+    if (existingContainerWindow)
     {
-      if (v18)
+      if (_isHostedInAnotherProcess)
       {
         v23 = 2;
       }
@@ -3310,8 +3310,8 @@ id __45__UIKBRTIPartner__didAddSupplementalLexicon___block_invoke(uint64_t a1, u
 
   v24 = v21 | v20;
   v25 = +[UIKeyboard usingEndInputSessionCompletion];
-  v26 = [(UIKBRTIPartner *)self rtiClient];
-  v27 = v26;
+  rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+  v27 = rtiClient2;
   if (v25)
   {
 
@@ -3332,7 +3332,7 @@ id __45__UIKBRTIPartner__didAddSupplementalLexicon___block_invoke(uint64_t a1, u
 
           v39 = v33;
           v40 = 2112;
-          v41 = v6;
+          v41 = reasonCopy;
           v42 = 2048;
           v43 = id;
           _os_log_impl(&dword_188A29000, v32, OS_LOG_TYPE_DEFAULT, "RTIPartner setEnvironmentOptions:%s withReason:%@ (id=%ld)", buf, 0x20u);
@@ -3351,16 +3351,16 @@ id __45__UIKBRTIPartner__didAddSupplementalLexicon___block_invoke(uint64_t a1, u
         dispatch_once(&qword_1ED49F518, &__block_literal_global_318);
       }
 
-      v29 = [(UIKBRTIPartner *)self partnerDelegate];
-      v30 = [v29 taskQueue];
+      partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+      taskQueue = [partnerDelegate taskQueue];
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __56__UIKBRTIPartner__updateRTIAllowedAndNotify_withReason___block_invoke_3;
       v35[3] = &unk_1E70FD8B0;
       v35[4] = self;
       v37 = v24;
-      v36 = v6;
-      [v30 performSingleTask:v35 breadcrumb:qword_1ED49F510];
+      v36 = reasonCopy;
+      [taskQueue performSingleTask:v35 breadcrumb:qword_1ED49F510];
 
       v31 = _UIKeyboardInputSessionChangeLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -3373,7 +3373,7 @@ id __45__UIKBRTIPartner__didAddSupplementalLexicon___block_invoke(uint64_t a1, u
 
   else
   {
-    [v26 setEnvironmentOptions:v24 withReason:v6];
+    [rtiClient2 setEnvironmentOptions:v24 withReason:reasonCopy];
   }
 }
 
@@ -3441,9 +3441,9 @@ uint64_t __56__UIKBRTIPartner__updateRTIAllowedAndNotify_withReason___block_invo
   return v3;
 }
 
-- (void)_didCreateRTIClient:(id)a3
+- (void)_didCreateRTIClient:(id)client
 {
-  [a3 setDelegate:self];
+  [client setDelegate:self];
 
   [(UIKBRTIPartner *)self _updateRTIAllowedAndNotify:0 withReason:@"Synchronize with initial Application state"];
 }
@@ -3454,21 +3454,21 @@ uint64_t __56__UIKBRTIPartner__updateRTIAllowedAndNotify_withReason___block_invo
   v3 = CatalystTextInputLog_UIKit();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(UIKBRTIPartner *)self delegate];
-    v8 = [(UIKBRTIPartner *)self rtiClient];
+    delegate = [(UIKBRTIPartner *)self delegate];
+    rtiClient = [(UIKBRTIPartner *)self rtiClient];
     v9 = 138543618;
-    v10 = v7;
+    v10 = delegate;
     v11 = 2114;
-    v12 = v8;
+    v12 = rtiClient;
     _os_log_debug_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEBUG, "RTI XPCEndpoint available: self.delegate: %{public}@, self.rtiClient: %{public}@", &v9, 0x16u);
   }
 
-  v4 = [(UIKBRTIPartner *)self rtiClient];
-  if (!v4)
+  rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+  if (!rtiClient2)
   {
-    v5 = [(UIKBRTIPartner *)self delegate];
+    delegate2 = [(UIKBRTIPartner *)self delegate];
 
-    if (!v5)
+    if (!delegate2)
     {
       return;
     }
@@ -3480,30 +3480,30 @@ uint64_t __56__UIKBRTIPartner__updateRTIAllowedAndNotify_withReason___block_invo
       _os_log_error_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "RTIClient not around when we have a delegate! Attempting to recover...", &v9, 2u);
     }
 
-    v4 = [(UIKBRTIPartner *)self partnerDelegate];
-    [v4 resetInputDelegate];
+    rtiClient2 = [(UIKBRTIPartner *)self partnerDelegate];
+    [rtiClient2 resetInputDelegate];
   }
 }
 
-- (void)beginAllowingRemoteTextInput:(id)a3
+- (void)beginAllowingRemoteTextInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   [(UIKBRTIPartner *)self _createRTIClientIfNecessary];
-  v5 = [(UIKBRTIPartner *)self rtiClient];
-  [v5 beginAllowingRemoteTextInput:v4];
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  [rtiClient beginAllowingRemoteTextInput:inputCopy];
 
   [(UIKBRTIPartner *)self _updateGeometryObserverIfNecessary];
 }
 
-- (void)endAllowingRemoteTextInput:(id)a3 waitForReply:(BOOL)a4
+- (void)endAllowingRemoteTextInput:(id)input waitForReply:(BOOL)reply
 {
-  v7 = a3;
-  v5 = [(UIKBRTIPartner *)self rtiClient];
+  inputCopy = input;
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
 
-  if (v5)
+  if (rtiClient)
   {
-    v6 = [(UIKBRTIPartner *)self rtiClient];
-    [v6 endAllowingRemoteTextInput:v7];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    [rtiClient2 endAllowingRemoteTextInput:inputCopy];
 
     [(UIKBRTIPartner *)self _updateGeometryObserverIfNecessary];
   }
@@ -3513,139 +3513,139 @@ uint64_t __56__UIKBRTIPartner__updateRTIAllowedAndNotify_withReason___block_invo
 
 - (void)restartCurrentSession
 {
-  v3 = [(UIKBRTIPartner *)self rtiClient];
-  if (v3)
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
+  if (rtiClient)
   {
-    v4 = v3;
-    v5 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    v4 = rtiClient;
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
 
-    if (v5)
+    if (currentSessionIdentifier)
     {
-      v6 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-      [(UIKBRTIPartner *)self beginAllowingRemoteTextInput:v6];
+      currentSessionIdentifier2 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+      [(UIKBRTIPartner *)self beginAllowingRemoteTextInput:currentSessionIdentifier2];
 
       [(UIKBRTIPartner *)self documentStateChanged];
     }
   }
 }
 
-- (void)updateStateWithCompletion:(id)a3 updateTraits:(BOOL)a4
+- (void)updateStateWithCompletion:(id)completion updateTraits:(BOOL)traits
 {
-  v4 = a4;
-  v9 = a3;
-  if ([(UIKBRTIPartner *)self _updateRTITraitsIfNecessary]&& v4)
+  traitsCopy = traits;
+  completionCopy = completion;
+  if ([(UIKBRTIPartner *)self _updateRTITraitsIfNecessary]&& traitsCopy)
   {
-    v6 = [(UIKBRTIPartner *)self rtiClient];
-    v7 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    v8 = [(UIKBRTIPartner *)self rtiDocumentTraits];
-    [v6 remoteTextInputSessionWithID:v7 documentTraitsDidChange:v8];
+    rtiClient = [(UIKBRTIPartner *)self rtiClient];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    rtiDocumentTraits = [(UIKBRTIPartner *)self rtiDocumentTraits];
+    [rtiClient remoteTextInputSessionWithID:currentSessionIdentifier documentTraitsDidChange:rtiDocumentTraits];
   }
 
-  [(UIKBRTIPartner *)self _updateRTIStateWithCompletion:v9];
+  [(UIKBRTIPartner *)self _updateRTIStateWithCompletion:completionCopy];
 }
 
 - (BOOL)documentTraitsDisableAutomaticKeyboardUI
 {
-  v2 = [(UIKBRTIPartner *)self rtiDocumentTraits];
-  v3 = [v2 disableAutomaticKeyboardUI];
+  rtiDocumentTraits = [(UIKBRTIPartner *)self rtiDocumentTraits];
+  disableAutomaticKeyboardUI = [rtiDocumentTraits disableAutomaticKeyboardUI];
 
-  return v3;
+  return disableAutomaticKeyboardUI;
 }
 
 - (id)inputDelegateView
 {
-  v2 = [(UIKBRTIPartner *)self partnerDelegate];
-  v3 = [v2 inputDelegate];
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  inputDelegate = [partnerDelegate inputDelegate];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    textInputView = inputDelegate;
   }
 
   else
   {
-    v4 = [v3 textInputView];
+    textInputView = [inputDelegate textInputView];
   }
 
-  v5 = v4;
+  v5 = textInputView;
 
   return v5;
 }
 
-- (void)_updateRTIStateWithCompletion:(id)a3
+- (void)_updateRTIStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(UIKBRTIPartner *)self rtiClient];
+  completionCopy = completion;
+  rtiClient = [(UIKBRTIPartner *)self rtiClient];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UIKBRTIPartner *)self rtiClient];
-    v8 = [v7 serviceOptions];
+    rtiClient2 = [(UIKBRTIPartner *)self rtiClient];
+    serviceOptions = [rtiClient2 serviceOptions];
   }
 
   else
   {
-    v8 = 0;
+    serviceOptions = 0;
   }
 
-  v9 = [(UIKBRTIPartner *)self rtiClient];
-  v10 = [v9 defaultDocumentRequest];
+  rtiClient3 = [(UIKBRTIPartner *)self rtiClient];
+  defaultDocumentRequest = [rtiClient3 defaultDocumentRequest];
 
-  if (!v10)
+  if (!defaultDocumentRequest)
   {
-    v10 = objc_alloc_init(MEMORY[0x1E69C6F30]);
-    [v10 setTextGranularity:2];
-    [v10 setRectGranularity:1];
+    defaultDocumentRequest = objc_alloc_init(MEMORY[0x1E69C6F30]);
+    [defaultDocumentRequest setTextGranularity:2];
+    [defaultDocumentRequest setRectGranularity:1];
     if (qword_1ED49F578 != -1)
     {
       dispatch_once(&qword_1ED49F578, &__block_literal_global_1191_0);
     }
 
-    [v10 setSurroundingGranularityCount:qword_1ED49F570];
+    [defaultDocumentRequest setSurroundingGranularityCount:qword_1ED49F570];
     if (qword_1ED49F588 != -1)
     {
       dispatch_once(&qword_1ED49F588, &__block_literal_global_1207);
     }
 
-    [v10 setRectCountBefore:qword_1ED49F580];
+    [defaultDocumentRequest setRectCountBefore:qword_1ED49F580];
     if (qword_1ED49F598 != -1)
     {
       dispatch_once(&qword_1ED49F598, &__block_literal_global_1217);
     }
 
-    [v10 setRectCountAfter:qword_1ED49F590];
-    [v10 setFlags:49];
+    [defaultDocumentRequest setRectCountAfter:qword_1ED49F590];
+    [defaultDocumentRequest setFlags:49];
     if (+[UIKeyboard inputUIOOP])
     {
-      [v10 setFlags:{objc_msgSend(v10, "flags") | 4}];
+      [defaultDocumentRequest setFlags:{objc_msgSend(defaultDocumentRequest, "flags") | 4}];
     }
   }
 
-  if (([v8 displayOptions] & 2) != 0)
+  if (([serviceOptions displayOptions] & 2) != 0)
   {
-    [v10 setFlags:{objc_msgSend(v10, "flags") | 2}];
+    [defaultDocumentRequest setFlags:{objc_msgSend(defaultDocumentRequest, "flags") | 2}];
   }
 
-  if (([v8 displayOptions] & 4) != 0)
+  if (([serviceOptions displayOptions] & 4) != 0)
   {
-    [v10 setFlags:{objc_msgSend(v10, "flags") | 4}];
+    [defaultDocumentRequest setFlags:{objc_msgSend(defaultDocumentRequest, "flags") | 4}];
   }
 
-  v11 = [(UIKBRTIPartner *)self partnerDelegate];
-  v12 = [v11 delegateAsResponder];
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  delegateAsResponder = [partnerDelegate delegateAsResponder];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __48__UIKBRTIPartner__updateRTIStateWithCompletion___block_invoke;
   v15[3] = &unk_1E7117EF8;
-  v16 = v12;
-  v17 = self;
-  v18 = v4;
-  v13 = v4;
-  v14 = v12;
-  [(UIKBRTIPartner *)self _queryDocumentRequest:v10 completion:v15];
+  v16 = delegateAsResponder;
+  selfCopy = self;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = delegateAsResponder;
+  [(UIKBRTIPartner *)self _queryDocumentRequest:defaultDocumentRequest completion:v15];
 }
 
 void __48__UIKBRTIPartner__updateRTIStateWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3707,107 +3707,107 @@ void __48__UIKBRTIPartner__updateRTIStateWithCompletion___block_invoke(uint64_t 
   }
 }
 
-- (void)_addCharacterRectsToDocumentState:(id)a3 textRange:(id)a4 offset:(int64_t)a5
+- (void)_addCharacterRectsToDocumentState:(id)state textRange:(id)range offset:(int64_t)offset
 {
-  v64 = a3;
-  v8 = a4;
-  v9 = [(UIKBRTIPartner *)self inputDelegate];
-  v10 = [v9 selectionRectsForRange:v8];
+  stateCopy = state;
+  rangeCopy = range;
+  inputDelegate = [(UIKBRTIPartner *)self inputDelegate];
+  v10 = [inputDelegate selectionRectsForRange:rangeCopy];
 
-  v11 = [v10 lastObject];
-  v63 = [v11 isVertical];
+  lastObject = [v10 lastObject];
+  isVertical = [lastObject isVertical];
 
-  if (v8)
+  if (rangeCopy)
   {
-    if ([v8 isEmpty])
+    if ([rangeCopy isEmpty])
     {
-      if (![v8 isEmpty])
+      if (![rangeCopy isEmpty])
       {
         goto LABEL_15;
       }
 
-      v12 = [(UIKBRTIPartner *)self inputDelegate];
-      v13 = [v12 textInputView];
+      inputDelegate2 = [(UIKBRTIPartner *)self inputDelegate];
+      textInputView = [inputDelegate2 textInputView];
 
-      v14 = [(UIKBRTIPartner *)self inputDelegate];
-      v15 = [v8 start];
-      [v14 caretRectForPosition:v15];
+      inputDelegate3 = [(UIKBRTIPartner *)self inputDelegate];
+      start = [rangeCopy start];
+      [inputDelegate3 caretRectForPosition:start];
       v17 = v16;
       v19 = v18;
       v21 = v20;
       v23 = v22;
 
-      v24 = [v13 window];
-      [v13 convertRect:v24 toView:{v17, v19, v21, v23}];
+      window = [textInputView window];
+      [textInputView convertRect:window toView:{v17, v19, v21, v23}];
       v26 = v25;
       v28 = v27;
       v30 = v29;
       v32 = v31;
 
-      [v64 addTextRect:a5 forCharacterRange:0 granularity:0 isVertical:{v63, v26, v28, v30, v32}];
+      [stateCopy addTextRect:offset forCharacterRange:0 granularity:0 isVertical:{isVertical, v26, v28, v30, v32}];
     }
 
     else
     {
-      v33 = [(UIKBRTIPartner *)self partnerDelegate];
-      v13 = [v33 inputDelegate];
+      partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+      textInputView = [partnerDelegate inputDelegate];
 
-      v34 = [v13 textInputView];
-      v35 = [(UIKBRTIPartner *)self inputDelegate];
-      v36 = [v8 start];
-      v37 = [v8 end];
-      v38 = [v35 offsetFromPosition:v36 toPosition:v37];
+      v13TextInputView = [textInputView textInputView];
+      inputDelegate4 = [(UIKBRTIPartner *)self inputDelegate];
+      start2 = [rangeCopy start];
+      v37 = [rangeCopy end];
+      v38 = [inputDelegate4 offsetFromPosition:start2 toPosition:v37];
 
-      v39 = [v8 start];
+      start3 = [rangeCopy start];
       if (v38 >= 1)
       {
         v62 = v10;
         v40 = 0;
         while (1)
         {
-          v41 = [v13 positionFromPosition:v39 offset:1];
+          v41 = [textInputView positionFromPosition:start3 offset:1];
 
           if (!v41)
           {
             break;
           }
 
-          v42 = [v13 textRangeFromPosition:v39 toPosition:v41];
+          v42 = [textInputView textRangeFromPosition:start3 toPosition:v41];
           if (!v42)
           {
             break;
           }
 
           v43 = v42;
-          v44 = [(UIKBRTIPartner *)self inputDelegate];
-          [v44 firstRectForRange:v43];
+          inputDelegate5 = [(UIKBRTIPartner *)self inputDelegate];
+          [inputDelegate5 firstRectForRange:v43];
           v46 = v45;
           v48 = v47;
           v50 = v49;
           v52 = v51;
 
-          v53 = [v34 window];
-          [v34 convertRect:v53 toView:{v46, v48, v50, v52}];
+          window2 = [v13TextInputView window];
+          [v13TextInputView convertRect:window2 toView:{v46, v48, v50, v52}];
           v55 = v54;
           v57 = v56;
           v59 = v58;
           v61 = v60;
 
-          [v64 addTextRect:a5 forCharacterRange:1 granularity:0 isVertical:{v63, v55, v57, v59, v61}];
+          [stateCopy addTextRect:offset forCharacterRange:1 granularity:0 isVertical:{isVertical, v55, v57, v59, v61}];
           v40 = v41;
 
-          ++a5;
-          v39 = v40;
+          ++offset;
+          start3 = v40;
           if (!--v38)
           {
             goto LABEL_12;
           }
         }
 
-        v40 = v39;
+        v40 = start3;
 LABEL_12:
 
-        v39 = v40;
+        start3 = v40;
         v10 = v62;
       }
     }
@@ -3816,57 +3816,57 @@ LABEL_12:
 LABEL_15:
 }
 
-- (void)_addTextCheckingAnnotatedStringToDocumentState:(id)a3
+- (void)_addTextCheckingAnnotatedStringToDocumentState:(id)state
 {
-  v24 = a3;
-  [v24 setTextCheckingAnnotatedString:0];
-  v4 = [(UIKBRTIPartner *)self inputDelegate];
+  stateCopy = state;
+  [stateCopy setTextCheckingAnnotatedString:0];
+  inputDelegate = [(UIKBRTIPartner *)self inputDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIKBRTIPartner *)self partnerDelegate];
-    v7 = [v6 inputDelegate];
+    partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+    inputDelegate2 = [partnerDelegate inputDelegate];
 
-    v8 = [v7 markedTextRange];
-    v9 = v8;
-    if (v8)
+    markedTextRange = [inputDelegate2 markedTextRange];
+    v9 = markedTextRange;
+    if (markedTextRange)
     {
-      v10 = v8;
+      selectedTextRange = markedTextRange;
     }
 
     else
     {
-      v10 = [v7 selectedTextRange];
+      selectedTextRange = [inputDelegate2 selectedTextRange];
     }
 
-    v11 = v10;
+    v11 = selectedTextRange;
 
-    v12 = [v24 documentState];
-    v13 = [v12 contextBeforeInput];
+    documentState = [stateCopy documentState];
+    contextBeforeInput = [documentState contextBeforeInput];
 
-    v14 = [v24 documentState];
-    v15 = [v14 contextAfterInput];
+    documentState2 = [stateCopy documentState];
+    contextAfterInput = [documentState2 contextAfterInput];
 
     if (v11)
     {
-      v16 = [v11 start];
-      v17 = [v7 positionFromPosition:v16 offset:{-objc_msgSend(v13, "length")}];
+      start = [v11 start];
+      v17 = [inputDelegate2 positionFromPosition:start offset:{-objc_msgSend(contextBeforeInput, "length")}];
 
       v18 = [v11 end];
-      v19 = [v7 positionFromPosition:v18 offset:{objc_msgSend(v15, "length")}];
+      v19 = [inputDelegate2 positionFromPosition:v18 offset:{objc_msgSend(contextAfterInput, "length")}];
 
       if (v17)
       {
         if (v19)
         {
-          v20 = [v7 textRangeFromPosition:v17 toPosition:v19];
+          v20 = [inputDelegate2 textRangeFromPosition:v17 toPosition:v19];
           if (v20)
           {
             v21 = v20;
-            v22 = [(UIKBRTIPartner *)self inputDelegate];
-            v23 = [v22 annotatedSubstringForRange:v21];
-            [v24 setTextCheckingAnnotatedString:v23];
+            inputDelegate3 = [(UIKBRTIPartner *)self inputDelegate];
+            v23 = [inputDelegate3 annotatedSubstringForRange:v21];
+            [stateCopy setTextCheckingAnnotatedString:v23];
           }
         }
       }
@@ -3874,39 +3874,39 @@ LABEL_15:
   }
 }
 
-- (void)applyRemoteDocumentTraitsIfNecessary:(id)a3 force:(BOOL)a4
+- (void)applyRemoteDocumentTraitsIfNecessary:(id)necessary force:(BOOL)force
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  forceCopy = force;
+  necessaryCopy = necessary;
+  if (necessaryCopy)
   {
-    v7 = v6;
+    inputSystemSourceSession = necessaryCopy;
   }
 
   else
   {
-    v8 = [(UIKBRTIPartner *)self partnerDelegate];
-    v7 = [v8 inputSystemSourceSession];
+    partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+    inputSystemSourceSession = [partnerDelegate inputSystemSourceSession];
 
-    if (!v7)
+    if (!inputSystemSourceSession)
     {
       return;
     }
   }
 
-  v197 = v4;
-  v9 = [(UIKBRTIPartner *)self partnerDelegate];
-  v10 = [v9 keyboardState];
+  v197 = forceCopy;
+  partnerDelegate2 = [(UIKBRTIPartner *)self partnerDelegate];
+  keyboardState = [partnerDelegate2 keyboardState];
 
-  v11 = [(UIKBRTIPartner *)self partnerDelegate];
-  v12 = [v11 textInputTraits];
+  partnerDelegate3 = [(UIKBRTIPartner *)self partnerDelegate];
+  textInputTraits = [partnerDelegate3 textInputTraits];
 
-  v200 = v12;
-  v13 = [v12 copy];
+  v200 = textInputTraits;
+  v13 = [textInputTraits copy];
   remoteDocumentTraits = self->_remoteDocumentTraits;
-  v15 = [v7 documentTraits];
+  documentTraits = [inputSystemSourceSession documentTraits];
 
-  if (remoteDocumentTraits == v15)
+  if (remoteDocumentTraits == documentTraits)
   {
     v191 = 1;
     v198 = 1;
@@ -3915,59 +3915,59 @@ LABEL_15:
 
   else
   {
-    v16 = v10;
-    v17 = [v7 documentTraits];
-    v18 = [v17 inputViewInfo];
-    v19 = [(RTIDocumentTraits *)self->_remoteDocumentTraits inputViewInfo];
-    if (v18 == v19)
+    v16 = keyboardState;
+    documentTraits2 = [inputSystemSourceSession documentTraits];
+    inputViewInfo = [documentTraits2 inputViewInfo];
+    inputViewInfo2 = [(RTIDocumentTraits *)self->_remoteDocumentTraits inputViewInfo];
+    if (inputViewInfo == inputViewInfo2)
     {
       v199 = 0;
     }
 
     else
     {
-      v20 = [v7 documentTraits];
-      v21 = [v20 inputViewInfo];
-      v22 = [(RTIDocumentTraits *)self->_remoteDocumentTraits inputViewInfo];
-      v199 = [v21 isEqual:v22] ^ 1;
+      documentTraits3 = [inputSystemSourceSession documentTraits];
+      inputViewInfo3 = [documentTraits3 inputViewInfo];
+      inputViewInfo4 = [(RTIDocumentTraits *)self->_remoteDocumentTraits inputViewInfo];
+      v199 = [inputViewInfo3 isEqual:inputViewInfo4] ^ 1;
     }
 
-    v23 = [v7 documentTraits];
-    v24 = [v23 textInputModeData];
-    if (v24)
+    documentTraits4 = [inputSystemSourceSession documentTraits];
+    textInputModeData = [documentTraits4 textInputModeData];
+    if (textInputModeData)
     {
-      v25 = [(RTIDocumentTraits *)self->_remoteDocumentTraits textInputModeData];
-      if (v25)
+      textInputModeData2 = [(RTIDocumentTraits *)self->_remoteDocumentTraits textInputModeData];
+      if (textInputModeData2)
       {
-        v26 = [v7 documentTraits];
-        v27 = [v26 textInputModeData];
-        v28 = [(RTIDocumentTraits *)self->_remoteDocumentTraits textInputModeData];
-        v199 |= [v27 isEqualToData:v28] ^ 1;
+        documentTraits5 = [inputSystemSourceSession documentTraits];
+        textInputModeData3 = [documentTraits5 textInputModeData];
+        textInputModeData4 = [(RTIDocumentTraits *)self->_remoteDocumentTraits textInputModeData];
+        v199 |= [textInputModeData3 isEqualToData:textInputModeData4] ^ 1;
       }
     }
 
-    v29 = [(RTIDocumentTraits *)self->_remoteDocumentTraits autofillMode];
-    v30 = [v7 documentTraits];
-    v191 = v29 == [v30 autofillMode];
+    autofillMode = [(RTIDocumentTraits *)self->_remoteDocumentTraits autofillMode];
+    documentTraits6 = [inputSystemSourceSession documentTraits];
+    v191 = autofillMode == [documentTraits6 autofillMode];
 
     v31 = self->_remoteDocumentTraits;
-    v32 = [v7 documentTraits];
-    [(RTIDocumentTraits *)v31 isEqual:v32];
+    documentTraits7 = [inputSystemSourceSession documentTraits];
+    [(RTIDocumentTraits *)v31 isEqual:documentTraits7];
 
-    v33 = [(RTIDocumentTraits *)self->_remoteDocumentTraits userInfo];
-    v34 = [v33 objectForKeyedSubscript:0x1EFB53430];
-    v35 = [v7 documentTraits];
-    v36 = [v35 userInfo];
-    v37 = [v36 objectForKeyedSubscript:0x1EFB53430];
+    userInfo = [(RTIDocumentTraits *)self->_remoteDocumentTraits userInfo];
+    v34 = [userInfo objectForKeyedSubscript:0x1EFB53430];
+    documentTraits8 = [inputSystemSourceSession documentTraits];
+    userInfo2 = [documentTraits8 userInfo];
+    v37 = [userInfo2 objectForKeyedSubscript:0x1EFB53430];
     v198 = [v34 isEqual:v37];
 
-    v38 = [(RTIDocumentTraits *)self->_remoteDocumentTraits userInfo];
-    v39 = [v38 objectForKeyedSubscript:0x1EFB53430];
+    userInfo3 = [(RTIDocumentTraits *)self->_remoteDocumentTraits userInfo];
+    v39 = [userInfo3 objectForKeyedSubscript:0x1EFB53430];
     if (!v39)
     {
-      v40 = [v7 documentTraits];
-      v41 = [v40 userInfo];
-      v42 = [v41 objectForKeyedSubscript:0x1EFB53430];
+      documentTraits9 = [inputSystemSourceSession documentTraits];
+      userInfo4 = [documentTraits9 userInfo];
+      v42 = [userInfo4 objectForKeyedSubscript:0x1EFB53430];
 
       v43 = v198;
       if (!v42)
@@ -3978,89 +3978,89 @@ LABEL_15:
       v198 = v43;
     }
 
-    v44 = [v7 documentTraits];
+    documentTraits10 = [inputSystemSourceSession documentTraits];
     v45 = self->_remoteDocumentTraits;
-    self->_remoteDocumentTraits = v44;
+    self->_remoteDocumentTraits = documentTraits10;
 
-    v10 = v16;
+    keyboardState = v16;
   }
 
-  v46 = [v200 keyboardAppearance];
-  v190 = [v200 keyboardType];
-  v189 = [v200 returnKeyType];
-  v47 = [v7 documentTraits];
+  keyboardAppearance = [v200 keyboardAppearance];
+  keyboardType = [v200 keyboardType];
+  returnKeyType = [v200 returnKeyType];
+  documentTraits11 = [inputSystemSourceSession documentTraits];
 
-  if (v47)
+  if (documentTraits11)
   {
-    v48 = [v7 documentTraits];
-    v49 = [v48 textInputTraits];
-    [v13 overlayWithTITextInputTraits:v49];
+    documentTraits12 = [inputSystemSourceSession documentTraits];
+    textInputTraits2 = [documentTraits12 textInputTraits];
+    [v13 overlayWithTITextInputTraits:textInputTraits2];
 
-    v50 = [v7 documentTraits];
-    v51 = [v50 PINEntrySeparatorIndexes];
-    [v13 setPINEntrySeparatorIndexes:v51];
+    documentTraits13 = [inputSystemSourceSession documentTraits];
+    pINEntrySeparatorIndexes = [documentTraits13 PINEntrySeparatorIndexes];
+    [v13 setPINEntrySeparatorIndexes:pINEntrySeparatorIndexes];
 
-    v52 = [v7 documentTraits];
-    v53 = [v52 validTextRange];
-    [v13 setValidTextRange:{v53, v54}];
+    documentTraits14 = [inputSystemSourceSession documentTraits];
+    validTextRange = [documentTraits14 validTextRange];
+    [v13 setValidTextRange:{validTextRange, v54}];
 
-    v55 = [v7 documentTraits];
-    v56 = [v55 recipientId];
-    [v13 setAutocorrectionContext:v56];
+    documentTraits15 = [inputSystemSourceSession documentTraits];
+    recipientId = [documentTraits15 recipientId];
+    [v13 setAutocorrectionContext:recipientId];
 
-    v57 = [v7 documentTraits];
-    v58 = [v57 recipientId];
-    [v10 setRecipientIdentifier:v58];
+    documentTraits16 = [inputSystemSourceSession documentTraits];
+    recipientId2 = [documentTraits16 recipientId];
+    [keyboardState setRecipientIdentifier:recipientId2];
 
-    v59 = [v7 documentTraits];
-    v60 = [v59 responseContext];
-    [v13 setResponseContext:v60];
+    documentTraits17 = [inputSystemSourceSession documentTraits];
+    responseContext = [documentTraits17 responseContext];
+    [v13 setResponseContext:responseContext];
 
-    v61 = [v7 documentTraits];
-    v62 = [v61 responseContext];
-    [v10 setResponseContext:v62];
+    documentTraits18 = [inputSystemSourceSession documentTraits];
+    responseContext2 = [documentTraits18 responseContext];
+    [keyboardState setResponseContext:responseContext2];
 
     v63 = [UIInputContextHistory alloc];
-    v64 = [v7 documentTraits];
-    v65 = [v64 inputContextHistory];
-    v66 = [(UIInputContextHistory *)v63 initWithInputContextHistory:v65];
+    documentTraits19 = [inputSystemSourceSession documentTraits];
+    inputContextHistory = [documentTraits19 inputContextHistory];
+    v66 = [(UIInputContextHistory *)v63 initWithInputContextHistory:inputContextHistory];
     [v13 setInputContextHistory:v66];
 
-    v67 = [v7 documentTraits];
-    v68 = [v67 inputContextHistory];
-    v69 = [v68 copy];
-    [v10 setInputContextHistory:v69];
+    documentTraits20 = [inputSystemSourceSession documentTraits];
+    inputContextHistory2 = [documentTraits20 inputContextHistory];
+    v69 = [inputContextHistory2 copy];
+    [keyboardState setInputContextHistory:v69];
 
-    v70 = [v7 documentTraits];
-    v71 = [v70 supportedPayloadIds];
-    [v10 setSupportedPayloadIds:v71];
+    documentTraits21 = [inputSystemSourceSession documentTraits];
+    supportedPayloadIds = [documentTraits21 supportedPayloadIds];
+    [keyboardState setSupportedPayloadIds:supportedPayloadIds];
 
-    v72 = [v7 documentTraits];
-    [v13 setDevicePasscodeEntry:{objc_msgSend(v72, "devicePasscodeEntry")}];
+    documentTraits22 = [inputSystemSourceSession documentTraits];
+    [v13 setDevicePasscodeEntry:{objc_msgSend(documentTraits22, "devicePasscodeEntry")}];
 
-    v73 = [v7 documentTraits];
-    [v13 setDisableInputBars:{objc_msgSend(v73, "disableInputBars")}];
+    documentTraits23 = [inputSystemSourceSession documentTraits];
+    [v13 setDisableInputBars:{objc_msgSend(documentTraits23, "disableInputBars")}];
 
-    v74 = [v7 documentTraits];
-    [v13 setDisablePrediction:{objc_msgSend(v74, "disablePrediction")}];
+    documentTraits24 = [inputSystemSourceSession documentTraits];
+    [v13 setDisablePrediction:{objc_msgSend(documentTraits24, "disablePrediction")}];
 
     if (+[UIKeyboard isKeyboardProcess])
     {
-      v75 = [v7 documentTraits];
-      [v13 setHidePrediction:{objc_msgSend(v75, "hidePrediction")}];
+      documentTraits25 = [inputSystemSourceSession documentTraits];
+      [v13 setHidePrediction:{objc_msgSend(documentTraits25, "hidePrediction")}];
 
-      LODWORD(v75) = [v200 hidePrediction];
-      v76 = [v7 documentTraits];
-      v77 = v75 ^ [v76 hidePrediction];
+      LODWORD(documentTraits25) = [v200 hidePrediction];
+      documentTraits26 = [inputSystemSourceSession documentTraits];
+      v77 = documentTraits25 ^ [documentTraits26 hidePrediction];
 
       v199 &= v77 ^ 1;
-      v78 = [v7 documentTraits];
-      [v13 setDisablePrediction:{objc_msgSend(v78, "disablePrediction")}];
+      documentTraits27 = [inputSystemSourceSession documentTraits];
+      [v13 setDisablePrediction:{objc_msgSend(documentTraits27, "disablePrediction")}];
     }
 
-    v79 = [v7 documentTraits];
-    v80 = [v79 fenceHandle];
-    v192 = v80 != 0;
+    documentTraits28 = [inputSystemSourceSession documentTraits];
+    fenceHandle = [documentTraits28 fenceHandle];
+    v192 = fenceHandle != 0;
   }
 
   else
@@ -4070,127 +4070,127 @@ LABEL_15:
 
   if (!+[UIKeyboard isInputSystemUI])
   {
-    [v13 setKeyboardAppearance:v46];
+    [v13 setKeyboardAppearance:keyboardAppearance];
   }
 
-  v81 = [v7 documentTraits];
-  [v10 setAutofillMode:{objc_msgSend(v81, "autofillMode")}];
+  documentTraits29 = [inputSystemSourceSession documentTraits];
+  [keyboardState setAutofillMode:{objc_msgSend(documentTraits29, "autofillMode")}];
 
-  v82 = [v7 documentTraits];
-  [v10 setAutofillSubMode:{objc_msgSend(v82, "autofillSubMode")}];
+  documentTraits30 = [inputSystemSourceSession documentTraits];
+  [keyboardState setAutofillSubMode:{objc_msgSend(documentTraits30, "autofillSubMode")}];
 
-  v83 = [v7 documentTraits];
-  v84 = [v83 enabledSupplementalLexiconIdentifiers];
+  documentTraits31 = [inputSystemSourceSession documentTraits];
+  enabledSupplementalLexiconIdentifiers = [documentTraits31 enabledSupplementalLexiconIdentifiers];
 
-  v196 = v84;
-  if ([v84 count])
+  v196 = enabledSupplementalLexiconIdentifiers;
+  if ([enabledSupplementalLexiconIdentifiers count])
   {
-    v85 = [v84 firstObject];
-    [v10 setSupplementalLexiconIdentifier:{objc_msgSend(v85, "unsignedLongLongValue")}];
+    firstObject = [enabledSupplementalLexiconIdentifiers firstObject];
+    [keyboardState setSupplementalLexiconIdentifier:{objc_msgSend(firstObject, "unsignedLongLongValue")}];
   }
 
   else
   {
-    [v10 setSupplementalLexiconIdentifier:0];
+    [keyboardState setSupplementalLexiconIdentifier:0];
   }
 
-  v86 = [v7 documentTraits];
-  v87 = [v86 autofillContext];
-  v88 = [v87 mutableCopy];
+  documentTraits32 = [inputSystemSourceSession documentTraits];
+  autofillContext = [documentTraits32 autofillContext];
+  dictionary = [autofillContext mutableCopy];
 
-  if (!v88)
+  if (!dictionary)
   {
-    v89 = [v7 documentTraits];
-    v90 = [v89 shouldLoadAutofillSignUp];
+    documentTraits33 = [inputSystemSourceSession documentTraits];
+    shouldLoadAutofillSignUp = [documentTraits33 shouldLoadAutofillSignUp];
 
-    if (v90)
+    if (shouldLoadAutofillSignUp)
     {
-      v88 = 0;
+      dictionary = 0;
     }
 
     else
     {
-      v88 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
   }
 
-  v91 = [v7 documentTraits];
-  v92 = [v91 appId];
+  documentTraits34 = [inputSystemSourceSession documentTraits];
+  appId = [documentTraits34 appId];
 
-  if (v92)
+  if (appId)
   {
-    v93 = [v7 documentTraits];
-    v94 = [v93 appId];
+    documentTraits35 = [inputSystemSourceSession documentTraits];
+    appId2 = [documentTraits35 appId];
 
-    [v88 setObject:v94 forKey:@"_AppId"];
+    [dictionary setObject:appId2 forKey:@"_AppId"];
     if (+[UIKeyboard isKeyboardProcess])
     {
-      [v10 setClientIdentifier:v94];
+      [keyboardState setClientIdentifier:appId2];
     }
   }
 
-  v95 = [v7 documentTraits];
-  v96 = [v95 bundleId];
+  documentTraits36 = [inputSystemSourceSession documentTraits];
+  bundleId = [documentTraits36 bundleId];
 
-  if (v96)
+  if (bundleId)
   {
-    v97 = [v7 documentTraits];
-    v98 = [v97 bundleId];
+    documentTraits37 = [inputSystemSourceSession documentTraits];
+    bundleId2 = [documentTraits37 bundleId];
 
-    [v88 setObject:v98 forKey:@"_BundleId"];
+    [dictionary setObject:bundleId2 forKey:@"_BundleId"];
   }
 
-  v99 = [v7 documentTraits];
-  v100 = [v99 associatedDomains];
+  documentTraits38 = [inputSystemSourceSession documentTraits];
+  associatedDomains = [documentTraits38 associatedDomains];
 
-  if (v100)
+  if (associatedDomains)
   {
-    [v88 setObject:v100 forKey:@"_AssociatedDomains"];
+    [dictionary setObject:associatedDomains forKey:@"_AssociatedDomains"];
   }
 
-  v195 = v100;
+  v195 = associatedDomains;
   v101 = +[UIKeyboardImpl activeInstance];
-  v102 = [v7 documentTraits];
-  [v101 setRemoteDelegateSupportsAdaptiveImageGlyph:{objc_msgSend(v102, "supportsAdaptiveImageGlyph")}];
+  documentTraits39 = [inputSystemSourceSession documentTraits];
+  [v101 setRemoteDelegateSupportsAdaptiveImageGlyph:{objc_msgSend(documentTraits39, "supportsAdaptiveImageGlyph")}];
 
-  [v10 setAutofillContext:v88];
-  v103 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+  [keyboardState setAutofillContext:dictionary];
+  currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
 
-  if (v103)
+  if (currentSessionIdentifier)
   {
-    v104 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    [v10 setDocumentIdentifier:v104];
+    currentSessionIdentifier2 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    [keyboardState setDocumentIdentifier:currentSessionIdentifier2];
   }
 
-  v105 = [v7 documentTraits];
-  v106 = [v105 userInfo];
+  documentTraits40 = [inputSystemSourceSession documentTraits];
+  userInfo5 = [documentTraits40 userInfo];
 
-  if (v106)
+  if (userInfo5)
   {
-    v107 = [v106 objectForKeyedSubscript:0x1EFB531F0];
+    v107 = [userInfo5 objectForKeyedSubscript:0x1EFB531F0];
     [v13 setForceFloatingKeyboard:{objc_msgSend(v107, "BOOLValue")}];
 
-    v108 = [v106 objectForKeyedSubscript:0x1EFB53210];
+    v108 = [userInfo5 objectForKeyedSubscript:0x1EFB53210];
     [v13 setForceDisableDictation:{objc_msgSend(v108, "BOOLValue")}];
 
-    v109 = [v106 objectForKeyedSubscript:0x1EFB53230];
+    v109 = [userInfo5 objectForKeyedSubscript:0x1EFB53230];
     [v13 setUseAutomaticEndpointing:{objc_msgSend(v109, "BOOLValue")}];
 
-    v110 = [v106 objectForKeyedSubscript:0x1EFB53250];
+    v110 = [userInfo5 objectForKeyedSubscript:0x1EFB53250];
     [v13 setAcceptsDictationSearchResults:{objc_msgSend(v110, "BOOLValue")}];
 
-    v111 = [v106 objectForKeyedSubscript:0x1EFB532D0];
+    v111 = [userInfo5 objectForKeyedSubscript:0x1EFB532D0];
     [v13 setForceEnableDictation:{objc_msgSend(v111, "BOOLValue")}];
 
     v112 = +[UIKeyboardImpl activeInstance];
-    v113 = [v112 isSettingDelegate];
+    isSettingDelegate = [v112 isSettingDelegate];
 
-    if (v113)
+    if (isSettingDelegate)
     {
-      v114 = [v106 objectForKeyedSubscript:0x1EFB53290];
-      v115 = [v114 BOOLValue];
+      v114 = [userInfo5 objectForKeyedSubscript:0x1EFB53290];
+      bOOLValue = [v114 BOOLValue];
 
-      if (v115)
+      if (bOOLValue)
       {
         v116 = +[UIDictationController sharedInstance];
         v117 = v116;
@@ -4207,24 +4207,24 @@ LABEL_15:
       [v116 setShouldSuppressSoftwareKeyboard:v118];
     }
 
-    v119 = [v106 objectForKeyedSubscript:0x1EFB53350];
+    v119 = [userInfo5 objectForKeyedSubscript:0x1EFB53350];
     v120 = +[UIDictationController sharedInstance];
     [v120 set_inputDelegateClassName:v119];
 
-    v121 = [v106 objectForKeyedSubscript:0x1EFB53270];
-    v122 = [v121 BOOLValue];
+    v121 = [userInfo5 objectForKeyedSubscript:0x1EFB53270];
+    bOOLValue2 = [v121 BOOLValue];
     v123 = +[UIDictationController sharedInstance];
-    [v123 set_shouldUseDictationSearchFieldBehavior:v122];
+    [v123 set_shouldUseDictationSearchFieldBehavior:bOOLValue2];
 
     v124 = +[UIKeyboardImpl activeInstance];
-    LODWORD(v122) = [v124 isSettingDelegate];
+    LODWORD(bOOLValue2) = [v124 isSettingDelegate];
 
-    if (v122)
+    if (bOOLValue2)
     {
-      v125 = [v106 objectForKeyedSubscript:0x1EFB532B0];
-      v126 = [v125 BOOLValue];
+      v125 = [userInfo5 objectForKeyedSubscript:0x1EFB532B0];
+      bOOLValue3 = [v125 BOOLValue];
 
-      if (v126)
+      if (bOOLValue3)
       {
         v127 = +[UIKeyboardCameraSession sharedSession];
         v128 = v127;
@@ -4241,42 +4241,42 @@ LABEL_15:
       [v127 setShouldSuppressSoftwareKeyboard:v129];
     }
 
-    v193 = v10;
-    v130 = [v106 objectForKeyedSubscript:0x1EFB532F0];
-    v131 = [v130 BOOLValue];
+    v193 = keyboardState;
+    v130 = [userInfo5 objectForKeyedSubscript:0x1EFB532F0];
+    bOOLValue4 = [v130 BOOLValue];
     v132 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    [v132 setHasCustomInputViewController:v131];
+    [v132 setHasCustomInputViewController:bOOLValue4];
 
     v133 = +[UIKeyboardImpl activeInstance];
-    v134 = [v106 objectForKeyedSubscript:0x1EFB53310];
+    v134 = [userInfo5 objectForKeyedSubscript:0x1EFB53310];
     [v133 _setShouldSuppressAssistantBar:{objc_msgSend(v134, "BOOLValue")}];
 
     v135 = +[UIKeyboardImpl activeInstance];
-    v136 = [v106 objectForKeyedSubscript:0x1EFB53330];
+    v136 = [userInfo5 objectForKeyedSubscript:0x1EFB53330];
     [v135 _setShouldSuppressSoftwareKeyboard:{objc_msgSend(v136, "BOOLValue")}];
 
     v137 = +[UIKeyboardImpl activeInstance];
     [v137 _suppressSoftwareKeyboardStateChangedIgnoringPolicyDelegate:0];
 
-    v138 = [v106 objectForKeyedSubscript:0x1EFB53370];
-    v139 = [v138 BOOLValue];
+    v138 = [userInfo5 objectForKeyedSubscript:0x1EFB53370];
+    bOOLValue5 = [v138 BOOLValue];
     v140 = +[UIKeyboardImpl activeInstance];
-    [v140 setHasPreviousKeyResponder:v139];
+    [v140 setHasPreviousKeyResponder:bOOLValue5];
 
-    v141 = [v106 objectForKeyedSubscript:0x1EFB53390];
-    v142 = [v141 BOOLValue];
+    v141 = [userInfo5 objectForKeyedSubscript:0x1EFB53390];
+    bOOLValue6 = [v141 BOOLValue];
     v143 = +[UIKeyboardImpl activeInstance];
-    [v143 setHasNextKeyResponder:v142];
+    [v143 setHasNextKeyResponder:bOOLValue6];
 
     v144 = +[UIKeyboardImpl activeInstance];
-    v145 = [v106 objectForKeyedSubscript:0x1EFB533B0];
+    v145 = [userInfo5 objectForKeyedSubscript:0x1EFB533B0];
     [v144 setReturnKeyEnabled:{objc_msgSend(v145, "BOOLValue")}];
 
     v146 = +[UIKeyboardImpl activeInstance];
-    v147 = [v106 objectForKeyedSubscript:0x1EFB53410];
+    v147 = [userInfo5 objectForKeyedSubscript:0x1EFB53410];
     [v146 setCorrectionLearningAllowed:{objc_msgSend(v147, "BOOLValue")}];
 
-    v148 = [v106 objectForKeyedSubscript:0x1EFB533D0];
+    v148 = [userInfo5 objectForKeyedSubscript:0x1EFB533D0];
     v149 = v148;
     if (!v148)
     {
@@ -4291,18 +4291,18 @@ LABEL_15:
     }
 
     v151 = [v149 objectForKeyedSubscript:@"disabled"];
-    v152 = [v151 BOOLValue];
+    bOOLValue7 = [v151 BOOLValue];
 
     v153 = [v149 objectForKeyedSubscript:@"forSuppressionAssertion"];
-    v154 = [v153 BOOLValue];
+    bOOLValue8 = [v153 BOOLValue];
 
     v155 = [v149 objectForKeyedSubscript:@"updatePlacement"];
-    v156 = [v155 BOOLValue];
+    bOOLValue9 = [v155 BOOLValue];
 
-    if (v154)
+    if (bOOLValue8)
     {
       v157 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-      [v157 setDisableBecomeFirstResponder:v152 forSuppressionAssertion:1 updatePlacement:v156];
+      [v157 setDisableBecomeFirstResponder:bOOLValue7 forSuppressionAssertion:1 updatePlacement:bOOLValue9];
     }
 
     else
@@ -4313,79 +4313,79 @@ LABEL_15:
       }
 
       v158 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v159 = [v158 keyboardArbiterClient];
-      v160 = [v159 disableBecomeFirstResponder];
+      keyboardArbiterClient = [v158 keyboardArbiterClient];
+      disableBecomeFirstResponder = [keyboardArbiterClient disableBecomeFirstResponder];
 
-      if (v152 == v160)
+      if (bOOLValue7 == disableBecomeFirstResponder)
       {
         goto LABEL_61;
       }
 
       v157 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-      [v157 setDisableBecomeFirstResponder:v152 forSuppressionAssertion:0];
+      [v157 setDisableBecomeFirstResponder:bOOLValue7 forSuppressionAssertion:0];
     }
 
 LABEL_61:
-    v161 = [v106 objectForKeyedSubscript:0x1EFB533F0];
-    v162 = [v161 BOOLValue];
+    v161 = [userInfo5 objectForKeyedSubscript:0x1EFB533F0];
+    bOOLValue10 = [v161 BOOLValue];
     v163 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v164 = [v163 existingContainerRootController];
-    [v164 setHiddenCount:v162];
+    existingContainerRootController = [v163 existingContainerRootController];
+    [existingContainerRootController setHiddenCount:bOOLValue10];
 
-    v10 = v193;
+    keyboardState = v193;
   }
 
   v165 = +[UIKeyboardImpl activeInstance];
-  v166 = [v165 showingEmojiSearch];
+  showingEmojiSearch = [v165 showingEmojiSearch];
 
-  v167 = [(UIKBRTIPartner *)self partnerDelegate];
-  v168 = v167;
-  if (v166)
+  partnerDelegate4 = [(UIKBRTIPartner *)self partnerDelegate];
+  v168 = partnerDelegate4;
+  if (showingEmojiSearch)
   {
     v207[0] = MEMORY[0x1E69E9820];
     v207[1] = 3221225472;
     v207[2] = __61__UIKBRTIPartner_applyRemoteDocumentTraitsIfNecessary_force___block_invoke;
     v207[3] = &unk_1E7117F20;
     v208 = v13;
-    v209 = v189;
-    v210 = v190;
+    v209 = returnKeyType;
+    v210 = keyboardType;
     [v168 modifyTextInputTraits:v207 forceSync:v197];
   }
 
   else
   {
-    [v167 updateInputDelegateForRemoteTraitChange:v13 forceSync:v197];
+    [partnerDelegate4 updateInputDelegateForRemoteTraitChange:v13 forceSync:v197];
   }
 
   if (+[UIKeyboard isInputSystemUI])
   {
-    v169 = [v7 documentTraits];
-    v170 = [v169 assistantItem];
-    [(UIKBRTIPartner *)self applyAssistantItem:v170];
+    documentTraits41 = [inputSystemSourceSession documentTraits];
+    assistantItem = [documentTraits41 assistantItem];
+    [(UIKBRTIPartner *)self applyAssistantItem:assistantItem];
 
-    v171 = [v7 documentTraits];
-    v172 = [v171 assistantViewInfo];
-    v173 = [v7 documentTraits];
-    v174 = [v172 uiRemoteInputViewInfoForProcessId:{objc_msgSend(v173, "processId")}];
+    documentTraits42 = [inputSystemSourceSession documentTraits];
+    assistantViewInfo = [documentTraits42 assistantViewInfo];
+    documentTraits43 = [inputSystemSourceSession documentTraits];
+    v174 = [assistantViewInfo uiRemoteInputViewInfoForProcessId:{objc_msgSend(documentTraits43, "processId")}];
 
-    v175 = [(UIKBRTIPartner *)self partnerDelegate];
-    [v175 updateAssistantViewInfo:v174];
+    partnerDelegate5 = [(UIKBRTIPartner *)self partnerDelegate];
+    [partnerDelegate5 updateAssistantViewInfo:v174];
 
     v176 = v192;
     if ((v199 | v192))
     {
-      v194 = v10;
+      v194 = keyboardState;
       if (v192)
       {
-        v177 = [v7 documentTraits];
-        v178 = [v177 fenceHandle];
-        v179 = [v178 isUsable];
+        documentTraits44 = [inputSystemSourceSession documentTraits];
+        fenceHandle2 = [documentTraits44 fenceHandle];
+        isUsable = [fenceHandle2 isUsable];
 
-        if (v179)
+        if (isUsable)
         {
-          v180 = [v7 documentTraits];
-          v181 = [v180 fenceHandle];
-          v182 = [v181 copy];
+          documentTraits45 = [inputSystemSourceSession documentTraits];
+          fenceHandle3 = [documentTraits45 fenceHandle];
+          v182 = [fenceHandle3 copy];
         }
 
         else
@@ -4407,13 +4407,13 @@ LABEL_61:
       block[3] = &unk_1E70F43C8;
       v205 = v176;
       v202 = v182;
-      v203 = self;
-      v204 = v7;
+      selfCopy = self;
+      v204 = inputSystemSourceSession;
       v206 = v199;
       v183 = v182;
       dispatch_async(MEMORY[0x1E69E96A0], block);
 
-      v10 = v194;
+      keyboardState = v194;
     }
 
     v184 = +[UIKeyboardImpl activeInstance];
@@ -4422,9 +4422,9 @@ LABEL_61:
 
   if (+[UIKeyboard isKeyboardProcess])
   {
-    v185 = [(UIKBRTIPartner *)self partnerDelegate];
-    v186 = [v7 documentTraits];
-    [v185 setRemoteDelegateSupportsImagePaste:{objc_msgSend(v186, "supportsImagePaste")}];
+    partnerDelegate6 = [(UIKBRTIPartner *)self partnerDelegate];
+    documentTraits46 = [inputSystemSourceSession documentTraits];
+    [partnerDelegate6 setRemoteDelegateSupportsImagePaste:{objc_msgSend(documentTraits46, "supportsImagePaste")}];
   }
 
   if (!(v198 & 1 | !+[UIKeyboard isKeyboardProcess]))
@@ -4480,61 +4480,61 @@ void __61__UIKBRTIPartner_applyRemoteDocumentTraitsIfNecessary_force___block_inv
   }
 }
 
-- (void)applyAssistantItem:(id)a3
+- (void)applyAssistantItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UIKBRTIPartner *)self partnerDelegate];
-  [v5 applyAssistantItem:v4];
+  itemCopy = item;
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  [partnerDelegate applyAssistantItem:itemCopy];
 }
 
-- (void)applyRemoteDocumentStateIfNecessary:(id)a3 force:(BOOL)a4
+- (void)applyRemoteDocumentStateIfNecessary:(id)necessary force:(BOOL)force
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  forceCopy = force;
+  necessaryCopy = necessary;
+  if (!necessaryCopy)
   {
-    v7 = [(UIKBRTIPartner *)self partnerDelegate];
-    v24 = [v7 inputSystemSourceSession];
+    partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+    inputSystemSourceSession = [partnerDelegate inputSystemSourceSession];
 
-    v6 = v24;
+    necessaryCopy = inputSystemSourceSession;
   }
 
-  v25 = v6;
-  v8 = [v6 documentState];
-  v9 = [v8 originatedFromSource];
+  v25 = necessaryCopy;
+  documentState = [necessaryCopy documentState];
+  originatedFromSource = [documentState originatedFromSource];
 
   v10 = v25;
   if (v25)
   {
-    v11 = [v25 documentState];
-    v12 = [v11 documentState];
+    documentState2 = [v25 documentState];
+    v11DocumentState = [documentState2 documentState];
 
     v10 = v25;
-    if (v12)
+    if (v11DocumentState)
     {
-      v13 = [v25 documentState];
-      v14 = [v13 documentState];
-      v15 = [v25 documentState];
-      v16 = [v15 selectedTextRange];
+      documentState3 = [v25 documentState];
+      v13DocumentState = [documentState3 documentState];
+      documentState4 = [v25 documentState];
+      selectedTextRange = [documentState4 selectedTextRange];
       v18 = v17;
 
-      v19 = [v13 hasText];
+      hasText = [documentState3 hasText];
       self->_isNotifyingDelegateOfRemoteOutputOperation = 1;
-      if (v9)
+      if (originatedFromSource)
       {
-        v20 = [(UIKBRTIPartner *)self partnerDelegate];
-        [v20 updateForExpectedRemoteDocumentStateChange:v14 selectedTextRange:v16 forceSync:{v18, v4}];
+        partnerDelegate2 = [(UIKBRTIPartner *)self partnerDelegate];
+        [partnerDelegate2 updateForExpectedRemoteDocumentStateChange:v13DocumentState selectedTextRange:selectedTextRange forceSync:{v18, forceCopy}];
       }
 
       else
       {
-        v21 = v19;
-        v22 = [v13 canSuggestSupplementalItemsForCurrentSelection];
-        v23 = [(UIKBRTIPartner *)self partnerDelegate];
-        [v23 setCanSuggestSupplementalItemsForCurrentSelection:v22];
+        v21 = hasText;
+        canSuggestSupplementalItemsForCurrentSelection = [documentState3 canSuggestSupplementalItemsForCurrentSelection];
+        partnerDelegate3 = [(UIKBRTIPartner *)self partnerDelegate];
+        [partnerDelegate3 setCanSuggestSupplementalItemsForCurrentSelection:canSuggestSupplementalItemsForCurrentSelection];
 
-        v20 = [(UIKBRTIPartner *)self partnerDelegate];
-        [v20 updateInputDelegateForRemoteDocumentStateChange:v14 selectedTextRange:v16 hasText:v18 forceSync:{v21, v4}];
+        partnerDelegate2 = [(UIKBRTIPartner *)self partnerDelegate];
+        [partnerDelegate2 updateInputDelegateForRemoteDocumentStateChange:v13DocumentState selectedTextRange:selectedTextRange hasText:v18 forceSync:{v21, forceCopy}];
       }
 
       self->_isNotifyingDelegateOfRemoteOutputOperation = 0;
@@ -4543,21 +4543,21 @@ void __61__UIKBRTIPartner_applyRemoteDocumentTraitsIfNecessary_force___block_inv
   }
 }
 
-- (void)sendAutoFillDidInsertCallbacksWithTextOperations:(id)a3
+- (void)sendAutoFillDidInsertCallbacksWithTextOperations:(id)operations
 {
-  v14 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v14 isAutoFillTextOperation])
+  operationsCopy = operations;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [operationsCopy isAutoFillTextOperation])
   {
-    v4 = [v14 textToAssert];
-    if ([v4 length])
+    textToAssert = [operationsCopy textToAssert];
+    if ([textToAssert length])
     {
     }
 
     else
     {
-      v5 = [v14 keyboardOutput];
-      v6 = [v5 insertionText];
-      v7 = [v6 length];
+      keyboardOutput = [operationsCopy keyboardOutput];
+      insertionText = [keyboardOutput insertionText];
+      v7 = [insertionText length];
 
       if (!v7)
       {
@@ -4565,40 +4565,40 @@ void __61__UIKBRTIPartner_applyRemoteDocumentTraitsIfNecessary_force___block_inv
       }
     }
 
-    v8 = [v14 isExplicitAutoFillInvocation];
-    v9 = [(UIKBRTIPartner *)self partnerDelegate];
-    v10 = [v9 inputDelegate];
+    isExplicitAutoFillInvocation = [operationsCopy isExplicitAutoFillInvocation];
+    partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+    inputDelegate = [partnerDelegate inputDelegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(UIKBRTIPartner *)self partnerDelegate];
-      v13 = [v12 inputDelegate];
-      [v13 autoFillDidInsertWithExplicitInvocationMode:v8];
+      partnerDelegate2 = [(UIKBRTIPartner *)self partnerDelegate];
+      inputDelegate2 = [partnerDelegate2 inputDelegate];
+      [inputDelegate2 autoFillDidInsertWithExplicitInvocationMode:isExplicitAutoFillInvocation];
     }
   }
 
 LABEL_8:
 }
 
-- (void)inputSession:(id)a3 documentStateDidChange:(id)a4 withMergeResult:(unint64_t)a5
+- (void)inputSession:(id)session documentStateDidChange:(id)change withMergeResult:(unint64_t)result
 {
-  if ((a5 & 0x21) != 0)
+  if ((result & 0x21) != 0)
   {
-    [(UIKBRTIPartner *)self applyRemoteDocumentStateIfNecessary:a3 force:1];
+    [(UIKBRTIPartner *)self applyRemoteDocumentStateIfNecessary:session force:1];
   }
 }
 
-- (void)inputSession:(id)a3 performInputOperation:(id)a4
+- (void)inputSession:(id)session performInputOperation:(id)operation
 {
-  v5 = a4;
-  v6 = [v5 customInfoType];
-  v7 = [v6 isEqualToString:@"UIPhysicalKeyboardEvent"];
+  operationCopy = operation;
+  customInfoType = [operationCopy customInfoType];
+  v7 = [customInfoType isEqualToString:@"UIPhysicalKeyboardEvent"];
 
   if (!v7)
   {
-    v10 = [v5 customInfoType];
-    v11 = [v10 isEqualToString:@"UISupplementalLexiconInputOperations"];
+    customInfoType2 = [operationCopy customInfoType];
+    v11 = [customInfoType2 isEqualToString:@"UISupplementalLexiconInputOperations"];
 
     if (v11)
     {
@@ -4606,8 +4606,8 @@ LABEL_8:
       aBlock[1] = 3221225472;
       aBlock[2] = __53__UIKBRTIPartner_inputSession_performInputOperation___block_invoke_2;
       aBlock[3] = &unk_1E70F35B8;
-      v73 = v5;
-      v74 = self;
+      v73 = operationCopy;
+      selfCopy = self;
       v12 = _Block_copy(aBlock);
       if (pthread_main_np() == 1)
       {
@@ -4623,8 +4623,8 @@ LABEL_8:
       goto LABEL_31;
     }
 
-    v13 = [v5 customInfoType];
-    v14 = [v13 isEqualToString:@"UIDictationRemoteInputOperations"];
+    customInfoType3 = [operationCopy customInfoType];
+    v14 = [customInfoType3 isEqualToString:@"UIDictationRemoteInputOperations"];
 
     if (v14)
     {
@@ -4632,8 +4632,8 @@ LABEL_8:
       v69[1] = 3221225472;
       v69[2] = __53__UIKBRTIPartner_inputSession_performInputOperation___block_invoke_3;
       v69[3] = &unk_1E70F35B8;
-      v70 = v5;
-      v71 = self;
+      v70 = operationCopy;
+      selfCopy2 = self;
       v15 = _Block_copy(v69);
       if (pthread_main_np() == 1)
       {
@@ -4649,8 +4649,8 @@ LABEL_8:
       goto LABEL_31;
     }
 
-    v17 = [v5 customInfoType];
-    v18 = [v17 isEqualToString:@"UIUserInteractionRemoteInputOperations"];
+    customInfoType4 = [operationCopy customInfoType];
+    v18 = [customInfoType4 isEqualToString:@"UIUserInteractionRemoteInputOperations"];
 
     if (v18)
     {
@@ -4658,8 +4658,8 @@ LABEL_8:
       v66[1] = 3221225472;
       v66[2] = __53__UIKBRTIPartner_inputSession_performInputOperation___block_invoke_431;
       v66[3] = &unk_1E70F35B8;
-      v67 = v5;
-      v68 = self;
+      v67 = operationCopy;
+      selfCopy3 = self;
       v19 = _Block_copy(v66);
       if (pthread_main_np() == 1)
       {
@@ -4675,8 +4675,8 @@ LABEL_8:
       goto LABEL_31;
     }
 
-    v20 = [v5 customInfoType];
-    v21 = [v20 isEqualToString:@"UIKeyboardCameraRemoteInputOperations"];
+    customInfoType5 = [operationCopy customInfoType];
+    v21 = [customInfoType5 isEqualToString:@"UIKeyboardCameraRemoteInputOperations"];
 
     if (v21)
     {
@@ -4684,8 +4684,8 @@ LABEL_8:
       v63[1] = 3221225472;
       v63[2] = __53__UIKBRTIPartner_inputSession_performInputOperation___block_invoke_477;
       v63[3] = &unk_1E70F35B8;
-      v64 = v5;
-      v65 = self;
+      v64 = operationCopy;
+      selfCopy4 = self;
       v22 = _Block_copy(v63);
       if (pthread_main_np() == 1)
       {
@@ -4701,12 +4701,12 @@ LABEL_8:
       goto LABEL_31;
     }
 
-    v23 = [v5 customInfoType];
-    v24 = [v23 isEqualToString:@"UIEmojiSearchOperations"];
+    customInfoType6 = [operationCopy customInfoType];
+    v24 = [customInfoType6 isEqualToString:@"UIEmojiSearchOperations"];
 
     if (v24)
     {
-      v25 = [v5 customInfo];
+      customInfo = [operationCopy customInfo];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4715,21 +4715,21 @@ LABEL_8:
         goto LABEL_32;
       }
 
-      v27 = [v5 customInfo];
-      v28 = [v27 objectForKeyedSubscript:@"resign"];
+      customInfo2 = [operationCopy customInfo];
+      v28 = [customInfo2 objectForKeyedSubscript:@"resign"];
       if (!v28)
       {
         goto LABEL_53;
       }
 
-      v29 = +[UIKeyboardImpl activeInstance];
-      [v29 clearForwardingInputDelegateAndResign:{objc_msgSend(v28, "BOOLValue")}];
+      existingContainerRootController = +[UIKeyboardImpl activeInstance];
+      [existingContainerRootController clearForwardingInputDelegateAndResign:{objc_msgSend(v28, "BOOLValue")}];
     }
 
     else
     {
-      v30 = [v5 customInfoType];
-      v31 = [v30 isEqualToString:@"UIUserPencilOperations"];
+      customInfoType7 = [operationCopy customInfoType];
+      v31 = [customInfoType7 isEqualToString:@"UIUserPencilOperations"];
 
       if (v31)
       {
@@ -4737,8 +4737,8 @@ LABEL_8:
         v60[1] = 3221225472;
         v60[2] = __53__UIKBRTIPartner_inputSession_performInputOperation___block_invoke_2_478;
         v60[3] = &unk_1E70F35B8;
-        v61 = v5;
-        v62 = self;
+        v61 = operationCopy;
+        selfCopy5 = self;
         v32 = _Block_copy(v60);
         if (pthread_main_np() == 1)
         {
@@ -4754,16 +4754,16 @@ LABEL_8:
         goto LABEL_31;
       }
 
-      v33 = [v5 customInfoType];
-      v34 = [v33 isEqualToString:@"UIKBRTICustomInfoTypeApplicationOperations"];
+      customInfoType8 = [operationCopy customInfoType];
+      v34 = [customInfoType8 isEqualToString:@"UIKBRTICustomInfoTypeApplicationOperations"];
 
-      v35 = [v5 actionSelector];
+      actionSelector = [operationCopy actionSelector];
       if (!v34)
       {
-        if (!v35 || [v5 actionSelector] != sel_acceptAutocorrection)
+        if (!actionSelector || [operationCopy actionSelector] != sel_acceptAutocorrection)
         {
-          v37 = [v5 customInfoType];
-          v38 = [v37 isEqualToString:@"UIWebKitOperations"];
+          customInfoType9 = [operationCopy customInfoType];
+          v38 = [customInfoType9 isEqualToString:@"UIWebKitOperations"];
 
           if (v38)
           {
@@ -4771,7 +4771,7 @@ LABEL_8:
             v57[1] = 3221225472;
             v57[2] = __53__UIKBRTIPartner_inputSession_performInputOperation___block_invoke_4;
             v57[3] = &unk_1E70F3590;
-            v58 = v5;
+            v58 = operationCopy;
             v39 = _Block_copy(v57);
             if (pthread_main_np() == 1)
             {
@@ -4788,8 +4788,8 @@ LABEL_8:
 
           else
           {
-            v40 = [v5 customInfoType];
-            v41 = [v40 isEqualToString:@"UIKBRTICustomInfoTypeAnalyticsOperations"];
+            customInfoType10 = [operationCopy customInfoType];
+            v41 = [customInfoType10 isEqualToString:@"UIKBRTICustomInfoTypeAnalyticsOperations"];
 
             if (v41)
             {
@@ -4797,7 +4797,7 @@ LABEL_8:
               v55[1] = 3221225472;
               v55[2] = __53__UIKBRTIPartner_inputSession_performInputOperation___block_invoke_5;
               v55[3] = &unk_1E70F3590;
-              v56 = v5;
+              v56 = operationCopy;
               v42 = _Block_copy(v55);
               if (pthread_main_np() == 1)
               {
@@ -4814,22 +4814,22 @@ LABEL_8:
 
             else
             {
-              v47 = [v5 customInfoType];
-              v48 = [v47 isEqualToString:@"UIKBRTICustomInfoTypeGrammarCorrectionOperations"];
+              customInfoType11 = [operationCopy customInfoType];
+              v48 = [customInfoType11 isEqualToString:@"UIKBRTICustomInfoTypeGrammarCorrectionOperations"];
 
               if (!v48)
               {
-                v50 = [v5 keyboardInput];
-                v8 = [v50 output];
+                keyboardInput = [operationCopy keyboardInput];
+                output = [keyboardInput output];
 
-                if (!v8)
+                if (!output)
                 {
                   goto LABEL_9;
                 }
 
-                v9 = [(UIKBRTIPartner *)self partnerDelegate];
-                v51 = [v5 keyboardInput];
-                [v9 undoWithKeyboardInput:v51];
+                partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+                keyboardInput2 = [operationCopy keyboardInput];
+                [partnerDelegate undoWithKeyboardInput:keyboardInput2];
 
                 goto LABEL_4;
               }
@@ -4838,8 +4838,8 @@ LABEL_8:
               v52[1] = 3221225472;
               v52[2] = __53__UIKBRTIPartner_inputSession_performInputOperation___block_invoke_6;
               v52[3] = &unk_1E70F35B8;
-              v53 = v5;
-              v54 = self;
+              v53 = operationCopy;
+              selfCopy6 = self;
               v49 = _Block_copy(v52);
               if (pthread_main_np() == 1)
               {
@@ -4871,44 +4871,44 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        v27 = [(UIKBRTIPartner *)self partnerDelegate];
-        [v27 acceptAutocorrection];
+        customInfo2 = [(UIKBRTIPartner *)self partnerDelegate];
+        [customInfo2 acceptAutocorrection];
 LABEL_54:
 
         goto LABEL_32;
       }
 
-      if (v35 == sel_setRemoteDisableBecomeFirstResponder_)
+      if (actionSelector == sel_setRemoteDisableBecomeFirstResponder_)
       {
-        v27 = [v5 customInfo];
+        customInfo2 = [operationCopy customInfo];
         v28 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-        v29 = [v27 objectForKeyedSubscript:@"disabled"];
-        v43 = [v29 BOOLValue];
-        v44 = [v27 objectForKeyedSubscript:@"forSuppressionAssertion"];
-        v45 = [v44 BOOLValue];
-        v46 = [v27 objectForKeyedSubscript:@"updatePlacement"];
-        [v28 setDisableBecomeFirstResponder:v43 forSuppressionAssertion:v45 updatePlacement:{objc_msgSend(v46, "BOOLValue")}];
+        existingContainerRootController = [customInfo2 objectForKeyedSubscript:@"disabled"];
+        bOOLValue = [existingContainerRootController BOOLValue];
+        v44 = [customInfo2 objectForKeyedSubscript:@"forSuppressionAssertion"];
+        bOOLValue2 = [v44 BOOLValue];
+        v46 = [customInfo2 objectForKeyedSubscript:@"updatePlacement"];
+        [v28 setDisableBecomeFirstResponder:bOOLValue forSuppressionAssertion:bOOLValue2 updatePlacement:{objc_msgSend(v46, "BOOLValue")}];
       }
 
       else
       {
-        if ([v5 actionSelector] == sel_verifyPlacement)
+        if ([operationCopy actionSelector] == sel_verifyPlacement)
         {
-          v27 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-          [v27 verifyPlacement];
+          customInfo2 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
+          [customInfo2 verifyPlacement];
           goto LABEL_54;
         }
 
-        if ([v5 actionSelector] != sel_setInputViewsHidden_)
+        if ([operationCopy actionSelector] != sel_setInputViewsHidden_)
         {
           goto LABEL_32;
         }
 
-        v27 = [v5 customInfo];
+        customInfo2 = [operationCopy customInfo];
         v28 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v29 = [v28 existingContainerRootController];
-        v36 = [v27 objectForKeyedSubscript:@"hidden"];
-        [v29 setInputViewsHidden:{objc_msgSend(v36, "BOOLValue")}];
+        existingContainerRootController = [v28 existingContainerRootController];
+        v36 = [customInfo2 objectForKeyedSubscript:@"hidden"];
+        [existingContainerRootController setInputViewsHidden:{objc_msgSend(v36, "BOOLValue")}];
       }
     }
 
@@ -4916,7 +4916,7 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  v8 = [v5 customInfo];
+  output = [operationCopy customInfo];
   if (pthread_main_np() != 1)
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -4924,14 +4924,14 @@ LABEL_53:
     block[2] = __53__UIKBRTIPartner_inputSession_performInputOperation___block_invoke;
     block[3] = &unk_1E70F35B8;
     block[4] = self;
-    v76 = v8;
+    v76 = output;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     goto LABEL_9;
   }
 
-  v9 = [(UIKBRTIPartner *)self partnerDelegate];
-  [v9 performKeyboardEvent:v8];
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  [partnerDelegate performKeyboardEvent:output];
 LABEL_4:
 
 LABEL_9:
@@ -5554,19 +5554,19 @@ void __53__UIKBRTIPartner_inputSession_performInputOperation___block_invoke_6(ui
   }
 }
 
-- (void)inputSession:(id)a3 performInputOperation:(id)a4 withResponse:(id)a5
+- (void)inputSession:(id)session performInputOperation:(id)operation withResponse:(id)response
 {
-  v7 = a4;
-  v8 = a5;
+  operationCopy = operation;
+  responseCopy = response;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__UIKBRTIPartner_inputSession_performInputOperation_withResponse___block_invoke;
   aBlock[3] = &unk_1E70FCE28;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v9 = v8;
-  v10 = v7;
+  v13 = operationCopy;
+  selfCopy = self;
+  v15 = responseCopy;
+  v9 = responseCopy;
+  v10 = operationCopy;
   v11 = _Block_copy(aBlock);
   if (pthread_main_np() == 1)
   {
@@ -5742,14 +5742,14 @@ uint64_t __66__UIKBRTIPartner_inputSession_performInputOperation_withResponse___
   return result;
 }
 
-- (void)inputSession:(id)a3 textSuggestionsChanged:(id)a4
+- (void)inputSession:(id)session textSuggestionsChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   if (pthread_main_np() == 1)
   {
-    v6 = [(UIKBRTIPartner *)self partnerDelegate];
-    v7 = [UITextSuggestion decodeTextSuggestions:v5];
-    [v6 setSuggestions:v7];
+    partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+    v7 = [UITextSuggestion decodeTextSuggestions:changedCopy];
+    [partnerDelegate setSuggestions:v7];
   }
 
   else
@@ -5759,7 +5759,7 @@ uint64_t __66__UIKBRTIPartner_inputSession_performInputOperation_withResponse___
     v8[2] = __54__UIKBRTIPartner_inputSession_textSuggestionsChanged___block_invoke;
     v8[3] = &unk_1E70F35B8;
     v8[4] = self;
-    v9 = v5;
+    v9 = changedCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
   }
 }
@@ -5771,9 +5771,9 @@ void __54__UIKBRTIPartner_inputSession_textSuggestionsChanged___block_invoke(uin
   [v3 setSuggestions:v2];
 }
 
-- (void)inputSession:(id)a3 didAddRTISupplementalLexicon:(id)a4
+- (void)inputSession:(id)session didAddRTISupplementalLexicon:(id)lexicon
 {
-  v5 = a4;
+  lexiconCopy = lexicon;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__UIKBRTIPartner_inputSession_didAddRTISupplementalLexicon___block_invoke;
@@ -5782,7 +5782,7 @@ void __54__UIKBRTIPartner_inputSession_textSuggestionsChanged___block_invoke(uin
   v6 = _Block_copy(aBlock);
   if (pthread_main_np() == 1)
   {
-    v6[2](v6, v5);
+    v6[2](v6, lexiconCopy);
   }
 
   else
@@ -5792,7 +5792,7 @@ void __54__UIKBRTIPartner_inputSession_textSuggestionsChanged___block_invoke(uin
     block[2] = __60__UIKBRTIPartner_inputSession_didAddRTISupplementalLexicon___block_invoke_2;
     block[3] = &unk_1E70F4A50;
     v9 = v6;
-    v8 = v5;
+    v8 = lexiconCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -5822,9 +5822,9 @@ void __60__UIKBRTIPartner_inputSession_didAddRTISupplementalLexicon___block_invo
   }
 }
 
-- (void)inputSession:(id)a3 didRemoveRTISupplementalLexicon:(id)a4
+- (void)inputSession:(id)session didRemoveRTISupplementalLexicon:(id)lexicon
 {
-  v5 = a4;
+  lexiconCopy = lexicon;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__UIKBRTIPartner_inputSession_didRemoveRTISupplementalLexicon___block_invoke;
@@ -5833,7 +5833,7 @@ void __60__UIKBRTIPartner_inputSession_didAddRTISupplementalLexicon___block_invo
   v6 = _Block_copy(aBlock);
   if (pthread_main_np() == 1)
   {
-    v6[2](v6, v5);
+    v6[2](v6, lexiconCopy);
   }
 
   else
@@ -5843,7 +5843,7 @@ void __60__UIKBRTIPartner_inputSession_didAddRTISupplementalLexicon___block_invo
     block[2] = __63__UIKBRTIPartner_inputSession_didRemoveRTISupplementalLexicon___block_invoke_2;
     block[3] = &unk_1E70F4A50;
     v9 = v6;
-    v8 = v5;
+    v8 = lexiconCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -5863,35 +5863,35 @@ void __63__UIKBRTIPartner_inputSession_didRemoveRTISupplementalLexicon___block_i
   }
 }
 
-- (BOOL)compareWaitingRTIOutputOperationResponseContext:(id)a3 andExchange:(id)a4
+- (BOOL)compareWaitingRTIOutputOperationResponseContext:(id)context andExchange:(id)exchange
 {
-  v7 = a4;
-  v8 = self;
-  v9 = a3;
-  objc_sync_enter(v8);
-  waitingRTIOutputOperationResponseContext = v8->_waitingRTIOutputOperationResponseContext;
+  exchangeCopy = exchange;
+  selfCopy = self;
+  contextCopy = context;
+  objc_sync_enter(selfCopy);
+  waitingRTIOutputOperationResponseContext = selfCopy->_waitingRTIOutputOperationResponseContext;
 
-  if (waitingRTIOutputOperationResponseContext == v9)
+  if (waitingRTIOutputOperationResponseContext == contextCopy)
   {
-    objc_storeStrong(&v8->_waitingRTIOutputOperationResponseContext, a4);
+    objc_storeStrong(&selfCopy->_waitingRTIOutputOperationResponseContext, exchange);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
-  return waitingRTIOutputOperationResponseContext == v9;
+  return waitingRTIOutputOperationResponseContext == contextCopy;
 }
 
-- (id)exchangeWaitingRTIOutputOperationResponseContext:(id)a3
+- (id)exchangeWaitingRTIOutputOperationResponseContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_waitingRTIOutputOperationResponseContext;
-  waitingRTIOutputOperationResponseContext = v5->_waitingRTIOutputOperationResponseContext;
-  v5->_waitingRTIOutputOperationResponseContext = v4;
-  v8 = v4;
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_waitingRTIOutputOperationResponseContext;
+  waitingRTIOutputOperationResponseContext = selfCopy->_waitingRTIOutputOperationResponseContext;
+  selfCopy->_waitingRTIOutputOperationResponseContext = contextCopy;
+  v8 = contextCopy;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -5903,18 +5903,18 @@ void __50__UIKBRTIPartner_finishCompletionHandlersIfNeeded__block_invoke()
   qword_1ED49F520 = v0;
 }
 
-- (void)performTextOperations:(id)a3
+- (void)performTextOperations:(id)operations
 {
-  v9 = a3;
-  v4 = [v9 customInfoType];
-  if ([v4 isEqualToString:@"UIEmojiSearchOperations"])
+  operationsCopy = operations;
+  customInfoType = [operationsCopy customInfoType];
+  if ([customInfoType isEqualToString:@"UIEmojiSearchOperations"])
   {
     v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v6 = [v5 scene];
-    v7 = [v6 activationState];
+    scene = [v5 scene];
+    activationState = [scene activationState];
 
-    v8 = v9;
-    if (v7)
+    v8 = operationsCopy;
+    if (activationState)
     {
       goto LABEL_6;
     }
@@ -5924,37 +5924,37 @@ void __50__UIKBRTIPartner_finishCompletionHandlersIfNeeded__block_invoke()
   {
   }
 
-  [(UIKBRTIPartner *)self performTextOperations:v9 resultHandler:&__block_literal_global_541];
-  v8 = v9;
+  [(UIKBRTIPartner *)self performTextOperations:operationsCopy resultHandler:&__block_literal_global_541];
+  v8 = operationsCopy;
 LABEL_6:
 }
 
-- (void)performTextOperations:(id)a3 resultHandler:(id)a4
+- (void)performTextOperations:(id)operations resultHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  operationsCopy = operations;
+  handlerCopy = handler;
   if (!+[UIKeyboard usingEndInputSessionCompletion])
   {
-    v9 = [(UIKBRTIPartner *)self exchangeWaitingRTIOutputOperationResponseContext:0];
-    if (v9)
+    keyboardTaskSubqueue = [(UIKBRTIPartner *)self exchangeWaitingRTIOutputOperationResponseContext:0];
+    if (keyboardTaskSubqueue)
     {
-      v10 = [v6 keyboardOutput];
-      [(UIKBRTIPartner *)self setPendingOutputOperation:v10];
+      keyboardOutput = [operationsCopy keyboardOutput];
+      [(UIKBRTIPartner *)self setPendingOutputOperation:keyboardOutput];
 
-      v7[2](v7, 255);
+      handlerCopy[2](handlerCopy, 255);
       if (qword_1ED49F558 != -1)
       {
         dispatch_once(&qword_1ED49F558, &__block_literal_global_559);
       }
 
-      [v9 transferExecutionToMainThreadWithTask:&__block_literal_global_565 breadcrumb:qword_1ED49F550];
+      [keyboardTaskSubqueue transferExecutionToMainThreadWithTask:&__block_literal_global_565 breadcrumb:qword_1ED49F550];
       goto LABEL_23;
     }
 
     if (pthread_main_np() == 1)
     {
-      [(UIKBRTIPartner *)self _queued_performTextOperations:v6 resultHandler:v7];
+      [(UIKBRTIPartner *)self _queued_performTextOperations:operationsCopy resultHandler:handlerCopy];
 LABEL_23:
 
       goto LABEL_24;
@@ -5965,8 +5965,8 @@ LABEL_23:
     v15[2] = __54__UIKBRTIPartner_performTextOperations_resultHandler___block_invoke_4;
     v15[3] = &unk_1E70FCE28;
     v15[4] = self;
-    v16 = v6;
-    v17 = v7;
+    v16 = operationsCopy;
+    v17 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v15);
 
     v12 = v16;
@@ -5977,16 +5977,16 @@ LABEL_22:
 
   if (pthread_main_np() != 1)
   {
-    v9 = [(UIKBRTIPartner *)self keyboardTaskSubqueue];
-    if (v9)
+    keyboardTaskSubqueue = [(UIKBRTIPartner *)self keyboardTaskSubqueue];
+    if (keyboardTaskSubqueue)
     {
       v11 = _UIKeyboardInputSessionChangeLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v27 = v6;
+        v27 = operationsCopy;
         v28 = 2112;
-        v29 = v9;
+        v29 = keyboardTaskSubqueue;
         _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, "Dispatching -_queued_performTextOperations:%p as main-thread task on keyboard task subqueue: %@", buf, 0x16u);
       }
 
@@ -5999,10 +5999,10 @@ LABEL_22:
       v21[1] = 3221225472;
       v21[2] = __54__UIKBRTIPartner_performTextOperations_resultHandler___block_invoke_3;
       v21[3] = &unk_1E70F5F08;
-      v22 = v6;
-      v23 = v9;
-      v24 = self;
-      v25 = v7;
+      v22 = operationsCopy;
+      v23 = keyboardTaskSubqueue;
+      selfCopy = self;
+      v25 = handlerCopy;
       [v23 dispatchAsync:v21 breadcrumb:qword_1ED49F530];
 
       v12 = v22;
@@ -6015,16 +6015,16 @@ LABEL_22:
         dispatch_once(&qword_1ED49F548, &__block_literal_global_550);
       }
 
-      v13 = [(UIKBRTIPartner *)self partnerDelegate];
-      v14 = [v13 taskQueue];
+      partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+      taskQueue = [partnerDelegate taskQueue];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __54__UIKBRTIPartner_performTextOperations_resultHandler___block_invoke_3_554;
       v18[3] = &unk_1E7117168;
       v18[4] = self;
-      v19 = v6;
-      v20 = v7;
-      [v14 addTask:v18 breadcrumb:qword_1ED49F540];
+      v19 = operationsCopy;
+      v20 = handlerCopy;
+      [taskQueue addTask:v18 breadcrumb:qword_1ED49F540];
 
       v12 = v19;
     }
@@ -6039,7 +6039,7 @@ LABEL_22:
     _os_log_error_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "Unexpected call to UIKBRTIPartner's -performTextOperations:resultHandler: on main thread.", buf, 2u);
   }
 
-  [(UIKBRTIPartner *)self _queued_performTextOperations:v6 resultHandler:v7];
+  [(UIKBRTIPartner *)self _queued_performTextOperations:operationsCopy resultHandler:handlerCopy];
 LABEL_24:
 }
 
@@ -6092,20 +6092,20 @@ void __54__UIKBRTIPartner_performTextOperations_resultHandler___block_invoke_557
   qword_1ED49F550 = v0;
 }
 
-- (void)_queued_performTextOperations:(id)a3 resultHandler:(id)a4
+- (void)_queued_performTextOperations:(id)operations resultHandler:(id)handler
 {
   v233 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 inputSourceState];
+  operationsCopy = operations;
+  handlerCopy = handler;
+  inputSourceState = [operationsCopy inputSourceState];
 
-  if (v8)
+  if (inputSourceState)
   {
     rtiInputSourceState = self->_rtiInputSourceState;
     if (rtiInputSourceState)
     {
-      v10 = [v6 inputSourceState];
-      v11 = [(RTIInputSourceState *)rtiInputSourceState isEqual:v10]^ 1;
+      inputSourceState2 = [operationsCopy inputSourceState];
+      v11 = [(RTIInputSourceState *)rtiInputSourceState isEqual:inputSourceState2]^ 1;
     }
 
     else
@@ -6113,9 +6113,9 @@ void __54__UIKBRTIPartner_performTextOperations_resultHandler___block_invoke_557
       v11 = 0;
     }
 
-    v12 = [v6 inputSourceState];
+    inputSourceState3 = [operationsCopy inputSourceState];
     v13 = self->_rtiInputSourceState;
-    self->_rtiInputSourceState = v12;
+    self->_rtiInputSourceState = inputSourceState3;
 
     v14 = _UIKeyboardLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -6132,15 +6132,15 @@ void __54__UIKBRTIPartner_performTextOperations_resultHandler___block_invoke_557
     v11 = 0;
   }
 
-  v15 = [(UIKBRTIPartner *)self partnerDelegate];
-  v16 = [v6 targetSessionUUID];
-  if (v16)
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  targetSessionUUID = [operationsCopy targetSessionUUID];
+  if (targetSessionUUID)
   {
-    v17 = [(UIKBRTIPartner *)self currentSessionIdentifier];
-    v18 = [v16 isEqual:v17];
+    currentSessionIdentifier = [(UIKBRTIPartner *)self currentSessionIdentifier];
+    v18 = [targetSessionUUID isEqual:currentSessionIdentifier];
 
     v19 = v18 ^ 1;
-    if (!v15)
+    if (!partnerDelegate)
     {
       goto LABEL_24;
     }
@@ -6149,18 +6149,18 @@ void __54__UIKBRTIPartner_performTextOperations_resultHandler___block_invoke_557
   else
   {
     v19 = 0;
-    if (!v15)
+    if (!partnerDelegate)
     {
 LABEL_24:
-      v35 = _UIKeyboardLog();
-      if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+      keyboardOutput = _UIKeyboardLog();
+      if (os_log_type_enabled(keyboardOutput, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [(UIKBRTIPartner *)self currentSessionIdentifier];
+        currentSessionIdentifier2 = [(UIKBRTIPartner *)self currentSessionIdentifier];
         *buf = 138412546;
-        v230 = v16;
+        v230 = targetSessionUUID;
         v231 = 2112;
-        v232 = v39;
-        _os_log_impl(&dword_188A29000, v35, OS_LOG_TYPE_DEFAULT, "Skipping performing textoperation targetsessionid: %@, currentSessionID: %@", buf, 0x16u);
+        v232 = currentSessionIdentifier2;
+        _os_log_impl(&dword_188A29000, keyboardOutput, OS_LOG_TYPE_DEFAULT, "Skipping performing textoperation targetsessionid: %@, currentSessionID: %@", buf, 0x16u);
       }
 
       v40 = 0;
@@ -6173,12 +6173,12 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v20 = [(UIKBRTIPartner *)self textOperationsFilter];
+  textOperationsFilter = [(UIKBRTIPartner *)self textOperationsFilter];
 
-  if (v20)
+  if (textOperationsFilter)
   {
-    v21 = [(UIKBRTIPartner *)self textOperationsFilter];
-    v22 = (v21)[2](v21, v6);
+    textOperationsFilter2 = [(UIKBRTIPartner *)self textOperationsFilter];
+    v22 = (textOperationsFilter2)[2](textOperationsFilter2, operationsCopy);
 
     if ((v22 & 2) != 0)
     {
@@ -6186,7 +6186,7 @@ LABEL_24:
     }
   }
 
-  [(UIKBRTIPartner *)self sendAutoFillDidInsertCallbacksWithTextOperations:v6];
+  [(UIKBRTIPartner *)self sendAutoFillDidInsertCallbacksWithTextOperations:operationsCopy];
   if (os_variant_has_internal_diagnostics())
   {
     v152 = _UIKeyboardExtendedLog();
@@ -6198,23 +6198,23 @@ LABEL_24:
   }
 
   v215 = v11;
-  v216 = v7;
-  v23 = [(UIKBRTIPartner *)self partnerDelegate];
-  [v23 setPerformingRemoteTextOperations:1];
+  v216 = handlerCopy;
+  partnerDelegate2 = [(UIKBRTIPartner *)self partnerDelegate];
+  [partnerDelegate2 setPerformingRemoteTextOperations:1];
 
   self->_isNotifyingDelegateOfRemoteOutputOperation = 1;
-  v24 = [(UIKBRTIPartner *)self rtiDocumentState];
-  v213 = [v24 canSuggestSupplementalItemsForCurrentSelection];
+  rtiDocumentState = [(UIKBRTIPartner *)self rtiDocumentState];
+  canSuggestSupplementalItemsForCurrentSelection = [rtiDocumentState canSuggestSupplementalItemsForCurrentSelection];
 
-  v25 = [v6 editingActionSelector] == 0;
-  v26 = [(UIKBRTIPartner *)self rtiDocumentState];
-  v27 = [v6 selectionRangeToAssert];
-  v29 = [v26 deltaForSelectionRange:{v27, v28}];
+  v25 = [operationsCopy editingActionSelector] == 0;
+  rtiDocumentState2 = [(UIKBRTIPartner *)self rtiDocumentState];
+  selectionRangeToAssert = [operationsCopy selectionRangeToAssert];
+  v29 = [rtiDocumentState2 deltaForSelectionRange:{selectionRangeToAssert, v28}];
   v31 = v30;
 
-  v32 = [(UIKBRTIPartner *)self partnerDelegate];
-  v33 = [v6 textToAssert];
-  LODWORD(v25) = [v32 assertTextForRemoteDocument:v33 withSelectionDelta:v29 updatingSelection:{v31, v25}];
+  partnerDelegate3 = [(UIKBRTIPartner *)self partnerDelegate];
+  textToAssert = [operationsCopy textToAssert];
+  LODWORD(v25) = [partnerDelegate3 assertTextForRemoteDocument:textToAssert withSelectionDelta:v29 updatingSelection:{v31, v25}];
 
   if (v25)
   {
@@ -6226,16 +6226,16 @@ LABEL_24:
     v34 = 0;
   }
 
-  v35 = [v6 keyboardOutput];
-  v36 = [v6 attributedInsertionText];
-  v37 = [v35 insertionText];
-  if ([v37 length])
+  keyboardOutput = [operationsCopy keyboardOutput];
+  attributedInsertionText = [operationsCopy attributedInsertionText];
+  insertionText = [keyboardOutput insertionText];
+  if ([insertionText length])
   {
-    v38 = [v36 length];
+    v38 = [attributedInsertionText length];
 
     if (v38)
     {
-      [v35 setInsertionText:0];
+      [keyboardOutput setInsertionText:0];
     }
   }
 
@@ -6243,17 +6243,17 @@ LABEL_24:
   {
   }
 
-  v41 = [(UIKBRTIPartner *)self _performKeyboardOutputOperations:v6];
+  v41 = [(UIKBRTIPartner *)self _performKeyboardOutputOperations:operationsCopy];
   if ((v41 & 1) != 0 && +[UIKeyboard inputUIOOP])
   {
     v42 = +[UIKeyboardImpl sharedInstance];
     [v42 triggerPendingKeyup];
   }
 
-  v221 = self;
-  if (v36)
+  selfCopy = self;
+  if (attributedInsertionText)
   {
-    [v15 insertAttributedText:v36];
+    [partnerDelegate insertAttributedText:attributedInsertionText];
     v43 = 2;
   }
 
@@ -6262,78 +6262,78 @@ LABEL_24:
     v43 = v34 | (2 * (v41 & 1u));
   }
 
-  v44 = [v6 styledIntermediateText];
+  styledIntermediateText = [operationsCopy styledIntermediateText];
 
-  v214 = v36;
-  v219 = v35;
-  if (v44)
+  v214 = attributedInsertionText;
+  v219 = keyboardOutput;
+  if (styledIntermediateText)
   {
     v45 = v41;
-    v208 = v16;
-    v46 = [v6 styledIntermediateText];
-    v47 = [v6 customInfoType];
-    v48 = [v47 isEqualToString:@"UIKBRTICustomInfoInlineCompletionAsMarkedText"];
+    v208 = targetSessionUUID;
+    styledIntermediateText2 = [operationsCopy styledIntermediateText];
+    customInfoType = [operationsCopy customInfoType];
+    v48 = [customInfoType isEqualToString:@"UIKBRTICustomInfoInlineCompletionAsMarkedText"];
 
-    v49 = [v46 displayString];
-    v50 = [v46 selectedRange];
+    displayString = [styledIntermediateText2 displayString];
+    selectedRange = [styledIntermediateText2 selectedRange];
     v52 = v51;
-    v53 = [v46 inputString];
-    v54 = [v46 searchString];
+    inputString = [styledIntermediateText2 inputString];
+    searchString = [styledIntermediateText2 searchString];
     if (v48)
     {
-      [v15 setInlineCompletionAsMarkedText:v49 selectedRange:v50 inputString:v52 searchString:{v53, v54}];
+      [partnerDelegate setInlineCompletionAsMarkedText:displayString selectedRange:selectedRange inputString:v52 searchString:{inputString, searchString}];
     }
 
     else
     {
-      [v15 setAttributedMarkedText:v49 selectedRange:v50 inputString:v52 searchString:{v53, v54}];
+      [partnerDelegate setAttributedMarkedText:displayString selectedRange:selectedRange inputString:v52 searchString:{inputString, searchString}];
     }
 
-    v57 = [v46 cursorVisibility];
+    cursorVisibility = [styledIntermediateText2 cursorVisibility];
     v41 = v45;
-    if (v57)
+    if (cursorVisibility)
     {
-      [v15 setCaretVisible:v57 == 1];
+      [partnerDelegate setCaretVisible:cursorVisibility == 1];
     }
 
     v43 = 2;
-    v16 = v208;
-    v35 = v219;
+    targetSessionUUID = v208;
+    keyboardOutput = v219;
     goto LABEL_43;
   }
 
-  v55 = [v6 intermediateText];
+  intermediateText = [operationsCopy intermediateText];
 
-  if (v55)
+  if (intermediateText)
   {
-    v46 = [v6 intermediateText];
-    v56 = [v15 assertIntermediateText:v46];
+    styledIntermediateText2 = [operationsCopy intermediateText];
+    v56 = [partnerDelegate assertIntermediateText:styledIntermediateText2];
     v43 |= 2 * (v56 & 1u);
     v41 |= v56;
 LABEL_43:
   }
 
-  if ([v6 editingActionSelector])
+  if ([operationsCopy editingActionSelector])
   {
-    v58 = [v6 customInfoType];
-    v59 = [v58 isEqualToString:@"UIKBRTICustomInfoTypeKeyboardOperations"];
+    customInfoType2 = [operationsCopy customInfoType];
+    v59 = [customInfoType2 isEqualToString:@"UIKBRTICustomInfoTypeKeyboardOperations"];
 
     if ((v59 & 1) == 0)
     {
-      [v15 performTextOperationActionSelector:{objc_msgSend(v6, "editingActionSelector")}];
+      [partnerDelegate performTextOperationActionSelector:{objc_msgSend(operationsCopy, "editingActionSelector")}];
       v43 = 3;
     }
   }
 
-  [v6 enumerateImagesAndUserInfosUsingBlock:&__block_literal_global_568];
+  [operationsCopy enumerateImagesAndUserInfosUsingBlock:&__block_literal_global_568];
   if (objc_opt_respondsToSelector())
   {
     v227[0] = MEMORY[0x1E69E9820];
     v227[1] = 3221225472;
     v227[2] = __62__UIKBRTIPartner__queued_performTextOperations_resultHandler___block_invoke_2;
     v227[3] = &unk_1E7117F90;
-    v227[4] = v221;
-    [v6 enumerateAdaptiveImageGlyphsUsingBlock:v227];
+    v227[4] = selfCopy;
+    [operationsCopy enumerateAdaptiveImageGlyphsUsingBlock:v227];
   }
 
   v220 = v43;
@@ -6343,29 +6343,29 @@ LABEL_43:
     v226[1] = 3221225472;
     v226[2] = __62__UIKBRTIPartner__queued_performTextOperations_resultHandler___block_invoke_3;
     v226[3] = &unk_1E7117FB8;
-    v226[4] = v221;
-    [v6 enumerateTextAttachmentsUsingBlock:v226];
+    v226[4] = selfCopy;
+    [operationsCopy enumerateTextAttachmentsUsingBlock:v226];
   }
 
-  v60 = [v6 inputSourceState];
-  v61 = [v60 inputMode];
+  inputSourceState4 = [operationsCopy inputSourceState];
+  inputMode = [inputSourceState4 inputMode];
 
-  v218 = v61;
-  if (v61)
+  v218 = inputMode;
+  if (inputMode)
   {
     v62 = +[UIKeyboardInputModeController sharedInputModeController];
-    v63 = [v62 currentInputMode];
-    v64 = [v63 identifier];
+    currentInputMode = [v62 currentInputMode];
+    identifier = [currentInputMode identifier];
 
-    if (([(RTIInputSourceState *)v64 isEqualToString:v61]& 1) == 0)
+    if (([(RTIInputSourceState *)identifier isEqualToString:inputMode]& 1) == 0)
     {
-      v65 = v35;
-      v66 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:v61];
+      v65 = keyboardOutput;
+      v66 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:inputMode];
       v67 = _UIKeyboardLog();
       if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v230 = v64;
+        v230 = identifier;
         v231 = 2112;
         v232 = v218;
         _os_log_debug_impl(&dword_188A29000, v67, OS_LOG_TYPE_DEBUG, "Detected an input mode change: %@->%@", buf, 0x16u);
@@ -6374,18 +6374,18 @@ LABEL_43:
       v68 = +[UIKeyboardImpl activeInstance];
       [v68 setKeyboardInputMode:v66 userInitiated:0];
 
-      v35 = v65;
+      keyboardOutput = v65;
     }
   }
 
-  v69 = [v6 customInfoType];
-  v70 = [v6 customInfo];
-  v217 = v70;
-  if ([v69 isEqualToString:@"UIDictationRemoteTextOperations"])
+  customInfoType3 = [operationsCopy customInfoType];
+  customInfo = [operationsCopy customInfo];
+  v217 = customInfo;
+  if ([customInfoType3 isEqualToString:@"UIDictationRemoteTextOperations"])
   {
     v206 = v41;
-    v71 = v16;
-    v72 = v70;
+    v71 = targetSessionUUID;
+    v72 = customInfo;
     v73 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"selector"];
     if (v73)
     {
@@ -6400,37 +6400,37 @@ LABEL_43:
 
     if (sel_isEqual(v75, sel_updateLastHypothesis_WithNewHypothesis_))
     {
-      v86 = +[UIDictationController sharedInstance];
+      inputDelegate = +[UIDictationController sharedInstance];
       v87 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"lastHypothesis"];
       v88 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"newHypothesis"];
-      [v86 updateLastHypothesis:v87 WithNewHypothesis:v88];
+      [inputDelegate updateLastHypothesis:v87 WithNewHypothesis:v88];
 
-      v16 = v71;
+      targetSessionUUID = v71;
 LABEL_102:
 
       v41 = v206;
 LABEL_103:
 
 LABEL_104:
-      v35 = v219;
+      keyboardOutput = v219;
 LABEL_105:
-      v76 = v221;
+      v76 = selfCopy;
       goto LABEL_106;
     }
 
-    v16 = v71;
+    targetSessionUUID = v71;
     if (sel_isEqual(v75, sel_resetLastHypothesis))
     {
-      v86 = +[UIDictationController sharedInstance];
-      [v86 resetLastHypothesis];
+      inputDelegate = +[UIDictationController sharedInstance];
+      [inputDelegate resetLastHypothesis];
       goto LABEL_102;
     }
 
     if (sel_isEqual(v75, sel_setCandidateDictationSerializableResults_))
     {
-      v86 = +[UIDictationController sharedInstance];
+      inputDelegate = +[UIDictationController sharedInstance];
       v91 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"candidateDictationSerializableResults"];
-      [v86 setCandidateDictationSerializableResults:v91];
+      [inputDelegate setCandidateDictationSerializableResults:v91];
 LABEL_101:
 
       goto LABEL_102;
@@ -6438,10 +6438,10 @@ LABEL_101:
 
     if (sel_isEqual(v75, sel_postNotificationName_object_userInfo_))
     {
-      v86 = +[UIDictationController sharedInstance];
+      inputDelegate = +[UIDictationController sharedInstance];
       v91 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"notificationName"];
       v96 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"userInfo"];
-      [v86 postNotificationName:v91 userInfo:v96];
+      [inputDelegate postNotificationName:v91 userInfo:v96];
 LABEL_100:
 
       goto LABEL_101;
@@ -6449,85 +6449,85 @@ LABEL_100:
 
     if (sel_isEqual(v75, sel_insertSerializedDictationResult_withCorrectionIdentifier_))
     {
-      v86 = +[UIDictationController sharedInstance];
+      inputDelegate = +[UIDictationController sharedInstance];
       v91 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"dictationResult"];
       v96 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"correctionIdentifier"];
-      [v86 insertSerializedDictationResult:v91 withCorrectionIdentifier:v96];
+      [inputDelegate insertSerializedDictationResult:v91 withCorrectionIdentifier:v96];
       goto LABEL_100;
     }
 
     if (sel_isEqual(v75, sel_startLandingIfNecessary))
     {
-      v86 = +[UIDictationLandingView sharedInstance];
-      [v86 startLandingIfNecessary];
+      inputDelegate = +[UIDictationLandingView sharedInstance];
+      [inputDelegate startLandingIfNecessary];
       goto LABEL_102;
     }
 
     if (sel_isEqual(v75, sel_stopLanding))
     {
-      v86 = +[UIDictationLandingView sharedInstance];
-      [v86 stopLanding];
+      inputDelegate = +[UIDictationLandingView sharedInstance];
+      [inputDelegate stopLanding];
       goto LABEL_102;
     }
 
     if (sel_isEqual(v75, sel_stopLandingForError))
     {
-      v86 = +[UIDictationLandingView sharedInstance];
-      [v86 stopLandingForError];
+      inputDelegate = +[UIDictationLandingView sharedInstance];
+      [inputDelegate stopLandingForError];
       goto LABEL_102;
     }
 
     if (sel_isEqual(v75, sel_resignFirstResponderWhenIdleIfNeeded))
     {
-      v86 = +[UIDictationController sharedInstance];
-      [v86 resignFirstResponderWhenIdleIfNeeded];
+      inputDelegate = +[UIDictationController sharedInstance];
+      [inputDelegate resignFirstResponderWhenIdleIfNeeded];
       goto LABEL_102;
     }
 
     if (sel_isEqual(v75, sel_setRemoteDictationPopover_))
     {
-      v86 = +[UIKeyboardImpl sharedInstance];
-      [v86 setRemoteDictationPopover:v72];
+      inputDelegate = +[UIKeyboardImpl sharedInstance];
+      [inputDelegate setRemoteDictationPopover:v72];
       goto LABEL_102;
     }
 
     if (sel_isEqual(v75, sel_setKeyboardMinimizedByDictation_))
     {
-      v86 = +[UIKeyboardImpl sharedInstance];
+      inputDelegate = +[UIKeyboardImpl sharedInstance];
       v91 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"minimized"];
-      [v86 setKeyboardMinimizedByDictation:{objc_msgSend(v91, "BOOLValue")}];
+      [inputDelegate setKeyboardMinimizedByDictation:{objc_msgSend(v91, "BOOLValue")}];
       goto LABEL_101;
     }
 
     if (sel_isEqual(v75, sel_setShadowState_))
     {
-      v86 = +[UIDictationController sharedInstance];
+      inputDelegate = +[UIDictationController sharedInstance];
       v91 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"state"];
-      [v86 setShadowState:{objc_msgSend(v91, "integerValue")}];
+      [inputDelegate setShadowState:{objc_msgSend(v91, "integerValue")}];
       goto LABEL_101;
     }
 
-    v212 = v6;
+    v212 = operationsCopy;
     if (sel_isEqual(v75, sel_presentDictationMenuTip_))
     {
-      v86 = +[UIKeyboardImpl activeInstance];
-      [v86 presentDictationMenuTip:v72];
+      inputDelegate = +[UIKeyboardImpl activeInstance];
+      [inputDelegate presentDictationMenuTip:v72];
       goto LABEL_253;
     }
 
     if (sel_isEqual(v75, sel_dismissDictationMenu))
     {
-      v86 = +[UIKeyboardImpl activeInstance];
-      [v86 dismissDictationMenu];
+      inputDelegate = +[UIKeyboardImpl activeInstance];
+      [inputDelegate dismissDictationMenu];
       goto LABEL_253;
     }
 
     if (sel_isEqual(v75, sel_setUsingTypeAndTalk_))
     {
-      v86 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"usingTypeAndTalk"];
-      v166 = [v86 BOOLValue];
+      inputDelegate = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"usingTypeAndTalk"];
+      bOOLValue = [inputDelegate BOOLValue];
       v167 = +[UIKeyboardInputMode dictationInputMode];
-      [v167 setUsingTypeAndTalk:v166];
+      [v167 setUsingTypeAndTalk:bOOLValue];
     }
 
     else
@@ -6537,13 +6537,13 @@ LABEL_100:
         if (sel_isEqual(v75, sel_updateCaretRectInWindowIfNeeded))
         {
           v169 = +[UIKeyboardImpl activeInstance];
-          v86 = [v169 inputDelegate];
+          inputDelegate = [v169 inputDelegate];
 
-          v170 = [v86 textInputView];
-          v171 = [v86 selectedTextRange];
-          v172 = [v171 start];
-          [v86 caretRectForPosition:v172];
-          [v170 convertRect:0 toView:?];
+          textInputView = [inputDelegate textInputView];
+          selectedTextRange = [inputDelegate selectedTextRange];
+          start = [selectedTextRange start];
+          [inputDelegate caretRectForPosition:start];
+          [textInputView convertRect:0 toView:?];
           v174 = v173;
 
           v175 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"caretRectInWindow.y"];
@@ -6552,7 +6552,7 @@ LABEL_100:
 
           if (vabdd_f64(v177, v174) > 2.0)
           {
-            [(UIKBRTIPartner *)v221 documentStateChanged];
+            [(UIKBRTIPartner *)selfCopy documentStateChanged];
           }
 
           goto LABEL_253;
@@ -6560,48 +6560,48 @@ LABEL_100:
 
         if (sel_isEqual(v75, sel_setCurrentInstrumentationContext_))
         {
-          v86 = +[UIDictationController sharedInstance];
+          inputDelegate = +[UIDictationController sharedInstance];
           v183 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"instrumentationContext"];
-          [v86 setCurrentInstrumentationContext:v183];
+          [inputDelegate setCurrentInstrumentationContext:v183];
         }
 
         else if (sel_isEqual(v75, sel_setLocalSpeechRecognitionForced_))
         {
-          v86 = +[UIDictationController sharedInstance];
+          inputDelegate = +[UIDictationController sharedInstance];
           v183 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"forceOfflineRecognition"];
-          [v86 setLocalSpeechRecognitionForced:v183 != 0];
+          [inputDelegate setLocalSpeechRecognitionForced:v183 != 0];
         }
 
         else if (sel_isEqual(v75, sel_setInteractionIdentifier_))
         {
-          v86 = +[UIDictationController sharedInstance];
+          inputDelegate = +[UIDictationController sharedInstance];
           v183 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"interactionIdentifier"];
-          [v86 setInteractionIdentifier:v183];
+          [inputDelegate setInteractionIdentifier:v183];
         }
 
         else
         {
           if (sel_isEqual(v75, sel_didRecognizeCommandWithIdentifier_strings_parameters_voiceCommandUUID_allVisibleRangeRects_currentGazePoint_))
           {
-            v86 = +[UIDictationController sharedInstance];
+            inputDelegate = +[UIDictationController sharedInstance];
             v205 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"identifier"];
             v193 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"strings"];
             v194 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"parameters"];
             v195 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"voiceCommandUUID"];
             v196 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"allVisibleRangeRects"];
             v197 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"currentGazePoint"];
-            [v86 didRecognizeCommandWithIdentifier:v205 strings:v193 parameters:v194 voiceCommandUUID:v195 allVisibleRangeRects:v196 currentGazePoint:v197];
+            [inputDelegate didRecognizeCommandWithIdentifier:v205 strings:v193 parameters:v194 voiceCommandUUID:v195 allVisibleRangeRects:v196 currentGazePoint:v197];
 
             goto LABEL_253;
           }
 
           if (sel_isEqual(v75, sel_setIdleTimerDisabled_forReason_))
           {
-            v86 = +[UIDictationController sharedInstance];
+            inputDelegate = +[UIDictationController sharedInstance];
             v183 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"disabled"];
-            v198 = [v183 BOOLValue];
+            bOOLValue2 = [v183 BOOLValue];
             v199 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"reason"];
-            [v86 setIdleTimerDisabled:v198 forReason:v199];
+            [inputDelegate setIdleTimerDisabled:bOOLValue2 forReason:v199];
           }
 
           else
@@ -6610,38 +6610,38 @@ LABEL_100:
             {
               if (sel_isEqual(v75, sel_beginUndoGroupingIfNecessary_))
               {
-                v86 = +[UIDictationController sharedInstance];
-                [v86 _beginUndoGroupingIfNecessary];
+                inputDelegate = +[UIDictationController sharedInstance];
+                [inputDelegate _beginUndoGroupingIfNecessary];
               }
 
               else
               {
                 if (!sel_isEqual(v75, sel_endUndoGroupingIfNecessary_))
                 {
-                  v16 = v71;
+                  targetSessionUUID = v71;
                   v41 = v206;
                   if (!sel_isEqual(v75, sel_setHaveLeakedPartialResultForCommandUtterance_))
                   {
                     goto LABEL_103;
                   }
 
-                  v86 = +[UIDictationController sharedInstance];
+                  inputDelegate = +[UIDictationController sharedInstance];
                   v91 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"haveLeakedPartialResultForCommandUtterance"];
-                  [v86 _setHaveLeakedPartialResultForCommandUtterance:{objc_msgSend(v91, "BOOLValue")}];
+                  [inputDelegate _setHaveLeakedPartialResultForCommandUtterance:{objc_msgSend(v91, "BOOLValue")}];
                   goto LABEL_101;
                 }
 
-                v86 = +[UIDictationController sharedInstance];
-                [v86 _endUndoGroupingIfNecessary];
+                inputDelegate = +[UIDictationController sharedInstance];
+                [inputDelegate _endUndoGroupingIfNecessary];
               }
 
 LABEL_253:
-              v16 = v71;
-              v6 = v212;
+              targetSessionUUID = v71;
+              operationsCopy = v212;
               goto LABEL_102;
             }
 
-            v86 = +[UIDictationController sharedInstance];
+            inputDelegate = +[UIDictationController sharedInstance];
             v200 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"language"];
             v183 = v200;
             if (v200)
@@ -6654,52 +6654,52 @@ LABEL_253:
               v201 = &stru_1EFB14550;
             }
 
-            [v86 showLowStorageUserAlertWithLanguage:v201];
+            [inputDelegate showLowStorageUserAlertWithLanguage:v201];
           }
         }
 
         goto LABEL_253;
       }
 
-      v86 = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"isCurrentDictationLanguageOnDevice"];
-      v168 = [v86 BOOLValue];
+      inputDelegate = [(RTIInputSourceState *)v72 objectForKeyedSubscript:@"isCurrentDictationLanguageOnDevice"];
+      bOOLValue3 = [inputDelegate BOOLValue];
       v167 = +[UIKeyboardInputMode dictationInputMode];
-      [v167 setIsCurrentDictationLanguageOnDevice:v168];
+      [v167 setIsCurrentDictationLanguageOnDevice:bOOLValue3];
     }
 
     goto LABEL_253;
   }
 
-  if (![v69 isEqualToString:@"_UIKeyboardIndirectTextSelectionGestureState"])
+  if (![customInfoType3 isEqualToString:@"_UIKeyboardIndirectTextSelectionGestureState"])
   {
-    if ([v69 isEqualToString:@"UITextSuggestion"])
+    if ([customInfoType3 isEqualToString:@"UITextSuggestion"])
     {
-      v79 = v70;
-      v76 = v221;
-      v80 = [(UIKBRTIPartner *)v221 inputDelegate];
-      [(UIKBRTIPartner *)v221 partnerDelegate];
-      v81 = v15;
-      v82 = v16;
-      v83 = v69;
+      v79 = customInfo;
+      v76 = selfCopy;
+      inputDelegate2 = [(UIKBRTIPartner *)selfCopy inputDelegate];
+      [(UIKBRTIPartner *)selfCopy partnerDelegate];
+      v81 = partnerDelegate;
+      v82 = targetSessionUUID;
+      v83 = customInfoType3;
       v85 = v84 = v41;
       [v85 insertCustomTextSuggestion:v79];
 
       v41 = v84;
-      v69 = v83;
-      v16 = v82;
-      v15 = v81;
+      customInfoType3 = v83;
+      targetSessionUUID = v82;
+      partnerDelegate = v81;
       v220 |= 2uLL;
 
       goto LABEL_106;
     }
 
-    if ([v69 isEqualToString:@"UIKBRTICustomInfoTypeWritingToolsOperations"])
+    if ([customInfoType3 isEqualToString:@"UIKBRTICustomInfoTypeWritingToolsOperations"])
     {
-      v89 = v35;
+      v89 = keyboardOutput;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v90 = NSSelectorFromString(v70);
+        v90 = NSSelectorFromString(customInfo);
       }
 
       else
@@ -6707,24 +6707,24 @@ LABEL_253:
         v90 = 0;
       }
 
-      v97 = [(UIKBRTIPartner *)v221 inputDelegate];
-      if (v97 && v90 && (objc_opt_respondsToSelector() & 1) != 0)
+      inputDelegate3 = [(UIKBRTIPartner *)selfCopy inputDelegate];
+      if (inputDelegate3 && v90 && (objc_opt_respondsToSelector() & 1) != 0)
       {
         if (sel_isEqual(v90, sel_showWritingTools_))
         {
-          _UIPerformVoidSelector1(v97, v90);
+          _UIPerformVoidSelector1(inputDelegate3, v90);
         }
 
         else if (sel_isEqual(v90, sel__startProofreadingFromCandidateBar) || sel_isEqual(v90, sel__startRewritingFromCandidateBar))
         {
           if (dyld_program_sdk_at_least())
           {
-            [v97 v90];
+            [inputDelegate3 v90];
           }
 
           else
           {
-            [v97 performSelector_];
+            [inputDelegate3 performSelector_];
           }
         }
 
@@ -6739,35 +6739,35 @@ LABEL_253:
           *buf = 138412546;
           v230 = v217;
           v231 = 2112;
-          v232 = v97;
+          v232 = inputDelegate3;
           _os_log_error_impl(&dword_188A29000, v98, OS_LOG_TYPE_ERROR, "Unable to trigger WritingTools operation %@ through RTI in text input %@.", buf, 0x16u);
         }
       }
 
-      v35 = v89;
+      keyboardOutput = v89;
       goto LABEL_105;
     }
 
     v207 = v41;
-    if ([v69 isEqualToString:@"UIStickerRemoteInputOperations"])
+    if ([customInfoType3 isEqualToString:@"UIStickerRemoteInputOperations"])
     {
-      v93 = _UIStickerCreateStickerFromTextInputPayload(v70);
-      v76 = v221;
-      v94 = [(UIKBRTIPartner *)v221 inputDelegate];
-      v95 = [(UIKBRTIPartner *)v221 partnerDelegate];
-      [v95 insertSticker:v93];
+      v93 = _UIStickerCreateStickerFromTextInputPayload(customInfo);
+      v76 = selfCopy;
+      inputDelegate4 = [(UIKBRTIPartner *)selfCopy inputDelegate];
+      partnerDelegate4 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+      [partnerDelegate4 insertSticker:v93];
 
       v220 |= 2uLL;
       goto LABEL_76;
     }
 
-    if ([v69 isEqualToString:@"UIKBRTICustomInfoTypeAutofill"])
+    if ([customInfoType3 isEqualToString:@"UIKBRTICustomInfoTypeAutofill"])
     {
-      v99 = v35;
+      v99 = keyboardOutput;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v100 = v70;
+        v100 = customInfo;
       }
 
       else
@@ -6787,17 +6787,17 @@ LABEL_253:
 
       if (sel_isEqual(v103, sel_handleEventFromRemoteSource_insertAutofillContent_))
       {
-        v105 = [(RTIInputSourceState *)v101 objectForKeyedSubscript:@"autofillContent"];
+        partnerDelegate6 = [(RTIInputSourceState *)v101 objectForKeyedSubscript:@"autofillContent"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v106 = [(UIKBRTIPartner *)v221 partnerDelegate];
-          [v106 handleEventFromRemoteSource_insertAutofillContent:v105];
+          partnerDelegate5 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+          [partnerDelegate5 handleEventFromRemoteSource_insertAutofillContent:partnerDelegate6];
           goto LABEL_161;
         }
 
-        v106 = _UIKeyboardLog();
-        if (!os_log_type_enabled(v106, OS_LOG_TYPE_ERROR))
+        partnerDelegate5 = _UIKeyboardLog();
+        if (!os_log_type_enabled(partnerDelegate5, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_161;
         }
@@ -6812,49 +6812,49 @@ LABEL_253:
         {
           if (sel_isEqual(v103, sel_handleEventFromRemoteSource_autoFillIsMenuPresented_))
           {
-            v105 = [(UIKBRTIPartner *)v221 partnerDelegate];
+            partnerDelegate6 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
             v126 = [(RTIInputSourceState *)v101 objectForKeyedSubscript:@"isMenuPresented"];
-            -[NSObject handleEventFromRemoteSource_autoFillIsMenuPresented:](v105, "handleEventFromRemoteSource_autoFillIsMenuPresented:", [v126 BOOLValue]);
+            -[NSObject handleEventFromRemoteSource_autoFillIsMenuPresented:](partnerDelegate6, "handleEventFromRemoteSource_autoFillIsMenuPresented:", [v126 BOOLValue]);
           }
 
           else
           {
             if (!sel_isEqual(v103, sel_handleEventFromRemoteSource_autoFillIsModalUIPresented_))
             {
-              v105 = _UIKeyboardLog();
-              if (os_log_type_enabled(v105, OS_LOG_TYPE_ERROR))
+              partnerDelegate6 = _UIKeyboardLog();
+              if (os_log_type_enabled(partnerDelegate6, OS_LOG_TYPE_ERROR))
               {
                 *buf = 0;
-                _os_log_error_impl(&dword_188A29000, v105, OS_LOG_TYPE_ERROR, "Unexpected value for 'selector' (customInfoType: Autofill)", buf, 2u);
+                _os_log_error_impl(&dword_188A29000, partnerDelegate6, OS_LOG_TYPE_ERROR, "Unexpected value for 'selector' (customInfoType: Autofill)", buf, 2u);
               }
 
               goto LABEL_176;
             }
 
-            v105 = [(UIKBRTIPartner *)v221 partnerDelegate];
+            partnerDelegate6 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
             v126 = [(RTIInputSourceState *)v101 objectForKeyedSubscript:@"isModalUIPresented"];
-            -[NSObject handleEventFromRemoteSource_autoFillIsModalUIPresented:](v105, "handleEventFromRemoteSource_autoFillIsModalUIPresented:", [v126 BOOLValue]);
+            -[NSObject handleEventFromRemoteSource_autoFillIsModalUIPresented:](partnerDelegate6, "handleEventFromRemoteSource_autoFillIsModalUIPresented:", [v126 BOOLValue]);
           }
 
 LABEL_176:
-          v35 = v99;
+          keyboardOutput = v99;
           v41 = v207;
           goto LABEL_105;
         }
 
-        v105 = [(RTIInputSourceState *)v101 objectForKeyedSubscript:@"isAuthenticating"];
+        partnerDelegate6 = [(RTIInputSourceState *)v101 objectForKeyedSubscript:@"isAuthenticating"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if ([v105 BOOLValue])
+          if ([partnerDelegate6 BOOLValue])
           {
-            v121 = v221;
-            v122 = v16;
+            v121 = selfCopy;
+            v122 = targetSessionUUID;
           }
 
           else
           {
-            v121 = v221;
+            v121 = selfCopy;
             v122 = 0;
           }
 
@@ -6862,8 +6862,8 @@ LABEL_176:
           goto LABEL_176;
         }
 
-        v106 = _UIKeyboardLog();
-        if (!os_log_type_enabled(v106, OS_LOG_TYPE_ERROR))
+        partnerDelegate5 = _UIKeyboardLog();
+        if (!os_log_type_enabled(partnerDelegate5, OS_LOG_TYPE_ERROR))
         {
 LABEL_161:
 
@@ -6874,13 +6874,13 @@ LABEL_161:
         v125 = "Value for 'isAuthenticating' is not a NSNumber (customInfoType: Autofill)";
       }
 
-      _os_log_error_impl(&dword_188A29000, v106, OS_LOG_TYPE_ERROR, v125, buf, 2u);
+      _os_log_error_impl(&dword_188A29000, partnerDelegate5, OS_LOG_TYPE_ERROR, v125, buf, 2u);
       goto LABEL_161;
     }
 
-    if ([v69 isEqualToString:@"UISupplementalLexiconOperations"])
+    if ([customInfoType3 isEqualToString:@"UISupplementalLexiconOperations"])
     {
-      v117 = v70;
+      v117 = customInfo;
       v118 = [(RTIInputSourceState *)v117 objectForKeyedSubscript:@"selector"];
       if (v118)
       {
@@ -6895,17 +6895,17 @@ LABEL_161:
 
       if (sel_isEqual(v120, sel_handleEventFromRemoteSource_insertSupplementalCandidate_textToCommit_))
       {
-        v130 = [(RTIInputSourceState *)v117 objectForKeyedSubscript:@"candidate"];
+        partnerDelegate8 = [(RTIInputSourceState *)v117 objectForKeyedSubscript:@"candidate"];
         v131 = [(RTIInputSourceState *)v117 objectForKeyedSubscript:@"textToCommit"];
         objc_opt_class();
-        v35 = v219;
+        keyboardOutput = v219;
         if (objc_opt_isKindOfClass())
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v132 = [(UIKBRTIPartner *)v221 partnerDelegate];
-            [v132 handleEventFromRemoteSource_insertSupplementalCandidate:v130 textToCommit:v131];
+            partnerDelegate7 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+            [partnerDelegate7 handleEventFromRemoteSource_insertSupplementalCandidate:partnerDelegate8 textToCommit:v131];
 
             v220 |= 2uLL;
           }
@@ -6914,33 +6914,33 @@ LABEL_161:
 
       else
       {
-        v35 = v219;
+        keyboardOutput = v219;
         if (!sel_isEqual(v120, sel_handleEventFromRemoteSource_insertionPointEnteredText_withSupplementalCandidate_))
         {
           if (sel_isEqual(v120, sel_handleEventFromRemoteSource_insertionPointExitedTextWithSupplementalItems))
           {
-            v130 = [(UIKBRTIPartner *)v221 partnerDelegate];
-            [v130 handleEventFromRemoteSource_insertionPointExitedTextWithSupplementalItems];
+            partnerDelegate8 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+            [partnerDelegate8 handleEventFromRemoteSource_insertionPointExitedTextWithSupplementalItems];
           }
 
           else
           {
             if (sel_isEqual(v120, sel_handleEventFromRemoteSource_chooseSupplementalItem_toReplaceText_))
             {
-              v130 = [(RTIInputSourceState *)v117 objectForKeyedSubscript:@"supplementalItems"];
+              partnerDelegate8 = [(RTIInputSourceState *)v117 objectForKeyedSubscript:@"supplementalItems"];
               v131 = [(RTIInputSourceState *)v117 objectForKeyedSubscript:@"textToReplace"];
-              v204 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v130, "count")}];
+              v204 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(partnerDelegate8, "count")}];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
                 v202 = v131;
-                v203 = v130;
-                v209 = v16;
+                v203 = partnerDelegate8;
+                v209 = targetSessionUUID;
                 v224 = 0u;
                 v225 = 0u;
                 v222 = 0u;
                 v223 = 0u;
-                v144 = v130;
+                v144 = partnerDelegate8;
                 v145 = [v144 countByEnumeratingWithState:&v222 objects:v228 count:16];
                 if (v145)
                 {
@@ -6973,17 +6973,17 @@ LABEL_161:
                   while (v146);
                 }
 
-                v16 = v209;
-                v35 = v219;
+                targetSessionUUID = v209;
+                keyboardOutput = v219;
                 v131 = v202;
-                v130 = v203;
+                partnerDelegate8 = v203;
               }
 
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) != 0 && [v204 count])
               {
-                v151 = [(UIKBRTIPartner *)v221 partnerDelegate];
-                [v151 handleEventFromRemoteSource_chooseSupplementalItem:v204 toReplaceText:v131];
+                partnerDelegate9 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+                [partnerDelegate9 handleEventFromRemoteSource_chooseSupplementalItem:v204 toReplaceText:v131];
 
                 v220 |= 2uLL;
               }
@@ -6996,8 +6996,8 @@ LABEL_161:
               goto LABEL_203;
             }
 
-            v130 = [(UIKBRTIPartner *)v221 partnerDelegate];
-            [v130 handleEventFromRemoteSource_cancelChooseSupplementalItemToInsert];
+            partnerDelegate8 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+            [partnerDelegate8 handleEventFromRemoteSource_cancelChooseSupplementalItemToInsert];
           }
 
 LABEL_202:
@@ -7006,7 +7006,7 @@ LABEL_203:
           goto LABEL_105;
         }
 
-        v130 = [(RTIInputSourceState *)v117 objectForKeyedSubscript:@"text"];
+        partnerDelegate8 = [(RTIInputSourceState *)v117 objectForKeyedSubscript:@"text"];
         v131 = [(RTIInputSourceState *)v117 objectForKeyedSubscript:@"candidate"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -7014,8 +7014,8 @@ LABEL_203:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v133 = [(UIKBRTIPartner *)v221 partnerDelegate];
-            [v133 handleEventFromRemoteSource_insertionPointEnteredText:v130 withSupplementalCandidate:v131];
+            partnerDelegate10 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+            [partnerDelegate10 handleEventFromRemoteSource_insertionPointEnteredText:partnerDelegate8 withSupplementalCandidate:v131];
           }
         }
       }
@@ -7025,34 +7025,34 @@ LABEL_201:
       goto LABEL_202;
     }
 
-    if ([v69 isEqualToString:@"UIPhysicalKeyboardEvent"])
+    if ([customInfoType3 isEqualToString:@"UIPhysicalKeyboardEvent"])
     {
-      v123 = v70;
-      v76 = v221;
-      v124 = [(UIKBRTIPartner *)v221 partnerDelegate];
-      [v124 performKeyboardEvent:v123];
+      v123 = customInfo;
+      v76 = selfCopy;
+      partnerDelegate11 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+      [partnerDelegate11 performKeyboardEvent:v123];
 
 LABEL_145:
       goto LABEL_106;
     }
 
-    if ([v69 isEqualToString:@"UIKBRTICustomInfoTypeDeleteAction"])
+    if ([customInfoType3 isEqualToString:@"UIKBRTICustomInfoTypeDeleteAction"])
     {
-      v127 = v70;
-      v76 = v221;
-      v124 = [(UIKBRTIPartner *)v221 partnerDelegate];
-      v128 = [(RTIInputSourceState *)v127 integerValue];
+      v127 = customInfo;
+      v76 = selfCopy;
+      partnerDelegate11 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+      integerValue = [(RTIInputSourceState *)v127 integerValue];
 
-      v129 = v128;
+      v129 = integerValue;
       v41 = v207;
-      [v124 handleAutoDeleteContinuationOnDestinationWithDeletionCount:v129];
+      [partnerDelegate11 handleAutoDeleteContinuationOnDestinationWithDeletionCount:v129];
       goto LABEL_145;
     }
 
-    if ([v69 isEqualToString:@"UIWebKitOperations"])
+    if ([customInfoType3 isEqualToString:@"UIWebKitOperations"])
     {
-      v134 = v16;
-      v135 = v70;
+      v134 = targetSessionUUID;
+      v135 = customInfo;
       v136 = [(RTIInputSourceState *)v135 objectForKeyedSubscript:@"selector"];
       if (v136)
       {
@@ -7069,19 +7069,19 @@ LABEL_145:
       {
         v155 = [(RTIInputSourceState *)v135 objectForKeyedSubscript:@"event"];
         v156 = [(RTIInputSourceState *)v135 objectForKeyedSubscript:@"index"];
-        v157 = [v156 unsignedIntegerValue];
+        unsignedIntegerValue = [v156 unsignedIntegerValue];
 
         v158 = [(RTIInputSourceState *)v135 objectForKeyedSubscript:@"inputString"];
         v159 = +[UIKeyboardImpl activeInstance];
-        [v159 _handleWebKeyEvent:v155 withIndex:v157 inInputString:v158];
-        v16 = v134;
+        [v159 _handleWebKeyEvent:v155 withIndex:unsignedIntegerValue inInputString:v158];
+        targetSessionUUID = v134;
         v41 = v207;
       }
 
       else
       {
         isEqual = sel_isEqual(v138, sel__handleWebKeyEvent_withEventType_withInputString_withInputStringIgnoringModifiers_);
-        v16 = v134;
+        targetSessionUUID = v134;
         v41 = v207;
         if (!isEqual)
         {
@@ -7092,12 +7092,12 @@ LABEL_220:
 
         v155 = [(RTIInputSourceState *)v135 objectForKeyedSubscript:@"keyEvent"];
         v161 = [(RTIInputSourceState *)v135 objectForKeyedSubscript:@"webEventType"];
-        v210 = [v161 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v161 unsignedIntegerValue];
 
         v162 = [(RTIInputSourceState *)v135 objectForKeyedSubscript:@"inputString"];
         v159 = [(RTIInputSourceState *)v135 objectForKeyedSubscript:@"inputStringIgnoringModifiers"];
         v163 = +[UIKeyboardImpl activeInstance];
-        [v163 _handleWebKeyEvent:v155 withEventType:v210 withInputString:v162 withInputStringIgnoringModifiers:v159];
+        [v163 _handleWebKeyEvent:v155 withEventType:unsignedIntegerValue2 withInputString:v162 withInputStringIgnoringModifiers:v159];
 
         v158 = v162;
       }
@@ -7105,32 +7105,32 @@ LABEL_220:
       goto LABEL_220;
     }
 
-    if ([v69 isEqualToString:@"UIEmojiSearchOperations"])
+    if ([customInfoType3 isEqualToString:@"UIEmojiSearchOperations"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v139 = [(RTIInputSourceState *)v70 BOOLValue];
+        bOOLValue4 = [(RTIInputSourceState *)customInfo BOOLValue];
         v140 = +[UIKeyboardImpl activeInstance];
-        v141 = [v140 inputDelegateManager];
-        [v141 setShouldRespectForwardingInputDelegate:v139];
+        inputDelegateManager = [v140 inputDelegateManager];
+        [inputDelegateManager setShouldRespectForwardingInputDelegate:bOOLValue4];
 
         v41 = v207;
       }
 
       v142 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v143 = [v142 remoteInputViewHost];
+      remoteInputViewHost = [v142 remoteInputViewHost];
 
-      [v143 updateInputViewsIfNecessary];
+      [remoteInputViewHost updateInputViewsIfNecessary];
       goto LABEL_105;
     }
 
-    if ([v69 isEqualToString:@"UIKBRTICustomInfoTypeUpdateInputMode"])
+    if ([customInfoType3 isEqualToString:@"UIKBRTICustomInfoTypeUpdateInputMode"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v153 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:v70];
+        v153 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:customInfo];
         v154 = +[UIKeyboardImpl activeInstance];
         [v154 setKeyboardInputMode:v153 userInitiated:1];
       }
@@ -7138,8 +7138,8 @@ LABEL_220:
       goto LABEL_105;
     }
 
-    v76 = v221;
-    if ([v69 isEqualToString:@"UIKBRTICustomInfoTypeTypologyLogOperations"])
+    v76 = selfCopy;
+    if ([customInfoType3 isEqualToString:@"UIKBRTICustomInfoTypeTypologyLogOperations"])
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -7148,7 +7148,7 @@ LABEL_220:
       }
 
       v93 = +[UIKeyboardImpl activeInstance];
-      [v93 presentKeyboardFeedbackAssistantViewControllerForLogURL:v70];
+      [v93 presentKeyboardFeedbackAssistantViewControllerForLogURL:customInfo];
 LABEL_76:
 
 LABEL_77:
@@ -7156,105 +7156,105 @@ LABEL_77:
       goto LABEL_106;
     }
 
-    v211 = v69;
-    if ([v69 isEqualToString:@"UIKBRTICustomInfoTypeKeyboardOperations"])
+    v211 = customInfoType3;
+    if ([customInfoType3 isEqualToString:@"UIKBRTICustomInfoTypeKeyboardOperations"])
     {
-      if (sel_isEqual([v6 editingActionSelector], sel_setFloating_))
+      if (sel_isEqual([operationsCopy editingActionSelector], sel_setFloating_))
       {
-        [UIKeyboardImpl setFloating:[(RTIInputSourceState *)v70 BOOLValue]];
+        [UIKeyboardImpl setFloating:[(RTIInputSourceState *)customInfo BOOLValue]];
         goto LABEL_249;
       }
 
-      if (sel_isEqual([v6 editingActionSelector], sel_updateTextInputKeyboardSource_))
+      if (sel_isEqual([operationsCopy editingActionSelector], sel_updateTextInputKeyboardSource_))
       {
-        v164 = +[UIKeyboardImpl activeInstance];
-        [v164 updateTextInputKeyboardSource:v70];
+        partnerDelegate12 = +[UIKeyboardImpl activeInstance];
+        [partnerDelegate12 updateTextInputKeyboardSource:customInfo];
         goto LABEL_248;
       }
 
-      if (sel_isEqual([v6 editingActionSelector], sel_becomeFirstResponderAndMakeVisible_))
+      if (sel_isEqual([operationsCopy editingActionSelector], sel_becomeFirstResponderAndMakeVisible_))
       {
-        v164 = +[UIKeyboardImpl activeInstance];
-        [v164 becomeFirstResponderAndMakeVisible:{-[RTIInputSourceState BOOLValue](v70, "BOOLValue")}];
+        partnerDelegate12 = +[UIKeyboardImpl activeInstance];
+        [partnerDelegate12 becomeFirstResponderAndMakeVisible:{-[RTIInputSourceState BOOLValue](customInfo, "BOOLValue")}];
         goto LABEL_248;
       }
 
-      if (sel_isEqual([v6 editingActionSelector], sel_resignFirstResponder))
+      if (sel_isEqual([operationsCopy editingActionSelector], sel_resignFirstResponder))
       {
-        v164 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v165 = [v164 responder];
-        [v165 resignFirstResponder];
+        partnerDelegate12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
+        responder = [partnerDelegate12 responder];
+        [responder resignFirstResponder];
       }
 
       else
       {
-        if (sel_isEqual([v6 editingActionSelector], sel_postNotificationName_))
+        if (sel_isEqual([operationsCopy editingActionSelector], sel_postNotificationName_))
         {
           v178 = MEMORY[0x1E696AD88];
-          v179 = v70;
-          v180 = [v178 defaultCenter];
+          v179 = customInfo;
+          defaultCenter = [v178 defaultCenter];
           v181 = [(RTIInputSourceState *)v179 objectForKeyedSubscript:@"name"];
           v182 = [(RTIInputSourceState *)v179 objectForKeyedSubscript:@"objecrt"];
 
-          [v180 postNotificationName:v181 object:v182];
+          [defaultCenter postNotificationName:v181 object:v182];
           goto LABEL_249;
         }
 
-        if (sel_isEqual([v6 editingActionSelector], sel_setIsExtended_))
+        if (sel_isEqual([operationsCopy editingActionSelector], sel_setIsExtended_))
         {
-          v164 = [(UIKBRTIPartner *)v221 partnerDelegate];
-          [v164 setCandidateDisplayIsExtended:{-[RTIInputSourceState BOOLValue](v70, "BOOLValue")}];
+          partnerDelegate12 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+          [partnerDelegate12 setCandidateDisplayIsExtended:{-[RTIInputSourceState BOOLValue](customInfo, "BOOLValue")}];
           goto LABEL_248;
         }
 
-        [v6 editingActionSelector];
+        [operationsCopy editingActionSelector];
         if (objc_opt_respondsToSelector())
         {
-          +[UIAssistantBarButtonItemProvider performSelector:](UIAssistantBarButtonItemProvider, "performSelector:", [v6 editingActionSelector]);
+          +[UIAssistantBarButtonItemProvider performSelector:](UIAssistantBarButtonItemProvider, "performSelector:", [operationsCopy editingActionSelector]);
           goto LABEL_249;
         }
 
-        if (sel_isEqual([v6 editingActionSelector], sel_setShiftStatesNeededInDestination_autoShifted_shiftLocked_))
+        if (sel_isEqual([operationsCopy editingActionSelector], sel_setShiftStatesNeededInDestination_autoShifted_shiftLocked_))
         {
-          v184 = [v6 customInfo];
-          v185 = v184;
-          if (v184)
+          customInfo2 = [operationsCopy customInfo];
+          v185 = customInfo2;
+          if (customInfo2)
           {
-            v186 = [v184 objectForKeyedSubscript:@"autoShift"];
-            v187 = [v186 BOOLValue];
+            v186 = [customInfo2 objectForKeyedSubscript:@"autoShift"];
+            bOOLValue5 = [v186 BOOLValue];
 
             v188 = [v185 objectForKeyedSubscript:@"shiftLocked"];
-            v189 = [v188 BOOLValue];
+            bOOLValue6 = [v188 BOOLValue];
 
             v190 = [v185 objectForKeyedSubscript:@"shift"];
-            v191 = [v190 BOOLValue];
+            bOOLValue7 = [v190 BOOLValue];
 
-            v192 = [(UIKBRTIPartner *)v221 partnerDelegate];
-            [v192 setShiftStatesNeededInDestination:v191 autoShifted:v187 shiftLocked:v189];
+            partnerDelegate13 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+            [partnerDelegate13 setShiftStatesNeededInDestination:bOOLValue7 autoShifted:bOOLValue5 shiftLocked:bOOLValue6];
           }
 
           goto LABEL_249;
         }
 
-        if (!sel_isEqual([v6 editingActionSelector], sel_clearKeyboardSnapshot))
+        if (!sel_isEqual([operationsCopy editingActionSelector], sel_clearKeyboardSnapshot))
         {
 LABEL_249:
           v41 = v207;
-          v69 = v211;
+          customInfoType3 = v211;
           goto LABEL_106;
         }
 
-        v164 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v165 = [v164 existingContainerRootController];
-        [v165 clearKeyboardSnapshot];
+        partnerDelegate12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
+        responder = [partnerDelegate12 existingContainerRootController];
+        [responder clearKeyboardSnapshot];
       }
     }
 
     else
     {
-      if (![v69 isEqualToString:@"UIKBRTICustomInfoTypeEmojiCreationOperations"])
+      if (![customInfoType3 isEqualToString:@"UIKBRTICustomInfoTypeEmojiCreationOperations"])
       {
-        if (![v69 isEqualToString:@"UIKBRTICustomInfoTypeSmartReplyCandidateOperations"])
+        if (![customInfoType3 isEqualToString:@"UIKBRTICustomInfoTypeSmartReplyCandidateOperations"])
         {
           goto LABEL_249;
         }
@@ -7265,55 +7265,55 @@ LABEL_249:
           goto LABEL_249;
         }
 
-        v164 = [(UIKBRTIPartner *)v221 partnerDelegate];
-        [v164 startSmartReplyWritingToolWithParams:v70];
+        partnerDelegate12 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+        [partnerDelegate12 startSmartReplyWritingToolWithParams:customInfo];
         goto LABEL_248;
       }
 
-      if (!sel_isEqual([v6 editingActionSelector], sel_presentEmojiGenerationWithInputString_))
+      if (!sel_isEqual([operationsCopy editingActionSelector], sel_presentEmojiGenerationWithInputString_))
       {
         goto LABEL_249;
       }
 
-      v164 = [(RTIInputSourceState *)v70 objectForKeyedSubscript:@"inputString"];
-      v165 = [(UIKBRTIPartner *)v221 partnerDelegate];
-      [v165 presentEmojiGenerationWithInputString:v164];
+      partnerDelegate12 = [(RTIInputSourceState *)customInfo objectForKeyedSubscript:@"inputString"];
+      responder = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+      [responder presentEmojiGenerationWithInputString:partnerDelegate12];
     }
 
 LABEL_248:
     goto LABEL_249;
   }
 
-  v76 = v221;
-  v77 = [(UIKBRTIPartner *)v221 partnerDelegate];
-  [v77 setPerformingRemoteTextOperations:0];
+  v76 = selfCopy;
+  partnerDelegate14 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  [partnerDelegate14 setPerformingRemoteTextOperations:0];
 
-  v221->_isNotifyingDelegateOfRemoteOutputOperation = 0;
-  [v15 handleRemoteIndirectGestureWithState:v70];
-  v78 = [(UIKBRTIPartner *)v221 partnerDelegate];
-  [v78 setPerformingRemoteTextOperations:1];
+  selfCopy->_isNotifyingDelegateOfRemoteOutputOperation = 0;
+  [partnerDelegate handleRemoteIndirectGestureWithState:customInfo];
+  partnerDelegate15 = [(UIKBRTIPartner *)selfCopy partnerDelegate];
+  [partnerDelegate15 setPerformingRemoteTextOperations:1];
 
-  v221->_isNotifyingDelegateOfRemoteOutputOperation = 1;
+  selfCopy->_isNotifyingDelegateOfRemoteOutputOperation = 1;
 LABEL_106:
-  v107 = [(UIKBRTIPartner *)v76 _performTextCheckingAnnotationOperations:v6, v202, v203];
+  v203 = [(UIKBRTIPartner *)v76 _performTextCheckingAnnotationOperations:operationsCopy, v202, v203];
   v108 = 2;
-  if (!v107)
+  if (!v203)
   {
     v108 = 0;
   }
 
   v40 = v108 | v220;
-  [v15 _updateCanSuggestSupplementalItemsForCurrentSelection];
-  v109 = [v15 canSuggestSupplementalItemsForCurrentSelection];
-  if (v213 != v109)
+  [partnerDelegate _updateCanSuggestSupplementalItemsForCurrentSelection];
+  canSuggestSupplementalItemsForCurrentSelection2 = [partnerDelegate canSuggestSupplementalItemsForCurrentSelection];
+  if (canSuggestSupplementalItemsForCurrentSelection != canSuggestSupplementalItemsForCurrentSelection2)
   {
-    [(UIKBRTIPartner *)v76 forwardEventToRemoteSource_canSuggestSupplementalItemsForCurrentSelection:v109];
+    [(UIKBRTIPartner *)v76 forwardEventToRemoteSource_canSuggestSupplementalItemsForCurrentSelection:canSuggestSupplementalItemsForCurrentSelection2];
   }
 
-  [v15 provideAutoFillTypingUpdatesIfNecessary];
+  [partnerDelegate provideAutoFillTypingUpdatesIfNecessary];
   v76->_isNotifyingDelegateOfRemoteOutputOperation = 0;
-  v110 = [(UIKBRTIPartner *)v76 partnerDelegate];
-  [v110 setPerformingRemoteTextOperations:0];
+  partnerDelegate16 = [(UIKBRTIPartner *)v76 partnerDelegate];
+  [partnerDelegate16 setPerformingRemoteTextOperations:0];
 
   if ((v40 & 2) != 0 || (v41 & 2) != 0)
   {
@@ -7323,24 +7323,24 @@ LABEL_106:
   if ((v215 | (v40 >> 1)))
   {
     v111 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v112 = [v111 existingContainerRootController];
-    v113 = [v112 presentedViewController];
+    existingContainerRootController = [v111 existingContainerRootController];
+    presentedViewController = [existingContainerRootController presentedViewController];
 
-    v114 = [v113 conformsToProtocol:&unk_1F005A9D0];
-    if (v113 && (v114 & 1) == 0)
+    v114 = [presentedViewController conformsToProtocol:&unk_1F005A9D0];
+    if (presentedViewController && (v114 & 1) == 0)
     {
       v115 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v116 = [v115 existingContainerRootController];
-      [v116 dismissViewControllerAnimated:1 completion:0];
+      existingContainerRootController2 = [v115 existingContainerRootController];
+      [existingContainerRootController2 dismissViewControllerAnimated:1 completion:0];
     }
   }
 
-  v7 = v216;
+  handlerCopy = v216;
 LABEL_119:
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v40);
+    handlerCopy[2](handlerCopy, v40);
   }
 }
 
@@ -7421,39 +7421,39 @@ void __62__UIKBRTIPartner__queued_performTextOperations_resultHandler___block_in
   }
 }
 
-- (unsigned)_performKeyboardOutputOperations:(id)a3
+- (unsigned)_performKeyboardOutputOperations:(id)operations
 {
-  v4 = a3;
-  v5 = [v4 keyboardOutput];
-  v6 = v5;
-  if (v5 && ([v5 _isEmpty] & 1) == 0)
+  operationsCopy = operations;
+  keyboardOutput = [operationsCopy keyboardOutput];
+  v6 = keyboardOutput;
+  if (keyboardOutput && ([keyboardOutput _isEmpty] & 1) == 0)
   {
     v8 = UIKeyboardGetCurrentInputMode();
-    v9 = [v4 customInfoType];
-    v10 = [v9 isEqualToString:@"UIDictationRemoteTextOperations"];
+    customInfoType = [operationsCopy customInfoType];
+    v10 = [customInfoType isEqualToString:@"UIDictationRemoteTextOperations"];
 
-    v11 = [v4 multilingualLanguages];
-    if (v11)
+    multilingualLanguages = [operationsCopy multilingualLanguages];
+    if (multilingualLanguages)
     {
-      v12 = v11;
+      v12 = multilingualLanguages;
       v13 = UIKeyboardGetCurrentInputMode();
       v14 = [v8 isEqualToString:v13];
 
       if (v14)
       {
         v15 = +[UIKeyboardInputModeController sharedInputModeController];
-        v16 = [v15 currentInputMode];
+        currentInputMode = [v15 currentInputMode];
 
-        v17 = [v4 multilingualLanguages];
-        if ([v17 count])
+        multilingualLanguages2 = [operationsCopy multilingualLanguages];
+        if ([multilingualLanguages2 count])
         {
-          v18 = [v4 multilingualLanguages];
-          [v16 setMultilingualLanguages:v18];
+          multilingualLanguages3 = [operationsCopy multilingualLanguages];
+          [currentInputMode setMultilingualLanguages:multilingualLanguages3];
         }
 
         else
         {
-          [v16 setMultilingualLanguages:0];
+          [currentInputMode setMultilingualLanguages:0];
         }
       }
     }
@@ -7461,14 +7461,14 @@ void __62__UIKBRTIPartner__queued_performTextOperations_resultHandler___block_in
     v19 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
     [v19 setObject:MEMORY[0x1E695E118] forKey:0x1EFB64610];
     [v19 setObject:MEMORY[0x1E695E110] forKey:0x1EFB64630];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 enumeratedInsertionAnimationStyle] >= 1)
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [operationsCopy enumeratedInsertionAnimationStyle] >= 1)
     {
-      v20 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "enumeratedInsertionAnimationStyle")}];
+      v20 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(operationsCopy, "enumeratedInsertionAnimationStyle")}];
       [v19 setObject:v20 forKey:0x1EFB64650];
     }
 
-    v21 = [(UIKBRTIPartner *)self partnerDelegate];
-    v22 = v21;
+    partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+    v22 = partnerDelegate;
     if (v10)
     {
       v26[0] = MEMORY[0x1E69E9820];
@@ -7485,7 +7485,7 @@ void __62__UIKBRTIPartner__queued_performTextOperations_resultHandler___block_in
 
     else
     {
-      v23 = [v21 performKeyboardOutput:v6 userInfo:v19];
+      v23 = [partnerDelegate performKeyboardOutput:v6 userInfo:v19];
 
       if (v23)
       {
@@ -7498,8 +7498,8 @@ void __62__UIKBRTIPartner__queued_performTextOperations_resultHandler___block_in
       }
     }
 
-    v24 = [(UIKBRTIPartner *)self partnerDelegate];
-    [v24 updateDocumentViewsAfterKeyboardOutput:v6];
+    partnerDelegate2 = [(UIKBRTIPartner *)self partnerDelegate];
+    [partnerDelegate2 updateDocumentViewsAfterKeyboardOutput:v6];
   }
 
   else
@@ -7516,7 +7516,7 @@ void __51__UIKBRTIPartner__performKeyboardOutputOperations___block_invoke(uint64
   [v2 performKeyboardOutput:*(a1 + 40) userInfo:*(a1 + 48)];
 }
 
-- (void)defaultDocumentRequestDidChange:(id)a3
+- (void)defaultDocumentRequestDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -7534,44 +7534,44 @@ uint64_t __50__UIKBRTIPartner_defaultDocumentRequestDidChange___block_invoke(uin
   return [v2 documentStateChanged];
 }
 
-- (void)_performDocumentRequest:(id)a3 completion:(id)a4
+- (void)_performDocumentRequest:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (+[UIKeyboard isKeyboardProcess])
   {
-    v7 = [(UIKBRTIPartner *)self payloadDelegate];
-    v8 = v7;
-    if (v7)
+    payloadDelegate = [(UIKBRTIPartner *)self payloadDelegate];
+    v8 = payloadDelegate;
+    if (payloadDelegate)
     {
-      [v7 performDocumentRequest:v9 completion:v6];
+      [payloadDelegate performDocumentRequest:requestCopy completion:completionCopy];
     }
 
-    else if (v6)
+    else if (completionCopy)
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    [(UIKBRTIPartner *)self performDocumentRequest:v9 completion:v6];
+    [(UIKBRTIPartner *)self performDocumentRequest:requestCopy completion:completionCopy];
   }
 }
 
-- (void)performDocumentRequest:(id)a3 completion:(id)a4
+- (void)performDocumentRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__UIKBRTIPartner_performDocumentRequest_completion___block_invoke;
   block[3] = &unk_1E70FCE28;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = requestCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -7598,112 +7598,112 @@ uint64_t __52__UIKBRTIPartner_performDocumentRequest_completion___block_invoke_2
   return result;
 }
 
-- (void)_queryDocumentRequest:(id)a3 completion:(id)a4
+- (void)_queryDocumentRequest:(id)request completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [(UIKBRTIPartner *)self partnerDelegate];
-    v8 = [v7 inputDelegateManager];
-    v9 = [v8 hasAsyncCapableInputDelegate];
+    partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+    inputDelegateManager = [partnerDelegate inputDelegateManager];
+    hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
-    if (v9)
+    if (hasAsyncCapableInputDelegate)
     {
-      [(UIKBRTIPartner *)self _queryWKDocumentRequest:v10 completion:v6];
+      [(UIKBRTIPartner *)self _queryWKDocumentRequest:requestCopy completion:completionCopy];
     }
 
     else
     {
-      [(UIKBRTIPartner *)self _queryUIKitDocumentRequest:v10 completion:v6];
+      [(UIKBRTIPartner *)self _queryUIKitDocumentRequest:requestCopy completion:completionCopy];
     }
   }
 }
 
-- (int64_t)_uiTextGranularityForRTITextGranularity:(int64_t)a3
+- (int64_t)_uiTextGranularityForRTITextGranularity:(int64_t)granularity
 {
-  if (a3 >= 6)
+  if (granularity >= 6)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return granularity;
   }
 }
 
-- (void)_addFirstSelectionRectToDocumentState:(id)a3
+- (void)_addFirstSelectionRectToDocumentState:(id)state
 {
-  v89 = a3;
-  v4 = [(UIKBRTIPartner *)self inputDelegate];
-  v5 = [v4 textInputView];
+  stateCopy = state;
+  inputDelegate = [(UIKBRTIPartner *)self inputDelegate];
+  textInputView = [inputDelegate textInputView];
 
-  v6 = [(UIKBRTIPartner *)self partnerDelegate];
-  [v6 correctionRect];
-  [(UIKBRTIPartner *)self convertRect:v5 from:?];
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  [partnerDelegate correctionRect];
+  [(UIKBRTIPartner *)self convertRect:textInputView from:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  [v89 setFirstSelectionRectInWindow:{v8, v10, v12, v14}];
+  [stateCopy setFirstSelectionRectInWindow:{v8, v10, v12, v14}];
   [(UIKBRTIPartner *)self _selectionClipRect];
-  [(UIKBRTIPartner *)self convertRect:v5 from:?];
+  [(UIKBRTIPartner *)self convertRect:textInputView from:?];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [v89 setClientFrameInWindow:?];
-  v23 = [(UIKBRTIPartner *)self inputDelegate];
-  v24 = [(UIKBRTIPartner *)self inputDelegate];
-  v25 = [v24 selectedTextRange];
-  v26 = [v25 start];
-  [v23 caretRectForPosition:v26];
+  [stateCopy setClientFrameInWindow:?];
+  inputDelegate2 = [(UIKBRTIPartner *)self inputDelegate];
+  inputDelegate3 = [(UIKBRTIPartner *)self inputDelegate];
+  selectedTextRange = [inputDelegate3 selectedTextRange];
+  start = [selectedTextRange start];
+  [inputDelegate2 caretRectForPosition:start];
   v28 = v27;
   v30 = v29;
   v32 = v31;
   v34 = v33;
 
-  [(UIKBRTIPartner *)self convertRect:v5 from:v28, v30, v32, v34];
+  [(UIKBRTIPartner *)self convertRect:textInputView from:v28, v30, v32, v34];
   v36 = v35;
   v38 = v37;
   v40 = v39;
   v42 = v41;
-  [v89 setCaretRectInWindow:?];
-  v43 = [(UIKBRTIPartner *)self inputDelegate];
-  v44 = [(UIKBRTIPartner *)self inputDelegate];
-  v45 = [v44 beginningOfDocument];
-  v46 = [(UIKBRTIPartner *)self inputDelegate];
-  v47 = [v46 selectedTextRange];
-  v48 = [v47 start];
-  v49 = [v43 offsetFromPosition:v45 toPosition:v48];
+  [stateCopy setCaretRectInWindow:?];
+  inputDelegate4 = [(UIKBRTIPartner *)self inputDelegate];
+  inputDelegate5 = [(UIKBRTIPartner *)self inputDelegate];
+  beginningOfDocument = [inputDelegate5 beginningOfDocument];
+  inputDelegate6 = [(UIKBRTIPartner *)self inputDelegate];
+  selectedTextRange2 = [inputDelegate6 selectedTextRange];
+  start2 = [selectedTextRange2 start];
+  v49 = [inputDelegate4 offsetFromPosition:beginningOfDocument toPosition:start2];
 
-  [v89 addTextRect:v49 forCharacterRange:0 granularity:0 isVertical:{0, v36, v38, v40, v42}];
-  v50 = [(UIKBRTIPartner *)self partnerDelegate];
-  v51 = [v50 textInputTraits];
-  v52 = [v51 insertionPointColor];
+  [stateCopy addTextRect:v49 forCharacterRange:0 granularity:0 isVertical:{0, v36, v38, v40, v42}];
+  partnerDelegate2 = [(UIKBRTIPartner *)self partnerDelegate];
+  textInputTraits = [partnerDelegate2 textInputTraits];
+  insertionPointColor = [textInputTraits insertionPointColor];
 
-  v53 = [MEMORY[0x1E69C6F28] colorWithCGColor:{objc_msgSend(v52, "CGColor")}];
-  [v89 setInsertionPointColor:v53];
-  v54 = [v5 window];
-  v55 = [v5 window];
-  v56 = [v55 screen];
-  v57 = [v56 coordinateSpace];
-  [v54 convertRect:v57 toCoordinateSpace:{v16, v18, v20, v22}];
+  v53 = [MEMORY[0x1E69C6F28] colorWithCGColor:{objc_msgSend(insertionPointColor, "CGColor")}];
+  [stateCopy setInsertionPointColor:v53];
+  window = [textInputView window];
+  window2 = [textInputView window];
+  screen = [window2 screen];
+  coordinateSpace = [screen coordinateSpace];
+  [window convertRect:coordinateSpace toCoordinateSpace:{v16, v18, v20, v22}];
   v59 = v58;
   v61 = v60;
   v63 = v62;
   v65 = v64;
 
-  v66 = [v5 window];
-  LODWORD(v55) = [v66 _isHostedInAnotherProcess];
+  window3 = [textInputView window];
+  LODWORD(window2) = [window3 _isHostedInAnotherProcess];
 
-  if (v55)
+  if (window2)
   {
-    v67 = [v5 window];
-    v68 = [v67 windowScene];
-    v69 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:v68];
+    window4 = [textInputView window];
+    windowScene = [window4 windowScene];
+    v69 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:windowScene];
     [v69 hostedViewReference];
     v71 = v70;
     v73 = v72;
@@ -7712,108 +7712,108 @@ uint64_t __52__UIKBRTIPartner_performDocumentRequest_completion___block_invoke_2
     v61 = v61 + v73;
   }
 
-  [v89 setClientFrameInEntitySpace:{v59, v61, v63, v65}];
+  [stateCopy setClientFrameInEntitySpace:{v59, v61, v63, v65}];
   if (objc_opt_respondsToSelector())
   {
-    v74 = [v5 window];
-    v75 = [v74 screen];
+    window5 = [textInputView window];
+    screen2 = [window5 screen];
 
-    if (v75)
+    if (screen2)
     {
-      v76 = [v5 window];
-      v77 = [v76 screen];
+      window6 = [textInputView window];
+      screen3 = [window6 screen];
 
-      [v77 nativeBounds];
+      [screen3 nativeBounds];
       v79 = v78;
-      [v77 scale];
+      [screen3 scale];
       v81 = v79 / v80;
-      [v77 bounds];
+      [screen3 bounds];
       v83 = v81 / v82;
-      [v77 nativeBounds];
+      [screen3 nativeBounds];
       v85 = v84;
-      [v77 scale];
+      [screen3 scale];
       v87 = v85 / v86;
-      [v77 bounds];
-      [v89 setDisplayZoom:{v83, v87 / v88}];
+      [screen3 bounds];
+      [stateCopy setDisplayZoom:{v83, v87 / v88}];
     }
   }
 }
 
-- (void)_addAutocorrectStylingToDocumentState:(id)a3
+- (void)_addAutocorrectStylingToDocumentState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIKBRTIPartner *)self inputDelegate];
-  v22 = [v5 _fontForCaretSelection];
+  stateCopy = state;
+  inputDelegate = [(UIKBRTIPartner *)self inputDelegate];
+  _fontForCaretSelection = [inputDelegate _fontForCaretSelection];
 
   v6 = MEMORY[0x1E69C6FB0];
-  v7 = [v22 isSystemFont];
-  if (v7)
+  isSystemFont = [_fontForCaretSelection isSystemFont];
+  if (isSystemFont)
   {
-    v8 = 0;
+    fontName = 0;
   }
 
   else
   {
-    v8 = [v22 fontName];
+    fontName = [_fontForCaretSelection fontName];
   }
 
-  [v22 pointSize];
+  [_fontForCaretSelection pointSize];
   v10 = v9;
-  v11 = [v22 fontDescriptor];
-  v12 = [v11 objectForKey:*off_1E70ECD38];
+  fontDescriptor = [_fontForCaretSelection fontDescriptor];
+  v12 = [fontDescriptor objectForKey:*off_1E70ECD38];
   [v12 doubleValue];
-  v14 = [v6 textStylingWithFontName:v8 fontSize:v10 fontWeight:v13];
+  v14 = [v6 textStylingWithFontName:fontName fontSize:v10 fontWeight:v13];
 
-  if ((v7 & 1) == 0)
+  if ((isSystemFont & 1) == 0)
   {
   }
 
-  [v4 setAutocorrectBubbleStyling:v14];
-  v15 = [(UIKBRTIPartner *)self inputDelegate];
-  v16 = [v15 _textColorForCaretSelection];
+  [stateCopy setAutocorrectBubbleStyling:v14];
+  inputDelegate2 = [(UIKBRTIPartner *)self inputDelegate];
+  _textColorForCaretSelection = [inputDelegate2 _textColorForCaretSelection];
 
-  v17 = [MEMORY[0x1E69C6F28] colorWithCGColor:{objc_msgSend(v16, "CGColor")}];
-  [v4 setAutocorrectTextColor:v17];
-  v18 = [(UIKBRTIPartner *)self partnerDelegate];
-  v19 = [v18 textInputTraits];
-  v20 = [v19 selectionHighlightColor];
+  v17 = [MEMORY[0x1E69C6F28] colorWithCGColor:{objc_msgSend(_textColorForCaretSelection, "CGColor")}];
+  [stateCopy setAutocorrectTextColor:v17];
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  textInputTraits = [partnerDelegate textInputTraits];
+  selectionHighlightColor = [textInputTraits selectionHighlightColor];
 
-  v21 = [MEMORY[0x1E69C6F28] colorWithCGColor:{objc_msgSend(v20, "CGColor")}];
-  [v4 setAutocorrectTextBackgroundColor:v21];
+  v21 = [MEMORY[0x1E69C6F28] colorWithCGColor:{objc_msgSend(selectionHighlightColor, "CGColor")}];
+  [stateCopy setAutocorrectTextBackgroundColor:v21];
 }
 
-- (void)_addMergedTextRectsToDocumentState:(id)a3 forWKContext:(id)a4 textInputView:(id)a5 granularity:(int64_t)a6
+- (void)_addMergedTextRectsToDocumentState:(id)state forWKContext:(id)context textInputView:(id)view granularity:(int64_t)granularity
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 fullText];
-  v14 = [(__CFString *)v13 length];
+  stateCopy = state;
+  contextCopy = context;
+  viewCopy = view;
+  fullText = [contextCopy fullText];
+  v14 = [(__CFString *)fullText length];
   wkRectTokenizer = self->_wkRectTokenizer;
   if (wkRectTokenizer)
   {
     v35.location = 0;
     v35.length = v14;
-    CFStringTokenizerSetString(wkRectTokenizer, v13, v35);
+    CFStringTokenizerSetString(wkRectTokenizer, fullText, v35);
   }
 
   else
   {
-    if ((a6 - 1) > 3)
+    if ((granularity - 1) > 3)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = qword_18A680490[a6 - 1];
+      v16 = qword_18A680490[granularity - 1];
     }
 
     v17 = *MEMORY[0x1E695E480];
-    v18 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     v36.location = 0;
     v36.length = v14;
-    self->_wkRectTokenizer = CFStringTokenizerCreate(v17, v13, v36, v16, v18);
+    self->_wkRectTokenizer = CFStringTokenizerCreate(v17, fullText, v36, v16, currentLocale);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -7837,7 +7837,7 @@ uint64_t __52__UIKBRTIPartner_performDocumentRequest_completion___block_invoke_2
   v29[3] = "";
   if ((*(v19 + 2))(v19, v30))
   {
-    v21 = [(__CFString *)v13 length];
+    v21 = [(__CFString *)fullText length];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __92__UIKBRTIPartner__addMergedTextRectsToDocumentState_forWKContext_textInputView_granularity___block_invoke_2;
@@ -7845,10 +7845,10 @@ uint64_t __52__UIKBRTIPartner_performDocumentRequest_completion___block_invoke_2
     v26 = v29;
     v25 = v19;
     v27 = v31;
-    v23 = v10;
-    v24 = v12;
-    v28 = a6;
-    [v11 enumerateLayoutRectsWithOptions:0 characterRange:0 block:{v21, v22}];
+    v23 = stateCopy;
+    v24 = viewCopy;
+    granularityCopy = granularity;
+    [contextCopy enumerateLayoutRectsWithOptions:0 characterRange:0 block:{v21, v22}];
   }
 
   _Block_object_dispose(v29, 8);
@@ -7926,12 +7926,12 @@ LABEL_3:
   }
 }
 
-- (void)_queryWKDocumentRequest:(id)a3 completion:(id)a4
+- (void)_queryWKDocumentRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIKBRTIPartner *)self inputDelegate];
-  v9 = [v8 textInputView];
+  requestCopy = request;
+  completionCopy = completion;
+  inputDelegate = [(UIKBRTIPartner *)self inputDelegate];
+  textInputView = [inputDelegate textInputView];
   v10 = _UIKeyboardLog();
   v11 = os_signpost_id_generate(v10);
 
@@ -7944,10 +7944,10 @@ LABEL_3:
   }
 
   v14 = objc_alloc_init(UIWKDocumentRequest);
-  v15 = -[UIKBRTIPartner _uiTextGranularityForRTITextGranularity:](self, "_uiTextGranularityForRTITextGranularity:", [v6 textGranularity]);
-  v16 = [v6 flags];
-  v17 = [v6 flags] & 2 | v16 & 1;
-  if (([v6 flags] & 4) != 0)
+  v15 = -[UIKBRTIPartner _uiTextGranularityForRTITextGranularity:](self, "_uiTextGranularityForRTITextGranularity:", [requestCopy textGranularity]);
+  flags = [requestCopy flags];
+  v17 = [requestCopy flags] & 2 | flags & 1;
+  if (([requestCopy flags] & 4) != 0)
   {
     v18 = v17 | 0x24;
   }
@@ -7959,55 +7959,55 @@ LABEL_3:
 
   if (_os_feature_enabled_impl())
   {
-    v18 = v18 & 0xFFFFFFFFFFFFFFBFLL | ((([v6 flags] >> 3) & 1) << 6);
+    v18 = v18 & 0xFFFFFFFFFFFFFFBFLL | ((([requestCopy flags] >> 3) & 1) << 6);
   }
 
-  -[UIWKDocumentRequest setFlags:](v14, "setFlags:", [v6 flags] & 0x10 | v18);
+  -[UIWKDocumentRequest setFlags:](v14, "setFlags:", [requestCopy flags] & 0x10 | v18);
   [(UIWKDocumentRequest *)v14 setSurroundingGranularity:v15];
-  -[UIWKDocumentRequest setGranularityCount:](v14, "setGranularityCount:", [v6 surroundingGranularityCount]);
-  if (([v6 flags] & 8) != 0)
+  -[UIWKDocumentRequest setGranularityCount:](v14, "setGranularityCount:", [requestCopy surroundingGranularityCount]);
+  if (([requestCopy flags] & 8) != 0)
   {
-    v19 = [(UIKBRTIPartner *)self partnerDelegate];
-    v20 = [v19 inputDelegateManager];
-    [v20 visibleTextRect];
+    partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+    inputDelegateManager = [partnerDelegate inputDelegateManager];
+    [inputDelegateManager visibleTextRect];
     [(UIWKDocumentRequest *)v14 setDocumentRect:?];
   }
 
-  v21 = -[UIKBRTIPartner _uiTextGranularityForRTITextGranularity:](self, "_uiTextGranularityForRTITextGranularity:", [v6 rectGranularity]);
-  v22 = [v6 flags];
+  v21 = -[UIKBRTIPartner _uiTextGranularityForRTITextGranularity:](self, "_uiTextGranularityForRTITextGranularity:", [requestCopy rectGranularity]);
+  flags2 = [requestCopy flags];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __53__UIKBRTIPartner__queryWKDocumentRequest_completion___block_invoke;
   aBlock[3] = &unk_1E7118080;
-  v35 = v6;
-  v36 = self;
-  v23 = (v21 != 0) & (v22 >> 2);
+  v35 = requestCopy;
+  selfCopy = self;
+  v23 = (v21 != 0) & (flags2 >> 2);
   if (v21 == v15)
   {
     LOBYTE(v23) = 0;
   }
 
   v43 = v23;
-  v37 = v8;
-  v38 = v9;
+  v37 = inputDelegate;
+  v38 = textInputView;
   v40 = v21;
   v41 = v15;
   v42 = v11;
-  v24 = v7;
+  v24 = completionCopy;
   v39 = v24;
-  v25 = v9;
-  v26 = v8;
-  v27 = v6;
+  v25 = textInputView;
+  v26 = inputDelegate;
+  v27 = requestCopy;
   v28 = _Block_copy(aBlock);
-  v29 = [(UIKBRTIPartner *)self partnerDelegate];
-  v30 = [v29 inputDelegateManager];
-  v31 = [v30 asyncCapableInputDelegate];
+  partnerDelegate2 = [(UIKBRTIPartner *)self partnerDelegate];
+  inputDelegateManager2 = [partnerDelegate2 inputDelegateManager];
+  asyncCapableInputDelegate = [inputDelegateManager2 asyncCapableInputDelegate];
 
-  if (v31)
+  if (asyncCapableInputDelegate)
   {
-    v32 = [(UIKBRTIPartner *)self partnerDelegate];
-    v33 = [v32 inputDelegateManager];
-    [v33 requestDocumentContext:v14 completionHandler:v28];
+    partnerDelegate3 = [(UIKBRTIPartner *)self partnerDelegate];
+    inputDelegateManager3 = [partnerDelegate3 inputDelegateManager];
+    [inputDelegateManager3 requestDocumentContext:v14 completionHandler:v28];
   }
 
   else
@@ -8144,11 +8144,11 @@ uint64_t __53__UIKBRTIPartner__queryWKDocumentRequest_completion___block_invoke_
   return [v6 addTextRect:a2 forCharacterRange:a3 granularity:v7 isVertical:0];
 }
 
-- (void)_queryUIKitDocumentRequest:(id)a3 completion:(id)a4
+- (void)_queryUIKitDocumentRequest:(id)request completion:(id)completion
 {
   v209 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = _UIKeyboardLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -8160,42 +8160,42 @@ uint64_t __53__UIKBRTIPartner__queryWKDocumentRequest_completion___block_invoke_
     _os_signpost_emit_with_name_impl(&dword_188A29000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "queryUIKitDocument", "", buf, 2u);
   }
 
-  v12 = [(UIKBRTIPartner *)self inputDelegate];
-  v193 = [v12 textInputView];
-  v13 = -[UIKBRTIPartner _uiTextGranularityForRTITextGranularity:](self, "_uiTextGranularityForRTITextGranularity:", [v6 textGranularity]);
-  v14 = [(UIKBRTIPartner *)self partnerDelegate];
-  v15 = [v14 textInputTraits];
+  inputDelegate = [(UIKBRTIPartner *)self inputDelegate];
+  textInputView = [inputDelegate textInputView];
+  v13 = -[UIKBRTIPartner _uiTextGranularityForRTITextGranularity:](self, "_uiTextGranularityForRTITextGranularity:", [requestCopy textGranularity]);
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  textInputTraits = [partnerDelegate textInputTraits];
 
   spid = v9;
-  if (([v15 isSecureTextEntry] & 1) != 0 || (objc_msgSend(v15, "recentInputIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
+  if (([textInputTraits isSecureTextEntry] & 1) != 0 || (objc_msgSend(textInputTraits, "recentInputIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
   {
     v13 = 5;
   }
 
-  v17 = [v12 selectedTextRange];
-  v18 = [v12 markedTextRange];
-  v195 = self;
+  selectedTextRange = [inputDelegate selectedTextRange];
+  markedTextRange = [inputDelegate markedTextRange];
+  selfCopy = self;
   v190 = v9 - 1;
-  if (v18)
+  if (markedTextRange)
   {
-    v19 = v18;
-    v20 = [v12 markedTextRange];
-    v21 = [v20 isEmpty];
+    v19 = markedTextRange;
+    markedTextRange2 = [inputDelegate markedTextRange];
+    isEmpty = [markedTextRange2 isEmpty];
 
-    if (v21)
+    if (isEmpty)
     {
       v189 = 0;
     }
 
     else
     {
-      v22 = [v12 markedTextRange];
+      markedTextRange3 = [inputDelegate markedTextRange];
 
       v189 = 1;
-      v17 = v22;
+      selectedTextRange = markedTextRange3;
     }
 
-    self = v195;
+    self = selfCopy;
   }
 
   else
@@ -8203,8 +8203,8 @@ uint64_t __53__UIKBRTIPartner__queryWKDocumentRequest_completion___block_invoke_
     v189 = 0;
   }
 
-  v23 = [MEMORY[0x1E69C6F38] documentStateWithRequest:v6];
-  if (!v17)
+  v23 = [MEMORY[0x1E69C6F38] documentStateWithRequest:requestCopy];
+  if (!selectedTextRange)
   {
     v36 = _UIKeyboardLog();
     v37 = v36;
@@ -8217,17 +8217,17 @@ uint64_t __53__UIKBRTIPartner__queryWKDocumentRequest_completion___block_invoke_
     goto LABEL_50;
   }
 
-  v170 = [v6 flags];
-  if ((v170 & 8) == 0)
+  flags = [requestCopy flags];
+  if ((flags & 8) == 0)
   {
-    v24 = [v17 start];
-    v25 = [v17 end];
+    start = [selectedTextRange start];
+    v25 = [selectedTextRange end];
     goto LABEL_16;
   }
 
-  v38 = [(UIKBRTIPartner *)self partnerDelegate];
-  v39 = [v38 inputDelegateManager];
-  [v39 visibleTextRect];
+  partnerDelegate2 = [(UIKBRTIPartner *)self partnerDelegate];
+  inputDelegateManager = [partnerDelegate2 inputDelegateManager];
+  [inputDelegateManager visibleTextRect];
   v41 = v40;
   v43 = v42;
   v45 = v44;
@@ -8242,7 +8242,7 @@ uint64_t __53__UIKBRTIPartner__queryWKDocumentRequest_completion___block_invoke_
   v211.origin.y = v43;
   v211.size.width = v45;
   v211.size.height = v47;
-  v49 = [v12 closestPositionToPoint:{MinX, CGRectGetMinY(v211)}];
+  v49 = [inputDelegate closestPositionToPoint:{MinX, CGRectGetMinY(v211)}];
   if (!v49)
   {
     v66 = _UIKeyboardLog();
@@ -8257,12 +8257,12 @@ LABEL_50:
     _os_signpost_emit_with_name_impl(&dword_188A29000, v37, OS_SIGNPOST_INTERVAL_END, spid, "queryUIKitDocument", "", buf, 2u);
 LABEL_51:
 
-    v7[2](v7, v23, 0);
+    completionCopy[2](completionCopy, v23, 0);
     goto LABEL_166;
   }
 
-  v24 = v49;
-  if ([v12 baseWritingDirectionForPosition:v49 inDirection:0] == 1)
+  start = v49;
+  if ([inputDelegate baseWritingDirectionForPosition:v49 inDirection:0] == 1)
   {
     v212.origin.x = v41;
     v212.origin.y = v43;
@@ -8273,9 +8273,9 @@ LABEL_51:
     v213.origin.y = v43;
     v213.size.width = v45;
     v213.size.height = v47;
-    v51 = [v12 closestPositionToPoint:{MaxX, CGRectGetMinY(v213)}];
+    v51 = [inputDelegate closestPositionToPoint:{MaxX, CGRectGetMinY(v213)}];
 
-    v24 = v51;
+    start = v51;
   }
 
   v214.origin.x = v41;
@@ -8287,11 +8287,11 @@ LABEL_51:
   v215.origin.y = v43;
   v215.size.width = v45;
   v215.size.height = v47;
-  v53 = [v12 closestPositionToPoint:{v52, CGRectGetMaxY(v215)}];
+  v53 = [inputDelegate closestPositionToPoint:{v52, CGRectGetMaxY(v215)}];
   if (v53)
   {
     v25 = v53;
-    if ([v12 baseWritingDirectionForPosition:v53 inDirection:0] == 1)
+    if ([inputDelegate baseWritingDirectionForPosition:v53 inDirection:0] == 1)
     {
       v216.origin.x = v41;
       v216.origin.y = v43;
@@ -8302,25 +8302,25 @@ LABEL_51:
       v217.origin.y = v43;
       v217.size.width = v45;
       v217.size.height = v47;
-      v55 = [v12 closestPositionToPoint:{v54, CGRectGetMaxY(v217)}];
+      v55 = [inputDelegate closestPositionToPoint:{v54, CGRectGetMaxY(v217)}];
 
       v25 = v55;
     }
 
 LABEL_16:
     v192 = v23;
-    v174 = v15;
-    v175 = v7;
-    if (([v6 surroundingGranularityCount] & 0x8000000000000000) == 0)
+    v174 = textInputTraits;
+    v175 = completionCopy;
+    if (([requestCopy surroundingGranularityCount] & 0x8000000000000000) == 0)
     {
       v26 = -1;
       while (1)
       {
-        v27 = [v12 tokenizer];
-        v28 = [v27 positionFromPosition:v24 toBoundary:v13 inDirection:1];
+        tokenizer = [inputDelegate tokenizer];
+        v28 = [tokenizer positionFromPosition:start toBoundary:v13 inDirection:1];
 
-        v29 = [v12 tokenizer];
-        v30 = [v29 positionFromPosition:v25 toBoundary:v13 inDirection:0];
+        tokenizer2 = [inputDelegate tokenizer];
+        v30 = [tokenizer2 positionFromPosition:v25 toBoundary:v13 inDirection:0];
 
         if (!(v28 | v30))
         {
@@ -8334,7 +8334,7 @@ LABEL_16:
 
         else
         {
-          v31 = v24;
+          v31 = start;
         }
 
         v32 = v31;
@@ -8353,9 +8353,9 @@ LABEL_16:
 
         v35 = v34;
         ++v26;
-        v24 = v32;
+        start = v32;
         v25 = v35;
-        if ([v6 surroundingGranularityCount] <= v26)
+        if ([requestCopy surroundingGranularityCount] <= v26)
         {
           goto LABEL_37;
         }
@@ -8363,29 +8363,29 @@ LABEL_16:
     }
 
     v35 = v25;
-    v32 = v24;
+    v32 = start;
 LABEL_37:
-    v56 = [v12 textRangeFromPosition:v32 toPosition:v35];
-    v57 = [v17 start];
-    v58 = [v17 end];
+    v56 = [inputDelegate textRangeFromPosition:v32 toPosition:v35];
+    start2 = [selectedTextRange start];
+    v58 = [selectedTextRange end];
     v59 = v58;
     v172 = v56;
-    if (v57 || !v58)
+    if (start2 || !v58)
     {
-      if (v58 || !v57)
+      if (v58 || !start2)
       {
 LABEL_43:
-        v194 = v12;
-        v60 = v17;
+        v194 = inputDelegate;
+        v60 = selectedTextRange;
         v61 = 0;
         v62 = 0x7FFFFFFFFFFFFFFFLL;
         v187 = v35;
         v188 = v32;
-        v177 = v57;
+        v177 = start2;
         v178 = v59;
         v171 = v60;
         v63 = 0;
-        if (!v57)
+        if (!start2)
         {
           v64 = 0;
           v186 = v60;
@@ -8401,7 +8401,7 @@ LABEL_43:
           goto LABEL_73;
         }
 
-        if (([v6 flags] & 1) == 0)
+        if (([requestCopy flags] & 1) == 0)
         {
           v61 = 0;
           v63 = 0;
@@ -8418,7 +8418,7 @@ LABEL_43:
         if (v67 == 1 && v68 == 1)
         {
           v71 = [v194 textRangeFromPosition:v32 toPosition:v35];
-          v182 = [(UIKBRTIPartner *)v195 documentTextInRange:v71 forInputDelegate:v194];
+          v182 = [(UIKBRTIPartner *)selfCopy documentTextInRange:v71 forInputDelegate:v194];
           v65 = 0;
         }
 
@@ -8429,13 +8429,13 @@ LABEL_43:
             if (v67 != 1 && v70 != -1)
             {
               v71 = [v194 textRangeFromPosition:v32 toPosition:v177];
-              v61 = [(UIKBRTIPartner *)v195 documentTextInRange:v71 forInputDelegate:v194];
+              v61 = [(UIKBRTIPartner *)selfCopy documentTextInRange:v71 forInputDelegate:v194];
               v116 = [v194 textRangeFromPosition:v177 toPosition:v178];
 
               v186 = v116;
-              v65 = [(UIKBRTIPartner *)v195 documentTextInRange:v116 forInputDelegate:v194];
+              v65 = [(UIKBRTIPartner *)selfCopy documentTextInRange:v116 forInputDelegate:v194];
               v117 = [v194 textRangeFromPosition:v178 toPosition:v35];
-              v182 = [(UIKBRTIPartner *)v195 documentTextInRange:v117 forInputDelegate:v194];
+              v182 = [(UIKBRTIPartner *)selfCopy documentTextInRange:v117 forInputDelegate:v194];
 
               goto LABEL_65;
             }
@@ -8457,7 +8457,7 @@ LABEL_43:
                 if (v70 != 1)
                 {
                   v71 = [v194 textRangeFromPosition:v32 toPosition:v35];
-                  v61 = [(UIKBRTIPartner *)v195 documentTextInRange:v71 forInputDelegate:v194];
+                  v61 = [(UIKBRTIPartner *)selfCopy documentTextInRange:v71 forInputDelegate:v194];
                   v182 = 0;
                   v65 = 0;
                   goto LABEL_64;
@@ -8467,13 +8467,13 @@ LABEL_43:
 LABEL_66:
               if (v189)
               {
-                v75 = [v194 selectedTextRange];
-                v76 = [v75 start];
-                v62 = [v194 offsetFromPosition:v177 toPosition:v76];
+                selectedTextRange2 = [v194 selectedTextRange];
+                start3 = [selectedTextRange2 start];
+                v62 = [v194 offsetFromPosition:v177 toPosition:start3];
 
-                [v75 start];
+                [selectedTextRange2 start];
                 v77 = v179 = v65;
-                v78 = [v75 end];
+                v78 = [selectedTextRange2 end];
                 v64 = [v194 offsetFromPosition:v77 toPosition:v78];
 
                 v65 = v179;
@@ -8492,18 +8492,18 @@ LABEL_66:
 LABEL_72:
                   v63 = v182;
 LABEL_73:
-                  v173 = v17;
+                  v173 = selectedTextRange;
                   v79 = objc_alloc(MEMORY[0x1E69D9590]);
                   v181 = v61;
-                  v80 = [v61 string];
+                  string = [v61 string];
                   v81 = v65;
-                  v82 = v80;
+                  v82 = string;
                   v180 = v81;
-                  v83 = [v81 string];
-                  v84 = v83;
+                  string2 = [v81 string];
+                  v84 = string2;
                   if (v189)
                   {
-                    v85 = v83;
+                    v85 = string2;
                   }
 
                   else
@@ -8518,19 +8518,19 @@ LABEL_73:
 
                   else
                   {
-                    v86 = v83;
+                    v86 = string2;
                   }
 
                   v183 = v63;
                   [v63 string];
-                  v87 = v176 = v6;
+                  v87 = v176 = requestCopy;
                   v88 = [v79 initWithUnboundedContextBefore:v82 markedText:v85 selectedText:v86 unboundedContextAfter:v87 selectedRangeInMarkedText:{v62, v64}];
 
                   v23 = v192;
                   [v192 setDocumentState:v88];
-                  if ((~[v6 flags] & 3) == 0)
+                  if ((~[requestCopy flags] & 3) == 0)
                   {
-                    [(UIKBRTIPartner *)v195 rtiDocumentState];
+                    [(UIKBRTIPartner *)selfCopy rtiDocumentState];
                     v90 = v89 = v88;
                     v91 = objc_opt_respondsToSelector();
 
@@ -8563,24 +8563,24 @@ LABEL_73:
                     }
                   }
 
-                  v12 = v194;
+                  inputDelegate = v194;
                   [v192 setHasText:{objc_msgSend(v194, "hasText")}];
-                  v96 = v195;
-                  [(UIKBRTIPartner *)v195 _addFirstSelectionRectToDocumentState:v192];
-                  v15 = v174;
-                  v7 = v175;
-                  if (([v6 flags] & 0x10) != 0)
+                  v96 = selfCopy;
+                  [(UIKBRTIPartner *)selfCopy _addFirstSelectionRectToDocumentState:v192];
+                  textInputTraits = v174;
+                  completionCopy = v175;
+                  if (([requestCopy flags] & 0x10) != 0)
                   {
-                    [(UIKBRTIPartner *)v195 _addTextCheckingAnnotatedStringToDocumentState:v192];
+                    [(UIKBRTIPartner *)selfCopy _addTextCheckingAnnotatedStringToDocumentState:v192];
                   }
 
-                  v17 = v173;
-                  if (([v6 flags] & 0x20) != 0)
+                  selectedTextRange = v173;
+                  if (([requestCopy flags] & 0x20) != 0)
                   {
-                    [(UIKBRTIPartner *)v195 _addAutocorrectStylingToDocumentState:v192];
+                    [(UIKBRTIPartner *)selfCopy _addAutocorrectStylingToDocumentState:v192];
                   }
 
-                  if (([v6 flags] & 4) == 0)
+                  if (([requestCopy flags] & 4) == 0)
                   {
                     goto LABEL_160;
                   }
@@ -8598,12 +8598,12 @@ LABEL_73:
                     _os_signpost_emit_with_name_impl(&dword_188A29000, v100, OS_SIGNPOST_INTERVAL_BEGIN, v98, "queryUIKitDocument.addRects", "", buf, 2u);
                   }
 
-                  v101 = -[UIKBRTIPartner _uiTextGranularityForRTITextGranularity:](v195, "_uiTextGranularityForRTITextGranularity:", [v6 rectGranularity]);
+                  v101 = -[UIKBRTIPartner _uiTextGranularityForRTITextGranularity:](selfCopy, "_uiTextGranularityForRTITextGranularity:", [requestCopy rectGranularity]);
                   if (v101 == 5)
                   {
                     v102 = [v194 offsetFromPosition:v188 toPosition:v187];
                     [v194 firstRectForRange:v171];
-                    [(UIKBRTIPartner *)v195 convertRect:v193 from:?];
+                    [(UIKBRTIPartner *)selfCopy convertRect:textInputView from:?];
                     [v192 addTextRect:0 forCharacterRange:v102 granularity:5];
                   }
 
@@ -8611,30 +8611,30 @@ LABEL_73:
                   {
                     v103 = v101;
                     v166 = v88;
-                    v104 = [v6 rectCountBefore];
-                    v105 = v104;
+                    rectCountBefore = [requestCopy rectCountBefore];
+                    v105 = rectCountBefore;
                     v106 = *MEMORY[0x1E69C6FB8];
-                    if (v104 <= *MEMORY[0x1E69C6FB8])
+                    if (rectCountBefore <= *MEMORY[0x1E69C6FB8])
                     {
                       v107 = *MEMORY[0x1E69C6FB8];
                     }
 
                     else
                     {
-                      v107 = v104;
+                      v107 = rectCountBefore;
                     }
 
-                    [v6 surroundingGranularityCount];
-                    v108 = [v6 rectCountAfter];
-                    v109 = v108;
-                    if (v108 <= v106)
+                    [requestCopy surroundingGranularityCount];
+                    rectCountAfter = [requestCopy rectCountAfter];
+                    v109 = rectCountAfter;
+                    if (rectCountAfter <= v106)
                     {
                       v110 = v106;
                     }
 
                     else
                     {
-                      v110 = v108;
+                      v110 = rectCountAfter;
                     }
 
                     if (v106 >= v105)
@@ -8644,14 +8644,14 @@ LABEL_73:
 
                     else
                     {
-                      v111 = [v186 start];
+                      start4 = [v186 start];
                       if ((v107 & 0x8000000000000000) == 0)
                       {
                         v112 = v107 + 1;
                         while (1)
                         {
-                          v113 = [v194 tokenizer];
-                          v114 = [v113 positionFromPosition:v111 toBoundary:v103 inDirection:1];
+                          tokenizer3 = [v194 tokenizer];
+                          v114 = [tokenizer3 positionFromPosition:start4 toBoundary:v103 inDirection:1];
 
                           if (!v114 || [v194 comparePosition:v114 toPosition:v188] == -1)
                           {
@@ -8660,7 +8660,7 @@ LABEL_73:
 
                           v115 = v114;
 
-                          v111 = v115;
+                          start4 = v115;
                           if (!--v112)
                           {
                             goto LABEL_117;
@@ -8668,14 +8668,14 @@ LABEL_73:
                         }
                       }
 
-                      v115 = v111;
+                      v115 = start4;
                     }
 
 LABEL_117:
                     if (v106 >= v109)
                     {
                       v124 = v187;
-                      v12 = v194;
+                      inputDelegate = v194;
                       v120 = v188;
                     }
 
@@ -8687,17 +8687,17 @@ LABEL_117:
                       if (v110 < 0)
                       {
                         v124 = v118;
-                        v12 = v194;
+                        inputDelegate = v194;
                       }
 
                       else
                       {
                         v121 = v110 + 1;
-                        v12 = v194;
+                        inputDelegate = v194;
                         while (1)
                         {
-                          v122 = [v194 tokenizer];
-                          v123 = [v122 positionFromPosition:v119 toBoundary:v103 inDirection:0];
+                          tokenizer4 = [v194 tokenizer];
+                          v123 = [tokenizer4 positionFromPosition:v119 toBoundary:v103 inDirection:0];
 
                           if (!v123 || [v194 comparePosition:v187 toPosition:v123] == -1)
                           {
@@ -8719,7 +8719,7 @@ LABEL_117:
 
 LABEL_127:
                     v125 = v115;
-                    v126 = [v12 offsetFromPosition:v120 toPosition:v125];
+                    v126 = [inputDelegate offsetFromPosition:v120 toPosition:v125];
                     if (v126 < 0)
                     {
                       v128 = _UIKeyboardLog();
@@ -8749,15 +8749,15 @@ LABEL_127:
                       v132 = v129;
                       v129 = v125;
 
-                      v133 = [v12 tokenizer];
-                      v125 = [v133 positionFromPosition:v129 toBoundary:v103 inDirection:0];
+                      tokenizer5 = [inputDelegate tokenizer];
+                      v125 = [tokenizer5 positionFromPosition:v129 toBoundary:v103 inDirection:0];
 
                       if (!v125)
                       {
                         break;
                       }
 
-                      v134 = [v12 textRangeFromPosition:v129 toPosition:v125];
+                      v134 = [inputDelegate textRangeFromPosition:v129 toPosition:v125];
                       v135 = _UIKeyboardLog();
                       if (os_log_type_enabled(v135, OS_LOG_TYPE_DEBUG))
                       {
@@ -8771,7 +8771,7 @@ LABEL_127:
                       v131 += v130;
 
                       v191 = v134;
-                      v136 = [v12 selectionRectsForRange:v134];
+                      v136 = [inputDelegate selectionRectsForRange:v134];
                       v196 = 0u;
                       v197 = 0u;
                       v198 = 0u;
@@ -8796,7 +8796,7 @@ LABEL_127:
                             if (v143 != 0.0)
                             {
                               [v142 rect];
-                              [(UIKBRTIPartner *)v195 convertRect:v193 from:?];
+                              [(UIKBRTIPartner *)selfCopy convertRect:textInputView from:?];
                               v145 = v144;
                               v147 = v146;
                               v149 = v148;
@@ -8812,7 +8812,7 @@ LABEL_127:
                         while (v139);
                       }
 
-                      v12 = v194;
+                      inputDelegate = v194;
                       v124 = v185;
                       if (![v194 comparePosition:v125 toPosition:v129])
                       {
@@ -8822,15 +8822,15 @@ LABEL_127:
 
                     while ([v194 comparePosition:v125 toPosition:v185] == -1);
 
-                    v7 = v175;
-                    v6 = v176;
-                    v17 = v173;
-                    v15 = v174;
+                    completionCopy = v175;
+                    requestCopy = v176;
+                    selectedTextRange = v173;
+                    textInputTraits = v174;
                     v23 = v192;
                     v88 = v166;
                     if (!v103)
                     {
-                      v96 = v195;
+                      v96 = selfCopy;
 LABEL_156:
                       v158 = _UIKeyboardLog();
                       v159 = v158;
@@ -8843,8 +8843,8 @@ LABEL_156:
 LABEL_160:
                       if (objc_opt_respondsToSelector())
                       {
-                        v160 = [(UIKBRTIPartner *)v96 partnerDelegate];
-                        [v23 setScrolling:{objc_msgSend(v160, "selectionScrolling")}];
+                        partnerDelegate3 = [(UIKBRTIPartner *)v96 partnerDelegate];
+                        [v23 setScrolling:{objc_msgSend(partnerDelegate3, "selectionScrolling")}];
                       }
 
                       v161 = _UIKeyboardLog();
@@ -8855,38 +8855,38 @@ LABEL_160:
                         _os_signpost_emit_with_name_impl(&dword_188A29000, v162, OS_SIGNPOST_INTERVAL_END, spid, "queryUIKitDocument", "", buf, 2u);
                       }
 
-                      (v7)[2](v7, v23, v172);
+                      (completionCopy)[2](completionCopy, v23, v172);
                       goto LABEL_166;
                     }
                   }
 
                   if (v189)
                   {
-                    v152 = [v12 markedTextRange];
-                    v96 = v195;
-                    -[UIKBRTIPartner _addCharacterRectsToDocumentState:textRange:offset:](v195, "_addCharacterRectsToDocumentState:textRange:offset:", v23, v152, [v181 length]);
+                    markedTextRange4 = [inputDelegate markedTextRange];
+                    v96 = selfCopy;
+                    -[UIKBRTIPartner _addCharacterRectsToDocumentState:textRange:offset:](selfCopy, "_addCharacterRectsToDocumentState:textRange:offset:", v23, markedTextRange4, [v181 length]);
                   }
 
                   else
                   {
-                    v96 = v195;
-                    if ((v170 & 8) == 0)
+                    v96 = selfCopy;
+                    if ((flags & 8) == 0)
                     {
                       v153 = [v181 length];
                       [v171 isEmpty];
                       if (v178)
                       {
-                        v154 = [v12 _rangeOfEnclosingWord:?];
+                        v154 = [inputDelegate _rangeOfEnclosingWord:?];
                         v155 = v154;
                         if (v154)
                         {
                           v167 = v88;
                           v156 = v154;
 
-                          v157 = [v156 start];
-                          v153 = [v12 offsetFromPosition:v188 toPosition:v157];
+                          start5 = [v156 start];
+                          v153 = [inputDelegate offsetFromPosition:v188 toPosition:start5];
 
-                          v96 = v195;
+                          v96 = selfCopy;
                           v186 = v156;
                           v88 = v167;
                         }
@@ -8910,9 +8910,9 @@ LABEL_160:
             }
 
             v71 = [v194 textRangeFromPosition:v32 toPosition:v177];
-            v61 = [(UIKBRTIPartner *)v195 documentTextInRange:v71 forInputDelegate:v194];
+            v61 = [(UIKBRTIPartner *)selfCopy documentTextInRange:v71 forInputDelegate:v194];
             v163 = [v194 textRangeFromPosition:v177 toPosition:v35];
-            v65 = [(UIKBRTIPartner *)v195 documentTextInRange:v163 forInputDelegate:v194];
+            v65 = [(UIKBRTIPartner *)selfCopy documentTextInRange:v163 forInputDelegate:v194];
 
             v182 = 0;
 LABEL_64:
@@ -8923,9 +8923,9 @@ LABEL_65:
           }
 
           v71 = [v194 textRangeFromPosition:v32 toPosition:v178];
-          v65 = [(UIKBRTIPartner *)v195 documentTextInRange:v71 forInputDelegate:v194];
+          v65 = [(UIKBRTIPartner *)selfCopy documentTextInRange:v71 forInputDelegate:v194];
           v74 = [v194 textRangeFromPosition:v178 toPosition:v35];
-          v182 = [(UIKBRTIPartner *)v195 documentTextInRange:v74 forInputDelegate:v194];
+          v182 = [(UIKBRTIPartner *)selfCopy documentTextInRange:v74 forInputDelegate:v194];
         }
 
         v61 = 0;
@@ -8935,11 +8935,11 @@ LABEL_65:
 
     else
     {
-      v57 = v58;
+      start2 = v58;
     }
 
-    v59 = v57;
-    v57 = v59;
+    v59 = start2;
+    start2 = v59;
     goto LABEL_43;
   }
 
@@ -8951,22 +8951,22 @@ LABEL_65:
     _os_signpost_emit_with_name_impl(&dword_188A29000, v73, OS_SIGNPOST_INTERVAL_END, spid, "queryUIKitDocument", "", buf, 2u);
   }
 
-  v7[2](v7, v23, 0);
+  completionCopy[2](completionCopy, v23, 0);
 LABEL_166:
 }
 
-- (id)documentTextInRange:(id)a3 forInputDelegate:(id)a4
+- (id)documentTextInRange:(id)range forInputDelegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
+  delegateCopy = delegate;
+  rangeCopy = range;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 attributedTextInRange:v6];
+    v7 = [delegateCopy attributedTextInRange:rangeCopy];
   }
 
   else
   {
-    v8 = [v5 textInRange:v6];
+    v8 = [delegateCopy textInRange:rangeCopy];
 
     v9 = objc_alloc(MEMORY[0x1E696AAB0]);
     if (v8)
@@ -8980,40 +8980,40 @@ LABEL_166:
     }
 
     v7 = [v9 initWithString:v10];
-    v6 = v8;
+    rangeCopy = v8;
   }
 
   return v7;
 }
 
-- (CGRect)convertRect:(CGRect)a3 from:(id)a4
+- (CGRect)convertRect:(CGRect)rect from:(id)from
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [v9 window];
-  [v9 convertRect:v10 toView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  fromCopy = from;
+  window = [fromCopy window];
+  [fromCopy convertRect:window toView:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [v9 window];
+  window2 = [fromCopy window];
 
-  LODWORD(v9) = [v19 _isRemoteInputHostWindow];
-  if (v9)
+  LODWORD(fromCopy) = [window2 _isRemoteInputHostWindow];
+  if (fromCopy)
   {
-    v20 = [(UIKBRTIPartner *)self rtiDocumentTraits];
-    v21 = [v20 assistantViewInfo];
+    rtiDocumentTraits = [(UIKBRTIPartner *)self rtiDocumentTraits];
+    assistantViewInfo = [rtiDocumentTraits assistantViewInfo];
 
-    v22 = [objc_opt_self() mainScreen];
-    [v22 bounds];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen bounds];
     v24 = v23;
-    [v21 insets];
+    [assistantViewInfo insets];
     v26 = v24 - v25;
-    [v21 size];
+    [assistantViewInfo size];
     v14 = v14 + v26 - v27;
   }
 
@@ -9028,29 +9028,29 @@ LABEL_166:
   return result;
 }
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  if ((a3->var0 & 6) != 0)
+  if ((changed->var0 & 6) != 0)
   {
     [(UIKBRTIPartner *)self documentStateChanged];
   }
 }
 
-- (_NSRange)_relativeReplacementRangeForAnnotationOperation:(id)a3
+- (_NSRange)_relativeReplacementRangeForAnnotationOperation:(id)operation
 {
-  v3 = a3;
-  v4 = [v3 textCheckingAnnotationRange];
+  operationCopy = operation;
+  textCheckingAnnotationRange = [operationCopy textCheckingAnnotationRange];
   v6 = v5;
-  v7 = [v3 textCheckingReplacementRange];
+  textCheckingReplacementRange = [operationCopy textCheckingReplacementRange];
   v9 = v8;
-  v10 = [v3 textCheckingAnnotatedString];
+  textCheckingAnnotatedString = [operationCopy textCheckingAnnotatedString];
 
-  if (v7 >= v4 && v7 + v9 <= v4 + v6)
+  if (textCheckingReplacementRange >= textCheckingAnnotationRange && textCheckingReplacementRange + v9 <= textCheckingAnnotationRange + v6)
   {
-    v13 = [v10 length];
+    v13 = [textCheckingAnnotatedString length];
     if (v13 + v9 >= v6)
     {
-      v12 = v7 - v4;
+      v12 = textCheckingReplacementRange - textCheckingAnnotationRange;
     }
 
     else
@@ -9082,66 +9082,66 @@ LABEL_166:
   return result;
 }
 
-- (BOOL)_performTextCheckingAnnotationOperations:(id)a3
+- (BOOL)_performTextCheckingAnnotationOperations:(id)operations
 {
-  v4 = a3;
-  v5 = [(UIKBRTIPartner *)self rtiDocumentState];
-  v6 = [v5 documentState];
+  operationsCopy = operations;
+  rtiDocumentState = [(UIKBRTIPartner *)self rtiDocumentState];
+  documentState = [rtiDocumentState documentState];
 
-  if (v6)
+  if (documentState)
   {
-    v7 = [v6 contextBeforeInput];
-    v8 = [v7 length];
+    contextBeforeInput = [documentState contextBeforeInput];
+    v8 = [contextBeforeInput length];
 
-    v9 = [(UIKBRTIPartner *)self _relativeReplacementRangeForAnnotationOperation:v4];
+    v9 = [(UIKBRTIPartner *)self _relativeReplacementRangeForAnnotationOperation:operationsCopy];
     v11 = v10;
-    if ([v4 textCheckingAnnotationRange] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([operationsCopy textCheckingAnnotationRange] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v12 = 0;
+      textCheckingAnnotatedString = 0;
     }
 
     else
     {
-      v12 = [v4 textCheckingAnnotatedString];
+      textCheckingAnnotatedString = [operationsCopy textCheckingAnnotatedString];
 
-      if (v12)
+      if (textCheckingAnnotatedString)
       {
-        v29 = [(UIKBRTIPartner *)self partnerDelegate];
-        v14 = [v29 inputDelegateManager];
-        v15 = [v4 textCheckingAnnotationRange];
+        partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+        inputDelegateManager = [partnerDelegate inputDelegateManager];
+        textCheckingAnnotationRange = [operationsCopy textCheckingAnnotationRange];
         v16 = v11;
         v17 = v9;
         v18 = v8;
         v20 = v19;
-        v21 = [v4 textCheckingAnnotatedString];
+        textCheckingAnnotatedString2 = [operationsCopy textCheckingAnnotatedString];
         v22 = v20;
         v8 = v18;
         v9 = v17;
         v11 = v16;
-        v12 = [v14 replaceAnnotationRange:v15 contextBeforeLength:v22 withAnnotatedString:v8 relativeReplacementRange:{v21, v9, v16}];
+        textCheckingAnnotatedString = [inputDelegateManager replaceAnnotationRange:textCheckingAnnotationRange contextBeforeLength:v22 withAnnotatedString:v8 relativeReplacementRange:{textCheckingAnnotatedString2, v9, v16}];
 
-        if (v12 == 3)
+        if (textCheckingAnnotatedString == 3)
         {
           [(UIKBRTIPartner *)self setTextOperationsFilter:&__block_literal_global_866];
         }
       }
     }
 
-    if ([v4 textCheckingAnnotationRemovalRange] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([operationsCopy textCheckingAnnotationRemovalRange] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v23 = [v4 textCheckingAnnotationToRemove];
+      textCheckingAnnotationToRemove = [operationsCopy textCheckingAnnotationToRemove];
 
-      if (v23)
+      if (textCheckingAnnotationToRemove)
       {
-        v24 = [(UIKBRTIPartner *)self partnerDelegate];
-        v25 = [v24 inputDelegateManager];
-        v26 = [v4 textCheckingAnnotationToRemove];
-        [v4 textCheckingAnnotationRemovalRange];
-        v12 |= [v25 removeAnnotation:v26 removalRangeLength:v27 forAnnotationRange:v9 contextBeforeLength:{v11, v8}];
+        partnerDelegate2 = [(UIKBRTIPartner *)self partnerDelegate];
+        inputDelegateManager2 = [partnerDelegate2 inputDelegateManager];
+        textCheckingAnnotationToRemove2 = [operationsCopy textCheckingAnnotationToRemove];
+        [operationsCopy textCheckingAnnotationRemovalRange];
+        textCheckingAnnotatedString |= [inputDelegateManager2 removeAnnotation:textCheckingAnnotationToRemove2 removalRangeLength:v27 forAnnotationRange:v9 contextBeforeLength:{v11, v8}];
       }
     }
 
-    v13 = v12 != 0;
+    v13 = textCheckingAnnotatedString != 0;
   }
 
   else
@@ -9174,24 +9174,24 @@ uint64_t __59__UIKBRTIPartner__performTextCheckingAnnotationOperations___block_i
   if (+[UIKeyboard isKeyboardProcess])
   {
     v3 = +[UIKeyboard currentDocumentState];
-    v4 = v3;
+    partnerDelegate = v3;
     if (v3)
     {
-      v5 = [v3 insertionPointColor];
-      if (v5)
+      insertionPointColor = [v3 insertionPointColor];
+      if (insertionPointColor)
       {
-        v6 = v5;
-        v7 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v5 cgColor]);
+        textInputTraits = insertionPointColor;
+        insertionPointColor2 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [insertionPointColor cgColor]);
         goto LABEL_7;
       }
     }
   }
 
-  v4 = [(UIKBRTIPartner *)self partnerDelegate];
-  v6 = [v4 textInputTraits];
-  v7 = [v6 insertionPointColor];
+  partnerDelegate = [(UIKBRTIPartner *)self partnerDelegate];
+  textInputTraits = [partnerDelegate textInputTraits];
+  insertionPointColor2 = [textInputTraits insertionPointColor];
 LABEL_7:
-  v8 = v7;
+  v8 = insertionPointColor2;
 
   return v8;
 }

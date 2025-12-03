@@ -1,29 +1,29 @@
 @interface _MemoryEfficientTracepointBuffer
-- (BOOL)findOversize:(id)a3 process:(unint64_t)a4 oversize_id:(unsigned int)a5 pidversion:(unsigned int)a6 timestamp:(unint64_t)a7 block:(id)a8;
-- (BOOL)iterateChunksAndFillEvent:(tp_element *)a3 block:(id)a4;
-- (tp_element)insertValuesIntoIndex:(int64_t)a3 coffset:(int64_t)a4 fileName:(id)a5 sortKey:(unint64_t)a6 type:(unsigned __int8)a7;
-- (unint64_t)addTSEntry:(os_timesync_time_entry_s *)a3;
-- (unsigned)indexOfUUID:(unsigned __int8)a3[16];
-- (void)advanceCursorToTime:(unint64_t)a3;
+- (BOOL)findOversize:(id)oversize process:(unint64_t)process oversize_id:(unsigned int)oversize_id pidversion:(unsigned int)pidversion timestamp:(unint64_t)timestamp block:(id)block;
+- (BOOL)iterateChunksAndFillEvent:(tp_element *)event block:(id)block;
+- (tp_element)insertValuesIntoIndex:(int64_t)index coffset:(int64_t)coffset fileName:(id)name sortKey:(unint64_t)key type:(unsigned __int8)type;
+- (unint64_t)addTSEntry:(os_timesync_time_entry_s *)entry;
+- (unsigned)indexOfUUID:(unsigned __int8)d[16];
+- (void)advanceCursorToTime:(unint64_t)time;
 - (void)consolidate;
 - (void)dealloc;
-- (void)enumerateEventsFromTime:(unint64_t)a3 to:(unint64_t)a4 options:(unsigned int)a5 usingBlock:(id)a6;
-- (void)finishedInsertingTracepointsWithNextMajorTime:(unint64_t)a3 options:(unsigned int)a4;
-- (void)insertChunk:(tracev3_chunk_s *)a3 chunkOffset:(int64_t)a4 chunkSetStartAddr:(void *)a5 timestamp:(unint64_t)a6 subchunk:(id)a7;
-- (void)insertNonsparsePoint:(unint64_t)a3 uuid:(unsigned __int8)a4[16] ttl:(unsigned __int8)a5 inMemory:(BOOL)a6;
-- (void)insertOversizedChunk:(tracev3_chunk_s *)a3 chunkOffset:(int64_t)a4 chunkSetStartAddr:(void *)a5 subchunk:(id)a6 chunkList:(id)a7;
-- (void)insertTimesyncPoints:(_os_timesync_db_s *)a3 forBoot:(unsigned __int8)a4[16] oldestContinuousTime:(unint64_t)a5;
-- (void)insertTracepoints:(tracev3_chunk_s *)a3 chunkOffset:(int64_t)a4 chunkSetStartAddr:(void *)a5 subchunk:(id)a6 options:(unsigned int)a7;
-- (void)retireOversize:(unint64_t)a3;
-- (void)setupStoresForIndex:(id)a3;
+- (void)enumerateEventsFromTime:(unint64_t)time to:(unint64_t)to options:(unsigned int)options usingBlock:(id)block;
+- (void)finishedInsertingTracepointsWithNextMajorTime:(unint64_t)time options:(unsigned int)options;
+- (void)insertChunk:(tracev3_chunk_s *)chunk chunkOffset:(int64_t)offset chunkSetStartAddr:(void *)addr timestamp:(unint64_t)timestamp subchunk:(id)subchunk;
+- (void)insertNonsparsePoint:(unint64_t)point uuid:(unsigned __int8)uuid[16] ttl:(unsigned __int8)ttl inMemory:(BOOL)memory;
+- (void)insertOversizedChunk:(tracev3_chunk_s *)chunk chunkOffset:(int64_t)offset chunkSetStartAddr:(void *)addr subchunk:(id)subchunk chunkList:(id)list;
+- (void)insertTimesyncPoints:(_os_timesync_db_s *)points forBoot:(unsigned __int8)boot[16] oldestContinuousTime:(unint64_t)time;
+- (void)insertTracepoints:(tracev3_chunk_s *)tracepoints chunkOffset:(int64_t)offset chunkSetStartAddr:(void *)addr subchunk:(id)subchunk options:(unsigned int)options;
+- (void)retireOversize:(unint64_t)oversize;
+- (void)setupStoresForIndex:(id)index;
 @end
 
 @implementation _MemoryEfficientTracepointBuffer
 
-- (BOOL)iterateChunksAndFillEvent:(tp_element *)a3 block:(id)a4
+- (BOOL)iterateChunksAndFillEvent:(tp_element *)event block:(id)block
 {
-  v6 = a4;
-  var0 = a3->var0;
+  blockCopy = block;
+  var0 = event->var0;
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x2020000000;
@@ -36,7 +36,7 @@
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v8 = BYTE2(a3->var3);
+  v8 = BYTE2(event->var3);
   if (v8 == 1)
   {
     v19 = 0u;
@@ -46,14 +46,14 @@
     v23 = 0u;
     v21 = 0u;
     LODWORD(v19) = 1;
-    *(&v19 + 1) = *(&a3->var2 + 2);
-    *(v20 + 8) = vextq_s8(*(&a3->var0 + 1), *(&a3->var0 + 1), 8uLL);
+    *(&v19 + 1) = *(&event->var2 + 2);
+    *(v20 + 8) = vextq_s8(*(&event->var0 + 1), *(&event->var0 + 1), 8uLL);
     tsEntries = self->_tsEntries;
     LOWORD(v20[0]) = var0;
-    v17 = &tsEntries[*(&a3->var3 + 7)];
-    v14 = [(NSMutableOrderedSet *)self->_uuids objectAtIndexedSubscript:*(&a3->var3 + 3), v19, v20[0], *&v20[1], 0, 0, *&v17->var0, v17->var1, v17->var2, *&v17->var3, 0, 0];
+    v17 = &tsEntries[*(&event->var3 + 7)];
+    v14 = [(NSMutableOrderedSet *)self->_uuids objectAtIndexedSubscript:*(&event->var3 + 3), v19, v20[0], *&v20[1], 0, 0, *&v17->var0, v17->var1, v17->var2, *&v17->var3, 0, 0];
     [v14 getUUIDBytes:&v20[1] + 8];
-    v15 = v6[2](v6, &v19);
+    v15 = blockCopy[2](blockCopy, &v19);
     goto LABEL_10;
   }
 
@@ -66,13 +66,13 @@
     v22 = 0u;
     v23 = 0u;
     LODWORD(v19) = 2;
-    *(&v19 + 1) = *(&a3->var2 + 2);
-    *(v20 + 8) = vextq_s8(*(&a3->var0 + 1), *(&a3->var0 + 1), 8uLL);
+    *(&v19 + 1) = *(&event->var2 + 2);
+    *(v20 + 8) = vextq_s8(*(&event->var0 + 1), *(&event->var0 + 1), 8uLL);
     LOWORD(v20[0]) = var0;
-    WORD4(v21) = *(&a3->var3 + 5);
-    v14 = [(NSMutableOrderedSet *)self->_uuids objectAtIndexedSubscript:*(&a3->var3 + 3), v19, v20[0], *&v20[1], 0, 0, *(&v21 + 1), 0, 0, 0, 0, 0];
+    WORD4(v21) = *(&event->var3 + 5);
+    v14 = [(NSMutableOrderedSet *)self->_uuids objectAtIndexedSubscript:*(&event->var3 + 3), v19, v20[0], *&v20[1], 0, 0, *(&v21 + 1), 0, 0, 0, 0, 0];
     [v14 getUUIDBytes:&v20[1] + 8];
-    v15 = v6[2](v6, &v19);
+    v15 = blockCopy[2](blockCopy, &v19);
 LABEL_10:
     v9 = v15;
 
@@ -85,7 +85,7 @@ LABEL_10:
   {
     v10 = objc_autoreleasePoolPush();
     storeArray = self->storeArray;
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:a3->var0];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:event->var0];
     v13 = [(NSMutableDictionary *)storeArray objectForKey:v12];
 
     if (v13)
@@ -103,8 +103,8 @@ LABEL_10:
       v32 = var0;
       v29 = &v19;
       v30 = &v33;
-      v31 = a3;
-      v26 = v6;
+      eventCopy = event;
+      v26 = blockCopy;
       [v13 enumerateChunksUsingBlock:v25];
 
       _Block_object_dispose(&v19, 8);
@@ -130,19 +130,19 @@ LABEL_11:
   return v9 & 1;
 }
 
-- (BOOL)findOversize:(id)a3 process:(unint64_t)a4 oversize_id:(unsigned int)a5 pidversion:(unsigned int)a6 timestamp:(unint64_t)a7 block:(id)a8
+- (BOOL)findOversize:(id)oversize process:(unint64_t)process oversize_id:(unsigned int)oversize_id pidversion:(unsigned int)pidversion timestamp:(unint64_t)timestamp block:(id)block
 {
-  v14 = a3;
-  v15 = a8;
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5 ^ a4 ^ a6 ^ a7];
-  v17 = [(NSMutableDictionary *)self->_oversizeTable objectForKey:v16];
+  oversizeCopy = oversize;
+  blockCopy = block;
+  timestamp = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:oversize_id ^ process ^ pidversion ^ timestamp];
+  v17 = [(NSMutableDictionary *)self->_oversizeTable objectForKey:timestamp];
   if (v17)
   {
-    v34 = v14;
+    v34 = oversizeCopy;
     storeArray = self->storeArray;
     catalogCache = self->catalogCache;
     dataCache = self->dataCache;
-    v37 = v14;
+    v37 = oversizeCopy;
     v21 = v17;
     v22 = storeArray;
     v36 = catalogCache;
@@ -176,8 +176,8 @@ LABEL_11:
     v51[3] = __Block_byref_object_copy__4372;
     v51[4] = __Block_byref_object_dispose__4373;
     v52 = 0;
-    v24 = [v21 fileIndex];
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v24];
+    fileIndex = [v21 fileIndex];
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:fileIndex];
     v26 = [(NSMutableDictionary *)v22 objectForKey:v25];
 
     if (v26)
@@ -189,7 +189,7 @@ LABEL_11:
       v44 = v55;
       v39 = v21;
       v45 = v53;
-      v50 = v24;
+      v50 = fileIndex;
       v40 = v36;
       v46 = v54;
       v47 = v51;
@@ -217,10 +217,10 @@ LABEL_11:
     v31 = v28;
     if (v30 == 1)
     {
-      v14 = v34;
-      if (v15[2](v15, v31))
+      oversizeCopy = v34;
+      if (blockCopy[2](blockCopy, v31))
       {
-        [(NSMutableDictionary *)self->_oversizeTable removeObjectForKey:v16];
+        [(NSMutableDictionary *)self->_oversizeTable removeObjectForKey:timestamp];
         v32 = 1;
       }
 
@@ -233,7 +233,7 @@ LABEL_11:
     else
     {
       v32 = 0;
-      v14 = v34;
+      oversizeCopy = v34;
     }
   }
 
@@ -245,7 +245,7 @@ LABEL_11:
   return v32;
 }
 
-- (void)retireOversize:(unint64_t)a3
+- (void)retireOversize:(unint64_t)oversize
 {
   v18 = *MEMORY[0x277D85DE8];
   if ([(NSMutableDictionary *)self->_oversizeTable count]>= 0x64)
@@ -271,7 +271,7 @@ LABEL_11:
 
           v10 = *(*(&v13 + 1) + 8 * i);
           v11 = [(NSMutableDictionary *)self->_oversizeTable objectForKey:v10, v13];
-          if ([v11 timestamp] >= a3)
+          if ([v11 timestamp] >= oversize)
           {
 
             goto LABEL_12;
@@ -296,10 +296,10 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateEventsFromTime:(unint64_t)a3 to:(unint64_t)a4 options:(unsigned int)a5 usingBlock:(id)a6
+- (void)enumerateEventsFromTime:(unint64_t)time to:(unint64_t)to options:(unsigned int)options usingBlock:(id)block
 {
-  v6 = a5;
-  v17 = a6;
+  optionsCopy = options;
+  blockCopy = block;
   if ([(_BaseTracepointBuffer *)self canMutate])
   {
     qword_27DA52778 = "BUG IN LIBTRACE: oltb iteration while mutable";
@@ -308,63 +308,63 @@ LABEL_12:
 
   else
   {
-    v10 = [(_BaseTracepointBuffer *)self cursor];
-    if (v10 < [(_BaseTracepointBuffer *)self count])
+    cursor = [(_BaseTracepointBuffer *)self cursor];
+    if (cursor < [(_BaseTracepointBuffer *)self count])
     {
-      v11 = 51 * v10;
+      v11 = 51 * cursor;
       while (1)
       {
         v12 = self->_traceEvents + v11;
         v13 = *(v12 + 18);
-        if (v13 == a4)
+        if (v13 == to)
         {
           goto LABEL_18;
         }
 
-        if ((v6 & 8) != 0)
+        if ((optionsCopy & 8) != 0)
         {
-          if (v13 <= a4)
+          if (v13 <= to)
           {
             goto LABEL_18;
           }
         }
 
-        else if (v13 >= a4)
+        else if (v13 >= to)
         {
           goto LABEL_18;
         }
 
         [(_BaseTracepointBuffer *)self setCursor:[(_BaseTracepointBuffer *)self cursor]+ 1];
         v14 = *(v12 + 18);
-        if (v14 == a3)
+        if (v14 == time)
         {
           break;
         }
 
-        if ((v6 & 8) != 0)
+        if ((optionsCopy & 8) != 0)
         {
-          if (v14 <= a3)
+          if (v14 <= time)
           {
             break;
           }
         }
 
-        else if (v14 >= a3)
+        else if (v14 >= time)
         {
           break;
         }
 
 LABEL_11:
-        ++v10;
+        ++cursor;
         v11 += 51;
-        if (v10 >= [(_BaseTracepointBuffer *)self count])
+        if (cursor >= [(_BaseTracepointBuffer *)self count])
         {
           goto LABEL_18;
         }
       }
 
       v15 = objc_autoreleasePoolPush();
-      v16 = [(_MemoryEfficientTracepointBuffer *)self iterateChunksAndFillEvent:v12 block:v17];
+      v16 = [(_MemoryEfficientTracepointBuffer *)self iterateChunksAndFillEvent:v12 block:blockCopy];
       objc_autoreleasePoolPop(v15);
       if (!v16)
       {
@@ -378,46 +378,46 @@ LABEL_18:
   }
 }
 
-- (void)insertOversizedChunk:(tracev3_chunk_s *)a3 chunkOffset:(int64_t)a4 chunkSetStartAddr:(void *)a5 subchunk:(id)a6 chunkList:(id)a7
+- (void)insertOversizedChunk:(tracev3_chunk_s *)chunk chunkOffset:(int64_t)offset chunkSetStartAddr:(void *)addr subchunk:(id)subchunk chunkList:(id)list
 {
-  v12 = a6;
-  v13 = a7;
+  subchunkCopy = subchunk;
+  listCopy = list;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = v12;
-    v14 = a3 - a5;
-    v15 = [[OversizeIndex alloc] init:a3->var1.var3.var0 msgID:a3->var1.var6.var5 pidV:a3->var1.var3.var1 timestamp:a3->var1.var0.var2];
+    v26 = subchunkCopy;
+    v14 = chunk - addr;
+    v15 = [[OversizeIndex alloc] init:chunk->var1.var3.var0 msgID:chunk->var1.var6.var5 pidV:chunk->var1.var3.var1 timestamp:chunk->var1.var0.var2];
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v15, "hash64")}];
     [v15 setTp_offset:v14];
-    [v15 setChunk_offset:a4];
+    [v15 setChunk_offset:offset];
     [v15 setCatalog_offset:{objc_msgSend(v26, "catalog_offset")}];
-    v17 = [v26 store];
-    v18 = [v17 fileName];
+    store = [v26 store];
+    fileName = [store fileName];
 
-    v19 = [(_BaseTracepointBuffer *)self fileNames];
-    v20 = v19;
-    if (v18)
+    fileNames = [(_BaseTracepointBuffer *)self fileNames];
+    v20 = fileNames;
+    if (fileName)
     {
-      v25 = [v26 store];
-      v21 = [v25 fileName];
-      [v20 addObject:v21];
+      store2 = [v26 store];
+      fileName2 = [store2 fileName];
+      [v20 addObject:fileName2];
 
-      v22 = [(_BaseTracepointBuffer *)self fileNames];
-      v23 = [v26 store];
-      v24 = [v23 fileName];
-      LOWORD(v25) = [v22 indexOfObject:v24];
+      fileNames2 = [(_BaseTracepointBuffer *)self fileNames];
+      store3 = [v26 store];
+      fileName3 = [store3 fileName];
+      LOWORD(store2) = [fileNames2 indexOfObject:fileName3];
     }
 
     else
     {
-      [v19 addObject:@"(null)"];
+      [fileNames addObject:@"(null)"];
 
-      v22 = [(_BaseTracepointBuffer *)self fileNames];
-      v25 = [v22 indexOfObject:@"(null)"];
+      fileNames2 = [(_BaseTracepointBuffer *)self fileNames];
+      store2 = [fileNames2 indexOfObject:@"(null)"];
     }
 
-    [v15 setFileIndex:v25];
+    [v15 setFileIndex:store2];
     [(NSMutableDictionary *)self->_oversizeTable setObject:v15 forKey:v16];
   }
 
@@ -428,24 +428,24 @@ LABEL_18:
   }
 }
 
-- (void)insertTracepoints:(tracev3_chunk_s *)a3 chunkOffset:(int64_t)a4 chunkSetStartAddr:(void *)a5 subchunk:(id)a6 options:(unsigned int)a7
+- (void)insertTracepoints:(tracev3_chunk_s *)tracepoints chunkOffset:(int64_t)offset chunkSetStartAddr:(void *)addr subchunk:(id)subchunk options:(unsigned int)options
 {
-  v7 = a7;
-  v12 = a6;
+  optionsCopy = options;
+  subchunkCopy = subchunk;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
-    v14 = [v13 catalog_offset];
-    v15 = [v13 oldestTime];
-    v16 = [v13 endTime];
-    var0 = a3->var0.var0;
-    if (a3->var0.var0 > 24579)
+    v13 = subchunkCopy;
+    catalog_offset = [v13 catalog_offset];
+    oldestTime = [v13 oldestTime];
+    endTime = [v13 endTime];
+    var0 = tracepoints->var0.var0;
+    if (tracepoints->var0.var0 > 24579)
     {
       switch(var0)
       {
         case 0x6004u:
-          var2 = a3->var0.var2;
+          var2 = tracepoints->var0.var2;
           v19 = var2 >= 0x48;
           v20 = var2 - 72;
           if (!v19)
@@ -454,10 +454,10 @@ LABEL_18:
           }
 
           v21 = 0;
-          var6 = a3->var1.var0.var10.var2;
+          var6 = tracepoints->var1.var0.var10.var2;
           break;
         case 0x600Cu:
-          v27 = a3->var0.var2;
+          v27 = tracepoints->var0.var2;
           v19 = v27 >= 0x10;
           v20 = v27 - 16;
           if (!v19)
@@ -466,10 +466,10 @@ LABEL_18:
           }
 
           v21 = 0;
-          var6 = &a3->var1.var3.var3[1];
+          var6 = &tracepoints->var1.var3.var3[1];
           break;
         case 0x6010u:
-          v23 = a3->var0.var2;
+          v23 = tracepoints->var0.var2;
           v19 = v23 >= 0x10;
           v20 = v23 - 16;
           if (!v19)
@@ -478,7 +478,7 @@ LABEL_18:
           }
 
           v21 = 0;
-          var6 = &a3->var1.var10[16];
+          var6 = &tracepoints->var1.var10[16];
           break;
         default:
           goto LABEL_68;
@@ -490,7 +490,7 @@ LABEL_18:
       switch(var0)
       {
         case 0x6001u:
-          v24 = a3->var0.var2;
+          v24 = tracepoints->var0.var2;
           v19 = v24 >= 0x10;
           v20 = v24 - 16;
           if (!v19)
@@ -498,11 +498,11 @@ LABEL_18:
             goto LABEL_68;
           }
 
-          var6 = &a3->var1.var10[16];
-          v21 = a3->var1.var3.var3[0] != 0;
+          var6 = &tracepoints->var1.var10[16];
+          v21 = tracepoints->var1.var3.var3[0] != 0;
           break;
         case 0x6002u:
-          v26 = a3->var0.var2;
+          v26 = tracepoints->var0.var2;
           v19 = v26 >= 0x20;
           v20 = v26 - 32;
           if (!v19)
@@ -511,10 +511,10 @@ LABEL_18:
           }
 
           v21 = 0;
-          var6 = a3->var1.var8.var6;
+          var6 = tracepoints->var1.var8.var6;
           break;
         case 0x6003u:
-          v18 = a3->var0.var2;
+          v18 = tracepoints->var0.var2;
           v19 = v18 >= 0x30;
           v20 = v18 - 48;
           if (!v19)
@@ -523,7 +523,7 @@ LABEL_18:
           }
 
           v21 = 0;
-          var6 = &a3->var1.var9.var8[8];
+          var6 = &tracepoints->var1.var9.var8[8];
           break;
         default:
           goto LABEL_68;
@@ -543,7 +543,7 @@ LABEL_18:
       {
         if (v21)
         {
-          v28 = a4;
+          offsetCopy3 = offset;
           v44 = v42 + (4096 - v43);
           v45 = &var6[v42];
           v46 = v20 > v44;
@@ -572,7 +572,7 @@ LABEL_18:
 
         if (v20 == 4096)
         {
-          v28 = a4;
+          offsetCopy3 = offset;
           v29 = &var6[v43];
           v30 = 4096 - v43;
 LABEL_29:
@@ -584,14 +584,14 @@ LABEL_29:
           v54 = v29;
           v55 = v30;
           v56 = 0;
-          v57 = v15;
-          v58 = v16;
-          v59 = a3;
-          v60 = a5;
-          v52 = a3;
-          v50 = self;
-          v61 = v28;
-          v62 = v14;
+          v57 = oldestTime;
+          v58 = endTime;
+          tracepointsCopy = tracepoints;
+          addrCopy = addr;
+          tracepointsCopy2 = tracepoints;
+          selfCopy = self;
+          v61 = offsetCopy3;
+          v62 = catalog_offset;
           v51 = v13;
           v31 = v47;
           v33 = var6 + 16;
@@ -641,32 +641,32 @@ LABEL_29:
               switch(v40)
               {
                 case 2u:
-                  if ((v7 & 0x80) == 0)
+                  if ((optionsCopy & 0x80) == 0)
                   {
                     goto LABEL_63;
                   }
 
                   break;
                 case 3u:
-                  if ((v7 & 0x100) == 0)
+                  if ((optionsCopy & 0x100) == 0)
                   {
                     goto LABEL_63;
                   }
 
                   break;
                 case 4u:
-                  if ((v7 & 0x200) == 0)
+                  if ((optionsCopy & 0x200) == 0)
                   {
                     v41 = BYTE1(*v35);
                     if (v41 == 2)
                     {
-                      if ((v7 & 2) != 0)
+                      if ((optionsCopy & 2) != 0)
                       {
                         goto LABEL_63;
                       }
                     }
 
-                    else if (v41 != 1 || (v7 & 4) != 0)
+                    else if (v41 != 1 || (optionsCopy & 4) != 0)
                     {
                       goto LABEL_63;
                     }
@@ -680,7 +680,7 @@ LABEL_29:
 
             if (v40 == 6)
             {
-              if ((v7 & 0x20) != 0)
+              if ((optionsCopy & 0x20) != 0)
               {
                 goto LABEL_63;
               }
@@ -688,13 +688,13 @@ LABEL_29:
 
             else if (v40 == 7)
             {
-              if ((v7 & 0x40) != 0)
+              if ((optionsCopy & 0x40) != 0)
               {
                 goto LABEL_63;
               }
             }
 
-            else if (v40 != 8 || (v7 & 0x800) != 0)
+            else if (v40 != 8 || (optionsCopy & 0x800) != 0)
             {
 LABEL_63:
               (v48)(v31);
@@ -704,7 +704,7 @@ LABEL_63:
       }
 
 LABEL_28:
-      v28 = a4;
+      offsetCopy3 = offset;
       v29 = 0;
       v30 = 0;
       goto LABEL_29;
@@ -719,46 +719,46 @@ LABEL_68:
   __break(1u);
 }
 
-- (void)insertChunk:(tracev3_chunk_s *)a3 chunkOffset:(int64_t)a4 chunkSetStartAddr:(void *)a5 timestamp:(unint64_t)a6 subchunk:(id)a7
+- (void)insertChunk:(tracev3_chunk_s *)chunk chunkOffset:(int64_t)offset chunkSetStartAddr:(void *)addr timestamp:(unint64_t)timestamp subchunk:(id)subchunk
 {
-  v12 = a7;
+  subchunkCopy = subchunk;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = v12;
-    v13 = [v24 oldestTime];
-    v14 = [v24 endTime];
-    if (v13 <= a6)
+    v24 = subchunkCopy;
+    oldestTime = [v24 oldestTime];
+    endTime = [v24 endTime];
+    if (oldestTime <= timestamp)
     {
-      v15 = a6;
+      timestampCopy = timestamp;
     }
 
     else
     {
-      v15 = v13;
+      timestampCopy = oldestTime;
     }
 
-    if (v15 >= v14)
+    if (timestampCopy >= endTime)
     {
-      v16 = v14;
+      v16 = endTime;
     }
 
     else
     {
-      v16 = v15;
+      v16 = timestampCopy;
     }
 
-    v17 = a3 - a5;
-    var0 = a3->var1.var3.var0;
-    v19 = [v24 catalog_offset];
-    v20 = self;
-    v21 = [v24 store];
-    v22 = [v21 fileName];
-    v23 = [(_MemoryEfficientTracepointBuffer *)v20 insertValuesIntoIndex:v17 coffset:a4 fileName:v22 sortKey:v16 type:3];
+    v17 = chunk - addr;
+    var0 = chunk->var1.var3.var0;
+    catalog_offset = [v24 catalog_offset];
+    selfCopy = self;
+    store = [v24 store];
+    fileName = [store fileName];
+    v23 = [(_MemoryEfficientTracepointBuffer *)selfCopy insertValuesIntoIndex:v17 coffset:offset fileName:fileName sortKey:v16 type:3];
 
     *(v23 + 35) = 0;
     *(v23 + 43) = var0;
-    *(v23 + 27) = v19;
+    *(v23 + 27) = catalog_offset;
   }
 
   else
@@ -768,35 +768,35 @@ LABEL_68:
   }
 }
 
-- (void)insertNonsparsePoint:(unint64_t)a3 uuid:(unsigned __int8)a4[16] ttl:(unsigned __int8)a5 inMemory:(BOOL)a6
+- (void)insertNonsparsePoint:(unint64_t)point uuid:(unsigned __int8)uuid[16] ttl:(unsigned __int8)ttl inMemory:(BOOL)memory
 {
-  v10 = [(_MemoryEfficientTracepointBuffer *)self insertValuesIntoIndex:3735928559 coffset:3735928559 fileName:@"nonsparse" sortKey:a3 type:2];
-  BYTE5(v10->var3) = a5;
-  BYTE6(v10->var3) = a6;
-  *(&v10->var3 + 3) = [(_MemoryEfficientTracepointBuffer *)self indexOfUUID:a4];
+  v10 = [(_MemoryEfficientTracepointBuffer *)self insertValuesIntoIndex:3735928559 coffset:3735928559 fileName:@"nonsparse" sortKey:point type:2];
+  BYTE5(v10->var3) = ttl;
+  BYTE6(v10->var3) = memory;
+  *(&v10->var3 + 3) = [(_MemoryEfficientTracepointBuffer *)self indexOfUUID:uuid];
 }
 
-- (void)insertTimesyncPoints:(_os_timesync_db_s *)a3 forBoot:(unsigned __int8)a4[16] oldestContinuousTime:(unint64_t)a5
+- (void)insertTimesyncPoints:(_os_timesync_db_s *)points forBoot:(unsigned __int8)boot[16] oldestContinuousTime:(unint64_t)time
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __86___MemoryEfficientTracepointBuffer_insertTimesyncPoints_forBoot_oldestContinuousTime___block_invoke;
   v5[3] = &unk_2787AF0F8;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a3;
-  v5[7] = a4;
-  _timesync_enumerate_boot(a3, a4, v5);
+  v5[5] = time;
+  v5[6] = points;
+  v5[7] = boot;
+  _timesync_enumerate_boot(points, boot, v5);
 }
 
-- (tp_element)insertValuesIntoIndex:(int64_t)a3 coffset:(int64_t)a4 fileName:(id)a5 sortKey:(unint64_t)a6 type:(unsigned __int8)a7
+- (tp_element)insertValuesIntoIndex:(int64_t)index coffset:(int64_t)coffset fileName:(id)name sortKey:(unint64_t)key type:(unsigned __int8)type
 {
-  v12 = a5;
-  v13 = [(_BaseTracepointBuffer *)self fileNames];
-  v14 = v13;
-  if (v12)
+  nameCopy = name;
+  fileNames = [(_BaseTracepointBuffer *)self fileNames];
+  v14 = fileNames;
+  if (nameCopy)
   {
-    v15 = v12;
+    v15 = nameCopy;
   }
 
   else
@@ -804,10 +804,10 @@ LABEL_68:
     v15 = @"(null)";
   }
 
-  [v13 addObject:v15];
+  [fileNames addObject:v15];
 
-  v16 = [(_BaseTracepointBuffer *)self fileNames];
-  v17 = [v16 indexOfObject:v15];
+  fileNames2 = [(_BaseTracepointBuffer *)self fileNames];
+  v17 = [fileNames2 indexOfObject:v15];
 
   result = [(_BaseTracepointBuffer *)self canMutate];
   if ((result & 1) == 0)
@@ -862,18 +862,18 @@ LABEL_17:
   }
 
   v23 = self->_traceEvents + 51 * v22;
-  *(v23 + 2) = a3;
-  *(v23 + 10) = a4;
+  *(v23 + 2) = index;
+  *(v23 + 10) = coffset;
   *v23 = v17;
-  *(v23 + 18) = a6;
-  v23[26] = a7;
+  *(v23 + 18) = key;
+  v23[26] = type;
 
   return v23;
 }
 
-- (unsigned)indexOfUUID:(unsigned __int8)a3[16]
+- (unsigned)indexOfUUID:(unsigned __int8)d[16]
 {
-  v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:d];
   [(NSMutableOrderedSet *)self->_uuids addObject:v4];
   v5 = [(NSMutableOrderedSet *)self->_uuids indexOfObject:v4];
   v6 = v5;
@@ -893,74 +893,74 @@ LABEL_17:
   return v5;
 }
 
-- (void)setupStoresForIndex:(id)a3
+- (void)setupStoresForIndex:(id)index
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __56___MemoryEfficientTracepointBuffer_setupStoresForIndex___block_invoke;
   v3[3] = &unk_2787AF0D0;
   v3[4] = self;
-  [a3 _foreachIndexFile:v3];
+  [index _foreachIndexFile:v3];
 }
 
-- (void)finishedInsertingTracepointsWithNextMajorTime:(unint64_t)a3 options:(unsigned int)a4
+- (void)finishedInsertingTracepointsWithNextMajorTime:(unint64_t)time options:(unsigned int)options
 {
-  v4 = a4;
+  optionsCopy = options;
   [(_MemoryEfficientTracepointBuffer *)self consolidate];
-  v7 = [(_BaseTracepointBuffer *)self cursor];
+  cursor = [(_BaseTracepointBuffer *)self cursor];
   v8 = [(_BaseTracepointBuffer *)self count];
-  if ((v4 & 8) != 0)
+  if ((optionsCopy & 8) != 0)
   {
     v9 = 0xFFFFFFFF00000001;
     while (1)
     {
-      if (v7 < v8)
+      if (cursor < v8)
       {
-        v23 = (&self->_traceEvents->var2 + 51 * v7 + 2);
+        v23 = (&self->_traceEvents->var2 + 51 * cursor + 2);
         while (1)
         {
           v24 = *v23;
           v23 = (v23 + 51);
-          if (v24 < a3)
+          if (v24 < time)
           {
             break;
           }
 
-          if (v8 == ++v7)
+          if (v8 == ++cursor)
           {
-            v7 = v8;
+            cursor = v8;
             break;
           }
         }
       }
 
-      if (v8 > v7)
+      if (v8 > cursor)
       {
         v25 = (self->_traceEvents + 51 * v8 - 33);
         while (1)
         {
           v26 = *v25;
           v25 = (v25 - 51);
-          if (v26 >= a3)
+          if (v26 >= time)
           {
             break;
           }
 
-          if (--v8 <= v7)
+          if (--v8 <= cursor)
           {
-            v8 = v7;
+            v8 = cursor;
             break;
           }
         }
       }
 
-      if (v7 == v8)
+      if (cursor == v8)
       {
         break;
       }
 
       traceEvents = self->_traceEvents;
-      v28 = traceEvents + 51 * v7;
+      v28 = traceEvents + 51 * cursor;
       v29 = *(v28 + 1);
       v40 = *v28;
       v41 = v29;
@@ -981,7 +981,7 @@ LABEL_17:
       *(v34 + 1) = v41;
       *(v34 + 2) = v35;
       *v34 = v40;
-      ++v7;
+      ++cursor;
     }
   }
 
@@ -990,53 +990,53 @@ LABEL_17:
     v9 = 0x1FFFFFFFFLL;
     while (1)
     {
-      if (v7 < v8)
+      if (cursor < v8)
       {
-        v10 = (&self->_traceEvents->var2 + 51 * v7 + 2);
+        v10 = (&self->_traceEvents->var2 + 51 * cursor + 2);
         while (1)
         {
           v11 = *v10;
           v10 = (v10 + 51);
-          if (v11 > a3)
+          if (v11 > time)
           {
             break;
           }
 
-          if (v8 == ++v7)
+          if (v8 == ++cursor)
           {
-            v7 = v8;
+            cursor = v8;
             break;
           }
         }
       }
 
-      if (v8 > v7)
+      if (v8 > cursor)
       {
         v12 = (self->_traceEvents + 51 * v8 - 33);
         while (1)
         {
           v13 = *v12;
           v12 = (v12 - 51);
-          if (v13 <= a3)
+          if (v13 <= time)
           {
             break;
           }
 
-          if (--v8 <= v7)
+          if (--v8 <= cursor)
           {
-            v8 = v7;
+            v8 = cursor;
             break;
           }
         }
       }
 
-      if (v7 == v8)
+      if (cursor == v8)
       {
         break;
       }
 
       v14 = self->_traceEvents;
-      v15 = v14 + 51 * v7;
+      v15 = v14 + 51 * cursor;
       v16 = *(v15 + 1);
       v40 = *v15;
       v41 = v16;
@@ -1057,19 +1057,19 @@ LABEL_17:
       *(v21 + 1) = v41;
       *(v21 + 2) = v22;
       *v21 = v40;
-      ++v7;
+      ++cursor;
     }
   }
 
   v36 = self->_traceEvents;
   v37 = v36 + 51 * [(_BaseTracepointBuffer *)self cursor];
-  v38 = [(_BaseTracepointBuffer *)self cursor];
+  cursor2 = [(_BaseTracepointBuffer *)self cursor];
   __compar[0] = MEMORY[0x277D85DD0];
   __compar[1] = 3221225472;
   __compar[2] = __90___MemoryEfficientTracepointBuffer_finishedInsertingTracepointsWithNextMajorTime_options___block_invoke;
   __compar[3] = &__block_descriptor_40_e15_i24__0r_v8r_v16l;
   __compar[4] = v9;
-  mergesort_b(v37, v7 - v38, 0x33uLL, __compar);
+  mergesort_b(v37, cursor - cursor2, 0x33uLL, __compar);
   [(_BaseTracepointBuffer *)self setCanMutate:0];
 }
 
@@ -1102,16 +1102,16 @@ LABEL_17:
   }
 }
 
-- (void)advanceCursorToTime:(unint64_t)a3
+- (void)advanceCursorToTime:(unint64_t)time
 {
-  v5 = [(_BaseTracepointBuffer *)self cursor];
+  cursor = [(_BaseTracepointBuffer *)self cursor];
   if ([(_BaseTracepointBuffer *)self canMutate])
   {
-    if (v5 < [(_BaseTracepointBuffer *)self count])
+    if (cursor < [(_BaseTracepointBuffer *)self count])
     {
-      v6 = 51 * v5 + 18;
-      v7 = v5;
-      while (*(&self->_traceEvents->var0 + v6) < a3)
+      v6 = 51 * cursor + 18;
+      v7 = cursor;
+      while (*(&self->_traceEvents->var0 + v6) < time)
       {
         ++v7;
         v6 += 51;
@@ -1121,12 +1121,12 @@ LABEL_17:
         }
       }
 
-      v5 = v7;
+      cursor = v7;
     }
 
 LABEL_8:
 
-    [(_BaseTracepointBuffer *)self setCursor:v5];
+    [(_BaseTracepointBuffer *)self setCursor:cursor];
   }
 
   else
@@ -1136,9 +1136,9 @@ LABEL_8:
   }
 }
 
-- (unint64_t)addTSEntry:(os_timesync_time_entry_s *)a3
+- (unint64_t)addTSEntry:(os_timesync_time_entry_s *)entry
 {
-  v4 = self;
+  selfCopy = self;
   v5 = *(self + 128);
   v6 = *(self + 136);
   if (v6 == v5)
@@ -1157,7 +1157,7 @@ LABEL_8:
     v6 = v7 + v5;
     v8 = *(self + 120);
     self = _os_trace_realloc_typed();
-    v4[15] = self;
+    selfCopy[15] = self;
   }
 
   if (v6 <= v5)
@@ -1169,13 +1169,13 @@ LABEL_8:
 
   else
   {
-    v4[17] = v6;
-    v9 = (v4[15] + 32 * v4[16]);
-    v10 = *&a3->var2;
-    *v9 = *&a3->var0.var0;
+    selfCopy[17] = v6;
+    v9 = (selfCopy[15] + 32 * selfCopy[16]);
+    v10 = *&entry->var2;
+    *v9 = *&entry->var0.var0;
     v9[1] = v10;
-    self = v4[16];
-    v4[16] = self + 1;
+    self = selfCopy[16];
+    selfCopy[16] = self + 1;
   }
 
   return self;

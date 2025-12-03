@@ -3,12 +3,12 @@
 - (AVCaptionTextAlignment)textAlignment;
 - (CMTimeRange)timeRange;
 - (NSString)text;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)removeBackgroundColorInRange:(NSRange)range;
 - (void)removeDecorationInRange:(NSRange)range;
 - (void)removeFontStyleInRange:(NSRange)range;
 - (void)removeFontWeightInRange:(NSRange)range;
-- (void)removeRuby:(_NSRange)a3;
+- (void)removeRuby:(_NSRange)ruby;
 - (void)removeTextColorInRange:(NSRange)range;
 - (void)removeTextCombineInRange:(NSRange)range;
 - (void)setBackgroundColor:(CGColorRef)color inRange:(NSRange)range;
@@ -25,10 +25,10 @@
 
 @implementation AVMutableCaption
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVCaption alloc];
-  v5 = [(AVCaption *)self _figCaptionData];
+  _figCaptionData = [(AVCaption *)self _figCaptionData];
   if (self)
   {
     [(AVMutableCaption *)self timeRange];
@@ -39,7 +39,7 @@
     memset(v7, 0, sizeof(v7));
   }
 
-  return [(AVCaption *)v4 initWithFigCaptionData:v5 timeRange:v7];
+  return [(AVCaption *)v4 initWithFigCaptionData:_figCaptionData timeRange:v7];
 }
 
 - (NSString)text
@@ -98,13 +98,13 @@ LABEL_6:
 {
   if (region)
   {
-    v6 = [(AVCaptionRegion *)region position];
-    v7 = [(AVCaptionRegion *)region height];
-    v8 = [(AVCaptionRegion *)region scroll];
-    if (v7)
+    position = [(AVCaptionRegion *)region position];
+    height = [(AVCaptionRegion *)region height];
+    scroll = [(AVCaptionRegion *)region scroll];
+    if (height)
     {
-      v9 = v8;
-      if (![(AVCaptionLength *)v7 numberOfCells])
+      v9 = scroll;
+      if (![(AVCaptionLength *)height numberOfCells])
       {
         v15 = MEMORY[0x1E695DF30];
         v16 = *MEMORY[0x1E695D940];
@@ -112,7 +112,7 @@ LABEL_6:
         goto LABEL_21;
       }
 
-      if ([(AVCaptionLength *)v7 numberOfCells]!= 1 && v9 != AVCaptionRegionScrollRollUp)
+      if ([(AVCaptionLength *)height numberOfCells]!= 1 && v9 != AVCaptionRegionScrollRollUp)
       {
         v15 = MEMORY[0x1E695DF30];
         v16 = *MEMORY[0x1E695D940];
@@ -121,23 +121,23 @@ LABEL_6:
       }
     }
 
-    if (v6 && ![(AVCaptionPosition *)v6 unitType])
+    if (position && ![(AVCaptionPosition *)position unitType])
     {
-      if ([(AVCaptionPosition *)v6 cellX]<= 0)
+      if ([(AVCaptionPosition *)position cellX]<= 0)
       {
         v15 = MEMORY[0x1E695DF30];
         v16 = *MEMORY[0x1E695D940];
         v17 = "[position cellX] >= 1";
       }
 
-      else if ([(AVCaptionPosition *)v6 cellX]>= 33)
+      else if ([(AVCaptionPosition *)position cellX]>= 33)
       {
         v15 = MEMORY[0x1E695DF30];
         v16 = *MEMORY[0x1E695D940];
         v17 = "[position cellX] <= 32";
       }
 
-      else if ([(AVCaptionPosition *)v6 cellY]<= 0)
+      else if ([(AVCaptionPosition *)position cellY]<= 0)
       {
         v15 = MEMORY[0x1E695DF30];
         v16 = *MEMORY[0x1E695D940];
@@ -146,7 +146,7 @@ LABEL_6:
 
       else
       {
-        if ([(AVCaptionPosition *)v6 cellY]< 16)
+        if ([(AVCaptionPosition *)position cellY]< 16)
         {
           goto LABEL_12;
         }
@@ -306,11 +306,11 @@ LABEL_12:
   }
 }
 
-- (void)removeRuby:(_NSRange)a3
+- (void)removeRuby:(_NSRange)ruby
 {
-  if (a3.length)
+  if (ruby.length)
   {
-    [(AVCaption *)self _setRuby:0 inRange:a3.location, a3.length];
+    [(AVCaption *)self _setRuby:0 inRange:ruby.location, ruby.length];
   }
 }
 

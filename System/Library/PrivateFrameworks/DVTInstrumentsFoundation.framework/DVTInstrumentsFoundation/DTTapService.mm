@@ -1,14 +1,14 @@
 @interface DTTapService
-+ (void)registerCapabilities:(id)a3 forDelegateClass:(Class)a4 forConnection:(id)a5;
-- (DTTapService)initWithChannel:(id)a3;
++ (void)registerCapabilities:(id)capabilities forDelegateClass:(Class)class forConnection:(id)connection;
+- (DTTapService)initWithChannel:(id)channel;
 - (void)fetchDataNow;
-- (void)handleBulkData:(const void *)a3 size:(unint64_t)a4 destructor:(id)a5;
-- (void)handleBulkData:(id)a3;
-- (void)messageReceived:(id)a3;
+- (void)handleBulkData:(const void *)data size:(unint64_t)size destructor:(id)destructor;
+- (void)handleBulkData:(id)data;
+- (void)messageReceived:(id)received;
 - (void)pause;
-- (void)sendFrameMessage:(id)a3;
-- (void)sendHeartbeatTime:(unint64_t)a3;
-- (void)setConfig:(id)a3;
+- (void)sendFrameMessage:(id)message;
+- (void)sendHeartbeatTime:(unint64_t)time;
+- (void)setConfig:(id)config;
 - (void)start;
 - (void)stop;
 - (void)unpause;
@@ -16,10 +16,10 @@
 
 @implementation DTTapService
 
-+ (void)registerCapabilities:(id)a3 forDelegateClass:(Class)a4 forConnection:(id)a5
++ (void)registerCapabilities:(id)capabilities forDelegateClass:(Class)class forConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a5;
+  capabilitiesCopy = capabilities;
+  connectionCopy = connection;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -28,9 +28,9 @@
   v16[1] = 3221225472;
   v16[2] = sub_247F7E5C8;
   v16[3] = &unk_278EF1B60;
-  v10 = v8;
+  v10 = capabilitiesCopy;
   v18 = &v20;
-  v19 = a4;
+  classCopy = class;
   v17 = v10;
   sub_247F7E514(v16);
   if ((v21[3] & 1) == 0)
@@ -40,25 +40,25 @@
     v11[2] = sub_247F7E6F8;
     v11[3] = &unk_278EF1BB0;
     v12 = v10;
-    v14 = a4;
-    v13 = v9;
-    v15 = a1;
+    classCopy2 = class;
+    v13 = connectionCopy;
+    selfCopy = self;
     sub_247F7E514(v11);
   }
 
   _Block_object_dispose(&v20, 8);
 }
 
-- (DTTapService)initWithChannel:(id)a3
+- (DTTapService)initWithChannel:(id)channel
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  channelCopy = channel;
   v31.receiver = self;
   v31.super_class = DTTapService;
-  v5 = [(DTXService *)&v31 initWithChannel:v4];
+  v5 = [(DTXService *)&v31 initWithChannel:channelCopy];
   if (v5)
   {
-    v6 = [[DTTapServiceMessageSender alloc] initWithChannel:v4];
+    v6 = [[DTTapServiceMessageSender alloc] initWithChannel:channelCopy];
     messageSender = v5->_messageSender;
     v5->_messageSender = v6;
 
@@ -66,8 +66,8 @@
     serialQueue = v5->_serialQueue;
     v5->_serialQueue = v8;
 
-    v10 = [v4 label];
-    if (v10)
+    label = [channelCopy label];
+    if (label)
     {
       v27 = 0;
       v28 = &v27;
@@ -78,7 +78,7 @@
       v24[2] = sub_247F7EB44;
       v24[3] = &unk_278EF1BD8;
       v26 = &v27;
-      v11 = v10;
+      v11 = label;
       v25 = v11;
       sub_247F7E514(v24);
       v12 = v28;
@@ -96,11 +96,11 @@
           tapServiceID = v5->_tapServiceID;
           v18 = NSStringFromClass(v28[3]);
           v19 = v18;
-          v20 = [v18 UTF8String];
+          uTF8String = [v18 UTF8String];
           *buf = 67109378;
           v33 = tapServiceID;
           v34 = 2080;
-          v35 = v20;
+          v35 = uTF8String;
           _os_log_impl(&dword_247F67000, p_super, OS_LOG_TYPE_INFO, "DTTapService: (%d) Created new Tap service with delegate %s", buf, 0x12u);
         }
       }
@@ -139,26 +139,26 @@ LABEL_11:
   return v21;
 }
 
-- (void)messageReceived:(id)a3
+- (void)messageReceived:(id)received
 {
-  if ([a3 errorStatus] == 2)
+  if ([received errorStatus] == 2)
   {
 
     [(DTTapService *)self stop];
   }
 }
 
-- (void)setConfig:(id)a3
+- (void)setConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_247F7EC6C;
   v7[3] = &unk_278EF1550;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configCopy;
+  v6 = configCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -324,29 +324,29 @@ LABEL_11:
   _Block_object_dispose(&v5, 8);
 }
 
-- (void)handleBulkData:(const void *)a3 size:(unint64_t)a4 destructor:(id)a5
+- (void)handleBulkData:(const void *)data size:(unint64_t)size destructor:(id)destructor
 {
-  v6 = [MEMORY[0x277D03668] messageReferencingBuffer:a3 length:a4 destructor:a5];
+  v6 = [MEMORY[0x277D03668] messageReferencingBuffer:data length:size destructor:destructor];
   [(DTTapServiceMessageSender *)self->_messageSender sendMessage:v6];
 }
 
-- (void)handleBulkData:(id)a3
+- (void)handleBulkData:(id)data
 {
-  v4 = [MEMORY[0x277D03668] messageWithData:a3];
+  v4 = [MEMORY[0x277D03668] messageWithData:data];
   [(DTTapServiceMessageSender *)self->_messageSender sendMessage:v4];
 }
 
-- (void)sendFrameMessage:(id)a3
+- (void)sendFrameMessage:(id)message
 {
   messageSender = self->_messageSender;
-  v4 = [MEMORY[0x277D03668] messageWithObject:a3];
+  v4 = [MEMORY[0x277D03668] messageWithObject:message];
   [(DTTapServiceMessageSender *)messageSender sendMessage:v4];
 }
 
-- (void)sendHeartbeatTime:(unint64_t)a3
+- (void)sendHeartbeatTime:(unint64_t)time
 {
   v7 = objc_opt_new();
-  [v7 setHeartbeatTime:a3];
+  [v7 setHeartbeatTime:time];
   messageSender = self->_messageSender;
   v6 = [MEMORY[0x277D03668] messageWithObject:v7];
   [(DTTapServiceMessageSender *)messageSender sendMessage:v6];

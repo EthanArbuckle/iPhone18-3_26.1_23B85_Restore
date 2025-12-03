@@ -1,22 +1,22 @@
 @interface PowerUITrialManager
-- (BOOL)useTrialEnabledFeature:(id)a3;
-- (PowerUITrialManager)initWithDefaultsDomain:(id)a3;
-- (double)doubleFactorForName:(id)a3;
+- (BOOL)useTrialEnabledFeature:(id)feature;
+- (PowerUITrialManager)initWithDefaultsDomain:(id)domain;
+- (double)doubleFactorForName:(id)name;
 - (double)loadTrialAdjustedHours;
 - (double)loadTrialMinInputChargeDuration;
 - (double)loadTrialThreshold;
-- (id)loadModelFromPath:(id)a3 deleteExistingFiles:(BOOL)a4;
-- (int64_t)longFactorForName:(id)a3;
-- (void)addUpdateHandler:(id)a3;
+- (id)loadModelFromPath:(id)path deleteExistingFiles:(BOOL)files;
+- (int64_t)longFactorForName:(id)name;
+- (void)addUpdateHandler:(id)handler;
 - (void)loadTrialUpdates;
 @end
 
 @implementation PowerUITrialManager
 
-- (PowerUITrialManager)initWithDefaultsDomain:(id)a3
+- (PowerUITrialManager)initWithDefaultsDomain:(id)domain
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  domainCopy = domain;
   v35.receiver = self;
   v35.super_class = PowerUITrialManager;
   v6 = [(PowerUITrialManager *)&v35 init];
@@ -29,10 +29,10 @@
     v7->_log = v8;
 
     [PowerUISmartChargeUtilities logMemoryUsageInternalForEvent:@"Beginning of TrialManager init"];
-    objc_storeStrong(&v7->_defaultsDomain, a3);
-    v10 = [MEMORY[0x277D73660] client];
+    objc_storeStrong(&v7->_defaultsDomain, domain);
+    client = [MEMORY[0x277D73660] client];
     trialClient = v7->_trialClient;
-    v7->_trialClient = v10;
+    v7->_trialClient = client;
 
     v12 = v7->_log;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -43,9 +43,9 @@
       _os_log_impl(&dword_21B766000, v12, OS_LOG_TYPE_DEFAULT, "Trial Client %@", buf, 0xCu);
     }
 
-    v14 = [(TRIClient *)v7->_trialClient trackingId];
+    trackingId = [(TRIClient *)v7->_trialClient trackingId];
     trialTrackingID = v7->_trialTrackingID;
-    v7->_trialTrackingID = v14;
+    v7->_trialTrackingID = trackingId;
 
     v16 = v7->_trialClient;
     v33 = 0;
@@ -71,9 +71,9 @@
     v7->_treatmentID = v19;
     v24 = v19;
 
-    v25 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     updateHandlers = v7->_updateHandlers;
-    v7->_updateHandlers = v25;
+    v7->_updateHandlers = array;
 
     v27 = v7->_trialClient;
     v31[0] = MEMORY[0x277D85DD0];
@@ -164,29 +164,29 @@ void __46__PowerUITrialManager_initWithDefaultsDomain___block_invoke(uint64_t a1
   [PowerUISmartChargeUtilities logMemoryUsageInternalForEvent:@"End of loadTrialUpdates"];
 }
 
-- (int64_t)longFactorForName:(id)a3
+- (int64_t)longFactorForName:(id)name
 {
-  v3 = [(PowerUITrialManager *)self trialFactor:a3];
-  v4 = [v3 longValue];
+  v3 = [(PowerUITrialManager *)self trialFactor:name];
+  longValue = [v3 longValue];
 
-  return v4;
+  return longValue;
 }
 
-- (double)doubleFactorForName:(id)a3
+- (double)doubleFactorForName:(id)name
 {
-  v3 = [(PowerUITrialManager *)self trialFactor:a3];
+  v3 = [(PowerUITrialManager *)self trialFactor:name];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addUpdateHandler:(id)a3
+- (void)addUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   updateHandlers = self->_updateHandlers;
-  v6 = MEMORY[0x21CEF8A60](v4);
+  v6 = MEMORY[0x21CEF8A60](handlerCopy);
 
   [(NSMutableArray *)updateHandlers addObject:v6];
 
@@ -280,12 +280,12 @@ void __46__PowerUITrialManager_initWithDefaultsDomain___block_invoke(uint64_t a1
   return v8;
 }
 
-- (BOOL)useTrialEnabledFeature:(id)a3
+- (BOOL)useTrialEnabledFeature:(id)feature
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"trialOverride.%@", v4];
-  v6 = [PowerUISmartChargeUtilities numberForPreferenceKey:v5 inDomain:self->_defaultsDomain];
+  featureCopy = feature;
+  featureCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"trialOverride.%@", featureCopy];
+  v6 = [PowerUISmartChargeUtilities numberForPreferenceKey:featureCopy inDomain:self->_defaultsDomain];
 
   if (v6 && [v6 BOOLValue])
   {
@@ -293,16 +293,16 @@ void __46__PowerUITrialManager_initWithDefaultsDomain___block_invoke(uint64_t a1
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = featureCopy;
       _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Feature '%@' enabled via defaults override", buf, 0xCu);
     }
 
-    v8 = 1;
+    bOOLeanValue = 1;
   }
 
   else
   {
-    v9 = [(PowerUITrialManager *)self trialFactor:v4];
+    v9 = [(PowerUITrialManager *)self trialFactor:featureCopy];
     v10 = self->_log;
     if (v9)
     {
@@ -311,7 +311,7 @@ void __46__PowerUITrialManager_initWithDefaultsDomain___block_invoke(uint64_t a1
         [(PowerUITrialManager *)v10 useTrialEnabledFeature:v9];
       }
 
-      v8 = [v9 BOOLeanValue];
+      bOOLeanValue = [v9 BOOLeanValue];
     }
 
     else
@@ -321,33 +321,33 @@ void __46__PowerUITrialManager_initWithDefaultsDomain___block_invoke(uint64_t a1
         [PowerUITrialManager useTrialEnabledFeature:];
       }
 
-      v8 = 0;
+      bOOLeanValue = 0;
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v8;
+  return bOOLeanValue;
 }
 
-- (id)loadModelFromPath:(id)a3 deleteExistingFiles:(BOOL)a4
+- (id)loadModelFromPath:(id)path deleteExistingFiles:(BOOL)files
 {
-  v4 = a4;
+  filesCopy = files;
   v131 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   v7 = os_transaction_create();
   [PowerUISmartChargeUtilities logMemoryUsageInternalForEvent:@"Beginning of loadModelFromPath"];
   log = self->_log;
-  if (v6)
+  if (pathCopy)
   {
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
       [PowerUITrialManager loadModelFromPath:deleteExistingFiles:];
     }
 
-    if (([v6 isAbsolutePath] & 1) == 0)
+    if (([pathCopy isAbsolutePath] & 1) == 0)
     {
       v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v10 = [v9 pathForResource:v6 ofType:0];
+      v10 = [v9 pathForResource:pathCopy ofType:0];
 
       v11 = self->_log;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -361,17 +361,17 @@ void __46__PowerUITrialManager_initWithDefaultsDomain___block_invoke(uint64_t a1
       {
         v12 = v10;
 
-        v6 = v12;
+        pathCopy = v12;
       }
     }
 
     v13 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"\\.(\\d+?)\\." options:1 error:0];
-    v14 = [v13 firstMatchInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+    v14 = [v13 firstMatchInString:pathCopy options:0 range:{0, objc_msgSend(pathCopy, "length")}];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 range];
-      v18 = [v6 substringWithRange:{v16, v17}];
+      range = [v14 range];
+      v18 = [pathCopy substringWithRange:{range, v17}];
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
       {
         [PowerUITrialManager loadModelFromPath:deleteExistingFiles:];
@@ -388,9 +388,9 @@ void __46__PowerUITrialManager_initWithDefaultsDomain___block_invoke(uint64_t a1
       v18 = 0;
     }
 
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v118 = 0;
-    if ([v20 fileExistsAtPath:@"/var/mobile/Library/PowerUI" isDirectory:&v118])
+    if ([defaultManager fileExistsAtPath:@"/var/mobile/Library/PowerUI" isDirectory:&v118])
     {
       v21 = 0;
     }
@@ -398,7 +398,7 @@ void __46__PowerUITrialManager_initWithDefaultsDomain___block_invoke(uint64_t a1
     else
     {
       v117 = 0;
-      v22 = [v20 createDirectoryAtPath:@"/var/mobile/Library/PowerUI" withIntermediateDirectories:1 attributes:0 error:&v117];
+      v22 = [defaultManager createDirectoryAtPath:@"/var/mobile/Library/PowerUI" withIntermediateDirectories:1 attributes:0 error:&v117];
       v21 = v117;
       if ((v22 & 1) == 0)
       {
@@ -414,10 +414,10 @@ void __46__PowerUITrialManager_initWithDefaultsDomain___block_invoke(uint64_t a1
 
     if (v18)
     {
-      v90 = v4;
+      v90 = filesCopy;
       v116 = v21;
-      v99 = v20;
-      v23 = [v20 contentsOfDirectoryAtPath:@"/var/mobile/Library/PowerUI" error:&v116];
+      v99 = defaultManager;
+      v23 = [defaultManager contentsOfDirectoryAtPath:@"/var/mobile/Library/PowerUI" error:&v116];
       v24 = v116;
 
       if (v24)
@@ -491,17 +491,17 @@ LABEL_32:
           v98 = v18;
           if (v90)
           {
-            v33 = [v21 path];
+            path = [v21 path];
             v34 = self->_log;
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v122 = v33;
+              v122 = path;
               _os_log_impl(&dword_21B766000, v34, OS_LOG_TYPE_DEFAULT, "Removing existing files from %@", buf, 0xCu);
             }
 
             v111 = 0;
-            v35 = [v99 removeItemAtPath:v33 error:&v111];
+            v35 = [v99 removeItemAtPath:path error:&v111];
             v21 = v111;
             if ((v35 & 1) == 0)
             {
@@ -509,7 +509,7 @@ LABEL_32:
               if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v122 = v33;
+                v122 = path;
                 v123 = 2112;
                 v124 = v21;
                 _os_log_impl(&dword_21B766000, v36, OS_LOG_TYPE_DEFAULT, "Failed to clean up path: %@ -- %@", buf, 0x16u);
@@ -522,7 +522,7 @@ LABEL_32:
             v21 = 0;
           }
 
-          v20 = v99;
+          defaultManager = v99;
           goto LABEL_53;
         }
       }
@@ -537,7 +537,7 @@ LABEL_38:
         v15 = v92;
       }
 
-      v20 = v99;
+      defaultManager = v99;
     }
 
     v37 = self->_log;
@@ -550,9 +550,9 @@ LABEL_38:
 
     v23 = 0;
 LABEL_53:
-    v38 = [v23 path];
-    v39 = v20;
-    v40 = [v20 fileExistsAtPath:v38 isDirectory:&v118];
+    path2 = [v23 path];
+    v39 = defaultManager;
+    v40 = [defaultManager fileExistsAtPath:path2 isDirectory:&v118];
 
     if (v40)
     {
@@ -582,7 +582,7 @@ LABEL_53:
         v19 = v41;
       }
 
-      v20 = v39;
+      defaultManager = v39;
       v18 = v98;
       goto LABEL_100;
     }
@@ -592,12 +592,12 @@ LABEL_53:
     v95 = v13;
     v97 = v7;
     v43 = MEMORY[0x277CCACA8];
-    v44 = [v39 temporaryDirectory];
-    v45 = [v44 path];
-    v128[0] = v45;
-    v46 = [MEMORY[0x277CCAD78] UUID];
-    v47 = [v46 UUIDString];
-    v128[1] = v47;
+    temporaryDirectory = [v39 temporaryDirectory];
+    path3 = [temporaryDirectory path];
+    v128[0] = path3;
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v128[1] = uUIDString;
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v128 count:2];
     v49 = [v43 pathWithComponents:v48];
 
@@ -618,7 +618,7 @@ LABEL_53:
       v19 = 0;
       v13 = v95;
       v7 = v97;
-      v20 = v39;
+      defaultManager = v39;
       v18 = v98;
       v23 = v91;
       goto LABEL_99;
@@ -626,20 +626,20 @@ LABEL_53:
 
     v51 = MEMORY[0x277CBEBC0];
     v127[0] = v50;
-    v52 = [v6 lastPathComponent];
-    v127[1] = v52;
+    lastPathComponent = [pathCopy lastPathComponent];
+    v127[1] = lastPathComponent;
     v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v127 count:2];
     v54 = [v51 fileURLWithPathComponents:v53];
 
     v88 = v54;
-    v55 = [v54 path];
+    path4 = [v54 path];
     v108 = v24;
     v100 = v39;
-    LOBYTE(v52) = [v39 copyItemAtPath:v6 toPath:v55 error:&v108];
+    LOBYTE(lastPathComponent) = [v39 copyItemAtPath:pathCopy toPath:path4 error:&v108];
     v56 = v108;
 
     v15 = v93;
-    if ((v52 & 1) == 0)
+    if ((lastPathComponent & 1) == 0)
     {
       v63 = self->_log;
       v13 = v95;
@@ -649,7 +649,7 @@ LABEL_53:
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v122 = v6;
+        v122 = pathCopy;
         v123 = 2112;
         v124 = v88;
         v125 = 2112;
@@ -658,7 +658,7 @@ LABEL_53:
       }
 
       v19 = 0;
-      v20 = v100;
+      defaultManager = v100;
       goto LABEL_98;
     }
 
@@ -675,10 +675,10 @@ LABEL_53:
     }
 
     v60 = MEMORY[0x277CBFEC0];
-    v61 = [MEMORY[0x277CBFEC8] defaultOptions];
+    defaultOptions = [MEMORY[0x277CBFEC8] defaultOptions];
     v107 = 0;
     v85 = v59;
-    v62 = [v60 compileSpecificationAtURL:v88 toURL:v59 options:v61 error:&v107];
+    v62 = [v60 compileSpecificationAtURL:v88 toURL:v59 options:defaultOptions error:&v107];
     v56 = v107;
 
     v13 = v95;
@@ -714,9 +714,9 @@ LABEL_79:
           }
 
           v68 = *(*(&v103 + 1) + 8 * v67);
-          v69 = [v68 pathComponents];
-          v70 = [v69 lastObject];
-          v71 = [@"coremldata.bin" isEqualToString:v70];
+          pathComponents = [v68 pathComponents];
+          lastObject = [pathComponents lastObject];
+          v71 = [@"coremldata.bin" isEqualToString:lastObject];
 
           if (v71)
           {
@@ -736,9 +736,9 @@ LABEL_79:
         }
 
         v72 = MEMORY[0x277CBEBC0];
-        v73 = [v68 pathComponents];
-        v74 = [v68 pathComponents];
-        v75 = [v73 subarrayWithRange:{0, objc_msgSend(v74, "count") - 1}];
+        pathComponents2 = [v68 pathComponents];
+        pathComponents3 = [v68 pathComponents];
+        v75 = [pathComponents2 subarrayWithRange:{0, objc_msgSend(pathComponents3, "count") - 1}];
         v76 = [v72 fileURLWithPathComponents:v75];
 
         if (!v76)
@@ -820,7 +820,7 @@ LABEL_93:
 
     v19 = 0;
 LABEL_97:
-    v20 = v100;
+    defaultManager = v100;
 
 LABEL_98:
     v24 = v56;

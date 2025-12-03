@@ -1,120 +1,120 @@
 @interface NCNotificationContentContainerViewController
-+ (id)_defaultUIExtensionForNotificationRequest:(id)a3 visibleAttachment:(id *)a4;
-+ (id)_visibleAttachmentForNotificationRequest:(id)a3;
-+ (id)extensionForNotificationRequest:(id)a3;
++ (id)_defaultUIExtensionForNotificationRequest:(id)request visibleAttachment:(id *)attachment;
++ (id)_visibleAttachmentForNotificationRequest:(id)request;
++ (id)extensionForNotificationRequest:(id)request;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)defaultContentHidden;
-- (BOOL)didReceiveNotificationRequest:(id)a3;
+- (BOOL)didReceiveNotificationRequest:(id)request;
 - (BOOL)overridesDefaultTitle;
-- (BOOL)performAction:(id)a3 forNotification:(id)a4;
-- (BOOL)performAction:(id)a3 forNotification:(id)a4 withUserInfo:(id)a5;
+- (BOOL)performAction:(id)action forNotification:(id)notification;
+- (BOOL)performAction:(id)action forNotification:(id)notification withUserInfo:(id)info;
 - (BOOL)restoreInputViews;
 - (BOOL)userInteractionEnabled;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
-- (NCNotificationContentContainerViewController)initWithNotificationRequest:(id)a3;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
+- (NCNotificationContentContainerViewController)initWithNotificationRequest:(id)request;
 - (NCNotificationCustomContentDelegate)delegate;
 - (NSString)contentExtensionIdentifier;
 - (NSString)title;
-- (id)_responseForAction:(id)a3 notification:(id)a4 userInfo:(id)a5;
-- (id)_textInputActionInNotification:(id)a3;
+- (id)_responseForAction:(id)action notification:(id)notification userInfo:(id)info;
+- (id)_textInputActionInNotification:(id)notification;
 - (id)cancelTouches;
-- (void)_forwardActionToExtension:(id)a3 forNotification:(id)a4 withUserInfo:(id)a5;
-- (void)_loadExtensionContainerViewControllerForNotificationRequest:(id)a3;
-- (void)_removeInputAccessoryView:(id)a3;
-- (void)_setupExtensionContainerViewControllerController:(id)a3;
-- (void)_setupQuickReplyForNotificationAction:(id)a3;
-- (void)_setupQuickReplyForNotificationRequest:(id)a3;
-- (void)extensionViewControllerDidLoadExtension:(id)a3;
-- (void)extensionViewControllerDidUpdateActions:(id)a3;
-- (void)extensionViewControllerDidUpdateTitle:(id)a3;
-- (void)extensionViewControllerRequestsDefaultAction:(id)a3;
-- (void)extensionViewControllerRequestsDismiss:(id)a3;
-- (void)notificationTextInputView:(id)a3 didConfirmText:(id)a4 forAction:(id)a5;
+- (void)_forwardActionToExtension:(id)extension forNotification:(id)notification withUserInfo:(id)info;
+- (void)_loadExtensionContainerViewControllerForNotificationRequest:(id)request;
+- (void)_removeInputAccessoryView:(id)view;
+- (void)_setupExtensionContainerViewControllerController:(id)controller;
+- (void)_setupQuickReplyForNotificationAction:(id)action;
+- (void)_setupQuickReplyForNotificationRequest:(id)request;
+- (void)extensionViewControllerDidLoadExtension:(id)extension;
+- (void)extensionViewControllerDidUpdateActions:(id)actions;
+- (void)extensionViewControllerDidUpdateTitle:(id)title;
+- (void)extensionViewControllerRequestsDefaultAction:(id)action;
+- (void)extensionViewControllerRequestsDismiss:(id)dismiss;
+- (void)notificationTextInputView:(id)view didConfirmText:(id)text forAction:(id)action;
 - (void)playMedia;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)preserveInputViews;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation NCNotificationContentContainerViewController
 
 - (NSString)contentExtensionIdentifier
 {
-  v2 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  v3 = [v2 extensionIdentifier];
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  extensionIdentifier = [extensionContainerViewController extensionIdentifier];
 
-  return v3;
+  return extensionIdentifier;
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  v3 = [v2 canBecomeFirstResponder];
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  canBecomeFirstResponder = [extensionContainerViewController canBecomeFirstResponder];
 
-  return v3 ^ 1;
+  return canBecomeFirstResponder ^ 1;
 }
 
 - (BOOL)becomeFirstResponder
 {
   v9.receiver = self;
   v9.super_class = NCNotificationContentContainerViewController;
-  v3 = [(NCNotificationContentContainerViewController *)&v9 becomeFirstResponder];
-  if (v3)
+  becomeFirstResponder = [(NCNotificationContentContainerViewController *)&v9 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
-    v4 = [(NCNotificationContentContainerViewController *)self notificationRequest];
-    v5 = [v4 showsTextInputOnAppearance];
+    notificationRequest = [(NCNotificationContentContainerViewController *)self notificationRequest];
+    showsTextInputOnAppearance = [notificationRequest showsTextInputOnAppearance];
 
-    if (v5)
+    if (showsTextInputOnAppearance)
     {
-      v6 = [(NCNotificationContentContainerViewController *)self notificationRequest];
-      [(NCNotificationContentContainerViewController *)self _setupQuickReplyForNotificationRequest:v6];
+      notificationRequest2 = [(NCNotificationContentContainerViewController *)self notificationRequest];
+      [(NCNotificationContentContainerViewController *)self _setupQuickReplyForNotificationRequest:notificationRequest2];
 
-      v7 = [(NCNotificationContentContainerViewController *)self textInputView];
-      [v7 becomeFirstResponder];
+      textInputView = [(NCNotificationContentContainerViewController *)self textInputView];
+      [textInputView becomeFirstResponder];
     }
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)restoreInputViews
 {
-  v3 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  if ([v3 canBecomeFirstResponder] && (objc_opt_respondsToSelector() & 1) != 0)
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  if ([extensionContainerViewController canBecomeFirstResponder] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 restoreInputViews];
+    restoreInputViews = [extensionContainerViewController restoreInputViews];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75830] sharedInstance];
+    mEMORY[0x277D75830] = [MEMORY[0x277D75830] sharedInstance];
     v6 = [MEMORY[0x277CCAE60] valueWithPointer:self];
-    v4 = [v5 _restoreInputViewsWithId:v6 animated:1];
+    restoreInputViews = [mEMORY[0x277D75830] _restoreInputViewsWithId:v6 animated:1];
   }
 
-  return v4;
+  return restoreInputViews;
 }
 
-+ (id)extensionForNotificationRequest:(id)a3
++ (id)extensionForNotificationRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v5 = [MEMORY[0x277CE2188] sharedInstance];
-    v6 = [v4 sectionIdentifier];
-    v7 = [v4 categoryIdentifier];
-    v8 = [v5 extensionForNotificationSourceIdentifier:v6 categoryIdentifier:v7];
+    mEMORY[0x277CE2188] = [MEMORY[0x277CE2188] sharedInstance];
+    sectionIdentifier = [requestCopy sectionIdentifier];
+    categoryIdentifier = [requestCopy categoryIdentifier];
+    v8 = [mEMORY[0x277CE2188] extensionForNotificationSourceIdentifier:sectionIdentifier categoryIdentifier:categoryIdentifier];
 
     if (!v8)
     {
-      v8 = [a1 _defaultUIExtensionForNotificationRequest:v4 visibleAttachment:0];
+      v8 = [self _defaultUIExtensionForNotificationRequest:requestCopy visibleAttachment:0];
     }
   }
 
@@ -126,27 +126,27 @@
   return v8;
 }
 
-- (NCNotificationContentContainerViewController)initWithNotificationRequest:(id)a3
+- (NCNotificationContentContainerViewController)initWithNotificationRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = NCNotificationContentContainerViewController;
   v6 = [(NCNotificationContentContainerViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notificationRequest, a3);
-    [(NCNotificationContentContainerViewController *)v7 _loadExtensionContainerViewControllerForNotificationRequest:v5];
+    objc_storeStrong(&v6->_notificationRequest, request);
+    [(NCNotificationContentContainerViewController *)v7 _loadExtensionContainerViewControllerForNotificationRequest:requestCopy];
   }
 
   return v7;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  if (a3)
+  if (window)
   {
-    [(NCNotificationContentContainerViewController *)self becomeFirstResponder:a3];
+    [(NCNotificationContentContainerViewController *)self becomeFirstResponder:window];
   }
 }
 
@@ -155,13 +155,13 @@
   v4.receiver = self;
   v4.super_class = NCNotificationContentContainerViewController;
   [(NCNotificationContentContainerViewController *)&v4 viewDidLoad];
-  v3 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  [(NCNotificationContentContainerViewController *)self _setupExtensionContainerViewControllerController:v3];
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  [(NCNotificationContentContainerViewController *)self _setupExtensionContainerViewControllerController:extensionContainerViewController];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D77DB8];
   if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_DEFAULT))
@@ -173,12 +173,12 @@
 
   v6.receiver = self;
   v6.super_class = NCNotificationContentContainerViewController;
-  [(NCNotificationContentContainerViewController *)&v6 viewWillAppear:v3];
+  [(NCNotificationContentContainerViewController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D77DB8];
   if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_DEFAULT))
@@ -190,14 +190,14 @@
 
   v7.receiver = self;
   v7.super_class = NCNotificationContentContainerViewController;
-  [(NCNotificationContentContainerViewController *)&v7 viewWillDisappear:v3];
-  v6 = [(NCNotificationContentContainerViewController *)self firstResponder];
-  [v6 resignFirstResponder];
+  [(NCNotificationContentContainerViewController *)&v7 viewWillDisappear:disappearCopy];
+  firstResponder = [(NCNotificationContentContainerViewController *)self firstResponder];
+  [firstResponder resignFirstResponder];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D77DB8];
   if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_DEFAULT))
@@ -209,13 +209,13 @@
 
   v6.receiver = self;
   v6.super_class = NCNotificationContentContainerViewController;
-  [(NCNotificationContentContainerViewController *)&v6 viewDidAppear:v3];
+  [(NCNotificationContentContainerViewController *)&v6 viewDidAppear:appearCopy];
   [(NCNotificationContentContainerViewController *)self becomeFirstResponder];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v9 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D77DB8];
   if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_DEFAULT))
@@ -227,45 +227,45 @@
 
   v6.receiver = self;
   v6.super_class = NCNotificationContentContainerViewController;
-  [(NCNotificationContentContainerViewController *)&v6 viewDidDisappear:v3];
+  [(NCNotificationContentContainerViewController *)&v6 viewDidDisappear:disappearCopy];
 }
 
 - (NSString)title
 {
-  v2 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  v3 = [v2 title];
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  title = [extensionContainerViewController title];
 
-  return v3;
+  return title;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v12.receiver = self;
   v12.super_class = NCNotificationContentContainerViewController;
-  [(NCNotificationContentContainerViewController *)&v12 preferredContentSizeDidChangeForChildContentContainer:v4];
+  [(NCNotificationContentContainerViewController *)&v12 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
   [(NCNotificationContentContainerViewController *)self preferredContentSize];
   v6 = v5;
   v8 = v7;
-  [v4 preferredContentSize];
+  [containerCopy preferredContentSize];
   if (v6 != v10 || v8 != v9)
   {
-    [v4 preferredContentSize];
+    [containerCopy preferredContentSize];
     [(NCNotificationContentContainerViewController *)self setPreferredContentSize:?];
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  height = size.height;
+  width = size.width;
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
 
-  if (v7)
+  if (extensionContainerViewController)
   {
-    v8 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-    v9 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-    [v8 sizeForChildContentContainer:v9 withParentContainerSize:{width, height}];
+    extensionContainerViewController2 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+    extensionContainerViewController3 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+    [extensionContainerViewController2 sizeForChildContentContainer:extensionContainerViewController3 withParentContainerSize:{width, height}];
     width = v10;
     v12 = v11;
   }
@@ -282,55 +282,55 @@
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = NCNotificationContentContainerViewController;
-  v7 = a4;
-  [(NCNotificationContentContainerViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(NCNotificationContentContainerViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController:v9.receiver];
-  [v8 viewWillTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+  [v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
 }
 
-- (void)extensionViewControllerDidLoadExtension:(id)a3
+- (void)extensionViewControllerDidLoadExtension:(id)extension
 {
-  v4 = [(NCNotificationContentContainerViewController *)self delegate];
+  delegate = [(NCNotificationContentContainerViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 customContentDidLoadExtension:self];
+    [delegate customContentDidLoadExtension:self];
   }
 }
 
-- (void)extensionViewControllerDidUpdateTitle:(id)a3
+- (void)extensionViewControllerDidUpdateTitle:(id)title
 {
-  v4 = [(NCNotificationContentContainerViewController *)self delegate];
+  delegate = [(NCNotificationContentContainerViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 customContentDidUpdateTitle:self];
+    [delegate customContentDidUpdateTitle:self];
   }
 }
 
-- (void)extensionViewControllerDidUpdateActions:(id)a3
+- (void)extensionViewControllerDidUpdateActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__5;
   v23 = __Block_byref_object_dispose__5;
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(NCNotificationContentContainerViewController *)self notificationRequest];
-  v6 = [v4 actions];
+  notificationRequest = [(NCNotificationContentContainerViewController *)self notificationRequest];
+  actions = [actionsCopy actions];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __88__NCNotificationContentContainerViewController_extensionViewControllerDidUpdateActions___block_invoke;
   v16 = &unk_2783715E8;
-  v7 = v5;
+  v7 = notificationRequest;
   v17 = v7;
   v18 = &v19;
-  [v6 enumerateObjectsUsingBlock:&v13];
+  [actions enumerateObjectsUsingBlock:&v13];
   updatedActions = self->_updatedActions;
   if (updatedActions)
   {
@@ -345,10 +345,10 @@
     self->_updatedActions = v10;
   }
 
-  v12 = [(NCNotificationContentContainerViewController *)self delegate];
+  delegate = [(NCNotificationContentContainerViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v12 customContent:self didUpdateUserNotificationActions:v20[5]];
+    [delegate customContent:self didUpdateUserNotificationActions:v20[5]];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -366,58 +366,58 @@ void __88__NCNotificationContentContainerViewController_extensionViewControllerD
   [*(*(*(a1 + 40) + 8) + 40) addObject:v8];
 }
 
-- (void)extensionViewControllerRequestsDefaultAction:(id)a3
+- (void)extensionViewControllerRequestsDefaultAction:(id)action
 {
-  v4 = [(NCNotificationContentContainerViewController *)self delegate];
+  delegate = [(NCNotificationContentContainerViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 customContentRequestsDefaultAction:self];
+    [delegate customContentRequestsDefaultAction:self];
   }
 }
 
-- (void)extensionViewControllerRequestsDismiss:(id)a3
+- (void)extensionViewControllerRequestsDismiss:(id)dismiss
 {
-  v4 = [(NCNotificationContentContainerViewController *)self delegate];
+  delegate = [(NCNotificationContentContainerViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 customContentRequestsDismiss:self];
+    [delegate customContentRequestsDismiss:self];
   }
 }
 
-- (BOOL)didReceiveNotificationRequest:(id)a3
+- (BOOL)didReceiveNotificationRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = *MEMORY[0x277D77DB8];
   if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 notificationIdentifier];
-    v8 = [v7 un_logDigest];
-    v9 = [v4 threadIdentifier];
-    v10 = [v9 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
+    threadIdentifier = [requestCopy threadIdentifier];
+    un_logDigest2 = [threadIdentifier un_logDigest];
     v14 = 138543618;
-    v15 = v8;
+    v15 = un_logDigest;
     v16 = 2114;
-    v17 = v10;
+    v17 = un_logDigest2;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "Content container received additional notification %{public}@ for thread %{public}@", &v14, 0x16u);
   }
 
-  v11 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  v12 = [v4 userNotification];
-  [v11 didReceiveNotification:v12];
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  userNotification = [requestCopy userNotification];
+  [extensionContainerViewController didReceiveNotification:userNotification];
 
-  return v11 != 0;
+  return extensionContainerViewController != 0;
 }
 
-- (BOOL)performAction:(id)a3 forNotification:(id)a4 withUserInfo:(id)a5
+- (BOOL)performAction:(id)action forNotification:(id)notification withUserInfo:(id)info
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 identifier];
-  v12 = [v11 isEqual:*MEMORY[0x277CE20E8]];
+  actionCopy = action;
+  notificationCopy = notification;
+  infoCopy = info;
+  identifier = [actionCopy identifier];
+  v12 = [identifier isEqual:*MEMORY[0x277CE20E8]];
 
   if ((v12 & 1) != 0 || (-[NCNotificationContentContainerViewController extensionContainerViewController](self, "extensionContainerViewController"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 extensionWantsToReceiveActionResponses], v13, !v14))
   {
@@ -430,33 +430,33 @@ void __88__NCNotificationContentContainerViewController_extensionViewControllerD
     if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v8 identifier];
-      v18 = [v9 notificationIdentifier];
-      v19 = [v18 un_logDigest];
+      identifier2 = [actionCopy identifier];
+      notificationIdentifier = [notificationCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543618;
-      v28 = v17;
+      v28 = identifier2;
       v29 = 2114;
-      v30 = v19;
+      v30 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v16, OS_LOG_TYPE_DEFAULT, "Sending action %{public}@ for notification %{public}@ to extension container", buf, 0x16u);
     }
 
-    if ([v8 requiresAuthentication])
+    if ([actionCopy requiresAuthentication])
     {
-      v20 = [(NCNotificationContentContainerViewController *)self delegate];
+      delegate = [(NCNotificationContentContainerViewController *)self delegate];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __91__NCNotificationContentContainerViewController_performAction_forNotification_withUserInfo___block_invoke;
       v23[3] = &unk_278371610;
       v23[4] = self;
-      v24 = v8;
-      v25 = v9;
-      v26 = v10;
-      [v20 customContent:self requestPermissionToExecuteAction:v24 forNotification:v25 withUserInfo:v26 completionHandler:v23];
+      v24 = actionCopy;
+      v25 = notificationCopy;
+      v26 = infoCopy;
+      [delegate customContent:self requestPermissionToExecuteAction:v24 forNotification:v25 withUserInfo:v26 completionHandler:v23];
     }
 
     else
     {
-      [(NCNotificationContentContainerViewController *)self _forwardActionToExtension:v8 forNotification:v9 withUserInfo:v10];
+      [(NCNotificationContentContainerViewController *)self _forwardActionToExtension:actionCopy forNotification:notificationCopy withUserInfo:infoCopy];
     }
 
     v21 = 1;
@@ -511,36 +511,36 @@ void __91__NCNotificationContentContainerViewController_performAction_forNotific
   }
 }
 
-- (BOOL)performAction:(id)a3 forNotification:(id)a4
+- (BOOL)performAction:(id)action forNotification:(id)notification
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 behavior] == 1 && (-[NCNotificationContentContainerViewController extensionContainerViewController](self, "extensionContainerViewController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "canBecomeFirstResponder"), v8, (v9 & 1) == 0))
+  actionCopy = action;
+  notificationCopy = notification;
+  if ([actionCopy behavior] == 1 && (-[NCNotificationContentContainerViewController extensionContainerViewController](self, "extensionContainerViewController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "canBecomeFirstResponder"), v8, (v9 & 1) == 0))
   {
     v11 = *MEMORY[0x277D77DB8];
     if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(NCNotificationContentContainerViewController *)self notificationRequest];
-      v14 = [v13 notificationIdentifier];
-      v15 = [v14 un_logDigest];
+      notificationRequest = [(NCNotificationContentContainerViewController *)self notificationRequest];
+      notificationIdentifier = [notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v18 = 138543362;
-      v19 = v15;
+      v19 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v12, OS_LOG_TYPE_DEFAULT, "Setup quick reply for request %{public}@", &v18, 0xCu);
     }
 
-    [(NCNotificationContentContainerViewController *)self _setupQuickReplyForNotificationAction:v6];
+    [(NCNotificationContentContainerViewController *)self _setupQuickReplyForNotificationAction:actionCopy];
     [(NCNotificationContentContainerViewController *)self becomeFirstResponder];
-    v16 = [(NCNotificationContentContainerViewController *)self textInputView];
-    [v16 becomeFirstResponder];
+    textInputView = [(NCNotificationContentContainerViewController *)self textInputView];
+    [textInputView becomeFirstResponder];
 
     v10 = 1;
   }
 
   else
   {
-    v10 = [(NCNotificationContentContainerViewController *)self performAction:v6 forNotification:v7 withUserInfo:MEMORY[0x277CBEC10]];
+    v10 = [(NCNotificationContentContainerViewController *)self performAction:actionCopy forNotification:notificationCopy withUserInfo:MEMORY[0x277CBEC10]];
   }
 
   return v10;
@@ -548,109 +548,109 @@ void __91__NCNotificationContentContainerViewController_performAction_forNotific
 
 - (BOOL)defaultContentHidden
 {
-  v3 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  if (v3)
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  if (extensionContainerViewController)
   {
-    v4 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-    v5 = [v4 isDefaultContentHidden];
+    extensionContainerViewController2 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+    isDefaultContentHidden = [extensionContainerViewController2 isDefaultContentHidden];
   }
 
   else
   {
-    v5 = 0;
+    isDefaultContentHidden = 0;
   }
 
-  return v5;
+  return isDefaultContentHidden;
 }
 
 - (BOOL)overridesDefaultTitle
 {
-  v3 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  if (v3)
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  if (extensionContainerViewController)
   {
-    v4 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-    v5 = [v4 isDefaultTitleOverridden];
+    extensionContainerViewController2 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+    isDefaultTitleOverridden = [extensionContainerViewController2 isDefaultTitleOverridden];
   }
 
   else
   {
-    v5 = 0;
+    isDefaultTitleOverridden = 0;
   }
 
-  return v5;
+  return isDefaultTitleOverridden;
 }
 
 - (void)preserveInputViews
 {
-  v5 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  if ([v5 canBecomeFirstResponder] && (objc_opt_respondsToSelector() & 1) != 0)
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  if ([extensionContainerViewController canBecomeFirstResponder] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 preserveInputViews];
+    [extensionContainerViewController preserveInputViews];
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75830] sharedInstance];
+    mEMORY[0x277D75830] = [MEMORY[0x277D75830] sharedInstance];
     v4 = [MEMORY[0x277CCAE60] valueWithPointer:self];
-    [v3 _preserveInputViewsWithId:v4 animated:1];
+    [mEMORY[0x277D75830] _preserveInputViewsWithId:v4 animated:1];
   }
 }
 
 - (BOOL)userInteractionEnabled
 {
-  v2 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  v3 = [v2 isUserInteractionEnabled];
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  isUserInteractionEnabled = [extensionContainerViewController isUserInteractionEnabled];
 
-  return v3;
+  return isUserInteractionEnabled;
 }
 
 - (void)playMedia
 {
-  v2 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  [v2 playMedia];
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  [extensionContainerViewController playMedia];
 }
 
 - (id)cancelTouches
 {
-  v2 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
-  v3 = [v2 cancelTouchesForCurrentEventInExtension];
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  cancelTouchesForCurrentEventInExtension = [extensionContainerViewController cancelTouchesForCurrentEventInExtension];
 
-  return v3;
+  return cancelTouchesForCurrentEventInExtension;
 }
 
-- (void)notificationTextInputView:(id)a3 didConfirmText:(id)a4 forAction:(id)a5
+- (void)notificationTextInputView:(id)view didConfirmText:(id)text forAction:(id)action
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  actionCopy = action;
   v14 = *MEMORY[0x277CF35E0];
-  v15[0] = a4;
+  v15[0] = text;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a4;
+  textCopy = text;
   v10 = [v8 dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-  v11 = [(NCNotificationContentContainerViewController *)self notificationRequest];
-  LOBYTE(v9) = [(NCNotificationContentContainerViewController *)self performAction:v7 forNotification:v11 withUserInfo:v10];
+  notificationRequest = [(NCNotificationContentContainerViewController *)self notificationRequest];
+  LOBYTE(textCopy) = [(NCNotificationContentContainerViewController *)self performAction:actionCopy forNotification:notificationRequest withUserInfo:v10];
 
-  if ((v9 & 1) == 0)
+  if ((textCopy & 1) == 0)
   {
-    v12 = [(NCNotificationContentContainerViewController *)self delegate];
-    v13 = [(NCNotificationContentContainerViewController *)self notificationRequest];
-    [v12 customContent:self forwardAction:v7 forNotification:v13 withUserInfo:v10];
+    delegate = [(NCNotificationContentContainerViewController *)self delegate];
+    notificationRequest2 = [(NCNotificationContentContainerViewController *)self notificationRequest];
+    [delegate customContent:self forwardAction:actionCopy forNotification:notificationRequest2 withUserInfo:v10];
   }
 }
 
-- (void)_setupExtensionContainerViewControllerController:(id)a3
+- (void)_setupExtensionContainerViewControllerController:(id)controller
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NCNotificationContentContainerViewController *)self isViewLoaded];
-  if (v4)
+  controllerCopy = controller;
+  isViewLoaded = [(NCNotificationContentContainerViewController *)self isViewLoaded];
+  if (controllerCopy)
   {
-    if (v5)
+    if (isViewLoaded)
     {
-      v6 = [v4 parentViewController];
+      parentViewController = [controllerCopy parentViewController];
 
-      if (!v6)
+      if (!parentViewController)
       {
         v7 = *MEMORY[0x277D77DB8];
         if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_DEFAULT))
@@ -658,49 +658,49 @@ void __91__NCNotificationContentContainerViewController_performAction_forNotific
           v8 = v7;
           v9 = objc_opt_class();
           v10 = NSStringFromClass(v9);
-          v11 = [(NCNotificationContentContainerViewController *)self notificationRequest];
-          v12 = [v11 notificationIdentifier];
-          v13 = [v12 un_logDigest];
+          notificationRequest = [(NCNotificationContentContainerViewController *)self notificationRequest];
+          notificationIdentifier = [notificationRequest notificationIdentifier];
+          un_logDigest = [notificationIdentifier un_logDigest];
           *buf = 138543618;
           v22 = v10;
           v23 = 2114;
-          v24 = v13;
+          v24 = un_logDigest;
           _os_log_impl(&dword_21E77E000, v8, OS_LOG_TYPE_DEFAULT, "Setting up content container view controller %{public}@ for notification %{public}@", buf, 0x16u);
         }
 
-        [(NCNotificationContentContainerViewController *)self addChildViewController:v4];
-        v14 = [v4 view];
-        v15 = [(NCNotificationContentContainerViewController *)self view];
-        [v15 bounds];
-        [v14 setFrame:?];
+        [(NCNotificationContentContainerViewController *)self addChildViewController:controllerCopy];
+        view = [controllerCopy view];
+        view2 = [(NCNotificationContentContainerViewController *)self view];
+        [view2 bounds];
+        [view setFrame:?];
 
-        [v14 setAutoresizingMask:18];
-        v16 = [(NCNotificationContentContainerViewController *)self view];
-        [v16 addSubview:v14];
+        [view setAutoresizingMask:18];
+        view3 = [(NCNotificationContentContainerViewController *)self view];
+        [view3 addSubview:view];
 
-        [v4 didMoveToParentViewController:self];
-        [v14 setAlpha:0.0];
+        [controllerCopy didMoveToParentViewController:self];
+        [view setAlpha:0.0];
         v17 = MEMORY[0x277D75D18];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __97__NCNotificationContentContainerViewController__setupExtensionContainerViewControllerController___block_invoke;
         v19[3] = &unk_27836F6A8;
-        v20 = v14;
-        v18 = v14;
+        v20 = view;
+        v18 = view;
         [v17 animateWithDuration:v19 animations:0.25];
       }
     }
   }
 }
 
-+ (id)_visibleAttachmentForNotificationRequest:(id)a3
++ (id)_visibleAttachmentForNotificationRequest:(id)request
 {
-  v3 = [a3 userNotification];
-  v4 = [v3 request];
-  v5 = [v4 content];
-  v6 = [v5 attachments];
+  userNotification = [request userNotification];
+  request = [userNotification request];
+  content = [request content];
+  attachments = [content attachments];
 
-  v7 = [v6 bs_firstObjectPassingTest:&__block_literal_global_18];
+  v7 = [attachments bs_firstObjectPassingTest:&__block_literal_global_18];
 
   return v7;
 }
@@ -713,18 +713,18 @@ BOOL __89__NCNotificationContentContainerViewController__visibleAttachmentForNot
   return v3;
 }
 
-+ (id)_defaultUIExtensionForNotificationRequest:(id)a3 visibleAttachment:(id *)a4
++ (id)_defaultUIExtensionForNotificationRequest:(id)request visibleAttachment:(id *)attachment
 {
-  if (a3)
+  if (request)
   {
-    v5 = [a1 _visibleAttachmentForNotificationRequest:?];
+    v5 = [self _visibleAttachmentForNotificationRequest:?];
     if (v5)
     {
       v6 = [MEMORY[0x277CCA9C8] extensionWithIdentifier:@"com.apple.UserNotificationsUIKit.DefaultUIExtension" error:0];
-      if (a4)
+      if (attachment)
       {
         v7 = v5;
-        *a4 = v5;
+        *attachment = v5;
       }
     }
 
@@ -742,33 +742,33 @@ BOOL __89__NCNotificationContentContainerViewController__visibleAttachmentForNot
   return v6;
 }
 
-- (void)_loadExtensionContainerViewControllerForNotificationRequest:(id)a3
+- (void)_loadExtensionContainerViewControllerForNotificationRequest:(id)request
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   self->_customContentLocation = 0;
-  v5 = [MEMORY[0x277CE2188] sharedInstance];
-  v6 = [v4 sectionIdentifier];
-  v7 = [v4 categoryIdentifier];
-  v8 = [v5 extensionForNotificationSourceIdentifier:v6 categoryIdentifier:v7];
+  mEMORY[0x277CE2188] = [MEMORY[0x277CE2188] sharedInstance];
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  categoryIdentifier = [requestCopy categoryIdentifier];
+  v8 = [mEMORY[0x277CE2188] extensionForNotificationSourceIdentifier:sectionIdentifier categoryIdentifier:categoryIdentifier];
 
   v9 = v8;
   v10 = v9;
   if (!v9)
   {
     v23 = 0;
-    v10 = [objc_opt_class() _defaultUIExtensionForNotificationRequest:v4 visibleAttachment:&v23];
+    v10 = [objc_opt_class() _defaultUIExtensionForNotificationRequest:requestCopy visibleAttachment:&v23];
     if (!v10)
     {
       [(NCNotificationContentContainerViewController *)self setExtensionContainerViewController:0];
       v16 = 0;
 LABEL_11:
-      v21 = [(NCNotificationContentContainerViewController *)self notificationRequest];
-      v22 = [v21 showsTextInputOnAppearance];
+      notificationRequest = [(NCNotificationContentContainerViewController *)self notificationRequest];
+      showsTextInputOnAppearance = [notificationRequest showsTextInputOnAppearance];
 
-      if (v22)
+      if (showsTextInputOnAppearance)
       {
-        [(NCNotificationContentContainerViewController *)self _setupQuickReplyForNotificationRequest:v4];
+        [(NCNotificationContentContainerViewController *)self _setupQuickReplyForNotificationRequest:requestCopy];
       }
 
       goto LABEL_13;
@@ -780,13 +780,13 @@ LABEL_11:
     }
   }
 
-  v11 = [(NCNotificationContentContainerViewController *)self notificationRequest];
-  v12 = [v11 defaultEnvironmentActions];
+  notificationRequest2 = [(NCNotificationContentContainerViewController *)self notificationRequest];
+  defaultEnvironmentActions = [notificationRequest2 defaultEnvironmentActions];
 
-  v13 = [v12 bs_map:&__block_literal_global_44];
+  v13 = [defaultEnvironmentActions bs_map:&__block_literal_global_44];
   v14 = objc_alloc(MEMORY[0x277CE2180]);
-  v15 = [v4 userNotification];
-  v16 = [v14 initWithExtension:v10 notification:v15 actions:v13];
+  userNotification = [requestCopy userNotification];
+  v16 = [v14 initWithExtension:v10 notification:userNotification actions:v13];
 
   [v16 setDelegate:self];
   [(NCNotificationContentContainerViewController *)self setExtensionContainerViewController:v16];
@@ -796,10 +796,10 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v4 notificationIdentifier];
-      v20 = [v19 un_logDigest];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543362;
-      v25 = v20;
+      v25 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v18, OS_LOG_TYPE_DEFAULT, "Created extension container view controller for notification %{public}@", buf, 0xCu);
     }
   }
@@ -812,9 +812,9 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)_setupQuickReplyForNotificationRequest:(id)a3
+- (void)_setupQuickReplyForNotificationRequest:(id)request
 {
-  v4 = [(NCNotificationContentContainerViewController *)self _textInputActionInNotification:a3];
+  v4 = [(NCNotificationContentContainerViewController *)self _textInputActionInNotification:request];
   if (v4)
   {
     v4 = [(NCNotificationContentContainerViewController *)self _setupQuickReplyForNotificationAction:v4];
@@ -823,54 +823,54 @@ LABEL_13:
   MEMORY[0x2821F96F8](v4);
 }
 
-- (void)_setupQuickReplyForNotificationAction:(id)a3
+- (void)_setupQuickReplyForNotificationAction:(id)action
 {
-  v4 = a3;
-  v5 = [(NCNotificationContentContainerViewController *)self textInputView];
+  actionCopy = action;
+  textInputView = [(NCNotificationContentContainerViewController *)self textInputView];
 
-  if (v5)
+  if (textInputView)
   {
-    v15 = [(NCNotificationContentContainerViewController *)self textInputView];
-    [(NCNotificationTextInputView *)v15 setAction:v4];
+    textInputView2 = [(NCNotificationContentContainerViewController *)self textInputView];
+    [(NCNotificationTextInputView *)textInputView2 setAction:actionCopy];
   }
 
   else
   {
     v6 = [NCNotificationTextInputView alloc];
-    v15 = [(NCNotificationTextInputView *)v6 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-    [(NCNotificationTextInputView *)v15 setDelegate:self];
-    [(NCNotificationTextInputView *)v15 setAction:v4];
+    textInputView2 = [(NCNotificationTextInputView *)v6 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    [(NCNotificationTextInputView *)textInputView2 setDelegate:self];
+    [(NCNotificationTextInputView *)textInputView2 setAction:actionCopy];
 
-    [(NCNotificationTextInputView *)v15 sizeToFit];
-    v4 = [(NCNotificationContentContainerViewController *)self notificationRequest];
-    v7 = [v4 content];
-    v8 = [v7 communicationContext];
-    if (v8)
+    [(NCNotificationTextInputView *)textInputView2 sizeToFit];
+    actionCopy = [(NCNotificationContentContainerViewController *)self notificationRequest];
+    content = [actionCopy content];
+    communicationContext = [content communicationContext];
+    if (communicationContext)
     {
       v9 = objc_alloc_init(MEMORY[0x277D75600]);
-      v10 = [v7 message];
-      v11 = [v4 timestamp];
-      v12 = [v8 sender];
-      v13 = [v12 handle];
-      [v9 addTextEntry:v10 timestamp:v11 senderIdentifier:v13];
+      message = [content message];
+      timestamp = [actionCopy timestamp];
+      sender = [communicationContext sender];
+      handle = [sender handle];
+      [v9 addTextEntry:message timestamp:timestamp senderIdentifier:handle];
 
-      [(NCNotificationTextInputView *)v15 setInputContextHistory:v9];
+      [(NCNotificationTextInputView *)textInputView2 setInputContextHistory:v9];
     }
 
-    [(NCNotificationContentContainerViewController *)self setTextInputView:v15];
+    [(NCNotificationContentContainerViewController *)self setTextInputView:textInputView2];
     [(NCNotificationContentContainerViewController *)self reloadInputViews];
-    if (([v4 showsTextInputOnAppearance] & 1) == 0)
+    if (([actionCopy showsTextInputOnAppearance] & 1) == 0)
     {
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v14 addObserver:self selector:sel__removeInputAccessoryView_ name:*MEMORY[0x277D76BA0] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__removeInputAccessoryView_ name:*MEMORY[0x277D76BA0] object:0];
     }
   }
 }
 
-- (id)_textInputActionInNotification:(id)a3
+- (id)_textInputActionInNotification:(id)notification
 {
   v14 = *MEMORY[0x277D85DE8];
-  [a3 defaultEnvironmentActions];
+  [notification defaultEnvironmentActions];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -911,15 +911,15 @@ LABEL_11:
   return v4;
 }
 
-- (void)_removeInputAccessoryView:(id)a3
+- (void)_removeInputAccessoryView:(id)view
 {
-  v4 = [(NCNotificationContentContainerViewController *)self notificationRequest];
-  v5 = [v4 showsTextInputOnAppearance];
+  notificationRequest = [(NCNotificationContentContainerViewController *)self notificationRequest];
+  showsTextInputOnAppearance = [notificationRequest showsTextInputOnAppearance];
 
-  if ((v5 & 1) == 0)
+  if ((showsTextInputOnAppearance & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
 
     [(NCNotificationContentContainerViewController *)self setTextInputView:0];
 
@@ -927,24 +927,24 @@ LABEL_11:
   }
 }
 
-- (void)_forwardActionToExtension:(id)a3 forNotification:(id)a4 withUserInfo:(id)a5
+- (void)_forwardActionToExtension:(id)extension forNotification:(id)notification withUserInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NCNotificationContentContainerViewController *)self _responseForAction:v8 notification:a4 userInfo:v9];
-  v11 = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
+  extensionCopy = extension;
+  infoCopy = info;
+  v10 = [(NCNotificationContentContainerViewController *)self _responseForAction:extensionCopy notification:notification userInfo:infoCopy];
+  extensionContainerViewController = [(NCNotificationContentContainerViewController *)self extensionContainerViewController];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __103__NCNotificationContentContainerViewController__forwardActionToExtension_forNotification_withUserInfo___block_invoke;
   v15[3] = &unk_2783716A0;
   v16 = v10;
-  v17 = self;
-  v18 = v8;
-  v19 = v9;
-  v12 = v9;
-  v13 = v8;
+  selfCopy = self;
+  v18 = extensionCopy;
+  v19 = infoCopy;
+  v12 = infoCopy;
+  v13 = extensionCopy;
   v14 = v10;
-  [v11 didReceiveNotificationResponse:v14 completionHandler:v15];
+  [extensionContainerViewController didReceiveNotificationResponse:v14 completionHandler:v15];
 }
 
 void __103__NCNotificationContentContainerViewController__forwardActionToExtension_forNotification_withUserInfo___block_invoke(id *a1, uint64_t a2)
@@ -1018,16 +1018,16 @@ void __103__NCNotificationContentContainerViewController__forwardActionToExtensi
   }
 }
 
-- (id)_responseForAction:(id)a3 notification:(id)a4 userInfo:(id)a5
+- (id)_responseForAction:(id)action notification:(id)notification userInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 behavior])
+  actionCopy = action;
+  notificationCopy = notification;
+  infoCopy = info;
+  if ([actionCopy behavior])
   {
-    if ([v7 behavior] == 1)
+    if ([actionCopy behavior] == 1)
     {
-      v10 = [v9 objectForKey:*MEMORY[0x277CF35E0]];
+      v10 = [infoCopy objectForKey:*MEMORY[0x277CF35E0]];
       v11 = v10;
       v12 = &stru_282FE84F8;
       if (v10)
@@ -1038,9 +1038,9 @@ void __103__NCNotificationContentContainerViewController__forwardActionToExtensi
       v13 = v12;
 
       v14 = MEMORY[0x277CE2018];
-      v15 = [v8 userNotification];
-      v16 = [v7 identifier];
-      v17 = [v14 responseWithNotification:v15 actionIdentifier:v16 userText:v13];
+      userNotification = [notificationCopy userNotification];
+      identifier = [actionCopy identifier];
+      v17 = [v14 responseWithNotification:userNotification actionIdentifier:identifier userText:v13];
     }
 
     else
@@ -1048,7 +1048,7 @@ void __103__NCNotificationContentContainerViewController__forwardActionToExtensi
       v21 = *MEMORY[0x277D77DB8];
       if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_ERROR))
       {
-        [NCNotificationContentContainerViewController _responseForAction:v21 notification:v7 userInfo:v8];
+        [NCNotificationContentContainerViewController _responseForAction:v21 notification:actionCopy userInfo:notificationCopy];
       }
 
       v17 = 0;
@@ -1058,9 +1058,9 @@ void __103__NCNotificationContentContainerViewController__forwardActionToExtensi
   else
   {
     v18 = MEMORY[0x277CE1FC8];
-    v19 = [v8 userNotification];
-    v20 = [v7 identifier];
-    v17 = [v18 responseWithNotification:v19 actionIdentifier:v20];
+    userNotification2 = [notificationCopy userNotification];
+    identifier2 = [actionCopy identifier];
+    v17 = [v18 responseWithNotification:userNotification2 actionIdentifier:identifier2];
   }
 
   return v17;

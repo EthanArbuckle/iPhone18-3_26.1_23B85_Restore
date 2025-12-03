@@ -1,28 +1,28 @@
 @interface TUIVisibilityTracker
-- (TUIVisibilityTracker)initWithThreshold:(double)a3 block:(id)a4 queue:(id)a5;
-- (void)addVisibilityObserver:(id)a3;
-- (void)q_notifyObserversWithRootNode:(id)a3 time:(double)a4;
-- (void)removeVisibilityObserver:(id)a3;
+- (TUIVisibilityTracker)initWithThreshold:(double)threshold block:(id)block queue:(id)queue;
+- (void)addVisibilityObserver:(id)observer;
+- (void)q_notifyObserversWithRootNode:(id)node time:(double)time;
+- (void)removeVisibilityObserver:(id)observer;
 @end
 
 @implementation TUIVisibilityTracker
 
-- (TUIVisibilityTracker)initWithThreshold:(double)a3 block:(id)a4 queue:(id)a5
+- (TUIVisibilityTracker)initWithThreshold:(double)threshold block:(id)block queue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
+  blockCopy = block;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = TUIVisibilityTracker;
   v10 = [(TUIVisibilityTracker *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_threshold = a3;
-    v12 = [v8 copy];
+    v10->_threshold = threshold;
+    v12 = [blockCopy copy];
     block = v11->_block;
     v11->_block = v12;
 
-    objc_storeStrong(&v11->_queue, a5);
+    objc_storeStrong(&v11->_queue, queue);
     v14 = [NSHashTable hashTableWithOptions:517];
     q_observers = v11->_q_observers;
     v11->_q_observers = v14;
@@ -31,10 +31,10 @@
   return v11;
 }
 
-- (void)addVisibilityObserver:(id)a3
+- (void)addVisibilityObserver:(id)observer
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
+  observerCopy = observer;
+  objc_initWeak(&location, observerCopy);
   v5 = sub_19F7C();
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
@@ -49,10 +49,10 @@
   objc_destroyWeak(&location);
 }
 
-- (void)removeVisibilityObserver:(id)a3
+- (void)removeVisibilityObserver:(id)observer
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
+  observerCopy = observer;
+  objc_initWeak(&location, observerCopy);
   v5 = sub_19F7C();
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
@@ -67,14 +67,14 @@
   objc_destroyWeak(&location);
 }
 
-- (void)q_notifyObserversWithRootNode:(id)a3 time:(double)a4
+- (void)q_notifyObserversWithRootNode:(id)node time:(double)time
 {
-  v6 = a3;
-  v7 = [[TUIVisibilityChangeRecord alloc] initWithLastTimestamp:v6 timestamp:self->_q_lastTimestamp rootNode:a4];
-  self->_q_lastTimestamp = a4;
-  v8 = [(TUIVisibilityChangeRecord *)v7 rootNode];
+  nodeCopy = node;
+  v7 = [[TUIVisibilityChangeRecord alloc] initWithLastTimestamp:nodeCopy timestamp:self->_q_lastTimestamp rootNode:time];
+  self->_q_lastTimestamp = time;
+  rootNode = [(TUIVisibilityChangeRecord *)v7 rootNode];
   q_lastVisible = self->_q_lastVisible;
-  self->_q_lastVisible = v8;
+  self->_q_lastVisible = rootNode;
 
   v17 = 0u;
   v18 = 0u;

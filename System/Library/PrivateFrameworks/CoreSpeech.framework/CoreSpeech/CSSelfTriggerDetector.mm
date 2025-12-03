@@ -1,41 +1,41 @@
 @interface CSSelfTriggerDetector
-+ (id)_digitalZeroChunkFromFirstAudioChunk:(id)a3;
++ (id)_digitalZeroChunkFromFirstAudioChunk:(id)chunk;
 + (id)selfTriggerAudioLogDirectory;
 + (id)selfTriggerAudioLoggingFilePath;
 + (id)timeStampString;
 - (BOOL)_isTelephonyTapAvailable;
-- (CSSelfTriggerDetector)initWithTargetQueue:(id)a3 audioProviderSelecting:(id)a4 audioSourceType:(unint64_t)a5;
+- (CSSelfTriggerDetector)initWithTargetQueue:(id)queue audioProviderSelecting:(id)selecting audioSourceType:(unint64_t)type;
 - (CSSpeechManager)speechManager;
 - (unint64_t)_getPlaybackRouteType;
 - (unint64_t)currentState;
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3;
-- (void)CSPhoneCallStateMonitor:(id)a3 didRecievePhoneCallStateChange:(unint64_t)a4;
-- (void)_addPowerLogsIfSupported:(unint64_t)a3;
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart;
+- (void)CSPhoneCallStateMonitor:(id)monitor didRecievePhoneCallStateChange:(unint64_t)change;
+- (void)_addPowerLogsIfSupported:(unint64_t)supported;
 - (void)_hardStopAndRestartAudioQueueIfNeeded;
-- (void)_keywordAnalyzerNDAPI:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5;
+- (void)_keywordAnalyzerNDAPI:(id)i hasResultAvailable:(id)available forChannel:(unint64_t)channel;
 - (void)_loadCurrentAssetToAnalyzer;
-- (void)_processAudioChunk:(id)a3;
+- (void)_processAudioChunk:(id)chunk;
 - (void)_reset;
-- (void)_setAsset:(id)a3;
+- (void)_setAsset:(id)asset;
 - (void)_startListenPolling;
-- (void)_startListenPollingWithInterval:(double)a3 completion:(id)a4;
-- (void)_startListenWithCompletion:(id)a3;
+- (void)_startListenPollingWithInterval:(double)interval completion:(id)completion;
+- (void)_startListenWithCompletion:(id)completion;
 - (void)_stopAudioFileWriter;
-- (void)_stopListeningWithCompletion:(id)a3;
-- (void)_transitCurrentStateTo:(unint64_t)a3;
+- (void)_stopListeningWithCompletion:(id)completion;
+- (void)_transitCurrentStateTo:(unint64_t)to;
 - (void)_unloadCurrentAssetToAnalyzer;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
-- (void)registerObserver:(id)a3;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
+- (void)registerObserver:(id)observer;
 - (void)reset;
-- (void)setAsset:(id)a3;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5;
+- (void)setAsset:(id)asset;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason;
 - (void)start;
 - (void)startAnalyze;
-- (void)stopAnalyzeWithCompletion:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)stopAnalyzeWithCompletion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CSSelfTriggerDetector
@@ -58,18 +58,18 @@
   }
 }
 
-- (void)_addPowerLogsIfSupported:(unint64_t)a3
+- (void)_addPowerLogsIfSupported:(unint64_t)supported
 {
-  if ([(CSSelfTriggerDetector *)self _shouldAddPowerLogs]&& self->_state != a3)
+  if ([(CSSelfTriggerDetector *)self _shouldAddPowerLogs]&& self->_state != supported)
   {
-    if (a3)
+    if (supported)
     {
-      if (a3 != 1)
+      if (supported != 1)
       {
         return;
       }
 
-      v5 = [(CSSelfTriggerDetector *)self _getPlaybackRouteType];
+      _getPlaybackRouteType = [(CSSelfTriggerDetector *)self _getPlaybackRouteType];
       v6 = +[CSPhoneCallStateMonitorFactory phoneCallStateMonitor];
       if ([v6 phoneCallState] == 3)
       {
@@ -86,7 +86,7 @@
       audioSourceType = self->_audioSourceType;
       v8 = +[NSDate date];
       [v8 timeIntervalSince1970];
-      [v11 powerLogSelfTriggerSuppressionStartWithSpeakerType:v5 withAudioSource:audioSourceType atTime:v7 isPhoneCall:?];
+      [v11 powerLogSelfTriggerSuppressionStartWithSpeakerType:_getPlaybackRouteType withAudioSource:audioSourceType atTime:v7 isPhoneCall:?];
     }
 
     else
@@ -99,7 +99,7 @@
   }
 }
 
-- (void)_transitCurrentStateTo:(unint64_t)a3
+- (void)_transitCurrentStateTo:(unint64_t)to
 {
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -111,14 +111,14 @@
     v10 = 2048;
     v11 = state;
     v12 = 2048;
-    v13 = a3;
+    toCopy = to;
     v14 = 2048;
     v15 = audioSourceType;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s From state : %lu to state : %lu , audioSourceType : %lu", &v8, 0x2Au);
   }
 
-  [(CSSelfTriggerDetector *)self _addPowerLogsIfSupported:a3];
-  self->_state = a3;
+  [(CSSelfTriggerDetector *)self _addPowerLogsIfSupported:to];
+  self->_state = to;
 }
 
 - (void)_hardStopAndRestartAudioQueueIfNeeded
@@ -131,7 +131,7 @@
   [(CSSelfTriggerDetector *)self _stopListeningWithCompletion:v2];
 }
 
-- (void)CSPhoneCallStateMonitor:(id)a3 didRecievePhoneCallStateChange:(unint64_t)a4
+- (void)CSPhoneCallStateMonitor:(id)monitor didRecievePhoneCallStateChange:(unint64_t)change
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -139,11 +139,11 @@
   v5[2] = sub_10001ADE8;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = change;
   dispatch_async(queue, v5);
 }
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -154,7 +154,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -165,7 +165,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -176,9 +176,9 @@
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
-  if (a5)
+  if (successfully)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -190,10 +190,10 @@
   }
 }
 
-- (void)_keywordAnalyzerNDAPI:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5
+- (void)_keywordAnalyzerNDAPI:(id)i hasResultAvailable:(id)available forChannel:(unint64_t)channel
 {
-  v7 = a4;
-  [v7 bestScore];
+  availableCopy = available;
+  [availableCopy bestScore];
   v9 = v8;
   v10 = qword_10029DF70;
   if (!(v10 % +[CSUtils loggingHeartbeatRate]))
@@ -220,7 +220,7 @@
       v100 = 2050;
       v101 = v9;
       v102 = 2050;
-      v103 = *&a5;
+      v103 = *&channel;
       v104 = 2114;
       v105 = v12;
       v106 = 2050;
@@ -237,32 +237,32 @@
     [(CSContinuousVoiceTriggerConfig *)self->_selfTriggerConfig threshold];
     if (v9 >= v17)
     {
-      v38 = [v7 bestStart];
-      v39 = [v7 bestEnd];
-      v40 = [v7 samplesAtFire];
+      bestStart = [availableCopy bestStart];
+      bestEnd = [availableCopy bestEnd];
+      samplesAtFire = [availableCopy samplesAtFire];
       +[CSConfig inputRecordingSampleRate];
-      v42 = ((v39 - v38) / v41);
+      v42 = ((bestEnd - bestStart) / v41);
       +[CSConfig inputRecordingSampleRate];
-      v44 = ((v40 - v38) / v43);
-      v45 = [(CSAudioTimeConverter *)self->_audioTimeConverter hostTimeFromSampleCount:v38];
-      v87 = [(CSAudioTimeConverter *)self->_audioTimeConverter hostTimeFromSampleCount:v39];
+      v44 = ((samplesAtFire - bestStart) / v43);
+      v45 = [(CSAudioTimeConverter *)self->_audioTimeConverter hostTimeFromSampleCount:bestStart];
+      v87 = [(CSAudioTimeConverter *)self->_audioTimeConverter hostTimeFromSampleCount:bestEnd];
       v23 = +[NSMutableDictionary dictionary];
-      v46 = [(CSAsset *)self->_currentAsset configVersion];
+      configVersion = [(CSAsset *)self->_currentAsset configVersion];
 
-      if (v46)
+      if (configVersion)
       {
-        v47 = [(CSAsset *)self->_currentAsset configVersion];
-        [(__CFString *)v23 setObject:v47 forKey:kVTEIconfigVersion];
+        configVersion2 = [(CSAsset *)self->_currentAsset configVersion];
+        [(__CFString *)v23 setObject:configVersion2 forKey:kVTEIconfigVersion];
       }
 
       +[CSConfig inputRecordingSampleRate];
-      v48 = [NSNumber numberWithUnsignedInteger:v38];
+      v48 = [NSNumber numberWithUnsignedInteger:bestStart];
       [(__CFString *)v23 setObject:v48 forKey:kVTEItriggerStartSampleCount];
 
-      v49 = [NSNumber numberWithUnsignedInteger:v39];
+      v49 = [NSNumber numberWithUnsignedInteger:bestEnd];
       [(__CFString *)v23 setObject:v49 forKey:kVTEItriggerEndSampleCount];
 
-      v50 = [NSNumber numberWithUnsignedInteger:v40];
+      v50 = [NSNumber numberWithUnsignedInteger:samplesAtFire];
       [(__CFString *)v23 setObject:v50 forKey:kVTEItriggerFireSampleCount];
 
       [(__CFString *)v23 setObject:&off_10025E978 forKey:kVTEItriggerStartSeconds];
@@ -286,15 +286,15 @@
       v57 = [NSNumber numberWithUnsignedLongLong:v87];
       [(__CFString *)v23 setObject:v57 forKey:kVTEItriggerEndMachTime];
 
-      v58 = [NSNumber numberWithUnsignedInteger:a5];
+      v58 = [NSNumber numberWithUnsignedInteger:channel];
       [(__CFString *)v23 setObject:v58 forKey:kVTEIactiveChannel];
 
-      v59 = [(CSSelfTriggerDetector *)self audioProviderUUID];
+      audioProviderUUID = [(CSSelfTriggerDetector *)self audioProviderUUID];
 
-      if (v59)
+      if (audioProviderUUID)
       {
-        v60 = [(CSSelfTriggerDetector *)self audioProviderUUID];
-        [(__CFString *)v23 setObject:v60 forKey:kVTEIAudioProviderUUID];
+        audioProviderUUID2 = [(CSSelfTriggerDetector *)self audioProviderUUID];
+        [(__CFString *)v23 setObject:audioProviderUUID2 forKey:kVTEIAudioProviderUUID];
       }
 
       if (self->_audioSourceType == 1)
@@ -364,7 +364,7 @@
 
       if ([(CSSelfTriggerDetector *)self _shouldAddPowerLogs])
       {
-        v72 = [(CSSelfTriggerDetector *)self _getPlaybackRouteType];
+        _getPlaybackRouteType = [(CSSelfTriggerDetector *)self _getPlaybackRouteType];
         v73 = +[CSPhoneCallStateMonitorFactory phoneCallStateMonitor];
         if ([v73 phoneCallState] == 3)
         {
@@ -381,7 +381,7 @@
         v84 = self->_audioSourceType;
         v85 = +[NSDate date];
         [v85 timeIntervalSince1970];
-        [v83 powerLogSelfTriggerSuppressionDetectedWithSpeakerType:v72 withAudioSource:v84 atTime:v74 isPhoneCall:?];
+        [v83 powerLogSelfTriggerSuppressionDetectedWithSpeakerType:_getPlaybackRouteType withAudioSource:v84 atTime:v74 isPhoneCall:?];
       }
 
       goto LABEL_58;
@@ -410,25 +410,25 @@
           }
 
           v23 = +[NSMutableDictionary dictionary];
-          v24 = [v7 bestStart];
-          v25 = [v7 samplesAtFire];
+          bestStart2 = [availableCopy bestStart];
+          samplesAtFire2 = [availableCopy samplesAtFire];
           +[CSConfig inputRecordingSampleRate];
-          if ((v26 + v26) <= v25)
+          if ((v26 + v26) <= samplesAtFire2)
           {
-            v27 = [v7 samplesAtFire];
+            samplesAtFire3 = [availableCopy samplesAtFire];
             +[CSConfig inputRecordingSampleRate];
-            v24 = (v27 + (v28 * -2.0));
+            bestStart2 = (samplesAtFire3 + (v28 * -2.0));
           }
 
-          v29 = [NSNumber numberWithUnsignedInteger:v24];
+          v29 = [NSNumber numberWithUnsignedInteger:bestStart2];
           [(__CFString *)v23 setObject:v29 forKey:kVTEItriggerStartSampleCount];
 
-          v30 = [(CSSelfTriggerDetector *)self audioProviderUUID];
+          audioProviderUUID3 = [(CSSelfTriggerDetector *)self audioProviderUUID];
 
-          if (v30)
+          if (audioProviderUUID3)
           {
-            v31 = [(CSSelfTriggerDetector *)self audioProviderUUID];
-            [(__CFString *)v23 setObject:v31 forKey:kVTEIAudioProviderUUID];
+            audioProviderUUID4 = [(CSSelfTriggerDetector *)self audioProviderUUID];
+            [(__CFString *)v23 setObject:audioProviderUUID4 forKey:kVTEIAudioProviderUUID];
           }
 
           if (self->_audioSourceType == 1)
@@ -521,37 +521,37 @@ LABEL_55:
 LABEL_59:
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v5 = a4;
+  availableCopy = available;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001BF8C;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = availableCopy;
+  v7 = availableCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)_processAudioChunk:(id)a3
+- (void)_processAudioChunk:(id)chunk
 {
-  v4 = a3;
-  -[CSAudioTimeConverter processSampleCount:hostTime:](self->_audioTimeConverter, "processSampleCount:hostTime:", [v4 startSampleCount], objc_msgSend(v4, "hostTime"));
+  chunkCopy = chunk;
+  -[CSAudioTimeConverter processSampleCount:hostTime:](self->_audioTimeConverter, "processSampleCount:hostTime:", [chunkCopy startSampleCount], objc_msgSend(chunkCopy, "hostTime"));
   if (self->_currentAsset)
   {
     if (self->_selfTriggerEnabled)
     {
       if (self->_audioFileWriter)
       {
-        v5 = [v4 dataForChannel:{-[CSKeywordAnalyzerNDAPI activeChannel](self->_keywordAnalyzer, "activeChannel")}];
-        -[CSPlainAudioFileWriter addSamples:numSamples:](self->_audioFileWriter, "addSamples:numSamples:", [v5 bytes], objc_msgSend(v4, "numSamples"));
+        v5 = [chunkCopy dataForChannel:{-[CSKeywordAnalyzerNDAPI activeChannel](self->_keywordAnalyzer, "activeChannel")}];
+        -[CSPlainAudioFileWriter addSamples:numSamples:](self->_audioFileWriter, "addSamples:numSamples:", [v5 bytes], objc_msgSend(chunkCopy, "numSamples"));
       }
 
-      v6 = [(CSKeywordAnalyzerNDAPI *)self->_keywordAnalyzer getAnalyzedResultsFromAudioChunk:v4];
-      v19 = v4;
-      self->_numAnalyzedSamples += [v4 numSamples];
+      v6 = [(CSKeywordAnalyzerNDAPI *)self->_keywordAnalyzer getAnalyzedResultsFromAudioChunk:chunkCopy];
+      v19 = chunkCopy;
+      self->_numAnalyzedSamples += [chunkCopy numSamples];
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
@@ -573,9 +573,9 @@ LABEL_59:
             }
 
             v12 = *(*(&v20 + 1) + 8 * v11);
-            v13 = [(CSContinuousVoiceTriggerConfig *)self->_selfTriggerConfig voiceTriggerPhIds];
+            voiceTriggerPhIds = [(CSContinuousVoiceTriggerConfig *)self->_selfTriggerConfig voiceTriggerPhIds];
             v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 phId]);
-            v15 = [v13 containsObject:v14];
+            v15 = [voiceTriggerPhIds containsObject:v14];
 
             if (v15)
             {
@@ -592,7 +592,7 @@ LABEL_59:
         while (v9);
       }
 
-      v4 = v19;
+      chunkCopy = v19;
     }
 
     else
@@ -628,7 +628,7 @@ LABEL_59:
   }
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
   v6 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -636,7 +636,7 @@ LABEL_59:
     *buf = 136315394;
     v10 = "[CSSelfTriggerDetector audioStreamProvider:didStopStreamUnexpectedly:]";
     v11 = 2050;
-    v12 = a4;
+    unexpectedlyCopy = unexpectedly;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s stream stopped unexpectedly : %{public}ld", buf, 0x16u);
   }
 
@@ -646,24 +646,24 @@ LABEL_59:
   v8[2] = sub_10001C524;
   v8[3] = &unk_100253C98;
   v8[4] = self;
-  v8[5] = a4;
+  v8[5] = unexpectedly;
   dispatch_async(queue, v8);
 }
 
 - (unint64_t)_getPlaybackRouteType
 {
   v2 = +[CSBuiltinSpeakerStateMonitor sharedInstance];
-  v3 = [v2 currentBuiltinSpeakerState];
+  currentBuiltinSpeakerState = [v2 currentBuiltinSpeakerState];
 
-  if (v3 == 1)
+  if (currentBuiltinSpeakerState == 1)
   {
     return 1;
   }
 
   v5 = +[CSBluetoothSpeakerStateMonitor sharedInstance];
-  v6 = [v5 isActive];
+  isActive = [v5 isActive];
 
-  if (v6)
+  if (isActive)
   {
     return 2;
   }
@@ -685,58 +685,58 @@ LABEL_59:
   return v3;
 }
 
-- (void)_stopListeningWithCompletion:(id)a3
+- (void)_stopListeningWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CSSelfTriggerDetector *)self audioStream];
-  if (v5 && (v6 = v5, -[CSSelfTriggerDetector audioStream](self, "audioStream"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isStreaming], v7, v6, v8))
+  completionCopy = completion;
+  audioStream = [(CSSelfTriggerDetector *)self audioStream];
+  if (audioStream && (v6 = audioStream, -[CSSelfTriggerDetector audioStream](self, "audioStream"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isStreaming], v7, v6, v8))
   {
     [(CSSelfTriggerDetector *)self _transitCurrentStateTo:3];
-    v9 = [(CSSelfTriggerDetector *)self audioStream];
+    audioStream2 = [(CSSelfTriggerDetector *)self audioStream];
     v10 = _NSConcreteStackBlock;
     v11 = 3221225472;
     v12 = sub_10001C7A4;
     v13 = &unk_100253270;
-    v14 = self;
-    v15 = v4;
-    [v9 stopAudioStreamWithOption:0 completion:&v10];
+    selfCopy = self;
+    v15 = completionCopy;
+    [audioStream2 stopAudioStreamWithOption:0 completion:&v10];
   }
 
   else
   {
     [(CSSelfTriggerDetector *)self _unloadCurrentAssetToAnalyzer];
     [(CSSelfTriggerDetector *)self _transitCurrentStateTo:0];
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
   [(CSSelfTriggerDetector *)self _stopAudioFileWriter:v10];
 }
 
-- (void)stopAnalyzeWithCompletion:(id)a3
+- (void)stopAnalyzeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001CA24;
   v7[3] = &unk_100253718;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_startListenWithCompletion:(id)a3
+- (void)_startListenWithCompletion:(id)completion
 {
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_10001CF80;
   v43[3] = &unk_100253220;
-  v4 = a3;
-  v44 = v4;
+  completionCopy = completion;
+  v44 = completionCopy;
   v5 = objc_retainBlock(v43);
   v6 = +[CSAudioRecordContext contextForBuiltInVoiceTrigger];
   if (self->_audioSourceType == 1)
@@ -782,8 +782,8 @@ LABEL_8:
 
   v38 = v12;
 LABEL_11:
-  v14 = [v8 UUID];
-  v15 = [v14 copy];
+  uUID = [v8 UUID];
+  v15 = [uUID copy];
   [(CSSelfTriggerDetector *)self setAudioProviderUUID:v15];
 
   v16 = objc_alloc_init(CSAudioTimeConverter);
@@ -792,9 +792,9 @@ LABEL_11:
 
   v18 = objc_alloc_init(CSAudioStreamRequest);
   v19 = +[CSFPreferences sharedPreferences];
-  v20 = [v19 fileLoggingIsEnabled];
+  fileLoggingIsEnabled = [v19 fileLoggingIsEnabled];
 
-  if (v20)
+  if (fileLoggingIsEnabled)
   {
     [v18 setRequiresHistoricalBuffer:1];
   }
@@ -808,7 +808,7 @@ LABEL_11:
   if (v23)
   {
     v36 = v6;
-    v37 = v4;
+    v37 = completionCopy;
     [(CSSelfTriggerDetector *)self setAudioStream:v23];
     [v23 setDelegate:self];
     v25 = mach_absolute_time();
@@ -822,9 +822,9 @@ LABEL_11:
     [(CSSelfTriggerDetector *)self _reset];
     [(CSSelfTriggerDetector *)self _transitCurrentStateTo:1];
     v29 = +[CSFPreferences sharedPreferences];
-    v30 = [v29 isSelfTriggerFileLoggingEnabled];
+    isSelfTriggerFileLoggingEnabled = [v29 isSelfTriggerFileLoggingEnabled];
 
-    if (v30)
+    if (isSelfTriggerFileLoggingEnabled)
     {
       v31 = +[CSSelfTriggerDetector selfTriggerAudioLoggingFilePath];
       v32 = [CSPlainAudioFileWriter alloc];
@@ -840,7 +840,7 @@ LABEL_11:
       self->_audioFileWriter = 0;
     }
 
-    v4 = v37;
+    completionCopy = v37;
     v13 = v38;
 
     self->_didReceiveFirstBuffer = 0;
@@ -864,9 +864,9 @@ LABEL_11:
 LABEL_20:
 }
 
-- (void)_startListenPollingWithInterval:(double)a3 completion:(id)a4
+- (void)_startListenPollingWithInterval:(double)interval completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -875,8 +875,8 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v8 = [(CSSelfTriggerDetector *)self audioStream];
-  if ([v8 isStreaming])
+  audioStream = [(CSSelfTriggerDetector *)self audioStream];
+  if ([audioStream isStreaming])
   {
   }
 
@@ -891,8 +891,8 @@ LABEL_20:
       v11[2] = sub_10001D358;
       v11[3] = &unk_1002531F8;
       v11[4] = self;
-      v13 = a3;
-      v12 = v6;
+      intervalCopy = interval;
+      v12 = completionCopy;
       [(CSSelfTriggerDetector *)self _startListenWithCompletion:v11];
 
       goto LABEL_11;
@@ -907,9 +907,9 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s Skip listen polling since audio is streaming / selfTrigger disabled", buf, 0xCu);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
 LABEL_11:
@@ -972,9 +972,9 @@ LABEL_11:
     self->_modelLoadTransaction = v3;
   }
 
-  v10 = [(CSAsset *)self->_currentAsset resourcePath];
-  v5 = [(CSContinuousVoiceTriggerConfig *)self->_selfTriggerConfig configPathNDAPI];
-  v6 = [[CSKeywordAnalyzerNDAPI alloc] initWithConfigPath:v5 resourcePath:v10];
+  resourcePath = [(CSAsset *)self->_currentAsset resourcePath];
+  configPathNDAPI = [(CSContinuousVoiceTriggerConfig *)self->_selfTriggerConfig configPathNDAPI];
+  v6 = [[CSKeywordAnalyzerNDAPI alloc] initWithConfigPath:configPathNDAPI resourcePath:resourcePath];
   keywordAnalyzer = self->_keywordAnalyzer;
   self->_keywordAnalyzer = v6;
 
@@ -993,12 +993,12 @@ LABEL_11:
   [(CSKeywordAnalyzerNDAPI *)v8 setActiveChannel:v9];
 }
 
-- (void)_setAsset:(id)a3
+- (void)_setAsset:(id)asset
 {
-  v5 = a3;
-  if (v5)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    objc_storeStrong(&self->_currentAsset, a3);
+    objc_storeStrong(&self->_currentAsset, asset);
     v6 = [CSContinuousVoiceTriggerConfigDecoder decodeConfigFrom:self->_currentAsset];
     selfTriggerConfig = self->_selfTriggerConfig;
     self->_selfTriggerConfig = v6;
@@ -1023,31 +1023,31 @@ LABEL_11:
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001DA2C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001DAD0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1070,17 +1070,17 @@ LABEL_11:
   return v3;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001DC34;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1114,10 +1114,10 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (CSSelfTriggerDetector)initWithTargetQueue:(id)a3 audioProviderSelecting:(id)a4 audioSourceType:(unint64_t)a5
+- (CSSelfTriggerDetector)initWithTargetQueue:(id)queue audioProviderSelecting:(id)selecting audioSourceType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  queueCopy = queue;
+  selectingCopy = selecting;
   v19.receiver = self;
   v19.super_class = CSSelfTriggerDetector;
   v10 = [(CSSelfTriggerDetector *)&v19 init];
@@ -1127,17 +1127,17 @@ LABEL_11:
     v12 = *(v10 + 2);
     *(v10 + 2) = v11;
 
-    if (v8)
+    if (queueCopy)
     {
-      dispatch_set_target_queue(*(v10 + 2), v8);
+      dispatch_set_target_queue(*(v10 + 2), queueCopy);
     }
 
     v13 = +[NSHashTable weakObjectsHashTable];
     v14 = *(v10 + 3);
     *(v10 + 3) = v13;
 
-    objc_storeStrong(v10 + 12, a4);
-    *(v10 + 14) = a5;
+    objc_storeStrong(v10 + 12, selecting);
+    *(v10 + 14) = type;
     *(v10 + 15) = 0;
     v15 = *(v10 + 6);
     *(v10 + 6) = 0;
@@ -1156,7 +1156,7 @@ LABEL_11:
     *buf = 136315394;
     v21 = "[CSSelfTriggerDetector initWithTargetQueue:audioProviderSelecting:audioSourceType:]";
     v22 = 2048;
-    v23 = a5;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s Creating SelfTriggerDetector with audioSourceType(%lu)", buf, 0x16u);
   }
 
@@ -1180,9 +1180,9 @@ LABEL_11:
 {
   v2 = +[NSFileManager defaultManager];
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 voiceTriggerAudioLogDirectory];
+  voiceTriggerAudioLogDirectory = [v3 voiceTriggerAudioLogDirectory];
 
-  if ([v2 fileExistsAtPath:v4])
+  if ([v2 fileExistsAtPath:voiceTriggerAudioLogDirectory])
   {
     v5 = 0;
   }
@@ -1190,7 +1190,7 @@ LABEL_11:
   else
   {
     v11 = 0;
-    v6 = [v2 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v11];
+    v6 = [v2 createDirectoryAtPath:voiceTriggerAudioLogDirectory withIntermediateDirectories:1 attributes:0 error:&v11];
     v5 = v11;
     if ((v6 & 1) == 0)
     {
@@ -1198,21 +1198,21 @@ LABEL_11:
       if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
       {
         v9 = v7;
-        v10 = [v5 localizedDescription];
+        localizedDescription = [v5 localizedDescription];
         *buf = 136315650;
         v13 = "+[CSSelfTriggerDetector selfTriggerAudioLogDirectory]";
         v14 = 2114;
-        v15 = v4;
+        v15 = voiceTriggerAudioLogDirectory;
         v16 = 2114;
-        v17 = v10;
+        v17 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s Couldn't create self-trigger audio logging directory at path %{public}@ %{public}@", buf, 0x20u);
       }
 
-      v4 = @"/tmp";
+      voiceTriggerAudioLogDirectory = @"/tmp";
     }
   }
 
-  return v4;
+  return voiceTriggerAudioLogDirectory;
 }
 
 + (id)selfTriggerAudioLoggingFilePath
@@ -1226,23 +1226,23 @@ LABEL_11:
   return v5;
 }
 
-+ (id)_digitalZeroChunkFromFirstAudioChunk:(id)a3
++ (id)_digitalZeroChunkFromFirstAudioChunk:(id)chunk
 {
-  v3 = a3;
-  v4 = [v3 startSampleCount];
+  chunkCopy = chunk;
+  startSampleCount = [chunkCopy startSampleCount];
   LODWORD(v5) = 0.5;
   v6 = [CSFTimeUtils secondsToHostTime:v5];
-  if ([v3 hostTime] <= v6)
+  if ([chunkCopy hostTime] <= v6)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = ([v3 hostTime] - v6);
+    v7 = ([chunkCopy hostTime] - v6);
   }
 
-  v8 = [v3 digitalZeroChunkWithDurationInSec:v4 startSampleCount:v7 hostTime:0.5];
+  v8 = [chunkCopy digitalZeroChunkWithDurationInSec:startSampleCount startSampleCount:v7 hostTime:0.5];
 
   return v8;
 }

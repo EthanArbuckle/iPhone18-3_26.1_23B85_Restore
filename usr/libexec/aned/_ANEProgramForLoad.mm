@@ -1,12 +1,12 @@
 @interface _ANEProgramForLoad
-+ (void)dumpProgramInstance:(ANEProgramInstanceStruct *)a3;
-- (BOOL)createProgramInstanceForModel:(id)a3 modelToken:(id)a4 modelFilePath:(id)a5 qos:(unsigned int)a6 isPreCompiled:(BOOL)a7 enablePowerSaving:(BOOL)a8 skipPreparePhase:(BOOL)a9 statsMask:(unsigned int)a10 memoryPoolID:(unint64_t)a11 enableLateLatch:(BOOL)a12 modelIdentityStr:(id)a13 owningPid:(int)a14 cacheUrlIdentifier:(id)a15 aotCacheUrlIdentifier:(id)a16 optOutOfModelMemoryUnwiring:(BOOL)a17 error:(id *)a18;
-- (BOOL)createProgramInstanceWithWeights:(id)a3 modelToken:(id)a4 qos:(unsigned int)a5 baseModelIdentifier:(id)a6 owningPid:(int)a7 numWeightFiles:(unsigned int *)a8 error:(id *)a9;
++ (void)dumpProgramInstance:(ANEProgramInstanceStruct *)instance;
+- (BOOL)createProgramInstanceForModel:(id)model modelToken:(id)token modelFilePath:(id)path qos:(unsigned int)qos isPreCompiled:(BOOL)compiled enablePowerSaving:(BOOL)saving skipPreparePhase:(BOOL)phase statsMask:(unsigned int)self0 memoryPoolID:(unint64_t)self1 enableLateLatch:(BOOL)self2 modelIdentityStr:(id)self3 owningPid:(int)self4 cacheUrlIdentifier:(id)self5 aotCacheUrlIdentifier:(id)self6 optOutOfModelMemoryUnwiring:(BOOL)self7 error:(id *)self8;
+- (BOOL)createProgramInstanceWithWeights:(id)weights modelToken:(id)token qos:(unsigned int)qos baseModelIdentifier:(id)identifier owningPid:(int)pid numWeightFiles:(unsigned int *)files error:(id *)error;
 - (BOOL)destroyProgramInstance;
 - (BOOL)removeCachedReference;
 - (_ANEProgramForLoad)init;
 - (id)createSymbolMapping;
-- (id)createSymbolMappingForProgram:(ANEProgramInstanceStruct *)a3;
+- (id)createSymbolMappingForProgram:(ANEProgramInstanceStruct *)program;
 - (id)description;
 - (void)addCachedReference;
 - (void)dealloc;
@@ -185,37 +185,37 @@ LABEL_23:
   return v5;
 }
 
-- (BOOL)createProgramInstanceForModel:(id)a3 modelToken:(id)a4 modelFilePath:(id)a5 qos:(unsigned int)a6 isPreCompiled:(BOOL)a7 enablePowerSaving:(BOOL)a8 skipPreparePhase:(BOOL)a9 statsMask:(unsigned int)a10 memoryPoolID:(unint64_t)a11 enableLateLatch:(BOOL)a12 modelIdentityStr:(id)a13 owningPid:(int)a14 cacheUrlIdentifier:(id)a15 aotCacheUrlIdentifier:(id)a16 optOutOfModelMemoryUnwiring:(BOOL)a17 error:(id *)a18
+- (BOOL)createProgramInstanceForModel:(id)model modelToken:(id)token modelFilePath:(id)path qos:(unsigned int)qos isPreCompiled:(BOOL)compiled enablePowerSaving:(BOOL)saving skipPreparePhase:(BOOL)phase statsMask:(unsigned int)self0 memoryPoolID:(unint64_t)self1 enableLateLatch:(BOOL)self2 modelIdentityStr:(id)self3 owningPid:(int)self4 cacheUrlIdentifier:(id)self5 aotCacheUrlIdentifier:(id)self6 optOutOfModelMemoryUnwiring:(BOOL)self7 error:(id *)self8
 {
-  v54 = a8;
-  v50 = a7;
-  v61 = a3;
-  v44 = a4;
-  v45 = a5;
-  v56 = a13;
-  v57 = a15;
-  v58 = a16;
+  savingCopy = saving;
+  compiledCopy = compiled;
+  modelCopy = model;
+  tokenCopy = token;
+  pathCopy = path;
+  strCopy = str;
+  identifierCopy = identifier;
+  urlIdentifierCopy = urlIdentifier;
   v21 = +[_ANELog daemon];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     v22 = NSStringFromSelector(a2);
-    v23 = [v61 bytes];
-    v24 = [v61 length];
-    v25 = [(_ANEProgramForLoad *)self controller];
+    bytes = [modelCopy bytes];
+    v24 = [modelCopy length];
+    controller = [(_ANEProgramForLoad *)self controller];
     *buf = 138416386;
     v92 = v22;
     v93 = 2048;
-    *v94 = v23;
+    *v94 = bytes;
     *&v94[8] = 2048;
     *&v94[10] = v24;
     *&v94[18] = 1024;
-    *&v94[20] = a6;
+    *&v94[20] = qos;
     v95 = 1024;
-    *v96 = v50;
+    *v96 = compiledCopy;
     *&v96[4] = 1024;
-    *&v96[6] = v54;
+    *&v96[6] = savingCopy;
     *v97 = 2048;
-    *&v97[2] = [v25 device];
+    *&v97[2] = [controller device];
     v98 = 2048;
     *v99 = [(_ANEProgramForLoad *)self programInstance];
     *&v99[8] = 2048;
@@ -223,19 +223,19 @@ LABEL_23:
     *&v99[18] = 2048;
     *&v99[20] = [(_ANEProgramForLoad *)self intermediateBufferHandle];
     v100 = 1024;
-    v101 = a10;
+    maskCopy = mask;
     v102 = 2048;
-    v103 = a11;
+    dCopy = d;
     v104 = 1024;
-    v105 = a12;
+    latchCopy = latch;
     v106 = 2112;
-    v107 = v56;
+    v107 = strCopy;
     v108 = 2112;
-    v109 = v57;
+    v109 = identifierCopy;
     v110 = 2112;
-    v111 = v58;
+    v111 = urlIdentifierCopy;
     v112 = 1024;
-    v113 = a17;
+    unwiringCopy = unwiring;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%@: START : cachedModel.bytes=%p : cachedModel.length=%ld : qos=%d : isPreCompiled=%d : enablePowerSaving=%d : controller.device=%p : programInstance=%p : refcount=%lld : intermediateBufferHandle=%llu : statsMask=%u : memoryPoolId=%llu : enableLateLatch=%d : modelIdentityStr=%@ : cacheUrlIdentifier=%@ : aotCacheUrlIdentifier=%@ optOutOfModelMemoryUnwiring=%d", buf, 0x94u);
   }
 
@@ -255,30 +255,30 @@ LABEL_23:
   block[2] = sub_100002CA0;
   block[3] = &unk_100030790;
   block[4] = self;
-  v27 = v61;
+  v27 = modelCopy;
   v63 = v27;
   v69 = &v81;
   v70 = &v87;
   v71 = a2;
-  v28 = v44;
+  v28 = tokenCopy;
   v64 = v28;
-  v29 = v45;
-  v76 = v50;
-  v73 = a14;
-  v74 = a6;
-  v77 = v54;
-  v75 = a10;
+  v29 = pathCopy;
+  v76 = compiledCopy;
+  pidCopy = pid;
+  qosCopy = qos;
+  v77 = savingCopy;
+  maskCopy2 = mask;
   v65 = v29;
-  v72 = a11;
-  v30 = v56;
+  dCopy2 = d;
+  v30 = strCopy;
   v66 = v30;
-  v55 = v58;
+  v55 = urlIdentifierCopy;
   v67 = v55;
-  v31 = v57;
+  v31 = identifierCopy;
   v68 = v31;
-  v78 = a17;
-  v79 = a9;
-  v80 = a12;
+  unwiringCopy2 = unwiring;
+  phaseCopy = phase;
+  latchCopy2 = latch;
   dispatch_sync(q, block);
   v32 = +[_ANELog daemon];
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
@@ -291,34 +291,34 @@ LABEL_23:
     v33 = v53 = v27;
     v46 = *(v88 + 24);
     aSelectora = [(_ANEProgramForLoad *)self controller];
-    v43 = [aSelectora device];
-    v34 = [(_ANEProgramForLoad *)self programHandle];
-    v35 = [(_ANEProgramForLoad *)self intermediateBufferHandle];
-    v36 = [(_ANEProgramForLoad *)self queueDepth];
-    v37 = [(_ANEProgramForLoad *)self numInputs];
-    v38 = [(_ANEProgramForLoad *)self numOutputs];
-    v39 = [(_ANEProgramForLoad *)self refcount];
-    v40 = [(_ANEProgramForLoad *)self wiredMemory];
+    device = [aSelectora device];
+    programHandle = [(_ANEProgramForLoad *)self programHandle];
+    intermediateBufferHandle = [(_ANEProgramForLoad *)self intermediateBufferHandle];
+    queueDepth = [(_ANEProgramForLoad *)self queueDepth];
+    numInputs = [(_ANEProgramForLoad *)self numInputs];
+    numOutputs = [(_ANEProgramForLoad *)self numOutputs];
+    refcount = [(_ANEProgramForLoad *)self refcount];
+    wiredMemory = [(_ANEProgramForLoad *)self wiredMemory];
     *buf = 138414594;
     v92 = v33;
     v93 = 1024;
     *v94 = v46;
     *&v94[4] = 2048;
-    *&v94[6] = v43;
+    *&v94[6] = device;
     *&v94[14] = 2048;
-    *&v94[16] = v34;
+    *&v94[16] = programHandle;
     v95 = 2048;
-    *v96 = v35;
+    *v96 = intermediateBufferHandle;
     *&v96[8] = 1024;
-    *v97 = v36;
+    *v97 = queueDepth;
     *&v97[4] = 1024;
-    *&v97[6] = v37;
+    *&v97[6] = numInputs;
     v98 = 1024;
-    *v99 = v38;
+    *v99 = numOutputs;
     *&v99[4] = 2048;
-    *&v99[6] = v39;
+    *&v99[6] = refcount;
     *&v99[14] = 2048;
-    *&v99[16] = v40;
+    *&v99[16] = wiredMemory;
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "%@: END : ok=%d : controller.device=%p : programHandle=%llu : intermediateBufferHandle=%llu : queueDepth=%d : numInputs=%d : numOutputs=%d : refcount=%lld : wiredMemory=%ld", buf, 0x56u);
 
     v28 = v51;
@@ -328,9 +328,9 @@ LABEL_23:
     v31 = v47;
   }
 
-  if (a18)
+  if (error)
   {
-    *a18 = v82[5];
+    *error = v82[5];
   }
 
   v41 = *(v88 + 24);
@@ -341,30 +341,30 @@ LABEL_23:
   return v41 & 1;
 }
 
-- (BOOL)createProgramInstanceWithWeights:(id)a3 modelToken:(id)a4 qos:(unsigned int)a5 baseModelIdentifier:(id)a6 owningPid:(int)a7 numWeightFiles:(unsigned int *)a8 error:(id *)a9
+- (BOOL)createProgramInstanceWithWeights:(id)weights modelToken:(id)token qos:(unsigned int)qos baseModelIdentifier:(id)identifier owningPid:(int)pid numWeightFiles:(unsigned int *)files error:(id *)error
 {
-  v39 = a3;
-  v40 = a4;
-  v41 = a6;
+  weightsCopy = weights;
+  tokenCopy = token;
+  identifierCopy = identifier;
   v16 = +[_ANELog daemon];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = NSStringFromSelector(a2);
-    v18 = [(_ANEProgramForLoad *)self controller];
+    controller = [(_ANEProgramForLoad *)self controller];
     *buf = 138413826;
     v63 = v17;
     v64 = 1024;
-    v65 = a5;
+    qosCopy = qos;
     v66 = 2048;
-    v67 = [v18 device];
+    device = [controller device];
     v68 = 2048;
-    v69 = [(_ANEProgramForLoad *)self programInstance];
+    programInstance = [(_ANEProgramForLoad *)self programInstance];
     v70 = 2048;
-    v71 = [(_ANEProgramForLoad *)self refcount];
+    refcount = [(_ANEProgramForLoad *)self refcount];
     v72 = 2048;
     *v73 = [(_ANEProgramForLoad *)self intermediateBufferHandle];
     *&v73[8] = 2112;
-    v74 = v41;
+    v74 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%@: START : qos=%d : controller.device=%p : programInstance=%p : refcount=%lld : intermediateBufferHandle=%llu : baseModelIdentifier=%@", buf, 0x44u);
   }
 
@@ -387,15 +387,15 @@ LABEL_23:
   v46 = &v52;
   v47 = &v58;
   v48 = a2;
-  v20 = v40;
+  v20 = tokenCopy;
   v43 = v20;
-  v50 = a7;
-  v21 = v41;
+  pidCopy = pid;
+  v21 = identifierCopy;
   v44 = v21;
-  v22 = v39;
+  v22 = weightsCopy;
   v45 = v22;
-  v49 = a8;
-  v51 = a5;
+  filesCopy = files;
+  qosCopy2 = qos;
   dispatch_sync(q, block);
   v23 = +[_ANELog daemon];
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -404,44 +404,44 @@ LABEL_23:
     v36 = v22;
     v24 = v37 = v20;
     v35 = *(v59 + 24);
-    v38 = [(_ANEProgramForLoad *)self controller];
-    v34 = [v38 device];
-    v25 = [(_ANEProgramForLoad *)self programHandle];
-    v26 = [(_ANEProgramForLoad *)self intermediateBufferHandle];
-    v27 = [(_ANEProgramForLoad *)self queueDepth];
-    v28 = [(_ANEProgramForLoad *)self numInputs];
-    v29 = [(_ANEProgramForLoad *)self numOutputs];
-    v30 = [(_ANEProgramForLoad *)self refcount];
-    v31 = [(_ANEProgramForLoad *)self wiredMemory];
+    controller2 = [(_ANEProgramForLoad *)self controller];
+    device2 = [controller2 device];
+    programHandle = [(_ANEProgramForLoad *)self programHandle];
+    intermediateBufferHandle = [(_ANEProgramForLoad *)self intermediateBufferHandle];
+    queueDepth = [(_ANEProgramForLoad *)self queueDepth];
+    numInputs = [(_ANEProgramForLoad *)self numInputs];
+    numOutputs = [(_ANEProgramForLoad *)self numOutputs];
+    refcount2 = [(_ANEProgramForLoad *)self refcount];
+    wiredMemory = [(_ANEProgramForLoad *)self wiredMemory];
     *buf = 138414594;
     v63 = v24;
     v64 = 1024;
-    v65 = v35;
+    qosCopy = v35;
     v66 = 2048;
-    v67 = v34;
+    device = device2;
     v68 = 2048;
-    v69 = v25;
+    programInstance = programHandle;
     v70 = 2048;
-    v71 = v26;
+    refcount = intermediateBufferHandle;
     v72 = 1024;
-    *v73 = v27;
+    *v73 = queueDepth;
     *&v73[4] = 1024;
-    *&v73[6] = v28;
+    *&v73[6] = numInputs;
     LOWORD(v74) = 1024;
-    *(&v74 + 2) = v29;
+    *(&v74 + 2) = numOutputs;
     HIWORD(v74) = 2048;
-    v75 = v30;
+    v75 = refcount2;
     v76 = 2048;
-    v77 = v31;
+    v77 = wiredMemory;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%@: END : ok=%d : controller.device=%p : programHandle=%llu : intermediateBufferHandle=%llu : queueDepth=%d : numInputs=%d : numOutputs=%d : refcount=%lld : wiredMemory=%ld", buf, 0x56u);
 
     v22 = v36;
     v20 = v37;
   }
 
-  if (a9)
+  if (error)
   {
-    *a9 = v53[5];
+    *error = v53[5];
   }
 
   v32 = *(v59 + 24);
@@ -458,22 +458,22 @@ LABEL_23:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [(_ANEProgramForLoad *)self controller];
+    controller = [(_ANEProgramForLoad *)self controller];
     *buf = 138413058;
     *&buf[4] = v9;
     *&buf[12] = 2048;
-    *&buf[14] = [v10 device];
+    *&buf[14] = [controller device];
     *&buf[22] = 2048;
-    v23 = [(_ANEProgramForLoad *)self programInstance];
+    programInstance = [(_ANEProgramForLoad *)self programInstance];
     v24 = 2048;
-    v25 = [(_ANEProgramForLoad *)self refcount];
+    refcount = [(_ANEProgramForLoad *)self refcount];
     _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%@: START : controller.device=%p : programInstance=%p : refcount=%lld", buf, 0x2Au);
   }
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  LOBYTE(v23) = 1;
+  LOBYTE(programInstance) = 1;
   q = self->_q;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -488,14 +488,14 @@ LABEL_23:
   {
     v11 = NSStringFromSelector(a2);
     v12 = *(*&buf[8] + 24);
-    v13 = [(_ANEProgramForLoad *)self controller];
-    v14 = [v13 device];
+    controller2 = [(_ANEProgramForLoad *)self controller];
+    device = [controller2 device];
     *v16 = 138412802;
     v17 = v11;
     v18 = 1024;
     v19 = v12;
     v20 = 2048;
-    v21 = v14;
+    v21 = device;
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%@: END : ok=%d : controller.device=%p", v16, 0x1Cu);
   }
 
@@ -506,12 +506,12 @@ LABEL_23:
 
 - (id)createSymbolMapping
 {
-  v3 = [(_ANEProgramForLoad *)self programInstance];
+  programInstance = [(_ANEProgramForLoad *)self programInstance];
 
-  return [(_ANEProgramForLoad *)self createSymbolMappingForProgram:v3];
+  return [(_ANEProgramForLoad *)self createSymbolMappingForProgram:programInstance];
 }
 
-+ (void)dumpProgramInstance:(ANEProgramInstanceStruct *)a3
++ (void)dumpProgramInstance:(ANEProgramInstanceStruct *)instance
 {
   v4 = +[_ANELog daemon];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -530,12 +530,12 @@ LABEL_23:
   }
 }
 
-- (id)createSymbolMappingForProgram:(ANEProgramInstanceStruct *)a3
+- (id)createSymbolMappingForProgram:(ANEProgramInstanceStruct *)program
 {
   v47 = [&__NSArray0__struct mutableCopy];
-  [objc_opt_class() dumpProgramInstance:a3];
-  var5 = a3->var5;
-  var4 = a3->var4;
+  [objc_opt_class() dumpProgramInstance:program];
+  var5 = program->var5;
+  var4 = program->var4;
   v50 = [&__NSArray0__struct mutableCopy];
   v46 = [&__NSArray0__struct mutableCopy];
   if (var4)
@@ -544,10 +544,10 @@ LABEL_23:
     v7 = 60;
     do
     {
-      v8 = [NSString stringWithFormat:@"%s", var5];
-      [v50 setObject:v8 atIndexedSubscript:v6];
+      var5 = [NSString stringWithFormat:@"%s", var5];
+      [v50 setObject:var5 atIndexedSubscript:v6];
 
-      if (*(a3->var7 + v7))
+      if (*(program->var7 + v7))
       {
         v9 = &__kCFBooleanTrue;
       }
@@ -565,8 +565,8 @@ LABEL_23:
     while (var4 != v6);
   }
 
-  var10 = a3->var10;
-  var9 = a3->var9;
+  var10 = program->var10;
+  var9 = program->var9;
   v49 = [&__NSArray0__struct mutableCopy];
   v45 = [&__NSArray0__struct mutableCopy];
   if (var9)
@@ -575,10 +575,10 @@ LABEL_23:
     v13 = 64;
     do
     {
-      v14 = [NSString stringWithFormat:@"%s", var10];
-      [v49 setObject:v14 atIndexedSubscript:v12];
+      var10 = [NSString stringWithFormat:@"%s", var10];
+      [v49 setObject:var10 atIndexedSubscript:v12];
 
-      if (*(a3->var8 + v13))
+      if (*(program->var8 + v13))
       {
         v15 = &__kCFBooleanTrue;
       }
@@ -596,8 +596,8 @@ LABEL_23:
     while (var9 != v12);
   }
 
-  var12 = a3->var12;
-  var13 = a3->var13;
+  var12 = program->var12;
+  var13 = program->var13;
   v48 = [&__NSDictionary0__struct mutableCopy];
   v43 = [&__NSDictionary0__struct mutableCopy];
   if (var12)
@@ -607,12 +607,12 @@ LABEL_23:
       v18 = [&__NSDictionary0__struct mutableCopy];
       v19 = [NSNumber numberWithUnsignedInt:*(var13 + 640)];
       [v18 setObject:v19 forKeyedSubscript:kANEFModelProcedureIDKey];
-      v20 = [NSString stringWithFormat:@"%s", var13];
-      [v48 setObject:v19 forKeyedSubscript:v20];
+      var13 = [NSString stringWithFormat:@"%s", var13];
+      [v48 setObject:v19 forKeyedSubscript:var13];
       if (*(var13 + 641))
       {
         v21 = [NSNumber numberWithUnsignedInt:?];
-        [v43 setObject:v21 forKeyedSubscript:v20];
+        [v43 setObject:v21 forKeyedSubscript:var13];
       }
 
       v22 = +[_ANELog daemon];

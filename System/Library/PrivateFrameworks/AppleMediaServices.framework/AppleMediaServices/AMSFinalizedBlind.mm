@@ -1,7 +1,7 @@
 @interface AMSFinalizedBlind
-- (AMSFinalizedBlind)initWithFinalizedData:(id)a3 privateInput:(id)a4 timestamp:(id)a5 adamId:(id)a6 publicKey:(id)a7 certificate:(id)a8;
+- (AMSFinalizedBlind)initWithFinalizedData:(id)data privateInput:(id)input timestamp:(id)timestamp adamId:(id)id publicKey:(id)key certificate:(id)certificate;
 - (NSString)certificate;
-- (void)setCertificate:(id)a3;
+- (void)setCertificate:(id)certificate;
 @end
 
 @implementation AMSFinalizedBlind
@@ -22,9 +22,9 @@
   return v3;
 }
 
-- (void)setCertificate:(id)a3
+- (void)setCertificate:(id)certificate
 {
-  if (a3)
+  if (certificate)
   {
     v4 = sub_192F967CC();
     v6 = v5;
@@ -36,18 +36,18 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   AMSFinalizedBlind.certificate.setter(v4, v6);
 }
 
-- (AMSFinalizedBlind)initWithFinalizedData:(id)a3 privateInput:(id)a4 timestamp:(id)a5 adamId:(id)a6 publicKey:(id)a7 certificate:(id)a8
+- (AMSFinalizedBlind)initWithFinalizedData:(id)data privateInput:(id)input timestamp:(id)timestamp adamId:(id)id publicKey:(id)key certificate:(id)certificate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  dataCopy = data;
+  inputCopy = input;
+  timestampCopy = timestamp;
+  idCopy = id;
+  keyCopy = key;
+  certificateCopy = certificate;
   v19 = sub_192F95B7C();
   v37 = v20;
   v38 = v19;
@@ -64,7 +64,7 @@
   v29 = sub_192F95B7C();
   v31 = v30;
 
-  if (v18)
+  if (certificateCopy)
   {
     v32 = sub_192F967CC();
     v34 = v33;

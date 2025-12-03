@@ -1,34 +1,34 @@
 @interface MCTextConversion
-+ (id)attributedStringWithCTAttributesFromStringAttributes:(id)a3;
-+ (id)attributedStringWithNSAttributesFromStringAttributes:(id)a3;
-+ (id)stretchForFontDisplayName:(id)a3 andFamilyName:(id)a4;
-+ (id)stringAttributesWithAttributedString:(id)a3;
-+ (id)stringFromLigature:(int64_t)a3;
-+ (id)stringFromTextAlignment:(int64_t)a3;
-+ (id)styleForFontDisplayName:(id)a3 andFamilyName:(id)a4;
-+ (id)textFormatFromUnderlineStyle:(unint64_t)a3;
-+ (id)textFormatWithCTAttributesForText:(id)a3 attributes:(id)a4;
-+ (id)weightForFontDisplayName:(id)a3 andFamilyName:(id)a4;
-+ (int64_t)ligatureFromString:(id)a3;
-+ (int64_t)textAlignmentFromString:(id)a3;
-+ (unint64_t)underlineStyleFromTextFormat:(id)a3;
++ (id)attributedStringWithCTAttributesFromStringAttributes:(id)attributes;
++ (id)attributedStringWithNSAttributesFromStringAttributes:(id)attributes;
++ (id)stretchForFontDisplayName:(id)name andFamilyName:(id)familyName;
++ (id)stringAttributesWithAttributedString:(id)string;
++ (id)stringFromLigature:(int64_t)ligature;
++ (id)stringFromTextAlignment:(int64_t)alignment;
++ (id)styleForFontDisplayName:(id)name andFamilyName:(id)familyName;
++ (id)textFormatFromUnderlineStyle:(unint64_t)style;
++ (id)textFormatWithCTAttributesForText:(id)text attributes:(id)attributes;
++ (id)weightForFontDisplayName:(id)name andFamilyName:(id)familyName;
++ (int64_t)ligatureFromString:(id)string;
++ (int64_t)textAlignmentFromString:(id)string;
++ (unint64_t)underlineStyleFromTextFormat:(id)format;
 @end
 
 @implementation MCTextConversion
 
-+ (id)styleForFontDisplayName:(id)a3 andFamilyName:(id)a4
++ (id)styleForFontDisplayName:(id)name andFamilyName:(id)familyName
 {
-  v5 = a3;
-  if ([a3 hasPrefix:a4])
+  nameCopy = name;
+  if ([name hasPrefix:familyName])
   {
-    v5 = [v5 substringFromIndex:{objc_msgSend(a4, "length")}];
+    nameCopy = [nameCopy substringFromIndex:{objc_msgSend(familyName, "length")}];
   }
 
   v6 = @"italic";
-  if ([v5 rangeOfString:@"italic" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([nameCopy rangeOfString:@"italic" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = @"oblique";
-    if ([v5 rangeOfString:@"oblique" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([nameCopy rangeOfString:@"oblique" options:1] == 0x7FFFFFFFFFFFFFFFLL)
     {
       return @"normal";
     }
@@ -37,20 +37,20 @@
   return v6;
 }
 
-+ (id)weightForFontDisplayName:(id)a3 andFamilyName:(id)a4
++ (id)weightForFontDisplayName:(id)name andFamilyName:(id)familyName
 {
-  v5 = a3;
-  if ([a3 hasPrefix:a4])
+  nameCopy = name;
+  if ([name hasPrefix:familyName])
   {
-    v5 = [v5 substringFromIndex:{objc_msgSend(a4, "length")}];
+    nameCopy = [nameCopy substringFromIndex:{objc_msgSend(familyName, "length")}];
   }
 
-  if ([v5 rangeOfString:@"light" options:1] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([nameCopy rangeOfString:@"light" options:1] != 0x7FFFFFFFFFFFFFFFLL)
   {
     return @"lighter";
   }
 
-  if ([v5 rangeOfString:@"bold" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([nameCopy rangeOfString:@"bold" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
     return @"normal";
   }
@@ -58,15 +58,15 @@
   return @"bold";
 }
 
-+ (id)stretchForFontDisplayName:(id)a3 andFamilyName:(id)a4
++ (id)stretchForFontDisplayName:(id)name andFamilyName:(id)familyName
 {
-  v5 = a3;
-  if ([a3 hasPrefix:a4])
+  nameCopy = name;
+  if ([name hasPrefix:familyName])
   {
-    v5 = [v5 substringFromIndex:{objc_msgSend(a4, "length")}];
+    nameCopy = [nameCopy substringFromIndex:{objc_msgSend(familyName, "length")}];
   }
 
-  if ([v5 rangeOfString:@"condensed" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([nameCopy rangeOfString:@"condensed" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
@@ -77,19 +77,19 @@
   }
 }
 
-+ (int64_t)textAlignmentFromString:(id)a3
++ (int64_t)textAlignmentFromString:(id)string
 {
-  if ([a3 isEqualToString:@"left"])
+  if ([string isEqualToString:@"left"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"right"])
+  if ([string isEqualToString:@"right"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"center"])
+  if ([string isEqualToString:@"center"])
   {
     return 2;
   }
@@ -97,32 +97,32 @@
   return 0;
 }
 
-+ (id)stringFromTextAlignment:(int64_t)a3
++ (id)stringFromTextAlignment:(int64_t)alignment
 {
-  if (a3 > 2)
+  if (alignment > 2)
   {
     return @"center";
   }
 
   else
   {
-    return off_1AB508[a3];
+    return off_1AB508[alignment];
   }
 }
 
-+ (int64_t)ligatureFromString:(id)a3
++ (int64_t)ligatureFromString:(id)string
 {
-  if ([a3 isEqualToString:@"noLigatures"])
+  if ([string isEqualToString:@"noLigatures"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"defaultLigatures"])
+  if ([string isEqualToString:@"defaultLigatures"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"allLigatures"])
+  if ([string isEqualToString:@"allLigatures"])
   {
     return 2;
   }
@@ -130,22 +130,22 @@
   return 1;
 }
 
-+ (id)stringFromLigature:(int64_t)a3
++ (id)stringFromLigature:(int64_t)ligature
 {
-  if (a3 > 2)
+  if (ligature > 2)
   {
     return @"defaultLigatures";
   }
 
   else
   {
-    return off_1AB520[a3];
+    return off_1AB520[ligature];
   }
 }
 
-+ (unint64_t)underlineStyleFromTextFormat:(id)a3
++ (unint64_t)underlineStyleFromTextFormat:(id)format
 {
-  v4 = [a3 objectForKey:@"thickness"];
+  v4 = [format objectForKey:@"thickness"];
   if ([v4 isEqualToString:@"single"])
   {
     v5 = 1;
@@ -166,7 +166,7 @@
     v5 = 1;
   }
 
-  v6 = [a3 objectForKey:@"pattern"];
+  v6 = [format objectForKey:@"pattern"];
   if (([v6 isEqualToString:@"solid"] & 1) == 0)
   {
     if ([v6 isEqualToString:@"dot"])
@@ -193,18 +193,18 @@
   return v5;
 }
 
-+ (id)textFormatFromUnderlineStyle:(unint64_t)a3
++ (id)textFormatFromUnderlineStyle:(unint64_t)style
 {
-  v3 = a3;
+  styleCopy = style;
   v4 = +[NSMutableDictionary dictionary];
   v5 = v4;
   v6 = @"single";
-  if (v3 == 2)
+  if (styleCopy == 2)
   {
     v6 = @"thick";
   }
 
-  if (v3 == 9)
+  if (styleCopy == 9)
   {
     v7 = @"double";
   }
@@ -215,14 +215,14 @@
   }
 
   [v4 setObject:v7 forKey:@"thickness"];
-  if ((HIBYTE(v3) - 1) > 3u)
+  if ((HIBYTE(styleCopy) - 1) > 3u)
   {
     v8 = @"solid";
   }
 
   else
   {
-    v8 = off_1AB538[(HIBYTE(v3) - 1)];
+    v8 = off_1AB538[(HIBYTE(styleCopy) - 1)];
   }
 
   [v5 setObject:v8 forKey:@"pattern"];
@@ -230,11 +230,11 @@
   return v5;
 }
 
-+ (id)textFormatWithCTAttributesForText:(id)a3 attributes:(id)a4
++ (id)textFormatWithCTAttributesForText:(id)text attributes:(id)attributes
 {
   v6 = +[NSMutableDictionary dictionary];
-  [v6 setObject:a3 forKey:@"text"];
-  v7 = [a4 objectForKey:kCTFontAttributeName];
+  [v6 setObject:text forKey:@"text"];
+  v7 = [attributes objectForKey:kCTFontAttributeName];
   if (!v7)
   {
     v7 = CTFontCreateWithName(@"Helvetica", 12.0, 0);
@@ -256,20 +256,20 @@
     [v6 setObject:v12 forKey:@"fontStretch"];
   }
 
-  v13 = [a4 objectForKey:kCTForegroundColorAttributeName];
+  v13 = [attributes objectForKey:kCTForegroundColorAttributeName];
   if (!v13)
   {
     v13 = +[MPUtilities blackCGColor];
   }
 
   [v6 setObject:+[MPUtilities stringFromCGColor:](MPUtilities forKey:{"stringFromCGColor:", v13), @"foregroundColor"}];
-  v14 = [a4 objectForKey:@"backgroundColor"];
+  v14 = [attributes objectForKey:@"backgroundColor"];
   if (v14)
   {
     [v6 setObject:+[MPUtilities stringFromCGColor:](MPUtilities forKey:{"stringFromCGColor:", v14), @"backgroundColor"}];
   }
 
-  v15 = [a4 objectForKey:kCTParagraphStyleAttributeName];
+  v15 = [attributes objectForKey:kCTParagraphStyleAttributeName];
   if (v15)
   {
     v16 = v15;
@@ -297,7 +297,7 @@
   }
 
   LODWORD(v43) = 0;
-  v19 = [a4 objectForKey:@"shadow"];
+  v19 = [attributes objectForKey:@"shadow"];
   if (v19)
   {
     v20 = v19;
@@ -327,14 +327,14 @@
     [v6 setObject:v21 forKey:@"shadow"];
   }
 
-  v26 = [a4 objectForKey:kCTUnderlineStyleAttributeName];
+  v26 = [attributes objectForKey:kCTUnderlineStyleAttributeName];
   if (v26)
   {
     v27 = v26;
     v28 = +[NSMutableDictionary dictionary];
     CFNumberGetValue(v27, kCFNumberSInt32Type, &v43);
     [v28 addEntriesFromDictionary:{+[MCTextConversion textFormatFromUnderlineStyle:](MCTextConversion, "textFormatFromUnderlineStyle:", SLODWORD(v43))}];
-    v29 = [a4 objectForKey:kCTUnderlineColorAttributeName];
+    v29 = [attributes objectForKey:kCTUnderlineColorAttributeName];
     if (v29)
     {
       [v28 setObject:+[MPUtilities stringFromCGColor:](MPUtilities forKey:{"stringFromCGColor:", v29), @"color"}];
@@ -343,49 +343,49 @@
     [v6 setObject:v28 forKey:@"underline"];
   }
 
-  v30 = [a4 objectForKey:kCTSuperscriptAttributeName];
+  v30 = [attributes objectForKey:kCTSuperscriptAttributeName];
   if (v30)
   {
     CFNumberGetValue(v30, kCFNumberSInt32Type, &v43);
     [v6 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", LODWORD(v43)), @"superscript"}];
   }
 
-  v31 = [a4 objectForKey:kCTLigatureAttributeName];
+  v31 = [attributes objectForKey:kCTLigatureAttributeName];
   if (v31)
   {
     CFNumberGetValue(v31, kCFNumberSInt32Type, &v43);
     [v6 setObject:+[MCTextConversion stringFromLigature:](MCTextConversion forKey:{"stringFromLigature:", SLODWORD(v43)), @"ligature"}];
   }
 
-  v32 = [a4 objectForKey:kCTKernAttributeName];
+  v32 = [attributes objectForKey:kCTKernAttributeName];
   if (v32)
   {
     CFNumberGetValue(v32, kCFNumberSInt32Type, &v43);
     [v6 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", LODWORD(v43)), @"kern"}];
   }
 
-  v33 = [a4 objectForKey:kCTStrokeWidthAttributeName];
+  v33 = [attributes objectForKey:kCTStrokeWidthAttributeName];
   if (v33)
   {
     v34 = v33;
     v35 = +[NSMutableDictionary dictionary];
     CFNumberGetValue(v34, kCFNumberSInt32Type, &v43);
     [v6 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", LODWORD(v43)), @"strokeWidth"}];
-    v36 = [a4 objectForKey:kCTStrokeColorAttributeName];
+    v36 = [attributes objectForKey:kCTStrokeColorAttributeName];
     if (v36)
     {
       [v35 setObject:+[MPUtilities stringFromCGColor:](MPUtilities forKey:{"stringFromCGColor:", v36), @"strokeColor"}];
     }
   }
 
-  v37 = [a4 objectForKey:@"strikethrough"];
+  v37 = [attributes objectForKey:@"strikethrough"];
   if (v37)
   {
     v38 = v37;
     v39 = +[NSMutableDictionary dictionary];
     LODWORD(v43) = [v38 integerValue];
     [v39 addEntriesFromDictionary:{+[MCTextConversion textFormatFromUnderlineStyle:](MCTextConversion, "textFormatFromUnderlineStyle:", SLODWORD(v43))}];
-    v40 = [a4 objectForKey:kCTUnderlineColorAttributeName];
+    v40 = [attributes objectForKey:kCTUnderlineColorAttributeName];
     if (v40)
     {
       [v39 setObject:+[MPUtilities stringFromCGColor:](MPUtilities forKey:{"stringFromCGColor:", v40), @"color"}];
@@ -397,10 +397,10 @@
   return v6;
 }
 
-+ (id)stringAttributesWithAttributedString:(id)a3
++ (id)stringAttributesWithAttributedString:(id)string
 {
-  v4 = [a3 length];
-  v5 = [a3 string];
+  v4 = [string length];
+  string = [string string];
   v6 = +[NSMutableArray array];
   if (v4)
   {
@@ -409,8 +409,8 @@
     v12 = 0;
     do
     {
-      v8 = [a3 attributesAtIndex:v7 longestEffectiveRange:&v11 inRange:{v7, v4}];
-      [v6 addObject:{+[MCTextConversion textFormatWithCTAttributesForText:attributes:](MCTextConversion, "textFormatWithCTAttributesForText:attributes:", objc_msgSend(v5, "substringWithRange:", v11, v12), v8)}];
+      v8 = [string attributesAtIndex:v7 longestEffectiveRange:&v11 inRange:{v7, v4}];
+      [v6 addObject:{+[MCTextConversion textFormatWithCTAttributesForText:attributes:](MCTextConversion, "textFormatWithCTAttributesForText:attributes:", objc_msgSend(string, "substringWithRange:", v11, v12), v8)}];
       v9 = &v4[v7];
       v7 = v12 + v11;
       v4 = &v9[-v12 - v11];
@@ -422,14 +422,14 @@
   return v6;
 }
 
-+ (id)attributedStringWithCTAttributesFromStringAttributes:(id)a3
++ (id)attributedStringWithCTAttributesFromStringAttributes:(id)attributes
 {
   v60 = objc_alloc_init(NSMutableAttributedString);
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v67 objects:v73 count:16];
+  v4 = [attributes countByEnumeratingWithState:&v67 objects:v73 count:16];
   if (v4)
   {
     v5 = v4;
@@ -441,7 +441,7 @@
       {
         if (*v68 != v61)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(attributes);
         }
 
         v7 = *(*(&v67 + 1) + 8 * i);
@@ -666,7 +666,7 @@ LABEL_24:
         }
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v67 objects:v73 count:16];
+      v5 = [attributes countByEnumeratingWithState:&v67 objects:v73 count:16];
     }
 
     while (v5);
@@ -675,7 +675,7 @@ LABEL_24:
   return v60;
 }
 
-+ (id)attributedStringWithNSAttributesFromStringAttributes:(id)a3
++ (id)attributedStringWithNSAttributesFromStringAttributes:(id)attributes
 {
   v3 = objc_alloc_init(NSMutableAttributedString);
 

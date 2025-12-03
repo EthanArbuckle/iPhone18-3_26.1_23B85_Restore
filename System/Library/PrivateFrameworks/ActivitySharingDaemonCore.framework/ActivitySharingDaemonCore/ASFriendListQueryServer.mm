@@ -1,38 +1,38 @@
 @interface ASFriendListQueryServer
 - (ASActivitySharingManager)activitySharingManager;
-- (ASFriendListQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (ASFriendListQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_activitySharingManagerProcessingStarted;
 - (void)_queue_activitySharingManagerProcessingStarted;
 - (void)_queue_start;
 - (void)_queue_stop;
-- (void)friendListDidUpdate:(id)a3;
+- (void)friendListDidUpdate:(id)update;
 @end
 
 @implementation ASFriendListQueryServer
 
-- (ASFriendListQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (ASFriendListQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a5;
+  clientCopy = client;
   v20.receiver = self;
   v20.super_class = ASFriendListQueryServer;
-  v11 = [(HDQueryServer *)&v20 initWithUUID:a3 configuration:a4 client:v10 delegate:a6];
+  v11 = [(HDQueryServer *)&v20 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (!v11)
   {
     goto LABEL_4;
   }
 
-  v12 = [v10 profile];
-  v13 = [v12 profileExtensionsConformingToProtocol:&unk_285108A30];
+  profile = [clientCopy profile];
+  v13 = [profile profileExtensionsConformingToProtocol:&unk_285108A30];
 
   if ([v13 count])
   {
-    v14 = [v13 firstObject];
-    v15 = [v14 activitySharingManager];
-    [(ASFriendListQueryServer *)v11 setActivitySharingManager:v15];
+    firstObject = [v13 firstObject];
+    activitySharingManager = [firstObject activitySharingManager];
+    [(ASFriendListQueryServer *)v11 setActivitySharingManager:activitySharingManager];
 
     [(ASFriendListQueryServer *)v11 setManagerStartAction:0];
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v11 selector:sel__activitySharingManagerProcessingStarted name:@"ActivitySharingMangerProcessingStartedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__activitySharingManagerProcessingStarted name:@"ActivitySharingMangerProcessingStartedNotification" object:0];
 
 LABEL_4:
     v17 = v11;
@@ -57,13 +57,13 @@ LABEL_8:
   v9.receiver = self;
   v9.super_class = ASFriendListQueryServer;
   [(HDQueryServer *)&v9 _queue_start];
-  v3 = [(ASFriendListQueryServer *)self activitySharingManager];
-  v4 = [v3 processingStarted];
+  activitySharingManager = [(ASFriendListQueryServer *)self activitySharingManager];
+  processingStarted = [activitySharingManager processingStarted];
 
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF0];
   v6 = os_log_type_enabled(*MEMORY[0x277CE8FF0], OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (processingStarted)
   {
     if (v6)
     {
@@ -72,8 +72,8 @@ LABEL_8:
     }
 
     [(ASFriendListQueryServer *)self setManagerStartAction:0];
-    v7 = [(ASFriendListQueryServer *)self activitySharingManager];
-    [v7 addFriendListObserver:self];
+    activitySharingManager2 = [(ASFriendListQueryServer *)self activitySharingManager];
+    [activitySharingManager2 addFriendListObserver:self];
   }
 
   else
@@ -93,13 +93,13 @@ LABEL_8:
   v9.receiver = self;
   v9.super_class = ASFriendListQueryServer;
   [(HDQueryServer *)&v9 _queue_stop];
-  v3 = [(ASFriendListQueryServer *)self activitySharingManager];
-  v4 = [v3 processingStarted];
+  activitySharingManager = [(ASFriendListQueryServer *)self activitySharingManager];
+  processingStarted = [activitySharingManager processingStarted];
 
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF0];
   v6 = os_log_type_enabled(*MEMORY[0x277CE8FF0], OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (processingStarted)
   {
     if (v6)
     {
@@ -107,8 +107,8 @@ LABEL_8:
       _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "ASFriendListQueryServer: Stopping.", v8, 2u);
     }
 
-    v7 = [(ASFriendListQueryServer *)self activitySharingManager];
-    [v7 removeFriendListObserver:self];
+    activitySharingManager2 = [(ASFriendListQueryServer *)self activitySharingManager];
+    [activitySharingManager2 removeFriendListObserver:self];
   }
 
   else
@@ -123,11 +123,11 @@ LABEL_8:
   }
 }
 
-- (void)friendListDidUpdate:(id)a3
+- (void)friendListDidUpdate:(id)update
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDQueryServer *)self clientProxy];
+  updateCopy = update;
+  clientProxy = [(HDQueryServer *)self clientProxy];
   v6 = ASCodableFriendListFromFriends();
   ASLoggingInitialize();
   v7 = *MEMORY[0x277CE8FF0];
@@ -135,13 +135,13 @@ LABEL_8:
   {
     v8 = v7;
     v12 = 134217984;
-    v13 = [v4 count];
+    v13 = [updateCopy count];
     _os_log_impl(&dword_23E5E3000, v8, OS_LOG_TYPE_DEFAULT, "ASFriendListQueryServer calling deliverFriendList with %lu friends", &v12, 0xCu);
   }
 
-  v9 = [v6 data];
-  v10 = [(HDQueryServer *)self queryUUID];
-  [v5 client_deliverFriendList:v9 queryUUID:v10];
+  data = [v6 data];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  [clientProxy client_deliverFriendList:data queryUUID:queryUUID];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -166,13 +166,13 @@ LABEL_8:
 
 - (void)_queue_activitySharingManagerProcessingStarted
 {
-  v3 = [(ASFriendListQueryServer *)self activitySharingManager];
-  v4 = [v3 processingStarted];
+  activitySharingManager = [(ASFriendListQueryServer *)self activitySharingManager];
+  processingStarted = [activitySharingManager processingStarted];
 
-  if (v4)
+  if (processingStarted)
   {
-    v5 = [(ASFriendListQueryServer *)self managerStartAction];
-    if (v5 == 2)
+    managerStartAction = [(ASFriendListQueryServer *)self managerStartAction];
+    if (managerStartAction == 2)
     {
       ASLoggingInitialize();
       v10 = *MEMORY[0x277CE8FF0];
@@ -182,15 +182,15 @@ LABEL_8:
         _os_log_impl(&dword_23E5E3000, v10, OS_LOG_TYPE_DEFAULT, "ASFriendListQueryServer: Removing friend list observer after activity sharing manager started", v11, 2u);
       }
 
-      v9 = [(ASFriendListQueryServer *)self activitySharingManager];
-      [v9 removeFriendListObserver:self];
+      activitySharingManager2 = [(ASFriendListQueryServer *)self activitySharingManager];
+      [activitySharingManager2 removeFriendListObserver:self];
     }
 
     else
     {
-      if (v5 != 1)
+      if (managerStartAction != 1)
       {
-        if (!v5)
+        if (!managerStartAction)
         {
           ASLoggingInitialize();
           v6 = *MEMORY[0x277CE8FF0];
@@ -212,8 +212,8 @@ LABEL_8:
         _os_log_impl(&dword_23E5E3000, v8, OS_LOG_TYPE_DEFAULT, "ASFriendListQueryServer: Adding friend list observer after activity sharing manager started", v12, 2u);
       }
 
-      v9 = [(ASFriendListQueryServer *)self activitySharingManager];
-      [v9 addFriendListObserver:self];
+      activitySharingManager2 = [(ASFriendListQueryServer *)self activitySharingManager];
+      [activitySharingManager2 addFriendListObserver:self];
     }
 
 LABEL_16:

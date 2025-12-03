@@ -8,12 +8,12 @@
 {
   v8.receiver = self;
   v8.super_class = BKUITransitionViewAccessibility;
-  v3 = [(BKUITransitionViewAccessibility *)&v8 accessibilityViewIsModal];
-  v4 = [(BKUITransitionViewAccessibility *)self accessibilityIdentifier];
+  accessibilityViewIsModal = [(BKUITransitionViewAccessibility *)&v8 accessibilityViewIsModal];
+  accessibilityIdentifier = [(BKUITransitionViewAccessibility *)self accessibilityIdentifier];
   v5 = +[(BKBasePresentingViewController *)BKAssetPresentingViewController];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [accessibilityIdentifier isEqualToString:v5];
 
-  return (v6 | v3) & 1;
+  return (v6 | accessibilityViewIsModal) & 1;
 }
 
 @end

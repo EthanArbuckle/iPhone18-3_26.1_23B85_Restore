@@ -1,17 +1,17 @@
 @interface SFScreenTimeOverlayViewController
-- (id)showBlockingViewControllerForURL:(id)a3 withPolicy:(int64_t)a4 animated:(BOOL)a5;
-- (void)_updateCurrentLockViewControllerInsetsHorizontalForSizeClass:(int64_t)a3;
-- (void)hideBlockingViewControllerWithCompletionHandler:(id)a3;
-- (void)setAdditionalVerticalSafeAreaMargin:(double)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (id)showBlockingViewControllerForURL:(id)l withPolicy:(int64_t)policy animated:(BOOL)animated;
+- (void)_updateCurrentLockViewControllerInsetsHorizontalForSizeClass:(int64_t)class;
+- (void)hideBlockingViewControllerWithCompletionHandler:(id)handler;
+- (void)setAdditionalVerticalSafeAreaMargin:(double)margin;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SFScreenTimeOverlayViewController
 
-- (id)showBlockingViewControllerForURL:(id)a3 withPolicy:(int64_t)a4 animated:(BOOL)a5
+- (id)showBlockingViewControllerForURL:(id)l withPolicy:(int64_t)policy animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
+  animatedCopy = animated;
+  lCopy = l;
   self->_blockingViewControllerShouldBeVisible = 1;
   blockingViewController = self->_blockingViewController;
   if (!blockingViewController)
@@ -34,29 +34,29 @@
 
     v11 = v10;
     _Block_object_dispose(&v32, 8);
-    v12 = [v10 newTranslucentBlockingViewController];
+    newTranslucentBlockingViewController = [v10 newTranslucentBlockingViewController];
     v13 = self->_blockingViewController;
-    self->_blockingViewController = v12;
+    self->_blockingViewController = newTranslucentBlockingViewController;
 
-    v14 = [(STBlockingViewController *)self->_blockingViewController view];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(STBlockingViewController *)self->_blockingViewController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
     blockingViewController = self->_blockingViewController;
   }
 
-  [(STBlockingViewController *)blockingViewController updateAppearanceUsingPolicy:a4 forWebpageURL:v8];
-  v15 = [(SFScreenTimeOverlayViewController *)self childViewControllers];
-  v16 = [v15 containsObject:self->_blockingViewController];
+  [(STBlockingViewController *)blockingViewController updateAppearanceUsingPolicy:policy forWebpageURL:lCopy];
+  childViewControllers = [(SFScreenTimeOverlayViewController *)self childViewControllers];
+  v16 = [childViewControllers containsObject:self->_blockingViewController];
 
   if ((v16 & 1) == 0)
   {
-    [(STBlockingViewController *)self->_blockingViewController beginAppearanceTransition:1 animated:v5];
+    [(STBlockingViewController *)self->_blockingViewController beginAppearanceTransition:1 animated:animatedCopy];
     [(SFScreenTimeOverlayViewController *)self addChildViewController:self->_blockingViewController];
-    v17 = [(SFScreenTimeOverlayViewController *)self view];
-    v18 = [(STBlockingViewController *)self->_blockingViewController view];
-    [v17 addSubview:v18];
-    _NSDictionaryOfVariableBindings(&cfstr_Blockingview.isa, v18, 0);
-    v19 = v30 = v8;
+    view2 = [(SFScreenTimeOverlayViewController *)self view];
+    view3 = [(STBlockingViewController *)self->_blockingViewController view];
+    [view2 addSubview:view3];
+    _NSDictionaryOfVariableBindings(&cfstr_Blockingview.isa, view3, 0);
+    v19 = v30 = lCopy;
     v20 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[blockingView]|" options:0 metrics:0 views:v19];
     v21 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[blockingView]|" options:0 metrics:0 views:v19];
     v22 = MEMORY[0x1E696ACD8];
@@ -65,13 +65,13 @@
 
     [(STBlockingViewController *)self->_blockingViewController didMoveToParentViewController:self];
     [(STBlockingViewController *)self->_blockingViewController endAppearanceTransition];
-    [(STBlockingViewController *)self->_blockingViewController showWithAnimation:v5 completionHandler:0];
+    [(STBlockingViewController *)self->_blockingViewController showWithAnimation:animatedCopy completionHandler:0];
 
-    v8 = v30;
+    lCopy = v30;
   }
 
-  v24 = [(STBlockingViewController *)self->_blockingViewController view];
-  [v24 bounds];
+  view4 = [(STBlockingViewController *)self->_blockingViewController view];
+  [view4 bounds];
   Width = CGRectGetWidth(v36);
   v26 = _SFSizeClassForWidth(Width);
 
@@ -82,23 +82,23 @@
   return v27;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  width = a3.width;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = SFScreenTimeOverlayViewController;
-  [(SFScreenTimeOverlayViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(SFScreenTimeOverlayViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(SFScreenTimeOverlayViewController *)self _updateCurrentLockViewControllerInsetsHorizontalForSizeClass:_SFSizeClassForWidth(width)];
 }
 
-- (void)_updateCurrentLockViewControllerInsetsHorizontalForSizeClass:(int64_t)a3
+- (void)_updateCurrentLockViewControllerInsetsHorizontalForSizeClass:(int64_t)class
 {
   blockingViewController = self->_blockingViewController;
   if (blockingViewController)
   {
     additionalVerticalSafeAreaMargin = self->_additionalVerticalSafeAreaMargin;
     v6 = additionalVerticalSafeAreaMargin + 46.0;
-    if (a3 == 1)
+    if (class == 1)
     {
       v7 = additionalVerticalSafeAreaMargin + 46.0;
     }
@@ -108,7 +108,7 @@
       v7 = additionalVerticalSafeAreaMargin + 94.0;
     }
 
-    if (a3 != 1)
+    if (class != 1)
     {
       v6 = 0.0;
     }
@@ -117,9 +117,9 @@
   }
 }
 
-- (void)hideBlockingViewControllerWithCompletionHandler:(id)a3
+- (void)hideBlockingViewControllerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   self->_blockingViewControllerShouldBeVisible = 0;
   [(STBlockingViewController *)self->_blockingViewController beginAppearanceTransition:0 animated:1];
   blockingViewController = self->_blockingViewController;
@@ -128,8 +128,8 @@
   v7[2] = __85__SFScreenTimeOverlayViewController_hideBlockingViewControllerWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E721BA48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(STBlockingViewController *)blockingViewController hideWithAnimation:1 completionHandler:v7];
 }
 
@@ -175,13 +175,13 @@ uint64_t __85__SFScreenTimeOverlayViewController_hideBlockingViewControllerWithC
   return result;
 }
 
-- (void)setAdditionalVerticalSafeAreaMargin:(double)a3
+- (void)setAdditionalVerticalSafeAreaMargin:(double)margin
 {
-  if (self->_additionalVerticalSafeAreaMargin != a3)
+  if (self->_additionalVerticalSafeAreaMargin != margin)
   {
-    self->_additionalVerticalSafeAreaMargin = a3;
-    v5 = [(STBlockingViewController *)self->_blockingViewController view];
-    [v5 bounds];
+    self->_additionalVerticalSafeAreaMargin = margin;
+    view = [(STBlockingViewController *)self->_blockingViewController view];
+    [view bounds];
     Width = CGRectGetWidth(v8);
     v7 = _SFSizeClassForWidth(Width);
 

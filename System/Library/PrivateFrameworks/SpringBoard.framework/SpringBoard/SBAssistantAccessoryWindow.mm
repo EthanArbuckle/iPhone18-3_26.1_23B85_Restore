@@ -1,14 +1,14 @@
 @interface SBAssistantAccessoryWindow
-- (SBAssistantAccessoryWindow)initWithWindowScene:(id)a3 rootViewController:(id)a4 layoutStrategy:(id)a5 role:(id)a6 debugName:(id)a7;
+- (SBAssistantAccessoryWindow)initWithWindowScene:(id)scene rootViewController:(id)controller layoutStrategy:(id)strategy role:(id)role debugName:(id)name;
 @end
 
 @implementation SBAssistantAccessoryWindow
 
-- (SBAssistantAccessoryWindow)initWithWindowScene:(id)a3 rootViewController:(id)a4 layoutStrategy:(id)a5 role:(id)a6 debugName:(id)a7
+- (SBAssistantAccessoryWindow)initWithWindowScene:(id)scene rootViewController:(id)controller layoutStrategy:(id)strategy role:(id)role debugName:(id)name
 {
   v10.receiver = self;
   v10.super_class = SBAssistantAccessoryWindow;
-  v7 = [(SBWindow *)&v10 initWithWindowScene:a3 rootViewController:a4 layoutStrategy:a5 role:a6 debugName:a7];
+  v7 = [(SBWindow *)&v10 initWithWindowScene:scene rootViewController:controller layoutStrategy:strategy role:role debugName:name];
   v8 = v7;
   if (v7)
   {

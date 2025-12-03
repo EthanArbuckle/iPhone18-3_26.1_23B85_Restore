@@ -1,26 +1,26 @@
 @interface DADAgentManager
-+ (BOOL)wirelessPolicy:(id)a3 isMorePermissiveThanPolicy:(id)a4;
++ (BOOL)wirelessPolicy:(id)policy isMorePermissiveThanPolicy:(id)thanPolicy;
 + (id)sharedManager;
-- (BOOL)_hasDataclassWeCareAbout:(id)a3;
+- (BOOL)_hasDataclassWeCareAbout:(id)about;
 - (BOOL)_systemMayNowBeReady;
 - (BOOL)hasActiveAccounts;
 - (BOOL)hasEASAccountConfigured;
-- (BOOL)resumeMonitoringAccountID:(id)a3 syncKeyMap:(id)a4;
-- (BOOL)startMonitoringAccountID:(id)a3 syncKeyMap:(id)a4;
-- (BOOL)stopMonitoringAccountID:(id)a3 folderIDs:(id)a4;
-- (BOOL)suspendMonitoringAccountID:(id)a3 folderIDs:(id)a4;
-- (BOOL)updateContentsOfAllFoldersForAccountID:(id)a3 andDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5;
-- (BOOL)updateContentsOfAllFoldersForAccountIDs:(id)a3;
-- (BOOL)updateContentsOfFolders:(id)a3 forAccountID:(id)a4 andDataclasses:(int64_t)a5 isUserRequested:(BOOL)a6;
-- (BOOL)updateFolderListForAccountID:(id)a3 andDataclasses:(int64_t)a4 requireChangedFolders:(BOOL)a5 isUserRequested:(BOOL)a6;
+- (BOOL)resumeMonitoringAccountID:(id)d syncKeyMap:(id)map;
+- (BOOL)startMonitoringAccountID:(id)d syncKeyMap:(id)map;
+- (BOOL)stopMonitoringAccountID:(id)d folderIDs:(id)ds;
+- (BOOL)suspendMonitoringAccountID:(id)d folderIDs:(id)ds;
+- (BOOL)updateContentsOfAllFoldersForAccountID:(id)d andDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested;
+- (BOOL)updateContentsOfAllFoldersForAccountIDs:(id)ds;
+- (BOOL)updateContentsOfFolders:(id)folders forAccountID:(id)d andDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested;
+- (BOOL)updateFolderListForAccountID:(id)d andDataclasses:(int64_t)dataclasses requireChangedFolders:(BOOL)folders isUserRequested:(BOOL)requested;
 - (DADAgentManager)init;
 - (NSArray)activeAgents;
 - (id)_accountInfoPath;
-- (id)_configFileForAgent:(id)a3;
-- (id)accountWithAccountID:(id)a3;
-- (id)accountWithAccountID:(id)a3 andClassName:(id)a4;
+- (id)_configFileForAgent:(id)agent;
+- (id)accountWithAccountID:(id)d;
+- (id)accountWithAccountID:(id)d andClassName:(id)name;
 - (id)activeAccountBundleIDs;
-- (id)agentWithAccountID:(id)a3;
+- (id)agentWithAccountID:(id)d;
 - (id)stateString;
 - (unint64_t)disableMonitoringAgents;
 - (void)_addAccountAggdEntries;
@@ -28,21 +28,21 @@
 - (void)_deviceDidWake;
 - (void)_deviceWillSleep;
 - (void)_handleCellularDataUsageChangedNotification;
-- (void)_loadAndStartMonitoringAgents:(BOOL)a3;
+- (void)_loadAndStartMonitoringAgents:(BOOL)agents;
 - (void)_registerForCTDataUsageNotificaiton;
 - (void)_resetMonitoringRequestsAndLoadAgents;
 - (void)_stopMonitoringAndSaveAgents;
 - (void)dealloc;
 - (void)disableActiveSync;
 - (void)enableActiveSync;
-- (void)enableMonitoringAgentsWithToken:(unint64_t)a3;
-- (void)getStatusReportDictsWithCompletionBlock:(id)a3;
-- (void)loadAgents:(BOOL)a3;
-- (void)processMeetingRequestDatas:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 forAccountWithId:(id)a7 callback:(id)a8;
+- (void)enableMonitoringAgentsWithToken:(unint64_t)token;
+- (void)getStatusReportDictsWithCompletionBlock:(id)block;
+- (void)loadAgents:(BOOL)agents;
+- (void)processMeetingRequestDatas:(id)datas deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id forAccountWithId:(id)withId callback:(id)callback;
 - (void)registerForBuddy;
 - (void)removePendingAccountSetup;
 - (void)saveAndReleaseAgents;
-- (void)setRem_xpcEventHandler:(id)a3;
+- (void)setRem_xpcEventHandler:(id)handler;
 - (void)unregisterForBuddy;
 @end
 
@@ -109,12 +109,12 @@ void __31__DADAgentManager_activeAgents__block_invoke(uint64_t a1)
 - (void)_deviceDidWake
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(DADAgentManager *)self activeAgents];
+  activeAgents = [(DADAgentManager *)self activeAgents];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v3 = [activeAgents countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -126,17 +126,17 @@ void __31__DADAgentManager_activeAgents__block_invoke(uint64_t a1)
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeAgents);
         }
 
-        v7 = [*(*(&v9 + 1) + 8 * v6) account];
-        [v7 deviceDidWake];
+        account = [*(*(&v9 + 1) + 8 * v6) account];
+        [account deviceDidWake];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [activeAgents countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -145,10 +145,10 @@ void __31__DADAgentManager_activeAgents__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRem_xpcEventHandler:(id)a3
+- (void)setRem_xpcEventHandler:(id)handler
 {
   v4 = DADAgentManagerDADREMXPCEventHandlerKey;
-  v5 = MEMORY[0x245D102E0](a3, a2);
+  v5 = MEMORY[0x245D102E0](handler, a2);
   objc_setAssociatedObject(self, v4, v5, 0x303);
 }
 
@@ -174,9 +174,9 @@ uint64_t __32__DADAgentManager_sharedManager__block_invoke()
       v3->_pmRunLoopSource = RunLoopSource;
       if (RunLoopSource)
       {
-        v5 = [MEMORY[0x277CF3A20] sharedRunLoop];
-        v6 = [v5 getCFRunLoop];
-        CFRunLoopAddSource(v6, v3->_pmRunLoopSource, *MEMORY[0x277CBF048]);
+        mEMORY[0x277CF3A20] = [MEMORY[0x277CF3A20] sharedRunLoop];
+        getCFRunLoop = [mEMORY[0x277CF3A20] getCFRunLoop];
+        CFRunLoopAddSource(getCFRunLoop, v3->_pmRunLoopSource, *MEMORY[0x277CBF048]);
 
         v7 = DALoggingwithCategory();
         v8 = *(MEMORY[0x277CF3AF0] + 6);
@@ -235,9 +235,9 @@ LABEL_10:
 {
   if (self->_pmRunLoopSource)
   {
-    v3 = [MEMORY[0x277CF3A20] sharedRunLoop];
-    v4 = [v3 getCFRunLoop];
-    CFRunLoopRemoveSource(v4, self->_pmRunLoopSource, *MEMORY[0x277CBF048]);
+    mEMORY[0x277CF3A20] = [MEMORY[0x277CF3A20] sharedRunLoop];
+    getCFRunLoop = [mEMORY[0x277CF3A20] getCFRunLoop];
+    CFRunLoopRemoveSource(getCFRunLoop, self->_pmRunLoopSource, *MEMORY[0x277CBF048]);
 
     CFRunLoopSourceInvalidate(self->_pmRunLoopSource);
   }
@@ -258,16 +258,16 @@ LABEL_10:
   [(DADAgentManager *)&v7 dealloc];
 }
 
-- (id)agentWithAccountID:(id)a3
+- (id)agentWithAccountID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DADAgentManager *)self activeAgents];
+  dCopy = d;
+  activeAgents = [(DADAgentManager *)self activeAgents];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [activeAgents countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -279,13 +279,13 @@ LABEL_10:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeAgents);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 account];
-        v13 = [v12 accountID];
-        v14 = [v13 isEqualToString:v4];
+        account = [v11 account];
+        accountID = [account accountID];
+        v14 = [accountID isEqualToString:dCopy];
 
         if (v14)
         {
@@ -295,7 +295,7 @@ LABEL_10:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [activeAgents countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
@@ -311,51 +311,51 @@ LABEL_10:
   return v8;
 }
 
-- (id)accountWithAccountID:(id)a3
+- (id)accountWithAccountID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DADAgentManager *)self activeAgents];
+  dCopy = d;
+  activeAgents = [(DADAgentManager *)self activeAgents];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [activeAgents countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
-    v8 = 0;
+    account = 0;
     v9 = 0;
     v10 = *v20;
     do
     {
       v11 = 0;
-      v12 = v8;
+      v12 = account;
       do
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeAgents);
         }
 
-        v8 = [*(*(&v19 + 1) + 8 * v11) account];
+        account = [*(*(&v19 + 1) + 8 * v11) account];
 
-        v13 = [v8 accountID];
-        v14 = [v13 isEqualToString:v4];
+        accountID = [account accountID];
+        v14 = [accountID isEqualToString:dCopy];
 
         if (v14)
         {
-          v15 = v8;
+          v15 = account;
 
           v9 = v15;
         }
 
         ++v11;
-        v12 = v8;
+        v12 = account;
       }
 
       while (v7 != v11);
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [activeAgents countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
@@ -363,7 +363,7 @@ LABEL_10:
 
   else
   {
-    v8 = 0;
+    account = 0;
     v9 = 0;
   }
 
@@ -373,39 +373,39 @@ LABEL_10:
   return v9;
 }
 
-- (id)accountWithAccountID:(id)a3 andClassName:(id)a4
+- (id)accountWithAccountID:(id)d andClassName:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v20 = a4;
-  NSClassFromString(v20);
-  v7 = [(DADAgentManager *)self activeAgents];
+  dCopy = d;
+  nameCopy = name;
+  NSClassFromString(nameCopy);
+  activeAgents = [(DADAgentManager *)self activeAgents];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v8 = [activeAgents countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    account = 0;
     v11 = 0;
     v12 = *v22;
     while (1)
     {
       v13 = 0;
-      v14 = v10;
+      v14 = account;
       do
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(activeAgents);
         }
 
-        v10 = [*(*(&v21 + 1) + 8 * v13) account];
+        account = [*(*(&v21 + 1) + 8 * v13) account];
 
-        v15 = [v10 accountID];
-        if ([v15 isEqualToString:v6])
+        accountID = [account accountID];
+        if ([accountID isEqualToString:dCopy])
         {
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -414,17 +414,17 @@ LABEL_10:
             goto LABEL_10;
           }
 
-          v15 = v11;
-          v11 = v10;
+          accountID = v11;
+          v11 = account;
         }
 
 LABEL_10:
         ++v13;
-        v14 = v10;
+        v14 = account;
       }
 
       while (v9 != v13);
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [activeAgents countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (!v9)
       {
         goto LABEL_14;
@@ -432,7 +432,7 @@ LABEL_10:
     }
   }
 
-  v10 = 0;
+  account = 0;
   v11 = 0;
 LABEL_14:
   v17 = v11;
@@ -441,20 +441,20 @@ LABEL_14:
   return v11;
 }
 
-- (id)_configFileForAgent:(id)a3
+- (id)_configFileForAgent:(id)agent
 {
-  v3 = a3;
+  agentCopy = agent;
   v4 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   v5 = [v4 objectAtIndexedSubscript:0];
 
   v6 = [v5 stringByAppendingPathComponent:@"Reminders/DataAccess"];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  [v7 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v8 = [v3 account];
+  account = [agentCopy account];
 
-  v9 = [v8 accountID];
-  v10 = [v6 stringByAppendingPathComponent:v9];
+  accountID = [account accountID];
+  v10 = [v6 stringByAppendingPathComponent:accountID];
 
   return v10;
 }
@@ -465,29 +465,29 @@ LABEL_14:
   v3 = [v2 objectAtIndexedSubscript:0];
 
   v4 = [v3 stringByAppendingPathComponent:@"Reminders/DataAccess"];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
 
   v6 = [v4 stringByAppendingPathComponent:@"AccountInformation.plist"];
 
   return v6;
 }
 
-- (void)loadAgents:(BOOL)a3
+- (void)loadAgents:(BOOL)agents
 {
-  v97 = a3;
+  agentsCopy = agents;
   v162 = *MEMORY[0x277D85DE8];
-  v95 = self;
-  objc_sync_enter(v95);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v98 = objc_opt_new();
   v105 = objc_opt_new();
   v103 = objc_opt_new();
-  v99 = [MEMORY[0x277CBEB18] array];
-  v3 = [(DADAgentManager *)v95 rem_storeProvider];
-  v4 = [v3 rem_storeForDataAccess];
+  array = [MEMORY[0x277CBEB18] array];
+  rem_storeProvider = [(DADAgentManager *)selfCopy rem_storeProvider];
+  rem_storeForDataAccess = [rem_storeProvider rem_storeForDataAccess];
 
-  v94 = v4;
-  if (!v4)
+  v94 = rem_storeForDataAccess;
+  if (!rem_storeForDataAccess)
   {
     v5 = DALoggingwithCategory();
     v6 = *(MEMORY[0x277CF3AF0] + 3);
@@ -499,14 +499,14 @@ LABEL_14:
   }
 
   v104 = sharedDAAccountStore();
-  v109 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v146 = 0u;
   v147 = 0u;
   v144 = 0u;
   v145 = 0u;
-  v7 = [MEMORY[0x277CF39F8] _leafAccountTypes];
-  v8 = [v7 countByEnumeratingWithState:&v144 objects:v161 count:16];
-  obj = v7;
+  _leafAccountTypes = [MEMORY[0x277CF39F8] _leafAccountTypes];
+  v8 = [_leafAccountTypes countByEnumeratingWithState:&v144 objects:v161 count:16];
+  obj = _leafAccountTypes;
   if (v8)
   {
     v100 = *v145;
@@ -556,15 +556,15 @@ LABEL_14:
               }
 
               v18 = *(*(&v140 + 1) + 8 * v17);
-              v19 = [v18 identifier];
-              if (!v19)
+              identifier = [v18 identifier];
+              if (!identifier)
               {
                 v23 = DALoggingwithCategory();
                 if (os_log_type_enabled(v23, type))
                 {
-                  v25 = [v18 accountDescription];
+                  accountDescription = [v18 accountDescription];
                   *buf = 138412290;
-                  v151 = v25;
+                  v151 = accountDescription;
                   _os_log_impl(&dword_2424DF000, v23, type, "loadAgents: ERROR: Can't load agent for this AC account because does not have an account identifier! {acAccount: %@}.", buf, 0xCu);
                 }
 
@@ -576,19 +576,19 @@ LABEL_14:
                 v23 = DALoggingwithCategory();
                 if (os_log_type_enabled(v23, v9))
                 {
-                  v26 = [v18 accountDescription];
+                  accountDescription2 = [v18 accountDescription];
                   *buf = 138412546;
-                  v151 = v26;
+                  v151 = accountDescription2;
                   v152 = 2114;
-                  v153 = v19;
+                  v153 = identifier;
                   _os_log_impl(&dword_2424DF000, v23, v9, "loadAgents: Skip loading agent for this AC account because it is not enabled for reminders {acAccount: %@ %{public}@}.", buf, 0x16u);
                 }
 
                 goto LABEL_25;
               }
 
-              v20 = [v18 accountProperties];
-              v21 = [v20 valueForKey:v111];
+              accountProperties = [v18 accountProperties];
+              v21 = [accountProperties valueForKey:v111];
               v22 = v21 == 0;
 
               if (!v22)
@@ -596,11 +596,11 @@ LABEL_14:
                 v23 = DALoggingwithCategory();
                 if (os_log_type_enabled(v23, v9))
                 {
-                  v24 = [v18 accountDescription];
+                  accountDescription3 = [v18 accountDescription];
                   *buf = 138412546;
-                  v151 = v24;
+                  v151 = accountDescription3;
                   v152 = 2114;
-                  v153 = v19;
+                  v153 = identifier;
                   _os_log_impl(&dword_2424DF000, v23, v9, "loadAgents: Skip loading agent for this AC account because it is a delegate {acAccount: %@ %{public}@}.", buf, 0x16u);
                 }
 
@@ -609,7 +609,7 @@ LABEL_25:
                 goto LABEL_26;
               }
 
-              [v109 setObject:v18 forKey:v19];
+              [dictionary setObject:v18 forKey:identifier];
 LABEL_26:
 
               ++v17;
@@ -639,9 +639,9 @@ LABEL_30:
     while (v8);
   }
 
-  v28 = [v109 allKeys];
+  allKeys = [dictionary allKeys];
   v139 = 0;
-  v118 = [v94 fetchAccountsWithExternalIdentifiers:v28 error:&v139];
+  v118 = [v94 fetchAccountsWithExternalIdentifiers:allKeys error:&v139];
   v108 = v139;
   if (v108)
   {
@@ -649,11 +649,11 @@ LABEL_30:
     v30 = *(MEMORY[0x277CF3AF0] + 3);
     if (os_log_type_enabled(v29, v30))
     {
-      v31 = [v108 localizedDescription];
+      localizedDescription = [v108 localizedDescription];
       *buf = 138543618;
-      v151 = v31;
+      v151 = localizedDescription;
       v152 = 2114;
-      v153 = v28;
+      v153 = allKeys;
       _os_log_impl(&dword_2424DF000, v29, v30, "ERROR: loadAgents: Could not fetch accounts with exteranl identifiers to load agents (error: %{public}@, identifiers: %{public}@)", buf, 0x16u);
     }
   }
@@ -662,7 +662,7 @@ LABEL_30:
   v138 = 0u;
   v135 = 0u;
   v136 = 0u;
-  typea = v28;
+  typea = allKeys;
   v32 = [typea countByEnumeratingWithState:&v135 objects:v159 count:16];
   if (v32)
   {
@@ -680,12 +680,12 @@ LABEL_30:
         }
 
         v37 = *(*(&v135 + 1) + 8 * i);
-        v38 = [v109 objectForKey:v37];
+        v38 = [dictionary objectForKey:v37];
         v39 = [v118 objectForKey:v37];
         if (v39)
         {
-          v40 = [MEMORY[0x277CF3A00] sharedInstance];
-          v41 = [v40 daemonAppropriateAccountClassForACAccount:v38];
+          mEMORY[0x277CF3A00] = [MEMORY[0x277CF3A00] sharedInstance];
+          v41 = [mEMORY[0x277CF3A00] daemonAppropriateAccountClassForACAccount:v38];
 
           v42 = [[v41 alloc] initWithBackingAccountInfo:v38];
           if (v42)
@@ -701,7 +701,7 @@ LABEL_30:
               _os_log_impl(&dword_2424DF000, v43, v34, "loadAgents: Creating an agent for account info %@ (%{public}@)", buf, 0x16u);
             }
 
-            [v99 addObject:v42];
+            [array addObject:v42];
           }
 
           else
@@ -724,12 +724,12 @@ LABEL_30:
           v42 = DALoggingwithCategory();
           if (os_log_type_enabled(v42, v35))
           {
-            v45 = [v38 accountDescription];
-            v46 = [v38 identifier];
+            accountDescription4 = [v38 accountDescription];
+            identifier2 = [v38 identifier];
             *buf = 138412546;
-            v151 = v45;
+            v151 = accountDescription4;
             v152 = 2114;
-            v153 = v46;
+            v153 = identifier2;
             _os_log_impl(&dword_2424DF000, v42, v35, "loadAgents: LOOKATME: Skip loading agent for this AC account because REM account is missing {acAccount: %@ %{public}@}.", buf, 0x16u);
           }
         }
@@ -745,7 +745,7 @@ LABEL_30:
   v134 = 0u;
   v131 = 0u;
   v132 = 0u;
-  v112 = v99;
+  v112 = array;
   v49 = [v112 countByEnumeratingWithState:&v131 objects:v158 count:16];
   if (v49)
   {
@@ -761,10 +761,10 @@ LABEL_30:
         }
 
         v53 = *(*(&v131 + 1) + 8 * j);
-        v54 = [v53 accountID];
-        if (v54)
+        accountID = [v53 accountID];
+        if (accountID)
         {
-          [v103 addObject:v54];
+          [v103 addObject:accountID];
         }
 
         if ([v53 isDisabled])
@@ -772,14 +772,14 @@ LABEL_30:
           v55 = DALoggingwithCategory();
           if (os_log_type_enabled(v55, v51))
           {
-            v56 = [v53 accountDescription];
-            v57 = [v53 accountID];
+            accountDescription5 = [v53 accountDescription];
+            accountID2 = [v53 accountID];
             v58 = objc_opt_class();
             v59 = NSStringFromClass(v58);
             *buf = 138543874;
-            v151 = v56;
+            v151 = accountDescription5;
             v152 = 2112;
-            v153 = v57;
+            v153 = accountID2;
             v154 = 2114;
             v155 = v59;
             _os_log_impl(&dword_2424DF000, v55, v51, "loadAgents: Not loading an agent for account %{public}@ (%@) (%{public}@), because it is disabled", buf, 0x20u);
@@ -788,20 +788,20 @@ LABEL_30:
 
         else
         {
-          v60 = [v53 agentClass];
-          if (v60)
+          agentClass = [v53 agentClass];
+          if (agentClass)
           {
-            v61 = [v53 accountID];
-            [v105 addObject:v61];
+            accountID3 = [v53 accountID];
+            [v105 addObject:accountID3];
 
-            if (v97)
+            if (agentsCopy)
             {
-              v62 = [v60 launchingAgentWithAccount:v53];
+              v62 = [agentClass launchingAgentWithAccount:v53];
             }
 
             else
             {
-              v62 = [[v60 alloc] initWithAccount:v53];
+              v62 = [[agentClass alloc] initWithAccount:v53];
             }
 
             v55 = v62;
@@ -809,16 +809,16 @@ LABEL_30:
             v67 = DALoggingwithCategory();
             if (os_log_type_enabled(v67, v51))
             {
-              v68 = [v53 accountDescription];
-              v69 = [v53 accountID];
+              accountDescription6 = [v53 accountDescription];
+              accountID4 = [v53 accountID];
               v70 = objc_opt_class();
               v71 = NSStringFromClass(v70);
               *buf = 138413058;
               v151 = v55;
               v152 = 2114;
-              v153 = v68;
+              v153 = accountDescription6;
               v154 = 2112;
-              v155 = v69;
+              v155 = accountID4;
               v156 = 2114;
               v157 = v71;
               _os_log_impl(&dword_2424DF000, v67, v51, "loadAgents: Loading up agent %@ for account %{public}@ (%@) (%{public}@)", buf, 0x2Au);
@@ -830,14 +830,14 @@ LABEL_30:
             v55 = DALoggingwithCategory();
             if (os_log_type_enabled(v55, v51))
             {
-              v63 = [v53 accountDescription];
-              v64 = [v53 accountID];
+              accountDescription7 = [v53 accountDescription];
+              accountID5 = [v53 accountID];
               v65 = objc_opt_class();
               v66 = NSStringFromClass(v65);
               *buf = 138543874;
-              v151 = v63;
+              v151 = accountDescription7;
               v152 = 2112;
-              v153 = v64;
+              v153 = accountID5;
               v154 = 2114;
               v155 = v66;
               _os_log_impl(&dword_2424DF000, v55, v51, "loadAgents: Not loading an agent for account %{public}@ (%@) (%{public}@), because agentClass is nil", buf, 0x20u);
@@ -854,21 +854,21 @@ LABEL_30:
 
   if ([v98 count])
   {
-    activeAgentsQueue = v95->_activeAgentsQueue;
+    activeAgentsQueue = selfCopy->_activeAgentsQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __30__DADAgentManager_loadAgents___block_invoke;
     block[3] = &unk_278D52AB0;
-    block[4] = v95;
+    block[4] = selfCopy;
     v130 = v98;
     dispatch_sync(activeAgentsQueue, block);
   }
 
-  objc_sync_exit(v95);
+  objc_sync_exit(selfCopy);
   v113 = objc_opt_new();
   v73 = objc_alloc(MEMORY[0x277CBEA60]);
-  v74 = [(DADAgentManager *)v95 _accountInfoPath];
-  v75 = [v73 initWithContentsOfFile:v74];
+  _accountInfoPath = [(DADAgentManager *)selfCopy _accountInfoPath];
+  v75 = [v73 initWithContentsOfFile:_accountInfoPath];
 
   v127 = 0u;
   v128 = 0u;
@@ -909,7 +909,7 @@ LABEL_30:
 
   if ([v113 count])
   {
-    v83 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
     v123 = 0u;
     v124 = 0u;
     v121 = 0u;
@@ -931,7 +931,7 @@ LABEL_30:
 
           v88 = *(*(&v121 + 1) + 8 * m);
           v120 = 0;
-          v89 = [v83 applyRestrictionDictionary:0 clientType:@"com.apple.eas.account" clientUUID:v88 localizedClientDescription:0 localizedWarningMessage:0 outRestrictionChanged:0 outEffectiveSettingsChanged:0 outError:&v120];
+          v89 = [mEMORY[0x277D262A0] applyRestrictionDictionary:0 clientType:@"com.apple.eas.account" clientUUID:v88 localizedClientDescription:0 localizedWarningMessage:0 outRestrictionChanged:0 outEffectiveSettingsChanged:0 outError:&v120];
           v90 = v120;
           if ((v89 & 1) == 0)
           {
@@ -954,8 +954,8 @@ LABEL_30:
     }
   }
 
-  v92 = [MEMORY[0x277D262A0] sharedConnection];
-  [v92 removeOrphanedClientRestrictionsWithCompletion:0];
+  mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0]2 removeOrphanedClientRestrictionsWithCompletion:0];
 
   v93 = *MEMORY[0x277D85DE8];
 }
@@ -1009,17 +1009,17 @@ void __30__DADAgentManager_loadAgents___block_invoke(uint64_t a1)
         }
 
         v7 = *(*(&v28 + 1) + 8 * i);
-        v8 = [v7 account];
+        account = [v7 account];
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
-        v11 = [v8 accountID];
-        v12 = [v8 persistentUUID];
-        v13 = v12;
+        accountID = [account accountID];
+        persistentUUID = [account persistentUUID];
+        v13 = persistentUUID;
         v32[0] = @"DAAgentClass";
         v32[1] = @"Identifier";
-        if (v11)
+        if (accountID)
         {
-          v14 = v11;
+          v14 = accountID;
         }
 
         else
@@ -1030,9 +1030,9 @@ void __30__DADAgentManager_loadAgents___block_invoke(uint64_t a1)
         v33[0] = v10;
         v33[1] = v14;
         v32[2] = v5;
-        if (v12)
+        if (persistentUUID)
         {
-          v15 = v12;
+          v15 = persistentUUID;
         }
 
         else
@@ -1052,11 +1052,11 @@ void __30__DADAgentManager_loadAgents___block_invoke(uint64_t a1)
     while (v4);
   }
 
-  v17 = [(DADAgentManager *)self _accountInfoPath];
-  [v24 writeToFile:v17 atomically:1];
+  _accountInfoPath = [(DADAgentManager *)self _accountInfoPath];
+  [v24 writeToFile:_accountInfoPath atomically:1];
 
-  v18 = [MEMORY[0x277D262A0] sharedConnection];
-  [v18 removeOrphanedClientRestrictionsWithCompletion:0];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] removeOrphanedClientRestrictionsWithCompletion:0];
 
   activeAgentsQueue = self->_activeAgentsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1064,7 +1064,7 @@ void __30__DADAgentManager_loadAgents___block_invoke(uint64_t a1)
   block[2] = __39__DADAgentManager_saveAndReleaseAgents__block_invoke;
   block[3] = &unk_278D52AB0;
   v26 = obj;
-  v27 = self;
+  selfCopy = self;
   v20 = obj;
   dispatch_sync(activeAgentsQueue, block);
 
@@ -1097,12 +1097,12 @@ void __39__DADAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
 - (void)_deviceWillSleep
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(DADAgentManager *)self activeAgents];
+  activeAgents = [(DADAgentManager *)self activeAgents];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v3 = [activeAgents countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1113,14 +1113,14 @@ void __39__DADAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeAgents);
         }
 
-        v7 = [*(*(&v13 + 1) + 8 * i) account];
-        [v7 deviceWillSleep];
+        account = [*(*(&v13 + 1) + 8 * i) account];
+        [account deviceWillSleep];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [activeAgents countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -1145,11 +1145,11 @@ void __39__DADAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)startMonitoringAccountID:(id)a3 syncKeyMap:(id)a4
+- (BOOL)startMonitoringAccountID:(id)d syncKeyMap:(id)map
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v28 = a4;
+  dCopy = d;
+  mapCopy = map;
   [(DADAgentManager *)self activeAgents];
   v30 = 0u;
   v31 = 0u;
@@ -1175,13 +1175,13 @@ void __39__DADAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
       }
 
       v13 = *(*(&v30 + 1) + 8 * i);
-      v14 = [v13 account];
-      v15 = [v14 accountID];
-      v16 = [v15 isEqualToString:v6];
+      account = [v13 account];
+      accountID = [account accountID];
+      v16 = [accountID isEqualToString:dCopy];
 
       if (v16)
       {
-        v10 = [v13 monitorFoldersWithSyncKeyMap:v28];
+        v10 = [v13 monitorFoldersWithSyncKeyMap:mapCopy];
         v9 = 1;
       }
     }
@@ -1198,9 +1198,9 @@ void __39__DADAgentManager_saveAndReleaseAgents__block_invoke(uint64_t a1)
       v19 = *(MEMORY[0x277CF3AF0] + 3);
       if (os_log_type_enabled(v18, v19))
       {
-        v20 = [v28 allKeys];
+        allKeys = [mapCopy allKeys];
         *buf = 138543362;
-        v35 = v20;
+        v35 = allKeys;
         v21 = "Did not start monitoring folder ids %{public}@, because the agent said nope";
         v22 = v18;
         v23 = v19;
@@ -1219,11 +1219,11 @@ LABEL_15:
     v25 = *(MEMORY[0x277CF3AF0] + 3);
     if (os_log_type_enabled(v18, v25))
     {
-      v20 = [v28 allKeys];
+      allKeys = [mapCopy allKeys];
       *buf = 138543874;
-      v35 = v20;
+      v35 = allKeys;
       v36 = 2114;
-      v37 = v6;
+      v37 = dCopy;
       v38 = 2112;
       v39 = obj;
       v21 = "Did not start monitoring folder ids %{public}@, because I have no agent containing account id %{public}@.  Agents: %@";
@@ -1246,17 +1246,17 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)stopMonitoringAccountID:(id)a3 folderIDs:(id)a4
+- (BOOL)stopMonitoringAccountID:(id)d folderIDs:(id)ds
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
-  v7 = [(DADAgentManager *)self activeAgents];
+  dCopy = d;
+  dsCopy = ds;
+  activeAgents = [(DADAgentManager *)self activeAgents];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v8 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (!v8)
   {
     goto LABEL_12;
@@ -1271,24 +1271,24 @@ LABEL_19:
     {
       if (*v25 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(activeAgents);
       }
 
       v13 = *(*(&v24 + 1) + 8 * i);
-      v14 = [v13 account];
-      v15 = [v14 accountID];
-      v16 = [v15 isEqualToString:v6];
+      account = [v13 account];
+      accountID = [account accountID];
+      v16 = [accountID isEqualToString:dCopy];
 
       if (v16)
       {
-        v17 = [v13 account];
-        [v17 stopMonitoringFoldersWithIDs:v23];
+        account2 = [v13 account];
+        [account2 stopMonitoringFoldersWithIDs:dsCopy];
 
         v10 = 1;
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+    v9 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   }
 
   while (v9);
@@ -1305,11 +1305,11 @@ LABEL_12:
     if (os_log_type_enabled(v19, v20))
     {
       *buf = 138543874;
-      v29 = v23;
+      v29 = dsCopy;
       v30 = 2114;
-      v31 = v6;
+      v31 = dCopy;
       v32 = 2112;
-      v33 = v7;
+      v33 = activeAgents;
       _os_log_impl(&dword_2424DF000, v19, v20, "Did not stop monitoring folder ids %{public}@, because I have no agent containing account id %{public}@.  Agents: %@", buf, 0x20u);
     }
 
@@ -1320,17 +1320,17 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)suspendMonitoringAccountID:(id)a3 folderIDs:(id)a4
+- (BOOL)suspendMonitoringAccountID:(id)d folderIDs:(id)ds
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
-  v7 = [(DADAgentManager *)self activeAgents];
+  dCopy = d;
+  dsCopy = ds;
+  activeAgents = [(DADAgentManager *)self activeAgents];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v8 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (!v8)
   {
     goto LABEL_12;
@@ -1345,24 +1345,24 @@ LABEL_12:
     {
       if (*v25 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(activeAgents);
       }
 
       v13 = *(*(&v24 + 1) + 8 * i);
-      v14 = [v13 account];
-      v15 = [v14 accountID];
-      v16 = [v15 isEqualToString:v6];
+      account = [v13 account];
+      accountID = [account accountID];
+      v16 = [accountID isEqualToString:dCopy];
 
       if (v16)
       {
-        v17 = [v13 account];
-        [v17 suspendMonitoringFoldersWithIDs:v23];
+        account2 = [v13 account];
+        [account2 suspendMonitoringFoldersWithIDs:dsCopy];
 
         v10 = 1;
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+    v9 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   }
 
   while (v9);
@@ -1379,11 +1379,11 @@ LABEL_12:
     if (os_log_type_enabled(v19, v20))
     {
       *buf = 138543874;
-      v29 = v23;
+      v29 = dsCopy;
       v30 = 2114;
-      v31 = v6;
+      v31 = dCopy;
       v32 = 2112;
-      v33 = v7;
+      v33 = activeAgents;
       _os_log_impl(&dword_2424DF000, v19, v20, "Did not suspend monitoring folder ids %{public}@, because I have no agent containing account id %{public}@.  Agents: %@", buf, 0x20u);
     }
 
@@ -1394,17 +1394,17 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)resumeMonitoringAccountID:(id)a3 syncKeyMap:(id)a4
+- (BOOL)resumeMonitoringAccountID:(id)d syncKeyMap:(id)map
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
-  v7 = [(DADAgentManager *)self activeAgents];
+  dCopy = d;
+  mapCopy = map;
+  activeAgents = [(DADAgentManager *)self activeAgents];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v8 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (!v8)
   {
     goto LABEL_12;
@@ -1419,22 +1419,22 @@ LABEL_12:
     {
       if (*v25 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(activeAgents);
       }
 
       v13 = *(*(&v24 + 1) + 8 * i);
-      v14 = [v13 account];
-      v15 = [v14 accountID];
-      v16 = [v15 isEqualToString:v6];
+      account = [v13 account];
+      accountID = [account accountID];
+      v16 = [accountID isEqualToString:dCopy];
 
       if (v16)
       {
-        [v13 resumeMonitoringFoldersWithSyncKeyMap:v23];
+        [v13 resumeMonitoringFoldersWithSyncKeyMap:mapCopy];
         v10 = 1;
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+    v9 = [activeAgents countByEnumeratingWithState:&v24 objects:v34 count:16];
   }
 
   while (v9);
@@ -1450,13 +1450,13 @@ LABEL_12:
     v19 = *(MEMORY[0x277CF3AF0] + 3);
     if (os_log_type_enabled(v18, v19))
     {
-      v20 = [v23 allKeys];
+      allKeys = [mapCopy allKeys];
       *buf = 138543874;
-      v29 = v20;
+      v29 = allKeys;
       v30 = 2114;
-      v31 = v6;
+      v31 = dCopy;
       v32 = 2112;
-      v33 = v7;
+      v33 = activeAgents;
       _os_log_impl(&dword_2424DF000, v18, v19, "Did not resume monitoring folder ids %{public}@, because I have no agent containing account id %{public}@.  Agents: %@", buf, 0x20u);
     }
 
@@ -1469,17 +1469,17 @@ LABEL_12:
 
 - (void)_clearOrphanedStores
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a1 object:a2 file:@"DADAgentManager.m" lineNumber:982 description:{@"When clearing orphaned stores, we have an account with no accountID.  That's bad.  account: %@", a3}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"DADAgentManager.m" lineNumber:982 description:{@"When clearing orphaned stores, we have an account with no accountID.  That's bad.  account: %@", a3}];
 }
 
 - (BOOL)_systemMayNowBeReady
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x277CF3AF0];
-  if (v2->_startAgentsWhenSystemReadyBlock)
+  if (selfCopy->_startAgentsWhenSystemReadyBlock)
   {
     v4 = +[DADBuddyStateObserver hasPassedBuddy];
     v5 = DALoggingwithCategory();
@@ -1493,9 +1493,9 @@ LABEL_12:
 
     if (v4)
     {
-      v7 = MEMORY[0x245D102E0](v2->_startAgentsWhenSystemReadyBlock);
-      startAgentsWhenSystemReadyBlock = v2->_startAgentsWhenSystemReadyBlock;
-      v2->_startAgentsWhenSystemReadyBlock = 0;
+      v7 = MEMORY[0x245D102E0](selfCopy->_startAgentsWhenSystemReadyBlock);
+      startAgentsWhenSystemReadyBlock = selfCopy->_startAgentsWhenSystemReadyBlock;
+      selfCopy->_startAgentsWhenSystemReadyBlock = 0;
       goto LABEL_12;
     }
 
@@ -1524,10 +1524,10 @@ LABEL_10:
   v7 = 0;
 LABEL_12:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   if (v7)
   {
-    [(DADAgentManager *)v2 unregisterForBuddy];
+    [(DADAgentManager *)selfCopy unregisterForBuddy];
     v10 = DALoggingwithCategory();
     v11 = *(v3 + 5);
     if (os_log_type_enabled(v10, v11))
@@ -1564,8 +1564,8 @@ LABEL_12:
     _os_log_impl(&dword_2424DF000, v3, v4, "DAAgentManager: Clearing disableMonitoringAgentsTokens and Loading Agents", v6, 2u);
   }
 
-  v5 = [(DADAgentManager *)self disableMonitoringAgentsTokens];
-  [v5 removeAllObjects];
+  disableMonitoringAgentsTokens = [(DADAgentManager *)self disableMonitoringAgentsTokens];
+  [disableMonitoringAgentsTokens removeAllObjects];
 
   [(DADAgentManager *)self _loadAndStartMonitoringAgents:1];
 }
@@ -1662,8 +1662,8 @@ void __54__DADAgentManager__registerForCTDataUsageNotificaiton__block_invoke_2()
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v6 = [(DADAgentManager *)self activeAgents];
-  v7 = [v6 countByEnumeratingWithState:&v50 objects:v60 count:16];
+  activeAgents = [(DADAgentManager *)self activeAgents];
+  v7 = [activeAgents countByEnumeratingWithState:&v50 objects:v60 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1674,15 +1674,15 @@ void __54__DADAgentManager__registerForCTDataUsageNotificaiton__block_invoke_2()
       {
         if (*v51 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeAgents);
         }
 
-        v11 = [*(*(&v50 + 1) + 8 * i) account];
-        v12 = [v11 onBehalfOfBundleIdentifier];
-        [v5 addObject:v12];
+        account = [*(*(&v50 + 1) + 8 * i) account];
+        onBehalfOfBundleIdentifier = [account onBehalfOfBundleIdentifier];
+        [v5 addObject:onBehalfOfBundleIdentifier];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v50 objects:v60 count:16];
+      v8 = [activeAgents countByEnumeratingWithState:&v50 objects:v60 count:16];
     }
 
     while (v8);
@@ -1728,8 +1728,8 @@ void __54__DADAgentManager__registerForCTDataUsageNotificaiton__block_invoke_2()
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v19 = [(DADAgentManager *)self activeAgents];
-    v20 = [v19 countByEnumeratingWithState:&v41 objects:v58 count:16];
+    activeAgents2 = [(DADAgentManager *)self activeAgents];
+    v20 = [activeAgents2 countByEnumeratingWithState:&v41 objects:v58 count:16];
     if (v20)
     {
       v22 = v20;
@@ -1743,38 +1743,38 @@ void __54__DADAgentManager__registerForCTDataUsageNotificaiton__block_invoke_2()
         {
           if (*v42 != v23)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(activeAgents2);
           }
 
           v25 = *(*(&v41 + 1) + 8 * k);
-          v26 = [v25 account];
-          v27 = [v26 onBehalfOfBundleIdentifier];
+          account2 = [v25 account];
+          onBehalfOfBundleIdentifier2 = [account2 onBehalfOfBundleIdentifier];
 
-          if ([v40 containsObject:v27])
+          if ([v40 containsObject:onBehalfOfBundleIdentifier2])
           {
-            v28 = v19;
+            v28 = activeAgents2;
             v29 = DALoggingwithCategory();
             if (os_log_type_enabled(v29, type))
             {
-              v30 = [v25 account];
-              v31 = [v30 accountID];
+              account3 = [v25 account];
+              accountID = [account3 accountID];
               *buf = v36;
-              v55 = v31;
+              v55 = accountID;
               v56 = 2114;
-              v57 = v27;
+              v57 = onBehalfOfBundleIdentifier2;
               _os_log_impl(&dword_2424DF000, v29, type, "Refreshing account %{public}@ because wireless data use is now allowed for %{public}@ and might not have been before.", buf, 0x16u);
             }
 
-            v32 = [v25 account];
-            v33 = [v32 accountID];
-            v34 = [v25 account];
-            -[DADAgentManager updateContentsOfAllFoldersForAccountID:andDataclasses:isUserRequested:](self, "updateContentsOfAllFoldersForAccountID:andDataclasses:isUserRequested:", v33, [v34 enabledDataclassesBitmask], 0);
+            account4 = [v25 account];
+            accountID2 = [account4 accountID];
+            account5 = [v25 account];
+            -[DADAgentManager updateContentsOfAllFoldersForAccountID:andDataclasses:isUserRequested:](self, "updateContentsOfAllFoldersForAccountID:andDataclasses:isUserRequested:", accountID2, [account5 enabledDataclassesBitmask], 0);
 
-            v19 = v28;
+            activeAgents2 = v28;
           }
         }
 
-        v22 = [v19 countByEnumeratingWithState:&v41 objects:v58 count:16];
+        v22 = [activeAgents2 countByEnumeratingWithState:&v41 objects:v58 count:16];
       }
 
       while (v22);
@@ -1783,28 +1783,28 @@ void __54__DADAgentManager__registerForCTDataUsageNotificaiton__block_invoke_2()
 
   else
   {
-    v19 = DALoggingwithCategory();
-    if (os_log_type_enabled(v19, v4))
+    activeAgents2 = DALoggingwithCategory();
+    if (os_log_type_enabled(activeAgents2, v4))
     {
       *buf = 0;
-      _os_log_impl(&dword_2424DF000, v19, v4, "Wireless data usage policy changes do not affect any existing agents; no refreshes will be done.", buf, 2u);
+      _os_log_impl(&dword_2424DF000, activeAgents2, v4, "Wireless data usage policy changes do not affect any existing agents; no refreshes will be done.", buf, 2u);
     }
   }
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)wirelessPolicy:(id)a3 isMorePermissiveThanPolicy:(id)a4
++ (BOOL)wirelessPolicy:(id)policy isMorePermissiveThanPolicy:(id)thanPolicy
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  policyCopy = policy;
+  thanPolicyCopy = thanPolicy;
+  v7 = thanPolicyCopy;
+  if (policyCopy)
   {
-    if (v6)
+    if (thanPolicyCopy)
     {
       v8 = *MEMORY[0x277CC3988];
-      v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277CC3988]];
+      v9 = [thanPolicyCopy objectForKeyedSubscript:*MEMORY[0x277CC3988]];
       v10 = *MEMORY[0x277CC4368];
       v11 = [v7 objectForKeyedSubscript:*MEMORY[0x277CC4368]];
     }
@@ -1818,8 +1818,8 @@ void __54__DADAgentManager__registerForCTDataUsageNotificaiton__block_invoke_2()
     }
 
     v13 = v11;
-    v14 = [v5 objectForKeyedSubscript:v8];
-    v15 = [v5 objectForKeyedSubscript:v10];
+    v14 = [policyCopy objectForKeyedSubscript:v8];
+    v15 = [policyCopy objectForKeyedSubscript:v10];
     v16 = *MEMORY[0x277CC3990];
     if ([v14 isEqualToString:*MEMORY[0x277CC3990]])
     {
@@ -1852,7 +1852,7 @@ void __54__DADAgentManager__registerForCTDataUsageNotificaiton__block_invoke_2()
   return v12 & 1;
 }
 
-- (void)_loadAndStartMonitoringAgents:(BOOL)a3
+- (void)_loadAndStartMonitoringAgents:(BOOL)agents
 {
   v5 = dataaccess_get_global_queue();
   dispatch_assert_queue_V2(v5);
@@ -1863,7 +1863,7 @@ void __54__DADAgentManager__registerForCTDataUsageNotificaiton__block_invoke_2()
   v11[2] = __49__DADAgentManager__loadAndStartMonitoringAgents___block_invoke;
   v11[3] = &unk_278D52B20;
   objc_copyWeak(&v12, &location);
-  v13 = a3;
+  agentsCopy = agents;
   v6 = MEMORY[0x245D102E0](v11);
   startAgentsWhenSystemReadyBlock = self->_startAgentsWhenSystemReadyBlock;
   self->_startAgentsWhenSystemReadyBlock = v6;
@@ -2108,8 +2108,8 @@ void __35__DADAgentManager_registerForBuddy__block_invoke(uint64_t a1)
   }
 
   dispatch_suspend(gDADOperationQueue);
-  v5 = [(DADAgentManager *)self activeAgents];
-  v6 = [v5 mutableCopy];
+  activeAgents = [(DADAgentManager *)self activeAgents];
+  v6 = [activeAgents mutableCopy];
   v7 = DALoggingwithCategory();
   v8 = *(MEMORY[0x277CF3AF0] + 6);
   if (os_log_type_enabled(v7, v8))
@@ -2119,13 +2119,13 @@ void __35__DADAgentManager_registerForBuddy__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2424DF000, v7, v8, "Agents awaiting shut down are %@", buf, 0xCu);
   }
 
-  v29 = self;
+  selfCopy = self;
 
   v9 = DALoggingwithCategory();
   if (os_log_type_enabled(v9, v8))
   {
     *buf = 138412290;
-    v38 = v5;
+    v38 = activeAgents;
     _os_log_impl(&dword_2424DF000, v9, v8, "Stopping our agents (which are %@)", buf, 0xCu);
   }
 
@@ -2133,7 +2133,7 @@ void __35__DADAgentManager_registerForBuddy__block_invoke(uint64_t a1)
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v5;
+  obj = activeAgents;
   v10 = [obj countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v10)
   {
@@ -2212,7 +2212,7 @@ void __35__DADAgentManager_registerForBuddy__block_invoke(uint64_t a1)
     }
   }
 
-  [(DADAgentManager *)v29 saveAndReleaseAgents];
+  [(DADAgentManager *)selfCopy saveAndReleaseAgents];
   v27 = DALoggingwithCategory();
   if (os_log_type_enabled(v27, v8))
   {
@@ -2255,20 +2255,20 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 - (void)_addAccountAggdEntries
 {
   v36 = *MEMORY[0x277D85DE8];
-  v2 = [(DADAgentManager *)self activeAgents];
-  [v2 count];
+  activeAgents = [(DADAgentManager *)self activeAgents];
+  [activeAgents count];
   ADClientSetValueForScalarKey();
-  if ([v2 count])
+  if ([activeAgents count])
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v3 = v2;
+    v3 = activeAgents;
     v4 = [v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v4)
     {
-      v25 = v2;
+      v25 = activeAgents;
       v26 = 0;
       v29 = 0;
       v30 = 0;
@@ -2286,9 +2286,9 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
             objc_enumerationMutation(v3);
           }
 
-          v9 = [*(*(&v31 + 1) + 8 * i) account];
-          v10 = [v9 accountTypeIdentifier];
-          v11 = [v10 isEqualToString:@"com.apple.account.SubscribedCalendar"];
+          account = [*(*(&v31 + 1) + 8 * i) account];
+          accountTypeIdentifier = [account accountTypeIdentifier];
+          v11 = [accountTypeIdentifier isEqualToString:@"com.apple.account.SubscribedCalendar"];
 
           if (v11)
           {
@@ -2297,8 +2297,8 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
           else
           {
-            v12 = [v9 accountTypeIdentifier];
-            v13 = [v12 isEqualToString:@"com.apple.account.CalDAV"];
+            accountTypeIdentifier2 = [account accountTypeIdentifier];
+            v13 = [accountTypeIdentifier2 isEqualToString:@"com.apple.account.CalDAV"];
 
             if (v13)
             {
@@ -2307,8 +2307,8 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
             else
             {
-              v14 = [v9 accountTypeIdentifier];
-              v15 = [v14 isEqualToString:@"com.apple.account.CardDAV"];
+              accountTypeIdentifier3 = [account accountTypeIdentifier];
+              v15 = [accountTypeIdentifier3 isEqualToString:@"com.apple.account.CardDAV"];
 
               if (v15)
               {
@@ -2317,8 +2317,8 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
               else
               {
-                v16 = [v9 accountTypeIdentifier];
-                v17 = [v16 isEqualToString:@"com.apple.account.Exchange"];
+                accountTypeIdentifier4 = [account accountTypeIdentifier];
+                v17 = [accountTypeIdentifier4 isEqualToString:@"com.apple.account.Exchange"];
 
                 if (v17)
                 {
@@ -2327,8 +2327,8 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
                 else
                 {
-                  v18 = [v9 accountTypeIdentifier];
-                  v19 = [v18 isEqualToString:@"com.apple.account.Hotmail"];
+                  accountTypeIdentifier5 = [account accountTypeIdentifier];
+                  v19 = [accountTypeIdentifier5 isEqualToString:@"com.apple.account.Hotmail"];
 
                   if (v19)
                   {
@@ -2337,8 +2337,8 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
                   else
                   {
-                    v20 = [v9 accountTypeIdentifier];
-                    v21 = [v20 isEqualToString:@"com.apple.account.LDAP"];
+                    accountTypeIdentifier6 = [account accountTypeIdentifier];
+                    v21 = [accountTypeIdentifier6 isEqualToString:@"com.apple.account.LDAP"];
 
                     if (v21)
                     {
@@ -2347,8 +2347,8 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 
                     else
                     {
-                      v22 = [v9 accountTypeIdentifier];
-                      v23 = [v22 isEqualToString:@"com.apple.account.IMAPNotes"];
+                      accountTypeIdentifier7 = [account accountTypeIdentifier];
+                      v23 = [accountTypeIdentifier7 isEqualToString:@"com.apple.account.IMAPNotes"];
 
                       v27 += v23;
                     }
@@ -2363,7 +2363,7 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
       }
 
       while (v4);
-      v2 = v25;
+      activeAgents = v25;
     }
   }
 
@@ -2384,18 +2384,18 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableMonitoringAgentsWithToken:(unint64_t)a3
+- (void)enableMonitoringAgentsWithToken:(unint64_t)token
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(DADAgentManager *)self disableMonitoringAgentsTokens];
-  v6 = [v5 count];
+  disableMonitoringAgentsTokens = [(DADAgentManager *)self disableMonitoringAgentsTokens];
+  v6 = [disableMonitoringAgentsTokens count];
 
-  v7 = [(DADAgentManager *)self disableMonitoringAgentsTokens];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v7 removeObjectForKey:v8];
+  disableMonitoringAgentsTokens2 = [(DADAgentManager *)self disableMonitoringAgentsTokens];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:token];
+  [disableMonitoringAgentsTokens2 removeObjectForKey:v8];
 
-  v9 = [(DADAgentManager *)self disableMonitoringAgentsTokens];
-  v10 = [v9 count];
+  disableMonitoringAgentsTokens3 = [(DADAgentManager *)self disableMonitoringAgentsTokens];
+  v10 = [disableMonitoringAgentsTokens3 count];
 
   v11 = DALoggingwithCategory();
   v12 = v11;
@@ -2405,7 +2405,7 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
     if (os_log_type_enabled(v11, v13))
     {
       v17 = 67109120;
-      v18 = a3;
+      tokenCopy = token;
       _os_log_impl(&dword_2424DF000, v12, v13, "Ignoring call to enableMonitoringAgentsWithToken: with unrecognized token %d", &v17, 8u);
     }
   }
@@ -2416,7 +2416,7 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
     if (os_log_type_enabled(v11, v14))
     {
       v17 = 67109120;
-      v18 = v10;
+      tokenCopy = v10;
       _os_log_impl(&dword_2424DF000, v12, v14, "DADAgentManager asked to enableMonitoringAgents. New count = %d", &v17, 8u);
     }
 
@@ -2440,15 +2440,15 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
 - (unint64_t)disableMonitoringAgents
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(DADAgentManager *)self nextDisableMonitoringAgentsToken];
-  [(DADAgentManager *)self setNextDisableMonitoringAgentsToken:v3 + 1];
+  nextDisableMonitoringAgentsToken = [(DADAgentManager *)self nextDisableMonitoringAgentsToken];
+  [(DADAgentManager *)self setNextDisableMonitoringAgentsToken:nextDisableMonitoringAgentsToken + 1];
   v4 = [objc_alloc(MEMORY[0x277CF3A30]) initWithLabel:@"disableMonitoringAgents"];
-  v5 = [(DADAgentManager *)self disableMonitoringAgentsTokens];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v3 + 1];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  disableMonitoringAgentsTokens = [(DADAgentManager *)self disableMonitoringAgentsTokens];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:nextDisableMonitoringAgentsToken + 1];
+  [disableMonitoringAgentsTokens setObject:v4 forKeyedSubscript:v6];
 
-  v7 = [(DADAgentManager *)self disableMonitoringAgentsTokens];
-  v8 = [v7 count];
+  disableMonitoringAgentsTokens2 = [(DADAgentManager *)self disableMonitoringAgentsTokens];
+  v8 = [disableMonitoringAgentsTokens2 count];
 
   v9 = DALoggingwithCategory();
   v10 = *(MEMORY[0x277CF3AF0] + 5);
@@ -2472,15 +2472,15 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v3 + 1;
+  return nextDisableMonitoringAgentsToken + 1;
 }
 
-- (BOOL)updateFolderListForAccountID:(id)a3 andDataclasses:(int64_t)a4 requireChangedFolders:(BOOL)a5 isUserRequested:(BOOL)a6
+- (BOOL)updateFolderListForAccountID:(id)d andDataclasses:(int64_t)dataclasses requireChangedFolders:(BOOL)folders isUserRequested:(BOOL)requested
 {
-  v6 = a6;
-  v7 = a5;
+  requestedCopy = requested;
+  foldersCopy = folders;
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  dCopy = d;
   [(DADAgentManager *)self activeAgents];
   v25 = 0u;
   v26 = 0u;
@@ -2490,8 +2490,8 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
   if (v12)
   {
     v13 = v12;
-    v23 = v7;
-    v24 = v6;
+    v23 = foldersCopy;
+    v24 = requestedCopy;
     v14 = *v26;
     while (2)
     {
@@ -2503,13 +2503,13 @@ void __47__DADAgentManager__stopMonitoringAndSaveAgents__block_invoke(uint64_t a
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [v16 account];
-        v18 = [v17 accountID];
-        v19 = [v18 isEqualToString:v10];
+        account = [v16 account];
+        accountID = [account accountID];
+        v19 = [accountID isEqualToString:dCopy];
 
         if (v19)
         {
-          if ([v17 enabledForAnyDADataclasses:a4])
+          if ([account enabledForAnyDADataclasses:dataclasses])
           {
             [v16 refreshFolderListRequireChangedFolders:v23 isUserRequested:v24];
           }
@@ -2536,12 +2536,12 @@ LABEL_13:
   return v20;
 }
 
-- (BOOL)updateContentsOfFolders:(id)a3 forAccountID:(id)a4 andDataclasses:(int64_t)a5 isUserRequested:(BOOL)a6
+- (BOOL)updateContentsOfFolders:(id)folders forAccountID:(id)d andDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested
 {
-  v6 = a6;
+  requestedCopy = requested;
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  foldersCopy = folders;
+  dCopy = d;
   [(DADAgentManager *)self activeAgents];
   v26 = 0u;
   v27 = 0u;
@@ -2551,8 +2551,8 @@ LABEL_13:
   if (v13)
   {
     v14 = v13;
-    v25 = a5;
-    v24 = v6;
+    dataclassesCopy = dataclasses;
+    v24 = requestedCopy;
     v15 = *v27;
     while (2)
     {
@@ -2564,15 +2564,15 @@ LABEL_13:
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        v18 = [v17 account];
-        v19 = [v18 accountID];
-        v20 = [v19 isEqualToString:v11];
+        account = [v17 account];
+        accountID = [account accountID];
+        v20 = [accountID isEqualToString:dCopy];
 
         if (v20)
         {
-          if ([v18 enabledForAnyDADataclasses:v25])
+          if ([account enabledForAnyDADataclasses:dataclassesCopy])
           {
-            [v17 syncFolderIDs:v10 forDataclasses:v25 isUserRequested:v24];
+            [v17 syncFolderIDs:foldersCopy forDataclasses:dataclassesCopy isUserRequested:v24];
           }
 
           v21 = 1;
@@ -2597,11 +2597,11 @@ LABEL_13:
   return v21;
 }
 
-- (BOOL)updateContentsOfAllFoldersForAccountID:(id)a3 andDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5
+- (BOOL)updateContentsOfAllFoldersForAccountID:(id)d andDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested
 {
-  v5 = a5;
+  requestedCopy = requested;
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dCopy = d;
   [(DADAgentManager *)self activeAgents];
   v22 = 0u;
   v23 = 0u;
@@ -2611,7 +2611,7 @@ LABEL_13:
   if (v10)
   {
     v11 = v10;
-    v21 = v5;
+    v21 = requestedCopy;
     v12 = *v23;
     while (2)
     {
@@ -2623,15 +2623,15 @@ LABEL_13:
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 account];
-        v16 = [v15 accountID];
-        v17 = [v16 isEqualToString:v8];
+        account = [v14 account];
+        accountID = [account accountID];
+        v17 = [accountID isEqualToString:dCopy];
 
         if (v17)
         {
-          if ([v15 enabledForAnyDADataclasses:a4])
+          if ([account enabledForAnyDADataclasses:dataclasses])
           {
-            [v14 syncFolderIDs:0 forDataclasses:a4 isUserRequested:v21];
+            [v14 syncFolderIDs:0 forDataclasses:dataclasses isUserRequested:v21];
           }
 
           v18 = 1;
@@ -2656,24 +2656,24 @@ LABEL_13:
   return v18;
 }
 
-- (BOOL)updateContentsOfAllFoldersForAccountIDs:(id)a3
+- (BOOL)updateContentsOfAllFoldersForAccountIDs:(id)ds
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v5 = v4;
+    v5 = dsCopy;
   }
 
   else
   {
-    v6 = [(DADAgentManager *)self activeAgents];
-    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
+    activeAgents = [(DADAgentManager *)self activeAgents];
+    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(activeAgents, "count")}];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v7 = v6;
+    v7 = activeAgents;
     v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v8)
     {
@@ -2688,9 +2688,9 @@ LABEL_13:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v26 + 1) + 8 * i) account];
-          v13 = [v12 accountID];
-          [v5 addObject:v13];
+          account = [*(*(&v26 + 1) + 8 * i) account];
+          accountID = [account accountID];
+          [v5 addObject:accountID];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -2742,15 +2742,15 @@ LABEL_13:
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
-  v4 = [(DADAgentManager *)self activeAgents];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  activeAgents = [(DADAgentManager *)self activeAgents];
+  v5 = [v3 initWithCapacity:{objc_msgSend(activeAgents, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(DADAgentManager *)self activeAgents];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  activeAgents2 = [(DADAgentManager *)self activeAgents];
+  v7 = [activeAgents2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2761,15 +2761,15 @@ LABEL_13:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeAgents2);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) account];
-        v12 = [v11 onBehalfOfBundleIdentifier];
-        [v5 addObject:v12];
+        account = [*(*(&v15 + 1) + 8 * i) account];
+        onBehalfOfBundleIdentifier = [account onBehalfOfBundleIdentifier];
+        [v5 addObject:onBehalfOfBundleIdentifier];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [activeAgents2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -2805,9 +2805,9 @@ LABEL_13:
         }
 
         v7 = *(*(&v21 + 1) + 8 * i);
-        v8 = [v7 account];
-        v9 = [v8 accountTypeIdentifier];
-        if ([v9 isEqualToString:v4])
+        account = [v7 account];
+        accountTypeIdentifier = [account accountTypeIdentifier];
+        if ([accountTypeIdentifier isEqualToString:v4])
         {
 
 LABEL_13:
@@ -2815,9 +2815,9 @@ LABEL_13:
           v15 = *(MEMORY[0x277CF3AF0] + 6);
           if (os_log_type_enabled(v14, v15))
           {
-            v16 = [v7 account];
+            account2 = [v7 account];
             *buf = 138412290;
-            v26 = v16;
+            v26 = account2;
             _os_log_impl(&dword_2424DF000, v14, v15, "Found an EAS Account %@", buf, 0xCu);
           }
 
@@ -2825,9 +2825,9 @@ LABEL_13:
           goto LABEL_16;
         }
 
-        v10 = [v7 account];
-        v11 = [v10 accountTypeIdentifier];
-        v12 = [v11 isEqualToString:v5];
+        account3 = [v7 account];
+        accountTypeIdentifier2 = [account3 accountTypeIdentifier];
+        v12 = [accountTypeIdentifier2 isEqualToString:v5];
 
         if (v12)
         {
@@ -2857,15 +2857,15 @@ LABEL_16:
   return v13;
 }
 
-- (void)processMeetingRequestDatas:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 forAccountWithId:(id)a7 callback:(id)a8
+- (void)processMeetingRequestDatas:(id)datas deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id forAccountWithId:(id)withId callback:(id)callback
 {
   v39 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v32 = a4;
-  v31 = a5;
-  v30 = a6;
-  v14 = a7;
-  v15 = a8;
+  datasCopy = datas;
+  clearCopy = clear;
+  softClearCopy = softClear;
+  idCopy = id;
+  withIdCopy = withId;
+  callbackCopy = callback;
   [(DADAgentManager *)self activeAgents];
   v34 = 0u;
   v35 = 0u;
@@ -2886,17 +2886,17 @@ LABEL_16:
         }
 
         v21 = *(*(&v34 + 1) + 8 * i);
-        v22 = [v21 account];
-        v23 = [v22 accountID];
-        v24 = [v23 isEqualToString:v14];
+        account = [v21 account];
+        accountID = [account accountID];
+        v24 = [accountID isEqualToString:withIdCopy];
 
         if (v24)
         {
-          v26 = v32;
-          v25 = v33;
-          v28 = v30;
-          v27 = v31;
-          [v21 processMeetingRequestDatas:v33 deliveryIdsToClear:v32 deliveryIdsToSoftClear:v31 inFolderWithId:v30 callback:v15];
+          v26 = clearCopy;
+          v25 = datasCopy;
+          v28 = idCopy;
+          v27 = softClearCopy;
+          [v21 processMeetingRequestDatas:datasCopy deliveryIdsToClear:clearCopy deliveryIdsToSoftClear:softClearCopy inFolderWithId:idCopy callback:callbackCopy];
 
           goto LABEL_11;
         }
@@ -2912,11 +2912,11 @@ LABEL_16:
     }
   }
 
-  v15[2](v15, 0);
-  v26 = v32;
-  v25 = v33;
-  v28 = v30;
-  v27 = v31;
+  callbackCopy[2](callbackCopy, 0);
+  v26 = clearCopy;
+  v25 = datasCopy;
+  v28 = idCopy;
+  v27 = softClearCopy;
 LABEL_11:
 
   v29 = *MEMORY[0x277D85DE8];
@@ -2925,8 +2925,8 @@ LABEL_11:
 - (id)stateString
 {
   v28 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = +[DADBuddyStateObserver hasPassedBuddy];
   v4 = MEMORY[0x277CCACA8];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
@@ -2935,14 +2935,14 @@ LABEL_11:
 
   v8 = [v7 stringByAppendingString:@"\n=======\n"];
 
-  if (v2->_startAgentsWhenSystemReadyBlock)
+  if (selfCopy->_startAgentsWhenSystemReadyBlock)
   {
     v9 = [v8 stringByAppendingString:@"XXX: startAgentsWhenSystemReadyBlock is non-nil"];
 
     v8 = [v9 stringByAppendingString:@"\n=======\n"];
   }
 
-  [(DADAgentManager *)v2 activeAgents];
+  [(DADAgentManager *)selfCopy activeAgents];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -2965,8 +2965,8 @@ LABEL_11:
 
         v12 = *(*(&v23 + 1) + 8 * v14);
 
-        v16 = [v12 stateString];
-        v17 = [v8 stringByAppendingString:v16];
+        stateString = [v12 stateString];
+        v17 = [v8 stringByAppendingString:stateString];
 
         v8 = [v17 stringByAppendingString:@"=======\n"];
 
@@ -2981,28 +2981,28 @@ LABEL_11:
     while (v11);
   }
 
-  v18 = [MEMORY[0x277CF3A18] sharedPowerAssertionManager];
-  v19 = [v18 stateString];
+  mEMORY[0x277CF3A18] = [MEMORY[0x277CF3A18] sharedPowerAssertionManager];
+  stateString2 = [mEMORY[0x277CF3A18] stateString];
 
-  if (v19)
+  if (stateString2)
   {
-    v20 = [v8 stringByAppendingString:v19];
+    v20 = [v8 stringByAppendingString:stateString2];
 
     v8 = v20;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v21 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (void)getStatusReportDictsWithCompletionBlock:(id)a3
+- (void)getStatusReportDictsWithCompletionBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v30 = [MEMORY[0x277CF3A10] sharedBabysitter];
+  blockCopy = block;
+  array = [MEMORY[0x277CBEB18] array];
+  mEMORY[0x277CF3A10] = [MEMORY[0x277CF3A10] sharedBabysitter];
   [(DADAgentManager *)self activeAgents];
   v35 = 0u;
   v36 = 0u;
@@ -3023,36 +3023,36 @@ LABEL_11:
         }
 
         v9 = *(*(&v35 + 1) + 8 * i);
-        v10 = [v9 account];
-        v11 = [v10 statusReport];
+        account = [v9 account];
+        statusReport = [account statusReport];
 
-        if (v11)
+        if (statusReport)
         {
-          v12 = [v9 account];
+          account2 = [v9 account];
           v13 = objc_opt_respondsToSelector();
-          v14 = [v9 account];
-          v15 = v14;
+          account3 = [v9 account];
+          v15 = account3;
           if (v13)
           {
-            [v14 waiterID];
+            [account3 waiterID];
           }
 
           else
           {
-            [v14 accountID];
+            [account3 accountID];
           }
           v16 = ;
 
-          [v11 setSyncingAllowed:{objc_msgSend(v30, "accountWithIDShouldContinue:", v16)}];
-          v17 = [v9 account];
-          v18 = [v17 protocolVersion];
-          [v11 setProtocolVersion:v18];
+          [statusReport setSyncingAllowed:{objc_msgSend(mEMORY[0x277CF3A10], "accountWithIDShouldContinue:", v16)}];
+          account4 = [v9 account];
+          protocolVersion = [account4 protocolVersion];
+          [statusReport setProtocolVersion:protocolVersion];
 
-          [v4 addObject:v11];
+          [array addObject:statusReport];
         }
 
-        v19 = [v9 account];
-        [v19 resetStatusReport];
+        account5 = [v9 account];
+        [account5 resetStatusReport];
       }
 
       v6 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -3061,14 +3061,14 @@ LABEL_11:
     while (v6);
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(array, "count")}];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v21 = v4;
+    v21 = array;
     v22 = [v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v22)
     {
@@ -3083,8 +3083,8 @@ LABEL_11:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation];
         }
 
         v23 = [v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -3099,21 +3099,21 @@ LABEL_11:
     v20 = 0;
   }
 
-  v28[2](v28, v20);
+  blockCopy[2](blockCopy, v20);
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_hasDataclassWeCareAbout:(id)a3
+- (BOOL)_hasDataclassWeCareAbout:(id)about
 {
   v3 = _hasDataclassWeCareAbout__onceToken;
-  v4 = a3;
+  aboutCopy = about;
   if (v3 != -1)
   {
     [DADAgentManager _hasDataclassWeCareAbout:];
   }
 
-  v5 = [v4 intersectsSet:_hasDataclassWeCareAbout__dataclassesWeCareAbout];
+  v5 = [aboutCopy intersectsSet:_hasDataclassWeCareAbout__dataclassesWeCareAbout];
 
   return v5;
 }
@@ -3129,8 +3129,8 @@ uint64_t __44__DADAgentManager__hasDataclassWeCareAbout___block_invoke()
 
 - (void)removePendingAccountSetup
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"DADAgentManager.m" lineNumber:2101 description:@"Somebody isn't maintaining their account setup correctly"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"DADAgentManager.m" lineNumber:2101 description:@"Somebody isn't maintaining their account setup correctly"];
 
   *a4 = *a3;
 }
@@ -3143,13 +3143,13 @@ uint64_t __44__DADAgentManager__hasDataclassWeCareAbout___block_invoke()
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [MEMORY[0x277CF39F8] _leafAccountTypes];
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  _leafAccountTypes = [MEMORY[0x277CF39F8] _leafAccountTypes];
+  v5 = [_leafAccountTypes countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v29;
-    v23 = v4;
+    v23 = _leafAccountTypes;
     v21 = *v29;
     do
     {
@@ -3159,7 +3159,7 @@ uint64_t __44__DADAgentManager__hasDataclassWeCareAbout___block_invoke()
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_leafAccountTypes);
         }
 
         v9 = [v3 accountTypeWithAccountTypeIdentifier:*(*(&v28 + 1) + 8 * v8)];
@@ -3185,14 +3185,14 @@ uint64_t __44__DADAgentManager__hasDataclassWeCareAbout___block_invoke()
                   objc_enumerationMutation(v11);
                 }
 
-                v16 = [*(*(&v24 + 1) + 8 * i) enabledDataclasses];
-                v17 = [(DADAgentManager *)self _hasDataclassWeCareAbout:v16];
+                enabledDataclasses = [*(*(&v24 + 1) + 8 * i) enabledDataclasses];
+                v17 = [(DADAgentManager *)self _hasDataclassWeCareAbout:enabledDataclasses];
 
                 if (v17)
                 {
 
                   v18 = 1;
-                  v4 = v23;
+                  _leafAccountTypes = v23;
                   goto LABEL_21;
                 }
               }
@@ -3208,7 +3208,7 @@ uint64_t __44__DADAgentManager__hasDataclassWeCareAbout___block_invoke()
           }
 
           v6 = v22;
-          v4 = v23;
+          _leafAccountTypes = v23;
           v7 = v21;
         }
 
@@ -3216,7 +3216,7 @@ uint64_t __44__DADAgentManager__hasDataclassWeCareAbout___block_invoke()
       }
 
       while (v8 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v6 = [_leafAccountTypes countByEnumeratingWithState:&v28 objects:v33 count:16];
       v18 = 0;
     }
 

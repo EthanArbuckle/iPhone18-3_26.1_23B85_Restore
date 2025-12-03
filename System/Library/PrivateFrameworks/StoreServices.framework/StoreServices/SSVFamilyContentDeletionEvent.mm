@@ -1,28 +1,28 @@
 @interface SSVFamilyContentDeletionEvent
-+ (id)notificationPayloadWithAccountPairs:(id)a3;
-+ (void)postDistributedNotificationWithAccountPairs:(id)a3;
-- (SSVFamilyContentDeletionEvent)initWithNotificationUserInfo:(id)a3;
-- (SSVFamilyContentDeletionEvent)initWithXPCEventStreamEvent:(id)a3;
++ (id)notificationPayloadWithAccountPairs:(id)pairs;
++ (void)postDistributedNotificationWithAccountPairs:(id)pairs;
+- (SSVFamilyContentDeletionEvent)initWithNotificationUserInfo:(id)info;
+- (SSVFamilyContentDeletionEvent)initWithXPCEventStreamEvent:(id)event;
 @end
 
 @implementation SSVFamilyContentDeletionEvent
 
-- (SSVFamilyContentDeletionEvent)initWithNotificationUserInfo:(id)a3
+- (SSVFamilyContentDeletionEvent)initWithNotificationUserInfo:(id)info
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v39.receiver = self;
   v39.super_class = SSVFamilyContentDeletionEvent;
   v5 = [(SSVFamilyContentDeletionEvent *)&v39 init];
   if (v5)
   {
     v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [v4 objectForKey:@"pairs"];
+    v6 = [infoCopy objectForKey:@"pairs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v30 = v5;
-      v31 = v4;
+      v31 = infoCopy;
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
@@ -65,15 +65,15 @@
                   {
                     v34 = [SSVFamilyAccountPair alloc];
                     v18 = v12;
-                    v19 = [v15 unsignedLongLongValue];
+                    unsignedLongLongValue = [v15 unsignedLongLongValue];
                     v20 = v10;
-                    v21 = [v17 unsignedLongLongValue];
-                    v22 = [v16 unsignedLongLongValue];
-                    v23 = v19;
+                    unsignedLongLongValue2 = [v17 unsignedLongLongValue];
+                    unsignedLongLongValue3 = [v16 unsignedLongLongValue];
+                    v23 = unsignedLongLongValue;
                     v12 = v18;
-                    v24 = v21;
+                    v24 = unsignedLongLongValue2;
                     v10 = v20;
-                    v25 = [(SSVFamilyAccountPair *)v34 initWithDownloaderAccountIdentifier:v23 purchaserAccountIdentifier:v24 familyIdentifier:v22];
+                    v25 = [(SSVFamilyAccountPair *)v34 initWithDownloaderAccountIdentifier:v23 purchaserAccountIdentifier:v24 familyIdentifier:unsignedLongLongValue3];
                     [v33 addObject:v25];
 
                     v7 = v32;
@@ -93,7 +93,7 @@
       }
 
       v5 = v30;
-      v4 = v31;
+      infoCopy = v31;
       v6 = v29;
     }
 
@@ -105,22 +105,22 @@
   return v5;
 }
 
-- (SSVFamilyContentDeletionEvent)initWithXPCEventStreamEvent:(id)a3
+- (SSVFamilyContentDeletionEvent)initWithXPCEventStreamEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v18.receiver = self;
   v18.super_class = SSVFamilyContentDeletionEvent;
   v5 = [(SSVFamilyContentDeletionEvent *)&v18 init];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v4)
+    if (eventCopy)
     {
-      v7 = MEMORY[0x1DA6E0380](v4);
+      v7 = MEMORY[0x1DA6E0380](eventCopy);
       v8 = MEMORY[0x1E69E9E80];
       if (v7 == MEMORY[0x1E69E9E80])
       {
-        v9 = xpc_dictionary_get_value(v4, "UserInfo");
+        v9 = xpc_dictionary_get_value(eventCopy, "UserInfo");
         v10 = v9;
         if (v9 && MEMORY[0x1DA6E0380](v9) == v8)
         {
@@ -174,16 +174,16 @@ uint64_t __61__SSVFamilyContentDeletionEvent_initWithXPCEventStreamEvent___block
   return 1;
 }
 
-+ (id)notificationPayloadWithAccountPairs:(id)a3
++ (id)notificationPayloadWithAccountPairs:(id)pairs
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pairsCopy = pairs;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v3;
+  obj = pairsCopy;
   v5 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -231,9 +231,9 @@ uint64_t __61__SSVFamilyContentDeletionEvent_initWithXPCEventStreamEvent___block
   return v14;
 }
 
-+ (void)postDistributedNotificationWithAccountPairs:(id)a3
++ (void)postDistributedNotificationWithAccountPairs:(id)pairs
 {
-  v3 = [a1 notificationPayloadWithAccountPairs:a3];
+  v3 = [self notificationPayloadWithAccountPairs:pairs];
   if (v3)
   {
     v6 = v3;

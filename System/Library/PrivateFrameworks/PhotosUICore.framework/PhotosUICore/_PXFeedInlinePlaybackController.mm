@@ -1,12 +1,12 @@
 @interface _PXFeedInlinePlaybackController
-- (BOOL)canPlayAsset:(id)a3;
+- (BOOL)canPlayAsset:(id)asset;
 - (CGRect)currentVisibleRect;
-- (CGRect)frameForPlaybackRecord:(id)a3 minPlayableSize:(CGSize *)a4;
+- (CGRect)frameForPlaybackRecord:(id)record minPlayableSize:(CGSize *)size;
 - (UIEdgeInsets)criticallyVisibleEdgeInsets;
-- (_PXFeedInlinePlaybackController)initWithContainerLayout:(id)a3 viewModel:(id)a4 itemLayoutDesiredPlayStateSetter:(id)a5;
-- (id)createPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7;
+- (_PXFeedInlinePlaybackController)initWithContainerLayout:(id)layout viewModel:(id)model itemLayoutDesiredPlayStateSetter:(id)setter;
+- (id)createPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale;
 - (id)currentHoveredDisplayAsset;
-- (void)_playbackRecord:(id)a3 setDesiredPlayState:(int64_t)a4;
+- (void)_playbackRecord:(id)record setDesiredPlayState:(int64_t)state;
 @end
 
 @implementation _PXFeedInlinePlaybackController
@@ -24,14 +24,14 @@
   return result;
 }
 
-- (void)_playbackRecord:(id)a3 setDesiredPlayState:(int64_t)a4
+- (void)_playbackRecord:(id)record setDesiredPlayState:(int64_t)state
 {
-  v6 = a3;
-  v7 = [(_PXFeedInlinePlaybackController *)self _itemLayoutForPlaybackRecord:v6];
-  v8 = [(_PXFeedInlinePlaybackController *)self itemLayoutDesiredPlayStateSetter];
-  if (v6)
+  recordCopy = record;
+  v7 = [(_PXFeedInlinePlaybackController *)self _itemLayoutForPlaybackRecord:recordCopy];
+  itemLayoutDesiredPlayStateSetter = [(_PXFeedInlinePlaybackController *)self itemLayoutDesiredPlayStateSetter];
+  if (recordCopy)
   {
-    [v6 bestVideoTimeRange];
+    [recordCopy bestVideoTimeRange];
   }
 
   else
@@ -39,25 +39,25 @@
     memset(v9, 0, sizeof(v9));
   }
 
-  (v8)[2](v8, v7, a4 == 1, v9);
+  (itemLayoutDesiredPlayStateSetter)[2](itemLayoutDesiredPlayStateSetter, v7, state == 1, v9);
 }
 
-- (BOOL)canPlayAsset:(id)a3
+- (BOOL)canPlayAsset:(id)asset
 {
-  if (([a3 playbackStyle] - 3) > 2)
+  if (([asset playbackStyle] - 3) > 2)
   {
     return 0;
   }
 
   v3 = +[PXStorySettings sharedInstance];
-  v4 = [v3 wantsInlinePlayback];
+  wantsInlinePlayback = [v3 wantsInlinePlayback];
 
-  return v4;
+  return wantsInlinePlayback;
 }
 
-- (CGRect)frameForPlaybackRecord:(id)a3 minPlayableSize:(CGSize *)a4
+- (CGRect)frameForPlaybackRecord:(id)record minPlayableSize:(CGSize *)size
 {
-  v5 = [(_PXFeedInlinePlaybackController *)self _itemLayoutForPlaybackRecord:a3, a4];
+  v5 = [(_PXFeedInlinePlaybackController *)self _itemLayoutForPlaybackRecord:record, size];
   [(_PXFeedInlinePlaybackController *)self containerLayout];
   objc_claimAutoreleasedReturnValue();
   [v5 contentSize];
@@ -68,12 +68,12 @@
 {
   v14 = 0u;
   v15 = 0u;
-  v3 = [(_PXFeedInlinePlaybackController *)self viewModel];
-  v4 = [v3 selectionSnapshot];
-  v5 = v4;
-  if (v4)
+  viewModel = [(_PXFeedInlinePlaybackController *)self viewModel];
+  selectionSnapshot = [viewModel selectionSnapshot];
+  v5 = selectionSnapshot;
+  if (selectionSnapshot)
   {
-    [v4 pendingIndexPath];
+    [selectionSnapshot pendingIndexPath];
   }
 
   else
@@ -89,40 +89,40 @@
 
   else
   {
-    v7 = [(_PXFeedInlinePlaybackController *)self viewModel];
-    v8 = [v7 dataSource];
+    viewModel2 = [(_PXFeedInlinePlaybackController *)self viewModel];
+    dataSource = [viewModel2 dataSource];
     v13[0] = v14;
     v13[1] = v15;
-    v6 = [v8 objectReferenceAtIndexPath:v13];
+    v6 = [dataSource objectReferenceAtIndexPath:v13];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v6;
+    keyAssetReference = v6;
 LABEL_11:
-    v10 = v9;
+    v10 = keyAssetReference;
     goto LABEL_13;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 keyAssetReference];
+    keyAssetReference = [v6 keyAssetReference];
     goto LABEL_11;
   }
 
   v10 = 0;
 LABEL_13:
-  v11 = [v10 asset];
+  asset = [v10 asset];
 
-  return v11;
+  return asset;
 }
 
 - (CGRect)currentVisibleRect
 {
-  v2 = [(_PXFeedInlinePlaybackController *)self containerLayout];
-  [v2 visibleRect];
+  containerLayout = [(_PXFeedInlinePlaybackController *)self containerLayout];
+  [containerLayout visibleRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -139,30 +139,30 @@ LABEL_13:
   return result;
 }
 
-- (id)createPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7
+- (id)createPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[_PXFeedInlinePlaybackRecord alloc] initWithDisplayAsset:v12 mediaProvider:v11 geometryReference:v10];
+  referenceCopy = reference;
+  providerCopy = provider;
+  assetCopy = asset;
+  v13 = [[_PXFeedInlinePlaybackRecord alloc] initWithDisplayAsset:assetCopy mediaProvider:providerCopy geometryReference:referenceCopy];
 
   [(_PXFeedInlinePlaybackRecord *)v13 setInlinePlaybackController:self];
 
   return v13;
 }
 
-- (_PXFeedInlinePlaybackController)initWithContainerLayout:(id)a3 viewModel:(id)a4 itemLayoutDesiredPlayStateSetter:(id)a5
+- (_PXFeedInlinePlaybackController)initWithContainerLayout:(id)layout viewModel:(id)model itemLayoutDesiredPlayStateSetter:(id)setter
 {
-  v8 = a3;
-  v9 = a5;
+  layoutCopy = layout;
+  setterCopy = setter;
   v16.receiver = self;
   v16.super_class = _PXFeedInlinePlaybackController;
   v10 = [(PXGridInlinePlaybackController *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_containerLayout, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_containerLayout, layout);
+    v12 = [setterCopy copy];
     itemLayoutDesiredPlayStateSetter = v11->_itemLayoutDesiredPlayStateSetter;
     v11->_itemLayoutDesiredPlayStateSetter = v12;
 

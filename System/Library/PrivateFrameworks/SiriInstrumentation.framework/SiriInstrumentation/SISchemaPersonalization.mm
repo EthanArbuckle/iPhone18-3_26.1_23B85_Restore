@@ -1,41 +1,41 @@
 @interface SISchemaPersonalization
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaPersonalization)initWithDictionary:(id)a3;
-- (SISchemaPersonalization)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaPersonalization)initWithDictionary:(id)dictionary;
+- (SISchemaPersonalization)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppleMusicSubscriber:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppleMusicSubscriber:(BOOL)subscriber;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaPersonalization
 
-- (SISchemaPersonalization)initWithDictionary:(id)a3
+- (SISchemaPersonalization)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaPersonalization;
   v5 = [(SISchemaPersonalization *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"personalDomainsSetup"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"personalDomainsSetup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaPersonalization setPersonalDomainsSetup:](v5, "setPersonalDomainsSetup:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"appleMusicSubscriber"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"appleMusicSubscriber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaPersonalization setAppleMusicSubscriber:](v5, "setAppleMusicSubscriber:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"voiceSettings"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"voiceSettings"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (SISchemaPersonalization)initWithJSON:(id)a3
+- (SISchemaPersonalization)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaPersonalization *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaPersonalization *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaPersonalization *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,12 +85,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaPersonalization appleMusicSubscriber](self, "appleMusicSubscriber")}];
-    [v3 setObject:v5 forKeyedSubscript:@"appleMusicSubscriber"];
+    [dictionary setObject:v5 forKeyedSubscript:@"appleMusicSubscriber"];
 
     has = self->_has;
   }
@@ -98,28 +98,28 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaPersonalization personalDomainsSetup](self, "personalDomainsSetup")}];
-    [v3 setObject:v6 forKeyedSubscript:@"personalDomainsSetup"];
+    [dictionary setObject:v6 forKeyedSubscript:@"personalDomainsSetup"];
   }
 
   if (self->_voiceSettings)
   {
-    v7 = [(SISchemaPersonalization *)self voiceSettings];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    voiceSettings = [(SISchemaPersonalization *)self voiceSettings];
+    dictionaryRepresentation = [voiceSettings dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"voiceSettings"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"voiceSettings"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"voiceSettings"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"voiceSettings"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -148,16 +148,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(SISchemaVoiceSettings *)self->_voiceSettings hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -166,27 +166,27 @@ LABEL_3:
   if (*&has)
   {
     personalDomainsSetup = self->_personalDomainsSetup;
-    if (personalDomainsSetup != [v4 personalDomainsSetup])
+    if (personalDomainsSetup != [equalCopy personalDomainsSetup])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (appleMusicSubscriber = self->_appleMusicSubscriber, appleMusicSubscriber == [v4 appleMusicSubscriber]))
+    if (!v8 || (appleMusicSubscriber = self->_appleMusicSubscriber, appleMusicSubscriber == [equalCopy appleMusicSubscriber]))
     {
-      v10 = [(SISchemaPersonalization *)self voiceSettings];
-      v11 = [v4 voiceSettings];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      voiceSettings = [(SISchemaPersonalization *)self voiceSettings];
+      voiceSettings2 = [equalCopy voiceSettings];
+      v12 = voiceSettings2;
+      if ((voiceSettings != 0) != (voiceSettings2 == 0))
       {
-        v13 = [(SISchemaPersonalization *)self voiceSettings];
-        if (!v13)
+        voiceSettings3 = [(SISchemaPersonalization *)self voiceSettings];
+        if (!voiceSettings3)
         {
 
 LABEL_17:
@@ -194,10 +194,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(SISchemaPersonalization *)self voiceSettings];
-        v16 = [v4 voiceSettings];
-        v17 = [v15 isEqual:v16];
+        v14 = voiceSettings3;
+        voiceSettings4 = [(SISchemaPersonalization *)self voiceSettings];
+        voiceSettings5 = [equalCopy voiceSettings];
+        v17 = [voiceSettings4 isEqual:voiceSettings5];
 
         if (v17)
         {
@@ -218,9 +218,9 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -233,21 +233,21 @@ LABEL_15:
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(SISchemaPersonalization *)self voiceSettings];
+  voiceSettings = [(SISchemaPersonalization *)self voiceSettings];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (voiceSettings)
   {
-    v7 = [(SISchemaPersonalization *)self voiceSettings];
+    voiceSettings2 = [(SISchemaPersonalization *)self voiceSettings];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasAppleMusicSubscriber:(BOOL)a3
+- (void)setHasAppleMusicSubscriber:(BOOL)subscriber
 {
-  if (a3)
+  if (subscriber)
   {
     v3 = 2;
   }
@@ -260,17 +260,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaPersonalization;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaPersonalization *)self voiceSettings:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaPersonalization *)self deleteVoiceSettings];
   }

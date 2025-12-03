@@ -1,23 +1,23 @@
 @interface STDeviceID
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeviceID:(id)a3;
-- (STDeviceID)initWithCoder:(id)a3;
-- (STDeviceID)initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeviceID:(id)d;
+- (STDeviceID)initWithCoder:(id)coder;
+- (STDeviceID)initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STDeviceID
 
-- (STDeviceID)initWithIdentifier:(id)a3
+- (STDeviceID)initWithIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = STDeviceID;
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [(STDeviceID *)&v8 init];
-  v5 = [v3 copy];
+  v5 = [identifierCopy copy];
 
   identifier = v4->_identifier;
   v4->_identifier = v5;
@@ -28,40 +28,40 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(STDeviceID *)self identifier];
-  v5 = [NSString stringWithFormat:@"<%@ { Identifier: %@ }>", v3, v4];
+  identifier = [(STDeviceID *)self identifier];
+  v5 = [NSString stringWithFormat:@"<%@ { Identifier: %@ }>", v3, identifier];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
 
   return [v4 initWithIdentifier:identifier];
 }
 
-- (STDeviceID)initWithCoder:(id)a3
+- (STDeviceID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   v6 = [(STDeviceID *)self initWithIdentifier:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STDeviceID *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(STDeviceID *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -71,7 +71,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STDeviceID *)self isEqualToDeviceID:v4];
+      v5 = [(STDeviceID *)self isEqualToDeviceID:equalCopy];
     }
 
     else
@@ -83,25 +83,25 @@
   return v5;
 }
 
-- (BOOL)isEqualToDeviceID:(id)a3
+- (BOOL)isEqualToDeviceID:(id)d
 {
-  if (a3 == self)
+  if (d == self)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(STDeviceID *)self identifier];
-  v6 = [v4 identifier];
+  dCopy = d;
+  identifier = [(STDeviceID *)self identifier];
+  identifier2 = [dCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(dCopy) = [identifier isEqualToString:identifier2];
+  return dCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(STDeviceID *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(STDeviceID *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

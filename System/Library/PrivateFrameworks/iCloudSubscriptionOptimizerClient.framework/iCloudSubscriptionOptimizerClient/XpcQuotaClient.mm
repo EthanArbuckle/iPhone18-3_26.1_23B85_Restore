@@ -1,13 +1,13 @@
 @interface XpcQuotaClient
 - (_TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient)init;
 - (id)failsafeDelayedOfferJsonContext;
-- (id)parseDelayedOffer:(id)a3;
-- (id)parseDelayedOfferFromJson:(id)a3;
-- (id)parseNotification:(id)a3;
-- (void)clearNotificationState:(id)a3;
-- (void)isNotificationPending:(id)a3;
-- (void)logFailsafeEvent:(id)a3;
-- (void)newOffer:(id)a3 andCallback:(id)a4;
+- (id)parseDelayedOffer:(id)offer;
+- (id)parseDelayedOfferFromJson:(id)json;
+- (id)parseNotification:(id)notification;
+- (void)clearNotificationState:(id)state;
+- (void)isNotificationPending:(id)pending;
+- (void)logFailsafeEvent:(id)event;
+- (void)newOffer:(id)offer andCallback:(id)callback;
 @end
 
 @implementation XpcQuotaClient
@@ -32,37 +32,37 @@
   return v6;
 }
 
-- (id)parseNotification:(id)a3
+- (id)parseNotification:(id)notification
 {
   v4 = sub_275A3D8F4();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_275A3C5A4(v4);
 
   return v6;
 }
 
-- (void)newOffer:(id)a3 andCallback:(id)a4
+- (void)newOffer:(id)offer andCallback:(id)callback
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(callback);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_275A3A5F8(v8, sub_275A3D0B0, v7);
+  offerCopy = offer;
+  selfCopy = self;
+  sub_275A3A5F8(offerCopy, sub_275A3D0B0, v7);
 }
 
-- (void)isNotificationPending:(id)a3
+- (void)isNotificationPending:(id)pending
 {
   ObjectType = swift_getObjectType();
   v6 = sub_275A3D364();
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x28223BE20](v6);
   v9 = &v18 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(pending);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = qword_2815AE358;
-  v13 = self;
+  selfCopy = self;
   if (v12 != -1)
   {
     swift_once();
@@ -78,30 +78,30 @@
   sub_275A3D124(&qword_2815AE4D0, MEMORY[0x277D7F530]);
 
   sub_275A3D304();
-  v16 = *&v13->protoClient[OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient + 16];
-  v17 = *&v13->protoClient[OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient + 24];
-  __swift_project_boxed_opaque_existential_1((&v13->super.super.isa + OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient), v16);
+  v16 = *&selfCopy->protoClient[OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient + 16];
+  v17 = *&selfCopy->protoClient[OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient + 24];
+  __swift_project_boxed_opaque_existential_1((&selfCopy->super.super.isa + OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient), v16);
   (*(v17 + 8))(v9, sub_275A3D0A4, v15, v16, v17);
 
   sub_275A3D23C(v9, MEMORY[0x277D7F530]);
 }
 
-- (void)clearNotificationState:(id)a3
+- (void)clearNotificationState:(id)state
 {
   ObjectType = swift_getObjectType();
   v6 = sub_275A3D364();
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x28223BE20](v6);
   v9 = &v17 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(state);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   sub_275A3D124(&qword_2815AE4D0, MEMORY[0x277D7F530]);
-  v12 = self;
+  selfCopy = self;
   sub_275A3D304();
-  v13 = *&v12->protoClient[OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient + 16];
-  v14 = *&v12->protoClient[OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient + 24];
-  __swift_project_boxed_opaque_existential_1((&v12->super.super.isa + OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient), v13);
+  v13 = *&selfCopy->protoClient[OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient + 16];
+  v14 = *&selfCopy->protoClient[OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient + 24];
+  __swift_project_boxed_opaque_existential_1((&selfCopy->super.super.isa + OBJC_IVAR____TtC33iCloudSubscriptionOptimizerClient14XpcQuotaClient_protoClient), v13);
   v15 = swift_allocObject();
   v15[2] = sub_275A331CC;
   v15[3] = v11;
@@ -113,7 +113,7 @@
   sub_275A3D23C(v9, MEMORY[0x277D7F530]);
 }
 
-- (id)parseDelayedOffer:(id)a3
+- (id)parseDelayedOffer:(id)offer
 {
   if (qword_2815AE358 != -1)
   {
@@ -127,7 +127,7 @@
   return 0;
 }
 
-- (id)parseDelayedOfferFromJson:(id)a3
+- (id)parseDelayedOfferFromJson:(id)json
 {
   v3 = sub_275A3D934();
   v5 = sub_275A3CA20(v3, v4);
@@ -143,7 +143,7 @@
   return v2;
 }
 
-- (void)logFailsafeEvent:(id)a3
+- (void)logFailsafeEvent:(id)event
 {
   v3 = sub_275A3D934();
   v5 = v4;

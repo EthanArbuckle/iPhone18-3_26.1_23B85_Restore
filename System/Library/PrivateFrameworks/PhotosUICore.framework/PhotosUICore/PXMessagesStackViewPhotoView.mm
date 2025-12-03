@@ -1,10 +1,10 @@
 @interface PXMessagesStackViewPhotoView
 - (CGRect)clippingRect;
-- (PXMessagesStackViewPhotoView)initWithFrame:(CGRect)a3;
+- (PXMessagesStackViewPhotoView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setClipsToBounds:(BOOL)a3;
-- (void)setItemEffectView:(id)a3;
-- (void)setUserData:(id)a3;
+- (void)setClipsToBounds:(BOOL)bounds;
+- (void)setItemEffectView:(id)view;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXMessagesStackViewPhotoView
@@ -22,15 +22,15 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PXMessagesStackViewPhotoView *)self userData];
-    v6 = v4;
-    if (!v5 || (v7 = [v5 imageRef], v7 != -[NSObject imageRef](v6, "imageRef")))
+    userData = [(PXMessagesStackViewPhotoView *)self userData];
+    v6 = dataCopy;
+    if (!userData || (v7 = [userData imageRef], v7 != -[NSObject imageRef](v6, "imageRef")))
     {
       v8 = [MEMORY[0x1E69DCAB8] imageWithCGImage:{-[NSObject imageRef](v6, "imageRef")}];
       [(UIImageView *)self->_imageView setImage:v8];
@@ -54,7 +54,7 @@
       }
 
       [(PXMessagesStackItemEffectView *)self->_itemEffectView setContentView:videoView];
-      [(PXGVideoPlayerView *)self->_videoView setUserData:v4];
+      [(PXGVideoPlayerView *)self->_videoView setUserData:dataCopy];
     }
 
     else
@@ -64,7 +64,7 @@
   }
 
   userData = self->_userData;
-  self->_userData = v4;
+  self->_userData = dataCopy;
 }
 
 - (void)layoutSubviews
@@ -78,41 +78,41 @@
   [(PXGVideoPlayerView *)self->_videoView setFrame:?];
 }
 
-- (void)setItemEffectView:(id)a3
+- (void)setItemEffectView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   itemEffectView = self->_itemEffectView;
-  if (itemEffectView != v5)
+  if (itemEffectView != viewCopy)
   {
-    v8 = v5;
-    v7 = [(PXMessagesStackItemEffectView *)itemEffectView contentView];
-    objc_storeStrong(&self->_itemEffectView, a3);
-    [(PXMessagesStackItemEffectView *)self->_itemEffectView setContentView:v7];
+    v8 = viewCopy;
+    contentView = [(PXMessagesStackItemEffectView *)itemEffectView contentView];
+    objc_storeStrong(&self->_itemEffectView, view);
+    [(PXMessagesStackItemEffectView *)self->_itemEffectView setContentView:contentView];
     [(PXMessagesStackItemEffectView *)self->_itemEffectView removeFromSuperview];
     [(PXMessagesStackViewPhotoView *)self addSubview:v8];
     [(PXMessagesStackViewPhotoView *)self setNeedsLayout];
 
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  v3 = a3;
+  boundsCopy = bounds;
   if (![(PXMessagesStackViewPhotoView *)self ignoresClipContentRequests])
   {
     v5.receiver = self;
     v5.super_class = PXMessagesStackViewPhotoView;
-    [(PXMessagesStackViewPhotoView *)&v5 setClipsToBounds:v3];
+    [(PXMessagesStackViewPhotoView *)&v5 setClipsToBounds:boundsCopy];
   }
 }
 
-- (PXMessagesStackViewPhotoView)initWithFrame:(CGRect)a3
+- (PXMessagesStackViewPhotoView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = PXMessagesStackViewPhotoView;
   v7 = [(PXMessagesStackViewPhotoView *)&v11 initWithFrame:?];

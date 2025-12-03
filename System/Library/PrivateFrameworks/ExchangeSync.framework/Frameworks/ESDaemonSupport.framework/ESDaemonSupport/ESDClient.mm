@@ -1,82 +1,82 @@
 @interface ESDClient
 + (id)clientsToInterrogate;
-- (BOOL)isMonitoringAccountID:(id)a3 folderID:(id)a4;
-- (ESDClient)initWithClientID:(id)a3;
-- (ESDClient)initWithConnection:(id)a3 clientID:(id)a4;
+- (BOOL)isMonitoringAccountID:(id)d folderID:(id)iD;
+- (ESDClient)initWithClientID:(id)d;
+- (ESDClient)initWithConnection:(id)connection clientID:(id)d;
 - (id)_clientName;
-- (id)_createReplyToRequest:(id)a3 withProperties:(id)a4;
-- (id)timersForAccountWithID:(id)a3;
+- (id)_createReplyToRequest:(id)request withProperties:(id)properties;
+- (id)timersForAccountWithID:(id)d;
 - (unint64_t)watchedFolderCount;
-- (void)_agentsStopped:(id)a3;
-- (void)_asPolicyKeyChanged:(id)a3;
-- (void)_asyncProcessMeetingRequests:(id)a3;
-- (void)_beginDownloadingAttachmentEvent:(id)a3 eventDict:(id)a4;
-- (void)_beginMonitoringFolders:(id)a3;
-- (void)_cancelCalendarAvailabilityRequest:(id)a3 eventDict:(id)a4;
-- (void)_cancelCalendarDirectorySearch:(id)a3 eventDict:(id)a4;
-- (void)_cancelDownloadingAttachmentEvent:(id)a3 eventDict:(id)a4;
-- (void)_cancelServerContactsSearch:(id)a3;
-- (void)_checkIsOofSettingsSupported:(id)a3;
+- (void)_agentsStopped:(id)stopped;
+- (void)_asPolicyKeyChanged:(id)changed;
+- (void)_asyncProcessMeetingRequests:(id)requests;
+- (void)_beginDownloadingAttachmentEvent:(id)event eventDict:(id)dict;
+- (void)_beginMonitoringFolders:(id)folders;
+- (void)_cancelCalendarAvailabilityRequest:(id)request eventDict:(id)dict;
+- (void)_cancelCalendarDirectorySearch:(id)search eventDict:(id)dict;
+- (void)_cancelDownloadingAttachmentEvent:(id)event eventDict:(id)dict;
+- (void)_cancelServerContactsSearch:(id)search;
+- (void)_checkIsOofSettingsSupported:(id)supported;
 - (void)_clearAllStopMonitoringAgentsTokens;
-- (void)_clientDiedWithReason:(id)a3;
-- (void)_dispatchMessage:(id)a3;
-- (void)_fillOutEASTimeZoneInfo:(id)a3;
-- (void)_foldersUpdated:(id)a3;
-- (void)_getAccountExternalIdentification:(id)a3 eventDict:(id)a4;
-- (void)_getActiveSyncDeviceIdentifier:(id)a3;
-- (void)_getCurrentPolicyKey:(id)a3;
-- (void)_getStatusReports:(id)a3;
-- (void)_handleURL:(id)a3;
-- (void)_openServerContactsSearch:(id)a3;
-- (void)_openServerOofSettingsRequest:(id)a3;
-- (void)_performCalendarDirectorySearch:(id)a3 eventDict:(id)a4;
-- (void)_processFolderChange:(id)a3;
-- (void)_processMeetingRequests:(id)a3;
-- (void)_removeBusyFolderIDs:(id)a3 forAccountWithID:(id)a4;
-- (void)_removeWatchedFolderIDs:(id)a3 forAccountWithID:(id)a4;
-- (void)_reportFolderItemsSyncResult:(id)a3;
-- (void)_reportSharedCalendarAsJunkEvent:(id)a3 eventDict:(id)a4;
-- (void)_requestAllFolderContentsUpdate:(id)a3;
-- (void)_requestAllFolderContentsUpdateForAccountId:(id)a3 dataclasses:(int64_t)a4 isUserRequested:(BOOL)a5;
-- (void)_requestCalendarAvailability:(id)a3 eventDict:(id)a4;
-- (void)_requestClientStatusDump:(id)a3;
-- (void)_requestFolderContentsUpdate:(id)a3;
-- (void)_requestFolderContentsUpdateForFolders:(id)a3 accountId:(id)a4 dataclasses:(int64_t)a5 isUserRequested:(BOOL)a6;
-- (void)_requestFolderListUpdate:(id)a3;
-- (void)_requestFolderListUpdateForAccountId:(id)a3 dataclasses:(int64_t)a4 requireChangedFolders:(BOOL)a5 isUserRequested:(BOOL)a6;
-- (void)_requestPolicyUpdate:(id)a3;
-- (void)_resetCertWarnings:(id)a3;
-- (void)_resetThrottleTimers:(id)a3;
-- (void)_respondToSharedCalendarEvent:(id)a3 eventDict:(id)a4;
-- (void)_resumeMonitoringFolders:(id)a3;
-- (void)_setFolderIdsThatExternalClientsCareAbout:(id)a3;
-- (void)_startMonitoringAgents:(id)a3;
-- (void)_startMonitoringAgentsWithClientToken:(unint64_t)a3;
-- (void)_startMonitoringAgentsWithServerToken:(unint64_t)a3;
-- (void)_stopMonitoringAgents:(id)a3;
-- (void)_stopMonitoringAgentsWithClientToken:(unint64_t)a3;
-- (void)_stopMonitoringFolders:(id)a3;
-- (void)_suspendMonitoringFolders:(id)a3;
-- (void)applyClientStatusReportToAggregator:(id)a3;
-- (void)beginMonitoringPersistentFolders:(id)a3 forAccount:(id)a4;
+- (void)_clientDiedWithReason:(id)reason;
+- (void)_dispatchMessage:(id)message;
+- (void)_fillOutEASTimeZoneInfo:(id)info;
+- (void)_foldersUpdated:(id)updated;
+- (void)_getAccountExternalIdentification:(id)identification eventDict:(id)dict;
+- (void)_getActiveSyncDeviceIdentifier:(id)identifier;
+- (void)_getCurrentPolicyKey:(id)key;
+- (void)_getStatusReports:(id)reports;
+- (void)_handleURL:(id)l;
+- (void)_openServerContactsSearch:(id)search;
+- (void)_openServerOofSettingsRequest:(id)request;
+- (void)_performCalendarDirectorySearch:(id)search eventDict:(id)dict;
+- (void)_processFolderChange:(id)change;
+- (void)_processMeetingRequests:(id)requests;
+- (void)_removeBusyFolderIDs:(id)ds forAccountWithID:(id)d;
+- (void)_removeWatchedFolderIDs:(id)ds forAccountWithID:(id)d;
+- (void)_reportFolderItemsSyncResult:(id)result;
+- (void)_reportSharedCalendarAsJunkEvent:(id)event eventDict:(id)dict;
+- (void)_requestAllFolderContentsUpdate:(id)update;
+- (void)_requestAllFolderContentsUpdateForAccountId:(id)id dataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested;
+- (void)_requestCalendarAvailability:(id)availability eventDict:(id)dict;
+- (void)_requestClientStatusDump:(id)dump;
+- (void)_requestFolderContentsUpdate:(id)update;
+- (void)_requestFolderContentsUpdateForFolders:(id)folders accountId:(id)id dataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested;
+- (void)_requestFolderListUpdate:(id)update;
+- (void)_requestFolderListUpdateForAccountId:(id)id dataclasses:(int64_t)dataclasses requireChangedFolders:(BOOL)folders isUserRequested:(BOOL)requested;
+- (void)_requestPolicyUpdate:(id)update;
+- (void)_resetCertWarnings:(id)warnings;
+- (void)_resetThrottleTimers:(id)timers;
+- (void)_respondToSharedCalendarEvent:(id)event eventDict:(id)dict;
+- (void)_resumeMonitoringFolders:(id)folders;
+- (void)_setFolderIdsThatExternalClientsCareAbout:(id)about;
+- (void)_startMonitoringAgents:(id)agents;
+- (void)_startMonitoringAgentsWithClientToken:(unint64_t)token;
+- (void)_startMonitoringAgentsWithServerToken:(unint64_t)token;
+- (void)_stopMonitoringAgents:(id)agents;
+- (void)_stopMonitoringAgentsWithClientToken:(unint64_t)token;
+- (void)_stopMonitoringFolders:(id)folders;
+- (void)_suspendMonitoringFolders:(id)folders;
+- (void)applyClientStatusReportToAggregator:(id)aggregator;
+- (void)beginMonitoringPersistentFolders:(id)folders forAccount:(id)account;
 - (void)dealloc;
-- (void)delegateWithIDIsGoingAway:(id)a3;
+- (void)delegateWithIDIsGoingAway:(id)away;
 - (void)disable;
-- (void)noteBlockedClientCallChange:(int)a3;
-- (void)noteRefreshClientCallChange:(int)a3;
+- (void)noteBlockedClientCallChange:(int)change;
+- (void)noteRefreshClientCallChange:(int)change;
 - (void)persistentClientCleanup;
-- (void)reconnectWithConnection:(id)a3;
+- (void)reconnectWithConnection:(id)connection;
 - (void)registerForInterrogation;
 - (void)unregisterForInterrogation;
 @end
 
 @implementation ESDClient
 
-- (ESDClient)initWithConnection:(id)a3 clientID:(id)a4
+- (ESDClient)initWithConnection:(id)connection clientID:(id)d
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  dCopy = d;
   v36.receiver = self;
   v36.super_class = ESDClient;
   v8 = [(ESDClient *)&v36 init];
@@ -87,31 +87,31 @@
     if (os_log_type_enabled(v9, v10))
     {
       *buf = 134218242;
-      v38 = v6;
+      v38 = connectionCopy;
       v39 = 2112;
-      v40 = v7;
+      v40 = dCopy;
       _os_log_impl(&dword_24A184000, v9, v10, "Creating a new ESDClient for Connection %p and ClientID %@", buf, 0x16u);
     }
 
-    [(ESDClient *)v8 setConn:v6];
-    v11 = [(ESDClient *)v8 conn];
+    [(ESDClient *)v8 setConn:connectionCopy];
+    conn = [(ESDClient *)v8 conn];
     v12 = dispatch_get_global_queue(2, 0);
-    xpc_connection_set_target_queue(v11, v12);
+    xpc_connection_set_target_queue(conn, v12);
 
-    v13 = [(ESDClient *)v8 conn];
+    conn2 = [(ESDClient *)v8 conn];
     v30 = MEMORY[0x277D85DD0];
     v31 = 3221225472;
     v32 = __41__ESDClient_initWithConnection_clientID___block_invoke;
     v33 = &unk_278FCDD10;
-    v34 = v6;
+    v34 = connectionCopy;
     v14 = v8;
     v35 = v14;
-    xpc_connection_set_event_handler(v13, &v30);
+    xpc_connection_set_event_handler(conn2, &v30);
 
-    objc_storeStrong(&v14->_clientBundleID, a4);
-    v15 = [MEMORY[0x277CCACA8] da_newGUID];
+    objc_storeStrong(&v14->_clientBundleID, d);
+    da_newGUID = [MEMORY[0x277CCACA8] da_newGUID];
     clientUniqueID = v14->_clientUniqueID;
-    v14->_clientUniqueID = v15;
+    v14->_clientUniqueID = da_newGUID;
 
     v17 = objc_opt_new();
     [(ESDClient *)v14 setWatchedIDs:v17];
@@ -131,20 +131,20 @@
     v22 = objc_opt_new();
     [(ESDClient *)v14 setAgentMonitoringTokens:v22];
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v14 selector:sel__foldersUpdated_ name:*MEMORY[0x277D036E8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__foldersUpdated_ name:*MEMORY[0x277D036E8] object:0];
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v14 selector:sel__asPolicyKeyChanged_ name:*MEMORY[0x277D038B8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v14 selector:sel__asPolicyKeyChanged_ name:*MEMORY[0x277D038B8] object:0];
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v14 selector:sel__requestClientStatusDump_ name:@"ESDRequestClientStatusDumpNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v14 selector:sel__requestClientStatusDump_ name:@"ESDRequestClientStatusDumpNotification" object:0];
 
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v14 selector:sel__agentsStopped_ name:@"ESDAgentsStoppedNotification" object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v14 selector:sel__agentsStopped_ name:@"ESDAgentsStoppedNotification" object:0];
 
-    v27 = [(ESDClient *)v14 conn];
-    xpc_connection_resume(v27);
+    conn3 = [(ESDClient *)v14 conn];
+    xpc_connection_resume(conn3);
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -195,10 +195,10 @@ void __41__ESDClient_initWithConnection_clientID___block_invoke(uint64_t a1, voi
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (ESDClient)initWithClientID:(id)a3
+- (ESDClient)initWithClientID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = ESDClient;
   v6 = [(ESDClient *)&v21 init];
@@ -211,12 +211,12 @@ void __41__ESDClient_initWithConnection_clientID___block_invoke(uint64_t a1, voi
       *buf = 134218242;
       v23 = 0;
       v24 = 2112;
-      v25 = v5;
+      v25 = dCopy;
       _os_log_impl(&dword_24A184000, v7, v8, "Creating a new ESDClient for Connection %p and ClientID %@", buf, 0x16u);
     }
 
     [(ESDClient *)v6 setConn:0];
-    objc_storeStrong(&v6->_clientBundleID, a3);
+    objc_storeStrong(&v6->_clientBundleID, d);
     v9 = objc_opt_new();
     [(ESDClient *)v6 setWatchedIDs:v9];
 
@@ -235,48 +235,48 @@ void __41__ESDClient_initWithConnection_clientID___block_invoke(uint64_t a1, voi
     v14 = objc_opt_new();
     [(ESDClient *)v6 setAgentMonitoringTokens:v14];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v6 selector:sel__foldersUpdated_ name:*MEMORY[0x277D036E8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__foldersUpdated_ name:*MEMORY[0x277D036E8] object:0];
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v6 selector:sel__asPolicyKeyChanged_ name:*MEMORY[0x277D038B8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__asPolicyKeyChanged_ name:*MEMORY[0x277D038B8] object:0];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v6 selector:sel__requestClientStatusDump_ name:@"ESDRequestClientStatusDumpNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v6 selector:sel__requestClientStatusDump_ name:@"ESDRequestClientStatusDumpNotification" object:0];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v6 selector:sel__agentsStopped_ name:@"ESDAgentsStoppedNotification" object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v6 selector:sel__agentsStopped_ name:@"ESDAgentsStoppedNotification" object:0];
   }
 
   v19 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (void)reconnectWithConnection:(id)a3
+- (void)reconnectWithConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(ESDClient *)self conn];
+  connectionCopy = connection;
+  conn = [(ESDClient *)self conn];
 
-  if (v5)
+  if (conn)
   {
     [ESDClient reconnectWithConnection:];
   }
 
-  [(ESDClient *)self setConn:v4];
-  v6 = [(ESDClient *)self conn];
+  [(ESDClient *)self setConn:connectionCopy];
+  conn2 = [(ESDClient *)self conn];
   v7 = dispatch_get_global_queue(2, 0);
-  xpc_connection_set_target_queue(v6, v7);
+  xpc_connection_set_target_queue(conn2, v7);
 
-  v8 = [(ESDClient *)self conn];
+  conn3 = [(ESDClient *)self conn];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __37__ESDClient_reconnectWithConnection___block_invoke;
   handler[3] = &unk_278FCDD38;
   handler[4] = self;
-  xpc_connection_set_event_handler(v8, handler);
+  xpc_connection_set_event_handler(conn3, handler);
 
-  v9 = [(ESDClient *)self conn];
-  xpc_connection_resume(v9);
+  conn4 = [(ESDClient *)self conn];
+  xpc_connection_resume(conn4);
 }
 
 void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a2)
@@ -301,19 +301,19 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
   v4 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v3, v4))
   {
-    v5 = [(ESDClient *)self conn];
-    v6 = [(ESDClient *)self clientBundleID];
+    conn = [(ESDClient *)self conn];
+    clientBundleID = [(ESDClient *)self clientBundleID];
     *buf = 134218498;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
-    v15 = v5;
+    v15 = conn;
     v16 = 2112;
-    v17 = v6;
+    v17 = clientBundleID;
     _os_log_impl(&dword_24A184000, v3, v4, "Destroying ESDClient %p for Connection %p and ClientID %@", buf, 0x20u);
   }
 
-  v7 = [MEMORY[0x277D037B8] sharedManager];
-  [v7 requestPriority:0 forClient:self dataclasses:0];
+  mEMORY[0x277D037B8] = [MEMORY[0x277D037B8] sharedManager];
+  [mEMORY[0x277D037B8] requestPriority:0 forClient:self dataclasses:0];
 
   conn = self->_conn;
   if (conn)
@@ -335,12 +335,12 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
   v12 = *MEMORY[0x277D85DE8];
   if (!self->_clientName)
   {
-    v3 = [(ESDClient *)self conn];
+    conn = [(ESDClient *)self conn];
 
-    if (v3)
+    if (conn)
     {
-      v4 = [(ESDClient *)self conn];
-      pid = xpc_connection_get_pid(v4);
+      conn2 = [(ESDClient *)self conn];
+      pid = xpc_connection_get_pid(conn2);
 
       memset(v11, 0, sizeof(v11));
       if (proc_name(pid, v11, 0x100u))
@@ -364,13 +364,13 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
   return v8;
 }
 
-- (void)_removeBusyFolderIDs:(id)a3 forAccountWithID:(id)a4
+- (void)_removeBusyFolderIDs:(id)ds forAccountWithID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ESDClient *)self busyIDs];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  dsCopy = ds;
+  dCopy = d;
+  busyIDs = [(ESDClient *)self busyIDs];
+  v9 = [busyIDs objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
@@ -378,7 +378,7 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = v6;
+    v10 = dsCopy;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -406,21 +406,21 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
 
     if (![v9 count])
     {
-      v15 = [(ESDClient *)self busyIDs];
-      [v15 removeObjectForKey:v7];
+      busyIDs2 = [(ESDClient *)self busyIDs];
+      [busyIDs2 removeObjectForKey:dCopy];
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeWatchedFolderIDs:(id)a3 forAccountWithID:(id)a4
+- (void)_removeWatchedFolderIDs:(id)ds forAccountWithID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ESDClient *)self watchedIDs];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  dsCopy = ds;
+  dCopy = d;
+  watchedIDs = [(ESDClient *)self watchedIDs];
+  v9 = [watchedIDs objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
@@ -428,7 +428,7 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = v6;
+    v10 = dsCopy;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -456,8 +456,8 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
 
     if (![v9 count])
     {
-      v15 = [(ESDClient *)self watchedIDs];
-      [v15 removeObjectForKey:v7];
+      watchedIDs2 = [(ESDClient *)self watchedIDs];
+      [watchedIDs2 removeObjectForKey:dCopy];
     }
   }
 
@@ -472,12 +472,12 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
     v33.receiver = self;
     v33.super_class = ESDClient;
     [(DADisableableObject *)&v33 disable];
-    v3 = [(ESDClient *)self actionDelegatesById];
-    if (v3)
+    actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+    if (actionDelegatesById)
     {
-      v4 = v3;
-      v5 = [(ESDClient *)self actionDelegatesById];
-      v6 = [v5 count];
+      v4 = actionDelegatesById;
+      actionDelegatesById2 = [(ESDClient *)self actionDelegatesById];
+      v6 = [actionDelegatesById2 count];
 
       if (v6)
       {
@@ -485,10 +485,10 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v7 = [(ESDClient *)self actionDelegatesById];
-        v8 = [v7 allValues];
+        actionDelegatesById3 = [(ESDClient *)self actionDelegatesById];
+        allValues = [actionDelegatesById3 allValues];
 
-        v9 = [v8 countByEnumeratingWithState:&v29 objects:v35 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v29 objects:v35 count:16];
         if (v9)
         {
           v10 = v9;
@@ -500,14 +500,14 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
             {
               if (*v30 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(allValues);
               }
 
               [*(*(&v29 + 1) + 8 * v12++) disable];
             }
 
             while (v10 != v12);
-            v10 = [v8 countByEnumeratingWithState:&v29 objects:v35 count:16];
+            v10 = [allValues countByEnumeratingWithState:&v29 objects:v35 count:16];
           }
 
           while (v10);
@@ -515,27 +515,27 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
       }
     }
 
-    v13 = [(ESDClient *)self conn];
+    conn = [(ESDClient *)self conn];
 
-    if (v13)
+    if (conn)
     {
-      v14 = [(ESDClient *)self conn];
-      xpc_connection_cancel(v14);
+      conn2 = [(ESDClient *)self conn];
+      xpc_connection_cancel(conn2);
 
       [(ESDClient *)self setConn:0];
     }
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v16 = [(ESDClient *)self accountTimers];
-    v17 = [v16 allValues];
+    accountTimers = [(ESDClient *)self accountTimers];
+    allValues2 = [accountTimers allValues];
 
-    v18 = [v17 countByEnumeratingWithState:&v25 objects:v34 count:16];
+    v18 = [allValues2 countByEnumeratingWithState:&v25 objects:v34 count:16];
     if (v18)
     {
       v19 = v18;
@@ -547,14 +547,14 @@ void __37__ESDClient_reconnectWithConnection___block_invoke(uint64_t a1, void *a
         {
           if (*v26 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allValues2);
           }
 
           [*(*(&v25 + 1) + 8 * v21++) killAllTimers];
         }
 
         while (v19 != v21);
-        v19 = [v17 countByEnumeratingWithState:&v25 objects:v34 count:16];
+        v19 = [allValues2 countByEnumeratingWithState:&v25 objects:v34 count:16];
       }
 
       while (v19);
@@ -769,10 +769,10 @@ void __20__ESDClient_disable__block_invoke(uint64_t a1)
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(ESDClient *)self watchedIDs];
-  v4 = [v3 allKeys];
+  watchedIDs = [(ESDClient *)self watchedIDs];
+  allKeys = [watchedIDs allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -784,18 +784,18 @@ void __20__ESDClient_disable__block_invoke(uint64_t a1)
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(ESDClient *)self watchedIDs];
-        v12 = [v11 objectForKeyedSubscript:v10];
-        v13 = [v12 allObjects];
+        watchedIDs2 = [(ESDClient *)self watchedIDs];
+        v12 = [watchedIDs2 objectForKeyedSubscript:v10];
+        allObjects = [v12 allObjects];
 
-        v7 += [v13 count];
+        v7 += [allObjects count];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -813,12 +813,12 @@ void __20__ESDClient_disable__block_invoke(uint64_t a1)
 - (void)persistentClientCleanup
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(ESDClient *)self conn];
+  conn = [(ESDClient *)self conn];
 
-  if (v3)
+  if (conn)
   {
-    v4 = [(ESDClient *)self conn];
-    xpc_connection_cancel(v4);
+    conn2 = [(ESDClient *)self conn];
+    xpc_connection_cancel(conn2);
 
     [(ESDClient *)self setConn:0];
   }
@@ -836,12 +836,12 @@ void __20__ESDClient_disable__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [(ESDClient *)self actionDelegatesById];
-    if (v7)
+    actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+    if (actionDelegatesById)
     {
-      v8 = v7;
-      v9 = [(ESDClient *)self actionDelegatesById];
-      v10 = [v9 count];
+      v8 = actionDelegatesById;
+      actionDelegatesById2 = [(ESDClient *)self actionDelegatesById];
+      v10 = [actionDelegatesById2 count];
 
       if (v10)
       {
@@ -849,10 +849,10 @@ void __20__ESDClient_disable__block_invoke(uint64_t a1)
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v11 = [(ESDClient *)self actionDelegatesById];
-        v12 = [v11 allValues];
+        actionDelegatesById3 = [(ESDClient *)self actionDelegatesById];
+        allValues = [actionDelegatesById3 allValues];
 
-        v13 = [v12 countByEnumeratingWithState:&v30 objects:v36 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v30 objects:v36 count:16];
         if (v13)
         {
           v14 = v13;
@@ -863,13 +863,13 @@ void __20__ESDClient_disable__block_invoke(uint64_t a1)
             {
               if (*v31 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(allValues);
               }
 
               [*(*(&v30 + 1) + 8 * i) disable];
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v30 objects:v36 count:16];
+            v14 = [allValues countByEnumeratingWithState:&v30 objects:v36 count:16];
           }
 
           while (v14);
@@ -881,10 +881,10 @@ void __20__ESDClient_disable__block_invoke(uint64_t a1)
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = [(ESDClient *)self accountTimers];
-    v18 = [v17 allValues];
+    accountTimers = [(ESDClient *)self accountTimers];
+    allValues2 = [accountTimers allValues];
 
-    v19 = [v18 countByEnumeratingWithState:&v26 objects:v35 count:16];
+    v19 = [allValues2 countByEnumeratingWithState:&v26 objects:v35 count:16];
     if (v19)
     {
       v20 = v19;
@@ -895,13 +895,13 @@ void __20__ESDClient_disable__block_invoke(uint64_t a1)
         {
           if (*v27 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allValues2);
           }
 
           [*(*(&v26 + 1) + 8 * j) killAllTimers];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v26 objects:v35 count:16];
+        v20 = [allValues2 countByEnumeratingWithState:&v26 objects:v35 count:16];
       }
 
       while (v20);
@@ -1007,20 +1007,20 @@ void __36__ESDClient_persistentClientCleanup__block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isMonitoringAccountID:(id)a3 folderID:(id)a4
+- (BOOL)isMonitoringAccountID:(id)d folderID:(id)iD
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ESDClient *)self watchedIDs];
-  v9 = [v8 objectForKeyedSubscript:v6];
-  v10 = [v9 allObjects];
+  dCopy = d;
+  iDCopy = iD;
+  watchedIDs = [(ESDClient *)self watchedIDs];
+  v9 = [watchedIDs objectForKeyedSubscript:dCopy];
+  allObjects = [v9 allObjects];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = v10;
+  v11 = allObjects;
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
@@ -1034,7 +1034,7 @@ void __36__ESDClient_persistentClientCleanup__block_invoke(uint64_t a1)
           objc_enumerationMutation(v11);
         }
 
-        if ([v7 isEqualToString:{*(*(&v17 + 1) + 8 * i), v17}])
+        if ([iDCopy isEqualToString:{*(*(&v17 + 1) + 8 * i), v17}])
         {
           LOBYTE(v12) = 1;
           goto LABEL_11;
@@ -1057,9 +1057,9 @@ LABEL_11:
   return v12;
 }
 
-- (void)noteBlockedClientCallChange:(int)a3
+- (void)noteBlockedClientCallChange:(int)change
 {
-  switch(a3)
+  switch(change)
   {
     case 0:
       if ([(DADisableableObject *)self isDisabled])
@@ -1068,7 +1068,7 @@ LABEL_11:
       }
 
       v5 = [(ESDClient *)self numOutstandingBlockingClientCalls]+ 1;
-      v4 = self;
+      selfCopy2 = self;
       goto LABEL_9;
     case 1:
       [(ESDClient *)self setNumOutstandingBlockingClientCalls:[(ESDClient *)self numOutstandingBlockingClientCalls]- 1];
@@ -1077,10 +1077,10 @@ LABEL_11:
         break;
       }
 
-      v4 = self;
+      selfCopy2 = self;
       v5 = 0;
 LABEL_9:
-      [(ESDClient *)v4 setNumOutstandingBlockingClientCalls:v5];
+      [(ESDClient *)selfCopy2 setNumOutstandingBlockingClientCalls:v5];
       break;
     case 2:
       [(ESDClient *)self setNumOutstandingBlockingClientCalls:0];
@@ -1090,8 +1090,8 @@ LABEL_9:
 
   if ([(ESDClient *)self numOutstandingBlockingClientCalls]== 1)
   {
-    v6 = [MEMORY[0x277D037B8] sharedManager];
-    [v6 requestPriority:2 forClient:self dataclasses:127];
+    mEMORY[0x277D037B8] = [MEMORY[0x277D037B8] sharedManager];
+    [mEMORY[0x277D037B8] requestPriority:2 forClient:self dataclasses:127];
 
     v7 = DALoggingwithCategory();
     v8 = *(MEMORY[0x277D03988] + 6);
@@ -1109,11 +1109,11 @@ LABEL_9:
       return;
     }
 
-    v9 = [(ESDClient *)self numOutstandingRefreshPriorityClientCalls];
+    numOutstandingRefreshPriorityClientCalls = [(ESDClient *)self numOutstandingRefreshPriorityClientCalls];
     v10 = DALoggingwithCategory();
     v11 = *(MEMORY[0x277D03988] + 6);
     v12 = os_log_type_enabled(v10, v11);
-    if (v9 < 1)
+    if (numOutstandingRefreshPriorityClientCalls < 1)
     {
       if (v12)
       {
@@ -1121,8 +1121,8 @@ LABEL_9:
         _os_log_impl(&dword_24A184000, v10, v11, "DAPERF DADClient Dropping priority, no one's waiting", v15, 2u);
       }
 
-      v13 = [MEMORY[0x277D037B8] sharedManager];
-      v7 = v13;
+      mEMORY[0x277D037B8]2 = [MEMORY[0x277D037B8] sharedManager];
+      v7 = mEMORY[0x277D037B8]2;
       v14 = 0;
     }
 
@@ -1134,18 +1134,18 @@ LABEL_9:
         _os_log_impl(&dword_24A184000, v10, v11, "DAPERF DADClient Dropping priority back to refresh", v16, 2u);
       }
 
-      v13 = [MEMORY[0x277D037B8] sharedManager];
-      v7 = v13;
+      mEMORY[0x277D037B8]2 = [MEMORY[0x277D037B8] sharedManager];
+      v7 = mEMORY[0x277D037B8]2;
       v14 = 1;
     }
 
-    [v13 requestPriority:v14 forClient:self dataclasses:127];
+    [mEMORY[0x277D037B8]2 requestPriority:v14 forClient:self dataclasses:127];
   }
 }
 
-- (void)noteRefreshClientCallChange:(int)a3
+- (void)noteRefreshClientCallChange:(int)change
 {
-  if (a3 == 1)
+  if (change == 1)
   {
     [(ESDClient *)self setNumOutstandingRefreshPriorityClientCalls:[(ESDClient *)self numOutstandingRefreshPriorityClientCalls]- 1];
     if ([(ESDClient *)self numOutstandingRefreshPriorityClientCalls]> 0)
@@ -1157,7 +1157,7 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  if (!a3 && ![(DADisableableObject *)self isDisabled])
+  if (!change && ![(DADisableableObject *)self isDisabled])
   {
     v4 = [(ESDClient *)self numOutstandingRefreshPriorityClientCalls]+ 1;
 LABEL_7:
@@ -1201,18 +1201,18 @@ LABEL_8:
     v7 = 0;
   }
 
-  v9 = [MEMORY[0x277D037B8] sharedManager];
-  [v9 requestPriority:v7 forClient:self dataclasses:127];
+  mEMORY[0x277D037B8] = [MEMORY[0x277D037B8] sharedManager];
+  [mEMORY[0x277D037B8] requestPriority:v7 forClient:self dataclasses:127];
 }
 
 + (id)clientsToInterrogate
 {
   v2 = objc_opt_class();
   objc_sync_enter(v2);
-  v3 = [clientsToInterrogate allObjects];
+  allObjects = [clientsToInterrogate allObjects];
   objc_sync_exit(v2);
 
-  return v3;
+  return allObjects;
 }
 
 - (void)registerForInterrogation
@@ -1241,10 +1241,10 @@ LABEL_8:
   objc_sync_exit(obj);
 }
 
-- (id)_createReplyToRequest:(id)a3 withProperties:(id)a4
+- (id)_createReplyToRequest:(id)request withProperties:(id)properties
 {
-  v5 = a4;
-  reply = xpc_dictionary_create_reply(a3);
+  propertiesCopy = properties;
+  reply = xpc_dictionary_create_reply(request);
   v7 = _CFXPCCreateXPCObjectFromCFObject();
 
   applier[0] = MEMORY[0x277D85DD0];
@@ -1258,10 +1258,10 @@ LABEL_8:
   return v8;
 }
 
-- (void)_beginMonitoringFolders:(id)a3
+- (void)_beginMonitoringFolders:(id)folders
 {
   v55 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  foldersCopy = folders;
   v4 = _CFXPCCreateCFObjectFromXPCObject();
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03BA8]];
@@ -1292,14 +1292,14 @@ LABEL_8:
     v15 = v7;
     v7 = v12;
     v16 = v6;
-    v17 = v3;
+    v17 = foldersCopy;
     v19 = v18 = v5;
     *buf = 138412290;
     v52 = v19;
     _os_log_impl(&dword_24A184000, v13, v14, "DATransaction starting, ID: %@", buf, 0xCu);
 
     v5 = v18;
-    v3 = v17;
+    foldersCopy = v17;
     v6 = v16;
     v12 = v7;
     LOBYTE(v7) = v15;
@@ -1360,7 +1360,7 @@ LABEL_15:
   v50 = v7;
   v22 = v12;
   v48 = v22;
-  v49 = v3;
+  v49 = foldersCopy;
   v23 = MEMORY[0x24C212500](v45);
   v24 = +[ESDMain sharedMain];
   v43[0] = MEMORY[0x277D85DD0];
@@ -1566,19 +1566,19 @@ uint64_t __37__ESDClient__beginMonitoringFolders___block_invoke_2(void *a1)
   return v3();
 }
 
-- (void)beginMonitoringPersistentFolders:(id)a3 forAccount:(id)a4
+- (void)beginMonitoringPersistentFolders:(id)folders forAccount:(id)account
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  foldersCopy = folders;
+  accountCopy = account;
   v8 = objc_opt_new();
   v9 = DALoggingwithCategory();
   v10 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v9, v10))
   {
-    v11 = [v8 transactionId];
+    transactionId = [v8 transactionId];
     *buf = 138412290;
-    v34 = v11;
+    v34 = transactionId;
     _os_log_impl(&dword_24A184000, v9, v10, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -1587,9 +1587,9 @@ uint64_t __37__ESDClient__beginMonitoringFolders___block_invoke_2(void *a1)
   v29[2] = __57__ESDClient_beginMonitoringPersistentFolders_forAccount___block_invoke;
   v29[3] = &unk_278FCDE00;
   v29[4] = self;
-  v12 = v7;
+  v12 = accountCopy;
   v30 = v12;
-  v13 = v6;
+  v13 = foldersCopy;
   v31 = v13;
   v14 = v8;
   v32 = v14;
@@ -1695,10 +1695,10 @@ uint64_t __57__ESDClient_beginMonitoringPersistentFolders_forAccount___block_inv
   return v3();
 }
 
-- (void)_stopMonitoringFolders:(id)a3
+- (void)_stopMonitoringFolders:(id)folders
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  foldersCopy = folders;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
   v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03BA8]];
@@ -1708,9 +1708,9 @@ uint64_t __57__ESDClient_beginMonitoringPersistentFolders_forAccount___block_inv
   v11 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v9, v11))
   {
-    v12 = [v8 transactionId];
+    transactionId = [v8 transactionId];
     *buf = 138412290;
-    v39 = v12;
+    v39 = transactionId;
     _os_log_impl(&dword_24A184000, v9, v11, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -1765,7 +1765,7 @@ LABEL_11:
   v35 = v13;
   v14 = v6;
   v36 = v14;
-  v37 = v4;
+  v37 = foldersCopy;
   v15 = MEMORY[0x24C212500](v34);
   v16 = +[ESDMain sharedMain];
   v32[0] = MEMORY[0x277D85DD0];
@@ -1780,7 +1780,7 @@ LABEL_11:
   v26[3] = &unk_278FCDE28;
   v27 = v13;
   v28 = v14;
-  v29 = self;
+  selfCopy = self;
   v31 = v33;
   v30 = v8;
   v17 = v33;
@@ -1947,10 +1947,10 @@ void __36__ESDClient__stopMonitoringFolders___block_invoke_2(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resumeMonitoringFolders:(id)a3
+- (void)_resumeMonitoringFolders:(id)folders
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  foldersCopy = folders;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
   v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03BA8]];
@@ -1960,9 +1960,9 @@ void __36__ESDClient__stopMonitoringFolders___block_invoke_2(uint64_t a1)
   v11 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v9, v11))
   {
-    v12 = [v8 transactionId];
+    transactionId = [v8 transactionId];
     *buf = 138412290;
-    v38 = v12;
+    v38 = transactionId;
     _os_log_impl(&dword_24A184000, v9, v11, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -2017,7 +2017,7 @@ LABEL_11:
   v34 = v13;
   v14 = v6;
   v35 = v14;
-  v36 = v4;
+  v36 = foldersCopy;
   v15 = MEMORY[0x24C212500](v33);
   v16 = +[ESDMain sharedMain];
   v31[0] = MEMORY[0x277D85DD0];
@@ -2112,10 +2112,10 @@ uint64_t __38__ESDClient__resumeMonitoringFolders___block_invoke_2(void *a1)
   return v3();
 }
 
-- (void)_suspendMonitoringFolders:(id)a3
+- (void)_suspendMonitoringFolders:(id)folders
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  foldersCopy = folders;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
   v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03BA8]];
@@ -2125,9 +2125,9 @@ uint64_t __38__ESDClient__resumeMonitoringFolders___block_invoke_2(void *a1)
   v11 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v9, v11))
   {
-    v12 = [v8 transactionId];
+    transactionId = [v8 transactionId];
     *buf = 138412290;
-    v38 = v12;
+    v38 = transactionId;
     _os_log_impl(&dword_24A184000, v9, v11, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -2182,7 +2182,7 @@ LABEL_11:
   v34 = v13;
   v14 = v7;
   v35 = v14;
-  v36 = v4;
+  v36 = foldersCopy;
   v15 = MEMORY[0x24C212500](v33);
   v16 = +[ESDMain sharedMain];
   v31[0] = MEMORY[0x277D85DD0];
@@ -2291,27 +2291,27 @@ uint64_t __39__ESDClient__suspendMonitoringFolders___block_invoke_2(void *a1)
   return v3();
 }
 
-- (void)_stopMonitoringAgentsWithClientToken:(unint64_t)a3
+- (void)_stopMonitoringAgentsWithClientToken:(unint64_t)token
 {
   v5 = +[ESDAgentManager sharedManager];
-  v6 = [v5 disableMonitoringAgents];
+  disableMonitoringAgents = [v5 disableMonitoringAgents];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
-  v7 = [(ESDClient *)self agentMonitoringTokens];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v7 setObject:v9 forKeyedSubscript:v8];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:disableMonitoringAgents];
+  agentMonitoringTokens = [(ESDClient *)self agentMonitoringTokens];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:token];
+  [agentMonitoringTokens setObject:v9 forKeyedSubscript:v8];
 }
 
-- (void)_startMonitoringAgentsWithClientToken:(unint64_t)a3
+- (void)_startMonitoringAgentsWithClientToken:(unint64_t)token
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(ESDClient *)self agentMonitoringTokens];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  agentMonitoringTokens = [(ESDClient *)self agentMonitoringTokens];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:token];
+  v7 = [agentMonitoringTokens objectForKeyedSubscript:v6];
 
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
@@ -2321,39 +2321,39 @@ uint64_t __39__ESDClient__suspendMonitoringFolders___block_invoke_2(void *a1)
     if (os_log_type_enabled(v9, v10))
     {
       v13[0] = 67109120;
-      v13[1] = a3;
+      v13[1] = token;
       _os_log_impl(&dword_24A184000, v9, v10, "Requested to start monitoring agents with unrecognized client token %d. Forcing a reload.", v13, 8u);
     }
 
     v11 = +[ESDAgentManager sharedManager];
-    v8 = [v11 disableMonitoringAgents];
+    unsignedIntegerValue = [v11 disableMonitoringAgents];
   }
 
-  [(ESDClient *)self _startMonitoringAgentsWithServerToken:v8];
+  [(ESDClient *)self _startMonitoringAgentsWithServerToken:unsignedIntegerValue];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startMonitoringAgentsWithServerToken:(unint64_t)a3
+- (void)_startMonitoringAgentsWithServerToken:(unint64_t)token
 {
   v4 = +[ESDAgentManager sharedManager];
-  [v4 enableMonitoringAgentsWithToken:a3];
+  [v4 enableMonitoringAgentsWithToken:token];
 }
 
 - (void)_clearAllStopMonitoringAgentsTokens
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(ESDClient *)self agentMonitoringTokens];
-  v4 = [v3 allValues];
+  agentMonitoringTokens = [(ESDClient *)self agentMonitoringTokens];
+  allValues = [agentMonitoringTokens allValues];
 
-  v5 = [(ESDClient *)self agentMonitoringTokens];
-  [v5 removeAllObjects];
+  agentMonitoringTokens2 = [(ESDClient *)self agentMonitoringTokens];
+  [agentMonitoringTokens2 removeAllObjects];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v4;
+  v6 = allValues;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -2382,24 +2382,24 @@ uint64_t __39__ESDClient__suspendMonitoringFolders___block_invoke_2(void *a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startMonitoringAgents:(id)a3
+- (void)_startMonitoringAgents:(id)agents
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  agentsCopy = agents;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v23 = v8;
+    v23 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
   v9 = _CFXPCCreateCFObjectFromXPCObject();
   v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D03A00]];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
   v12 = +[ESDMain sharedMain];
   v17[0] = MEMORY[0x277D85DD0];
@@ -2408,11 +2408,11 @@ uint64_t __39__ESDClient__suspendMonitoringFolders___block_invoke_2(void *a1)
   v17[3] = &unk_278FCDE50;
   v17[4] = self;
   v18 = v9;
-  v21 = v11;
-  v19 = v4;
+  v21 = bOOLValue;
+  v19 = agentsCopy;
   v20 = v5;
   v13 = v5;
-  v14 = v4;
+  v14 = agentsCopy;
   v15 = v9;
   [v12 addToOperationsQueueDisabledCheckAndGoBlock:0 wrappedBlock:v17];
 
@@ -2482,24 +2482,24 @@ LABEL_8:
   return result;
 }
 
-- (void)_stopMonitoringAgents:(id)a3
+- (void)_stopMonitoringAgents:(id)agents
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  agentsCopy = agents;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v24 = v8;
+    v24 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
   v9 = _CFXPCCreateCFObjectFromXPCObject();
   v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D03A00]];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
   v12 = +[ESDMain sharedMain];
   v17[0] = MEMORY[0x277D85DD0];
@@ -2507,12 +2507,12 @@ LABEL_8:
   v17[2] = __35__ESDClient__stopMonitoringAgents___block_invoke;
   v17[3] = &unk_278FCDE50;
   v18 = v9;
-  v19 = self;
-  v22 = v11;
-  v20 = v4;
+  selfCopy = self;
+  v22 = bOOLValue;
+  v20 = agentsCopy;
   v21 = v5;
   v13 = v5;
-  v14 = v4;
+  v14 = agentsCopy;
   v15 = v9;
   [v12 addToOperationsQueueDisabledCheckAndGoBlock:0 wrappedBlock:v17];
 
@@ -2565,18 +2565,18 @@ void __35__ESDClient__stopMonitoringAgents___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getCurrentPolicyKey:(id)a3
+- (void)_getCurrentPolicyKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v24 = v8;
+    v24 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -2587,11 +2587,11 @@ void __35__ESDClient__stopMonitoringAgents___block_invoke(uint64_t a1)
   v18[2] = __34__ESDClient__getCurrentPolicyKey___block_invoke;
   v18[3] = &unk_278FCDE78;
   v19 = v10;
-  v20 = self;
-  v21 = v4;
+  selfCopy = self;
+  v21 = keyCopy;
   v22 = v5;
   v11 = v5;
-  v12 = v4;
+  v12 = keyCopy;
   v13 = v10;
   v14 = MEMORY[0x24C212500](v18);
   v15 = +[ESDMain sharedMain];
@@ -2641,18 +2641,18 @@ void __34__ESDClient__getCurrentPolicyKey___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestPolicyUpdate:(id)a3
+- (void)_requestPolicyUpdate:(id)update
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v21 = v8;
+    v21 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -2684,19 +2684,19 @@ void __34__ESDClient__requestPolicyUpdate___block_invoke(uint64_t a1)
   [v2 requestPolicyUpdateForAccount:*(a1 + 32)];
 }
 
-- (id)timersForAccountWithID:(id)a3
+- (id)timersForAccountWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(ESDClient *)self accountTimers];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    accountTimers = [(ESDClient *)self accountTimers];
+    v6 = [accountTimers objectForKeyedSubscript:dCopy];
 
     if (!v6)
     {
       v6 = objc_opt_new();
-      v7 = [(ESDClient *)self accountTimers];
-      [v7 setObject:v6 forKeyedSubscript:v4];
+      accountTimers2 = [(ESDClient *)self accountTimers];
+      [accountTimers2 setObject:v6 forKeyedSubscript:dCopy];
     }
   }
 
@@ -2708,22 +2708,22 @@ void __34__ESDClient__requestPolicyUpdate___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_requestFolderContentsUpdateForFolders:(id)a3 accountId:(id)a4 dataclasses:(int64_t)a5 isUserRequested:(BOOL)a6
+- (void)_requestFolderContentsUpdateForFolders:(id)folders accountId:(id)id dataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested
 {
-  v6 = a6;
-  v34 = a5;
+  requestedCopy = requested;
+  dataclassesCopy = dataclasses;
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  foldersCopy = folders;
+  idCopy = id;
   v10 = objc_opt_new();
   v11 = DALoggingwithCategory();
   v12 = MEMORY[0x277D03988];
   v13 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v11, v13))
   {
-    v14 = [v10 transactionId];
+    transactionId = [v10 transactionId];
     *buf = 138412290;
-    v55 = v14;
+    v55 = transactionId;
     _os_log_impl(&dword_24A184000, v11, v13, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -2732,24 +2732,24 @@ void __34__ESDClient__requestPolicyUpdate___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v15, v16))
   {
     *buf = 138412802;
-    v55 = v9;
+    v55 = idCopy;
     v56 = 2048;
-    v57 = v34;
+    v57 = dataclassesCopy;
     v58 = 1024;
-    v59 = v6;
+    v59 = requestedCopy;
     _os_log_impl(&dword_24A184000, v15, v16, "_requestFolderContentsUpdateForFolders for account %@, dataclass 0x%lx isUserRequested %d", buf, 0x1Cu);
   }
 
-  v17 = [(ESDClient *)self timersForAccountWithID:v9];
-  v18 = [v17 clientBehaviorForFolderIds:v8];
-  if (v6 || (v19 = v18, (v18 & 1) != 0))
+  v17 = [(ESDClient *)self timersForAccountWithID:idCopy];
+  v18 = [v17 clientBehaviorForFolderIds:foldersCopy];
+  if (requestedCopy || (v19 = v18, (v18 & 1) != 0))
   {
     v20 = objc_opt_new();
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v22 = v8;
+    v22 = foldersCopy;
     v23 = [v22 countByEnumeratingWithState:&v49 objects:v53 count:16];
     if (v23)
     {
@@ -2764,7 +2764,7 @@ void __34__ESDClient__requestPolicyUpdate___block_invoke(uint64_t a1)
             objc_enumerationMutation(v22);
           }
 
-          [v17 setLastFolderContentRequestDate:v20 forFolderWithId:{*(*(&v49 + 1) + 8 * i), v34}];
+          [v17 setLastFolderContentRequestDate:v20 forFolderWithId:{*(*(&v49 + 1) + 8 * i), dataclassesCopy}];
         }
 
         v24 = [v22 countByEnumeratingWithState:&v49 objects:v53 count:16];
@@ -2778,9 +2778,9 @@ void __34__ESDClient__requestPolicyUpdate___block_invoke(uint64_t a1)
     v43[2] = __90__ESDClient__requestFolderContentsUpdateForFolders_accountId_dataclasses_isUserRequested___block_invoke;
     v43[3] = &unk_278FCDEC8;
     v44 = v22;
-    v45 = v9;
-    v47 = v34;
-    v48 = v6;
+    v45 = idCopy;
+    v47 = dataclassesCopy;
+    v48 = requestedCopy;
     v46 = v10;
     v27 = MEMORY[0x24C212500](v43);
     v28 = +[ESDMain sharedMain];
@@ -2802,7 +2802,7 @@ void __34__ESDClient__requestPolicyUpdate___block_invoke(uint64_t a1)
     if (v21)
     {
       *buf = 138412290;
-      v55 = v8;
+      v55 = foldersCopy;
       _os_log_impl(&dword_24A184000, v20, v13, "Deferring request to update folders %@", buf, 0xCu);
     }
 
@@ -2816,10 +2816,10 @@ void __34__ESDClient__requestPolicyUpdate___block_invoke(uint64_t a1)
     handler[2] = __90__ESDClient__requestFolderContentsUpdateForFolders_accountId_dataclasses_isUserRequested___block_invoke_60;
     handler[3] = &unk_278FCDEF0;
     handler[4] = self;
-    v37 = v8;
-    v38 = v9;
-    v40 = v34;
-    v41 = v6;
+    v37 = foldersCopy;
+    v38 = idCopy;
+    v40 = dataclassesCopy;
+    v41 = requestedCopy;
     v39 = v10;
     dispatch_source_set_event_handler(v20, handler);
     dispatch_resume(v20);
@@ -2874,17 +2874,17 @@ void __90__ESDClient__requestFolderContentsUpdateForFolders_accountId_dataclasse
   [v2 setDeferredFolderContentsSource:0];
 }
 
-- (void)_requestFolderContentsUpdate:(id)a3
+- (void)_requestFolderContentsUpdate:(id)update
 {
   v23 = *MEMORY[0x277D85DE8];
   v4 = _CFXPCCreateCFObjectFromXPCObject();
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03B08]];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
   v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03BA8]];
   v9 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03C58]];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
   if (!v8)
   {
@@ -2927,26 +2927,26 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  [(ESDClient *)self _requestFolderContentsUpdateForFolders:v8 accountId:v5 dataclasses:v7 isUserRequested:v10];
+  [(ESDClient *)self _requestFolderContentsUpdateForFolders:v8 accountId:v5 dataclasses:intValue isUserRequested:bOOLValue];
 LABEL_10:
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestAllFolderContentsUpdateForAccountId:(id)a3 dataclasses:(int64_t)a4 isUserRequested:(BOOL)a5
+- (void)_requestAllFolderContentsUpdateForAccountId:(id)id dataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested
 {
-  v5 = a5;
+  requestedCopy = requested;
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  idCopy = id;
   v9 = objc_opt_new();
   v10 = DALoggingwithCategory();
   v11 = MEMORY[0x277D03988];
   v12 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v10, v12))
   {
-    v13 = [v9 transactionId];
+    transactionId = [v9 transactionId];
     *buf = 138412290;
-    v41 = v13;
+    v41 = transactionId;
     _os_log_impl(&dword_24A184000, v10, v12, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -2955,29 +2955,29 @@ LABEL_10:
   if (os_log_type_enabled(v14, v15))
   {
     *buf = 138412802;
-    v41 = v8;
+    v41 = idCopy;
     v42 = 2048;
-    v43 = a4;
+    dataclassesCopy = dataclasses;
     v44 = 1024;
-    v45 = v5;
+    v45 = requestedCopy;
     _os_log_impl(&dword_24A184000, v14, v15, "_requestAllFolderContentsUpdateForAccountId %@, dataclasses 0x%lx, isUserRequested: %d", buf, 0x1Cu);
   }
 
-  v16 = [(ESDClient *)self timersForAccountWithID:v8];
-  v17 = [v16 clientBehaviorForFolderContents];
-  if (v5 || (v18 = v17, (v17 & 1) != 0))
+  v16 = [(ESDClient *)self timersForAccountWithID:idCopy];
+  clientBehaviorForFolderContents = [v16 clientBehaviorForFolderContents];
+  if (requestedCopy || (v18 = clientBehaviorForFolderContents, (clientBehaviorForFolderContents & 1) != 0))
   {
-    v21 = [MEMORY[0x277CBEAA8] date];
-    [v16 setLastAllFolderContentsRequestDate:v21];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v16 setLastAllFolderContentsRequestDate:date];
 
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __85__ESDClient__requestAllFolderContentsUpdateForAccountId_dataclasses_isUserRequested___block_invoke;
     v34[3] = &unk_278FCDEC8;
-    v38 = a4;
-    v39 = v5;
-    v35 = v8;
-    v36 = self;
+    dataclassesCopy2 = dataclasses;
+    v39 = requestedCopy;
+    v35 = idCopy;
+    selfCopy = self;
     v37 = v9;
     v22 = MEMORY[0x24C212500](v34);
     v23 = +[ESDMain sharedMain];
@@ -3013,9 +3013,9 @@ LABEL_10:
       handler[2] = __85__ESDClient__requestAllFolderContentsUpdateForAccountId_dataclasses_isUserRequested___block_invoke_62;
       handler[3] = &unk_278FCDEC8;
       handler[4] = self;
-      v29 = v8;
-      v31 = a4;
-      v32 = v5;
+      v29 = idCopy;
+      dataclassesCopy3 = dataclasses;
+      v32 = requestedCopy;
       v30 = v9;
       dispatch_source_set_event_handler(v19, handler);
       dispatch_resume(v19);
@@ -3090,20 +3090,20 @@ void __85__ESDClient__requestAllFolderContentsUpdateForAccountId_dataclasses_isU
   [v2 setDeferredAllFolderContentsSource:0];
 }
 
-- (void)_requestAllFolderContentsUpdate:(id)a3
+- (void)_requestAllFolderContentsUpdate:(id)update
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = _CFXPCCreateCFObjectFromXPCObject();
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03B08]];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
   v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03C58]];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
   if (v5)
   {
-    [(ESDClient *)self _requestAllFolderContentsUpdateForAccountId:v5 dataclasses:v7 isUserRequested:v9];
+    [(ESDClient *)self _requestAllFolderContentsUpdateForAccountId:v5 dataclasses:intValue isUserRequested:bOOLValue];
   }
 
   else
@@ -3121,21 +3121,21 @@ void __85__ESDClient__requestAllFolderContentsUpdateForAccountId_dataclasses_isU
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestFolderListUpdateForAccountId:(id)a3 dataclasses:(int64_t)a4 requireChangedFolders:(BOOL)a5 isUserRequested:(BOOL)a6
+- (void)_requestFolderListUpdateForAccountId:(id)id dataclasses:(int64_t)dataclasses requireChangedFolders:(BOOL)folders isUserRequested:(BOOL)requested
 {
-  v6 = a6;
-  v31 = a5;
+  requestedCopy = requested;
+  foldersCopy = folders;
   v52 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  idCopy = id;
   v10 = objc_opt_new();
   v11 = DALoggingwithCategory();
   v12 = MEMORY[0x277D03988];
   v13 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v11, v13))
   {
-    v14 = [v10 transactionId];
+    transactionId = [v10 transactionId];
     *buf = 138412290;
-    v47 = v14;
+    v47 = transactionId;
     _os_log_impl(&dword_24A184000, v11, v13, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -3144,25 +3144,25 @@ void __85__ESDClient__requestAllFolderContentsUpdateForAccountId_dataclasses_isU
   if (os_log_type_enabled(v15, v16))
   {
     *buf = 138412802;
-    v47 = v9;
+    v47 = idCopy;
     v48 = 2048;
-    v49 = a4;
+    dataclassesCopy = dataclasses;
     v50 = 1024;
-    v51 = v6;
+    v51 = requestedCopy;
     _os_log_impl(&dword_24A184000, v15, v16, "_requestFolderListUpdateForAccountId %@, dataclass 0x%lx, isUserRequested %d", buf, 0x1Cu);
   }
 
-  v17 = [(ESDClient *)self timersForAccountWithID:v9];
-  v18 = [v17 clientBehaviorForFolderList];
-  if (v6 || (v19 = v18, (v18 & 1) != 0))
+  v17 = [(ESDClient *)self timersForAccountWithID:idCopy];
+  clientBehaviorForFolderList = [v17 clientBehaviorForFolderList];
+  if (requestedCopy || (v19 = clientBehaviorForFolderList, (clientBehaviorForFolderList & 1) != 0))
   {
-    v22 = [MEMORY[0x277CBEAA8] date];
-    [v17 setLastFolderListRequestDate:v22];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v17 setLastFolderListRequestDate:date];
 
-    if (v31 && [v17 allowFolderWipe])
+    if (foldersCopy && [v17 allowFolderWipe])
     {
-      v23 = [MEMORY[0x277CBEAA8] date];
-      [v17 setLastFolderWipeRequestDate:v23];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [v17 setLastFolderWipeRequestDate:date2];
 
       v24 = 1;
     }
@@ -3176,11 +3176,11 @@ void __85__ESDClient__requestAllFolderContentsUpdateForAccountId_dataclasses_isU
     v39[1] = 3221225472;
     v39[2] = __100__ESDClient__requestFolderListUpdateForAccountId_dataclasses_requireChangedFolders_isUserRequested___block_invoke;
     v39[3] = &unk_278FCDF18;
-    v43 = a4;
+    dataclassesCopy2 = dataclasses;
     v44 = v24;
-    v45 = v6;
-    v40 = v9;
-    v41 = self;
+    v45 = requestedCopy;
+    v40 = idCopy;
+    selfCopy = self;
     v42 = v10;
     v25 = MEMORY[0x24C212500](v39);
     v26 = +[ESDMain sharedMain];
@@ -3216,10 +3216,10 @@ void __85__ESDClient__requestAllFolderContentsUpdateForAccountId_dataclasses_isU
       handler[2] = __100__ESDClient__requestFolderListUpdateForAccountId_dataclasses_requireChangedFolders_isUserRequested___block_invoke_64;
       handler[3] = &unk_278FCDF18;
       handler[4] = self;
-      v33 = v9;
-      v35 = a4;
-      v36 = v31;
-      v37 = v6;
+      v33 = idCopy;
+      dataclassesCopy3 = dataclasses;
+      v36 = foldersCopy;
+      v37 = requestedCopy;
       v34 = v10;
       dispatch_source_set_event_handler(v20, handler);
       dispatch_resume(v20);
@@ -3277,23 +3277,23 @@ void __100__ESDClient__requestFolderListUpdateForAccountId_dataclasses_requireCh
   [v2 setDeferredFolderListSource:0];
 }
 
-- (void)_requestFolderListUpdate:(id)a3
+- (void)_requestFolderListUpdate:(id)update
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = _CFXPCCreateCFObjectFromXPCObject();
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03B08]];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
   v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03D90]];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
   v10 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03C58]];
-  v11 = [v10 BOOLValue];
+  bOOLValue2 = [v10 BOOLValue];
 
   if (v5)
   {
-    [(ESDClient *)self _requestFolderListUpdateForAccountId:v5 dataclasses:v7 requireChangedFolders:v9 isUserRequested:v11];
+    [(ESDClient *)self _requestFolderListUpdateForAccountId:v5 dataclasses:intValue requireChangedFolders:bOOLValue isUserRequested:bOOLValue2];
   }
 
   else
@@ -3311,25 +3311,25 @@ void __100__ESDClient__requestFolderListUpdateForAccountId_dataclasses_requireCh
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)delegateWithIDIsGoingAway:(id)a3
+- (void)delegateWithIDIsGoingAway:(id)away
 {
-  v4 = a3;
-  v5 = [(ESDClient *)self actionDelegatesById];
-  [v5 removeObjectForKey:v4];
+  awayCopy = away;
+  actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+  [actionDelegatesById removeObjectForKey:awayCopy];
 }
 
-- (void)_openServerContactsSearch:(id)a3
+- (void)_openServerContactsSearch:(id)search
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  searchCopy = search;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v33 = v8;
+    v33 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -3357,14 +3357,14 @@ void __100__ESDClient__requestFolderListUpdateForAccountId_dataclasses_requireCh
   [ESDClient _openServerContactsSearch:];
 LABEL_5:
   v13 = [[ESDClientContactsSearchDelegate alloc] initWithAccountID:v10 queryDictionary:v12 client:self];
-  v14 = [(ESDClientDelegate *)v13 delegateID];
-  if (v14)
+  delegateID = [(ESDClientDelegate *)v13 delegateID];
+  if (delegateID)
   {
-    v15 = [(ESDClient *)self actionDelegatesById];
-    [v15 setObject:v13 forKeyedSubscript:v14];
+    actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+    [actionDelegatesById setObject:v13 forKeyedSubscript:delegateID];
 
     v30 = *MEMORY[0x277D03DB8];
-    v31 = v14;
+    v31 = delegateID;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
   }
 
@@ -3373,13 +3373,13 @@ LABEL_5:
     v16 = MEMORY[0x277CBEC10];
   }
 
-  v17 = [(ESDClient *)self _createReplyToRequest:v4 withProperties:v16, v4];
-  v18 = [(ESDClient *)self conn];
+  searchCopy = [(ESDClient *)self _createReplyToRequest:searchCopy withProperties:v16, searchCopy];
+  conn = [(ESDClient *)self conn];
 
-  if (v18)
+  if (conn)
   {
-    v19 = [(ESDClient *)self conn];
-    xpc_connection_send_message(v19, v17);
+    conn2 = [(ESDClient *)self conn];
+    xpc_connection_send_message(conn2, searchCopy);
   }
 
   v20 = +[ESDMain sharedMain];
@@ -3401,25 +3401,25 @@ LABEL_5:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelServerContactsSearch:(id)a3
+- (void)_cancelServerContactsSearch:(id)search
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  searchCopy = search;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v24 = v8;
+    v24 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
   v9 = _CFXPCCreateCFObjectFromXPCObject();
   v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D03DB8]];
-  v11 = [(ESDClient *)self actionDelegatesById];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+  v12 = [actionDelegatesById objectForKeyedSubscript:v10];
 
   v13 = +[ESDMain sharedMain];
   v21[0] = MEMORY[0x277D85DD0];
@@ -3432,7 +3432,7 @@ LABEL_5:
   v17[2] = __41__ESDClient__cancelServerContactsSearch___block_invoke_2;
   v17[3] = &unk_278FCDF40;
   v18 = v22;
-  v19 = self;
+  selfCopy = self;
   v20 = v5;
   v14 = v5;
   v15 = v22;
@@ -3449,19 +3449,19 @@ uint64_t __41__ESDClient__cancelServerContactsSearch___block_invoke_2(uint64_t a
   return [v2 noteBlockedClientCallChange:1];
 }
 
-- (void)_processMeetingRequests:(id)a3
+- (void)_processMeetingRequests:(id)requests
 {
   v64 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestsCopy = requests;
   v4 = objc_opt_new();
   v5 = DALoggingwithCategory();
   v6 = MEMORY[0x277D03988];
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v5, v7))
   {
-    v8 = [v4 transactionId];
+    transactionId = [v4 transactionId];
     *buf = 138412290;
-    v61 = v8;
+    v61 = transactionId;
     _os_log_impl(&dword_24A184000, v5, v7, "ProcessMeetingRequests: DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -3505,24 +3505,24 @@ uint64_t __41__ESDClient__cancelServerContactsSearch___block_invoke_2(uint64_t a
     v58 = *MEMORY[0x277D03E38];
     v59 = &unk_285D5BDF0;
     v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-    v21 = v3;
-    v22 = [(ESDClient *)self _createReplyToRequest:v3 withProperties:v35];
-    v23 = [(ESDClient *)self conn];
+    v21 = requestsCopy;
+    v22 = [(ESDClient *)self _createReplyToRequest:requestsCopy withProperties:v35];
+    conn = [(ESDClient *)self conn];
 
     v24 = DALoggingwithCategory();
-    v25 = v24;
-    if (v23)
+    conn2 = v24;
+    if (conn)
     {
       if (os_log_type_enabled(v24, v7))
       {
         *buf = 0;
-        _os_log_impl(&dword_24A184000, v25, v7, "ProcessMeetingRequests: sending reply message with status DAStatusUnknown", buf, 2u);
+        _os_log_impl(&dword_24A184000, conn2, v7, "ProcessMeetingRequests: sending reply message with status DAStatusUnknown", buf, 2u);
       }
 
-      v26 = self;
-      v25 = [(ESDClient *)self conn];
-      xpc_connection_send_message(v25, v22);
-      v3 = v21;
+      selfCopy2 = self;
+      conn2 = [(ESDClient *)self conn];
+      xpc_connection_send_message(conn2, v22);
+      requestsCopy = v21;
       v36 = v39;
     }
 
@@ -3532,14 +3532,14 @@ uint64_t __41__ESDClient__cancelServerContactsSearch___block_invoke_2(uint64_t a
       if (os_log_type_enabled(v24, v20))
       {
         *buf = 0;
-        _os_log_impl(&dword_24A184000, v25, v20, "ProcessMeetingRequests: connection lost, unable to send reply message", buf, 2u);
+        _os_log_impl(&dword_24A184000, conn2, v20, "ProcessMeetingRequests: connection lost, unable to send reply message", buf, 2u);
       }
 
-      v3 = v21;
-      v26 = self;
+      requestsCopy = v21;
+      selfCopy2 = self;
     }
 
-    [(ESDClient *)v26 noteBlockedClientCallChange:1];
+    [(ESDClient *)selfCopy2 noteBlockedClientCallChange:1];
     v34 = v41;
     v37 = v42;
     v29 = v40;
@@ -3556,8 +3556,8 @@ uint64_t __41__ESDClient__cancelServerContactsSearch___block_invoke_2(uint64_t a
     v52 = v14;
     v53 = v16;
     v54 = v11;
-    v55 = self;
-    v27 = v3;
+    selfCopy3 = self;
+    v27 = requestsCopy;
     v56 = v27;
     v28 = v9;
     v57 = v28;
@@ -3742,19 +3742,19 @@ uint64_t __37__ESDClient__processMeetingRequests___block_invoke_75(uint64_t a1)
   return v2 ^ 1u;
 }
 
-- (void)_asyncProcessMeetingRequests:(id)a3
+- (void)_asyncProcessMeetingRequests:(id)requests
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestsCopy = requests;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = MEMORY[0x277D03988];
   v8 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v8))
   {
-    v9 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v34 = v9;
+    v34 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v8, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -3802,7 +3802,7 @@ uint64_t __37__ESDClient__processMeetingRequests___block_invoke_75(uint64_t a1)
     v28 = v14;
     v29 = v16;
     v30 = v11;
-    v31 = self;
+    selfCopy = self;
     v32 = v5;
     v21 = MEMORY[0x24C212500](v25);
     v22 = +[ESDMain sharedMain];
@@ -3835,26 +3835,26 @@ void __42__ESDClient__asyncProcessMeetingRequests___block_invoke(void *a1)
   [v2 processMeetingRequestDatas:v3 deliveryIdsToClear:v4 deliveryIdsToSoftClear:v5 inFolderWithId:v6 forAccountWithId:v7 callback:v9];
 }
 
-- (void)_resetCertWarnings:(id)a3
+- (void)_resetCertWarnings:(id)warnings
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  warningsCopy = warnings;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = MEMORY[0x277D03988];
   v8 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v8))
   {
-    v9 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v27 = v9;
+    v27 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v8, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
   v10 = _CFXPCCreateCFObjectFromXPCObject();
   v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
   v12 = [v10 objectForKeyedSubscript:*MEMORY[0x277D03B08]];
-  v13 = [v12 intValue];
+  intValue = [v12 intValue];
 
   v14 = DALoggingwithCategory();
   v15 = *(v7 + 7);
@@ -3863,7 +3863,7 @@ void __42__ESDClient__asyncProcessMeetingRequests___block_invoke(void *a1)
     *buf = 138412546;
     v27 = v11;
     v28 = 2048;
-    v29 = v13;
+    v29 = intValue;
     _os_log_impl(&dword_24A184000, v14, v15, "_resetCertWarningsForAccountWithId %@ dataclasses %lx", buf, 0x16u);
   }
 
@@ -3872,7 +3872,7 @@ void __42__ESDClient__asyncProcessMeetingRequests___block_invoke(void *a1)
   v22[2] = __32__ESDClient__resetCertWarnings___block_invoke;
   v22[3] = &unk_278FCE008;
   v24 = v5;
-  v25 = v13;
+  v25 = intValue;
   v23 = v11;
   v16 = v5;
   v17 = v11;
@@ -3913,18 +3913,18 @@ void __32__ESDClient__resetCertWarnings___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setFolderIdsThatExternalClientsCareAbout:(id)a3
+- (void)_setFolderIdsThatExternalClientsCareAbout:(id)about
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  aboutCopy = about;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v38 = v8;
+    v38 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -3938,10 +3938,10 @@ void __32__ESDClient__resetCertWarnings___block_invoke(uint64_t a1)
   v34[2] = __55__ESDClient__setFolderIdsThatExternalClientsCareAbout___block_invoke;
   v34[3] = &unk_278FCDF68;
   v34[4] = self;
-  v35 = v4;
+  v35 = aboutCopy;
   v36 = v5;
   v25 = v5;
-  v14 = v4;
+  v14 = aboutCopy;
   v15 = MEMORY[0x24C212500](v34);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -4048,18 +4048,18 @@ uint64_t __55__ESDClient__setFolderIdsThatExternalClientsCareAbout___block_invok
   return v2 ^ 1u;
 }
 
-- (void)_reportFolderItemsSyncResult:(id)a3
+- (void)_reportFolderItemsSyncResult:(id)result
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v30 = v8;
+    v30 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -4067,17 +4067,17 @@ uint64_t __55__ESDClient__setFolderIdsThatExternalClientsCareAbout___block_invok
   v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
   v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277D03BA0]];
   v12 = [v9 objectForKeyedSubscript:*MEMORY[0x277D03BB8]];
-  v13 = [v12 unsignedIntegerValue];
+  unsignedIntegerValue = [v12 unsignedIntegerValue];
 
   v14 = [v9 objectForKeyedSubscript:*MEMORY[0x277D03E38]];
-  v15 = [v14 intValue];
+  intValue = [v14 intValue];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __42__ESDClient__reportFolderItemsSyncResult___block_invoke;
   v23[3] = &unk_278FCE058;
-  v27 = v15;
-  v28 = v13;
+  v27 = intValue;
+  v28 = unsignedIntegerValue;
   v24 = v11;
   v25 = v10;
   v26 = v5;
@@ -4102,18 +4102,18 @@ void __42__ESDClient__reportFolderItemsSyncResult___block_invoke(void *a1)
   [v2 reportFolderItemsSyncSuccess:a1[7] == 2 forFolderWithID:a1[4] withItemsCount:a1[8] andAccountWithID:a1[5]];
 }
 
-- (void)_handleURL:(id)a3
+- (void)_handleURL:(id)l
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v21 = v8;
+    v21 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -4145,19 +4145,19 @@ void __24__ESDClient__handleURL___block_invoke(uint64_t a1)
   [v2 handleURLString:*(a1 + 32)];
 }
 
-- (void)_processFolderChange:(id)a3
+- (void)_processFolderChange:(id)change
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = _processFolderChange__taskId++;
   v6 = objc_opt_new();
   v7 = DALoggingwithCategory();
   v8 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v7, v8))
   {
-    v9 = [v6 transactionId];
+    transactionId = [v6 transactionId];
     *buf = 138412290;
-    v34 = v9;
+    v34 = transactionId;
     _os_log_impl(&dword_24A184000, v7, v8, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -4172,12 +4172,12 @@ void __24__ESDClient__handleURL___block_invoke(uint64_t a1)
   v25[1] = 3221225472;
   v25[2] = __34__ESDClient__processFolderChange___block_invoke_2;
   v25[3] = &unk_278FCE0A8;
-  v11 = v4;
+  v11 = changeCopy;
   v26 = v11;
   v12 = v10;
   v30 = v5;
   v29 = v12;
-  v27 = self;
+  selfCopy = self;
   v13 = v6;
   v28 = v13;
   v14 = MEMORY[0x24C212500](v25);
@@ -4325,18 +4325,18 @@ uint64_t __34__ESDClient__processFolderChange___block_invoke_86(uint64_t a1)
   return v2 ^ 1u;
 }
 
-- (void)_getStatusReports:(id)a3
+- (void)_getStatusReports:(id)reports
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportsCopy = reports;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v19 = v8;
+    v19 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -4345,10 +4345,10 @@ uint64_t __34__ESDClient__processFolderChange___block_invoke_86(uint64_t a1)
   v15[2] = __31__ESDClient__getStatusReports___block_invoke;
   v15[3] = &unk_278FCDF40;
   v15[4] = self;
-  v16 = v4;
+  v16 = reportsCopy;
   v17 = v5;
   v9 = v5;
-  v10 = v4;
+  v10 = reportsCopy;
   v11 = MEMORY[0x24C212500](v15);
   v12 = +[ESDMain sharedMain];
   v14[0] = MEMORY[0x277D85DD0];
@@ -4412,10 +4412,10 @@ void __31__ESDClient__getStatusReports___block_invoke_2(uint64_t a1, void *a2)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resetThrottleTimers:(id)a3
+- (void)_resetThrottleTimers:(id)timers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timersCopy = timers;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
   v7 = DALoggingwithCategory();
@@ -4427,45 +4427,45 @@ void __31__ESDClient__getStatusReports___block_invoke_2(uint64_t a1, void *a2)
     _os_log_impl(&dword_24A184000, v7, v8, "_resetThrottleTimersForAccountWithId %@", &v14, 0xCu);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (v6)
   {
-    v10 = [(ESDClient *)v9 accountTimers];
-    v11 = [v10 objectForKeyedSubscript:v6];
+    accountTimers = [(ESDClient *)selfCopy accountTimers];
+    v11 = [accountTimers objectForKeyedSubscript:v6];
 
     if (v11)
     {
       [v11 killAllTimers];
-      v12 = [(ESDClient *)v9 accountTimers];
-      [v12 removeObjectForKey:v6];
+      accountTimers2 = [(ESDClient *)selfCopy accountTimers];
+      [accountTimers2 removeObjectForKey:v6];
     }
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_beginDownloadingAttachmentEvent:(id)a3 eventDict:(id)a4
+- (void)_beginDownloadingAttachmentEvent:(id)event eventDict:(id)dict
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  dictCopy = dict;
+  eventCopy = event;
   v8 = objc_opt_new();
   v9 = DALoggingwithCategory();
   v10 = MEMORY[0x277D03988];
   v11 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v9, v11))
   {
-    v12 = [v8 transactionId];
+    transactionId = [v8 transactionId];
     *buf = 138412290;
-    v36 = v12;
+    v36 = transactionId;
     _os_log_impl(&dword_24A184000, v9, v11, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
-  v13 = [v6 objectForKeyedSubscript:*MEMORY[0x277D03A38]];
-  v14 = [v6 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
+  v13 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03A38]];
+  v14 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D039D0]];
 
   if (v14)
   {
@@ -4498,9 +4498,9 @@ LABEL_5:
   }
 
   v17 = [[ESDClientAttachmentDownloadDelegate alloc] initWithAccountID:v14 attachmentUUID:v13 client:self];
-  v18 = [(ESDClient *)self actionDelegatesById];
-  v19 = [(ESDClientDelegate *)v17 delegateID];
-  [v18 setObject:v17 forKeyedSubscript:v19];
+  actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+  delegateID = [(ESDClientDelegate *)v17 delegateID];
+  [actionDelegatesById setObject:v17 forKeyedSubscript:delegateID];
 
   v20 = +[ESDMain sharedMain];
   v31[0] = MEMORY[0x277D85DD0];
@@ -4519,12 +4519,12 @@ LABEL_5:
   [v20 addToOperationsQueueDisabledCheckAndGoBlock:v31 wrappedBlock:v28];
 
   v33 = *MEMORY[0x277D03A20];
-  v23 = [(ESDClientDelegate *)v22 delegateID];
-  v34 = v23;
+  delegateID2 = [(ESDClientDelegate *)v22 delegateID];
+  v34 = delegateID2;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
 
-  v25 = [(ESDClient *)self _createReplyToRequest:v7 withProperties:v24];
-  v26 = xpc_dictionary_get_remote_connection(v7);
+  v25 = [(ESDClient *)self _createReplyToRequest:eventCopy withProperties:v24];
+  v26 = xpc_dictionary_get_remote_connection(eventCopy);
 
   xpc_connection_send_message(v26, v25);
   [(ESDClient *)self noteBlockedClientCallChange:1];
@@ -4532,25 +4532,25 @@ LABEL_5:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelDownloadingAttachmentEvent:(id)a3 eventDict:(id)a4
+- (void)_cancelDownloadingAttachmentEvent:(id)event eventDict:(id)dict
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  dictCopy = dict;
+  eventCopy = event;
   v8 = objc_opt_new();
   v9 = DALoggingwithCategory();
   v10 = MEMORY[0x277D03988];
   v11 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v9, v11))
   {
-    v12 = [v8 transactionId];
+    transactionId = [v8 transactionId];
     *buf = 138412290;
-    v34 = v12;
+    v34 = transactionId;
     _os_log_impl(&dword_24A184000, v9, v11, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
   v13 = *MEMORY[0x277D03A20];
-  v14 = [v6 objectForKeyedSubscript:*MEMORY[0x277D03A20]];
+  v14 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03A20]];
 
   if (!v14)
   {
@@ -4566,8 +4566,8 @@ LABEL_5:
     _os_log_impl(&dword_24A184000, v15, v16, "_cancelDownloadingAttachmentEvent downloadID: %@", buf, 0xCu);
   }
 
-  v17 = [(ESDClient *)self actionDelegatesById];
-  v18 = [v17 objectForKeyedSubscript:v14];
+  actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+  v18 = [actionDelegatesById objectForKeyedSubscript:v14];
 
   if (v18)
   {
@@ -4600,16 +4600,16 @@ LABEL_5:
     }
   }
 
-  v22 = [v18 delegateID];
+  delegateID = [v18 delegateID];
   v23 = objc_opt_new();
   v24 = v23;
-  if (v22)
+  if (delegateID)
   {
-    [v23 setObject:v22 forKey:v13];
+    [v23 setObject:delegateID forKey:v13];
   }
 
-  v25 = [(ESDClient *)self _createReplyToRequest:v7 withProperties:v24];
-  v26 = xpc_dictionary_get_remote_connection(v7);
+  v25 = [(ESDClient *)self _createReplyToRequest:eventCopy withProperties:v24];
+  v26 = xpc_dictionary_get_remote_connection(eventCopy);
 
   xpc_connection_send_message(v26, v25);
   [(ESDClient *)self noteBlockedClientCallChange:1];
@@ -4617,28 +4617,28 @@ LABEL_5:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_respondToSharedCalendarEvent:(id)a3 eventDict:(id)a4
+- (void)_respondToSharedCalendarEvent:(id)event eventDict:(id)dict
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  dictCopy = dict;
+  eventCopy = event;
   v8 = objc_opt_new();
   v9 = DALoggingwithCategory();
   v10 = MEMORY[0x277D03988];
   v11 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v9, v11))
   {
-    v12 = [v8 transactionId];
+    transactionId = [v8 transactionId];
     *buf = 138412290;
-    v42 = v12;
+    v42 = transactionId;
     _os_log_impl(&dword_24A184000, v9, v11, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
-  v13 = [v6 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
-  v14 = [v6 objectForKeyedSubscript:*MEMORY[0x277D03E20]];
-  v15 = [v6 objectForKeyedSubscript:*MEMORY[0x277D03E18]];
+  v13 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D039D0]];
+  v14 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03E20]];
+  v15 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03E18]];
 
-  v16 = [v15 intValue];
+  intValue = [v15 intValue];
   if (v13)
   {
     if (v14)
@@ -4671,7 +4671,7 @@ LABEL_5:
 LABEL_11:
   [ESDClient _respondToSharedCalendarEvent:eventDict:];
 LABEL_6:
-  v17 = v16;
+  v17 = intValue;
   v18 = DALoggingwithCategory();
   v19 = *(v10 + 7);
   if (os_log_type_enabled(v18, v19))
@@ -4686,9 +4686,9 @@ LABEL_6:
   }
 
   v20 = [[ESDClientShareResponseDelegate alloc] initWithAccountID:v13 client:self calendarID:v14];
-  v21 = [(ESDClient *)self actionDelegatesById];
-  v22 = [(ESDClientDelegate *)v20 delegateID];
-  [v21 setObject:v20 forKeyedSubscript:v22];
+  actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+  delegateID = [(ESDClientDelegate *)v20 delegateID];
+  [actionDelegatesById setObject:v20 forKeyedSubscript:delegateID];
 
   v23 = +[ESDMain sharedMain];
   v38[0] = MEMORY[0x277D85DD0];
@@ -4712,8 +4712,8 @@ LABEL_6:
   v40 = v26;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
 
-  v28 = [(ESDClient *)self _createReplyToRequest:v7 withProperties:v27];
-  v29 = xpc_dictionary_get_remote_connection(v7);
+  v28 = [(ESDClient *)self _createReplyToRequest:eventCopy withProperties:v27];
+  v29 = xpc_dictionary_get_remote_connection(eventCopy);
 
   xpc_connection_send_message(v29, v28);
   [(ESDClient *)self noteBlockedClientCallChange:1];
@@ -4721,25 +4721,25 @@ LABEL_6:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportSharedCalendarAsJunkEvent:(id)a3 eventDict:(id)a4
+- (void)_reportSharedCalendarAsJunkEvent:(id)event eventDict:(id)dict
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  dictCopy = dict;
+  eventCopy = event;
   v8 = objc_opt_new();
   v9 = DALoggingwithCategory();
   v10 = MEMORY[0x277D03988];
   v11 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v9, v11))
   {
-    v12 = [v8 transactionId];
+    transactionId = [v8 transactionId];
     *buf = 138412290;
-    v35 = v12;
+    v35 = transactionId;
     _os_log_impl(&dword_24A184000, v9, v11, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
-  v13 = [v6 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
-  v14 = [v6 objectForKeyedSubscript:*MEMORY[0x277D03E20]];
+  v13 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D039D0]];
+  v14 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03E20]];
 
   if (v13)
   {
@@ -4772,9 +4772,9 @@ LABEL_5:
   }
 
   v17 = [[ESDClientShareResponseDelegate alloc] initWithAccountID:v13 client:self calendarID:v14];
-  v18 = [(ESDClient *)self actionDelegatesById];
-  v19 = [(ESDClientDelegate *)v17 delegateID];
-  [v18 setObject:v17 forKeyedSubscript:v19];
+  actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+  delegateID = [(ESDClientDelegate *)v17 delegateID];
+  [actionDelegatesById setObject:v17 forKeyedSubscript:delegateID];
 
   v20 = +[ESDMain sharedMain];
   v31[0] = MEMORY[0x277D85DD0];
@@ -4793,12 +4793,12 @@ LABEL_5:
   [v20 addToOperationsQueueDisabledCheckAndGoBlock:v31 wrappedBlock:v28];
 
   v32 = *MEMORY[0x277D03E10];
-  v23 = [(ESDClientDelegate *)v22 delegateID];
-  v33 = v23;
+  delegateID2 = [(ESDClientDelegate *)v22 delegateID];
+  v33 = delegateID2;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
 
-  v25 = [(ESDClient *)self _createReplyToRequest:v7 withProperties:v24];
-  v26 = xpc_dictionary_get_remote_connection(v7);
+  v25 = [(ESDClient *)self _createReplyToRequest:eventCopy withProperties:v24];
+  v26 = xpc_dictionary_get_remote_connection(eventCopy);
 
   xpc_connection_send_message(v26, v25);
   [(ESDClient *)self noteBlockedClientCallChange:1];
@@ -4806,18 +4806,18 @@ LABEL_5:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fillOutEASTimeZoneInfo:(id)a3
+- (void)_fillOutEASTimeZoneInfo:(id)info
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v19 = v8;
+    v19 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -4839,10 +4839,10 @@ LABEL_5:
   v14[2] = __37__ESDClient__fillOutEASTimeZoneInfo___block_invoke_2;
   v14[3] = &unk_278FCDF40;
   v14[4] = self;
-  v15 = v4;
+  v15 = infoCopy;
   v16 = v5;
   v11 = v5;
-  v12 = v4;
+  v12 = infoCopy;
   [v10 addToOperationsQueueDisabledCheckAndGoBlock:v17 wrappedBlock:v14];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -4868,10 +4868,10 @@ void __37__ESDClient__fillOutEASTimeZoneInfo___block_invoke_2(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getActiveSyncDeviceIdentifier:(id)a3
+- (void)_getActiveSyncDeviceIdentifier:(id)identifier
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v5, v6))
@@ -4882,10 +4882,10 @@ void __37__ESDClient__fillOutEASTimeZoneInfo___block_invoke_2(uint64_t a1)
 
   v7 = objc_alloc(MEMORY[0x277CB8F58]);
   v8 = [v7 initWithIdentifier:*MEMORY[0x277CB8C00] description:0];
-  v9 = [MEMORY[0x277D079F0] sharedInstance];
-  [v9 loadDaemonBundleForACAccountType:v8];
+  mEMORY[0x277D079F0] = [MEMORY[0x277D079F0] sharedInstance];
+  [mEMORY[0x277D079F0] loadDaemonBundleForACAccountType:v8];
 
-  v10 = [NSClassFromString(&cfstr_Asutilslazycla.isa) asDeviceID];
+  asDeviceID = [NSClassFromString(&cfstr_Asutilslazycla.isa) asDeviceID];
   v11 = DALoggingwithCategory();
   if (os_log_type_enabled(v11, v6))
   {
@@ -4894,13 +4894,13 @@ void __37__ESDClient__fillOutEASTimeZoneInfo___block_invoke_2(uint64_t a1)
   }
 
   v19 = *MEMORY[0x277D039F0];
-  v20[0] = v10;
+  v20[0] = asDeviceID;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-  v13 = [(ESDClient *)self _createReplyToRequest:v4 withProperties:v12];
+  v13 = [(ESDClient *)self _createReplyToRequest:identifierCopy withProperties:v12];
 
-  v14 = [(ESDClient *)self conn];
+  conn = [(ESDClient *)self conn];
 
-  if (v14)
+  if (conn)
   {
     v15 = DALoggingwithCategory();
     if (os_log_type_enabled(v15, v6))
@@ -4909,8 +4909,8 @@ void __37__ESDClient__fillOutEASTimeZoneInfo___block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_24A184000, v15, v6, "Returning active sync device identifier", v18, 2u);
     }
 
-    v16 = [(ESDClient *)self conn];
-    xpc_connection_send_message(v16, v13);
+    conn2 = [(ESDClient *)self conn];
+    xpc_connection_send_message(conn2, v13);
   }
 
   [(ESDClient *)self noteBlockedClientCallChange:1];
@@ -4918,18 +4918,18 @@ void __37__ESDClient__fillOutEASTimeZoneInfo___block_invoke_2(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_openServerOofSettingsRequest:(id)a3
+- (void)_openServerOofSettingsRequest:(id)request
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138412290;
-    v36 = v8;
+    v36 = transactionId;
     _os_log_impl(&dword_24A184000, v6, v7, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
@@ -4940,7 +4940,7 @@ void __37__ESDClient__fillOutEASTimeZoneInfo___block_invoke_2(uint64_t a1)
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
     if (v10)
     {
       goto LABEL_5;
@@ -4949,7 +4949,7 @@ void __37__ESDClient__fillOutEASTimeZoneInfo___block_invoke_2(uint64_t a1)
 
   else
   {
-    v14 = 0;
+    bOOLValue = 0;
     if (v10)
     {
       goto LABEL_5;
@@ -4959,15 +4959,15 @@ void __37__ESDClient__fillOutEASTimeZoneInfo___block_invoke_2(uint64_t a1)
   [ESDClient _openServerOofSettingsRequest:];
 LABEL_5:
   v26 = v11;
-  v15 = [[ESDClientSettingsDelegate alloc] initWithAccountID:v10 requestDictionary:v11 forUpdate:v14 client:self];
-  v16 = [(ESDClientDelegate *)v15 delegateID];
-  if (v16)
+  v15 = [[ESDClientSettingsDelegate alloc] initWithAccountID:v10 requestDictionary:v11 forUpdate:bOOLValue client:self];
+  delegateID = [(ESDClientDelegate *)v15 delegateID];
+  if (delegateID)
   {
-    v17 = [(ESDClient *)self actionDelegatesById];
-    [v17 setObject:v15 forKeyedSubscript:v16];
+    actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+    [actionDelegatesById setObject:v15 forKeyedSubscript:delegateID];
 
     v33 = *MEMORY[0x277D03CC8];
-    v34 = v16;
+    v34 = delegateID;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
   }
 
@@ -4976,14 +4976,14 @@ LABEL_5:
     v18 = MEMORY[0x277CBEC10];
   }
 
-  v27 = v4;
-  v19 = [(ESDClient *)self _createReplyToRequest:v4 withProperties:v18];
-  v20 = [(ESDClient *)self conn];
+  v27 = requestCopy;
+  v19 = [(ESDClient *)self _createReplyToRequest:requestCopy withProperties:v18];
+  conn = [(ESDClient *)self conn];
 
-  if (v20)
+  if (conn)
   {
-    v21 = [(ESDClient *)self conn];
-    xpc_connection_send_message(v21, v19);
+    conn2 = [(ESDClient *)self conn];
+    xpc_connection_send_message(conn2, v19);
   }
 
   v22 = +[ESDMain sharedMain];
@@ -5005,10 +5005,10 @@ LABEL_5:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkIsOofSettingsSupported:(id)a3
+- (void)_checkIsOofSettingsSupported:(id)supported
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  supportedCopy = supported;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
   if (!v6)
@@ -5017,46 +5017,46 @@ LABEL_5:
   }
 
   v7 = [[ESDClientSettingsDelegate alloc] initWithAccountID:v6 requestDictionary:0 forUpdate:0 client:self];
-  v8 = [(ESDClientSettingsDelegate *)v7 isOofSupported];
+  isOofSupported = [(ESDClientSettingsDelegate *)v7 isOofSupported];
   v15 = *MEMORY[0x277D03C50];
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:isOofSupported];
   v16[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
-  v11 = [(ESDClient *)self _createReplyToRequest:v4 withProperties:v10];
-  v12 = [(ESDClient *)self conn];
+  v11 = [(ESDClient *)self _createReplyToRequest:supportedCopy withProperties:v10];
+  conn = [(ESDClient *)self conn];
 
-  if (v12)
+  if (conn)
   {
-    v13 = [(ESDClient *)self conn];
-    xpc_connection_send_message(v13, v11);
+    conn2 = [(ESDClient *)self conn];
+    xpc_connection_send_message(conn2, v11);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestCalendarAvailability:(id)a3 eventDict:(id)a4
+- (void)_requestCalendarAvailability:(id)availability eventDict:(id)dict
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  dictCopy = dict;
+  availabilityCopy = availability;
   v7 = objc_opt_new();
   v8 = DALoggingwithCategory();
   v9 = MEMORY[0x277D03988];
   v10 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v8, v10))
   {
-    v11 = [v7 transactionId];
+    transactionId = [v7 transactionId];
     *buf = 138412290;
-    v40 = v11;
+    v40 = transactionId;
     _os_log_impl(&dword_24A184000, v8, v10, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
-  v12 = [v5 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
-  v13 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03E28]];
-  v14 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03B38]];
-  v15 = [v5 objectForKeyedSubscript:*MEMORY[0x277D039F8]];
-  v16 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03C38]];
+  v12 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D039D0]];
+  v13 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03E28]];
+  v14 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03B38]];
+  v15 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D039F8]];
+  v16 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03C38]];
 
   if (v12)
   {
@@ -5109,16 +5109,16 @@ LABEL_6:
   }
 
   v19 = [[ESDClientCalendarAvailabilityResponseDelegate alloc] initWithAccountID:v12 client:self startDate:v13 endDate:v14 ignoredEventID:v16 addresses:v15];
-  v20 = [(ESDClientDelegate *)v19 delegateID];
-  v21 = [(ESDClient *)self actionDelegatesById];
-  [v21 setObject:v19 forKeyedSubscript:v20];
+  delegateID = [(ESDClientDelegate *)v19 delegateID];
+  actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+  [actionDelegatesById setObject:v19 forKeyedSubscript:delegateID];
 
   v37 = *MEMORY[0x277D03A58];
-  v38 = v20;
+  v38 = delegateID;
   [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
   v22 = v29 = v15;
-  v23 = [(ESDClient *)self _createReplyToRequest:v6 withProperties:v22];
-  v24 = xpc_dictionary_get_remote_connection(v6);
+  v23 = [(ESDClient *)self _createReplyToRequest:availabilityCopy withProperties:v22];
+  v24 = xpc_dictionary_get_remote_connection(availabilityCopy);
 
   xpc_connection_send_message(v24, v23);
   v25 = +[ESDMain sharedMain];
@@ -5141,25 +5141,25 @@ LABEL_6:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelCalendarAvailabilityRequest:(id)a3 eventDict:(id)a4
+- (void)_cancelCalendarAvailabilityRequest:(id)request eventDict:(id)dict
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dictCopy = dict;
   v6 = objc_opt_new();
   v7 = DALoggingwithCategory();
   v8 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v7, v8))
   {
-    v9 = [v6 transactionId];
+    transactionId = [v6 transactionId];
     *buf = 138412290;
-    v23 = v9;
+    v23 = transactionId;
     _os_log_impl(&dword_24A184000, v7, v8, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
-  v10 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03A58]];
+  v10 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03A58]];
 
-  v11 = [(ESDClient *)self actionDelegatesById];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+  v12 = [actionDelegatesById objectForKeyedSubscript:v10];
 
   v13 = +[ESDMain sharedMain];
   v20[0] = MEMORY[0x277D85DD0];
@@ -5181,25 +5181,25 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performCalendarDirectorySearch:(id)a3 eventDict:(id)a4
+- (void)_performCalendarDirectorySearch:(id)search eventDict:(id)dict
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  dictCopy = dict;
+  searchCopy = search;
   v7 = objc_opt_new();
   v8 = DALoggingwithCategory();
   v9 = MEMORY[0x277D03988];
   v10 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v8, v10))
   {
-    v11 = [v7 transactionId];
+    transactionId = [v7 transactionId];
     *buf = 138412290;
-    v46 = v11;
+    v46 = transactionId;
     _os_log_impl(&dword_24A184000, v8, v10, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
-  v12 = [v5 objectForKeyedSubscript:*MEMORY[0x277D039D0]];
-  v13 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03AA8]];
+  v12 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D039D0]];
+  v13 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03AA8]];
   if (v13)
   {
     v14 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v13];
@@ -5210,7 +5210,7 @@ LABEL_6:
     v14 = 0;
   }
 
-  v15 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03A88]];
+  v15 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03A88]];
   v34 = v15;
   if (v15)
   {
@@ -5222,16 +5222,16 @@ LABEL_6:
     v16 = 0;
   }
 
-  v17 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03A90]];
+  v17 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03A90]];
   v33 = v17;
   if (v17)
   {
-    v18 = [v17 unsignedIntegerValue];
+    unsignedIntegerValue = [v17 unsignedIntegerValue];
   }
 
   else
   {
-    v18 = 0;
+    unsignedIntegerValue = 0;
   }
 
   v36 = v13;
@@ -5250,22 +5250,22 @@ LABEL_6:
     v47 = 2112;
     v48 = v16;
     v49 = 2048;
-    v50 = v18;
+    v50 = unsignedIntegerValue;
     v51 = 2112;
     v52 = v14;
     _os_log_impl(&dword_24A184000, v19, v20, "Starting calendar directory search with accountID: [%@] recordTypes: [%@] resultLimit: [%lu] terms: [%@]", buf, 0x2Au);
   }
 
-  v21 = [[ESDClientCalendarDirectorySearchResponseDelegate alloc] initWithAccountID:v12 client:self terms:v14 recordTypes:v16 resultLimit:v18];
-  v22 = [(ESDClientDelegate *)v21 delegateID];
-  v23 = [(ESDClient *)self actionDelegatesById];
-  [v23 setObject:v21 forKeyedSubscript:v22];
+  v21 = [[ESDClientCalendarDirectorySearchResponseDelegate alloc] initWithAccountID:v12 client:self terms:v14 recordTypes:v16 resultLimit:unsignedIntegerValue];
+  delegateID = [(ESDClientDelegate *)v21 delegateID];
+  actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+  [actionDelegatesById setObject:v21 forKeyedSubscript:delegateID];
 
   v43 = *MEMORY[0x277D03A80];
-  v44 = v22;
+  v44 = delegateID;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-  v25 = [(ESDClient *)self _createReplyToRequest:v6 withProperties:v24];
-  xpc_dictionary_get_remote_connection(v6);
+  v25 = [(ESDClient *)self _createReplyToRequest:searchCopy withProperties:v24];
+  xpc_dictionary_get_remote_connection(searchCopy);
   v32 = v12;
   v27 = v26 = v14;
 
@@ -5290,25 +5290,25 @@ LABEL_6:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelCalendarDirectorySearch:(id)a3 eventDict:(id)a4
+- (void)_cancelCalendarDirectorySearch:(id)search eventDict:(id)dict
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dictCopy = dict;
   v6 = objc_opt_new();
   v7 = DALoggingwithCategory();
   v8 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v7, v8))
   {
-    v9 = [v6 transactionId];
+    transactionId = [v6 transactionId];
     *buf = 138412290;
-    v23 = v9;
+    v23 = transactionId;
     _os_log_impl(&dword_24A184000, v7, v8, "DATransaction starting, ID: %@", buf, 0xCu);
   }
 
-  v10 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03A80]];
+  v10 = [dictCopy objectForKeyedSubscript:*MEMORY[0x277D03A80]];
 
-  v11 = [(ESDClient *)self actionDelegatesById];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  actionDelegatesById = [(ESDClient *)self actionDelegatesById];
+  v12 = [actionDelegatesById objectForKeyedSubscript:v10];
 
   v13 = +[ESDMain sharedMain];
   v20[0] = MEMORY[0x277D85DD0];
@@ -5330,26 +5330,26 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getAccountExternalIdentification:(id)a3 eventDict:(id)a4
+- (void)_getAccountExternalIdentification:(id)identification eventDict:(id)dict
 {
   v19[3] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D039D0];
-  v7 = a3;
-  v8 = [a4 objectForKeyedSubscript:v6];
+  identificationCopy = identification;
+  v8 = [dict objectForKeyedSubscript:v6];
   v9 = +[ESDAgentManager sharedManager];
   v10 = [v9 accountWithAccountID:v8];
 
   if (v10)
   {
     v18[0] = *MEMORY[0x277D039E0];
-    v11 = [v10 host];
-    v19[0] = v11;
+    host = [v10 host];
+    v19[0] = host;
     v18[1] = *MEMORY[0x277D039E8];
     v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "port")}];
     v19[1] = v12;
     v18[2] = *MEMORY[0x277D039D8];
-    v13 = [v10 emailAddresses];
-    v19[2] = v13;
+    emailAddresses = [v10 emailAddresses];
+    v19[2] = emailAddresses;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
   }
 
@@ -5358,8 +5358,8 @@ LABEL_6:
     v14 = MEMORY[0x277CBEC10];
   }
 
-  v15 = [(ESDClient *)self _createReplyToRequest:v7 withProperties:v14];
-  v16 = xpc_dictionary_get_remote_connection(v7);
+  v15 = [(ESDClient *)self _createReplyToRequest:identificationCopy withProperties:v14];
+  v16 = xpc_dictionary_get_remote_connection(identificationCopy);
 
   xpc_connection_send_message(v16, v15);
   [(ESDClient *)self noteBlockedClientCallChange:1];
@@ -5367,17 +5367,17 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_asPolicyKeyChanged:(id)a3
+- (void)_asPolicyKeyChanged:(id)changed
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ESDClient *)self conn];
+  changedCopy = changed;
+  conn = [(ESDClient *)self conn];
 
-  if (v5)
+  if (conn)
   {
-    v6 = [v4 object];
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D038B0]];
+    object = [changedCopy object];
+    userInfo = [changedCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D038B0]];
 
     if (v8)
     {
@@ -5389,10 +5389,10 @@ LABEL_6:
       v9 = &stru_285D58A48;
     }
 
-    v10 = [v4 userInfo];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D038A8]];
+    userInfo2 = [changedCopy userInfo];
+    v11 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277D038A8]];
 
-    if (v6)
+    if (object)
     {
       v12 = *MEMORY[0x277D03C88];
       v13 = *MEMORY[0x277D03D18];
@@ -5402,7 +5402,7 @@ LABEL_6:
         v22[0] = *MEMORY[0x277D03C88];
         v22[1] = v14;
         v23[0] = v13;
-        v23[1] = v6;
+        v23[1] = object;
         v15 = *MEMORY[0x277D03D20];
         v23[2] = v9;
         v16 = *MEMORY[0x277D03D10];
@@ -5418,67 +5418,67 @@ LABEL_6:
         v24[0] = *MEMORY[0x277D03C88];
         v24[1] = v14;
         v25[0] = v13;
-        v25[1] = v6;
+        v25[1] = object;
         v24[2] = *MEMORY[0x277D03D20];
         v25[2] = v9;
         v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:3];
       }
 
       v19 = _CFXPCCreateXPCObjectFromCFObject();
-      v20 = [(ESDClient *)self conn];
-      xpc_connection_send_message(v20, v19);
+      conn2 = [(ESDClient *)self conn];
+      xpc_connection_send_message(conn2, v19);
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestClientStatusDump:(id)a3
+- (void)_requestClientStatusDump:(id)dump
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = [(ESDClient *)self conn];
+  conn = [(ESDClient *)self conn];
 
-  if (v4)
+  if (conn)
   {
     v9 = *MEMORY[0x277D03C88];
     v10[0] = *MEMORY[0x277D03C60];
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     v6 = _CFXPCCreateXPCObjectFromCFObject();
-    v7 = [(ESDClient *)self conn];
-    xpc_connection_send_message(v7, v6);
+    conn2 = [(ESDClient *)self conn];
+    xpc_connection_send_message(conn2, v6);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_foldersUpdated:(id)a3
+- (void)_foldersUpdated:(id)updated
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = DALoggingwithCategory();
   v6 = MEMORY[0x277D03988];
   v7 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v5, v7))
   {
     *buf = 138412290;
-    v32 = v4;
+    v32 = updatedCopy;
     _os_log_impl(&dword_24A184000, v5, v7, "Received folder updated notification %@", buf, 0xCu);
   }
 
-  v8 = [v4 object];
-  v9 = [v8 accountID];
+  object = [updatedCopy object];
+  accountID = [object accountID];
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D038D0]];
+  userInfo = [updatedCopy userInfo];
+  v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D038D0]];
 
   if (v11)
   {
-    v12 = [(ESDClient *)self watchedIDs];
-    v13 = [v12 objectForKeyedSubscript:v9];
+    watchedIDs = [(ESDClient *)self watchedIDs];
+    v13 = [watchedIDs objectForKeyedSubscript:accountID];
 
     if (!v13)
     {
-      v15 = v11;
+      allObjects = v11;
 LABEL_15:
 
       goto LABEL_16;
@@ -5486,49 +5486,49 @@ LABEL_15:
 
     v14 = [MEMORY[0x277CBEB58] setWithArray:v11];
     [v14 intersectSet:v13];
-    v15 = [v14 allObjects];
+    allObjects = [v14 allObjects];
 
-    if (v15)
+    if (allObjects)
     {
-      v16 = [(ESDClient *)self conn];
+      conn = [(ESDClient *)self conn];
 
-      if (v16)
+      if (conn)
       {
         v17 = *MEMORY[0x277D03BC0];
         v18 = *MEMORY[0x277D039D0];
         v29[0] = *MEMORY[0x277D03C88];
         v29[1] = v18;
         v30[0] = v17;
-        v30[1] = v9;
+        v30[1] = accountID;
         v29[2] = *MEMORY[0x277D03BA8];
-        v30[2] = v15;
+        v30[2] = allObjects;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:3];
         v20 = _CFXPCCreateXPCObjectFromCFObject();
-        v21 = [(ESDClient *)self conn];
-        xpc_connection_send_message(v21, v20);
+        conn2 = [(ESDClient *)self conn];
+        xpc_connection_send_message(conn2, v20);
       }
 
       else
       {
-        v19 = [MEMORY[0x277CBEB58] setWithArray:v15];
-        v22 = [(ESDClient *)self updatedIDs];
-        v20 = [v22 objectForKeyedSubscript:v9];
+        v19 = [MEMORY[0x277CBEB58] setWithArray:allObjects];
+        updatedIDs = [(ESDClient *)self updatedIDs];
+        v20 = [updatedIDs objectForKeyedSubscript:accountID];
 
         if (v20)
         {
           [v19 unionSet:v20];
         }
 
-        v23 = [(ESDClient *)self updatedIDs];
-        [v23 setObject:v19 forKey:v9];
+        updatedIDs2 = [(ESDClient *)self updatedIDs];
+        [updatedIDs2 setObject:v19 forKey:accountID];
 
         v24 = DALoggingwithCategory();
         v25 = *(v6 + 6);
         if (os_log_type_enabled(v24, v25))
         {
-          v26 = [(ESDClient *)self clientBundleID];
+          clientBundleID = [(ESDClient *)self clientBundleID];
           *buf = 138412290;
-          v32 = v26;
+          v32 = clientBundleID;
           _os_log_impl(&dword_24A184000, v24, v25, "Launching %@", buf, 0xCu);
         }
 
@@ -5545,42 +5545,42 @@ LABEL_16:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_agentsStopped:(id)a3
+- (void)_agentsStopped:(id)stopped
 {
-  v3 = [(ESDClient *)self accountTimers];
-  [v3 removeAllObjects];
+  accountTimers = [(ESDClient *)self accountTimers];
+  [accountTimers removeAllObjects];
 }
 
-- (void)applyClientStatusReportToAggregator:(id)a3
+- (void)applyClientStatusReportToAggregator:(id)aggregator
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  aggregatorCopy = aggregator;
   if (applyClientStatusReportToAggregator__once != -1)
   {
     [ESDClient applyClientStatusReportToAggregator:];
   }
 
-  v5 = [(ESDClient *)self conn];
+  conn = [(ESDClient *)self conn];
 
-  if (v5)
+  if (conn)
   {
     v13 = *MEMORY[0x277D03C88];
     v14[0] = *MEMORY[0x277D03BE0];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v7 = _CFXPCCreateXPCObjectFromCFObject();
-    v8 = [(ESDClient *)self conn];
+    conn2 = [(ESDClient *)self conn];
     v9 = applyClientStatusReportToAggregator__aggregatorQueue;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __49__ESDClient_applyClientStatusReportToAggregator___block_invoke_2;
     v11[3] = &unk_278FCDD38;
-    v12 = v4;
-    xpc_connection_send_message_with_reply(v8, v7, v9, v11);
+    v12 = aggregatorCopy;
+    xpc_connection_send_message_with_reply(conn2, v7, v9, v11);
   }
 
   else
   {
-    [v4 noteAdditionalReportDicts:0];
+    [aggregatorCopy noteAdditionalReportDicts:0];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -5611,13 +5611,13 @@ void __49__ESDClient_applyClientStatusReportToAggregator___block_invoke_2(uint64
   [*(a1 + 32) noteAdditionalReportDicts:v4];
 }
 
-- (void)_clientDiedWithReason:(id)a3
+- (void)_clientDiedWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = MEMORY[0x277D863F0];
   v6 = DALoggingwithCategory();
   v7 = v6;
-  if (v4 == v5 || v4 == MEMORY[0x277D863F8])
+  if (reasonCopy == v5 || reasonCopy == MEMORY[0x277D863F8])
   {
     v11 = *(MEMORY[0x277D03988] + 6);
     if (os_log_type_enabled(v6, v11))
@@ -5653,10 +5653,10 @@ LABEL_10:
   }
 }
 
-- (void)_dispatchMessage:(id)a3
+- (void)_dispatchMessage:(id)message
 {
   v174 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if (![(DADisableableObject *)self isDisabled])
   {
     v5 = _CFXPCCreateCFObjectFromXPCObject();
@@ -5667,9 +5667,9 @@ LABEL_10:
     v10 = *(MEMORY[0x277D03988] + 6);
     if (os_log_type_enabled(v8, v10))
     {
-      v11 = [v7 transactionId];
+      transactionId = [v7 transactionId];
       *buf = 138412290;
-      v173 = v11;
+      v173 = transactionId;
       _os_log_impl(&dword_24A184000, v8, v10, "DATransaction starting, ID: %@", buf, 0xCu);
     }
 
@@ -5691,7 +5691,7 @@ LABEL_10:
       block[2] = __30__ESDClient__dispatchMessage___block_invoke;
       block[3] = &unk_278FCDF40;
       block[4] = self;
-      v170 = v4;
+      v170 = messageCopy;
       v171 = v7;
       dispatch_async(v14, block);
 
@@ -5707,7 +5707,7 @@ LABEL_10:
       v166[2] = __30__ESDClient__dispatchMessage___block_invoke_2;
       v166[3] = &unk_278FCDF40;
       v166[4] = self;
-      v167 = v4;
+      v167 = messageCopy;
       v168 = v7;
       dispatch_async(v16, v166);
 
@@ -5723,7 +5723,7 @@ LABEL_10:
       v163[2] = __30__ESDClient__dispatchMessage___block_invoke_3;
       v163[3] = &unk_278FCDF40;
       v163[4] = self;
-      v164 = v4;
+      v164 = messageCopy;
       v165 = v7;
       dispatch_async(v17, v163);
 
@@ -5739,7 +5739,7 @@ LABEL_10:
       v160[2] = __30__ESDClient__dispatchMessage___block_invoke_4;
       v160[3] = &unk_278FCDF40;
       v160[4] = self;
-      v161 = v4;
+      v161 = messageCopy;
       v162 = v7;
       dispatch_async(v18, v160);
 
@@ -5755,7 +5755,7 @@ LABEL_10:
       v157[2] = __30__ESDClient__dispatchMessage___block_invoke_5;
       v157[3] = &unk_278FCDF40;
       v157[4] = self;
-      v158 = v4;
+      v158 = messageCopy;
       v159 = v7;
       dispatch_async(v19, v157);
 
@@ -5771,7 +5771,7 @@ LABEL_10:
       v154[2] = __30__ESDClient__dispatchMessage___block_invoke_6;
       v154[3] = &unk_278FCDF40;
       v154[4] = self;
-      v155 = v4;
+      v155 = messageCopy;
       v156 = v7;
       dispatch_async(v20, v154);
 
@@ -5787,7 +5787,7 @@ LABEL_10:
       v151[2] = __30__ESDClient__dispatchMessage___block_invoke_7;
       v151[3] = &unk_278FCDF40;
       v151[4] = self;
-      v152 = v4;
+      v152 = messageCopy;
       v153 = v7;
       dispatch_async(v21, v151);
 
@@ -5802,7 +5802,7 @@ LABEL_10:
       v148[2] = __30__ESDClient__dispatchMessage___block_invoke_8;
       v148[3] = &unk_278FCDF40;
       v148[4] = self;
-      v149 = v4;
+      v149 = messageCopy;
       v150 = v7;
       dispatch_async(v22, v148);
 
@@ -5817,7 +5817,7 @@ LABEL_10:
       v145[2] = __30__ESDClient__dispatchMessage___block_invoke_9;
       v145[3] = &unk_278FCDF40;
       v145[4] = self;
-      v146 = v4;
+      v146 = messageCopy;
       v147 = v7;
       dispatch_async(v23, v145);
 
@@ -5832,7 +5832,7 @@ LABEL_10:
       v142[2] = __30__ESDClient__dispatchMessage___block_invoke_10;
       v142[3] = &unk_278FCDF40;
       v142[4] = self;
-      v143 = v4;
+      v143 = messageCopy;
       v144 = v7;
       dispatch_async(v24, v142);
 
@@ -5847,7 +5847,7 @@ LABEL_10:
       v139[2] = __30__ESDClient__dispatchMessage___block_invoke_11;
       v139[3] = &unk_278FCDF40;
       v139[4] = self;
-      v140 = v4;
+      v140 = messageCopy;
       v141 = v7;
       dispatch_async(v25, v139);
 
@@ -5863,7 +5863,7 @@ LABEL_10:
       v136[2] = __30__ESDClient__dispatchMessage___block_invoke_12;
       v136[3] = &unk_278FCDF40;
       v136[4] = self;
-      v137 = v4;
+      v137 = messageCopy;
       v138 = v7;
       dispatch_async(v26, v136);
 
@@ -5878,7 +5878,7 @@ LABEL_10:
       v133[2] = __30__ESDClient__dispatchMessage___block_invoke_13;
       v133[3] = &unk_278FCDF40;
       v133[4] = self;
-      v134 = v4;
+      v134 = messageCopy;
       v135 = v7;
       dispatch_async(v27, v133);
 
@@ -5894,7 +5894,7 @@ LABEL_10:
       v130[2] = __30__ESDClient__dispatchMessage___block_invoke_14;
       v130[3] = &unk_278FCDF40;
       v130[4] = self;
-      v131 = v4;
+      v131 = messageCopy;
       v132 = v7;
       dispatch_async(v28, v130);
 
@@ -5910,7 +5910,7 @@ LABEL_10:
       v127[2] = __30__ESDClient__dispatchMessage___block_invoke_15;
       v127[3] = &unk_278FCDF40;
       v127[4] = self;
-      v128 = v4;
+      v128 = messageCopy;
       v129 = v7;
       dispatch_async(v29, v127);
 
@@ -5925,7 +5925,7 @@ LABEL_10:
       v124[2] = __30__ESDClient__dispatchMessage___block_invoke_16;
       v124[3] = &unk_278FCDF40;
       v124[4] = self;
-      v125 = v4;
+      v125 = messageCopy;
       v126 = v7;
       dispatch_async(v30, v124);
 
@@ -5941,7 +5941,7 @@ LABEL_10:
       v121[2] = __30__ESDClient__dispatchMessage___block_invoke_17;
       v121[3] = &unk_278FCDF40;
       v121[4] = self;
-      v122 = v4;
+      v122 = messageCopy;
       v123 = v7;
       dispatch_async(v31, v121);
 
@@ -5956,7 +5956,7 @@ LABEL_10:
       v118[2] = __30__ESDClient__dispatchMessage___block_invoke_18;
       v118[3] = &unk_278FCDF40;
       v118[4] = self;
-      v119 = v4;
+      v119 = messageCopy;
       v120 = v7;
       dispatch_async(v32, v118);
 
@@ -5971,7 +5971,7 @@ LABEL_10:
       v115[2] = __30__ESDClient__dispatchMessage___block_invoke_19;
       v115[3] = &unk_278FCDF40;
       v115[4] = self;
-      v116 = v4;
+      v116 = messageCopy;
       v117 = v7;
       dispatch_async(v33, v115);
 
@@ -5987,7 +5987,7 @@ LABEL_10:
       v112[2] = __30__ESDClient__dispatchMessage___block_invoke_20;
       v112[3] = &unk_278FCDF40;
       v112[4] = self;
-      v113 = v4;
+      v113 = messageCopy;
       v114 = v7;
       dispatch_async(v34, v112);
 
@@ -6003,7 +6003,7 @@ LABEL_10:
       v109[2] = __30__ESDClient__dispatchMessage___block_invoke_21;
       v109[3] = &unk_278FCDF40;
       v109[4] = self;
-      v110 = v4;
+      v110 = messageCopy;
       v111 = v7;
       dispatch_async(v35, v109);
 
@@ -6018,7 +6018,7 @@ LABEL_10:
       v106[2] = __30__ESDClient__dispatchMessage___block_invoke_22;
       v106[3] = &unk_278FCDF40;
       v106[4] = self;
-      v107 = v4;
+      v107 = messageCopy;
       v108 = v7;
       dispatch_async(v36, v106);
 
@@ -6033,7 +6033,7 @@ LABEL_10:
       v103[2] = __30__ESDClient__dispatchMessage___block_invoke_23;
       v103[3] = &unk_278FCDF40;
       v103[4] = self;
-      v104 = v4;
+      v104 = messageCopy;
       v105 = v7;
       dispatch_async(v37, v103);
 
@@ -6049,7 +6049,7 @@ LABEL_10:
       v99[2] = __30__ESDClient__dispatchMessage___block_invoke_24;
       v99[3] = &unk_278FCDE78;
       v99[4] = self;
-      v100 = v4;
+      v100 = messageCopy;
       v101 = v5;
       v102 = v7;
       dispatch_async(v38, v99);
@@ -6066,7 +6066,7 @@ LABEL_10:
       v95[2] = __30__ESDClient__dispatchMessage___block_invoke_25;
       v95[3] = &unk_278FCDE78;
       v95[4] = self;
-      v96 = v4;
+      v96 = messageCopy;
       v97 = v5;
       v98 = v7;
       dispatch_async(v39, v95);
@@ -6083,7 +6083,7 @@ LABEL_10:
       v91[2] = __30__ESDClient__dispatchMessage___block_invoke_26;
       v91[3] = &unk_278FCDE78;
       v91[4] = self;
-      v92 = v4;
+      v92 = messageCopy;
       v93 = v5;
       v94 = v7;
       dispatch_async(v40, v91);
@@ -6100,7 +6100,7 @@ LABEL_10:
       v87[2] = __30__ESDClient__dispatchMessage___block_invoke_27;
       v87[3] = &unk_278FCDE78;
       v87[4] = self;
-      v88 = v4;
+      v88 = messageCopy;
       v89 = v5;
       v90 = v7;
       dispatch_async(v41, v87);
@@ -6117,7 +6117,7 @@ LABEL_10:
       v84[2] = __30__ESDClient__dispatchMessage___block_invoke_28;
       v84[3] = &unk_278FCDF40;
       v84[4] = self;
-      v85 = v4;
+      v85 = messageCopy;
       v86 = v7;
       dispatch_async(v42, v84);
 
@@ -6133,7 +6133,7 @@ LABEL_10:
       v81[2] = __30__ESDClient__dispatchMessage___block_invoke_29;
       v81[3] = &unk_278FCDF40;
       v81[4] = self;
-      v82 = v4;
+      v82 = messageCopy;
       v83 = v7;
       dispatch_async(v43, v81);
 
@@ -6149,7 +6149,7 @@ LABEL_10:
       v78[2] = __30__ESDClient__dispatchMessage___block_invoke_30;
       v78[3] = &unk_278FCDF40;
       v78[4] = self;
-      v79 = v4;
+      v79 = messageCopy;
       v80 = v7;
       dispatch_async(v44, v78);
 
@@ -6165,7 +6165,7 @@ LABEL_10:
       v75[2] = __30__ESDClient__dispatchMessage___block_invoke_31;
       v75[3] = &unk_278FCDF40;
       v75[4] = self;
-      v76 = v4;
+      v76 = messageCopy;
       v77 = v7;
       dispatch_async(v45, v75);
 
@@ -6181,7 +6181,7 @@ LABEL_10:
       v71[2] = __30__ESDClient__dispatchMessage___block_invoke_32;
       v71[3] = &unk_278FCDE78;
       v71[4] = self;
-      v72 = v4;
+      v72 = messageCopy;
       v73 = v5;
       v74 = v7;
       dispatch_async(v46, v71);
@@ -6198,7 +6198,7 @@ LABEL_10:
       v67[2] = __30__ESDClient__dispatchMessage___block_invoke_33;
       v67[3] = &unk_278FCDE78;
       v67[4] = self;
-      v68 = v4;
+      v68 = messageCopy;
       v69 = v5;
       v70 = v7;
       dispatch_async(v47, v67);
@@ -6215,7 +6215,7 @@ LABEL_10:
       v63[2] = __30__ESDClient__dispatchMessage___block_invoke_34;
       v63[3] = &unk_278FCDE78;
       v63[4] = self;
-      v64 = v4;
+      v64 = messageCopy;
       v65 = v5;
       v66 = v7;
       dispatch_async(v48, v63);
@@ -6232,7 +6232,7 @@ LABEL_10:
       v59[2] = __30__ESDClient__dispatchMessage___block_invoke_35;
       v59[3] = &unk_278FCDE78;
       v59[4] = self;
-      v60 = v4;
+      v60 = messageCopy;
       v61 = v5;
       v62 = v7;
       dispatch_async(v49, v59);
@@ -6270,7 +6270,7 @@ LABEL_10:
       v55[2] = __30__ESDClient__dispatchMessage___block_invoke_36;
       v55[3] = &unk_278FCDE78;
       v55[4] = self;
-      v56 = v4;
+      v56 = messageCopy;
       v57 = v5;
       v58 = v7;
       dispatch_async(v50, v55);
@@ -6282,7 +6282,7 @@ LABEL_80:
     goto LABEL_81;
   }
 
-  v5 = xpc_dictionary_get_remote_connection(v4);
+  v5 = xpc_dictionary_get_remote_connection(messageCopy);
   xpc_connection_cancel(v5);
 LABEL_81:
 

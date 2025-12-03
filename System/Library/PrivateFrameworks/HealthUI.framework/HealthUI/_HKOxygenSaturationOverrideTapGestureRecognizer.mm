@@ -1,15 +1,15 @@
 @interface _HKOxygenSaturationOverrideTapGestureRecognizer
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_HKOxygenSaturationOverrideTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_HKOxygenSaturationOverrideTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation _HKOxygenSaturationOverrideTapGestureRecognizer
 
-- (_HKOxygenSaturationOverrideTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_HKOxygenSaturationOverrideTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _HKOxygenSaturationOverrideTapGestureRecognizer;
-  v4 = [(_HKOxygenSaturationOverrideTapGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(_HKOxygenSaturationOverrideTapGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -20,21 +20,21 @@
   return v5;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 view];
-  v8 = [v6 view];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  view = [touchCopy view];
+  view2 = [recognizerCopy view];
 
-  if (v7 == v8)
+  if (view == view2)
   {
     v10 = 1;
   }
 
   else
   {
-    v9 = [v5 view];
+    view3 = [touchCopy view];
     objc_opt_class();
     v10 = objc_opt_isKindOfClass() ^ 1;
   }

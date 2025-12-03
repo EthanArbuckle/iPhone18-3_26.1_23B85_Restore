@@ -1,14 +1,14 @@
 @interface FontWeightSlider.Coordinator
-- (void)sliderValueChanged:(id)a3;
+- (void)sliderValueChanged:(id)changed;
 @end
 
 @implementation FontWeightSlider.Coordinator
 
-- (void)sliderValueChanged:(id)a3
+- (void)sliderValueChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   sub_1A34C9010();
-  sub_1A34382C8(v3);
+  sub_1A34382C8(changedCopy);
 }
 
 @end

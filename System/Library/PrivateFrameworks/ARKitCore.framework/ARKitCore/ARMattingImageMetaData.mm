@@ -1,12 +1,12 @@
 @interface ARMattingImageMetaData
-- (ARMattingImageMetaData)initWithTimestamp:(double)a3 downSampledImageBuffer:(__CVBuffer *)a4 mattingScaleImageBuffer:(__CVBuffer *)a5;
+- (ARMattingImageMetaData)initWithTimestamp:(double)timestamp downSampledImageBuffer:(__CVBuffer *)buffer mattingScaleImageBuffer:(__CVBuffer *)imageBuffer;
 - (NSString)description;
 - (void)dealloc;
 @end
 
 @implementation ARMattingImageMetaData
 
-- (ARMattingImageMetaData)initWithTimestamp:(double)a3 downSampledImageBuffer:(__CVBuffer *)a4 mattingScaleImageBuffer:(__CVBuffer *)a5
+- (ARMattingImageMetaData)initWithTimestamp:(double)timestamp downSampledImageBuffer:(__CVBuffer *)buffer mattingScaleImageBuffer:(__CVBuffer *)imageBuffer
 {
   v11.receiver = self;
   v11.super_class = ARMattingImageMetaData;
@@ -14,9 +14,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_timestamp = a3;
-    v8->_downSampledImageBuffer = CVPixelBufferRetain(a4);
-    v9->_mattingScaleImageBuffer = CVPixelBufferRetain(a5);
+    v8->_timestamp = timestamp;
+    v8->_downSampledImageBuffer = CVPixelBufferRetain(buffer);
+    v9->_mattingScaleImageBuffer = CVPixelBufferRetain(imageBuffer);
   }
 
   return v9;

@@ -6,11 +6,11 @@
 
 - (uint64_t)hmf_removeFirstObject
 {
-  result = [a1 count];
+  result = [self count];
   if (result)
   {
 
-    return [a1 removeObjectAtIndex:0];
+    return [self removeObjectAtIndex:0];
   }
 
   return result;

@@ -1,18 +1,18 @@
 @interface UITableViewLabel
-- (BOOL)_attributedStringHasParagraphStyleWithNonzeroFirstLineHeadIndent:(id)a3;
+- (BOOL)_attributedStringHasParagraphStyleWithNonzeroFirstLineHeadIndent:(id)indent;
 - (UITableViewCell)tableCell;
-- (UITableViewLabel)initWithCoder:(id)a3;
-- (UITableViewLabel)initWithFrame:(CGRect)a3;
+- (UITableViewLabel)initWithCoder:(id)coder;
+- (UITableViewLabel)initWithFrame:(CGRect)frame;
 - (id)_disabledFontColor;
 - (void)_cleanupErrantFirstLineHeadIndent;
 - (void)_clearNumberOfLines;
-- (void)_setDefaultFont:(id)a3;
-- (void)_setFirstParagraphFirstLineHeadIndent:(double)a3;
+- (void)_setDefaultFont:(id)font;
+- (void)_setFirstParagraphFirstLineHeadIndent:(double)indent;
 - (void)_setNumberOfLinesForAXLayoutIfNecessary;
-- (void)setAttributedText:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setText:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setFont:(id)font;
+- (void)setText:(id)text;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UITableViewLabel
@@ -21,22 +21,22 @@
 {
   v4.receiver = self;
   v4.super_class = UITableViewLabel;
-  v2 = [(UILabel *)&v4 _disabledFontColor];
+  _disabledFontColor = [(UILabel *)&v4 _disabledFontColor];
 
-  return v2;
+  return _disabledFontColor;
 }
 
 - (void)_setNumberOfLinesForAXLayoutIfNecessary
 {
-  v5 = [(UIView *)self traitCollection];
-  if ([v5 userInterfaceIdiom] == 3 || (dyld_program_sdk_at_least() & 1) == 0)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3 || (dyld_program_sdk_at_least() & 1) == 0)
   {
   }
 
   else
   {
-    v3 = [UIApp preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -48,20 +48,20 @@
 
 - (void)_cleanupErrantFirstLineHeadIndent
 {
-  v3 = [(UILabel *)self _content];
-  v4 = [v3 isAttributed];
+  _content = [(UILabel *)self _content];
+  isAttributed = [_content isAttributed];
 
-  if (v4)
+  if (isAttributed)
   {
-    v5 = [(UILabel *)self _content];
-    v6 = [v5 attributedString];
+    _content2 = [(UILabel *)self _content];
+    attributedString = [_content2 attributedString];
 
-    if ([v6 length])
+    if ([attributedString length])
     {
       v15 = 0;
       v16 = 0;
       v7 = *off_1E70EC988;
-      v8 = [v6 attribute:*off_1E70EC988 atIndex:0 effectiveRange:&v15];
+      v8 = [attributedString attribute:*off_1E70EC988 atIndex:0 effectiveRange:&v15];
       v9 = v8;
       if (v8)
       {
@@ -70,8 +70,8 @@
 
       else
       {
-        v11 = [(UILabel *)self _defaultAttributes];
-        v10 = [v11 objectForKey:v7];
+        _defaultAttributes = [(UILabel *)self _defaultAttributes];
+        v10 = [_defaultAttributes objectForKey:v7];
       }
 
       [v10 firstLineHeadIndent];
@@ -79,7 +79,7 @@
       {
         v13 = [v10 mutableCopy];
         [v13 setFirstLineHeadIndent:0.0];
-        v14 = [v6 mutableCopy];
+        v14 = [attributedString mutableCopy];
         [v14 addAttribute:v7 value:v13 range:{v15, v16}];
         [(UITableViewLabel *)self setAttributedText:v14];
       }
@@ -94,11 +94,11 @@
   [(UILabel *)self setNumberOfLines:0];
 }
 
-- (UITableViewLabel)initWithFrame:(CGRect)a3
+- (UITableViewLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UITableViewLabel;
-  v3 = [(UILabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UILabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -110,29 +110,29 @@
   return v4;
 }
 
-- (UITableViewLabel)initWithCoder:(id)a3
+- (UITableViewLabel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = UITableViewLabel;
-  v5 = [(UILabel *)&v8 initWithCoder:v4];
+  v5 = [(UILabel *)&v8 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     v5->_savedNumberOfLines = 0x7FFFFFFFFFFFFFFFLL;
-    v5->_usingDefaultFont = [v4 containsValueForKey:@"UIFont"] ^ 1;
+    v5->_usingDefaultFont = [coderCopy containsValueForKey:@"UIFont"] ^ 1;
     [(UITableViewLabel *)v6 _setNumberOfLinesForAXLayoutIfNecessary];
   }
 
   return v6;
 }
 
-- (BOOL)_attributedStringHasParagraphStyleWithNonzeroFirstLineHeadIndent:(id)a3
+- (BOOL)_attributedStringHasParagraphStyleWithNonzeroFirstLineHeadIndent:(id)indent
 {
-  v3 = a3;
-  if ([v3 length])
+  indentCopy = indent;
+  if ([indentCopy length])
   {
-    v4 = [v3 attribute:*off_1E70EC988 atIndex:0 effectiveRange:0];
+    v4 = [indentCopy attribute:*off_1E70EC988 atIndex:0 effectiveRange:0];
     [v4 firstLineHeadIndent];
     v6 = v5 != 0.0;
   }
@@ -145,25 +145,25 @@
   return v6;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(UILabel *)self text];
-  if (v5 == v4)
+  textCopy = text;
+  text = [(UILabel *)self text];
+  if (text == textCopy)
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v6 = [(UILabel *)self text];
-  v7 = [v4 isEqualToString:v6];
+  text2 = [(UILabel *)self text];
+  v7 = [textCopy isEqualToString:text2];
 
   if ((v7 & 1) == 0)
   {
-    if (dyld_program_sdk_at_least() && self->_firstParagraphFirstLineHeadIndent != 0.0 && [v4 length])
+    if (dyld_program_sdk_at_least() && self->_firstParagraphFirstLineHeadIndent != 0.0 && [textCopy length])
     {
-      v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4];
+      v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:textCopy];
       [(UITableViewLabel *)self setAttributedText:v8];
     }
 
@@ -174,7 +174,7 @@ LABEL_15:
 
       v13.receiver = self;
       v13.super_class = UITableViewLabel;
-      [(UILabel *)&v13 setText:v4];
+      [(UILabel *)&v13 setText:textCopy];
       if (dyld_program_sdk_at_least())
       {
         [(UITableViewLabel *)self _cleanupErrantFirstLineHeadIndent];
@@ -182,7 +182,7 @@ LABEL_15:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_tableCell);
-    v5 = WeakRetained;
+    text = WeakRetained;
     if (WeakRetained)
     {
       [WeakRetained _contentViewLabelTextDidChange:self];
@@ -190,8 +190,8 @@ LABEL_15:
 
     else
     {
-      v11 = [(UIView *)self superview];
-      if (v11)
+      superview = [(UIView *)self superview];
+      if (superview)
       {
         do
         {
@@ -201,15 +201,15 @@ LABEL_15:
             break;
           }
 
-          v12 = [v11 superview];
+          v11Superview = [superview superview];
 
-          v11 = v12;
+          superview = v11Superview;
         }
 
-        while (v12);
+        while (v11Superview);
       }
 
-      [v11 setNeedsLayout];
+      [superview setNeedsLayout];
     }
 
     goto LABEL_15;
@@ -218,47 +218,47 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v25.receiver = self;
   v25.super_class = UITableViewLabel;
-  [(UILabel *)&v25 traitCollectionDidChange:v4];
+  [(UILabel *)&v25 traitCollectionDidChange:changeCopy];
   if (!dyld_program_sdk_at_least())
   {
     goto LABEL_24;
   }
 
-  v5 = [(UILabel *)self numberOfLines];
-  v6 = [v4 userInterfaceIdiom];
-  v7 = [(UIView *)self traitCollection];
-  if (v6 == [v7 userInterfaceIdiom])
+  numberOfLines = [(UILabel *)self numberOfLines];
+  userInterfaceIdiom = [changeCopy userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  if (userInterfaceIdiom == [traitCollection userInterfaceIdiom])
   {
 
     goto LABEL_10;
   }
 
-  v8 = [(UIView *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  traitCollection2 = [(UIView *)self traitCollection];
+  userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-  if (v9 != 3)
+  if (userInterfaceIdiom2 != 3)
   {
 LABEL_10:
-    v12 = [(UIView *)self traitCollection];
-    v13 = [v12 preferredContentSizeCategory];
-    v14 = [v4 preferredContentSizeCategory];
-    v15 = [v13 isEqual:v14];
+    traitCollection3 = [(UIView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection3 preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v15 = [preferredContentSizeCategory isEqual:preferredContentSizeCategory2];
 
-    v16 = [(UIView *)self traitCollection];
-    v17 = [v16 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v17);
+    traitCollection4 = [(UIView *)self traitCollection];
+    preferredContentSizeCategory3 = [traitCollection4 preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory3);
 
-    v19 = [v4 preferredContentSizeCategory];
-    v20 = UIContentSizeCategoryIsAccessibilityCategory(v19);
+    preferredContentSizeCategory4 = [changeCopy preferredContentSizeCategory];
+    v20 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory4);
 
     if ((v15 & 1) == 0)
     {
-      if (v5)
+      if (numberOfLines)
       {
         v21 = IsAccessibilityCategory;
       }
@@ -276,7 +276,7 @@ LABEL_10:
       else if (!IsAccessibilityCategory && v20)
       {
         savedNumberOfLines = self->_savedNumberOfLines;
-        if (savedNumberOfLines != 0x7FFFFFFFFFFFFFFFLL && v5 != savedNumberOfLines)
+        if (savedNumberOfLines != 0x7FFFFFFFFFFFFFFFLL && numberOfLines != savedNumberOfLines)
         {
           [(UITableViewLabel *)self _restoreNumberOfLines];
         }
@@ -294,8 +294,8 @@ LABEL_10:
 
       else
       {
-        v24 = [(UILabel *)self attributedText];
-        [(UITableViewLabel *)self setAttributedText:v24];
+        attributedText = [(UILabel *)self attributedText];
+        [(UITableViewLabel *)self setAttributedText:attributedText];
       }
     }
 
@@ -303,7 +303,7 @@ LABEL_10:
   }
 
   v10 = self->_savedNumberOfLines;
-  if (v10 != 0x7FFFFFFFFFFFFFFFLL && v5 != v10)
+  if (v10 != 0x7FFFFFFFFFFFFFFFLL && numberOfLines != v10)
   {
     [(UITableViewLabel *)self _restoreNumberOfLines];
   }
@@ -311,10 +311,10 @@ LABEL_10:
 LABEL_24:
 }
 
-- (void)_setFirstParagraphFirstLineHeadIndent:(double)a3
+- (void)_setFirstParagraphFirstLineHeadIndent:(double)indent
 {
   firstParagraphFirstLineHeadIndent = self->_firstParagraphFirstLineHeadIndent;
-  v4 = fmax(a3, 0.0);
+  v4 = fmax(indent, 0.0);
   self->_firstParagraphFirstLineHeadIndent = v4;
   if (firstParagraphFirstLineHeadIndent != v4)
   {
@@ -326,25 +326,25 @@ LABEL_24:
 
     else
     {
-      v6 = [(UILabel *)self attributedText];
-      [(UITableViewLabel *)self setAttributedText:v6];
+      attributedText = [(UILabel *)self attributedText];
+      [(UITableViewLabel *)self setAttributedText:attributedText];
     }
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  textCopy = text;
+  v5 = [textCopy copy];
   shadowAttributedText = self->_shadowAttributedText;
   self->_shadowAttributedText = v5;
 
-  if (dyld_program_sdk_at_least() && self->_firstParagraphFirstLineHeadIndent != 0.0 && [v4 length])
+  if (dyld_program_sdk_at_least() && self->_firstParagraphFirstLineHeadIndent != 0.0 && [textCopy length])
   {
     [(UILabel *)self _setOverallWritingDirectionFollowsLayoutDirection:1];
-    v7 = [v4 mutableCopy];
+    v7 = [textCopy mutableCopy];
     v8 = *off_1E70EC988;
-    v9 = [v4 attribute:*off_1E70EC988 atIndex:0 effectiveRange:0];
+    v9 = [textCopy attribute:*off_1E70EC988 atIndex:0 effectiveRange:0];
     v10 = [v9 mutableCopy];
     v11 = v10;
     if (v10)
@@ -362,12 +362,12 @@ LABEL_24:
     [v14 setFirstLineHeadIndent:self->_firstParagraphFirstLineHeadIndent];
     if (!v9)
     {
-      v15 = [off_1E70ECB88 defaultParagraphStyle];
-      [v7 addAttribute:v8 value:v15 range:{0, objc_msgSend(v7, "length")}];
+      defaultParagraphStyle = [off_1E70ECB88 defaultParagraphStyle];
+      [v7 addAttribute:v8 value:defaultParagraphStyle range:{0, objc_msgSend(v7, "length")}];
     }
 
-    v16 = [v4 string];
-    v17 = [v16 paragraphRangeForRange:{0, 0}];
+    string = [textCopy string];
+    v17 = [string paragraphRangeForRange:{0, 0}];
     [v7 addAttribute:v8 value:v14 range:{v17, v18}];
 
     v13 = 0;
@@ -378,7 +378,7 @@ LABEL_24:
     [(UILabel *)self _setOverallWritingDirectionFollowsLayoutDirection:0];
     if (dyld_program_sdk_at_least())
     {
-      v13 = ![(UITableViewLabel *)self _attributedStringHasParagraphStyleWithNonzeroFirstLineHeadIndent:v4];
+      v13 = ![(UITableViewLabel *)self _attributedStringHasParagraphStyleWithNonzeroFirstLineHeadIndent:textCopy];
     }
 
     else
@@ -386,7 +386,7 @@ LABEL_24:
       v13 = 0;
     }
 
-    v7 = v4;
+    v7 = textCopy;
   }
 
   v19.receiver = self;
@@ -398,26 +398,26 @@ LABEL_24:
   }
 }
 
-- (void)_setDefaultFont:(id)a3
+- (void)_setDefaultFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   self->_usingDefaultFont = 1;
-  v5 = [(UILabel *)self font];
+  font = [(UILabel *)self font];
 
-  if (v5 != v4)
+  if (font != fontCopy)
   {
     v6.receiver = self;
     v6.super_class = UITableViewLabel;
-    [(UILabel *)&v6 setFont:v4];
+    [(UILabel *)&v6 setFont:fontCopy];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   self->_usingDefaultFont = 0;
   v3.receiver = self;
   v3.super_class = UITableViewLabel;
-  [(UILabel *)&v3 setFont:a3];
+  [(UILabel *)&v3 setFont:font];
 }
 
 - (UITableViewCell)tableCell

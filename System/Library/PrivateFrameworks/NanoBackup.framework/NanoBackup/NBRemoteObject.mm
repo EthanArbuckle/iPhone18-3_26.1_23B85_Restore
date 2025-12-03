@@ -1,30 +1,30 @@
 @interface NBRemoteObject
-- (NBRemoteObject)initWithServiceName:(id)a3 andDelegate:(id)a4 andClientQueue:(id)a5;
+- (NBRemoteObject)initWithServiceName:(id)name andDelegate:(id)delegate andClientQueue:(id)queue;
 - (id)delegate;
-- (void)_messageResponseTimeout:(id)a3;
-- (void)_sendMessage:(id)a3 type:(unsigned __int16)a4 requestUUID:(id)a5 withTimeout:(id)a6 withResponseTimeout:(id)a7 withDescription:(id)a8 onlyOneFor:(id)a9 didSend:(id)a10 andResponse:(id)a11;
-- (void)_storeProtobufAction:(SEL)a3 messageType:(unsigned __int16)a4 messageSendType:(int64_t)a5;
-- (void)handleIncomingMessage:(id)a3;
+- (void)_messageResponseTimeout:(id)timeout;
+- (void)_sendMessage:(id)message type:(unsigned __int16)type requestUUID:(id)d withTimeout:(id)timeout withResponseTimeout:(id)responseTimeout withDescription:(id)description onlyOneFor:(id)for didSend:(id)self0 andResponse:(id)self1;
+- (void)_storeProtobufAction:(SEL)action messageType:(unsigned __int16)type messageSendType:(int64_t)sendType;
+- (void)handleIncomingMessage:(id)message;
 - (void)invalidate;
-- (void)sendFileRequest:(id)a3 type:(unsigned __int16)a4 withTimeout:(id)a5 withResponseTimeout:(id)a6 withDescription:(id)a7 onlyOneFor:(id)a8 didSend:(id)a9 andResponse:(id)a10;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
+- (void)sendFileRequest:(id)request type:(unsigned __int16)type withTimeout:(id)timeout withResponseTimeout:(id)responseTimeout withDescription:(id)description onlyOneFor:(id)for didSend:(id)send andResponse:(id)self0;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
 @end
 
 @implementation NBRemoteObject
 
-- (NBRemoteObject)initWithServiceName:(id)a3 andDelegate:(id)a4 andClientQueue:(id)a5
+- (NBRemoteObject)initWithServiceName:(id)name andDelegate:(id)delegate andClientQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v33.receiver = self;
   v33.super_class = NBRemoteObject;
   v11 = [(NBRemoteObject *)&v33 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     serviceName = v11->_serviceName;
     v11->_serviceName = v12;
 
@@ -41,20 +41,20 @@
     v11->_idsSendIDToTimer = v18;
 
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v21 = dispatch_queue_create([v8 UTF8String], v20);
+    v21 = dispatch_queue_create([nameCopy UTF8String], v20);
     idsQueue = v11->_idsQueue;
     v11->_idsQueue = v21;
 
-    if (v10)
+    if (queueCopy)
     {
-      v23 = v10;
+      v23 = queueCopy;
       clientQueue = v11->_clientQueue;
       v11->_clientQueue = v23;
     }
 
     else
     {
-      clientQueue = [v8 stringByAppendingString:@".client"];
+      clientQueue = [nameCopy stringByAppendingString:@".client"];
       v25 = dispatch_queue_create([clientQueue UTF8String], v20);
       v26 = v11->_clientQueue;
       v11->_clientQueue = v25;
@@ -70,12 +70,12 @@
 
     [(NBRemoteObject *)v11 registerProtobufHandlers];
     [(IDSService *)v11->_service addDelegate:v11 queue:v11->_idsQueue];
-    [(NBRemoteObject *)v11 setDelegate:v9];
+    [(NBRemoteObject *)v11 setDelegate:delegateCopy];
     v31 = nb_daemon_log;
     if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v8;
+      v35 = nameCopy;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Created IDS service %@", buf, 0xCu);
     }
   }
@@ -111,20 +111,20 @@
   }
 }
 
-- (void)handleIncomingMessage:(id)a3
+- (void)handleIncomingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     serviceName = self->_serviceName;
     v7 = v5;
-    v8 = [v4 type];
-    v9 = [v4 data];
-    v10 = [v9 length];
-    v11 = [v4 isResponse];
+    type = [messageCopy type];
+    data = [messageCopy data];
+    v10 = [data length];
+    isResponse = [messageCopy isResponse];
     v12 = &__kCFBooleanFalse;
-    if (v11)
+    if (isResponse)
     {
       v12 = &__kCFBooleanTrue;
     }
@@ -132,7 +132,7 @@
     *buf = 138413058;
     v56 = serviceName;
     v57 = 2048;
-    v58 = v8;
+    v58 = type;
     v59 = 2048;
     v60 = v10;
     v61 = 2112;
@@ -140,15 +140,15 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "(%@): IDS message received type=%ld length=%ld response=%@", buf, 0x2Au);
   }
 
-  v13 = [v4 context];
-  v14 = [v13 incomingResponseIdentifier];
+  context = [messageCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  if ([v4 isResponse] && v14)
+  if ([messageCopy isResponse] && incomingResponseIdentifier)
   {
-    v15 = [(NSMutableDictionary *)self->_idsSendIDToTimer objectForKeyedSubscript:v14];
+    v15 = [(NSMutableDictionary *)self->_idsSendIDToTimer objectForKeyedSubscript:incomingResponseIdentifier];
     [v15 invalidate];
-    [(NSMutableDictionary *)self->_idsSendIDToTimer removeObjectForKey:v14];
-    v16 = [(NSMutableDictionary *)self->_idsSendIDToResponseHandler objectForKeyedSubscript:v14];
+    [(NSMutableDictionary *)self->_idsSendIDToTimer removeObjectForKey:incomingResponseIdentifier];
+    v16 = [(NSMutableDictionary *)self->_idsSendIDToResponseHandler objectForKeyedSubscript:incomingResponseIdentifier];
     v17 = nb_daemon_log;
     v18 = os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT);
     if (v16)
@@ -159,18 +159,18 @@
         *buf = 138412546;
         v56 = v19;
         v57 = 2114;
-        v58 = v14;
+        v58 = incomingResponseIdentifier;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "(%@): matched response %{public}@, executing block", buf, 0x16u);
       }
 
-      [(NSMutableDictionary *)self->_idsSendIDToResponseHandler removeObjectForKey:v14];
+      [(NSMutableDictionary *)self->_idsSendIDToResponseHandler removeObjectForKey:incomingResponseIdentifier];
       clientQueue = self->_clientQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100011A94;
       block[3] = &unk_10002CF00;
       v54 = v16;
-      v53 = v4;
+      v53 = messageCopy;
       dispatch_async(clientQueue, block);
     }
 
@@ -180,12 +180,12 @@
       *buf = 138412546;
       v56 = v21;
       v57 = 2114;
-      v58 = v14;
+      v58 = incomingResponseIdentifier;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "(%@): no ack block found for response %{public}@, ignoring", buf, 0x16u);
     }
   }
 
-  if ([v4 isResponse])
+  if ([messageCopy isResponse])
   {
     v22 = 0x10000;
   }
@@ -195,7 +195,7 @@
     v22 = 0;
   }
 
-  v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v22 | [v4 type]);
+  v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v22 | [messageCopy type]);
   v24 = [(NSMutableDictionary *)self->_idsRequestMessageTypeToSelector objectForKeyedSubscript:v23];
   v25 = v24;
   if (!v24)
@@ -208,12 +208,12 @@
 
     v35 = self->_serviceName;
     v36 = v34;
-    v37 = [v4 type];
-    v38 = [v4 data];
-    v39 = [v38 length];
-    v40 = [v4 isResponse];
+    type2 = [messageCopy type];
+    data2 = [messageCopy data];
+    v39 = [data2 length];
+    isResponse2 = [messageCopy isResponse];
     v41 = &__kCFBooleanFalse;
-    if (v40)
+    if (isResponse2)
     {
       v41 = &__kCFBooleanTrue;
     }
@@ -222,7 +222,7 @@ LABEL_32:
     *buf = 138413058;
     v56 = v35;
     v57 = 2048;
-    v58 = v37;
+    v58 = type2;
     v59 = 2048;
     v60 = v39;
     v61 = 2112;
@@ -232,10 +232,10 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v26 = [v24 method];
+  method = [v24 method];
   v27 = nb_daemon_log;
   v28 = os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT);
-  if (!v26)
+  if (!method)
   {
     if (!v28)
     {
@@ -244,12 +244,12 @@ LABEL_32:
 
     v35 = self->_serviceName;
     v36 = v27;
-    v37 = [v4 type];
-    v38 = [v4 data];
-    v39 = [v38 length];
-    v42 = [v4 isResponse];
+    type2 = [messageCopy type];
+    data2 = [messageCopy data];
+    v39 = [data2 length];
+    isResponse3 = [messageCopy isResponse];
     v41 = &__kCFBooleanFalse;
-    if (v42)
+    if (isResponse3)
     {
       v41 = &__kCFBooleanTrue;
     }
@@ -262,10 +262,10 @@ LABEL_32:
     v45 = self->_serviceName;
     log = v27;
     v29 = NSStringFromSelector([v25 selector]);
-    v44 = [v4 type];
-    v46 = [v4 data];
-    v43 = [v46 length];
-    if ([v4 isResponse])
+    type3 = [messageCopy type];
+    data3 = [messageCopy data];
+    v43 = [data3 length];
+    if ([messageCopy isResponse])
     {
       v30 = &__kCFBooleanTrue;
     }
@@ -275,20 +275,20 @@ LABEL_32:
       v30 = &__kCFBooleanFalse;
     }
 
-    v31 = [v4 context];
-    v32 = [v31 fromID];
+    context2 = [messageCopy context];
+    fromID = [context2 fromID];
     *buf = 138413570;
     v56 = v45;
     v57 = 2114;
     v58 = v29;
     v59 = 2048;
-    v60 = v44;
+    v60 = type3;
     v61 = 2048;
     v62 = v43;
     v63 = 2112;
     v64 = v30;
     v65 = 2114;
-    v66 = v32;
+    v66 = fromID;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "(%@): Calling selector %{public}@ for type=%ld length=%ld response=%@ messageSource=%{public}@", buf, 0x3Eu);
   }
 
@@ -297,72 +297,72 @@ LABEL_32:
   v48[1] = 3221225472;
   v48[2] = sub_100011AA8;
   v48[3] = &unk_10002CF28;
-  v51 = v26;
+  v51 = method;
   v48[4] = self;
   v49 = v25;
-  v50 = v4;
+  v50 = messageCopy;
   dispatch_async(v33, v48);
 
 LABEL_33:
 }
 
-- (void)_storeProtobufAction:(SEL)a3 messageType:(unsigned __int16)a4 messageSendType:(int64_t)a5
+- (void)_storeProtobufAction:(SEL)action messageType:(unsigned __int16)type messageSendType:(int64_t)sendType
 {
-  v6 = a4;
+  typeCopy = type;
   v10 = objc_alloc_init(NBPBSelectorItem);
-  [(NBPBSelectorItem *)v10 setSelector:a3];
-  if (a3)
+  [(NBPBSelectorItem *)v10 setSelector:action];
+  if (action)
   {
-    [(NBPBSelectorItem *)v10 setMethod:[(NBRemoteObject *)self methodForSelector:a3]];
+    [(NBPBSelectorItem *)v10 setMethod:[(NBRemoteObject *)self methodForSelector:action]];
   }
 
-  v9 = [NSNumber numberWithInteger:v6 | (a5 << 16)];
+  v9 = [NSNumber numberWithInteger:typeCopy | (sendType << 16)];
   [(NSMutableDictionary *)self->_idsRequestMessageTypeToSelector setObject:v10 forKeyedSubscript:v9];
 }
 
-- (void)sendFileRequest:(id)a3 type:(unsigned __int16)a4 withTimeout:(id)a5 withResponseTimeout:(id)a6 withDescription:(id)a7 onlyOneFor:(id)a8 didSend:(id)a9 andResponse:(id)a10
+- (void)sendFileRequest:(id)request type:(unsigned __int16)type withTimeout:(id)timeout withResponseTimeout:(id)responseTimeout withDescription:(id)description onlyOneFor:(id)for didSend:(id)send andResponse:(id)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  requestCopy = request;
+  timeoutCopy = timeout;
+  responseTimeoutCopy = responseTimeout;
+  descriptionCopy = description;
+  forCopy = for;
+  sendCopy = send;
+  responseCopy = response;
   idsQueue = self->_idsQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100011F24;
   block[3] = &unk_10002CF50;
   block[4] = self;
-  v32 = v16;
-  v39 = a4;
-  v33 = v17;
-  v34 = v18;
-  v35 = v19;
-  v36 = v20;
-  v37 = v21;
-  v38 = v22;
-  v24 = v22;
-  v25 = v21;
-  v26 = v20;
-  v27 = v19;
-  v28 = v18;
-  v29 = v17;
-  v30 = v16;
+  v32 = requestCopy;
+  typeCopy = type;
+  v33 = timeoutCopy;
+  v34 = responseTimeoutCopy;
+  v35 = descriptionCopy;
+  v36 = forCopy;
+  v37 = sendCopy;
+  v38 = responseCopy;
+  v24 = responseCopy;
+  v25 = sendCopy;
+  v26 = forCopy;
+  v27 = descriptionCopy;
+  v28 = responseTimeoutCopy;
+  v29 = timeoutCopy;
+  v30 = requestCopy;
   dispatch_async(idsQueue, block);
 }
 
-- (void)_sendMessage:(id)a3 type:(unsigned __int16)a4 requestUUID:(id)a5 withTimeout:(id)a6 withResponseTimeout:(id)a7 withDescription:(id)a8 onlyOneFor:(id)a9 didSend:(id)a10 andResponse:(id)a11
+- (void)_sendMessage:(id)message type:(unsigned __int16)type requestUUID:(id)d withTimeout:(id)timeout withResponseTimeout:(id)responseTimeout withDescription:(id)description onlyOneFor:(id)for didSend:(id)self0 andResponse:(id)self1
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  messageCopy = message;
+  dCopy = d;
+  timeoutCopy = timeout;
+  responseTimeoutCopy = responseTimeout;
+  descriptionCopy = description;
+  forCopy = for;
+  sendCopy = send;
+  responseCopy = response;
   dispatch_assert_queue_not_V2(self->_idsQueue);
   idsQueue = self->_idsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -370,65 +370,65 @@ LABEL_33:
   block[2] = sub_100012294;
   block[3] = &unk_10002CF78;
   block[4] = self;
-  v35 = v16;
-  v43 = a4;
-  v36 = v17;
-  v37 = v18;
-  v38 = v19;
-  v39 = v20;
-  v40 = v21;
-  v41 = v22;
-  v42 = v23;
-  v25 = v23;
-  v26 = v22;
-  v27 = v21;
-  v28 = v20;
-  v29 = v19;
-  v30 = v18;
-  v31 = v17;
-  v32 = v16;
+  v35 = messageCopy;
+  typeCopy = type;
+  v36 = dCopy;
+  v37 = timeoutCopy;
+  v38 = responseTimeoutCopy;
+  v39 = descriptionCopy;
+  v40 = forCopy;
+  v41 = sendCopy;
+  v42 = responseCopy;
+  v25 = responseCopy;
+  v26 = sendCopy;
+  v27 = forCopy;
+  v28 = descriptionCopy;
+  v29 = responseTimeoutCopy;
+  v30 = timeoutCopy;
+  v31 = dCopy;
+  v32 = messageCopy;
   dispatch_async(idsQueue, block);
 }
 
-- (void)_messageResponseTimeout:(id)a3
+- (void)_messageResponseTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   idsQueue = self->_idsQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100012374;
   v7[3] = &unk_10002C768;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = timeoutCopy;
+  selfCopy = self;
+  v6 = timeoutCopy;
   dispatch_async(idsQueue, v7);
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a5;
-  v11 = a7;
-  v12 = [(NSMutableDictionary *)self->_idsSendIDToCompletionHandler objectForKeyedSubscript:v10];
+  identifierCopy = identifier;
+  errorCopy = error;
+  v12 = [(NSMutableDictionary *)self->_idsSendIDToCompletionHandler objectForKeyedSubscript:identifierCopy];
   if (v12)
   {
-    [(NSMutableDictionary *)self->_idsSendIDToCompletionHandler removeObjectForKey:v10];
+    [(NSMutableDictionary *)self->_idsSendIDToCompletionHandler removeObjectForKey:identifierCopy];
     clientQueue = self->_clientQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100013060;
     block[3] = &unk_10002CF00;
     v32 = v12;
-    v31 = v11;
+    v31 = errorCopy;
     dispatch_async(clientQueue, block);
   }
 
-  if (!v11 && a6)
+  if (!errorCopy && success)
   {
     v14 = nb_daemon_log;
     if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v34 = v10;
+      v34 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "IDS success sending request: %{public}@", buf, 0xCu);
     }
 
@@ -436,18 +436,18 @@ LABEL_33:
   }
 
   v15 = IDSErrorDomain;
-  v16 = [v11 domain];
-  if ([v15 isEqual:v16])
+  domain = [errorCopy domain];
+  if ([v15 isEqual:domain])
   {
-    v17 = [v11 code];
+    code = [errorCopy code];
 
-    if (v17 == 24)
+    if (code == 24)
     {
       v18 = nb_daemon_log;
       if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v34 = v10;
+        v34 = identifierCopy;
         v19 = "IDS message %{public}@ was replaced by another message";
         v20 = v18;
         v21 = 12;
@@ -468,9 +468,9 @@ LABEL_14:
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v34 = v11;
+    v34 = errorCopy;
     v35 = 2114;
-    v36 = v10;
+    v36 = identifierCopy;
     v19 = "IDS error sending request: %{public}@ %{public}@";
     v20 = v22;
     v21 = 22;
@@ -478,7 +478,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  v23 = [(NSMutableDictionary *)self->_idsSendIDToResponseHandler objectForKeyedSubscript:v10];
+  v23 = [(NSMutableDictionary *)self->_idsSendIDToResponseHandler objectForKeyedSubscript:identifierCopy];
   v24 = v23;
   if (v23)
   {
@@ -498,14 +498,14 @@ LABEL_15:
 LABEL_18:
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
-  v46 = a3;
-  v45 = a4;
-  v48 = a5;
-  v14 = a6;
-  v47 = a7;
-  v42 = a8;
+  serviceCopy = service;
+  accountCopy = account;
+  lCopy = l;
+  metadataCopy = metadata;
+  dCopy = d;
+  contextCopy = context;
   v15 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
@@ -513,20 +513,20 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "incomingResourceAtURL called", buf, 2u);
   }
 
-  v44 = v14;
-  v16 = [v14 objectForKeyedSubscript:{@"MessageType", v42}];
-  v17 = [v16 shortValue];
+  v44 = metadataCopy;
+  v16 = [metadataCopy objectForKeyedSubscript:{@"MessageType", contextCopy}];
+  shortValue = [v16 shortValue];
 
   v18 = NSTemporaryDirectory();
   v19 = +[NSUUID UUID];
-  v20 = [v19 UUIDString];
-  v21 = [v18 stringByAppendingPathComponent:v20];
+  uUIDString = [v19 UUIDString];
+  v21 = [v18 stringByAppendingPathComponent:uUIDString];
   v22 = [NSURL fileURLWithPath:v21];
 
   v23 = +[NSFileManager defaultManager];
   v54 = 0;
-  v24 = v48;
-  [v23 linkItemAtURL:v48 toURL:v22 error:&v54];
+  v24 = lCopy;
+  [v23 linkItemAtURL:lCopy toURL:v22 error:&v54];
   v25 = v54;
 
   if (v25)
@@ -556,7 +556,7 @@ LABEL_18:
     *buf = 138412802;
     v56 = serviceName;
     v57 = 2048;
-    v58 = v17;
+    v58 = shortValue;
     v59 = 2112;
     v60 = v22;
     v40 = v38;
@@ -565,10 +565,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v30 = [v28 method];
+  method = [v28 method];
   v31 = nb_daemon_log;
   v32 = os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT);
-  if (!v30)
+  if (!method)
   {
     v37 = v43;
     if (!v32)
@@ -580,7 +580,7 @@ LABEL_15:
     *buf = 138412802;
     v56 = v41;
     v57 = 2048;
-    v58 = v17;
+    v58 = shortValue;
     v59 = 2112;
     v60 = v22;
     v40 = v31;
@@ -597,12 +597,12 @@ LABEL_15:
     v57 = 2114;
     v58 = v35;
     v59 = 2048;
-    v60 = v17;
+    v60 = shortValue;
     v61 = 2112;
     v62 = v22;
     v63 = 2114;
-    v24 = v48;
-    v64 = v47;
+    v24 = lCopy;
+    v64 = dCopy;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "(%@): Calling selector %{public}@ for type=%ld url=%@ messageSource=%{public}@", buf, 0x34u);
   }
 
@@ -611,7 +611,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_100013510;
   block[3] = &unk_10002CFA0;
-  v53 = v30;
+  v53 = method;
   block[4] = self;
   v50 = v29;
   v51 = v22;
@@ -622,12 +622,12 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_service == v8)
+  serviceCopy = service;
+  deviceCopy = device;
+  blockCopy = block;
+  if (self->_service == serviceCopy)
   {
     v11 = nb_daemon_log;
     if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
@@ -636,7 +636,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "executing IDS acknowledgementBlock", v12, 2u);
     }
 
-    v10[2](v10);
+    blockCopy[2](blockCopy);
   }
 }
 

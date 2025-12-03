@@ -2,15 +2,15 @@
 + (id)lock;
 + (id)stores;
 + (void)flushAndCommitAll;
-- (BOOL)checkPriorityForBundleID:(const char *)a3 identifier:(const char *)a4 UUID:(const char *)a5 serialNumber:(unint64_t)a6 defaultIfNotExists:(BOOL)a7;
-- (BOOL)enumerateItems:(id)a3;
+- (BOOL)checkPriorityForBundleID:(const char *)d identifier:(const char *)identifier UUID:(const char *)iD serialNumber:(unint64_t)number defaultIfNotExists:(BOOL)exists;
+- (BOOL)enumerateItems:(id)items;
 - (BOOL)flushAndCommit;
-- (BOOL)markForDeleteDBO:(db_obj *)a3 purgeContext:(id *)a4;
-- (BOOL)markPriorityForBundleID:(const char *)a3 identifier:(const char *)a4 UUID:(const char *)a5 serialNumber:(unint64_t)a6 flag:(BOOL)a7;
-- (BOOL)removePriorityForBundleID:(const char *)a3 identifier:(const char *)a4 UUID:(const char *)a5 serialNumber:(unint64_t)a6;
-- (BOOL)writeLanguageForBundleID:(const char *)a3 identifier:(const char *)a4 UUID:(const char *)a5 serialNumber:(unint64_t)a6 language:(const char *)a7;
-- (db_obj)getDBOWithOID:(int64_t)a3;
-- (id)readLanguageFromBundleID:(const char *)a3 identifier:(const char *)a4 UUID:(const char *)a5 serialNumber:(unint64_t)a6;
+- (BOOL)markForDeleteDBO:(db_obj *)o purgeContext:(id *)context;
+- (BOOL)markPriorityForBundleID:(const char *)d identifier:(const char *)identifier UUID:(const char *)iD serialNumber:(unint64_t)number flag:(BOOL)flag;
+- (BOOL)removePriorityForBundleID:(const char *)d identifier:(const char *)identifier UUID:(const char *)iD serialNumber:(unint64_t)number;
+- (BOOL)writeLanguageForBundleID:(const char *)d identifier:(const char *)identifier UUID:(const char *)iD serialNumber:(unint64_t)number language:(const char *)language;
+- (db_obj)getDBOWithOID:(int64_t)d;
+- (id)readLanguageFromBundleID:(const char *)d identifier:(const char *)identifier UUID:(const char *)iD serialNumber:(unint64_t)number;
 - (void)closeAndDeleteStore;
 - (void)dealloc;
 - (void)flushAndCommit;
@@ -85,19 +85,19 @@ uint64_t __53__SKGUpdaterStore_purgeAllWithUUIDImpl_listenerType___block_invoke(
 + (void)flushAndCommitAll
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [a1 lock];
-  [v3 lock];
+  lock = [self lock];
+  [lock lock];
 
-  v4 = [a1 stores];
-  v5 = [a1 lock];
-  [v5 unlock];
+  stores = [self stores];
+  lock2 = [self lock];
+  [lock2 unlock];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v4 allValues];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [stores allValues];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -109,14 +109,14 @@ uint64_t __53__SKGUpdaterStore_purgeAllWithUUIDImpl_listenerType___block_invoke(
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v12 + 1) + 8 * v10++) flushAndCommit];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -145,24 +145,24 @@ uint64_t __53__SKGUpdaterStore_purgeAllWithUUIDImpl_listenerType___block_invoke(
   [(SKGUpdaterStore *)&v5 dealloc];
 }
 
-- (BOOL)markPriorityForBundleID:(const char *)a3 identifier:(const char *)a4 UUID:(const char *)a5 serialNumber:(unint64_t)a6 flag:(BOOL)a7
+- (BOOL)markPriorityForBundleID:(const char *)d identifier:(const char *)identifier UUID:(const char *)iD serialNumber:(unint64_t)number flag:(BOOL)flag
 {
   v55 = *MEMORY[0x277D85DE8];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%s:", "Priority", a5];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%s:", "Priority", iD];
   dsi = self->_dsi;
   [v11 length];
   obj = db_create_obj();
   v51 = obj;
   if (obj)
   {
-    v14 = a3;
+    dCopy = d;
     v15 = obj;
-    v48 = v14;
-    v47 = a6;
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%llu:%s", "Priority", a6, v14];
-    strlen(a4);
-    [v16 UTF8String];
-    strlen([v16 UTF8String]);
+    v48 = dCopy;
+    numberCopy = number;
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%llu:%s", "Priority", number, dCopy];
+    strlen(identifier);
+    [dCopy UTF8String];
+    strlen([dCopy UTF8String]);
     *v15 = si_compute_oid_for_identifier_bundle_id();
     makeThreadId();
     v17 = MEMORY[0x277D294F0];
@@ -189,7 +189,7 @@ uint64_t __53__SKGUpdaterStore_purgeAllWithUUIDImpl_listenerType___block_invoke(
       v23(*(v21 + 288));
     }
 
-    v24 = v16;
+    v24 = dCopy;
     *buf = v50;
     if (_setjmp(v21))
     {
@@ -279,11 +279,11 @@ LABEL_36:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218498;
-        *&buf[4] = v47;
+        *&buf[4] = numberCopy;
         *&buf[12] = 2080;
         *&buf[14] = v48;
         *&buf[22] = 2080;
-        *&buf[24] = a4;
+        *&buf[24] = identifier;
         _os_log_debug_impl(&dword_231B25000, v30, OS_LOG_TYPE_DEBUG, "SKGUpdaterStore#markPriorityForBundleID written serialNumber: %llu to bundleID: %s, identifier: %s", buf, 0x20u);
       }
 
@@ -333,12 +333,12 @@ LABEL_37:
   return v31;
 }
 
-- (BOOL)checkPriorityForBundleID:(const char *)a3 identifier:(const char *)a4 UUID:(const char *)a5 serialNumber:(unint64_t)a6 defaultIfNotExists:(BOOL)a7
+- (BOOL)checkPriorityForBundleID:(const char *)d identifier:(const char *)identifier UUID:(const char *)iD serialNumber:(unint64_t)number defaultIfNotExists:(BOOL)exists
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%s:", "Priority", a5];
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%llu:%s", "Priority", a6, a3];
-  strlen(a4);
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%s:", "Priority", iD];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%llu:%s", "Priority", number, d];
+  strlen(identifier);
   [v13 UTF8String];
   strlen([v13 UTF8String]);
   v14 = [(SKGUpdaterStore *)self getDBOWithOID:si_compute_oid_for_identifier_bundle_id()];
@@ -361,11 +361,11 @@ LABEL_37:
           v26 = 1024;
           v27 = v18;
           v28 = 2048;
-          v29 = a6;
+          numberCopy = number;
           v30 = 2080;
-          v31 = a3;
+          dCopy = d;
           v32 = 2080;
-          v33 = a4;
+          identifierCopy = identifier;
           _os_log_debug_impl(&dword_231B25000, v19, OS_LOG_TYPE_DEBUG, "SKGUpdaterStore#checkPriorityForBundleID Could not find field %@ err: %d serialNumber: %llu to bundleID: %s, identifier: %s", buf, 0x30u);
         }
       }
@@ -377,7 +377,7 @@ LABEL_37:
     {
       v21 = MEMORY[0];
       MEMORY[0x2383779F0](v15);
-      a7 = v21 == 1;
+      exists = v21 == 1;
     }
   }
 
@@ -391,14 +391,14 @@ LABEL_37:
   }
 
   v22 = *MEMORY[0x277D85DE8];
-  return a7;
+  return exists;
 }
 
-- (BOOL)removePriorityForBundleID:(const char *)a3 identifier:(const char *)a4 UUID:(const char *)a5 serialNumber:(unint64_t)a6
+- (BOOL)removePriorityForBundleID:(const char *)d identifier:(const char *)identifier UUID:(const char *)iD serialNumber:(unint64_t)number
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%llu:%s", a4, a5, "Priority", a6, a3];
-  strlen(a4);
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%llu:%s", identifier, iD, "Priority", number, d];
+  strlen(identifier);
   [v8 UTF8String];
   v9 = v8;
   strlen([v8 UTF8String]);
@@ -495,17 +495,17 @@ LABEL_37:
   return v21;
 }
 
-- (BOOL)writeLanguageForBundleID:(const char *)a3 identifier:(const char *)a4 UUID:(const char *)a5 serialNumber:(unint64_t)a6 language:(const char *)a7
+- (BOOL)writeLanguageForBundleID:(const char *)d identifier:(const char *)identifier UUID:(const char *)iD serialNumber:(unint64_t)number language:(const char *)language
 {
   v49 = *MEMORY[0x277D85DE8];
   v47 = 0;
   v48 = 0;
-  v46 = a6;
+  numberCopy = number;
   if (__strlcpy_chk() < 0x10)
   {
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%s", "Language", a5];
-    strlen(a4);
-    strlen(a3);
+    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%s", "Language", iD];
+    strlen(identifier);
+    strlen(d);
     v15 = si_compute_oid_for_identifier_bundle_id();
     obj = [(SKGUpdaterStore *)self getDBOWithOID:v15];
     v42 = obj;
@@ -635,11 +635,11 @@ LABEL_33:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218498;
-      *&buf[4] = a6;
+      *&buf[4] = number;
       *&buf[12] = 2080;
-      *&buf[14] = a3;
+      *&buf[14] = d;
       *&buf[22] = 2080;
-      *&buf[24] = a4;
+      *&buf[24] = identifier;
       _os_log_debug_impl(&dword_231B25000, v30, OS_LOG_TYPE_DEBUG, "SKGUpdaterStore#writeLanguageForBundleID written serialNumber: %llu to bundleID: %s, identifier: %s", buf, 0x20u);
     }
 
@@ -668,11 +668,11 @@ LABEL_35:
   return result;
 }
 
-- (id)readLanguageFromBundleID:(const char *)a3 identifier:(const char *)a4 UUID:(const char *)a5 serialNumber:(unint64_t)a6
+- (id)readLanguageFromBundleID:(const char *)d identifier:(const char *)identifier UUID:(const char *)iD serialNumber:(unint64_t)number
 {
   v44 = *MEMORY[0x277D85DE8];
-  strlen(a4);
-  strlen(a3);
+  strlen(identifier);
+  strlen(d);
   si_compute_oid_for_identifier_bundle_id();
   makeThreadId();
   atomic_fetch_add_explicit(MEMORY[0x277D294F0], 1u, memory_order_relaxed);
@@ -725,7 +725,7 @@ LABEL_35:
   if (!obj)
   {
 LABEL_7:
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%s", "Language", a5];
+    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%s", "Language", iD];
     v20 = self->_dsi;
     v21 = v19;
     [v21 UTF8String];
@@ -743,11 +743,11 @@ LABEL_7:
           *&buf[12] = 1024;
           *&buf[14] = v23;
           *&buf[18] = 2048;
-          *&buf[20] = a6;
+          *&buf[20] = number;
           *&buf[28] = 2080;
-          *&buf[30] = a3;
+          *&buf[30] = d;
           *&buf[38] = 2080;
-          *&buf[40] = a4;
+          *&buf[40] = identifier;
           _os_log_debug_impl(&dword_231B25000, v24, OS_LOG_TYPE_DEBUG, "SKGUpdaterStore#readLanguageFromBundleID Could not find field %@ err: %d serialNumber: %llu to bundleID: %s, identifier: %s", buf, 0x30u);
         }
       }
@@ -788,7 +788,7 @@ LABEL_32:
 
       else
       {
-        if (v40 == a6)
+        if (v40 == number)
         {
           v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:&v40 + 8];
           goto LABEL_34;
@@ -802,9 +802,9 @@ LABEL_32:
             *buf = 136315650;
             *&buf[4] = &v40 + 8;
             *&buf[12] = 2080;
-            *&buf[14] = a3;
+            *&buf[14] = d;
             *&buf[22] = 2080;
-            *&buf[24] = a4;
+            *&buf[24] = identifier;
             _os_log_debug_impl(&dword_231B25000, v34, OS_LOG_TYPE_DEBUG, "SKGUpdaterStore#readLanguageFromBundleID illegal language: %s to bundleID: %s, identifier: %s", buf, 0x20u);
           }
 
@@ -839,9 +839,9 @@ LABEL_34:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315650;
-      *&buf[4] = a3;
+      *&buf[4] = d;
       *&buf[12] = 2080;
-      *&buf[14] = a4;
+      *&buf[14] = identifier;
       *&buf[22] = 1024;
       *&buf[24] = obj;
       _os_log_debug_impl(&dword_231B25000, v29, OS_LOG_TYPE_DEBUG, "SKGUpdaterStore#readLanguageFromBundleID Could not find object-id for bundleID:%s identifier: %s err: %d", buf, 0x1Cu);
@@ -906,7 +906,7 @@ LABEL_9:
   return v6;
 }
 
-- (db_obj)getDBOWithOID:(int64_t)a3
+- (db_obj)getDBOWithOID:(int64_t)d
 {
   makeThreadId();
   atomic_fetch_add_explicit(MEMORY[0x277D294F0], 1u, memory_order_relaxed);
@@ -970,16 +970,16 @@ LABEL_9:
   return 0;
 }
 
-- (BOOL)markForDeleteDBO:(db_obj *)a3 purgeContext:(id *)a4
+- (BOOL)markForDeleteDBO:(db_obj *)o purgeContext:(id *)context
 {
-  if (!a3->var0)
+  if (!o->var0)
   {
     v16 = 0;
     goto LABEL_22;
   }
 
   v19 = 1;
-  v20 = a4;
+  contextCopy = context;
   while (1)
   {
     dsi = self->_dsi;
@@ -998,7 +998,7 @@ LABEL_9:
         if ([v8 isEqual:@"Priority"])
         {
           v9 = [v7 objectAtIndexedSubscript:1];
-          var2 = v20->var2;
+          var2 = contextCopy->var2;
 
           if (v9 == var2)
           {
@@ -1019,15 +1019,15 @@ LABEL_9:
         {
           v12 = [v7 objectAtIndexedSubscript:1];
           v13 = v12;
-          if (v12 == v20->var2)
+          if (v12 == contextCopy->var2)
           {
             v14 = [v7 objectAtIndexedSubscript:2];
-            v15 = [v14 intValue];
-            var1 = v20->var1;
+            intValue = [v14 intValue];
+            var1 = contextCopy->var1;
 
-            if (v15 == var1)
+            if (intValue == var1)
             {
-              v19 &= v20->var0 >= MEMORY[0xD];
+              v19 &= contextCopy->var0 >= MEMORY[0xD];
             }
 
             goto LABEL_16;
@@ -1040,15 +1040,15 @@ LABEL_16:
   }
 
   v16 = v19;
-  a4 = v20;
+  context = contextCopy;
 LABEL_22:
 
   return v16 & 1;
 }
 
-- (BOOL)enumerateItems:(id)a3
+- (BOOL)enumerateItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   makeThreadId();
   atomic_fetch_add_explicit(MEMORY[0x277D294F0], 1u, memory_order_relaxed);
   parentFd = self->_parentFd;

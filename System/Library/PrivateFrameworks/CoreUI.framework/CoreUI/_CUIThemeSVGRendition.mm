@@ -2,9 +2,9 @@
 - ($01BB1521EC52D44A8E7628F5261DCEC8)vectorGlyphAlignmentRectInsets;
 - (CGSVGDocument)svgDocument;
 - (CGSize)canvasSize;
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (id)rawData;
-- (void)_initalizeMetadataFromCSIData:(const _csiheader *)a3 version:(unsigned int)a4;
+- (void)_initalizeMetadataFromCSIData:(const _csiheader *)data version:(unsigned int)version;
 - (void)dealloc;
 @end
 
@@ -23,8 +23,8 @@
     self->_svgDocument = CGSVGDocumentCreateFromData();
     if (self->_baseline == 0.0 && !self->_standardPointSize)
     {
-      v5 = [(CUIThemeRendition *)self colorSpaceID];
-      if (v5 == 1 || v5 == 4 || v5 == 3)
+      colorSpaceID = [(CUIThemeRendition *)self colorSpaceID];
+      if (colorSpaceID == 1 || colorSpaceID == 4 || colorSpaceID == 3)
       {
         CGSVGDocumentSetPreferredColorSpace();
       }
@@ -55,8 +55,8 @@ LABEL_2:
     fileData = self->_fileData;
     self->_fileData = CUIUncompressDataWithLZFSE(fileData);
     v4 = fileData;
-    v5 = [(CUIThemeRendition *)self renditionFlags];
-    *v5 &= 0xFFFFFFC3;
+    renditionFlags = [(CUIThemeRendition *)self renditionFlags];
+    *renditionFlags &= 0xFFFFFFC3;
   }
 
   v6 = self->_fileData;
@@ -120,14 +120,14 @@ LABEL_2:
   [(CUIThemeRendition *)&v3 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v17.receiver = self;
   v17.super_class = _CUIThemeSVGRendition;
-  v5 = [(CUIThemeRendition *)&v17 _initWithCSIHeader:a3 version:*&a4];
+  v5 = [(CUIThemeRendition *)&v17 _initWithCSIHeader:header version:*&version];
   v6 = v5;
   v5[85] = 0;
-  v7 = &a3->var0 + 4 * a3->var11.var0 + a3->var10;
+  v7 = &header->var0 + 4 * header->var11.var0 + header->var10;
   v9 = *(v7 + 45);
   v8 = v7 + 180;
   v10 = *(v8 + 2);
@@ -144,24 +144,24 @@ LABEL_2:
 
   v13 = v8 - [objc_msgSend(v5 "srcData")];
   v14 = *(v8 + 1) != 0;
-  v15 = [v6 renditionFlags];
-  *v15 = *v15 & 0xFFFFFFC3 | (16 * v14);
+  renditionFlags = [v6 renditionFlags];
+  *renditionFlags = *renditionFlags & 0xFFFFFFC3 | (16 * v14);
   v6[28] = -[_CUISubrangeData initWithData:range:]([_CUISubrangeData alloc], "initWithData:range:", [v6 srcData], v13 + 12, v12);
   return v6;
 }
 
-- (void)_initalizeMetadataFromCSIData:(const _csiheader *)a3 version:(unsigned int)a4
+- (void)_initalizeMetadataFromCSIData:(const _csiheader *)data version:(unsigned int)version
 {
   v25.receiver = self;
   v25.super_class = _CUIThemeSVGRendition;
   [CUIThemeRendition _initalizeMetadataFromCSIData:sel__initalizeMetadataFromCSIData_version_ version:?];
-  var10 = a3->var10;
-  var0 = a3->var11.var0;
+  var10 = data->var10;
+  var0 = data->var11.var0;
   self->_containsMulticolorLayers = -1;
   self->_containsHierarchicalLayers = -1;
   if (var10)
   {
-    v8 = &a3->var11.var1[var0];
+    v8 = &data->var11.var1[var0];
     v9 = v8 + var10 + 4;
     v10 = v8 + 1;
     do
@@ -184,7 +184,7 @@ LABEL_2:
         }
 
         self->_containsHierarchicalLayers = v18;
-        if (a4 < 0x34F)
+        if (version < 0x34F)
         {
           v11 = 12;
         }

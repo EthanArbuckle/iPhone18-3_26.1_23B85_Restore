@@ -1,166 +1,166 @@
 @interface QSSMutableTextToSpeechRequest
 - (BOOL)enable_word_timing_info;
 - (QSSMutableTextToSpeechRequest)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)audio_type;
 - (int64_t)preferred_voice_type;
-- (void)setAudio_type:(int64_t)a3;
-- (void)setContext:(id)a3;
-- (void)setContext_info:(id)a3;
-- (void)setDebug:(id)a3;
-- (void)setDev_config:(id)a3;
-- (void)setExperiment:(id)a3;
-- (void)setFeature_flags:(id)a3;
-- (void)setGender:(id)a3;
-- (void)setLanguage:(id)a3;
-- (void)setMeta_info:(id)a3;
-- (void)setPreferred_voice_type:(int64_t)a3;
-- (void)setProfile:(id)a3;
-- (void)setProsody_config:(id)a3;
-- (void)setProsody_control_config:(id)a3;
-- (void)setSession_id:(id)a3;
-- (void)setSpeech_id:(id)a3;
-- (void)setText:(id)a3;
-- (void)setVoice_name:(id)a3;
+- (void)setAudio_type:(int64_t)audio_type;
+- (void)setContext:(id)context;
+- (void)setContext_info:(id)context_info;
+- (void)setDebug:(id)debug;
+- (void)setDev_config:(id)dev_config;
+- (void)setExperiment:(id)experiment;
+- (void)setFeature_flags:(id)feature_flags;
+- (void)setGender:(id)gender;
+- (void)setLanguage:(id)language;
+- (void)setMeta_info:(id)meta_info;
+- (void)setPreferred_voice_type:(int64_t)preferred_voice_type;
+- (void)setProfile:(id)profile;
+- (void)setProsody_config:(id)prosody_config;
+- (void)setProsody_control_config:(id)prosody_control_config;
+- (void)setSession_id:(id)session_id;
+- (void)setSpeech_id:(id)speech_id;
+- (void)setText:(id)text;
+- (void)setVoice_name:(id)voice_name;
 @end
 
 @implementation QSSMutableTextToSpeechRequest
 
-- (void)setProsody_control_config:(id)a3
+- (void)setProsody_control_config:(id)prosody_control_config
 {
-  v4 = [a3 copy];
+  v4 = [prosody_control_config copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setProsody_config:(id)a3
+- (void)setProsody_config:(id)prosody_config
 {
-  v4 = [a3 copy];
+  v4 = [prosody_config copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setDev_config:(id)a3
+- (void)setDev_config:(id)dev_config
 {
-  v4 = [a3 copy];
+  v4 = [dev_config copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setProfile:(id)a3
+- (void)setProfile:(id)profile
 {
-  v4 = [a3 copy];
+  v4 = [profile copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setDebug:(id)a3
+- (void)setDebug:(id)debug
 {
-  v4 = [a3 copy];
+  v4 = [debug copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setFeature_flags:(id)a3
+- (void)setFeature_flags:(id)feature_flags
 {
-  v4 = [a3 copy];
+  v4 = [feature_flags copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setExperiment:(id)a3
+- (void)setExperiment:(id)experiment
 {
-  v4 = [a3 copy];
+  v4 = [experiment copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = [a3 copy];
+  v4 = [context copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setMeta_info:(id)a3
+- (void)setMeta_info:(id)meta_info
 {
-  v4 = [a3 copy];
+  v4 = [meta_info copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setPreferred_voice_type:(int64_t)a3
+- (void)setPreferred_voice_type:(int64_t)preferred_voice_type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:preferred_voice_type];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int64_t)preferred_voice_type
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"preferred_voice_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setContext_info:(id)a3
+- (void)setContext_info:(id)context_info
 {
-  v4 = [a3 copy];
+  v4 = [context_info copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setVoice_name:(id)a3
+- (void)setVoice_name:(id)voice_name
 {
-  v4 = [a3 copy];
+  v4 = [voice_name copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (BOOL)enable_word_timing_info
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"enable_word_timing_info"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setAudio_type:(int64_t)a3
+- (void)setAudio_type:(int64_t)audio_type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:audio_type];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int64_t)audio_type
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"audio_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setGender:(id)a3
+- (void)setGender:(id)gender
 {
-  v4 = [a3 copy];
+  v4 = [gender copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  v4 = [a3 copy];
+  v4 = [language copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setSession_id:(id)a3
+- (void)setSession_id:(id)session_id
 {
-  v4 = [a3 copy];
+  v4 = [session_id copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setSpeech_id:(id)a3
+- (void)setSpeech_id:(id)speech_id
 {
-  v4 = [a3 copy];
+  v4 = [speech_id copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -175,9 +175,9 @@
   v2 = [(QSSMutableTextToSpeechRequest *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

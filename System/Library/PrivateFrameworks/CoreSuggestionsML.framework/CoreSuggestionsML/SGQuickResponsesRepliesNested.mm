@@ -1,27 +1,27 @@
 @interface SGQuickResponsesRepliesNested
-+ (BOOL)isZeroBasedAndContiguous:(id)a3;
-+ (id)categoryModelsFromModels:(id)a3;
-+ (id)flattenedArraysFromNestedArray:(id)a3;
-+ (id)indexedArraysFromNestedArray:(id)a3;
-+ (id)modelSemanticClassesFromModels:(id)a3;
-+ (id)nestedArrayFromFlatArray:(id)a3 nestedIndexes:(id)a4;
-+ (id)nestedArrayFromModels:(id)a3;
-+ (id)parentArraysFromNestedArray:(id)a3 models:(id)a4;
-+ (id)replyModelsForArray:(id)a3;
-+ (id)selectedPseudocountsFromModels:(id)a3;
-+ (id)subclassesFromClasses:(id)a3 subclassArray:(id)a4;
-- (SGQuickResponsesRepliesNested)initWithArray:(id)a3;
-- (id)replyTextForIndex:(unint64_t)a3 position:(unint64_t)a4;
-- (unint64_t)replyCountForIndex:(unint64_t)a3;
++ (BOOL)isZeroBasedAndContiguous:(id)contiguous;
++ (id)categoryModelsFromModels:(id)models;
++ (id)flattenedArraysFromNestedArray:(id)array;
++ (id)indexedArraysFromNestedArray:(id)array;
++ (id)modelSemanticClassesFromModels:(id)models;
++ (id)nestedArrayFromFlatArray:(id)array nestedIndexes:(id)indexes;
++ (id)nestedArrayFromModels:(id)models;
++ (id)parentArraysFromNestedArray:(id)array models:(id)models;
++ (id)replyModelsForArray:(id)array;
++ (id)selectedPseudocountsFromModels:(id)models;
++ (id)subclassesFromClasses:(id)classes subclassArray:(id)array;
+- (SGQuickResponsesRepliesNested)initWithArray:(id)array;
+- (id)replyTextForIndex:(unint64_t)index position:(unint64_t)position;
+- (unint64_t)replyCountForIndex:(unint64_t)index;
 @end
 
 @implementation SGQuickResponsesRepliesNested
 
-- (SGQuickResponsesRepliesNested)initWithArray:(id)a3
+- (SGQuickResponsesRepliesNested)initWithArray:(id)array
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  arrayCopy = array;
+  v5 = arrayCopy;
+  if (!arrayCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
@@ -235,7 +235,7 @@ LABEL_28:
       }
 
 LABEL_35:
-      v62 = 0;
+      selfCopy = 0;
       goto LABEL_36;
     }
 
@@ -254,38 +254,38 @@ LABEL_19:
 
 LABEL_12:
   self = self;
-  v62 = self;
+  selfCopy = self;
 LABEL_36:
 
-  return v62;
+  return selfCopy;
 }
 
-- (unint64_t)replyCountForIndex:(unint64_t)a3
+- (unint64_t)replyCountForIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_semanticClasses objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_semanticClasses objectAtIndexedSubscript:index];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)replyTextForIndex:(unint64_t)a3 position:(unint64_t)a4
+- (id)replyTextForIndex:(unint64_t)index position:(unint64_t)position
 {
-  v5 = [(NSArray *)self->_semanticClassReplyTextStrings objectAtIndexedSubscript:a3];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  v5 = [(NSArray *)self->_semanticClassReplyTextStrings objectAtIndexedSubscript:index];
+  v6 = [v5 objectAtIndexedSubscript:position];
 
   return v6;
 }
 
-+ (id)selectedPseudocountsFromModels:(id)a3
++ (id)selectedPseudocountsFromModels:(id)models
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  modelsCopy = models;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = modelsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -300,8 +300,8 @@ LABEL_36:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) selectedPseudocounts];
-        [v4 addObjectsFromArray:v10];
+        selectedPseudocounts = [*(*(&v13 + 1) + 8 * i) selectedPseudocounts];
+        [v4 addObjectsFromArray:selectedPseudocounts];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -315,18 +315,18 @@ LABEL_36:
   return v4;
 }
 
-+ (id)subclassesFromClasses:(id)a3 subclassArray:(id)a4
++ (id)subclassesFromClasses:(id)classes subclassArray:(id)array
 {
   v71 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v5 = a4;
+  classesCopy = classes;
+  arrayCopy = array;
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = v5;
+  obj = arrayCopy;
   v8 = [obj countByEnumeratingWithState:&v63 objects:v70 count:16];
   v50 = v7;
   if (v8)
@@ -351,9 +351,9 @@ LABEL_36:
         v15 = v10;
         for (j = v14; j; --j)
         {
-          v17 = [v7 lastObject];
+          lastObject = [v7 lastObject];
           v18 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:v15];
-          [v17 addObject:v18];
+          [lastObject addObject:v18];
 
           v7 = v50;
           ++v15;
@@ -368,8 +368,8 @@ LABEL_36:
     while (v9);
   }
 
-  v19 = v46;
-  if (!v46)
+  v19 = classesCopy;
+  if (!classesCopy)
   {
     v19 = objc_opt_new();
     v20 = [obj count];
@@ -449,8 +449,8 @@ LABEL_36:
                     }
 
                     v38 = *(*(&v51 + 1) + 8 * n);
-                    v39 = [v6 lastObject];
-                    [v39 addObject:v38];
+                    lastObject2 = [v6 lastObject];
+                    [lastObject2 addObject:v38];
                   }
 
                   v35 = [v33 countByEnumeratingWithState:&v51 objects:v67 count:16];
@@ -483,9 +483,9 @@ LABEL_36:
   return v6;
 }
 
-+ (id)modelSemanticClassesFromModels:(id)a3
++ (id)modelSemanticClassesFromModels:(id)models
 {
-  v3 = a3;
+  modelsCopy = models;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -493,7 +493,7 @@ LABEL_36:
   v7[3] = &unk_278EB7468;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [modelsCopy enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -523,16 +523,16 @@ void __64__SGQuickResponsesRepliesNested_modelSemanticClassesFromModels___block_
   [*(a1 + 32) addObject:v3];
 }
 
-+ (id)categoryModelsFromModels:(id)a3
++ (id)categoryModelsFromModels:(id)models
 {
-  v3 = a3;
-  v4 = [v3 valueForKeyPath:@"@max.category"];
-  v5 = [v4 unsignedIntegerValue];
+  modelsCopy = models;
+  v4 = [modelsCopy valueForKeyPath:@"@max.category"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
   v6 = objc_opt_new();
-  if (v5 != -1)
+  if (unsignedIntegerValue != -1)
   {
-    v7 = v5 + 1;
+    v7 = unsignedIntegerValue + 1;
     do
     {
       v8 = objc_opt_new();
@@ -544,31 +544,31 @@ void __64__SGQuickResponsesRepliesNested_modelSemanticClassesFromModels___block_
     while (v7);
   }
 
-  if ([v3 count])
+  if ([modelsCopy count])
   {
     v9 = 0;
     do
     {
-      v10 = [v3 objectAtIndexedSubscript:v9];
-      v11 = [v10 category];
+      v10 = [modelsCopy objectAtIndexedSubscript:v9];
+      category = [v10 category];
 
-      v12 = [v6 objectAtIndexedSubscript:v11];
+      v12 = [v6 objectAtIndexedSubscript:category];
       v13 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:v9];
       [v12 addObject:v13];
 
       ++v9;
     }
 
-    while (v9 < [v3 count]);
+    while (v9 < [modelsCopy count]);
   }
 
   return v6;
 }
 
-+ (id)replyModelsForArray:(id)a3
++ (id)replyModelsForArray:(id)array
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -577,14 +577,14 @@ void __64__SGQuickResponsesRepliesNested_modelSemanticClassesFromModels___block_
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v5 = v3;
+    v5 = arrayCopy;
     v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v6)
     {
       v7 = v6;
       v8 = 0;
       v9 = *v22;
-      v20 = v3;
+      v20 = arrayCopy;
 LABEL_4:
       v10 = 0;
       while (1)
@@ -617,13 +617,13 @@ LABEL_4:
 
         v13 = v12;
         [v4 addObject:v12];
-        v14 = [(SGQuickResponsesReplyModel *)v13 semanticClasses];
-        v8 += [v14 count];
+        semanticClasses = [(SGQuickResponsesReplyModel *)v13 semanticClasses];
+        v8 += [semanticClasses count];
 
         if (v7 == ++v10)
         {
           v7 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
-          v3 = v20;
+          arrayCopy = v20;
           if (v7)
           {
             goto LABEL_4;
@@ -638,7 +638,7 @@ LABEL_4:
 LABEL_19:
 
         v15 = 0;
-        v3 = v20;
+        arrayCopy = v20;
         goto LABEL_23;
       }
 
@@ -687,18 +687,18 @@ LABEL_23:
   return v15;
 }
 
-+ (BOOL)isZeroBasedAndContiguous:(id)a3
++ (BOOL)isZeroBasedAndContiguous:(id)contiguous
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  contiguousCopy = contiguous;
+  if ([contiguousCopy count])
   {
     v4 = objc_opt_new();
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v5 = v3;
+    v5 = contiguousCopy;
     v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v6)
     {
@@ -725,22 +725,22 @@ LABEL_23:
       while (v7);
     }
 
-    v13 = [v4 allObjects];
-    v14 = [v13 valueForKeyPath:@"@min.unsignedIntegerValue"];
-    v15 = [v14 unsignedIntegerValue];
+    allObjects = [v4 allObjects];
+    v14 = [allObjects valueForKeyPath:@"@min.unsignedIntegerValue"];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-    v16 = [v4 allObjects];
-    v17 = [v16 valueForKeyPath:@"@max.unsignedIntegerValue"];
-    v18 = [v17 unsignedIntegerValue];
+    allObjects2 = [v4 allObjects];
+    v17 = [allObjects2 valueForKeyPath:@"@max.unsignedIntegerValue"];
+    unsignedIntegerValue2 = [v17 unsignedIntegerValue];
 
-    if (v15)
+    if (unsignedIntegerValue)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = v18 == [v4 count] - 1;
+      v19 = unsignedIntegerValue2 == [v4 count] - 1;
     }
   }
 
@@ -753,10 +753,10 @@ LABEL_23:
   return v19;
 }
 
-+ (id)parentArraysFromNestedArray:(id)a3 models:(id)a4
++ (id)parentArraysFromNestedArray:(id)array models:(id)models
 {
-  v5 = a4;
-  v6 = a3;
+  modelsCopy = models;
+  arrayCopy = array;
   v7 = objc_opt_new();
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -767,11 +767,11 @@ LABEL_23:
   v13[1] = 3221225472;
   v13[2] = __68__SGQuickResponsesRepliesNested_parentArraysFromNestedArray_models___block_invoke_2;
   v13[3] = &unk_278EB7440;
-  v14 = v5;
+  v14 = modelsCopy;
   v8 = v17;
   v15 = v8;
-  v9 = v5;
-  [SGNestedArray traversalWithNestedArray:v6 depthCallback:v16 itemCallback:v13];
+  v9 = modelsCopy;
+  [SGNestedArray traversalWithNestedArray:arrayCopy depthCallback:v16 itemCallback:v13];
 
   v10 = v15;
   v11 = v8;
@@ -807,17 +807,17 @@ void __68__SGQuickResponsesRepliesNested_parentArraysFromNestedArray_models___bl
   [v11 addObject:v10];
 }
 
-+ (id)nestedArrayFromFlatArray:(id)a3 nestedIndexes:(id)a4
++ (id)nestedArrayFromFlatArray:(id)array nestedIndexes:(id)indexes
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  indexesCopy = indexes;
   v22 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v6;
+  obj = indexesCopy;
   v7 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
@@ -853,7 +853,7 @@ void __68__SGQuickResponsesRepliesNested_parentArraysFromNestedArray_models___bl
                 objc_enumerationMutation(v13);
               }
 
-              v18 = [v5 objectAtIndexedSubscript:{objc_msgSend(*(*(&v23 + 1) + 8 * j), "unsignedIntegerValue")}];
+              v18 = [arrayCopy objectAtIndexedSubscript:{objc_msgSend(*(*(&v23 + 1) + 8 * j), "unsignedIntegerValue")}];
               [v12 addObject:v18];
             }
 
@@ -877,9 +877,9 @@ void __68__SGQuickResponsesRepliesNested_parentArraysFromNestedArray_models___bl
   return v22;
 }
 
-+ (id)flattenedArraysFromNestedArray:(id)a3
++ (id)flattenedArraysFromNestedArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -887,7 +887,7 @@ void __68__SGQuickResponsesRepliesNested_parentArraysFromNestedArray_models___bl
   v7[3] = &unk_278EB7418;
   v5 = v4;
   v8 = v5;
-  [SGNestedArray traversalWithNestedArray:v3 depthCallback:0 itemCallback:v7];
+  [SGNestedArray traversalWithNestedArray:arrayCopy depthCallback:0 itemCallback:v7];
 
   return v5;
 }
@@ -921,9 +921,9 @@ void __64__SGQuickResponsesRepliesNested_flattenedArraysFromNestedArray___block_
 LABEL_6:
 }
 
-+ (id)indexedArraysFromNestedArray:(id)a3
++ (id)indexedArraysFromNestedArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_opt_new();
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -936,7 +936,7 @@ LABEL_6:
   v9[3] = &unk_278EB7418;
   v5 = v12;
   v10 = v5;
-  [SGNestedArray traversalWithNestedArray:v3 depthCallback:v11 itemCallback:v9];
+  [SGNestedArray traversalWithNestedArray:arrayCopy depthCallback:v11 itemCallback:v9];
 
   v6 = v10;
   v7 = v5;
@@ -959,16 +959,16 @@ void __62__SGQuickResponsesRepliesNested_indexedArraysFromNestedArray___block_in
   [v7 addObject:v6];
 }
 
-+ (id)nestedArrayFromModels:(id)a3
++ (id)nestedArrayFromModels:(id)models
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  modelsCopy = models;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = modelsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -983,8 +983,8 @@ void __62__SGQuickResponsesRepliesNested_indexedArraysFromNestedArray___block_in
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) semanticClasses];
-        [v4 addObject:v10];
+        semanticClasses = [*(*(&v13 + 1) + 8 * i) semanticClasses];
+        [v4 addObject:semanticClasses];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];

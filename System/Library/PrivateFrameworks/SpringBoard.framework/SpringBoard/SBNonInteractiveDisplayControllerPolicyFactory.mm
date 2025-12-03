@@ -1,26 +1,26 @@
 @interface SBNonInteractiveDisplayControllerPolicyFactory
-- (SBNonInteractiveDisplayControllerPolicyFactory)initWithFBSceneManager:(id)a3 monitoredWindowScene:(id)a4 applicationController:(id)a5;
-- (id)policyForConnectingDisplay:(id)a3;
-- (void)transformDisplayConfiguration:(id)a3 forControllersWithBuilder:(id)a4;
+- (SBNonInteractiveDisplayControllerPolicyFactory)initWithFBSceneManager:(id)manager monitoredWindowScene:(id)scene applicationController:(id)controller;
+- (id)policyForConnectingDisplay:(id)display;
+- (void)transformDisplayConfiguration:(id)configuration forControllersWithBuilder:(id)builder;
 @end
 
 @implementation SBNonInteractiveDisplayControllerPolicyFactory
 
-- (SBNonInteractiveDisplayControllerPolicyFactory)initWithFBSceneManager:(id)a3 monitoredWindowScene:(id)a4 applicationController:(id)a5
+- (SBNonInteractiveDisplayControllerPolicyFactory)initWithFBSceneManager:(id)manager monitoredWindowScene:(id)scene applicationController:(id)controller
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  managerCopy = manager;
+  sceneCopy = scene;
+  controllerCopy = controller;
+  if (managerCopy)
   {
-    if (v11)
+    if (sceneCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [SBNonInteractiveDisplayControllerPolicyFactory initWithFBSceneManager:a2 monitoredWindowScene:self applicationController:?];
-    if (v12)
+    if (controllerCopy)
     {
       goto LABEL_4;
     }
@@ -29,13 +29,13 @@ LABEL_8:
   }
 
   [SBNonInteractiveDisplayControllerPolicyFactory initWithFBSceneManager:a2 monitoredWindowScene:self applicationController:?];
-  if (!v11)
+  if (!sceneCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (controllerCopy)
   {
     goto LABEL_4;
   }
@@ -49,28 +49,28 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_fbSceneManager, a3);
-    objc_storeStrong(&v14->_monitoredWindowScene, a4);
-    objc_storeStrong(&v14->_applicationController, a5);
+    objc_storeStrong(&v13->_fbSceneManager, manager);
+    objc_storeStrong(&v14->_monitoredWindowScene, scene);
+    objc_storeStrong(&v14->_applicationController, controller);
   }
 
   return v14;
 }
 
-- (id)policyForConnectingDisplay:(id)a3
+- (id)policyForConnectingDisplay:(id)display
 {
   v3 = [[SBNonInteractiveDisplayControllerPolicy alloc] initWithFBSceneManager:self->_fbSceneManager monitoredWindowScene:self->_monitoredWindowScene applicationController:self->_applicationController];
 
   return v3;
 }
 
-- (void)transformDisplayConfiguration:(id)a3 forControllersWithBuilder:(id)a4
+- (void)transformDisplayConfiguration:(id)configuration forControllersWithBuilder:(id)builder
 {
-  v8 = a4;
-  v5 = [a3 identity];
-  v6 = [v5 isRestrictedAirPlayDisplay];
+  builderCopy = builder;
+  identity = [configuration identity];
+  isRestrictedAirPlayDisplay = [identity isRestrictedAirPlayDisplay];
 
-  if (v6)
+  if (isRestrictedAirPlayDisplay)
   {
     v7 = @"com.apple.springboard.noninteractive.PA2D";
   }
@@ -80,8 +80,8 @@ LABEL_4:
     v7 = @"com.apple.springboard.noninteractive";
   }
 
-  [v8 setUniqueIdentifier:v7];
-  [v8 setCloningSupported:v6 ^ 1u];
+  [builderCopy setUniqueIdentifier:v7];
+  [builderCopy setCloningSupported:isRestrictedAirPlayDisplay ^ 1u];
 }
 
 - (void)initWithFBSceneManager:(uint64_t)a1 monitoredWindowScene:(uint64_t)a2 applicationController:.cold.1(uint64_t a1, uint64_t a2)

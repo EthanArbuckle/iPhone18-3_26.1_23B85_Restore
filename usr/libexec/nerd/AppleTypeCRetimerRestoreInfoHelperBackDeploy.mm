@@ -1,44 +1,44 @@
 @interface AppleTypeCRetimerRestoreInfoHelperBackDeploy
-- (AppleTypeCRetimerRestoreInfoHelperBackDeploy)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5;
-- (void)logInternal:(id)a3 arguments:(char *)a4;
-- (void)verboseLog:(id)a3;
+- (AppleTypeCRetimerRestoreInfoHelperBackDeploy)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context;
+- (void)logInternal:(id)internal arguments:(char *)arguments;
+- (void)verboseLog:(id)log;
 @end
 
 @implementation AppleTypeCRetimerRestoreInfoHelperBackDeploy
 
-- (AppleTypeCRetimerRestoreInfoHelperBackDeploy)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5
+- (AppleTypeCRetimerRestoreInfoHelperBackDeploy)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context
 {
-  v8 = a3;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = AppleTypeCRetimerRestoreInfoHelperBackDeploy;
   v9 = [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_logFunction = a4;
-    v9->_logContext = a5;
+    v9->_logFunction = function;
+    v9->_logContext = context;
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v10 verboseLog:@"%@: options = %@", v12, v8];
+    [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)v10 verboseLog:@"%@: options = %@", v12, optionsCopy];
   }
 
   return v10;
 }
 
-- (void)logInternal:(id)a3 arguments:(char *)a4
+- (void)logInternal:(id)internal arguments:(char *)arguments
 {
-  v6 = a3;
-  v7 = [[NSMutableString alloc] initWithFormat:v6 arguments:a4];
+  internalCopy = internal;
+  v7 = [[NSMutableString alloc] initWithFormat:internalCopy arguments:arguments];
 
   [v7 appendString:@"\n"];
   (self->_logFunction)(self->_logContext, [v7 UTF8String]);
 }
 
-- (void)verboseLog:(id)a3
+- (void)verboseLog:(id)log
 {
   if (self->_verbose)
   {
-    [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)self logInternal:a3 arguments:&v3];
+    [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)self logInternal:log arguments:&v3];
   }
 }
 

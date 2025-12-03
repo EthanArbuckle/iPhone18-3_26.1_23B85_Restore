@@ -9,16 +9,16 @@
 - (id)pui_constraintsPinningSubview:()PosterUIFoundation toEdges:
 {
   v6 = a3;
-  v7 = [v6 isDescendantOfView:a1];
+  v7 = [v6 isDescendantOfView:self];
   v8 = MEMORY[0x1E695E0F0];
   if (a4 && v7)
   {
     v9 = objc_opt_new();
     if (a4)
     {
-      v14 = [v6 topAnchor];
-      v15 = [a1 topAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15];
+      topAnchor = [v6 topAnchor];
+      topAnchor2 = [self topAnchor];
+      v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v9 addObject:v16];
 
       if ((a4 & 4) == 0)
@@ -38,9 +38,9 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v17 = [v6 bottomAnchor];
-    v18 = [a1 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [v6 bottomAnchor];
+    bottomAnchor2 = [self bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v9 addObject:v19];
 
     if ((a4 & 2) == 0)
@@ -55,18 +55,18 @@ LABEL_8:
       }
 
 LABEL_7:
-      v10 = [v6 trailingAnchor];
-      v11 = [a1 trailingAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      trailingAnchor = [v6 trailingAnchor];
+      trailingAnchor2 = [self trailingAnchor];
+      v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v9 addObject:v12];
 
       goto LABEL_8;
     }
 
 LABEL_14:
-    v20 = [v6 leadingAnchor];
-    v21 = [a1 leadingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    leadingAnchor = [v6 leadingAnchor];
+    leadingAnchor2 = [self leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v9 addObject:v22];
 
     if ((a4 & 8) == 0)
@@ -84,14 +84,14 @@ LABEL_9:
 
 - (uint64_t)pui_setBoundsAndPositionFromFrame:()PosterUIFoundation
 {
-  [a1 bounds];
-  [a1 setBounds:?];
-  v10 = [a1 layer];
-  [v10 anchorPoint];
+  [self bounds];
+  [self setBounds:?];
+  layer = [self layer];
+  [layer anchorPoint];
   v12 = v11;
   v14 = v13;
 
-  return [a1 setCenter:{a2 + v12 * a4, a3 + v14 * a5}];
+  return [self setCenter:{a2 + v12 * a4, a3 + v14 * a5}];
 }
 
 - (void)pui_transitionWithType:()PosterUIFoundation duration:timingFunctionName:
@@ -126,8 +126,8 @@ LABEL_9:
     }
 
     [v9 setType:v12];
-    v13 = [a1 layer];
-    [v13 addAnimation:v9 forKey:0];
+    layer = [self layer];
+    [layer addAnimation:v9 forKey:0];
   }
 }
 

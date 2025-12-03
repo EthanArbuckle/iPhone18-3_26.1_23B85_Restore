@@ -1,12 +1,12 @@
 @interface ProductLockupCollectionViewCell
 - (_TtC11AppStoreKit16DynamicTypeLabel)accessibilityTertiaryTitleLabel;
 - (_TtC18ASMessagesProvider9VideoView)accessibilityVideoView;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)developerLabelTapped:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)developerLabelTapped:(id)tapped;
 - (void)layoutDirectionDidChanged;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)taglineLabelTapped:(id)a3;
+- (void)taglineLabelTapped:(id)tapped;
 - (void)userInterfaceStyleDidChanged;
 @end
 
@@ -14,23 +14,23 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2D49F0();
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_2D7AA4(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_2D7AA4(attributesCopy);
 }
 
-- (void)developerLabelTapped:(id)a3
+- (void)developerLabelTapped:(id)tapped
 {
   v3 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider31ProductLockupCollectionViewCell_developerTapHandler);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_F714(v3);
     v3(v5);
 
@@ -38,22 +38,22 @@
   }
 }
 
-- (void)taglineLabelTapped:(id)a3
+- (void)taglineLabelTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_2DE18C();
 }
 
 - (void)layoutDirectionDidChanged
 {
-  v2 = self;
-  sub_62F1C8(v2, v2);
+  selfCopy = self;
+  sub_62F1C8(selfCopy, selfCopy);
 }
 
 - (void)userInterfaceStyleDidChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_2D2674();
   sub_2D28C8();
 }
@@ -74,7 +74,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_629DF4();
 }
 

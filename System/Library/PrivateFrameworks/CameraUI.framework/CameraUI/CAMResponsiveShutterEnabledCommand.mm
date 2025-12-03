@@ -1,14 +1,14 @@
 @interface CAMResponsiveShutterEnabledCommand
-- (CAMResponsiveShutterEnabledCommand)initWithCoder:(id)a3;
-- (CAMResponsiveShutterEnabledCommand)initWithEnabled:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMResponsiveShutterEnabledCommand)initWithCoder:(id)coder;
+- (CAMResponsiveShutterEnabledCommand)initWithEnabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMResponsiveShutterEnabledCommand
 
-- (CAMResponsiveShutterEnabledCommand)initWithEnabled:(BOOL)a3
+- (CAMResponsiveShutterEnabledCommand)initWithEnabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = CAMResponsiveShutterEnabledCommand;
@@ -16,50 +16,50 @@
   v5 = v4;
   if (v4)
   {
-    v4->__enabled = a3;
+    v4->__enabled = enabled;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMResponsiveShutterEnabledCommand)initWithCoder:(id)a3
+- (CAMResponsiveShutterEnabledCommand)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"CAMResponsiveShutterEnabledCommandKey"];
+  v4 = [coder decodeBoolForKey:@"CAMResponsiveShutterEnabledCommandKey"];
 
   return [(CAMResponsiveShutterEnabledCommand *)self initWithEnabled:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMResponsiveShutterEnabledCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CAMResponsiveShutterEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMResponsiveShutterEnabledCommandKey"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CAMResponsiveShutterEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMResponsiveShutterEnabledCommandKey"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMResponsiveShutterEnabledCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMResponsiveShutterEnabledCommand *)self _isEnabled];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v5 = [a3 currentStillImageOutput];
-  v4 = [(CAMResponsiveShutterEnabledCommand *)self _isEnabled];
-  if ([v5 isResponsiveCaptureSupported])
+  currentStillImageOutput = [context currentStillImageOutput];
+  _isEnabled = [(CAMResponsiveShutterEnabledCommand *)self _isEnabled];
+  if ([currentStillImageOutput isResponsiveCaptureSupported])
   {
-    [v5 setResponsiveCaptureEnabled:1];
+    [currentStillImageOutput setResponsiveCaptureEnabled:1];
   }
 
-  if ([v5 isFastCapturePrioritizationSupported])
+  if ([currentStillImageOutput isFastCapturePrioritizationSupported])
   {
-    [v5 setFastCapturePrioritizationEnabled:v4];
+    [currentStillImageOutput setFastCapturePrioritizationEnabled:_isEnabled];
   }
 }
 

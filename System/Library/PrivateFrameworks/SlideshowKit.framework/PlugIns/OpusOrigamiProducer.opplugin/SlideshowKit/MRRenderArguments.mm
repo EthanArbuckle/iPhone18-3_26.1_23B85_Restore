@@ -1,5 +1,5 @@
 @interface MRRenderArguments
-- (MRRenderArguments)initWithRenderer:(id)a3;
+- (MRRenderArguments)initWithRenderer:(id)renderer;
 - (id)copyForPreloading;
 - (void)cleanup;
 - (void)dealloc;
@@ -7,14 +7,14 @@
 
 @implementation MRRenderArguments
 
-- (MRRenderArguments)initWithRenderer:(id)a3
+- (MRRenderArguments)initWithRenderer:(id)renderer
 {
   v6.receiver = self;
   v6.super_class = MRRenderArguments;
   v4 = [(MRRenderArguments *)&v6 init];
   if (v4)
   {
-    v4->_renderer = a3;
+    v4->_renderer = renderer;
   }
 
   return v4;

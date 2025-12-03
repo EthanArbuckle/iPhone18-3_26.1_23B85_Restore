@@ -1,24 +1,24 @@
 @interface CLBAdminSceneDelegate
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (CLBAdminSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)setIsShowingAdminSettings:(BOOL)a3;
-- (void)setIsShowingModalView:(BOOL)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)setIsShowingAdminSettings:(BOOL)settings;
+- (void)setIsShowingModalView:(BOOL)view;
+- (void)setWindow:(id)window;
 @end
 
 @implementation CLBAdminSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CLBAdminSceneDelegate_window);
-  *(&self->super.isa + OBJC_IVAR___CLBAdminSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CLBAdminSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)setIsShowingModalView:(BOOL)a3
+- (void)setIsShowingModalView:(BOOL)view
 {
-  *(&self->super.isa + OBJC_IVAR___CLBAdminSceneDelegate_isShowingModalView) = a3;
+  *(&self->super.isa + OBJC_IVAR___CLBAdminSceneDelegate_isShowingModalView) = view;
   v3 = *(&self->super.isa + OBJC_IVAR___CLBAdminSceneDelegate_window);
   if (v3)
   {
@@ -26,41 +26,41 @@
   }
 }
 
-- (void)setIsShowingAdminSettings:(BOOL)a3
+- (void)setIsShowingAdminSettings:(BOOL)settings
 {
-  v4 = self;
-  sub_1000870E4(a3);
+  selfCopy = self;
+  sub_1000870E4(settings);
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
   sub_100088A7C();
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(CLBAdminSceneDelegate *)v4 type];
-  if (v6 == 6)
+  eventCopy = event;
+  selfCopy = self;
+  type = [(CLBAdminSceneDelegate *)eventCopy type];
+  if (type == 6)
   {
     sub_10002B6CC(&qword_10032D0B8);
     sub_1000812EC();
     Subject<>.send()();
-    v7 = v5;
+    v7 = selfCopy;
   }
 
   else
   {
-    v7 = v4;
-    v4 = v5;
+    v7 = eventCopy;
+    eventCopy = selfCopy;
   }
 
-  return v6 == 6;
+  return type == 6;
 }
 
 - (CLBAdminSceneDelegate)init

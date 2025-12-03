@@ -1,16 +1,16 @@
 @interface URLBagTimer
 + (id)subscriptionRenewTimer;
-- (URLBagTimer)initWithIdentifier:(id)a3;
-- (double)_readTimeIntervalFromUserDefaultsKey:(id)a3;
+- (URLBagTimer)initWithIdentifier:(id)identifier;
+- (double)_readTimeIntervalFromUserDefaultsKey:(id)key;
 - (double)_timerInterval;
-- (double)_timerIntervalWithBagKey:(id)a3 userDefaultsKey:(id)a4;
-- (double)_windowWithUserDefaultsKey:(id)a3;
-- (id)_nextFireDateWithInterval:(double)a3;
-- (void)_addJobWithDate:(id)a3 window:(double)a4 allowsCellular:(BOOL)a5;
-- (void)_attemptFireForJob:(id)a3 withName:(id)a4;
+- (double)_timerIntervalWithBagKey:(id)key userDefaultsKey:(id)defaultsKey;
+- (double)_windowWithUserDefaultsKey:(id)key;
+- (id)_nextFireDateWithInterval:(double)interval;
+- (void)_addJobWithDate:(id)date window:(double)window allowsCellular:(BOOL)cellular;
+- (void)_attemptFireForJob:(id)job withName:(id)name;
 - (void)_fireTimer;
 - (void)_resetBackgroundTaskJobs;
-- (void)_setLastFireDate:(id)a3;
+- (void)_setLastFireDate:(id)date;
 - (void)dealloc;
 - (void)invalidate;
 - (void)reset;
@@ -19,21 +19,21 @@
 
 @implementation URLBagTimer
 
-- (URLBagTimer)initWithIdentifier:(id)a3
+- (URLBagTimer)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = URLBagTimer;
   v5 = [(URLBagTimer *)&v16 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
     objc_initWeak(&location, v5);
     v8 = +[Daemon daemon];
-    v9 = [v4 copy];
+    v9 = [identifierCopy copy];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100169E14;
@@ -65,7 +65,7 @@
 
 + (id)subscriptionRenewTimer
 {
-  v2 = [[a1 alloc] initWithIdentifier:@"com.apple.itunesstored.subscription-poll"];
+  v2 = [[self alloc] initWithIdentifier:@"com.apple.itunesstored.subscription-poll"];
   [v2 setBagKey:@"subscription-status-refresh-interval-in-seconds"];
   [v2 setDefaultInterval:86400.0];
   [v2 setDefaultWindow:43200.0];
@@ -105,19 +105,19 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    oSLogObject = [v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v9 &= 2u;
     }
@@ -141,7 +141,7 @@ LABEL_19:
         return;
       }
 
-      v10 = [NSString stringWithCString:v14 encoding:4, &v17, v15];
+      oSLogObject = [NSString stringWithCString:v14 encoding:4, &v17, v15];
       free(v14);
       SSFileLog();
     }
@@ -163,8 +163,8 @@ LABEL_19:
   if (!self->_started)
   {
     self->_started = 1;
-    v3 = [(URLBagTimer *)self _userDefaultsKeyLastTimeCheck];
-    v4 = CFPreferencesCopyAppValue(v3, kSSUserDefaultsIdentifier);
+    _userDefaultsKeyLastTimeCheck = [(URLBagTimer *)self _userDefaultsKeyLastTimeCheck];
+    v4 = CFPreferencesCopyAppValue(_userDefaultsKeyLastTimeCheck, kSSUserDefaultsIdentifier);
     v5 = v4;
     if (v4 && (v6 = CFGetTypeID(v4), v6 == CFDateGetTypeID()) && (([v5 timeIntervalSinceNow], v8 = v7, -[URLBagTimer _timerInterval](self, "_timerInterval"), v9 <= 0.0) || v8 >= -v9) || (preconditionsBlock = self->_preconditionsBlock) != 0 && !preconditionsBlock[2]())
     {
@@ -183,19 +183,19 @@ LABEL_19:
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
+    shouldLog = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    v14 = [v11 OSLogObject];
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    oSLogObject = [v11 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v13 &= 2u;
     }
@@ -217,7 +217,7 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      v14 = [NSString stringWithCString:v18 encoding:4, v20, v19, *v20, *&v20[16]];
+      oSLogObject = [NSString stringWithCString:v18 encoding:4, v20, v19, *v20, *&v20[16]];
       free(v18);
       SSFileLog();
     }
@@ -227,7 +227,7 @@ LABEL_19:
     if (!v5)
     {
 LABEL_21:
-      CFRelease(v3);
+      CFRelease(_userDefaultsKeyLastTimeCheck);
       return;
     }
 
@@ -237,18 +237,18 @@ LABEL_20:
   }
 }
 
-- (void)_addJobWithDate:(id)a3 window:(double)a4 allowsCellular:(BOOL)a5
+- (void)_addJobWithDate:(id)date window:(double)window allowsCellular:(BOOL)cellular
 {
-  v5 = a5;
-  v7 = a3;
-  [v7 timeIntervalSinceNow];
+  cellularCopy = cellular;
+  dateCopy = date;
+  [dateCopy timeIntervalSinceNow];
   v9 = v8;
   v10 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REQUIRE_INEXPENSIVE_NETWORK_CONNECTIVITY, !v5);
+  xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REQUIRE_INEXPENSIVE_NETWORK_CONNECTIVITY, !cellularCopy);
   xpc_dictionary_set_int64(v10, XPC_ACTIVITY_DELAY, v9);
   xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REQUIRE_NETWORK_CONNECTIVITY, 1);
   v11 = [[BackgroundTaskRequest alloc] initWithBackgroundTaskAgentJob:v10];
-  if (v5)
+  if (cellularCopy)
   {
     v12 = @".cell";
   }
@@ -266,19 +266,19 @@ LABEL_20:
     v14 = +[SSLogConfig sharedConfig];
   }
 
-  v15 = [v14 shouldLog];
+  shouldLog = [v14 shouldLog];
   if ([v14 shouldLogToDisk])
   {
-    v16 = v15 | 2;
+    v16 = shouldLog | 2;
   }
 
   else
   {
-    v16 = v15;
+    v16 = shouldLog;
   }
 
-  v17 = [v14 OSLogObject];
-  if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+  oSLogObject = [v14 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v16 &= 2u;
   }
@@ -293,14 +293,14 @@ LABEL_20:
   *&v22[12] = 2112;
   *&v22[14] = v13;
   *&v22[22] = 2112;
-  v23 = v7;
+  v23 = dateCopy;
   v18 = *&v22[4];
   LODWORD(v21) = 32;
   v19 = _os_log_send_and_compose_impl();
 
   if (v19)
   {
-    v17 = [NSString stringWithCString:v19 encoding:4, v22, v21, *v22, *&v22[16], v23];
+    oSLogObject = [NSString stringWithCString:v19 encoding:4, v22, v21, *v22, *&v22[16], v23];
     free(v19);
     SSFileLog();
 LABEL_14:
@@ -310,15 +310,15 @@ LABEL_14:
   [v20 addBackgroundTaskWithRequest:v11];
 }
 
-- (void)_attemptFireForJob:(id)a3 withName:(id)a4
+- (void)_attemptFireForJob:(id)job withName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   if (self->_started)
   {
     v6 = +[ISNetworkObserver sharedInstance];
-    v7 = [v6 networkType];
+    networkType = [v6 networkType];
 
-    if ([v5 hasSuffix:@"cell"])
+    if ([nameCopy hasSuffix:@"cell"])
     {
       if ((SSNetworkTypeIsCellularType() & 1) == 0)
       {
@@ -328,7 +328,7 @@ LABEL_21:
       }
     }
 
-    else if (![v5 hasSuffix:@"wifi"] || v7 != 1000)
+    else if (![nameCopy hasSuffix:@"wifi"] || networkType != 1000)
     {
       goto LABEL_21;
     }
@@ -345,19 +345,19 @@ LABEL_21:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    oSLogObject = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v11 &= 2u;
     }
@@ -367,7 +367,7 @@ LABEL_21:
       *v16 = 138412546;
       *&v16[4] = objc_opt_class();
       *&v16[12] = 2112;
-      *&v16[14] = v5;
+      *&v16[14] = nameCopy;
       v13 = *&v16[4];
       LODWORD(v15) = 22;
       v14 = _os_log_send_and_compose_impl();
@@ -380,7 +380,7 @@ LABEL_20:
         goto LABEL_22;
       }
 
-      v12 = [NSString stringWithCString:v14 encoding:4, v16, v15, *v16, *&v16[16]];
+      oSLogObject = [NSString stringWithCString:v14 encoding:4, v16, v15, *v16, *&v16[16]];
       free(v14);
       SSFileLog();
     }
@@ -407,10 +407,10 @@ LABEL_22:
   [(URLBagTimer *)self _resetBackgroundTaskJobs];
 }
 
-- (id)_nextFireDateWithInterval:(double)a3
+- (id)_nextFireDateWithInterval:(double)interval
 {
-  v5 = [(URLBagTimer *)self _userDefaultsKeyLastTimeCheck];
-  v6 = CFPreferencesCopyAppValue(v5, kSSUserDefaultsIdentifier);
+  _userDefaultsKeyLastTimeCheck = [(URLBagTimer *)self _userDefaultsKeyLastTimeCheck];
+  v6 = CFPreferencesCopyAppValue(_userDefaultsKeyLastTimeCheck, kSSUserDefaultsIdentifier);
   v7 = +[NSDate date];
   v8 = v7;
   if (v6)
@@ -433,12 +433,12 @@ LABEL_22:
 
   v11 = v12;
 LABEL_8:
-  v13 = [[NSDate alloc] initWithTimeInterval:v11 sinceDate:a3];
+  v13 = [[NSDate alloc] initWithTimeInterval:v11 sinceDate:interval];
   v14 = [v13 earlierDate:v8];
 
   if (v14 == v13)
   {
-    v15 = [[NSDate alloc] initWithTimeInterval:v8 sinceDate:a3];
+    v15 = [[NSDate alloc] initWithTimeInterval:v8 sinceDate:interval];
 
     v13 = v15;
   }
@@ -448,16 +448,16 @@ LABEL_8:
     CFRelease(v6);
   }
 
-  CFRelease(v5);
+  CFRelease(_userDefaultsKeyLastTimeCheck);
 
   return v13;
 }
 
-- (double)_readTimeIntervalFromUserDefaultsKey:(id)a3
+- (double)_readTimeIntervalFromUserDefaultsKey:(id)key
 {
   valuePtr = 0.0;
-  v3 = a3;
-  v4 = CFPreferencesCopyAppValue(v3, kSSUserDefaultsIdentifier);
+  keyCopy = key;
+  v4 = CFPreferencesCopyAppValue(keyCopy, kSSUserDefaultsIdentifier);
   if (v4)
   {
     v5 = v4;
@@ -480,7 +480,7 @@ LABEL_8:
     CFRelease(v5);
   }
 
-  CFRelease(v3);
+  CFRelease(keyCopy);
   v9 = valuePtr;
 
   return v9;
@@ -490,13 +490,13 @@ LABEL_8:
 {
   if (self->_started)
   {
-    v3 = [(URLBagTimer *)self _userDefaultsKeyWindowOverride];
-    [(URLBagTimer *)self _windowWithUserDefaultsKey:v3];
+    _userDefaultsKeyWindowOverride = [(URLBagTimer *)self _userDefaultsKeyWindowOverride];
+    [(URLBagTimer *)self _windowWithUserDefaultsKey:_userDefaultsKeyWindowOverride];
     v5 = v4;
 
     bagKey = self->_bagKey;
-    v7 = [(URLBagTimer *)self _userDefaultsKeyWiFiOverride];
-    [(URLBagTimer *)self _timerIntervalWithBagKey:bagKey userDefaultsKey:v7];
+    _userDefaultsKeyWiFiOverride = [(URLBagTimer *)self _userDefaultsKeyWiFiOverride];
+    [(URLBagTimer *)self _timerIntervalWithBagKey:bagKey userDefaultsKey:_userDefaultsKeyWiFiOverride];
     defaultInterval = v8;
 
     if (defaultInterval < 2.22044605e-16)
@@ -511,8 +511,8 @@ LABEL_8:
     }
 
     cellularBagKey = self->_cellularBagKey;
-    v12 = [(URLBagTimer *)self _userDefaultsKeyCellularOverride];
-    [(URLBagTimer *)self _timerIntervalWithBagKey:cellularBagKey userDefaultsKey:v12];
+    _userDefaultsKeyCellularOverride = [(URLBagTimer *)self _userDefaultsKeyCellularOverride];
+    [(URLBagTimer *)self _timerIntervalWithBagKey:cellularBagKey userDefaultsKey:_userDefaultsKeyCellularOverride];
     v14 = v13;
 
     if (v14 < 2.22044605e-16 && !self->_cellularBagKey)
@@ -528,27 +528,27 @@ LABEL_8:
   }
 }
 
-- (void)_setLastFireDate:(id)a3
+- (void)_setLastFireDate:(id)date
 {
-  v4 = a3;
-  v5 = [(URLBagTimer *)self _userDefaultsKeyLastTimeCheck];
+  dateCopy = date;
+  _userDefaultsKeyLastTimeCheck = [(URLBagTimer *)self _userDefaultsKeyLastTimeCheck];
   v6 = kITunesStoreDaemonDefaultsID;
-  CFPreferencesSetAppValue(v5, v4, kITunesStoreDaemonDefaultsID);
+  CFPreferencesSetAppValue(_userDefaultsKeyLastTimeCheck, dateCopy, kITunesStoreDaemonDefaultsID);
 
   CFPreferencesAppSynchronize(v6);
 
-  CFRelease(v5);
+  CFRelease(_userDefaultsKeyLastTimeCheck);
 }
 
 - (double)_timerInterval
 {
   v3 = +[ISNetworkObserver sharedInstance];
-  v4 = [v3 networkType];
+  networkType = [v3 networkType];
 
-  if (v4 == 1000)
+  if (networkType == 1000)
   {
     bagKey = self->_bagKey;
-    v6 = [(URLBagTimer *)self _userDefaultsKeyWiFiOverride];
+    _userDefaultsKeyWiFiOverride = [(URLBagTimer *)self _userDefaultsKeyWiFiOverride];
   }
 
   else
@@ -564,11 +564,11 @@ LABEL_8:
       bagKey = self->_bagKey;
     }
 
-    v6 = [(URLBagTimer *)self _userDefaultsKeyCellularOverride];
+    _userDefaultsKeyWiFiOverride = [(URLBagTimer *)self _userDefaultsKeyCellularOverride];
   }
 
-  v7 = v6;
-  [(URLBagTimer *)self _timerIntervalWithBagKey:bagKey userDefaultsKey:v6];
+  v7 = _userDefaultsKeyWiFiOverride;
+  [(URLBagTimer *)self _timerIntervalWithBagKey:bagKey userDefaultsKey:_userDefaultsKeyWiFiOverride];
   v9 = v8;
 
   if (v9 < 2.22044605e-16)
@@ -579,15 +579,15 @@ LABEL_8:
   return v9;
 }
 
-- (double)_timerIntervalWithBagKey:(id)a3 userDefaultsKey:(id)a4
+- (double)_timerIntervalWithBagKey:(id)key userDefaultsKey:(id)defaultsKey
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  keyCopy = key;
+  defaultsKeyCopy = defaultsKey;
+  if (defaultsKeyCopy)
   {
-    [(URLBagTimer *)self _readTimeIntervalFromUserDefaultsKey:v7];
+    [(URLBagTimer *)self _readTimeIntervalFromUserDefaultsKey:defaultsKeyCopy];
     v9 = v8;
-    if (!v6)
+    if (!keyCopy)
     {
       goto LABEL_7;
     }
@@ -596,7 +596,7 @@ LABEL_8:
   else
   {
     v9 = 0.0;
-    if (!v6)
+    if (!keyCopy)
     {
       goto LABEL_7;
     }
@@ -608,7 +608,7 @@ LABEL_8:
     v11 = [SSURLBagContext contextWithBagType:0];
     v12 = [v10 URLBagForContext:v11];
 
-    v13 = [v12 valueForKey:v6];
+    v13 = [v12 valueForKey:keyCopy];
     [v13 doubleValue];
     v9 = v14;
   }
@@ -618,10 +618,10 @@ LABEL_7:
   return v9;
 }
 
-- (double)_windowWithUserDefaultsKey:(id)a3
+- (double)_windowWithUserDefaultsKey:(id)key
 {
-  v4 = a3;
-  if (!v4 || ([(URLBagTimer *)self _readTimeIntervalFromUserDefaultsKey:v4], defaultWindow < 2.22044605e-16))
+  keyCopy = key;
+  if (!keyCopy || ([(URLBagTimer *)self _readTimeIntervalFromUserDefaultsKey:keyCopy], defaultWindow < 2.22044605e-16))
   {
     defaultWindow = self->_defaultWindow;
   }

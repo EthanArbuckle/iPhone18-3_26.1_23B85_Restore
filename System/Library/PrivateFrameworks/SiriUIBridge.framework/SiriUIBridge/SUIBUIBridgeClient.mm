@@ -1,72 +1,72 @@
 @interface SUIBUIBridgeClient
-- (SUIBUIBridgeClient)initWithDelegate:(id)a3 delegateQueue:(id)a4;
-- (void)notifyTypingStartedWith:(id)a3;
+- (SUIBUIBridgeClient)initWithDelegate:(id)delegate delegateQueue:(id)queue;
+- (void)notifyTypingStartedWith:(id)with;
 - (void)preheat;
 - (void)siriDismissed;
 - (void)siriPrompted;
 - (void)siriWillPrompt;
 - (void)startAttending;
-- (void)startAttendingWithReason:(unint64_t)a3 deviceId:(id)a4;
-- (void)stopAttendingForReason:(unint64_t)a3;
+- (void)startAttendingWithReason:(unint64_t)reason deviceId:(id)id;
+- (void)stopAttendingForReason:(unint64_t)reason;
 @end
 
 @implementation SUIBUIBridgeClient
 
-- (SUIBUIBridgeClient)initWithDelegate:(id)a3 delegateQueue:(id)a4
+- (SUIBUIBridgeClient)initWithDelegate:(id)delegate delegateQueue:(id)queue
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  return SUIBUIBridgeClient.init(delegate:delegateQueue:)(a3, a4);
+  queueCopy = queue;
+  return SUIBUIBridgeClient.init(delegate:delegateQueue:)(delegate, queue);
 }
 
 - (void)preheat
 {
-  v2 = self;
+  selfCopy = self;
   SUIBUIBridgeClient.preheat()();
 }
 
 - (void)siriDismissed
 {
-  v2 = self;
+  selfCopy = self;
   SUIBUIBridgeClient.siriDismissed()();
 }
 
 - (void)siriPrompted
 {
-  v2 = self;
+  selfCopy = self;
   SUIBUIBridgeClient.siriPrompted()();
 }
 
-- (void)stopAttendingForReason:(unint64_t)a3
+- (void)stopAttendingForReason:(unint64_t)reason
 {
-  v4 = self;
-  SUIBUIBridgeClient.stopAttending(for:)(a3);
+  selfCopy = self;
+  SUIBUIBridgeClient.stopAttending(for:)(reason);
 }
 
-- (void)notifyTypingStartedWith:(id)a3
+- (void)notifyTypingStartedWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v5._typingSessionId = self;
   typingSessionId = v5._typingSessionId;
-  v5.super.isa = v4;
+  v5.super.isa = withCopy;
   SUIBUIBridgeClient.notifyTypingStarted(with:)(v5);
 }
 
 - (void)siriWillPrompt
 {
-  v2 = self;
+  selfCopy = self;
   SUIBUIBridgeClient.siriWillPrompt()();
 }
 
 - (void)startAttending
 {
-  v2 = self;
+  selfCopy = self;
   SUIBUIBridgeClient.startAttending()();
 }
 
-- (void)startAttendingWithReason:(unint64_t)a3 deviceId:(id)a4
+- (void)startAttendingWithReason:(unint64_t)reason deviceId:(id)id
 {
-  if (a4)
+  if (id)
   {
     v6 = sub_222E098C0();
     v8 = v7;
@@ -78,8 +78,8 @@
     v8 = 0;
   }
 
-  v9 = self;
-  SUIBUIBridgeClient.startAttending(with:deviceId:)(a3, v6, v8);
+  selfCopy = self;
+  SUIBUIBridgeClient.startAttending(with:deviceId:)(reason, v6, v8);
 }
 
 @end

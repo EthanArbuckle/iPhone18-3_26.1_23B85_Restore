@@ -1,5 +1,5 @@
 @interface PKPrintdRPC_BrowseClient
-- (PKPrintdRPC_BrowseClient)initWithInfo:(id)a3 provenance:(unint64_t)a4 delegate:(id)a5;
+- (PKPrintdRPC_BrowseClient)initWithInfo:(id)info provenance:(unint64_t)provenance delegate:(id)delegate;
 - (id)ptConn_locked;
 - (void)invalidate;
 - (void)ptConn_locked;
@@ -8,21 +8,21 @@
 
 @implementation PKPrintdRPC_BrowseClient
 
-- (PKPrintdRPC_BrowseClient)initWithInfo:(id)a3 provenance:(unint64_t)a4 delegate:(id)a5
+- (PKPrintdRPC_BrowseClient)initWithInfo:(id)info provenance:(unint64_t)provenance delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
+  infoCopy = info;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = PKPrintdRPC_BrowseClient;
   v10 = [(PKPrinterTool_Client *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [infoCopy copy];
     infoDictionary = v10->_infoDictionary;
     v10->_infoDictionary = v11;
 
-    v10->_provenance = a4;
-    objc_storeStrong(&v10->_delegate, a5);
+    v10->_provenance = provenance;
+    objc_storeStrong(&v10->_delegate, delegate);
   }
 
   return v10;
@@ -32,8 +32,8 @@
 {
   v11.receiver = self;
   v11.super_class = PKPrintdRPC_BrowseClient;
-  v3 = [(PKPrinterTool_Client *)&v11 ptConn_locked];
-  if (v3)
+  ptConn_locked = [(PKPrinterTool_Client *)&v11 ptConn_locked];
+  if (ptConn_locked)
   {
     v4 = getPrintdRPCBrowseProtocolInterface();
     [(NSXPCConnection *)self->super._conn_needsLock setExportedInterface:v4];
@@ -65,17 +65,17 @@
     }
   }
 
-  return v3;
+  return ptConn_locked;
 }
 
 - (void)startBrowsing
 {
-  v3 = [(PKPrinterTool_Client *)self ptConn];
-  v4 = [v3 remoteObjectProxy];
+  ptConn = [(PKPrinterTool_Client *)self ptConn];
+  remoteObjectProxy = [ptConn remoteObjectProxy];
 
-  if (v4)
+  if (remoteObjectProxy)
   {
-    [v4 startBrowsing:self->_infoDictionary provenance:self->_provenance];
+    [remoteObjectProxy startBrowsing:self->_infoDictionary provenance:self->_provenance];
   }
 }
 
@@ -88,10 +88,10 @@
 
 - (void)ptConn_locked
 {
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_ERROR))
   {
     *v2 = 0;
-    _os_log_impl(&dword_25F5FC000, a1, OS_LOG_TYPE_ERROR, "XPC Service not found, check for valid installation or use GRAPPLER_IS_PRINTERTOOL", v2, 2u);
+    _os_log_impl(&dword_25F5FC000, self, OS_LOG_TYPE_ERROR, "XPC Service not found, check for valid installation or use GRAPPLER_IS_PRINTERTOOL", v2, 2u);
   }
 
   abort();

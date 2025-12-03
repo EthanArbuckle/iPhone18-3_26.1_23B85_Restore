@@ -1,14 +1,14 @@
 @interface ISPersona
-- (ISPersona)initWithRecord:(id)a3;
+- (ISPersona)initWithRecord:(id)record;
 - (id)resourceBadge;
 @end
 
 @implementation ISPersona
 
-- (ISPersona)initWithRecord:(id)a3
+- (ISPersona)initWithRecord:(id)record
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  recordCopy = record;
   v22.receiver = self;
   v22.super_class = ISPersona;
   v6 = [(ISPersona *)&v22 init];
@@ -18,10 +18,10 @@
     goto LABEL_16;
   }
 
-  objc_storeStrong(&v6->_record, a3);
+  objc_storeStrong(&v6->_record, record);
   v7->_personaType = 0;
-  v8 = +[ISDefaults sharedInstance];
-  if ([v8 enableInstanceIDBasedTwoAppModel])
+  identities = +[ISDefaults sharedInstance];
+  if ([identities enableInstanceIDBasedTwoAppModel])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -35,8 +35,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [v5 identities];
-    v10 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    identities = [recordCopy identities];
+    v10 = [identities countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -48,7 +48,7 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(identities);
           }
 
           if ([*(*(&v18 + 1) + 8 * v13) personaType] == 2)
@@ -60,7 +60,7 @@
         }
 
         while (v11 != v13);
-        v11 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v11 = [identities countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v11);
@@ -69,9 +69,9 @@
 
 LABEL_14:
   v14 = +[ISDefaults sharedInstance];
-  v15 = [v14 enableBadgeOverhang];
+  enableBadgeOverhang = [v14 enableBadgeOverhang];
 
-  if (v15)
+  if (enableBadgeOverhang)
   {
     v7->_personaType = 1;
   }

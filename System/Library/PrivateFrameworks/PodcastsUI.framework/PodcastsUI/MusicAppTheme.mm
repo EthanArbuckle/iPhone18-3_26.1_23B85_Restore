@@ -1,15 +1,15 @@
 @interface MusicAppTheme
-+ (CGSize)cloudDownloadImageSizeForTraitCollection:(id)a3;
-+ (id)cloudDownloadImageForTintColor:(id)a3 outlineColor:(id)a4 traitCollection:(id)a5;
++ (CGSize)cloudDownloadImageSizeForTraitCollection:(id)collection;
++ (id)cloudDownloadImageForTintColor:(id)color outlineColor:(id)outlineColor traitCollection:(id)collection;
 - (MusicAppTheme)init;
 @end
 
 @implementation MusicAppTheme
 
-+ (CGSize)cloudDownloadImageSizeForTraitCollection:(id)a3
++ (CGSize)cloudDownloadImageSizeForTraitCollection:(id)collection
 {
-  v3 = a3;
-  _s10PodcastsUI5ThemeC22cloudDownloadImageSize3forSo6CGSizeVSo17UITraitCollectionC_tFZ_0(v3);
+  collectionCopy = collection;
+  _s10PodcastsUI5ThemeC22cloudDownloadImageSize3forSo6CGSizeVSo17UITraitCollectionC_tFZ_0(collectionCopy);
   v5 = v4;
   v7 = v6;
 
@@ -20,13 +20,13 @@
   return result;
 }
 
-+ (id)cloudDownloadImageForTintColor:(id)a3 outlineColor:(id)a4 traitCollection:(id)a5
++ (id)cloudDownloadImageForTintColor:(id)color outlineColor:(id)outlineColor traitCollection:(id)collection
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = static Theme.cloudDownloadImage(forTintColor:outlineColor:traitCollection:)(v8, v9, v10);
+  colorCopy = color;
+  outlineColorCopy = outlineColor;
+  collectionCopy = collection;
+  v11 = static Theme.cloudDownloadImage(forTintColor:outlineColor:traitCollection:)(colorCopy, outlineColorCopy, collectionCopy);
 
   return v11;
 }

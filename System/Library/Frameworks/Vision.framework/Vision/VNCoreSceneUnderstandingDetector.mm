@@ -1,52 +1,52 @@
 @interface VNCoreSceneUnderstandingDetector
-+ (BOOL)_getEntityNetTaxonomy:(void *)a3 forCSUSceneNetV5Configuration:(void *)a4 session:(uint64_t)a5 error:;
-+ (BOOL)_getSceneNetV5ConfigurationRevision:(void *)a3 forConfigurationOptions:(void *)a4 error:;
-+ (id)_detectedObjectTaxonomyForCSUSceneNetV5Configuration:(void *)a3 session:(uint64_t)a4 error:;
-+ (id)_globalOrProvidedSessionInOptions:(uint64_t)a3 error:;
-+ (id)_identifiersSupportedByCustomClassifierConfiguration:(uint64_t)a3 error:;
-+ (id)_newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:(id)a3;
-+ (id)_sceneNetTaxonomyForCSUSceneNetV5Configuration:(void *)a3 session:(uint64_t)a4 error:;
-+ (id)_specialCaseRecognizedObjectsDuplicationsForOriginatingRequestSpecifier:(id)a3;
-+ (id)allCityNatureIdentifiersWithConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)allClassificationIdentifiersWithConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)allRecognizedObjectIdentifiersWithConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)allSignificantEventIdentifiersWithConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)allVN5kJNH3eYuyaLxNpZr5Z7ziIdentifiersWithConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
++ (BOOL)_getEntityNetTaxonomy:(void *)taxonomy forCSUSceneNetV5Configuration:(void *)configuration session:(uint64_t)session error:;
++ (BOOL)_getSceneNetV5ConfigurationRevision:(void *)revision forConfigurationOptions:(void *)options error:;
++ (id)_detectedObjectTaxonomyForCSUSceneNetV5Configuration:(void *)configuration session:(uint64_t)session error:;
++ (id)_globalOrProvidedSessionInOptions:(uint64_t)options error:;
++ (id)_identifiersSupportedByCustomClassifierConfiguration:(uint64_t)configuration error:;
++ (id)_newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:(id)options;
++ (id)_sceneNetTaxonomyForCSUSceneNetV5Configuration:(void *)configuration session:(uint64_t)session error:;
++ (id)_specialCaseRecognizedObjectsDuplicationsForOriginatingRequestSpecifier:(id)specifier;
++ (id)allCityNatureIdentifiersWithConfigurationOptions:(id)options error:(id *)error;
++ (id)allClassificationIdentifiersWithConfigurationOptions:(id)options error:(id *)error;
++ (id)allRecognizedObjectIdentifiersWithConfigurationOptions:(id)options error:(id *)error;
++ (id)allSignificantEventIdentifiersWithConfigurationOptions:(id)options error:(id *)error;
++ (id)allVN5kJNH3eYuyaLxNpZr5Z7ziIdentifiersWithConfigurationOptions:(id)options error:(id *)error;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)keyForDetectorWithConfigurationOptions:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
-+ (uint64_t)_getCSUSceneNetV5Configuration:(void *)a3 junkLeafConfiguration:(void *)a4 junkHierarchicalConfiguration:(void *)a5 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:(void *)a6 significantEventConfiguration:(void *)a7 cityNatureConfiguration:(void *)a8 forConfigurationOptions:(void *)a9 error:;
-+ (uint64_t)_sceneNetV5ConfigurationRevisionForRequestClass:(unint64_t)a3 revision:;
-+ (uint64_t)_sceneNetV5ConfigurationRevisionForRequestSpecifier:(uint64_t)a1;
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3;
-- (BOOL)_processJunkConfigurations:(void *)a3 VN5kJNH3eYuyaLxNpZr5Z7ziConfigurations:(void *)a4 significantEventConfigurations:(void *)a5 cityNatureConfigurations:(void *)a6 forSceneNetOutput:(void *)a7 collectedObservations:(void *)a8 error:;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (BOOL)warmUpSession:(id)a3 withOptions:(id)a4 error:(id *)a5;
-- (id)_CSUSceneNetV5NetworkLabelLikelihoodEnumerationBlockForCollectingTopN:(uint64_t)a1 observations:(void *)a2 minimumConfidence:(void *)a3 disallowedList:(void *)a4 taxonomy:(void *)a5 originatingRequestSpecifier:(float)a6;
-- (id)_entityNetTaxonomyForSession:(uint64_t)a3 error:;
-- (id)_processSaliencyConfiguration:(uint64_t)a3 fromSaliencyMapProvidedBySelector:(void *)a4 ofSceneNetOutput:(void *)a5 regionOfInterest:(uint64_t)a6 options:(void *)a7 qosClass:(uint64_t)a8 saliencyGeneratorType:(double)a9 error:(double)a10;
-- (id)_processSceneNetOutput:(void *)a3 regionOfInterest:(unsigned int)a4 options:(void *)a5 qosClass:(double)a6 error:(double)a7;
-- (id)_sceneNetTaxonomyForSession:(uint64_t)a3 error:;
++ (id)keyForDetectorWithConfigurationOptions:(id)options;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
++ (uint64_t)_getCSUSceneNetV5Configuration:(void *)configuration junkLeafConfiguration:(void *)leafConfiguration junkHierarchicalConfiguration:(void *)hierarchicalConfiguration VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:(void *)z7ziConfiguration significantEventConfiguration:(void *)eventConfiguration cityNatureConfiguration:(void *)natureConfiguration forConfigurationOptions:(void *)options error:;
++ (uint64_t)_sceneNetV5ConfigurationRevisionForRequestClass:(unint64_t)class revision:;
++ (uint64_t)_sceneNetV5ConfigurationRevisionForRequestSpecifier:(uint64_t)specifier;
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary;
+- (BOOL)_processJunkConfigurations:(void *)configurations VN5kJNH3eYuyaLxNpZr5Z7ziConfigurations:(void *)z7ziConfigurations significantEventConfigurations:(void *)eventConfigurations cityNatureConfigurations:(void *)natureConfigurations forSceneNetOutput:(void *)output collectedObservations:(void *)observations error:;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (BOOL)warmUpSession:(id)session withOptions:(id)options error:(id *)error;
+- (id)_CSUSceneNetV5NetworkLabelLikelihoodEnumerationBlockForCollectingTopN:(uint64_t)n observations:(void *)observations minimumConfidence:(void *)confidence disallowedList:(void *)list taxonomy:(void *)taxonomy originatingRequestSpecifier:(float)specifier;
+- (id)_entityNetTaxonomyForSession:(uint64_t)session error:;
+- (id)_processSaliencyConfiguration:(uint64_t)configuration fromSaliencyMapProvidedBySelector:(void *)selector ofSceneNetOutput:(void *)output regionOfInterest:(uint64_t)interest options:(void *)options qosClass:(uint64_t)class saliencyGeneratorType:(double)type error:(double)self0;
+- (id)_processSceneNetOutput:(void *)output regionOfInterest:(unsigned int)interest options:(void *)options qosClass:(double)class error:(double)error;
+- (id)_sceneNetTaxonomyForSession:(uint64_t)session error:;
 - (id)description;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 - (int64_t)sceneNetConfigurationRevision;
-- (uint64_t)_runSceneNetCustomClassifiers:(void *)a1 onSceneprintBuffer:(void *)a2 forConfigurations:(void *)a3 collectedObservations:(void *)a4 error:(void *)a5;
-- (uint64_t)_warmUpTaxonomiesForOptions:(void *)a3 inSession:(uint64_t)a4 error:;
+- (uint64_t)_runSceneNetCustomClassifiers:(void *)classifiers onSceneprintBuffer:(void *)buffer forConfigurations:(void *)configurations collectedObservations:(void *)observations error:(void *)error;
+- (uint64_t)_warmUpTaxonomiesForOptions:(void *)options inSession:(uint64_t)session error:;
 @end
 
 @implementation VNCoreSceneUnderstandingDetector
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a5;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  optionsCopy = options;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -70,12 +70,12 @@
   v29 = y;
   v30 = width;
   v31 = height;
-  v18 = v17;
+  v18 = optionsCopy;
   v25 = v18;
-  v32 = a6;
+  classCopy = class;
   v19 = _Block_copy(aBlock);
   v20 = objc_autoreleasePoolPush();
-  [(CSUSceneNetV5 *)self->_sceneNet runOnInputImage:a4 completion:v19];
+  [(CSUSceneNetV5 *)self->_sceneNet runOnInputImage:buffer completion:v19];
   objc_autoreleasePoolPop(v20);
   v21 = v40[5];
   if (v21)
@@ -83,9 +83,9 @@
     v22 = v21;
   }
 
-  else if (a8)
+  else if (error)
   {
-    *a8 = v34[5];
+    *error = v34[5];
   }
 
   _Block_object_dispose(&v33, 8);
@@ -122,21 +122,21 @@ void __134__VNCoreSceneUnderstandingDetector_processRegionOfInterest_croppedPixe
   }
 }
 
-- (id)_processSceneNetOutput:(void *)a3 regionOfInterest:(unsigned int)a4 options:(void *)a5 qosClass:(double)a6 error:(double)a7
+- (id)_processSceneNetOutput:(void *)output regionOfInterest:(unsigned int)interest options:(void *)options qosClass:(double)class error:(double)error
 {
   v331 = *MEMORY[0x1E69E9840];
   v278 = a2;
-  v12 = a3;
-  v276 = a1;
-  v257 = v12;
-  if (!a1)
+  outputCopy = output;
+  selfCopy = self;
+  v257 = outputCopy;
+  if (!self)
   {
     v157 = 0;
     goto LABEL_154;
   }
 
-  v279 = a5;
-  v264 = [VNValidationUtilities requiredSessionInOptions:v12 error:a5];
+  optionsCopy = options;
+  v264 = [VNValidationUtilities requiredSessionInOptions:outputCopy error:options];
   if (!v264)
   {
     v157 = 0;
@@ -176,32 +176,32 @@ void __134__VNCoreSceneUnderstandingDetector_processRegionOfInterest_croppedPixe
         v161 = *(*(&v308 + 1) + 8 * v160);
         v162 = v278;
         v163 = v264;
-        v164 = [v162 VNRequiredBufferFromSelector:v268 error:v279];
+        v164 = [v162 VNRequiredBufferFromSelector:v268 error:optionsCopy];
         if (v164)
         {
-          v165 = [(VNCoreSceneUnderstandingDetector *)v276 _sceneNetTaxonomyForSession:v163 error:v279];
+          v165 = [(VNCoreSceneUnderstandingDetector *)selfCopy _sceneNetTaxonomyForSession:v163 error:optionsCopy];
           if (v165)
           {
-            v245 = [v161 observationsRecipient];
-            v250 = [v245 originatingRequestSpecifier];
+            observationsRecipient = [v161 observationsRecipient];
+            originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
             [v161 minimumConfidence];
             v167 = v166;
-            v168 = [v161 disallowedList];
-            v241 = v168;
+            disallowedList = [v161 disallowedList];
+            v241 = disallowedList;
             v274 = objc_alloc_init(MEMORY[0x1E695DF70]);
-            v169 = -[VNCoreSceneUnderstandingDetector _CSUSceneNetV5NetworkLabelLikelihoodEnumerationBlockForCollectingTopN:observations:minimumConfidence:disallowedList:taxonomy:originatingRequestSpecifier:]([v161 maximumHierarchicalClassifications], v274, v168, v165, v250, v167);
-            if ([v276[7] enumerateHierarchicalSceneClassificationLikelihoods:v164 usingBlock:v169 error:v279])
+            v169 = -[VNCoreSceneUnderstandingDetector _CSUSceneNetV5NetworkLabelLikelihoodEnumerationBlockForCollectingTopN:observations:minimumConfidence:disallowedList:taxonomy:originatingRequestSpecifier:]([v161 maximumHierarchicalClassifications], v274, disallowedList, v165, originatingRequestSpecifier, v167);
+            if ([selfCopy[7] enumerateHierarchicalSceneClassificationLikelihoods:v164 usingBlock:v169 error:optionsCopy])
             {
               v170 = objc_alloc_init(MEMORY[0x1E695DF70]);
-              v171 = -[VNCoreSceneUnderstandingDetector _CSUSceneNetV5NetworkLabelLikelihoodEnumerationBlockForCollectingTopN:observations:minimumConfidence:disallowedList:taxonomy:originatingRequestSpecifier:]([v161 maximumLeafClassifications], v170, v168, v165, v250, v167);
+              v171 = -[VNCoreSceneUnderstandingDetector _CSUSceneNetV5NetworkLabelLikelihoodEnumerationBlockForCollectingTopN:observations:minimumConfidence:disallowedList:taxonomy:originatingRequestSpecifier:]([v161 maximumLeafClassifications], v170, disallowedList, v165, originatingRequestSpecifier, v167);
 
-              if ([v276[7] enumerateLeafSceneClassificationLikelihoods:v164 usingBlock:v171 error:v279])
+              if ([selfCopy[7] enumerateLeafSceneClassificationLikelihoods:v164 usingBlock:v171 error:optionsCopy])
               {
                 [v170 addObjectsFromArray:v274];
                 v172 = &__block_literal_global_128;
                 [v170 sortWithOptions:16 usingComparator:&__block_literal_global_128];
 
-                [v245 receiveObservations:v170];
+                [observationsRecipient receiveObservations:v170];
                 v173 = v170;
               }
 
@@ -275,32 +275,32 @@ void __134__VNCoreSceneUnderstandingDetector_processRegionOfInterest_croppedPixe
       v177 = *(*(&v304 + 1) + 8 * i);
       v275 = v278;
       v269 = v264;
-      v178 = [v177 observationsRecipient];
+      observationsRecipient2 = [v177 observationsRecipient];
       v179 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v180 = [v275 entityNetClassificationLikelihoods];
-      if (!v180)
+      entityNetClassificationLikelihoods = [v275 entityNetClassificationLikelihoods];
+      if (!entityNetClassificationLikelihoods)
       {
         goto LABEL_137;
       }
 
-      v181 = [(VNCoreSceneUnderstandingDetector *)v276 _entityNetTaxonomyForSession:v269 error:v279];
+      v181 = [(VNCoreSceneUnderstandingDetector *)selfCopy _entityNetTaxonomyForSession:v269 error:optionsCopy];
       if (v181)
       {
-        v251 = [v178 originatingRequestSpecifier];
-        v182 = [v177 maximumClassifications];
+        originatingRequestSpecifier2 = [observationsRecipient2 originatingRequestSpecifier];
+        maximumClassifications = [v177 maximumClassifications];
         [v177 minimumConfidence];
         v184 = v183;
-        v185 = [v177 disallowedList];
-        v186 = [VNCoreSceneUnderstandingDetector _CSUSceneNetV5NetworkLabelLikelihoodEnumerationBlockForCollectingTopN:v182 observations:v179 minimumConfidence:v185 disallowedList:v181 taxonomy:v251 originatingRequestSpecifier:v184];
+        disallowedList2 = [v177 disallowedList];
+        v186 = [VNCoreSceneUnderstandingDetector _CSUSceneNetV5NetworkLabelLikelihoodEnumerationBlockForCollectingTopN:maximumClassifications observations:v179 minimumConfidence:disallowedList2 disallowedList:v181 taxonomy:originatingRequestSpecifier2 originatingRequestSpecifier:v184];
 
         v174 = v246;
-        if ([v276[7] enumerateEntityNetClassificationLikelihoods:v180 usingBlock:v186 error:v279])
+        if ([selfCopy[7] enumerateEntityNetClassificationLikelihoods:entityNetClassificationLikelihoods usingBlock:v186 error:optionsCopy])
         {
           v187 = &__block_literal_global_128;
           [v179 sortWithOptions:16 usingComparator:&__block_literal_global_128];
 
 LABEL_137:
-          [v178 receiveObservations:v179];
+          [observationsRecipient2 receiveObservations:v179];
           v188 = v179;
           goto LABEL_140;
         }
@@ -353,22 +353,22 @@ LABEL_4:
 
         v17 = *(*(&v300 + 1) + 8 * v16);
         v18 = v278;
-        v19 = [v18 VNRequiredBufferFromSelector:v270 error:v279];
+        v19 = [v18 VNRequiredBufferFromSelector:v270 error:optionsCopy];
         if (v19)
         {
-          v20 = [v17 observationsRecipient];
-          v21 = [v20 originatingRequestSpecifier];
-          v22 = [(VNEspressoModelImageprint *)VNSceneprint printFromCSUBuffer:v19 originatingRequestSpecifier:v21 error:v279];
+          observationsRecipient3 = [v17 observationsRecipient];
+          originatingRequestSpecifier3 = [observationsRecipient3 originatingRequestSpecifier];
+          v22 = [(VNEspressoModelImageprint *)VNSceneprint printFromCSUBuffer:v19 originatingRequestSpecifier:originatingRequestSpecifier3 error:optionsCopy];
           if (v22)
           {
             v23 = [VNSceneObservation alloc];
             v326[0] = v22;
             v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v326 count:1];
-            v25 = [(VNSceneObservation *)v23 initWithOriginatingRequestSpecifier:v21 sceneprints:v24];
+            v25 = [(VNSceneObservation *)v23 initWithOriginatingRequestSpecifier:originatingRequestSpecifier3 sceneprints:v24];
 
             *&v327 = v25;
             v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v327 count:1];
-            [v20 receiveObservations:v26];
+            [observationsRecipient3 receiveObservations:v26];
           }
 
           else
@@ -431,18 +431,18 @@ LABEL_4:
 
         v266 = *(*(&v296 + 1) + 8 * v30);
         v271 = v278;
-        v31 = [v271 VNRequiredBufferFromSelector:v238 error:v279];
+        v31 = [v271 VNRequiredBufferFromSelector:v238 error:optionsCopy];
         obja = v31;
         if (v31)
         {
-          v32 = [v276[7] allAestheticsAttributeScores:v31];
-          v33 = [v271 VNRequiredBufferFromSelector:v192 error:v279];
+          v32 = [selfCopy[7] allAestheticsAttributeScores:v31];
+          v33 = [v271 VNRequiredBufferFromSelector:v192 error:optionsCopy];
           v252 = v33;
           if (v33)
           {
-            v247 = [v276[7] allAestheticsGlobalScores:v33];
-            v231 = [v266 observationsRecipient];
-            v242 = [v231 originatingRequestSpecifier];
+            v247 = [selfCopy[7] allAestheticsGlobalScores:v33];
+            observationsRecipient4 = [v266 observationsRecipient];
+            originatingRequestSpecifier4 = [observationsRecipient4 originatingRequestSpecifier];
             v211 = [v247 objectForKeyedSubscript:@"aesthetic_score"];
             [v211 floatValue];
             v220 = v34;
@@ -517,13 +517,13 @@ LABEL_4:
             LODWORD(v77) = v215;
             LODWORD(v76) = v216;
             LODWORD(v78) = v214;
-            v79 = [VNImageAestheticsObservation observationForOriginatingRequestSpecifier:v242 overallAestheticScore:v279 wellFramedSubjectScore:v72 wellChosenBackgroundScore:v73 tastefullyBlurredScore:v74 sharplyFocusedSubjectScore:v75 wellTimedShotScore:v76 pleasantLightingScore:v77 pleasantReflectionsScore:v78 harmoniousColorScore:v71 livelyColorScore:__PAIR64__(v210 pleasantSymmetryScore:v212) pleasantPatternScore:__PAIR64__(v204 immersivenessScore:v207) pleasantPerspectiveScore:__PAIR64__(v48 pleasantPostProcessingScore:v202) noiseScore:__PAIR64__(v53 failureScore:v50) pleasantCompositionScore:__PAIR64__(v59 interestingSubjectScore:v56) intrusiveObjectPresenceScore:__PAIR64__(v65 pleasantCameraTiltScore:v62) lowKeyLightingScore:v190 error:?];
+            v79 = [VNImageAestheticsObservation observationForOriginatingRequestSpecifier:originatingRequestSpecifier4 overallAestheticScore:optionsCopy wellFramedSubjectScore:v72 wellChosenBackgroundScore:v73 tastefullyBlurredScore:v74 sharplyFocusedSubjectScore:v75 wellTimedShotScore:v76 pleasantLightingScore:v77 pleasantReflectionsScore:v78 harmoniousColorScore:v71 livelyColorScore:__PAIR64__(v210 pleasantSymmetryScore:v212) pleasantPatternScore:__PAIR64__(v204 immersivenessScore:v207) pleasantPerspectiveScore:__PAIR64__(v48 pleasantPostProcessingScore:v202) noiseScore:__PAIR64__(v53 failureScore:v50) pleasantCompositionScore:__PAIR64__(v59 interestingSubjectScore:v56) intrusiveObjectPresenceScore:__PAIR64__(v65 pleasantCameraTiltScore:v62) lowKeyLightingScore:v190 error:?];
 
             if (v79)
             {
               v326[0] = v79;
               v80 = [MEMORY[0x1E695DEC8] arrayWithObjects:v326 count:1];
-              [v231 receiveObservations:v80];
+              [observationsRecipient4 receiveObservations:v80];
             }
 
             else
@@ -591,7 +591,7 @@ LABEL_4:
         v87 = *(*(&v292 + 1) + 8 * v85);
         v88 = v278;
         v89 = v257;
-        v90 = [(VNCoreSceneUnderstandingDetector *)v276 _processSaliencyConfiguration:v87 fromSaliencyMapProvidedBySelector:v86 ofSceneNetOutput:v88 regionOfInterest:v89 options:a4 qosClass:@"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType" saliencyGeneratorType:v279 error:a6, a7, a8, a9];
+        v90 = [(VNCoreSceneUnderstandingDetector *)selfCopy _processSaliencyConfiguration:v87 fromSaliencyMapProvidedBySelector:v86 ofSceneNetOutput:v88 regionOfInterest:v89 options:interest qosClass:@"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType" saliencyGeneratorType:optionsCopy error:class, error, a8, a9];
 
         if (!v90)
         {
@@ -640,7 +640,7 @@ LABEL_4:
         v97 = *(*(&v288 + 1) + 8 * v95);
         v98 = v278;
         v99 = v257;
-        v100 = [(VNCoreSceneUnderstandingDetector *)v276 _processSaliencyConfiguration:v97 fromSaliencyMapProvidedBySelector:v96 ofSceneNetOutput:v98 regionOfInterest:v99 options:a4 qosClass:@"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType" saliencyGeneratorType:v279 error:a6, a7, a8, a9];
+        v100 = [(VNCoreSceneUnderstandingDetector *)selfCopy _processSaliencyConfiguration:v97 fromSaliencyMapProvidedBySelector:v96 ofSceneNetOutput:v98 regionOfInterest:v99 options:interest qosClass:@"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType" saliencyGeneratorType:optionsCopy error:class, error, a8, a9];
 
         if (!v100)
         {
@@ -691,10 +691,10 @@ LABEL_4:
         v103 = *(*(&v284 + 1) + 8 * v272);
         v104 = v278;
         v253 = v104;
-        objb = [v104 VNRequiredBufferFromSelector:v239 error:v279];
+        objb = [v104 VNRequiredBufferFromSelector:v239 error:optionsCopy];
         if (objb)
         {
-          v105 = [v104 VNRequiredBufferFromSelector:v224 error:v279];
+          v105 = [v104 VNRequiredBufferFromSelector:v224 error:optionsCopy];
           if (v105)
           {
             v243 = v105;
@@ -703,26 +703,26 @@ LABEL_4:
             [v248 setDetectionForegroundThreshold:?];
             [v103 nonMaximumSuppressionThreshold];
             [v248 setNmsThresholdDetection:?];
-            v106 = [v103 targetedIdentifiers];
-            [v248 setRelevantClassNames:v106];
+            targetedIdentifiers = [v103 targetedIdentifiers];
+            [v248 setRelevantClassNames:targetedIdentifiers];
 
-            v107 = [v276[7] detectionResultFromScoreHeatMap:objb coordinateOffsetMap:v243 options:v248 error:v279];
+            v107 = [selfCopy[7] detectionResultFromScoreHeatMap:objb coordinateOffsetMap:v243 options:v248 error:optionsCopy];
             if (v107)
             {
               v232 = v107;
-              v226 = [v103 observationsRecipient];
-              v108 = [v226 originatingRequestSpecifier];
+              observationsRecipient5 = [v103 observationsRecipient];
+              originatingRequestSpecifier5 = [observationsRecipient5 originatingRequestSpecifier];
               v109 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v107, "count")}];
               aBlock = MEMORY[0x1E69E9820];
               v321 = 3221225472;
               v322 = __96__VNCoreSceneUnderstandingDetector__processRecognizedObjectsConfiguration_sceneNetOutput_error___block_invoke;
               v323 = &unk_1E77B4F08;
-              v230 = v108;
+              v230 = originatingRequestSpecifier5;
               v324 = v230;
               v228 = v109;
               v325 = v228;
               v110 = _Block_copy(&aBlock);
-              v111 = [v103 disallowedList];
+              disallowedList3 = [v103 disallowedList];
               [v103 minimumDetectionConfidence];
               v113 = v112;
               v114 = [objc_opt_class() _specialCaseRecognizedObjectsDuplicationsForOriginatingRequestSpecifier:v230];
@@ -749,8 +749,8 @@ LABEL_4:
                     v121 = v120;
                     if (v120 >= v113)
                     {
-                      v122 = [v119 label];
-                      if (([v111 containsIdentifier:v122] & 1) == 0)
+                      label = [v119 label];
+                      if (([disallowedList3 containsIdentifier:label] & 1) == 0)
                       {
                         [v119 box];
                         v333.origin.y = 1.0 - v123 - v333.size.height;
@@ -763,8 +763,8 @@ LABEL_4:
                         y = v334.origin.y;
                         width = v334.size.width;
                         height = v334.size.height;
-                        v110[2](v110, v122);
-                        v128 = [v114 objectForKeyedSubscript:v122];
+                        v110[2](v110, label);
+                        v128 = [v114 objectForKeyedSubscript:label];
                         if (v128)
                         {
                           (v110[2])(v110, v128, x, y, width, height, v121);
@@ -782,7 +782,7 @@ LABEL_4:
               v129 = &__block_literal_global_133;
               [v228 sortWithOptions:16 usingComparator:&__block_literal_global_133];
 
-              [v226 receiveObservations:v228];
+              [observationsRecipient5 receiveObservations:v228];
               v130 = v228;
 
               v107 = v232;
@@ -855,11 +855,11 @@ LABEL_4:
 
         v267 = *(*(&v280 + 1) + 8 * v273);
         objc = v278;
-        v134 = [objc VNRequiredBufferFromSelector:v249 error:v279];
+        v134 = [objc VNRequiredBufferFromSelector:v249 error:optionsCopy];
         if (v134)
         {
           v254 = v134;
-          v135 = [v276[7] hashesFromFingerprintEmbedding:v134];
+          v135 = [selfCopy[7] hashesFromFingerprintEmbedding:v134];
           v136 = objc_alloc_init(MEMORY[0x1E695DF70]);
           v329 = 0u;
           v330 = 0u;
@@ -881,12 +881,12 @@ LABEL_4:
 
                 v141 = *(*(&v327 + 1) + 8 * k);
                 v142 = v141;
-                v143 = [v141 bytes];
+                bytes = [v141 bytes];
                 v144 = [v141 length];
                 v321 = 0;
                 aBlock = 0;
                 v322 = 0;
-                std::vector<float>::__init_with_size[abi:ne200100]<float const*,float const*>(&aBlock, v143, v143 + (v144 & 0xFFFFFFFFFFFFFFFCLL), v144 >> 2);
+                std::vector<float>::__init_with_size[abi:ne200100]<float const*,float const*>(&aBlock, bytes, bytes + (v144 & 0xFFFFFFFFFFFFFFFCLL), v144 >> 2);
                 v145 = aBlock;
                 if (v321 != aBlock)
                 {
@@ -914,12 +914,12 @@ LABEL_4:
             while (v138);
           }
 
-          v147 = [v267 observationsRecipient];
-          v148 = [v147 originatingRequestSpecifier];
-          v149 = [[VNImageFingerprintsObservation alloc] initWithOriginatingRequestSpecifier:v148 fingerprintHashes:v136];
+          observationsRecipient6 = [v267 observationsRecipient];
+          originatingRequestSpecifier6 = [observationsRecipient6 originatingRequestSpecifier];
+          v149 = [[VNImageFingerprintsObservation alloc] initWithOriginatingRequestSpecifier:originatingRequestSpecifier6 fingerprintHashes:v136];
           aBlock = v149;
           v150 = [MEMORY[0x1E695DEC8] arrayWithObjects:&aBlock count:1];
-          [v147 receiveObservations:v150];
+          [observationsRecipient6 receiveObservations:v150];
 
           v134 = v254;
         }
@@ -957,7 +957,7 @@ LABEL_4:
   v153 = [v257 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_5kJNH3eYuyaLxNpZr5Z7ziConfigurations"];
   v154 = [v257 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_SignificantEventConfigurations"];
   v155 = [v257 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_CityNatureGatingConfigurations"];
-  v156 = [(VNCoreSceneUnderstandingDetector *)v276 _processJunkConfigurations:v152 VN5kJNH3eYuyaLxNpZr5Z7ziConfigurations:v153 significantEventConfigurations:v154 cityNatureConfigurations:v155 forSceneNetOutput:v278 collectedObservations:v277 error:v279];
+  v156 = [(VNCoreSceneUnderstandingDetector *)selfCopy _processJunkConfigurations:v152 VN5kJNH3eYuyaLxNpZr5Z7ziConfigurations:v153 significantEventConfigurations:v154 cityNatureConfigurations:v155 forSceneNetOutput:v278 collectedObservations:v277 error:optionsCopy];
 
   if (v156)
   {
@@ -975,24 +975,24 @@ LABEL_154:
   return v157;
 }
 
-- (BOOL)_processJunkConfigurations:(void *)a3 VN5kJNH3eYuyaLxNpZr5Z7ziConfigurations:(void *)a4 significantEventConfigurations:(void *)a5 cityNatureConfigurations:(void *)a6 forSceneNetOutput:(void *)a7 collectedObservations:(void *)a8 error:
+- (BOOL)_processJunkConfigurations:(void *)configurations VN5kJNH3eYuyaLxNpZr5Z7ziConfigurations:(void *)z7ziConfigurations significantEventConfigurations:(void *)eventConfigurations cityNatureConfigurations:(void *)natureConfigurations forSceneNetOutput:(void *)output collectedObservations:(void *)observations error:
 {
   v36[2] = *MEMORY[0x1E69E9840];
   v15 = a2;
-  v16 = a3;
-  v17 = a4;
-  v32 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = [v18 scenePrint];
+  configurationsCopy = configurations;
+  z7ziConfigurationsCopy = z7ziConfigurations;
+  eventConfigurationsCopy = eventConfigurations;
+  natureConfigurationsCopy = natureConfigurations;
+  outputCopy = output;
+  scenePrint = [natureConfigurationsCopy scenePrint];
   v30 = 0;
-  if (![v15 count] || (v21 = a1[17], v36[0] = a1[16], v36[1] = v21, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v36, 2), v22 = objc_claimAutoreleasedReturnValue(), v23 = -[VNCoreSceneUnderstandingDetector _runSceneNetCustomClassifiers:onSceneprintBuffer:forConfigurations:collectedObservations:error:](v22, v20, v15, v19, a8), v22, (v23 & 1) != 0))
+  if (![v15 count] || (v21 = self[17], v36[0] = self[16], v36[1] = v21, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v36, 2), v22 = objc_claimAutoreleasedReturnValue(), v23 = -[VNCoreSceneUnderstandingDetector _runSceneNetCustomClassifiers:onSceneprintBuffer:forConfigurations:collectedObservations:error:](v22, scenePrint, v15, outputCopy, observations), v22, (v23 & 1) != 0))
   {
-    if (![v16 count] || (v35 = a1[18], objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v35, 1), v24 = objc_claimAutoreleasedReturnValue(), v25 = -[VNCoreSceneUnderstandingDetector _runSceneNetCustomClassifiers:onSceneprintBuffer:forConfigurations:collectedObservations:error:](v24, v20, v16, v19, a8), v24, (v25 & 1) != 0))
+    if (![configurationsCopy count] || (v35 = self[18], objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v35, 1), v24 = objc_claimAutoreleasedReturnValue(), v25 = -[VNCoreSceneUnderstandingDetector _runSceneNetCustomClassifiers:onSceneprintBuffer:forConfigurations:collectedObservations:error:](v24, scenePrint, configurationsCopy, outputCopy, observations), v24, (v25 & 1) != 0))
     {
-      if (![v17 count] || (v34 = a1[19], objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v34, 1), v26 = objc_claimAutoreleasedReturnValue(), v27 = -[VNCoreSceneUnderstandingDetector _runSceneNetCustomClassifiers:onSceneprintBuffer:forConfigurations:collectedObservations:error:](v26, v20, v17, v19, a8), v26, (v27 & 1) != 0))
+      if (![z7ziConfigurationsCopy count] || (v34 = self[19], objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v34, 1), v26 = objc_claimAutoreleasedReturnValue(), v27 = -[VNCoreSceneUnderstandingDetector _runSceneNetCustomClassifiers:onSceneprintBuffer:forConfigurations:collectedObservations:error:](v26, scenePrint, z7ziConfigurationsCopy, outputCopy, observations), v26, (v27 & 1) != 0))
       {
-        if (![v32 count] || (v33 = a1[20], objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v33, 1), v28 = objc_claimAutoreleasedReturnValue(), v29 = -[VNCoreSceneUnderstandingDetector _runSceneNetCustomClassifiers:onSceneprintBuffer:forConfigurations:collectedObservations:error:](v28, v20, v32, v19, a8), v28, (v29 & 1) != 0))
+        if (![eventConfigurationsCopy count] || (v33 = self[20], objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v33, 1), v28 = objc_claimAutoreleasedReturnValue(), v29 = -[VNCoreSceneUnderstandingDetector _runSceneNetCustomClassifiers:onSceneprintBuffer:forConfigurations:collectedObservations:error:](v28, scenePrint, eventConfigurationsCopy, outputCopy, observations), v28, (v29 & 1) != 0))
         {
           v30 = 1;
         }
@@ -1003,19 +1003,19 @@ LABEL_154:
   return v30;
 }
 
-- (uint64_t)_runSceneNetCustomClassifiers:(void *)a1 onSceneprintBuffer:(void *)a2 forConfigurations:(void *)a3 collectedObservations:(void *)a4 error:(void *)a5
+- (uint64_t)_runSceneNetCustomClassifiers:(void *)classifiers onSceneprintBuffer:(void *)buffer forConfigurations:(void *)configurations collectedObservations:(void *)observations error:(void *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a1;
-  v30 = a2;
-  v31 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  classifiersCopy = classifiers;
+  bufferCopy = buffer;
+  configurationsCopy = configurations;
+  observationsCopy = observations;
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v11 = v8;
+  v11 = classifiersCopy;
   v12 = [v11 countByEnumeratingWithState:&v48 objects:v53 count:16];
   obj = v11;
   if (v12)
@@ -1042,16 +1042,16 @@ LABEL_154:
         aBlock[2] = __131__VNCoreSceneUnderstandingDetector__runSceneNetCustomClassifiers_onSceneprintBuffer_forConfigurations_collectedObservations_error___block_invoke;
         aBlock[3] = &unk_1E77B4F58;
         v41 = &v42;
-        v38 = v31;
+        v38 = configurationsCopy;
         v39 = v14;
-        v40 = v10;
+        v40 = strongToStrongObjectsMapTable;
         v15 = _Block_copy(aBlock);
-        [v14 runOnInputScenePrint:v30 completion:v15];
+        [v14 runOnInputScenePrint:bufferCopy completion:v15];
         v16 = v43[5];
-        if (v16 && a5)
+        if (v16 && error)
         {
           v16 = v16;
-          *a5 = v16;
+          *error = v16;
         }
 
         v17 = v16 == 0;
@@ -1080,7 +1080,7 @@ LABEL_154:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v18 = v31;
+  v18 = configurationsCopy;
   v19 = [v18 countByEnumeratingWithState:&v33 objects:v52 count:16];
   if (v19)
   {
@@ -1095,13 +1095,13 @@ LABEL_154:
         }
 
         v22 = *(*(&v33 + 1) + 8 * j);
-        v23 = [v10 objectForKey:v22];
+        v23 = [strongToStrongObjectsMapTable objectForKey:v22];
         v24 = &__block_literal_global_128;
         [v23 sortWithOptions:16 usingComparator:&__block_literal_global_128];
 
-        v25 = [v22 observationsRecipient];
-        [v25 receiveObservations:v23];
-        [v9 addObjectsFromArray:v23];
+        observationsRecipient = [v22 observationsRecipient];
+        [observationsRecipient receiveObservations:v23];
+        [observationsCopy addObjectsFromArray:v23];
       }
 
       v19 = [v18 countByEnumeratingWithState:&v33 objects:v52 count:16];
@@ -1226,55 +1226,55 @@ void __96__VNCoreSceneUnderstandingDetector__processRecognizedObjectsConfigurati
   [*(a1 + 40) addObject:v21];
 }
 
-- (id)_processSaliencyConfiguration:(uint64_t)a3 fromSaliencyMapProvidedBySelector:(void *)a4 ofSceneNetOutput:(void *)a5 regionOfInterest:(uint64_t)a6 options:(void *)a7 qosClass:(uint64_t)a8 saliencyGeneratorType:(double)a9 error:(double)a10
+- (id)_processSaliencyConfiguration:(uint64_t)configuration fromSaliencyMapProvidedBySelector:(void *)selector ofSceneNetOutput:(void *)output regionOfInterest:(uint64_t)interest options:(void *)options qosClass:(uint64_t)class saliencyGeneratorType:(double)type error:(double)self0
 {
   v44[1] = *MEMORY[0x1E69E9840];
   v22 = a2;
-  v23 = a4;
-  v24 = a5;
-  v25 = a7;
-  v26 = [VNValidationUtilities requiredSessionInOptions:v24 error:a8];
+  selectorCopy = selector;
+  outputCopy = output;
+  optionsCopy = options;
+  v26 = [VNValidationUtilities requiredSessionInOptions:outputCopy error:class];
   if (v26)
   {
-    v27 = [v23 VNRequiredBufferFromSelector:a3 error:a8];
+    v27 = [selectorCopy VNRequiredBufferFromSelector:configuration error:class];
     if (v27)
     {
-      v39 = [v22 observationsRecipient];
-      v42 = [v39 originatingRequestSpecifier];
-      texture = [a1[7] pixelBufferForSaliencyMap:v27 error:a8];
+      observationsRecipient = [v22 observationsRecipient];
+      originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
+      texture = [self[7] pixelBufferForSaliencyMap:v27 error:class];
       if (texture)
       {
-        v38 = [[VNImageBuffer alloc] initWithCVPixelBuffer:texture orientation:1 options:v24 session:v26];
-        v41 = [objc_opt_class() _newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:v24];
-        v37 = [v26 detectorOfType:v25 configuredWithOptions:? error:?];
+        v38 = [[VNImageBuffer alloc] initWithCVPixelBuffer:texture orientation:1 options:outputCopy session:v26];
+        v41 = [objc_opt_class() _newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:outputCopy];
+        v37 = [v26 detectorOfType:optionsCopy configuredWithOptions:? error:?];
         if (v37)
         {
           v44[0] = v38;
           v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:1];
           [v41 setObject:v28 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-          [v41 setObject:v42 forKeyedSubscript:@"VNDetectorOption_OriginatingRequestSpecifier"];
-          if ([v42 observationProvidesBoundsNormalizedToROI])
+          [v41 setObject:originatingRequestSpecifier forKeyedSubscript:@"VNDetectorOption_OriginatingRequestSpecifier"];
+          if ([originatingRequestSpecifier observationProvidesBoundsNormalizedToROI])
           {
-            v30 = 0.0;
+            typeCopy = 0.0;
           }
 
           else
           {
-            v30 = a9;
+            typeCopy = type;
           }
 
-          v31 = [v37 processUsingQualityOfServiceClass:a6 options:v41 regionOfInterest:0 warningRecorder:a8 error:0 progressHandler:v30];
+          v31 = [v37 processUsingQualityOfServiceClass:interest options:v41 regionOfInterest:0 warningRecorder:class error:0 progressHandler:typeCopy];
           if (v31)
           {
-            v32 = [a1 validatedImageBufferFromOptions:v24 error:a8];
+            v32 = [self validatedImageBufferFromOptions:outputCopy error:class];
             v33 = v32;
             if (v32)
             {
-              v34 = -[VNSaliencyImageObservation initWithOriginatingRequestSpecifier:rawSaliencyImage:originalImageSize:salientObjectBoundingBoxes:]([VNSaliencyImageObservation alloc], "initWithOriginatingRequestSpecifier:rawSaliencyImage:originalImageSize:salientObjectBoundingBoxes:", v42, texture, v31, a11 * [v32 width], a12 * objc_msgSend(v32, "height"));
+              v34 = -[VNSaliencyImageObservation initWithOriginatingRequestSpecifier:rawSaliencyImage:originalImageSize:salientObjectBoundingBoxes:]([VNSaliencyImageObservation alloc], "initWithOriginatingRequestSpecifier:rawSaliencyImage:originalImageSize:salientObjectBoundingBoxes:", originatingRequestSpecifier, texture, v31, a11 * [v32 width], a12 * objc_msgSend(v32, "height"));
               v43 = v34;
               v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
-              [v39 receiveObservations:v35];
+              [observationsRecipient receiveObservations:v35];
             }
 
             else
@@ -1317,26 +1317,26 @@ void __96__VNCoreSceneUnderstandingDetector__processRecognizedObjectsConfigurati
   return v35;
 }
 
-- (id)_entityNetTaxonomyForSession:(uint64_t)a3 error:
+- (id)_entityNetTaxonomyForSession:(uint64_t)session error:
 {
   v5 = a2;
-  v6 = *(a1 + 72);
+  v6 = *(self + 72);
   if (v6)
   {
     goto LABEL_4;
   }
 
   v13 = 0;
-  v7 = [*(a1 + 56) configuration];
-  v8 = [VNCoreSceneUnderstandingDetector _getEntityNetTaxonomy:v7 forCSUSceneNetV5Configuration:v5 session:a3 error:?];
+  configuration = [*(self + 56) configuration];
+  v8 = [VNCoreSceneUnderstandingDetector _getEntityNetTaxonomy:configuration forCSUSceneNetV5Configuration:v5 session:session error:?];
   v9 = v13;
 
   if (v8)
   {
-    v10 = *(a1 + 72);
-    *(a1 + 72) = v9;
+    v10 = *(self + 72);
+    *(self + 72) = v9;
 
-    v6 = *(a1 + 72);
+    v6 = *(self + 72);
 LABEL_4:
     v11 = v6;
     goto LABEL_5;
@@ -1348,26 +1348,26 @@ LABEL_5:
   return v11;
 }
 
-- (id)_CSUSceneNetV5NetworkLabelLikelihoodEnumerationBlockForCollectingTopN:(uint64_t)a1 observations:(void *)a2 minimumConfidence:(void *)a3 disallowedList:(void *)a4 taxonomy:(void *)a5 originatingRequestSpecifier:(float)a6
+- (id)_CSUSceneNetV5NetworkLabelLikelihoodEnumerationBlockForCollectingTopN:(uint64_t)n observations:(void *)observations minimumConfidence:(void *)confidence disallowedList:(void *)list taxonomy:(void *)taxonomy originatingRequestSpecifier:(float)specifier
 {
-  v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  observationsCopy = observations;
+  confidenceCopy = confidence;
+  listCopy = list;
+  taxonomyCopy = taxonomy;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __189__VNCoreSceneUnderstandingDetector__CSUSceneNetV5NetworkLabelLikelihoodEnumerationBlockForCollectingTopN_observations_minimumConfidence_disallowedList_taxonomy_originatingRequestSpecifier___block_invoke;
   v22[3] = &unk_1E77B4EE0;
-  v28 = a6;
-  v15 = v12;
+  specifierCopy = specifier;
+  v15 = confidenceCopy;
   v23 = v15;
-  v16 = v13;
+  v16 = listCopy;
   v24 = v16;
-  v17 = v14;
+  v17 = taxonomyCopy;
   v25 = v17;
-  v18 = v11;
+  v18 = observationsCopy;
   v26 = v18;
-  v27 = a1;
+  nCopy = n;
   v19 = _Block_copy(v22);
   v20 = _Block_copy(v19);
 
@@ -1403,28 +1403,28 @@ VNClassificationObservation *__189__VNCoreSceneUnderstandingDetector__CSUSceneNe
   return v5;
 }
 
-+ (BOOL)_getEntityNetTaxonomy:(void *)a3 forCSUSceneNetV5Configuration:(void *)a4 session:(uint64_t)a5 error:
++ (BOOL)_getEntityNetTaxonomy:(void *)taxonomy forCSUSceneNetV5Configuration:(void *)configuration session:(uint64_t)session error:
 {
-  v8 = a3;
-  v9 = a4;
+  taxonomyCopy = taxonomy;
+  configurationCopy = configuration;
   v10 = objc_opt_self();
-  v11 = [v8 entityNetVocabularyName];
-  if (v11)
+  entityNetVocabularyName = [taxonomyCopy entityNetVocabularyName];
+  if (entityNetVocabularyName)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __102__VNCoreSceneUnderstandingDetector__getEntityNetTaxonomy_forCSUSceneNetV5Configuration_session_error___block_invoke;
     aBlock[3] = &unk_1E77B4E68;
-    v12 = v8;
+    v12 = taxonomyCopy;
     v22 = v12;
-    v23 = v11;
+    v23 = entityNetVocabularyName;
     v13 = _Block_copy(aBlock);
     v14 = objc_alloc(MEMORY[0x1E696AEC0]);
     v15 = NSStringFromClass(v10);
     v16 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v12, "revision")}];
     v17 = [v14 initWithFormat:@"%@.SceneNetV5.%@.entityNetTaxonomy", v15, v16];
 
-    v18 = [v9 resourceObjectForIdentifier:v17 creationBlock:v13 error:a5];
+    v18 = [configurationCopy resourceObjectForIdentifier:v17 creationBlock:v13 error:session];
     v19 = v18 != 0;
     if (v18)
     {
@@ -1461,11 +1461,11 @@ id __102__VNCoreSceneUnderstandingDetector__getEntityNetTaxonomy_forCSUSceneNetV
   return v6;
 }
 
-- (id)_sceneNetTaxonomyForSession:(uint64_t)a3 error:
+- (id)_sceneNetTaxonomyForSession:(uint64_t)session error:
 {
   v5 = a2;
-  v6 = *(a1 + 64);
-  if (v6 || ([*(a1 + 56) configuration], v7 = objc_claimAutoreleasedReturnValue(), +[VNCoreSceneUnderstandingDetector _sceneNetTaxonomyForCSUSceneNetV5Configuration:session:error:](VNCoreSceneUnderstandingDetector, v7, v5, a3), v8 = objc_claimAutoreleasedReturnValue(), v9 = *(a1 + 64), *(a1 + 64) = v8, v9, v7, (v6 = *(a1 + 64)) != 0))
+  v6 = *(self + 64);
+  if (v6 || ([*(self + 56) configuration], v7 = objc_claimAutoreleasedReturnValue(), +[VNCoreSceneUnderstandingDetector _sceneNetTaxonomyForCSUSceneNetV5Configuration:session:error:](VNCoreSceneUnderstandingDetector, v7, v5, session), v8 = objc_claimAutoreleasedReturnValue(), v9 = *(self + 64), *(self + 64) = v8, v9, v7, (v6 = *(self + 64)) != 0))
   {
     v10 = v6;
   }
@@ -1478,10 +1478,10 @@ id __102__VNCoreSceneUnderstandingDetector__getEntityNetTaxonomy_forCSUSceneNetV
   return v10;
 }
 
-+ (id)_sceneNetTaxonomyForCSUSceneNetV5Configuration:(void *)a3 session:(uint64_t)a4 error:
++ (id)_sceneNetTaxonomyForCSUSceneNetV5Configuration:(void *)configuration session:(uint64_t)session error:
 {
   v6 = a2;
-  v7 = a3;
+  configurationCopy = configuration;
   v8 = objc_opt_self();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1495,7 +1495,7 @@ id __102__VNCoreSceneUnderstandingDetector__getEntityNetTaxonomy_forCSUSceneNetV
   v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "revision")}];
   v14 = [v11 initWithFormat:@"%@.SceneNetV5.%@.sceneTaxonomy", v12, v13];
 
-  v15 = [v7 resourceObjectForIdentifier:v14 creationBlock:v10 error:a4];
+  v15 = [configurationCopy resourceObjectForIdentifier:v14 creationBlock:v10 error:session];
 
   return v15;
 }
@@ -1522,36 +1522,36 @@ id __97__VNCoreSceneUnderstandingDetector__sceneNetTaxonomyForCSUSceneNetV5Confi
   return v8;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a6;
-  v19 = v17;
-  if (self && (v39 = 0, [VNValidationUtilities getNSUIntegerValue:&v39 forKey:@"VNDetectorProcessOption_ImageCropAndScaleOption" inOptions:v19 withDefaultValue:2 error:a8]))
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  v19 = optionsCopy;
+  if (self && (v39 = 0, [VNValidationUtilities getNSUIntegerValue:&v39 forKey:@"VNDetectorProcessOption_ImageCropAndScaleOption" inOptions:v19 withDefaultValue:2 error:error]))
   {
     v20 = v39;
 
-    v21 = [(VNDetector *)self validatedImageBufferFromOptions:v19 error:a8];
+    v21 = [(VNDetector *)self validatedImageBufferFromOptions:v19 error:error];
     v22 = v21;
     if (v21)
     {
-      v23 = [v21 width];
-      v24 = [v22 height];
-      v25 = width * v23;
-      v26 = v24;
-      v27 = height * v24;
+      width = [v21 width];
+      height = [v22 height];
+      v25 = width * width;
+      v26 = height;
+      v27 = height * height;
       if (v25 >= v27)
       {
-        v28 = height * v24;
+        v28 = height * height;
       }
 
       else
       {
-        v28 = width * v23;
+        v28 = width * width;
       }
 
       inputImageMinimumDimension = self->_inputImageMinimumDimension;
@@ -1572,7 +1572,7 @@ id __97__VNCoreSceneUnderstandingDetector__sceneNetTaxonomyForCSUSceneNetV5Confi
           v30 = 1.0;
         }
 
-        VNRecordImageTooSmallWarningWithImageMinimumShortDimension(v18, (inputImageMinimumDimension / v30));
+        VNRecordImageTooSmallWarningWithImageMinimumShortDimension(recorderCopy, (inputImageMinimumDimension / v30));
       }
 
       [v19 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
@@ -1580,9 +1580,9 @@ id __97__VNCoreSceneUnderstandingDetector__sceneNetTaxonomyForCSUSceneNetV5Confi
       inputImagePixelHeight = self->_inputImagePixelHeight;
       inputImagePixelFormat = self->_inputImagePixelFormat;
       v38 = 0;
-      v34 = [v22 cropAndScaleBufferWithWidth:inputImagePixelWidth height:inputImagePixelHeight cropRect:inputImagePixelFormat format:v20 imageCropAndScaleOption:v19 options:a8 error:x * v23 calculatedNormalizedOriginOffset:y * v26 calculatedScaleX:v25 calculatedScaleY:v27 pixelBufferRepsCacheKey:{0, 0, 0, &v38}];
+      v34 = [v22 cropAndScaleBufferWithWidth:inputImagePixelWidth height:inputImagePixelHeight cropRect:inputImagePixelFormat format:v20 imageCropAndScaleOption:v19 options:error error:x * width calculatedNormalizedOriginOffset:y * v26 calculatedScaleX:v25 calculatedScaleY:v27 pixelBufferRepsCacheKey:{0, 0, 0, &v38}];
       v35 = v38;
-      *a7 = v34;
+      *buffer = v34;
       v36 = v34 != 0;
       if (v34)
       {
@@ -1605,18 +1605,18 @@ id __97__VNCoreSceneUnderstandingDetector__sceneNetTaxonomyForCSUSceneNetV5Confi
   return v36;
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = *&a3;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v15 = *&class;
   v67 = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v18 = a6;
-  v49 = a8;
-  v19 = [(VNDetector *)self validatedImageBufferFromOptions:v17 error:a7];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v19 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v20 = v19;
   if (!v19)
   {
@@ -1625,13 +1625,13 @@ id __97__VNCoreSceneUnderstandingDetector__sceneNetTaxonomyForCSUSceneNetV5Confi
   }
 
   v48 = +[VNRegionOfInterestTiling tilingForRegionOfInterest:inPixelWidth:height:tileAspectRatio:options:](VNRegionOfInterestTiling, "tilingForRegionOfInterest:inPixelWidth:height:tileAspectRatio:options:", [v19 width], objc_msgSend(v19, "height"), self->_inputImageTilingOptions, x, y, width, height, self->_inputImagePixelWidth / self->_inputImagePixelHeight);
-  v21 = [v48 tileCount];
-  if (v21 >= 2)
+  tileCount = [v48 tileCount];
+  if (tileCount >= 2)
   {
-    [v17 setObject:v48 forKeyedSubscript:@"VNCoreSceneUnderstandingDetectorInternalProcessingOption_Tiling"];
+    [optionsCopy setObject:v48 forKeyedSubscript:@"VNCoreSceneUnderstandingDetectorInternalProcessingOption_Tiling"];
   }
 
-  v22 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageClassificationConfigurations"];
+  v22 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageClassificationConfigurations"];
   if ([v22 count])
   {
     v23 = 0;
@@ -1639,13 +1639,13 @@ id __97__VNCoreSceneUnderstandingDetector__sceneNetTaxonomyForCSUSceneNetV5Confi
 
   else
   {
-    v25 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_EntityNetClassificationConfigurations"];
+    v25 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_EntityNetClassificationConfigurations"];
     v23 = [v25 count] == 0;
   }
 
-  if (v21 > 1 || v23)
+  if (tileCount > 1 || v23)
   {
-    v27 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_SceneprintConfigurations"];
+    v27 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_SceneprintConfigurations"];
     if ([v27 count])
     {
 LABEL_29:
@@ -1653,7 +1653,7 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v28 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageAestheticsConfigurations"];
+    v28 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageAestheticsConfigurations"];
     if ([v28 count])
     {
 LABEL_28:
@@ -1661,7 +1661,7 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v47 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageSaliencyAConfigurations"];
+    v47 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageSaliencyAConfigurations"];
     if ([v47 count])
     {
 LABEL_27:
@@ -1669,7 +1669,7 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v46 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageSaliencyOConfigurations"];
+    v46 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageSaliencyOConfigurations"];
     if ([v46 count])
     {
 LABEL_26:
@@ -1677,7 +1677,7 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v45 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_RecognizeObjectsConfigurations"];
+    v45 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_RecognizeObjectsConfigurations"];
     if ([v45 count])
     {
 LABEL_25:
@@ -1685,7 +1685,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v44 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageFingerprintsConfigurations"];
+    v44 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageFingerprintsConfigurations"];
     if ([v44 count])
     {
 LABEL_24:
@@ -1693,7 +1693,7 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v43 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_JunkConfigurations"];
+    v43 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_JunkConfigurations"];
     if ([v43 count])
     {
 LABEL_23:
@@ -1701,7 +1701,7 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v42 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_5kJNH3eYuyaLxNpZr5Z7ziConfigurations"];
+    v42 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_5kJNH3eYuyaLxNpZr5Z7ziConfigurations"];
     if ([v42 count])
     {
 LABEL_22:
@@ -1709,19 +1709,19 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v41 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_SignificantEventConfigurations"];
+    v41 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_SignificantEventConfigurations"];
     if ([v41 count])
     {
 
       goto LABEL_22;
     }
 
-    v40 = [v17 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_CityNatureGatingConfigurations"];
+    v40 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_CityNatureGatingConfigurations"];
     v39 = [v40 count];
 
     if (!v39)
     {
-      v29 = 0;
+      height = 0;
       goto LABEL_31;
     }
   }
@@ -1729,8 +1729,8 @@ LABEL_22:
 LABEL_30:
   v65.receiver = self;
   v65.super_class = VNCoreSceneUnderstandingDetector;
-  v29 = [(VNDetector *)&v65 internalProcessUsingQualityOfServiceClass:v15 options:v17 regionOfInterest:v18 warningRecorder:a7 error:v49 progressHandler:x, y, width, height];
-  if (!v29)
+  height = [(VNDetector *)&v65 internalProcessUsingQualityOfServiceClass:v15 options:optionsCopy regionOfInterest:recorderCopy warningRecorder:error error:handlerCopy progressHandler:x, y, width, height];
+  if (!height)
   {
 LABEL_49:
     v24 = 0;
@@ -1738,7 +1738,7 @@ LABEL_49:
   }
 
 LABEL_31:
-  if (v21 >= 2 && !v23)
+  if (tileCount >= 2 && !v23)
   {
     v59 = 0;
     v60 = &v59;
@@ -1753,23 +1753,23 @@ LABEL_31:
     v58 = &v59;
     aBlock[4] = self;
     v55 = v48;
-    v56 = v17;
-    v57 = v18;
+    v56 = optionsCopy;
+    v57 = recorderCopy;
     v30 = _Block_copy(aBlock);
-    v31 = [objc_opt_class() runSuccessReportingBlockSynchronously:v30 detector:self qosClass:v15 error:a7];
+    v31 = [objc_opt_class() runSuccessReportingBlockSynchronously:v30 detector:self qosClass:v15 error:error];
     if (v31)
     {
       v32 = v60[5];
-      if (v29)
+      if (height)
       {
-        v33 = [v29 arrayByAddingObjectsFromArray:v32];
+        v33 = [height arrayByAddingObjectsFromArray:v32];
 
-        v29 = v33;
+        height = v33;
       }
 
       else
       {
-        v29 = v32;
+        height = v32;
       }
     }
 
@@ -1780,13 +1780,13 @@ LABEL_31:
     }
   }
 
-  if (v29)
+  if (height)
   {
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v34 = v29;
+    v34 = height;
     v35 = [v34 countByEnumeratingWithState:&v50 objects:v66 count:16];
     if (v35)
     {
@@ -1800,7 +1800,7 @@ LABEL_31:
             objc_enumerationMutation(v34);
           }
 
-          [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:v17 toObservation:*(*(&v50 + 1) + 8 * i)];
+          [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:optionsCopy toObservation:*(*(&v50 + 1) + 8 * i)];
         }
 
         v35 = [v34 countByEnumeratingWithState:&v50 objects:v66 count:16];
@@ -1809,20 +1809,20 @@ LABEL_31:
       while (v35);
     }
 
-    v29 = v34;
-    v24 = v29;
+    height = v34;
+    v24 = height;
     goto LABEL_50;
   }
 
-  if (!a7)
+  if (!error)
   {
-    v29 = 0;
+    height = 0;
     goto LABEL_49;
   }
 
   [VNError errorForUnimplementedFunctionWithLocalizedDescription:@"no CSU processing took place"];
-  v29 = 0;
-  *a7 = v24 = 0;
+  height = 0;
+  *error = v24 = 0;
 LABEL_50:
 
 LABEL_51:
@@ -2283,35 +2283,35 @@ void __137__VNCoreSceneUnderstandingDetector__getBestLeafConfidences_bestHierarc
   }
 }
 
-- (BOOL)warmUpSession:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (BOOL)warmUpSession:(id)session withOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  sessionCopy = session;
+  optionsCopy = options;
   v30.receiver = self;
   v30.super_class = VNCoreSceneUnderstandingDetector;
-  if (-[VNDetector warmUpSession:withOptions:error:](&v30, sel_warmUpSession_withOptions_error_, v8, v9, a5) && -[CSUSceneNetV5 loadResources:](self->_sceneNet, "loadResources:", a5) && (([v9 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_JunkConfigurations"], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, !v11) || (-[CSUSceneNetV5CustomClassifier loadResourcesAndReturnError:](self->_junkLeafClassifier, "loadResourcesAndReturnError:", a5) & 1) != 0 && -[CSUSceneNetV5CustomClassifier loadResourcesAndReturnError:](self->_junkHierarchicalClassifier, "loadResourcesAndReturnError:", a5)) && ((objc_msgSend(v9, "objectForKeyedSubscript:", @"VNCoreSceneUnderstandingDetectorProcessingOption_5kJNH3eYuyaLxNpZr5Z7ziConfigurations"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, !v13) || (-[CSUSceneNetV5CustomClassifier loadResourcesAndReturnError:](self->_VN5kJNH3eYuyaLxNpZr5Z7ziCLassifier, "loadResourcesAndReturnError:", a5) & 1) != 0) && ((objc_msgSend(v9, "objectForKeyedSubscript:", @"VNCoreSceneUnderstandingDetectorProcessingOption_SignificantEventConfigurations"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, !v15) || (-[CSUSceneNetV5CustomClassifier loadResourcesAndReturnError:](self->_significantEventClassifier, "loadResourcesAndReturnError:", a5) & 1) != 0) && ((objc_msgSend(v9, "objectForKeyedSubscript:", @"VNCoreSceneUnderstandingDetectorProcessingOption_CityNatureGatingConfigurations"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, !v17) || (-[CSUSceneNetV5CustomClassifier loadResourcesAndReturnError:](self->_cityNatureClassifier, "loadResourcesAndReturnError:", a5) & 1) != 0))
+  if (-[VNDetector warmUpSession:withOptions:error:](&v30, sel_warmUpSession_withOptions_error_, sessionCopy, optionsCopy, error) && -[CSUSceneNetV5 loadResources:](self->_sceneNet, "loadResources:", error) && (([optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_JunkConfigurations"], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, !v11) || (-[CSUSceneNetV5CustomClassifier loadResourcesAndReturnError:](self->_junkLeafClassifier, "loadResourcesAndReturnError:", error) & 1) != 0 && -[CSUSceneNetV5CustomClassifier loadResourcesAndReturnError:](self->_junkHierarchicalClassifier, "loadResourcesAndReturnError:", error)) && ((objc_msgSend(optionsCopy, "objectForKeyedSubscript:", @"VNCoreSceneUnderstandingDetectorProcessingOption_5kJNH3eYuyaLxNpZr5Z7ziConfigurations"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, !v13) || (-[CSUSceneNetV5CustomClassifier loadResourcesAndReturnError:](self->_VN5kJNH3eYuyaLxNpZr5Z7ziCLassifier, "loadResourcesAndReturnError:", error) & 1) != 0) && ((objc_msgSend(optionsCopy, "objectForKeyedSubscript:", @"VNCoreSceneUnderstandingDetectorProcessingOption_SignificantEventConfigurations"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, !v15) || (-[CSUSceneNetV5CustomClassifier loadResourcesAndReturnError:](self->_significantEventClassifier, "loadResourcesAndReturnError:", error) & 1) != 0) && ((objc_msgSend(optionsCopy, "objectForKeyedSubscript:", @"VNCoreSceneUnderstandingDetectorProcessingOption_CityNatureGatingConfigurations"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, !v17) || (-[CSUSceneNetV5CustomClassifier loadResourcesAndReturnError:](self->_cityNatureClassifier, "loadResourcesAndReturnError:", error) & 1) != 0))
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __68__VNCoreSceneUnderstandingDetector_warmUpSession_withOptions_error___block_invoke;
     aBlock[3] = &unk_1E77B51A8;
     aBlock[4] = self;
-    v18 = v9;
+    v18 = optionsCopy;
     v28 = v18;
-    v19 = v8;
+    v19 = sessionCopy;
     v29 = v19;
     v20 = _Block_copy(aBlock);
     v21 = [v18 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageSaliencyAConfigurations"];
     v22 = [v21 count];
 
-    if (v22 && (v20[2](v20, @"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType", a5) & 1) == 0 || ([v18 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageSaliencyOConfigurations"], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "count"), v23, v24) && (v20[2](v20, @"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType", a5) & 1) == 0)
+    if (v22 && (v20[2](v20, @"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType", error) & 1) == 0 || ([v18 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageSaliencyOConfigurations"], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "count"), v23, v24) && (v20[2](v20, @"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType", error) & 1) == 0)
     {
       v25 = 0;
     }
 
     else
     {
-      v25 = [(VNCoreSceneUnderstandingDetector *)self _warmUpTaxonomiesForOptions:v18 inSession:v19 error:a5];
+      v25 = [(VNCoreSceneUnderstandingDetector *)self _warmUpTaxonomiesForOptions:v18 inSession:v19 error:error];
     }
   }
 
@@ -2342,18 +2342,18 @@ uint64_t __68__VNCoreSceneUnderstandingDetector_warmUpSession_withOptions_error_
   return v9;
 }
 
-- (uint64_t)_warmUpTaxonomiesForOptions:(void *)a3 inSession:(uint64_t)a4 error:
+- (uint64_t)_warmUpTaxonomiesForOptions:(void *)options inSession:(uint64_t)session error:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  optionsCopy = options;
+  if (self)
   {
     v9 = [v7 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageClassificationConfigurations"];
     v10 = [v9 count];
 
-    if (v10 && (-[VNCoreSceneUnderstandingDetector _sceneNetTaxonomyForSession:error:](a1, v8, a4), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11) || ([v7 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_EntityNetClassificationConfigurations"], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13) && (-[VNCoreSceneUnderstandingDetector _entityNetTaxonomyForSession:error:](a1, v8, a4), v14 = objc_claimAutoreleasedReturnValue(), v14, !v14))
+    if (v10 && (-[VNCoreSceneUnderstandingDetector _sceneNetTaxonomyForSession:error:](self, optionsCopy, session), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11) || ([v7 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_EntityNetClassificationConfigurations"], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13) && (-[VNCoreSceneUnderstandingDetector _entityNetTaxonomyForSession:error:](self, optionsCopy, session), v14 = objc_claimAutoreleasedReturnValue(), v14, !v14))
     {
-      a1 = 0;
+      self = 0;
     }
 
     else
@@ -2361,20 +2361,20 @@ uint64_t __68__VNCoreSceneUnderstandingDetector_warmUpSession_withOptions_error_
       v15 = [v7 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_RecognizeObjectsConfigurations"];
       v16 = [v15 count];
 
-      if (!v16 || ((v17 = v8, (v18 = *(a1 + 80)) == 0) && ([*(a1 + 56) configuration], v19 = objc_claimAutoreleasedReturnValue(), +[VNCoreSceneUnderstandingDetector _detectedObjectTaxonomyForCSUSceneNetV5Configuration:session:error:](VNCoreSceneUnderstandingDetector, v19, v17, a4), v20 = objc_claimAutoreleasedReturnValue(), v21 = *(a1 + 80), *(a1 + 80) = v20, v21, v19, (v18 = *(a1 + 80)) == 0) ? (a1 = 0) : (a1 = v18), v17, a1, a1))
+      if (!v16 || ((v17 = optionsCopy, (v18 = *(self + 80)) == 0) && ([*(self + 56) configuration], v19 = objc_claimAutoreleasedReturnValue(), +[VNCoreSceneUnderstandingDetector _detectedObjectTaxonomyForCSUSceneNetV5Configuration:session:error:](VNCoreSceneUnderstandingDetector, v19, v17, session), v20 = objc_claimAutoreleasedReturnValue(), v21 = *(self + 80), *(self + 80) = v20, v21, v19, (v18 = *(self + 80)) == 0) ? (self = 0) : (self = v18), v17, self, self))
       {
-        a1 = 1;
+        self = 1;
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)_detectedObjectTaxonomyForCSUSceneNetV5Configuration:(void *)a3 session:(uint64_t)a4 error:
++ (id)_detectedObjectTaxonomyForCSUSceneNetV5Configuration:(void *)configuration session:(uint64_t)session error:
 {
   v6 = a2;
-  v7 = a3;
+  configurationCopy = configuration;
   v8 = objc_opt_self();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -2388,7 +2388,7 @@ uint64_t __68__VNCoreSceneUnderstandingDetector_warmUpSession_withOptions_error_
   v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "revision")}];
   v14 = [v11 initWithFormat:@"%@.SceneNetV5.%@.detectedObjectTaxonomy", v12, v13];
 
-  v15 = [v7 resourceObjectForIdentifier:v14 creationBlock:v10 error:a4];
+  v15 = [configurationCopy resourceObjectForIdentifier:v14 creationBlock:v10 error:session];
 
   return v15;
 }
@@ -2413,12 +2413,12 @@ id __103__VNCoreSceneUnderstandingDetector__detectedObjectTaxonomyForCSUSceneNet
   return v7;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v40.receiver = self;
   v40.super_class = VNCoreSceneUnderstandingDetector;
-  if ([(VNDetector *)&v40 completeInitializationForSession:v6 error:a4])
+  if ([(VNDetector *)&v40 completeInitializationForSession:sessionCopy error:error])
   {
     [(VNDetector *)self configurationOptions];
     v38 = 0;
@@ -2427,7 +2427,7 @@ id __103__VNCoreSceneUnderstandingDetector__detectedObjectTaxonomyForCSUSceneNet
     v37 = 0;
     v34 = 0;
     v33 = v35 = 0;
-    v7 = [VNCoreSceneUnderstandingDetector _getCSUSceneNetV5Configuration:&v38 junkLeafConfiguration:&v37 junkHierarchicalConfiguration:&v36 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:&v35 significantEventConfiguration:&v34 cityNatureConfiguration:v33 forConfigurationOptions:a4 error:?];
+    v7 = [VNCoreSceneUnderstandingDetector _getCSUSceneNetV5Configuration:&v38 junkLeafConfiguration:&v37 junkHierarchicalConfiguration:&v36 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:&v35 significantEventConfiguration:&v34 cityNatureConfiguration:v33 forConfigurationOptions:error error:?];
     v8 = v39;
     v9 = v38;
     v10 = v37;
@@ -2440,15 +2440,15 @@ id __103__VNCoreSceneUnderstandingDetector__detectedObjectTaxonomyForCSUSceneNet
       sceneNet = self->_sceneNet;
       self->_sceneNet = v14;
 
-      v16 = [v8 inputPixelBufferDescriptor];
-      self->_inputImagePixelFormat = [v16 pixelFormat];
-      self->_inputImagePixelWidth = [v16 width];
-      v17 = [v16 height];
-      self->_inputImagePixelHeight = v17;
+      inputPixelBufferDescriptor = [v8 inputPixelBufferDescriptor];
+      self->_inputImagePixelFormat = [inputPixelBufferDescriptor pixelFormat];
+      self->_inputImagePixelWidth = [inputPixelBufferDescriptor width];
+      height = [inputPixelBufferDescriptor height];
+      self->_inputImagePixelHeight = height;
       inputImagePixelWidth = self->_inputImagePixelWidth;
-      if (inputImagePixelWidth >= v17)
+      if (inputImagePixelWidth >= height)
       {
-        inputImagePixelWidth = v17;
+        inputImagePixelWidth = height;
       }
 
       self->_inputImageMinimumDimension = inputImagePixelWidth;
@@ -2476,7 +2476,7 @@ id __103__VNCoreSceneUnderstandingDetector__detectedObjectTaxonomyForCSUSceneNet
       cityNatureClassifier = self->_cityNatureClassifier;
       self->_cityNatureClassifier = v29;
 
-      v31 = [(VNCoreSceneUnderstandingDetector *)self _warmUpTaxonomiesForOptions:v33 inSession:v6 error:a4];
+      v31 = [(VNCoreSceneUnderstandingDetector *)self _warmUpTaxonomiesForOptions:v33 inSession:sessionCopy error:error];
     }
 
     else
@@ -2493,18 +2493,18 @@ id __103__VNCoreSceneUnderstandingDetector__detectedObjectTaxonomyForCSUSceneNet
   return v31;
 }
 
-+ (uint64_t)_getCSUSceneNetV5Configuration:(void *)a3 junkLeafConfiguration:(void *)a4 junkHierarchicalConfiguration:(void *)a5 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:(void *)a6 significantEventConfiguration:(void *)a7 cityNatureConfiguration:(void *)a8 forConfigurationOptions:(void *)a9 error:
++ (uint64_t)_getCSUSceneNetV5Configuration:(void *)configuration junkLeafConfiguration:(void *)leafConfiguration junkHierarchicalConfiguration:(void *)hierarchicalConfiguration VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:(void *)z7ziConfiguration significantEventConfiguration:(void *)eventConfiguration cityNatureConfiguration:(void *)natureConfiguration forConfigurationOptions:(void *)options error:
 {
-  v14 = a8;
+  natureConfigurationCopy = natureConfiguration;
   v15 = objc_opt_self();
-  v16 = [v15 computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:v14 error:a9];
+  v16 = [v15 computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:natureConfigurationCopy error:options];
   if (v16)
   {
     v39 = 0;
-    if ([(VNCoreSceneUnderstandingDetector *)v15 _getSceneNetV5ConfigurationRevision:v14 forConfigurationOptions:a9 error:?])
+    if ([(VNCoreSceneUnderstandingDetector *)v15 _getSceneNetV5ConfigurationRevision:natureConfigurationCopy forConfigurationOptions:options error:?])
     {
       v17 = v39;
-      v18 = [MEMORY[0x1E6999130] sceneNetV5ConfigurationForRevision:v39 error:a9];
+      v18 = [MEMORY[0x1E6999130] sceneNetV5ConfigurationForRevision:v39 error:options];
       v19 = v18;
       if (!v18)
       {
@@ -2532,9 +2532,9 @@ id __103__VNCoreSceneUnderstandingDetector__detectedObjectTaxonomyForCSUSceneNet
       v34 = v21;
       v38 = v34;
       v35 = _Block_copy(aBlock);
-      if (a3)
+      if (configuration)
       {
-        v22 = [v19 newJunkLeafConfigurationAndReturnError:a9];
+        v22 = [v19 newJunkLeafConfigurationAndReturnError:options];
         if (!v22)
         {
           goto LABEL_25;
@@ -2542,12 +2542,12 @@ id __103__VNCoreSceneUnderstandingDetector__detectedObjectTaxonomyForCSUSceneNet
 
         v35[2](v35, v22);
         v23 = v22;
-        *a3 = v22;
+        *configuration = v22;
       }
 
-      if (a4)
+      if (leafConfiguration)
       {
-        v24 = [v19 newJunkHierarchicalConfigurationAndReturnError:a9];
+        v24 = [v19 newJunkHierarchicalConfigurationAndReturnError:options];
         if (!v24)
         {
           goto LABEL_25;
@@ -2555,12 +2555,12 @@ id __103__VNCoreSceneUnderstandingDetector__detectedObjectTaxonomyForCSUSceneNet
 
         v35[2](v35, v24);
         v25 = v24;
-        *a4 = v24;
+        *leafConfiguration = v24;
       }
 
-      if (a5)
+      if (hierarchicalConfiguration)
       {
-        v26 = [v19 newClassifierBetaConfigurationAndReturnError:a9];
+        v26 = [v19 newClassifierBetaConfigurationAndReturnError:options];
         if (!v26)
         {
           goto LABEL_25;
@@ -2568,12 +2568,12 @@ id __103__VNCoreSceneUnderstandingDetector__detectedObjectTaxonomyForCSUSceneNet
 
         v35[2](v35, v26);
         v27 = v26;
-        *a5 = v26;
+        *hierarchicalConfiguration = v26;
       }
 
-      if (a6)
+      if (z7ziConfiguration)
       {
-        v28 = [v19 newClassifierAlphaConfigurationAndReturnError:a9];
+        v28 = [v19 newClassifierAlphaConfigurationAndReturnError:options];
         if (!v28)
         {
           goto LABEL_25;
@@ -2581,10 +2581,10 @@ id __103__VNCoreSceneUnderstandingDetector__detectedObjectTaxonomyForCSUSceneNet
 
         v35[2](v35, v28);
         v29 = v28;
-        *a6 = v28;
+        *z7ziConfiguration = v28;
       }
 
-      if (!a7)
+      if (!eventConfiguration)
       {
 LABEL_23:
         v32 = 1;
@@ -2594,12 +2594,12 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v30 = [v19 newCityNatureConfigurationAndReturnError:a9];
+      v30 = [v19 newCityNatureConfigurationAndReturnError:options];
       if (v30)
       {
         v35[2](v35, v30);
         v31 = v30;
-        *a7 = v30;
+        *eventConfiguration = v30;
 
         goto LABEL_23;
       }
@@ -2616,16 +2616,16 @@ LABEL_29:
   return v32;
 }
 
-+ (BOOL)_getSceneNetV5ConfigurationRevision:(void *)a3 forConfigurationOptions:(void *)a4 error:
++ (BOOL)_getSceneNetV5ConfigurationRevision:(void *)revision forConfigurationOptions:(void *)options error:
 {
-  v6 = a3;
+  revisionCopy = revision;
   v7 = objc_opt_self();
   v8 = objc_alloc_init(MEMORY[0x1E696AD50]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __102__VNCoreSceneUnderstandingDetector__getSceneNetV5ConfigurationRevision_forConfigurationOptions_error___block_invoke;
   aBlock[3] = &unk_1E77B4E18;
-  v9 = v6;
+  v9 = revisionCopy;
   v17 = v9;
   v19 = v7;
   v10 = v8;
@@ -2652,10 +2652,10 @@ LABEL_29:
       v13 = 1;
     }
 
-    else if (a4)
+    else if (options)
     {
       [VNError errorForInvalidOperationWithLocalizedDescription:@"The configuration options require multiple model revisions"];
-      *a4 = v13 = 0;
+      *options = v13 = 0;
     }
 
     else
@@ -2666,7 +2666,7 @@ LABEL_29:
 
   else
   {
-    v14 = [VNValidationUtilities originatingRequestSpecifierInOptions:v9 error:a4];
+    v14 = [VNValidationUtilities originatingRequestSpecifierInOptions:v9 error:options];
     v13 = v14 != 0;
     if (v14)
     {
@@ -2726,7 +2726,7 @@ void __102__VNCoreSceneUnderstandingDetector__getSceneNetV5ConfigurationRevision
   }
 }
 
-+ (uint64_t)_sceneNetV5ConfigurationRevisionForRequestSpecifier:(uint64_t)a1
++ (uint64_t)_sceneNetV5ConfigurationRevisionForRequestSpecifier:(uint64_t)specifier
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -2744,7 +2744,7 @@ void __102__VNCoreSceneUnderstandingDetector__getSceneNetV5ConfigurationRevision
   return v5;
 }
 
-+ (uint64_t)_sceneNetV5ConfigurationRevisionForRequestClass:(unint64_t)a3 revision:
++ (uint64_t)_sceneNetV5ConfigurationRevisionForRequestClass:(unint64_t)class revision:
 {
   objc_opt_self();
   v5 = VisionCoreCurrentANEGeneration();
@@ -2774,7 +2774,7 @@ void __102__VNCoreSceneUnderstandingDetector__getSceneNetV5ConfigurationRevision
     v12 = v8[4];
     if (v7 == v12)
     {
-      v13 = v8[5] < a3;
+      v13 = v8[5] < class;
     }
 
     else
@@ -2793,7 +2793,7 @@ void __102__VNCoreSceneUnderstandingDetector__getSceneNetV5ConfigurationRevision
   }
 
   while (v8);
-  if (v11 == v9 || ((v16 = v11[4], v16 != v7) ? (v17 = v7 < v16) : (v17 = v11[5] > a3), v17))
+  if (v11 == v9 || ((v16 = v11[4], v16 != v7) ? (v17 = v7 < v16) : (v17 = v11[5] > class), v17))
   {
 LABEL_20:
     v11 = v9;
@@ -2815,16 +2815,16 @@ LABEL_20:
   v9.receiver = self;
   v9.super_class = VNCoreSceneUnderstandingDetector;
   v3 = [(VNDetector *)&v9 description];
-  v4 = [(CSUSceneNetV5 *)self->_sceneNet configuration];
-  v5 = [v4 revision];
-  if ((v5 - 1) >= 3)
+  configuration = [(CSUSceneNetV5 *)self->_sceneNet configuration];
+  revision = [configuration revision];
+  if ((revision - 1) >= 3)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CSUSceneNetV5ConfigurationRevision(%ld)", v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CSUSceneNetV5ConfigurationRevision(%ld)", revision];
   }
 
   else
   {
-    v6 = off_1E77B50A8[v5 - 1];
+    v6 = off_1E77B50A8[revision - 1];
   }
 
   v7 = [v3 stringByAppendingFormat:@" %@", v6];
@@ -2834,23 +2834,23 @@ LABEL_20:
 
 - (int64_t)sceneNetConfigurationRevision
 {
-  v2 = [(CSUSceneNetV5 *)self->_sceneNet configuration];
-  v3 = [v2 revision];
+  configuration = [(CSUSceneNetV5 *)self->_sceneNet configuration];
+  revision = [configuration revision];
 
-  return v3;
+  return revision;
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11 = 0;
-  v4 = [VNCoreSceneUnderstandingDetector _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:0 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:0 significantEventConfiguration:0 cityNatureConfiguration:a3 forConfigurationOptions:a4 error:?];
+  v4 = [VNCoreSceneUnderstandingDetector _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:0 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:0 significantEventConfiguration:0 cityNatureConfiguration:options forConfigurationOptions:error error:?];
   v5 = v11;
   v6 = v5;
   if (v4)
   {
-    v7 = [v5 inputPixelBufferDescriptor];
-    v8 = -[VNSupportedImageSize initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:]([VNSupportedImageSize alloc], "initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:", [v7 pixelFormat], objc_msgSend(v7, "width"), objc_msgSend(v7, "height"), 1, 0, 0);
+    inputPixelBufferDescriptor = [v5 inputPixelBufferDescriptor];
+    v8 = -[VNSupportedImageSize initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:]([VNSupportedImageSize alloc], "initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:", [inputPixelBufferDescriptor pixelFormat], objc_msgSend(inputPixelBufferDescriptor, "width"), objc_msgSend(inputPixelBufferDescriptor, "height"), 1, 0, 0);
     v12[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   }
@@ -2863,20 +2863,20 @@ LABEL_20:
   return v9;
 }
 
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5.receiver = a1;
+  dictionaryCopy = dictionary;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___VNCoreSceneUnderstandingDetector;
-  objc_msgSendSuper2(&v5, sel_recordDefaultConfigurationOptionsInDictionary_, v4);
-  [v4 setObject:&unk_1F19C1960 forKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
+  objc_msgSendSuper2(&v5, sel_recordDefaultConfigurationOptionsInDictionary_, dictionaryCopy);
+  [dictionaryCopy setObject:&unk_1F19C1960 forKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v27 = 0;
-  if (![(VNCoreSceneUnderstandingDetector *)a1 _getSceneNetV5ConfigurationRevision:v6 forConfigurationOptions:a4 error:?])
+  if (![(VNCoreSceneUnderstandingDetector *)self _getSceneNetV5ConfigurationRevision:optionsCopy forConfigurationOptions:error error:?])
   {
     v18 = 0;
     goto LABEL_24;
@@ -2896,15 +2896,15 @@ LABEL_20:
   v8 = _Block_copy(aBlock);
   v9 = +[VNCoreSceneUnderstandingDetector supportedComputeStageDevicesForOptions:error:]::sceneNetConfigurationCache;
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
-  v11 = [v9 objectForIdentifier:v10 creationBlock:v8 error:a4];
+  v11 = [v9 objectForIdentifier:v10 creationBlock:v8 error:error];
 
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v13 = [v11 supportedComputeDevices];
-    [v12 setObject:v13 forKeyedSubscript:@"VNComputeStageMain"];
+    supportedComputeDevices = [v11 supportedComputeDevices];
+    [v12 setObject:supportedComputeDevices forKeyedSubscript:@"VNComputeStageMain"];
 
-    v14 = [VNValidationUtilities originatingRequestSpecifierInOptions:v6 error:a4];
+    v14 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
     v15 = v14;
     if (!v14)
     {
@@ -2941,9 +2941,9 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v20 = [a1 _newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:v6];
-    v21 = [VNDetector detectorClassForDetectorType:v19 configuredWithOptions:v20 error:a4];
-    if (!v21 || ([(objc_class *)v21 supportedComputeStageDevicesForOptions:v6 error:a4], v22 = objc_claimAutoreleasedReturnValue(), (v23 = v22) == 0))
+    v20 = [self _newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:optionsCopy];
+    v21 = [VNDetector detectorClassForDetectorType:v19 configuredWithOptions:v20 error:error];
+    if (!v21 || ([(objc_class *)v21 supportedComputeStageDevicesForOptions:optionsCopy error:error], v22 = objc_claimAutoreleasedReturnValue(), (v23 = v22) == 0))
     {
 
       v18 = 0;
@@ -2976,7 +2976,7 @@ uint64_t __81__VNCoreSceneUnderstandingDetector_supportedComputeStageDevicesForO
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";
@@ -2985,14 +2985,14 @@ uint64_t __81__VNCoreSceneUnderstandingDetector_supportedComputeStageDevicesForO
   return v3;
 }
 
-+ (id)keyForDetectorWithConfigurationOptions:(id)a3
++ (id)keyForDetectorWithConfigurationOptions:(id)options
 {
-  v4 = a3;
-  v10.receiver = a1;
+  optionsCopy = options;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___VNCoreSceneUnderstandingDetector;
-  v5 = objc_msgSendSuper2(&v10, sel_keyForDetectorWithConfigurationOptions_, v4);
+  v5 = objc_msgSendSuper2(&v10, sel_keyForDetectorWithConfigurationOptions_, optionsCopy);
   v9 = 0;
-  if ([(VNCoreSceneUnderstandingDetector *)a1 _getSceneNetV5ConfigurationRevision:v4 forConfigurationOptions:0 error:?])
+  if ([(VNCoreSceneUnderstandingDetector *)self _getSceneNetV5ConfigurationRevision:optionsCopy forConfigurationOptions:0 error:?])
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
     v7 = [v6 initWithFormat:@"%@:%lu", v5, v9];
@@ -3009,7 +3009,7 @@ uint64_t __81__VNCoreSceneUnderstandingDetector_supportedComputeStageDevicesForO
   block[1] = 3221225472;
   block[2] = __73__VNCoreSceneUnderstandingDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNCoreSceneUnderstandingDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNCoreSceneUnderstandingDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -3035,15 +3035,15 @@ void __73__VNCoreSceneUnderstandingDetector_configurationOptionKeysForDetectorKe
   +[VNCoreSceneUnderstandingDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)allCityNatureIdentifiersWithConfigurationOptions:(id)a3 error:(id *)a4
++ (id)allCityNatureIdentifiersWithConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v11 = 0;
-  v7 = [(VNCoreSceneUnderstandingDetector *)a1 _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:0 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:0 significantEventConfiguration:&v11 cityNatureConfiguration:v6 forConfigurationOptions:a4 error:?];
+  v7 = [(VNCoreSceneUnderstandingDetector *)self _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:0 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:0 significantEventConfiguration:&v11 cityNatureConfiguration:optionsCopy forConfigurationOptions:error error:?];
   v8 = v11;
   if (v7)
   {
-    v9 = [(VNCoreSceneUnderstandingDetector *)a1 _identifiersSupportedByCustomClassifierConfiguration:v8 error:a4];
+    v9 = [(VNCoreSceneUnderstandingDetector *)self _identifiersSupportedByCustomClassifierConfiguration:v8 error:error];
   }
 
   else
@@ -3054,22 +3054,22 @@ void __73__VNCoreSceneUnderstandingDetector_configurationOptionKeysForDetectorKe
   return v9;
 }
 
-+ (id)_identifiersSupportedByCustomClassifierConfiguration:(uint64_t)a3 error:
++ (id)_identifiersSupportedByCustomClassifierConfiguration:(uint64_t)configuration error:
 {
   v4 = a2;
   objc_opt_self();
-  v5 = [v4 taxonomyWithError:a3];
+  v5 = [v4 taxonomyWithError:configuration];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v7 = [v4 vocabularyName];
+    vocabularyName = [v4 vocabularyName];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __95__VNCoreSceneUnderstandingDetector__identifiersSupportedByCustomClassifierConfiguration_error___block_invoke;
     v10[3] = &unk_1E77B4E90;
     v8 = v6;
     v11 = v8;
-    [v5 enumerateLabelsInVocabularyNamed:v7 usingBlock:v10];
+    [v5 enumerateLabelsInVocabularyNamed:vocabularyName usingBlock:v10];
 
     [v8 sortUsingSelector:sel_compare_];
   }
@@ -3082,15 +3082,15 @@ void __73__VNCoreSceneUnderstandingDetector_configurationOptionKeysForDetectorKe
   return v8;
 }
 
-+ (id)allSignificantEventIdentifiersWithConfigurationOptions:(id)a3 error:(id *)a4
++ (id)allSignificantEventIdentifiersWithConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v11 = 0;
-  v7 = [(VNCoreSceneUnderstandingDetector *)a1 _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:0 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:&v11 significantEventConfiguration:0 cityNatureConfiguration:v6 forConfigurationOptions:a4 error:?];
+  v7 = [(VNCoreSceneUnderstandingDetector *)self _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:0 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:&v11 significantEventConfiguration:0 cityNatureConfiguration:optionsCopy forConfigurationOptions:error error:?];
   v8 = v11;
   if (v7)
   {
-    v9 = [(VNCoreSceneUnderstandingDetector *)a1 _identifiersSupportedByCustomClassifierConfiguration:v8 error:a4];
+    v9 = [(VNCoreSceneUnderstandingDetector *)self _identifiersSupportedByCustomClassifierConfiguration:v8 error:error];
   }
 
   else
@@ -3101,15 +3101,15 @@ void __73__VNCoreSceneUnderstandingDetector_configurationOptionKeysForDetectorKe
   return v9;
 }
 
-+ (id)allVN5kJNH3eYuyaLxNpZr5Z7ziIdentifiersWithConfigurationOptions:(id)a3 error:(id *)a4
++ (id)allVN5kJNH3eYuyaLxNpZr5Z7ziIdentifiersWithConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v11 = 0;
-  v7 = [(VNCoreSceneUnderstandingDetector *)a1 _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:&v11 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:0 significantEventConfiguration:0 cityNatureConfiguration:v6 forConfigurationOptions:a4 error:?];
+  v7 = [(VNCoreSceneUnderstandingDetector *)self _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:&v11 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:0 significantEventConfiguration:0 cityNatureConfiguration:optionsCopy forConfigurationOptions:error error:?];
   v8 = v11;
   if (v7)
   {
-    v9 = [(VNCoreSceneUnderstandingDetector *)a1 _identifiersSupportedByCustomClassifierConfiguration:v8 error:a4];
+    v9 = [(VNCoreSceneUnderstandingDetector *)self _identifiersSupportedByCustomClassifierConfiguration:v8 error:error];
   }
 
   else
@@ -3120,34 +3120,34 @@ void __73__VNCoreSceneUnderstandingDetector_configurationOptionKeysForDetectorKe
   return v9;
 }
 
-+ (id)allRecognizedObjectIdentifiersWithConfigurationOptions:(id)a3 error:(id *)a4
++ (id)allRecognizedObjectIdentifiersWithConfigurationOptions:(id)options error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(VNCoreSceneUnderstandingDetector *)a1 _globalOrProvidedSessionInOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [(VNCoreSceneUnderstandingDetector *)self _globalOrProvidedSessionInOptions:optionsCopy error:error];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_RecognizeObjectsConfigurations"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_RecognizeObjectsConfigurations"];
     if ([v8 count] == 1)
     {
-      v28 = [v8 firstObject];
+      firstObject = [v8 firstObject];
       v33 = 0;
-      v9 = [(VNCoreSceneUnderstandingDetector *)a1 _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:0 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:0 significantEventConfiguration:0 cityNatureConfiguration:v6 forConfigurationOptions:a4 error:?];
+      v9 = [(VNCoreSceneUnderstandingDetector *)self _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:0 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:0 significantEventConfiguration:0 cityNatureConfiguration:optionsCopy forConfigurationOptions:error error:?];
       v10 = v33;
       v27 = v10;
       if (v9)
       {
-        v11 = [(VNCoreSceneUnderstandingDetector *)a1 _detectedObjectTaxonomyForCSUSceneNetV5Configuration:v10 session:v7 error:a4];
+        v11 = [(VNCoreSceneUnderstandingDetector *)self _detectedObjectTaxonomyForCSUSceneNetV5Configuration:v10 session:v7 error:error];
         v26 = v11;
         if (v11)
         {
-          v12 = [v11 labels];
-          v13 = [v12 mutableCopy];
+          labels = [v11 labels];
+          v13 = [labels mutableCopy];
 
-          v14 = [v28 observationsRecipient];
-          v25 = [v14 originatingRequestSpecifier];
+          observationsRecipient = [firstObject observationsRecipient];
+          originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
 
-          v15 = [a1 _specialCaseRecognizedObjectsDuplicationsForOriginatingRequestSpecifier:v25];
+          v15 = [self _specialCaseRecognizedObjectsDuplicationsForOriginatingRequestSpecifier:originatingRequestSpecifier];
           v16 = v15;
           if (v15)
           {
@@ -3197,10 +3197,10 @@ void __73__VNCoreSceneUnderstandingDetector_configurationOptionKeysForDetectorKe
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"incorrect recognized objects configurations"];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -3217,14 +3217,14 @@ void __73__VNCoreSceneUnderstandingDetector_configurationOptionKeysForDetectorKe
   return v13;
 }
 
-+ (id)_globalOrProvidedSessionInOptions:(uint64_t)a3 error:
++ (id)_globalOrProvidedSessionInOptions:(uint64_t)options error:
 {
   v4 = a2;
   objc_opt_self();
   v8 = 0;
-  LOBYTE(a3) = [VNValidationUtilities getOptionalObject:&v8 ofClass:objc_opt_class() forKey:@"VNDetectorProcessOption_Session" inOptions:v4 error:a3];
+  LOBYTE(options) = [VNValidationUtilities getOptionalObject:&v8 ofClass:objc_opt_class() forKey:@"VNDetectorProcessOption_Session" inOptions:v4 error:options];
   v5 = v8;
-  if (a3)
+  if (options)
   {
     if (!v5)
     {
@@ -3243,10 +3243,10 @@ void __73__VNCoreSceneUnderstandingDetector_configurationOptionKeysForDetectorKe
   return v6;
 }
 
-+ (id)allClassificationIdentifiersWithConfigurationOptions:(id)a3 error:(id *)a4
++ (id)allClassificationIdentifiersWithConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VNCoreSceneUnderstandingDetector *)a1 _globalOrProvidedSessionInOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [(VNCoreSceneUnderstandingDetector *)self _globalOrProvidedSessionInOptions:optionsCopy error:error];
   if (!v7)
   {
     v14 = 0;
@@ -3254,20 +3254,20 @@ void __73__VNCoreSceneUnderstandingDetector_configurationOptionKeysForDetectorKe
   }
 
   v21 = 0;
-  v8 = [(VNCoreSceneUnderstandingDetector *)a1 _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:0 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:0 significantEventConfiguration:0 cityNatureConfiguration:v6 forConfigurationOptions:a4 error:?];
+  v8 = [(VNCoreSceneUnderstandingDetector *)self _getCSUSceneNetV5Configuration:0 junkLeafConfiguration:0 junkHierarchicalConfiguration:0 VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:0 significantEventConfiguration:0 cityNatureConfiguration:optionsCopy forConfigurationOptions:error error:?];
   v9 = v21;
   if (v8)
   {
-    v10 = [v6 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageClassificationConfigurations"];
+    v10 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageClassificationConfigurations"];
     if ([v10 count] == 1)
     {
-      v11 = [(VNCoreSceneUnderstandingDetector *)a1 _sceneNetTaxonomyForCSUSceneNetV5Configuration:v9 session:v7 error:a4];
+      v11 = [(VNCoreSceneUnderstandingDetector *)self _sceneNetTaxonomyForCSUSceneNetV5Configuration:v9 session:v7 error:error];
       if (v11)
       {
-        v12 = [v10 firstObject];
-        v13 = [v12 disallowedList];
+        firstObject = [v10 firstObject];
+        disallowedList = [firstObject disallowedList];
 
-        v14 = [v11 labelsFilteredByDisallowedList:v13];
+        v14 = [v11 labelsFilteredByDisallowedList:disallowedList];
 LABEL_18:
 
         goto LABEL_19;
@@ -3276,29 +3276,29 @@ LABEL_18:
 
     else
     {
-      v11 = [v6 objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_EntityNetClassificationConfigurations"];
+      v11 = [optionsCopy objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_EntityNetClassificationConfigurations"];
       if ([v11 count] == 1)
       {
         v20 = 0;
-        v15 = [(VNCoreSceneUnderstandingDetector *)a1 _getEntityNetTaxonomy:v9 forCSUSceneNetV5Configuration:v7 session:a4 error:?];
+        v15 = [(VNCoreSceneUnderstandingDetector *)self _getEntityNetTaxonomy:v9 forCSUSceneNetV5Configuration:v7 session:error error:?];
         v16 = v20;
-        v13 = v16;
+        disallowedList = v16;
         if (v15)
         {
           if (v16)
           {
-            v17 = [v11 firstObject];
-            v18 = [v17 disallowedList];
+            firstObject2 = [v11 firstObject];
+            disallowedList2 = [firstObject2 disallowedList];
 
-            v14 = [v13 labelsFilteredByDisallowedList:v18];
+            v14 = [disallowedList labelsFilteredByDisallowedList:disallowedList2];
 
             goto LABEL_18;
           }
 
-          if (a4)
+          if (error)
           {
             [VNError errorForInvalidModelWithLocalizedDescription:@"classification is not supported"];
-            *a4 = v14 = 0;
+            *error = v14 = 0;
             goto LABEL_18;
           }
         }
@@ -3307,10 +3307,10 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      if (a4)
+      if (error)
       {
         [VNError errorForInternalErrorWithLocalizedDescription:@"incorrect classification configurations"];
-        *a4 = v14 = 0;
+        *error = v14 = 0;
 LABEL_19:
 
         goto LABEL_20;
@@ -3329,11 +3329,11 @@ LABEL_21:
   return v14;
 }
 
-+ (id)_newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:(id)a3
++ (id)_newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 objectForKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
+  optionsCopy = options;
+  v4 = [optionsCopy mutableCopy];
+  v5 = [optionsCopy objectForKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
   if ([v5 count])
   {
     v6 = objc_alloc(MEMORY[0x1E695DF20]);
@@ -3346,10 +3346,10 @@ LABEL_21:
   return v4;
 }
 
-+ (id)_specialCaseRecognizedObjectsDuplicationsForOriginatingRequestSpecifier:(id)a3
++ (id)_specialCaseRecognizedObjectsDuplicationsForOriginatingRequestSpecifier:(id)specifier
 {
-  v3 = a3;
-  if ([v3 specifiesRequestClass:objc_opt_class() revision:3737841667])
+  specifierCopy = specifier;
+  if ([specifierCopy specifiesRequestClass:objc_opt_class() revision:3737841667])
   {
     if (+[VNCoreSceneUnderstandingDetector _specialCaseRecognizedObjectsDuplicationsForOriginatingRequestSpecifier:]::onceToken != -1)
     {

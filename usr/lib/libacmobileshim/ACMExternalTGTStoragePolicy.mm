@@ -1,15 +1,15 @@
 @interface ACMExternalTGTStoragePolicy
 - (ACFCryptographProtocol)cryptograph;
-- (BOOL)performRemoveTokenWithPrincipal:(id)a3 service:(id)a4;
+- (BOOL)performRemoveTokenWithPrincipal:(id)principal service:(id)service;
 - (NSData)secret;
-- (id)decryptTokenData:(id)a3;
-- (id)encryptTokenData:(id)a3;
+- (id)decryptTokenData:(id)data;
+- (id)encryptTokenData:(id)data;
 - (id)preferences;
-- (id)searchItemWithInfo:(id)a3;
+- (id)searchItemWithInfo:(id)info;
 - (id)service;
-- (id)tokenDataWithDictionary:(id)a3;
-- (id)tokenDictionaryWithData:(id)a3;
-- (int)storeItemWithInfo:(id)a3;
+- (id)tokenDataWithDictionary:(id)dictionary;
+- (id)tokenDictionaryWithData:(id)data;
+- (int)storeItemWithInfo:(id)info;
 - (void)resetSecret;
 @end
 
@@ -22,41 +22,41 @@
   return [v2 stringByAppendingString:@".appleconnect.tgt"];
 }
 
-- (id)searchItemWithInfo:(id)a3
+- (id)searchItemWithInfo:(id)info
 {
-  v4 = [(ACMKeychainTGTStoragePolicy *)self keychainManager];
+  keychainManager = [(ACMKeychainTGTStoragePolicy *)self keychainManager];
 
-  return [(ACFKeychainManagerProtocol *)v4 searchItemWithInfo:a3];
+  return [(ACFKeychainManagerProtocol *)keychainManager searchItemWithInfo:info];
 }
 
-- (int)storeItemWithInfo:(id)a3
+- (int)storeItemWithInfo:(id)info
 {
-  [a3 setAccessibleType:*MEMORY[0x29EDBBB98]];
+  [info setAccessibleType:*MEMORY[0x29EDBBB98]];
   v6.receiver = self;
   v6.super_class = ACMExternalTGTStoragePolicy;
-  return [(ACMKeychainTGTStoragePolicy *)&v6 storeItemWithInfo:a3];
+  return [(ACMKeychainTGTStoragePolicy *)&v6 storeItemWithInfo:info];
 }
 
-- (id)tokenDataWithDictionary:(id)a3
+- (id)tokenDataWithDictionary:(id)dictionary
 {
   v4.receiver = self;
   v4.super_class = ACMExternalTGTStoragePolicy;
-  return [(ACMExternalTGTStoragePolicy *)self encryptTokenData:[(ACMKeychainTGTStoragePolicy *)&v4 tokenDataWithDictionary:a3]];
+  return [(ACMExternalTGTStoragePolicy *)self encryptTokenData:[(ACMKeychainTGTStoragePolicy *)&v4 tokenDataWithDictionary:dictionary]];
 }
 
-- (id)tokenDictionaryWithData:(id)a3
+- (id)tokenDictionaryWithData:(id)data
 {
   v4.receiver = self;
   v4.super_class = ACMExternalTGTStoragePolicy;
-  return [(ACMKeychainTGTStoragePolicy *)&v4 tokenDictionaryWithData:[(ACMExternalTGTStoragePolicy *)self decryptTokenData:a3]];
+  return [(ACMKeychainTGTStoragePolicy *)&v4 tokenDictionaryWithData:[(ACMExternalTGTStoragePolicy *)self decryptTokenData:data]];
 }
 
-- (BOOL)performRemoveTokenWithPrincipal:(id)a3 service:(id)a4
+- (BOOL)performRemoveTokenWithPrincipal:(id)principal service:(id)service
 {
   [(ACMExternalTGTStoragePolicy *)self resetSecret];
   v8.receiver = self;
   v8.super_class = ACMExternalTGTStoragePolicy;
-  return [(ACMKeychainTGTStoragePolicy *)&v8 performRemoveTokenWithPrincipal:a3 service:a4];
+  return [(ACMKeychainTGTStoragePolicy *)&v8 performRemoveTokenWithPrincipal:principal service:service];
 }
 
 - (ACFCryptographProtocol)cryptograph
@@ -81,9 +81,9 @@
     self->_secret = v3;
     if (![(NSData *)v3 length])
     {
-      v4 = [(ACMExternalTGTStoragePolicy *)self cryptograph];
-      v5 = [(ACFCryptographProtocol *)v4 randomDataOfLength:2 * kACFAES128KeySize];
-      self->_secret = v5;
+      cryptograph = [(ACMExternalTGTStoragePolicy *)self cryptograph];
+      kACFAES128KeySize = [(ACFCryptographProtocol *)cryptograph randomDataOfLength:2 * kACFAES128KeySize];
+      self->_secret = kACFAES128KeySize;
       [-[ACMExternalTGTStoragePolicy preferences](self "preferences")];
     }
   }
@@ -98,17 +98,17 @@
   self->_secret = 0;
 }
 
-- (id)encryptTokenData:(id)a3
+- (id)encryptTokenData:(id)data
 {
-  v5 = [(ACMExternalTGTStoragePolicy *)self secret];
+  secret = [(ACMExternalTGTStoragePolicy *)self secret];
   v6 = kACFAES128KeySize;
-  if ([(NSData *)v5 length]== 2 * v6)
+  if ([(NSData *)secret length]== 2 * v6)
   {
-    v7 = [(NSData *)v5 subdataWithRange:0, kACFAES128KeySize];
-    v8 = [(NSData *)v5 subdataWithRange:kACFAES128KeySize, kACFAES128KeySize];
-    v9 = [(ACMExternalTGTStoragePolicy *)self cryptograph];
+    kACFAES128KeySize = [(NSData *)secret subdataWithRange:0, kACFAES128KeySize];
+    kACFAES128KeySize2 = [(NSData *)secret subdataWithRange:kACFAES128KeySize, kACFAES128KeySize];
+    cryptograph = [(ACMExternalTGTStoragePolicy *)self cryptograph];
 
-    return [(ACFCryptographProtocol *)v9 encryptAES128CBCData:a3 withKey:v8 initializationVector:v7 pading:1];
+    return [(ACFCryptographProtocol *)cryptograph encryptAES128CBCData:data withKey:kACFAES128KeySize2 initializationVector:kACFAES128KeySize pading:1];
   }
 
   else
@@ -122,17 +122,17 @@
   }
 }
 
-- (id)decryptTokenData:(id)a3
+- (id)decryptTokenData:(id)data
 {
-  v5 = [(ACMExternalTGTStoragePolicy *)self secret];
+  secret = [(ACMExternalTGTStoragePolicy *)self secret];
   v6 = kACFAES128KeySize;
-  if ([(NSData *)v5 length]== 2 * v6)
+  if ([(NSData *)secret length]== 2 * v6)
   {
-    v7 = [(NSData *)v5 subdataWithRange:0, kACFAES128KeySize];
-    v8 = [(NSData *)v5 subdataWithRange:kACFAES128KeySize, kACFAES128KeySize];
-    v9 = [(ACMExternalTGTStoragePolicy *)self cryptograph];
+    kACFAES128KeySize = [(NSData *)secret subdataWithRange:0, kACFAES128KeySize];
+    kACFAES128KeySize2 = [(NSData *)secret subdataWithRange:kACFAES128KeySize, kACFAES128KeySize];
+    cryptograph = [(ACMExternalTGTStoragePolicy *)self cryptograph];
 
-    return [(ACFCryptographProtocol *)v9 decryptAES128CBCData:a3 withKey:v8 initializationVector:v7 pading:1];
+    return [(ACFCryptographProtocol *)cryptograph decryptAES128CBCData:data withKey:kACFAES128KeySize2 initializationVector:kACFAES128KeySize pading:1];
   }
 
   else

@@ -1,32 +1,32 @@
 @interface DDGenericURLPreviewAction
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4;
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result;
 - (id)commitURL;
 - (id)menuActions;
 @end
 
 @implementation DDGenericURLPreviewAction
 
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result
 {
-  v5 = a3;
-  if (!v5)
+  urlCopy = url;
+  if (!urlCopy)
   {
-    if (!_DDResultIsURL(a4))
+    if (!_DDResultIsURL(result))
     {
       return 0;
     }
 
-    v5 = _DDURLFromResult(a4);
-    if (!v5)
+    urlCopy = _DDURLFromResult(result);
+    if (!urlCopy)
     {
       return 0;
     }
   }
 
-  v6 = v5;
-  v7 = [v5 scheme];
-  v8 = [v7 lowercaseString];
-  if ([v8 isEqualToString:@"upi"])
+  v6 = urlCopy;
+  scheme = [urlCopy scheme];
+  lowercaseString = [scheme lowercaseString];
+  if ([lowercaseString isEqualToString:@"upi"])
   {
     LOBYTE(v9) = 0;
   }

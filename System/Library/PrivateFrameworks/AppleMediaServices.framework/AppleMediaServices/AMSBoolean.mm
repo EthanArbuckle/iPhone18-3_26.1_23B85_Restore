@@ -1,68 +1,68 @@
 @interface AMSBoolean
-+ (id)BOOLeanWithBool:(BOOL)a3;
-- (AMSBoolean)initWithBool:(BOOL)a3;
-- (AMSBoolean)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBool:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)BOOLeanWithBool:(BOOL)bool;
+- (AMSBoolean)initWithBool:(BOOL)bool;
+- (AMSBoolean)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBool:(id)bool;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSBoolean
 
-- (AMSBoolean)initWithBool:(BOOL)a3
+- (AMSBoolean)initWithBool:(BOOL)bool
 {
   v5.receiver = self;
   v5.super_class = AMSBoolean;
   result = [(AMSBoolean *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = bool;
   }
 
   return result;
 }
 
-+ (id)BOOLeanWithBool:(BOOL)a3
++ (id)BOOLeanWithBool:(BOOL)bool
 {
-  v3 = [[a1 alloc] initWithBool:a3];
+  v3 = [[self alloc] initWithBool:bool];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSBoolean *)self isEqualToBool:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSBoolean *)self isEqualToBool:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToBool:(id)a3
+- (BOOL)isEqualToBool:(id)bool
 {
-  if (!a3)
+  if (!bool)
   {
     return 0;
   }
 
-  v4 = a3;
+  boolCopy = bool;
   LOBYTE(self) = [(AMSBoolean *)self value];
-  v5 = [v4 value];
+  value = [boolCopy value];
 
-  return self ^ v5 ^ 1;
+  return self ^ value ^ 1;
 }
 
-- (AMSBoolean)initWithCoder:(id)a3
+- (AMSBoolean)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"value"];
+  v4 = [coder decodeBoolForKey:@"value"];
 
   return [(AMSBoolean *)self initWithBool:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[AMSBoolean value](self forKey:{"value"), @"value"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[AMSBoolean value](self forKey:{"value"), @"value"}];
 }
 
 @end

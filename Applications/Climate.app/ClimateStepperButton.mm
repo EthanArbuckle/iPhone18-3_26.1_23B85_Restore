@@ -1,7 +1,7 @@
 @interface ClimateStepperButton
 - (BOOL)isHighlighted;
 - (_TtC7Climate20ClimateStepperButton)init;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation ClimateStepperButton
@@ -13,13 +13,13 @@
   return [(ClimateButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for ClimateStepperButton(0);
   v4 = v5.receiver;
-  [(ClimateButton *)&v5 setHighlighted:v3];
+  [(ClimateButton *)&v5 setHighlighted:highlightedCopy];
   sub_10002D2C4();
 }
 

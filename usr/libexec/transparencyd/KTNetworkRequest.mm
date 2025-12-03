@@ -1,20 +1,20 @@
 @interface KTNetworkRequest
 - (_TtC13transparencyd16KTNetworkRequest)init;
-- (_TtC13transparencyd16KTNetworkRequest)initWithLogClient:(id)a3;
-- (_TtC13transparencyd16KTNetworkRequest)requestWithIdsURI:(id)a3 application:(id)a4 traceUUID:(id)a5 timeout:(double)a6 complete:(id)a7;
+- (_TtC13transparencyd16KTNetworkRequest)initWithLogClient:(id)client;
+- (_TtC13transparencyd16KTNetworkRequest)requestWithIdsURI:(id)i application:(id)application traceUUID:(id)d timeout:(double)timeout complete:(id)complete;
 @end
 
 @implementation KTNetworkRequest
 
-- (_TtC13transparencyd16KTNetworkRequest)initWithLogClient:(id)a3
+- (_TtC13transparencyd16KTNetworkRequest)initWithLogClient:(id)client
 {
   v5 = type metadata accessor for Logger();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
   __chkstk_darwin(v5);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  *(&self->super.isa + OBJC_IVAR____TtC13transparencyd16KTNetworkRequest_logClient) = a3;
-  v10 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC13transparencyd16KTNetworkRequest_logClient) = client;
+  clientCopy = client;
   Logger.init(subsystem:category:)();
   (*(v6 + 32))(self + OBJC_IVAR____TtC13transparencyd16KTNetworkRequest_log, v9, v5);
   v11 = type metadata accessor for KTNetworkRequest();
@@ -25,17 +25,17 @@
   return v12;
 }
 
-- (_TtC13transparencyd16KTNetworkRequest)requestWithIdsURI:(id)a3 application:(id)a4 traceUUID:(id)a5 timeout:(double)a6 complete:(id)a7
+- (_TtC13transparencyd16KTNetworkRequest)requestWithIdsURI:(id)i application:(id)application traceUUID:(id)d timeout:(double)timeout complete:(id)complete
 {
-  v10 = _Block_copy(a7);
+  v10 = _Block_copy(complete);
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  if (a5)
+  if (d)
   {
     v17 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a5 = v18;
+    d = v18;
   }
 
   else
@@ -44,8 +44,8 @@
   }
 
   _Block_copy(v10);
-  v19 = self;
-  sub_10009A494(v11, v13, v14, v16, v17, a5, v19, v10, a6);
+  selfCopy = self;
+  sub_10009A494(v11, v13, v14, v16, v17, d, selfCopy, v10, timeout);
   _Block_release(v10);
   _Block_release(v10);
 }

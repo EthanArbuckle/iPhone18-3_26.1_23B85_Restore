@@ -1,12 +1,12 @@
 @interface CNPRUISPosterConfigurationUtilities
-+ (id)titleStyleAttributesForCNConfiguration:(id)a3 error:(id *)a4;
++ (id)titleStyleAttributesForCNConfiguration:(id)configuration error:(id *)error;
 @end
 
 @implementation CNPRUISPosterConfigurationUtilities
 
-+ (id)titleStyleAttributesForCNConfiguration:(id)a3 error:(id *)a4
++ (id)titleStyleAttributesForCNConfiguration:(id)configuration error:(id *)error
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -25,8 +25,8 @@
 
   v7 = v6;
   _Block_object_dispose(&v13, 8);
-  v8 = [v5 wrappedPosterConfiguration];
-  v9 = [v6 titleStyleAttributesForConfiguration:v8 error:a4];
+  wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
+  v9 = [v6 titleStyleAttributesForConfiguration:wrappedPosterConfiguration error:error];
 
   if (v9)
   {

@@ -1,8 +1,8 @@
 @interface FCArticleMetadata
 - (BOOL)isPaid;
 - (BOOL)isTreatedAsNew;
-- (FCArticleMetadata)initWithDictionary:(id)a3;
-- (FCArticleMetadata)initWithDictionary:(id)a3 identifier:(id)a4;
+- (FCArticleMetadata)initWithDictionary:(id)dictionary;
+- (FCArticleMetadata)initWithDictionary:(id)dictionary identifier:(id)identifier;
 - (NSArray)sportsEventIDs;
 - (NSDate)publishDate;
 - (NSString)articleID;
@@ -34,20 +34,20 @@
 
 @implementation FCArticleMetadata
 
-- (FCArticleMetadata)initWithDictionary:(id)a3
+- (FCArticleMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = FCArticleMetadata;
   v5 = [(FCArticleMetadata *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
 
-    v8 = [(FCArticleMetadata *)v5 dictionary];
-    v9 = [v8 objectForKeyedSubscript:@"displayDate"];
+    dictionary = [(FCArticleMetadata *)v5 dictionary];
+    v9 = [dictionary objectForKeyedSubscript:@"displayDate"];
 
     if (v9)
     {
@@ -66,14 +66,14 @@
   return v5;
 }
 
-- (FCArticleMetadata)initWithDictionary:(id)a3 identifier:(id)a4
+- (FCArticleMetadata)initWithDictionary:(id)dictionary identifier:(id)identifier
 {
-  v7 = a4;
-  v8 = [(FCArticleMetadata *)self initWithDictionary:a3];
+  identifierCopy = identifier;
+  v8 = [(FCArticleMetadata *)self initWithDictionary:dictionary];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a4);
+    objc_storeStrong(&v8->_identifier, identifier);
   }
 
   return v9;
@@ -81,206 +81,206 @@
 
 - (NSString)title
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"title"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"title"];
 
   return v3;
 }
 
 - (NSString)storyType
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"storyType"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"storyType"];
 
   return v3;
 }
 
 - (NSString)articleID
 {
-  v3 = [(FCArticleMetadata *)self dictionary];
-  v4 = [v3 objectForKeyedSubscript:@"id"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v4 = [dictionary objectForKeyedSubscript:@"id"];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    identifier = v4;
   }
 
   else
   {
-    v6 = [(FCArticleMetadata *)self identifier];
+    identifier = [(FCArticleMetadata *)self identifier];
   }
 
-  v7 = v6;
+  v7 = identifier;
 
   return v7;
 }
 
 - (NSString)shortExcerpt
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"shortExcerpt"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"shortExcerpt"];
 
   return v3;
 }
 
 - (NSString)thumbnailTextColor
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailTextColor"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailTextColor"];
 
   return v3;
 }
 
 - (NSString)thumbnailBackgroundColor
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailBackgroundColor"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailBackgroundColor"];
 
   return v3;
 }
 
 - (NSString)sourceChannelTagID
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"sourceChannelTagID"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"sourceChannelTagID"];
 
   return v3;
 }
 
 - (NSString)thumbnailAccentColor
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailAccentColor"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailAccentColor"];
 
   return v3;
 }
 
 - (NSString)thumbnailPrimaryColor
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailPrimaryColor"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailPrimaryColor"];
 
   return v3;
 }
 
 - (BOOL)isPaid
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"isPaid"];
-  v4 = [v3 BOOLValue];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"isPaid"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)thumbnail
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnail"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnail"];
 
   return v3;
 }
 
 - (int64_t)thumbnailMetadata
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailMetadata"];
-  v4 = [v3 longLongValue];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailMetadata"];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
 - (NSString)thumbnailMedium
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailMedium"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailMedium"];
 
   return v3;
 }
 
 - (int64_t)thumbnailMediumMetadata
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailMediumMetadata"];
-  v4 = [v3 longLongValue];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailMediumMetadata"];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
 - (NSString)thumbnailHQ
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailHQ"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailHQ"];
 
   return v3;
 }
 
 - (int64_t)thumbnailHQMetadata
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailHQMetadata"];
-  v4 = [v3 longLongValue];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailHQMetadata"];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
 - (NSString)thumbnailUltraHQ
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailUltraHQ"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailUltraHQ"];
 
   return v3;
 }
 
 - (int64_t)thumbnailUltraHQMetadata
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailUltraHQMetadata"];
-  v4 = [v3 longLongValue];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailUltraHQMetadata"];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
 - (int64_t)thumbnailFocalFrame
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"thumbnailFocalFrame"];
-  v4 = [v3 longLongValue];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"thumbnailFocalFrame"];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
 - (NSDate)publishDate
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"publishDate"];
-  v4 = [v3 longLongValue];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"publishDate"];
+  longLongValue = [v3 longLongValue];
 
   v5 = MEMORY[0x1E695DF00];
 
-  return [v5 fc_dateWithMillisecondTimeIntervalSince1970:v4];
+  return [v5 fc_dateWithMillisecondTimeIntervalSince1970:longLongValue];
 }
 
 - (BOOL)isTreatedAsNew
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"isTreatedAsNew"];
-  v4 = [v3 BOOLValue];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"isTreatedAsNew"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)publisherID
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"sourceChannelTagID"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"sourceChannelTagID"];
 
   return v3;
 }
 
 - (int64_t)contentType
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"contentType"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"contentType"];
   v4 = FCArticleContentTypeFromString(v3);
 
   return v4;
@@ -288,40 +288,40 @@
 
 - (NSString)contentURL
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"contentURL"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"contentURL"];
 
   return v3;
 }
 
 - (NSString)videoURL
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"videoURL"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"videoURL"];
 
   return v3;
 }
 
 - (NSString)videoType
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"videoType"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"videoType"];
 
   return v3;
 }
 
 - (NSArray)sportsEventIDs
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"sportsEventIDs"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"sportsEventIDs"];
 
   return v3;
 }
 
 - (NSURL)routeURL
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"routeURL"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"routeURL"];
 
   if ([v3 length])
   {
@@ -338,8 +338,8 @@
 
 - (double)conditionalScore
 {
-  v2 = [(FCArticleMetadata *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"conditionalScore"];
+  dictionary = [(FCArticleMetadata *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"conditionalScore"];
   [v3 doubleValue];
   v5 = v4;
 

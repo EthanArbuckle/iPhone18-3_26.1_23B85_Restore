@@ -1,32 +1,32 @@
 @interface NSFileVersion
-+ (BOOL)_isTemporaryStorageRequiredForGSError:(id)a3 andURL:(id)a4;
-+ (BOOL)_permanentVersionStorageSupportedForURL:(id)a3 temporaryStorageIdentifier:(id *)a4 error:(id *)a5;
-+ (BOOL)_removeOtherVersionsOfItemAtURL:(id)a3 temporaryStorageIdentifier:(id)a4 error:(id *)a5;
-+ (BOOL)unresolvedConflictsExistForItemAtURL:(id)a3;
++ (BOOL)_isTemporaryStorageRequiredForGSError:(id)error andURL:(id)l;
++ (BOOL)_permanentVersionStorageSupportedForURL:(id)l temporaryStorageIdentifier:(id *)identifier error:(id *)error;
++ (BOOL)_removeOtherVersionsOfItemAtURL:(id)l temporaryStorageIdentifier:(id)identifier error:(id *)error;
++ (BOOL)unresolvedConflictsExistForItemAtURL:(id)l;
 + (NSArray)unresolvedConflictVersionsOfItemAtURL:(NSURL *)url;
 + (NSFileVersion)addVersionOfItemAtURL:(NSURL *)url withContentsOfURL:(NSURL *)contentsURL options:(NSFileVersionAddingOptions)options error:(NSError *)outError;
 + (NSFileVersion)currentVersionOfItemAtURL:(NSURL *)url;
 + (NSURL)temporaryDirectoryURLForNewVersionOfItemAtURL:(NSURL *)url;
-+ (id)_addVersionOfItemAtURL:(id)a3 withContentsOfURL:(id)a4 options:(unint64_t)a5 userInfo:(id)a6 temporaryStorageIdentifier:(id *)a7 error:(id *)a8;
-+ (id)_autosaveDirectoryURLCreateIfNecessary:(BOOL)a3;
-+ (id)_existingLibraryForURL:(id)a3 temporaryStorageIdentifier:(id)a4;
-+ (id)_libraryForURL:(id)a3 temporaryStorageIdentifier:(id *)a4;
-+ (id)_makePermanentStorageLibraryForURL:(id)a3 temporaryStorageRequired:(BOOL *)a4 error:(id *)a5;
++ (id)_addVersionOfItemAtURL:(id)l withContentsOfURL:(id)rL options:(unint64_t)options userInfo:(id)info temporaryStorageIdentifier:(id *)identifier error:(id *)error;
++ (id)_autosaveDirectoryURLCreateIfNecessary:(BOOL)necessary;
++ (id)_existingLibraryForURL:(id)l temporaryStorageIdentifier:(id)identifier;
++ (id)_libraryForURL:(id)l temporaryStorageIdentifier:(id *)identifier;
++ (id)_makePermanentStorageLibraryForURL:(id)l temporaryStorageRequired:(BOOL *)required error:(id *)error;
 + (id)_makeTemporaryStorageIdentifier;
-+ (id)_otherVersionsOfItemAtURL:(id)a3 temporaryStorageIdentifier:(id)a4 withoutOptions:(unint64_t)a5;
-+ (id)_temporaryDirectoryURLForNewVersionOfItemAtURL:(id)a3 temporaryStorageIdentifier:(id)a4;
-+ (id)_temporaryStorageLocationForIdentifier:(id)a3;
-+ (id)_versionOfItemAtURL:(id)a3 forClientID:(id)a4 name:(id)a5 temporaryStorageIdentifier:(id)a6 evenIfDeleted:(BOOL)a7;
-+ (id)_versionOfItemAtURL:(id)a3 forPersistentIdentifier:(id)a4 temporaryStorageIdentifier:(id)a5;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
-+ (void)_markConflicts:(id)a3 asHandledForItemAtURL:(id)a4;
-+ (void)_removeTemporaryDirectoryAtURL:(id)a3;
-+ (void)getNonlocalVersionsOfItemFromBRAtURL:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-+ (void)getNonlocalVersionsOfItemFromFPAtURL:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
++ (id)_otherVersionsOfItemAtURL:(id)l temporaryStorageIdentifier:(id)identifier withoutOptions:(unint64_t)options;
++ (id)_temporaryDirectoryURLForNewVersionOfItemAtURL:(id)l temporaryStorageIdentifier:(id)identifier;
++ (id)_temporaryStorageLocationForIdentifier:(id)identifier;
++ (id)_versionOfItemAtURL:(id)l forClientID:(id)d name:(id)name temporaryStorageIdentifier:(id)identifier evenIfDeleted:(BOOL)deleted;
++ (id)_versionOfItemAtURL:(id)l forPersistentIdentifier:(id)identifier temporaryStorageIdentifier:(id)storageIdentifier;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
++ (void)_markConflicts:(id)conflicts asHandledForItemAtURL:(id)l;
++ (void)_removeTemporaryDirectoryAtURL:(id)l;
++ (void)getNonlocalVersionsOfItemFromBRAtURL:(id)l options:(unint64_t)options completionHandler:(id)handler;
++ (void)getNonlocalVersionsOfItemFromFPAtURL:(id)l options:(unint64_t)options completionHandler:(id)handler;
 - (BOOL)_preserveConflictVersionLocally;
-- (BOOL)_setDocumentInfo:(id)a3;
+- (BOOL)_setDocumentInfo:(id)info;
 - (BOOL)isConflict;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)removeAndReturnError:(NSError *)outError;
 - (NSDate)modificationDate;
 - (NSPersonNameComponents)originatorNameComponents;
@@ -36,25 +36,25 @@
 - (NSURL)URL;
 - (NSURL)replaceItemAtURL:(NSURL *)url options:(NSFileVersionReplacingOptions)options error:(NSError *)error;
 - (id)_documentInfo;
-- (id)_initWithAddition:(id)a3;
-- (id)_initWithFileURL:(id)a3 fileVersion:(id)a4;
-- (id)_initWithFileURL:(id)a3 library:(id)a4 clientID:(id)a5 name:(id)a6 contentsURL:(id)a7 isBackup:(BOOL)a8 revision:(id)a9;
-- (id)_initWithFileURL:(id)a3 nonLocalVersion:(id)a4;
+- (id)_initWithAddition:(id)addition;
+- (id)_initWithFileURL:(id)l fileVersion:(id)version;
+- (id)_initWithFileURL:(id)l library:(id)library clientID:(id)d name:(id)name contentsURL:(id)rL isBackup:(BOOL)backup revision:(id)revision;
+- (id)_initWithFileURL:(id)l nonLocalVersion:(id)version;
 - (id)description;
 - (id)persistentIdentifier;
 - (unint64_t)hash;
 - (unint64_t)size;
-- (void)_overrideModificationDateWithDate:(id)a3;
+- (void)_overrideModificationDateWithDate:(id)date;
 - (void)dealloc;
 - (void)setResolved:(BOOL)resolved;
 @end
 
 @implementation NSFileVersion
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"hasThumbnail"])
+  if ([key isEqualToString:@"hasThumbnail"])
   {
     v5 = MEMORY[0x1E695DFD8];
 
@@ -63,9 +63,9 @@
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NSFileVersion;
-    return objc_msgSendSuper2(&v7, sel_keyPathsForValuesAffectingValueForKey_, a3);
+    return objc_msgSendSuper2(&v7, sel_keyPathsForValuesAffectingValueForKey_, key);
   }
 }
 
@@ -78,9 +78,9 @@
   [(NSFileVersion *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -90,17 +90,17 @@
     return 0;
   }
 
-  v5 = [(NSFileVersion *)self persistentIdentifier];
-  v6 = [a3 persistentIdentifier];
+  persistentIdentifier = [(NSFileVersion *)self persistentIdentifier];
+  persistentIdentifier2 = [equal persistentIdentifier];
 
-  return [v5 isEqual:v6];
+  return [persistentIdentifier isEqual:persistentIdentifier2];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NSFileVersion *)self persistentIdentifier];
+  persistentIdentifier = [(NSFileVersion *)self persistentIdentifier];
 
-  return [v2 hash];
+  return [persistentIdentifier hash];
 }
 
 - (id)description
@@ -148,7 +148,7 @@
     return 0;
   }
 
-  v5 = [[a1 alloc] _initWithFileURL:url library:0 clientID:0 name:0 contentsURL:url isBackup:0 revision:0];
+  v5 = [[self alloc] _initWithFileURL:url library:0 clientID:0 name:0 contentsURL:url isBackup:0 revision:0];
 
   return v5;
 }
@@ -156,7 +156,7 @@
 + (NSFileVersion)addVersionOfItemAtURL:(NSURL *)url withContentsOfURL:(NSURL *)contentsURL options:(NSFileVersionAddingOptions)options error:(NSError *)outError
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___NSFileVersion;
   objc_msgSendSuper2(&v7, sel_doesNotRecognizeSelector_, a2, contentsURL, options, outError);
   return 0;
@@ -165,7 +165,7 @@
 + (NSURL)temporaryDirectoryURLForNewVersionOfItemAtURL:(NSURL *)url
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___NSFileVersion;
   objc_msgSendSuper2(&v4, sel_doesNotRecognizeSelector_, a2);
   return 0;
@@ -219,7 +219,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v14 = [[a1 alloc] _initWithAddition:*(*(&v18 + 1) + 8 * i)];
+        v14 = [[self alloc] _initWithAddition:*(*(&v18 + 1) + 8 * i)];
         [(NSArray *)v9 addObject:v14];
       }
 
@@ -234,9 +234,9 @@
 
 - (NSURL)URL
 {
-  v3 = [(NSURL *)self->_contentsURL isFileReferenceURL];
+  isFileReferenceURL = [(NSURL *)self->_contentsURL isFileReferenceURL];
   contentsURL = self->_contentsURL;
-  if (v3)
+  if (isFileReferenceURL)
   {
 
     return [(NSURL *)contentsURL filePathURL];
@@ -397,8 +397,8 @@
 
   if (self->_isBackup)
   {
-    v5 = [(NSURL *)self->_contentsURL path];
-    return [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v5, @"path", 0}];
+    path = [(NSURL *)self->_contentsURL path];
+    return [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{path, @"path", 0}];
   }
 
   else
@@ -649,7 +649,7 @@ LABEL_23:
   v21 = __Block_byref_object_dispose__31;
   v22 = 0;
   v6 = dispatch_semaphore_create(0);
-  v7 = [(GSAddition *)self->_addition storage];
+  storage = [(GSAddition *)self->_addition storage];
   v23[0] = self->_addition;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v16[0] = MEMORY[0x1E69E9820];
@@ -658,7 +658,7 @@ LABEL_23:
   v16[3] = &unk_1E69F9EA0;
   v16[4] = v6;
   v16[5] = buf;
-  [v7 removeAdditions:v8 completionHandler:v16];
+  [storage removeAdditions:v8 completionHandler:v16];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_release(v6);
   v9 = *(v18 + 5);
@@ -697,7 +697,7 @@ intptr_t __38__NSFileVersion_removeAndReturnError___block_invoke(uint64_t a1, vo
   return dispatch_semaphore_signal(v4);
 }
 
-- (id)_initWithFileURL:(id)a3 library:(id)a4 clientID:(id)a5 name:(id)a6 contentsURL:(id)a7 isBackup:(BOOL)a8 revision:(id)a9
+- (id)_initWithFileURL:(id)l library:(id)library clientID:(id)d name:(id)name contentsURL:(id)rL isBackup:(BOOL)backup revision:(id)revision
 {
   v21 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -705,13 +705,13 @@ intptr_t __38__NSFileVersion_removeAndReturnError___block_invoke(uint64_t a1, vo
   v15 = [(NSFileVersion *)&v20 init];
   if (v15)
   {
-    v15->_fileURL = [a3 copy];
-    v15->_contentsURL = [a7 copy];
-    v15->_isBackup = a8;
-    v15->_name = [a6 copy];
-    if (a4)
+    v15->_fileURL = [l copy];
+    v15->_contentsURL = [rL copy];
+    v15->_isBackup = backup;
+    v15->_name = [name copy];
+    if (library)
     {
-      v16 = [gsDefaultStorageManager() persistentIdentifierInStorage:a4 forAdditionNamed:a6 inNameSpace:a5];
+      v16 = [gsDefaultStorageManager() persistentIdentifierInStorage:library forAdditionNamed:name inNameSpace:d];
       v15->_deadVersionIdentifier = v16;
       v17 = v16;
     }
@@ -738,7 +738,7 @@ intptr_t __38__NSFileVersion_removeAndReturnError___block_invoke(uint64_t a1, vo
   return v15;
 }
 
-- (id)_initWithAddition:(id)a3
+- (id)_initWithAddition:(id)addition
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -746,14 +746,14 @@ intptr_t __38__NSFileVersion_removeAndReturnError___block_invoke(uint64_t a1, vo
   v4 = [(NSFileVersion *)&v10 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_addition = v5;
-    v4->_fileURL = [objc_msgSend(-[GSAddition storage](v5 "storage")];
+    additionCopy = addition;
+    v4->_addition = additionCopy;
+    v4->_fileURL = [objc_msgSend(-[GSAddition storage](additionCopy "storage")];
     v4->_contentsURL = [(GSAddition *)v4->_addition url];
     v4->_isBackup = 0;
-    v6 = [(GSAddition *)v4->_addition displayName];
-    v4->_localizedName = v6;
-    if (!v6)
+    displayName = [(GSAddition *)v4->_addition displayName];
+    v4->_localizedName = displayName;
+    if (!displayName)
     {
       v9 = 0;
       if ([(NSURL *)v4->_fileURL getResourceValue:&v9 forKey:*MEMORY[0x1E695DC10] error:0])
@@ -777,7 +777,7 @@ intptr_t __38__NSFileVersion_removeAndReturnError___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-- (id)_initWithFileURL:(id)a3 nonLocalVersion:(id)a4
+- (id)_initWithFileURL:(id)l nonLocalVersion:(id)version
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -785,18 +785,18 @@ intptr_t __38__NSFileVersion_removeAndReturnError___block_invoke(uint64_t a1, vo
   v6 = [(NSFileVersion *)&v8 init];
   if (v6)
   {
-    v6->_nonLocalVersion = a4;
-    v6->_fileURL = [a3 copy];
-    v6->_contentsURL = [objc_msgSend(a4 "url")];
-    v6->_localizedName = [objc_msgSend(a4 "displayName")];
-    v6->_modificationDate = [objc_msgSend(a4 "modificationDate")];
+    v6->_nonLocalVersion = version;
+    v6->_fileURL = [l copy];
+    v6->_contentsURL = [objc_msgSend(version "url")];
+    v6->_localizedName = [objc_msgSend(version "displayName")];
+    v6->_modificationDate = [objc_msgSend(version "modificationDate")];
     v6->_isBackup = 0;
   }
 
   return v6;
 }
 
-- (id)_initWithFileURL:(id)a3 fileVersion:(id)a4
+- (id)_initWithFileURL:(id)l fileVersion:(id)version
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -804,20 +804,20 @@ intptr_t __38__NSFileVersion_removeAndReturnError___block_invoke(uint64_t a1, vo
   v6 = [(NSFileVersion *)&v8 init];
   if (v6)
   {
-    v6->_nonLocalVersion = a4;
-    v6->_fileURL = [a3 copy];
-    v6->_contentsURL = [objc_msgSend(a4 "url")];
-    v6->_localizedName = [objc_msgSend(a4 "displayName")];
-    v6->_modificationDate = [objc_msgSend(a4 "modificationDate")];
+    v6->_nonLocalVersion = version;
+    v6->_fileURL = [l copy];
+    v6->_contentsURL = [objc_msgSend(version "url")];
+    v6->_localizedName = [objc_msgSend(version "displayName")];
+    v6->_modificationDate = [objc_msgSend(version "modificationDate")];
     v6->_isBackup = 0;
   }
 
   return v6;
 }
 
-+ (void)getNonlocalVersionsOfItemFromBRAtURL:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
++ (void)getNonlocalVersionsOfItemFromBRAtURL:(id)l options:(unint64_t)options completionHandler:(id)handler
 {
-  v6 = a4;
+  optionsCopy = options;
   v15[6] = *MEMORY[0x1E69E9840];
   if (qword_1ED440210 != -1)
   {
@@ -827,9 +827,9 @@ intptr_t __38__NSFileVersion_removeAndReturnError___block_invoke(uint64_t a1, vo
   v8 = objc_lookUpClass("BRListNonLocalVersionsOperation");
   if (v8)
   {
-    v9 = [[v8 alloc] initWithDocumentURL:a3];
+    v9 = [[v8 alloc] initWithDocumentURL:l];
     v10 = v9;
-    if (v6)
+    if (optionsCopy)
     {
       [v9 setIncludeCachedVersions:1];
     }
@@ -840,8 +840,8 @@ intptr_t __38__NSFileVersion_removeAndReturnError___block_invoke(uint64_t a1, vo
     v15[1] = 3221225472;
     v15[2] = __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromBRAtURL_options_completionHandler___block_invoke;
     v15[3] = &unk_1E69F9EC8;
-    v15[4] = a3;
-    v15[5] = a5;
+    v15[4] = l;
+    v15[5] = handler;
     [v10 setFetchingVersionsDoneBlock:v15];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -855,9 +855,9 @@ intptr_t __38__NSFileVersion_removeAndReturnError___block_invoke(uint64_t a1, vo
   else
   {
     v12 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3328 userInfo:0];
-    v13 = *(a5 + 2);
+    v13 = *(handler + 2);
 
-    v13(a5, 0, v12);
+    v13(handler, 0, v12);
   }
 }
 
@@ -919,9 +919,9 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromBRAtURL_opt
   return v8();
 }
 
-+ (void)getNonlocalVersionsOfItemFromFPAtURL:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
++ (void)getNonlocalVersionsOfItemFromFPAtURL:(id)l options:(unint64_t)options completionHandler:(id)handler
 {
-  v6 = a4;
+  optionsCopy = options;
   v15[6] = *MEMORY[0x1E69E9840];
   if (qword_1ED440208 != -1)
   {
@@ -930,9 +930,9 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromBRAtURL_opt
 
   if (qword_1ED440200 && (v8 = objc_lookUpClass("FPListRemoteVersionsOperation")) != 0)
   {
-    v9 = [[v8 alloc] initWithDocumentURL:a3];
+    v9 = [[v8 alloc] initWithDocumentURL:l];
     v10 = v9;
-    if (v6)
+    if (optionsCopy)
     {
       [v9 setIncludeCachedVersions:1];
     }
@@ -943,8 +943,8 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromBRAtURL_opt
     v15[1] = 3221225472;
     v15[2] = __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_options_completionHandler___block_invoke;
     v15[3] = &unk_1E69F9EC8;
-    v15[4] = a3;
-    v15[5] = a5;
+    v15[4] = l;
+    v15[5] = handler;
     [v10 setFinishedBlock:v15];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -958,9 +958,9 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromBRAtURL_opt
   else
   {
     v12 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3328 userInfo:0];
-    v13 = *(a5 + 2);
+    v13 = *(handler + 2);
 
-    v13(a5, 0, v12);
+    v13(handler, 0, v12);
   }
 }
 
@@ -1022,12 +1022,12 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
   return v8();
 }
 
-+ (id)_autosaveDirectoryURLCreateIfNecessary:(BOOL)a3
++ (id)_autosaveDirectoryURLCreateIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v11 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v4 = [+[NSFileManager defaultManager](NSFileManager URLForDirectory:"URLForDirectory:inDomain:appropriateForURL:create:error:" inDomain:11 appropriateForURL:1 create:0 error:a3, &v8];
+  v4 = [+[NSFileManager defaultManager](NSFileManager URLForDirectory:"URLForDirectory:inDomain:appropriateForURL:create:error:" inDomain:11 appropriateForURL:1 create:0 error:necessary, &v8];
   if (v4)
   {
     v5 = 1;
@@ -1035,7 +1035,7 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
 
   else
   {
-    v5 = !v3;
+    v5 = !necessaryCopy;
   }
 
   if (!v5)
@@ -1052,44 +1052,44 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
   return v4;
 }
 
-+ (id)_temporaryStorageLocationForIdentifier:(id)a3
++ (id)_temporaryStorageLocationForIdentifier:(id)identifier
 {
   v4 = [objc_opt_class() _autosaveDirectoryURLCreateIfNecessary:1];
-  v5 = [a3 stringByAppendingPathExtension:@"genstore.noindex"];
+  v5 = [identifier stringByAppendingPathExtension:@"genstore.noindex"];
 
   return [v4 URLByAppendingPathComponent:v5];
 }
 
-+ (BOOL)_isTemporaryStorageRequiredForGSError:(id)a3 andURL:(id)a4
++ (BOOL)_isTemporaryStorageRequiredForGSError:(id)error andURL:(id)l
 {
-  if (!a3)
+  if (!error)
   {
     return 1;
   }
 
-  v6 = [a3 domain];
-  if (![v6 isEqualToString:_MergedGlobals_149] || objc_msgSend(a3, "code") == 5 || objc_msgSend(a3, "code") != 2)
+  domain = [error domain];
+  if (![domain isEqualToString:_MergedGlobals_149] || objc_msgSend(error, "code") == 5 || objc_msgSend(error, "code") != 2)
   {
     return 1;
   }
 
-  return [a4 checkResourceIsReachableAndReturnError:0];
+  return [l checkResourceIsReachableAndReturnError:0];
 }
 
-+ (id)_makePermanentStorageLibraryForURL:(id)a3 temporaryStorageRequired:(BOOL *)a4 error:(id *)a5
++ (id)_makePermanentStorageLibraryForURL:(id)l temporaryStorageRequired:(BOOL *)required error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v12[0] = 0;
-  v9 = [gsDefaultStorageManager() permanentStorageForItemAtURL:a3 allocateIfNone:1 error:v12];
+  v9 = [gsDefaultStorageManager() permanentStorageForItemAtURL:l allocateIfNone:1 error:v12];
   v10 = v9;
-  if (a4)
+  if (required)
   {
     if (!v9)
     {
-      *a4 = [a1 _isTemporaryStorageRequiredForGSError:v12[0] andURL:a3];
-      if (a5)
+      *required = [self _isTemporaryStorageRequiredForGSError:v12[0] andURL:l];
+      if (error)
       {
-        *a5 = v12[0];
+        *error = v12[0];
       }
     }
   }
@@ -1105,37 +1105,37 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
   return v3;
 }
 
-+ (BOOL)_permanentVersionStorageSupportedForURL:(id)a3 temporaryStorageIdentifier:(id *)a4 error:(id *)a5
++ (BOOL)_permanentVersionStorageSupportedForURL:(id)l temporaryStorageIdentifier:(id *)identifier error:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v11[0] = 0;
-  v9 = [gsDefaultStorageManager() isPermanentStorageSupportedAtURL:a3 error:v11];
+  v9 = [gsDefaultStorageManager() isPermanentStorageSupportedAtURL:l error:v11];
   if ((v9 & 1) == 0)
   {
-    if (a4 && [a1 _isTemporaryStorageRequiredForGSError:v11[0] andURL:a3])
+    if (identifier && [self _isTemporaryStorageRequiredForGSError:v11[0] andURL:l])
     {
-      *a4 = [a1 _makeTemporaryStorageIdentifier];
+      *identifier = [self _makeTemporaryStorageIdentifier];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v11[0];
+      *error = v11[0];
     }
   }
 
   return v9;
 }
 
-+ (id)_existingLibraryForURL:(id)a3 temporaryStorageIdentifier:(id)a4
++ (id)_existingLibraryForURL:(id)l temporaryStorageIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    v5 = [a1 _temporaryStorageLocationForIdentifier:a4];
+    v5 = [self _temporaryStorageLocationForIdentifier:identifier];
     if ([v5 checkResourceIsReachableAndReturnError:0])
     {
       v6 = gsDefaultStorageManager();
 
-      return [v6 temporaryStorageForItemAtURL:a3 locatedAtURL:v5 error:0];
+      return [v6 temporaryStorageForItemAtURL:l locatedAtURL:v5 error:0];
     }
 
     else
@@ -1148,16 +1148,16 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
   {
     v8 = gsDefaultStorageManager();
 
-    return [v8 permanentStorageForItemAtURL:a3 allocateIfNone:0 error:0];
+    return [v8 permanentStorageForItemAtURL:l allocateIfNone:0 error:0];
   }
 }
 
-+ (id)_libraryForURL:(id)a3 temporaryStorageIdentifier:(id *)a4
++ (id)_libraryForURL:(id)l temporaryStorageIdentifier:(id *)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0;
   v12 = 0;
-  if (a4 && [*a4 isEqualToString:@"com.apple.NSFileVersionTestTempID"])
+  if (identifier && [*identifier isEqualToString:@"com.apple.NSFileVersionTestTempID"])
   {
     v7 = 1;
     v13 = 1;
@@ -1165,7 +1165,7 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
 
   else
   {
-    result = [a1 _makePermanentStorageLibraryForURL:a3 temporaryStorageRequired:&v13 error:{0, v12}];
+    result = [self _makePermanentStorageLibraryForURL:l temporaryStorageRequired:&v13 error:{0, v12}];
     if (result)
     {
       return result;
@@ -1175,23 +1175,23 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
   }
 
   result = 0;
-  if (a4 && (v7 & 1) != 0)
+  if (identifier && (v7 & 1) != 0)
   {
-    v9 = *a4;
-    if (!*a4)
+    _makeTemporaryStorageIdentifier = *identifier;
+    if (!*identifier)
     {
-      v9 = [a1 _makeTemporaryStorageIdentifier];
+      _makeTemporaryStorageIdentifier = [self _makeTemporaryStorageIdentifier];
     }
 
-    result = [a1 _temporaryStorageLocationForIdentifier:{v9, v12}];
+    result = [self _temporaryStorageLocationForIdentifier:{_makeTemporaryStorageIdentifier, v12}];
     if (result)
     {
       v10 = result;
       -[NSFileManager createDirectoryAtPath:withIntermediateDirectories:attributes:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", [result path], 0, 0, 0);
-      result = [gsDefaultStorageManager() temporaryStorageForItemAtURL:a3 locatedAtURL:v10 error:&v12];
+      result = [gsDefaultStorageManager() temporaryStorageForItemAtURL:l locatedAtURL:v10 error:&v12];
       if (result)
       {
-        *a4 = v9;
+        *identifier = _makeTemporaryStorageIdentifier;
       }
 
       else
@@ -1214,10 +1214,10 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
   return result;
 }
 
-+ (id)_otherVersionsOfItemAtURL:(id)a3 temporaryStorageIdentifier:(id)a4 withoutOptions:(unint64_t)a5
++ (id)_otherVersionsOfItemAtURL:(id)l temporaryStorageIdentifier:(id)identifier withoutOptions:(unint64_t)options
 {
   v39 = *MEMORY[0x1E69E9840];
-  v23 = [a1 _existingLibraryForURL:a3 temporaryStorageIdentifier:a4];
+  v23 = [self _existingLibraryForURL:l temporaryStorageIdentifier:identifier];
   if (!v23)
   {
     return MEMORY[0x1E695E0F0];
@@ -1245,7 +1245,7 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
           objc_enumerationMutation(&unk_1EEF59FF0);
         }
 
-        v12 = [v23 enumeratorForAdditionsInNameSpace:*(*(&v35 + 1) + 8 * v11) withOptions:0 withoutOptions:a5 ordering:{0, v21}];
+        v12 = [v23 enumeratorForAdditionsInNameSpace:*(*(&v35 + 1) + 8 * v11) withOptions:0 withoutOptions:options ordering:{0, v21}];
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
@@ -1264,7 +1264,7 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
                 objc_enumerationMutation(v12);
               }
 
-              v17 = [[a1 alloc] _initWithAddition:*(*(&v30 + 1) + 8 * i)];
+              v17 = [[self alloc] _initWithAddition:*(*(&v30 + 1) + 8 * i)];
               [v6 addObject:v17];
             }
 
@@ -1279,11 +1279,11 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
           v18 = _NSOSLog();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v19 = [v12 error];
+            error = [v12 error];
             *buf = v21;
-            v26 = a3;
+            lCopy = l;
             v27 = 2112;
-            v28 = v19;
+            v28 = error;
             _os_log_error_impl(&dword_18075C000, v18, OS_LOG_TYPE_ERROR, "Enumeration of versions for %@ failed. Here's the error:\n%@", buf, 0x16u);
           }
         }
@@ -1301,14 +1301,14 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
   return v6;
 }
 
-+ (id)_versionOfItemAtURL:(id)a3 forPersistentIdentifier:(id)a4 temporaryStorageIdentifier:(id)a5
++ (id)_versionOfItemAtURL:(id)l forPersistentIdentifier:(id)identifier temporaryStorageIdentifier:(id)storageIdentifier
 {
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0;
-  v9 = [gsDefaultStorageManager() additionForItemAtURL:a3 forPersistentIdentifier:a4 error:&v21];
+  v9 = [gsDefaultStorageManager() additionForItemAtURL:l forPersistentIdentifier:identifier error:&v21];
   if (v9)
   {
-    v10 = [[a1 alloc] _initWithAddition:v9];
+    v10 = [[self alloc] _initWithAddition:v9];
     return v10;
   }
 
@@ -1318,7 +1318,7 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v23 = a4;
+      identifierCopy = identifier;
       v24 = 2112;
       v25 = v21;
       _os_log_error_impl(&dword_18075C000, v13, OS_LOG_TYPE_ERROR, "Failed to get a GSAddition with persistent identifier: %@. Here's the error: %@", buf, 0x16u);
@@ -1327,20 +1327,20 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
     return 0;
   }
 
-  v15 = [a4 objectForKey:@"clientID"];
-  v16 = [a4 objectForKey:@"name"];
-  v17 = [a4 objectForKey:@"path"];
+  v15 = [identifier objectForKey:@"clientID"];
+  v16 = [identifier objectForKey:@"name"];
+  v17 = [identifier objectForKey:@"path"];
   if (v15)
   {
     if (v16)
     {
-      v18 = [a1 _existingLibraryForURL:a3 temporaryStorageIdentifier:a5];
+      v18 = [self _existingLibraryForURL:l temporaryStorageIdentifier:storageIdentifier];
       if (v18)
       {
         v19 = [gsDefaultStorageManager() persistentIdentifierInStorage:v18 forAdditionNamed:v16 inNameSpace:v15];
         if (v19)
         {
-          return [a1 _versionOfItemAtURL:a3 forPersistentIdentifier:v19 temporaryStorageIdentifier:v19];
+          return [self _versionOfItemAtURL:l forPersistentIdentifier:v19 temporaryStorageIdentifier:v19];
         }
       }
     }
@@ -1350,9 +1350,9 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
 
   if (!v17)
   {
-    if ([a3 checkResourceIsReachableAndReturnError:0])
+    if ([l checkResourceIsReachableAndReturnError:0])
     {
-      v10 = [[a1 alloc] _initWithFileURL:a3 library:0 clientID:0 name:0 contentsURL:a3 isBackup:0 revision:0];
+      v10 = [[self alloc] _initWithFileURL:l library:0 clientID:0 name:0 contentsURL:l isBackup:0 revision:0];
       return v10;
     }
 
@@ -1363,42 +1363,42 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
   v12 = 0;
   if ([v20 checkResourceIsReachableAndReturnError:0])
   {
-    v12 = [[a1 alloc] _initWithFileURL:a3 library:0 clientID:0 name:0 contentsURL:v20 isBackup:1 revision:0];
+    v12 = [[self alloc] _initWithFileURL:l library:0 clientID:0 name:0 contentsURL:v20 isBackup:1 revision:0];
   }
 
   return v12;
 }
 
-+ (id)_addVersionOfItemAtURL:(id)a3 withContentsOfURL:(id)a4 options:(unint64_t)a5 userInfo:(id)a6 temporaryStorageIdentifier:(id *)a7 error:(id *)a8
++ (id)_addVersionOfItemAtURL:(id)l withContentsOfURL:(id)rL options:(unint64_t)options userInfo:(id)info temporaryStorageIdentifier:(id *)identifier error:(id *)error
 {
-  v10 = a5;
+  optionsCopy = options;
   v53[1] = *MEMORY[0x1E69E9840];
-  v14 = [a1 _libraryForURL:a3 temporaryStorageIdentifier:a7];
+  v14 = [self _libraryForURL:l temporaryStorageIdentifier:identifier];
   if (v14)
   {
     v15 = v14;
-    v16 = [a4 path];
-    v17 = [v16 pathExtension];
-    if ([v17 hasPrefix:@"sb-"])
+    path = [rL path];
+    pathExtension = [path pathExtension];
+    if ([pathExtension hasPrefix:@"sb-"])
     {
-      v17 = [objc_msgSend(v16 "stringByDeletingPathExtension")];
+      pathExtension = [objc_msgSend(path "stringByDeletingPathExtension")];
     }
 
-    v18 = [+[NSUUID UUID](NSUUID UUIDString];
-    if ([v17 length])
+    uUIDString = [+[NSUUID UUID](NSUUID UUIDString];
+    if ([pathExtension length])
     {
-      v18 = [(NSString *)v18 stringByAppendingPathExtension:v17];
+      uUIDString = [(NSString *)uUIDString stringByAppendingPathExtension:pathExtension];
     }
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
-    [v19 setObject:@"com.apple.documentVersions" forKey:qword_1ED4401E0];
-    [v19 setObject:v18 forKey:qword_1ED4401E8];
-    if (a6)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"com.apple.documentVersions" forKey:qword_1ED4401E0];
+    [dictionary setObject:uUIDString forKey:qword_1ED4401E8];
+    if (info)
     {
       v52 = @"NSDocumentInfo";
-      v53[0] = a6;
+      v53[0] = info;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:&v52 count:1];
-      [v19 setObject:v20 forKey:qword_1ED4401F0];
+      [dictionary setObject:v20 forKey:qword_1ED4401F0];
     }
 
     *&buf = 0;
@@ -1413,7 +1413,7 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
     v38 = __Block_byref_object_copy__31;
     v39 = __Block_byref_object_dispose__31;
     v40 = 0;
-    v21 = [v15 prepareAdditionCreationWithItemAtURL:a4 byMoving:v10 & 1 creationInfo:v19 error:&v51];
+    v21 = [v15 prepareAdditionCreationWithItemAtURL:rL byMoving:optionsCopy & 1 creationInfo:dictionary error:&v51];
     if (v21)
     {
       v22 = dispatch_semaphore_create(0);
@@ -1421,14 +1421,14 @@ uint64_t __91__NSFileVersion_NSPrivate__getNonlocalVersionsOfItemFromFPAtURL_opt
       v34[1] = 3221225472;
       v34[2] = __119__NSFileVersion_NSPrivate___addVersionOfItemAtURL_withContentsOfURL_options_userInfo_temporaryStorageIdentifier_error___block_invoke;
       v34[3] = &unk_1E69F9EF0;
-      v34[4] = a3;
-      v34[5] = a1;
+      v34[4] = l;
+      v34[5] = self;
       v34[9] = &v35;
       v34[10] = &buf;
       v34[6] = v15;
       v34[7] = v21;
       v34[8] = v22;
-      [v15 createAdditionStagedAtURL:v21 creationInfo:v19 completionHandler:v34];
+      [v15 createAdditionStagedAtURL:v21 creationInfo:dictionary completionHandler:v34];
       dispatch_semaphore_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
       dispatch_release(v22);
       v23 = v36[5];
@@ -1446,16 +1446,16 @@ LABEL_24:
       {
         v33 = *(*(&buf + 1) + 40);
         *v41 = 138412802;
-        v42 = a3;
+        lCopy2 = l;
         v43 = 2112;
-        v44 = a4;
+        rLCopy2 = rL;
         v45 = 2112;
         v46 = v33;
         _os_log_error_impl(&dword_18075C000, v29, OS_LOG_TYPE_ERROR, "NSFileVersion tried to tried to add a new generation and failed. Versioned file URL: %@, contents URL: %@, error: %@", v41, 0x20u);
       }
 
       v30 = *(*(&buf + 1) + 40);
-      if (a8)
+      if (error)
       {
         v28 = v30;
         goto LABEL_21;
@@ -1471,19 +1471,19 @@ LABEL_23:
     {
       v32 = *(*(&buf + 1) + 40);
       *v41 = 138412802;
-      v42 = a3;
+      lCopy2 = l;
       v43 = 2112;
-      v44 = a4;
+      rLCopy2 = rL;
       v45 = 2112;
       v46 = v32;
       _os_log_error_impl(&dword_18075C000, v27, OS_LOG_TYPE_ERROR, "NSFileVersion tried to tried to add a new generation and failed. Versioned file URL: %@, contents URL: %@, error: %@", v41, 0x20u);
-      if (!a8)
+      if (!error)
       {
         goto LABEL_23;
       }
     }
 
-    else if (!a8)
+    else if (!error)
     {
       goto LABEL_23;
     }
@@ -1491,7 +1491,7 @@ LABEL_23:
     v28 = *(*(&buf + 1) + 40);
 LABEL_21:
     v24 = 0;
-    *a8 = v28;
+    *error = v28;
     goto LABEL_24;
   }
 
@@ -1499,9 +1499,9 @@ LABEL_21:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = l;
     _os_log_error_impl(&dword_18075C000, v25, OS_LOG_TYPE_ERROR, "NSFileVersion couldn't find the library for a file. URL: %@", &buf, 0xCu);
-    if (a8)
+    if (error)
     {
       goto LABEL_13;
     }
@@ -1509,15 +1509,15 @@ LABEL_21:
     return 0;
   }
 
-  if (!a8)
+  if (!error)
   {
     return 0;
   }
 
 LABEL_13:
-  v26 = _NSErrorWithFilePath(512, a3);
+  v26 = _NSErrorWithFilePath(512, l);
   v24 = 0;
-  *a8 = v26;
+  *error = v26;
   return v24;
 }
 
@@ -1540,19 +1540,19 @@ intptr_t __119__NSFileVersion_NSPrivate___addVersionOfItemAtURL_withContentsOfUR
   return dispatch_semaphore_signal(v5);
 }
 
-+ (id)_temporaryDirectoryURLForNewVersionOfItemAtURL:(id)a3 temporaryStorageIdentifier:(id)a4
++ (id)_temporaryDirectoryURLForNewVersionOfItemAtURL:(id)l temporaryStorageIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (identifier)
   {
-    a3 = [a1 _temporaryStorageLocationForIdentifier:a4];
+    l = [self _temporaryStorageLocationForIdentifier:identifier];
   }
 
-  if (a3)
+  if (l)
   {
     v7 = 0;
-    a3 = [+[NSFileManager defaultManager](NSFileManager URLForDirectory:"URLForDirectory:inDomain:appropriateForURL:create:error:" inDomain:99 appropriateForURL:1 create:a3 error:1, &v7];
-    if (!a3)
+    l = [+[NSFileManager defaultManager](NSFileManager URLForDirectory:"URLForDirectory:inDomain:appropriateForURL:create:error:" inDomain:99 appropriateForURL:1 create:l error:1, &v7];
+    if (!l)
     {
       v5 = _NSOSLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1564,13 +1564,13 @@ intptr_t __119__NSFileVersion_NSPrivate___addVersionOfItemAtURL_withContentsOfUR
     }
   }
 
-  return a3;
+  return l;
 }
 
-+ (BOOL)_removeOtherVersionsOfItemAtURL:(id)a3 temporaryStorageIdentifier:(id)a4 error:(id *)a5
++ (BOOL)_removeOtherVersionsOfItemAtURL:(id)l temporaryStorageIdentifier:(id)identifier error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v6 = [a1 _existingLibraryForURL:a3 temporaryStorageIdentifier:a4];
+  v6 = [self _existingLibraryForURL:l temporaryStorageIdentifier:identifier];
   if (v6)
   {
     v7 = v6;
@@ -1610,12 +1610,12 @@ intptr_t __119__NSFileVersion_NSPrivate___addVersionOfItemAtURL_withContentsOfUR
             v13 = _NSOSLog();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
             {
-              v14 = [v12 name];
+              name = [v12 name];
               v15 = v45[5];
               *buf = 138412802;
-              v61 = a3;
+              lCopy6 = l;
               v62 = 2112;
-              v63 = v14;
+              v63 = name;
               v64 = 2112;
               v65 = v15;
               _os_log_error_impl(&dword_18075C000, v13, OS_LOG_TYPE_ERROR, "marking version %@ for %@ as resolved failed. The error is:\n%@", buf, 0x20u);
@@ -1634,11 +1634,11 @@ intptr_t __119__NSFileVersion_NSPrivate___addVersionOfItemAtURL_withContentsOfUR
       v16 = _NSOSLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v37 = [v8 error];
+        error = [v8 error];
         *buf = 138412546;
-        v61 = a3;
+        lCopy6 = l;
         v62 = 2112;
-        v63 = v37;
+        v63 = error;
         _os_log_error_impl(&dword_18075C000, v16, OS_LOG_TYPE_ERROR, "Enumeration of versions for %@ failed. Here's the error:\n%@", buf, 0x16u);
       }
     }
@@ -1667,12 +1667,12 @@ intptr_t __119__NSFileVersion_NSPrivate___addVersionOfItemAtURL_withContentsOfUR
             v22 = _NSOSLog();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
-              v23 = [v21 name];
+              name2 = [v21 name];
               v24 = v45[5];
               *buf = 138412802;
-              v61 = a3;
+              lCopy6 = l;
               v62 = 2112;
-              v63 = v23;
+              v63 = name2;
               v64 = 2112;
               v65 = v24;
               _os_log_error_impl(&dword_18075C000, v22, OS_LOG_TYPE_ERROR, "marking version %@ for %@ as resolved failed. The error is:\n%@", buf, 0x20u);
@@ -1691,11 +1691,11 @@ intptr_t __119__NSFileVersion_NSPrivate___addVersionOfItemAtURL_withContentsOfUR
       v25 = _NSOSLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v38 = [v17 error];
+        error2 = [v17 error];
         *buf = 138412546;
-        v61 = a3;
+        lCopy6 = l;
         v62 = 2112;
-        v63 = v38;
+        v63 = error2;
         _os_log_error_impl(&dword_18075C000, v25, OS_LOG_TYPE_ERROR, "Enumeration of versions for %@ failed. Here's the error:\n%@", buf, 0x16u);
       }
     }
@@ -1707,11 +1707,11 @@ intptr_t __119__NSFileVersion_NSPrivate___addVersionOfItemAtURL_withContentsOfUR
       v28 = _NSOSLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v39 = [v26 error];
+        error3 = [v26 error];
         *buf = 138412546;
-        v61 = a3;
+        lCopy6 = l;
         v62 = 2112;
-        v63 = v39;
+        v63 = error3;
         _os_log_error_impl(&dword_18075C000, v28, OS_LOG_TYPE_ERROR, "Enumeration of versions for %@ failed. Here's the error:\n%@", buf, 0x16u);
       }
     }
@@ -1739,7 +1739,7 @@ LABEL_35:
                 objc_enumerationMutation(v27);
               }
 
-              +[NSFileCoordinator __itemAtURL:didLoseVersionWithClientID:name:purposeID:](NSFileCoordinator, "__itemAtURL:didLoseVersionWithClientID:name:purposeID:", a3, [*(*(&v51 + 1) + 8 * k) nameSpace], objc_msgSend(*(*(&v51 + 1) + 8 * k), "name"), 0);
+              +[NSFileCoordinator __itemAtURL:didLoseVersionWithClientID:name:purposeID:](NSFileCoordinator, "__itemAtURL:didLoseVersionWithClientID:name:purposeID:", l, [*(*(&v51 + 1) + 8 * k) nameSpace], objc_msgSend(*(*(&v51 + 1) + 8 * k), "name"), 0);
             }
 
             v29 = [v27 countByEnumeratingWithState:&v51 objects:v50 count:16];
@@ -1779,16 +1779,16 @@ LABEL_49:
     {
       v40 = v45[5];
       *buf = 138412546;
-      v61 = a3;
+      lCopy6 = l;
       v62 = 2112;
       v63 = v40;
       _os_log_error_impl(&dword_18075C000, v35, OS_LOG_TYPE_ERROR, "NSFileVersion tried to tried to delete temporary version storage and failed. Versioned file URL: %@, error: %@", buf, 0x16u);
     }
 
     v32 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v45[5];
+      *error = v45[5];
     }
 
     goto LABEL_49;
@@ -1805,19 +1805,19 @@ id __93__NSFileVersion_NSPrivate___removeOtherVersionsOfItemAtURL_temporaryStora
   return result;
 }
 
-+ (id)_versionOfItemAtURL:(id)a3 forClientID:(id)a4 name:(id)a5 temporaryStorageIdentifier:(id)a6 evenIfDeleted:(BOOL)a7
++ (id)_versionOfItemAtURL:(id)l forClientID:(id)d name:(id)name temporaryStorageIdentifier:(id)identifier evenIfDeleted:(BOOL)deleted
 {
-  v7 = a7;
-  v12 = [a1 _existingLibraryForURL:a3 temporaryStorageIdentifier:a6];
-  v13 = [v12 additionWithName:a5 inNameSpace:a4 error:0];
+  deletedCopy = deleted;
+  v12 = [self _existingLibraryForURL:l temporaryStorageIdentifier:identifier];
+  v13 = [v12 additionWithName:name inNameSpace:d error:0];
   if (v13)
   {
-    v14 = [[a1 alloc] _initWithAddition:v13];
+    v14 = [[self alloc] _initWithAddition:v13];
   }
 
-  else if (v7)
+  else if (deletedCopy)
   {
-    v14 = [[a1 alloc] _initWithFileURL:a3 library:v12 clientID:a4 name:a5 contentsURL:0 isBackup:0 revision:0];
+    v14 = [[self alloc] _initWithFileURL:l library:v12 clientID:d name:name contentsURL:0 isBackup:0 revision:0];
   }
 
   else
@@ -1828,14 +1828,14 @@ id __93__NSFileVersion_NSPrivate___removeOtherVersionsOfItemAtURL_temporaryStora
   return v14;
 }
 
-+ (void)_removeTemporaryDirectoryAtURL:(id)a3
++ (void)_removeTemporaryDirectoryAtURL:(id)l
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [a3 path];
-  if (v4)
+  path = [l path];
+  if (path)
   {
-    v5 = v4;
-    if (!rmdir([v4 fileSystemRepresentation]))
+    v5 = path;
+    if (!rmdir([path fileSystemRepresentation]))
     {
       return;
     }
@@ -1852,7 +1852,7 @@ id __93__NSFileVersion_NSPrivate___removeOtherVersionsOfItemAtURL_temporaryStora
     }
   }
 
-  [+[NSFileManager defaultManager](NSFileManager removeItemAtURL:"removeItemAtURL:error:" error:a3, 0];
+  [+[NSFileManager defaultManager](NSFileManager removeItemAtURL:"removeItemAtURL:error:" error:l, 0];
 }
 
 - (id)_documentInfo
@@ -1866,30 +1866,30 @@ id __93__NSFileVersion_NSPrivate___removeOtherVersionsOfItemAtURL_temporaryStora
   return result;
 }
 
-- (BOOL)_setDocumentInfo:(id)a3
+- (BOOL)_setDocumentInfo:(id)info
 {
   v6[1] = *MEMORY[0x1E69E9840];
   addition = self->_addition;
   v5 = @"NSDocumentInfo";
-  v6[0] = a3;
+  v6[0] = info;
   return -[GSAddition mergeUserInfo:error:](addition, "mergeUserInfo:error:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1], 0);
 }
 
-- (void)_overrideModificationDateWithDate:(id)a3
+- (void)_overrideModificationDateWithDate:(id)date
 {
-  if (self->_modificationDate != a3)
+  if (self->_modificationDate != date)
   {
     if (self->_addition)
     {
-      v5 = [(NSFileVersion *)self _documentInfo];
-      if (v5)
+      _documentInfo = [(NSFileVersion *)self _documentInfo];
+      if (_documentInfo)
       {
-        v6 = [v5 mutableCopy];
-        [v6 setObject:a3 forKey:@"modificationDate"];
+        v6 = [_documentInfo mutableCopy];
+        [v6 setObject:date forKey:@"modificationDate"];
         if ([(NSFileVersion *)self _setDocumentInfo:v6])
         {
 
-          self->_modificationDate = [a3 copy];
+          self->_modificationDate = [date copy];
         }
       }
     }
@@ -1907,11 +1907,11 @@ id __93__NSFileVersion_NSPrivate___removeOtherVersionsOfItemAtURL_temporaryStora
   return 1;
 }
 
-+ (BOOL)unresolvedConflictsExistForItemAtURL:(id)a3
++ (BOOL)unresolvedConflictsExistForItemAtURL:(id)l
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = 0;
-  v3 = [a3 getResourceValue:v5 forKey:*MEMORY[0x1E695DCA8] error:0];
+  v3 = [l getResourceValue:v5 forKey:*MEMORY[0x1E695DCA8] error:0];
   if (v3)
   {
     LOBYTE(v3) = [v5[0] BOOLValue];
@@ -1920,10 +1920,10 @@ id __93__NSFileVersion_NSPrivate___removeOtherVersionsOfItemAtURL_temporaryStora
   return v3;
 }
 
-+ (void)_markConflicts:(id)a3 asHandledForItemAtURL:(id)a4
++ (void)_markConflicts:(id)conflicts asHandledForItemAtURL:(id)l
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!l)
   {
     v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: URL parameter may not be nil", NSStringFromSelector(a2)), 0}];
     objc_exception_throw(v9);
@@ -1933,7 +1933,7 @@ id __93__NSFileVersion_NSPrivate___removeOtherVersionsOfItemAtURL_temporaryStora
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v5 = [conflicts countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1945,14 +1945,14 @@ id __93__NSFileVersion_NSPrivate___removeOtherVersionsOfItemAtURL_temporaryStora
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(conflicts);
         }
 
         [*(*(&v11 + 1) + 8 * v8++) setResolved:1];
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [conflicts countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);

@@ -1,7 +1,7 @@
 @interface AGXG18PFamilyBinaryFunction
-- (AGXG18PFamilyBinaryFunction)initWithDynamicLibrary:(id)a3;
-- (AGXG18PFamilyBinaryFunction)initWithFunction:(id)a3;
-- (AGXG18PFamilyBinaryFunction)initWithIntersectionProgram:(id)a3;
+- (AGXG18PFamilyBinaryFunction)initWithDynamicLibrary:(id)library;
+- (AGXG18PFamilyBinaryFunction)initWithFunction:(id)function;
+- (AGXG18PFamilyBinaryFunction)initWithIntersectionProgram:(id)program;
 - (void)dealloc;
 @end
 
@@ -14,18 +14,18 @@
   [(_MTL4BinaryFunction *)&v3 dealloc];
 }
 
-- (AGXG18PFamilyBinaryFunction)initWithFunction:(id)a3
+- (AGXG18PFamilyBinaryFunction)initWithFunction:(id)function
 {
   v10.receiver = self;
   v10.super_class = AGXG18PFamilyBinaryFunction;
   v4 = [(_MTL4BinaryFunction *)&v10 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_function = v5;
-    v6 = [(_MTLFunction *)v5 functionType];
+    functionCopy = function;
+    v4->_function = functionCopy;
+    functionType = [(_MTLFunction *)functionCopy functionType];
     function = v4->_function;
-    if (v6 == 5)
+    if (functionType == 5)
     {
       v8 = &OBJC_IVAR___AGXG18PFamilyBinaryFunction__dylib;
 LABEL_6:
@@ -44,9 +44,9 @@ LABEL_6:
   return v4;
 }
 
-- (AGXG18PFamilyBinaryFunction)initWithIntersectionProgram:(id)a3
+- (AGXG18PFamilyBinaryFunction)initWithIntersectionProgram:(id)program
 {
-  if (a3)
+  if (program)
   {
     v7.receiver = self;
     v7.super_class = AGXG18PFamilyBinaryFunction;
@@ -54,9 +54,9 @@ LABEL_6:
     if (result)
     {
       v5 = result;
-      v6 = a3;
+      programCopy = program;
       result = v5;
-      v5->_ip = v6;
+      v5->_ip = programCopy;
     }
   }
 
@@ -69,9 +69,9 @@ LABEL_6:
   return result;
 }
 
-- (AGXG18PFamilyBinaryFunction)initWithDynamicLibrary:(id)a3
+- (AGXG18PFamilyBinaryFunction)initWithDynamicLibrary:(id)library
 {
-  if (a3)
+  if (library)
   {
     v7.receiver = self;
     v7.super_class = AGXG18PFamilyBinaryFunction;
@@ -79,9 +79,9 @@ LABEL_6:
     if (result)
     {
       v5 = result;
-      v6 = a3;
+      libraryCopy = library;
       result = v5;
-      v5->_dylib = v6;
+      v5->_dylib = libraryCopy;
     }
   }
 

@@ -1,106 +1,106 @@
 @interface SearchUITableModel
-+ (BOOL)resultHasHorizontallyGroupedCardSections:(id)a3;
-+ (SearchUITableModel)tableModelWithCardSections:(id)a3 result:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 shouldCombine:(BOOL)a7;
-+ (SearchUITableModel)tableModelWithResult:(id)a3;
-+ (SearchUITableModel)tableModelWithResults:(id)a3;
-+ (SearchUITableModel)tableModelWithSections:(id)a3 expandedSections:(id)a4 expandedCollectionCardSections:(id)a5;
-+ (id)rowModelForCardSection:(id)a3 result:(id)a4;
-- (BOOL)indexPathExists:(id)a3;
-- (BOOL)rowWillFillBackgroundWithContentAtIndexPath:(id)a3;
-- (SearchUITableModel)initWithQueryId:(unint64_t)a3;
-- (id)cardSectionForIndexPath:(id)a3;
++ (BOOL)resultHasHorizontallyGroupedCardSections:(id)sections;
++ (SearchUITableModel)tableModelWithCardSections:(id)sections result:(id)result isInline:(BOOL)inline queryId:(unint64_t)id shouldCombine:(BOOL)combine;
++ (SearchUITableModel)tableModelWithResult:(id)result;
++ (SearchUITableModel)tableModelWithResults:(id)results;
++ (SearchUITableModel)tableModelWithSections:(id)sections expandedSections:(id)expandedSections expandedCollectionCardSections:(id)cardSections;
++ (id)rowModelForCardSection:(id)section result:(id)result;
+- (BOOL)indexPathExists:(id)exists;
+- (BOOL)rowWillFillBackgroundWithContentAtIndexPath:(id)path;
+- (SearchUITableModel)initWithQueryId:(unint64_t)id;
+- (id)cardSectionForIndexPath:(id)path;
 - (id)description;
-- (id)indexPathForResultInFirstTwoSections:(id)a3;
-- (id)indexPathForRowModel:(id)a3;
-- (id)removeRowModel:(id)a3;
-- (id)resultForIndexPath:(id)a3;
-- (id)rowModelForIndexPath:(id)a3;
-- (id)sectionForIndex:(unint64_t)a3;
-- (id)updatedTableModelByDeletingSectionIndex:(unint64_t)a3;
-- (id)updatedTableModelWithExpandedSections:(id)a3 expandedCollectionCardSections:(id)a4 hiddenSections:(id)a5 atSectionIndex:(unint64_t)a6;
-- (int)separatorStyleForIndexPath:(id)a3;
-- (int64_t)numberOfRowsForSection:(int64_t)a3;
-- (unint64_t)indexOfSection:(id)a3;
+- (id)indexPathForResultInFirstTwoSections:(id)sections;
+- (id)indexPathForRowModel:(id)model;
+- (id)removeRowModel:(id)model;
+- (id)resultForIndexPath:(id)path;
+- (id)rowModelForIndexPath:(id)path;
+- (id)sectionForIndex:(unint64_t)index;
+- (id)updatedTableModelByDeletingSectionIndex:(unint64_t)index;
+- (id)updatedTableModelWithExpandedSections:(id)sections expandedCollectionCardSections:(id)cardSections hiddenSections:(id)hiddenSections atSectionIndex:(unint64_t)index;
+- (int)separatorStyleForIndexPath:(id)path;
+- (int64_t)numberOfRowsForSection:(int64_t)section;
+- (unint64_t)indexOfSection:(id)section;
 - (unint64_t)numberOfSections;
-- (void)enumerateRowModels:(id)a3;
-- (void)replaceResult:(id)a3 withResult:(id)a4 completion:(id)a5;
+- (void)enumerateRowModels:(id)models;
+- (void)replaceResult:(id)result withResult:(id)withResult completion:(id)completion;
 @end
 
 @implementation SearchUITableModel
 
-- (SearchUITableModel)initWithQueryId:(unint64_t)a3
+- (SearchUITableModel)initWithQueryId:(unint64_t)id
 {
   v5.receiver = self;
   v5.super_class = SearchUITableModel;
   result = [(SearchUITableModel *)&v5 init];
   if (result)
   {
-    result->_queryId = a3;
+    result->_queryId = id;
   }
 
   return result;
 }
 
-+ (SearchUITableModel)tableModelWithSections:(id)a3 expandedSections:(id)a4 expandedCollectionCardSections:(id)a5
++ (SearchUITableModel)tableModelWithSections:(id)sections expandedSections:(id)expandedSections expandedCollectionCardSections:(id)cardSections
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [[SearchUIDataSourceSnapshotBuilder alloc] initWithExpandedSections:v9 expandedCollectionSections:v8];
+  sectionsCopy = sections;
+  cardSectionsCopy = cardSections;
+  expandedSectionsCopy = expandedSections;
+  v10 = [[SearchUIDataSourceSnapshotBuilder alloc] initWithExpandedSections:expandedSectionsCopy expandedCollectionSections:cardSectionsCopy];
 
-  v11 = [v7 firstObject];
-  v12 = [v11 results];
-  v13 = [v12 firstObject];
-  v14 = [v13 queryId];
-  if (!v14)
+  firstObject = [sectionsCopy firstObject];
+  results = [firstObject results];
+  firstObject2 = [results firstObject];
+  queryId = [firstObject2 queryId];
+  if (!queryId)
   {
-    v15 = [v7 lastObject];
-    v16 = [v15 results];
-    v17 = [v16 firstObject];
-    v14 = [v17 queryId];
+    lastObject = [sectionsCopy lastObject];
+    results2 = [lastObject results];
+    firstObject3 = [results2 firstObject];
+    queryId = [firstObject3 queryId];
   }
 
-  v18 = [[SearchUITableModel alloc] initWithQueryId:v14];
-  v19 = [(SearchUIDataSourceSnapshotBuilder *)v10 buildRowModelsFromResultSections:v7 queryId:v14];
+  v18 = [[SearchUITableModel alloc] initWithQueryId:queryId];
+  v19 = [(SearchUIDataSourceSnapshotBuilder *)v10 buildRowModelsFromResultSections:sectionsCopy queryId:queryId];
   v20 = [v19 mutableCopy];
   [(SearchUITableModel *)v18 setTableRowModel:v20];
 
-  [(SearchUITableModel *)v18 setSections:v7];
+  [(SearchUITableModel *)v18 setSections:sectionsCopy];
 
   return v18;
 }
 
-+ (BOOL)resultHasHorizontallyGroupedCardSections:(id)a3
++ (BOOL)resultHasHorizontallyGroupedCardSections:(id)sections
 {
-  v3 = a3;
-  v4 = [SearchUIUtilities cardSectionsForRenderingResult:v3];
+  sectionsCopy = sections;
+  v4 = [SearchUIUtilities cardSectionsForRenderingResult:sectionsCopy];
   if ([v4 count])
   {
-    v5 = [v3 renderHorizontallyWithOtherResultsInCategory];
+    renderHorizontallyWithOtherResultsInCategory = [sectionsCopy renderHorizontallyWithOtherResultsInCategory];
   }
 
   else
   {
-    v5 = 0;
+    renderHorizontallyWithOtherResultsInCategory = 0;
   }
 
-  return v5;
+  return renderHorizontallyWithOtherResultsInCategory;
 }
 
-+ (SearchUITableModel)tableModelWithCardSections:(id)a3 result:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 shouldCombine:(BOOL)a7
++ (SearchUITableModel)tableModelWithCardSections:(id)sections result:(id)result isInline:(BOOL)inline queryId:(unint64_t)id shouldCombine:(BOOL)combine
 {
-  v7 = a7;
-  v9 = a5;
+  combineCopy = combine;
+  inlineCopy = inline;
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a3;
-  v13 = [[SearchUITableModel alloc] initWithQueryId:a6];
+  resultCopy = result;
+  sectionsCopy = sections;
+  v13 = [[SearchUITableModel alloc] initWithQueryId:id];
   v14 = objc_opt_new();
-  v15 = [v14 buildRowModelsFromCardSections:v12 result:v11 isInline:v9 queryId:a6];
+  v15 = [v14 buildRowModelsFromCardSections:sectionsCopy result:resultCopy isInline:inlineCopy queryId:id];
 
-  if (v7)
+  if (combineCopy)
   {
-    v16 = [v14 buildCombinedRowModelsFromRowModels:v15 result:v11];
+    v16 = [v14 buildCombinedRowModelsFromRowModels:v15 result:resultCopy];
 
     v15 = v16;
   }
@@ -115,17 +115,17 @@
   return v13;
 }
 
-+ (SearchUITableModel)tableModelWithResult:(id)a3
++ (SearchUITableModel)tableModelWithResult:(id)result
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (result)
   {
-    v9 = a3;
+    resultCopy = result;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v9 count:1];
+    resultCopy2 = result;
+    v6 = [v4 arrayWithObjects:&resultCopy count:1];
 
-    v7 = [a1 tableModelWithResults:{v6, v9, v10}];
+    v7 = [self tableModelWithResults:{v6, resultCopy, v10}];
   }
 
   else
@@ -136,42 +136,42 @@
   return v7;
 }
 
-+ (SearchUITableModel)tableModelWithResults:(id)a3
++ (SearchUITableModel)tableModelWithResults:(id)results
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_opt_new();
-  [v5 setResults:v4];
+  [v5 setResults:resultsCopy];
 
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-  v7 = [a1 tableModelWithSections:v6 expandedSections:0 expandedCollectionCardSections:0];
+  v7 = [self tableModelWithSections:v6 expandedSections:0 expandedCollectionCardSections:0];
 
   return v7;
 }
 
-- (id)updatedTableModelWithExpandedSections:(id)a3 expandedCollectionCardSections:(id)a4 hiddenSections:(id)a5 atSectionIndex:(unint64_t)a6
+- (id)updatedTableModelWithExpandedSections:(id)sections expandedCollectionCardSections:(id)cardSections hiddenSections:(id)hiddenSections atSectionIndex:(unint64_t)index
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(SearchUITableModel *)self sections];
-  v14 = [v13 mutableCopy];
+  sectionsCopy = sections;
+  cardSectionsCopy = cardSections;
+  hiddenSectionsCopy = hiddenSections;
+  sections = [(SearchUITableModel *)self sections];
+  v14 = [sections mutableCopy];
 
-  if (v12)
+  if (hiddenSectionsCopy)
   {
-    v15 = [v14 objectAtIndexedSubscript:a6];
+    v15 = [v14 objectAtIndexedSubscript:index];
     [v15 setIsInitiallyHidden:1];
 
-    v16 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{a6, objc_msgSend(v12, "count")}];
-    [v14 removeObjectAtIndex:a6];
-    [v14 insertObjects:v12 atIndexes:v16];
+    v16 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{index, objc_msgSend(hiddenSectionsCopy, "count")}];
+    [v14 removeObjectAtIndex:index];
+    [v14 insertObjects:hiddenSectionsCopy atIndexes:v16];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v17 = v12;
+    v17 = hiddenSectionsCopy;
     v18 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v18)
     {
@@ -196,17 +196,17 @@
     }
   }
 
-  v22 = [objc_opt_class() tableModelWithSections:v14 expandedSections:v10 expandedCollectionCardSections:v11];
+  v22 = [objc_opt_class() tableModelWithSections:v14 expandedSections:sectionsCopy expandedCollectionCardSections:cardSectionsCopy];
 
   return v22;
 }
 
-- (id)updatedTableModelByDeletingSectionIndex:(unint64_t)a3
+- (id)updatedTableModelByDeletingSectionIndex:(unint64_t)index
 {
-  v4 = [(SearchUITableModel *)self sections];
-  v5 = [v4 mutableCopy];
+  sections = [(SearchUITableModel *)self sections];
+  v5 = [sections mutableCopy];
 
-  [v5 removeObjectAtIndex:a3];
+  [v5 removeObjectAtIndex:index];
   v6 = [objc_opt_class() tableModelWithSections:v5 expandedSections:0 expandedCollectionCardSections:0];
 
   return v6;
@@ -214,17 +214,17 @@
 
 - (unint64_t)numberOfSections
 {
-  v2 = [(SearchUITableModel *)self tableRowModel];
-  v3 = [v2 count];
+  tableRowModel = [(SearchUITableModel *)self tableRowModel];
+  v3 = [tableRowModel count];
 
   return v3;
 }
 
-- (void)replaceResult:(id)a3 withResult:(id)a4 completion:(id)a5
+- (void)replaceResult:(id)result withResult:(id)withResult completion:(id)completion
 {
-  v8 = a3;
-  v40 = a4;
-  v41 = a5;
+  resultCopy = result;
+  withResultCopy = withResult;
+  completionCopy = completion;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -244,30 +244,30 @@
   v13 = objc_opt_new();
   v14 = [(SearchUIDataSourceSnapshotBuilder *)v9 initWithExpandedSections:v10 expandedCollectionSections:v11 rowModelIdentifiers:v12 sectionModelIdentifiers:v13];
 
-  v15 = [(SearchUIDataSourceSnapshotBuilder *)v14 buildRowModelsFromResult:v8];
+  v15 = [(SearchUIDataSourceSnapshotBuilder *)v14 buildRowModelsFromResult:resultCopy];
   v39 = v14;
-  v16 = [(SearchUIDataSourceSnapshotBuilder *)v14 buildRowModelsFromResult:v40];
-  v17 = [v15 firstObject];
-  v18 = [(SearchUITableModel *)self indexPathForRowModel:v17];
+  v16 = [(SearchUIDataSourceSnapshotBuilder *)v14 buildRowModelsFromResult:withResultCopy];
+  firstObject = [v15 firstObject];
+  v18 = [(SearchUITableModel *)self indexPathForRowModel:firstObject];
 
   if (v18)
   {
-    v19 = [v18 section];
+    section = [v18 section];
     v38 = v18;
     v20 = [v18 row];
-    v21 = [(SearchUITableModel *)self tableRowModel];
-    v22 = [v21 objectAtIndexedSubscript:v19];
+    tableRowModel = [(SearchUITableModel *)self tableRowModel];
+    v22 = [tableRowModel objectAtIndexedSubscript:section];
     v23 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v20, objc_msgSend(v15, "count")}];
     [v22 removeObjectsAtIndexes:v23];
 
-    v24 = [(SearchUITableModel *)self tableRowModel];
-    v25 = [v24 objectAtIndexedSubscript:v19];
+    tableRowModel2 = [(SearchUITableModel *)self tableRowModel];
+    v25 = [tableRowModel2 objectAtIndexedSubscript:section];
     v26 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v20, objc_msgSend(v16, "count")}];
     [v25 insertObjects:v16 atIndexes:v26];
 
     v27 = objc_opt_new();
     v28 = objc_opt_new();
-    v37 = v8;
+    v37 = resultCopy;
     v29 = objc_opt_new();
     for (i = 0; ; ++i)
     {
@@ -279,7 +279,7 @@
         break;
       }
 
-      v34 = [MEMORY[0x1E696AC88] indexPathForRow:v20 + i inSection:v19];
+      v34 = [MEMORY[0x1E696AC88] indexPathForRow:v20 + i inSection:section];
       if (i >= [v16 count] || (v35 = objc_msgSend(v15, "count"), v36 = v27, i >= v35))
       {
         if (i >= [v16 count])
@@ -298,20 +298,20 @@
 
     if ([v27 count])
     {
-      v41[2](v41, 1, v27);
+      completionCopy[2](completionCopy, 1, v27);
     }
 
     if ([v28 count])
     {
-      v41[2](v41, 2, v28);
+      completionCopy[2](completionCopy, 2, v28);
     }
 
     if ([v29 count])
     {
-      v41[2](v41, 0, v29);
+      completionCopy[2](completionCopy, 0, v29);
     }
 
-    v8 = v37;
+    resultCopy = v37;
     v18 = v38;
   }
 
@@ -325,29 +325,29 @@ void __58__SearchUITableModel_replaceResult_withResult_completion___block_invoke
   [v2 addObject:v3];
 }
 
-- (id)removeRowModel:(id)a3
+- (id)removeRowModel:(id)model
 {
-  v4 = [(SearchUITableModel *)self indexPathForRowModel:a3];
+  v4 = [(SearchUITableModel *)self indexPathForRowModel:model];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 section];
-    v7 = [(SearchUITableModel *)self tableRowModel];
-    if (v6 >= [v7 count])
+    section = [v4 section];
+    tableRowModel = [(SearchUITableModel *)self tableRowModel];
+    if (section >= [tableRowModel count])
     {
     }
 
     else
     {
       v8 = [v5 row];
-      v9 = [(SearchUITableModel *)self tableRowModel];
-      v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+      tableRowModel2 = [(SearchUITableModel *)self tableRowModel];
+      v10 = [tableRowModel2 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
       v11 = [v10 count];
 
       if (v8 < v11)
       {
-        v12 = [(SearchUITableModel *)self tableRowModel];
-        v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+        tableRowModel3 = [(SearchUITableModel *)self tableRowModel];
+        v13 = [tableRowModel3 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
         [v13 removeObjectAtIndex:{objc_msgSend(v5, "row")}];
 
         v14 = v5;
@@ -362,39 +362,39 @@ LABEL_7:
   return v14;
 }
 
-+ (id)rowModelForCardSection:(id)a3 result:(id)a4
++ (id)rowModelForCardSection:(id)section result:(id)result
 {
-  v5 = a4;
-  v6 = a3;
+  resultCopy = result;
+  sectionCopy = section;
   v7 = objc_opt_new();
-  v8 = [v7 buildRowModelFromCardSection:v6 result:v5];
+  v8 = [v7 buildRowModelFromCardSection:sectionCopy result:resultCopy];
 
   return v8;
 }
 
-- (int64_t)numberOfRowsForSection:(int64_t)a3
+- (int64_t)numberOfRowsForSection:(int64_t)section
 {
-  v4 = [(SearchUITableModel *)self tableRowModel];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  tableRowModel = [(SearchUITableModel *)self tableRowModel];
+  v5 = [tableRowModel objectAtIndexedSubscript:section];
   v6 = [v5 count];
 
   return v6;
 }
 
-- (BOOL)indexPathExists:(id)a3
+- (BOOL)indexPathExists:(id)exists
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || [v4 row] < 0 || objc_msgSend(v5, "section") < 0)
+  existsCopy = exists;
+  v5 = existsCopy;
+  if (!existsCopy || [existsCopy row] < 0 || objc_msgSend(v5, "section") < 0)
   {
     v11 = 0;
   }
 
   else
   {
-    v6 = [v5 section];
-    v7 = [(SearchUITableModel *)self tableRowModel];
-    if (v6 >= [v7 count])
+    section = [v5 section];
+    tableRowModel = [(SearchUITableModel *)self tableRowModel];
+    if (section >= [tableRowModel count])
     {
       v11 = 0;
     }
@@ -402,8 +402,8 @@ LABEL_7:
     else
     {
       v8 = [v5 row];
-      v9 = [(SearchUITableModel *)self tableRowModel];
-      v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+      tableRowModel2 = [(SearchUITableModel *)self tableRowModel];
+      v10 = [tableRowModel2 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
       v11 = v8 < [v10 count];
     }
   }
@@ -411,14 +411,14 @@ LABEL_7:
   return v11;
 }
 
-- (id)rowModelForIndexPath:(id)a3
+- (id)rowModelForIndexPath:(id)path
 {
-  v4 = a3;
-  if ([(SearchUITableModel *)self indexPathExists:v4])
+  pathCopy = path;
+  if ([(SearchUITableModel *)self indexPathExists:pathCopy])
   {
-    v5 = [(SearchUITableModel *)self tableRowModel];
-    v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
-    v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    tableRowModel = [(SearchUITableModel *)self tableRowModel];
+    v6 = [tableRowModel objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+    v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
@@ -429,115 +429,115 @@ LABEL_7:
   return v7;
 }
 
-- (id)resultForIndexPath:(id)a3
+- (id)resultForIndexPath:(id)path
 {
-  v3 = [(SearchUITableModel *)self rowModelForIndexPath:a3];
-  v4 = [v3 identifyingResult];
+  v3 = [(SearchUITableModel *)self rowModelForIndexPath:path];
+  identifyingResult = [v3 identifyingResult];
 
-  return v4;
+  return identifyingResult;
 }
 
-- (id)sectionForIndex:(unint64_t)a3
+- (id)sectionForIndex:(unint64_t)index
 {
-  v5 = [(SearchUITableModel *)self sections];
-  if ([v5 count] <= a3)
+  sections = [(SearchUITableModel *)self sections];
+  if ([sections count] <= index)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(SearchUITableModel *)self sections];
-    v7 = [v6 objectAtIndexedSubscript:a3];
+    sections2 = [(SearchUITableModel *)self sections];
+    v7 = [sections2 objectAtIndexedSubscript:index];
   }
 
   return v7;
 }
 
-- (unint64_t)indexOfSection:(id)a3
+- (unint64_t)indexOfSection:(id)section
 {
-  v4 = a3;
-  v5 = [(SearchUITableModel *)self sections];
-  v6 = [v5 indexOfObject:v4];
+  sectionCopy = section;
+  sections = [(SearchUITableModel *)self sections];
+  v6 = [sections indexOfObject:sectionCopy];
 
   return v6;
 }
 
-- (id)cardSectionForIndexPath:(id)a3
+- (id)cardSectionForIndexPath:(id)path
 {
-  v3 = [(SearchUITableModel *)self rowModelForIndexPath:a3];
-  v4 = [v3 cardSection];
+  v3 = [(SearchUITableModel *)self rowModelForIndexPath:path];
+  cardSection = [v3 cardSection];
 
-  return v4;
+  return cardSection;
 }
 
-- (int)separatorStyleForIndexPath:(id)a3
+- (int)separatorStyleForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SearchUITableModel *)self rowModelForIndexPath:v4];
+  pathCopy = path;
+  v5 = [(SearchUITableModel *)self rowModelForIndexPath:pathCopy];
   v6 = MEMORY[0x1E696AC88];
-  v7 = [v4 row];
-  v8 = [v4 section];
+  v7 = [pathCopy row];
+  section = [pathCopy section];
 
-  v9 = [v6 indexPathForRow:v7 + 1 inSection:v8];
+  v9 = [v6 indexPathForRow:v7 + 1 inSection:section];
   v10 = [(SearchUITableModel *)self rowModelForIndexPath:v9];
 
-  v11 = [v5 separatorStyle];
-  if (!v11)
+  separatorStyle = [v5 separatorStyle];
+  if (!separatorStyle)
   {
     if ([v10 prefersNoSeparatorAbove])
     {
-      v11 = 1;
+      separatorStyle = 1;
     }
 
     else
     {
-      v11 = 3;
+      separatorStyle = 3;
     }
   }
 
-  if (v11 == 3 && v10)
+  if (separatorStyle == 3 && v10)
   {
     if ([v10 hasLeadingImage])
     {
-      v11 = 3;
+      separatorStyle = 3;
     }
 
     else
     {
-      v11 = 2;
+      separatorStyle = 2;
     }
   }
 
-  return v11;
+  return separatorStyle;
 }
 
-- (BOOL)rowWillFillBackgroundWithContentAtIndexPath:(id)a3
+- (BOOL)rowWillFillBackgroundWithContentAtIndexPath:(id)path
 {
-  v3 = [(SearchUITableModel *)self rowModelForIndexPath:a3];
-  v4 = [v3 fillsBackgroundWithContent];
+  v3 = [(SearchUITableModel *)self rowModelForIndexPath:path];
+  fillsBackgroundWithContent = [v3 fillsBackgroundWithContent];
 
-  return v4;
+  return fillsBackgroundWithContent;
 }
 
-- (id)indexPathForRowModel:(id)a3
+- (id)indexPathForRowModel:(id)model
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v5 = [(SearchUITableModel *)self tableRowModel];
-    v6 = [v5 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    tableRowModel = [(SearchUITableModel *)self tableRowModel];
+    v6 = [tableRowModel countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v6)
     {
       v7 = v6;
       v8 = 0;
       v9 = *v42;
-      v34 = v5;
+      v34 = tableRowModel;
       v30 = *v42;
       do
       {
@@ -548,7 +548,7 @@ LABEL_7:
         {
           if (*v42 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(tableRowModel);
           }
 
           v12 = *(*(&v41 + 1) + 8 * v10);
@@ -579,35 +579,35 @@ LABEL_7:
                 }
 
                 v19 = *(*(&v37 + 1) + 8 * v17);
-                if (v19 == v4)
+                if (v19 == modelCopy)
                 {
                   goto LABEL_26;
                 }
 
-                v20 = [v4 identifyingResult];
-                v21 = [v19 identifyingResult];
-                if (v20 == v21)
+                identifyingResult = [modelCopy identifyingResult];
+                identifyingResult2 = [v19 identifyingResult];
+                if (identifyingResult == identifyingResult2)
                 {
-                  v22 = [v4 identifyingResult];
-                  if (v22)
+                  identifyingResult3 = [modelCopy identifyingResult];
+                  if (identifyingResult3)
                   {
 
 LABEL_26:
                     v27 = [MEMORY[0x1E696AC88] indexPathForRow:v18 inSection:{v35, v29}];
 
-                    v5 = v34;
+                    tableRowModel = v34;
                     goto LABEL_27;
                   }
                 }
 
-                v23 = [v4 cardSection];
-                v24 = [v19 cardSection];
-                v25 = v24;
-                if (v23 == v24)
+                cardSection = [modelCopy cardSection];
+                cardSection2 = [v19 cardSection];
+                v25 = cardSection2;
+                if (cardSection == cardSection2)
                 {
-                  v26 = [v4 cardSection];
+                  cardSection3 = [modelCopy cardSection];
 
-                  if (v26)
+                  if (cardSection3)
                   {
                     goto LABEL_26;
                   }
@@ -623,7 +623,7 @@ LABEL_26:
 
               while (v14 != v17);
               v14 = [obj countByEnumeratingWithState:&v37 objects:v45 count:16];
-              v5 = v34;
+              tableRowModel = v34;
               v11 = v35;
               v9 = v30;
               v10 = v31;
@@ -643,7 +643,7 @@ LABEL_26:
         }
 
         while (v10 != v7);
-        v7 = [v5 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v7 = [tableRowModel countByEnumeratingWithState:&v41 objects:v46 count:16];
         v27 = 0;
         v8 = v29;
       }
@@ -667,22 +667,22 @@ LABEL_27:
   return v27;
 }
 
-- (id)indexPathForResultInFirstTwoSections:(id)a3
+- (id)indexPathForResultInFirstTwoSections:(id)sections
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  sectionsCopy = sections;
+  if (sectionsCopy)
   {
-    v5 = [(SearchUITableModel *)self tableRowModel];
-    v6 = [v5 count];
+    tableRowModel = [(SearchUITableModel *)self tableRowModel];
+    v6 = [tableRowModel count];
 
     if (v6)
     {
       v7 = 0;
       do
       {
-        v8 = [(SearchUITableModel *)self tableRowModel];
-        v9 = [v8 objectAtIndexedSubscript:v7];
+        tableRowModel2 = [(SearchUITableModel *)self tableRowModel];
+        v9 = [tableRowModel2 objectAtIndexedSubscript:v7];
         v10 = [v9 count];
 
         if (v10)
@@ -694,12 +694,12 @@ LABEL_27:
             v31 = 0u;
             v28 = 0u;
             v29 = 0u;
-            v12 = [(SearchUITableModel *)self tableRowModel];
-            v13 = [v12 objectAtIndexedSubscript:v7];
+            tableRowModel3 = [(SearchUITableModel *)self tableRowModel];
+            v13 = [tableRowModel3 objectAtIndexedSubscript:v7];
             v14 = [v13 objectAtIndexedSubscript:v11];
-            v15 = [v14 results];
+            results = [v14 results];
 
-            v16 = [v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
+            v16 = [results countByEnumeratingWithState:&v28 objects:v32 count:16];
             if (v16)
             {
               v17 = v16;
@@ -710,10 +710,10 @@ LABEL_27:
                 {
                   if (*v29 != v18)
                   {
-                    objc_enumerationMutation(v15);
+                    objc_enumerationMutation(results);
                   }
 
-                  if (*(*(&v28 + 1) + 8 * i) == v4)
+                  if (*(*(&v28 + 1) + 8 * i) == sectionsCopy)
                   {
                     v6 = [MEMORY[0x1E696AC88] indexPathForRow:v11 inSection:v7];
 
@@ -721,7 +721,7 @@ LABEL_27:
                   }
                 }
 
-                v17 = [v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
+                v17 = [results countByEnumeratingWithState:&v28 objects:v32 count:16];
                 if (v17)
                 {
                   continue;
@@ -732,8 +732,8 @@ LABEL_27:
             }
 
             ++v11;
-            v20 = [(SearchUITableModel *)self tableRowModel];
-            v21 = [v20 objectAtIndexedSubscript:v7];
+            tableRowModel4 = [(SearchUITableModel *)self tableRowModel];
+            v21 = [tableRowModel4 objectAtIndexedSubscript:v7];
             v22 = [v21 count];
           }
 
@@ -741,8 +741,8 @@ LABEL_27:
         }
 
         v23 = v7 + 1;
-        v24 = [(SearchUITableModel *)self tableRowModel];
-        v25 = [v24 count];
+        tableRowModel5 = [(SearchUITableModel *)self tableRowModel];
+        v25 = [tableRowModel5 count];
 
         v6 = 0;
         if (v25 >= 2)
@@ -780,26 +780,26 @@ LABEL_22:
   v4 = [(SearchUITableModel *)&v8 description];
   [v3 appendString:v4];
 
-  v5 = [(SearchUITableModel *)self tableRowModel];
-  v6 = [v5 description];
+  tableRowModel = [(SearchUITableModel *)self tableRowModel];
+  v6 = [tableRowModel description];
   [v3 appendFormat:@"\n %@", v6];
 
   return v3;
 }
 
-- (void)enumerateRowModels:(id)a3
+- (void)enumerateRowModels:(id)models
 {
-  v19 = a3;
-  v4 = [(SearchUITableModel *)self tableRowModel];
-  v5 = [v4 count];
+  modelsCopy = models;
+  tableRowModel = [(SearchUITableModel *)self tableRowModel];
+  v5 = [tableRowModel count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      v7 = [(SearchUITableModel *)self tableRowModel];
-      v8 = [v7 objectAtIndexedSubscript:v6];
+      tableRowModel2 = [(SearchUITableModel *)self tableRowModel];
+      v8 = [tableRowModel2 objectAtIndexedSubscript:v6];
       v9 = [v8 count];
 
       if (v9)
@@ -807,14 +807,14 @@ LABEL_22:
         v10 = 0;
         do
         {
-          v11 = [(SearchUITableModel *)self tableRowModel];
-          v12 = [v11 objectAtIndexedSubscript:v6];
+          tableRowModel3 = [(SearchUITableModel *)self tableRowModel];
+          v12 = [tableRowModel3 objectAtIndexedSubscript:v6];
           v13 = [v12 objectAtIndexedSubscript:v10];
-          v19[2](v19, v13);
+          modelsCopy[2](modelsCopy, v13);
 
           ++v10;
-          v14 = [(SearchUITableModel *)self tableRowModel];
-          v15 = [v14 objectAtIndexedSubscript:v6];
+          tableRowModel4 = [(SearchUITableModel *)self tableRowModel];
+          v15 = [tableRowModel4 objectAtIndexedSubscript:v6];
           v16 = [v15 count];
         }
 
@@ -822,8 +822,8 @@ LABEL_22:
       }
 
       ++v6;
-      v17 = [(SearchUITableModel *)self tableRowModel];
-      v18 = [v17 count];
+      tableRowModel5 = [(SearchUITableModel *)self tableRowModel];
+      v18 = [tableRowModel5 count];
     }
 
     while (v6 < v18);

@@ -1,5 +1,5 @@
 @interface MPSCNNDropoutGradientNode
-- (MPSCNNDropoutGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSCNNDropoutGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter;
 - (MPSCNNDropoutGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState keepProbability:(float)keepProbability seed:(NSUInteger)seed maskStrideInPixels:(MTLSize *)maskStrideInPixels;
 @end
 
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (MPSCNNDropoutGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+- (MPSCNNDropoutGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter
 {
   objc_opt_class();
   objc_opt_isKindOfClass();
@@ -36,19 +36,19 @@
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = a4;
+    filterCopy = filter;
     MTLReportFailure();
   }
 
   v12.receiver = self;
   v12.super_class = MPSCNNDropoutGradientNode;
-  result = [(MPSNNGradientFilterNode *)&v12 initWithGradientImages:a3 forwardFilter:a4, v10, v11];
+  result = [(MPSNNGradientFilterNode *)&v12 initWithGradientImages:images forwardFilter:filter, v10, filterCopy];
   if (result)
   {
-    result->_keepProbability = *(a4 + 14);
-    result->_seed = *(a4 + 8);
-    v8 = *(a4 + 11);
-    *&result->_maskStride.width = *(a4 + 72);
+    result->_keepProbability = *(filter + 14);
+    result->_seed = *(filter + 8);
+    v8 = *(filter + 11);
+    *&result->_maskStride.width = *(filter + 72);
     result->_maskStride.depth = v8;
   }
 

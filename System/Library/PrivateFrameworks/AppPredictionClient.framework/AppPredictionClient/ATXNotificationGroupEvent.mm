@@ -1,8 +1,8 @@
 @interface ATXNotificationGroupEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXNotificationGroupEvent)initWithEventType:(int64_t)a3 uuid:(id)a4 eventDate:(id)a5;
-- (ATXNotificationGroupEvent)initWithProto:(id)a3;
-- (ATXNotificationGroupEvent)initWithProtoData:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXNotificationGroupEvent)initWithEventType:(int64_t)type uuid:(id)uuid eventDate:(id)date;
+- (ATXNotificationGroupEvent)initWithProto:(id)proto;
+- (ATXNotificationGroupEvent)initWithProtoData:(id)data;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonRawData;
@@ -11,14 +11,14 @@
 
 @implementation ATXNotificationGroupEvent
 
-- (ATXNotificationGroupEvent)initWithEventType:(int64_t)a3 uuid:(id)a4 eventDate:(id)a5
+- (ATXNotificationGroupEvent)initWithEventType:(int64_t)type uuid:(id)uuid eventDate:(id)date
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (a3)
+  uuidCopy = uuid;
+  dateCopy = date;
+  v12 = dateCopy;
+  if (type)
   {
-    if (v11)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -41,18 +41,18 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    v13->_eventType = a3;
-    objc_storeStrong(&v13->_uuid, a4);
-    objc_storeStrong(&v14->_eventDate, a5);
+    v13->_eventType = type;
+    objc_storeStrong(&v13->_uuid, uuid);
+    objc_storeStrong(&v14->_eventDate, date);
   }
 
   return v14;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -63,12 +63,12 @@ LABEL_3:
   uuid = self->_uuid;
   if (uuid)
   {
-    v4 = [(NSUUID *)uuid UUIDString];
+    uUIDString = [(NSUUID *)uuid UUIDString];
   }
 
   else
   {
-    v4 = @"nil";
+    uUIDString = @"nil";
   }
 
   v8[0] = @"eventType";
@@ -83,7 +83,7 @@ LABEL_3:
   }
 
   v9[0] = v5;
-  v9[1] = v4;
+  v9[1] = uUIDString;
   v8[1] = @"uuid";
   v8[2] = @"eventDate";
   v9[2] = self->_eventDate;
@@ -95,46 +95,46 @@ LABEL_3:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXNotificationGroupEvent *)self jsonRawData];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonRawData = [(ATXNotificationGroupEvent *)self jsonRawData];
+  v4 = [v2 dataWithJSONObject:jsonRawData options:1 error:0];
 
   return v4;
 }
 
-- (ATXNotificationGroupEvent)initWithProtoData:(id)a3
+- (ATXNotificationGroupEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBNotificationGroupEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBNotificationGroupEvent alloc] initWithData:dataCopy];
 
     self = [(ATXNotificationGroupEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXNotificationGroupEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXNotificationGroupEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXNotificationGroupEvent)initWithProto:(id)a3
+- (ATXNotificationGroupEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -150,30 +150,30 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [(ATXPBNotificationGroupEvent *)v5 eventType];
+  v5 = protoCopy;
+  eventType = [(ATXPBNotificationGroupEvent *)v5 eventType];
   v7 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v8 = [(ATXPBNotificationGroupEvent *)v5 uuid];
-  v9 = [v7 initWithUUIDString:v8];
+  uuid = [(ATXPBNotificationGroupEvent *)v5 uuid];
+  v9 = [v7 initWithUUIDString:uuid];
 
   v10 = objc_alloc(MEMORY[0x1E695DF00]);
-  v11 = [(ATXPBNotificationGroupEvent *)v5 secondsSinceReferenceDate];
+  secondsSinceReferenceDate = [(ATXPBNotificationGroupEvent *)v5 secondsSinceReferenceDate];
 
-  v12 = [v10 initWithTimeIntervalSinceReferenceDate:v11];
-  self = [(ATXNotificationGroupEvent *)self initWithEventType:v6 uuid:v9 eventDate:v12];
+  v12 = [v10 initWithTimeIntervalSinceReferenceDate:secondsSinceReferenceDate];
+  self = [(ATXNotificationGroupEvent *)self initWithEventType:eventType uuid:v9 eventDate:v12];
 
-  v13 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
   [(ATXPBNotificationGroupEvent *)v3 setEventType:?];
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  [(ATXPBNotificationGroupEvent *)v3 setUuid:v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [(ATXPBNotificationGroupEvent *)v3 setUuid:uUIDString];
 
   [(NSDate *)self->_eventDate timeIntervalSinceReferenceDate];
   [(ATXPBNotificationGroupEvent *)v3 setSecondsSinceReferenceDate:v5];

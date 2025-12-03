@@ -132,14 +132,14 @@
     v58 = v57;
     [(CIVector *)self->inputBlueCoefficients valueAtIndex:9];
     v60 = [CIVector vectorWithX:v56 Y:v58 Z:v59];
-    v61 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
     [(CIImage *)self->inputImage extent];
     v63 = v62;
     v65 = v64;
     v67 = v66;
     v69 = v68;
-    v70 = [(CIColorCrossPolynomial *)self _kernel];
-    v75[0] = v61;
+    _kernel = [(CIColorCrossPolynomial *)self _kernel];
+    v75[0] = imageByUnpremultiplyingAlpha;
     v75[1] = v74;
     v75[2] = v73;
     v75[3] = v72;
@@ -150,7 +150,7 @@
     v75[8] = v48;
     v75[9] = v54;
     v75[10] = v60;
-    return [objc_msgSend(v70 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v75, 11), v63, v65, v67, v69), "imageByPremultiplyingAlpha"}];
+    return [objc_msgSend(_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v75, 11), v63, v65, v67, v69), "imageByPremultiplyingAlpha"}];
   }
 }
 

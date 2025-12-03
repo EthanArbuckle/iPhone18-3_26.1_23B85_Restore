@@ -1,28 +1,28 @@
 @interface SXDataTableConditionEngine
 + (id)engine;
-- (unint64_t)isEvenInteger:(int64_t)a3;
-- (unint64_t)isOddInteger:(int64_t)a3;
-- (void)addConditionForEqualInteger:(unint64_t)a3 withInteger:(unint64_t)a4;
-- (void)addConditionForEqualString:(id)a3 withString:(id)a4;
-- (void)addConditionForEvenBoolean:(unint64_t)a3 withInteger:(unint64_t)a4;
-- (void)addConditionForOddBoolean:(unint64_t)a3 withInteger:(unint64_t)a4;
+- (unint64_t)isEvenInteger:(int64_t)integer;
+- (unint64_t)isOddInteger:(int64_t)integer;
+- (void)addConditionForEqualInteger:(unint64_t)integer withInteger:(unint64_t)withInteger;
+- (void)addConditionForEqualString:(id)string withString:(id)withString;
+- (void)addConditionForEvenBoolean:(unint64_t)boolean withInteger:(unint64_t)integer;
+- (void)addConditionForOddBoolean:(unint64_t)boolean withInteger:(unint64_t)integer;
 @end
 
 @implementation SXDataTableConditionEngine
 
 + (id)engine
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)addConditionForEvenBoolean:(unint64_t)a3 withInteger:(unint64_t)a4
+- (void)addConditionForEvenBoolean:(unint64_t)boolean withInteger:(unint64_t)integer
 {
-  if (a3)
+  if (boolean)
   {
     [(SXDataTableConditionEngine *)self setConditionCount:[(SXDataTableConditionEngine *)self conditionCount]+ 1];
-    if ([(SXDataTableConditionEngine *)self isEvenInteger:a4]== a3)
+    if ([(SXDataTableConditionEngine *)self isEvenInteger:integer]== boolean)
     {
       v7 = [(SXDataTableConditionEngine *)self validConditionCount]+ 1;
 
@@ -31,12 +31,12 @@
   }
 }
 
-- (void)addConditionForOddBoolean:(unint64_t)a3 withInteger:(unint64_t)a4
+- (void)addConditionForOddBoolean:(unint64_t)boolean withInteger:(unint64_t)integer
 {
-  if (a3)
+  if (boolean)
   {
     [(SXDataTableConditionEngine *)self setConditionCount:[(SXDataTableConditionEngine *)self conditionCount]+ 1];
-    if ([(SXDataTableConditionEngine *)self isOddInteger:a4]== a3)
+    if ([(SXDataTableConditionEngine *)self isOddInteger:integer]== boolean)
     {
       v7 = [(SXDataTableConditionEngine *)self validConditionCount]+ 1;
 
@@ -45,12 +45,12 @@
   }
 }
 
-- (void)addConditionForEqualInteger:(unint64_t)a3 withInteger:(unint64_t)a4
+- (void)addConditionForEqualInteger:(unint64_t)integer withInteger:(unint64_t)withInteger
 {
-  if (a3 != -1)
+  if (integer != -1)
   {
     [(SXDataTableConditionEngine *)self setConditionCount:[(SXDataTableConditionEngine *)self conditionCount]+ 1];
-    if (a3 == a4)
+    if (integer == withInteger)
     {
       v7 = [(SXDataTableConditionEngine *)self validConditionCount]+ 1;
 
@@ -59,23 +59,23 @@
   }
 }
 
-- (void)addConditionForEqualString:(id)a3 withString:(id)a4
+- (void)addConditionForEqualString:(id)string withString:(id)withString
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  stringCopy = string;
+  withStringCopy = withString;
+  if (stringCopy)
   {
     [(SXDataTableConditionEngine *)self setConditionCount:[(SXDataTableConditionEngine *)self conditionCount]+ 1];
-    if ([v7 isEqualToString:v6])
+    if ([stringCopy isEqualToString:withStringCopy])
     {
       [(SXDataTableConditionEngine *)self setValidConditionCount:[(SXDataTableConditionEngine *)self validConditionCount]+ 1];
     }
   }
 }
 
-- (unint64_t)isEvenInteger:(int64_t)a3
+- (unint64_t)isEvenInteger:(int64_t)integer
 {
-  if (a3)
+  if (integer)
   {
     return 2;
   }
@@ -86,9 +86,9 @@
   }
 }
 
-- (unint64_t)isOddInteger:(int64_t)a3
+- (unint64_t)isOddInteger:(int64_t)integer
 {
-  if (a3)
+  if (integer)
   {
     return 1;
   }

@@ -1,23 +1,23 @@
 @interface VSIdentityProviderUserAccountUpdateOperation
-- (VSIdentityProviderUserAccountUpdateOperation)initWithIdentityProvider:(id)a3 userAccounts:(id)a4;
+- (VSIdentityProviderUserAccountUpdateOperation)initWithIdentityProvider:(id)provider userAccounts:(id)accounts;
 - (id)_allowedBundleIDs;
 - (void)executionDidBegin;
 @end
 
 @implementation VSIdentityProviderUserAccountUpdateOperation
 
-- (VSIdentityProviderUserAccountUpdateOperation)initWithIdentityProvider:(id)a3 userAccounts:(id)a4
+- (VSIdentityProviderUserAccountUpdateOperation)initWithIdentityProvider:(id)provider userAccounts:(id)accounts
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  accountsCopy = accounts;
   v12.receiver = self;
   v12.super_class = VSIdentityProviderUserAccountUpdateOperation;
   v9 = [(VSIdentityProviderUserAccountUpdateOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_provider, a3);
-    objc_storeStrong(&v10->_userAccounts, a4);
+    objc_storeStrong(&v9->_provider, provider);
+    objc_storeStrong(&v10->_userAccounts, accounts);
   }
 
   return v10;
@@ -26,18 +26,18 @@
 - (void)executionDidBegin
 {
   v30 = *MEMORY[0x277D85DE8];
-  v2 = [(VSIdentityProviderUserAccountUpdateOperation *)self userAccounts];
-  if ([v2 count])
+  userAccounts = [(VSIdentityProviderUserAccountUpdateOperation *)self userAccounts];
+  if ([userAccounts count])
   {
     v3 = VSDefaultLogObject();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [v2 count];
-      v5 = [(VSIdentityProviderUserAccountUpdateOperation *)self provider];
+      v4 = [userAccounts count];
+      provider = [(VSIdentityProviderUserAccountUpdateOperation *)self provider];
       *buf = 134218242;
       v27 = v4;
       v28 = 2112;
-      v29 = v5;
+      v29 = provider;
       _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "%lu user accounts to write for provider %@", buf, 0x16u);
     }
 
@@ -54,8 +54,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v16 = v2;
-    v9 = v2;
+    v16 = userAccounts;
+    v9 = userAccounts;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v10)
     {
@@ -95,7 +95,7 @@
     [(VSWaitGroup *)v8 waitWithMilliseconds:0];
     [(VSAsyncOperation *)self finishExecutionIfPossible];
 
-    v2 = v16;
+    userAccounts = v16;
   }
 }
 
@@ -150,10 +150,10 @@ void __65__VSIdentityProviderUserAccountUpdateOperation_executionDidBegin__block
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(VSIdentityProviderUserAccountUpdateOperation *)self provider];
-  v5 = [v4 nonChannelAppDescriptions];
+  provider = [(VSIdentityProviderUserAccountUpdateOperation *)self provider];
+  nonChannelAppDescriptions = [provider nonChannelAppDescriptions];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [nonChannelAppDescriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -165,22 +165,22 @@ void __65__VSIdentityProviderUserAccountUpdateOperation_executionDidBegin__block
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(nonChannelAppDescriptions);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 bundleID];
+        bundleID = [v11 bundleID];
 
-        if (!v12)
+        if (!bundleID)
         {
           [MEMORY[0x277CBEAD8] raise:v9 format:@"The [appDescription bundleID] parameter must not be nil."];
         }
 
-        v13 = [v11 bundleID];
-        [v3 addObject:v13];
+        bundleID2 = [v11 bundleID];
+        [v3 addObject:bundleID2];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [nonChannelAppDescriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);

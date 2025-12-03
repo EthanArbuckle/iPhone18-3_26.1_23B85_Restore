@@ -1,12 +1,12 @@
 @interface VCAudioUnitSpatialContext
-- (VCAudioUnitSpatialContext)initWithAudioSessionId:(unsigned int)a3 maxChannelCountMic:(unsigned int)a4 maxChannelCountSpeaker:(unsigned int)a5 spatialMetadata:(OpaqueCMBlockBuffer *)a6;
+- (VCAudioUnitSpatialContext)initWithAudioSessionId:(unsigned int)id maxChannelCountMic:(unsigned int)mic maxChannelCountSpeaker:(unsigned int)speaker spatialMetadata:(OpaqueCMBlockBuffer *)metadata;
 - (void)dealloc;
-- (void)setSpatialMetadata:(OpaqueCMBlockBuffer *)a3;
+- (void)setSpatialMetadata:(OpaqueCMBlockBuffer *)metadata;
 @end
 
 @implementation VCAudioUnitSpatialContext
 
-- (VCAudioUnitSpatialContext)initWithAudioSessionId:(unsigned int)a3 maxChannelCountMic:(unsigned int)a4 maxChannelCountSpeaker:(unsigned int)a5 spatialMetadata:(OpaqueCMBlockBuffer *)a6
+- (VCAudioUnitSpatialContext)initWithAudioSessionId:(unsigned int)id maxChannelCountMic:(unsigned int)mic maxChannelCountSpeaker:(unsigned int)speaker spatialMetadata:(OpaqueCMBlockBuffer *)metadata
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -15,12 +15,12 @@
   v11 = v10;
   if (v10)
   {
-    v10->_audioSessionId = a3;
-    v10->_maxChannelCountMic = a4;
-    v10->_maxChannelCountSpeaker = a5;
-    if (a6)
+    v10->_audioSessionId = id;
+    v10->_maxChannelCountMic = mic;
+    v10->_maxChannelCountSpeaker = speaker;
+    if (metadata)
     {
-      v12 = CFRetain(a6);
+      v12 = CFRetain(metadata);
     }
 
     else
@@ -34,19 +34,19 @@
   return v11;
 }
 
-- (void)setSpatialMetadata:(OpaqueCMBlockBuffer *)a3
+- (void)setSpatialMetadata:(OpaqueCMBlockBuffer *)metadata
 {
   spatialMetadata = self->_spatialMetadata;
-  if (spatialMetadata != a3)
+  if (spatialMetadata != metadata)
   {
     if (spatialMetadata)
     {
       CFRelease(spatialMetadata);
     }
 
-    if (a3)
+    if (metadata)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(metadata);
     }
 
     else

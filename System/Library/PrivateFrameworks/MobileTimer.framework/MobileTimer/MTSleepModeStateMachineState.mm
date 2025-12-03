@@ -1,10 +1,10 @@
 @interface MTSleepModeStateMachineState
-- (id)determineNextState:(BOOL)a3;
+- (id)determineNextState:(BOOL)state;
 - (id)nextSleepModeEndDate;
-- (id)nextSleepModeEndDateAfterDate:(id)a3;
+- (id)nextSleepModeEndDateAfterDate:(id)date;
 - (id)nextSleepModeStartDate;
-- (id)nextSleepModeStartDateAfterDate:(id)a3;
-- (void)sleepModeEnabled:(BOOL)a3 userRequested:(BOOL)a4 date:(id)a5;
+- (id)nextSleepModeStartDateAfterDate:(id)date;
+- (void)sleepModeEnabled:(BOOL)enabled userRequested:(BOOL)requested date:(id)date;
 - (void)updateModeKeepOffUntilDateIfNecessary;
 - (void)userWokeUp;
 @end
@@ -14,58 +14,58 @@
 - (void)updateModeKeepOffUntilDateIfNecessary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(MTStateMachineState *)self stateMachine];
-  v4 = [v3 currentDate];
+  stateMachine = [(MTStateMachineState *)self stateMachine];
+  currentDate = [stateMachine currentDate];
 
-  v5 = [(MTStateMachineState *)self stateMachine];
-  v6 = [v5 keepOffUntilDate];
+  stateMachine2 = [(MTStateMachineState *)self stateMachine];
+  keepOffUntilDate = [stateMachine2 keepOffUntilDate];
 
-  if (v6 && [v4 mtIsBeforeDate:v6])
+  if (keepOffUntilDate && [currentDate mtIsBeforeDate:keepOffUntilDate])
   {
-    v7 = [(MTSleepModeStateMachineState *)self nextSleepModeStartDateAfterDate:v4];
-    if (([v6 isEqualToDate:v7] & 1) == 0)
+    v7 = [(MTSleepModeStateMachineState *)self nextSleepModeStartDateAfterDate:currentDate];
+    if (([keepOffUntilDate isEqualToDate:v7] & 1) == 0)
     {
       v8 = MTLogForCategory(7);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543618;
-        v13 = self;
+        selfCopy = self;
         v14 = 2114;
         v15 = v7;
         _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating keep off until date: %{public}@", &v12, 0x16u);
       }
 
-      v9 = [(MTStateMachineState *)self stateMachine];
-      v10 = [(MTStateMachineState *)self stateMachine];
-      [v9 stateMachine:v10 keepSleepModeOffUntilDate:v7];
+      stateMachine3 = [(MTStateMachineState *)self stateMachine];
+      stateMachine4 = [(MTStateMachineState *)self stateMachine];
+      [stateMachine3 stateMachine:stateMachine4 keepSleepModeOffUntilDate:v7];
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)determineNextState:(BOOL)a3
+- (id)determineNextState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v40 = *MEMORY[0x1E69E9840];
-  v5 = [(MTStateMachineState *)self stateMachine];
-  v6 = [v5 currentDate];
+  stateMachine = [(MTStateMachineState *)self stateMachine];
+  currentDate = [stateMachine currentDate];
 
-  v7 = [(MTStateMachineState *)self stateMachine];
-  v8 = [v7 keepOffUntilDate];
+  stateMachine2 = [(MTStateMachineState *)self stateMachine];
+  keepOffUntilDate = [stateMachine2 keepOffUntilDate];
 
-  if (!v8 || ![v6 mtIsBeforeDate:v8])
+  if (!keepOffUntilDate || ![currentDate mtIsBeforeDate:keepOffUntilDate])
   {
-    v12 = [(MTStateMachineState *)self stateMachine];
-    v10 = [v12 sleepAlarm];
+    stateMachine3 = [(MTStateMachineState *)self stateMachine];
+    sleepAlarm = [stateMachine3 sleepAlarm];
 
-    if (!v10)
+    if (!sleepAlarm)
     {
       v22 = MTLogForCategory(7);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v32 = 138543618;
-        v33 = self;
+        selfCopy7 = self;
         v34 = 2114;
         v35 = @"sleep mode";
         _os_log_impl(&dword_1B1F9F000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ no sleep alarm, turning off %{public}@ if it's on", &v32, 0x16u);
@@ -74,33 +74,33 @@
       goto LABEL_24;
     }
 
-    if ([v10 sleepSchedule])
+    if ([sleepAlarm sleepSchedule])
     {
-      if ([v10 sleepMode])
+      if ([sleepAlarm sleepMode])
       {
-        v13 = [(MTStateMachineState *)self stateMachine];
-        v14 = [v13 isUserAsleep];
+        stateMachine4 = [(MTStateMachineState *)self stateMachine];
+        isUserAsleep = [stateMachine4 isUserAsleep];
 
-        if (v14)
+        if (isUserAsleep)
         {
-          if (!v3 || ([v10 bedtimeReminder], (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (v16 = v15, v17 = objc_msgSend(v10, "bedtimeReminderMinutes"), v16, v17))
+          if (!stateCopy || ([sleepAlarm bedtimeReminder], (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (v16 = v15, v17 = objc_msgSend(sleepAlarm, "bedtimeReminderMinutes"), v16, v17))
           {
             v18 = MTLogForCategory(7);
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v10 alarmIDString];
+              alarmIDString = [sleepAlarm alarmIDString];
               v32 = 138543874;
-              v33 = self;
+              selfCopy7 = self;
               v34 = 2114;
               v35 = @"sleep mode";
               v36 = 2114;
-              v37 = v19;
+              v37 = alarmIDString;
               _os_log_impl(&dword_1B1F9F000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ turning on %{public}@ if it's not on for alarm %{public}@", &v32, 0x20u);
             }
 
-            v20 = [(MTStateMachineState *)self stateMachine];
-            v21 = [(MTSleepModeStateMachineState *)self nextSleepModeEndDate];
-            v11 = [v20 onStateWithSleepModeEndDate:v21];
+            stateMachine5 = [(MTStateMachineState *)self stateMachine];
+            nextSleepModeEndDate = [(MTSleepModeStateMachineState *)self nextSleepModeEndDate];
+            v11 = [stateMachine5 onStateWithSleepModeEndDate:nextSleepModeEndDate];
 
             goto LABEL_26;
           }
@@ -108,20 +108,20 @@
           v30 = MTLogForCategory(7);
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
-            v31 = [v10 alarmIDString];
+            alarmIDString2 = [sleepAlarm alarmIDString];
             v32 = 138543874;
-            v33 = self;
+            selfCopy7 = self;
             v34 = 2114;
             v35 = @"sleep mode";
             v36 = 2114;
-            v37 = v31;
+            v37 = alarmIDString2;
             _os_log_impl(&dword_1B1F9F000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ waiting 60 seconds before turning on %{public}@ for alarm %{public}@", &v32, 0x20u);
           }
 
-          v20 = [(MTStateMachineState *)self stateMachine];
-          v27 = [v20 waitingState];
+          stateMachine5 = [(MTStateMachineState *)self stateMachine];
+          waitingState = [stateMachine5 waitingState];
 LABEL_25:
-          v11 = v27;
+          v11 = waitingState;
 LABEL_26:
 
           goto LABEL_27;
@@ -130,11 +130,11 @@ LABEL_26:
         v22 = MTLogForCategory(7);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v10 alarmIDString];
+          alarmIDString3 = [sleepAlarm alarmIDString];
           v32 = 138543874;
-          v33 = self;
+          selfCopy7 = self;
           v34 = 2114;
-          v35 = v23;
+          v35 = alarmIDString3;
           v36 = 2114;
           v37 = @"sleep mode";
           v24 = "%{public}@ not in sleep window for alarm %{public}@, turning off %{public}@ if it's on";
@@ -147,13 +147,13 @@ LABEL_26:
         v22 = MTLogForCategory(7);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v10 alarmIDString];
+          alarmIDString3 = [sleepAlarm alarmIDString];
           v32 = 138544130;
-          v33 = self;
+          selfCopy7 = self;
           v34 = 2114;
           v35 = @"sleep mode";
           v36 = 2114;
-          v37 = v23;
+          v37 = alarmIDString3;
           v38 = 2114;
           v39 = @"sleep mode";
           v24 = "%{public}@ %{public}@ not enabled for alarm %{public}@, turning off %{public}@ if it's on";
@@ -169,11 +169,11 @@ LABEL_26:
       v22 = MTLogForCategory(7);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v10 alarmIDString];
+        alarmIDString3 = [sleepAlarm alarmIDString];
         v32 = 138543874;
-        v33 = self;
+        selfCopy7 = self;
         v34 = 2114;
-        v35 = v23;
+        v35 = alarmIDString3;
         v36 = 2114;
         v37 = @"sleep mode";
         v24 = "%{public}@ sleep schedule for %{public}@ not enabled, turning off %{public}@ if it's on";
@@ -187,8 +187,8 @@ LABEL_23:
 
 LABEL_24:
 
-    v20 = [(MTStateMachineState *)self stateMachine];
-    v27 = [v20 offState];
+    stateMachine5 = [(MTStateMachineState *)self stateMachine];
+    waitingState = [stateMachine5 offState];
     goto LABEL_25;
   }
 
@@ -196,16 +196,16 @@ LABEL_24:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v32 = 138543874;
-    v33 = self;
+    selfCopy7 = self;
     v34 = 2114;
-    v35 = v8;
+    v35 = keepOffUntilDate;
     v36 = 2114;
     v37 = @"sleep mode";
     _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ We are before keep off until date: %{public}@, turning off %{public}@ if it's on", &v32, 0x20u);
   }
 
-  v10 = [(MTStateMachineState *)self stateMachine];
-  v11 = [v10 userRequestedOffStateWithKeepOffUntilDate:v8];
+  sleepAlarm = [(MTStateMachineState *)self stateMachine];
+  v11 = [sleepAlarm userRequestedOffStateWithKeepOffUntilDate:keepOffUntilDate];
 LABEL_27:
 
   v28 = *MEMORY[0x1E69E9840];
@@ -213,57 +213,57 @@ LABEL_27:
   return v11;
 }
 
-- (void)sleepModeEnabled:(BOOL)a3 userRequested:(BOOL)a4 date:(id)a5
+- (void)sleepModeEnabled:(BOOL)enabled userRequested:(BOOL)requested date:(id)date
 {
-  v5 = a4;
-  v6 = a3;
+  requestedCopy = requested;
+  enabledCopy = enabled;
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (v6)
+  dateCopy = date;
+  if (enabledCopy)
   {
-    v9 = [(MTSleepModeStateMachineState *)self nextSleepModeEndDate];
-    v10 = [(MTStateMachineState *)self stateMachine];
-    v11 = [(MTStateMachineState *)self stateMachine];
-    v12 = [v11 onStateWithSleepModeEndDate:v9];
+    nextSleepModeEndDate = [(MTSleepModeStateMachineState *)self nextSleepModeEndDate];
+    stateMachine = [(MTStateMachineState *)self stateMachine];
+    stateMachine2 = [(MTStateMachineState *)self stateMachine];
+    v12 = [stateMachine2 onStateWithSleepModeEndDate:nextSleepModeEndDate];
   }
 
   else
   {
-    if (!v5)
+    if (!requestedCopy)
     {
-      v9 = [(MTStateMachineState *)self stateMachine];
-      v17 = [(MTStateMachineState *)self stateMachine];
-      v18 = [v17 offState];
-      [v9 enterState:v18];
+      nextSleepModeEndDate = [(MTStateMachineState *)self stateMachine];
+      stateMachine3 = [(MTStateMachineState *)self stateMachine];
+      offState = [stateMachine3 offState];
+      [nextSleepModeEndDate enterState:offState];
 
       goto LABEL_9;
     }
 
-    v9 = [(MTSleepModeStateMachineState *)self nextSleepModeStartDateAfterDate:v8];
-    v14 = [(MTStateMachineState *)self stateMachine];
-    v15 = [v14 currentDate];
-    v16 = [v9 mtIsAfterDate:v15];
+    nextSleepModeEndDate = [(MTSleepModeStateMachineState *)self nextSleepModeStartDateAfterDate:dateCopy];
+    stateMachine4 = [(MTStateMachineState *)self stateMachine];
+    currentDate = [stateMachine4 currentDate];
+    v16 = [nextSleepModeEndDate mtIsAfterDate:currentDate];
 
     if (!v16)
     {
-      v10 = MTLogForCategory(7);
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      stateMachine = MTLogForCategory(7);
+      if (os_log_type_enabled(stateMachine, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138543362;
-        v21 = self;
-        _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ ignoring user requested off because it's for previous sleep window", &v20, 0xCu);
+        selfCopy = self;
+        _os_log_impl(&dword_1B1F9F000, stateMachine, OS_LOG_TYPE_DEFAULT, "%{public}@ ignoring user requested off because it's for previous sleep window", &v20, 0xCu);
       }
 
       goto LABEL_4;
     }
 
-    v10 = [(MTStateMachineState *)self stateMachine];
-    v11 = [(MTStateMachineState *)self stateMachine];
-    v12 = [v11 userRequestedOffStateWithKeepOffUntilDate:v9];
+    stateMachine = [(MTStateMachineState *)self stateMachine];
+    stateMachine2 = [(MTStateMachineState *)self stateMachine];
+    v12 = [stateMachine2 userRequestedOffStateWithKeepOffUntilDate:nextSleepModeEndDate];
   }
 
   v13 = v12;
-  [v10 enterState:v12];
+  [stateMachine enterState:v12];
 
 LABEL_4:
 LABEL_9:
@@ -273,46 +273,46 @@ LABEL_9:
 
 - (void)userWokeUp
 {
-  v5 = [(MTStateMachineState *)self stateMachine];
-  v3 = [(MTStateMachineState *)self stateMachine];
-  v4 = [v3 offState];
-  [v5 enterState:v4];
+  stateMachine = [(MTStateMachineState *)self stateMachine];
+  stateMachine2 = [(MTStateMachineState *)self stateMachine];
+  offState = [stateMachine2 offState];
+  [stateMachine enterState:offState];
 }
 
 - (id)nextSleepModeEndDate
 {
-  v3 = [(MTStateMachineState *)self stateMachine];
-  v4 = [v3 currentDate];
-  v5 = [(MTSleepModeStateMachineState *)self nextSleepModeEndDateAfterDate:v4];
+  stateMachine = [(MTStateMachineState *)self stateMachine];
+  currentDate = [stateMachine currentDate];
+  v5 = [(MTSleepModeStateMachineState *)self nextSleepModeEndDateAfterDate:currentDate];
 
   return v5;
 }
 
-- (id)nextSleepModeEndDateAfterDate:(id)a3
+- (id)nextSleepModeEndDateAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MTStateMachineState *)self stateMachine];
-  v6 = [v5 sleepAlarm];
-  v7 = [v6 nextExpectedWakeUpDateAfterDate:v4];
+  dateCopy = date;
+  stateMachine = [(MTStateMachineState *)self stateMachine];
+  sleepAlarm = [stateMachine sleepAlarm];
+  v7 = [sleepAlarm nextExpectedWakeUpDateAfterDate:dateCopy];
 
   return v7;
 }
 
 - (id)nextSleepModeStartDate
 {
-  v3 = [(MTStateMachineState *)self stateMachine];
-  v4 = [v3 currentDate];
-  v5 = [(MTSleepModeStateMachineState *)self nextSleepModeStartDateAfterDate:v4];
+  stateMachine = [(MTStateMachineState *)self stateMachine];
+  currentDate = [stateMachine currentDate];
+  v5 = [(MTSleepModeStateMachineState *)self nextSleepModeStartDateAfterDate:currentDate];
 
   return v5;
 }
 
-- (id)nextSleepModeStartDateAfterDate:(id)a3
+- (id)nextSleepModeStartDateAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MTStateMachineState *)self stateMachine];
-  v6 = [v5 sleepAlarm];
-  v7 = [v6 nextExpectedBedtimeDateAfterDate:v4];
+  dateCopy = date;
+  stateMachine = [(MTStateMachineState *)self stateMachine];
+  sleepAlarm = [stateMachine sleepAlarm];
+  v7 = [sleepAlarm nextExpectedBedtimeDateAfterDate:dateCopy];
 
   return v7;
 }

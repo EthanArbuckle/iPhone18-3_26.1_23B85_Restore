@@ -1,32 +1,32 @@
 @interface NESMAlwaysOnSession
 + (BOOL)hasRequiredFrameworks;
-- (BOOL)handleUpdateConfiguration:(id)a3;
-- (NESMAlwaysOnSession)initWithConfiguration:(id)a3 andServer:(id)a4;
+- (BOOL)handleUpdateConfiguration:(id)configuration;
+- (NESMAlwaysOnSession)initWithConfiguration:(id)configuration andServer:(id)server;
 - (id)copyExtendedStatus;
-- (void)carrierBundleChange:(id)a3;
+- (void)carrierBundleChange:(id)change;
 - (void)dealloc;
-- (void)handleChangeEventForInterface:(id)a3 newFlags:(unint64_t)a4 previousFlags:(unint64_t)a5;
-- (void)handleGetInfoMessage:(id)a3 withType:(int)a4;
+- (void)handleChangeEventForInterface:(id)interface newFlags:(unint64_t)flags previousFlags:(unint64_t)previousFlags;
+- (void)handleGetInfoMessage:(id)message withType:(int)type;
 - (void)handleInitializeState;
 - (void)handleInstalledAppsChanged;
-- (void)handleNetworkConfigurationChange:(int64_t)a3;
-- (void)handleNetworkDetectionNotification:(int)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)handleNetworkConfigurationChange:(int64_t)change;
+- (void)handleNetworkDetectionNotification:(int)notification;
+- (void)handleStartMessage:(id)message;
 - (void)handleWakeup;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setStatus:(int)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setStatus:(int)status;
 @end
 
 @implementation NESMAlwaysOnSession
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Carrier bundle changed: %@", &v6, 0xCu);
   }
 
@@ -37,36 +37,36 @@
 - (void)handleInstalledAppsChanged
 {
   [(NESMAlwaysOnSession *)self handleNetworkDetectionNotification:2];
-  v3 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100007A38;
   block[3] = &unk_1000EB1C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)handleNetworkDetectionNotification:(int)a3
+- (void)handleNetworkDetectionNotification:(int)notification
 {
-  if (a3 <= 5 && ((1 << a3) & 0x27) != 0)
+  if (notification <= 5 && ((1 << notification) & 0x27) != 0)
   {
     block[7] = v3;
     block[8] = v4;
-    v6 = [(NESMSession *)self queue];
+    queue = [(NESMSession *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100007ED4;
     block[3] = &unk_1000EB1C0;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if (self)
   {
     Property = objc_getProperty(self, v11, 360, 1);
@@ -77,7 +77,7 @@
     Property = 0;
   }
 
-  if (Property == v10 && [v9 isEqualToString:@"path"])
+  if (Property == objectCopy && [pathCopy isEqualToString:@"path"])
   {
     if (self)
     {
@@ -89,8 +89,8 @@
       v15 = 0;
     }
 
-    v16 = [v15 path];
-    if ([v16 status] == 1)
+    path = [v15 path];
+    if ([path status] == 1)
     {
       if (self)
       {
@@ -102,10 +102,10 @@
         IDSNexusIfIndex = 0;
       }
 
-      v18 = [v16 interface];
-      v19 = [v18 interfaceIndex];
+      interface = [path interface];
+      interfaceIndex = [interface interfaceIndex];
 
-      if (IDSNexusIfIndex == v19)
+      if (IDSNexusIfIndex == interfaceIndex)
       {
         goto LABEL_28;
       }
@@ -123,25 +123,25 @@
           v21 = 0;
         }
 
-        v22 = [v16 interface];
+        interface2 = [path interface];
         v36 = 134218240;
         v37 = v21;
         v38 = 2048;
-        v39 = [v22 interfaceIndex];
+        interfaceIndex2 = [interface2 interfaceIndex];
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "IDS Nexus interface changed %ld -> %ld", &v36, 0x16u);
       }
 
-      v23 = [v16 interface];
-      v24 = [v23 interfaceIndex];
+      interface3 = [path interface];
+      interfaceIndex3 = [interface3 interfaceIndex];
       if (self)
       {
-        self->_IDSNexusIfIndex = v24;
+        self->_IDSNexusIfIndex = interfaceIndex3;
       }
 
-      v25 = [(NESMSession *)self policySession];
-      v26 = [v16 interface];
-      v27 = [v26 interfaceName];
-      v28 = sub_100048604(v25, v27);
+      policySession = [(NESMSession *)self policySession];
+      interface4 = [path interface];
+      interfaceName = [interface4 interfaceName];
+      v28 = sub_100048604(policySession, interfaceName);
 
       if (v28)
       {
@@ -151,10 +151,10 @@
       v29 = ne_log_obj();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        v30 = [v16 interface];
-        v31 = [v30 interfaceName];
+        interface5 = [path interface];
+        interfaceName2 = [interface5 interfaceName];
         v36 = 138412290;
-        v37 = v31;
+        v37 = interfaceName2;
         _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Failed to add IDS Nexus policy for %@", &v36, 0xCu);
       }
     }
@@ -173,8 +173,8 @@
         self->_IDSNexusIfIndex = 0;
       }
 
-      v33 = [(NESMSession *)self policySession];
-      v35 = sub_100034538(v33, v34);
+      policySession2 = [(NESMSession *)self policySession];
+      v35 = sub_100034538(policySession2, v34);
 
       if (v35)
       {
@@ -193,25 +193,25 @@ LABEL_28:
   }
 }
 
-- (void)handleNetworkConfigurationChange:(int64_t)a3
+- (void)handleNetworkConfigurationChange:(int64_t)change
 {
-  v5 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000088D8;
   v6[3] = &unk_1000EB0D8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = change;
+  dispatch_async(queue, v6);
 }
 
-- (void)setStatus:(int)a3
+- (void)setStatus:(int)status
 {
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v77 = self;
+    selfCopy5 = self;
     v78 = 2080;
     v79 = "[NESMAlwaysOnSession setStatus:]";
     v80 = 2080;
@@ -224,7 +224,7 @@ LABEL_28:
   v69 = 0u;
   v70 = 0u;
   v7 = &selRef_temporaryAllowMulticastNetworkName;
-  v56 = a3;
+  statusCopy = status;
   if (self)
   {
     Property = objc_getProperty(self, v6, 400, 1);
@@ -266,18 +266,18 @@ LABEL_28:
         v18 = ne_log_obj();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v19 = [v17 interfaceName];
-          v20 = [v17 connectCount];
-          v21 = [v17 connectedCount];
-          v22 = [v17 disconnectedCount];
+          interfaceName = [v17 interfaceName];
+          connectCount = [v17 connectCount];
+          connectedCount = [v17 connectedCount];
+          disconnectedCount = [v17 disconnectedCount];
           *buf = 138413058;
-          v77 = v19;
+          selfCopy5 = interfaceName;
           v78 = 2048;
-          v79 = v20;
+          v79 = connectCount;
           v80 = 2048;
-          v81 = v21;
+          v81 = connectedCount;
           v82 = 2048;
-          v83 = v22;
+          v83 = disconnectedCount;
           _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "AlwaysOn Stats [%@]: connect %ld, connected %ld, disconnected %ld", buf, 0x2Au);
 
           v7 = &selRef_temporaryAllowMulticastNetworkName;
@@ -296,13 +296,13 @@ LABEL_28:
 
   v75[1] = 0;
   v75[0] = 0;
-  v24 = [(NESMSession *)self configuration];
-  v25 = [v24 identifier];
-  [v25 getUUIDBytes:v75];
+  configuration = [(NESMSession *)self configuration];
+  identifier = [configuration identifier];
+  [identifier getUUIDBytes:v75];
 
-  if (v56 > 3)
+  if (statusCopy > 3)
   {
-    if ((v56 - 4) >= 2)
+    if ((statusCopy - 4) >= 2)
     {
       return;
     }
@@ -350,9 +350,9 @@ LABEL_26:
           }
 
           v37 = [v36 objectForKeyedSubscript:v35];
-          v38 = [v37 status];
+          status = [v37 status];
 
-          if (v38 == 3)
+          if (status == 3)
           {
 
             return;
@@ -374,7 +374,7 @@ LABEL_26:
     {
       v55 = ne_session_status_to_string();
       *buf = 138412802;
-      v77 = self;
+      selfCopy5 = self;
       v78 = 2080;
       v79 = "[NESMAlwaysOnSession setStatus:]";
       v80 = 2080;
@@ -384,21 +384,21 @@ LABEL_26:
 
     v57.receiver = self;
     v57.super_class = NESMAlwaysOnSession;
-    [(NESMSession *)&v57 setStatus:v56];
+    [(NESMSession *)&v57 setStatus:statusCopy];
     return;
   }
 
-  if (v56 != 1)
+  if (statusCopy != 1)
   {
-    if (v56 != 2)
+    if (statusCopy != 2)
     {
-      if (v56 == 3)
+      if (statusCopy == 3)
       {
         v27 = ne_log_obj();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v77 = self;
+          selfCopy5 = self;
           v78 = 2080;
           v79 = "[NESMAlwaysOnSession setStatus:]";
           _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "%@:%s: Status to Client: CONNECTED", buf, 0x16u);
@@ -457,9 +457,9 @@ LABEL_26:
         }
 
         v50 = [v49 objectForKeyedSubscript:v48];
-        v51 = [v50 status];
+        status2 = [v50 status];
 
-        if (v51 != 1)
+        if (status2 != 1)
         {
 
           return;
@@ -482,7 +482,7 @@ LABEL_26:
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v77 = self;
+      selfCopy5 = self;
       v78 = 2080;
       v79 = "[NESMAlwaysOnSession setStatus:]";
       _os_log_debug_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEBUG, "%@:%s: Status to Client: DISCONNECTED", buf, 0x16u);
@@ -499,7 +499,7 @@ LABEL_26:
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v77 = self;
+      selfCopy5 = self;
       v78 = 2080;
       v79 = "[NESMAlwaysOnSession setStatus:]";
       _os_log_debug_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEBUG, "%@:%s: Status to Client: REASSERTING", buf, 0x16u);
@@ -511,37 +511,37 @@ LABEL_26:
   }
 }
 
-- (void)handleChangeEventForInterface:(id)a3 newFlags:(unint64_t)a4 previousFlags:(unint64_t)a5
+- (void)handleChangeEventForInterface:(id)interface newFlags:(unint64_t)flags previousFlags:(unint64_t)previousFlags
 {
-  v8 = a3;
+  interfaceCopy = interface;
   v9 = ne_log_obj();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v18 = self;
+    selfCopy = self;
     v19 = 2080;
     v20 = "[NESMAlwaysOnSession handleChangeEventForInterface:newFlags:previousFlags:]";
     v21 = 2112;
-    v22 = v8;
+    v22 = interfaceCopy;
     v23 = 1024;
-    v24 = a4;
+    flagsCopy = flags;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%@:%s: Enter (ifName %@, flags %X)", buf, 0x26u);
   }
 
   v16.receiver = self;
   v16.super_class = NESMAlwaysOnSession;
-  [(NESMSession *)&v16 handleChangeEventForInterface:v8 newFlags:a4 previousFlags:a5];
-  v10 = [(NESMSession *)self queue];
+  [(NESMSession *)&v16 handleChangeEventForInterface:interfaceCopy newFlags:flags previousFlags:previousFlags];
+  queue = [(NESMSession *)self queue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000092C8;
   v12[3] = &unk_1000EABF0;
   v12[4] = self;
-  v13 = v8;
-  v14 = a4;
-  v15 = a5;
-  v11 = v8;
-  dispatch_async(v10, v12);
+  v13 = interfaceCopy;
+  flagsCopy2 = flags;
+  previousFlagsCopy = previousFlags;
+  v11 = interfaceCopy;
+  dispatch_async(queue, v12);
 }
 
 - (id)copyExtendedStatus
@@ -591,7 +591,7 @@ LABEL_26:
           }
 
           v13 = [v12 objectForKeyedSubscript:v11];
-          v14 = [v13 queue];
+          queue = [v13 queue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_10000AC34;
@@ -600,7 +600,7 @@ LABEL_26:
           v21 = v4;
           v22 = v11;
           v15 = v13;
-          dispatch_sync(v14, block);
+          dispatch_sync(queue, block);
 
           v10 = v10 + 1;
         }
@@ -617,11 +617,11 @@ LABEL_26:
   return v4;
 }
 
-- (void)handleGetInfoMessage:(id)a3 withType:(int)a4
+- (void)handleGetInfoMessage:(id)message withType:(int)type
 {
-  v28 = a3;
-  xdict = xpc_dictionary_create_reply(v28);
-  if (a4 == 2)
+  messageCopy = message;
+  xdict = xpc_dictionary_create_reply(messageCopy);
+  if (type == 2)
   {
     self = [(NESMAlwaysOnSession *)self copyExtendedStatus];
     if (self)
@@ -632,7 +632,7 @@ LABEL_13:
     }
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
     if (self)
     {
@@ -688,7 +688,7 @@ LABEL_13:
             v12 = objc_getProperty(self, v7, 400, 1);
             v13 = [v12 objectForKeyedSubscript:v11];
 
-            v14 = [v13 queue];
+            queue = [v13 queue];
             block[0] = _NSConcreteStackBlock;
             block[1] = 3221225472;
             block[2] = sub_10000B234;
@@ -702,7 +702,7 @@ LABEL_13:
             v37 = &v47;
             v38 = &v43;
             v15 = v13;
-            dispatch_sync(v14, block);
+            dispatch_sync(queue, block);
           }
 
           v8 = [obj countByEnumeratingWithState:&v39 objects:v77 count:16];
@@ -752,14 +752,14 @@ LABEL_13:
     }
   }
 
-  v26 = xpc_dictionary_get_remote_connection(v28);
+  v26 = xpc_dictionary_get_remote_connection(messageCopy);
   xpc_connection_send_message(v26, xdict);
 }
 
-- (BOOL)handleUpdateConfiguration:(id)a3
+- (BOOL)handleUpdateConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [(NESMSession *)self setConfiguration:0];
     [(NESMSession *)self setConfigurationSignature:0];
@@ -767,28 +767,28 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v5 = [(NESMSession *)self status];
-  if (self && v5 == 4 && self->_stopped)
+  status = [(NESMSession *)self status];
+  if (self && status == 4 && self->_stopped)
   {
-    v6 = [(NESMSession *)self configuration];
-    if (![v6 isEnabled])
+    configuration = [(NESMSession *)self configuration];
+    if (![configuration isEnabled])
     {
-      v7 = [v4 isEnabled];
+      isEnabled = [configurationCopy isEnabled];
 
-      if (!v7)
+      if (!isEnabled)
       {
         goto LABEL_10;
       }
 
       self->_stopped = 0;
-      v6 = ne_log_obj();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+      configuration = ne_log_obj();
+      if (os_log_type_enabled(configuration, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v17 = self;
+        selfCopy = self;
         v18 = 2080;
         v19 = "[NESMAlwaysOnSession handleUpdateConfiguration:]";
-        _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%@:%s: Enabling config in Reasserting state, clearing STOPPED", buf, 0x16u);
+        _os_log_debug_impl(&_mh_execute_header, configuration, OS_LOG_TYPE_DEBUG, "%@:%s: Enabling config in Reasserting state, clearing STOPPED", buf, 0x16u);
       }
     }
   }
@@ -796,7 +796,7 @@ LABEL_13:
 LABEL_10:
   v15.receiver = self;
   v15.super_class = NESMAlwaysOnSession;
-  if (![(NESMSession *)&v15 handleUpdateConfiguration:v4])
+  if (![(NESMSession *)&v15 handleUpdateConfiguration:configurationCopy])
   {
 LABEL_15:
     v11 = 0;
@@ -804,19 +804,19 @@ LABEL_15:
   }
 
   sub_100007F18(self);
-  v8 = [v4 alwaysOnVPN];
-  v9 = [v8 isEnabled];
+  alwaysOnVPN = [configurationCopy alwaysOnVPN];
+  isEnabled2 = [alwaysOnVPN isEnabled];
 
-  if (v9)
+  if (isEnabled2)
   {
-    v10 = [(NESMSession *)self queue];
+    queue = [(NESMSession *)self queue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10000B62C;
     v13[3] = &unk_1000EB198;
     v13[4] = self;
-    v14 = v4;
-    dispatch_async(v10, v13);
+    v14 = configurationCopy;
+    dispatch_async(queue, v13);
   }
 
   v11 = 1;
@@ -827,25 +827,25 @@ LABEL_16:
 
 - (void)handleWakeup
 {
-  v3 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B9AC;
   block[3] = &unk_1000EB1C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   if (self)
   {
-    objc_setProperty_atomic(self, v4, v5, 392);
+    objc_setProperty_atomic(self, v4, messageCopy, 392);
     self->_stopped = 0;
     v26.receiver = self;
     v26.super_class = NESMAlwaysOnSession;
-    [(NESMSession *)&v26 handleStartMessage:v5];
+    [(NESMSession *)&v26 handleStartMessage:messageCopy];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -857,7 +857,7 @@ LABEL_16:
   {
     v26.receiver = 0;
     v26.super_class = NESMAlwaysOnSession;
-    [(NESMSession *)&v26 handleStartMessage:v5];
+    [(NESMSession *)&v26 handleStartMessage:messageCopy];
     Property = 0;
     v24 = 0u;
     v25 = 0u;
@@ -895,14 +895,14 @@ LABEL_16:
         v16 = [v15 objectForKeyedSubscript:v14];
         if ([v16 state] == 1)
         {
-          v17 = [v16 queue];
+          queue = [v16 queue];
           v19[0] = _NSConcreteStackBlock;
           v19[1] = 3221225472;
           v19[2] = sub_10000C06C;
           v19[3] = &unk_1000EB198;
           v20 = v16;
-          v21 = v5;
-          dispatch_async(v17, v19);
+          v21 = messageCopy;
+          dispatch_async(queue, v19);
         }
 
         v13 = v13 + 1;
@@ -965,14 +965,14 @@ LABEL_16:
         }
 
         v12 = [v11 objectForKeyedSubscript:v10];
-        v13 = [v12 queue];
+        queue = [v12 queue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_10000C270;
         block[3] = &unk_1000EB1C0;
         v18 = v12;
         v14 = v12;
-        dispatch_async(v13, block);
+        dispatch_async(queue, block);
 
         v9 = v9 + 1;
       }
@@ -997,8 +997,8 @@ LABEL_16:
     }
 
     self->_IDSNexusIfIndex = 0;
-    v5 = [(NESMSession *)self policySession];
-    v7 = sub_100034538(v5, v6);
+    policySession = [(NESMSession *)self policySession];
+    v7 = sub_100034538(policySession, v6);
 
     if ((v7 & 1) == 0)
     {
@@ -1018,13 +1018,13 @@ LABEL_16:
   [(NESMSession *)&v10 dealloc];
 }
 
-- (NESMAlwaysOnSession)initWithConfiguration:(id)a3 andServer:(id)a4
+- (NESMAlwaysOnSession)initWithConfiguration:(id)configuration andServer:(id)server
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  serverCopy = server;
   v54.receiver = self;
   v54.super_class = NESMAlwaysOnSession;
-  v8 = [(NESMSession *)&v54 initWithConfiguration:v6 andServer:v7];
+  v8 = [(NESMSession *)&v54 initWithConfiguration:configurationCopy andServer:serverCopy];
   v9 = v8;
   if (!v8)
   {
@@ -1040,11 +1040,11 @@ LABEL_16:
 
   v9->_stopped = 1;
   v11 = [NESMPolicySession alloc];
-  v12 = [v6 identifier];
-  v13 = [v6 grade];
+  identifier = [configurationCopy identifier];
+  grade = [configurationCopy grade];
   if (v11)
   {
-    v11 = sub_100033D18(&v11->super.isa, v12, 3, v13, 1, 1);
+    v11 = sub_100033D18(&v11->super.isa, identifier, 3, grade, 1, 1);
   }
 
   [(NESMSession *)v9 setPolicySession:v11];
@@ -1058,7 +1058,7 @@ LABEL_16:
     v57 = 2080;
     v58 = "[NESMAlwaysOnSession initWithConfiguration:andServer:]";
     v59 = 2112;
-    v60 = v6;
+    v60 = configurationCopy;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%@:%s: Configuration %@", buf, 0x20u);
   }
 
@@ -1194,9 +1194,9 @@ LABEL_46:
   v34 = [[NEPolicySession alloc] initWithSessionName:@"AOVPN control"];
   [(NESMSession *)v9 setControlPolicySession:v34];
 
-  v35 = [(NESMSession *)v9 controlPolicySession];
+  controlPolicySession = [(NESMSession *)v9 controlPolicySession];
 
-  if (!v35)
+  if (!controlPolicySession)
   {
     v47 = ne_log_obj();
     if (!os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -1213,18 +1213,18 @@ LABEL_49:
     goto LABEL_45;
   }
 
-  v36 = [(NESMSession *)v9 controlPolicySession];
-  [v36 setPriority:100];
+  controlPolicySession2 = [(NESMSession *)v9 controlPolicySession];
+  [controlPolicySession2 setPriority:100];
 
-  v37 = [(NESMSession *)v9 controlPolicySession];
-  [v37 lockSessionToCurrentProcess];
+  controlPolicySession3 = [(NESMSession *)v9 controlPolicySession];
+  [controlPolicySession3 lockSessionToCurrentProcess];
 
   v38 = [[NEPolicySession alloc] initWithSessionName:@"AOVPN high"];
   [(NESMSession *)v9 setHighPolicySession:v38];
 
-  v39 = [(NESMSession *)v9 highPolicySession];
+  highPolicySession = [(NESMSession *)v9 highPolicySession];
 
-  if (!v39)
+  if (!highPolicySession)
   {
     v47 = ne_log_obj();
     if (!os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -1237,17 +1237,17 @@ LABEL_49:
     goto LABEL_49;
   }
 
-  v40 = [(NESMSession *)v9 highPolicySession];
-  [v40 setPriority:400];
+  highPolicySession2 = [(NESMSession *)v9 highPolicySession];
+  [highPolicySession2 setPriority:400];
 
-  v41 = [(NESMSession *)v9 highPolicySession];
-  [v41 lockSessionToCurrentProcess];
+  highPolicySession3 = [(NESMSession *)v9 highPolicySession];
+  [highPolicySession3 lockSessionToCurrentProcess];
 
   v9->_carrierBundleIMSUseIPSec = 0;
   v9->_carrierBundleNATKeepAliveIntervalOverCell = 110;
   v42 = [CoreTelephonyClient alloc];
-  v43 = [(NESMSession *)v9 queue];
-  v44 = [v42 initWithQueue:v43];
+  queue = [(NESMSession *)v9 queue];
+  v44 = [v42 initWithQueue:queue];
   CTClient = v9->_CTClient;
   v9->_CTClient = v44;
 

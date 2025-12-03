@@ -1,16 +1,16 @@
 @interface CertificateDetailsSummaryCell
-- (CertificateDetailsSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setDetails:(id)a3;
-- (void)setDetailsWithCertificateTrust:(__SecTrust *)a3 certificateExpiration:(id)a4 certificateIsTrusted:(BOOL)a5;
+- (CertificateDetailsSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setDetails:(id)details;
+- (void)setDetailsWithCertificateTrust:(__SecTrust *)trust certificateExpiration:(id)expiration certificateIsTrusted:(BOOL)trusted;
 @end
 
 @implementation CertificateDetailsSummaryCell
 
-- (CertificateDetailsSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CertificateDetailsSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CertificateDetailsSummaryCell;
-  v4 = [(CertUIItemDetailsSummaryCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CertUIItemDetailsSummaryCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -20,27 +20,27 @@
   return v5;
 }
 
-- (void)setDetails:(id)a3
+- (void)setDetails:(id)details
 {
-  v5 = a3;
-  if (self->_details != v5)
+  detailsCopy = details;
+  if (self->_details != detailsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_details, a3);
+    v6 = detailsCopy;
+    objc_storeStrong(&self->_details, details);
     [(CertUIItemDetailsSummaryCell *)self createViewWithItemDetailArray:self->_details];
     [(CertificateDetailsSummaryCell *)self setNeedsLayout];
-    v5 = v6;
+    detailsCopy = v6;
   }
 }
 
-- (void)setDetailsWithCertificateTrust:(__SecTrust *)a3 certificateExpiration:(id)a4 certificateIsTrusted:(BOOL)a5
+- (void)setDetailsWithCertificateTrust:(__SecTrust *)trust certificateExpiration:(id)expiration certificateIsTrusted:(BOOL)trusted
 {
-  v5 = a5;
-  v35 = a4;
+  trustedCopy = trusted;
+  expirationCopy = expiration;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
   v9 = v8;
-  if (v5)
+  if (trustedCopy)
   {
     v10 = @"TRUSTED";
   }
@@ -63,7 +63,7 @@
     v13 = &stru_28561D260;
   }
 
-  if (v5)
+  if (trustedCopy)
   {
     [MEMORY[0x277D75348] CertUIVerifiedColor];
   }
@@ -73,12 +73,12 @@
     [MEMORY[0x277D75348] systemRedColor];
   }
   v14 = ;
-  LOBYTE(v33) = v5;
+  LOBYTE(v33) = trustedCopy;
   v15 = [CertUIItemDetail itemDetailWithDetailTitle:0 detail:0 detailHighlightColor:0 showCheckmarkView:1 checkmarkText:v13 checkmarkHighlightColor:v14 showCheckmark:v33];
   [v7 addObject:v15];
-  if (a3)
+  if (trust)
   {
-    CertificateCount = SecTrustGetCertificateCount(a3);
+    CertificateCount = SecTrustGetCertificateCount(trust);
     if (CertificateCount < 1)
     {
       v22 = 0;
@@ -92,7 +92,7 @@
       v20 = *MEMORY[0x277CBECC8];
       do
       {
-        if (SecTrustGetCertificateAtIndex(a3, v18))
+        if (SecTrustGetCertificateAtIndex(trust, v18))
         {
           SecCertificateNotValidAfter();
           if ((v19 & (v21 >= v20)) == 0)
@@ -121,14 +121,14 @@
 
   else
   {
-    v22 = v35;
+    v22 = expirationCopy;
   }
 
   v23 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v23 setDateStyle:1];
   [v23 setTimeStyle:2];
-  v24 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v23 setLocale:v24];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v23 setLocale:currentLocale];
 
   v25 = [v23 stringFromDate:v22];
   if (v25)
@@ -151,8 +151,8 @@
   {
     v30 = [v28 localizedStringForKey:@"EXPIRED" value:&stru_28561D260 table:@"CertInfo"];
 
-    v31 = [MEMORY[0x277D75348] systemRedColor];
-    v32 = [CertUIItemDetail itemDetailWithDetailTitle:v30 detail:v11 detailHighlightColor:v31];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    v32 = [CertUIItemDetail itemDetailWithDetailTitle:v30 detail:v11 detailHighlightColor:systemRedColor];
   }
 
   [v7 addObject:v32];

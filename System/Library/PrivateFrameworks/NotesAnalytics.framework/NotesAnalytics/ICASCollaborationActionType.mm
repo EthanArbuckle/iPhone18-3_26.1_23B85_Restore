@@ -1,33 +1,33 @@
 @interface ICASCollaborationActionType
-- (ICASCollaborationActionType)initWithCollaborationActionType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASCollaborationActionType)initWithCollaborationActionType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASCollaborationActionType
 
-- (ICASCollaborationActionType)initWithCollaborationActionType:(int64_t)a3
+- (ICASCollaborationActionType)initWithCollaborationActionType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASCollaborationActionType;
   result = [(ICASCollaborationActionType *)&v5 init];
   if (result)
   {
-    result->_collaborationActionType = a3;
+    result->_collaborationActionType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASCollaborationActionType *)self collaborationActionType];
+  collaborationActionType = [(ICASCollaborationActionType *)self collaborationActionType];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (collaborationActionType == 1)
   {
     v4 = @"invite";
   }
 
-  if (v3 == 2)
+  if (collaborationActionType == 2)
   {
     return @"uncollaborate";
   }

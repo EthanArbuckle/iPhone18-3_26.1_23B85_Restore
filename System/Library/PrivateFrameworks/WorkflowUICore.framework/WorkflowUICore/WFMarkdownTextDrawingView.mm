@@ -1,28 +1,28 @@
 @interface WFMarkdownTextDrawingView
-- (_TtC14WorkflowUICoreP33_3E9D7953B2AD67C52890490469C980A825WFMarkdownTextDrawingView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (void)drawRect:(CGRect)a3;
+- (_TtC14WorkflowUICoreP33_3E9D7953B2AD67C52890490469C980A825WFMarkdownTextDrawingView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation WFMarkdownTextDrawingView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_274B5BA5C(x, y, width, height);
 }
 
-- (_TtC14WorkflowUICoreP33_3E9D7953B2AD67C52890490469C980A825WFMarkdownTextDrawingView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC14WorkflowUICoreP33_3E9D7953B2AD67C52890490469C980A825WFMarkdownTextDrawingView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  return sub_274B5CB40(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
+  return sub_274B5CB40(container, x, y, width, height);
 }
 
 @end

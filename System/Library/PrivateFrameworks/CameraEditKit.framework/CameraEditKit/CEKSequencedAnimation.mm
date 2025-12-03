@@ -1,27 +1,27 @@
 @interface CEKSequencedAnimation
-- (CEKSequencedAnimation)initWithWithIdentifier:(id)a3 duration:(double)a4 updateHandler:(id)a5 completion:(id)a6;
+- (CEKSequencedAnimation)initWithWithIdentifier:(id)identifier duration:(double)duration updateHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation CEKSequencedAnimation
 
-- (CEKSequencedAnimation)initWithWithIdentifier:(id)a3 duration:(double)a4 updateHandler:(id)a5 completion:(id)a6
+- (CEKSequencedAnimation)initWithWithIdentifier:(id)identifier duration:(double)duration updateHandler:(id)handler completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  completionCopy = completion;
   v22.receiver = self;
   v22.super_class = CEKSequencedAnimation;
   v14 = [(CEKSequencedAnimation *)&v22 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a3);
-    v15->_duration = a4;
-    v16 = _Block_copy(v12);
+    objc_storeStrong(&v14->_identifier, identifier);
+    v15->_duration = duration;
+    v16 = _Block_copy(handlerCopy);
     updateHandler = v15->_updateHandler;
     v15->_updateHandler = v16;
 
-    v18 = _Block_copy(v13);
+    v18 = _Block_copy(completionCopy);
     completionHandler = v15->_completionHandler;
     v15->_completionHandler = v18;
 

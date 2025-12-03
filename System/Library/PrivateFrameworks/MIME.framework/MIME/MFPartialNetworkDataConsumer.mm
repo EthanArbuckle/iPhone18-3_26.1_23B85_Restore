@@ -2,7 +2,7 @@
 - (MFPartialNetworkDataConsumer)init;
 - (id)copyDataWithUnixLineEndings;
 - (id)data;
-- (int64_t)appendData:(id)a3;
+- (int64_t)appendData:(id)data;
 - (void)dealloc;
 - (void)done;
 @end
@@ -29,12 +29,12 @@
   [(MFPartialNetworkDataConsumer *)&v3 dealloc];
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
   self->_strippedData = 0;
   if ((*(self + 32) & 1) == 0)
   {
-    if (memchr([a3 bytes], 13, objc_msgSend(a3, "length")))
+    if (memchr([data bytes], 13, objc_msgSend(data, "length")))
     {
       v5 = (*(self + 32) & 0xFE) + 1;
     }
@@ -47,7 +47,7 @@
     *(self + 32) = v5;
   }
 
-  result = [(MFGuaranteedCollectingDataConsumer *)self->_rawDataConsumer appendData:a3];
+  result = [(MFGuaranteedCollectingDataConsumer *)self->_rawDataConsumer appendData:data];
   if (result >= 1)
   {
     self->_length += result;
@@ -90,10 +90,10 @@
         [(MFLineEndingConverterFilter *)v7 appendData:[(MFGuaranteedCollectingDataConsumer *)self->_rawDataConsumer data]];
         [(MFLineEndingConverterFilter *)v7 done];
         [(MFBufferedDataConsumer *)v6 done];
-        v8 = [(MFBufferedDataConsumer *)v6 data];
-        self->_strippedData = v8;
+        data = [(MFBufferedDataConsumer *)v6 data];
+        self->_strippedData = data;
 
-        strippedData = v8;
+        strippedData = data;
       }
     }
 

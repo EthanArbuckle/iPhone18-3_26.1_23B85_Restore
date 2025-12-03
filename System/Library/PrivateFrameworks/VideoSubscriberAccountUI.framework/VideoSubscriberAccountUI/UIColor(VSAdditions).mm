@@ -57,9 +57,9 @@
 
 + (id)vsa_opacityADynamicColor
 {
-  v2 = [a1 vsa_opacityALightColor];
-  v3 = [a1 vsa_opacityADarkColor];
-  v4 = [a1 vsa_dynamicColorWithLightStyleColor:v2 darkStyleColor:v3];
+  vsa_opacityALightColor = [self vsa_opacityALightColor];
+  vsa_opacityADarkColor = [self vsa_opacityADarkColor];
+  v4 = [self vsa_dynamicColorWithLightStyleColor:vsa_opacityALightColor darkStyleColor:vsa_opacityADarkColor];
 
   return v4;
 }
@@ -90,9 +90,9 @@
 
 + (id)vsa_opacityBDynamicColor
 {
-  v2 = [a1 vsa_opacityBLightColor];
-  v3 = [a1 vsa_opacityBDarkColor];
-  v4 = [a1 vsa_dynamicColorWithLightStyleColor:v2 darkStyleColor:v3];
+  vsa_opacityBLightColor = [self vsa_opacityBLightColor];
+  vsa_opacityBDarkColor = [self vsa_opacityBDarkColor];
+  v4 = [self vsa_dynamicColorWithLightStyleColor:vsa_opacityBLightColor darkStyleColor:vsa_opacityBDarkColor];
 
   return v4;
 }
@@ -123,9 +123,9 @@
 
 + (id)vsa_opacityCDynamicColor
 {
-  v2 = [a1 vsa_opacityCLightColor];
-  v3 = [a1 vsa_opacityCDarkColor];
-  v4 = [a1 vsa_dynamicColorWithLightStyleColor:v2 darkStyleColor:v3];
+  vsa_opacityCLightColor = [self vsa_opacityCLightColor];
+  vsa_opacityCDarkColor = [self vsa_opacityCDarkColor];
+  v4 = [self vsa_dynamicColorWithLightStyleColor:vsa_opacityCLightColor darkStyleColor:vsa_opacityCDarkColor];
 
   return v4;
 }

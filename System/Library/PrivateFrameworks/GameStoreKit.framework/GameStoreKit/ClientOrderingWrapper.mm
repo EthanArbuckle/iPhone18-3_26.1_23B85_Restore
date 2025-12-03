@@ -1,23 +1,23 @@
 @interface ClientOrderingWrapper
 - (_TtC12GameStoreKit21ClientOrderingWrapper)init;
-- (void)orderedVisibleIAPs:(id)a3 :(id)a4 :(id)a5 :(id)a6 :(id)a7;
-- (void)visibilityForIAPs:(id)a3 :(id)a4;
+- (void)orderedVisibleIAPs:(id)ps :(id)a4 :(id)a5 :(id)a6 :(id)a7;
+- (void)visibilityForIAPs:(id)ps :(id)a4;
 @end
 
 @implementation ClientOrderingWrapper
 
-- (void)visibilityForIAPs:(id)a3 :(id)a4
+- (void)visibilityForIAPs:(id)ps :(id)a4
 {
   v6 = sub_24F92AE38();
   v7 = a4;
-  v8 = self;
+  selfCopy = self;
   sub_24EE05720(v6, v7);
 }
 
-- (void)orderedVisibleIAPs:(id)a3 :(id)a4 :(id)a5 :(id)a6 :(id)a7
+- (void)orderedVisibleIAPs:(id)ps :(id)a4 :(id)a5 :(id)a6 :(id)a7
 {
   v10 = a4;
-  if (a3)
+  if (ps)
   {
     v12 = sub_24F92B0D8();
     v14 = v13;
@@ -45,7 +45,7 @@ LABEL_4:
 
   v15 = a6;
   v16 = a7;
-  v17 = self;
+  selfCopy = self;
   if (v15)
   {
     v18 = sub_24F92B0D8();

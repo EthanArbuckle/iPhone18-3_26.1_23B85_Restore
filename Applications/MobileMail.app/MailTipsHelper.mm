@@ -2,7 +2,7 @@
 + (_TtC10MobileMail14MailTipsHelper)shared;
 - (void)filterByUnreadUsed;
 - (void)setup;
-- (void)updateFilterByUnreadRulesWithAmountOfEmails:(int64_t)a3 amountOfUnreads:(int64_t)a4;
+- (void)updateFilterByUnreadRulesWithAmountOfEmails:(int64_t)emails amountOfUnreads:(int64_t)unreads;
 @end
 
 @implementation MailTipsHelper
@@ -30,7 +30,7 @@
   _objc_release(self);
 }
 
-- (void)updateFilterByUnreadRulesWithAmountOfEmails:(int64_t)a3 amountOfUnreads:(int64_t)a4
+- (void)updateFilterByUnreadRulesWithAmountOfEmails:(int64_t)emails amountOfUnreads:(int64_t)unreads
 {
   _objc_retain(self);
   sub_1003A3310();

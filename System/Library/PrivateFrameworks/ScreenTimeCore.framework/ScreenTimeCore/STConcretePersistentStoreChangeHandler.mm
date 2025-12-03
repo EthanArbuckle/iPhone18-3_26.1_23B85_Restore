@@ -1,22 +1,22 @@
 @interface STConcretePersistentStoreChangeHandler
-- (STConcretePersistentStoreChangeHandler)initWithPersistentContainer:(id)a3;
-- (id)persistentHistoryTokenForStore:(id)a3;
-- (void)handlePersistentStoreCoordinatorStoresDidChange:(id)a3;
-- (void)handleRemotePersistentStoreDidChange:(id)a3 inContext:(id)a4;
-- (void)savePersistentHistoryToken:(id)a3 forStore:(id)a4;
+- (STConcretePersistentStoreChangeHandler)initWithPersistentContainer:(id)container;
+- (id)persistentHistoryTokenForStore:(id)store;
+- (void)handlePersistentStoreCoordinatorStoresDidChange:(id)change;
+- (void)handleRemotePersistentStoreDidChange:(id)change inContext:(id)context;
+- (void)savePersistentHistoryToken:(id)token forStore:(id)store;
 @end
 
 @implementation STConcretePersistentStoreChangeHandler
 
-- (STConcretePersistentStoreChangeHandler)initWithPersistentContainer:(id)a3
+- (STConcretePersistentStoreChangeHandler)initWithPersistentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v13.receiver = self;
   v13.super_class = STConcretePersistentStoreChangeHandler;
   v5 = [(STConcretePersistentStoreChangeHandler *)&v13 init];
   persistentContainer = v5->_persistentContainer;
-  v5->_persistentContainer = v4;
-  v7 = v4;
+  v5->_persistentContainer = containerCopy;
+  v7 = containerCopy;
 
   v8 = objc_opt_new();
   lastPersistentHistoryTokenByStoreIdentifier = v5->_lastPersistentHistoryTokenByStoreIdentifier;
@@ -29,11 +29,11 @@
   return v5;
 }
 
-- (void)handleRemotePersistentStoreDidChange:(id)a3 inContext:(id)a4
+- (void)handleRemotePersistentStoreDidChange:(id)change inContext:(id)context
 {
-  v6 = a4;
-  v7 = [a3 userInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
+  contextCopy = context;
+  userInfo = [change userInfo];
+  v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -41,8 +41,8 @@
   v11[3] = &unk_1E7CE7230;
   v11[4] = self;
   v12 = v8;
-  v13 = v6;
-  v9 = v6;
+  v13 = contextCopy;
+  v9 = contextCopy;
   v10 = v8;
   [v9 performBlockAndWait:v11];
 }
@@ -131,17 +131,17 @@ void __89__STConcretePersistentStoreChangeHandler_handleRemotePersistentStoreDid
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handlePersistentStoreCoordinatorStoresDidChange:(id)a3
+- (void)handlePersistentStoreCoordinatorStoresDidChange:(id)change
 {
   v42 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v29 = [(STConcretePersistentStoreChangeHandler *)self persistentContainer];
-  v4 = [v29 persistentStoreCoordinator];
+  changeCopy = change;
+  persistentContainer = [(STConcretePersistentStoreChangeHandler *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
   obj = self->_lastPersistentHistoryTokenByStoreIdentifierLock;
   objc_sync_enter(obj);
-  v5 = [(STConcretePersistentStoreChangeHandler *)self lastPersistentHistoryTokenByStoreIdentifier];
-  v30 = [v28 userInfo];
-  [v30 objectForKeyedSubscript:*MEMORY[0x1E695D2C8]];
+  lastPersistentHistoryTokenByStoreIdentifier = [(STConcretePersistentStoreChangeHandler *)self lastPersistentHistoryTokenByStoreIdentifier];
+  userInfo = [changeCopy userInfo];
+  [userInfo objectForKeyedSubscript:*MEMORY[0x1E695D2C8]];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -163,10 +163,10 @@ void __89__STConcretePersistentStoreChangeHandler_handleRemotePersistentStoreDid
         v40 = *(*(&v35 + 1) + 8 * v9);
         v10 = v40;
         v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:{1, obj}];
-        v12 = [v4 currentPersistentHistoryTokenFromStores:v11];
+        v12 = [persistentStoreCoordinator currentPersistentHistoryTokenFromStores:v11];
 
-        v13 = [v10 identifier];
-        [v5 setObject:v12 forKeyedSubscript:v13];
+        identifier = [v10 identifier];
+        [lastPersistentHistoryTokenByStoreIdentifier setObject:v12 forKeyedSubscript:identifier];
 
         ++v9;
       }
@@ -178,7 +178,7 @@ void __89__STConcretePersistentStoreChangeHandler_handleRemotePersistentStoreDid
     while (v7);
   }
 
-  [v30 objectForKeyedSubscript:*MEMORY[0x1E695D478]];
+  [userInfo objectForKeyedSubscript:*MEMORY[0x1E695D478]];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -197,8 +197,8 @@ void __89__STConcretePersistentStoreChangeHandler_handleRemotePersistentStoreDid
           objc_enumerationMutation(v14);
         }
 
-        v18 = [*(*(&v31 + 1) + 8 * v17) identifier];
-        [v5 removeObjectForKey:v18];
+        identifier2 = [*(*(&v31 + 1) + 8 * v17) identifier];
+        [lastPersistentHistoryTokenByStoreIdentifier removeObjectForKey:identifier2];
 
         ++v17;
       }
@@ -210,47 +210,47 @@ void __89__STConcretePersistentStoreChangeHandler_handleRemotePersistentStoreDid
     while (v15);
   }
 
-  v19 = [v30 objectForKeyedSubscript:*MEMORY[0x1E695D4C0]];
+  v19 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695D4C0]];
   if ([v19 count] >= 2)
   {
     v20 = [v19 objectAtIndexedSubscript:0];
     v21 = [v19 objectAtIndexedSubscript:1];
-    v22 = [v20 identifier];
-    v23 = [v5 objectForKeyedSubscript:v22];
-    v24 = [v21 identifier];
-    [v5 setObject:v23 forKeyedSubscript:v24];
+    identifier3 = [v20 identifier];
+    v23 = [lastPersistentHistoryTokenByStoreIdentifier objectForKeyedSubscript:identifier3];
+    identifier4 = [v21 identifier];
+    [lastPersistentHistoryTokenByStoreIdentifier setObject:v23 forKeyedSubscript:identifier4];
 
-    v25 = [v20 identifier];
-    [v5 removeObjectForKey:v25];
+    identifier5 = [v20 identifier];
+    [lastPersistentHistoryTokenByStoreIdentifier removeObjectForKey:identifier5];
   }
 
   objc_sync_exit(obj);
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (id)persistentHistoryTokenForStore:(id)a3
+- (id)persistentHistoryTokenForStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = self->_lastPersistentHistoryTokenByStoreIdentifierLock;
   objc_sync_enter(v5);
-  v6 = [(STConcretePersistentStoreChangeHandler *)self lastPersistentHistoryTokenByStoreIdentifier];
-  v7 = [v4 identifier];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  lastPersistentHistoryTokenByStoreIdentifier = [(STConcretePersistentStoreChangeHandler *)self lastPersistentHistoryTokenByStoreIdentifier];
+  identifier = [storeCopy identifier];
+  v8 = [lastPersistentHistoryTokenByStoreIdentifier objectForKeyedSubscript:identifier];
 
   objc_sync_exit(v5);
 
   return v8;
 }
 
-- (void)savePersistentHistoryToken:(id)a3 forStore:(id)a4
+- (void)savePersistentHistoryToken:(id)token forStore:(id)store
 {
-  v10 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  storeCopy = store;
   v7 = self->_lastPersistentHistoryTokenByStoreIdentifierLock;
   objc_sync_enter(v7);
-  v8 = [(STConcretePersistentStoreChangeHandler *)self lastPersistentHistoryTokenByStoreIdentifier];
-  v9 = [v6 identifier];
-  [v8 setObject:v10 forKeyedSubscript:v9];
+  lastPersistentHistoryTokenByStoreIdentifier = [(STConcretePersistentStoreChangeHandler *)self lastPersistentHistoryTokenByStoreIdentifier];
+  identifier = [storeCopy identifier];
+  [lastPersistentHistoryTokenByStoreIdentifier setObject:tokenCopy forKeyedSubscript:identifier];
 
   objc_sync_exit(v7);
 }

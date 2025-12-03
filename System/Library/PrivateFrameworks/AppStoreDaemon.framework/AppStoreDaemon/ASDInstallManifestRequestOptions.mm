@@ -1,23 +1,23 @@
 @interface ASDInstallManifestRequestOptions
-- (ASDInstallManifestRequestOptions)initWithCoder:(id)a3;
-- (ASDInstallManifestRequestOptions)initWithManifest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ASDInstallManifestRequestOptions)initWithCoder:(id)coder;
+- (ASDInstallManifestRequestOptions)initWithManifest:(id)manifest;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASDInstallManifestRequestOptions
 
-- (ASDInstallManifestRequestOptions)initWithManifest:(id)a3
+- (ASDInstallManifestRequestOptions)initWithManifest:(id)manifest
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  manifestCopy = manifest;
   v12.receiver = self;
   v12.super_class = ASDInstallManifestRequestOptions;
   v5 = [(ASDInstallManifestRequestOptions *)&v12 init];
   if (v5)
   {
-    if (v4)
+    if (manifestCopy)
     {
-      v6 = [v4 copy];
+      v6 = [manifestCopy copy];
       p_super = &v5->_manifest->super;
       v5->_manifest = v6;
     }
@@ -40,21 +40,21 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ASDInstallManifestRequestOptions allocWithZone:a3];
+  v4 = [ASDInstallManifestRequestOptions allocWithZone:zone];
   manifest = self->_manifest;
 
   return [(ASDInstallManifestRequestOptions *)v4 initWithManifest:manifest];
 }
 
-- (ASDInstallManifestRequestOptions)initWithCoder:(id)a3
+- (ASDInstallManifestRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASDInstallManifestRequestOptions *)self initWithManifest:0];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manifest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manifest"];
     manifest = v5->_manifest;
     v5->_manifest = v6;
   }

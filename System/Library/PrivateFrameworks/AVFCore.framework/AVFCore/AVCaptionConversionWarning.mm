@@ -1,7 +1,7 @@
 @interface AVCaptionConversionWarning
-+ (AVCaptionConversionWarning)captionConversionWarningWithFigDictionary:(__CFDictionary *)a3;
++ (AVCaptionConversionWarning)captionConversionWarningWithFigDictionary:(__CFDictionary *)dictionary;
 - (AVCaptionConversionAdjustment)adjustment;
-- (AVCaptionConversionWarning)initWithFigDictionary:(__CFDictionary *)a3;
+- (AVCaptionConversionWarning)initWithFigDictionary:(__CFDictionary *)dictionary;
 - (AVCaptionConversionWarningType)warningType;
 - (NSRange)rangeOfCaptions;
 - (id)description;
@@ -10,21 +10,21 @@
 
 @implementation AVCaptionConversionWarning
 
-+ (AVCaptionConversionWarning)captionConversionWarningWithFigDictionary:(__CFDictionary *)a3
++ (AVCaptionConversionWarning)captionConversionWarningWithFigDictionary:(__CFDictionary *)dictionary
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithFigDictionary:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithFigDictionary:dictionary];
 
   return v3;
 }
 
-- (AVCaptionConversionWarning)initWithFigDictionary:(__CFDictionary *)a3
+- (AVCaptionConversionWarning)initWithFigDictionary:(__CFDictionary *)dictionary
 {
   v6.receiver = self;
   v6.super_class = AVCaptionConversionWarning;
   v4 = [(AVCaptionConversionWarning *)&v6 init];
   if (v4)
   {
-    v4->_warningInternal = [(__CFDictionary *)a3 copy];
+    v4->_warningInternal = [(__CFDictionary *)dictionary copy];
   }
 
   return v4;
@@ -76,23 +76,23 @@
   }
 
   v3 = [description_warningMapping objectForKeyedSubscript:{-[AVCaptionConversionWarning warningType](self, "warningType")}];
-  v4 = [(AVCaptionConversionWarning *)self rangeOfCaptions];
+  rangeOfCaptions = [(AVCaptionConversionWarning *)self rangeOfCaptions];
   v6 = v5;
-  v7 = [(AVCaptionConversionWarning *)self adjustment];
+  adjustment = [(AVCaptionConversionWarning *)self adjustment];
   if (v6 < 2)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@" = %lu", v4, v14];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@" = %lu", rangeOfCaptions, v14];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"es = (%lu-%lu)", v4, v6 + v4 - 1];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"es = (%lu-%lu)", rangeOfCaptions, v6 + rangeOfCaptions - 1];
   }
 
   v9 = v8;
-  if (v7)
+  if (adjustment)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"adjustment = %@", v7];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"adjustment = %@", adjustment];
   }
 
   else

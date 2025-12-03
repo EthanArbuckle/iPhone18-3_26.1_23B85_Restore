@@ -1,22 +1,22 @@
 @interface CSMagSafeAccessoryTrayViewController
-- (CSMagSafeAccessoryTrayViewController)initWithAccessory:(id)a3;
-- (id)_trayColorForAccessory:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (CSMagSafeAccessoryTrayViewController)initWithAccessory:(id)accessory;
+- (id)_trayColorForAccessory:(id)accessory;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation CSMagSafeAccessoryTrayViewController
 
-- (CSMagSafeAccessoryTrayViewController)initWithAccessory:(id)a3
+- (CSMagSafeAccessoryTrayViewController)initWithAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v11.receiver = self;
   v11.super_class = CSMagSafeAccessoryTrayViewController;
-  v5 = [(CSMagSafeAccessoryViewController *)&v11 initWithAccessory:v4];
+  v5 = [(CSMagSafeAccessoryViewController *)&v11 initWithAccessory:accessoryCopy];
   if (v5)
   {
     v6 = [CSMagSafeAccessoryTrayView alloc];
-    v7 = [(CSMagSafeAccessoryTrayViewController *)v5 _trayColorForAccessory:v4];
+    v7 = [(CSMagSafeAccessoryTrayViewController *)v5 _trayColorForAccessory:accessoryCopy];
     v8 = [(CSMagSafeAccessoryTrayView *)v6 initWithTrayColor:v7];
     trayView = v5->_trayView;
     v5->_trayView = v8;
@@ -30,15 +30,15 @@
   v4.receiver = self;
   v4.super_class = CSMagSafeAccessoryTrayViewController;
   [(CSCoverSheetViewControllerBase *)&v4 viewDidLoad];
-  v3 = [(CSMagSafeAccessoryTrayViewController *)self view];
-  [v3 addSubview:self->_trayView];
+  view = [(CSMagSafeAccessoryTrayViewController *)self view];
+  [view addSubview:self->_trayView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CSMagSafeAccessoryTrayViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:appear];
   [(CSMagSafeAccessoryTrayViewController *)self setIsAnimatingPresentation:1];
   trayView = self->_trayView;
   v5[0] = MEMORY[0x277D85DD0];
@@ -49,20 +49,20 @@
   [(CSMagSafeAccessoryTrayView *)trayView performAnimation:0 completionHandler:v5];
 }
 
-- (id)_trayColorForAccessory:(id)a3
+- (id)_trayColorForAccessory:(id)accessory
 {
-  v3 = a3;
-  if ([v3 type] == 2 || objc_msgSend(v3, "type") == 4 || objc_msgSend(v3, "type") == 11)
+  accessoryCopy = accessory;
+  if ([accessoryCopy type] == 2 || objc_msgSend(accessoryCopy, "type") == 4 || objc_msgSend(accessoryCopy, "type") == 11)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
   else
   {
-    v4 = [v3 primaryColor];
+    clearColor = [accessoryCopy primaryColor];
   }
 
-  v5 = v4;
+  v5 = clearColor;
 
   return v5;
 }

@@ -1,89 +1,89 @@
 @interface NTKEditOptionPickerView
 - (CGAffineTransform)contentTransform;
 - (CGRect)_frameForContainerView;
-- (NTKEditOptionPickerView)initWithOptions:(id)a3 selectedOption:(id)a4;
+- (NTKEditOptionPickerView)initWithOptions:(id)options selectedOption:(id)option;
 - (UIEdgeInsets)padding;
 - (id)_selectedSideView;
-- (void)_enumerateSideViewsWithBlock:(id)a3;
-- (void)_tileContainerForTransitionDirection:(int64_t)a3;
+- (void)_enumerateSideViewsWithBlock:(id)block;
+- (void)_tileContainerForTransitionDirection:(int64_t)direction;
 - (void)_transitionToSelectedOption;
 - (void)_updateContainer;
-- (void)applyBreathingScale:(double)a3;
-- (void)applyRubberBandingFraction:(double)a3;
+- (void)applyBreathingScale:(double)scale;
+- (void)applyRubberBandingFraction:(double)fraction;
 - (void)decrementSelection;
 - (void)incrementSelection;
 - (void)layoutSubviews;
-- (void)setActive:(BOOL)a3;
-- (void)setContainerView:(id)a3;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setNumberOfSides:(unint64_t)a3;
-- (void)setSelectedOptionIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setTransitionFraction:(double)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5;
+- (void)setActive:(BOOL)active;
+- (void)setContainerView:(id)view;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setNumberOfSides:(unint64_t)sides;
+- (void)setSelectedOptionIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setTransitionFraction:(double)fraction fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
 @end
 
 @implementation NTKEditOptionPickerView
 
-- (NTKEditOptionPickerView)initWithOptions:(id)a3 selectedOption:(id)a4
+- (NTKEditOptionPickerView)initWithOptions:(id)options selectedOption:(id)option
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  optionCopy = option;
   v14.receiver = self;
   v14.super_class = NTKEditOptionPickerView;
   v8 = [(NTKEditOptionPickerView *)&v14 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v8)
   {
-    if (([v6 containsObject:v7] & 1) == 0)
+    if (([optionsCopy containsObject:optionCopy] & 1) == 0)
     {
-      v9 = [v6 arrayByAddingObject:v7];
+      v9 = [optionsCopy arrayByAddingObject:optionCopy];
 
-      v6 = v9;
+      optionsCopy = v9;
     }
 
-    objc_storeStrong(&v8->_options, v6);
+    objc_storeStrong(&v8->_options, optionsCopy);
     v8->_numberOfOptions = [(NSArray *)v8->_options count];
-    v8->_selectedOptionIndex = [v6 indexOfObject:v7];
+    v8->_selectedOptionIndex = [optionsCopy indexOfObject:optionCopy];
     v10 = MEMORY[0x277CBF2C0];
     v11 = *(MEMORY[0x277CBF2C0] + 16);
     *&v8->_contentTransform.a = *MEMORY[0x277CBF2C0];
     *&v8->_contentTransform.c = v11;
     *&v8->_contentTransform.tx = *(v10 + 32);
-    v12 = [(NTKEditOptionPickerView *)v8 _newContainerView];
-    [(NTKEditOptionPickerView *)v8 setContainerView:v12];
+    _newContainerView = [(NTKEditOptionPickerView *)v8 _newContainerView];
+    [(NTKEditOptionPickerView *)v8 setContainerView:_newContainerView];
   }
 
   return v8;
 }
 
-- (void)setContainerView:(id)a3
+- (void)setContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   containerView = self->_containerView;
-  if (containerView != v5)
+  if (containerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(NTKEditOptionContainerView *)containerView removeFromSuperview];
-    objc_storeStrong(&self->_containerView, a3);
+    objc_storeStrong(&self->_containerView, view);
     [(NTKEditOptionPickerView *)self addSubview:self->_containerView];
     [(NTKEditOptionPickerView *)self _updateContainer];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_contentTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_contentTransform.a = *&transform->a;
   *&self->_contentTransform.c = v4;
   *&self->_contentTransform.tx = v3;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__NTKEditOptionPickerView_setContentTransform___block_invoke;
   v6[3] = &__block_descriptor_80_e37_v16__0__NTKEditOptionPickerSideView_8l;
-  v5 = *&a3->c;
-  v7 = *&a3->a;
+  v5 = *&transform->c;
+  v7 = *&transform->a;
   v8 = v5;
-  v9 = *&a3->tx;
+  v9 = *&transform->tx;
   [(NTKEditOptionPickerView *)self _enumerateSideViewsWithBlock:v6];
 }
 
@@ -119,25 +119,25 @@ uint64_t __47__NTKEditOptionPickerView_setContentTransform___block_invoke(_OWORD
   [(NTKEditOptionPickerView *)self _transitionToSelectedOption];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       [(NTKEditOptionPickerView *)self _tileContainerForTransitionDirection:0];
     }
   }
 }
 
-- (void)setNumberOfSides:(unint64_t)a3
+- (void)setNumberOfSides:(unint64_t)sides
 {
-  if ([(NTKEditOptionContainerView *)self->_containerView numberOfSides]!= a3)
+  if ([(NTKEditOptionContainerView *)self->_containerView numberOfSides]!= sides)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(NTKEditOptionContainerView *)self->_containerView setNumberOfSides:a3];
+      [(NTKEditOptionContainerView *)self->_containerView setNumberOfSides:sides];
     }
 
     [(NTKEditOptionPickerView *)self _updateContainer];
@@ -168,21 +168,21 @@ uint64_t __47__NTKEditOptionPickerView_setContentTransform___block_invoke(_OWORD
   }
 }
 
-- (void)setSelectedOptionIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)setSelectedOptionIndex:(unint64_t)index animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     selectedOptionIndex = self->_selectedOptionIndex;
-    if (selectedOptionIndex <= a3)
+    if (selectedOptionIndex <= index)
     {
-      if (selectedOptionIndex < a3)
+      if (selectedOptionIndex < index)
       {
         do
         {
           [(NTKEditOptionPickerView *)self incrementSelection];
         }
 
-        while (self->_selectedOptionIndex < a3);
+        while (self->_selectedOptionIndex < index);
       }
     }
 
@@ -193,26 +193,26 @@ uint64_t __47__NTKEditOptionPickerView_setContentTransform___block_invoke(_OWORD
         [(NTKEditOptionPickerView *)self decrementSelection];
       }
 
-      while (self->_selectedOptionIndex > a3);
+      while (self->_selectedOptionIndex > index);
     }
   }
 
   else
   {
-    self->_selectedOptionIndex = a3;
+    self->_selectedOptionIndex = index;
     [(NTKEditOptionPickerView *)self _tileContainerForTransitionDirection:0];
 
     [(NTKEditOptionPickerView *)self _transitionToSelectedOption];
   }
 }
 
-- (void)setTransitionFraction:(double)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5
+- (void)setTransitionFraction:(double)fraction fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   selectedOptionIndex = self->_selectedOptionIndex;
-  if (a3 <= 0.5)
+  if (fraction <= 0.5)
   {
-    v10 = a4;
-    if (selectedOptionIndex == a4)
+    toIndexCopy = index;
+    if (selectedOptionIndex == index)
     {
       goto LABEL_6;
     }
@@ -220,21 +220,21 @@ uint64_t __47__NTKEditOptionPickerView_setContentTransform___block_invoke(_OWORD
     goto LABEL_5;
   }
 
-  v10 = a5;
-  if (selectedOptionIndex != a5)
+  toIndexCopy = toIndex;
+  if (selectedOptionIndex != toIndex)
   {
 LABEL_5:
-    self->_selectedOptionIndex = v10;
+    self->_selectedOptionIndex = toIndexCopy;
     [(NTKEditOptionPickerView *)self _tileContainerForTransitionDirection:0];
   }
 
 LABEL_6:
-  v11 = [(NTKEditOptionContainerView *)self->_containerView numberOfSides];
-  v12 = a4 % v11;
-  v13 = a5 % v11;
+  numberOfSides = [(NTKEditOptionContainerView *)self->_containerView numberOfSides];
+  v12 = index % numberOfSides;
+  v13 = toIndex % numberOfSides;
   containerView = self->_containerView;
 
-  [(NTKEditOptionContainerView *)containerView transitionToFraction:v12 fromSideAtIndex:v13 toSideAtIndex:a3];
+  [(NTKEditOptionContainerView *)containerView transitionToFraction:v12 fromSideAtIndex:v13 toSideAtIndex:fraction];
 }
 
 - (void)layoutSubviews
@@ -245,14 +245,14 @@ LABEL_6:
   [(NTKEditOptionContainerView *)containerView setFrame:?];
 }
 
-- (void)applyBreathingScale:(double)a3
+- (void)applyBreathingScale:(double)scale
 {
   memset(&v8, 0, sizeof(v8));
   v4 = *&self->_contentTransform.c;
   *&v7.a = *&self->_contentTransform.a;
   *&v7.c = v4;
   *&v7.tx = *&self->_contentTransform.tx;
-  CGAffineTransformScale(&v8, &v7, a3, a3);
+  CGAffineTransformScale(&v8, &v7, scale, scale);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__NTKEditOptionPickerView_applyBreathingScale___block_invoke;
@@ -270,16 +270,16 @@ uint64_t __47__NTKEditOptionPickerView_applyBreathingScale___block_invoke(_OWORD
   return [a2 applyContentTransform:v4];
 }
 
-- (void)applyRubberBandingFraction:(double)a3
+- (void)applyRubberBandingFraction:(double)fraction
 {
-  v5 = NTKScaleForRubberBandingFraction(a3);
+  v5 = NTKScaleForRubberBandingFraction(fraction);
   memset(&v12, 0, sizeof(v12));
   v6 = *&self->_contentTransform.c;
   *&v11.a = *&self->_contentTransform.a;
   *&v11.c = v6;
   *&v11.tx = *&self->_contentTransform.tx;
   CGAffineTransformScale(&v12, &v11, v5, v5);
-  v7 = NTKAlphaForRubberBandingFraction(a3);
+  v7 = NTKAlphaForRubberBandingFraction(fraction);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__NTKEditOptionPickerView_applyRubberBandingFraction___block_invoke;
@@ -332,22 +332,22 @@ void __54__NTKEditOptionPickerView_applyRubberBandingFraction___block_invoke(uin
   return [(NTKEditOptionPickerView *)self _sideViewAtIndex:v4];
 }
 
-- (void)_tileContainerForTransitionDirection:(int64_t)a3
+- (void)_tileContainerForTransitionDirection:(int64_t)direction
 {
-  v5 = [(NTKEditOptionContainerView *)self->_containerView numberOfSides];
-  if (v5)
+  numberOfSides = [(NTKEditOptionContainerView *)self->_containerView numberOfSides];
+  if (numberOfSides)
   {
     selectedOptionIndex = self->_selectedOptionIndex;
     visibleOptionBufferSize = self->_visibleOptionBufferSize;
-    v8 = a3 == 2 ? -1 : 0;
-    v9 = selectedOptionIndex - (a3 == 2) - visibleOptionBufferSize;
-    v10 = a3 == 1 ? selectedOptionIndex + 1 : self->_selectedOptionIndex;
+    v8 = direction == 2 ? -1 : 0;
+    v9 = selectedOptionIndex - (direction == 2) - visibleOptionBufferSize;
+    v10 = direction == 1 ? selectedOptionIndex + 1 : self->_selectedOptionIndex;
     v11 = v10 + visibleOptionBufferSize;
     v12 = self->_active ? 0x7FFFFFFFFFFFFFFFLL : self->_selectedOptionIndex;
     if (v9 <= v11)
     {
-      v13 = v5;
-      v14 = ((a3 == 1) | (2 * visibleOptionBufferSize)) - v8 + 1;
+      v13 = numberOfSides;
+      v14 = ((direction == 1) | (2 * visibleOptionBufferSize)) - v8 + 1;
       do
       {
         v15 = [(NTKEditOptionPickerView *)self _sideViewAtIndex:(v13 + v9) % v13];
@@ -397,16 +397,16 @@ void __54__NTKEditOptionPickerView_applyRubberBandingFraction___block_invoke(uin
   [(NTKEditOptionContainerView *)containerView transitionToSideAtIndex:v4];
 }
 
-- (void)_enumerateSideViewsWithBlock:(id)a3
+- (void)_enumerateSideViewsWithBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(NTKEditOptionContainerView *)self->_containerView numberOfSides])
   {
     v4 = 0;
     do
     {
       v5 = [(NTKEditOptionPickerView *)self _sideViewAtIndex:v4];
-      v6[2](v6, v5);
+      blockCopy[2](blockCopy, v5);
 
       ++v4;
     }

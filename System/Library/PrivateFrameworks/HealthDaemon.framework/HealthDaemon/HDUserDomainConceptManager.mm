@@ -1,26 +1,26 @@
 @interface HDUserDomainConceptManager
-+ (id)_countOfMedicalUserDomainConceptsWithPredicate:(void *)a3 transaction:(uint64_t)a4 error:;
-+ (id)_countOfUserDomainConceptsWithEntity:(void *)a3 predicate:(void *)a4 transaction:(uint64_t)a5 error:;
-+ (id)_enumerationPredicateWithOptions:(void *)a3 existingPredicate:;
-+ (id)countOfUserDomainConceptsMatchingPredicate:(id)a3 options:(unint64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (id)predicateForAllPinnedConceptsMappingToRecordsWithUUIDs:(id)a3 pinnedConceptUUIDs:(id)a4;
-+ (id)predicateForElementsOfListType:(unint64_t)a3;
-- (BOOL)deleteUserDomainConcept:(id)a3 error:(id *)a4;
-- (BOOL)deleteUserDomainConcepts:(id)a3 error:(id *)a4;
-- (BOOL)enumerateUserDomainConceptsWithPredicate:(id)a3 enumerationOptions:(unint64_t)a4 limit:(int64_t)a5 orderingTerms:(id)a6 error:(id *)a7 enumerationHandler:(id)a8;
-- (BOOL)enumerateUserDomainConceptsWithPredicate:(id)a3 enumerationOptions:(unint64_t)a4 limit:(int64_t)a5 orderingTerms:(id)a6 transaction:(id)a7 error:(id *)a8 enumerationHandler:(id)a9;
-- (BOOL)modifyUserDomainConcepts:(id)a3 method:(int64_t)a4 error:(id *)a5;
-- (BOOL)modifyUserDomainConcepts:(id)a3 method:(int64_t)a4 syncProvenance:(int64_t)a5 syncIdentity:(int64_t)a6 syncVersion:(id)a7 error:(id *)a8;
-- (BOOL)updateUserDomainConcept:(id)a3 error:(id *)a4;
++ (id)_countOfMedicalUserDomainConceptsWithPredicate:(void *)predicate transaction:(uint64_t)transaction error:;
++ (id)_countOfUserDomainConceptsWithEntity:(void *)entity predicate:(void *)predicate transaction:(uint64_t)transaction error:;
++ (id)_enumerationPredicateWithOptions:(void *)options existingPredicate:;
++ (id)countOfUserDomainConceptsMatchingPredicate:(id)predicate options:(unint64_t)options transaction:(id)transaction error:(id *)error;
++ (id)predicateForAllPinnedConceptsMappingToRecordsWithUUIDs:(id)ds pinnedConceptUUIDs:(id)iDs;
++ (id)predicateForElementsOfListType:(unint64_t)type;
+- (BOOL)deleteUserDomainConcept:(id)concept error:(id *)error;
+- (BOOL)deleteUserDomainConcepts:(id)concepts error:(id *)error;
+- (BOOL)enumerateUserDomainConceptsWithPredicate:(id)predicate enumerationOptions:(unint64_t)options limit:(int64_t)limit orderingTerms:(id)terms error:(id *)error enumerationHandler:(id)handler;
+- (BOOL)enumerateUserDomainConceptsWithPredicate:(id)predicate enumerationOptions:(unint64_t)options limit:(int64_t)limit orderingTerms:(id)terms transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
+- (BOOL)modifyUserDomainConcepts:(id)concepts method:(int64_t)method error:(id *)error;
+- (BOOL)modifyUserDomainConcepts:(id)concepts method:(int64_t)method syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity syncVersion:(id)version error:(id *)error;
+- (BOOL)updateUserDomainConcept:(id)concept error:(id *)error;
 - (HDProfile)profile;
 - (HDUserDomainConceptManager)init;
-- (HDUserDomainConceptManager)initWithProfile:(id)a3;
-- (_HDUserDomainConceptObserverRecordSummary)_synthesizeSummaryForCallToObserversAndFlushRecordsIsSynchronous:(os_unfair_lock_s *)a1;
+- (HDUserDomainConceptManager)initWithProfile:(id)profile;
+- (_HDUserDomainConceptObserverRecordSummary)_synthesizeSummaryForCallToObserversAndFlushRecordsIsSynchronous:(os_unfair_lock_s *)synchronous;
 - (id)keyValueDomain;
-- (id)orderingTermsForSortDescriptors:(id)a3 error:(id *)a4;
-- (id)userDomainConceptAnalyticsWithError:(id *)a3;
+- (id)orderingTermsForSortDescriptors:(id)descriptors error:(id *)error;
+- (id)userDomainConceptAnalyticsWithError:(id *)error;
 - (void)_callObserversIfPossible;
-- (void)_notifyObserversForUDC:(uint64_t)a3 type:(void *)a4 transaction:;
+- (void)_notifyObserversForUDC:(uint64_t)c type:(void *)type transaction:;
 - (void)closeObserverTransaction;
 - (void)openObserverTransaction;
 @end
@@ -37,16 +37,16 @@
   return 0;
 }
 
-- (HDUserDomainConceptManager)initWithProfile:(id)a3
+- (HDUserDomainConceptManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v26.receiver = self;
   v26.super_class = HDUserDomainConceptManager;
   v5 = [(HDUserDomainConceptManager *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277CCD738]);
     v8 = NSStringFromProtocol(&unk_283CE69F8);
     v9 = HKLogHealthOntology();
@@ -70,7 +70,7 @@
     pendingUserDomainConceptSynchronousObserverRecords = v6->_pendingUserDomainConceptSynchronousObserverRecords;
     v6->_pendingUserDomainConceptSynchronousObserverRecords = v19;
 
-    v21 = [[HDUserDomainConceptProcessingManager alloc] initWithProfile:v4];
+    v21 = [[HDUserDomainConceptProcessingManager alloc] initWithProfile:profileCopy];
     processingManager = v6->_processingManager;
     v6->_processingManager = v21;
 
@@ -82,71 +82,71 @@
   return v6;
 }
 
-- (BOOL)updateUserDomainConcept:(id)a3 error:(id *)a4
+- (BOOL)updateUserDomainConcept:(id)concept error:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  conceptCopy = concept;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v11 count:1];
+  conceptCopy2 = concept;
+  v8 = [v6 arrayWithObjects:&conceptCopy count:1];
 
-  LOBYTE(a4) = [(HDUserDomainConceptManager *)self modifyUserDomainConcepts:v8 method:1 error:a4, v11, v12];
+  LOBYTE(error) = [(HDUserDomainConceptManager *)self modifyUserDomainConcepts:v8 method:1 error:error, conceptCopy, v12];
   v9 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (BOOL)deleteUserDomainConcept:(id)a3 error:(id *)a4
+- (BOOL)deleteUserDomainConcept:(id)concept error:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  conceptCopy = concept;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v11 count:1];
+  conceptCopy2 = concept;
+  v8 = [v6 arrayWithObjects:&conceptCopy count:1];
 
-  LOBYTE(a4) = [(HDUserDomainConceptManager *)self modifyUserDomainConcepts:v8 method:3 error:a4, v11, v12];
+  LOBYTE(error) = [(HDUserDomainConceptManager *)self modifyUserDomainConcepts:v8 method:3 error:error, conceptCopy, v12];
   v9 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (BOOL)deleteUserDomainConcepts:(id)a3 error:(id *)a4
+- (BOOL)deleteUserDomainConcepts:(id)concepts error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  conceptsCopy = concepts;
   _HKInitializeLogging();
   v7 = HKLogHealthOntology();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v6;
+    v14 = conceptsCopy;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: deleteUserDomainConcepts: %{public}@", &v11, 0x16u);
   }
 
-  v8 = [(HDUserDomainConceptManager *)self modifyUserDomainConcepts:v6 method:3 error:a4];
+  v8 = [(HDUserDomainConceptManager *)self modifyUserDomainConcepts:conceptsCopy method:3 error:error];
   v9 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (BOOL)enumerateUserDomainConceptsWithPredicate:(id)a3 enumerationOptions:(unint64_t)a4 limit:(int64_t)a5 orderingTerms:(id)a6 transaction:(id)a7 error:(id *)a8 enumerationHandler:(id)a9
+- (BOOL)enumerateUserDomainConceptsWithPredicate:(id)predicate enumerationOptions:(unint64_t)options limit:(int64_t)limit orderingTerms:(id)terms transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v13 = a4;
-  v16 = a9;
-  v17 = a7;
-  v18 = a6;
-  v19 = [HDUserDomainConceptManager _enumerationPredicateWithOptions:v13 existingPredicate:a3];
+  optionsCopy = options;
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  termsCopy = terms;
+  v19 = [HDUserDomainConceptManager _enumerationPredicateWithOptions:optionsCopy existingPredicate:predicate];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a8) = [HDUserDomainConceptEntity enumerateUserDomainConceptsWithPredicate:v19 limit:a5 orderingTerms:v18 profile:WeakRetained transaction:v17 error:a8 enumerationHandler:v16];
+  LOBYTE(error) = [HDUserDomainConceptEntity enumerateUserDomainConceptsWithPredicate:v19 limit:limit orderingTerms:termsCopy profile:WeakRetained transaction:transactionCopy error:error enumerationHandler:handlerCopy];
 
-  return a8;
+  return error;
 }
 
-+ (id)_enumerationPredicateWithOptions:(void *)a3 existingPredicate:
++ (id)_enumerationPredicateWithOptions:(void *)options existingPredicate:
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_opt_self();
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [v5 hk_addNonNilObject:v4];
+  [v5 hk_addNonNilObject:optionsCopy];
 
   if ((a2 & 1) == 0)
   {
@@ -174,32 +174,32 @@
   return v8;
 }
 
-- (BOOL)enumerateUserDomainConceptsWithPredicate:(id)a3 enumerationOptions:(unint64_t)a4 limit:(int64_t)a5 orderingTerms:(id)a6 error:(id *)a7 enumerationHandler:(id)a8
+- (BOOL)enumerateUserDomainConceptsWithPredicate:(id)predicate enumerationOptions:(unint64_t)options limit:(int64_t)limit orderingTerms:(id)terms error:(id *)error enumerationHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v18 = [WeakRetained database];
+  database = [WeakRetained database];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __135__HDUserDomainConceptManager_enumerateUserDomainConceptsWithPredicate_enumerationOptions_limit_orderingTerms_error_enumerationHandler___block_invoke;
   v23[3] = &unk_27862B018;
   v23[4] = self;
-  v24 = v14;
-  v27 = a4;
-  v28 = a5;
-  v25 = v15;
-  v26 = v16;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
-  LOBYTE(a7) = [(HDHealthEntity *)HDUserDomainConceptEntity performReadTransactionWithHealthDatabase:v18 error:a7 block:v23];
+  v24 = predicateCopy;
+  optionsCopy = options;
+  limitCopy = limit;
+  v25 = termsCopy;
+  v26 = handlerCopy;
+  v19 = handlerCopy;
+  v20 = termsCopy;
+  v21 = predicateCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDUserDomainConceptEntity performReadTransactionWithHealthDatabase:database error:error block:v23];
 
-  return a7;
+  return error;
 }
 
-- (id)userDomainConceptAnalyticsWithError:(id *)a3
+- (id)userDomainConceptAnalyticsWithError:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -208,15 +208,15 @@
   v14 = __Block_byref_object_dispose__172;
   v15 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
+  database = [WeakRetained database];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__HDUserDomainConceptManager_userDomainConceptAnalyticsWithError___block_invoke;
   v9[3] = &unk_278618610;
   v9[4] = &v10;
-  LODWORD(a3) = [(HDHealthEntity *)HDUserDomainConceptEntity performReadTransactionWithHealthDatabase:v5 error:a3 block:v9];
+  LODWORD(error) = [(HDHealthEntity *)HDUserDomainConceptEntity performReadTransactionWithHealthDatabase:database error:error block:v9];
 
-  if (a3)
+  if (error)
   {
     v6 = v11[5];
   }
@@ -384,16 +384,16 @@ LABEL_11:
   return result;
 }
 
-- (id)orderingTermsForSortDescriptors:(id)a3 error:(id *)a4
+- (id)orderingTermsForSortDescriptors:(id)descriptors error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = v4;
+  v6 = descriptorsCopy;
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v7)
   {
@@ -433,7 +433,7 @@ LABEL_11:
             {
               v22 = MEMORY[0x277CCA9B8];
               v23 = [v12 key];
-              [v22 hk_assignError:a4 code:3 format:{@"We don't have have any sort descriptor key defined for key: '%@'. Please add them here", v23}];
+              [v22 hk_assignError:error code:3 format:{@"We don't have have any sort descriptor key defined for key: '%@'. Please add them here", v23}];
 
               v6 = obj;
               v21 = 0;
@@ -465,18 +465,18 @@ LABEL_13:
   return v21;
 }
 
-- (BOOL)modifyUserDomainConcepts:(id)a3 method:(int64_t)a4 syncProvenance:(int64_t)a5 syncIdentity:(int64_t)a6 syncVersion:(id)a7 error:(id *)a8
+- (BOOL)modifyUserDomainConcepts:(id)concepts method:(int64_t)method syncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity syncVersion:(id)version error:(id *)error
 {
-  v14 = a3;
+  conceptsCopy = concepts;
   if (self)
   {
-    v15 = [[_HDUserDomainConceptManagerModificationOperation alloc] initWithUserDomainConcepts:v14 method:a4 syncProvenance:a5 syncIdentity:a6 syncVersion:a7];
+    v15 = [[_HDUserDomainConceptManagerModificationOperation alloc] initWithUserDomainConcepts:conceptsCopy method:method syncProvenance:provenance syncIdentity:identity syncVersion:version];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v17 = [(HDJournalableOperation *)v15 performOrJournalWithProfile:WeakRetained error:a8];
+    v17 = [(HDJournalableOperation *)v15 performOrJournalWithProfile:WeakRetained error:error];
 
     if (v17 && [(HDJournalableOperation *)v15 didJournal])
     {
-      v18 = [v14 hk_map:&__block_literal_global_209];
+      v18 = [conceptsCopy hk_map:&__block_literal_global_209];
       os_unfair_lock_lock(&self->_userDomainConceptObserverLock);
       [(NSMutableArray *)self->_pendingUserDomainConceptObserverRecords addObjectsFromArray:v18];
       os_unfair_lock_unlock(&self->_userDomainConceptObserverLock);
@@ -492,13 +492,13 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)modifyUserDomainConcepts:(id)a3 method:(int64_t)a4 error:(id *)a5
+- (BOOL)modifyUserDomainConcepts:(id)concepts method:(int64_t)method error:(id *)error
 {
-  v8 = a3;
-  v9 = [(HDUserDomainConceptManager *)self profile];
-  LOBYTE(a5) = -[HDUserDomainConceptManager modifyUserDomainConcepts:method:syncProvenance:syncIdentity:syncVersion:error:](self, "modifyUserDomainConcepts:method:syncProvenance:syncIdentity:syncVersion:error:", v8, a4, 0, [v9 currentSyncIdentityPersistentID], 0x400000000, a5);
+  conceptsCopy = concepts;
+  profile = [(HDUserDomainConceptManager *)self profile];
+  LOBYTE(error) = -[HDUserDomainConceptManager modifyUserDomainConcepts:method:syncProvenance:syncIdentity:syncVersion:error:](self, "modifyUserDomainConcepts:method:syncProvenance:syncIdentity:syncVersion:error:", conceptsCopy, method, 0, [profile currentSyncIdentityPersistentID], 0x400000000, error);
 
-  return a5;
+  return error;
 }
 
 - (void)openObserverTransaction
@@ -515,8 +515,8 @@ LABEL_13:
   userDomainConceptObserverOpenTransactionsCount = self->_userDomainConceptObserverOpenTransactionsCount;
   if (userDomainConceptObserverOpenTransactionsCount <= 0)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"HDUserDomainConceptManager.m" lineNumber:332 description:@"No open transactions"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDUserDomainConceptManager.m" lineNumber:332 description:@"No open transactions"];
 
     userDomainConceptObserverOpenTransactionsCount = self->_userDomainConceptObserverOpenTransactionsCount;
   }
@@ -530,9 +530,9 @@ LABEL_13:
 - (void)_callObserversIfPossible
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [(HDUserDomainConceptManager *)a1 _synthesizeSummaryForCallToObserversAndFlushRecordsIsSynchronous:?];
+    v2 = [(HDUserDomainConceptManager *)self _synthesizeSummaryForCallToObserversAndFlushRecordsIsSynchronous:?];
     v3 = v2;
     if (v2 && ([v2 isEmpty] & 1) == 0)
     {
@@ -540,15 +540,15 @@ LABEL_13:
       v4 = HKLogHealthOntology();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v5 = [v3 addedConcepts];
-        v6 = [v5 count];
-        v7 = [v3 updatedConcepts];
-        v8 = [v7 count];
-        v9 = [v3 journaledConcepts];
-        v10 = [v9 count];
-        v11 = [v3 removedConcepts];
+        addedConcepts = [v3 addedConcepts];
+        v6 = [addedConcepts count];
+        updatedConcepts = [v3 updatedConcepts];
+        v8 = [updatedConcepts count];
+        journaledConcepts = [v3 journaledConcepts];
+        v10 = [journaledConcepts count];
+        removedConcepts = [v3 removedConcepts];
         *buf = 138544386;
-        v17 = a1;
+        selfCopy = self;
         v18 = 2048;
         v19 = v6;
         v20 = 2048;
@@ -556,16 +556,16 @@ LABEL_13:
         v22 = 2048;
         v23 = v10;
         v24 = 2048;
-        v25 = [v11 count];
+        v25 = [removedConcepts count];
         _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: notify UDC observers about: added=%ld, updated=%ld, journaled=%ld, deleted=%ld", buf, 0x34u);
       }
 
-      v12 = *(a1 + 8);
+      v12 = *(self + 8);
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __54__HDUserDomainConceptManager__callObserversIfPossible__block_invoke;
       v14[3] = &unk_27862B088;
-      v14[4] = a1;
+      v14[4] = self;
       v15 = v3;
       [v12 notifyObservers:v14];
     }
@@ -574,62 +574,62 @@ LABEL_13:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserversForUDC:(uint64_t)a3 type:(void *)a4 transaction:
+- (void)_notifyObserversForUDC:(uint64_t)c type:(void *)type transaction:
 {
-  v7 = a4;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
     v8 = a2;
-    os_unfair_lock_lock((a1 + 24));
-    v9 = *(a1 + 56);
+    os_unfair_lock_lock((self + 24));
+    v9 = *(self + 56);
     if (!v9)
     {
       v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v11 = *(a1 + 56);
-      *(a1 + 56) = v10;
+      v11 = *(self + 56);
+      *(self + 56) = v10;
 
-      v12 = [v7 protectedDatabase];
+      protectedDatabase = [typeCopy protectedDatabase];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __70__HDUserDomainConceptManager__notifyObserversForUDC_type_transaction___block_invoke;
       v17[3] = &unk_278620C68;
-      v17[4] = a1;
-      v13 = v7;
+      v17[4] = self;
+      v13 = typeCopy;
       v18 = v13;
-      [v12 beforeCommit:v17];
+      [protectedDatabase beforeCommit:v17];
 
-      v15[4] = a1;
+      v15[4] = self;
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __70__HDUserDomainConceptManager__notifyObserversForUDC_type_transaction___block_invoke_2;
       v16[3] = &unk_278613968;
-      v16[4] = a1;
+      v16[4] = self;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __70__HDUserDomainConceptManager__notifyObserversForUDC_type_transaction___block_invoke_3;
       v15[3] = &unk_2786138D0;
       [v13 onCommit:v16 orRollback:v15];
 
-      v9 = *(a1 + 56);
+      v9 = *(self + 56);
     }
 
-    v14 = [[_HDUserDomainConceptObserverRecord alloc] initWithUserDomainConcept:v8 modificationType:a3];
+    v14 = [[_HDUserDomainConceptObserverRecord alloc] initWithUserDomainConcept:v8 modificationType:c];
 
     [v9 addObject:v14];
-    os_unfair_lock_unlock((a1 + 24));
+    os_unfair_lock_unlock((self + 24));
   }
 }
 
-+ (id)countOfUserDomainConceptsMatchingPredicate:(id)a3 options:(unint64_t)a4 transaction:(id)a5 error:(id *)a6
++ (id)countOfUserDomainConceptsMatchingPredicate:(id)predicate options:(unint64_t)options transaction:(id)transaction error:(id *)error
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = [(HDUserDomainConceptManager *)a1 _enumerationPredicateWithOptions:v7 existingPredicate:a3];
-  v12 = v10;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  v11 = [(HDUserDomainConceptManager *)self _enumerationPredicateWithOptions:optionsCopy existingPredicate:predicate];
+  v12 = transactionCopy;
   v13 = v11;
   v14 = objc_opt_self();
   v15 = objc_opt_class();
-  v16 = [(HDUserDomainConceptManager *)v14 _countOfUserDomainConceptsWithEntity:v15 predicate:v13 transaction:v12 error:a6];
+  v16 = [(HDUserDomainConceptManager *)v14 _countOfUserDomainConceptsWithEntity:v15 predicate:v13 transaction:v12 error:error];
 
   return v16;
 }
@@ -644,25 +644,25 @@ BOOL __129__HDUserDomainConceptManager__enumerateAndDeleteSemanticDuplicatesOfCo
   return v9;
 }
 
-+ (id)_countOfUserDomainConceptsWithEntity:(void *)a3 predicate:(void *)a4 transaction:(uint64_t)a5 error:
++ (id)_countOfUserDomainConceptsWithEntity:(void *)entity predicate:(void *)predicate transaction:(uint64_t)transaction error:
 {
-  v8 = a4;
-  v9 = a3;
+  predicateCopy = predicate;
+  entityCopy = entity;
   objc_opt_self();
-  v10 = [v8 protectedDatabase];
+  protectedDatabase = [predicateCopy protectedDatabase];
 
-  v11 = [a2 countDistinctForProperty:@"udc_id" predicate:v9 database:v10 error:a5];
+  v11 = [a2 countDistinctForProperty:@"udc_id" predicate:entityCopy database:protectedDatabase error:transaction];
 
   return v11;
 }
 
-+ (id)_countOfMedicalUserDomainConceptsWithPredicate:(void *)a3 transaction:(uint64_t)a4 error:
++ (id)_countOfMedicalUserDomainConceptsWithPredicate:(void *)predicate transaction:(uint64_t)transaction error:
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v7 = a2;
   v8 = objc_opt_self();
   v9 = objc_opt_class();
-  v10 = [(HDUserDomainConceptManager *)v8 _countOfUserDomainConceptsWithEntity:v9 predicate:v7 transaction:v6 error:a4];
+  v10 = [(HDUserDomainConceptManager *)v8 _countOfUserDomainConceptsWithEntity:v9 predicate:v7 transaction:predicateCopy error:transaction];
 
   return v10;
 }
@@ -812,11 +812,11 @@ void __70__HDUserDomainConceptManager__notifyObserversForUDC_type_transaction___
   os_unfair_lock_unlock(v4);
 }
 
-- (_HDUserDomainConceptObserverRecordSummary)_synthesizeSummaryForCallToObserversAndFlushRecordsIsSynchronous:(os_unfair_lock_s *)a1
+- (_HDUserDomainConceptObserverRecordSummary)_synthesizeSummaryForCallToObserversAndFlushRecordsIsSynchronous:(os_unfair_lock_s *)synchronous
 {
-  v3 = a1;
+  synchronousCopy = synchronous;
   v28 = *MEMORY[0x277D85DE8];
-  os_unfair_lock_lock(a1 + 6);
+  os_unfair_lock_lock(synchronous + 6);
   if (a2)
   {
     v4 = 12;
@@ -824,7 +824,7 @@ void __70__HDUserDomainConceptManager__notifyObserversForUDC_type_transaction___
 
   else
   {
-    if (*&v3[8]._os_unfair_lock_opaque)
+    if (*&synchronousCopy[8]._os_unfair_lock_opaque)
     {
       v5 = 0;
       goto LABEL_34;
@@ -833,9 +833,9 @@ void __70__HDUserDomainConceptManager__notifyObserversForUDC_type_transaction___
     v4 = 10;
   }
 
-  v6 = *&v3[v4]._os_unfair_lock_opaque;
-  v22 = v3;
-  os_unfair_lock_assert_owner(v3 + 6);
+  v6 = *&synchronousCopy[v4]._os_unfair_lock_opaque;
+  v22 = synchronousCopy;
+  os_unfair_lock_assert_owner(synchronousCopy + 6);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -867,10 +867,10 @@ void __70__HDUserDomainConceptManager__notifyObserversForUDC_type_transaction___
       }
 
       v16 = *(*(&v23 + 1) + 8 * i);
-      v17 = [v16 changeType];
-      if (v17 > 2)
+      changeType = [v16 changeType];
+      if (changeType > 2)
       {
-        if (v17 == 3)
+        if (changeType == 3)
         {
           if (v13)
           {
@@ -886,7 +886,7 @@ void __70__HDUserDomainConceptManager__notifyObserversForUDC_type_transaction___
 
         else
         {
-          if (v17 != 4)
+          if (changeType != 4)
           {
             continue;
           }
@@ -904,7 +904,7 @@ void __70__HDUserDomainConceptManager__notifyObserversForUDC_type_transaction___
         }
       }
 
-      else if (v17 == 1)
+      else if (changeType == 1)
       {
         if (v11)
         {
@@ -920,7 +920,7 @@ void __70__HDUserDomainConceptManager__notifyObserversForUDC_type_transaction___
 
       else
       {
-        if (v17 != 2)
+        if (changeType != 2)
         {
           continue;
         }
@@ -937,8 +937,8 @@ void __70__HDUserDomainConceptManager__notifyObserversForUDC_type_transaction___
         }
       }
 
-      v19 = [v16 userDomainConcept];
-      [v18 addObject:v19];
+      userDomainConcept = [v16 userDomainConcept];
+      [v18 addObject:userDomainConcept];
     }
 
     v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -950,9 +950,9 @@ LABEL_33:
   [v7 removeAllObjects];
   v5 = [[_HDUserDomainConceptObserverRecordSummary alloc] initWithJournaledConcepts:v10 addedConcepts:v11 updatedConcepts:v12 removedConcepts:v13];
 
-  v3 = v22;
+  synchronousCopy = v22;
 LABEL_34:
-  os_unfair_lock_unlock(v3 + 6);
+  os_unfair_lock_unlock(synchronousCopy + 6);
   v20 = *MEMORY[0x277D85DE8];
 
   return v5;
@@ -1053,25 +1053,25 @@ void __71__HDUserDomainConceptManager__callSynchronousObserversWithTransaction__
   return v5;
 }
 
-+ (id)predicateForAllPinnedConceptsMappingToRecordsWithUUIDs:(id)a3 pinnedConceptUUIDs:(id)a4
++ (id)predicateForAllPinnedConceptsMappingToRecordsWithUUIDs:(id)ds pinnedConceptUUIDs:(id)iDs
 {
   v5 = MEMORY[0x277D10B70];
-  v6 = a4;
-  v7 = HDMedicalUserDomainConceptEntityPredicateForMedicalRecordWithUUIDs(a3);
-  v8 = HDUserDomainConceptEntityPredicateForConceptUUIDs(v6);
+  iDsCopy = iDs;
+  v7 = HDMedicalUserDomainConceptEntityPredicateForMedicalRecordWithUUIDs(ds);
+  v8 = HDUserDomainConceptEntityPredicateForConceptUUIDs(iDsCopy);
 
   v9 = [v5 compoundPredicateWithPredicate:v7 otherPredicate:v8];
 
   return v9;
 }
 
-+ (id)predicateForElementsOfListType:(unint64_t)a3
++ (id)predicateForElementsOfListType:(unint64_t)type
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277D10B80]);
   [v4 setEntityClass:objc_opt_class()];
   [v4 setLimitCount:1];
-  v5 = HDListUserDomainConceptEntityPredicateForListType(a3, 1);
+  v5 = HDListUserDomainConceptEntityPredicateForListType(type, 1);
   [v4 setPredicate:v5];
 
   v6 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"modification_date" entityClass:objc_opt_class() ascending:0];

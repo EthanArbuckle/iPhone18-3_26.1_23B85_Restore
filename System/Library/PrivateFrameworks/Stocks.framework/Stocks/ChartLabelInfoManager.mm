@@ -1,13 +1,13 @@
 @interface ChartLabelInfoManager
-+ (__CFString)_CFDateFormatterPropertyForMonthLabelLength:(int64_t)a3;
++ (__CFString)_CFDateFormatterPropertyForMonthLabelLength:(int64_t)length;
 + (id)chartLabelFont;
 + (id)sharedLabelInfoManager;
 + (void)clearSharedManager;
 - (ChartLabelInfoManager)init;
 - (id)labelInfoForYAxis;
-- (id)labelInfoWithString:(id)a3;
-- (id)labelInfoWithUnsignedInteger:(unint64_t)a3;
-- (id)monthLabelInfoArrayForLabelLength:(int64_t)a3;
+- (id)labelInfoWithString:(id)string;
+- (id)labelInfoWithUnsignedInteger:(unint64_t)integer;
+- (id)monthLabelInfoArrayForLabelLength:(int64_t)length;
 - (void)dealloc;
 - (void)resetLocale;
 @end
@@ -41,8 +41,8 @@
   if (!axisLabelFont)
   {
     v3 = MEMORY[0x277D74300];
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
     v5 = 12.0;
     if (v6 == 667.0)
     {
@@ -81,11 +81,11 @@
   [(ChartLabelInfoManager *)&v3 dealloc];
 }
 
-- (id)labelInfoWithString:(id)a3
+- (id)labelInfoWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(ChartLabelInfo);
-  [(ChartLabelInfo *)v4 setString:v3];
+  [(ChartLabelInfo *)v4 setString:stringCopy];
 
   return v4;
 }
@@ -107,7 +107,7 @@
   return yAxisLabelInfo;
 }
 
-- (id)labelInfoWithUnsignedInteger:(unint64_t)a3
+- (id)labelInfoWithUnsignedInteger:(unint64_t)integer
 {
   if (!self->_integerLabelInfoArray)
   {
@@ -119,8 +119,8 @@
     do
     {
       v8 = self->_integerLabelInfoArray;
-      v9 = [MEMORY[0x277CBEB68] null];
-      [(NSMutableArray *)v8 addObject:v9];
+      null = [MEMORY[0x277CBEB68] null];
+      [(NSMutableArray *)v8 addObject:null];
 
       --v5;
     }
@@ -128,30 +128,30 @@
     while (v5);
   }
 
-  if (a3 - 32 > 0xFFFFFFFFFFFFFFE0)
+  if (integer - 32 > 0xFFFFFFFFFFFFFFE0)
   {
-    v14 = a3 - 1;
-    v15 = [(NSMutableArray *)self->_integerLabelInfoArray objectAtIndex:a3 - 1];
-    v16 = [MEMORY[0x277CBEB68] null];
+    v14 = integer - 1;
+    v15 = [(NSMutableArray *)self->_integerLabelInfoArray objectAtIndex:integer - 1];
+    null2 = [MEMORY[0x277CBEB68] null];
 
-    if (v15 == v16)
+    if (v15 == null2)
     {
       v17 = objc_alloc_init(ChartLabelInfo);
       v18 = +[StockDataFormatter sharedDataFormatter];
-      v19 = [v18 doesLocaleUseASCII];
+      doesLocaleUseASCII = [v18 doesLocaleUseASCII];
 
-      if (v19)
+      if (doesLocaleUseASCII)
       {
-        v26[0] = (a3 % 0xAu) | 0x30;
-        if (a3 < 0xA)
+        v26[0] = (integer % 0xAu) | 0x30;
+        if (integer < 0xA)
         {
           v20 = 1;
         }
 
         else
         {
-          v26[1] = (a3 % 0xAu) | 0x30;
-          v26[0] = (a3 / 0xAu) | 0x30;
+          v26[1] = (integer % 0xAu) | 0x30;
+          v26[0] = (integer / 0xAu) | 0x30;
           v20 = 2;
         }
 
@@ -162,7 +162,7 @@
       else
       {
         v21 = +[StockDataFormatter sharedDataFormatter];
-        v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+        v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integer];
         v23 = [v21 formattedNumber:v22 withPrecision:0 useGroupSeparator:0];
         [(ChartLabelInfo *)v17 setString:v23];
       }
@@ -177,7 +177,7 @@
   else
   {
     v10 = +[StockDataFormatter sharedDataFormatter];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integer];
     v12 = [v10 formattedNumber:v11 withPrecision:0 useGroupSeparator:0];
     v13 = [(ChartLabelInfoManager *)self labelInfoWithString:v12];
   }
@@ -185,9 +185,9 @@
   return v13;
 }
 
-+ (__CFString)_CFDateFormatterPropertyForMonthLabelLength:(int64_t)a3
++ (__CFString)_CFDateFormatterPropertyForMonthLabelLength:(int64_t)length
 {
-  switch(a3)
+  switch(length)
   {
     case 0:
       v3 = MEMORY[0x277CBEE08];
@@ -203,7 +203,7 @@
   return 0;
 }
 
-- (id)monthLabelInfoArrayForLabelLength:(int64_t)a3
+- (id)monthLabelInfoArrayForLabelLength:(int64_t)length
 {
   v38 = *MEMORY[0x277D85DE8];
   monthLabelInfoArrays = self->_monthLabelInfoArrays;
@@ -217,8 +217,8 @@
     do
     {
       v9 = self->_monthLabelInfoArrays;
-      v10 = [MEMORY[0x277CBEB68] null];
-      [(NSMutableArray *)v9 addObject:v10];
+      null = [MEMORY[0x277CBEB68] null];
+      [(NSMutableArray *)v9 addObject:null];
 
       --v6;
     }
@@ -227,10 +227,10 @@
     monthLabelInfoArrays = self->_monthLabelInfoArrays;
   }
 
-  v11 = [(NSMutableArray *)monthLabelInfoArrays objectAtIndex:a3];
-  v12 = [MEMORY[0x277CBEB68] null];
+  v11 = [(NSMutableArray *)monthLabelInfoArrays objectAtIndex:length];
+  null2 = [MEMORY[0x277CBEB68] null];
 
-  if (v11 != v12)
+  if (v11 != null2)
   {
     v13 = v11;
 LABEL_7:
@@ -239,7 +239,7 @@ LABEL_7:
     goto LABEL_27;
   }
 
-  v15 = [ChartLabelInfoManager _CFDateFormatterPropertyForMonthLabelLength:a3];
+  v15 = [ChartLabelInfoManager _CFDateFormatterPropertyForMonthLabelLength:length];
   if (v15)
   {
     v16 = v15;
@@ -302,7 +302,7 @@ LABEL_7:
         while (v27 != v29);
       }
 
-      [(NSMutableArray *)self->_monthLabelInfoArrays replaceObjectAtIndex:a3 withObject:v13, v33];
+      [(NSMutableArray *)self->_monthLabelInfoArrays replaceObjectAtIndex:length withObject:v13, v33];
 
       goto LABEL_7;
     }

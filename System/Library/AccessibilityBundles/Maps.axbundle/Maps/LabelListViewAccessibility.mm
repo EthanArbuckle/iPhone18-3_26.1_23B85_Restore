@@ -7,7 +7,7 @@
 - (id)accessibilityLabel
 {
   v17 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDBA050] string];
+  string = [MEMORY[0x29EDBA050] string];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -27,10 +27,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) accessibilityLabel];
-        if ([v9 length])
+        accessibilityLabel = [*(*(&v12 + 1) + 8 * i) accessibilityLabel];
+        if ([accessibilityLabel length])
         {
-          [v3 appendFormat:@"%@, ", v9];
+          [string appendFormat:@"%@, ", accessibilityLabel];
         }
       }
 
@@ -42,7 +42,7 @@
 
   v10 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return string;
 }
 
 @end

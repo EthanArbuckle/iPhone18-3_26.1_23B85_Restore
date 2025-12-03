@@ -1,23 +1,23 @@
 @interface STSGridLayout
 - (BOOL)_hasOnlyLargeItems;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (CGRect)_gridFrameForRow:(unint64_t)a3 andColumn:(unint64_t)a4 inSize:(CGSize)a5;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (CGRect)_gridFrameForRow:(unint64_t)row andColumn:(unint64_t)column inSize:(CGSize)size;
 - (CGSize)_availableContentSize;
 - (CGSize)collectionViewContentSize;
 - (STSGridLayout)init;
 - (id)_gridLayoutDelegate;
 - (id)_gridTilesForCurrentDataSource;
-- (id)_tileSmallFramesForSize:(CGSize)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (unint64_t)_tilesPerRowAndWidth:(double *)a3;
+- (id)_tileSmallFramesForSize:(CGSize)size;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (unint64_t)_tilesPerRowAndWidth:(double *)width;
 - (void)_gridTilesForCurrentDataSource;
-- (void)_redistributeLastRowItemsInTiles:(id)a3 withTilesPerRow:(unint64_t)a4;
+- (void)_redistributeLastRowItemsInTiles:(id)tiles withTilesPerRow:(unint64_t)row;
 - (void)invalidateLayout;
 - (void)prepareLayout;
-- (void)setFooterHeight:(double)a3;
-- (void)setHeaderHeight:(double)a3;
-- (void)setItemSpacing:(double)a3;
+- (void)setFooterHeight:(double)height;
+- (void)setHeaderHeight:(double)height;
+- (void)setItemSpacing:(double)spacing;
 @end
 
 @implementation STSGridLayout
@@ -31,9 +31,9 @@
   if (v2)
   {
     v2->_itemSpacing = 6.0;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     tileSmallFrameCache = v3->_tileSmallFrameCache;
-    v3->_tileSmallFrameCache = v4;
+    v3->_tileSmallFrameCache = dictionary;
 
     [(STSGridLayout *)v3 registerClass:objc_opt_class() forDecorationViewOfKind:@"TileOverlay"];
   }
@@ -43,9 +43,9 @@
 
 - (void)prepareLayout
 {
-  v3 = [(STSGridLayout *)self _hasOnlyLargeItems];
-  v4 = [(STSGridLayout *)self _gridTilesForCurrentDataSource];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  _hasOnlyLargeItems = [(STSGridLayout *)self _hasOnlyLargeItems];
+  _gridTilesForCurrentDataSource = [(STSGridLayout *)self _gridTilesForCurrentDataSource];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -71,11 +71,11 @@
 
   v49 = 0.0;
   v13 = [(STSGridLayout *)self _tilesPerRowAndWidth:&v49];
-  v14 = [v4 count];
+  v14 = [_gridTilesForCurrentDataSource count];
   v15 = v49;
-  if (v3)
+  if (_hasOnlyLargeItems)
   {
-    v16 = [(STSGridLayout *)self collectionView];
+    collectionView = [(STSGridLayout *)self collectionView];
     UICeilToViewScale();
     v18 = v17;
 
@@ -98,7 +98,7 @@
   *(&v47 + 1) = v20;
   *&v48 = v15;
   *(&v48 + 1) = v18;
-  if (!v3)
+  if (!_hasOnlyLargeItems)
   {
     v19 = [(STSGridLayout *)self _tileSmallFramesForSize:v15, v18];
   }
@@ -107,20 +107,20 @@
   v35[1] = 3221225472;
   v35[2] = __30__STSGridLayout_prepareLayout__block_invoke;
   v35[3] = &unk_279B8AAD8;
-  v45 = v3;
+  v45 = _hasOnlyLargeItems;
   v39 = v46;
   v21 = (v13 + v14 - 1) / v13;
   v22 = v19;
   v36 = v22;
-  v23 = v5;
+  v23 = dictionary;
   v41 = v13;
   v42 = v21;
   v40 = &v50;
   v37 = v23;
-  v38 = self;
+  selfCopy = self;
   v43 = v18;
   v44 = v49;
-  [v4 enumerateObjectsUsingBlock:v35];
+  [_gridTilesForCurrentDataSource enumerateObjectsUsingBlock:v35];
   if (self->_footerHeight > 0.0)
   {
     v24 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
@@ -365,14 +365,14 @@ void __30__STSGridLayout_prepareLayout__block_invoke_40(uint64_t a1, void *a2, u
   self->_contentSizeMaxY = 0.0;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(STSGridLayout *)self collectionView];
-  [v7 bounds];
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  collectionView = [(STSGridLayout *)self collectionView];
+  [collectionView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -390,36 +390,36 @@ void __30__STSGridLayout_prepareLayout__block_invoke_40(uint64_t a1, void *a2, u
   return v16 != CGRectGetWidth(v19);
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __51__STSGridLayout_layoutAttributesForElementsInRect___block_invoke;
   v25[3] = &__block_descriptor_64_e49_B32__0__UICollectionViewLayoutAttributes_8Q16_B24l;
-  v26 = a3;
+  rectCopy = rect;
   v8 = MEMORY[0x266751FB0](v25, a2);
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (self->_headerHeight > 0.0)
   {
-    v10 = [(NSDictionary *)self->_headerAttributes allValues];
-    v11 = [v10 indexesOfObjectsPassingTest:v8];
-    v12 = [v10 objectsAtIndexes:v11];
-    [v9 addObjectsFromArray:v12];
+    allValues = [(NSDictionary *)self->_headerAttributes allValues];
+    v11 = [allValues indexesOfObjectsPassingTest:v8];
+    v12 = [allValues objectsAtIndexes:v11];
+    [array addObjectsFromArray:v12];
   }
 
-  v13 = [(NSDictionary *)self->_cellAttributes allValues];
-  v14 = [v13 indexesOfObjectsPassingTest:v8];
-  v15 = [v13 objectsAtIndexes:v14];
-  [v9 addObjectsFromArray:v15];
+  allValues2 = [(NSDictionary *)self->_cellAttributes allValues];
+  v14 = [allValues2 indexesOfObjectsPassingTest:v8];
+  v15 = [allValues2 objectsAtIndexes:v14];
+  [array addObjectsFromArray:v15];
 
-  v16 = [(NSDictionary *)self->_tileAttributes allValues];
-  v17 = [v16 indexesOfObjectsPassingTest:v8];
-  v18 = [v16 objectsAtIndexes:v17];
-  [v9 addObjectsFromArray:v18];
+  allValues3 = [(NSDictionary *)self->_tileAttributes allValues];
+  v17 = [allValues3 indexesOfObjectsPassingTest:v8];
+  v18 = [allValues3 objectsAtIndexes:v17];
+  [array addObjectsFromArray:v18];
 
   footerAttributes = self->_footerAttributes;
   if (footerAttributes)
@@ -435,11 +435,11 @@ void __30__STSGridLayout_prepareLayout__block_invoke_40(uint64_t a1, void *a2, u
     v28.size.height = height;
     if (CGRectIntersectsRect(v28, v29))
     {
-      [v9 addObject:self->_footerAttributes];
+      [array addObject:self->_footerAttributes];
     }
   }
 
-  return v9;
+  return array;
 }
 
 BOOL __51__STSGridLayout_layoutAttributesForElementsInRect___block_invoke(void *a1, void *a2)
@@ -457,19 +457,19 @@ BOOL __51__STSGridLayout_layoutAttributesForElementsInRect___block_invoke(void *
   return CGRectIntersectsRect(*&v11, *&v4);
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"STSGridLayoutElementKindHeader"])
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:@"STSGridLayoutElementKindHeader"])
   {
-    v8 = [(NSDictionary *)self->_headerAttributes objectForKeyedSubscript:v7];
+    v8 = [(NSDictionary *)self->_headerAttributes objectForKeyedSubscript:pathCopy];
 LABEL_5:
     v9 = v8;
     goto LABEL_7;
   }
 
-  if ([v6 isEqualToString:@"STSGridLayoutElementKindFooter"])
+  if ([kindCopy isEqualToString:@"STSGridLayoutElementKindFooter"])
   {
     v8 = self->_footerAttributes;
     goto LABEL_5;
@@ -490,29 +490,29 @@ LABEL_7:
   return result;
 }
 
-- (void)setHeaderHeight:(double)a3
+- (void)setHeaderHeight:(double)height
 {
-  if (self->_headerHeight != a3)
+  if (self->_headerHeight != height)
   {
-    self->_headerHeight = a3;
+    self->_headerHeight = height;
     [(STSGridLayout *)self invalidateLayout];
   }
 }
 
-- (void)setFooterHeight:(double)a3
+- (void)setFooterHeight:(double)height
 {
-  if (self->_footerHeight != a3)
+  if (self->_footerHeight != height)
   {
-    self->_footerHeight = a3;
+    self->_footerHeight = height;
     [(STSGridLayout *)self invalidateLayout];
   }
 }
 
-- (void)setItemSpacing:(double)a3
+- (void)setItemSpacing:(double)spacing
 {
-  if (self->_itemSpacing != a3)
+  if (self->_itemSpacing != spacing)
   {
-    self->_itemSpacing = a3;
+    self->_itemSpacing = spacing;
     [(NSMutableDictionary *)self->_tileSmallFrameCache removeAllObjects];
 
     [(STSGridLayout *)self invalidateLayout];
@@ -521,22 +521,22 @@ LABEL_7:
 
 - (id)_gridLayoutDelegate
 {
-  v2 = [(STSGridLayout *)self collectionView];
-  v3 = [v2 delegate];
+  collectionView = [(STSGridLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (id)_gridTilesForCurrentDataSource
 {
-  v25 = [MEMORY[0x277CBEB18] array];
-  v3 = [(STSGridLayout *)self collectionView];
+  array = [MEMORY[0x277CBEB18] array];
+  collectionView = [(STSGridLayout *)self collectionView];
   v4 = [(STSGridLayout *)self _tilesPerRowAndWidth:0];
-  v5 = [(STSGridLayout *)self _hasOnlyLargeItems];
-  v22 = v3;
-  if ([v3 numberOfSections])
+  _hasOnlyLargeItems = [(STSGridLayout *)self _hasOnlyLargeItems];
+  v22 = collectionView;
+  if ([collectionView numberOfSections])
   {
-    if (v5)
+    if (_hasOnlyLargeItems)
     {
       v6 = &unk_2876BA480;
     }
@@ -559,17 +559,17 @@ LABEL_7:
     v37 = __Block_byref_object_dispose_;
     v38 = 0;
     v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{9, v4}];
-    v8 = [v3 numberOfItemsInSection:0];
+    v8 = [collectionView numberOfItemsInSection:0];
     v9 = v8;
     if (v8)
     {
       v10 = 0;
       v11 = v8 - 1;
-      v23 = self;
+      selfCopy = self;
       do
       {
         v12 = [MEMORY[0x277CCAA70] indexPathForItem:v10 inSection:0];
-        if (v5 || (-[STSGridLayout _gridLayoutDelegate](self, "_gridLayoutDelegate"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 collectionView:v22 layout:self sizeForItemAtIndexPath:v12], v13, !v14))
+        if (_hasOnlyLargeItems || (-[STSGridLayout _gridLayoutDelegate](self, "_gridLayoutDelegate"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 collectionView:v22 layout:self sizeForItemAtIndexPath:v12], v13, !v14))
         {
           v14 = 0;
           if (v34[5])
@@ -626,11 +626,11 @@ LABEL_23:
         v32 = &v33;
         v29 = v16;
         v30 = v24;
-        v31 = v25;
+        v31 = array;
         v17 = MEMORY[0x266751FB0](v28);
         if (!v15)
         {
-          if (v11 != v10 && (!v34[5] && [v16 count] < 9 || !v5 && v34[5] && objc_msgSend(v16, "count") <= 4) && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+          if (v11 != v10 && (!v34[5] && [v16 count] < 9 || !_hasOnlyLargeItems && v34[5] && objc_msgSend(v16, "count") <= 4) && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             [(STSGridLayout *)&buf _gridTilesForCurrentDataSource];
           }
@@ -659,21 +659,21 @@ LABEL_37:
         }
 
         ++v10;
-        self = v23;
+        self = selfCopy;
       }
 
       while (v9 != v10);
     }
 
-    if (!v5)
+    if (!_hasOnlyLargeItems)
     {
-      [(STSGridLayout *)self _redistributeLastRowItemsInTiles:v25 withTilesPerRow:v21];
+      [(STSGridLayout *)self _redistributeLastRowItemsInTiles:array withTilesPerRow:v21];
     }
 
     _Block_object_dispose(&v33, 8);
   }
 
-  return v25;
+  return array;
 }
 
 void __47__STSGridLayout__gridTilesForCurrentDataSource__block_invoke(uint64_t a1)
@@ -701,32 +701,32 @@ void __47__STSGridLayout__gridTilesForCurrentDataSource__block_invoke(uint64_t a
   [*(a1 + 32) removeAllObjects];
 }
 
-- (void)_redistributeLastRowItemsInTiles:(id)a3 withTilesPerRow:(unint64_t)a4
+- (void)_redistributeLastRowItemsInTiles:(id)tiles withTilesPerRow:(unint64_t)row
 {
-  v6 = a3;
-  if ([v6 count])
+  tilesCopy = tiles;
+  if ([tilesCopy count])
   {
-    v7 = [v6 lastObject];
-    if (!([v6 count] % a4))
+    lastObject = [tilesCopy lastObject];
+    if (!([tilesCopy count] % row))
     {
-      v25 = [v7 largeIndex];
-      if (!v25 || ([v7 smallIndexes], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "count") > 4))
+      largeIndex = [lastObject largeIndex];
+      if (!largeIndex || ([lastObject smallIndexes], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "count") > 4))
       {
-        v26 = [v7 largeIndex];
-        if (v26)
+        largeIndex2 = [lastObject largeIndex];
+        if (largeIndex2)
         {
 
-          if (v25)
+          if (largeIndex)
           {
           }
 
           goto LABEL_23;
         }
 
-        v27 = [v7 smallIndexes];
-        v28 = [v27 count];
+        smallIndexes = [lastObject smallIndexes];
+        v28 = [smallIndexes count];
 
-        if (v25)
+        if (largeIndex)
         {
 
           if (v28 < 9)
@@ -747,10 +747,10 @@ LABEL_23:
     }
 
 LABEL_3:
-    v31 = v7;
-    v8 = [v6 count];
-    v32 = v8 - 1 - (a4 + v8 - 1) % a4;
-    v9 = [v6 subarrayWithRange:{v32, objc_msgSend(v6, "count") - v32}];
+    v31 = lastObject;
+    v8 = [tilesCopy count];
+    v32 = v8 - 1 - (row + v8 - 1) % row;
+    v9 = [tilesCopy subarrayWithRange:{v32, objc_msgSend(tilesCopy, "count") - v32}];
     v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{9 * objc_msgSend(v9, "count")}];
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
     v35[0] = MEMORY[0x277D85DD0];
@@ -763,18 +763,18 @@ LABEL_3:
     v30 = v9;
     v37 = v29;
     [v9 enumerateObjectsUsingBlock:v35];
-    v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:a4];
+    v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:row];
     if ([v12 count])
     {
       v14 = 0;
       v15 = v32;
       do
       {
-        if (v15 >= [v6 count] || (objc_msgSend(v6, "objectAtIndexedSubscript:", v15), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (v15 >= [tilesCopy count] || (objc_msgSend(tilesCopy, "objectAtIndexedSubscript:", v15), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
         {
           v16 = objc_alloc_init(STSGridTile);
           [(STSGridTile *)v16 setLayoutStyle:0];
-          [v6 addObject:v16];
+          [tilesCopy addObject:v16];
         }
 
         v17 = [MEMORY[0x277CCABB0] numberWithInteger:v15];
@@ -787,8 +787,8 @@ LABEL_3:
           [v13 setObject:v18 forKeyedSubscript:v19];
         }
 
-        v20 = [(STSGridTile *)v16 largeIndex];
-        if (v20)
+        largeIndex3 = [(STSGridTile *)v16 largeIndex];
+        if (largeIndex3)
         {
           if ([v18 count] <= 1)
           {
@@ -820,7 +820,7 @@ LABEL_3:
         v24 = [v12 subarrayWithRange:{v14, v23}];
         [v18 addObjectsFromArray:v24];
         v14 += v23;
-        if ((v15 + 1) % a4)
+        if ((v15 + 1) % row)
         {
           ++v15;
         }
@@ -838,10 +838,10 @@ LABEL_3:
     v33[1] = 3221225472;
     v33[2] = __66__STSGridLayout__redistributeLastRowItemsInTiles_withTilesPerRow___block_invoke_2;
     v33[3] = &unk_279B8AB70;
-    v34 = v6;
+    v34 = tilesCopy;
     [v13 enumerateKeysAndObjectsUsingBlock:v33];
 
-    v7 = v31;
+    lastObject = v31;
     goto LABEL_23;
   }
 
@@ -907,7 +907,7 @@ void __66__STSGridLayout__redistributeLastRowItemsInTiles_withTilesPerRow___bloc
   hasOnlyLargeItems = self->_hasOnlyLargeItems;
   if (!hasOnlyLargeItems)
   {
-    v4 = [(STSGridLayout *)self collectionView];
+    collectionView = [(STSGridLayout *)self collectionView];
     v11 = 0;
     v12 = &v11;
     v13 = 0x3032000000;
@@ -920,7 +920,7 @@ void __66__STSGridLayout__redistributeLastRowItemsInTiles_withTilesPerRow___bloc
     v8[3] = &unk_279B8AB98;
     v10 = &v11;
     v8[4] = self;
-    v5 = v4;
+    v5 = collectionView;
     v9 = v5;
     [v5 sts_enumerateAllIndexPathsUsingBlock:v8];
     if (v12[5])
@@ -964,10 +964,10 @@ void __35__STSGridLayout__hasOnlyLargeItems__block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (id)_tileSmallFramesForSize:(CGSize)a3
+- (id)_tileSmallFramesForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [MEMORY[0x277CCAE60] valueWithCGSize:?];
   v7 = [(NSMutableDictionary *)self->_tileSmallFrameCache objectForKey:v6];
   if (!v7)
@@ -994,17 +994,17 @@ void __35__STSGridLayout__hasOnlyLargeItems__block_invoke(uint64_t a1, void *a2,
   return v7;
 }
 
-- (CGRect)_gridFrameForRow:(unint64_t)a3 andColumn:(unint64_t)a4 inSize:(CGSize)a5
+- (CGRect)_gridFrameForRow:(unint64_t)row andColumn:(unint64_t)column inSize:(CGSize)size
 {
-  v6 = [(STSGridLayout *)self collectionView];
+  collectionView = [(STSGridLayout *)self collectionView];
   UIFloorToViewScale();
   v8 = v7;
 
-  v9 = [(STSGridLayout *)self collectionView];
+  collectionView2 = [(STSGridLayout *)self collectionView];
   UIFloorToViewScale();
   v11 = v10;
 
-  v12 = [(STSGridLayout *)self collectionView];
+  collectionView3 = [(STSGridLayout *)self collectionView];
   UIFloorToViewScale();
   v14 = v13;
 
@@ -1019,7 +1019,7 @@ void __35__STSGridLayout__hasOnlyLargeItems__block_invoke(uint64_t a1, void *a2,
   return result;
 }
 
-- (unint64_t)_tilesPerRowAndWidth:(double *)a3
+- (unint64_t)_tilesPerRowAndWidth:(double *)width
 {
   [(STSGridLayout *)self _availableContentSize];
   if (v5 >= 550.0)
@@ -1034,19 +1034,19 @@ void __35__STSGridLayout__hasOnlyLargeItems__block_invoke(uint64_t a1, void *a2,
       v7 = 3;
     }
 
-    if (a3)
+    if (width)
     {
-      v9 = [(STSGridLayout *)self collectionView];
+      collectionView = [(STSGridLayout *)self collectionView];
       UIFloorToViewScale();
-      *a3 = v10;
+      *width = v10;
     }
   }
 
   else
   {
-    if (a3)
+    if (width)
     {
-      *a3 = v5;
+      *width = v5;
     }
 
     return 1;
@@ -1057,12 +1057,12 @@ void __35__STSGridLayout__hasOnlyLargeItems__block_invoke(uint64_t a1, void *a2,
 
 - (CGSize)_availableContentSize
 {
-  v3 = [(STSGridLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(STSGridLayout *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(STSGridLayout *)self collectionView];
-  [v8 contentInset];
+  collectionView2 = [(STSGridLayout *)self collectionView];
+  [collectionView2 contentInset];
   v11 = v5 - (v9 + v10);
   v14 = v7 - (v12 + v13);
 

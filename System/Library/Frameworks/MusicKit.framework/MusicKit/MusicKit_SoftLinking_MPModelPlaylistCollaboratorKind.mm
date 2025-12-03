@@ -1,6 +1,6 @@
 @interface MusicKit_SoftLinking_MPModelPlaylistCollaboratorKind
 - (MusicKit_SoftLinking_MPModelPlaylistCollaboratorKind)init;
-- (MusicKit_SoftLinking_MPModelPlaylistCollaboratorKind)initWithVariants:(unint64_t)a3;
+- (MusicKit_SoftLinking_MPModelPlaylistCollaboratorKind)initWithVariants:(unint64_t)variants;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelPlaylistCollaboratorKind
@@ -15,7 +15,7 @@
   return v4;
 }
 
-- (MusicKit_SoftLinking_MPModelPlaylistCollaboratorKind)initWithVariants:(unint64_t)a3
+- (MusicKit_SoftLinking_MPModelPlaylistCollaboratorKind)initWithVariants:(unint64_t)variants
 {
   v5 = [(MusicKit_SoftLinking_MPModelPlaylistCollaboratorKind *)self _underlyingVariantsFromVariants:?];
   v14 = 0;
@@ -43,7 +43,7 @@
   v10 = v9;
   if (v9)
   {
-    v9->_variants = a3;
+    v9->_variants = variants;
   }
 
   return v10;

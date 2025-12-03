@@ -1,20 +1,20 @@
 @interface SMAppDeletionManager
 - (BOOL)isMessagesAppInstalled;
 - (SMAppDeletionManager)init;
-- (void)_addObserver:(id)a3;
-- (void)_applicationsDidInstall:(id)a3;
-- (void)_applicationsDidUninstall:(id)a3;
+- (void)_addObserver:(id)observer;
+- (void)_applicationsDidInstall:(id)install;
+- (void)_applicationsDidUninstall:(id)uninstall;
 - (void)_notifyObserversForMessagesAppInstalled;
 - (void)_notifyObserversForMessagesAppUninstalled;
 - (void)_notifyObserversWithUpdatedMessagesInstallation;
-- (void)_removeObserver:(id)a3;
+- (void)_removeObserver:(id)observer;
 - (void)_setup;
-- (void)addObserver:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)databaseWasRebuilt;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)setup;
 @end
 
@@ -23,8 +23,8 @@
 - (BOOL)isMessagesAppInstalled
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v3 = [v2 applicationIsInstalled:@"com.apple.MobileSMS"];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v3 = [defaultWorkspace applicationIsInstalled:@"com.apple.MobileSMS"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -60,16 +60,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(SMAppDeletionManager *)v4 UTF8String];
+      uTF8String = [(SMAppDeletionManager *)v4 UTF8String];
     }
 
     else
     {
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v4];
-      v6 = [v7 UTF8String];
+      uTF8String = [v7 UTF8String];
     }
 
-    v8 = dispatch_queue_create(v6, v5);
+    v8 = dispatch_queue_create(uTF8String, v5);
 
     queue = v4->_queue;
     v4->_queue = v8;
@@ -86,8 +86,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SMAppDeletionManager;
@@ -96,53 +96,53 @@
 
 - (void)setup
 {
-  v3 = [(SMAppDeletionManager *)self queue];
+  queue = [(SMAppDeletionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__SMAppDeletionManager_setup__block_invoke;
   block[3] = &unk_279B655F8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_setup
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 addObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace addObserver:self];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SMAppDeletionManager *)self queue];
+  observerCopy = observer;
+  queue = [(SMAppDeletionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__SMAppDeletionManager_addObserver___block_invoke;
   v7[3] = &unk_279B65620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SMAppDeletionManager *)self queue];
+  observerCopy = observer;
+  queue = [(SMAppDeletionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SMAppDeletionManager_removeObserver___block_invoke;
   v7[3] = &unk_279B65620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -162,30 +162,30 @@
     }
   }
 
-  [(NSHashTable *)self->_observers addObject:v4];
-  v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v7 = [v6 applicationIsInstalled:@"com.apple.MobileSMS"];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v7 = [defaultWorkspace applicationIsInstalled:@"com.apple.MobileSMS"];
 
   if (v7)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 onMessagesAppInstalled];
+      [observerCopy onMessagesAppInstalled];
     }
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v4 onMessagesAppUninstalled];
+    [observerCopy onMessagesAppUninstalled];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -205,7 +205,7 @@
     }
   }
 
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -217,8 +217,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(SMAppDeletionManager *)self observers];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  observers = [(SMAppDeletionManager *)self observers];
+  v3 = [observers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -230,7 +230,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(observers);
         }
 
         v7 = *(*(&v9 + 1) + 8 * v6);
@@ -243,7 +243,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [observers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -259,8 +259,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(SMAppDeletionManager *)self observers];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  observers = [(SMAppDeletionManager *)self observers];
+  v3 = [observers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -272,7 +272,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(observers);
         }
 
         v7 = *(*(&v9 + 1) + 8 * v6);
@@ -285,7 +285,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [observers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -294,29 +294,29 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
-  v5 = [(SMAppDeletionManager *)self queue];
+  installCopy = install;
+  queue = [(SMAppDeletionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__SMAppDeletionManager_applicationsDidInstall___block_invoke;
   v7[3] = &unk_279B65620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = installCopy;
+  v6 = installCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_applicationsDidInstall:(id)a3
+- (void)_applicationsDidInstall:(id)install
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  installCopy = install;
+  v5 = [installCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -327,11 +327,11 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
-        v10 = [v9 isEqualToString:@"com.apple.MobileSMS"];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
+        v10 = [bundleIdentifier isEqualToString:@"com.apple.MobileSMS"];
 
         if (v10)
         {
@@ -340,7 +340,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -355,29 +355,29 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
-  v5 = [(SMAppDeletionManager *)self queue];
+  uninstallCopy = uninstall;
+  queue = [(SMAppDeletionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SMAppDeletionManager_applicationsDidUninstall___block_invoke;
   v7[3] = &unk_279B65620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = uninstallCopy;
+  v6 = uninstallCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_applicationsDidUninstall:(id)a3
+- (void)_applicationsDidUninstall:(id)uninstall
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  uninstallCopy = uninstall;
+  v5 = [uninstallCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -388,11 +388,11 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
-        v10 = [v9 isEqualToString:@"com.apple.MobileSMS"];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
+        v10 = [bundleIdentifier isEqualToString:@"com.apple.MobileSMS"];
 
         if (v10)
         {
@@ -401,7 +401,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -418,19 +418,19 @@ LABEL_11:
 
 - (void)databaseWasRebuilt
 {
-  v3 = [(SMAppDeletionManager *)self queue];
+  queue = [(SMAppDeletionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__SMAppDeletionManager_databaseWasRebuilt__block_invoke;
   block[3] = &unk_279B655F8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_notifyObserversWithUpdatedMessagesInstallation
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v4 = [v3 applicationIsInstalled:@"com.apple.MobileSMS"];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v4 = [defaultWorkspace applicationIsInstalled:@"com.apple.MobileSMS"];
 
   if (v4)
   {

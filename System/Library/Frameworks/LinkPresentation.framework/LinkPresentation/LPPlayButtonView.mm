@@ -1,6 +1,6 @@
 @interface LPPlayButtonView
 - (BOOL)isLyricStyle;
-- (LPPlayButtonView)initWithHost:(id)a3 playbackInformation:(id)a4 style:(id)a5 properties:(id)a6;
+- (LPPlayButtonView)initWithHost:(id)host playbackInformation:(id)information style:(id)style properties:(id)properties;
 - (id)theme;
 - (void)buildSubviewsIfNeeded;
 - (void)dealloc;
@@ -20,20 +20,20 @@
 
 @implementation LPPlayButtonView
 
-- (LPPlayButtonView)initWithHost:(id)a3 playbackInformation:(id)a4 style:(id)a5 properties:(id)a6
+- (LPPlayButtonView)initWithHost:(id)host playbackInformation:(id)information style:(id)style properties:(id)properties
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  informationCopy = information;
+  styleCopy = style;
+  propertiesCopy = properties;
   v18.receiver = self;
   v18.super_class = LPPlayButtonView;
-  v14 = [(LPComponentView *)&v18 initWithHost:a3];
+  v14 = [(LPComponentView *)&v18 initWithHost:host];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_style, a5);
-    objc_storeStrong(&v15->_properties, a6);
-    objc_storeStrong(&v15->_playbackInformation, a4);
+    objc_storeStrong(&v14->_style, style);
+    objc_storeStrong(&v15->_properties, properties);
+    objc_storeStrong(&v15->_playbackInformation, information);
     v16 = v15;
   }
 
@@ -83,18 +83,18 @@ void __41__LPPlayButtonView_buildSubviewsIfNeeded__block_invoke(uint64_t a1)
 
 - (BOOL)isLyricStyle
 {
-  v2 = self;
-  v3 = [(LPComponentView *)self host];
-  LOBYTE(v2) = [v3 rendererStyleForComponentView:v2] == 42;
+  selfCopy = self;
+  host = [(LPComponentView *)self host];
+  LOBYTE(selfCopy) = [host rendererStyleForComponentView:selfCopy] == 42;
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)theme
 {
-  v3 = [(LPPlayButtonPresentationProperties *)self->_properties accentColor];
+  accentColor = [(LPPlayButtonPresentationProperties *)self->_properties accentColor];
 
-  if (v3)
+  if (accentColor)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -103,57 +103,57 @@ void __41__LPPlayButtonView_buildSubviewsIfNeeded__block_invoke(uint64_t a1)
     v15[4] = self;
     v4 = __25__LPPlayButtonView_theme__block_invoke(v15);
     v5 = [LPAudioPlayButtonTheme alloc];
-    v6 = [(LPPlayButtonPresentationProperties *)self->_properties accentColor];
-    v7 = [(LPAudioPlayButtonStyle *)self->_style defaultTheme];
-    v8 = [v7 outerBorderColor];
-    v9 = [(LPAudioPlayButtonTheme *)v5 initWithKeyColor:v4 secondaryColor:v6 outerBorderColor:v8 useInvertedInactiveState:0];
+    accentColor2 = [(LPPlayButtonPresentationProperties *)self->_properties accentColor];
+    defaultTheme = [(LPAudioPlayButtonStyle *)self->_style defaultTheme];
+    outerBorderColor = [defaultTheme outerBorderColor];
+    v9 = [(LPAudioPlayButtonTheme *)v5 initWithKeyColor:v4 secondaryColor:accentColor2 outerBorderColor:outerBorderColor useInvertedInactiveState:0];
 
     goto LABEL_16;
   }
 
-  v10 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation type];
-  if (v10 > 6)
+  type = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation type];
+  if (type > 6)
   {
 LABEL_11:
-    if (v10)
+    if (type)
     {
-      v11 = [(LPAudioPlayButtonStyle *)self->_style defaultTheme];
+      defaultTheme2 = [(LPAudioPlayButtonStyle *)self->_style defaultTheme];
       goto LABEL_15;
     }
 
-    v13 = [(LPPlayButtonView *)self isLyricStyle];
+    isLyricStyle = [(LPPlayButtonView *)self isLyricStyle];
     style = self->_style;
-    if (v13)
+    if (isLyricStyle)
     {
-      v11 = [(LPAudioPlayButtonStyle *)style lyricExcerptTheme];
+      defaultTheme2 = [(LPAudioPlayButtonStyle *)style lyricExcerptTheme];
       goto LABEL_15;
     }
 
     goto LABEL_8;
   }
 
-  if (((1 << v10) & 0x26) != 0)
+  if (((1 << type) & 0x26) != 0)
   {
     style = self->_style;
 LABEL_8:
-    v11 = [(LPAudioPlayButtonStyle *)style appleMusicTheme];
+    defaultTheme2 = [(LPAudioPlayButtonStyle *)style appleMusicTheme];
     goto LABEL_15;
   }
 
-  if (((1 << v10) & 0x18) == 0)
+  if (((1 << type) & 0x18) == 0)
   {
-    if (v10 == 6)
+    if (type == 6)
     {
-      v11 = [(LPAudioPlayButtonStyle *)self->_style audioBookTheme];
+      defaultTheme2 = [(LPAudioPlayButtonStyle *)self->_style audioBookTheme];
       goto LABEL_15;
     }
 
     goto LABEL_11;
   }
 
-  v11 = [(LPAudioPlayButtonStyle *)self->_style podcastsTheme];
+  defaultTheme2 = [(LPAudioPlayButtonStyle *)self->_style podcastsTheme];
 LABEL_15:
-  v9 = v11;
+  v9 = defaultTheme2;
 LABEL_16:
 
   return v9;
@@ -190,8 +190,8 @@ id __25__LPPlayButtonView_theme__block_invoke(uint64_t a1)
 
   v4 = [LPPlaceholderPlayButtonControl alloc];
   style = self->_style;
-  v6 = [(LPPlayButtonView *)self theme];
-  v7 = [(LPPlaceholderPlayButtonControl *)v4 initWithStyle:style theme:v6];
+  theme = [(LPPlayButtonView *)self theme];
+  v7 = [(LPPlaceholderPlayButtonControl *)v4 initWithStyle:style theme:theme];
   v8 = self->_button;
   self->_button = v7;
 
@@ -202,7 +202,7 @@ id __25__LPPlayButtonView_theme__block_invoke(uint64_t a1)
 
 - (void)installiTunesButton
 {
-  if (a1)
+  if (self)
   {
     v3 = *a2;
     v4 = 138412290;
@@ -247,16 +247,16 @@ id __25__LPPlayButtonView_theme__block_invoke(uint64_t a1)
     }
 
     v4 = [LPAudio alloc];
-    v5 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation previewURL];
+    previewURL = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation previewURL];
     v6 = objc_alloc_init(LPAudioProperties);
-    v14 = [(LPAudio *)v4 initWithStreamingURL:v5 properties:v6];
+    v14 = [(LPAudio *)v4 initWithStreamingURL:previewURL properties:v6];
 
     v7 = [LPStreamingAudioPlayButtonControl alloc];
     style = self->_style;
-    v9 = [(LPPlayButtonView *)self theme];
-    v10 = [(LPComponentView *)self host];
-    v11 = [v10 componentView:self playerForAudio:v14];
-    v12 = [(LPStreamingAudioPlayButtonControl *)v7 initWithAudio:v14 style:style theme:v9 player:v11];
+    theme = [(LPPlayButtonView *)self theme];
+    host = [(LPComponentView *)self host];
+    v11 = [host componentView:self playerForAudio:v14];
+    v12 = [(LPStreamingAudioPlayButtonControl *)v7 initWithAudio:v14 style:style theme:theme player:v11];
     v13 = self->_button;
     self->_button = v12;
 
@@ -268,8 +268,8 @@ id __25__LPPlayButtonView_theme__block_invoke(uint64_t a1)
 - (void)updateButtonForSongOrAlbum
 {
   v3 = +[LPiTunesStoreInformation shared];
-  v4 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storefrontIdentifier];
-  v5 = [v3 userStateForMediaStorefrontIdentifier:v4];
+  storefrontIdentifier = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storefrontIdentifier];
+  v5 = [v3 userStateForMediaStorefrontIdentifier:storefrontIdentifier];
 
   if (v5 == 4)
   {
@@ -291,8 +291,8 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  v6 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation availability];
-  if (v6 < 2)
+  availability = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation availability];
+  if (availability < 2)
   {
     if (v5 == 1)
     {
@@ -303,9 +303,9 @@ LABEL_7:
     }
   }
 
-  else if (v6 != 2)
+  else if (availability != 2)
   {
-    if (v6 != 3)
+    if (availability != 3)
     {
       return;
     }
@@ -319,8 +319,8 @@ LABEL_7:
 - (void)updateButtonForRadio
 {
   v3 = +[LPiTunesStoreInformation shared];
-  v4 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storefrontIdentifier];
-  v5 = [v3 userStateForMediaStorefrontIdentifier:v4];
+  storefrontIdentifier = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation storefrontIdentifier];
+  v5 = [v3 userStateForMediaStorefrontIdentifier:storefrontIdentifier];
 
   if ((v5 - 2) >= 3)
   {
@@ -386,13 +386,13 @@ LABEL_7:
   }
 
   v4 = [LPStreamingAudioPlayButtonControl alloc];
-  v5 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation audio];
+  audio = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation audio];
   style = self->_style;
-  v7 = [(LPPlayButtonView *)self theme];
-  v8 = [(LPComponentView *)self host];
-  v9 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation audio];
-  v10 = [v8 componentView:self playerForAudio:v9];
-  v11 = [(LPStreamingAudioPlayButtonControl *)v4 initWithAudio:v5 style:style theme:v7 player:v10];
+  theme = [(LPPlayButtonView *)self theme];
+  host = [(LPComponentView *)self host];
+  audio2 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation audio];
+  v10 = [host componentView:self playerForAudio:audio2];
+  v11 = [(LPStreamingAudioPlayButtonControl *)v4 initWithAudio:audio style:style theme:theme player:v10];
   v12 = self->_button;
   self->_button = v11;
 
@@ -404,9 +404,9 @@ LABEL_7:
 
 - (void)updateButtonForAudioFile
 {
-  v3 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation audio];
+  audio = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation audio];
 
-  if (v3)
+  if (audio)
   {
 
     [(LPPlayButtonView *)self installAudioButton];
@@ -422,14 +422,14 @@ LABEL_7:
 - (void)updateButton
 {
   [(LPPlayButtonView *)self setUserInteractionEnabled:1];
-  v3 = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation type];
-  if (v3 <= 4)
+  type = [(LPInlineMediaPlaybackInformation *)self->_playbackInformation type];
+  if (type <= 4)
   {
-    if (v3 >= 2)
+    if (type >= 2)
     {
-      if ((v3 - 3) >= 2)
+      if ((type - 3) >= 2)
       {
-        if (v3 == 2)
+        if (type == 2)
         {
 
           [(LPPlayButtonView *)self updateButtonForRadio];
@@ -448,7 +448,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  switch(v3)
+  switch(type)
   {
     case 7:
 

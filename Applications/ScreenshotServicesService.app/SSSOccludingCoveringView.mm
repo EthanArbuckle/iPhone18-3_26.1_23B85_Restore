@@ -1,15 +1,15 @@
 @interface SSSOccludingCoveringView
-- (SSSOccludingCoveringView)initWithFrame:(CGRect)a3;
+- (SSSOccludingCoveringView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SSSOccludingCoveringView
 
-- (SSSOccludingCoveringView)initWithFrame:(CGRect)a3
+- (SSSOccludingCoveringView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SSSOccludingCoveringView;
-  v3 = [(SSSOccludingCoveringView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSSOccludingCoveringView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_opt_new();
   backgroundColorView = v3->_backgroundColorView;
   v3->_backgroundColorView = v4;

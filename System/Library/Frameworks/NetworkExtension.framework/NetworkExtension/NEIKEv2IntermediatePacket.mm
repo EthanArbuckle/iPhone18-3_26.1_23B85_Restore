@@ -1,5 +1,5 @@
 @interface NEIKEv2IntermediatePacket
-- (BOOL)constructAuthenticatedDataWithPayloads:(int)a3 payloadsLength:(void *)a4 authenticatedHeaders:;
+- (BOOL)constructAuthenticatedDataWithPayloads:(int)payloads payloadsLength:(void *)length authenticatedHeaders:;
 - (void)filloutPayloads;
 - (void)gatherPayloads;
 @end
@@ -45,8 +45,8 @@
         }
 
         v13 = *(*(&v36 + 1) + 8 * i);
-        v14 = [v13 type];
-        if (v14 == 41)
+        type = [v13 type];
+        if (type == 41)
         {
           v17 = v13;
           if (self && objc_getProperty(self, v16, 64, 1))
@@ -60,7 +60,7 @@
           if (self)
           {
 LABEL_23:
-            v30 = self;
+            selfCopy2 = self;
             v31 = v20;
             v32 = 64;
             goto LABEL_26;
@@ -69,7 +69,7 @@ LABEL_23:
           goto LABEL_27;
         }
 
-        if (v14 == 34)
+        if (type == 34)
         {
           if (self)
           {
@@ -99,11 +99,11 @@ LABEL_23:
               }
             }
 
-            v30 = self;
+            selfCopy2 = self;
             v31 = v20;
             v32 = 56;
 LABEL_26:
-            objc_setProperty_atomic(v30, v19, v31, v32);
+            objc_setProperty_atomic(selfCopy2, v19, v31, v32);
 LABEL_27:
 
             continue;
@@ -115,12 +115,12 @@ LABEL_27:
             v25 = v11;
             v26 = v10;
             v27 = v9;
-            v28 = [(NEIKEv2Packet *)self copyShortDescription];
-            v29 = [v13 typeDescription];
+            copyShortDescription = [(NEIKEv2Packet *)self copyShortDescription];
+            typeDescription = [v13 typeDescription];
             *buf = v34;
-            v41 = v28;
+            v41 = copyShortDescription;
             v42 = 2112;
-            v43 = v29;
+            v43 = typeDescription;
             _os_log_impl(&dword_1BA83C000, v24, OS_LOG_TYPE_DEFAULT, "%@ ignoring unexpected %@ payload", buf, 0x16u);
 
             v9 = v27;
@@ -164,12 +164,12 @@ LABEL_27:
   [(NEIKEv2Packet *)self setRawPayloads:v7];
 }
 
-- (BOOL)constructAuthenticatedDataWithPayloads:(int)a3 payloadsLength:(void *)a4 authenticatedHeaders:
+- (BOOL)constructAuthenticatedDataWithPayloads:(int)payloads payloadsLength:(void *)length authenticatedHeaders:
 {
   v28 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a4;
-  v9 = v8;
+  lengthCopy = length;
+  v9 = lengthCopy;
   if (!v7)
   {
     v17 = ne_log_obj();
@@ -189,7 +189,7 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!lengthCopy)
   {
     v17 = ne_log_obj();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -205,20 +205,20 @@ LABEL_15:
 
   *v26 = 0u;
   v27 = 0u;
-  v10 = [v8 length];
+  v10 = [lengthCopy length];
   v11 = v10 > 0x1F;
   if (v10 > 0x1F)
   {
     [v9 getBytes:v26 length:32];
-    HIWORD(v27) = bswap32(a3 + 4) >> 16;
-    DWORD2(v27) = bswap32((a3 + 4) + 28);
+    HIWORD(v27) = bswap32(payloads + 4) >> 16;
+    DWORD2(v27) = bswap32((payloads + 4) + 28);
     LOBYTE(v27) = 46;
     v19 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v26 length:32];
     v21 = v19;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
     v13 = [v12 arrayByAddingObjectsFromArray:v7];
-    v14 = *(a1 + 88);
-    *(a1 + 88) = v13;
+    v14 = *(self + 88);
+    *(self + 88) = v13;
   }
 
   else

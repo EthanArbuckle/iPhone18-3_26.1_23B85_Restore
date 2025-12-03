@@ -11,7 +11,7 @@
   do
   {
     v4 = v3;
-    v5 = [a1 copyInfo:v3];
+    v5 = [self copyInfo:v3];
     if (v5)
     {
       v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v3];

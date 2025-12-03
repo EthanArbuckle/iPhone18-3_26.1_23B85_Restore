@@ -1,22 +1,22 @@
 @interface MADAutoAssetJobInformation
-- (MADAutoAssetJobInformation)initWithCoder:(id)a3;
-- (id)initForAssetSelector:(id)a3;
+- (MADAutoAssetJobInformation)initWithCoder:(id)coder;
+- (id)initForAssetSelector:(id)selector;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoAssetJobInformation
 
-- (id)initForAssetSelector:(id)a3
+- (id)initForAssetSelector:(id)selector
 {
-  v5 = a3;
+  selectorCopy = selector;
   v14.receiver = self;
   v14.super_class = MADAutoAssetJobInformation;
   v6 = [(MADAutoAssetJobInformation *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_initialAssetSelector, a3);
+    objc_storeStrong(&v6->_initialAssetSelector, selector);
     fullAssetSelector = v7->_fullAssetSelector;
     v7->_fullAssetSelector = 0;
 
@@ -36,35 +36,35 @@
   return v7;
 }
 
-- (MADAutoAssetJobInformation)initWithCoder:(id)a3
+- (MADAutoAssetJobInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MADAutoAssetJobInformation;
   v5 = [(MADAutoAssetJobInformation *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"initialAssetSelector"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initialAssetSelector"];
     initialAssetSelector = v5->_initialAssetSelector;
     v5->_initialAssetSelector = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullAssetSelector"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullAssetSelector"];
     fullAssetSelector = v5->_fullAssetSelector;
     v5->_fullAssetSelector = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientInstance"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientInstance"];
     clientInstance = v5->_clientInstance;
     v5->_clientInstance = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDesire"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDesire"];
     clientDesire = v5->_clientDesire;
     v5->_clientDesire = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"foundContent"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"foundContent"];
     foundContent = v5->_foundContent;
     v5->_foundContent = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentStatus"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentStatus"];
     currentStatus = v5->_currentStatus;
     v5->_currentStatus = v16;
   }
@@ -72,125 +72,125 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetJobInformation *)self initialAssetSelector];
-  [v4 encodeObject:v5 forKey:@"initialAssetSelector"];
+  coderCopy = coder;
+  initialAssetSelector = [(MADAutoAssetJobInformation *)self initialAssetSelector];
+  [coderCopy encodeObject:initialAssetSelector forKey:@"initialAssetSelector"];
 
-  v6 = [(MADAutoAssetJobInformation *)self fullAssetSelector];
-  [v4 encodeObject:v6 forKey:@"fullAssetSelector"];
+  fullAssetSelector = [(MADAutoAssetJobInformation *)self fullAssetSelector];
+  [coderCopy encodeObject:fullAssetSelector forKey:@"fullAssetSelector"];
 
-  v7 = [(MADAutoAssetJobInformation *)self clientInstance];
-  [v4 encodeObject:v7 forKey:@"clientInstance"];
+  clientInstance = [(MADAutoAssetJobInformation *)self clientInstance];
+  [coderCopy encodeObject:clientInstance forKey:@"clientInstance"];
 
-  v8 = [(MADAutoAssetJobInformation *)self clientDesire];
-  [v4 encodeObject:v8 forKey:@"clientDesire"];
+  clientDesire = [(MADAutoAssetJobInformation *)self clientDesire];
+  [coderCopy encodeObject:clientDesire forKey:@"clientDesire"];
 
-  v9 = [(MADAutoAssetJobInformation *)self foundContent];
-  [v4 encodeObject:v9 forKey:@"foundContent"];
+  foundContent = [(MADAutoAssetJobInformation *)self foundContent];
+  [coderCopy encodeObject:foundContent forKey:@"foundContent"];
 
-  v10 = [(MADAutoAssetJobInformation *)self currentStatus];
-  [v4 encodeObject:v10 forKey:@"currentStatus"];
+  currentStatus = [(MADAutoAssetJobInformation *)self currentStatus];
+  [coderCopy encodeObject:currentStatus forKey:@"currentStatus"];
 }
 
 - (id)summary
 {
-  v3 = [(MADAutoAssetJobInformation *)self initialAssetSelector];
-  if (v3)
+  initialAssetSelector = [(MADAutoAssetJobInformation *)self initialAssetSelector];
+  if (initialAssetSelector)
   {
-    v20 = [(MADAutoAssetJobInformation *)self initialAssetSelector];
-    v24 = [v20 summary];
+    initialAssetSelector2 = [(MADAutoAssetJobInformation *)self initialAssetSelector];
+    summary = [initialAssetSelector2 summary];
   }
 
   else
   {
-    v24 = @"N";
+    summary = @"N";
   }
 
-  v4 = [(MADAutoAssetJobInformation *)self fullAssetSelector];
-  if (v4)
+  fullAssetSelector = [(MADAutoAssetJobInformation *)self fullAssetSelector];
+  if (fullAssetSelector)
   {
-    v19 = [(MADAutoAssetJobInformation *)self fullAssetSelector];
-    v23 = [v19 summary];
+    fullAssetSelector2 = [(MADAutoAssetJobInformation *)self fullAssetSelector];
+    summary2 = [fullAssetSelector2 summary];
   }
 
   else
   {
-    v23 = @"N";
+    summary2 = @"N";
   }
 
-  v5 = [(MADAutoAssetJobInformation *)self clientInstance];
-  if (v5)
+  clientInstance = [(MADAutoAssetJobInformation *)self clientInstance];
+  if (clientInstance)
   {
-    v18 = [(MADAutoAssetJobInformation *)self clientInstance];
-    v22 = [v18 summary];
+    clientInstance2 = [(MADAutoAssetJobInformation *)self clientInstance];
+    summary3 = [clientInstance2 summary];
   }
 
   else
   {
-    v22 = @"N";
+    summary3 = @"N";
   }
 
-  v6 = [(MADAutoAssetJobInformation *)self clientDesire];
-  if (v6)
+  clientDesire = [(MADAutoAssetJobInformation *)self clientDesire];
+  if (clientDesire)
   {
-    v17 = [(MADAutoAssetJobInformation *)self clientDesire];
-    v7 = [v17 summary];
+    clientDesire2 = [(MADAutoAssetJobInformation *)self clientDesire];
+    summary4 = [clientDesire2 summary];
   }
 
   else
   {
-    v7 = @"N";
+    summary4 = @"N";
   }
 
-  v8 = [(MADAutoAssetJobInformation *)self foundContent];
-  if (v8)
+  foundContent = [(MADAutoAssetJobInformation *)self foundContent];
+  if (foundContent)
   {
-    v16 = [(MADAutoAssetJobInformation *)self foundContent];
-    v9 = [v16 summary];
+    foundContent2 = [(MADAutoAssetJobInformation *)self foundContent];
+    summary5 = [foundContent2 summary];
   }
 
   else
   {
-    v9 = @"N";
+    summary5 = @"N";
   }
 
-  v10 = [(MADAutoAssetJobInformation *)self currentStatus];
-  if (v10)
+  currentStatus = [(MADAutoAssetJobInformation *)self currentStatus];
+  if (currentStatus)
   {
     [(MADAutoAssetJobInformation *)self currentStatus];
-    v11 = v4;
-    v13 = v12 = v3;
-    v14 = [v13 summary];
-    v21 = [NSString stringWithFormat:@"[initialSelector:%@|fullSelector:%@|clientInstance:%@|clientDesire:%@|foundContent:%@|currentStatus:%@]", v24, v23, v22, v7, v9, v14];
+    v11 = fullAssetSelector;
+    v13 = v12 = initialAssetSelector;
+    summary6 = [v13 summary];
+    v21 = [NSString stringWithFormat:@"[initialSelector:%@|fullSelector:%@|clientInstance:%@|clientDesire:%@|foundContent:%@|currentStatus:%@]", summary, summary2, summary3, summary4, summary5, summary6];
 
-    v3 = v12;
-    v4 = v11;
+    initialAssetSelector = v12;
+    fullAssetSelector = v11;
   }
 
   else
   {
-    v21 = [NSString stringWithFormat:@"[initialSelector:%@|fullSelector:%@|clientInstance:%@|clientDesire:%@|foundContent:%@|currentStatus:%@]", v24, v23, v22, v7, v9, @"N"];
+    v21 = [NSString stringWithFormat:@"[initialSelector:%@|fullSelector:%@|clientInstance:%@|clientDesire:%@|foundContent:%@|currentStatus:%@]", summary, summary2, summary3, summary4, summary5, @"N"];
   }
 
-  if (v8)
+  if (foundContent)
   {
   }
 
-  if (v6)
+  if (clientDesire)
   {
   }
 
-  if (v5)
+  if (clientInstance)
   {
   }
 
-  if (v4)
+  if (fullAssetSelector)
   {
   }
 
-  if (v3)
+  if (initialAssetSelector)
   {
   }
 

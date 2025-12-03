@@ -1,20 +1,20 @@
 @interface SBHDebugIconViewController
 - (CGRect)visibleBounds;
-- (SBHDebugIconViewController)initWithIcon:(id)a3;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
+- (SBHDebugIconViewController)initWithIcon:(id)icon;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
 - (void)viewDidLoad;
 @end
 
 @implementation SBHDebugIconViewController
 
-- (SBHDebugIconViewController)initWithIcon:(id)a3
+- (SBHDebugIconViewController)initWithIcon:(id)icon
 {
-  v5 = a3;
+  iconCopy = icon;
   v6 = [(SBHDebugIconViewController *)self initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_icon, a3);
+    objc_storeStrong(&v6->_icon, icon);
   }
 
   return v7;
@@ -25,13 +25,13 @@
   v10.receiver = self;
   v10.super_class = SBHDebugIconViewController;
   [(SBHDebugIconViewController *)&v10 viewDidLoad];
-  v3 = [(SBHDebugIconViewController *)self view];
-  v4 = [(SBHDebugIconViewController *)self icon];
-  v5 = [v4 uniqueIdentifier];
-  v6 = v5;
-  if (v5)
+  view = [(SBHDebugIconViewController *)self view];
+  icon = [(SBHDebugIconViewController *)self icon];
+  uniqueIdentifier = [icon uniqueIdentifier];
+  v6 = uniqueIdentifier;
+  if (uniqueIdentifier)
   {
-    v7 = ([v5 hash] % 0xFFuLL) / 255.0;
+    v7 = ([uniqueIdentifier hash] % 0xFFuLL) / 255.0;
   }
 
   else
@@ -41,10 +41,10 @@
   }
 
   v9 = [MEMORY[0x1E69DC888] colorWithHue:v7 saturation:0.8 brightness:0.8 alpha:1.0];
-  [v3 setBackgroundColor:v9];
+  [view setBackgroundColor:v9];
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -59,16 +59,16 @@
     p_iconImageInfo->continuousCornerRadius = v7;
     if ([(SBHDebugIconViewController *)self isViewLoaded])
     {
-      v13 = [(SBHDebugIconViewController *)self view];
-      [v13 _setContinuousCornerRadius:v7];
+      view = [(SBHDebugIconViewController *)self view];
+      [view _setContinuousCornerRadius:v7];
     }
   }
 }
 
 - (CGRect)visibleBounds
 {
-  v2 = [(SBHDebugIconViewController *)self view];
-  [v2 bounds];
+  view = [(SBHDebugIconViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;

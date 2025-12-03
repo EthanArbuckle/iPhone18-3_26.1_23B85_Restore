@@ -1,176 +1,176 @@
 @interface AKAppleIDAuthenticationService
 + (id)_verificationQueue;
 - (AKAppleIDAuthenticationService)init;
-- (AKAppleIDAuthenticationService)initWithClient:(id)a3 passwordResetPresenter:(id)a4;
-- (AKAppleIDAuthenticationService)initWithProxy:(id)a3;
-- (BOOL)_incrementAttemptsForContext:(id)a3 error:(id *)a4;
-- (BOOL)_shouldBroadcastForProximity:(id)a3;
-- (BOOL)_shouldPresentShieldForContext:(id)a3;
-- (BOOL)_shouldShowAlertForAuthModeError:(id)a3;
-- (BOOL)_shouldSkipAccountUpdatesForAuthWithContext:(id)a3;
-- (BOOL)_updateAuthKitAccount:(id)a3 withServerResponse:(id)a4 context:(id)a5 error:(id *)a6;
-- (BOOL)shouldProcessAdditionalServerUIData:(id)a3;
-- (id)_accountForContinuationWithContext:(id)a3 error:(id *)a4;
-- (id)_addAccountNameParameterToURL:(id)a3 withContext:(id)a4;
-- (id)_alertDetailsForError:(id)a3 context:(id)a4;
-- (id)_authKitAccountFromContext:(id)a3;
-- (id)_authenticationParametersForUsername:(id)a3 altDSID:(id)a4 context:(id)a5;
-- (id)_createAuthenticationStartEventWithContext:(id)a3;
-- (id)_createProxAnalyticsForAuthenticationContextIfNeeded:(id)a3;
-- (id)_deviceListProviderWithContext:(id)a3;
-- (id)_requestingControllerWithServerResponse:(id)a3;
-- (id)_secureChannelTypeForContext:(id)a3;
-- (id)_srpAuthContextHelperWithContext:(id)a3;
-- (id)authResultsFromServerResponse:(id)a3 inContext:(id)a4;
-- (id)authResultsFromServerResponse:(id)a3 inContext:(id)a4 usernameOverride:(id)a5 passwordOverride:(id)a6 didShowServerUI:(BOOL)a7 continuationData:(id)a8 verificationError:(id)a9;
+- (AKAppleIDAuthenticationService)initWithClient:(id)client passwordResetPresenter:(id)presenter;
+- (AKAppleIDAuthenticationService)initWithProxy:(id)proxy;
+- (BOOL)_incrementAttemptsForContext:(id)context error:(id *)error;
+- (BOOL)_shouldBroadcastForProximity:(id)proximity;
+- (BOOL)_shouldPresentShieldForContext:(id)context;
+- (BOOL)_shouldShowAlertForAuthModeError:(id)error;
+- (BOOL)_shouldSkipAccountUpdatesForAuthWithContext:(id)context;
+- (BOOL)_updateAuthKitAccount:(id)account withServerResponse:(id)response context:(id)context error:(id *)error;
+- (BOOL)shouldProcessAdditionalServerUIData:(id)data;
+- (id)_accountForContinuationWithContext:(id)context error:(id *)error;
+- (id)_addAccountNameParameterToURL:(id)l withContext:(id)context;
+- (id)_alertDetailsForError:(id)error context:(id)context;
+- (id)_authKitAccountFromContext:(id)context;
+- (id)_authenticationParametersForUsername:(id)username altDSID:(id)d context:(id)context;
+- (id)_createAuthenticationStartEventWithContext:(id)context;
+- (id)_createProxAnalyticsForAuthenticationContextIfNeeded:(id)needed;
+- (id)_deviceListProviderWithContext:(id)context;
+- (id)_requestingControllerWithServerResponse:(id)response;
+- (id)_secureChannelTypeForContext:(id)context;
+- (id)_srpAuthContextHelperWithContext:(id)context;
+- (id)authResultsFromServerResponse:(id)response inContext:(id)context;
+- (id)authResultsFromServerResponse:(id)response inContext:(id)context usernameOverride:(id)override passwordOverride:(id)passwordOverride didShowServerUI:(BOOL)i continuationData:(id)data verificationError:(id)error;
 - (id)fidoHandler;
-- (void)_accountForContinuationWithContext:(id)a3 completion:(id)a4;
-- (void)_attemptBiometricOrPasscodeAuthWithContext:(id)a3 completion:(id)a4;
-- (void)_attemptInteractiveAuthWithContext:(id)a3 completion:(id)a4;
-- (void)_attemptPasswordlessAuthAfterBiometricOrPasscodeValidationWithContext:(id)a3 promptType:(unint64_t)a4 completion:(id)a5;
-- (void)_attemptPasswordlessAuthOptionsWithContext:(id)a3 completion:(id)a4;
-- (void)_attemptPasswordlessAuthWithContext:(id)a3 completion:(id)a4;
-- (void)_authenticateWithContext:(id)a3 completion:(id)a4;
-- (void)_beginChangePasswordFlowWithAccount:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_beginServerDrivenSecondaryActionWithURLKey:(id)a3 context:(id)a4 initialAuthResponse:(id)a5 completion:(id)a6;
-- (void)_beginServerUIAppleIDCreationFlowWithContext:(id)a3 completion:(id)a4;
-- (void)_beginiForgotFlowWithContext:(id)a3 completion:(id)a4;
-- (void)_changePasswordAndAuthenticateWithContext:(id)a3 completion:(id)a4;
-- (void)_checkFreshnessAndVerifyWithPassword:(id)a3 serverResponse:(id)a4 additionalData:(id)a5 secondaryActionError:(id)a6 context:(id)a7 newServerResponse:(id)a8 username:(id)a9 completion:(id)a10;
-- (void)_completeAuthenticationWithServiceTokens:(id)a3 tokenFetchError:(id)a4 altDSID:(id)a5 authenticationResults:(id)a6 context:(id)a7 completion:(id)a8;
-- (void)_configureDeviceListCacheInBackgroundWithContext:(id)a3 response:(id)a4;
-- (void)_correlateContext:(id)a3 withAuthModeInformation:(id)a4;
-- (void)_createNewAppleIDAndAuthenticateWithContext:(id)a3 completion:(id)a4;
-- (void)_fetchAuthModeInfoWithContext:(id)a3 completion:(id)a4;
-- (void)_fetchDeviceListWithContext:(id)a3 completion:(id)a4;
-- (void)_fetchDeviceSafetyRestrictionStateForAltDSID:(id)a3 completion:(id)a4;
-- (void)_fetchTokensForServiceIDs:(id)a3 withUsername:(id)a4 altDSID:(id)a5 masterToken:(id)a6 context:(id)a7 completion:(id)a8;
-- (void)_handleBasicLoginUICompletionWithUsername:(id)a3 password:(id)a4 context:(id)a5 additionalData:(id)a6 collectionError:(id)a7 completion:(id)a8;
-- (void)_handleCreateNewAppleIDError:(id)a3 withContext:(id)a4 andCompletion:(id)a5;
-- (void)_handleDeviceListResponseRequestContext:(id)a3 responseError:(id)a4 responseData:(id)a5 completion:(id)a6;
-- (void)_handleGrandslamResponse:(id)a3 data:(id)a4 error:(id)a5 serverResponse:(id)a6 completion:(id)a7;
-- (void)_handleMissingUsernameOrPasswordForContext:(id)a3 password:(id)a4 username:(id)a5 completion:(id)a6;
-- (void)_handlePasswordlessAuthResults:(id)a3 context:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)_handleRecoverCredentialsError:(id)a3 withContext:(id)a4 event:(id)a5 andCompletion:(id)a6;
-- (void)_handleSecondFactorUICompletionWithCode:(id)a3 error:(id)a4 idmsData:(id)a5 initialAuthResponse:(id)a6 context:(id)a7 completion:(id)a8;
-- (void)_handleSecondFactorUICompletionWithCode:(id)a3 error:(id)a4 idmsData:(id)a5 piggybacking:(BOOL)a6 initialAuthResponse:(id)a7 context:(id)a8 completion:(id)a9;
-- (void)_handleStartFidoAuthWithContext:(id)a3 fidoContext:(id)a4 serverResponse:(id)a5 completion:(id)a6;
-- (void)_handleSuccessfulVerificationForContext:(id)a3 withResults:(id)a4 serverResponse:(id)a5 shouldContinue:(BOOL)a6 withError:(id)a7 completion:(id)a8;
-- (void)_handleVerificationCompletionForUsername:(id)a3 password:(id)a4 serverResponse:(id)a5 didShowServerUI:(BOOL)a6 continuationData:(id)a7 error:(id)a8 context:(id)a9 completion:(id)a10;
-- (void)_handleVerificationError:(id)a3 forContext:(id)a4 completion:(id)a5;
-- (void)_isInteractiveAuthRequiredForContext:(id)a3 completion:(id)a4;
-- (void)_keepLoginAliveWithContext:(id)a3 error:(id)a4 andCompletion:(id)a5;
-- (void)_performAuthenticationWithContext:(id)a3 completion:(id)a4;
-- (void)_performDeviceListRequestWithContext:(id)a3 completion:(id)a4;
-- (void)_performFidoStartAuthActionWithContext:(id)a3 serverResponse:(id)a4 completion:(id)a5;
-- (void)_performGrandslamEndpointActionWithContext:(id)a3 serverResponse:(id)a4 completion:(id)a5;
-- (void)_performInteractiveAuthWithContext:(id)a3 completion:(id)a4;
-- (void)_performPasswordlessAuth:(id)a3 completion:(id)a4;
-- (void)_performPasswordlessSRPAuthWithAccount:(id)a3 context:(id)a4 client:(id)a5 completion:(id)a6;
-- (void)_performPasswordlessSRPAuthWithAccount:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_performPasswordlessSRPAuthWithContext:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)_performPasswordlessSRPAuthWithContext:(id)a3 completion:(id)a4;
-- (void)_performSRPAuthenticationWithContext:(id)a3 completion:(id)a4;
-- (void)_performSafeSRPAuthenticationWithContext:(id)a3 completion:(id)a4;
-- (void)_performSecondaryActionWithServerResponse:(id)a3 context:(id)a4 client:(id)a5 completion:(id)a6;
-- (void)_performSecondaryActionWithServerResponse:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_performSilentServiceTokenAuthWithContext:(id)a3 completion:(id)a4;
-- (void)_persistGrandSlamServiceTokens:(id)a3 forAltDSID:(id)a4 DSID:(id)a5 appleID:(id)a6 forContext:(id)a7 error:(id *)a8;
-- (void)_presentShieldForMigrationWithContext:(id)a3 completionHandler:(id)a4;
-- (void)_presentShieldWithContext:(id)a3 completionHandler:(id)a4;
-- (void)_processValidationCodeSuccessResponse:(id)a3 authResponse:(id)a4 results:(id)a5 completion:(id)a6;
-- (void)_provideServiceTokensIfRequiredForContext:(id)a3 authenticationResults:(id)a4 serverResponse:(id)a5 completion:(id)a6;
-- (void)_recoverCredentialsAndAuthenticateWithContext:(id)a3 completion:(id)a4;
-- (void)_refreshAuthModeFromServerForContext:(id)a3 completion:(id)a4;
-- (void)_refreshAuthModeIfNecessaryForContext:(id)a3 completion:(id)a4;
-- (void)_refreshLocalAccountAndUpdateContext:(id)a3 completion:(id)a4;
-- (void)_repairAppleIDWithContext:(id)a3 completion:(id)a4;
-- (void)_setAuthKitAccount:(id)a3 inUse:(BOOL)a4 forService:(int64_t)a5 completion:(id)a6;
-- (void)_shouldContinueAuthenticatingForUsername:(id)a3 password:(id)a4 serverResponse:(id)a5 didShowServerUI:(BOOL)a6 continuationData:(id)a7 error:(id)a8 context:(id)a9 completion:(id)a10;
-- (void)_showAlertForLoginCodeValidationError:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_showAlertForLoginError:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_showAlertForVerificationError:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_showBiometricOrPasscodeAuthWithContext:(id)a3 completion:(id)a4;
-- (void)_showContinueUsingUIWithContext:(id)a3 completion:(id)a4;
-- (void)_showServerUIWithContext:(id)a3 completion:(id)a4;
-- (void)_showServerUIWithURLRequest:(id)a3 context:(id)a4 initialAuthResponse:(id)a5 urlConfiguration:(id)a6 completion:(id)a7;
-- (void)_showServerUIWithURLRequest:(id)a3 context:(id)a4 urlConfiguration:(id)a5 completion:(id)a6;
-- (void)_unsafe_presentShieldViewServiceWithContext:(id)a3 completionHandler:(id)a4;
-- (void)_updateAltDSIDAndUsername:(id)a3;
-- (void)_updateDeviceListResponseWithDeviceInfo:(id)a3 completion:(id)a4;
-- (void)_upgradeSecurityLevelWithContext:(id)a3 completion:(id)a4;
-- (void)_validateLoginCode:(unint64_t)a3 forAltDSID:(id)a4 masterToken:(id)a5 idmsData:(id)a6 authContext:(id)a7 completion:(id)a8;
-- (void)_verifyUsername:(id)a3 password:(id)a4 context:(id)a5 completion:(id)a6;
-- (void)accountNamesForAltDSID:(id)a3 completion:(id)a4;
-- (void)activeLoginCode:(id)a3;
-- (void)authenticateWithContext:(id)a3 completion:(id)a4;
-- (void)checkSecurityUpgradeEligibilityForContext:(id)a3 completion:(id)a4;
-- (void)checkSignInOrCreateFlowShieldingWithCompletion:(id)a3;
-- (void)clearSessionCacheWithCompletion:(id)a3;
-- (void)configurationInfoWithIdentifiers:(id)a3 forAltDSID:(id)a4 completion:(id)a5;
+- (void)_accountForContinuationWithContext:(id)context completion:(id)completion;
+- (void)_attemptBiometricOrPasscodeAuthWithContext:(id)context completion:(id)completion;
+- (void)_attemptInteractiveAuthWithContext:(id)context completion:(id)completion;
+- (void)_attemptPasswordlessAuthAfterBiometricOrPasscodeValidationWithContext:(id)context promptType:(unint64_t)type completion:(id)completion;
+- (void)_attemptPasswordlessAuthOptionsWithContext:(id)context completion:(id)completion;
+- (void)_attemptPasswordlessAuthWithContext:(id)context completion:(id)completion;
+- (void)_authenticateWithContext:(id)context completion:(id)completion;
+- (void)_beginChangePasswordFlowWithAccount:(id)account context:(id)context completion:(id)completion;
+- (void)_beginServerDrivenSecondaryActionWithURLKey:(id)key context:(id)context initialAuthResponse:(id)response completion:(id)completion;
+- (void)_beginServerUIAppleIDCreationFlowWithContext:(id)context completion:(id)completion;
+- (void)_beginiForgotFlowWithContext:(id)context completion:(id)completion;
+- (void)_changePasswordAndAuthenticateWithContext:(id)context completion:(id)completion;
+- (void)_checkFreshnessAndVerifyWithPassword:(id)password serverResponse:(id)response additionalData:(id)data secondaryActionError:(id)error context:(id)context newServerResponse:(id)serverResponse username:(id)username completion:(id)self0;
+- (void)_completeAuthenticationWithServiceTokens:(id)tokens tokenFetchError:(id)error altDSID:(id)d authenticationResults:(id)results context:(id)context completion:(id)completion;
+- (void)_configureDeviceListCacheInBackgroundWithContext:(id)context response:(id)response;
+- (void)_correlateContext:(id)context withAuthModeInformation:(id)information;
+- (void)_createNewAppleIDAndAuthenticateWithContext:(id)context completion:(id)completion;
+- (void)_fetchAuthModeInfoWithContext:(id)context completion:(id)completion;
+- (void)_fetchDeviceListWithContext:(id)context completion:(id)completion;
+- (void)_fetchDeviceSafetyRestrictionStateForAltDSID:(id)d completion:(id)completion;
+- (void)_fetchTokensForServiceIDs:(id)ds withUsername:(id)username altDSID:(id)d masterToken:(id)token context:(id)context completion:(id)completion;
+- (void)_handleBasicLoginUICompletionWithUsername:(id)username password:(id)password context:(id)context additionalData:(id)data collectionError:(id)error completion:(id)completion;
+- (void)_handleCreateNewAppleIDError:(id)error withContext:(id)context andCompletion:(id)completion;
+- (void)_handleDeviceListResponseRequestContext:(id)context responseError:(id)error responseData:(id)data completion:(id)completion;
+- (void)_handleGrandslamResponse:(id)response data:(id)data error:(id)error serverResponse:(id)serverResponse completion:(id)completion;
+- (void)_handleMissingUsernameOrPasswordForContext:(id)context password:(id)password username:(id)username completion:(id)completion;
+- (void)_handlePasswordlessAuthResults:(id)results context:(id)context error:(id)error completion:(id)completion;
+- (void)_handleRecoverCredentialsError:(id)error withContext:(id)context event:(id)event andCompletion:(id)completion;
+- (void)_handleSecondFactorUICompletionWithCode:(id)code error:(id)error idmsData:(id)data initialAuthResponse:(id)response context:(id)context completion:(id)completion;
+- (void)_handleSecondFactorUICompletionWithCode:(id)code error:(id)error idmsData:(id)data piggybacking:(BOOL)piggybacking initialAuthResponse:(id)response context:(id)context completion:(id)completion;
+- (void)_handleStartFidoAuthWithContext:(id)context fidoContext:(id)fidoContext serverResponse:(id)response completion:(id)completion;
+- (void)_handleSuccessfulVerificationForContext:(id)context withResults:(id)results serverResponse:(id)response shouldContinue:(BOOL)continue withError:(id)error completion:(id)completion;
+- (void)_handleVerificationCompletionForUsername:(id)username password:(id)password serverResponse:(id)response didShowServerUI:(BOOL)i continuationData:(id)data error:(id)error context:(id)context completion:(id)self0;
+- (void)_handleVerificationError:(id)error forContext:(id)context completion:(id)completion;
+- (void)_isInteractiveAuthRequiredForContext:(id)context completion:(id)completion;
+- (void)_keepLoginAliveWithContext:(id)context error:(id)error andCompletion:(id)completion;
+- (void)_performAuthenticationWithContext:(id)context completion:(id)completion;
+- (void)_performDeviceListRequestWithContext:(id)context completion:(id)completion;
+- (void)_performFidoStartAuthActionWithContext:(id)context serverResponse:(id)response completion:(id)completion;
+- (void)_performGrandslamEndpointActionWithContext:(id)context serverResponse:(id)response completion:(id)completion;
+- (void)_performInteractiveAuthWithContext:(id)context completion:(id)completion;
+- (void)_performPasswordlessAuth:(id)auth completion:(id)completion;
+- (void)_performPasswordlessSRPAuthWithAccount:(id)account context:(id)context client:(id)client completion:(id)completion;
+- (void)_performPasswordlessSRPAuthWithAccount:(id)account context:(id)context completion:(id)completion;
+- (void)_performPasswordlessSRPAuthWithContext:(id)context client:(id)client completion:(id)completion;
+- (void)_performPasswordlessSRPAuthWithContext:(id)context completion:(id)completion;
+- (void)_performSRPAuthenticationWithContext:(id)context completion:(id)completion;
+- (void)_performSafeSRPAuthenticationWithContext:(id)context completion:(id)completion;
+- (void)_performSecondaryActionWithServerResponse:(id)response context:(id)context client:(id)client completion:(id)completion;
+- (void)_performSecondaryActionWithServerResponse:(id)response context:(id)context completion:(id)completion;
+- (void)_performSilentServiceTokenAuthWithContext:(id)context completion:(id)completion;
+- (void)_persistGrandSlamServiceTokens:(id)tokens forAltDSID:(id)d DSID:(id)iD appleID:(id)appleID forContext:(id)context error:(id *)error;
+- (void)_presentShieldForMigrationWithContext:(id)context completionHandler:(id)handler;
+- (void)_presentShieldWithContext:(id)context completionHandler:(id)handler;
+- (void)_processValidationCodeSuccessResponse:(id)response authResponse:(id)authResponse results:(id)results completion:(id)completion;
+- (void)_provideServiceTokensIfRequiredForContext:(id)context authenticationResults:(id)results serverResponse:(id)response completion:(id)completion;
+- (void)_recoverCredentialsAndAuthenticateWithContext:(id)context completion:(id)completion;
+- (void)_refreshAuthModeFromServerForContext:(id)context completion:(id)completion;
+- (void)_refreshAuthModeIfNecessaryForContext:(id)context completion:(id)completion;
+- (void)_refreshLocalAccountAndUpdateContext:(id)context completion:(id)completion;
+- (void)_repairAppleIDWithContext:(id)context completion:(id)completion;
+- (void)_setAuthKitAccount:(id)account inUse:(BOOL)use forService:(int64_t)service completion:(id)completion;
+- (void)_shouldContinueAuthenticatingForUsername:(id)username password:(id)password serverResponse:(id)response didShowServerUI:(BOOL)i continuationData:(id)data error:(id)error context:(id)context completion:(id)self0;
+- (void)_showAlertForLoginCodeValidationError:(id)error context:(id)context completion:(id)completion;
+- (void)_showAlertForLoginError:(id)error context:(id)context completion:(id)completion;
+- (void)_showAlertForVerificationError:(id)error context:(id)context completion:(id)completion;
+- (void)_showBiometricOrPasscodeAuthWithContext:(id)context completion:(id)completion;
+- (void)_showContinueUsingUIWithContext:(id)context completion:(id)completion;
+- (void)_showServerUIWithContext:(id)context completion:(id)completion;
+- (void)_showServerUIWithURLRequest:(id)request context:(id)context initialAuthResponse:(id)response urlConfiguration:(id)configuration completion:(id)completion;
+- (void)_showServerUIWithURLRequest:(id)request context:(id)context urlConfiguration:(id)configuration completion:(id)completion;
+- (void)_unsafe_presentShieldViewServiceWithContext:(id)context completionHandler:(id)handler;
+- (void)_updateAltDSIDAndUsername:(id)username;
+- (void)_updateDeviceListResponseWithDeviceInfo:(id)info completion:(id)completion;
+- (void)_upgradeSecurityLevelWithContext:(id)context completion:(id)completion;
+- (void)_validateLoginCode:(unint64_t)code forAltDSID:(id)d masterToken:(id)token idmsData:(id)data authContext:(id)context completion:(id)completion;
+- (void)_verifyUsername:(id)username password:(id)password context:(id)context completion:(id)completion;
+- (void)accountNamesForAltDSID:(id)d completion:(id)completion;
+- (void)activeLoginCode:(id)code;
+- (void)authenticateWithContext:(id)context completion:(id)completion;
+- (void)checkSecurityUpgradeEligibilityForContext:(id)context completion:(id)completion;
+- (void)checkSignInOrCreateFlowShieldingWithCompletion:(id)completion;
+- (void)clearSessionCacheWithCompletion:(id)completion;
+- (void)configurationInfoWithIdentifiers:(id)identifiers forAltDSID:(id)d completion:(id)completion;
 - (void)dealloc;
-- (void)deleteAuthorizationDatabaseWithAltDSID:(id)a3 completion:(id)a4;
-- (void)deleteDeviceListCacheWithCompletion:(id)a3;
-- (void)deleteDeviceListCacheWithContext:(id)a3 completion:(id)a4;
-- (void)deleteTokensFromCacheWithAltDSID:(id)a3 tokenIdentifiers:(id)a4 completion:(id)a5;
-- (void)deviceListWithContext:(id)a3 completion:(id)a4;
-- (void)endProximityAuthenticationForContext:(id)a3 completion:(id)a4;
-- (void)fetchAppListWithAltDSID:(id)a3 completion:(id)a4;
-- (void)fetchAuthModeWithContext:(id)a3 completion:(id)a4;
-- (void)fetchBAADeviceTokenWithCompletion:(id)a3;
-- (void)fetchBirthdayForAltDSID:(id)a3 completion:(id)a4;
-- (void)fetchGlobalConfigurationUsingPolicy:(unint64_t)a3 completion:(id)a4;
-- (void)fetchTokensWithAltDSID:(id)a3 tokenIdentifiers:(id)a4 completion:(id)a5;
-- (void)fetchURLBagForAltDSID:(id)a3 completion:(id)a4;
-- (void)fetchURLBagFromCache:(BOOL)a3 altDSID:(id)a4 completion:(id)a5;
-- (void)fetchUserInformationForAltDSID:(id)a3 completion:(id)a4;
-- (void)forceURLBagUpdateForAltDSID:(id)a3 urlSwitchData:(id)a4 completion:(id)a5;
-- (void)generateLoginCodeWithCompletion:(id)a3;
-- (void)getServerUILoadDelegateForAltDSID:(id)a3 completion:(id)a4;
-- (void)getServerUILoadDelegateWithContext:(id)a3 completion:(id)a4;
-- (void)getUserInformationForAltDSID:(id)a3 completion:(id)a4;
-- (void)getUserInformationWithContext:(id)a3 completion:(id)a4;
-- (void)isCreateAppleIDAllowedWithCompletion:(id)a3;
-- (void)isDevicePasscodeProtected:(id)a3;
-- (void)performCheckInForAccountWithAltDSID:(id)a3 event:(id)a4 completion:(id)a5;
-- (void)performCheckInForAccountWithAltDSID:(id)a3 event:(id)a4 reason:(unint64_t)a5 completion:(id)a6;
-- (void)performCircleRequestWithContext:(id)a3 completion:(id)a4;
-- (void)performPasswordResetWithContext:(id)a3 completion:(id)a4;
-- (void)performSilentTTRFor:(unint64_t)a3 completion:(id)a4;
-- (void)persistRecoveryKeyWithContext:(id)a3 authContext:(id)a4 completion:(id)a5;
-- (void)piggyback:(id)a3 handleEscapeHatchError:(id)a4 completion:(id)a5;
-- (void)piggyback:(id)a3 handleVerificationWithError:(id)a4 completion:(id)a5;
-- (void)piggyback:(id)a3 promptForRandomCodeWithCompletion:(id)a4;
-- (void)piggyback:(id)a3 shouldContinueWithCompletion:(id)a4;
-- (void)piggyback:(id)a3 validateSecurityCode:(id)a4 completion:(id)a5;
-- (void)refreshAuthMetadataWithContext:(id)a3 completion:(id)a4;
-- (void)refreshBAADeviceTokenWithCompletion:(id)a3;
-- (void)renewRecoveryTokenWithContext:(id)a3 completion:(id)a4;
-- (void)reportSignOutForAllAppleIDsWithCompletion:(id)a3;
-- (void)reportSignOutForAppleID:(id)a3 service:(int64_t)a4 completion:(id)a5;
-- (void)revokeAuthorizationForApplicationWithClientID:(id)a3 completion:(id)a4;
-- (void)serverUIContext:(id)a3 processAdditionalData:(id)a4 completion:(id)a5;
-- (void)setAppleIDWithAltDSID:(id)a3 inUse:(BOOL)a4 forService:(int64_t)a5 completion:(id)a6;
-- (void)setAppleIDWithDSID:(id)a3 inUse:(BOOL)a4 forService:(int64_t)a5 completion:(id)a6;
-- (void)setConfigurationInfo:(id)a3 forIdentifier:(id)a4 forAltDSID:(id)a5 completion:(id)a6;
-- (void)startPiggybackingForServerResponse:(id)a3 context:(id)a4 password:(id)a5 username:(id)a6 completion:(id)a7;
-- (void)synchronizeFollowUpItemsForContext:(id)a3 completion:(id)a4;
-- (void)teardownFollowUpWithContext:(id)a3 completion:(id)a4;
-- (void)updateStateWithExternalAuthenticationResponse:(id)a3 forAppleID:(id)a4 completion:(id)a5;
-- (void)updateStateWithExternalAuthenticationResponse:(id)a3 forContext:(id)a4 completion:(id)a5;
-- (void)updateUserInformationForAltDSID:(id)a3 userInformation:(id)a4 completion:(id)a5;
-- (void)updateUserInformationWithContext:(id)a3 userInformation:(id)a4 completion:(id)a5;
-- (void)validateLoginCode:(unint64_t)a3 forAppleID:(id)a4 withCompletion:(id)a5;
-- (void)validateVettingToken:(id)a3 forAltDSID:(id)a4 completion:(id)a5;
-- (void)verifyMasterKey:(id)a3 withContext:(id)a4 completion:(id)a5;
-- (void)warmUpVerificationSessionWithCompletion:(id)a3;
+- (void)deleteAuthorizationDatabaseWithAltDSID:(id)d completion:(id)completion;
+- (void)deleteDeviceListCacheWithCompletion:(id)completion;
+- (void)deleteDeviceListCacheWithContext:(id)context completion:(id)completion;
+- (void)deleteTokensFromCacheWithAltDSID:(id)d tokenIdentifiers:(id)identifiers completion:(id)completion;
+- (void)deviceListWithContext:(id)context completion:(id)completion;
+- (void)endProximityAuthenticationForContext:(id)context completion:(id)completion;
+- (void)fetchAppListWithAltDSID:(id)d completion:(id)completion;
+- (void)fetchAuthModeWithContext:(id)context completion:(id)completion;
+- (void)fetchBAADeviceTokenWithCompletion:(id)completion;
+- (void)fetchBirthdayForAltDSID:(id)d completion:(id)completion;
+- (void)fetchGlobalConfigurationUsingPolicy:(unint64_t)policy completion:(id)completion;
+- (void)fetchTokensWithAltDSID:(id)d tokenIdentifiers:(id)identifiers completion:(id)completion;
+- (void)fetchURLBagForAltDSID:(id)d completion:(id)completion;
+- (void)fetchURLBagFromCache:(BOOL)cache altDSID:(id)d completion:(id)completion;
+- (void)fetchUserInformationForAltDSID:(id)d completion:(id)completion;
+- (void)forceURLBagUpdateForAltDSID:(id)d urlSwitchData:(id)data completion:(id)completion;
+- (void)generateLoginCodeWithCompletion:(id)completion;
+- (void)getServerUILoadDelegateForAltDSID:(id)d completion:(id)completion;
+- (void)getServerUILoadDelegateWithContext:(id)context completion:(id)completion;
+- (void)getUserInformationForAltDSID:(id)d completion:(id)completion;
+- (void)getUserInformationWithContext:(id)context completion:(id)completion;
+- (void)isCreateAppleIDAllowedWithCompletion:(id)completion;
+- (void)isDevicePasscodeProtected:(id)protected;
+- (void)performCheckInForAccountWithAltDSID:(id)d event:(id)event completion:(id)completion;
+- (void)performCheckInForAccountWithAltDSID:(id)d event:(id)event reason:(unint64_t)reason completion:(id)completion;
+- (void)performCircleRequestWithContext:(id)context completion:(id)completion;
+- (void)performPasswordResetWithContext:(id)context completion:(id)completion;
+- (void)performSilentTTRFor:(unint64_t)for completion:(id)completion;
+- (void)persistRecoveryKeyWithContext:(id)context authContext:(id)authContext completion:(id)completion;
+- (void)piggyback:(id)piggyback handleEscapeHatchError:(id)error completion:(id)completion;
+- (void)piggyback:(id)piggyback handleVerificationWithError:(id)error completion:(id)completion;
+- (void)piggyback:(id)piggyback promptForRandomCodeWithCompletion:(id)completion;
+- (void)piggyback:(id)piggyback shouldContinueWithCompletion:(id)completion;
+- (void)piggyback:(id)piggyback validateSecurityCode:(id)code completion:(id)completion;
+- (void)refreshAuthMetadataWithContext:(id)context completion:(id)completion;
+- (void)refreshBAADeviceTokenWithCompletion:(id)completion;
+- (void)renewRecoveryTokenWithContext:(id)context completion:(id)completion;
+- (void)reportSignOutForAllAppleIDsWithCompletion:(id)completion;
+- (void)reportSignOutForAppleID:(id)d service:(int64_t)service completion:(id)completion;
+- (void)revokeAuthorizationForApplicationWithClientID:(id)d completion:(id)completion;
+- (void)serverUIContext:(id)context processAdditionalData:(id)data completion:(id)completion;
+- (void)setAppleIDWithAltDSID:(id)d inUse:(BOOL)use forService:(int64_t)service completion:(id)completion;
+- (void)setAppleIDWithDSID:(id)d inUse:(BOOL)use forService:(int64_t)service completion:(id)completion;
+- (void)setConfigurationInfo:(id)info forIdentifier:(id)identifier forAltDSID:(id)d completion:(id)completion;
+- (void)startPiggybackingForServerResponse:(id)response context:(id)context password:(id)password username:(id)username completion:(id)completion;
+- (void)synchronizeFollowUpItemsForContext:(id)context completion:(id)completion;
+- (void)teardownFollowUpWithContext:(id)context completion:(id)completion;
+- (void)updateStateWithExternalAuthenticationResponse:(id)response forAppleID:(id)d completion:(id)completion;
+- (void)updateStateWithExternalAuthenticationResponse:(id)response forContext:(id)context completion:(id)completion;
+- (void)updateUserInformationForAltDSID:(id)d userInformation:(id)information completion:(id)completion;
+- (void)updateUserInformationWithContext:(id)context userInformation:(id)information completion:(id)completion;
+- (void)validateLoginCode:(unint64_t)code forAppleID:(id)d withCompletion:(id)completion;
+- (void)validateVettingToken:(id)token forAltDSID:(id)d completion:(id)completion;
+- (void)verifyMasterKey:(id)key withContext:(id)context completion:(id)completion;
+- (void)warmUpVerificationSessionWithCompletion:(id)completion;
 @end
 
 @implementation AKAppleIDAuthenticationService
 
 - (void)dealloc
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEBUG;
@@ -181,23 +181,23 @@
   }
 
   objc_storeStrong(location, 0);
-  v5 = _objc_retain(v8->_activeProximityAuthenticationToken);
+  v5 = _objc_retain(selfCopy->_activeProximityAuthenticationToken);
   if (v5)
   {
     oslog = _AKLogSystem();
     v3 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
-      sub_10001B098(v9, v8->proximityServiceProvider, v5);
+      sub_10001B098(v9, selfCopy->proximityServiceProvider, v5);
       _os_log_debug_impl(&_mh_execute_header, oslog, v3, "Calling to end authentication for service provider: %@ with token: %@", v9, 0x16u);
     }
 
     objc_storeStrong(&oslog, 0);
-    [(ProximityAuthServiceProvider *)v8->proximityServiceProvider endAuthenticationWithToken:v5];
+    [(ProximityAuthServiceProvider *)selfCopy->proximityServiceProvider endAuthenticationWithToken:v5];
   }
 
   objc_storeStrong(&v5, 0);
-  v2.receiver = v8;
+  v2.receiver = selfCopy;
   v2.super_class = AKAppleIDAuthenticationService;
   [(AKAppleIDAuthenticationService *)&v2 dealloc];
 }
@@ -229,12 +229,12 @@
     v20->_authTrafficController = v8;
     _objc_release(authTrafficController);
     v17 = [NSURL URLWithString:@"https://gsa.apple.com/grandslam/GsService2/lookup/v2"];
-    v16 = [(NSURL *)v17 host];
+    host = [(NSURL *)v17 host];
     v10 = [CUTReachability reachabilityWithHostName:?];
     reachability = v20->_reachability;
     v20->_reachability = v10;
     _objc_release(reachability);
-    _objc_release(v16);
+    _objc_release(host);
     _objc_release(v17);
     v12 = +[AKProximityAuthFlowController shared];
     proximityServiceProvider = v20->proximityServiceProvider;
@@ -247,51 +247,51 @@
   return v15;
 }
 
-- (AKAppleIDAuthenticationService)initWithClient:(id)a3 passwordResetPresenter:(id)a4
+- (AKAppleIDAuthenticationService)initWithClient:(id)client passwordResetPresenter:(id)presenter
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v7 = v11;
+  objc_storeStrong(&v9, presenter);
+  v7 = selfCopy;
   v8 = objc_alloc_init(AKAppleIDAuthSupportProxyImpl);
-  v11 = 0;
-  v11 = [(AKAppleIDAuthenticationService *)v7 initWithProxy:?];
-  objc_storeStrong(&v11, v11);
+  selfCopy = 0;
+  selfCopy = [(AKAppleIDAuthenticationService *)v7 initWithProxy:?];
+  objc_storeStrong(&selfCopy, selfCopy);
   _objc_release(v8);
-  if (v11)
+  if (selfCopy)
   {
-    objc_storeStrong(&v11->_client, location[0]);
-    objc_storeStrong(&v11->_passwordResetPresenter, v9);
+    objc_storeStrong(&selfCopy->_client, location[0]);
+    objc_storeStrong(&selfCopy->_passwordResetPresenter, v9);
   }
 
-  v5 = _objc_retain(v11);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKAppleIDAuthenticationService)initWithProxy:(id)a3
+- (AKAppleIDAuthenticationService)initWithProxy:(id)proxy
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v7;
-  v7 = 0;
-  v7 = [(AKAppleIDAuthenticationService *)v3 init];
-  objc_storeStrong(&v7, v7);
-  if (v7)
+  objc_storeStrong(location, proxy);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKAppleIDAuthenticationService *)v3 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v7->_authProxy, location[0]);
+    objc_storeStrong(&selfCopy->_authProxy, location[0]);
   }
 
-  v5 = _objc_retain(v7);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
@@ -311,19 +311,19 @@
   return v2;
 }
 
-- (void)accountNamesForAltDSID:(id)a3 completion:(id)a4
+- (void)accountNamesForAltDSID:(id)d completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  if ([(AKClient *)v24->_client hasInternalAccess])
+  objc_storeStrong(&v22, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalAccess])
   {
     v6 = +[AKUserInfoController sharedController];
     v4 = location[0];
-    client = v24->_client;
+    client = selfCopy->_client;
     v12 = _NSConcreteStackBlock;
     v13 = -1073741824;
     v14 = 0;
@@ -360,14 +360,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)endProximityAuthenticationForContext:(id)a3 completion:(id)a4
+- (void)endProximityAuthenticationForContext:(id)context completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, completion);
   v7 = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -377,32 +377,32 @@
   }
 
   objc_storeStrong(&v7, 0);
-  if (v10->proximityServiceProvider)
+  if (selfCopy->proximityServiceProvider)
   {
-    [(ProximityAuthServiceProvider *)v10->proximityServiceProvider endAuthenticationWithCompletion:v8];
+    [(ProximityAuthServiceProvider *)selfCopy->proximityServiceProvider endAuthenticationWithCompletion:v8];
   }
 
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000194D4(v11, v10->_activeProximityAuthenticationToken);
+    sub_1000194D4(v11, selfCopy->_activeProximityAuthenticationToken);
     _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "Nullifying active prox auth token: %@", v11, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  objc_storeStrong(&v10->_activeProximityAuthenticationToken, 0);
+  objc_storeStrong(&selfCopy->_activeProximityAuthenticationToken, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchURLBagForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchURLBagForAltDSID:(id)d completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, completion);
   v5 = +[AKURLBagService sharedBagService];
   [v5 fetchURLBagForAltDSID:location[0] completion:v6];
   _objc_release(v5);
@@ -410,32 +410,32 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchURLBagFromCache:(BOOL)a3 altDSID:(id)a4 completion:(id)a5
+- (void)fetchURLBagFromCache:(BOOL)cache altDSID:(id)d completion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  cacheCopy = cache;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, d);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
+  objc_storeStrong(&v7, completion);
   v6 = +[AKURLBagService sharedBagService];
-  [v6 fetchURLBagForAltDSID:location fromCache:v9 completion:v7];
+  [v6 fetchURLBagForAltDSID:location fromCache:cacheCopy completion:v7];
   _objc_release(v6);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&location, 0);
 }
 
-- (void)forceURLBagUpdateForAltDSID:(id)a3 urlSwitchData:(id)a4 completion:(id)a5
+- (void)forceURLBagUpdateForAltDSID:(id)d urlSwitchData:(id)data completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, data);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
+  objc_storeStrong(&v8, completion);
   v7 = +[AKURLBagService sharedBagService];
   [v7 forceURLBagUpdateForAltDSID:location[0] urlSwitchData:v9 completion:v8];
   _objc_release(v7);
@@ -444,16 +444,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setAppleIDWithAltDSID:(id)a3 inUse:(BOOL)a4 forService:(int64_t)a5 completion:(id)a6
+- (void)setAppleIDWithAltDSID:(id)d inUse:(BOOL)use forService:(int64_t)service completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v29 = a4;
-  v28 = a5;
+  objc_storeStrong(location, d);
+  useCopy = use;
+  serviceCopy = service;
   v27 = 0;
-  objc_storeStrong(&v27, a6);
+  objc_storeStrong(&v27, completion);
   if (location[0])
   {
     queue = [objc_opt_class() _verificationQueue];
@@ -462,11 +462,11 @@
     v16 = 0;
     v17 = sub_10008CB88;
     v18 = &unk_1003217D0;
-    v19 = _objc_retain(v31);
+    v19 = _objc_retain(selfCopy);
     v20 = _objc_retain(location[0]);
     v21[0] = _objc_retain(v27);
-    v22 = v29;
-    v21[1] = v28;
+    v22 = useCopy;
+    v21[1] = serviceCopy;
     dispatch_async(queue, &v14);
     _objc_release(queue);
     objc_storeStrong(v21, 0);
@@ -499,16 +499,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setAppleIDWithDSID:(id)a3 inUse:(BOOL)a4 forService:(int64_t)a5 completion:(id)a6
+- (void)setAppleIDWithDSID:(id)d inUse:(BOOL)use forService:(int64_t)service completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v29 = a4;
-  v28 = a5;
+  objc_storeStrong(location, d);
+  useCopy = use;
+  serviceCopy = service;
   v27 = 0;
-  objc_storeStrong(&v27, a6);
+  objc_storeStrong(&v27, completion);
   if (location[0])
   {
     queue = [objc_opt_class() _verificationQueue];
@@ -517,11 +517,11 @@
     v16 = 0;
     v17 = sub_10008CFF8;
     v18 = &unk_1003217D0;
-    v19 = _objc_retain(v31);
+    v19 = _objc_retain(selfCopy);
     v20 = _objc_retain(location[0]);
     v21[0] = _objc_retain(v27);
-    v22 = v29;
-    v21[1] = v28;
+    v22 = useCopy;
+    v21[1] = serviceCopy;
     dispatch_async(queue, &v14);
     _objc_release(queue);
     objc_storeStrong(v21, 0);
@@ -554,25 +554,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_setAuthKitAccount:(id)a3 inUse:(BOOL)a4 forService:(int64_t)a5 completion:(id)a6
+- (void)_setAuthKitAccount:(id)account inUse:(BOOL)use forService:(int64_t)service completion:(id)completion
 {
-  v59 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v57 = a4;
-  v56 = a5;
+  objc_storeStrong(location, account);
+  useCopy = use;
+  serviceCopy = service;
   v55 = 0;
-  objc_storeStrong(&v55, a6);
-  if ([(AKClient *)v59->_client hasInternalPrivateAccess]|| [(AKClient *)v59->_client hasWriteAccess])
+  objc_storeStrong(&v55, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess]|| [(AKClient *)selfCopy->_client hasWriteAccess])
   {
-    if (v56)
+    if (serviceCopy)
     {
       v47 = 0;
       v17 = 0;
-      if (!v57)
+      if (!useCopy)
       {
-        v48 = [(AKAccountManager *)v59->_accountManager servicesUsingAccount:location[0]];
+        v48 = [(AKAccountManager *)selfCopy->_accountManager servicesUsingAccount:location[0]];
         v47 = 1;
         v17 = [v48 count] == 0;
       }
@@ -588,7 +588,7 @@
         v45 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
-          v16 = [NSNumber numberWithInteger:v56];
+          v16 = [NSNumber numberWithInteger:serviceCopy];
           sub_1000194D4(v61, v16);
           _os_log_error_impl(&_mh_execute_header, v46, v45, "Told to mark service %@ as not using account, but already not using!", v61, 0xCu);
           _objc_release(v16);
@@ -605,9 +605,9 @@
         v43 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = [NSNumber numberWithInteger:v56];
+          v6 = [NSNumber numberWithInteger:serviceCopy];
           v15 = v6;
-          if (v57)
+          if (useCopy)
           {
             v7 = &stru_100330538;
           }
@@ -623,17 +623,17 @@
         }
 
         objc_storeStrong(&v44, 0);
-        [(AKAccountManager *)v59->_accountManager setAccount:location[0] inUse:v57 byService:v56];
-        v42 = [(AKAccountManager *)v59->_accountManager servicesUsingAccount:location[0]];
+        [(AKAccountManager *)selfCopy->_accountManager setAccount:location[0] inUse:useCopy byService:serviceCopy];
+        v42 = [(AKAccountManager *)selfCopy->_accountManager servicesUsingAccount:location[0]];
         if ([v42 count])
         {
           v30 = 0;
-          accountManager = v59->_accountManager;
+          accountManager = selfCopy->_accountManager;
           v28 = 0;
           v10 = [(AKAccountManager *)accountManager saveAccount:location[0] error:&v28];
           objc_storeStrong(&v30, v28);
           v29 = v10;
-          if (v57)
+          if (useCopy)
           {
             (*(v55 + 2))();
           }
@@ -641,7 +641,7 @@
           else
           {
             v9 = +[AKAppleIDCheckInHelperService sharedService];
-            [v9 reportSignOutEventForService:v56 account:location[0] completion:v55];
+            [v9 reportSignOutEventForService:serviceCopy account:location[0] completion:v55];
             _objc_release(v9);
           }
 
@@ -669,7 +669,7 @@
           v34 = sub_10008DDD0;
           v35 = &unk_1003217F8;
           v36 = _objc_retain(location[0]);
-          v37 = _objc_retain(v59);
+          v37 = _objc_retain(selfCopy);
           v38 = _objc_retain(v55);
           [v12 reportFinalSignOutEventForAccount:v11 completion:&v31];
           _objc_release(v12);
@@ -689,7 +689,7 @@
       v49 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
       {
-        v20 = [NSNumber numberWithInteger:v56];
+        v20 = [NSNumber numberWithInteger:serviceCopy];
         sub_1000194D4(v62, v20);
         _os_log_error_impl(&_mh_execute_header, v50, v49, "Service type %@ is not valid.", v62, 0xCu);
         _objc_release(v20);
@@ -728,19 +728,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchUserInformationForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchUserInformationForAltDSID:(id)d completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  if ([(AKClient *)v24->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v22, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v6 = +[AKUserInfoController sharedController];
     v4 = location[0];
-    client = v24->_client;
+    client = selfCopy->_client;
     v12 = _NSConcreteStackBlock;
     v13 = -1073741824;
     v14 = 0;
@@ -777,19 +777,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)getUserInformationWithContext:(id)a3 completion:(id)a4
+- (void)getUserInformationWithContext:(id)context completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  if ([(AKClient *)v24->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v22, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v6 = +[AKUserInfoController sharedController];
     v4 = location[0];
-    client = v24->_client;
+    client = selfCopy->_client;
     v12 = _NSConcreteStackBlock;
     v13 = -1073741824;
     v14 = 0;
@@ -826,19 +826,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)getUserInformationForAltDSID:(id)a3 completion:(id)a4
+- (void)getUserInformationForAltDSID:(id)d completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  if ([(AKClient *)v24->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v22, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v6 = +[AKUserInfoController sharedController];
     v4 = location[0];
-    client = v24->_client;
+    client = selfCopy->_client;
     v12 = _NSConcreteStackBlock;
     v13 = -1073741824;
     v14 = 0;
@@ -875,17 +875,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)updateUserInformationForAltDSID:(id)a3 userInformation:(id)a4 completion:(id)a5
+- (void)updateUserInformationForAltDSID:(id)d userInformation:(id)information completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, information);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  if ([(AKClient *)v18->_client hasInternalAccess]|| [(AKClient *)v18->_client hasOwnerAccess])
+  objc_storeStrong(&v15, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalAccess]|| [(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     v5 = +[AKUserInfoController sharedController];
     [v5 updateUserInformationForAltDSID:location[0] userInformation:v16 completion:v15];
@@ -916,24 +916,24 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)updateUserInformationWithContext:(id)a3 userInformation:(id)a4 completion:(id)a5
+- (void)updateUserInformationWithContext:(id)context userInformation:(id)information completion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, information);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, completion);
   if (location[0])
   {
     if (v27)
     {
-      if ([(AKClient *)v29->_client hasInternalAccess]|| [(AKClient *)v29->_client hasOwnerAccess])
+      if ([(AKClient *)selfCopy->_client hasInternalAccess]|| [(AKClient *)selfCopy->_client hasOwnerAccess])
       {
         v5 = +[AKUserInfoController sharedController];
-        [v5 updateUserInformationWithContext:location[0] userInformation:v27 client:v29->_client completion:v26];
+        [v5 updateUserInformationWithContext:location[0] userInformation:v27 client:selfCopy->_client completion:v26];
         _objc_release(v5);
         v22 = 0;
       }
@@ -1021,15 +1021,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAuthModeWithContext:(id)a3 completion:(id)a4
+- (void)fetchAuthModeWithContext:(id)context completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v6 = v15;
+  objc_storeStrong(&v13, completion);
+  v6 = selfCopy;
   v5 = location[0];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
@@ -1043,24 +1043,24 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchAuthModeInfoWithContext:(id)a3 completion:(id)a4
+- (void)_fetchAuthModeInfoWithContext:(id)context completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, completion);
   v16 = objc_opt_new();
   v7 = v16;
   v5 = location[0];
-  client = v19->_client;
+  client = selfCopy->_client;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_10008F504;
   v11 = &unk_100321870;
   v12 = _objc_retain(v16);
-  v13 = _objc_retain(v19);
+  v13 = _objc_retain(selfCopy);
   v14 = _objc_retain(location[0]);
   v15 = _objc_retain(v17);
   [v7 fetchAuthModeWithContext:v5 client:client completion:?];
@@ -1073,25 +1073,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldShowAlertForAuthModeError:(id)a3
+- (BOOL)_shouldShowAlertForAuthModeError:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v5 = location[0] && ([location[0] code] == -7093 || objc_msgSend(location[0], "code") == -7094);
   objc_storeStrong(location, 0);
   return v5;
 }
 
-- (void)_fetchDeviceSafetyRestrictionStateForAltDSID:(id)a3 completion:(id)a4
+- (void)_fetchDeviceSafetyRestrictionStateForAltDSID:(id)d completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, completion);
   v22 = _AKLogSystem();
   v21 = 2;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -1107,7 +1107,7 @@
   [v19 setAltDSID:location[0]];
   v4 = [AKGrandSlamRequestProvider alloc];
   v18 = [(AKURLRequestProviderImpl *)v4 initWithContext:v19 urlBagKey:AKURLBagKeyDeviceInfo];
-  [(AKURLRequestProviderImpl *)v18 setClient:v25->_client];
+  [(AKURLRequestProviderImpl *)v18 setClient:selfCopy->_client];
   [(AKGrandSlamRequestProvider *)v18 setAuthenticatedRequest:1];
   [(AKGrandSlamRequestProvider *)v18 setExpectedResponseType:1];
   v5 = [AKServiceControllerImpl alloc];
@@ -1130,29 +1130,29 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateDeviceListResponseWithDeviceInfo:(id)a3 completion:(id)a4
+- (void)_updateDeviceListResponseWithDeviceInfo:(id)info completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, completion);
   v12 = +[AKFeatureManager sharedManager];
-  v13 = [v12 isDTOEnabled];
+  isDTOEnabled = [v12 isDTOEnabled];
   _objc_release(v12);
-  if (v13)
+  if (isDTOEnabled)
   {
     v7 = +[AKConfiguration sharedConfiguration];
-    v8 = [v7 deviceSafetyRestrictionReasonOverride];
+    deviceSafetyRestrictionReasonOverride = [v7 deviceSafetyRestrictionReasonOverride];
     _objc_release(v7);
-    v23 = v8;
-    if (v8)
+    v23 = deviceSafetyRestrictionReasonOverride;
+    if (deviceSafetyRestrictionReasonOverride)
     {
       v6 = +[AKDevice currentDevice];
-      v22 = [v6 serialNumber];
+      serialNumber = [v6 serialNumber];
       _objc_release(v6);
-      v21 = [[AKDeviceSafetyRestrictionState alloc] initWithDeviceMID:0 serialNumber:v22 restrictionReason:v23];
+      v21 = [[AKDeviceSafetyRestrictionState alloc] initWithDeviceMID:0 serialNumber:serialNumber restrictionReason:v23];
       [location[0] updateWithDeviceRestrictionState:v21];
       if (v28)
       {
@@ -1161,13 +1161,13 @@
 
       v24 = 1;
       objc_storeStrong(&v21, 0);
-      objc_storeStrong(&v22, 0);
+      objc_storeStrong(&serialNumber, 0);
     }
 
     else
     {
-      v4 = v30;
-      v5 = [location[0] altDSID];
+      v4 = selfCopy;
+      altDSID = [location[0] altDSID];
       v14 = _NSConcreteStackBlock;
       v15 = -1073741824;
       v16 = 0;
@@ -1175,8 +1175,8 @@
       v18 = &unk_1003218C0;
       v20 = _objc_retain(v28);
       v19 = _objc_retain(location[0]);
-      [(AKAppleIDAuthenticationService *)v4 _fetchDeviceSafetyRestrictionStateForAltDSID:v5 completion:&v14];
-      _objc_release(v5);
+      [(AKAppleIDAuthenticationService *)v4 _fetchDeviceSafetyRestrictionStateForAltDSID:altDSID completion:&v14];
+      _objc_release(altDSID);
       objc_storeStrong(&v19, 0);
       objc_storeStrong(&v20, 0);
       v24 = 0;
@@ -1208,15 +1208,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)deviceListWithContext:(id)a3 completion:(id)a4
+- (void)deviceListWithContext:(id)context completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
-  if ([(AKClient *)v36->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v34, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v21 = _NSConcreteStackBlock;
     v22 = -1073741824;
@@ -1225,19 +1225,19 @@
     v25 = &unk_1003218E8;
     v28 = _objc_retain(v34);
     v26 = _objc_retain(location[0]);
-    v27 = _objc_retain(v36);
+    v27 = _objc_retain(selfCopy);
     v29 = objc_retainBlock(&v21);
     v6 = +[AKFeatureManager sharedManager];
-    v7 = [v6 isDeviceListCacheEnabled];
+    isDeviceListCacheEnabled = [v6 isDeviceListCacheEnabled];
     _objc_release(v6);
-    if (v7)
+    if (isDeviceListCacheEnabled)
     {
-      [(AKAppleIDAuthenticationService *)v36 _fetchDeviceListWithContext:location[0] completion:v29];
+      [(AKAppleIDAuthenticationService *)selfCopy _fetchDeviceListWithContext:location[0] completion:v29];
     }
 
     else
     {
-      v5 = v36;
+      v5 = selfCopy;
       v4 = location[0];
       v13 = _NSConcreteStackBlock;
       v14 = -1073741824;
@@ -1245,7 +1245,7 @@
       v16 = sub_100090ABC;
       v17 = &unk_100321938;
       v18 = _objc_retain(location[0]);
-      v19 = _objc_retain(v36);
+      v19 = _objc_retain(selfCopy);
       v20 = _objc_retain(v29);
       [(AKAppleIDAuthenticationService *)v5 _performDeviceListRequestWithContext:v4 completion:&v13];
       objc_storeStrong(&v20, 0);
@@ -1288,22 +1288,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performDeviceListRequestWithContext:(id)a3 completion:(id)a4
+- (void)_performDeviceListRequestWithContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  authTrafficController = v17->_authTrafficController;
+  objc_storeStrong(&v15, completion);
+  authTrafficController = selfCopy->_authTrafficController;
   v5 = location[0];
-  client = v17->_client;
+  client = selfCopy->_client;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_10009101C;
   v11 = &unk_100320558;
-  v12 = _objc_retain(v17);
+  v12 = _objc_retain(selfCopy);
   v13 = _objc_retain(location[0]);
   v14 = _objc_retain(v15);
   [(AKAuthenticationTrafficController *)authTrafficController beginAuthenticatedRequestWithContext:v5 client:client clearanceHandler:?];
@@ -1314,20 +1314,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_deviceListProviderWithContext:(id)a3
+- (id)_deviceListProviderWithContext:(id)context
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v3 = [AKDeviceListRequestProvider alloc];
   v7 = [(AKURLRequestProviderImpl *)v3 initWithContext:location[0] urlBagKey:AKURLBagKeyDeviceList];
   [(AKDeviceListRequestProvider *)v7 setDeviceRequestContext:location[0]];
   [(AKGrandSlamRequestProvider *)v7 setAuthenticatedRequest:1];
-  v5 = [(AKURLRequestProviderImpl *)v7 concreteAuthenticationContext];
-  [(AKAppleIDAuthenticationContext *)v5 set_shouldSendGrandSlamTokensForRemoteUI:1];
-  _objc_release(v5);
-  [(AKURLRequestProviderImpl *)v7 setClient:v9->_client];
+  concreteAuthenticationContext = [(AKURLRequestProviderImpl *)v7 concreteAuthenticationContext];
+  [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext set_shouldSendGrandSlamTokensForRemoteUI:1];
+  _objc_release(concreteAuthenticationContext);
+  [(AKURLRequestProviderImpl *)v7 setClient:selfCopy->_client];
   v6 = _objc_retain(v7);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
@@ -1335,18 +1335,18 @@
   return v6;
 }
 
-- (void)_handleDeviceListResponseRequestContext:(id)a3 responseError:(id)a4 responseData:(id)a5 completion:(id)a6
+- (void)_handleDeviceListResponseRequestContext:(id)context responseError:(id)error responseData:(id)data completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, error);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, data);
   v24 = 0;
-  objc_storeStrong(&v24, a6);
+  objc_storeStrong(&v24, completion);
   if (v26)
   {
     v23 = _AKLogSystem();
@@ -1369,14 +1369,14 @@
     v21 = [AAFSerialization dictionaryFromObject:v25 ofType:@"application/json"];
     v20 = [AKDeviceListResponse deviceMapFromResponseBody:v21];
     v8 = objc_opt_class();
-    v10 = [location[0] altDSID];
+    altDSID = [location[0] altDSID];
     v9 = [v20 objectForKeyedSubscript:?];
     v19 = sub_1000919F0(v8, v9);
     _objc_release(v9);
-    _objc_release(v10);
-    v11 = [v19 deviceList];
-    _objc_release(v11);
-    if (v11)
+    _objc_release(altDSID);
+    deviceList = [v19 deviceList];
+    _objc_release(deviceList);
+    if (deviceList)
     {
       oslog = _AKLogSystem();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -1387,11 +1387,11 @@
 
       objc_storeStrong(&oslog, 0);
       v6 = +[AKFeatureManager sharedManager];
-      v7 = [v6 isDeviceListCacheEnableDryMode];
+      isDeviceListCacheEnableDryMode = [v6 isDeviceListCacheEnableDryMode];
       _objc_release(v6);
-      if (v7)
+      if (isDeviceListCacheEnableDryMode)
       {
-        [(AKAppleIDAuthenticationService *)v28 _configureDeviceListCacheInBackgroundWithContext:location[0] response:v19];
+        [(AKAppleIDAuthenticationService *)selfCopy _configureDeviceListCacheInBackgroundWithContext:location[0] response:v19];
       }
 
       if (v24)
@@ -1431,14 +1431,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_configureDeviceListCacheInBackgroundWithContext:(id)a3 response:(id)a4
+- (void)_configureDeviceListCacheInBackgroundWithContext:(id)context response:(id)response
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, response);
   queue = dispatch_get_global_queue(9, 0);
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
@@ -1446,7 +1446,7 @@
   v9 = sub_100091C00;
   v10 = &unk_10031F050;
   v11 = _objc_retain(location[0]);
-  v12 = _objc_retain(v16);
+  v12 = _objc_retain(selfCopy);
   v13 = _objc_retain(v14);
   dispatch_async(queue, &v6);
   _objc_release(queue);
@@ -1457,18 +1457,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAppListWithAltDSID:(id)a3 completion:(id)a4
+- (void)fetchAppListWithAltDSID:(id)d completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  if ([(AKClient *)v15->_client hasOwnerAccess])
+  objc_storeStrong(&v13, completion);
+  if ([(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     v4 = +[AKApplicationInformationController sharedController];
-    [v4 fetchAppInformationWithAltDSID:location[0] client:v15->_client completion:v13];
+    [v4 fetchAppInformationWithAltDSID:location[0] client:selfCopy->_client completion:v13];
     _objc_release(v4);
   }
 
@@ -1495,15 +1495,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)deleteAuthorizationDatabaseWithAltDSID:(id)a3 completion:(id)a4
+- (void)deleteAuthorizationDatabaseWithAltDSID:(id)d completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  if ([(AKClient *)v18->_client hasInternalAccess]|| [(AKClient *)v18->_client hasOwnerAccess])
+  objc_storeStrong(&v16, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalAccess]|| [(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     v11 = 0;
     v4 = +[AKAuthorizationStoreManager sharedInstance];
@@ -1549,15 +1549,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)revokeAuthorizationForApplicationWithClientID:(id)a3 completion:(id)a4
+- (void)revokeAuthorizationForApplicationWithClientID:(id)d completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  if ([(AKClient *)v15->_client hasInternalAccess]|| [(AKClient *)v15->_client hasOwnerAccess])
+  objc_storeStrong(&v13, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalAccess]|| [(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     v4 = objc_opt_new();
     [v4 revokeAuthorizationForApplicationWithClientID:location[0] completion:v13];
@@ -1587,26 +1587,26 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)performSilentTTRFor:(unint64_t)a3 completion:(id)a4
+- (void)performSilentTTRFor:(unint64_t)for completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  forCopy = for;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v4 = +[AKTTRController sharedController];
-  [v4 performSilentTTRFor:v6 completion:location];
+  [v4 performSilentTTRFor:forCopy completion:location];
   objc_storeStrong(&v4, 0);
   objc_storeStrong(&location, 0);
 }
 
-- (void)warmUpVerificationSessionWithCompletion:(id)a3
+- (void)warmUpVerificationSessionWithCompletion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKClient *)v18->_client hasInternalAccess]|| [(AKClient *)v18->_client hasOwnerAccess])
+  objc_storeStrong(location, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalAccess]|| [(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     v12 = _AKLogSystem();
     v11 = OS_LOG_TYPE_DEFAULT;
@@ -1648,24 +1648,24 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setConfigurationInfo:(id)a3 forIdentifier:(id)a4 forAltDSID:(id)a5 completion:(id)a6
+- (void)setConfigurationInfo:(id)info forIdentifier:(id)identifier forAltDSID:(id)d completion:(id)completion
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, identifier);
   v30 = 0;
-  objc_storeStrong(&v30, a5);
+  objc_storeStrong(&v30, d);
   v29 = 0;
-  objc_storeStrong(&v29, a6);
-  if ([(AKClient *)v33->_client hasInternalPrivateAccess]|| [(AKClient *)v33->_client hasWriteAccess])
+  objc_storeStrong(&v29, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess]|| [(AKClient *)selfCopy->_client hasWriteAccess])
   {
     v24 = +[AKUserConfigController sharedController];
     v10 = v24;
     v6 = v30;
-    client = v33->_client;
+    client = selfCopy->_client;
     v8 = location[0];
     v9 = v31;
     v18 = _NSConcreteStackBlock;
@@ -1706,24 +1706,24 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)configurationInfoWithIdentifiers:(id)a3 forAltDSID:(id)a4 completion:(id)a5
+- (void)configurationInfoWithIdentifiers:(id)identifiers forAltDSID:(id)d completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifiers);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, d);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
-  if ([(AKClient *)v25->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v22, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     if (location[0])
     {
       v17 = +[AKUserConfigController sharedController];
       v9 = v17;
       v7 = v23;
-      client = v25->_client;
+      client = selfCopy->_client;
       v16 = _objc_retain(v22);
       [v9 fetchUserConfigForAltDSID:v7 client:client dataCenter:? forIdentifiers:? completion:?];
       objc_storeStrong(&v16, 0);
@@ -1766,25 +1766,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)isDevicePasscodeProtected:(id)a3
+- (void)isDevicePasscodeProtected:(id)protected
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, protected);
   v3 = +[AKDevice currentDevice];
-  v4 = [v3 isProtectedWithPasscode];
+  isProtectedWithPasscode = [v3 isProtectedWithPasscode];
   _objc_release(v3);
-  (*(location[0] + 2))(location[0], v4 & 1, 0);
+  (*(location[0] + 2))(location[0], isProtectedWithPasscode & 1, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)activeLoginCode:(id)a3
+- (void)activeLoginCode:(id)code
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v17 = _AKLogSystem();
   v16 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1796,15 +1796,15 @@
   }
 
   objc_storeStrong(&v17, 0);
-  if ([(AKClient *)v19->_client hasOwnerAccess])
+  if ([(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     if (location[0])
     {
       v3 = location[0];
       v5 = +[AKAppleIDPushHelperService sharedService];
-      v4 = [v5 activeCode];
+      activeCode = [v5 activeCode];
       v3[2]();
-      _objc_release(v4);
+      _objc_release(activeCode);
       _objc_release(v5);
     }
   }
@@ -1831,21 +1831,21 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)getServerUILoadDelegateWithContext:(id)a3 completion:(id)a4
+- (void)getServerUILoadDelegateWithContext:(id)context completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, completion);
   queue = dispatch_get_global_queue(33, 0);
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_10009337C;
   v10 = &unk_100321280;
-  v11 = _objc_retain(v16);
+  v11 = _objc_retain(selfCopy);
   v13 = _objc_retain(v14);
   v12 = _objc_retain(location[0]);
   dispatch_async(queue, &v6);
@@ -1857,58 +1857,58 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)getServerUILoadDelegateForAltDSID:(id)a3 completion:(id)a4
+- (void)getServerUILoadDelegateForAltDSID:(id)d completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, completion);
   v5 = objc_opt_new();
   [v5 setAltDSID:location[0]];
-  [(AKAppleIDAuthenticationService *)v8 getServerUILoadDelegateWithContext:v5 completion:v6];
+  [(AKAppleIDAuthenticationService *)selfCopy getServerUILoadDelegateWithContext:v5 completion:v6];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)updateStateWithExternalAuthenticationResponse:(id)a3 forAppleID:(id)a4 completion:(id)a5
+- (void)updateStateWithExternalAuthenticationResponse:(id)response forAppleID:(id)d completion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, d);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
+  objc_storeStrong(&v8, completion);
   v7 = objc_alloc_init(AKAppleIDAuthenticationContext);
   [v7 setUsername:v9];
-  [(AKAppleIDAuthenticationService *)v11 updateStateWithExternalAuthenticationResponse:location[0] forContext:v7 completion:v8];
+  [(AKAppleIDAuthenticationService *)selfCopy updateStateWithExternalAuthenticationResponse:location[0] forContext:v7 completion:v8];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)updateStateWithExternalAuthenticationResponse:(id)a3 forContext:(id)a4 completion:(id)a5
+- (void)updateStateWithExternalAuthenticationResponse:(id)response forContext:(id)context completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, context);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, completion);
   queue = dispatch_get_global_queue(33, 0);
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_100093864;
   v12 = &unk_100321A38;
-  v13 = _objc_retain(v20);
+  v13 = _objc_retain(selfCopy);
   v16 = _objc_retain(v17);
   v14 = _objc_retain(location[0]);
   v15 = _objc_retain(v18);
@@ -1923,13 +1923,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)generateLoginCodeWithCompletion:(id)a3
+- (void)generateLoginCodeWithCompletion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKClient *)v16->_client hasInternalAccess])
+  objc_storeStrong(location, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalAccess])
   {
     v10 = 0;
     v8 = 0;
@@ -1969,28 +1969,28 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)validateLoginCode:(unint64_t)a3 forAppleID:(id)a4 withCompletion:(id)a5
+- (void)validateLoginCode:(unint64_t)code forAppleID:(id)d withCompletion:(id)completion
 {
-  v57 = self;
+  selfCopy = self;
   v56 = a2;
-  v55 = a3;
+  codeCopy = code;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, d);
   v53 = 0;
-  objc_storeStrong(&v53, a5);
+  objc_storeStrong(&v53, completion);
   v52 = _AKLogSystem();
   v51 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100036FE8(v59, v55);
+    sub_100036FE8(v59, codeCopy);
     _os_log_impl(&_mh_execute_header, v52, v51, "Asked to validated code: %llu", v59, 0xCu);
   }
 
   objc_storeStrong(&v52, 0);
-  v50 = [(AKAccountManager *)v57->_accountManager authKitAccountWithAppleID:location error:0];
+  v50 = [(AKAccountManager *)selfCopy->_accountManager authKitAccountWithAppleID:location error:0];
   if (v50)
   {
-    v48 = [(AKAccountManager *)v57->_accountManager altDSIDForAccount:v50];
+    v48 = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAccount:v50];
     v41 = 0;
     v42 = &v41;
     v43 = 838860800;
@@ -2013,22 +2013,22 @@
     v29 = sub_100095A98;
     v30 = &unk_100321A60;
     v32[1] = &v34;
-    v31 = _objc_retain(v57);
+    v31 = _objc_retain(selfCopy);
     v32[0] = _objc_retain(v50);
     v32[2] = &v41;
     [AKAccountManager performWithinPersonaForAccount:v14 withBlock:&v26];
-    v13 = [v35[5] token];
+    token = [v35[5] token];
     v5 = [AKMasterToken tokenWithExternalizedVersionString:?];
     v6 = v33;
     v33 = v5;
     _objc_release(v6);
-    _objc_release(v13);
+    _objc_release(token);
     objc_storeStrong(v32, 0);
     objc_storeStrong(&v31, 0);
     if (v35[5] && v33)
     {
-      v10 = v57;
-      v7 = v55;
+      v10 = selfCopy;
+      v7 = codeCopy;
       v8 = v48;
       v9 = v33;
       v18 = _NSConcreteStackBlock;
@@ -2082,33 +2082,33 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)_validateLoginCode:(unint64_t)a3 forAltDSID:(id)a4 masterToken:(id)a5 idmsData:(id)a6 authContext:(id)a7 completion:(id)a8
+- (void)_validateLoginCode:(unint64_t)code forAltDSID:(id)d masterToken:(id)token idmsData:(id)data authContext:(id)context completion:(id)completion
 {
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
-  v48 = a3;
+  codeCopy = code;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, d);
   v46 = 0;
-  objc_storeStrong(&v46, a5);
+  objc_storeStrong(&v46, token);
   v45 = 0;
-  objc_storeStrong(&v45, a6);
+  objc_storeStrong(&v45, data);
   v44 = 0;
-  objc_storeStrong(&v44, a7);
+  objc_storeStrong(&v44, context);
   v43 = 0;
-  objc_storeStrong(&v43, a8);
+  objc_storeStrong(&v43, completion);
   v24 = v44;
   v25 = [v44 authKitAccount:0];
   [AKAnalyticsSender sendAnalyticsEvent:"sendAnalyticsEvent:context:account:error:" context:@"com.apple.authkit.secondFactorValidationStart" account:v24 error:?];
   _objc_release(v25);
   if (location)
   {
-    v38 = [v46 stringValue];
-    if (v38)
+    stringValue = [v46 stringValue];
+    if (stringValue)
     {
       [v44 setAltDSID:location];
-      [v44 _setRemoteUIIdentityToken:v38];
-      [v44 setSecurityCode:v48];
+      [v44 _setRemoteUIIdentityToken:stringValue];
+      [v44 setSecurityCode:codeCopy];
       v8 = [AKGrandSlamRequestProvider alloc];
       v34 = [(AKURLRequestProviderImpl *)v8 initWithContext:v44 urlBagKey:AKURLBagKeyValidateCode];
       v51 = AKIdmsDataKey;
@@ -2116,7 +2116,7 @@
       v10 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
       [(AKURLRequestProviderImpl *)v34 setAuthKitBody:?];
       _objc_release(v10);
-      [(AKURLRequestProviderImpl *)v34 setClient:v50->_client];
+      [(AKURLRequestProviderImpl *)v34 setClient:selfCopy->_client];
       [(AKGrandSlamRequestProvider *)v34 setAuthenticatedRequest:0];
       [(AKURLRequestProviderImpl *)v34 setDataCenterIdentifier:?];
       v9 = [AKServiceControllerImpl alloc];
@@ -2157,7 +2157,7 @@
       v39 = 1;
     }
 
-    objc_storeStrong(&v38, 0);
+    objc_storeStrong(&stringValue, 0);
   }
 
   else
@@ -2187,17 +2187,17 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)validateVettingToken:(id)a3 forAltDSID:(id)a4 completion:(id)a5
+- (void)validateVettingToken:(id)token forAltDSID:(id)d completion:(id)completion
 {
-  v97 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, token);
   v95 = 0;
-  objc_storeStrong(&v95, a4);
+  objc_storeStrong(&v95, d);
   v94 = 0;
-  objc_storeStrong(&v94, a5);
-  if (![(AKClient *)v97->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v94, completion);
+  if (![(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v93 = _AKLogSystem();
     v92 = 16;
@@ -2220,7 +2220,7 @@
   {
     if ([v95 length])
     {
-      v83 = [(AKAccountManager *)v97->_accountManager authKitAccountWithAltDSID:v95 error:0];
+      v83 = [(AKAccountManager *)selfCopy->_accountManager authKitAccountWithAltDSID:v95 error:0];
       if (v83)
       {
         v76 = 0;
@@ -2245,16 +2245,16 @@
         v64 = sub_10009792C;
         v65 = &unk_100321A60;
         v67[1] = &v69;
-        v66 = _objc_retain(v97);
+        v66 = _objc_retain(selfCopy);
         v67[0] = _objc_retain(v83);
         v67[2] = &v76;
         [AKAccountManager performWithinPersonaForAccount:v26 withBlock:&v61];
-        v25 = [v70[5] token];
+        token = [v70[5] token];
         v5 = [AKMasterToken tokenWithExternalizedVersionString:?];
         v6 = v68;
         v68 = v5;
         _objc_release(v6);
-        _objc_release(v25);
+        _objc_release(token);
         objc_storeStrong(v67, 0);
         objc_storeStrong(&v66, 0);
         if (!v70[5] || !v68)
@@ -2274,19 +2274,19 @@
           _objc_release(v23);
         }
 
-        v58 = [v68 stringValue];
-        if (v58)
+        stringValue = [v68 stringValue];
+        if (stringValue)
         {
           v18 = [AKURLBag bagForAltDSID:v95];
-          v54 = [v18 validateVettingTokenURL];
+          validateVettingTokenURL = [v18 validateVettingTokenURL];
           _objc_release(v18);
-          if (v54)
+          if (validateVettingTokenURL)
           {
-            v53 = [[NSMutableURLRequest alloc] initWithURL:v54];
+            v53 = [[NSMutableURLRequest alloc] initWithURL:validateVettingTokenURL];
             v14 = +[AKDevice currentDevice];
-            v15 = [v14 isProtectedWithPasscode];
+            isProtectedWithPasscode = [v14 isProtectedWithPasscode];
             _objc_release(v14);
-            if (v15)
+            if (isProtectedWithPasscode)
             {
               [v53 ak_addPRKRequestHeader];
             }
@@ -2299,13 +2299,13 @@
             [v53 ak_addInternalBuildHeader];
             [v53 ak_addSeedBuildHeader];
             [v53 ak_addFeatureMaskHeader];
-            v13 = [(AKClient *)v97->_client name];
+            name = [(AKClient *)selfCopy->_client name];
             [v53 ak_addClientApp:?];
-            _objc_release(v13);
-            v12 = [(AKClient *)v97->_client bundleID];
+            _objc_release(name);
+            bundleID = [(AKClient *)selfCopy->_client bundleID];
             [v53 ak_addClientBundleIDHeader:?];
-            _objc_release(v12);
-            [v53 ak_addAuthorizationHeaderWithIdentityToken:v58 forAltDSID:v95];
+            _objc_release(bundleID);
+            [v53 ak_addAuthorizationHeaderWithIdentityToken:stringValue forAltDSID:v95];
             [v53 setValue:location[0] forHTTPHeaderField:@"X-Apple-I-Vetting-Token"];
             v52 = _AKLogSystem();
             v51 = OS_LOG_TYPE_DEFAULT;
@@ -2344,7 +2344,7 @@
             v87 = 1;
           }
 
-          objc_storeStrong(&v54, 0);
+          objc_storeStrong(&validateVettingTokenURL, 0);
         }
 
         else
@@ -2367,7 +2367,7 @@
           v87 = 1;
         }
 
-        objc_storeStrong(&v58, 0);
+        objc_storeStrong(&stringValue, 0);
         objc_storeStrong(&v68, 0);
         _Block_object_dispose(&v69, 8);
         objc_storeStrong(&v75, 0);
@@ -2433,13 +2433,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)isCreateAppleIDAllowedWithCompletion:(id)a3
+- (void)isCreateAppleIDAllowedWithCompletion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKClient *)v15->_client hasInternalPrivateAccess])
+  objc_storeStrong(location, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v3 = +[AKAccountManager sharedInstance];
     v9 = [(AKAccountManager *)v3 allAuthKitAccountsWithError:?];
@@ -2474,23 +2474,23 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)checkSecurityUpgradeEligibilityForContext:(id)a3 completion:(id)a4
+- (void)checkSecurityUpgradeEligibilityForContext:(id)context completion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
-  if ([(AKClient *)v35->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v33, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    v11 = [location[0] altDSID];
-    _objc_release(v11);
-    if (v11)
+    altDSID = [location[0] altDSID];
+    _objc_release(altDSID);
+    if (altDSID)
     {
       v4 = [AKSecurityUpgradeEligibilityRequestProvider alloc];
       v25 = [(AKURLRequestProviderImpl *)v4 initWithContext:location[0] urlBagKey:AKURLBagKeyUpgradeEligibilityCheck];
-      [(AKURLRequestProviderImpl *)v25 setClient:v35->_client];
+      [(AKURLRequestProviderImpl *)v25 setClient:selfCopy->_client];
       v5 = [AKServiceControllerImpl alloc];
       v24 = [(AKServiceControllerImpl *)v5 initWithRequestProvider:v25];
       v6 = v24;
@@ -2554,16 +2554,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)performCheckInForAccountWithAltDSID:(id)a3 event:(id)a4 completion:(id)a5
+- (void)performCheckInForAccountWithAltDSID:(id)d event:(id)event completion:(id)completion
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, event);
   v29 = 0;
-  objc_storeStrong(&v29, a5);
+  objc_storeStrong(&v29, completion);
   v28 = _AKLogSystem();
   v27 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -2577,7 +2577,7 @@
   {
     if (v30)
     {
-      v25 = [(AKAccountManager *)v32->_accountManager authKitAccountWithAltDSID:location[0] error:0];
+      v25 = [(AKAccountManager *)selfCopy->_accountManager authKitAccountWithAltDSID:location[0] error:0];
       if (v25)
       {
         v24 = _AKLogSystem();
@@ -2647,17 +2647,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)performCheckInForAccountWithAltDSID:(id)a3 event:(id)a4 reason:(unint64_t)a5 completion:(id)a6
+- (void)performCheckInForAccountWithAltDSID:(id)d event:(id)event reason:(unint64_t)reason completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
-  v33 = a5;
+  objc_storeStrong(&v34, event);
+  reasonCopy = reason;
   v32 = 0;
-  objc_storeStrong(&v32, a6);
+  objc_storeStrong(&v32, completion);
   v31 = _AKLogSystem();
   v30 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -2671,14 +2671,14 @@
   {
     if (v34)
     {
-      v28 = [(AKAccountManager *)v36->_accountManager authKitAccountWithAltDSID:location[0] error:0];
+      v28 = [(AKAccountManager *)selfCopy->_accountManager authKitAccountWithAltDSID:location[0] error:0];
       if (v28)
       {
         v27 = _AKLogSystem();
         v26 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
-          sub_100074370(v38, v28, v33);
+          sub_100074370(v38, v28, reasonCopy);
           _os_log_impl(&_mh_execute_header, v27, v26, "Performing liveness check-in for account: %@ with reason: %lu", v38, 0x16u);
         }
 
@@ -2686,7 +2686,7 @@
         v11 = +[AKAppleIDCheckInHelperService sharedService];
         v8 = v28;
         v9 = v34;
-        v10 = v33;
+        v10 = reasonCopy;
         v20 = _NSConcreteStackBlock;
         v21 = -1073741824;
         v22 = 0;
@@ -2742,37 +2742,37 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)reportSignOutForAppleID:(id)a3 service:(int64_t)a4 completion:(id)a5
+- (void)reportSignOutForAppleID:(id)d service:(int64_t)service completion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v27 = a4;
+  objc_storeStrong(location, d);
+  serviceCopy = service;
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, completion);
   v25 = _AKLogSystem();
   v24 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [NSNumber numberWithInteger:v27];
+    v15 = [NSNumber numberWithInteger:serviceCopy];
     sub_10001B098(v31, v15, location[0]);
     _os_log_impl(&_mh_execute_header, v25, v24, "Asked to report signout from service %@ for Apple ID: %@", v31, 0x16u);
     _objc_release(v15);
   }
 
   objc_storeStrong(&v25, 0);
-  if ([(AKClient *)v29->_client hasInternalAccess])
+  if ([(AKClient *)selfCopy->_client hasInternalAccess])
   {
     if (location[0])
     {
-      v19 = [(AKAccountManager *)v29->_accountManager authKitAccountWithAppleID:location[0] error:0];
+      v19 = [(AKAccountManager *)selfCopy->_accountManager authKitAccountWithAppleID:location[0] error:0];
       if (v19)
       {
-        if (v27)
+        if (serviceCopy)
         {
           v6 = +[AKAppleIDCheckInHelperService sharedService];
-          [v6 reportSignOutEventForService:v27 account:v19 completion:v26];
+          [v6 reportSignOutEventForService:serviceCopy account:v19 completion:v26];
           _objc_release(v6);
         }
 
@@ -2840,12 +2840,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)reportSignOutForAllAppleIDsWithCompletion:(id)a3
+- (void)reportSignOutForAllAppleIDsWithCompletion:(id)completion
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v46 = _AKLogSystem();
   v45 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
@@ -2857,9 +2857,9 @@
   }
 
   objc_storeStrong(&v46, 0);
-  if ([(AKClient *)v48->_client hasWriteAccess])
+  if ([(AKClient *)selfCopy->_client hasWriteAccess])
   {
-    v39 = [(AKAccountManager *)v48->_accountManager allAuthKitAccountsWithError:0];
+    v39 = [(AKAccountManager *)selfCopy->_accountManager allAuthKitAccountsWithError:0];
     if ([v39 count])
     {
       v29 = 0;
@@ -2976,39 +2976,39 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_createAuthenticationStartEventWithContext:(id)a3
+- (id)_createAuthenticationStartEventWithContext:(id)context
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [AAFAnalyticsEvent ak_analyticsEventWithContext:location[0] client:v13->_client eventName:@"com.apple.authkit.authenticationStart" error:0];
+  objc_storeStrong(location, context);
+  v11 = [AAFAnalyticsEvent ak_analyticsEventWithContext:location[0] client:selfCopy->_client eventName:@"com.apple.authkit.authenticationStart" error:0];
   v7 = +[AAFDeviceInfo localSecretType];
   [v11 setObject:? forKeyedSubscript:?];
   _objc_release(v7);
-  v10 = [(AKAppleIDAuthenticationService *)v13 _secureChannelTypeForContext:location[0]];
+  v10 = [(AKAppleIDAuthenticationService *)selfCopy _secureChannelTypeForContext:location[0]];
   if (v10)
   {
     [v11 setObject:v10 forKeyedSubscript:@"secureChannelType"];
     [v11 setObject:&__kCFBooleanTrue forKeyedSubscript:@"proximityChannelAvailable"];
   }
 
-  v5 = [location[0] proxiedDevice];
+  proxiedDevice = [location[0] proxiedDevice];
   v8 = 0;
   v6 = 1;
-  if (!v5)
+  if (!proxiedDevice)
   {
-    v9 = [location[0] proxiedDeviceAnisetteData];
+    proxiedDeviceAnisetteData = [location[0] proxiedDeviceAnisetteData];
     v8 = 1;
-    v6 = v9 != 0;
+    v6 = proxiedDeviceAnisetteData != 0;
   }
 
   if (v8)
   {
-    _objc_release(v9);
+    _objc_release(proxiedDeviceAnisetteData);
   }
 
-  _objc_release(v5);
+  _objc_release(proxiedDevice);
   if (v6)
   {
     [v11 setObject:&off_100338FF8 forKeyedSubscript:@"hasProxiedDevice"];
@@ -3022,33 +3022,33 @@
   return v4;
 }
 
-- (id)_secureChannelTypeForContext:(id)a3
+- (id)_secureChannelTypeForContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [location[0] companionDevice];
-  _objc_release(v7);
-  if (v7)
+  objc_storeStrong(location, context);
+  companionDevice = [location[0] companionDevice];
+  _objc_release(companionDevice);
+  if (companionDevice)
   {
     v9 = _objc_retain(&off_100339010);
   }
 
   else
   {
-    v6 = [location[0] companionDeviceAnisetteData];
-    _objc_release(v6);
-    if (v6)
+    companionDeviceAnisetteData = [location[0] companionDeviceAnisetteData];
+    _objc_release(companionDeviceAnisetteData);
+    if (companionDeviceAnisetteData)
     {
       v9 = _objc_retain(&off_100339028);
     }
 
     else
     {
-      v5 = [location[0] companionKeyEnvelope];
-      _objc_release(v5);
-      if (v5)
+      companionKeyEnvelope = [location[0] companionKeyEnvelope];
+      _objc_release(companionKeyEnvelope);
+      if (companionKeyEnvelope)
       {
         v9 = _objc_retain(&off_100339040);
       }
@@ -3066,36 +3066,36 @@
   return v3;
 }
 
-- (void)authenticateWithContext:(id)a3 completion:(id)a4
+- (void)authenticateWithContext:(id)context completion:(id)completion
 {
-  v90 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v88 = 0;
-  objc_storeStrong(&v88, a4);
+  objc_storeStrong(&v88, completion);
   v87 = os_transaction_create();
   v40 = +[AKFeatureManager sharedManager];
-  v41 = [v40 isAuthenticationTelemetryEnabled];
+  isAuthenticationTelemetryEnabled = [v40 isAuthenticationTelemetryEnabled];
   _objc_release(v40);
-  if (v41)
+  if (isAuthenticationTelemetryEnabled)
   {
-    v86 = [(AKAppleIDAuthenticationService *)v90 _createAuthenticationStartEventWithContext:location[0]];
+    v86 = [(AKAppleIDAuthenticationService *)selfCopy _createAuthenticationStartEventWithContext:location[0]];
     v38 = +[AKAnalyticsReporterRTC rtcAnalyticsReporter];
     [v38 sendEvent:v86];
     _objc_release(v38);
     objc_storeStrong(&v86, 0);
   }
 
-  v85 = [(AKAppleIDAuthenticationService *)v90 _createProxAnalyticsForAuthenticationContextIfNeeded:location[0]];
+  v85 = [(AKAppleIDAuthenticationService *)selfCopy _createProxAnalyticsForAuthenticationContextIfNeeded:location[0]];
   if (!v85)
   {
     v36 = +[AKFeatureManager sharedManager];
-    v37 = [v36 isAuthenticationTelemetryEnabled];
+    isAuthenticationTelemetryEnabled2 = [v36 isAuthenticationTelemetryEnabled];
     _objc_release(v36);
-    if (v37)
+    if (isAuthenticationTelemetryEnabled2)
     {
-      v4 = [AAFAnalyticsEvent ak_analyticsEventWithContext:location[0] client:v90->_client eventName:@"com.apple.authkit.authentication" error:0];
+      v4 = [AAFAnalyticsEvent ak_analyticsEventWithContext:location[0] client:selfCopy->_client eventName:@"com.apple.authkit.authentication" error:0];
       v5 = v85;
       v85 = v4;
       _objc_release(v5);
@@ -3115,9 +3115,9 @@
   if (+[AAFDeviceInfo isDeviceInDiagnosticMode](AAFDeviceInfo, "isDeviceInDiagnosticMode") || +[AAFDeviceInfo isDeviceUnlockedSinceBoot](AAFDeviceInfo, "isDeviceUnlockedSinceBoot") || [location[0] allowAuthenticationBeforeFirstUnlock])
   {
     v30 = +[AKAccountManager sharedInstance];
-    v29 = [location[0] altDSID];
+    altDSID = [location[0] altDSID];
     v31 = [(AKAccountManager *)v30 hasPersonaAvailableForAltDSID:?];
-    _objc_release(v29);
+    _objc_release(altDSID);
     _objc_release(v30);
     if (v31)
     {
@@ -3134,19 +3134,19 @@
         }
 
         objc_storeStrong(&v67, 0);
-        v22 = [(AKAuthenticationUILiaison *)v90->_authUILiaison surrogateManager];
-        [(AKAuthenticationSurrogateManager *)v22 registerUISurrogateContext:location[0] client:v90->_client completion:v84];
-        _objc_release(v22);
+        surrogateManager = [(AKAuthenticationUILiaison *)selfCopy->_authUILiaison surrogateManager];
+        [(AKAuthenticationSurrogateManager *)surrogateManager registerUISurrogateContext:location[0] client:selfCopy->_client completion:v84];
+        _objc_release(surrogateManager);
         v71 = 1;
       }
 
       else
       {
         v64 = [location[0] serviceType] == 2;
-        v6 = [(AKClient *)v90->_client isPermittedForInteractiveAuthOnLimitedContext];
+        isPermittedForInteractiveAuthOnLimitedContext = [(AKClient *)selfCopy->_client isPermittedForInteractiveAuthOnLimitedContext];
         v62 = 0;
         v21 = 0;
-        if (!v6)
+        if (!isPermittedForInteractiveAuthOnLimitedContext)
         {
           v21 = 0;
           if ([location[0] isContextEligibleForSilentAuthCoercion])
@@ -3184,15 +3184,15 @@
           [location[0] setAuthenticationType:0];
         }
 
-        v16 = [location[0] username];
+        username = [location[0] username];
         v57 = 0;
         v17 = 0;
-        if (v16)
+        if (username)
         {
-          v58 = [location[0] _password];
+          _password = [location[0] _password];
           v57 = 1;
           v17 = 0;
-          if (v58)
+          if (_password)
           {
             v17 = 0;
             if ([location[0] authenticationType] == 1)
@@ -3204,10 +3204,10 @@
 
         if (v57)
         {
-          _objc_release(v58);
+          _objc_release(_password);
         }
 
-        _objc_release(v16);
+        _objc_release(username);
         if (v17)
         {
           v56 = _AKLogSystem();
@@ -3224,21 +3224,21 @@
           [location[0] setAuthenticationType:0];
         }
 
-        v12 = [location[0] companionKeyEnvelope];
+        companionKeyEnvelope = [location[0] companionKeyEnvelope];
         v13 = 0;
-        if (v12)
+        if (companionKeyEnvelope)
         {
-          v13 = ![(AKClient *)v90->_client hasCompanionKeyEnvelopeAccess];
+          v13 = ![(AKClient *)selfCopy->_client hasCompanionKeyEnvelopeAccess];
         }
 
-        _objc_release(v12);
+        _objc_release(companionKeyEnvelope);
         if (v13)
         {
           v53 = _AKLogSystem();
           v52 = OS_LOG_TYPE_ERROR;
           if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
           {
-            sub_10001B098(v92, location[0], v90->_client);
+            sub_10001B098(v92, location[0], selfCopy->_client);
             _os_log_error_impl(&_mh_execute_header, v53, v52, "Unable to accept authentication request (%@) from unentitled client: %@", v92, 0x16u);
           }
 
@@ -3261,16 +3261,16 @@
           }
 
           objc_storeStrong(&v51, 0);
-          authTrafficController = v90->_authTrafficController;
+          authTrafficController = selfCopy->_authTrafficController;
           v7 = location[0];
-          client = v90->_client;
+          client = selfCopy->_client;
           v42 = _NSConcreteStackBlock;
           v43 = -1073741824;
           v44 = 0;
           v45 = sub_10009B8B0;
           v46 = &unk_100320558;
           v47 = _objc_retain(location[0]);
-          v48 = _objc_retain(v90);
+          v48 = _objc_retain(selfCopy);
           v49 = _objc_retain(v84);
           [(AKAuthenticationTrafficController *)authTrafficController beginAuthenticatedRequestWithContext:v7 client:client clearanceHandler:&v42];
           objc_storeStrong(&v49, 0);
@@ -3333,22 +3333,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_authenticateWithContext:(id)a3 completion:(id)a4
+- (void)_authenticateWithContext:(id)context completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, completion);
   v11 = 0;
   v9 = 0;
   v6 = [location[0] authKitAccount:&v9];
   objc_storeStrong(&v11, v9);
   v10 = v6;
-  if (v6 && ([(AKAccountManager *)v14->_accountManager accountIdentifiableTelemetryForAccount:v10]& 1) != 0)
+  if (v6 && ([(AKAccountManager *)selfCopy->_accountManager accountIdentifiableTelemetryForAccount:v10]& 1) != 0)
   {
-    v8 = [(AKAccountManager *)v14->_accountManager telemetryDeviceSessionIDForAccount:v10];
+    v8 = [(AKAccountManager *)selfCopy->_accountManager telemetryDeviceSessionIDForAccount:v10];
     [location[0] setTelemetryDeviceSessionID:v8];
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -3361,48 +3361,48 @@
     objc_storeStrong(&v8, 0);
   }
 
-  if ([(AKAppleIDAuthenticationService *)v14 _shouldPresentShieldForContext:location[0]])
+  if ([(AKAppleIDAuthenticationService *)selfCopy _shouldPresentShieldForContext:location[0]])
   {
-    [(AKAppleIDAuthenticationService *)v14 _presentShieldWithContext:location[0] completionHandler:v12];
+    [(AKAppleIDAuthenticationService *)selfCopy _presentShieldWithContext:location[0] completionHandler:v12];
   }
 
   else
   {
-    v4 = [location[0] accountMigrationContext];
-    _objc_release(v4);
-    if (v4)
+    accountMigrationContext = [location[0] accountMigrationContext];
+    _objc_release(accountMigrationContext);
+    if (accountMigrationContext)
     {
-      [(AKAppleIDAuthenticationService *)v14 _presentShieldForMigrationWithContext:location[0] completionHandler:v12];
+      [(AKAppleIDAuthenticationService *)selfCopy _presentShieldForMigrationWithContext:location[0] completionHandler:v12];
     }
 
     else if ([location[0] needsRepair] == 1)
     {
-      [(AKAppleIDAuthenticationService *)v14 _repairAppleIDWithContext:location[0] completion:v12];
+      [(AKAppleIDAuthenticationService *)selfCopy _repairAppleIDWithContext:location[0] completion:v12];
     }
 
     else if ([location[0] needsCredentialRecovery] == 1)
     {
-      [(AKAppleIDAuthenticationService *)v14 _recoverCredentialsAndAuthenticateWithContext:location[0] completion:v12];
+      [(AKAppleIDAuthenticationService *)selfCopy _recoverCredentialsAndAuthenticateWithContext:location[0] completion:v12];
     }
 
     else if ([location[0] isConfiguredForAccountCreation])
     {
-      [(AKAppleIDAuthenticationService *)v14 _createNewAppleIDAndAuthenticateWithContext:location[0] completion:v12];
+      [(AKAppleIDAuthenticationService *)selfCopy _createNewAppleIDAndAuthenticateWithContext:location[0] completion:v12];
     }
 
     else if ([location[0] needsPasswordChange] == 1)
     {
-      [(AKAppleIDAuthenticationService *)v14 _changePasswordAndAuthenticateWithContext:location[0] completion:v12];
+      [(AKAppleIDAuthenticationService *)selfCopy _changePasswordAndAuthenticateWithContext:location[0] completion:v12];
     }
 
     else if ([location[0] needsSecurityUpgradeUI] == 1)
     {
-      [(AKAppleIDAuthenticationService *)v14 _upgradeSecurityLevelWithContext:location[0] completion:v12];
+      [(AKAppleIDAuthenticationService *)selfCopy _upgradeSecurityLevelWithContext:location[0] completion:v12];
     }
 
     else
     {
-      [(AKAppleIDAuthenticationService *)v14 _performAuthenticationWithContext:location[0] completion:v12];
+      [(AKAppleIDAuthenticationService *)selfCopy _performAuthenticationWithContext:location[0] completion:v12];
     }
   }
 
@@ -3412,14 +3412,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_upgradeSecurityLevelWithContext:(id)a3 completion:(id)a4
+- (void)_upgradeSecurityLevelWithContext:(id)context completion:(id)completion
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, completion);
   v29 = _AKLogSystem();
   v28 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -3450,7 +3450,7 @@
   v13 = 0;
   v14 = sub_10009C5E0;
   v15 = &unk_100321B90;
-  v16 = _objc_retain(v32);
+  v16 = _objc_retain(selfCopy);
   v17 = _objc_retain(location[0]);
   v18 = _objc_retain(v26);
   [v7 urlConfigurationForKey:v6 fromCache:0 completion:&v11];
@@ -3465,22 +3465,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performAuthenticationWithContext:(id)a3 completion:(id)a4
+- (void)_performAuthenticationWithContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v6 = v17;
+  objc_storeStrong(&v15, completion);
+  v6 = selfCopy;
   v5 = location[0];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_10009CD10;
   v11 = &unk_1003217F8;
-  v12 = _objc_retain(v17);
+  v12 = _objc_retain(selfCopy);
   v13 = _objc_retain(location[0]);
   v14 = _objc_retain(v15);
   [(AKAppleIDAuthenticationService *)v6 _isInteractiveAuthRequiredForContext:v5 completion:?];
@@ -3491,18 +3491,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handlePasswordlessAuthResults:(id)a3 context:(id)a4 error:(id)a5 completion:(id)a6
+- (void)_handlePasswordlessAuthResults:(id)results context:(id)context error:(id)error completion:(id)completion
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, context);
   v40 = 0;
-  objc_storeStrong(&v40, a5);
+  objc_storeStrong(&v40, error);
   v39 = 0;
-  objc_storeStrong(&v39, a6);
+  objc_storeStrong(&v39, completion);
   if (v40 && [v41 authenticationType] == 1)
   {
     v38 = _AKLogSystem();
@@ -3517,10 +3517,10 @@
 
     objc_storeStrong(&v38, 0);
     v44 = NSUnderlyingErrorKey;
-    v15 = [v40 ac_secureCodingError];
-    v45 = v15;
+    ac_secureCodingError = [v40 ac_secureCodingError];
+    v45 = ac_secureCodingError;
     v35 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-    _objc_release(v15);
+    _objc_release(ac_secureCodingError);
     v34 = [NSError errorWithDomain:AKAppleIDAuthenticationErrorDomain code:-7013 userInfo:v35];
     (*(v39 + 2))(v39, 0, v34);
     objc_storeStrong(&v34, 0);
@@ -3529,20 +3529,20 @@
 
   else
   {
-    v13 = [v40 domain];
+    domain = [v40 domain];
     v14 = 0;
-    if ([v13 isEqualToString:AKAppleIDAuthenticationErrorDomain])
+    if ([domain isEqualToString:AKAppleIDAuthenticationErrorDomain])
     {
-      v12 = 1;
+      ak_isIncompatibleDevicesError = 1;
       if ([v40 code] != -7065)
       {
-        v12 = [v40 ak_isIncompatibleDevicesError];
+        ak_isIncompatibleDevicesError = [v40 ak_isIncompatibleDevicesError];
       }
 
-      v14 = v12;
+      v14 = ak_isIncompatibleDevicesError;
     }
 
-    _objc_release(v13);
+    _objc_release(domain);
     if (v14)
     {
       v33 = _AKLogSystem();
@@ -3577,7 +3577,7 @@
       }
 
       objc_storeStrong(&v30, 0);
-      v7 = v43;
+      v7 = selfCopy;
       v6 = v41;
       v21 = _NSConcreteStackBlock;
       v22 = -1073741824;
@@ -3598,14 +3598,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_isInteractiveAuthRequiredForContext:(id)a3 completion:(id)a4
+- (void)_isInteractiveAuthRequiredForContext:(id)context completion:(id)completion
 {
-  v73 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v71 = 0;
-  objc_storeStrong(&v71, a4);
+  objc_storeStrong(&v71, completion);
   v70 = _AKLogSystem();
   v69 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
@@ -3615,7 +3615,7 @@
   }
 
   objc_storeStrong(&v70, 0);
-  v68 = [location[0] proxiedDeviceAnisetteData];
+  proxiedDeviceAnisetteData = [location[0] proxiedDeviceAnisetteData];
   if ([location[0] authenticationType] == 2 || objc_msgSend(location[0], "authenticationType") == 3)
   {
     v67 = _AKLogSystem();
@@ -3637,9 +3637,9 @@
 
   else
   {
-    v26 = [location[0] _password];
-    v27 = [v26 length];
-    _objc_release(v26);
+    _password = [location[0] _password];
+    v27 = [_password length];
+    _objc_release(_password);
     if (v27)
     {
       v64 = _AKLogSystem();
@@ -3663,41 +3663,41 @@
 
     else
     {
-      v22 = [location[0] proxiedDevice];
+      proxiedDevice = [location[0] proxiedDevice];
       v59 = 0;
       v23 = 0;
-      if (v22)
+      if (proxiedDevice)
       {
-        v60 = [location[0] proxiedAppleID];
+        proxiedAppleID = [location[0] proxiedAppleID];
         v59 = 1;
-        v23 = v60 == 0;
+        v23 = proxiedAppleID == 0;
       }
 
       if (v59)
       {
-        _objc_release(v60);
+        _objc_release(proxiedAppleID);
       }
 
-      _objc_release(v22);
+      _objc_release(proxiedDevice);
       v61 = v23;
-      v58 = v68 != 0;
+      v58 = proxiedDeviceAnisetteData != 0;
       v57 = 0;
-      v20 = [location[0] appProvidedContext];
+      appProvidedContext = [location[0] appProvidedContext];
       v54 = 0;
       v21 = 0;
-      if ([v20 isEqualToString:AKAppleIDAuthenticationAppProvidedContextConnectDependent])
+      if ([appProvidedContext isEqualToString:AKAppleIDAuthenticationAppProvidedContextConnectDependent])
       {
-        v55 = [location[0] proxiedDevice];
+        proxiedDevice2 = [location[0] proxiedDevice];
         v54 = 1;
-        v21 = v55 != 0;
+        v21 = proxiedDevice2 != 0;
       }
 
       if (v54)
       {
-        _objc_release(v55);
+        _objc_release(proxiedDevice2);
       }
 
-      _objc_release(v20);
+      _objc_release(appProvidedContext);
       v56 = v21;
       v53 = _AKLogSystem();
       v52 = OS_LOG_TYPE_DEFAULT;
@@ -3740,9 +3740,9 @@
       objc_storeStrong(&v53, 0);
       if ((v57 & 1) != 0 || v56 || !v58 && !v61)
       {
-        v16 = [location[0] serviceIdentifiers];
+        serviceIdentifiers = [location[0] serviceIdentifiers];
         v17 = 0;
-        if (v16)
+        if (serviceIdentifiers)
         {
           v15 = 1;
           if ([location[0] authenticationType])
@@ -3753,7 +3753,7 @@
           v17 = v15;
         }
 
-        _objc_release(v16);
+        _objc_release(serviceIdentifiers);
         v48 = v17;
         if (v17)
         {
@@ -3794,9 +3794,9 @@
           {
             v39 = 0;
             v40 = 0;
-            v39 = [(AKAccountManager *)v73->_accountManager authenticationModeForAccount:v41];
-            LOBYTE(v40) = [(AKAccountManager *)v73->_accountManager mdmInformationRequiredForAccount:v41];
-            [(AKAppleIDAuthenticationService *)v73 _correlateContext:location[0] withAuthModeInformation:v39, v40];
+            v39 = [(AKAccountManager *)selfCopy->_accountManager authenticationModeForAccount:v41];
+            LOBYTE(v40) = [(AKAccountManager *)selfCopy->_accountManager mdmInformationRequiredForAccount:v41];
+            [(AKAppleIDAuthenticationService *)selfCopy _correlateContext:location[0] withAuthModeInformation:v39, v40];
           }
 
           v10 = 1;
@@ -3868,17 +3868,17 @@
     }
   }
 
-  objc_storeStrong(&v68, 0);
+  objc_storeStrong(&proxiedDeviceAnisetteData, 0);
   objc_storeStrong(&v71, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_createProxAnalyticsForAuthenticationContextIfNeeded:(id)a3
+- (id)_createProxAnalyticsForAuthenticationContextIfNeeded:(id)needed
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, needed);
   v45 = 0;
   v43 = 0;
   v17 = [location[0] authKitAccount:&v43];
@@ -3925,32 +3925,32 @@
     }
 
     objc_storeStrong(&v37, 0);
-    v3 = [location[0] companionDevice];
-    v12 = v3;
+    companionDevice = [location[0] companionDevice];
+    v12 = companionDevice;
     v29 = 0;
     v27 = 0;
     v13 = 1;
-    if (!v3)
+    if (!companionDevice)
     {
-      v30 = [location[0] companionDeviceAnisetteData];
+      companionDeviceAnisetteData = [location[0] companionDeviceAnisetteData];
       v29 = 1;
       v13 = 1;
-      if (!v30)
+      if (!companionDeviceAnisetteData)
       {
-        v28 = [location[0] companionKeyEnvelope];
+        companionKeyEnvelope = [location[0] companionKeyEnvelope];
         v27 = 1;
-        v13 = v28 != 0;
+        v13 = companionKeyEnvelope != 0;
       }
     }
 
     if (v27)
     {
-      _objc_release(v28);
+      _objc_release(companionKeyEnvelope);
     }
 
     if (v29)
     {
-      _objc_release(v30);
+      _objc_release(companionDeviceAnisetteData);
     }
 
     _objc_release(v12);
@@ -4024,12 +4024,12 @@
   return v4;
 }
 
-- (BOOL)_shouldPresentShieldForContext:(id)a3
+- (BOOL)_shouldPresentShieldForContext:(id)context
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   if ([location[0] isEphemeral])
   {
     v38 = _AKLogSystem();
@@ -4064,34 +4064,34 @@
 
     else
     {
-      v14 = [location[0] proxiedDevice];
+      proxiedDevice = [location[0] proxiedDevice];
       v30 = 0;
       v28 = 0;
       v15 = 1;
-      if (!v14)
+      if (!proxiedDevice)
       {
-        v31 = [location[0] companionDevice];
+        companionDevice = [location[0] companionDevice];
         v30 = 1;
         v15 = 1;
-        if (!v31)
+        if (!companionDevice)
         {
-          v29 = [location[0] companionKeyEnvelope];
+          companionKeyEnvelope = [location[0] companionKeyEnvelope];
           v28 = 1;
-          v15 = v29 != 0;
+          v15 = companionKeyEnvelope != 0;
         }
       }
 
       if (v28)
       {
-        _objc_release(v29);
+        _objc_release(companionKeyEnvelope);
       }
 
       if (v30)
       {
-        _objc_release(v31);
+        _objc_release(companionDevice);
       }
 
-      _objc_release(v14);
+      _objc_release(proxiedDevice);
       if (v15)
       {
         oslog = _AKLogSystem();
@@ -4109,32 +4109,32 @@
 
       else
       {
-        v12 = [location[0] protoAccountContext];
+        protoAccountContext = [location[0] protoAccountContext];
         v24 = 0;
         v13 = 0;
-        if (v12)
+        if (protoAccountContext)
         {
-          v25 = [location[0] protoAccountContext];
+          protoAccountContext2 = [location[0] protoAccountContext];
           v24 = 1;
-          v13 = [v25 shouldForceShieldUI] == 0;
+          v13 = [protoAccountContext2 shouldForceShieldUI] == 0;
         }
 
         if (v24)
         {
-          _objc_release(v25);
+          _objc_release(protoAccountContext2);
         }
 
-        _objc_release(v12);
+        _objc_release(protoAccountContext);
         if (v13)
         {
           v23 = _AKLogSystem();
           v22 = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v11 = [location[0] protoAccountContext];
-            sub_1000194D4(v45, v11);
+            protoAccountContext3 = [location[0] protoAccountContext];
+            sub_1000194D4(v45, protoAccountContext3);
             _os_log_impl(&_mh_execute_header, v23, v22, "Shield should not be presented for non-nil protoAccountContext without being forced: %@", v45, 0xCu);
-            _objc_release(v11);
+            _objc_release(protoAccountContext3);
           }
 
           objc_storeStrong(&v23, 0);
@@ -4144,9 +4144,9 @@
 
         else
         {
-          v10 = [location[0] accountMigrationContext];
-          _objc_release(v10);
-          if (v10)
+          accountMigrationContext = [location[0] accountMigrationContext];
+          _objc_release(accountMigrationContext);
+          if (accountMigrationContext)
           {
             v21 = _AKLogSystem();
             v20 = OS_LOG_TYPE_DEFAULT;
@@ -4161,7 +4161,7 @@
             v36 = 1;
           }
 
-          else if (([(AKAccountManager *)v40->_accountManager shieldSignInOrCreateFlows]& 1) != 0)
+          else if (([(AKAccountManager *)selfCopy->_accountManager shieldSignInOrCreateFlows]& 1) != 0)
           {
             v19 = _AKLogSystem();
             v18 = OS_LOG_TYPE_DEFAULT;
@@ -4178,10 +4178,10 @@
 
           else
           {
-            v8 = [location[0] protoAccountContext];
-            v9 = [v8 shouldForceShieldUI];
-            _objc_release(v8);
-            v17 = v9;
+            protoAccountContext4 = [location[0] protoAccountContext];
+            shouldForceShieldUI = [protoAccountContext4 shouldForceShieldUI];
+            _objc_release(protoAccountContext4);
+            v17 = shouldForceShieldUI;
             v16 = _AKLogSystem();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
@@ -4193,10 +4193,10 @@
 
               v5 = v3;
               v6 = location[0];
-              v7 = [location[0] protoAccountContext];
-              sub_10004DCC8(v42, v5, v6, v7);
+              protoAccountContext5 = [location[0] protoAccountContext];
+              sub_10004DCC8(v42, v5, v6, protoAccountContext5);
               _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Shield should %@ presented: %@ based on protoAccountContext: %@", v42, 0x20u);
-              _objc_release(v7);
+              _objc_release(protoAccountContext5);
             }
 
             objc_storeStrong(&v16, 0);
@@ -4227,23 +4227,23 @@
   return v41 & 1;
 }
 
-- (void)_presentShieldWithContext:(id)a3 completionHandler:(id)a4
+- (void)_presentShieldWithContext:(id)context completionHandler:(id)handler
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v10 = [location[0] authenticatableResource];
-  _objc_release(v10);
-  if (!v10)
+  objc_storeStrong(&v21, handler);
+  authenticatableResource = [location[0] authenticatableResource];
+  _objc_release(authenticatableResource);
+  if (!authenticatableResource)
   {
-    v8 = [(AKClient *)v23->_client bundleID];
+    bundleID = [(AKClient *)selfCopy->_client bundleID];
     v7 = [AKAuthenticatableResourceFactory authenticatableResourceForBundleID:?];
     [location[0] setAuthenticatableResource:?];
     _objc_release(v7);
-    _objc_release(v8);
+    _objc_release(bundleID);
   }
 
   v20 = _AKLogSystem();
@@ -4255,9 +4255,9 @@
   }
 
   objc_storeStrong(&v20, 0);
-  authTrafficController = v23->_authTrafficController;
+  authTrafficController = selfCopy->_authTrafficController;
   v4 = location[0];
-  client = v23->_client;
+  client = selfCopy->_client;
   v11 = _NSConcreteStackBlock;
   v12 = -1073741824;
   v13 = 0;
@@ -4265,7 +4265,7 @@
   v15 = &unk_100321C08;
   v18 = _objc_retain(v21);
   v16 = _objc_retain(location[0]);
-  v17 = _objc_retain(v23);
+  v17 = _objc_retain(selfCopy);
   [(AKAuthenticationTrafficController *)authTrafficController requestClearanceForShieldWithContext:v4 client:client completionHandler:&v11];
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v16, 0);
@@ -4274,24 +4274,24 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_presentShieldForMigrationWithContext:(id)a3 completionHandler:(id)a4
+- (void)_presentShieldForMigrationWithContext:(id)context completionHandler:(id)handler
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  authTrafficController = v17->_authTrafficController;
+  objc_storeStrong(&v15, handler);
+  authTrafficController = selfCopy->_authTrafficController;
   v5 = location[0];
-  client = v17->_client;
+  client = selfCopy->_client;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1000A0168;
   v11 = &unk_100321C08;
   v14 = _objc_retain(v15);
   v12 = _objc_retain(location[0]);
-  v13 = _objc_retain(v17);
+  v13 = _objc_retain(selfCopy);
   [(AKAuthenticationTrafficController *)authTrafficController requestClearanceForShieldWithContext:v5 client:client completionHandler:?];
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v12, 0);
@@ -4300,14 +4300,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_unsafe_presentShieldViewServiceWithContext:(id)a3 completionHandler:(id)a4
+- (void)_unsafe_presentShieldViewServiceWithContext:(id)context completionHandler:(id)handler
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, handler);
   v17 = _AKLogSystem();
   v16 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -4337,22 +4337,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)performPasswordResetWithContext:(id)a3 completion:(id)a4
+- (void)performPasswordResetWithContext:(id)context completion:(id)completion
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v37 = _AKLogSystem();
   v36 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(AKClient *)v40->_client bundleID];
-    sub_1000194D4(v41, v18);
+    bundleID = [(AKClient *)selfCopy->_client bundleID];
+    sub_1000194D4(v41, bundleID);
     _os_log_impl(&_mh_execute_header, v37, v36, "Password reset request received from client: %@", v41, 0xCu);
-    _objc_release(v18);
+    _objc_release(bundleID);
   }
 
   objc_storeStrong(&v37, 0);
@@ -4364,29 +4364,29 @@
   v34 = _objc_retain(v38);
   v35 = objc_retainBlock(&v29);
   v16 = +[AKFeatureManager sharedManager];
-  v17 = [v16 isForgotPasswordNativeTakeoverEnabled];
+  isForgotPasswordNativeTakeoverEnabled = [v16 isForgotPasswordNativeTakeoverEnabled];
   _objc_release(v16);
-  if (v17)
+  if (isForgotPasswordNativeTakeoverEnabled)
   {
-    v11 = 1;
-    if (![(AKClient *)v40->_client hasInternalAccess])
+    hasPrivateAccess = 1;
+    if (![(AKClient *)selfCopy->_client hasInternalAccess])
     {
-      v11 = [(AKClient *)v40->_client hasPrivateAccess];
+      hasPrivateAccess = [(AKClient *)selfCopy->_client hasPrivateAccess];
     }
 
-    v24 = v11 & 1;
-    if (v11)
+    v24 = hasPrivateAccess & 1;
+    if (hasPrivateAccess)
     {
       v4 = +[AKAccountManager sharedInstance];
-      v20 = [(AKAccountManager *)v4 primaryAuthKitAccount];
+      primaryAuthKitAccount = [(AKAccountManager *)v4 primaryAuthKitAccount];
       _objc_release(v4);
-      v5 = [v20 username];
+      username = [primaryAuthKitAccount username];
       [location[0] setUsername:?];
-      _objc_release(v5);
-      v6 = [(AKAppleIDAuthenticationService *)v40 passwordResetPresenter];
-      [(AKPasswordResetPresenter *)v6 presentWithContext:location[0] completion:v35];
-      _objc_release(v6);
-      objc_storeStrong(&v20, 0);
+      _objc_release(username);
+      passwordResetPresenter = [(AKAppleIDAuthenticationService *)selfCopy passwordResetPresenter];
+      [(AKPasswordResetPresenter *)passwordResetPresenter presentWithContext:location[0] completion:v35];
+      _objc_release(passwordResetPresenter);
+      objc_storeStrong(&primaryAuthKitAccount, 0);
       v25 = 0;
     }
 
@@ -4445,18 +4445,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_attemptBiometricOrPasscodeAuthWithContext:(id)a3 completion:(id)a4
+- (void)_attemptBiometricOrPasscodeAuthWithContext:(id)context completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v10 = [location[0] isContextEligibleForPasscodeAuth];
-  if (v10 & 1) != 0 || ([location[0] isContextEligibleForBiometricOrPasscodeAuth])
+  objc_storeStrong(&v11, completion);
+  isContextEligibleForPasscodeAuth = [location[0] isContextEligibleForPasscodeAuth];
+  if (isContextEligibleForPasscodeAuth & 1) != 0 || ([location[0] isContextEligibleForBiometricOrPasscodeAuth])
   {
-    [(AKAppleIDAuthenticationService *)v13 _showBiometricOrPasscodeAuthWithContext:location[0] completion:v11];
+    [(AKAppleIDAuthenticationService *)selfCopy _showBiometricOrPasscodeAuthWithContext:location[0] completion:v11];
   }
 
   else
@@ -4472,21 +4472,21 @@
     }
 
     objc_storeStrong(&v9, 0);
-    [(AKAppleIDAuthenticationService *)v13 _attemptInteractiveAuthWithContext:location[0] completion:v11];
+    [(AKAppleIDAuthenticationService *)selfCopy _attemptInteractiveAuthWithContext:location[0] completion:v11];
   }
 
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_showBiometricOrPasscodeAuthWithContext:(id)a3 completion:(id)a4
+- (void)_showBiometricOrPasscodeAuthWithContext:(id)context completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, completion);
   v22 = _AKLogSystem();
   v21 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -4502,16 +4502,16 @@
   v5 = [location[0] authKitAccount:0];
   [AKAnalyticsSender sendAnalyticsEvent:"sendAnalyticsEvent:context:account:error:" context:@"com.apple.authkit.deviceAuthStart" account:v4 error:?];
   _objc_release(v5);
-  authUILiaison = v25->_authUILiaison;
+  authUILiaison = selfCopy->_authUILiaison;
   v6 = location[0];
-  client = v25->_client;
+  client = selfCopy->_client;
   v12 = _NSConcreteStackBlock;
   v13 = -1073741824;
   v14 = 0;
   v15 = sub_1000A1E3C;
   v16 = &unk_100321CA8;
   v17 = _objc_retain(location[0]);
-  v18 = _objc_retain(v25);
+  v18 = _objc_retain(selfCopy);
   v19 = _objc_retain(v23);
   [(AKAuthenticationUILiaison *)authUILiaison presentBiometricOrPasscodeValidationForContext:v6 client:client completion:&v12];
   objc_storeStrong(&v19, 0);
@@ -4521,21 +4521,21 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_attemptPasswordlessAuthOptionsWithContext:(id)a3 completion:(id)a4
+- (void)_attemptPasswordlessAuthOptionsWithContext:(id)context completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, completion);
   v5 = location[0];
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_1000A248C;
   v10 = &unk_1003217F8;
-  v11 = _objc_retain(v16);
+  v11 = _objc_retain(selfCopy);
   v12 = _objc_retain(location[0]);
   v13 = _objc_retain(v14);
   [v5 isConfiguredForTokenUpgradeWithCompletion:?];
@@ -4546,15 +4546,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_attemptPasswordlessAuthWithContext:(id)a3 completion:(id)a4
+- (void)_attemptPasswordlessAuthWithContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v5 = v17;
+  objc_storeStrong(&v15, completion);
+  v5 = selfCopy;
   v4 = location[0];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
@@ -4563,7 +4563,7 @@
   v11 = &unk_100321D48;
   v14 = _objc_retain(v15);
   v12 = _objc_retain(location[0]);
-  v13 = _objc_retain(v17);
+  v13 = _objc_retain(selfCopy);
   [(AKAppleIDAuthenticationService *)v5 _accountForContinuationWithContext:v4 completion:&v7];
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v12, 0);
@@ -4572,17 +4572,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_accountForContinuationWithContext:(id)a3 completion:(id)a4
+- (void)_accountForContinuationWithContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   v14 = 0;
   v12 = 0;
-  v7 = [(AKAppleIDAuthenticationService *)v17 _accountForContinuationWithContext:location[0] error:&v12];
+  v7 = [(AKAppleIDAuthenticationService *)selfCopy _accountForContinuationWithContext:location[0] error:&v12];
   objc_storeStrong(&v14, v12);
   v13 = v7;
   if (v7)
@@ -4606,7 +4606,7 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      [(AKAppleIDAuthenticationService *)v17 _showContinueUsingUIWithContext:location[0] completion:v15];
+      [(AKAppleIDAuthenticationService *)selfCopy _showContinueUsingUIWithContext:location[0] completion:v15];
     }
 
     else
@@ -4623,14 +4623,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_showContinueUsingUIWithContext:(id)a3 completion:(id)a4
+- (void)_showContinueUsingUIWithContext:(id)context completion:(id)completion
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, completion);
   if (+[AKAccountManager isAccountsFrameworkAvailable])
   {
     if ([location[0] _capabilityForUIDisplay] == 2)
@@ -4646,41 +4646,41 @@
       }
 
       objc_storeStrong(&v34, 0);
-      v31 = [(AKAccountManager *)v41->_accountManager mostRecentlyUsedAuthKitAccount];
-      if (v31)
+      mostRecentlyUsedAuthKitAccount = [(AKAccountManager *)selfCopy->_accountManager mostRecentlyUsedAuthKitAccount];
+      if (mostRecentlyUsedAuthKitAccount)
       {
-        v27 = [(AKAccountManager *)v41->_accountManager continuationTokenForAccount:v31];
+        v27 = [(AKAccountManager *)selfCopy->_accountManager continuationTokenForAccount:mostRecentlyUsedAuthKitAccount];
         if (v27)
         {
-          v26 = [v31 username];
+          username = [mostRecentlyUsedAuthKitAccount username];
           v25 = _AKLogSystem();
           v24 = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            sub_1000194D4(v42, v31);
+            sub_1000194D4(v42, mostRecentlyUsedAuthKitAccount);
             _os_log_impl(&_mh_execute_header, v25, v24, "Telling client to ask the user about using Apple ID: %@", v42, 0xCu);
           }
 
           objc_storeStrong(&v25, 0);
-          authUILiaison = v41->_authUILiaison;
+          authUILiaison = selfCopy->_authUILiaison;
           v4 = location[0];
-          client = v41->_client;
-          v6 = v26;
+          client = selfCopy->_client;
+          v6 = username;
           v15 = _NSConcreteStackBlock;
           v16 = -1073741824;
           v17 = 0;
           v18 = sub_1000A3C64;
           v19 = &unk_100321D98;
           v23 = _objc_retain(v39);
-          v20 = _objc_retain(v41);
+          v20 = _objc_retain(selfCopy);
           v21 = _objc_retain(location[0]);
-          v22 = _objc_retain(v31);
+          v22 = _objc_retain(mostRecentlyUsedAuthKitAccount);
           [(AKAuthenticationUILiaison *)authUILiaison presentKeepUsingUIForContext:v4 client:client appleID:v6 completion:&v15];
           objc_storeStrong(&v22, 0);
           objc_storeStrong(&v21, 0);
           objc_storeStrong(&v20, 0);
           objc_storeStrong(&v23, 0);
-          objc_storeStrong(&v26, 0);
+          objc_storeStrong(&username, 0);
           v35 = 0;
         }
 
@@ -4710,7 +4710,7 @@
         v35 = 1;
       }
 
-      objc_storeStrong(&v31, 0);
+      objc_storeStrong(&mostRecentlyUsedAuthKitAccount, 0);
     }
 
     else
@@ -4741,13 +4741,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_accountForContinuationWithContext:(id)a3 error:(id *)a4
+- (id)_accountForContinuationWithContext:(id)context error:(id *)error
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v40 = a4;
+  objc_storeStrong(location, context);
+  errorCopy = error;
   if (!+[AKAccountManager isAccountsFrameworkAvailable])
   {
     v39 = _AKLogSystem();
@@ -4780,10 +4780,10 @@
       v27 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [location[0] username];
-        sub_1000194D4(v48, v14);
+        username = [location[0] username];
+        sub_1000194D4(v48, username);
         _os_log_impl(&_mh_execute_header, v28, v27, "No existing IDMS account for %@", v48, 0xCu);
-        _objc_release(v14);
+        _objc_release(username);
       }
 
       objc_storeStrong(&v28, 0);
@@ -4800,7 +4800,7 @@
 
     objc_storeStrong(&oslog, 0);
     v24 = 0;
-    accountManager = v42->_accountManager;
+    accountManager = selfCopy->_accountManager;
     obj = 0;
     v13 = [(AKAccountManager *)accountManager continuationTokenForAccount:v30 error:&obj];
     objc_storeStrong(&v24, obj);
@@ -4820,17 +4820,17 @@
       }
 
       objc_storeStrong(&v21, 0);
-      v11 = [v24 domain];
+      domain = [v24 domain];
       v12 = 0;
-      if ([v11 isEqualToString:ACErrorDomain])
+      if ([domain isEqualToString:ACErrorDomain])
       {
         v12 = [v24 code] == 10;
       }
 
-      _objc_release(v11);
+      _objc_release(domain);
       if (v12)
       {
-        if (v40)
+        if (errorCopy)
         {
           v8 = AKAppleIDAuthenticationErrorDomain;
           v44 = NSUnderlyingErrorKey;
@@ -4838,7 +4838,7 @@
           v9 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
           v10 = [NSError errorWithDomain:v8 code:-7065 userInfo:?];
           v5 = v10;
-          *v40 = v10;
+          *errorCopy = v10;
           _objc_release(v9);
         }
 
@@ -4887,30 +4887,30 @@ LABEL_30:
   return v6;
 }
 
-- (void)_attemptInteractiveAuthWithContext:(id)a3 completion:(id)a4
+- (void)_attemptInteractiveAuthWithContext:(id)context completion:(id)completion
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
-  v16 = [location[0] username];
+  objc_storeStrong(&v39, completion);
+  username = [location[0] username];
   v36 = 0;
   v17 = 0;
-  if ([v16 length])
+  if ([username length])
   {
-    v37 = [location[0] _password];
+    _password = [location[0] _password];
     v36 = 1;
-    v17 = [v37 length] != 0;
+    v17 = [_password length] != 0;
   }
 
   if (v36)
   {
-    _objc_release(v37);
+    _objc_release(_password);
   }
 
-  _objc_release(v16);
+  _objc_release(username);
   v38 = v17;
   if (v17)
   {
@@ -4925,9 +4925,9 @@ LABEL_30:
     }
 
     objc_storeStrong(&v35, 0);
-    v11 = v41;
-    v13 = [location[0] username];
-    v12 = [location[0] _password];
+    v11 = selfCopy;
+    username2 = [location[0] username];
+    _password2 = [location[0] _password];
     v10 = location[0];
     v25 = _NSConcreteStackBlock;
     v26 = -1073741824;
@@ -4935,17 +4935,17 @@ LABEL_30:
     v28 = sub_1000A4B54;
     v29 = &unk_100321910;
     v30 = _objc_retain(location[0]);
-    v31 = _objc_retain(v41);
+    v31 = _objc_retain(selfCopy);
     v32 = _objc_retain(v39);
-    [(AKAppleIDAuthenticationService *)v11 _verifyUsername:v13 password:v12 context:v10 completion:&v25];
-    _objc_release(v12);
-    _objc_release(v13);
+    [(AKAppleIDAuthenticationService *)v11 _verifyUsername:username2 password:_password2 context:v10 completion:&v25];
+    _objc_release(_password2);
+    _objc_release(username2);
     objc_storeStrong(&v32, 0);
     objc_storeStrong(&v31, 0);
     objc_storeStrong(&v30, 0);
   }
 
-  else if ([location[0] _shouldSkipInitialReachabilityCheck] || -[CUTReachability currentReachabilityStatus](v41->_reachability, "currentReachabilityStatus"))
+  else if ([location[0] _shouldSkipInitialReachabilityCheck] || -[CUTReachability currentReachabilityStatus](selfCopy->_reachability, "currentReachabilityStatus"))
   {
     v21 = _AKLogSystem();
     v20 = 2;
@@ -4958,7 +4958,7 @@ LABEL_30:
     }
 
     objc_storeStrong(&v21, 0);
-    [(AKAppleIDAuthenticationService *)v41 _performInteractiveAuthWithContext:location[0] completion:v39];
+    [(AKAppleIDAuthenticationService *)selfCopy _performInteractiveAuthWithContext:location[0] completion:v39];
   }
 
   else
@@ -4984,22 +4984,22 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshAuthMetadataWithContext:(id)a3 completion:(id)a4
+- (void)refreshAuthMetadataWithContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v6 = v17;
+  objc_storeStrong(&v15, completion);
+  v6 = selfCopy;
   v5 = location[0];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_1000A4FD4;
   v11 = &unk_1003217F8;
-  v12 = _objc_retain(v17);
+  v12 = _objc_retain(selfCopy);
   v13 = _objc_retain(location[0]);
   v14 = _objc_retain(v15);
   [(AKAppleIDAuthenticationService *)v6 _refreshLocalAccountAndUpdateContext:v5 completion:?];
@@ -5010,26 +5010,26 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_performInteractiveAuthWithContext:(id)a3 completion:(id)a4
+- (void)_performInteractiveAuthWithContext:(id)context completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v5 = location[0];
   v6 = [location[0] authKitAccount:0];
   [AKAnalyticsSender sendAnalyticsEvent:"sendAnalyticsEvent:context:account:error:" context:@"com.apple.authkit.interactiveAuthStart" account:v5 error:?];
   _objc_release(v6);
-  v8 = v18;
+  v8 = selfCopy;
   v7 = location[0];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_1000A54C0;
   v12 = &unk_1003217F8;
   v13 = _objc_retain(location[0]);
-  v14 = _objc_retain(v18);
+  v14 = _objc_retain(selfCopy);
   v15 = _objc_retain(v16);
   [(AKAppleIDAuthenticationService *)v8 refreshAuthMetadataWithContext:v7 completion:?];
   objc_storeStrong(&v15, 0);
@@ -5039,12 +5039,12 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldBroadcastForProximity:(id)a3
+- (BOOL)_shouldBroadcastForProximity:(id)proximity
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, proximity);
   if ((+[AKFeatureManager isProxForAuthkitEnabled](AKFeatureManager, "isProxForAuthkitEnabled") & 1) == 0 || [location[0] disableProximityAuth])
   {
     v19 = 0;
@@ -5053,7 +5053,7 @@ LABEL_30:
   else
   {
     v10 = +[AKAccountManager sharedInstance];
-    v16 = [(AKAccountManager *)v10 primaryAuthKitAccount];
+    primaryAuthKitAccount = [(AKAccountManager *)v10 primaryAuthKitAccount];
     _objc_release(v10);
     v11 = 1;
     if ([location[0] _capabilityForUIDisplay] != 1)
@@ -5078,16 +5078,16 @@ LABEL_30:
       v19 = 0;
     }
 
-    else if (v16)
+    else if (primaryAuthKitAccount)
     {
       v5 = +[AKAccountManager sharedInstance];
-      v6 = [(AKAccountManager *)v5 isProximityAuthEligible:v16];
+      v6 = [(AKAccountManager *)v5 isProximityAuthEligible:primaryAuthKitAccount];
       _objc_release(v5);
       v7 = 0;
       if (v6)
       {
         v7 = 0;
-        if (([(ProximityAuthServiceProvider *)v18->proximityServiceProvider shouldBeginProximityAuthentiation]& 1) != 0)
+        if (([(ProximityAuthServiceProvider *)selfCopy->proximityServiceProvider shouldBeginProximityAuthentiation]& 1) != 0)
         {
           v7 = !v15;
         }
@@ -5099,7 +5099,7 @@ LABEL_30:
     else
     {
       v4 = 0;
-      if (([(ProximityAuthServiceProvider *)v18->proximityServiceProvider shouldBeginProximityAuthentiation]& 1) != 0)
+      if (([(ProximityAuthServiceProvider *)selfCopy->proximityServiceProvider shouldBeginProximityAuthentiation]& 1) != 0)
       {
         v4 = !v15;
       }
@@ -5107,39 +5107,39 @@ LABEL_30:
       v19 = v4;
     }
 
-    objc_storeStrong(&v16, 0);
+    objc_storeStrong(&primaryAuthKitAccount, 0);
   }
 
   objc_storeStrong(location, 0);
   return v19;
 }
 
-- (void)_performPasswordlessAuth:(id)a3 completion:(id)a4
+- (void)_performPasswordlessAuth:(id)auth completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, auth);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, completion);
   v17 = _AKLogSystem();
   v16 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    sub_10004DCC8(v21, v20, location[0], v20->_client);
+    sub_10004DCC8(v21, selfCopy, location[0], selfCopy->_client);
     _os_log_debug_impl(&_mh_execute_header, v17, v16, "%@: Obtaining full UI capability before attempting passwordless auth with context (%@) for client (%@)", v21, 0x20u);
   }
 
   objc_storeStrong(&v17, 0);
-  authUILiaison = v20->_authUILiaison;
+  authUILiaison = selfCopy->_authUILiaison;
   v4 = location[0];
-  client = v20->_client;
+  client = selfCopy->_client;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_1000A6560;
   v12 = &unk_100321DE8;
-  v13 = _objc_retain(v20);
+  v13 = _objc_retain(selfCopy);
   v15 = _objc_retain(v18);
   v14 = _objc_retain(location[0]);
   [(AKAuthenticationUILiaison *)authUILiaison fetchUICapableContext:v4 client:client completion:&v8];
@@ -5150,17 +5150,17 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_correlateContext:(id)a3 withAuthModeInformation:(id)a4
+- (void)_correlateContext:(id)context withAuthModeInformation:(id)information
 {
-  v6 = a4;
+  informationCopy = information;
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] setAuthenticationMode:v6.var0];
+  objc_storeStrong(location, context);
+  [location[0] setAuthenticationMode:informationCopy.var0];
   if ((+[AKFeatureManager isEnforceMDMPolicyEnabled]& 1) != 0)
   {
-    [location[0] setIsMDMInformationRequired:v6.var1];
+    [location[0] setIsMDMInformationRequired:informationCopy.var1];
   }
 
   v4 = objc_alloc_init(AKAuthenticationContextSanitizer);
@@ -5169,66 +5169,66 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateAltDSIDAndUsername:(id)a3
+- (void)_updateAltDSIDAndUsername:(id)username
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = [location[0] altDSID];
-  _objc_release(v25);
-  if (v25)
+  objc_storeStrong(location, username);
+  altDSID = [location[0] altDSID];
+  _objc_release(altDSID);
+  if (altDSID)
   {
     v10 = +[AKAccountManager sharedInstance];
-    v9 = [location[0] altDSID];
+    altDSID2 = [location[0] altDSID];
     v31 = [AKAccountManager authKitAccountWithAltDSID:v10 error:"authKitAccountWithAltDSID:error:"];
-    _objc_release(v9);
+    _objc_release(altDSID2);
     _objc_release(v10);
     if (v31)
     {
-      v7 = [location[0] username];
+      username = [location[0] username];
       v29 = 0;
       v27 = 0;
       v8 = 0;
-      if (v7)
+      if (username)
       {
-        v30 = [location[0] username];
+        username2 = [location[0] username];
         v29 = 1;
-        v28 = [v31 username];
+        username3 = [v31 username];
         v27 = 1;
-        v8 = [v30 isEqualToString:?] == 0;
+        v8 = [username2 isEqualToString:?] == 0;
       }
 
       if (v27)
       {
-        _objc_release(v28);
+        _objc_release(username3);
       }
 
       if (v29)
       {
-        _objc_release(v30);
+        _objc_release(username2);
       }
 
-      _objc_release(v7);
+      _objc_release(username);
       if (v8)
       {
         v26 = _AKLogSystem();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
         {
-          v6 = [location[0] username];
-          v5 = [v31 username];
-          v4 = [location[0] _proxiedAppName];
-          sub_10004DCC8(v43, v6, v5, v4);
+          username4 = [location[0] username];
+          username5 = [v31 username];
+          _proxiedAppName = [location[0] _proxiedAppName];
+          sub_10004DCC8(v43, username4, username5, _proxiedAppName);
           _os_log_fault_impl(&_mh_execute_header, v26, OS_LOG_TYPE_FAULT, "Context provided username is different %@(context) vs %@(account) for client %@. Trusting AuthKit account username.", v43, 0x20u);
-          _objc_release(v4);
-          _objc_release(v5);
-          _objc_release(v6);
+          _objc_release(_proxiedAppName);
+          _objc_release(username5);
+          _objc_release(username4);
         }
 
         objc_storeStrong(&v26, 0);
-        v3 = [v31 username];
+        username6 = [v31 username];
         [location[0] setUsername:?];
-        _objc_release(v3);
+        _objc_release(username6);
       }
     }
 
@@ -5237,9 +5237,9 @@ LABEL_30:
 
   else
   {
-    v24 = [location[0] DSID];
-    _objc_release(v24);
-    if (v24)
+    dSID = [location[0] DSID];
+    _objc_release(dSID);
+    if (dSID)
     {
       v41 = _AKLogSystem();
       v40 = 2;
@@ -5253,11 +5253,11 @@ LABEL_30:
 
       objc_storeStrong(&v41, 0);
       v20 = +[AKAccountManager sharedInstance];
-      v19 = [location[0] DSID];
-      v18 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v19 longLongValue]);
+      dSID2 = [location[0] DSID];
+      v18 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [dSID2 longLongValue]);
       v38 = [(AKAccountManager *)v20 authKitAccountWithDSID:?];
       _objc_release(v18);
-      _objc_release(v19);
+      _objc_release(dSID2);
       _objc_release(v20);
       v21 = [v38 accountPropertyForKey:AKAltDSID];
       _objc_release(v21);
@@ -5266,50 +5266,50 @@ LABEL_30:
         v15 = [v38 accountPropertyForKey:AKAltDSID];
         [location[0] setAltDSID:?];
         _objc_release(v15);
-        v16 = [location[0] username];
+        username7 = [location[0] username];
         v36 = 0;
         v34 = 0;
         v17 = 0;
-        if (v16)
+        if (username7)
         {
-          v37 = [location[0] username];
+          username8 = [location[0] username];
           v36 = 1;
-          v35 = [v38 username];
+          username9 = [v38 username];
           v34 = 1;
-          v17 = [v37 isEqualToString:?] == 0;
+          v17 = [username8 isEqualToString:?] == 0;
         }
 
         if (v34)
         {
-          _objc_release(v35);
+          _objc_release(username9);
         }
 
         if (v36)
         {
-          _objc_release(v37);
+          _objc_release(username8);
         }
 
-        _objc_release(v16);
+        _objc_release(username7);
         if (v17)
         {
           v33 = _AKLogSystem();
           v32 = OS_LOG_TYPE_FAULT;
           if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
           {
-            v14 = [location[0] username];
-            v13 = [v38 username];
-            v12 = [location[0] _proxiedAppName];
-            sub_10004DCC8(v44, v14, v13, v12);
+            username10 = [location[0] username];
+            username11 = [v38 username];
+            _proxiedAppName2 = [location[0] _proxiedAppName];
+            sub_10004DCC8(v44, username10, username11, _proxiedAppName2);
             _os_log_fault_impl(&_mh_execute_header, v33, v32, "Context provided username is different %@(context) vs %@(account) for client %@. Trusting AuthKit account username.", v44, 0x20u);
-            _objc_release(v12);
-            _objc_release(v13);
-            _objc_release(v14);
+            _objc_release(_proxiedAppName2);
+            _objc_release(username11);
+            _objc_release(username10);
           }
 
           objc_storeStrong(&v33, 0);
-          v11 = [v38 username];
+          username12 = [v38 username];
           [location[0] setUsername:?];
-          _objc_release(v11);
+          _objc_release(username12);
         }
       }
 
@@ -5320,14 +5320,14 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_refreshLocalAccountAndUpdateContext:(id)a3 completion:(id)a4
+- (void)_refreshLocalAccountAndUpdateContext:(id)context completion:(id)completion
 {
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, completion);
   v36 = _AKLogSystem();
   v35 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -5339,10 +5339,10 @@ LABEL_30:
   objc_storeStrong(&v36, 0);
   if ([location[0] _shouldRefreshAccountAndUpdateContext])
   {
-    [(AKAppleIDAuthenticationService *)v39 _updateAltDSIDAndUsername:location[0]];
-    v14 = [location[0] altDSID];
-    _objc_release(v14);
-    if (v14)
+    [(AKAppleIDAuthenticationService *)selfCopy _updateAltDSIDAndUsername:location[0]];
+    altDSID = [location[0] altDSID];
+    _objc_release(altDSID);
+    if (altDSID)
     {
       v30 = +[AKUserInfoController sharedController];
       v10 = [location[0] authKitAccount:0];
@@ -5383,8 +5383,8 @@ LABEL_30:
       else
       {
         v6 = v30;
-        v7 = [location[0] altDSID];
-        client = v39->_client;
+        altDSID2 = [location[0] altDSID];
+        client = selfCopy->_client;
         v16 = _NSConcreteStackBlock;
         v17 = -1073741824;
         v18 = 0;
@@ -5392,9 +5392,9 @@ LABEL_30:
         v20 = &unk_100321E10;
         v23 = _objc_retain(v37);
         v21 = _objc_retain(location[0]);
-        v22 = _objc_retain(v39);
-        [v6 fetchUserInformationForAltDSID:v7 client:client completion:&v16];
-        _objc_release(v7);
+        v22 = _objc_retain(selfCopy);
+        [v6 fetchUserInformationForAltDSID:altDSID2 client:client completion:&v16];
+        _objc_release(altDSID2);
         objc_storeStrong(&v22, 0);
         objc_storeStrong(&v21, 0);
         objc_storeStrong(&v23, 0);
@@ -5433,14 +5433,14 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_refreshAuthModeIfNecessaryForContext:(id)a3 completion:(id)a4
+- (void)_refreshAuthModeIfNecessaryForContext:(id)context completion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, completion);
   v31 = 0;
   v29 = 0;
   v13 = 1;
@@ -5452,15 +5452,15 @@ LABEL_30:
       v13 = 1;
       if (([location[0] needsPasswordChange] & 1) == 0)
       {
-        v32 = [location[0] username];
+        username = [location[0] username];
         v31 = 1;
         v13 = 1;
-        if (v32)
+        if (username)
         {
-          v30 = [location[0] username];
+          username2 = [location[0] username];
           v29 = 1;
           v11 = 0;
-          if (v30)
+          if (username2)
           {
             v11 = [location[0] authenticationType] == 3;
           }
@@ -5473,12 +5473,12 @@ LABEL_30:
 
   if (v29)
   {
-    _objc_release(v30);
+    _objc_release(username2);
   }
 
   if (v31)
   {
-    _objc_release(v32);
+    _objc_release(username);
   }
 
   if (v13)
@@ -5492,7 +5492,7 @@ LABEL_30:
     v27 = [location[0] authKitAccount:0];
     if (v27)
     {
-      v26 = [(AKAccountManager *)v35->_accountManager shouldUpdateAuthModeForAccount:v27];
+      v26 = [(AKAccountManager *)selfCopy->_accountManager shouldUpdateAuthModeForAccount:v27];
       if (v26)
       {
         v25 = _AKLogSystem();
@@ -5506,7 +5506,7 @@ LABEL_30:
         }
 
         objc_storeStrong(&v25, 0);
-        [(AKAppleIDAuthenticationService *)v35 _refreshAuthModeFromServerForContext:location[0] completion:v33];
+        [(AKAppleIDAuthenticationService *)selfCopy _refreshAuthModeFromServerForContext:location[0] completion:v33];
       }
 
       else
@@ -5524,9 +5524,9 @@ LABEL_30:
         objc_storeStrong(&v22, 0);
         v18 = 0;
         v19 = 0;
-        v18 = [(AKAccountManager *)v35->_accountManager authenticationModeForAccount:v27];
-        LOBYTE(v19) = [(AKAccountManager *)v35->_accountManager mdmInformationRequiredForAccount:v27];
-        [(AKAppleIDAuthenticationService *)v35 _correlateContext:location[0] withAuthModeInformation:v18, v19];
+        v18 = [(AKAccountManager *)selfCopy->_accountManager authenticationModeForAccount:v27];
+        LOBYTE(v19) = [(AKAccountManager *)selfCopy->_accountManager mdmInformationRequiredForAccount:v27];
+        [(AKAppleIDAuthenticationService *)selfCopy _correlateContext:location[0] withAuthModeInformation:v18, v19];
         (*(v33 + 2))(v33, 1, 0);
       }
     }
@@ -5559,7 +5559,7 @@ LABEL_30:
       }
 
       objc_storeStrong(&v17, 0);
-      [(AKAppleIDAuthenticationService *)v35 _refreshAuthModeFromServerForContext:location[0] completion:v33];
+      [(AKAppleIDAuthenticationService *)selfCopy _refreshAuthModeFromServerForContext:location[0] completion:v33];
     }
 
     objc_storeStrong(&v27, 0);
@@ -5570,15 +5570,15 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_refreshAuthModeFromServerForContext:(id)a3 completion:(id)a4
+- (void)_refreshAuthModeFromServerForContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v6 = v17;
+  objc_storeStrong(&v15, completion);
+  v6 = selfCopy;
   v5 = location[0];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
@@ -5586,7 +5586,7 @@ LABEL_30:
   v10 = sub_1000A8624;
   v11 = &unk_100321E38;
   v14 = _objc_retain(v15);
-  v12 = _objc_retain(v17);
+  v12 = _objc_retain(selfCopy);
   v13 = _objc_retain(location[0]);
   [(AKAppleIDAuthenticationService *)v6 _fetchAuthModeInfoWithContext:v5 completion:?];
   objc_storeStrong(&v13, 0);
@@ -5596,22 +5596,22 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleBasicLoginUICompletionWithUsername:(id)a3 password:(id)a4 context:(id)a5 additionalData:(id)a6 collectionError:(id)a7 completion:(id)a8
+- (void)_handleBasicLoginUICompletionWithUsername:(id)username password:(id)password context:(id)context additionalData:(id)data collectionError:(id)error completion:(id)completion
 {
-  v129 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v127 = 0;
-  objc_storeStrong(&v127, a4);
+  objc_storeStrong(&v127, password);
   v126 = 0;
-  objc_storeStrong(&v126, a5);
+  objc_storeStrong(&v126, context);
   v125 = 0;
-  objc_storeStrong(&v125, a6);
+  objc_storeStrong(&v125, data);
   v124 = 0;
-  objc_storeStrong(&v124, a7);
+  objc_storeStrong(&v124, error);
   v123 = 0;
-  objc_storeStrong(&v123, a8);
+  objc_storeStrong(&v123, completion);
   v52 = v126;
   v53 = [v126 authKitAccount:0];
   [AKAnalyticsSender sendAnalyticsEvent:"sendAnalyticsEvent:context:account:error:" context:@"com.apple.authkit.interactiveAuth" account:v52 error:?];
@@ -5620,20 +5620,20 @@ LABEL_30:
   v118[1] = 3221225472;
   v118[2] = sub_1000A9704;
   v118[3] = &unk_100321910;
-  v119 = _objc_retain(v129);
+  v119 = _objc_retain(selfCopy);
   v120 = _objc_retain(v126);
   v121 = _objc_retain(v123);
   v122 = objc_retainBlock(v118);
   if (v124)
   {
-    v45 = [v124 domain];
+    domain = [v124 domain];
     v46 = 0;
-    if ([v45 isEqual:AKAppleIDAuthenticationErrorDomain])
+    if ([domain isEqual:AKAppleIDAuthenticationErrorDomain])
     {
       v46 = [v124 code] == -7017;
     }
 
-    _objc_release(v45);
+    _objc_release(domain);
     if (v46)
     {
       v117 = _AKLogSystem();
@@ -5652,14 +5652,14 @@ LABEL_30:
         [v126 setUsername:location[0]];
       }
 
-      v42 = v129;
+      v42 = selfCopy;
       v41 = v126;
       v106 = _NSConcreteStackBlock;
       v107 = -1073741824;
       v108 = 0;
       v109 = sub_1000A99B8;
       v110 = &unk_100321E88;
-      v111 = _objc_retain(v129);
+      v111 = _objc_retain(selfCopy);
       v112 = _objc_retain(v126);
       v113 = _objc_retain(v123);
       v114 = _objc_retain(v122);
@@ -5672,14 +5672,14 @@ LABEL_30:
 
     else
     {
-      v39 = [v124 domain];
+      domain2 = [v124 domain];
       v40 = 0;
-      if ([v39 isEqual:AKAppleIDAuthenticationErrorDomain])
+      if ([domain2 isEqual:AKAppleIDAuthenticationErrorDomain])
       {
         v40 = [v124 code] == -7016;
       }
 
-      _objc_release(v39);
+      _objc_release(domain2);
       if (v40)
       {
         oslog = _AKLogSystem();
@@ -5693,14 +5693,14 @@ LABEL_30:
         }
 
         objc_storeStrong(&oslog, 0);
-        v36 = v129;
+        v36 = selfCopy;
         v35 = v126;
         v94 = _NSConcreteStackBlock;
         v95 = -1073741824;
         v96 = 0;
         v97 = sub_1000A9A80;
         v98 = &unk_100321E88;
-        v99 = _objc_retain(v129);
+        v99 = _objc_retain(selfCopy);
         v100 = _objc_retain(v126);
         v101 = _objc_retain(v123);
         v102 = _objc_retain(v122);
@@ -5756,8 +5756,8 @@ LABEL_30:
         }
 
         objc_storeStrong(&v87, 0);
-        v27 = [v124 userInfo];
-        v28 = [v27 objectForKeyedSubscript:NSUnderlyingErrorKey];
+        userInfo = [v124 userInfo];
+        v28 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
         if (v28)
         {
           v8 = _objc_retain(v28);
@@ -5770,36 +5770,36 @@ LABEL_30:
 
         v84 = v8;
         _objc_release(v28);
-        _objc_release(v27);
+        _objc_release(userInfo);
         (*(v123 + 2))();
         objc_storeStrong(&v84, 0);
       }
 
       else
       {
-        v25 = [v124 domain];
-        v26 = 0;
-        if ([v25 isEqual:AKAppleIDAuthenticationErrorDomain])
+        domain3 = [v124 domain];
+        _keepAlive = 0;
+        if ([domain3 isEqual:AKAppleIDAuthenticationErrorDomain])
         {
-          v26 = [v126 _keepAlive];
+          _keepAlive = [v126 _keepAlive];
         }
 
-        _objc_release(v25);
-        if (v26)
+        _objc_release(domain3);
+        if (_keepAlive)
         {
-          [(AKAppleIDAuthenticationService *)v129 _keepLoginAliveWithContext:v126 error:v124 andCompletion:v123];
+          [(AKAppleIDAuthenticationService *)selfCopy _keepLoginAliveWithContext:v126 error:v124 andCompletion:v123];
         }
 
         else
         {
-          v23 = [v124 domain];
+          domain4 = [v124 domain];
           v24 = 0;
-          if ([v23 isEqual:AKAppleIDAuthenticationErrorDomain])
+          if ([domain4 isEqual:AKAppleIDAuthenticationErrorDomain])
           {
             v24 = [v124 code] == -7048;
           }
 
-          _objc_release(v23);
+          _objc_release(domain4);
           if (v24)
           {
             v83 = _AKLogSystem();
@@ -5829,7 +5829,7 @@ LABEL_30:
             }
 
             objc_storeStrong(&v80, 0);
-            [(AKAppleIDAuthenticationService *)v129 _showAlertForVerificationError:v124 context:v126 completion:v123];
+            [(AKAppleIDAuthenticationService *)selfCopy _showAlertForVerificationError:v124 context:v126 completion:v123];
           }
 
           else
@@ -5863,7 +5863,7 @@ LABEL_30:
     }
 
     objc_storeStrong(&v66, 0);
-    v12 = v129;
+    v12 = selfCopy;
     v9 = location[0];
     v10 = v127;
     v11 = v126;
@@ -5874,7 +5874,7 @@ LABEL_30:
     v58 = &unk_100321ED8;
     v59 = _objc_retain(v125);
     v62 = _objc_retain(v122);
-    v60 = _objc_retain(v129);
+    v60 = _objc_retain(selfCopy);
     v61 = _objc_retain(v126);
     v63 = _objc_retain(v123);
     [(AKAppleIDAuthenticationService *)v12 _verifyUsername:v9 password:v10 context:v11 completion:&v54];
@@ -5887,7 +5887,7 @@ LABEL_30:
 
   else
   {
-    v18 = v129;
+    v18 = selfCopy;
     v15 = v126;
     v16 = v127;
     v17 = location[0];
@@ -5898,7 +5898,7 @@ LABEL_30:
     v71 = &unk_100321EB0;
     v74 = _objc_retain(v123);
     v72 = _objc_retain(v126);
-    v73 = _objc_retain(v129);
+    v73 = _objc_retain(selfCopy);
     v75 = _objc_retain(v122);
     [(AKAppleIDAuthenticationService *)v18 _handleMissingUsernameOrPasswordForContext:v15 password:v16 username:v17 completion:&v67];
     objc_storeStrong(&v75, 0);
@@ -5919,16 +5919,16 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_keepLoginAliveWithContext:(id)a3 error:(id)a4 andCompletion:(id)a5
+- (void)_keepLoginAliveWithContext:(id)context error:(id)error andCompletion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, error);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, completion);
   v11 = _AKLogSystem();
   v10 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -5942,12 +5942,12 @@ LABEL_30:
   objc_storeStrong(&v11, 0);
   if (!v13 || [v13 ak_isUserCancelError])
   {
-    [(AKAppleIDAuthenticationService *)v15 _authenticateWithContext:location[0] completion:v12];
+    [(AKAppleIDAuthenticationService *)selfCopy _authenticateWithContext:location[0] completion:v12];
   }
 
   else
   {
-    [(AKAppleIDAuthenticationService *)v15 _showAlertForVerificationError:v13 context:location[0] completion:v12];
+    [(AKAppleIDAuthenticationService *)selfCopy _showAlertForVerificationError:v13 context:location[0] completion:v12];
   }
 
   objc_storeStrong(&v12, 0);
@@ -5955,22 +5955,22 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleMissingUsernameOrPasswordForContext:(id)a3 password:(id)a4 username:(id)a5 completion:(id)a6
+- (void)_handleMissingUsernameOrPasswordForContext:(id)context password:(id)password username:(id)username completion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, password);
   v31 = 0;
-  objc_storeStrong(&v31, a5);
+  objc_storeStrong(&v31, username);
   v30 = 0;
-  objc_storeStrong(&v30, a6);
+  objc_storeStrong(&v30, completion);
   if ([v31 length])
   {
     [location[0] setUsername:v31];
-    v11 = v34;
+    v11 = selfCopy;
     v10 = location[0];
     v22 = _NSConcreteStackBlock;
     v23 = -1073741824;
@@ -5978,7 +5978,7 @@ LABEL_30:
     v25 = sub_1000AA9CC;
     v26 = &unk_1003217F8;
     v27 = _objc_retain(location[0]);
-    v28 = _objc_retain(v34);
+    v28 = _objc_retain(selfCopy);
     v29 = _objc_retain(v30);
     [(AKAppleIDAuthenticationService *)v11 refreshAuthMetadataWithContext:v10 completion:&v22];
     objc_storeStrong(&v29, 0);
@@ -6015,7 +6015,7 @@ LABEL_30:
     }
 
     v15 = [NSError ak_errorWithCode:-7012];
-    [(AKAppleIDAuthenticationService *)v34 _showAlertForVerificationError:v15 context:location[0] completion:v30];
+    [(AKAppleIDAuthenticationService *)selfCopy _showAlertForVerificationError:v15 context:location[0] completion:v30];
     objc_storeStrong(&v15, 0);
   }
 
@@ -6025,16 +6025,16 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleVerificationError:(id)a3 forContext:(id)a4 completion:(id)a5
+- (void)_handleVerificationError:(id)error forContext:(id)context completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, context);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, completion);
   if ([location[0] ak_isUserCancelError])
   {
     (*(v13 + 2))(v13, 0, location[0]);
@@ -6044,14 +6044,14 @@ LABEL_30:
   {
     v12 = 0;
     v10 = 0;
-    v7 = [(AKAppleIDAuthenticationService *)v16 _incrementAttemptsForContext:v14 error:&v10];
+    v7 = [(AKAppleIDAuthenticationService *)selfCopy _incrementAttemptsForContext:v14 error:&v10];
     objc_storeStrong(&v12, v10);
     v11 = v7;
     if (v7)
     {
       if ([v14 _capabilityForUIDisplay] == 2)
       {
-        [(AKAppleIDAuthenticationService *)v16 _showAlertForVerificationError:v12 context:v14 completion:v13];
+        [(AKAppleIDAuthenticationService *)selfCopy _showAlertForVerificationError:v12 context:v14 completion:v13];
       }
 
       else
@@ -6065,7 +6065,7 @@ LABEL_30:
 
     else
     {
-      [(AKAppleIDAuthenticationService *)v16 _showAlertForVerificationError:location[0] context:v14 completion:v13];
+      [(AKAppleIDAuthenticationService *)selfCopy _showAlertForVerificationError:location[0] context:v14 completion:v13];
     }
 
     objc_storeStrong(&v12, 0);
@@ -6073,7 +6073,7 @@ LABEL_30:
 
   else
   {
-    [(AKAppleIDAuthenticationService *)v16 _showAlertForVerificationError:location[0] context:v14 completion:v13];
+    [(AKAppleIDAuthenticationService *)selfCopy _showAlertForVerificationError:location[0] context:v14 completion:v13];
   }
 
   objc_storeStrong(&v13, 0);
@@ -6081,24 +6081,24 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_showAlertForVerificationError:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_showAlertForVerificationError:(id)error context:(id)context completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, context);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  v9 = v20;
+  objc_storeStrong(&v17, completion);
+  v9 = selfCopy;
   v7 = location[0];
   v8 = v18;
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_1000AB0F4;
   v13 = &unk_100321DC0;
-  v14 = _objc_retain(v20);
+  v14 = _objc_retain(selfCopy);
   v15 = _objc_retain(v18);
   v16 = _objc_retain(v17);
   [(AKAppleIDAuthenticationService *)v9 _showAlertForLoginError:v7 context:v8 completion:?];
@@ -6110,21 +6110,21 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_incrementAttemptsForContext:(id)a3 error:(id *)a4
+- (BOOL)_incrementAttemptsForContext:(id)context error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
-  v12 = [location[0] username];
+  objc_storeStrong(location, context);
+  errorCopy = error;
+  username = [location[0] username];
   v13 = 0;
-  if ([v12 length])
+  if ([username length])
   {
     v13 = [location[0] isUsernameEditable] == 0;
   }
 
-  _objc_release(v12);
+  _objc_release(username);
   if (!v13)
   {
     goto LABEL_12;
@@ -6142,8 +6142,8 @@ LABEL_30:
 
   objc_storeStrong(&v18, 0);
   [location[0] set_attemptIndex:{objc_msgSend(location[0], "_attemptIndex") + 1}];
-  v9 = [location[0] _attemptIndex];
-  if (v9 >= [location[0] maximumLoginAttempts])
+  _attemptIndex = [location[0] _attemptIndex];
+  if (_attemptIndex >= [location[0] maximumLoginAttempts])
   {
     v16 = _AKLogSystem();
     v15 = OS_LOG_TYPE_DEFAULT;
@@ -6156,11 +6156,11 @@ LABEL_30:
     }
 
     objc_storeStrong(&v16, 0);
-    if (v19)
+    if (errorCopy)
     {
       v6 = [NSError ak_errorWithCode:-7028];
       v4 = v6;
-      *v19 = v6;
+      *errorCopy = v6;
     }
 
     v21 = 1;
@@ -6176,20 +6176,20 @@ LABEL_12:
   return v21 & 1;
 }
 
-- (id)_alertDetailsForError:(id)a3 context:(id)a4
+- (id)_alertDetailsForError:(id)error context:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, context);
   v10 = objc_opt_new();
   v7 = v10;
   v6 = location[0];
-  v8 = [v11 username];
+  username = [v11 username];
   v9 = [v7 createAlertDetailsWithError:v6 username:?];
-  _objc_release(v8);
+  _objc_release(username);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
@@ -6197,17 +6197,17 @@ LABEL_12:
   return v9;
 }
 
-- (void)_showAlertForLoginError:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_showAlertForLoginError:(id)error context:(id)context completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, context);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  v8 = [(AKAppleIDAuthenticationService *)v12 _alertDetailsForError:location[0] context:v10];
+  objc_storeStrong(&v9, completion);
+  v8 = [(AKAppleIDAuthenticationService *)selfCopy _alertDetailsForError:location[0] context:v10];
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -6216,37 +6216,37 @@ LABEL_12:
   }
 
   objc_storeStrong(&oslog, 0);
-  [(AKAuthenticationUILiaison *)v12->_authUILiaison presentLoginAlertForContext:v10 client:v12->_client withAlertDetails:v8 completion:v9];
+  [(AKAuthenticationUILiaison *)selfCopy->_authUILiaison presentLoginAlertForContext:v10 client:selfCopy->_client withAlertDetails:v8 completion:v9];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_checkFreshnessAndVerifyWithPassword:(id)a3 serverResponse:(id)a4 additionalData:(id)a5 secondaryActionError:(id)a6 context:(id)a7 newServerResponse:(id)a8 username:(id)a9 completion:(id)a10
+- (void)_checkFreshnessAndVerifyWithPassword:(id)password serverResponse:(id)response additionalData:(id)data secondaryActionError:(id)error context:(id)context newServerResponse:(id)serverResponse username:(id)username completion:(id)self0
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, password);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, response);
   v30 = 0;
-  objc_storeStrong(&v30, a5);
+  objc_storeStrong(&v30, data);
   v29 = 0;
-  objc_storeStrong(&v29, a6);
+  objc_storeStrong(&v29, error);
   v28 = 0;
-  objc_storeStrong(&v28, a7);
+  objc_storeStrong(&v28, context);
   v27 = 0;
-  objc_storeStrong(&v27, a8);
+  objc_storeStrong(&v27, serverResponse);
   v26 = 0;
-  objc_storeStrong(&v26, a9);
+  objc_storeStrong(&v26, username);
   v25 = 0;
-  objc_storeStrong(&v25, a10);
+  objc_storeStrong(&v25, completion);
   v24 = _objc_retain(location[0]);
-  v10 = [v31 secondaryActionURLKey];
-  v18 = v10 != 0;
-  _objc_release(v10);
+  secondaryActionURLKey = [v31 secondaryActionURLKey];
+  v18 = secondaryActionURLKey != 0;
+  _objc_release(secondaryActionURLKey);
   v23 = v18;
   v21 = 0;
   v19 = 0;
@@ -6271,7 +6271,7 @@ LABEL_12:
   }
 
   v20 = [v30 objectForKeyedSubscript:AKAuthenticationNewAppleIDSetupInfoKey];
-  [(AKAppleIDAuthenticationService *)v33 _handleVerificationCompletionForUsername:v26 password:v24 serverResponse:v27 didShowServerUI:v23 continuationData:v20 error:v29 context:v28 completion:v25];
+  [(AKAppleIDAuthenticationService *)selfCopy _handleVerificationCompletionForUsername:v26 password:v24 serverResponse:v27 didShowServerUI:v23 continuationData:v20 error:v29 context:v28 completion:v25];
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v25, 0);
@@ -6284,23 +6284,23 @@ LABEL_12:
   objc_storeStrong(location, 0);
 }
 
-- (void)_verifyUsername:(id)a3 password:(id)a4 context:(id)a5 completion:(id)a6
+- (void)_verifyUsername:(id)username password:(id)password context:(id)context completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, password);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
+  objc_storeStrong(&v27, context);
   v26 = 0;
-  objc_storeStrong(&v26, a6);
+  objc_storeStrong(&v26, completion);
   [v27 setUsername:location[0]];
   v13 = +[AKFeatureManager sharedManager];
-  v14 = [v13 isAuthenticationTelemetryEnabled];
+  isAuthenticationTelemetryEnabled = [v13 isAuthenticationTelemetryEnabled];
   _objc_release(v13);
-  if (v14)
+  if (isAuthenticationTelemetryEnabled)
   {
     v8 = v27;
     v9 = [v27 authKitAccount:?];
@@ -6308,9 +6308,9 @@ LABEL_12:
     _objc_release(v9);
   }
 
-  v25 = [(AKAppleIDAuthenticationService *)v30 _srpAuthContextHelperWithContext:v27];
+  v25 = [(AKAppleIDAuthenticationService *)selfCopy _srpAuthContextHelperWithContext:v27];
   [v25 setPassword:v28];
-  v7 = v30;
+  v7 = selfCopy;
   v6 = v25;
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
@@ -6318,7 +6318,7 @@ LABEL_12:
   v18 = sub_1000ABE54;
   v19 = &unk_100321F00;
   v20 = _objc_retain(v27);
-  v21 = _objc_retain(v30);
+  v21 = _objc_retain(selfCopy);
   v22 = _objc_retain(v28);
   v23 = _objc_retain(location[0]);
   v24 = _objc_retain(v26);
@@ -6335,64 +6335,64 @@ LABEL_12:
   objc_storeStrong(location, 0);
 }
 
-- (void)_performPasswordlessSRPAuthWithContext:(id)a3 completion:(id)a4
+- (void)_performPasswordlessSRPAuthWithContext:(id)context completion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(AKAppleIDAuthenticationService *)v7 _performPasswordlessSRPAuthWithContext:location[0] client:v7->_client completion:v5];
+  objc_storeStrong(&v5, completion);
+  [(AKAppleIDAuthenticationService *)selfCopy _performPasswordlessSRPAuthWithContext:location[0] client:selfCopy->_client completion:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_performPasswordlessSRPAuthWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_performPasswordlessSRPAuthWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, client);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(AKAppleIDAuthenticationService *)v10 _performPasswordlessSRPAuthWithAccount:0 context:location[0] client:v8 completion:v7];
+  objc_storeStrong(&v7, completion);
+  [(AKAppleIDAuthenticationService *)selfCopy _performPasswordlessSRPAuthWithAccount:0 context:location[0] client:v8 completion:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_performPasswordlessSRPAuthWithAccount:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_performPasswordlessSRPAuthWithAccount:(id)account context:(id)context completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, context);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(AKAppleIDAuthenticationService *)v10 _performPasswordlessSRPAuthWithAccount:location[0] context:v8 client:v10->_client completion:v7];
+  objc_storeStrong(&v7, completion);
+  [(AKAppleIDAuthenticationService *)selfCopy _performPasswordlessSRPAuthWithAccount:location[0] context:v8 client:selfCopy->_client completion:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_performPasswordlessSRPAuthWithAccount:(id)a3 context:(id)a4 client:(id)a5 completion:(id)a6
+- (void)_performPasswordlessSRPAuthWithAccount:(id)account context:(id)context client:(id)client completion:(id)completion
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v46 = 0;
-  objc_storeStrong(&v46, a4);
+  objc_storeStrong(&v46, context);
   v45 = 0;
-  objc_storeStrong(&v45, a5);
+  objc_storeStrong(&v45, client);
   v44 = 0;
-  objc_storeStrong(&v44, a6);
-  v43 = [v46 username];
+  objc_storeStrong(&v44, completion);
+  username = [v46 username];
   if (location[0])
   {
     v42 = _AKLogSystem();
@@ -6404,40 +6404,40 @@ LABEL_12:
     }
 
     objc_storeStrong(&v42, 0);
-    v6 = [location[0] username];
-    v7 = v43;
-    v43 = v6;
+    username2 = [location[0] username];
+    v7 = username;
+    username = username2;
     _objc_release(v7);
-    [v46 setUsername:v43];
+    [v46 setUsername:username];
   }
 
   v22 = +[AKFeatureManager sharedManager];
-  v23 = [v22 isAuthenticationTelemetryEnabled];
+  isAuthenticationTelemetryEnabled = [v22 isAuthenticationTelemetryEnabled];
   _objc_release(v22);
-  if (v23)
+  if (isAuthenticationTelemetryEnabled)
   {
     [AKAnalyticsSender sendAnalyticsEvent:@"com.apple.authkit.passwordlessAuthStart" context:v46 account:location[0] error:0];
   }
 
-  v40 = [(AKAppleIDAuthenticationService *)v48 _srpAuthContextHelperWithContext:v46];
+  v40 = [(AKAppleIDAuthenticationService *)selfCopy _srpAuthContextHelperWithContext:v46];
   [v40 setAuthKitAccount:location[0]];
-  v21 = [v46 proxiedToken];
+  proxiedToken = [v46 proxiedToken];
   [v40 setProxiedToken:?];
-  _objc_release(v21);
+  _objc_release(proxiedToken);
   v39 = _AKLogSystem();
   v38 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v46 passwordlessToken];
+    passwordlessToken = [v46 passwordlessToken];
     v8 = @"YES";
-    if (!v20)
+    if (!passwordlessToken)
     {
       v8 = @"NO";
     }
 
     v18 = v8;
-    v19 = [v46 idmsDataToken];
-    if (v19)
+    idmsDataToken = [v46 idmsDataToken];
+    if (idmsDataToken)
     {
       v9 = @"YES";
     }
@@ -6449,38 +6449,38 @@ LABEL_12:
 
     sub_10001B098(v49, v18, v9);
     _os_log_impl(&_mh_execute_header, v39, v38, "PasswordlessSRP with passwordlessToken: %@ idmsDataToken: %@", v49, 0x16u);
-    _objc_release(v19);
-    _objc_release(v20);
+    _objc_release(idmsDataToken);
+    _objc_release(passwordlessToken);
   }
 
   objc_storeStrong(&v39, 0);
-  v17 = [v46 passwordlessToken];
-  _objc_release(v17);
-  if (v17)
+  passwordlessToken2 = [v46 passwordlessToken];
+  _objc_release(passwordlessToken2);
+  if (passwordlessToken2)
   {
-    v15 = [v46 passwordlessToken];
+    passwordlessToken3 = [v46 passwordlessToken];
     [v40 setPasswordlessToken:?];
-    _objc_release(v15);
-    v16 = [v46 idmsDataToken];
-    _objc_release(v16);
-    if (v16)
+    _objc_release(passwordlessToken3);
+    idmsDataToken2 = [v46 idmsDataToken];
+    _objc_release(idmsDataToken2);
+    if (idmsDataToken2)
     {
-      v14 = [v46 idmsDataToken];
+      idmsDataToken3 = [v46 idmsDataToken];
       [v40 setIdmsDataToken:?];
-      _objc_release(v14);
+      _objc_release(idmsDataToken3);
     }
   }
 
-  v13 = [v46 idmsData];
-  _objc_release(v13);
-  if (v13)
+  idmsData = [v46 idmsData];
+  _objc_release(idmsData);
+  if (idmsData)
   {
-    v12 = [v46 idmsData];
+    idmsData2 = [v46 idmsData];
     [v40 setIdmsData:?];
-    _objc_release(v12);
+    _objc_release(idmsData2);
   }
 
-  v11 = v48;
+  v11 = selfCopy;
   v10 = v40;
   v27 = _NSConcreteStackBlock;
   v28 = -1073741824;
@@ -6488,10 +6488,10 @@ LABEL_12:
   v30 = sub_1000AD200;
   v31 = &unk_100321F78;
   v32 = _objc_retain(v40);
-  v33 = _objc_retain(v43);
+  v33 = _objc_retain(username);
   v34 = _objc_retain(v46);
   v37 = _objc_retain(v44);
-  v35 = _objc_retain(v48);
+  v35 = _objc_retain(selfCopy);
   v36 = _objc_retain(v45);
   [(AKAppleIDAuthenticationService *)v11 _performSRPAuthenticationWithContext:v10 completion:&v27];
   objc_storeStrong(&v36, 0);
@@ -6501,25 +6501,25 @@ LABEL_12:
   objc_storeStrong(&v33, 0);
   objc_storeStrong(&v32, 0);
   objc_storeStrong(&v40, 0);
-  objc_storeStrong(&v43, 0);
+  objc_storeStrong(&username, 0);
   objc_storeStrong(&v44, 0);
   objc_storeStrong(&v45, 0);
   objc_storeStrong(&v46, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_srpAuthContextHelperWithContext:(id)a3
+- (id)_srpAuthContextHelperWithContext:(id)context
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v3 = [AKSRPAuthenticationContextHelper alloc];
   v7 = [(AKSRPAuthenticationContextHelper *)v3 initWithContext:location[0]];
-  v5 = [location[0] username];
+  username = [location[0] username];
   [(AKSRPContextHelper *)v7 setUsername:?];
-  _objc_release(v5);
-  [(AKSRPContextHelper *)v7 setClient:v9->_client];
+  _objc_release(username);
+  [(AKSRPContextHelper *)v7 setClient:selfCopy->_client];
   v6 = _objc_retain(v7);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
@@ -6527,18 +6527,18 @@ LABEL_12:
   return v6;
 }
 
-- (void)_performSRPAuthenticationWithContext:(id)a3 completion:(id)a4
+- (void)_performSRPAuthenticationWithContext:(id)context completion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, completion);
   v11 = +[AKConfiguration sharedConfiguration];
-  v12 = [v11 shouldFakeAuthSuccess];
+  shouldFakeAuthSuccess = [v11 shouldFakeAuthSuccess];
   _objc_release(v11);
-  if (v12 == 1)
+  if (shouldFakeAuthSuccess == 1)
   {
     v24 = _AKLogSystem();
     v23 = OS_LOG_TYPE_DEFAULT;
@@ -6557,28 +6557,28 @@ LABEL_12:
 
   else
   {
-    v6 = [location[0] authContext];
-    v7 = [v6 authenticationMode];
-    _objc_release(v6);
-    if (v7)
+    authContext = [location[0] authContext];
+    authenticationMode = [authContext authenticationMode];
+    _objc_release(authContext);
+    if (authenticationMode)
     {
-      [(AKAppleIDAuthenticationService *)v27 _performSafeSRPAuthenticationWithContext:location[0] completion:v25];
+      [(AKAppleIDAuthenticationService *)selfCopy _performSafeSRPAuthenticationWithContext:location[0] completion:v25];
     }
 
     else
     {
-      v4 = v27;
-      v5 = [location[0] authContext];
+      v4 = selfCopy;
+      authContext2 = [location[0] authContext];
       v13 = _NSConcreteStackBlock;
       v14 = -1073741824;
       v15 = 0;
       v16 = sub_1000AE574;
       v17 = &unk_1003217F8;
-      v18 = _objc_retain(v27);
+      v18 = _objc_retain(selfCopy);
       v19 = _objc_retain(location[0]);
       v20 = _objc_retain(v25);
-      [(AKAppleIDAuthenticationService *)v4 _refreshAuthModeIfNecessaryForContext:v5 completion:&v13];
-      _objc_release(v5);
+      [(AKAppleIDAuthenticationService *)v4 _refreshAuthModeIfNecessaryForContext:authContext2 completion:&v13];
+      _objc_release(authContext2);
       objc_storeStrong(&v20, 0);
       objc_storeStrong(&v19, 0);
       objc_storeStrong(&v18, 0);
@@ -6591,29 +6591,29 @@ LABEL_12:
   objc_storeStrong(location, 0);
 }
 
-- (void)_performSafeSRPAuthenticationWithContext:(id)a3 completion:(id)a4
+- (void)_performSafeSRPAuthenticationWithContext:(id)context completion:(id)completion
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, completion);
   v34 = [location[0] authKitAccount:0];
-  v15 = [location[0] authContext];
+  authContext = [location[0] authContext];
   v31 = 0;
   v29 = 0;
   v27 = 0;
   v25 = 0;
   v23 = 0;
   v16 = 1;
-  if ([v15 authenticationMode] != 1)
+  if ([authContext authenticationMode] != 1)
   {
-    v32 = [location[0] authContext];
+    authContext2 = [location[0] authContext];
     v31 = 1;
-    v30 = [v32 companionKeyEnvelope];
+    companionKeyEnvelope = [authContext2 companionKeyEnvelope];
     v29 = 1;
-    if (!v30 || (v28 = [location[0] authContext], v27 = 1, v26 = objc_msgSend(v28, "companionDevice"), v25 = 1, v16 = 1, !v26))
+    if (!companionKeyEnvelope || (v28 = [location[0] authContext], v27 = 1, v26 = objc_msgSend(v28, "companionDevice"), v25 = 1, v16 = 1, !v26))
     {
       v24 = +[AKAccountManager sharedInstance];
       v23 = 1;
@@ -6638,15 +6638,15 @@ LABEL_12:
 
   if (v29)
   {
-    _objc_release(v30);
+    _objc_release(companionKeyEnvelope);
   }
 
   if (v31)
   {
-    _objc_release(v32);
+    _objc_release(authContext2);
   }
 
-  _objc_release(v15);
+  _objc_release(authContext);
   v33 = v16;
   if (!v16)
   {
@@ -6668,20 +6668,20 @@ LABEL_12:
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      v12 = [location[0] authContext];
-      v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 serviceType]);
-      v10 = [location[0] client];
-      v9 = [v10 name];
-      v8 = [location[0] authContext];
-      v7 = [v8 _proxiedAppName];
-      sub_10004DCC8(v38, v11, v9, v7);
+      authContext3 = [location[0] authContext];
+      v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [authContext3 serviceType]);
+      client = [location[0] client];
+      name = [client name];
+      authContext4 = [location[0] authContext];
+      _proxiedAppName = [authContext4 _proxiedAppName];
+      sub_10004DCC8(v38, v11, name, _proxiedAppName);
       _os_log_error_impl(&_mh_execute_header, oslog, type, "SRP auth attempted with an invalid context: %@ - %@ - %@", v38, 0x20u);
-      _objc_release(v7);
-      _objc_release(v8);
-      _objc_release(v9);
-      _objc_release(v10);
+      _objc_release(_proxiedAppName);
+      _objc_release(authContext4);
+      _objc_release(name);
+      _objc_release(client);
       _objc_release(v11);
-      _objc_release(v12);
+      _objc_release(authContext3);
     }
 
     objc_storeStrong(&oslog, 0);
@@ -6697,7 +6697,7 @@ LABEL_12:
   {
 LABEL_22:
     v4 = [AKSRPService alloc];
-    v17 = [(AKSRPService *)v4 initWithClient:v37->_client];
+    v17 = [(AKSRPService *)v4 initWithClient:selfCopy->_client];
     [(AKSRPService *)v17 performSRPContractWithContext:location[0] completion:v35];
     objc_storeStrong(&v17, 0);
     v18 = 0;
@@ -6708,30 +6708,30 @@ LABEL_22:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleVerificationCompletionForUsername:(id)a3 password:(id)a4 serverResponse:(id)a5 didShowServerUI:(BOOL)a6 continuationData:(id)a7 error:(id)a8 context:(id)a9 completion:(id)a10
+- (void)_handleVerificationCompletionForUsername:(id)username password:(id)password serverResponse:(id)response didShowServerUI:(BOOL)i continuationData:(id)data error:(id)error context:(id)context completion:(id)self0
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, password);
   v34 = 0;
-  objc_storeStrong(&v34, a5);
-  v33 = a6;
+  objc_storeStrong(&v34, response);
+  iCopy = i;
   v32 = 0;
-  objc_storeStrong(&v32, a7);
+  objc_storeStrong(&v32, data);
   v31 = 0;
-  objc_storeStrong(&v31, a8);
+  objc_storeStrong(&v31, error);
   v30 = 0;
-  objc_storeStrong(&v30, a9);
+  objc_storeStrong(&v30, context);
   v29 = 0;
-  objc_storeStrong(&v29, a10);
-  v22 = v37;
+  objc_storeStrong(&v29, completion);
+  v22 = selfCopy;
   v16 = location[0];
   v17 = v35;
   v18 = v34;
-  v19 = v33;
+  v19 = iCopy;
   v20 = v32;
   v21 = v31;
   v15 = v30;
@@ -6740,7 +6740,7 @@ LABEL_22:
   v23[2] = sub_1000AEEAC;
   v23[3] = &unk_100321FA0;
   v24 = _objc_retain(v31);
-  v25 = _objc_retain(v37);
+  v25 = _objc_retain(selfCopy);
   v26 = _objc_retain(v30);
   v27 = _objc_retain(v34);
   v28 = _objc_retain(v29);
@@ -6759,38 +6759,38 @@ LABEL_22:
   objc_storeStrong(location, 0);
 }
 
-- (id)authResultsFromServerResponse:(id)a3 inContext:(id)a4
+- (id)authResultsFromServerResponse:(id)response inContext:(id)context
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v6 = [(AKAppleIDAuthenticationService *)v9 authResultsFromServerResponse:location[0] inContext:v7 usernameOverride:0 passwordOverride:0 didShowServerUI:0 continuationData:0 verificationError:?];
+  objc_storeStrong(&v7, context);
+  v6 = [(AKAppleIDAuthenticationService *)selfCopy authResultsFromServerResponse:location[0] inContext:v7 usernameOverride:0 passwordOverride:0 didShowServerUI:0 continuationData:0 verificationError:?];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)authResultsFromServerResponse:(id)a3 inContext:(id)a4 usernameOverride:(id)a5 passwordOverride:(id)a6 didShowServerUI:(BOOL)a7 continuationData:(id)a8 verificationError:(id)a9
+- (id)authResultsFromServerResponse:(id)response inContext:(id)context usernameOverride:(id)override passwordOverride:(id)passwordOverride didShowServerUI:(BOOL)i continuationData:(id)data verificationError:(id)error
 {
-  v163 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v161 = 0;
-  objc_storeStrong(&v161, a4);
+  objc_storeStrong(&v161, context);
   v160 = 0;
-  objc_storeStrong(&v160, a5);
+  objc_storeStrong(&v160, override);
   v159 = 0;
-  objc_storeStrong(&v159, a6);
-  v158 = a7;
+  objc_storeStrong(&v159, passwordOverride);
+  iCopy = i;
   v157 = 0;
-  objc_storeStrong(&v157, a8);
+  objc_storeStrong(&v157, data);
   v156 = 0;
-  objc_storeStrong(&v156, a9);
+  objc_storeStrong(&v156, error);
   v155 = _AKLogSystem();
   v154 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v155, OS_LOG_TYPE_DEBUG))
@@ -6800,9 +6800,9 @@ LABEL_22:
   }
 
   objc_storeStrong(&v155, 0);
-  v99 = [location[0] appleID];
-  _objc_release(v99);
-  if (v99)
+  appleID = [location[0] appleID];
+  _objc_release(appleID);
+  if (appleID)
   {
     v153 = _AKLogSystem();
     v152 = 2;
@@ -6848,13 +6848,13 @@ LABEL_22:
   }
 
   v144 = objc_alloc_init(NSMutableDictionary);
-  v91 = [v161 telemetryFlowID];
+  telemetryFlowID = [v161 telemetryFlowID];
   [v144 setObject:? forKeyedSubscript:?];
-  _objc_release(v91);
-  v92 = [location[0] appleID];
-  if (v92)
+  _objc_release(telemetryFlowID);
+  appleID2 = [location[0] appleID];
+  if (appleID2)
   {
-    v9 = _objc_retain(v92);
+    v9 = _objc_retain(appleID2);
   }
 
   else
@@ -6863,31 +6863,31 @@ LABEL_22:
   }
 
   v143 = v9;
-  _objc_release(v92);
+  _objc_release(appleID2);
   [v144 setObject:v143 forKeyedSubscript:AKAuthenticationUsernameKey];
   if (v143)
   {
     [v161 setUsername:v143];
   }
 
-  v90 = [location[0] altDSID];
-  _objc_release(v90);
-  if (v90)
+  altDSID = [location[0] altDSID];
+  _objc_release(altDSID);
+  if (altDSID)
   {
-    v89 = [location[0] altDSID];
+    altDSID2 = [location[0] altDSID];
     [v161 setAltDSID:?];
-    _objc_release(v89);
+    _objc_release(altDSID2);
   }
 
-  v88 = [location[0] passwordEquivalentToken];
-  _objc_release(v88);
-  if (v88)
+  passwordEquivalentToken = [location[0] passwordEquivalentToken];
+  _objc_release(passwordEquivalentToken);
+  if (passwordEquivalentToken)
   {
-    v87 = [location[0] passwordEquivalentToken];
-    v86 = [v87 stringValue];
+    passwordEquivalentToken2 = [location[0] passwordEquivalentToken];
+    stringValue = [passwordEquivalentToken2 stringValue];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v86);
-    _objc_release(v87);
+    _objc_release(stringValue);
+    _objc_release(passwordEquivalentToken2);
   }
 
   else if (!v156)
@@ -6905,21 +6905,21 @@ LABEL_22:
     objc_storeStrong(&v142, 0);
   }
 
-  v83 = [location[0] shortLivedToken];
-  _objc_release(v83);
-  if (v83)
+  shortLivedToken = [location[0] shortLivedToken];
+  _objc_release(shortLivedToken);
+  if (shortLivedToken)
   {
-    v82 = [location[0] shortLivedToken];
-    v81 = [v82 stringValue];
+    shortLivedToken2 = [location[0] shortLivedToken];
+    stringValue2 = [shortLivedToken2 stringValue];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v81);
-    _objc_release(v82);
+    _objc_release(stringValue2);
+    _objc_release(shortLivedToken2);
   }
 
   else
   {
-    v139 = [location[0] masterToken];
-    if (v139)
+    masterToken = [location[0] masterToken];
+    if (masterToken)
     {
       if ([v161 shouldRequestShortLivedToken])
       {
@@ -6934,12 +6934,12 @@ LABEL_22:
         }
 
         objc_storeStrong(&oslog, 0);
-        v78 = [v139 stringValue];
+        stringValue3 = [masterToken stringValue];
         [v144 setObject:? forKeyedSubscript:?];
-        _objc_release(v78);
+        _objc_release(stringValue3);
       }
 
-      else if (-[AKClient hasInternalAccess](v163->_client, "hasInternalAccess") && [location[0] authMode])
+      else if (-[AKClient hasInternalAccess](selfCopy->_client, "hasInternalAccess") && [location[0] authMode])
       {
         v135 = _AKLogSystem();
         v134 = OS_LOG_TYPE_DEFAULT;
@@ -6952,20 +6952,20 @@ LABEL_22:
         }
 
         objc_storeStrong(&v135, 0);
-        v75 = [v139 stringValue];
+        stringValue4 = [masterToken stringValue];
         [v144 setObject:? forKeyedSubscript:?];
-        _objc_release(v75);
+        _objc_release(stringValue4);
       }
     }
 
-    objc_storeStrong(&v139, 0);
+    objc_storeStrong(&masterToken, 0);
   }
 
-  v73 = [location[0] inheritanceBeneficiarySetupToken];
-  v74 = [v73 stringValue];
-  _objc_release(v74);
-  _objc_release(v73);
-  if (v74)
+  inheritanceBeneficiarySetupToken = [location[0] inheritanceBeneficiarySetupToken];
+  stringValue5 = [inheritanceBeneficiarySetupToken stringValue];
+  _objc_release(stringValue5);
+  _objc_release(inheritanceBeneficiarySetupToken);
+  if (stringValue5)
   {
     v132 = _AKLogSystem();
     v131 = OS_LOG_TYPE_DEFAULT;
@@ -6978,44 +6978,44 @@ LABEL_22:
     }
 
     objc_storeStrong(&v132, 0);
-    v70 = [location[0] inheritanceBeneficiarySetupToken];
-    v69 = [v70 stringValue];
+    inheritanceBeneficiarySetupToken2 = [location[0] inheritanceBeneficiarySetupToken];
+    stringValue6 = [inheritanceBeneficiarySetupToken2 stringValue];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v69);
-    _objc_release(v70);
+    _objc_release(stringValue6);
+    _objc_release(inheritanceBeneficiarySetupToken2);
   }
 
-  v68 = [location[0] beneficiaryIdentifier];
-  _objc_release(v68);
-  if (v68)
+  beneficiaryIdentifier = [location[0] beneficiaryIdentifier];
+  _objc_release(beneficiaryIdentifier);
+  if (beneficiaryIdentifier)
   {
-    v67 = [location[0] beneficiaryIdentifier];
+    beneficiaryIdentifier2 = [location[0] beneficiaryIdentifier];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v67);
+    _objc_release(beneficiaryIdentifier2);
   }
 
-  v66 = [location[0] beneficiaryWrappedKey];
-  _objc_release(v66);
-  if (v66)
+  beneficiaryWrappedKey = [location[0] beneficiaryWrappedKey];
+  _objc_release(beneficiaryWrappedKey);
+  if (beneficiaryWrappedKey)
   {
-    v65 = [location[0] beneficiaryWrappedKey];
+    beneficiaryWrappedKey2 = [location[0] beneficiaryWrappedKey];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v65);
+    _objc_release(beneficiaryWrappedKey2);
   }
 
-  v129 = [location[0] dsid];
-  if (v129)
+  dsid = [location[0] dsid];
+  if (dsid)
   {
-    [v144 setObject:v129 forKeyedSubscript:AKAuthenticationDSIDKey];
+    [v144 setObject:dsid forKeyedSubscript:AKAuthenticationDSIDKey];
   }
 
-  v128 = [location[0] altDSID];
-  if (v128)
+  altDSID3 = [location[0] altDSID];
+  if (altDSID3)
   {
-    [v144 setObject:v128 forKeyedSubscript:AKAuthenticationAlternateDSIDKey];
+    [v144 setObject:altDSID3 forKeyedSubscript:AKAuthenticationAlternateDSIDKey];
   }
 
-  if (v158)
+  if (iCopy)
   {
     [v144 setObject:&__kCFBooleanTrue forKeyedSubscript:AKAuthenticationDidShowServerUIKey];
   }
@@ -7037,7 +7037,7 @@ LABEL_22:
 
   if (v159)
   {
-    if (-[AKClient hasInternalAccess](v163->_client, "hasInternalAccess") && [location[0] authMode] != 2)
+    if (-[AKClient hasInternalAccess](selfCopy->_client, "hasInternalAccess") && [location[0] authMode] != 2)
     {
       v126 = _AKLogSystem();
       v125 = OS_LOG_TYPE_DEFAULT;
@@ -7054,13 +7054,13 @@ LABEL_22:
     }
   }
 
-  v62 = [location[0] acceptedTermsInfo];
-  _objc_release(v62);
-  if (v62)
+  acceptedTermsInfo = [location[0] acceptedTermsInfo];
+  _objc_release(acceptedTermsInfo);
+  if (acceptedTermsInfo)
   {
-    v61 = [location[0] acceptedTermsInfo];
+    acceptedTermsInfo2 = [location[0] acceptedTermsInfo];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v61);
+    _objc_release(acceptedTermsInfo2);
   }
 
   if ([location[0] appleIDSecurityLevel])
@@ -7070,22 +7070,22 @@ LABEL_22:
     _objc_release(v60);
   }
 
-  v59 = [location[0] hasSOSActiveDevice];
-  _objc_release(v59);
-  if (v59)
+  hasSOSActiveDevice = [location[0] hasSOSActiveDevice];
+  _objc_release(hasSOSActiveDevice);
+  if (hasSOSActiveDevice)
   {
-    v58 = [location[0] hasSOSActiveDevice];
+    hasSOSActiveDevice2 = [location[0] hasSOSActiveDevice];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v58);
+    _objc_release(hasSOSActiveDevice2);
   }
 
-  v57 = [location[0] SOSNeeded];
-  _objc_release(v57);
-  if (v57)
+  sOSNeeded = [location[0] SOSNeeded];
+  _objc_release(sOSNeeded);
+  if (sOSNeeded)
   {
-    v56 = [location[0] SOSNeeded];
+    sOSNeeded2 = [location[0] SOSNeeded];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v56);
+    _objc_release(sOSNeeded2);
   }
 
   if ([location[0] authMode])
@@ -7128,46 +7128,46 @@ LABEL_22:
   v53 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [location[0] managedOrganizationType]);
   [v144 setObject:? forKeyedSubscript:?];
   _objc_release(v53);
-  v54 = [location[0] managedOrganizationName];
-  _objc_release(v54);
-  if (v54)
+  managedOrganizationName = [location[0] managedOrganizationName];
+  _objc_release(managedOrganizationName);
+  if (managedOrganizationName)
   {
-    v52 = [location[0] managedOrganizationName];
+    managedOrganizationName2 = [location[0] managedOrganizationName];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v52);
+    _objc_release(managedOrganizationName2);
   }
 
-  v51 = [location[0] isNotificationEmailAvailable];
-  _objc_release(v51);
-  if (v51)
+  isNotificationEmailAvailable = [location[0] isNotificationEmailAvailable];
+  _objc_release(isNotificationEmailAvailable);
+  if (isNotificationEmailAvailable)
   {
-    v50 = [location[0] isNotificationEmailAvailable];
+    isNotificationEmailAvailable2 = [location[0] isNotificationEmailAvailable];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v50);
+    _objc_release(isNotificationEmailAvailable2);
   }
 
-  v49 = [location[0] notificationEmail];
-  _objc_release(v49);
-  if (v49)
+  notificationEmail = [location[0] notificationEmail];
+  _objc_release(notificationEmail);
+  if (notificationEmail)
   {
-    v48 = [location[0] notificationEmail];
+    notificationEmail2 = [location[0] notificationEmail];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v48);
+    _objc_release(notificationEmail2);
   }
 
-  v47 = [location[0] custodianSessionID];
-  _objc_release(v47);
-  if (v47)
+  custodianSessionID = [location[0] custodianSessionID];
+  _objc_release(custodianSessionID);
+  if (custodianSessionID)
   {
-    v46 = [location[0] custodianSessionID];
+    custodianSessionID2 = [location[0] custodianSessionID];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v46);
+    _objc_release(custodianSessionID2);
   }
 
-  v45 = [location[0] passwordResetToken];
-  v123 = [v45 stringValue];
-  _objc_release(v45);
-  if (v123 && [(AKClient *)v163->_client hasInternalAccess])
+  passwordResetToken = [location[0] passwordResetToken];
+  stringValue7 = [passwordResetToken stringValue];
+  _objc_release(passwordResetToken);
+  if (stringValue7 && [(AKClient *)selfCopy->_client hasInternalAccess])
   {
     v122 = _AKLogSystem();
     v121 = OS_LOG_TYPE_DEFAULT;
@@ -7180,111 +7180,111 @@ LABEL_22:
     }
 
     objc_storeStrong(&v122, 0);
-    [v144 setObject:v123 forKeyedSubscript:AKAuthenticationPasswordResetTokenKey];
+    [v144 setObject:stringValue7 forKeyedSubscript:AKAuthenticationPasswordResetTokenKey];
   }
 
-  v42 = [location[0] passcodeAuth];
-  _objc_release(v42);
-  if (v42)
+  passcodeAuth = [location[0] passcodeAuth];
+  _objc_release(passcodeAuth);
+  if (passcodeAuth)
   {
-    v41 = [location[0] passcodeAuth];
+    passcodeAuth2 = [location[0] passcodeAuth];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v41);
+    _objc_release(passcodeAuth2);
   }
 
-  v40 = [location[0] hasModernRecoveryKey];
-  _objc_release(v40);
-  if (v40)
+  hasModernRecoveryKey = [location[0] hasModernRecoveryKey];
+  _objc_release(hasModernRecoveryKey);
+  if (hasModernRecoveryKey)
   {
-    v39 = [location[0] hasModernRecoveryKey];
+    hasModernRecoveryKey2 = [location[0] hasModernRecoveryKey];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v39);
+    _objc_release(hasModernRecoveryKey2);
   }
 
-  v32 = [location[0] firstName];
+  firstName = [location[0] firstName];
   [v144 setObject:? forKeyedSubscript:?];
-  _objc_release(v32);
-  v33 = [location[0] lastName];
+  _objc_release(firstName);
+  lastName = [location[0] lastName];
   [v144 setObject:? forKeyedSubscript:?];
-  _objc_release(v33);
-  v34 = [location[0] imageURLString];
+  _objc_release(lastName);
+  imageURLString = [location[0] imageURLString];
   [v144 setObject:? forKeyedSubscript:?];
-  _objc_release(v34);
-  v35 = [location[0] configurationInfo];
+  _objc_release(imageURLString);
+  configurationInfo = [location[0] configurationInfo];
   [v144 setObject:? forKeyedSubscript:?];
-  _objc_release(v35);
-  v36 = [location[0] additionalInfo];
+  _objc_release(configurationInfo);
+  additionalInfo = [location[0] additionalInfo];
   [v144 setObject:? forKeyedSubscript:?];
-  _objc_release(v36);
+  _objc_release(additionalInfo);
   v37 = +[AKFeatureManager sharedManager];
-  v38 = [v37 isBackgroundiCloudSignInEnabled];
+  isBackgroundiCloudSignInEnabled = [v37 isBackgroundiCloudSignInEnabled];
   _objc_release(v37);
-  if (v38)
+  if (isBackgroundiCloudSignInEnabled)
   {
     v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [location[0] canBackgroundiCloudSignIn]);
     [v144 setObject:? forKeyedSubscript:?];
     _objc_release(v31);
   }
 
-  v26 = [location[0] adpCohort];
+  adpCohort = [location[0] adpCohort];
   [v144 setObject:? forKeyedSubscript:?];
-  _objc_release(v26);
-  v27 = [location[0] idmsWalrusStatus];
+  _objc_release(adpCohort);
+  idmsWalrusStatus = [location[0] idmsWalrusStatus];
   [v144 setObject:? forKeyedSubscript:?];
-  _objc_release(v27);
-  v28 = [location[0] passwordlessToken];
-  v29 = [v28 stringValue];
+  _objc_release(idmsWalrusStatus);
+  passwordlessToken = [location[0] passwordlessToken];
+  stringValue8 = [passwordlessToken stringValue];
   v117 = 0;
   v115 = 0;
   v30 = 0;
-  if (v29)
+  if (stringValue8)
   {
-    v118 = [location[0] passwordlessToken];
+    passwordlessToken2 = [location[0] passwordlessToken];
     v117 = 1;
-    v116 = [v118 stringValue];
+    stringValue9 = [passwordlessToken2 stringValue];
     v115 = 1;
-    v30 = [v116 length] != 0;
+    v30 = [stringValue9 length] != 0;
   }
 
   if (v115)
   {
-    _objc_release(v116);
+    _objc_release(stringValue9);
   }
 
   if (v117)
   {
-    _objc_release(v118);
+    _objc_release(passwordlessToken2);
   }
 
-  _objc_release(v29);
-  _objc_release(v28);
+  _objc_release(stringValue8);
+  _objc_release(passwordlessToken);
   v119 = v30;
-  v23 = [location[0] idmsDataToken];
-  v24 = [v23 stringValue];
+  idmsDataToken = [location[0] idmsDataToken];
+  stringValue10 = [idmsDataToken stringValue];
   v112 = 0;
   v110 = 0;
   v25 = 0;
-  if (v24)
+  if (stringValue10)
   {
-    v113 = [location[0] idmsDataToken];
+    idmsDataToken2 = [location[0] idmsDataToken];
     v112 = 1;
-    v111 = [v113 stringValue];
+    stringValue11 = [idmsDataToken2 stringValue];
     v110 = 1;
-    v25 = [v111 length] != 0;
+    v25 = [stringValue11 length] != 0;
   }
 
   if (v110)
   {
-    _objc_release(v111);
+    _objc_release(stringValue11);
   }
 
   if (v112)
   {
-    _objc_release(v113);
+    _objc_release(idmsDataToken2);
   }
 
-  _objc_release(v24);
-  _objc_release(v23);
+  _objc_release(stringValue10);
+  _objc_release(idmsDataToken);
   v114 = v25;
   if (v119)
   {
@@ -7292,16 +7292,16 @@ LABEL_22:
     v108 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v109, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [location[0] passwordlessToken];
+      passwordlessToken3 = [location[0] passwordlessToken];
       v10 = @"YES";
-      if (!v22)
+      if (!passwordlessToken3)
       {
         v10 = @"NO";
       }
 
       v20 = v10;
-      v21 = [location[0] idmsDataToken];
-      if (v21)
+      idmsDataToken3 = [location[0] idmsDataToken];
+      if (idmsDataToken3)
       {
         v11 = @"YES";
       }
@@ -7313,23 +7313,23 @@ LABEL_22:
 
       sub_10001B098(v164, v20, v11);
       _os_log_impl(&_mh_execute_header, v109, v108, "Providing passwordlessToken: %@ idmsDataToken: %@", v164, 0x16u);
-      _objc_release(v21);
-      _objc_release(v22);
+      _objc_release(idmsDataToken3);
+      _objc_release(passwordlessToken3);
     }
 
     objc_storeStrong(&v109, 0);
-    v19 = [location[0] passwordlessToken];
-    v18 = [v19 stringValue];
+    passwordlessToken4 = [location[0] passwordlessToken];
+    stringValue12 = [passwordlessToken4 stringValue];
     [v144 setObject:? forKeyedSubscript:?];
-    _objc_release(v18);
-    _objc_release(v19);
+    _objc_release(stringValue12);
+    _objc_release(passwordlessToken4);
     if (v114)
     {
-      v17 = [location[0] idmsDataToken];
-      v16 = [v17 stringValue];
+      idmsDataToken4 = [location[0] idmsDataToken];
+      stringValue13 = [idmsDataToken4 stringValue];
       [v144 setObject:? forKeyedSubscript:?];
-      _objc_release(v16);
-      _objc_release(v17);
+      _objc_release(stringValue13);
+      _objc_release(idmsDataToken4);
     }
   }
 
@@ -7349,9 +7349,9 @@ LABEL_22:
   }
 
   v13 = _objc_retain(v144);
-  objc_storeStrong(&v123, 0);
-  objc_storeStrong(&v128, 0);
-  objc_storeStrong(&v129, 0);
+  objc_storeStrong(&stringValue7, 0);
+  objc_storeStrong(&altDSID3, 0);
+  objc_storeStrong(&dsid, 0);
   objc_storeStrong(&v143, 0);
   objc_storeStrong(&v144, 0);
   objc_storeStrong(&v156, 0);
@@ -7364,29 +7364,29 @@ LABEL_22:
   return v13;
 }
 
-- (void)_shouldContinueAuthenticatingForUsername:(id)a3 password:(id)a4 serverResponse:(id)a5 didShowServerUI:(BOOL)a6 continuationData:(id)a7 error:(id)a8 context:(id)a9 completion:(id)a10
+- (void)_shouldContinueAuthenticatingForUsername:(id)username password:(id)password serverResponse:(id)response didShowServerUI:(BOOL)i continuationData:(id)data error:(id)error context:(id)context completion:(id)self0
 {
-  v85 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v83 = 0;
-  objc_storeStrong(&v83, a4);
+  objc_storeStrong(&v83, password);
   v82 = 0;
-  objc_storeStrong(&v82, a5);
-  v81 = a6;
+  objc_storeStrong(&v82, response);
+  iCopy = i;
   v80 = 0;
-  objc_storeStrong(&v80, a7);
+  objc_storeStrong(&v80, data);
   v79 = 0;
-  objc_storeStrong(&v79, a8);
+  objc_storeStrong(&v79, error);
   v78 = 0;
-  objc_storeStrong(&v78, a9);
+  objc_storeStrong(&v78, context);
   v77 = 0;
-  objc_storeStrong(&v77, a10);
+  objc_storeStrong(&v77, completion);
   v36 = +[AKFeatureManager sharedManager];
-  v37 = [v36 isAuthenticationTelemetryEnabled];
+  isAuthenticationTelemetryEnabled = [v36 isAuthenticationTelemetryEnabled];
   _objc_release(v36);
-  if (v37)
+  if (isAuthenticationTelemetryEnabled)
   {
     v29 = v78;
     v30 = [v78 authKitAccount:?];
@@ -7402,14 +7402,14 @@ LABEL_22:
   v74 = _objc_retain(v78);
   v75 = _objc_retain(v77);
   v76 = objc_retainBlock(&v69);
-  v27 = [v79 domain];
+  domain = [v79 domain];
   v28 = 0;
-  if ([v27 isEqual:AKAppleIDAuthenticationErrorDomain])
+  if ([domain isEqual:AKAppleIDAuthenticationErrorDomain])
   {
     v28 = [v79 code] == -7014;
   }
 
-  _objc_release(v27);
+  _objc_release(domain);
   if (v28)
   {
     v68 = _AKLogSystem();
@@ -7440,7 +7440,7 @@ LABEL_22:
     }
 
     objc_storeStrong(&v64, 0);
-    if (v81)
+    if (iCopy)
     {
       oslog = _AKLogSystem();
       v60 = OS_LOG_TYPE_DEBUG;
@@ -7472,8 +7472,8 @@ LABEL_22:
 
   else
   {
-    v57 = [v85 authResultsFromServerResponse:v82 inContext:v78 usernameOverride:location[0] passwordOverride:v83 didShowServerUI:v81 continuationData:v80 verificationError:v79];
-    v18 = v85[1];
+    v57 = [selfCopy authResultsFromServerResponse:v82 inContext:v78 usernameOverride:location[0] passwordOverride:v83 didShowServerUI:iCopy continuationData:v80 verificationError:v79];
+    v18 = selfCopy[1];
     v50 = _NSConcreteStackBlock;
     v51 = -1073741824;
     v52 = 0;
@@ -7485,7 +7485,7 @@ LABEL_22:
     v48 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1000194D4(v86, v85[1]);
+      sub_1000194D4(v86, selfCopy[1]);
       _os_log_impl(&_mh_execute_header, v49, v48, "Asking %@ should continue?", v86, 0xCu);
     }
 
@@ -7519,7 +7519,7 @@ LABEL_22:
       v14 = v56;
       v12 = v57;
       v13 = v79;
-      v15 = [v78 _identifier];
+      _identifier = [v78 _identifier];
       v38 = _NSConcreteStackBlock;
       v39 = -1073741824;
       v40 = 0;
@@ -7527,8 +7527,8 @@ LABEL_22:
       v42 = &unk_100322018;
       v43 = _objc_retain(v79);
       v44 = _objc_retain(v76);
-      [v14 shouldContinueWithAuthenticationResults:v12 error:v13 forContextID:v15 completion:&v38];
-      _objc_release(v15);
+      [v14 shouldContinueWithAuthenticationResults:v12 error:v13 forContextID:_identifier completion:&v38];
+      _objc_release(_identifier);
       objc_storeStrong(&v44, 0);
       objc_storeStrong(&v43, 0);
     }
@@ -7551,30 +7551,30 @@ LABEL_22:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleSuccessfulVerificationForContext:(id)a3 withResults:(id)a4 serverResponse:(id)a5 shouldContinue:(BOOL)a6 withError:(id)a7 completion:(id)a8
+- (void)_handleSuccessfulVerificationForContext:(id)context withResults:(id)results serverResponse:(id)response shouldContinue:(BOOL)continue withError:(id)error completion:(id)completion
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, results);
   v29 = 0;
-  objc_storeStrong(&v29, a5);
-  v28 = a6;
+  objc_storeStrong(&v29, response);
+  continueCopy = continue;
   v27 = 0;
-  objc_storeStrong(&v27, a7);
+  objc_storeStrong(&v27, error);
   v26 = 0;
-  objc_storeStrong(&v26, a8);
+  objc_storeStrong(&v26, completion);
   queue = [objc_opt_class() _verificationQueue];
   v14 = _NSConcreteStackBlock;
   v15 = -1073741824;
   v16 = 0;
   v17 = sub_1000B1F60;
   v18 = &unk_100322060;
-  v19 = _objc_retain(v32);
+  v19 = _objc_retain(selfCopy);
   v20 = _objc_retain(location[0]);
-  v25 = v28;
+  v25 = continueCopy;
   v21 = _objc_retain(v29);
   v24 = _objc_retain(v26);
   v22 = _objc_retain(v30);
@@ -7594,12 +7594,12 @@ LABEL_22:
   objc_storeStrong(location, 0);
 }
 
-- (id)_authKitAccountFromContext:(id)a3
+- (id)_authKitAccountFromContext:(id)context
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v16 = [location[0] authKitAccount:0];
   if (v16 || (+[AKAccountManager isAccountsFrameworkAvailable]& 1) == 0)
   {
@@ -7619,25 +7619,25 @@ LABEL_22:
     v14 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [location[0] username];
-      v10 = [location[0] altDSID];
-      sub_1000B2850(v20, v11, v10);
+      username = [location[0] username];
+      altDSID = [location[0] altDSID];
+      sub_1000B2850(v20, username, altDSID);
       _os_log_impl(&_mh_execute_header, v15, v14, "Creating a new authkit account <%{private}@><%{private}@>", v20, 0x16u);
-      _objc_release(v10);
-      _objc_release(v11);
+      _objc_release(altDSID);
+      _objc_release(username);
     }
 
     objc_storeStrong(&v15, 0);
     v7 = [ACAccount alloc];
-    v8 = [(AKAccountManager *)v18->_accountManager authKitAccountTypeWithError:0];
+    v8 = [(AKAccountManager *)selfCopy->_accountManager authKitAccountTypeWithError:0];
     v3 = [v7 initWithAccountType:?];
     v4 = v16;
     v16 = v3;
     _objc_release(v4);
     _objc_release(v8);
-    v9 = [location[0] username];
+    username2 = [location[0] username];
     [v16 setUsername:?];
-    _objc_release(v9);
+    _objc_release(username2);
     v13 = +[AKAccountManager personaIDIfCurrentPersonaIsDataSeparated];
     if (v13)
     {
@@ -7654,62 +7654,62 @@ LABEL_22:
   return v6;
 }
 
-- (void)_provideServiceTokensIfRequiredForContext:(id)a3 authenticationResults:(id)a4 serverResponse:(id)a5 completion:(id)a6
+- (void)_provideServiceTokensIfRequiredForContext:(id)context authenticationResults:(id)results serverResponse:(id)response completion:(id)completion
 {
-  v69 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v67 = 0;
-  objc_storeStrong(&v67, a4);
+  objc_storeStrong(&v67, results);
   v66 = 0;
-  objc_storeStrong(&v66, a5);
+  objc_storeStrong(&v66, response);
   v65 = 0;
-  objc_storeStrong(&v65, a6);
-  v64 = [location[0] serviceIdentifiers];
-  v36 = 1;
+  objc_storeStrong(&v65, completion);
+  serviceIdentifiers = [location[0] serviceIdentifiers];
+  needsNewAppleID = 1;
   if (([location[0] shouldUpdatePersistentServiceTokens] & 1) == 0)
   {
-    v36 = [location[0] needsNewAppleID];
+    needsNewAppleID = [location[0] needsNewAppleID];
   }
 
-  v63 = v36 & 1;
+  v63 = needsNewAppleID & 1;
   v61 = 0;
   v32 = 0;
-  if (v36)
+  if (needsNewAppleID)
   {
-    v62 = [v66 serviceTokens];
+    serviceTokens = [v66 serviceTokens];
     v61 = 1;
-    v32 = v62 != 0;
+    v32 = serviceTokens != 0;
   }
 
   if (v61)
   {
-    _objc_release(v62);
+    _objc_release(serviceTokens);
   }
 
   if (v32)
   {
-    v31 = [v66 serviceTokens];
-    v60 = [v31 allKeys];
-    _objc_release(v31);
-    if (v64)
+    serviceTokens2 = [v66 serviceTokens];
+    allKeys = [serviceTokens2 allKeys];
+    _objc_release(serviceTokens2);
+    if (serviceIdentifiers)
     {
-      v6 = [v64 arrayByAddingObjectsFromArray:v60];
-      v7 = v64;
-      v64 = v6;
+      v6 = [serviceIdentifiers arrayByAddingObjectsFromArray:allKeys];
+      v7 = serviceIdentifiers;
+      serviceIdentifiers = v6;
       _objc_release(v7);
     }
 
     else
     {
-      objc_storeStrong(&v64, v60);
+      objc_storeStrong(&serviceIdentifiers, allKeys);
     }
 
-    objc_storeStrong(&v60, 0);
+    objc_storeStrong(&allKeys, 0);
   }
 
-  if (!v64)
+  if (!serviceIdentifiers)
   {
     v59 = _AKLogSystem();
     v58 = OS_LOG_TYPE_DEFAULT;
@@ -7730,7 +7730,7 @@ LABEL_35:
 
   v56 = objc_alloc_init(NSMutableSet);
   memset(__b, 0, sizeof(__b));
-  v27 = _objc_retain(v64);
+  v27 = _objc_retain(serviceIdentifiers);
   v28 = [v27 countByEnumeratingWithState:__b objects:v70 count:16];
   if (v28)
   {
@@ -7746,10 +7746,10 @@ LABEL_35:
       }
 
       v55 = *(__b[1] + 8 * v25);
-      v21 = [v66 serviceTokens];
-      v22 = [v21 objectForKeyedSubscript:v55];
+      serviceTokens3 = [v66 serviceTokens];
+      v22 = [serviceTokens3 objectForKeyedSubscript:v55];
       _objc_release(v22);
-      _objc_release(v21);
+      _objc_release(serviceTokens3);
       if (!v22)
       {
         [v56 addObject:v55];
@@ -7769,16 +7769,16 @@ LABEL_35:
   }
 
   _objc_release(v27);
-  v53 = [location[0] altDSID];
-  if (!v53)
+  altDSID = [location[0] altDSID];
+  if (!altDSID)
   {
-    v53 = [v66 altDSID];
+    altDSID = [v66 altDSID];
     _objc_release(0);
   }
 
-  v20 = [location[0] dependentAltDSID];
-  _objc_release(v20);
-  if (v20)
+  dependentAltDSID = [location[0] dependentAltDSID];
+  _objc_release(dependentAltDSID);
+  if (dependentAltDSID)
   {
     oslog = _AKLogSystem();
     v51 = OS_LOG_TYPE_DEFAULT;
@@ -7792,10 +7792,10 @@ LABEL_35:
 
     objc_storeStrong(&oslog, 0);
     [location[0] setShouldUpdatePersistentServiceTokens:0];
-    v16 = v69;
-    v17 = [v66 serviceTokens];
+    v16 = selfCopy;
+    serviceTokens4 = [v66 serviceTokens];
     [AKAppleIDAuthenticationService _completeAuthenticationWithServiceTokens:v16 tokenFetchError:"_completeAuthenticationWithServiceTokens:tokenFetchError:altDSID:authenticationResults:context:completion:" altDSID:? authenticationResults:? context:? completion:?];
-    _objc_release(v17);
+    _objc_release(serviceTokens4);
     v49 = 1;
   }
 
@@ -7803,11 +7803,11 @@ LABEL_35:
   {
     if ([v56 count])
     {
-      v10 = v69;
-      v13 = [v56 allObjects];
-      v12 = [location[0] username];
-      v8 = v53;
-      v11 = [v66 masterToken];
+      v10 = selfCopy;
+      allObjects = [v56 allObjects];
+      username = [location[0] username];
+      v8 = altDSID;
+      masterToken = [v66 masterToken];
       v9 = location[0];
       v37 = _NSConcreteStackBlock;
       v38 = -1073741824;
@@ -7815,16 +7815,16 @@ LABEL_35:
       v40 = sub_1000B31B8;
       v41 = &unk_100322088;
       v42 = _objc_retain(v56);
-      v43 = _objc_retain(v69);
+      v43 = _objc_retain(selfCopy);
       v44 = _objc_retain(v66);
-      v45 = _objc_retain(v53);
+      v45 = _objc_retain(altDSID);
       v46 = _objc_retain(v67);
       v47 = _objc_retain(location[0]);
       v48 = _objc_retain(v65);
-      [(AKAppleIDAuthenticationService *)v10 _fetchTokensForServiceIDs:v13 withUsername:v12 altDSID:v8 masterToken:v11 context:v9 completion:&v37];
-      _objc_release(v11);
-      _objc_release(v12);
-      _objc_release(v13);
+      [(AKAppleIDAuthenticationService *)v10 _fetchTokensForServiceIDs:allObjects withUsername:username altDSID:v8 masterToken:masterToken context:v9 completion:&v37];
+      _objc_release(masterToken);
+      _objc_release(username);
+      _objc_release(allObjects);
       objc_storeStrong(&v48, 0);
       objc_storeStrong(&v47, 0);
       objc_storeStrong(&v46, 0);
@@ -7836,16 +7836,16 @@ LABEL_35:
 
     else
     {
-      v14 = v69;
-      v15 = [v66 serviceTokens];
+      v14 = selfCopy;
+      serviceTokens5 = [v66 serviceTokens];
       [AKAppleIDAuthenticationService _completeAuthenticationWithServiceTokens:v14 tokenFetchError:"_completeAuthenticationWithServiceTokens:tokenFetchError:altDSID:authenticationResults:context:completion:" altDSID:? authenticationResults:? context:? completion:?];
-      _objc_release(v15);
+      _objc_release(serviceTokens5);
     }
 
     v49 = 0;
   }
 
-  objc_storeStrong(&v53, 0);
+  objc_storeStrong(&altDSID, 0);
   objc_storeStrong(&v56, 0);
   if (!v49)
   {
@@ -7853,30 +7853,30 @@ LABEL_35:
   }
 
 LABEL_36:
-  objc_storeStrong(&v64, 0);
+  objc_storeStrong(&serviceIdentifiers, 0);
   objc_storeStrong(&v65, 0);
   objc_storeStrong(&v66, 0);
   objc_storeStrong(&v67, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_completeAuthenticationWithServiceTokens:(id)a3 tokenFetchError:(id)a4 altDSID:(id)a5 authenticationResults:(id)a6 context:(id)a7 completion:(id)a8
+- (void)_completeAuthenticationWithServiceTokens:(id)tokens tokenFetchError:(id)error altDSID:(id)d authenticationResults:(id)results context:(id)context completion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tokens);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, error);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
+  objc_storeStrong(&v32, d);
   v31 = 0;
-  objc_storeStrong(&v31, a6);
+  objc_storeStrong(&v31, results);
   v30 = 0;
-  objc_storeStrong(&v30, a7);
+  objc_storeStrong(&v30, context);
   v29 = 0;
-  objc_storeStrong(&v29, a8);
-  v28 = [v30 serviceIdentifiers];
+  objc_storeStrong(&v29, completion);
+  serviceIdentifiers = [v30 serviceIdentifiers];
   if (location[0])
   {
     v24 = [v31 mutableCopy];
@@ -7888,9 +7888,9 @@ LABEL_36:
 
     v23 = [location[0] aaf_map:&stru_1003220C8];
     [v24 setObject:v23 forKeyedSubscript:AKAuthenticationIDMSTokenKey];
-    if ([v30 shouldUpdatePersistentServiceTokens] && !-[AKAppleIDAuthenticationService _shouldSkipAccountUpdatesForAuthWithContext:](v35, "_shouldSkipAccountUpdatesForAuthWithContext:", v30))
+    if ([v30 shouldUpdatePersistentServiceTokens] && !-[AKAppleIDAuthenticationService _shouldSkipAccountUpdatesForAuthWithContext:](selfCopy, "_shouldSkipAccountUpdatesForAuthWithContext:", v30))
     {
-      v10 = v35;
+      v10 = selfCopy;
       v8 = location[0];
       v9 = v32;
       v12 = [v31 objectForKeyedSubscript:AKAuthenticationDSIDKey];
@@ -7929,7 +7929,7 @@ LABEL_36:
     v26 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      sub_1000194D4(v36, v28);
+      sub_1000194D4(v36, serviceIdentifiers);
       _os_log_error_impl(&_mh_execute_header, v27, v26, "We have no token for these services: %@. This can't be good.", v36, 0xCu);
     }
 
@@ -7938,7 +7938,7 @@ LABEL_36:
     v25 = 1;
   }
 
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&serviceIdentifiers, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v31, 0);
@@ -7947,27 +7947,27 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_persistGrandSlamServiceTokens:(id)a3 forAltDSID:(id)a4 DSID:(id)a5 appleID:(id)a6 forContext:(id)a7 error:(id *)a8
+- (void)_persistGrandSlamServiceTokens:(id)tokens forAltDSID:(id)d DSID:(id)iD appleID:(id)appleID forContext:(id)context error:(id *)error
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tokens);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, d);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, iD);
   v18 = 0;
-  objc_storeStrong(&v18, a6);
+  objc_storeStrong(&v18, appleID);
   v17 = 0;
-  objc_storeStrong(&v17, a7);
-  v16 = a8;
+  objc_storeStrong(&v17, context);
+  errorCopy = error;
   v8 = [AKGrandslamTokenUpdateRequest alloc];
-  v15 = [(AKGrandslamTokenUpdateRequest *)v8 initWithTokens:location[0] accountManager:v22->_accountManager context:v17 altDSID:v20];
+  v15 = [(AKGrandslamTokenUpdateRequest *)v8 initWithTokens:location[0] accountManager:selfCopy->_accountManager context:v17 altDSID:v20];
   [(AKGrandslamTokenUpdateRequest *)v15 setDsid:v19];
   [(AKGrandslamTokenUpdateRequest *)v15 setAppleIDUsername:v18];
   v14 = objc_opt_new();
-  [v14 updateGrandSlamServiceTokensWithRequest:v15 error:v16];
+  [v14 updateGrandSlamServiceTokensWithRequest:v15 error:errorCopy];
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v17, 0);
@@ -7977,34 +7977,34 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_performSecondaryActionWithServerResponse:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_performSecondaryActionWithServerResponse:(id)response context:(id)context completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, context);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  [(AKAppleIDAuthenticationService *)v10 _performSecondaryActionWithServerResponse:location[0] context:v8 client:v10->_client completion:v7];
+  objc_storeStrong(&v7, completion);
+  [(AKAppleIDAuthenticationService *)selfCopy _performSecondaryActionWithServerResponse:location[0] context:v8 client:selfCopy->_client completion:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_performSecondaryActionWithServerResponse:(id)a3 context:(id)a4 client:(id)a5 completion:(id)a6
+- (void)_performSecondaryActionWithServerResponse:(id)response context:(id)context client:(id)client completion:(id)completion
 {
-  v95 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v93 = 0;
-  objc_storeStrong(&v93, a4);
+  objc_storeStrong(&v93, context);
   v92 = 0;
-  objc_storeStrong(&v92, a5);
+  objc_storeStrong(&v92, client);
   v91 = 0;
-  objc_storeStrong(&v91, a6);
+  objc_storeStrong(&v91, completion);
   if ([v93 authenticationType] == 1)
   {
     v90 = _AKLogSystem();
@@ -8027,23 +8027,23 @@ LABEL_36:
 
   else
   {
-    v42 = [location[0] federatedAuthURL];
-    _objc_release(v42);
-    if (v42)
+    federatedAuthURL = [location[0] federatedAuthURL];
+    _objc_release(federatedAuthURL);
+    if (federatedAuthURL)
     {
       v6 = [AKEducationEnterpriseController alloc];
       v7 = [(AKEducationEnterpriseController *)v6 initWithContext:v93 client:v92];
-      eduController = v95->_eduController;
-      v95->_eduController = v7;
+      eduController = selfCopy->_eduController;
+      selfCopy->_eduController = v7;
       _objc_release(eduController);
-      [(AKEducationEnterpriseController *)v95->_eduController beginFederatedAuthWithInitialResponse:location[0] completionHandler:v91];
+      [(AKEducationEnterpriseController *)selfCopy->_eduController beginFederatedAuthWithInitialResponse:location[0] completionHandler:v91];
     }
 
     else
     {
-      v41 = [location[0] secondaryActionURLKey];
-      _objc_release(v41);
-      if (v41)
+      secondaryActionURLKey = [location[0] secondaryActionURLKey];
+      _objc_release(secondaryActionURLKey);
+      if (secondaryActionURLKey)
       {
         if ([location[0] isSecondaryActionURLGSEndpoint])
         {
@@ -8074,8 +8074,8 @@ LABEL_36:
           }
 
           objc_storeStrong(&v83, 0);
-          v35 = v95;
-          v36 = [location[0] secondaryActionURLKey];
+          v35 = selfCopy;
+          secondaryActionURLKey2 = [location[0] secondaryActionURLKey];
           v33 = v93;
           v34 = location[0];
           v75 = _NSConcreteStackBlock;
@@ -8084,30 +8084,30 @@ LABEL_36:
           v78 = sub_1000B46C0;
           v79 = &unk_1003220F0;
           v80 = _objc_retain(v91);
-          [(AKAppleIDAuthenticationService *)v35 _beginServerDrivenSecondaryActionWithURLKey:v36 context:v33 initialAuthResponse:v34 completion:&v75];
-          _objc_release(v36);
+          [(AKAppleIDAuthenticationService *)v35 _beginServerDrivenSecondaryActionWithURLKey:secondaryActionURLKey2 context:v33 initialAuthResponse:v34 completion:&v75];
+          _objc_release(secondaryActionURLKey2);
           objc_storeStrong(&v80, 0);
         }
       }
 
       else
       {
-        v31 = [location[0] secondaryActionURLKey];
+        secondaryActionURLKey3 = [location[0] secondaryActionURLKey];
         v73 = 0;
         v32 = 0;
-        if (!v31)
+        if (!secondaryActionURLKey3)
         {
-          v74 = [v93 _masterKey];
+          _masterKey = [v93 _masterKey];
           v73 = 1;
-          v32 = v74 != 0;
+          v32 = _masterKey != 0;
         }
 
         if (v73)
         {
-          _objc_release(v74);
+          _objc_release(_masterKey);
         }
 
-        _objc_release(v31);
+        _objc_release(secondaryActionURLKey3);
         if (v32)
         {
           v72 = _AKLogSystem();
@@ -8125,22 +8125,22 @@ LABEL_36:
           v23 = [v93 authKitAccount:0];
           [AKAnalyticsSender sendAnalyticsEvent:"sendAnalyticsEvent:context:account:error:" context:@"com.apple.authkit.authMasterKeyStart" account:v22 error:?];
           _objc_release(v23);
-          v69 = [(AKAppleIDAuthenticationService *)v95 _srpAuthContextHelperWithContext:v93];
-          v24 = [v93 _masterKey];
+          v69 = [(AKAppleIDAuthenticationService *)selfCopy _srpAuthContextHelperWithContext:v93];
+          _masterKey2 = [v93 _masterKey];
           [v69 setPassword:?];
-          _objc_release(v24);
+          _objc_release(_masterKey2);
           [v69 _setMasterKeyAsSecondFactor:1];
-          v68 = [v69 authContext];
-          v27 = [location[0] altDSID];
-          v26 = [location[0] masterToken];
-          v25 = [v26 stringValue];
-          v67 = [NSString stringWithFormat:@"%@:%@", v27, v25];
-          _objc_release(v25);
-          _objc_release(v26);
-          _objc_release(v27);
+          authContext = [v69 authContext];
+          altDSID = [location[0] altDSID];
+          masterToken = [location[0] masterToken];
+          stringValue = [masterToken stringValue];
+          v67 = [NSString stringWithFormat:@"%@:%@", altDSID, stringValue];
+          _objc_release(stringValue);
+          _objc_release(masterToken);
+          _objc_release(altDSID);
           v66 = [v67 dataUsingEncoding:4];
           v28 = [v66 base64EncodedStringWithOptions:0];
-          [v68 _setIdentityToken:?];
+          [authContext _setIdentityToken:?];
           _objc_release(v28);
           v65 = _AKLogSystem();
           v64 = OS_LOG_TYPE_DEFAULT;
@@ -8153,7 +8153,7 @@ LABEL_36:
           }
 
           objc_storeStrong(&v65, 0);
-          v19 = v95;
+          v19 = selfCopy;
           v18 = v69;
           v56 = _NSConcreteStackBlock;
           v57 = -1073741824;
@@ -8167,7 +8167,7 @@ LABEL_36:
           objc_storeStrong(&v61, 0);
           objc_storeStrong(&v66, 0);
           objc_storeStrong(&v67, 0);
-          objc_storeStrong(&v68, 0);
+          objc_storeStrong(&authContext, 0);
           objc_storeStrong(&v69, 0);
         }
 
@@ -8184,19 +8184,19 @@ LABEL_36:
           }
 
           objc_storeStrong(&oslog, 0);
-          v15 = [location[0] masterToken];
-          v14 = [v15 stringValue];
+          masterToken2 = [location[0] masterToken];
+          stringValue2 = [masterToken2 stringValue];
           [v93 _setIdentityToken:?];
-          _objc_release(v14);
-          _objc_release(v15);
-          [(AKAppleIDAuthenticationService *)v95 _performFidoStartAuthActionWithContext:v93 serverResponse:location[0] completion:v91];
+          _objc_release(stringValue2);
+          _objc_release(masterToken2);
+          [(AKAppleIDAuthenticationService *)selfCopy _performFidoStartAuthActionWithContext:v93 serverResponse:location[0] completion:v91];
         }
 
         else
         {
-          v13 = [location[0] secondaryActionMessage];
+          secondaryActionMessage = [location[0] secondaryActionMessage];
           [v93 _setMessage:?];
-          _objc_release(v13);
+          _objc_release(secondaryActionMessage);
           v52 = _AKLogSystem();
           v51 = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
@@ -8225,23 +8225,23 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleSecondFactorUICompletionWithCode:(id)a3 error:(id)a4 idmsData:(id)a5 initialAuthResponse:(id)a6 context:(id)a7 completion:(id)a8
+- (void)_handleSecondFactorUICompletionWithCode:(id)code error:(id)error idmsData:(id)data initialAuthResponse:(id)response context:(id)context completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, error);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, data);
   v15 = 0;
-  objc_storeStrong(&v15, a6);
+  objc_storeStrong(&v15, response);
   v14 = 0;
-  objc_storeStrong(&v14, a7);
+  objc_storeStrong(&v14, context);
   v13 = 0;
-  objc_storeStrong(&v13, a8);
-  [(AKAppleIDAuthenticationService *)v19 _handleSecondFactorUICompletionWithCode:location[0] error:v17 idmsData:v16 piggybacking:0 initialAuthResponse:v15 context:v14 completion:v13];
+  objc_storeStrong(&v13, completion);
+  [(AKAppleIDAuthenticationService *)selfCopy _handleSecondFactorUICompletionWithCode:location[0] error:v17 idmsData:v16 piggybacking:0 initialAuthResponse:v15 context:v14 completion:v13];
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
@@ -8250,23 +8250,23 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleSecondFactorUICompletionWithCode:(id)a3 error:(id)a4 idmsData:(id)a5 piggybacking:(BOOL)a6 initialAuthResponse:(id)a7 context:(id)a8 completion:(id)a9
+- (void)_handleSecondFactorUICompletionWithCode:(id)code error:(id)error idmsData:(id)data piggybacking:(BOOL)piggybacking initialAuthResponse:(id)response context:(id)context completion:(id)completion
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, error);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
-  v38 = a6;
+  objc_storeStrong(&v39, data);
+  piggybackingCopy = piggybacking;
   v37 = 0;
-  objc_storeStrong(&v37, a7);
+  objc_storeStrong(&v37, response);
   v36 = 0;
-  objc_storeStrong(&v36, a8);
+  objc_storeStrong(&v36, context);
   v35 = 0;
-  objc_storeStrong(&v35, a9);
+  objc_storeStrong(&v35, completion);
   if (v40)
   {
     v34 = _AKLogSystem();
@@ -8292,10 +8292,10 @@ LABEL_36:
     }
 
     objc_storeStrong(&v32, 0);
-    v12 = v42;
-    v9 = [location[0] unsignedIntegerValue];
-    v14 = [v37 altDSID];
-    v13 = [v37 masterToken];
+    v12 = selfCopy;
+    unsignedIntegerValue = [location[0] unsignedIntegerValue];
+    altDSID = [v37 altDSID];
+    masterToken = [v37 masterToken];
     v10 = v39;
     v11 = v36;
     v20 = _NSConcreteStackBlock;
@@ -8303,15 +8303,15 @@ LABEL_36:
     v22 = 0;
     v23 = sub_1000B4E88;
     v24 = &unk_100322168;
-    v30 = v38;
+    v30 = piggybackingCopy;
     v29 = _objc_retain(v35);
-    v25 = _objc_retain(v42);
+    v25 = _objc_retain(selfCopy);
     v26 = _objc_retain(v36);
     v27 = _objc_retain(v39);
     v28 = _objc_retain(v37);
-    [(AKAppleIDAuthenticationService *)v12 _validateLoginCode:v9 forAltDSID:v14 masterToken:v13 idmsData:v10 authContext:v11 completion:&v20];
-    _objc_release(v13);
-    _objc_release(v14);
+    [(AKAppleIDAuthenticationService *)v12 _validateLoginCode:unsignedIntegerValue forAltDSID:altDSID masterToken:masterToken idmsData:v10 authContext:v11 completion:&v20];
+    _objc_release(masterToken);
+    _objc_release(altDSID);
     objc_storeStrong(&v28, 0);
     objc_storeStrong(&v27, 0);
     objc_storeStrong(&v26, 0);
@@ -8327,18 +8327,18 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_processValidationCodeSuccessResponse:(id)a3 authResponse:(id)a4 results:(id)a5 completion:(id)a6
+- (void)_processValidationCodeSuccessResponse:(id)response authResponse:(id)authResponse results:(id)results completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, authResponse);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, results);
   v17 = 0;
-  objc_storeStrong(&v17, a6);
+  objc_storeStrong(&v17, completion);
   v16 = _AKLogSystem();
   v15 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -8371,31 +8371,31 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_showAlertForLoginCodeValidationError:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_showAlertForLoginCodeValidationError:(id)error context:(id)context completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, context);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
-  v15 = [(AKAppleIDAuthenticationService *)v19 _alertDetailsForError:location[0] context:v17];
+  objc_storeStrong(&v16, completion);
+  v15 = [(AKAppleIDAuthenticationService *)selfCopy _alertDetailsForError:location[0] context:v17];
   v7 = [AKAuthenticationErrorAlertDetails alloc];
-  v11 = [v15 error];
+  error = [v15 error];
   v10 = [NSBundle bundleWithIdentifier:?];
   v9 = [NSBundle localizedStringForKey:v10 value:"localizedStringForKey:value:table:" table:?];
-  v8 = [v15 message];
-  v14 = [(AKAuthenticationErrorAlertDetails *)v7 initWithError:v11 title:v9 message:?];
-  _objc_release(v8);
+  message = [v15 message];
+  v14 = [(AKAuthenticationErrorAlertDetails *)v7 initWithError:error title:v9 message:?];
+  _objc_release(message);
   _objc_release(v9);
   _objc_release(v10);
-  _objc_release(v11);
+  _objc_release(error);
   v12 = [NSBundle bundleWithIdentifier:@"com.apple.AuthKit"];
   v13 = [(NSBundle *)v12 localizedStringForKey:@"CODE_INVALID_TITLE" value:&stru_100330538 table:@"Localizable"];
   _objc_release(v12);
-  [(AKAuthenticationUILiaison *)v19->_authUILiaison presentSecondFactorAlertForContext:v17 client:v19->_client withAlertDetails:v14 completion:v16];
+  [(AKAuthenticationUILiaison *)selfCopy->_authUILiaison presentSecondFactorAlertForContext:v17 client:selfCopy->_client withAlertDetails:v14 completion:v16];
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
@@ -8404,16 +8404,16 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_attemptPasswordlessAuthAfterBiometricOrPasscodeValidationWithContext:(id)a3 promptType:(unint64_t)a4 completion:(id)a5
+- (void)_attemptPasswordlessAuthAfterBiometricOrPasscodeValidationWithContext:(id)context promptType:(unint64_t)type completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
+  objc_storeStrong(location, context);
+  typeCopy = type;
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  v8 = v20;
+  objc_storeStrong(&v17, completion);
+  v8 = selfCopy;
   v7 = location[0];
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
@@ -8422,8 +8422,8 @@ LABEL_36:
   v13 = &unk_1003221B8;
   v16[0] = _objc_retain(v17);
   v14 = _objc_retain(location[0]);
-  v15 = _objc_retain(v20);
-  v16[1] = v18;
+  v15 = _objc_retain(selfCopy);
+  v16[1] = typeCopy;
   [(AKAppleIDAuthenticationService *)v8 _accountForContinuationWithContext:v7 completion:?];
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v14, 0);
@@ -8432,44 +8432,44 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_performGrandslamEndpointActionWithContext:(id)a3 serverResponse:(id)a4 completion:(id)a5
+- (void)_performGrandslamEndpointActionWithContext:(id)context serverResponse:(id)response completion:(id)completion
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, response);
   v37 = 0;
-  objc_storeStrong(&v37, a5);
-  v21 = [location[0] altDSID];
+  objc_storeStrong(&v37, completion);
+  altDSID = [location[0] altDSID];
   v20 = [AKURLBag bagForAltDSID:?];
-  v19 = [v38 secondaryActionURLKey];
+  secondaryActionURLKey = [v38 secondaryActionURLKey];
   v36 = [v20 _urlAtKey:?];
-  _objc_release(v19);
+  _objc_release(secondaryActionURLKey);
   _objc_release(v20);
-  _objc_release(v21);
+  _objc_release(altDSID);
   if (v36)
   {
     v32 = [[NSMutableURLRequest alloc] initWithURL:v36];
     [v32 setHTTPMethod:@"GET"];
     v6 = v32;
-    v7 = [(AKClient *)v40->_client name];
+    name = [(AKClient *)selfCopy->_client name];
     [v6 ak_addClientApp:?];
-    _objc_release(v7);
+    _objc_release(name);
     v8 = v32;
-    v9 = [(AKClient *)v40->_client bundleID];
+    bundleID = [(AKClient *)selfCopy->_client bundleID];
     [v8 ak_addClientBundleIDHeader:?];
-    _objc_release(v9);
+    _objc_release(bundleID);
     [v32 ak_addClientInfoHeader];
     v10 = v32;
-    v13 = [v38 masterToken];
-    v12 = [v13 stringValue];
-    v11 = [v38 altDSID];
-    [v10 ak_addAuthorizationHeaderWithIdentityToken:v12 forAltDSID:?];
-    _objc_release(v11);
-    _objc_release(v12);
-    _objc_release(v13);
+    masterToken = [v38 masterToken];
+    stringValue = [masterToken stringValue];
+    altDSID2 = [v38 altDSID];
+    [v10 ak_addAuthorizationHeaderWithIdentityToken:stringValue forAltDSID:?];
+    _objc_release(altDSID2);
+    _objc_release(stringValue);
+    _objc_release(masterToken);
     [v32 ak_addInternalBuildHeader];
     [v32 ak_addSeedBuildHeader];
     [v32 ak_addFeatureMaskHeader];
@@ -8480,7 +8480,7 @@ LABEL_36:
     v26 = 0;
     v27 = sub_1000B6458;
     v28 = &unk_100320918;
-    v29 = _objc_retain(v40);
+    v29 = _objc_retain(selfCopy);
     v30 = _objc_retain(v38);
     v31 = _objc_retain(v37);
     v5 = [v15 beginDataTaskWithRequest:v14 completionHandler:&v24];
@@ -8498,10 +8498,10 @@ LABEL_36:
     v34 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v38 secondaryActionURLKey];
-      sub_1000194D4(v41, v18);
+      secondaryActionURLKey2 = [v38 secondaryActionURLKey];
+      sub_1000194D4(v41, secondaryActionURLKey2);
       _os_log_error_impl(&_mh_execute_header, v35, v34, "There was no URL in the bag for key: %@", v41, 0xCu);
-      _objc_release(v18);
+      _objc_release(secondaryActionURLKey2);
     }
 
     objc_storeStrong(&v35, 0);
@@ -8518,20 +8518,20 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleGrandslamResponse:(id)a3 data:(id)a4 error:(id)a5 serverResponse:(id)a6 completion:(id)a7
+- (void)_handleGrandslamResponse:(id)response data:(id)data error:(id)error serverResponse:(id)serverResponse completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, data);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, error);
   v22 = 0;
-  objc_storeStrong(&v22, a6);
+  objc_storeStrong(&v22, serverResponse);
   v21 = 0;
-  objc_storeStrong(&v21, a7);
+  objc_storeStrong(&v21, completion);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -8577,12 +8577,12 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)clearSessionCacheWithCompletion:(id)a3
+- (void)clearSessionCacheWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v8 = _AKLogSystem();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -8601,15 +8601,15 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchGlobalConfigurationUsingPolicy:(unint64_t)a3 completion:(id)a4
+- (void)fetchGlobalConfigurationUsingPolicy:(unint64_t)policy completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  policyCopy = policy;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v4 = +[AKGlobalConfigService sharedInstance];
-  [(AKGlobalConfigService *)v4 fetchGlobalConfigUsingCachePolicy:v6 context:AKRequestContextUserInitiated completion:location];
+  [(AKGlobalConfigService *)v4 fetchGlobalConfigUsingCachePolicy:policyCopy context:AKRequestContextUserInitiated completion:location];
   _objc_release(v4);
   objc_storeStrong(&location, 0);
 }
@@ -8629,43 +8629,43 @@ LABEL_36:
   return v4;
 }
 
-- (void)_performFidoStartAuthActionWithContext:(id)a3 serverResponse:(id)a4 completion:(id)a5
+- (void)_performFidoStartAuthActionWithContext:(id)context serverResponse:(id)response completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, response);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
-  v9 = [location[0] altDSID];
+  objc_storeStrong(&v25, completion);
+  altDSID = [location[0] altDSID];
   v23 = 0;
   v10 = 0;
-  if (!v9)
+  if (!altDSID)
   {
-    v24 = [v26 altDSID];
+    altDSID2 = [v26 altDSID];
     v23 = 1;
-    v10 = [v24 length] != 0;
+    v10 = [altDSID2 length] != 0;
   }
 
   if (v23)
   {
-    _objc_release(v24);
+    _objc_release(altDSID2);
   }
 
-  _objc_release(v9);
+  _objc_release(altDSID);
   if (v10)
   {
-    v8 = [v26 altDSID];
+    altDSID3 = [v26 altDSID];
     [location[0] setAltDSID:?];
-    _objc_release(v8);
+    _objc_release(altDSID3);
   }
 
-  objc_initWeak(&from, v28);
-  v7 = [(AKAppleIDAuthenticationService *)v28 fidoHandler];
+  objc_initWeak(&from, selfCopy);
+  fidoHandler = [(AKAppleIDAuthenticationService *)selfCopy fidoHandler];
   v5 = location[0];
-  client = v28->_client;
+  client = selfCopy->_client;
   v13 = _NSConcreteStackBlock;
   v14 = -1073741824;
   v15 = 0;
@@ -8675,8 +8675,8 @@ LABEL_36:
   v20 = _objc_retain(v25);
   v18 = _objc_retain(location[0]);
   v19 = _objc_retain(v26);
-  [v7 startFidoAuthWithContext:v5 recoveryToken:0 client:client completion:&v13];
-  _objc_release(v7);
+  [fidoHandler startFidoAuthWithContext:v5 recoveryToken:0 client:client completion:&v13];
+  _objc_release(fidoHandler);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v20, 0);
@@ -8687,18 +8687,18 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleStartFidoAuthWithContext:(id)a3 fidoContext:(id)a4 serverResponse:(id)a5 completion:(id)a6
+- (void)_handleStartFidoAuthWithContext:(id)context fidoContext:(id)fidoContext serverResponse:(id)response completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, fidoContext);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, response);
   v21 = 0;
-  objc_storeStrong(&v21, a6);
+  objc_storeStrong(&v21, completion);
   v20 = _AKLogFido();
   v19 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -8708,7 +8708,7 @@ LABEL_36:
   }
 
   objc_storeStrong(&v20, 0);
-  objc_initWeak(&from, v25);
+  objc_initWeak(&from, selfCopy);
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
@@ -8718,7 +8718,7 @@ LABEL_36:
   v15 = _objc_retain(v21);
   v14 = _objc_retain(location[0]);
   v17 = objc_retainBlock(&v9);
-  [(AKAuthenticationUILiaison *)v25->_authUILiaison presentFidoAuthForContext:location[0] fidoContext:v23 client:v25->_client completion:v17];
+  [(AKAuthenticationUILiaison *)selfCopy->_authUILiaison presentFidoAuthForContext:location[0] fidoContext:v23 client:selfCopy->_client completion:v17];
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
@@ -8730,18 +8730,18 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_beginServerDrivenSecondaryActionWithURLKey:(id)a3 context:(id)a4 initialAuthResponse:(id)a5 completion:(id)a6
+- (void)_beginServerDrivenSecondaryActionWithURLKey:(id)key context:(id)context initialAuthResponse:(id)response completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, context);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, response);
   v24 = 0;
-  objc_storeStrong(&v24, a6);
+  objc_storeStrong(&v24, completion);
   v23 = _AKLogSystem();
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -8751,7 +8751,7 @@ LABEL_36:
   }
 
   objc_storeStrong(&v23, 0);
-  v8 = [v26 altDSID];
+  altDSID = [v26 altDSID];
   v7 = [AKURLBag bagForAltDSID:?];
   v6 = location[0];
   v12 = _NSConcreteStackBlock;
@@ -8761,12 +8761,12 @@ LABEL_36:
   v16 = &unk_100322230;
   v17 = _objc_retain(location[0]);
   v21 = _objc_retain(v24);
-  v18 = _objc_retain(v28);
+  v18 = _objc_retain(selfCopy);
   v19 = _objc_retain(v26);
   v20 = _objc_retain(v25);
   [v7 urlConfigurationForKey:v6 fromCache:0 completion:&v12];
   _objc_release(v7);
-  _objc_release(v8);
+  _objc_release(altDSID);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v18, 0);
@@ -8778,41 +8778,41 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_showServerUIWithURLRequest:(id)a3 context:(id)a4 urlConfiguration:(id)a5 completion:(id)a6
+- (void)_showServerUIWithURLRequest:(id)request context:(id)context urlConfiguration:(id)configuration completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, context);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, configuration);
   v9 = 0;
-  objc_storeStrong(&v9, a6);
-  [(AKAppleIDAuthenticationService *)v13 _showServerUIWithURLRequest:location[0] context:v11 initialAuthResponse:0 urlConfiguration:v10 completion:v9];
+  objc_storeStrong(&v9, completion);
+  [(AKAppleIDAuthenticationService *)selfCopy _showServerUIWithURLRequest:location[0] context:v11 initialAuthResponse:0 urlConfiguration:v10 completion:v9];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_showServerUIWithURLRequest:(id)a3 context:(id)a4 initialAuthResponse:(id)a5 urlConfiguration:(id)a6 completion:(id)a7
+- (void)_showServerUIWithURLRequest:(id)request context:(id)context initialAuthResponse:(id)response urlConfiguration:(id)configuration completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, context);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, response);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
+  objc_storeStrong(&v13, configuration);
   v12 = 0;
-  objc_storeStrong(&v12, a7);
+  objc_storeStrong(&v12, completion);
   v11 = [AKDServerUIContext serverUIContextFromResponse:v14 authContext:v15 urlRequest:location[0] urlConfiguration:v13];
-  [(AKAppleIDAuthenticationService *)v17 _showServerUIWithContext:v11 completion:v12];
+  [(AKAppleIDAuthenticationService *)selfCopy _showServerUIWithContext:v11 completion:v12];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
@@ -8821,23 +8821,23 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_showServerUIWithContext:(id)a3 completion:(id)a4
+- (void)_showServerUIWithContext:(id)context completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
-  v8 = [location[0] authContext];
-  v7 = [location[0] authContext];
-  v6 = [v7 authKitAccount:0];
-  [AKAnalyticsSender sendAnalyticsEvent:"sendAnalyticsEvent:context:account:error:" context:@"com.apple.authkit.authServerUIStart" account:v8 error:?];
+  objc_storeStrong(&v18, completion);
+  authContext = [location[0] authContext];
+  authContext2 = [location[0] authContext];
+  v6 = [authContext2 authKitAccount:0];
+  [AKAnalyticsSender sendAnalyticsEvent:"sendAnalyticsEvent:context:account:error:" context:@"com.apple.authkit.authServerUIStart" account:authContext error:?];
   _objc_release(v6);
-  _objc_release(v7);
-  _objc_release(v8);
+  _objc_release(authContext2);
+  _objc_release(authContext);
   v4 = [AKDServerUIController alloc];
-  v17 = [(AKDServerUIController *)v4 initWithLiaison:v20->_authUILiaison client:v20->_client delegate:v20];
+  v17 = [(AKDServerUIController *)v4 initWithLiaison:selfCopy->_authUILiaison client:selfCopy->_client delegate:selfCopy];
   v10 = v17;
   v9 = location[0];
   v11 = _NSConcreteStackBlock;
@@ -8854,27 +8854,27 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)shouldProcessAdditionalServerUIData:(id)a3
+- (BOOL)shouldProcessAdditionalServerUIData:(id)data
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v4 = [AKAccountRecoveryController shouldProcessServerUIRequest:location[0]];
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (void)serverUIContext:(id)a3 processAdditionalData:(id)a4 completion:(id)a5
+- (void)serverUIContext:(id)context processAdditionalData:(id)data completion:(id)completion
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, data);
   v30 = 0;
-  objc_storeStrong(&v30, a5);
+  objc_storeStrong(&v30, completion);
   v29 = _AKLogSystem();
   v28 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -8901,7 +8901,7 @@ LABEL_36:
   v21 = 48;
   v22 = sub_100003984;
   v23 = sub_1000111A0;
-  v24 = [[AKAccountRecoveryController alloc] initWithUILiaison:v33->_authUILiaison client:v33->_client];
+  v24 = [[AKAccountRecoveryController alloc] initWithUILiaison:selfCopy->_authUILiaison client:selfCopy->_client];
   v7 = v19[5];
   v5 = location[0];
   v6 = v31;
@@ -8921,14 +8921,14 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_performSilentServiceTokenAuthWithContext:(id)a3 completion:(id)a4
+- (void)_performSilentServiceTokenAuthWithContext:(id)context completion:(id)completion
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
+  objc_storeStrong(&v36, completion);
   v35 = 0;
   v33 = 0;
   v14 = [location[0] authKitAccountForSilentServiceToken:&v33];
@@ -8945,13 +8945,13 @@ LABEL_36:
     }
 
     objc_storeStrong(&v29, 0);
-    v27 = [(AKAccountManager *)v38->_accountManager masterTokenForAccount:v34];
+    v27 = [(AKAccountManager *)selfCopy->_accountManager masterTokenForAccount:v34];
     if (v27)
     {
-      v24 = [(AKAccountManager *)v38->_accountManager altDSIDForAccount:v34];
-      v7 = v38;
-      v9 = [location[0] serviceIdentifiers];
-      v8 = [v34 username];
+      v24 = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAccount:v34];
+      v7 = selfCopy;
+      serviceIdentifiers = [location[0] serviceIdentifiers];
+      username = [v34 username];
       v4 = v24;
       v5 = v27;
       v6 = location[0];
@@ -8962,11 +8962,11 @@ LABEL_36:
       v19 = &unk_1003222A8;
       v20 = _objc_retain(location[0]);
       v23 = _objc_retain(v36);
-      v21 = _objc_retain(v38);
+      v21 = _objc_retain(selfCopy);
       v22 = _objc_retain(v24);
-      [(AKAppleIDAuthenticationService *)v7 _fetchTokensForServiceIDs:v9 withUsername:v8 altDSID:v4 masterToken:v5 context:v6 completion:&v15];
-      _objc_release(v8);
-      _objc_release(v9);
+      [(AKAppleIDAuthenticationService *)v7 _fetchTokensForServiceIDs:serviceIdentifiers withUsername:username altDSID:v4 masterToken:v5 context:v6 completion:&v15];
+      _objc_release(username);
+      _objc_release(serviceIdentifiers);
       objc_storeStrong(&v22, 0);
       objc_storeStrong(&v21, 0);
       objc_storeStrong(&v23, 0);
@@ -9002,10 +9002,10 @@ LABEL_36:
     v31 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [location[0] username];
-      sub_1000194D4(v41, v12);
+      username2 = [location[0] username];
+      sub_1000194D4(v41, username2);
       _os_log_impl(&_mh_execute_header, v32, v31, "No usable IDMS account for Apple ID: %@", v41, 0xCu);
-      _objc_release(v12);
+      _objc_release(username2);
     }
 
     objc_storeStrong(&v32, 0);
@@ -9019,26 +9019,26 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchTokensForServiceIDs:(id)a3 withUsername:(id)a4 altDSID:(id)a5 masterToken:(id)a6 context:(id)a7 completion:(id)a8
+- (void)_fetchTokensForServiceIDs:(id)ds withUsername:(id)username altDSID:(id)d masterToken:(id)token context:(id)context completion:(id)completion
 {
-  v73 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, ds);
   v71 = 0;
-  objc_storeStrong(&v71, a4);
+  objc_storeStrong(&v71, username);
   v70 = 0;
-  objc_storeStrong(&v70, a5);
+  objc_storeStrong(&v70, d);
   v69 = 0;
-  objc_storeStrong(&v69, a6);
+  objc_storeStrong(&v69, token);
   v68 = 0;
-  objc_storeStrong(&v68, a7);
+  objc_storeStrong(&v68, context);
   v67 = 0;
-  objc_storeStrong(&v67, a8);
+  objc_storeStrong(&v67, completion);
   if (location[0])
   {
-    v62 = [v69 externalizedVersion];
-    if (v62)
+    externalizedVersion = [v69 externalizedVersion];
+    if (externalizedVersion)
     {
       v58 = 0uLL;
       v20 = _AKSignpostLogSystem();
@@ -9069,26 +9069,26 @@ LABEL_36:
       objc_storeStrong(&oslog, 0);
       v58 = v57;
       v50 = 0;
-      authProxy = v73->_authProxy;
+      authProxy = selfCopy->_authProxy;
       v48 = 0;
-      v16 = [(AKAppleIDAuthSupportProxy *)authProxy appleIDAuthSupportTokenCreateWithExternalizedVersion:v62 error:&v48];
+      v16 = [(AKAppleIDAuthSupportProxy *)authProxy appleIDAuthSupportTokenCreateWithExternalizedVersion:externalizedVersion error:&v48];
       objc_storeStrong(&v50, v48);
       v49 = v16;
       if (v16)
       {
-        v39 = [(AKAppleIDAuthenticationService *)v73 _authenticationParametersForUsername:v71 altDSID:v70 context:v68];
-        v12 = [v68 altDSID];
+        v39 = [(AKAppleIDAuthenticationService *)selfCopy _authenticationParametersForUsername:v71 altDSID:v70 context:v68];
+        altDSID = [v68 altDSID];
         v11 = [AKURLBag bagForAltDSID:?];
         v10 = AKURLBagKeyBasicAuthKey;
         v34 = _objc_retain(v39);
-        v35 = _objc_retain(v73);
+        v35 = _objc_retain(selfCopy);
         v37[1] = v49;
         v36 = _objc_retain(location[0]);
         v37[0] = _objc_retain(v67);
         v38 = v58;
         [v11 urlForKey:v10 completion:?];
         _objc_release(v11);
-        _objc_release(v12);
+        _objc_release(altDSID);
         objc_storeStrong(v37, 0);
         objc_storeStrong(&v36, 0);
         objc_storeStrong(&v35, 0);
@@ -9131,11 +9131,11 @@ LABEL_36:
         if (v67)
         {
           v13 = v67;
-          v15 = [v50 ac_secureCodingError];
+          ac_secureCodingError = [v50 ac_secureCodingError];
           v14 = [NSError ak_errorWithCode:-7001 underlyingError:?];
           v13[2](v13, 0);
           _objc_release(v14);
-          _objc_release(v15);
+          _objc_release(ac_secureCodingError);
         }
 
         v63 = 1;
@@ -9168,7 +9168,7 @@ LABEL_36:
       v63 = 1;
     }
 
-    objc_storeStrong(&v62, 0);
+    objc_storeStrong(&externalizedVersion, 0);
   }
 
   else
@@ -9203,34 +9203,34 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)renewRecoveryTokenWithContext:(id)a3 completion:(id)a4
+- (void)renewRecoveryTokenWithContext:(id)context completion:(id)completion
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, completion);
   v4 = [AKAccountRecoveryController alloc];
-  v6 = [(AKAccountRecoveryController *)v4 initWithUILiaison:v9->_authUILiaison client:v9->_client];
+  v6 = [(AKAccountRecoveryController *)v4 initWithUILiaison:selfCopy->_authUILiaison client:selfCopy->_client];
   [(AKAccountRecoveryController *)v6 renewRecoveryTokenWithContext:location[0] completion:v7];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)verifyMasterKey:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)verifyMasterKey:(id)key withContext:(id)context completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, context);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, completion);
   v5 = [AKAccountRecoveryController alloc];
-  v8 = [(AKAccountRecoveryController *)v5 initWithUILiaison:v12->_authUILiaison client:v12->_client];
+  v8 = [(AKAccountRecoveryController *)v5 initWithUILiaison:selfCopy->_authUILiaison client:selfCopy->_client];
   [(AKAccountRecoveryController *)v8 verifyMasterKey:location[0] withContext:v10 completion:v9];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
@@ -9238,20 +9238,20 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)persistRecoveryKeyWithContext:(id)a3 authContext:(id)a4 completion:(id)a5
+- (void)persistRecoveryKeyWithContext:(id)context authContext:(id)authContext completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, authContext);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  if ([(AKClient *)v16->_client hasInternalAccess])
+  objc_storeStrong(&v13, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalAccess])
   {
     v5 = [AKAccountRecoveryController alloc];
-    v12 = [(AKAccountRecoveryController *)v5 initWithUILiaison:v16->_authUILiaison client:v16->_client];
+    v12 = [(AKAccountRecoveryController *)v5 initWithUILiaison:selfCopy->_authUILiaison client:selfCopy->_client];
     [(AKAccountRecoveryController *)v12 persistRecoveryKeyWithContext:location[0] authContext:v14 completion:v13];
     objc_storeStrong(&v12, 0);
   }
@@ -9261,10 +9261,10 @@ LABEL_36:
     v11 = _AKLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(AKClient *)v16->_client name];
-      sub_1000194D4(v17, v8);
+      name = [(AKClient *)selfCopy->_client name];
+      sub_1000194D4(v17, name);
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%@ does not have entitlements to persistRecoveryKey", v17, 0xCu);
-      _objc_release(v8);
+      _objc_release(name);
     }
 
     objc_storeStrong(&v11, 0);
@@ -9282,14 +9282,14 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_recoverCredentialsAndAuthenticateWithContext:(id)a3 completion:(id)a4
+- (void)_recoverCredentialsAndAuthenticateWithContext:(id)context completion:(id)completion
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
+  objc_storeStrong(&v36, completion);
   v35 = _AKLogSystem();
   v34 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -9301,7 +9301,7 @@ LABEL_36:
   }
 
   objc_storeStrong(&v35, 0);
-  v32 = [AAFAnalyticsEvent ak_analyticsEventWithContext:location[0] client:v38->_client eventName:@"com.apple.authkit.accountRecoveryStart" error:0];
+  v32 = [AAFAnalyticsEvent ak_analyticsEventWithContext:location[0] client:selfCopy->_client eventName:@"com.apple.authkit.accountRecoveryStart" error:0];
   v10 = +[AKAnalyticsReporterRTC rtcAnalyticsReporter];
   [v10 sendEvent:v32];
   _objc_release(v10);
@@ -9333,7 +9333,7 @@ LABEL_36:
 
   objc_storeStrong(&v25, 0);
   v31 = v30;
-  v6 = v38;
+  v6 = selfCopy;
   v5 = location[0];
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
@@ -9342,7 +9342,7 @@ LABEL_36:
   v19 = &unk_100322320;
   v23 = v30;
   v20 = _objc_retain(location[0]);
-  v21 = _objc_retain(v38);
+  v21 = _objc_retain(selfCopy);
   v22 = _objc_retain(v36);
   [(AKAppleIDAuthenticationService *)v6 _beginiForgotFlowWithContext:v5 completion:&v15];
   objc_storeStrong(&v22, 0);
@@ -9353,18 +9353,18 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleRecoverCredentialsError:(id)a3 withContext:(id)a4 event:(id)a5 andCompletion:(id)a6
+- (void)_handleRecoverCredentialsError:(id)error withContext:(id)context event:(id)event andCompletion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, context);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, event);
   v12 = 0;
-  objc_storeStrong(&v12, a6);
+  objc_storeStrong(&v12, completion);
   v11 = _AKLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -9374,18 +9374,18 @@ LABEL_36:
 
   objc_storeStrong(&v11, 0);
   [AKAnalyticsSender sendAnalyticsEvent:v13 withError:location[0]];
-  v6 = [location[0] domain];
-  v7 = 0;
-  if ([v6 isEqualToString:AKAppleIDAuthenticationErrorDomain])
+  domain = [location[0] domain];
+  _keepAlive = 0;
+  if ([domain isEqualToString:AKAppleIDAuthenticationErrorDomain])
   {
-    v7 = [v14 _keepAlive];
+    _keepAlive = [v14 _keepAlive];
   }
 
-  _objc_release(v6);
-  if (v7)
+  _objc_release(domain);
+  if (_keepAlive)
   {
     [v14 setNeedsCredentialRecovery:0];
-    [(AKAppleIDAuthenticationService *)v16 _keepLoginAliveWithContext:v14 error:location[0] andCompletion:v12];
+    [(AKAppleIDAuthenticationService *)selfCopy _keepLoginAliveWithContext:v14 error:location[0] andCompletion:v12];
   }
 
   else
@@ -9399,14 +9399,14 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_beginiForgotFlowWithContext:(id)a3 completion:(id)a4
+- (void)_beginiForgotFlowWithContext:(id)context completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, completion);
   v27 = _AKLogSystem();
   v26 = 2;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -9440,7 +9440,7 @@ LABEL_36:
     objc_storeStrong(&v24, AKURLBagKeyiForgot);
   }
 
-  v7 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   v6 = [v4 bagForAltDSID:?];
   v5 = v24;
   v13 = _NSConcreteStackBlock;
@@ -9449,11 +9449,11 @@ LABEL_36:
   v16 = sub_1000BC410;
   v17 = &unk_100322348;
   v20 = _objc_retain(v28);
-  v18 = _objc_retain(v30);
+  v18 = _objc_retain(selfCopy);
   v19 = _objc_retain(location[0]);
   [v6 urlConfigurationForKey:v5 fromCache:0 completion:&v13];
   _objc_release(v6);
-  _objc_release(v7);
+  _objc_release(altDSID);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v20, 0);
@@ -9462,36 +9462,36 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (id)_addAccountNameParameterToURL:(id)a3 withContext:(id)a4
+- (id)_addAccountNameParameterToURL:(id)l withContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v16 = [v22 username];
-  v17 = [v16 length];
-  _objc_release(v16);
+  objc_storeStrong(&v22, context);
+  username = [v22 username];
+  v17 = [username length];
+  _objc_release(username);
   if (v17)
   {
-    v13 = [v22 username];
-    v21 = [v13 aaf_urlEncoded];
-    _objc_release(v13);
+    username2 = [v22 username];
+    aaf_urlEncoded = [username2 aaf_urlEncoded];
+    _objc_release(username2);
     v20 = 0;
-    v14 = 0;
+    isRequestedFromOOPViewService = 0;
     if ([v22 needsCredentialRecovery])
     {
-      v14 = [v22 isRequestedFromOOPViewService];
+      isRequestedFromOOPViewService = [v22 isRequestedFromOOPViewService];
     }
 
     v18 = 0;
-    v12 = 0;
-    if (v14)
+    isForgotPasswordNativeTakeoverEnabled = 0;
+    if (isRequestedFromOOPViewService)
     {
       v19 = +[AKFeatureManager sharedManager];
       v18 = 1;
-      v12 = [v19 isForgotPasswordNativeTakeoverEnabled];
+      isForgotPasswordNativeTakeoverEnabled = [v19 isForgotPasswordNativeTakeoverEnabled];
     }
 
     if (v18)
@@ -9499,29 +9499,29 @@ LABEL_36:
       _objc_release(v19);
     }
 
-    if (v12)
+    if (isForgotPasswordNativeTakeoverEnabled)
     {
-      v11 = [location[0] absoluteString];
-      v4 = [v11 stringByAppendingFormat:@"?%@=%@&%@=%@", AKRecoveryUsernameRequestParameter, v21, AKRecoveryAutoSubmitAccountRequestParameter, AKTrueValue];
+      absoluteString = [location[0] absoluteString];
+      aKTrueValue = [absoluteString stringByAppendingFormat:@"?%@=%@&%@=%@", AKRecoveryUsernameRequestParameter, aaf_urlEncoded, AKRecoveryAutoSubmitAccountRequestParameter, AKTrueValue];
       v5 = v20;
-      v20 = v4;
+      v20 = aKTrueValue;
       _objc_release(v5);
-      _objc_release(v11);
+      _objc_release(absoluteString);
     }
 
     else
     {
-      v10 = [location[0] absoluteString];
-      v6 = [v10 stringByAppendingFormat:@"?%@=%@", AKRecoveryUsernameRequestParameter, v21];
+      absoluteString2 = [location[0] absoluteString];
+      v6 = [absoluteString2 stringByAppendingFormat:@"?%@=%@", AKRecoveryUsernameRequestParameter, aaf_urlEncoded];
       v7 = v20;
       v20 = v6;
       _objc_release(v7);
-      _objc_release(v10);
+      _objc_release(absoluteString2);
     }
 
     v24 = [NSURL URLWithString:v20];
     objc_storeStrong(&v20, 0);
-    objc_storeStrong(&v21, 0);
+    objc_storeStrong(&aaf_urlEncoded, 0);
   }
 
   else
@@ -9536,14 +9536,14 @@ LABEL_36:
   return v8;
 }
 
-- (void)_repairAppleIDWithContext:(id)a3 completion:(id)a4
+- (void)_repairAppleIDWithContext:(id)context completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, completion);
   v27 = _AKLogSystem();
   v26 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -9562,7 +9562,7 @@ LABEL_36:
   v23 = v7;
   if (!v24 && v23)
   {
-    v6 = [location[0] altDSID];
+    altDSID = [location[0] altDSID];
     v5 = [AKURLBag bagForAltDSID:?];
     v4 = AKURLBagKeyRepair;
     v11 = _NSConcreteStackBlock;
@@ -9572,11 +9572,11 @@ LABEL_36:
     v15 = &unk_100322370;
     v19 = _objc_retain(v28);
     v16 = _objc_retain(location[0]);
-    v17 = _objc_retain(v30);
+    v17 = _objc_retain(selfCopy);
     v18 = _objc_retain(v23);
     [v5 urlConfigurationForKey:v4 fromCache:0 completion:&v11];
     _objc_release(v5);
-    _objc_release(v6);
+    _objc_release(altDSID);
     objc_storeStrong(&v18, 0);
     objc_storeStrong(&v17, 0);
     objc_storeStrong(&v16, 0);
@@ -9603,14 +9603,14 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_createNewAppleIDAndAuthenticateWithContext:(id)a3 completion:(id)a4
+- (void)_createNewAppleIDAndAuthenticateWithContext:(id)context completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, completion);
   v33 = _AKLogSystem();
   v32 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -9650,7 +9650,7 @@ LABEL_36:
 
   objc_storeStrong(&v24, 0);
   v30 = v29;
-  v6 = v36;
+  v6 = selfCopy;
   v5 = location[0];
   v14 = _NSConcreteStackBlock;
   v15 = -1073741824;
@@ -9659,7 +9659,7 @@ LABEL_36:
   v18 = &unk_100322398;
   v22 = v29;
   v21 = _objc_retain(v34);
-  v19 = _objc_retain(v36);
+  v19 = _objc_retain(selfCopy);
   v20 = _objc_retain(location[0]);
   [(AKAppleIDAuthenticationService *)v6 _beginServerUIAppleIDCreationFlowWithContext:v5 completion:&v14];
   objc_storeStrong(&v20, 0);
@@ -9669,16 +9669,16 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleCreateNewAppleIDError:(id)a3 withContext:(id)a4 andCompletion:(id)a5
+- (void)_handleCreateNewAppleIDError:(id)error withContext:(id)context andCompletion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, context);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, completion);
   v9 = _AKLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -9687,18 +9687,18 @@ LABEL_36:
   }
 
   objc_storeStrong(&v9, 0);
-  v5 = [location[0] domain];
-  v6 = 0;
-  if ([v5 isEqualToString:AKAppleIDAuthenticationErrorDomain])
+  domain = [location[0] domain];
+  _keepAlive = 0;
+  if ([domain isEqualToString:AKAppleIDAuthenticationErrorDomain])
   {
-    v6 = [v11 _keepAlive];
+    _keepAlive = [v11 _keepAlive];
   }
 
-  _objc_release(v5);
-  if (v6)
+  _objc_release(domain);
+  if (_keepAlive)
   {
     [v11 setNeedsNewAppleID:0];
-    [(AKAppleIDAuthenticationService *)v13 _keepLoginAliveWithContext:v11 error:location[0] andCompletion:v10];
+    [(AKAppleIDAuthenticationService *)selfCopy _keepLoginAliveWithContext:v11 error:location[0] andCompletion:v10];
   }
 
   else
@@ -9711,17 +9711,17 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_beginServerUIAppleIDCreationFlowWithContext:(id)a3 completion:(id)a4
+- (void)_beginServerUIAppleIDCreationFlowWithContext:(id)context completion:(id)completion
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, completion);
   v34 = 0;
-  v16 = [location[0] requestedNewAccountAgeRange];
-  if (v16 == 1)
+  requestedNewAccountAgeRange = [location[0] requestedNewAccountAgeRange];
+  if (requestedNewAccountAgeRange == 1)
   {
 LABEL_7:
     v30 = _AKLogSystem();
@@ -9739,12 +9739,12 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  if (v16 == 2)
+  if (requestedNewAccountAgeRange == 2)
   {
     v13 = +[AKFeatureManager sharedManager];
-    v14 = [v13 isAgeBasedAccountSupportEnabled];
+    isAgeBasedAccountSupportEnabled = [v13 isAgeBasedAccountSupportEnabled];
     _objc_release(v13);
-    if (v14)
+    if (isAgeBasedAccountSupportEnabled)
     {
       v33 = _AKLogSystem();
       v32 = 2;
@@ -9778,7 +9778,7 @@ LABEL_7:
   objc_storeStrong(&v34, AKURLBagKeyCreateAppleID);
 LABEL_13:
   [location[0] setNeedsNewAppleID:1];
-  v6 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   v5 = [AKURLBag bagForAltDSID:?];
   v4 = v34;
   v17 = _NSConcreteStackBlock;
@@ -9788,10 +9788,10 @@ LABEL_13:
   v21 = &unk_100322348;
   v24 = _objc_retain(v35);
   v22 = _objc_retain(location[0]);
-  v23 = _objc_retain(v37);
+  v23 = _objc_retain(selfCopy);
   [v5 urlConfigurationForKey:v4 fromCache:0 completion:&v17];
   _objc_release(v5);
-  _objc_release(v6);
+  _objc_release(altDSID);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v24, 0);
@@ -9800,14 +9800,14 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)_changePasswordAndAuthenticateWithContext:(id)a3 completion:(id)a4
+- (void)_changePasswordAndAuthenticateWithContext:(id)context completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, completion);
   v21 = 0;
   v19 = 0;
   v8 = [location[0] authKitAccount:&v19];
@@ -9829,7 +9829,7 @@ LABEL_13:
 
   else
   {
-    v6 = v24;
+    v6 = selfCopy;
     v4 = v20;
     v5 = location[0];
     v9 = _NSConcreteStackBlock;
@@ -9838,7 +9838,7 @@ LABEL_13:
     v12 = sub_1000BF08C;
     v13 = &unk_10031EF20;
     v16 = _objc_retain(v22);
-    v14 = _objc_retain(v24);
+    v14 = _objc_retain(selfCopy);
     v15 = _objc_retain(location[0]);
     [(AKAppleIDAuthenticationService *)v6 _beginChangePasswordFlowWithAccount:v4 context:v5 completion:&v9];
     objc_storeStrong(&v15, 0);
@@ -9852,16 +9852,16 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)_beginChangePasswordFlowWithAccount:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_beginChangePasswordFlowWithAccount:(id)account context:(id)context completion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, context);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
+  objc_storeStrong(&v32, completion);
   v31 = _AKLogSystem();
   v30 = 2;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -9875,7 +9875,7 @@ LABEL_13:
   objc_storeStrong(&v31, 0);
   if (location[0])
   {
-    v7 = [v33 altDSID];
+    altDSID = [v33 altDSID];
     v6 = [AKURLBag bagForAltDSID:?];
     v5 = AKURLBagKeyChangePassword;
     v16 = _NSConcreteStackBlock;
@@ -9884,12 +9884,12 @@ LABEL_13:
     v19 = sub_1000BF960;
     v20 = &unk_100322370;
     v24 = _objc_retain(v32);
-    v21 = _objc_retain(v35);
+    v21 = _objc_retain(selfCopy);
     v22 = _objc_retain(location[0]);
     v23 = _objc_retain(v33);
     [v6 urlConfigurationForKey:v5 fromCache:0 completion:&v16];
     _objc_release(v6);
-    _objc_release(v7);
+    _objc_release(altDSID);
     objc_storeStrong(&v23, 0);
     objc_storeStrong(&v22, 0);
     objc_storeStrong(&v21, 0);
@@ -9922,22 +9922,22 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (id)_authenticationParametersForUsername:(id)a3 altDSID:(id)a4 context:(id)a5
+- (id)_authenticationParametersForUsername:(id)username altDSID:(id)d context:(id)context
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, d);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, context);
   v5 = [AKSRPAuthenticationContextHelper alloc];
   v10 = [(AKSRPAuthenticationContextHelper *)v5 initWithContext:v11];
   [(AKSRPContextHelper *)v10 setUsername:location[0]];
   [(AKSRPContextHelper *)v10 setAltDSID:v12];
   [(AKSRPContextHelper *)v10 setIgnoreInternalTokens:1];
-  [(AKSRPContextHelper *)v10 setClient:v14->_client];
+  [(AKSRPContextHelper *)v10 setClient:selfCopy->_client];
   v9 = _objc_retain(v10);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
@@ -9947,14 +9947,14 @@ LABEL_13:
   return v9;
 }
 
-- (id)_requestingControllerWithServerResponse:(id)a3
+- (id)_requestingControllerWithServerResponse:(id)response
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v3 = [AKPiggybackRequestingController alloc];
-  v6 = [(AKPiggybackRequestingController *)v3 initWithServerResponse:location[0] andDelegate:v8];
+  v6 = [(AKPiggybackRequestingController *)v3 initWithServerResponse:location[0] andDelegate:selfCopy];
   v5 = _objc_retain(v6);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
@@ -9962,28 +9962,28 @@ LABEL_13:
   return v5;
 }
 
-- (void)startPiggybackingForServerResponse:(id)a3 context:(id)a4 password:(id)a5 username:(id)a6 completion:(id)a7
+- (void)startPiggybackingForServerResponse:(id)response context:(id)context password:(id)password username:(id)username completion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, context);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, password);
   v22 = 0;
-  objc_storeStrong(&v22, a6);
+  objc_storeStrong(&v22, username);
   v21 = 0;
-  objc_storeStrong(&v21, a7);
-  v20 = [(AKAppleIDAuthenticationService *)v26 _requestingControllerWithServerResponse:location[0]];
+  objc_storeStrong(&v21, completion);
+  v20 = [(AKAppleIDAuthenticationService *)selfCopy _requestingControllerWithServerResponse:location[0]];
   [v20 setInitiatingContext:v24];
   [v20 setInitiatingPassword:v23];
-  v13 = [v20 delegate];
-  _objc_release(v13);
-  if (!v13)
+  delegate = [v20 delegate];
+  _objc_release(delegate);
+  if (!delegate)
   {
-    [v20 setDelegate:v26];
+    [v20 setDelegate:selfCopy];
   }
 
   v8 = +[AKPiggybackController sharedController];
@@ -10005,14 +10005,14 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)performCircleRequestWithContext:(id)a3 completion:(id)a4
+- (void)performCircleRequestWithContext:(id)context completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, completion);
   v7 = +[AKPiggybackController sharedController];
   v6 = location[0];
   v8 = _NSConcreteStackBlock;
@@ -10028,14 +10028,14 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)piggyback:(id)a3 promptForRandomCodeWithCompletion:(id)a4
+- (void)piggyback:(id)piggyback promptForRandomCodeWithCompletion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, piggyback);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, completion);
   v12 = _AKLogSystem();
   v11 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -10047,41 +10047,41 @@ LABEL_13:
   }
 
   objc_storeStrong(&v12, 0);
-  authUILiaison = v15->_authUILiaison;
-  v6 = [location[0] initiatingContext];
-  client = v15->_client;
+  authUILiaison = selfCopy->_authUILiaison;
+  initiatingContext = [location[0] initiatingContext];
+  client = selfCopy->_client;
   [AKAuthenticationUILiaison presentSecondFactorUIForContext:"presentSecondFactorUIForContext:client:completion:" client:? completion:?];
-  _objc_release(v6);
+  _objc_release(initiatingContext);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)piggyback:(id)a3 validateSecurityCode:(id)a4 completion:(id)a5
+- (void)piggyback:(id)piggyback validateSecurityCode:(id)code completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, piggyback);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, code);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
-  v8 = v19;
+  objc_storeStrong(&v16, completion);
+  v8 = selfCopy;
   v7 = v17;
-  v11 = [location[0] idmsData];
-  v10 = [location[0] initialAuthResponse];
-  v9 = [location[0] initiatingContext];
+  idmsData = [location[0] idmsData];
+  initialAuthResponse = [location[0] initialAuthResponse];
+  initiatingContext = [location[0] initiatingContext];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000C0B28;
   v12[3] = &unk_100322410;
   v15 = _objc_retain(v16);
-  v13 = _objc_retain(v19);
+  v13 = _objc_retain(selfCopy);
   v14 = _objc_retain(location[0]);
-  [(AKAppleIDAuthenticationService *)v8 _handleSecondFactorUICompletionWithCode:v7 error:0 idmsData:v11 piggybacking:1 initialAuthResponse:v10 context:v9 completion:v12];
-  _objc_release(v9);
-  _objc_release(v10);
-  _objc_release(v11);
+  [(AKAppleIDAuthenticationService *)v8 _handleSecondFactorUICompletionWithCode:v7 error:0 idmsData:idmsData piggybacking:1 initialAuthResponse:initialAuthResponse context:initiatingContext completion:v12];
+  _objc_release(initiatingContext);
+  _objc_release(initialAuthResponse);
+  _objc_release(idmsData);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v15, 0);
@@ -10090,34 +10090,34 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)piggyback:(id)a3 shouldContinueWithCompletion:(id)a4
+- (void)piggyback:(id)piggyback shouldContinueWithCompletion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, piggyback);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  v5 = v21;
-  v10 = [location[0] initiatingContext];
-  v9 = [v10 username];
-  v8 = [location[0] initiatingPassword];
-  v7 = [location[0] initialAuthResponse];
-  v6 = [location[0] initiatingContext];
+  objc_storeStrong(&v19, completion);
+  v5 = selfCopy;
+  initiatingContext = [location[0] initiatingContext];
+  username = [initiatingContext username];
+  initiatingPassword = [location[0] initiatingPassword];
+  initialAuthResponse = [location[0] initialAuthResponse];
+  initiatingContext2 = [location[0] initiatingContext];
   v11 = _NSConcreteStackBlock;
   v12 = -1073741824;
   v13 = 0;
   v14 = sub_1000C108C;
   v15 = &unk_100322460;
-  v16 = _objc_retain(v21);
+  v16 = _objc_retain(selfCopy);
   v17 = _objc_retain(location[0]);
   v18 = _objc_retain(v19);
-  [(AKAppleIDAuthenticationService *)v5 _shouldContinueAuthenticatingForUsername:v9 password:v8 serverResponse:v7 didShowServerUI:0 continuationData:0 error:v6 context:&v11 completion:?];
-  _objc_release(v6);
-  _objc_release(v7);
-  _objc_release(v8);
-  _objc_release(v9);
-  _objc_release(v10);
+  [(AKAppleIDAuthenticationService *)v5 _shouldContinueAuthenticatingForUsername:username password:initiatingPassword serverResponse:initialAuthResponse didShowServerUI:0 continuationData:0 error:initiatingContext2 context:&v11 completion:?];
+  _objc_release(initiatingContext2);
+  _objc_release(initialAuthResponse);
+  _objc_release(initiatingPassword);
+  _objc_release(username);
+  _objc_release(initiatingContext);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v16, 0);
@@ -10125,16 +10125,16 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)piggyback:(id)a3 handleEscapeHatchError:(id)a4 completion:(id)a5
+- (void)piggyback:(id)piggyback handleEscapeHatchError:(id)error completion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, piggyback);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, error);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, completion);
   v19 = _AKLogSystem();
   v18 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -10144,19 +10144,19 @@ LABEL_13:
   }
 
   objc_storeStrong(&v19, 0);
-  authUILiaison = v23->_authUILiaison;
-  v7 = [location[0] initiatingContext];
-  client = v23->_client;
+  authUILiaison = selfCopy->_authUILiaison;
+  initiatingContext = [location[0] initiatingContext];
+  client = selfCopy->_client;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_1000C1590;
   v14 = &unk_1003217F8;
   v15 = _objc_retain(location[0]);
-  v16 = _objc_retain(v23);
+  v16 = _objc_retain(selfCopy);
   v17 = _objc_retain(v20);
-  [(AKAuthenticationUILiaison *)authUILiaison dismissSecondFactorUIForContext:v7 client:client completion:&v10];
-  _objc_release(v7);
+  [(AKAuthenticationUILiaison *)authUILiaison dismissSecondFactorUIForContext:initiatingContext client:client completion:&v10];
+  _objc_release(initiatingContext);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
@@ -10165,39 +10165,39 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)piggyback:(id)a3 handleVerificationWithError:(id)a4 completion:(id)a5
+- (void)piggyback:(id)piggyback handleVerificationWithError:(id)error completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, piggyback);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, error);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
-  v8 = v13;
+  objc_storeStrong(&v10, completion);
+  v8 = selfCopy;
   v7 = v11;
-  v9 = [location[0] initiatingContext];
+  initiatingContext = [location[0] initiatingContext];
   [AKAppleIDAuthenticationService _showAlertForLoginCodeValidationError:v8 context:"_showAlertForLoginCodeValidationError:context:completion:" completion:v7];
-  _objc_release(v9);
+  _objc_release(initiatingContext);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_updateAuthKitAccount:(id)a3 withServerResponse:(id)a4 context:(id)a5 error:(id *)a6
+- (BOOL)_updateAuthKitAccount:(id)account withServerResponse:(id)response context:(id)context error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, response);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
-  v11[1] = a6;
+  objc_storeStrong(&v12, context);
+  v11[1] = error;
   v11[0] = objc_opt_new();
-  v7 = [v11[0] updateAuthKitAccount:location[0] withServerResponse:v13 context:v12 error:a6];
+  v7 = [v11[0] updateAuthKitAccount:location[0] withServerResponse:v13 context:v12 error:error];
   objc_storeStrong(v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
@@ -10205,14 +10205,14 @@ LABEL_13:
   return v7 & 1;
 }
 
-- (BOOL)_shouldSkipAccountUpdatesForAuthWithContext:(id)a3
+- (BOOL)_shouldSkipAccountUpdatesForAuthWithContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v46 = 0;
-  v45 = [location[0] proxiedDeviceAnisetteData];
+  proxiedDeviceAnisetteData = [location[0] proxiedDeviceAnisetteData];
   if (+[AKAccountManager isAccountsFrameworkAvailable])
   {
     if ([location[0] isEphemeral] == 1)
@@ -10233,14 +10233,14 @@ LABEL_13:
 
     else
     {
-      v17 = [location[0] proxiedDevice];
+      proxiedDevice = [location[0] proxiedDevice];
       v18 = 1;
-      if (!v17)
+      if (!proxiedDevice)
       {
-        v18 = v45 != 0;
+        v18 = proxiedDeviceAnisetteData != 0;
       }
 
-      _objc_release(v17);
+      _objc_release(proxiedDevice);
       if (v18)
       {
         v38 = _AKLogSystem();
@@ -10265,15 +10265,15 @@ LABEL_13:
         {
           if ([location[0] requestedNewAccountAgeRange] == 1 || (v14 = 0, objc_msgSend(location[0], "requestedNewAccountAgeRange") == 2))
           {
-            v35 = [location[0] protoAccountContext];
+            protoAccountContext = [location[0] protoAccountContext];
             v34 = 1;
-            v14 = v35 == 0;
+            v14 = protoAccountContext == 0;
           }
         }
 
         if (v34)
         {
-          _objc_release(v35);
+          _objc_release(protoAccountContext);
         }
 
         if (v14)
@@ -10294,22 +10294,22 @@ LABEL_13:
 
         else
         {
-          v10 = [location[0] appProvidedContext];
+          appProvidedContext = [location[0] appProvidedContext];
           v29 = 0;
           v11 = 0;
-          if ([v10 isEqualToString:AKAppleIDAuthenticationAppProvidedContextEasyStudentSignIn])
+          if ([appProvidedContext isEqualToString:AKAppleIDAuthenticationAppProvidedContextEasyStudentSignIn])
           {
-            v30 = [location[0] proxiedAppleID];
+            proxiedAppleID = [location[0] proxiedAppleID];
             v29 = 1;
-            v11 = v30 != 0;
+            v11 = proxiedAppleID != 0;
           }
 
           if (v29)
           {
-            _objc_release(v30);
+            _objc_release(proxiedAppleID);
           }
 
-          _objc_release(v10);
+          _objc_release(appProvidedContext);
           if (v11)
           {
             v28 = _AKLogSystem();
@@ -10328,9 +10328,9 @@ LABEL_13:
 
           else
           {
-            v7 = [location[0] dependentAltDSID];
-            _objc_release(v7);
-            if (v7)
+            dependentAltDSID = [location[0] dependentAltDSID];
+            _objc_release(dependentAltDSID);
+            if (dependentAltDSID)
             {
               v25 = _AKLogSystem();
               v24 = OS_LOG_TYPE_DEFAULT;
@@ -10368,19 +10368,19 @@ LABEL_13:
   }
 
   v4 = v46;
-  objc_storeStrong(&v45, 0);
+  objc_storeStrong(&proxiedDeviceAnisetteData, 0);
   objc_storeStrong(location, 0);
   return v4 & 1;
 }
 
-- (void)synchronizeFollowUpItemsForContext:(id)a3 completion:(id)a4
+- (void)synchronizeFollowUpItemsForContext:(id)context completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, completion);
   v6 = objc_alloc_init(AKAuthHandlerImpl);
   v5 = +[AKFollowUpManagerFactory sharedAuthKitFollowupManager];
   [v5 synchronizeFollowUpItemsForContext:location[0] authHandler:v6 completion:v7];
@@ -10390,14 +10390,14 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)teardownFollowUpWithContext:(id)a3 completion:(id)a4
+- (void)teardownFollowUpWithContext:(id)context completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, completion);
   v10 = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -10416,33 +10416,33 @@ LABEL_13:
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchDeviceListWithContext:(id)a3 completion:(id)a4
+- (void)_fetchDeviceListWithContext:(id)context completion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, completion);
   if ([location[0] type] != 3)
   {
     goto LABEL_9;
   }
 
-  if ([(AKClient *)v26->_client hasServerOnlyDeviceListAccess])
+  if ([(AKClient *)selfCopy->_client hasServerOnlyDeviceListAccess])
   {
     [location[0] setForceFetch:1];
 LABEL_9:
-    authTrafficController = v26->_authTrafficController;
+    authTrafficController = selfCopy->_authTrafficController;
     v4 = location[0];
-    client = v26->_client;
+    client = selfCopy->_client;
     v12 = _NSConcreteStackBlock;
     v13 = -1073741824;
     v14 = 0;
     v15 = sub_1000C2D00;
     v16 = &unk_100320558;
     v17 = _objc_retain(location[0]);
-    v18 = _objc_retain(v26);
+    v18 = _objc_retain(selfCopy);
     v19 = _objc_retain(v24);
     [(AKAuthenticationTrafficController *)authTrafficController beginAuthenticatedRequestWithContext:v4 client:client clearanceHandler:&v12];
     objc_storeStrong(&v19, 0);
@@ -10477,24 +10477,24 @@ LABEL_10:
   objc_storeStrong(location, 0);
 }
 
-- (void)deleteDeviceListCacheWithContext:(id)a3 completion:(id)a4
+- (void)deleteDeviceListCacheWithContext:(id)context completion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, completion);
   v14 = +[AKFeatureManager sharedManager];
-  v15 = [v14 isDeviceListCacheEnabled];
+  isDeviceListCacheEnabled = [v14 isDeviceListCacheEnabled];
   _objc_release(v14);
-  if (v15)
+  if (isDeviceListCacheEnabled)
   {
     v7 = [AKDeviceListRequester alloc];
     v10 = +[AKDeviceListStoreManager sharedManager];
     v9 = objc_opt_new();
     v8 = +[AKAccountManager sharedInstance];
-    client = v29->_client;
+    client = selfCopy->_client;
     v26 = [AKDeviceListRequester initWithStoreManager:v7 cdpFactory:"initWithStoreManager:cdpFactory:accountManager:client:" accountManager:v10 client:v9];
     _objc_release(v8);
     _objc_release(v9);
@@ -10537,16 +10537,16 @@ LABEL_10:
   objc_storeStrong(location, 0);
 }
 
-- (void)deleteDeviceListCacheWithCompletion:(id)a3
+- (void)deleteDeviceListCacheWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v6 = +[AKFeatureManager sharedManager];
-  v7 = [v6 isDeviceListCacheEnabled];
+  isDeviceListCacheEnabled = [v6 isDeviceListCacheEnabled];
   _objc_release(v6);
-  if (v7)
+  if (isDeviceListCacheEnabled)
   {
     v5 = +[AKDeviceListStoreManager sharedManager];
     v11 = _NSConcreteStackBlock;
@@ -10582,16 +10582,16 @@ LABEL_10:
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchTokensWithAltDSID:(id)a3 tokenIdentifiers:(id)a4 completion:(id)a5
+- (void)fetchTokensWithAltDSID:(id)d tokenIdentifiers:(id)identifiers completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, identifiers);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, completion);
   v21 = objc_alloc_init(NSMutableDictionary);
   v20 = 0;
   memset(__b, 0, sizeof(__b));
@@ -10611,7 +10611,7 @@ LABEL_10:
       }
 
       v19 = *(__b[1] + 8 * v10);
-      tokenManager = v25->_tokenManager;
+      tokenManager = selfCopy->_tokenManager;
       v16 = v20;
       v7 = [(AKTokenManager *)tokenManager tokenWithIdentifier:v19 altDSID:location[0] forAccount:0 error:&v16];
       objc_storeStrong(&v20, v16);
@@ -10650,16 +10650,16 @@ LABEL_10:
   objc_storeStrong(location, 0);
 }
 
-- (void)deleteTokensFromCacheWithAltDSID:(id)a3 tokenIdentifiers:(id)a4 completion:(id)a5
+- (void)deleteTokensFromCacheWithAltDSID:(id)d tokenIdentifiers:(id)identifiers completion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, identifiers);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, completion);
   v19 = 0;
   if (v21 && [v21 count])
   {
@@ -10680,7 +10680,7 @@ LABEL_10:
         }
 
         v18 = *(__b[1] + 8 * v9);
-        tokenManager = v23->_tokenManager;
+        tokenManager = selfCopy->_tokenManager;
         v16 = v19;
         [(AKTokenManager *)tokenManager updateToken:0 identifier:v18 altDSID:location[0] account:0 credential:0 error:&v16];
         objc_storeStrong(&v19, v16);
@@ -10702,7 +10702,7 @@ LABEL_10:
 
   else
   {
-    v6 = v23->_tokenManager;
+    v6 = selfCopy->_tokenManager;
     v15 = v19;
     [(AKTokenManager *)v6 deleteTokenFromCacheWithIdentifer:0 altDSID:location[0] error:&v15];
     objc_storeStrong(&v19, v15);
@@ -10719,12 +10719,12 @@ LABEL_10:
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshBAADeviceTokenWithCompletion:(id)a3
+- (void)refreshBAADeviceTokenWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v10 = +[AKBAADeviceTokenController sharedTokenController];
   v3 = v10;
   v4 = _NSConcreteStackBlock;
@@ -10739,12 +10739,12 @@ LABEL_10:
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchBAADeviceTokenWithCompletion:(id)a3
+- (void)fetchBAADeviceTokenWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v10 = +[AKBAADeviceTokenController sharedTokenController];
   v3 = v10;
   v4 = _NSConcreteStackBlock;
@@ -10759,15 +10759,15 @@ LABEL_10:
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchBirthdayForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchBirthdayForAltDSID:(id)d completion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
-  if ([(AKClient *)v34->_client hasBirthdayAccess])
+  objc_storeStrong(&v32, completion);
+  if ([(AKClient *)selfCopy->_client hasBirthdayAccess])
   {
     v27 = 0;
     v14 = +[AKAccountManager sharedInstance];
@@ -10872,18 +10872,18 @@ LABEL_10:
   objc_storeStrong(location, 0);
 }
 
-- (void)checkSignInOrCreateFlowShieldingWithCompletion:(id)a3
+- (void)checkSignInOrCreateFlowShieldingWithCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKClient *)v11->_client hasInternalPrivateAccess])
+  objc_storeStrong(location, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v3 = +[AKAccountManager sharedInstance];
-    v4 = [(AKAccountManager *)v3 shieldSignInOrCreateFlows];
+    shieldSignInOrCreateFlows = [(AKAccountManager *)v3 shieldSignInOrCreateFlows];
     _objc_release(v3);
-    if (v4)
+    if (shieldSignInOrCreateFlows)
     {
       (*(location[0] + 2))(location[0], 1);
     }

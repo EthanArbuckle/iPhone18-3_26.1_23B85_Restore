@@ -1,22 +1,22 @@
 @interface BWPointCloudDensificationNode
-- (BWPointCloudDensificationNode)initWithConfiguration:(id)a3;
-- (id)_newPointCloudFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_setupPointCloudMediaConfigurationForInput:(id)a3 inputAttachedMediaKey:(id)a4;
+- (BWPointCloudDensificationNode)initWithConfiguration:(id)configuration;
+- (id)_newPointCloudFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_setupPointCloudMediaConfigurationForInput:(id)input inputAttachedMediaKey:(id)key;
 - (void)dealloc;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWPointCloudDensificationNode
 
-- (BWPointCloudDensificationNode)initWithConfiguration:(id)a3
+- (BWPointCloudDensificationNode)initWithConfiguration:(id)configuration
 {
   v11.receiver = self;
   v11.super_class = BWPointCloudDensificationNode;
   v4 = [(BWNode *)&v11 init];
   if (v4)
   {
-    v4->_configuration = a3;
+    v4->_configuration = configuration;
     v5 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v4];
     [(BWNodeInput *)v5 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeInput *)v5 setPassthroughMode:1];
@@ -56,18 +56,18 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)_setupPointCloudMediaConfigurationForInput:(id)a3 inputAttachedMediaKey:(id)a4
+- (void)_setupPointCloudMediaConfigurationForInput:(id)input inputAttachedMediaKey:(id)key
 {
   v6 = objc_alloc_init(BWNodeInputMediaConfiguration);
   [(BWNodeInputMediaConfiguration *)v6 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
   [(BWNodeInputMediaConfiguration *)v6 setPassthroughMode:0];
 
-  [a3 setMediaConfiguration:v6 forAttachedMediaKey:a4];
+  [input setMediaConfiguration:v6 forAttachedMediaKey:key];
 }
 
-- (id)_newPointCloudFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (id)_newPointCloudFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F219CD30);
+  AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, 0x1F219CD30);
   if (!AttachedMedia)
   {
     [BWPointCloudDensificationNode _newPointCloudFromSampleBuffer:];
@@ -83,15 +83,15 @@
     goto LABEL_12;
   }
 
-  BWSampleBufferRemoveAttachedMedia(a3, 0x1F219CD30);
+  BWSampleBufferRemoveAttachedMedia(buffer, 0x1F219CD30);
   if ([(BWPointCloudDensificationNodeConfiguration *)self->_configuration timeOfFlightCameraType]== 2)
   {
-    v8 = BWSampleBufferGetAttachedMedia(a3, 0x1F21AAE50);
+    v8 = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AAE50);
     if (v8)
     {
       v9 = BWSampleBufferGetCVDataBuffer(v8);
       v10 = [objc_alloc(getADJasperPointCloudClass()) initWithDataBuffer:v9];
-      BWSampleBufferRemoveAttachedMedia(a3, 0x1F21AAE50);
+      BWSampleBufferRemoveAttachedMedia(buffer, 0x1F21AAE50);
       if (v10)
       {
         v13[0] = v7;
@@ -117,14 +117,14 @@ LABEL_12:
   return v7;
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(BWNode *)self outputs];
-  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  outputs = [(BWNode *)self outputs];
+  v8 = [(NSArray *)outputs countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -135,23 +135,23 @@ LABEL_12:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(outputs);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 attachedMediaKeyDrivenByInputAttachedMediaKey:a5 inputIndex:{objc_msgSend(a4, "index")}];
+        v13 = [v12 attachedMediaKeyDrivenByInputAttachedMediaKey:key inputIndex:{objc_msgSend(input, "index")}];
         if (v13)
         {
           v14 = v13;
-          if (([a5 isEqualToString:0x1F219CD30] & 1) == 0 && (objc_msgSend(a5, "isEqualToString:", 0x1F21AAE50) & 1) == 0 && objc_msgSend(v12, "passthroughMode"))
+          if (([key isEqualToString:0x1F219CD30] & 1) == 0 && (objc_msgSend(key, "isEqualToString:", 0x1F21AAE50) & 1) == 0 && objc_msgSend(v12, "passthroughMode"))
           {
-            -[ADJasperColorV2Executor prepareForColorROI:](self->_executor, "prepareForColorROI:", 0.0, 0.0, [objc_msgSend(a4 "videoFormat")], objc_msgSend(objc_msgSend(a4, "videoFormat"), "height"));
+            -[ADJasperColorV2Executor prepareForColorROI:](self->_executor, "prepareForColorROI:", 0.0, 0.0, [objc_msgSend(input "videoFormat")], objc_msgSend(objc_msgSend(input, "videoFormat"), "height"));
             v15 = [v12 mediaPropertiesForAttachedMediaKey:v14];
             if (!v15)
             {
               if ([v14 isEqualToString:@"PrimaryFormat"])
               {
-                v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", self, v12, a5];
+                v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", self, v12, key];
                 objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v16 userInfo:0]);
               }
 
@@ -159,31 +159,31 @@ LABEL_12:
               [v12 _setMediaProperties:v15 forAttachedMediaKey:v14];
             }
 
-            [(BWNodeOutputMediaProperties *)v15 setResolvedFormat:a3];
+            [(BWNodeOutputMediaProperties *)v15 setResolvedFormat:format];
           }
         }
       }
 
-      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      v9 = [(NSArray *)outputs countByEnumeratingWithState:&v20 objects:v19 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v18 = 0;
   v19 = 0;
   v16 = 0;
   sampleBufferOut = 0;
-  if (FigCaptureCreateColorCameraCalibrationForColorSampleBuffer(a3, [(BWPointCloudDensificationNodeConfiguration *)self->_configuration rgbSensorConfiguration:a3], [(BWPointCloudDensificationNodeConfiguration *)self->_configuration rgbCameraHorizontalSensorBinningFactor], [(BWPointCloudDensificationNodeConfiguration *)self->_configuration rgbCameraVerticalSensorBinningFactor], &v19) || (v14 = 0u, v15 = 0u, v12 = 0u, v13 = 0u, FigCaptureCreateJasperToColorCameraTransformForJasperSensorConfiguration([(BWPointCloudDensificationNodeConfiguration *)self->_configuration timeOfFlightSensorConfiguration], &v12)))
+  if (FigCaptureCreateColorCameraCalibrationForColorSampleBuffer(buffer, [(BWPointCloudDensificationNodeConfiguration *)self->_configuration rgbSensorConfiguration:buffer], [(BWPointCloudDensificationNodeConfiguration *)self->_configuration rgbCameraHorizontalSensorBinningFactor], [(BWPointCloudDensificationNodeConfiguration *)self->_configuration rgbCameraVerticalSensorBinningFactor], &v19) || (v14 = 0u, v15 = 0u, v12 = 0u, v13 = 0u, FigCaptureCreateJasperToColorCameraTransformForJasperSensorConfiguration([(BWPointCloudDensificationNodeConfiguration *)self->_configuration timeOfFlightSensorConfiguration], &v12)))
   {
     v6 = 0;
     goto LABEL_13;
   }
 
-  v6 = [(BWPointCloudDensificationNode *)self _newPointCloudFromSampleBuffer:a3];
+  v6 = [(BWPointCloudDensificationNode *)self _newPointCloudFromSampleBuffer:buffer];
   if (!v6)
   {
     fig_log_get_emitter();
@@ -193,7 +193,7 @@ LABEL_27:
     goto LABEL_13;
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   v16 = [objc_msgSend(-[BWNodeOutput mediaPropertiesForAttachedMediaKey:](self->super._output mediaPropertiesForAttachedMediaKey:{@"Depth", "livePixelBufferPool"), "newPixelBuffer"}];
   if (v16 && !FigCaptureCreateDepthMetadataForColorCameraCalibration(v19, [(BWPointCloudDensificationNodeConfiguration *)self->_configuration filteringEnabled], &v18))
   {
@@ -208,7 +208,7 @@ LABEL_27:
     memset(&sampleTiming.presentationTimeStamp, 0, 48);
     *&sampleTiming.duration.value = *MEMORY[0x1E6960C70];
     sampleTiming.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
-    CMSampleBufferGetPresentationTimeStamp(&sampleTiming.presentationTimeStamp, a3);
+    CMSampleBufferGetPresentationTimeStamp(&sampleTiming.presentationTimeStamp, buffer);
     sampleTiming.decodeTimeStamp = sampleTiming.duration;
     v9 = CMSampleBufferCreateForImageBuffer(v8, v16, 1u, 0, 0, formatDescriptionOut, &sampleTiming, &sampleBufferOut);
     if (formatDescriptionOut)
@@ -219,9 +219,9 @@ LABEL_27:
     if (!v9)
     {
       CMSetAttachment(sampleBufferOut, *off_1E798D2B8, v18, 1u);
-      BWSampleBufferSetAttachedMedia(a3, @"Depth", sampleBufferOut);
+      BWSampleBufferSetAttachedMedia(buffer, @"Depth", sampleBufferOut);
 LABEL_12:
-      [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+      [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
       goto LABEL_13;
     }
 

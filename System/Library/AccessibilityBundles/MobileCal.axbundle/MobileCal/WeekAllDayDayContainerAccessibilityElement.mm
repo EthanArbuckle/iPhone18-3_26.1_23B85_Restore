@@ -1,7 +1,7 @@
 @interface WeekAllDayDayContainerAccessibilityElement
 - (CGRect)accessibilityFrame;
 - (UIView)allDayView;
-- (WeekAllDayDayContainerAccessibilityElement)initWithAccessibilityContainer:(id)a3;
+- (WeekAllDayDayContainerAccessibilityElement)initWithAccessibilityContainer:(id)container;
 - (id)accessibilityLabel;
 - (int64_t)accessibilityContainerType;
 - (void)dealloc;
@@ -9,11 +9,11 @@
 
 @implementation WeekAllDayDayContainerAccessibilityElement
 
-- (WeekAllDayDayContainerAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (WeekAllDayDayContainerAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
   v7.receiver = self;
   v7.super_class = WeekAllDayDayContainerAccessibilityElement;
-  v3 = [(WeekAllDayDayContainerAccessibilityElement *)&v7 initWithAccessibilityContainer:a3];
+  v3 = [(WeekAllDayDayContainerAccessibilityElement *)&v7 initWithAccessibilityContainer:container];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
@@ -31,8 +31,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(WeekAllDayDayContainerAccessibilityElement *)self children];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  children = [(WeekAllDayDayContainerAccessibilityElement *)self children];
+  v4 = [children countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -44,14 +44,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) setAccessibilityContainer:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [children countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -64,11 +64,11 @@
 
 - (int64_t)accessibilityContainerType
 {
-  v3 = [(WeekAllDayDayContainerAccessibilityElement *)self children];
-  if ([v3 count] == 1)
+  children = [(WeekAllDayDayContainerAccessibilityElement *)self children];
+  if ([children count] == 1)
   {
-    v4 = [(WeekAllDayDayContainerAccessibilityElement *)self children];
-    v5 = [v4 firstObject];
+    children2 = [(WeekAllDayDayContainerAccessibilityElement *)self children];
+    firstObject = [children2 firstObject];
     NSClassFromString(&cfstr_Weekalldaylabe.isa);
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -92,17 +92,17 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(WeekAllDayDayContainerAccessibilityElement *)self date];
-  v3 = _AXGetStringsForDate(v2);
+  date = [(WeekAllDayDayContainerAccessibilityElement *)self date];
+  v3 = _AXGetStringsForDate(date);
 
   return v3;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(WeekAllDayDayContainerAccessibilityElement *)self allDayView];
-  [v3 bounds];
-  v4 = [v3 safeValueForKey:@"_dayStarts"];
+  allDayView = [(WeekAllDayDayContainerAccessibilityElement *)self allDayView];
+  [allDayView bounds];
+  v4 = [allDayView safeValueForKey:@"_dayStarts"];
   [v4 count];
 
   [(WeekAllDayDayContainerAccessibilityElement *)self dayIndex];

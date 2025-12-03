@@ -2,9 +2,9 @@
 + (CGImage)_gainMapPlaceholderImage;
 - ($644A41260DF4BF4C36F7F207412D02FF)options;
 - (PXImageLayerModulator)init;
-- (PXImageLayerModulator)initWithOptions:(id *)a3;
-- (void)_addFilterToLayer:(id)a3;
-- (void)_removeFilterFromLayer:(id)a3;
+- (PXImageLayerModulator)initWithOptions:(id *)options;
+- (void)_addFilterToLayer:(id)layer;
+- (void)_removeFilterFromLayer:(id)layer;
 - (void)_setNeedsUpdate;
 - (void)_updateFilter;
 - (void)_updateFilterInput;
@@ -14,19 +14,19 @@
 - (void)_updateGainMapVisibility;
 - (void)_updateIfNeeded;
 - (void)dealloc;
-- (void)performChanges:(id)a3;
+- (void)performChanges:(id)changes;
 - (void)prepareForReuse;
-- (void)setDisplayingOpaqueContent:(BOOL)a3;
-- (void)setDisplayingVideoComplement:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFilter:(id)a3;
-- (void)setFilterType:(int64_t)a3;
-- (void)setFilteredLayer:(id)a3;
-- (void)setGainMapImage:(CGImage *)a3 animated:(BOOL)a4;
-- (void)setGainMapLayer:(id)a3;
-- (void)setIntensity:(double)a3;
-- (void)setLayer:(id)a3;
-- (void)setRevealsGainMapImage:(BOOL)a3;
+- (void)setDisplayingOpaqueContent:(BOOL)content;
+- (void)setDisplayingVideoComplement:(BOOL)complement;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFilter:(id)filter;
+- (void)setFilterType:(int64_t)type;
+- (void)setFilteredLayer:(id)layer;
+- (void)setGainMapImage:(CGImage *)image animated:(BOOL)animated;
+- (void)setGainMapLayer:(id)layer;
+- (void)setIntensity:(double)intensity;
+- (void)setLayer:(id)layer;
+- (void)setRevealsGainMapImage:(BOOL)image;
 @end
 
 @implementation PXImageLayerModulator
@@ -45,26 +45,26 @@
   if (self->_needsUpdateFlags.gainMapVisibility)
   {
     self->_needsUpdateFlags.gainMapVisibility = 0;
-    v4 = [(PXImageLayerModulator *)self gainMapImage];
-    v18 = [(PXImageLayerModulator *)self gainMapLayer];
-    v5 = [v18 presentationLayer];
-    v6 = [v5 contents];
-    v7 = v6;
-    if (v6)
+    gainMapImage = [(PXImageLayerModulator *)self gainMapImage];
+    gainMapLayer = [(PXImageLayerModulator *)self gainMapLayer];
+    presentationLayer = [gainMapLayer presentationLayer];
+    contents = [presentationLayer contents];
+    v7 = contents;
+    if (contents)
     {
-      v8 = v6;
+      contents2 = contents;
     }
 
     else
     {
-      v8 = [v18 contents];
+      contents2 = [gainMapLayer contents];
     }
 
-    v9 = v8;
+    v9 = contents2;
 
-    v10 = v4;
-    v11 = [(PXImageLayerModulator *)self gainMapAnimationDurationFilter];
-    [v11 output];
+    v10 = gainMapImage;
+    gainMapAnimationDurationFilter = [(PXImageLayerModulator *)self gainMapAnimationDurationFilter];
+    [gainMapAnimationDurationFilter output];
     v13 = v12;
 
     [MEMORY[0x1E6979518] begin];
@@ -76,15 +76,15 @@
       [v14 setToValue:v10];
       [v14 setDuration:v13];
       v15 = +[PXImageModulationSettings sharedInstance];
-      v16 = [v15 gainMapAnimationTimingFunction];
+      gainMapAnimationTimingFunction = [v15 gainMapAnimationTimingFunction];
 
-      v17 = [MEMORY[0x1E69793D0] functionWithName:v16];
+      v17 = [MEMORY[0x1E69793D0] functionWithName:gainMapAnimationTimingFunction];
       [v14 setTimingFunction:v17];
 
-      [v18 addAnimation:v14 forKey:@"imageLayerContents"];
+      [gainMapLayer addAnimation:v14 forKey:@"imageLayerContents"];
     }
 
-    [v18 setContents:v10];
+    [gainMapLayer setContents:v10];
     [MEMORY[0x1E6979518] commit];
   }
 }
@@ -95,33 +95,33 @@
   if (self->_needsUpdateFlags.gainMapAppearance)
   {
     self->_needsUpdateFlags.gainMapAppearance = 0;
-    v3 = [(PXImageLayerModulator *)self gainMapLayer];
-    if (v3)
+    gainMapLayer = [(PXImageLayerModulator *)self gainMapLayer];
+    if (gainMapLayer)
     {
-      v4 = [(PXImageLayerModulator *)self filter];
+      filter = [(PXImageLayerModulator *)self filter];
       if ([(PXImageLayerModulator *)self revealsGainMapImage])
       {
-        [v3 setCompositingFilter:*MEMORY[0x1E69798A8]];
-        [v3 setFilters:0];
-        v8 = v4;
+        [gainMapLayer setCompositingFilter:*MEMORY[0x1E69798A8]];
+        [gainMapLayer setFilters:0];
+        v8 = filter;
         v9 = 0;
       }
 
       else
       {
-        v5 = [(PXImageLayerModulator *)self isDisplayingOpaqueContent];
+        isDisplayingOpaqueContent = [(PXImageLayerModulator *)self isDisplayingOpaqueContent];
         v6 = MEMORY[0x1E6979CA8];
-        if (!v5)
+        if (!isDisplayingOpaqueContent)
         {
           v6 = MEMORY[0x1E6979CA0];
         }
 
-        [v3 setCompositingFilter:*v6];
-        v12[0] = v4;
+        [gainMapLayer setCompositingFilter:*v6];
+        v12[0] = filter;
         v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-        [v3 setFilters:v7];
+        [gainMapLayer setFilters:v7];
 
-        v8 = v4;
+        v8 = filter;
         v9 = 1;
       }
 
@@ -129,10 +129,10 @@
       v10 = +[PXImageModulationSettings sharedInstance];
       if ([v10 showGainMapBorder])
       {
-        v11 = [MEMORY[0x1E69DC888] whiteColor];
-        [v3 setBorderColor:{objc_msgSend(v11, "CGColor")}];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [gainMapLayer setBorderColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-        [v3 setBorderWidth:15.0];
+        [gainMapLayer setBorderWidth:15.0];
       }
     }
   }
@@ -154,9 +154,9 @@
       [(PXImageLayerModulator *)self filteredLayer];
     }
     v3 = ;
-    v4 = [(PXImageLayerModulator *)self layerFilterIntensityKeyPath];
-    v5 = v4;
-    if (!v3 || !v4)
+    layerFilterIntensityKeyPath = [(PXImageLayerModulator *)self layerFilterIntensityKeyPath];
+    v5 = layerFilterIntensityKeyPath;
+    if (!v3 || !layerFilterIntensityKeyPath)
     {
 LABEL_30:
 
@@ -179,12 +179,12 @@ LABEL_17:
       [MEMORY[0x1E6979518] setDisableActions:1];
       if (v13 > 0.0)
       {
-        v14 = [v3 presentationLayer];
-        v15 = [v14 filters];
-        if (v15)
+        presentationLayer = [v3 presentationLayer];
+        filters = [presentationLayer filters];
+        if (filters)
         {
-          v16 = [v3 presentationLayer];
-          v17 = [v16 valueForKeyPath:v5];
+          presentationLayer2 = [v3 presentationLayer];
+          v17 = [presentationLayer2 valueForKeyPath:v5];
         }
 
         else
@@ -207,7 +207,7 @@ LABEL_17:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218754;
-        v22 = self;
+        selfCopy = self;
         v23 = 2112;
         v24 = v3;
         v25 = 2112;
@@ -263,8 +263,8 @@ LABEL_13:
     self->_needsUpdateFlags.filteredLayer = 0;
     if ([(PXImageLayerModulator *)self isEnabled])
     {
-      v3 = [(PXImageLayerModulator *)self layer];
-      [(PXImageLayerModulator *)self setFilteredLayer:v3];
+      layer = [(PXImageLayerModulator *)self layer];
+      [(PXImageLayerModulator *)self setFilteredLayer:layer];
     }
 
     else
@@ -283,19 +283,19 @@ LABEL_13:
   }
 
   self->_needsUpdateFlags.filter = 0;
-  v4 = [(PXImageLayerModulator *)self filterType];
-  switch(v4)
+  filterType = [(PXImageLayerModulator *)self filterType];
+  switch(filterType)
   {
     case 3:
       v13 = objc_alloc(MEMORY[0x1E6979378]);
       v25 = [v13 initWithType:*MEMORY[0x1E6979910]];
       v6 = *MEMORY[0x1E6979BF0];
       v7 = +[PXImageModulationSettings sharedInstance];
-      v14 = [v7 EDRHeadroomUsageScheme];
-      if (v14 != 1)
+      eDRHeadroomUsageScheme = [v7 EDRHeadroomUsageScheme];
+      if (eDRHeadroomUsageScheme != 1)
       {
         v9 = 0.0;
-        if (!v14)
+        if (!eDRHeadroomUsageScheme)
         {
           v15 = MEMORY[0x1E69C0708];
           [(PXImageLayerModulator *)self hdrGain];
@@ -328,11 +328,11 @@ LABEL_15:
       v25 = [v5 initWithType:*MEMORY[0x1E6979C90]];
       v6 = *MEMORY[0x1E6979BF0];
       v7 = +[PXImageModulationSettings sharedInstance];
-      v8 = [v7 EDRHeadroomUsageScheme];
-      if (v8 != 1)
+      eDRHeadroomUsageScheme2 = [v7 EDRHeadroomUsageScheme];
+      if (eDRHeadroomUsageScheme2 != 1)
       {
         v9 = 0.0;
-        if (!v8)
+        if (!eDRHeadroomUsageScheme2)
         {
           [(PXImageLayerModulator *)self hdrGain];
           v11 = v10;
@@ -402,16 +402,16 @@ LABEL_13:
 {
   if (!self->_isPerformingChanges && !self->_isPerformingUpdates)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXImageLayerModulator.m" lineNumber:345 description:{@"neither insider -performChanges: block, nor performing updates"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImageLayerModulator.m" lineNumber:345 description:{@"neither insider -performChanges: block, nor performing updates"}];
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
-  (*(a3 + 2))(a3, self);
+  (*(changes + 2))(changes, self);
   self->_isPerformingChanges = isPerformingChanges;
   if (!isPerformingChanges)
   {
@@ -428,7 +428,7 @@ LABEL_13:
   {
     v5 = NSStringFromSelector(a2);
     v6 = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
     v9 = v5;
     _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "[ImageLayerModulator %p] %@", &v6, 0x16u);
@@ -442,38 +442,38 @@ LABEL_13:
   [(PXImageLayerModulator *)self setGainMapValue:0.0];
 }
 
-- (void)setRevealsGainMapImage:(BOOL)a3
+- (void)setRevealsGainMapImage:(BOOL)image
 {
-  if (self->_revealsGainMapImage != a3)
+  if (self->_revealsGainMapImage != image)
   {
-    self->_revealsGainMapImage = a3;
+    self->_revealsGainMapImage = image;
     [(PXImageLayerModulator *)self _invalidateGainMapAppearance];
   }
 }
 
-- (void)setGainMapLayer:(id)a3
+- (void)setGainMapLayer:(id)layer
 {
-  v5 = a3;
-  if (self->_gainMapLayer != v5)
+  layerCopy = layer;
+  if (self->_gainMapLayer != layerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_gainMapLayer, a3);
+    v6 = layerCopy;
+    objc_storeStrong(&self->_gainMapLayer, layer);
     [(PXImageLayerModulator *)self _invalidateGainMapVisibility];
-    v5 = v6;
+    layerCopy = v6;
   }
 }
 
-- (void)setGainMapImage:(CGImage *)a3 animated:(BOOL)a4
+- (void)setGainMapImage:(CGImage *)image animated:(BOOL)animated
 {
   gainMapImage = self->_gainMapImage;
-  if (gainMapImage != a3)
+  if (gainMapImage != image)
   {
     CGImageRelease(gainMapImage);
-    self->_gainMapImage = a3;
-    CGImageRetain(a3);
+    self->_gainMapImage = image;
+    CGImageRetain(image);
     [(PXImageLayerModulator *)self setAnimateGainMapAppearance:1];
-    v7 = [(PXImageLayerModulator *)self gainMapAnimationDurationFilter];
-    [v7 setGainMapImageAvailable:a3 != 0];
+    gainMapAnimationDurationFilter = [(PXImageLayerModulator *)self gainMapAnimationDurationFilter];
+    [gainMapAnimationDurationFilter setGainMapImageAvailable:image != 0];
 
     [(PXImageLayerModulator *)self _invalidateFilterInput];
 
@@ -481,20 +481,20 @@ LABEL_13:
   }
 }
 
-- (void)setDisplayingOpaqueContent:(BOOL)a3
+- (void)setDisplayingOpaqueContent:(BOOL)content
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_displayingOpaqueContent != a3)
+  if (self->_displayingOpaqueContent != content)
   {
-    v3 = a3;
-    self->_displayingOpaqueContent = a3;
+    contentCopy = content;
+    self->_displayingOpaqueContent = content;
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = contentCopy;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "[ImageLayerModulator %p] setDisplayingOpaqueContent:%d", &v6, 0x12u);
     }
 
@@ -502,20 +502,20 @@ LABEL_13:
   }
 }
 
-- (void)setDisplayingVideoComplement:(BOOL)a3
+- (void)setDisplayingVideoComplement:(BOOL)complement
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_displayingVideoComplement != a3)
+  if (self->_displayingVideoComplement != complement)
   {
-    v3 = a3;
-    self->_displayingVideoComplement = a3;
+    complementCopy = complement;
+    self->_displayingVideoComplement = complement;
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = complementCopy;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "[ImageLayerModulator %p] setDisplayingVideoComplement:%d", &v6, 0x12u);
     }
 
@@ -523,20 +523,20 @@ LABEL_13:
   }
 }
 
-- (void)setIntensity:(double)a3
+- (void)setIntensity:(double)intensity
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_intensity != a3)
+  if (self->_intensity != intensity)
   {
-    self->_intensity = a3;
+    self->_intensity = intensity;
     v4 = PLUIGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       intensity = self->_intensity;
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 2048;
-      v9 = intensity;
+      intensityCopy = intensity;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "[ImageLayerModulator %p] setIntensity:%f", &v6, 0x16u);
     }
 
@@ -544,23 +544,23 @@ LABEL_13:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v3 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     v6 = PLUIGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v7 = NSStringFromSelector(a2);
       v8 = 134218498;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = v7;
       v12 = 1024;
-      v13 = v3;
+      v13 = enabledCopy;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEBUG, "[ImageLayerModulator %p] %@ %i", &v8, 0x1Cu);
     }
 
@@ -569,20 +569,20 @@ LABEL_13:
   }
 }
 
-- (void)_removeFilterFromLayer:(id)a3
+- (void)_removeFilterFromLayer:(id)layer
 {
-  v5 = a3;
-  v6 = [(PXImageLayerModulator *)self filter];
-  v7 = v6;
-  if (v5 && v6)
+  layerCopy = layer;
+  filter = [(PXImageLayerModulator *)self filter];
+  v7 = filter;
+  if (layerCopy && filter)
   {
-    v8 = [(PXImageLayerModulator *)self filterType];
-    if ((v8 - 1) >= 2)
+    filterType = [(PXImageLayerModulator *)self filterType];
+    if ((filterType - 1) >= 2)
     {
-      if (v8 == 3)
+      if (filterType == 3)
       {
-        v15 = [(PXImageLayerModulator *)self gainMapLayer];
-        [v15 removeFromSuperlayer];
+        gainMapLayer = [(PXImageLayerModulator *)self gainMapLayer];
+        [gainMapLayer removeFromSuperlayer];
 
         [(PXImageLayerModulator *)self setGainMapLayer:0];
       }
@@ -590,23 +590,23 @@ LABEL_13:
 
     else
     {
-      v9 = [v5 filters];
-      v10 = [v9 mutableCopy];
+      filters = [layerCopy filters];
+      v10 = [filters mutableCopy];
 
-      v11 = [v7 name];
+      name = [v7 name];
       v16 = MEMORY[0x1E69E9820];
       v17 = 3221225472;
       v18 = __48__PXImageLayerModulator__removeFilterFromLayer___block_invoke;
       v19 = &unk_1E773F5A8;
       v23 = a2;
-      v20 = self;
+      selfCopy = self;
       v21 = v7;
-      v22 = v11;
-      v12 = v11;
+      v22 = name;
+      v12 = name;
       v13 = [v10 indexOfObjectPassingTest:&v16];
       if (v13 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v10 removeObjectAtIndex:{v13, v16, v17, v18, v19, v20, v21, v22, v23}];
+        [v10 removeObjectAtIndex:{v13, v16, v17, v18, v19, selfCopy, v21, v22, v23}];
         if ([v10 count])
         {
           v14 = v10;
@@ -617,7 +617,7 @@ LABEL_13:
           v14 = 0;
         }
 
-        [v5 setFilters:v14];
+        [layerCopy setFilters:v14];
       }
     }
   }
@@ -631,22 +631,22 @@ uint64_t __48__PXImageLayerModulator__removeFilterFromLayer___block_invoke(uint6
   return v4;
 }
 
-- (void)_addFilterToLayer:(id)a3
+- (void)_addFilterToLayer:(id)layer
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXImageLayerModulator *)self filter];
-  v6 = v5;
-  if (v4 && v5)
+  layerCopy = layer;
+  filter = [(PXImageLayerModulator *)self filter];
+  v6 = filter;
+  if (layerCopy && filter)
   {
-    v7 = [(PXImageLayerModulator *)self filterType];
-    if ((v7 - 1) < 2)
+    filterType = [(PXImageLayerModulator *)self filterType];
+    if ((filterType - 1) < 2)
     {
-      v8 = [v4 filters];
-      v9 = v8;
-      if (v8)
+      filters = [layerCopy filters];
+      v9 = filters;
+      if (filters)
       {
-        v10 = [v8 arrayByAddingObject:v6];
+        v10 = [filters arrayByAddingObject:v6];
       }
 
       else
@@ -656,17 +656,17 @@ uint64_t __48__PXImageLayerModulator__removeFilterFromLayer___block_invoke(uint6
       }
 
       v17 = v10;
-      [v4 setFilters:v10];
+      [layerCopy setFilters:v10];
 
       goto LABEL_10;
     }
 
-    if (v7 == 3)
+    if (filterType == 3)
     {
       v9 = objc_alloc_init(MEMORY[0x1E6979398]);
       [v9 setCompositingFilter:*MEMORY[0x1E6979CA8]];
-      v11 = [(PXImageLayerModulator *)self filter];
-      v20 = v11;
+      filter2 = [(PXImageLayerModulator *)self filter];
+      v20 = filter2;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
       [v9 setFilters:v12];
 
@@ -676,8 +676,8 @@ uint64_t __48__PXImageLayerModulator__removeFilterFromLayer___block_invoke(uint6
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
       [v9 setActions:v14];
 
-      v15 = [(PXImageLayerModulator *)self filteredLayer];
-      [v15 addSublayer:v9];
+      filteredLayer = [(PXImageLayerModulator *)self filteredLayer];
+      [filteredLayer addSublayer:v9];
 
       [(PXImageLayerModulator *)self setGainMapLayer:v9];
       v16 = objc_alloc_init(PXGainMapAnimationDurationFilter);
@@ -688,14 +688,14 @@ LABEL_10:
   }
 }
 
-- (void)setFilteredLayer:(id)a3
+- (void)setFilteredLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   filteredLayer = self->_filteredLayer;
-  if (filteredLayer != v4)
+  if (filteredLayer != layerCopy)
   {
-    v9 = v4;
-    v6 = v4;
+    v9 = layerCopy;
+    v6 = layerCopy;
     v7 = self->_filteredLayer;
     self->_filteredLayer = v6;
     v8 = filteredLayer;
@@ -705,40 +705,40 @@ LABEL_10:
 
     [(PXImageLayerModulator *)self _invalidateFilterIntensity];
     [(PXImageLayerModulator *)self _invalidateGainMapAppearance];
-    v4 = v9;
+    layerCopy = v9;
   }
 }
 
-- (void)setFilterType:(int64_t)a3
+- (void)setFilterType:(int64_t)type
 {
-  if (self->_filterType != a3)
+  if (self->_filterType != type)
   {
-    v6 = [(PXImageLayerModulator *)self filteredLayer];
-    [(PXImageLayerModulator *)self _removeFilterFromLayer:v6];
+    filteredLayer = [(PXImageLayerModulator *)self filteredLayer];
+    [(PXImageLayerModulator *)self _removeFilterFromLayer:filteredLayer];
 
-    self->_filterType = a3;
+    self->_filterType = type;
 
     [(PXImageLayerModulator *)self _invalidateFilter];
   }
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_filter != v5)
+  filterCopy = filter;
+  v6 = filterCopy;
+  if (self->_filter != filterCopy)
   {
-    v10 = v5;
-    v7 = [(CAFilter *)v5 isEqual:?];
+    v10 = filterCopy;
+    v7 = [(CAFilter *)filterCopy isEqual:?];
     v6 = v10;
     if ((v7 & 1) == 0)
     {
-      v8 = [(PXImageLayerModulator *)self filteredLayer];
-      [(PXImageLayerModulator *)self _removeFilterFromLayer:v8];
+      filteredLayer = [(PXImageLayerModulator *)self filteredLayer];
+      [(PXImageLayerModulator *)self _removeFilterFromLayer:filteredLayer];
 
-      objc_storeStrong(&self->_filter, a3);
-      v9 = [(PXImageLayerModulator *)self filteredLayer];
-      [(PXImageLayerModulator *)self _addFilterToLayer:v9];
+      objc_storeStrong(&self->_filter, filter);
+      filteredLayer2 = [(PXImageLayerModulator *)self filteredLayer];
+      [(PXImageLayerModulator *)self _addFilterToLayer:filteredLayer2];
 
       [(PXImageLayerModulator *)self _invalidateFilterIntensity];
       [(PXImageLayerModulator *)self _invalidateGainMapAppearance];
@@ -747,23 +747,23 @@ LABEL_10:
   }
 }
 
-- (void)setLayer:(id)a3
+- (void)setLayer:(id)layer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (self->_layer != v6)
+  layerCopy = layer;
+  if (self->_layer != layerCopy)
   {
-    objc_storeStrong(&self->_layer, a3);
+    objc_storeStrong(&self->_layer, layer);
     v7 = PLUIGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v8 = NSStringFromSelector(a2);
       v9 = 134218498;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v8;
       v13 = 2112;
-      v14 = v6;
+      v14 = layerCopy;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEBUG, "[ImageLayerModulator %p] %@ %@", &v9, 0x20u);
     }
 
@@ -779,7 +779,7 @@ LABEL_10:
   [(PXImageLayerModulator *)&v3 dealloc];
 }
 
-- (PXImageLayerModulator)initWithOptions:(id *)a3
+- (PXImageLayerModulator)initWithOptions:(id *)options
 {
   v10.receiver = self;
   v10.super_class = PXImageLayerModulator;
@@ -787,16 +787,16 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->var0;
-    v7 = *&a3->var2;
-    *&v4->_options.fallbackHdrGain = *&a3->var4;
+    v6 = *&options->var0;
+    v7 = *&options->var2;
+    *&v4->_options.fallbackHdrGain = *&options->var4;
     *&v4->_options.contentFormat = v6;
     *&v4->_options.hdrGain = v7;
     v4->_displayingOpaqueContent = 1;
-    if (a3->var0 == 2)
+    if (options->var0 == 2)
     {
-      v8 = [objc_opt_class() _gainMapPlaceholderImage];
-      v5->_gainMapImage = CGImageRetain(v8);
+      _gainMapPlaceholderImage = [objc_opt_class() _gainMapPlaceholderImage];
+      v5->_gainMapImage = CGImageRetain(_gainMapPlaceholderImage);
     }
 
     v5->_needsUpdateFlags.filterInput = 1;
@@ -808,8 +808,8 @@ LABEL_10:
 
 - (PXImageLayerModulator)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXImageLayerModulator.m" lineNumber:65 description:{@"%s is not available as initializer", "-[PXImageLayerModulator init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXImageLayerModulator.m" lineNumber:65 description:{@"%s is not available as initializer", "-[PXImageLayerModulator init]"}];
 
   abort();
 }

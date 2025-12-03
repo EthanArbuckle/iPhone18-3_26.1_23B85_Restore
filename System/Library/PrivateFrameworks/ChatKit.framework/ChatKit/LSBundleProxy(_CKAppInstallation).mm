@@ -6,10 +6,10 @@
 
 - (id)__ck_icon
 {
-  v2 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:a1 format:14];
+  v2 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:self format:14];
   if (!v2)
   {
-    v2 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:a1 format:2];
+    v2 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:self format:2];
   }
 
   return v2;

@@ -2,22 +2,22 @@
 + (id)defaults;
 - (ADMetricDepthPipeline)init;
 - (id).cxx_construct;
-- (id)initForEspressoEngine:(unint64_t)a3;
-- (id)initForEspressoEngine:(unint64_t)a3 pipelineParameters:(id)a4;
+- (id)initForEspressoEngine:(unint64_t)engine;
+- (id)initForEspressoEngine:(unint64_t)engine pipelineParameters:(id)parameters;
 - (id)outputConfidenceDescriptor;
 - (id)outputDepthDescriptor;
 - (id)outputNormalsDescriptor;
-- (int64_t)createJasperEmbeddings:(id)a3 cropTo:(CGRect)a4 rotateBy:(int64_t)a5 outputBuffer:(id)a6 outputBatchOffset:(unint64_t)a7;
-- (int64_t)createJasperEmbeddingsForRightCameraPointCloud:(id)a3 leftCameraPointCloud:(id)a4 crop:(CGRect)a5 rotation:(int64_t)a6 outputBuffer:(id)a7;
-- (int64_t)fillSensorsMask:(__CVBuffer *)a3;
-- (int64_t)filterJasperPointCloud:(id)a3 usingPearlInput:(__CVBuffer *)a4;
-- (int64_t)filterUncertainty:(__CVBuffer *)a3 output:(__CVBuffer *)a4;
-- (int64_t)postProcessEspressoConfidence:(__CVBuffer *)a3 outputConfidence:(__CVBuffer *)a4 confidenceUnits:(unint64_t)a5;
-- (int64_t)postProcessEspressoDepth:(__CVBuffer *)a3 espressoConfidence:(__CVBuffer *)a4 espressoNormals:(__CVBuffer *)a5 toOutputDepth:(__CVBuffer *)a6 outputConfidence:(__CVBuffer *)a7 outputNormals:(__CVBuffer *)a8;
-- (int64_t)postProcessEspressoNormals:(__CVBuffer *)a3 toOutputNormals:(__CVBuffer *)a4;
-- (uint64_t)createCameraEmbeddingsForRightCameraCalibration:(uint64_t)a1 leftCameraCalibration:(uint64_t)a2 rightCameraPose:(uint64_t)a3 leftCameraPose:(uint64_t)a4 outputBuffer:(void *)a5;
-- (uint64_t)emulatePeridotFromJasper:(double)a3 jasperPoses:(double)a4 jasperTimestamps:(double)a5 jasperToPlatformTransform:(int32x4_t)a6 pearlDepth:(int32x4_t)a7 pearlPose:(int32x4_t)a8 pearlCalibration:(float32x4_t)a9 outPointCloud:(uint64_t)a10 outPose:(void *)a11 outTimestamp:(uint64_t)a12;
-- (uint64_t)preprocessPearlDepth:(int32x4_t)a3 pearlPose:(int32x4_t)a4 pearlCalibration:(float32x4_t)a5 colorPose:(float32x4_t)a6 colorCalibration:(float32x4_t)a7 outputBuffer:(float32x4_t)a8;
+- (int64_t)createJasperEmbeddings:(id)embeddings cropTo:(CGRect)to rotateBy:(int64_t)by outputBuffer:(id)buffer outputBatchOffset:(unint64_t)offset;
+- (int64_t)createJasperEmbeddingsForRightCameraPointCloud:(id)cloud leftCameraPointCloud:(id)pointCloud crop:(CGRect)crop rotation:(int64_t)rotation outputBuffer:(id)buffer;
+- (int64_t)fillSensorsMask:(__CVBuffer *)mask;
+- (int64_t)filterJasperPointCloud:(id)cloud usingPearlInput:(__CVBuffer *)input;
+- (int64_t)filterUncertainty:(__CVBuffer *)uncertainty output:(__CVBuffer *)output;
+- (int64_t)postProcessEspressoConfidence:(__CVBuffer *)confidence outputConfidence:(__CVBuffer *)outputConfidence confidenceUnits:(unint64_t)units;
+- (int64_t)postProcessEspressoDepth:(__CVBuffer *)depth espressoConfidence:(__CVBuffer *)confidence espressoNormals:(__CVBuffer *)normals toOutputDepth:(__CVBuffer *)outputDepth outputConfidence:(__CVBuffer *)outputConfidence outputNormals:(__CVBuffer *)outputNormals;
+- (int64_t)postProcessEspressoNormals:(__CVBuffer *)normals toOutputNormals:(__CVBuffer *)outputNormals;
+- (uint64_t)createCameraEmbeddingsForRightCameraCalibration:(uint64_t)calibration leftCameraCalibration:(uint64_t)cameraCalibration rightCameraPose:(uint64_t)pose leftCameraPose:(uint64_t)cameraPose outputBuffer:(void *)buffer;
+- (uint64_t)emulatePeridotFromJasper:(double)jasper jasperPoses:(double)poses jasperTimestamps:(double)timestamps jasperToPlatformTransform:(int32x4_t)transform pearlDepth:(int32x4_t)depth pearlPose:(int32x4_t)pose pearlCalibration:(float32x4_t)calibration outPointCloud:(uint64_t)self0 outPose:(void *)self1 outTimestamp:(uint64_t)self2;
+- (uint64_t)preprocessPearlDepth:(int32x4_t)depth pearlPose:(int32x4_t)pose pearlCalibration:(float32x4_t)calibration colorPose:(float32x4_t)colorPose colorCalibration:(float32x4_t)colorCalibration outputBuffer:(float32x4_t)buffer;
 @end
 
 @implementation ADMetricDepthPipeline
@@ -51,29 +51,29 @@
   return self;
 }
 
-- (int64_t)filterUncertainty:(__CVBuffer *)a3 output:(__CVBuffer *)a4
+- (int64_t)filterUncertainty:(__CVBuffer *)uncertainty output:(__CVBuffer *)output
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  if (PixelFormatType == CVPixelBufferGetPixelFormatType(a4) && (v8 = CVPixelBufferGetWidth(a3), v8 == CVPixelBufferGetWidth(a4)) && (v9 = CVPixelBufferGetHeight(a3), v9 == CVPixelBufferGetHeight(a4)))
+  PixelFormatType = CVPixelBufferGetPixelFormatType(uncertainty);
+  if (PixelFormatType == CVPixelBufferGetPixelFormatType(output) && (v8 = CVPixelBufferGetWidth(uncertainty), v8 == CVPixelBufferGetWidth(output)) && (v9 = CVPixelBufferGetHeight(uncertainty), v9 == CVPixelBufferGetHeight(output)))
   {
-    if (CVPixelBufferGetPixelFormatType(a3) == 1278226536)
+    if (CVPixelBufferGetPixelFormatType(uncertainty) == 1278226536)
     {
-      v10 = [(ADMetricDepthPipelineParameters *)self->_pipelineParameters confidenceLevelRanges];
-      [v10 highLevel];
+      confidenceLevelRanges = [(ADMetricDepthPipelineParameters *)self->_pipelineParameters confidenceLevelRanges];
+      [confidenceLevelRanges highLevel];
       v73 = v11;
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
-      CVPixelBufferLockBaseAddress(a4, 0);
+      CVPixelBufferLockBaseAddress(uncertainty, 1uLL);
+      CVPixelBufferLockBaseAddress(output, 0);
       memset(&buf, 0, sizeof(buf));
       v12 = MEMORY[0x277CBF3A0];
-      PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+      PixelBufferUtils::asVImageBuffer(uncertainty, *MEMORY[0x277CBF3A0], &buf);
       memset(&v74, 0, sizeof(v74));
-      PixelBufferUtils::asVImageBuffer(a4, *v12, &v74);
+      PixelBufferUtils::asVImageBuffer(output, *v12, &v74);
       height = buf.height;
       if (!buf.height || (width = buf.width) == 0)
       {
 LABEL_47:
-        CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-        CVPixelBufferUnlockBaseAddress(a4, 0);
+        CVPixelBufferUnlockBaseAddress(uncertainty, 1uLL);
+        CVPixelBufferUnlockBaseAddress(output, 0);
 
         return 0;
       }
@@ -320,23 +320,23 @@ LABEL_21:
   return -22953;
 }
 
-- (uint64_t)emulatePeridotFromJasper:(double)a3 jasperPoses:(double)a4 jasperTimestamps:(double)a5 jasperToPlatformTransform:(int32x4_t)a6 pearlDepth:(int32x4_t)a7 pearlPose:(int32x4_t)a8 pearlCalibration:(float32x4_t)a9 outPointCloud:(uint64_t)a10 outPose:(void *)a11 outTimestamp:(uint64_t)a12
+- (uint64_t)emulatePeridotFromJasper:(double)jasper jasperPoses:(double)poses jasperTimestamps:(double)timestamps jasperToPlatformTransform:(int32x4_t)transform pearlDepth:(int32x4_t)depth pearlPose:(int32x4_t)pose pearlCalibration:(float32x4_t)calibration outPointCloud:(uint64_t)self0 outPose:(void *)self1 outTimestamp:(uint64_t)self2
 {
-  v22 = a11;
+  outPoseCopy = outPose;
   v65 = a15;
   v23 = objc_alloc(MEMORY[0x277CED040]);
   LODWORD(v24) = 1017370378;
-  v25 = [v23 initWithIntrinsics:0 cameraToPlatformTransform:*&_PromotedConst_10355 pixelSize:unk_240407F90 referenceDimensions:8.58993628e10 distortionModel:{a2, a3, a4, a5, v24, 0x4051800000000000, 0x4056800000000000}];
+  v25 = [v23 initWithIntrinsics:0 cameraToPlatformTransform:*&_PromotedConst_10355 pixelSize:unk_240407F90 referenceDimensions:8.58993628e10 distortionModel:{a2, jasper, poses, timestamps, v24, 0x4051800000000000, 0x4056800000000000}];
   for (i = 0; ; ++i)
   {
-    if ([v22 count] <= i)
+    if ([outPoseCopy count] <= i)
     {
       goto LABEL_16;
     }
 
-    v27 = [v22 objectAtIndexedSubscript:i];
-    v28 = [MEMORY[0x277CBEB68] null];
-    v29 = [v27 isEqual:v28];
+    v27 = [outPoseCopy objectAtIndexedSubscript:i];
+    null = [MEMORY[0x277CBEB68] null];
+    v29 = [v27 isEqual:null];
 
     if ((v29 & 1) == 0 && !*[v27 bankIds])
     {
@@ -352,7 +352,7 @@ LABEL_16:
     goto LABEL_24;
   }
 
-  v30 = [v22 objectAtIndexedSubscript:i];
+  v30 = [outPoseCopy objectAtIndexedSubscript:i];
   v31 = [v30 pointCloudByChangingPointOfViewByTransform:v25 to:{*&_PromotedConst_10356, unk_240407FC0, 0.0, unk_240407FE0}];
   v32 = [v31 mutableCopy];
 
@@ -375,33 +375,33 @@ LABEL_16:
     BytesPerRow = CVPixelBufferGetBytesPerRow(pixelBufferOut);
     CVPixelBufferLockBaseAddress(v34, 1uLL);
     BaseAddress = CVPixelBufferGetBaseAddress(v34);
-    v35 = (a12 + (i << 6));
-    v36 = vtrn2q_s32(a6, a7);
-    v36.i32[2] = a8.i32[1];
-    v37 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(vzip1q_s32(vzip1q_s32(a6, a8), a7), a9.f32[0]), v36, *a9.f32, 1), vzip1q_s32(vzip2q_s32(a6, a8), vdupq_laneq_s32(a7, 2)), a9, 2);
+    v35 = (timestamp + (i << 6));
+    v36 = vtrn2q_s32(transform, depth);
+    v36.i32[2] = pose.i32[1];
+    v37 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(vzip1q_s32(vzip1q_s32(transform, pose), depth), calibration.f32[0]), v36, *calibration.f32, 1), vzip1q_s32(vzip2q_s32(transform, pose), vdupq_laneq_s32(depth, 2)), calibration, 2);
     v39 = v35[2];
     v38 = v35[3];
     v40 = v35[1];
-    [*(a1 + 32) warpDepth:a14 srcCalibration:v65 dstCalibration:v25 poseTransform:v34 warpedDepth:{*vmlaq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(*v35, *a6.i32), v40, *a7.i32), v39, *a8.i32), 0, v38).i64, *vmlaq_f32(vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(*v35, *a6.i8, 1), v40, *a7.i8, 1), v39, *a8.i8, 1), 0, v38).i64, *vmlaq_f32(vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(*v35, a6, 2), v40, a7, 2), v39, a8, 2), 0, v38).i64, *vaddq_f32(v38, vmlsq_laneq_f32(vmlsq_lane_f32(vmulq_n_f32(*v35, vnegq_f32(v37).f32[0]), v40, *v37.f32, 1), v39, v37, 2)).i64}];
-    v41 = [v32 echoIds];
-    v42 = [v32 cameraPixels];
-    v43 = [v32 mutableConfidences];
+    [*(self + 32) warpDepth:a14 srcCalibration:v65 dstCalibration:v25 poseTransform:v34 warpedDepth:{*vmlaq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(*v35, *transform.i32), v40, *depth.i32), v39, *pose.i32), 0, v38).i64, *vmlaq_f32(vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(*v35, *transform.i8, 1), v40, *depth.i8, 1), v39, *pose.i8, 1), 0, v38).i64, *vmlaq_f32(vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(*v35, transform, 2), v40, depth, 2), v39, pose, 2), 0, v38).i64, *vaddq_f32(v38, vmlsq_laneq_f32(vmlsq_lane_f32(vmulq_n_f32(*v35, vnegq_f32(v37).f32[0]), v40, *v37.f32, 1), v39, v37, 2)).i64}];
+    echoIds = [v32 echoIds];
+    cameraPixels = [v32 cameraPixels];
+    mutableConfidences = [v32 mutableConfidences];
     v57 = i;
-    v44 = [v32 mutablePoints];
+    mutablePoints = [v32 mutablePoints];
     for (j = 0; j < [v32 length]; ++j)
     {
-      if (!*(v41 + j) && *(v43 + 4 * j) < 0.8)
+      if (!*(echoIds + j) && *(mutableConfidences + 4 * j) < 0.8)
       {
-        v66 = *&BaseAddress[4 * *v42 + BytesPerRow * v42[1]] * 1000.0;
+        v66 = *&BaseAddress[4 * *cameraPixels + BytesPerRow * cameraPixels[1]] * 1000.0;
         if (v66 < 1000.0)
         {
-          [v25 backProject:1 undistortedPixels:v42 withZ:&v66 outPoints:v44];
-          *(v43 + 4 * j) = 1065353216;
+          [v25 backProject:1 undistortedPixels:cameraPixels withZ:&v66 outPoints:mutablePoints];
+          *(mutableConfidences + 4 * j) = 1065353216;
         }
       }
 
-      v42 += 2;
-      v44 += 16;
+      cameraPixels += 2;
+      mutablePoints += 16;
     }
 
     CVPixelBufferUnlockBaseAddress(v34, 1uLL);
@@ -428,18 +428,18 @@ LABEL_24:
   return v46;
 }
 
-- (int64_t)postProcessEspressoNormals:(__CVBuffer *)a3 toOutputNormals:(__CVBuffer *)a4
+- (int64_t)postProcessEspressoNormals:(__CVBuffer *)normals toOutputNormals:(__CVBuffer *)outputNormals
 {
   v115 = *MEMORY[0x277D85DE8];
   kdebug_trace();
-  if (!a3 || !a4)
+  if (!normals || !outputNormals)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      *v113 = a3;
+      *v113 = normals;
       *&v113[8] = 2048;
-      v114 = a4;
+      outputNormalsCopy = outputNormals;
       v27 = MEMORY[0x277D86220];
       v28 = "normals postprocess buffer cannot be null: %p,%p";
 LABEL_20:
@@ -452,16 +452,16 @@ LABEL_29:
     goto LABEL_23;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  v8 = CVPixelBufferGetPixelFormatType(a4);
-  v9 = [(ADEspressoMetricDepthInferenceDescriptor *)self->_inferenceDescriptor normalsOutput];
-  v10 = [v9 imageDescriptor];
-  if (PixelFormatType == [v10 pixelFormat])
+  PixelFormatType = CVPixelBufferGetPixelFormatType(normals);
+  v8 = CVPixelBufferGetPixelFormatType(outputNormals);
+  normalsOutput = [(ADEspressoMetricDepthInferenceDescriptor *)self->_inferenceDescriptor normalsOutput];
+  imageDescriptor = [normalsOutput imageDescriptor];
+  if (PixelFormatType == [imageDescriptor pixelFormat])
   {
-    v11 = [(ADMetricDepthPipeline *)self outputNormalsDescriptor];
-    v12 = [v11 pixelFormat];
+    outputNormalsDescriptor = [(ADMetricDepthPipeline *)self outputNormalsDescriptor];
+    pixelFormat = [outputNormalsDescriptor pixelFormat];
 
-    if (v8 == v12)
+    if (v8 == pixelFormat)
     {
       v13 = PixelBufferUtils::componentsPerPixelForPixelFormat(PixelFormatType, 0);
       if (PixelFormatType == 1380411457)
@@ -469,16 +469,16 @@ LABEL_29:
         v14 = v13;
         if (v8 == 1380410945)
         {
-          Width = CVPixelBufferGetWidth(a3);
-          Height = CVPixelBufferGetHeight(a3);
-          if (Width == CVPixelBufferGetWidth(a4) && Height == CVPixelBufferGetHeight(a4))
+          Width = CVPixelBufferGetWidth(normals);
+          Height = CVPixelBufferGetHeight(normals);
+          if (Width == CVPixelBufferGetWidth(outputNormals) && Height == CVPixelBufferGetHeight(outputNormals))
           {
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
-            CVPixelBufferLockBaseAddress(a4, 0);
-            BaseAddress = CVPixelBufferGetBaseAddress(a3);
-            v33 = CVPixelBufferGetBaseAddress(a4);
-            BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-            v35 = CVPixelBufferGetBytesPerRow(a4);
+            CVPixelBufferLockBaseAddress(normals, 1uLL);
+            CVPixelBufferLockBaseAddress(outputNormals, 0);
+            BaseAddress = CVPixelBufferGetBaseAddress(normals);
+            v33 = CVPixelBufferGetBaseAddress(outputNormals);
+            BytesPerRow = CVPixelBufferGetBytesPerRow(normals);
+            v35 = CVPixelBufferGetBytesPerRow(outputNormals);
             if (Height)
             {
               v36 = Width * v14;
@@ -690,7 +690,7 @@ LABEL_40:
           *buf = 134218240;
           *v113 = Width;
           *&v113[8] = 2048;
-          v114 = Height;
+          outputNormalsCopy = Height;
           v27 = MEMORY[0x277D86220];
           v28 = "postprocess buffer dimensions must match: %lu,%lu";
           goto LABEL_20;
@@ -698,21 +698,21 @@ LABEL_40:
 
         if (v8 == 1380411457)
         {
-          Width = CVPixelBufferGetWidth(a3);
-          Height = CVPixelBufferGetHeight(a3);
-          if (Width == CVPixelBufferGetWidth(a4) && Height == CVPixelBufferGetHeight(a4))
+          Width = CVPixelBufferGetWidth(normals);
+          Height = CVPixelBufferGetHeight(normals);
+          if (Width == CVPixelBufferGetWidth(outputNormals) && Height == CVPixelBufferGetHeight(outputNormals))
           {
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
-            CVPixelBufferLockBaseAddress(a4, 0);
-            v17 = CVPixelBufferGetBaseAddress(a3);
-            v18 = CVPixelBufferGetBaseAddress(a4);
-            v19 = CVPixelBufferGetBytesPerRow(a3);
-            v20 = CVPixelBufferGetBytesPerRow(a4);
+            CVPixelBufferLockBaseAddress(normals, 1uLL);
+            CVPixelBufferLockBaseAddress(outputNormals, 0);
+            v17 = CVPixelBufferGetBaseAddress(normals);
+            v18 = CVPixelBufferGetBaseAddress(outputNormals);
+            v19 = CVPixelBufferGetBytesPerRow(normals);
+            v20 = CVPixelBufferGetBytesPerRow(outputNormals);
             if (!Height || (v21 = Width * v14) == 0)
             {
 LABEL_85:
-              CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-              CVPixelBufferUnlockBaseAddress(a4, 0);
+              CVPixelBufferUnlockBaseAddress(normals, 1uLL);
+              CVPixelBufferUnlockBaseAddress(outputNormals, 0);
               v30 = 0;
               goto LABEL_24;
             }
@@ -885,43 +885,43 @@ LABEL_24:
   return v30;
 }
 
-- (int64_t)postProcessEspressoDepth:(__CVBuffer *)a3 espressoConfidence:(__CVBuffer *)a4 espressoNormals:(__CVBuffer *)a5 toOutputDepth:(__CVBuffer *)a6 outputConfidence:(__CVBuffer *)a7 outputNormals:(__CVBuffer *)a8
+- (int64_t)postProcessEspressoDepth:(__CVBuffer *)depth espressoConfidence:(__CVBuffer *)confidence espressoNormals:(__CVBuffer *)normals toOutputDepth:(__CVBuffer *)outputDepth outputConfidence:(__CVBuffer *)outputConfidence outputNormals:(__CVBuffer *)outputNormals
 {
   kdebug_trace();
-  v15 = [ADUtils postProcessDepth:a3 depthOutput:a6];
+  v15 = [ADUtils postProcessDepth:depth depthOutput:outputDepth];
   kdebug_trace();
-  if (a7 && a4 && !v15)
+  if (outputConfidence && confidence && !v15)
   {
-    v15 = [(ADMetricDepthPipeline *)self postProcessEspressoConfidence:a4 outputConfidence:a7 confidenceUnits:[(ADMetricDepthPipelineParameters *)self->_pipelineParameters confidenceUnits]];
+    v15 = [(ADMetricDepthPipeline *)self postProcessEspressoConfidence:confidence outputConfidence:outputConfidence confidenceUnits:[(ADMetricDepthPipelineParameters *)self->_pipelineParameters confidenceUnits]];
   }
 
-  if (!a8 || !a5 || v15)
+  if (!outputNormals || !normals || v15)
   {
     return v15;
   }
 
-  return [(ADMetricDepthPipeline *)self postProcessEspressoNormals:a5 toOutputNormals:a8];
+  return [(ADMetricDepthPipeline *)self postProcessEspressoNormals:normals toOutputNormals:outputNormals];
 }
 
-- (int64_t)postProcessEspressoConfidence:(__CVBuffer *)a3 outputConfidence:(__CVBuffer *)a4 confidenceUnits:(unint64_t)a5
+- (int64_t)postProcessEspressoConfidence:(__CVBuffer *)confidence outputConfidence:(__CVBuffer *)outputConfidence confidenceUnits:(unint64_t)units
 {
   kdebug_trace();
-  v9 = [(ADMetricDepthPipelineParameters *)self->_pipelineParameters confidenceLevelRanges];
-  v10 = [ADUtils postProcessConfidence:a3 confidenceOutput:a4 rawConfidenceUnits:3 outConfidenceUnits:a5 confidenceLevelRanges:v9];
+  confidenceLevelRanges = [(ADMetricDepthPipelineParameters *)self->_pipelineParameters confidenceLevelRanges];
+  v10 = [ADUtils postProcessConfidence:confidence confidenceOutput:outputConfidence rawConfidenceUnits:3 outConfidenceUnits:units confidenceLevelRanges:confidenceLevelRanges];
 
   kdebug_trace();
   return v10;
 }
 
-- (int64_t)fillSensorsMask:(__CVBuffer *)a3
+- (int64_t)fillSensorsMask:(__CVBuffer *)mask
 {
-  CVPixelBufferLockBaseAddress(a3, 0);
+  CVPixelBufferLockBaseAddress(mask, 0);
   memset(&__dst, 0, sizeof(__dst));
-  PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &__dst);
-  if (__dst.rowBytes == 640 && (PixelFormatType = CVPixelBufferGetPixelFormatType(a3), PixelBufferUtils::pixelSizeForPixelFormat(PixelFormatType, 0) == 2))
+  PixelBufferUtils::asVImageBuffer(mask, *MEMORY[0x277CBF3A0], &__dst);
+  if (__dst.rowBytes == 640 && (PixelFormatType = CVPixelBufferGetPixelFormatType(mask), PixelBufferUtils::pixelSizeForPixelFormat(PixelFormatType, 0) == 2))
   {
-    v5 = [objc_opt_class() defaults];
-    v6 = [v5 integerForKey:kADDeviceConfigurationKeyMetricDepthActiveMaskMode];
+    defaults = [objc_opt_class() defaults];
+    v6 = [defaults integerForKey:kADDeviceConfigurationKeyMetricDepthActiveMaskMode];
 
     if (v6 >= 2)
     {
@@ -956,11 +956,11 @@ LABEL_24:
     v11 = -22951;
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(mask, 0);
   return v11;
 }
 
-- (uint64_t)preprocessPearlDepth:(int32x4_t)a3 pearlPose:(int32x4_t)a4 pearlCalibration:(float32x4_t)a5 colorPose:(float32x4_t)a6 colorCalibration:(float32x4_t)a7 outputBuffer:(float32x4_t)a8
+- (uint64_t)preprocessPearlDepth:(int32x4_t)depth pearlPose:(int32x4_t)pose pearlCalibration:(float32x4_t)calibration colorPose:(float32x4_t)colorPose colorCalibration:(float32x4_t)colorCalibration outputBuffer:(float32x4_t)buffer
 {
   v59 = *MEMORY[0x277D85DE8];
   v18 = a12;
@@ -974,35 +974,35 @@ LABEL_24:
   if ([v20 width] == v21 && (objc_msgSend(v19, "referenceDimensions"), objc_msgSend(v20, "height") == v22))
   {
     v41 = a11;
-    v23 = [v20 data];
-    v24 = *(a1 + 192);
-    if (!v24 || CVPixelBufferGetBaseAddress(v24) != v23 || (Width = CVPixelBufferGetWidth(*(a1 + 192)), Width != [v20 width]) || (Height = CVPixelBufferGetHeight(*(a1 + 192)), Height != objc_msgSend(v20, "height")))
+    data = [v20 data];
+    v24 = *(self + 192);
+    if (!v24 || CVPixelBufferGetBaseAddress(v24) != data || (Width = CVPixelBufferGetWidth(*(self + 192)), Width != [v20 width]) || (Height = CVPixelBufferGetHeight(*(self + 192)), Height != objc_msgSend(v20, "height")))
     {
       texture = 0;
-      v27 = [v20 width];
-      v28 = [v20 height];
-      v29 = [*(a1 + 376) pearlInput];
-      v30 = [v29 imageDescriptor];
-      v31 = [v30 pixelFormat];
-      v32 = [v20 rowBytes];
-      CVPixelBufferCreateWithBytes(*MEMORY[0x277CBECE8], v27, v28, v31, v23, v32, 0, 0, 0, &texture);
+      width = [v20 width];
+      height = [v20 height];
+      pearlInput = [*(self + 376) pearlInput];
+      imageDescriptor = [pearlInput imageDescriptor];
+      pixelFormat = [imageDescriptor pixelFormat];
+      rowBytes = [v20 rowBytes];
+      CVPixelBufferCreateWithBytes(*MEMORY[0x277CBECE8], width, height, pixelFormat, data, rowBytes, 0, 0, 0, &texture);
 
       v33 = texture;
       *buf = &unk_285231598;
       *&buf[8] = texture;
       CVPixelBufferRetain(texture);
       CVPixelBufferRelease(v33);
-      CVPixelBufferRelease(*(a1 + 192));
-      *(a1 + 192) = *&buf[8];
+      CVPixelBufferRelease(*(self + 192));
+      *(self + 192) = *&buf[8];
       *buf = &unk_285231598;
       *&buf[8] = 0;
       CVPixelBufferRelease(0);
     }
 
-    v34 = vtrn2q_s32(a2, a3);
-    v34.i32[2] = a4.i32[1];
-    v35 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(vzip1q_s32(vzip1q_s32(a2, a4), a3), a5.f32[0]), v34, *a5.f32, 1), vzip1q_s32(vzip2q_s32(a2, a4), vdupq_laneq_s32(a3, 2)), a5, 2);
-    v36 = [*(a1 + 32) warpDepth:v41 srcCalibration:v18 dstCalibration:v19 poseTransform:*(a1 + 192) warpedDepth:{*vmlaq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(a6, *a2.i32), a7, *a3.i32), a8, *a4.i32), 0, a9).i64, *vmlaq_f32(vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(a6, *a2.i8, 1), a7, *a3.i8, 1), a8, *a4.i8, 1), 0, a9).i64, *vmlaq_f32(vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(a6, a2, 2), a7, a3, 2), a8, a4, 2), 0, a9).i64, *vaddq_f32(a9, vmlsq_laneq_f32(vmlsq_lane_f32(vmulq_n_f32(a6, vnegq_f32(v35).f32[0]), a7, *v35.f32, 1), a8, v35, 2)).i64}];
+    v34 = vtrn2q_s32(a2, depth);
+    v34.i32[2] = pose.i32[1];
+    v35 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(vzip1q_s32(vzip1q_s32(a2, pose), depth), calibration.f32[0]), v34, *calibration.f32, 1), vzip1q_s32(vzip2q_s32(a2, pose), vdupq_laneq_s32(depth, 2)), calibration, 2);
+    v36 = [*(self + 32) warpDepth:v41 srcCalibration:v18 dstCalibration:v19 poseTransform:*(self + 192) warpedDepth:{*vmlaq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(colorPose, *a2.i32), colorCalibration, *depth.i32), buffer, *pose.i32), 0, a9).i64, *vmlaq_f32(vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(colorPose, *a2.i8, 1), colorCalibration, *depth.i8, 1), buffer, *pose.i8, 1), 0, a9).i64, *vmlaq_f32(vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(colorPose, a2, 2), colorCalibration, depth, 2), buffer, pose, 2), 0, a9).i64, *vaddq_f32(a9, vmlsq_laneq_f32(vmlsq_lane_f32(vmulq_n_f32(colorPose, vnegq_f32(v35).f32[0]), colorCalibration, *v35.f32, 1), buffer, v35, 2)).i64}];
   }
 
   else
@@ -1017,9 +1017,9 @@ LABEL_24:
       *&buf[12] = 2048;
       *&buf[14] = v40;
       v55 = 2048;
-      v56 = [v20 width];
+      width2 = [v20 width];
       v57 = 2048;
-      v58 = [v20 height];
+      height2 = [v20 height];
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Color dimensions expected match target buffer, actually it is (%zux%zu) vs expected (%zux%zu)", buf, 0x2Au);
     }
 
@@ -1031,25 +1031,25 @@ LABEL_24:
   return v36;
 }
 
-- (uint64_t)createCameraEmbeddingsForRightCameraCalibration:(uint64_t)a1 leftCameraCalibration:(uint64_t)a2 rightCameraPose:(uint64_t)a3 leftCameraPose:(uint64_t)a4 outputBuffer:(void *)a5
+- (uint64_t)createCameraEmbeddingsForRightCameraCalibration:(uint64_t)calibration leftCameraCalibration:(uint64_t)cameraCalibration rightCameraPose:(uint64_t)pose leftCameraPose:(uint64_t)cameraPose outputBuffer:(void *)buffer
 {
-  v5 = a5;
-  memcpy([v5 data], &metricDepthCameraEmbeddingPadded, objc_msgSend(v5, "size"));
+  bufferCopy = buffer;
+  memcpy([bufferCopy data], &metricDepthCameraEmbeddingPadded, objc_msgSend(bufferCopy, "size"));
 
   return 0;
 }
 
-- (int64_t)createJasperEmbeddingsForRightCameraPointCloud:(id)a3 leftCameraPointCloud:(id)a4 crop:(CGRect)a5 rotation:(int64_t)a6 outputBuffer:(id)a7
+- (int64_t)createJasperEmbeddingsForRightCameraPointCloud:(id)cloud leftCameraPointCloud:(id)pointCloud crop:(CGRect)crop rotation:(int64_t)rotation outputBuffer:(id)buffer
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = [(ADMetricDepthPipeline *)self createJasperEmbeddings:v15 cropTo:a6 rotateBy:v17 outputBuffer:0 outputBatchOffset:x, y, width, height];
-  if (v18)
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  cloudCopy = cloud;
+  pointCloudCopy = pointCloud;
+  bufferCopy = buffer;
+  height = [(ADMetricDepthPipeline *)self createJasperEmbeddings:cloudCopy cropTo:rotation rotateBy:bufferCopy outputBuffer:0 outputBatchOffset:x, y, width, height];
+  if (height)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -1064,8 +1064,8 @@ LABEL_8:
 
   else
   {
-    v18 = [(ADMetricDepthPipeline *)self createJasperEmbeddings:v16 cropTo:a6 rotateBy:v17 outputBuffer:1 outputBatchOffset:x, y, width, height];
-    if (v18 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+    height = [(ADMetricDepthPipeline *)self createJasperEmbeddings:pointCloudCopy cropTo:rotation rotateBy:bufferCopy outputBuffer:1 outputBatchOffset:x, y, width, height];
+    if (height && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v23 = 0;
       v19 = MEMORY[0x277D86220];
@@ -1075,35 +1075,35 @@ LABEL_8:
     }
   }
 
-  return v18;
+  return height;
 }
 
-- (int64_t)createJasperEmbeddings:(id)a3 cropTo:(CGRect)a4 rotateBy:(int64_t)a5 outputBuffer:(id)a6 outputBatchOffset:(unint64_t)a7
+- (int64_t)createJasperEmbeddings:(id)embeddings cropTo:(CGRect)to rotateBy:(int64_t)by outputBuffer:(id)buffer outputBatchOffset:(unint64_t)offset
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
   v44 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a6;
-  v37 = a7;
+  embeddingsCopy = embeddings;
+  bufferCopy = buffer;
+  offsetCopy = offset;
   v34 = 335683472;
   v35 = 0u;
   v36 = 0u;
   kdebug_trace();
-  if ([v16 width] == (width * 0.125) && objc_msgSend(v16, "height") == (height * 0.125))
+  if ([bufferCopy width] == (width * 0.125) && objc_msgSend(bufferCopy, "height") == (height * 0.125))
   {
-    v32 = &v37;
-    v17 = std::__hash_table<std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,PixelBufferSharedPtr>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long const&>,std::tuple<>>(&self->_downscaledJasperBuffer.__table_.__bucket_list_.__ptr_, v37)[4];
+    v32 = &offsetCopy;
+    v17 = std::__hash_table<std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,PixelBufferSharedPtr>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long const&>,std::tuple<>>(&self->_downscaledJasperBuffer.__table_.__bucket_list_.__ptr_, offsetCopy)[4];
     *buf = &unk_285231598;
     *&buf[8] = v17;
     CVPixelBufferRetain(v17);
-    if (!*&buf[8] || (v18 = CVPixelBufferGetWidth(*&buf[8]), v18 != [v16 width]) || (v19 = CVPixelBufferGetHeight(*&buf[8]), v19 != objc_msgSend(v16, "height")))
+    if (!*&buf[8] || (v18 = CVPixelBufferGetWidth(*&buf[8]), v18 != [bufferCopy width]) || (v19 = CVPixelBufferGetHeight(*&buf[8]), v19 != objc_msgSend(bufferCopy, "height")))
     {
-      v21 = [(ADEspressoMetricDepthInferenceDescriptor *)self->_inferenceDescriptor jasperInput];
-      v22 = [v21 imageDescriptor];
-      if (PixelBufferUtils::pixelSizeForPixelFormat([v22 pixelFormat], 0) == 2)
+      jasperInput = [(ADEspressoMetricDepthInferenceDescriptor *)self->_inferenceDescriptor jasperInput];
+      imageDescriptor = [jasperInput imageDescriptor];
+      if (PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor pixelFormat], 0) == 2)
       {
         v23 = 1751410032;
       }
@@ -1113,11 +1113,11 @@ LABEL_8:
         v23 = 1717855600;
       }
 
-      v24 = [v16 width];
-      v25 = [v16 height];
+      width = [bufferCopy width];
+      height = [bufferCopy height];
       pixelBufferOut = 0;
       BufferAttributes = getBufferAttributes();
-      if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], v24, v25, v23, BufferAttributes, &pixelBufferOut))
+      if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], width, height, v23, BufferAttributes, &pixelBufferOut))
       {
         v27 = 0;
       }
@@ -1131,8 +1131,8 @@ LABEL_8:
       texture = v27;
       CVPixelBufferRetain(v27);
       CVPixelBufferRelease(v27);
-      pixelBufferOut = &v37;
-      v28 = std::__hash_table<std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,PixelBufferSharedPtr>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long const&>,std::tuple<>>(&self->_downscaledJasperBuffer.__table_.__bucket_list_.__ptr_, v37);
+      pixelBufferOut = &offsetCopy;
+      v28 = std::__hash_table<std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,PixelBufferSharedPtr>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,PixelBufferSharedPtr>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long const&>,std::tuple<>>(&self->_downscaledJasperBuffer.__table_.__bucket_list_.__ptr_, offsetCopy);
       CVPixelBufferRelease(v28[4]);
       v28[4] = v27;
       texture = 0;
@@ -1142,10 +1142,10 @@ LABEL_8:
       CVPixelBufferRelease(0);
     }
 
-    if (v15)
+    if (embeddingsCopy)
     {
-      v29 = [(ADMetricDepthPipelineParameters *)self->_pipelineParameters pointCloudFilter];
-      v30 = [v15 projectJasperPointsFilteredBy:v29 croppedBy:a5 rotatedBy:*&buf[8] andScaledInto:{x, y, width, height}];
+      pointCloudFilter = [(ADMetricDepthPipelineParameters *)self->_pipelineParameters pointCloudFilter];
+      v30 = [embeddingsCopy projectJasperPointsFilteredBy:pointCloudFilter croppedBy:by rotatedBy:*&buf[8] andScaledInto:{x, y, width, height}];
 
       if (v30)
       {
@@ -1170,7 +1170,7 @@ LABEL_8:
       PixelBufferUtils::blacken(*&buf[8], v20);
     }
 
-    v30 = [(ADEmbeddings *)self->_jasperEmbeddings embedDepthMapUsingFourierEncoding:*&buf[8] outputBuffer:v16 outputChannelOffset:0 outputBatchOffset:v37, v32];
+    v30 = [(ADEmbeddings *)self->_jasperEmbeddings embedDepthMapUsingFourierEncoding:*&buf[8] outputBuffer:bufferCopy outputChannelOffset:0 outputBatchOffset:offsetCopy, v32];
 LABEL_25:
     *buf = &unk_285231598;
     CVPixelBufferRelease(*&buf[8]);
@@ -1184,9 +1184,9 @@ LABEL_25:
     *&buf[12] = 2048;
     *&buf[14] = height;
     v40 = 2048;
-    v41 = [v16 width];
+    width2 = [bufferCopy width];
     v42 = 2048;
-    v43 = [v16 height];
+    height2 = [bufferCopy height];
     _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Crop dimensions expected to be x8 than target buffer, actually it is (%zux%zu) vs expected (%zux%zu)", buf, 0x2Au);
   }
 
@@ -1197,11 +1197,11 @@ LABEL_26:
   return v30;
 }
 
-- (int64_t)filterJasperPointCloud:(id)a3 usingPearlInput:(__CVBuffer *)a4
+- (int64_t)filterJasperPointCloud:(id)cloud usingPearlInput:(__CVBuffer *)input
 {
   v53 = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  if (!v48)
+  cloudCopy = cloud;
+  if (!cloudCopy)
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -1212,7 +1212,7 @@ LABEL_26:
     goto LABEL_43;
   }
 
-  if (a4)
+  if (input)
   {
     [(ADMetricDepthPipelineParameters *)self->_pipelineParameters pearlJasperCoFilteringMaxPearlDepth];
     if (v6 <= 0.0)
@@ -1222,19 +1222,19 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
-    CVPixelBufferLockBaseAddress(a4, 1uLL);
-    BaseAddress = CVPixelBufferGetBaseAddress(a4);
+    Width = CVPixelBufferGetWidth(input);
+    Height = CVPixelBufferGetHeight(input);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(input);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(input);
+    CVPixelBufferLockBaseAddress(input, 1uLL);
+    BaseAddress = CVPixelBufferGetBaseAddress(input);
     if (PixelFormatType == 1717855600)
     {
       [(ADMetricDepthPipelineParameters *)self->_pipelineParameters pearlJasperCoFilteringMaxPearlDepth];
       v33 = v32;
       [(ADMetricDepthPipelineParameters *)self->_pipelineParameters pearlJasperCoFilteringMaxAllowedDisagreement];
       v35 = v34;
-      v36 = v48;
+      v36 = cloudCopy;
       v37 = 0;
       for (i = 0; i < [v36 length]; ++i)
       {
@@ -1242,11 +1242,11 @@ LABEL_43:
         v40 = *([v36 cameraPixels] + v37 + 8);
         if (Width > v39 && Height > v40)
         {
-          v42 = [v36 points];
+          points = [v36 points];
           LODWORD(v43) = *&BaseAddress[4 * v39 + BytesPerRow * v40];
           if (*&v43 < v33 && *&v43 > 0.0)
           {
-            v44 = *(v42 + v37 + 8) / 1000.0;
+            v44 = *(points + v37 + 8) / 1000.0;
             *&v43 = vabds_f32(*&v43, v44);
             if (v44 > 0.0 && *&v43 > v35)
             {
@@ -1267,7 +1267,7 @@ LABEL_43:
       v13 = v12;
       [(ADMetricDepthPipelineParameters *)self->_pipelineParameters pearlJasperCoFilteringMaxAllowedDisagreement];
       v15 = v14;
-      v16 = v48;
+      v16 = cloudCopy;
       v17 = 0;
       for (j = 0; j < [v16 length]; ++j)
       {
@@ -1275,7 +1275,7 @@ LABEL_43:
         v20 = *([v16 cameraPixels] + v17 + 8);
         if (Width > v19 && Height > v20)
         {
-          v22 = [v16 points];
+          points2 = [v16 points];
           __asm { FCMP            H0, #0 }
 
           if (!(_NF ^ _VF | _ZF))
@@ -1284,7 +1284,7 @@ LABEL_43:
 
             if (v13 > _S0)
             {
-              _D1 = *(v22 + v17 + 8) / 1000.0;
+              _D1 = *(points2 + v17 + 8) / 1000.0;
               __asm
               {
                 FCVT            H1, D1
@@ -1316,7 +1316,7 @@ LABEL_43:
 
 LABEL_42:
 
-      CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+      CVPixelBufferUnlockBaseAddress(input, 1uLL);
       goto LABEL_43;
     }
 
@@ -1354,32 +1354,32 @@ LABEL_44:
 
 - (id)outputNormalsDescriptor
 {
-  v2 = [(ADEspressoMetricDepthInferenceDescriptor *)self->_inferenceDescriptor normalsOutput];
-  v3 = [v2 imageDescriptor];
+  normalsOutput = [(ADEspressoMetricDepthInferenceDescriptor *)self->_inferenceDescriptor normalsOutput];
+  imageDescriptor = [normalsOutput imageDescriptor];
 
-  return v3;
+  return imageDescriptor;
 }
 
 - (id)outputConfidenceDescriptor
 {
-  v2 = [(ADEspressoMetricDepthInferenceDescriptor *)self->_inferenceDescriptor confidenceOutput];
-  v3 = [v2 imageDescriptor];
+  confidenceOutput = [(ADEspressoMetricDepthInferenceDescriptor *)self->_inferenceDescriptor confidenceOutput];
+  imageDescriptor = [confidenceOutput imageDescriptor];
 
-  return v3;
+  return imageDescriptor;
 }
 
 - (id)outputDepthDescriptor
 {
-  v2 = [(ADEspressoMetricDepthInferenceDescriptor *)self->_inferenceDescriptor depthOutput];
-  v3 = [v2 imageDescriptor];
+  depthOutput = [(ADEspressoMetricDepthInferenceDescriptor *)self->_inferenceDescriptor depthOutput];
+  imageDescriptor = [depthOutput imageDescriptor];
 
-  return v3;
+  return imageDescriptor;
 }
 
-- (id)initForEspressoEngine:(unint64_t)a3 pipelineParameters:(id)a4
+- (id)initForEspressoEngine:(unint64_t)engine pipelineParameters:(id)parameters
 {
   v94 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  parametersCopy = parameters;
   v89 = 335685740;
   v90 = 0u;
   v91 = 0u;
@@ -1392,7 +1392,7 @@ LABEL_44:
     }
 
     *buf = 134217984;
-    v93 = a3;
+    engineCopy2 = engine;
     v8 = MEMORY[0x277D86220];
     v9 = OS_LOG_TYPE_DEFAULT;
   }
@@ -1405,7 +1405,7 @@ LABEL_44:
     }
 
     *buf = 134217984;
-    v93 = a3;
+    engineCopy2 = engine;
     v8 = MEMORY[0x277D86220];
     v9 = OS_LOG_TYPE_INFO;
   }
@@ -1419,8 +1419,8 @@ LABEL_7:
   v12 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_pipelineParameters, a4);
-    v13 = [ADNetworkProvider providerForNetwork:@"MDNet" espressoEngine:a3];
+    objc_storeStrong(&v10->_pipelineParameters, parameters);
+    v13 = [ADNetworkProvider providerForNetwork:@"MDNet" espressoEngine:engine];
     networkProvider = v12->_networkProvider;
     v12->_networkProvider = v13;
 
@@ -1430,13 +1430,13 @@ LABEL_7:
       goto LABEL_58;
     }
 
-    v15 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
-    v16 = v15 == 0;
+    confidenceLevelRanges = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
+    v16 = confidenceLevelRanges == 0;
 
     if (v16)
     {
-      v17 = [(ADNetworkProvider *)v12->_networkProvider confidenceLevelRanges];
-      [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters setConfidenceLevelRanges:v17];
+      confidenceLevelRanges2 = [(ADNetworkProvider *)v12->_networkProvider confidenceLevelRanges];
+      [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters setConfidenceLevelRanges:confidenceLevelRanges2];
     }
 
     [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceBucketingLowThreshold];
@@ -1446,16 +1446,16 @@ LABEL_7:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "pipelinePrameters.confidenceBucketingLowThreshold is deprecated. please use confidenceLevelRanges instead", buf, 2u);
     }
 
-    v18 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
-    [v18 highLevel];
+    confidenceLevelRanges3 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
+    [confidenceLevelRanges3 highLevel];
     v20 = v19;
 
     [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceBucketingLowThreshold];
     v22 = v21;
-    v23 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
+    confidenceLevelRanges4 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
     LODWORD(v24) = v22;
     LODWORD(v25) = v20;
-    [v23 setHighLevel:{v24, v25}];
+    [confidenceLevelRanges4 setHighLevel:{v24, v25}];
 
     [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceBucketingHighThreshold];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -1464,39 +1464,39 @@ LABEL_7:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "pipelinePrameters.confidenceBucketingHighThreshold is deprecated. please use confidenceLevelRanges instead", buf, 2u);
     }
 
-    v26 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
-    [v26 lowLevel];
+    confidenceLevelRanges5 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
+    [confidenceLevelRanges5 lowLevel];
     v28 = v27;
 
     [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceBucketingHighThreshold];
     v30 = v29;
-    v31 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
+    confidenceLevelRanges6 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
     LODWORD(v32) = v28;
     LODWORD(v33) = v30;
-    [v31 setLowLevel:{v32, v33}];
+    [confidenceLevelRanges6 setLowLevel:{v32, v33}];
 
-    v34 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
-    [v34 highLevel];
+    confidenceLevelRanges7 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
+    [confidenceLevelRanges7 highLevel];
     [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters setConfidenceBucketingLowThreshold:?];
 
-    v35 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
-    [v35 lowLevel];
+    confidenceLevelRanges8 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters confidenceLevelRanges];
+    [confidenceLevelRanges8 lowLevel];
     LODWORD(v37) = v36;
     [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters setConfidenceBucketingHighThreshold:v37];
 
-    v38 = [[ADEspressoMetricDepthInferenceDescriptor alloc] initWithNetworkProvider:v12->_networkProvider espressoEngine:a3];
+    v38 = [[ADEspressoMetricDepthInferenceDescriptor alloc] initWithNetworkProvider:v12->_networkProvider espressoEngine:engine];
     inferenceDescriptor = v12->_inferenceDescriptor;
     v12->_inferenceDescriptor = v38;
 
-    v40 = [(ADEspressoMetricDepthInferenceDescriptor *)v11->_inferenceDescriptor confidenceOutput];
-    v41 = [v40 imageDescriptor];
-    v42 = [v41 cloneWithDifferentFormat:1278226488];
+    confidenceOutput = [(ADEspressoMetricDepthInferenceDescriptor *)v11->_inferenceDescriptor confidenceOutput];
+    imageDescriptor = [confidenceOutput imageDescriptor];
+    v42 = [imageDescriptor cloneWithDifferentFormat:1278226488];
     postProcessedMetricConfLevelsDesc = v12->_postProcessedMetricConfLevelsDesc;
     v12->_postProcessedMetricConfLevelsDesc = v42;
 
-    v44 = [(ADEspressoMetricDepthInferenceDescriptor *)v12->_inferenceDescriptor confidenceOutput];
-    v45 = [v44 imageDescriptor];
-    v46 = [v45 cloneWithDifferentFormat:1278226536];
+    confidenceOutput2 = [(ADEspressoMetricDepthInferenceDescriptor *)v12->_inferenceDescriptor confidenceOutput];
+    imageDescriptor2 = [confidenceOutput2 imageDescriptor];
+    v46 = [imageDescriptor2 cloneWithDifferentFormat:1278226536];
     postProcessedMetricActiveDepthMaskDesc = v12->_postProcessedMetricActiveDepthMaskDesc;
     v12->_postProcessedMetricActiveDepthMaskDesc = v46;
 
@@ -1506,25 +1506,25 @@ LABEL_7:
 
     [(ADReprojection *)v12->_pearlReprojector setFullPassReprojectionAllowed:0];
     v50 = [ADEmbeddings alloc];
-    v51 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters numCenterBands];
+    numCenterBands = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters numCenterBands];
     *&v52 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters maxCenterResolution];
     LODWORD(v53) = 1.0;
-    v54 = [(ADEmbeddings *)v50 initWithBands:v51 maxResolution:v52 sourceFactor:v53];
+    v54 = [(ADEmbeddings *)v50 initWithBands:numCenterBands maxResolution:v52 sourceFactor:v53];
     cameraCenterEmbeddings = v12->_cameraCenterEmbeddings;
     v12->_cameraCenterEmbeddings = v54;
 
     v56 = [ADEmbeddings alloc];
-    v57 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters numRaysBands];
+    numRaysBands = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters numRaysBands];
     *&v58 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters maxRaysResolution];
     LODWORD(v59) = 1.0;
-    v60 = [(ADEmbeddings *)v56 initWithBands:v57 maxResolution:v58 sourceFactor:v59];
+    v60 = [(ADEmbeddings *)v56 initWithBands:numRaysBands maxResolution:v58 sourceFactor:v59];
     cameraRaysEmbeddings = v12->_cameraRaysEmbeddings;
     v12->_cameraRaysEmbeddings = v60;
 
     v62 = [ADEmbeddings alloc];
-    v63 = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters numJasperBands];
+    numJasperBands = [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters numJasperBands];
     [(ADMetricDepthPipelineParameters *)v11->_pipelineParameters maxJasperDepth];
-    v64 = [ADEmbeddings initWithBands:v62 maxResolution:"initWithBands:maxResolution:sourceFactor:" sourceFactor:v63];
+    v64 = [ADEmbeddings initWithBands:v62 maxResolution:"initWithBands:maxResolution:sourceFactor:" sourceFactor:numJasperBands];
     jasperEmbeddings = v12->_jasperEmbeddings;
     v12->_jasperEmbeddings = v64;
 
@@ -1706,10 +1706,10 @@ LABEL_58:
   return v82;
 }
 
-- (id)initForEspressoEngine:(unint64_t)a3
+- (id)initForEspressoEngine:(unint64_t)engine
 {
   v5 = objc_opt_new();
-  v6 = [(ADMetricDepthPipeline *)self initForEspressoEngine:a3 pipelineParameters:v5];
+  v6 = [(ADMetricDepthPipeline *)self initForEspressoEngine:engine pipelineParameters:v5];
 
   return v6;
 }

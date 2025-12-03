@@ -1,26 +1,26 @@
 @interface APServerActivityScheduler
-- (void)registerWeeklyActivityWithName:(id)a3 work:(id)a4;
+- (void)registerWeeklyActivityWithName:(id)name work:(id)work;
 @end
 
 @implementation APServerActivityScheduler
 
-- (void)registerWeeklyActivityWithName:(id)a3 work:(id)a4
+- (void)registerWeeklyActivityWithName:(id)name work:(id)work
 {
-  v5 = a4;
-  v6 = a3;
+  workCopy = work;
+  nameCopy = name;
   v7 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v7, *MEMORY[0x1E69E9D68], *MEMORY[0x1E69E9D78]);
   xpc_dictionary_set_int64(v7, *MEMORY[0x1E69E9CB0], *MEMORY[0x1E69E9CF0]);
   xpc_dictionary_set_BOOL(v7, *MEMORY[0x1E69E9D88], 1);
-  v8 = [v6 UTF8String];
+  uTF8String = [nameCopy UTF8String];
 
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __65__APServerActivityScheduler_registerWeeklyActivityWithName_work___block_invoke;
   handler[3] = &unk_1E6EE89C0;
-  v11 = v5;
-  v9 = v5;
-  xpc_activity_register(v8, v7, handler);
+  v11 = workCopy;
+  v9 = workCopy;
+  xpc_activity_register(uTF8String, v7, handler);
 }
 
 void __65__APServerActivityScheduler_registerWeeklyActivityWithName_work___block_invoke(uint64_t a1, void *a2)

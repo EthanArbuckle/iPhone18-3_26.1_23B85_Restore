@@ -1,14 +1,14 @@
 @interface IXAppInstallCoordinatorSeed
-- (IXAppInstallCoordinatorSeed)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IXAppInstallCoordinatorSeed)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IXAppInstallCoordinatorSeed
 
-- (IXAppInstallCoordinatorSeed)initWithCoder:(id)a3
+- (IXAppInstallCoordinatorSeed)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = IXAppInstallCoordinatorSeed;
   v5 = [(IXAppInstallCoordinatorSeed *)&v20 init];
@@ -17,26 +17,26 @@
     goto LABEL_6;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
   v7 = *(v5 + 2);
   *(v5 + 2) = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creator"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creator"];
   *(v5 + 3) = [v8 unsignedLongLongValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creatorEUID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creatorEUID"];
   *(v5 + 2) = [v9 unsignedIntegerValue];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
   *(v5 + 4) = [v10 unsignedLongLongValue];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
   v12 = *(v5 + 5);
   *(v5 + 5) = v11;
 
   if (!*(v5 + 5))
   {
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     if (v16)
     {
       v17 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:v16];
@@ -70,9 +70,9 @@
   }
 
 LABEL_3:
-  if ([v4 containsValueForKey:@"installationDomain"])
+  if ([coderCopy containsValueForKey:@"installationDomain"])
   {
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installationDomain"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installationDomain"];
     *(v5 + 6) = [v13 unsignedIntegerValue];
   }
 
@@ -88,39 +88,39 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IXAppInstallCoordinatorSeed *)self uniqueIdentifier];
-  [v4 encodeObject:v5 forKey:@"uniqueIdentifier"];
+  coderCopy = coder;
+  uniqueIdentifier = [(IXAppInstallCoordinatorSeed *)self uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[IXAppInstallCoordinatorSeed creator](self, "creator")}];
-  [v4 encodeObject:v6 forKey:@"creator"];
+  [coderCopy encodeObject:v6 forKey:@"creator"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[IXAppInstallCoordinatorSeed creatorEUID](self, "creatorEUID")}];
-  [v4 encodeObject:v7 forKey:@"creatorEUID"];
+  [coderCopy encodeObject:v7 forKey:@"creatorEUID"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[IXAppInstallCoordinatorSeed intent](self, "intent")}];
-  [v4 encodeObject:v8 forKey:@"intent"];
+  [coderCopy encodeObject:v8 forKey:@"intent"];
 
-  v9 = [(IXAppInstallCoordinatorSeed *)self identity];
-  [v4 encodeObject:v9 forKey:@"identity"];
+  identity = [(IXAppInstallCoordinatorSeed *)self identity];
+  [coderCopy encodeObject:identity forKey:@"identity"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[IXAppInstallCoordinatorSeed installationDomain](self, "installationDomain")}];
-  [v4 encodeObject:v10 forKey:@"installationDomain"];
+  [coderCopy encodeObject:v10 forKey:@"installationDomain"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(IXAppInstallCoordinatorSeed *)self uniqueIdentifier];
-  [v4 setUniqueIdentifier:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  uniqueIdentifier = [(IXAppInstallCoordinatorSeed *)self uniqueIdentifier];
+  [v4 setUniqueIdentifier:uniqueIdentifier];
 
   [v4 setCreator:{-[IXAppInstallCoordinatorSeed creator](self, "creator")}];
   [v4 setCreatorEUID:{-[IXAppInstallCoordinatorSeed creatorEUID](self, "creatorEUID")}];
   [v4 setIntent:{-[IXAppInstallCoordinatorSeed intent](self, "intent")}];
-  v6 = [(IXAppInstallCoordinatorSeed *)self identity];
-  [v4 setIdentity:v6];
+  identity = [(IXAppInstallCoordinatorSeed *)self identity];
+  [v4 setIdentity:identity];
 
   [v4 setInstallationDomain:{-[IXAppInstallCoordinatorSeed installationDomain](self, "installationDomain")}];
   return v4;

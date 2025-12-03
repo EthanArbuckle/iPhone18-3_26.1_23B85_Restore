@@ -1,35 +1,35 @@
 @interface PSUIPlanPendingTransferActivationButtonSpecifier
 - (PSListController)hostController;
-- (PSUIPlanPendingTransferActivationButtonSpecifier)initWithListController:(id)a3 planPendingTransfer:(id)a4;
+- (PSUIPlanPendingTransferActivationButtonSpecifier)initWithListController:(id)controller planPendingTransfer:(id)transfer;
 - (UIViewController)topViewController;
-- (void)activatePlanPendingTransfer:(id)a3;
-- (void)setProperty:(id)a3 forKey:(id)a4;
+- (void)activatePlanPendingTransfer:(id)transfer;
+- (void)setProperty:(id)property forKey:(id)key;
 - (void)setSpecifierProperties;
-- (void)showSpinner:(BOOL)a3;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
+- (void)showSpinner:(BOOL)spinner;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
 @end
 
 @implementation PSUIPlanPendingTransferActivationButtonSpecifier
 
-- (PSUIPlanPendingTransferActivationButtonSpecifier)initWithListController:(id)a3 planPendingTransfer:(id)a4
+- (PSUIPlanPendingTransferActivationButtonSpecifier)initWithListController:(id)controller planPendingTransfer:(id)transfer
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  transferCopy = transfer;
   v14.receiver = self;
   v14.super_class = PSUIPlanPendingTransferActivationButtonSpecifier;
   v8 = [(PSUIPlanPendingTransferActivationButtonSpecifier *)&v14 initWithName:0 target:self set:0 get:0 detail:0 cell:13 edit:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_hostController, v6);
-    v10 = [v6 navigationController];
-    objc_storeWeak(&v9->_navigationController, v10);
+    objc_storeWeak(&v8->_hostController, controllerCopy);
+    navigationController = [controllerCopy navigationController];
+    objc_storeWeak(&v9->_navigationController, navigationController);
 
-    objc_storeStrong(&v9->_plan, a4);
-    objc_storeWeak(&v9->_hostController, v6);
-    v11 = [MEMORY[0x277CF96D8] sharedManager];
+    objc_storeStrong(&v9->_plan, transfer);
+    objc_storeWeak(&v9->_hostController, controllerCopy);
+    mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
     cellularPlanManager = v9->_cellularPlanManager;
-    v9->_cellularPlanManager = v11;
+    v9->_cellularPlanManager = mEMORY[0x277CF96D8];
 
     [(PSUIPlanPendingTransferActivationButtonSpecifier *)v9 setSpecifierProperties];
     [(PSUIPlanPendingTransferActivationButtonSpecifier *)v9 setButtonAction:sel_activatePlanPendingTransfer_];
@@ -40,11 +40,11 @@
 
 - (void)setSpecifierProperties
 {
-  v3 = [(CTCellularPlanPendingTransfer *)self->_plan status];
-  if (v3 <= 2)
+  status = [(CTCellularPlanPendingTransfer *)self->_plan status];
+  if (status <= 2)
   {
-    v4 = off_279BAAA88[v3];
-    v5 = qword_279BAAAA0[v3];
+    v4 = off_279BAAA88[status];
+    v5 = qword_279BAAAA0[status];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:v4 value:&stru_287733598 table:@"Gemini-Gemini"];
     [(PSUIPlanPendingTransferActivationButtonSpecifier *)self setName:v7];
@@ -55,19 +55,19 @@
   }
 }
 
-- (void)activatePlanPendingTransfer:(id)a3
+- (void)activatePlanPendingTransfer:(id)transfer
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUIPlanPendingTransferActivationButtonSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  transferCopy = transfer;
+  getLogger = [(PSUIPlanPendingTransferActivationButtonSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v26 = "[PSUIPlanPendingTransferActivationButtonSpecifier activatePlanPendingTransfer:]";
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  [v4 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+  [transferCopy setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
   v6 = MEMORY[0x277D75110];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"TRANSFER_TARGET_TITLE" value:&stru_287733598 table:@"Cellular"];
@@ -82,14 +82,14 @@
   v20 = 3221225472;
   v21 = __80__PSUIPlanPendingTransferActivationButtonSpecifier_activatePlanPendingTransfer___block_invoke;
   v22 = &unk_279BAA160;
-  v23 = self;
-  v24 = v4;
-  v15 = v4;
+  selfCopy = self;
+  v24 = transferCopy;
+  v15 = transferCopy;
   v16 = [v12 actionWithTitle:v14 style:2 handler:&v19];
 
-  [v11 addAction:{v16, v19, v20, v21, v22, v23}];
-  v17 = [(PSUIPlanPendingTransferActivationButtonSpecifier *)self hostController];
-  [v17 presentViewController:v11 animated:1 completion:0];
+  [v11 addAction:{v16, v19, v20, v21, v22, selfCopy}];
+  hostController = [(PSUIPlanPendingTransferActivationButtonSpecifier *)self hostController];
+  [hostController presentViewController:v11 animated:1 completion:0];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -201,9 +201,9 @@ void __80__PSUIPlanPendingTransferActivationButtonSpecifier_activatePlanPendingT
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
-  v3 = a3;
+  spinnerCopy = spinner;
   if (!self->_spinner)
   {
     v6 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
@@ -211,11 +211,11 @@ void __80__PSUIPlanPendingTransferActivationButtonSpecifier_activatePlanPendingT
     self->_spinner = v6;
 
     v8 = [(PSUIPlanPendingTransferActivationButtonSpecifier *)self propertyForKey:*MEMORY[0x277D40148]];
-    v9 = [v8 accessoryView];
+    accessoryView = [v8 accessoryView];
     originAccessoryView = self->_originAccessoryView;
-    self->_originAccessoryView = v9;
+    self->_originAccessoryView = accessoryView;
 
-    if (v3)
+    if (spinnerCopy)
     {
       goto LABEL_3;
     }
@@ -228,7 +228,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!spinner)
   {
     goto LABEL_5;
   }
@@ -253,46 +253,46 @@ void __64__PSUIPlanPendingTransferActivationButtonSpecifier_showSpinner___block_
   [WeakRetained reloadSpecifier:*(a1 + 32)];
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4
+- (void)setProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([*MEMORY[0x277D40148] isEqualToString:v7])
+  propertyCopy = property;
+  keyCopy = key;
+  if ([*MEMORY[0x277D40148] isEqualToString:keyCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
-      v9 = [v8 textLabel];
-      [v9 setNumberOfLines:0];
+      v8 = propertyCopy;
+      textLabel = [v8 textLabel];
+      [textLabel setNumberOfLines:0];
 
-      v10 = [v8 textLabel];
+      textLabel2 = [v8 textLabel];
 
-      [v10 setLineBreakMode:0];
+      [textLabel2 setLineBreakMode:0];
     }
   }
 
-  if ([*MEMORY[0x277D3FF38] isEqualToString:v7])
+  if ([*MEMORY[0x277D3FF38] isEqualToString:keyCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[PSUIPlanPendingTransferActivationButtonSpecifier showSpinner:](self, "showSpinner:", [v6 BOOLValue] ^ 1);
+      -[PSUIPlanPendingTransferActivationButtonSpecifier showSpinner:](self, "showSpinner:", [propertyCopy BOOLValue] ^ 1);
     }
   }
 
   v11.receiver = self;
   v11.super_class = PSUIPlanPendingTransferActivationButtonSpecifier;
-  [(PSUIPlanPendingTransferActivationButtonSpecifier *)&v11 setProperty:v6 forKey:v7];
+  [(PSUIPlanPendingTransferActivationButtonSpecifier *)&v11 setProperty:propertyCopy forKey:keyCopy];
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
-  v4 = [(PSUIPlanPendingTransferActivationButtonSpecifier *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIPlanPendingTransferActivationButtonSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf[0]) = 0;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "finish activation flow", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "finish activation flow", buf, 2u);
   }
 
   objc_initWeak(buf, self);

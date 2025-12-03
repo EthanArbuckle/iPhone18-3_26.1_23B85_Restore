@@ -1,19 +1,19 @@
 @interface TSUNumberParser
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDecimalValue:(TSUDecimal *)a5;
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDecimalValue:(TSUDecimal *)a5 outValueType:(int *)a6;
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDecimalValue:(TSUDecimal *)a5 outValueType:(int *)a6 outCurrencyCode:(id *)a7;
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDoubleValue:(double *)a5;
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDoubleValue:(double *)a5 outValueType:(int *)a6;
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDoubleValue:(double *)a5 outValueType:(int *)a6 outCurrencyCode:(id *)a7;
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDecimalValue:(TSUDecimal *)value;
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDecimalValue:(TSUDecimal *)value outValueType:(int *)type;
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDecimalValue:(TSUDecimal *)value outValueType:(int *)type outCurrencyCode:(id *)code;
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDoubleValue:(double *)value;
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDoubleValue:(double *)value outValueType:(int *)type;
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDoubleValue:(double *)value outValueType:(int *)type outCurrencyCode:(id *)code;
 @end
 
 @implementation TSUNumberParser
 
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDoubleValue:(double *)a5 outValueType:(int *)a6 outCurrencyCode:(id *)a7
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDoubleValue:(double *)value outValueType:(int *)type outCurrencyCode:(id *)code
 {
-  v11 = a3;
-  v12 = a4;
-  if (!v12)
+  stringCopy = string;
+  localeCopy = locale;
+  if (!localeCopy)
   {
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUNumberParser numberValueFromString:locale:outDoubleValue:outValueType:outCurrencyCode:]"];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUUnivNumberParser.mm"];
@@ -22,16 +22,16 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  NumberValueTypeAndCurrencyFromString = TSUUnivNumberParser::getNumberValueTypeAndCurrencyFromString(v11, v12, a5, a6, a7);
+  NumberValueTypeAndCurrencyFromString = TSUUnivNumberParser::getNumberValueTypeAndCurrencyFromString(stringCopy, localeCopy, value, type, code);
 
   return NumberValueTypeAndCurrencyFromString;
 }
 
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDoubleValue:(double *)a5 outValueType:(int *)a6
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDoubleValue:(double *)value outValueType:(int *)type
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  stringCopy = string;
+  localeCopy = locale;
+  if (!localeCopy)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUNumberParser numberValueFromString:locale:outDoubleValue:outValueType:]"];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUUnivNumberParser.mm"];
@@ -40,16 +40,16 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  NumberValueAndTypeFromString = TSUUnivNumberParser::getNumberValueAndTypeFromString(v9, v10, a5, a6);
+  NumberValueAndTypeFromString = TSUUnivNumberParser::getNumberValueAndTypeFromString(stringCopy, localeCopy, value, type);
 
   return NumberValueAndTypeFromString;
 }
 
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDoubleValue:(double *)a5
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDoubleValue:(double *)value
 {
-  v7 = a3;
-  v9 = a4;
-  if (!v9)
+  stringCopy = string;
+  localeCopy = locale;
+  if (!localeCopy)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUNumberParser numberValueFromString:locale:outDoubleValue:]"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUUnivNumberParser.mm"];
@@ -58,16 +58,16 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  NumberValueFromString = TSUUnivNumberParser::getNumberValueFromString(v7, v9, a5, v8);
+  NumberValueFromString = TSUUnivNumberParser::getNumberValueFromString(stringCopy, localeCopy, value, v8);
 
   return NumberValueFromString;
 }
 
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDecimalValue:(TSUDecimal *)a5 outValueType:(int *)a6 outCurrencyCode:(id *)a7
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDecimalValue:(TSUDecimal *)value outValueType:(int *)type outCurrencyCode:(id *)code
 {
-  v11 = a3;
-  v12 = a4;
-  if (!v12)
+  stringCopy = string;
+  localeCopy = locale;
+  if (!localeCopy)
   {
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUNumberParser numberValueFromString:locale:outDecimalValue:outValueType:outCurrencyCode:]"];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUUnivNumberParser.mm"];
@@ -76,20 +76,20 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (v11)
+  if (stringCopy)
   {
-    TSUUnivNumberParser::TSUUnivNumberParser(v23, v12);
-    *a6 = -999;
+    TSUUnivNumberParser::TSUUnivNumberParser(v23, localeCopy);
+    *type = -999;
     v18 = 0;
     v19 = -999;
     v20 = 10;
     v21 = 0u;
     v22 = 0u;
-    v15 = TSUUnivNumberParser::numberValueTypeAndCurrency(v23, v11, &v18, a6, a7);
+    v15 = TSUUnivNumberParser::numberValueTypeAndCurrency(v23, stringCopy, &v18, type, code);
     if (v15)
     {
       TSUDecimal::operator=(&v17, &v18);
-      *a5 = v17;
+      *value = v17;
     }
 
     TSUParsedNumber::~TSUParsedNumber(&v18);
@@ -103,11 +103,11 @@
   return v15;
 }
 
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDecimalValue:(TSUDecimal *)a5 outValueType:(int *)a6
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDecimalValue:(TSUDecimal *)value outValueType:(int *)type
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  stringCopy = string;
+  localeCopy = locale;
+  if (!localeCopy)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUNumberParser numberValueFromString:locale:outDecimalValue:outValueType:]"];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUUnivNumberParser.mm"];
@@ -116,20 +116,20 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (v9)
+  if (stringCopy)
   {
-    TSUUnivNumberParser::TSUUnivNumberParser(v21, v10);
-    *a6 = -999;
+    TSUUnivNumberParser::TSUUnivNumberParser(v21, localeCopy);
+    *type = -999;
     v16 = 0;
     v17 = -999;
     v18 = 10;
     v19 = 0u;
     v20 = 0u;
-    v13 = TSUUnivNumberParser::numberValueAndType(v21, v9, &v16, a6);
+    v13 = TSUUnivNumberParser::numberValueAndType(v21, stringCopy, &v16, type);
     if (v13)
     {
       TSUDecimal::operator=(&v15, &v16);
-      *a5 = v15;
+      *value = v15;
     }
 
     TSUParsedNumber::~TSUParsedNumber(&v16);
@@ -143,11 +143,11 @@
   return v13;
 }
 
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDecimalValue:(TSUDecimal *)a5
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDecimalValue:(TSUDecimal *)value
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  stringCopy = string;
+  localeCopy = locale;
+  if (!localeCopy)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUNumberParser numberValueFromString:locale:outDecimalValue:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUUnivNumberParser.mm"];
@@ -156,19 +156,19 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (v7)
+  if (stringCopy)
   {
-    TSUUnivNumberParser::TSUUnivNumberParser(v19, v8);
+    TSUUnivNumberParser::TSUUnivNumberParser(v19, localeCopy);
     v14 = 0;
     v15 = -999;
     v16 = 10;
     v17 = 0u;
     v18 = 0u;
-    v11 = TSUUnivNumberParser::numberValue(v19, v7, &v14);
+    v11 = TSUUnivNumberParser::numberValue(v19, stringCopy, &v14);
     if (v11)
     {
       TSUDecimal::operator=(&v13, &v14);
-      *a5 = v13;
+      *value = v13;
     }
 
     TSUParsedNumber::~TSUParsedNumber(&v14);

@@ -1,79 +1,79 @@
 @interface TSWPShapeLayout
-- (BOOL)allowsLastLineTruncation:(id)a3;
+- (BOOL)allowsLastLineTruncation:(id)truncation;
 - (BOOL)canAspectRatioLockBeChangedByUser;
 - (BOOL)isInvisibleAutosizingShape;
 - (BOOL)resizeMayChangeAspectRatio;
 - (BOOL)shrinkTextToFit;
 - (BOOL)supportsRotation;
-- (BOOL)textLayoutShouldLayoutVertically:(id)a3;
+- (BOOL)textLayoutShouldLayoutVertically:(id)vertically;
 - (CGAffineTransform)autosizedTransform;
-- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)a3;
+- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)geometry;
 - (CGAffineTransform)computeLayoutTransform;
 - (CGPoint)autosizePositionOffset;
-- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)a3 height:(BOOL)a4;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)width height:(BOOL)height;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGSize)adjustedInsets;
-- (TSWPShapeLayout)initWithInfo:(id)a3;
-- (double)gapForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6;
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
+- (TSWPShapeLayout)initWithInfo:(id)info;
+- (double)gapForColumnIndex:(unint64_t)index bodyWidth:(double)width;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap;
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width;
 - (id)childSearchTargets;
 - (id)children;
 - (id)dependentLayouts;
-- (id)dependentsOfTextLayout:(id)a3;
-- (id)instructionalStorageForContainedStorage:(id)a3 storageKind:(int)a4;
+- (id)dependentsOfTextLayout:(id)layout;
+- (id)instructionalStorageForContainedStorage:(id)storage storageKind:(int)kind;
 - (id)interiorWrapPath;
 - (id)interiorWrapPolygon;
 - (id)pathSource;
 - (id)textWrapper;
 - (unint64_t)columnCount;
-- (unsigned)autosizeFlagsForTextLayout:(id)a3;
-- (unsigned)cropLine:(CGRect)a3 lineSegmentRects:(CGRect)a4[128];
-- (unsigned)maxLineCountForTextLayout:(id)a3;
-- (unsigned)verticalAlignmentForTextLayout:(id)a3;
-- (void)addChild:(id)a3;
+- (unsigned)autosizeFlagsForTextLayout:(id)layout;
+- (unsigned)cropLine:(CGRect)line lineSegmentRects:(CGRect)rects[128];
+- (unsigned)maxLineCountForTextLayout:(id)layout;
+- (unsigned)verticalAlignmentForTextLayout:(id)layout;
+- (void)addChild:(id)child;
 - (void)createContainedLayoutForEditing;
 - (void)createContainedLayoutForInstructionalText;
 - (void)dealloc;
 - (void)destroyContainedLayoutForInstructionalText;
-- (void)insertChild:(id)a3 above:(id)a4;
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertChild:(id)a3 below:(id)a4;
-- (void)invalidateForAutosizingTextLayout:(id)a3;
+- (void)insertChild:(id)child above:(id)above;
+- (void)insertChild:(id)child atIndex:(unint64_t)index;
+- (void)insertChild:(id)child below:(id)below;
+- (void)invalidateForAutosizingTextLayout:(id)layout;
 - (void)invalidatePath;
 - (void)invalidateSize;
-- (void)processChangedProperty:(int)a3;
-- (void)replaceChild:(id)a3 with:(id)a4;
-- (void)setChildren:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)storage:(id)a3 didChangeRange:(_NSRange)a4 delta:(int64_t)a5 broadcastKind:(int)a6;
+- (void)processChangedProperty:(int)property;
+- (void)replaceChild:(id)child with:(id)with;
+- (void)setChildren:(id)children;
+- (void)setGeometry:(id)geometry;
+- (void)storage:(id)storage didChangeRange:(_NSRange)range delta:(int64_t)delta broadcastKind:(int)kind;
 - (void)updateChildrenFromInfo;
-- (void)willBeAddedToLayoutController:(id)a3;
-- (void)willBeRemovedFromLayoutController:(id)a3;
+- (void)willBeAddedToLayoutController:(id)controller;
+- (void)willBeRemovedFromLayoutController:(id)controller;
 @end
 
 @implementation TSWPShapeLayout
 
-- (TSWPShapeLayout)initWithInfo:(id)a3
+- (TSWPShapeLayout)initWithInfo:(id)info
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout initWithInfo:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 48, @"info is wrong class for layout"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 48, @"info is wrong class for layout"}];
   }
 
   v12.receiver = self;
   v12.super_class = TSWPShapeLayout;
-  v7 = [(TSDShapeLayout *)&v12 initWithInfo:a3];
+  v7 = [(TSDShapeLayout *)&v12 initWithInfo:info];
   v8 = v7;
   if (v7 && ![(TSDInfo *)[(TSDLayout *)v7 info] containedStorage])
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout initWithInfo:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 51, @"invalid nil value for '%s'", "self.info.containedStorage"}];
+    [currentHandler2 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 51, @"invalid nil value for '%s'", "self.info.containedStorage"}];
   }
 
   return v8;
@@ -83,9 +83,9 @@
 {
   if (self->_observingStorage)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout dealloc]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 59, @"should have unregistered ourselves before dealloc"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 59, @"should have unregistered ourselves before dealloc"}];
   }
 
   [(TSDLayout *)self->_containedLayout setParent:0];
@@ -97,11 +97,11 @@
   [(TSDShapeLayout *)&v5 dealloc];
 }
 
-- (void)willBeAddedToLayoutController:(id)a3
+- (void)willBeAddedToLayoutController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = TSWPShapeLayout;
-  [(TSDLayout *)&v6 willBeAddedToLayoutController:a3];
+  [(TSDLayout *)&v6 willBeAddedToLayoutController:controller];
   if (!self->_observingStorage || (v4 = [MEMORY[0x277D6C290] currentHandler], v5 = objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "-[TSWPShapeLayout willBeAddedToLayoutController:]"), objc_msgSend(v4, "handleFailureInFunction:file:lineNumber:description:", v5, objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 73, @"already observing the storage"), !self->_observingStorage))
   {
     [-[TSDInfo containedStorage](-[TSDLayout info](self "info")];
@@ -109,11 +109,11 @@
   }
 }
 
-- (void)willBeRemovedFromLayoutController:(id)a3
+- (void)willBeRemovedFromLayoutController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = TSWPShapeLayout;
-  [(TSDLayout *)&v6 willBeRemovedFromLayoutController:a3];
+  [(TSDLayout *)&v6 willBeRemovedFromLayoutController:controller];
   if (self->_observingStorage || (v4 = [MEMORY[0x277D6C290] currentHandler], v5 = objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "-[TSWPShapeLayout willBeRemovedFromLayoutController:]"), objc_msgSend(v4, "handleFailureInFunction:file:lineNumber:description:", v5, objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 86, @"not observing the storage"), self->_observingStorage))
   {
     [-[TSDInfo containedStorage](-[TSDLayout info](self "info")];
@@ -133,58 +133,58 @@
   return [MEMORY[0x277CBEA60] arrayWithObjects:v3 count:1];
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout setChildren:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:102 description:@"not supported"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:102 description:@"not supported"];
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout addChild:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:107 description:@"not supported"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:107 description:@"not supported"];
 }
 
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChild:(id)child atIndex:(unint64_t)index
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout insertChild:atIndex:]"];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"];
 
-  [v4 handleFailureInFunction:v5 file:v6 lineNumber:112 description:@"not supported"];
+  [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:112 description:@"not supported"];
 }
 
-- (void)insertChild:(id)a3 below:(id)a4
+- (void)insertChild:(id)child below:(id)below
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout insertChild:below:]"];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"];
 
-  [v4 handleFailureInFunction:v5 file:v6 lineNumber:117 description:@"not supported"];
+  [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:117 description:@"not supported"];
 }
 
-- (void)insertChild:(id)a3 above:(id)a4
+- (void)insertChild:(id)child above:(id)above
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout insertChild:above:]"];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"];
 
-  [v4 handleFailureInFunction:v5 file:v6 lineNumber:122 description:@"not supported"];
+  [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:122 description:@"not supported"];
 }
 
-- (void)replaceChild:(id)a3 with:(id)a4
+- (void)replaceChild:(id)child with:(id)with
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout replaceChild:with:]"];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"];
 
-  [v4 handleFailureInFunction:v5 file:v6 lineNumber:127 description:@"not supported"];
+  [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:127 description:@"not supported"];
 }
 
 - (void)invalidateSize
@@ -217,15 +217,15 @@
 {
   if (([(TSDInfo *)[(TSDLayout *)self info] displaysInstructionalText]& 1) == 0)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout destroyContainedLayoutForInstructionalText]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 162, @"trying to destroy layout for instructional text when it is not present"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 162, @"trying to destroy layout for instructional text when it is not present"}];
   }
 
   if ([(TSDInfo *)[(TSDLayout *)self info] displaysInstructionalText])
   {
-    v5 = [(TSDLayout *)self->_containedLayout info];
-    if (v5 != [(TSDInfo *)[(TSDLayout *)self info] containedStorage])
+    info = [(TSDLayout *)self->_containedLayout info];
+    if (info != [(TSDInfo *)[(TSDLayout *)self info] containedStorage])
     {
       [(TSDLayout *)self->_containedLayout setParent:0];
 
@@ -236,22 +236,22 @@
 
 - (void)createContainedLayoutForInstructionalText
 {
-  v3 = [(TSDInfo *)[(TSDLayout *)self info] containedStorage];
-  if (-[TSDInfo displaysInstructionalText](-[TSDLayout info](self, "info"), "displaysInstructionalText") && ![v3 length])
+  containedStorage = [(TSDInfo *)[(TSDLayout *)self info] containedStorage];
+  if (-[TSDInfo displaysInstructionalText](-[TSDLayout info](self, "info"), "displaysInstructionalText") && ![containedStorage length])
   {
     containedLayout = self->_containedLayout;
-    if ((!containedLayout || -[TSDLayout info](containedLayout, "info") == v3) && (![-[TSDLayout layoutController](self "layoutController")] || objc_msgSend(objc_msgSend(-[TSDLayout layoutController](self, "layoutController"), "canvas"), "shouldShowInstructionalText")))
+    if ((!containedLayout || -[TSDLayout info](containedLayout, "info") == containedStorage) && (![-[TSDLayout layoutController](self "layoutController")] || objc_msgSend(objc_msgSend(-[TSDLayout layoutController](self, "layoutController"), "canvas"), "shouldShowInstructionalText")))
     {
       [(TSDDrawableLayout *)self invalidate];
       [(TSDLayout *)self->_containedLayout setParent:0];
 
       self->_containedLayout = 0;
-      v5 = [v3 wpKind] == 5 ? 5 : 3;
-      v6 = [(TSWPShapeLayout *)self instructionalStorageForContainedStorage:v3 storageKind:v5];
-      [v6 setParentInfo:{objc_msgSend(v3, "parentInfo")}];
-      v7 = [(TSDInfo *)[(TSDLayout *)self info] geometry];
-      v8 = objc_alloc([v3 layoutClass]);
-      [v7 size];
+      v5 = [containedStorage wpKind] == 5 ? 5 : 3;
+      v6 = [(TSWPShapeLayout *)self instructionalStorageForContainedStorage:containedStorage storageKind:v5];
+      [v6 setParentInfo:{objc_msgSend(containedStorage, "parentInfo")}];
+      geometry = [(TSDInfo *)[(TSDLayout *)self info] geometry];
+      v8 = objc_alloc([containedStorage layoutClass]);
+      [geometry size];
       v9 = [v8 initWithInfo:v6 frame:TSDRectWithSize()];
       self->_containedLayout = v9;
       [(TSDLayout *)v9 setParent:self];
@@ -271,17 +271,17 @@
   }
 }
 
-- (id)instructionalStorageForContainedStorage:(id)a3 storageKind:(int)a4
+- (id)instructionalStorageForContainedStorage:(id)storage storageKind:(int)kind
 {
-  v4 = *&a4;
+  v4 = *&kind;
   v7 = [TSWPStorage alloc];
-  v8 = [a3 context];
-  v9 = [(TSDInfo *)[(TSDLayout *)self info] instructionalText];
-  v10 = [a3 stylesheet];
-  v11 = [a3 paragraphStyleAtParIndex:0 effectiveRange:0];
-  v12 = [a3 listStyleAtCharIndex:0 effectiveRange:0];
-  LODWORD(v15) = [a3 writingDirectionForParagraphAtCharIndex:0];
-  v13 = [(TSWPStorage *)v7 initWithContext:v8 string:v9 kind:v4 stylesheet:v10 paragraphStyle:v11 listStyle:v12 section:0 columnStyle:0 paragraphDirection:v15];
+  context = [storage context];
+  instructionalText = [(TSDInfo *)[(TSDLayout *)self info] instructionalText];
+  stylesheet = [storage stylesheet];
+  v11 = [storage paragraphStyleAtParIndex:0 effectiveRange:0];
+  v12 = [storage listStyleAtCharIndex:0 effectiveRange:0];
+  LODWORD(v15) = [storage writingDirectionForParagraphAtCharIndex:0];
+  v13 = [(TSWPStorage *)v7 initWithContext:context string:instructionalText kind:v4 stylesheet:stylesheet paragraphStyle:v11 listStyle:v12 section:0 columnStyle:0 paragraphDirection:v15];
 
   return v13;
 }
@@ -302,8 +302,8 @@
 
 - (id)childSearchTargets
 {
-  v3 = [(TSDLayout *)self->_containedLayout info];
-  if (v3 != [(TSDInfo *)[(TSDLayout *)self info] containedStorage])
+  info = [(TSDLayout *)self->_containedLayout info];
+  if (info != [(TSDInfo *)[(TSDLayout *)self info] containedStorage])
   {
     return 0;
   }
@@ -313,12 +313,12 @@
   return [(TSDLayout *)&v5 childSearchTargets];
 }
 
-- (void)storage:(id)a3 didChangeRange:(_NSRange)a4 delta:(int64_t)a5 broadcastKind:(int)a6
+- (void)storage:(id)storage didChangeRange:(_NSRange)range delta:(int64_t)delta broadcastKind:(int)kind
 {
   delegate = self->_delegate;
-  if (!delegate || [(TSWPShapeLayoutDelegate *)delegate shapeLayoutShouldUpdateInstructionalText:self, a4.location, a4.length, a5, *&a6])
+  if (!delegate || [(TSWPShapeLayoutDelegate *)delegate shapeLayoutShouldUpdateInstructionalText:self, range.location, range.length, delta, *&kind])
   {
-    if ([(TSDInfo *)[(TSDLayout *)self info:a3] displaysInstructionalText])
+    if ([(TSDInfo *)[(TSDLayout *)self info:storage] displaysInstructionalText])
     {
       [(TSWPShapeLayout *)self destroyContainedLayoutForInstructionalText];
     }
@@ -333,17 +333,17 @@
 
 - (void)createContainedLayoutForEditing
 {
-  v3 = [(TSDInfo *)[(TSDLayout *)self info] containedStorage];
+  containedStorage = [(TSDInfo *)[(TSDLayout *)self info] containedStorage];
   containedLayout = self->_containedLayout;
-  if (!containedLayout || [(TSDLayout *)containedLayout info]!= v3)
+  if (!containedLayout || [(TSDLayout *)containedLayout info]!= containedStorage)
   {
     [(TSDDrawableLayout *)self invalidate];
     [(TSDLayout *)self->_containedLayout setParent:0];
 
     self->_containedLayout = 0;
-    v5 = objc_alloc([v3 layoutClass]);
+    v5 = objc_alloc([containedStorage layoutClass]);
     [(TSWPShapeLayout *)self nonAutosizedFrameForTextLayout:self->_containedLayout];
-    v6 = [v5 initWithInfo:v3 frame:?];
+    v6 = [v5 initWithInfo:containedStorage frame:?];
     self->_containedLayout = v6;
     [(TSDLayout *)v6 setParent:self];
     if ([(TSWPShapeLayout *)self autosizes])
@@ -372,7 +372,7 @@
   result = self->_cachedInteriorWrapPolygon;
   if (!result)
   {
-    v4 = [(TSWPShapeLayout *)self interiorWrapPath];
+    interiorWrapPath = [(TSWPShapeLayout *)self interiorWrapPath];
     if ([(TSDInfo *)[(TSDLayout *)self info] textIsVertical])
     {
       [(TSDShapeLayout *)self pathBoundsWithoutStroke];
@@ -381,10 +381,10 @@
       v7 = v9;
       CGAffineTransformRotate(&v8, &v7, -1.57079633);
       v9 = v8;
-      [v4 transformUsingAffineTransform:&v8];
+      [interiorWrapPath transformUsingAffineTransform:&v8];
     }
 
-    v6 = [[TSDWrapPolygon alloc] initWithPath:v4];
+    v6 = [[TSDWrapPolygon alloc] initWithPath:interiorWrapPath];
     self->_cachedInteriorWrapPolygon = v6;
     [(TSDWrapPolygon *)v6 setIntersectsSelf:0];
     return self->_cachedInteriorWrapPolygon;
@@ -416,9 +416,9 @@
 
   else
   {
-    v9 = [v7 join];
+    join = [v7 join];
 
-    return [v3 bezierPathByOffsettingPath:v9 joinStyle:-v5 withThreshold:1.0];
+    return [v3 bezierPathByOffsettingPath:join joinStyle:-v5 withThreshold:1.0];
   }
 }
 
@@ -432,23 +432,23 @@
   return +[TSWPInteriorTextWrapController sharedInteriorTextWrapController];
 }
 
-- (unsigned)cropLine:(CGRect)a3 lineSegmentRects:(CGRect)a4[128]
+- (unsigned)cropLine:(CGRect)line lineSegmentRects:(CGRect)rects[128]
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(TSWPShapeLayout *)self interiorWrapPolygon];
+  height = line.size.height;
+  width = line.size.width;
+  y = line.origin.y;
+  x = line.origin.x;
+  interiorWrapPolygon = [(TSWPShapeLayout *)self interiorWrapPolygon];
 
-  return [TSWPTextWrapper splitLine:a4 lineSegmentRects:v9 polygon:0 type:0 skipHint:x, y, width, height];
+  return [TSWPTextWrapper splitLine:rects lineSegmentRects:interiorWrapPolygon polygon:0 type:0 skipHint:x, y, width, height];
 }
 
-- (unsigned)autosizeFlagsForTextLayout:(id)a3
+- (unsigned)autosizeFlagsForTextLayout:(id)layout
 {
-  v4 = [(TSDShapeLayout *)self layoutInfoGeometry];
-  v5 = [(TSDInfo *)[(TSDLayout *)self info] textIsVertical];
-  v6 = [v4 heightValid];
-  if (v5)
+  layoutInfoGeometry = [(TSDShapeLayout *)self layoutInfoGeometry];
+  textIsVertical = [(TSDInfo *)[(TSDLayout *)self info] textIsVertical];
+  heightValid = [layoutInfoGeometry heightValid];
+  if (textIsVertical)
   {
     v7 = 4;
   }
@@ -458,7 +458,7 @@
     v7 = 1;
   }
 
-  if (v5)
+  if (textIsVertical)
   {
     v8 = 1;
   }
@@ -468,7 +468,7 @@
     v8 = 4;
   }
 
-  if (v6)
+  if (heightValid)
   {
     v9 = 0;
   }
@@ -478,7 +478,7 @@
     v9 = v7;
   }
 
-  if ([v4 widthValid])
+  if ([layoutInfoGeometry widthValid])
   {
     v10 = 0;
   }
@@ -491,7 +491,7 @@
   return v10 | v9;
 }
 
-- (unsigned)verticalAlignmentForTextLayout:(id)a3
+- (unsigned)verticalAlignmentForTextLayout:(id)layout
 {
   objc_opt_class();
   [-[TSDShapeLayout shapeInfo](self "shapeInfo")];
@@ -505,13 +505,13 @@
   return v4;
 }
 
-- (void)invalidateForAutosizingTextLayout:(id)a3
+- (void)invalidateForAutosizingTextLayout:(id)layout
 {
   if (![(TSWPShapeLayout *)self autosizes])
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout invalidateForAutosizingTextLayout:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 437, @"should call only when autosizing"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 437, @"should call only when autosizing"}];
   }
 
   [(TSDShapeLayout *)self invalidateFrame];
@@ -519,12 +519,12 @@
   [(TSWPShapeLayout *)self invalidatePath];
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
-  v4 = [-[TSDShapeLayout shapeInfo](self shapeInfo];
-  if (![v4 shouldRender])
+  shapeInfo = [-[TSDShapeLayout shapeInfo](self shapeInfo];
+  if (![shapeInfo shouldRender])
   {
-    v4 = 0;
+    shapeInfo = 0;
   }
 
   v5 = [(TSWPShapeLayout *)self autosizeFlagsForTextLayout:self->_containedLayout];
@@ -545,9 +545,9 @@
   [(TSDShapeLayout *)self pathBounds];
   x = TSDSubtractPoints(v6, v8, v16);
   y = v18;
-  if (v4 && [-[TSWPShapeLayout pathSource](self "pathSource")])
+  if (shapeInfo && [-[TSWPShapeLayout pathSource](self "pathSource")])
   {
-    [v4 width];
+    [shapeInfo width];
     v21 = ceil(v20 * 0.5);
     v22 = fmin(v21, width * 0.5);
     v23 = fmin(v21, height * 0.5);
@@ -573,13 +573,13 @@
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
   if (![(TSWPShapeLayout *)self autosizes])
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPShapeLayout autosizedFrameForTextLayout:textSize:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 478, @"should call only when autosizing"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPShapeLayout.mm"), 478, @"should call only when autosizing"}];
   }
 
   v7 = [-[TSDShapeLayout shapeInfo](self "shapeInfo")];
@@ -592,11 +592,11 @@
     }
   }
 
-  v9 = [(TSDShapeLayout *)self layoutInfoGeometry];
-  [v9 size];
-  [v9 size];
-  [v9 widthValid];
-  [v9 heightValid];
+  layoutInfoGeometry = [(TSDShapeLayout *)self layoutInfoGeometry];
+  [layoutInfoGeometry size];
+  [layoutInfoGeometry size];
+  [layoutInfoGeometry widthValid];
+  [layoutInfoGeometry heightValid];
 
   v10 = TSDRectWithSize();
   result.size.height = v13;
@@ -606,7 +606,7 @@
   return result;
 }
 
-- (id)dependentsOfTextLayout:(id)a3
+- (id)dependentsOfTextLayout:(id)layout
 {
   v5[1] = *MEMORY[0x277D85DE8];
   if (![(TSWPShapeLayout *)self autosizes])
@@ -618,25 +618,25 @@
   return [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
 }
 
-- (BOOL)textLayoutShouldLayoutVertically:(id)a3
+- (BOOL)textLayoutShouldLayoutVertically:(id)vertically
 {
-  v3 = [(TSDLayout *)self info];
+  info = [(TSDLayout *)self info];
 
-  return [(TSDInfo *)v3 textIsVertical];
+  return [(TSDInfo *)info textIsVertical];
 }
 
-- (BOOL)allowsLastLineTruncation:(id)a3
+- (BOOL)allowsLastLineTruncation:(id)truncation
 {
-  v3 = [(TSDLayout *)self info];
+  info = [(TSDLayout *)self info];
 
-  return [(TSDInfo *)v3 allowsLastLineTruncation];
+  return [(TSDInfo *)info allowsLastLineTruncation];
 }
 
-- (unsigned)maxLineCountForTextLayout:(id)a3
+- (unsigned)maxLineCountForTextLayout:(id)layout
 {
-  v3 = [(TSDLayout *)self info];
+  info = [(TSDLayout *)self info];
 
-  return [(TSDInfo *)v3 maxLineCount];
+  return [(TSDInfo *)info maxLineCount];
 }
 
 - (BOOL)supportsRotation
@@ -684,24 +684,24 @@
 {
   v6.receiver = self;
   v6.super_class = TSWPShapeLayout;
-  v3 = [(TSDLayout *)&v6 dependentLayouts];
+  dependentLayouts = [(TSDLayout *)&v6 dependentLayouts];
   if (self->_containedLayout && ![(TSWPShapeLayout *)self autosizes])
   {
-    if (v3)
+    if (dependentLayouts)
     {
-      v4 = [v3 mutableCopy];
+      array = [dependentLayouts mutableCopy];
     }
 
     else
     {
-      v4 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
-    v3 = v4;
-    [v4 addObject:self->_containedLayout];
+    dependentLayouts = array;
+    [array addObject:self->_containedLayout];
   }
 
-  return v3;
+  return dependentLayouts;
 }
 
 - (CGAffineTransform)computeLayoutTransform
@@ -754,14 +754,14 @@
   return result;
 }
 
-- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)a3
+- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)geometry
 {
-  v7 = [(TSDLayout *)self info];
+  info = [(TSDLayout *)self info];
   result = [(TSDShapeLayout *)self pathBoundsWithoutStroke];
-  if (v7)
+  if (info)
   {
 
-    return [(TSDInfo *)v7 autosizedTransformForInfoGeometry:a4 size:v9, v10];
+    return [(TSDInfo *)info autosizedTransformForInfoGeometry:a4 size:v9, v10];
   }
 
   else
@@ -782,10 +782,10 @@
   return result;
 }
 
-- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)a3 height:(BOOL)a4
+- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)width height:(BOOL)height
 {
-  v4 = a4;
-  v5 = a3;
+  heightCopy = height;
+  widthCopy = width;
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
@@ -801,13 +801,13 @@
   [v11 size];
   v13 = v12;
   v15 = v14;
-  if (([v11 widthValid] & 1) == 0 && v5)
+  if (([v11 widthValid] & 1) == 0 && widthCopy)
   {
     [v11 setWidthValid:1];
     v13 = v8;
   }
 
-  if (([v11 heightValid] & 1) == 0 && v4)
+  if (([v11 heightValid] & 1) == 0 && heightCopy)
   {
     [v11 setHeightValid:1];
     v15 = v10;
@@ -864,12 +864,12 @@
   }
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v5.receiver = self;
   v5.super_class = TSWPShapeLayout;
   [(TSDShapeLayout *)&v5 processChangedProperty:?];
-  if (a3 == 517)
+  if (property == 517)
   {
 LABEL_4:
 
@@ -878,9 +878,9 @@ LABEL_4:
     return;
   }
 
-  if (a3 != 153)
+  if (property != 153)
   {
-    if (a3 != 146)
+    if (property != 146)
     {
       return;
     }
@@ -894,11 +894,11 @@ LABEL_4:
   self->_cachedInteriorWrapPolygon = 0;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v21.receiver = self;
   v21.super_class = TSWPShapeLayout;
-  [(TSDShapeLayout *)&v21 setGeometry:a3];
+  [(TSDShapeLayout *)&v21 setGeometry:geometry];
   if (self->_containedLayout && [(TSWPShapeLayout *)self autosizes])
   {
     [(TSDLayoutGeometry *)[(TSDAbstractLayout *)self->_containedLayout geometry] size];
@@ -933,11 +933,11 @@ LABEL_4:
 {
   v2 = *MEMORY[0x277CBF3A8];
   v3 = *(MEMORY[0x277CBF3A8] + 8);
-  v4 = [(TSDInfo *)[(TSDLayout *)self info] padding];
-  if (v4)
+  padding = [(TSDInfo *)[(TSDLayout *)self info] padding];
+  if (padding)
   {
-    v5 = v4;
-    [v4 leftInset];
+    v5 = padding;
+    [padding leftInset];
     v2 = v6;
     [v5 topInset];
     v3 = v7;
@@ -952,51 +952,51 @@ LABEL_4:
 
 - (unint64_t)columnCount
 {
-  v2 = [(TSDInfo *)[(TSDLayout *)self info] columns];
-  if (!v2)
+  columns = [(TSDInfo *)[(TSDLayout *)self info] columns];
+  if (!columns)
   {
     return 1;
   }
 
-  return [v2 columnCount];
+  return [columns columnCount];
 }
 
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
-  v6 = [(TSDInfo *)[(TSDLayout *)self info] columns];
-  if (!v6)
+  columns = [(TSDInfo *)[(TSDLayout *)self info] columns];
+  if (!columns)
   {
     return 0.0;
   }
 
-  [v6 widthForColumnIndex:a3 bodyWidth:a4];
+  [columns widthForColumnIndex:index bodyWidth:width];
   return result;
 }
 
-- (double)gapForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)gapForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
-  v6 = [(TSDInfo *)[(TSDLayout *)self info] columns];
-  if (!v6)
+  columns = [(TSDInfo *)[(TSDLayout *)self info] columns];
+  if (!columns)
   {
     return 0.0;
   }
 
-  [v6 gapForColumnIndex:a3 bodyWidth:a4];
+  [columns gapForColumnIndex:index bodyWidth:width];
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap
 {
-  v11 = [(TSDInfo *)[(TSDLayout *)self info] columns];
-  v12 = [(TSDInfo *)[(TSDLayout *)self info] padding];
-  if (v12)
+  columns = [(TSDInfo *)[(TSDLayout *)self info] columns];
+  padding = [(TSDInfo *)[(TSDLayout *)self info] padding];
+  if (padding)
   {
-    [v12 leftInset];
+    [padding leftInset];
     v14 = v13;
-    if (v11)
+    if (columns)
     {
 LABEL_3:
-      [v11 positionForColumnIndex:a3 bodyWidth:a5 outWidth:a6 outGap:{fmax(a4 + v14 * -2.0, 0.0)}];
+      [columns positionForColumnIndex:index bodyWidth:outWidth outWidth:gap outGap:{fmax(width + v14 * -2.0, 0.0)}];
       return v14 + v15;
     }
   }
@@ -1004,20 +1004,20 @@ LABEL_3:
   else
   {
     v14 = 0.0;
-    if (v11)
+    if (columns)
     {
       goto LABEL_3;
     }
   }
 
-  if (a5)
+  if (outWidth)
   {
-    *a5 = a4 + v14 * -2.0;
+    *outWidth = width + v14 * -2.0;
   }
 
-  if (a6)
+  if (gap)
   {
-    *a6 = 0.0;
+    *gap = 0.0;
   }
 
   return v14;
@@ -1025,9 +1025,9 @@ LABEL_3:
 
 - (BOOL)shrinkTextToFit
 {
-  v2 = [(TSDLayout *)self info];
+  info = [(TSDLayout *)self info];
 
-  return [(TSDInfo *)v2 shrinkTextToFit];
+  return [(TSDInfo *)info shrinkTextToFit];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface _CRKCardSectionViewControllerRegistry
-- (Class)cardSectionViewControllerClassForCardSectionClass:(Class)a3;
+- (Class)cardSectionViewControllerClassForCardSectionClass:(Class)class;
 - (_CRKCardSectionViewControllerRegistry)init;
-- (void)registerCardSectionViewControllerClass:(Class)a3 forCardSectionClass:(Class)a4;
+- (void)registerCardSectionViewControllerClass:(Class)class forCardSectionClass:(Class)sectionClass;
 @end
 
 @implementation _CRKCardSectionViewControllerRegistry
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (void)registerCardSectionViewControllerClass:(Class)a3 forCardSectionClass:(Class)a4
+- (void)registerCardSectionViewControllerClass:(Class)class forCardSectionClass:(Class)sectionClass
 {
   v28 = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CF93F0];
@@ -30,8 +30,8 @@
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = NSStringFromClass(a3);
-    v11 = NSStringFromClass(a4);
+    v10 = NSStringFromClass(class);
+    v11 = NSStringFromClass(sectionClass);
     v22 = 138412546;
     v23 = v10;
     v24 = 2112;
@@ -40,7 +40,7 @@
   }
 
   cardSectionViewControllerClassNameForCardSectionClassName = self->_cardSectionViewControllerClassNameForCardSectionClassName;
-  v13 = NSStringFromClass(a4);
+  v13 = NSStringFromClass(sectionClass);
   v14 = [(NSMutableDictionary *)cardSectionViewControllerClassNameForCardSectionClassName objectForKey:v13];
 
   if (v14)
@@ -49,8 +49,8 @@
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_ERROR))
     {
       v19 = v15;
-      v20 = NSStringFromClass(a4);
-      v21 = NSStringFromClass(a3);
+      v20 = NSStringFromClass(sectionClass);
+      v21 = NSStringFromClass(class);
       v22 = 138412802;
       v23 = v20;
       v24 = 2112;
@@ -62,16 +62,16 @@
   }
 
   v16 = self->_cardSectionViewControllerClassNameForCardSectionClassName;
-  v17 = NSStringFromClass(a3);
-  v18 = NSStringFromClass(a4);
+  v17 = NSStringFromClass(class);
+  v18 = NSStringFromClass(sectionClass);
   [(NSMutableDictionary *)v16 setObject:v17 forKey:v18];
 }
 
-- (Class)cardSectionViewControllerClassForCardSectionClass:(Class)a3
+- (Class)cardSectionViewControllerClassForCardSectionClass:(Class)class
 {
   v21 = *MEMORY[0x277D85DE8];
   cardSectionViewControllerClassNameForCardSectionClassName = self->_cardSectionViewControllerClassNameForCardSectionClassName;
-  v5 = NSStringFromClass(a3);
+  v5 = NSStringFromClass(class);
   v6 = [(NSMutableDictionary *)cardSectionViewControllerClassNameForCardSectionClassName objectForKey:v5];
 
   v7 = *MEMORY[0x277CF93F0];
@@ -81,7 +81,7 @@
     if (v8)
     {
       v9 = v7;
-      v10 = NSStringFromClass(a3);
+      v10 = NSStringFromClass(class);
       v17 = 138412546;
       v18 = v10;
       v19 = 2112;
@@ -97,7 +97,7 @@
     if (v8)
     {
       v12 = v7;
-      v13 = NSStringFromClass(a3);
+      v13 = NSStringFromClass(class);
       v17 = 138412290;
       v18 = v13;
       _os_log_impl(&dword_243247000, v12, OS_LOG_TYPE_DEFAULT, "Defaulting to base class view controller for card section\n    Card section: %@", &v17, 0xCu);

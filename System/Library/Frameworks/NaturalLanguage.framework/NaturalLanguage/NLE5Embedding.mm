@@ -1,28 +1,28 @@
 @interface NLE5Embedding
-+ (BOOL)compileEmbeddingModelWithModelPath:(id)a3 useANE:(BOOL)a4 adapters:(id)a5;
-+ (BOOL)isCompiledEmbeddingModelWithModelPath:(id)a3 useANE:(BOOL)a4 adapters:(id)a5 error:(id *)a6;
-+ (id)embeddingModelWithModelPath:(id)a3 useANE:(BOOL)a4 adapters:(id)a5;
-- (BOOL)_loadFunction:(const char *)a3;
-- (BOOL)isAdapterLoaded:(id)a3;
++ (BOOL)compileEmbeddingModelWithModelPath:(id)path useANE:(BOOL)e adapters:(id)adapters;
++ (BOOL)isCompiledEmbeddingModelWithModelPath:(id)path useANE:(BOOL)e adapters:(id)adapters error:(id *)error;
++ (id)embeddingModelWithModelPath:(id)path useANE:(BOOL)e adapters:(id)adapters;
+- (BOOL)_loadFunction:(const char *)function;
+- (BOOL)isAdapterLoaded:(id)loaded;
 - (BOOL)isBackboneLoaded;
-- (BOOL)loadAdapter:(id)a3;
+- (BOOL)loadAdapter:(id)adapter;
 - (BOOL)loadBackbone;
-- (NLE5Embedding)initWithProgramLibrary:()unique_ptr<E5RT:(std:(void *)a4 :default_delete<E5RT::ProgramLibrary>>)a3 :ProgramLibrary andSubwordVocab:;
+- (NLE5Embedding)initWithProgramLibrary:()unique_ptr<E5RT:(std:(void *)t :default_delete<E5RT::ProgramLibrary>>)a3 :ProgramLibrary andSubwordVocab:;
 - (id).cxx_construct;
-- (id)_embeddingDataForString:(id)a3 sequenceSize:(unint64_t *)a4 error:(id *)a5;
-- (id)_embeddingDataForTokenizedBatch:(id)a3 withOutputProperties:(id)a4;
-- (id)_tokenIDsForText:(id)a3 addBOS:(BOOL)a4;
-- (id)embeddingDataForString:(id)a3 sequenceSize:(unint64_t *)a4 error:(id *)a5;
-- (id)embeddingDataForTokenizedBatch:(id)a3 withOutputProperties:(id)a4;
-- (id)textForTokenIDs:(id)a3;
-- (id)tokenIDsForText:(id)a3;
-- (void)_setInputFragments:(int *)a3 count:(unint64_t)a4;
+- (id)_embeddingDataForString:(id)string sequenceSize:(unint64_t *)size error:(id *)error;
+- (id)_embeddingDataForTokenizedBatch:(id)batch withOutputProperties:(id)properties;
+- (id)_tokenIDsForText:(id)text addBOS:(BOOL)s;
+- (id)embeddingDataForString:(id)string sequenceSize:(unint64_t *)size error:(id *)error;
+- (id)embeddingDataForTokenizedBatch:(id)batch withOutputProperties:(id)properties;
+- (id)textForTokenIDs:(id)ds;
+- (id)tokenIDsForText:(id)text;
+- (void)_setInputFragments:(int *)fragments count:(unint64_t)count;
 - (void)dealloc;
 @end
 
 @implementation NLE5Embedding
 
-- (NLE5Embedding)initWithProgramLibrary:()unique_ptr<E5RT:(std:(void *)a4 :default_delete<E5RT::ProgramLibrary>>)a3 :ProgramLibrary andSubwordVocab:
+- (NLE5Embedding)initWithProgramLibrary:()unique_ptr<E5RT:(std:(void *)t :default_delete<E5RT::ProgramLibrary>>)a3 :ProgramLibrary andSubwordVocab:
 {
   v13.receiver = self;
   v13.super_class = NLE5Embedding;
@@ -31,7 +31,7 @@
   if (v6)
   {
     v6->_numInputs = 3;
-    v6->_subwordVocabRef = a4;
+    v6->_subwordVocabRef = t;
     v8 = *a3.__ptr_;
     *a3.__ptr_ = 0;
     ptr = v6->_programLibrary.__ptr_;
@@ -64,32 +64,32 @@
   [(NLE5Embedding *)&v4 dealloc];
 }
 
-+ (id)embeddingModelWithModelPath:(id)a3 useANE:(BOOL)a4 adapters:(id)a5
++ (id)embeddingModelWithModelPath:(id)path useANE:(BOOL)e adapters:(id)adapters
 {
-  v6 = a4;
+  eCopy = e;
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (v7)
+  pathCopy = path;
+  adaptersCopy = adapters;
+  if (pathCopy)
   {
-    v9 = [v7 pathExtension];
-    v10 = [v9 isEqualToString:@"mil"];
+    pathExtension = [pathCopy pathExtension];
+    v10 = [pathExtension isEqualToString:@"mil"];
 
     if (v10)
     {
-      v11 = [v7 stringByDeletingLastPathComponent];
-      v12 = [v11 stringByAppendingPathComponent:@"sp.dat"];
+      stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+      v12 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"sp.dat"];
 
-      v13 = [MEMORY[0x1E696AC08] defaultManager];
-      v14 = [v13 fileExistsAtPath:v12 isDirectory:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v14 = [defaultManager fileExistsAtPath:v12 isDirectory:0];
 
       if ((v14 & 1) == 0)
       {
         v29 = objc_autoreleasePoolPush();
         v30 = NLGetLogCategory(0);
-        v31 = [v30 internal];
+        internal = [v30 internal];
 
-        if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(internal, OS_LOG_TYPE_ERROR))
         {
           v32 = NLGetLogIdentifier(0);
           v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing sentence piece model for embedding at: %@", v12];
@@ -97,7 +97,7 @@
           *&buf[4] = v32;
           *&buf[12] = 2114;
           *&buf[14] = v33;
-          _os_log_impl(&dword_19D48F000, v31, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
+          _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v29);
@@ -125,9 +125,9 @@
       dispatch_sync(v15, block);
       if (*(*&buf[8] + 24))
       {
-        v17 = v7;
-        std::string::basic_string[abi:ne200100]<0>(__p, [v7 UTF8String]);
-        compileModel(__p, v6, v8);
+        v17 = pathCopy;
+        std::string::basic_string[abi:ne200100]<0>(__p, [pathCopy UTF8String]);
+        compileModel(__p, eCopy, adaptersCopy);
         if (v49 < 0)
         {
           operator delete(*__p);
@@ -144,9 +144,9 @@
           (*(*v20 + 8))(v20);
         }
 
-        if ([v8 count])
+        if ([adaptersCopy count])
         {
-          v21 = [v8 copy];
+          v21 = [adaptersCopy copy];
           [(NLE5Embedding *)v19 setAdapters:v21];
         }
 
@@ -173,9 +173,9 @@
       {
         v34 = objc_autoreleasePoolPush();
         v35 = NLGetLogCategory(0);
-        v36 = [v35 internal];
+        internal2 = [v35 internal];
 
-        if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(internal2, OS_LOG_TYPE_ERROR))
         {
           v37 = NLGetLogIdentifier(0);
           v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load sentence piece model for embedding from: %@", v16];
@@ -183,7 +183,7 @@
           *&__p[4] = v37;
           v47 = 2114;
           v48 = v38;
-          _os_log_impl(&dword_19D48F000, v36, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
+          _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
         }
 
         objc_autoreleasePoolPop(v34);
@@ -201,17 +201,17 @@ LABEL_29:
 
   v24 = objc_autoreleasePoolPush();
   v25 = NLGetLogCategory(0);
-  v26 = [v25 internal];
+  internal3 = [v25 internal];
 
-  if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(internal3, OS_LOG_TYPE_ERROR))
   {
     v27 = NLGetLogIdentifier(0);
-    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid path for MIL model: %@", v7];
+    pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid path for MIL model: %@", pathCopy];
     *buf = 138543618;
     *&buf[4] = v27;
     *&buf[12] = 2114;
-    *&buf[14] = v28;
-    _os_log_impl(&dword_19D48F000, v26, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
+    *&buf[14] = pathCopy;
+    _os_log_impl(&dword_19D48F000, internal3, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v24);
@@ -231,12 +231,12 @@ uint64_t __61__NLE5Embedding_embeddingModelWithModelPath_useANE_adapters___block
   return result;
 }
 
-+ (BOOL)isCompiledEmbeddingModelWithModelPath:(id)a3 useANE:(BOOL)a4 adapters:(id)a5 error:(id *)a6
++ (BOOL)isCompiledEmbeddingModelWithModelPath:(id)path useANE:(BOOL)e adapters:(id)adapters error:(id *)error
 {
-  v7 = a4;
+  eCopy = e;
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  adaptersCopy = adapters;
   MEMORY[0x19EAFBE50](v26);
   std::string::basic_string[abi:ne200100]<0>(__p, "/private/var/db/com.apple.naturallanguaged");
   E5RT::E5CompilerConfigOptions::SetBundleCacheLocation();
@@ -246,16 +246,16 @@ uint64_t __61__NLE5Embedding_embeddingModelWithModelPath_useANE_adapters___block
   }
 
   E5RT::E5Compiler::MakeCompiler();
-  v10 = v8;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
-  createE5CompilerOptions(v7, v9, &v24);
+  v10 = pathCopy;
+  std::string::basic_string[abi:ne200100]<0>(__p, [pathCopy UTF8String]);
+  createE5CompilerOptions(eCopy, adaptersCopy, &v24);
   if (v30 < 0)
   {
     operator delete(*__p);
   }
 
-  v11 = v8;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
+  v11 = pathCopy;
+  std::string::basic_string[abi:ne200100]<0>(__p, [pathCopy UTF8String]);
   IsNewCompileRequired = E5RT::E5Compiler::IsNewCompileRequired();
   if (v30 < 0)
   {
@@ -265,9 +265,9 @@ uint64_t __61__NLE5Embedding_embeddingModelWithModelPath_useANE_adapters___block
   v13 = objc_autoreleasePoolPush();
   v14 = IsNewCompileRequired ^ 1;
   v15 = NLGetLogCategory(0);
-  v16 = [v15 internal];
+  internal = [v15 internal];
 
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(internal, OS_LOG_TYPE_DEFAULT))
   {
     v17 = NLGetLogIdentifier(0);
     v18 = "doesn't require";
@@ -276,12 +276,12 @@ uint64_t __61__NLE5Embedding_embeddingModelWithModelPath_useANE_adapters___block
       v18 = "requires";
     }
 
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' %s compilation", v8, v18];
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' %s compilation", pathCopy, v18];
     *__p = 138543618;
     *&__p[4] = v17;
     v28 = 2114;
     v29 = v19;
-    _os_log_impl(&dword_19D48F000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", __p, 0x16u);
+    _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", __p, 0x16u);
   }
 
   objc_autoreleasePoolPop(v13);
@@ -305,27 +305,27 @@ uint64_t __61__NLE5Embedding_embeddingModelWithModelPath_useANE_adapters___block
   return v14;
 }
 
-+ (BOOL)compileEmbeddingModelWithModelPath:(id)a3 useANE:(BOOL)a4 adapters:(id)a5
++ (BOOL)compileEmbeddingModelWithModelPath:(id)path useANE:(BOOL)e adapters:(id)adapters
 {
-  v6 = a4;
+  eCopy = e;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  pathCopy = path;
+  adaptersCopy = adapters;
   v9 = objc_autoreleasePoolPush();
   v10 = NLGetLogCategory(0);
-  v11 = [v10 internal];
+  internal = [v10 internal];
 
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(internal, OS_LOG_TYPE_DEFAULT))
   {
     v12 = NLGetLogIdentifier(0);
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [v8 componentsJoinedByString:@" / "];
-    v15 = [v13 stringWithFormat:@"Compiling '%@' with adapters: %@", v7, v14];
+    v14 = [adaptersCopy componentsJoinedByString:@" / "];
+    v15 = [v13 stringWithFormat:@"Compiling '%@' with adapters: %@", pathCopy, v14];
     *buf = 138543618;
     *&buf[4] = v12;
     v27 = 2114;
     v28 = v15;
-    _os_log_impl(&dword_19D48F000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
+    _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
@@ -339,9 +339,9 @@ uint64_t __61__NLE5Embedding_embeddingModelWithModelPath_useANE_adapters___block
     _os_signpost_emit_with_name_impl(&dword_19D48F000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "compileE5", &unk_19D4EF749, buf, 2u);
   }
 
-  v20 = v7;
-  std::string::basic_string[abi:ne200100]<0>(buf, [v7 UTF8String]);
-  compileModel(buf, v6, v8);
+  v20 = pathCopy;
+  std::string::basic_string[abi:ne200100]<0>(buf, [pathCopy UTF8String]);
+  compileModel(buf, eCopy, adaptersCopy);
   if (v25)
   {
     (*(*v25 + 8))();
@@ -364,12 +364,12 @@ uint64_t __61__NLE5Embedding_embeddingModelWithModelPath_useANE_adapters___block
   return 1;
 }
 
-- (BOOL)_loadFunction:(const char *)a3
+- (BOOL)_loadFunction:(const char *)function
 {
   v92[6] = *MEMORY[0x1E69E9840];
   ExportedFunctions = E5RT::ProgramLibrary::GetExportedFunctions(self->_programLibrary.__ptr_);
   std::unordered_map<std::string,std::shared_ptr<E5RT::ProgramFunction>>::unordered_map(v92, ExportedFunctions);
-  std::string::basic_string[abi:ne200100]<0>(__p, a3);
+  std::string::basic_string[abi:ne200100]<0>(__p, function);
   v6 = std::__hash_table<std::__hash_value_type<std::string,std::shared_ptr<E5RT::ProgramFunction>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::shared_ptr<E5RT::ProgramFunction>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::shared_ptr<E5RT::ProgramFunction>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::shared_ptr<E5RT::ProgramFunction>>>>::find<std::string>(v92, __p);
   v7 = v6;
   if ((v91 & 0x80000000) == 0)
@@ -382,17 +382,17 @@ uint64_t __61__NLE5Embedding_embeddingModelWithModelPath_useANE_adapters___block
 LABEL_69:
     v47 = objc_autoreleasePoolPush();
     v48 = NLGetLogCategory(self);
-    v49 = [v48 internal];
+    internal = [v48 internal];
 
-    if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(internal, OS_LOG_TYPE_ERROR))
     {
       v50 = NLGetLogIdentifier(self);
-      v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Loaded mil library is missing %s function", a3];
+      function = [MEMORY[0x1E696AEC0] stringWithFormat:@"Loaded mil library is missing %s function", function];
       *__p = 138543618;
       *&__p[4] = v50;
       v89 = 2114;
-      v90 = v51;
-      _os_log_impl(&dword_19D48F000, v49, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
+      v90 = function;
+      _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
     }
 
     objc_autoreleasePoolPop(v47);
@@ -406,7 +406,7 @@ LABEL_69:
   }
 
 LABEL_3:
-  std::string::basic_string[abi:ne200100]<0>(__p, a3);
+  std::string::basic_string[abi:ne200100]<0>(__p, function);
   v8 = std::__hash_table<std::__hash_value_type<std::string,std::shared_ptr<E5RT::ProgramFunction>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::shared_ptr<E5RT::ProgramFunction>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::shared_ptr<E5RT::ProgramFunction>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::shared_ptr<E5RT::ProgramFunction>>>>::find<std::string>(v92, __p);
   if (!v8)
   {
@@ -432,7 +432,7 @@ LABEL_3:
     operator delete(*__p);
   }
 
-  v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
+  v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:function];
   loadedFunction = self->_loadedFunction;
   self->_loadedFunction = v10;
 
@@ -512,9 +512,9 @@ LABEL_35:
             {
               v52 = objc_autoreleasePoolPush();
               v69 = NLGetLogCategory(self);
-              v54 = [v69 internal];
+              internal2 = [v69 internal];
 
-              if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(internal2, OS_LOG_TYPE_ERROR))
               {
                 v70 = NLGetLogIdentifier(self);
                 v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected output rank"];
@@ -522,7 +522,7 @@ LABEL_35:
                 *&__p[4] = v70;
                 v89 = 2114;
                 v90 = v71;
-                _os_log_impl(&dword_19D48F000, v54, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
+                _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
               }
 
               goto LABEL_92;
@@ -533,9 +533,9 @@ LABEL_35:
             {
               v52 = objc_autoreleasePoolPush();
               v72 = NLGetLogCategory(self);
-              v54 = [v72 internal];
+              internal2 = [v72 internal];
 
-              if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(internal2, OS_LOG_TYPE_ERROR))
               {
                 v73 = NLGetLogIdentifier(self);
                 v74 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected output type"];
@@ -543,7 +543,7 @@ LABEL_35:
                 *&__p[4] = v73;
                 v89 = 2114;
                 v90 = v74;
-                _os_log_impl(&dword_19D48F000, v54, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
+                _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
               }
 
               goto LABEL_92;
@@ -555,9 +555,9 @@ LABEL_35:
             {
               v52 = objc_autoreleasePoolPush();
               v75 = NLGetLogCategory(self);
-              v54 = [v75 internal];
+              internal2 = [v75 internal];
 
-              if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(internal2, OS_LOG_TYPE_ERROR))
               {
                 v76 = NLGetLogIdentifier(self);
                 v77 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Max sequence length not matching in input/output"];
@@ -565,7 +565,7 @@ LABEL_35:
                 *&__p[4] = v76;
                 v89 = 2114;
                 v90 = v77;
-                _os_log_impl(&dword_19D48F000, v54, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
+                _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
               }
 
               goto LABEL_92;
@@ -631,9 +631,9 @@ LABEL_58:
 
         v52 = objc_autoreleasePoolPush();
         v57 = NLGetLogCategory(self);
-        v54 = [v57 internal];
+        internal2 = [v57 internal];
 
-        if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(internal2, OS_LOG_TYPE_ERROR))
         {
           v58 = NLGetLogIdentifier(self);
           v59 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s output is missing", "mlm_embeddings"];
@@ -641,7 +641,7 @@ LABEL_58:
           *&__p[4] = v58;
           v89 = 2114;
           v90 = v59;
-          _os_log_impl(&dword_19D48F000, v54, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
+          _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
         }
 
         goto LABEL_92;
@@ -655,9 +655,9 @@ LABEL_58:
 
     v52 = objc_autoreleasePoolPush();
     v53 = NLGetLogCategory(self);
-    v54 = [v53 internal];
+    internal2 = [v53 internal];
 
-    if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(internal2, OS_LOG_TYPE_ERROR))
     {
       v55 = NLGetLogIdentifier(self);
       v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s input is missing", "mlm_input"];
@@ -665,7 +665,7 @@ LABEL_58:
       *&__p[4] = v55;
       v89 = 2114;
       v90 = v56;
-      _os_log_impl(&dword_19D48F000, v54, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
+      _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
     }
 
     goto LABEL_92;
@@ -734,9 +734,9 @@ LABEL_58:
     {
       v52 = objc_autoreleasePoolPush();
       v63 = NLGetLogCategory(self);
-      v54 = [v63 internal];
+      internal2 = [v63 internal];
 
-      if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(internal2, OS_LOG_TYPE_ERROR))
       {
         v64 = NLGetLogIdentifier(self);
         v65 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected input type"];
@@ -744,7 +744,7 @@ LABEL_58:
         *&__p[4] = v64;
         v89 = 2114;
         v90 = v65;
-        _os_log_impl(&dword_19D48F000, v54, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
+        _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
       }
 
       goto LABEL_92;
@@ -756,9 +756,9 @@ LABEL_58:
     {
       v52 = objc_autoreleasePoolPush();
       v66 = NLGetLogCategory(self);
-      v54 = [v66 internal];
+      internal2 = [v66 internal];
 
-      if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(internal2, OS_LOG_TYPE_ERROR))
       {
         v67 = NLGetLogIdentifier(self);
         v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected input tensor shape"];
@@ -766,7 +766,7 @@ LABEL_58:
         *&__p[4] = v67;
         v89 = 2114;
         v90 = v68;
-        _os_log_impl(&dword_19D48F000, v54, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
+        _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
       }
 
       goto LABEL_92;
@@ -782,9 +782,9 @@ LABEL_32:
 
   v52 = objc_autoreleasePoolPush();
   v60 = NLGetLogCategory(self);
-  v54 = [v60 internal];
+  internal2 = [v60 internal];
 
-  if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(internal2, OS_LOG_TYPE_ERROR))
   {
     v61 = NLGetLogIdentifier(self);
     v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected input rank"];
@@ -792,7 +792,7 @@ LABEL_32:
     *&__p[4] = v61;
     v89 = 2114;
     v90 = v62;
-    _os_log_impl(&dword_19D48F000, v54, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
+    _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __p, 0x16u);
   }
 
 LABEL_92:
@@ -811,7 +811,7 @@ LABEL_95:
   return result;
 }
 
-- (void)_setInputFragments:(int *)a3 count:(unint64_t)a4
+- (void)_setInputFragments:(int *)fragments count:(unint64_t)count
 {
   std::string::basic_string[abi:ne200100]<0>(__p, "mlm_input");
   v16 = __p;
@@ -835,16 +835,16 @@ LABEL_95:
 
   bzero(v11, v10 & 0xFFFFFFFFFFFFFFFCLL);
   maximumSequenceLength = self->_maximumSequenceLength;
-  if (maximumSequenceLength >= a4)
+  if (maximumSequenceLength >= count)
   {
-    maximumSequenceLength = a4;
+    maximumSequenceLength = count;
   }
 
   if (maximumSequenceLength)
   {
     for (i = 0; i != maximumSequenceLength; ++i)
     {
-      *(v11 + self->_numInputs * i) = a3[i];
+      *(v11 + self->_numInputs * i) = fragments[i];
       *(v11 + self->_numInputs * i + 1) = i;
       *(v11 + self->_numInputs * i + 2) = 0;
     }
@@ -877,9 +877,9 @@ LABEL_95:
   {
     v4 = objc_autoreleasePoolPush();
     v5 = NLGetLogCategory(self);
-    v6 = [v5 internal];
+    internal = [v5 internal];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(internal, OS_LOG_TYPE_INFO))
     {
       v7 = NLGetLogIdentifier(self);
       v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Loading backbone"];
@@ -887,7 +887,7 @@ LABEL_95:
       v20 = v7;
       v21 = 2114;
       v22 = v8;
-      _os_log_impl(&dword_19D48F000, v6, OS_LOG_TYPE_INFO, "%{public}@%{public}@", &v19, 0x16u);
+      _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_INFO, "%{public}@%{public}@", &v19, 0x16u);
     }
 
     objc_autoreleasePoolPop(v4);
@@ -927,43 +927,43 @@ LABEL_95:
   return v3;
 }
 
-- (BOOL)isAdapterLoaded:(id)a3
+- (BOOL)isAdapterLoaded:(id)loaded
 {
-  v4 = a3;
-  v5 = self->_stream.__ptr_ && [(NSString *)self->_loadedFunction isEqualToString:v4];
+  loadedCopy = loaded;
+  v5 = self->_stream.__ptr_ && [(NSString *)self->_loadedFunction isEqualToString:loadedCopy];
 
   return v5;
 }
 
-- (BOOL)loadAdapter:(id)a3
+- (BOOL)loadAdapter:(id)adapter
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(NLE5Embedding *)self isAdapterLoaded:v4])
+  adapterCopy = adapter;
+  if ([(NLE5Embedding *)self isAdapterLoaded:adapterCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(NLE5Embedding *)self adapters];
-    v7 = [v6 containsObject:v4];
+    adapters = [(NLE5Embedding *)self adapters];
+    v7 = [adapters containsObject:adapterCopy];
 
     v8 = objc_autoreleasePoolPush();
     if (v7)
     {
       v9 = NLGetLogCategory(self);
-      v10 = [v9 internal];
+      internal = [v9 internal];
 
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(internal, OS_LOG_TYPE_INFO))
       {
         v11 = NLGetLogIdentifier(self);
-        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Loading adapter '%@'", v4];
+        adapterCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Loading adapter '%@'", adapterCopy];
         *buf = 138543618;
         v30 = v11;
         v31 = 2114;
-        v32 = v12;
-        _os_log_impl(&dword_19D48F000, v10, OS_LOG_TYPE_INFO, "%{public}@%{public}@", buf, 0x16u);
+        v32 = adapterCopy;
+        _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_INFO, "%{public}@%{public}@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v8);
@@ -992,8 +992,8 @@ LABEL_95:
         _os_signpost_emit_with_name_impl(&dword_19D48F000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "loadAdapterE5", &unk_19D4EF749, buf, 2u);
       }
 
-      v20 = v4;
-      v5 = -[NLE5Embedding _loadFunction:](self, "_loadFunction:", [v4 UTF8String]);
+      v20 = adapterCopy;
+      v5 = -[NLE5Embedding _loadFunction:](self, "_loadFunction:", [adapterCopy UTF8String]);
       v21 = v19;
       v22 = v21;
       if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
@@ -1006,17 +1006,17 @@ LABEL_95:
     else
     {
       v23 = NLGetLogCategory(self);
-      v24 = [v23 internal];
+      internal2 = [v23 internal];
 
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(internal2, OS_LOG_TYPE_ERROR))
       {
         v25 = NLGetLogIdentifier(self);
-        v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"E5 bundle is missing requested adapter '%@'", v4];
+        adapterCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"E5 bundle is missing requested adapter '%@'", adapterCopy];
         *buf = 138543618;
         v30 = v25;
         v31 = 2114;
-        v32 = v26;
-        _os_log_impl(&dword_19D48F000, v24, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
+        v32 = adapterCopy2;
+        _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v8);
@@ -1028,27 +1028,27 @@ LABEL_95:
   return v5;
 }
 
-- (id)_embeddingDataForTokenizedBatch:(id)a3 withOutputProperties:(id)a4
+- (id)_embeddingDataForTokenizedBatch:(id)batch withOutputProperties:(id)properties
 {
   __src[3] = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v6 = a4;
-  v55 = v6;
+  batchCopy = batch;
+  propertiesCopy = properties;
+  v55 = propertiesCopy;
   if (self->_stream.__ptr_)
   {
-    v52 = [MEMORY[0x1E695DF88] data];
-    v51 = [MEMORY[0x1E695DF70] array];
-    v7 = [MEMORY[0x1E695DF70] array];
+    data = [MEMORY[0x1E695DF88] data];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v54 = 0;
-    v56 = v7;
-    while (v54 < [v53 count])
+    v56 = array2;
+    while (v54 < [batchCopy count])
     {
-      v8 = [v53 objectAtIndex:?];
-      v9 = [MEMORY[0x1E695DF70] array];
+      v8 = [batchCopy objectAtIndex:?];
+      array3 = [MEMORY[0x1E695DF70] array];
       memset(__src, 0, 24);
       v10 = [(NLE5Embedding *)self _tokenIDsForText:&stru_1F10C6540 addBOS:1];
-      v11 = [v10 firstObject];
-      v12 = [v11 intValue];
+      firstObject = [v10 firstObject];
+      intValue = [firstObject intValue];
 
       v13 = __src[1];
       if (__src[1] >= __src[2])
@@ -1080,7 +1080,7 @@ LABEL_95:
           std::__allocate_at_least[abi:ne200100]<std::allocator<ME_Model::ME_Feature>>(__src, v21);
         }
 
-        *(4 * v17) = v12;
+        *(4 * v17) = intValue;
         v14 = (4 * v17 + 4);
         memcpy(0, v15, v16);
         v22 = __src[0];
@@ -1092,12 +1092,12 @@ LABEL_95:
           operator delete(v22);
         }
 
-        v7 = v56;
+        array2 = v56;
       }
 
       else
       {
-        *__src[1] = v12;
+        *__src[1] = intValue;
         v14 = v13 + 4;
       }
 
@@ -1121,14 +1121,14 @@ LABEL_95:
         v26 = __src[1];
         begin = __p.__begin_;
         end = __p.__end_;
-        v30 = [(NLE5Embedding *)self maximumSequenceLength];
+        maximumSequenceLength = [(NLE5Embedding *)self maximumSequenceLength];
         v31 = end - begin + ((v26 - v27) >> 2);
-        v6 = v55;
-        v7 = v56;
-        if (v31 <= v30)
+        propertiesCopy = v55;
+        array2 = v56;
+        if (v31 <= maximumSequenceLength)
         {
           v32 = [MEMORY[0x1E696B098] valueWithRange:{(__src[1] - __src[0]) >> 2, __p.__end_ - __p.__begin_}];
-          [v9 addObject:v32];
+          [array3 addObject:v32];
 
           std::vector<int>::__insert_with_size[abi:ne200100]<std::__wrap_iter<int *>,std::__wrap_iter<int *>>(__src, __src[1], __p.__begin_, __p.__end_, __p.__end_ - __p.__begin_);
         }
@@ -1144,7 +1144,7 @@ LABEL_95:
           CFRelease(cf);
         }
 
-        if (v31 > v30)
+        if (v31 > maximumSequenceLength)
         {
           break;
         }
@@ -1155,7 +1155,7 @@ LABEL_95:
       while ([v8 count] > v23)
       {
         v33 = [MEMORY[0x1E696B098] valueWithRange:{0x7FFFFFFFFFFFFFFFLL, 0}];
-        [v9 addObject:v33];
+        [array3 addObject:v33];
 
         ++v23;
       }
@@ -1184,15 +1184,15 @@ LABEL_95:
       cf = &__p;
       v40 = std::__hash_table<std::__hash_value_type<std::string,std::shared_ptr<E5RT::BufferObject>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::shared_ptr<E5RT::BufferObject>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::shared_ptr<E5RT::BufferObject>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::shared_ptr<E5RT::BufferObject>>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_buffers.__table_.__bucket_list_.__ptr_, &__p.__begin_);
       DataSpan = E5RT::BufferObject::GetDataSpan(v40[5]);
-      [v52 appendBytes:DataSpan length:4 * self->_dimension * ((__src[1] - __src[0]) >> 2)];
+      [data appendBytes:DataSpan length:4 * self->_dimension * ((__src[1] - __src[0]) >> 2)];
       if (SHIBYTE(__p.__end_cap_.__value_) < 0)
       {
         operator delete(__p.__begin_);
       }
 
-      [v51 addObject:v9];
+      [array addObject:array3];
       v42 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:(__src[1] - __src[0]) >> 2];
-      [v7 addObject:v42];
+      [array2 addObject:v42];
 
       if (__src[0])
       {
@@ -1203,17 +1203,17 @@ LABEL_95:
       ++v54;
     }
 
-    [v6 setObject:v51 forKeyedSubscript:@"fragmentRangesForTokens"];
-    [v6 setObject:v7 forKeyedSubscript:@"fragmentCountPerSample"];
+    [propertiesCopy setObject:array forKeyedSubscript:@"fragmentRangesForTokens"];
+    [propertiesCopy setObject:array2 forKeyedSubscript:@"fragmentCountPerSample"];
   }
 
   else
   {
     v43 = objc_autoreleasePoolPush();
     v44 = NLGetLogCategory(self);
-    v45 = [v44 internal];
+    internal = [v44 internal];
 
-    if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(internal, OS_LOG_TYPE_ERROR))
     {
       v46 = NLGetLogIdentifier(self);
       v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Execution stream hasn't been created"];
@@ -1221,37 +1221,37 @@ LABEL_95:
       *(__src + 4) = v46;
       WORD2(__src[1]) = 2114;
       *(&__src[1] + 6) = v47;
-      _os_log_impl(&dword_19D48F000, v45, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __src, 0x16u);
+      _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", __src, 0x16u);
     }
 
     objc_autoreleasePoolPop(v43);
-    v52 = 0;
+    data = 0;
   }
 
   v48 = *MEMORY[0x1E69E9840];
 
-  return v52;
+  return data;
 }
 
-- (id)embeddingDataForTokenizedBatch:(id)a3 withOutputProperties:(id)a4
+- (id)embeddingDataForTokenizedBatch:(id)batch withOutputProperties:(id)properties
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NLE5Embedding *)self _embeddingDataForTokenizedBatch:v6 withOutputProperties:v7];
+  batchCopy = batch;
+  propertiesCopy = properties;
+  v8 = [(NLE5Embedding *)self _embeddingDataForTokenizedBatch:batchCopy withOutputProperties:propertiesCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (id)_embeddingDataForString:(id)a3 sequenceSize:(unint64_t *)a4 error:(id *)a5
+- (id)_embeddingDataForString:(id)string sequenceSize:(unint64_t *)size error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  stringCopy = string;
   if (self->_stream.__ptr_)
   {
-    v9 = [(NLE5Embedding *)self _tokenIDsForText:v8 addBOS:1];
+    v9 = [(NLE5Embedding *)self _tokenIDsForText:stringCopy addBOS:1];
     applesauce::CF::ArrayRef::from_ns(v9, cf);
 
     if (!cf[0])
@@ -1268,9 +1268,9 @@ LABEL_95:
     {
       v12 = objc_autoreleasePoolPush();
       v13 = NLGetLogCategory(self);
-      v14 = [v13 internal];
+      internal = [v13 internal];
 
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(internal, OS_LOG_TYPE_ERROR))
       {
         v15 = NLGetLogIdentifier(self);
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Input string length exceeds max sequence length supported by the model"];
@@ -1278,17 +1278,17 @@ LABEL_95:
         *&buf[4] = v15;
         v33 = 2114;
         v34 = v16;
-        _os_log_impl(&dword_19D48F000, v14, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
+        _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v12);
-      if (a5)
+      if (error)
       {
         v17 = MEMORY[0x1E696ABC0];
         v36 = *MEMORY[0x1E696A578];
         v37 = @"Input trimmed up to max sequence length";
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-        *a5 = [v17 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:4 userInfo:v18];
+        *error = [v17 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:4 userInfo:v18];
       }
 
       std::vector<int>::resize(&v38, [(NLE5Embedding *)self maximumSequenceLength]);
@@ -1307,9 +1307,9 @@ LABEL_95:
       operator delete(*buf);
     }
 
-    if (a4)
+    if (size)
     {
-      *a4 = v38.__end_ - v38.__begin_;
+      *size = v38.__end_ - v38.__begin_;
     }
 
     if (v38.__begin_)
@@ -1328,9 +1328,9 @@ LABEL_95:
   {
     v23 = objc_autoreleasePoolPush();
     v24 = NLGetLogCategory(self);
-    v25 = [v24 internal];
+    internal2 = [v24 internal];
 
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(internal2, OS_LOG_TYPE_ERROR))
     {
       v26 = NLGetLogIdentifier(self);
       v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Execution stream hasn't been created"];
@@ -1338,7 +1338,7 @@ LABEL_95:
       *(&v38.__begin_ + 4) = v26;
       WORD2(v38.__end_) = 2114;
       *(&v38.__end_ + 6) = v27;
-      _os_log_impl(&dword_19D48F000, v25, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", &v38, 0x16u);
+      _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", &v38, 0x16u);
     }
 
     objc_autoreleasePoolPop(v23);
@@ -1350,21 +1350,21 @@ LABEL_95:
   return v22;
 }
 
-- (id)embeddingDataForString:(id)a3 sequenceSize:(unint64_t *)a4 error:(id *)a5
+- (id)embeddingDataForString:(id)string sequenceSize:(unint64_t *)size error:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(NLE5Embedding *)self _embeddingDataForString:v8 sequenceSize:a4 error:a5];
+  stringCopy = string;
+  v9 = [(NLE5Embedding *)self _embeddingDataForString:stringCopy sequenceSize:size error:error];
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (id)textForTokenIDs:(id)a3
+- (id)textForTokenIDs:(id)ds
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   if (self->_subwordVocabRef)
   {
     v5 = NLEmbeddingSubwordVocabCopyTextForTokenIds();
@@ -1374,9 +1374,9 @@ LABEL_95:
   {
     v6 = objc_autoreleasePoolPush();
     v7 = NLGetLogCategory(self);
-    v8 = [v7 internal];
+    internal = [v7 internal];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(internal, OS_LOG_TYPE_ERROR))
     {
       v9 = NLGetLogIdentifier(self);
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Sentence piece tokenizer is not set"];
@@ -1384,7 +1384,7 @@ LABEL_95:
       v14 = v9;
       v15 = 2114;
       v16 = v10;
-      _os_log_impl(&dword_19D48F000, v8, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", &v13, 0x16u);
+      _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", &v13, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
@@ -1396,22 +1396,22 @@ LABEL_95:
   return v5;
 }
 
-- (id)tokenIDsForText:(id)a3
+- (id)tokenIDsForText:(id)text
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   if (self->_subwordVocabRef)
   {
-    v5 = [(NLE5Embedding *)self _tokenIDsForText:v4 addBOS:1];
+    v5 = [(NLE5Embedding *)self _tokenIDsForText:textCopy addBOS:1];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
     v7 = NLGetLogCategory(self);
-    v8 = [v7 internal];
+    internal = [v7 internal];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(internal, OS_LOG_TYPE_ERROR))
     {
       v9 = NLGetLogIdentifier(self);
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Sentence piece tokenizer is not set"];
@@ -1419,7 +1419,7 @@ LABEL_95:
       v14 = v9;
       v15 = 2114;
       v16 = v10;
-      _os_log_impl(&dword_19D48F000, v8, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", &v13, 0x16u);
+      _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_ERROR, "%{public}@%{public}@", &v13, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
@@ -1431,7 +1431,7 @@ LABEL_95:
   return v5;
 }
 
-- (id)_tokenIDsForText:(id)a3 addBOS:(BOOL)a4
+- (id)_tokenIDsForText:(id)text addBOS:(BOOL)s
 {
   subwordVocabRef = self->_subwordVocabRef;
   v5 = NLEmbeddingSubwordVocabCopyTokenIdsForText();

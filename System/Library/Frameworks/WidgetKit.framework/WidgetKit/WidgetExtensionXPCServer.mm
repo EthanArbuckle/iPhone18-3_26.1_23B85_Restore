@@ -1,20 +1,20 @@
 @interface WidgetExtensionXPCServer
-- (BOOL)shouldAcceptConnection:(id)a3;
+- (BOOL)shouldAcceptConnection:(id)connection;
 - (_TtC9WidgetKit24WidgetExtensionXPCServer)init;
 @end
 
 @implementation WidgetExtensionXPCServer
 
-- (BOOL)shouldAcceptConnection:(id)a3
+- (BOOL)shouldAcceptConnection:(id)connection
 {
   v4 = objc_allocWithZone(type metadata accessor for WidgetExtensionXPCServer.ExportedObject());
-  v5 = a3;
-  v6 = sub_192035854(v5);
-  v7 = [type metadata accessor for _WidgetExtensionBaseContext() _extensionAuxiliaryVendorProtocol];
-  [v5 setExportedInterface_];
+  connectionCopy = connection;
+  v6 = sub_192035854(connectionCopy);
+  _extensionAuxiliaryVendorProtocol = [type metadata accessor for _WidgetExtensionBaseContext() _extensionAuxiliaryVendorProtocol];
+  [connectionCopy setExportedInterface_];
 
-  [v5 setExportedObject_];
-  [v5 resume];
+  [connectionCopy setExportedObject_];
+  [connectionCopy resume];
 
   return 1;
 }

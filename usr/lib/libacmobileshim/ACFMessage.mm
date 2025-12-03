@@ -1,32 +1,32 @@
 @interface ACFMessage
-+ (id)messageWithIdentifier:(id)a3;
-+ (id)messageWithInfo:(id)a3;
-- (ACFMessage)initWithCoder:(id)a3;
-- (ACFMessage)initWithInfo:(id)a3;
++ (id)messageWithIdentifier:(id)identifier;
++ (id)messageWithInfo:(id)info;
+- (ACFMessage)initWithCoder:(id)coder;
+- (ACFMessage)initWithInfo:(id)info;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)mutableInfo;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (int)senderProcessID;
 - (int64_t)errorCode;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setInfo:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setSenderProcessID:(int)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeObjectForKey:(id)key;
+- (void)setInfo:(id)info;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setSenderProcessID:(int)d;
 @end
 
 @implementation ACFMessage
 
-+ (id)messageWithInfo:(id)a3
++ (id)messageWithInfo:(id)info
 {
-  v3 = [[a1 alloc] initWithInfo:a3];
+  v3 = [[self alloc] initWithInfo:info];
 
   return v3;
 }
 
-- (ACFMessage)initWithInfo:(id)a3
+- (ACFMessage)initWithInfo:(id)info
 {
   v7.receiver = self;
   v7.super_class = ACFMessage;
@@ -34,7 +34,7 @@
   v5 = v4;
   if (v4)
   {
-    [(ACFMessage *)v4 setInfo:a3];
+    [(ACFMessage *)v4 setInfo:info];
   }
 
   return v5;
@@ -47,33 +47,33 @@
   [(ACFMessage *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() messageWithInfo:{objc_msgSend(-[ACFMessage info](self, "info"), "copyWithZone:", a3)}];
+  v3 = [objc_opt_class() messageWithInfo:{objc_msgSend(-[ACFMessage info](self, "info"), "copyWithZone:", zone)}];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     mutableInfo = self->_mutableInfo;
 
-    [a3 encodeObject:mutableInfo forKey:@"ACFMessageInfo"];
+    [coder encodeObject:mutableInfo forKey:@"ACFMessageInfo"];
   }
 }
 
-- (ACFMessage)initWithCoder:(id)a3
+- (ACFMessage)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ACFMessage;
   v4 = [(ACFMessage *)&v6 init];
   if (v4)
   {
-    if ([a3 allowsKeyedCoding])
+    if ([coder allowsKeyedCoding])
     {
-      v4->_mutableInfo = [objc_msgSend(a3 decodeObjectForKey:{@"ACFMessageInfo", "mutableCopy"}];
+      v4->_mutableInfo = [objc_msgSend(coder decodeObjectForKey:{@"ACFMessageInfo", "mutableCopy"}];
     }
 
     else
@@ -86,13 +86,13 @@
   return v4;
 }
 
-- (void)setInfo:(id)a3
+- (void)setInfo:(id)info
 {
   mutableInfo = self->_mutableInfo;
-  if (mutableInfo != a3)
+  if (mutableInfo != info)
   {
 
-    self->_mutableInfo = [MEMORY[0x29EDB8E00] dictionaryWithDictionary:a3];
+    self->_mutableInfo = [MEMORY[0x29EDB8E00] dictionaryWithDictionary:info];
   }
 }
 
@@ -108,21 +108,21 @@
   return result;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
-    if (a3)
+    if (object)
     {
-      v6 = [(ACFMessage *)self mutableInfo];
+      mutableInfo = [(ACFMessage *)self mutableInfo];
 
-      [v6 setObject:a3 forKey:a4];
+      [mutableInfo setObject:object forKey:key];
     }
 
     else
     {
 
-      [(ACFMessage *)self removeObjectForKey:a4];
+      [(ACFMessage *)self removeObjectForKey:key];
     }
   }
 
@@ -132,25 +132,25 @@
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = [(ACFMessage *)self mutableInfo];
+  mutableInfo = [(ACFMessage *)self mutableInfo];
 
-  [v4 removeObjectForKey:a3];
+  [mutableInfo removeObjectForKey:key];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = [(ACFMessage *)self info];
+  info = [(ACFMessage *)self info];
 
-  return [v4 objectForKey:a3];
+  return [info objectForKey:key];
 }
 
-+ (id)messageWithIdentifier:(id)a3
++ (id)messageWithIdentifier:(id)identifier
 {
-  v4 = [a1 message];
-  [v4 setIdentifier:a3];
-  return v4;
+  message = [self message];
+  [message setIdentifier:identifier];
+  return message;
 }
 
 - (int64_t)errorCode
@@ -167,9 +167,9 @@
   return [v2 intValue];
 }
 
-- (void)setSenderProcessID:(int)a3
+- (void)setSenderProcessID:(int)d
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithInteger:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithInteger:d];
 
   [(ACFMessage *)self setObject:v4 forKey:@"ACFMessageSenderPID"];
 }

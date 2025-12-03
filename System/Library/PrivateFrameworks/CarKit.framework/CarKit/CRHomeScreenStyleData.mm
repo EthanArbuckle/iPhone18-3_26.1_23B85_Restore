@@ -4,26 +4,26 @@
 + (id)styleTypeKey;
 + (id)styleVariantKey;
 + (id)variationKey;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRHomeScreenStyleData)init;
-- (CRHomeScreenStyleData)initWithBSXPCCoder:(id)a3;
-- (CRHomeScreenStyleData)initWithCoder:(id)a3;
-- (CRHomeScreenStyleData)initWithStyleType:(int64_t)a3 styleVariant:(int64_t)a4 variation:(double)a5 luminance:(double)a6 saturation:(double)a7;
+- (CRHomeScreenStyleData)initWithBSXPCCoder:(id)coder;
+- (CRHomeScreenStyleData)initWithCoder:(id)coder;
+- (CRHomeScreenStyleData)initWithStyleType:(int64_t)type styleVariant:(int64_t)variant variation:(double)variation luminance:(double)luminance saturation:(double)saturation;
 - (NSDictionary)asDictionary;
 - (NSString)description;
 - (double)luminance;
 - (double)saturation;
 - (double)variation;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)styleType;
 - (int64_t)styleVariant;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLuminance:(double)a3;
-- (void)setSaturation:(double)a3;
-- (void)setStyleType:(int64_t)a3;
-- (void)setStyleVariant:(int64_t)a3;
-- (void)setVariation:(double)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLuminance:(double)luminance;
+- (void)setSaturation:(double)saturation;
+- (void)setStyleType:(int64_t)type;
+- (void)setStyleVariant:(int64_t)variant;
+- (void)setVariation:(double)variation;
 @end
 
 @implementation CRHomeScreenStyleData
@@ -70,11 +70,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setStyleType:(int64_t)a3
+- (void)setStyleType:(int64_t)type
 {
   v5 = OBJC_IVAR___CRHomeScreenStyleData_styleType;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = type;
 }
 
 - (int64_t)styleVariant
@@ -84,11 +84,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setStyleVariant:(int64_t)a3
+- (void)setStyleVariant:(int64_t)variant
 {
   v5 = OBJC_IVAR___CRHomeScreenStyleData_styleVariant;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = variant;
 }
 
 - (double)variation
@@ -98,11 +98,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setVariation:(double)a3
+- (void)setVariation:(double)variation
 {
   v5 = OBJC_IVAR___CRHomeScreenStyleData_variation;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = variation;
 }
 
 - (double)luminance
@@ -112,11 +112,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setLuminance:(double)a3
+- (void)setLuminance:(double)luminance
 {
   v5 = OBJC_IVAR___CRHomeScreenStyleData_luminance;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = luminance;
 }
 
 - (double)saturation
@@ -126,20 +126,20 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSaturation:(double)a3
+- (void)setSaturation:(double)saturation
 {
   v5 = OBJC_IVAR___CRHomeScreenStyleData_saturation;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = saturation;
 }
 
-- (CRHomeScreenStyleData)initWithStyleType:(int64_t)a3 styleVariant:(int64_t)a4 variation:(double)a5 luminance:(double)a6 saturation:(double)a7
+- (CRHomeScreenStyleData)initWithStyleType:(int64_t)type styleVariant:(int64_t)variant variation:(double)variation luminance:(double)luminance saturation:(double)saturation
 {
-  *(&self->super.isa + OBJC_IVAR___CRHomeScreenStyleData_styleType) = a3;
-  *(&self->super.isa + OBJC_IVAR___CRHomeScreenStyleData_styleVariant) = a4;
-  *(&self->super.isa + OBJC_IVAR___CRHomeScreenStyleData_variation) = a5;
-  *(&self->super.isa + OBJC_IVAR___CRHomeScreenStyleData_luminance) = a6;
-  *(&self->super.isa + OBJC_IVAR___CRHomeScreenStyleData_saturation) = a7;
+  *(&self->super.isa + OBJC_IVAR___CRHomeScreenStyleData_styleType) = type;
+  *(&self->super.isa + OBJC_IVAR___CRHomeScreenStyleData_styleVariant) = variant;
+  *(&self->super.isa + OBJC_IVAR___CRHomeScreenStyleData_variation) = variation;
+  *(&self->super.isa + OBJC_IVAR___CRHomeScreenStyleData_luminance) = luminance;
+  *(&self->super.isa + OBJC_IVAR___CRHomeScreenStyleData_saturation) = saturation;
   v8.receiver = self;
   v8.super_class = CRHomeScreenStyleData;
   return [(CRHomeScreenStyleData *)&v8 init];
@@ -147,7 +147,7 @@
 
 - (NSDictionary)asDictionary
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CRHomeScreenStyleData.asDictionary.getter();
 
   if (v3)
@@ -163,11 +163,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C8254EA4();
     swift_unknownObjectRelease();
@@ -176,7 +176,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CRHomeScreenStyleData.isEqual(_:)(v8);
@@ -187,7 +187,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CRHomeScreenStyleData.description.getter();
 
   v3 = sub_1C8254DF4();
@@ -195,48 +195,48 @@
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
-  v4 = [(CRHomeScreenStyleData *)v3 styleType];
-  v5 = [(CRHomeScreenStyleData *)v3 styleVariant];
-  [(CRHomeScreenStyleData *)v3 variation];
+  selfCopy = self;
+  styleType = [(CRHomeScreenStyleData *)selfCopy styleType];
+  styleVariant = [(CRHomeScreenStyleData *)selfCopy styleVariant];
+  [(CRHomeScreenStyleData *)selfCopy variation];
   v7 = v6;
-  [(CRHomeScreenStyleData *)v3 luminance];
+  [(CRHomeScreenStyleData *)selfCopy luminance];
   v9 = v8;
-  [(CRHomeScreenStyleData *)v3 saturation];
-  v11 = [objc_allocWithZone(CRHomeScreenStyleData) initWithStyleType:v4 styleVariant:v5 variation:v7 luminance:v9 saturation:v10];
+  [(CRHomeScreenStyleData *)selfCopy saturation];
+  v11 = [objc_allocWithZone(CRHomeScreenStyleData) initWithStyleType:styleType styleVariant:styleVariant variation:v7 luminance:v9 saturation:v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRHomeScreenStyleData.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRHomeScreenStyleData.encode(with:)(coderCopy);
 }
 
-- (CRHomeScreenStyleData)initWithCoder:(id)a3
+- (CRHomeScreenStyleData)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1C824D7C8(v3);
+  coderCopy = coder;
+  v4 = sub_1C824D7C8(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  CRHomeScreenStyleData.encode(withBSXPCCoder:)(a3);
+  selfCopy = self;
+  CRHomeScreenStyleData.encode(withBSXPCCoder:)(coder);
   swift_unknownObjectRelease();
 }
 
-- (CRHomeScreenStyleData)initWithBSXPCCoder:(id)a3
+- (CRHomeScreenStyleData)initWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v4 = sub_1C824D9E4(a3);
+  v4 = sub_1C824D9E4(coder);
   swift_unknownObjectRelease();
   return v4;
 }

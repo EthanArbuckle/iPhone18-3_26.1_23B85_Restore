@@ -1,26 +1,26 @@
 @interface _HUQuickControlSingleControlHostView
 - (HULayoutAnchorProviding)preferredFrameLayoutGuide;
-- (_HUQuickControlSingleControlHostView)initWithContentView:(id)a3;
+- (_HUQuickControlSingleControlHostView)initWithContentView:(id)view;
 - (void)_setupConstraintSet;
 - (void)didMoveToWindow;
-- (void)setPreferredFrameLayoutGuide:(id)a3;
+- (void)setPreferredFrameLayoutGuide:(id)guide;
 - (void)updateConstraints;
 @end
 
 @implementation _HUQuickControlSingleControlHostView
 
-- (_HUQuickControlSingleControlHostView)initWithContentView:(id)a3
+- (_HUQuickControlSingleControlHostView)initWithContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = _HUQuickControlSingleControlHostView;
   v6 = [(_HUQuickControlSingleControlHostView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentView, a3);
+    objc_storeStrong(&v6->_contentView, view);
     [(UIView *)v7->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(_HUQuickControlSingleControlHostView *)v7 addSubview:v5];
+    [(_HUQuickControlSingleControlHostView *)v7 addSubview:viewCopy];
     [(_HUQuickControlSingleControlHostView *)v7 _setupConstraintSet];
   }
 
@@ -37,17 +37,17 @@
   return self;
 }
 
-- (void)setPreferredFrameLayoutGuide:(id)a3
+- (void)setPreferredFrameLayoutGuide:(id)guide
 {
-  v8 = a3;
-  v5 = [(_HUQuickControlSingleControlHostView *)self preferredFrameLayoutGuide];
-  v6 = [v5 isEqual:v8];
+  guideCopy = guide;
+  preferredFrameLayoutGuide = [(_HUQuickControlSingleControlHostView *)self preferredFrameLayoutGuide];
+  v6 = [preferredFrameLayoutGuide isEqual:guideCopy];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_preferredFrameLayoutGuide, a3);
-    v7 = [(_HUQuickControlSingleControlHostView *)self constraintSet];
-    [v7 invalidate];
+    objc_storeStrong(&self->_preferredFrameLayoutGuide, guide);
+    constraintSet = [(_HUQuickControlSingleControlHostView *)self constraintSet];
+    [constraintSet invalidate];
   }
 }
 
@@ -56,8 +56,8 @@
   v4.receiver = self;
   v4.super_class = _HUQuickControlSingleControlHostView;
   [(_HUQuickControlSingleControlHostView *)&v4 didMoveToWindow];
-  v3 = [(_HUQuickControlSingleControlHostView *)self constraintSet];
-  [v3 invalidate];
+  constraintSet = [(_HUQuickControlSingleControlHostView *)self constraintSet];
+  [constraintSet invalidate];
 }
 
 - (void)updateConstraints
@@ -65,8 +65,8 @@
   v4.receiver = self;
   v4.super_class = _HUQuickControlSingleControlHostView;
   [(_HUQuickControlSingleControlHostView *)&v4 updateConstraints];
-  v3 = [(_HUQuickControlSingleControlHostView *)self constraintSet];
-  [v3 activateIfNeeded];
+  constraintSet = [(_HUQuickControlSingleControlHostView *)self constraintSet];
+  [constraintSet activateIfNeeded];
 }
 
 - (void)_setupConstraintSet

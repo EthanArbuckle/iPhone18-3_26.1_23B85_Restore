@@ -1,27 +1,27 @@
 @interface SIRINLUINTERNALCONTEXTUPDATEReformedTurnInputBundle
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)addPreviousTurns:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPreviousTurns:(id)turns;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALCONTEXTUPDATEReformedTurnInputBundle
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[7])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[7])
   {
-    self->_type = v4[6];
+    self->_type = fromCopy[6];
     *&self->_has |= 1u;
   }
 
@@ -87,24 +87,24 @@
   return v4 ^ [(NSMutableArray *)self->_previousTurns hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_11:
     v8 = 0;
@@ -112,13 +112,13 @@ LABEL_11:
   }
 
   currentTurn = self->_currentTurn;
-  if (currentTurn | *(v4 + 1) && ![(SIRINLUEXTERNALTurnInput *)currentTurn isEqual:?])
+  if (currentTurn | *(equalCopy + 1) && ![(SIRINLUEXTERNALTurnInput *)currentTurn isEqual:?])
   {
     goto LABEL_11;
   }
 
   previousTurns = self->_previousTurns;
-  if (previousTurns | *(v4 + 2))
+  if (previousTurns | *(equalCopy + 2))
   {
     v8 = [(NSMutableArray *)previousTurns isEqual:?];
   }
@@ -133,10 +133,10 @@ LABEL_12:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -144,7 +144,7 @@ LABEL_12:
     *(v5 + 28) |= 1u;
   }
 
-  v7 = [(SIRINLUEXTERNALTurnInput *)self->_currentTurn copyWithZone:a3];
+  v7 = [(SIRINLUEXTERNALTurnInput *)self->_currentTurn copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
@@ -168,7 +168,7 @@ LABEL_12:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * v13) copyWithZone:{a3, v17}];
+        v14 = [*(*(&v17 + 1) + 8 * v13) copyWithZone:{zone, v17}];
         [v6 addPreviousTurns:v14];
 
         ++v13;
@@ -185,28 +185,28 @@ LABEL_12:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_type;
-    *(v4 + 28) |= 1u;
+    toCopy[6] = self->_type;
+    *(toCopy + 28) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_currentTurn)
   {
-    [v4 setCurrentTurn:?];
+    [toCopy setCurrentTurn:?];
   }
 
   if ([(SIRINLUINTERNALCONTEXTUPDATEReformedTurnInputBundle *)self previousTurnsCount])
   {
     [v9 clearPreviousTurns];
-    v5 = [(SIRINLUINTERNALCONTEXTUPDATEReformedTurnInputBundle *)self previousTurnsCount];
-    if (v5)
+    previousTurnsCount = [(SIRINLUINTERNALCONTEXTUPDATEReformedTurnInputBundle *)self previousTurnsCount];
+    if (previousTurnsCount)
     {
-      v6 = v5;
+      v6 = previousTurnsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(SIRINLUINTERNALCONTEXTUPDATEReformedTurnInputBundle *)self previousTurnsAtIndex:i];
@@ -216,10 +216,10 @@ LABEL_12:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     type = self->_type;
@@ -269,7 +269,7 @@ LABEL_12:
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     type = self->_type;
@@ -283,14 +283,14 @@ LABEL_12:
       v5 = off_1E8328050[type];
     }
 
-    [v3 setObject:v5 forKey:@"type"];
+    [dictionary setObject:v5 forKey:@"type"];
   }
 
   currentTurn = self->_currentTurn;
   if (currentTurn)
   {
-    v7 = [(SIRINLUEXTERNALTurnInput *)currentTurn dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"current_turn"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALTurnInput *)currentTurn dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"current_turn"];
   }
 
   if ([(NSMutableArray *)self->_previousTurns count])
@@ -315,8 +315,8 @@ LABEL_12:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -325,12 +325,12 @@ LABEL_12:
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"previous_turns"];
+    [dictionary setObject:v8 forKey:@"previous_turns"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -339,49 +339,49 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALCONTEXTUPDATEReformedTurnInputBundle;
   v4 = [(SIRINLUINTERNALCONTEXTUPDATEReformedTurnInputBundle *)&v8 description];
-  v5 = [(SIRINLUINTERNALCONTEXTUPDATEReformedTurnInputBundle *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALCONTEXTUPDATEReformedTurnInputBundle *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addPreviousTurns:(id)a3
+- (void)addPreviousTurns:(id)turns
 {
-  v4 = a3;
+  turnsCopy = turns;
   previousTurns = self->_previousTurns;
-  v8 = v4;
+  v8 = turnsCopy;
   if (!previousTurns)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_previousTurns;
     self->_previousTurns = v6;
 
-    v4 = v8;
+    turnsCopy = v8;
     previousTurns = self->_previousTurns;
   }
 
-  [(NSMutableArray *)previousTurns addObject:v4];
+  [(NSMutableArray *)previousTurns addObject:turnsCopy];
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"REFORM_TYPE_NONE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"REFORM_TYPE_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CORRECTION_BY_REPETITION"])
+  else if ([typeCopy isEqualToString:@"CORRECTION_BY_REPETITION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REFERENCE_RESOLUTION"])
+  else if ([typeCopy isEqualToString:@"REFERENCE_RESOLUTION"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TAP_TO_EDIT"])
+  else if ([typeCopy isEqualToString:@"TAP_TO_EDIT"])
   {
     v4 = 3;
   }

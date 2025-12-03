@@ -1,18 +1,18 @@
 @interface TMTimeSynthesizer
-+ (id)newSynthesizerFromDataRepresentation:(id)a3;
-- (BOOL)intersects:(id)a3;
-- (TMTimeSynthesizer)initWithClockAccuracy:(double)a3 noiseDensity:(double)a4 name:(id)a5;
-- (TMTimeSynthesizer)initWithCoder:(id)a3;
-- (double)rtcWhenBeyondUncertainty:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)newSynthesizerFromDataRepresentation:(id)representation;
+- (BOOL)intersects:(id)intersects;
+- (TMTimeSynthesizer)initWithClockAccuracy:(double)accuracy noiseDensity:(double)density name:(id)name;
+- (TMTimeSynthesizer)initWithCoder:(id)coder;
+- (double)rtcWhenBeyondUncertainty:(double)uncertainty;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataRepresentation;
 - (id)synthesizedTimeAtLastRTC;
-- (id)timeAtRtc:(double)a3;
+- (id)timeAtRtc:(double)rtc;
 - (void)dealloc;
 - (void)displayLastQualityTime;
-- (void)encodeWithCoder:(id)a3;
-- (void)inflateHistoricalDataBy:(double)a3;
-- (void)update:(id)a3 withError:(id *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)inflateHistoricalDataBy:(double)by;
+- (void)update:(id)update withError:(id *)error;
 @end
 
 @implementation TMTimeSynthesizer
@@ -47,7 +47,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithClockAccuracy:-[TMTimeSynthesizer name](self noiseDensity:"name") name:{self->_xoAccuracy, self->_clkSg}];
   [v4 setRunning:{-[TMTimeSynthesizer isRunning](self, "isRunning")}];
@@ -64,54 +64,54 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[TMTimeSynthesizer name](self forKey:{"name"), @"name"}];
-  [a3 encodeBool:-[TMTimeSynthesizer isRunning](self forKey:{"isRunning"), @"running"}];
-  [a3 encodeDouble:@"rtc" forKey:self->_rtc];
-  [a3 encodeDouble:@"utc" forKey:self->_utc];
-  [a3 encodeDouble:@"rateSf" forKey:self->_rateSf];
-  [a3 encodeDouble:@"utc_var" forKey:self->_utc_var];
-  [a3 encodeDouble:@"sf_var" forKey:self->_sf_var];
-  [a3 encodeDouble:@"utc_sf_cov" forKey:self->_utc_sf_cov];
-  [a3 encodeDouble:@"xoAccuracy" forKey:self->_xoAccuracy];
-  [a3 encodeDouble:@"clkSg" forKey:self->_clkSg];
-  [a3 encodeDouble:@"smoothedSf" forKey:self->_smoothedSf];
-  [a3 encodeInt:self->_measNumber forKey:@"measNumber"];
-  [a3 encodeObject:-[TMTimeSynthesizer lastQualityTime](self forKey:{"lastQualityTime"), @"lastQualityTime"}];
-  v5 = [(TMTimeSynthesizer *)self lastInputSource];
+  [coder encodeObject:-[TMTimeSynthesizer name](self forKey:{"name"), @"name"}];
+  [coder encodeBool:-[TMTimeSynthesizer isRunning](self forKey:{"isRunning"), @"running"}];
+  [coder encodeDouble:@"rtc" forKey:self->_rtc];
+  [coder encodeDouble:@"utc" forKey:self->_utc];
+  [coder encodeDouble:@"rateSf" forKey:self->_rateSf];
+  [coder encodeDouble:@"utc_var" forKey:self->_utc_var];
+  [coder encodeDouble:@"sf_var" forKey:self->_sf_var];
+  [coder encodeDouble:@"utc_sf_cov" forKey:self->_utc_sf_cov];
+  [coder encodeDouble:@"xoAccuracy" forKey:self->_xoAccuracy];
+  [coder encodeDouble:@"clkSg" forKey:self->_clkSg];
+  [coder encodeDouble:@"smoothedSf" forKey:self->_smoothedSf];
+  [coder encodeInt:self->_measNumber forKey:@"measNumber"];
+  [coder encodeObject:-[TMTimeSynthesizer lastQualityTime](self forKey:{"lastQualityTime"), @"lastQualityTime"}];
+  lastInputSource = [(TMTimeSynthesizer *)self lastInputSource];
 
-  [a3 encodeObject:v5 forKey:@"lastInputSource"];
+  [coder encodeObject:lastInputSource forKey:@"lastInputSource"];
 }
 
-- (TMTimeSynthesizer)initWithCoder:(id)a3
+- (TMTimeSynthesizer)initWithCoder:(id)coder
 {
   v4 = [(TMTimeSynthesizer *)self init];
   if (v4)
   {
-    -[TMTimeSynthesizer setName:](v4, "setName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
-    -[TMTimeSynthesizer setRunning:](v4, "setRunning:", [a3 decodeBoolForKey:@"running"]);
-    [a3 decodeDoubleForKey:@"rtc"];
+    -[TMTimeSynthesizer setName:](v4, "setName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
+    -[TMTimeSynthesizer setRunning:](v4, "setRunning:", [coder decodeBoolForKey:@"running"]);
+    [coder decodeDoubleForKey:@"rtc"];
     v4->_rtc = v5;
-    [a3 decodeDoubleForKey:@"utc"];
+    [coder decodeDoubleForKey:@"utc"];
     v4->_utc = v6;
-    [a3 decodeDoubleForKey:@"rateSf"];
+    [coder decodeDoubleForKey:@"rateSf"];
     v4->_rateSf = v7;
-    [a3 decodeDoubleForKey:@"utc_var"];
+    [coder decodeDoubleForKey:@"utc_var"];
     v4->_utc_var = v8;
-    [a3 decodeDoubleForKey:@"sf_var"];
+    [coder decodeDoubleForKey:@"sf_var"];
     v4->_sf_var = v9;
-    [a3 decodeDoubleForKey:@"utc_sf_cov"];
+    [coder decodeDoubleForKey:@"utc_sf_cov"];
     v4->_utc_sf_cov = v10;
-    [a3 decodeDoubleForKey:@"xoAccuracy"];
+    [coder decodeDoubleForKey:@"xoAccuracy"];
     v4->_xoAccuracy = v11;
-    [a3 decodeDoubleForKey:@"clkSg"];
+    [coder decodeDoubleForKey:@"clkSg"];
     v4->_clkSg = v12;
-    [a3 decodeDoubleForKey:@"smoothedSf"];
+    [coder decodeDoubleForKey:@"smoothedSf"];
     v4->_smoothedSf = v13;
-    v4->_measNumber = [a3 decodeIntForKey:@"measNumber"];
-    -[TMTimeSynthesizer setLastQualityTime:](v4, "setLastQualityTime:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"lastQualityTime"]);
-    -[TMTimeSynthesizer setLastInputSource:](v4, "setLastInputSource:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"lastInputSource"]);
+    v4->_measNumber = [coder decodeIntForKey:@"measNumber"];
+    -[TMTimeSynthesizer setLastQualityTime:](v4, "setLastQualityTime:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"lastQualityTime"]);
+    -[TMTimeSynthesizer setLastInputSource:](v4, "setLastInputSource:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"lastInputSource"]);
     [(TMTimeSynthesizer *)v4 displayLastQualityTime];
     v4->_lastRtcForSmoothSf = 0.0;
   }
@@ -119,15 +119,15 @@
   return v4;
 }
 
-+ (id)newSynthesizerFromDataRepresentation:(id)a3
++ (id)newSynthesizerFromDataRepresentation:(id)representation
 {
-  if (!a3)
+  if (!representation)
   {
-    sub_100017580(a2, a1);
+    sub_100017580(a2, self);
   }
 
   v9 = 0;
-  v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:a3 error:&v9];
+  v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:representation error:&v9];
   v5 = v9;
   if (v9)
   {
@@ -144,23 +144,23 @@
   return v7;
 }
 
-- (BOOL)intersects:(id)a3
+- (BOOL)intersects:(id)intersects
 {
-  v4 = [(TMTimeSynthesizer *)self synthesizedTimeAtLastRTC];
-  [a3 rtc_s];
-  [v4 propagatedTimeAtRTC:?];
+  synthesizedTimeAtLastRTC = [(TMTimeSynthesizer *)self synthesizedTimeAtLastRTC];
+  [intersects rtc_s];
+  [synthesizedTimeAtLastRTC propagatedTimeAtRTC:?];
   v6 = v5;
-  [v4 utcUnc_s];
+  [synthesizedTimeAtLastRTC utcUnc_s];
   v8 = v7;
-  [a3 rtc_s];
+  [intersects rtc_s];
   v10 = v9;
-  [v4 rtc_s];
+  [synthesizedTimeAtLastRTC rtc_s];
   v12 = sub_1000031AC(v8, vabdd_f64(v10, v11));
-  [a3 utc_s];
+  [intersects utc_s];
   v14 = v13;
-  [a3 utcUnc_s];
+  [intersects utcUnc_s];
   v16 = v15;
-  [a3 source];
+  [intersects source];
   if (v12 <= 0.0 || v16 <= 0.0)
   {
     sub_1000185E0();
@@ -176,7 +176,7 @@
   return v18;
 }
 
-- (void)inflateHistoricalDataBy:(double)a3
+- (void)inflateHistoricalDataBy:(double)by
 {
   v5 = qword_100033220;
   if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
@@ -187,7 +187,7 @@
     v12 = 138413058;
     v13 = name;
     v14 = 2048;
-    v15 = a3;
+    byCopy = by;
     v16 = 2048;
     v17 = utc_var;
     v18 = 2048;
@@ -195,17 +195,17 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@,Inflate,inflation_s,%lf,utcVar,%lf,sfCovar,%lf", &v12, 0x2Au);
   }
 
-  if (a3 != 0.0)
+  if (by != 0.0)
   {
-    v9 = [(TMTimeSynthesizer *)self lastQualityTime];
-    v10 = v9;
-    if (v9)
+    lastQualityTime = [(TMTimeSynthesizer *)self lastQualityTime];
+    v10 = lastQualityTime;
+    if (lastQualityTime)
     {
-      [(TMTime *)v9 utcUnc_s];
-      [(TMTime *)v10 setUtcUnc_s:v11 + a3];
+      [(TMTime *)lastQualityTime utcUnc_s];
+      [(TMTime *)v10 setUtcUnc_s:v11 + by];
     }
 
-    self->_utc_var = self->_utc_var + a3 * (a3 + sqrt(self->_utc_var) * 2.0);
+    self->_utc_var = self->_utc_var + by * (by + sqrt(self->_utc_var) * 2.0);
     self->_utc_sf_cov = 0.0;
   }
 }
@@ -220,20 +220,20 @@
   [(TMTimeSynthesizer *)&v3 dealloc];
 }
 
-- (TMTimeSynthesizer)initWithClockAccuracy:(double)a3 noiseDensity:(double)a4 name:(id)a5
+- (TMTimeSynthesizer)initWithClockAccuracy:(double)accuracy noiseDensity:(double)density name:(id)name
 {
   v8 = [(TMTimeSynthesizer *)self init];
   v9 = v8;
   if (v8)
   {
     [(TMTimeSynthesizer *)v8 reset];
-    v9->_clkSg = a4;
-    v9->_xoAccuracy = a3;
+    v9->_clkSg = density;
+    v9->_xoAccuracy = accuracy;
     __asm { FMOV            V0.2D, #1.0 }
 
     *&v9->_rateSf = _Q0;
     v9->_lastRtcForSmoothSf = 0.0;
-    [(TMTimeSynthesizer *)v9 setName:a5];
+    [(TMTimeSynthesizer *)v9 setName:name];
     v9->_lastInputSource = 0;
     [(TMTimeSynthesizer *)v9 displayLastQualityTime];
   }
@@ -243,24 +243,24 @@
 
 - (void)displayLastQualityTime
 {
-  v3 = [(TMTimeSynthesizer *)self lastQualityTime];
+  lastQualityTime = [(TMTimeSynthesizer *)self lastQualityTime];
   v4 = qword_100033220;
   v5 = os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (lastQualityTime)
   {
     if (v5)
     {
       name = self->_name;
-      v7 = [(TMTime *)v3 source];
-      [(TMTime *)v3 rtc_s];
+      source = [(TMTime *)lastQualityTime source];
+      [(TMTime *)lastQualityTime rtc_s];
       v9 = v8;
-      [(TMTime *)v3 utc_s];
+      [(TMTime *)lastQualityTime utc_s];
       v11 = v10;
-      [(TMTime *)v3 utcUnc_s];
+      [(TMTime *)lastQualityTime utcUnc_s];
       v17 = 138413314;
       v18 = name;
       v19 = 2112;
-      v20 = v7;
+      v20 = source;
       v21 = 2048;
       v22 = v9;
       v23 = 2048;
@@ -287,13 +287,13 @@ LABEL_6:
   }
 }
 
-- (id)timeAtRtc:(double)a3
+- (id)timeAtRtc:(double)rtc
 {
-  v5 = sub_100018D7C(self, a3);
+  v5 = sub_100018D7C(self, rtc);
   if (v5)
   {
     v10 = v5;
-    v11 = a3 - self->_rtc;
+    v11 = rtc - self->_rtc;
     [(TMTimeSynthesizerStates *)v5 utc];
     rtc = self->_rtc;
     v14 = v13 - self->_utc;
@@ -370,14 +370,14 @@ LABEL_6:
   return v8;
 }
 
-- (double)rtcWhenBeyondUncertainty:(double)a3
+- (double)rtcWhenBeyondUncertainty:(double)uncertainty
 {
-  if (self->_running && (utc_var = self->_utc_var, a3 * a3 >= utc_var) && !self->_needTimeNow && self->_measNumber > 3)
+  if (self->_running && (utc_var = self->_utc_var, uncertainty * uncertainty >= utc_var) && !self->_needTimeNow && self->_measNumber > 3)
   {
     v5 = (self->_sf_var + self->_clkSg * 10800.0 / 3.0) * 1.0e12;
     v6 = (self->_utc_sf_cov + self->_utc_sf_cov) * 1.0e12;
-    v7 = (sqrt((utc_var - a3 * a3) * 1.0e12 * (v5 * -4.0) + v6 * v6) - v6) / (v5 + v5);
-    v8 = (a3 - sqrt(utc_var)) / (self->_xoAccuracy * 0.5);
+    v7 = (sqrt((utc_var - uncertainty * uncertainty) * 1.0e12 * (v5 * -4.0) + v6 * v6) - v6) / (v5 + v5);
+    v8 = (uncertainty - sqrt(utc_var)) / (self->_xoAccuracy * 0.5);
     if (v7 < v8)
     {
       v8 = v7;
@@ -393,15 +393,15 @@ LABEL_6:
   }
 }
 
-- (void)update:(id)a3 withError:(id *)a4
+- (void)update:(id)update withError:(id *)error
 {
   self->_needTimeNow = 0;
-  if ([a3 isSynthesized])
+  if ([update isSynthesized])
   {
     v7 = qword_100033218;
     if (!os_log_type_enabled(qword_100033218, OS_LOG_TYPE_ERROR))
     {
-      if (!a4)
+      if (!error)
       {
         return;
       }
@@ -410,22 +410,22 @@ LABEL_6:
     }
 
     sub_1000191A0(v7);
-    if (a4)
+    if (error)
     {
 LABEL_4:
       v8 = 0;
 LABEL_26:
-      *a4 = [NSError errorWithDomain:@"kTimedErrorDomain" code:v8 userInfo:0];
+      *error = [NSError errorWithDomain:@"kTimedErrorDomain" code:v8 userInfo:0];
     }
   }
 
   else
   {
-    [a3 utcUnc_s];
+    [update utcUnc_s];
     if (v9 >= 0.000001)
     {
       running = self->_running;
-      [a3 rtc_s];
+      [update rtc_s];
       if (running && rtc < self->_rtc)
       {
         rtc = self->_rtc;
@@ -433,7 +433,7 @@ LABEL_26:
 
       self->_lastTimeRtc = rtc;
       ++self->_measNumber;
-      if ([objc_msgSend(a3 "source")])
+      if ([objc_msgSend(update "source")])
       {
         if (self->_running)
         {
@@ -441,13 +441,13 @@ LABEL_26:
           if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
           {
             name = self->_name;
-            [a3 rtc_s];
+            [update rtc_s];
             v22 = v21;
-            [a3 utc_s];
+            [update utc_s];
             v24 = v23;
-            [a3 utcUnc_s];
+            [update utcUnc_s];
             v26 = v25;
-            v27 = [a3 source];
+            source = [update source];
             v28 = self->_rtc;
             *buf = 138413570;
             v142 = name;
@@ -458,13 +458,13 @@ LABEL_26:
             *&v144[18] = 2048;
             *&v144[20] = v26;
             *&v144[28] = 2112;
-            *&v144[30] = v27;
+            *&v144[30] = source;
             *&v144[38] = 2048;
             *&v144[40] = v28;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%@,ignoreMobileLockdown,rtc,%.6lf,utc,%.6lf,unc,%.6lf,source,%@,_rtc,%.6lf", buf, 0x3Eu);
           }
 
-          if (a4)
+          if (error)
           {
             v8 = 2;
             goto LABEL_26;
@@ -476,10 +476,10 @@ LABEL_26:
 
       else if (self->_running)
       {
-        [a3 rtc_s];
+        [update rtc_s];
         if (v29 >= self->_rtc + -0.006)
         {
-          [a3 rtc_s];
+          [update rtc_s];
           if (v42 < self->_rtc)
           {
             v42 = self->_rtc;
@@ -487,26 +487,26 @@ LABEL_26:
 
           v43 = sub_100018D7C(self, v42);
           AnalyticsSendEventLazy();
-          [a3 utcUnc_s];
+          [update utcUnc_s];
           v45 = v44;
-          [a3 utcUnc_s];
+          [update utcUnc_s];
           v47 = v46;
           [(TMTimeSynthesizerStates *)v43 utc_var];
           v49 = v48;
-          [a3 utc_s];
+          [update utc_s];
           v51 = v50;
           [(TMTimeSynthesizerStates *)v43 utc];
           v53 = v51 - v52;
           [(TMTimeSynthesizerStates *)v43 utc_var];
           v55 = v54;
-          [a3 utcUnc_s];
+          [update utcUnc_s];
           v57 = v56;
-          [a3 utcUnc_s];
+          [update utcUnc_s];
           v59 = v55 + v57 * v58;
           v60 = 3.0;
-          if (([objc_msgSend(a3 "source")] & 1) == 0)
+          if (([objc_msgSend(update "source")] & 1) == 0)
           {
-            if ([objc_msgSend(a3 "source")])
+            if ([objc_msgSend(update "source")])
             {
               v60 = 10.0;
             }
@@ -517,7 +517,7 @@ LABEL_26:
             }
           }
 
-          v61 = sub_10000EE9C(TMTimeSynthesizer, [a3 source]);
+          v61 = sub_10000EE9C(TMTimeSynthesizer, [update source]);
           v62 = v61;
           if (v53 * v53 <= v59 * (v60 * v60))
           {
@@ -557,8 +557,8 @@ LABEL_26:
             self->_utc_var = v111 * self->_utc_var;
             self->_sf_var = v116;
             self->_utc_sf_cov = v111 * utc_sf_cov;
-            -[TMTimeSynthesizer setLastInputSource:](self, "setLastInputSource:", [a3 source]);
-            sub_100018D04(self, a3);
+            -[TMTimeSynthesizer setLastInputSource:](self, "setLastInputSource:", [update source]);
+            sub_100018D04(self, update);
             sub_100002E1C(self);
             v117 = qword_100033220;
             if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
@@ -571,13 +571,13 @@ LABEL_26:
               v140 = sqrt(self->_sf_var);
               v138 = sqrt(self->_utc_sf_cov);
               v122 = log10(self->_clkSg);
-              [a3 rtc_s];
+              [update rtc_s];
               v124 = v123;
-              [a3 utc_s];
+              [update utc_s];
               v126 = v125;
-              [a3 utcUnc_s];
+              [update utcUnc_s];
               v128 = v127;
-              v129 = [a3 source];
+              source2 = [update source];
               [(TMTimeSynthesizerStates *)v43 utc];
               v131 = v130;
               [(TMTimeSynthesizerStates *)v43 utc_var];
@@ -609,7 +609,7 @@ LABEL_26:
               v153 = 2048;
               v154 = v128;
               v155 = 2112;
-              v156 = v129;
+              v156 = source2;
               v157 = 2048;
               v158 = v131;
               v159 = 2048;
@@ -635,11 +635,11 @@ LABEL_26:
               rejects = self->_rejects;
               [(TMTimeSynthesizerStates *)v43 utc];
               v67 = v66;
-              [a3 rtc_s];
+              [update rtc_s];
               v69 = v68;
-              [a3 utc_s];
+              [update utc_s];
               v71 = v70;
-              [a3 utcUnc_s];
+              [update utcUnc_s];
               *buf = 138414082;
               v142 = v64;
               v143 = 2048;
@@ -655,14 +655,14 @@ LABEL_26:
               v145 = 2048;
               v146 = v72;
               v147 = 2112;
-              v148 = COERCE_DOUBLE([a3 source]);
+              v148 = COERCE_DOUBLE([update source]);
               _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "%@,RejectATime,rejects,%lu,innv,%.6lf,predTime,%.6lf,rtc,%.6lf,utc,%.6lf,unc,%.6lf,source,%@", buf, 0x52u);
             }
 
             AnalyticsSendEventLazy();
-            if (a4)
+            if (error)
             {
-              *a4 = [NSError errorWithDomain:@"kTimedErrorDomain" code:4 userInfo:0];
+              *error = [NSError errorWithDomain:@"kTimedErrorDomain" code:4 userInfo:0];
             }
 
             if (v62)
@@ -674,13 +674,13 @@ LABEL_26:
               if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
               {
                 v75 = self->_name;
-                [a3 rtc_s];
+                [update rtc_s];
                 v77 = v76;
-                [a3 utc_s];
+                [update utc_s];
                 v79 = v78;
-                [a3 utcUnc_s];
+                [update utcUnc_s];
                 v81 = v80;
-                v82 = [a3 source];
+                source3 = [update source];
                 *buf = 138413570;
                 v142 = v75;
                 v143 = 1024;
@@ -692,12 +692,12 @@ LABEL_26:
                 *&v144[24] = 2048;
                 *&v144[26] = v81;
                 *&v144[34] = 2112;
-                *&v144[36] = v82;
+                *&v144[36] = source3;
                 _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "%@,RequestFastTime,Reject,number,%u,rtc,%.6lf,utc,%.6lf,uncertainty,%.6lf,source,%@", buf, 0x3Au);
               }
 
               AnalyticsSendEventLazy();
-              if (self->_rejects > 4 || (-[TMTimeSynthesizerStates utc_var](v43, "utc_var"), v84 = v83, [a3 utcUnc_s], v86 = v85, objc_msgSend(a3, "utcUnc_s"), v84 > v86 * v87 * 16.0))
+              if (self->_rejects > 4 || (-[TMTimeSynthesizerStates utc_var](v43, "utc_var"), v84 = v83, [update utcUnc_s], v86 = v85, objc_msgSend(update, "utcUnc_s"), v84 > v86 * v87 * 16.0))
               {
                 v88 = qword_100033220;
                 if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
@@ -708,13 +708,13 @@ LABEL_26:
                   v92 = v91;
                   [(TMTimeSynthesizerStates *)v43 utc_var];
                   v94 = sqrt(v93);
-                  [a3 rtc_s];
+                  [update rtc_s];
                   v96 = v95;
-                  [a3 utc_s];
+                  [update utc_s];
                   v98 = v97;
-                  [a3 utcUnc_s];
+                  [update utcUnc_s];
                   v100 = v99;
-                  v101 = COERCE_DOUBLE([a3 source]);
+                  v101 = COERCE_DOUBLE([update source]);
                   *buf = 138414082;
                   v142 = v89;
                   v143 = 2048;
@@ -735,8 +735,8 @@ LABEL_26:
                 }
 
                 AnalyticsSendEventLazy();
-                sub_100018EA0(self, a3);
-                if (a4)
+                sub_100018EA0(self, update);
+                if (error)
                 {
                   v8 = 5;
                   goto LABEL_26;
@@ -752,13 +752,13 @@ LABEL_26:
           if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
           {
             v31 = self->_name;
-            [a3 rtc_s];
+            [update rtc_s];
             v33 = v32;
-            [a3 utc_s];
+            [update utc_s];
             v35 = v34;
-            [a3 utcUnc_s];
+            [update utcUnc_s];
             v37 = v36;
-            v38 = [a3 source];
+            source4 = [update source];
             v39 = self->_rtc;
             *buf = 138413570;
             v142 = v31;
@@ -769,7 +769,7 @@ LABEL_26:
             *&v144[18] = 2048;
             *&v144[20] = v37;
             *&v144[28] = 2112;
-            *&v144[30] = v38;
+            *&v144[30] = source4;
             *&v144[38] = 2048;
             *&v144[40] = v39;
             _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%@,RtcRollBack,rtc,%.6lf,utc,%.6lf,unc,%.6lf,source,%@,_rtc,%.6lf", buf, 0x3Eu);
@@ -777,8 +777,8 @@ LABEL_26:
 
           AnalyticsSendEventLazy();
           v40 = self->_rtc;
-          [a3 rtc_s];
-          if (a4 && v40 - v41 > 3600.0)
+          [update rtc_s];
+          if (error && v40 - v41 > 3600.0)
           {
             v8 = 3;
             goto LABEL_26;
@@ -788,7 +788,7 @@ LABEL_26:
         return;
       }
 
-      sub_100018EA0(self, a3);
+      sub_100018EA0(self, update);
       return;
     }
 
@@ -796,11 +796,11 @@ LABEL_26:
     if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
     {
       v11 = self->_name;
-      [a3 rtc_s];
+      [update rtc_s];
       v13 = v12;
-      [a3 utc_s];
+      [update utc_s];
       v15 = v14;
-      [a3 utcUnc_s];
+      [update utcUnc_s];
       *buf = 138413314;
       v142 = v11;
       v143 = 2048;
@@ -810,11 +810,11 @@ LABEL_26:
       *&v144[18] = 2048;
       *&v144[20] = v16;
       *&v144[28] = 2112;
-      *&v144[30] = [a3 source];
+      *&v144[30] = [update source];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@,zeroTimeUncertainty,timeRtc,%.6lf,timeUtc,%.6lf,timeUnc,%.6lf,timeSource,%@", buf, 0x34u);
     }
 
-    if (a4)
+    if (error)
     {
       v8 = 1;
       goto LABEL_26;

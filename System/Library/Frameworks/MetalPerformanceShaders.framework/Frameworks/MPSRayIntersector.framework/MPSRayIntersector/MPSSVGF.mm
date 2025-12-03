@@ -2,10 +2,10 @@
 - (MPSSVGF)copyWithZone:(NSZone *)zone device:(id)device;
 - (MPSSVGF)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSSVGF)initWithDevice:(id)device;
-- (MPSSVGFFunctionHash)getHashForKernelID:(SEL)a3 haveMotionVectorTexture:(unint64_t)a4 haveDepthNormalTexture:(BOOL)a5 haveSecondTexture:(BOOL)a6;
+- (MPSSVGFFunctionHash)getHashForKernelID:(SEL)d haveMotionVectorTexture:(unint64_t)texture haveDepthNormalTexture:(BOOL)normalTexture haveSecondTexture:(BOOL)secondTexture;
 - (MPSSVGFParams)params;
 - (id)description;
-- (unint64_t)channelCount:(id)a3;
+- (unint64_t)channelCount:(id)count;
 - (void)dealloc;
 - (void)encodeBilateralFilterToCommandBuffer:(id)commandBuffer stepDistance:(NSUInteger)stepDistance sourceTexture:(id)sourceTexture destinationTexture:(id)destinationTexture sourceTexture2:(id)sourceTexture2 destinationTexture2:(id)destinationTexture2 depthNormalTexture:(id)depthNormalTexture;
 - (void)encodeReprojectionToCommandBuffer:(id)commandBuffer sourceTexture:(id)sourceTexture previousTexture:(id)previousTexture destinationTexture:(id)destinationTexture previousLuminanceMomentsTexture:(id)previousLuminanceMomentsTexture destinationLuminanceMomentsTexture:(id)destinationLuminanceMomentsTexture sourceTexture2:(id)sourceTexture2 previousTexture2:(id)previousTexture2 destinationTexture2:(id)destinationTexture2 previousLuminanceMomentsTexture2:(id)previousLuminanceMomentsTexture2 destinationLuminanceMomentsTexture2:(id)destinationLuminanceMomentsTexture2 previousFrameCountTexture:(id)previousFrameCountTexture destinationFrameCountTexture:(id)destinationFrameCountTexture motionVectorTexture:(id)motionVectorTexture depthNormalTexture:(id)depthNormalTexture previousDepthNormalTexture:(id)previousDepthNormalTexture;
@@ -310,9 +310,9 @@
   return result;
 }
 
-- (MPSSVGFFunctionHash)getHashForKernelID:(SEL)a3 haveMotionVectorTexture:(unint64_t)a4 haveDepthNormalTexture:(BOOL)a5 haveSecondTexture:(BOOL)a6
+- (MPSSVGFFunctionHash)getHashForKernelID:(SEL)d haveMotionVectorTexture:(unint64_t)texture haveDepthNormalTexture:(BOOL)normalTexture haveSecondTexture:(BOOL)secondTexture
 {
-  if (a5)
+  if (normalTexture)
   {
     v7 = 8;
   }
@@ -322,7 +322,7 @@
     v7 = 0;
   }
 
-  if (a6)
+  if (secondTexture)
   {
     v8 = 16;
   }
@@ -342,7 +342,7 @@
     v9 = 0;
   }
 
-  v10 = (v8 | v7 | v9) & 0xFFFB | *&retstr->var0.var0 & 0xFC00 | a4 & 3 | (4 * (*&self[4].var0.var0 & 1));
+  v10 = (v8 | v7 | v9) & 0xFFFB | *&retstr->var0.var0 & 0xFC00 | texture & 3 | (4 * (*&self[4].var0.var0 & 1));
   v11 = *&self[6].var3;
   retstr->var3 = *&self[6].var1;
   *(&retstr->var3 + 1) = v11;
@@ -368,10 +368,10 @@
   return self;
 }
 
-- (unint64_t)channelCount:(id)a3
+- (unint64_t)channelCount:(id)count
 {
   v5 = *(&self->super.super.isa + *MEMORY[0x277CD7350]);
-  v6 = objc_msgSend_pixelFormat(a3, a2, a3, v3, v4);
+  v6 = objc_msgSend_pixelFormat(count, a2, count, v3, v4);
   PixelInfo = MPSDevice::GetPixelInfo(v5, v6, MPSImageFeatureChannelFormatNone);
   if ((PixelInfo & 0xE000000) != 0)
   {

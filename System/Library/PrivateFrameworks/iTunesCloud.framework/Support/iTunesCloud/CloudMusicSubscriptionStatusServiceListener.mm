@@ -1,33 +1,33 @@
 @interface CloudMusicSubscriptionStatusServiceListener
 + (CloudMusicSubscriptionStatusServiceListener)sharedMusicSubscriptionStatusServiceListener;
 - (BOOL)isActive;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_init;
 - (void)dealloc;
-- (void)performSubscriptionStatusRequest:(id)a3 forUniqueIdentifier:(id)a4;
-- (void)setSubscriptionStatusFromResponsePayload:(id)a3 forUserIdentity:(id)a4 withCompletionHandler:(id)a5;
+- (void)performSubscriptionStatusRequest:(id)request forUniqueIdentifier:(id)identifier;
+- (void)setSubscriptionStatusFromResponsePayload:(id)payload forUserIdentity:(id)identity withCompletionHandler:(id)handler;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation CloudMusicSubscriptionStatusServiceListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  [v5 setExportedObject:self];
+  connectionCopy = connection;
+  [connectionCopy setExportedObject:self];
   v6 = +[ICMusicSubscriptionStatusRemoteRequesting serviceInterface];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = +[ICMusicSubscriptionStatusRemoteRequesting clientInterface];
-  [v5 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
   v8 = +[ICDeviceSetupStatusMonitor sharedMonitor];
-  v9 = [v8 isDeviceSetupComplete];
+  isDeviceSetupComplete = [v8 isDeviceSetupComplete];
 
-  if (v9)
+  if (isDeviceSetupComplete)
   {
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   else
@@ -37,28 +37,28 @@
     v12[1] = 3221225472;
     v12[2] = sub_1000A8808;
     v12[3] = &unk_1001DF578;
-    v13 = v5;
+    v13 = connectionCopy;
     [v10 performBlockAfterDeviceSetup:v12];
   }
 
   return 1;
 }
 
-- (void)setSubscriptionStatusFromResponsePayload:(id)a3 forUserIdentity:(id)a4 withCompletionHandler:(id)a5
+- (void)setSubscriptionStatusFromResponsePayload:(id)payload forUserIdentity:(id)identity withCompletionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identityCopy = identity;
+  handlerCopy = handler;
+  payloadCopy = payload;
   v11 = +[NSXPCConnection currentConnection];
   v12 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
     v22 = v11;
     v23 = 2114;
-    v24 = v8;
+    v24 = identityCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Received request from remote client connection %{public}@ to update subscription status for %{public}@", buf, 0x20u);
   }
 
@@ -68,17 +68,17 @@
   v16[2] = sub_1000A89C4;
   v16[3] = &unk_1001DC888;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v14 = v9;
-  v15 = v8;
-  [v13 setSubscriptionStatusFromResponsePayload:v10 forUserIdentity:v15 withCompletionHandler:v16];
+  v17 = identityCopy;
+  v18 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = identityCopy;
+  [v13 setSubscriptionStatusFromResponsePayload:payloadCopy forUserIdentity:v15 withCompletionHandler:v16];
 }
 
-- (void)performSubscriptionStatusRequest:(id)a3 forUniqueIdentifier:(id)a4
+- (void)performSubscriptionStatusRequest:(id)request forUniqueIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  requestCopy = request;
   v8 = +[NSXPCConnection currentConnection];
   v9 = +[ICMusicSubscriptionStatusController sharedStatusController];
   v12[0] = _NSConcreteStackBlock;
@@ -86,11 +86,11 @@
   v12[2] = sub_1000A8BCC;
   v12[3] = &unk_1001DF4E0;
   v12[4] = self;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v8;
   v10 = v8;
-  v11 = v6;
-  [v9 performSubscriptionStatusRequest:v7 withStatusHandler:v12];
+  v11 = identifierCopy;
+  [v9 performSubscriptionStatusRequest:requestCopy withStatusHandler:v12];
 }
 
 - (void)stop

@@ -24,10 +24,10 @@
 
 - (uint64_t)showsTextInputOnAppearance
 {
-  result = [a1 hasOnlySingleTextInputAction];
+  result = [self hasOnlySingleTextInputAction];
   if (result)
   {
-    return [a1 hasAttachments] ^ 1;
+    return [self hasAttachments] ^ 1;
   }
 
   return result;
@@ -35,11 +35,11 @@
 
 - (BOOL)hasOnlySingleTextInputAction
 {
-  v1 = [a1 defaultEnvironmentActions];
-  if ([v1 count] == 1)
+  defaultEnvironmentActions = [self defaultEnvironmentActions];
+  if ([defaultEnvironmentActions count] == 1)
   {
-    v2 = [v1 firstObject];
-    v3 = [v2 behavior] == 1;
+    firstObject = [defaultEnvironmentActions firstObject];
+    v3 = [firstObject behavior] == 1;
   }
 
   else
@@ -52,30 +52,30 @@
 
 - (id)defaultEnvironmentActions
 {
-  v1 = [a1 supplementaryActions];
-  v2 = [v1 objectForKey:*MEMORY[0x277D77DA0]];
+  supplementaryActions = [self supplementaryActions];
+  v2 = [supplementaryActions objectForKey:*MEMORY[0x277D77DA0]];
 
   return v2;
 }
 
 - (BOOL)hasAttachments
 {
-  v1 = [a1 userNotification];
-  v2 = [v1 request];
-  v3 = [v2 content];
-  v4 = [v3 attachments];
-  v5 = [v4 count] != 0;
+  userNotification = [self userNotification];
+  request = [userNotification request];
+  content = [request content];
+  attachments = [content attachments];
+  v5 = [attachments count] != 0;
 
   return v5;
 }
 
 - (BOOL)hasOnlySingleMinimalTextInputAction
 {
-  v1 = [a1 minimalEnvironmentActions];
-  if ([v1 count] == 1)
+  minimalEnvironmentActions = [self minimalEnvironmentActions];
+  if ([minimalEnvironmentActions count] == 1)
   {
-    v2 = [v1 firstObject];
-    v3 = [v2 behavior] == 1;
+    firstObject = [minimalEnvironmentActions firstObject];
+    v3 = [firstObject behavior] == 1;
   }
 
   else
@@ -88,8 +88,8 @@
 
 - (id)minimalEnvironmentActions
 {
-  v1 = [a1 supplementaryActions];
-  v2 = [v1 objectForKey:*MEMORY[0x277D77DA8]];
+  supplementaryActions = [self supplementaryActions];
+  v2 = [supplementaryActions objectForKey:*MEMORY[0x277D77DA8]];
 
   return v2;
 }

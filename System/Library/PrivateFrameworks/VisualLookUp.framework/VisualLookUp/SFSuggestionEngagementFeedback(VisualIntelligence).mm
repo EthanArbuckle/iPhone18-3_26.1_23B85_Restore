@@ -9,17 +9,17 @@
 {
   v4 = SearchSuggestionFactoryKey;
   v5 = _Block_copy(aBlock);
-  objc_setAssociatedObject(a1, v4, v5, 3);
+  objc_setAssociatedObject(self, v4, v5, 3);
 }
 
 - (id)VI_searchSuggestionForSuggestionType:()VisualIntelligence
 {
   v4 = a3;
-  v5 = [a1 VI_searchSuggestionFactory];
-  if (v5)
+  vI_searchSuggestionFactory = [self VI_searchSuggestionFactory];
+  if (vI_searchSuggestionFactory)
   {
-    v6 = [a1 VI_searchSuggestionFactory];
-    v7 = (v6)[2](v6, v4);
+    vI_searchSuggestionFactory2 = [self VI_searchSuggestionFactory];
+    v7 = (vI_searchSuggestionFactory2)[2](vI_searchSuggestionFactory2, v4);
   }
 
   else
@@ -34,7 +34,7 @@
       }
     }
 
-    v7 = [a1 copy];
+    v7 = [self copy];
     [v7 setSuggestion:v4];
   }
 

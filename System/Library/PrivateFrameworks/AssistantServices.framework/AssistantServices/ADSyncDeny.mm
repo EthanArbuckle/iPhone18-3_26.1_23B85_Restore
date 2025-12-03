@@ -2,72 +2,72 @@
 + (id)sharedInstance;
 - (ADSyncDeny)init;
 - (id)_storePath;
-- (id)_timeouts:(id)a3 expiringAfter:(id)a4;
-- (id)timeoutsExpiringAfter:(id)a3;
-- (void)_saveTimeouts:(id)a3;
-- (void)checkIfAnyUserVocabularyIsDeniedForApp:(id)a3 completion:(id)a4;
-- (void)checkPermissionToSyncSlot:(id)a3 forApp:(id)a4 completion:(id)a5;
-- (void)filterDeniedAnchorsFrom:(id)a3 includingNewRestrictionsFromResponse:(id)a4;
-- (void)filterDeniedKeys:(id)a3 appSources:(id)a4;
-- (void)filterDeniedKeys:(id)a3 vocabSources:(id)a4;
-- (void)saveTimeouts:(id)a3;
+- (id)_timeouts:(id)_timeouts expiringAfter:(id)after;
+- (id)timeoutsExpiringAfter:(id)after;
+- (void)_saveTimeouts:(id)timeouts;
+- (void)checkIfAnyUserVocabularyIsDeniedForApp:(id)app completion:(id)completion;
+- (void)checkPermissionToSyncSlot:(id)slot forApp:(id)app completion:(id)completion;
+- (void)filterDeniedAnchorsFrom:(id)from includingNewRestrictionsFromResponse:(id)response;
+- (void)filterDeniedKeys:(id)keys appSources:(id)sources;
+- (void)filterDeniedKeys:(id)keys vocabSources:(id)sources;
+- (void)saveTimeouts:(id)timeouts;
 @end
 
 @implementation ADSyncDeny
 
-- (void)_saveTimeouts:(id)a3
+- (void)_saveTimeouts:(id)timeouts
 {
-  v9 = a3;
-  if (([v9 isEqual:self->_cachedTimeoutTable] & 1) == 0)
+  timeoutsCopy = timeouts;
+  if (([timeoutsCopy isEqual:self->_cachedTimeoutTable] & 1) == 0)
   {
-    v4 = [v9 copy];
+    v4 = [timeoutsCopy copy];
     cachedTimeoutTable = self->_cachedTimeoutTable;
     self->_cachedTimeoutTable = v4;
 
     if ([(NSDictionary *)self->_cachedTimeoutTable count])
     {
       v6 = self->_cachedTimeoutTable;
-      v7 = [(ADSyncDeny *)self _storePath];
-      [(NSDictionary *)v6 writeToFile:v7 atomically:1];
+      _storePath = [(ADSyncDeny *)self _storePath];
+      [(NSDictionary *)v6 writeToFile:_storePath atomically:1];
     }
 
     else
     {
-      v7 = +[NSFileManager defaultManager];
-      v8 = [(ADSyncDeny *)self _storePath];
-      [v7 removeItemAtPath:v8 error:0];
+      _storePath = +[NSFileManager defaultManager];
+      _storePath2 = [(ADSyncDeny *)self _storePath];
+      [_storePath removeItemAtPath:_storePath2 error:0];
     }
   }
 
   _objc_release_x1();
 }
 
-- (void)saveTimeouts:(id)a3
+- (void)saveTimeouts:(id)timeouts
 {
-  v4 = a3;
+  timeoutsCopy = timeouts;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C8758;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timeoutsCopy;
+  v6 = timeoutsCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)_timeouts:(id)a3 expiringAfter:(id)a4
+- (id)_timeouts:(id)_timeouts expiringAfter:(id)after
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000C8860;
   v13[3] = &unk_100510C00;
-  v14 = a4;
-  v5 = v14;
-  v6 = a3;
-  v7 = [v6 keysOfEntriesPassingTest:v13];
-  v8 = [v7 allObjects];
-  v9 = [v6 dictionaryWithValuesForKeys:v8];
+  afterCopy = after;
+  v5 = afterCopy;
+  _timeoutsCopy = _timeouts;
+  v7 = [_timeoutsCopy keysOfEntriesPassingTest:v13];
+  allObjects = [v7 allObjects];
+  v9 = [_timeoutsCopy dictionaryWithValuesForKeys:allObjects];
 
   if (v9)
   {
@@ -84,9 +84,9 @@
   return v10;
 }
 
-- (id)timeoutsExpiringAfter:(id)a3
+- (id)timeoutsExpiringAfter:(id)after
 {
-  v4 = a3;
+  afterCopy = after;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -98,10 +98,10 @@
   block[1] = 3221225472;
   block[2] = sub_1000C89C0;
   block[3] = &unk_10051C588;
-  v10 = v4;
+  v10 = afterCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = afterCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -110,14 +110,14 @@
   return v7;
 }
 
-- (void)filterDeniedKeys:(id)a3 appSources:(id)a4
+- (void)filterDeniedKeys:(id)keys appSources:(id)sources
 {
-  v28 = self;
-  v29 = a3;
-  v5 = a4;
-  v6 = [v5 copy];
-  [v5 removeAllObjects];
-  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  selfCopy = self;
+  keysCopy = keys;
+  sourcesCopy = sources;
+  v6 = [sourcesCopy copy];
+  [sourcesCopy removeAllObjects];
+  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(sourcesCopy, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -138,16 +138,16 @@
         }
 
         v13 = *(*(&v34 + 1) + 8 * i);
-        v14 = [v13 appIdentifyingInfo];
-        v15 = [v14 bundleId];
+        appIdentifyingInfo = [v13 appIdentifyingInfo];
+        bundleId = [appIdentifyingInfo bundleId];
 
-        if (v15)
+        if (bundleId)
         {
-          v16 = [v13 syncSlots];
-          v17 = v16;
-          if (v16)
+          syncSlots = [v13 syncSlots];
+          v17 = syncSlots;
+          if (syncSlots)
           {
-            v18 = v16;
+            v18 = syncSlots;
           }
 
           else
@@ -155,7 +155,7 @@
             v18 = &__NSArray0__struct;
           }
 
-          [v7 setObject:v18 forKey:v15];
+          [v7 setObject:v18 forKey:bundleId];
         }
       }
 
@@ -165,7 +165,7 @@
     while (v10);
   }
 
-  [(ADSyncDeny *)v28 filterDeniedKeys:v29 vocabSources:v7];
+  [(ADSyncDeny *)selfCopy filterDeniedKeys:keysCopy vocabSources:v7];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -186,16 +186,16 @@
         }
 
         v24 = *(*(&v30 + 1) + 8 * j);
-        v25 = [v24 appIdentifyingInfo];
-        v26 = [v25 bundleId];
+        appIdentifyingInfo2 = [v24 appIdentifyingInfo];
+        bundleId2 = [appIdentifyingInfo2 bundleId];
 
-        if (v26)
+        if (bundleId2)
         {
-          v27 = [v7 objectForKey:v26];
+          v27 = [v7 objectForKey:bundleId2];
           if (v27)
           {
             [v24 setSyncSlots:v27];
-            [v5 addObject:v24];
+            [sourcesCopy addObject:v24];
           }
         }
       }
@@ -207,34 +207,34 @@
   }
 }
 
-- (void)filterDeniedKeys:(id)a3 vocabSources:(id)a4
+- (void)filterDeniedKeys:(id)keys vocabSources:(id)sources
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  sourcesCopy = sources;
   v8 = +[NSDate date];
   v9 = [(ADSyncDeny *)self timeoutsExpiringAfter:v8];
 
   if ([v9 count])
   {
-    v10 = [v9 allKeys];
-    [v6 removeObjectsInArray:v10];
+    allKeys = [v9 allKeys];
+    [keysCopy removeObjectsInArray:allKeys];
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_1000C8E04;
     v16 = &unk_100510BD8;
-    v17 = v10;
-    v18 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+    v17 = allKeys;
+    v18 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(sourcesCopy, "count")}];
     v11 = v18;
-    v12 = v10;
-    [v7 enumerateKeysAndObjectsUsingBlock:&v13];
-    [v7 setDictionary:{v11, v13, v14, v15, v16}];
+    v12 = allKeys;
+    [sourcesCopy enumerateKeysAndObjectsUsingBlock:&v13];
+    [sourcesCopy setDictionary:{v11, v13, v14, v15, v16}];
   }
 }
 
-- (void)filterDeniedAnchorsFrom:(id)a3 includingNewRestrictionsFromResponse:(id)a4
+- (void)filterDeniedAnchorsFrom:(id)from includingNewRestrictionsFromResponse:(id)response
 {
-  v28 = a3;
-  v5 = a4;
+  fromCopy = from;
+  responseCopy = response;
   v30 = +[NSDate date];
   v31 = objc_alloc_init(NSMutableSet);
   v29 = [[NSMutableDictionary alloc] initWithCapacity:0];
@@ -242,9 +242,9 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v27 = v5;
-  v6 = [v5 anchors];
-  v7 = [v6 countByEnumeratingWithState:&v32 objects:v42 count:16];
+  v27 = responseCopy;
+  anchors = [responseCopy anchors];
+  v7 = [anchors countByEnumeratingWithState:&v32 objects:v42 count:16];
   if (v7)
   {
     v8 = v7;
@@ -255,18 +255,18 @@
       {
         if (*v33 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(anchors);
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v11 suspendDurationInSeconds];
-        [v12 doubleValue];
+        suspendDurationInSeconds = [v11 suspendDurationInSeconds];
+        [suspendDurationInSeconds doubleValue];
         if (v13 != 0.0)
         {
           v14 = v13;
           if ([v11 _af_isValid])
           {
-            v15 = [v11 _af_normalizedKey];
+            _af_normalizedKey = [v11 _af_normalizedKey];
             if (v14 >= 0.0)
             {
               v21 = [v30 dateByAddingTimeInterval:v14];
@@ -282,7 +282,7 @@
                 _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%s Anchor was throttled until %@ %@", buf, 0x20u);
               }
 
-              [v29 setObject:v21 forKey:v15];
+              [v29 setObject:v21 forKey:_af_normalizedKey];
             }
 
             else
@@ -298,7 +298,7 @@
               }
             }
 
-            [v31 addObject:v15];
+            [v31 addObject:_af_normalizedKey];
           }
 
           else
@@ -308,60 +308,60 @@
             {
               v18 = v17;
               v19 = [v11 key];
-              v20 = [v11 aceId];
+              aceId = [v11 aceId];
               *buf = 136315650;
               v37 = "[ADSyncDeny filterDeniedAnchorsFrom:includingNewRestrictionsFromResponse:]";
               v38 = 2114;
               v39 = v19;
               v40 = 2112;
-              v41 = v20;
+              v41 = aceId;
               _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s Unable to stop synching anchors of type %{public}@, because the example anchor is malformed aceID=%@", buf, 0x20u);
             }
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v32 objects:v42 count:16];
+      v8 = [anchors countByEnumeratingWithState:&v32 objects:v42 count:16];
     }
 
     while (v8);
   }
 
   v23 = [(ADSyncDeny *)self timeoutsExpiringAfter:v30];
-  v24 = [v23 allKeys];
-  [v31 addObjectsFromArray:v24];
+  allKeys = [v23 allKeys];
+  [v31 addObjectsFromArray:allKeys];
 
   [v29 addEntriesFromDictionary:v23];
   [(ADSyncDeny *)self saveTimeouts:v29];
-  v25 = [v31 allObjects];
-  [v28 removeObjectsForKeys:v25];
+  allObjects = [v31 allObjects];
+  [fromCopy removeObjectsForKeys:allObjects];
 }
 
-- (void)checkPermissionToSyncSlot:(id)a3 forApp:(id)a4 completion:(id)a5
+- (void)checkPermissionToSyncSlot:(id)slot forApp:(id)app completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  slotCopy = slot;
+  appCopy = app;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000C9548;
   v15[3] = &unk_10051E0D8;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = appCopy;
+  v17 = slotCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = slotCopy;
+  v14 = appCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)checkIfAnyUserVocabularyIsDeniedForApp:(id)a3 completion:(id)a4
+- (void)checkIfAnyUserVocabularyIsDeniedForApp:(id)app completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  appCopy = app;
+  completionCopy = completion;
+  if (completionCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -369,8 +369,8 @@
     block[2] = sub_1000C9784;
     block[3] = &unk_10051E088;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = appCopy;
+    v11 = completionCopy;
     dispatch_async(queue, block);
   }
 }
@@ -391,9 +391,9 @@
   if (v2)
   {
     v3 = [objc_opt_class() description];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
 
@@ -418,7 +418,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000C9C14;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10058FFD0 != -1)
   {
     dispatch_once(&qword_10058FFD0, block);

@@ -1,6 +1,6 @@
 @interface BCLazyValue
-+ (id)objectAsyncProducer:(id)a3;
-+ (id)objectSyncProducer:(id)a3;
++ (id)objectAsyncProducer:(id)producer;
++ (id)objectSyncProducer:(id)producer;
 - (BCLazyValue)init;
 - (id)value;
 @end
@@ -22,13 +22,13 @@
   return result;
 }
 
-+ (id)objectSyncProducer:(id)a3
++ (id)objectSyncProducer:(id)producer
 {
-  if (a3)
+  if (producer)
   {
-    v3 = a3;
+    producerCopy = producer;
     v4 = objc_alloc_init(BCLazyValue);
-    [(BCLazyValue *)v4 setSyncProducer:v3];
+    [(BCLazyValue *)v4 setSyncProducer:producerCopy];
   }
 
   else
@@ -39,13 +39,13 @@
   return v4;
 }
 
-+ (id)objectAsyncProducer:(id)a3
++ (id)objectAsyncProducer:(id)producer
 {
-  if (a3)
+  if (producer)
   {
-    v3 = a3;
+    producerCopy = producer;
     v4 = objc_alloc_init(BCLazyValue);
-    [(BCLazyValue *)v4 setAsyncProducer:v3];
+    [(BCLazyValue *)v4 setAsyncProducer:producerCopy];
   }
 
   else

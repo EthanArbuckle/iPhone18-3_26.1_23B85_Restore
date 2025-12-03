@@ -1,34 +1,34 @@
 @interface CUIKUserActivityWithSource
-- (CUIKUserActivityWithSource)initWithDictionary:(id)a3;
-- (CUIKUserActivityWithSource)initWithSource:(id)a3 type:(unint64_t)a4;
+- (CUIKUserActivityWithSource)initWithDictionary:(id)dictionary;
+- (CUIKUserActivityWithSource)initWithSource:(id)source type:(unint64_t)type;
 - (id)dictionary;
-- (unint64_t)isMatchForSource:(id)a3;
+- (unint64_t)isMatchForSource:(id)source;
 - (void)dictionary;
 @end
 
 @implementation CUIKUserActivityWithSource
 
-- (CUIKUserActivityWithSource)initWithSource:(id)a3 type:(unint64_t)a4
+- (CUIKUserActivityWithSource)initWithSource:(id)source type:(unint64_t)type
 {
-  v6 = a3;
+  sourceCopy = source;
   v17.receiver = self;
   v17.super_class = CUIKUserActivityWithSource;
-  v7 = [(CUIKUserActivity *)&v17 initWithType:a4];
+  v7 = [(CUIKUserActivity *)&v17 initWithType:type];
   if (!v7)
   {
     goto LABEL_8;
   }
 
-  v8 = v6 ? [v6 sourceType] : 0;
+  v8 = sourceCopy ? [sourceCopy sourceType] : 0;
   v7->_sourceType = v8;
   if (![(CUIKUserActivityWithSource *)v7 _requiresHostAndOwner])
   {
     goto LABEL_8;
   }
 
-  v9 = [v6 serverHost];
+  serverHost = [sourceCopy serverHost];
   sourceHost = v7->_sourceHost;
-  v7->_sourceHost = v9;
+  v7->_sourceHost = serverHost;
 
   if (!v7->_sourceHost)
   {
@@ -41,10 +41,10 @@
     goto LABEL_14;
   }
 
-  v11 = [v6 ownerAddresses];
-  v12 = [v11 anyObject];
+  ownerAddresses = [sourceCopy ownerAddresses];
+  anyObject = [ownerAddresses anyObject];
   sourceOwner = v7->_sourceOwner;
-  v7->_sourceOwner = v12;
+  v7->_sourceOwner = anyObject;
 
   if (!v7->_sourceOwner)
   {
@@ -67,19 +67,19 @@ LABEL_9:
   return v14;
 }
 
-- (CUIKUserActivityWithSource)initWithDictionary:(id)a3
+- (CUIKUserActivityWithSource)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = CUIKUserActivityWithSource;
-  v5 = [(CUIKUserActivity *)&v18 initWithDictionary:v4];
+  v5 = [(CUIKUserActivity *)&v18 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_18;
   }
 
   v17 = 0;
-  v6 = [objc_opt_class() _unsignedIntegerFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.sourceType" error:&v17];
+  v6 = [objc_opt_class() _unsignedIntegerFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.sourceType" error:&v17];
   v7 = v6;
   if (v6 >= 8)
   {
@@ -102,7 +102,7 @@ LABEL_9:
   {
     if ([(CUIKUserActivityWithSource *)v5 _requiresHostAndOwner])
     {
-      v12 = [objc_opt_class() _stringFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.sourceHost" error:&v17];
+      v12 = [objc_opt_class() _stringFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.sourceHost" error:&v17];
       sourceHost = v5->_sourceHost;
       v5->_sourceHost = v12;
 
@@ -117,7 +117,7 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v14 = [objc_opt_class() _stringFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.sourceOwner" error:&v17];
+      v14 = [objc_opt_class() _stringFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.sourceOwner" error:&v17];
       sourceOwner = v5->_sourceOwner;
       v5->_sourceOwner = v14;
 
@@ -157,8 +157,8 @@ LABEL_19:
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v12.receiver = self;
   v12.super_class = CUIKUserActivityWithSource;
-  v4 = [(CUIKUserActivity *)&v12 dictionary];
-  v5 = [v3 initWithDictionary:v4];
+  dictionary = [(CUIKUserActivity *)&v12 dictionary];
+  v5 = [v3 initWithDictionary:dictionary];
 
   v6 = MEMORY[0x1E696AD98];
   sourceType = self->_sourceType;
@@ -190,16 +190,16 @@ LABEL_19:
   return v5;
 }
 
-- (unint64_t)isMatchForSource:(id)a3
+- (unint64_t)isMatchForSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 sourceType];
-  if (v5)
+  sourceCopy = source;
+  sourceType = [sourceCopy sourceType];
+  if (sourceType)
   {
     sourceType = self->_sourceType;
     if (sourceType)
     {
-      if (v5 != sourceType)
+      if (sourceType != sourceType)
       {
         goto LABEL_13;
       }
@@ -209,10 +209,10 @@ LABEL_19:
         goto LABEL_15;
       }
 
-      v7 = [v4 serverHost];
-      if ([v7 length])
+      serverHost = [sourceCopy serverHost];
+      if ([serverHost length])
       {
-        if ([v7 isEqualToString:self->_sourceHost])
+        if ([serverHost isEqualToString:self->_sourceHost])
         {
           goto LABEL_7;
         }
@@ -221,10 +221,10 @@ LABEL_19:
       else if (![(NSString *)self->_sourceHost length])
       {
 LABEL_7:
-        v8 = [v4 ownerAddresses];
-        if ([v8 count])
+        ownerAddresses = [sourceCopy ownerAddresses];
+        if ([ownerAddresses count])
         {
-          v9 = [v8 containsObject:self->_sourceOwner];
+          v9 = [ownerAddresses containsObject:self->_sourceOwner];
 
           if (v9)
           {
@@ -266,7 +266,7 @@ LABEL_16:
 
 - (void)dictionary
 {
-  v1 = [MEMORY[0x1E696AD98] numberWithInteger:a1];
+  v1 = [MEMORY[0x1E696AD98] numberWithInteger:self];
   OUTLINED_FUNCTION_2(&dword_1CAB19000, v2, v3, "Invalid EKSourceType: %@", v4, v5, v6, v7, 2u);
 }
 

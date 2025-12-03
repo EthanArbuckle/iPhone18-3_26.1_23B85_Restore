@@ -2,7 +2,7 @@
 - (SEL)action;
 - (_UIValidatableCommand)init;
 - (id)alternates;
-- (void)useCommand:(id)a3 alternate:(id)a4;
+- (void)useCommand:(id)command alternate:(id)alternate;
 @end
 
 @implementation _UIValidatableCommand
@@ -28,15 +28,15 @@
 {
   if (self->_alternate || (command = self->_command) == 0)
   {
-    v4 = MEMORY[0x1E695E0F0];
+    alternates = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v4 = [(UICommand *)command alternates];
+    alternates = [(UICommand *)command alternates];
   }
 
-  return v4;
+  return alternates;
 }
 
 - (_UIValidatableCommand)init
@@ -46,17 +46,17 @@
   return [(UICommand *)&v3 initWithTitle:&stru_1EFB14550 image:0 imageName:0 action:sel__nop_ propertyList:0 leafOrCommandAlternates:MEMORY[0x1E695E0F0] discoverabilityTitle:0 attributes:0 state:0];
 }
 
-- (void)useCommand:(id)a3 alternate:(id)a4
+- (void)useCommand:(id)command alternate:(id)alternate
 {
-  v9 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_command, a3);
-  objc_storeStrong(&self->_alternate, a4);
-  _UIMenuLeafCopyValidatablePropertiesFromValidatedLeaf(self, v9);
-  if (v7)
+  commandCopy = command;
+  alternateCopy = alternate;
+  objc_storeStrong(&self->_command, command);
+  objc_storeStrong(&self->_alternate, alternate);
+  _UIMenuLeafCopyValidatablePropertiesFromValidatedLeaf(self, commandCopy);
+  if (alternateCopy)
   {
-    v8 = [v7 title];
-    [(UICommand *)self setTitle:v8];
+    title = [alternateCopy title];
+    [(UICommand *)self setTitle:title];
 
     [(UIMenuElement *)self setAttributedTitle:0];
   }

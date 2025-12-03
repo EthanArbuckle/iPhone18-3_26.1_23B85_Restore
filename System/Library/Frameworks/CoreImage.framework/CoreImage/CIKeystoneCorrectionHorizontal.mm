@@ -6,32 +6,32 @@
 
 - (void)computeRotation
 {
-  v3 = [(CIKeystoneCorrection *)self inputTopLeft];
-  [(CIVector *)v3 X];
+  inputTopLeft = [(CIKeystoneCorrection *)self inputTopLeft];
+  [(CIVector *)inputTopLeft X];
   *&v4 = v4;
   v34 = *&v4;
-  [(CIVector *)v3 Y];
+  [(CIVector *)inputTopLeft Y];
   *&v5 = v5;
   v33 = *&v5;
-  v6 = [(CIKeystoneCorrection *)self inputTopRight];
-  [(CIVector *)v6 X];
+  inputTopRight = [(CIKeystoneCorrection *)self inputTopRight];
+  [(CIVector *)inputTopRight X];
   *&v7 = v7;
   v32 = *&v7;
-  [(CIVector *)v6 Y];
+  [(CIVector *)inputTopRight Y];
   *&v8 = v8;
   v31 = *&v8;
-  v9 = [(CIKeystoneCorrection *)self inputBottomLeft];
-  [(CIVector *)v9 X];
+  inputBottomLeft = [(CIKeystoneCorrection *)self inputBottomLeft];
+  [(CIVector *)inputBottomLeft X];
   *&v10 = v10;
   v30 = *&v10;
-  [(CIVector *)v9 Y];
+  [(CIVector *)inputBottomLeft Y];
   *&v11 = v11;
   v29 = *&v11;
-  v12 = [(CIKeystoneCorrection *)self inputBottomRight];
-  [(CIVector *)v12 X];
+  inputBottomRight = [(CIKeystoneCorrection *)self inputBottomRight];
+  [(CIVector *)inputBottomRight X];
   *&v13 = v13;
   v28 = *&v13;
-  [(CIVector *)v12 Y];
+  [(CIVector *)inputBottomRight Y];
   *&v14 = v14;
   v15 = *self->super._anon_80;
   v16 = *&self->super._anon_80[16];

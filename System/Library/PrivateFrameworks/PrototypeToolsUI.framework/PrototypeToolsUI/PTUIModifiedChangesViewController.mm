@@ -1,9 +1,9 @@
 @interface PTUIModifiedChangesViewController
-- (PTUIModifiedChangesViewController)initWithParameterRecords:(id)a3 withTitle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (PTUIModifiedChangesViewController)initWithParameterRecords:(id)records withTitle:(id)title;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_populateTableDataAndChildren;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -19,17 +19,17 @@
   children = self->_children;
   self->_children = v5;
 
-  v7 = [(PTParameterRecords *)self->_parameterRecords recordDictionary];
-  v19 = [v7 allKeys];
+  recordDictionary = [(PTParameterRecords *)self->_parameterRecords recordDictionary];
+  allKeys = [recordDictionary allKeys];
 
-  if ([v19 count])
+  if ([allKeys count])
   {
     v8 = 0;
     do
     {
-      v9 = [v19 objectAtIndexedSubscript:v8];
-      v10 = [(PTParameterRecords *)self->_parameterRecords recordDictionary];
-      v11 = [v10 objectForKey:v9];
+      v9 = [allKeys objectAtIndexedSubscript:v8];
+      recordDictionary2 = [(PTParameterRecords *)self->_parameterRecords recordDictionary];
+      v11 = [recordDictionary2 objectForKey:v9];
 
       v12 = [[NSMutableArray alloc] initWithObjects:{v9, 0}];
       objc_opt_class();
@@ -37,19 +37,19 @@
       {
         while (1)
         {
-          v13 = [v11 allKeys];
-          v14 = [v13 count];
+          allKeys2 = [v11 allKeys];
+          v14 = [allKeys2 count];
 
           if (v14 != 1)
           {
             break;
           }
 
-          v15 = [v11 allKeys];
-          v16 = [v15 firstObject];
+          allKeys3 = [v11 allKeys];
+          firstObject = [allKeys3 firstObject];
 
-          [v12 addObject:v16];
-          v17 = [v11 objectForKey:v16];
+          [v12 addObject:firstObject];
+          v17 = [v11 objectForKey:firstObject];
 
           objc_opt_class();
           v11 = v17;
@@ -69,7 +69,7 @@ LABEL_8:
       ++v8;
     }
 
-    while ([v19 count] > v8);
+    while ([allKeys count] > v8);
   }
 }
 
@@ -79,59 +79,59 @@ LABEL_8:
   v7.super_class = PTUIModifiedChangesViewController;
   [(PTUIModifiedChangesViewController *)&v7 viewDidLoad];
   v3 = [UITableView alloc];
-  v4 = [(PTUIModifiedChangesViewController *)self view];
-  [v4 bounds];
+  view = [(PTUIModifiedChangesViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:2 style:?];
 
   [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"ParameterRecordStandardCell"];
   [v5 setDelegate:self];
   [v5 setDataSource:self];
   [v5 reloadData];
-  v6 = [(PTUIModifiedChangesViewController *)self view];
-  [v6 addSubview:v5];
+  view2 = [(PTUIModifiedChangesViewController *)self view];
+  [view2 addSubview:v5];
 }
 
-- (PTUIModifiedChangesViewController)initWithParameterRecords:(id)a3 withTitle:(id)a4
+- (PTUIModifiedChangesViewController)initWithParameterRecords:(id)records withTitle:(id)title
 {
-  v7 = a3;
-  v8 = a4;
+  recordsCopy = records;
+  titleCopy = title;
   v12.receiver = self;
   v12.super_class = PTUIModifiedChangesViewController;
   v9 = [(PTUIModifiedChangesViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parameterRecords, a3);
+    objc_storeStrong(&v9->_parameterRecords, records);
     [(PTUIModifiedChangesViewController *)v10 _populateTableDataAndChildren];
-    [(PTUIModifiedChangesViewController *)v10 setTitle:v8];
+    [(PTUIModifiedChangesViewController *)v10 setTitle:titleCopy];
   }
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = -[NSMutableArray objectAtIndex:](self->_tableData, "objectAtIndex:", [v6 row]);
-  v8 = -[NSMutableArray objectAtIndex:](self->_children, "objectAtIndex:", [v6 row]);
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[NSMutableArray objectAtIndex:](self->_tableData, "objectAtIndex:", [pathCopy row]);
+  v8 = -[NSMutableArray objectAtIndex:](self->_children, "objectAtIndex:", [pathCopy row]);
   if (v8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v12 deselectRowAtIndexPath:v6 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       v9 = [[PTParameterRecords alloc] initWithDictionary:v8];
       v10 = [[PTUIModifiedChangesViewController alloc] initWithParameterRecords:v9 withTitle:v7];
-      v11 = [(PTUIModifiedChangesViewController *)self navigationController];
-      [v11 pushViewController:v10 animated:1];
+      navigationController = [(PTUIModifiedChangesViewController *)self navigationController];
+      [navigationController pushViewController:v10 animated:1];
     }
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  result = [(NSMutableArray *)self->_tableData count:a3];
+  result = [(NSMutableArray *)self->_tableData count:view];
   if (result <= 1)
   {
     return 1;
@@ -140,16 +140,16 @@ LABEL_8:
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"ParameterRecordStandardCell"];
-  v8 = [v7 defaultContentConfiguration];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"ParameterRecordStandardCell"];
+  defaultContentConfiguration = [v7 defaultContentConfiguration];
   if ([(NSMutableArray *)self->_tableData count])
   {
-    v9 = -[NSMutableArray objectAtIndex:](self->_tableData, "objectAtIndex:", [v6 row]);
-    [v8 setText:v9];
-    v10 = -[NSMutableArray objectAtIndex:](self->_children, "objectAtIndex:", [v6 row]);
+    v9 = -[NSMutableArray objectAtIndex:](self->_tableData, "objectAtIndex:", [pathCopy row]);
+    [defaultContentConfiguration setText:v9];
+    v10 = -[NSMutableArray objectAtIndex:](self->_children, "objectAtIndex:", [pathCopy row]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -159,21 +159,21 @@ LABEL_8:
     else
     {
       [v7 setSelectionStyle:0];
-      v11 = [v10 changedValue];
-      [v11 doubleValue];
+      changedValue = [v10 changedValue];
+      [changedValue doubleValue];
       v13 = v12;
 
       v14 = [NSString stringWithFormat:@"%.3f", v13];
-      [v8 setSecondaryText:v14];
+      [defaultContentConfiguration setSecondaryText:v14];
     }
   }
 
   else
   {
-    [v8 setText:@"Hey there! 👋 It looks like you haven't changed any parameters from their default values in this prototyping session.\n\nAny settings changes that you make will eventually be viewable here. Feel free to consult this section later whenever you're curious about how your new settings differ from default settings. 😊"];
+    [defaultContentConfiguration setText:@"Hey there! 👋 It looks like you haven't changed any parameters from their default values in this prototyping session.\n\nAny settings changes that you make will eventually be viewable here. Feel free to consult this section later whenever you're curious about how your new settings differ from default settings. 😊"];
   }
 
-  [v7 setContentConfiguration:v8];
+  [v7 setContentConfiguration:defaultContentConfiguration];
 
   return v7;
 }

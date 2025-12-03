@@ -1,24 +1,24 @@
 @interface HUSoftwareUpdateFetchCell
-- (HUSoftwareUpdateFetchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUSoftwareUpdateFetchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUSoftwareUpdateFetchCell
 
-- (HUSoftwareUpdateFetchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUSoftwareUpdateFetchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v38[2] = *MEMORY[0x277D85DE8];
   v37.receiver = self;
   v37.super_class = HUSoftwareUpdateFetchCell;
-  v4 = [(HUSoftwareUpdateFetchCell *)&v37 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUSoftwareUpdateFetchCell *)&v37 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(HUSoftwareUpdateFetchCell *)v4 setSelectionStyle:0];
     [(HUSoftwareUpdateFetchCell *)v5 setUserInteractionEnabled:0];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(HUSoftwareUpdateFetchCell *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(HUSoftwareUpdateFetchCell *)v5 setBackgroundColor:clearColor];
 
     v7 = objc_alloc_init(MEMORY[0x277D180D0]);
     iconView = v5->_iconView;
@@ -37,8 +37,8 @@
     [(UILabel *)v11 setFont:v12];
 
     v13 = v5->_titleLabel;
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v13 setBackgroundColor:v14];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v13 setBackgroundColor:clearColor2];
 
     [(UILabel *)v5->_titleLabel setNumberOfLines:0];
     [(UILabel *)v5->_titleLabel setTextAlignment:1];
@@ -53,12 +53,12 @@
     [(UILabel *)v17 setFont:v18];
 
     v19 = v5->_subtitleLabel;
-    v20 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v19 setBackgroundColor:v20];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v19 setBackgroundColor:clearColor3];
 
     v21 = v5->_subtitleLabel;
-    v22 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v21 setTextColor:v22];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v21 setTextColor:systemGrayColor];
 
     [(UILabel *)v5->_subtitleLabel setNumberOfLines:0];
     [(UILabel *)v5->_subtitleLabel setTextAlignment:1];
@@ -80,14 +80,14 @@
 
     [(UIView *)v5->_titleSpinnerView addSubview:v5->_checkingForUpdateSpinner];
     [(UIView *)v5->_titleSpinnerView addSubview:v5->_titleLabel];
-    v29 = [MEMORY[0x277CBEB18] array];
-    [v29 addObject:v5->_iconView];
+    array = [MEMORY[0x277CBEB18] array];
+    [array addObject:v5->_iconView];
     v38[0] = v5->_titleSpinnerView;
     v38[1] = v5->_subtitleLabel;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
-    [v29 addObjectsFromArray:v30];
+    [array addObjectsFromArray:v30];
 
-    v31 = [objc_alloc(MEMORY[0x277D75A68]) initWithArrangedSubviews:v29];
+    v31 = [objc_alloc(MEMORY[0x277D75A68]) initWithArrangedSubviews:array];
     mainStackView = v5->_mainStackView;
     v5->_mainStackView = v31;
 
@@ -96,58 +96,58 @@
     [(UIStackView *)v5->_mainStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v5->_mainStackView setSpacing:4.0];
     v33 = v5->_mainStackView;
-    v34 = [(HUSoftwareUpdateFetchCell *)v5 iconView];
-    [(UIStackView *)v33 setCustomSpacing:v34 afterView:10.0];
+    iconView = [(HUSoftwareUpdateFetchCell *)v5 iconView];
+    [(UIStackView *)v33 setCustomSpacing:iconView afterView:10.0];
 
-    v35 = [(HUSoftwareUpdateFetchCell *)v5 contentView];
-    [v35 addSubview:v5->_mainStackView];
+    contentView = [(HUSoftwareUpdateFetchCell *)v5 contentView];
+    [contentView addSubview:v5->_mainStackView];
   }
 
   return v5;
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v5 = [(HUSoftwareUpdateFetchCell *)self item];
-  v26 = [v5 latestResults];
+  animationCopy = animation;
+  item = [(HUSoftwareUpdateFetchCell *)self item];
+  latestResults = [item latestResults];
 
-  v6 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v7 = [(HUSoftwareUpdateFetchCell *)self titleLabel];
-  [v7 setText:v6];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  titleLabel = [(HUSoftwareUpdateFetchCell *)self titleLabel];
+  [titleLabel setText:v6];
 
-  v8 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
   v9 = [v8 stringWithAttributes:MEMORY[0x277CBEC10]];
-  v10 = [(HUSoftwareUpdateFetchCell *)self subtitleLabel];
-  [v10 setAttributedText:v9];
+  subtitleLabel = [(HUSoftwareUpdateFetchCell *)self subtitleLabel];
+  [subtitleLabel setAttributedText:v9];
 
-  v11 = [v26 objectForKeyedSubscript:*MEMORY[0x277D140F0]];
-  v12 = [v11 BOOLValue];
+  v11 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D140F0]];
+  bOOLValue = [v11 BOOLValue];
 
-  v13 = [(HUSoftwareUpdateFetchCell *)self titleSpinnerView];
-  v14 = [(HUSoftwareUpdateFetchCell *)self checkingForUpdateSpinner];
-  v15 = [v13 containsView:v14];
+  titleSpinnerView = [(HUSoftwareUpdateFetchCell *)self titleSpinnerView];
+  checkingForUpdateSpinner = [(HUSoftwareUpdateFetchCell *)self checkingForUpdateSpinner];
+  v15 = [titleSpinnerView containsView:checkingForUpdateSpinner];
 
-  if (!v12 || (v15 & 1) != 0)
+  if (!bOOLValue || (v15 & 1) != 0)
   {
-    if (!(v12 & 1 | ((v15 & 1) == 0)))
+    if (!(bOOLValue & 1 | ((v15 & 1) == 0)))
     {
-      v19 = [(HUSoftwareUpdateFetchCell *)self checkingForUpdateSpinner];
-      [v19 removeFromSuperview];
+      checkingForUpdateSpinner2 = [(HUSoftwareUpdateFetchCell *)self checkingForUpdateSpinner];
+      [checkingForUpdateSpinner2 removeFromSuperview];
 
-      v20 = [(HUSoftwareUpdateFetchCell *)self checkingForUpdateSpinner];
-      [v20 stopAnimating];
+      checkingForUpdateSpinner3 = [(HUSoftwareUpdateFetchCell *)self checkingForUpdateSpinner];
+      [checkingForUpdateSpinner3 stopAnimating];
     }
   }
 
   else
   {
-    v16 = [(HUSoftwareUpdateFetchCell *)self titleSpinnerView];
-    v17 = [(HUSoftwareUpdateFetchCell *)self checkingForUpdateSpinner];
-    [v16 addSubview:v17];
+    titleSpinnerView2 = [(HUSoftwareUpdateFetchCell *)self titleSpinnerView];
+    checkingForUpdateSpinner4 = [(HUSoftwareUpdateFetchCell *)self checkingForUpdateSpinner];
+    [titleSpinnerView2 addSubview:checkingForUpdateSpinner4];
 
-    v18 = [(HUSoftwareUpdateFetchCell *)self checkingForUpdateSpinner];
-    [v18 startAnimating];
+    checkingForUpdateSpinner5 = [(HUSoftwareUpdateFetchCell *)self checkingForUpdateSpinner];
+    [checkingForUpdateSpinner5 startAnimating];
 
     [(HUSoftwareUpdateFetchCell *)self updateConstraints];
   }
@@ -162,15 +162,15 @@
     [MEMORY[0x277D75348] labelColor];
   }
   v21 = ;
-  v22 = [(HUSoftwareUpdateFetchCell *)self titleLabel];
-  [v22 setTextColor:v21];
+  titleLabel2 = [(HUSoftwareUpdateFetchCell *)self titleLabel];
+  [titleLabel2 setTextColor:v21];
 
-  v23 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
-  v24 = [(HUSoftwareUpdateFetchCell *)self iconView];
-  [v24 updateWithIconDescriptor:v23 displayStyle:1 animated:v3];
+  v23 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+  iconView = [(HUSoftwareUpdateFetchCell *)self iconView];
+  [iconView updateWithIconDescriptor:v23 displayStyle:1 animated:animationCopy];
 
-  v25 = [(HUSoftwareUpdateFetchCell *)self iconView];
-  [v25 setHidden:v23 == 0];
+  iconView2 = [(HUSoftwareUpdateFetchCell *)self iconView];
+  [iconView2 setHidden:v23 == 0];
 
   [(HUSoftwareUpdateFetchCell *)self setNeedsLayout];
 }
@@ -180,79 +180,79 @@
   v48.receiver = self;
   v48.super_class = HUSoftwareUpdateFetchCell;
   [(HUSoftwareUpdateFetchCell *)&v48 updateConstraints];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(UIStackView *)self->_mainStackView leadingAnchor];
-  v5 = [(HUSoftwareUpdateFetchCell *)self contentView];
-  v6 = [v5 layoutMarginsGuide];
-  v7 = [v6 leadingAnchor];
-  v8 = [v4 constraintEqualToAnchor:v7];
-  [v3 addObject:v8];
+  array = [MEMORY[0x277CBEB18] array];
+  leadingAnchor = [(UIStackView *)self->_mainStackView leadingAnchor];
+  contentView = [(HUSoftwareUpdateFetchCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v8];
 
-  v9 = [(UIStackView *)self->_mainStackView trailingAnchor];
-  v10 = [(HUSoftwareUpdateFetchCell *)self contentView];
-  v11 = [v10 layoutMarginsGuide];
-  v12 = [v11 trailingAnchor];
-  v13 = [v9 constraintEqualToAnchor:v12];
-  [v3 addObject:v13];
+  trailingAnchor = [(UIStackView *)self->_mainStackView trailingAnchor];
+  contentView2 = [(HUSoftwareUpdateFetchCell *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v13];
 
-  v14 = [(UIStackView *)self->_mainStackView topAnchor];
-  v15 = [(HUSoftwareUpdateFetchCell *)self contentView];
-  v16 = [v15 layoutMarginsGuide];
-  v17 = [v16 topAnchor];
-  v18 = [v14 constraintEqualToAnchor:v17];
-  [v3 addObject:v18];
+  topAnchor = [(UIStackView *)self->_mainStackView topAnchor];
+  contentView3 = [(HUSoftwareUpdateFetchCell *)self contentView];
+  layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v18];
 
-  v19 = [(UIStackView *)self->_mainStackView bottomAnchor];
-  v20 = [(HUSoftwareUpdateFetchCell *)self contentView];
-  v21 = [v20 layoutMarginsGuide];
-  v22 = [v21 bottomAnchor];
-  v23 = [v19 constraintEqualToAnchor:v22];
-  [v3 addObject:v23];
+  bottomAnchor = [(UIStackView *)self->_mainStackView bottomAnchor];
+  contentView4 = [(HUSoftwareUpdateFetchCell *)self contentView];
+  layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v23];
 
-  v24 = [(UILabel *)self->_titleLabel rightAnchor];
-  v25 = [(UIView *)self->_titleSpinnerView rightAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
-  [v3 addObject:v26];
+  rightAnchor = [(UILabel *)self->_titleLabel rightAnchor];
+  rightAnchor2 = [(UIView *)self->_titleSpinnerView rightAnchor];
+  v26 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
+  [array addObject:v26];
 
-  v27 = [(UILabel *)self->_titleLabel topAnchor];
-  v28 = [(UIView *)self->_titleSpinnerView topAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
-  [v3 addObject:v29];
+  topAnchor3 = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor4 = [(UIView *)self->_titleSpinnerView topAnchor];
+  v29 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
+  [array addObject:v29];
 
-  v30 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v31 = [(UIView *)self->_titleSpinnerView bottomAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
-  [v3 addObject:v32];
+  bottomAnchor3 = [(UILabel *)self->_titleLabel bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_titleSpinnerView bottomAnchor];
+  v32 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+  [array addObject:v32];
 
-  v33 = [(UILabel *)self->_titleLabel leftAnchor];
-  v34 = [(UIView *)self->_titleSpinnerView leftAnchor];
-  v35 = [v33 constraintGreaterThanOrEqualToAnchor:v34];
-  [v3 addObject:v35];
+  leftAnchor = [(UILabel *)self->_titleLabel leftAnchor];
+  leftAnchor2 = [(UIView *)self->_titleSpinnerView leftAnchor];
+  v35 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2];
+  [array addObject:v35];
 
   if ([(UIView *)self->_titleSpinnerView containsView:self->_checkingForUpdateSpinner])
   {
-    v36 = [(UIView *)self->_titleSpinnerView widthAnchor];
-    v37 = [(UIStackView *)self->_mainStackView widthAnchor];
-    v38 = [v36 constraintLessThanOrEqualToAnchor:v37];
-    [v3 addObject:v38];
+    widthAnchor = [(UIView *)self->_titleSpinnerView widthAnchor];
+    widthAnchor2 = [(UIStackView *)self->_mainStackView widthAnchor];
+    v38 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
+    [array addObject:v38];
 
-    v39 = [(UIActivityIndicatorView *)self->_checkingForUpdateSpinner leftAnchor];
-    v40 = [(UIView *)self->_titleSpinnerView leftAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
-    [v3 addObject:v41];
+    leftAnchor3 = [(UIActivityIndicatorView *)self->_checkingForUpdateSpinner leftAnchor];
+    leftAnchor4 = [(UIView *)self->_titleSpinnerView leftAnchor];
+    v41 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
+    [array addObject:v41];
 
-    v42 = [(UIActivityIndicatorView *)self->_checkingForUpdateSpinner centerYAnchor];
-    v43 = [(UIView *)self->_titleSpinnerView centerYAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
-    [v3 addObject:v44];
+    centerYAnchor = [(UIActivityIndicatorView *)self->_checkingForUpdateSpinner centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_titleSpinnerView centerYAnchor];
+    v44 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v44];
 
-    v45 = [(UILabel *)self->_titleLabel leftAnchor];
-    v46 = [(UIActivityIndicatorView *)self->_checkingForUpdateSpinner rightAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46 constant:8.0];
-    [v3 addObject:v47];
+    leftAnchor5 = [(UILabel *)self->_titleLabel leftAnchor];
+    rightAnchor3 = [(UIActivityIndicatorView *)self->_checkingForUpdateSpinner rightAnchor];
+    v47 = [leftAnchor5 constraintEqualToAnchor:rightAnchor3 constant:8.0];
+    [array addObject:v47];
   }
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v3];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 @end

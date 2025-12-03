@@ -1,32 +1,32 @@
 @interface TSCH3DChartPieResizer
 + (float)perspectiveness;
-+ (tvec2<float>)adjustLabelWrapSize:(void *)a3;
++ (tvec2<float>)adjustLabelWrapSize:(void *)size;
 - (tvec2<BOOL>)canImprove;
-- (tvec2<float>)squareSize:(const void *)a3;
-- (tvec2<float>)updateDirectionsFromRequestedSize:(void *)a3 startingSize:(void *)a4;
-- (tvec2<float>)updateResizerFromRequestedSize:(void *)a3 startingSize:(void *)a4;
-- (tvec3<float>)adjust:(void *)a3 by:(float)a4;
-- (void)setScale:(void *)a3;
+- (tvec2<float>)squareSize:(const void *)size;
+- (tvec2<float>)updateDirectionsFromRequestedSize:(void *)size startingSize:(void *)startingSize;
+- (tvec2<float>)updateResizerFromRequestedSize:(void *)size startingSize:(void *)startingSize;
+- (tvec3<float>)adjust:(void *)adjust by:(float)by;
+- (void)setScale:(void *)scale;
 @end
 
 @implementation TSCH3DChartPieResizer
 
-+ (tvec2<float>)adjustLabelWrapSize:(void *)a3
++ (tvec2<float>)adjustLabelWrapSize:(void *)size
 {
-  v4 = *a3;
-  if (*a3 >= *(a3 + 1))
+  v4 = *size;
+  if (*size >= *(size + 1))
   {
-    v4 = *(a3 + 1);
+    v4 = *(size + 1);
   }
 
   *v3 = v4;
   v3[1] = v4;
-  return a1;
+  return self;
 }
 
 + (float)perspectiveness
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___TSCH3DChartPieResizer;
   objc_msgSendSuper2(&v4, sel_perspectiveness);
   return v2 + 0.3;
@@ -37,34 +37,34 @@
   v4 = v2;
   v8.receiver = self;
   v8.super_class = TSCH3DChartPieResizer;
-  v5 = [(TSCH3DChartResizer *)&v8 canImprove];
+  canImprove = [(TSCH3DChartResizer *)&v8 canImprove];
   v6 = v9 == 1 && self->_directions.var0.var0;
   v7 = v10 == 1 && self->_directions.var1.var0;
   *v4 = v6;
   v4[1] = v7;
-  return v5;
+  return canImprove;
 }
 
-- (void)setScale:(void *)a3
+- (void)setScale:(void *)scale
 {
-  v3 = *a3;
-  if (*a3 <= *(a3 + 1))
+  v3 = *scale;
+  if (*scale <= *(scale + 1))
   {
-    v3 = *(a3 + 1);
+    v3 = *(scale + 1);
   }
 
   v5[0] = v3;
   v5[1] = v3;
-  v5[2] = *(a3 + 2);
+  v5[2] = *(scale + 2);
   v4.receiver = self;
   v4.super_class = TSCH3DChartPieResizer;
   [(TSCH3DChartResizer *)&v4 setScale:v5];
 }
 
-- (tvec3<float>)adjust:(void *)a3 by:(float)a4
+- (tvec3<float>)adjust:(void *)adjust by:(float)by
 {
-  v5 = *(a3 + 2) * a4;
-  *v4 = vmul_n_f32(*a3, a4);
+  v5 = *(adjust + 2) * by;
+  *v4 = vmul_n_f32(*adjust, by);
   v4[1].f32[0] = v5;
   result.var2 = a2;
   result.var0 = self;
@@ -72,7 +72,7 @@
   return result;
 }
 
-- (tvec2<float>)squareSize:(const void *)a3
+- (tvec2<float>)squareSize:(const void *)size
 {
   v4 = 4;
   if (self->_directions.var0.var0)
@@ -80,19 +80,19 @@
     v4 = 0;
   }
 
-  v5 = *(a3 + v4);
+  v5 = *(size + v4);
   *v3 = v5;
   v3[1] = v5;
   return self;
 }
 
-- (tvec2<float>)updateDirectionsFromRequestedSize:(void *)a3 startingSize:(void *)a4
+- (tvec2<float>)updateDirectionsFromRequestedSize:(void *)size startingSize:(void *)startingSize
 {
   v11 = v4;
-  if (a4)
+  if (startingSize)
   {
-    v12 = a4;
-    LODWORD(v5) = *(a4 + 1);
+    startingSizeCopy = startingSize;
+    LODWORD(v5) = *(startingSize + 1);
   }
 
   else
@@ -100,7 +100,7 @@
     layout = self->super._layout;
     if (layout)
     {
-      v12 = __p;
+      startingSizeCopy = __p;
       objc_msgSend_resizingSize(layout, a2, v5, v6, v7);
       LODWORD(v5) = HIDWORD(__p[0]);
     }
@@ -110,31 +110,31 @@
       __p[0] = 0;
       __p[1] = 0;
       v5 = 0.0;
-      v12 = __p;
+      startingSizeCopy = __p;
       v77 = 0;
     }
   }
 
-  v14 = *v12 + 0.5;
-  LODWORD(v7) = *a3;
-  v15 = *(a3 + 1);
-  *&v6 = v14 - *a3;
+  v14 = *startingSizeCopy + 0.5;
+  LODWORD(v7) = *size;
+  v15 = *(size + 1);
+  *&v6 = v14 - *size;
   *&v5 = (*&v5 + 0.5) - v15;
   v16 = *&v6 != 0;
   if (v16 && *&v5 != 0)
   {
-    v16 = *a3 < v15;
+    v16 = *size < v15;
   }
 
   self->_directions.var0.var0 = v16;
   self->_directions.var1.var0 = !v16;
-  v17 = objc_msgSend_squareSize_(self, a2, v5, v6, v7, a3);
+  v17 = objc_msgSend_squareSize_(self, a2, v5, v6, v7, size);
   if (byte_280A46430 == 1)
   {
     v18 = objc_opt_class();
     v19 = NSStringFromSelector(a2);
     v20 = MEMORY[0x277CCACA8];
-    v73 = *a3;
+    v73 = *size;
     sub_276152FD4("vec2(%f, %f)", v21, v22, v23, v24, v25, v26, v27, SLOBYTE(v73));
     if (v77 >= 0)
     {
@@ -220,12 +220,12 @@
   return v17;
 }
 
-- (tvec2<float>)updateResizerFromRequestedSize:(void *)a3 startingSize:(void *)a4
+- (tvec2<float>)updateResizerFromRequestedSize:(void *)size startingSize:(void *)startingSize
 {
   v11.receiver = self;
   v11.super_class = TSCH3DChartPieResizer;
-  [(TSCH3DChartResizer *)&v11 updateResizerFromRequestedSize:a3 startingSize:?];
-  return objc_msgSend_updateDirectionsFromRequestedSize_startingSize_(self, v6, v7, v8, v9, v12, a4);
+  [(TSCH3DChartResizer *)&v11 updateResizerFromRequestedSize:size startingSize:?];
+  return objc_msgSend_updateDirectionsFromRequestedSize_startingSize_(self, v6, v7, v8, v9, v12, startingSize);
 }
 
 @end

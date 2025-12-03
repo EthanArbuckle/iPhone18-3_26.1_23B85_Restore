@@ -1,17 +1,17 @@
 @interface SKUIImageGridViewElement
 - (CGSize)size;
-- (SKUIImageGridViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIImageGridViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (UIEdgeInsets)contentInset;
 - (int64_t)columnCount;
 @end
 
 @implementation SKUIImageGridViewElement
 
-- (SKUIImageGridViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIImageGridViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIImageGridViewElement initWithDOMElement:parent:elementFactory:];
@@ -19,11 +19,11 @@
 
   v17.receiver = self;
   v17.super_class = SKUIImageGridViewElement;
-  v11 = [(SKUIViewElement *)&v17 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v17 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"height"];
-    v13 = [v8 getAttribute:@"width"];
+    v12 = [elementCopy getAttribute:@"height"];
+    v13 = [elementCopy getAttribute:@"width"];
     if ([v12 length] && objc_msgSend(v13, "length"))
     {
       [v12 doubleValue];
@@ -38,24 +38,24 @@
 
 - (int64_t)columnCount
 {
-  v2 = [(SKUIImageGridViewElement *)self style];
-  v3 = [v2 columnCount];
+  style = [(SKUIImageGridViewElement *)self style];
+  columnCount = [style columnCount];
 
-  if (v3 <= 1)
+  if (columnCount <= 1)
   {
     return 1;
   }
 
   else
   {
-    return v3;
+    return columnCount;
   }
 }
 
 - (UIEdgeInsets)contentInset
 {
-  v2 = [(SKUIImageGridViewElement *)self style];
-  [v2 elementPadding];
+  style = [(SKUIImageGridViewElement *)self style];
+  [style elementPadding];
   v4 = v3;
   v6 = v5;
   v8 = v7;

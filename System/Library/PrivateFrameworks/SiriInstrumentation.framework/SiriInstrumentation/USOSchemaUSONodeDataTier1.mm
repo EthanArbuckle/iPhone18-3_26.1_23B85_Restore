@@ -1,36 +1,36 @@
 @interface USOSchemaUSONodeDataTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USOSchemaUSONodeDataTier1)initWithDictionary:(id)a3;
-- (USOSchemaUSONodeDataTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (USOSchemaUSONodeDataTier1)initWithDictionary:(id)dictionary;
+- (USOSchemaUSONodeDataTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addNormalizedStringPayloads:(id)a3;
-- (void)setHasIntegerPayload:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addNormalizedStringPayloads:(id)payloads;
+- (void)setHasIntegerPayload:(BOOL)payload;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USOSchemaUSONodeDataTier1
 
-- (USOSchemaUSONodeDataTier1)initWithDictionary:(id)a3
+- (USOSchemaUSONodeDataTier1)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = USOSchemaUSONodeDataTier1;
   v5 = [(USOSchemaUSONodeDataTier1 *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"index"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"index"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSONodeDataTier1 setIndex:](v5, "setIndex:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"stringPayload"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"stringPayload"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,14 +38,14 @@
       [(USOSchemaUSONodeDataTier1 *)v5 setStringPayload:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"integerPayload"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"integerPayload"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSONodeDataTier1 setIntegerPayload:](v5, "setIntegerPayload:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"normalizedStringPayloads"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"normalizedStringPayloads"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,30 +99,30 @@
   return v5;
 }
 
-- (USOSchemaUSONodeDataTier1)initWithJSON:(id)a3
+- (USOSchemaUSONodeDataTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USOSchemaUSONodeDataTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USOSchemaUSONodeDataTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USOSchemaUSONodeDataTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -135,12 +135,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSONodeDataTier1 index](self, "index")}];
-    [v3 setObject:v5 forKeyedSubscript:@"index"];
+    [dictionary setObject:v5 forKeyedSubscript:@"index"];
 
     has = self->_has;
   }
@@ -148,26 +148,26 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[USOSchemaUSONodeDataTier1 integerPayload](self, "integerPayload")}];
-    [v3 setObject:v6 forKeyedSubscript:@"integerPayload"];
+    [dictionary setObject:v6 forKeyedSubscript:@"integerPayload"];
   }
 
   if (self->_normalizedStringPayloads)
   {
-    v7 = [(USOSchemaUSONodeDataTier1 *)self normalizedStringPayloads];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"normalizedStringPayloads"];
+    normalizedStringPayloads = [(USOSchemaUSONodeDataTier1 *)self normalizedStringPayloads];
+    v8 = [normalizedStringPayloads copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"normalizedStringPayloads"];
   }
 
   if (self->_stringPayload)
   {
-    v9 = [(USOSchemaUSONodeDataTier1 *)self stringPayload];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"stringPayload"];
+    stringPayload = [(USOSchemaUSONodeDataTier1 *)self stringPayload];
+    v10 = [stringPayload copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"stringPayload"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -196,15 +196,15 @@
   return v4 ^ v3 ^ v5 ^ [(NSArray *)self->_normalizedStringPayloads hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_18;
   }
@@ -212,26 +212,26 @@
   if (*&self->_has)
   {
     index = self->_index;
-    if (index != [v4 index])
+    if (index != [equalCopy index])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(USOSchemaUSONodeDataTier1 *)self stringPayload];
-  v7 = [v4 stringPayload];
-  if ((v6 != 0) == (v7 == 0))
+  stringPayload = [(USOSchemaUSONodeDataTier1 *)self stringPayload];
+  stringPayload2 = [equalCopy stringPayload];
+  if ((stringPayload != 0) == (stringPayload2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(USOSchemaUSONodeDataTier1 *)self stringPayload];
-  if (v8)
+  stringPayload3 = [(USOSchemaUSONodeDataTier1 *)self stringPayload];
+  if (stringPayload3)
   {
-    v9 = v8;
-    v10 = [(USOSchemaUSONodeDataTier1 *)self stringPayload];
-    v11 = [v4 stringPayload];
-    v12 = [v10 isEqual:v11];
+    v9 = stringPayload3;
+    stringPayload4 = [(USOSchemaUSONodeDataTier1 *)self stringPayload];
+    stringPayload5 = [equalCopy stringPayload];
+    v12 = [stringPayload4 isEqual:stringPayload5];
 
     if (!v12)
     {
@@ -244,7 +244,7 @@
   }
 
   v13 = (*&self->_has >> 1) & 1;
-  if (v13 != ((v4[40] >> 1) & 1))
+  if (v13 != ((equalCopy[40] >> 1) & 1))
   {
     goto LABEL_18;
   }
@@ -252,18 +252,18 @@
   if (v13)
   {
     integerPayload = self->_integerPayload;
-    if (integerPayload != [v4 integerPayload])
+    if (integerPayload != [equalCopy integerPayload])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(USOSchemaUSONodeDataTier1 *)self normalizedStringPayloads];
-  v7 = [v4 normalizedStringPayloads];
-  if ((v6 != 0) != (v7 == 0))
+  stringPayload = [(USOSchemaUSONodeDataTier1 *)self normalizedStringPayloads];
+  stringPayload2 = [equalCopy normalizedStringPayloads];
+  if ((stringPayload != 0) != (stringPayload2 == 0))
   {
-    v15 = [(USOSchemaUSONodeDataTier1 *)self normalizedStringPayloads];
-    if (!v15)
+    normalizedStringPayloads = [(USOSchemaUSONodeDataTier1 *)self normalizedStringPayloads];
+    if (!normalizedStringPayloads)
     {
 
 LABEL_21:
@@ -271,10 +271,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v16 = v15;
-    v17 = [(USOSchemaUSONodeDataTier1 *)self normalizedStringPayloads];
-    v18 = [v4 normalizedStringPayloads];
-    v19 = [v17 isEqual:v18];
+    v16 = normalizedStringPayloads;
+    normalizedStringPayloads2 = [(USOSchemaUSONodeDataTier1 *)self normalizedStringPayloads];
+    normalizedStringPayloads3 = [equalCopy normalizedStringPayloads];
+    v19 = [normalizedStringPayloads2 isEqual:normalizedStringPayloads3];
 
     if (v19)
     {
@@ -294,18 +294,18 @@ LABEL_19:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint32Field();
   }
 
-  v5 = [(USOSchemaUSONodeDataTier1 *)self stringPayload];
+  stringPayload = [(USOSchemaUSONodeDataTier1 *)self stringPayload];
 
-  if (v5)
+  if (stringPayload)
   {
     PBDataWriterWriteStringField();
   }
@@ -347,27 +347,27 @@ LABEL_19:
   }
 }
 
-- (void)addNormalizedStringPayloads:(id)a3
+- (void)addNormalizedStringPayloads:(id)payloads
 {
-  v4 = a3;
+  payloadsCopy = payloads;
   normalizedStringPayloads = self->_normalizedStringPayloads;
-  v8 = v4;
+  v8 = payloadsCopy;
   if (!normalizedStringPayloads)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_normalizedStringPayloads;
-    self->_normalizedStringPayloads = v6;
+    self->_normalizedStringPayloads = array;
 
-    v4 = v8;
+    payloadsCopy = v8;
     normalizedStringPayloads = self->_normalizedStringPayloads;
   }
 
-  [(NSArray *)normalizedStringPayloads addObject:v4];
+  [(NSArray *)normalizedStringPayloads addObject:payloadsCopy];
 }
 
-- (void)setHasIntegerPayload:(BOOL)a3
+- (void)setHasIntegerPayload:(BOOL)payload
 {
-  if (a3)
+  if (payload)
   {
     v3 = 2;
   }
@@ -380,41 +380,41 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = USOSchemaUSONodeDataTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(USOSchemaUSONodeDataTier1 *)self deleteStringPayload];
     [(USOSchemaUSONodeDataTier1 *)self deleteIntegerPayload];
     [(USOSchemaUSONodeDataTier1 *)self deleteNormalizedStringPayloads];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(USOSchemaUSONodeDataTier1 *)self deleteStringPayload];
     [(USOSchemaUSONodeDataTier1 *)self deleteIntegerPayload];
     [(USOSchemaUSONodeDataTier1 *)self deleteNormalizedStringPayloads];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(USOSchemaUSONodeDataTier1 *)self deleteStringPayload];
     [(USOSchemaUSONodeDataTier1 *)self deleteIntegerPayload];
     [(USOSchemaUSONodeDataTier1 *)self deleteNormalizedStringPayloads];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(USOSchemaUSONodeDataTier1 *)self deleteStringPayload];
     [(USOSchemaUSONodeDataTier1 *)self deleteIntegerPayload];
     [(USOSchemaUSONodeDataTier1 *)self deleteNormalizedStringPayloads];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(USOSchemaUSONodeDataTier1 *)self deleteStringPayload];
     [(USOSchemaUSONodeDataTier1 *)self deleteIntegerPayload];

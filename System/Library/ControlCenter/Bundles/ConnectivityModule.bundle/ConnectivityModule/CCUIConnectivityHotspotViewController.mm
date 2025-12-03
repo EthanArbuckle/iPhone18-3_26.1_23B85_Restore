@@ -9,10 +9,10 @@
 - (id)subtitleText;
 - (void)_hostAPStateChanged;
 - (void)_networkTetheringStateChanged;
-- (void)_setGlobalServiceState:(int)a3;
+- (void)_setGlobalServiceState:(int)state;
 - (void)_updateDiscoverability;
 - (void)_updateState;
-- (void)buttonTapped:(id)a3;
+- (void)buttonTapped:(id)tapped;
 - (void)dealloc;
 - (void)startObserving;
 - (void)stopObserving;
@@ -122,13 +122,13 @@ LABEL_13:
   return v33;
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   objc_msgSend__toggleState(self, v5, v6);
   v7.receiver = self;
   v7.super_class = CCUIConnectivityHotspotViewController;
-  [(CCUIConnectivityButtonViewController *)&v7 buttonTapped:v4];
+  [(CCUIConnectivityButtonViewController *)&v7 buttonTapped:tappedCopy];
 }
 
 - (void)viewDidLoad
@@ -150,7 +150,7 @@ LABEL_13:
   if (os_log_type_enabled(*MEMORY[0x29EDC0C90], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_29C961000, v3, OS_LOG_TYPE_DEFAULT, "[Hotspot] (%{public}p) Dealloc", buf, 0xCu);
   }
 
@@ -236,7 +236,7 @@ LABEL_13:
   return 1;
 }
 
-- (void)_setGlobalServiceState:(int)a3
+- (void)_setGlobalServiceState:(int)state
 {
   objc_initWeak(&location, self);
   v7 = objc_msgSend_queue(self, v5, v6);
@@ -245,7 +245,7 @@ LABEL_13:
   block[2] = sub_29C9671A4;
   block[3] = &unk_29F337418;
   objc_copyWeak(&v9, &location);
-  v10 = a3;
+  stateCopy = state;
   dispatch_async(v7, block);
   objc_destroyWeak(&v9);
 

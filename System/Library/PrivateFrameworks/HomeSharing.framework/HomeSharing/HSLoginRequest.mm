@@ -1,37 +1,37 @@
 @interface HSLoginRequest
 + (id)supportedVideoQualities;
-- (HSLoginRequest)initWithAction:(id)a3;
-- (id)canonicalResponseForResponse:(id)a3;
+- (HSLoginRequest)initWithAction:(id)action;
+- (id)canonicalResponseForResponse:(id)response;
 @end
 
 @implementation HSLoginRequest
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
-  v3 = [(HSResponse *)HSLoginResponse responseWithResponse:a3];
-  v4 = [v3 responseData];
-  v5 = [HSResponseDataParser parseResponseData:v4];
+  v3 = [(HSResponse *)HSLoginResponse responseWithResponse:response];
+  responseData = [v3 responseData];
+  v5 = [HSResponseDataParser parseResponseData:responseData];
 
   [v3 setSessionID:{objc_msgSend(v5, "unsignedIntValue")}];
 
   return v3;
 }
 
-- (HSLoginRequest)initWithAction:(id)a3
+- (HSLoginRequest)initWithAction:(id)action
 {
   v21 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
   v19.super_class = HSLoginRequest;
-  v3 = [(HSRequest *)&v19 initWithAction:a3];
+  v3 = [(HSRequest *)&v19 initWithAction:action];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB68] string];
-    v5 = [objc_opt_class() supportedVideoQualities];
+    string = [MEMORY[0x277CCAB68] string];
+    supportedVideoQualities = [objc_opt_class() supportedVideoQualities];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    v6 = [supportedVideoQualities countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -43,12 +43,12 @@
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(supportedVideoQualities);
           }
 
           v10 = *(*(&v15 + 1) + 8 * v9);
-          v11 = [v4 length];
-          v12 = [v10 intValue];
+          v11 = [string length];
+          intValue = [v10 intValue];
           if (v11)
           {
             v13 = @",%d";
@@ -59,18 +59,18 @@
             v13 = @"%d";
           }
 
-          [v4 appendFormat:v13, v12];
+          [string appendFormat:v13, intValue];
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v7 = [supportedVideoQualities countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v7);
     }
 
-    [(HSRequest *)v3 setValue:v4 forArgument:@"preferredVideoQuality"];
+    [(HSRequest *)v3 setValue:string forArgument:@"preferredVideoQuality"];
   }
 
   return v3;

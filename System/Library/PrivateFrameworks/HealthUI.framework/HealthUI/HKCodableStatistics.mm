@@ -1,23 +1,23 @@
 @interface HKCodableStatistics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDataCount:(BOOL)a3;
-- (void)setHasDataType:(BOOL)a3;
-- (void)setHasEndDate:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDataCount:(BOOL)count;
+- (void)setHasDataType:(BOOL)type;
+- (void)setHasEndDate:(BOOL)date;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableStatistics
 
-- (void)setHasDataType:(BOOL)a3
+- (void)setHasDataType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 16;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasEndDate:(BOOL)a3
+- (void)setHasEndDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 8;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDataCount:(BOOL)a3
+- (void)setHasDataCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableStatistics;
   v4 = [(HKCodableStatistics *)&v8 description];
-  v5 = [(HKCodableStatistics *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableStatistics *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_dataType];
-    [v3 setObject:v25 forKey:@"dataType"];
+    [dictionary setObject:v25 forKey:@"dataType"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -115,96 +115,96 @@ LABEL_3:
   }
 
   v26 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startDate];
-  [v3 setObject:v26 forKey:@"startDate"];
+  [dictionary setObject:v26 forKey:@"startDate"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endDate];
-    [v3 setObject:v5 forKey:@"endDate"];
+    [dictionary setObject:v5 forKey:@"endDate"];
   }
 
 LABEL_5:
   averageQuantity = self->_averageQuantity;
   if (averageQuantity)
   {
-    v7 = [(HKCodableQuantity *)averageQuantity dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"averageQuantity"];
+    dictionaryRepresentation = [(HKCodableQuantity *)averageQuantity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"averageQuantity"];
   }
 
   minQuantity = self->_minQuantity;
   if (minQuantity)
   {
-    v9 = [(HKCodableQuantity *)minQuantity dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"minQuantity"];
+    dictionaryRepresentation2 = [(HKCodableQuantity *)minQuantity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"minQuantity"];
   }
 
   maxQuantity = self->_maxQuantity;
   if (maxQuantity)
   {
-    v11 = [(HKCodableQuantity *)maxQuantity dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"maxQuantity"];
+    dictionaryRepresentation3 = [(HKCodableQuantity *)maxQuantity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"maxQuantity"];
   }
 
   mostRecentQuantity = self->_mostRecentQuantity;
   if (mostRecentQuantity)
   {
-    v13 = [(HKCodableQuantity *)mostRecentQuantity dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"mostRecentQuantity"];
+    dictionaryRepresentation4 = [(HKCodableQuantity *)mostRecentQuantity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"mostRecentQuantity"];
   }
 
   sumQuantity = self->_sumQuantity;
   if (sumQuantity)
   {
-    v15 = [(HKCodableQuantity *)sumQuantity dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"sumQuantity"];
+    dictionaryRepresentation5 = [(HKCodableQuantity *)sumQuantity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"sumQuantity"];
   }
 
   durationQuantity = self->_durationQuantity;
   if (durationQuantity)
   {
-    v17 = [(HKCodableQuantity *)durationQuantity dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"durationQuantity"];
+    dictionaryRepresentation6 = [(HKCodableQuantity *)durationQuantity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"durationQuantity"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_dataCount];
-    [v3 setObject:v18 forKey:@"dataCount"];
+    [dictionary setObject:v18 forKey:@"dataCount"];
   }
 
   statisticsInterval = self->_statisticsInterval;
   if (statisticsInterval)
   {
-    v20 = [(HKCodableDateComponents *)statisticsInterval dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"statisticsInterval"];
+    dictionaryRepresentation7 = [(HKCodableDateComponents *)statisticsInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"statisticsInterval"];
   }
 
   if (*&self->_has)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_baselineRelativeValueState];
-    [v3 setObject:v21 forKey:@"baselineRelativeValueState"];
+    [dictionary setObject:v21 forKey:@"baselineRelativeValueState"];
   }
 
   metadata = self->_metadata;
   if (metadata)
   {
-    v23 = [(HKCodableMetadataDictionary *)metadata dictionaryRepresentation];
-    [v3 setObject:v23 forKey:@"metadata"];
+    dictionaryRepresentation8 = [(HKCodableMetadataDictionary *)metadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"metadata"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -224,84 +224,84 @@ LABEL_3:
   }
 
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_4:
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
   if (self->_averageQuantity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_minQuantity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_maxQuantity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_mostRecentQuantity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sumQuantity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_durationQuantity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_statisticsInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_metadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = self->_dataType;
-    *(v4 + 112) |= 4u;
+    toCopy[3] = self->_dataType;
+    *(toCopy + 112) |= 4u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -320,81 +320,81 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = *&self->_startDate;
-  *(v4 + 112) |= 0x10u;
+  toCopy[5] = *&self->_startDate;
+  *(toCopy + 112) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_4:
-    v4[4] = *&self->_endDate;
-    *(v4 + 112) |= 8u;
+    toCopy[4] = *&self->_endDate;
+    *(toCopy + 112) |= 8u;
   }
 
 LABEL_5:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_averageQuantity)
   {
-    [v4 setAverageQuantity:?];
-    v4 = v6;
+    [toCopy setAverageQuantity:?];
+    toCopy = v6;
   }
 
   if (self->_minQuantity)
   {
     [v6 setMinQuantity:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_maxQuantity)
   {
     [v6 setMaxQuantity:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_mostRecentQuantity)
   {
     [v6 setMostRecentQuantity:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sumQuantity)
   {
     [v6 setSumQuantity:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_durationQuantity)
   {
     [v6 setDurationQuantity:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_dataCount;
-    *(v4 + 112) |= 2u;
+    toCopy[2] = self->_dataCount;
+    *(toCopy + 112) |= 2u;
   }
 
   if (self->_statisticsInterval)
   {
     [v6 setStatisticsInterval:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    v4[1] = self->_baselineRelativeValueState;
-    *(v4 + 112) |= 1u;
+    toCopy[1] = self->_baselineRelativeValueState;
+    *(toCopy + 112) |= 1u;
   }
 
   if (self->_metadata)
   {
     [v6 setMetadata:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -429,27 +429,27 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(HKCodableQuantity *)self->_averageQuantity copyWithZone:a3];
+  v8 = [(HKCodableQuantity *)self->_averageQuantity copyWithZone:zone];
   v9 = *(v6 + 48);
   *(v6 + 48) = v8;
 
-  v10 = [(HKCodableQuantity *)self->_minQuantity copyWithZone:a3];
+  v10 = [(HKCodableQuantity *)self->_minQuantity copyWithZone:zone];
   v11 = *(v6 + 80);
   *(v6 + 80) = v10;
 
-  v12 = [(HKCodableQuantity *)self->_maxQuantity copyWithZone:a3];
+  v12 = [(HKCodableQuantity *)self->_maxQuantity copyWithZone:zone];
   v13 = *(v6 + 64);
   *(v6 + 64) = v12;
 
-  v14 = [(HKCodableQuantity *)self->_mostRecentQuantity copyWithZone:a3];
+  v14 = [(HKCodableQuantity *)self->_mostRecentQuantity copyWithZone:zone];
   v15 = *(v6 + 88);
   *(v6 + 88) = v14;
 
-  v16 = [(HKCodableQuantity *)self->_sumQuantity copyWithZone:a3];
+  v16 = [(HKCodableQuantity *)self->_sumQuantity copyWithZone:zone];
   v17 = *(v6 + 104);
   *(v6 + 104) = v16;
 
-  v18 = [(HKCodableQuantity *)self->_durationQuantity copyWithZone:a3];
+  v18 = [(HKCodableQuantity *)self->_durationQuantity copyWithZone:zone];
   v19 = *(v6 + 56);
   *(v6 + 56) = v18;
 
@@ -459,7 +459,7 @@ LABEL_5:
     *(v6 + 112) |= 2u;
   }
 
-  v20 = [(HKCodableDateComponents *)self->_statisticsInterval copyWithZone:a3];
+  v20 = [(HKCodableDateComponents *)self->_statisticsInterval copyWithZone:zone];
   v21 = *(v6 + 96);
   *(v6 + 96) = v20;
 
@@ -469,68 +469,68 @@ LABEL_5:
     *(v6 + 112) |= 1u;
   }
 
-  v22 = [(HKCodableMetadataDictionary *)self->_metadata copyWithZone:a3];
+  v22 = [(HKCodableMetadataDictionary *)self->_metadata copyWithZone:zone];
   v23 = *(v6 + 72);
   *(v6 + 72) = v22;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 112) & 4) == 0 || self->_dataType != *(v4 + 3))
+    if ((*(equalCopy + 112) & 4) == 0 || self->_dataType != *(equalCopy + 3))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 112) & 4) != 0)
+  else if ((*(equalCopy + 112) & 4) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 112) & 0x10) == 0 || self->_startDate != *(v4 + 5))
+    if ((*(equalCopy + 112) & 0x10) == 0 || self->_startDate != *(equalCopy + 5))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 112) & 0x10) != 0)
+  else if ((*(equalCopy + 112) & 0x10) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 112) & 8) == 0 || self->_endDate != *(v4 + 4))
+    if ((*(equalCopy + 112) & 8) == 0 || self->_endDate != *(equalCopy + 4))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 112) & 8) != 0)
+  else if ((*(equalCopy + 112) & 8) != 0)
   {
     goto LABEL_44;
   }
 
   averageQuantity = self->_averageQuantity;
-  if (averageQuantity | *(v4 + 6) && ![(HKCodableQuantity *)averageQuantity isEqual:?])
+  if (averageQuantity | *(equalCopy + 6) && ![(HKCodableQuantity *)averageQuantity isEqual:?])
   {
     goto LABEL_44;
   }
 
   minQuantity = self->_minQuantity;
-  if (minQuantity | *(v4 + 10))
+  if (minQuantity | *(equalCopy + 10))
   {
     if (![(HKCodableQuantity *)minQuantity isEqual:?])
     {
@@ -539,7 +539,7 @@ LABEL_5:
   }
 
   maxQuantity = self->_maxQuantity;
-  if (maxQuantity | *(v4 + 8))
+  if (maxQuantity | *(equalCopy + 8))
   {
     if (![(HKCodableQuantity *)maxQuantity isEqual:?])
     {
@@ -548,7 +548,7 @@ LABEL_5:
   }
 
   mostRecentQuantity = self->_mostRecentQuantity;
-  if (mostRecentQuantity | *(v4 + 11))
+  if (mostRecentQuantity | *(equalCopy + 11))
   {
     if (![(HKCodableQuantity *)mostRecentQuantity isEqual:?])
     {
@@ -557,7 +557,7 @@ LABEL_5:
   }
 
   sumQuantity = self->_sumQuantity;
-  if (sumQuantity | *(v4 + 13))
+  if (sumQuantity | *(equalCopy + 13))
   {
     if (![(HKCodableQuantity *)sumQuantity isEqual:?])
     {
@@ -566,7 +566,7 @@ LABEL_5:
   }
 
   durationQuantity = self->_durationQuantity;
-  if (durationQuantity | *(v4 + 7))
+  if (durationQuantity | *(equalCopy + 7))
   {
     if (![(HKCodableQuantity *)durationQuantity isEqual:?])
     {
@@ -577,19 +577,19 @@ LABEL_5:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 112) & 2) == 0 || self->_dataCount != *(v4 + 2))
+    if ((*(equalCopy + 112) & 2) == 0 || self->_dataCount != *(equalCopy + 2))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 112) & 2) != 0)
+  else if ((*(equalCopy + 112) & 2) != 0)
   {
     goto LABEL_44;
   }
 
   statisticsInterval = self->_statisticsInterval;
-  if (statisticsInterval | *(v4 + 12))
+  if (statisticsInterval | *(equalCopy + 12))
   {
     if (![(HKCodableDateComponents *)statisticsInterval isEqual:?])
     {
@@ -603,19 +603,19 @@ LABEL_44:
 
   if (has)
   {
-    if ((*(v4 + 112) & 1) == 0 || self->_baselineRelativeValueState != *(v4 + 1))
+    if ((*(equalCopy + 112) & 1) == 0 || self->_baselineRelativeValueState != *(equalCopy + 1))
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 112))
+  else if (*(equalCopy + 112))
   {
     goto LABEL_44;
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 9))
+  if (metadata | *(equalCopy + 9))
   {
     v14 = [(HKCodableMetadataDictionary *)metadata isEqual:?];
   }
@@ -743,16 +743,16 @@ LABEL_9:
   return v23 ^ v24 ^ v9 ^ v22 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ [(HKCodableMetadataDictionary *)self->_metadata hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 112);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 112);
   if ((v6 & 4) != 0)
   {
-    self->_dataType = *(v4 + 3);
+    self->_dataType = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v6 = *(v4 + 112);
+    v6 = *(fromCopy + 112);
     if ((v6 & 0x10) == 0)
     {
 LABEL_3:
@@ -765,17 +765,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 112) & 0x10) == 0)
+  else if ((*(fromCopy + 112) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_startDate = *(v4 + 5);
+  self->_startDate = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 112) & 8) != 0)
+  if ((*(fromCopy + 112) & 8) != 0)
   {
 LABEL_4:
-    self->_endDate = *(v4 + 4);
+    self->_endDate = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 

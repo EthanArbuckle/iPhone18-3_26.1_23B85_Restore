@@ -1,9 +1,9 @@
 @interface AvatarImageView
 - (CGSize)intrinsicContentSize;
-- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithCoder:(id)a3;
-- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithFrame:(CGRect)a3;
-- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithImage:(id)a3;
-- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithCoder:(id)coder;
+- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithFrame:(CGRect)frame;
+- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithImage:(id)image;
+- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 @end
 
 @implementation AvatarImageView
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithImage:(id)a3
+- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithImage:(id)image
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -37,12 +37,12 @@
 
   v7.receiver = self;
   v7.super_class = type metadata accessor for AvatarImageView();
-  v5 = [(AvatarImageView *)&v7 initWithImage:a3];
+  v5 = [(AvatarImageView *)&v7 initWithImage:image];
 
   return v5;
 }
 
-- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -54,17 +54,17 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for AvatarImageView();
-  v7 = [(AvatarImageView *)&v9 initWithImage:a3 highlightedImage:a4];
+  v7 = [(AvatarImageView *)&v9 initWithImage:image highlightedImage:highlightedImage];
 
   return v7;
 }
 
-- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithFrame:(CGRect)a3
+- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_244257BB8();
   sub_244257BA8();
   sub_244257B68();
@@ -75,12 +75,12 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for AvatarImageView();
-  v8 = [(AvatarImageView *)&v10 initWithFrame:x, y, width, height];
+  height = [(AvatarImageView *)&v10 initWithFrame:x, y, width, height];
 
-  return v8;
+  return height;
 }
 
-- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithCoder:(id)a3
+- (_TtC14ContinuitySingP33_C6AF9BC24C805691840A4EC35E9D0F7415AvatarImageView)initWithCoder:(id)coder
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -92,8 +92,8 @@
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for AvatarImageView();
-  v5 = a3;
-  v6 = [(AvatarImageView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(AvatarImageView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

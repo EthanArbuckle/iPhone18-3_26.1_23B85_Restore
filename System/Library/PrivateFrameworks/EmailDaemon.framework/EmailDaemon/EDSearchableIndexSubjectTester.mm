@@ -1,17 +1,17 @@
 @interface EDSearchableIndexSubjectTester
-- (BOOL)verifySearchableItem:(id)a3 matchesDataSample:(id)a4;
+- (BOOL)verifySearchableItem:(id)item matchesDataSample:(id)sample;
 - (NSArray)fetchAttributes;
-- (id)expressionFromDataSamples:(id)a3;
-- (id)transformDataForVerification:(id)a3;
+- (id)expressionFromDataSamples:(id)samples;
+- (id)transformDataForVerification:(id)verification;
 @end
 
 @implementation EDSearchableIndexSubjectTester
 
-- (id)transformDataForVerification:(id)a3
+- (id)transformDataForVerification:(id)verification
 {
-  v3 = a3;
-  v4 = [v3 subject];
-  if (![v4 length] || (v5 = v3, objc_msgSend(v4, "containsString:", @"\x00x01")))
+  verificationCopy = verification;
+  subject = [verificationCopy subject];
+  if (![subject length] || (v5 = verificationCopy, objc_msgSend(subject, "containsString:", @"\x00x01")))
   {
 
     v5 = 0;
@@ -20,10 +20,10 @@
   return v5;
 }
 
-- (id)expressionFromDataSamples:(id)a3
+- (id)expressionFromDataSamples:(id)samples
 {
-  v3 = [a3 allValues];
-  v4 = [v3 ef_map:&__block_literal_global_83];
+  allValues = [samples allValues];
+  v4 = [allValues ef_map:&__block_literal_global_83];
 
   v5 = [MEMORY[0x1E699AE78] queryStringByJoiningQueries:v4 withOperand:2];
   v6 = [MEMORY[0x1E699AE80] expressionWithQueryString:v5];
@@ -51,18 +51,18 @@ id __60__EDSearchableIndexSubjectTester_expressionFromDataSamples___block_invoke
   return v2;
 }
 
-- (BOOL)verifySearchableItem:(id)a3 matchesDataSample:(id)a4
+- (BOOL)verifySearchableItem:(id)item matchesDataSample:(id)sample
 {
-  v5 = a4;
-  v6 = [a3 attributeSet];
-  v7 = [v6 subject];
+  sampleCopy = sample;
+  attributeSet = [item attributeSet];
+  subject = [attributeSet subject];
 
-  v8 = [v5 subject];
-  v9 = v8;
+  subject2 = [sampleCopy subject];
+  v9 = subject2;
   v10 = 0;
-  if (v7 && v8)
+  if (subject && subject2)
   {
-    v10 = [v7 compare:v8] == 0;
+    v10 = [subject compare:subject2] == 0;
   }
 
   return v10;

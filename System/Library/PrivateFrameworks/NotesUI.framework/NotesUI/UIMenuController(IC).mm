@@ -8,14 +8,14 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 menuItems];
-  v6 = v5;
-  if (!v5)
+  menuItems = [self menuItems];
+  v6 = menuItems;
+  if (!menuItems)
   {
-    v5 = MEMORY[0x1E695E0F0];
+    menuItems = MEMORY[0x1E695E0F0];
   }
 
-  v7 = [v5 mutableCopy];
+  v7 = [menuItems mutableCopy];
 
   v17 = 0u;
   v18 = 0u;
@@ -59,7 +59,7 @@
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((updatedMenuItems) != nil)" functionName:"-[UIMenuController(IC) ic_addMenuItemsIfNecessary:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "updatedMenuItems"}];
   }
 
-  [a1 setMenuItems:v7];
+  [self setMenuItems:v7];
 }
 
 @end

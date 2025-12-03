@@ -1,17 +1,17 @@
 @interface RTVisitPipelineModuleSpeedCluster
 - (NSString)description;
-- (RTVisitPipelineModuleSpeedCluster)initWithHyperParameter:(id)a3;
-- (id)process:(id)a3;
-- (void)clearAndAddForcedExitSignalToClusters:(id)a3;
+- (RTVisitPipelineModuleSpeedCluster)initWithHyperParameter:(id)parameter;
+- (id)process:(id)process;
+- (void)clearAndAddForcedExitSignalToClusters:(id)clusters;
 - (void)clearWorkingVisit;
 @end
 
 @implementation RTVisitPipelineModuleSpeedCluster
 
-- (RTVisitPipelineModuleSpeedCluster)initWithHyperParameter:(id)a3
+- (RTVisitPipelineModuleSpeedCluster)initWithHyperParameter:(id)parameter
 {
-  v5 = a3;
-  if (v5)
+  parameterCopy = parameter;
+  if (parameterCopy)
   {
     v11.receiver = self;
     v11.super_class = RTVisitPipelineModuleSpeedCluster;
@@ -19,11 +19,11 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_hyperParameter, a3);
+      objc_storeStrong(&v6->_hyperParameter, parameter);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -35,10 +35,10 @@
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: hyperParameter", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSString)description
@@ -62,10 +62,10 @@
   self->_workingVisit = 0;
 }
 
-- (void)clearAndAddForcedExitSignalToClusters:(id)a3
+- (void)clearAndAddForcedExitSignalToClusters:(id)clusters
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clustersCopy = clusters;
   if (!self->_workingVisit)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -82,19 +82,19 @@
   v6 = [[RTVisitCluster alloc] initWithPoints:0 visit:self->_workingVisit];
   if (v6)
   {
-    [v4 addObject:v6];
+    [clustersCopy addObject:v6];
   }
 
   [(RTVisitPipelineModuleSpeedCluster *)self clearWorkingVisit];
 }
 
-- (id)process:(id)a3
+- (id)process:(id)process
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  processCopy = process;
+  if (![processCopy count])
   {
-    v5 = v4;
+    v5 = processCopy;
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -105,18 +105,18 @@
       _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inClusters.count (in %s:%d)", buf, 0x12u);
     }
 
-    v4 = v5;
+    processCopy = v5;
   }
 
-  v44 = v4;
-  if ([v4 count])
+  v44 = processCopy;
+  if ([processCopy count])
   {
     v48 = objc_opt_new();
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    obj = v4;
+    obj = processCopy;
     v47 = [obj countByEnumeratingWithState:&v53 objects:v68 count:16];
     if (v47)
     {
@@ -164,15 +164,15 @@
             }
           }
 
-          v12 = [v9 points];
+          points = [v9 points];
           *buf = 0;
           *&buf[8] = buf;
           *&buf[16] = 0x3032000000;
           v65 = __Block_byref_object_copy__167;
           v66 = __Block_byref_object_dispose__167;
           v67 = 0;
-          v13 = [v12 locations];
-          v14 = [v13 count] == 0;
+          locations = [points locations];
+          v14 = [locations count] == 0;
 
           if (v14)
           {
@@ -212,8 +212,8 @@
                 v15 = self->_workingVisit;
               }
 
-              v17 = [(RTVisit *)v15 entry];
-              v18 = [v9 isDateInside:v17];
+              entry = [(RTVisit *)v15 entry];
+              v18 = [v9 isDateInside:entry];
 
               v19 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
               if (v18)
@@ -231,8 +231,8 @@
                 }
 
                 objc_storeStrong((*&buf[8] + 40), self->_lastPoint);
-                v21 = [*(*&buf[8] + 40) date];
-                v22 = [v9 isDateInside:v21];
+                date = [*(*&buf[8] + 40) date];
+                v22 = [v9 isDateInside:date];
 
                 if ((v22 & 1) == 0)
                 {
@@ -269,11 +269,11 @@
               v57 = *(*&buf[8] + 40);
               v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
               v27 = [RTVisitLocationPoints alloc];
-              v28 = [v12 locations];
-              v29 = [v26 arrayByAddingObjectsFromArray:v28];
+              locations2 = [points locations];
+              v29 = [v26 arrayByAddingObjectsFromArray:locations2];
               v30 = [(RTVisitLocationPoints *)v27 initWithLocations:v29];
 
-              v12 = v30;
+              points = v30;
             }
 
             hyperParameter = self->_hyperParameter;
@@ -286,12 +286,12 @@
             v32 = v48;
             v50 = v32;
             v51 = v9;
-            [v12 enumerateLowSpeedSegementsUsingBlock:hyperParameter block:v49];
+            [points enumerateLowSpeedSegementsUsingBlock:hyperParameter block:v49];
             if (self->_workingVisit)
             {
-              v33 = [v9 visit];
-              v34 = [v33 exit];
-              v35 = v34 == 0;
+              visit = [v9 visit];
+              exit = [visit exit];
+              v35 = exit == 0;
 
               if (!v35)
               {

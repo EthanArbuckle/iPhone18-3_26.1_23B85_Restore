@@ -2,12 +2,12 @@
 - (NSDate)lower;
 - (NSDate)upper;
 - (_TtC8MapsSync17MapsSyncDateRange)init;
-- (_TtC8MapsSync17MapsSyncDateRange)initWithStartDate:(id)a3 endDate:(id)a4;
+- (_TtC8MapsSync17MapsSyncDateRange)initWithStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation MapsSyncDateRange
 
-- (_TtC8MapsSync17MapsSyncDateRange)initWithStartDate:(id)a3 endDate:(id)a4
+- (_TtC8MapsSync17MapsSyncDateRange)initWithStartDate:(id)date endDate:(id)endDate
 {
   v4 = sub_1B63BE994();
   v5 = *(*(v4 - 8) + 64);

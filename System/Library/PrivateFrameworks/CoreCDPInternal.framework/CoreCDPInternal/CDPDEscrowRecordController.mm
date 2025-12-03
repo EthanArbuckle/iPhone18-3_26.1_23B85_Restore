@@ -1,69 +1,69 @@
 @interface CDPDEscrowRecordController
-- (BOOL)_clearLastEscrowRepairAttemptDate:(id *)a3;
+- (BOOL)_clearLastEscrowRepairAttemptDate:(id *)date;
 - (BOOL)_hasLocalSecret;
-- (BOOL)_isEligibleForEscrowRecordOperationsWithError:(id *)a3;
+- (BOOL)_isEligibleForEscrowRecordOperationsWithError:(id *)error;
 - (BOOL)_isEscrowRecordRepairPermitted;
-- (BOOL)_setLastEscrowRepairAttemptDate:(id)a3 error:(id *)a4;
-- (BOOL)_shouldPerformSilentRepairForEscrowRecordState:(unint64_t)a3;
-- (BOOL)synchronizeCircleViewsForSecureBackupContext:(id)a3;
-- (BOOL)updateLastSilentEscrowRecordRepairAttemptDate:(id)a3 error:(id *)a4;
-- (CDPDEscrowRecordController)initWithContext:(id)a3;
-- (CDPDEscrowRecordController)initWithContext:(id)a3 circleProxy:(id)a4 octagonTrustProxy:(id)a5 secureBackupProxy:(id)a6;
+- (BOOL)_setLastEscrowRepairAttemptDate:(id)date error:(id *)error;
+- (BOOL)_shouldPerformSilentRepairForEscrowRecordState:(unint64_t)state;
+- (BOOL)synchronizeCircleViewsForSecureBackupContext:(id)context;
+- (BOOL)updateLastSilentEscrowRecordRepairAttemptDate:(id)date error:(id *)error;
+- (CDPDEscrowRecordController)initWithContext:(id)context;
+- (CDPDEscrowRecordController)initWithContext:(id)context circleProxy:(id)proxy octagonTrustProxy:(id)trustProxy secureBackupProxy:(id)backupProxy;
 - (id)_cdpStateMachineWithNilUIProvider;
-- (id)_firstUsableRecordForCurrentPeerWithSerialNumber:(id)a3 fromRecords:(id)a4;
-- (id)_lastEscrowRepairAttemptDate:(id *)a3;
+- (id)_firstUsableRecordForCurrentPeerWithSerialNumber:(id)number fromRecords:(id)records;
+- (id)_lastEscrowRepairAttemptDate:(id *)date;
 - (id)_lastEscrowRepairAttemptDateDescriptor;
-- (id)circlePeerIDForSecureBackupController:(id)a3;
-- (unint64_t)_combinedCircleStatusUsingCache:(BOOL)a3 error:(id *)a4;
-- (void)_beginSilentEscrowRecordRepairWithState:(unint64_t)a3 completion:(id)a4;
-- (void)_checkAllRecordsForCurrentDeviceUsingCache:(BOOL)a3 completion:(id)a4;
-- (void)_checkFirstUsableRecordForDeviceFromSource:(int64_t)a3 completion:(id)a4;
-- (void)_continueSilentEscrowRecordRepairWithState:(unint64_t)a3 completion:(id)a4;
-- (void)_determineEligibilityForSilentRepairWithCompletion:(id)a3;
-- (void)_deviceEscrowRecordStateUsingAccountsHealthCheckCache:(id)a3;
-- (void)_fetchAllEscrowRecordsFromSource:(int64_t)a3 completion:(id)a4;
+- (id)circlePeerIDForSecureBackupController:(id)controller;
+- (unint64_t)_combinedCircleStatusUsingCache:(BOOL)cache error:(id *)error;
+- (void)_beginSilentEscrowRecordRepairWithState:(unint64_t)state completion:(id)completion;
+- (void)_checkAllRecordsForCurrentDeviceUsingCache:(BOOL)cache completion:(id)completion;
+- (void)_checkFirstUsableRecordForDeviceFromSource:(int64_t)source completion:(id)completion;
+- (void)_continueSilentEscrowRecordRepairWithState:(unint64_t)state completion:(id)completion;
+- (void)_determineEligibilityForSilentRepairWithCompletion:(id)completion;
+- (void)_deviceEscrowRecordStateUsingAccountsHealthCheckCache:(id)cache;
+- (void)_fetchAllEscrowRecordsFromSource:(int64_t)source completion:(id)completion;
 - (void)_isEscrowRecordRepairPermitted;
-- (void)_performSilentEscrowRecordRepairWithCompletion:(id)a3;
-- (void)_reauthenticateAndPerformEscrowCheckWithIsBackground:(BOOL)a3 completion:(id)a4;
-- (void)_tlkRecoveryViewsForRecord:(id)a3 usingCache:(BOOL)a4 completion:(id)a5;
-- (void)circleController:(id)a3 secureBackupRecordsArePresentWithCompletion:(id)a4;
-- (void)generateEscrowRecordStatusReportForLocalDeviceUsingFetchSource:(int64_t)a3 withCompletion:(id)a4;
-- (void)performSilentEscrowRecordRepairWithCompletion:(id)a3;
-- (void)promptForAdoptionOfMultipleICSCWithCompletion:(id)a3;
-- (void)promptForLocalSecretWithCompletion:(id)a3;
+- (void)_performSilentEscrowRecordRepairWithCompletion:(id)completion;
+- (void)_reauthenticateAndPerformEscrowCheckWithIsBackground:(BOOL)background completion:(id)completion;
+- (void)_tlkRecoveryViewsForRecord:(id)record usingCache:(BOOL)cache completion:(id)completion;
+- (void)circleController:(id)controller secureBackupRecordsArePresentWithCompletion:(id)completion;
+- (void)generateEscrowRecordStatusReportForLocalDeviceUsingFetchSource:(int64_t)source withCompletion:(id)completion;
+- (void)performSilentEscrowRecordRepairWithCompletion:(id)completion;
+- (void)promptForAdoptionOfMultipleICSCWithCompletion:(id)completion;
+- (void)promptForLocalSecretWithCompletion:(id)completion;
 @end
 
 @implementation CDPDEscrowRecordController
 
-- (CDPDEscrowRecordController)initWithContext:(id)a3 circleProxy:(id)a4 octagonTrustProxy:(id)a5 secureBackupProxy:(id)a6
+- (CDPDEscrowRecordController)initWithContext:(id)context circleProxy:(id)proxy octagonTrustProxy:(id)trustProxy secureBackupProxy:(id)backupProxy
 {
-  v11 = a3;
-  v29 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 dsid];
-  if (v14 && (v15 = v14, [v11 altDSID], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
+  contextCopy = context;
+  proxyCopy = proxy;
+  trustProxyCopy = trustProxy;
+  backupProxyCopy = backupProxy;
+  dsid = [contextCopy dsid];
+  if (dsid && (v15 = dsid, [contextCopy altDSID], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
   {
     v30.receiver = self;
     v30.super_class = CDPDEscrowRecordController;
     v17 = [(CDPDEscrowRecordController *)&v30 init];
     v18 = v17;
-    v19 = v29;
+    v19 = proxyCopy;
     if (v17)
     {
-      objc_storeStrong(&v17->_context, a3);
-      objc_storeStrong(&v18->_circleProxy, a4);
-      objc_storeStrong(&v18->_octagonTrustProxy, a5);
-      objc_storeStrong(&v18->_secureBackupProxy, a6);
+      objc_storeStrong(&v17->_context, context);
+      objc_storeStrong(&v18->_circleProxy, proxy);
+      objc_storeStrong(&v18->_octagonTrustProxy, trustProxy);
+      objc_storeStrong(&v18->_secureBackupProxy, backupProxy);
       v20 = objc_alloc_init(MEMORY[0x277CE4530]);
       keychainManager = v18->_keychainManager;
       v18->_keychainManager = v20;
 
-      v22 = [[CDPDCircleController alloc] initWithUiProvider:0 delegate:v18 circleProxy:v29 octagonTrustProxy:v12];
+      v22 = [[CDPDCircleController alloc] initWithUiProvider:0 delegate:v18 circleProxy:proxyCopy octagonTrustProxy:trustProxyCopy];
       circleController = v18->_circleController;
       v18->_circleController = v22;
 
-      v24 = [[CDPDSecureBackupController alloc] initWithContext:v11 secureBackupProxy:v13 octagonTrustProxy:v12];
+      v24 = [[CDPDSecureBackupController alloc] initWithContext:contextCopy secureBackupProxy:backupProxyCopy octagonTrustProxy:trustProxyCopy];
       secureBackupController = v18->_secureBackupController;
       v18->_secureBackupController = v24;
 
@@ -71,7 +71,7 @@
     }
 
     self = v18;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
@@ -82,21 +82,21 @@
       [CDPDEscrowRecordController initWithContext:circleProxy:octagonTrustProxy:secureBackupProxy:];
     }
 
-    v26 = 0;
-    v19 = v29;
+    selfCopy = 0;
+    v19 = proxyCopy;
   }
 
-  return v26;
+  return selfCopy;
 }
 
-- (CDPDEscrowRecordController)initWithContext:(id)a3
+- (CDPDEscrowRecordController)initWithContext:(id)context
 {
   v4 = MEMORY[0x277CFD498];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithContext:v5];
-  v7 = [[CDPDOctagonTrustProxyImpl alloc] initWithContext:v5];
-  v8 = [[CDPDSecureBackupProxyImpl alloc] initWithContext:v5];
-  v9 = [(CDPDEscrowRecordController *)self initWithContext:v5 circleProxy:v6 octagonTrustProxy:v7 secureBackupProxy:v8];
+  contextCopy = context;
+  v6 = [[v4 alloc] initWithContext:contextCopy];
+  v7 = [[CDPDOctagonTrustProxyImpl alloc] initWithContext:contextCopy];
+  v8 = [[CDPDSecureBackupProxyImpl alloc] initWithContext:contextCopy];
+  v9 = [(CDPDEscrowRecordController *)self initWithContext:contextCopy circleProxy:v6 octagonTrustProxy:v7 secureBackupProxy:v8];
 
   return v9;
 }
@@ -130,9 +130,9 @@ void __69__CDPDEscrowRecordController_escrowCheckWithIsBackground_completion___b
   }
 }
 
-- (void)_reauthenticateAndPerformEscrowCheckWithIsBackground:(BOOL)a3 completion:(id)a4
+- (void)_reauthenticateAndPerformEscrowCheckWithIsBackground:(BOOL)background completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -144,29 +144,29 @@ void __69__CDPDEscrowRecordController_escrowCheckWithIsBackground_completion___b
   v10[1] = 3221225472;
   v10[2] = __94__CDPDEscrowRecordController__reauthenticateAndPerformEscrowCheckWithIsBackground_completion___block_invoke;
   v10[3] = &unk_278E24B38;
-  v12 = a3;
+  backgroundCopy = background;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(CDPContext *)context reauthenticateUserWithCompletion:v10];
 }
 
-- (void)performSilentEscrowRecordRepairWithCompletion:(id)a3
+- (void)performSilentEscrowRecordRepairWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_transaction_create();
   v6 = +[CDPDLockAssertion lock];
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  v9 = [(CDPDEscrowRecordController *)self context];
-  [v9 setTelemetryFlowID:v8];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  context = [(CDPDEscrowRecordController *)self context];
+  [context setTelemetryFlowID:uUIDString];
 
-  v10 = [(CDPDEscrowRecordController *)self context];
-  [v10 populateWalrusStatus];
+  context2 = [(CDPDEscrowRecordController *)self context];
+  [context2 populateWalrusStatus];
 
   v11 = MEMORY[0x277CE44D8];
-  v12 = [(CDPDEscrowRecordController *)self context];
-  v13 = [v11 analyticsEventWithContext:v12 eventName:*MEMORY[0x277CFD890] category:*MEMORY[0x277CFD930]];
+  context3 = [(CDPDEscrowRecordController *)self context];
+  v13 = [v11 analyticsEventWithContext:context3 eventName:*MEMORY[0x277CFD890] category:*MEMORY[0x277CFD930]];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -175,9 +175,9 @@ void __69__CDPDEscrowRecordController_escrowCheckWithIsBackground_completion___b
   v19 = v6;
   v20 = v13;
   v21 = v5;
-  v22 = v4;
+  v22 = completionCopy;
   v14 = v5;
-  v15 = v4;
+  v15 = completionCopy;
   v16 = v13;
   v17 = v6;
   [(CDPDEscrowRecordController *)self _performSilentEscrowRecordRepairWithCompletion:v18];
@@ -201,25 +201,25 @@ void __76__CDPDEscrowRecordController_performSilentEscrowRecordRepairWithComplet
   }
 }
 
-- (BOOL)updateLastSilentEscrowRecordRepairAttemptDate:(id)a3 error:(id *)a4
+- (BOOL)updateLastSilentEscrowRecordRepairAttemptDate:(id)date error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CE4560] isInternalBuild];
+  dateCopy = date;
+  isInternalBuild = [MEMORY[0x277CE4560] isInternalBuild];
   v8 = _CDPLogSystem();
   v9 = v8;
-  if (v7)
+  if (isInternalBuild)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v6;
+      v16 = dateCopy;
       _os_log_impl(&dword_24510B000, v9, OS_LOG_TYPE_DEFAULT, "%@: Attempting to update the last silent escrow record repair attempt date (%@)", &v13, 0x16u);
     }
 
-    v10 = [(CDPDEscrowRecordController *)self _setLastEscrowRepairAttemptDate:v6 error:a4];
+    v10 = [(CDPDEscrowRecordController *)self _setLastEscrowRepairAttemptDate:dateCopy error:error];
   }
 
   else
@@ -229,10 +229,10 @@ void __76__CDPDEscrowRecordController_performSilentEscrowRecordRepairWithComplet
       [CDPDEscrowRecordController updateLastSilentEscrowRecordRepairAttemptDate:error:];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5004];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -292,16 +292,16 @@ uint64_t __90__CDPDEscrowRecordController__shouldPerformSilentEscrowRecordRepair
   return MEMORY[0x2821F97C8]();
 }
 
-- (BOOL)_shouldPerformSilentRepairForEscrowRecordState:(unint64_t)a3
+- (BOOL)_shouldPerformSilentRepairForEscrowRecordState:(unint64_t)state
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = self;
+    selfCopy7 = self;
     v13 = 2048;
-    v14 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_24510B000, v5, OS_LOG_TYPE_DEFAULT, "%@: Determining if silent repair should be performed for state (%lu)", &v11, 0x16u);
   }
 
@@ -318,18 +318,18 @@ LABEL_14:
     }
 
     v11 = 138412290;
-    v12 = self;
+    selfCopy7 = self;
     v8 = "%@: Silent repair should not be performed due to rate limiting";
 LABEL_12:
     _os_log_impl(&dword_24510B000, v6, OS_LOG_TYPE_DEFAULT, v8, &v11, 0xCu);
     goto LABEL_13;
   }
 
-  if (a3 <= 1)
+  if (state <= 1)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 != 1)
+      if (state != 1)
       {
         goto LABEL_15;
       }
@@ -341,7 +341,7 @@ LABEL_12:
       }
 
       v11 = 138412290;
-      v12 = self;
+      selfCopy7 = self;
       v8 = "%@: Silent repair should not be performed for viable state";
     }
 
@@ -354,21 +354,21 @@ LABEL_12:
       }
 
       v11 = 138412290;
-      v12 = self;
+      selfCopy7 = self;
       v8 = "%@: Silent repair should not be performed for unknown state";
     }
 
     goto LABEL_12;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 2uLL:
       v6 = _CDPLogSystem();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = self;
+        selfCopy7 = self;
         v7 = "%@: Silent repair should be performed for not found state";
         goto LABEL_22;
       }
@@ -382,9 +382,9 @@ LABEL_23:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412546;
-        v12 = self;
+        selfCopy7 = self;
         v13 = 1024;
-        LODWORD(v14) = v5;
+        LODWORD(stateCopy) = v5;
         _os_log_impl(&dword_24510B000, v6, OS_LOG_TYPE_DEFAULT, "%@: Silent repair can be perfomed for non viable state (%{BOOL}d)", &v11, 0x12u);
       }
 
@@ -394,7 +394,7 @@ LABEL_23:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = self;
+        selfCopy7 = self;
         v7 = "%@: Silent burn recovery can be perfomed for missing circle state";
 LABEL_22:
         _os_log_impl(&dword_24510B000, v6, OS_LOG_TYPE_DEFAULT, v7, &v11, 0xCu);
@@ -409,15 +409,15 @@ LABEL_15:
   return v5 & 1;
 }
 
-- (void)_performSilentEscrowRecordRepairWithCompletion:(id)a3
+- (void)_performSilentEscrowRecordRepairWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__CDPDEscrowRecordController__performSilentEscrowRecordRepairWithCompletion___block_invoke;
   aBlock[3] = &unk_278E25028;
-  v11 = v4;
-  v5 = v4;
+  v11 = completionCopy;
+  v5 = completionCopy;
   v6 = _Block_copy(aBlock);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -478,9 +478,9 @@ void __77__CDPDEscrowRecordController__performSilentEscrowRecordRepairWithComple
   }
 }
 
-- (void)generateEscrowRecordStatusReportForLocalDeviceUsingFetchSource:(int64_t)a3 withCompletion:(id)a4
+- (void)generateEscrowRecordStatusReportForLocalDeviceUsingFetchSource:(int64_t)source withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11 = 0;
   v7 = [(CDPDEscrowRecordController *)self _isEligibleForEscrowRecordOperationsWithError:&v11];
   v8 = v11;
@@ -491,13 +491,13 @@ void __77__CDPDEscrowRecordController__performSilentEscrowRecordRepairWithComple
     v9[2] = __108__CDPDEscrowRecordController_generateEscrowRecordStatusReportForLocalDeviceUsingFetchSource_withCompletion___block_invoke;
     v9[3] = &unk_278E250A0;
     v9[4] = self;
-    v10 = v6;
-    [(CDPDEscrowRecordController *)self _fetchAllEscrowRecordsFromSource:a3 completion:v9];
+    v10 = completionCopy;
+    [(CDPDEscrowRecordController *)self _fetchAllEscrowRecordsFromSource:source completion:v9];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
   }
 }
 
@@ -610,23 +610,23 @@ void __108__CDPDEscrowRecordController_generateEscrowRecordStatusReportForLocalD
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_firstUsableRecordForCurrentPeerWithSerialNumber:(id)a3 fromRecords:(id)a4
+- (id)_firstUsableRecordForCurrentPeerWithSerialNumber:(id)number fromRecords:(id)records
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  recordsCopy = records;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [CDPDEscrowRecordController _firstUsableRecordForCurrentPeerWithSerialNumber:v7 fromRecords:?];
   }
 
-  if (![v6 count] || !objc_msgSend(v5, "length"))
+  if (![recordsCopy count] || !objc_msgSend(numberCopy, "length"))
   {
     v9 = _CDPLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [CDPDEscrowRecordController _firstUsableRecordForCurrentPeerWithSerialNumber:v6 fromRecords:?];
+      [CDPDEscrowRecordController _firstUsableRecordForCurrentPeerWithSerialNumber:recordsCopy fromRecords:?];
     }
 
     goto LABEL_40;
@@ -642,7 +642,7 @@ void __108__CDPDEscrowRecordController_generateEscrowRecordStatusReportForLocalD
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = v6;
+  v9 = recordsCopy;
   v10 = [v9 countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (!v10)
   {
@@ -652,7 +652,7 @@ LABEL_40:
   }
 
   v11 = v10;
-  v32 = v6;
+  v32 = recordsCopy;
   v12 = *v39;
 LABEL_9:
   v13 = 0;
@@ -664,8 +664,8 @@ LABEL_9:
     }
 
     v14 = *(*(&v38 + 1) + 8 * v13);
-    v15 = [v14 serialNumber];
-    v16 = [v15 isEqualToString:v5];
+    serialNumber = [v14 serialNumber];
+    v16 = [serialNumber isEqualToString:numberCopy];
 
     v17 = _CDPLogSystem();
     v18 = v17;
@@ -673,13 +673,13 @@ LABEL_9:
     {
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v14 serialNumber];
+        serialNumber2 = [v14 serialNumber];
         *buf = 138543875;
-        v45 = self;
+        selfCopy4 = self;
         v46 = 2117;
-        v47 = v25;
+        v47 = serialNumber2;
         v48 = 2117;
-        v49 = v5;
+        v49 = numberCopy;
         _os_log_error_impl(&dword_24510B000, v18, OS_LOG_TYPE_ERROR, "%{public}@: Skipping record with serial number (%{sensitive}@). This device has a serial number of (%{sensitive}@)", buf, 0x20u);
       }
 
@@ -691,8 +691,8 @@ LABEL_9:
       [(CDPDEscrowRecordController *)v42 _firstUsableRecordForCurrentPeerWithSerialNumber:v18 fromRecords:?];
     }
 
-    v19 = [v14 label];
-    v20 = [v19 hasPrefix:@"com.apple.icdp.record"];
+    label = [v14 label];
+    v20 = [label hasPrefix:@"com.apple.icdp.record"];
 
     v21 = _CDPLogSystem();
     v18 = v21;
@@ -703,13 +703,13 @@ LABEL_9:
 
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v14 label];
+      label2 = [v14 label];
       *buf = 138543874;
-      v45 = self;
+      selfCopy4 = self;
       v46 = 2160;
       v47 = 1752392040;
       v48 = 2112;
-      v49 = v22;
+      v49 = label2;
       v23 = v18;
       v24 = "%{public}@: Skipping record with incorrect label %{mask.hash}@";
       goto LABEL_35;
@@ -741,13 +741,13 @@ LABEL_32:
     v18 = _CDPLogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v14 recordId];
+      label2 = [v14 recordId];
       *buf = 138543874;
-      v45 = self;
+      selfCopy4 = self;
       v46 = 2160;
       v47 = 1752392040;
       v48 = 2112;
-      v49 = v22;
+      v49 = label2;
       v23 = v18;
       v24 = "%{public}@: Record %{mask.hash}@ has invalid status.";
 LABEL_35:
@@ -770,13 +770,13 @@ LABEL_35:
     v18 = _CDPLogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v14 recordId];
+      label2 = [v14 recordId];
       *buf = 138543874;
-      v45 = self;
+      selfCopy4 = self;
       v46 = 2160;
       v47 = 1752392040;
       v48 = 2112;
-      v49 = v22;
+      v49 = label2;
       v23 = v18;
       v24 = "%{public}@: Record %{mask.hash}@ is not partially or fully viable. Skipping update.";
       goto LABEL_35;
@@ -793,7 +793,7 @@ LABEL_35:
 
   v28 = v14;
 LABEL_44:
-  v6 = v32;
+  recordsCopy = v32;
 LABEL_45:
 
   v30 = *MEMORY[0x277D85DE8];
@@ -801,14 +801,14 @@ LABEL_45:
   return v28;
 }
 
-- (void)_determineEligibilityForSilentRepairWithCompletion:(id)a3
+- (void)_determineEligibilityForSilentRepairWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CDPDEscrowRecordController *)self context];
-  v6 = [v5 isLocalSecretCached];
+  completionCopy = completion;
+  context = [(CDPDEscrowRecordController *)self context];
+  isLocalSecretCached = [context isLocalSecretCached];
 
-  if (v6)
+  if (isLocalSecretCached)
   {
     if ([(CDPDEscrowRecordController *)self _isEscrowRecordRepairPermitted])
     {
@@ -817,7 +817,7 @@ LABEL_45:
       v13[2] = __81__CDPDEscrowRecordController__determineEligibilityForSilentRepairWithCompletion___block_invoke;
       v13[3] = &unk_278E25078;
       v13[4] = self;
-      v14 = v4;
+      v14 = completionCopy;
       [(CDPDEscrowRecordController *)self _shouldPerformSilentEscrowRecordRepairUsingCache:1 completion:v13];
 
       goto LABEL_13;
@@ -827,11 +827,11 @@ LABEL_45:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_24510B000, v10, OS_LOG_TYPE_DEFAULT, "%@: Cannot silently repair escrow record due to rate limiting", buf, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v8 = MEMORY[0x277CCA9B8];
       v9 = -5203;
@@ -845,17 +845,17 @@ LABEL_45:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_24510B000, v7, OS_LOG_TYPE_DEFAULT, "%@: Cannot silently repair escrow record without cached local secret", buf, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v8 = MEMORY[0x277CCA9B8];
       v9 = -5003;
 LABEL_12:
       v11 = [v8 cdp_errorWithCode:v9];
-      (*(v4 + 2))(v4, 0, 0, v11);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v11);
     }
   }
 
@@ -920,7 +920,7 @@ void __81__CDPDEscrowRecordController__determineEligibilityForSilentRepairWithCo
     if (v7)
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy4 = self;
       v18 = 2112;
       v19 = v3;
       _os_log_impl(&dword_24510B000, v5, OS_LOG_TYPE_DEFAULT, "%@: Fetched last escrow repair attempt date (%@)", buf, 0x16u);
@@ -937,7 +937,7 @@ void __81__CDPDEscrowRecordController__determineEligibilityForSilentRepairWithCo
       if (v11)
       {
         *buf = 138412290;
-        v17 = self;
+        selfCopy4 = self;
         v12 = "%@: Escrow record repair will not be allowed at this time";
         goto LABEL_16;
       }
@@ -946,7 +946,7 @@ void __81__CDPDEscrowRecordController__determineEligibilityForSilentRepairWithCo
     else if (v11)
     {
       *buf = 138412290;
-      v17 = self;
+      selfCopy4 = self;
       v12 = "%@: Escrow record repair will be allowed at this time";
 LABEL_16:
       _os_log_impl(&dword_24510B000, v10, OS_LOG_TYPE_DEFAULT, v12, buf, 0xCu);
@@ -958,7 +958,7 @@ LABEL_16:
   if (v7)
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_24510B000, v5, OS_LOG_TYPE_DEFAULT, "%@: Could not find an existing keychain value for last escrow repair attempt date, allowing repair to proceed", buf, 0xCu);
   }
 
@@ -969,30 +969,30 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)_isEligibleForEscrowRecordOperationsWithError:(id *)a3
+- (BOOL)_isEligibleForEscrowRecordOperationsWithError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [(CDPDEscrowRecordController *)self context];
-  v6 = [v5 altDSID];
-  v7 = [(CDPDEscrowRecordController *)self _getAccountRepresentationForAltDSID:v6];
+  context = [(CDPDEscrowRecordController *)self context];
+  altDSID = [context altDSID];
+  v7 = [(CDPDEscrowRecordController *)self _getAccountRepresentationForAltDSID:altDSID];
 
   if (!v7)
   {
     v11 = _CDPLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(CDPDEscrowRecordController *)self context];
-      v13 = [v12 altDSID];
+      context2 = [(CDPDEscrowRecordController *)self context];
+      altDSID2 = [context2 altDSID];
       v19 = 138412802;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2160;
       v22 = 1752392040;
       v23 = 2112;
-      v24 = v13;
+      v24 = altDSID2;
       _os_log_impl(&dword_24510B000, v11, OS_LOG_TYPE_DEFAULT, "%@: Cannot determine escrow record for unknown account with altDSID (%{mask.hash}@)", &v19, 0x20u);
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -1007,11 +1007,11 @@ LABEL_18:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_24510B000, v15, OS_LOG_TYPE_DEFAULT, "%@: Will not determine escrow record state for device without local secret (not eligible)", &v19, 0xCu);
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -1019,26 +1019,26 @@ LABEL_18:
     v14 = -5500;
 LABEL_17:
     [MEMORY[0x277CCA9B8] cdp_errorWithCode:v14];
-    *a3 = v10 = 0;
+    *error = v10 = 0;
     goto LABEL_19;
   }
 
-  v8 = [(CDPDEscrowRecordController *)self circleController];
-  v9 = [v8 circleStatus];
+  circleController = [(CDPDEscrowRecordController *)self circleController];
+  circleStatus = [circleController circleStatus];
 
-  if (v9 != 1)
+  if (circleStatus != 1)
   {
     v16 = _CDPLogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412546;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2048;
-      v22 = v9;
+      v22 = circleStatus;
       _os_log_impl(&dword_24510B000, v16, OS_LOG_TYPE_DEFAULT, "%@: Cannot determine escrow record state for device not in circle (%lu)", &v19, 0x16u);
     }
 
-    if (a3)
+    if (error)
     {
       v14 = -5403;
       goto LABEL_17;
@@ -1056,13 +1056,13 @@ LABEL_19:
   return v10;
 }
 
-- (void)_deviceEscrowRecordStateUsingAccountsHealthCheckCache:(id)a3
+- (void)_deviceEscrowRecordStateUsingAccountsHealthCheckCache:(id)cache
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CDPDEscrowRecordController *)self context];
-  v6 = [v5 altDSID];
-  v7 = [(CDPDEscrowRecordController *)self _getAppleAccountForAltDSID:v6];
+  cacheCopy = cache;
+  context = [(CDPDEscrowRecordController *)self context];
+  altDSID = [context altDSID];
+  v7 = [(CDPDEscrowRecordController *)self _getAppleAccountForAltDSID:altDSID];
 
   if (v7)
   {
@@ -1082,24 +1082,24 @@ LABEL_19:
         v10 = 0;
       }
 
-      v17 = [v10 intValue];
+      intValue = [v10 intValue];
       v18 = _CDPLogSystem();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v19 = "unknown";
-        if (v17 > 0)
+        if (intValue > 0)
         {
           v19 = "non-viable or not found";
         }
 
         v23 = 138412546;
-        v24 = self;
+        selfCopy2 = self;
         v25 = 2080;
         v26 = v19;
         _os_log_impl(&dword_24510B000, v18, OS_LOG_TYPE_DEFAULT, "%@: Used precomputed escrowRecordHealthCheckFailureCount bit and determined escrow record state is %s.", &v23, 0x16u);
       }
 
-      if (v17 < 1)
+      if (intValue < 1)
       {
         v21 = _CDPLogSystem();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1107,16 +1107,16 @@ LABEL_19:
           [CDPDEscrowRecordController _deviceEscrowRecordStateUsingAccountsHealthCheckCache:];
         }
 
-        if (v4)
+        if (cacheCopy)
         {
           v22 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5324];
-          v4[2](v4, 0, v22);
+          cacheCopy[2](cacheCopy, 0, v22);
         }
       }
 
-      else if (v4)
+      else if (cacheCopy)
       {
-        v4[2](v4, 2, 0);
+        cacheCopy[2](cacheCopy, 2, 0);
       }
 
       goto LABEL_22;
@@ -1128,7 +1128,7 @@ LABEL_19:
       [CDPDEscrowRecordController _deviceEscrowRecordStateUsingAccountsHealthCheckCache:];
     }
 
-    if (v4)
+    if (cacheCopy)
     {
       v14 = MEMORY[0x277CCA9B8];
       v15 = -5323;
@@ -1141,24 +1141,24 @@ LABEL_19:
     v11 = _CDPLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(CDPDEscrowRecordController *)self context];
-      v13 = [v12 altDSID];
+      context2 = [(CDPDEscrowRecordController *)self context];
+      altDSID2 = [context2 altDSID];
       v23 = 138412802;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2160;
       v26 = 1752392040;
       v27 = 2112;
-      v28 = v13;
+      v28 = altDSID2;
       _os_log_impl(&dword_24510B000, v11, OS_LOG_TYPE_DEFAULT, "%@: Cannot determine escrow record for unknown account with altDSID (%{mask.hash}@)", &v23, 0x20u);
     }
 
-    if (v4)
+    if (cacheCopy)
     {
       v14 = MEMORY[0x277CCA9B8];
       v15 = -5108;
 LABEL_13:
       v10 = [v14 cdp_errorWithCode:v15];
-      v4[2](v4, 0, v10);
+      cacheCopy[2](cacheCopy, 0, v10);
 LABEL_22:
     }
   }
@@ -1287,21 +1287,21 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkAllRecordsForCurrentDeviceUsingCache:(BOOL)a3 completion:(id)a4
+- (void)_checkAllRecordsForCurrentDeviceUsingCache:(BOOL)cache completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CDPDEscrowRecordController *)self circleController];
-  v8 = [v7 peerID];
+  cacheCopy = cache;
+  completionCopy = completion;
+  circleController = [(CDPDEscrowRecordController *)self circleController];
+  peerID = [circleController peerID];
 
-  if (v8)
+  if (peerID)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __84__CDPDEscrowRecordController__checkAllRecordsForCurrentDeviceUsingCache_completion___block_invoke;
     v11[3] = &unk_278E25118;
-    v12 = v6;
-    [(CDPDEscrowRecordController *)self _checkFirstUsableRecordForDeviceFromSource:v4 completion:v11];
+    v12 = completionCopy;
+    [(CDPDEscrowRecordController *)self _checkFirstUsableRecordForDeviceFromSource:cacheCopy completion:v11];
     v9 = v12;
 LABEL_7:
 
@@ -1314,10 +1314,10 @@ LABEL_7:
     [CDPDEscrowRecordController _deviceEscrowRecordStateUsingCache:completion:];
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v9 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5309];
-    (*(v6 + 2))(v6, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
     goto LABEL_7;
   }
 
@@ -1435,68 +1435,68 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tlkRecoveryViewsForRecord:(id)a3 usingCache:(BOOL)a4 completion:(id)a5
+- (void)_tlkRecoveryViewsForRecord:(id)record usingCache:(BOOL)cache completion:(id)completion
 {
-  v6 = a4;
+  cacheCopy = cache;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  recordCopy = record;
+  completionCopy = completion;
   v10 = _CDPLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 recordId];
+    recordId = [recordCopy recordId];
     *buf = 138544130;
-    v21 = self;
+    selfCopy = self;
     v22 = 2160;
     v23 = 1752392040;
     v24 = 2112;
-    v25 = v11;
+    v25 = recordId;
     v26 = 1024;
-    v27 = v6;
+    v27 = cacheCopy;
     _os_log_impl(&dword_24510B000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Checking for recoverable TLK views in record (%{mask.hash}@) is missing TLK recoverability using cache (%{BOOL}d)", buf, 0x26u);
   }
 
-  v12 = [(CDPDEscrowRecordController *)self context];
-  v13 = [CDPDSecureBackupConfiguration configurationWithContext:v12];
+  context = [(CDPDEscrowRecordController *)self context];
+  v13 = [CDPDSecureBackupConfiguration configurationWithContext:context];
 
-  v14 = [v13 accountInfoFetchSetupDictionary];
-  v15 = [(CDPDEscrowRecordController *)self octagonTrustProxy];
+  accountInfoFetchSetupDictionary = [v13 accountInfoFetchSetupDictionary];
+  octagonTrustProxy = [(CDPDEscrowRecordController *)self octagonTrustProxy];
   v19 = 0;
-  v16 = [v15 tlkRecoverabilityForEscrow:v14 record:v8 source:v6 error:&v19];
+  v16 = [octagonTrustProxy tlkRecoverabilityForEscrow:accountInfoFetchSetupDictionary record:recordCopy source:cacheCopy error:&v19];
   v17 = v19;
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v16, v17);
+    completionCopy[2](completionCopy, v16, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_beginSilentEscrowRecordRepairWithState:(unint64_t)a3 completion:(id)a4
+- (void)_beginSilentEscrowRecordRepairWithState:(unint64_t)state completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __81__CDPDEscrowRecordController__beginSilentEscrowRecordRepairWithState_completion___block_invoke;
   aBlock[3] = &unk_278E25168;
-  v16 = v6;
-  v17 = a3;
+  v16 = completionCopy;
+  stateCopy = state;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   v8 = _Block_copy(aBlock);
-  v9 = [(CDPDEscrowRecordController *)self context];
-  v10 = [v9 passwordEquivToken];
+  context = [(CDPDEscrowRecordController *)self context];
+  passwordEquivToken = [context passwordEquivToken];
 
   v11 = _CDPLogSystem();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v10)
+  if (passwordEquivToken)
   {
     if (v12)
     {
       *buf = 138412290;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_24510B000, v11, OS_LOG_TYPE_DEFAULT, "%@: Context already has PET, auth is not necessary", buf, 0xCu);
     }
 
@@ -1508,12 +1508,12 @@ LABEL_12:
     if (v12)
     {
       *buf = 138412290;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_24510B000, v11, OS_LOG_TYPE_DEFAULT, "%@: Context does not have a PET, attempting to perform silent auth", buf, 0xCu);
     }
 
-    v13 = [(CDPDEscrowRecordController *)self context];
-    [v13 reauthenticateUserWithCompletion:v8];
+    context2 = [(CDPDEscrowRecordController *)self context];
+    [context2 reauthenticateUserWithCompletion:v8];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1562,23 +1562,23 @@ void __81__CDPDEscrowRecordController__beginSilentEscrowRecordRepairWithState_co
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_continueSilentEscrowRecordRepairWithState:(unint64_t)a3 completion:(id)a4
+- (void)_continueSilentEscrowRecordRepairWithState:(unint64_t)state completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEAA8] date];
+  completionCopy = completion;
+  date = [MEMORY[0x277CBEAA8] date];
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = self;
+    selfCopy2 = self;
     v29 = 2112;
-    v30 = v7;
+    v30 = date;
     _os_log_impl(&dword_24510B000, v8, OS_LOG_TYPE_DEFAULT, "%@: Attempting to set the current date (%@) as last escrow repair attempt date", buf, 0x16u);
   }
 
   v26 = 0;
-  v9 = [(CDPDEscrowRecordController *)self _setLastEscrowRepairAttemptDate:v7 error:&v26];
+  v9 = [(CDPDEscrowRecordController *)self _setLastEscrowRepairAttemptDate:date error:&v26];
   v10 = v26;
   v11 = _CDPLogSystem();
   v12 = v11;
@@ -1587,49 +1587,49 @@ void __81__CDPDEscrowRecordController__beginSilentEscrowRecordRepairWithState_co
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2112;
-      v30 = v7;
+      v30 = date;
       _os_log_impl(&dword_24510B000, v12, OS_LOG_TYPE_DEFAULT, "%@: Successfully saved current date (%@) as last escrow repair attempt date, proceeding with silent repair attempt", buf, 0x16u);
     }
 
-    if (a3 == 4)
+    if (state == 4)
     {
-      v13 = [(CDPDEscrowRecordController *)self _cdpStateMachineWithNilUIProvider];
+      _cdpStateMachineWithNilUIProvider = [(CDPDEscrowRecordController *)self _cdpStateMachineWithNilUIProvider];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __84__CDPDEscrowRecordController__continueSilentEscrowRecordRepairWithState_completion___block_invoke;
       v24[3] = &unk_278E24AE8;
       v24[4] = self;
-      v25 = v6;
-      [v13 repairCloudDataProtectionStateWithCompletion:v24];
+      v25 = completionCopy;
+      [_cdpStateMachineWithNilUIProvider repairCloudDataProtectionStateWithCompletion:v24];
     }
 
     else
     {
       v14 = objc_alloc_init(CDPDSecureBackupContext);
-      v15 = [(CDPDEscrowRecordController *)self context];
-      -[CDPDSecureBackupContext setUsePreviouslyCachedSecret:](v14, "setUsePreviouslyCachedSecret:", [v15 _useSecureBackupCachedPassphrase]);
+      context = [(CDPDEscrowRecordController *)self context];
+      -[CDPDSecureBackupContext setUsePreviouslyCachedSecret:](v14, "setUsePreviouslyCachedSecret:", [context _useSecureBackupCachedPassphrase]);
 
-      v16 = [(CDPDEscrowRecordController *)self context];
-      -[CDPDSecureBackupContext setSynchronous:](v14, "setSynchronous:", [v16 _disableAsyncSecureBackupEnrollment]);
+      context2 = [(CDPDEscrowRecordController *)self context];
+      -[CDPDSecureBackupContext setSynchronous:](v14, "setSynchronous:", [context2 _disableAsyncSecureBackupEnrollment]);
 
-      v17 = [(CDPDEscrowRecordController *)self context];
-      v18 = [v17 cachedLocalSecret];
-      [(CDPDSecureBackupContext *)v14 setLocalSecret:v18];
+      context3 = [(CDPDEscrowRecordController *)self context];
+      cachedLocalSecret = [context3 cachedLocalSecret];
+      [(CDPDSecureBackupContext *)v14 setLocalSecret:cachedLocalSecret];
 
-      v19 = [(CDPDEscrowRecordController *)self context];
-      -[CDPDSecureBackupContext setLocalSecretType:](v14, "setLocalSecretType:", [v19 cachedLocalSecretType]);
+      context4 = [(CDPDEscrowRecordController *)self context];
+      -[CDPDSecureBackupContext setLocalSecretType:](v14, "setLocalSecretType:", [context4 cachedLocalSecretType]);
 
-      [(CDPDSecureBackupContext *)v14 setNonViableRequiresRepair:a3 == 3];
-      v20 = [(CDPDEscrowRecordController *)self secureBackupController];
+      [(CDPDSecureBackupContext *)v14 setNonViableRequiresRepair:state == 3];
+      secureBackupController = [(CDPDEscrowRecordController *)self secureBackupController];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __84__CDPDEscrowRecordController__continueSilentEscrowRecordRepairWithState_completion___block_invoke_69;
       v22[3] = &unk_278E24AE8;
       v22[4] = self;
-      v23 = v6;
-      [v20 enableSecureBackupWithContext:v14 completion:v22];
+      v23 = completionCopy;
+      [secureBackupController enableSecureBackupWithContext:v14 completion:v22];
     }
   }
 
@@ -1640,9 +1640,9 @@ void __81__CDPDEscrowRecordController__beginSilentEscrowRecordRepairWithState_co
       [CDPDEscrowRecordController _continueSilentEscrowRecordRepairWithState:completion:];
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0, v10);
+      (*(completionCopy + 2))(completionCopy, 0, v10);
     }
   }
 
@@ -1708,18 +1708,18 @@ LABEL_8:
   }
 }
 
-- (void)_checkFirstUsableRecordForDeviceFromSource:(int64_t)a3 completion:(id)a4
+- (void)_checkFirstUsableRecordForDeviceFromSource:(int64_t)source completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __84__CDPDEscrowRecordController__checkFirstUsableRecordForDeviceFromSource_completion___block_invoke;
   v8[3] = &unk_278E25190;
   v8[4] = self;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
-  [(CDPDEscrowRecordController *)self _fetchAllEscrowRecordsFromSource:a3 completion:v8];
+  v9 = completionCopy;
+  sourceCopy = source;
+  v7 = completionCopy;
+  [(CDPDEscrowRecordController *)self _fetchAllEscrowRecordsFromSource:source completion:v8];
 }
 
 void __84__CDPDEscrowRecordController__checkFirstUsableRecordForDeviceFromSource_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1798,22 +1798,22 @@ LABEL_15:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchAllEscrowRecordsFromSource:(int64_t)a3 completion:(id)a4
+- (void)_fetchAllEscrowRecordsFromSource:(int64_t)source completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(CDPDEscrowRecordController *)self secureBackupController];
-  v8 = [v7 configuration];
-  v9 = [v8 accountInfoFetchSetupDictionary];
+  completionCopy = completion;
+  secureBackupController = [(CDPDEscrowRecordController *)self secureBackupController];
+  configuration = [secureBackupController configuration];
+  accountInfoFetchSetupDictionary = [configuration accountInfoFetchSetupDictionary];
 
   v10 = _CDPLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [CDPDSecureBackupController _sanitizedInfoDictionary:v9];
+    v11 = [CDPDSecureBackupController _sanitizedInfoDictionary:accountInfoFetchSetupDictionary];
     *buf = 138412802;
-    v18 = self;
+    selfCopy = self;
     v19 = 2048;
-    v20 = a3;
+    sourceCopy = source;
     v21 = 2112;
     v22 = v11;
     _os_log_impl(&dword_24510B000, v10, OS_LOG_TYPE_DEFAULT, "%@: Fetching all escrow records from source (%ld) with account info (%@)", buf, 0x20u);
@@ -1825,9 +1825,9 @@ LABEL_15:
   v15[2] = __74__CDPDEscrowRecordController__fetchAllEscrowRecordsFromSource_completion___block_invoke;
   v15[3] = &unk_278E251B8;
   v15[4] = self;
-  v16 = v6;
-  v13 = v6;
-  [(CDPDOctagonTrustProxy *)octagonTrustProxy fetchAllEscrowRecords:v9 source:a3 completion:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [(CDPDOctagonTrustProxy *)octagonTrustProxy fetchAllEscrowRecords:accountInfoFetchSetupDictionary source:source completion:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -1892,23 +1892,23 @@ LABEL_10:
   return v2;
 }
 
-- (id)_lastEscrowRepairAttemptDate:(id *)a3
+- (id)_lastEscrowRepairAttemptDate:(id *)date
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [(CDPDEscrowRecordController *)self _lastEscrowRepairAttemptDateDescriptor];
-  v6 = [(CDPDEscrowRecordController *)self keychainManager];
+  _lastEscrowRepairAttemptDateDescriptor = [(CDPDEscrowRecordController *)self _lastEscrowRepairAttemptDateDescriptor];
+  keychainManager = [(CDPDEscrowRecordController *)self keychainManager];
   v22 = 0;
-  v7 = [v6 keychainItemForDescriptor:v5 error:&v22];
+  v7 = [keychainManager keychainItemForDescriptor:_lastEscrowRepairAttemptDateDescriptor error:&v22];
   v8 = v22;
 
-  v9 = [v7 value];
+  value = [v7 value];
   if ([v8 code] == -25300 && (objc_msgSend(v8, "domain"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277CCA590]), v10, v11))
   {
     v12 = _CDPLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
       v26 = v8;
       _os_log_impl(&dword_24510B000, v12, OS_LOG_TYPE_DEFAULT, "%@: Last escrow repair attempt date not found in keychain (%@)", buf, 0x16u);
@@ -1917,19 +1917,19 @@ LABEL_10:
 
   else
   {
-    if (v9)
+    if (value)
     {
       v21 = 0;
-      v13 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:&v21];
+      v13 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:value error:&v21];
       v14 = v21;
       v15 = v14;
       if (v14)
       {
-        if (a3)
+        if (date)
         {
           v16 = v14;
           v17 = 0;
-          *a3 = v15;
+          *date = v15;
         }
 
         else
@@ -1946,11 +1946,11 @@ LABEL_10:
       goto LABEL_16;
     }
 
-    if (a3)
+    if (date)
     {
       v18 = v8;
       v17 = 0;
-      *a3 = v8;
+      *date = v8;
       goto LABEL_16;
     }
   }
@@ -1963,39 +1963,39 @@ LABEL_16:
   return v17;
 }
 
-- (BOOL)_setLastEscrowRepairAttemptDate:(id)a3 error:(id *)a4
+- (BOOL)_setLastEscrowRepairAttemptDate:(id)date error:(id *)error
 {
-  if (a3)
+  if (date)
   {
     v18 = 0;
-    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v18];
+    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:date requiringSecureCoding:1 error:&v18];
     v7 = v18;
     v8 = v7;
     if (v6)
     {
-      v9 = [(CDPDEscrowRecordController *)self _lastEscrowRepairAttemptDateDescriptor];
-      v10 = [objc_alloc(MEMORY[0x277CE4520]) initWithDescriptor:v9 value:v6];
-      v11 = [(CDPDEscrowRecordController *)self keychainManager];
+      _lastEscrowRepairAttemptDateDescriptor = [(CDPDEscrowRecordController *)self _lastEscrowRepairAttemptDateDescriptor];
+      v10 = [objc_alloc(MEMORY[0x277CE4520]) initWithDescriptor:_lastEscrowRepairAttemptDateDescriptor value:v6];
+      keychainManager = [(CDPDEscrowRecordController *)self keychainManager];
       v17 = 0;
-      [v11 addOrUpdateKeychainItem:v10 error:&v17];
+      [keychainManager addOrUpdateKeychainItem:v10 error:&v17];
       v12 = v17;
 
       v13 = v12 == 0;
-      if (a4)
+      if (error)
       {
         if (v12)
         {
           v14 = v12;
-          *a4 = v12;
+          *error = v12;
         }
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v16 = v7;
       v13 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -2009,37 +2009,37 @@ LABEL_16:
   else
   {
 
-    return [(CDPDEscrowRecordController *)self _clearLastEscrowRepairAttemptDate:a4];
+    return [(CDPDEscrowRecordController *)self _clearLastEscrowRepairAttemptDate:error];
   }
 }
 
-- (BOOL)_clearLastEscrowRepairAttemptDate:(id *)a3
+- (BOOL)_clearLastEscrowRepairAttemptDate:(id *)date
 {
-  v5 = [(CDPDEscrowRecordController *)self _lastEscrowRepairAttemptDateDescriptor];
-  v6 = [(CDPDEscrowRecordController *)self keychainManager];
-  [v6 deleteKeychainItemsForDescriptor:v5 error:a3];
+  _lastEscrowRepairAttemptDateDescriptor = [(CDPDEscrowRecordController *)self _lastEscrowRepairAttemptDateDescriptor];
+  keychainManager = [(CDPDEscrowRecordController *)self keychainManager];
+  [keychainManager deleteKeychainItemsForDescriptor:_lastEscrowRepairAttemptDateDescriptor error:date];
 
-  return a3 != 0;
+  return date != 0;
 }
 
-- (unint64_t)_combinedCircleStatusUsingCache:(BOOL)a3 error:(id *)a4
+- (unint64_t)_combinedCircleStatusUsingCache:(BOOL)cache error:(id *)error
 {
-  v5 = a3;
+  cacheCopy = cache;
   v24 = *MEMORY[0x277D85DE8];
-  v7 = [(CDPDEscrowRecordController *)self circleProxy];
-  v8 = v7;
-  if (v5)
+  circleProxy = [(CDPDEscrowRecordController *)self circleProxy];
+  v8 = circleProxy;
+  if (cacheCopy)
   {
     v19 = 0;
     v9 = &v19;
-    v10 = [v7 combinedCachedCircleStatus:&v19];
+    v10 = [circleProxy combinedCachedCircleStatus:&v19];
   }
 
   else
   {
     v18 = 0;
     v9 = &v18;
-    v10 = [v7 combinedCircleStatus:&v18];
+    v10 = [circleProxy combinedCircleStatus:&v18];
   }
 
   v11 = v10;
@@ -2052,18 +2052,18 @@ LABEL_16:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 1024;
-      *v23 = v5;
+      *v23 = cacheCopy;
       *&v23[4] = 2112;
       *&v23[6] = v12;
       _os_log_error_impl(&dword_24510B000, v14, OS_LOG_TYPE_ERROR, "%@: Failed to retrieve combined circle status using cache (%{BOOL}d) with error (%@)", buf, 0x1Cu);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -2072,11 +2072,11 @@ LABEL_16:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2048;
       *v23 = v11;
       *&v23[8] = 1024;
-      *&v23[10] = v5;
+      *&v23[10] = cacheCopy;
       _os_log_impl(&dword_24510B000, v14, OS_LOG_TYPE_DEFAULT, "%@: Retrieved combined circle status (%lu) using cache (%{BOOL}d)", buf, 0x1Cu);
     }
   }
@@ -2085,54 +2085,54 @@ LABEL_16:
   return v11;
 }
 
-- (void)circleController:(id)a3 secureBackupRecordsArePresentWithCompletion:(id)a4
+- (void)circleController:(id)controller secureBackupRecordsArePresentWithCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
     v5 = MEMORY[0x277CCA9B8];
-    v6 = a4;
+    completionCopy = completion;
     v7 = [v5 cdp_errorWithCode:-5004];
-    (*(a4 + 2))(v6, 0, 0, v7);
+    (*(completion + 2))(completionCopy, 0, 0, v7);
   }
 }
 
-- (id)circlePeerIDForSecureBackupController:(id)a3
+- (id)circlePeerIDForSecureBackupController:(id)controller
 {
-  v3 = [(CDPDEscrowRecordController *)self circleController];
-  v4 = [v3 peerID];
+  circleController = [(CDPDEscrowRecordController *)self circleController];
+  peerID = [circleController peerID];
 
-  return v4;
+  return peerID;
 }
 
-- (BOOL)synchronizeCircleViewsForSecureBackupContext:(id)a3
+- (BOOL)synchronizeCircleViewsForSecureBackupContext:(id)context
 {
-  v3 = [(CDPDEscrowRecordController *)self circleController];
-  v4 = [v3 synchronizeCircleViews];
+  circleController = [(CDPDEscrowRecordController *)self circleController];
+  synchronizeCircleViews = [circleController synchronizeCircleViews];
 
-  return v4;
+  return synchronizeCircleViews;
 }
 
-- (void)promptForAdoptionOfMultipleICSCWithCompletion:(id)a3
+- (void)promptForAdoptionOfMultipleICSCWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 1, 0);
+    (*(completion + 2))(completion, 1, 0);
   }
 }
 
-- (void)promptForLocalSecretWithCompletion:(id)a3
+- (void)promptForLocalSecretWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
     [CDPDEscrowRecordController promptForLocalSecretWithCompletion:];
   }
 
-  if (v3)
+  if (completionCopy)
   {
     v5 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5004];
-    v3[2](v3, 0, v5);
+    completionCopy[2](completionCopy, 0, v5);
   }
 }
 
@@ -2145,10 +2145,10 @@ LABEL_16:
 
 - (BOOL)_hasLocalSecret
 {
-  v2 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v3 = [v2 hasLocalSecret];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  hasLocalSecret = [mEMORY[0x277CFD4F8] hasLocalSecret];
 
-  return v3;
+  return hasLocalSecret;
 }
 
 - (void)initWithContext:circleProxy:octagonTrustProxy:secureBackupProxy:.cold.1()

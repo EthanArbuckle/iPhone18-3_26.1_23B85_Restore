@@ -1,24 +1,24 @@
 @interface AVContentKeyReportGroup
-- (AVContentKeyReportGroup)initWithKeySystem:(id)a3 keySession:(id)a4 contentKeyBoss:(OpaqueFigContentKeyBoss *)a5 useContentKeyBoss:(BOOL)a6 groupID:(unint64_t)a7 storageDirectoryAtURL:(id)a8;
-- (BOOL)_associateRequestWithGroupWithRequestID:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_destroyContentKeyGroupWithError:(id *)a3;
-- (BOOL)_setAuthorizationToken:(id)a3 forIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)associateContentKeyRequest:(id)a3;
+- (AVContentKeyReportGroup)initWithKeySystem:(id)system keySession:(id)session contentKeyBoss:(OpaqueFigContentKeyBoss *)boss useContentKeyBoss:(BOOL)keyBoss groupID:(unint64_t)d storageDirectoryAtURL:(id)l;
+- (BOOL)_associateRequestWithGroupWithRequestID:(unint64_t)d error:(id *)error;
+- (BOOL)_destroyContentKeyGroupWithError:(id *)error;
+- (BOOL)_setAuthorizationToken:(id)token forIdentifier:(id)identifier error:(id *)error;
+- (BOOL)associateContentKeyRequest:(id)request;
 - (BOOL)hasProtector;
 - (NSData)contentProtectionSessionIdentifier;
-- (OpaqueFigCPECryptor)copyCryptorForCryptKeyAttributes:(id)a3;
-- (OpaqueFigCPECryptor)copyCryptorForIdentifier:(id)a3 initializationData:(id)a4;
-- (OpaqueFigCPECryptor)createCryptorIfNecessaryForIdentifier:(id)a3 initializationData:(id)a4 formatDescription:(opaqueCMFormatDescription *)a5 hlsMethod:(id)a6 error:(id *)a7;
+- (OpaqueFigCPECryptor)copyCryptorForCryptKeyAttributes:(id)attributes;
+- (OpaqueFigCPECryptor)copyCryptorForIdentifier:(id)identifier initializationData:(id)data;
+- (OpaqueFigCPECryptor)createCryptorIfNecessaryForIdentifier:(id)identifier initializationData:(id)data formatDescription:(opaqueCMFormatDescription *)description hlsMethod:(id)method error:(id *)error;
 - (OpaqueFigContentKeyBoss)_contentKeyBoss;
-- (id)_processContentKeyRequestWithIdentifier:(id)a3 contentIdentifier:(id)a4 keyIDFromInitializationData:(id)a5 initializationData:(id)a6 options:(id)a7;
-- (id)_processContentKeyRequestWithKeyRequestFromPSSH:(id)a3 decryptFormatType:(id)a4 initializationData:(id)a5 options:(id)a6;
-- (int)configureAppIdentifier:(id)a3;
-- (int)externalProtectionStatusForCryptor:(OpaqueFigCPECryptor *)a3 withDisplays:(id)a4;
+- (id)_processContentKeyRequestWithIdentifier:(id)identifier contentIdentifier:(id)contentIdentifier keyIDFromInitializationData:(id)data initializationData:(id)initializationData options:(id)options;
+- (id)_processContentKeyRequestWithKeyRequestFromPSSH:(id)h decryptFormatType:(id)type initializationData:(id)data options:(id)options;
+- (int)configureAppIdentifier:(id)identifier;
+- (int)externalProtectionStatusForCryptor:(OpaqueFigCPECryptor *)cryptor withDisplays:(id)displays;
 - (void)createProtectorSessionIdentifierIfNecessary;
 - (void)dealloc;
 - (void)expire;
-- (void)failProcessingContentKeyRequestWithIdentifier:(id)a3 initializationData:(id)a4 error:(id)a5;
-- (void)processContentKeyRequestWithIdentifier:(id)a3 initializationData:(id)a4 options:(id)a5;
+- (void)failProcessingContentKeyRequestWithIdentifier:(id)identifier initializationData:(id)data error:(id)error;
+- (void)processContentKeyRequestWithIdentifier:(id)identifier initializationData:(id)data options:(id)options;
 @end
 
 @implementation AVContentKeyReportGroup
@@ -53,21 +53,21 @@
   return result;
 }
 
-- (void)failProcessingContentKeyRequestWithIdentifier:(id)a3 initializationData:(id)a4 error:(id)a5
+- (void)failProcessingContentKeyRequestWithIdentifier:(id)identifier initializationData:(id)data error:(id)error
 {
   LOBYTE(v7) = 0;
-  v6 = [[AVContentKeyRequest alloc] initWithContentKeySession:[(AVContentKeyReportGroup *)self _contentKeySession] reportGroup:self identifier:a3 contentIdentifier:0 keyIDFromInitializationData:0 initializationData:a4 preloadingRequestOptions:0 providesPersistableKey:v7];
+  v6 = [[AVContentKeyRequest alloc] initWithContentKeySession:[(AVContentKeyReportGroup *)self _contentKeySession] reportGroup:self identifier:identifier contentIdentifier:0 keyIDFromInitializationData:0 initializationData:data preloadingRequestOptions:0 providesPersistableKey:v7];
 
-  [(AVContentKeyRequest *)v6 _setError:a5];
+  [(AVContentKeyRequest *)v6 _setError:error];
 }
 
-- (id)_processContentKeyRequestWithIdentifier:(id)a3 contentIdentifier:(id)a4 keyIDFromInitializationData:(id)a5 initializationData:(id)a6 options:(id)a7
+- (id)_processContentKeyRequestWithIdentifier:(id)identifier contentIdentifier:(id)contentIdentifier keyIDFromInitializationData:(id)data initializationData:(id)initializationData options:(id)options
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v22 = 0;
-  if (!(a3 | a6))
+  if (!(identifier | initializationData))
   {
-    v19 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"identifier or initializationData must be valid", a4, a5, a6, a7, v7, v20), 0}];
+    v19 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"identifier or initializationData must be valid", contentIdentifier, data, initializationData, options, v7, v20), 0}];
     objc_exception_throw(v19);
   }
 
@@ -75,13 +75,13 @@
   {
     v23 = *MEMORY[0x1E695E618];
     v24[0] = @"An expired content key session cannot process content key request";
-    -[AVContentKeyReportGroup failProcessingContentKeyRequestWithIdentifier:initializationData:error:](self, "failProcessingContentKeyRequestWithIdentifier:initializationData:error:", a3, a6, AVLocalizedError(@"AVFoundationErrorDomain", -11862, [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1]));
+    -[AVContentKeyReportGroup failProcessingContentKeyRequestWithIdentifier:initializationData:error:](self, "failProcessingContentKeyRequestWithIdentifier:initializationData:error:", identifier, initializationData, AVLocalizedError(@"AVFoundationErrorDomain", -11862, [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1]));
     return 0;
   }
 
   else
   {
-    v15 = [(AVContentKeyReportGroup *)self copyCryptorForIdentifier:a3 initializationData:a6];
+    v15 = [(AVContentKeyReportGroup *)self copyCryptorForIdentifier:identifier initializationData:initializationData];
     if (v15 && ((v16 = *(*(CMBaseObjectGetVTable() + 8) + 48)) == 0 || v16(v15, *MEMORY[0x1E69610E8], *MEMORY[0x1E695E480], &v22) || (v17 = [v22 intValue], v22, v17 != 1)))
     {
       v11 = 0;
@@ -90,7 +90,7 @@
     else
     {
       LOBYTE(v21) = 0;
-      v11 = [[AVContentKeyRequest alloc] initWithContentKeySession:[(AVContentKeyReportGroup *)self _contentKeySession] reportGroup:self identifier:a3 contentIdentifier:a4 keyIDFromInitializationData:a5 initializationData:a6 preloadingRequestOptions:a7 providesPersistableKey:v21];
+      v11 = [[AVContentKeyRequest alloc] initWithContentKeySession:[(AVContentKeyReportGroup *)self _contentKeySession] reportGroup:self identifier:identifier contentIdentifier:contentIdentifier keyIDFromInitializationData:data initializationData:initializationData preloadingRequestOptions:options providesPersistableKey:v21];
       if (!v15)
       {
         return v11;
@@ -103,12 +103,12 @@
   return v11;
 }
 
-- (id)_processContentKeyRequestWithKeyRequestFromPSSH:(id)a3 decryptFormatType:(id)a4 initializationData:(id)a5 options:(id)a6
+- (id)_processContentKeyRequestWithKeyRequestFromPSSH:(id)h decryptFormatType:(id)type initializationData:(id)data options:(id)options
 {
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  [v11 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E6972168]), @"ProtocolVersionsKey"}];
-  [v11 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E6972160]), @"CSKRO_RemoteContext"}];
-  if ([a4 isEqualToString:*MEMORY[0x1E6971748]])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(h forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E6972168]), @"ProtocolVersionsKey"}];
+  [dictionary setObject:objc_msgSend(h forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E6972160]), @"CSKRO_RemoteContext"}];
+  if ([type isEqualToString:*MEMORY[0x1E6971748]])
   {
     v12 = @"ISO_23001_7";
   }
@@ -118,25 +118,25 @@
     v12 = @"SAMPLE-AES";
   }
 
-  [v11 setObject:v12 forKeyedSubscript:@"HLSMethodKey"];
+  [dictionary setObject:v12 forKeyedSubscript:@"HLSMethodKey"];
   v13 = *MEMORY[0x1E6972158];
-  v14 = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E6972158]), "base64EncodedStringWithOptions:", 0}];
-  v15 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6972150]];
-  v16 = [a3 objectForKeyedSubscript:v13];
-  v17 = [AVContentKeyRequest _mergeDictionary:v11 withMissingItemsFrom:a6];
+  v14 = [objc_msgSend(h objectForKeyedSubscript:{*MEMORY[0x1E6972158]), "base64EncodedStringWithOptions:", 0}];
+  v15 = [h objectForKeyedSubscript:*MEMORY[0x1E6972150]];
+  v16 = [h objectForKeyedSubscript:v13];
+  v17 = [AVContentKeyRequest _mergeDictionary:dictionary withMissingItemsFrom:options];
 
-  return [(AVContentKeyReportGroup *)self _processContentKeyRequestWithIdentifier:v14 contentIdentifier:v15 keyIDFromInitializationData:v16 initializationData:a5 options:v17];
+  return [(AVContentKeyReportGroup *)self _processContentKeyRequestWithIdentifier:v14 contentIdentifier:v15 keyIDFromInitializationData:v16 initializationData:data options:v17];
 }
 
-- (void)processContentKeyRequestWithIdentifier:(id)a3 initializationData:(id)a4 options:(id)a5
+- (void)processContentKeyRequestWithIdentifier:(id)identifier initializationData:(id)data options:(id)options
 {
   v30[42] = *MEMORY[0x1E69E9840];
   v29 = 0;
   v30[0] = 0;
   v28 = 0;
-  v10 = [MEMORY[0x1E695DF70] array];
-  v27 = [(AVContentKeyReportGroup *)self _contentKeySession];
-  if (!v27)
+  array = [MEMORY[0x1E695DF70] array];
+  _contentKeySession = [(AVContentKeyReportGroup *)self _contentKeySession];
+  if (!_contentKeySession)
   {
     v22 = MEMORY[0x1E695DF30];
     v23 = *MEMORY[0x1E695D940];
@@ -144,7 +144,7 @@
     goto LABEL_22;
   }
 
-  if (!(a3 | a4))
+  if (!(identifier | data))
   {
     v22 = MEMORY[0x1E695DF30];
     v23 = *MEMORY[0x1E695D940];
@@ -163,17 +163,17 @@ LABEL_22:
 
   if (self->_useContentKeyBoss)
   {
-    [v27 _processContentKeyRequestWithIdentifier:a3 initializationData:a4 options:a5 groupID:self->_groupID];
+    [_contentKeySession _processContentKeyRequestWithIdentifier:identifier initializationData:data options:options groupID:self->_groupID];
     v17 = 0;
     goto LABEL_14;
   }
 
-  if (!a4)
+  if (!data)
   {
     goto LABEL_8;
   }
 
-  avcks_decodeInitializationDataAndCopyInformation(a4, &v28, 0, 0, 0, v30);
+  avcks_decodeInitializationDataAndCopyInformation(data, &v28, 0, 0, 0, v30);
   if (v30[0])
   {
     v21 = FigPKDParsePSSHAndCopyContentKeyInfo();
@@ -185,7 +185,7 @@ LABEL_12:
       v20 = AVLocalizedErrorWithUnderlyingOSStatusAndUnderlyingError(v18, 0, 0, 1);
       if (v20)
       {
-        [(AVContentKeyReportGroup *)self failProcessingContentKeyRequestWithIdentifier:a3 initializationData:a4 error:v20];
+        [(AVContentKeyReportGroup *)self failProcessingContentKeyRequestWithIdentifier:identifier initializationData:data error:v20];
       }
 
       goto LABEL_14;
@@ -205,13 +205,13 @@ LABEL_8:
     v18 = 0;
   }
 
-  v19 = [(AVContentKeyReportGroup *)self _processContentKeyRequestWithIdentifier:a3 contentIdentifier:v17 keyIDFromInitializationData:v29 initializationData:a4 options:a5];
+  v19 = [(AVContentKeyReportGroup *)self _processContentKeyRequestWithIdentifier:identifier contentIdentifier:v17 keyIDFromInitializationData:v29 initializationData:data options:options];
   if (v19)
   {
-    [v10 addObject:v19];
+    [array addObject:v19];
   }
 
-  [v27 issueContentKeyRequests:v10 forInitializationData:{a4, v26}];
+  [_contentKeySession issueContentKeyRequests:array forInitializationData:{data, v26}];
   if (v18)
   {
     goto LABEL_12;
@@ -220,14 +220,14 @@ LABEL_8:
 LABEL_14:
 }
 
-- (BOOL)_associateRequestWithGroupWithRequestID:(unint64_t)a3 error:(id *)a4
+- (BOOL)_associateRequestWithGroupWithRequestID:(unint64_t)d error:(id *)error
 {
-  v7 = [(AVContentKeyReportGroup *)self _contentKeyBoss];
-  if (!v7)
+  _contentKeyBoss = [(AVContentKeyReportGroup *)self _contentKeyBoss];
+  if (!_contentKeyBoss)
   {
     [AVContentKeyReportGroup _associateRequestWithGroupWithRequestID:? error:?];
     v11 = v13;
-    if (!a4)
+    if (!error)
     {
       return v11 == 0;
     }
@@ -235,12 +235,12 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  v8 = v7;
+  v8 = _contentKeyBoss;
   groupID = self->_groupID;
   v10 = *(*(CMBaseObjectGetVTable() + 16) + 80);
   if (v10)
   {
-    v11 = v10(v8, a3, groupID);
+    v11 = v10(v8, d, groupID);
   }
 
   else
@@ -249,19 +249,19 @@ LABEL_14:
   }
 
   CFRelease(v8);
-  if (a4)
+  if (error)
   {
 LABEL_6:
     if (v11)
     {
-      *a4 = AVLocalizedErrorWithUnderlyingOSStatus(v11, 0);
+      *error = AVLocalizedErrorWithUnderlyingOSStatus(v11, 0);
     }
   }
 
   return v11 == 0;
 }
 
-- (BOOL)associateContentKeyRequest:(id)a3
+- (BOOL)associateContentKeyRequest:(id)request
 {
   if (dword_1EAEFCEB0)
   {
@@ -272,23 +272,23 @@ LABEL_6:
 
   if (self->_useContentKeyBoss)
   {
-    return -[AVContentKeyReportGroup _associateRequestWithGroupWithRequestID:error:](self, "_associateRequestWithGroupWithRequestID:error:", [a3 _requestID], 0);
+    return -[AVContentKeyReportGroup _associateRequestWithGroupWithRequestID:error:](self, "_associateRequestWithGroupWithRequestID:error:", [request _requestID], 0);
   }
 
   else
   {
-    return [a3 setReportGroup:self];
+    return [request setReportGroup:self];
   }
 }
 
-- (BOOL)_destroyContentKeyGroupWithError:(id *)a3
+- (BOOL)_destroyContentKeyGroupWithError:(id *)error
 {
-  v5 = [(AVContentKeyReportGroup *)self _contentKeyBoss];
-  if (!v5)
+  _contentKeyBoss = [(AVContentKeyReportGroup *)self _contentKeyBoss];
+  if (!_contentKeyBoss)
   {
     [AVContentKeyReportGroup _destroyContentKeyGroupWithError:?];
     v9 = v11;
-    if (!a3)
+    if (!error)
     {
       return v9 == 0;
     }
@@ -296,7 +296,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v6 = v5;
+  v6 = _contentKeyBoss;
   groupID = self->_groupID;
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 72);
   if (v8)
@@ -310,12 +310,12 @@ LABEL_6:
   }
 
   CFRelease(v6);
-  if (a3)
+  if (error)
   {
 LABEL_6:
     if (v9)
     {
-      *a3 = AVLocalizedErrorWithUnderlyingOSStatus(v9, 0);
+      *error = AVLocalizedErrorWithUnderlyingOSStatus(v9, 0);
     }
   }
 
@@ -385,7 +385,7 @@ uint64_t __33__AVContentKeyReportGroup_expire__block_invoke(uint64_t result)
   return v2;
 }
 
-- (OpaqueFigCPECryptor)createCryptorIfNecessaryForIdentifier:(id)a3 initializationData:(id)a4 formatDescription:(opaqueCMFormatDescription *)a5 hlsMethod:(id)a6 error:(id *)a7
+- (OpaqueFigCPECryptor)createCryptorIfNecessaryForIdentifier:(id)identifier initializationData:(id)data formatDescription:(opaqueCMFormatDescription *)description hlsMethod:(id)method error:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -403,19 +403,19 @@ uint64_t __33__AVContentKeyReportGroup_expire__block_invoke(uint64_t result)
     block[2] = __152__AVContentKeyReportGroup_AVContentKeyReportGroup_Internal__createCryptorIfNecessaryForIdentifier_initializationData_formatDescription_hlsMethod_error___block_invoke;
     block[3] = &unk_1E7466138;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
-    block[7] = a6;
+    block[5] = identifier;
+    block[6] = data;
+    block[7] = method;
     block[8] = &v23;
     block[9] = &v19;
-    block[10] = a5;
+    block[10] = description;
     dispatch_sync(serialQueue, block);
     v14 = *(v24 + 6);
     if (v14)
     {
-      if (a7)
+      if (error)
       {
-        *a7 = AVLocalizedErrorWithUnderlyingOSStatus(v14, 0);
+        *error = AVLocalizedErrorWithUnderlyingOSStatus(v14, 0);
       }
 
       v15 = v20[3];
@@ -433,7 +433,7 @@ uint64_t __33__AVContentKeyReportGroup_expire__block_invoke(uint64_t result)
   return v16;
 }
 
-- (OpaqueFigCPECryptor)copyCryptorForIdentifier:(id)a3 initializationData:(id)a4
+- (OpaqueFigCPECryptor)copyCryptorForIdentifier:(id)identifier initializationData:(id)data
 {
   v17 = 0;
   v18 = &v17;
@@ -456,8 +456,8 @@ uint64_t __33__AVContentKeyReportGroup_expire__block_invoke(uint64_t result)
     block[2] = __105__AVContentKeyReportGroup_AVContentKeyReportGroup_Internal__copyCryptorForIdentifier_initializationData___block_invoke;
     block[3] = &unk_1E7466160;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = identifier;
+    block[6] = data;
     block[7] = &v17;
     block[8] = &v13;
     dispatch_sync(serialQueue, block);
@@ -480,7 +480,7 @@ uint64_t __33__AVContentKeyReportGroup_expire__block_invoke(uint64_t result)
   return v10;
 }
 
-- (AVContentKeyReportGroup)initWithKeySystem:(id)a3 keySession:(id)a4 contentKeyBoss:(OpaqueFigContentKeyBoss *)a5 useContentKeyBoss:(BOOL)a6 groupID:(unint64_t)a7 storageDirectoryAtURL:(id)a8
+- (AVContentKeyReportGroup)initWithKeySystem:(id)system keySession:(id)session contentKeyBoss:(OpaqueFigContentKeyBoss *)boss useContentKeyBoss:(BOOL)keyBoss groupID:(unint64_t)d storageDirectoryAtURL:(id)l
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -488,21 +488,21 @@ uint64_t __33__AVContentKeyReportGroup_expire__block_invoke(uint64_t result)
   v13 = [(AVContentKeyReportGroup *)&v19 init];
   if (v13)
   {
-    v13->_contentKeySessionWeakReference = [[AVWeakReference alloc] initWithReferencedObject:a4];
+    v13->_contentKeySessionWeakReference = [[AVWeakReference alloc] initWithReferencedObject:session];
     v13->_cryptorsList = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13->_serialQueue = dispatch_queue_create("com.apple.avfoundation.avcontentkeyreportgroup", v14);
-    v13->_keySystem = a3;
+    v13->_keySystem = system;
     v13->_weakContentKeyBoss = FigCFWeakReferenceHolderCreateWithReferencedObject();
-    v13->_useContentKeyBoss = a6;
-    if (a8)
+    v13->_useContentKeyBoss = keyBoss;
+    if (l)
     {
       v20 = *MEMORY[0x1E6960F18];
-      v21[0] = a8;
+      v21[0] = l;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
     }
 
-    v13->_groupID = a7;
+    v13->_groupID = d;
     Session = FigContentKeySessionRemoteCreateSession();
     if (Session)
     {
@@ -603,7 +603,7 @@ uint64_t __111__AVContentKeyReportGroup_AVContentKeyReportGroupPrivateUtilities_
   return result;
 }
 
-- (int)configureAppIdentifier:(id)a3
+- (int)configureAppIdentifier:(id)identifier
 {
   if (self->_useContentKeyBoss)
   {
@@ -618,7 +618,7 @@ uint64_t __111__AVContentKeyReportGroup_AVContentKeyReportGroupPrivateUtilities_
     {
       v7 = *MEMORY[0x1E6960F78];
 
-      return v6(figContentKeySession, v7, a3);
+      return v6(figContentKeySession, v7, identifier);
     }
 
     else
@@ -634,7 +634,7 @@ uint64_t __111__AVContentKeyReportGroup_AVContentKeyReportGroupPrivateUtilities_
   }
 }
 
-- (BOOL)_setAuthorizationToken:(id)a3 forIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_setAuthorizationToken:(id)token forIdentifier:(id)identifier error:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -646,14 +646,14 @@ uint64_t __111__AVContentKeyReportGroup_AVContentKeyReportGroupPrivateUtilities_
   v10[2] = __111__AVContentKeyReportGroup_AVContentKeyReportGroupPrivateUtilities___setAuthorizationToken_forIdentifier_error___block_invoke;
   v10[3] = &unk_1E7466188;
   v10[4] = self;
-  v10[5] = a4;
-  v10[6] = a3;
+  v10[5] = identifier;
+  v10[6] = token;
   v10[7] = &v11;
   dispatch_sync(serialQueue, v10);
   v7 = *(v12 + 6);
-  if (a5 && v7)
+  if (error && v7)
   {
-    *a5 = AVLocalizedErrorWithUnderlyingOSStatus(v7, 0);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(v7, 0);
     v7 = *(v12 + 6);
   }
 
@@ -720,7 +720,7 @@ uint64_t __111__AVContentKeyReportGroup_AVContentKeyReportGroupPrivateUtilities_
   return !v4 && v3 == *MEMORY[0x1E695E4D0];
 }
 
-- (OpaqueFigCPECryptor)copyCryptorForCryptKeyAttributes:(id)a3
+- (OpaqueFigCPECryptor)copyCryptorForCryptKeyAttributes:(id)attributes
 {
   v7 = 0;
   figContentKeySession = self->_figContentKeySession;
@@ -729,7 +729,7 @@ uint64_t __111__AVContentKeyReportGroup_AVContentKeyReportGroupPrivateUtilities_
     v5 = *(*(CMBaseObjectGetVTable() + 16) + 16);
     if (v5)
     {
-      v5(figContentKeySession, *MEMORY[0x1E695E480], a3, 0, &v7);
+      v5(figContentKeySession, *MEMORY[0x1E695E480], attributes, 0, &v7);
       return v7;
     }
   }
@@ -742,7 +742,7 @@ uint64_t __111__AVContentKeyReportGroup_AVContentKeyReportGroupPrivateUtilities_
   return 0;
 }
 
-- (int)externalProtectionStatusForCryptor:(OpaqueFigCPECryptor *)a3 withDisplays:(id)a4
+- (int)externalProtectionStatusForCryptor:(OpaqueFigCPECryptor *)cryptor withDisplays:(id)displays
 {
   v9 = 1;
   figContentKeySession = self->_figContentKeySession;
@@ -751,7 +751,7 @@ uint64_t __111__AVContentKeyReportGroup_AVContentKeyReportGroupPrivateUtilities_
     v7 = *(*(CMBaseObjectGetVTable() + 16) + 88);
     if (v7)
     {
-      v7(figContentKeySession, a3, a4, &v9);
+      v7(figContentKeySession, cryptor, displays, &v9);
       return v9;
     }
   }

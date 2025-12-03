@@ -1,138 +1,138 @@
 @interface HKSPSleepScheduleModel
-+ (id)_computeUpcomingDateIntervalForDate:(id)a3;
-+ (id)sleepScheduleModelWithSleepSchedule:(id)a3 sleepSettings:(id)a4 sleepEventRecord:(id)a5;
-+ (id)templateModelForSchedule:(id)a3;
-- (BOOL)chargingRemindersEnabledWithLogObject:(id)a3;
-- (BOOL)goodMorningAlertNotificationsEnabledWithLogObject:(id)a3;
-- (BOOL)goodMorningScreenEnabledWithLogObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentTo:(id)a3;
-- (HKSPSleepScheduleModel)initWithCoder:(id)a3;
++ (id)_computeUpcomingDateIntervalForDate:(id)date;
++ (id)sleepScheduleModelWithSleepSchedule:(id)schedule sleepSettings:(id)settings sleepEventRecord:(id)record;
++ (id)templateModelForSchedule:(id)schedule;
+- (BOOL)chargingRemindersEnabledWithLogObject:(id)object;
+- (BOOL)goodMorningAlertNotificationsEnabledWithLogObject:(id)object;
+- (BOOL)goodMorningScreenEnabledWithLogObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentTo:(id)to;
+- (HKSPSleepScheduleModel)initWithCoder:(id)coder;
 - (NSDate)lastModifiedDate;
-- (id)_computeOriginalWakeUpForOverrideDateHelper:(id)a3;
-- (id)_timelineResultsDueAfterDate:(id)a3;
-- (id)_upcomingEventsDueAfterDate:(id)a3 searchBackwards:(BOOL)a4;
-- (id)_upcomingResolvedOccurrencesDueAfterDate:(id)a3 searchBackwards:(BOOL)a4;
-- (id)closestEventWithIdentifier:(id)a3 dueAroundDate:(id)a4;
-- (id)computeConfirmedWakeUpUntilDateForEarlyWakeUpDate:(id)a3;
-- (id)computeConfirmedWakeUpUntilDateForOverrideWakeUpDate:(id)a3;
-- (id)computeTemplateGenerationDateForCurrentDate:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)generateOverrideOccurrenceForCurrentDate:(id)a3 gregorianCalendar:(id)a4;
-- (id)generateOverrideOccurrenceForCurrentDate:(id)a3 gregorianCalendar:(id)a4 schedule:(id)a5;
-- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)a3;
-- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)a3 gregorianCalendar:(id)a4;
-- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)a3 gregorianCalendar:(id)a4 mutableOccurrence:(id)a5;
-- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)a3 gregorianCalendar:(id)a4 schedule:(id)a5;
-- (id)modelByApplyingChangesFromOccurrence:(id)a3;
-- (id)nextEventDueAfterDate:(id)a3;
-- (id)nextEventWithIdentifier:(id)a3 dueAfterDate:(id)a4;
-- (id)nextOccurrenceAfterDate:(id)a3;
-- (id)nextOccurrenceInInterval:(id)a3;
-- (id)nextResolvedOccurrenceAfterDate:(id)a3;
-- (id)nextResolvedOccurrenceInInterval:(id)a3;
-- (id)overrideOccurrenceGenerationResultForCurrentDate:(id)a3 gregorianCalendar:(id)a4 schedule:(id)a5;
-- (id)previousEventWithIdentifier:(id)a3 dueBeforeDate:(id)a4;
-- (id)previousOccurrenceBeforeDate:(id)a3;
-- (id)previousResolvedOccurrenceBeforeDate:(id)a3;
+- (id)_computeOriginalWakeUpForOverrideDateHelper:(id)helper;
+- (id)_timelineResultsDueAfterDate:(id)date;
+- (id)_upcomingEventsDueAfterDate:(id)date searchBackwards:(BOOL)backwards;
+- (id)_upcomingResolvedOccurrencesDueAfterDate:(id)date searchBackwards:(BOOL)backwards;
+- (id)closestEventWithIdentifier:(id)identifier dueAroundDate:(id)date;
+- (id)computeConfirmedWakeUpUntilDateForEarlyWakeUpDate:(id)date;
+- (id)computeConfirmedWakeUpUntilDateForOverrideWakeUpDate:(id)date;
+- (id)computeTemplateGenerationDateForCurrentDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)generateOverrideOccurrenceForCurrentDate:(id)date gregorianCalendar:(id)calendar;
+- (id)generateOverrideOccurrenceForCurrentDate:(id)date gregorianCalendar:(id)calendar schedule:(id)schedule;
+- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)date;
+- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)date gregorianCalendar:(id)calendar;
+- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)date gregorianCalendar:(id)calendar mutableOccurrence:(id)occurrence;
+- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)date gregorianCalendar:(id)calendar schedule:(id)schedule;
+- (id)modelByApplyingChangesFromOccurrence:(id)occurrence;
+- (id)nextEventDueAfterDate:(id)date;
+- (id)nextEventWithIdentifier:(id)identifier dueAfterDate:(id)date;
+- (id)nextOccurrenceAfterDate:(id)date;
+- (id)nextOccurrenceInInterval:(id)interval;
+- (id)nextResolvedOccurrenceAfterDate:(id)date;
+- (id)nextResolvedOccurrenceInInterval:(id)interval;
+- (id)overrideOccurrenceGenerationResultForCurrentDate:(id)date gregorianCalendar:(id)calendar schedule:(id)schedule;
+- (id)previousEventWithIdentifier:(id)identifier dueBeforeDate:(id)date;
+- (id)previousOccurrenceBeforeDate:(id)date;
+- (id)previousResolvedOccurrenceBeforeDate:(id)date;
 - (id)succinctDescription;
-- (id)timelineForDate:(id)a3;
-- (id)upcomingOccurrenceAfterDate:(id)a3;
-- (id)upcomingResolvedOccurrenceAfterDate:(id)a3;
-- (int64_t)alarmStatusForOccurrence:(id)a3;
+- (id)timelineForDate:(id)date;
+- (id)upcomingOccurrenceAfterDate:(id)date;
+- (id)upcomingResolvedOccurrenceAfterDate:(id)date;
+- (int64_t)alarmStatusForOccurrence:(id)occurrence;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSPSleepScheduleModel
 
-+ (id)sleepScheduleModelWithSleepSchedule:(id)a3 sleepSettings:(id)a4 sleepEventRecord:(id)a5
++ (id)sleepScheduleModelWithSleepSchedule:(id)schedule sleepSettings:(id)settings sleepEventRecord:(id)record
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  recordCopy = record;
+  settingsCopy = settings;
+  scheduleCopy = schedule;
   v10 = objc_alloc_init(HKSPSleepScheduleModel);
-  v11 = [v9 copy];
+  v11 = [scheduleCopy copy];
 
   sleepSchedule = v10->_sleepSchedule;
   v10->_sleepSchedule = v11;
 
-  v13 = [v8 copy];
+  v13 = [settingsCopy copy];
   sleepSettings = v10->_sleepSettings;
   v10->_sleepSettings = v13;
 
-  v15 = [v7 copy];
+  v15 = [recordCopy copy];
   sleepEventRecord = v10->_sleepEventRecord;
   v10->_sleepEventRecord = v15;
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HKSPSleepScheduleModel);
-  v5 = [(HKSPSleepScheduleModel *)self sleepSchedule];
+  sleepSchedule = [(HKSPSleepScheduleModel *)self sleepSchedule];
   sleepSchedule = v4->_sleepSchedule;
-  v4->_sleepSchedule = v5;
+  v4->_sleepSchedule = sleepSchedule;
 
-  v7 = [(HKSPSleepScheduleModel *)self sleepSettings];
+  sleepSettings = [(HKSPSleepScheduleModel *)self sleepSettings];
   sleepSettings = v4->_sleepSettings;
-  v4->_sleepSettings = v7;
+  v4->_sleepSettings = sleepSettings;
 
-  v9 = [(HKSPSleepScheduleModel *)self sleepEventRecord];
+  sleepEventRecord = [(HKSPSleepScheduleModel *)self sleepEventRecord];
   sleepEventRecord = v4->_sleepEventRecord;
-  v4->_sleepEventRecord = v9;
+  v4->_sleepEventRecord = sleepEventRecord;
 
   return v4;
 }
 
 - (NSDate)lastModifiedDate
 {
-  v3 = [(HKSPSleepSchedule *)self->_sleepSchedule lastModifiedDate];
-  if (!v3 || (-[HKSPSleepSettings lastModifiedDate](self->_sleepSettings, "lastModifiedDate"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 hksp_isAfterDate:v3], v4, v5))
+  lastModifiedDate = [(HKSPSleepSchedule *)self->_sleepSchedule lastModifiedDate];
+  if (!lastModifiedDate || (-[HKSPSleepSettings lastModifiedDate](self->_sleepSettings, "lastModifiedDate"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 hksp_isAfterDate:lastModifiedDate], v4, v5))
   {
-    v6 = [(HKSPSleepSettings *)self->_sleepSettings lastModifiedDate];
+    lastModifiedDate2 = [(HKSPSleepSettings *)self->_sleepSettings lastModifiedDate];
 
-    v3 = v6;
-    if (!v6)
+    lastModifiedDate = lastModifiedDate2;
+    if (!lastModifiedDate2)
     {
       goto LABEL_5;
     }
   }
 
-  v7 = [(HKSPSleepEventRecord *)self->_sleepEventRecord lastModifiedDate];
-  v8 = [v7 hksp_isAfterDate:v3];
+  lastModifiedDate3 = [(HKSPSleepEventRecord *)self->_sleepEventRecord lastModifiedDate];
+  v8 = [lastModifiedDate3 hksp_isAfterDate:lastModifiedDate];
 
   if (v8)
   {
 LABEL_5:
-    v9 = [(HKSPSleepEventRecord *)self->_sleepEventRecord lastModifiedDate];
+    lastModifiedDate4 = [(HKSPSleepEventRecord *)self->_sleepEventRecord lastModifiedDate];
 
-    v3 = v9;
+    lastModifiedDate = lastModifiedDate4;
   }
 
-  return v3;
+  return lastModifiedDate;
 }
 
-- (BOOL)isEquivalentTo:(id)a3
+- (BOOL)isEquivalentTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HKSPSleepScheduleModel *)self sleepSchedule];
-    v6 = [v4 sleepSchedule];
-    if ([v5 isEquivalentTo:v6])
+    sleepSchedule = [(HKSPSleepScheduleModel *)self sleepSchedule];
+    sleepSchedule2 = [toCopy sleepSchedule];
+    if ([sleepSchedule isEquivalentTo:sleepSchedule2])
     {
-      v7 = [(HKSPSleepScheduleModel *)self sleepSettings];
-      v8 = [v4 sleepSettings];
-      if ([v7 isEquivalentTo:v8])
+      sleepSettings = [(HKSPSleepScheduleModel *)self sleepSettings];
+      sleepSettings2 = [toCopy sleepSettings];
+      if ([sleepSettings isEquivalentTo:sleepSettings2])
       {
-        v9 = [(HKSPSleepScheduleModel *)self sleepEventRecord];
-        v10 = [v4 sleepEventRecord];
-        v11 = [v9 isEquivalentTo:v10];
+        sleepEventRecord = [(HKSPSleepScheduleModel *)self sleepEventRecord];
+        sleepEventRecord2 = [toCopy sleepEventRecord];
+        v11 = [sleepEventRecord isEquivalentTo:sleepEventRecord2];
       }
 
       else
@@ -155,10 +155,10 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -168,7 +168,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [MEMORY[0x277CF0C20] builderWithObject:v5 ofExpectedClass:objc_opt_class()];
       sleepSchedule = self->_sleepSchedule;
       v22[0] = MEMORY[0x277D85DD0];
@@ -206,24 +206,24 @@ LABEL_5:
   return v16;
 }
 
-- (id)nextEventWithIdentifier:(id)a3 dueAfterDate:(id)a4
+- (id)nextEventWithIdentifier:(id)identifier dueAfterDate:(id)date
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v8 = +[HKSPSleepEvent standardEventIdentifiers];
-  v9 = [v8 containsObject:v6];
+  v9 = [v8 containsObject:identifierCopy];
 
   if (v9)
   {
-    v10 = [(HKSPSleepScheduleModel *)self upcomingEventsDueAfterDate:v7];
+    v10 = [(HKSPSleepScheduleModel *)self upcomingEventsDueAfterDate:dateCopy];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __63__HKSPSleepScheduleModel_nextEventWithIdentifier_dueAfterDate___block_invoke;
     v16[3] = &unk_279C73CF8;
-    v17 = v6;
+    v17 = identifierCopy;
     v11 = [v10 na_firstObjectPassingTest:v16];
-    v12 = [v11 dueDate];
+    dueDate = [v11 dueDate];
   }
 
   else
@@ -234,17 +234,17 @@ LABEL_5:
       *buf = 138543618;
       v19 = objc_opt_class();
       v20 = 2114;
-      v21 = v6;
+      v21 = identifierCopy;
       v15 = v19;
       _os_log_error_impl(&dword_269A84000, v10, OS_LOG_TYPE_ERROR, "[%{public}@] %{public}@ not in known identifiers", buf, 0x16u);
     }
 
-    v12 = 0;
+    dueDate = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return dueDate;
 }
 
 uint64_t __63__HKSPSleepScheduleModel_nextEventWithIdentifier_dueAfterDate___block_invoke(uint64_t a1, void *a2)
@@ -255,24 +255,24 @@ uint64_t __63__HKSPSleepScheduleModel_nextEventWithIdentifier_dueAfterDate___blo
   return v4;
 }
 
-- (id)previousEventWithIdentifier:(id)a3 dueBeforeDate:(id)a4
+- (id)previousEventWithIdentifier:(id)identifier dueBeforeDate:(id)date
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v8 = +[HKSPSleepEvent standardEventIdentifiers];
-  v9 = [v8 containsObject:v6];
+  v9 = [v8 containsObject:identifierCopy];
 
   if (v9)
   {
-    v10 = [(HKSPSleepScheduleModel *)self _upcomingEventsDueAfterDate:v7 searchBackwards:1];
+    v10 = [(HKSPSleepScheduleModel *)self _upcomingEventsDueAfterDate:dateCopy searchBackwards:1];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __68__HKSPSleepScheduleModel_previousEventWithIdentifier_dueBeforeDate___block_invoke;
     v16[3] = &unk_279C73CF8;
-    v17 = v6;
+    v17 = identifierCopy;
     v11 = [v10 na_firstObjectPassingTest:v16];
-    v12 = [v11 dueDate];
+    dueDate = [v11 dueDate];
   }
 
   else
@@ -283,17 +283,17 @@ uint64_t __63__HKSPSleepScheduleModel_nextEventWithIdentifier_dueAfterDate___blo
       *buf = 138543618;
       v19 = objc_opt_class();
       v20 = 2114;
-      v21 = v6;
+      v21 = identifierCopy;
       v15 = v19;
       _os_log_error_impl(&dword_269A84000, v10, OS_LOG_TYPE_ERROR, "[%{public}@] %{public}@ not in known identifiers", buf, 0x16u);
     }
 
-    v12 = 0;
+    dueDate = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return dueDate;
 }
 
 uint64_t __68__HKSPSleepScheduleModel_previousEventWithIdentifier_dueBeforeDate___block_invoke(uint64_t a1, void *a2)
@@ -304,12 +304,12 @@ uint64_t __68__HKSPSleepScheduleModel_previousEventWithIdentifier_dueBeforeDate_
   return v4;
 }
 
-- (id)closestEventWithIdentifier:(id)a3 dueAroundDate:(id)a4
+- (id)closestEventWithIdentifier:(id)identifier dueAroundDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKSPSleepScheduleModel *)self nextEventWithIdentifier:v7 dueAfterDate:v6];
-  v9 = [(HKSPSleepScheduleModel *)self previousEventWithIdentifier:v7 dueBeforeDate:v6];
+  dateCopy = date;
+  identifierCopy = identifier;
+  v8 = [(HKSPSleepScheduleModel *)self nextEventWithIdentifier:identifierCopy dueAfterDate:dateCopy];
+  v9 = [(HKSPSleepScheduleModel *)self previousEventWithIdentifier:identifierCopy dueBeforeDate:dateCopy];
 
   v10 = v9;
   if (v8)
@@ -317,9 +317,9 @@ uint64_t __68__HKSPSleepScheduleModel_previousEventWithIdentifier_dueBeforeDate_
     v10 = v8;
     if (v9)
     {
-      [v8 timeIntervalSinceDate:v6];
+      [v8 timeIntervalSinceDate:dateCopy];
       v12 = v11;
-      [v6 timeIntervalSinceDate:v9];
+      [dateCopy timeIntervalSinceDate:v9];
       if (v12 > v13)
       {
         v10 = v9;
@@ -337,30 +337,30 @@ uint64_t __68__HKSPSleepScheduleModel_previousEventWithIdentifier_dueBeforeDate_
   return v14;
 }
 
-- (id)nextEventDueAfterDate:(id)a3
+- (id)nextEventDueAfterDate:(id)date
 {
-  v3 = [(HKSPSleepScheduleModel *)self upcomingEventsDueAfterDate:a3];
-  v4 = [v3 firstObject];
+  v3 = [(HKSPSleepScheduleModel *)self upcomingEventsDueAfterDate:date];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)_upcomingEventsDueAfterDate:(id)a3 searchBackwards:(BOOL)a4
+- (id)_upcomingEventsDueAfterDate:(id)date searchBackwards:(BOOL)backwards
 {
-  if (a3)
+  if (date)
   {
-    v5 = [HKSPSleepEventTimelineBuilder builderWithSleepScheduleModel:self date:a3];
+    v5 = [HKSPSleepEventTimelineBuilder builderWithSleepScheduleModel:self date:date];
     v6 = [v5 buildTimelineWithOptions:0];
-    v7 = [v6 timeline];
-    v8 = v7;
-    if (a4)
+    timeline = [v6 timeline];
+    v8 = timeline;
+    if (backwards)
     {
-      [v7 previousEvents];
+      [timeline previousEvents];
     }
 
     else
     {
-      [v7 upcomingEvents];
+      [timeline upcomingEvents];
     }
     v10 = ;
 
@@ -399,122 +399,122 @@ uint64_t __70__HKSPSleepScheduleModel__upcomingEventsDueAfterDate_searchBackward
   return v6 ^ 1u;
 }
 
-- (id)upcomingOccurrenceAfterDate:(id)a3
+- (id)upcomingOccurrenceAfterDate:(id)date
 {
-  v3 = [(HKSPSleepScheduleModel *)self upcomingResolvedOccurrenceAfterDate:a3];
-  v4 = [v3 occurrence];
+  v3 = [(HKSPSleepScheduleModel *)self upcomingResolvedOccurrenceAfterDate:date];
+  occurrence = [v3 occurrence];
 
-  return v4;
+  return occurrence;
 }
 
-+ (id)_computeUpcomingDateIntervalForDate:(id)a3
++ (id)_computeUpcomingDateIntervalForDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 hk_gregorianCalendar];
-  v6 = [v5 hk_dateByAddingDays:2 toDate:v4];
-  v7 = [v5 startOfDayForDate:v6];
+  dateCopy = date;
+  hk_gregorianCalendar = [v3 hk_gregorianCalendar];
+  v6 = [hk_gregorianCalendar hk_dateByAddingDays:2 toDate:dateCopy];
+  v7 = [hk_gregorianCalendar startOfDayForDate:v6];
   v8 = [v7 dateByAddingTimeInterval:-1.0];
-  v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v4 endDate:v8];
+  v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:v8];
 
   return v9;
 }
 
-- (id)upcomingResolvedOccurrenceAfterDate:(id)a3
+- (id)upcomingResolvedOccurrenceAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _computeUpcomingDateIntervalForDate:v4];
+  dateCopy = date;
+  v5 = [objc_opt_class() _computeUpcomingDateIntervalForDate:dateCopy];
 
   v6 = [(HKSPSleepScheduleModel *)self nextResolvedOccurrenceInInterval:v5];
 
   return v6;
 }
 
-- (id)nextOccurrenceAfterDate:(id)a3
+- (id)nextOccurrenceAfterDate:(id)date
 {
-  v3 = [(HKSPSleepScheduleModel *)self nextResolvedOccurrenceAfterDate:a3];
-  v4 = [v3 occurrence];
+  v3 = [(HKSPSleepScheduleModel *)self nextResolvedOccurrenceAfterDate:date];
+  occurrence = [v3 occurrence];
 
-  return v4;
+  return occurrence;
 }
 
-- (id)nextOccurrenceInInterval:(id)a3
+- (id)nextOccurrenceInInterval:(id)interval
 {
-  v3 = [(HKSPSleepScheduleModel *)self nextResolvedOccurrenceInInterval:a3];
-  v4 = [v3 occurrence];
+  v3 = [(HKSPSleepScheduleModel *)self nextResolvedOccurrenceInInterval:interval];
+  occurrence = [v3 occurrence];
 
-  return v4;
+  return occurrence;
 }
 
-- (id)nextResolvedOccurrenceAfterDate:(id)a3
+- (id)nextResolvedOccurrenceAfterDate:(id)date
 {
-  v3 = [(HKSPSleepScheduleModel *)self _upcomingResolvedOccurrencesDueAfterDate:a3 searchBackwards:0];
-  v4 = [v3 firstObject];
+  v3 = [(HKSPSleepScheduleModel *)self _upcomingResolvedOccurrencesDueAfterDate:date searchBackwards:0];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)nextResolvedOccurrenceInInterval:(id)a3
+- (id)nextResolvedOccurrenceInInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   if ([(HKSPSleepSchedule *)self->_sleepSchedule isEnabled])
   {
-    v5 = [v4 startDate];
-    v6 = [(HKSPSleepScheduleModel *)self timelineForDate:v5];
+    startDate = [intervalCopy startDate];
+    v6 = [(HKSPSleepScheduleModel *)self timelineForDate:startDate];
 
-    v7 = [v4 endDate];
-    v8 = [v6 upcomingResolvedOccurrencesBeforeDate:v7];
-    v9 = [v8 firstObject];
+    endDate = [intervalCopy endDate];
+    v8 = [v6 upcomingResolvedOccurrencesBeforeDate:endDate];
+    firstObject = [v8 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (id)previousOccurrenceBeforeDate:(id)a3
+- (id)previousOccurrenceBeforeDate:(id)date
 {
-  v3 = [(HKSPSleepScheduleModel *)self previousResolvedOccurrenceBeforeDate:a3];
-  v4 = [v3 occurrence];
+  v3 = [(HKSPSleepScheduleModel *)self previousResolvedOccurrenceBeforeDate:date];
+  occurrence = [v3 occurrence];
 
-  return v4;
+  return occurrence;
 }
 
-- (id)previousResolvedOccurrenceBeforeDate:(id)a3
+- (id)previousResolvedOccurrenceBeforeDate:(id)date
 {
-  v3 = [(HKSPSleepScheduleModel *)self _upcomingResolvedOccurrencesDueAfterDate:a3 searchBackwards:1];
-  v4 = [v3 firstObject];
+  v3 = [(HKSPSleepScheduleModel *)self _upcomingResolvedOccurrencesDueAfterDate:date searchBackwards:1];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)timelineForDate:(id)a3
+- (id)timelineForDate:(id)date
 {
-  v3 = [(HKSPSleepScheduleModel *)self _timelineResultsDueAfterDate:a3];
-  v4 = [v3 timeline];
+  v3 = [(HKSPSleepScheduleModel *)self _timelineResultsDueAfterDate:date];
+  timeline = [v3 timeline];
 
-  return v4;
+  return timeline;
 }
 
-- (id)_timelineResultsDueAfterDate:(id)a3
+- (id)_timelineResultsDueAfterDate:(id)date
 {
-  v3 = [HKSPSleepEventTimelineBuilder builderWithSleepScheduleModel:self date:a3];
+  v3 = [HKSPSleepEventTimelineBuilder builderWithSleepScheduleModel:self date:date];
   v4 = [v3 buildTimelineWithOptions:0];
 
   return v4;
 }
 
-- (id)_upcomingResolvedOccurrencesDueAfterDate:(id)a3 searchBackwards:(BOOL)a4
+- (id)_upcomingResolvedOccurrencesDueAfterDate:(id)date searchBackwards:(BOOL)backwards
 {
-  v6 = a3;
+  dateCopy = date;
   if ([(HKSPSleepSchedule *)self->_sleepSchedule isEnabled])
   {
-    v7 = [(HKSPSleepScheduleModel *)self timelineForDate:v6];
+    v7 = [(HKSPSleepScheduleModel *)self timelineForDate:dateCopy];
     v8 = v7;
-    if (a4)
+    if (backwards)
     {
       [v7 previousResolvedOccurrences];
     }
@@ -534,16 +534,16 @@ uint64_t __70__HKSPSleepScheduleModel__upcomingEventsDueAfterDate_searchBackward
   return v9;
 }
 
-- (int64_t)alarmStatusForOccurrence:(id)a3
+- (int64_t)alarmStatusForOccurrence:(id)occurrence
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  occurrenceCopy = occurrence;
+  v5 = occurrenceCopy;
+  if (occurrenceCopy)
   {
-    if ([v4 isSingleDayOverride])
+    if ([occurrenceCopy isSingleDayOverride])
     {
-      v6 = [(HKSPSleepScheduleModel *)self sleepSchedule];
-      v7 = [v6 overridenOccurrenceForOverrideOccurrence:v5];
+      sleepSchedule = [(HKSPSleepScheduleModel *)self sleepSchedule];
+      v7 = [sleepSchedule overridenOccurrenceForOverrideOccurrence:v5];
     }
 
     else
@@ -551,10 +551,10 @@ uint64_t __70__HKSPSleepScheduleModel__upcomingEventsDueAfterDate_searchBackward
       v7 = 0;
     }
 
-    v9 = [v5 alarmConfiguration];
-    v10 = [v9 isEnabled];
+    alarmConfiguration = [v5 alarmConfiguration];
+    isEnabled = [alarmConfiguration isEnabled];
 
-    if (v10)
+    if (isEnabled)
     {
       if (![v5 isSingleDayOverride] || v7 && (objc_msgSend(v7, "isAlarmEquivalentToOverrideOccurrence:", v5) & 1) != 0)
       {
@@ -569,10 +569,10 @@ uint64_t __70__HKSPSleepScheduleModel__upcomingEventsDueAfterDate_searchBackward
 
     else if (v7)
     {
-      v11 = [v7 alarmConfiguration];
-      v12 = [v11 isEnabled];
+      alarmConfiguration2 = [v7 alarmConfiguration];
+      isEnabled2 = [alarmConfiguration2 isEnabled];
 
-      v8 = v12 & 1;
+      v8 = isEnabled2 & 1;
     }
 
     else
@@ -589,66 +589,66 @@ uint64_t __70__HKSPSleepScheduleModel__upcomingEventsDueAfterDate_searchBackward
   return v8;
 }
 
-+ (id)templateModelForSchedule:(id)a3
++ (id)templateModelForSchedule:(id)schedule
 {
-  v3 = a3;
+  scheduleCopy = schedule;
   v4 = objc_opt_class();
   v5 = objc_alloc_init(HKSPSleepSettings);
   v6 = objc_alloc_init(HKSPSleepEventRecord);
-  v7 = [v4 sleepScheduleModelWithSleepSchedule:v3 sleepSettings:v5 sleepEventRecord:v6];
+  v7 = [v4 sleepScheduleModelWithSleepSchedule:scheduleCopy sleepSettings:v5 sleepEventRecord:v6];
 
   return v7;
 }
 
-- (id)modelByApplyingChangesFromOccurrence:(id)a3
+- (id)modelByApplyingChangesFromOccurrence:(id)occurrence
 {
-  v4 = [a3 mutableCopy];
-  v5 = [(HKSPSleepScheduleModel *)self sleepSchedule];
-  v6 = [v5 mutableCopy];
+  v4 = [occurrence mutableCopy];
+  sleepSchedule = [(HKSPSleepScheduleModel *)self sleepSchedule];
+  v6 = [sleepSchedule mutableCopy];
 
   [v6 saveOccurrence:v4];
   v7 = objc_opt_class();
   v8 = [v6 copy];
-  v9 = [(HKSPSleepScheduleModel *)self sleepSettings];
-  v10 = [(HKSPSleepScheduleModel *)self sleepEventRecord];
-  v11 = [v7 sleepScheduleModelWithSleepSchedule:v8 sleepSettings:v9 sleepEventRecord:v10];
+  sleepSettings = [(HKSPSleepScheduleModel *)self sleepSettings];
+  sleepEventRecord = [(HKSPSleepScheduleModel *)self sleepEventRecord];
+  v11 = [v7 sleepScheduleModelWithSleepSchedule:v8 sleepSettings:sleepSettings sleepEventRecord:sleepEventRecord];
 
   return v11;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [(HKSPSleepScheduleModel *)self sleepSchedule];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x277CF0C40] builder];
+  sleepSchedule = [(HKSPSleepScheduleModel *)self sleepSchedule];
+  v5 = [builder appendObject:sleepSchedule];
 
-  v6 = [(HKSPSleepScheduleModel *)self sleepSettings];
-  v7 = [v3 appendObject:v6];
+  sleepSettings = [(HKSPSleepScheduleModel *)self sleepSettings];
+  v7 = [builder appendObject:sleepSettings];
 
-  v8 = [(HKSPSleepScheduleModel *)self sleepEventRecord];
-  v9 = [v3 appendObject:v8];
+  sleepEventRecord = [(HKSPSleepScheduleModel *)self sleepEventRecord];
+  v9 = [builder appendObject:sleepEventRecord];
 
-  v10 = [v3 hash];
+  v10 = [builder hash];
   return v10;
 }
 
-- (HKSPSleepScheduleModel)initWithCoder:(id)a3
+- (HKSPSleepScheduleModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = HKSPSleepScheduleModel;
   v5 = [(HKSPSleepScheduleModel *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sleepSchedule"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sleepSchedule"];
     sleepSchedule = v5->_sleepSchedule;
     v5->_sleepSchedule = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sleepSettings"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sleepSettings"];
     sleepSettings = v5->_sleepSettings;
     v5->_sleepSettings = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sleepEventRecord"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sleepEventRecord"];
     sleepEventRecord = v5->_sleepEventRecord;
     v5->_sleepEventRecord = v10;
 
@@ -658,35 +658,35 @@ uint64_t __70__HKSPSleepScheduleModel__upcomingEventsDueAfterDate_searchBackward
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sleepSchedule = self->_sleepSchedule;
-  v5 = a3;
-  [v5 encodeObject:sleepSchedule forKey:@"sleepSchedule"];
-  [v5 encodeObject:self->_sleepSettings forKey:@"sleepSettings"];
-  [v5 encodeObject:self->_sleepEventRecord forKey:@"sleepEventRecord"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sleepSchedule forKey:@"sleepSchedule"];
+  [coderCopy encodeObject:self->_sleepSettings forKey:@"sleepSettings"];
+  [coderCopy encodeObject:self->_sleepEventRecord forKey:@"sleepEventRecord"];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(HKSPSleepScheduleModel *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HKSPSleepScheduleModel *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HKSPSleepScheduleModel *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HKSPSleepScheduleModel *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -694,8 +694,8 @@ uint64_t __70__HKSPSleepScheduleModel__upcomingEventsDueAfterDate_searchBackward
   v10[3] = &unk_279C73B58;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -708,24 +708,24 @@ id __64__HKSPSleepScheduleModel_descriptionBuilderWithMultilinePrefix___block_in
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 24) withName:@"sleepEventRecord"];
 }
 
-- (id)computeConfirmedWakeUpUntilDateForEarlyWakeUpDate:(id)a3
+- (id)computeConfirmedWakeUpUntilDateForEarlyWakeUpDate:(id)date
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = HKSPLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v43 = objc_opt_class();
     v44 = 2114;
-    v45 = v4;
+    v45 = dateCopy;
     v6 = v43;
     _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] computing wake up confirmed date for early wake up (%{public}@)", buf, 0x16u);
   }
 
-  v7 = [(HKSPSleepScheduleModel *)self nextResolvedOccurrenceAfterDate:v4];
-  v8 = [v7 wakeUpEvent];
-  v9 = [v8 dueDate];
+  v7 = [(HKSPSleepScheduleModel *)self nextResolvedOccurrenceAfterDate:dateCopy];
+  wakeUpEvent = [v7 wakeUpEvent];
+  dueDate = [wakeUpEvent dueDate];
 
   v10 = HKSPLogForCategory(9uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -734,13 +734,13 @@ id __64__HKSPSleepScheduleModel_descriptionBuilderWithMultilinePrefix___block_in
     *buf = 138543618;
     v43 = v11;
     v44 = 2114;
-    v45 = v9;
+    v45 = dueDate;
     v12 = v11;
     _os_log_impl(&dword_269A84000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] next wake up is %{public}@", buf, 0x16u);
   }
 
-  v13 = [v7 scheduledInterval];
-  v14 = [v13 containsDate:v4];
+  scheduledInterval = [v7 scheduledInterval];
+  v14 = [scheduledInterval containsDate:dateCopy];
 
   if (v14)
   {
@@ -754,18 +754,18 @@ id __64__HKSPSleepScheduleModel_descriptionBuilderWithMultilinePrefix___block_in
     *buf = 138543618;
     v43 = v16;
     v44 = 2114;
-    v45 = v4;
+    v45 = dateCopy;
     v17 = v16;
     _os_log_impl(&dword_269A84000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] early wake up detected outside of expected interval (%{public}@)", buf, 0x16u);
   }
 
-  v18 = [(HKSPSleepScheduleModel *)self sleepEventRecord];
-  v19 = [v18 wakeUpEarlyNotificationConfirmedDate];
-  v20 = [v18 wakeUpConfirmedUntilDate];
-  if ([v20 hksp_isAfterDate:v19])
+  sleepEventRecord = [(HKSPSleepScheduleModel *)self sleepEventRecord];
+  wakeUpEarlyNotificationConfirmedDate = [sleepEventRecord wakeUpEarlyNotificationConfirmedDate];
+  wakeUpConfirmedUntilDate = [sleepEventRecord wakeUpConfirmedUntilDate];
+  if ([wakeUpConfirmedUntilDate hksp_isAfterDate:wakeUpEarlyNotificationConfirmedDate])
   {
-    v21 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v19 endDate:v20];
-    if ([v21 hksp_containsDate:v4])
+    v21 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:wakeUpEarlyNotificationConfirmedDate endDate:wakeUpConfirmedUntilDate];
+    if ([v21 hksp_containsDate:dateCopy])
     {
       v22 = HKSPLogForCategory(9uLL);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -774,7 +774,7 @@ id __64__HKSPSleepScheduleModel_descriptionBuilderWithMultilinePrefix___block_in
         *buf = 138543618;
         v43 = v23;
         v44 = 2114;
-        v45 = v20;
+        v45 = wakeUpConfirmedUntilDate;
         v24 = v23;
         _os_log_impl(&dword_269A84000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] possible duplicate early wake up detected, using that wake up date (%{public}@)", buf, 0x16u);
       }
@@ -783,20 +783,20 @@ id __64__HKSPSleepScheduleModel_descriptionBuilderWithMultilinePrefix___block_in
     }
   }
 
-  v40 = v19;
-  v39 = [(HKSPSleepScheduleModel *)self previousResolvedOccurrenceBeforeDate:v4];
-  v25 = [v39 wakeUpEvent];
-  v26 = [v25 dueDate];
+  v40 = wakeUpEarlyNotificationConfirmedDate;
+  v39 = [(HKSPSleepScheduleModel *)self previousResolvedOccurrenceBeforeDate:dateCopy];
+  wakeUpEvent2 = [v39 wakeUpEvent];
+  dueDate2 = [wakeUpEvent2 dueDate];
 
   v27 = MEMORY[0x277CBEAA8];
-  v41[0] = v26;
-  v41[1] = v9;
+  v41[0] = dueDate2;
+  v41[1] = dueDate;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:2];
-  v29 = [v27 hksp_closestFromDates:v28 toDate:v4];
+  v29 = [v27 hksp_closestFromDates:v28 toDate:dateCopy];
 
   v30 = HKSPLogForCategory(9uLL);
   v31 = v30;
-  if (v29 == v26)
+  if (v29 == dueDate2)
   {
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
@@ -804,12 +804,12 @@ id __64__HKSPSleepScheduleModel_descriptionBuilderWithMultilinePrefix___block_in
       *buf = 138543618;
       v43 = v33;
       v44 = 2114;
-      v45 = v26;
+      v45 = dueDate2;
       v34 = v33;
       _os_log_impl(&dword_269A84000, v31, OS_LOG_TYPE_DEFAULT, "[%{public}@] possible late early wake up detected, using previous wake up date (%{public}@)", buf, 0x16u);
     }
 
-    v32 = v26;
+    v32 = dueDate2;
   }
 
   else
@@ -823,97 +823,97 @@ id __64__HKSPSleepScheduleModel_descriptionBuilderWithMultilinePrefix___block_in
       _os_log_error_impl(&dword_269A84000, v31, OS_LOG_TYPE_ERROR, "[%{public}@] unexpected early wake up detected", buf, 0xCu);
     }
 
-    v32 = v20;
+    v32 = wakeUpConfirmedUntilDate;
   }
 
-  v20 = v32;
-  if (v29 != v26)
+  wakeUpConfirmedUntilDate = v32;
+  if (v29 != dueDate2)
   {
 LABEL_22:
-    v20 = v9;
+    wakeUpConfirmedUntilDate = dueDate;
   }
 
 LABEL_23:
 
   v35 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return wakeUpConfirmedUntilDate;
 }
 
-- (id)computeConfirmedWakeUpUntilDateForOverrideWakeUpDate:(id)a3
+- (id)computeConfirmedWakeUpUntilDateForOverrideWakeUpDate:(id)date
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = HKSPLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
     v11 = objc_opt_class();
     v12 = 2114;
-    v13 = v4;
+    v13 = dateCopy;
     v6 = v11;
     _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] computing wake up confirmed date for override wake up (%{public}@)", &v10, 0x16u);
   }
 
-  v7 = [(HKSPSleepScheduleModel *)self _computeOriginalWakeUpForOverrideDateHelper:v4];
+  v7 = [(HKSPSleepScheduleModel *)self _computeOriginalWakeUpForOverrideDateHelper:dateCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)computeTemplateGenerationDateForCurrentDate:(id)a3
+- (id)computeTemplateGenerationDateForCurrentDate:(id)date
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = HKSPLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
     v11 = objc_opt_class();
     v12 = 2114;
-    v13 = v4;
+    v13 = dateCopy;
     v6 = v11;
     _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] computing template generation date for current date (%{public}@)", &v10, 0x16u);
   }
 
-  v7 = [(HKSPSleepScheduleModel *)self _computeOriginalWakeUpForOverrideDateHelper:v4];
+  v7 = [(HKSPSleepScheduleModel *)self _computeOriginalWakeUpForOverrideDateHelper:dateCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)_computeOriginalWakeUpForOverrideDateHelper:(id)a3
+- (id)_computeOriginalWakeUpForOverrideDateHelper:(id)helper
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HKSPSleepScheduleModel *)self previousOccurrenceBeforeDate:v4];
-  v6 = [(HKSPSleepScheduleModel *)self sleepSchedule];
-  v7 = [v6 overridenOccurrenceForOverrideOccurrence:v5];
+  helperCopy = helper;
+  v5 = [(HKSPSleepScheduleModel *)self previousOccurrenceBeforeDate:helperCopy];
+  sleepSchedule = [(HKSPSleepScheduleModel *)self sleepSchedule];
+  v7 = [sleepSchedule overridenOccurrenceForOverrideOccurrence:v5];
 
   if (!v7)
   {
-    v8 = HKSPLogForCategory(9uLL);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    hk_gregorianCalendar = HKSPLogForCategory(9uLL);
+    if (os_log_type_enabled(hk_gregorianCalendar, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 138543362;
       v25 = objc_opt_class();
       v17 = v25;
-      _os_log_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] override occurrence doesn't override anything", &v24, 0xCu);
+      _os_log_impl(&dword_269A84000, hk_gregorianCalendar, OS_LOG_TYPE_DEFAULT, "[%{public}@] override occurrence doesn't override anything", &v24, 0xCu);
     }
 
     goto LABEL_15;
   }
 
-  v8 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v9 = [v5 wakeUpComponents];
-  v10 = [v8 dateFromComponents:v9];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  wakeUpComponents = [v5 wakeUpComponents];
+  v10 = [hk_gregorianCalendar dateFromComponents:wakeUpComponents];
 
-  v11 = [v7 nextDateIntervalWithWakeUpAfterDate:v10 gregorianCalendar:v8];
-  v12 = [v11 endDate];
+  v11 = [v7 nextDateIntervalWithWakeUpAfterDate:v10 gregorianCalendar:hk_gregorianCalendar];
+  endDate = [v11 endDate];
 
-  if (![v8 date:v12 isSameDayAsDate:v10])
+  if (![hk_gregorianCalendar date:endDate isSameDayAsDate:v10])
   {
     v14 = HKSPLogForCategory(9uLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -931,11 +931,11 @@ LABEL_13:
 LABEL_14:
 
 LABEL_15:
-    v12 = v4;
+    endDate = helperCopy;
     goto LABEL_16;
   }
 
-  v13 = [v12 hksp_isAfterDate:v4];
+  v13 = [endDate hksp_isAfterDate:helperCopy];
   v14 = HKSPLogForCategory(9uLL);
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
   if (!v13)
@@ -945,7 +945,7 @@ LABEL_15:
       v24 = 138543618;
       v25 = objc_opt_class();
       v26 = 2114;
-      v27 = v12;
+      v27 = endDate;
       v18 = v25;
       v19 = "[%{public}@] wake up for override was later than normal occurrence wake up time (%{public}@)";
       v20 = v14;
@@ -961,7 +961,7 @@ LABEL_15:
     v24 = 138543618;
     v25 = objc_opt_class();
     v26 = 2114;
-    v27 = v12;
+    v27 = endDate;
     v16 = v25;
     _os_log_impl(&dword_269A84000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] wake up for override was earlier than normal occurrence wake up time (%{public}@)", &v24, 0x16u);
   }
@@ -969,69 +969,69 @@ LABEL_15:
 LABEL_16:
   v22 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return endDate;
 }
 
-- (id)generateOverrideOccurrenceForCurrentDate:(id)a3 gregorianCalendar:(id)a4
+- (id)generateOverrideOccurrenceForCurrentDate:(id)date gregorianCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKSPSleepScheduleModel *)self sleepSchedule];
-  if (v8)
+  dateCopy = date;
+  calendarCopy = calendar;
+  sleepSchedule = [(HKSPSleepScheduleModel *)self sleepSchedule];
+  if (sleepSchedule)
   {
-    v9 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceForCurrentDate:v6 gregorianCalendar:v7 schedule:v8];
+    v9 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceForCurrentDate:dateCopy gregorianCalendar:calendarCopy schedule:sleepSchedule];
   }
 
   else
   {
     v10 = objc_alloc_init(HKSPSleepSchedule);
-    v9 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceForCurrentDate:v6 gregorianCalendar:v7 schedule:v10];
+    v9 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceForCurrentDate:dateCopy gregorianCalendar:calendarCopy schedule:v10];
   }
 
   return v9;
 }
 
-- (id)generateOverrideOccurrenceForCurrentDate:(id)a3 gregorianCalendar:(id)a4 schedule:(id)a5
+- (id)generateOverrideOccurrenceForCurrentDate:(id)date gregorianCalendar:(id)calendar schedule:(id)schedule
 {
-  v5 = [(HKSPSleepScheduleModel *)self overrideOccurrenceGenerationResultForCurrentDate:a3 gregorianCalendar:a4 schedule:a5];
-  v6 = [v5 overrideOccurrence];
+  v5 = [(HKSPSleepScheduleModel *)self overrideOccurrenceGenerationResultForCurrentDate:date gregorianCalendar:calendar schedule:schedule];
+  overrideOccurrence = [v5 overrideOccurrence];
 
-  return v6;
+  return overrideOccurrence;
 }
 
-- (id)overrideOccurrenceGenerationResultForCurrentDate:(id)a3 gregorianCalendar:(id)a4 schedule:(id)a5
+- (id)overrideOccurrenceGenerationResultForCurrentDate:(id)date gregorianCalendar:(id)calendar schedule:(id)schedule
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  calendarCopy = calendar;
+  scheduleCopy = schedule;
   v11 = HKSPLogForCategory(9uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [v8 hkspDescription];
+    hkspDescription = [dateCopy hkspDescription];
     *buf = 138543874;
     v37 = v12;
     v38 = 2114;
-    v39 = v14;
+    v39 = hkspDescription;
     v40 = 2114;
-    v41 = v10;
+    v41 = scheduleCopy;
     _os_log_impl(&dword_269A84000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] generating an override occurrence for current date: %{public}@ from schedule: %{public}@", buf, 0x20u);
   }
 
   v15 = objc_alloc_init(HKSPOverrideOccurrenceGenerationResult);
-  v16 = [(HKSPSleepScheduleModel *)self upcomingResolvedOccurrenceAfterDate:v8];
+  v16 = [(HKSPSleepScheduleModel *)self upcomingResolvedOccurrenceAfterDate:dateCopy];
   v17 = HKSPLogForCategory(9uLL);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = objc_opt_class();
-    v35 = self;
-    v19 = v9;
-    v20 = v10;
+    selfCopy = self;
+    v19 = calendarCopy;
+    v20 = scheduleCopy;
     v21 = v18;
-    [v8 hkspDescription];
-    v23 = v22 = v8;
+    [dateCopy hkspDescription];
+    v23 = v22 = dateCopy;
     *buf = 138543874;
     v37 = v18;
     v38 = 2114;
@@ -1040,10 +1040,10 @@ LABEL_16:
     v41 = v16;
     _os_log_impl(&dword_269A84000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] upcoming resolved occurrence for current date: %{public}@ is: %{public}@", buf, 0x20u);
 
-    v8 = v22;
-    v10 = v20;
-    v9 = v19;
-    self = v35;
+    dateCopy = v22;
+    scheduleCopy = v20;
+    calendarCopy = v19;
+    self = selfCopy;
   }
 
   v24 = HKSPLogForCategory(9uLL);
@@ -1060,10 +1060,10 @@ LABEL_16:
     }
 
     [(HKSPOverrideOccurrenceGenerationResult *)v15 setWasGeneratedFromTemplate:0];
-    v28 = [v16 occurrence];
-    -[HKSPOverrideOccurrenceGenerationResult setUpcomingOccurrenceWasOverride:](v15, "setUpcomingOccurrenceWasOverride:", [v28 isSingleDayOverride]);
+    occurrence = [v16 occurrence];
+    -[HKSPOverrideOccurrenceGenerationResult setUpcomingOccurrenceWasOverride:](v15, "setUpcomingOccurrenceWasOverride:", [occurrence isSingleDayOverride]);
 
-    v29 = [v16 generateOverrideOccurrenceForCurrentDate:v8 gregorianCalendar:v9];
+    v29 = [v16 generateOverrideOccurrenceForCurrentDate:dateCopy gregorianCalendar:calendarCopy];
   }
 
   else
@@ -1079,7 +1079,7 @@ LABEL_16:
 
     [(HKSPOverrideOccurrenceGenerationResult *)v15 setWasGeneratedFromTemplate:1];
     [(HKSPOverrideOccurrenceGenerationResult *)v15 setUpcomingOccurrenceWasOverride:0];
-    v29 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceFromTemplateForCurrentDate:v8 gregorianCalendar:v9 schedule:v10];
+    v29 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceFromTemplateForCurrentDate:dateCopy gregorianCalendar:calendarCopy schedule:scheduleCopy];
   }
 
   v32 = v29;
@@ -1090,71 +1090,71 @@ LABEL_16:
   return v15;
 }
 
-- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)a3
+- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)date
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v6 = [v4 hk_gregorianCalendar];
-  v7 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceFromTemplateForCurrentDate:v5 gregorianCalendar:v6];
+  dateCopy = date;
+  hk_gregorianCalendar = [v4 hk_gregorianCalendar];
+  v7 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceFromTemplateForCurrentDate:dateCopy gregorianCalendar:hk_gregorianCalendar];
 
   return v7;
 }
 
-- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)a3 gregorianCalendar:(id)a4
+- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)date gregorianCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKSPSleepScheduleModel *)self sleepSchedule];
-  if (v8)
+  dateCopy = date;
+  calendarCopy = calendar;
+  sleepSchedule = [(HKSPSleepScheduleModel *)self sleepSchedule];
+  if (sleepSchedule)
   {
-    v9 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceFromTemplateForCurrentDate:v6 gregorianCalendar:v7 schedule:v8];
+    v9 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceFromTemplateForCurrentDate:dateCopy gregorianCalendar:calendarCopy schedule:sleepSchedule];
   }
 
   else
   {
     v10 = objc_alloc_init(HKSPSleepSchedule);
-    v9 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceFromTemplateForCurrentDate:v6 gregorianCalendar:v7 schedule:v10];
+    v9 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceFromTemplateForCurrentDate:dateCopy gregorianCalendar:calendarCopy schedule:v10];
   }
 
   return v9;
 }
 
-- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)a3 gregorianCalendar:(id)a4 schedule:(id)a5
+- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)date gregorianCalendar:(id)calendar schedule:(id)schedule
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 mutableOccurrenceTemplate];
-  v11 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceFromTemplateForCurrentDate:v9 gregorianCalendar:v8 mutableOccurrence:v10];
+  calendarCopy = calendar;
+  dateCopy = date;
+  mutableOccurrenceTemplate = [schedule mutableOccurrenceTemplate];
+  v11 = [(HKSPSleepScheduleModel *)self generateOverrideOccurrenceFromTemplateForCurrentDate:dateCopy gregorianCalendar:calendarCopy mutableOccurrence:mutableOccurrenceTemplate];
 
   return v11;
 }
 
-- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)a3 gregorianCalendar:(id)a4 mutableOccurrence:(id)a5
+- (id)generateOverrideOccurrenceFromTemplateForCurrentDate:(id)date gregorianCalendar:(id)calendar mutableOccurrence:(id)occurrence
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(HKSPSleepScheduleModel *)self computeTemplateGenerationDateForCurrentDate:a3];
-  v11 = [v8 overrideOccurrenceTemplateForCurrentDate:v10 gregorianCalendar:v9];
+  occurrenceCopy = occurrence;
+  calendarCopy = calendar;
+  v10 = [(HKSPSleepScheduleModel *)self computeTemplateGenerationDateForCurrentDate:date];
+  v11 = [occurrenceCopy overrideOccurrenceTemplateForCurrentDate:v10 gregorianCalendar:calendarCopy];
 
   return v11;
 }
 
-- (BOOL)goodMorningAlertNotificationsEnabledWithLogObject:(id)a3
+- (BOOL)goodMorningAlertNotificationsEnabledWithLogObject:(id)object
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HKSPSleepScheduleModel *)self sleepSchedule];
-  if ([v5 isEnabledAndHasOccurrences])
+  objectCopy = object;
+  sleepSchedule = [(HKSPSleepScheduleModel *)self sleepSchedule];
+  if ([sleepSchedule isEnabledAndHasOccurrences])
   {
-    v6 = [(HKSPSleepScheduleModel *)self sleepSettings];
-    if (([v6 watchSleepFeaturesEnabled]& 1) != 0)
+    sleepSettings = [(HKSPSleepScheduleModel *)self sleepSettings];
+    if (([sleepSettings watchSleepFeaturesEnabled]& 1) != 0)
     {
-      if (([v6 scheduledSleepMode]& 1) != 0)
+      if (([sleepSettings scheduledSleepMode]& 1) != 0)
       {
-        v7 = [(HKSPSleepScheduleModel *)self sleepEventRecord];
-        v8 = [v7 isAnySleepCoachingOnboardingCompleted];
-        v9 = v8;
-        if (!v4 || (v8 & 1) != 0)
+        sleepEventRecord = [(HKSPSleepScheduleModel *)self sleepEventRecord];
+        isAnySleepCoachingOnboardingCompleted = [sleepEventRecord isAnySleepCoachingOnboardingCompleted];
+        v9 = isAnySleepCoachingOnboardingCompleted;
+        if (!objectCopy || (isAnySleepCoachingOnboardingCompleted & 1) != 0)
         {
           goto LABEL_21;
         }
@@ -1163,7 +1163,7 @@ LABEL_16:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138543362;
-          v15 = v4;
+          v15 = objectCopy;
           _os_log_impl(&dword_269A84000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] not posting good morning alert because onboarding hasn't completed", &v14, 0xCu);
         }
 
@@ -1175,34 +1175,34 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      if (v4)
+      if (objectCopy)
       {
-        v7 = HKSPLogForCategory(0);
-        if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+        sleepEventRecord = HKSPLogForCategory(0);
+        if (!os_log_type_enabled(sleepEventRecord, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_20;
         }
 
         v14 = 138543362;
-        v15 = v4;
+        v15 = objectCopy;
         v11 = "[%{public}@] not posting morning notification because scheduledSleepMode isn't enabled";
         goto LABEL_19;
       }
     }
 
-    else if (v4)
+    else if (objectCopy)
     {
-      v7 = HKSPLogForCategory(0);
-      if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      sleepEventRecord = HKSPLogForCategory(0);
+      if (!os_log_type_enabled(sleepEventRecord, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_20;
       }
 
       v14 = 138543362;
-      v15 = v4;
+      v15 = objectCopy;
       v11 = "[%{public}@] not posting morning notification because sleep features are disabled for this watch";
 LABEL_19:
-      _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, v11, &v14, 0xCu);
+      _os_log_impl(&dword_269A84000, sleepEventRecord, OS_LOG_TYPE_DEFAULT, v11, &v14, 0xCu);
       goto LABEL_20;
     }
 
@@ -1211,14 +1211,14 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v4)
+  if (objectCopy)
   {
-    v6 = HKSPLogForCategory(0);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    sleepSettings = HKSPLogForCategory(0);
+    if (os_log_type_enabled(sleepSettings, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      v15 = v4;
-      _os_log_impl(&dword_269A84000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] not posting morning notification because sleep schedule isn't enabled", &v14, 0xCu);
+      v15 = objectCopy;
+      _os_log_impl(&dword_269A84000, sleepSettings, OS_LOG_TYPE_DEFAULT, "[%{public}@] not posting morning notification because sleep schedule isn't enabled", &v14, 0xCu);
     }
 
     goto LABEL_22;
@@ -1231,46 +1231,46 @@ LABEL_24:
   return v9;
 }
 
-- (BOOL)goodMorningScreenEnabledWithLogObject:(id)a3
+- (BOOL)goodMorningScreenEnabledWithLogObject:(id)object
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HKSPSleepScheduleModel *)self sleepSchedule];
-  if (([v5 isEnabledAndHasOccurrences] & 1) == 0)
+  objectCopy = object;
+  sleepSchedule = [(HKSPSleepScheduleModel *)self sleepSchedule];
+  if (([sleepSchedule isEnabledAndHasOccurrences] & 1) == 0)
   {
-    if (!v4)
+    if (!objectCopy)
     {
       v9 = 0;
       goto LABEL_17;
     }
 
-    v6 = HKSPLogForCategory(0);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    sleepSettings = HKSPLogForCategory(0);
+    if (os_log_type_enabled(sleepSettings, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v4;
-      _os_log_impl(&dword_269A84000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] not showing morning screen because sleep schedule isn't enabled", &v12, 0xCu);
+      v13 = objectCopy;
+      _os_log_impl(&dword_269A84000, sleepSettings, OS_LOG_TYPE_DEFAULT, "[%{public}@] not showing morning screen because sleep schedule isn't enabled", &v12, 0xCu);
     }
 
     goto LABEL_15;
   }
 
-  v6 = [(HKSPSleepScheduleModel *)self sleepSettings];
-  if (([v6 scheduledSleepMode]& 1) != 0)
+  sleepSettings = [(HKSPSleepScheduleModel *)self sleepSettings];
+  if (([sleepSettings scheduledSleepMode]& 1) != 0)
   {
-    if (([v6 sleepModeOptions]& 0x4000) != 0)
+    if (([sleepSettings sleepModeOptions]& 0x4000) != 0)
     {
       v9 = 1;
       goto LABEL_16;
     }
 
-    if (v4)
+    if (objectCopy)
     {
       v7 = HKSPLogForCategory(0);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = v4;
+        v13 = objectCopy;
         v8 = "[%{public}@] not showing morning screen because it isn't enabled";
 LABEL_13:
         _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, v8, &v12, 0xCu);
@@ -1281,13 +1281,13 @@ LABEL_13:
     }
   }
 
-  else if (v4)
+  else if (objectCopy)
   {
     v7 = HKSPLogForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v4;
+      v13 = objectCopy;
       v8 = "[%{public}@] not showing morning screen because scheduledSleepMode isn't enabled";
       goto LABEL_13;
     }
@@ -1304,17 +1304,17 @@ LABEL_17:
   return v9;
 }
 
-- (BOOL)chargingRemindersEnabledWithLogObject:(id)a3
+- (BOOL)chargingRemindersEnabledWithLogObject:(id)object
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HKSPSleepScheduleModel *)self sleepSchedule];
-  if ([v5 isEnabledAndHasOccurrences])
+  objectCopy = object;
+  sleepSchedule = [(HKSPSleepScheduleModel *)self sleepSchedule];
+  if ([sleepSchedule isEnabledAndHasOccurrences])
   {
-    v6 = [(HKSPSleepScheduleModel *)self sleepSettings];
-    if (([v6 watchSleepFeaturesEnabled]& 1) != 0)
+    sleepSettings = [(HKSPSleepScheduleModel *)self sleepSettings];
+    if (([sleepSettings watchSleepFeaturesEnabled]& 1) != 0)
     {
-      if (([v6 chargingReminders]& 1) != 0)
+      if (([sleepSettings chargingReminders]& 1) != 0)
       {
         v7 = 1;
 LABEL_18:
@@ -1322,13 +1322,13 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      if (v4)
+      if (objectCopy)
       {
         v8 = HKSPLogForCategory(0);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138543362;
-          v13 = v4;
+          v13 = objectCopy;
           v9 = "[%{public}@] not posting charging reminder because charging reminders aren't enabled";
           goto LABEL_15;
         }
@@ -1337,13 +1337,13 @@ LABEL_18:
       }
     }
 
-    else if (v4)
+    else if (objectCopy)
     {
       v8 = HKSPLogForCategory(0);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = v4;
+        v13 = objectCopy;
         v9 = "[%{public}@] not posting charging reminder because sleep features are disabled for this watch";
 LABEL_15:
         _os_log_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEFAULT, v9, &v12, 0xCu);
@@ -1357,14 +1357,14 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v4)
+  if (objectCopy)
   {
-    v6 = HKSPLogForCategory(0);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    sleepSettings = HKSPLogForCategory(0);
+    if (os_log_type_enabled(sleepSettings, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v4;
-      _os_log_impl(&dword_269A84000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] not posting charging reminder because sleep schedule isn't enabled", &v12, 0xCu);
+      v13 = objectCopy;
+      _os_log_impl(&dword_269A84000, sleepSettings, OS_LOG_TYPE_DEFAULT, "[%{public}@] not posting charging reminder because sleep schedule isn't enabled", &v12, 0xCu);
     }
 
     goto LABEL_17;

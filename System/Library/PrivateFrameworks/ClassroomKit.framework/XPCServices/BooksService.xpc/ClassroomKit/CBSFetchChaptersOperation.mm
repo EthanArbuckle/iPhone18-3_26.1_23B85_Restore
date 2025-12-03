@@ -1,25 +1,25 @@
 @interface CBSFetchChaptersOperation
-- (CBSFetchChaptersOperation)initWithRequest:(id)a3;
+- (CBSFetchChaptersOperation)initWithRequest:(id)request;
 - (void)cleanUp;
-- (void)finishOperation:(id)a3;
-- (void)finishOperationWithError:(id)a3;
-- (void)parseOFPPackageContentsOperationDidFinish:(id)a3;
-- (void)parseOPFFilePathOperationDidFinish:(id)a3;
+- (void)finishOperation:(id)operation;
+- (void)finishOperationWithError:(id)error;
+- (void)parseOFPPackageContentsOperationDidFinish:(id)finish;
+- (void)parseOPFFilePathOperationDidFinish:(id)finish;
 - (void)run;
 @end
 
 @implementation CBSFetchChaptersOperation
 
-- (CBSFetchChaptersOperation)initWithRequest:(id)a3
+- (CBSFetchChaptersOperation)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = CBSFetchChaptersOperation;
   v6 = [(CBSFetchChaptersOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mRequest, a3);
+    objc_storeStrong(&v6->mRequest, request);
   }
 
   return v7;
@@ -36,8 +36,8 @@
   else
   {
     v3 = [CBSParseOPFFilePathOperation alloc];
-    v4 = [(CRKFetchChaptersRequest *)self->mRequest path];
-    v6 = [(CBSParseOPFFilePathOperation *)v3 initWithBookFilePath:v4];
+    path = [(CRKFetchChaptersRequest *)self->mRequest path];
+    v6 = [(CBSParseOPFFilePathOperation *)v3 initWithBookFilePath:path];
 
     [(CBSParseOPFFilePathOperation *)v6 addTarget:self selector:"parseOPFFilePathOperationDidFinish:" forOperationEvents:6];
     v5 = +[CATOperationQueue crk_backgroundQueue];
@@ -45,18 +45,18 @@
   }
 }
 
-- (void)parseOPFFilePathOperationDidFinish:(id)a3
+- (void)parseOPFFilePathOperationDidFinish:(id)finish
 {
-  v11 = a3;
-  v4 = [v11 resultObject];
+  finishCopy = finish;
+  resultObject = [finishCopy resultObject];
 
-  if (v4)
+  if (resultObject)
   {
     v5 = [CBSParseOPFPackageContentsOperation alloc];
-    v6 = [v11 resultObject];
-    v7 = [(CRKFetchChaptersRequest *)self->mRequest identifierType];
-    v8 = [(CRKFetchChaptersRequest *)self->mRequest identifier];
-    v9 = [(CBSParseOPFPackageContentsOperation *)v5 initWithOPFFilePath:v6 identifierType:v7 identifier:v8];
+    resultObject2 = [finishCopy resultObject];
+    identifierType = [(CRKFetchChaptersRequest *)self->mRequest identifierType];
+    identifier = [(CRKFetchChaptersRequest *)self->mRequest identifier];
+    v9 = [(CBSParseOPFPackageContentsOperation *)v5 initWithOPFFilePath:resultObject2 identifierType:identifierType identifier:identifier];
 
     [(CBSParseOPFPackageContentsOperation *)v9 addTarget:self selector:"parseOFPPackageContentsOperationDidFinish:" forOperationEvents:6];
     v10 = +[CATOperationQueue crk_backgroundQueue];
@@ -65,21 +65,21 @@
 
   else
   {
-    [(CBSFetchChaptersOperation *)self finishOperation:v11];
+    [(CBSFetchChaptersOperation *)self finishOperation:finishCopy];
   }
 }
 
-- (void)parseOFPPackageContentsOperationDidFinish:(id)a3
+- (void)parseOFPPackageContentsOperationDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [v4 resultObject];
+  finishCopy = finish;
+  resultObject = [finishCopy resultObject];
 
-  if (v5)
+  if (resultObject)
   {
-    v6 = [v4 resultObject];
+    resultObject2 = [finishCopy resultObject];
 
-    v7 = [v6 tableOfContentsMediaType];
-    v8 = [v7 isEqualToString:@"application/x-dtbncx+xml"];
+    tableOfContentsMediaType = [resultObject2 tableOfContentsMediaType];
+    v8 = [tableOfContentsMediaType isEqualToString:@"application/x-dtbncx+xml"];
 
     if (v8)
     {
@@ -88,8 +88,8 @@
 
     else
     {
-      v10 = [v6 tableOfContentsMediaType];
-      v11 = [v10 isEqualToString:@"application/xhtml+xml"];
+      tableOfContentsMediaType2 = [resultObject2 tableOfContentsMediaType];
+      v11 = [tableOfContentsMediaType2 isEqualToString:@"application/xhtml+xml"];
 
       if (!v11)
       {
@@ -101,7 +101,7 @@
         v16 = qword_100011E80;
         if (os_log_type_enabled(qword_100011E80, OS_LOG_TYPE_ERROR))
         {
-          sub_100005120(v16, v6);
+          sub_100005120(v16, resultObject2);
         }
 
         v14 = CRKErrorWithCodeAndUserInfo();
@@ -113,8 +113,8 @@
     }
 
     v12 = [v9 alloc];
-    v13 = [v6 tableOfContentsFilePath];
-    v14 = [v12 initWithFilePath:v13 packageContents:v6];
+    tableOfContentsFilePath = [resultObject2 tableOfContentsFilePath];
+    v14 = [v12 initWithFilePath:tableOfContentsFilePath packageContents:resultObject2];
 
     [v14 addTarget:self selector:"parseTableOfContentsOperationDidFinish:" forOperationEvents:6];
     v15 = +[CATOperationQueue crk_backgroundQueue];
@@ -124,31 +124,31 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  [(CBSFetchChaptersOperation *)self finishOperation:v4];
-  v6 = v4;
+  [(CBSFetchChaptersOperation *)self finishOperation:finishCopy];
+  resultObject2 = finishCopy;
 LABEL_14:
 }
 
-- (void)finishOperation:(id)a3
+- (void)finishOperation:(id)operation
 {
-  v9 = a3;
+  operationCopy = operation;
   [(CBSFetchChaptersOperation *)self cleanUp];
-  v4 = [v9 error];
+  error = [operationCopy error];
 
-  if (v4)
+  if (error)
   {
-    v5 = [v9 error];
-    [(CBSFetchChaptersOperation *)self endOperationWithError:v5];
+    error2 = [operationCopy error];
+    [(CBSFetchChaptersOperation *)self endOperationWithError:error2];
   }
 
   else
   {
-    v5 = objc_opt_new();
-    v6 = [v9 resultObject];
-    v7 = v6;
-    if (v6)
+    error2 = objc_opt_new();
+    resultObject = [operationCopy resultObject];
+    v7 = resultObject;
+    if (resultObject)
     {
-      v8 = v6;
+      v8 = resultObject;
     }
 
     else
@@ -156,17 +156,17 @@ LABEL_14:
       v8 = &__NSArray0__struct;
     }
 
-    [v5 setChapters:v8];
+    [error2 setChapters:v8];
 
-    [(CBSFetchChaptersOperation *)self endOperationWithResultObject:v5];
+    [(CBSFetchChaptersOperation *)self endOperationWithResultObject:error2];
   }
 }
 
-- (void)finishOperationWithError:(id)a3
+- (void)finishOperationWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(CBSFetchChaptersOperation *)self cleanUp];
-  [(CBSFetchChaptersOperation *)self endOperationWithError:v4];
+  [(CBSFetchChaptersOperation *)self endOperationWithError:errorCopy];
 }
 
 - (void)cleanUp

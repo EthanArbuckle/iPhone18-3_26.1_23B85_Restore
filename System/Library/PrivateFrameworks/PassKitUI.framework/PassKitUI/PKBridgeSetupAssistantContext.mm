@@ -1,22 +1,22 @@
 @interface PKBridgeSetupAssistantContext
 - (PKSetupAssistantPeerPaymentAddAssociatedAccountDelegate)peerPaymentDelegate;
-- (void)extendableDescription:(id)a3;
+- (void)extendableDescription:(id)description;
 @end
 
 @implementation PKBridgeSetupAssistantContext
 
-- (void)extendableDescription:(id)a3
+- (void)extendableDescription:(id)description
 {
   v6.receiver = self;
   v6.super_class = PKBridgeSetupAssistantContext;
-  v4 = a3;
-  [(PKSetupAssistantContext *)&v6 extendableDescription:v4];
-  [v4 appendFormat:@"dataProvider: '%@'; ", self->_dataProvider];
+  descriptionCopy = description;
+  [(PKSetupAssistantContext *)&v6 extendableDescription:descriptionCopy];
+  [descriptionCopy appendFormat:@"dataProvider: '%@'; ", self->_dataProvider];
   WeakRetained = objc_loadWeakRetained(&self->_peerPaymentDelegate);
-  [v4 appendFormat:@"peerPaymentDelegate: '%@'; ", WeakRetained];
+  [descriptionCopy appendFormat:@"peerPaymentDelegate: '%@'; ", WeakRetained];
 
-  [v4 appendFormat:@"pairingFamilyMember: '%@'; ", self->_pairingFamilyMember];
-  [v4 appendFormat:@"parentFamilyMember: '%@'; ", self->_parentFamilyMember];
+  [descriptionCopy appendFormat:@"pairingFamilyMember: '%@'; ", self->_pairingFamilyMember];
+  [descriptionCopy appendFormat:@"parentFamilyMember: '%@'; ", self->_parentFamilyMember];
 }
 
 - (PKSetupAssistantPeerPaymentAddAssociatedAccountDelegate)peerPaymentDelegate

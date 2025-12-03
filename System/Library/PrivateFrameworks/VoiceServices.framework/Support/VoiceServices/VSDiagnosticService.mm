@@ -1,28 +1,28 @@
 @interface VSDiagnosticService
 + (id)defaultService;
-- (VSDiagnosticService)initWithDirectory:(id)a3;
+- (VSDiagnosticService)initWithDirectory:(id)directory;
 - (unint64_t)totalDiagnosticFileSize;
-- (void)collectTailspin:(id)a3;
+- (void)collectTailspin:(id)tailspin;
 - (void)createDirectoryIfNeeded;
-- (void)dumpCompressedAudio:(id)a3 forRequest:(id)a4;
-- (void)dumpInstrumentMetrics:(id)a3 withTimestamp:(int64_t)a4;
-- (void)dumpStreamAudio:(id)a3 forRequest:(id)a4;
+- (void)dumpCompressedAudio:(id)audio forRequest:(id)request;
+- (void)dumpInstrumentMetrics:(id)metrics withTimestamp:(int64_t)timestamp;
+- (void)dumpStreamAudio:(id)audio forRequest:(id)request;
 - (void)removeDirectory;
 - (void)removeOldFiles;
 @end
 
 @implementation VSDiagnosticService
 
-- (void)collectTailspin:(id)a3
+- (void)collectTailspin:(id)tailspin
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tailspinCopy = tailspin;
   [(VSDiagnosticService *)self createDirectoryIfNeeded];
   v5 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v5 setDateFormat:@"yyyy_MM_dd-HHmmss.SSS"];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v5 stringFromDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [v5 stringFromDate:date];
   v9 = [v6 stringWithFormat:@"TTS-stall-%@.tailspin", v8];
 
   v10 = MEMORY[0x277CCACA8];
@@ -31,17 +31,17 @@
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
   v12 = [v10 pathWithComponents:v11];
 
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  [v13 createFileAtPath:v12 contents:0 attributes:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createFileAtPath:v12 contents:0 attributes:0];
 
   v14 = [MEMORY[0x277CCA9F8] fileHandleForUpdatingAtPath:v12];
   [v14 fileDescriptor];
   v15 = dispatch_get_global_queue(9, 0);
   v21 = v12;
-  v22 = v4;
+  v22 = tailspinCopy;
   v20 = v14;
   v16 = v12;
-  v17 = v4;
+  v17 = tailspinCopy;
   v18 = v14;
   tailspin_dump_output();
 
@@ -63,35 +63,35 @@ uint64_t __39__VSDiagnosticService_collectTailspin___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)dumpInstrumentMetrics:(id)a3 withTimestamp:(int64_t)a4
+- (void)dumpInstrumentMetrics:(id)metrics withTimestamp:(int64_t)timestamp
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  metricsCopy = metrics;
+  if (metricsCopy)
   {
     v21 = 0;
-    v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v6 options:0 error:&v21];
+    v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:metricsCopy options:0 error:&v21];
     v8 = v21;
     if (v8)
     {
-      v9 = VSGetLogDefault();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      timestamp = VSGetLogDefault();
+      if (os_log_type_enabled(timestamp, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v24 = v6;
+        v24 = metricsCopy;
         v25 = 2112;
         v26 = v8;
-        _os_log_error_impl(&dword_2727E4000, v9, OS_LOG_TYPE_ERROR, "Unable to parse json for dictionary '%@', error: %@", buf, 0x16u);
+        _os_log_error_impl(&dword_2727E4000, timestamp, OS_LOG_TYPE_ERROR, "Unable to parse json for dictionary '%@', error: %@", buf, 0x16u);
       }
     }
 
     else
     {
       [(VSDiagnosticService *)self createDirectoryIfNeeded];
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"TTSMetrics-%lld", a4];
+      timestamp = [MEMORY[0x277CCACA8] stringWithFormat:@"TTSMetrics-%lld", timestamp];
       v10 = MEMORY[0x277CCACA8];
       v22[0] = @"/private/var/mobile/Library/Logs/CrashReporter/VoiceServices/";
-      v11 = [v9 stringByAppendingString:@".json"];
+      v11 = [timestamp stringByAppendingString:@".json"];
       v22[1] = v11;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
       v13 = [v10 pathWithComponents:v12];
@@ -102,7 +102,7 @@ uint64_t __39__VSDiagnosticService_collectTailspin___block_invoke(uint64_t a1)
       block[2] = __59__VSDiagnosticService_dumpInstrumentMetrics_withTimestamp___block_invoke;
       block[3] = &unk_279E4B970;
       v18 = v13;
-      v19 = self;
+      selfCopy = self;
       v20 = v7;
       v15 = v13;
       dispatch_async(v14, block);
@@ -155,20 +155,20 @@ void __59__VSDiagnosticService_dumpInstrumentMetrics_withTimestamp___block_invok
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dumpStreamAudio:(id)a3 forRequest:(id)a4
+- (void)dumpStreamAudio:(id)audio forRequest:(id)request
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([a4 canLogRequestText])
+  audioCopy = audio;
+  if ([request canLogRequestText])
   {
-    if (v6)
+    if (audioCopy)
     {
       [(VSDiagnosticService *)self createDirectoryIfNeeded];
       v7 = objc_alloc_init(MEMORY[0x277CCA968]);
       [v7 setDateFormat:@"yyyy_MM_dd-HHmmss.SSS"];
       v8 = MEMORY[0x277CCACA8];
-      v9 = [MEMORY[0x277CBEAA8] date];
-      v10 = [v7 stringFromDate:v9];
+      date = [MEMORY[0x277CBEAA8] date];
+      v10 = [v7 stringFromDate:date];
       v11 = [v8 stringWithFormat:@"TTS-%@", v10];
 
       v12 = MEMORY[0x277CCACA8];
@@ -184,8 +184,8 @@ void __59__VSDiagnosticService_dumpInstrumentMetrics_withTimestamp___block_invok
       block[2] = __50__VSDiagnosticService_dumpStreamAudio_forRequest___block_invoke;
       block[3] = &unk_279E4B948;
       v21 = v15;
-      v22 = self;
-      v23 = v6;
+      selfCopy = self;
+      v23 = audioCopy;
       v24 = v11;
       v17 = v11;
       v18 = v15;
@@ -266,20 +266,20 @@ void __50__VSDiagnosticService_dumpStreamAudio_forRequest___block_invoke(uint64_
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dumpCompressedAudio:(id)a3 forRequest:(id)a4
+- (void)dumpCompressedAudio:(id)audio forRequest:(id)request
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([a4 canLogRequestText])
+  audioCopy = audio;
+  if ([request canLogRequestText])
   {
-    if (v6)
+    if (audioCopy)
     {
       [(VSDiagnosticService *)self createDirectoryIfNeeded];
       v7 = objc_alloc_init(MEMORY[0x277CCA968]);
       [v7 setDateFormat:@"yyyy_MM_dd-HHmmss.SSS"];
       v8 = MEMORY[0x277CCACA8];
-      v9 = [MEMORY[0x277CBEAA8] date];
-      v10 = [v7 stringFromDate:v9];
+      date = [MEMORY[0x277CBEAA8] date];
+      v10 = [v7 stringFromDate:date];
       v11 = [v8 stringWithFormat:@"TTS-%@", v10];
 
       v12 = MEMORY[0x277CCACA8];
@@ -295,8 +295,8 @@ void __50__VSDiagnosticService_dumpStreamAudio_forRequest___block_invoke(uint64_
       block[2] = __54__VSDiagnosticService_dumpCompressedAudio_forRequest___block_invoke;
       block[3] = &unk_279E4B948;
       v21 = v15;
-      v22 = self;
-      v23 = v6;
+      selfCopy = self;
+      v23 = audioCopy;
       v24 = v11;
       v17 = v11;
       v18 = v15;
@@ -381,16 +381,16 @@ void __54__VSDiagnosticService_dumpCompressedAudio_forRequest___block_invoke(uin
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0;
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  [v3 fileExistsAtPath:self->_audioDumpPath isDirectory:&v15];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager fileExistsAtPath:self->_audioDumpPath isDirectory:&v15];
 
   if ((v15 & 1) == 0)
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     audioDumpPath = self->_audioDumpPath;
     audioDumpFileAttributes = self->_audioDumpFileAttributes;
     v14 = 0;
-    v7 = [v4 createDirectoryAtPath:audioDumpPath withIntermediateDirectories:1 attributes:audioDumpFileAttributes error:&v14];
+    v7 = [defaultManager2 createDirectoryAtPath:audioDumpPath withIntermediateDirectories:1 attributes:audioDumpFileAttributes error:&v14];
     v8 = v14;
 
     v9 = VSGetLogDefault();
@@ -422,16 +422,16 @@ void __54__VSDiagnosticService_dumpCompressedAudio_forRequest___block_invoke(uin
 
 - (void)removeDirectory
 {
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [(VSDiagnosticService *)self audioDumpPath];
-  [v4 removeDirectory:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  audioDumpPath = [(VSDiagnosticService *)self audioDumpPath];
+  [defaultManager removeDirectory:audioDumpPath];
 }
 
 - (unint64_t)totalDiagnosticFileSize
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(VSDiagnosticService *)self audioDumpPath];
-  v5 = [v3 directorySize:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  audioDumpPath = [(VSDiagnosticService *)self audioDumpPath];
+  v5 = [defaultManager directorySize:audioDumpPath];
 
   return v5;
 }
@@ -439,22 +439,22 @@ void __54__VSDiagnosticService_dumpCompressedAudio_forRequest___block_invoke(uin
 - (void)removeOldFiles
 {
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-864000.0];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(VSDiagnosticService *)self audioDumpPath];
-  [v3 cleanDirectory:v4 withDateOlderThan:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  audioDumpPath = [(VSDiagnosticService *)self audioDumpPath];
+  [defaultManager cleanDirectory:audioDumpPath withDateOlderThan:v5];
 }
 
-- (VSDiagnosticService)initWithDirectory:(id)a3
+- (VSDiagnosticService)initWithDirectory:(id)directory
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  directoryCopy = directory;
   v12.receiver = self;
   v12.super_class = VSDiagnosticService;
   v6 = [(VSDiagnosticService *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioDumpPath, a3);
+    objc_storeStrong(&v6->_audioDumpPath, directory);
     v13 = *MEMORY[0x277CCA160];
     v14[0] = @"mobile";
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];

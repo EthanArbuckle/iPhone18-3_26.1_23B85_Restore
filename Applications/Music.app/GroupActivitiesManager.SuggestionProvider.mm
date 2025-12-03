@@ -32,7 +32,7 @@
 
 - (UIActivityItemsConfigurationReading)activityItemsConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GroupActivitiesManager.SuggestionProvider.activityItemsConfiguration.getter();
 
   return v3;

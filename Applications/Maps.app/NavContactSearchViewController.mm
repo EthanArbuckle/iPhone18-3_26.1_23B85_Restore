@@ -1,8 +1,8 @@
 @interface NavContactSearchViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (NavActionCoordination)navActionCoordinator;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_contactValuesSelected:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_contactValuesSelected:(id)selected;
 - (void)loadContaineeHeaderView;
 - (void)viewDidLoad;
 @end
@@ -16,16 +16,16 @@
   return WeakRetained;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ContactSearchViewController *)self contactValues];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  contactValues = [(ContactSearchViewController *)self contactValues];
+  v9 = [contactValues objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v13.receiver = self;
   v13.super_class = NavContactSearchViewController;
-  v10 = [(ContactSearchViewController *)&v13 tableView:v7 cellForRowAtIndexPath:v6];
+  v10 = [(ContactSearchViewController *)&v13 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
   if ([(NSOrderedSet *)self->_activeContactsValues containsObject:v9])
   {
@@ -36,23 +36,23 @@
   return v10;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ContactSearchViewController *)self contactValues];
-  v7 = [v5 row];
+  pathCopy = path;
+  contactValues = [(ContactSearchViewController *)self contactValues];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [contactValues objectAtIndexedSubscript:v7];
 
   LOBYTE(self) = [(NSOrderedSet *)self->_activeContactsValues containsObject:v8];
   return self ^ 1;
 }
 
-- (void)_contactValuesSelected:(id)a3
+- (void)_contactValuesSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(ContactSearchViewController *)self suggestionDataSource];
-  [v5 toggleContact:v4];
+  selectedCopy = selected;
+  suggestionDataSource = [(ContactSearchViewController *)self suggestionDataSource];
+  [suggestionDataSource toggleContact:selectedCopy];
 
   [(ContaineeViewController *)self handleDismissAction:0];
 }
@@ -66,8 +66,8 @@
   v4 = [v3 localizedStringForKey:@"[SharedETA] Contacts Title" value:@"localized string not found" table:0];
   [(ContainerHeaderView *)v6 setTitle:v4];
 
-  v5 = [(NavContactSearchViewController *)self view];
-  [v5 addSubview:v6];
+  view = [(NavContactSearchViewController *)self view];
+  [view addSubview:v6];
 
   [(ContactSearchViewController *)self setTitleHeaderView:v6];
 }
@@ -77,17 +77,17 @@
   v11.receiver = self;
   v11.super_class = NavContactSearchViewController;
   [(ContactSearchViewController *)&v11 viewDidLoad];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 setBlurInCardView:0];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setBlurInCardView:0];
 
   v4 = [UIColor colorNamed:@"NavigationMaterialColor"];
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 setCardColor:v4];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 setCardColor:v4];
 
   v6 = [NSOrderedSet alloc];
   v7 = +[MSPSharedTripService sharedInstance];
-  v8 = [v7 receivers];
-  v9 = [v6 initWithArray:v8];
+  receivers = [v7 receivers];
+  v9 = [v6 initWithArray:receivers];
   activeContactsValues = self->_activeContactsValues;
   self->_activeContactsValues = v9;
 }

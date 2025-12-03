@@ -1,60 +1,60 @@
 @interface W5Engine
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (W5Engine)init;
 - (id)__localPeer;
 - (id)__model;
 - (id)_peerListeners;
-- (void)__cancelPeerDiscoveryWithUUID:(id)a3;
-- (void)__cancelWiFiSnifferWithUUID:(id)a3 peer:(id)a4 reply:(id)a5;
-- (void)__collectLogItem:(id)a3 reply:(id)a4;
-- (void)__collectLogsDiagnosticMode:(id)a3 outputName:(id)a4 uid:(unsigned int)a5 gid:(unsigned int)a6 uuid:(id)a7 reply:(id)a8;
-- (void)__collectedLogItem:(id)a3;
-- (void)__completedDiagnosticsTest:(id)a3;
-- (void)__runDiagnostics:(id)a3 configuration:(id)a4 uuid:(id)a5 reply:(id)a6;
-- (void)__runWiFiPerfLoggingWithConfiguration:(id)a3 uuid:(id)a4 reply:(id)a5;
-- (void)__runWiFiSnifferOnPeer:(id)a3 channels:(id)a4 duration:(double)a5 uuid:(id)a6 reply:(id)a7;
+- (void)__cancelPeerDiscoveryWithUUID:(id)d;
+- (void)__cancelWiFiSnifferWithUUID:(id)d peer:(id)peer reply:(id)reply;
+- (void)__collectLogItem:(id)item reply:(id)reply;
+- (void)__collectLogsDiagnosticMode:(id)mode outputName:(id)name uid:(unsigned int)uid gid:(unsigned int)gid uuid:(id)uuid reply:(id)reply;
+- (void)__collectedLogItem:(id)item;
+- (void)__completedDiagnosticsTest:(id)test;
+- (void)__runDiagnostics:(id)diagnostics configuration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)__runWiFiPerfLoggingWithConfiguration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)__runWiFiSnifferOnPeer:(id)peer channels:(id)channels duration:(double)duration uuid:(id)uuid reply:(id)reply;
 - (void)__setupCallbacks;
 - (void)__updateStatusMonitoring;
-- (void)__updatedStatusWithEvent:(id)a3;
+- (void)__updatedStatusWithEvent:(id)event;
 - (void)_scheduleRepeatingCleanupTasks;
 - (void)dealloc;
 - (void)run;
-- (void)terminateAndNotify:(id)a3;
-- (void)xpcConnection:(id)a3 associateToNetworkOnPeer:(id)a4 scanResult:(id)a5 configuration:(id)a6 reply:(id)a7;
-- (void)xpcConnection:(id)a3 cancelCollectLogsWithUUID:(id)a4 peerID:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 cancelDiagnosticsWithUUID:(id)a4 peerID:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 cancelWiFiPerformanceLoggingWithUUID:(id)a4 peerID:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 cancelWiFiSnifferWithUUID:(id)a4 peer:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 cancelWiFiSnifferWithUUID:(id)a4 peerID:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 collectLogs:(id)a4 configuration:(id)a5 uuid:(id)a6 reply:(id)a7;
-- (void)xpcConnection:(id)a3 collectLogsDiagnosticMode:(id)a4 uuid:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 listFilesFromPeer:(id)a4 remoteDirPath:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 queryDatabaseForPeer:(id)a4 fetch:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 queryDebugConfigurationForPeer:(id)a4 reply:(id)a5;
-- (void)xpcConnection:(id)a3 queryDiagnosticsModeForPeer:(id)a4 info:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 queryFaultEventCacheForPeer:(id)a4 reply:(id)a5;
-- (void)xpcConnection:(id)a3 queryLocalPeerAndReply:(id)a4;
-- (void)xpcConnection:(id)a3 queryRegisteredDiagnosticsPeersWithReply:(id)a4;
-- (void)xpcConnection:(id)a3 queryStatusForPeer:(id)a4 reply:(id)a5;
-- (void)xpcConnection:(id)a3 registerRemoteDiagnosticEventsForPeer:(id)a4 configuration:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 requestFileFromPeer:(id)a4 remoteFilePath:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 runDiagnostics:(id)a4 configuration:(id)a5 uuid:(id)a6 reply:(id)a7;
-- (void)xpcConnection:(id)a3 runDiagnosticsForPeer:(id)a4 diagnostics:(id)a5 configuration:(id)a6 uuid:(id)a7 reply:(id)a8;
-- (void)xpcConnection:(id)a3 runWiFiPerformanceLoggingWithConfiguration:(id)a4 uuid:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 runWiFiSnifferOnChannels:(id)a4 duration:(double)a5 peer:(id)a6 uuid:(id)a7 reply:(id)a8;
-- (void)xpcConnection:(id)a3 runWiFiSnifferWithTCPDumpOnChannels:(id)a4 duration:(double)a5 peer:(id)a6 uuid:(id)a7 reply:(id)a8;
-- (void)xpcConnection:(id)a3 setDebugConfiguration:(id)a4 peer:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 startDiagnosticsModeWithConfiguration:(id)a4 reply:(id)a5;
-- (void)xpcConnection:(id)a3 startMonitoringEvents:(id)a4 reply:(id)a5;
-- (void)xpcConnection:(id)a3 startMonitoringFaultEventsForPeer:(id)a4 reply:(id)a5;
-- (void)xpcConnection:(id)a3 startNetworkDiscoveryOnPeer:(id)a4 configuration:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 startPeerDiscoveryWithConfiguration:(id)a4 uuid:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 stopDiagnosticsModeWithUUID:(id)a4 info:(id)a5 reply:(id)a6;
-- (void)xpcConnection:(id)a3 stopMonitoringEvents:(id)a4 reply:(id)a5;
-- (void)xpcConnection:(id)a3 stopMonitoringFaultEventsForPeer:(id)a4 reply:(id)a5;
-- (void)xpcConnection:(id)a3 stopPeerDiscoveryWithUUID:(id)a4 reply:(id)a5;
-- (void)xpcConnection:(id)a3 submitFaultEvent:(id)a4 reply:(id)a5;
-- (void)xpcConnection:(id)a3 unregisterRemoteDiagnosticEventsForPeer:(id)a4 configuration:(id)a5 reply:(id)a6;
+- (void)terminateAndNotify:(id)notify;
+- (void)xpcConnection:(id)connection associateToNetworkOnPeer:(id)peer scanResult:(id)result configuration:(id)configuration reply:(id)reply;
+- (void)xpcConnection:(id)connection cancelCollectLogsWithUUID:(id)d peerID:(id)iD reply:(id)reply;
+- (void)xpcConnection:(id)connection cancelDiagnosticsWithUUID:(id)d peerID:(id)iD reply:(id)reply;
+- (void)xpcConnection:(id)connection cancelWiFiPerformanceLoggingWithUUID:(id)d peerID:(id)iD reply:(id)reply;
+- (void)xpcConnection:(id)connection cancelWiFiSnifferWithUUID:(id)d peer:(id)peer reply:(id)reply;
+- (void)xpcConnection:(id)connection cancelWiFiSnifferWithUUID:(id)d peerID:(id)iD reply:(id)reply;
+- (void)xpcConnection:(id)connection collectLogs:(id)logs configuration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)xpcConnection:(id)connection collectLogsDiagnosticMode:(id)mode uuid:(id)uuid reply:(id)reply;
+- (void)xpcConnection:(id)connection listFilesFromPeer:(id)peer remoteDirPath:(id)path reply:(id)reply;
+- (void)xpcConnection:(id)connection queryDatabaseForPeer:(id)peer fetch:(id)fetch reply:(id)reply;
+- (void)xpcConnection:(id)connection queryDebugConfigurationForPeer:(id)peer reply:(id)reply;
+- (void)xpcConnection:(id)connection queryDiagnosticsModeForPeer:(id)peer info:(id)info reply:(id)reply;
+- (void)xpcConnection:(id)connection queryFaultEventCacheForPeer:(id)peer reply:(id)reply;
+- (void)xpcConnection:(id)connection queryLocalPeerAndReply:(id)reply;
+- (void)xpcConnection:(id)connection queryRegisteredDiagnosticsPeersWithReply:(id)reply;
+- (void)xpcConnection:(id)connection queryStatusForPeer:(id)peer reply:(id)reply;
+- (void)xpcConnection:(id)connection registerRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration reply:(id)reply;
+- (void)xpcConnection:(id)connection requestFileFromPeer:(id)peer remoteFilePath:(id)path reply:(id)reply;
+- (void)xpcConnection:(id)connection runDiagnostics:(id)diagnostics configuration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)xpcConnection:(id)connection runDiagnosticsForPeer:(id)peer diagnostics:(id)diagnostics configuration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)xpcConnection:(id)connection runWiFiPerformanceLoggingWithConfiguration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)xpcConnection:(id)connection runWiFiSnifferOnChannels:(id)channels duration:(double)duration peer:(id)peer uuid:(id)uuid reply:(id)reply;
+- (void)xpcConnection:(id)connection runWiFiSnifferWithTCPDumpOnChannels:(id)channels duration:(double)duration peer:(id)peer uuid:(id)uuid reply:(id)reply;
+- (void)xpcConnection:(id)connection setDebugConfiguration:(id)configuration peer:(id)peer reply:(id)reply;
+- (void)xpcConnection:(id)connection startDiagnosticsModeWithConfiguration:(id)configuration reply:(id)reply;
+- (void)xpcConnection:(id)connection startMonitoringEvents:(id)events reply:(id)reply;
+- (void)xpcConnection:(id)connection startMonitoringFaultEventsForPeer:(id)peer reply:(id)reply;
+- (void)xpcConnection:(id)connection startNetworkDiscoveryOnPeer:(id)peer configuration:(id)configuration reply:(id)reply;
+- (void)xpcConnection:(id)connection startPeerDiscoveryWithConfiguration:(id)configuration uuid:(id)uuid reply:(id)reply;
+- (void)xpcConnection:(id)connection stopDiagnosticsModeWithUUID:(id)d info:(id)info reply:(id)reply;
+- (void)xpcConnection:(id)connection stopMonitoringEvents:(id)events reply:(id)reply;
+- (void)xpcConnection:(id)connection stopMonitoringFaultEventsForPeer:(id)peer reply:(id)reply;
+- (void)xpcConnection:(id)connection stopPeerDiscoveryWithUUID:(id)d reply:(id)reply;
+- (void)xpcConnection:(id)connection submitFaultEvent:(id)event reply:(id)reply;
+- (void)xpcConnection:(id)connection unregisterRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration reply:(id)reply;
 @end
 
 @implementation W5Engine
@@ -436,7 +436,7 @@ LABEL_75:
   [+[NSRunLoop currentRunLoop](NSRunLoop run];
 }
 
-- (void)terminateAndNotify:(id)a3
+- (void)terminateAndNotify:(id)notify
 {
   v5 = dispatch_semaphore_create(0);
   sniff = self->_sniff;
@@ -500,7 +500,7 @@ LABEL_75:
     dispatch_release(v5);
   }
 
-  (*(a3 + 2))(a3);
+  (*(notify + 2))(notify);
 }
 
 - (id)__model
@@ -679,22 +679,22 @@ LABEL_27:
   }
 }
 
-- (void)__runDiagnostics:(id)a3 configuration:(id)a4 uuid:(id)a5 reply:(id)a6
+- (void)__runDiagnostics:(id)diagnostics configuration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   v11 = objc_alloc_init(W5DiagnosticsTestRequestInternal);
-  [(W5DiagnosticsTestRequestInternal *)v11 setUuid:a5];
-  [(W5DiagnosticsTestRequestInternal *)v11 setTestRequests:a3];
-  [(W5DiagnosticsTestRequestInternal *)v11 setConfiguration:a4];
-  -[W5DiagnosticsTestRequestInternal setIncludeEvents:](v11, "setIncludeEvents:", [objc_msgSend(a4 objectForKeyedSubscript:{@"IncludeEvents", "BOOLValue"}]);
-  [(W5DiagnosticsTestRequestInternal *)v11 setReply:a6];
+  [(W5DiagnosticsTestRequestInternal *)v11 setUuid:uuid];
+  [(W5DiagnosticsTestRequestInternal *)v11 setTestRequests:diagnostics];
+  [(W5DiagnosticsTestRequestInternal *)v11 setConfiguration:configuration];
+  -[W5DiagnosticsTestRequestInternal setIncludeEvents:](v11, "setIncludeEvents:", [objc_msgSend(configuration objectForKeyedSubscript:{@"IncludeEvents", "BOOLValue"}]);
+  [(W5DiagnosticsTestRequestInternal *)v11 setReply:reply];
   diagnostics = self->_diagnostics;
 
   [(W5DiagnosticsManager *)diagnostics addRequest:v11];
 }
 
-- (void)__collectLogsDiagnosticMode:(id)a3 outputName:(id)a4 uid:(unsigned int)a5 gid:(unsigned int)a6 uuid:(id)a7 reply:(id)a8
+- (void)__collectLogsDiagnosticMode:(id)mode outputName:(id)name uid:(unsigned int)uid gid:(unsigned int)gid uuid:(id)uuid reply:(id)reply
 {
-  v12 = [a3 mutableCopy];
+  v12 = [mode mutableCopy];
   if ([-[W5DebugManager queryDebugConfigurationAndReturnError:](self->_debug queryDebugConfigurationAndReturnError:{0), "megaWiFiProfile"}] == 1)
   {
     [v12 setObject:&__kCFBooleanTrue forKeyedSubscript:@"UseMegaWiFiProfileLimits"];
@@ -705,42 +705,42 @@ LABEL_27:
   v14[1] = 3221225472;
   v14[2] = sub_100029C7C;
   v14[3] = &unk_1000E1DE8;
-  v14[4] = a8;
-  [(W5DiagnosticsModeManager *)diagnosticsModeManager collectLogsDiagnosticMode:a3 outputName:a4 reply:v14];
+  v14[4] = reply;
+  [(W5DiagnosticsModeManager *)diagnosticsModeManager collectLogsDiagnosticMode:mode outputName:name reply:v14];
 }
 
-- (void)__runWiFiSnifferOnPeer:(id)a3 channels:(id)a4 duration:(double)a5 uuid:(id)a6 reply:(id)a7
+- (void)__runWiFiSnifferOnPeer:(id)peer channels:(id)channels duration:(double)duration uuid:(id)uuid reply:(id)reply
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100029D8C;
   v9[3] = &unk_1000E1E10;
-  v9[4] = a7;
-  v8 = [(W5PeerManager *)self->_peerManager runSnifferAtPeerWithRequest:[[W5PeerSnifferRequest alloc] initWithPeer:a3 requestType:1 duration:0 uuid:a4 channels:0 config:v9 reply:a5]];
-  if (a7)
+  v9[4] = reply;
+  v8 = [(W5PeerManager *)self->_peerManager runSnifferAtPeerWithRequest:[[W5PeerSnifferRequest alloc] initWithPeer:peer requestType:1 duration:0 uuid:channels channels:0 config:v9 reply:duration]];
+  if (reply)
   {
     if (v8)
     {
-      (*(a7 + 2))(a7, v8, 0, 0, 0);
+      (*(reply + 2))(reply, v8, 0, 0, 0);
     }
   }
 }
 
-- (void)__cancelWiFiSnifferWithUUID:(id)a3 peer:(id)a4 reply:(id)a5
+- (void)__cancelWiFiSnifferWithUUID:(id)d peer:(id)peer reply:(id)reply
 {
-  if (a4)
+  if (peer)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10002A150;
     v7[3] = &unk_1000E1E10;
-    v7[4] = a5;
-    v6 = [(W5PeerManager *)self->_peerManager runSnifferAtPeerWithRequest:[[W5PeerSnifferRequest alloc] initWithPeer:a4 requestType:2 duration:a3 uuid:0 channels:0 config:v7 reply:0.0]];
-    if (a5)
+    v7[4] = reply;
+    v6 = [(W5PeerManager *)self->_peerManager runSnifferAtPeerWithRequest:[[W5PeerSnifferRequest alloc] initWithPeer:peer requestType:2 duration:d uuid:0 channels:0 config:v7 reply:0.0]];
+    if (reply)
     {
       if (v6)
       {
-        (*(a5 + 2))(a5, v6);
+        (*(reply + 2))(reply, v6);
       }
     }
   }
@@ -748,22 +748,22 @@ LABEL_27:
   else
   {
 
-    [(W5Engine *)self __cancelWiFiSnifferWithUUID:a3 reply:a5];
+    [(W5Engine *)self __cancelWiFiSnifferWithUUID:d reply:reply];
   }
 }
 
-- (void)__runWiFiPerfLoggingWithConfiguration:(id)a3 uuid:(id)a4 reply:(id)a5
+- (void)__runWiFiPerfLoggingWithConfiguration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   v9 = objc_alloc_init(W5WiFiPerfLoggingRequest);
-  [(W5WiFiPerfLoggingRequest *)v9 setUuid:a4];
-  [(W5WiFiPerfLoggingRequest *)v9 setConfiguration:a3];
-  [(W5WiFiPerfLoggingRequest *)v9 setReply:a5];
+  [(W5WiFiPerfLoggingRequest *)v9 setUuid:uuid];
+  [(W5WiFiPerfLoggingRequest *)v9 setConfiguration:configuration];
+  [(W5WiFiPerfLoggingRequest *)v9 setReply:reply];
   wifiperf = self->_wifiperf;
 
   [(W5WiFiPerfLoggingManager *)wifiperf addRequest:v9];
 }
 
-- (void)__updatedStatusWithEvent:(id)a3
+- (void)__updatedStatusWithEvent:(id)event
 {
   v10 = 0u;
   v11 = 0u;
@@ -798,9 +798,9 @@ LABEL_27:
   }
 }
 
-- (void)__completedDiagnosticsTest:(id)a3
+- (void)__completedDiagnosticsTest:(id)test
 {
-  v4 = [objc_msgSend(a3 "info")];
+  v4 = [objc_msgSend(test "info")];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -835,8 +835,8 @@ LABEL_17:
           v22 = 0u;
           v19 = 0u;
           v20 = 0u;
-          v12 = [v11 activeRequests];
-          v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          activeRequests = [v11 activeRequests];
+          v13 = [activeRequests countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v13)
           {
             v14 = v13;
@@ -847,7 +847,7 @@ LABEL_17:
               {
                 if (*v20 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(activeRequests);
                 }
 
                 if ([objc_msgSend(*(*(&v19 + 1) + 8 * i) "uuid")])
@@ -857,7 +857,7 @@ LABEL_17:
                 }
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+              v14 = [activeRequests countByEnumeratingWithState:&v19 objects:v27 count:16];
               v8 = 0;
               if (v14)
               {
@@ -886,9 +886,9 @@ LABEL_17:
   }
 }
 
-- (void)__collectedLogItem:(id)a3
+- (void)__collectedLogItem:(id)item
 {
-  v4 = [objc_msgSend(a3 "info")];
+  v4 = [objc_msgSend(item "info")];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -923,8 +923,8 @@ LABEL_17:
           v22 = 0u;
           v19 = 0u;
           v20 = 0u;
-          v12 = [v11 activeRequests];
-          v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          activeRequests = [v11 activeRequests];
+          v13 = [activeRequests countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v13)
           {
             v14 = v13;
@@ -935,7 +935,7 @@ LABEL_17:
               {
                 if (*v20 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(activeRequests);
                 }
 
                 if ([objc_msgSend(*(*(&v19 + 1) + 8 * i) "uuid")])
@@ -945,7 +945,7 @@ LABEL_17:
                 }
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+              v14 = [activeRequests countByEnumeratingWithState:&v19 objects:v27 count:16];
               v8 = 0;
               if (v14)
               {
@@ -974,15 +974,15 @@ LABEL_17:
   }
 }
 
-- (void)__collectLogItem:(id)a3 reply:(id)a4
+- (void)__collectLogItem:(id)item reply:(id)reply
 {
   global_queue = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002A778;
   v7[3] = &unk_1000E1C70;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = item;
+  v7[5] = reply;
   dispatch_async(global_queue, v7);
 }
 
@@ -1168,7 +1168,7 @@ LABEL_17:
   _Block_object_dispose(v29, 8);
 }
 
-- (void)xpcConnection:(id)a3 startMonitoringEvents:(id)a4 reply:(id)a5
+- (void)xpcConnection:(id)connection startMonitoringEvents:(id)events reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -1176,11 +1176,11 @@ LABEL_17:
   v6[2] = sub_10002C478;
   v6[3] = &unk_1000E1C70;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)xpcConnection:(id)a3 stopMonitoringEvents:(id)a4 reply:(id)a5
+- (void)xpcConnection:(id)connection stopMonitoringEvents:(id)events reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -1188,11 +1188,11 @@ LABEL_17:
   v6[2] = sub_10002C548;
   v6[3] = &unk_1000E1C70;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)xpcConnection:(id)a3 queryLocalPeerAndReply:(id)a4
+- (void)xpcConnection:(id)connection queryLocalPeerAndReply:(id)reply
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -1200,11 +1200,11 @@ LABEL_17:
   v5[2] = sub_10002C618;
   v5[3] = &unk_1000E1C70;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = reply;
   dispatch_async(queue, v5);
 }
 
-- (void)xpcConnection:(id)a3 queryStatusForPeer:(id)a4 reply:(id)a5
+- (void)xpcConnection:(id)connection queryStatusForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1212,54 +1212,54 @@ LABEL_17:
   block[2] = sub_10002C728;
   block[3] = &unk_1000E2108;
   block[5] = self;
-  block[6] = a5;
-  block[4] = a4;
+  block[6] = reply;
+  block[4] = peer;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 queryDatabaseForPeer:(id)a4 fetch:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection queryDatabaseForPeer:(id)peer fetch:(id)fetch reply:(id)reply
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002C9D4;
   v7[3] = &unk_1000E20B8;
-  v7[4] = a4;
+  v7[4] = peer;
   v7[5] = self;
-  v7[6] = a5;
-  v7[7] = a6;
+  v7[6] = fetch;
+  v7[7] = reply;
   dispatch_async(queue, v7);
 }
 
-- (void)xpcConnection:(id)a3 requestFileFromPeer:(id)a4 remoteFilePath:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection requestFileFromPeer:(id)peer remoteFilePath:(id)path reply:(id)reply
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002D000;
   v7[3] = &unk_1000E20B8;
-  v7[4] = a4;
-  v7[5] = a5;
+  v7[4] = peer;
+  v7[5] = path;
   v7[6] = self;
-  v7[7] = a6;
+  v7[7] = reply;
   dispatch_async(queue, v7);
 }
 
-- (void)xpcConnection:(id)a3 listFilesFromPeer:(id)a4 remoteDirPath:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection listFilesFromPeer:(id)peer remoteDirPath:(id)path reply:(id)reply
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002D1C8;
   v7[3] = &unk_1000E20B8;
-  v7[4] = a4;
-  v7[5] = a5;
+  v7[4] = peer;
+  v7[5] = path;
   v7[6] = self;
-  v7[7] = a6;
+  v7[7] = reply;
   dispatch_async(queue, v7);
 }
 
-- (void)xpcConnection:(id)a3 queryDebugConfigurationForPeer:(id)a4 reply:(id)a5
+- (void)xpcConnection:(id)connection queryDebugConfigurationForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1267,42 +1267,42 @@ LABEL_17:
   block[2] = sub_10002D348;
   block[3] = &unk_1000E2108;
   block[5] = self;
-  block[6] = a5;
-  block[4] = a4;
+  block[6] = reply;
+  block[4] = peer;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 setDebugConfiguration:(id)a4 peer:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection setDebugConfiguration:(id)configuration peer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002D5FC;
   v7[3] = &unk_1000E2180;
-  v7[4] = a5;
-  v7[5] = a4;
+  v7[4] = peer;
+  v7[5] = configuration;
   v7[6] = self;
-  v7[7] = a6;
+  v7[7] = reply;
   dispatch_async(queue, v7);
 }
 
-- (void)xpcConnection:(id)a3 runDiagnostics:(id)a4 configuration:(id)a5 uuid:(id)a6 reply:(id)a7
+- (void)xpcConnection:(id)connection runDiagnostics:(id)diagnostics configuration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002D8AC;
   v8[3] = &unk_1000E21D0;
-  v8[4] = a6;
-  v8[5] = a3;
-  v8[6] = a5;
-  v8[7] = a4;
+  v8[4] = uuid;
+  v8[5] = connection;
+  v8[6] = configuration;
+  v8[7] = diagnostics;
   v8[8] = self;
-  v8[9] = a7;
+  v8[9] = reply;
   dispatch_async(queue, v8);
 }
 
-- (void)xpcConnection:(id)a3 runDiagnosticsForPeer:(id)a4 diagnostics:(id)a5 configuration:(id)a6 uuid:(id)a7 reply:(id)a8
+- (void)xpcConnection:(id)connection runDiagnosticsForPeer:(id)peer diagnostics:(id)diagnostics configuration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   v11 = sub_100098A04();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1314,24 +1314,24 @@ LABEL_17:
     v39 = 1024;
     v40 = 1230;
     v41 = 2114;
-    v42 = [objc_msgSend(a7 "UUIDString")];
+    v42 = [objc_msgSend(uuid "UUIDString")];
     v43 = 2114;
-    v44 = [a3 processName];
+    processName = [connection processName];
     v45 = 1024;
-    v46 = [objc_msgSend(a3 "connection")];
+    v46 = [objc_msgSend(connection "connection")];
     v47 = 2114;
-    v48 = a6;
+    configurationCopy = configuration;
     LODWORD(v23) = 64;
     v22 = &v35;
     _os_log_send_and_compose_impl();
   }
 
-  v25 = a6;
+  configurationCopy2 = configuration;
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = [a5 countByEnumeratingWithState:&v30 objects:v34 count:{16, v22, v23}];
+  v12 = [diagnostics countByEnumeratingWithState:&v30 objects:v34 count:{16, v22, v23}];
   if (v12)
   {
     v13 = v12;
@@ -1342,7 +1342,7 @@ LABEL_17:
       {
         if (*v31 != v14)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(diagnostics);
         }
 
         v16 = *(*(&v30 + 1) + 8 * i);
@@ -1351,7 +1351,7 @@ LABEL_17:
         {
           [v16 testID];
           v18 = W5DescriptionForDiagnosticsTestID();
-          v19 = [v16 testID];
+          testID = [v16 testID];
           v35 = 136316162;
           v36 = "[W5Engine xpcConnection:runDiagnosticsForPeer:diagnostics:configuration:uuid:reply:]";
           v37 = 2080;
@@ -1361,12 +1361,12 @@ LABEL_17:
           v41 = 2114;
           v42 = v18;
           v43 = 2048;
-          v44 = v19;
+          processName = testID;
           _os_log_send_and_compose_impl();
         }
       }
 
-      v13 = [a5 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v13 = [diagnostics countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v13);
@@ -1376,12 +1376,12 @@ LABEL_17:
   v29[1] = 3221225472;
   v29[2] = sub_10002E164;
   v29[3] = &unk_1000E2068;
-  v29[4] = a8;
-  v20 = [[W5PeerDiagnosticsRequest alloc] initWithPeer:a4 diagnostics:a5 configuration:v25 uuid:a7 reply:v29];
+  v29[4] = reply;
+  v20 = [[W5PeerDiagnosticsRequest alloc] initWithPeer:peer diagnostics:diagnostics configuration:configurationCopy2 uuid:uuid reply:v29];
   v21 = [(W5PeerManager *)self->_peerManager runDiagnosticsOnPeerWithRequest:v20];
-  if (a8 && v21)
+  if (reply && v21)
   {
-    (*(a8 + 2))(a8, v21, 0);
+    (*(reply + 2))(reply, v21, 0);
   }
 
   if (v20)
@@ -1390,10 +1390,10 @@ LABEL_17:
   }
 }
 
-- (void)xpcConnection:(id)a3 registerRemoteDiagnosticEventsForPeer:(id)a4 configuration:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection registerRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration reply:(id)reply
 {
   v9 = 0;
-  if (![(W5DiagnosticsModeManager *)self->_diagnosticsModeManager registerPeer:a4 role:16 configuration:a5 error:&v9])
+  if (![(W5DiagnosticsModeManager *)self->_diagnosticsModeManager registerPeer:peer role:16 configuration:configuration error:&v9])
   {
     v8 = sub_100098A04();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1405,23 +1405,23 @@ LABEL_17:
       v14 = 1024;
       v15 = 1252;
       v16 = 2114;
-      v17 = a4;
+      peerCopy = peer;
       v18 = 2114;
       v19 = v9;
       _os_log_send_and_compose_impl();
     }
   }
 
-  if (a6)
+  if (reply)
   {
-    (*(a6 + 2))(a6, v9);
+    (*(reply + 2))(reply, v9);
   }
 }
 
-- (void)xpcConnection:(id)a3 unregisterRemoteDiagnosticEventsForPeer:(id)a4 configuration:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection unregisterRemoteDiagnosticEventsForPeer:(id)peer configuration:(id)configuration reply:(id)reply
 {
   v9 = 0;
-  if (![(W5DiagnosticsModeManager *)self->_diagnosticsModeManager unregisterPeer:a4 role:16 error:&v9])
+  if (![(W5DiagnosticsModeManager *)self->_diagnosticsModeManager unregisterPeer:peer role:16 error:&v9])
   {
     v8 = sub_100098A04();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1433,153 +1433,153 @@ LABEL_17:
       v14 = 1024;
       v15 = 1262;
       v16 = 2114;
-      v17 = a4;
+      peerCopy = peer;
       v18 = 2114;
       v19 = v9;
       _os_log_send_and_compose_impl();
     }
   }
 
-  if (a6)
+  if (reply)
   {
-    (*(a6 + 2))(a6, v9);
+    (*(reply + 2))(reply, v9);
   }
 }
 
-- (void)xpcConnection:(id)a3 queryRegisteredDiagnosticsPeersWithReply:(id)a4
+- (void)xpcConnection:(id)connection queryRegisteredDiagnosticsPeersWithReply:(id)reply
 {
-  if (a4)
+  if (reply)
   {
     v5 = [(W5DiagnosticsModeManager *)self->_diagnosticsModeManager registeredPeersForFaultType:0x7FFFFFFFFFFFFFFFLL];
-    v6 = *(a4 + 2);
+    v6 = *(reply + 2);
 
-    v6(a4, 0, v5);
+    v6(reply, 0, v5);
   }
 }
 
-- (void)xpcConnection:(id)a3 startDiagnosticsModeWithConfiguration:(id)a4 reply:(id)a5
+- (void)xpcConnection:(id)connection startDiagnosticsModeWithConfiguration:(id)configuration reply:(id)reply
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10002E4BC;
   v6[3] = &unk_1000E20B8;
-  v6[4] = a3;
-  v6[5] = a4;
+  v6[4] = connection;
+  v6[5] = configuration;
   v6[6] = self;
-  v6[7] = a5;
+  v6[7] = reply;
   dispatch_async(queue, v6);
 }
 
-- (void)xpcConnection:(id)a3 stopDiagnosticsModeWithUUID:(id)a4 info:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection stopDiagnosticsModeWithUUID:(id)d info:(id)info reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002E7C4;
   block[3] = &unk_1000E2220;
-  block[4] = a4;
-  block[5] = a3;
-  block[6] = a5;
+  block[4] = d;
+  block[5] = connection;
+  block[6] = info;
   block[7] = self;
-  block[8] = a6;
+  block[8] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 queryDiagnosticsModeForPeer:(id)a4 info:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection queryDiagnosticsModeForPeer:(id)peer info:(id)info reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002EAC8;
   block[3] = &unk_1000E2220;
-  block[4] = a3;
-  block[5] = a5;
-  block[6] = a4;
+  block[4] = connection;
+  block[5] = info;
+  block[6] = peer;
   block[7] = self;
-  block[8] = a6;
+  block[8] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 collectLogs:(id)a4 configuration:(id)a5 uuid:(id)a6 reply:(id)a7
+- (void)xpcConnection:(id)connection collectLogs:(id)logs configuration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002EEE0;
   v8[3] = &unk_1000E21D0;
-  v8[4] = a6;
-  v8[5] = a3;
-  v8[6] = a5;
-  v8[7] = a4;
+  v8[4] = uuid;
+  v8[5] = connection;
+  v8[6] = configuration;
+  v8[7] = logs;
   v8[8] = self;
-  v8[9] = a7;
+  v8[9] = reply;
   dispatch_async(queue, v8);
 }
 
-- (void)xpcConnection:(id)a3 collectLogsDiagnosticMode:(id)a4 uuid:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection collectLogsDiagnosticMode:(id)mode uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002F608;
   block[3] = &unk_1000E2220;
-  block[4] = a5;
-  block[5] = a3;
-  block[6] = a4;
+  block[4] = uuid;
+  block[5] = connection;
+  block[6] = mode;
   block[7] = self;
-  block[8] = a6;
+  block[8] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 runWiFiSnifferOnChannels:(id)a4 duration:(double)a5 peer:(id)a6 uuid:(id)a7 reply:(id)a8
+- (void)xpcConnection:(id)connection runWiFiSnifferOnChannels:(id)channels duration:(double)duration peer:(id)peer uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10002FC9C;
   v9[3] = &unk_1000E2388;
-  v9[4] = a6;
+  v9[4] = peer;
   v9[5] = self;
-  *&v9[9] = a5;
-  v9[7] = a7;
-  v9[8] = a8;
-  v9[6] = a4;
+  *&v9[9] = duration;
+  v9[7] = uuid;
+  v9[8] = reply;
+  v9[6] = channels;
   dispatch_async(queue, v9);
 }
 
-- (void)xpcConnection:(id)a3 runWiFiSnifferWithTCPDumpOnChannels:(id)a4 duration:(double)a5 peer:(id)a6 uuid:(id)a7 reply:(id)a8
+- (void)xpcConnection:(id)connection runWiFiSnifferWithTCPDumpOnChannels:(id)channels duration:(double)duration peer:(id)peer uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000301B0;
   v9[3] = &unk_1000E2388;
-  v9[4] = a6;
+  v9[4] = peer;
   v9[5] = self;
-  *&v9[9] = a5;
-  v9[7] = a7;
-  v9[8] = a8;
-  v9[6] = a4;
+  *&v9[9] = duration;
+  v9[7] = uuid;
+  v9[8] = reply;
+  v9[6] = channels;
   dispatch_async(queue, v9);
 }
 
-- (void)xpcConnection:(id)a3 startPeerDiscoveryWithConfiguration:(id)a4 uuid:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection startPeerDiscoveryWithConfiguration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100030560;
   block[3] = &unk_1000E2220;
-  block[4] = a4;
-  block[5] = a5;
-  block[6] = a3;
+  block[4] = configuration;
+  block[5] = uuid;
+  block[6] = connection;
   block[7] = self;
-  block[8] = a6;
+  block[8] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 stopPeerDiscoveryWithUUID:(id)a4 reply:(id)a5
+- (void)xpcConnection:(id)connection stopPeerDiscoveryWithUUID:(id)d reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1587,12 +1587,12 @@ LABEL_17:
   block[2] = sub_100030808;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)__cancelPeerDiscoveryWithUUID:(id)a3
+- (void)__cancelPeerDiscoveryWithUUID:(id)d
 {
   if ([(W5PeerManager *)self->_peerManager stopPeerDiscoveryWithRequestUUID:?])
   {
@@ -1604,35 +1604,35 @@ LABEL_17:
   }
 }
 
-- (void)xpcConnection:(id)a3 startNetworkDiscoveryOnPeer:(id)a4 configuration:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection startNetworkDiscoveryOnPeer:(id)peer configuration:(id)configuration reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000309D4;
   block[3] = &unk_1000E1CC0;
-  block[4] = a4;
+  block[4] = peer;
   block[5] = self;
-  block[6] = a6;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 associateToNetworkOnPeer:(id)a4 scanResult:(id)a5 configuration:(id)a6 reply:(id)a7
+- (void)xpcConnection:(id)connection associateToNetworkOnPeer:(id)peer scanResult:(id)result configuration:(id)configuration reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100030E28;
   block[3] = &unk_1000E2220;
-  block[4] = a4;
+  block[4] = peer;
   block[5] = self;
-  block[6] = a5;
-  block[7] = a6;
-  block[8] = a7;
+  block[6] = result;
+  block[7] = configuration;
+  block[8] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 runWiFiPerformanceLoggingWithConfiguration:(id)a4 uuid:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection runWiFiPerformanceLoggingWithConfiguration:(id)configuration uuid:(id)uuid reply:(id)reply
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
@@ -1640,13 +1640,13 @@ LABEL_17:
   v7[2] = sub_100031274;
   v7[3] = &unk_1000E20B8;
   v7[4] = self;
-  v7[5] = a4;
-  v7[6] = a5;
-  v7[7] = a6;
+  v7[5] = configuration;
+  v7[6] = uuid;
+  v7[7] = reply;
   dispatch_async(queue, v7);
 }
 
-- (void)xpcConnection:(id)a3 cancelDiagnosticsWithUUID:(id)a4 peerID:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection cancelDiagnosticsWithUUID:(id)d peerID:(id)iD reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1654,12 +1654,12 @@ LABEL_17:
   block[2] = sub_10003144C;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a6;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 cancelCollectLogsWithUUID:(id)a4 peerID:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection cancelCollectLogsWithUUID:(id)d peerID:(id)iD reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1667,40 +1667,40 @@ LABEL_17:
   block[2] = sub_100031624;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a6;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 cancelWiFiSnifferWithUUID:(id)a4 peerID:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection cancelWiFiSnifferWithUUID:(id)d peerID:(id)iD reply:(id)reply
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000317FC;
   v7[3] = &unk_1000E20B8;
-  v7[4] = a5;
+  v7[4] = iD;
   v7[5] = self;
-  v7[6] = a4;
-  v7[7] = a6;
+  v7[6] = d;
+  v7[7] = reply;
   dispatch_async(queue, v7);
 }
 
-- (void)xpcConnection:(id)a3 cancelWiFiSnifferWithUUID:(id)a4 peer:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection cancelWiFiSnifferWithUUID:(id)d peer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100031B44;
   v7[3] = &unk_1000E20B8;
-  v7[4] = a5;
+  v7[4] = peer;
   v7[5] = self;
-  v7[6] = a4;
-  v7[7] = a6;
+  v7[6] = d;
+  v7[7] = reply;
   dispatch_async(queue, v7);
 }
 
-- (void)xpcConnection:(id)a3 cancelWiFiPerformanceLoggingWithUUID:(id)a4 peerID:(id)a5 reply:(id)a6
+- (void)xpcConnection:(id)connection cancelWiFiPerformanceLoggingWithUUID:(id)d peerID:(id)iD reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1708,38 +1708,38 @@ LABEL_17:
   block[2] = sub_100031E4C;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a6;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 startMonitoringFaultEventsForPeer:(id)a4 reply:(id)a5
+- (void)xpcConnection:(id)connection startMonitoringFaultEventsForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100032024;
   block[3] = &unk_1000E1CC0;
-  block[4] = a4;
+  block[4] = peer;
   block[5] = self;
-  block[6] = a5;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 stopMonitoringFaultEventsForPeer:(id)a4 reply:(id)a5
+- (void)xpcConnection:(id)connection stopMonitoringFaultEventsForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100032108;
   block[3] = &unk_1000E1CC0;
-  block[4] = a4;
+  block[4] = peer;
   block[5] = self;
-  block[6] = a5;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 submitFaultEvent:(id)a4 reply:(id)a5
+- (void)xpcConnection:(id)connection submitFaultEvent:(id)event reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1747,32 +1747,32 @@ LABEL_17:
   block[2] = sub_1000321EC;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = event;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (void)xpcConnection:(id)a3 queryFaultEventCacheForPeer:(id)a4 reply:(id)a5
+- (void)xpcConnection:(id)connection queryFaultEventCacheForPeer:(id)peer reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000322C4;
   block[3] = &unk_1000E1CC0;
-  block[4] = a4;
+  block[4] = peer;
   block[5] = self;
-  block[6] = a5;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x3052000000;
   v39[3] = sub_100029A3C;
   v39[4] = sub_100029A4C;
-  v39[5] = a4;
+  v39[5] = connection;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3052000000;
@@ -1785,7 +1785,7 @@ LABEL_17:
   v30 = sub_100029A3C;
   v31 = sub_100029A4C;
   v32 = 0;
-  v6 = [[W5XPCConnection alloc] initWithXPCConnection:a4];
+  v6 = [[W5XPCConnection alloc] initWithXPCConnection:connection];
   v7 = v6;
   if (!v6)
   {
@@ -1797,7 +1797,7 @@ LABEL_13:
       goto LABEL_9;
     }
 
-    v18 = [a4 processIdentifier];
+    processIdentifier = [connection processIdentifier];
     v40 = 136315906;
     v41 = "[W5Engine listener:shouldAcceptNewConnection:]";
     v42 = 2080;
@@ -1805,7 +1805,7 @@ LABEL_13:
     v44 = 1024;
     v45 = 1800;
     v46 = 1024;
-    LODWORD(v47) = v18;
+    LODWORD(v47) = processIdentifier;
 LABEL_12:
     _os_log_send_and_compose_impl();
     goto LABEL_13;
@@ -1819,8 +1819,8 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v20 = [(W5XPCConnection *)v7 processName];
-    v21 = [(NSXPCConnection *)[(W5XPCConnection *)v7 connection] processIdentifier];
+    processName = [(W5XPCConnection *)v7 processName];
+    processIdentifier2 = [(NSXPCConnection *)[(W5XPCConnection *)v7 connection] processIdentifier];
     v40 = 136316418;
     v41 = "[W5Engine listener:shouldAcceptNewConnection:]";
     v42 = 2080;
@@ -1828,18 +1828,18 @@ LABEL_12:
     v44 = 1024;
     v45 = 1807;
     v46 = 2114;
-    v47 = v20;
+    v47 = processName;
     v48 = 1024;
-    v49 = v21;
+    v49 = processIdentifier2;
     v50 = 2114;
     *v51 = @"com.apple.private.wifivelocity";
     goto LABEL_12;
   }
 
   [(W5XPCConnection *)v7 setDelegate:self];
-  [a4 setExportedInterface:sub_1000344F8()];
-  [a4 setExportedObject:v7];
-  [a4 setRemoteObjectInterface:sub_1000363F8()];
+  [connection setExportedInterface:sub_1000344F8()];
+  [connection setExportedObject:v7];
+  [connection setRemoteObjectInterface:sub_1000363F8()];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1859,7 +1859,7 @@ LABEL_12:
   v25[3] = &unk_1000E2428;
   v25[4] = &v33;
   v25[5] = v39;
-  [a4 setInterruptionHandler:v25];
+  [connection setInterruptionHandler:v25];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100032AEC;
@@ -1868,14 +1868,14 @@ LABEL_12:
   v24[5] = &v33;
   v24[6] = v39;
   v24[7] = &v27;
-  [a4 setInvalidationHandler:v24];
+  [connection setInvalidationHandler:v24];
   v10 = sub_100098A04();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(W5XPCConnection *)v7 processName];
-    v12 = [a4 processIdentifier];
-    v13 = [a4 effectiveUserIdentifier];
-    v14 = [a4 effectiveGroupIdentifier];
+    processName2 = [(W5XPCConnection *)v7 processName];
+    processIdentifier3 = [connection processIdentifier];
+    effectiveUserIdentifier = [connection effectiveUserIdentifier];
+    effectiveGroupIdentifier = [connection effectiveGroupIdentifier];
     v40 = 136316674;
     v41 = "[W5Engine listener:shouldAcceptNewConnection:]";
     v42 = 2080;
@@ -1883,19 +1883,19 @@ LABEL_12:
     v44 = 1024;
     v45 = 1911;
     v46 = 2114;
-    v47 = v11;
+    v47 = processName2;
     v48 = 1024;
-    v49 = v12;
+    v49 = processIdentifier3;
     v50 = 1024;
-    *v51 = v13;
+    *v51 = effectiveUserIdentifier;
     *&v51[4] = 1024;
-    *&v51[6] = v14;
+    *&v51[6] = effectiveGroupIdentifier;
     LODWORD(v23) = 56;
     v22 = &v40;
     _os_log_send_and_compose_impl();
   }
 
-  [a4 resume];
+  [connection resume];
   v15 = 1;
 LABEL_9:
   _Block_object_dispose(&v27, 8);

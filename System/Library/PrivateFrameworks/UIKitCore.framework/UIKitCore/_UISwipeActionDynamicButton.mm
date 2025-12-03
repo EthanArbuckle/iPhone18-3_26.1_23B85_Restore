@@ -1,15 +1,15 @@
 @interface _UISwipeActionDynamicButton
 - (_UISwipeActionDynamicButtonDelegate)swipeActionButtonDelegate;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation _UISwipeActionDynamicButton
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v7.receiver = self;
   v7.super_class = _UISwipeActionDynamicButton;
-  [(UIControl *)&v7 contextMenuInteraction:a3 willDisplayMenuForConfiguration:a4 animator:a5];
+  [(UIControl *)&v7 contextMenuInteraction:interaction willDisplayMenuForConfiguration:configuration animator:animator];
   WeakRetained = objc_loadWeakRetained(&self->_swipeActionButtonDelegate);
   if (objc_opt_respondsToSelector())
   {

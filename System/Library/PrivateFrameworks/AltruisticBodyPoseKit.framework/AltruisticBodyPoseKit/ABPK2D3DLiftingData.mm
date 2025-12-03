@@ -1,19 +1,19 @@
 @interface ABPK2D3DLiftingData
-- (ABPK2D3DLiftingData)initWithCoder:(id)a3;
-- (ABPK2D3DLiftingData)initWithHumanForLifting:(const void *)a3 imageSize:(CGSize)a4 rotation:(int64_t)a5 croppedRect:(CGRect)a6;
-- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)a2 imageSize:;
-- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)a2 liftingData3D:liftingData3DElementCount:;
-- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)a2 rotation:croppedRect:liftingData3D:liftingData3DElementCount:;
-- (BOOL)isEqual:(id)a3;
+- (ABPK2D3DLiftingData)initWithCoder:(id)coder;
+- (ABPK2D3DLiftingData)initWithHumanForLifting:(const void *)lifting imageSize:(CGSize)size rotation:(int64_t)rotation croppedRect:(CGRect)rect;
+- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)joints imageSize:;
+- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)joints liftingData3D:liftingData3DElementCount:;
+- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)joints rotation:croppedRect:liftingData3D:liftingData3DElementCount:;
+- (BOOL)isEqual:(id)equal;
 - (id).cxx_construct;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)prepareLiftingInput:(ABPK2D3DLiftingData *)self imageSize:(SEL)a2 pUnnormalizedMultiArray:pMultiArray:;
+- (void)encodeWithCoder:(id)coder;
+- (void)prepareLiftingInput:(ABPK2D3DLiftingData *)self imageSize:(SEL)size pUnnormalizedMultiArray:pMultiArray:;
 @end
 
 @implementation ABPK2D3DLiftingData
 
-- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)a2 liftingData3D:liftingData3DElementCount:
+- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)joints liftingData3D:liftingData3DElementCount:
 {
   v6 = v5;
   v7 = v4;
@@ -67,7 +67,7 @@ LABEL_8:
   return v18;
 }
 
-- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)a2 rotation:croppedRect:liftingData3D:liftingData3DElementCount:
+- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)joints rotation:croppedRect:liftingData3D:liftingData3DElementCount:
 {
   v11 = v6;
   v12 = v5;
@@ -176,27 +176,27 @@ LABEL_22:
   return v32;
 }
 
-- (ABPK2D3DLiftingData)initWithHumanForLifting:(const void *)a3 imageSize:(CGSize)a4 rotation:(int64_t)a5 croppedRect:(CGRect)a6
+- (ABPK2D3DLiftingData)initWithHumanForLifting:(const void *)lifting imageSize:(CGSize)size rotation:(int64_t)rotation croppedRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a4.height;
-  v12 = a4.width;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v11 = size.height;
+  v12 = size.width;
   v21.receiver = self;
   v21.super_class = ABPK2D3DLiftingData;
   v14 = [(ABPK2D3DLiftingData *)&v21 init];
   if (v14)
   {
-    v15 = abpk::Human::jointVector(a3);
+    v15 = abpk::Human::jointVector(lifting);
     if (v14->_anon_8 != v15)
     {
       _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE18__assign_with_sizeB8ne200100IPS1_S6_EEvT_T0_l(v14->_anon_8, *v15, v15[1], (v15[1] - *v15) >> 3);
     }
 
-    v14->_rotationNeeded = a5;
-    if (a5 == -90)
+    v14->_rotationNeeded = rotation;
+    if (rotation == -90)
     {
       v16 = y;
     }
@@ -206,7 +206,7 @@ LABEL_22:
       v16 = x;
     }
 
-    if (a5 == -90)
+    if (rotation == -90)
     {
       v17 = x;
     }
@@ -216,7 +216,7 @@ LABEL_22:
       v17 = y;
     }
 
-    if (a5 == -90)
+    if (rotation == -90)
     {
       v18 = height;
     }
@@ -226,7 +226,7 @@ LABEL_22:
       v18 = width;
     }
 
-    if (a5 == -90)
+    if (rotation == -90)
     {
       v19 = width;
     }
@@ -236,7 +236,7 @@ LABEL_22:
       v19 = height;
     }
 
-    if (a5 == 90)
+    if (rotation == 90)
     {
       v16 = y;
       v17 = x;
@@ -251,7 +251,7 @@ LABEL_22:
   return v14;
 }
 
-- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)a2 imageSize:
+- (ABPK2D3DLiftingData)initWithJoints:(ABPK2D3DLiftingData *)self numberOfJoints:(SEL)joints imageSize:
 {
   v6 = v5;
   v7 = v4;
@@ -284,7 +284,7 @@ LABEL_22:
   return v10;
 }
 
-- (void)prepareLiftingInput:(ABPK2D3DLiftingData *)self imageSize:(SEL)a2 pUnnormalizedMultiArray:pMultiArray:
+- (void)prepareLiftingInput:(ABPK2D3DLiftingData *)self imageSize:(SEL)size pUnnormalizedMultiArray:pMultiArray:
 {
   v7 = v4;
   v8 = v3;
@@ -370,17 +370,17 @@ LABEL_22:
   while (v31 != 32);
 }
 
-- (ABPK2D3DLiftingData)initWithCoder:(id)a3
+- (ABPK2D3DLiftingData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = ABPK2D3DLiftingData;
   v5 = [(ABPK2D3DLiftingData *)&v25 init];
   if (v5)
   {
-    *(v5 + 39) = [v4 decodeIntegerForKey:@"rotationNeeded"];
+    *(v5 + 39) = [coderCopy decodeIntegerForKey:@"rotationNeeded"];
     v24 = 0;
-    v6 = [v4 decodeBytesForKey:@"rawJointsUsedForLifting" returnedLength:&v24];
+    v6 = [coderCopy decodeBytesForKey:@"rawJointsUsedForLifting" returnedLength:&v24];
     v7 = v24 >> 3;
     v22 = 0uLL;
     v23 = 0;
@@ -398,7 +398,7 @@ LABEL_22:
     *(v5 + 8) = v22;
     *(v5 + 3) = v23;
     v21 = 0;
-    v9 = [v4 decodeBytesForKey:@"rotatedJointsUsedForLifting" returnedLength:&v21];
+    v9 = [coderCopy decodeBytesForKey:@"rotatedJointsUsedForLifting" returnedLength:&v21];
     v10 = v21 >> 3;
     v22 = 0uLL;
     v23 = 0;
@@ -421,7 +421,7 @@ LABEL_22:
     }
 
     *&v22 = 0;
-    v12 = [v4 decodeBytesForKey:@"multiArray" returnedLength:&v22];
+    v12 = [coderCopy decodeBytesForKey:@"multiArray" returnedLength:&v22];
     if (v22 >> 2 != 32)
     {
       NSLog(&cfstr_InconsistentMu.isa, v22 >> 2);
@@ -451,23 +451,23 @@ LABEL_12:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_rotationNeeded forKey:@"rotationNeeded"];
-  [v4 encodeBytes:*self->_anon_8 length:*&self->_anon_8[8] - *self->_anon_8 forKey:@"rawJointsUsedForLifting"];
-  [v4 encodeBytes:*self->_anon_20 length:*&self->_anon_20[8] - *self->_anon_20 forKey:@"rotatedJointsUsedForLifting"];
-  [v4 encodeBytes:&self->_multiArray length:128 forKey:@"multiArray"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_rotationNeeded forKey:@"rotationNeeded"];
+  [coderCopy encodeBytes:*self->_anon_8 length:*&self->_anon_8[8] - *self->_anon_8 forKey:@"rawJointsUsedForLifting"];
+  [coderCopy encodeBytes:*self->_anon_20 length:*&self->_anon_20[8] - *self->_anon_20 forKey:@"rotatedJointsUsedForLifting"];
+  [coderCopy encodeBytes:&self->_multiArray length:128 forKey:@"multiArray"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(ABPK2D3DLiftingData *)self jointCount];
-    if (v6 == [v5 jointCount])
+    v5 = equalCopy;
+    jointCount = [(ABPK2D3DLiftingData *)self jointCount];
+    if (jointCount == [v5 jointCount])
     {
       v7 = *self->_anon_8;
       v8 = *&self->_anon_8[8];

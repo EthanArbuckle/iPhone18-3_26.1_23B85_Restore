@@ -1,15 +1,15 @@
 @interface _JSAStoreHTTPReqestOfflineCache
 + (id)sharedOfflineCache;
 - (_JSAStoreHTTPReqestOfflineCache)init;
-- (id)_loadCacheFromCandidatePaths:(id)a3;
-- (id)responseForKey:(id)a3;
+- (id)_loadCacheFromCandidatePaths:(id)paths;
+- (id)responseForKey:(id)key;
 - (void)_aq_loadPostLaunchCaches;
 - (void)_aq_saveOfflineCache;
-- (void)_saveOfflineCache:(id)a3;
+- (void)_saveOfflineCache:(id)cache;
 - (void)dealloc;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
 - (void)incrementPostLaunchCacheCount;
-- (void)setResponse:(id)a3 forKey:(id)a4;
+- (void)setResponse:(id)response forKey:(id)key;
 @end
 
 @implementation _JSAStoreHTTPReqestOfflineCache
@@ -125,13 +125,13 @@ LABEL_18:
   [(_JSAStoreHTTPReqestOfflineCache *)&v4 dealloc];
 }
 
-- (id)_loadCacheFromCandidatePaths:(id)a3
+- (id)_loadCacheFromCandidatePaths:(id)paths
 {
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = a3;
+  obj = paths;
   v3 = [obj countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v3)
   {
@@ -152,8 +152,8 @@ LABEL_18:
         }
 
         v9 = *(*(&v35 + 1) + 8 * v8);
-        v10 = [v6[127] defaultManager];
-        v11 = [v10 fileExistsAtPath:v9];
+        defaultManager = [v6[127] defaultManager];
+        v11 = [defaultManager fileExistsAtPath:v9];
 
         if (v11)
         {
@@ -333,10 +333,10 @@ LABEL_22:
   }
 }
 
-- (void)setResponse:(id)a3 forKey:(id)a4
+- (void)setResponse:(id)response forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  keyCopy = key;
   if (+[JSAOfflineCache generateCache])
   {
     accessQueue = self->_accessQueue;
@@ -345,15 +345,15 @@ LABEL_22:
     block[2] = sub_11F00;
     block[3] = &unk_B2638;
     block[4] = self;
-    v10 = v7;
-    v11 = v6;
+    v10 = keyCopy;
+    v11 = responseCopy;
     dispatch_sync(accessQueue, block);
   }
 }
 
-- (id)responseForKey:(id)a3
+- (id)responseForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (+[JSAOfflineCache runFromCache])
   {
     v42 = +[NSDate now];
@@ -371,7 +371,7 @@ LABEL_22:
     block[3] = &unk_B2818;
     v51 = &v52;
     block[4] = self;
-    v7 = v4;
+    v7 = keyCopy;
     v50 = v7;
     dispatch_sync(accessQueue, block);
     objc_opt_class();
@@ -419,11 +419,11 @@ LABEL_22:
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 bu_gzipInflate];
+      bu_gzipInflate = [v12 bu_gzipInflate];
 
       objc_opt_class();
       v48 = 0;
-      v15 = [NSJSONSerialization JSONObjectWithData:v14 options:0 error:&v48];
+      v15 = [NSJSONSerialization JSONObjectWithData:bu_gzipInflate options:0 error:&v48];
       v41 = v48;
       v16 = BUDynamicCast();
 
@@ -444,7 +444,7 @@ LABEL_11:
       v23 = [NSSet setWithObjects:v40, v39, v38, v20, v21, v22, objc_opt_class(), 0];
       objc_opt_class();
       v47 = 0;
-      v24 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v23 fromData:v14 error:&v47];
+      v24 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v23 fromData:bu_gzipInflate error:&v47];
       v17 = v47;
       v16 = BUDynamicCast();
 
@@ -469,7 +469,7 @@ LABEL_11:
       v16 = BUDynamicCast();
       if (v16)
       {
-        v14 = 0;
+        bu_gzipInflate = 0;
 LABEL_12:
         v25 = [[JSAStoreHTTPResponse alloc] initWithDictionary:v16];
 LABEL_21:
@@ -480,7 +480,7 @@ LABEL_21:
         v43[3] = &unk_B2638;
         v10 = v25;
         v44 = v10;
-        v45 = self;
+        selfCopy = self;
         v46 = v7;
         dispatch_sync(v28, v43);
 
@@ -493,7 +493,7 @@ LABEL_21:
         sub_812C0();
       }
 
-      v14 = 0;
+      bu_gzipInflate = 0;
     }
 
     v16 = 0;
@@ -507,21 +507,21 @@ LABEL_26:
   return v18;
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_12634;
   v7[3] = &unk_B2728;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)_saveOfflineCache:(id)a3
+- (void)_saveOfflineCache:(id)cache
 {
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;

@@ -1,7 +1,7 @@
 @interface JavaUtilStringTokenizer
 - (BOOL)hasMoreTokens;
 - (id)nextToken;
-- (id)nextTokenWithNSString:(id)a3;
+- (id)nextTokenWithNSString:(id)string;
 - (int)countTokens;
 - (void)dealloc;
 @end
@@ -211,9 +211,9 @@ LABEL_23:
   return [(NSString *)v16 substring:position];
 }
 
-- (id)nextTokenWithNSString:(id)a3
+- (id)nextTokenWithNSString:(id)string
 {
-  JreStrongAssign(&self->delimiters_, a3);
+  JreStrongAssign(&self->delimiters_, string);
 
   return [(JavaUtilStringTokenizer *)self nextToken];
 }

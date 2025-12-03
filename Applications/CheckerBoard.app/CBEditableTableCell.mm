@@ -1,15 +1,15 @@
 @interface CBEditableTableCell
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (CBEditableTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (CBEditableTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation CBEditableTableCell
 
-- (CBEditableTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (CBEditableTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = CBEditableTableCell;
-  result = [(CBEditableTableCell *)&v6 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  result = [(CBEditableTableCell *)&v6 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (result)
   {
     result->_characterLimit = 0x7FFFFFFFFFFFFFFFLL;
@@ -18,21 +18,21 @@
   return result;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
   v11 = length + location;
-  v12 = [v9 text];
-  v13 = [v12 length];
+  text = [fieldCopy text];
+  v13 = [text length];
 
   if (v11 <= v13)
   {
-    v15 = [v9 text];
-    v16 = [v15 length];
-    v17 = &v16[[v10 length] - length];
+    text2 = [fieldCopy text];
+    v16 = [text2 length];
+    v17 = &v16[[stringCopy length] - length];
 
     v14 = v17 <= [(CBEditableTableCell *)self characterLimit];
   }

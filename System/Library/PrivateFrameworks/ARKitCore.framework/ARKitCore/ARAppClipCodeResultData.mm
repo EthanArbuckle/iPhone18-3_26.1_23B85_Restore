@@ -1,13 +1,13 @@
 @interface ARAppClipCodeResultData
-- (ARAppClipCodeResultData)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ARAppClipCodeResultData)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ARAppClipCodeResultData
 
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove
 {
   v120 = *MEMORY[0x1E69E9840];
   v13 = a11;
@@ -37,8 +37,8 @@
         if (objc_opt_isKindOfClass())
         {
           v21 = v20;
-          v22 = [v21 instanceID];
-          [v14 setObject:v21 forKey:v22];
+          instanceID = [v21 instanceID];
+          [v14 setObject:v21 forKey:instanceID];
         }
       }
 
@@ -55,8 +55,8 @@
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v23 = a1;
-  obj = [*(a1 + 8) allKeys];
+  selfCopy3 = self;
+  obj = [*(self + 8) allKeys];
   v79 = v14;
   v85 = [obj countByEnumeratingWithState:&v101 objects:v115 count:16];
   if (v85)
@@ -73,7 +73,7 @@
         }
 
         v25 = *(*(&v101 + 1) + 8 * v24);
-        v26 = [*(v23 + 8) objectForKeyedSubscript:v25];
+        v26 = [*(selfCopy3 + 8) objectForKeyedSubscript:v25];
         v27 = [v14 objectForKeyedSubscript:v25];
         v28 = v27;
         if (v27)
@@ -93,7 +93,7 @@
             v34 = [v26 url];
 
             v35 = v33 == v34;
-            v23 = a1;
+            selfCopy3 = self;
             v14 = v79;
             if (!v35)
             {
@@ -136,7 +136,7 @@
 LABEL_27:
                 _os_log_impl(&dword_1C241C000, v40, v41, v42, buf, 0x16u);
 
-                v23 = a1;
+                selfCopy3 = self;
               }
 
 LABEL_28:
@@ -181,7 +181,7 @@ LABEL_30:
         v119 = 0u;
         do
         {
-          *&buf[v51] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a6, COERCE_FLOAT(*(&v109 + v51))), a7, *(&v109 + v51), 1), a8, *(&v109 + v51), 2), a9, *(&v109 + v51), 3);
+          *&buf[v51] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(remove, COERCE_FLOAT(*(&v109 + v51))), a7, *(&v109 + v51), 1), a8, *(&v109 + v51), 2), a9, *(&v109 + v51), 3);
           v51 += 16;
         }
 
@@ -227,8 +227,8 @@ LABEL_30:
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v90 = [v14 allValues];
-  v60 = [v90 countByEnumeratingWithState:&v97 objects:v114 count:16];
+  allValues = [v14 allValues];
+  v60 = [allValues countByEnumeratingWithState:&v97 objects:v114 count:16];
   if (v60)
   {
     v61 = v60;
@@ -239,7 +239,7 @@ LABEL_30:
       {
         if (*v98 != v62)
         {
-          objc_enumerationMutation(v90);
+          objc_enumerationMutation(allValues);
         }
 
         v64 = *(*(&v97 + 1) + 8 * j);
@@ -298,7 +298,7 @@ LABEL_57:
         ;
       }
 
-      v61 = [v90 countByEnumeratingWithState:&v97 objects:v114 count:16];
+      v61 = [allValues countByEnumeratingWithState:&v97 objects:v114 count:16];
     }
 
     while (v61);
@@ -307,9 +307,9 @@ LABEL_57:
   return v86;
 }
 
-- (ARAppClipCodeResultData)initWithCoder:(id)a3
+- (ARAppClipCodeResultData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ARAppClipCodeResultData;
   v5 = [(ARAppClipCodeResultData *)&v13 init];
@@ -319,7 +319,7 @@ LABEL_57:
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"trackedAppClipCodes"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"trackedAppClipCodes"];
     trackedAppClipCodes = v5->_trackedAppClipCodes;
     v5->_trackedAppClipCodes = v10;
   }
@@ -327,25 +327,25 @@ LABEL_57:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSDictionary *)self->_trackedAppClipCodes copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSDictionary *)self->_trackedAppClipCodes copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 trackedAppClipCodes];
-    v6 = [(ARAppClipCodeResultData *)self trackedAppClipCodes];
-    v7 = [v5 isEqual:v6];
+    trackedAppClipCodes = [equalCopy trackedAppClipCodes];
+    trackedAppClipCodes2 = [(ARAppClipCodeResultData *)self trackedAppClipCodes];
+    v7 = [trackedAppClipCodes isEqual:trackedAppClipCodes2];
   }
 
   else

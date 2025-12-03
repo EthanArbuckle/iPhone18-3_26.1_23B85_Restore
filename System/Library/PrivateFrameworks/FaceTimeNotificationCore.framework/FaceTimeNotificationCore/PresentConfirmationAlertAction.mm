@@ -1,15 +1,15 @@
 @interface PresentConfirmationAlertAction
 - (_TtC24FaceTimeNotificationCore30PresentConfirmationAlertAction)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PresentConfirmationAlertAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PresentConfirmationAlertAction.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PresentConfirmationAlertAction.encode(with:)(coderCopy);
 }
 
 - (_TtC24FaceTimeNotificationCore30PresentConfirmationAlertAction)init

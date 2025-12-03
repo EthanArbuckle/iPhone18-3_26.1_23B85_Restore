@@ -1,14 +1,14 @@
 @interface DrawData
-- (DrawData)initWithPosition:(float)a3 size:(Color)a4 color:;
+- (DrawData)initWithPosition:(float)position size:(Color)size color:;
 @end
 
 @implementation DrawData
 
-- (DrawData)initWithPosition:(float)a3 size:(Color)a4 color:
+- (DrawData)initWithPosition:(float)position size:(Color)size color:
 {
-  v5 = *&a4.red;
+  v5 = *&size.red;
   v6 = v4;
-  v8 = *&a3;
+  v8 = *&position;
   v9.receiver = self;
   v9.super_class = DrawData;
   result = [(DrawData *)&v9 init];

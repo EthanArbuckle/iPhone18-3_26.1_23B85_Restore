@@ -1,48 +1,48 @@
 @interface TLAlertQueuePlayerStateDescriptor
-- (TLAlertQueuePlayerStateDescriptor)initWithPlayingAlert:(id)a3 completionHandler:(id)a4 previousStateDescriptor:(id)a5;
-- (id)_descriptionForDebugging:(BOOL)a3;
-- (id)_initForRelinquishingActivationAssertionWithAlertForAudioEnvironmentSetup:(id)a3 previousStateDescriptor:(id)a4;
-- (id)initForAcquiringActivationAssertionWithAlertForAudioEnvironmentSetup:(id)a3 previousStateDescriptor:(id)a4;
+- (TLAlertQueuePlayerStateDescriptor)initWithPlayingAlert:(id)alert completionHandler:(id)handler previousStateDescriptor:(id)descriptor;
+- (id)_descriptionForDebugging:(BOOL)debugging;
+- (id)_initForRelinquishingActivationAssertionWithAlertForAudioEnvironmentSetup:(id)setup previousStateDescriptor:(id)descriptor;
+- (id)initForAcquiringActivationAssertionWithAlertForAudioEnvironmentSetup:(id)setup previousStateDescriptor:(id)descriptor;
 - (id)stateDescriptorByRelinquishingActivationAssertion;
 - (id)stateDescriptorForCompletedPlayback;
-- (void)_initializeAnalyticsFromPreviousStateDescriptor:(id)a3;
-- (void)_transferPlayingAlertAndCompletionHandlerFromPreviousStateDescriptor:(id)a3;
-- (void)invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:(int64_t)a3 error:(id)a4;
+- (void)_initializeAnalyticsFromPreviousStateDescriptor:(id)descriptor;
+- (void)_transferPlayingAlertAndCompletionHandlerFromPreviousStateDescriptor:(id)descriptor;
+- (void)invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:(int64_t)type error:(id)error;
 @end
 
 @implementation TLAlertQueuePlayerStateDescriptor
 
-- (TLAlertQueuePlayerStateDescriptor)initWithPlayingAlert:(id)a3 completionHandler:(id)a4 previousStateDescriptor:(id)a5
+- (TLAlertQueuePlayerStateDescriptor)initWithPlayingAlert:(id)alert completionHandler:(id)handler previousStateDescriptor:(id)descriptor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  alertCopy = alert;
+  handlerCopy = handler;
+  descriptorCopy = descriptor;
   v23.receiver = self;
   v23.super_class = TLAlertQueuePlayerStateDescriptor;
   v12 = [(TLAlertQueuePlayerStateDescriptor *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_playingAlert, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_playingAlert, alert);
+    v14 = [handlerCopy copy];
     playingAlertCompletionHandler = v13->_playingAlertCompletionHandler;
     v13->_playingAlertCompletionHandler = v14;
 
-    if ([v11 isAlertActivationAssertionAcquired])
+    if ([descriptorCopy isAlertActivationAssertionAcquired])
     {
       v13->_isAlertActivationAssertionAcquired = 1;
-      v16 = [v11 alertForAudioEnvironmentSetup];
+      alertForAudioEnvironmentSetup = [descriptorCopy alertForAudioEnvironmentSetup];
     }
 
     else
     {
-      v16 = v9;
+      alertForAudioEnvironmentSetup = alertCopy;
     }
 
     alertForAudioEnvironmentSetup = v13->_alertForAudioEnvironmentSetup;
-    v13->_alertForAudioEnvironmentSetup = v16;
+    v13->_alertForAudioEnvironmentSetup = alertForAudioEnvironmentSetup;
 
-    v18 = [[TLAlertQueuePlayerAnalytics alloc] initWithAlert:v9];
+    v18 = [[TLAlertQueuePlayerAnalytics alloc] initWithAlert:alertCopy];
     analytics = v13->_analytics;
     v13->_analytics = v18;
 
@@ -69,20 +69,20 @@
   return v3;
 }
 
-- (id)initForAcquiringActivationAssertionWithAlertForAudioEnvironmentSetup:(id)a3 previousStateDescriptor:(id)a4
+- (id)initForAcquiringActivationAssertionWithAlertForAudioEnvironmentSetup:(id)setup previousStateDescriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
+  setupCopy = setup;
+  descriptorCopy = descriptor;
   v12.receiver = self;
   v12.super_class = TLAlertQueuePlayerStateDescriptor;
   v9 = [(TLAlertQueuePlayerStateDescriptor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_alertForAudioEnvironmentSetup, a3);
+    objc_storeStrong(&v9->_alertForAudioEnvironmentSetup, setup);
     v10->_isAlertActivationAssertionAcquired = 1;
-    [(TLAlertQueuePlayerStateDescriptor *)v10 _transferPlayingAlertAndCompletionHandlerFromPreviousStateDescriptor:v8];
-    [(TLAlertQueuePlayerStateDescriptor *)v10 _initializeAnalyticsFromPreviousStateDescriptor:v8];
+    [(TLAlertQueuePlayerStateDescriptor *)v10 _transferPlayingAlertAndCompletionHandlerFromPreviousStateDescriptor:descriptorCopy];
+    [(TLAlertQueuePlayerStateDescriptor *)v10 _initializeAnalyticsFromPreviousStateDescriptor:descriptorCopy];
   }
 
   return v10;
@@ -105,47 +105,47 @@
   return v5;
 }
 
-- (id)_initForRelinquishingActivationAssertionWithAlertForAudioEnvironmentSetup:(id)a3 previousStateDescriptor:(id)a4
+- (id)_initForRelinquishingActivationAssertionWithAlertForAudioEnvironmentSetup:(id)setup previousStateDescriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
+  setupCopy = setup;
+  descriptorCopy = descriptor;
   v12.receiver = self;
   v12.super_class = TLAlertQueuePlayerStateDescriptor;
   v9 = [(TLAlertQueuePlayerStateDescriptor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_alertForAudioEnvironmentSetup, a3);
+    objc_storeStrong(&v9->_alertForAudioEnvironmentSetup, setup);
     v10->_isAlertActivationAssertionAcquired = 0;
-    [(TLAlertQueuePlayerStateDescriptor *)v10 _transferPlayingAlertAndCompletionHandlerFromPreviousStateDescriptor:v8];
-    [(TLAlertQueuePlayerStateDescriptor *)v10 _initializeAnalyticsFromPreviousStateDescriptor:v8];
+    [(TLAlertQueuePlayerStateDescriptor *)v10 _transferPlayingAlertAndCompletionHandlerFromPreviousStateDescriptor:descriptorCopy];
+    [(TLAlertQueuePlayerStateDescriptor *)v10 _initializeAnalyticsFromPreviousStateDescriptor:descriptorCopy];
   }
 
   return v10;
 }
 
-- (void)_transferPlayingAlertAndCompletionHandlerFromPreviousStateDescriptor:(id)a3
+- (void)_transferPlayingAlertAndCompletionHandlerFromPreviousStateDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
-    objc_storeStrong(&self->_playingAlert, *(a3 + 4));
-    v7 = a3;
-    v5 = MEMORY[0x1DA730160](*(v7 + 5));
+    objc_storeStrong(&self->_playingAlert, *(descriptor + 4));
+    descriptorCopy = descriptor;
+    v5 = MEMORY[0x1DA730160](*(descriptorCopy + 5));
     playingAlertCompletionHandler = self->_playingAlertCompletionHandler;
     self->_playingAlertCompletionHandler = v5;
 
-    self->_hasInvokedCompletionHandlerForPlayingAlert = *(v7 + 8);
-    *(v7 + 8) = 1;
+    self->_hasInvokedCompletionHandlerForPlayingAlert = *(descriptorCopy + 8);
+    *(descriptorCopy + 8) = 1;
   }
 }
 
-- (void)_initializeAnalyticsFromPreviousStateDescriptor:(id)a3
+- (void)_initializeAnalyticsFromPreviousStateDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
-    v4 = [a3 analytics];
+    analytics = [descriptor analytics];
     analytics = self->_analytics;
-    self->_analytics = v4;
+    self->_analytics = analytics;
   }
 
   else
@@ -169,7 +169,7 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_descriptionForDebugging:(BOOL)a3
+- (id)_descriptionForDebugging:(BOOL)debugging
 {
   v5 = objc_alloc(MEMORY[0x1E696AD60]);
   v6 = objc_opt_class();
@@ -177,7 +177,7 @@
   v8 = [v5 initWithFormat:@"<%@: %p", v7, self];
 
   playingAlert = self->_playingAlert;
-  if (a3)
+  if (debugging)
   {
     v10 = [(TLAlert *)playingAlert debugDescription];
     [v8 appendFormat:@"; playingAlert = %@", v10];
@@ -232,9 +232,9 @@ LABEL_12:
   return v8;
 }
 
-- (void)invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:(int64_t)a3 error:(id)a4
+- (void)invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:(int64_t)type error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v7 = MEMORY[0x1DA730160](self->_playingAlertCompletionHandler);
   if (v7 && !self->_hasInvokedCompletionHandlerForPlayingAlert)
   {
@@ -245,14 +245,14 @@ LABEL_12:
     block[2] = __105__TLAlertQueuePlayerStateDescriptor_invokePlayingAlertCompletionHandlerWithPlaybackCompletionType_error___block_invoke;
     block[3] = &unk_1E8579850;
     v13 = v7;
-    v14 = a3;
-    v12 = v6;
+    typeCopy = type;
+    v12 = errorCopy;
     dispatch_async(v8, block);
 
     [(TLAlertQueuePlayerAnalytics *)self->_analytics setWasDeviceChargingOnStop:+[TLAlertQueuePlayerAnalytics isDeviceCurrentlyCharging]];
     analytics = self->_analytics;
-    v10 = [MEMORY[0x1E695DF00] date];
-    [v10 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     [(TLAlertQueuePlayerAnalytics *)analytics setStopTime:?];
 
     [(TLAlertQueuePlayerAnalytics *)self->_analytics setAttentionAwarenessSupportEnabled:+[TLAttentionAwarenessObserver supportsAttenuatingTonesForAttentionDetected]];

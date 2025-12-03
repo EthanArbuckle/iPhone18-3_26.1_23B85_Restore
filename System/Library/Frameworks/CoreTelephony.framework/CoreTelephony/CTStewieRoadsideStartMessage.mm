@@ -1,43 +1,43 @@
 @interface CTStewieRoadsideStartMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRoadsideStartMessage:(id)a3;
-- (CTStewieRoadsideStartMessage)initWithCoder:(id)a3;
-- (CTStewieRoadsideStartMessage)initWithDictionary:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRoadsideStartMessage:(id)message;
+- (CTStewieRoadsideStartMessage)initWithCoder:(id)coder;
+- (CTStewieRoadsideStartMessage)initWithDictionary:(id)dictionary error:(id *)error;
 - (NSString)description;
 - (double)estimatedSendTime;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieRoadsideStartMessage
 
-- (CTStewieRoadsideStartMessage)initWithDictionary:(id)a3 error:(id *)a4
+- (CTStewieRoadsideStartMessage)initWithDictionary:(id)dictionary error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v8 = [v6 valueForKey:@"conversationID"];
+    v8 = [dictionaryCopy valueForKey:@"conversationID"];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 integerValue];
-      if (v10 < 0x100)
+      integerValue = [v8 integerValue];
+      if (integerValue < 0x100)
       {
         v11 = [v7 valueForKey:@"providerId"];
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 integerValue];
-          if (v13 < 0x8000)
+          integerValue2 = [v11 integerValue];
+          if (integerValue2 < 0x8000)
           {
             v14 = [v7 valueForKey:@"isPayPerUse"];
             if (!v14)
             {
-              if (!a4)
+              if (!error)
               {
-                v20 = 0;
+                selfCopy = 0;
                 goto LABEL_35;
               }
 
@@ -46,7 +46,7 @@
               v38 = @"isPayPerUseNum is missing";
               v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
               [v27 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v16];
-              *a4 = v20 = 0;
+              *error = selfCopy = 0;
               goto LABEL_34;
             }
 
@@ -57,13 +57,13 @@
               if ([(_anonymous_namespace_ *)v15 length])
               {
                 {
-                  if (a4)
+                  if (error)
                   {
                     v17 = MEMORY[0x1E696ABC0];
                     v35 = *MEMORY[0x1E696A578];
                     v36 = @"phoneNumber is invalid. Phone number can only contain digits and must be of length <= 15";
                     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-                    *a4 = [v17 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v18];
+                    *error = [v17 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v18];
                   }
 
                   goto LABEL_33;
@@ -83,8 +83,8 @@
             v29 = v28;
             if (v28)
             {
-              v28->_conversationID = v10;
-              v28->_providerId = v13;
+              v28->_conversationID = integerValue;
+              v28->_providerId = integerValue2;
               v28->_isPayPerUse = [v14 BOOLValue];
               v30 = [v7 valueForKey:@"serializedQuestionnaireAnswers"];
               serializedQuestionnaireAnswers = v29->_serializedQuestionnaireAnswers;
@@ -92,7 +92,7 @@
 
               objc_storeStrong(&v29->_phoneNumber, v16);
               self = v29;
-              v20 = self;
+              selfCopy = self;
 LABEL_34:
 
               goto LABEL_35;
@@ -100,11 +100,11 @@ LABEL_34:
 
             self = 0;
 LABEL_33:
-            v20 = 0;
+            selfCopy = 0;
             goto LABEL_34;
           }
 
-          if (a4)
+          if (error)
           {
             v26 = MEMORY[0x1E696ABC0];
             v39 = *MEMORY[0x1E696A578];
@@ -115,7 +115,7 @@ LABEL_33:
           }
         }
 
-        else if (a4)
+        else if (error)
         {
           v24 = MEMORY[0x1E696ABC0];
           v41 = *MEMORY[0x1E696A578];
@@ -123,20 +123,20 @@ LABEL_33:
           v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
           v25 = [v24 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v14];
 LABEL_25:
-          v20 = 0;
-          *a4 = v25;
+          selfCopy = 0;
+          *error = v25;
 LABEL_35:
 
           goto LABEL_36;
         }
 
-        v20 = 0;
+        selfCopy = 0;
 LABEL_36:
 
         goto LABEL_37;
       }
 
-      if (a4)
+      if (error)
       {
         v23 = MEMORY[0x1E696ABC0];
         v43 = *MEMORY[0x1E696A578];
@@ -147,7 +147,7 @@ LABEL_36:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v21 = MEMORY[0x1E696ABC0];
       v45 = *MEMORY[0x1E696A578];
@@ -155,33 +155,33 @@ LABEL_36:
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
       v22 = [v21 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v12];
 LABEL_18:
-      v20 = 0;
-      *a4 = v22;
+      selfCopy = 0;
+      *error = v22;
       goto LABEL_36;
     }
 
-    v20 = 0;
+    selfCopy = 0;
 LABEL_37:
 
     goto LABEL_38;
   }
 
-  if (a4)
+  if (error)
   {
     v19 = MEMORY[0x1E696ABC0];
     v47 = *MEMORY[0x1E696A578];
     v48[0] = @"Empty dictionary";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
     [v19 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v9];
-    *a4 = v20 = 0;
+    *error = selfCopy = 0;
     goto LABEL_37;
   }
 
-  v20 = 0;
+  selfCopy = 0;
 LABEL_38:
 
   v32 = *MEMORY[0x1E69E9840];
-  return v20;
+  return selfCopy;
 }
 
 - (NSString)description
@@ -189,19 +189,19 @@ LABEL_38:
   v4 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v4 appendFormat:@", conversationID=%ld", -[CTStewieRoadsideStartMessage conversationID](self, "conversationID")];
   [v4 appendFormat:@", providerId=%ld", -[CTStewieRoadsideStartMessage providerId](self, "providerId")];
-  v5 = [(CTStewieRoadsideStartMessage *)self isPayPerUse];
+  isPayPerUse = [(CTStewieRoadsideStartMessage *)self isPayPerUse];
   v6 = "no";
-  if (v5)
+  if (isPayPerUse)
   {
     v6 = "yes";
   }
 
   [v4 appendFormat:@", isPayPerUse=%s", v6];
-  v7 = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
-  if (v7)
+  serializedQuestionnaireAnswers = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
+  if (serializedQuestionnaireAnswers)
   {
-    v2 = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
-    v8 = [v2 length];
+    serializedQuestionnaireAnswers2 = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
+    v8 = [serializedQuestionnaireAnswers2 length];
   }
 
   else
@@ -210,15 +210,15 @@ LABEL_38:
   }
 
   [v4 appendFormat:@", serializedQuestionnaireAnswers length=%lu", v8];
-  if (v7)
+  if (serializedQuestionnaireAnswers)
   {
   }
 
-  v9 = [(CTStewieRoadsideStartMessage *)self phoneNumber];
-  if (v9)
+  phoneNumber = [(CTStewieRoadsideStartMessage *)self phoneNumber];
+  if (phoneNumber)
   {
-    v2 = [(CTStewieRoadsideStartMessage *)self phoneNumber];
-    v10 = [v2 length];
+    serializedQuestionnaireAnswers2 = [(CTStewieRoadsideStartMessage *)self phoneNumber];
+    v10 = [serializedQuestionnaireAnswers2 length];
   }
 
   else
@@ -227,7 +227,7 @@ LABEL_38:
   }
 
   [v4 appendFormat:@", phoneNumber length=%lu", v10];
-  if (v9)
+  if (phoneNumber)
   {
   }
 
@@ -236,23 +236,23 @@ LABEL_38:
   return v4;
 }
 
-- (BOOL)isEqualToRoadsideStartMessage:(id)a3
+- (BOOL)isEqualToRoadsideStartMessage:(id)message
 {
-  v6 = a3;
-  v7 = [(CTStewieRoadsideStartMessage *)self conversationID];
-  if (v7 == [v6 conversationID])
+  messageCopy = message;
+  conversationID = [(CTStewieRoadsideStartMessage *)self conversationID];
+  if (conversationID == [messageCopy conversationID])
   {
-    v8 = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
-    v9 = [v6 serializedQuestionnaireAnswers];
-    if (v8 == v9 || (-[CTStewieRoadsideStartMessage serializedQuestionnaireAnswers](self, "serializedQuestionnaireAnswers"), v3 = objc_claimAutoreleasedReturnValue(), [v6 serializedQuestionnaireAnswers], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    serializedQuestionnaireAnswers = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
+    serializedQuestionnaireAnswers2 = [messageCopy serializedQuestionnaireAnswers];
+    if (serializedQuestionnaireAnswers == serializedQuestionnaireAnswers2 || (-[CTStewieRoadsideStartMessage serializedQuestionnaireAnswers](self, "serializedQuestionnaireAnswers"), v3 = objc_claimAutoreleasedReturnValue(), [messageCopy serializedQuestionnaireAnswers], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v11 = [(CTStewieRoadsideStartMessage *)self isPayPerUse];
-      if (v11 == [v6 isPayPerUse] && (v12 = -[CTStewieRoadsideStartMessage providerId](self, "providerId"), v12 == objc_msgSend(v6, "providerId")))
+      isPayPerUse = [(CTStewieRoadsideStartMessage *)self isPayPerUse];
+      if (isPayPerUse == [messageCopy isPayPerUse] && (v12 = -[CTStewieRoadsideStartMessage providerId](self, "providerId"), v12 == objc_msgSend(messageCopy, "providerId")))
       {
-        v13 = [(CTStewieRoadsideStartMessage *)self phoneNumber];
-        v14 = [v6 phoneNumber];
-        v15 = v14;
-        if (v13 == v14)
+        phoneNumber = [(CTStewieRoadsideStartMessage *)self phoneNumber];
+        phoneNumber2 = [messageCopy phoneNumber];
+        v15 = phoneNumber2;
+        if (phoneNumber == phoneNumber2)
         {
 
           v10 = 1;
@@ -260,9 +260,9 @@ LABEL_38:
 
         else
         {
-          v16 = [(CTStewieRoadsideStartMessage *)self phoneNumber];
-          v17 = [v6 phoneNumber];
-          v10 = [v16 isEqualToString:v17];
+          phoneNumber3 = [(CTStewieRoadsideStartMessage *)self phoneNumber];
+          phoneNumber4 = [messageCopy phoneNumber];
+          v10 = [phoneNumber3 isEqualToString:phoneNumber4];
         }
       }
 
@@ -271,7 +271,7 @@ LABEL_38:
         v10 = 0;
       }
 
-      if (v8 == v9)
+      if (serializedQuestionnaireAnswers == serializedQuestionnaireAnswers2)
       {
         goto LABEL_13;
       }
@@ -292,10 +292,10 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -303,7 +303,7 @@ LABEL_14:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieRoadsideStartMessage *)self isEqualToRoadsideStartMessage:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieRoadsideStartMessage *)self isEqualToRoadsideStartMessage:equalCopy];
   }
 
   return v5;
@@ -311,12 +311,12 @@ LABEL_14:
 
 - (double)estimatedSendTime
 {
-  v3 = [(CTStewieRoadsideStartMessage *)self phoneNumber];
-  v4 = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
-  if (v4)
+  phoneNumber = [(CTStewieRoadsideStartMessage *)self phoneNumber];
+  serializedQuestionnaireAnswers = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
+  if (serializedQuestionnaireAnswers)
   {
-    v5 = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
-    v6 = [v5 length];
+    serializedQuestionnaireAnswers2 = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
+    v6 = [serializedQuestionnaireAnswers2 length];
   }
 
   else
@@ -324,7 +324,7 @@ LABEL_14:
     v6 = 0;
   }
 
-  if (v3)
+  if (phoneNumber)
   {
     v7 = 18;
   }
@@ -337,51 +337,51 @@ LABEL_14:
   return getEstimatedSendTimeOverStewieInSeconds(v6 + v7);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setConversationID:{-[CTStewieRoadsideStartMessage conversationID](self, "conversationID")}];
   [v5 setProviderId:{-[CTStewieRoadsideStartMessage providerId](self, "providerId")}];
   [v5 setIsPayPerUse:{-[CTStewieRoadsideStartMessage isPayPerUse](self, "isPayPerUse")}];
-  v6 = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
-  v7 = [v6 copyWithZone:a3];
+  serializedQuestionnaireAnswers = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
+  v7 = [serializedQuestionnaireAnswers copyWithZone:zone];
   [v5 setSerializedQuestionnaireAnswers:v7];
 
-  v8 = [(CTStewieRoadsideStartMessage *)self phoneNumber];
-  v9 = [v8 copyWithZone:a3];
+  phoneNumber = [(CTStewieRoadsideStartMessage *)self phoneNumber];
+  v9 = [phoneNumber copyWithZone:zone];
   [v5 setPhoneNumber:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInteger:-[CTStewieRoadsideStartMessage conversationID](self forKey:{"conversationID"), @"conversationID"}];
-  [v6 encodeInteger:-[CTStewieRoadsideStartMessage providerId](self forKey:{"providerId"), @"providerId"}];
-  [v6 encodeBool:-[CTStewieRoadsideStartMessage isPayPerUse](self forKey:{"isPayPerUse"), @"isPayPerUse"}];
-  v4 = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
-  [v6 encodeObject:v4 forKey:@"serializedQuestionnaireAnswers"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CTStewieRoadsideStartMessage conversationID](self forKey:{"conversationID"), @"conversationID"}];
+  [coderCopy encodeInteger:-[CTStewieRoadsideStartMessage providerId](self forKey:{"providerId"), @"providerId"}];
+  [coderCopy encodeBool:-[CTStewieRoadsideStartMessage isPayPerUse](self forKey:{"isPayPerUse"), @"isPayPerUse"}];
+  serializedQuestionnaireAnswers = [(CTStewieRoadsideStartMessage *)self serializedQuestionnaireAnswers];
+  [coderCopy encodeObject:serializedQuestionnaireAnswers forKey:@"serializedQuestionnaireAnswers"];
 
-  v5 = [(CTStewieRoadsideStartMessage *)self phoneNumber];
-  [v6 encodeObject:v5 forKey:@"phoneNumber"];
+  phoneNumber = [(CTStewieRoadsideStartMessage *)self phoneNumber];
+  [coderCopy encodeObject:phoneNumber forKey:@"phoneNumber"];
 }
 
-- (CTStewieRoadsideStartMessage)initWithCoder:(id)a3
+- (CTStewieRoadsideStartMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CTStewieRoadsideStartMessage;
   v5 = [(CTStewieRoadsideStartMessage *)&v10 init];
   if (v5)
   {
-    -[CTStewieRoadsideStartMessage setConversationID:](v5, "setConversationID:", [v4 decodeIntegerForKey:@"conversationID"]);
-    -[CTStewieRoadsideStartMessage setProviderId:](v5, "setProviderId:", [v4 decodeIntegerForKey:@"providerId"]);
-    -[CTStewieRoadsideStartMessage setIsPayPerUse:](v5, "setIsPayPerUse:", [v4 decodeBoolForKey:@"isPayPerUse"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serializedQuestionnaireAnswers"];
+    -[CTStewieRoadsideStartMessage setConversationID:](v5, "setConversationID:", [coderCopy decodeIntegerForKey:@"conversationID"]);
+    -[CTStewieRoadsideStartMessage setProviderId:](v5, "setProviderId:", [coderCopy decodeIntegerForKey:@"providerId"]);
+    -[CTStewieRoadsideStartMessage setIsPayPerUse:](v5, "setIsPayPerUse:", [coderCopy decodeBoolForKey:@"isPayPerUse"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedQuestionnaireAnswers"];
     [(CTStewieRoadsideStartMessage *)v5 setSerializedQuestionnaireAnswers:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     [(CTStewieRoadsideStartMessage *)v5 setPhoneNumber:v7];
 
     v8 = v5;

@@ -1,28 +1,28 @@
 @interface CRLiOSDocumentModeFreehandDrawingTransform
-- (BOOL)allowGestureInRestrictedGestureMode:(id)a3;
-- (CRLiOSDocumentModeFreehandDrawingTransform)initWithBoardViewController:(id)a3 andInteractiveCanvasController:(id)a4;
-- (void)modeDidBeginFromMode:(id)a3 forced:(BOOL)a4;
-- (void)modeWillBeginFromMode:(id)a3 forced:(BOOL)a4;
-- (void)modeWillEndForMode:(id)a3 forced:(BOOL)a4;
-- (void)p_doneButtonTapped:(id)a3;
+- (BOOL)allowGestureInRestrictedGestureMode:(id)mode;
+- (CRLiOSDocumentModeFreehandDrawingTransform)initWithBoardViewController:(id)controller andInteractiveCanvasController:(id)canvasController;
+- (void)modeDidBeginFromMode:(id)mode forced:(BOOL)forced;
+- (void)modeWillBeginFromMode:(id)mode forced:(BOOL)forced;
+- (void)modeWillEndForMode:(id)mode forced:(BOOL)forced;
+- (void)p_doneButtonTapped:(id)tapped;
 - (void)p_endTransformMode;
-- (void)selectionPathDidChange:(id)a3;
+- (void)selectionPathDidChange:(id)change;
 - (void)toolkitDidUpdateCurrentToolSelection;
 @end
 
 @implementation CRLiOSDocumentModeFreehandDrawingTransform
 
-- (CRLiOSDocumentModeFreehandDrawingTransform)initWithBoardViewController:(id)a3 andInteractiveCanvasController:(id)a4
+- (CRLiOSDocumentModeFreehandDrawingTransform)initWithBoardViewController:(id)controller andInteractiveCanvasController:(id)canvasController
 {
   v5.receiver = self;
   v5.super_class = CRLiOSDocumentModeFreehandDrawingTransform;
-  return [(CRLiOSDocumentModeFreehandDrawing *)&v5 initWithBoardViewController:a3 andInteractiveCanvasController:a4];
+  return [(CRLiOSDocumentModeFreehandDrawing *)&v5 initWithBoardViewController:controller andInteractiveCanvasController:canvasController];
 }
 
-- (void)modeWillBeginFromMode:(id)a3 forced:(BOOL)a4
+- (void)modeWillBeginFromMode:(id)mode forced:(BOOL)forced
 {
-  v4 = a4;
-  v6 = a3;
+  forcedCopy = forced;
+  modeCopy = mode;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -56,59 +56,59 @@
 
   v12.receiver = self;
   v12.super_class = CRLiOSDocumentModeFreehandDrawingTransform;
-  [(CRLiOSDocumentModeFreehandDrawing *)&v12 modeWillBeginFromMode:v6 forced:v4];
+  [(CRLiOSDocumentModeFreehandDrawing *)&v12 modeWillBeginFromMode:modeCopy forced:forcedCopy];
 }
 
-- (void)modeDidBeginFromMode:(id)a3 forced:(BOOL)a4
+- (void)modeDidBeginFromMode:(id)mode forced:(BOOL)forced
 {
   v9.receiver = self;
   v9.super_class = CRLiOSDocumentModeFreehandDrawingTransform;
-  [(CRLiOSDocumentModeFreehandDrawing *)&v9 modeDidBeginFromMode:a3 forced:a4];
+  [(CRLiOSDocumentModeFreehandDrawing *)&v9 modeDidBeginFromMode:mode forced:forced];
   if ([CRLFeatureFlagsHelper isOSFeatureEnabled:9])
   {
-    v5 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-    v6 = [v5 layerHost];
-    v7 = [v6 asiOSCVC];
+    interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+    layerHost = [interactiveCanvasController layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    v8 = [v7 smartSelectionManager];
-    [v8 beginSuppressingSmartSelection];
+    smartSelectionManager = [asiOSCVC smartSelectionManager];
+    [smartSelectionManager beginSuppressingSmartSelection];
   }
 }
 
-- (void)modeWillEndForMode:(id)a3 forced:(BOOL)a4
+- (void)modeWillEndForMode:(id)mode forced:(BOOL)forced
 {
   v9.receiver = self;
   v9.super_class = CRLiOSDocumentModeFreehandDrawingTransform;
-  [(CRLiOSDocumentModeFreehandDrawing *)&v9 modeWillEndForMode:a3 forced:a4];
+  [(CRLiOSDocumentModeFreehandDrawing *)&v9 modeWillEndForMode:mode forced:forced];
   if ([CRLFeatureFlagsHelper isOSFeatureEnabled:9])
   {
-    v5 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-    v6 = [v5 layerHost];
-    v7 = [v6 asiOSCVC];
+    interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+    layerHost = [interactiveCanvasController layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    v8 = [v7 smartSelectionManager];
-    [v8 endSuppressingSmartSelection];
+    smartSelectionManager = [asiOSCVC smartSelectionManager];
+    [smartSelectionManager endSuppressingSmartSelection];
   }
 }
 
-- (BOOL)allowGestureInRestrictedGestureMode:(id)a3
+- (BOOL)allowGestureInRestrictedGestureMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-  v6 = [v5 layerHost];
-  v7 = [v6 asiOSCVC];
+  modeCopy = mode;
+  interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
   v11.receiver = self;
   v11.super_class = CRLiOSDocumentModeFreehandDrawingTransform;
-  if ([(CRLiOSDocumentModeFreehandDrawing *)&v11 allowGestureInRestrictedGestureMode:v4])
+  if ([(CRLiOSDocumentModeFreehandDrawing *)&v11 allowGestureInRestrictedGestureMode:modeCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v7 repRotateGestureRecognizer];
-    v8 = v9 == v4;
+    repRotateGestureRecognizer = [asiOSCVC repRotateGestureRecognizer];
+    v8 = repRotateGestureRecognizer == modeCopy;
   }
 
   return v8;
@@ -122,30 +122,30 @@
   [(CRLiOSDocumentModeFreehandDrawingTransform *)self p_endTransformMode];
 }
 
-- (void)p_doneButtonTapped:(id)a3
+- (void)p_doneButtonTapped:(id)tapped
 {
-  v4 = [(CRLiOSDocumentMode *)self boardViewController];
-  v3 = [v4 documentModeController];
-  [v3 resetToDefaultModeAnimated:1];
+  boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
+  documentModeController = [boardViewController documentModeController];
+  [documentModeController resetToDefaultModeAnimated:1];
 }
 
-- (void)selectionPathDidChange:(id)a3
+- (void)selectionPathDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CRLiOSDocumentModeFreehandDrawingTransform;
-  [(CRLiOSDocumentModeFreehandDrawing *)&v4 selectionPathDidChange:a3];
+  [(CRLiOSDocumentModeFreehandDrawing *)&v4 selectionPathDidChange:change];
   [(CRLiOSDocumentModeFreehandDrawingTransform *)self p_endTransformMode];
 }
 
 - (void)p_endTransformMode
 {
-  v7 = [(CRLiOSDocumentMode *)self boardViewController];
+  boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
   v3 = [CRLiOSDocumentModeFreehandDrawing alloc];
-  v4 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-  v5 = [(CRLiOSDocumentModeFreehandDrawing *)v3 initWithBoardViewController:v7 andInteractiveCanvasController:v4];
+  interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+  v5 = [(CRLiOSDocumentModeFreehandDrawing *)v3 initWithBoardViewController:boardViewController andInteractiveCanvasController:interactiveCanvasController];
 
-  v6 = [v7 documentModeController];
-  [v6 setMode:v5 animated:0];
+  documentModeController = [boardViewController documentModeController];
+  [documentModeController setMode:v5 animated:0];
 }
 
 @end

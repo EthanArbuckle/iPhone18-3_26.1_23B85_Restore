@@ -6,7 +6,7 @@
 
 - (uint64_t)encodeWithCAMLWriter:()CAMLWriter
 {
-  v4 = CFURLGetString(a1);
+  v4 = CFURLGetString(self);
 
   return [a3 setElementContent:v4];
 }

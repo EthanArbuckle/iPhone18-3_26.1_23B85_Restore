@@ -1,46 +1,46 @@
 @interface ATXUserNotificationDigestBiomeStream
-- (ATXUserNotificationDigestBiomeStream)initWithStoreConfig:(id)a3;
-- (void)sendEvent:(id)a3;
+- (ATXUserNotificationDigestBiomeStream)initWithStoreConfig:(id)config;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation ATXUserNotificationDigestBiomeStream
 
-- (ATXUserNotificationDigestBiomeStream)initWithStoreConfig:(id)a3
+- (ATXUserNotificationDigestBiomeStream)initWithStoreConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v13.receiver = self;
   v13.super_class = ATXUserNotificationDigestBiomeStream;
   v5 = [(ATXUserNotificationDigestBiomeStream *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (configCopy)
     {
-      v6 = v4;
+      atx_storeConfig = configCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E698F130] atx_storeConfig];
+      atx_storeConfig = [MEMORY[0x1E698F130] atx_storeConfig];
     }
 
-    v7 = v6;
-    v8 = [objc_alloc(MEMORY[0x1E698F318]) initWithPrivateStreamIdentifier:@"notificationDigestLoggingEvents" storeConfig:v6 eventDataClass:objc_opt_class()];
+    v7 = atx_storeConfig;
+    v8 = [objc_alloc(MEMORY[0x1E698F318]) initWithPrivateStreamIdentifier:@"notificationDigestLoggingEvents" storeConfig:atx_storeConfig eventDataClass:objc_opt_class()];
     inner = v5->_inner;
     v5->_inner = v8;
 
-    v10 = [(BMStoreStream *)v5->_inner source];
+    source = [(BMStoreStream *)v5->_inner source];
     source = v5->_source;
-    v5->_source = v10;
+    v5->_source = source;
   }
 
   return v5;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(ATXUserNotificationDigestBiomeStream *)self source];
-  [v5 sendEvent:v4];
+  eventCopy = event;
+  source = [(ATXUserNotificationDigestBiomeStream *)self source];
+  [source sendEvent:eventCopy];
 }
 
 @end

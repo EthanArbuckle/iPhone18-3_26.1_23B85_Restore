@@ -12,7 +12,7 @@
 - (uint64_t)fp_getSize:()CopyFile error:
 {
   v7 = 0;
-  v4 = [a1 getResourceValue:&v7 forKey:*MEMORY[0x1E695DB50] error:0];
+  v4 = [self getResourceValue:&v7 forKey:*MEMORY[0x1E695DB50] error:0];
   if (a3)
   {
     if (v4)
@@ -36,11 +36,11 @@
 
 - (uint64_t)fp_volumeUsesAppleDouble:()CopyFile
 {
-  v3 = [a3 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [a3 URLByDeletingLastPathComponent];
   v11 = 0;
   v4 = *MEMORY[0x1E695DEA0];
   v10 = 0;
-  [v3 getResourceValue:&v11 forKey:v4 error:&v10];
+  [uRLByDeletingLastPathComponent getResourceValue:&v11 forKey:v4 error:&v10];
   v5 = v11;
   v6 = v10;
   if (v6)
@@ -48,7 +48,7 @@
     v7 = fp_current_or_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(CopyFile) *)v3 fp_volumeUsesAppleDouble:v6, v7];
+      [(NSURL(CopyFile) *)uRLByDeletingLastPathComponent fp_volumeUsesAppleDouble:v6, v7];
     }
 
     v8 = 0;
@@ -84,8 +84,8 @@
 
   v18 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:v17];
   memset(&v70, 0, sizeof(v70));
-  v19 = [a1 path];
-  v20 = lstat([v19 fileSystemRepresentation], &v70);
+  path = [self path];
+  v20 = lstat([path fileSystemRepresentation], &v70);
 
   if (!v20)
   {
@@ -109,19 +109,19 @@
     memset(&v65, 0, sizeof(v65));
     memset(&v64, 0, sizeof(v64));
     v46 = v15;
-    v23 = [v15 path];
-    v24 = a1;
-    v25 = [v23 stringByDeletingLastPathComponent];
-    if (stat([v25 fileSystemRepresentation], &v65))
+    path2 = [v15 path];
+    selfCopy = self;
+    stringByDeletingLastPathComponent = [path2 stringByDeletingLastPathComponent];
+    if (stat([stringByDeletingLastPathComponent fileSystemRepresentation], &v65))
     {
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFF8] fp_homeDirectory];
-      v27 = [v26 path];
-      v28 = [v27 stringByDeletingLastPathComponent];
-      v29 = stat([v28 fileSystemRepresentation], &v64);
+      fp_homeDirectory = [MEMORY[0x1E695DFF8] fp_homeDirectory];
+      path3 = [fp_homeDirectory path];
+      stringByDeletingLastPathComponent2 = [path3 stringByDeletingLastPathComponent];
+      v29 = stat([stringByDeletingLastPathComponent2 fileSystemRepresentation], &v64);
 
       if (!v29 && v70.st_dev == v65.st_dev && v70.st_dev == v64.st_dev)
       {
@@ -134,8 +134,8 @@
       *(v67 + 6) |= 0x8000u;
       if (v47)
       {
-        v30 = [v46 path];
-        if ((rmdir([v30 fileSystemRepresentation]) & 0x80000000) == 0)
+        path4 = [v46 path];
+        if ((rmdir([path4 fileSystemRepresentation]) & 0x80000000) == 0)
         {
 
 LABEL_26:
@@ -172,8 +172,8 @@ LABEL_24:
       }
     }
 
-    v31 = [v46 path];
-    v32 = stat([v31 fileSystemRepresentation], &v63);
+    path5 = [v46 path];
+    v32 = stat([path5 fileSystemRepresentation], &v63);
 
     if (v32)
     {
@@ -193,7 +193,7 @@ LABEL_27:
       block[2] = __129__NSURL_CopyFile__fp_copyToURL_queue_precomputedItemSize_replacePlaceholder_shouldCopyAppleDouble_ignoreVFSSkipMtime_completion___block_invoke;
       block[3] = &unk_1E793CBA0;
       v51 = v37;
-      v52 = v24;
+      v52 = selfCopy;
       v15 = v46;
       v39 = v46;
       v60 = v45;
@@ -233,17 +233,17 @@ LABEL_29:
   v14 = a3;
   v15 = a4;
   v16 = a8;
-  if ([a1 fp_volumeUsesAppleDouble:v14])
+  if ([self fp_volumeUsesAppleDouble:v14])
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = [a1 fp_volumeUsesAppleDouble:a1] ^ 1;
+    v17 = [self fp_volumeUsesAppleDouble:self] ^ 1;
   }
 
-  v18 = [a1 fp_copyToURL:v14 queue:v15 precomputedItemSize:a5 replacePlaceholder:a6 shouldCopyAppleDouble:v17 ignoreVFSSkipMtime:a7 completion:v16];
+  v18 = [self fp_copyToURL:v14 queue:v15 precomputedItemSize:a5 replacePlaceholder:a6 shouldCopyAppleDouble:v17 ignoreVFSSkipMtime:a7 completion:v16];
 
   return v18;
 }
@@ -254,20 +254,20 @@ LABEL_29:
   v9 = a6;
   v10 = MEMORY[0x1E696AC08];
   v11 = a3;
-  v12 = [v10 defaultManager];
-  v13 = [MEMORY[0x1E695DFF8] fp_insecureTempDirectory];
-  v14 = [v13 path];
-  v15 = [MEMORY[0x1E696AFB0] UUID];
-  v16 = [v15 UUIDString];
-  v17 = [v14 stringByAppendingPathComponent:v16];
+  defaultManager = [v10 defaultManager];
+  fp_insecureTempDirectory = [MEMORY[0x1E695DFF8] fp_insecureTempDirectory];
+  path = [fp_insecureTempDirectory path];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v17 = [path stringByAppendingPathComponent:uUIDString];
 
   v18 = [v17 stringByAppendingPathComponent:v11];
 
   v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:v18 isDirectory:0];
   v29 = 0;
-  LOBYTE(v16) = [v12 createDirectoryAtPath:v17 withIntermediateDirectories:1 attributes:0 error:&v29];
+  LOBYTE(uUIDString) = [defaultManager createDirectoryAtPath:v17 withIntermediateDirectories:1 attributes:0 error:&v29];
   v20 = v29;
-  if (v16)
+  if (uUIDString)
   {
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
@@ -276,7 +276,7 @@ LABEL_29:
     v28 = v9;
     v26 = v19;
     v27 = v17;
-    v21 = [a1 fp_copyToURL:v26 queue:v8 precomputedItemSize:a5 replacePlaceholder:1 ignoreVFSSkipMtime:0 completion:v25];
+    v21 = [self fp_copyToURL:v26 queue:v8 precomputedItemSize:a5 replacePlaceholder:1 ignoreVFSSkipMtime:0 completion:v25];
   }
 
   else
@@ -294,21 +294,21 @@ LABEL_29:
   v8 = a5;
   v9 = MEMORY[0x1E696AC08];
   v10 = a3;
-  v11 = [v9 defaultManager];
-  v12 = [MEMORY[0x1E695DFF8] fp_insecureTempDirectory];
-  v13 = [v12 path];
-  v14 = [MEMORY[0x1E696AFB0] UUID];
-  v15 = [v14 UUIDString];
-  v16 = [v13 stringByAppendingPathComponent:v15];
+  defaultManager = [v9 defaultManager];
+  fp_insecureTempDirectory = [MEMORY[0x1E695DFF8] fp_insecureTempDirectory];
+  path = [fp_insecureTempDirectory path];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v16 = [path stringByAppendingPathComponent:uUIDString];
 
   v17 = [v16 stringByAppendingPathComponent:v10];
 
   v18 = [MEMORY[0x1E695DFF8] fileURLWithPath:v17 isDirectory:0];
   v25 = 0;
-  LOBYTE(v14) = [v11 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v25];
+  LOBYTE(uUID) = [defaultManager createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v25];
   v19 = v25;
   v20 = v19;
-  if (v14)
+  if (uUID)
   {
     v24 = v19;
     v21 = v7[2](v7, v18, &v24);

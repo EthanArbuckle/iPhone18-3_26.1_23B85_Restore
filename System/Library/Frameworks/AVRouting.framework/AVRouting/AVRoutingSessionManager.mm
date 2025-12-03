@@ -1,25 +1,25 @@
 @interface AVRoutingSessionManager
-+ (BOOL)longFormVideoManagerCanHaveCurrentSessionWithDestinationOfType:(int64_t)a3 subType:(int64_t)a4;
++ (BOOL)longFormVideoManagerCanHaveCurrentSessionWithDestinationOfType:(int64_t)type subType:(int64_t)subType;
 + (id)longFormVideoRoutingSessionManager;
 + (void)initialize;
 - (AVRoutingSession)currentRoutingSession;
-- (AVRoutingSessionManager)initWithFigRoutingSessionManager:(OpaqueFigRoutingSessionManager *)a3;
+- (AVRoutingSessionManager)initWithFigRoutingSessionManager:(OpaqueFigRoutingSessionManager *)manager;
 - (BOOL)prefersLikelyDestinationsOverCurrentRoutingSession;
-- (BOOL)startRoutingSessionWithOutputDeviceDescriptions:(id)a3 error:(id *)a4;
-- (BOOL)startSuppressingLikelyDestinationsUntilNextPlayEventAndReturnError:(id *)a3;
-- (BOOL)stopSuppressingLikelyDestinationsAndReturnError:(id *)a3;
+- (BOOL)startRoutingSessionWithOutputDeviceDescriptions:(id)descriptions error:(id *)error;
+- (BOOL)startSuppressingLikelyDestinationsUntilNextPlayEventAndReturnError:(id *)error;
+- (BOOL)stopSuppressingLikelyDestinationsAndReturnError:(id *)error;
 - (NSArray)likelyExternalDestinations;
 - (id)description;
 - (void)dealloc;
-- (void)startRoutingSessionForHighConfidenceExternalDestinationIfPresentWithCompletionHandler:(id)a3;
-- (void)updateCurrentRoutingSessionFromLikelyDestinationsWithCompletionHandler:(id)a3;
+- (void)startRoutingSessionForHighConfidenceExternalDestinationIfPresentWithCompletionHandler:(id)handler;
+- (void)updateCurrentRoutingSessionFromLikelyDestinationsWithCompletionHandler:(id)handler;
 @end
 
 @implementation AVRoutingSessionManager
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -28,15 +28,15 @@
   }
 }
 
-+ (BOOL)longFormVideoManagerCanHaveCurrentSessionWithDestinationOfType:(int64_t)a3 subType:(int64_t)a4
++ (BOOL)longFormVideoManagerCanHaveCurrentSessionWithDestinationOfType:(int64_t)type subType:(int64_t)subType
 {
-  v4 = 0x32800u >> a4;
-  if (a4 > 0x11)
+  v4 = 0x32800u >> subType;
+  if (subType > 0x11)
   {
     LOBYTE(v4) = 0;
   }
 
-  if (a3)
+  if (type)
   {
     LOBYTE(v4) = 0;
   }
@@ -198,10 +198,10 @@ LABEL_7:
   return v9 && v6 == 0;
 }
 
-- (void)updateCurrentRoutingSessionFromLikelyDestinationsWithCompletionHandler:(id)a3
+- (void)updateCurrentRoutingSessionFromLikelyDestinationsWithCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [a3 copy];
+  v5 = [handler copy];
   if (dword_1EB46D588)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -238,10 +238,10 @@ LABEL_9:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startRoutingSessionForHighConfidenceExternalDestinationIfPresentWithCompletionHandler:(id)a3
+- (void)startRoutingSessionForHighConfidenceExternalDestinationIfPresentWithCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [a3 copy];
+  v5 = [handler copy];
   if (dword_1EB46D588)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -278,7 +278,7 @@ LABEL_9:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)startRoutingSessionWithOutputDeviceDescriptions:(id)a3 error:(id *)a4
+- (BOOL)startRoutingSessionWithOutputDeviceDescriptions:(id)descriptions error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9C0]);
@@ -295,7 +295,7 @@ LABEL_9:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v33 objects:v39 count:{16, v29, v31}];
+  v9 = [descriptions countByEnumeratingWithState:&v33 objects:v39 count:{16, v29, v31}];
   if (v9)
   {
     v10 = v9;
@@ -306,7 +306,7 @@ LABEL_9:
       {
         if (*v34 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(descriptions);
         }
 
         v13 = AVCreateFigRouteDescriptorFromOutputDeviceDescription(*(*(&v33 + 1) + 8 * i));
@@ -317,7 +317,7 @@ LABEL_9:
         }
       }
 
-      v10 = [a3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v10 = [descriptions countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v10);
@@ -375,9 +375,9 @@ LABEL_9:
     v25 = -12782;
   }
 
-  if (a4 && v25 != -15395)
+  if (error && v25 != -15395)
   {
-    *a4 = AVLocalizedErrorWithUnderlyingOSStatus(v25, 0);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(v25, 0);
   }
 
   if (Mutable)
@@ -397,7 +397,7 @@ LABEL_32:
   return result;
 }
 
-- (BOOL)startSuppressingLikelyDestinationsUntilNextPlayEventAndReturnError:(id *)a3
+- (BOOL)startSuppressingLikelyDestinationsUntilNextPlayEventAndReturnError:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
   if (dword_1EB46D588)
@@ -424,9 +424,9 @@ LABEL_32:
     v14 = -12782;
   }
 
-  if (a3 && v14 != -15395)
+  if (error && v14 != -15395)
   {
-    *a3 = AVLocalizedErrorWithUnderlyingOSStatus(v14, 0);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(v14, 0);
   }
 
   if (v14 == -15395)
@@ -441,7 +441,7 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)stopSuppressingLikelyDestinationsAndReturnError:(id *)a3
+- (BOOL)stopSuppressingLikelyDestinationsAndReturnError:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
   if (dword_1EB46D588)
@@ -468,9 +468,9 @@ LABEL_12:
     v14 = -12782;
   }
 
-  if (a3 && v14 != -15395)
+  if (error && v14 != -15395)
   {
-    *a3 = AVLocalizedErrorWithUnderlyingOSStatus(v14, 0);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(v14, 0);
   }
 
   if (v14 == -15395)
@@ -495,13 +495,13 @@ LABEL_12:
 
   else
   {
-    v4 = [[a1 alloc] initWithFigRoutingSessionManager:0];
+    v4 = [[self alloc] initWithFigRoutingSessionManager:0];
   }
 
   return v4;
 }
 
-- (AVRoutingSessionManager)initWithFigRoutingSessionManager:(OpaqueFigRoutingSessionManager *)a3
+- (AVRoutingSessionManager)initWithFigRoutingSessionManager:(OpaqueFigRoutingSessionManager *)manager
 {
   CMNotificationCenterGetDefaultLocalCenter();
   v13.receiver = self;
@@ -519,9 +519,9 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (manager)
   {
-    v7 = CFRetain(a3);
+    v7 = CFRetain(manager);
     ivars = v5->_ivars;
   }
 

@@ -1,31 +1,31 @@
 @interface WPDObjectDiscoveryData
-+ (id)addressFromNearbyToken:(id)a3;
-+ (id)addressesFromNearbyTokens:(id)a3;
-+ (id)objectDiscoveryReportFromAdvReport:(id)a3;
-+ (unsigned)applyMaskToAddress:(id)a3;
++ (id)addressFromNearbyToken:(id)token;
++ (id)addressesFromNearbyTokens:(id)tokens;
++ (id)objectDiscoveryReportFromAdvReport:(id)report;
++ (unsigned)applyMaskToAddress:(id)address;
 - (WPDObjectDiscoveryData)init;
-- (id)updateWithKey:(id)a3 Status:(unsigned __int8)a4 Reserved:(id)a5;
+- (id)updateWithKey:(id)key Status:(unsigned __int8)status Reserved:(id)reserved;
 - (void)wipeout;
 @end
 
 @implementation WPDObjectDiscoveryData
 
-+ (id)objectDiscoveryReportFromAdvReport:(id)a3
++ (id)objectDiscoveryReportFromAdvReport:(id)report
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"kDeviceTime"];
+  reportCopy = report;
+  v4 = [reportCopy objectForKeyedSubscript:@"kDeviceTime"];
   v5 = MEMORY[0x277CBEAA8];
   [v4 doubleValue];
   v6 = [v5 dateWithTimeIntervalSinceReferenceDate:?];
   v7 = MEMORY[0x277CBEB28];
-  v8 = [v3 objectForKeyedSubscript:@"kDeviceAddress"];
+  v8 = [reportCopy objectForKeyedSubscript:@"kDeviceAddress"];
   v9 = [v7 dataWithData:v8];
 
-  v45 = [v3 objectForKeyedSubscript:@"kDeviceRSSI"];
-  v10 = [v3 objectForKeyedSubscript:@"kDeviceChannel"];
-  v44 = [v3 objectForKeyedSubscript:@"kDeviceDataSaturated"];
-  v11 = [v3 objectForKeyedSubscript:@"kDeviceAdvertisingData"];
+  v45 = [reportCopy objectForKeyedSubscript:@"kDeviceRSSI"];
+  v10 = [reportCopy objectForKeyedSubscript:@"kDeviceChannel"];
+  v44 = [reportCopy objectForKeyedSubscript:@"kDeviceDataSaturated"];
+  v11 = [reportCopy objectForKeyedSubscript:@"kDeviceAdvertisingData"];
   v12 = [v11 length];
   v13 = v12 - 4;
   if (v12 == 6)
@@ -74,9 +74,9 @@ LABEL_13:
       +[WPDObjectDiscoveryData objectDiscoveryReportFromAdvReport:];
     }
 
-    v18 = [v17 bytes];
-    v43 = [MEMORY[0x277CCABB0] numberWithChar:*v18];
-    v19 = [MEMORY[0x277CBEA90] data];
+    bytes = [v17 bytes];
+    v43 = [MEMORY[0x277CCABB0] numberWithChar:*bytes];
+    data = [MEMORY[0x277CBEA90] data];
     if (v13 >= 1)
     {
       v20 = MEMORY[0x277CBEA90];
@@ -87,18 +87,18 @@ LABEL_13:
 
       v6 = v22;
       v9 = v21;
-      v19 = v24;
+      data = v24;
     }
 
     v25 = MEMORY[0x277CBEB28];
     v26 = [v17 subdataWithRange:{v14 | 1, v15}];
     v27 = [v25 dataWithData:v26];
 
-    v28 = [v27 mutableBytes];
-    LOBYTE(v26) = *v28;
-    *v28 &= 0xFCu;
-    v29 = [v9 mutableBytes];
-    *v29 = *v29 & 0x3F | (v26 << 6);
+    mutableBytes = [v27 mutableBytes];
+    LOBYTE(v26) = *mutableBytes;
+    *mutableBytes &= 0xFCu;
+    mutableBytes2 = [v9 mutableBytes];
+    *mutableBytes2 = *mutableBytes2 & 0x3F | (v26 << 6);
     v46[0] = @"kSPDeviceAddress";
     v30 = v9;
     v31 = [MEMORY[0x277CBEA90] dataWithData:v9];
@@ -108,7 +108,7 @@ LABEL_13:
     v46[1] = @"kSPScanDate";
     v46[2] = @"kSPrssi";
     v47[2] = v45;
-    v47[3] = v19;
+    v47[3] = data;
     v46[3] = @"kSPAdvertisementData";
     v46[4] = @"kSPStatus";
     v47[4] = v43;
@@ -196,11 +196,11 @@ LABEL_41:
   return v37;
 }
 
-+ (unsigned)applyMaskToAddress:(id)a3
++ (unsigned)applyMaskToAddress:(id)address
 {
-  v3 = [a3 mutableBytes];
-  v4 = *v3;
-  *v3 = v4 | 0xC0;
+  mutableBytes = [address mutableBytes];
+  v4 = *mutableBytes;
+  *mutableBytes = v4 | 0xC0;
   if (WPLogInitOnce != -1)
   {
     +[WPDObjectDiscoveryData applyMaskToAddress:];
@@ -208,35 +208,35 @@ LABEL_41:
 
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
-    [WPDObjectDiscoveryData applyMaskToAddress:v3];
+    [WPDObjectDiscoveryData applyMaskToAddress:mutableBytes];
   }
 
   return v4 >> 6;
 }
 
-+ (id)addressFromNearbyToken:(id)a3
++ (id)addressFromNearbyToken:(id)token
 {
-  v3 = [MEMORY[0x277CBEB28] dataWithData:a3];
+  v3 = [MEMORY[0x277CBEB28] dataWithData:token];
   [WPDObjectDiscoveryData applyMaskToAddress:v3];
   v4 = [MEMORY[0x277CBEA90] dataWithData:v3];
 
   return v4;
 }
 
-+ (id)addressesFromNearbyTokens:(id)a3
++ (id)addressesFromNearbyTokens:(id)tokens
 {
-  v3 = a3;
-  if (v3)
+  tokensCopy = tokens;
+  if (tokensCopy)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(tokensCopy, "count")}];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __52__WPDObjectDiscoveryData_addressesFromNearbyTokens___block_invoke;
     v9[3] = &unk_279ED7520;
     v10 = v5;
     v6 = v5;
-    [v3 enumerateObjectsUsingBlock:v9];
+    [tokensCopy enumerateObjectsUsingBlock:v9];
     v7 = [MEMORY[0x277CBEA60] arrayWithArray:v6];
 
     objc_autoreleasePoolPop(v4);
@@ -289,16 +289,16 @@ void __52__WPDObjectDiscoveryData_addressesFromNearbyTokens___block_invoke(uint6
   [(NSMutableData *)payload resetBytesInRange:0, v4];
 }
 
-- (id)updateWithKey:(id)a3 Status:(unsigned __int8)a4 Reserved:(id)a5
+- (id)updateWithKey:(id)key Status:(unsigned __int8)status Reserved:(id)reserved
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 length];
+  keyCopy = key;
+  reservedCopy = reserved;
+  v10 = [keyCopy length];
   v11 = v10 - 6;
   if ((v10 - 6) >= 0x17)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"bad ObjectDiscovery key of length %lu", objc_msgSend(v8, "length")];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"bad ObjectDiscovery key of length %lu", objc_msgSend(keyCopy, "length")];
     v13 = MEMORY[0x277CCA9B8];
     v34 = *MEMORY[0x277CCA450];
     v35[0] = v12;
@@ -313,9 +313,9 @@ LABEL_6:
   }
 
   v17 = v10;
-  if (v9 && [v9 length] >= 3)
+  if (reservedCopy && [reservedCopy length] >= 3)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"bad ObjectDiscovery reserved bytes length %lu", objc_msgSend(v9, "length")];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"bad ObjectDiscovery reserved bytes length %lu", objc_msgSend(reservedCopy, "length")];
     v13 = MEMORY[0x277CCA9B8];
     v32 = *MEMORY[0x277CCA450];
     v33 = v12;
@@ -325,33 +325,33 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v20 = [(WPDObjectDiscoveryData *)self address];
-  [v20 replaceBytesInRange:0 withBytes:{6, objc_msgSend(v8, "bytes")}];
+  address = [(WPDObjectDiscoveryData *)self address];
+  [address replaceBytesInRange:0 withBytes:{6, objc_msgSend(keyCopy, "bytes")}];
 
-  v21 = [(WPDObjectDiscoveryData *)self address];
-  v22 = [WPDObjectDiscoveryData applyMaskToAddress:v21];
+  address2 = [(WPDObjectDiscoveryData *)self address];
+  v22 = [WPDObjectDiscoveryData applyMaskToAddress:address2];
 
-  v23 = [(WPDObjectDiscoveryData *)self payload];
-  v24 = [(WPDObjectDiscoveryData *)self payload];
-  [v23 resetBytesInRange:{0, objc_msgSend(v24, "length")}];
+  payload = [(WPDObjectDiscoveryData *)self payload];
+  payload2 = [(WPDObjectDiscoveryData *)self payload];
+  [payload resetBytesInRange:{0, objc_msgSend(payload2, "length")}];
 
   if (v11)
   {
-    v25 = [(WPDObjectDiscoveryData *)self payload];
-    [v25 replaceBytesInRange:1 withBytes:{v11, objc_msgSend(v8, "bytes") + 6}];
+    payload3 = [(WPDObjectDiscoveryData *)self payload];
+    [payload3 replaceBytesInRange:1 withBytes:{v11, objc_msgSend(keyCopy, "bytes") + 6}];
   }
 
-  v26 = [(WPDObjectDiscoveryData *)self payload];
-  v27 = [v26 mutableBytes];
+  payload4 = [(WPDObjectDiscoveryData *)self payload];
+  mutableBytes = [payload4 mutableBytes];
 
-  *v27 = a4;
-  if (v9 && [v9 length])
+  *mutableBytes = status;
+  if (reservedCopy && [reservedCopy length])
   {
-    v28 = [(WPDObjectDiscoveryData *)self payload];
-    [v28 replaceBytesInRange:v11 withBytes:{objc_msgSend(v9, "length"), objc_msgSend(v9, "bytes")}];
+    payload5 = [(WPDObjectDiscoveryData *)self payload];
+    [payload5 replaceBytesInRange:v11 withBytes:{objc_msgSend(reservedCopy, "length"), objc_msgSend(reservedCopy, "bytes")}];
   }
 
-  v27[v17 - 5] = v27[v17 - 5] & 0xFC | v22;
+  mutableBytes[v17 - 5] = mutableBytes[v17 - 5] & 0xFC | v22;
   if (v11)
   {
     v29 = v17 - 3;

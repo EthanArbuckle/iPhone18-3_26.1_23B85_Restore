@@ -1,7 +1,7 @@
 @interface DMCFieldCollection
 - (BOOL)currentFieldIsLastInPayload;
 - (BOOL)currentFieldIsSinglePasswordField;
-- (DMCFieldCollection)initWithUserInput:(id)a3;
+- (DMCFieldCollection)initWithUserInput:(id)input;
 - (id)responseDictionariesForCurrentPayload;
 - (id)userInputResponses;
 - (void)_setCurrentFieldToCurrentIndices;
@@ -11,16 +11,16 @@
 
 @implementation DMCFieldCollection
 
-- (DMCFieldCollection)initWithUserInput:(id)a3
+- (DMCFieldCollection)initWithUserInput:(id)input
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   v31.receiver = self;
   v31.super_class = DMCFieldCollection;
   v5 = [(DMCFieldCollection *)&v31 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(inputCopy, "count")}];
     payloadFieldArrays = v5->_payloadFieldArrays;
     v5->_payloadFieldArrays = v6;
 
@@ -28,7 +28,7 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = v4;
+    obj = inputCopy;
     v8 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v8)
     {
@@ -139,8 +139,8 @@
                 objc_enumerationMutation(v10);
               }
 
-              v15 = [*(*(&v18 + 1) + 8 * j) responseDictionary];
-              [v9 addObject:v15];
+              responseDictionary = [*(*(&v18 + 1) + 8 * j) responseDictionary];
+              [v9 addObject:responseDictionary];
             }
 
             v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -299,8 +299,8 @@ LABEL_5:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * v10) responseDictionary];
-          [v5 addObject:v11];
+          responseDictionary = [*(*(&v15 + 1) + 8 * v10) responseDictionary];
+          [v5 addObject:responseDictionary];
 
           ++v10;
         }

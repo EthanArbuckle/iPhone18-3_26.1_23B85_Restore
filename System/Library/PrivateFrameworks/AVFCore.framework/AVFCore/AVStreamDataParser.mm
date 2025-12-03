@@ -1,7 +1,7 @@
 @interface AVStreamDataParser
-+ (BOOL)canParseExtendedMIMEType:(id)a3;
++ (BOOL)canParseExtendedMIMEType:(id)type;
 + (NSArray)audiovisualMIMETypes;
-+ (id)outputMIMECodecParameterForInputMIMECodecParameter:(id)a3;
++ (id)outputMIMECodecParameterForInputMIMECodecParameter:(id)parameter;
 - (AVStreamDataParser)init;
 - (BOOL)_ICYIsAllowed;
 - (BOOL)_MPEG2TSIsAllowed;
@@ -14,34 +14,34 @@
 - (NSArray)allowableMIMETypes;
 - (NSData)contentProtectionSessionIdentifier;
 - (id)_fullListOfAllowableMIMETypes;
-- (id)streamingContentKeyRequestDataForApp:(id)a3 contentIdentifier:(id)a4 trackID:(int)a5 options:(id)a6 error:(id *)a7;
-- (int)_attachToContentKeySession:(id)a3 contentKeyBoss:(OpaqueFigContentKeyBoss *)a4 failedSinceAlreadyAttachedToAnotherSession:(BOOL *)a5;
-- (int)_createFigManifold:(OpaqueCMBlockBuffer *)a3 manifold:(OpaqueFigManifold *)a4;
-- (int)_createFigManifoldRemote:(OpaqueCMBlockBuffer *)a3 manifold:(OpaqueFigManifold *)a4;
-- (int)_createFigManifoldWithBlockBuffer:(OpaqueCMBlockBuffer *)a3 manifold:(OpaqueFigManifold *)a4;
-- (int)_figManifold:(OpaqueFigManifold *)a3 formatDescription:(opaqueCMFormatDescription *)a4 orDecryptorDidChange:(void *)a5 forTrackID:(int)a6;
-- (int)_figManifold:(OpaqueFigManifold *)a3 pushedSampleBuffer:(opaqueCMSampleBuffer *)a4 trackID:(int)a5 flags:(unsigned int)a6;
-- (int)_registerForFigManifoldCallbacksForTrackID:(int)a3;
-- (int)_unregisterForFigManifoldCallbacksForTrackID:(int)a3;
+- (id)streamingContentKeyRequestDataForApp:(id)app contentIdentifier:(id)identifier trackID:(int)d options:(id)options error:(id *)error;
+- (int)_attachToContentKeySession:(id)session contentKeyBoss:(OpaqueFigContentKeyBoss *)boss failedSinceAlreadyAttachedToAnotherSession:(BOOL *)anotherSession;
+- (int)_createFigManifold:(OpaqueCMBlockBuffer *)manifold manifold:(OpaqueFigManifold *)a4;
+- (int)_createFigManifoldRemote:(OpaqueCMBlockBuffer *)remote manifold:(OpaqueFigManifold *)manifold;
+- (int)_createFigManifoldWithBlockBuffer:(OpaqueCMBlockBuffer *)buffer manifold:(OpaqueFigManifold *)manifold;
+- (int)_figManifold:(OpaqueFigManifold *)manifold formatDescription:(opaqueCMFormatDescription *)description orDecryptorDidChange:(void *)change forTrackID:(int)d;
+- (int)_figManifold:(OpaqueFigManifold *)manifold pushedSampleBuffer:(opaqueCMSampleBuffer *)buffer trackID:(int)d flags:(unsigned int)flags;
+- (int)_registerForFigManifoldCallbacksForTrackID:(int)d;
+- (int)_unregisterForFigManifoldCallbacksForTrackID:(int)d;
 - (int64_t)status;
 - (int64_t)status2;
-- (void)_appendStreamData:(OpaqueCMBlockBuffer *)a3 withFlags:(unint64_t)a4;
+- (void)_appendStreamData:(OpaqueCMBlockBuffer *)data withFlags:(unint64_t)flags;
 - (void)_configureInternal;
 - (void)_createAssetIfNecessary;
-- (void)_setError:(id)a3;
+- (void)_setError:(id)error;
 - (void)_willDeallocOrFinalize;
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4;
-- (void)contentKeySessionContentProtectionSessionIdentifierDidChange:(id)a3;
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request;
+- (void)contentKeySessionContentProtectionSessionIdentifierDidChange:(id)change;
 - (void)dealloc;
 - (void)expire;
-- (void)processContentKeyResponseData:(id)a3 forTrackID:(int)a4;
-- (void)processContentKeyResponseError:(id)a3 forTrackID:(int)a4;
+- (void)processContentKeyResponseData:(id)data forTrackID:(int)d;
+- (void)processContentKeyResponseError:(id)error forTrackID:(int)d;
 - (void)providePendingMediaData;
-- (void)setAllowableMIMETypes:(id)a3;
-- (void)setPreferSandboxedParsing:(BOOL)a3;
-- (void)setSession:(id)a3;
-- (void)setShouldProvideMediaData:(BOOL)a3 forTrackID:(int)a4;
-- (void)setStatus:(int64_t)a3;
+- (void)setAllowableMIMETypes:(id)types;
+- (void)setPreferSandboxedParsing:(BOOL)parsing;
+- (void)setSession:(id)session;
+- (void)setShouldProvideMediaData:(BOOL)data forTrackID:(int)d;
+- (void)setStatus:(int64_t)status;
 @end
 
 @implementation AVStreamDataParser
@@ -95,8 +95,8 @@
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = [(AVAsset *)v4->_asset tracks];
-      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      tracks = [(AVAsset *)v4->_asset tracks];
+      v6 = [(NSArray *)tracks countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         v7 = v6;
@@ -107,13 +107,13 @@
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(tracks);
             }
 
             -[AVStreamDataParser _unregisterForFigManifoldCallbacksForTrackID:](self, "_unregisterForFigManifoldCallbacksForTrackID:", [*(*(&v13 + 1) + 8 * i) trackID]);
           }
 
-          v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [(NSArray *)tracks countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v7);
@@ -204,7 +204,7 @@ uint64_t __28__AVStreamDataParser_status__block_invoke(uint64_t result)
   return v3;
 }
 
-- (void)setStatus:(int64_t)a3
+- (void)setStatus:(int64_t)status
 {
   threadSafetyQ = self->_parser->_threadSafetyQ;
   v4[0] = MEMORY[0x1E69E9820];
@@ -212,7 +212,7 @@ uint64_t __28__AVStreamDataParser_status__block_invoke(uint64_t result)
   v4[2] = __32__AVStreamDataParser_setStatus___block_invoke;
   v4[3] = &unk_1E7460FA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = status;
   dispatch_sync(threadSafetyQ, v4);
 }
 
@@ -229,12 +229,12 @@ uint64_t __32__AVStreamDataParser_setStatus___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_setError:(id)a3
+- (void)_setError:(id)error
 {
   [(AVStreamDataParser *)self setStatus:4];
   if (!self->_parser->_error)
   {
-    self->_parser->_error = [a3 copy];
+    self->_parser->_error = [error copy];
     if (self->_parser->_delegate)
     {
       if (objc_opt_respondsToSelector())
@@ -289,14 +289,14 @@ void __42__AVStreamDataParser_audiovisualMIMETypes__block_invoke()
   FigCopySetOfAudioSupportedMIMETypes();
 }
 
-+ (BOOL)canParseExtendedMIMEType:(id)a3
++ (BOOL)canParseExtendedMIMEType:(id)type
 {
   +[AVStreamDataParser audiovisualMIMETypes];
   +[AVURLAsset _avfValidationPlist];
   return FigMediaValidatorValidateRFC4281ExtendedMIMETypeForStreaming() == 0;
 }
 
-- (void)setAllowableMIMETypes:(id)a3
+- (void)setAllowableMIMETypes:(id)types
 {
   parser = self->_parser;
   if (parser->_figManifold)
@@ -305,7 +305,7 @@ void __42__AVStreamDataParser_audiovisualMIMETypes__block_invoke()
   }
 
   allowableMIMETypes = parser->_allowableMIMETypes;
-  self->_parser->_allowableMIMETypes = [a3 copyWithZone:0];
+  self->_parser->_allowableMIMETypes = [types copyWithZone:0];
 }
 
 - (NSArray)allowableMIMETypes
@@ -315,11 +315,11 @@ void __42__AVStreamDataParser_audiovisualMIMETypes__block_invoke()
   return v2;
 }
 
-- (void)_appendStreamData:(OpaqueCMBlockBuffer *)a3 withFlags:(unint64_t)a4
+- (void)_appendStreamData:(OpaqueCMBlockBuffer *)data withFlags:(unint64_t)flags
 {
   number = 0;
   v40 = 0;
-  if (!a3)
+  if (!data)
   {
     return;
   }
@@ -329,7 +329,7 @@ void __42__AVStreamDataParser_audiovisualMIMETypes__block_invoke()
     parser = self->_parser;
     if (parser->_figManifold)
     {
-      v7 = CFRetain(a3);
+      v7 = CFRetain(data);
       if (!v7)
       {
         goto LABEL_52;
@@ -345,7 +345,7 @@ LABEL_7:
       v10 = *(*(CMBaseObjectGetVTable() + 16) + 8);
       if (v10)
       {
-        v11 = v10(figManifold, 0, a4 & 1, v7);
+        v11 = v10(figManifold, 0, flags & 1, v7);
         if (v11 == -16046)
         {
           cf = 0;
@@ -394,7 +394,7 @@ LABEL_7:
             v23 = cf;
             if (cf)
             {
-              [(AVStreamDataParser *)self _appendStreamData:cf withFlags:a4];
+              [(AVStreamDataParser *)self _appendStreamData:cf withFlags:flags];
               CFRelease(cf);
               v23 = 0;
             }
@@ -467,8 +467,8 @@ LABEL_7:
       }
     }
 
-    DataLength = CMBlockBufferGetDataLength(a3);
-    CMBlockBufferAppendBufferReference(v25, a3, 0, DataLength, 0);
+    DataLength = CMBlockBufferGetDataLength(data);
+    CMBlockBufferAppendBufferReference(v25, data, 0, DataLength, 0);
     v7 = CFRetain(self->_parser->_accumulatedInitializationData);
     if (!v7)
     {
@@ -586,12 +586,12 @@ LABEL_52:
   }
 }
 
-- (void)setShouldProvideMediaData:(BOOL)a3 forTrackID:(int)a4
+- (void)setShouldProvideMediaData:(BOOL)data forTrackID:(int)d
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&d;
+  dataCopy = data;
   v13[1] = *MEMORY[0x1E69E9840];
-  if (![(AVAsset *)self->_parser->_asset trackWithTrackID:*&a4])
+  if (![(AVAsset *)self->_parser->_asset trackWithTrackID:*&d])
   {
     v10 = MEMORY[0x1E695DF30];
     v11 = *MEMORY[0x1E695D940];
@@ -601,7 +601,7 @@ LABEL_52:
   }
 
   trackIDsNotProvidingMedia = self->_parser->_trackIDsNotProvidingMedia;
-  if (v5)
+  if (dataCopy)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
 
@@ -700,22 +700,22 @@ LABEL_52:
   }
 }
 
-+ (id)outputMIMECodecParameterForInputMIMECodecParameter:(id)a3
++ (id)outputMIMECodecParameterForInputMIMECodecParameter:(id)parameter
 {
-  v3 = [objc_msgSend(a3 stringByReplacingOccurrencesOfString:@"avc3" withString:{@"avc1", "stringByReplacingOccurrencesOfString:withString:", @"hev1", @"hvc1"}];
+  v3 = [objc_msgSend(parameter stringByReplacingOccurrencesOfString:@"avc3" withString:{@"avc1", "stringByReplacingOccurrencesOfString:withString:", @"hev1", @"hvc1"}];
 
   return [v3 stringByReplacingOccurrencesOfString:@"dvhe" withString:@"dvh1"];
 }
 
-- (int)_figManifold:(OpaqueFigManifold *)a3 pushedSampleBuffer:(opaqueCMSampleBuffer *)a4 trackID:(int)a5 flags:(unsigned int)a6
+- (int)_figManifold:(OpaqueFigManifold *)manifold pushedSampleBuffer:(opaqueCMSampleBuffer *)buffer trackID:(int)d flags:(unsigned int)flags
 {
-  v6 = *&a6;
-  v7 = *&a5;
+  v6 = *&flags;
+  v7 = *&d;
   v34[4] = *MEMORY[0x1E69E9840];
-  FormatDescription = CMSampleBufferGetFormatDescription(a4);
+  FormatDescription = CMSampleBufferGetFormatDescription(buffer);
   MediaType = CMFormatDescriptionGetMediaType(FormatDescription);
   v13 = AVStringForOSType(MediaType);
-  v14 = CMSampleBufferGetFormatDescription(a4);
+  v14 = CMSampleBufferGetFormatDescription(buffer);
   MediaSubType = CMFormatDescriptionGetMediaSubType(v14);
   AVStringForOSType(MediaSubType);
   parser = self->_parser;
@@ -724,7 +724,7 @@ LABEL_52:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ![(NSArray *)[(AVAssetTrack *)[(AVAsset *)self->_parser->_asset trackWithTrackID:v7] formatDescriptions] count])
     {
-      v24 = CMSampleBufferGetFormatDescription(a4);
+      v24 = CMSampleBufferGetFormatDescription(buffer);
       if (v24)
       {
         v25 = v24;
@@ -754,7 +754,7 @@ LABEL_52:
             FigSampleBufferSetDecryptor();
           }
 
-          [(AVStreamDataParserOutputHandling *)self->_parser->_delegate streamDataParser:self didProvideMediaData:a4 forTrackID:v7 mediaType:v13 flags:0];
+          [(AVStreamDataParserOutputHandling *)self->_parser->_delegate streamDataParser:self didProvideMediaData:buffer forTrackID:v7 mediaType:v13 flags:0];
         }
 
         goto LABEL_20;
@@ -773,16 +773,16 @@ LABEL_52:
 
     v33[0] = @"figManifold";
     v33[1] = @"sbuf";
-    v34[0] = a3;
-    v34[1] = a4;
+    v34[0] = manifold;
+    v34[1] = buffer;
     v33[2] = @"trackID";
     v34[2] = [MEMORY[0x1E696AD98] numberWithInt:v7];
     v33[3] = @"flags";
     v34[3] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
     -[NSMutableArray addObject:](samplesBeforeReady, "addObject:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:4]);
-    self->_parser->_samplesBeforeReadyTotalSize += CMSampleBufferGetTotalSampleSize(a4);
+    self->_parser->_samplesBeforeReadyTotalSize += CMSampleBufferGetTotalSampleSize(buffer);
     memset(&v32, 0, sizeof(v32));
-    CMSampleBufferGetOutputDuration(&v32, a4);
+    CMSampleBufferGetOutputDuration(&v32, buffer);
     if ((v32.flags & 0x1D) == 1)
     {
       v20 = self->_parser;
@@ -825,11 +825,11 @@ LABEL_20:
   return delegate;
 }
 
-- (int)_figManifold:(OpaqueFigManifold *)a3 formatDescription:(opaqueCMFormatDescription *)a4 orDecryptorDidChange:(void *)a5 forTrackID:(int)a6
+- (int)_figManifold:(OpaqueFigManifold *)manifold formatDescription:(opaqueCMFormatDescription *)description orDecryptorDidChange:(void *)change forTrackID:(int)d
 {
-  v6 = *&a6;
+  v6 = *&d;
   v50 = *MEMORY[0x1E69E9840];
-  if (a4 && FigCPEIsSupportedFormatDescription())
+  if (description && FigCPEIsSupportedFormatDescription())
   {
     p_parser = &self->_parser;
     self->_parser->_currentTrackID = v6;
@@ -842,12 +842,12 @@ LABEL_20:
       trackFormatDescriptionsByTrackID = (*p_parser)->_trackFormatDescriptionsByTrackID;
     }
 
-    -[NSMutableDictionary setObject:forKey:](trackFormatDescriptionsByTrackID, "setObject:forKey:", a4, [MEMORY[0x1E696AD98] numberWithInt:parser->_currentTrackID]);
-    Extension = CMFormatDescriptionGetExtension(a4, *MEMORY[0x1E69600A0]);
+    -[NSMutableDictionary setObject:forKey:](trackFormatDescriptionsByTrackID, "setObject:forKey:", description, [MEMORY[0x1E696AD98] numberWithInt:parser->_currentTrackID]);
+    Extension = CMFormatDescriptionGetExtension(description, *MEMORY[0x1E69600A0]);
     if (Extension)
     {
       v13 = Extension;
-      v14 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v15 = [v13 objectForKey:@"sinf"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -873,7 +873,7 @@ LABEL_20:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v14 addObject:v19];
+                [array addObject:v19];
               }
             }
 
@@ -889,24 +889,24 @@ LABEL_20:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v14 addObject:v15];
+          [array addObject:v15];
         }
       }
     }
 
     else
     {
-      v14 = 0;
+      array = 0;
     }
 
-    if ([v14 count])
+    if ([array count])
     {
-      v20 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v21 = [v14 countByEnumeratingWithState:&v46 objects:v45 count:16];
+      v21 = [array countByEnumeratingWithState:&v46 objects:v45 count:16];
       if (v21)
       {
         v22 = *v47;
@@ -916,26 +916,26 @@ LABEL_20:
           {
             if (*v47 != v22)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(array);
             }
 
-            [v20 addObject:{objc_msgSend(*(*(&v46 + 1) + 8 * j), "base64EncodedStringWithOptions:", 0)}];
+            [array2 addObject:{objc_msgSend(*(*(&v46 + 1) + 8 * j), "base64EncodedStringWithOptions:", 0)}];
           }
 
-          v21 = [v14 countByEnumeratingWithState:&v46 objects:v45 count:16];
+          v21 = [array countByEnumeratingWithState:&v46 objects:v45 count:16];
         }
 
         while (v21);
       }
 
       v43 = @"sinf";
-      v44 = v20;
+      v44 = array2;
       v24 = [MEMORY[0x1E696ACB0] dataWithJSONObject:objc_msgSend(MEMORY[0x1E695DF20] options:"dictionaryWithObjects:forKeys:count:" error:{&v44, &v43, 1), 1, 0}];
       goto LABEL_43;
     }
 
-    MediaType = CMFormatDescriptionGetMediaType(a4);
-    MediaSubType = CMFormatDescriptionGetMediaSubType(a4);
+    MediaType = CMFormatDescriptionGetMediaType(description);
+    MediaSubType = CMFormatDescriptionGetMediaSubType(description);
     v27 = 0;
     if (MediaSubType <= 2053202738)
     {
@@ -997,10 +997,10 @@ LABEL_44:
       (*p_parser)->_contentKeySession = [[AVWeakReference alloc] initWithReferencedObject:(*p_parser)->_defaultContentKeySession];
     }
 
-    v38 = [(AVWeakReference *)(*p_parser)->_contentKeySession referencedObject];
-    v39 = [v38 copyCryptorForInitializationData:v27];
+    referencedObject = [(AVWeakReference *)(*p_parser)->_contentKeySession referencedObject];
+    v39 = [referencedObject copyCryptorForInitializationData:v27];
     v32 = v39;
-    if (!v38 || v39)
+    if (!referencedObject || v39)
     {
       if (!v39)
       {
@@ -1010,7 +1010,7 @@ LABEL_44:
 
     else
     {
-      v40 = [v38 issueContentKeyRequestForInitializationData:v27];
+      v40 = [referencedObject issueContentKeyRequestForInitializationData:v27];
       if ([(AVStreamDataParser *)self status2]> 3)
       {
         return -11860;
@@ -1022,16 +1022,16 @@ LABEL_44:
         return -11860;
       }
 
-      v41 = [(AVWeakReference *)(*p_parser)->_contentKeySession referencedObject];
+      referencedObject2 = [(AVWeakReference *)(*p_parser)->_contentKeySession referencedObject];
       v45[0] = 0;
-      v32 = [v41 createCryptorIfNecessaryForInitializationData:v27 formatDescription:a4 error:v45];
+      v32 = [referencedObject2 createCryptorIfNecessaryForInitializationData:v27 formatDescription:description error:v45];
       if (!v32)
       {
         [AVStreamDataParser(AVStreamDataParser_FigManifold) _figManifold:v45 formatDescription:&v46 orDecryptorDidChange:? forTrackID:?];
         return v46;
       }
 
-      (*p_parser)->_startedUsingInternalContentKeySession = [v41 isInternal];
+      (*p_parser)->_startedUsingInternalContentKeySession = [referencedObject2 isInternal];
     }
 
     [AVStreamDataParser(AVStreamDataParser_FigManifold) _figManifold:v32 formatDescription:&self->_parser orDecryptorDidChange:? forTrackID:?];
@@ -1048,10 +1048,10 @@ LABEL_47:
   if (v33->_asset)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([-[AVAsset formatDescriptionsForTrackID:](self->_parser->_asset formatDescriptionsForTrackID:{a6), "containsObject:", a4}] & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([-[AVAsset formatDescriptionsForTrackID:](self->_parser->_asset formatDescriptionsForTrackID:{d), "containsObject:", description}] & 1) == 0)
     {
       v34 = self->_parser->_asset;
-      self->_parser->_asset = [(AVAsset *)self->_parser->_asset copyAssetWithReplacementFormatDescription:a4 forTrackID:a6];
+      self->_parser->_asset = [(AVAsset *)self->_parser->_asset copyAssetWithReplacementFormatDescription:description forTrackID:d];
       if (self->_parser->_delegate)
       {
         if (objc_opt_respondsToSelector())
@@ -1062,14 +1062,14 @@ LABEL_47:
     }
   }
 
-  else if (a4)
+  else if (description)
   {
-    v35 = [-[NSMutableDictionary objectForKey:](v33->_tracksBecomingReadyByTrackID objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", a6)), "mutableCopy"}];
+    v35 = [-[NSMutableDictionary objectForKey:](v33->_tracksBecomingReadyByTrackID objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", d)), "mutableCopy"}];
     v36 = v35;
     if (v35)
     {
-      [v35 setObject:a4 forKey:@"formatDescription"];
-      -[NSMutableDictionary setObject:forKey:](self->_parser->_tracksBecomingReadyByTrackID, "setObject:forKey:", v36, [MEMORY[0x1E696AD98] numberWithInt:a6]);
+      [v35 setObject:description forKey:@"formatDescription"];
+      -[NSMutableDictionary setObject:forKey:](self->_parser->_tracksBecomingReadyByTrackID, "setObject:forKey:", v36, [MEMORY[0x1E696AD98] numberWithInt:d]);
     }
   }
 
@@ -1081,9 +1081,9 @@ LABEL_47:
   return 0;
 }
 
-- (int)_registerForFigManifoldCallbacksForTrackID:(int)a3
+- (int)_registerForFigManifoldCallbacksForTrackID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   figManifold = self->_parser->_figManifold;
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (!v6)
@@ -1094,9 +1094,9 @@ LABEL_47:
   return v6(figManifold, v3, &kManifoldTrackCallbacks, self);
 }
 
-- (int)_unregisterForFigManifoldCallbacksForTrackID:(int)a3
+- (int)_unregisterForFigManifoldCallbacksForTrackID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   figManifold = self->_parser->_figManifold;
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (!v5)
@@ -1360,14 +1360,14 @@ LABEL_12:
 
 - (id)_fullListOfAllowableMIMETypes
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(AVStreamDataParser *)self _WebVTTIsAllowed])
   {
     v4 = FigCopyWebVTTMIMETypes();
     if (v4)
     {
       v5 = v4;
-      [v3 addObjectsFromArray:v4];
+      [array addObjectsFromArray:v4];
       CFRelease(v5);
     }
   }
@@ -1378,7 +1378,7 @@ LABEL_12:
     if (v6)
     {
       v7 = v6;
-      [v3 addObjectsFromArray:v6];
+      [array addObjectsFromArray:v6];
       CFRelease(v7);
     }
   }
@@ -1389,7 +1389,7 @@ LABEL_12:
     if (v8)
     {
       v9 = v8;
-      [v3 addObjectsFromArray:v8];
+      [array addObjectsFromArray:v8];
       CFRelease(v9);
     }
   }
@@ -1399,10 +1399,10 @@ LABEL_12:
     FigCopySetOfAudioSupportedMIMETypes();
   }
 
-  return v3;
+  return array;
 }
 
-- (int)_createFigManifoldRemote:(OpaqueCMBlockBuffer *)a3 manifold:(OpaqueFigManifold *)a4
+- (int)_createFigManifoldRemote:(OpaqueCMBlockBuffer *)remote manifold:(OpaqueFigManifold *)manifold
 {
   if (![(AVStreamDataParser *)self _WebVTTIsAllowed]|| (result = FigManifoldCreateRemoteForWebVTT(), result == -16044))
   {
@@ -1414,7 +1414,7 @@ LABEL_12:
         {
           v8 = *MEMORY[0x1E695E480];
 
-          return MEMORY[0x1EEDCD4F8](v8, a3, _figManifoldDiscoveredNewTrackInStream, _figManifoldAllNewTracksReady, self, a4);
+          return MEMORY[0x1EEDCD4F8](v8, remote, _figManifoldDiscoveredNewTrackInStream, _figManifoldAllNewTracksReady, self, manifold);
         }
 
         else
@@ -1428,7 +1428,7 @@ LABEL_12:
   return result;
 }
 
-- (int)_createFigManifold:(OpaqueCMBlockBuffer *)a3 manifold:(OpaqueFigManifold *)a4
+- (int)_createFigManifold:(OpaqueCMBlockBuffer *)manifold manifold:(OpaqueFigManifold *)a4
 {
   if (![(AVStreamDataParser *)self _WebVTTIsAllowed]|| (result = FigManifoldCreateForWebVTT(), result == -16044))
   {
@@ -1440,7 +1440,7 @@ LABEL_12:
         {
           v8 = *MEMORY[0x1E695E480];
 
-          return MEMORY[0x1EEDCD4D8](v8, a3, _figManifoldDiscoveredNewTrackInStream, _figManifoldAllNewTracksReady, self, a4);
+          return MEMORY[0x1EEDCD4D8](v8, manifold, _figManifoldDiscoveredNewTrackInStream, _figManifoldAllNewTracksReady, self, a4);
         }
 
         else
@@ -1454,61 +1454,61 @@ LABEL_12:
   return result;
 }
 
-- (int)_createFigManifoldWithBlockBuffer:(OpaqueCMBlockBuffer *)a3 manifold:(OpaqueFigManifold *)a4
+- (int)_createFigManifoldWithBlockBuffer:(OpaqueCMBlockBuffer *)buffer manifold:(OpaqueFigManifold *)manifold
 {
   if ([(AVStreamDataParser *)self preferSandboxedParsing])
   {
-    v7 = [(AVStreamDataParser *)self _createFigManifoldRemote:a3 manifold:a4];
+    v7 = [(AVStreamDataParser *)self _createFigManifoldRemote:buffer manifold:manifold];
   }
 
   else
   {
-    v7 = [(AVStreamDataParser *)self _createFigManifold:a3 manifold:a4];
+    v7 = [(AVStreamDataParser *)self _createFigManifold:buffer manifold:manifold];
   }
 
   v8 = v7;
-  if (*a4)
+  if (*manifold)
   {
-    self->_parser->_typeIdOfInitialFigManifold = CFGetTypeID(*a4);
+    self->_parser->_typeIdOfInitialFigManifold = CFGetTypeID(*manifold);
   }
 
   return v8;
 }
 
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request
 {
   v6 = self->_parser->_sessionKeyRequest;
-  self->_parser->_sessionKeyRequest = a4;
+  self->_parser->_sessionKeyRequest = request;
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_parser->_delegate;
-    v8 = [a4 initializationData];
+    initializationData = [request initializationData];
     currentTrackID = self->_parser->_currentTrackID;
 
-    [(AVStreamDataParserOutputHandling *)delegate streamDataParser:self didProvideContentKeyRequestInitializationData:v8 forTrackID:currentTrackID];
+    [(AVStreamDataParserOutputHandling *)delegate streamDataParser:self didProvideContentKeyRequestInitializationData:initializationData forTrackID:currentTrackID];
   }
 }
 
-- (void)contentKeySessionContentProtectionSessionIdentifierDidChange:(id)a3
+- (void)contentKeySessionContentProtectionSessionIdentifierDidChange:(id)change
 {
-  v4 = [a3 contentProtectionSessionIdentifier];
-  if (v4)
+  contentProtectionSessionIdentifier = [change contentProtectionSessionIdentifier];
+  if (contentProtectionSessionIdentifier)
   {
-    v5 = v4;
-    v6 = [(AVWeakReference *)self->_parser->_legacyStreamSession referencedObject];
+    v5 = contentProtectionSessionIdentifier;
+    referencedObject = [(AVWeakReference *)self->_parser->_legacyStreamSession referencedObject];
 
-    [v6 setFigCPEProtectorSessionIdentifier:v5];
+    [referencedObject setFigCPEProtectorSessionIdentifier:v5];
   }
 }
 
 - (NSData)contentProtectionSessionIdentifier
 {
-  v2 = [(AVWeakReference *)self->_parser->_contentKeySession referencedObject];
+  referencedObject = [(AVWeakReference *)self->_parser->_contentKeySession referencedObject];
 
-  return [v2 contentProtectionSessionIdentifier];
+  return [referencedObject contentProtectionSessionIdentifier];
 }
 
-- (void)processContentKeyResponseData:(id)a3 forTrackID:(int)a4
+- (void)processContentKeyResponseData:(id)data forTrackID:(int)d
 {
   v20 = *MEMORY[0x1E69E9840];
   parser = self->_parser;
@@ -1559,29 +1559,29 @@ LABEL_5:
     }
   }
 
-  [(AVContentKeyRequest *)sessionKeyRequest processContentKeyResponse:[AVContentKeyResponse contentKeyResponseWithFairPlayStreamingKeyResponseData:a3, *&a4]];
+  [(AVContentKeyRequest *)sessionKeyRequest processContentKeyResponse:[AVContentKeyResponse contentKeyResponseWithFairPlayStreamingKeyResponseData:data, *&d]];
 }
 
-- (void)processContentKeyResponseError:(id)a3 forTrackID:(int)a4
+- (void)processContentKeyResponseError:(id)error forTrackID:(int)d
 {
-  v4 = a3;
+  errorCopy = error;
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!error)
   {
     v6 = @"AVErrorPersistentTrackIDKey";
-    v7[0] = [MEMORY[0x1E696AD98] numberWithInt:*&a4];
-    v4 = AVLocalizedError(@"AVFoundationErrorDomain", -11800, [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
+    v7[0] = [MEMORY[0x1E696AD98] numberWithInt:*&d];
+    errorCopy = AVLocalizedError(@"AVFoundationErrorDomain", -11800, [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
   }
 
-  [(AVStreamDataParser *)self _setError:v4, *&a4];
-  [(AVContentKeyRequest *)self->_parser->_sessionKeyRequest processContentKeyResponseError:v4];
+  [(AVStreamDataParser *)self _setError:errorCopy, *&d];
+  [(AVContentKeyRequest *)self->_parser->_sessionKeyRequest processContentKeyResponseError:errorCopy];
 }
 
-- (id)streamingContentKeyRequestDataForApp:(id)a3 contentIdentifier:(id)a4 trackID:(int)a5 options:(id)a6 error:(id *)a7
+- (id)streamingContentKeyRequestDataForApp:(id)app contentIdentifier:(id)identifier trackID:(int)d options:(id)options error:(id *)error
 {
-  v9 = *&a5;
+  v9 = *&d;
   [-[AVWeakReference referencedObject](self->_parser->_legacyStreamSession "referencedObject")];
-  v13 = [a6 mutableCopy];
+  v13 = [options mutableCopy];
   v14 = -[NSMutableDictionary objectForKeyedSubscript:](self->_parser->_trackFormatDescriptionsByTrackID, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:v9]);
   if (v14)
   {
@@ -1590,29 +1590,29 @@ LABEL_5:
 
   sessionKeyRequest = self->_parser->_sessionKeyRequest;
 
-  return [(AVContentKeyRequest *)sessionKeyRequest contentKeyRequestDataForApp:a3 contentIdentifier:a4 options:v13 error:a7];
+  return [(AVContentKeyRequest *)sessionKeyRequest contentKeyRequestDataForApp:app contentIdentifier:identifier options:v13 error:error];
 }
 
 - (BOOL)hasProtector
 {
-  v2 = [(AVWeakReference *)self->_parser->_contentKeySession referencedObject];
+  referencedObject = [(AVWeakReference *)self->_parser->_contentKeySession referencedObject];
 
-  return [v2 hasProtector];
+  return [referencedObject hasProtector];
 }
 
 - (void)expire
 {
   [(AVStreamDataParser *)self setStatus:5];
-  v3 = [(AVWeakReference *)self->_parser->_contentKeySession referencedObject];
+  referencedObject = [(AVWeakReference *)self->_parser->_contentKeySession referencedObject];
 
-  [v3 expire];
+  [referencedObject expire];
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  if (a3)
+  if (session)
   {
-    [a3 referencedObject];
+    [session referencedObject];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1634,10 +1634,10 @@ LABEL_5:
       if (!v5->_startedUsingInternalContentKeySession)
       {
         v8 = v5->_contentKeySession;
-        v9 = a3;
+        sessionCopy = session;
         v10 = p_parser;
 LABEL_10:
-        (*v10)->_contentKeySession = v9;
+        (*v10)->_contentKeySession = sessionCopy;
         return;
       }
 
@@ -1663,17 +1663,17 @@ LABEL_10:
   {
     [(AVStreamDataParser *)self setStatus:5];
     v13 = self->_parser->_contentKeySession;
-    v9 = 0;
+    sessionCopy = 0;
     goto LABEL_10;
   }
 }
 
 - (BOOL)_attachedToExternalContentKeySession
 {
-  v3 = [(AVWeakReference *)self->_parser->_contentKeySession referencedObject];
-  if (v3)
+  referencedObject = [(AVWeakReference *)self->_parser->_contentKeySession referencedObject];
+  if (referencedObject)
   {
-    v4 = [v3 isInternal] ^ 1;
+    v4 = [referencedObject isInternal] ^ 1;
   }
 
   else
@@ -1692,26 +1692,26 @@ LABEL_10:
   }
 }
 
-- (int)_attachToContentKeySession:(id)a3 contentKeyBoss:(OpaqueFigContentKeyBoss *)a4 failedSinceAlreadyAttachedToAnotherSession:(BOOL *)a5
+- (int)_attachToContentKeySession:(id)session contentKeyBoss:(OpaqueFigContentKeyBoss *)boss failedSinceAlreadyAttachedToAnotherSession:(BOOL *)anotherSession
 {
-  v7 = [a3 _weakReference];
-  if (self->_parser->_contentKeySession == v7)
+  _weakReference = [session _weakReference];
+  if (self->_parser->_contentKeySession == _weakReference)
   {
-    if (a5)
+    if (anotherSession)
     {
-      *a5 = 0;
+      *anotherSession = 0;
     }
   }
 
   else
   {
-    [(AVStreamDataParser *)self setSession:v7];
+    [(AVStreamDataParser *)self setSession:_weakReference];
   }
 
   return 0;
 }
 
-- (void)setPreferSandboxedParsing:(BOOL)a3
+- (void)setPreferSandboxedParsing:(BOOL)parsing
 {
   threadSafetyQ = self->_parser->_threadSafetyQ;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1719,7 +1719,7 @@ LABEL_10:
   v4[2] = __84__AVStreamDataParser_AVStreamDataParserSandboxedParsing__setPreferSandboxedParsing___block_invoke;
   v4[3] = &unk_1E7460E40;
   v4[4] = self;
-  v5 = a3;
+  parsingCopy = parsing;
   dispatch_sync(threadSafetyQ, v4);
 }
 

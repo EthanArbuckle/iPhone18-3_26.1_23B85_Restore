@@ -1,5 +1,5 @@
 @interface _MKFMediaPlaybackAction
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFHome)home;
 - (MKFMediaPlaybackActionDatabaseID)databaseID;
 - (NSArray)accessories;
@@ -11,17 +11,17 @@
 - (NSArray)accessories
 {
   v2 = [(_MKFMediaPlaybackAction *)self valueForKey:@"accessories_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFHome)home
 {
-  v2 = [(_MKFMediaPlaybackAction *)self actionSet];
-  v3 = [v2 home];
+  actionSet = [(_MKFMediaPlaybackAction *)self actionSet];
+  home = [actionSet home];
 
-  return v3;
+  return home;
 }
 
 - (MKFMediaPlaybackActionDatabaseID)databaseID
@@ -41,13 +41,13 @@
   {
     if ([(_MKFMediaPlaybackAction *)self hasChanges])
     {
-      v3 = [(_MKFMediaPlaybackAction *)self accessories];
-      v4 = [v3 count];
+      accessories = [(_MKFMediaPlaybackAction *)self accessories];
+      v4 = [accessories count];
 
       if (!v4)
       {
         v5 = objc_autoreleasePoolPush();
-        v6 = self;
+        selfCopy = self;
         v7 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
@@ -58,8 +58,8 @@
         }
 
         objc_autoreleasePoolPop(v5);
-        v9 = [(_MKFMediaPlaybackAction *)v6 managedObjectContext];
-        [v9 deleteObject:v6];
+        managedObjectContext = [(_MKFMediaPlaybackAction *)selfCopy managedObjectContext];
+        [managedObjectContext deleteObject:selfCopy];
       }
     }
   }
@@ -67,9 +67,9 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

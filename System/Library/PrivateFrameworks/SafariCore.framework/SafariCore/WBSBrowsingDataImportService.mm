@@ -1,31 +1,31 @@
 @interface WBSBrowsingDataImportService
-- (void)parseChromeExtensionsFromFileHandle:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (void)parseChromeHistoryJSONFromFileHandle:(id)a3 ageLimit:(double)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (void)parseCreditCardJSONFromFileHandle:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (void)parseExtensionsFromFileHandle:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (void)parseHistoryJSONFromFileHandle:(id)a3 ageLimit:(double)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (void)parseNetscapeBookmarkFromFileHandle:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (void)scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5;
+- (void)parseChromeExtensionsFromFileHandle:(id)handle delegate:(id)delegate completionHandler:(id)handler;
+- (void)parseChromeHistoryJSONFromFileHandle:(id)handle ageLimit:(double)limit delegate:(id)delegate completionHandler:(id)handler;
+- (void)parseCreditCardJSONFromFileHandle:(id)handle delegate:(id)delegate completionHandler:(id)handler;
+- (void)parseExtensionsFromFileHandle:(id)handle delegate:(id)delegate completionHandler:(id)handler;
+- (void)parseHistoryJSONFromFileHandle:(id)handle ageLimit:(double)limit delegate:(id)delegate completionHandler:(id)handler;
+- (void)parseNetscapeBookmarkFromFileHandle:(id)handle delegate:(id)delegate completionHandler:(id)handler;
+- (void)scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler;
 @end
 
 @implementation WBSBrowsingDataImportService
 
-- (void)parseChromeExtensionsFromFileHandle:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (void)parseChromeExtensionsFromFileHandle:(id)handle delegate:(id)delegate completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  handleCopy = handle;
   v10 = objc_alloc_init(WBSChromeExtensionsImporter);
-  [(WBSChromeExtensionsImporter *)v10 setDelegate:v7];
+  [(WBSChromeExtensionsImporter *)v10 setDelegate:delegateCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __95__WBSBrowsingDataImportService_parseChromeExtensionsFromFileHandle_delegate_completionHandler___block_invoke;
   v13[3] = &unk_1E7CF2D48;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
-  [(WBSChromeExtensionsImporter *)v10 parseFileHandle:v9 completionHandler:v13];
+  v14 = delegateCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = delegateCopy;
+  [(WBSChromeExtensionsImporter *)v10 parseFileHandle:handleCopy completionHandler:v13];
 }
 
 void __95__WBSBrowsingDataImportService_parseChromeExtensionsFromFileHandle_delegate_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -43,42 +43,42 @@ void __95__WBSBrowsingDataImportService_parseChromeExtensionsFromFileHandle_dele
   [*(a1 + 32) finishWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)parseHistoryJSONFromFileHandle:(id)a3 ageLimit:(double)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)parseHistoryJSONFromFileHandle:(id)handle ageLimit:(double)limit delegate:(id)delegate completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  handleCopy = handle;
   v12 = objc_alloc_init(WBSHistoryImporter);
-  [(WBSHistoryImporter *)v12 setDelegate:v10];
-  [(WBSHistoryImporter *)v12 setAgeLimit:a4];
+  [(WBSHistoryImporter *)v12 setDelegate:delegateCopy];
+  [(WBSHistoryImporter *)v12 setAgeLimit:limit];
   v13 = 0;
-  [(WBSHistoryImporter *)v12 parseFileHandle:v11 error:&v13];
+  [(WBSHistoryImporter *)v12 parseFileHandle:handleCopy error:&v13];
 
-  [v10 finishWithCompletionHandler:v9];
+  [delegateCopy finishWithCompletionHandler:handlerCopy];
 }
 
-- (void)parseCreditCardJSONFromFileHandle:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (void)parseCreditCardJSONFromFileHandle:(id)handle delegate:(id)delegate completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  handleCopy = handle;
   v10 = objc_alloc_init(WBSCreditCardImporter);
-  [(WBSCreditCardImporter *)v10 setDelegate:v8];
+  [(WBSCreditCardImporter *)v10 setDelegate:delegateCopy];
   v11 = 0;
-  [(WBSCreditCardImporter *)v10 parseFileHandle:v9 error:&v11];
+  [(WBSCreditCardImporter *)v10 parseFileHandle:handleCopy error:&v11];
 
-  [v8 finishWithCompletionHandler:v7];
+  [delegateCopy finishWithCompletionHandler:handlerCopy];
 }
 
-- (void)parseNetscapeBookmarkFromFileHandle:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (void)parseNetscapeBookmarkFromFileHandle:(id)handle delegate:(id)delegate completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  handleCopy = handle;
   v10 = objc_alloc_init(WBSNetscapeBookmarkFileReader);
-  [(WBSNetscapeBookmarkFileReader *)v10 setDelegate:v8];
+  [(WBSNetscapeBookmarkFileReader *)v10 setDelegate:delegateCopy];
   v17 = 0;
-  [(WBSNetscapeBookmarkFileReader *)v10 readFromFileHandle:v9 error:&v17];
+  [(WBSNetscapeBookmarkFileReader *)v10 readFromFileHandle:handleCopy error:&v17];
 
   v11 = v17;
   v14[0] = MEMORY[0x1E69E9820];
@@ -86,10 +86,10 @@ void __95__WBSBrowsingDataImportService_parseChromeExtensionsFromFileHandle_dele
   v14[2] = __95__WBSBrowsingDataImportService_parseNetscapeBookmarkFromFileHandle_delegate_completionHandler___block_invoke;
   v14[3] = &unk_1E7CF2988;
   v15 = v11;
-  v16 = v7;
+  v16 = handlerCopy;
   v12 = v11;
-  v13 = v7;
-  [v8 finishWithCompletionHandler:v14];
+  v13 = handlerCopy;
+  [delegateCopy finishWithCompletionHandler:v14];
 }
 
 void __95__WBSBrowsingDataImportService_parseNetscapeBookmarkFromFileHandle_delegate_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -108,22 +108,22 @@ void __95__WBSBrowsingDataImportService_parseNetscapeBookmarkFromFileHandle_dele
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)parseExtensionsFromFileHandle:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (void)parseExtensionsFromFileHandle:(id)handle delegate:(id)delegate completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  handleCopy = handle;
   v10 = objc_alloc_init(WBSExtensionsImporter);
-  [(WBSExtensionsImporter *)v10 setDelegate:v7];
+  [(WBSExtensionsImporter *)v10 setDelegate:delegateCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__WBSBrowsingDataImportService_parseExtensionsFromFileHandle_delegate_completionHandler___block_invoke;
   v13[3] = &unk_1E7CF2D48;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
-  [(WBSExtensionsImporter *)v10 parseFileHandle:v9 completionHandler:v13];
+  v14 = delegateCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = delegateCopy;
+  [(WBSExtensionsImporter *)v10 parseFileHandle:handleCopy completionHandler:v13];
 }
 
 void __89__WBSBrowsingDataImportService_parseExtensionsFromFileHandle_delegate_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -141,36 +141,36 @@ void __89__WBSBrowsingDataImportService_parseExtensionsFromFileHandle_delegate_c
   [*(a1 + 32) finishWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)parseChromeHistoryJSONFromFileHandle:(id)a3 ageLimit:(double)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)parseChromeHistoryJSONFromFileHandle:(id)handle ageLimit:(double)limit delegate:(id)delegate completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  handleCopy = handle;
   v12 = objc_alloc_init(WBSChromeHistoryImporter);
-  [(WBSChromeHistoryImporter *)v12 setDelegate:v10];
-  [(WBSChromeHistoryImporter *)v12 setAgeLimit:a4];
+  [(WBSChromeHistoryImporter *)v12 setDelegate:delegateCopy];
+  [(WBSChromeHistoryImporter *)v12 setAgeLimit:limit];
   v13 = 0;
-  [(WBSChromeHistoryImporter *)v12 parseFileHandle:v11 error:&v13];
+  [(WBSChromeHistoryImporter *)v12 parseFileHandle:handleCopy error:&v13];
 
-  [v10 finishWithCompletionHandler:v9];
+  [delegateCopy finishWithCompletionHandler:handlerCopy];
 }
 
-- (void)scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5
+- (void)scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_68];
+  handlerCopy = handler;
+  extensionsCopy = extensions;
+  lsCopy = ls;
+  v10 = [extensionsCopy safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_68];
   v11 = objc_alloc_init(_WBSBrowsingDataImportScanner);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __83__WBSBrowsingDataImportService_scanImportURLs_sandboxExtensions_completionHandler___block_invoke_9;
   v14[3] = &unk_1E7CF50E0;
   v15 = v10;
-  v16 = v7;
-  v12 = v7;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v10;
-  [(_WBSBrowsingDataImportScanner *)v11 scanImportURLs:v9 sandboxExtensions:v8 completionHandler:v14];
+  [(_WBSBrowsingDataImportScanner *)v11 scanImportURLs:lsCopy sandboxExtensions:extensionsCopy completionHandler:v14];
 }
 
 id __83__WBSBrowsingDataImportService_scanImportURLs_sandboxExtensions_completionHandler___block_invoke(int a1, id a2)

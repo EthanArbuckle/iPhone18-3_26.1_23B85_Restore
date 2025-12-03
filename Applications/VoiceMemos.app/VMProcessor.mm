@@ -1,32 +1,32 @@
 @interface VMProcessor
 - (AudioStreamBasicDescription)debounceASBD;
-- (BOOL)_configureDSPGraphsWithFormat:(id *)a3;
-- (BOOL)_prepareWithFormat:(AudioStreamBasicDescription *)a3 maxFramesPerRender:(unsigned int)a4 error:(id *)a5;
-- (id)initForRealTime:(BOOL)a3;
-- (void)_performAsynchronousRenderSensitiveAction:(id)a3;
+- (BOOL)_configureDSPGraphsWithFormat:(id *)format;
+- (BOOL)_prepareWithFormat:(AudioStreamBasicDescription *)format maxFramesPerRender:(unsigned int)render error:(id *)error;
+- (id)initForRealTime:(BOOL)time;
+- (void)_performAsynchronousRenderSensitiveAction:(id)action;
 - (void)_registerInternalAudioUnits;
-- (void)_setDSPGraphParameter:(float)a3 address:(unsigned int)a4;
+- (void)_setDSPGraphParameter:(float)parameter address:(unsigned int)address;
 - (void)_unprepare;
-- (void)_updateParameterForAddress:(id)a3;
+- (void)_updateParameterForAddress:(id)address;
 - (void)dealloc;
-- (void)prepareWithFormat:(AudioStreamBasicDescription *)a3 maxFramesPerRender:(unsigned int)a4;
-- (void)setDebounceASBD:(AudioStreamBasicDescription *)a3;
+- (void)prepareWithFormat:(AudioStreamBasicDescription *)format maxFramesPerRender:(unsigned int)render;
+- (void)setDebounceASBD:(AudioStreamBasicDescription *)d;
 - (void)unprepare;
 @end
 
 @implementation VMProcessor
 
-- (id)initForRealTime:(BOOL)a3
+- (id)initForRealTime:(BOOL)time
 {
-  v3 = a3;
+  timeCopy = time;
   v12.receiver = self;
   v12.super_class = VMProcessor;
   v4 = [(VMProcessor *)&v12 init];
   v5 = v4;
   if (v4)
   {
-    v4->_realTime = v3;
-    if (v3)
+    v4->_realTime = timeCopy;
+    if (timeCopy)
     {
       pthread_mutex_init(&v4->_renderLock, 0);
       v6 = dispatch_queue_create("com.apple.VoiceMemos.VMProcessorQueue", 0);
@@ -64,26 +64,26 @@
   [(VMProcessor *)&v3 dealloc];
 }
 
-- (void)prepareWithFormat:(AudioStreamBasicDescription *)a3 maxFramesPerRender:(unsigned int)a4
+- (void)prepareWithFormat:(AudioStreamBasicDescription *)format maxFramesPerRender:(unsigned int)render
 {
-  v4 = *&a4;
-  if ([(VMProcessor *)self debounceMaxFrames]!= a4 || ([(VMProcessor *)self debounceASBD], v7 = *&a3->mBytesPerPacket, v15[0] = *&a3->mSampleRate, v15[1] = v7, v16 = *&a3->mBitsPerChannel, !sub_100095B34(v15, v17)))
+  v4 = *&render;
+  if ([(VMProcessor *)self debounceMaxFrames]!= render || ([(VMProcessor *)self debounceASBD], v7 = *&format->mBytesPerPacket, v15[0] = *&format->mSampleRate, v15[1] = v7, v16 = *&format->mBitsPerChannel, !sub_100095B34(v15, v17)))
   {
     [(VMProcessor *)self setDebounceMaxFrames:v4];
-    v8 = *&a3->mBytesPerPacket;
-    v17[0] = *&a3->mSampleRate;
+    v8 = *&format->mBytesPerPacket;
+    v17[0] = *&format->mSampleRate;
     v17[1] = v8;
-    v18 = *&a3->mBitsPerChannel;
+    v18 = *&format->mBitsPerChannel;
     [(VMProcessor *)self setDebounceASBD:v17];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
-    v9 = *&a3->mBytesPerPacket;
-    v11 = *&a3->mSampleRate;
+    v9 = *&format->mBytesPerPacket;
+    v11 = *&format->mSampleRate;
     v12 = v9;
     v10[2] = sub_100048914;
     v10[3] = &unk_10028AB30;
     v10[4] = self;
-    v13 = *&a3->mBitsPerChannel;
+    v13 = *&format->mBitsPerChannel;
     v14 = v4;
     [(VMProcessor *)self _performAsynchronousRenderSensitiveAction:v10];
   }
@@ -103,7 +103,7 @@
   [(VMProcessor *)self _performAsynchronousRenderSensitiveAction:v2];
 }
 
-- (BOOL)_prepareWithFormat:(AudioStreamBasicDescription *)a3 maxFramesPerRender:(unsigned int)a4 error:(id *)a5
+- (BOOL)_prepareWithFormat:(AudioStreamBasicDescription *)format maxFramesPerRender:(unsigned int)render error:(id *)error
 {
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -111,12 +111,12 @@
   v29[3] = &unk_10028AB58;
   v29[4] = self;
   v9 = objc_retainBlock(v29);
-  v10 = *&a3->mSampleRate;
-  v11 = *&a3->mBytesPerPacket;
-  *&self->_ioFormat.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v10 = *&format->mSampleRate;
+  v11 = *&format->mBytesPerPacket;
+  *&self->_ioFormat.mBitsPerChannel = *&format->mBitsPerChannel;
   *&self->_ioFormat.mBytesPerPacket = v11;
   *&self->_ioFormat.mSampleRate = v10;
-  self->_maxFramesPerRender = a4;
+  self->_maxFramesPerRender = render;
   self->_timestamp.mFlags |= 1u;
   v12 = 2;
   do
@@ -125,10 +125,10 @@
     v12 *= 2;
   }
 
-  while (v13 < (a3->mSampleRate * 0.01));
+  while (v13 < (format->mSampleRate * 0.01));
   self->_preferredBufferSize = v13;
-  v14 = sub_100095C94(a3->mChannelsPerFrame, a4);
-  v15 = 1.0 / (a3->mSampleRate * 0.0500000007);
+  v14 = sub_100095C94(format->mChannelsPerFrame, render);
+  v15 = 1.0 / (format->mSampleRate * 0.0500000007);
   v16 = 0.0;
   if (self->_enabled)
   {
@@ -139,20 +139,20 @@
   v17 = v15;
   self->_processedToCleanRatio = v16;
   self->_crossfadeIncrement = v17;
-  if ([(VMProcessor *)self _configureDSPGraphsWithFormat:a5])
+  if ([(VMProcessor *)self _configureDSPGraphsWithFormat:error])
   {
     sub_100095BC0(&self->_utilityBuffer->mNumberBuffers, self->_ioFormat.mChannelsPerFrame, self->_maxFramesPerRender, 1);
     sub_100048DF4(self, self->_maxFramesPerRender, self->_utilityBuffer);
     [(VMProcessor *)self _updateParameterForAddress:0];
     objc_initWeak(&location, self);
-    v18 = [@"com.apple.VoiceMemos.audioParameterUpdate" UTF8String];
+    uTF8String = [@"com.apple.VoiceMemos.audioParameterUpdate" UTF8String];
     v19 = &_dispatch_main_q;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100048F08;
     handler[3] = &unk_10028AB80;
     objc_copyWeak(&v27, &location);
-    notify_register_dispatch(v18, &self->_notifyToken, &_dispatch_main_q, handler);
+    notify_register_dispatch(uTF8String, &self->_notifyToken, &_dispatch_main_q, handler);
 
     outData = 0.0;
     ioDataSize = 8;
@@ -183,13 +183,13 @@
   return v22;
 }
 
-- (void)_updateParameterForAddress:(id)a3
+- (void)_updateParameterForAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
+  addressCopy = address;
+  v5 = addressCopy;
   if (qword_1002D7000 == -1)
   {
-    if (v4)
+    if (addressCopy)
     {
       goto LABEL_3;
     }
@@ -202,14 +202,14 @@
     {
 LABEL_3:
       v6 = [qword_1002D6FF8 objectForKeyedSubscript:v5];
-      v7 = v6;
+      allValues = v6;
       if (v6)
       {
         [v6 currentValue];
         v9 = v8;
-        v10 = [v7 address];
+        address = [allValues address];
         LODWORD(v11) = v9;
-        [(VMProcessor *)self _setDSPGraphParameter:v10 address:v11];
+        [(VMProcessor *)self _setDSPGraphParameter:address address:v11];
       }
 
       goto LABEL_13;
@@ -220,8 +220,8 @@ LABEL_3:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [qword_1002D6FF8 allValues];
-  v12 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allValues = [qword_1002D6FF8 allValues];
+  v12 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -232,18 +232,18 @@ LABEL_3:
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
         [v16 currentValue];
         v18 = v17;
-        v19 = [v16 address];
+        address2 = [v16 address];
         LODWORD(v20) = v18;
-        [(VMProcessor *)self _setDSPGraphParameter:v19 address:v20];
+        [(VMProcessor *)self _setDSPGraphParameter:address2 address:v20];
       }
 
-      v13 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v13);
@@ -252,14 +252,14 @@ LABEL_3:
 LABEL_13:
 }
 
-- (void)_setDSPGraphParameter:(float)a3 address:(unsigned int)a4
+- (void)_setDSPGraphParameter:(float)parameter address:(unsigned int)address
 {
   if (self->_dspGraphs && self->_ioFormat.mChannelsPerFrame)
   {
     v7 = 0;
     do
     {
-      AudioUnitSetParameter(self->_dspGraphs[v7++], a4, 0, 0, a3, 0);
+      AudioUnitSetParameter(self->_dspGraphs[v7++], address, 0, 0, parameter, 0);
     }
 
     while (v7 < self->_ioFormat.mChannelsPerFrame);
@@ -321,10 +321,10 @@ LABEL_8:
   *&self->_timestamp.mSMPTETime.mHours = 0u;
 }
 
-- (void)_performAsynchronousRenderSensitiveAction:(id)a3
+- (void)_performAsynchronousRenderSensitiveAction:(id)action
 {
-  v4 = a3;
-  v5 = v4;
+  actionCopy = action;
+  v5 = actionCopy;
   if (self->_realTime)
   {
     preparationQueue = self->_preparationQueue;
@@ -333,17 +333,17 @@ LABEL_8:
     v7[2] = sub_100049460;
     v7[3] = &unk_10028ABC8;
     v7[4] = self;
-    v8 = v4;
+    v8 = actionCopy;
     dispatch_async(preparationQueue, v7);
   }
 
   else
   {
-    v4[2](v4);
+    actionCopy[2](actionCopy);
   }
 }
 
-- (BOOL)_configureDSPGraphsWithFormat:(id *)a3
+- (BOOL)_configureDSPGraphsWithFormat:(id *)format
 {
   mSampleRate = self->_ioFormat.mSampleRate;
   v55 = *&self->_ioFormat.mFormatID;
@@ -353,10 +353,10 @@ LABEL_8:
   v9 = +[NSFileManager defaultManager];
   v10 = NSTemporaryDirectory();
   v11 = [NSURL fileURLWithPath:v10];
-  v12 = [v9 URLForDirectory:99 inDomain:1 appropriateForURL:v11 create:1 error:a3];
+  v12 = [v9 URLForDirectory:99 inDomain:1 appropriateForURL:v11 create:1 error:format];
 
-  v13 = [v12 path];
-  v14 = [v13 stringByAppendingPathComponent:@"tmp.dspg"];
+  path = [v12 path];
+  v14 = [path stringByAppendingPathComponent:@"tmp.dspg"];
 
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
@@ -367,7 +367,7 @@ LABEL_8:
   v16 = objc_retainBlock(v53);
   inData = v14;
   v41 = v14;
-  if ([VMDSPGraph writeGraphTextToFile:v14 samplerate:mSampleRate bufferSize:self->_preferredBufferSize error:a3])
+  if ([VMDSPGraph writeGraphTextToFile:v14 samplerate:mSampleRate bufferSize:self->_preferredBufferSize error:format])
   {
     v40 = +[VMDSPGraph propertyStrip];
     v51 = v40;
@@ -380,7 +380,7 @@ LABEL_8:
     if (mChannelsPerFrame)
     {
       v18 = sub_100095AC4(0x61756678u, 0x64737067u, self->_dspGraphs);
-      if (sub_1000959C0(v18, a3))
+      if (sub_1000959C0(v18, format))
       {
         v39 = mReserved;
         v19 = mChannelsPerFrame;
@@ -394,25 +394,25 @@ LABEL_8:
         do
         {
           v23 = AudioUnitSetProperty(self->_dspGraphs[v21 / 8 - 1], 0x64737067u, 0, 0, &inData, 8u);
-          if (!sub_1000959C0(v23, a3))
+          if (!sub_1000959C0(v23, format))
           {
             break;
           }
 
           v24 = AudioUnitSetProperty(self->_dspGraphs[v21 / 8 - 1], 0x70727370u, 0, 0, &v51, 8u);
-          if (!sub_1000959C0(v24, a3))
+          if (!sub_1000959C0(v24, format))
           {
             break;
           }
 
           v25 = AudioUnitSetProperty(self->_dspGraphs[v21 / 8 - 1], 0x61757370u, 0, 0, &v50, 8u);
-          if (!sub_1000959C0(v25, a3))
+          if (!sub_1000959C0(v25, format))
           {
             break;
           }
 
           v26 = sub_100095EC0(self->_dspGraphs[v21 / 8 - 1], &outData);
-          if (!sub_1000959C0(v26, a3))
+          if (!sub_1000959C0(v26, format))
           {
             break;
           }
@@ -425,7 +425,7 @@ LABEL_8:
           v46 = mBitsPerChannel;
           v47 = v39;
           v28 = sub_100095B14(v27, &v42, 1);
-          if (!sub_1000959C0(v28, a3))
+          if (!sub_1000959C0(v28, format))
           {
             break;
           }
@@ -438,7 +438,7 @@ LABEL_8:
           v46 = mBitsPerChannel;
           v47 = v39;
           v30 = sub_100095B14(v29, &v42, 0);
-          if (!sub_1000959C0(v30, a3) || (v31 = AudioUnitSetProperty(self->_dspGraphs[v21 / 8 - 1], 0x17u, 1u, 0, v48, 0x10u), !sub_1000959C0(v31, a3)))
+          if (!sub_1000959C0(v30, format) || (v31 = AudioUnitSetProperty(self->_dspGraphs[v21 / 8 - 1], 0x17u, 1u, 0, v48, 0x10u), !sub_1000959C0(v31, format)))
           {
             v15 = v37;
             v17 = v38;
@@ -448,7 +448,7 @@ LABEL_8:
           v32 = AudioUnitInitialize(self->_dspGraphs[v21 / 8 - 1]);
           v15 = v37;
           v17 = v38;
-          if (!sub_1000959C0(v32, a3))
+          if (!sub_1000959C0(v32, format))
           {
             break;
           }
@@ -464,7 +464,7 @@ LABEL_8:
           ++v22;
         }
 
-        while (sub_1000959C0(v33, a3));
+        while (sub_1000959C0(v33, format));
       }
 
       else
@@ -508,11 +508,11 @@ LABEL_17:
   return self;
 }
 
-- (void)setDebounceASBD:(AudioStreamBasicDescription *)a3
+- (void)setDebounceASBD:(AudioStreamBasicDescription *)d
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_debounceASBD.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&d->mSampleRate;
+  v4 = *&d->mBytesPerPacket;
+  *&self->_debounceASBD.mBitsPerChannel = *&d->mBitsPerChannel;
   *&self->_debounceASBD.mSampleRate = v3;
   *&self->_debounceASBD.mBytesPerPacket = v4;
 }

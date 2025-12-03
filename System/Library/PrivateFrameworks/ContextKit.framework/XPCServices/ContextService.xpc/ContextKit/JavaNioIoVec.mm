@@ -1,8 +1,8 @@
 @interface JavaNioIoVec
-- (int)doTransferWithJavaIoFileDescriptor:(id)a3;
+- (int)doTransferWithJavaIoFileDescriptor:(id)descriptor;
 - (int)init__;
 - (void)dealloc;
-- (void)didTransferWithInt:(int)a3;
+- (void)didTransferWithInt:(int)int;
 @end
 
 @implementation JavaNioIoVec
@@ -54,10 +54,10 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    v10 = [(IOSClass *)v8 remaining];
-    v11 = [(IOSClass *)v8 isDirect];
+    remaining = [(IOSClass *)v8 remaining];
+    isDirect = [(IOSClass *)v8 isDirect];
     ioBuffers = self->ioBuffers_;
-    if (v11)
+    if (isDirect)
     {
       if (!ioBuffers)
       {
@@ -65,14 +65,14 @@ LABEL_30:
       }
 
       IOSObjectArray_Set(self->ioBuffers_, v3, v8);
-      v13 = [(IOSClass *)v8 position];
+      position = [(IOSClass *)v8 position];
       offsets = self->offsets_;
       if (!offsets)
       {
         goto LABEL_30;
       }
 
-      v15 = v13;
+      v15 = position;
       v16 = offsets->super.size_;
       if (v3 >= v16)
       {
@@ -90,14 +90,14 @@ LABEL_30:
       v17 = JavaNioNioUtils_unsafeArrayWithJavaNioByteBuffer_(v8);
       IOSObjectArray_Set(ioBuffers, v3, v17);
       v18 = JavaNioNioUtils_unsafeArrayOffsetWithJavaNioByteBuffer_(v8);
-      v19 = [(IOSClass *)v8 position];
+      position2 = [(IOSClass *)v8 position];
       offsets = self->offsets_;
       if (!offsets)
       {
         goto LABEL_30;
       }
 
-      v15 = v19 + v18;
+      v15 = position2 + v18;
       v16 = offsets->super.size_;
       if (v3 >= v16)
       {
@@ -119,8 +119,8 @@ LABEL_27:
       IOSArray_throwOutOfBoundsWithMsg(v21, v3);
     }
 
-    *(&byteCounts->super.size_ + v3 + 1) = v10;
-    v4 += v10;
+    *(&byteCounts->super.size_ + v3 + 1) = remaining;
+    v4 += remaining;
     ++v3;
   }
 
@@ -128,7 +128,7 @@ LABEL_27:
   return v4;
 }
 
-- (int)doTransferWithJavaIoFileDescriptor:(id)a3
+- (int)doTransferWithJavaIoFileDescriptor:(id)descriptor
 {
   direction = self->direction_;
   if ((atomic_load_explicit(JavaNioIoVec_DirectionEnum__initialized, memory_order_acquire) & 1) == 0)
@@ -150,7 +150,7 @@ LABEL_27:
       JreThrowNullPointerException();
     }
 
-    result = [LibcoreIoLibcore_os_ readvWithJavaIoFileDescriptor:a3 withNSObjectArray:self->ioBuffers_ withIntArray:self->offsets_ withIntArray:self->byteCounts_];
+    result = [LibcoreIoLibcore_os_ readvWithJavaIoFileDescriptor:descriptor withNSObjectArray:self->ioBuffers_ withIntArray:self->offsets_ withIntArray:self->byteCounts_];
     if (!result)
     {
       return -1;
@@ -169,17 +169,17 @@ LABEL_27:
       JreThrowNullPointerException();
     }
 
-    return [LibcoreIoLibcore_os_ writevWithJavaIoFileDescriptor:a3 withNSObjectArray:self->ioBuffers_ withIntArray:self->offsets_ withIntArray:self->byteCounts_];
+    return [LibcoreIoLibcore_os_ writevWithJavaIoFileDescriptor:descriptor withNSObjectArray:self->ioBuffers_ withIntArray:self->offsets_ withIntArray:self->byteCounts_];
   }
 
   return result;
 }
 
-- (void)didTransferWithInt:(int)a3
+- (void)didTransferWithInt:(int)int
 {
-  if (a3 >= 1)
+  if (int >= 1)
   {
-    v3 = a3;
+    intCopy = int;
     v5 = 0;
     while (v5 < self->bufferCount_)
     {
@@ -209,7 +209,7 @@ LABEL_27:
         IOSArray_throwOutOfBoundsWithMsg(v11, v5);
       }
 
-      if (*(&byteCounts->super.size_ + v5 + 1) >= v3)
+      if (*(&byteCounts->super.size_ + v5 + 1) >= intCopy)
       {
         if (!v10)
         {
@@ -225,15 +225,15 @@ LABEL_27:
 
         if (direction == qword_100558040)
         {
-          v15 = [(IOSClass *)v10 position];
+          position = [(IOSClass *)v10 position];
         }
 
         else
         {
-          v15 = 0;
+          position = 0;
         }
 
-        [(IOSClass *)v10 positionWithInt:v15 + v3];
+        [(IOSClass *)v10 positionWithInt:position + intCopy];
         return;
       }
 
@@ -250,8 +250,8 @@ LABEL_27:
         IOSArray_throwOutOfBoundsWithMsg(v13, v5);
       }
 
-      v3 -= *(&v12->super.size_ + ++v5);
-      if (v3 <= 0)
+      intCopy -= *(&v12->super.size_ + ++v5);
+      if (intCopy <= 0)
       {
         return;
       }

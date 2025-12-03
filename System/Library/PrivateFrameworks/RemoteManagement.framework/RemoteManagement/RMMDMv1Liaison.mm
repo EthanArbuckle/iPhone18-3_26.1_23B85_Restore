@@ -1,7 +1,7 @@
 @interface RMMDMv1Liaison
 + (BOOL)isEnrolledInMDMv1;
 + (BOOL)isEnrollmentInMDMv1Restricted;
-+ (void)_didEnroll:(BOOL)a3;
++ (void)_didEnroll:(BOOL)enroll;
 + (void)refreshState;
 @end
 
@@ -10,8 +10,8 @@
 + (BOOL)isEnrolledInMDMv1
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 installedMDMProfileIdentifier];
-  v4 = v3 != 0;
+  installedMDMProfileIdentifier = [v2 installedMDMProfileIdentifier];
+  v4 = installedMDMProfileIdentifier != 0;
 
   return v4;
 }
@@ -24,9 +24,9 @@
   return v3;
 }
 
-+ (void)_didEnroll:(BOOL)a3
++ (void)_didEnroll:(BOOL)enroll
 {
-  if (a3)
+  if (enroll)
   {
     v3 = objc_opt_new();
     [v3 MCSetBoolRestriction:MCFeatureMDMEnrollmentAllowed value:0];

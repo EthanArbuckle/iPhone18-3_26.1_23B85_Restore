@@ -1,6 +1,6 @@
 @interface SFSSAudioDataWrapper
 - (NSArray)audioChunks;
-- (SFSSAudioDataWrapper)initWithAudioChunks:(id)a3;
+- (SFSSAudioDataWrapper)initWithAudioChunks:(id)chunks;
 @end
 
 @implementation SFSSAudioDataWrapper
@@ -12,9 +12,9 @@
   return WeakRetained;
 }
 
-- (SFSSAudioDataWrapper)initWithAudioChunks:(id)a3
+- (SFSSAudioDataWrapper)initWithAudioChunks:(id)chunks
 {
-  v4 = a3;
+  chunksCopy = chunks;
   v8.receiver = self;
   v8.super_class = SFSSAudioDataWrapper;
   v5 = [(SFSSAudioDataWrapper *)&v8 init];
@@ -22,7 +22,7 @@
   if (v5)
   {
     v5->_index = 0;
-    objc_storeWeak(&v5->_audioChunks, v4);
+    objc_storeWeak(&v5->_audioChunks, chunksCopy);
   }
 
   return v6;

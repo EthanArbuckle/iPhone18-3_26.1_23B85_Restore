@@ -30,16 +30,16 @@
       v8 = 10.0;
     }
 
-    v19 = [(UILabel *)self->_textLabel centerYAnchor];
-    v9 = [(HUTimerIntervalPickerCell *)self centerYAnchor];
-    v10 = [v19 constraintEqualToAnchor:v9];
+    centerYAnchor = [(UILabel *)self->_textLabel centerYAnchor];
+    centerYAnchor2 = [(HUTimerIntervalPickerCell *)self centerYAnchor];
+    v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v20[0] = v10;
-    v11 = [(UILabel *)self->_textLabel heightAnchor];
-    v12 = [v11 constraintEqualToConstant:32.0];
+    heightAnchor = [(UILabel *)self->_textLabel heightAnchor];
+    v12 = [heightAnchor constraintEqualToConstant:32.0];
     v20[1] = v12;
-    v13 = [(UILabel *)self->_textLabel leadingAnchor];
-    v14 = [(HUTimerIntervalPickerCell *)self leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:v8];
+    leadingAnchor = [(UILabel *)self->_textLabel leadingAnchor];
+    leadingAnchor2 = [(HUTimerIntervalPickerCell *)self leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v8];
     v20[2] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:3];
     [v18 activateConstraints:v16];

@@ -1,7 +1,7 @@
 @interface TNPreviewExporter
 - (CGRect)clipRect;
 - (CGRect)unscaledClipRect;
-- (TNPreviewExporter)initWithDocumentRoot:(id)a3;
+- (TNPreviewExporter)initWithDocumentRoot:(id)root;
 - (id)p_renderingExporterDelegate;
 @end
 
@@ -70,11 +70,11 @@
   return result;
 }
 
-- (TNPreviewExporter)initWithDocumentRoot:(id)a3
+- (TNPreviewExporter)initWithDocumentRoot:(id)root
 {
   v4.receiver = self;
   v4.super_class = TNPreviewExporter;
-  result = [(TNRenderingExporter *)&v4 initWithDocumentRoot:a3];
+  result = [(TNRenderingExporter *)&v4 initWithDocumentRoot:root];
   if (result)
   {
     *(&result->super.super.super.isa + *MEMORY[0x277D7FFF8]) = 0;

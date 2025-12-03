@@ -1,36 +1,36 @@
 @interface PXSearchParsecAnalyticsUtilities
-+ (id)SFSearchResultForInitialSuggestionWithQueryId:(int64_t)a3;
-+ (id)SFSearchResultFromAssetUUID:(id)a3 isTopResult:(BOOL)a4 retrievalType:(unint64_t)a5 queryId:(int64_t)a6;
-+ (id)SFSearchResultFromCollectionIdentifier:(id)a3 type:(unint64_t)a4 queryId:(int64_t)a5;
-+ (id)SFSearchResultFromSearchSuggestion:(id)a3 queryId:(int64_t)a4;
-+ (id)_baseSFSearchResultForQueryId:(int64_t)a3;
-+ (id)_descriptionForSearchToken:(unint64_t)a3;
-+ (id)_identifierForSearchSuggestion:(id)a3;
-+ (id)_resultRankingFeedbacksFromSFSearchResults:(id)a3;
-+ (id)_resultSectionForInitialSuggestions:(id)a3 queryId:(int64_t)a4;
-+ (id)_searchResultDescriptionForSearchResultType:(unint64_t)a3;
-+ (id)_sectionRankingFeedbackWithResultSection:(id)a3 localSectionPosition:(unint64_t)a4;
-+ (id)_tokenCategoryTypesForSearchTokens:(id)a3;
-+ (id)commandFeedbackFromSFSearchResult:(id)a3;
-+ (id)descriptionForSearchString:(id)a3 searchTokens:(id)a4;
-+ (id)sectionRankingFeedbackWithInitialSuggestions:(id)a3 queryId:(int64_t)a4;
-+ (unint64_t)_wordCountForSearchString:(id)a3;
++ (id)SFSearchResultForInitialSuggestionWithQueryId:(int64_t)id;
++ (id)SFSearchResultFromAssetUUID:(id)d isTopResult:(BOOL)result retrievalType:(unint64_t)type queryId:(int64_t)id;
++ (id)SFSearchResultFromCollectionIdentifier:(id)identifier type:(unint64_t)type queryId:(int64_t)id;
++ (id)SFSearchResultFromSearchSuggestion:(id)suggestion queryId:(int64_t)id;
++ (id)_baseSFSearchResultForQueryId:(int64_t)id;
++ (id)_descriptionForSearchToken:(unint64_t)token;
++ (id)_identifierForSearchSuggestion:(id)suggestion;
++ (id)_resultRankingFeedbacksFromSFSearchResults:(id)results;
++ (id)_resultSectionForInitialSuggestions:(id)suggestions queryId:(int64_t)id;
++ (id)_searchResultDescriptionForSearchResultType:(unint64_t)type;
++ (id)_sectionRankingFeedbackWithResultSection:(id)section localSectionPosition:(unint64_t)position;
++ (id)_tokenCategoryTypesForSearchTokens:(id)tokens;
++ (id)commandFeedbackFromSFSearchResult:(id)result;
++ (id)descriptionForSearchString:(id)string searchTokens:(id)tokens;
++ (id)sectionRankingFeedbackWithInitialSuggestions:(id)suggestions queryId:(int64_t)id;
++ (unint64_t)_wordCountForSearchString:(id)string;
 @end
 
 @implementation PXSearchParsecAnalyticsUtilities
 
-+ (id)_identifierForSearchSuggestion:(id)a3
++ (id)_identifierForSearchSuggestion:(id)suggestion
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", objc_msgSend(v3, "hash")];
+  suggestionCopy = suggestion;
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", objc_msgSend(suggestionCopy, "hash")];
   if (![v4 length])
   {
     v5 = PLSearchUIParsecAnalyticsGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v8 = v3;
+      v8 = suggestionCopy;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_ERROR, "Error constructing identifier for search suggestion: %@", buf, 0xCu);
     }
   }
@@ -38,22 +38,22 @@
   return v4;
 }
 
-+ (unint64_t)_wordCountForSearchString:(id)a3
++ (unint64_t)_wordCountForSearchString:(id)string
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringCopy = string;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if ([v3 length])
+  if ([stringCopy length])
   {
     v4 = *MEMORY[0x1E69779F0];
     v15[0] = v4;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     v6 = [objc_alloc(MEMORY[0x1E6977A80]) initWithTagSchemes:v5];
-    [v6 setString:v3];
-    v7 = [v3 length];
+    [v6 setString:stringCopy];
+    v7 = [stringCopy length];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __62__PXSearchParsecAnalyticsUtilities__wordCountForSearchString___block_invoke;
@@ -84,42 +84,42 @@ uint64_t __62__PXSearchParsecAnalyticsUtilities__wordCountForSearchString___bloc
   return result;
 }
 
-+ (id)_descriptionForSearchToken:(unint64_t)a3
++ (id)_descriptionForSearchToken:(unint64_t)token
 {
-  if (a3 > 0x2C)
+  if (token > 0x2C)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7739800[a3];
+    return off_1E7739800[token];
   }
 }
 
-+ (id)_searchResultDescriptionForSearchResultType:(unint64_t)a3
++ (id)_searchResultDescriptionForSearchResultType:(unint64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E77397C8[a3];
+    return off_1E77397C8[type];
   }
 }
 
-+ (id)_tokenCategoryTypesForSearchTokens:(id)a3
++ (id)_tokenCategoryTypesForSearchTokens:(id)tokens
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokensCopy = tokens;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = tokensCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -134,7 +134,7 @@ uint64_t __62__PXSearchParsecAnalyticsUtilities__wordCountForSearchString___bloc
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _descriptionForSearchToken:{objc_msgSend(*(*(&v14 + 1) + 8 * i), "categoriesType", v14)}];
+        v11 = [self _descriptionForSearchToken:{objc_msgSend(*(*(&v14 + 1) + 8 * i), "categoriesType", v14)}];
         [v5 addObject:v11];
       }
 
@@ -149,22 +149,22 @@ uint64_t __62__PXSearchParsecAnalyticsUtilities__wordCountForSearchString___bloc
   return v12;
 }
 
-+ (id)_resultSectionForInitialSuggestions:(id)a3 queryId:(int64_t)a4
++ (id)_resultSectionForInitialSuggestions:(id)suggestions queryId:(int64_t)id
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  if ([v5 count])
+  suggestionsCopy = suggestions;
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
+  if ([suggestionsCopy count])
   {
     v7 = 0;
     do
     {
-      v8 = [PXSearchParsecAnalyticsUtilities SFSearchResultForInitialSuggestionWithQueryId:a4];
+      v8 = [PXSearchParsecAnalyticsUtilities SFSearchResultForInitialSuggestionWithQueryId:id];
       [v6 addObject:v8];
 
       ++v7;
     }
 
-    while ([v5 count] > v7);
+    while ([suggestionsCopy count] > v7);
   }
 
   v9 = objc_alloc_init(MEMORY[0x1E69CA390]);
@@ -178,33 +178,33 @@ uint64_t __62__PXSearchParsecAnalyticsUtilities__wordCountForSearchString___bloc
   return v9;
 }
 
-+ (id)_baseSFSearchResultForQueryId:(int64_t)a3
++ (id)_baseSFSearchResultForQueryId:(int64_t)id
 {
   v4 = objc_alloc_init(MEMORY[0x1E69CA3E8]);
   [v4 setUserInput:@"photos"];
   [v4 setApplicationBundleIdentifier:@"com.apple.photos"];
-  [v4 setQueryId:a3];
+  [v4 setQueryId:id];
 
   return v4;
 }
 
-+ (id)descriptionForSearchString:(id)a3 searchTokens:(id)a4
++ (id)descriptionForSearchString:(id)string searchTokens:(id)tokens
 {
   v29[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] || objc_msgSend(v7, "count"))
+  stringCopy = string;
+  tokensCopy = tokens;
+  if ([stringCopy length] || objc_msgSend(tokensCopy, "count"))
   {
-    v8 = [a1 _wordCountForSearchString:v6];
-    v9 = [a1 _tokenCategoryTypesForSearchTokens:v7];
+    v8 = [self _wordCountForSearchString:stringCopy];
+    v9 = [self _tokenCategoryTypesForSearchTokens:tokensCopy];
     v28[0] = @"cc";
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "length")}];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(stringCopy, "length")}];
     v29[0] = v10;
     v28[1] = @"wc";
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
     v29[1] = v11;
     v28[2] = @"tc";
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(tokensCopy, "count")}];
     v28[3] = @"tt";
     v29[2] = v12;
     v29[3] = v9;
@@ -221,9 +221,9 @@ uint64_t __62__PXSearchParsecAnalyticsUtilities__wordCountForSearchString___bloc
         *buf = 138412802;
         v23 = v15;
         v24 = 2112;
-        v25 = v6;
+        v25 = stringCopy;
         v26 = 2112;
-        v27 = v7;
+        v27 = tokensCopy;
         _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_ERROR, "Error serializing search characteristics: %@ for search string: %@, search tokens: %@", buf, 0x20u);
       }
     }
@@ -255,24 +255,24 @@ uint64_t __62__PXSearchParsecAnalyticsUtilities__wordCountForSearchString___bloc
   return v19;
 }
 
-+ (id)_resultRankingFeedbacksFromSFSearchResults:(id)a3
++ (id)_resultRankingFeedbacksFromSFSearchResults:(id)results
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  if ([v3 count])
+  resultsCopy = results;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(resultsCopy, "count")}];
+  if ([resultsCopy count])
   {
     v5 = 0;
     v6 = MEMORY[0x1E695E0F0];
     do
     {
       v7 = objc_alloc(MEMORY[0x1E69CA388]);
-      v8 = [v3 objectAtIndexedSubscript:v5];
+      v8 = [resultsCopy objectAtIndexedSubscript:v5];
       v9 = [v7 initWithResult:v8 hiddenResults:v6 duplicateResults:v6 localResultPosition:++v5];
 
       [v4 addObject:v9];
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [resultsCopy count]);
   }
 
   v10 = [v4 copy];
@@ -280,52 +280,52 @@ uint64_t __62__PXSearchParsecAnalyticsUtilities__wordCountForSearchString___bloc
   return v10;
 }
 
-+ (id)_sectionRankingFeedbackWithResultSection:(id)a3 localSectionPosition:(unint64_t)a4
++ (id)_sectionRankingFeedbackWithResultSection:(id)section localSectionPosition:(unint64_t)position
 {
-  v6 = a3;
-  v7 = [v6 results];
-  v8 = [a1 _resultRankingFeedbacksFromSFSearchResults:v7];
+  sectionCopy = section;
+  results = [sectionCopy results];
+  v8 = [self _resultRankingFeedbacksFromSFSearchResults:results];
 
-  v9 = [objc_alloc(MEMORY[0x1E69CA418]) initWithResults:v8 section:v6 localSectionPosition:a4 personalizationScore:0.0];
+  v9 = [objc_alloc(MEMORY[0x1E69CA418]) initWithResults:v8 section:sectionCopy localSectionPosition:position personalizationScore:0.0];
 
   return v9;
 }
 
-+ (id)sectionRankingFeedbackWithInitialSuggestions:(id)a3 queryId:(int64_t)a4
++ (id)sectionRankingFeedbackWithInitialSuggestions:(id)suggestions queryId:(int64_t)id
 {
-  v5 = [a1 _resultSectionForInitialSuggestions:a3 queryId:a4];
-  v6 = [a1 _sectionRankingFeedbackWithResultSection:v5 localSectionPosition:1];
+  v5 = [self _resultSectionForInitialSuggestions:suggestions queryId:id];
+  v6 = [self _sectionRankingFeedbackWithResultSection:v5 localSectionPosition:1];
 
   return v6;
 }
 
-+ (id)commandFeedbackFromSFSearchResult:(id)a3
++ (id)commandFeedbackFromSFSearchResult:(id)result
 {
   v3 = MEMORY[0x1E69C9F88];
-  v4 = a3;
+  resultCopy = result;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc_init(MEMORY[0x1E69C9F08]);
   v7 = objc_alloc_init(MEMORY[0x1E69C9ED0]);
-  v8 = [objc_alloc(MEMORY[0x1E69C9F98]) initWithCommand:v5 cardSection:v6 result:v4 button:v7];
+  v8 = [objc_alloc(MEMORY[0x1E69C9F98]) initWithCommand:v5 cardSection:v6 result:resultCopy button:v7];
 
   [v8 setTriggerEvent:2];
 
   return v8;
 }
 
-+ (id)SFSearchResultFromSearchSuggestion:(id)a3 queryId:(int64_t)a4
++ (id)SFSearchResultFromSearchSuggestion:(id)suggestion queryId:(int64_t)id
 {
-  v7 = a3;
-  if (!v7)
+  suggestionCopy = suggestion;
+  if (!suggestionCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PXSearchParsecAnalyticsUtilities.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"searchSuggestion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSearchParsecAnalyticsUtilities.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"searchSuggestion"}];
   }
 
-  v8 = [a1 _baseSFSearchResultForQueryId:a4];
-  v9 = [a1 _descriptionForSearchToken:{objc_msgSend(v7, "categoriesType")}];
+  v8 = [self _baseSFSearchResultForQueryId:id];
+  v9 = [self _descriptionForSearchToken:{objc_msgSend(suggestionCopy, "categoriesType")}];
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.photos.suggestions", v9];
-  v11 = [a1 _identifierForSearchSuggestion:v7];
+  v11 = [self _identifierForSearchSuggestion:suggestionCopy];
   [v8 setIdentifier:v11];
 
   [v8 setResultBundleId:v10];
@@ -335,9 +335,9 @@ uint64_t __62__PXSearchParsecAnalyticsUtilities__wordCountForSearchString___bloc
   return v8;
 }
 
-+ (id)SFSearchResultForInitialSuggestionWithQueryId:(int64_t)a3
++ (id)SFSearchResultForInitialSuggestionWithQueryId:(int64_t)id
 {
-  v3 = [a1 _baseSFSearchResultForQueryId:a3];
+  v3 = [self _baseSFSearchResultForQueryId:id];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.photos.zkw", @"Unknown"];
   [v3 setResultBundleId:v4];
   [v3 setSectionBundleIdentifier:v4];
@@ -346,26 +346,26 @@ uint64_t __62__PXSearchParsecAnalyticsUtilities__wordCountForSearchString___bloc
   return v3;
 }
 
-+ (id)SFSearchResultFromCollectionIdentifier:(id)a3 type:(unint64_t)a4 queryId:(int64_t)a5
++ (id)SFSearchResultFromCollectionIdentifier:(id)identifier type:(unint64_t)type queryId:(int64_t)id
 {
-  v8 = a3;
-  v9 = [a1 _baseSFSearchResultForQueryId:a5];
-  v10 = [a1 _searchResultDescriptionForSearchResultType:a4];
+  identifierCopy = identifier;
+  v9 = [self _baseSFSearchResultForQueryId:id];
+  v10 = [self _searchResultDescriptionForSearchResultType:type];
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.photos", v10];
   [v9 setResultBundleId:v11];
   [v9 setSectionBundleIdentifier:v11];
-  [v9 setIdentifier:v8];
+  [v9 setIdentifier:identifierCopy];
 
   return v9;
 }
 
-+ (id)SFSearchResultFromAssetUUID:(id)a3 isTopResult:(BOOL)a4 retrievalType:(unint64_t)a5 queryId:(int64_t)a6
++ (id)SFSearchResultFromAssetUUID:(id)d isTopResult:(BOOL)result retrievalType:(unint64_t)type queryId:(int64_t)id
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = [a1 _baseSFSearchResultForQueryId:a6];
+  resultCopy = result;
+  dCopy = d;
+  v11 = [self _baseSFSearchResultForQueryId:id];
   v12 = @"AssetResult";
-  if (v8)
+  if (resultCopy)
   {
     v12 = @"TopAssetResult";
   }
@@ -373,11 +373,11 @@ uint64_t __62__PXSearchParsecAnalyticsUtilities__wordCountForSearchString___bloc
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.photos", v12];
   [v11 setResultBundleId:v13];
   [v11 setSectionBundleIdentifier:v13];
-  [v11 setIdentifier:v10];
+  [v11 setIdentifier:dCopy];
 
   v14 = objc_alloc_init(MEMORY[0x1E69CA2E8]);
-  [v14 setIsEmbeddingMatched:(a5 & 0xFFFFFFFFFFFFFFFELL) == 2];
-  [v14 setIsMetadataMatched:(a5 & 0xFFFFFFFFFFFFFFFDLL) == 1];
+  [v14 setIsEmbeddingMatched:(type & 0xFFFFFFFFFFFFFFFELL) == 2];
+  [v14 setIsMetadataMatched:(type & 0xFFFFFFFFFFFFFFFDLL) == 1];
   [v11 setPhotosAttributes:v14];
 
   return v11;

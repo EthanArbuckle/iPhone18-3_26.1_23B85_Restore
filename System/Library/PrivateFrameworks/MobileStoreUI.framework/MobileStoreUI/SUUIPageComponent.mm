@@ -1,24 +1,24 @@
 @interface SUUIPageComponent
-- (SUUIPageComponent)initWithCustomPageContext:(id)a3;
-- (SUUIPageComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4;
-- (SUUIPageComponent)initWithViewElement:(id)a3;
+- (SUUIPageComponent)initWithCustomPageContext:(id)context;
+- (SUUIPageComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind;
+- (SUUIPageComponent)initWithViewElement:(id)element;
 - (int64_t)componentType;
-- (void)_enumerateMissingItemIdentifiersFromBricks:(id)a3 startIndex:(int64_t)a4 usingBlock:(id)a5;
-- (void)_enumerateMissingItemIdentifiersFromLinks:(id)a3 startIndex:(int64_t)a4 usingBlock:(id)a5;
-- (void)_enumerateMissingItemIdentifiersFromLockups:(id)a3 startIndex:(int64_t)a4 usingBlock:(id)a5;
+- (void)_enumerateMissingItemIdentifiersFromBricks:(id)bricks startIndex:(int64_t)index usingBlock:(id)block;
+- (void)_enumerateMissingItemIdentifiersFromLinks:(id)links startIndex:(int64_t)index usingBlock:(id)block;
+- (void)_enumerateMissingItemIdentifiersFromLockups:(id)lockups startIndex:(int64_t)index usingBlock:(id)block;
 @end
 
 @implementation SUUIPageComponent
 
-- (SUUIPageComponent)initWithCustomPageContext:(id)a3
+- (SUUIPageComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 componentDictionary];
-  v6 = [v5 objectForKey:@"startTime"];
+  contextCopy = context;
+  componentDictionary = [contextCopy componentDictionary];
+  v6 = [componentDictionary objectForKey:@"startTime"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 pageGenerationTime];
+    [contextCopy pageGenerationTime];
     v8 = v7;
     [v6 doubleValue];
     v10 = v8 < v9;
@@ -29,7 +29,7 @@
     v10 = 0;
   }
 
-  v11 = [v5 objectForKey:@"endTime"];
+  v11 = [componentDictionary objectForKey:@"endTime"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -44,7 +44,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v4 pageGenerationTime];
+  [contextCopy pageGenerationTime];
   v13 = v12;
   [v11 doubleValue];
   if (v13 > v14)
@@ -61,23 +61,23 @@ LABEL_9:
   return v15;
 }
 
-- (SUUIPageComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4
+- (SUUIPageComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind
 {
   v5.receiver = self;
   v5.super_class = SUUIPageComponent;
-  return [(SUUIPageComponent *)&v5 init:a3];
+  return [(SUUIPageComponent *)&v5 init:context];
 }
 
-- (SUUIPageComponent)initWithViewElement:(id)a3
+- (SUUIPageComponent)initWithViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUIPageComponent;
   v6 = [(SUUIPageComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewElement, a3);
+    objc_storeStrong(&v6->_viewElement, element);
   }
 
   return v7;
@@ -94,24 +94,24 @@ LABEL_9:
   return result;
 }
 
-- (void)_enumerateMissingItemIdentifiersFromBricks:(id)a3 startIndex:(int64_t)a4 usingBlock:(id)a5
+- (void)_enumerateMissingItemIdentifiersFromBricks:(id)bricks startIndex:(int64_t)index usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 count];
-  if (v9 > a4)
+  bricksCopy = bricks;
+  blockCopy = block;
+  v9 = [bricksCopy count];
+  if (v9 > index)
   {
     v10 = v9 - 1;
     do
     {
       v11 = objc_autoreleasePoolPush();
       v17 = 0;
-      v12 = [v7 objectAtIndex:a4];
-      v13 = [v12 link];
-      v14 = [v13 itemIdentifier];
-      if (([v13 isActionable] & 1) == 0 && v14)
+      v12 = [bricksCopy objectAtIndex:index];
+      link = [v12 link];
+      itemIdentifier = [link itemIdentifier];
+      if (([link isActionable] & 1) == 0 && itemIdentifier)
       {
-        v8[2](v8, v14, a4, &v17);
+        blockCopy[2](blockCopy, itemIdentifier, index, &v17);
       }
 
       v15 = v17;
@@ -123,27 +123,27 @@ LABEL_9:
       }
     }
 
-    while (v10 != a4++);
+    while (v10 != index++);
   }
 }
 
-- (void)_enumerateMissingItemIdentifiersFromLinks:(id)a3 startIndex:(int64_t)a4 usingBlock:(id)a5
+- (void)_enumerateMissingItemIdentifiersFromLinks:(id)links startIndex:(int64_t)index usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 count];
-  if (v9 > a4)
+  linksCopy = links;
+  blockCopy = block;
+  v9 = [linksCopy count];
+  if (v9 > index)
   {
     v10 = v9 - 1;
     do
     {
       v11 = objc_autoreleasePoolPush();
       v16 = 0;
-      v12 = [v7 objectAtIndex:a4];
-      v13 = [v12 itemIdentifier];
-      if (([v12 isActionable] & 1) == 0 && v13)
+      v12 = [linksCopy objectAtIndex:index];
+      itemIdentifier = [v12 itemIdentifier];
+      if (([v12 isActionable] & 1) == 0 && itemIdentifier)
       {
-        v8[2](v8, v13, a4, &v16);
+        blockCopy[2](blockCopy, itemIdentifier, index, &v16);
       }
 
       v14 = v16;
@@ -155,31 +155,31 @@ LABEL_9:
       }
     }
 
-    while (v10 != a4++);
+    while (v10 != index++);
   }
 }
 
-- (void)_enumerateMissingItemIdentifiersFromLockups:(id)a3 startIndex:(int64_t)a4 usingBlock:(id)a5
+- (void)_enumerateMissingItemIdentifiersFromLockups:(id)lockups startIndex:(int64_t)index usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 count];
-  if (v9 > a4)
+  lockupsCopy = lockups;
+  blockCopy = block;
+  v9 = [lockupsCopy count];
+  if (v9 > index)
   {
     v10 = v9 - 1;
     do
     {
       v11 = objc_autoreleasePoolPush();
       v18 = 0;
-      v12 = [v7 objectAtIndex:a4];
-      v13 = [v12 itemIdentifier];
-      if (v13)
+      v12 = [lockupsCopy objectAtIndex:index];
+      itemIdentifier = [v12 itemIdentifier];
+      if (itemIdentifier)
       {
-        v14 = v13;
+        v14 = itemIdentifier;
         if ([v12 _needsItemData])
         {
           v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:v14];
-          v8[2](v8, v15, a4, &v18);
+          blockCopy[2](blockCopy, v15, index, &v18);
         }
       }
 
@@ -192,7 +192,7 @@ LABEL_9:
       }
     }
 
-    while (v10 != a4++);
+    while (v10 != index++);
   }
 }
 

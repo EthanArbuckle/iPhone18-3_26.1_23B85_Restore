@@ -1,6 +1,6 @@
 @interface GDVURecognitionResult
 - (GDEntityIdentifier)entityIdentifier;
-- (void)setEntityIdentifier:(id)a3;
+- (void)setEntityIdentifier:(id)identifier;
 @end
 
 @implementation GDVURecognitionResult
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)setEntityIdentifier:(id)a3
+- (void)setEntityIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  GDVURecognitionResult.entityIdentifier.setter(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  GDVURecognitionResult.entityIdentifier.setter(identifierCopy);
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface CNNonGregorianBirthdayDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (BOOL)isValidValue:(id)a3 error:(id *)a4;
-- (BOOL)isValue:(id)a3 preferredToUnifiedValue:(id)a4;
-- (id)CNValueFromABBytes:(char *)a3 length:(unint64_t)a4;
-- (id)CNValueFromABValue:(void *)a3;
-- (void)ABValueFromCNValue:(id)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (BOOL)isValidValue:(id)value error:(id *)error;
+- (BOOL)isValue:(id)value preferredToUnifiedValue:(id)unifiedValue;
+- (id)CNValueFromABBytes:(char *)bytes length:(unint64_t)length;
+- (id)CNValueFromABValue:(void *)value;
+- (void)ABValueFromCNValue:(id)value;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNNonGregorianBirthdayDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 nonGregorianBirthday];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  nonGregorianBirthday = [contactCopy nonGregorianBirthday];
+  if (!nonGregorianBirthday)
   {
-    v4 = [v7 nonGregorianBirthday];
-    if (!v4)
+    nonGregorianBirthday2 = [otherCopy nonGregorianBirthday];
+    if (!nonGregorianBirthday2)
     {
       v11 = 1;
 LABEL_6:
@@ -28,11 +28,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 nonGregorianBirthday];
-  v10 = [v7 nonGregorianBirthday];
-  v11 = [v9 isEqual:v10];
+  nonGregorianBirthday3 = [contactCopy nonGregorianBirthday];
+  nonGregorianBirthday4 = [otherCopy nonGregorianBirthday];
+  v11 = [nonGregorianBirthday3 isEqual:nonGregorianBirthday4];
 
-  if (!v8)
+  if (!nonGregorianBirthday)
   {
     goto LABEL_6;
   }
@@ -42,51 +42,51 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_nonGregorianBirthday"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_nonGregorianBirthday"];
 
   v7 = [v9 copy];
-  v8 = v5[28];
-  v5[28] = v7;
+  v8 = contactCopy[28];
+  contactCopy[28] = v7;
 }
 
-- (BOOL)isValue:(id)a3 preferredToUnifiedValue:(id)a4
+- (BOOL)isValue:(id)value preferredToUnifiedValue:(id)unifiedValue
 {
-  v5 = a4;
-  v6 = [a3 year];
-  v7 = [v5 year];
+  unifiedValueCopy = unifiedValue;
+  year = [value year];
+  year2 = [unifiedValueCopy year];
 
-  return v6 != 0x7FFFFFFFFFFFFFFFLL && v7 == 0x7FFFFFFFFFFFFFFFLL;
+  return year != 0x7FFFFFFFFFFFFFFFLL && year2 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)isValidValue:(id)a3 error:(id *)a4
+- (BOOL)isValidValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = CNNonGregorianBirthdayDescription;
-  v7 = [(CNPropertyDescription *)&v13 isValidValue:v6 error:a4];
+  v7 = [(CNPropertyDescription *)&v13 isValidValue:valueCopy error:error];
   v8 = v7;
-  if (v6 && v7)
+  if (valueCopy && v7)
   {
     v12 = 0;
-    v8 = [CN areValidNonGregorianDayComponents:v6 error:&v12];
+    v8 = [CN areValidNonGregorianDayComponents:valueCopy error:&v12];
     v9 = v12;
-    if (a4 && !v8)
+    if (error && !v8)
     {
       v10 = [(CNPropertyDescription *)self key];
-      *a4 = [CNErrorFactory errorByPrependingKeyPath:v10 toKeyPathsInError:v9];
+      *error = [CNErrorFactory errorByPrependingKeyPath:v10 toKeyPathsInError:v9];
     }
   }
 
   return v8;
 }
 
-- (id)CNValueFromABBytes:(char *)a3 length:(unint64_t)a4
+- (id)CNValueFromABBytes:(char *)bytes length:(unint64_t)length
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:a3 length:a4 encoding:4];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:bytes length:length encoding:4];
   if (!v4)
   {
     v5 = 0;
@@ -155,8 +155,8 @@ LABEL_10:
       }
 
       v31 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
-      v32 = [v5 calendar];
-      [v32 setTimeZone:v31];
+      calendar = [v5 calendar];
+      [calendar setTimeZone:v31];
 
       goto LABEL_21;
     }
@@ -172,13 +172,13 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v14 = [v11 lowercaseString];
+    lowercaseString = [v11 lowercaseString];
 
-    v15 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:v14];
+    v15 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:lowercaseString];
     if (v15)
     {
       v13 = v15;
-      v11 = v14;
+      v11 = lowercaseString;
       goto LABEL_9;
     }
   }
@@ -189,36 +189,36 @@ LABEL_24:
   return v33;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A2C0];
+    *d = *MEMORY[0x1E698A2C0];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (void)ABValueFromCNValue:(id)a3
+- (void)ABValueFromCNValue:(id)value
 {
-  v3 = a3;
-  if (v3)
+  valueCopy = value;
+  if (valueCopy)
   {
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-    v5 = [v3 calendar];
-    v6 = [v5 calendarIdentifier];
+    calendar = [valueCopy calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
 
-    if (v6)
+    if (calendarIdentifier)
     {
       v7 = *MEMORY[0x1E698A298];
-      v8 = [v3 calendar];
-      v9 = [v8 calendarIdentifier];
-      CFDictionarySetValue(Mutable, v7, v9);
+      calendar2 = [valueCopy calendar];
+      calendarIdentifier2 = [calendar2 calendarIdentifier];
+      CFDictionarySetValue(Mutable, v7, calendarIdentifier2);
     }
 
-    v10 = [v3 isLeapMonth];
+    isLeapMonth = [valueCopy isLeapMonth];
     v11 = MEMORY[0x1E695E4D0];
-    if (!v10)
+    if (!isLeapMonth)
     {
       v11 = MEMORY[0x1E695E4C0];
     }
@@ -230,13 +230,13 @@ LABEL_24:
     aBlock[3] = &__block_descriptor_40_e24_v24__0q8____CFString__16l;
     aBlock[4] = Mutable;
     v12 = _Block_copy(aBlock);
-    v13 = [v3 era];
+    v13 = [valueCopy era];
     v12[2](v12, v13, *MEMORY[0x1E698A2A8]);
-    v14 = [v3 year];
-    v12[2](v12, v14, *MEMORY[0x1E698A2C8]);
-    v15 = [v3 month];
-    v12[2](v12, v15, *MEMORY[0x1E698A2B8]);
-    v16 = [v3 day];
+    year = [valueCopy year];
+    v12[2](v12, year, *MEMORY[0x1E698A2C8]);
+    month = [valueCopy month];
+    v12[2](v12, month, *MEMORY[0x1E698A2B8]);
+    v16 = [valueCopy day];
     v12[2](v12, v16, *MEMORY[0x1E698A2A0]);
 
     if (Mutable)
@@ -263,28 +263,28 @@ void __63__CNNonGregorianBirthdayDescription_iOSAB__ABValueFromCNValue___block_i
   }
 }
 
-- (id)CNValueFromABValue:(void *)a3
+- (id)CNValueFromABValue:(void *)value
 {
-  if (!a3)
+  if (!value)
   {
     v9 = 0;
     goto LABEL_9;
   }
 
   v4 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  v5 = CFDictionaryGetValue(a3, *MEMORY[0x1E698A298]);
+  v5 = CFDictionaryGetValue(value, *MEMORY[0x1E698A298]);
   v6 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:v5];
   if (v6)
   {
     v7 = v6;
-    v8 = v5;
+    lowercaseString = v5;
   }
 
   else
   {
-    v8 = [v5 lowercaseString];
+    lowercaseString = [v5 lowercaseString];
 
-    v10 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:v8];
+    v10 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:lowercaseString];
     if (!v10)
     {
       v9 = 0;
@@ -298,12 +298,12 @@ void __63__CNNonGregorianBirthdayDescription_iOSAB__ABValueFromCNValue___block_i
   [v7 setTimeZone:v11];
 
   [v4 setCalendar:v7];
-  [v4 setLeapMonth:{CFDictionaryGetValue(a3, *MEMORY[0x1E698A2B0]) == *MEMORY[0x1E695E4D0]}];
+  [v4 setLeapMonth:{CFDictionaryGetValue(value, *MEMORY[0x1E698A2B0]) == *MEMORY[0x1E695E4D0]}];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__CNNonGregorianBirthdayDescription_iOSAB__CNValueFromABValue___block_invoke;
   aBlock[3] = &__block_descriptor_40_e21_q16__0____CFString__8l;
-  aBlock[4] = a3;
+  aBlock[4] = value;
   v12 = _Block_copy(aBlock);
   [v4 setEra:{v12[2](v12, *MEMORY[0x1E698A2A8])}];
   [v4 setYear:{v12[2](v12, *MEMORY[0x1E698A2C8])}];

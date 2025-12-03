@@ -1,38 +1,38 @@
 @interface TSWPopoverController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)shouldDismissWhileRotating:(BOOL)a3;
-- (CGPath)p_newMaskPathWithBounds:(CGRect)a3 cornerRadius:(double)a4 arrowDirection:(unint64_t)a5 arrowBounds:(CGRect)a6;
-- (CGPoint)p_popoverCenterForArrowDirection:(unint64_t)a3 targetRect:(CGRect)a4 targetBounds:(CGRect)a5;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)shouldDismissWhileRotating:(BOOL)rotating;
+- (CGPath)p_newMaskPathWithBounds:(CGRect)bounds cornerRadius:(double)radius arrowDirection:(unint64_t)direction arrowBounds:(CGRect)arrowBounds;
+- (CGPoint)p_popoverCenterForArrowDirection:(unint64_t)direction targetRect:(CGRect)rect targetBounds:(CGRect)bounds;
 - (CGRect)boundsIncludingStroke;
-- (CGRect)p_arrowBoundsForArrowDirection:(unint64_t)a3 targetPoint:(CGPoint)a4;
+- (CGRect)p_arrowBoundsForArrowDirection:(unint64_t)direction targetPoint:(CGPoint)point;
 - (CGSize)originalViewSize;
-- (TSWPopoverController)initWithContentProvider:(id)a3;
+- (TSWPopoverController)initWithContentProvider:(id)provider;
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)fadeInsets;
 - (UIEdgeInsets)fadeSizes;
-- (unint64_t)p_arrowDirectionForTargetRect:(CGRect)a3 targetBounds:(CGRect)a4 permittedDirections:(unint64_t)a5;
+- (unint64_t)p_arrowDirectionForTargetRect:(CGRect)rect targetBounds:(CGRect)bounds permittedDirections:(unint64_t)directions;
 - (void)dealloc;
-- (void)dismissPopoverAnimated:(BOOL)a3;
+- (void)dismissPopoverAnimated:(BOOL)animated;
 - (void)loadView;
-- (void)pFadeInIncludeScrim:(BOOL)a3;
-- (void)p_customizeWithTheme:(id)a3;
+- (void)pFadeInIncludeScrim:(BOOL)scrim;
+- (void)p_customizeWithTheme:(id)theme;
 - (void)p_didFade;
-- (void)p_handleDismissGR:(id)a3;
-- (void)p_handleDoubleTapGR:(id)a3;
-- (void)p_updateAppearanceForArrowDirection:(unint64_t)a3 arrowBounds:(CGRect)a4;
-- (void)p_updateBackgroundViewWithArrowDirection:(unint64_t)a3 arrowBounds:(CGRect)a4;
-- (void)p_updateClipViewWithArrowDirection:(unint64_t)a3 arrowBounds:(CGRect)a4;
-- (void)p_updateStrokeLayerWithArrowDirection:(unint64_t)a3 arrowBounds:(CGRect)a4;
+- (void)p_handleDismissGR:(id)r;
+- (void)p_handleDoubleTapGR:(id)r;
+- (void)p_updateAppearanceForArrowDirection:(unint64_t)direction arrowBounds:(CGRect)bounds;
+- (void)p_updateBackgroundViewWithArrowDirection:(unint64_t)direction arrowBounds:(CGRect)bounds;
+- (void)p_updateClipViewWithArrowDirection:(unint64_t)direction arrowBounds:(CGRect)bounds;
+- (void)p_updateStrokeLayerWithArrowDirection:(unint64_t)direction arrowBounds:(CGRect)bounds;
 - (void)p_willFade;
-- (void)presentPopoverFromRect:(CGRect)a3 inView:(id)a4 viewBounds:(CGRect)a5 permittedArrowDirections:(unint64_t)a6 displayMode:(int)a7 animated:(BOOL)a8;
+- (void)presentPopoverFromRect:(CGRect)rect inView:(id)view viewBounds:(CGRect)bounds permittedArrowDirections:(unint64_t)directions displayMode:(int)mode animated:(BOOL)animated;
 @end
 
 @implementation TSWPopoverController
 
-- (TSWPopoverController)initWithContentProvider:(id)a3
+- (TSWPopoverController)initWithContentProvider:(id)provider
 {
-  if (!a3)
+  if (!provider)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -43,20 +43,20 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (provider)
     {
-      v5->_contentProvider = a3;
+      v5->_contentProvider = provider;
       if ([(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)v6 contentProvider] popoverTheme])
       {
-        v7 = [(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)v6 contentProvider] popoverTheme];
+        popoverTheme = [(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)v6 contentProvider] popoverTheme];
       }
 
       else
       {
-        v7 = objc_alloc_init(TSWPopoverTheme);
+        popoverTheme = objc_alloc_init(TSWPopoverTheme);
       }
 
-      [(TSWPopoverController *)v6 p_customizeWithTheme:v7];
+      [(TSWPopoverController *)v6 p_customizeWithTheme:popoverTheme];
       v6->_popUpInfo = [(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)v6 contentProvider] popupInfo];
     }
 
@@ -91,24 +91,24 @@
   self->_clipView = [(TSWClipView *)v3 initWithFrame:?];
   [-[TSWPopoverController view](self "view")];
   clipView = self->_clipView;
-  v5 = [(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)self contentProvider] popoverContentView];
+  popoverContentView = [(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)self contentProvider] popoverContentView];
 
-  [(TSWClipView *)clipView addContentView:v5];
+  [(TSWClipView *)clipView addContentView:popoverContentView];
 }
 
-- (BOOL)shouldDismissWhileRotating:(BOOL)a3
+- (BOOL)shouldDismissWhileRotating:(BOOL)rotating
 {
-  v3 = a3;
-  v5 = [(TSWPopoverController *)self isPopoverVisible];
-  if (v5 && v3)
+  rotatingCopy = rotating;
+  isPopoverVisible = [(TSWPopoverController *)self isPopoverVisible];
+  if (isPopoverVisible && rotatingCopy)
   {
-    LOBYTE(v5) = [(TSWPopoverTheme *)[(TSWPopoverController *)self theme] presentationMode]!= 1;
+    LOBYTE(isPopoverVisible) = [(TSWPopoverTheme *)[(TSWPopoverController *)self theme] presentationMode]!= 1;
   }
 
-  return v5;
+  return isPopoverVisible;
 }
 
-- (void)pFadeInIncludeScrim:(BOOL)a3
+- (void)pFadeInIncludeScrim:(BOOL)scrim
 {
   [(TSWPopoverController *)self p_willFade];
   [-[TSWPopoverController view](self "view")];
@@ -118,7 +118,7 @@
   v6[2] = sub_1283B8;
   v6[3] = &unk_45B2C0;
   v6[4] = self;
-  v7 = a3;
+  scrimCopy = scrim;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_12842C;
@@ -127,22 +127,22 @@
   [UIView animateWithDuration:v6 animations:v5 completion:0.150000006];
 }
 
-- (void)presentPopoverFromRect:(CGRect)a3 inView:(id)a4 viewBounds:(CGRect)a5 permittedArrowDirections:(unint64_t)a6 displayMode:(int)a7 animated:(BOOL)a8
+- (void)presentPopoverFromRect:(CGRect)rect inView:(id)view viewBounds:(CGRect)bounds permittedArrowDirections:(unint64_t)directions displayMode:(int)mode animated:(BOOL)animated
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  x = a5.origin.x;
-  y = a5.origin.y;
-  v13 = a3.size.height;
-  v14 = a3.size.width;
-  v15 = a3.origin.y;
-  v16 = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  x = bounds.origin.x;
+  y = bounds.origin.y;
+  v13 = rect.size.height;
+  v14 = rect.size.width;
+  v15 = rect.origin.y;
+  v16 = rect.origin.x;
   if ([-[TSWPopoverController view](self view] || self->_dismissGR)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  self->_displayMode = a7;
+  self->_displayMode = mode;
   if ([(TSWPopoverTheme *)[(TSWPopoverController *)self theme] presentationMode]== 1)
   {
     v83 = v14;
@@ -155,14 +155,14 @@
     }
 
     v18 = [UIView alloc];
-    [a4 bounds];
+    [view bounds];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    [a4 bounds];
+    [view bounds];
     v28 = v27 * -1.414;
-    [a4 bounds];
+    [view bounds];
     v30 = v29 * -1.414;
     v94.origin.x = v20;
     v94.origin.y = v22;
@@ -173,14 +173,14 @@
     -[UIView setBackgroundColor:](-[TSWPopoverController scrimView](self, "scrimView"), "setBackgroundColor:", [+[TSUColor blackColor](TSUColor "blackColor")]);
     [(UIView *)[(TSWPopoverController *)self scrimView] setAutoresizingMask:18];
     [(UIView *)[(TSWPopoverController *)self scrimView] setAlpha:0.0];
-    [a4 addSubview:{-[TSWPopoverController scrimView](self, "scrimView")}];
+    [view addSubview:{-[TSWPopoverController scrimView](self, "scrimView")}];
     width = v89;
     height = v91;
     v14 = v83;
     v13 = v84;
   }
 
-  [a4 addSubview:{-[TSWPopoverController view](self, "view")}];
+  [view addSubview:{-[TSWPopoverController view](self, "view")}];
   [objc_msgSend(-[TSWPopoverController view](self "view")];
   [(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)self contentProvider] scale];
   v32 = v31 * -12.0;
@@ -235,8 +235,8 @@
       }
 
       v57 = v54 * v56;
-      v58 = [(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)self contentProvider] popoverContentController];
-      [v58 setFrame:v79 scale:{v80, v57, v78, v56}];
+      popoverContentController = [(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)self contentProvider] popoverContentController];
+      [popoverContentController setFrame:v79 scale:{v80, v57, v78, v56}];
     }
 
     TSDRectWithSize();
@@ -265,7 +265,7 @@
   }
 
   [-[TSWPopoverControllerContentProvider popoverContentView](-[TSWPopoverController contentProvider](self "contentProvider")];
-  v67 = [(TSWPopoverController *)self p_arrowDirectionForTargetRect:a6 targetBounds:v35 permittedDirections:v36, v92, v90, v88, v86, v37, v38];
+  v67 = [(TSWPopoverController *)self p_arrowDirectionForTargetRect:directions targetBounds:v35 permittedDirections:v36, v92, v90, v88, v86, v37, v38];
   [(TSWPopoverController *)self p_popoverCenterForArrowDirection:v67 targetRect:v35 targetBounds:v36, v92, v90, v88, v86, v37, v38];
   [-[TSWPopoverController view](self "view")];
   TSDRectWithCenterAndSize();
@@ -273,9 +273,9 @@
   [-[TSWPopoverController view](self "view")];
   [(TSWPopoverController *)self boundsIncludingStroke];
   [objc_msgSend(-[TSWPopoverController view](self "view")];
-  v72 = [(TSWPopoverController *)self view];
+  view = [(TSWPopoverController *)self view];
   TSDCenterOfRect();
-  [v72 convertPoint:a4 fromView:?];
+  [view convertPoint:view fromView:?];
   [(TSWPopoverController *)self p_arrowBoundsForArrowDirection:v67 targetPoint:?];
   [(TSWPopoverController *)self p_updateAppearanceForArrowDirection:v67 arrowBounds:?];
   [(TSWPopoverController *)self contentProvider];
@@ -289,7 +289,7 @@
   v74 = [[TSWPopoverDismissGestureRecognizer alloc] initWithTarget:self action:"p_handleDismissGR:"];
   self->_dismissGR = &v74->super;
   [(TSWPopoverDismissGestureRecognizer *)v74 setDelegate:self];
-  [a4 addGestureRecognizer:self->_dismissGR];
+  [view addGestureRecognizer:self->_dismissGR];
   if (v45)
   {
     -[TSWPopoverController setDoubleTapGR:](self, "setDoubleTapGR:", [[UITapGestureRecognizer alloc] initWithTarget:self action:"p_handleDoubleTapGR:"]);
@@ -310,7 +310,7 @@
     [(UIButton *)[(TSWPopoverController *)self closeButton] setImage:[UIImage forState:"th_imageNamed:" th_imageNamed:?], 1];
     [(UIButton *)[(TSWPopoverController *)self closeButton] addTarget:self action:"handleClose:" forControlEvents:64];
     [(UIButton *)[(TSWPopoverController *)self closeButton] setFrame:0.0, 0.0, 35.0, 35.0];
-    [a4 addSubview:{-[TSWPopoverController closeButton](self, "closeButton")}];
+    [view addSubview:{-[TSWPopoverController closeButton](self, "closeButton")}];
     [-[TSWPopoverController view](self "view")];
     v76 = v75 + 5.0;
     [-[TSWPopoverController view](self "view")];
@@ -320,9 +320,9 @@
   [(TSWPopoverController *)self pFadeInIncludeScrim:1];
 }
 
-- (void)dismissPopoverAnimated:(BOOL)a3
+- (void)dismissPopoverAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(TSWPopoverController *)self isDismissing])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -335,7 +335,7 @@
 
   self->_dismissGR = 0;
   v5 = 0.150000006;
-  if (!v3)
+  if (!animatedCopy)
   {
     v5 = 0.0;
   }
@@ -353,28 +353,28 @@
   [UIView animateWithDuration:v7 animations:v6 completion:v5];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = [(TSWPopoverController *)self doubleTapGR]== a3 || [(TSWPopoverController *)self dismissGR]== a3;
-  if ([(NSArray *)self->_passThroughGestureRecognizers containsObject:a4])
+  v7 = [(TSWPopoverController *)self doubleTapGR]== recognizer || [(TSWPopoverController *)self dismissGR]== recognizer;
+  if ([(NSArray *)self->_passThroughGestureRecognizers containsObject:gestureRecognizer])
   {
-    return (objc_opt_respondsToSelector() & 1) == 0 || ([(TSWPopoverControllerDelegate *)self->_delegate popoverController:self shouldIgnorePassThroughGestureRecognizer:a4]& 1) == 0;
+    return (objc_opt_respondsToSelector() & 1) == 0 || ([(TSWPopoverControllerDelegate *)self->_delegate popoverController:self shouldIgnorePassThroughGestureRecognizer:gestureRecognizer]& 1) == 0;
   }
 
   return v7;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   result = 1;
-  if ([(TSWPopoverController *)self doubleTapGR]!= a3)
+  if ([(TSWPopoverController *)self doubleTapGR]!= recognizer)
   {
     [-[TSWPopoverController view](self "view")];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [a4 locationInView:{-[TSWPopoverController view](self, "view")}];
+    [touch locationInView:{-[TSWPopoverController view](self, "view")}];
     v27.x = v14;
     v27.y = v15;
     v29.origin.x = v7;
@@ -393,7 +393,7 @@
       v19 = v18;
       v21 = v20;
       v23 = v22;
-      [a4 locationInView:{-[TSWPopoverController closeButton](self, "closeButton")}];
+      [touch locationInView:{-[TSWPopoverController closeButton](self, "closeButton")}];
       v28.x = v24;
       v28.y = v25;
       v30.origin.x = v17;
@@ -419,9 +419,9 @@
   v10 = v9;
   if ([(TSDStroke *)[(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverStroke] shouldRender])
   {
-    v11 = [(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverStroke];
+    popoverStroke = [(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverStroke];
     [-[TSWPopoverController view](self "view")];
-    [(TSDStroke *)v11 boundsForPath:[TSDBezierPath bezierPathWithRect:?]];
+    [(TSDStroke *)popoverStroke boundsForPath:[TSDBezierPath bezierPathWithRect:?]];
     v4 = v12;
     v6 = v13;
     v8 = v14;
@@ -439,17 +439,17 @@
   return result;
 }
 
-- (unint64_t)p_arrowDirectionForTargetRect:(CGRect)a3 targetBounds:(CGRect)a4 permittedDirections:(unint64_t)a5
+- (unint64_t)p_arrowDirectionForTargetRect:(CGRect)rect targetBounds:(CGRect)bounds permittedDirections:(unint64_t)directions
 {
-  v5 = a5;
-  width = a4.size.width;
-  rect = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  height = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  directionsCopy = directions;
+  width = bounds.size.width;
+  rect = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  height = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   if ([(TSWPopoverTheme *)[(TSWPopoverController *)self theme] presentationMode]== 1)
   {
     return -1;
@@ -471,7 +471,7 @@
   v19 = v35.origin.y;
   v20 = v35.size.width;
   v21 = v35.size.height;
-  if ((v5 & 2) != 0)
+  if ((directionsCopy & 2) != 0)
   {
     v22 = CGRectGetMinY(v35) - v15;
     v36.origin.x = x;
@@ -484,7 +484,7 @@
     }
   }
 
-  if (v5)
+  if (directionsCopy)
   {
     v37.origin.x = v18;
     v37.origin.y = v19;
@@ -501,7 +501,7 @@
     }
   }
 
-  if ((v5 & 4) != 0)
+  if ((directionsCopy & 4) != 0)
   {
     v39.origin.x = v18;
     v39.origin.y = v19;
@@ -518,9 +518,9 @@
     }
   }
 
-  if ((v5 & 8) == 0)
+  if ((directionsCopy & 8) == 0)
   {
-    if ((v5 & 2) == 0)
+    if ((directionsCopy & 2) == 0)
     {
       return -1;
     }
@@ -548,7 +548,7 @@
     result = 8;
   }
 
-  if ((v5 & 2) != 0 && v25 < MinX)
+  if ((directionsCopy & 2) != 0 && v25 < MinX)
   {
 LABEL_17:
     v43.origin.x = v18;
@@ -572,7 +572,7 @@ LABEL_17:
   return result;
 }
 
-- (CGRect)p_arrowBoundsForArrowDirection:(unint64_t)a3 targetPoint:(CGPoint)a4
+- (CGRect)p_arrowBoundsForArrowDirection:(unint64_t)direction targetPoint:(CGPoint)point
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -610,11 +610,11 @@ LABEL_17:
     v34.size.height = v19;
     CGRectGetHeight(v34);
     TSUClamp();
-    if (a3 > 3)
+    if (direction > 3)
     {
       v25 = v24;
       v9 = height;
-      if (a3 == 4)
+      if (direction == 4)
       {
         v38.origin.x = v28;
         v38.origin.y = v15;
@@ -631,7 +631,7 @@ LABEL_17:
       {
         x = CGRectZero.origin.x;
         v8 = width;
-        if (a3 == 8)
+        if (direction == 8)
         {
           v36.origin.x = v28;
           v36.origin.y = v15;
@@ -648,7 +648,7 @@ LABEL_17:
     else
     {
       v9 = height;
-      if (a3 == 1)
+      if (direction == 1)
       {
         x = v23 - v21;
         v37.origin.x = v13;
@@ -665,7 +665,7 @@ LABEL_17:
       {
         x = CGRectZero.origin.x;
         v8 = width;
-        if (a3 == 2)
+        if (direction == 2)
         {
           x = v23 - v21;
           v35.origin.x = v13;
@@ -689,16 +689,16 @@ LABEL_17:
   return result;
 }
 
-- (CGPoint)p_popoverCenterForArrowDirection:(unint64_t)a3 targetRect:(CGRect)a4 targetBounds:(CGRect)a5
+- (CGPoint)p_popoverCenterForArrowDirection:(unint64_t)direction targetRect:(CGRect)rect targetBounds:(CGRect)bounds
 {
-  width = a5.size.width;
-  rect = a5.size.height;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  height = a4.size.height;
-  v7 = a4.size.width;
-  v8 = a4.origin.y;
-  v9 = a4.origin.x;
+  width = bounds.size.width;
+  rect = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  height = rect.size.height;
+  v7 = rect.size.width;
+  v8 = rect.origin.y;
+  v9 = rect.origin.x;
   if ([(TSWPopoverTheme *)[(TSWPopoverController *)self theme] presentationMode]== 1)
   {
     v47.origin.x = x;
@@ -731,9 +731,9 @@ LABEL_17:
   MidY = CGRectGetMidY(v50);
   [(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)self contentProvider] scale];
   v19 = v18 * 13.0;
-  if (a3 <= 1)
+  if (direction <= 1)
   {
-    if (a3 == -1)
+    if (direction == -1)
     {
       v59.origin.x = v9;
       v59.origin.y = v8;
@@ -752,7 +752,7 @@ LABEL_17:
       goto LABEL_15;
     }
 
-    if (a3 == 1)
+    if (direction == 1)
     {
       v26 = v19;
       v53.origin.x = v9;
@@ -780,7 +780,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3 == 2)
+  if (direction == 2)
   {
     v28 = v19;
     v55.origin.x = v9;
@@ -800,7 +800,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3 == 4)
+  if (direction == 4)
   {
     v30 = v19;
     v57.origin.x = v9;
@@ -820,7 +820,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3 != 8)
+  if (direction != 8)
   {
     goto LABEL_14;
   }
@@ -900,16 +900,16 @@ LABEL_16:
   return result;
 }
 
-- (void)p_handleDismissGR:(id)a3
+- (void)p_handleDismissGR:(id)r
 {
-  if ([a3 state] == &dword_0 + 3 || objc_msgSend(a3, "state") == &dword_0 + 2)
+  if ([r state] == &dword_0 + 3 || objc_msgSend(r, "state") == &dword_0 + 2)
   {
 
     [(TSWPopoverController *)self dismissPopoverAnimated:1];
   }
 }
 
-- (void)p_handleDoubleTapGR:(id)a3
+- (void)p_handleDoubleTapGR:(id)r
 {
   displayMode = self->_displayMode;
   if (displayMode)
@@ -928,7 +928,7 @@ LABEL_16:
 
 - (void)p_willFade
 {
-  v3 = self;
+  selfCopy = self;
   [objc_msgSend(-[TSWPopoverController view](self "view")];
   TSUScreenScale();
   [objc_msgSend(-[TSWPopoverController view](self "view")];
@@ -942,12 +942,12 @@ LABEL_16:
   [objc_msgSend(-[TSWPopoverController view](self "view")];
   [+[UIApplication sharedApplication](UIApplication endIgnoringInteractionEvents];
 
-  v3 = self;
+  selfCopy = self;
 }
 
-- (void)p_customizeWithTheme:(id)a3
+- (void)p_customizeWithTheme:(id)theme
 {
-  v4 = [a3 copy];
+  v4 = [theme copy];
   [(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)self contentProvider] scale];
   [v4 scaleWithFactor:?];
   [(TSWPopoverController *)self setTheme:v4];
@@ -972,17 +972,17 @@ LABEL_16:
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(TSWPopoverController *)self view];
+  view = [(TSWPopoverController *)self view];
 
-  [v20 setFrame:{v13, v15, v17, v19}];
+  [view setFrame:{v13, v15, v17, v19}];
 }
 
-- (CGPath)p_newMaskPathWithBounds:(CGRect)a3 cornerRadius:(double)a4 arrowDirection:(unint64_t)a5 arrowBounds:(CGRect)a6
+- (CGPath)p_newMaskPathWithBounds:(CGRect)bounds cornerRadius:(double)radius arrowDirection:(unint64_t)direction arrowBounds:(CGRect)arrowBounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   Mutable = CGPathCreateMutable();
   v75.origin.x = x;
   v75.origin.y = y;
@@ -1012,63 +1012,63 @@ LABEL_16:
   v80.origin.x = x;
   v80.origin.y = y;
   v80.size.width = width;
-  v14 = a4;
+  radiusCopy3 = radius;
   v80.size.height = height;
   MinY = CGRectGetMinY(v80);
-  CGPathMoveToPoint(Mutable, 0, MinX, MinY + a4);
+  CGPathMoveToPoint(Mutable, 0, MinX, MinY + radius);
   v69 = MinX;
   v67 = MidX;
-  CGPathAddArcToPoint(Mutable, 0, MinX, MinY, MidX, MinY, a4);
-  if (a5 == 1)
+  CGPathAddArcToPoint(Mutable, 0, MinX, MinY, MidX, MinY, radius);
+  if (direction == 1)
   {
-    v16 = CGRectGetMinX(a6);
+    v16 = CGRectGetMinX(arrowBounds);
     CGPathAddLineToPoint(Mutable, 0, v16, MinY);
-    cp1x = CGRectGetMinX(a6) + 7.0;
-    v17 = CGRectGetMidX(a6) + -5.0;
-    v18 = CGRectGetMinY(a6);
-    v19 = CGRectGetMidX(a6);
-    v20 = CGRectGetMinY(a6);
+    cp1x = CGRectGetMinX(arrowBounds) + 7.0;
+    v17 = CGRectGetMidX(arrowBounds) + -5.0;
+    v18 = CGRectGetMinY(arrowBounds);
+    v19 = CGRectGetMidX(arrowBounds);
+    v20 = CGRectGetMinY(arrowBounds);
     CGPathAddCurveToPoint(Mutable, 0, cp1x, MinY, v17, v18, v19, v20);
-    v21 = CGRectGetMidX(a6) + 5.0;
-    v22 = CGRectGetMinY(a6);
-    v23 = CGRectGetMaxX(a6) + -7.0;
-    v24 = CGRectGetMaxX(a6);
+    v21 = CGRectGetMidX(arrowBounds) + 5.0;
+    v22 = CGRectGetMinY(arrowBounds);
+    v23 = CGRectGetMaxX(arrowBounds) + -7.0;
+    v24 = CGRectGetMaxX(arrowBounds);
     v25 = v21;
-    v14 = a4;
+    radiusCopy3 = radius;
     CGPathAddCurveToPoint(Mutable, 0, v25, v22, v23, MinY, v24, MinY);
     v26 = MaxX;
-    CGPathAddArcToPoint(Mutable, 0, MaxX, MinY, MaxX, MidY, a4);
-    v27 = a6.size.height;
-    v28 = a6.size.width;
+    CGPathAddArcToPoint(Mutable, 0, MaxX, MinY, MaxX, MidY, radius);
+    v27 = arrowBounds.size.height;
+    v28 = arrowBounds.size.width;
     v29 = MidY;
 LABEL_5:
     v43 = v26;
     v44 = MaxY;
-    CGPathAddArcToPoint(Mutable, 0, v43, MaxY, v67, MaxY, v14);
+    CGPathAddArcToPoint(Mutable, 0, v43, MaxY, v67, MaxY, radiusCopy3);
     v45 = v69;
     goto LABEL_6;
   }
 
-  v28 = a6.size.width;
-  v27 = a6.size.height;
+  v28 = arrowBounds.size.width;
+  v27 = arrowBounds.size.height;
   v29 = MidY;
-  CGPathAddArcToPoint(Mutable, 0, MaxX, MinY, MaxX, MidY, a4);
-  if (a5 == 8)
+  CGPathAddArcToPoint(Mutable, 0, MaxX, MinY, MaxX, MidY, radius);
+  if (direction == 8)
   {
-    v30 = CGRectGetMinY(a6);
+    v30 = CGRectGetMinY(arrowBounds);
     CGPathAddLineToPoint(Mutable, 0, MaxX, v30);
-    v31 = CGRectGetMinY(a6) + 7.0;
-    v32 = CGRectGetMaxX(a6);
-    v33 = CGRectGetMidY(a6) + -5.0;
-    v34 = CGRectGetMaxX(a6);
-    v35 = CGRectGetMidY(a6);
+    v31 = CGRectGetMinY(arrowBounds) + 7.0;
+    v32 = CGRectGetMaxX(arrowBounds);
+    v33 = CGRectGetMidY(arrowBounds) + -5.0;
+    v34 = CGRectGetMaxX(arrowBounds);
+    v35 = CGRectGetMidY(arrowBounds);
     CGPathAddCurveToPoint(Mutable, 0, MaxX, v31, v32, v33, v34, v35);
-    v36 = CGRectGetMaxX(a6);
-    v37 = CGRectGetMidY(a6) + 5.0;
-    v38 = CGRectGetMaxY(a6) + -7.0;
-    v39 = CGRectGetMaxY(a6);
+    v36 = CGRectGetMaxX(arrowBounds);
+    v37 = CGRectGetMidY(arrowBounds) + 5.0;
+    v38 = CGRectGetMaxY(arrowBounds) + -7.0;
+    v39 = CGRectGetMaxY(arrowBounds);
     v40 = v36;
-    v14 = a4;
+    radiusCopy3 = radius;
     v41 = v37;
     v42 = v38;
     v29 = MidY;
@@ -1078,81 +1078,81 @@ LABEL_5:
   }
 
   v44 = MaxY;
-  CGPathAddArcToPoint(Mutable, 0, MaxX, MaxY, v67, MaxY, a4);
+  CGPathAddArcToPoint(Mutable, 0, MaxX, MaxY, v67, MaxY, radius);
   v45 = v69;
-  if (a5 == 2)
+  if (direction == 2)
   {
-    v56 = CGRectGetMaxX(a6);
+    v56 = CGRectGetMaxX(arrowBounds);
     CGPathAddLineToPoint(Mutable, 0, v56, MaxY);
-    v72 = CGRectGetMaxX(a6) + -7.0;
-    v57 = CGRectGetMidX(a6) + 5.0;
-    v58 = CGRectGetMaxY(a6);
-    v59 = CGRectGetMidX(a6);
-    v60 = CGRectGetMaxY(a6);
+    v72 = CGRectGetMaxX(arrowBounds) + -7.0;
+    v57 = CGRectGetMidX(arrowBounds) + 5.0;
+    v58 = CGRectGetMaxY(arrowBounds);
+    v59 = CGRectGetMidX(arrowBounds);
+    v60 = CGRectGetMaxY(arrowBounds);
     CGPathAddCurveToPoint(Mutable, 0, v72, MaxY, v57, v58, v59, v60);
-    v61 = CGRectGetMidX(a6) + -7.0;
-    v62 = CGRectGetMaxY(a6);
-    v63 = CGRectGetMinX(a6) + 5.0;
-    v64 = CGRectGetMinX(a6);
+    v61 = CGRectGetMidX(arrowBounds) + -7.0;
+    v62 = CGRectGetMaxY(arrowBounds);
+    v63 = CGRectGetMinX(arrowBounds) + 5.0;
+    v64 = CGRectGetMinX(arrowBounds);
     CGPathAddCurveToPoint(Mutable, 0, v61, v62, v63, MaxY, v64, MaxY);
-    CGPathAddArcToPoint(Mutable, 0, v69, MaxY, v69, MidY, a4);
+    CGPathAddArcToPoint(Mutable, 0, v69, MaxY, v69, MidY, radius);
     goto LABEL_10;
   }
 
 LABEL_6:
-  CGPathAddArcToPoint(Mutable, 0, v45, v44, v45, v29, v14);
-  if (a5 == 4)
+  CGPathAddArcToPoint(Mutable, 0, v45, v44, v45, v29, radiusCopy3);
+  if (direction == 4)
   {
-    v81.origin.x = a6.origin.x;
-    v81.origin.y = a6.origin.y;
+    v81.origin.x = arrowBounds.origin.x;
+    v81.origin.y = arrowBounds.origin.y;
     v81.size.width = v28;
     v81.size.height = v27;
     v46 = CGRectGetMaxY(v81);
     CGPathAddLineToPoint(Mutable, 0, v45, v46);
-    v82.origin.x = a6.origin.x;
-    v82.origin.y = a6.origin.y;
+    v82.origin.x = arrowBounds.origin.x;
+    v82.origin.y = arrowBounds.origin.y;
     v82.size.width = v28;
     v82.size.height = v27;
     cp1ya = CGRectGetMaxY(v82) + -7.0;
-    v83.origin.x = a6.origin.x;
-    v83.origin.y = a6.origin.y;
+    v83.origin.x = arrowBounds.origin.x;
+    v83.origin.y = arrowBounds.origin.y;
     v83.size.width = v28;
     v83.size.height = v27;
     v47 = CGRectGetMinX(v83);
-    v84.origin.x = a6.origin.x;
-    v84.origin.y = a6.origin.y;
+    v84.origin.x = arrowBounds.origin.x;
+    v84.origin.y = arrowBounds.origin.y;
     v84.size.width = v28;
     v84.size.height = v27;
     v48 = CGRectGetMidY(v84) + 5.0;
-    v85.origin.x = a6.origin.x;
-    v85.origin.y = a6.origin.y;
+    v85.origin.x = arrowBounds.origin.x;
+    v85.origin.y = arrowBounds.origin.y;
     v85.size.width = v28;
     v85.size.height = v27;
     v49 = v45;
     v50 = CGRectGetMinX(v85);
-    v86.origin.x = a6.origin.x;
-    v86.origin.y = a6.origin.y;
+    v86.origin.x = arrowBounds.origin.x;
+    v86.origin.y = arrowBounds.origin.y;
     v86.size.width = v28;
     v86.size.height = v27;
     v51 = CGRectGetMidY(v86);
     CGPathAddCurveToPoint(Mutable, 0, v49, cp1ya, v47, v48, v50, v51);
-    v87.origin.x = a6.origin.x;
-    v87.origin.y = a6.origin.y;
+    v87.origin.x = arrowBounds.origin.x;
+    v87.origin.y = arrowBounds.origin.y;
     v87.size.width = v28;
     v87.size.height = v27;
     v52 = CGRectGetMinX(v87);
-    v88.origin.x = a6.origin.x;
-    v88.origin.y = a6.origin.y;
+    v88.origin.x = arrowBounds.origin.x;
+    v88.origin.y = arrowBounds.origin.y;
     v88.size.width = v28;
     v88.size.height = v27;
     v53 = CGRectGetMidY(v88) + -5.0;
-    v89.origin.x = a6.origin.x;
-    v89.origin.y = a6.origin.y;
+    v89.origin.x = arrowBounds.origin.x;
+    v89.origin.y = arrowBounds.origin.y;
     v89.size.width = v28;
     v89.size.height = v27;
     v54 = CGRectGetMinY(v89) + 7.0;
-    v90.origin.x = a6.origin.x;
-    v90.origin.y = a6.origin.y;
+    v90.origin.x = arrowBounds.origin.x;
+    v90.origin.y = arrowBounds.origin.y;
     v90.size.width = v28;
     v90.size.height = v27;
     v55 = CGRectGetMinY(v90);
@@ -1164,24 +1164,24 @@ LABEL_10:
   return Mutable;
 }
 
-- (void)p_updateAppearanceForArrowDirection:(unint64_t)a3 arrowBounds:(CGRect)a4
+- (void)p_updateAppearanceForArrowDirection:(unint64_t)direction arrowBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [TSWPopoverController p_updateClipViewWithArrowDirection:"p_updateClipViewWithArrowDirection:arrowBounds:" arrowBounds:?];
-  [(TSWPopoverController *)self p_updateBackgroundViewWithArrowDirection:a3 arrowBounds:x, y, width, height];
+  [(TSWPopoverController *)self p_updateBackgroundViewWithArrowDirection:direction arrowBounds:x, y, width, height];
 
-  [(TSWPopoverController *)self p_updateStrokeLayerWithArrowDirection:a3 arrowBounds:x, y, width, height];
+  [(TSWPopoverController *)self p_updateStrokeLayerWithArrowDirection:direction arrowBounds:x, y, width, height];
 }
 
-- (void)p_updateClipViewWithArrowDirection:(unint64_t)a3 arrowBounds:(CGRect)a4
+- (void)p_updateClipViewWithArrowDirection:(unint64_t)direction arrowBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [-[TSWPopoverController view](self "view")];
   [(TSWClipView *)self->_clipView setFrame:?];
   [(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverContentInsets];
@@ -1198,7 +1198,7 @@ LABEL_10:
   v20 = v19;
   v22 = v21;
   [(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverCornerRadius];
-  v24 = [(TSWPopoverController *)self p_newMaskPathWithBounds:a3 cornerRadius:v16 arrowDirection:v18 arrowBounds:v20, v22, v23, *&x, *&y, *&width, *&height];
+  v24 = [(TSWPopoverController *)self p_newMaskPathWithBounds:direction cornerRadius:v16 arrowDirection:v18 arrowBounds:v20, v22, v23, *&x, *&y, *&width, *&height];
   [-[TSWPopoverController view](self "view")];
   v26 = v25;
   v28 = v27;
@@ -1213,9 +1213,9 @@ LABEL_10:
   CGPathRelease(v24);
 }
 
-- (void)p_updateBackgroundViewWithArrowDirection:(unint64_t)a3 arrowBounds:(CGRect)a4
+- (void)p_updateBackgroundViewWithArrowDirection:(unint64_t)direction arrowBounds:(CGRect)bounds
 {
-  [(UIView *)self->_backgroundView removeFromSuperview:a3];
+  [(UIView *)self->_backgroundView removeFromSuperview:direction];
 
   self->_backgroundView = 0;
   [(TSWPopoverControllerContentProvider *)[(TSWPopoverController *)self contentProvider] scale];
@@ -1233,9 +1233,9 @@ LABEL_10:
     [(UIView *)v8 bounds];
     [v9 setFrame:?];
     v10 = [TSUColor colorWithWhite:1.0 alpha:0.200000003];
-    v11 = [(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverBackgroundColor];
+    popoverBackgroundColor = [(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverBackgroundColor];
     [(TSUColor *)v10 alphaComponent];
-    v12 = [(TSUColor *)v11 blendedColorWithFraction:v10 ofColor:?];
+    v12 = [(TSUColor *)popoverBackgroundColor blendedColorWithFraction:v10 ofColor:?];
     [(TSUColor *)[(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverBackgroundColor] alphaComponent];
     [v9 setColors:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", objc_msgSend(objc_msgSend(v12, "colorWithAlphaComponent:"), "CGColor"), -[TSUColor CGColor](-[TSWPopoverTheme popoverBackgroundColor](-[TSWPopoverController theme](self, "theme"), "popoverBackgroundColor"), "CGColor"), 0)}];
     [(UIView *)v8 bounds];
@@ -1253,15 +1253,15 @@ LABEL_10:
   [(TSWClipView *)clipView addBackgroundView:v8];
 }
 
-- (void)p_updateStrokeLayerWithArrowDirection:(unint64_t)a3 arrowBounds:(CGRect)a4
+- (void)p_updateStrokeLayerWithArrowDirection:(unint64_t)direction arrowBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = [(TSDStroke *)[(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverStroke] shouldRender];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  shouldRender = [(TSDStroke *)[(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverStroke] shouldRender];
   strokeLayer = self->_strokeLayer;
-  if (v10)
+  if (shouldRender)
   {
     if (!strokeLayer)
     {
@@ -1288,7 +1288,7 @@ LABEL_10:
     v21 = v20;
     v23 = v22;
     [(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverCornerRadius];
-    v25 = [(TSWPopoverController *)self p_newMaskPathWithBounds:a3 cornerRadius:v17 arrowDirection:v19 arrowBounds:v21, v23, v24, *&x, *&y, *&width, *&height];
+    v25 = [(TSWPopoverController *)self p_newMaskPathWithBounds:direction cornerRadius:v17 arrowDirection:v19 arrowBounds:v21, v23, v24, *&x, *&y, *&width, *&height];
     [(CAShapeLayer *)self->_strokeLayer setPath:v25];
     CGPathRelease(v25);
     if (([(TSDStroke *)[(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverStroke] canApplyToShapeRenderable]& 1) == 0)
@@ -1296,10 +1296,10 @@ LABEL_10:
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    v26 = [(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverStroke];
+    popoverStroke = [(TSWPopoverTheme *)[(TSWPopoverController *)self theme] popoverStroke];
     v27 = [TSDRenderable renderableFromLayer:self->_strokeLayer];
 
-    [(TSDStroke *)v26 applyToRepRenderable:v27 withScale:1.0];
+    [(TSDStroke *)popoverStroke applyToRepRenderable:v27 withScale:1.0];
   }
 
   else

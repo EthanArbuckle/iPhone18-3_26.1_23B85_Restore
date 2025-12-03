@@ -1,21 +1,21 @@
 @interface VNCSUDetectionprintGenerator
-+ (BOOL)_getCSUDetectionprintNetworkConfiguration:(id *)a3 forConfigurationOptions:(id)a4 error:(id *)a5;
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (BOOL)warmUpSession:(id)a3 withOptions:(id)a4 error:(id *)a5;
-- (id)_observationsFromNetworkOutput:(id)a3 originatingRequestSpecifier:(id)a4 error:(id *)a5;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (BOOL)_getCSUDetectionprintNetworkConfiguration:(id *)configuration forConfigurationOptions:(id)options error:(id *)error;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (BOOL)warmUpSession:(id)session withOptions:(id)options error:(id *)error;
+- (id)_observationsFromNetworkOutput:(id)output originatingRequestSpecifier:(id)specifier error:(id *)error;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNCSUDetectionprintGenerator
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  v12 = a5;
-  v13 = [VNValidationUtilities originatingRequestSpecifierInOptions:v12 error:a8];
+  optionsCopy = options;
+  v13 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   v14 = v13;
   if (v13)
   {
@@ -40,16 +40,16 @@
     v22 = &v29;
     v19[4] = self;
     v20 = v13;
-    [(CSUDetectionPrintNetwork *)network runOnInputImage:a4 completion:v19];
+    [(CSUDetectionPrintNetwork *)network runOnInputImage:buffer completion:v19];
     v16 = v30[5];
     if (v16)
     {
       v17 = v16;
     }
 
-    else if (a8)
+    else if (error)
     {
-      *a8 = v24[5];
+      *error = v24[5];
     }
 
     _Block_object_dispose(&v23, 8);
@@ -87,22 +87,22 @@ void __130__VNCSUDetectionprintGenerator_processRegionOfInterest_croppedPixelBuf
   }
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a6;
-  v19 = [(VNDetector *)self validatedImageBufferFromOptions:v17 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  v19 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v20 = v19;
   if (v19)
   {
-    v21 = [v19 width];
-    v22 = [v20 height];
-    v23 = width * v21;
-    v24 = height * v22;
+    width = [v19 width];
+    height = [v20 height];
+    v23 = width * width;
+    v24 = height * height;
     if (v23 >= v24)
     {
       v25 = v24;
@@ -115,21 +115,21 @@ void __130__VNCSUDetectionprintGenerator_processRegionOfInterest_croppedPixelBuf
 
     if (self->_inputImageMinimumDimension > v25)
     {
-      VNRecordImageTooSmallWarningWithImageMinimumShortDimension(v18, v25);
+      VNRecordImageTooSmallWarningWithImageMinimumShortDimension(recorderCopy, v25);
     }
 
-    [v17 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+    [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
     inputImagePixelWidth = self->_inputImagePixelWidth;
     inputImagePixelHeight = self->_inputImagePixelHeight;
     inputImagePixelFormat = self->_inputImagePixelFormat;
     v33 = 0;
-    v29 = [v20 croppedBufferWithWidth:inputImagePixelWidth height:inputImagePixelHeight format:inputImagePixelFormat cropRect:v17 options:a8 error:&v33 pixelBufferRepsCacheKey:{x * v21, y * v22, v23, v24}];
+    v29 = [v20 croppedBufferWithWidth:inputImagePixelWidth height:inputImagePixelHeight format:inputImagePixelFormat cropRect:optionsCopy options:error error:&v33 pixelBufferRepsCacheKey:{x * width, y * height, v23, v24}];
     v30 = v33;
-    *a7 = v29;
+    *buffer = v29;
     v31 = v29 != 0;
     if (v29)
     {
-      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:v17 cacheKey:v30 imageBuffer:v20];
+      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:optionsCopy cacheKey:v30 imageBuffer:v20];
     }
   }
 
@@ -141,15 +141,15 @@ void __130__VNCSUDetectionprintGenerator_processRegionOfInterest_croppedPixelBuf
   return v31;
 }
 
-- (BOOL)warmUpSession:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (BOOL)warmUpSession:(id)session withOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  sessionCopy = session;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = VNCSUDetectionprintGenerator;
-  if ([(VNDetector *)&v12 warmUpSession:v8 withOptions:v9 error:a5])
+  if ([(VNDetector *)&v12 warmUpSession:sessionCopy withOptions:optionsCopy error:error])
   {
-    v10 = [(CSUDetectionPrintNetwork *)self->_network loadResourcesAndReturnError:a5];
+    v10 = [(CSUDetectionPrintNetwork *)self->_network loadResourcesAndReturnError:error];
   }
 
   else
@@ -160,18 +160,18 @@ void __130__VNCSUDetectionprintGenerator_processRegionOfInterest_croppedPixelBuf
   return v10;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v16.receiver = self;
   v16.super_class = VNCSUDetectionprintGenerator;
-  if (![(VNDetector *)&v16 completeInitializationForSession:a3 error:?])
+  if (![(VNDetector *)&v16 completeInitializationForSession:session error:?])
   {
     return 0;
   }
 
-  v6 = [(VNDetector *)self configurationOptions];
+  configurationOptions = [(VNDetector *)self configurationOptions];
   v15 = 0;
-  v7 = [objc_opt_class() _getCSUDetectionprintNetworkConfiguration:&v15 forConfigurationOptions:v6 error:a4];
+  v7 = [objc_opt_class() _getCSUDetectionprintNetworkConfiguration:&v15 forConfigurationOptions:configurationOptions error:error];
   v8 = v15;
   if (v7)
   {
@@ -179,15 +179,15 @@ void __130__VNCSUDetectionprintGenerator_processRegionOfInterest_croppedPixelBuf
     network = self->_network;
     self->_network = v9;
 
-    v11 = [v8 inputPixelBufferDescriptor];
-    self->_inputImagePixelFormat = [v11 pixelFormat];
-    self->_inputImagePixelWidth = [v11 width];
-    v12 = [v11 height];
-    self->_inputImagePixelHeight = v12;
+    inputPixelBufferDescriptor = [v8 inputPixelBufferDescriptor];
+    self->_inputImagePixelFormat = [inputPixelBufferDescriptor pixelFormat];
+    self->_inputImagePixelWidth = [inputPixelBufferDescriptor width];
+    height = [inputPixelBufferDescriptor height];
+    self->_inputImagePixelHeight = height;
     inputImagePixelWidth = self->_inputImagePixelWidth;
-    if (inputImagePixelWidth >= v12)
+    if (inputImagePixelWidth >= height)
     {
-      inputImagePixelWidth = v12;
+      inputImagePixelWidth = height;
     }
 
     self->_inputImageMinimumDimension = inputImagePixelWidth;
@@ -196,18 +196,18 @@ void __130__VNCSUDetectionprintGenerator_processRegionOfInterest_croppedPixelBuf
   return v7;
 }
 
-- (id)_observationsFromNetworkOutput:(id)a3 originatingRequestSpecifier:(id)a4 error:(id *)a5
+- (id)_observationsFromNetworkOutput:(id)output originatingRequestSpecifier:(id)specifier error:(id *)error
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v20 = a4;
+  outputCopy = output;
+  specifierCopy = specifier;
   v28[0] = @"6316";
   v28[1] = @"5637";
   v29[0] = @"VNDetectionprintTensorKeyStride8FeatureMap";
   v29[1] = @"VNDetectionprintTensorKeyStride16FeatureMap";
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
   v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v21 availableTapPointNames];
+  [outputCopy availableTapPointNames];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -229,13 +229,13 @@ void __130__VNCSUDetectionprintGenerator_processRegionOfInterest_croppedPixelBuf
         v13 = [v7 objectForKeyedSubscript:v12];
         if (v13)
         {
-          v14 = [v21 detectionPrintFeatureForTapPointName:v12 error:a5];
+          v14 = [outputCopy detectionPrintFeatureForTapPointName:v12 error:error];
           if (!v14)
           {
             goto LABEL_14;
           }
 
-          v15 = [VNDetectionprintTensor tensorFromCSUBuffer:v14 originatingRequestSpecifier:v20 error:a5];
+          v15 = [VNDetectionprintTensor tensorFromCSUBuffer:v14 originatingRequestSpecifier:specifierCopy error:error];
           if (!v15)
           {
 
@@ -259,8 +259,8 @@ LABEL_14:
     }
   }
 
-  v16 = [[VNDetectionprint alloc] initWithTensorsDictionary:v19 originatingRequestSpecifier:v20];
-  v13 = [[VNDetectionprintObservation alloc] initWithOriginatingRequestSpecifier:v20 detectionprint:v16];
+  v16 = [[VNDetectionprint alloc] initWithTensorsDictionary:v19 originatingRequestSpecifier:specifierCopy];
+  v13 = [[VNDetectionprintObservation alloc] initWithOriginatingRequestSpecifier:specifierCopy detectionprint:v16];
   v26 = v13;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
 LABEL_15:
@@ -268,17 +268,17 @@ LABEL_15:
   return v17;
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11 = 0;
-  v4 = [a1 _getCSUDetectionprintNetworkConfiguration:&v11 forConfigurationOptions:a3 error:a4];
+  v4 = [self _getCSUDetectionprintNetworkConfiguration:&v11 forConfigurationOptions:options error:error];
   v5 = v11;
   v6 = v5;
   if (v4)
   {
-    v7 = [v5 inputPixelBufferDescriptor];
-    v8 = -[VNSupportedImageSize initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:]([VNSupportedImageSize alloc], "initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:", [v7 pixelFormat], objc_msgSend(v7, "width"), objc_msgSend(v7, "height"), 1, 0, 0);
+    inputPixelBufferDescriptor = [v5 inputPixelBufferDescriptor];
+    v8 = -[VNSupportedImageSize initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:]([VNSupportedImageSize alloc], "initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:", [inputPixelBufferDescriptor pixelFormat], objc_msgSend(inputPixelBufferDescriptor, "width"), objc_msgSend(inputPixelBufferDescriptor, "height"), 1, 0, 0);
     v12[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   }
@@ -291,18 +291,18 @@ LABEL_15:
   return v9;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 detectionPrintConfigurationRevisionForConfigurationOptions:v6];
-  v8 = [MEMORY[0x1E6999108] detectionPrintConfigurationForRevision:v7 error:a4];
+  optionsCopy = options;
+  v7 = [self detectionPrintConfigurationRevisionForConfigurationOptions:optionsCopy];
+  v8 = [MEMORY[0x1E6999108] detectionPrintConfigurationForRevision:v7 error:error];
   v9 = v8;
   if (v8)
   {
     v13 = @"VNComputeStageMain";
-    v10 = [v8 supportedComputeDevices];
-    v14[0] = v10;
+    supportedComputeDevices = [v8 supportedComputeDevices];
+    v14[0] = supportedComputeDevices;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   }
 
@@ -314,7 +314,7 @@ LABEL_15:
   return v11;
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";
@@ -323,21 +323,21 @@ LABEL_15:
   return v3;
 }
 
-+ (BOOL)_getCSUDetectionprintNetworkConfiguration:(id *)a3 forConfigurationOptions:(id)a4 error:(id *)a5
++ (BOOL)_getCSUDetectionprintNetworkConfiguration:(id *)configuration forConfigurationOptions:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = [a1 computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:v8 error:a5];
+  optionsCopy = options;
+  v9 = [self computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:optionsCopy error:error];
   if (v9)
   {
-    v10 = [a1 detectionPrintConfigurationRevisionForConfigurationOptions:v8];
-    v11 = [MEMORY[0x1E6999108] detectionPrintConfigurationForRevision:v10 error:a5];
+    v10 = [self detectionPrintConfigurationRevisionForConfigurationOptions:optionsCopy];
+    v11 = [MEMORY[0x1E6999108] detectionPrintConfigurationForRevision:v10 error:error];
     v12 = v11;
     v13 = v11 != 0;
     if (v11)
     {
       [v11 setComputeDevice:v9];
       v14 = v12;
-      *a3 = v12;
+      *configuration = v12;
     }
   }
 

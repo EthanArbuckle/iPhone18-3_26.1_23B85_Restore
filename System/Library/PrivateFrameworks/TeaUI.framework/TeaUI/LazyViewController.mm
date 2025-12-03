@@ -1,11 +1,11 @@
 @interface LazyViewController
 - (NSString)description;
-- (_TtC5TeaUI18LazyViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5TeaUI18LazyViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)childViewControllerForStatusBarStyle;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -13,7 +13,7 @@
 
 - (id)childViewControllerForStatusBarStyle
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = LazyViewController.childForStatusBarStyle.getter();
 
   return v2;
@@ -21,51 +21,51 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   LazyViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  LazyViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  LazyViewController.viewWillAppear(_:)(appear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   LazyViewController.viewWillLayoutSubviews()();
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  LazyViewController.setEditing(_:animated:)(a3, a4);
+  selfCopy = self;
+  LazyViewController.setEditing(_:animated:)(editing, animated);
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  v4 = self;
-  LazyViewController.contentScrollView(for:)(v5, a3);
+  selfCopy = self;
+  LazyViewController.contentScrollView(for:)(v5, edge);
   v7 = v6;
 
   return v7;
 }
 
-- (_TtC5TeaUI18LazyViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI18LazyViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   LazyViewController.init(nibName:bundle:)();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   LazyViewController.description.getter();
 
   v3 = sub_1D8190EE4();

@@ -1,19 +1,19 @@
 @interface APPrivacyDisclosureAdapter
-- (APPrivacyDisclosureAdapter)initWithPreflightManger:(id)a3;
+- (APPrivacyDisclosureAdapter)initWithPreflightManger:(id)manger;
 @end
 
 @implementation APPrivacyDisclosureAdapter
 
-- (APPrivacyDisclosureAdapter)initWithPreflightManger:(id)a3
+- (APPrivacyDisclosureAdapter)initWithPreflightManger:(id)manger
 {
-  v5 = a3;
+  mangerCopy = manger;
   v9.receiver = self;
   v9.super_class = APPrivacyDisclosureAdapter;
   v6 = [(APPrivacyDisclosureAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preflightManager, a3);
+    objc_storeStrong(&v6->_preflightManager, manger);
   }
 
   return v7;

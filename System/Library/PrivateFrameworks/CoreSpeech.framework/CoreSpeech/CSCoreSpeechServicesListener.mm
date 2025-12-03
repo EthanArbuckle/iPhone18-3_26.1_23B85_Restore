@@ -1,23 +1,23 @@
 @interface CSCoreSpeechServicesListener
-- (BOOL)_servicesListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_servicesListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CSCoreSpeechServicesListener)init;
-- (void)clearTriggerCount:(id)a3;
-- (void)getCurrentVoiceTriggerLocaleWithEndpointId:(id)a3 completion:(id)a4;
-- (void)getFirstPassRunningMode:(id)a3;
-- (void)getTestResponse:(id)a3;
-- (void)getTriggerCount:(id)a3;
-- (void)getVoiceTriggerRTModelRequestOptionsWithEndpointId:(id)a3 completion:(id)a4;
+- (void)clearTriggerCount:(id)count;
+- (void)getCurrentVoiceTriggerLocaleWithEndpointId:(id)id completion:(id)completion;
+- (void)getFirstPassRunningMode:(id)mode;
+- (void)getTestResponse:(id)response;
+- (void)getTriggerCount:(id)count;
+- (void)getVoiceTriggerRTModelRequestOptionsWithEndpointId:(id)id completion:(id)completion;
 - (void)listen;
-- (void)requestUpdatedSATAudio:(id)a3;
-- (void)setDelayInterstitialSounds:(id)a3 level:(int64_t)a4 completion:(id)a5;
+- (void)requestUpdatedSATAudio:(id)audio;
+- (void)setDelayInterstitialSounds:(id)sounds level:(int64_t)level completion:(id)completion;
 @end
 
 @implementation CSCoreSpeechServicesListener
 
-- (void)getFirstPassRunningMode:(id)a3
+- (void)getFirstPassRunningMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -29,26 +29,26 @@
   gibraltarVoiceTriggerHandler = self->_gibraltarVoiceTriggerHandler;
   if (gibraltarVoiceTriggerHandler)
   {
-    [(CSGibraltarVoiceTriggerHandler *)gibraltarVoiceTriggerHandler getFirstPassRunningMode:v4];
+    [(CSGibraltarVoiceTriggerHandler *)gibraltarVoiceTriggerHandler getFirstPassRunningMode:modeCopy];
   }
 
-  else if (v4)
+  else if (modeCopy)
   {
-    v4[2](v4, -1);
+    modeCopy[2](modeCopy, -1);
   }
 }
 
-- (void)requestUpdatedSATAudio:(id)a3
+- (void)requestUpdatedSATAudio:(id)audio
 {
-  if (a3)
+  if (audio)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(audio + 2))(audio, 0);
   }
 }
 
-- (void)clearTriggerCount:(id)a3
+- (void)clearTriggerCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -60,18 +60,18 @@
   gibraltarVoiceTriggerHandler = self->_gibraltarVoiceTriggerHandler;
   if (gibraltarVoiceTriggerHandler)
   {
-    [(CSGibraltarVoiceTriggerHandler *)gibraltarVoiceTriggerHandler clearTriggerCount:v4];
+    [(CSGibraltarVoiceTriggerHandler *)gibraltarVoiceTriggerHandler clearTriggerCount:countCopy];
   }
 
-  else if (v4)
+  else if (countCopy)
   {
-    v4[2](v4);
+    countCopy[2](countCopy);
   }
 }
 
-- (void)getTriggerCount:(id)a3
+- (void)getTriggerCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -83,19 +83,19 @@
   gibraltarVoiceTriggerHandler = self->_gibraltarVoiceTriggerHandler;
   if (gibraltarVoiceTriggerHandler)
   {
-    [(CSGibraltarVoiceTriggerHandler *)gibraltarVoiceTriggerHandler getTriggerCount:v4];
+    [(CSGibraltarVoiceTriggerHandler *)gibraltarVoiceTriggerHandler getTriggerCount:countCopy];
   }
 
-  else if (v4)
+  else if (countCopy)
   {
-    v4[2](v4, 0);
+    countCopy[2](countCopy, 0);
   }
 }
 
-- (void)setDelayInterstitialSounds:(id)a3 level:(int64_t)a4 completion:(id)a5
+- (void)setDelayInterstitialSounds:(id)sounds level:(int64_t)level completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  soundsCopy = sounds;
+  completionCopy = completion;
   v10 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -107,51 +107,51 @@
   gibraltarVoiceTriggerHandler = self->_gibraltarVoiceTriggerHandler;
   if (gibraltarVoiceTriggerHandler)
   {
-    [(CSGibraltarVoiceTriggerHandler *)gibraltarVoiceTriggerHandler setDelayInterstitialSounds:v8 level:a4 completion:v9];
+    [(CSGibraltarVoiceTriggerHandler *)gibraltarVoiceTriggerHandler setDelayInterstitialSounds:soundsCopy level:level completion:completionCopy];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
     v12 = [NSError errorWithDomain:CSErrorDomain code:305 userInfo:0];
-    v9[2](v9, v12);
+    completionCopy[2](completionCopy, v12);
   }
 }
 
-- (void)getVoiceTriggerRTModelRequestOptionsWithEndpointId:(id)a3 completion:(id)a4
+- (void)getVoiceTriggerRTModelRequestOptionsWithEndpointId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000595A4;
   v11[3] = &unk_100253718;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = idCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)getCurrentVoiceTriggerLocaleWithEndpointId:(id)a3 completion:(id)a4
+- (void)getCurrentVoiceTriggerLocaleWithEndpointId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10005994C;
   v11[3] = &unk_100253718;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = idCopy;
+  v13 = completionCopy;
+  v9 = idCopy;
+  v10 = completionCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)getTestResponse:(id)a3
+- (void)getTestResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -160,13 +160,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s get test response. return string Test", &v5, 0xCu);
   }
 
-  v3[2](v3, @"Test");
+  responseCopy[2](responseCopy, @"Test");
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -175,9 +175,9 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s ", &v12, 0xCu);
   }
 
-  if (self->_servicesListener == v6)
+  if (self->_servicesListener == listenerCopy)
   {
-    v10 = [(CSCoreSpeechServicesListener *)self _servicesListenerShouldAcceptNewConnection:v7];
+    v10 = [(CSCoreSpeechServicesListener *)self _servicesListenerShouldAcceptNewConnection:connectionCopy];
   }
 
   else
@@ -196,41 +196,41 @@
   return v10;
 }
 
-- (BOOL)_servicesListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_servicesListenerShouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[CSCoreSpeechServicesListener _servicesListenerShouldAcceptNewConnection:]";
     v12 = 2114;
-    v13 = v4;
+    v13 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s Received accept request : %{public}@", &v10, 0x16u);
   }
 
   v6 = sub_1000EA614();
-  [v4 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  v7 = [CSUtils xpcConnection:v4 hasEntitlement:@"corespeech.xpc"];
+  v7 = [CSUtils xpcConnection:connectionCopy hasEntitlement:@"corespeech.xpc"];
   if (v7)
   {
-    [v4 setExportedObject:self];
-    [v4 setInterruptionHandler:&stru_10024F4A8];
-    [v4 setInvalidationHandler:&stru_10024F4C8];
-    [v4 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInterruptionHandler:&stru_10024F4A8];
+    [connectionCopy setInvalidationHandler:&stru_10024F4C8];
+    [connectionCopy resume];
   }
 
   else
   {
-    [v4 invalidate];
+    [connectionCopy invalidate];
     v8 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v10 = 136315394;
       v11 = "[CSCoreSpeechServicesListener _servicesListenerShouldAcceptNewConnection:]";
       v12 = 2114;
-      v13 = v4;
+      v13 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s Connectin request %{public}@ rejected due to missing entitlement", &v10, 0x16u);
     }
   }

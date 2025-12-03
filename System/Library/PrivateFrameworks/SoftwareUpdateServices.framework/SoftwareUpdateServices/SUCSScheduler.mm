@@ -1,13 +1,13 @@
 @interface SUCSScheduler
 + (BOOL)_callInProgress;
-+ (BOOL)_getBoolForKeyPath:(id)a3;
++ (BOOL)_getBoolForKeyPath:(id)path;
 + (BOOL)_hasNetworkConnection;
-+ (id)batteryLevelPredicate:(id)a3;
++ (id)batteryLevelPredicate:(id)predicate;
 + (int)_batteryLevel;
-+ (int)_getIntForKeyPath:(id)a3;
++ (int)_getIntForKeyPath:(id)path;
 - (SUCSScheduler)init;
 - (void)dealloc;
-- (void)registerInstallAlertConditionsWithHandler:(id)a3;
+- (void)registerInstallAlertConditionsWithHandler:(id)handler;
 - (void)unregisterInstallationAlertAction;
 @end
 
@@ -20,9 +20,9 @@
   v2 = [(SUCSScheduler *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     context = v2->_context;
-    v2->_context = v3;
+    v2->_context = userContext;
 
     registration = v2->_registration;
     v2->_registration = 0;
@@ -39,10 +39,10 @@
   [(SUCSScheduler *)&v3 dealloc];
 }
 
-- (void)registerInstallAlertConditionsWithHandler:(id)a3
+- (void)registerInstallAlertConditionsWithHandler:(id)handler
 {
   v24[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277CFE360];
   v6 = [SUCSScheduler batteryLevelPredicate:&unk_287B6F7C0];
   v24[0] = v6;
@@ -55,18 +55,18 @@
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
   v11 = [v5 andPredicateWithSubpredicates:v10];
 
-  v12 = [MEMORY[0x277CFE318] userContext];
-  LODWORD(v7) = [v12 evaluatePredicate:v11];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  LODWORD(v7) = [userContext evaluatePredicate:v11];
 
   if (v7)
   {
     SULogInfo(@"Installation alert predicate conditions met", v13, v14, v15, v16, v17, v18, v19, v23);
-    v4[2](v4, @"com.apple.softwareupdateservicesd.installAlert");
+    handlerCopy[2](handlerCopy, @"com.apple.softwareupdateservicesd.installAlert");
   }
 
   else
   {
-    v20 = [MEMORY[0x277CFE350] localWakingRegistrationWithIdentifier:@"com.apple.softwareupdateservicesd.installAlert" contextualPredicate:v11 callback:v4];
+    v20 = [MEMORY[0x277CFE350] localWakingRegistrationWithIdentifier:@"com.apple.softwareupdateservicesd.installAlert" contextualPredicate:v11 callback:handlerCopy];
     registration = self->_registration;
     self->_registration = v20;
 
@@ -93,14 +93,14 @@
   }
 }
 
-+ (id)batteryLevelPredicate:(id)a3
++ (id)batteryLevelPredicate:(id)predicate
 {
   v3 = MEMORY[0x277CFE360];
   v4 = MEMORY[0x277CFE338];
-  v5 = a3;
-  v6 = [v4 keyPathForBatteryLevel];
-  v17 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  v7 = [v3 predicateForKeyPath:v6 withFormat:@"self.%@.value >= %@"];
+  predicateCopy = predicate;
+  keyPathForBatteryLevel = [v4 keyPathForBatteryLevel];
+  keyPathForBatteryLevel2 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  v7 = [v3 predicateForKeyPath:keyPathForBatteryLevel withFormat:@"self.%@.value >= %@"];
 
   if (v7)
   {
@@ -109,59 +109,59 @@
 
   else
   {
-    SULogInfo(@"Failed to create battery level _CDContextualPredicate", v8, v9, v10, v11, v12, v13, v14, v17);
+    SULogInfo(@"Failed to create battery level _CDContextualPredicate", v8, v9, v10, v11, v12, v13, v14, keyPathForBatteryLevel2);
   }
 
   return v7;
 }
 
-+ (BOOL)_getBoolForKeyPath:(id)a3
++ (BOOL)_getBoolForKeyPath:(id)path
 {
   v3 = MEMORY[0x277CFE318];
-  v4 = a3;
-  v5 = [v3 userContext];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  pathCopy = path;
+  userContext = [v3 userContext];
+  v6 = [userContext objectForKeyedSubscript:pathCopy];
 
-  LOBYTE(v5) = [v6 BOOLValue];
-  return v5;
+  LOBYTE(userContext) = [v6 BOOLValue];
+  return userContext;
 }
 
-+ (int)_getIntForKeyPath:(id)a3
++ (int)_getIntForKeyPath:(id)path
 {
   v3 = MEMORY[0x277CFE318];
-  v4 = a3;
-  v5 = [v3 userContext];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  pathCopy = path;
+  userContext = [v3 userContext];
+  v6 = [userContext objectForKeyedSubscript:pathCopy];
 
-  LODWORD(v5) = [v6 intValue];
-  return v5;
+  LODWORD(userContext) = [v6 intValue];
+  return userContext;
 }
 
 + (int)_batteryLevel
 {
-  v3 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  LODWORD(a1) = [a1 _getIntForKeyPath:v3];
+  keyPathForBatteryLevel = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  LODWORD(self) = [self _getIntForKeyPath:keyPathForBatteryLevel];
 
-  return a1;
+  return self;
 }
 
 + (BOOL)_callInProgress
 {
-  v3 = [MEMORY[0x277CFE338] keyPathForCallInProgressStatus];
-  LOBYTE(a1) = [a1 _getBoolForKeyPath:v3];
+  keyPathForCallInProgressStatus = [MEMORY[0x277CFE338] keyPathForCallInProgressStatus];
+  LOBYTE(self) = [self _getBoolForKeyPath:keyPathForCallInProgressStatus];
 
-  return a1;
+  return self;
 }
 
 + (BOOL)_hasNetworkConnection
 {
-  v3 = [MEMORY[0x277CFE338] keyPathForWiFiConnectionQuality];
-  v4 = [a1 _getIntForKeyPath:v3];
+  keyPathForWiFiConnectionQuality = [MEMORY[0x277CFE338] keyPathForWiFiConnectionQuality];
+  v4 = [self _getIntForKeyPath:keyPathForWiFiConnectionQuality];
 
-  v5 = [MEMORY[0x277CFE338] keyPathForCellConnectionQuality];
-  LODWORD(a1) = [a1 _getIntForKeyPath:v5];
+  keyPathForCellConnectionQuality = [MEMORY[0x277CFE338] keyPathForCellConnectionQuality];
+  LODWORD(self) = [self _getIntForKeyPath:keyPathForCellConnectionQuality];
 
-  return (v4 & a1 & 0x80000000) == 0;
+  return (v4 & self & 0x80000000) == 0;
 }
 
 @end

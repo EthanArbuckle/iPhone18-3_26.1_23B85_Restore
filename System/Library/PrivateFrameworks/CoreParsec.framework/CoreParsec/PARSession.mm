@@ -1,55 +1,55 @@
 @interface PARSession
-+ (PARSession)sessionWithConfiguration:(id)a3;
-+ (id)sharedPARSessionWithConfiguration:(id)a3;
++ (PARSession)sessionWithConfiguration:(id)configuration;
++ (id)sharedPARSessionWithConfiguration:(id)configuration;
 + (id)sharedSession;
-- (BOOL)loadCard:(id)a3 withCompletionHandler:(id)a4;
-- (BOOL)loadImage:(id)a3 withCompletionHandler:(id)a4;
-- (BOOL)loadImage:(id)a3 withContext:(id)a4 completionHandler:(id)a5;
-- (BOOL)loadMoreResults:(id)a3 withCompletionHandler:(id)a4;
-- (id)initInternal:(id)a3 startImmediately:(BOOL)a4;
-- (void)clearEngagedResult:(id)a3 completion:(id)a4;
-- (void)reportFeedback:(id)a3;
-- (void)subscribeToChannel:(id)a3 reply:(id)a4;
-- (void)subscriptionStatusForChannel:(id)a3 reply:(id)a4;
-- (void)unsubscribeFromChannel:(id)a3 reply:(id)a4;
+- (BOOL)loadCard:(id)card withCompletionHandler:(id)handler;
+- (BOOL)loadImage:(id)image withCompletionHandler:(id)handler;
+- (BOOL)loadImage:(id)image withContext:(id)context completionHandler:(id)handler;
+- (BOOL)loadMoreResults:(id)results withCompletionHandler:(id)handler;
+- (id)initInternal:(id)internal startImmediately:(BOOL)immediately;
+- (void)clearEngagedResult:(id)result completion:(id)completion;
+- (void)reportFeedback:(id)feedback;
+- (void)subscribeToChannel:(id)channel reply:(id)reply;
+- (void)subscriptionStatusForChannel:(id)channel reply:(id)reply;
+- (void)unsubscribeFromChannel:(id)channel reply:(id)reply;
 @end
 
 @implementation PARSession
 
-- (void)subscriptionStatusForChannel:(id)a3 reply:(id)a4
+- (void)subscriptionStatusForChannel:(id)channel reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PARSession *)self internal];
-  [v8 subscriptionStatusForChannel:v7 reply:v6];
+  replyCopy = reply;
+  channelCopy = channel;
+  internal = [(PARSession *)self internal];
+  [internal subscriptionStatusForChannel:channelCopy reply:replyCopy];
 }
 
-- (void)unsubscribeFromChannel:(id)a3 reply:(id)a4
+- (void)unsubscribeFromChannel:(id)channel reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PARSession *)self internal];
-  [v8 unsubscribeFromChannel:v7 reply:v6];
+  replyCopy = reply;
+  channelCopy = channel;
+  internal = [(PARSession *)self internal];
+  [internal unsubscribeFromChannel:channelCopy reply:replyCopy];
 }
 
-- (void)subscribeToChannel:(id)a3 reply:(id)a4
+- (void)subscribeToChannel:(id)channel reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PARSession *)self internal];
-  [v8 subscribeToChannel:v7 reply:v6];
+  replyCopy = reply;
+  channelCopy = channel;
+  internal = [(PARSession *)self internal];
+  [internal subscribeToChannel:channelCopy reply:replyCopy];
 }
 
-- (void)clearEngagedResult:(id)a3 completion:(id)a4
+- (void)clearEngagedResult:(id)result completion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v11 = a3;
+  resultCopy = result;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v11 count:1];
-  [(PARSessionSwiftInternal *)internal clearEngagedResults:v9 completion:v7, v11, v12];
+  completionCopy = completion;
+  resultCopy2 = result;
+  v9 = [v6 arrayWithObjects:&resultCopy count:1];
+  [(PARSessionSwiftInternal *)internal clearEngagedResults:v9 completion:completionCopy, resultCopy, v12];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -106,95 +106,95 @@ LABEL_5:
 LABEL_14:
 }
 
-- (void)reportFeedback:(id)a3
+- (void)reportFeedback:(id)feedback
 {
   internal = self->_internal;
-  v6 = a3;
-  v4 = [v6 queryId];
-  if (v4 >> 31)
+  feedbackCopy = feedback;
+  queryId = [feedbackCopy queryId];
+  if (queryId >> 31)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = queryId;
   }
 
-  [(PARSessionSwiftInternal *)internal reportFeedback:v6 queryId:v5];
+  [(PARSessionSwiftInternal *)internal reportFeedback:feedbackCopy queryId:v5];
 }
 
-- (BOOL)loadMoreResults:(id)a3 withCompletionHandler:(id)a4
+- (BOOL)loadMoreResults:(id)results withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PARSession *)self moreResultsLoader];
-  v9 = [v8 canLoadMoreResults:v6];
+  resultsCopy = results;
+  handlerCopy = handler;
+  moreResultsLoader = [(PARSession *)self moreResultsLoader];
+  v9 = [moreResultsLoader canLoadMoreResults:resultsCopy];
   if (v9)
   {
-    [v8 loadMoreResults:v6 completionHandler:v7];
+    [moreResultsLoader loadMoreResults:resultsCopy completionHandler:handlerCopy];
   }
 
   return v9;
 }
 
-- (BOOL)loadCard:(id)a3 withCompletionHandler:(id)a4
+- (BOOL)loadCard:(id)card withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PARSession *)self cardLoader];
-  v9 = [v8 canLoadCard:v6];
+  cardCopy = card;
+  handlerCopy = handler;
+  cardLoader = [(PARSession *)self cardLoader];
+  v9 = [cardLoader canLoadCard:cardCopy];
   if (v9)
   {
-    [v8 loadCard:v6 completionHandler:v7];
+    [cardLoader loadCard:cardCopy completionHandler:handlerCopy];
   }
 
   return v9;
 }
 
-- (BOOL)loadImage:(id)a3 withCompletionHandler:(id)a4
+- (BOOL)loadImage:(id)image withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PARSession *)self imageLoader];
-  v9 = [v8 canLoadImage:v6 context:0];
+  imageCopy = image;
+  handlerCopy = handler;
+  imageLoader = [(PARSession *)self imageLoader];
+  v9 = [imageLoader canLoadImage:imageCopy context:0];
   if (v9)
   {
-    [v8 loadImage:v6 context:0 completionHandler:v7];
+    [imageLoader loadImage:imageCopy context:0 completionHandler:handlerCopy];
   }
 
   return v9;
 }
 
-- (BOOL)loadImage:(id)a3 withContext:(id)a4 completionHandler:(id)a5
+- (BOOL)loadImage:(id)image withContext:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PARSession *)self imageLoader];
-  v12 = [v11 canLoadImage:v8 context:v9];
+  imageCopy = image;
+  contextCopy = context;
+  handlerCopy = handler;
+  imageLoader = [(PARSession *)self imageLoader];
+  v12 = [imageLoader canLoadImage:imageCopy context:contextCopy];
   if (v12)
   {
-    [v11 loadImage:v8 context:v9 completionHandler:v10];
+    [imageLoader loadImage:imageCopy context:contextCopy completionHandler:handlerCopy];
   }
 
   return v12;
 }
 
-- (id)initInternal:(id)a3 startImmediately:(BOOL)a4
+- (id)initInternal:(id)internal startImmediately:(BOOL)immediately
 {
-  v4 = a4;
-  v7 = a3;
+  immediatelyCopy = immediately;
+  internalCopy = internal;
   v11.receiver = self;
   v11.super_class = PARSession;
   v8 = [(PARSession *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_internal, a3);
+    objc_storeStrong(&v8->_internal, internal);
   }
 
-  if (v4)
+  if (immediatelyCopy)
   {
     [(PARSession *)v9 start];
   }
@@ -202,10 +202,10 @@ LABEL_14:
   return v9;
 }
 
-+ (PARSession)sessionWithConfiguration:(id)a3
++ (PARSession)sessionWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithConfiguration:v4 connection:0 delegate:0 startImmediately:1];
+  configurationCopy = configuration;
+  v5 = [[self alloc] initWithConfiguration:configurationCopy connection:0 delegate:0 startImmediately:1];
 
   return v5;
 }
@@ -243,13 +243,13 @@ void __27__PARSession_sharedSession__block_invoke()
   sharedSession_sharedSession = v0;
 }
 
-+ (id)sharedPARSessionWithConfiguration:(id)a3
++ (id)sharedPARSessionWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = v3;
+  configurationCopy = configuration;
+  v4 = configurationCopy;
   if (sharedPARSessionWithConfiguration__onceToken == -1)
   {
-    if (v3)
+    if (configurationCopy)
     {
 LABEL_3:
       v5 = v4;

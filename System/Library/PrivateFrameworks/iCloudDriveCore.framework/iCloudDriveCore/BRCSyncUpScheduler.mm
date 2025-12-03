@@ -1,39 +1,39 @@
 @interface BRCSyncUpScheduler
-- (BOOL)isItemPendingSyncUp:(id)a3;
-- (BRCSyncUpScheduler)initWithAccountSession:(id)a3;
-- (id)descriptionForItem:(id)a3 context:(id)a4;
-- (int64_t)timeToRetryForItem:(id)a3 zone:(id)a4;
-- (unint64_t)finishSyncUpForItem:(id)a3 inZone:(id)a4 success:(BOOL)a5;
-- (unint64_t)postponeSyncUpCallback:(id)a3 inZone:(id)a4;
-- (void)_clearSyncUpErrorForItem:(id)a3;
-- (void)_scheduleSyncUpJob:(id)a3;
-- (void)_scheduleSyncUpJobForZoneWithRowID:(id)a3;
-- (void)createSyncUpJobForItem:(id)a3 inZone:(id)a4;
-- (void)createSyncUpJobForRowID:(unint64_t)a3 inZone:(id)a4;
-- (void)ineligibleSyncUpCallback:(id)a3 inZone:(id)a4;
-- (void)prepareItemForSyncUp:(id)a3 inFlightDiffs:(unint64_t)a4 inZone:(id)a5;
-- (void)recoverAndReportMissingJobsWithCompletion:(id)a3 recoveryTask:(id)a4;
+- (BOOL)isItemPendingSyncUp:(id)up;
+- (BRCSyncUpScheduler)initWithAccountSession:(id)session;
+- (id)descriptionForItem:(id)item context:(id)context;
+- (int64_t)timeToRetryForItem:(id)item zone:(id)zone;
+- (unint64_t)finishSyncUpForItem:(id)item inZone:(id)zone success:(BOOL)success;
+- (unint64_t)postponeSyncUpCallback:(id)callback inZone:(id)zone;
+- (void)_clearSyncUpErrorForItem:(id)item;
+- (void)_scheduleSyncUpJob:(id)job;
+- (void)_scheduleSyncUpJobForZoneWithRowID:(id)d;
+- (void)createSyncUpJobForItem:(id)item inZone:(id)zone;
+- (void)createSyncUpJobForRowID:(unint64_t)d inZone:(id)zone;
+- (void)ineligibleSyncUpCallback:(id)callback inZone:(id)zone;
+- (void)prepareItemForSyncUp:(id)up inFlightDiffs:(unint64_t)diffs inZone:(id)zone;
+- (void)recoverAndReportMissingJobsWithCompletion:(id)completion recoveryTask:(id)task;
 - (void)schedule;
 @end
 
 @implementation BRCSyncUpScheduler
 
-- (BRCSyncUpScheduler)initWithAccountSession:(id)a3
+- (BRCSyncUpScheduler)initWithAccountSession:(id)session
 {
   v4.receiver = self;
   v4.super_class = BRCSyncUpScheduler;
-  return [(BRCFSSchedulerBase *)&v4 initWithSession:a3 name:@"Sync-Up" tableName:@"client_sync_up"];
+  return [(BRCFSSchedulerBase *)&v4 initWithSession:session name:@"Sync-Up" tableName:@"client_sync_up"];
 }
 
-- (id)descriptionForItem:(id)a3 context:(id)a4
+- (id)descriptionForItem:(id)item context:(id)context
 {
   v6 = MEMORY[0x277D82C18];
-  v7 = a4;
-  v8 = a3;
+  contextCopy = context;
+  itemCopy = item;
   v9 = [v6 rawInjection:"in_flight_diffs length:{zone_rowid", 27}];
   v12.receiver = self;
   v12.super_class = BRCSyncUpScheduler;
-  v10 = [(BRCFSSchedulerBase *)&v12 descriptionForJobsMatching:v8 ordering:0 additionalColumns:v9 additionalValuesHandler:&__block_literal_global_52 context:v7];
+  v10 = [(BRCFSSchedulerBase *)&v12 descriptionForJobsMatching:itemCopy ordering:0 additionalColumns:v9 additionalValuesHandler:&__block_literal_global_52 context:contextCopy];
 
   return v10;
 }
@@ -53,21 +53,21 @@ void __49__BRCSyncUpScheduler_descriptionForItem_context___block_invoke(uint64_t
   }
 }
 
-- (void)createSyncUpJobForItem:(id)a3 inZone:(id)a4
+- (void)createSyncUpJobForItem:(id)item inZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 br_isEqualToNumber:&unk_2837B0478] & 1) == 0)
+  itemCopy = item;
+  zoneCopy = zone;
+  if (([zoneCopy br_isEqualToNumber:&unk_2837B0478] & 1) == 0)
   {
-    v8 = [(BRCAccountSession *)self->super._session serverZoneByRowID:v7];
-    v9 = [v8 clientZone];
+    v8 = [(BRCAccountSession *)self->super._session serverZoneByRowID:zoneCopy];
+    clientZone = [v8 clientZone];
 
-    if ([v9 isSyncBlockedBecauseAppNotInstalled])
+    if ([clientZone isSyncBlockedBecauseAppNotInstalled])
     {
-      v10 = [v6 itemID];
-      v11 = [v10 isDocumentsFolder];
+      itemID = [itemCopy itemID];
+      isDocumentsFolder = [itemID isDocumentsFolder];
 
-      if ((v11 & 1) == 0)
+      if ((isDocumentsFolder & 1) == 0)
       {
         v12 = brc_bread_crumbs();
         v13 = brc_default_log();
@@ -76,24 +76,24 @@ void __49__BRCSyncUpScheduler_descriptionForItem_context___block_invoke(uint64_t
           [BRCSyncUpScheduler createSyncUpJobForItem:v12 inZone:v13];
         }
 
-        [v9 clearStateBits:4096];
+        [clientZone clearStateBits:4096];
       }
     }
   }
 
-  -[BRCSyncUpScheduler createSyncUpJobForRowID:inZone:](self, "createSyncUpJobForRowID:inZone:", [v6 dbRowID], v7);
+  -[BRCSyncUpScheduler createSyncUpJobForRowID:inZone:](self, "createSyncUpJobForRowID:inZone:", [itemCopy dbRowID], zoneCopy);
 }
 
-- (void)createSyncUpJobForRowID:(unint64_t)a3 inZone:(id)a4
+- (void)createSyncUpJobForRowID:(unint64_t)d inZone:(id)zone
 {
-  v6 = a4;
-  v13 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:a3 zoneRowID:v6];
+  zoneCopy = zone;
+  v13 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:d zoneRowID:zoneCopy];
 
-  v7 = [(BRCAccountSession *)self->super._session syncContextProvider];
-  v8 = [v7 defaultSyncContext];
-  v9 = [v8 uploadThrottle];
+  syncContextProvider = [(BRCAccountSession *)self->super._session syncContextProvider];
+  defaultSyncContext = [syncContextProvider defaultSyncContext];
+  uploadThrottle = [defaultSyncContext uploadThrottle];
   v10 = [MEMORY[0x277D82C08] formatInjection:@"in_flight_diffs = NULL"];
-  [(BRCFSSchedulerBase *)self insertOrUpdateJobID:v13 throttle:v9 withState:1 insertedSQLColumn:0 insertedSQLValues:0 updatedSQLValues:v10 error:0];
+  [(BRCFSSchedulerBase *)self insertOrUpdateJobID:v13 throttle:uploadThrottle withState:1 insertedSQLColumn:0 insertedSQLValues:0 updatedSQLValues:v10 error:0];
   v12 = v11;
 
   if (v12 <= brc_current_date_nsec())
@@ -102,52 +102,52 @@ void __49__BRCSyncUpScheduler_descriptionForItem_context___block_invoke(uint64_t
   }
 }
 
-- (void)prepareItemForSyncUp:(id)a3 inFlightDiffs:(unint64_t)a4 inZone:(id)a5
+- (void)prepareItemForSyncUp:(id)up inFlightDiffs:(unint64_t)diffs inZone:(id)zone
 {
-  v8 = a5;
+  zoneCopy = zone;
   session = self->super._session;
-  v10 = a3;
-  v11 = [(BRCAccountSession *)session clientDB];
-  v12 = [(BRCFSSchedulerBase *)self tableName];
-  v13 = [v10 dbRowID];
+  upCopy = up;
+  clientDB = [(BRCAccountSession *)session clientDB];
+  tableName = [(BRCFSSchedulerBase *)self tableName];
+  dbRowID = [upCopy dbRowID];
 
-  v16 = v8;
-  v14 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:v13 zoneRowID:v16];
+  v16 = zoneCopy;
+  v14 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:dbRowID zoneRowID:v16];
 
-  v15 = [(BRCIntAndZoneJobIdentifier *)v14 matchingJobsWhereSQLClause];
-  [v11 execute:{@"UPDATE %@SET in_flight_diffs = %lldWHERE %@", v12, a4, v15}];
+  matchingJobsWhereSQLClause = [(BRCIntAndZoneJobIdentifier *)v14 matchingJobsWhereSQLClause];
+  [clientDB execute:{@"UPDATE %@SET in_flight_diffs = %lldWHERE %@", tableName, diffs, matchingJobsWhereSQLClause}];
 }
 
-- (void)_clearSyncUpErrorForItem:(id)a3
+- (void)_clearSyncUpErrorForItem:(id)item
 {
   session = self->super._session;
-  v4 = a3;
-  v6 = [(BRCAccountSession *)session clientDB];
-  v5 = [v4 dbRowID];
+  itemCopy = item;
+  clientDB = [(BRCAccountSession *)session clientDB];
+  dbRowID = [itemCopy dbRowID];
 
-  [v6 execute:{@"DELETE FROM item_errors WHERE item_rowid = %llu AND service = %d", v5, 3}];
+  [clientDB execute:{@"DELETE FROM item_errors WHERE item_rowid = %llu AND service = %d", dbRowID, 3}];
 }
 
-- (unint64_t)finishSyncUpForItem:(id)a3 inZone:(id)a4 success:(BOOL)a5
+- (unint64_t)finishSyncUpForItem:(id)item inZone:(id)zone success:(BOOL)success
 {
-  v5 = a5;
+  successCopy = success;
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  itemCopy = item;
+  zoneCopy = zone;
+  if (successCopy)
   {
-    [(BRCSyncUpScheduler *)self _clearSyncUpErrorForItem:v8];
+    [(BRCSyncUpScheduler *)self _clearSyncUpErrorForItem:itemCopy];
   }
 
-  v10 = [(BRCAccountSession *)self->super._session clientDB];
-  v11 = [v10 isBatchSuspended];
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
+  isBatchSuspended = [clientDB isBatchSuspended];
 
-  if ((v11 & 1) == 0)
+  if ((isBatchSuspended & 1) == 0)
   {
     [BRCSyncUpScheduler finishSyncUpForItem:inZone:success:];
   }
 
-  if (!v9)
+  if (!zoneCopy)
   {
     [BRCSyncUpScheduler finishSyncUpForItem:inZone:success:];
   }
@@ -159,52 +159,52 @@ void __49__BRCSyncUpScheduler_descriptionForItem_context___block_invoke(uint64_t
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v26 = v29[0];
-    v27 = [(BRCFSSchedulerBase *)self name];
-    v28 = [v8 jobsDescription];
+    name = [(BRCFSSchedulerBase *)self name];
+    jobsDescription = [itemCopy jobsDescription];
     *buf = 134218754;
     v31 = v26;
     v32 = 2112;
-    v33 = v27;
+    v33 = name;
     v34 = 2112;
-    v35 = v28;
+    v35 = jobsDescription;
     v36 = 2112;
     v37 = v12;
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx %@[%@]: finishing sync up%@", buf, 0x2Au);
   }
 
-  v14 = [v8 inFlightSyncUpDiffsInZoneRowID:v9];
-  v15 = [v8 dbRowID];
-  v16 = v9;
-  v17 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:v15 zoneRowID:v16];
+  v14 = [itemCopy inFlightSyncUpDiffsInZoneRowID:zoneCopy];
+  dbRowID = [itemCopy dbRowID];
+  v16 = zoneCopy;
+  v17 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:dbRowID zoneRowID:v16];
 
-  if (-[BRCFSSchedulerBase setState:forJobID:](self, "setState:forJobID:", 0, v17) && [v8 isDocument])
+  if (-[BRCFSSchedulerBase setState:forJobID:](self, "setState:forJobID:", 0, v17) && [itemCopy isDocument])
   {
-    v18 = [v8 clientZone];
-    v19 = [v18 dbRowID];
-    v20 = [v19 br_isEqualToNumber:v16];
+    clientZone = [itemCopy clientZone];
+    dbRowID2 = [clientZone dbRowID];
+    v20 = [dbRowID2 br_isEqualToNumber:v16];
 
     if (v20)
     {
-      v21 = [v8 asDocument];
-      if (v5 || ([v8 needsSyncUp] & 1) == 0)
+      asDocument = [itemCopy asDocument];
+      if (successCopy || ([itemCopy needsSyncUp] & 1) == 0)
       {
-        v22 = [(BRCAccountSession *)self->super._session fsUploader];
-        [v22 cancelAndCleanupItemUpload:v21];
+        fsUploader = [(BRCAccountSession *)self->super._session fsUploader];
+        [fsUploader cancelAndCleanupItemUpload:asDocument];
       }
 
-      if ([v8 needsUpload])
+      if ([itemCopy needsUpload])
       {
-        v23 = [(BRCAccountSession *)self->super._session fsUploader];
-        [v23 uploadItem:v21];
+        fsUploader2 = [(BRCAccountSession *)self->super._session fsUploader];
+        [fsUploader2 uploadItem:asDocument];
       }
 
       goto LABEL_19;
     }
 
-    if ([v8 needsUpload])
+    if ([itemCopy needsUpload])
     {
-      v21 = [(BRCAccountSession *)self->super._session fsUploader];
-      [v21 rescheduleSuspendedJobsMatching:v8 inState:31];
+      asDocument = [(BRCAccountSession *)self->super._session fsUploader];
+      [asDocument rescheduleSuspendedJobsMatching:itemCopy inState:31];
 LABEL_19:
     }
   }
@@ -214,25 +214,25 @@ LABEL_19:
   return v14;
 }
 
-- (BOOL)isItemPendingSyncUp:(id)a3
+- (BOOL)isItemPendingSyncUp:(id)up
 {
-  v4 = a3;
-  v5 = [v4 db];
-  v6 = [(BRCFSSchedulerBase *)self tableName];
-  v7 = [v4 matchingJobsWhereSQLClause];
+  upCopy = up;
+  v5 = [upCopy db];
+  tableName = [(BRCFSSchedulerBase *)self tableName];
+  matchingJobsWhereSQLClause = [upCopy matchingJobsWhereSQLClause];
 
-  v8 = [v5 numberWithSQL:{@"SELECT COUNT(*) FROM %@WHERE %@ AND throttle_state != 0", v6, v7}];
-  LOBYTE(v6) = [v8 BOOLValue];
+  v8 = [v5 numberWithSQL:{@"SELECT COUNT(*) FROM %@WHERE %@ AND throttle_state != 0", tableName, matchingJobsWhereSQLClause}];
+  LOBYTE(tableName) = [v8 BOOLValue];
 
-  return v6;
+  return tableName;
 }
 
-- (int64_t)timeToRetryForItem:(id)a3 zone:(id)a4
+- (int64_t)timeToRetryForItem:(id)item zone:(id)zone
 {
-  v6 = a4;
-  v7 = [a3 dbRowID];
-  v8 = v6;
-  v9 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:v7 zoneRowID:v8];
+  zoneCopy = zone;
+  dbRowID = [item dbRowID];
+  v8 = zoneCopy;
+  v9 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:dbRowID zoneRowID:v8];
 
   v12.receiver = self;
   v12.super_class = BRCSyncUpScheduler;
@@ -241,47 +241,47 @@ LABEL_19:
   return v10;
 }
 
-- (void)_scheduleSyncUpJobForZoneWithRowID:(id)a3
+- (void)_scheduleSyncUpJobForZoneWithRowID:(id)d
 {
-  v8 = a3;
-  v4 = [v8 br_isEqualToNumber:&unk_2837B0478];
+  dCopy = d;
+  v4 = [dCopy br_isEqualToNumber:&unk_2837B0478];
   session = self->super._session;
   if (v4)
   {
-    v6 = [(BRCAccountSession *)session containerScheduler];
-    [v6 scheduleSyncUpForSideCar];
+    containerScheduler = [(BRCAccountSession *)session containerScheduler];
+    [containerScheduler scheduleSyncUpForSideCar];
   }
 
   else
   {
-    v6 = [(BRCAccountSession *)session serverZoneByRowID:v8];
-    v7 = [v6 clientZone];
-    [v7 scheduleSyncUp];
+    containerScheduler = [(BRCAccountSession *)session serverZoneByRowID:dCopy];
+    clientZone = [containerScheduler clientZone];
+    [clientZone scheduleSyncUp];
   }
 }
 
-- (void)_scheduleSyncUpJob:(id)a3
+- (void)_scheduleSyncUpJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(BRCSyncUpScheduler *)v4 _scheduleSyncUpJob:v5, v6];
+    [(BRCSyncUpScheduler *)jobCopy _scheduleSyncUpJob:v5, v6];
   }
 
-  [(BRCFSSchedulerBase *)self setState:50 forJobID:v4];
-  v7 = [v4 zoneRowID];
-  [(BRCSyncUpScheduler *)self _scheduleSyncUpJobForZoneWithRowID:v7];
+  [(BRCFSSchedulerBase *)self setState:50 forJobID:jobCopy];
+  zoneRowID = [jobCopy zoneRowID];
+  [(BRCSyncUpScheduler *)self _scheduleSyncUpJobForZoneWithRowID:zoneRowID];
 }
 
-- (void)recoverAndReportMissingJobsWithCompletion:(id)a3 recoveryTask:(id)a4
+- (void)recoverAndReportMissingJobsWithCompletion:(id)completion recoveryTask:(id)task
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCAccountSession *)self->super._session clientDB];
-  v9 = [v8 fetch:{@"SELECT ci.rowid, ci.zone_rowid, ci.item_id, ci.item_creator_id, ci.item_sharing_options, ci.item_side_car_ckinfo, ci.item_parent_zone_rowid, ci.item_localsyncupstate, ci.item_local_diffs, ci.item_notifs_rank, ci.app_library_rowid, ci.item_min_supported_os_rowid, ci.item_user_visible, ci.item_stat_ckinfo, ci.item_state, ci.item_type, ci.item_mode, ci.item_birthtime, ci.item_lastusedtime, ci.item_favoriterank, ci.item_parent_id, ci.item_filename, ci.item_hidden_ext, ci.item_finder_tags, ci.item_xattr_signature, ci.item_trash_put_back_path, ci.item_trash_put_back_parent_id, ci.item_alias_target, ci.item_creator, ci.item_processing_stamp, ci.item_bouncedname, ci.item_scope, ci.item_local_change_count, ci.item_old_version_identifier, ci.fp_creation_item_identifier, ci.version_name, ci.version_ckinfo, ci.version_mtime, ci.version_size, ci.version_thumb_size, ci.version_thumb_signature, ci.version_content_signature, ci.version_xattr_signature, ci.version_edited_since_shared, ci.version_device, ci.version_conflict_loser_etags, ci.version_quarantine_info, ci.version_uploaded_assets, ci.version_upload_error, ci.version_old_zone_item_id, ci.version_old_zone_rowid, ci.version_local_change_count, ci.version_old_version_identifier, ci.item_live_conflict_loser_etags, ci.item_file_id, ci.item_generation FROM client_items AS ci WHERE ci.item_localsyncupstate = 4 AND ci.item_localsyncupstate != 0 AND NOT EXISTS (SELECT 1 FROM client_sync_up AS su WHERE ci.rowid = su.throttle_id AND su.throttle_state != 0)"}];
+  completionCopy = completion;
+  taskCopy = task;
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
+  v9 = [clientDB fetch:{@"SELECT ci.rowid, ci.zone_rowid, ci.item_id, ci.item_creator_id, ci.item_sharing_options, ci.item_side_car_ckinfo, ci.item_parent_zone_rowid, ci.item_localsyncupstate, ci.item_local_diffs, ci.item_notifs_rank, ci.app_library_rowid, ci.item_min_supported_os_rowid, ci.item_user_visible, ci.item_stat_ckinfo, ci.item_state, ci.item_type, ci.item_mode, ci.item_birthtime, ci.item_lastusedtime, ci.item_favoriterank, ci.item_parent_id, ci.item_filename, ci.item_hidden_ext, ci.item_finder_tags, ci.item_xattr_signature, ci.item_trash_put_back_path, ci.item_trash_put_back_parent_id, ci.item_alias_target, ci.item_creator, ci.item_processing_stamp, ci.item_bouncedname, ci.item_scope, ci.item_local_change_count, ci.item_old_version_identifier, ci.fp_creation_item_identifier, ci.version_name, ci.version_ckinfo, ci.version_mtime, ci.version_size, ci.version_thumb_size, ci.version_thumb_signature, ci.version_content_signature, ci.version_xattr_signature, ci.version_edited_since_shared, ci.version_device, ci.version_conflict_loser_etags, ci.version_quarantine_info, ci.version_uploaded_assets, ci.version_upload_error, ci.version_old_zone_item_id, ci.version_old_zone_rowid, ci.version_local_change_count, ci.version_old_version_identifier, ci.item_live_conflict_loser_etags, ci.item_file_id, ci.item_generation FROM client_items AS ci WHERE ci.item_localsyncupstate = 4 AND ci.item_localsyncupstate != 0 AND NOT EXISTS (SELECT 1 FROM client_sync_up AS su WHERE ci.rowid = su.throttle_id AND su.throttle_state != 0)"}];
 
   v38 = 0u;
   v39 = 0u;
@@ -299,8 +299,8 @@ LABEL_19:
     v12 = v11;
     v30 = v9;
     v31 = 8;
-    v32 = v7;
-    v33 = v6;
+    v32 = taskCopy;
+    v33 = completionCopy;
     LODWORD(v13) = 0;
     v14 = *v37;
     do
@@ -315,9 +315,9 @@ LABEL_19:
 
         v16 = *(*(&v36 + 1) + 8 * i);
         v17 = objc_autoreleasePoolPush();
-        v18 = [v16 clientZone];
-        v19 = [v18 dbRowID];
-        [(BRCSyncUpScheduler *)self createSyncUpJobForItem:v16 inZone:v19];
+        clientZone = [v16 clientZone];
+        dbRowID = [clientZone dbRowID];
+        [(BRCSyncUpScheduler *)self createSyncUpJobForItem:v16 inZone:dbRowID];
 
         if ([v16 isSharedToMeChildItem])
         {
@@ -326,9 +326,9 @@ LABEL_19:
 
         else if ([v16 isSharedToMeTopLevelItem])
         {
-          v20 = [v16 parentClientZone];
-          v21 = [v20 dbRowID];
-          [(BRCSyncUpScheduler *)self createSyncUpJobForItem:v16 inZone:v21];
+          parentClientZone = [v16 parentClientZone];
+          dbRowID2 = [parentClientZone dbRowID];
+          [(BRCSyncUpScheduler *)self createSyncUpJobForItem:v16 inZone:dbRowID2];
         }
 
         objc_autoreleasePoolPop(v17);
@@ -348,8 +348,8 @@ LABEL_19:
     }
 
     [(BRCSyncUpScheduler *)self schedule];
-    v7 = v32;
-    v6 = v33;
+    taskCopy = v32;
+    completionCopy = v33;
     v9 = v30;
   }
 
@@ -374,10 +374,10 @@ LABEL_19:
   }
 
   v27 = [AppTelemetryTimeSeriesEvent newMissingSyncUpJobEventWithNumberMissing:v13];
-  v28 = [(BRCAccountSession *)self->super._session analyticsReporter];
-  [v28 postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:v27];
+  analyticsReporter = [(BRCAccountSession *)self->super._session analyticsReporter];
+  [analyticsReporter postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:v27];
 
-  v6[2](v6, v13);
+  completionCopy[2](completionCopy, v13);
   v29 = *MEMORY[0x277D85DE8];
 }
 
@@ -394,7 +394,7 @@ id __77__BRCSyncUpScheduler_recoverAndReportMissingJobsWithCompletion_recoveryTa
 - (void)schedule
 {
   v3 = [BRCUserDefaults defaultsForMangledID:0];
-  v4 = [v3 maxRecordCountInModifyRecordsOperation];
+  maxRecordCountInModifyRecordsOperation = [v3 maxRecordCountInModifyRecordsOperation];
 
   v5 = [MEMORY[0x277D82C18] rawInjection:"throttle_id length:{zone_rowid", 23}];
   v6[0] = MEMORY[0x277D85DD0];
@@ -402,7 +402,7 @@ id __77__BRCSyncUpScheduler_recoverAndReportMissingJobsWithCompletion_recoveryTa
   v6[2] = __30__BRCSyncUpScheduler_schedule__block_invoke;
   v6[3] = &unk_278502028;
   v6[4] = self;
-  [(BRCFSSchedulerBase *)self scheduleWithBatchSize:v4 whereSQLClause:0 columns:v5 actionHandler:v6];
+  [(BRCFSSchedulerBase *)self scheduleWithBatchSize:maxRecordCountInModifyRecordsOperation whereSQLClause:0 columns:v5 actionHandler:v6];
 }
 
 void __30__BRCSyncUpScheduler_schedule__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -416,44 +416,44 @@ void __30__BRCSyncUpScheduler_schedule__block_invoke(uint64_t a1, void *a2, uint
   [v7 _scheduleSyncUpJob:v8];
 }
 
-- (unint64_t)postponeSyncUpCallback:(id)a3 inZone:(id)a4
+- (unint64_t)postponeSyncUpCallback:(id)callback inZone:(id)zone
 {
-  v6 = a4;
-  v7 = [a3 dbRowID];
-  v8 = v6;
-  v9 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:v7 zoneRowID:v8];
+  zoneCopy = zone;
+  dbRowID = [callback dbRowID];
+  v8 = zoneCopy;
+  v9 = [[BRCItemDBRowIDAndZoneJobIdentifier alloc] initWithItemDBRowID:dbRowID zoneRowID:v8];
 
-  v10 = [v8 longLongValue];
+  longLongValue = [v8 longLongValue];
   session = self->super._session;
-  if (v10 <= 0)
+  if (longLongValue <= 0)
   {
-    v12 = [(BRCAccountSession *)session syncContextProvider];
-    [v12 defaultSyncContext];
+    syncContextProvider = [(BRCAccountSession *)session syncContextProvider];
+    [syncContextProvider defaultSyncContext];
   }
 
   else
   {
-    v12 = [(BRCAccountSession *)session serverZoneByRowID:v8];
-    [v12 metadataSyncContext];
+    syncContextProvider = [(BRCAccountSession *)session serverZoneByRowID:v8];
+    [syncContextProvider metadataSyncContext];
   }
   v13 = ;
 
-  v14 = [v13 perItemSyncUpThrottle];
-  v15 = [(BRCFSSchedulerBase *)self postponeJobID:v9 withThrottle:v14];
+  perItemSyncUpThrottle = [v13 perItemSyncUpThrottle];
+  v15 = [(BRCFSSchedulerBase *)self postponeJobID:v9 withThrottle:perItemSyncUpThrottle];
 
   return v15;
 }
 
-- (void)ineligibleSyncUpCallback:(id)a3 inZone:(id)a4
+- (void)ineligibleSyncUpCallback:(id)callback inZone:(id)zone
 {
-  v9 = a3;
-  [(BRCSyncUpScheduler *)self setState:52 forItem:v9 zone:a4];
-  if ([v9 isDocument])
+  callbackCopy = callback;
+  [(BRCSyncUpScheduler *)self setState:52 forItem:callbackCopy zone:zone];
+  if ([callbackCopy isDocument])
   {
-    v6 = [v9 session];
-    v7 = [v6 globalProgress];
-    v8 = [v9 asDocument];
-    [v7 didUpdateDocument:v8];
+    session = [callbackCopy session];
+    globalProgress = [session globalProgress];
+    asDocument = [callbackCopy asDocument];
+    [globalProgress didUpdateDocument:asDocument];
   }
 }
 

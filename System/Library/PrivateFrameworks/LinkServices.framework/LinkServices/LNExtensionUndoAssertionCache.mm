@@ -1,8 +1,8 @@
 @interface LNExtensionUndoAssertionCache
 + (LNExtensionUndoAssertionCache)shared;
-- (BOOL)addAssertion:(id)a3 error:(id *)a4;
-- (BOOL)extendAssertionForHandle:(id)a3;
-- (void)removeAssertion:(id)a3;
+- (BOOL)addAssertion:(id)assertion error:(id *)error;
+- (BOOL)extendAssertionForHandle:(id)handle;
+- (void)removeAssertion:(id)assertion;
 @end
 
 @implementation LNExtensionUndoAssertionCache
@@ -14,29 +14,29 @@
   return v2;
 }
 
-- (BOOL)extendAssertionForHandle:(id)a3
+- (BOOL)extendAssertionForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1976882E0(v4);
+  handleCopy = handle;
+  selfCopy = self;
+  LOBYTE(self) = sub_1976882E0(handleCopy);
 
   return self & 1;
 }
 
-- (BOOL)addAssertion:(id)a3 error:(id *)a4
+- (BOOL)addAssertion:(id)assertion error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_1976887C4(v5);
+  assertionCopy = assertion;
+  selfCopy = self;
+  sub_1976887C4(assertionCopy);
 
   return 1;
 }
 
-- (void)removeAssertion:(id)a3
+- (void)removeAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = self;
-  sub_197689284(v4);
+  assertionCopy = assertion;
+  selfCopy = self;
+  sub_197689284(assertionCopy);
 }
 
 @end

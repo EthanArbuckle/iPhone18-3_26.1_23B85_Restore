@@ -1,32 +1,32 @@
 @interface SecEventMetric
 + (id)supportedAttributeClasses;
-- (SecEventMetric)initWithCoder:(id)a3;
-- (SecEventMetric)initWithEventName:(id)a3;
-- (id)generateError:(id)a3;
+- (SecEventMetric)initWithCoder:(id)coder;
+- (SecEventMetric)initWithEventName:(id)name;
+- (id)generateError:(id)error;
 - (id)genericEvent;
-- (void)encodeWithCoder:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation SecEventMetric
 
-- (id)generateError:(id)a3
+- (id)generateError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_alloc_init(SECC2MPError);
-  v6 = [v4 domain];
-  [(SECC2MPError *)v5 setErrorDomain:v6];
+  domain = [errorCopy domain];
+  [(SECC2MPError *)v5 setErrorDomain:domain];
 
-  -[SECC2MPError setErrorCode:](v5, "setErrorCode:", [v4 code]);
+  -[SECC2MPError setErrorCode:](v5, "setErrorCode:", [errorCopy code]);
   if (+[SecC2DeviceInfo isAppleInternal])
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:NSLocalizedDescriptionKey];
     [(SECC2MPError *)v5 setErrorDescription:v8];
   }
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo2 = [errorCopy userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
   if (v10)
   {
@@ -40,13 +40,13 @@
 - (id)genericEvent
 {
   v3 = objc_alloc_init(SECC2MPGenericEvent);
-  v4 = [(SecEventMetric *)self eventName];
-  [(SECC2MPGenericEvent *)v3 setName:v4];
+  eventName = [(SecEventMetric *)self eventName];
+  [(SECC2MPGenericEvent *)v3 setName:eventName];
 
   [(SECC2MPGenericEvent *)v3 setType:201];
   [(SECC2MPGenericEvent *)v3 setTimestampStart:0];
   [(SECC2MPGenericEvent *)v3 setTimestampEnd:0];
-  v5 = [(SecEventMetric *)self attributes];
+  attributes = [(SecEventMetric *)self attributes];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001FC184;
@@ -54,7 +54,7 @@
   v10[4] = self;
   v6 = v3;
   v11 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  [attributes enumerateKeysAndObjectsUsingBlock:v10];
 
   v7 = v11;
   v8 = v6;
@@ -62,20 +62,20 @@
   return v6;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  objectCopy = object;
+  subscriptCopy = subscript;
+  if (subscriptCopy)
   {
-    if (v6)
+    if (objectCopy)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = [objc_opt_class() supportedAttributeClasses];
-      v9 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      supportedAttributeClasses = [objc_opt_class() supportedAttributeClasses];
+      v9 = [supportedAttributeClasses countByEnumeratingWithState:&v17 objects:v25 count:16];
       if (v9)
       {
         v10 = *v18;
@@ -86,7 +86,7 @@
           {
             if (*v18 != v10)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(supportedAttributeClasses);
             }
 
             v12 = *(*(&v17 + 1) + 8 * v11);
@@ -100,7 +100,7 @@
           }
 
           while (v9 != v11);
-          v9 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          v9 = [supportedAttributeClasses countByEnumeratingWithState:&v17 objects:v25 count:16];
           if (v9)
           {
             continue;
@@ -115,7 +115,7 @@
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
         *buf = 138543618;
-        v22 = v7;
+        v22 = subscriptCopy;
         v23 = 2114;
         v24 = v14;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "genericMetric  %{public}@ with unhandled metric type: %{public}@", buf, 0x16u);
@@ -125,43 +125,43 @@
     else
     {
 LABEL_14:
-      v15 = self;
-      objc_sync_enter(v15);
-      v16 = [(SecEventMetric *)v15 attributes];
-      [v16 setObject:v6 forKeyedSubscript:v7];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      attributes = [(SecEventMetric *)selfCopy attributes];
+      [attributes setObject:objectCopy forKeyedSubscript:subscriptCopy];
 
-      objc_sync_exit(v15);
+      objc_sync_exit(selfCopy);
     }
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SecEventMetric *)self eventName];
-  [v4 encodeObject:v5 forKey:@"eventName"];
+  coderCopy = coder;
+  eventName = [(SecEventMetric *)self eventName];
+  [coderCopy encodeObject:eventName forKey:@"eventName"];
 
-  v6 = [(SecEventMetric *)self attributes];
-  [v4 encodeObject:v6 forKey:@"attributes"];
+  attributes = [(SecEventMetric *)self attributes];
+  [coderCopy encodeObject:attributes forKey:@"attributes"];
 }
 
-- (SecEventMetric)initWithCoder:(id)a3
+- (SecEventMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SecEventMetric;
   v5 = [(SecEventMetric *)&v14 init];
   if (v5)
   {
-    v6 = [objc_opt_class() supportedAttributeClasses];
-    v7 = [v6 mutableCopy];
+    supportedAttributeClasses = [objc_opt_class() supportedAttributeClasses];
+    v7 = [supportedAttributeClasses mutableCopy];
 
     [v7 addObject:objc_opt_class()];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventName"];
     eventName = v5->_eventName;
     v5->_eventName = v8;
 
-    v10 = [v4 decodeObjectOfClasses:v7 forKey:@"attributes"];
+    v10 = [coderCopy decodeObjectOfClasses:v7 forKey:@"attributes"];
     attributes = v5->_attributes;
     v5->_attributes = v10;
 
@@ -179,16 +179,16 @@ LABEL_7:
   return v12;
 }
 
-- (SecEventMetric)initWithEventName:(id)a3
+- (SecEventMetric)initWithEventName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = SecEventMetric;
   v5 = [(SecEventMetric *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(SecEventMetric *)v5 setEventName:v4];
+    [(SecEventMetric *)v5 setEventName:nameCopy];
     v7 = +[NSMutableDictionary dictionary];
     [(SecEventMetric *)v6 setAttributes:v7];
 

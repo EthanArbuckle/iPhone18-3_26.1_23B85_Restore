@@ -1,22 +1,22 @@
 @interface CTXPCTransferPlanRequest
 + (id)allowedClassesForArguments;
-- (CTXPCTransferPlanRequest)initWithPlan:(id)a3 fromDevice:(id)a4;
+- (CTXPCTransferPlanRequest)initWithPlan:(id)plan fromDevice:(id)device;
 - (id)deviceIdentifier;
 - (id)plan;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCTransferPlanRequest
 
-- (CTXPCTransferPlanRequest)initWithPlan:(id)a3 fromDevice:(id)a4
+- (CTXPCTransferPlanRequest)initWithPlan:(id)plan fromDevice:(id)device
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  planCopy = plan;
+  deviceCopy = device;
   v13[0] = @"plan";
   v13[1] = @"deviceID";
-  v14[0] = v6;
-  v14[1] = v7;
+  v14[0] = planCopy;
+  v14[1] = deviceCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v12.receiver = self;
   v12.super_class = CTXPCTransferPlanRequest;
@@ -26,25 +26,25 @@
   return v9;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCTransferPlanRequest *)self plan];
-  v9 = [(CTXPCTransferPlanRequest *)self deviceIdentifier];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  plan = [(CTXPCTransferPlanRequest *)self plan];
+  deviceIdentifier = [(CTXPCTransferPlanRequest *)self deviceIdentifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__CTXPCTransferPlanRequest_performRequestWithHandler_completionHandler___block_invoke;
   v11[3] = &unk_1E6A45F00;
-  v10 = v7;
+  v10 = completionHandlerCopy;
   v12 = v10;
-  [v6 transferCellularPlan:v8 fromDevice:v9 completionHandler:v11];
+  [handlerCopy transferCellularPlan:plan fromDevice:deviceIdentifier completionHandler:v11];
 }
 
 + (id)allowedClassesForArguments
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCTransferPlanRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -59,8 +59,8 @@
 
 - (id)plan
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"plan"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"plan"];
   v4 = CTThrowingCastIfClass<CTPlan>(v3);
 
   return v4;
@@ -68,8 +68,8 @@
 
 - (id)deviceIdentifier
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"deviceID"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"deviceID"];
   v4 = CTThrowingCastIfClass<CTDeviceIdentifier>(v3);
 
   return v4;

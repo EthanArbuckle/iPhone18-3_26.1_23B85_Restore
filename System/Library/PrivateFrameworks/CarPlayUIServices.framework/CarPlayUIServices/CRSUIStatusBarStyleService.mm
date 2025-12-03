@@ -4,16 +4,16 @@
 - (CRSUIStatusBarStyleService)init;
 - (int64_t)colorVariant;
 - (int64_t)interfaceStyle;
-- (void)_connectionQueue_addConnection:(id)a3;
-- (void)_connectionQueue_removeConnection:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)clientAcquireForSiriPresentationWithFenceHandle:(id)a3 animationSettings:(id)a4;
-- (void)clientAcquireForStandByScreenWithFenceHandle:(id)a3 animationSettings:(id)a4;
-- (void)clientAcquireWithInterfaceStyle:(id)a3 colorVariant:(id)a4 fenceHandle:(id)a5 animationSettings:(id)a6;
-- (void)clientReliquishWithFenceHandle:(id)a3 animationSettings:(id)a4;
+- (void)_connectionQueue_addConnection:(id)connection;
+- (void)_connectionQueue_removeConnection:(id)connection;
+- (void)addObserver:(id)observer;
+- (void)clientAcquireForSiriPresentationWithFenceHandle:(id)handle animationSettings:(id)settings;
+- (void)clientAcquireForStandByScreenWithFenceHandle:(id)handle animationSettings:(id)settings;
+- (void)clientAcquireWithInterfaceStyle:(id)style colorVariant:(id)variant fenceHandle:(id)handle animationSettings:(id)settings;
+- (void)clientReliquishWithFenceHandle:(id)handle animationSettings:(id)settings;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)removeObserver:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CRSUIStatusBarStyleService
@@ -81,21 +81,21 @@ void __42__CRSUIStatusBarStyleService_colorVariant__block_invoke(uint64_t a1, vo
 - (BOOL)isSiriPresentation
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableArray *)self->_lock_assertions lastObject];
-  v4 = [v3 isSiriPresentation];
+  lastObject = [(NSMutableArray *)self->_lock_assertions lastObject];
+  isSiriPresentation = [lastObject isSiriPresentation];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return isSiriPresentation;
 }
 
 - (BOOL)isStandByScreen
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableArray *)self->_lock_assertions lastObject];
-  v4 = [v3 isStandByScreen];
+  lastObject = [(NSMutableArray *)self->_lock_assertions lastObject];
+  isStandByScreen = [lastObject isStandByScreen];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return isStandByScreen;
 }
 
 - (CRSUIStatusBarStyleService)init
@@ -110,7 +110,7 @@ void __42__CRSUIStatusBarStyleService_colorVariant__block_invoke(uint64_t a1, vo
     observers = v2->_observers;
     v2->_observers = v3;
 
-    v5 = [MEMORY[0x277CF0C18] serial];
+    serial = [MEMORY[0x277CF0C18] serial];
     v6 = BSDispatchQueueCreate();
     connectionQueue = v2->_connectionQueue;
     v2->_connectionQueue = v6;
@@ -161,40 +161,40 @@ void __34__CRSUIStatusBarStyleService_init__block_invoke(uint64_t a1, void *a2)
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRSUIStatusBarStyleService *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(CRSUIStatusBarStyleService *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRSUIStatusBarStyleService *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(CRSUIStatusBarStyleService *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (void)invalidate
 {
-  v2 = [(CRSUIStatusBarStyleService *)self listener];
-  [v2 invalidate];
+  listener = [(CRSUIStatusBarStyleService *)self listener];
+  [listener invalidate];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = CRSUILogForCategory(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = connectionCopy;
     _os_log_impl(&dword_243218000, v7, OS_LOG_TYPE_INFO, "Received connection! %@", buf, 0xCu);
   }
 
-  v8 = [v6 remoteProcess];
-  v9 = [v8 hasEntitlement:@"com.apple.private.CarPlayUIServices.status-bar-style"];
+  remoteProcess = [connectionCopy remoteProcess];
+  v9 = [remoteProcess hasEntitlement:@"com.apple.private.CarPlayUIServices.status-bar-style"];
 
   if (v9)
   {
@@ -203,24 +203,24 @@ void __34__CRSUIStatusBarStyleService_init__block_invoke(uint64_t a1, void *a2)
     v17[2] = __72__CRSUIStatusBarStyleService_listener_didReceiveConnection_withContext___block_invoke;
     v17[3] = &unk_278DA10F0;
     v17[4] = self;
-    [v6 configureConnection:v17];
+    [connectionCopy configureConnection:v17];
     v10 = CRSUILogForCategory(1uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = connectionCopy;
       _os_log_impl(&dword_243218000, v10, OS_LOG_TYPE_DEFAULT, "Activating connection... %@", buf, 0xCu);
     }
 
-    v11 = [(CRSUIStatusBarStyleService *)self connectionQueue];
+    connectionQueue = [(CRSUIStatusBarStyleService *)self connectionQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__CRSUIStatusBarStyleService_listener_didReceiveConnection_withContext___block_invoke_118;
     block[3] = &unk_278DA0D18;
     block[4] = self;
-    v12 = v6;
+    v12 = connectionCopy;
     v16 = v12;
-    dispatch_async(v11, block);
+    dispatch_async(connectionQueue, block);
 
     [v12 activate];
   }
@@ -230,10 +230,10 @@ void __34__CRSUIStatusBarStyleService_init__block_invoke(uint64_t a1, void *a2)
     v13 = CRSUILogForCategory(1uLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [CRSUIStatusBarStyleService listener:v6 didReceiveConnection:v13 withContext:?];
+      [CRSUIStatusBarStyleService listener:connectionCopy didReceiveConnection:v13 withContext:?];
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -271,14 +271,14 @@ void __72__CRSUIStatusBarStyleService_listener_didReceiveConnection_withContext_
   [*(a1 + 32) _connectionQueue_removeConnection:v3];
 }
 
-- (void)clientAcquireWithInterfaceStyle:(id)a3 colorVariant:(id)a4 fenceHandle:(id)a5 animationSettings:(id)a6
+- (void)clientAcquireWithInterfaceStyle:(id)style colorVariant:(id)variant fenceHandle:(id)handle animationSettings:(id)settings
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CRSUIStatusBarStyleService *)self connectionQueue];
+  styleCopy = style;
+  variantCopy = variant;
+  handleCopy = handle;
+  settingsCopy = settings;
+  connectionQueue = [(CRSUIStatusBarStyleService *)self connectionQueue];
   BSDispatchQueueAssert();
 
   os_unfair_lock_lock(&self->_lock);
@@ -286,46 +286,46 @@ void __72__CRSUIStatusBarStyleService_listener_didReceiveConnection_withContext_
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v36 = v10;
+    v36 = styleCopy;
     v37 = 2112;
-    v38 = v11;
+    v38 = variantCopy;
     _os_log_impl(&dword_243218000, v15, OS_LOG_TYPE_DEFAULT, "Received override request! Style: %@, color variant: %@", buf, 0x16u);
   }
 
-  if (v10)
+  if (styleCopy)
   {
-    v16 = [v10 integerValue];
-    if (v11)
+    integerValue = [styleCopy integerValue];
+    if (variantCopy)
     {
 LABEL_5:
-      v17 = [v11 integerValue];
+      integerValue2 = [variantCopy integerValue];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v16 = 0;
-    if (v11)
+    integerValue = 0;
+    if (variantCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v17 = -1;
+  integerValue2 = -1;
 LABEL_8:
-  v18 = [MEMORY[0x277CF3280] currentContext];
-  v19 = [v18 instance];
-  v20 = v19;
-  if (v19)
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  instance = [currentContext instance];
+  v20 = instance;
+  if (instance)
   {
-    v28 = v12;
+    v28 = handleCopy;
     lock_assertions = self->_lock_assertions;
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __105__CRSUIStatusBarStyleService_clientAcquireWithInterfaceStyle_colorVariant_fenceHandle_animationSettings___block_invoke;
     v33[3] = &unk_278DA1118;
-    v22 = v19;
+    v22 = instance;
     v34 = v22;
     v23 = [(NSMutableArray *)lock_assertions indexOfObjectPassingTest:v33];
     if (v23 != 0x7FFFFFFFFFFFFFFFLL)
@@ -335,11 +335,11 @@ LABEL_8:
 
     v24 = objc_alloc_init(CRSUIStatusBarStyleAssertionData);
     [(CRSUIStatusBarStyleAssertionData *)v24 setIdentifier:v22];
-    [(CRSUIStatusBarStyleAssertionData *)v24 setInterfaceStyle:v16];
-    [(CRSUIStatusBarStyleAssertionData *)v24 setColorVariant:v17];
+    [(CRSUIStatusBarStyleAssertionData *)v24 setInterfaceStyle:integerValue];
+    [(CRSUIStatusBarStyleAssertionData *)v24 setColorVariant:integerValue2];
     [(NSMutableArray *)self->_lock_assertions addObject:v24];
 
-    v12 = v28;
+    handleCopy = v28;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -347,11 +347,11 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __105__CRSUIStatusBarStyleService_clientAcquireWithInterfaceStyle_colorVariant_fenceHandle_animationSettings___block_invoke_2;
   block[3] = &unk_278DA1140;
-  v30 = v12;
-  v31 = self;
-  v32 = v13;
-  v25 = v13;
-  v26 = v12;
+  v30 = handleCopy;
+  selfCopy = self;
+  v32 = settingsCopy;
+  v25 = settingsCopy;
+  v26 = handleCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v27 = *MEMORY[0x277D85DE8];
@@ -372,11 +372,11 @@ void __105__CRSUIStatusBarStyleService_clientAcquireWithInterfaceStyle_colorVari
   [v2 statusBarStyleServiceUpdatedOverride:*(a1 + 40) animationSettings:*(a1 + 48)];
 }
 
-- (void)clientAcquireForSiriPresentationWithFenceHandle:(id)a3 animationSettings:(id)a4
+- (void)clientAcquireForSiriPresentationWithFenceHandle:(id)handle animationSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRSUIStatusBarStyleService *)self connectionQueue];
+  handleCopy = handle;
+  settingsCopy = settings;
+  connectionQueue = [(CRSUIStatusBarStyleService *)self connectionQueue];
   BSDispatchQueueAssert();
 
   os_unfair_lock_lock(&self->_lock);
@@ -387,17 +387,17 @@ void __105__CRSUIStatusBarStyleService_clientAcquireWithInterfaceStyle_colorVari
     _os_log_impl(&dword_243218000, v9, OS_LOG_TYPE_DEFAULT, "Received Siri presentation override request!", buf, 2u);
   }
 
-  v10 = [MEMORY[0x277CF3280] currentContext];
-  v11 = [v10 instance];
-  v12 = v11;
-  if (v11)
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  instance = [currentContext instance];
+  v12 = instance;
+  if (instance)
   {
     lock_assertions = self->_lock_assertions;
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __96__CRSUIStatusBarStyleService_clientAcquireForSiriPresentationWithFenceHandle_animationSettings___block_invoke;
     v23[3] = &unk_278DA1118;
-    v14 = v11;
+    v14 = instance;
     v24 = v14;
     v15 = [(NSMutableArray *)lock_assertions indexOfObjectPassingTest:v23];
     if (v15 != 0x7FFFFFFFFFFFFFFFLL)
@@ -418,11 +418,11 @@ void __105__CRSUIStatusBarStyleService_clientAcquireWithInterfaceStyle_colorVari
   v19[1] = 3221225472;
   v19[2] = __96__CRSUIStatusBarStyleService_clientAcquireForSiriPresentationWithFenceHandle_animationSettings___block_invoke_2;
   v19[3] = &unk_278DA1140;
-  v20 = v6;
-  v21 = self;
-  v22 = v7;
-  v17 = v7;
-  v18 = v6;
+  v20 = handleCopy;
+  selfCopy = self;
+  v22 = settingsCopy;
+  v17 = settingsCopy;
+  v18 = handleCopy;
   dispatch_async(MEMORY[0x277D85CD0], v19);
 }
 
@@ -441,11 +441,11 @@ void __96__CRSUIStatusBarStyleService_clientAcquireForSiriPresentationWithFenceH
   [v2 statusBarStyleServiceUpdatedOverride:*(a1 + 40) animationSettings:*(a1 + 48)];
 }
 
-- (void)clientAcquireForStandByScreenWithFenceHandle:(id)a3 animationSettings:(id)a4
+- (void)clientAcquireForStandByScreenWithFenceHandle:(id)handle animationSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRSUIStatusBarStyleService *)self connectionQueue];
+  handleCopy = handle;
+  settingsCopy = settings;
+  connectionQueue = [(CRSUIStatusBarStyleService *)self connectionQueue];
   BSDispatchQueueAssert();
 
   os_unfair_lock_lock(&self->_lock);
@@ -456,17 +456,17 @@ void __96__CRSUIStatusBarStyleService_clientAcquireForSiriPresentationWithFenceH
     _os_log_impl(&dword_243218000, v9, OS_LOG_TYPE_DEFAULT, "Received StandBy override request!", buf, 2u);
   }
 
-  v10 = [MEMORY[0x277CF3280] currentContext];
-  v11 = [v10 instance];
-  v12 = v11;
-  if (v11)
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  instance = [currentContext instance];
+  v12 = instance;
+  if (instance)
   {
     lock_assertions = self->_lock_assertions;
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __93__CRSUIStatusBarStyleService_clientAcquireForStandByScreenWithFenceHandle_animationSettings___block_invoke;
     v23[3] = &unk_278DA1118;
-    v14 = v11;
+    v14 = instance;
     v24 = v14;
     v15 = [(NSMutableArray *)lock_assertions indexOfObjectPassingTest:v23];
     if (v15 != 0x7FFFFFFFFFFFFFFFLL)
@@ -488,11 +488,11 @@ void __96__CRSUIStatusBarStyleService_clientAcquireForSiriPresentationWithFenceH
   v19[1] = 3221225472;
   v19[2] = __93__CRSUIStatusBarStyleService_clientAcquireForStandByScreenWithFenceHandle_animationSettings___block_invoke_2;
   v19[3] = &unk_278DA1140;
-  v20 = v6;
-  v21 = self;
-  v22 = v7;
-  v17 = v7;
-  v18 = v6;
+  v20 = handleCopy;
+  selfCopy = self;
+  v22 = settingsCopy;
+  v17 = settingsCopy;
+  v18 = handleCopy;
   dispatch_async(MEMORY[0x277D85CD0], v19);
 }
 
@@ -511,25 +511,25 @@ void __93__CRSUIStatusBarStyleService_clientAcquireForStandByScreenWithFenceHand
   [v2 statusBarStyleServiceUpdatedOverride:*(a1 + 40) animationSettings:*(a1 + 48)];
 }
 
-- (void)clientReliquishWithFenceHandle:(id)a3 animationSettings:(id)a4
+- (void)clientReliquishWithFenceHandle:(id)handle animationSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRSUIStatusBarStyleService *)self connectionQueue];
+  handleCopy = handle;
+  settingsCopy = settings;
+  connectionQueue = [(CRSUIStatusBarStyleService *)self connectionQueue];
   BSDispatchQueueAssert();
 
   os_unfair_lock_lock(&self->_lock);
-  v9 = [MEMORY[0x277CF3280] currentContext];
-  v10 = [v9 instance];
-  v11 = v10;
-  if (v10)
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  instance = [currentContext instance];
+  v11 = instance;
+  if (instance)
   {
     lock_assertions = self->_lock_assertions;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __79__CRSUIStatusBarStyleService_clientReliquishWithFenceHandle_animationSettings___block_invoke;
     v20[3] = &unk_278DA1118;
-    v21 = v10;
+    v21 = instance;
     v13 = [(NSMutableArray *)lock_assertions indexOfObjectPassingTest:v20];
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -542,11 +542,11 @@ void __93__CRSUIStatusBarStyleService_clientAcquireForStandByScreenWithFenceHand
   v16[1] = 3221225472;
   v16[2] = __79__CRSUIStatusBarStyleService_clientReliquishWithFenceHandle_animationSettings___block_invoke_2;
   v16[3] = &unk_278DA1140;
-  v17 = v6;
-  v18 = self;
-  v19 = v7;
-  v14 = v7;
-  v15 = v6;
+  v17 = handleCopy;
+  selfCopy = self;
+  v19 = settingsCopy;
+  v14 = settingsCopy;
+  v15 = handleCopy;
   dispatch_async(MEMORY[0x277D85CD0], v16);
 }
 
@@ -565,30 +565,30 @@ void __79__CRSUIStatusBarStyleService_clientReliquishWithFenceHandle_animationSe
   [v2 statusBarStyleServiceUpdatedOverride:*(a1 + 40) animationSettings:*(a1 + 48)];
 }
 
-- (void)_connectionQueue_addConnection:(id)a3
+- (void)_connectionQueue_addConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CRSUIStatusBarStyleService *)self connections];
-  [v5 addObject:v4];
+  connectionCopy = connection;
+  connections = [(CRSUIStatusBarStyleService *)self connections];
+  [connections addObject:connectionCopy];
 }
 
-- (void)_connectionQueue_removeConnection:(id)a3
+- (void)_connectionQueue_removeConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CRSUIStatusBarStyleService *)self connections];
-  [v5 removeObject:v4];
+  connectionCopy = connection;
+  connections = [(CRSUIStatusBarStyleService *)self connections];
+  [connections removeObject:connectionCopy];
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [v4 instance];
+  instance = [connectionCopy instance];
 
-  if (v6)
+  if (instance)
   {
     lock_assertions = self->_lock_assertions;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __64__CRSUIStatusBarStyleService__connectionQueue_removeConnection___block_invoke;
     v10[3] = &unk_278DA1118;
-    v11 = v6;
+    v11 = instance;
     v8 = [(NSMutableArray *)lock_assertions indexOfObjectPassingTest:v10];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {

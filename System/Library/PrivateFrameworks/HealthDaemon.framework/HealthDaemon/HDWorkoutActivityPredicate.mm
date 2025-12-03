@@ -1,13 +1,13 @@
 @interface HDWorkoutActivityPredicate
-+ (id)predicateForSubPredicate:(id)a3;
-- (id)SQLForEntityClass:(Class)a3;
++ (id)predicateForSubPredicate:(id)predicate;
+- (id)SQLForEntityClass:(Class)class;
 @end
 
 @implementation HDWorkoutActivityPredicate
 
-+ (id)predicateForSubPredicate:(id)a3
++ (id)predicateForSubPredicate:(id)predicate
 {
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = [HDWorkoutActivityPredicate alloc];
   if (v4)
   {
@@ -22,12 +22,12 @@
   }
 
   v6 = v5[1];
-  v5[1] = v3;
+  v5[1] = predicateCopy;
 
   return v5;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
   v3 = [(HDSQLitePredicate *)self->_subPredicate SQLForEntityClass:objc_opt_class()];
   v14 = MEMORY[0x277CCACA8];

@@ -1,29 +1,29 @@
 @interface GetPlayInfoOperation
-- (GetPlayInfoOperation)initWithPlayInfoRequestContext:(id)a3;
+- (GetPlayInfoOperation)initWithPlayInfoRequestContext:(id)context;
 - (NSString)clientIdentifierHeader;
 - (NSString)userAgent;
 - (SSPlayInfoRequestContext)playInfoContext;
 - (SSPlayInfoResponse)playInfoResponse;
-- (id)_copyRequestBody:(id *)a3;
-- (void)_failWithError:(id)a3;
-- (void)_setPlayInfoResponse:(id)a3;
-- (void)_setResponseForOutput:(id)a3;
+- (id)_copyRequestBody:(id *)body;
+- (void)_failWithError:(id)error;
+- (void)_setPlayInfoResponse:(id)response;
+- (void)_setResponseForOutput:(id)output;
 - (void)dealloc;
 - (void)run;
-- (void)setClientIdentifierHeader:(id)a3;
-- (void)setUserAgent:(id)a3;
+- (void)setClientIdentifierHeader:(id)header;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation GetPlayInfoOperation
 
-- (GetPlayInfoOperation)initWithPlayInfoRequestContext:(id)a3
+- (GetPlayInfoOperation)initWithPlayInfoRequestContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = GetPlayInfoOperation;
   v4 = [(GetPlayInfoOperation *)&v6 init];
   if (v4)
   {
-    v4->_context = [a3 copy];
+    v4->_context = [context copy];
   }
 
   return v4;
@@ -59,27 +59,27 @@
   return v3;
 }
 
-- (void)setClientIdentifierHeader:(id)a3
+- (void)setClientIdentifierHeader:(id)header
 {
   [(GetPlayInfoOperation *)self lock];
   clientIdentifierHeader = self->_clientIdentifierHeader;
-  if (clientIdentifierHeader != a3)
+  if (clientIdentifierHeader != header)
   {
 
-    self->_clientIdentifierHeader = [a3 copy];
+    self->_clientIdentifierHeader = [header copy];
   }
 
   [(GetPlayInfoOperation *)self unlock];
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
   [(GetPlayInfoOperation *)self lock];
   userAgent = self->_userAgent;
-  if (userAgent != a3)
+  if (userAgent != agent)
   {
 
-    self->_userAgent = [a3 copy];
+    self->_userAgent = [agent copy];
   }
 
   [(GetPlayInfoOperation *)self unlock];
@@ -106,15 +106,15 @@
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
+    shouldLog = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
     if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -157,15 +157,15 @@ LABEL_24:
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog2 = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog2 | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -183,13 +183,13 @@ LABEL_24:
 
   v5 = v4;
   v6 = objc_alloc_init(ISStoreURLOperation);
-  v7 = [(GetPlayInfoOperation *)self userAgent];
+  userAgent = [(GetPlayInfoOperation *)self userAgent];
   v8 = [v3 objectForKey:@"dsid"];
   if (v8)
   {
     v9 = [[SSMutableAuthenticationContext alloc] initWithAccountIdentifier:v8];
     v10 = SSHTTPHeaderUserAgent;
-    [v9 setValue:v7 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+    [v9 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
     [v6 setAuthenticationContext:v9];
   }
 
@@ -206,7 +206,7 @@ LABEL_24:
   [v21 setHTTPBody:v5];
   [v21 setHTTPMethod:@"POST"];
   [v21 setURLBagKey:@"get-play-info"];
-  [v21 setValue:v7 forHTTPHeaderField:v10];
+  [v21 setValue:userAgent forHTTPHeaderField:v10];
   [v6 setRequestProperties:v21];
 
   v22 = +[SSLogConfig sharedDaemonConfig];
@@ -215,15 +215,15 @@ LABEL_24:
     v22 = +[SSLogConfig sharedConfig];
   }
 
-  v23 = [v22 shouldLog];
+  shouldLog3 = [v22 shouldLog];
   if ([v22 shouldLogToDisk])
   {
-    v24 = v23 | 2;
+    v24 = shouldLog3 | 2;
   }
 
   else
   {
-    v24 = v23;
+    v24 = shouldLog3;
   }
 
   if (!os_log_type_enabled([v22 OSLogObject], OS_LOG_TYPE_INFO))
@@ -262,13 +262,13 @@ LABEL_24:
 LABEL_40:
 }
 
-- (id)_copyRequestBody:(id *)a3
+- (id)_copyRequestBody:(id *)body
 {
   v37 = 0;
-  v5 = [(SSPlayInfoRequestContext *)self->_context sinfs];
-  if ([v5 count])
+  sinfs = [(SSPlayInfoRequestContext *)self->_context sinfs];
+  if ([sinfs count])
   {
-    v6 = [[SinfsArray alloc] initWithSINFs:v5];
+    v6 = [[SinfsArray alloc] initWithSINFs:sinfs];
   }
 
   else
@@ -276,8 +276,8 @@ LABEL_40:
     v6 = 0;
   }
 
-  v7 = [(SSPlayInfoRequestContext *)self->_context accountIdentifier];
-  if (v7)
+  accountIdentifier = [(SSPlayInfoRequestContext *)self->_context accountIdentifier];
+  if (accountIdentifier)
   {
     v8 = 1;
   }
@@ -289,17 +289,17 @@ LABEL_40:
 
   if (!v8)
   {
-    v7 = [(SinfsArray *)v6 copyValueForProperty:@"SinfPropertyAccountIdentifier" error:&v37];
+    accountIdentifier = [(SinfsArray *)v6 copyValueForProperty:@"SinfPropertyAccountIdentifier" error:&v37];
   }
 
-  if (v7)
+  if (accountIdentifier)
   {
     v9 = objc_alloc_init(NSMutableDictionary);
-    [v9 setObject:v7 forKey:@"dsid"];
-    v10 = [(SSPlayInfoRequestContext *)self->_context contentIdentifier];
-    if (v10)
+    [v9 setObject:accountIdentifier forKey:@"dsid"];
+    contentIdentifier = [(SSPlayInfoRequestContext *)self->_context contentIdentifier];
+    if (contentIdentifier)
     {
-      [v9 setObject:v10 forKey:@"content-id"];
+      [v9 setObject:contentIdentifier forKey:@"content-id"];
     }
 
     else
@@ -331,15 +331,15 @@ LABEL_40:
           v28 = +[SSLogConfig sharedConfig];
         }
 
-        v29 = [v28 shouldLog];
+        shouldLog = [v28 shouldLog];
         if ([v28 shouldLogToDisk])
         {
-          v30 = v29 | 2;
+          v30 = shouldLog | 2;
         }
 
         else
         {
-          v30 = v29;
+          v30 = shouldLog;
         }
 
         if (!os_log_type_enabled([v28 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -369,16 +369,16 @@ LABEL_40:
       }
     }
 
-    v22 = [(SSPlayInfoRequestContext *)self->_context playbackType];
-    if (v22)
+    playbackType = [(SSPlayInfoRequestContext *)self->_context playbackType];
+    if (playbackType)
     {
-      [v9 setObject:v22 forKey:@"subPlayType"];
+      [v9 setObject:playbackType forKey:@"subPlayType"];
     }
 
-    v23 = [+[ISDevice sharedInstance](ISDevice guid];
-    if (v23)
+    guid = [+[ISDevice sharedInstance](ISDevice guid];
+    if (guid)
     {
-      [v9 setObject:v23 forKey:@"guid"];
+      [v9 setObject:guid forKey:@"guid"];
     }
 
     v24 = [+[SSDevice currentDevice](SSDevice "currentDevice")];
@@ -387,16 +387,16 @@ LABEL_40:
       [v9 setObject:v24 forKey:@"hw.model"];
     }
 
-    v25 = [(SSPlayInfoRequestContext *)self->_context playerGUID];
-    if (v25)
+    playerGUID = [(SSPlayInfoRequestContext *)self->_context playerGUID];
+    if (playerGUID)
     {
-      [v9 setObject:v25 forKey:@"player-guid"];
+      [v9 setObject:playerGUID forKey:@"player-guid"];
     }
 
-    v26 = [(SSPlayInfoRequestContext *)self->_context SICData];
-    if (v26)
+    sICData = [(SSPlayInfoRequestContext *)self->_context SICData];
+    if (sICData)
     {
-      [v9 setObject:v26 forKey:@"sic"];
+      [v9 setObject:sICData forKey:@"sic"];
     }
   }
 
@@ -408,15 +408,15 @@ LABEL_40:
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
+    shouldLog2 = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog2 | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -451,43 +451,43 @@ LABEL_40:
     v9 = 0;
   }
 
-  if (a3)
+  if (body)
   {
-    *a3 = v37;
+    *body = v37;
   }
 
   return v9;
 }
 
-- (void)_failWithError:(id)a3
+- (void)_failWithError:(id)error
 {
-  v3 = a3;
-  if (!a3)
+  errorCopy = error;
+  if (!error)
   {
-    v3 = SSError();
+    errorCopy = SSError();
   }
 
-  v5 = [[SSPlayInfoResponse alloc] initWithPlayInfoData:0 error:v3];
+  v5 = [[SSPlayInfoResponse alloc] initWithPlayInfoData:0 error:errorCopy];
   [(GetPlayInfoOperation *)self _setPlayInfoResponse:v5];
-  [(GetPlayInfoOperation *)self setError:v3];
+  [(GetPlayInfoOperation *)self setError:errorCopy];
 }
 
-- (void)_setPlayInfoResponse:(id)a3
+- (void)_setPlayInfoResponse:(id)response
 {
   [(GetPlayInfoOperation *)self lock];
   response = self->_response;
-  if (response != a3)
+  if (response != response)
   {
 
-    self->_response = a3;
+    self->_response = response;
   }
 
   [(GetPlayInfoOperation *)self unlock];
 }
 
-- (void)_setResponseForOutput:(id)a3
+- (void)_setResponseForOutput:(id)output
 {
-  v5 = [a3 objectForKey:@"status"];
+  v5 = [output objectForKey:@"status"];
   if (v5 && (v6 = v5, (objc_opt_respondsToSelector() & 1) != 0) && [v6 intValue])
   {
     v7 = +[SSLogConfig sharedDaemonConfig];
@@ -496,15 +496,15 @@ LABEL_40:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -537,7 +537,7 @@ LABEL_40:
 
   else
   {
-    v13 = [a3 objectForKey:@"play-info"];
+    v13 = [output objectForKey:@"play-info"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {

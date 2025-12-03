@@ -1,20 +1,20 @@
 @interface UARPAccessoryID
-- (BOOL)analyticsIsEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)analyticsIsEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shareAnalyticsEventsWithThirdParty;
 - (NSString)modelAnalytics;
 - (NSString)modelIdentifier;
 - (NSString)modelName;
-- (UARPAccessoryID)initWithCoder:(id)a3;
-- (UARPAccessoryID)initWithManufacturer:(id)a3 modelName:(id)a4 serialNumber:(id)a5 firmwareVersion:(id)a6;
-- (UARPAccessoryID)initWithManufacturer:(id)a3 modelName:(id)a4 serialNumber:(id)a5 firmwareVersion:(id)a6 productGroup:(id)a7 productNumber:(id)a8;
-- (UARPAccessoryID)initWithModelNumber:(id)a3;
-- (UARPAccessoryID)initWithProductGroup:(id)a3 productNumber:(id)a4;
+- (UARPAccessoryID)initWithCoder:(id)coder;
+- (UARPAccessoryID)initWithManufacturer:(id)manufacturer modelName:(id)name serialNumber:(id)number firmwareVersion:(id)version;
+- (UARPAccessoryID)initWithManufacturer:(id)manufacturer modelName:(id)name serialNumber:(id)number firmwareVersion:(id)version productGroup:(id)group productNumber:(id)productNumber;
+- (UARPAccessoryID)initWithModelNumber:(id)number;
+- (UARPAccessoryID)initWithProductGroup:(id)group productNumber:(id)number;
 - (UARPAccessoryID)initWithoutUUID;
 - (const)assetAvailabilityUpdateNotification;
 - (const)supplementalAssetAvailabilityUpdateNotification;
 - (id)computeModelIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)countryCode;
 - (id)description;
 - (id)partnerSerialNumbers;
@@ -22,40 +22,40 @@
 - (unint64_t)capability;
 - (unint64_t)hash;
 - (unint64_t)uarpVersion;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initCountryCode;
-- (void)setCapability:(unint64_t)a3;
-- (void)setCountryCode:(id)a3;
-- (void)setFirmwareVersion:(id)a3;
-- (void)setFriendlyName:(id)a3;
-- (void)setHwFusingType:(id)a3;
-- (void)setHwRevision:(id)a3;
-- (void)setManufacturer:(id)a3;
-- (void)setModelName:(id)a3;
-- (void)setModelNumber:(id)a3;
-- (void)setPartnerSerialNumbers:(id)a3;
-- (void)setProductGroup:(id)a3;
-- (void)setProductNumber:(id)a3;
-- (void)setSerialNumber:(id)a3;
-- (void)setStagedFirmwareVersion:(id)a3;
-- (void)setSuppressAutomaticDynamicAssets:(BOOL)a3;
-- (void)setSuppressInfoQueries:(BOOL)a3;
-- (void)setUarpVersion:(unint64_t)a3;
-- (void)setUuid:(id)a3;
+- (void)setCapability:(unint64_t)capability;
+- (void)setCountryCode:(id)code;
+- (void)setFirmwareVersion:(id)version;
+- (void)setFriendlyName:(id)name;
+- (void)setHwFusingType:(id)type;
+- (void)setHwRevision:(id)revision;
+- (void)setManufacturer:(id)manufacturer;
+- (void)setModelName:(id)name;
+- (void)setModelNumber:(id)number;
+- (void)setPartnerSerialNumbers:(id)numbers;
+- (void)setProductGroup:(id)group;
+- (void)setProductNumber:(id)number;
+- (void)setSerialNumber:(id)number;
+- (void)setStagedFirmwareVersion:(id)version;
+- (void)setSuppressAutomaticDynamicAssets:(BOOL)assets;
+- (void)setSuppressInfoQueries:(BOOL)queries;
+- (void)setUarpVersion:(unint64_t)version;
+- (void)setUuid:(id)uuid;
 @end
 
 @implementation UARPAccessoryID
 
-- (BOOL)analyticsIsEqual:(id)a3
+- (BOOL)analyticsIsEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(UARPAccessoryID *)self modelNumber];
-  v6 = [v4 modelNumber];
-  if ([v5 isEqual:v6])
+  equalCopy = equal;
+  modelNumber = [(UARPAccessoryID *)self modelNumber];
+  modelNumber2 = [equalCopy modelNumber];
+  if ([modelNumber isEqual:modelNumber2])
   {
-    v7 = [(UARPAccessoryID *)self serialNumber];
-    v8 = [v4 serialNumber];
-    v9 = [v7 isEqual:v8];
+    serialNumber = [(UARPAccessoryID *)self serialNumber];
+    serialNumber2 = [equalCopy serialNumber];
+    v9 = [serialNumber isEqual:serialNumber2];
   }
 
   else
@@ -84,47 +84,47 @@
   return v2;
 }
 
-- (UARPAccessoryID)initWithManufacturer:(id)a3 modelName:(id)a4 serialNumber:(id)a5 firmwareVersion:(id)a6
+- (UARPAccessoryID)initWithManufacturer:(id)manufacturer modelName:(id)name serialNumber:(id)number firmwareVersion:(id)version
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(UARPAccessoryID *)self initWithoutUUID];
-  if (v14)
+  manufacturerCopy = manufacturer;
+  nameCopy = name;
+  numberCopy = number;
+  versionCopy = version;
+  initWithoutUUID = [(UARPAccessoryID *)self initWithoutUUID];
+  if (initWithoutUUID)
   {
-    v15 = [v10 copy];
-    manufacturer = v14->_manufacturer;
-    v14->_manufacturer = v15;
+    v15 = [manufacturerCopy copy];
+    manufacturer = initWithoutUUID->_manufacturer;
+    initWithoutUUID->_manufacturer = v15;
 
-    v17 = [v11 copy];
-    modelName = v14->_modelName;
-    v14->_modelName = v17;
+    v17 = [nameCopy copy];
+    modelName = initWithoutUUID->_modelName;
+    initWithoutUUID->_modelName = v17;
 
-    v19 = [v12 copy];
-    serialNumber = v14->_serialNumber;
-    v14->_serialNumber = v19;
+    v19 = [numberCopy copy];
+    serialNumber = initWithoutUUID->_serialNumber;
+    initWithoutUUID->_serialNumber = v19;
 
-    v21 = [v13 copy];
-    firmwareVersion = v14->_firmwareVersion;
-    v14->_firmwareVersion = v21;
+    v21 = [versionCopy copy];
+    firmwareVersion = initWithoutUUID->_firmwareVersion;
+    initWithoutUUID->_firmwareVersion = v21;
   }
 
-  return v14;
+  return initWithoutUUID;
 }
 
-- (UARPAccessoryID)initWithManufacturer:(id)a3 modelName:(id)a4 serialNumber:(id)a5 firmwareVersion:(id)a6 productGroup:(id)a7 productNumber:(id)a8
+- (UARPAccessoryID)initWithManufacturer:(id)manufacturer modelName:(id)name serialNumber:(id)number firmwareVersion:(id)version productGroup:(id)group productNumber:(id)productNumber
 {
-  v14 = a7;
-  v15 = a8;
-  v16 = [(UARPAccessoryID *)self initWithManufacturer:a3 modelName:a4 serialNumber:a5 firmwareVersion:a6];
+  groupCopy = group;
+  productNumberCopy = productNumber;
+  v16 = [(UARPAccessoryID *)self initWithManufacturer:manufacturer modelName:name serialNumber:number firmwareVersion:version];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [groupCopy copy];
     productGroup = v16->_productGroup;
     v16->_productGroup = v17;
 
-    v19 = [v15 copy];
+    v19 = [productNumberCopy copy];
     productNumber = v16->_productNumber;
     v16->_productNumber = v19;
   }
@@ -136,119 +136,119 @@
 {
   if (objc_opt_class())
   {
-    v6 = [MEMORY[0x277D0EAF8] sharedConfiguration];
-    v3 = [v6 countryCode];
-    v4 = [v3 copy];
+    mEMORY[0x277D0EAF8] = [MEMORY[0x277D0EAF8] sharedConfiguration];
+    countryCode = [mEMORY[0x277D0EAF8] countryCode];
+    v4 = [countryCode copy];
     countryCode = self->_countryCode;
     self->_countryCode = v4;
   }
 }
 
-- (UARPAccessoryID)initWithModelNumber:(id)a3
+- (UARPAccessoryID)initWithModelNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(UARPAccessoryID *)self initWithoutUUID];
-  if (v5)
+  numberCopy = number;
+  initWithoutUUID = [(UARPAccessoryID *)self initWithoutUUID];
+  if (initWithoutUUID)
   {
-    v6 = [v4 copy];
-    modelNumber = v5->_modelNumber;
-    v5->_modelNumber = v6;
+    v6 = [numberCopy copy];
+    modelNumber = initWithoutUUID->_modelNumber;
+    initWithoutUUID->_modelNumber = v6;
   }
 
-  return v5;
+  return initWithoutUUID;
 }
 
-- (UARPAccessoryID)initWithProductGroup:(id)a3 productNumber:(id)a4
+- (UARPAccessoryID)initWithProductGroup:(id)group productNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UARPAccessoryID *)self initWithoutUUID];
-  if (v8)
+  groupCopy = group;
+  numberCopy = number;
+  initWithoutUUID = [(UARPAccessoryID *)self initWithoutUUID];
+  if (initWithoutUUID)
   {
-    v9 = [v6 copy];
-    productGroup = v8->_productGroup;
-    v8->_productGroup = v9;
+    v9 = [groupCopy copy];
+    productGroup = initWithoutUUID->_productGroup;
+    initWithoutUUID->_productGroup = v9;
 
-    v11 = [v7 copy];
-    productNumber = v8->_productNumber;
-    v8->_productNumber = v11;
+    v11 = [numberCopy copy];
+    productNumber = initWithoutUUID->_productNumber;
+    initWithoutUUID->_productNumber = v11;
   }
 
-  return v8;
+  return initWithoutUUID;
 }
 
-- (UARPAccessoryID)initWithCoder:(id)a3
+- (UARPAccessoryID)initWithCoder:(id)coder
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = UARPAccessoryID;
   v5 = [(UARPAccessoryID *)&v43 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productGroup"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productGroup"];
     productGroup = v5->_productGroup;
     v5->_productGroup = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productNumber"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productNumber"];
     productNumber = v5->_productNumber;
     v5->_productNumber = v10;
 
-    v5->_autoDownloadAllowed = [v4 decodeBoolForKey:@"autoDownloadAllowed"];
-    v5->_downloadOnCellularAllowed = [v4 decodeBoolForKey:@"downloadOnCellularAllowed"];
-    v5->_transport = [v4 decodeIntegerForKey:@"transport"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastAddedDate"];
+    v5->_autoDownloadAllowed = [coderCopy decodeBoolForKey:@"autoDownloadAllowed"];
+    v5->_downloadOnCellularAllowed = [coderCopy decodeBoolForKey:@"downloadOnCellularAllowed"];
+    v5->_transport = [coderCopy decodeIntegerForKey:@"transport"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastAddedDate"];
     lastAddedDate = v5->_lastAddedDate;
     v5->_lastAddedDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     countryCode = v5->_countryCode;
     v5->_countryCode = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagedFirmwareVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagedFirmwareVersion"];
     stagedFirmwareVersion = v5->_stagedFirmwareVersion;
     v5->_stagedFirmwareVersion = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manufacturer"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manufacturer"];
     manufacturer = v5->_manufacturer;
     v5->_manufacturer = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelName"];
     modelName = v5->_modelName;
     v5->_modelName = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelNumber"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelNumber"];
     modelNumber = v5->_modelNumber;
     v5->_modelNumber = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firmwareVersion"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firmwareVersion"];
     firmwareVersion = v5->_firmwareVersion;
     v5->_firmwareVersion = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"capability"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"capability"];
     v5->_capability = [v28 unsignedLongLongValue];
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hwFusingType"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hwFusingType"];
     hwFusingType = v5->_hwFusingType;
     v5->_hwFusingType = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hwRevision"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hwRevision"];
     hwRevision = v5->_hwRevision;
     v5->_hwRevision = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"friendlyName"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"friendlyName"];
     friendlyName = v5->_friendlyName;
     v5->_friendlyName = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uarpVersion"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uarpVersion"];
     v5->_uarpVersion = [v35 unsignedLongLongValue];
 
     v36 = MEMORY[0x277CBEB98];
@@ -256,7 +256,7 @@
     v44[1] = objc_opt_class();
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
     v38 = [v36 setWithArray:v37];
-    v39 = [v4 decodeObjectOfClasses:v38 forKey:@"partnerSerialNumbers"];
+    v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"partnerSerialNumbers"];
     partnerSerialNumbers = v5->_partnerSerialNumbers;
     v5->_partnerSerialNumbers = v39;
   }
@@ -265,353 +265,353 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v7 encodeObject:v4->_manufacturer forKey:@"manufacturer"];
-  [v7 encodeObject:v4->_modelName forKey:@"modelName"];
-  [v7 encodeObject:v4->_modelNumber forKey:@"modelNumber"];
-  [v7 encodeObject:v4->_serialNumber forKey:@"serialNumber"];
-  [v7 encodeObject:v4->_firmwareVersion forKey:@"firmwareVersion"];
-  [v7 encodeObject:v4->_productGroup forKey:@"productGroup"];
-  [v7 encodeObject:v4->_productNumber forKey:@"productNumber"];
-  [v7 encodeBool:v4->_autoDownloadAllowed forKey:@"autoDownloadAllowed"];
-  [v7 encodeBool:v4->_downloadOnCellularAllowed forKey:@"downloadOnCellularAllowed"];
-  [v7 encodeInteger:v4->_transport forKey:@"transport"];
-  [v7 encodeObject:v4->_lastAddedDate forKey:@"lastAddedDate"];
-  [v7 encodeObject:v4->_countryCode forKey:@"countryCode"];
-  [v7 encodeObject:v4->_stagedFirmwareVersion forKey:@"stagedFirmwareVersion"];
-  [v7 encodeObject:v4->_uuid forKey:@"uuid"];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v4->_capability];
-  [v7 encodeObject:v5 forKey:@"capability"];
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [coderCopy encodeObject:selfCopy->_manufacturer forKey:@"manufacturer"];
+  [coderCopy encodeObject:selfCopy->_modelName forKey:@"modelName"];
+  [coderCopy encodeObject:selfCopy->_modelNumber forKey:@"modelNumber"];
+  [coderCopy encodeObject:selfCopy->_serialNumber forKey:@"serialNumber"];
+  [coderCopy encodeObject:selfCopy->_firmwareVersion forKey:@"firmwareVersion"];
+  [coderCopy encodeObject:selfCopy->_productGroup forKey:@"productGroup"];
+  [coderCopy encodeObject:selfCopy->_productNumber forKey:@"productNumber"];
+  [coderCopy encodeBool:selfCopy->_autoDownloadAllowed forKey:@"autoDownloadAllowed"];
+  [coderCopy encodeBool:selfCopy->_downloadOnCellularAllowed forKey:@"downloadOnCellularAllowed"];
+  [coderCopy encodeInteger:selfCopy->_transport forKey:@"transport"];
+  [coderCopy encodeObject:selfCopy->_lastAddedDate forKey:@"lastAddedDate"];
+  [coderCopy encodeObject:selfCopy->_countryCode forKey:@"countryCode"];
+  [coderCopy encodeObject:selfCopy->_stagedFirmwareVersion forKey:@"stagedFirmwareVersion"];
+  [coderCopy encodeObject:selfCopy->_uuid forKey:@"uuid"];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:selfCopy->_capability];
+  [coderCopy encodeObject:v5 forKey:@"capability"];
 
-  [v7 encodeObject:v4->_hwFusingType forKey:@"hwFusingType"];
-  [v7 encodeObject:v4->_hwRevision forKey:@"hwRevision"];
-  [v7 encodeObject:v4->_friendlyName forKey:@"friendlyName"];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4->_uarpVersion];
-  [v7 encodeObject:v6 forKey:@"uarpVersion"];
+  [coderCopy encodeObject:selfCopy->_hwFusingType forKey:@"hwFusingType"];
+  [coderCopy encodeObject:selfCopy->_hwRevision forKey:@"hwRevision"];
+  [coderCopy encodeObject:selfCopy->_friendlyName forKey:@"friendlyName"];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:selfCopy->_uarpVersion];
+  [coderCopy encodeObject:v6 forKey:@"uarpVersion"];
 
-  [v7 encodeObject:v4->_partnerSerialNumbers forKey:@"partnerSerialNumbers"];
-  objc_sync_exit(v4);
+  [coderCopy encodeObject:selfCopy->_partnerSerialNumbers forKey:@"partnerSerialNumbers"];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UARPAccessoryID);
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSUUID *)v5->_uuid copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSUUID *)selfCopy->_uuid copy];
   uuid = v4->_uuid;
   v4->_uuid = v6;
 
-  v8 = [(NSString *)v5->_manufacturer copy];
+  v8 = [(NSString *)selfCopy->_manufacturer copy];
   manufacturer = v4->_manufacturer;
   v4->_manufacturer = v8;
 
-  v10 = [(NSString *)v5->_modelName copy];
+  v10 = [(NSString *)selfCopy->_modelName copy];
   modelName = v4->_modelName;
   v4->_modelName = v10;
 
-  v12 = [(NSString *)v5->_modelNumber copy];
+  v12 = [(NSString *)selfCopy->_modelNumber copy];
   modelNumber = v4->_modelNumber;
   v4->_modelNumber = v12;
 
-  v14 = [(NSString *)v5->_serialNumber copy];
+  v14 = [(NSString *)selfCopy->_serialNumber copy];
   serialNumber = v4->_serialNumber;
   v4->_serialNumber = v14;
 
-  v16 = [(NSString *)v5->_firmwareVersion copy];
+  v16 = [(NSString *)selfCopy->_firmwareVersion copy];
   firmwareVersion = v4->_firmwareVersion;
   v4->_firmwareVersion = v16;
 
-  v18 = [(NSString *)v5->_productGroup copy];
+  v18 = [(NSString *)selfCopy->_productGroup copy];
   productGroup = v4->_productGroup;
   v4->_productGroup = v18;
 
-  v20 = [(NSString *)v5->_productNumber copy];
+  v20 = [(NSString *)selfCopy->_productNumber copy];
   productNumber = v4->_productNumber;
   v4->_productNumber = v20;
 
-  v4->_autoDownloadAllowed = v5->_autoDownloadAllowed;
-  v4->_downloadOnCellularAllowed = v5->_downloadOnCellularAllowed;
-  v4->_transport = v5->_transport;
-  objc_storeStrong(&v4->_lastAddedDate, v5->_lastAddedDate);
-  v22 = [(NSString *)v5->_countryCode copy];
+  v4->_autoDownloadAllowed = selfCopy->_autoDownloadAllowed;
+  v4->_downloadOnCellularAllowed = selfCopy->_downloadOnCellularAllowed;
+  v4->_transport = selfCopy->_transport;
+  objc_storeStrong(&v4->_lastAddedDate, selfCopy->_lastAddedDate);
+  v22 = [(NSString *)selfCopy->_countryCode copy];
   countryCode = v4->_countryCode;
   v4->_countryCode = v22;
 
-  v24 = [(NSString *)v5->_stagedFirmwareVersion copy];
+  v24 = [(NSString *)selfCopy->_stagedFirmwareVersion copy];
   stagedFirmwareVersion = v4->_stagedFirmwareVersion;
   v4->_stagedFirmwareVersion = v24;
 
-  v4->_capability = v5->_capability;
-  objc_storeStrong(&v4->_hwFusingType, v5->_hwFusingType);
-  objc_storeStrong(&v4->_hwRevision, v5->_hwRevision);
-  v26 = [(NSString *)v5->_friendlyName copy];
+  v4->_capability = selfCopy->_capability;
+  objc_storeStrong(&v4->_hwFusingType, selfCopy->_hwFusingType);
+  objc_storeStrong(&v4->_hwRevision, selfCopy->_hwRevision);
+  v26 = [(NSString *)selfCopy->_friendlyName copy];
   friendlyName = v4->_friendlyName;
   v4->_friendlyName = v26;
 
-  v4->_uarpVersion = v5->_uarpVersion;
-  v28 = [(NSArray *)v5->_partnerSerialNumbers copy];
+  v4->_uarpVersion = selfCopy->_uarpVersion;
+  v28 = [(NSArray *)selfCopy->_partnerSerialNumbers copy];
   partnerSerialNumbers = v4->_partnerSerialNumbers;
   v4->_partnerSerialNumbers = v28;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
 - (id)uuid
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_uuid;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_uuid;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
-  v4 = a3;
+  uuidCopy = uuid;
   obj = self;
   objc_sync_enter(obj);
   uuid = obj->_uuid;
-  obj->_uuid = v4;
+  obj->_uuid = uuidCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setCountryCode:(id)a3
+- (void)setCountryCode:(id)code
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  countryCode = v4->_countryCode;
-  v4->_countryCode = v5;
+  codeCopy = code;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [codeCopy copy];
+  countryCode = selfCopy->_countryCode;
+  selfCopy->_countryCode = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setManufacturer:(id)a3
+- (void)setManufacturer:(id)manufacturer
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  manufacturer = v4->_manufacturer;
-  v4->_manufacturer = v5;
+  manufacturerCopy = manufacturer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [manufacturerCopy copy];
+  manufacturer = selfCopy->_manufacturer;
+  selfCopy->_manufacturer = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)modelName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_modelName;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_modelName;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setModelName:(id)a3
+- (void)setModelName:(id)name
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  modelName = v4->_modelName;
-  v4->_modelName = v5;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [nameCopy copy];
+  modelName = selfCopy->_modelName;
+  selfCopy->_modelName = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setModelNumber:(id)a3
+- (void)setModelNumber:(id)number
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  modelNumber = v4->_modelNumber;
-  v4->_modelNumber = v5;
+  numberCopy = number;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [numberCopy copy];
+  modelNumber = selfCopy->_modelNumber;
+  selfCopy->_modelNumber = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSerialNumber:(id)a3
+- (void)setSerialNumber:(id)number
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  serialNumber = v4->_serialNumber;
-  v4->_serialNumber = v5;
+  numberCopy = number;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [numberCopy copy];
+  serialNumber = selfCopy->_serialNumber;
+  selfCopy->_serialNumber = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setProductGroup:(id)a3
+- (void)setProductGroup:(id)group
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  productGroup = v4->_productGroup;
-  v4->_productGroup = v5;
+  groupCopy = group;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [groupCopy copy];
+  productGroup = selfCopy->_productGroup;
+  selfCopy->_productGroup = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setProductNumber:(id)a3
+- (void)setProductNumber:(id)number
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  productNumber = v4->_productNumber;
-  v4->_productNumber = v5;
+  numberCopy = number;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [numberCopy copy];
+  productNumber = selfCopy->_productNumber;
+  selfCopy->_productNumber = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setFirmwareVersion:(id)a3
+- (void)setFirmwareVersion:(id)version
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  firmwareVersion = v4->_firmwareVersion;
-  v4->_firmwareVersion = v5;
+  versionCopy = version;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [versionCopy copy];
+  firmwareVersion = selfCopy->_firmwareVersion;
+  selfCopy->_firmwareVersion = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setStagedFirmwareVersion:(id)a3
+- (void)setStagedFirmwareVersion:(id)version
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  stagedFirmwareVersion = v4->_stagedFirmwareVersion;
-  v4->_stagedFirmwareVersion = v5;
+  versionCopy = version;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [versionCopy copy];
+  stagedFirmwareVersion = selfCopy->_stagedFirmwareVersion;
+  selfCopy->_stagedFirmwareVersion = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setHwFusingType:(id)a3
+- (void)setHwFusingType:(id)type
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  hwFusingType = v4->_hwFusingType;
-  v4->_hwFusingType = v5;
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [typeCopy copy];
+  hwFusingType = selfCopy->_hwFusingType;
+  selfCopy->_hwFusingType = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setHwRevision:(id)a3
+- (void)setHwRevision:(id)revision
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  hwRevision = v4->_hwRevision;
-  v4->_hwRevision = v5;
+  revisionCopy = revision;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [revisionCopy copy];
+  hwRevision = selfCopy->_hwRevision;
+  selfCopy->_hwRevision = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSuppressAutomaticDynamicAssets:(BOOL)a3
+- (void)setSuppressAutomaticDynamicAssets:(BOOL)assets
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_suppressAutomaticDynamicAssets = a3;
+  obj->_suppressAutomaticDynamicAssets = assets;
   objc_sync_exit(obj);
 }
 
-- (void)setSuppressInfoQueries:(BOOL)a3
+- (void)setSuppressInfoQueries:(BOOL)queries
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_suppressInfoQueries = a3;
+  obj->_suppressInfoQueries = queries;
   objc_sync_exit(obj);
 }
 
-- (void)setFriendlyName:(id)a3
+- (void)setFriendlyName:(id)name
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  friendlyName = v4->_friendlyName;
-  v4->_friendlyName = v5;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [nameCopy copy];
+  friendlyName = selfCopy->_friendlyName;
+  selfCopy->_friendlyName = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (unint64_t)uarpVersion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  uarpVersion = v2->_uarpVersion;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  uarpVersion = selfCopy->_uarpVersion;
+  objc_sync_exit(selfCopy);
 
   return uarpVersion;
 }
 
-- (void)setUarpVersion:(unint64_t)a3
+- (void)setUarpVersion:(unint64_t)version
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_uarpVersion = a3;
+  obj->_uarpVersion = version;
   objc_sync_exit(obj);
 }
 
 - (id)countryCode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_countryCode;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_countryCode;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setCapability:(unint64_t)a3
+- (void)setCapability:(unint64_t)capability
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_capability = a3;
+  obj->_capability = capability;
   objc_sync_exit(obj);
 }
 
 - (unint64_t)capability
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  capability = v2->_capability;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  capability = selfCopy->_capability;
+  objc_sync_exit(selfCopy);
 
   return capability;
 }
 
 - (id)computeModelIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_productGroup && v2->_productNumber)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_productGroup && selfCopy->_productNumber)
   {
-    v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-%@", v2->_productGroup, v2->_productNumber];
+    v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-%@", selfCopy->_productGroup, selfCopy->_productNumber];
 LABEL_6:
     v5 = v3;
     goto LABEL_8;
   }
 
-  modelNumber = v2->_modelNumber;
+  modelNumber = selfCopy->_modelNumber;
   if (modelNumber)
   {
     v3 = modelNumber;
@@ -620,43 +620,43 @@ LABEL_6:
 
   v5 = 0;
 LABEL_8:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (NSString)modelIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(UARPAccessoryID *)v2 computeModelIdentifier];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  computeModelIdentifier = [(UARPAccessoryID *)selfCopy computeModelIdentifier];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return computeModelIdentifier;
 }
 
 - (NSString)modelAnalytics
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(UARPAccessoryID *)v2 computeModelIdentifier];
-  if (!v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  computeModelIdentifier = [(UARPAccessoryID *)selfCopy computeModelIdentifier];
+  if (!computeModelIdentifier)
   {
-    v3 = v2->_modelName;
+    computeModelIdentifier = selfCopy->_modelName;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return computeModelIdentifier;
 }
 
 - (BOOL)shareAnalyticsEventsWithThirdParty
 {
-  v3 = [(UARPAccessoryID *)self productGroup];
-  if (v3)
+  productGroup = [(UARPAccessoryID *)self productGroup];
+  if (productGroup)
   {
-    v4 = [(UARPAccessoryID *)self productNumber];
-    v5 = v4 != 0;
+    productNumber = [(UARPAccessoryID *)self productNumber];
+    v5 = productNumber != 0;
   }
 
   else
@@ -670,72 +670,72 @@ LABEL_8:
 - (const)assetAvailabilityUpdateNotification
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(UARPAccessoryID *)self uuid];
-  v4 = [v2 stringWithFormat:@"com.apple.uarp.aau.%@", v3];
-  v5 = [v4 UTF8String];
+  uuid = [(UARPAccessoryID *)self uuid];
+  v4 = [v2 stringWithFormat:@"com.apple.uarp.aau.%@", uuid];
+  uTF8String = [v4 UTF8String];
 
-  return v5;
+  return uTF8String;
 }
 
 - (const)supplementalAssetAvailabilityUpdateNotification
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(UARPAccessoryID *)self uuid];
-  v4 = [v2 stringWithFormat:@"com.apple.uarp.saau.%@", v3];
-  v5 = [v4 UTF8String];
+  uuid = [(UARPAccessoryID *)self uuid];
+  v4 = [v2 stringWithFormat:@"com.apple.uarp.saau.%@", uuid];
+  uTF8String = [v4 UTF8String];
 
-  return v5;
+  return uTF8String;
 }
 
-- (void)setPartnerSerialNumbers:(id)a3
+- (void)setPartnerSerialNumbers:(id)numbers
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  partnerSerialNumbers = v4->_partnerSerialNumbers;
-  v4->_partnerSerialNumbers = v5;
+  numbersCopy = numbers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [numbersCopy copy];
+  partnerSerialNumbers = selfCopy->_partnerSerialNumbers;
+  selfCopy->_partnerSerialNumbers = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)partnerSerialNumbers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NSArray *)v2->_partnerSerialNumbers containsObject:v2->_serialNumber])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSArray *)selfCopy->_partnerSerialNumbers containsObject:selfCopy->_serialNumber])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v2->_partnerSerialNumbers;
+    v3 = selfCopy->_partnerSerialNumbers;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v8 = 1;
     }
 
     else
     {
-      v5 = v4;
-      v6 = [(UARPAccessoryID *)self uuid];
-      v7 = [(UARPAccessoryID *)v5 uuid];
+      v5 = equalCopy;
+      uuid = [(UARPAccessoryID *)self uuid];
+      uuid2 = [(UARPAccessoryID *)v5 uuid];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [uuid isEqual:uuid2];
     }
   }
 
@@ -749,8 +749,8 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v2 = [(UARPAccessoryID *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(UARPAccessoryID *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
@@ -760,83 +760,83 @@ LABEL_8:
   v3 = MEMORY[0x277CCAB68];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UARPAccessoryID *)self uuid];
-  v7 = [v3 stringWithFormat:@"<%@: uuid=%@ ", v5, v6];
+  uuid = [(UARPAccessoryID *)self uuid];
+  v7 = [v3 stringWithFormat:@"<%@: uuid=%@ ", v5, uuid];
 
-  v8 = [(UARPAccessoryID *)self manufacturer];
+  manufacturer = [(UARPAccessoryID *)self manufacturer];
 
-  if (v8)
+  if (manufacturer)
   {
-    v9 = [(UARPAccessoryID *)self manufacturer];
-    [v7 appendFormat:@"manufacturer=%@ ", v9];
+    manufacturer2 = [(UARPAccessoryID *)self manufacturer];
+    [v7 appendFormat:@"manufacturer=%@ ", manufacturer2];
   }
 
-  v10 = [(UARPAccessoryID *)self modelName];
+  modelName = [(UARPAccessoryID *)self modelName];
 
-  if (v10)
+  if (modelName)
   {
-    v11 = [(UARPAccessoryID *)self modelName];
-    [v7 appendFormat:@"model=%@ ", v11];
+    modelName2 = [(UARPAccessoryID *)self modelName];
+    [v7 appendFormat:@"model=%@ ", modelName2];
   }
 
-  v12 = [(UARPAccessoryID *)self modelNumber];
+  modelNumber = [(UARPAccessoryID *)self modelNumber];
 
-  if (v12)
+  if (modelNumber)
   {
-    v13 = [(UARPAccessoryID *)self modelNumber];
-    [v7 appendFormat:@"modelNumber=%@ ", v13];
+    modelNumber2 = [(UARPAccessoryID *)self modelNumber];
+    [v7 appendFormat:@"modelNumber=%@ ", modelNumber2];
   }
 
-  v14 = [(UARPAccessoryID *)self friendlyName];
+  friendlyName = [(UARPAccessoryID *)self friendlyName];
 
-  if (v14)
+  if (friendlyName)
   {
-    v15 = [(UARPAccessoryID *)self friendlyName];
-    [v7 appendFormat:@"friendlyName=%@ ", v15];
+    friendlyName2 = [(UARPAccessoryID *)self friendlyName];
+    [v7 appendFormat:@"friendlyName=%@ ", friendlyName2];
   }
 
-  v16 = [(UARPAccessoryID *)self hwFusingType];
+  hwFusingType = [(UARPAccessoryID *)self hwFusingType];
 
-  if (v16)
+  if (hwFusingType)
   {
-    v17 = [(UARPAccessoryID *)self hwFusingType];
-    [v7 appendFormat:@"hwFusing=%@ ", v17];
+    hwFusingType2 = [(UARPAccessoryID *)self hwFusingType];
+    [v7 appendFormat:@"hwFusing=%@ ", hwFusingType2];
   }
 
-  v18 = [(UARPAccessoryID *)self hwRevision];
+  hwRevision = [(UARPAccessoryID *)self hwRevision];
 
-  if (v18)
+  if (hwRevision)
   {
-    v19 = [(UARPAccessoryID *)self hwRevision];
-    [v7 appendFormat:@"hwRevision=%@ ", v19];
+    hwRevision2 = [(UARPAccessoryID *)self hwRevision];
+    [v7 appendFormat:@"hwRevision=%@ ", hwRevision2];
   }
 
-  v20 = [(UARPAccessoryID *)self serialNumber];
-  v21 = [(UARPAccessoryID *)self firmwareVersion];
-  [v7 appendFormat:@"sn=%@ fw=%@ ", v20, v21];
+  serialNumber = [(UARPAccessoryID *)self serialNumber];
+  firmwareVersion = [(UARPAccessoryID *)self firmwareVersion];
+  [v7 appendFormat:@"sn=%@ fw=%@ ", serialNumber, firmwareVersion];
 
-  v22 = [(UARPAccessoryID *)self stagedFirmwareVersion];
+  stagedFirmwareVersion = [(UARPAccessoryID *)self stagedFirmwareVersion];
 
-  if (v22)
+  if (stagedFirmwareVersion)
   {
-    v23 = [(UARPAccessoryID *)self stagedFirmwareVersion];
-    [v7 appendFormat:@"stagedFW=%@ ", v23];
+    stagedFirmwareVersion2 = [(UARPAccessoryID *)self stagedFirmwareVersion];
+    [v7 appendFormat:@"stagedFW=%@ ", stagedFirmwareVersion2];
   }
 
-  v24 = [(UARPAccessoryID *)self productGroup];
+  productGroup = [(UARPAccessoryID *)self productGroup];
 
-  if (v24)
+  if (productGroup)
   {
-    v25 = [(UARPAccessoryID *)self productGroup];
-    [v7 appendFormat:@"pg=%@ ", v25];
+    productGroup2 = [(UARPAccessoryID *)self productGroup];
+    [v7 appendFormat:@"pg=%@ ", productGroup2];
   }
 
-  v26 = [(UARPAccessoryID *)self productNumber];
+  productNumber = [(UARPAccessoryID *)self productNumber];
 
-  if (v26)
+  if (productNumber)
   {
-    v27 = [(UARPAccessoryID *)self productNumber];
-    [v7 appendFormat:@"pn=%@ ", v27];
+    productNumber2 = [(UARPAccessoryID *)self productNumber];
+    [v7 appendFormat:@"pn=%@ ", productNumber2];
   }
 
   [v7 appendString:@">"];

@@ -1,8 +1,8 @@
 @interface ICQLiftUICache
 + (ICQLiftUICache)sharedCache;
-- (void)cacheResponseFromURL:(id)a3;
+- (void)cacheResponseFromURL:(id)l;
 - (void)discardCaches;
-- (void)fetchResponseForURL:(NSURL *)a3 completion:(id)a4;
+- (void)fetchResponseForURL:(NSURL *)l completion:(id)completion;
 @end
 
 @implementation ICQLiftUICache
@@ -24,7 +24,7 @@
   sub_2755EC74C();
 }
 
-- (void)cacheResponseFromURL:(id)a3
+- (void)cacheResponseFromURL:(id)l
 {
   v4 = sub_2755EC58C();
   v5 = *(v4 - 8);
@@ -33,7 +33,7 @@
   v8 = &v9[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   sub_2755EC54C();
   sub_2755EC76C();
-  v10 = self;
+  selfCopy = self;
   v11 = v8;
 
   sub_2755EC74C();
@@ -41,15 +41,15 @@
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)fetchResponseForURL:(NSURL *)a3 completion:(id)a4
+- (void)fetchResponseForURL:(NSURL *)l completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2809F9CE8, &qword_2755F3690);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = l;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2755ECA9C();
@@ -64,7 +64,7 @@
   v15[3] = 0;
   v15[4] = &unk_2755F3C80;
   v15[5] = v14;
-  v16 = a3;
+  lCopy = l;
 
   sub_2755DC10C(0, 0, v10, &unk_2755F3C90, v15);
 }

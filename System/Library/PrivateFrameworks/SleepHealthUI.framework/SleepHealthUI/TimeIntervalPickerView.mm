@@ -1,15 +1,15 @@
 @interface TimeIntervalPickerView
-- (_TtC13SleepHealthUI22TimeIntervalPickerView)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI22TimeIntervalPickerView)initWithFrame:(CGRect)a3;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)numberOfComponentsInPickerView:(id)a3;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (_TtC13SleepHealthUI22TimeIntervalPickerView)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI22TimeIntervalPickerView)initWithFrame:(CGRect)frame;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)numberOfComponentsInPickerView:(id)view;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation TimeIntervalPickerView
 
-- (_TtC13SleepHealthUI22TimeIntervalPickerView)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI22TimeIntervalPickerView)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -19,12 +19,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_269CD9DCC(a3);
+  v4 = sub_269CD9DCC(coder);
 
   return v4;
 }
 
-- (_TtC13SleepHealthUI22TimeIntervalPickerView)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI22TimeIntervalPickerView)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (int64_t)numberOfComponentsInPickerView:(id)a3
+- (int64_t)numberOfComponentsInPickerView:(id)view
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -62,7 +62,7 @@
   }
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -72,12 +72,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = sub_269CDACBC(a4);
+  v5 = sub_269CDACBC(component);
 
   return v5;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -89,10 +89,10 @@
 
   v8 = self + OBJC_IVAR____TtC13SleepHealthUI22TimeIntervalPickerView_configuration;
   v9 = *(&self->super.super._cachedTraitCollection + OBJC_IVAR____TtC13SleepHealthUI22TimeIntervalPickerView_configuration);
-  if (v9 << 63 >> 63 == a5)
+  if (v9 << 63 >> 63 == component)
   {
-    v10 = self;
-    sub_269CDA20C(a4);
+    selfCopy = self;
+    sub_269CDA20C(row);
 
 LABEL_11:
     v16 = sub_269D9A5F0();
@@ -100,21 +100,21 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!(v9 & 1) == a5)
+  if (!(v9 & 1) == component)
   {
-    v11 = self;
+    selfCopy2 = self;
     result = sub_269CD9C48();
     v13 = *(v8 + 2);
-    if ((a4 * v13) >> 64 != (a4 * v13) >> 63)
+    if ((row * v13) >> 64 != (row * v13) >> 63)
     {
       __break(1u);
       return result;
     }
 
     v14 = result;
-    v15 = [result stringFromTimeInterval_];
+    stringFromTimeInterval_ = [result stringFromTimeInterval_];
 
-    if (v15)
+    if (stringFromTimeInterval_)
     {
       sub_269D9A630();
     }
@@ -132,7 +132,7 @@ LABEL_12:
   return v16;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -142,9 +142,9 @@ LABEL_12:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v11 = self;
-  sub_269CDA7D8(a4, a5, 1, v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_269CDA7D8(row, component, 1, v10);
 }
 
 @end

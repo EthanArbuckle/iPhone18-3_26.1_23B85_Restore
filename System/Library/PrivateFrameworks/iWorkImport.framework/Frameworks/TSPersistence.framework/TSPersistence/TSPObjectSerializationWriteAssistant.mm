@@ -1,9 +1,9 @@
 @interface TSPObjectSerializationWriteAssistant
 - (TSPObjectSerializationWriteAssistant)init;
-- (TSPObjectSerializationWriteAssistant)initWithContext:(id)a3 documentUUID:(id)a4 versionUUID:(id)a5;
-- (id)createMetadataForRootObject:(id)a3 readVersion:(unint64_t)a4 dataArchiver:(id)a5 archivedObjects:(id)a6 componentObjectUUIDMap:(id)a7 externalReferences:(id)a8 weakExternalReferences:(id)a9 lazyReferences:(id)a10 dataReferences:(id)a11 error:(id *)a12;
+- (TSPObjectSerializationWriteAssistant)initWithContext:(id)context documentUUID:(id)d versionUUID:(id)iD;
+- (id)createMetadataForRootObject:(id)object readVersion:(unint64_t)version dataArchiver:(id)archiver archivedObjects:(id)objects componentObjectUUIDMap:(id)map externalReferences:(id)references weakExternalReferences:(id)externalReferences lazyReferences:(id)self0 dataReferences:(id)self1 error:(id *)self2;
 - (int64_t)componentWriterMode;
-- (void)encodeObject:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)encodeObject:(id)object options:(id)options completion:(id)completion;
 @end
 
 @implementation TSPObjectSerializationWriteAssistant
@@ -24,33 +24,33 @@
   objc_exception_throw(v13);
 }
 
-- (TSPObjectSerializationWriteAssistant)initWithContext:(id)a3 documentUUID:(id)a4 versionUUID:(id)a5
+- (TSPObjectSerializationWriteAssistant)initWithContext:(id)context documentUUID:(id)d versionUUID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = TSPObjectSerializationWriteAssistant;
   v11 = [(TSPObjectSerializationWriteAssistant *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_context, v8);
-    objc_storeStrong(&v12->_documentUUID, a4);
-    objc_storeStrong(&v12->_versionUUID, a5);
+    objc_storeWeak(&v11->_context, contextCopy);
+    objc_storeStrong(&v12->_documentUUID, d);
+    objc_storeStrong(&v12->_versionUUID, iD);
   }
 
   return v12;
 }
 
-- (void)encodeObject:(id)a3 options:(id)a4 completion:(id)a5
+- (void)encodeObject:(id)object options:(id)options completion:(id)completion
 {
   v76 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v8 = a4;
-  v56 = a5;
+  objectCopy = object;
+  optionsCopy = options;
+  completionCopy = completion;
   objc_opt_class();
-  v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, @"TSPObjecSerialization_SerializeAsPasteboard");
+  v10 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v9, @"TSPObjecSerialization_SerializeAsPasteboard");
   v11 = TSUDynamicCast();
   v14 = objc_msgSend_BOOLValue(v11, v12, v13);
 
@@ -63,7 +63,7 @@
   else
   {
     objc_opt_class();
-    v17 = objc_msgSend_objectForKeyedSubscript_(v8, v16, @"TSPObjecSerialization_WeakAsStrongReferences");
+    v17 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v16, @"TSPObjecSerialization_WeakAsStrongReferences");
     v18 = TSUDynamicCast();
     self->_serializeWeakAsStrongReferences = objc_msgSend_BOOLValue(v18, v19, v20);
 
@@ -84,10 +84,10 @@
   v58 = objc_alloc_init(TSPObjectSerializationEncoder);
   v24 = [TSPEncoderWriteCoordinator alloc];
   v27 = objc_msgSend_initWithEncoder_context_archiverClass_delegate_(v24, v25, v58, WeakRetained, v22, self);
-  if (v8)
+  if (optionsCopy)
   {
     objc_opt_class();
-    v29 = objc_msgSend_objectForKeyedSubscript_(v8, v28, @"TSPObjecSerialization_ObjectProxy");
+    v29 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v28, @"TSPObjecSerialization_ObjectProxy");
     v30 = TSUDynamicCast();
 
     v72[0] = MEMORY[0x277D85DD0];
@@ -103,7 +103,7 @@
     v68 = 0u;
     v69 = 0u;
     objc_opt_class();
-    v34 = objc_msgSend_objectForKeyedSubscript_(v8, v33, @"TSPObjecSerialization_DelayedObjects");
+    v34 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v33, @"TSPObjecSerialization_DelayedObjects");
     v35 = TSUDynamicCast();
 
     v38 = objc_msgSend_countByEnumeratingWithState_objects_count_(v35, v36, &v68, v75, 16);
@@ -135,7 +135,7 @@
     v64 = 0u;
     v65 = 0u;
     objc_opt_class();
-    v42 = objc_msgSend_objectForKeyedSubscript_(v8, v41, @"TSPObjecSerialization_SkipObjects");
+    v42 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v41, @"TSPObjecSerialization_SkipObjects");
     v43 = TSUDynamicCast();
 
     v46 = objc_msgSend_countByEnumeratingWithState_objects_count_(v43, v44, &v64, v74, 16);
@@ -171,13 +171,13 @@
   v59[4] = self;
   v49 = v27;
   v60 = v49;
-  v50 = v8;
+  v50 = optionsCopy;
   v61 = v50;
   v51 = v58;
   v62 = v51;
-  v52 = v56;
+  v52 = completionCopy;
   v63 = v52;
-  objc_msgSend_writeRootObject_completion_(v49, v53, v57, v59);
+  objc_msgSend_writeRootObject_completion_(v49, v53, objectCopy, v59);
 
   v54 = *MEMORY[0x277D85DE8];
 }
@@ -195,35 +195,35 @@
   }
 }
 
-- (id)createMetadataForRootObject:(id)a3 readVersion:(unint64_t)a4 dataArchiver:(id)a5 archivedObjects:(id)a6 componentObjectUUIDMap:(id)a7 externalReferences:(id)a8 weakExternalReferences:(id)a9 lazyReferences:(id)a10 dataReferences:(id)a11 error:(id *)a12
+- (id)createMetadataForRootObject:(id)object readVersion:(unint64_t)version dataArchiver:(id)archiver archivedObjects:(id)objects componentObjectUUIDMap:(id)map externalReferences:(id)references weakExternalReferences:(id)externalReferences lazyReferences:(id)self0 dataReferences:(id)self1 error:(id *)self2
 {
   v95 = *MEMORY[0x277D85DE8];
-  v88 = a3;
-  v84 = a5;
-  v80 = a6;
-  v86 = a7;
-  v18 = a8;
-  v85 = a9;
-  v83 = a10;
-  v87 = a11;
-  v82 = v18;
-  if (objc_msgSend_count(v18, v19, v20))
+  objectCopy = object;
+  archiverCopy = archiver;
+  objectsCopy = objects;
+  mapCopy = map;
+  referencesCopy = references;
+  externalReferencesCopy = externalReferences;
+  lazyReferencesCopy = lazyReferences;
+  dataReferencesCopy = dataReferences;
+  v82 = referencesCopy;
+  if (objc_msgSend_count(referencesCopy, v19, v20))
   {
     v23 = MEMORY[0x277D81150];
-    v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, "[TSPObjectSerializationWriteAssistant createMetadataForRootObject:readVersion:dataArchiver:archivedObjects:componentObjectUUIDMap:externalReferences:weakExternalReferences:lazyReferences:dataReferences:error:]", v80);
+    v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, "[TSPObjectSerializationWriteAssistant createMetadataForRootObject:readVersion:dataArchiver:archivedObjects:componentObjectUUIDMap:externalReferences:weakExternalReferences:lazyReferences:dataReferences:error:]", objectsCopy);
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPObjectSerializationWriteAssistant.mm");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v23, v27, v24, v26, 135, 0, "Strong external references aren't supported.");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29);
   }
 
-  v30 = objc_msgSend_context(v88, v21, v22, v80);
+  v30 = objc_msgSend_context(objectCopy, v21, v22, objectsCopy);
   v31 = [TSPObjectSerializationMetadata alloc];
   v33 = objc_msgSend_initWithContext_(v31, v32, v30);
   v36 = objc_msgSend_message(v33, v34, v35);
   v37 = UnsafePointer();
   UnsafePointer(v37, v36 + 24);
-  UnsafePointer(a4, v36 + 96);
+  UnsafePointer(version, v36 + 96);
   sub_2769C65D4(v93, self->_documentUUID);
   *(v36 + 16) |= 1u;
   v38 = *(v36 + 120);
@@ -270,7 +270,7 @@
     *(v36 + 136) = v44;
   }
 
-  v46 = objc_msgSend_tsp_identifier(v88, v42, v43);
+  v46 = objc_msgSend_tsp_identifier(objectCopy, v42, v43);
   v47 = *(v44 + 16);
   *(v44 + 280) = v46;
   *(v44 + 16) = v47 | 5;
@@ -282,37 +282,37 @@
 
   v49 = google::protobuf::internal::ArenaStringPtr::Mutable((v44 + 264), v48);
   objc_msgSend_tsp_saveToProtobufString_(@"Object", v50, v49);
-  IsNotPersisted_context_error = objc_msgSend_tsp_identifierToObjectUUIDDictionaryFromWeakExternalReferences_updatingComponentInfo_failIfReferenceIsNotPersisted_context_error_(MEMORY[0x277CBEAC0], v51, v85, v44, 0, v30, a12);
+  IsNotPersisted_context_error = objc_msgSend_tsp_identifierToObjectUUIDDictionaryFromWeakExternalReferences_updatingComponentInfo_failIfReferenceIsNotPersisted_context_error_(MEMORY[0x277CBEAC0], v51, externalReferencesCopy, v44, 0, v30, error);
   if (!IsNotPersisted_context_error)
   {
     goto LABEL_35;
   }
 
-  if (objc_msgSend_count(v86, v52, v53))
+  if (objc_msgSend_count(mapCopy, v52, v53))
   {
-    objc_msgSend_saveToMessage_(v86, v55, v44 + 120);
+    objc_msgSend_saveToMessage_(mapCopy, v55, v44 + 120);
   }
 
-  if (!objc_msgSend_count(v87, v55, v56))
+  if (!objc_msgSend_count(dataReferencesCopy, v55, v56))
   {
     goto LABEL_32;
   }
 
-  if (!objc_msgSend_tsp_saveDataReferencesToMessage_dataArchiver_(v87, v57, v36 + 48, v84))
+  if (!objc_msgSend_tsp_saveDataReferencesToMessage_dataArchiver_(dataReferencesCopy, v57, v36 + 48, archiverCopy))
   {
 LABEL_35:
     v77 = 0;
     goto LABEL_36;
   }
 
-  v61 = objc_msgSend_allObjects(v87, v59, v60);
+  v61 = objc_msgSend_allObjects(dataReferencesCopy, v59, v60);
   objc_msgSend_setDataReferences_(v33, v62, v61);
 
   v91 = 0u;
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v63 = v87;
+  v63 = dataReferencesCopy;
   v67 = objc_msgSend_countByEnumeratingWithState_objects_count_(v63, v64, &v89, v94, 16);
   if (v67)
   {

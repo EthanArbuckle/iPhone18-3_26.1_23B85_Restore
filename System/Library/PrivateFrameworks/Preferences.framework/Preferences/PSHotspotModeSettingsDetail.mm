@@ -2,8 +2,8 @@
 + (BOOL)isDiscoverable;
 + (BOOL)isEnabled;
 + (NETRBClient)getNETRBClient;
-+ (void)setDiscoverable:(BOOL)a3;
-+ (void)setEnabled:(BOOL)a3;
++ (void)setDiscoverable:(BOOL)discoverable;
++ (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation PSHotspotModeSettingsDetail
@@ -47,11 +47,11 @@
   return result;
 }
 
-+ (void)setEnabled:(BOOL)a3
++ (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[PSHotspotModeSettingsDetail getNETRBClient];
-  if (v3)
+  if (enabledCopy)
   {
     v5 = 1023;
   }
@@ -90,7 +90,7 @@
   }
 
   wifiManager = v8;
-  PSWiFiManagerClientSetMISDiscoveryState(v8, v3, v3 ^ 1);
+  PSWiFiManagerClientSetMISDiscoveryState(v8, enabledCopy, enabledCopy ^ 1);
 }
 
 + (BOOL)isEnabled
@@ -128,10 +128,10 @@
   return v8 == 1023;
 }
 
-+ (void)setDiscoverable:(BOOL)a3
++ (void)setDiscoverable:(BOOL)discoverable
 {
-  v3 = a3;
-  if (a3 && !+[PSHotspotModeSettingsDetail isEnabled])
+  discoverableCopy = discoverable;
+  if (discoverable && !+[PSHotspotModeSettingsDetail isEnabled])
   {
 
     [PSHotspotModeSettingsDetail setEnabled:1];
@@ -147,7 +147,7 @@
 
     wifiManager = v4;
 
-    PSWiFiManagerClientSetMISDiscoveryState(v4, v3, v3 ^ 1);
+    PSWiFiManagerClientSetMISDiscoveryState(v4, discoverableCopy, discoverableCopy ^ 1);
   }
 }
 

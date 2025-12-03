@@ -11,8 +11,8 @@
     +[AXSiriGlue accessibilityInitializeBundle];
   }
 
-  v2 = [MEMORY[0x29EDBDF40] server];
-  [v2 registerSiriViewServicePID:getpid()];
+  server = [MEMORY[0x29EDBDF40] server];
+  [server registerSiriViewServicePID:getpid()];
 }
 
 void __43__AXSiriGlue_accessibilityInitializeBundle__block_invoke()

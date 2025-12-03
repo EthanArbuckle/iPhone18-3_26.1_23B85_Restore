@@ -3,14 +3,14 @@
 - (TKAdaptiveImage)init;
 - (id)imageTraitForMetrics;
 - (id)traits;
-- (id)url:(id)a3 withTrait:(id)a4;
+- (id)url:(id)url withTrait:(id)trait;
 - (void)adaptiveMetricsDidChange;
 - (void)dealloc;
-- (void)didLoadImage:(id)a3 state:(unint64_t)a4;
-- (void)loadWithTrait:(id)a3;
-- (void)setQuality:(double)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setUrl:(id)a3;
+- (void)didLoadImage:(id)image state:(unint64_t)state;
+- (void)loadWithTrait:(id)trait;
+- (void)setQuality:(double)quality;
+- (void)setState:(unint64_t)state;
+- (void)setUrl:(id)url;
 - (void)start;
 - (void)stop;
 - (void)tmlDispose;
@@ -40,59 +40,59 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(TKAdaptiveImage *)self stop];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = TKAdaptiveImage;
   [(TKAdaptiveResourceObject *)&v2 dealloc];
 }
 
 - (void)tmlDispose
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(TKAdaptiveImage *)self stop];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = TKAdaptiveImage;
   [(TKAdaptiveResourceObject *)&v2 tmlDispose];
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_url != location[0] && ([(NSURL *)v4->_url isEqual:location[0]]& 1) == 0)
+  objc_storeStrong(location, url);
+  if (selfCopy->_url != location[0] && ([(NSURL *)selfCopy->_url isEqual:location[0]]& 1) == 0)
   {
-    objc_storeStrong(&v4->_url, location[0]);
-    if (v4->_state)
+    objc_storeStrong(&selfCopy->_url, location[0]);
+    if (selfCopy->_state)
     {
-      [(TKAdaptiveImage *)v4 stop];
-      [(TKAdaptiveImage *)v4 start];
+      [(TKAdaptiveImage *)selfCopy stop];
+      [(TKAdaptiveImage *)selfCopy start];
     }
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setQuality:(double)a3
+- (void)setQuality:(double)quality
 {
-  v3 = a3;
-  if (a3 > 1.0 || a3 <= 0.0)
+  qualityCopy = quality;
+  if (quality > 1.0 || quality <= 0.0)
   {
-    v3 = 0.850000024;
+    qualityCopy = 0.850000024;
   }
 
-  self->_quality = v3;
+  self->_quality = qualityCopy;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  self->_state = a3;
-  v3 = a3 == 1;
-  if ((a3 == 1) != self->_loading)
+  self->_state = state;
+  v3 = state == 1;
+  if ((state == 1) != self->_loading)
   {
     [(TKAdaptiveImage *)self willChangeValueForKey:?];
     self->_loading = v3;
@@ -102,36 +102,36 @@
 
 - (void)start
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
-  if (self->_state != 1 && v8->_state != 2)
+  if (self->_state != 1 && selfCopy->_state != 2)
   {
-    if (v8->_image)
+    if (selfCopy->_image)
     {
-      [(TKAdaptiveImage *)v8 willChangeValueForKey:?];
-      objc_storeStrong(&v8->_image, 0);
-      [(TKAdaptiveImage *)v8 didChangeValueForKey:@"image"];
+      [(TKAdaptiveImage *)selfCopy willChangeValueForKey:?];
+      objc_storeStrong(&selfCopy->_image, 0);
+      [(TKAdaptiveImage *)selfCopy didChangeValueForKey:@"image"];
     }
 
-    v3 = [(NSURL *)v8->_url scheme];
-    v4 = [(NSString *)v3 length];
-    MEMORY[0x277D82BD8](v3);
+    scheme = [(NSURL *)selfCopy->_url scheme];
+    v4 = [(NSString *)scheme length];
+    MEMORY[0x277D82BD8](scheme);
     if (v4)
     {
-      v8->_supportsTraits = 1;
-      [(TKAdaptiveImage *)v8 setState:1];
-      v2 = [(TKAdaptiveImage *)v8 imageTraitForMetrics];
-      [(TKAdaptiveImage *)v8 loadWithTrait:?];
-      MEMORY[0x277D82BD8](v2);
+      selfCopy->_supportsTraits = 1;
+      [(TKAdaptiveImage *)selfCopy setState:1];
+      imageTraitForMetrics = [(TKAdaptiveImage *)selfCopy imageTraitForMetrics];
+      [(TKAdaptiveImage *)selfCopy loadWithTrait:?];
+      MEMORY[0x277D82BD8](imageTraitForMetrics);
     }
 
     else
     {
-      v8->_supportsTraits = 0;
-      v7[0] = [(NSURL *)v8->_url path];
-      if (![v7[0] length] || ((location = objc_msgSend(MEMORY[0x277D755B8], "imageNamed:", v7[0])) == 0 ? (v5 = 0) : (-[TKAdaptiveImage didLoadImage:state:](v8, "didLoadImage:state:", location, 2), v5 = 1), objc_storeStrong(&location, 0), !v5))
+      selfCopy->_supportsTraits = 0;
+      v7[0] = [(NSURL *)selfCopy->_url path];
+      if (![v7[0] length] || ((location = objc_msgSend(MEMORY[0x277D755B8], "imageNamed:", v7[0])) == 0 ? (v5 = 0) : (-[TKAdaptiveImage didLoadImage:state:](selfCopy, "didLoadImage:state:", location, 2), v5 = 1), objc_storeStrong(&location, 0), !v5))
       {
-        [(TKAdaptiveImage *)v8 didLoadImage:0 state:3];
+        [(TKAdaptiveImage *)selfCopy didLoadImage:0 state:3];
       }
 
       objc_storeStrong(v7, 0);
@@ -157,46 +157,46 @@
   }
 }
 
-- (void)loadWithTrait:(id)a3
+- (void)loadWithTrait:(id)trait
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v20->_supportsTraits && v20->_url)
+  objc_storeStrong(location, trait);
+  if (selfCopy->_supportsTraits && selfCopy->_url)
   {
     if (location[0])
     {
-      v17 = [(TKAdaptiveImage *)v20 url:v20->_url withTrait:location[0]];
-      if (([v17 isEqual:v20->_currentURL] & 1) != 0 && v20->_image)
+      v17 = [(TKAdaptiveImage *)selfCopy url:selfCopy->_url withTrait:location[0]];
+      if (([v17 isEqual:selfCopy->_currentURL] & 1) != 0 && selfCopy->_image)
       {
         v18 = 1;
       }
 
       else
       {
-        [(TKAdaptiveImage *)v20 setState:1];
-        objc_storeStrong(&v20->_currentURL, v17);
-        if (v20->_image && v20->_currentTrait && ![(TKAdaptiveImage_Trait *)v20->_currentTrait compatibleWithTrait:location[0]])
+        [(TKAdaptiveImage *)selfCopy setState:1];
+        objc_storeStrong(&selfCopy->_currentURL, v17);
+        if (selfCopy->_image && selfCopy->_currentTrait && ![(TKAdaptiveImage_Trait *)selfCopy->_currentTrait compatibleWithTrait:location[0]])
         {
-          [(TKAdaptiveImage *)v20 willChangeValueForKey:?];
-          objc_storeStrong(&v20->_image, 0);
-          [(TKAdaptiveImage *)v20 didChangeValueForKey:@"image"];
+          [(TKAdaptiveImage *)selfCopy willChangeValueForKey:?];
+          objc_storeStrong(&selfCopy->_image, 0);
+          [(TKAdaptiveImage *)selfCopy didChangeValueForKey:@"image"];
         }
 
-        objc_storeStrong(&v20->_currentTrait, location[0]);
+        objc_storeStrong(&selfCopy->_currentTrait, location[0]);
         v16 = 0;
-        if ([(NSString *)v20->_priority isEqualToString:@"high"])
+        if ([(NSString *)selfCopy->_priority isEqualToString:@"high"])
         {
           v16 = 1;
         }
 
-        else if ([(NSString *)v20->_priority isEqualToString:@"low"])
+        else if ([(NSString *)selfCopy->_priority isEqualToString:@"low"])
         {
           v16 = -1;
         }
 
-        objc_initWeak(&from, v20);
+        objc_initWeak(&from, selfCopy);
         v7 = +[TKNetwork shared];
         v5 = [MEMORY[0x277CCAD20] requestWithURL:v17];
         v6 = v16;
@@ -208,8 +208,8 @@
         v13 = MEMORY[0x277D82BE0](v17);
         objc_copyWeak(v14, &from);
         v3 = [v7 downloadImage:v5 priority:v6 completion:&v8];
-        task = v20->_task;
-        v20->_task = v3;
+        task = selfCopy->_task;
+        selfCopy->_task = v3;
         MEMORY[0x277D82BD8](task);
         MEMORY[0x277D82BD8](v5);
         MEMORY[0x277D82BD8](v7);
@@ -224,7 +224,7 @@
 
     else
     {
-      objc_storeStrong(&v20->_currentURL, 0);
+      objc_storeStrong(&selfCopy->_currentURL, 0);
       v18 = 1;
     }
   }
@@ -272,24 +272,24 @@ void __33__TKAdaptiveImage_loadWithTrait___block_invoke(uint64_t a1, void *a2, v
   objc_storeStrong(location, 0);
 }
 
-- (void)didLoadImage:(id)a3 state:(unint64_t)a4
+- (void)didLoadImage:(id)image state:(unint64_t)state
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v6->_task, 0);
+  objc_storeStrong(location, image);
+  objc_storeStrong(&selfCopy->_task, 0);
   if (location[0])
   {
-    [(TKAdaptiveImage *)v6 willChangeValueForKey:?];
-    objc_storeStrong(&v6->_image, location[0]);
-    [(TKAdaptiveImage *)v6 didChangeValueForKey:@"image"];
+    [(TKAdaptiveImage *)selfCopy willChangeValueForKey:?];
+    objc_storeStrong(&selfCopy->_image, location[0]);
+    [(TKAdaptiveImage *)selfCopy didChangeValueForKey:@"image"];
   }
 
-  [(TKAdaptiveImage *)v6 setState:a4];
-  if (a4 == 3)
+  [(TKAdaptiveImage *)selfCopy setState:state];
+  if (state == 3)
   {
-    [(TKAdaptiveImage *)v6 emitTMLSignal:@"error" withArguments:0];
+    [(TKAdaptiveImage *)selfCopy emitTMLSignal:@"error" withArguments:0];
   }
 
   objc_storeStrong(location, 0);
@@ -297,12 +297,12 @@ void __33__TKAdaptiveImage_loadWithTrait___block_invoke(uint64_t a1, void *a2, v
 
 - (void)adaptiveMetricsDidChange
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   if (self->_supportsTraits)
   {
-    v2[0] = [(TKAdaptiveImage *)v3 imageTraitForMetrics];
-    [(TKAdaptiveImage *)v3 loadWithTrait:v2[0]];
+    v2[0] = [(TKAdaptiveImage *)selfCopy imageTraitForMetrics];
+    [(TKAdaptiveImage *)selfCopy loadWithTrait:v2[0]];
     objc_storeStrong(v2, 0);
   }
 }
@@ -333,13 +333,13 @@ uint64_t __28__TKAdaptiveImage_zeroTrait__block_invoke()
 
 - (id)traits
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [(TKAdaptiveImage *)v7 tmlChildren];
+  tmlChildren = [(TKAdaptiveImage *)selfCopy tmlChildren];
   v5 = MEMORY[0x277D82BE0](v6[0]);
-  [v3 enumerateObjectsUsingBlock:?];
-  MEMORY[0x277D82BD8](v3);
+  [tmlChildren enumerateObjectsUsingBlock:?];
+  MEMORY[0x277D82BD8](tmlChildren);
   v4 = MEMORY[0x277D82BE0](v6[0]);
   objc_storeStrong(&v5, 0);
   objc_storeStrong(v6, 0);
@@ -363,8 +363,8 @@ void __25__TKAdaptiveImage_traits__block_invoke(id *a1, void *a2)
 
 - (id)imageTraitForMetrics
 {
-  v16 = &v34;
-  v34 = self;
+  v16 = &selfCopy;
+  selfCopy = self;
   v33 = a2;
   v26 = 0;
   v27 = &v26;
@@ -372,11 +372,11 @@ void __25__TKAdaptiveImage_traits__block_invoke(id *a1, void *a2)
   v29 = 48;
   v30 = __Block_byref_object_copy_;
   v31 = __Block_byref_object_dispose_;
-  v32 = [objc_opt_class() zeroTrait];
+  zeroTrait = [objc_opt_class() zeroTrait];
   v17 = +[TKAdaptiveResourceManager traitCollection];
   v25 = v17;
-  v15 = [(TKAdaptiveImage *)v34 traits];
-  v14 = v15;
+  traits = [(TKAdaptiveImage *)selfCopy traits];
+  v14 = traits;
   v13 = &v19;
   v19 = MEMORY[0x277D85DD0];
   v20 = -1073741824;
@@ -390,15 +390,15 @@ void __25__TKAdaptiveImage_traits__block_invoke(id *a1, void *a2)
   MEMORY[0x277D82BD8](v14);
   v10 = v27[5];
   v11 = objc_opt_class();
-  v9 = [v11 zeroTrait];
-  v8 = v9;
+  zeroTrait2 = [v11 zeroTrait];
+  v8 = zeroTrait2;
   MEMORY[0x277D82BD8](v8);
   if (v10 == v8)
   {
     if ((*v16)->_url)
     {
-      v7 = [(NSURL *)(*v16)->_url absoluteString];
-      v6 = v7;
+      absoluteString = [(NSURL *)(*v16)->_url absoluteString];
+      v6 = absoluteString;
       NSLog(&cfstr_AdaptiveimageN.isa, v6);
       MEMORY[0x277D82BD8](v6);
     }
@@ -442,14 +442,14 @@ void __39__TKAdaptiveImage_imageTraitForMetrics__block_invoke(uint64_t a1, void 
   objc_storeStrong(location, 0);
 }
 
-- (id)url:(id)a3 withTrait:(id)a4
+- (id)url:(id)url withTrait:(id)trait
 {
-  v105 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, url);
   v103 = 0;
-  objc_storeStrong(&v103, a4);
+  objc_storeStrong(&v103, trait);
   [v103 size];
   *&v102 = v4;
   *(&v102 + 1) = v5;
@@ -557,10 +557,10 @@ void __39__TKAdaptiveImage_imageTraitForMetrics__block_invoke(uint64_t a1, void 
   v68 = v58;
   if (v58 == 0.0)
   {
-    v56 = [MEMORY[0x277D759A0] mainScreen];
-    [v56 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v68 = v42;
-    MEMORY[0x277D82BD8](v56);
+    MEMORY[0x277D82BD8](mainScreen);
   }
 
   v108 = *&v102 * v68;
@@ -569,21 +569,21 @@ void __39__TKAdaptiveImage_imageTraitForMetrics__block_invoke(uint64_t a1, void 
   *&v67 = v43;
   *(&v67 + 1) = v44;
   v102 = v67;
-  v66 = MEMORY[0x277D82BE0](v105->_backgroundColor);
-  if (v66)
+  whiteColor = MEMORY[0x277D82BE0](selfCopy->_backgroundColor);
+  if (whiteColor)
   {
     v65 = 0.0;
-    [v66 getRed:0 green:0 blue:0 alpha:&v65];
+    [whiteColor getRed:0 green:0 blue:0 alpha:&v65];
     v45 = v65;
     if (v65 == 0.0)
     {
-      objc_storeStrong(&v66, 0);
+      objc_storeStrong(&whiteColor, 0);
     }
   }
 
   else
   {
-    v66 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     MEMORY[0x277D82BD8](0);
   }
 
@@ -596,7 +596,7 @@ void __39__TKAdaptiveImage_imageTraitForMetrics__block_invoke(uint64_t a1, void 
   [v103 quality];
   if (v46 == 0.0)
   {
-    quality = v105->_quality;
+    quality = selfCopy->_quality;
   }
 
   else
@@ -606,15 +606,15 @@ void __39__TKAdaptiveImage_imageTraitForMetrics__block_invoke(uint64_t a1, void 
   }
 
   v63 = quality;
-  v62 = [TKAdaptiveImageAPI getService:v105->_service];
-  if (!v62 || ((v54 = v64, [v103 crop], (v61 = (*(v62 + 2))(v62, v54, v66, *&v102, *(&v102 + 1), v48, v49, v50, v51, v63)) == 0) ? (v60 = 0) : (v106 = MEMORY[0x277D82BE0](v61), v60 = 1), objc_storeStrong(&v61, 0), !v60))
+  v62 = [TKAdaptiveImageAPI getService:selfCopy->_service];
+  if (!v62 || ((v54 = v64, [v103 crop], (v61 = (*(v62 + 2))(v62, v54, whiteColor, *&v102, *(&v102 + 1), v48, v49, v50, v51, v63)) == 0) ? (v60 = 0) : (v106 = MEMORY[0x277D82BE0](v61), v60 = 1), objc_storeStrong(&v61, 0), !v60))
   {
     v106 = MEMORY[0x277D82BE0](v64);
   }
 
   objc_storeStrong(&v62, 0);
   objc_storeStrong(&v64, 0);
-  objc_storeStrong(&v66, 0);
+  objc_storeStrong(&whiteColor, 0);
   objc_storeStrong(&v103, 0);
   objc_storeStrong(location, 0);
   v52 = v106;

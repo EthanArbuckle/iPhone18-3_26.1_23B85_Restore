@@ -1,19 +1,19 @@
 @interface PXMemoryCustomUserAssetsEdit
-- (PXMemoryCustomUserAssetsEdit)initWithAssets:(id)a3;
+- (PXMemoryCustomUserAssetsEdit)initWithAssets:(id)assets;
 @end
 
 @implementation PXMemoryCustomUserAssetsEdit
 
-- (PXMemoryCustomUserAssetsEdit)initWithAssets:(id)a3
+- (PXMemoryCustomUserAssetsEdit)initWithAssets:(id)assets
 {
-  v5 = a3;
+  assetsCopy = assets;
   v9.receiver = self;
   v9.super_class = PXMemoryCustomUserAssetsEdit;
   v6 = [(PXMemoryCustomUserAssetsEdit *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assets, a3);
+    objc_storeStrong(&v6->_assets, assets);
   }
 
   return v7;

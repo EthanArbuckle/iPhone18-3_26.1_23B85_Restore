@@ -4,23 +4,23 @@
 - (BOOL)locationServicesDisabledByRestrictions;
 - (BOOL)shouldEnableLocationSharingSpecifier;
 - (BOOL)shouldShowLocationSharingSpecifier;
-- (FMFSpecifierProvider)initWithAccountManager:(id)a3;
+- (FMFSpecifierProvider)initWithAccountManager:(id)manager;
 - (NSArray)specifiers;
-- (void)locationSharingSpecifierWasTapped:(id)a3;
+- (void)locationSharingSpecifierWasTapped:(id)tapped;
 @end
 
 @implementation FMFSpecifierProvider
 
-- (FMFSpecifierProvider)initWithAccountManager:(id)a3
+- (FMFSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = FMFSpecifierProvider;
   v6 = [(FMFSpecifierProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
   }
 
   return v7;
@@ -76,10 +76,10 @@
   return v13;
 }
 
-- (void)locationSharingSpecifierWasTapped:(id)a3
+- (void)locationSharingSpecifierWasTapped:(id)tapped
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = LogCategory_Daemon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -89,10 +89,10 @@
   }
 
   v6 = objc_alloc_init(FMFLocationSharingViewController);
-  [(FMFLocationSharingViewController *)v6 setSpecifier:v4];
+  [(FMFLocationSharingViewController *)v6 setSpecifier:tappedCopy];
 
-  v7 = [(FMFSpecifierProvider *)self delegate];
-  [v7 specifierProvider:self showViewController:v6];
+  delegate = [(FMFSpecifierProvider *)self delegate];
+  [delegate specifierProvider:self showViewController:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -112,12 +112,12 @@
 
 - (BOOL)shouldShowLocationSharingSpecifier
 {
-  v2 = [(FMFSpecifierProvider *)self accountManager];
-  v3 = [v2 accounts];
-  v4 = [v3 objectForKeyedSubscript:@"com.apple.AppleID.Service.Cloud"];
+  accountManager = [(FMFSpecifierProvider *)self accountManager];
+  accounts = [accountManager accounts];
+  v4 = [accounts objectForKeyedSubscript:@"com.apple.AppleID.Service.Cloud"];
 
-  LOBYTE(v2) = [v4 isProvisionedForDataclass:*MEMORY[0x277CB91A0]];
-  return v2;
+  LOBYTE(accountManager) = [v4 isProvisionedForDataclass:*MEMORY[0x277CB91A0]];
+  return accountManager;
 }
 
 - (BOOL)locationServicesDisabledByRestrictions
@@ -131,9 +131,9 @@
 
 - (BOOL)isAccountInGrayMode
 {
-  v2 = [(FMFSpecifierProvider *)self accountManager];
-  v3 = [v2 accounts];
-  v4 = [v3 objectForKeyedSubscript:@"com.apple.AppleID.Service.Cloud"];
+  accountManager = [(FMFSpecifierProvider *)self accountManager];
+  accounts = [accountManager accounts];
+  v4 = [accounts objectForKeyedSubscript:@"com.apple.AppleID.Service.Cloud"];
 
   if (v4)
   {
@@ -144,8 +144,8 @@
 
     else
     {
-      v5 = [v4 aa_repairState];
-      v6 = [v5 unsignedIntegerValue] == 3;
+      aa_repairState = [v4 aa_repairState];
+      v6 = [aa_repairState unsignedIntegerValue] == 3;
     }
   }
 

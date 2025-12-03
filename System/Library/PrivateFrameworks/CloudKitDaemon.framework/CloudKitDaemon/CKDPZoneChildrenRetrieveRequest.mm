@@ -1,17 +1,17 @@
 @interface CKDPZoneChildrenRetrieveRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)traversalTypeAsString:(int)a3;
-- (int)StringAsTraversalType:(id)a3;
+- (id)traversalTypeAsString:(int)string;
+- (int)StringAsTraversalType:(id)type;
 - (int)traversalType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTraversalType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTraversalType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPZoneChildrenRetrieveRequest
@@ -41,9 +41,9 @@
   }
 }
 
-- (void)setHasTraversalType:(BOOL)a3
+- (void)setHasTraversalType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -56,35 +56,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)traversalTypeAsString:(int)a3
+- (id)traversalTypeAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CDB8[a3];
+    v4 = off_27854CDB8[string];
   }
 
   return v4;
 }
 
-- (int)StringAsTraversalType:(id)a3
+- (int)StringAsTraversalType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"UNKNOWN"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"UNKNOWN"))
   {
     v6 = 0;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"DIRECT_CHILDREN"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"DIRECT_CHILDREN"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"DFS"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"DFS"))
   {
     v6 = 2;
   }
@@ -150,74 +150,74 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_zoneIdentifier)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     traversalType = self->_traversalType;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_continuationToken)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     limit = self->_limit;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   zoneIdentifier = self->_zoneIdentifier;
-  v8 = v4;
+  v8 = toCopy;
   if (zoneIdentifier)
   {
-    objc_msgSend_setZoneIdentifier_(v4, v5, zoneIdentifier);
-    v4 = v8;
+    objc_msgSend_setZoneIdentifier_(toCopy, v5, zoneIdentifier);
+    toCopy = v8;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 5) = self->_traversalType;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 5) = self->_traversalType;
+    *(toCopy + 32) |= 2u;
   }
 
   continuationToken = self->_continuationToken;
   if (continuationToken)
   {
     objc_msgSend_setContinuationToken_(v8, v5, continuationToken);
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_limit;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 4) = self->_limit;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, zone);
   v13 = *(v10 + 24);
   *(v10 + 24) = v12;
 
@@ -227,7 +227,7 @@
     *(v10 + 32) |= 2u;
   }
 
-  v15 = objc_msgSend_copyWithZone_(self->_continuationToken, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_continuationToken, v14, zone);
   v16 = *(v10 + 8);
   *(v10 + 8) = v15;
 
@@ -240,17 +240,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_16;
   }
 
   zoneIdentifier = self->_zoneIdentifier;
-  v9 = v4[3];
+  v9 = equalCopy[3];
   if (zoneIdentifier | v9)
   {
     if (!objc_msgSend_isEqual_(zoneIdentifier, v7, v9))
@@ -260,22 +260,22 @@
   }
 
   has = self->_has;
-  v11 = *(v4 + 32);
+  v11 = *(equalCopy + 32);
   if ((has & 2) != 0)
   {
-    if ((v4[4] & 2) == 0 || self->_traversalType != *(v4 + 5))
+    if ((equalCopy[4] & 2) == 0 || self->_traversalType != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((v4[4] & 2) != 0)
+  else if ((equalCopy[4] & 2) != 0)
   {
     goto LABEL_16;
   }
 
   continuationToken = self->_continuationToken;
-  v13 = v4[1];
+  v13 = equalCopy[1];
   if (continuationToken | v13)
   {
     if (!objc_msgSend_isEqual_(continuationToken, v7, v13))
@@ -286,13 +286,13 @@ LABEL_16:
     }
 
     has = self->_has;
-    v11 = *(v4 + 32);
+    v11 = *(equalCopy + 32);
   }
 
   v14 = (v11 & 1) == 0;
   if (has)
   {
-    if ((v11 & 1) == 0 || self->_limit != *(v4 + 4))
+    if ((v11 & 1) == 0 || self->_limit != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
@@ -332,12 +332,12 @@ LABEL_17:
   return v7 ^ v6 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   zoneIdentifier = self->_zoneIdentifier;
-  v6 = *(v4 + 3);
-  v8 = v4;
+  v6 = *(fromCopy + 3);
+  v8 = fromCopy;
   if (zoneIdentifier)
   {
     if (!v6)
@@ -345,7 +345,7 @@ LABEL_17:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(zoneIdentifier, v4, v6);
+    objc_msgSend_mergeFrom_(zoneIdentifier, fromCopy, v6);
   }
 
   else
@@ -355,27 +355,27 @@ LABEL_17:
       goto LABEL_7;
     }
 
-    objc_msgSend_setZoneIdentifier_(self, v4, v6);
+    objc_msgSend_setZoneIdentifier_(self, fromCopy, v6);
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  if ((*(v4 + 32) & 2) != 0)
+  if ((*(fromCopy + 32) & 2) != 0)
   {
-    self->_traversalType = *(v4 + 5);
+    self->_traversalType = *(fromCopy + 5);
     *&self->_has |= 2u;
   }
 
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   if (v7)
   {
-    objc_msgSend_setContinuationToken_(self, v4, v7);
-    v4 = v8;
+    objc_msgSend_setContinuationToken_(self, fromCopy, v7);
+    fromCopy = v8;
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_limit = *(v4 + 4);
+    self->_limit = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

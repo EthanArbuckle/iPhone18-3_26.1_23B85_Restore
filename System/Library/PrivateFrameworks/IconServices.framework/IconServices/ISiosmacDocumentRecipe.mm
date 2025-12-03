@@ -1,6 +1,6 @@
 @interface ISiosmacDocumentRecipe
 - (id)hintedBadgeRect;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISiosmacDocumentRecipe
@@ -28,11 +28,11 @@ uint64_t __41__ISiosmacDocumentRecipe_hintedBadgeRect__block_invoke()
   return [v2 addHintedRect:112.0 forSize:{112.0, 288.0, 288.0, 512.0, 512.0}];
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ISiosmacDocumentRecipe *)self hintedBadgeRect:a3.width];
+  height = size.height;
+  width = size.width;
+  v6 = [(ISiosmacDocumentRecipe *)self hintedBadgeRect:size.width];
   [v6 hintedRectForSize:{width, height}];
   v8 = v7;
   v10 = v9;
@@ -46,8 +46,8 @@ uint64_t __41__ISiosmacDocumentRecipe_hintedBadgeRect__block_invoke()
   [(ISLayer *)v16 setName:@"Background layer"];
   [(ISLayer *)v16 setSize:width, height];
   v17 = MEMORY[0x1E69A8990];
-  v18 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-  v19 = [v17 imageBagWithResourcesNamed:@"GenericBackground" fromBundle:v18];
+  iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+  v19 = [v17 imageBagWithResourcesNamed:@"GenericBackground" fromBundle:iconsetResourceBundle];
 
   [(ISContentLayer *)v16 setContent:v19];
   [(ISLayer *)v15 addSublayer:v16];
@@ -78,8 +78,8 @@ uint64_t __41__ISiosmacDocumentRecipe_hintedBadgeRect__block_invoke()
   [(ISLayer *)v26 setSize:width, height];
   [(ISLayer *)v26 setName:@"mask layer"];
   v27 = MEMORY[0x1E69A8990];
-  v28 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-  v29 = [v27 imageBagWithResourcesNamed:@"GenericFullDocumentMask" fromBundle:v28];
+  iconsetResourceBundle2 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+  v29 = [v27 imageBagWithResourcesNamed:@"GenericFullDocumentMask" fromBundle:iconsetResourceBundle2];
 
   if (v29)
   {
@@ -92,8 +92,8 @@ uint64_t __41__ISiosmacDocumentRecipe_hintedBadgeRect__block_invoke()
   [(ISLayer *)v30 setName:@"Forground layer"];
   [(ISLayer *)v30 setSize:width, height];
   v31 = MEMORY[0x1E69A8990];
-  v32 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-  v33 = [v31 imageBagWithResourcesNamed:@"GenericForeground" fromBundle:v32];
+  iconsetResourceBundle3 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+  v33 = [v31 imageBagWithResourcesNamed:@"GenericForeground" fromBundle:iconsetResourceBundle3];
 
   [(ISContentLayer *)v30 setContent:v33];
   [(ISLayer *)v15 addSublayer:v30];

@@ -1,35 +1,35 @@
 @interface AXMTFaceKitFaceTracker
 + (NSDictionary)_faceKitCreationOptions;
-+ (__n128)_poseRotationMatrixFromArray:(void *)a3;
-+ (__n128)_poseTranslationMatrixFromArray:(void *)a3;
++ (__n128)_poseRotationMatrixFromArray:(void *)array;
++ (__n128)_poseTranslationMatrixFromArray:(void *)array;
 + (id)_backupIntrinsicsMatrixForiOS;
-+ (id)_faceKitProcessOptionsForSampleBuffer:(opaqueCMSampleBuffer *)a3 detectedFaceInfo:(id)a4 callback:(id)a5;
-+ (id)_intrinsicsArrayFromMatrix:(__n128)a3;
-- ($AA6A45B2DFCED8527C3A0E9A46B0D48F)_updateAXExpressions:(SEL)a3 withFaceKitLiteExpresion:(id *)a4 faceKitLiteExpressionActivation:(id)a5;
-- (AXMTFaceKitFaceTracker)initWithFaceKitPipeline:(BOOL)a3;
++ (id)_faceKitProcessOptionsForSampleBuffer:(opaqueCMSampleBuffer *)buffer detectedFaceInfo:(id)info callback:(id)callback;
++ (id)_intrinsicsArrayFromMatrix:(__n128)matrix;
+- ($AA6A45B2DFCED8527C3A0E9A46B0D48F)_updateAXExpressions:(SEL)expressions withFaceKitLiteExpresion:(id *)expresion faceKitLiteExpressionActivation:(id)activation;
+- (AXMTFaceKitFaceTracker)initWithFaceKitPipeline:(BOOL)pipeline;
 - (AXMTFaceKitFaceTrackerDelegate)delegate;
-- (BOOL)_videoFrameisValidForProcessing:(opaqueCMSampleBuffer *)a3;
-- (id)_generateFaceKitResultForLiteOutput:(id)a3 imageProcessedInExclaves:(BOOL)a4;
-- (id)_generateFaceKitResultForVanillaOutput:(id)a3 withSampleBuffer:(opaqueCMSampleBuffer *)a4;
-- (id)_handleFaceBlendShapes:(id)a3;
-- (unint64_t)_axFacialExpressionActivationForFaceKitLiteExpresionActivation:(unsigned __int8)a3;
-- (void)_processFaceKitOnVideoFrame:(opaqueCMSampleBuffer *)a3;
-- (void)_processFaceKitResults:(__CFDictionary *)a3 withSampleBuffer:(opaqueCMSampleBuffer *)a4;
-- (void)_updateFaceInfoIfNeededWithMetadata:(id)a3;
+- (BOOL)_videoFrameisValidForProcessing:(opaqueCMSampleBuffer *)processing;
+- (id)_generateFaceKitResultForLiteOutput:(id)output imageProcessedInExclaves:(BOOL)exclaves;
+- (id)_generateFaceKitResultForVanillaOutput:(id)output withSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (id)_handleFaceBlendShapes:(id)shapes;
+- (unint64_t)_axFacialExpressionActivationForFaceKitLiteExpresionActivation:(unsigned __int8)activation;
+- (void)_processFaceKitOnVideoFrame:(opaqueCMSampleBuffer *)frame;
+- (void)_processFaceKitResults:(__CFDictionary *)results withSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_updateFaceInfoIfNeededWithMetadata:(id)metadata;
 - (void)dealloc;
-- (void)didUpdateVideoResolution:(CGSize)a3;
-- (void)failedToTrackFaceWithError:(id)a3;
-- (void)processTrackedFacesMetadata:(id)a3;
-- (void)processVideoFrame:(opaqueCMSampleBuffer *)a3;
-- (void)processVideoFrame:(opaqueCMSampleBuffer *)a3 metadata:(id)a4;
+- (void)didUpdateVideoResolution:(CGSize)resolution;
+- (void)failedToTrackFaceWithError:(id)error;
+- (void)processTrackedFacesMetadata:(id)metadata;
+- (void)processVideoFrame:(opaqueCMSampleBuffer *)frame;
+- (void)processVideoFrame:(opaqueCMSampleBuffer *)frame metadata:(id)metadata;
 - (void)reset;
 @end
 
 @implementation AXMTFaceKitFaceTracker
 
-- (AXMTFaceKitFaceTracker)initWithFaceKitPipeline:(BOOL)a3
+- (AXMTFaceKitFaceTracker)initWithFaceKitPipeline:(BOOL)pipeline
 {
-  v3 = a3;
+  pipelineCopy = pipeline;
   v25.receiver = self;
   v25.super_class = AXMTFaceKitFaceTracker;
   v4 = [(AXMTFaceKitFaceTracker *)&v25 init];
@@ -38,10 +38,10 @@
     goto LABEL_30;
   }
 
-  if (v3)
+  if (pipelineCopy)
   {
     v24 = 0;
-    v5 = [objc_opt_class() _faceKitCreationOptions];
+    _faceKitCreationOptions = [objc_opt_class() _faceKitCreationOptions];
     v31 = 0;
     v32 = &v31;
     v33 = 0x2020000000;
@@ -71,7 +71,7 @@ LABEL_33:
     }
 
     v9 = kCFAllocatorDefault;
-    v10 = v6(kCFAllocatorDefault, v5, &v24);
+    v10 = v6(kCFAllocatorDefault, _faceKitCreationOptions, &v24);
 
     v11 = v24;
     v12 = AXSSLogForCategory();
@@ -195,19 +195,19 @@ LABEL_31:
   [(AXMTFaceKitFaceTracker *)self set_initialFaceInfo:0];
 }
 
-- (void)processVideoFrame:(opaqueCMSampleBuffer *)a3
+- (void)processVideoFrame:(opaqueCMSampleBuffer *)frame
 {
   if ([(AXMTFaceKitFaceTracker *)self _videoFrameisValidForProcessing:?])
   {
 
-    [(AXMTFaceKitFaceTracker *)self _processFaceKitOnVideoFrame:a3];
+    [(AXMTFaceKitFaceTracker *)self _processFaceKitOnVideoFrame:frame];
   }
 }
 
-- (void)processVideoFrame:(opaqueCMSampleBuffer *)a3 metadata:(id)a4
+- (void)processVideoFrame:(opaqueCMSampleBuffer *)frame metadata:(id)metadata
 {
-  v6 = a4;
-  if ([(AXMTFaceKitFaceTracker *)self _videoFrameisValidForProcessing:a3])
+  metadataCopy = metadata;
+  if ([(AXMTFaceKitFaceTracker *)self _videoFrameisValidForProcessing:frame])
   {
     v8 = 0;
     v9 = &v8;
@@ -220,20 +220,20 @@ LABEL_31:
     v7[2] = sub_10002205C;
     v7[3] = &unk_100049158;
     v7[4] = &v8;
-    [v6 enumerateObjectsUsingBlock:v7];
+    [metadataCopy enumerateObjectsUsingBlock:v7];
     if (v9[5])
     {
       [(AXMTFaceKitFaceTracker *)self _updateFaceInfoIfNeededWithMetadata:?];
-      [(AXMTFaceKitFaceTracker *)self _processFaceKitOnVideoFrame:a3];
+      [(AXMTFaceKitFaceTracker *)self _processFaceKitOnVideoFrame:frame];
     }
 
     _Block_object_dispose(&v8, 8);
   }
 }
 
-- (void)processTrackedFacesMetadata:(id)a3
+- (void)processTrackedFacesMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -245,40 +245,40 @@ LABEL_31:
   v7[2] = sub_100022218;
   v7[3] = &unk_100049158;
   v7[4] = &v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [metadataCopy enumerateObjectsUsingBlock:v7];
   v5 = v9[5];
   if (v5)
   {
-    v6 = [v5 payload];
-    [(AXMTFaceKitFaceTracker *)self _processFaceKitResults:v6 withSampleBuffer:0];
+    payload = [v5 payload];
+    [(AXMTFaceKitFaceTracker *)self _processFaceKitResults:payload withSampleBuffer:0];
   }
 
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)failedToTrackFaceWithError:(id)a3
+- (void)failedToTrackFaceWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(AXMTFaceKitFaceTracker *)self delegate];
+  errorCopy = error;
+  delegate = [(AXMTFaceKitFaceTracker *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [[AXMTFaceKitResult alloc] initWithError:v8];
-    v7 = [(AXMTFaceKitFaceTracker *)self delegate];
-    [v7 faceKitFaceTracker:self updatedResult:v6];
+    v6 = [[AXMTFaceKitResult alloc] initWithError:errorCopy];
+    delegate2 = [(AXMTFaceKitFaceTracker *)self delegate];
+    [delegate2 faceKitFaceTracker:self updatedResult:v6];
   }
 }
 
-- (void)didUpdateVideoResolution:(CGSize)a3
+- (void)didUpdateVideoResolution:(CGSize)resolution
 {
-  v4 = [NSValue valueWithSize:a3.width, a3.height];
+  v4 = [NSValue valueWithSize:resolution.width, resolution.height];
   [(AXMTFaceKitFaceTracker *)self set_referenceDimensionsValue:v4];
 }
 
-- (BOOL)_videoFrameisValidForProcessing:(opaqueCMSampleBuffer *)a3
+- (BOOL)_videoFrameisValidForProcessing:(opaqueCMSampleBuffer *)processing
 {
-  if (a3 && [(AXMTFaceKitFaceTracker *)self _faceKitRef])
+  if (processing && [(AXMTFaceKitFaceTracker *)self _faceKitRef])
   {
     return 1;
   }
@@ -286,26 +286,26 @@ LABEL_31:
   v6 = AXSSLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_100028F24(a3, self, v6);
+    sub_100028F24(processing, self, v6);
   }
 
   return 0;
 }
 
-- (void)_processFaceKitOnVideoFrame:(opaqueCMSampleBuffer *)a3
+- (void)_processFaceKitOnVideoFrame:(opaqueCMSampleBuffer *)frame
 {
   v5 = dispatch_semaphore_create(0);
   v6 = objc_opt_class();
-  v7 = [(AXMTFaceKitFaceTracker *)self _initialFaceInfo];
+  _initialFaceInfo = [(AXMTFaceKitFaceTracker *)self _initialFaceInfo];
   v18 = _NSConcreteStackBlock;
   v19 = 3221225472;
   v20 = sub_100022658;
   v21 = &unk_100049180;
-  v22 = self;
-  v24 = a3;
+  selfCopy = self;
+  frameCopy = frame;
   v8 = v5;
   v23 = v8;
-  v9 = [v6 _faceKitProcessOptionsForSampleBuffer:a3 detectedFaceInfo:v7 callback:&v18];
+  v9 = [v6 _faceKitProcessOptionsForSampleBuffer:frame detectedFaceInfo:_initialFaceInfo callback:&v18];
 
   v10 = [(AXMTFaceKitFaceTracker *)self _faceKitRef:v18];
   v30 = 0;
@@ -342,7 +342,7 @@ LABEL_31:
     v16 = AXSSLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      sub_100028FD4(a3, v15, v16);
+      sub_100028FD4(frame, v15, v16);
     }
   }
 
@@ -352,30 +352,30 @@ LABEL_31:
   }
 }
 
-- (id)_generateFaceKitResultForVanillaOutput:(id)a3 withSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (id)_generateFaceKitResultForVanillaOutput:(id)output withSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v4 = a3;
+  outputCopy = output;
   if (qword_100054608 != -1)
   {
     sub_10002905C();
   }
 
-  v35 = v4;
-  v36 = [v4 objectForKeyedSubscript:sub_100022FAC()];
+  v35 = outputCopy;
+  v36 = [outputCopy objectForKeyedSubscript:sub_100022FAC()];
   if (![v36 count])
   {
     v25 = 0;
     goto LABEL_33;
   }
 
-  v34 = [v36 firstObject];
-  v5 = v34;
-  if (v34)
+  firstObject = [v36 firstObject];
+  v5 = firstObject;
+  if (firstObject)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v34 objectForKeyedSubscript:sub_1000230A0()];
+      v6 = [firstObject objectForKeyedSubscript:sub_1000230A0()];
       v46 = 0;
       v47 = &v46;
       v48 = 0x2020000000;
@@ -405,15 +405,15 @@ LABEL_31:
 LABEL_29:
           v26 = [AXMTFaceKitXNUResult alloc];
           v27 = qword_1000545F8;
-          v28 = [(AXMTFaceKitFaceTracker *)self _referenceDimensionsValue];
-          v25 = [(AXMTFaceKitXNUResult *)v26 initWithFaceKitTrackedFaceDictionary:v34 semanticsDictionary:v27 sampleBuffer:a4 expressions:v24 referenceDimensionsValue:v28];
+          _referenceDimensionsValue = [(AXMTFaceKitFaceTracker *)self _referenceDimensionsValue];
+          v25 = [(AXMTFaceKitXNUResult *)v26 initWithFaceKitTrackedFaceDictionary:firstObject semanticsDictionary:v27 sampleBuffer:buffer expressions:v24 referenceDimensionsValue:_referenceDimensionsValue];
 
           if (v25)
           {
             v29 = v25;
           }
 
-          v5 = v34;
+          v5 = firstObject;
           goto LABEL_32;
         }
 
@@ -462,10 +462,10 @@ LABEL_29:
 
                   v17 = *(*(&v37 + 1) + 8 * i);
                   v18 = [qword_100054600 objectForKeyedSubscript:{v17, v31}];
-                  v19 = [v18 unsignedIntValue];
+                  unsignedIntValue = [v18 unsignedIntValue];
 
                   v20 = v11;
-                  LODWORD(v21) = *([v11 bytes] + v19);
+                  LODWORD(v21) = *([v11 bytes] + unsignedIntValue);
                   v22 = [NSNumber numberWithFloat:v21];
                   [v12 setObject:v22 forKey:v17];
                 }
@@ -507,11 +507,11 @@ LABEL_33:
   return v25;
 }
 
-- (id)_generateFaceKitResultForLiteOutput:(id)a3 imageProcessedInExclaves:(BOOL)a4
+- (id)_generateFaceKitResultForLiteOutput:(id)output imageProcessedInExclaves:(BOOL)exclaves
 {
-  v43 = a4;
-  v46 = a3;
-  v47 = [v46 objectForKeyedSubscript:sub_1000238F4()];
+  exclavesCopy = exclaves;
+  outputCopy = output;
+  v47 = [outputCopy objectForKeyedSubscript:sub_1000238F4()];
   *&v53 = 0;
   *(&v53 + 1) = &v53;
   *&v54 = 0x2020000000;
@@ -537,7 +537,7 @@ LABEL_33:
     goto LABEL_35;
   }
 
-  v8 = [v46 objectForKeyedSubscript:*v5];
+  v8 = [outputCopy objectForKeyedSubscript:*v5];
   *&v53 = 0;
   *(&v53 + 1) = &v53;
   *&v54 = 0x2020000000;
@@ -566,8 +566,8 @@ LABEL_33:
   v12 = [v8 objectForKeyedSubscript:*v9];
 
   v45 = [v47 objectForKeyedSubscript:sub_100022FAC()];
-  v13 = [v45 firstObject];
-  v44 = [v13 objectForKeyedSubscript:sub_1000230A0()];
+  firstObject = [v45 firstObject];
+  v44 = [firstObject objectForKeyedSubscript:sub_1000230A0()];
   if (v12 && v44)
   {
     *&v53 = 0;
@@ -619,13 +619,13 @@ LABEL_33:
 
             v22 = *(*(&v58 + 1) + 8 * i);
             v23 = [v18 objectForKeyedSubscript:v22];
-            v24 = [v23 charValue];
+            charValue = [v23 charValue];
             v50 = v64;
             v51 = v65;
             v52 = v66;
             v48 = v62;
             v49 = v63;
-            [(AXMTFaceKitFaceTracker *)self _updateAXExpressions:&v48 withFaceKitLiteExpresion:v22 faceKitLiteExpressionActivation:v24];
+            [(AXMTFaceKitFaceTracker *)self _updateAXExpressions:&v48 withFaceKitLiteExpresion:v22 faceKitLiteExpressionActivation:charValue];
             v64 = v55;
             v65 = v56;
             v66 = v57;
@@ -695,13 +695,13 @@ LABEL_33:
             [v34 doubleValue];
             v38 = [NSValue valueWithPoint:v36, v37];
             v39 = [AXMTFaceKitExclavesResult alloc];
-            v40 = [(AXMTFaceKitFaceTracker *)self _referenceDimensionsValue];
+            _referenceDimensionsValue = [(AXMTFaceKitFaceTracker *)self _referenceDimensionsValue];
             v55 = v64;
             v56 = v65;
             v57 = v66;
             v53 = v62;
             v54 = v63;
-            v41 = [(AXMTFaceKitExclavesResult *)v39 initWithFaceKitLiteSharedDataDictionary:v47 expressions:&v53 noseBaseCenter:v38 referenceDimensionsValue:v40 imageProcessedInExclaves:v43];
+            v41 = [(AXMTFaceKitExclavesResult *)v39 initWithFaceKitLiteSharedDataDictionary:v47 expressions:&v53 noseBaseCenter:v38 referenceDimensionsValue:_referenceDimensionsValue imageProcessedInExclaves:exclavesCopy];
           }
 
           else
@@ -735,10 +735,10 @@ LABEL_32:
   return v41;
 }
 
-- ($AA6A45B2DFCED8527C3A0E9A46B0D48F)_updateAXExpressions:(SEL)a3 withFaceKitLiteExpresion:(id *)a4 faceKitLiteExpressionActivation:(id)a5
+- ($AA6A45B2DFCED8527C3A0E9A46B0D48F)_updateAXExpressions:(SEL)expressions withFaceKitLiteExpresion:(id *)expresion faceKitLiteExpressionActivation:(id)activation
 {
   v6 = a6;
-  v10 = a5;
+  activationCopy = activation;
   v11 = [(AXMTFaceKitFaceTracker *)self _axFacialExpressionActivationForFaceKitLiteExpresionActivation:v6];
   v30 = 0;
   v31 = &v30;
@@ -768,8 +768,8 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v14 = [v10 isEqualToString:*v12];
-  p_var1 = a4;
+  v14 = [activationCopy isEqualToString:*v12];
+  p_var1 = expresion;
   if (v14)
   {
 LABEL_36:
@@ -796,9 +796,9 @@ LABEL_36:
     goto LABEL_39;
   }
 
-  if ([v10 isEqualToString:*v16])
+  if ([activationCopy isEqualToString:*v16])
   {
-    p_var1 = &a4->var1;
+    p_var1 = &expresion->var1;
     goto LABEL_36;
   }
 
@@ -821,9 +821,9 @@ LABEL_36:
     goto LABEL_40;
   }
 
-  if ([v10 isEqualToString:*v18])
+  if ([activationCopy isEqualToString:*v18])
   {
-    p_var1 = &a4->var2;
+    p_var1 = &expresion->var2;
     goto LABEL_36;
   }
 
@@ -846,9 +846,9 @@ LABEL_36:
     goto LABEL_41;
   }
 
-  if ([v10 isEqualToString:*v20])
+  if ([activationCopy isEqualToString:*v20])
   {
-    p_var1 = &a4->var3;
+    p_var1 = &expresion->var3;
     goto LABEL_36;
   }
 
@@ -871,9 +871,9 @@ LABEL_36:
     goto LABEL_42;
   }
 
-  if ([v10 isEqualToString:*v22])
+  if ([activationCopy isEqualToString:*v22])
   {
-    p_var1 = &a4->var4;
+    p_var1 = &expresion->var4;
     goto LABEL_36;
   }
 
@@ -899,47 +899,47 @@ LABEL_43:
     _Unwind_Resume(v29);
   }
 
-  if ([v10 isEqualToString:*v24])
+  if ([activationCopy isEqualToString:*v24])
   {
-    p_var1 = &a4->var5;
+    p_var1 = &expresion->var5;
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:sub_100023F84()])
+  if ([activationCopy isEqualToString:sub_100023F84()])
   {
-    p_var1 = &a4->var6;
+    p_var1 = &expresion->var6;
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:sub_100024078()])
+  if ([activationCopy isEqualToString:sub_100024078()])
   {
-    p_var1 = &a4->var8;
+    p_var1 = &expresion->var8;
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:sub_10002416C()])
+  if ([activationCopy isEqualToString:sub_10002416C()])
   {
-    p_var1 = &a4->var7;
+    p_var1 = &expresion->var7;
     goto LABEL_36;
   }
 
 LABEL_37:
-  v26 = *&a4->var6;
-  *&retstr->var4 = *&a4->var4;
+  v26 = *&expresion->var6;
+  *&retstr->var4 = *&expresion->var4;
   *&retstr->var6 = v26;
-  retstr->var8 = a4->var8;
-  v27 = *&a4->var2;
-  *&retstr->var0 = *&a4->var0;
+  retstr->var8 = expresion->var8;
+  v27 = *&expresion->var2;
+  *&retstr->var0 = *&expresion->var0;
   *&retstr->var2 = v27;
 
   return result;
 }
 
-- (unint64_t)_axFacialExpressionActivationForFaceKitLiteExpresionActivation:(unsigned __int8)a3
+- (unint64_t)_axFacialExpressionActivationForFaceKitLiteExpresionActivation:(unsigned __int8)activation
 {
-  if ((a3 - 1) < 3)
+  if ((activation - 1) < 3)
   {
-    return (a3 - 1) + 1;
+    return (activation - 1) + 1;
   }
 
   else
@@ -948,12 +948,12 @@ LABEL_37:
   }
 }
 
-- (void)_processFaceKitResults:(__CFDictionary *)a3 withSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (void)_processFaceKitResults:(__CFDictionary *)results withSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v6 = a3;
-  v7 = [(__CFDictionary *)v6 objectForKeyedSubscript:sub_1000238F4()];
+  resultsCopy = results;
+  v7 = [(__CFDictionary *)resultsCopy objectForKeyedSubscript:sub_1000238F4()];
   v8 = v7;
-  if (a4)
+  if (buffer)
   {
     v9 = 1;
   }
@@ -969,7 +969,7 @@ LABEL_37:
     goto LABEL_18;
   }
 
-  v11 = [(AXMTFaceKitFaceTracker *)self _faceKitLiteFilterRef];
+  _faceKitLiteFilterRef = [(AXMTFaceKitFaceTracker *)self _faceKitLiteFilterRef];
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -997,10 +997,10 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v12(v11, v6);
+  v12(_faceKitLiteFilterRef, resultsCopy);
   v37 = 0;
   v36 = 0;
-  v14 = [(AXMTFaceKitFaceTracker *)self _faceKitLiteFilterRef];
+  _faceKitLiteFilterRef2 = [(AXMTFaceKitFaceTracker *)self _faceKitLiteFilterRef];
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -1025,7 +1025,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v17 = v15(v14);
+  v17 = v15(_faceKitLiteFilterRef2);
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -1056,18 +1056,18 @@ LABEL_33:
   v18(v17, &v37, &v36);
   v20 = v37;
 
-  v6 = v20;
+  resultsCopy = v20;
 LABEL_18:
-  v21 = [(__CFDictionary *)v6 objectForKeyedSubscript:sub_1000238F4()];
+  v21 = [(__CFDictionary *)resultsCopy objectForKeyedSubscript:sub_1000238F4()];
 
   if (v21)
   {
-    [(AXMTFaceKitFaceTracker *)self _generateFaceKitResultForLiteOutput:v6 imageProcessedInExclaves:v10];
+    [(AXMTFaceKitFaceTracker *)self _generateFaceKitResultForLiteOutput:resultsCopy imageProcessedInExclaves:v10];
   }
 
   else
   {
-    [(AXMTFaceKitFaceTracker *)self _generateFaceKitResultForVanillaOutput:v6 withSampleBuffer:a4];
+    [(AXMTFaceKitFaceTracker *)self _generateFaceKitResultForVanillaOutput:resultsCopy withSampleBuffer:buffer];
   }
   v22 = ;
   if (!v22)
@@ -1079,13 +1079,13 @@ LABEL_18:
     }
 
     [(AXMTFaceKitFaceTracker *)self set_initialFaceInfo:0];
-    v24 = [(AXMTFaceKitFaceTracker *)self lastResult];
-    v25 = [v24 error];
-    if (v25)
+    lastResult = [(AXMTFaceKitFaceTracker *)self lastResult];
+    error = [lastResult error];
+    if (error)
     {
-      v26 = [(AXMTFaceKitFaceTracker *)self lastResult];
-      v27 = [v26 error];
-      v28 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v27 code]);
+      lastResult2 = [(AXMTFaceKitFaceTracker *)self lastResult];
+      error2 = [lastResult2 error];
+      v28 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [error2 code]);
     }
 
     else
@@ -1093,34 +1093,34 @@ LABEL_18:
       v28 = 0;
     }
 
-    v29 = [AXMTUtilities errorCodeForFaceKitPayload:v6 lastReportedFailureNumber:v28];
+    v29 = [AXMTUtilities errorCodeForFaceKitPayload:resultsCopy lastReportedFailureNumber:v28];
     v30 = [NSError alloc];
     v31 = [v30 initWithDomain:AXSSMotionTrackingErrorDomain code:v29 userInfo:0];
     v22 = [[AXMTFaceKitResult alloc] initWithError:v31];
   }
 
   [(AXMTFaceKitFaceTracker *)self setLastResult:v22];
-  v32 = [(AXMTFaceKitFaceTracker *)self delegate];
+  delegate = [(AXMTFaceKitFaceTracker *)self delegate];
   v33 = objc_opt_respondsToSelector();
 
   if (v33)
   {
-    v34 = [(AXMTFaceKitFaceTracker *)self delegate];
-    [v34 faceKitFaceTracker:self updatedResult:v22];
+    delegate2 = [(AXMTFaceKitFaceTracker *)self delegate];
+    [delegate2 faceKitFaceTracker:self updatedResult:v22];
   }
 }
 
-- (void)_updateFaceInfoIfNeededWithMetadata:(id)a3
+- (void)_updateFaceInfoIfNeededWithMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [[AXMTFaceKitFaceTrackerFaceInfo alloc] initWithFaceMetadata:v4];
+  metadataCopy = metadata;
+  v5 = [[AXMTFaceKitFaceTrackerFaceInfo alloc] initWithFaceMetadata:metadataCopy];
 
   [(AXMTFaceKitFaceTracker *)self set_initialFaceInfo:v5];
 }
 
-- (id)_handleFaceBlendShapes:(id)a3
+- (id)_handleFaceBlendShapes:(id)shapes
 {
-  v3 = a3;
+  shapesCopy = shapes;
   if (qword_100054618 != -1)
   {
     sub_1000291E4();
@@ -1147,7 +1147,7 @@ LABEL_18:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v3 objectForKeyedSubscript:{v10, v14}];
+        v11 = [shapesCopy objectForKeyedSubscript:{v10, v14}];
         if (v11)
         {
           v12 = [qword_100054610 objectForKeyedSubscript:v10];
@@ -1164,16 +1164,16 @@ LABEL_18:
   return v4;
 }
 
-+ (__n128)_poseTranslationMatrixFromArray:(void *)a3
++ (__n128)_poseTranslationMatrixFromArray:(void *)array
 {
-  v3 = a3;
-  v4 = [v3 objectAtIndexedSubscript:0];
+  arrayCopy = array;
+  v4 = [arrayCopy objectAtIndexedSubscript:0];
   [v4 floatValue];
   v13 = v5;
-  v6 = [v3 objectAtIndexedSubscript:1];
+  v6 = [arrayCopy objectAtIndexedSubscript:1];
   [v6 floatValue];
   v12 = v7;
-  v8 = [v3 objectAtIndexedSubscript:2];
+  v8 = [arrayCopy objectAtIndexedSubscript:2];
 
   [v8 floatValue];
   v11 = v9;
@@ -1184,47 +1184,47 @@ LABEL_18:
   return result;
 }
 
-+ (__n128)_poseRotationMatrixFromArray:(void *)a3
++ (__n128)_poseRotationMatrixFromArray:(void *)array
 {
-  v3 = a3;
-  v4 = [v3 objectAtIndexedSubscript:0];
+  arrayCopy = array;
+  v4 = [arrayCopy objectAtIndexedSubscript:0];
   v5 = [v4 objectAtIndexedSubscript:0];
   [v5 floatValue];
   v28 = v6;
 
-  v7 = [v3 objectAtIndexedSubscript:1];
+  v7 = [arrayCopy objectAtIndexedSubscript:1];
   v8 = [v7 objectAtIndexedSubscript:0];
   [v8 floatValue];
   v27 = v9;
 
-  v10 = [v3 objectAtIndexedSubscript:2];
+  v10 = [arrayCopy objectAtIndexedSubscript:2];
   v11 = [v10 objectAtIndexedSubscript:0];
   [v11 floatValue];
   *&v12 = __PAIR64__(v27, v28);
   *(&v12 + 1) = v13;
   v29 = v12;
 
-  v14 = [v3 objectAtIndexedSubscript:0];
+  v14 = [arrayCopy objectAtIndexedSubscript:0];
   v15 = [v14 objectAtIndexedSubscript:1];
   [v15 floatValue];
 
-  v16 = [v3 objectAtIndexedSubscript:1];
+  v16 = [arrayCopy objectAtIndexedSubscript:1];
   v17 = [v16 objectAtIndexedSubscript:1];
   [v17 floatValue];
 
-  v18 = [v3 objectAtIndexedSubscript:2];
+  v18 = [arrayCopy objectAtIndexedSubscript:2];
   v19 = [v18 objectAtIndexedSubscript:1];
   [v19 floatValue];
 
-  v20 = [v3 objectAtIndexedSubscript:0];
+  v20 = [arrayCopy objectAtIndexedSubscript:0];
   v21 = [v20 objectAtIndexedSubscript:2];
   [v21 floatValue];
 
-  v22 = [v3 objectAtIndexedSubscript:1];
+  v22 = [arrayCopy objectAtIndexedSubscript:1];
   v23 = [v22 objectAtIndexedSubscript:2];
   [v23 floatValue];
 
-  v24 = [v3 objectAtIndexedSubscript:2];
+  v24 = [arrayCopy objectAtIndexedSubscript:2];
 
   v25 = [v24 objectAtIndexedSubscript:2];
   [v25 floatValue];
@@ -1232,35 +1232,35 @@ LABEL_18:
   return v29;
 }
 
-+ (id)_intrinsicsArrayFromMatrix:(__n128)a3
++ (id)_intrinsicsArrayFromMatrix:(__n128)matrix
 {
   v19 = [NSNumber numberWithFloat:?];
   v25[0] = v19;
   v18 = [NSNumber numberWithFloat:a2.n128_f64[0]];
   v25[1] = v18;
-  v17 = [NSNumber numberWithFloat:a3.n128_f64[0]];
+  v17 = [NSNumber numberWithFloat:matrix.n128_f64[0]];
   v25[2] = v17;
   v3 = [NSArray arrayWithObjects:v25 count:3];
   v26[0] = v3;
-  HIDWORD(v4) = a1.n128_u32[1];
-  LODWORD(v4) = a1.n128_u32[1];
+  HIDWORD(v4) = self.n128_u32[1];
+  LODWORD(v4) = self.n128_u32[1];
   v5 = [NSNumber numberWithFloat:v4];
   v24[0] = v5;
   HIDWORD(v6) = a2.n128_u32[1];
   LODWORD(v6) = a2.n128_u32[1];
   v7 = [NSNumber numberWithFloat:v6];
   v24[1] = v7;
-  HIDWORD(v8) = a3.n128_u32[1];
-  LODWORD(v8) = a3.n128_u32[1];
+  HIDWORD(v8) = matrix.n128_u32[1];
+  LODWORD(v8) = matrix.n128_u32[1];
   v9 = [NSNumber numberWithFloat:v8];
   v24[2] = v9;
   v10 = [NSArray arrayWithObjects:v24 count:3];
   v26[1] = v10;
-  v11 = [NSNumber numberWithFloat:COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[2]))];
+  v11 = [NSNumber numberWithFloat:COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[2]))];
   v23[0] = v11;
   v12 = [NSNumber numberWithFloat:COERCE_DOUBLE(__PAIR64__(a2.n128_u32[1], a2.n128_u32[2]))];
   v23[1] = v12;
-  v13 = [NSNumber numberWithFloat:COERCE_DOUBLE(__PAIR64__(a3.n128_u32[1], a3.n128_u32[2]))];
+  v13 = [NSNumber numberWithFloat:COERCE_DOUBLE(__PAIR64__(matrix.n128_u32[1], matrix.n128_u32[2]))];
   v23[2] = v13;
   v14 = [NSArray arrayWithObjects:v23 count:3];
   v26[2] = v14;
@@ -1269,10 +1269,10 @@ LABEL_18:
   return v15;
 }
 
-+ (id)_faceKitProcessOptionsForSampleBuffer:(opaqueCMSampleBuffer *)a3 detectedFaceInfo:(id)a4 callback:(id)a5
++ (id)_faceKitProcessOptionsForSampleBuffer:(opaqueCMSampleBuffer *)buffer detectedFaceInfo:(id)info callback:(id)callback
 {
-  v8 = a4;
-  v51 = a5;
+  infoCopy = info;
+  callbackCopy = callback;
   v9 = +[NSMutableDictionary dictionary];
   v63[0] = sub_100025A00();
   v64[0] = &off_100049FB8;
@@ -1281,7 +1281,7 @@ LABEL_18:
   v48 = [NSDictionary dictionaryWithObjects:v64 forKeys:v63 count:2];
   v52 = +[NSMutableDictionary dictionary];
   [v52 setObject:v48 forKeyedSubscript:sub_100025BE8()];
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (!ImageBuffer)
   {
     v11 = AXSSLogForCategory();
@@ -1291,14 +1291,14 @@ LABEL_18:
     }
   }
 
-  v12 = CMGetAttachment(a3, kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, 0);
+  v12 = CMGetAttachment(buffer, kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, 0);
   v13 = v12;
   if (v12 && (v14 = CFGetTypeID(v12), v14 == CFDataGetTypeID()))
   {
     *v55 = 0u;
     memset(time, 0, sizeof(time));
     [v13 getBytes:time length:48];
-    v50 = [a1 _intrinsicsArrayFromMatrix:{*time, *&time[16], v55[0]}];
+    _backupIntrinsicsMatrixForiOS = [self _intrinsicsArrayFromMatrix:{*time, *&time[16], v55[0]}];
   }
 
   else
@@ -1306,24 +1306,24 @@ LABEL_18:
     if (!ImageBuffer)
     {
 LABEL_12:
-      v50 = 0;
+      _backupIntrinsicsMatrixForiOS = 0;
       goto LABEL_13;
     }
 
-    v50 = [objc_opt_class() _backupIntrinsicsMatrixForiOS];
+    _backupIntrinsicsMatrixForiOS = [objc_opt_class() _backupIntrinsicsMatrixForiOS];
   }
 
-  if (!v50)
+  if (!_backupIntrinsicsMatrixForiOS)
   {
     goto LABEL_12;
   }
 
-  [v52 setObject:v50 forKeyedSubscript:sub_100025CDC()];
+  [v52 setObject:_backupIntrinsicsMatrixForiOS forKeyedSubscript:sub_100025CDC()];
 LABEL_13:
   v15 = [v52 copy];
   [v9 setObject:v15 forKeyedSubscript:sub_100025DD0()];
 
-  if (!v8)
+  if (!infoCopy)
   {
     v16 = AXSSLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1358,10 +1358,10 @@ LABEL_13:
   }
 
   v60[0] = *v17;
-  v49 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 identifier]);
+  v49 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [infoCopy identifier]);
   v61[0] = v49;
   v60[1] = sub_100025EC4();
-  [v8 boundingBoxInNormalizedCoordinates];
+  [infoCopy boundingBoxInNormalizedCoordinates];
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v66);
   v61[1] = DictionaryRepresentation;
   v56 = 0;
@@ -1390,14 +1390,14 @@ LABEL_13:
   }
 
   v60[2] = *v21;
-  [v8 roll];
+  [infoCopy roll];
   v24 = [NSNumber numberWithDouble:?];
   v61[2] = v24;
   v25 = [NSDictionary dictionaryWithObjects:v61 forKeys:v60 count:3];
   v62 = v25;
   v26 = [NSArray arrayWithObjects:&v62 count:1];
-  v27 = v8;
-  v28 = a3;
+  v27 = infoCopy;
+  bufferCopy = buffer;
   v56 = 0;
   v57 = &v56;
   v58 = 0x2020000000;
@@ -1460,7 +1460,7 @@ LABEL_47:
   [v9 setObject:ImageBuffer forKeyedSubscript:*v32];
 LABEL_31:
   memset(&v53, 0, sizeof(v53));
-  CMSampleBufferGetPresentationTimeStamp(&v53, v28);
+  CMSampleBufferGetPresentationTimeStamp(&v53, bufferCopy);
   *time = v53;
   v35 = CMTimeCopyAsDictionary(time, kCFAllocatorDefault);
   if (v35)
@@ -1493,9 +1493,9 @@ LABEL_31:
     [v9 setObject:v35 forKeyedSubscript:*v36];
   }
 
-  if (v51)
+  if (callbackCopy)
   {
-    v39 = objc_retainBlock(v51);
+    v39 = objc_retainBlock(callbackCopy);
     v56 = 0;
     v57 = &v56;
     v58 = 0x2020000000;

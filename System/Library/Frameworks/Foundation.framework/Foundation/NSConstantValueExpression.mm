@@ -1,14 +1,14 @@
 @interface NSConstantValueExpression
-- (BOOL)isEqual:(id)a3;
-- (NSConstantValueExpression)initWithCoder:(id)a3;
-- (NSConstantValueExpression)initWithObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)expressionValueWithObject:(id)a3;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (NSConstantValueExpression)initWithCoder:(id)coder;
+- (NSConstantValueExpression)initWithObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)expressionValueWithObject:(id)object;
+- (id)expressionValueWithObject:(id)object context:(id)context;
 - (id)predicateFormat;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSConstantValueExpression
@@ -62,32 +62,32 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v2 = [(NSConstantValueExpression *)self constantValue];
+  constantValue = [(NSConstantValueExpression *)self constantValue];
 
-  return [v2 hash];
+  return [constantValue hash];
 }
 
-- (NSConstantValueExpression)initWithObject:(id)a3
+- (NSConstantValueExpression)initWithObject:(id)object
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSConstantValueExpression;
   v4 = [(NSExpression *)&v6 initWithExpressionType:0];
-  v4->constantValue = a3;
+  v4->constantValue = object;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v9.receiver = self;
   v9.super_class = NSConstantValueExpression;
-  [(NSExpression *)&v9 encodeWithCoder:a3];
+  [(NSExpression *)&v9 encodeWithCoder:coder];
   v5 = objc_opt_self();
   v6 = objc_opt_class();
   constantValue = self->constantValue;
@@ -102,13 +102,13 @@ LABEL_3:
     v8 = @"NSConstantValue";
   }
 
-  [a3 encodeObject:constantValue forKey:v8];
+  [coder encodeObject:constantValue forKey:v8];
 }
 
-- (NSConstantValueExpression)initWithCoder:(id)a3
+- (NSConstantValueExpression)initWithCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -116,15 +116,15 @@ LABEL_3:
 
   v15.receiver = self;
   v15.super_class = NSConstantValueExpression;
-  v5 = [(NSExpression *)&v15 initWithCoder:a3];
+  v5 = [(NSExpression *)&v15 initWithCoder:coder];
   if (v5)
   {
-    v6 = [a3 allowedClasses];
+    allowedClasses = [coder allowedClasses];
     v7 = +[_NSPredicateUtilities _constantValueClassesForSecureCoding];
-    if (v6 && [v6 count])
+    if (allowedClasses && [allowedClasses count])
     {
       v7 = [v7 mutableCopy];
-      [v7 unionSet:v6];
+      [v7 unionSet:allowedClasses];
       [v7 removeObject:objc_opt_class()];
       [v7 removeObject:objc_opt_class()];
     }
@@ -134,12 +134,12 @@ LABEL_3:
       v8 = v7;
     }
 
-    *(v5 + 3) = [a3 decodeObjectOfClasses:v7 forKey:@"NSConstantValue"];
+    *(v5 + 3) = [coder decodeObjectOfClasses:v7 forKey:@"NSConstantValue"];
 
     v9 = *(v5 + 3);
     if (!v9)
     {
-      v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSConstantValueClassName"];
+      v10 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSConstantValueClassName"];
       if (v10)
       {
         v9 = NSClassFromString(v10);
@@ -193,7 +193,7 @@ LABEL_3:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   constantValue = self->constantValue;
@@ -201,27 +201,27 @@ LABEL_3:
   return [v4 initWithObject:constantValue];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSConstantValueExpression *)self constantValue];
-    v6 = [a3 constantValue];
-    if (!(v5 | v6) || v6 && (LODWORD(v6) = [v6 isEqual:v5], v6))
+    constantValue = [(NSConstantValueExpression *)self constantValue];
+    constantValue2 = [equal constantValue];
+    if (!(constantValue | constantValue2) || constantValue2 && (LODWORD(constantValue2) = [constantValue2 isEqual:constantValue], constantValue2))
     {
-      LOBYTE(v6) = 1;
+      LOBYTE(constantValue2) = 1;
     }
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(constantValue2) = 0;
   }
 
-  return v6;
+  return constantValue2;
 }
 
-- (id)expressionValueWithObject:(id)a3
+- (id)expressionValueWithObject:(id)object
 {
   if (![(NSExpression *)self _allowsEvaluation])
   {
@@ -231,9 +231,9 @@ LABEL_3:
   return self->constantValue;
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
-  if (![(NSExpression *)self _allowsEvaluation:a3])
+  if (![(NSExpression *)self _allowsEvaluation:object])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"This expression has evaluation disabled" userInfo:0]);
   }

@@ -1,21 +1,21 @@
 @interface ODIBendingList2
-+ (void)mapWithState:(id)a3;
++ (void)mapWithState:(id)state;
 @end
 
 @implementation ODIBendingList2
 
-+ (void)mapWithState:(id)a3
++ (void)mapWithState:(id)state
 {
-  v38 = a3;
-  v4 = [v38 diagram];
-  v5 = [v4 documentPoint];
-  v6 = [v5 children];
-  v7 = [v6 count];
+  stateCopy = state;
+  diagram = [stateCopy diagram];
+  documentPoint = [diagram documentPoint];
+  children = [documentPoint children];
+  v7 = [children count];
 
-  v8 = [a1 mapLogicalBoundsWithShapeSize:0xFFFFFFFFLL spaceSize:0xFFFFFFFFLL maxNodeCount:v38 maxColumnCount:? state:?];
-  v9 = [v38 diagram];
-  v10 = [v9 documentPoint];
-  v37 = [v10 children];
+  v8 = [self mapLogicalBoundsWithShapeSize:0xFFFFFFFFLL spaceSize:0xFFFFFFFFLL maxNodeCount:stateCopy maxColumnCount:? state:?];
+  diagram2 = [stateCopy diagram];
+  documentPoint2 = [diagram2 documentPoint];
+  children2 = [documentPoint2 children];
   v11 = v7 + v8 - 1;
 
   if (v11 >= v8)
@@ -49,7 +49,7 @@
           break;
         }
 
-        v19 = [v37 objectAtIndex:v12 + v15];
+        v19 = [children2 objectAtIndex:v12 + v15];
         if (v13 == v36)
         {
           v20 = (v15 * 1.17) + v35 * 1.16999996;
@@ -62,17 +62,17 @@
         }
 
         v22 = +[ODIDrawable shapeGeometryForRectangle];
-        v23 = [ODIDrawable addShapeWithBounds:v22 rotation:v38 geometry:v21 state:v17, 1.0, 1.06999993, 0.0];
+        v23 = [ODIDrawable addShapeWithBounds:v22 rotation:stateCopy geometry:v21 state:v17, 1.0, 1.06999993, 0.0];
 
-        [ODIDrawable mapStyleAndTextFromPoint:v19 shape:v23 state:v38];
+        [ODIDrawable mapStyleAndTextFromPoint:v19 shape:v23 state:stateCopy];
         v24 = TSURectWithCenterAndSize((v21 + 0.9), v18, 0.340000004);
         v26 = v25;
         v28 = v27;
         v30 = v29;
         v31 = +[ODIDrawable shapeGeometryForEllipse];
-        v32 = [ODIDrawable addShapeWithBounds:v31 rotation:v38 geometry:v24 state:v26, v28, v30, 0.0];
+        v32 = [ODIDrawable addShapeWithBounds:v31 rotation:stateCopy geometry:v24 state:v26, v28, v30, 0.0];
 
-        [ODIDrawable mapStyleForPresentationName:@"adorn" point:v19 shape:v32 state:v38];
+        [ODIDrawable mapStyleForPresentationName:@"adorn" point:v19 shape:v32 state:stateCopy];
         ++v15;
       }
 

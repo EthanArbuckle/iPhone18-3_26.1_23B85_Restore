@@ -1,21 +1,21 @@
 @interface PKPaymentSetupFieldPickerItem
-+ (id)_itemWithDIAttributePickerItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_itemWithDIAttributePickerItem:(id)item;
+- (BOOL)isEqual:(id)equal;
 - (DIAttributePickerItem)attributePickerItem;
-- (PKPaymentSetupFieldPickerItem)initWithDictionary:(id)a3;
-- (PKPaymentSetupFieldPickerItem)initWithName:(id)a3 value:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentSetupFieldPickerItem)initWithDictionary:(id)dictionary;
+- (PKPaymentSetupFieldPickerItem)initWithName:(id)name value:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PKPaymentSetupFieldPickerItem
 
-- (PKPaymentSetupFieldPickerItem)initWithDictionary:(id)a3
+- (PKPaymentSetupFieldPickerItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"localizedDisplayName"];
-  v6 = [v4 PKStringForKey:@"submissionValue"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"localizedDisplayName"];
+  v6 = [dictionaryCopy PKStringForKey:@"submissionValue"];
   v7 = v6;
-  v8 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     v24.receiver = self;
@@ -31,15 +31,15 @@
       submissionValue = v9->_submissionValue;
       v9->_submissionValue = v12;
 
-      v14 = [v4 PKStringForKey:@"submissionConfirmationTitle"];
+      v14 = [dictionaryCopy PKStringForKey:@"submissionConfirmationTitle"];
       submissionConfirmationTitle = v9->_submissionConfirmationTitle;
       v9->_submissionConfirmationTitle = v14;
 
-      v16 = [v4 PKStringForKey:@"submissionConfirmationDescription"];
+      v16 = [dictionaryCopy PKStringForKey:@"submissionConfirmationDescription"];
       submissionConfirmationDescription = v9->_submissionConfirmationDescription;
       v9->_submissionConfirmationDescription = v16;
 
-      v18 = [v4 PKDictionaryForKey:@"nextPickerLevel"];
+      v18 = [dictionaryCopy PKDictionaryForKey:@"nextPickerLevel"];
       if (v18)
       {
         v19 = [PKPaymentSetupFieldPicker alloc];
@@ -51,21 +51,21 @@
     }
 
     self = v9;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-+ (id)_itemWithDIAttributePickerItem:(id)a3
++ (id)_itemWithDIAttributePickerItem:(id)item
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 localizedDisplayName];
-  v7 = [v4 value];
-  v8 = [v5 initWithName:v6 value:v7];
+  itemCopy = item;
+  v5 = [self alloc];
+  localizedDisplayName = [itemCopy localizedDisplayName];
+  value = [itemCopy value];
+  v8 = [v5 initWithName:localizedDisplayName value:value];
 
-  [v8 setAttributePickerItem:v4];
+  [v8 setAttributePickerItem:itemCopy];
 
   return v8;
 }
@@ -76,9 +76,9 @@
   if (!attributePickerItem)
   {
     v4 = objc_alloc(MEMORY[0x1E6997D80]);
-    v5 = [(PKPaymentSetupFieldPickerItem *)self localizedDisplayName];
-    v6 = [(PKPaymentSetupFieldPickerItem *)self submissionValue];
-    v7 = [v4 initWithName:v5 value:v6];
+    localizedDisplayName = [(PKPaymentSetupFieldPickerItem *)self localizedDisplayName];
+    submissionValue = [(PKPaymentSetupFieldPickerItem *)self submissionValue];
+    v7 = [v4 initWithName:localizedDisplayName value:submissionValue];
     v8 = self->_attributePickerItem;
     self->_attributePickerItem = v7;
 
@@ -88,20 +88,20 @@
   return attributePickerItem;
 }
 
-- (PKPaymentSetupFieldPickerItem)initWithName:(id)a3 value:(id)a4
+- (PKPaymentSetupFieldPickerItem)initWithName:(id)name value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 0;
-  if (v6 && v7)
+  nameCopy = name;
+  valueCopy = value;
+  v8 = valueCopy;
+  selfCopy = 0;
+  if (nameCopy && valueCopy)
   {
     v16.receiver = self;
     v16.super_class = PKPaymentSetupFieldPickerItem;
     v10 = [(PKPaymentSetupFieldPickerItem *)&v16 init];
     if (v10)
     {
-      v11 = [v6 copy];
+      v11 = [nameCopy copy];
       localizedDisplayName = v10->_localizedDisplayName;
       v10->_localizedDisplayName = v11;
 
@@ -111,15 +111,15 @@
     }
 
     self = v10;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   objc_storeStrong(v4 + 1, self->_localizedDisplayName);
   objc_storeStrong(v4 + 2, self->_submissionValue);
   objc_storeStrong(v4 + 3, self->_attributePickerItem);
@@ -129,13 +129,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[1];
     v7 = self->_localizedDisplayName;
     v8 = v6;

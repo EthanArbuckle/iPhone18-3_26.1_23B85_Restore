@@ -1,32 +1,32 @@
 @interface DIIOClientDelegate
-- (BOOL)setupNewConnection:(id)a3;
-- (DIIOClientDelegate)initWithIODaemon:(id)a3;
+- (BOOL)setupNewConnection:(id)connection;
+- (DIIOClientDelegate)initWithIODaemon:(id)daemon;
 - (DIIODaemonDelegate)weakDaemon;
 - (NSXPCListenerEndpoint)xpcEndpoint;
-- (void)addToRefCountWithReply:(id)a3;
+- (void)addToRefCountWithReply:(id)reply;
 - (void)createListener;
 @end
 
 @implementation DIIOClientDelegate
 
-- (DIIOClientDelegate)initWithIODaemon:(id)a3
+- (DIIOClientDelegate)initWithIODaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v8.receiver = self;
   v8.super_class = DIIOClientDelegate;
   v5 = [(DIBaseServiceDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_weakDaemon, v4);
+    objc_storeWeak(&v5->_weakDaemon, daemonCopy);
   }
 
   return v6;
 }
 
-- (void)addToRefCountWithReply:(id)a3
+- (void)addToRefCountWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = *__error();
   if (sub_1000E95F0())
   {
@@ -59,12 +59,12 @@
   }
 
   *__error() = v4;
-  v3[2](v3, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (BOOL)setupNewConnection:(id)a3
+- (BOOL)setupNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = *__error();
   if (sub_1000E95F0())
   {
@@ -101,41 +101,41 @@
 
   *__error() = v5;
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DIIOClientProtocol];
-  [v4 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  [v4 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
+  objc_initWeak(&from, connectionCopy);
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100006398;
   v28[3] = &unk_1001F5760;
   objc_copyWeak(&v29, &location);
   objc_copyWeak(&v30, &from);
-  [v4 setInvalidationHandler:v28];
+  [connectionCopy setInvalidationHandler:v28];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100006568;
   v25[3] = &unk_1001F5760;
   objc_copyWeak(&v26, &location);
   objc_copyWeak(&v27, &from);
-  [v4 setInterruptionHandler:v25];
-  v10 = [(DIIOClientDelegate *)self weakDaemon];
-  v11 = v10;
-  if (v10)
+  [connectionCopy setInterruptionHandler:v25];
+  weakDaemon = [(DIIOClientDelegate *)self weakDaemon];
+  v11 = weakDaemon;
+  if (weakDaemon)
   {
-    v12 = v10;
+    v12 = weakDaemon;
     objc_sync_enter(v12);
-    v13 = [v12 activeConnections];
-    [v13 addObject:v4];
+    activeConnections = [v12 activeConnections];
+    [activeConnections addObject:connectionCopy];
 
     v14 = *__error();
     if (sub_1000E95F0())
     {
       v15 = sub_1000E957C();
       os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-      v16 = [v12 activeConnections];
-      v17 = [v16 count];
+      activeConnections2 = [v12 activeConnections];
+      v17 = [activeConnections2 count];
       *buf = 68158210;
       v34 = 41;
       v35 = 2080;
@@ -156,8 +156,8 @@
       v19 = sub_1000E957C();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v12 activeConnections];
-        v21 = [v20 count];
+        activeConnections3 = [v12 activeConnections];
+        v21 = [activeConnections3 count];
         *buf = 68158210;
         v34 = 41;
         v35 = 2080;
@@ -190,10 +190,10 @@
 
 - (NSXPCListenerEndpoint)xpcEndpoint
 {
-  v2 = [(DIBaseServiceDelegate *)self listener];
-  v3 = [v2 endpoint];
+  listener = [(DIBaseServiceDelegate *)self listener];
+  endpoint = [listener endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 - (DIIODaemonDelegate)weakDaemon

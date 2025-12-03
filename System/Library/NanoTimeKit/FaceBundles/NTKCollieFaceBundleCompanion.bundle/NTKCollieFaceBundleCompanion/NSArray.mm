@@ -1,12 +1,12 @@
 @interface NSArray
-- (unint64_t)ntk_indexOfFirstObjectPassingTest:(id)a3;
+- (unint64_t)ntk_indexOfFirstObjectPassingTest:(id)test;
 @end
 
 @implementation NSArray
 
-- (unint64_t)ntk_indexOfFirstObjectPassingTest:(id)a3
+- (unint64_t)ntk_indexOfFirstObjectPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = [(NSArray *)self count];
   if (v5)
   {
@@ -15,7 +15,7 @@
     while (1)
     {
       v8 = [(NSArray *)self objectAtIndexedSubscript:v7];
-      v9 = v4[2](v4, v8);
+      v9 = testCopy[2](testCopy, v8);
 
       if (v9)
       {

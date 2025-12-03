@@ -1,37 +1,37 @@
 @interface MTContentKeyRequest
 - (MTContentKeyRequest)init;
-- (MTContentKeyRequest)initWithKeyIdentifier:(id)a3 adamId:(id)a4 requestType:(int64_t)a5 offlineRequest:(BOOL)a6 secureInvalidationDsid:(id)a7;
-- (id)copyWith:(int64_t)a3;
-- (id)initFrom:(id)a3 adamId:(id)a4 requestType:(int64_t)a5 offlineRequest:(BOOL)a6;
+- (MTContentKeyRequest)initWithKeyIdentifier:(id)identifier adamId:(id)id requestType:(int64_t)type offlineRequest:(BOOL)request secureInvalidationDsid:(id)dsid;
+- (id)copyWith:(int64_t)with;
+- (id)initFrom:(id)from adamId:(id)id requestType:(int64_t)type offlineRequest:(BOOL)request;
 @end
 
 @implementation MTContentKeyRequest
 
-- (id)initFrom:(id)a3 adamId:(id)a4 requestType:(int64_t)a5 offlineRequest:(BOOL)a6
+- (id)initFrom:(id)from adamId:(id)id requestType:(int64_t)type offlineRequest:(BOOL)request
 {
-  v6 = a6;
+  requestCopy = request;
   v9 = sub_1D917820C();
-  return ContentKeyRequest.init(from:adamId:requestType:offlineRequest:)(a3, v9, v10, a5, v6);
+  return ContentKeyRequest.init(from:adamId:requestType:offlineRequest:)(from, v9, v10, type, requestCopy);
 }
 
-- (MTContentKeyRequest)initWithKeyIdentifier:(id)a3 adamId:(id)a4 requestType:(int64_t)a5 offlineRequest:(BOOL)a6 secureInvalidationDsid:(id)a7
+- (MTContentKeyRequest)initWithKeyIdentifier:(id)identifier adamId:(id)id requestType:(int64_t)type offlineRequest:(BOOL)request secureInvalidationDsid:(id)dsid
 {
-  v8 = a6;
+  requestCopy = request;
   v10 = sub_1D917820C();
   v12 = v11;
   v13 = sub_1D917820C();
   v15 = v14;
-  v16 = a7;
-  sub_1D8FF943C(v10, v12, v13, v15, a5, v8, a7);
+  dsidCopy = dsid;
+  sub_1D8FF943C(v10, v12, v13, v15, type, requestCopy, dsid);
   v18 = v17;
 
   return v18;
 }
 
-- (id)copyWith:(int64_t)a3
+- (id)copyWith:(int64_t)with
 {
-  v4 = self;
-  v5 = sub_1D8FF8470(a3);
+  selfCopy = self;
+  v5 = sub_1D8FF8470(with);
 
   return v5;
 }

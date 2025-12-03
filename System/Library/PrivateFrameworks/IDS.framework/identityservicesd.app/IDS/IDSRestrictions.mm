@@ -1,21 +1,21 @@
 @interface IDSRestrictions
 + (IDSRestrictions)sharedInstance;
-- (BOOL)_isDisabledService:(id)a3;
+- (BOOL)_isDisabledService:(id)service;
 - (BOOL)launchServiceIsAvailable;
-- (BOOL)shouldDisableAccount:(id)a3;
-- (BOOL)shouldDisableService:(id)a3;
+- (BOOL)shouldDisableAccount:(id)account;
+- (BOOL)shouldDisableService:(id)service;
 - (IDSRestrictions)init;
-- (unint64_t)_restrictionReasonForService:(id)a3;
-- (unint64_t)restrictionReasonForService:(id)a3;
+- (unint64_t)_restrictionReasonForService:(id)service;
+- (unint64_t)restrictionReasonForService:(id)service;
 - (void)_loadInitialAppInstallState;
-- (void)_managedPrefsNotification:(id)a3;
-- (void)_setRestrictionReason:(unint64_t)a3 forService:(id)a4;
+- (void)_managedPrefsNotification:(id)notification;
+- (void)_setRestrictionReason:(unint64_t)reason forService:(id)service;
 - (void)_updateParentalSettings;
 - (void)_updateParentalSettingsIfFTInstallChanged;
 - (void)_updateParentalSettingsIfMessagesInstallChanged;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)refreshStateForAccount:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)refreshStateForAccount:(id)account;
 - (void)updateAccountActivation;
 @end
 
@@ -106,27 +106,27 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
     {
-      v9 = 1;
+      bOOLValue = 1;
     }
 
-    self->_cachedFTInstallState = v9;
+    self->_cachedFTInstallState = bOOLValue;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v8 BOOLValue];
+      bOOLValue2 = [v8 BOOLValue];
     }
 
     else
     {
-      v10 = 1;
+      bOOLValue2 = 1;
     }
 
-    self->_cachedMessagesInstallState = v10;
+    self->_cachedMessagesInstallState = bOOLValue2;
     v11 = +[LSApplicationWorkspace defaultWorkspace];
     applicationWorkspace = self->_applicationWorkspace;
     self->_applicationWorkspace = v11;
@@ -146,14 +146,14 @@
     else
     {
       v14 = +[IDSDataMigrationTracker sharedInstance];
-      v15 = [v14 performMigrationIfNeeded];
+      performMigrationIfNeeded = [v14 performMigrationIfNeeded];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_100495A74;
       v16[3] = &unk_100BDAD00;
       v16[4] = self;
       v17 = v13;
-      [v15 registerResultBlock:v16];
+      [performMigrationIfNeeded registerResultBlock:v16];
     }
   }
 }
@@ -174,13 +174,13 @@
   else
   {
     v4 = +[IDSDataMigrationTracker sharedInstance];
-    v5 = [v4 performMigrationIfNeeded];
+    performMigrationIfNeeded = [v4 performMigrationIfNeeded];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100495DD4;
     v6[3] = &unk_100BD9940;
     v7 = v3;
-    [v5 registerResultBlock:v6];
+    [performMigrationIfNeeded registerResultBlock:v6];
   }
 }
 
@@ -200,63 +200,63 @@
   else
   {
     v4 = +[IDSDataMigrationTracker sharedInstance];
-    v5 = [v4 performMigrationIfNeeded];
+    performMigrationIfNeeded = [v4 performMigrationIfNeeded];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100496100;
     v6[3] = &unk_100BD9940;
     v7 = v3;
-    [v5 registerResultBlock:v6];
+    [performMigrationIfNeeded registerResultBlock:v6];
   }
 }
 
-- (BOOL)_isDisabledService:(id)a3
+- (BOOL)_isDisabledService:(id)service
 {
-  v3 = [(NSMutableDictionary *)self->_parentalControls objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_parentalControls objectForKey:service];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (unint64_t)_restrictionReasonForService:(id)a3
+- (unint64_t)_restrictionReasonForService:(id)service
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_parentalControls objectForKey:v4];
+  serviceCopy = service;
+  v5 = [(NSMutableDictionary *)self->_parentalControls objectForKey:serviceCopy];
 
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_parentalControls objectForKey:v4];
-    v7 = [v6 unsignedIntValue];
+    v6 = [(NSMutableDictionary *)self->_parentalControls objectForKey:serviceCopy];
+    unsignedIntValue = [v6 unsignedIntValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v7;
+  return unsignedIntValue;
 }
 
-- (void)_setRestrictionReason:(unint64_t)a3 forService:(id)a4
+- (void)_setRestrictionReason:(unint64_t)reason forService:(id)service
 {
   parentalControls = self->_parentalControls;
-  if (a3)
+  if (reason)
   {
-    v6 = a4;
-    v7 = [NSNumber numberWithUnsignedInteger:a3];
+    serviceCopy = service;
+    serviceCopy2 = [NSNumber numberWithUnsignedInteger:reason];
     [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
   }
 
   else
   {
-    v7 = a4;
+    serviceCopy2 = service;
     [(NSMutableDictionary *)parentalControls removeObjectForKey:?];
   }
 }
 
 - (void)_updateParentalSettings
 {
-  v2 = self;
+  selfCopy = self;
   v3 = !self->_active;
   if (!self->_active)
   {
@@ -264,7 +264,7 @@
   }
 
   v4 = objc_alloc_init(NSMutableSet);
-  v5 = [(IDSRestrictions *)v2 _restrictionReasonForService:@"com.apple.ess"];
+  v5 = [(IDSRestrictions *)selfCopy _restrictionReasonForService:@"com.apple.ess"];
   v6 = +[FTDeviceSupport sharedInstance];
   if ([v6 faceTimeSupported])
   {
@@ -285,19 +285,19 @@
     v8 = 1;
   }
 
-  if (_os_feature_enabled_impl() && !v2->_cachedFTInstallState)
+  if (_os_feature_enabled_impl() && !selfCopy->_cachedFTInstallState)
   {
     v8 = 3;
   }
 
   if (v8 != v5)
   {
-    [(IDSRestrictions *)v2 _setRestrictionReason:v8 forService:@"com.apple.ess"];
+    [(IDSRestrictions *)selfCopy _setRestrictionReason:v8 forService:@"com.apple.ess"];
     [v4 addObject:@"com.apple.ess"];
     v3 = 1;
   }
 
-  v9 = [(IDSRestrictions *)v2 _restrictionReasonForService:@"com.apple.private.ac"];
+  v9 = [(IDSRestrictions *)selfCopy _restrictionReasonForService:@"com.apple.private.ac"];
   v10 = +[FTDeviceSupport sharedInstance];
   if ([v10 callingSupported])
   {
@@ -318,19 +318,19 @@
     v12 = 1;
   }
 
-  if (_os_feature_enabled_impl() && !v2->_cachedFTInstallState)
+  if (_os_feature_enabled_impl() && !selfCopy->_cachedFTInstallState)
   {
     v12 = 3;
   }
 
   if (v12 != v9)
   {
-    [(IDSRestrictions *)v2 _setRestrictionReason:v12 forService:@"com.apple.private.ac"];
+    [(IDSRestrictions *)selfCopy _setRestrictionReason:v12 forService:@"com.apple.private.ac"];
     [v4 addObject:@"com.apple.private.ac"];
     v3 = 1;
   }
 
-  v13 = [(IDSRestrictions *)v2 _restrictionReasonForService:@"com.apple.private.alloy.facetime.multi"];
+  v13 = [(IDSRestrictions *)selfCopy _restrictionReasonForService:@"com.apple.private.alloy.facetime.multi"];
   v14 = +[FTDeviceSupport sharedInstance];
   if ([v14 multiwaySupported])
   {
@@ -351,19 +351,19 @@
     v16 = 1;
   }
 
-  if (_os_feature_enabled_impl() && !v2->_cachedFTInstallState)
+  if (_os_feature_enabled_impl() && !selfCopy->_cachedFTInstallState)
   {
     v16 = 3;
   }
 
   if (v16 != v13)
   {
-    [(IDSRestrictions *)v2 _setRestrictionReason:v16 forService:@"com.apple.private.alloy.facetime.multi"];
+    [(IDSRestrictions *)selfCopy _setRestrictionReason:v16 forService:@"com.apple.private.alloy.facetime.multi"];
     [v4 addObject:@"com.apple.private.alloy.facetime.multi"];
     v3 = 1;
   }
 
-  v17 = [(IDSRestrictions *)v2 _restrictionReasonForService:@"com.apple.madrid"];
+  v17 = [(IDSRestrictions *)selfCopy _restrictionReasonForService:@"com.apple.madrid"];
   v18 = +[FTDeviceSupport sharedInstance];
   if ([v18 iMessageSupported])
   {
@@ -384,7 +384,7 @@
     v20 = 1;
   }
 
-  if (v2->_cachedMessagesInstallState)
+  if (selfCopy->_cachedMessagesInstallState)
   {
     v21 = v20;
   }
@@ -396,7 +396,7 @@
 
   if (v21 != v17)
   {
-    [(IDSRestrictions *)v2 _setRestrictionReason:v21 forService:@"com.apple.madrid"];
+    [(IDSRestrictions *)selfCopy _setRestrictionReason:v21 forService:@"com.apple.madrid"];
     [v4 addObject:@"com.apple.madrid"];
     v3 = 1;
   }
@@ -405,9 +405,9 @@
   v22 = +[IMRGLog registration];
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [(IDSRestrictions *)v2 active];
+    active = [(IDSRestrictions *)selfCopy active];
     v24 = @"NO";
-    if (v23)
+    if (active)
     {
       v24 = @"YES";
     }
@@ -421,7 +421,7 @@
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v25 = v2->_parentalControls;
+  v25 = selfCopy->_parentalControls;
   v26 = [(NSMutableDictionary *)v25 countByEnumeratingWithState:&v61 objects:v71 count:16];
   if (v26)
   {
@@ -440,16 +440,16 @@
         v31 = +[IMRGLog registration];
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          [(NSMutableDictionary *)v2->_parentalControls objectForKey:v30];
-          v33 = v32 = v2;
-          v34 = [v33 unsignedLongValue];
+          [(NSMutableDictionary *)selfCopy->_parentalControls objectForKey:v30];
+          v33 = v32 = selfCopy;
+          unsignedLongValue = [v33 unsignedLongValue];
           *buf = 138412546;
           v68 = v30;
           v69 = 2048;
-          v70 = v34;
+          v70 = unsignedLongValue;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "IDSRestrictions - %@ Restriction Reason: %lu", buf, 0x16u);
 
-          v2 = v32;
+          selfCopy = v32;
         }
       }
 
@@ -459,7 +459,7 @@
     while (v27);
   }
 
-  if (obj && v2->_shouldPostNotifications)
+  if (obj && selfCopy->_shouldPostNotifications)
   {
     v35 = +[NSNotificationCenter defaultCenter];
     [v35 __mainThreadPostNotificationName:@"__kIDSRestrictionsChangedNotification" object:0];
@@ -484,7 +484,7 @@
           }
 
           v40 = *(*(&v57 + 1) + 8 * j);
-          v41 = [(IDSRestrictions *)v2 _restrictionReasonForService:v40];
+          v41 = [(IDSRestrictions *)selfCopy _restrictionReasonForService:v40];
           v56[0] = _NSConcreteStackBlock;
           v56[1] = 3221225472;
           v56[2] = sub_100496960;
@@ -531,29 +531,29 @@
     }
   }
 
-  [(IDSRestrictions *)v2 updateAccountActivation];
+  [(IDSRestrictions *)selfCopy updateAccountActivation];
 }
 
 - (void)updateAccountActivation
 {
   v3 = +[IDSDAccountController sharedInstance];
-  v4 = [v3 accountsLoaded];
-  v5 = +[IMRGLog registration];
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  accountsLoaded = [v3 accountsLoaded];
+  accounts = +[IMRGLog registration];
+  v6 = os_log_type_enabled(accounts, OS_LOG_TYPE_DEFAULT);
+  if (accountsLoaded)
   {
     if (v6)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, " Updating account activation if needed", buf, 2u);
+      _os_log_impl(&_mh_execute_header, accounts, OS_LOG_TYPE_DEFAULT, " Updating account activation if needed", buf, 2u);
     }
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [v3 accounts];
-    v7 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+    accounts = [v3 accounts];
+    v7 = [accounts countByEnumeratingWithState:&v18 objects:v24 count:16];
     if (v7)
     {
       v9 = v7;
@@ -566,7 +566,7 @@
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(accounts);
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
@@ -582,8 +582,8 @@
                 _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "IDSRestrictions - Disabling account: %@", buf, 0xCu);
               }
 
-              v14 = [v12 uniqueID];
-              [v3 disableAccountWithUniqueID:v14];
+              uniqueID = [v12 uniqueID];
+              [v3 disableAccountWithUniqueID:uniqueID];
 
               [v12 setWasDisabledAutomatically:1];
             }
@@ -598,13 +598,13 @@
                 _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "IDSRestrictions - Re-activating a disabled account: %@", buf, 0xCu);
               }
 
-              v16 = [v12 uniqueID];
-              [v3 enableAccountWithUniqueID:v16];
+              uniqueID2 = [v12 uniqueID];
+              [v3 enableAccountWithUniqueID:uniqueID2];
             }
           }
         }
 
-        v9 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+        v9 = [accounts countByEnumeratingWithState:&v18 objects:v24 count:16];
       }
 
       while (v9);
@@ -614,19 +614,19 @@
   else if (v6)
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Waiting on account activate, the account controller isn't ready yet", buf, 2u);
+    _os_log_impl(&_mh_execute_header, accounts, OS_LOG_TYPE_DEFAULT, "Waiting on account activate, the account controller isn't ready yet", buf, 2u);
   }
 }
 
-- (BOOL)shouldDisableService:(id)a3
+- (BOOL)shouldDisableService:(id)service
 {
-  v4 = a3;
-  if (v4)
+  serviceCopy = service;
+  if (serviceCopy)
   {
     if ([(IDSRestrictions *)self active])
     {
-      v5 = [v4 identifier];
-      v6 = [(IDSRestrictions *)self _isDisabledService:v5];
+      identifier = [serviceCopy identifier];
+      v6 = [(IDSRestrictions *)self _isDisabledService:identifier];
     }
 
     else
@@ -643,15 +643,15 @@
   return v6;
 }
 
-- (BOOL)shouldDisableAccount:(id)a3
+- (BOOL)shouldDisableAccount:(id)account
 {
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
     if ([(IDSRestrictions *)self active])
     {
-      v5 = [v4 service];
-      v6 = [(IDSRestrictions *)self shouldDisableService:v5];
+      service = [accountCopy service];
+      v6 = [(IDSRestrictions *)self shouldDisableService:service];
     }
 
     else
@@ -668,10 +668,10 @@
   return v6;
 }
 
-- (void)refreshStateForAccount:(id)a3
+- (void)refreshStateForAccount:(id)account
 {
-  v8 = a3;
-  v4 = [v8 serviceType];
+  accountCopy = account;
+  serviceType = [accountCopy serviceType];
   v5 = IDSIsAnyFaceTimeRelatedRegistrationServiceType();
 
   if (v5)
@@ -681,7 +681,7 @@
 
   else
   {
-    v6 = [v8 serviceType];
+    serviceType2 = [accountCopy serviceType];
     v7 = IDSIsiMessageRegistrationServiceType();
 
     if (v7)
@@ -691,19 +691,19 @@
   }
 }
 
-- (unint64_t)restrictionReasonForService:(id)a3
+- (unint64_t)restrictionReasonForService:(id)service
 {
-  v4 = a3;
-  if (![v4 adHocServiceType] || (+[IDSDServiceController sharedInstance](IDSDServiceController, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "primaryServiceForAdhocServiceType:", objc_msgSend(v4, "adHocServiceType")), v6 = objc_claimAutoreleasedReturnValue(), v5, objc_msgSend(v6, "identifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = -[IDSRestrictions _restrictionReasonForService:](self, "_restrictionReasonForService:", v7), v7, v6, !v8))
+  serviceCopy = service;
+  if (![serviceCopy adHocServiceType] || (+[IDSDServiceController sharedInstance](IDSDServiceController, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "primaryServiceForAdhocServiceType:", objc_msgSend(serviceCopy, "adHocServiceType")), v6 = objc_claimAutoreleasedReturnValue(), v5, objc_msgSend(v6, "identifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = -[IDSRestrictions _restrictionReasonForService:](self, "_restrictionReasonForService:", v7), v7, v6, !v8))
   {
-    v9 = [v4 identifier];
-    v8 = [(IDSRestrictions *)self _restrictionReasonForService:v9];
+    identifier = [serviceCopy identifier];
+    v8 = [(IDSRestrictions *)self _restrictionReasonForService:identifier];
   }
 
   return v8;
 }
 
-- (void)_managedPrefsNotification:(id)a3
+- (void)_managedPrefsNotification:(id)notification
 {
   v4 = +[IMRGLog registration];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -715,7 +715,7 @@
   [(IDSRestrictions *)self _updateParentalSettings];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v4 = im_primary_queue();
   block[0] = _NSConcreteStackBlock;
@@ -726,7 +726,7 @@
   dispatch_async(v4, block);
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v4 = im_primary_queue();
   block[0] = _NSConcreteStackBlock;

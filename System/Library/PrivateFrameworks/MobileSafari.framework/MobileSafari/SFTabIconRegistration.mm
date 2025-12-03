@@ -3,7 +3,7 @@
 - (SFTabIconRegistration)init;
 - (UIImage)content;
 - (id)contentObserver;
-- (void)setContentObserver:(id)a3;
+- (void)setContentObserver:(id)observer;
 @end
 
 @implementation SFTabIconRegistration
@@ -33,9 +33,9 @@
   return v5;
 }
 
-- (void)setContentObserver:(id)a3
+- (void)setContentObserver:(id)observer
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(observer);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.isa + OBJC_IVAR___SFTabIconRegistration_wrapped);

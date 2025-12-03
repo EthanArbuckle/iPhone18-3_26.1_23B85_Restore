@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (_DASSystemConditionsRecorder)init;
 - (void)recordBatteryStatus;
-- (void)recordForKeyPaths:(id)a3;
+- (void)recordForKeyPaths:(id)paths;
 - (void)recordMotionStatus;
 - (void)recordNetworkStatus;
 - (void)recordPowerManagementStatus;
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000617B4;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B2E0 != -1)
   {
     dispatch_once(&qword_10020B2E0, block);
@@ -69,9 +69,9 @@
 {
   v26 = +[NSMutableDictionary dictionary];
   v3 = +[_DASDeviceActivityPolicy policyInstance];
-  v4 = [v3 deviceWarm];
+  deviceWarm = [v3 deviceWarm];
 
-  if (v4)
+  if (deviceWarm)
   {
     [v26 setObject:&off_1001C9A30 forKeyedSubscript:@"ThermalPressure"];
   }
@@ -173,7 +173,7 @@
   context = self->_context;
   v4 = +[_CDContextQueries keyPathForMotionState];
   v5 = [(_CDContext *)context objectForKeyedSubscript:v4];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   v7 = self->_context;
   v8 = +[_CDContextQueries keyPathForCallInProgressStatus];
@@ -183,19 +183,19 @@
   v10 = self->_context;
   v11 = +[_CDContextQueries keyPathForCarplayConnectedStatus];
   v12 = [(_CDContext *)v10 objectForKeyedSubscript:v11];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
   v14 = self->_context;
   v15 = [_CDContextualKeyPath ephemeralKeyPathWithKey:@"/car/isConnected"];
   v16 = [(_CDContext *)v14 objectForKeyedSubscript:v15];
-  v17 = [v16 BOOLValue];
+  bOOLValue2 = [v16 BOOLValue];
 
   v18 = self->_context;
   v19 = [_CDContextualKeyPath ephemeralKeyPathWithKey:@"/maps/navigationInProgress"];
   v20 = [(_CDContext *)v18 objectForKeyedSubscript:v19];
-  v21 = [v20 BOOLValue];
+  bOOLValue3 = [v20 BOOLValue];
 
-  if ((v7 & 1) != 0 || (v13 & 1) != 0 || (v17 & 1) != 0 || (v21 & 1) != 0 || v6 != _DASMotionStateAny && v6 != _DASMotionStateStationary)
+  if ((v7 & 1) != 0 || (bOOLValue & 1) != 0 || (bOOLValue2 & 1) != 0 || (bOOLValue3 & 1) != 0 || integerValue != _DASMotionStateAny && integerValue != _DASMotionStateStationary)
   {
     [v23 setObject:&__kCFBooleanTrue forKeyedSubscript:@"InUseOrMotion"];
   }
@@ -205,17 +205,17 @@
   [v22 sendDataToPPS:v23 subsystem:@"BackgroundProcessing" category:@"SystemConditionsInUseOrMotion"];
 }
 
-- (void)recordForKeyPaths:(id)a3
+- (void)recordForKeyPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100061D34;
   v7[3] = &unk_1001B56E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = pathsCopy;
+  selfCopy = self;
+  v6 = pathsCopy;
   dispatch_sync(queue, v7);
 }
 

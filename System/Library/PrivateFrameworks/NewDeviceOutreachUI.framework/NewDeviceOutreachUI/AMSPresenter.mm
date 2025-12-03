@@ -1,21 +1,21 @@
 @interface AMSPresenter
-- (void)amsUIViewFinishedWithCompletion:(unint64_t)a3;
-- (void)amsUIViewFinishedWithCompletion:(unint64_t)a3 params:(id)a4;
+- (void)amsUIViewFinishedWithCompletion:(unint64_t)completion;
+- (void)amsUIViewFinishedWithCompletion:(unint64_t)completion params:(id)params;
 @end
 
 @implementation AMSPresenter
 
-- (void)amsUIViewFinishedWithCompletion:(unint64_t)a3
+- (void)amsUIViewFinishedWithCompletion:(unint64_t)completion
 {
   v5 = *self->onFinish;
   v4 = *&self->onFinish[8];
 
-  v5(a3, 0);
+  v5(completion, 0);
 }
 
-- (void)amsUIViewFinishedWithCompletion:(unint64_t)a3 params:(id)a4
+- (void)amsUIViewFinishedWithCompletion:(unint64_t)completion params:(id)params
 {
-  if (a4)
+  if (params)
   {
     v6 = sub_25BDDFE08();
   }
@@ -28,7 +28,7 @@
   v8 = *self->onFinish;
   v7 = *&self->onFinish[8];
 
-  v8(a3, v6);
+  v8(completion, v6);
 }
 
 @end

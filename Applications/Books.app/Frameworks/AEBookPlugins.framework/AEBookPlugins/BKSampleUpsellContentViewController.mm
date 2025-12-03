@@ -2,27 +2,27 @@
 - (BKSampleUpsellContentViewController)init;
 - (BKUpsellBuyDelegate)buyDelegate;
 - (BOOL)wasPreordered;
-- (CGRect)cachedRectForAnnotation:(id)a3;
-- (CGRect)cachedVisibleRectForAnnotation:(id)a3;
+- (CGRect)cachedRectForAnnotation:(id)annotation;
+- (CGRect)cachedVisibleRectForAnnotation:(id)annotation;
 - (CGSize)contentSize;
-- (double)_calculateLineNumbersForLabel:(id)a3 withFont:(id)a4;
+- (double)_calculateLineNumbersForLabel:(id)label withFont:(id)font;
 - (id)currentLocation;
 - (id)styleManager;
-- (void)_didChangeStyle:(id)a3;
-- (void)buyButton:(id)a3 initialBuy:(id)a4 completion:(id)a5;
-- (void)configureWithProfile:(id)a3;
+- (void)_didChangeStyle:(id)style;
+- (void)buyButton:(id)button initialBuy:(id)buy completion:(id)completion;
+- (void)configureWithProfile:(id)profile;
 - (void)dealloc;
 - (void)releaseViews;
-- (void)setContentScale:(double)a3;
-- (void)setTheme:(id)a3;
-- (void)setTheme:(id)a3 force:(BOOL)a4;
+- (void)setContentScale:(double)scale;
+- (void)setTheme:(id)theme;
+- (void)setTheme:(id)theme force:(BOOL)force;
 - (void)updateAppearance;
 - (void)updateButtonAppearance;
 - (void)updateFonts;
 - (void)updateViewConstraints;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BKSampleUpsellContentViewController
@@ -73,67 +73,67 @@
   v28.receiver = self;
   v28.super_class = BKSampleUpsellContentViewController;
   [(BKContentViewController *)&v28 viewDidLoad];
-  v24 = [(BKSampleUpsellContentViewController *)self buyButton];
-  [v24 setDelegate:self];
-  v3 = [(BKSampleUpsellContentViewController *)self profileFuture];
-  v23 = [v3 getNonBlockingError:0];
+  buyButton = [(BKSampleUpsellContentViewController *)self buyButton];
+  [buyButton setDelegate:self];
+  profileFuture = [(BKSampleUpsellContentViewController *)self profileFuture];
+  v23 = [profileFuture getNonBlockingError:0];
 
   [(BKSampleUpsellContentViewController *)self configureWithProfile:v23];
   objc_initWeak(&location, self);
-  v4 = [(BKSampleUpsellContentViewController *)self profileFuture];
+  profileFuture2 = [(BKSampleUpsellContentViewController *)self profileFuture];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_2EBC4;
   v25[3] = &unk_1E3720;
   objc_copyWeak(&v26, &location);
-  [v4 get:v25];
+  [profileFuture2 get:v25];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(&location);
   [(BKSampleUpsellContentViewController *)self updateAppearance];
-  v5 = [(BKSampleUpsellContentViewController *)self view];
-  v22 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
-  v21 = [v22 leadingAnchor];
-  v20 = [v5 leadingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20 constant:45.0];
+  view = [(BKSampleUpsellContentViewController *)self view];
+  bookTitleLabel = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
+  leadingAnchor = [bookTitleLabel leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:45.0];
   v29[0] = v19;
-  v18 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
-  v17 = [v18 trailingAnchor];
-  v16 = [v5 trailingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16 constant:-45.0];
+  bookTitleLabel2 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
+  trailingAnchor = [bookTitleLabel2 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-45.0];
   v29[1] = v15;
-  v6 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
-  v7 = [v6 leadingAnchor];
-  v8 = [v5 leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:45.0];
+  bookAuthorLabel = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
+  leadingAnchor3 = [bookAuthorLabel leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v9 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:45.0];
   v29[2] = v9;
-  v10 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
-  v11 = [v10 trailingAnchor];
-  v12 = [v5 trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:-45.0];
+  bookAuthorLabel2 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
+  trailingAnchor3 = [bookAuthorLabel2 trailingAnchor];
+  trailingAnchor4 = [view trailingAnchor];
+  v13 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-45.0];
   v29[3] = v13;
   v14 = [NSArray arrayWithObjects:v29 count:4];
   [NSLayoutConstraint activateConstraints:v14];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = BKSampleUpsellContentViewController;
-  [(BKSampleUpsellContentViewController *)&v9 viewWillAppear:a3];
+  [(BKSampleUpsellContentViewController *)&v9 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   v5 = BKStyleManagerDidChangeStyleNotification[0];
-  v6 = [(BKSampleUpsellContentViewController *)self styleManager];
-  [v4 addObserver:self selector:"_didChangeStyle:" name:v5 object:v6];
+  styleManager = [(BKSampleUpsellContentViewController *)self styleManager];
+  [v4 addObserver:self selector:"_didChangeStyle:" name:v5 object:styleManager];
 
   [(BKSampleUpsellContentViewController *)self updateFonts];
   [(BKSampleUpsellContentViewController *)self updateAppearance];
-  v7 = [(BKSampleUpsellContentViewController *)self view];
-  [v7 layoutIfNeeded];
+  view = [(BKSampleUpsellContentViewController *)self view];
+  [view layoutIfNeeded];
 
   [(BKSampleUpsellContentViewController *)self updateButtonAppearance];
-  v8 = [(BKSampleUpsellContentViewController *)self buyButton];
-  [v8 resetButtonState];
+  buyButton = [(BKSampleUpsellContentViewController *)self buyButton];
+  [buyButton resetButtonState];
 }
 
 - (void)viewDidLayoutSubviews
@@ -146,7 +146,7 @@
 
 - (void)updateButtonAppearance
 {
-  v8 = [(BKSampleUpsellContentViewController *)self buyButton];
+  buyButton = [(BKSampleUpsellContentViewController *)self buyButton];
   [(BKSampleUpsellContentViewController *)self contentScale];
   v4 = 40.0;
   v5 = v3 * 40.0;
@@ -166,7 +166,7 @@
     v4 = v5;
   }
 
-  [v8 setContentEdgeInsets:{v7, v4, v7, v4}];
+  [buyButton setContentEdgeInsets:{v7, v4, v7, v4}];
 }
 
 - (void)updateViewConstraints
@@ -174,27 +174,27 @@
   v31.receiver = self;
   v31.super_class = BKSampleUpsellContentViewController;
   [(BKSampleUpsellContentViewController *)&v31 updateViewConstraints];
-  v3 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
-  v4 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
-  v5 = [v4 font];
-  [(BKSampleUpsellContentViewController *)self _calculateLineNumbersForLabel:v3 withFont:v5];
+  bookTitleLabel = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
+  bookTitleLabel2 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
+  font = [bookTitleLabel2 font];
+  [(BKSampleUpsellContentViewController *)self _calculateLineNumbersForLabel:bookTitleLabel withFont:font];
   v7 = v6;
 
-  v8 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
-  v9 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
-  v10 = [v9 font];
-  [(BKSampleUpsellContentViewController *)self _calculateLineNumbersForLabel:v8 withFont:v10];
+  bookAuthorLabel = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
+  bookAuthorLabel2 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
+  font2 = [bookAuthorLabel2 font];
+  [(BKSampleUpsellContentViewController *)self _calculateLineNumbersForLabel:bookAuthorLabel withFont:font2];
   v12 = v11;
 
   if (![(BKSampleUpsellContentViewController *)self im_isCompactWidth])
   {
-    v19 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
-    if (v12 >= [v19 numberOfLines])
+    bookAuthorLabel3 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
+    if (v12 >= [bookAuthorLabel3 numberOfLines])
     {
-      v20 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
-      v21 = [v20 numberOfLines];
+      bookTitleLabel3 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
+      numberOfLines = [bookTitleLabel3 numberOfLines];
 
-      if (v7 < v21)
+      if (v7 < numberOfLines)
       {
         v17 = 12.0;
       }
@@ -204,7 +204,7 @@
         v17 = 4.0;
       }
 
-      if (v7 < v21)
+      if (v7 < numberOfLines)
       {
         v18 = 28.0;
       }
@@ -231,10 +231,10 @@ LABEL_12:
   v13 = +[UIDevice currentDevice];
   v14 = [v13 orientation] - 1;
 
-  v15 = [(BKContentViewController *)self delegate];
+  delegate = [(BKContentViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v15 hasSpreadPagesForContentViewController:self];
+    v16 = [delegate hasSpreadPagesForContentViewController:self];
     if (v16)
     {
       v17 = 10.0;
@@ -264,13 +264,13 @@ LABEL_12:
 
   if (v14 >= 2)
   {
-    v22 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
-    if (v12 >= [v22 numberOfLines])
+    bookAuthorLabel4 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
+    if (v12 >= [bookAuthorLabel4 numberOfLines])
     {
-      v23 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
-      v24 = [v23 numberOfLines];
+      bookTitleLabel4 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
+      numberOfLines2 = [bookTitleLabel4 numberOfLines];
 
-      if (v7 < v24)
+      if (v7 < numberOfLines2)
       {
         v17 = 10.0;
       }
@@ -280,7 +280,7 @@ LABEL_12:
         v17 = 4.0;
       }
 
-      if (v7 < v24)
+      if (v7 < numberOfLines2)
       {
         v18 = 14.0;
       }
@@ -321,31 +321,31 @@ LABEL_30:
     v27 = v17 * v25;
   }
 
-  v28 = [(BKSampleUpsellContentViewController *)self bookTitleTopConstraint];
-  [v28 setConstant:v26];
+  bookTitleTopConstraint = [(BKSampleUpsellContentViewController *)self bookTitleTopConstraint];
+  [bookTitleTopConstraint setConstant:v26];
 
-  v29 = [(BKSampleUpsellContentViewController *)self bookAuthorTopConstraint];
-  [v29 setConstant:v27];
+  bookAuthorTopConstraint = [(BKSampleUpsellContentViewController *)self bookAuthorTopConstraint];
+  [bookAuthorTopConstraint setConstant:v27];
 
-  v30 = [(BKSampleUpsellContentViewController *)self buyButtonTopConstraint];
-  [v30 setConstant:v26];
+  buyButtonTopConstraint = [(BKSampleUpsellContentViewController *)self buyButtonTopConstraint];
+  [buyButtonTopConstraint setConstant:v26];
 }
 
-- (double)_calculateLineNumbersForLabel:(id)a3 withFont:(id)a4
+- (double)_calculateLineNumbersForLabel:(id)label withFont:(id)font
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 text];
-  [v6 frame];
+  fontCopy = font;
+  labelCopy = label;
+  text = [labelCopy text];
+  [labelCopy frame];
   v9 = v8;
 
   v17 = NSFontAttributeName;
-  v18 = v5;
+  v18 = fontCopy;
   v10 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  [v7 boundingRectWithSize:1 options:v10 attributes:0 context:{v9, 1.79769313e308}];
+  [text boundingRectWithSize:1 options:v10 attributes:0 context:{v9, 1.79769313e308}];
   v12 = v11;
 
-  [v5 lineHeight];
+  [fontCopy lineHeight];
   v14 = v13;
 
   v15 = v12 / v14;
@@ -354,10 +354,10 @@ LABEL_30:
 
 - (id)styleManager
 {
-  v2 = [(BKContentViewController *)self book];
-  v3 = [v2 styleManager];
+  book = [(BKContentViewController *)self book];
+  styleManager = [book styleManager];
 
-  return v3;
+  return styleManager;
 }
 
 - (void)updateFonts
@@ -365,19 +365,19 @@ LABEL_30:
   v3 = 1.0;
   if (![(BKSampleUpsellContentViewController *)self fixedLayout])
   {
-    v4 = [(BKSampleUpsellContentViewController *)self styleManager];
-    [v4 fontSize];
+    styleManager = [(BKSampleUpsellContentViewController *)self styleManager];
+    [styleManager fontSize];
     v6 = v5;
 
     if (v6 > 0.0)
     {
-      v7 = [(BKSampleUpsellContentViewController *)self im_isCompactWidth];
+      im_isCompactWidth = [(BKSampleUpsellContentViewController *)self im_isCompactWidth];
       LODWORD(v8) = 1.25;
-      if ((v7 & 1) == 0)
+      if ((im_isCompactWidth & 1) == 0)
       {
-        v9 = [(BKSampleUpsellContentViewController *)self im_isCompactHeight];
+        im_isCompactHeight = [(BKSampleUpsellContentViewController *)self im_isCompactHeight];
         LODWORD(v8) = 1.5;
-        if (v9)
+        if (im_isCompactHeight)
         {
           *&v8 = 1.25;
         }
@@ -404,60 +404,60 @@ LABEL_30:
     v12 = v3 * v11;
   }
 
-  v41 = [(BKSampleUpsellContentViewController *)self continueLabel];
+  continueLabel = [(BKSampleUpsellContentViewController *)self continueLabel];
   v13 = [UIFont systemFontOfSize:v12 * 13.0];
-  [v41 setFont:v13];
+  [continueLabel setFont:v13];
 
-  v14 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
-  v15 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
+  bookTitleLabel = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
+  bookAuthorLabel = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
   v16 = [TUIFontSpec fontSpecWithPostscriptName:@"BooksSerif-Heavy" size:v12 * 26.0];
-  v17 = [v16 font];
-  [v14 setFont:v17];
+  font = [v16 font];
+  [bookTitleLabel setFont:font];
 
   v18 = [UIFont systemFontOfSize:v12 * 18.0];
-  [v15 setFont:v18];
+  [bookAuthorLabel setFont:v18];
 
-  v19 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
+  bookTitleLabel2 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
   v20 = [TUIFontSpec fontSpecWithPostscriptName:@"BooksSerif-Heavy" size:v12 * 26.0];
-  v21 = [v20 font];
-  [(BKSampleUpsellContentViewController *)self _calculateLineNumbersForLabel:v19 withFont:v21];
+  font2 = [v20 font];
+  [(BKSampleUpsellContentViewController *)self _calculateLineNumbersForLabel:bookTitleLabel2 withFont:font2];
   v23 = v22;
 
-  v24 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
+  bookAuthorLabel2 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
   v25 = [UIFont systemFontOfSize:v12 * 18.0];
-  [(BKSampleUpsellContentViewController *)self _calculateLineNumbersForLabel:v24 withFont:v25];
+  [(BKSampleUpsellContentViewController *)self _calculateLineNumbersForLabel:bookAuthorLabel2 withFont:v25];
   v27 = v26;
 
   v28 = +[UIDevice currentDevice];
-  v29 = [v28 orientation];
+  orientation = [v28 orientation];
 
-  v30 = [(BKContentViewController *)self delegate];
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v30 hasSpreadPagesForContentViewController:self])
+  delegate = [(BKContentViewController *)self delegate];
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([delegate hasSpreadPagesForContentViewController:self])
   {
     v31 = 16.0;
     v32 = 24.0;
 LABEL_19:
     v36 = [TUIFontSpec fontSpecWithPostscriptName:@"BooksSerif-Heavy" size:v12 * v32];
-    v37 = [v36 font];
-    [v14 setFont:v37];
+    font3 = [v36 font];
+    [bookTitleLabel setFont:font3];
 
-    v33 = [UIFont systemFontOfSize:v12 * v31];
-    [v15 setFont:v33];
+    bookTitleLabel3 = [UIFont systemFontOfSize:v12 * v31];
+    [bookAuthorLabel setFont:bookTitleLabel3];
     goto LABEL_20;
   }
 
-  v33 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
-  if (v23 < [v33 numberOfLines])
+  bookTitleLabel3 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
+  if (v23 < [bookTitleLabel3 numberOfLines])
   {
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  v34 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
-  v35 = [v34 numberOfLines];
+  bookAuthorLabel3 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
+  numberOfLines = [bookAuthorLabel3 numberOfLines];
 
-  if (v27 >= v35 && (v29 - 1) >= 2)
+  if (v27 >= numberOfLines && (orientation - 1) >= 2)
   {
     v31 = 14.0;
     v32 = 20.0;
@@ -465,15 +465,15 @@ LABEL_20:
   }
 
 LABEL_21:
-  v38 = [(BKSampleUpsellContentViewController *)self buyButton];
+  buyButton = [(BKSampleUpsellContentViewController *)self buyButton];
   v39 = [UIFont boldSystemFontOfSize:v12 * 15.0];
-  [v38 setButtonFont:v39];
+  [buyButton setButtonFont:v39];
 
-  v40 = [(BKSampleUpsellContentViewController *)self view];
-  [v40 setNeedsUpdateConstraints];
+  view = [(BKSampleUpsellContentViewController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
-- (void)_didChangeStyle:(id)a3
+- (void)_didChangeStyle:(id)style
 {
   if (!+[NSThread isMainThread])
   {
@@ -481,8 +481,8 @@ LABEL_21:
   }
 
   [(BKSampleUpsellContentViewController *)self updateFonts];
-  v4 = [(BKSampleUpsellContentViewController *)self view];
-  [v4 layoutIfNeeded];
+  view = [(BKSampleUpsellContentViewController *)self view];
+  [view layoutIfNeeded];
 
   [(BKSampleUpsellContentViewController *)self updateButtonAppearance];
 }
@@ -491,8 +491,8 @@ LABEL_21:
 {
   if ([(BKSampleUpsellContentViewController *)self isViewLoaded])
   {
-    v29 = [(BKSampleUpsellContentViewController *)self themePage];
-    v3 = [v29 backgroundColorForTraitEnvironment:self];
+    themePage = [(BKSampleUpsellContentViewController *)self themePage];
+    v3 = [themePage backgroundColorForTraitEnvironment:self];
     v4 = v3;
     if (v3)
     {
@@ -506,14 +506,14 @@ LABEL_21:
 
     v6 = v5;
 
-    v7 = [(BKSampleUpsellContentViewController *)self view];
-    [v7 setBackgroundColor:v6];
+    view = [(BKSampleUpsellContentViewController *)self view];
+    [view setBackgroundColor:v6];
 
-    v8 = [v29 contentTextColor];
-    v9 = v8;
-    if (v8)
+    contentTextColor = [themePage contentTextColor];
+    v9 = contentTextColor;
+    if (contentTextColor)
     {
-      v10 = v8;
+      v10 = contentTextColor;
     }
 
     else
@@ -523,21 +523,21 @@ LABEL_21:
 
     v11 = v10;
 
-    v12 = [(BKSampleUpsellContentViewController *)self continueLabel];
-    [v12 setTextColor:v11];
+    continueLabel = [(BKSampleUpsellContentViewController *)self continueLabel];
+    [continueLabel setTextColor:v11];
 
-    v13 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
-    [v13 setTextColor:v11];
+    bookTitleLabel = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
+    [bookTitleLabel setTextColor:v11];
 
-    v14 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
-    [v14 setTextColor:v11];
+    bookAuthorLabel = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
+    [bookAuthorLabel setTextColor:v11];
 
-    v15 = [(BKSampleUpsellContentViewController *)self buyButton];
-    v16 = [v29 finishedButtonBackgroundColor];
-    v17 = v16;
-    if (v16)
+    buyButton = [(BKSampleUpsellContentViewController *)self buyButton];
+    finishedButtonBackgroundColor = [themePage finishedButtonBackgroundColor];
+    v17 = finishedButtonBackgroundColor;
+    if (finishedButtonBackgroundColor)
     {
-      v18 = v16;
+      v18 = finishedButtonBackgroundColor;
     }
 
     else
@@ -547,26 +547,26 @@ LABEL_21:
 
     v19 = v18;
 
-    [v15 setBackgroundFillColor:v19];
-    v20 = [v29 finishedButtonDisabledBackgroundColor];
-    v21 = [v20 colorWithAlphaComponent:0.4];
-    [v15 setDisabledBackgroundFillColor:v21];
+    [buyButton setBackgroundFillColor:v19];
+    finishedButtonDisabledBackgroundColor = [themePage finishedButtonDisabledBackgroundColor];
+    v21 = [finishedButtonDisabledBackgroundColor colorWithAlphaComponent:0.4];
+    [buyButton setDisabledBackgroundFillColor:v21];
 
-    [v15 setFrameColor:v19];
+    [buyButton setFrameColor:v19];
     v22 = +[UIColor whiteColor];
-    [v15 setTextColor:v22];
+    [buyButton setTextColor:v22];
 
     v23 = +[UIColor whiteColor];
     v24 = [v23 colorWithAlphaComponent:0.4];
-    [v15 setDisabledTextColor:v24];
+    [buyButton setDisabledTextColor:v24];
 
-    [v15 setTextHilightColor:v19];
-    [v15 setBackgroundFillHighlightColor:v6];
-    v25 = [v29 buyButtonColor];
-    v26 = v25;
-    if (v25)
+    [buyButton setTextHilightColor:v19];
+    [buyButton setBackgroundFillHighlightColor:v6];
+    buyButtonColor = [themePage buyButtonColor];
+    v26 = buyButtonColor;
+    if (buyButtonColor)
     {
-      v27 = v25;
+      v27 = buyButtonColor;
     }
 
     else
@@ -576,51 +576,51 @@ LABEL_21:
 
     v28 = v27;
 
-    [v15 setBuyStateTextColor:v28];
-    [v15 setBuyStateBackgroundFillColor:v6];
-    [v15 setBuyStateFrameColor:v28];
-    [v15 setFrameWidth:0.0];
-    [v15 updateButton];
+    [buyButton setBuyStateTextColor:v28];
+    [buyButton setBuyStateBackgroundFillColor:v6];
+    [buyButton setBuyStateFrameColor:v28];
+    [buyButton setFrameWidth:0.0];
+    [buyButton updateButton];
   }
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v4 = a3;
-  v5 = [(BKSampleUpsellContentViewController *)self theme];
-  v6 = [v4 isEqual:v5];
+  themeCopy = theme;
+  theme = [(BKSampleUpsellContentViewController *)self theme];
+  v6 = [themeCopy isEqual:theme];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = BKSampleUpsellContentViewController;
-    [(BKContentViewController *)&v7 setTheme:v4];
+    [(BKContentViewController *)&v7 setTheme:themeCopy];
     [(BKSampleUpsellContentViewController *)self updateAppearance];
   }
 }
 
-- (void)setTheme:(id)a3 force:(BOOL)a4
+- (void)setTheme:(id)theme force:(BOOL)force
 {
   v5.receiver = self;
   v5.super_class = BKSampleUpsellContentViewController;
-  [(BKContentViewController *)&v5 setTheme:a3 force:a4];
+  [(BKContentViewController *)&v5 setTheme:theme force:force];
   [(BKSampleUpsellContentViewController *)self updateAppearance];
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (self->_contentScale != a3)
+  if (self->_contentScale != scale)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     [(BKSampleUpsellContentViewController *)self updateFonts];
-    v5 = [(BKSampleUpsellContentViewController *)self view];
-    [v5 layoutIfNeeded];
+    view = [(BKSampleUpsellContentViewController *)self view];
+    [view layoutIfNeeded];
 
     [(BKSampleUpsellContentViewController *)self updateButtonAppearance];
   }
 }
 
-- (CGRect)cachedRectForAnnotation:(id)a3
+- (CGRect)cachedRectForAnnotation:(id)annotation
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -633,7 +633,7 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)cachedVisibleRectForAnnotation:(id)a3
+- (CGRect)cachedVisibleRectForAnnotation:(id)annotation
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -653,62 +653,62 @@ LABEL_21:
   return v2;
 }
 
-- (void)configureWithProfile:(id)a3
+- (void)configureWithProfile:(id)profile
 {
-  v12 = a3;
-  v5 = [v12 title];
-  v6 = v5;
-  if (!v5)
+  profileCopy = profile;
+  title = [profileCopy title];
+  bookTitle = title;
+  if (!title)
   {
-    v3 = [(BKContentViewController *)self book];
-    v6 = [v3 bookTitle];
+    book = [(BKContentViewController *)self book];
+    bookTitle = [book bookTitle];
   }
 
-  v7 = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
-  [v7 setText:v6];
+  bookTitleLabel = [(BKSampleUpsellContentViewController *)self bookTitleLabel];
+  [bookTitleLabel setText:bookTitle];
 
-  if (!v5)
-  {
-  }
-
-  v8 = [v12 author];
-  v9 = v8;
-  if (!v8)
-  {
-    v3 = [(BKContentViewController *)self book];
-    v9 = [v3 bookAuthor];
-  }
-
-  v10 = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
-  [v10 setText:v9];
-
-  if (!v8)
+  if (!title)
   {
   }
 
-  v11 = [(BKSampleUpsellContentViewController *)self buyButton];
-  [v11 setProductProfile:v12];
+  author = [profileCopy author];
+  bookAuthor = author;
+  if (!author)
+  {
+    book = [(BKContentViewController *)self book];
+    bookAuthor = [book bookAuthor];
+  }
+
+  bookAuthorLabel = [(BKSampleUpsellContentViewController *)self bookAuthorLabel];
+  [bookAuthorLabel setText:bookAuthor];
+
+  if (!author)
+  {
+  }
+
+  buyButton = [(BKSampleUpsellContentViewController *)self buyButton];
+  [buyButton setProductProfile:profileCopy];
 }
 
-- (void)buyButton:(id)a3 initialBuy:(id)a4 completion:(id)a5
+- (void)buyButton:(id)button initialBuy:(id)buy completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(BKSampleUpsellContentViewController *)self buyDelegate];
-  if (v9)
+  buttonCopy = button;
+  completionCopy = completion;
+  buyDelegate = [(BKSampleUpsellContentViewController *)self buyDelegate];
+  if (buyDelegate)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_2FE00;
     v12[3] = &unk_1E3748;
-    v13 = v7;
-    v14 = v8;
-    [v9 buyWithCompletion:v12];
+    v13 = buttonCopy;
+    v14 = completionCopy;
+    [buyDelegate buyWithCompletion:v12];
   }
 
   else
   {
-    v10 = objc_retainBlock(v8);
+    v10 = objc_retainBlock(completionCopy);
     v11 = v10;
     if (v10)
     {
@@ -719,11 +719,11 @@ LABEL_21:
 
 - (BOOL)wasPreordered
 {
-  v2 = [(BKContentViewController *)self book];
-  v3 = [v2 isPreorder];
-  v4 = [v3 BOOLValue];
+  book = [(BKContentViewController *)self book];
+  isPreorder = [book isPreorder];
+  bOOLValue = [isPreorder BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (CGSize)contentSize

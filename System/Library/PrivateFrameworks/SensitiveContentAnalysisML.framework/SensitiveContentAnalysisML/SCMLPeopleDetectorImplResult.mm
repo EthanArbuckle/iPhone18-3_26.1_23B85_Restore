@@ -1,7 +1,7 @@
 @interface SCMLPeopleDetectorImplResult
 - (NSDictionary)people;
 - (_TtC26SensitiveContentAnalysisML28SCMLPeopleDetectorImplResult)init;
-- (void)setPeople:(id)a3;
+- (void)setPeople:(id)people;
 @end
 
 @implementation SCMLPeopleDetectorImplResult
@@ -18,7 +18,7 @@
   return v5;
 }
 
-- (void)setPeople:(id)a3
+- (void)setPeople:(id)people
 {
   type metadata accessor for SCMLPersonAttributes();
   v4 = sub_1B8AF05B8();

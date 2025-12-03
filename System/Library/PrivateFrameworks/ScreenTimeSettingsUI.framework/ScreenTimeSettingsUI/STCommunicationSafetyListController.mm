@@ -3,14 +3,14 @@
 - (BOOL)_isAnyCommunicationSafetySettingEnabled;
 - (BOOL)_isCommunicationSafetyAnalyticsEnabled;
 - (STCommunicationSafetyListController)init;
-- (id)_checkForUnsafePhotos:(id)a3;
+- (id)_checkForUnsafePhotos:(id)photos;
 - (id)_createCheckForUnsafePhotosSpecifier;
 - (id)_createEnableAnalyticsGroupSpecifier;
 - (id)_createEnableAnalyticsSpecifier;
 - (id)_createUnsafePhotosGroupSpecifier;
 - (id)_createViewChildSafetyResourcesGroupSpecifier;
 - (id)_createViewChildSafetyResourcesSpecifier;
-- (id)_getEnableAnalytics:(id)a3;
+- (id)_getEnableAnalytics:(id)analytics;
 - (id)specifiers;
 - (void)_acknowledgeAnalyticsTip;
 - (void)_acknowledgeIntroScreens;
@@ -18,17 +18,17 @@
 - (void)_openAboutAnalytics;
 - (void)_openChildSafetyWebsite;
 - (void)_persistSettings;
-- (void)_setCheckForUnsafePhotos:(BOOL)a3;
-- (void)_setCheckForUnsafePhotos:(id)a3 specifier:(id)a4;
-- (void)_setEnableAnalytics:(BOOL)a3;
-- (void)_setEnableAnalytics:(id)a3 specifier:(id)a4;
+- (void)_setCheckForUnsafePhotos:(BOOL)photos;
+- (void)_setCheckForUnsafePhotos:(id)photos specifier:(id)specifier;
+- (void)_setEnableAnalytics:(BOOL)analytics;
+- (void)_setEnableAnalytics:(id)analytics specifier:(id)specifier;
 - (void)_showChildSafetyResources;
 - (void)_showCommunicationSafetyCompatibilityAlertIfNeeded;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation STCommunicationSafetyListController
@@ -53,56 +53,56 @@
   [(STListViewController *)&v3 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = STCommunicationSafetyListController;
-  [(STPINListViewController *)&v16 viewDidAppear:a3];
+  [(STPINListViewController *)&v16 viewDidAppear:appear];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.ScreenTime/COMMUNICATION_SAFETY"];
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v7 = +[STScreenTimeSettingsUIBundle bundle];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"CommunicationSafetyTitle" table:@"Localizable" locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"CommunicationSafetyTitle" table:@"Localizable" locale:currentLocale bundleURL:bundleURL];
 
   v10 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v11 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
   v12 = +[STScreenTimeSettingsUIBundle bundle];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:v11 bundleURL:v13];
+  bundleURL2 = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:currentLocale2 bundleURL:bundleURL2];
 
   v17[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   [(STCommunicationSafetyListController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.screen-time" title:v9 localizedNavigationComponents:v15 deepLink:v4];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STPINListViewController *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted" context:"STCommunicationSafetyListControllerObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted" context:"STCommunicationSafetyListControllerObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled" context:"STCommunicationSafetyListControllerObservationContext"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STPINListViewController *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted" context:"STCommunicationSafetyListControllerObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted" context:"STCommunicationSafetyListControllerObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled" context:"STCommunicationSafetyListControllerObservationContext"];
   v6.receiver = self;
   v6.super_class = STCommunicationSafetyListController;
-  [(STPINListViewController *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted" options:3 context:"STCommunicationSafetyListControllerObservationContext"];
-  [v4 addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted" options:3 context:"STCommunicationSafetyListControllerObservationContext"];
-  [v4 addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled" options:3 context:"STCommunicationSafetyListControllerObservationContext"];
+  [(STPINListViewController *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted" options:3 context:"STCommunicationSafetyListControllerObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted" options:3 context:"STCommunicationSafetyListControllerObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled" options:3 context:"STCommunicationSafetyListControllerObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == "STCommunicationSafetyListControllerObservationContext")
+  if (context == "STCommunicationSafetyListControllerObservationContext")
   {
     v11 = *MEMORY[0x277CCA300];
-    v12 = a5;
-    v14 = [v12 objectForKeyedSubscript:v11];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    changeCopy = change;
+    v14 = [changeCopy objectForKeyedSubscript:v11];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
 
-    LODWORD(v12) = [v14 BOOLValue];
-    if (v12 != [v13 BOOLValue])
+    LODWORD(changeCopy) = [v14 BOOLValue];
+    if (changeCopy != [v13 BOOLValue])
     {
       [(STCommunicationSafetyListController *)self _disableAnalyticsIfNeeded];
       [(STCommunicationSafetyListController *)self reloadSpecifiers];
@@ -113,8 +113,8 @@
   {
     v15.receiver = self;
     v15.super_class = STCommunicationSafetyListController;
-    v10 = a5;
-    [(STListViewController *)&v15 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    changeCopy2 = change;
+    [(STListViewController *)&v15 observeValueForKeyPath:path ofObject:object change:changeCopy2 context:context];
   }
 }
 
@@ -125,29 +125,29 @@
   if (!v4)
   {
     v5 = objc_opt_new();
-    v6 = [(STCommunicationSafetyListController *)self _createUnsafePhotosGroupSpecifier];
-    [v5 addObject:v6];
+    _createUnsafePhotosGroupSpecifier = [(STCommunicationSafetyListController *)self _createUnsafePhotosGroupSpecifier];
+    [v5 addObject:_createUnsafePhotosGroupSpecifier];
 
-    v7 = [(STCommunicationSafetyListController *)self _createCheckForUnsafePhotosSpecifier];
-    [(STCommunicationSafetyListController *)self setCheckSpecifier:v7];
+    _createCheckForUnsafePhotosSpecifier = [(STCommunicationSafetyListController *)self _createCheckForUnsafePhotosSpecifier];
+    [(STCommunicationSafetyListController *)self setCheckSpecifier:_createCheckForUnsafePhotosSpecifier];
 
-    v8 = [(STCommunicationSafetyListController *)self checkSpecifier];
-    [v5 addObject:v8];
+    checkSpecifier = [(STCommunicationSafetyListController *)self checkSpecifier];
+    [v5 addObject:checkSpecifier];
 
-    v9 = [(STCommunicationSafetyListController *)self _createViewChildSafetyResourcesGroupSpecifier];
-    [v5 addObject:v9];
+    _createViewChildSafetyResourcesGroupSpecifier = [(STCommunicationSafetyListController *)self _createViewChildSafetyResourcesGroupSpecifier];
+    [v5 addObject:_createViewChildSafetyResourcesGroupSpecifier];
 
-    v10 = [(STCommunicationSafetyListController *)self _createViewChildSafetyResourcesSpecifier];
-    [v5 addObject:v10];
+    _createViewChildSafetyResourcesSpecifier = [(STCommunicationSafetyListController *)self _createViewChildSafetyResourcesSpecifier];
+    [v5 addObject:_createViewChildSafetyResourcesSpecifier];
 
-    v11 = [(STCommunicationSafetyListController *)self _createEnableAnalyticsGroupSpecifier];
-    [v5 addObject:v11];
+    _createEnableAnalyticsGroupSpecifier = [(STCommunicationSafetyListController *)self _createEnableAnalyticsGroupSpecifier];
+    [v5 addObject:_createEnableAnalyticsGroupSpecifier];
 
-    v12 = [(STCommunicationSafetyListController *)self _createEnableAnalyticsSpecifier];
-    [(STCommunicationSafetyListController *)self setEnableAnalyticsSpecifier:v12];
+    _createEnableAnalyticsSpecifier = [(STCommunicationSafetyListController *)self _createEnableAnalyticsSpecifier];
+    [(STCommunicationSafetyListController *)self setEnableAnalyticsSpecifier:_createEnableAnalyticsSpecifier];
 
-    v13 = [(STCommunicationSafetyListController *)self enableAnalyticsSpecifier];
-    [v5 addObject:v13];
+    enableAnalyticsSpecifier = [(STCommunicationSafetyListController *)self enableAnalyticsSpecifier];
+    [v5 addObject:enableAnalyticsSpecifier];
 
     [(STCommunicationSafetyListController *)self _disableAnalyticsIfNeeded];
     v14 = [v5 copy];
@@ -192,9 +192,9 @@
 
 - (void)_openChildSafetyWebsite
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v2 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/kb/HT212850"];
-  [v3 openURL:v2 withOptions:0];
+  [defaultWorkspace openURL:v2 withOptions:0];
 }
 
 - (id)_createCheckForUnsafePhotosSpecifier
@@ -205,11 +205,11 @@
   v5 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v4 target:self set:sel__setCheckForUnsafePhotos_specifier_ get:sel__checkForUnsafePhotos_ detail:0 cell:6 edit:objc_opt_class()];
   [(STPINListViewController *)self setUpPasscodeAndLineWrapBehaviorForSpecifier:v5];
   [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A48];
-  v6 = [(STPINListViewController *)self coordinator];
-  v7 = [v6 communicationSafetyCoordinator];
-  v8 = [v7 isCommunicationSafetySendingEditable];
+  coordinator = [(STPINListViewController *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  isCommunicationSafetySendingEditable = [communicationSafetyCoordinator isCommunicationSafetySendingEditable];
 
-  if ((v8 & 1) == 0)
+  if ((isCommunicationSafetySendingEditable & 1) == 0)
   {
     [v5 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D3FF38]];
   }
@@ -241,12 +241,12 @@
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 flow];
-    v11 = [v10 localizedButtonTitle];
+    flow = [v8 flow];
+    localizedButtonTitle = [flow localizedButtonTitle];
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:v7, v11];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:v7, localizedButtonTitle];
     [v6 setObject:v12 forKeyedSubscript:*MEMORY[0x277D3FF88]];
-    v20.location = [v12 rangeOfString:v11];
+    v20.location = [v12 rangeOfString:localizedButtonTitle];
     v13 = NSStringFromRange(v20);
     [v6 setObject:v13 forKeyedSubscript:*MEMORY[0x277D3FF58]];
 
@@ -263,8 +263,8 @@
 
   else
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:v7, &stru_28766E5A8];
-    [v6 setObject:v11 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    localizedButtonTitle = [MEMORY[0x277CCACA8] stringWithFormat:v7, &stru_28766E5A8];
+    [v6 setObject:localizedButtonTitle forKeyedSubscript:*MEMORY[0x277D3FF88]];
   }
 
   return v6;
@@ -284,32 +284,32 @@
 
 - (id)_createViewChildSafetyResourcesGroupSpecifier
 {
-  v2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v3 = +[STScreenTimeSettingsUIBundle bundle];
   v4 = [v3 localizedStringForKey:@"CommunicationSafetyViewResourcesGroupSpecifierFooter" value:&stru_28766E5A8 table:0];
-  [v2 setObject:v4 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+  [emptyGroupSpecifier setObject:v4 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
-  return v2;
+  return emptyGroupSpecifier;
 }
 
 - (void)_disableAnalyticsIfNeeded
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  v4 = [v3 communicationSafetyCoordinator];
-  v7 = [v4 viewModel];
+  coordinator = [(STPINListViewController *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  viewModel = [communicationSafetyCoordinator viewModel];
 
-  if ([v7 isCommunicationSafetySendingRestricted] && (objc_msgSend(v7, "isCommunicationSafetyReceivingRestricted") & 1) != 0)
+  if ([viewModel isCommunicationSafetySendingRestricted] && (objc_msgSend(viewModel, "isCommunicationSafetyReceivingRestricted") & 1) != 0)
   {
-    v5 = [(STCommunicationSafetyListController *)self enableAnalyticsSpecifier];
-    [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FF38]];
+    enableAnalyticsSpecifier = [(STCommunicationSafetyListController *)self enableAnalyticsSpecifier];
+    [enableAnalyticsSpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FF38]];
   }
 
   else
   {
-    v6 = [(STCommunicationSafetyListController *)self enableAnalyticsSpecifier];
-    [v6 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D3FF38]];
+    enableAnalyticsSpecifier2 = [(STCommunicationSafetyListController *)self enableAnalyticsSpecifier];
+    [enableAnalyticsSpecifier2 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
-    [v7 setIsCommunicationSafetyAnalyticsEnabled:0];
+    [viewModel setIsCommunicationSafetyAnalyticsEnabled:0];
   }
 }
 
@@ -318,9 +318,9 @@
   v3 = +[STScreenTimeSettingsUIBundle bundle];
   v4 = [v3 localizedStringForKey:@"CommunicationSafetyViewResourcesSpecifierTitle" value:&stru_28766E5A8 table:0];
 
-  v5 = [(STPINListViewController *)self coordinator];
-  v6 = [v5 viewModel];
-  v7 = [v6 me];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v7 = [viewModel me];
   if ([v7 isRemoteUser])
   {
     v8 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v4 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -342,82 +342,82 @@
 {
   v38[4] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277CE3868] nonPersistentDataStore];
+  nonPersistentDataStore = [MEMORY[0x277CE3868] nonPersistentDataStore];
   v37 = v3;
-  [v3 setWebsiteDataStore:v4];
+  [v3 setWebsiteDataStore:nonPersistentDataStore];
 
   v5 = [[STActivityIndicatingWebView alloc] initWithConfiguration:v3];
   v6 = objc_alloc(MEMORY[0x277CCAD20]);
-  v7 = [objc_opt_class() resourcesURL];
-  v36 = [v6 initWithURL:v7];
+  resourcesURL = [objc_opt_class() resourcesURL];
+  v36 = [v6 initWithURL:resourcesURL];
 
   v8 = [(STActivityIndicatingWebView *)v5 loadRequest:v36];
   v9 = objc_opt_new();
   v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__dismissChildSafetyResourcesView_];
-  v11 = [v9 navigationItem];
-  [v11 setRightBarButtonItem:v10];
+  navigationItem = [v9 navigationItem];
+  [navigationItem setRightBarButtonItem:v10];
 
   [v9 setEdgesForExtendedLayout:0];
   [(STActivityIndicatingWebView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [v9 view];
-  [v12 addSubview:v5];
+  view = [v9 view];
+  [view addSubview:v5];
 
   v27 = MEMORY[0x277CCAAD0];
-  v33 = [(STActivityIndicatingWebView *)v5 leadingAnchor];
-  v34 = [v9 view];
-  v32 = [v34 leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  leadingAnchor = [(STActivityIndicatingWebView *)v5 leadingAnchor];
+  view2 = [v9 view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v38[0] = v31;
-  v29 = [(STActivityIndicatingWebView *)v5 topAnchor];
-  v30 = [v9 view];
-  v28 = [v30 topAnchor];
-  v26 = [v29 constraintEqualToAnchor:v28];
+  topAnchor = [(STActivityIndicatingWebView *)v5 topAnchor];
+  view3 = [v9 view];
+  topAnchor2 = [view3 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[1] = v26;
-  v25 = [(STActivityIndicatingWebView *)v5 trailingAnchor];
-  v13 = [v9 view];
-  v14 = [v13 trailingAnchor];
-  v15 = [v25 constraintEqualToAnchor:v14];
+  trailingAnchor = [(STActivityIndicatingWebView *)v5 trailingAnchor];
+  view4 = [v9 view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v38[2] = v15;
-  v16 = [(STActivityIndicatingWebView *)v5 bottomAnchor];
-  v17 = [v9 view];
-  v18 = [v17 bottomAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  bottomAnchor = [(STActivityIndicatingWebView *)v5 bottomAnchor];
+  view5 = [v9 view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v38[3] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:4];
   [v27 activateConstraints:v20];
 
-  v21 = [v9 view];
-  [(STActivityIndicatingWebView *)v5 hostActivityIndicatorInView:v21];
+  view6 = [v9 view];
+  [(STActivityIndicatingWebView *)v5 hostActivityIndicatorInView:view6];
 
   v22 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v9];
   [v22 setModalPresentationStyle:2];
   v23 = objc_opt_new();
   [v23 configureWithOpaqueBackground];
-  v24 = [v22 navigationBar];
-  [v24 setScrollEdgeAppearance:v23];
+  navigationBar = [v22 navigationBar];
+  [navigationBar setScrollEdgeAppearance:v23];
 
   [(STCommunicationSafetyListController *)self presentViewController:v22 animated:1 completion:0];
 }
 
-- (void)_setCheckForUnsafePhotos:(id)a3 specifier:(id)a4
+- (void)_setCheckForUnsafePhotos:(id)photos specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = [a3 BOOLValue];
-  v8 = [(STPINListViewController *)self coordinator];
-  v9 = [v8 viewModel];
-  v10 = [v9 me];
+  specifierCopy = specifier;
+  bOOLValue = [photos BOOLValue];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v10 = [viewModel me];
   if (![v10 hasPasscode])
   {
 
     goto LABEL_5;
   }
 
-  v11 = [v8 hasAlreadyEnteredPINForSession];
+  hasAlreadyEnteredPINForSession = [coordinator hasAlreadyEnteredPINForSession];
 
-  if (v11)
+  if (hasAlreadyEnteredPINForSession)
   {
 LABEL_5:
-    [(STCommunicationSafetyListController *)self _setCheckForUnsafePhotos:v7];
+    [(STCommunicationSafetyListController *)self _setCheckForUnsafePhotos:bOOLValue];
     goto LABEL_6;
   }
 
@@ -426,8 +426,8 @@ LABEL_5:
   v12[2] = __74__STCommunicationSafetyListController__setCheckForUnsafePhotos_specifier___block_invoke;
   v12[3] = &unk_279B7CF48;
   v12[4] = self;
-  v14 = v7;
-  v13 = v6;
+  v14 = bOOLValue;
+  v13 = specifierCopy;
   [(STPINListViewController *)self showPINSheet:v13 completion:v12];
 
 LABEL_6:
@@ -447,22 +447,22 @@ uint64_t __74__STCommunicationSafetyListController__setCheckForUnsafePhotos_spec
   }
 }
 
-- (void)_setCheckForUnsafePhotos:(BOOL)a3
+- (void)_setCheckForUnsafePhotos:(BOOL)photos
 {
-  v3 = a3;
+  photosCopy = photos;
   v5 = +[STUILog communicationSafety];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [STCommunicationSafetyListController _setCheckForUnsafePhotos:v3];
+    [STCommunicationSafetyListController _setCheckForUnsafePhotos:photosCopy];
   }
 
-  v6 = [(STPINListViewController *)self coordinator];
-  v7 = [v6 communicationSafetyCoordinator];
-  v8 = [v7 viewModel];
+  coordinator = [(STPINListViewController *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  viewModel = [communicationSafetyCoordinator viewModel];
 
-  [v8 setIsCommunicationSafetySendingRestricted:v3];
-  [v8 setIsCommunicationSafetyReceivingRestricted:v3];
-  if (v3)
+  [viewModel setIsCommunicationSafetySendingRestricted:photosCopy];
+  [viewModel setIsCommunicationSafetyReceivingRestricted:photosCopy];
+  if (photosCopy)
   {
     [(STCommunicationSafetyListController *)self _disableAnalyticsIfNeeded];
     [(STCommunicationSafetyListController *)self _persistSettings];
@@ -471,22 +471,22 @@ uint64_t __74__STCommunicationSafetyListController__setCheckForUnsafePhotos_spec
 
   else
   {
-    [v8 setIsCommunicationSafetyNotificationEnabled:0];
+    [viewModel setIsCommunicationSafetyNotificationEnabled:0];
     [(STCommunicationSafetyListController *)self _disableAnalyticsIfNeeded];
     [(STCommunicationSafetyListController *)self _persistSettings];
   }
 
-  v9 = [(STCommunicationSafetyListController *)self enableAnalyticsSpecifier];
-  [(STCommunicationSafetyListController *)self reloadSpecifier:v9 animated:1];
+  enableAnalyticsSpecifier = [(STCommunicationSafetyListController *)self enableAnalyticsSpecifier];
+  [(STCommunicationSafetyListController *)self reloadSpecifier:enableAnalyticsSpecifier animated:1];
 }
 
-- (id)_checkForUnsafePhotos:(id)a3
+- (id)_checkForUnsafePhotos:(id)photos
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(STPINListViewController *)self coordinator];
-  v5 = [v4 communicationSafetyCoordinator];
-  v6 = [v5 viewModel];
-  v7 = [v3 numberWithBool:{objc_msgSend(v6, "isCommunicationSafetySendingRestricted")}];
+  coordinator = [(STPINListViewController *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  viewModel = [communicationSafetyCoordinator viewModel];
+  v7 = [v3 numberWithBool:{objc_msgSend(viewModel, "isCommunicationSafetySendingRestricted")}];
 
   v8 = +[STUILog communicationSafety];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -497,25 +497,25 @@ uint64_t __74__STCommunicationSafetyListController__setCheckForUnsafePhotos_spec
   return v7;
 }
 
-- (void)_setEnableAnalytics:(id)a3 specifier:(id)a4
+- (void)_setEnableAnalytics:(id)analytics specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = [a3 BOOLValue];
-  v8 = [(STPINListViewController *)self coordinator];
-  v9 = [v8 viewModel];
-  v10 = [v9 me];
+  specifierCopy = specifier;
+  bOOLValue = [analytics BOOLValue];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v10 = [viewModel me];
   if (![v10 hasPasscode])
   {
 
     goto LABEL_5;
   }
 
-  v11 = [v8 hasAlreadyEnteredPINForSession];
+  hasAlreadyEnteredPINForSession = [coordinator hasAlreadyEnteredPINForSession];
 
-  if (v11)
+  if (hasAlreadyEnteredPINForSession)
   {
 LABEL_5:
-    [(STCommunicationSafetyListController *)self _setEnableAnalytics:v7];
+    [(STCommunicationSafetyListController *)self _setEnableAnalytics:bOOLValue];
     goto LABEL_6;
   }
 
@@ -524,8 +524,8 @@ LABEL_5:
   v12[2] = __69__STCommunicationSafetyListController__setEnableAnalytics_specifier___block_invoke;
   v12[3] = &unk_279B7CF48;
   v12[4] = self;
-  v14 = v7;
-  v13 = v6;
+  v14 = bOOLValue;
+  v13 = specifierCopy;
   [(STPINListViewController *)self showPINSheet:v13 completion:v12];
 
 LABEL_6:
@@ -545,34 +545,34 @@ uint64_t __69__STCommunicationSafetyListController__setEnableAnalytics_specifier
   }
 }
 
-- (void)_setEnableAnalytics:(BOOL)a3
+- (void)_setEnableAnalytics:(BOOL)analytics
 {
-  v3 = a3;
+  analyticsCopy = analytics;
   v5 = +[STUILog communicationSafety];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [STCommunicationSafetyListController _setEnableAnalytics:v3];
+    [STCommunicationSafetyListController _setEnableAnalytics:analyticsCopy];
   }
 
-  v6 = [(STPINListViewController *)self coordinator];
-  v7 = [v6 communicationSafetyCoordinator];
-  v8 = [v7 viewModel];
+  coordinator = [(STPINListViewController *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  viewModel = [communicationSafetyCoordinator viewModel];
 
-  [v8 setIsCommunicationSafetyAnalyticsEnabled:v3];
+  [viewModel setIsCommunicationSafetyAnalyticsEnabled:analyticsCopy];
   [(STCommunicationSafetyListController *)self _persistSettings];
-  if (v3)
+  if (analyticsCopy)
   {
     [(STCommunicationSafetyListController *)self _acknowledgeAnalyticsTip];
   }
 }
 
-- (id)_getEnableAnalytics:(id)a3
+- (id)_getEnableAnalytics:(id)analytics
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(STPINListViewController *)self coordinator];
-  v5 = [v4 communicationSafetyCoordinator];
-  v6 = [v5 viewModel];
-  v7 = [v3 numberWithBool:{objc_msgSend(v6, "isCommunicationSafetyAnalyticsEnabled")}];
+  coordinator = [(STPINListViewController *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  viewModel = [communicationSafetyCoordinator viewModel];
+  v7 = [v3 numberWithBool:{objc_msgSend(viewModel, "isCommunicationSafetyAnalyticsEnabled")}];
 
   v8 = +[STUILog communicationSafety];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -585,9 +585,9 @@ uint64_t __69__STCommunicationSafetyListController__setEnableAnalytics_specifier
 
 - (void)_persistSettings
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  v2 = [v3 communicationSafetyCoordinator];
-  [v2 persistCommunicationSafetySettingsWithCompletionHandler:&__block_literal_global_5];
+  coordinator = [(STPINListViewController *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  [communicationSafetyCoordinator persistCommunicationSafetySettingsWithCompletionHandler:&__block_literal_global_5];
 }
 
 void __55__STCommunicationSafetyListController__persistSettings__block_invoke(uint64_t a1, void *a2)
@@ -603,11 +603,11 @@ void __55__STCommunicationSafetyListController__persistSettings__block_invoke(ui
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15.receiver = self;
   v15.super_class = STCommunicationSafetyListController;
-  [(STCommunicationSafetyListController *)&v15 viewWillAppear:a3];
+  [(STCommunicationSafetyListController *)&v15 viewWillAppear:appear];
   if ([(STCommunicationSafetyListController *)self _isAnyCommunicationSafetySettingEnabled])
   {
     [(STCommunicationSafetyListController *)self _acknowledgeIntroScreens];
@@ -616,19 +616,19 @@ void __55__STCommunicationSafetyListController__persistSettings__block_invoke(ui
   if (![(STCommunicationSafetyListController *)self _hasAcknowledgedIntroScreens])
   {
     v4 = [STCommunicationSafetyOnboardingController alloc];
-    v5 = [(STPINListViewController *)self coordinator];
-    v6 = [(STCommunicationSafetyOnboardingController *)v4 initWithCoordinator:v5];
+    coordinator = [(STPINListViewController *)self coordinator];
+    v6 = [(STCommunicationSafetyOnboardingController *)v4 initWithCoordinator:coordinator];
     [(STCommunicationSafetyListController *)self setOnboardingController:v6];
 
     objc_initWeak(location, self);
-    v7 = [(STCommunicationSafetyListController *)self onboardingController];
+    onboardingController = [(STCommunicationSafetyListController *)self onboardingController];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __54__STCommunicationSafetyListController_viewWillAppear___block_invoke;
     v11 = &unk_279B7D1F8;
     objc_copyWeak(&v13, location);
-    v12 = self;
-    [v7 presentOverViewController:self skipFeatureEnablement:0 completionBlock:&v8];
+    selfCopy = self;
+    [onboardingController presentOverViewController:self skipFeatureEnablement:0 completionBlock:&v8];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(location);
@@ -677,75 +677,75 @@ void __54__STCommunicationSafetyListController_viewWillAppear___block_invoke(uin
 
 - (BOOL)_isAnyCommunicationSafetySettingEnabled
 {
-  v2 = [(STPINListViewController *)self coordinator];
-  v3 = [v2 communicationSafetyCoordinator];
-  v4 = [v3 viewModel];
+  coordinator = [(STPINListViewController *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  viewModel = [communicationSafetyCoordinator viewModel];
 
-  if ([v4 isCommunicationSafetySendingRestricted] & 1) != 0 || (objc_msgSend(v4, "isCommunicationSafetyReceivingRestricted") & 1) != 0 || (objc_msgSend(v4, "isCommunicationSafetyNotificationEnabled"))
+  if ([viewModel isCommunicationSafetySendingRestricted] & 1) != 0 || (objc_msgSend(viewModel, "isCommunicationSafetyReceivingRestricted") & 1) != 0 || (objc_msgSend(viewModel, "isCommunicationSafetyNotificationEnabled"))
   {
-    v5 = 1;
+    isCommunicationSafetyAnalyticsEnabled = 1;
   }
 
   else
   {
-    v5 = [v4 isCommunicationSafetyAnalyticsEnabled];
+    isCommunicationSafetyAnalyticsEnabled = [viewModel isCommunicationSafetyAnalyticsEnabled];
   }
 
-  return v5;
+  return isCommunicationSafetyAnalyticsEnabled;
 }
 
 - (BOOL)_hasAcknowledgedIntroScreens
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"ScreenTimeCommunicationSafetyIntroAcknowledged"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"ScreenTimeCommunicationSafetyIntroAcknowledged"];
 
   return v3;
 }
 
 - (void)_acknowledgeIntroScreens
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 setBool:1 forKey:@"ScreenTimeCommunicationSafetyIntroAcknowledged"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:1 forKey:@"ScreenTimeCommunicationSafetyIntroAcknowledged"];
 }
 
 - (BOOL)_isCommunicationSafetyAnalyticsEnabled
 {
-  v2 = [(STPINListViewController *)self coordinator];
-  v3 = [v2 communicationSafetyCoordinator];
-  v4 = [v3 viewModel];
+  coordinator = [(STPINListViewController *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  viewModel = [communicationSafetyCoordinator viewModel];
 
-  LOBYTE(v2) = [v4 isCommunicationSafetyAnalyticsEnabled];
-  return v2;
+  LOBYTE(coordinator) = [viewModel isCommunicationSafetyAnalyticsEnabled];
+  return coordinator;
 }
 
 - (void)_showCommunicationSafetyCompatibilityAlertIfNeeded
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  v4 = [v3 viewModel];
-  v5 = [v4 me];
-  if ([v4 shouldShowCompatibilityAlerts])
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v5 = [viewModel me];
+  if ([viewModel shouldShowCompatibilityAlerts])
   {
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v7 = [v6 objectForKey:@"HasShownCommunicationSafetyCompatibilityAlertByDSID"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v7 = [standardUserDefaults objectForKey:@"HasShownCommunicationSafetyCompatibilityAlertByDSID"];
 
-    v8 = [v5 dsid];
-    v9 = [v8 stringValue];
-    v10 = [v7 objectForKeyedSubscript:v9];
-    v11 = [v10 BOOLValue];
+    dsid = [v5 dsid];
+    stringValue = [dsid stringValue];
+    v10 = [v7 objectForKeyedSubscript:stringValue];
+    bOOLValue = [v10 BOOLValue];
 
-    if ((v11 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v12 = +[STScreenTimeSettingsUIBundle bundle];
       if ([v5 isRemoteUser])
       {
-        v13 = [v5 givenName];
-        if (v13)
+        givenName = [v5 givenName];
+        if (givenName)
         {
           v23 = [v12 localizedStringForKey:@"UpdateChildDevicesAlertTitleFormat" value:&stru_28766E5A8 table:0];
-          v14 = [MEMORY[0x277CBEAF8] currentLocale];
-          v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v23 locale:v14, v13];
+          currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+          v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v23 locale:currentLocale, givenName];
           v16 = [v12 localizedStringForKey:@"CommunicationSafetyChildCompatibilityAlertMessageFormat" value:&stru_28766E5A8 table:0];
-          v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v16 locale:v14, v13];
+          v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v16 locale:currentLocale, givenName];
 
 LABEL_9:
           v20 = [MEMORY[0x277D75110] alertControllerWithTitle:v15 message:v17 preferredStyle:1];
@@ -771,9 +771,9 @@ LABEL_9:
       else
       {
         v15 = [v12 localizedStringForKey:@"UpdateOtherDevicesAlertTitle" value:&stru_28766E5A8 table:0];
-        v13 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"CommunicationSafetyCompatibilityAlertMessage"];
+        givenName = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"CommunicationSafetyCompatibilityAlertMessage"];
         v18 = v12;
-        v19 = v13;
+        v19 = givenName;
       }
 
       v17 = [v18 localizedStringForKey:v19 value:&stru_28766E5A8 table:0];
@@ -810,14 +810,14 @@ void __89__STCommunicationSafetyListController__showCommunicationSafetyCompatibi
 
 - (void)_acknowledgeAnalyticsTip
 {
-  v2 = [(STPINListViewController *)self coordinator];
-  v6 = [v2 viewModel];
+  coordinator = [(STPINListViewController *)self coordinator];
+  viewModel = [coordinator viewModel];
 
-  v3 = [v6 me];
-  v4 = [v3 dsid];
-  v5 = [v4 stringValue];
+  v3 = [viewModel me];
+  dsid = [v3 dsid];
+  stringValue = [dsid stringValue];
 
-  [STCommunicationSafetyAnalyticsTipCell acknowledgeTipViewForDSID:v5];
+  [STCommunicationSafetyAnalyticsTipCell acknowledgeTipViewForDSID:stringValue];
 }
 
 - (void)_setCheckForUnsafePhotos:(char)a1 .cold.1(char a1)

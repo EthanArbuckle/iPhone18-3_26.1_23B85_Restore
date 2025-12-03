@@ -1,18 +1,18 @@
 @interface BLRetention
 + (id)retentionPolicyTypes;
-+ (unint64_t)stripSequenceAtPath:(id)a3;
-+ (void)applyCustomerPolicyForType:(id)a3 withSequenceDirs:(id)a4 withSize:(unint64_t *)a5;
-+ (void)applyCustomerPolicyWithPath:(id)a3;
-+ (void)applyPolicyForType:(id)a3 withSequenceDirs:(id)a4 withSize:(unint64_t *)a5;
-+ (void)applyPolicyWithPath:(id)a3 sizeLimit:(unint64_t)a4 freeMissingSpace:(unint64_t)a5;
-+ (void)applyPolicyWithPath:(id)a3 sizeLimit:(unint64_t)a4 freeSpaceLimit:(unint64_t)a5;
++ (unint64_t)stripSequenceAtPath:(id)path;
++ (void)applyCustomerPolicyForType:(id)type withSequenceDirs:(id)dirs withSize:(unint64_t *)size;
++ (void)applyCustomerPolicyWithPath:(id)path;
++ (void)applyPolicyForType:(id)type withSequenceDirs:(id)dirs withSize:(unint64_t *)size;
++ (void)applyPolicyWithPath:(id)path sizeLimit:(unint64_t)limit freeMissingSpace:(unint64_t)space;
++ (void)applyPolicyWithPath:(id)path sizeLimit:(unint64_t)limit freeSpaceLimit:(unint64_t)spaceLimit;
 + (void)initialize;
-+ (void)limitSequenceDirs:(id)a3 withSize:(unint64_t *)a4;
-+ (void)limitSequenceDirs:(id)a3 withSize:(unint64_t *)a4 removalMethod:(id)a5;
-+ (void)limitSequenceDirs:(id)a3 withSize:(unint64_t *)a4 toCount:(unint64_t)a5 withReplaceInterval:(double)a6 removalMethod:(id)a7;
-+ (void)removeItemAtPath:(id)a3;
-+ (void)setPurgeableAtPath:(id)a3 directory:(BOOL)a4;
-+ (void)setRetentionType:(id)a3 atPath:(id)a4;
++ (void)limitSequenceDirs:(id)dirs withSize:(unint64_t *)size;
++ (void)limitSequenceDirs:(id)dirs withSize:(unint64_t *)size removalMethod:(id)method;
++ (void)limitSequenceDirs:(id)dirs withSize:(unint64_t *)size toCount:(unint64_t)count withReplaceInterval:(double)interval removalMethod:(id)method;
++ (void)removeItemAtPath:(id)path;
++ (void)setPurgeableAtPath:(id)path directory:(BOOL)directory;
++ (void)setRetentionType:(id)type atPath:(id)path;
 @end
 
 @implementation BLRetention
@@ -37,31 +37,31 @@
   objc_storeStrong(&__osLogTrace_BioLog_Retention, v4);
 }
 
-+ (void)applyPolicyForType:(id)a3 withSequenceDirs:(id)a4 withSize:(unint64_t *)a5
++ (void)applyPolicyForType:(id)type withSequenceDirs:(id)dirs withSize:(unint64_t *)size
 {
-  v8 = a3;
-  v9 = a4;
-  if (([v8 isEqualToString:@"rp_none"] & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"rp_enroll") & 1) == 0)
+  typeCopy = type;
+  dirsCopy = dirs;
+  if (([typeCopy isEqualToString:@"rp_none"] & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", @"rp_enroll") & 1) == 0)
   {
-    if ([v8 isEqualToString:@"rp_noface"])
+    if ([typeCopy isEqualToString:@"rp_noface"])
     {
       v10 = objc_opt_class();
       v20 = MEMORY[0x29EDCA5F8];
       v21 = 3221225472;
       v22 = __60__BLRetention_applyPolicyForType_withSequenceDirs_withSize___block_invoke;
       v23 = &__block_descriptor_40_e17_Q16__0__NSArray_8l;
-      v24 = a1;
+      selfCopy = self;
       v11 = &v20;
-      v12 = v9;
-      v13 = a5;
+      v12 = dirsCopy;
+      sizeCopy2 = size;
       v14 = 100;
     }
 
     else
     {
-      if (![v8 isEqualToString:@"rp_nomatch"])
+      if (![typeCopy isEqualToString:@"rp_nomatch"])
       {
-        [v8 isEqualToString:@"rp_update"];
+        [typeCopy isEqualToString:@"rp_update"];
         goto LABEL_9;
       }
 
@@ -70,14 +70,14 @@
       v16 = 3221225472;
       v17 = __60__BLRetention_applyPolicyForType_withSequenceDirs_withSize___block_invoke_2;
       v18 = &__block_descriptor_40_e17_Q16__0__NSArray_8l;
-      v19 = a1;
+      selfCopy2 = self;
       v11 = &v15;
-      v12 = v9;
-      v13 = a5;
+      v12 = dirsCopy;
+      sizeCopy2 = size;
       v14 = 40;
     }
 
-    [v10 limitSequenceDirs:v12 withSize:v13 toCount:v14 keepNewest:1 removalMethod:{v11, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24}];
+    [v10 limitSequenceDirs:v12 withSize:sizeCopy2 toCount:v14 keepNewest:1 removalMethod:{v11, v15, v16, v17, v18, selfCopy2, v20, v21, v22, v23, selfCopy}];
   }
 
 LABEL_9:
@@ -113,46 +113,46 @@ uint64_t __60__BLRetention_applyPolicyForType_withSequenceDirs_withSize___block_
   return v7;
 }
 
-+ (void)applyCustomerPolicyForType:(id)a3 withSequenceDirs:(id)a4 withSize:(unint64_t *)a5
++ (void)applyCustomerPolicyForType:(id)type withSequenceDirs:(id)dirs withSize:(unint64_t *)size
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"rp_enroll"])
+  typeCopy = type;
+  dirsCopy = dirs;
+  if ([typeCopy isEqualToString:@"rp_enroll"])
   {
     v10 = objc_opt_class();
     v32[0] = MEMORY[0x29EDCA5F8];
     v32[1] = 3221225472;
     v32[2] = __68__BLRetention_applyCustomerPolicyForType_withSequenceDirs_withSize___block_invoke;
     v32[3] = &__block_descriptor_40_e17_Q16__0__NSArray_8l;
-    v32[4] = a1;
+    v32[4] = self;
     v11 = v32;
-    v12 = v9;
-    v13 = a5;
+    v12 = dirsCopy;
+    sizeCopy4 = size;
     v14 = 3;
     v15 = 1;
   }
 
   else
   {
-    if (![v8 isEqualToString:@"rp_canceled"])
+    if (![typeCopy isEqualToString:@"rp_canceled"])
     {
-      if ([v8 isEqualToString:@"rp_anyfailure"])
+      if ([typeCopy isEqualToString:@"rp_anyfailure"])
       {
         v16 = objc_opt_class();
         v26 = MEMORY[0x29EDCA5F8];
         v27 = 3221225472;
         v28 = __68__BLRetention_applyCustomerPolicyForType_withSequenceDirs_withSize___block_invoke_3;
         v29 = &__block_descriptor_40_e17_Q16__0__NSArray_8l;
-        v30 = a1;
+        selfCopy = self;
         v17 = &v26;
-        v18 = v9;
-        v19 = a5;
+        v18 = dirsCopy;
+        sizeCopy3 = size;
         v20 = 30;
       }
 
       else
       {
-        if (![v8 isEqualToString:@"rp_anysuccess"])
+        if (![typeCopy isEqualToString:@"rp_anysuccess"])
         {
           goto LABEL_6;
         }
@@ -162,14 +162,14 @@ uint64_t __60__BLRetention_applyPolicyForType_withSequenceDirs_withSize___block_
         v22 = 3221225472;
         v23 = __68__BLRetention_applyCustomerPolicyForType_withSequenceDirs_withSize___block_invoke_4;
         v24 = &__block_descriptor_40_e17_Q16__0__NSArray_8l;
-        v25 = a1;
+        selfCopy2 = self;
         v17 = &v21;
-        v18 = v9;
-        v19 = a5;
+        v18 = dirsCopy;
+        sizeCopy3 = size;
         v20 = 10;
       }
 
-      [v16 limitSequenceDirs:v18 withSize:v19 toCount:v20 withReplaceInterval:v17 removalMethod:{14400.0, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30}];
+      [v16 limitSequenceDirs:v18 withSize:sizeCopy3 toCount:v20 withReplaceInterval:v17 removalMethod:{14400.0, v21, v22, v23, v24, selfCopy2, v26, v27, v28, v29, selfCopy}];
       goto LABEL_6;
     }
 
@@ -178,15 +178,15 @@ uint64_t __60__BLRetention_applyPolicyForType_withSequenceDirs_withSize___block_
     v31[1] = 3221225472;
     v31[2] = __68__BLRetention_applyCustomerPolicyForType_withSequenceDirs_withSize___block_invoke_2;
     v31[3] = &__block_descriptor_40_e17_Q16__0__NSArray_8l;
-    v31[4] = a1;
+    v31[4] = self;
     v11 = v31;
-    v12 = v9;
-    v13 = a5;
+    v12 = dirsCopy;
+    sizeCopy4 = size;
     v14 = 10;
     v15 = 0;
   }
 
-  [v10 limitSequenceDirs:v12 withSize:v13 toCount:v14 keepNewest:v15 removalMethod:v11];
+  [v10 limitSequenceDirs:v12 withSize:sizeCopy4 toCount:v14 keepNewest:v15 removalMethod:v11];
 LABEL_6:
 }
 
@@ -270,17 +270,17 @@ void __35__BLRetention_retentionPolicyTypes__block_invoke()
   retentionPolicyTypes_types = &unk_2A1E03B08;
 }
 
-+ (void)applyPolicyWithPath:(id)a3 sizeLimit:(unint64_t)a4 freeSpaceLimit:(unint64_t)a5
++ (void)applyPolicyWithPath:(id)path sizeLimit:(unint64_t)limit freeSpaceLimit:(unint64_t)spaceLimit
 {
   v49 = *MEMORY[0x29EDCA608];
-  v8 = a3;
+  pathCopy = path;
   if (applyPolicyWithPath_sizeLimit_freeSpaceLimit__oldBioLogExists != 1)
   {
     goto LABEL_12;
   }
 
-  v9 = [MEMORY[0x29EDB9FB8] defaultManager];
-  v10 = [v9 fileExistsAtPath:@"/var/mobile/Library/Logs/BioLog"];
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:@"/var/mobile/Library/Logs/BioLog"];
   applyPolicyWithPath_sizeLimit_freeSpaceLimit__oldBioLogExists = v10;
 
   if (!v10)
@@ -288,8 +288,8 @@ void __35__BLRetention_retentionPolicyTypes__block_invoke()
     goto LABEL_12;
   }
 
-  v11 = [MEMORY[0x29EDB9FB8] defaultManager];
-  applyPolicyWithPath_sizeLimit_freeSpaceLimit__oldBioLogExists = [v11 removeItemAtPath:@"/var/mobile/Library/Logs/BioLog" error:0] ^ 1;
+  defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+  applyPolicyWithPath_sizeLimit_freeSpaceLimit__oldBioLogExists = [defaultManager2 removeItemAtPath:@"/var/mobile/Library/Logs/BioLog" error:0] ^ 1;
 
   v12 = applyPolicyWithPath_sizeLimit_freeSpaceLimit__oldBioLogExists;
   if (__osLog_BioLog_Retention)
@@ -329,32 +329,32 @@ void __35__BLRetention_retentionPolicyTypes__block_invoke()
 
   _os_log_impl(&dword_296CA4000, v13, OS_LOG_TYPE_ERROR, v15, buf, 0xCu);
 LABEL_12:
-  if (a4)
+  if (limit)
   {
-    v16 = a4;
+    limitCopy = limit;
   }
 
   else
   {
-    v16 = 5120;
+    limitCopy = 5120;
   }
 
-  if (a5)
+  if (spaceLimit)
   {
-    v17 = a5;
+    spaceLimitCopy = spaceLimit;
   }
 
   else
   {
-    v17 = 5120;
+    spaceLimitCopy = 5120;
   }
 
   v18 = &biolog_cert_pem[984];
-  if (v17 > 1)
+  if (spaceLimitCopy > 1)
   {
-    v19 = [MEMORY[0x29EDB9FB8] defaultManager];
+    defaultManager3 = [MEMORY[0x29EDB9FB8] defaultManager];
     v40 = 0;
-    v20 = [v19 attributesOfFileSystemForPath:v8 error:&v40];
+    v20 = [defaultManager3 attributesOfFileSystemForPath:pathCopy error:&v40];
     v21 = v40;
 
     v22 = [v20 objectForKeyedSubscript:*MEMORY[0x29EDB9E98]];
@@ -362,7 +362,7 @@ LABEL_12:
     if (v22)
     {
       v38 = v21;
-      v39 = a1;
+      selfCopy = self;
       v24 = [v22 unsignedIntegerValue] >> 20;
       v25 = MEMORY[0x29EDCA988];
       if (__osLog_BioLog_Retention)
@@ -380,21 +380,21 @@ LABEL_12:
         *buf = 134218752;
         v42 = applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit;
         v43 = 2048;
-        v44 = v16;
+        v44 = limitCopy;
         v45 = 2048;
-        v46 = v17;
+        v46 = spaceLimitCopy;
         v47 = 2048;
         v48 = v24;
         _os_log_impl(&dword_296CA4000, v26, OS_LOG_TYPE_DEFAULT, "Retention policy lastSizeLimit:%lu, newSizeLimit:%lu, freeSpaceLimit:%lu, freeSpace:%lu\n", buf, 0x2Au);
       }
 
-      v27 = (v24 - v17);
-      if (v24 < v17)
+      v27 = (v24 - spaceLimitCopy);
+      if (v24 < spaceLimitCopy)
       {
-        v28 = v17 - v24;
-        if (applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit >= v16)
+        v28 = spaceLimitCopy - v24;
+        if (applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit >= limitCopy)
         {
-          if (v16 <= v28)
+          if (limitCopy <= v28)
           {
 LABEL_49:
             if (__osLog_BioLog_Retention)
@@ -410,32 +410,32 @@ LABEL_49:
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218496;
-              v42 = (v17 - v24);
+              v42 = (spaceLimitCopy - v24);
               v43 = 2048;
-              v44 = v17;
+              v44 = spaceLimitCopy;
               v45 = 1024;
               LODWORD(v46) = 500;
               _os_log_impl(&dword_296CA4000, v35, OS_LOG_TYPE_DEFAULT, "Missing disk space %luMB of free space limit %luMB under minimal log size %dMB, removing entire BioLog...\n", buf, 0x1Cu);
             }
 
-            a1 = v39;
-            [v39 removeItemAtPath:v8];
-            v16 = 0;
+            self = selfCopy;
+            [selfCopy removeItemAtPath:pathCopy];
+            limitCopy = 0;
             goto LABEL_55;
           }
         }
 
         else
         {
-          v16 = applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit;
+          limitCopy = applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit;
           if (applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit <= v28)
           {
             goto LABEL_49;
           }
         }
 
-        v16 -= v28;
-        if (v16 <= 0x1F3)
+        limitCopy -= v28;
+        if (limitCopy <= 0x1F3)
         {
           goto LABEL_49;
         }
@@ -455,21 +455,21 @@ LABEL_49:
           *buf = 134218496;
           v42 = v24;
           v43 = 2048;
-          v44 = v17;
+          v44 = spaceLimitCopy;
           v45 = 2048;
-          v46 = v16;
+          v46 = limitCopy;
           _os_log_impl(&dword_296CA4000, v37, OS_LOG_TYPE_DEFAULT, "Free disk space %luMB under %luMB limit, new size limit %luMB.\n", buf, 0x20u);
         }
 
 LABEL_46:
-        a1 = v39;
+        self = selfCopy;
 LABEL_55:
         v18 = &biolog_cert_pem[984];
         v21 = v38;
         goto LABEL_56;
       }
 
-      if (applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit >= v16 || (v32 = v27 + applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit, v16 <= v27 + applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit))
+      if (applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit >= limitCopy || (v32 = v27 + applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit, limitCopy <= v27 + applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit))
       {
         v28 = 0;
         goto LABEL_46;
@@ -488,39 +488,39 @@ LABEL_55:
       v34 = os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT);
       if (v32 >= 0x1F5)
       {
-        a1 = v39;
+        self = selfCopy;
         if (v34)
         {
           *buf = 134218496;
           v42 = v24;
           v43 = 2048;
-          v44 = v17;
+          v44 = spaceLimitCopy;
           v45 = 2048;
           v46 = v32;
           _os_log_impl(&dword_296CA4000, v33, OS_LOG_TYPE_DEFAULT, "Free disk space %luMB over %luMB limit, new size limit %luMB.\n", buf, 0x20u);
         }
 
         v28 = 0;
-        v16 = v32;
+        limitCopy = v32;
         goto LABEL_55;
       }
 
       v21 = v38;
-      a1 = v39;
+      self = selfCopy;
       if (v34)
       {
         *buf = 134218496;
         v42 = v27;
         v43 = 2048;
-        v44 = v17;
+        v44 = spaceLimitCopy;
         v45 = 1024;
         LODWORD(v46) = 500;
         _os_log_impl(&dword_296CA4000, v33, OS_LOG_TYPE_DEFAULT, "Available disk space %luMB on top of free space limit %luMB under minimal log size %dMB, removing BioLog...\n", buf, 0x1Cu);
       }
 
-      [v39 removeItemAtPath:v8];
+      [selfCopy removeItemAtPath:pathCopy];
       v28 = 0;
-      v16 = 0;
+      limitCopy = 0;
       v18 = biolog_cert_pem + 984;
     }
 
@@ -539,9 +539,9 @@ LABEL_55:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         v30 = v29;
-        v31 = [v21 localizedDescription];
+        localizedDescription = [v21 localizedDescription];
         *buf = 138412290;
-        v42 = v31;
+        v42 = localizedDescription;
         _os_log_impl(&dword_296CA4000, v30, OS_LOG_TYPE_ERROR, "Warning: Could not get free disk space! Free space unrelated. %@\n", buf, 0xCu);
       }
 
@@ -550,8 +550,8 @@ LABEL_55:
 
 LABEL_56:
 
-    *(v18 + 83) = v16;
-    if (!v16)
+    *(v18 + 83) = limitCopy;
+    if (!limitCopy)
     {
       goto LABEL_59;
     }
@@ -560,9 +560,9 @@ LABEL_56:
   }
 
   v28 = 0;
-  applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit = v16;
+  applyPolicyWithPath_sizeLimit_freeSpaceLimit__lastSizeLimit = limitCopy;
 LABEL_57:
-  [a1 applyPolicyWithPath:v8 sizeLimit:v16 << 20 freeMissingSpace:v28 << 20];
+  [self applyPolicyWithPath:pathCopy sizeLimit:limitCopy << 20 freeMissingSpace:v28 << 20];
   if (v28)
   {
     *(v18 + 83) = __retentionSizeLimit >> 20;
@@ -573,10 +573,10 @@ LABEL_59:
   v36 = *MEMORY[0x29EDCA608];
 }
 
-+ (void)applyPolicyWithPath:(id)a3 sizeLimit:(unint64_t)a4 freeMissingSpace:(unint64_t)a5
++ (void)applyPolicyWithPath:(id)path sizeLimit:(unint64_t)limit freeMissingSpace:(unint64_t)space
 {
   v152 = *MEMORY[0x29EDCA608];
-  v124 = a3;
+  pathCopy = path;
   if (__osLog_BioLog_Retention)
   {
     v7 = __osLog_BioLog_Retention;
@@ -593,13 +593,13 @@ LABEL_59:
     _os_log_impl(&dword_296CA4000, v7, OS_LOG_TYPE_DEFAULT, "Applying retention policy...\n", buf, 2u);
   }
 
-  v123 = [MEMORY[0x29EDB8DB0] date];
+  date = [MEMORY[0x29EDB8DB0] date];
   v8 = 0x29EDB8000uLL;
-  v9 = [MEMORY[0x29EDB8E00] dictionary];
-  v10 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary2 = [MEMORY[0x29EDB8E00] dictionary];
   v140 = 0;
-  __retentionSizeLimit = a4;
-  v11 = opendir([v124 cStringUsingEncoding:1]);
+  __retentionSizeLimit = limit;
+  v11 = opendir([pathCopy cStringUsingEncoding:1]);
   if (!v11)
   {
     v16 = 0;
@@ -608,8 +608,8 @@ LABEL_59:
 
   v12 = v11;
   v13 = readdir(v11);
-  v120 = v9;
-  v127 = v10;
+  v120 = dictionary;
+  v127 = dictionary2;
   if (!v13)
   {
     v16 = 0;
@@ -635,7 +635,7 @@ LABEL_59:
     }
 
     v18 = [MEMORY[0x29EDBA0F8] stringWithCString:v15->d_name encoding:{1, v111}];
-    v19 = [v124 stringByAppendingPathComponent:v18];
+    v19 = [pathCopy stringByAppendingPathComponent:v18];
 
     v20 = opendir([v19 cStringUsingEncoding:1]);
     if (!v20)
@@ -643,21 +643,21 @@ LABEL_59:
       goto LABEL_72;
     }
 
-    v21 = v9;
+    v21 = dictionary;
     v22 = v20;
     v23 = readdir(v20);
     if (!v23)
     {
       closedir(v22);
-      v9 = v21;
+      dictionary = v21;
       goto LABEL_66;
     }
 
     v24 = v23;
     v126 = v22;
     v119 = 0;
-    v9 = v21;
-    v115 = a5;
+    dictionary = v21;
+    spaceCopy = space;
     v112 = v19;
     while (1)
     {
@@ -683,8 +683,8 @@ LABEL_25:
     v25 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:v24->d_name];
     v26 = [v19 stringByAppendingPathComponent:v25];
 
-    v27 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v121 = [v27 attributesOfItemAtPath:v26 error:0];
+    defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+    v121 = [defaultManager attributesOfItemAtPath:v26 error:0];
 
     __directorySize = 0;
     if (!ftw([v26 cStringUsingEncoding:1], addDirectoryEntrySize, 1))
@@ -693,8 +693,8 @@ LABEL_25:
       v139 = 0u;
       v136 = 0u;
       v137 = 0u;
-      v28 = [objc_opt_class() retentionPolicyTypes];
-      v29 = [v28 countByEnumeratingWithState:&v136 objects:v151 count:16];
+      retentionPolicyTypes = [objc_opt_class() retentionPolicyTypes];
+      v29 = [retentionPolicyTypes countByEnumeratingWithState:&v136 objects:v151 count:16];
       if (v29)
       {
         v30 = v29;
@@ -705,13 +705,13 @@ LABEL_25:
           {
             if (*v137 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(retentionPolicyTypes);
             }
 
             v33 = *(*(&v136 + 1) + 8 * i);
             v34 = [v26 stringByAppendingPathComponent:v33];
-            v35 = [MEMORY[0x29EDB9FB8] defaultManager];
-            v36 = [v35 fileExistsAtPath:v34];
+            defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+            v36 = [defaultManager2 fileExistsAtPath:v34];
 
             if (v36)
             {
@@ -721,7 +721,7 @@ LABEL_25:
             }
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v136 objects:v151 count:16];
+          v30 = [retentionPolicyTypes countByEnumeratingWithState:&v136 objects:v151 count:16];
           if (v30)
           {
             continue;
@@ -732,9 +732,9 @@ LABEL_25:
 
         v37 = @"rp_none";
 LABEL_40:
-        v9 = v120;
+        dictionary = v120;
         v8 = 0x29EDB8000;
-        a5 = v115;
+        space = spaceCopy;
       }
 
       else
@@ -742,8 +742,8 @@ LABEL_40:
         v37 = @"rp_none";
       }
 
-      v38 = [v121 fileModificationDate];
-      [v38 timeIntervalSinceNow];
+      fileModificationDate = [v121 fileModificationDate];
+      [fileModificationDate timeIntervalSinceNow];
       v114 = v37;
       if (v39 <= -21600.0)
       {
@@ -761,15 +761,15 @@ LABEL_40:
           v42 = [MEMORY[0x29EDB8D80] arrayWithObjects:v150 count:2];
           v43 = MEMORY[0x29EDBA070];
           [v121 fileModificationDate];
-          v45 = v44 = v9;
-          [v45 timeIntervalSince1970];
-          v46 = [v43 numberWithDouble:?];
-          [v44 setObject:v42 forKeyedSubscript:v46];
+          fileModificationDate3 = v44 = dictionary;
+          [fileModificationDate3 timeIntervalSince1970];
+          fileModificationDate2 = [v43 numberWithDouble:?];
+          [v44 setObject:v42 forKeyedSubscript:fileModificationDate2];
 LABEL_50:
 
           v56 = __directorySize;
           v140 += __directorySize;
-          v9 = v120;
+          dictionary = v120;
           v19 = v112;
           if (v140 > __retentionSizeLimit)
           {
@@ -802,13 +802,13 @@ LABEL_50:
             v135[1] = 3221225472;
             v135[2] = __62__BLRetention_applyPolicyWithPath_sizeLimit_freeMissingSpace___block_invoke;
             v135[3] = &__block_descriptor_40_e17_Q16__0__NSArray_8l;
-            v135[4] = a1;
+            v135[4] = self;
             [v62 limitSequenceDirs:v63 withSize:&v140 removalMethod:v135];
           }
 
           v16 = v56 + v117;
           objc_autoreleasePoolPop(context);
-          v10 = v127;
+          dictionary2 = v127;
           v8 = 0x29EDB8000;
           v12 = v113;
           goto LABEL_25;
@@ -824,12 +824,12 @@ LABEL_50:
         v148[1] = v41;
         v148[2] = v37;
         v42 = [MEMORY[0x29EDB8D80] arrayWithObjects:v148 count:3];
-        v45 = [v127 objectForKeyedSubscript:v37];
+        fileModificationDate3 = [v127 objectForKeyedSubscript:v37];
         v48 = MEMORY[0x29EDBA070];
-        v46 = [v121 fileModificationDate];
-        [v46 timeIntervalSince1970];
+        fileModificationDate2 = [v121 fileModificationDate];
+        [fileModificationDate2 timeIntervalSince1970];
         v49 = [v48 numberWithDouble:?];
-        v50 = v45;
+        v50 = fileModificationDate3;
         v51 = v42;
         v52 = v49;
       }
@@ -843,10 +843,10 @@ LABEL_50:
         v149[1] = v41;
         v42 = [MEMORY[0x29EDB8D80] arrayWithObjects:v149 count:2];
         v55 = MEMORY[0x29EDBA070];
-        v45 = [v121 fileModificationDate];
-        [v45 timeIntervalSince1970];
-        v46 = [v55 numberWithDouble:?];
-        v49 = [v54 dictionaryWithObject:v42 forKey:v46];
+        fileModificationDate3 = [v121 fileModificationDate];
+        [fileModificationDate3 timeIntervalSince1970];
+        fileModificationDate2 = [v55 numberWithDouble:?];
+        v49 = [v54 dictionaryWithObject:v42 forKey:fileModificationDate2];
         v50 = v127;
         v51 = v49;
         v52 = v53;
@@ -854,7 +854,7 @@ LABEL_50:
 
       [v50 setObject:v51 forKeyedSubscript:v52];
 
-      a5 = v115;
+      space = spaceCopy;
       goto LABEL_50;
     }
 
@@ -913,9 +913,9 @@ LABEL_15:
   while (v15);
 LABEL_75:
   closedir(v12);
-  if (v16 - v140 < a5)
+  if (v16 - v140 < space)
   {
-    if (v16 <= a5 + 500)
+    if (v16 <= space + 500)
     {
       __retentionSizeLimit = 0;
       if (__osLog_BioLog_Retention)
@@ -931,19 +931,19 @@ LABEL_75:
       if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v143 = a5 >> 20;
+        v143 = space >> 20;
         v144 = 2048;
         v145 = v16 - 500;
         _os_log_impl(&dword_296CA4000, v67, OS_LOG_TYPE_DEFAULT, "Missing disk space %luMB over removable log size %ldMB, removing BioLog...\n", buf, 0x16u);
       }
 
-      [a1 removeItemAtPath:{v124, v111}];
+      [self removeItemAtPath:{pathCopy, v111}];
       v140 = 0;
     }
 
     else
     {
-      __retentionSizeLimit = v16 - a5;
+      __retentionSizeLimit = v16 - space;
       if (__osLog_BioLog_Retention)
       {
         v66 = __osLog_BioLog_Retention;
@@ -959,7 +959,7 @@ LABEL_75:
         *buf = 134218496;
         v143 = v140 >> 20;
         v144 = 2048;
-        v145 = a5 >> 20;
+        v145 = space >> 20;
         v146 = 2048;
         v147 = __retentionSizeLimit >> 20;
         _os_log_impl(&dword_296CA4000, v66, OS_LOG_TYPE_DEFAULT, "Log size %luMB over free space limit by %luMB, new size limit %luMB\n", buf, 0x20u);
@@ -971,13 +971,13 @@ LABEL_75:
   {
     v68 = __retentionSizeLimit;
     v69 = __retentionSizeLimit / 0x4600000uLL;
-    [v10 objectForKeyedSubscript:@"rp_keep"];
+    [dictionary2 objectForKeyedSubscript:@"rp_keep"];
     v71 = v70 = v16;
     v72 = [v71 count];
 
     v16 = v70;
     v73 = v72 > v69;
-    v10 = v127;
+    dictionary2 = v127;
     if (v73)
     {
       if (__osLog_BioLog_Retention)
@@ -1003,81 +1003,81 @@ LABEL_75:
         v147 = v68 / 0x4600000;
         _os_log_impl(&dword_296CA4000, v75, OS_LOG_TYPE_DEFAULT, "Limiting %s, count %lu to %lu ...\n", buf, 0x20u);
 
-        v10 = v127;
+        dictionary2 = v127;
       }
 
       v78 = objc_opt_class();
-      v79 = [v10 objectForKeyedSubscript:@"rp_keep"];
+      v79 = [dictionary2 objectForKeyedSubscript:@"rp_keep"];
       v134[0] = MEMORY[0x29EDCA5F8];
       v134[1] = 3221225472;
       v134[2] = __62__BLRetention_applyPolicyWithPath_sizeLimit_freeMissingSpace___block_invoke_48;
       v134[3] = &__block_descriptor_40_e17_Q16__0__NSArray_8l;
-      v134[4] = a1;
+      v134[4] = self;
       [v78 limitSequenceDirs:v79 withSize:&v140 toCount:v68 / 0x4600000 keepNewest:1 removalMethod:v134];
 
-      v10 = v127;
+      dictionary2 = v127;
       v16 = v70;
     }
   }
 
-  v80 = [*(v8 + 3584) dictionary];
-  v81 = [v10 objectForKeyedSubscript:@"rp_noface"];
+  dictionary3 = [*(v8 + 3584) dictionary];
+  v81 = [dictionary2 objectForKeyedSubscript:@"rp_noface"];
 
   if (v81)
   {
-    v82 = [v10 objectForKeyedSubscript:@"rp_noface"];
-    [v80 addEntriesFromDictionary:v82];
+    v82 = [dictionary2 objectForKeyedSubscript:@"rp_noface"];
+    [dictionary3 addEntriesFromDictionary:v82];
   }
 
-  v83 = [v10 objectForKeyedSubscript:@"rp_keep"];
+  v83 = [dictionary2 objectForKeyedSubscript:@"rp_keep"];
 
   if (v83)
   {
-    v84 = [v10 objectForKeyedSubscript:@"rp_keep"];
-    [v80 addEntriesFromDictionary:v84];
+    v84 = [dictionary2 objectForKeyedSubscript:@"rp_keep"];
+    [dictionary3 addEntriesFromDictionary:v84];
   }
 
-  v85 = [v10 objectForKeyedSubscript:@"rp_nomatch"];
+  v85 = [dictionary2 objectForKeyedSubscript:@"rp_nomatch"];
 
   if (v85)
   {
-    v86 = [v10 objectForKeyedSubscript:@"rp_nomatch"];
-    [v80 addEntriesFromDictionary:v86];
+    v86 = [dictionary2 objectForKeyedSubscript:@"rp_nomatch"];
+    [dictionary3 addEntriesFromDictionary:v86];
   }
 
-  v87 = [v10 objectForKeyedSubscript:@"rp_matchfailure"];
+  v87 = [dictionary2 objectForKeyedSubscript:@"rp_matchfailure"];
 
   if (v87)
   {
-    v88 = [v10 objectForKeyedSubscript:@"rp_matchfailure"];
-    [v80 addEntriesFromDictionary:v88];
+    v88 = [dictionary2 objectForKeyedSubscript:@"rp_matchfailure"];
+    [dictionary3 addEntriesFromDictionary:v88];
   }
 
-  v89 = [v10 objectForKeyedSubscript:@"rp_passcode"];
+  v89 = [dictionary2 objectForKeyedSubscript:@"rp_passcode"];
 
   if (v89)
   {
-    v90 = [v10 objectForKeyedSubscript:@"rp_passcode"];
-    [v80 addEntriesFromDictionary:v90];
+    v90 = [dictionary2 objectForKeyedSubscript:@"rp_passcode"];
+    [dictionary3 addEntriesFromDictionary:v90];
   }
 
-  [v10 setObject:v80 forKeyedSubscript:@"rp_anyfailure"];
-  [v10 removeObjectForKey:@"rp_noface"];
-  [v10 removeObjectForKey:@"rp_keep"];
-  [v10 removeObjectForKey:@"rp_nomatch"];
-  [v10 removeObjectForKey:@"rp_matchfailure"];
-  [v10 removeObjectForKey:@"rp_passcode"];
+  [dictionary2 setObject:dictionary3 forKeyedSubscript:@"rp_anyfailure"];
+  [dictionary2 removeObjectForKey:@"rp_noface"];
+  [dictionary2 removeObjectForKey:@"rp_keep"];
+  [dictionary2 removeObjectForKey:@"rp_nomatch"];
+  [dictionary2 removeObjectForKey:@"rp_matchfailure"];
+  [dictionary2 removeObjectForKey:@"rp_passcode"];
   if (v140 > __retentionSizeLimit)
   {
-    v122 = v80;
+    v122 = dictionary3;
     v118 = v16;
     v132 = 0u;
     v133 = 0u;
     v130 = 0u;
     v131 = 0u;
-    v91 = a1;
-    v92 = [objc_opt_class() retentionPolicyTypes];
-    v93 = [v92 countByEnumeratingWithState:&v130 objects:v141 count:16];
+    selfCopy2 = self;
+    retentionPolicyTypes2 = [objc_opt_class() retentionPolicyTypes];
+    v93 = [retentionPolicyTypes2 countByEnumeratingWithState:&v130 objects:v141 count:16];
     if (v93)
     {
       v94 = v93;
@@ -1088,7 +1088,7 @@ LABEL_110:
       {
         if (*v131 != v95)
         {
-          objc_enumerationMutation(v92);
+          objc_enumerationMutation(retentionPolicyTypes2);
         }
 
         v97 = *(*(&v130 + 1) + 8 * v96);
@@ -1113,7 +1113,7 @@ LABEL_110:
           v145 = v101;
           _os_log_impl(&dword_296CA4000, v99, OS_LOG_TYPE_DEFAULT, "Limiting %@, count %lu ...\n", buf, 0x16u);
 
-          v91 = a1;
+          selfCopy2 = self;
         }
 
         v102 = [v97 isEqualToString:@"rp_anyfailure"];
@@ -1130,7 +1130,7 @@ LABEL_110:
           v129[1] = 3221225472;
           v129[2] = __62__BLRetention_applyPolicyWithPath_sizeLimit_freeMissingSpace___block_invoke_49;
           v129[3] = &__block_descriptor_40_e17_Q16__0__NSArray_8l;
-          v129[4] = v91;
+          v129[4] = selfCopy2;
           [v103 limitSequenceDirs:v104 withSize:&v140 removalMethod:v129];
         }
 
@@ -1141,7 +1141,7 @@ LABEL_110:
 
         if (v94 == ++v96)
         {
-          v94 = [v92 countByEnumeratingWithState:&v130 objects:v141 count:16];
+          v94 = [retentionPolicyTypes2 countByEnumeratingWithState:&v130 objects:v141 count:16];
           if (v94)
           {
             goto LABEL_110;
@@ -1152,9 +1152,9 @@ LABEL_110:
       }
     }
 
-    v9 = v120;
-    v80 = v122;
-    v10 = v127;
+    dictionary = v120;
+    dictionary3 = v122;
+    dictionary2 = v127;
     v16 = v118;
   }
 
@@ -1165,8 +1165,8 @@ LABEL_110:
     v128[1] = 3221225472;
     v128[2] = __62__BLRetention_applyPolicyWithPath_sizeLimit_freeMissingSpace___block_invoke_2;
     v128[3] = &__block_descriptor_40_e17_Q16__0__NSArray_8l;
-    v128[4] = a1;
-    [v105 limitSequenceDirs:v9 withSize:&v140 removalMethod:v128];
+    v128[4] = self;
+    [v105 limitSequenceDirs:dictionary withSize:&v140 removalMethod:v128];
   }
 
 LABEL_128:
@@ -1184,7 +1184,7 @@ LABEL_128:
   {
     *&v107 = vcvtd_n_f64_u64(v16 - v140, 0x14uLL);
     v108 = v106;
-    [v123 timeIntervalSinceNow];
+    [date timeIntervalSinceNow];
     *buf = 134218496;
     v143 = v107;
     v144 = 2048;
@@ -1259,10 +1259,10 @@ uint64_t __62__BLRetention_applyPolicyWithPath_sizeLimit_freeMissingSpace___bloc
   return v7;
 }
 
-+ (void)applyCustomerPolicyWithPath:(id)a3
++ (void)applyCustomerPolicyWithPath:(id)path
 {
   v117 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  pathCopy = path;
   if (__osLog_BioLog_Retention)
   {
     v4 = __osLog_BioLog_Retention;
@@ -1279,11 +1279,11 @@ uint64_t __62__BLRetention_applyPolicyWithPath_sizeLimit_freeMissingSpace___bloc
     _os_log_impl(&dword_296CA4000, v4, OS_LOG_TYPE_DEFAULT, "Applying customer retention policy...\n", buf, 2u);
   }
 
-  v5 = [MEMORY[0x29EDB8DB0] date];
+  date = [MEMORY[0x29EDB8DB0] date];
   v6 = 0x29EDB8000uLL;
-  v7 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   v106 = 0;
-  v8 = opendir([v3 cStringUsingEncoding:1]);
+  v8 = opendir([pathCopy cStringUsingEncoding:1]);
   if (!v8)
   {
     v52 = 0;
@@ -1294,8 +1294,8 @@ uint64_t __62__BLRetention_applyPolicyWithPath_sizeLimit_freeMissingSpace___bloc
 
   v9 = v8;
   v10 = readdir(v8);
-  v91 = v5;
-  v92 = v3;
+  v91 = date;
+  v92 = pathCopy;
   if (!v10)
   {
     v94 = 0;
@@ -1313,17 +1313,17 @@ uint64_t __62__BLRetention_applyPolicyWithPath_sizeLimit_freeMissingSpace___bloc
       goto LABEL_14;
     }
 
-    v13 = v5;
+    v13 = date;
     v14 = v12;
     v15 = [*(v12 + 248) stringWithCString:v10->d_name encoding:{1, v86}];
-    v16 = [v3 stringByAppendingPathComponent:v15];
+    v16 = [pathCopy stringByAppendingPathComponent:v15];
 
     v93 = v16;
     v17 = opendir([v16 cStringUsingEncoding:1]);
     if (!v17)
     {
       v12 = v14;
-      v5 = v13;
+      date = v13;
       goto LABEL_47;
     }
 
@@ -1333,14 +1333,14 @@ uint64_t __62__BLRetention_applyPolicyWithPath_sizeLimit_freeMissingSpace___bloc
     {
       v20 = v90;
       v12 = v14;
-      v5 = v13;
+      date = v13;
       goto LABEL_46;
     }
 
     v19 = v18;
     v20 = v90;
     v12 = v14;
-    v5 = v13;
+    date = v13;
     v87 = v9;
     while (v19->d_type != 4 || v19->d_name[0] == 46 && (!v19->d_name[1] || v19->d_name[1] == 46 && !v19->d_name[2]) || !strstr(v19->d_name, ".seq") && !strstr(v19->d_name, ".evt"))
     {
@@ -1357,8 +1357,8 @@ LABEL_24:
     [v93 stringByAppendingPathComponent:v22];
     v24 = v23 = v12;
 
-    v25 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v89 = [v25 attributesOfItemAtPath:v24 error:0];
+    defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+    v89 = [defaultManager attributesOfItemAtPath:v24 error:0];
 
     __directorySize = 0;
     v26 = v24;
@@ -1386,14 +1386,14 @@ LABEL_24:
 
             v32 = *(*(&v102 + 1) + 8 * i);
             v33 = [v30 stringByAppendingPathComponent:v32];
-            v34 = [MEMORY[0x29EDB9FB8] defaultManager];
-            v35 = [v34 fileExistsAtPath:v33];
+            defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+            v35 = [defaultManager2 fileExistsAtPath:v33];
 
             if (v35)
             {
               v36 = v32;
 
-              v3 = v92;
+              pathCopy = v92;
               v21 = biolog_cert_pem + 984;
               v30 = v26;
               goto LABEL_40;
@@ -1412,7 +1412,7 @@ LABEL_24:
         }
 
         v36 = @"rp_none";
-        v3 = v92;
+        pathCopy = v92;
         v21 = biolog_cert_pem + 984;
       }
 
@@ -1420,12 +1420,12 @@ LABEL_24:
       {
         v36 = @"rp_none";
         v30 = v24;
-        v3 = v92;
+        pathCopy = v92;
       }
 
 LABEL_40:
 
-      v37 = [v7 objectForKeyedSubscript:v36];
+      v37 = [dictionary objectForKeyedSubscript:v36];
 
       v38 = v89;
       v88 = v30;
@@ -1436,12 +1436,12 @@ LABEL_40:
         v114[1] = obja;
         v114[2] = v36;
         v39 = [MEMORY[0x29EDB8D80] arrayWithObjects:v114 count:3];
-        v40 = [v7 objectForKeyedSubscript:v36];
+        fileModificationDate2 = [dictionary objectForKeyedSubscript:v36];
         v41 = MEMORY[0x29EDBA070];
-        v42 = [v89 fileModificationDate];
-        [v42 timeIntervalSince1970];
+        fileModificationDate = [v89 fileModificationDate];
+        [fileModificationDate timeIntervalSince1970];
         v43 = [v41 numberWithDouble:?];
-        v44 = v40;
+        v44 = fileModificationDate2;
         v45 = v39;
         v46 = v43;
       }
@@ -1454,13 +1454,13 @@ LABEL_40:
         v115[1] = obja;
         v39 = [MEMORY[0x29EDB8D80] arrayWithObjects:v115 count:2];
         v48 = MEMORY[0x29EDBA070];
-        v40 = [v89 fileModificationDate];
-        [v40 timeIntervalSince1970];
+        fileModificationDate2 = [v89 fileModificationDate];
+        [fileModificationDate2 timeIntervalSince1970];
         v49 = v48;
         v38 = v89;
-        v42 = [v49 numberWithDouble:?];
-        v43 = [v47 dictionaryWithObject:v39 forKey:v42];
-        v44 = v7;
+        fileModificationDate = [v49 numberWithDouble:?];
+        v43 = [v47 dictionaryWithObject:v39 forKey:fileModificationDate];
+        v44 = dictionary;
         v45 = v43;
         v46 = v36;
       }
@@ -1475,7 +1475,7 @@ LABEL_40:
       v9 = v87;
       v12 = 0x29EDBA000;
       v20 = v90;
-      v5 = v91;
+      date = v91;
       goto LABEL_24;
     }
 
@@ -1498,8 +1498,8 @@ LABEL_40:
     }
 
     v6 = 0x29EDB8000;
-    v5 = v91;
-    v3 = v92;
+    date = v91;
+    pathCopy = v92;
 LABEL_46:
     closedir(v20);
 LABEL_47:
@@ -1511,62 +1511,62 @@ LABEL_14:
   while (v10);
 LABEL_56:
   closedir(v9);
-  v55 = [*(v6 + 3584) dictionary];
-  v56 = [v7 objectForKeyedSubscript:@"rp_noface"];
+  dictionary2 = [*(v6 + 3584) dictionary];
+  v56 = [dictionary objectForKeyedSubscript:@"rp_noface"];
 
   if (v56)
   {
-    v57 = [v7 objectForKeyedSubscript:@"rp_noface"];
-    [v55 addEntriesFromDictionary:v57];
+    v57 = [dictionary objectForKeyedSubscript:@"rp_noface"];
+    [dictionary2 addEntriesFromDictionary:v57];
   }
 
-  v58 = [v7 objectForKeyedSubscript:{@"rp_nomatch", v86}];
+  v58 = [dictionary objectForKeyedSubscript:{@"rp_nomatch", v86}];
 
   if (v58)
   {
-    v59 = [v7 objectForKeyedSubscript:@"rp_nomatch"];
-    [v55 addEntriesFromDictionary:v59];
+    v59 = [dictionary objectForKeyedSubscript:@"rp_nomatch"];
+    [dictionary2 addEntriesFromDictionary:v59];
   }
 
-  v60 = [v7 objectForKeyedSubscript:@"rp_matchfailure"];
+  v60 = [dictionary objectForKeyedSubscript:@"rp_matchfailure"];
 
   if (v60)
   {
-    v61 = [v7 objectForKeyedSubscript:@"rp_matchfailure"];
-    [v55 addEntriesFromDictionary:v61];
+    v61 = [dictionary objectForKeyedSubscript:@"rp_matchfailure"];
+    [dictionary2 addEntriesFromDictionary:v61];
   }
 
-  [v7 setObject:v55 forKeyedSubscript:@"rp_anyfailure"];
-  [v7 removeObjectForKey:@"rp_noface"];
-  [v7 removeObjectForKey:@"rp_nomatch"];
-  [v7 removeObjectForKey:@"rp_matchfailure"];
-  v62 = [*(v6 + 3584) dictionary];
-  v63 = [v7 objectForKeyedSubscript:@"rp_none"];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"rp_anyfailure"];
+  [dictionary removeObjectForKey:@"rp_noface"];
+  [dictionary removeObjectForKey:@"rp_nomatch"];
+  [dictionary removeObjectForKey:@"rp_matchfailure"];
+  dictionary3 = [*(v6 + 3584) dictionary];
+  v63 = [dictionary objectForKeyedSubscript:@"rp_none"];
 
   if (v63)
   {
-    v64 = [v7 objectForKeyedSubscript:@"rp_none"];
-    [v62 addEntriesFromDictionary:v64];
+    v64 = [dictionary objectForKeyedSubscript:@"rp_none"];
+    [dictionary3 addEntriesFromDictionary:v64];
   }
 
-  objb = v55;
-  v65 = [v7 objectForKeyedSubscript:@"rp_update"];
+  objb = dictionary2;
+  v65 = [dictionary objectForKeyedSubscript:@"rp_update"];
 
   if (v65)
   {
-    v66 = [v7 objectForKeyedSubscript:@"rp_update"];
-    [v62 addEntriesFromDictionary:v66];
+    v66 = [dictionary objectForKeyedSubscript:@"rp_update"];
+    [dictionary3 addEntriesFromDictionary:v66];
   }
 
-  [v7 setObject:v62 forKeyedSubscript:@"rp_anysuccess"];
-  [v7 removeObjectForKey:@"rp_none"];
-  [v7 removeObjectForKey:@"rp_update"];
+  [dictionary setObject:dictionary3 forKeyedSubscript:@"rp_anysuccess"];
+  [dictionary removeObjectForKey:@"rp_none"];
+  [dictionary removeObjectForKey:@"rp_update"];
   v100 = 0u;
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v67 = [objc_opt_class() retentionPolicyTypes];
-  v68 = [v67 countByEnumeratingWithState:&v98 objects:v113 count:16];
+  retentionPolicyTypes = [objc_opt_class() retentionPolicyTypes];
+  v68 = [retentionPolicyTypes countByEnumeratingWithState:&v98 objects:v113 count:16];
   if (v68)
   {
     v69 = v68;
@@ -1577,27 +1577,27 @@ LABEL_56:
       {
         if (*v99 != v70)
         {
-          objc_enumerationMutation(v67);
+          objc_enumerationMutation(retentionPolicyTypes);
         }
 
         v72 = *(*(&v98 + 1) + 8 * j);
         v73 = objc_opt_class();
-        v74 = [v7 objectForKeyedSubscript:v72];
+        v74 = [dictionary objectForKeyedSubscript:v72];
         [v73 applyCustomerPolicyForType:v72 withSequenceDirs:v74 withSize:&v106];
       }
 
-      v69 = [v67 countByEnumeratingWithState:&v98 objects:v113 count:16];
+      v69 = [retentionPolicyTypes countByEnumeratingWithState:&v98 objects:v113 count:16];
     }
 
     while (v69);
   }
 
-  v75 = [v7 objectForKeyedSubscript:@"rp_anyfailure"];
+  v75 = [dictionary objectForKeyedSubscript:@"rp_anyfailure"];
   if ([v75 count] <= 0x1D)
   {
 
-    v5 = v91;
-    v3 = v92;
+    date = v91;
+    pathCopy = v92;
     v53 = 0x2A18B8000uLL;
     v54 = MEMORY[0x29EDCA988];
     v52 = v94;
@@ -1606,12 +1606,12 @@ LABEL_56:
 
   else
   {
-    v76 = [v7 objectForKeyedSubscript:@"rp_anysuccess"];
+    v76 = [dictionary objectForKeyedSubscript:@"rp_anysuccess"];
     v77 = [v76 count];
 
     v78 = v77 >= 0xA;
-    v5 = v91;
-    v3 = v92;
+    date = v91;
+    pathCopy = v92;
     v53 = 0x2A18B8000uLL;
     v54 = MEMORY[0x29EDCA988];
     v52 = v94;
@@ -1642,7 +1642,7 @@ LABEL_83:
   {
     v82 = vcvtd_n_f64_u64(v52 - v106, 0x14uLL);
     v83 = v81;
-    [v5 timeIntervalSinceNow];
+    [date timeIntervalSinceNow];
     *buf = 134218496;
     v108 = v82;
     v109 = 2048;
@@ -1655,109 +1655,109 @@ LABEL_83:
   v85 = *MEMORY[0x29EDCA608];
 }
 
-+ (void)limitSequenceDirs:(id)a3 withSize:(unint64_t *)a4
++ (void)limitSequenceDirs:(id)dirs withSize:(unint64_t *)size
 {
   v35 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  dirsCopy = dirs;
   v8 = &biolog_cert_pem[984];
-  if (*a4 > __retentionSizeLimit)
+  if (*size > __retentionSizeLimit)
   {
     v9 = sel_compare_;
     *&v7 = 138412546;
     v29 = v7;
-    v30 = a4;
+    sizeCopy = size;
     do
     {
-      if (![v6 count])
+      if (![dirsCopy count])
       {
         break;
       }
 
-      v10 = [v6 allKeys];
-      v11 = [v10 sortedArrayUsingSelector:v9];
-      v12 = [v11 firstObject];
+      allKeys = [dirsCopy allKeys];
+      v11 = [allKeys sortedArrayUsingSelector:v9];
+      firstObject = [v11 firstObject];
 
       v13 = (__osLog_BioLog_Retention ? __osLog_BioLog_Retention : MEMORY[0x29EDCA988]);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = v13;
-        v15 = [v6 objectForKeyedSubscript:v12];
+        v15 = [dirsCopy objectForKeyedSubscript:firstObject];
         [v15 objectAtIndexedSubscript:0];
         v16 = v9;
-        v17 = a1;
+        selfCopy = self;
         v19 = v18 = v8;
-        v20 = [v6 objectForKeyedSubscript:v12];
+        v20 = [dirsCopy objectForKeyedSubscript:firstObject];
         v21 = [v20 objectAtIndexedSubscript:1];
-        v22 = [v21 unsignedIntegerValue];
+        unsignedIntegerValue = [v21 unsignedIntegerValue];
         *buf = v29;
         v32 = v19;
         v33 = 2048;
-        v34 = vcvtd_n_f64_u64(v22, 0x14uLL);
+        v34 = vcvtd_n_f64_u64(unsignedIntegerValue, 0x14uLL);
         _os_log_impl(&dword_296CA4000, v14, OS_LOG_TYPE_DEFAULT, "Sequences exceeded limit size, removing %@ of size %.3fMB ...\n", buf, 0x16u);
 
         v8 = v18;
-        a1 = v17;
+        self = selfCopy;
         v9 = v16;
-        a4 = v30;
+        size = sizeCopy;
       }
 
       v23 = objc_opt_class();
-      v24 = [v6 objectForKeyedSubscript:v12];
+      v24 = [dirsCopy objectForKeyedSubscript:firstObject];
       v25 = [v24 objectAtIndexedSubscript:0];
       [v23 removeItemAtPath:v25];
 
-      v26 = [v6 objectForKeyedSubscript:v12];
+      v26 = [dirsCopy objectForKeyedSubscript:firstObject];
       v27 = [v26 objectAtIndexedSubscript:1];
-      *a4 -= [v27 unsignedLongValue];
+      *size -= [v27 unsignedLongValue];
 
-      [v6 removeObjectForKey:v12];
+      [dirsCopy removeObjectForKey:firstObject];
     }
 
-    while (*a4 > *(v8 + 102));
+    while (*size > *(v8 + 102));
   }
 
   v28 = *MEMORY[0x29EDCA608];
 }
 
-+ (void)limitSequenceDirs:(id)a3 withSize:(unint64_t *)a4 removalMethod:(id)a5
++ (void)limitSequenceDirs:(id)dirs withSize:(unint64_t *)size removalMethod:(id)method
 {
   v34 = *MEMORY[0x29EDCA608];
-  v7 = a3;
-  v8 = a5;
-  v10 = v8;
+  dirsCopy = dirs;
+  methodCopy = method;
+  v10 = methodCopy;
   v11 = &biolog_cert_pem[984];
-  if (*a4 > __retentionSizeLimit)
+  if (*size > __retentionSizeLimit)
   {
     v12 = sel_compare_;
     *&v9 = 138412546;
     v28 = v9;
-    v29 = v8;
+    v29 = methodCopy;
     do
     {
-      if (![v7 count])
+      if (![dirsCopy count])
       {
         break;
       }
 
-      v13 = [v7 allKeys];
-      v14 = [v13 sortedArrayUsingSelector:v12];
-      v15 = [v14 firstObject];
+      allKeys = [dirsCopy allKeys];
+      v14 = [allKeys sortedArrayUsingSelector:v12];
+      firstObject = [v14 firstObject];
 
       v16 = (__osLog_BioLog_Retention ? __osLog_BioLog_Retention : MEMORY[0x29EDCA988]);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [v7 objectForKeyedSubscript:v15];
+        v18 = [dirsCopy objectForKeyedSubscript:firstObject];
         [v18 objectAtIndexedSubscript:0];
         v19 = v12;
         v21 = v20 = v11;
-        v22 = [v7 objectForKeyedSubscript:v15];
+        v22 = [dirsCopy objectForKeyedSubscript:firstObject];
         v23 = [v22 objectAtIndexedSubscript:1];
-        v24 = [v23 unsignedIntegerValue];
+        unsignedIntegerValue = [v23 unsignedIntegerValue];
         *buf = v28;
         v31 = v21;
         v32 = 2048;
-        v33 = vcvtd_n_f64_u64(v24, 0x14uLL);
+        v33 = vcvtd_n_f64_u64(unsignedIntegerValue, 0x14uLL);
         _os_log_impl(&dword_296CA4000, v17, OS_LOG_TYPE_DEFAULT, "Sequences exceeded limit size, processing %@ of size %.3fMB ...\n", buf, 0x16u);
 
         v11 = v20;
@@ -1765,51 +1765,51 @@ LABEL_83:
         v10 = v29;
       }
 
-      v25 = [v7 objectForKeyedSubscript:v15];
+      v25 = [dirsCopy objectForKeyedSubscript:firstObject];
       v26 = (v10)[2](v10, v25);
 
-      *a4 -= v26;
-      [v7 removeObjectForKey:v15];
+      *size -= v26;
+      [dirsCopy removeObjectForKey:firstObject];
     }
 
-    while (*a4 > *(v11 + 102));
+    while (*size > *(v11 + 102));
   }
 
   v27 = *MEMORY[0x29EDCA608];
 }
 
-+ (void)limitSequenceDirs:(id)a3 withSize:(unint64_t *)a4 toCount:(unint64_t)a5 withReplaceInterval:(double)a6 removalMethod:(id)a7
++ (void)limitSequenceDirs:(id)dirs withSize:(unint64_t *)size toCount:(unint64_t)count withReplaceInterval:(double)interval removalMethod:(id)method
 {
   v45 = *MEMORY[0x29EDCA608];
-  v11 = a3;
-  v12 = a7;
-  v38 = a5;
-  if ([v11 count] > a5)
+  dirsCopy = dirs;
+  methodCopy = method;
+  countCopy = count;
+  if ([dirsCopy count] > count)
   {
     *&v13 = 134218498;
     v35 = v13;
-    v36 = a4;
+    sizeCopy = size;
     do
     {
-      v14 = [v11 allKeys];
-      v15 = [v14 sortedArrayUsingSelector:sel_compare_];
+      allKeys = [dirsCopy allKeys];
+      v15 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-      v16 = [v15 firstObject];
-      v17 = [v15 reverseObjectEnumerator];
-      v18 = [v17 allObjects];
-      v19 = [v18 firstObject];
+      firstObject = [v15 firstObject];
+      reverseObjectEnumerator = [v15 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      firstObject2 = [allObjects firstObject];
 
-      [v16 floatValue];
+      [firstObject floatValue];
       v21 = v20;
-      [v19 floatValue];
-      if (v22 - a6 >= v21)
+      [firstObject2 floatValue];
+      if (v22 - interval >= v21)
       {
-        v23 = v16;
+        v23 = firstObject;
       }
 
       else
       {
-        v23 = v19;
+        v23 = firstObject2;
       }
 
       v24 = v23;
@@ -1826,44 +1826,44 @@ LABEL_83:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         v26 = v25;
-        v37 = [v11 objectForKeyedSubscript:v24];
+        v37 = [dirsCopy objectForKeyedSubscript:v24];
         v27 = [v37 objectAtIndexedSubscript:0];
-        v28 = [v11 objectForKeyedSubscript:v24];
+        v28 = [dirsCopy objectForKeyedSubscript:v24];
         [v28 objectAtIndexedSubscript:1];
-        v30 = v29 = v12;
-        v31 = [v30 unsignedIntegerValue];
+        v30 = v29 = methodCopy;
+        unsignedIntegerValue = [v30 unsignedIntegerValue];
         *buf = v35;
-        v40 = v38;
+        v40 = countCopy;
         v41 = 2112;
         v42 = v27;
         v43 = 2048;
-        v44 = vcvtd_n_f64_u64(v31, 0x14uLL);
+        v44 = vcvtd_n_f64_u64(unsignedIntegerValue, 0x14uLL);
         _os_log_impl(&dword_296CA4000, v26, OS_LOG_TYPE_DEBUG, "Sequences exceeded limit count %lu, processing %@ of size %.3fMB...\n", buf, 0x20u);
 
-        v12 = v29;
-        a4 = v36;
+        methodCopy = v29;
+        size = sizeCopy;
       }
 
-      v32 = [v11 objectForKeyedSubscript:v24];
-      v33 = v12[2](v12, v32);
+      v32 = [dirsCopy objectForKeyedSubscript:v24];
+      v33 = methodCopy[2](methodCopy, v32);
 
-      *a4 -= v33;
-      [v11 removeObjectForKey:v24];
+      *size -= v33;
+      [dirsCopy removeObjectForKey:v24];
     }
 
-    while ([v11 count] > v38);
+    while ([dirsCopy count] > countCopy);
   }
 
   v34 = *MEMORY[0x29EDCA608];
 }
 
-+ (void)removeItemAtPath:(id)a3
++ (void)removeItemAtPath:(id)path
 {
   v16 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = [MEMORY[0x29EDB9FB8] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
   v11 = 0;
-  v5 = [v4 removeItemAtPath:v3 error:&v11];
+  v5 = [defaultManager removeItemAtPath:pathCopy error:&v11];
   v6 = v11;
 
   if ((v5 & 1) == 0)
@@ -1881,11 +1881,11 @@ LABEL_83:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = v7;
-      v9 = [v6 localizedFailureReason];
+      localizedFailureReason = [v6 localizedFailureReason];
       *buf = 138412546;
-      v13 = v3;
+      v13 = pathCopy;
       v14 = 2112;
-      v15 = v9;
+      v15 = localizedFailureReason;
       _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_ERROR, "Warning: Could not remove item %@! %@\n", buf, 0x16u);
     }
   }
@@ -1893,13 +1893,13 @@ LABEL_83:
   v10 = *MEMORY[0x29EDCA608];
 }
 
-+ (unint64_t)stripSequenceAtPath:(id)a3
++ (unint64_t)stripSequenceAtPath:(id)path
 {
   v48 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = [MEMORY[0x29EDB9FB8] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
   v42 = 0;
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v42];
+  v5 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:&v42];
   v6 = v42;
 
   if ([v5 count])
@@ -1932,15 +1932,15 @@ LABEL_83:
 
           v13 = *(*(&v38 + 1) + 8 * v12);
           v14 = objc_autoreleasePoolPush();
-          v15 = [v13 pathExtension];
-          v16 = [(__CFString *)v10 stringByAppendingString:v15];
+          pathExtension = [v13 pathExtension];
+          v16 = [(__CFString *)v10 stringByAppendingString:pathExtension];
 
-          v17 = [v3 stringByAppendingPathComponent:v13];
+          v17 = [pathCopy stringByAppendingPathComponent:v13];
           if (([v16 isEqualToString:@".json"] & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", @".prle") & 1) == 0)
           {
             v18 = v10;
             v19 = v7;
-            v20 = v3;
+            v20 = pathCopy;
             if (__osLog_BioLog_Retention)
             {
               v21 = __osLog_BioLog_Retention;
@@ -1958,12 +1958,12 @@ LABEL_83:
               _os_log_impl(&dword_296CA4000, v21, OS_LOG_TYPE_DEBUG, "Removing data %@\n", buf, 0xCu);
             }
 
-            v22 = [MEMORY[0x29EDB9FB8] defaultManager];
-            v23 = [v22 attributesOfItemAtPath:v17 error:0];
+            defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+            v23 = [defaultManager2 attributesOfItemAtPath:v17 error:0];
             v37 += [v23 fileSize];
 
             [objc_opt_class() removeItemAtPath:v17];
-            v3 = v20;
+            pathCopy = v20;
             v7 = v19;
             v10 = v18;
             v9 = v35;
@@ -1989,8 +1989,8 @@ LABEL_83:
               _os_log_impl(&dword_296CA4000, v24, OS_LOG_TYPE_DEBUG, "Removing frame context %@\n", buf, 0xCu);
             }
 
-            v25 = [MEMORY[0x29EDB9FB8] defaultManager];
-            v26 = [v25 attributesOfItemAtPath:v17 error:0];
+            defaultManager3 = [MEMORY[0x29EDB9FB8] defaultManager];
+            v26 = [defaultManager3 attributesOfItemAtPath:v17 error:0];
             v37 += [v26 fileSize];
 
             [objc_opt_class() removeItemAtPath:v17];
@@ -2033,11 +2033,11 @@ LABEL_83:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       v28 = v27;
-      v29 = [v6 localizedFailureReason];
+      localizedFailureReason = [v6 localizedFailureReason];
       *buf = 138412546;
-      v44 = v3;
+      v44 = pathCopy;
       v45 = 2112;
-      v46 = v29;
+      v46 = localizedFailureReason;
       _os_log_impl(&dword_296CA4000, v28, OS_LOG_TYPE_ERROR, "Warning: Could not strip sequence at %@! %@\n", buf, 0x16u);
     }
 
@@ -2048,13 +2048,13 @@ LABEL_83:
   return v30;
 }
 
-+ (void)setPurgeableAtPath:(id)a3 directory:(BOOL)a4
++ (void)setPurgeableAtPath:(id)path directory:(BOOL)directory
 {
   v12 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = v5;
+  pathCopy = path;
+  v6 = pathCopy;
   v9 = 66053;
-  if (!a4 && fsctl([v5 UTF8String], 0xC0084A44uLL, &v9, 0))
+  if (!directory && fsctl([pathCopy UTF8String], 0xC0084A44uLL, &v9, 0))
   {
     if (__osLog_BioLog_Retention)
     {
@@ -2077,17 +2077,17 @@ LABEL_83:
   v8 = *MEMORY[0x29EDCA608];
 }
 
-+ (void)setRetentionType:(id)a3 atPath:(id)a4
++ (void)setRetentionType:(id)type atPath:(id)path
 {
   v36 = *MEMORY[0x29EDCA608];
-  v24 = a3;
-  v6 = a4;
+  typeCopy = type;
+  pathCopy = path;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [objc_opt_class() retentionPolicyTypes];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v35 count:16];
+  retentionPolicyTypes = [objc_opt_class() retentionPolicyTypes];
+  v8 = [retentionPolicyTypes countByEnumeratingWithState:&v25 objects:v35 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2098,12 +2098,12 @@ LABEL_83:
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(retentionPolicyTypes);
         }
 
-        v12 = [v6 stringByAppendingPathComponent:*(*(&v25 + 1) + 8 * i)];
-        v13 = [MEMORY[0x29EDB9FB8] defaultManager];
-        v14 = [v13 fileExistsAtPath:v12];
+        v12 = [pathCopy stringByAppendingPathComponent:*(*(&v25 + 1) + 8 * i)];
+        defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+        v14 = [defaultManager fileExistsAtPath:v12];
 
         if (v14)
         {
@@ -2111,16 +2111,16 @@ LABEL_83:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v35 count:16];
+      v9 = [retentionPolicyTypes countByEnumeratingWithState:&v25 objects:v35 count:16];
     }
 
     while (v9);
   }
 
-  if (v24)
+  if (typeCopy)
   {
-    v15 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v16 = [v6 stringByAppendingPathComponent:v24];
+    defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+    v16 = [pathCopy stringByAppendingPathComponent:typeCopy];
     v17 = *MEMORY[0x29EDB9E80];
     v33[0] = *MEMORY[0x29EDB9E58];
     v33[1] = v17;
@@ -2128,12 +2128,12 @@ LABEL_83:
     v34[0] = @"mobile";
     v34[1] = v18;
     v19 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
-    v20 = [v15 createFileAtPath:v16 contents:0 attributes:v19];
+    v20 = [defaultManager2 createFileAtPath:v16 contents:0 attributes:v19];
 
     if (v20)
     {
-      v21 = [v6 stringByAppendingPathComponent:v24];
-      [a1 setPurgeableAtPath:v21 directory:0];
+      v21 = [pathCopy stringByAppendingPathComponent:typeCopy];
+      [self setPurgeableAtPath:v21 directory:0];
     }
 
     else
@@ -2151,9 +2151,9 @@ LABEL_83:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v30 = v24;
+        v30 = typeCopy;
         v31 = 2112;
-        v32 = v6;
+        v32 = pathCopy;
         _os_log_impl(&dword_296CA4000, v22, OS_LOG_TYPE_ERROR, "Warning: Could not create retention type file %@ at path %@!\n", buf, 0x16u);
       }
     }

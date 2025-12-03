@@ -1,27 +1,27 @@
 @interface SUCoreAnalyticsEvent
 - (NSDictionary)eventPayload;
-- (SUCoreAnalyticsEvent)initWithEventName:(id)a3;
+- (SUCoreAnalyticsEvent)initWithEventName:(id)name;
 - (id)description;
-- (void)_queue_removeEventPayloadEntry:(id)a3;
-- (void)_queue_setEventPayloadEntry:(id)a3 value:(id)a4;
-- (void)_queue_setEventPayloadEntryToNull:(id)a3;
-- (void)removeEventPayloadEntry:(id)a3;
-- (void)setEventPayloadEntry:(id)a3 value:(id)a4;
-- (void)setEventPayloadEntryToNull:(id)a3;
+- (void)_queue_removeEventPayloadEntry:(id)entry;
+- (void)_queue_setEventPayloadEntry:(id)entry value:(id)value;
+- (void)_queue_setEventPayloadEntryToNull:(id)null;
+- (void)removeEventPayloadEntry:(id)entry;
+- (void)setEventPayloadEntry:(id)entry value:(id)value;
+- (void)setEventPayloadEntryToNull:(id)null;
 @end
 
 @implementation SUCoreAnalyticsEvent
 
-- (SUCoreAnalyticsEvent)initWithEventName:(id)a3
+- (SUCoreAnalyticsEvent)initWithEventName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = SUCoreAnalyticsEvent;
   v6 = [(SUCoreAnalyticsEvent *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventName, a3);
+    objc_storeStrong(&v6->_eventName, name);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     mutableEventPayload = v7->_mutableEventPayload;
     v7->_mutableEventPayload = v8;
@@ -31,10 +31,10 @@
     stateQueue = v7->_stateQueue;
     v7->_stateQueue = v11;
 
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     eventUUID = v7->_eventUUID;
-    v7->_eventUUID = v14;
+    v7->_eventUUID = uUIDString;
   }
 
   return v7;
@@ -73,11 +73,11 @@ uint64_t __36__SUCoreAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setEventPayloadEntry:(id)a3 value:(id)a4
+- (void)setEventPayloadEntry:(id)entry value:(id)value
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  valueCopy = value;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -88,34 +88,34 @@ uint64_t __36__SUCoreAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
     block[2] = __51__SUCoreAnalyticsEvent_setEventPayloadEntry_value___block_invoke;
     block[3] = &unk_27892D340;
     block[4] = self;
-    v15 = v6;
-    v16 = v7;
+    v15 = entryCopy;
+    v16 = valueCopy;
     dispatch_sync(stateQueue, block);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D64460] sharedLogger];
-    v11 = [v10 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       *buf = 138543618;
-      v18 = v6;
+      v18 = entryCopy;
       v19 = 2114;
       v20 = v13;
-      _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "Event payload data %{public}@ is unsupported type %{public}@. Supported Types: NSString, NSNumber, NSData, NSDate", buf, 0x16u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Event payload data %{public}@ is unsupported type %{public}@. Supported Types: NSString, NSNumber, NSData, NSDate", buf, 0x16u);
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEventPayloadEntryToNull:(id)a3
+- (void)setEventPayloadEntryToNull:(id)null
 {
-  v4 = a3;
+  nullCopy = null;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -123,14 +123,14 @@ uint64_t __36__SUCoreAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   v7[2] = __51__SUCoreAnalyticsEvent_setEventPayloadEntryToNull___block_invoke;
   v7[3] = &unk_27892D478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nullCopy;
+  v6 = nullCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)removeEventPayloadEntry:(id)a3
+- (void)removeEventPayloadEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -138,45 +138,45 @@ uint64_t __36__SUCoreAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   v7[2] = __48__SUCoreAnalyticsEvent_removeEventPayloadEntry___block_invoke;
   v7[3] = &unk_27892D478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = entryCopy;
+  v6 = entryCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)_queue_setEventPayloadEntry:(id)a3 value:(id)a4
+- (void)_queue_setEventPayloadEntry:(id)entry value:(id)value
 {
   stateQueue = self->_stateQueue;
-  v7 = a4;
-  v8 = a3;
+  valueCopy = value;
+  entryCopy = entry;
   dispatch_assert_queue_V2(stateQueue);
-  [(NSMutableDictionary *)self->_mutableEventPayload setSafeObject:v7 forKey:v8];
+  [(NSMutableDictionary *)self->_mutableEventPayload setSafeObject:valueCopy forKey:entryCopy];
 }
 
-- (void)_queue_setEventPayloadEntryToNull:(id)a3
+- (void)_queue_setEventPayloadEntryToNull:(id)null
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  nullCopy = null;
   dispatch_assert_queue_V2(stateQueue);
   mutableEventPayload = self->_mutableEventPayload;
-  v7 = [MEMORY[0x277CBEB68] null];
-  [(NSMutableDictionary *)mutableEventPayload setSafeObject:v7 forKey:v5];
+  null = [MEMORY[0x277CBEB68] null];
+  [(NSMutableDictionary *)mutableEventPayload setSafeObject:null forKey:nullCopy];
 }
 
-- (void)_queue_removeEventPayloadEntry:(id)a3
+- (void)_queue_removeEventPayloadEntry:(id)entry
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  entryCopy = entry;
   dispatch_assert_queue_V2(stateQueue);
-  [(NSMutableDictionary *)self->_mutableEventPayload setObject:0 forKeyedSubscript:v5];
+  [(NSMutableDictionary *)self->_mutableEventPayload setObject:0 forKeyedSubscript:entryCopy];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUCoreAnalyticsEvent *)self eventName];
-  v5 = [(SUCoreAnalyticsEvent *)self eventUUID];
-  v6 = [(SUCoreAnalyticsEvent *)self eventPayload];
-  v7 = [v3 stringWithFormat:@"EventName: %@ EventUUID: %@ EventPayload: %@", v4, v5, v6];
+  eventName = [(SUCoreAnalyticsEvent *)self eventName];
+  eventUUID = [(SUCoreAnalyticsEvent *)self eventUUID];
+  eventPayload = [(SUCoreAnalyticsEvent *)self eventPayload];
+  v7 = [v3 stringWithFormat:@"EventName: %@ EventUUID: %@ EventPayload: %@", eventName, eventUUID, eventPayload];
 
   return v7;
 }

@@ -6,8 +6,8 @@
 
 - (id)metaData
 {
-  v2 = [(MOResource *)self data];
-  v3 = [MODictionaryEncoder decodeToDictionary:v2];
+  data = [(MOResource *)self data];
+  v3 = [MODictionaryEncoder decodeToDictionary:data];
 
   return v3;
 }

@@ -8,23 +8,23 @@
 - (id)generateThumbnailSmallImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 thumbnailImageCompactURL];
-  if (v5)
+  thumbnailImageCompactURL = [self thumbnailImageCompactURL];
+  if (thumbnailImageCompactURL)
   {
-    v6 = [a1 thumbnailImageCompactURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    thumbnailImageCompactURL2 = [self thumbnailImageCompactURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:thumbnailImageCompactURL2 lifetimeHint:v9];
   }
 
   else
@@ -38,23 +38,23 @@
 - (id)generateThumbnailLargeImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 thumbnailImageLargeURL];
-  if (v5)
+  thumbnailImageLargeURL = [self thumbnailImageLargeURL];
+  if (thumbnailImageLargeURL)
   {
-    v6 = [a1 thumbnailImageLargeURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    thumbnailImageLargeURL2 = [self thumbnailImageLargeURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:thumbnailImageLargeURL2 lifetimeHint:v9];
   }
 
   else

@@ -1,19 +1,19 @@
 @interface IDSDeviceConnectionAWDMetrics
 + (id)sharedInstance;
-- (BOOL)_canReportMetric:(id)a3;
+- (BOOL)_canReportMetric:(id)metric;
 - (IDSDeviceConnectionAWDMetrics)init;
 - (id)_currentMetrics;
-- (id)awdMetricsForConnectionUUID:(id)a3;
-- (void)_reportAndRemoveForConnectionUUID:(id)a3;
-- (void)_setCreatedAt:(id)a3 forConnectionUUID:(id)a4;
-- (void)setClientInitTime:(double)a3 forConnectionUUID:(id)a4;
-- (void)setClientOpenSocketCompletionTime:(double)a3 forConnectionUUID:(id)a4;
-- (void)setConnectionInitTime:(double)a3 forConnectionUUID:(id)a4;
-- (void)setDaemonOpenSocketCompletionTime:(double)a3 forConnectionUUID:(id)a4;
-- (void)setDaemonOpenSocketTime:(double)a3 forConnectionUUID:(id)a4;
-- (void)setFirstPacketReceiveTime:(double)a3 forConnectionUUID:(id)a4;
-- (void)setServiceName:(id)a3 forConnectionUUID:(id)a4;
-- (void)setSuccess:(BOOL)a3 forConnectionUUID:(id)a4;
+- (id)awdMetricsForConnectionUUID:(id)d;
+- (void)_reportAndRemoveForConnectionUUID:(id)d;
+- (void)_setCreatedAt:(id)at forConnectionUUID:(id)d;
+- (void)setClientInitTime:(double)time forConnectionUUID:(id)d;
+- (void)setClientOpenSocketCompletionTime:(double)time forConnectionUUID:(id)d;
+- (void)setConnectionInitTime:(double)time forConnectionUUID:(id)d;
+- (void)setDaemonOpenSocketCompletionTime:(double)time forConnectionUUID:(id)d;
+- (void)setDaemonOpenSocketTime:(double)time forConnectionUUID:(id)d;
+- (void)setFirstPacketReceiveTime:(double)time forConnectionUUID:(id)d;
+- (void)setServiceName:(id)name forConnectionUUID:(id)d;
+- (void)setSuccess:(BOOL)success forConnectionUUID:(id)d;
 @end
 
 @implementation IDSDeviceConnectionAWDMetrics
@@ -57,25 +57,25 @@
   return v2;
 }
 
-- (id)awdMetricsForConnectionUUID:(id)a3
+- (id)awdMetricsForConnectionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_writeLock);
-  v5 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
   if (!v5)
   {
     v5 = +[NSMutableDictionary dictionary];
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     [v5 setObject:v6 forKeyedSubscript:IDSDeviceConnectionAWDMetricsConnectionUUIDKey];
 
     ids_monotonic_time();
     v7 = [NSNumber numberWithDouble:?];
     [v5 setObject:v7 forKeyedSubscript:IDSDeviceConnectionAWDMetricsCreatedAtKey];
 
-    [(NSMutableDictionary *)self->_metrics setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_metrics setObject:v5 forKeyedSubscript:dCopy];
   }
 
-  v8 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
   v9 = [v8 mutableCopy];
 
   os_unfair_lock_unlock(&self->_writeLock);
@@ -83,9 +83,9 @@
   return v9;
 }
 
-- (void)_reportAndRemoveForConnectionUUID:(id)a3
+- (void)_reportAndRemoveForConnectionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   ids_monotonic_time();
   v6 = v5;
   v7 = +[NSMutableArray array];
@@ -99,11 +99,11 @@
   v9 = v7;
   v15 = v9;
   [(NSMutableDictionary *)metrics enumerateKeysAndObjectsUsingBlock:v14];
-  v10 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v4];
+  v10 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
 
   if (v10)
   {
-    v11 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v4];
+    v11 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
     [v9 addObject:v11];
   }
 
@@ -113,7 +113,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = dCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Can't find AWD metrics for %@", buf, 0xCu);
     }
 
@@ -139,15 +139,15 @@
   [v9 enumerateObjectsUsingBlock:v13];
 }
 
-- (void)setServiceName:(id)a3 forConnectionUUID:(id)a4
+- (void)setServiceName:(id)name forConnectionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dCopy = d;
   os_unfair_lock_lock(&self->_writeLock);
-  v8 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     [v8 setObject:v9 forKeyedSubscript:IDSDeviceConnectionAWDMetricsServiceNameKey];
 
     os_unfair_lock_unlock(&self->_writeLock);
@@ -160,7 +160,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v12 = v7;
+      v12 = dCopy;
       v13 = 2112;
       v14 = IDSDeviceConnectionAWDMetricsServiceNameKey;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "There is no metric dictionary for %@, %@", buf, 0x16u);
@@ -180,14 +180,14 @@
   }
 }
 
-- (void)setClientInitTime:(double)a3 forConnectionUUID:(id)a4
+- (void)setClientInitTime:(double)time forConnectionUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   os_unfair_lock_lock(&self->_writeLock);
-  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
   if (v7)
   {
-    v8 = [NSNumber numberWithDouble:a3];
+    v8 = [NSNumber numberWithDouble:time];
     [v7 setObject:v8 forKeyedSubscript:IDSDeviceConnectionAWDMetricsClientInitKey];
 
     os_unfair_lock_unlock(&self->_writeLock);
@@ -200,7 +200,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v11 = v6;
+      v11 = dCopy;
       v12 = 2112;
       v13 = IDSDeviceConnectionAWDMetricsClientInitKey;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "There is no metric dictionary for %@, %@", buf, 0x16u);
@@ -220,14 +220,14 @@
   }
 }
 
-- (void)setConnectionInitTime:(double)a3 forConnectionUUID:(id)a4
+- (void)setConnectionInitTime:(double)time forConnectionUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   os_unfair_lock_lock(&self->_writeLock);
-  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
   if (v7)
   {
-    v8 = [NSNumber numberWithDouble:a3];
+    v8 = [NSNumber numberWithDouble:time];
     [v7 setObject:v8 forKeyedSubscript:IDSDeviceConnectionAWDMetricsConnectionInitKey];
 
     os_unfair_lock_unlock(&self->_writeLock);
@@ -240,7 +240,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v11 = v6;
+      v11 = dCopy;
       v12 = 2112;
       v13 = IDSDeviceConnectionAWDMetricsConnectionInitKey;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "There is no metric dictionary for %@, %@", buf, 0x16u);
@@ -260,14 +260,14 @@
   }
 }
 
-- (void)setDaemonOpenSocketTime:(double)a3 forConnectionUUID:(id)a4
+- (void)setDaemonOpenSocketTime:(double)time forConnectionUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   os_unfair_lock_lock(&self->_writeLock);
-  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
   if (v7)
   {
-    v8 = [NSNumber numberWithDouble:a3];
+    v8 = [NSNumber numberWithDouble:time];
     [v7 setObject:v8 forKeyedSubscript:IDSDeviceConnectionAWDMetricsDaemonOpenSocketKey];
   }
 
@@ -276,7 +276,7 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v11 = v6;
+    v11 = dCopy;
     v12 = 2112;
     v13 = IDSDeviceConnectionAWDMetricsDaemonOpenSocketKey;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "There is no metric dictionary for %@, %@", buf, 0x16u);
@@ -295,14 +295,14 @@
   }
 }
 
-- (void)setFirstPacketReceiveTime:(double)a3 forConnectionUUID:(id)a4
+- (void)setFirstPacketReceiveTime:(double)time forConnectionUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   os_unfair_lock_lock(&self->_writeLock);
-  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
   if (v7)
   {
-    v8 = [NSNumber numberWithDouble:a3];
+    v8 = [NSNumber numberWithDouble:time];
     [v7 setObject:v8 forKeyedSubscript:IDSDeviceConnectionAWDMetricsFirstDataPacketReceiveKey];
 
     os_unfair_lock_unlock(&self->_writeLock);
@@ -315,7 +315,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v11 = v6;
+      v11 = dCopy;
       v12 = 2112;
       v13 = IDSDeviceConnectionAWDMetricsFirstDataPacketReceiveKey;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "There is no metric dictionary for %@, %@", buf, 0x16u);
@@ -335,14 +335,14 @@
   }
 }
 
-- (void)setDaemonOpenSocketCompletionTime:(double)a3 forConnectionUUID:(id)a4
+- (void)setDaemonOpenSocketCompletionTime:(double)time forConnectionUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   os_unfair_lock_lock(&self->_writeLock);
-  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
   if (v7)
   {
-    v8 = [NSNumber numberWithDouble:a3];
+    v8 = [NSNumber numberWithDouble:time];
     [v7 setObject:v8 forKeyedSubscript:IDSDeviceConnectionAWDMetricsDaemonCompletionHandlerKey];
 
     os_unfair_lock_unlock(&self->_writeLock);
@@ -355,7 +355,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v11 = v6;
+      v11 = dCopy;
       v12 = 2112;
       v13 = IDSDeviceConnectionAWDMetricsDaemonCompletionHandlerKey;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "There is no metric dictionary for %@, %@", buf, 0x16u);
@@ -375,14 +375,14 @@
   }
 }
 
-- (void)setClientOpenSocketCompletionTime:(double)a3 forConnectionUUID:(id)a4
+- (void)setClientOpenSocketCompletionTime:(double)time forConnectionUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   os_unfair_lock_lock(&self->_writeLock);
-  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
   if (v7)
   {
-    v8 = [NSNumber numberWithDouble:a3];
+    v8 = [NSNumber numberWithDouble:time];
     [v7 setObject:v8 forKeyedSubscript:IDSDeviceConnectionAWDMetricsClientOpenSocketCompletionKey];
 
     os_unfair_lock_unlock(&self->_writeLock);
@@ -395,7 +395,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v11 = v6;
+      v11 = dCopy;
       v12 = 2112;
       v13 = IDSDeviceConnectionAWDMetricsClientOpenSocketCompletionKey;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "There is no metric dictionary for %@, %@", buf, 0x16u);
@@ -415,15 +415,15 @@
   }
 }
 
-- (void)setSuccess:(BOOL)a3 forConnectionUUID:(id)a4
+- (void)setSuccess:(BOOL)success forConnectionUUID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
+  successCopy = success;
+  dCopy = d;
   os_unfair_lock_lock(&self->_writeLock);
-  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
   if (v7)
   {
-    v8 = [NSNumber numberWithBool:v4];
+    v8 = [NSNumber numberWithBool:successCopy];
     [v7 setObject:v8 forKeyedSubscript:IDSDeviceConnectionAWDMetricsSuccessKey];
 
     os_unfair_lock_unlock(&self->_writeLock);
@@ -436,7 +436,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v11 = v6;
+      v11 = dCopy;
       v12 = 2112;
       v13 = IDSDeviceConnectionAWDMetricsSuccessKey;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "There is no metric dictionary for %@, %@", buf, 0x16u);
@@ -456,15 +456,15 @@
   }
 }
 
-- (void)_setCreatedAt:(id)a3 forConnectionUUID:(id)a4
+- (void)_setCreatedAt:(id)at forConnectionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  dCopy = d;
   os_unfair_lock_lock(&self->_writeLock);
-  v8 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_metrics objectForKeyedSubscript:dCopy];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [atCopy copy];
     [v8 setObject:v9 forKeyedSubscript:IDSDeviceConnectionAWDMetricsCreatedAtKey];
 
     os_unfair_lock_unlock(&self->_writeLock);
@@ -477,7 +477,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v12 = v7;
+      v12 = dCopy;
       v13 = 2112;
       v14 = IDSDeviceConnectionAWDMetricsCreatedAtKey;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "There is no metric dictionary for %@, %@", buf, 0x16u);
@@ -497,9 +497,9 @@
   }
 }
 
-- (BOOL)_canReportMetric:(id)a3
+- (BOOL)_canReportMetric:(id)metric
 {
-  v3 = [a3 objectForKeyedSubscript:IDSDeviceConnectionAWDMetricsClientOpenSocketCompletionKey];
+  v3 = [metric objectForKeyedSubscript:IDSDeviceConnectionAWDMetricsClientOpenSocketCompletionKey];
   v4 = v3 != 0;
 
   return v4;

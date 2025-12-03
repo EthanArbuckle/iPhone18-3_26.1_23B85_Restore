@@ -1,94 +1,94 @@
 @interface SHShazamKitServiceConnectionClient
 - (SHShazamKitClient)delegate;
-- (void)_library:(id)a3 didChangeWithSnapshot:(id)a4;
-- (void)_library:(id)a3 didProduceError:(id)a4 failedItemIdentifiers:(id)a5;
-- (void)_libraryDidCompleteSync:(id)a3;
-- (void)_libraryWillBeginSync:(id)a3;
-- (void)didCalculateSpectralData:(id)a3;
-- (void)matcher:(id)a3 didProduceResponse:(id)a4;
+- (void)_library:(id)_library didChangeWithSnapshot:(id)snapshot;
+- (void)_library:(id)_library didProduceError:(id)error failedItemIdentifiers:(id)identifiers;
+- (void)_libraryDidCompleteSync:(id)sync;
+- (void)_libraryWillBeginSync:(id)sync;
+- (void)didCalculateSpectralData:(id)data;
+- (void)matcher:(id)matcher didProduceResponse:(id)response;
 @end
 
 @implementation SHShazamKitServiceConnectionClient
 
-- (void)matcher:(id)a3 didProduceResponse:(id)a4
+- (void)matcher:(id)matcher didProduceResponse:(id)response
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SHShazamKitServiceConnectionClient *)self delegate];
+  matcherCopy = matcher;
+  responseCopy = response;
+  delegate = [(SHShazamKitServiceConnectionClient *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SHShazamKitServiceConnectionClient *)self delegate];
-    [v9 matcher:v10 didProduceResponse:v6];
+    delegate2 = [(SHShazamKitServiceConnectionClient *)self delegate];
+    [delegate2 matcher:matcherCopy didProduceResponse:responseCopy];
   }
 }
 
-- (void)_libraryWillBeginSync:(id)a3
+- (void)_libraryWillBeginSync:(id)sync
 {
-  v7 = a3;
-  v4 = [(SHShazamKitServiceConnectionClient *)self delegate];
+  syncCopy = sync;
+  delegate = [(SHShazamKitServiceConnectionClient *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SHShazamKitServiceConnectionClient *)self delegate];
-    [v6 _libraryWillBeginSync:v7];
+    delegate2 = [(SHShazamKitServiceConnectionClient *)self delegate];
+    [delegate2 _libraryWillBeginSync:syncCopy];
   }
 }
 
-- (void)_library:(id)a3 didChangeWithSnapshot:(id)a4
+- (void)_library:(id)_library didChangeWithSnapshot:(id)snapshot
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SHShazamKitServiceConnectionClient *)self delegate];
+  _libraryCopy = _library;
+  snapshotCopy = snapshot;
+  delegate = [(SHShazamKitServiceConnectionClient *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SHShazamKitServiceConnectionClient *)self delegate];
-    [v9 _library:v10 didChangeWithSnapshot:v6];
+    delegate2 = [(SHShazamKitServiceConnectionClient *)self delegate];
+    [delegate2 _library:_libraryCopy didChangeWithSnapshot:snapshotCopy];
   }
 }
 
-- (void)_library:(id)a3 didProduceError:(id)a4 failedItemIdentifiers:(id)a5
+- (void)_library:(id)_library didProduceError:(id)error failedItemIdentifiers:(id)identifiers
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SHShazamKitServiceConnectionClient *)self delegate];
+  _libraryCopy = _library;
+  errorCopy = error;
+  identifiersCopy = identifiers;
+  delegate = [(SHShazamKitServiceConnectionClient *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(SHShazamKitServiceConnectionClient *)self delegate];
-    [v12 _library:v13 didProduceError:v8 failedItemIdentifiers:v9];
+    delegate2 = [(SHShazamKitServiceConnectionClient *)self delegate];
+    [delegate2 _library:_libraryCopy didProduceError:errorCopy failedItemIdentifiers:identifiersCopy];
   }
 }
 
-- (void)_libraryDidCompleteSync:(id)a3
+- (void)_libraryDidCompleteSync:(id)sync
 {
-  v7 = a3;
-  v4 = [(SHShazamKitServiceConnectionClient *)self delegate];
+  syncCopy = sync;
+  delegate = [(SHShazamKitServiceConnectionClient *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SHShazamKitServiceConnectionClient *)self delegate];
-    [v6 _libraryDidCompleteSync:v7];
+    delegate2 = [(SHShazamKitServiceConnectionClient *)self delegate];
+    [delegate2 _libraryDidCompleteSync:syncCopy];
   }
 }
 
-- (void)didCalculateSpectralData:(id)a3
+- (void)didCalculateSpectralData:(id)data
 {
-  v7 = a3;
-  v4 = [(SHShazamKitServiceConnectionClient *)self delegate];
+  dataCopy = data;
+  delegate = [(SHShazamKitServiceConnectionClient *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SHShazamKitServiceConnectionClient *)self delegate];
-    [v6 didCalculateSpectralData:v7];
+    delegate2 = [(SHShazamKitServiceConnectionClient *)self delegate];
+    [delegate2 didCalculateSpectralData:dataCopy];
   }
 }
 

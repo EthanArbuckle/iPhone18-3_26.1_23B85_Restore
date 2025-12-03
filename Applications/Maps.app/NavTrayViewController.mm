@@ -1,34 +1,34 @@
 @interface NavTrayViewController
 - (BOOL)_isEligibleToShowWalkingButton;
-- (BOOL)_isWaypointCallable:(id)a3;
-- (BOOL)_isWaypointRemovable:(id)a3;
+- (BOOL)_isWaypointCallable:(id)callable;
+- (BOOL)_isWaypointRemovable:(id)removable;
 - (BOOL)_shouldEnableAddStop;
-- (BOOL)_shouldEnableShareETAForRoute:(id)a3 disabledForReasons:(id *)a4;
-- (BOOL)_shouldEnableTrafficIncidentsForRoute:(id)a3 disabledForReasons:(id *)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)_shouldEnableShareETAForRoute:(id)route disabledForReasons:(id *)reasons;
+- (BOOL)_shouldEnableTrafficIncidentsForRoute:(id)route disabledForReasons:(id *)reasons;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (NSArray)waypointRows;
 - (NSMutableDictionary)actionCells;
 - (PlatformController)platformController;
 - (_TtC4Maps28NavigationWaypointController)waypointController;
 - (double)headerHeight;
-- (double)heightForLayout:(unint64_t)a3;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)heightForLayout:(unint64_t)layout;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (double)topSpaceForScrollPocket;
 - (id)_delegate;
-- (id)_destinationPhoneNumbersForWaypoint:(id)a3;
+- (id)_destinationPhoneNumbersForWaypoint:(id)waypoint;
 - (id)_traySectionsDescription;
-- (id)initForNavigationWithDelegate:(id)a3 guidanceObserver:(id)a4 platformController:(id)a5;
-- (id)initForSteppingWithDelegate:(id)a3 platformController:(id)a4;
+- (id)initForNavigationWithDelegate:(id)delegate guidanceObserver:(id)observer platformController:(id)controller;
+- (id)initForSteppingWithDelegate:(id)delegate platformController:(id)controller;
 - (id)mapItemMuid;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (int)currentUITargetForAnalytics;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_commonInit;
 - (void)_computeSections;
-- (void)_handleArrivalAtEndOfLegIndex:(unint64_t)a3 forced:(BOOL)a4 service:(id)a5;
-- (void)_maneuverBannerViewEVStationsNotification:(id)a3;
+- (void)_handleArrivalAtEndOfLegIndex:(unint64_t)index forced:(BOOL)forced service:(id)service;
+- (void)_maneuverBannerViewEVStationsNotification:(id)notification;
 - (void)_pressedCustomRoute;
 - (void)_pressedDetails;
 - (void)_pressedEndRoute;
@@ -44,54 +44,54 @@
 - (void)_pressedWalkingRoute;
 - (void)_resumeNavigation;
 - (void)_resumedFromSAR;
-- (void)_sceneConnectionsDidChange:(id)a3;
+- (void)_sceneConnectionsDidChange:(id)change;
 - (void)_startTimerToDismissInitialBanner;
-- (void)_startTimerToDismissInitialBannerWithInterval:(double)a3;
+- (void)_startTimerToDismissInitialBannerWithInterval:(double)interval;
 - (void)_startTimerToDisplayInitialBanner;
 - (void)_updateArrivalState;
 - (void)_updateShareETADisclosure;
 - (void)_updateShareETADisclosureIfNecessary;
-- (void)_updateShareETAFooterTextWithSharingIdentity:(id)a3;
-- (void)_updateWithRoute:(id)a3;
-- (void)applyAlphaToContent:(double)a3;
+- (void)_updateShareETAFooterTextWithSharingIdentity:(id)identity;
+- (void)_updateWithRoute:(id)route;
+- (void)applyAlphaToContent:(double)content;
 - (void)didBecomeCurrent;
-- (void)didChangeContainerStyle:(unint64_t)a3;
-- (void)didChangeLayout:(unint64_t)a3;
+- (void)didChangeContainerStyle:(unint64_t)style;
+- (void)didChangeLayout:(unint64_t)layout;
 - (void)didTapShareETAContactButton;
 - (void)feedbackViewDidSelectThumbsDown;
 - (void)feedbackViewDidSelectThumbsUp;
 - (void)incidentsReportingEnablementDidUpdate;
-- (void)navigationService:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)navigationService:(id)a3 didUpdateAlternateWalkingRoute:(id)a4;
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5;
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationService:(id)a3 didUpdateNavTrayGuidance:(id)a4;
-- (void)navigationService:(id)a3 didUpdateTargetLegIndex:(unint64_t)a4;
-- (void)navigationService:(id)a3 didUpdateVehicleParkingInfo:(id)a4;
-- (void)navigationWaypointController:(id)a3 didUpdateDisplayedWaypoints:(id)a4;
+- (void)navigationService:(id)service didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)navigationService:(id)service didUpdateAlternateWalkingRoute:(id)route;
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state;
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)navigationService:(id)service didUpdateNavTrayGuidance:(id)guidance;
+- (void)navigationService:(id)service didUpdateTargetLegIndex:(unint64_t)index;
+- (void)navigationService:(id)service didUpdateVehicleParkingInfo:(id)info;
+- (void)navigationWaypointController:(id)controller didUpdateDisplayedWaypoints:(id)waypoints;
 - (void)offlineMapsStateChanged;
-- (void)pressedDeleteOnCell:(id)a3;
+- (void)pressedDeleteOnCell:(id)cell;
 - (void)pressedHeaderView;
-- (void)pressedPhoneCallOnCell:(id)a3;
-- (void)setConnectedToCarPlay:(BOOL)a3;
-- (void)setCurrentStepIndex:(unint64_t)a3;
-- (void)setReceivingContacts:(id)a3;
-- (void)setShareETAFooterText:(id)a3;
-- (void)sharedTripService:(id)a3 didUpdateReceivers:(id)a4;
-- (void)sharedTripServiceDidUpdateSendingAvailability:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateCardCornerRadiusForLayout:(unint64_t)a3;
+- (void)pressedPhoneCallOnCell:(id)cell;
+- (void)setConnectedToCarPlay:(BOOL)play;
+- (void)setCurrentStepIndex:(unint64_t)index;
+- (void)setReceivingContacts:(id)contacts;
+- (void)setShareETAFooterText:(id)text;
+- (void)sharedTripService:(id)service didUpdateReceivers:(id)receivers;
+- (void)sharedTripServiceDidUpdateSendingAvailability:(id)availability;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateCardCornerRadiusForLayout:(unint64_t)layout;
 - (void)updatedHeight;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willChangeContainerStyle:(unint64_t)a3;
-- (void)willChangeLayout:(unint64_t)a3;
+- (void)willChangeContainerStyle:(unint64_t)style;
+- (void)willChangeLayout:(unint64_t)layout;
 @end
 
 @implementation NavTrayViewController
@@ -102,9 +102,9 @@
   if (!waypointRows)
   {
     v4 = +[MNNavigationService sharedService];
-    v5 = [(NavTrayViewController *)self waypointController];
-    v6 = [v5 displayedWaypoints];
-    v7 = [NavTrayWaypointRow waypointRowsFromNavigationService:v4 withWaypoints:v6];
+    waypointController = [(NavTrayViewController *)self waypointController];
+    displayedWaypoints = [waypointController displayedWaypoints];
+    v7 = [NavTrayWaypointRow waypointRowsFromNavigationService:v4 withWaypoints:displayedWaypoints];
     v8 = self->_waypointRows;
     self->_waypointRows = v7;
 
@@ -121,7 +121,7 @@
   return WeakRetained;
 }
 
-- (void)_maneuverBannerViewEVStationsNotification:(id)a3
+- (void)_maneuverBannerViewEVStationsNotification:(id)notification
 {
   if (![(NavTrayViewController *)self isConnectedToCarPlay])
   {
@@ -137,38 +137,38 @@
   }
 }
 
-- (void)_sceneConnectionsDidChange:(id)a3
+- (void)_sceneConnectionsDidChange:(id)change
 {
   v4 = [UIApplication _maps_isAnySceneConnectedForRole:_UIWindowSceneSessionRoleCarPlay];
 
   [(NavTrayViewController *)self setConnectedToCarPlay:v4];
 }
 
-- (void)pressedPhoneCallOnCell:(id)a3
+- (void)pressedPhoneCallOnCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v5 = sub_100B78EB8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Handle phone call cell tap", buf, 0xCu);
   }
 
-  v6 = [v4 waypoint];
-  v7 = [(NavTrayViewController *)self _destinationPhoneNumbersForWaypoint:v6];
+  waypoint = [cellCopy waypoint];
+  v7 = [(NavTrayViewController *)self _destinationPhoneNumbersForWaypoint:waypoint];
 
   if ([v7 count] < 2)
   {
     v10 = +[UIApplication sharedApplication];
-    v21 = [v7 anyObject];
-    v22 = [v21 unformattedInternationalStringValue];
-    [v10 callPhoneNumber:v22 completion:0];
+    anyObject = [v7 anyObject];
+    unformattedInternationalStringValue = [anyObject unformattedInternationalStringValue];
+    [v10 callPhoneNumber:unformattedInternationalStringValue completion:0];
   }
 
   else
   {
-    v25 = v4;
+    v25 = cellCopy;
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"[NavTray] Phone number prompt" value:@"localized string not found" table:0];
     v10 = [UIAlertController alertControllerWithTitle:v9 message:0 preferredStyle:0];
@@ -193,13 +193,13 @@
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
-          v16 = [v15 stringValue];
+          stringValue = [v15 stringValue];
           v27[0] = _NSConcreteStackBlock;
           v27[1] = 3221225472;
           v27[2] = sub_100B78F0C;
           v27[3] = &unk_10165F220;
           v27[4] = v15;
-          v17 = [UIAlertAction actionWithTitle:v16 style:0 handler:v27];
+          v17 = [UIAlertAction actionWithTitle:stringValue style:0 handler:v27];
           [v10 addAction:v17];
         }
 
@@ -214,19 +214,19 @@
     v20 = [UIAlertAction actionWithTitle:v19 style:1 handler:0];
     [v10 addAction:v20];
 
-    v21 = +[MapsInternalAlertPresentationController sharedInstance];
-    v22 = [(NavTrayViewController *)self view];
-    v23 = [v22 window];
-    v24 = [v23 windowScene];
-    [v21 presentAlertController:v10 fromWindowScene:v24];
+    anyObject = +[MapsInternalAlertPresentationController sharedInstance];
+    unformattedInternationalStringValue = [(NavTrayViewController *)self view];
+    window = [unformattedInternationalStringValue window];
+    windowScene = [window windowScene];
+    [anyObject presentAlertController:v10 fromWindowScene:windowScene];
 
-    v4 = v25;
+    cellCopy = v25;
   }
 }
 
-- (id)_destinationPhoneNumbersForWaypoint:(id)a3
+- (id)_destinationPhoneNumbersForWaypoint:(id)waypoint
 {
-  v3 = a3;
+  waypointCopy = waypoint;
   if ((+[TUCallCapabilities supportsTelephonyCalls]& 1) == 0)
   {
     v11 = +[NSSet set];
@@ -234,20 +234,20 @@
   }
 
   v4 = objc_opt_new();
-  v5 = [v3 findMyHandleID];
+  findMyHandleID = [waypointCopy findMyHandleID];
 
-  if (v5)
+  if (findMyHandleID)
   {
-    v6 = [v3 findMyHandle];
-    v7 = [v6 phoneNumbers];
-    [v4 unionSet:v7];
+    findMyHandle = [waypointCopy findMyHandle];
+    phoneNumbers = [findMyHandle phoneNumbers];
+    [v4 unionSet:phoneNumbers];
   }
 
   else
   {
-    v13 = [v3 addressBookAddress];
+    addressBookAddress = [waypointCopy addressBookAddress];
 
-    if (!v13)
+    if (!addressBookAddress)
     {
       goto LABEL_5;
     }
@@ -256,11 +256,11 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [v3 addressBookAddress];
-    v15 = [v14 contact];
-    v6 = [v15 phoneNumbers];
+    addressBookAddress2 = [waypointCopy addressBookAddress];
+    contact = [addressBookAddress2 contact];
+    findMyHandle = [contact phoneNumbers];
 
-    v16 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v16 = [findMyHandle countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v16)
     {
       v17 = v16;
@@ -271,14 +271,14 @@
         {
           if (*v22 != v18)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(findMyHandle);
           }
 
-          v20 = [*(*(&v21 + 1) + 8 * i) value];
-          [v4 addObject:v20];
+          value = [*(*(&v21 + 1) + 8 * i) value];
+          [v4 addObject:value];
         }
 
-        v17 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v17 = [findMyHandle countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v17);
@@ -286,11 +286,11 @@
   }
 
 LABEL_5:
-  v8 = [v3 geoMapItem];
-  if ([v8 _hasTelephone])
+  geoMapItem = [waypointCopy geoMapItem];
+  if ([geoMapItem _hasTelephone])
   {
-    v9 = [v8 _telephone];
-    v10 = [CNPhoneNumber phoneNumberWithStringValue:v9];
+    _telephone = [geoMapItem _telephone];
+    v10 = [CNPhoneNumber phoneNumberWithStringValue:_telephone];
     [v4 addObject:v10];
   }
 
@@ -301,85 +301,85 @@ LABEL_9:
   return v11;
 }
 
-- (void)pressedDeleteOnCell:(id)a3
+- (void)pressedDeleteOnCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v5 = sub_100B78EB8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v13 = 134349056;
-    v14 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Handle delete waypoint cell tap", &v13, 0xCu);
   }
 
-  v6 = [v4 waypoint];
-  if (v6 && (-[NavTrayViewController waypointController](self, "waypointController"), v7 = objc_claimAutoreleasedReturnValue(), [v7 displayedWaypoints], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "indexOfObject:", v6), v8, v7, v9 != 0x7FFFFFFFFFFFFFFFLL))
+  waypoint = [cellCopy waypoint];
+  if (waypoint && (-[NavTrayViewController waypointController](self, "waypointController"), v7 = objc_claimAutoreleasedReturnValue(), [v7 displayedWaypoints], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "indexOfObject:", waypoint), v8, v7, v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
     [GEOAPPortal captureUserAction:294 target:self->_analyticsTarget value:0];
     v12 = sub_100B78EB8();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = 134349312;
-      v14 = self;
+      selfCopy3 = self;
       v15 = 2048;
       v16 = v9;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Deleting waypoint at index %lu", &v13, 0x16u);
     }
 
-    v10 = [(NavTrayViewController *)self waypointController];
-    [v10 removeWaypointAt:v9];
+    waypointController = [(NavTrayViewController *)self waypointController];
+    [waypointController removeWaypointAt:v9];
   }
 
   else
   {
-    v10 = sub_100B78EB8();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    waypointController = sub_100B78EB8();
+    if (os_log_type_enabled(waypointController, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v6 shortDescription];
+      shortDescription = [waypoint shortDescription];
       v13 = 134349570;
-      v14 = self;
+      selfCopy3 = self;
       v15 = 2112;
-      v16 = v4;
+      v16 = cellCopy;
       v17 = 2112;
-      v18 = v11;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[%{public}p] Couldn't delete cell: %@ waypoint: %@", &v13, 0x20u);
+      v18 = shortDescription;
+      _os_log_impl(&_mh_execute_header, waypointController, OS_LOG_TYPE_ERROR, "[%{public}p] Couldn't delete cell: %@ waypoint: %@", &v13, 0x20u);
     }
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = sub_100B78EB8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v20 = 134349314;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v6;
+    v23 = pathCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] NavTrayViewController tableView:didSelectRowAtIndexPath: %@", &v20, 0x16u);
   }
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  v9 = -[NSArray objectAtIndexedSubscript:](self->_usedSections, "objectAtIndexedSubscript:", [v6 section]);
-  v10 = [v9 integerValue];
-  v11 = [v6 row];
-  if (v10 == 1)
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v9 = -[NSArray objectAtIndexedSubscript:](self->_usedSections, "objectAtIndexedSubscript:", [pathCopy section]);
+  integerValue = [v9 integerValue];
+  v11 = [pathCopy row];
+  if (integerValue == 1)
   {
-    v16 = [(NavTrayViewController *)self _delegate];
-    [v16 suppressTransitionsOfContainee:self];
+    _delegate = [(NavTrayViewController *)self _delegate];
+    [_delegate suppressTransitionsOfContainee:self];
 
-    v17 = [(ContaineeViewController *)self cardPresentationController];
-    [v17 wantsLayout:1];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController wantsLayout:1];
 
     v18 = [(NSDictionary *)self->_traySections objectForKeyedSubscript:v9];
     v13 = [v18 objectAtIndexedSubscript:v11];
 
-    v19 = [v13 unsignedIntegerValue];
-    if (v19 > 2)
+    unsignedIntegerValue = [v13 unsignedIntegerValue];
+    if (unsignedIntegerValue > 2)
     {
-      switch(v19)
+      switch(unsignedIntegerValue)
       {
         case 3:
           [(NavTrayViewController *)self _pressedReport];
@@ -393,9 +393,9 @@ LABEL_9:
       }
     }
 
-    else if ((v19 - 1) >= 2)
+    else if ((unsignedIntegerValue - 1) >= 2)
     {
-      if (!v19)
+      if (!unsignedIntegerValue)
       {
         [(NavTrayViewController *)self _pressedSAR];
       }
@@ -409,38 +409,38 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  if (!v10)
+  if (!integerValue)
   {
     v12 = [(NSDictionary *)self->_traySections objectForKeyedSubscript:v9];
     v13 = [v12 objectAtIndexedSubscript:v11];
 
-    v14 = [(NavTrayViewController *)self _delegate];
-    v15 = [v13 waypoint];
-    [v14 pressedViewWaypoint:v15];
+    _delegate2 = [(NavTrayViewController *)self _delegate];
+    waypoint = [v13 waypoint];
+    [_delegate2 pressedViewWaypoint:waypoint];
 
 LABEL_17:
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = -[NSArray objectAtIndexedSubscript:](self->_usedSections, "objectAtIndexedSubscript:", [a4 section]);
+  v4 = -[NSArray objectAtIndexedSubscript:](self->_usedSections, "objectAtIndexedSubscript:", [path section]);
   v5 = [v4 integerValue] != 2;
 
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
     [(NavTrayMetrics *)self->_metrics endButtonTopPadding];
     goto LABEL_5;
   }
 
   v7 = 10.0;
-  if (a4 == 2)
+  if (section == 2)
   {
     [(NavTrayMetrics *)self->_metrics actionButtonBottomPadding];
 LABEL_5:
@@ -450,10 +450,10 @@ LABEL_5:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = 2.22044605e-16;
-  if (a4)
+  if (section)
   {
     return 0.0;
   }
@@ -461,36 +461,36 @@ LABEL_5:
   return result;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = objc_opt_new();
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   usedSections = self->_usedSections;
-  v8 = a4;
-  v9 = -[NSArray objectAtIndexedSubscript:](usedSections, "objectAtIndexedSubscript:", [v8 section]);
-  v10 = [v9 integerValue];
-  v11 = [v8 row];
+  pathCopy = path;
+  v9 = -[NSArray objectAtIndexedSubscript:](usedSections, "objectAtIndexedSubscript:", [pathCopy section]);
+  integerValue = [v9 integerValue];
+  v11 = [pathCopy row];
 
-  if (v10 == 2)
+  if (integerValue == 2)
   {
     v29 = objc_opt_class();
     v30 = NSStringFromClass(v29);
-    v14 = [v6 dequeueReusableCellWithIdentifier:v30];
+    v14 = [viewCopy dequeueReusableCellWithIdentifier:v30];
 
     [(NavTrayButtonCell *)v14 setMetrics:self->_metrics];
     [(NavTrayButtonCell *)v14 setButtonStylingDelegate:self];
     if ([(NavTrayViewController *)self _isEligibleToShowWalkingButton])
     {
       v31 = +[MNNavigationService sharedService];
-      v32 = [v31 alternateWalkingRouteDisplayETAInfo];
+      alternateWalkingRouteDisplayETAInfo = [v31 alternateWalkingRouteDisplayETAInfo];
 
-      [(NavTrayButtonCell *)v14 setHasWalkingETAInfo:v32 != 0];
+      [(NavTrayButtonCell *)v14 setHasWalkingETAInfo:alternateWalkingRouteDisplayETAInfo != 0];
     }
 
     objc_storeStrong(&self->_navTrayEndCell, v14);
@@ -498,37 +498,37 @@ LABEL_5:
 
   else
   {
-    if (v10 == 1)
+    if (integerValue == 1)
     {
       v23 = [(NSDictionary *)self->_traySections objectForKeyedSubscript:v9];
       v16 = [v23 objectAtIndexedSubscript:v11];
 
-      v24 = [(NavTrayViewController *)self actionCells];
-      v14 = [v24 objectForKeyedSubscript:v16];
+      actionCells = [(NavTrayViewController *)self actionCells];
+      v14 = [actionCells objectForKeyedSubscript:v16];
 
       if (!v14)
       {
         v25 = [_TtC4Maps17NavTrayButtonCell alloc];
-        v26 = [v16 unsignedIntegerValue];
-        if ((v26 - 1) >= 5)
+        unsignedIntegerValue = [v16 unsignedIntegerValue];
+        if ((unsignedIntegerValue - 1) >= 5)
         {
           v27 = 0;
         }
 
         else
         {
-          v27 = v26;
+          v27 = unsignedIntegerValue;
         }
 
         v14 = [(NavTrayButtonCell *)v25 initWithStyle:v27];
-        v28 = [(NavTrayViewController *)self actionCells];
-        [v28 setObject:v14 forKeyedSubscript:v16];
+        actionCells2 = [(NavTrayViewController *)self actionCells];
+        [actionCells2 setObject:v14 forKeyedSubscript:v16];
       }
     }
 
     else
     {
-      if (v10)
+      if (integerValue)
       {
         v14 = objc_opt_new();
         goto LABEL_18;
@@ -536,21 +536,21 @@ LABEL_5:
 
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v14 = [v6 dequeueReusableCellWithIdentifier:v13];
+      v14 = [viewCopy dequeueReusableCellWithIdentifier:v13];
 
       v15 = [(NSDictionary *)self->_traySections objectForKeyedSubscript:v9];
       v16 = [v15 objectAtIndexedSubscript:v11];
 
-      v17 = [v16 waypoint];
+      waypoint = [v16 waypoint];
       [(NavTrayButtonCell *)v14 setDelegate:self];
-      [(NavTrayButtonCell *)v14 setWaypoint:v17];
-      v18 = [(NavTrayViewController *)self traitCollection];
-      [v18 displayScale];
-      v19 = [v17 _maps_waypointImageWithScale:?];
+      [(NavTrayButtonCell *)v14 setWaypoint:waypoint];
+      traitCollection = [(NavTrayViewController *)self traitCollection];
+      [traitCollection displayScale];
+      v19 = [waypoint _maps_waypointImageWithScale:?];
       [(NavTrayButtonCell *)v14 setWaypointImage:v19];
 
-      v20 = [v17 _maps_waypointName];
-      [(NavTrayButtonCell *)v14 setTitle:v20];
+      _maps_waypointName = [waypoint _maps_waypointName];
+      [(NavTrayButtonCell *)v14 setTitle:_maps_waypointName];
 
       v21 = [(NSDictionary *)self->_traySections objectForKeyedSubscript:v9];
       if ([v21 count] <= 1)
@@ -560,11 +560,11 @@ LABEL_5:
 
       else
       {
-        v22 = [v16 etaString];
-        [(NavTrayButtonCell *)v14 setEtaString:v22];
+        etaString = [v16 etaString];
+        [(NavTrayButtonCell *)v14 setEtaString:etaString];
       }
 
-      [(NavTrayButtonCell *)v14 applyWithIsCallable:[(NavTrayViewController *)self _isWaypointCallable:v17] isDeletable:[(NavTrayViewController *)self _isWaypointRemovable:v17]];
+      [(NavTrayButtonCell *)v14 applyWithIsCallable:[(NavTrayViewController *)self _isWaypointCallable:waypoint] isDeletable:[(NavTrayViewController *)self _isWaypointRemovable:waypoint]];
     }
   }
 
@@ -573,49 +573,49 @@ LABEL_18:
   return v14;
 }
 
-- (BOOL)_isWaypointCallable:(id)a3
+- (BOOL)_isWaypointCallable:(id)callable
 {
-  v3 = a3;
+  callableCopy = callable;
   if (+[TUCallCapabilities supportsTelephonyCalls])
   {
-    v4 = [v3 findMyHandle];
-    v5 = [v4 phoneNumbers];
-    if ([v5 count])
+    findMyHandle = [callableCopy findMyHandle];
+    phoneNumbers = [findMyHandle phoneNumbers];
+    if ([phoneNumbers count])
     {
-      v6 = 1;
+      _hasTelephone = 1;
     }
 
     else
     {
-      v7 = [v3 addressBookAddress];
-      v8 = [v7 contact];
-      v9 = [v8 phoneNumbers];
-      if ([v9 count])
+      addressBookAddress = [callableCopy addressBookAddress];
+      contact = [addressBookAddress contact];
+      phoneNumbers2 = [contact phoneNumbers];
+      if ([phoneNumbers2 count])
       {
-        v6 = 1;
+        _hasTelephone = 1;
       }
 
       else
       {
-        v10 = [v3 geoMapItem];
-        v6 = [v10 _hasTelephone];
+        geoMapItem = [callableCopy geoMapItem];
+        _hasTelephone = [geoMapItem _hasTelephone];
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    _hasTelephone = 0;
   }
 
-  return v6;
+  return _hasTelephone;
 }
 
-- (BOOL)_isWaypointRemovable:(id)a3
+- (BOOL)_isWaypointRemovable:(id)removable
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_isSteppingMode || ([v4 isServerProvidedWaypoint] & 1) != 0)
+  removableCopy = removable;
+  v5 = removableCopy;
+  if (self->_isSteppingMode || ([removableCopy isServerProvidedWaypoint] & 1) != 0)
   {
     v6 = 0;
   }
@@ -629,9 +629,9 @@ LABEL_18:
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(NSArray *)self->_usedSections objectAtIndexedSubscript:a4];
+  v5 = [(NSArray *)self->_usedSections objectAtIndexedSubscript:section];
   v6 = [(NSDictionary *)self->_traySections objectForKeyedSubscript:v5];
   v7 = [v6 count];
 
@@ -640,67 +640,67 @@ LABEL_18:
 
 - (void)offlineMapsStateChanged
 {
-  v3 = [(NavTrayViewController *)self route];
-  [(NavTrayViewController *)self _updateWithRoute:v3];
+  route = [(NavTrayViewController *)self route];
+  [(NavTrayViewController *)self _updateWithRoute:route];
 }
 
-- (void)_updateShareETAFooterTextWithSharingIdentity:(id)a3
+- (void)_updateShareETAFooterTextWithSharingIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[NSBundle mainBundle];
   v9 = [v5 localizedStringForKey:@"[SharedETA] sender info label" value:@"localized string not found" table:0];
 
-  v6 = [v4 name];
-  v7 = [v4 handle];
+  name = [identityCopy name];
+  handle = [identityCopy handle];
 
-  v8 = [NSString stringWithFormat:v9, v6, v7];
+  v8 = [NSString stringWithFormat:v9, name, handle];
   [(NavTrayViewController *)self setShareETAFooterText:v8];
 }
 
-- (void)sharedTripService:(id)a3 didUpdateReceivers:(id)a4
+- (void)sharedTripService:(id)service didUpdateReceivers:(id)receivers
 {
-  v5 = a4;
-  [(NavTrayViewController *)self setReceivingContacts:v5];
+  receiversCopy = receivers;
+  [(NavTrayViewController *)self setReceivingContacts:receiversCopy];
   v6 = +[UIApplication _maps_keyMapsSceneDelegate];
   [v6 setNeedsUserActivityUpdate];
 
-  v7 = [v5 count];
+  v7 = [receiversCopy count];
   if (!v7)
   {
-    v8 = [(NavTrayViewController *)self route];
-    [(NavTrayViewController *)self _updateWithRoute:v8];
+    route = [(NavTrayViewController *)self route];
+    [(NavTrayViewController *)self _updateWithRoute:route];
   }
 
   [(NavTrayViewController *)self _updateShareETADisclosureIfNecessary];
 }
 
-- (void)sharedTripServiceDidUpdateSendingAvailability:(id)a3
+- (void)sharedTripServiceDidUpdateSendingAvailability:(id)availability
 {
-  v4 = [(NavTrayViewController *)self route];
-  [(NavTrayViewController *)self _updateWithRoute:v4];
+  route = [(NavTrayViewController *)self route];
+  [(NavTrayViewController *)self _updateWithRoute:route];
 
   [(NavTrayViewController *)self _updateShareETADisclosureIfNecessary];
 }
 
 - (void)incidentsReportingEnablementDidUpdate
 {
-  v3 = [(NavTrayViewController *)self route];
-  [(NavTrayViewController *)self _updateWithRoute:v3];
+  route = [(NavTrayViewController *)self route];
+  [(NavTrayViewController *)self _updateWithRoute:route];
 }
 
 - (int)currentUITargetForAnalytics
 {
-  v2 = [(NavTrayViewController *)self route];
-  v3 = [v2 transportType];
+  route = [(NavTrayViewController *)self route];
+  transportType = [route transportType];
 
-  if (v3 > 3)
+  if (transportType > 3)
   {
     return 0;
   }
 
   else
   {
-    return dword_101212C50[v3];
+    return dword_101212C50[transportType];
   }
 }
 
@@ -710,7 +710,7 @@ LABEL_18:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Resuming navigation", buf, 0xCu);
   }
 
@@ -727,9 +727,9 @@ LABEL_18:
   [UIView animateWithDuration:4 delay:v4 options:0 animations:0.25 completion:0.0];
 }
 
-- (void)navigationService:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6
+- (void)navigationService:(id)service didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason
 {
-  if (a6 - 3 <= 1)
+  if (reason - 3 <= 1)
   {
     [GEOAPPortal captureUserAction:297 target:self->_analyticsTarget value:0];
   }
@@ -737,22 +737,22 @@ LABEL_18:
   [(NavTrayViewController *)self _resumeNavigation];
 }
 
-- (void)_handleArrivalAtEndOfLegIndex:(unint64_t)a3 forced:(BOOL)a4 service:(id)a5
+- (void)_handleArrivalAtEndOfLegIndex:(unint64_t)index forced:(BOOL)forced service:(id)service
 {
-  v8 = a5;
-  if (![(NavTrayViewController *)self isInArrivalState]|| a4)
+  serviceCopy = service;
+  if (![(NavTrayViewController *)self isInArrivalState]|| forced)
   {
-    v14 = [v8 route];
-    v15 = [v14 legs];
-    if ([v15 count] <= a3)
+    route = [serviceCopy route];
+    legs = [route legs];
+    if ([legs count] <= index)
     {
     }
 
     else
     {
-      v16 = [v8 route];
-      v17 = [v16 legs];
-      v9 = [v17 objectAtIndexedSubscript:a3];
+      route2 = [serviceCopy route];
+      legs2 = [route2 legs];
+      v9 = [legs2 objectAtIndexedSubscript:index];
 
       if (v9)
       {
@@ -760,16 +760,16 @@ LABEL_18:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           *buf = 134349312;
-          v33 = self;
+          selfCopy3 = self;
           v34 = 2048;
-          v35 = a3;
+          indexCopy2 = index;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "[%{public}p] Handling arrival at end of leg index: %lu", buf, 0x16u);
         }
 
-        v19 = [v8 route];
-        v20 = [v19 isLegIndexOfLastLeg:a3];
+        route3 = [serviceCopy route];
+        v20 = [route3 isLegIndexOfLastLeg:index];
 
-        v21 = [v8 arrivalChargingStationInfo];
+        arrivalChargingStationInfo = [serviceCopy arrivalChargingStationInfo];
 
         [(NavTrayViewController *)self setIsInArrivalState:1];
         [(NavTrayViewController *)self loadViewIfNeeded];
@@ -785,8 +785,8 @@ LABEL_18:
         v31[3] = &unk_101661B18;
         v31[4] = self;
         [UIView animateWithDuration:4 delay:v31 options:0 animations:0.25 completion:0.0];
-        v24 = [(ContaineeViewController *)self cardPresentationController];
-        [v24 wantsLayout:1];
+        cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+        [cardPresentationController wantsLayout:1];
 
         v25 = objc_loadWeakRetained(&self->_navigationDelegate);
         [v25 presentTray];
@@ -797,12 +797,12 @@ LABEL_18:
         }
 
         analyticsTarget = self->_analyticsTarget;
-        v27 = [NSString stringWithFormat:@"%ld", a3];
-        [GEOAPPortal captureUserAction:293 target:analyticsTarget value:v27];
+        index = [NSString stringWithFormat:@"%ld", index];
+        [GEOAPPortal captureUserAction:293 target:analyticsTarget value:index];
 
-        if (((v21 == 0) & v20) == 0)
+        if (((arrivalChargingStationInfo == 0) & v20) == 0)
         {
-          if (v21)
+          if (arrivalChargingStationInfo)
           {
             v28 = 295;
           }
@@ -831,9 +831,9 @@ LABEL_18:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349312;
-      v33 = self;
+      selfCopy3 = self;
       v34 = 2048;
-      v35 = a3;
+      indexCopy2 = index;
       v10 = "[%{public}p] _handleDidArriveAtEndOfLegIndex:service: received an invalid legIndex: %lu";
       v11 = v9;
       v12 = OS_LOG_TYPE_ERROR;
@@ -848,7 +848,7 @@ LABEL_18:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v33 = self;
+      selfCopy3 = self;
       v10 = "[%{public}p] _handleDidArriveAtEndOfLegIndex:service: already in arrival state";
       v11 = v9;
       v12 = OS_LOG_TYPE_INFO;
@@ -864,29 +864,29 @@ LABEL_21:
 - (void)_updateArrivalState
 {
   v3 = +[MNNavigationService sharedService];
-  v4 = [v3 arrivalInfo];
-  v5 = v4;
-  if (!v4 || ![v4 arrivalState])
+  arrivalInfo = [v3 arrivalInfo];
+  v5 = arrivalInfo;
+  if (!arrivalInfo || ![arrivalInfo arrivalState])
   {
     [(NavTrayViewController *)self _resumeNavigation];
     goto LABEL_50;
   }
 
-  v6 = [v5 arrivalState];
-  if ((v6 - 1) > 5)
+  arrivalState = [v5 arrivalState];
+  if ((arrivalState - 1) > 5)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = qword_101215480[(v6 - 1)];
+    v7 = qword_101215480[(arrivalState - 1)];
   }
 
   [(NavTrayHeaderView *)self->_navHeaderView setArrivalState:v7];
-  v8 = [v5 legIndex];
-  v9 = [v3 route];
-  v10 = [v9 isLegIndexOfLastLeg:v8];
+  legIndex = [v5 legIndex];
+  route = [v3 route];
+  v10 = [route isLegIndexOfLastLeg:legIndex];
 
   if (v10)
   {
@@ -894,7 +894,7 @@ LABEL_21:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v44 = self;
+      selfCopy9 = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] Arrived at end of route", buf, 0xCu);
     }
 
@@ -905,15 +905,15 @@ LABEL_21:
 
   else
   {
-    v14 = [v3 isArrivedAtEVCharger];
+    isArrivedAtEVCharger = [v3 isArrivedAtEVCharger];
     v15 = sub_100B78EB8();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
-    if (v14)
+    if (isArrivedAtEVCharger)
     {
       if (v16)
       {
         *buf = 134349056;
-        v44 = self;
+        selfCopy9 = self;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}p] Arrived at EV stop", buf, 0xCu);
       }
 
@@ -926,7 +926,7 @@ LABEL_21:
       if (v16)
       {
         *buf = 134349056;
-        v44 = self;
+        selfCopy9 = self;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}p] Arrived at mid way stop", buf, 0xCu);
       }
 
@@ -936,32 +936,32 @@ LABEL_21:
   }
 
   [(NavTrayHeaderView *)navHeaderView setAlternateButtonTypes:v13];
-  v17 = [v3 destination];
-  v18 = [v17 findMyHandleID];
-  if (!v18)
+  destination = [v3 destination];
+  findMyHandleID = [destination findMyHandleID];
+  if (!findMyHandleID)
   {
     goto LABEL_25;
   }
 
-  v19 = v18;
-  v20 = [v3 arrivalInfo];
-  if (([v20 isInArrivalState] & 1) == 0)
+  v19 = findMyHandleID;
+  arrivalInfo2 = [v3 arrivalInfo];
+  if (([arrivalInfo2 isInArrivalState] & 1) == 0)
   {
 
 LABEL_25:
     goto LABEL_26;
   }
 
-  v21 = [(NavTrayViewController *)self _isEligibleToShowFindMyButton];
+  _isEligibleToShowFindMyButton = [(NavTrayViewController *)self _isEligibleToShowFindMyButton];
 
-  if (!v21)
+  if (!_isEligibleToShowFindMyButton)
   {
 LABEL_26:
     v25 = sub_100B78EB8();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v44 = self;
+      selfCopy9 = self;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "[%{public}p] Not eligible to show find my button", buf, 0xCu);
     }
 
@@ -974,7 +974,7 @@ LABEL_26:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v44 = self;
+    selfCopy9 = self;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[%{public}p] Eligible to show find my button", buf, 0xCu);
   }
 
@@ -988,7 +988,7 @@ LABEL_29:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v44 = self;
+      selfCopy9 = self;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "[%{public}p] Eligible to show walking button", buf, 0xCu);
     }
 
@@ -1002,7 +1002,7 @@ LABEL_29:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v44 = self;
+      selfCopy9 = self;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "[%{public}p] Not eligible to show walking button", buf, 0xCu);
     }
 
@@ -1011,15 +1011,15 @@ LABEL_29:
   }
 
   [(NavTrayHeaderView *)v30 setAlternateButtonTypes:v31];
-  v33 = [v3 destination];
-  v34 = [v33 route];
-  if (v34 && (v35 = v34, [v3 arrivalInfo], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "isInArrivalState"), v36, v35, v37))
+  destination2 = [v3 destination];
+  route2 = [destination2 route];
+  if (route2 && (v35 = route2, [v3 arrivalInfo], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "isInArrivalState"), v36, v35, v37))
   {
     v38 = sub_100B78EB8();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v44 = self;
+      selfCopy9 = self;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "[%{public}p] Eligible to show arrival button for custom route", buf, 0xCu);
     }
 
@@ -1033,7 +1033,7 @@ LABEL_29:
     if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v44 = self;
+      selfCopy9 = self;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "[%{public}p] Not eligible to show arrival button for custom route", buf, 0xCu);
     }
 
@@ -1056,65 +1056,65 @@ LABEL_29:
 
   else
   {
-    [(NavTrayViewController *)self _handleArrivalAtEndOfLegIndex:v8 service:v3];
+    [(NavTrayViewController *)self _handleArrivalAtEndOfLegIndex:legIndex service:v3];
   }
 
 LABEL_50:
 }
 
-- (void)navigationService:(id)a3 didUpdateNavTrayGuidance:(id)a4
+- (void)navigationService:(id)service didUpdateNavTrayGuidance:(id)guidance
 {
-  v5 = a4;
+  guidanceCopy = guidance;
   v6 = sub_100B78EB8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v5;
+    v10 = guidanceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Got updated nav tray guidance event: %@", &v7, 0x16u);
   }
 
   [(NavTrayViewController *)self _updateArrivalState];
 }
 
-- (void)navigationService:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5
+- (void)navigationService:(id)service didUpdateArrivalInfo:(id)info previousState:(int64_t)state
 {
-  v6 = a4;
+  infoCopy = info;
   v7 = sub_100B78EB8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 destination];
+    destination = [infoCopy destination];
     v9 = 134349570;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = infoCopy;
     v13 = 2112;
-    v14 = v8;
+    v14 = destination;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Got updated arrival info: %@ for destination: %@", &v9, 0x20u);
   }
 
   [(NavTrayViewController *)self _updateArrivalState];
 }
 
-- (void)navigationService:(id)a3 didUpdateTargetLegIndex:(unint64_t)a4
+- (void)navigationService:(id)service didUpdateTargetLegIndex:(unint64_t)index
 {
   v6 = sub_100B78EB8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 134349312;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = a4;
+    indexCopy = index;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Updated target leg index: %lu", &v7, 0x16u);
   }
 
   [(NavTrayViewController *)self _updateArrivalState];
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
-  if ([(NavTrayHeaderView *)self->_navHeaderView arrivalState:a3]== 3 || [(NavTrayHeaderView *)self->_navHeaderView arrivalState]== 4)
+  if ([(NavTrayHeaderView *)self->_navHeaderView arrivalState:service]== 3 || [(NavTrayHeaderView *)self->_navHeaderView arrivalState]== 4)
   {
     navHeaderView = self->_navHeaderView;
 
@@ -1122,27 +1122,27 @@ LABEL_50:
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateVehicleParkingInfo:(id)a4
+- (void)navigationService:(id)service didUpdateVehicleParkingInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  infoCopy = info;
   v8 = sub_100B78EB8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v18 = 134349314;
-    v19 = self;
+    selfCopy3 = self;
     v20 = 2112;
-    v21 = v7;
+    v21 = infoCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Updating vehicle parking info: %@", &v18, 0x16u);
   }
 
-  if (-[NavTrayViewController _isEligibleToShowWalkingButton](self, "_isEligibleToShowWalkingButton") && ([v6 alternateWalkingRoute], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, objc_msgSend(v6, "arrivalInfo"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isInParkingState"), v11, v10, v12))
+  if (-[NavTrayViewController _isEligibleToShowWalkingButton](self, "_isEligibleToShowWalkingButton") && ([serviceCopy alternateWalkingRoute], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, objc_msgSend(serviceCopy, "arrivalInfo"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isInParkingState"), v11, v10, v12))
   {
     v13 = sub_100B78EB8();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v18 = 134349056;
-      v19 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}p] Will show walking route alongside parking info", &v18, 0xCu);
     }
 
@@ -1156,7 +1156,7 @@ LABEL_50:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v18 = 134349056;
-      v19 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] Will NOT show walking route alongside parking info", &v18, 0xCu);
     }
 
@@ -1167,29 +1167,29 @@ LABEL_50:
   [(NavTrayHeaderView *)navHeaderView setAlternateButtonTypes:v15];
   [(NavTrayHeaderView *)self->_navHeaderView clearAnimations];
   [(NavTrayHeaderView *)self->_navHeaderView applyArrivalState];
-  v17 = [(ContaineeViewController *)self cardPresentationController];
-  [v17 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 }
 
-- (void)navigationService:(id)a3 didUpdateAlternateWalkingRoute:(id)a4
+- (void)navigationService:(id)service didUpdateAlternateWalkingRoute:(id)route
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  routeCopy = route;
   v8 = sub_100B78EB8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 uniqueRouteID];
+    uniqueRouteID = [routeCopy uniqueRouteID];
     v26 = 134349314;
-    v27 = self;
+    selfCopy5 = self;
     v28 = 2112;
-    v29 = v9;
+    v29 = uniqueRouteID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Updating alternate walking route: %@", &v26, 0x16u);
   }
 
-  v10 = [(NavTrayViewController *)self _isEligibleToShowWalkingButton];
-  if (v7)
+  _isEligibleToShowWalkingButton = [(NavTrayViewController *)self _isEligibleToShowWalkingButton];
+  if (routeCopy)
   {
-    v11 = v10;
+    v11 = _isEligibleToShowWalkingButton;
   }
 
   else
@@ -1199,16 +1199,16 @@ LABEL_50:
 
   [(NavTrayEndCell *)self->_navTrayEndCell setHasWalkingETAInfo:v11];
   [(NavTrayEndCell *)self->_navTrayEndCell updateAlternateWalkingRouteDuration];
-  v12 = [v6 destination];
-  v13 = [v12 findMyHandleID];
-  if (!v13)
+  destination = [serviceCopy destination];
+  findMyHandleID = [destination findMyHandleID];
+  if (!findMyHandleID)
   {
     goto LABEL_14;
   }
 
-  v14 = v13;
-  v15 = [v6 arrivalInfo];
-  if (([v15 isInArrivalState] & 1) == 0)
+  v14 = findMyHandleID;
+  arrivalInfo = [serviceCopy arrivalInfo];
+  if (([arrivalInfo isInArrivalState] & 1) == 0)
   {
 
 LABEL_14:
@@ -1217,7 +1217,7 @@ LABEL_15:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v26 = 134349056;
-      v27 = self;
+      selfCopy5 = self;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "[%{public}p] Not eligible to show find my button", &v26, 0xCu);
     }
 
@@ -1230,9 +1230,9 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  v16 = [(NavTrayViewController *)self _isEligibleToShowFindMyButton];
+  _isEligibleToShowFindMyButton = [(NavTrayViewController *)self _isEligibleToShowFindMyButton];
 
-  if (!v16)
+  if (!_isEligibleToShowFindMyButton)
   {
     goto LABEL_15;
   }
@@ -1241,7 +1241,7 @@ LABEL_15:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v26 = 134349056;
-    v27 = self;
+    selfCopy5 = self;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}p] Eligible to show find my button", &v26, 0xCu);
   }
 
@@ -1252,17 +1252,17 @@ LABEL_15:
   }
 
 LABEL_18:
-  v19 = [v6 arrivalInfo];
-  v20 = [v19 isInParkingState];
+  arrivalInfo2 = [serviceCopy arrivalInfo];
+  isInParkingState = [arrivalInfo2 isInParkingState];
 
-  if (!v20)
+  if (!isInParkingState)
   {
 LABEL_22:
     v24 = sub_100B78EB8();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       v26 = 134349056;
-      v27 = self;
+      selfCopy5 = self;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "[%{public}p] Not eligible to show walking button", &v26, 0xCu);
     }
 
@@ -1275,7 +1275,7 @@ LABEL_22:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     v26 = 134349056;
-    v27 = self;
+    selfCopy5 = self;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}p] Eligible to show walking button", &v26, 0xCu);
   }
 
@@ -1285,58 +1285,58 @@ LABEL_25:
   [(NavTrayHeaderView *)navHeaderView setAlternateButtonTypes:v23];
   [(NavTrayHeaderView *)self->_navHeaderView clearAnimations];
   [(NavTrayHeaderView *)self->_navHeaderView applyArrivalState];
-  v25 = [(ContaineeViewController *)self cardPresentationController];
-  [v25 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 }
 
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info
 {
-  v7 = a4;
+  aCopy = a;
   v33 = [(NSArray *)self->_usedSections indexOfObject:&off_1016E89F0];
   if (v33 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v7 routeID];
-    v9 = [(GEOComposedRoute *)self->_route uniqueRouteID];
-    v10 = [v8 isEqual:v9];
+    routeID = [aCopy routeID];
+    uniqueRouteID = [(GEOComposedRoute *)self->_route uniqueRouteID];
+    v10 = [routeID isEqual:uniqueRouteID];
 
     if (v10)
     {
-      v11 = [v7 legInfos];
-      v12 = [v11 count];
-      v13 = [(NavTrayViewController *)self waypointRows];
-      v14 = [v13 count];
+      legInfos = [aCopy legInfos];
+      v12 = [legInfos count];
+      waypointRows = [(NavTrayViewController *)self waypointRows];
+      v14 = [waypointRows count];
 
       if (v12 != v14)
       {
         v15 = sub_100B78EB8();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v16 = [v7 legInfos];
-          v17 = [v16 count];
-          v18 = [(NavTrayViewController *)self waypointRows];
+          legInfos2 = [aCopy legInfos];
+          v17 = [legInfos2 count];
+          waypointRows2 = [(NavTrayViewController *)self waypointRows];
           *buf = 134349568;
-          v44 = self;
+          selfCopy = self;
           v45 = 1024;
           v46 = v17;
           v47 = 1024;
-          v48 = [v18 count];
+          v48 = [waypointRows2 count];
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "[%{public}p] NavTrayViewController number of legs in MNDisplayETAInfo (%d) does not match number of waypoint rows in table (%d). Attempting to continue but ETA will likely be wrong.", buf, 0x18u);
         }
       }
 
-      v19 = [(NavTrayViewController *)self tableView];
-      v20 = [v19 indexPathsForVisibleRows];
+      tableView = [(NavTrayViewController *)self tableView];
+      indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
       v21 = [NSMutableArray alloc];
-      v22 = [v7 legInfos];
-      v23 = [v21 initWithCapacity:{objc_msgSend(v22, "count")}];
+      legInfos3 = [aCopy legInfos];
+      v23 = [v21 initWithCapacity:{objc_msgSend(legInfos3, "count")}];
 
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v31 = v7;
-      obj = [v7 legInfos];
+      v31 = aCopy;
+      obj = [aCopy legInfos];
       v24 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v24)
       {
@@ -1352,16 +1352,16 @@ LABEL_25:
             }
 
             v28 = *(*(&v38 + 1) + 8 * i);
-            v29 = [(NavTrayViewController *)self waypointRows];
+            waypointRows3 = [(NavTrayViewController *)self waypointRows];
             v34[0] = _NSConcreteStackBlock;
             v34[1] = 3221225472;
             v34[2] = sub_100B7B994;
             v34[3] = &unk_10163B5C8;
             v34[4] = v28;
             v37 = v33;
-            v35 = v20;
+            v35 = indexPathsForVisibleRows;
             v36 = v23;
-            [v29 enumerateObjectsUsingBlock:v34];
+            [waypointRows3 enumerateObjectsUsingBlock:v34];
           }
 
           v25 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -1372,19 +1372,19 @@ LABEL_25:
 
       if ([v23 count])
       {
-        v30 = [(NavTrayViewController *)self tableView];
-        [v30 reloadRowsAtIndexPaths:v23 withRowAnimation:5];
+        tableView2 = [(NavTrayViewController *)self tableView];
+        [tableView2 reloadRowsAtIndexPaths:v23 withRowAnimation:5];
       }
 
-      v7 = v31;
+      aCopy = v31;
     }
   }
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  v6 = *&a4;
-  v8 = a5;
+  v6 = *&type;
+  routeCopy = route;
   v9 = sub_100B78EB8();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -1399,43 +1399,43 @@ LABEL_25:
     }
 
     *buf = 134349314;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Got new transport type: %@", buf, 0x16u);
   }
 
-  [(NavTrayViewController *)self _updateWithRoute:v8];
+  [(NavTrayViewController *)self _updateWithRoute:routeCopy];
   [(NavTrayViewController *)self _resumeNavigation];
 }
 
-- (void)setCurrentStepIndex:(unint64_t)a3
+- (void)setCurrentStepIndex:(unint64_t)index
 {
-  v5 = [(NavTrayViewController *)self route];
-  v6 = [v5 steps];
-  v7 = [v6 count];
+  route = [(NavTrayViewController *)self route];
+  steps = [route steps];
+  v7 = [steps count];
 
-  if (v7 > a3)
+  if (v7 > index)
   {
-    v8 = [v5 steps];
-    v9 = [v8 objectAtIndexedSubscript:a3];
+    steps2 = [route steps];
+    v9 = [steps2 objectAtIndexedSubscript:index];
 
-    v10 = [v5 legIndexForRouteCoordinate:{-[NSObject startRouteCoordinate](v9, "startRouteCoordinate")}];
-    v11 = [v5 legs];
-    v12 = [v11 count];
+    v10 = [route legIndexForRouteCoordinate:{-[NSObject startRouteCoordinate](v9, "startRouteCoordinate")}];
+    legs = [route legs];
+    v12 = [legs count];
 
     if (v10 < v12)
     {
-      v13 = [v5 startRouteStep];
-      [v5 remainingTimeToEndOfRouteFrom:objc_msgSend(v13 etaRoute:{"startRouteCoordinate"), 0}];
+      startRouteStep = [route startRouteStep];
+      [route remainingTimeToEndOfRouteFrom:objc_msgSend(startRouteStep etaRoute:{"startRouteCoordinate"), 0}];
       v15 = v14;
 
-      v16 = [v5 destination];
-      v17 = [v16 navDisplayName];
+      destination = [route destination];
+      navDisplayName = [destination navDisplayName];
 
-      if ([v17 length])
+      if ([navDisplayName length])
       {
-        [(NavTrayHeaderView *)self->_navHeaderView setDestinationName:v17];
+        [(NavTrayHeaderView *)self->_navHeaderView setDestinationName:navDisplayName];
       }
 
       else
@@ -1445,11 +1445,11 @@ LABEL_25:
         [(NavTrayHeaderView *)self->_navHeaderView setDestinationName:v27];
       }
 
-      if ([v17 length])
+      if ([navDisplayName length])
       {
         v28 = +[NSBundle mainBundle];
         v29 = [v28 localizedStringForKey:@"[NavTray] To Destination" value:@"localized string not found" table:0];
-        v30 = [NSString stringWithFormat:v29, v17];
+        v30 = [NSString stringWithFormat:v29, navDisplayName];
       }
 
       else
@@ -1465,15 +1465,15 @@ LABEL_25:
         [v31 addObject:v32];
       }
 
-      v33 = [v5 legs];
-      v34 = [v33 count];
+      legs2 = [route legs];
+      v34 = [legs2 count];
 
       if (v34 >= 2)
       {
         v35 = +[NSBundle mainBundle];
         v36 = [v35 localizedStringForKey:@"[NavTray][Stepping] Number of stops" value:@"localized string not found" table:0];
-        v37 = [v5 legs];
-        v38 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v36, [v37 count] - 1);
+        legs3 = [route legs];
+        v38 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v36, [legs3 count] - 1);
 
         [v31 addObject:v38];
       }
@@ -1491,8 +1491,8 @@ LABEL_25:
     v22 = sub_10006D178();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v5 legs];
-      v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Current leg index (%lu) is greater than the number of steps (%lu)", v10, [v23 count]);
+      legs4 = [route legs];
+      v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Current leg index (%lu) is greater than the number of steps (%lu)", v10, [legs4 count]);
       *buf = 136315906;
       v44 = "[NavTrayViewController setCurrentStepIndex:]";
       v45 = 2080;
@@ -1524,8 +1524,8 @@ LABEL_25:
   v18 = sub_10006D178();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    v19 = [v5 steps];
-    v20 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Current step index (%lu) is greater than the number of steps (%lu)", a3, [v19 count]);
+    steps3 = [route steps];
+    v20 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Current step index (%lu) is greater than the number of steps (%lu)", index, [steps3 count]);
     *buf = 136315906;
     v44 = "[NavTrayViewController setCurrentStepIndex:]";
     v45 = 2080;
@@ -1561,22 +1561,22 @@ LABEL_26:
 
 - (void)_pressedCustomRoute
 {
-  v3 = [(NavTrayViewController *)self mapItemMuid];
-  [GEOAPPortal captureUserAction:470 target:136 value:v3];
+  mapItemMuid = [(NavTrayViewController *)self mapItemMuid];
+  [GEOAPPortal captureUserAction:470 target:136 value:mapItemMuid];
 
   v4 = sub_100B78EB8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v9 = 134349056;
-    v10 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Pressed custom route arrival transition button", &v9, 0xCu);
   }
 
   v5 = +[MNNavigationService sharedService];
-  v6 = [v5 destination];
-  v7 = [v6 route];
+  destination = [v5 destination];
+  route = [destination route];
 
-  if (v7)
+  if (route)
   {
     [v5 switchToDestinationRoute];
   }
@@ -1587,7 +1587,7 @@ LABEL_26:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = 134349056;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[%{public}p] No custom route found on the destination. Cannot transition the route.", &v9, 0xCu);
     }
   }
@@ -1614,30 +1614,30 @@ LABEL_26:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = 134349056;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Pressed walking button. Will transition to walking transport type.", &v11, 0xCu);
   }
 
   v7 = +[MNNavigationService sharedService];
-  v8 = [v7 alternateWalkingRoute];
+  alternateWalkingRoute = [v7 alternateWalkingRoute];
 
-  if (v8)
+  if (alternateWalkingRoute)
   {
     v9 = +[MNNavigationService sharedService];
-    [v9 changeTransportType:2 route:v8];
+    [v9 changeTransportType:2 route:alternateWalkingRoute];
 
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    [v10 wantsLayout:1];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController wantsLayout:1];
   }
 
   else
   {
-    v10 = sub_100B78EB8();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    cardPresentationController = sub_100B78EB8();
+    if (os_log_type_enabled(cardPresentationController, OS_LOG_TYPE_ERROR))
     {
       v11 = 134349056;
-      v12 = self;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[%{public}p] No alternate walking route found. Cannot transition to walking transport type.", &v11, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, cardPresentationController, OS_LOG_TYPE_ERROR, "[%{public}p] No alternate walking route found. Cannot transition to walking transport type.", &v11, 0xCu);
     }
   }
 }
@@ -1646,14 +1646,14 @@ LABEL_26:
 {
   [GEOAPPortal captureUserAction:457 target:125 value:0];
   v3 = +[MNNavigationService sharedService];
-  v4 = [v3 destination];
-  v5 = [v4 findMyHandleID];
+  destination = [v3 destination];
+  findMyHandleID = [destination findMyHandleID];
 
   v6 = sub_100B78EB8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Pressed Find My button. Will prompt to unlock phone if necessary.", buf, 0xCu);
   }
 
@@ -1663,7 +1663,7 @@ LABEL_26:
   v8[2] = sub_100B7C724;
   v8[3] = &unk_10165D288;
   objc_copyWeak(&v10, buf);
-  v7 = v5;
+  v7 = findMyHandleID;
   v9 = v7;
   [UIApplication _maps_unlockApplicationWithCompletion:v8];
 
@@ -1677,7 +1677,7 @@ LABEL_26:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Pressed resume route", &v5, 0xCu);
   }
 
@@ -1699,7 +1699,7 @@ LABEL_26:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         v19 = 136316418;
-        v20 = "[NavTrayViewController _pressedOtherStations]";
+        selfCopy2 = "[NavTrayViewController _pressedOtherStations]";
         v21 = 2080;
         v22 = "NavTrayViewController.m";
         v23 = 1024;
@@ -1720,7 +1720,7 @@ LABEL_26:
         {
           v18 = +[NSThread callStackSymbols];
           v19 = 138412290;
-          v20 = v18;
+          selfCopy2 = v18;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@", &v19, 0xCu);
         }
       }
@@ -1731,19 +1731,19 @@ LABEL_26:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v19 = 134349056;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Pressed other stations", &v19, 0xCu);
   }
 
   v7 = +[MNNavigationService sharedService];
-  v8 = [v7 arrivalInfo];
+  arrivalInfo = [v7 arrivalInfo];
   if ([v7 isArrivedAtEVCharger])
   {
-    v9 = [v8 destination];
-    v10 = [v9 muid];
+    destination = [arrivalInfo destination];
+    muid = [destination muid];
 
     WeakRetained = objc_loadWeakRetained(&self->_navigationDelegate);
-    [WeakRetained sendOtherEVStationsRequest:v10];
+    [WeakRetained sendOtherEVStationsRequest:muid];
   }
 
   else
@@ -1752,7 +1752,7 @@ LABEL_26:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v19 = 136315650;
-      v20 = "[NavTrayViewController _pressedOtherStations]";
+      selfCopy2 = "[NavTrayViewController _pressedOtherStations]";
       v21 = 2080;
       v22 = "NavTrayViewController.m";
       v23 = 1024;
@@ -1767,7 +1767,7 @@ LABEL_26:
       {
         v14 = +[NSThread callStackSymbols];
         v19 = 138412290;
-        v20 = v14;
+        selfCopy2 = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%@", &v19, 0xCu);
       }
     }
@@ -1776,7 +1776,7 @@ LABEL_26:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v19 = 134349056;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "[%{public}p] The charging info at this waypoint couldn't be found.", &v19, 0xCu);
     }
 
@@ -1791,7 +1791,7 @@ LABEL_26:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Pressed pause route", &v5, 0xCu);
   }
 
@@ -1806,7 +1806,7 @@ LABEL_26:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Pressed end route", &v7, 0xCu);
   }
 
@@ -1820,29 +1820,29 @@ LABEL_26:
   {
     if ([(NavTrayHeaderView *)self->_navHeaderView currentAlternateButtonType]== 5)
     {
-      v5 = 0;
+      mapItemMuid = 0;
       analyticsTarget = 125;
       goto LABEL_11;
     }
 
     if ([(NavTrayHeaderView *)self->_navHeaderView currentAlternateButtonType]== 7)
     {
-      v5 = [(NavTrayViewController *)self mapItemMuid];
+      mapItemMuid = [(NavTrayViewController *)self mapItemMuid];
       analyticsTarget = 136;
       goto LABEL_11;
     }
 
 LABEL_10:
-    v5 = 0;
+    mapItemMuid = 0;
     goto LABEL_11;
   }
 
-  v5 = 0;
+  mapItemMuid = 0;
   analyticsTarget = 124;
 LABEL_11:
-  [GEOAPPortal captureUserAction:3002 target:analyticsTarget value:v5];
-  v6 = [(NavTrayViewController *)self _delegate];
-  [v6 pressedEndWithSender:self feedback:0];
+  [GEOAPPortal captureUserAction:3002 target:analyticsTarget value:mapItemMuid];
+  _delegate = [(NavTrayViewController *)self _delegate];
+  [_delegate pressedEndWithSender:self feedback:0];
 }
 
 - (void)_pressedDetails
@@ -1851,13 +1851,13 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Pressed details", &v5, 0xCu);
   }
 
   [GEOAPPortal captureUserAction:3004 target:505 value:0];
-  v4 = [(NavTrayViewController *)self _delegate];
-  [v4 pressedShowDirectionsListWithSender:self];
+  _delegate = [(NavTrayViewController *)self _delegate];
+  [_delegate pressedShowDirectionsListWithSender:self];
 }
 
 - (void)_pressedVoiceVolume
@@ -1866,14 +1866,14 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v8 = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Pressed voice volume", &v8, 0xCu);
   }
 
   v4 = +[MNNavigationService sharedService];
-  v5 = [v4 navigationTransportType];
+  navigationTransportType = [v4 navigationTransportType];
 
-  switch(v5)
+  switch(navigationTransportType)
   {
     case 0u:
       v6 = 401;
@@ -1898,7 +1898,7 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Pressed report incident", &v5, 0xCu);
   }
 
@@ -1913,21 +1913,21 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Pressed share ETA disclosure button", buf, 0xCu);
   }
 
   v4 = [(NSArray *)self->_receivingContacts count];
-  v5 = [(NavTrayViewController *)self route];
-  v6 = [v5 transportType];
-  if (v6 >= 7)
+  route = [(NavTrayViewController *)self route];
+  transportType = [route transportType];
+  if (transportType >= 7)
   {
-    v7 = [NSString stringWithFormat:@"(unknown: %i)", v6];
+    v7 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
   }
 
   else
   {
-    v7 = *(&off_10163B678 + v6);
+    v7 = *(&off_10163B678 + transportType);
   }
 
   if (v4)
@@ -1952,21 +1952,21 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Pressed share ETA in tray", buf, 0xCu);
   }
 
   analyticsTarget = self->_analyticsTarget;
-  v5 = [(NavTrayViewController *)self route];
-  v6 = [v5 transportType];
-  if (v6 >= 7)
+  route = [(NavTrayViewController *)self route];
+  transportType = [route transportType];
+  if (transportType >= 7)
   {
-    v7 = [NSString stringWithFormat:@"(unknown: %i)", v6];
+    v7 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
   }
 
   else
   {
-    v7 = *(&off_10163B678 + v6);
+    v7 = *(&off_10163B678 + transportType);
   }
 
   [GEOAPPortal captureUserAction:9022 target:analyticsTarget value:v7];
@@ -1981,15 +1981,15 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Pressed SAR", &v7, 0xCu);
   }
 
   [GEOAPPortal captureUserAction:6097 target:self->_analyticsTarget value:0];
   WeakRetained = objc_loadWeakRetained(&self->_navigationDelegate);
-  v5 = [(NavTrayViewController *)self categoriesAPIController];
-  v6 = [v5 categories];
-  [WeakRetained presentAddStopUsingCategories:v6];
+  categoriesAPIController = [(NavTrayViewController *)self categoriesAPIController];
+  categories = [categoriesAPIController categories];
+  [WeakRetained presentAddStopUsingCategories:categories];
 }
 
 - (void)didTapShareETAContactButton
@@ -1998,10 +1998,10 @@ LABEL_9:
   if (contactSharingState - 2 < 2)
   {
     v12 = +[MSPSharedTripService sharedInstance];
-    v13 = [(NavTrayViewController *)self route];
-    v14 = [v13 shareETAWaypointContacts];
-    v15 = [v14 lastObject];
-    [v12 stopSharingWithContact:v15 completion:&stru_10163B5A0];
+    route = [(NavTrayViewController *)self route];
+    shareETAWaypointContacts = [route shareETAWaypointContacts];
+    lastObject = [shareETAWaypointContacts lastObject];
+    [v12 stopSharingWithContact:lastObject completion:&stru_10163B5A0];
 
     [GEOAPPortal captureUserAction:402 target:91 value:0];
     self->_contactSharingState = 0;
@@ -2018,9 +2018,9 @@ LABEL_9:
         sharedTripAnimationTimer = self->_sharedTripAnimationTimer;
         self->_sharedTripAnimationTimer = 0;
 
-        v5 = [(NavTrayViewController *)self route];
-        v6 = [v5 shareETAWaypointContacts];
-        v7 = [v6 lastObject];
+        route2 = [(NavTrayViewController *)self route];
+        shareETAWaypointContacts2 = [route2 shareETAWaypointContacts];
+        lastObject2 = [shareETAWaypointContacts2 lastObject];
 
         objc_initWeak(&location, self);
         v8 = &_dispatch_main_q;
@@ -2029,7 +2029,7 @@ LABEL_9:
         v17[2] = sub_100B7DB5C;
         v17[3] = &unk_10163B580;
         objc_copyWeak(&v19, &location);
-        v9 = v7;
+        v9 = lastObject2;
         v18 = v9;
         v10 = [GCDTimer scheduledTimerWithTimeInterval:&_dispatch_main_q queue:v17 block:1.5];
         sharedTripDelayedStartTimer = self->_sharedTripDelayedStartTimer;
@@ -2054,26 +2054,26 @@ LABEL_9:
   [(NavTrayViewController *)self _startTimerToDismissInitialBannerWithInterval:5.0];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v4 = -1.0;
-  if (a3 == 2)
+  if (layout == 2)
   {
     if (![(NavTrayViewController *)self isInArrivalState])
     {
-      v9 = [(NavTrayViewController *)self tableView];
-      [v9 layoutIfNeeded];
+      tableView = [(NavTrayViewController *)self tableView];
+      [tableView layoutIfNeeded];
 
       [(NavTrayMetrics *)self->_metrics defaultVerticalPadding];
       v11 = v10;
-      v12 = [(NavTrayViewController *)self tableView];
-      [v12 adjustedContentInset];
+      tableView2 = [(NavTrayViewController *)self tableView];
+      [tableView2 adjustedContentInset];
       v14 = v13;
 
       if (self->_usedSections)
       {
-        v15 = [(NavTrayViewController *)self tableView];
-        [v15 contentSize];
+        tableView3 = [(NavTrayViewController *)self tableView];
+        [tableView3 contentSize];
         v11 = v16;
       }
 
@@ -2090,19 +2090,19 @@ LABEL_9:
       }
 
       v20 = v19;
-      v7 = [(ContaineeViewController *)self cardPresentationController];
-      [v7 bottomSafeOffset];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController bottomSafeOffset];
       v4 = v20 + v21 + v17;
       goto LABEL_11;
     }
   }
 
-  else if (a3 == 1)
+  else if (layout == 1)
   {
     [(NavTrayViewController *)self headerHeight];
     v6 = v5;
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    [v7 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     v4 = v8 + v6;
 LABEL_11:
   }
@@ -2132,63 +2132,63 @@ LABEL_11:
 
 - (BOOL)_isEligibleToShowWalkingButton
 {
-  v2 = [(NavTrayViewController *)self route];
-  v3 = [v2 destination];
-  [v3 hasFindMyHandleID];
+  route = [(NavTrayViewController *)self route];
+  destination = [route destination];
+  [destination hasFindMyHandleID];
 
   return GEOConfigGetBOOL();
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
   v5.receiver = self;
   v5.super_class = NavTrayViewController;
-  [(ContaineeViewController *)&v5 applyAlphaToContent:a3];
+  [(ContaineeViewController *)&v5 applyAlphaToContent:content];
   if ([(NavTrayViewController *)self isInArrivalState]|| !self->_viewDidAppear)
   {
-    v4 = [(NavTrayViewController *)self contentView];
-    [v4 setAlpha:0.0];
+    contentView = [(NavTrayViewController *)self contentView];
+    [contentView setAlpha:0.0];
   }
 }
 
-- (void)didChangeContainerStyle:(unint64_t)a3
+- (void)didChangeContainerStyle:(unint64_t)style
 {
   v5.receiver = self;
   v5.super_class = NavTrayViewController;
-  [(ContaineeViewController *)&v5 didChangeContainerStyle:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  -[NavTrayViewController updateCardCornerRadiusForLayout:](self, "updateCardCornerRadiusForLayout:", [v4 containeeLayout]);
+  [(ContaineeViewController *)&v5 didChangeContainerStyle:style];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  -[NavTrayViewController updateCardCornerRadiusForLayout:](self, "updateCardCornerRadiusForLayout:", [cardPresentationController containeeLayout]);
 }
 
-- (void)willChangeContainerStyle:(unint64_t)a3
+- (void)willChangeContainerStyle:(unint64_t)style
 {
   v10.receiver = self;
   v10.super_class = NavTrayViewController;
   [(ContaineeViewController *)&v10 willChangeContainerStyle:?];
-  if (a3 <= 7 && ((1 << a3) & 0xE3) != 0)
+  if (style <= 7 && ((1 << style) & 0xE3) != 0)
   {
-    v5 = [(NavTrayViewController *)self tableView];
-    v6 = [v5 numberOfSections];
+    tableView = [(NavTrayViewController *)self tableView];
+    numberOfSections = [tableView numberOfSections];
 
-    if (v6 >= 2)
+    if (numberOfSections >= 2)
     {
-      v7 = [(NavTrayViewController *)self tableView];
-      [v7 reloadData];
+      tableView2 = [(NavTrayViewController *)self tableView];
+      [tableView2 reloadData];
 
-      v8 = [(NavTrayViewController *)self tableView];
+      tableView3 = [(NavTrayViewController *)self tableView];
       v9 = [NSIndexPath indexPathForRow:0 inSection:2];
-      [v8 scrollToRowAtIndexPath:v9 atScrollPosition:3 animated:0];
+      [tableView3 scrollToRowAtIndexPath:v9 atScrollPosition:3 animated:0];
     }
   }
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v16.receiver = self;
   v16.super_class = NavTrayViewController;
   [(ContaineeViewController *)&v16 didChangeLayout:?];
   v5 = +[MNNavigationService sharedService];
-  if (a3 == 2)
+  if (layout == 2)
   {
     analyticsTarget = self->_analyticsTarget;
     WeakRetained = dispatch_get_global_queue(33, 0);
@@ -2203,7 +2203,7 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (layout == 1)
   {
     v6 = self->_analyticsTarget;
     v7 = dispatch_get_global_queue(33, 0);
@@ -2225,27 +2225,27 @@ LABEL_5:
   }
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
   v17.receiver = self;
   v17.super_class = NavTrayViewController;
   [(ContaineeViewController *)&v17 willChangeLayout:?];
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (v6 && v6 < a3)
+  if (containeeLayout && containeeLayout < layout)
   {
-    v7 = [(NavTrayViewController *)self tableView];
-    [v7 reloadData];
+    tableView = [(NavTrayViewController *)self tableView];
+    [tableView reloadData];
 
-    v8 = [(NavTrayViewController *)self tableView];
-    v9 = [v8 numberOfSections];
+    tableView2 = [(NavTrayViewController *)self tableView];
+    numberOfSections = [tableView2 numberOfSections];
 
-    if (v9 >= 3)
+    if (numberOfSections >= 3)
     {
-      v10 = [(NavTrayViewController *)self tableView];
+      tableView3 = [(NavTrayViewController *)self tableView];
       v11 = [NSIndexPath indexPathForRow:0 inSection:2];
-      [v10 scrollToRowAtIndexPath:v11 atScrollPosition:3 animated:0];
+      [tableView3 scrollToRowAtIndexPath:v11 atScrollPosition:3 animated:0];
     }
 
     analyticsTarget = self->_analyticsTarget;
@@ -2261,9 +2261,9 @@ LABEL_5:
     [WeakRetained hideJunctionViewIfNeeded];
   }
 
-  [(NavTrayHeaderView *)self->_navHeaderView setEnabledNestedInteraction:a3 == 1];
-  [(UITableView *)self->_tableView _setPocketsEnabled:a3 > 1];
-  [(NavTrayViewController *)self updateCardCornerRadiusForLayout:a3];
+  [(NavTrayHeaderView *)self->_navHeaderView setEnabledNestedInteraction:layout == 1];
+  [(UITableView *)self->_tableView _setPocketsEnabled:layout > 1];
+  [(NavTrayViewController *)self updateCardCornerRadiusForLayout:layout];
 }
 
 - (void)didBecomeCurrent
@@ -2271,22 +2271,22 @@ LABEL_5:
   v4.receiver = self;
   v4.super_class = NavTrayViewController;
   [(ContaineeViewController *)&v4 didBecomeCurrent];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  -[UITableView _setPocketsEnabled:](self->_tableView, "_setPocketsEnabled:", [v3 containeeLayout] > 1);
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  -[UITableView _setPocketsEnabled:](self->_tableView, "_setPocketsEnabled:", [cardPresentationController containeeLayout] > 1);
 }
 
 - (void)feedbackViewDidSelectThumbsDown
 {
-  v3 = [(NavTrayViewController *)self route];
-  v4 = [v3 transportType];
-  if (v4 >= 7)
+  route = [(NavTrayViewController *)self route];
+  transportType = [route transportType];
+  if (transportType >= 7)
   {
-    v5 = [NSString stringWithFormat:@"(unknown: %i)", v4];
+    v5 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
   }
 
   else
   {
-    v5 = *(&off_10163B678 + v4);
+    v5 = *(&off_10163B678 + transportType);
   }
 
   [GEOAPPortal captureUserAction:228 target:31 value:v5];
@@ -2297,16 +2297,16 @@ LABEL_5:
 
 - (void)feedbackViewDidSelectThumbsUp
 {
-  v3 = [(NavTrayViewController *)self route];
-  v4 = [v3 transportType];
-  if (v4 >= 7)
+  route = [(NavTrayViewController *)self route];
+  transportType = [route transportType];
+  if (transportType >= 7)
   {
-    v5 = [NSString stringWithFormat:@"(unknown: %i)", v4];
+    v5 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
   }
 
   else
   {
-    v5 = *(&off_10163B678 + v4);
+    v5 = *(&off_10163B678 + transportType);
   }
 
   [GEOAPPortal captureUserAction:243 target:31 value:v5];
@@ -2317,13 +2317,13 @@ LABEL_5:
 
 - (id)mapItemMuid
 {
-  v2 = [(NavTrayViewController *)self route];
-  v3 = [v2 destination];
-  v4 = [v3 route];
+  route = [(NavTrayViewController *)self route];
+  destination = [route destination];
+  route2 = [destination route];
 
-  if ([v4 mapItemMuid])
+  if ([route2 mapItemMuid])
   {
-    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v4 mapItemMuid]);
+    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [route2 mapItemMuid]);
   }
 
   else
@@ -2349,12 +2349,12 @@ LABEL_5:
 
 - (void)pressedHeaderView
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  v4 = [v3 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v7 = v5;
-  if (v4 == 1)
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  v7 = cardPresentationController2;
+  if (containeeLayout == 1)
   {
     v6 = 2;
   }
@@ -2364,31 +2364,31 @@ LABEL_5:
     v6 = 1;
   }
 
-  [v5 wantsLayout:v6];
+  [cardPresentationController2 wantsLayout:v6];
 }
 
-- (void)navigationWaypointController:(id)a3 didUpdateDisplayedWaypoints:(id)a4
+- (void)navigationWaypointController:(id)controller didUpdateDisplayedWaypoints:(id)waypoints
 {
   waypointRows = self->_waypointRows;
   self->_waypointRows = 0;
 
   [(NavTrayViewController *)self _computeSections];
-  v6 = [(NavTrayViewController *)self tableView];
-  [v6 reloadData];
+  tableView = [(NavTrayViewController *)self tableView];
+  [tableView reloadData];
 
-  v7 = [(ContaineeViewController *)self cardPresentationController];
-  [v7 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 }
 
-- (void)_startTimerToDismissInitialBannerWithInterval:(double)a3
+- (void)_startTimerToDismissInitialBannerWithInterval:(double)interval
 {
   v5 = sub_100B78EB8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349312;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
-    v14 = a3;
+    intervalCopy = interval;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Starting timer to dismiss Share ETA in %f seconds banner", buf, 0x16u);
   }
 
@@ -2399,7 +2399,7 @@ LABEL_5:
   v9[2] = sub_100B7EB44;
   v9[3] = &unk_1016616E8;
   objc_copyWeak(&v10, buf);
-  v7 = [GCDTimer scheduledTimerWithTimeInterval:&_dispatch_main_q queue:v9 block:a3];
+  v7 = [GCDTimer scheduledTimerWithTimeInterval:&_dispatch_main_q queue:v9 block:interval];
   sharedTripAnimationTimer = self->_sharedTripAnimationTimer;
   self->_sharedTripAnimationTimer = v7;
 
@@ -2420,7 +2420,7 @@ LABEL_5:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Starting timer to show Share ETA initial banner", buf, 0xCu);
   }
 
@@ -2445,7 +2445,7 @@ LABEL_5:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134349056;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Resuming navigation to original destination", &v4, 0xCu);
   }
 
@@ -2457,11 +2457,11 @@ LABEL_5:
   UInteger = GEOConfigGetUInteger();
   if (!UInteger || (v4 = UInteger, -[NavTrayViewController route](self, "route"), v5 = objc_claimAutoreleasedReturnValue(), [v5 userRequestedWaypoints], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5, v7 < v4))
   {
-    v8 = [(NavTrayViewController *)self route];
-    v9 = [v8 transportType];
-    if (v9 > 2)
+    route = [(NavTrayViewController *)self route];
+    transportType = [route transportType];
+    if (transportType > 2)
     {
-      if (v9 == 3)
+      if (transportType == 3)
       {
         IsEnabled_Maps420 = MapsFeature_IsEnabled_Maps420();
 LABEL_13:
@@ -2473,14 +2473,14 @@ LABEL_13:
         }
 
 LABEL_15:
-        v13 = [(NavTrayViewController *)self categoriesAPIController];
-        v14 = [v13 categories];
-        v11 = [v14 count] != 0;
+        categoriesAPIController = [(NavTrayViewController *)self categoriesAPIController];
+        categories = [categoriesAPIController categories];
+        v11 = [categories count] != 0;
 
         return v11;
       }
 
-      if (v9 != 6)
+      if (transportType != 6)
       {
 LABEL_11:
         IsEnabled_Maps420 = MapsFeature_IsEnabled_DrivingMultiWaypointRoutes();
@@ -2488,9 +2488,9 @@ LABEL_11:
       }
     }
 
-    else if (v9 != 1)
+    else if (transportType != 1)
     {
-      if (v9 == 2)
+      if (transportType == 2)
       {
         IsEnabled_Maps420 = MapsFeature_IsEnabled_Maps182();
         goto LABEL_13;
@@ -2505,53 +2505,53 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)_shouldEnableTrafficIncidentsForRoute:(id)a3 disabledForReasons:(id *)a4
+- (BOOL)_shouldEnableTrafficIncidentsForRoute:(id)route disabledForReasons:(id *)reasons
 {
-  v5 = [a3 transportType];
+  transportType = [route transportType];
   v6 = +[TrafficIncidentLayoutManager sharedInstance];
-  v7 = [v6 isIncidentReportingEnabled];
+  isIncidentReportingEnabled = [v6 isIncidentReportingEnabled];
 
-  if (a4 && ((v5 == 0) & v7) == 0)
+  if (reasons && ((transportType == 0) & isIncidentReportingEnabled) == 0)
   {
     v8 = [[NSMutableArray alloc] initWithCapacity:5];
     v9 = v8;
-    if (v5)
+    if (transportType)
     {
       [v8 addObject:@"incompatible transport type"];
     }
 
-    if ((v7 & 1) == 0)
+    if ((isIncidentReportingEnabled & 1) == 0)
     {
       [v9 addObject:@"incident reporting disabled"];
     }
 
-    *a4 = [v9 copy];
+    *reasons = [v9 copy];
   }
 
-  return (v5 == 0) & v7;
+  return (transportType == 0) & isIncidentReportingEnabled;
 }
 
-- (BOOL)_shouldEnableShareETAForRoute:(id)a3 disabledForReasons:(id *)a4
+- (BOOL)_shouldEnableShareETAForRoute:(id)route disabledForReasons:(id *)reasons
 {
-  v6 = a3;
+  routeCopy = route;
   v7 = MSPSharedTripSharingAvailable();
-  [v6 transportType];
+  [routeCopy transportType];
 
   v8 = MSPSharedTripSharingSupportedForTransportType();
   v9 = +[MSPSharedTripService sharedInstance];
-  v10 = [v9 canAddReceivers];
+  canAddReceivers = [v9 canAddReceivers];
 
   v11 = +[MSPSharedTripService sharedInstance];
-  v12 = [v11 receivers];
-  v13 = [v12 count];
+  receivers = [v11 receivers];
+  v13 = [receivers count];
 
   v14 = 0;
   if (!self->_isSteppingMode && ((v7 ^ 1) & 1) == 0)
   {
-    v14 = v8 & (v10 | (v13 != 0));
+    v14 = v8 & (canAddReceivers | (v13 != 0));
   }
 
-  if (a4 && (v14 & 1) == 0)
+  if (reasons && (v14 & 1) == 0)
   {
     v15 = [[NSMutableArray alloc] initWithCapacity:5];
     v16 = v15;
@@ -2579,7 +2579,7 @@ LABEL_8:
     if (v8)
     {
 LABEL_9:
-      if (v10)
+      if (canAddReceivers)
       {
         goto LABEL_10;
       }
@@ -2589,13 +2589,13 @@ LABEL_9:
 
 LABEL_16:
     [v16 addObject:@"incompatible transport type"];
-    if (v10)
+    if (canAddReceivers)
     {
 LABEL_10:
       if (!v13)
       {
 LABEL_12:
-        *a4 = [v16 copy];
+        *reasons = [v16 copy];
 
         return v14;
       }
@@ -2630,7 +2630,7 @@ LABEL_17:
   if (v45)
   {
     v5 = *v58;
-    v43 = self;
+    selfCopy = self;
     v44 = *v58;
     v42 = v4;
     do
@@ -2645,8 +2645,8 @@ LABEL_17:
 
         v46 = v6;
         v7 = *(*(&v57 + 1) + 8 * v6);
-        v8 = [v7 unsignedIntegerValue];
-        if (v8 == 2)
+        unsignedIntegerValue = [v7 unsignedIntegerValue];
+        if (unsignedIntegerValue == 2)
         {
           v36 = @"End";
 LABEL_55:
@@ -2654,9 +2654,9 @@ LABEL_55:
           goto LABEL_56;
         }
 
-        if (v8 != 1)
+        if (unsignedIntegerValue != 1)
         {
-          if (!v8)
+          if (!unsignedIntegerValue)
           {
             [v3 appendFormat:@"\n\t%@ {", @"Waypoints"];
             v9 = [(NSDictionary *)self->_traySections objectForKeyedSubscript:v7];
@@ -2685,9 +2685,9 @@ LABEL_55:
                 }
 
                 v14 = *(*(&v53 + 1) + 8 * v12);
-                v15 = [v14 waypointIndex];
-                v16 = [v14 waypoint];
-                if ([v16 isServerProvidedWaypoint])
+                waypointIndex = [v14 waypointIndex];
+                waypoint = [v14 waypoint];
+                if ([waypoint isServerProvidedWaypoint])
                 {
                   v17 = " (server-provided)";
                 }
@@ -2728,7 +2728,7 @@ LABEL_22:
 LABEL_25:
 
                 v3 = v13;
-                [v13 appendFormat:@"\n\t\tWaypoint %lu%s (%@)", v15, v17, v23];
+                [v13 appendFormat:@"\n\t\tWaypoint %lu%s (%@)", waypointIndex, v17, v23];
 
                 v12 = v12 + 1;
               }
@@ -2741,7 +2741,7 @@ LABEL_25:
 LABEL_29:
 
                 v4 = v42;
-                self = v43;
+                self = selfCopy;
                 goto LABEL_46;
               }
             }
@@ -2795,8 +2795,8 @@ LABEL_29:
                 objc_enumerationMutation(v25);
               }
 
-              v30 = [*(*(&v49 + 1) + 8 * i) unsignedIntegerValue];
-              if (v30 >= 6)
+              unsignedIntegerValue2 = [*(*(&v49 + 1) + 8 * i) unsignedIntegerValue];
+              if (unsignedIntegerValue2 >= 6)
               {
                 v32 = sub_10006D178();
                 if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -2829,7 +2829,7 @@ LABEL_29:
 
               else
               {
-                v31 = *(&off_10163B648 + v30);
+                v31 = *(&off_10163B648 + unsignedIntegerValue2);
               }
 
               [v3 appendFormat:@"\n\t\t%@", v31];
@@ -2865,8 +2865,8 @@ LABEL_56:
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(NavTrayViewController *)self waypointRows];
-  [(NSDictionary *)v3 setObject:v5 forKeyedSubscript:&off_1016E89F0];
+  waypointRows = [(NavTrayViewController *)self waypointRows];
+  [(NSDictionary *)v3 setObject:waypointRows forKeyedSubscript:&off_1016E89F0];
 
   [(NSArray *)v4 addObject:&off_1016E89F0];
   v6 = objc_opt_new();
@@ -2924,11 +2924,11 @@ LABEL_15:
   v12 = sub_100B78EB8();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(NavTrayViewController *)self _traySectionsDescription];
+    _traySectionsDescription = [(NavTrayViewController *)self _traySectionsDescription];
     v14 = 134349314;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v13;
+    v17 = _traySectionsDescription;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Tray sections are now: %{public}@", &v14, 0x16u);
   }
 }
@@ -2951,21 +2951,21 @@ LABEL_15:
 - (_TtC4Maps28NavigationWaypointController)waypointController
 {
   WeakRetained = objc_loadWeakRetained(&self->_platformController);
-  v4 = [WeakRetained currentNavigationSession];
-  v5 = [v4 waypointController];
+  currentNavigationSession = [WeakRetained currentNavigationSession];
+  waypointController = [currentNavigationSession waypointController];
 
-  if (!v5)
+  if (!waypointController)
   {
     v6 = sub_100B78EB8();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_FAULT, "[%{public}p] Couldn't find a navigation waypoint controller within NavTrayViewController.", &v8, 0xCu);
     }
   }
 
-  return v5;
+  return waypointController;
 }
 
 - (id)_delegate
@@ -2985,49 +2985,49 @@ LABEL_15:
   return WeakRetained;
 }
 
-- (void)setConnectedToCarPlay:(BOOL)a3
+- (void)setConnectedToCarPlay:(BOOL)play
 {
-  if (self->_connectedToCarPlay != a3)
+  if (self->_connectedToCarPlay != play)
   {
-    self->_connectedToCarPlay = a3;
+    self->_connectedToCarPlay = play;
     if ([(NavTrayViewController *)self isInArrivalState])
     {
       v6 = +[MNNavigationService sharedService];
-      v4 = [v6 route];
-      v5 = [v4 legIndexForStepIndex:{objc_msgSend(v6, "stepIndex")}];
+      route = [v6 route];
+      v5 = [route legIndexForStepIndex:{objc_msgSend(v6, "stepIndex")}];
 
       [(NavTrayViewController *)self _handleArrivalAtEndOfLegIndex:v5 forced:1 service:v6];
     }
   }
 }
 
-- (void)_updateWithRoute:(id)a3
+- (void)_updateWithRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   v37 = 0;
-  v6 = [(NavTrayViewController *)self _shouldEnableShareETAForRoute:v5 disabledForReasons:&v37];
+  v6 = [(NavTrayViewController *)self _shouldEnableShareETAForRoute:routeCopy disabledForReasons:&v37];
   v33 = v37;
   v36 = 0;
-  v7 = [(NavTrayViewController *)self _shouldEnableTrafficIncidentsForRoute:v5 disabledForReasons:&v36];
+  v7 = [(NavTrayViewController *)self _shouldEnableTrafficIncidentsForRoute:routeCopy disabledForReasons:&v36];
   v8 = v36;
   route = self->_route;
-  v10 = route != v5;
-  if (route != v5)
+  v10 = route != routeCopy;
+  if (route != routeCopy)
   {
     v11 = sub_100B78EB8();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(GEOComposedRoute *)v5 uniqueRouteID];
+      uniqueRouteID = [(GEOComposedRoute *)routeCopy uniqueRouteID];
       *buf = 134349314;
-      v39 = self;
+      selfCopy5 = self;
       v40 = 2114;
-      v41 = v12;
+      v41 = uniqueRouteID;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] Updating route: %{public}@", buf, 0x16u);
     }
 
-    objc_storeStrong(&self->_route, a3);
-    v13 = [(NavTrayViewController *)self route];
-    v14 = [v13 transportType] == 2;
+    objc_storeStrong(&self->_route, route);
+    route = [(NavTrayViewController *)self route];
+    v14 = [route transportType] == 2;
 
     if (v14)
     {
@@ -3036,8 +3036,8 @@ LABEL_15:
 
     else
     {
-      v15 = [(NavTrayViewController *)self categoriesAPIController];
-      v16 = v15 == 0;
+      categoriesAPIController = [(NavTrayViewController *)self categoriesAPIController];
+      v16 = categoriesAPIController == 0;
 
       if (v16)
       {
@@ -3046,25 +3046,25 @@ LABEL_15:
       }
 
       objc_initWeak(buf, self);
-      v18 = [(NavTrayViewController *)self categoriesAPIController];
+      categoriesAPIController2 = [(NavTrayViewController *)self categoriesAPIController];
       v34[0] = _NSConcreteStackBlock;
       v34[1] = 3221225472;
       v34[2] = sub_100B80778;
       v34[3] = &unk_101661B98;
       objc_copyWeak(&v35, buf);
-      [v18 fetchSARCategoriesOnCompletionHandler:v34];
+      [categoriesAPIController2 fetchSARCategoriesOnCompletionHandler:v34];
 
       objc_destroyWeak(&v35);
       objc_destroyWeak(buf);
     }
 
     self->_analyticsTarget = [(NavTrayViewController *)self currentUITargetForAnalytics];
-    v19 = [(GEOComposedRoute *)self->_route destination];
-    v20 = [v19 navDisplayName];
+    destination = [(GEOComposedRoute *)self->_route destination];
+    navDisplayName = [destination navDisplayName];
 
-    if ([v20 length])
+    if ([navDisplayName length])
     {
-      [(NavTrayHeaderView *)self->_navHeaderView setDestinationName:v20];
+      [(NavTrayHeaderView *)self->_navHeaderView setDestinationName:navDisplayName];
     }
 
     else
@@ -3090,7 +3090,7 @@ LABEL_15:
       if (v24)
       {
         *buf = 134349056;
-        v39 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "[%{public}p] Report Incident action is now enabled", buf, 0xCu);
       }
 
@@ -3103,7 +3103,7 @@ LABEL_15:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315906;
-        v39 = "[NavTrayViewController _updateWithRoute:]";
+        selfCopy5 = "[NavTrayViewController _updateWithRoute:]";
         v40 = 2080;
         v41 = "NavTrayViewController.m";
         v42 = 1024;
@@ -3123,7 +3123,7 @@ LABEL_15:
       {
         v26 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v39 = v26;
+        selfCopy5 = v26;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -3131,7 +3131,7 @@ LABEL_15:
     else if (v24)
     {
       *buf = 134349314;
-      v39 = self;
+      selfCopy5 = self;
       v40 = 2114;
       v41 = v8;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "[%{public}p] Report Incident action is now disabled for reasons: %{public}@", buf, 0x16u);
@@ -3159,7 +3159,7 @@ LABEL_28:
     if (v28)
     {
       *buf = 134349056;
-      v39 = self;
+      selfCopy5 = self;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "[%{public}p] Share ETA action is now enabled", buf, 0xCu);
     }
 
@@ -3172,7 +3172,7 @@ LABEL_28:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v39 = "[NavTrayViewController _updateWithRoute:]";
+      selfCopy5 = "[NavTrayViewController _updateWithRoute:]";
       v40 = 2080;
       v41 = "NavTrayViewController.m";
       v42 = 1024;
@@ -3192,7 +3192,7 @@ LABEL_28:
     {
       v30 = +[NSThread callStackSymbols];
       *buf = 138412290;
-      v39 = v30;
+      selfCopy5 = v30;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
   }
@@ -3200,7 +3200,7 @@ LABEL_28:
   else if (v28)
   {
     *buf = 134349314;
-    v39 = self;
+    selfCopy5 = self;
     v40 = 2114;
     v41 = v33;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "[%{public}p] Share ETA action is now disabled for reasons: %{public}@", buf, 0x16u);
@@ -3210,11 +3210,11 @@ LABEL_44:
   [(NavTrayViewController *)self _updateShareETADisclosure];
 LABEL_45:
   [(NavTrayViewController *)self _computeSections];
-  v31 = [(NavTrayViewController *)self tableView];
-  [v31 reloadData];
+  tableView = [(NavTrayViewController *)self tableView];
+  [tableView reloadData];
 
-  v32 = [(ContaineeViewController *)self cardPresentationController];
-  [v32 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 
 LABEL_46:
 }
@@ -3222,10 +3222,10 @@ LABEL_46:
 - (void)_updateShareETADisclosure
 {
   [(NavTrayViewController *)self loadViewIfNeeded];
-  v3 = [(NavTrayViewController *)self route];
-  v4 = [v3 shareETAWaypointContacts];
+  route = [(NavTrayViewController *)self route];
+  shareETAWaypointContacts = [route shareETAWaypointContacts];
 
-  v5 = [v4 count];
+  v5 = [shareETAWaypointContacts count];
   if (self->_enableShareETA)
   {
     v6 = ![(NavTrayViewController *)self isInArrivalState];
@@ -3236,19 +3236,19 @@ LABEL_46:
     v6 = 0;
   }
 
-  v7 = [(NavTrayHeaderView *)self->_navHeaderView waldoModel];
+  waldoModel = [(NavTrayHeaderView *)self->_navHeaderView waldoModel];
 
-  v8 = [(NavTrayViewController *)self receivingContacts];
-  v9 = [v8 count];
+  receivingContacts = [(NavTrayViewController *)self receivingContacts];
+  v9 = [receivingContacts count];
 
   if (v9 && v6)
   {
     v10 = +[NSBundle mainBundle];
     v11 = [v10 localizedStringForKey:@"[NavTray] Sharing with %lu" value:@"localized string not found" table:0];
-    v12 = [(NavTrayViewController *)self receivingContacts];
-    v13 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v11, [v12 count]);
+    receivingContacts2 = [(NavTrayViewController *)self receivingContacts];
+    lastObject2 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v11, [receivingContacts2 count]);
 
-    v14 = [[_TtC4Maps22ShareETAAccessoryModel alloc] initWithTitle:v13 shortTitle:0 state:&off_1016E8A20];
+    v14 = [[_TtC4Maps22ShareETAAccessoryModel alloc] initWithTitle:lastObject2 shortTitle:0 state:&off_1016E8A20];
     [(NavTrayHeaderView *)self->_navHeaderView setShareETAModel:v14];
     goto LABEL_7;
   }
@@ -3260,24 +3260,24 @@ LABEL_46:
       v17 = sub_100B78EB8();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v34 = [v4 lastObject];
-        v18 = [v34 contact];
+        lastObject = [shareETAWaypointContacts lastObject];
+        contact = [lastObject contact];
         v19 = +[AddressBookManager sharedManager];
-        v20 = [v19 meCard];
-        v21 = [v20 identifier];
+        meCard = [v19 meCard];
+        identifier = [meCard identifier];
         *buf = 134349571;
-        v37 = self;
+        selfCopy = self;
         v38 = 2113;
-        v39 = v18;
+        v39 = contact;
         v40 = 2113;
-        v41 = v21;
+        v41 = identifier;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}p] Will show share ETA disclosure for contact: %{private}@, with meIdentifier: %{private}@", buf, 0x20u);
       }
 
-      v13 = [v4 lastObject];
+      lastObject2 = [shareETAWaypointContacts lastObject];
       v22 = +[MSPSharedTripService sharedInstance];
       v35 = 0;
-      v23 = [v22 capabilityTypeForContact:v13 serviceName:&v35 isActiveReceiver:0];
+      v23 = [v22 capabilityTypeForContact:lastObject2 serviceName:&v35 isActiveReceiver:0];
       v14 = v35;
 
       v24 = 0;
@@ -3288,14 +3288,14 @@ LABEL_46:
       }
 
       v26 = [_TtC4Maps19WaldoAccessoryModel alloc];
-      v27 = [(NavTrayViewController *)self shareETAFooterText];
+      shareETAFooterText = [(NavTrayViewController *)self shareETAFooterText];
       v28 = [NSNumber numberWithInteger:v24];
-      v29 = [(WaldoAccessoryModel *)v26 initWithContact:v13 capabilityType:v23 serviceName:v14 footerText:v27 state:v28];
+      v29 = [(WaldoAccessoryModel *)v26 initWithContact:lastObject2 capabilityType:v23 serviceName:v14 footerText:shareETAFooterText state:v28];
 
       [(NavTrayHeaderView *)self->_navHeaderView setWaldoModel:v29];
 LABEL_7:
 
-      if (v7)
+      if (waldoModel)
       {
         goto LABEL_20;
       }
@@ -3309,7 +3309,7 @@ LABEL_7:
     v33 = [[_TtC4Maps22ShareETAAccessoryModel alloc] initWithTitle:v32 shortTitle:0 state:&off_1016E89F0];
     [(NavTrayHeaderView *)self->_navHeaderView setShareETAModel:v33];
 
-    if (v7)
+    if (waldoModel)
     {
       goto LABEL_20;
     }
@@ -3319,16 +3319,16 @@ LABEL_7:
   {
     [(NavTrayHeaderView *)self->_navHeaderView setShareETAModel:0];
     [(NavTrayHeaderView *)self->_navHeaderView setWaldoModel:0];
-    if (v7)
+    if (waldoModel)
     {
       goto LABEL_20;
     }
   }
 
 LABEL_18:
-  v30 = [(NavTrayHeaderView *)self->_navHeaderView waldoModel];
+  waldoModel2 = [(NavTrayHeaderView *)self->_navHeaderView waldoModel];
 
-  if (v30)
+  if (waldoModel2)
   {
     [GEOAPPortal captureUserAction:45 target:91 value:0];
   }
@@ -3344,11 +3344,11 @@ LABEL_20:
   }
 }
 
-- (void)setShareETAFooterText:(id)a3
+- (void)setShareETAFooterText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_shareETAFooterText;
-  v6 = v4;
+  v6 = textCopy;
   if (v6 | v5)
   {
     v10 = v6;
@@ -3367,11 +3367,11 @@ LABEL_20:
   }
 }
 
-- (void)setReceivingContacts:(id)a3
+- (void)setReceivingContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = self->_receivingContacts;
-  v6 = v4;
+  v6 = contactsCopy;
   if (v6 | v5)
   {
     v7 = [v5 isEqual:v6];
@@ -3386,7 +3386,7 @@ LABEL_20:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v18 = 134349314;
-        v19 = self;
+        selfCopy = self;
         v20 = 2112;
         v21 = v6;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] Updated receiving contacts: %@", &v18, 0x16u);
@@ -3409,14 +3409,14 @@ LABEL_20:
         if (v12 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v13 = v12;
-          v14 = [(NavTrayViewController *)self tableView];
-          v15 = [v14 numberOfSections];
+          tableView = [(NavTrayViewController *)self tableView];
+          numberOfSections = [tableView numberOfSections];
 
-          if (v13 < v15)
+          if (v13 < numberOfSections)
           {
-            v16 = [(NavTrayViewController *)self tableView];
+            tableView2 = [(NavTrayViewController *)self tableView];
             v17 = [NSIndexSet indexSetWithIndex:v13];
-            [v16 reloadSections:v17 withRowAnimation:5];
+            [tableView2 reloadSections:v17 withRowAnimation:5];
           }
         }
       }
@@ -3424,24 +3424,24 @@ LABEL_20:
   }
 }
 
-- (void)updateCardCornerRadiusForLayout:(unint64_t)a3
+- (void)updateCardCornerRadiusForLayout:(unint64_t)layout
 {
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 usingSheetPresentation];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-  if (!v6)
+  if (!usingSheetPresentation)
   {
     return;
   }
 
-  if (a3 == 1)
+  if (layout == 1)
   {
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    if ([v7 containerStyle] == 1 && !-[NavTrayViewController isInArrivalState](self, "isInArrivalState"))
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    if ([cardPresentationController2 containerStyle] == 1 && !-[NavTrayViewController isInArrivalState](self, "isInArrivalState"))
     {
-      v9 = [(NavTrayHeaderView *)self->_navHeaderView hasAccessory];
+      hasAccessory = [(NavTrayHeaderView *)self->_navHeaderView hasAccessory];
 
-      if ((v9 & 1) == 0)
+      if ((hasAccessory & 1) == 0)
       {
         [(NavTrayViewController *)self headerHeight];
         v8 = v10 * 0.5;
@@ -3456,8 +3456,8 @@ LABEL_20:
 
   v8 = UISheetPresentationControllerAutomaticDimension;
 LABEL_7:
-  v11 = [(NavTrayViewController *)self sheetPresentationController];
-  [v11 setPreferredCornerRadius:v8];
+  sheetPresentationController = [(NavTrayViewController *)self sheetPresentationController];
+  [sheetPresentationController setPreferredCornerRadius:v8];
 }
 
 - (double)topSpaceForScrollPocket
@@ -3475,33 +3475,33 @@ LABEL_7:
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v19.receiver = self;
   v19.super_class = NavTrayViewController;
-  [(MapsThemeViewController *)&v19 traitCollectionDidChange:v4];
-  v5 = [(NavTrayViewController *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
-  if (sub_10008FB5C(v6, v7))
+  [(MapsThemeViewController *)&v19 traitCollectionDidChange:changeCopy];
+  traitCollection = [(NavTrayViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  if (sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2))
   {
   }
 
   else
   {
-    v8 = [(NavTrayViewController *)self traitCollection];
-    v9 = [v8 accessibilityContrast];
-    v10 = [v4 accessibilityContrast];
+    traitCollection2 = [(NavTrayViewController *)self traitCollection];
+    accessibilityContrast = [traitCollection2 accessibilityContrast];
+    accessibilityContrast2 = [changeCopy accessibilityContrast];
 
-    if (v9 == v10)
+    if (accessibilityContrast == accessibilityContrast2)
     {
       goto LABEL_5;
     }
   }
 
-  v11 = [(NavTrayViewController *)self tableView];
-  [v11 reloadData];
+  tableView = [(NavTrayViewController *)self tableView];
+  [tableView reloadData];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3510,21 +3510,21 @@ LABEL_7:
   block[4] = self;
   dispatch_async(&_dispatch_main_q, block);
 LABEL_5:
-  v12 = [(NavTrayViewController *)self traitCollection];
-  v13 = sub_100017FE8(v4, v12);
+  traitCollection3 = [(NavTrayViewController *)self traitCollection];
+  v13 = sub_100017FE8(changeCopy, traitCollection3);
 
   if (v13)
   {
-    v14 = [(NavTrayViewController *)self traitCollection];
-    v15 = [v14 isLuminanceReduced];
+    traitCollection4 = [(NavTrayViewController *)self traitCollection];
+    isLuminanceReduced = [traitCollection4 isLuminanceReduced];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100B81314;
     v16[3] = &unk_101661AE0;
-    v17 = v15;
+    v17 = isLuminanceReduced;
     v16[4] = self;
-    [UIView _maps_animateForAndromeda:v15 animations:v16];
+    [UIView _maps_animateForAndromeda:isLuminanceReduced animations:v16];
   }
 }
 
@@ -3533,20 +3533,20 @@ LABEL_5:
   v7.receiver = self;
   v7.super_class = NavTrayViewController;
   [(NavTrayViewController *)&v7 viewWillLayoutSubviews];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 transitionProgressFromLayout:1 toLayout:2];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController transitionProgressFromLayout:1 toLayout:2];
   v5 = v4;
 
   [(NavTrayHeaderView *)self->_navHeaderView setExpansionProgress:v5];
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  -[NavTrayViewController updateCardCornerRadiusForLayout:](self, "updateCardCornerRadiusForLayout:", [v6 containeeLayout]);
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  -[NavTrayViewController updateCardCornerRadiusForLayout:](self, "updateCardCornerRadiusForLayout:", [cardPresentationController2 containeeLayout]);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = NavTrayViewController;
-  [(NavTrayViewController *)&v6 viewDidDisappear:a3];
+  [(NavTrayViewController *)&v6 viewDidDisappear:disappear];
   v4 = +[TrafficIncidentLayoutManager sharedInstance];
   [v4 removeObserver:self];
 
@@ -3554,40 +3554,40 @@ LABEL_5:
   [WeakRetained dismissViewControllerAnimated:0 completion:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = NavTrayViewController;
-  [(NavTrayViewController *)&v5 viewDidAppear:a3];
+  [(NavTrayViewController *)&v5 viewDidAppear:appear];
   self->_viewDidAppear = 1;
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v24.receiver = self;
   v24.super_class = NavTrayViewController;
-  [(ContaineeViewController *)&v24 viewWillAppear:a3];
+  [(ContaineeViewController *)&v24 viewWillAppear:appear];
   v4 = +[MNNavigationService sharedService];
-  v5 = [v4 route];
-  [(NavTrayViewController *)self _updateWithRoute:v5];
+  route = [v4 route];
+  [(NavTrayViewController *)self _updateWithRoute:route];
 
   [(ContaineeViewController *)self setContentScrollView:self->_tableView forEdge:1];
   v6 = +[TrafficIncidentLayoutManager sharedInstance];
   [v6 addObserver:self];
 
   v7 = +[MSPSharedTripService sharedInstance];
-  v8 = [v7 receivers];
-  [(NavTrayViewController *)self setReceivingContacts:v8];
+  receivers = [v7 receivers];
+  [(NavTrayViewController *)self setReceivingContacts:receivers];
 
-  v9 = [(NavTrayViewController *)self view];
-  v10 = [v9 window];
+  view = [(NavTrayViewController *)self view];
+  window = [view window];
 
-  if (v10)
+  if (window)
   {
-    v11 = [(ContaineeViewController *)self cardPresentationController];
-    [v11 wantsLayout:1];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController wantsLayout:1];
   }
 
   if (self->_enableShareETA)
@@ -3598,7 +3598,7 @@ LABEL_5:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v26 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Starting timer to show Share ETA initial banner", buf, 0xCu);
       }
 
@@ -3612,7 +3612,7 @@ LABEL_5:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v26 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}p] Not presenting Share ETA initial banner as it's not available", buf, 0xCu);
     }
 
@@ -3620,24 +3620,24 @@ LABEL_5:
   }
 
   v14 = +[MNNavigationService sharedService];
-  v15 = [v14 arrivalInfo];
-  v16 = [v15 arrivalState];
+  arrivalInfo = [v14 arrivalInfo];
+  arrivalState = [arrivalInfo arrivalState];
 
-  if (v16 != -1)
+  if (arrivalState != -1)
   {
-    if (v16)
+    if (arrivalState)
     {
-      v17 = [v14 route];
-      v18 = [v17 legIndexForStepIndex:{objc_msgSend(v14, "stepIndex")}];
+      route2 = [v14 route];
+      v18 = [route2 legIndexForStepIndex:{objc_msgSend(v14, "stepIndex")}];
 
-      if ((v16 - 1) > 5)
+      if ((arrivalState - 1) > 5)
       {
         v19 = 0;
       }
 
       else
       {
-        v19 = qword_101215480[(v16 - 1)];
+        v19 = qword_101215480[(arrivalState - 1)];
       }
 
       [(NavTrayHeaderView *)self->_navHeaderView setArrivalState:v19];
@@ -3659,8 +3659,8 @@ LABEL_5:
   objc_copyWeak(&v23, buf);
   [v20 refreshSharingIdentityWithCompletion:v22];
 
-  v21 = [(ContaineeViewController *)self cardPresentationController];
-  -[NavTrayViewController updateCardCornerRadiusForLayout:](self, "updateCardCornerRadiusForLayout:", [v21 containeeLayout]);
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  -[NavTrayViewController updateCardCornerRadiusForLayout:](self, "updateCardCornerRadiusForLayout:", [cardPresentationController2 containeeLayout]);
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
@@ -3668,8 +3668,8 @@ LABEL_5:
 
 - (void)viewDidLoad
 {
-  v3 = [(NavTrayViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"NavTray"];
+  view = [(NavTrayViewController *)self view];
+  [view setAccessibilityIdentifier:@"NavTray"];
 
   v4 = objc_opt_new();
   contentView = self->_contentView;
@@ -3678,8 +3678,8 @@ LABEL_5:
   [(UIView *)self->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_contentView setAlpha:0.0];
   [(UIView *)self->_contentView setAccessibilityIdentifier:@"NavTrayContent"];
-  v6 = [(NavTrayViewController *)self view];
-  [v6 addSubview:self->_contentView];
+  view2 = [(NavTrayViewController *)self view];
+  [view2 addSubview:self->_contentView];
 
   v114.receiver = self;
   v114.super_class = NavTrayViewController;
@@ -3690,18 +3690,18 @@ LABEL_5:
     [v7 addSendingObserver:self];
   }
 
-  v8 = [(ContaineeViewController *)self cardPresentationController];
-  [v8 setFirstCard:1];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setFirstCard:1];
 
-  v9 = [(ContaineeViewController *)self cardPresentationController];
-  [v9 setEdgeAttachedRegularHeightDimmingBehavior:2];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 setEdgeAttachedRegularHeightDimmingBehavior:2];
 
   if (self->_isSteppingMode)
   {
     v10 = +[MNNavigationService sharedService];
-    v11 = [v10 route];
+    route = [v10 route];
     route = self->_route;
-    self->_route = v11;
+    self->_route = route;
 
     v13 = [[StepTrayHeaderView alloc] initWithDelegate:self metrics:self->_metrics];
     stepHeaderView = self->_stepHeaderView;
@@ -3720,12 +3720,12 @@ LABEL_5:
     [(GuidanceObserver *)self->_guidanceObserver addOutlet:self->_navHeaderView];
     v17 = +[MNNavigationService sharedService];
     v18 = [GuidanceETA alloc];
-    v19 = [v17 displayEtaInfo];
-    v20 = [v17 remainingDistanceInfo];
-    v21 = [v17 batteryChargeInfo];
-    v22 = [v17 upcomingStop];
-    v23 = [v22 timezone];
-    v24 = -[GuidanceETA initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:](v18, "initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:", v19, v20, v21, v23, [v17 navigationTransportType]);
+    displayEtaInfo = [v17 displayEtaInfo];
+    remainingDistanceInfo = [v17 remainingDistanceInfo];
+    batteryChargeInfo = [v17 batteryChargeInfo];
+    upcomingStop = [v17 upcomingStop];
+    timezone = [upcomingStop timezone];
+    v24 = -[GuidanceETA initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:](v18, "initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:", displayEtaInfo, remainingDistanceInfo, batteryChargeInfo, timezone, [v17 navigationTransportType]);
     [(NavTrayHeaderView *)self->_navHeaderView setETA:v24];
 
     [(NavTrayHeaderView *)self->_navHeaderView setExpansionProgress:0.0];
@@ -3737,8 +3737,8 @@ LABEL_5:
   [(UIView *)self->_headerView setContentCompressionResistancePriority:0 forAxis:v25];
   LODWORD(v26) = 1148846080;
   [(UIView *)self->_headerView setContentCompressionResistancePriority:1 forAxis:v26];
-  v27 = [(NavTrayViewController *)self view];
-  [v27 addSubview:self->_headerView];
+  view3 = [(NavTrayViewController *)self view];
+  [view3 addSubview:self->_headerView];
 
   [(GuidanceObserver *)self->_guidanceObserver repeatAllUpdatesForOutlet:self->_navHeaderView];
   v28 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -3783,88 +3783,88 @@ LABEL_5:
 
   [(UITableView *)self->_tableView setAccessibilityIdentifier:@"NavTrayTableView"];
   [(UITableView *)self->_tableView _setPocketsEnabled:0];
-  v47 = [(NavTrayViewController *)self contentView];
-  [v47 addSubview:self->_tableView];
+  contentView = [(NavTrayViewController *)self contentView];
+  [contentView addSubview:self->_tableView];
 
-  v48 = [(NavTrayViewController *)self view];
-  v49 = [(NavTrayViewController *)self contentView];
-  [v48 bringSubviewToFront:v49];
+  view4 = [(NavTrayViewController *)self view];
+  contentView2 = [(NavTrayViewController *)self contentView];
+  [view4 bringSubviewToFront:contentView2];
 
-  v50 = [(NavTrayViewController *)self view];
-  v51 = [(NavTrayViewController *)self headerView];
-  [v50 bringSubviewToFront:v51];
+  view5 = [(NavTrayViewController *)self view];
+  headerView = [(NavTrayViewController *)self headerView];
+  [view5 bringSubviewToFront:headerView];
 
-  v113 = [(NavTrayViewController *)self headerView];
-  v111 = [v113 leadingAnchor];
-  v112 = [(NavTrayViewController *)self view];
-  v110 = [v112 leadingAnchor];
-  v109 = [v111 constraintEqualToAnchor:v110];
+  headerView2 = [(NavTrayViewController *)self headerView];
+  leadingAnchor = [headerView2 leadingAnchor];
+  view6 = [(NavTrayViewController *)self view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v109 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v115[0] = v109;
-  v108 = [(NavTrayViewController *)self headerView];
-  v106 = [v108 trailingAnchor];
-  v107 = [(NavTrayViewController *)self view];
-  v105 = [v107 trailingAnchor];
-  v104 = [v106 constraintEqualToAnchor:v105];
+  headerView3 = [(NavTrayViewController *)self headerView];
+  trailingAnchor = [headerView3 trailingAnchor];
+  view7 = [(NavTrayViewController *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v104 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v115[1] = v104;
-  v103 = [(NavTrayViewController *)self headerView];
-  v101 = [v103 topAnchor];
-  v102 = [(NavTrayViewController *)self view];
-  v100 = [v102 topAnchor];
-  v99 = [v101 constraintEqualToAnchor:v100];
+  headerView4 = [(NavTrayViewController *)self headerView];
+  topAnchor = [headerView4 topAnchor];
+  view8 = [(NavTrayViewController *)self view];
+  topAnchor2 = [view8 topAnchor];
+  v99 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v115[2] = v99;
-  v98 = [(NavTrayViewController *)self headerView];
-  v96 = [v98 bottomAnchor];
-  v97 = [(NavTrayViewController *)self view];
-  v95 = [v97 bottomAnchor];
-  v94 = [v96 constraintLessThanOrEqualToAnchor:v95];
+  headerView5 = [(NavTrayViewController *)self headerView];
+  bottomAnchor = [headerView5 bottomAnchor];
+  view9 = [(NavTrayViewController *)self view];
+  bottomAnchor2 = [view9 bottomAnchor];
+  v94 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v115[3] = v94;
-  v93 = [(NavTrayViewController *)self contentView];
-  v91 = [v93 leadingAnchor];
-  v92 = [(NavTrayViewController *)self view];
-  v90 = [v92 leadingAnchor];
-  v89 = [v91 constraintEqualToAnchor:v90];
+  contentView3 = [(NavTrayViewController *)self contentView];
+  leadingAnchor3 = [contentView3 leadingAnchor];
+  view10 = [(NavTrayViewController *)self view];
+  leadingAnchor4 = [view10 leadingAnchor];
+  v89 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v115[4] = v89;
-  v88 = [(NavTrayViewController *)self contentView];
-  v86 = [v88 trailingAnchor];
-  v87 = [(NavTrayViewController *)self view];
-  v85 = [v87 trailingAnchor];
-  v84 = [v86 constraintEqualToAnchor:v85];
+  contentView4 = [(NavTrayViewController *)self contentView];
+  trailingAnchor3 = [contentView4 trailingAnchor];
+  view11 = [(NavTrayViewController *)self view];
+  trailingAnchor4 = [view11 trailingAnchor];
+  v84 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v115[5] = v84;
-  v83 = [(NavTrayViewController *)self contentView];
-  v81 = [v83 topAnchor];
-  v82 = [(NavTrayViewController *)self view];
-  v80 = [v82 topAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80];
+  contentView5 = [(NavTrayViewController *)self contentView];
+  topAnchor3 = [contentView5 topAnchor];
+  view12 = [(NavTrayViewController *)self view];
+  topAnchor4 = [view12 topAnchor];
+  v79 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v115[6] = v79;
-  v78 = [(NavTrayViewController *)self contentView];
-  v76 = [v78 bottomAnchor];
-  v77 = [(NavTrayViewController *)self view];
-  v75 = [v77 bottomAnchor];
-  v74 = [v76 constraintEqualToAnchor:v75];
+  contentView6 = [(NavTrayViewController *)self contentView];
+  bottomAnchor3 = [contentView6 bottomAnchor];
+  view13 = [(NavTrayViewController *)self view];
+  bottomAnchor4 = [view13 bottomAnchor];
+  v74 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v115[7] = v74;
-  v73 = [(NavTrayViewController *)self tableView];
-  v71 = [v73 leadingAnchor];
-  v72 = [(NavTrayViewController *)self contentView];
-  v70 = [v72 leadingAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70];
+  tableView = [(NavTrayViewController *)self tableView];
+  leadingAnchor5 = [tableView leadingAnchor];
+  contentView7 = [(NavTrayViewController *)self contentView];
+  leadingAnchor6 = [contentView7 leadingAnchor];
+  v69 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v115[8] = v69;
-  v68 = [(NavTrayViewController *)self tableView];
-  v66 = [v68 trailingAnchor];
-  v67 = [(NavTrayViewController *)self contentView];
-  v65 = [v67 trailingAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  tableView2 = [(NavTrayViewController *)self tableView];
+  trailingAnchor5 = [tableView2 trailingAnchor];
+  contentView8 = [(NavTrayViewController *)self contentView];
+  trailingAnchor6 = [contentView8 trailingAnchor];
+  v64 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v115[9] = v64;
-  v63 = [(NavTrayViewController *)self tableView];
-  v62 = [v63 topAnchor];
-  v52 = [(NavTrayViewController *)self contentView];
-  v53 = [v52 topAnchor];
-  v54 = [v62 constraintEqualToAnchor:v53];
+  tableView3 = [(NavTrayViewController *)self tableView];
+  topAnchor5 = [tableView3 topAnchor];
+  contentView9 = [(NavTrayViewController *)self contentView];
+  topAnchor6 = [contentView9 topAnchor];
+  v54 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v115[10] = v54;
-  v55 = [(NavTrayViewController *)self tableView];
-  v56 = [v55 bottomAnchor];
-  v57 = [(NavTrayViewController *)self contentView];
-  v58 = [v57 bottomAnchor];
-  v59 = [v56 constraintEqualToAnchor:v58];
+  tableView4 = [(NavTrayViewController *)self tableView];
+  bottomAnchor5 = [tableView4 bottomAnchor];
+  contentView10 = [(NavTrayViewController *)self contentView];
+  bottomAnchor6 = [contentView10 bottomAnchor];
+  v59 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v115[11] = v59;
   v60 = [NSArray arrayWithObjects:v115 count:12];
   [NSLayoutConstraint activateConstraints:v60];
@@ -3875,27 +3875,27 @@ LABEL_5:
     [(NavTrayViewController *)self setCurrentStepIndex:0];
   }
 
-  v61 = [(NavTrayViewController *)self waypointController];
-  [v61 registerObserver:self];
+  waypointController = [(NavTrayViewController *)self waypointController];
+  [waypointController registerObserver:self];
 }
 
 - (void)_commonInit
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 setBlurInCardView:0];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setBlurInCardView:0];
 
   v4 = [UIColor colorNamed:@"NavigationMaterialColor"];
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 setCardColor:v4];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 setCardColor:v4];
 
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  [v6 setAllowsSwipeToDismiss:0];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 setAllowsSwipeToDismiss:0];
 
-  v7 = [(ContaineeViewController *)self cardPresentationController];
-  [v7 setMaximumLayoutForEdgeInsetUpdate:1];
+  cardPresentationController4 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController4 setMaximumLayoutForEdgeInsetUpdate:1];
 
-  v8 = [(ContaineeViewController *)self cardPresentationController];
-  [v8 setIncludesSafeAreaInsetWhenInset:0];
+  cardPresentationController5 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController5 setIncludesSafeAreaInsetWhenInset:0];
 
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 addObserver:self selector:"offlineMapsStateChanged" name:@"UsingOfflineMapsStateChangedNotification" object:0];
@@ -3911,11 +3911,11 @@ LABEL_5:
   [v12 addObserver:self selector:"_maneuverBannerViewEVStationsNotification:" name:@"ManeuverBannerViewEVStationsNotification" object:0];
 }
 
-- (id)initForNavigationWithDelegate:(id)a3 guidanceObserver:(id)a4 platformController:(id)a5
+- (id)initForNavigationWithDelegate:(id)delegate guidanceObserver:(id)observer platformController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  observerCopy = observer;
+  controllerCopy = controller;
   v18.receiver = self;
   v18.super_class = NavTrayViewController;
   v11 = [(NavTrayViewController *)&v18 initWithNibName:0 bundle:0];
@@ -3923,9 +3923,9 @@ LABEL_5:
   if (v11)
   {
     [(NavTrayViewController *)v11 _commonInit];
-    objc_storeWeak(&v12->_navigationDelegate, v8);
-    objc_storeStrong(&v12->_guidanceObserver, a4);
-    objc_storeWeak(&v12->_platformController, v10);
+    objc_storeWeak(&v12->_navigationDelegate, delegateCopy);
+    objc_storeStrong(&v12->_guidanceObserver, observer);
+    objc_storeWeak(&v12->_platformController, controllerCopy);
     v13 = +[NavTrayMetrics defaultMetrics];
     metrics = v12->_metrics;
     v12->_metrics = v13;
@@ -3940,10 +3940,10 @@ LABEL_5:
   return v12;
 }
 
-- (id)initForSteppingWithDelegate:(id)a3 platformController:(id)a4
+- (id)initForSteppingWithDelegate:(id)delegate platformController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = NavTrayViewController;
   v8 = [(NavTrayViewController *)&v13 initWithNibName:0 bundle:0];
@@ -3951,13 +3951,13 @@ LABEL_5:
   if (v8)
   {
     [(NavTrayViewController *)v8 _commonInit];
-    objc_storeWeak(&v9->_steppingDelegate, v6);
+    objc_storeWeak(&v9->_steppingDelegate, delegateCopy);
     v9->_isSteppingMode = 1;
     v10 = +[NavTrayMetrics defaultMetrics];
     metrics = v9->_metrics;
     v9->_metrics = v10;
 
-    objc_storeWeak(&v9->_platformController, v7);
+    objc_storeWeak(&v9->_platformController, controllerCopy);
   }
 
   return v9;

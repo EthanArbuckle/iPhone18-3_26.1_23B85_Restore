@@ -1,7 +1,7 @@
 @interface AdvertisableFeatureTableViewCell
 - (NSString)reuseIdentifier;
-- (_TtC18HealthExperienceUI32AdvertisableFeatureTableViewCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI32AdvertisableFeatureTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18HealthExperienceUI32AdvertisableFeatureTableViewCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI32AdvertisableFeatureTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation AdvertisableFeatureTableViewCell
@@ -14,9 +14,9 @@
   return v2;
 }
 
-- (_TtC18HealthExperienceUI32AdvertisableFeatureTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18HealthExperienceUI32AdvertisableFeatureTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
   }
@@ -30,7 +30,7 @@
   return sub_1BA017FC0(v4, v5);
 }
 
-- (_TtC18HealthExperienceUI32AdvertisableFeatureTableViewCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI32AdvertisableFeatureTableViewCell)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI32AdvertisableFeatureTableViewCell_baseIdentifier);
   *v3 = 0;

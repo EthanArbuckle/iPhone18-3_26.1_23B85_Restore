@@ -1,24 +1,24 @@
 @interface BRProgressProxy
-- (BRProgressProxy)initWithURL:(id)a3;
+- (BRProgressProxy)initWithURL:(id)l;
 - (BRProgressProxyDelegate)delegate;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation BRProgressProxy
 
-- (BRProgressProxy)initWithURL:(id)a3
+- (BRProgressProxy)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = BRProgressProxy;
   v6 = [(BRProgressProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
   }
 
   return v7;
@@ -36,7 +36,7 @@
     _os_log_fault_impl(&dword_1AE2A9000, v5, OS_LOG_TYPE_FAULT, "[CRIT] Assertion failed: _globalProgressSubscriber == nil%@", &v7, 0xCu);
   }
 
-  if (*a1)
+  if (*self)
   {
     [a2 stop];
   }
@@ -115,26 +115,26 @@ uint64_t __24__BRProgressProxy_start__block_invoke_2(uint64_t a1)
   self->_globalProgressSubscriber = 0;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v11;
-    v14 = [(BRProgressProxy *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v14 progressProxy:self localizedDescriptionForProgress:v13], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+    v13 = objectCopy;
+    delegate = [(BRProgressProxy *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate progressProxy:self localizedDescriptionForProgress:v13], (localizedDescription = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v15 = [v13 localizedDescription];
+      localizedDescription = [v13 localizedDescription];
     }
 
-    v16 = v15;
-    [(BRProgressProxy *)self setLocalizedDescription:v15];
+    v16 = localizedDescription;
+    [(BRProgressProxy *)self setLocalizedDescription:localizedDescription];
 
-    v17 = [v13 localizedAdditionalDescription];
-    [(BRProgressProxy *)self setLocalizedAdditionalDescription:v17];
+    localizedAdditionalDescription = [v13 localizedAdditionalDescription];
+    [(BRProgressProxy *)self setLocalizedAdditionalDescription:localizedAdditionalDescription];
 
     -[BRProgressProxy setTotalUnitCount:](self, "setTotalUnitCount:", [v13 totalUnitCount]);
     -[BRProgressProxy setCompletedUnitCount:](self, "setCompletedUnitCount:", [v13 completedUnitCount]);
@@ -144,7 +144,7 @@ uint64_t __24__BRProgressProxy_start__block_invoke_2(uint64_t a1)
   {
     v18.receiver = self;
     v18.super_class = BRProgressProxy;
-    [(BRProgressProxy *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BRProgressProxy *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

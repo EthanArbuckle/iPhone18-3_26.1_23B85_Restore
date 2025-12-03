@@ -1,37 +1,37 @@
 @interface TUICandidateBaseCell
-- (TUICandidateBaseCell)initWithFrame:(CGRect)a3;
+- (TUICandidateBaseCell)initWithFrame:(CGRect)frame;
 - (id)cellBackgroundColor;
 - (id)cellBackgroundImage;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)updateBackground:(id)a3 color:(id)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)updateBackground:(id)background color:(id)color;
 - (void)updateColors;
 @end
 
 @implementation TUICandidateBaseCell
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v19.receiver = self;
   v19.super_class = TUICandidateBaseCell;
   [(TUICandidateBaseCell *)&v19 setHighlighted:?];
-  v5 = [(TUICandidateBaseCell *)self style];
+  style = [(TUICandidateBaseCell *)self style];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(TUICandidateBaseCell *)self style];
-    v7 = [v6 performScalingAnimationOnCellHighlight];
+    style2 = [(TUICandidateBaseCell *)self style];
+    performScalingAnimationOnCellHighlight = [style2 performScalingAnimationOnCellHighlight];
 
-    if (v7)
+    if (performScalingAnimationOnCellHighlight)
     {
-      if (v3)
+      if (highlightedCopy)
       {
         v14 = MEMORY[0x1E69E9820];
         v15 = 3221225472;
         v16 = __39__TUICandidateBaseCell_setHighlighted___block_invoke;
         v17 = &unk_1E72D83A0;
-        v18 = self;
+        selfCopy = self;
         v8 = &v14;
       }
 
@@ -41,11 +41,11 @@
         v10 = 3221225472;
         v11 = __39__TUICandidateBaseCell_setHighlighted___block_invoke_2;
         v12 = &unk_1E72D83A0;
-        v13 = self;
+        selfCopy2 = self;
         v8 = &v9;
       }
 
-      [MEMORY[0x1E69DD250] animateWithDuration:v8 animations:{0.1, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18}];
+      [MEMORY[0x1E69DD250] animateWithDuration:v8 animations:{0.1, v9, v10, v11, v12, selfCopy2, v14, v15, v16, v17, selfCopy}];
     }
   }
 
@@ -74,23 +74,23 @@ uint64_t __39__TUICandidateBaseCell_setHighlighted___block_invoke_2(uint64_t a1)
   return [v1 setTransform:v4];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = TUICandidateBaseCell;
-  [(TUICandidateBaseCell *)&v4 setSelected:a3];
+  [(TUICandidateBaseCell *)&v4 setSelected:selected];
   [(TUICandidateBaseCell *)self updateColors];
 }
 
-- (void)updateBackground:(id)a3 color:(id)a4
+- (void)updateBackground:(id)background color:(id)color
 {
-  v13 = a3;
-  v6 = a4;
-  if (v13)
+  backgroundCopy = background;
+  colorCopy = color;
+  if (backgroundCopy)
   {
-    v7 = [(TUICandidateBaseCell *)self backgroundImageView];
+    backgroundImageView = [(TUICandidateBaseCell *)self backgroundImageView];
 
-    if (!v7)
+    if (!backgroundImageView)
     {
       v8 = objc_alloc(MEMORY[0x1E69DCAE0]);
       [(TUICandidateBaseCell *)self bounds];
@@ -98,11 +98,11 @@ uint64_t __39__TUICandidateBaseCell_setHighlighted___block_invoke_2(uint64_t a1)
       [(TUICandidateBaseCell *)self setBackgroundImageView:v9];
     }
 
-    v10 = [(TUICandidateBaseCell *)self backgroundImageView];
-    [v10 setImage:v13];
+    backgroundImageView2 = [(TUICandidateBaseCell *)self backgroundImageView];
+    [backgroundImageView2 setImage:backgroundCopy];
 
-    v11 = [(TUICandidateBaseCell *)self backgroundImageView];
-    [(TUICandidateBaseCell *)self setBackgroundView:v11];
+    backgroundImageView3 = [(TUICandidateBaseCell *)self backgroundImageView];
+    [(TUICandidateBaseCell *)self setBackgroundView:backgroundImageView3];
 
     v12 = 0;
   }
@@ -110,7 +110,7 @@ uint64_t __39__TUICandidateBaseCell_setHighlighted___block_invoke_2(uint64_t a1)
   else
   {
     [(TUICandidateBaseCell *)self setBackgroundView:0];
-    v12 = v6;
+    v12 = colorCopy;
   }
 
   [(TUICandidateBaseCell *)self setBackgroundColor:v12];
@@ -120,29 +120,29 @@ uint64_t __39__TUICandidateBaseCell_setHighlighted___block_invoke_2(uint64_t a1)
 {
   if (([(TUICandidateBaseCell *)self isSelected]& 1) != 0 || [(TUICandidateBaseCell *)self isHighlighted])
   {
-    v3 = [(TUICandidateBaseCell *)self style];
-    v4 = [v3 highlightedCellBackgroundImage];
+    style = [(TUICandidateBaseCell *)self style];
+    highlightedCellBackgroundImage = [style highlightedCellBackgroundImage];
   }
 
   else
   {
-    v3 = [(TUICandidateBaseCell *)self style];
-    v4 = [v3 cellBackgroundImage];
+    style = [(TUICandidateBaseCell *)self style];
+    highlightedCellBackgroundImage = [style cellBackgroundImage];
   }
 
-  v5 = v4;
+  v5 = highlightedCellBackgroundImage;
 
   return v5;
 }
 
 - (id)cellBackgroundColor
 {
-  v3 = [(TUICandidateBaseCell *)self style];
+  style = [(TUICandidateBaseCell *)self style];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(TUICandidateBaseCell *)self style];
-    v5 = [v4 spaceConfirmationCandidateCellBackgroundColor];
-    v6 = v5 == 0;
+    style2 = [(TUICandidateBaseCell *)self style];
+    spaceConfirmationCandidateCellBackgroundColor = [style2 spaceConfirmationCandidateCellBackgroundColor];
+    v6 = spaceConfirmationCandidateCellBackgroundColor == 0;
   }
 
   else
@@ -154,33 +154,33 @@ uint64_t __39__TUICandidateBaseCell_setHighlighted___block_invoke_2(uint64_t a1)
   {
     if (([(TUICandidateBaseCell *)self isSelected]& 1) != 0 || [(TUICandidateBaseCell *)self isHighlighted])
     {
-      v7 = [(TUICandidateBaseCell *)self style];
-      v8 = [v7 highlightedBackgroundColor];
+      style3 = [(TUICandidateBaseCell *)self style];
+      highlightedBackgroundColor = [style3 highlightedBackgroundColor];
     }
 
     else
     {
-      v7 = [(TUICandidateBaseCell *)self style];
-      v8 = [v7 cellBackgroundColor];
+      style3 = [(TUICandidateBaseCell *)self style];
+      highlightedBackgroundColor = [style3 cellBackgroundColor];
     }
   }
 
   else
   {
-    v7 = [(TUICandidateBaseCell *)self style];
-    v8 = [v7 spaceConfirmationCandidateCellBackgroundColor];
+    style3 = [(TUICandidateBaseCell *)self style];
+    highlightedBackgroundColor = [style3 spaceConfirmationCandidateCellBackgroundColor];
   }
 
-  v9 = v8;
+  v9 = highlightedBackgroundColor;
 
   return v9;
 }
 
 - (void)updateColors
 {
-  v4 = [(TUICandidateBaseCell *)self cellBackgroundImage];
-  v3 = [(TUICandidateBaseCell *)self cellBackgroundColor];
-  [(TUICandidateBaseCell *)self updateBackground:v4 color:v3];
+  cellBackgroundImage = [(TUICandidateBaseCell *)self cellBackgroundImage];
+  cellBackgroundColor = [(TUICandidateBaseCell *)self cellBackgroundColor];
+  [(TUICandidateBaseCell *)self updateBackground:cellBackgroundImage color:cellBackgroundColor];
 }
 
 - (void)layoutSubviews
@@ -189,30 +189,30 @@ uint64_t __39__TUICandidateBaseCell_setHighlighted___block_invoke_2(uint64_t a1)
   v9.super_class = TUICandidateBaseCell;
   [(TUICandidateBaseCell *)&v9 layoutSubviews];
   [(TUICandidateBaseCell *)self updateColors];
-  v3 = [(TUICandidateBaseCell *)self style];
+  style = [(TUICandidateBaseCell *)self style];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(TUICandidateBaseCell *)self style];
-    v5 = [v4 applyCornerRadiusToAllCandidates];
+    style2 = [(TUICandidateBaseCell *)self style];
+    applyCornerRadiusToAllCandidates = [style2 applyCornerRadiusToAllCandidates];
 
-    if (!v5)
+    if (!applyCornerRadiusToAllCandidates)
     {
       return;
     }
 
-    v3 = [(TUICandidateBaseCell *)self style];
-    [v3 cellCornerRadius];
+    style = [(TUICandidateBaseCell *)self style];
+    [style cellCornerRadius];
     v7 = v6;
-    v8 = [(TUICandidateBaseCell *)self layer];
-    [v8 setCornerRadius:v7];
+    layer = [(TUICandidateBaseCell *)self layer];
+    [layer setCornerRadius:v7];
   }
 }
 
-- (TUICandidateBaseCell)initWithFrame:(CGRect)a3
+- (TUICandidateBaseCell)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = TUICandidateBaseCell;
-  return [(TUICandidateBaseCell *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(TUICandidateBaseCell *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 @end

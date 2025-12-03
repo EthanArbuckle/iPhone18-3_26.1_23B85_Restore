@@ -1,48 +1,48 @@
 @interface BRCItemFetcher
-- (BRCItemFetcher)initWithSessionContext:(id)a3 localItemBuilder:(id)a4 serverItemBuilder:(id)a5;
-- (id)itemByFileObjectID:(id)a3 dbFacade:(id)a4;
-- (id)itemByItemGlobalID:(id)a3 dbFacade:(id)a4;
-- (id)localAliasForSharedItem:(id)a3 inZone:(id)a4;
-- (id)serverAliasItemForSharedItem:(id)a3 dbFacade:(id)a4;
-- (id)serverAliasItemForSharedItem:(id)a3 inZone:(id)a4 dbFacade:(id)a5;
+- (BRCItemFetcher)initWithSessionContext:(id)context localItemBuilder:(id)builder serverItemBuilder:(id)itemBuilder;
+- (id)itemByFileObjectID:(id)d dbFacade:(id)facade;
+- (id)itemByItemGlobalID:(id)d dbFacade:(id)facade;
+- (id)localAliasForSharedItem:(id)item inZone:(id)zone;
+- (id)serverAliasItemForSharedItem:(id)item dbFacade:(id)facade;
+- (id)serverAliasItemForSharedItem:(id)item inZone:(id)zone dbFacade:(id)facade;
 @end
 
 @implementation BRCItemFetcher
 
-- (BRCItemFetcher)initWithSessionContext:(id)a3 localItemBuilder:(id)a4 serverItemBuilder:(id)a5
+- (BRCItemFetcher)initWithSessionContext:(id)context localItemBuilder:(id)builder serverItemBuilder:(id)itemBuilder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  builderCopy = builder;
+  itemBuilderCopy = itemBuilder;
   v19.receiver = self;
   v19.super_class = BRCItemFetcher;
   v11 = [(BRCItemFetcher *)&v19 init];
   if (v11)
   {
-    v12 = [v8 zoneAppRetriever];
+    zoneAppRetriever = [contextCopy zoneAppRetriever];
     zoneAppRetriever = v11->_zoneAppRetriever;
-    v11->_zoneAppRetriever = v12;
+    v11->_zoneAppRetriever = zoneAppRetriever;
 
-    v14 = [v8 clientReadWriteDatabaseFacade];
+    clientReadWriteDatabaseFacade = [contextCopy clientReadWriteDatabaseFacade];
     defaultClientDBFacade = v11->_defaultClientDBFacade;
-    v11->_defaultClientDBFacade = v14;
+    v11->_defaultClientDBFacade = clientReadWriteDatabaseFacade;
 
-    v16 = [v8 serverReadWriteDatabaseFacade];
+    serverReadWriteDatabaseFacade = [contextCopy serverReadWriteDatabaseFacade];
     defaultServerDBFacade = v11->_defaultServerDBFacade;
-    v11->_defaultServerDBFacade = v16;
+    v11->_defaultServerDBFacade = serverReadWriteDatabaseFacade;
 
-    objc_storeStrong(&v11->_localItemBuilder, a4);
-    objc_storeStrong(&v11->_serverItemBuilder, a5);
+    objc_storeStrong(&v11->_localItemBuilder, builder);
+    objc_storeStrong(&v11->_serverItemBuilder, itemBuilder);
   }
 
   return v11;
 }
 
-- (id)itemByFileObjectID:(id)a3 dbFacade:(id)a4
+- (id)itemByFileObjectID:(id)d dbFacade:(id)facade
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  facadeCopy = facade;
+  if (!dCopy)
   {
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
@@ -57,19 +57,19 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v8 = [v6 type];
-  v9 = [v6 rawID];
-  if (v8 <= 3)
+  type = [dCopy type];
+  rawID = [dCopy rawID];
+  if (type <= 3)
   {
-    if (v8)
+    if (type)
     {
-      if (v8 == 1)
+      if (type == 1)
       {
         zoneAppRetriever = self->_zoneAppRetriever;
-        v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v9];
+        v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:rawID];
         v12 = [(BRCZoneAppRetriever *)zoneAppRetriever appLibraryByRowID:v11];
 
-        v13 = [v12 fetchRootItemWithFacade:v7];
+        v13 = [v12 fetchRootItemWithFacade:facadeCopy];
 
         goto LABEL_16;
       }
@@ -87,12 +87,12 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (v8 != 4)
+  if (type != 4)
   {
-    if (v8 != 5)
+    if (type != 5)
     {
 LABEL_12:
-      v13 = [(BRCItemFetcher *)self itemByRowID:v9 dbFacade:v7];
+      v13 = [(BRCItemFetcher *)self itemByRowID:rawID dbFacade:facadeCopy];
       goto LABEL_16;
     }
 
@@ -107,7 +107,7 @@ LABEL_12:
   }
 
   v35 = self->_zoneAppRetriever;
-  v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v9];
+  v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:rawID];
   v37 = [(BRCZoneAppRetriever *)v35 appLibraryByRowID:v36];
 
   if (([v37 includesDataScope] & 1) == 0)
@@ -115,63 +115,63 @@ LABEL_12:
     [BRCItemFetcher itemByFileObjectID:dbFacade:];
   }
 
-  v13 = [v37 fetchDocumentsDirectoryItemWithFacade:v7];
+  v13 = [v37 fetchDocumentsDirectoryItemWithFacade:facadeCopy];
 
 LABEL_16:
 
   return v13;
 }
 
-- (id)localAliasForSharedItem:(id)a3 inZone:(id)a4
+- (id)localAliasForSharedItem:(id)item inZone:(id)zone
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 serverZone];
-  v9 = [v8 isSharedZone];
+  zoneCopy = zone;
+  itemCopy = item;
+  serverZone = [itemCopy serverZone];
+  isSharedZone = [serverZone isSharedZone];
 
-  if ((v9 & 1) == 0)
+  if ((isSharedZone & 1) == 0)
   {
     [BRCItemFetcher localAliasForSharedItem:inZone:];
   }
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v7 itemID];
-  v12 = [v11 itemIDString];
-  v13 = [v7 serverZone];
+  itemID = [itemCopy itemID];
+  itemIDString = [itemID itemIDString];
+  serverZone2 = [itemCopy serverZone];
 
-  v14 = [v13 mangledID];
-  v15 = [v10 unsaltedBookmarkDataWithItemResolutionString:v12 serverZoneMangledID:v14];
+  mangledID = [serverZone2 mangledID];
+  v15 = [v10 unsaltedBookmarkDataWithItemResolutionString:itemIDString serverZoneMangledID:mangledID];
 
-  v16 = [(BRCClientDatabaseFacade *)self->_defaultClientDBFacade localAliasForItemWithBookmarkData:v15 inZone:v6 itemBuilder:self->_localItemBuilder];
+  v16 = [(BRCClientDatabaseFacade *)self->_defaultClientDBFacade localAliasForItemWithBookmarkData:v15 inZone:zoneCopy itemBuilder:self->_localItemBuilder];
 
   return v16;
 }
 
-- (id)itemByItemGlobalID:(id)a3 dbFacade:(id)a4
+- (id)itemByItemGlobalID:(id)d dbFacade:(id)facade
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 itemID];
-  v9 = [v8 isNonDesktopRoot];
+  dCopy = d;
+  facadeCopy = facade;
+  itemID = [dCopy itemID];
+  isNonDesktopRoot = [itemID isNonDesktopRoot];
 
-  if (v9)
+  if (isNonDesktopRoot)
   {
     localItemBuilder = self->_localItemBuilder;
-    v11 = [v6 itemID];
-    v12 = [(BRCLocalItemBuilder *)localItemBuilder newZoneRootWithItemID:v11];
+    itemID2 = [dCopy itemID];
+    v12 = [(BRCLocalItemBuilder *)localItemBuilder newZoneRootWithItemID:itemID2];
 LABEL_5:
     v16 = v12;
     goto LABEL_6;
   }
 
   zoneAppRetriever = self->_zoneAppRetriever;
-  v14 = [v6 zoneRowID];
-  v15 = [(BRCZoneAppRetriever *)zoneAppRetriever serverZoneByRowID:v14];
-  v11 = [v15 clientZone];
+  zoneRowID = [dCopy zoneRowID];
+  v15 = [(BRCZoneAppRetriever *)zoneAppRetriever serverZoneByRowID:zoneRowID];
+  itemID2 = [v15 clientZone];
 
-  if (v11)
+  if (itemID2)
   {
-    v12 = [v7 localItemByItemGlobalID:v6 itemBuilder:self->_localItemBuilder];
+    v12 = [facadeCopy localItemByItemGlobalID:dCopy itemBuilder:self->_localItemBuilder];
     goto LABEL_5;
   }
 
@@ -181,44 +181,44 @@ LABEL_6:
   return v16;
 }
 
-- (id)serverAliasItemForSharedItem:(id)a3 inZone:(id)a4 dbFacade:(id)a5
+- (id)serverAliasItemForSharedItem:(id)item inZone:(id)zone dbFacade:(id)facade
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 serverZone];
-  v12 = [v11 isSharedZone];
+  facadeCopy = facade;
+  zoneCopy = zone;
+  itemCopy = item;
+  serverZone = [itemCopy serverZone];
+  isSharedZone = [serverZone isSharedZone];
 
-  if ((v12 & 1) == 0)
+  if ((isSharedZone & 1) == 0)
   {
     [BRCItemFetcher serverAliasItemForSharedItem:inZone:dbFacade:];
   }
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [v10 itemID];
-  v15 = [v14 itemIDString];
-  v16 = [v10 serverZone];
+  itemID = [itemCopy itemID];
+  itemIDString = [itemID itemIDString];
+  serverZone2 = [itemCopy serverZone];
 
-  v17 = [v16 mangledID];
-  v18 = [v13 unsaltedBookmarkDataWithItemResolutionString:v15 serverZoneMangledID:v17];
+  mangledID = [serverZone2 mangledID];
+  v18 = [v13 unsaltedBookmarkDataWithItemResolutionString:itemIDString serverZoneMangledID:mangledID];
 
-  v19 = [v8 serverAliasItemForItemWithBookmarkData:v18 inZone:v9 itemBuilder:self->_serverItemBuilder];
+  v19 = [facadeCopy serverAliasItemForItemWithBookmarkData:v18 inZone:zoneCopy itemBuilder:self->_serverItemBuilder];
 
   return v19;
 }
 
-- (id)serverAliasItemForSharedItem:(id)a3 dbFacade:(id)a4
+- (id)serverAliasItemForSharedItem:(id)item dbFacade:(id)facade
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  facadeCopy = facade;
   zoneAppRetriever = self->_zoneAppRetriever;
-  v9 = [v6 clientZone];
-  v10 = [v9 zoneName];
-  v11 = [(BRCZoneAppRetriever *)zoneAppRetriever privateClientZoneByID:v10];
+  clientZone = [itemCopy clientZone];
+  zoneName = [clientZone zoneName];
+  v11 = [(BRCZoneAppRetriever *)zoneAppRetriever privateClientZoneByID:zoneName];
 
-  if (!v11 || ([v11 serverZone], v12 = objc_claimAutoreleasedReturnValue(), -[BRCItemFetcher serverAliasItemForSharedItem:inZone:dbFacade:](self, "serverAliasItemForSharedItem:inZone:dbFacade:", v6, v12, v7), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
+  if (!v11 || ([v11 serverZone], v12 = objc_claimAutoreleasedReturnValue(), -[BRCItemFetcher serverAliasItemForSharedItem:inZone:dbFacade:](self, "serverAliasItemForSharedItem:inZone:dbFacade:", itemCopy, v12, facadeCopy), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
   {
-    v13 = [(BRCItemFetcher *)self serverAliasItemForSharedItem:v6 inZone:0 dbFacade:v7];
+    v13 = [(BRCItemFetcher *)self serverAliasItemForSharedItem:itemCopy inZone:0 dbFacade:facadeCopy];
   }
 
   return v13;

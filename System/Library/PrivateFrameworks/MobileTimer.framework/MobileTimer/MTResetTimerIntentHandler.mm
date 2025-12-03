@@ -1,32 +1,32 @@
 @interface MTResetTimerIntentHandler
-- (id)_responseToResetTimerIntent:(id)a3 withResetTimers:(id)a4 error:(id)a5 dryRun:(BOOL)a6;
-- (void)confirmResetTimer:(id)a3 completion:(id)a4;
-- (void)handleResetTimer:(id)a3 completion:(id)a4;
-- (void)resolveTargetTimerForResetTimer:(id)a3 withCompletion:(id)a4;
+- (id)_responseToResetTimerIntent:(id)intent withResetTimers:(id)timers error:(id)error dryRun:(BOOL)run;
+- (void)confirmResetTimer:(id)timer completion:(id)completion;
+- (void)handleResetTimer:(id)timer completion:(id)completion;
+- (void)resolveTargetTimerForResetTimer:(id)timer withCompletion:(id)completion;
 @end
 
 @implementation MTResetTimerIntentHandler
 
-- (void)resolveTargetTimerForResetTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveTargetTimerForResetTimer:(id)timer withCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v22 = "[MTResetTimerIntentHandler resolveTargetTimerForResetTimer:withCompletion:]";
     v23 = 2112;
-    v24 = v6;
+    v24 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [v6 targetTimer];
-    v10 = [v6 targetTimer];
-    v11 = -[MTUpdateTimerIntentHandler _timerFromIntentTargetTimer:defaultState:](self, "_timerFromIntentTargetTimer:defaultState:", v9, [v10 state]);
+    targetTimer = [timerCopy targetTimer];
+    targetTimer2 = [timerCopy targetTimer];
+    v11 = -[MTUpdateTimerIntentHandler _timerFromIntentTargetTimer:defaultState:](self, "_timerFromIntentTargetTimer:defaultState:", targetTimer, [targetTimer2 state]);
 
     if ([v11 type] == 2)
     {
@@ -38,16 +38,16 @@
       [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F2965F30, &unk_1F2965F48, &unk_1F2965F60, 0}];
     }
     v12 = ;
-    v13 = [v6 resetMultiple];
-    v14 = [v13 BOOLValue];
+    resetMultiple = [timerCopy resetMultiple];
+    bOOLValue = [resetMultiple BOOLValue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __76__MTResetTimerIntentHandler_resolveTargetTimerForResetTimer_withCompletion___block_invoke;
     v18[3] = &unk_1E7B0C3E8;
     v19 = v11;
-    v20 = v7;
+    v20 = completionCopy;
     v15 = v11;
-    [(MTTimerIntentHandler *)self _genericallyResolveTargetTimer:v15 multiple:v14 allowedTimerStatesForFollowup:v12 completion:v18];
+    [(MTTimerIntentHandler *)self _genericallyResolveTargetTimer:v15 multiple:bOOLValue allowedTimerStatesForFollowup:v12 completion:v18];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -71,30 +71,30 @@ void __76__MTResetTimerIntentHandler_resolveTargetTimerForResetTimer_withComplet
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)confirmResetTimer:(id)a3 completion:(id)a4
+- (void)confirmResetTimer:(id)timer completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v14 = "[MTResetTimerIntentHandler confirmResetTimer:completion:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__MTResetTimerIntentHandler_confirmResetTimer_completion___block_invoke;
     v10[3] = &unk_1E7B0E258;
-    v12 = v7;
+    v12 = completionCopy;
     v10[4] = self;
-    v11 = v6;
+    v11 = timerCopy;
     [(MTResetTimerIntentHandler *)self _handleResetTimer:v11 dryRun:1 completion:v10];
   }
 
@@ -108,18 +108,18 @@ void __58__MTResetTimerIntentHandler_confirmResetTimer_completion___block_invoke
   (*(v3 + 16))(v3, v4);
 }
 
-- (void)handleResetTimer:(id)a3 completion:(id)a4
+- (void)handleResetTimer:(id)timer completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v16 = "[MTResetTimerIntentHandler handleResetTimer:completion:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = timerCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -127,11 +127,11 @@ void __58__MTResetTimerIntentHandler_confirmResetTimer_completion___block_invoke
   v12[1] = 3221225472;
   v12[2] = __57__MTResetTimerIntentHandler_handleResetTimer_completion___block_invoke;
   v12[3] = &unk_1E7B0E258;
-  v13 = v6;
-  v14 = v7;
+  v13 = timerCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = timerCopy;
+  v10 = completionCopy;
   [(MTResetTimerIntentHandler *)self _handleResetTimer:v9 dryRun:0 completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -156,18 +156,18 @@ uint64_t __65__MTResetTimerIntentHandler__handleResetTimer_dryRun_completion___b
   return 0;
 }
 
-- (id)_responseToResetTimerIntent:(id)a3 withResetTimers:(id)a4 error:(id)a5 dryRun:(BOOL)a6
+- (id)_responseToResetTimerIntent:(id)intent withResetTimers:(id)timers error:(id)error dryRun:(BOOL)run
 {
-  v6 = a6;
+  runCopy = run;
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v10 || v11)
+  intentCopy = intent;
+  timersCopy = timers;
+  errorCopy = error;
+  v12 = errorCopy;
+  if (!timersCopy || errorCopy)
   {
-    v16 = [v11 domain];
-    v17 = [v16 isEqualToString:@"MTTimerIntentHandlerErrorDomain"];
+    domain = [errorCopy domain];
+    v17 = [domain isEqualToString:@"MTTimerIntentHandlerErrorDomain"];
 
     if (!v17 || (v18 = [v12 code], (v18 - 5) > 2) || (v13 = objc_msgSend(objc_alloc(MEMORY[0x1E696E998]), "initWithCode:userActivity:", qword_1B20B8AF0[v18 - 5], 0)) == 0)
     {
@@ -177,7 +177,7 @@ uint64_t __65__MTResetTimerIntentHandler__handleResetTimer_dryRun_completion___b
     v19 = *MEMORY[0x1E696E6D8];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v22 = v6 ? @"confirm" : @"handle";
+      v22 = runCopy ? @"confirm" : @"handle";
       if (v12)
       {
         v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"due to error %@", v12];
@@ -193,7 +193,7 @@ uint64_t __65__MTResetTimerIntentHandler__handleResetTimer_dryRun_completion___b
       v26 = 2112;
       v27 = v22;
       v28 = 2112;
-      v29 = v9;
+      v29 = intentCopy;
       v30 = 2112;
       v31 = v23;
       v32 = 2112;
@@ -208,7 +208,7 @@ uint64_t __65__MTResetTimerIntentHandler__handleResetTimer_dryRun_completion___b
   else
   {
     v13 = [objc_alloc(MEMORY[0x1E696E998]) initWithCode:3 userActivity:0];
-    [(__CFString *)v13 setResetTimers:v10];
+    [(__CFString *)v13 setResetTimers:timersCopy];
     v14 = *MEMORY[0x1E696E6D8];
     if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
     {
@@ -216,14 +216,14 @@ uint64_t __65__MTResetTimerIntentHandler__handleResetTimer_dryRun_completion___b
       *buf = 136315906;
       v25 = "[MTResetTimerIntentHandler _responseToResetTimerIntent:withResetTimers:error:dryRun:]";
       v26 = 2112;
-      if (v6)
+      if (runCopy)
       {
         v15 = @"confirmed";
       }
 
       v27 = v15;
       v28 = 2112;
-      v29 = v9;
+      v29 = intentCopy;
       v30 = 2112;
       v31 = v13;
       _os_log_impl(&dword_1B1F9F000, v14, OS_LOG_TYPE_INFO, "%s Successfully %@ reset timer intent %@ with response %@", buf, 0x2Au);

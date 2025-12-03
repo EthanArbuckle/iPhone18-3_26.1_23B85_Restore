@@ -1,6 +1,6 @@
 @interface CPInterfaceController
 + (id)_templateProvidingInterface;
-+ (void)_allowlistClassesForBaseTemplateProvider:(id)a3;
++ (void)_allowlistClassesForBaseTemplateProvider:(id)provider;
 - (BOOL)isCarPlayCanvasActive;
 - (CPTemplate)presentedTemplate;
 - (CPTemplate)topTemplate;
@@ -9,30 +9,30 @@
 - (UITraitCollection)carTraitCollection;
 - (id)_activeMapTemplate;
 - (id)_init;
-- (id)_listenerEndpointForSettings:(id)a3;
+- (id)_listenerEndpointForSettings:(id)settings;
 - (id)_synchronousTemplateProvider;
-- (id)_templateWithIdentifier:(id)a3;
+- (id)_templateWithIdentifier:(id)identifier;
 - (id)delegate;
-- (void)_completeSetupWithCompletion:(id)a3;
-- (void)_connectToListenerEndpoint:(id)a3;
+- (void)_completeSetupWithCompletion:(id)completion;
+- (void)_connectToListenerEndpoint:(id)endpoint;
 - (void)_connectionInterrupted;
 - (void)_connectionInvalidated;
-- (void)_handleCompletion:(id)a3 withSuccess:(BOOL)a4 error:(id)a5;
+- (void)_handleCompletion:(id)completion withSuccess:(BOOL)success error:(id)error;
 - (void)_invalidate;
-- (void)_pushTabBarTemplate:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_sceneConnect:(id)a3;
-- (void)bannerDidAppearWithIdentifier:(id)a3;
-- (void)bannerDidDisappearWithIdentifier:(id)a3;
-- (void)bannerTappedWithIdentifier:(id)a3;
-- (void)clientAssistantCellUnavailableWithError:(id)a3;
-- (void)clientPushNowPlayingTemplateAnimated:(BOOL)a3;
-- (void)clientPushedIllegalTemplateOfClass:(id)a3;
-- (void)selectTabBarTemplateIndex:(int64_t)a3;
+- (void)_pushTabBarTemplate:(id)template animated:(BOOL)animated completion:(id)completion;
+- (void)_sceneConnect:(id)connect;
+- (void)bannerDidAppearWithIdentifier:(id)identifier;
+- (void)bannerDidDisappearWithIdentifier:(id)identifier;
+- (void)bannerTappedWithIdentifier:(id)identifier;
+- (void)clientAssistantCellUnavailableWithError:(id)error;
+- (void)clientPushNowPlayingTemplateAnimated:(BOOL)animated;
+- (void)clientPushedIllegalTemplateOfClass:(id)class;
+- (void)selectTabBarTemplateIndex:(int64_t)index;
 - (void)setPrefersDarkUserInterfaceStyle:(BOOL)prefersDarkUserInterfaceStyle;
-- (void)templateIdentifierDidDismiss:(id)a3;
-- (void)templateIdentifierDidPop:(id)a3;
-- (void)updateInterestingLayoutGuideWithInsets:(UIEdgeInsets)a3;
-- (void)updateTabBarTemplate:(id)a3;
+- (void)templateIdentifierDidDismiss:(id)dismiss;
+- (void)templateIdentifierDidPop:(id)pop;
+- (void)updateInterestingLayoutGuideWithInsets:(UIEdgeInsets)insets;
+- (void)updateTabBarTemplate:(id)template;
 @end
 
 @implementation CPInterfaceController
@@ -57,8 +57,8 @@
   if (self->_prefersDarkUserInterfaceStyle != prefersDarkUserInterfaceStyle)
   {
     self->_prefersDarkUserInterfaceStyle = prefersDarkUserInterfaceStyle;
-    v5 = [(CPInterfaceController *)self templateProvider];
-    [v5 setHostPrefersDarkUserInterfaceStyle:self->_prefersDarkUserInterfaceStyle];
+    templateProvider = [(CPInterfaceController *)self templateProvider];
+    [templateProvider setHostPrefersDarkUserInterfaceStyle:self->_prefersDarkUserInterfaceStyle];
   }
 }
 
@@ -195,14 +195,14 @@ void __59__CPInterfaceController_popToTemplate_animated_completion___block_invok
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(CPInterfaceController *)self _synchronousTemplateProvider];
+  _synchronousTemplateProvider = [(CPInterfaceController *)self _synchronousTemplateProvider];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__CPInterfaceController_presentedTemplate__block_invoke;
   v6[3] = &unk_278A10950;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 getPresentedTemplateWithReply:v6];
+  [_synchronousTemplateProvider getPresentedTemplateWithReply:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -247,14 +247,14 @@ LABEL_6:
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(CPInterfaceController *)self _synchronousTemplateProvider];
+  _synchronousTemplateProvider = [(CPInterfaceController *)self _synchronousTemplateProvider];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__CPInterfaceController_topTemplate__block_invoke;
   v6[3] = &unk_278A10978;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 getTopTemplateWithReply:v6];
+  [_synchronousTemplateProvider getTopTemplateWithReply:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -282,14 +282,14 @@ void __36__CPInterfaceController_topTemplate__block_invoke(uint64_t a1, void *a2
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(CPInterfaceController *)self _synchronousTemplateProvider];
+  _synchronousTemplateProvider = [(CPInterfaceController *)self _synchronousTemplateProvider];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__CPInterfaceController_templates__block_invoke;
   v6[3] = &unk_278A109C8;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 getTemplatesWithReply:v6];
+  [_synchronousTemplateProvider getTemplatesWithReply:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -331,20 +331,20 @@ void __34__CPInterfaceController_templates__block_invoke_2(uint64_t a1, void *a2
   }
 }
 
-- (void)_handleCompletion:(id)a3 withSuccess:(BOOL)a4 error:(id)a5
+- (void)_handleCompletion:(id)completion withSuccess:(BOOL)success error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  completionCopy = completion;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (completionCopy)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __61__CPInterfaceController__handleCompletion_withSuccess_error___block_invoke_2;
     v11[3] = &unk_278A109F0;
     v10 = &v13;
-    v13 = v7;
-    v14 = a4;
+    v13 = completionCopy;
+    successCopy = success;
     v12 = v9;
     dispatch_async(MEMORY[0x277D85CD0], v11);
 
@@ -352,7 +352,7 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  if ((v8 || !a4) && dyld_program_sdk_at_least())
+  if ((errorCopy || !success) && dyld_program_sdk_at_least())
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -430,18 +430,18 @@ uint64_t __87__CPInterfaceController__pushNowPlayingTemplate_presentationStyle_a
   return [v3 _handleCompletion:v4 withSuccess:1 error:0];
 }
 
-- (void)_pushTabBarTemplate:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_pushTabBarTemplate:(id)template animated:(BOOL)animated completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  [v7 setInterfaceController:self];
+  templateCopy = template;
+  completionCopy = completion;
+  [templateCopy setInterfaceController:self];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v7 templates];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  templates = [templateCopy templates];
+  v10 = [templates countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = *v24;
@@ -452,7 +452,7 @@ uint64_t __87__CPInterfaceController__pushNowPlayingTemplate_presentationStyle_a
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(templates);
         }
 
         v13 = *(*(&v23 + 1) + 8 * v12);
@@ -466,24 +466,24 @@ uint64_t __87__CPInterfaceController__pushNowPlayingTemplate_presentationStyle_a
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [templates countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
   }
 
   objc_initWeak(location, self);
-  v14 = [(CPInterfaceController *)self templateProvider];
+  templateProvider = [(CPInterfaceController *)self templateProvider];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __65__CPInterfaceController__pushTabBarTemplate_animated_completion___block_invoke_54;
   v18[3] = &unk_278A10BA8;
-  v15 = v7;
+  v15 = templateCopy;
   v19 = v15;
   objc_copyWeak(&v21, location);
-  v16 = v8;
+  v16 = completionCopy;
   v20 = v16;
-  [v14 setTabBarTemplate:v15 withProxyDelegate:v15 reply:v18 animated:MEMORY[0x277CBEC28]];
+  [templateProvider setTabBarTemplate:v15 withProxyDelegate:v15 reply:v18 animated:MEMORY[0x277CBEC28]];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(location);
@@ -532,16 +532,16 @@ uint64_t __83__CPInterfaceController__pushEntityTemplate_presentationStyle_anima
   return [v3 _handleCompletion:v4 withSuccess:1 error:0];
 }
 
-- (void)updateTabBarTemplate:(id)a3
+- (void)updateTabBarTemplate:(id)template
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  templateCopy = template;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 templates];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  templates = [templateCopy templates];
+  v6 = [templates countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -552,21 +552,21 @@ uint64_t __83__CPInterfaceController__pushEntityTemplate_presentationStyle_anima
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(templates);
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
         [CPInterfaceController _pushTemplate:"_pushTemplate:presentationStyle:animated:completion:" presentationStyle:? animated:? completion:?];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [templates countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(CPInterfaceController *)self templateProvider];
-  [v10 updateTabBarTemplate:v4];
+  templateProvider = [(CPInterfaceController *)self templateProvider];
+  [templateProvider updateTabBarTemplate:templateCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -596,32 +596,32 @@ void __46__CPInterfaceController_updateTabBarTemplate___block_invoke(uint64_t a1
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)selectTabBarTemplateIndex:(int64_t)a3
+- (void)selectTabBarTemplateIndex:(int64_t)index
 {
-  v4 = [(CPInterfaceController *)self templateProvider];
-  [v4 selectTabBarTemplateAtIndex:a3];
+  templateProvider = [(CPInterfaceController *)self templateProvider];
+  [templateProvider selectTabBarTemplateAtIndex:index];
 }
 
-- (void)_sceneConnect:(id)a3
+- (void)_sceneConnect:(id)connect
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 _FBSScene];
-  if (CPCurrentProcessHasTemplateEntitlement() && ([v5 settings], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
+  connectCopy = connect;
+  _FBSScene = [connectCopy _FBSScene];
+  if (CPCurrentProcessHasTemplateEntitlement() && ([_FBSScene settings], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
   {
     v8 = CarPlayFrameworkGeneralLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 _identifier];
+      _identifier = [connectCopy _identifier];
       v14 = 138543362;
-      v15 = v9;
+      v15 = _identifier;
       _os_log_impl(&dword_236ED4000, v8, OS_LOG_TYPE_DEFAULT, "Connecting to listener endpoint for scene identifier: %{public}@", &v14, 0xCu);
     }
 
     v10 = objc_alloc_init(MEMORY[0x277CCAEA0]);
-    v11 = [v5 settings];
-    v12 = [v11 endpoint];
-    [v10 _setEndpoint:v12];
+    settings = [_FBSScene settings];
+    endpoint = [settings endpoint];
+    [v10 _setEndpoint:endpoint];
 
     [(CPInterfaceController *)self _connectToListenerEndpoint:v10];
   }
@@ -656,25 +656,25 @@ void __46__CPInterfaceController_updateTabBarTemplate___block_invoke(uint64_t a1
     self->_lastPresentedTemplate = 0;
   }
 
-  v11 = [(NSMapTable *)self->_templateMapTable objectEnumerator];
-  v7 = [v11 nextObject];
-  if (v7)
+  objectEnumerator = [(NSMapTable *)self->_templateMapTable objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v8 = v7;
+    v8 = nextObject;
     do
     {
       [v8 invalidateTemplateProvider];
-      v9 = [v11 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v8 = v9;
+      v8 = nextObject2;
     }
 
-    while (v9);
+    while (nextObject2);
   }
 
   [(NSMapTable *)self->_templateMapTable removeAllObjects];
-  v10 = [(CPInterfaceController *)self connection];
-  [v10 invalidate];
+  connection = [(CPInterfaceController *)self connection];
+  [connection invalidate];
 
   [(CPInterfaceController *)self setConnection:0];
   [(CPInterfaceController *)self setTemplateProvider:0];
@@ -716,7 +716,7 @@ void __46__CPInterfaceController_updateTabBarTemplate___block_invoke(uint64_t a1
   [v3 setInterface:v14 forSelector:sel_pushGridTemplate_withProxyDelegate_animated_presentationStyle_reply_ argumentIndex:1 ofReply:0];
 
   v15 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284A2A4B0];
-  [a1 _allowlistClassesForBaseTemplateProvider:v15];
+  [self _allowlistClassesForBaseTemplateProvider:v15];
   v83 = v15;
   [v3 setInterface:v15 forSelector:sel_pushGridTemplate_withProxyDelegate_animated_presentationStyle_reply_ argumentIndex:0 ofReply:1];
   v16 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
@@ -726,14 +726,14 @@ void __46__CPInterfaceController_updateTabBarTemplate___block_invoke(uint64_t a1
   [v3 setInterface:v17 forSelector:sel_pushInformationTemplate_withProxyDelegate_animated_presentationStyle_reply_ argumentIndex:1 ofReply:0];
 
   v82 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284A2A510];
-  [a1 _allowlistClassesForBaseTemplateProvider:v82];
+  [self _allowlistClassesForBaseTemplateProvider:v82];
   [v3 setInterface:v82 forSelector:sel_pushInformationTemplate_withProxyDelegate_animated_presentationStyle_reply_ argumentIndex:0 ofReply:1];
   v18 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284A1AF58];
   [v3 setInterface:v18 forSelector:sel_pushListTemplate_withProxyDelegate_animated_presentationStyle_reply_ argumentIndex:1 ofReply:0];
 
   [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284A2A570];
-  v19 = v77 = a1;
-  [a1 _allowlistClassesForBaseTemplateProvider:?];
+  v19 = v77 = self;
+  [self _allowlistClassesForBaseTemplateProvider:?];
   v20 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v21 = v19;
   [v19 setClasses:v20 forSelector:sel_reloadTemplate_ argumentIndex:0 ofReply:0];
@@ -756,7 +756,7 @@ void __46__CPInterfaceController_updateTabBarTemplate___block_invoke(uint64_t a1
   [v3 setInterface:v30 forSelector:? argumentIndex:? ofReply:?];
 
   v31 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284A2A5D0];
-  [a1 _allowlistClassesForBaseTemplateProvider:v31];
+  [self _allowlistClassesForBaseTemplateProvider:v31];
   [v31 setClass:objc_opt_class() forSelector:sel_hostSetMapButton_imageSet_ argumentIndex:1 ofReply:0];
   v32 = MEMORY[0x277CBEB98];
   v33 = objc_opt_class();
@@ -809,7 +809,7 @@ void __46__CPInterfaceController_updateTabBarTemplate___block_invoke(uint64_t a1
   [v3 setInterface:v54 forSelector:sel_pushNowPlayingTemplate_withProxyDelegate_animated_presentationStyle_reply_ argumentIndex:1 ofReply:0];
 
   v55 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284A2A6F0];
-  [a1 _allowlistClassesForBaseTemplateProvider:v55];
+  [self _allowlistClassesForBaseTemplateProvider:v55];
   v56 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   [v55 setClasses:v56 forSelector:sel_updateNowPlayingTemplate_withProxyDelegate_canThrottle_ argumentIndex:0 ofReply:0];
 
@@ -833,7 +833,7 @@ void __46__CPInterfaceController_updateTabBarTemplate___block_invoke(uint64_t a1
   [v3 setInterface:v62 forSelector:sel_presentVoiceTemplate_withProxyDelegate_animated_reply_ argumentIndex:1 ofReply:0];
 
   v63 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284A2A7B0];
-  [a1 _allowlistClassesForBaseTemplateProvider:v63];
+  [self _allowlistClassesForBaseTemplateProvider:v63];
   [v3 setInterface:v63 forSelector:sel_presentVoiceTemplate_withProxyDelegate_animated_reply_ argumentIndex:0 ofReply:1];
   v64 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284A199C0];
   [v3 setInterface:v64 forSelector:sel_setTabBarTemplate_withProxyDelegate_reply_animated_ argumentIndex:1 ofReply:0];
@@ -862,33 +862,33 @@ void __46__CPInterfaceController_updateTabBarTemplate___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (void)_allowlistClassesForBaseTemplateProvider:(id)a3
++ (void)_allowlistClassesForBaseTemplateProvider:(id)provider
 {
   v3 = MEMORY[0x277CBEB98];
-  v11 = a3;
+  providerCopy = provider;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = [v3 setWithObjects:{v4, v5, objc_opt_class(), 0}];
-  [v11 setClasses:v6 forSelector:sel_setLeadingNavigationBarButtons_ argumentIndex:0 ofReply:0];
+  [providerCopy setClasses:v6 forSelector:sel_setLeadingNavigationBarButtons_ argumentIndex:0 ofReply:0];
 
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-  [v11 setClasses:v10 forSelector:sel_setTrailingNavigationBarButtons_ argumentIndex:0 ofReply:0];
+  [providerCopy setClasses:v10 forSelector:sel_setTrailingNavigationBarButtons_ argumentIndex:0 ofReply:0];
 
-  [v11 setClass:objc_opt_class() forSelector:sel_setBarButton_image_ argumentIndex:1 ofReply:0];
-  [v11 setClass:objc_opt_class() forSelector:sel_setHostBackButton_ argumentIndex:0 ofReply:0];
+  [providerCopy setClass:objc_opt_class() forSelector:sel_setBarButton_image_ argumentIndex:1 ofReply:0];
+  [providerCopy setClass:objc_opt_class() forSelector:sel_setHostBackButton_ argumentIndex:0 ofReply:0];
 }
 
-- (void)_connectToListenerEndpoint:(id)a3
+- (void)_connectToListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v4];
-  v6 = [objc_opt_class() _templateProvidingInterface];
-  [v5 setRemoteObjectInterface:v6];
-  v7 = [objc_opt_class() _templateClientInterface];
-  [v5 setExportedInterface:v7];
+  endpointCopy = endpoint;
+  v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:endpointCopy];
+  _templateProvidingInterface = [objc_opt_class() _templateProvidingInterface];
+  [v5 setRemoteObjectInterface:_templateProvidingInterface];
+  _templateClientInterface = [objc_opt_class() _templateClientInterface];
+  [v5 setExportedInterface:_templateClientInterface];
   [v5 setExportedObject:self];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
@@ -905,8 +905,8 @@ void __46__CPInterfaceController_updateTabBarTemplate___block_invoke(uint64_t a1
   [v5 setInvalidationHandler:v9];
   [v5 resume];
   [(CPInterfaceController *)self setConnection:v5];
-  v8 = [v5 remoteObjectProxy];
-  [(CPInterfaceController *)self setTemplateProvider:v8];
+  remoteObjectProxy = [v5 remoteObjectProxy];
+  [(CPInterfaceController *)self setTemplateProvider:remoteObjectProxy];
 
   [(CPInterfaceController *)self _completeSetupWithCompletion:&__block_literal_global_5];
   objc_destroyWeak(&v10);
@@ -948,51 +948,51 @@ void __52__CPInterfaceController__connectToListenerEndpoint___block_invoke_432()
   }
 }
 
-- (void)_completeSetupWithCompletion:(id)a3
+- (void)_completeSetupWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
-  v6 = [(CPInterfaceController *)self templateProvider];
+  templateProvider = [(CPInterfaceController *)self templateProvider];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __54__CPInterfaceController__completeSetupWithCompletion___block_invoke;
   v20[3] = &unk_278A10BF8;
   v7 = v5;
   v21 = v7;
-  [v6 preferredListMaximumImageSizeWithReply:v20];
+  [templateProvider preferredListMaximumImageSizeWithReply:v20];
 
   dispatch_group_enter(v7);
-  v8 = [(CPInterfaceController *)self templateProvider];
+  templateProvider2 = [(CPInterfaceController *)self templateProvider];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __54__CPInterfaceController__completeSetupWithCompletion___block_invoke_2;
   v18[3] = &unk_278A10BF8;
   v9 = v7;
   v19 = v9;
-  [v8 preferredImageRowMaximumImageSizeWithReply:v18];
+  [templateProvider2 preferredImageRowMaximumImageSizeWithReply:v18];
 
   dispatch_group_enter(v9);
-  v10 = [(CPInterfaceController *)self templateProvider];
+  templateProvider3 = [(CPInterfaceController *)self templateProvider];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__CPInterfaceController__completeSetupWithCompletion___block_invoke_3;
   v16[3] = &unk_278A10BF8;
   v11 = v9;
   v17 = v11;
-  [v10 preferredListMaximumGridButtonImageSizeWithReply:v16];
+  [templateProvider3 preferredListMaximumGridButtonImageSizeWithReply:v16];
 
   dispatch_group_enter(v11);
-  v12 = [(CPInterfaceController *)self templateProvider];
+  templateProvider4 = [(CPInterfaceController *)self templateProvider];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __54__CPInterfaceController__completeSetupWithCompletion___block_invoke_4;
   v14[3] = &unk_278A10BF8;
   v15 = v11;
   v13 = v11;
-  [v12 preferredGridMaximumGridButtonImageSizeWithReply:v14];
+  [templateProvider4 preferredGridMaximumGridButtonImageSizeWithReply:v14];
 
-  dispatch_group_notify(v13, MEMORY[0x277D85CD0], v4);
+  dispatch_group_notify(v13, MEMORY[0x277D85CD0], completionCopy);
 }
 
 void __54__CPInterfaceController__completeSetupWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1057,14 +1057,14 @@ void __54__CPInterfaceController__completeSetupWithCompletion___block_invoke_4(u
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (id)_listenerEndpointForSettings:(id)a3
+- (id)_listenerEndpointForSettings:(id)settings
 {
-  if (a3)
+  if (settings)
   {
-    v3 = [a3 objectForSetting:1];
+    v3 = [settings objectForSetting:1];
     v4 = objc_alloc_init(MEMORY[0x277CCAEA0]);
-    v5 = [v3 endpoint];
-    [v4 _setEndpoint:v5];
+    endpoint = [v3 endpoint];
+    [v4 _setEndpoint:endpoint];
   }
 
   else
@@ -1077,8 +1077,8 @@ void __54__CPInterfaceController__completeSetupWithCompletion___block_invoke_4(u
 
 - (id)_synchronousTemplateProvider
 {
-  v2 = [(CPInterfaceController *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_437];
+  connection = [(CPInterfaceController *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_437];
 
   return v3;
 }
@@ -1098,17 +1098,17 @@ void __53__CPInterfaceController__synchronousTemplateProvider__block_invoke(uint
 
 - (UITraitCollection)carTraitCollection
 {
-  v2 = [(CPInterfaceController *)self windowProvider];
-  v3 = [v2 carTraitCollection];
+  windowProvider = [(CPInterfaceController *)self windowProvider];
+  carTraitCollection = [windowProvider carTraitCollection];
 
-  return v3;
+  return carTraitCollection;
 }
 
-- (id)_templateWithIdentifier:(id)a3
+- (id)_templateWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPTemplate *)self->_presentedTemplate identifier];
-  v6 = [v5 isEqual:v4];
+  identifierCopy = identifier;
+  identifier = [(CPTemplate *)self->_presentedTemplate identifier];
+  v6 = [identifier isEqual:identifierCopy];
 
   if (v6)
   {
@@ -1118,8 +1118,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [(CPTemplate *)self->_lastPresentedTemplate identifier];
-  v9 = [v8 isEqual:v4];
+  identifier2 = [(CPTemplate *)self->_lastPresentedTemplate identifier];
+  v9 = [identifier2 isEqual:identifierCopy];
 
   if (v9)
   {
@@ -1127,13 +1127,13 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v12 = [(CPInterfaceController *)self templateMapTable];
-  v13 = [v12 objectForKey:v4];
+  templateMapTable = [(CPInterfaceController *)self templateMapTable];
+  v13 = [templateMapTable objectForKey:identifierCopy];
 
   if (v13)
   {
-    v14 = [(CPInterfaceController *)self templateMapTable];
-    v10 = [v14 objectForKey:v4];
+    templateMapTable2 = [(CPInterfaceController *)self templateMapTable];
+    v10 = [templateMapTable2 objectForKey:identifierCopy];
   }
 
   else
@@ -1141,7 +1141,7 @@ LABEL_5:
     v15 = CarPlayFrameworkGeneralLogging();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(CPInterfaceController *)v4 _templateWithIdentifier:v15];
+      [(CPInterfaceController *)identifierCopy _templateWithIdentifier:v15];
     }
 
     v10 = 0;
@@ -1160,14 +1160,14 @@ LABEL_6:
   return v3;
 }
 
-- (void)updateInterestingLayoutGuideWithInsets:(UIEdgeInsets)a3
+- (void)updateInterestingLayoutGuideWithInsets:(UIEdgeInsets)insets
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__CPInterfaceController_updateInterestingLayoutGuideWithInsets___block_invoke;
   block[3] = &unk_278A10C40;
   block[4] = self;
-  v4 = a3;
+  insetsCopy = insets;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1177,14 +1177,14 @@ void __64__CPInterfaceController_updateInterestingLayoutGuideWithInsets___block_
   [v2 updateLayoutGuideWithInsets:{*(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64)}];
 }
 
-- (void)clientPushNowPlayingTemplateAnimated:(BOOL)a3
+- (void)clientPushNowPlayingTemplateAnimated:(BOOL)animated
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __62__CPInterfaceController_clientPushNowPlayingTemplateAnimated___block_invoke;
   v3[3] = &unk_278A10C88;
   v3[4] = self;
-  v4 = a3;
+  animatedCopy = animated;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -1219,15 +1219,15 @@ void __62__CPInterfaceController_clientPushNowPlayingTemplateAnimated___block_in
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientAssistantCellUnavailableWithError:(id)a3
+- (void)clientAssistantCellUnavailableWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__CPInterfaceController_clientAssistantCellUnavailableWithError___block_invoke;
   block[3] = &unk_278A105A0;
-  v6 = v3;
-  v4 = v3;
+  v6 = errorCopy;
+  v4 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1242,15 +1242,15 @@ void __65__CPInterfaceController_clientAssistantCellUnavailableWithError___block
   exit(-1);
 }
 
-- (void)clientPushedIllegalTemplateOfClass:(id)a3
+- (void)clientPushedIllegalTemplateOfClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__CPInterfaceController_clientPushedIllegalTemplateOfClass___block_invoke;
   block[3] = &unk_278A105A0;
-  v6 = v3;
-  v4 = v3;
+  v6 = classCopy;
+  v4 = classCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1263,16 +1263,16 @@ void __65__CPInterfaceController_clientExceededAudioMetadataThrottleLimit__block
   }
 }
 
-- (void)templateIdentifierDidPop:(id)a3
+- (void)templateIdentifierDidPop:(id)pop
 {
-  v4 = a3;
+  popCopy = pop;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__CPInterfaceController_templateIdentifierDidPop___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = popCopy;
+  v5 = popCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1301,16 +1301,16 @@ void __50__CPInterfaceController_templateIdentifierDidPop___block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)templateIdentifierDidDismiss:(id)a3
+- (void)templateIdentifierDidDismiss:(id)dismiss
 {
-  v4 = a3;
+  dismissCopy = dismiss;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__CPInterfaceController_templateIdentifierDidDismiss___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dismissCopy;
+  v5 = dismissCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1362,13 +1362,13 @@ void __54__CPInterfaceController_templateIdentifierDidDismiss___block_invoke(uin
   v9 = __Block_byref_object_copy__0;
   v10 = __Block_byref_object_dispose__0;
   v11 = 0;
-  v2 = [(CPInterfaceController *)self templates];
+  templates = [(CPInterfaceController *)self templates];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__CPInterfaceController__activeMapTemplate__block_invoke;
   v5[3] = &unk_278A10CB0;
   v5[4] = &v6;
-  [v2 enumerateObjectsWithOptions:2 usingBlock:v5];
+  [templates enumerateObjectsWithOptions:2 usingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -1387,16 +1387,16 @@ void __43__CPInterfaceController__activeMapTemplate__block_invoke(uint64_t a1, v
   }
 }
 
-- (void)bannerDidAppearWithIdentifier:(id)a3
+- (void)bannerDidAppearWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__CPInterfaceController_bannerDidAppearWithIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1406,16 +1406,16 @@ void __55__CPInterfaceController_bannerDidAppearWithIdentifier___block_invoke(ui
   [v2 bannerDidAppearWithIdentifier:*(a1 + 40)];
 }
 
-- (void)bannerDidDisappearWithIdentifier:(id)a3
+- (void)bannerDidDisappearWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__CPInterfaceController_bannerDidDisappearWithIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1425,16 +1425,16 @@ void __58__CPInterfaceController_bannerDidDisappearWithIdentifier___block_invoke
   [v2 bannerDidDisappearWithIdentifier:*(a1 + 40)];
 }
 
-- (void)bannerTappedWithIdentifier:(id)a3
+- (void)bannerTappedWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__CPInterfaceController_bannerTappedWithIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

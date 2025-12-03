@@ -10,7 +10,7 @@
   v3 = [(NSDictionary *)self objectForKey:@"BAHasManagedAssetPacks"];
   if ([(NSDictionary *)self infoDictionaryUsesAppleHosting])
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
   else
@@ -18,16 +18,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 BOOLValue];
+      bOOLValue = [v3 BOOLValue];
     }
 
     else
     {
-      v4 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)infoDictionaryUsesAppleHosting
@@ -36,15 +36,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

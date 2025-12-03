@@ -1,65 +1,65 @@
 @interface WDAddDataViewController
 - (BOOL)savingEnabled;
-- (WDAddDataViewController)initWithDisplayType:(id)a3 healthStore:(id)a4 unitController:(id)a5 initialStartDate:(id)a6 dateCache:(id)a7;
-- (WDAddDataViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (WDAddDataViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (WDAddDataViewController)initWithDisplayType:(id)type healthStore:(id)store unitController:(id)controller initialStartDate:(id)date dateCache:(id)cache;
+- (WDAddDataViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (WDAddDataViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_sectionHeaderView;
 - (id)defaultMetadata;
 - (id)generateHKObjects;
-- (id)manualEntryItemsForSection:(int64_t)a3;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)_widthDesignationFromTraitCollection:(id)a3;
+- (id)manualEntryItemsForSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)_widthDesignationFromTraitCollection:(id)collection;
 - (void)_dataValidated;
-- (void)_showValidationConfirmAlertWithErrorString:(id)a3;
-- (void)_showValidationErrorAlertWithErrorString:(id)a3;
+- (void)_showValidationConfirmAlertWithErrorString:(id)string;
+- (void)_showValidationErrorAlertWithErrorString:(id)string;
 - (void)_updateMargins;
-- (void)_updateMarginsForWidthDesignation:(int64_t)a3;
-- (void)addButtonTapped:(id)a3;
+- (void)_updateMarginsForWidthDesignation:(int64_t)designation;
+- (void)addButtonTapped:(id)tapped;
 - (void)reloadContent;
-- (void)saveHKObjectWithCompletion:(id)a3;
-- (void)setSavingEnabled:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)saveHKObjectWithCompletion:(id)completion;
+- (void)setSavingEnabled:(BOOL)enabled;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updatePreferredContentSize;
-- (void)validateMaximumAllowedDurationFor:(id)a3 endDate:(id)a4 competion:(id)a5;
+- (void)validateMaximumAllowedDurationFor:(id)for endDate:(id)date competion:(id)competion;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WDAddDataViewController
 
-- (WDAddDataViewController)initWithDisplayType:(id)a3 healthStore:(id)a4 unitController:(id)a5 initialStartDate:(id)a6 dateCache:(id)a7
+- (WDAddDataViewController)initWithDisplayType:(id)type healthStore:(id)store unitController:(id)controller initialStartDate:(id)date dateCache:(id)cache
 {
-  v13 = a3;
-  v24 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  storeCopy = store;
+  controllerCopy = controller;
+  dateCopy = date;
+  cacheCopy = cache;
   v25.receiver = self;
   v25.super_class = WDAddDataViewController;
   v17 = [(HKTableViewController *)&v25 initWithUsingInsetStyling:1];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_displayType, a3);
-    objc_storeStrong(&v18->_healthStore, a4);
-    objc_storeStrong(&v18->_unitController, a5);
-    objc_storeStrong(&v18->_initialStartDate, a6);
-    objc_storeStrong(&v18->_dateCache, a7);
+    objc_storeStrong(&v17->_displayType, type);
+    objc_storeStrong(&v18->_healthStore, store);
+    objc_storeStrong(&v18->_unitController, controller);
+    objc_storeStrong(&v18->_initialStartDate, date);
+    objc_storeStrong(&v18->_dateCache, cache);
     v19 = objc_alloc_init(MEMORY[0x1E69A4400]);
     validationController = v18->_validationController;
     v18->_validationController = v19;
 
-    v21 = [v13 localization];
-    v22 = [v21 titleEmbeddedDisplayName];
-    [(WDAddDataViewController *)v18 setTitle:v22];
+    localization = [typeCopy localization];
+    titleEmbeddedDisplayName = [localization titleEmbeddedDisplayName];
+    [(WDAddDataViewController *)v18 setTitle:titleEmbeddedDisplayName];
   }
 
   return v18;
 }
 
-- (WDAddDataViewController)initWithStyle:(int64_t)a3
+- (WDAddDataViewController)initWithStyle:(int64_t)style
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -69,7 +69,7 @@
   return 0;
 }
 
-- (WDAddDataViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WDAddDataViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D940];
@@ -85,29 +85,29 @@
   v31.receiver = self;
   v31.super_class = WDAddDataViewController;
   [(HKTableViewController *)&v31 viewDidLoad];
-  v3 = [(WDAddDataViewController *)self tableView];
-  [v3 setRowHeight:*MEMORY[0x1E69DE3D0]];
+  tableView = [(WDAddDataViewController *)self tableView];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
 
   v35[0] = @"UIA.Health.AddData";
   v35[1] = @"View";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
   v5 = HKUIJoinStringsForAutomationIdentifier();
-  v6 = [(WDAddDataViewController *)self view];
-  [v6 setAccessibilityIdentifier:v5];
+  view = [(WDAddDataViewController *)self view];
+  [view setAccessibilityIdentifier:v5];
 
-  v7 = [(WDAddDataViewController *)self tableView];
-  [v7 _setSectionContentInsetFollowsLayoutMargins:1];
+  tableView2 = [(WDAddDataViewController *)self tableView];
+  [tableView2 _setSectionContentInsetFollowsLayoutMargins:1];
 
-  v8 = [(WDAddDataViewController *)self navigationItem];
-  [v8 setTitle:0];
+  navigationItem = [(WDAddDataViewController *)self navigationItem];
+  [navigationItem setTitle:0];
 
   v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonTapped_];
   v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_addButtonTapped_];
-  v11 = [(WDAddDataViewController *)self navigationItem];
-  [v11 setLeftBarButtonItem:v9];
+  navigationItem2 = [(WDAddDataViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v9];
 
-  v12 = [(WDAddDataViewController *)self navigationItem];
-  [v12 setRightBarButtonItem:v10];
+  navigationItem3 = [(WDAddDataViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:v10];
 
   v34[0] = @"UIA.Health.AddData";
   v34[1] = @"Cancel";
@@ -175,10 +175,10 @@ void __38__WDAddDataViewController_viewDidLoad__block_invoke(uint64_t a1)
 - (void)reloadContent
 {
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(WDAddDataViewController *)self numberOfSections];
-  if (v3 >= 1)
+  numberOfSections = [(WDAddDataViewController *)self numberOfSections];
+  if (numberOfSections >= 1)
   {
-    v4 = v3;
+    v4 = numberOfSections;
     for (i = 0; i != v4; ++i)
     {
       v6 = [(WDAddDataViewController *)self manualEntryItemsForSection:i];
@@ -191,41 +191,41 @@ void __38__WDAddDataViewController_viewDidLoad__block_invoke(uint64_t a1)
   model = self->_model;
   self->_model = v8;
 
-  v10 = [(WDAddDataViewController *)self tableView];
-  [v10 reloadData];
+  tableView = [(WDAddDataViewController *)self tableView];
+  [tableView reloadData];
 
   [(WDAddDataViewController *)self updatePreferredContentSize];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v5.receiver = self;
   v5.super_class = WDAddDataViewController;
-  [(WDAddDataViewController *)&v5 viewIsAppearing:a3];
-  v4 = [(WDAddDataViewController *)self defaultEditingItem];
-  [v4 beginEditing];
+  [(WDAddDataViewController *)&v5 viewIsAppearing:appearing];
+  defaultEditingItem = [(WDAddDataViewController *)self defaultEditingItem];
+  [defaultEditingItem beginEditing];
 
   [(WDAddDataViewController *)self updatePreferredContentSize];
   [(WDAddDataViewController *)self _updateMargins];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WDAddDataViewController;
-  [(WDAddDataViewController *)&v4 viewWillAppear:a3];
+  [(WDAddDataViewController *)&v4 viewWillAppear:appear];
   [(WDAddDataViewController *)self updatePreferredContentSize];
 }
 
 - (void)updatePreferredContentSize
 {
-  v3 = [(WDAddDataViewController *)self tableView];
-  [v3 layoutIfNeeded];
+  tableView = [(WDAddDataViewController *)self tableView];
+  [tableView layoutIfNeeded];
 
-  v4 = [MEMORY[0x1E696C608] sharedBehavior];
-  v5 = [v4 isiPad];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  isiPad = [mEMORY[0x1E696C608] isiPad];
 
-  if (v5)
+  if (isiPad)
   {
     v6 = 644.0;
     v7 = 540.0;
@@ -233,69 +233,69 @@ void __38__WDAddDataViewController_viewDidLoad__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [(WDAddDataViewController *)self traitCollection];
-    v9 = [v8 preferredContentSizeCategory];
+    traitCollection = [(WDAddDataViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    v7 = dbl_1BA4B23F0[UIContentSizeCategoryCompareToCategory(v9, *MEMORY[0x1E69DDC60]) == NSOrderedAscending];
-    v10 = [(WDAddDataViewController *)self tableView];
-    [v10 contentSize];
+    v7 = dbl_1BA4B23F0[UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC60]) == NSOrderedAscending];
+    tableView2 = [(WDAddDataViewController *)self tableView];
+    [tableView2 contentSize];
     v6 = v11;
   }
 
   [(WDAddDataViewController *)self setPreferredContentSize:v7, v6];
-  v12 = [(WDAddDataViewController *)self navigationController];
-  [v12 setPreferredContentSize:{v7, v6}];
+  navigationController = [(WDAddDataViewController *)self navigationController];
+  [navigationController setPreferredContentSize:{v7, v6}];
 }
 
-- (int64_t)_widthDesignationFromTraitCollection:(id)a3
+- (int64_t)_widthDesignationFromTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 valueForNSIntegerTrait:objc_opt_class()];
+  collectionCopy = collection;
+  v4 = [collectionCopy valueForNSIntegerTrait:objc_opt_class()];
 
   return v4;
 }
 
-- (void)_updateMarginsForWidthDesignation:(int64_t)a3
+- (void)_updateMarginsForWidthDesignation:(int64_t)designation
 {
   sub_1BA4A75D8();
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(WDAddDataViewController *)self tableView];
-  [v12 setDirectionalLayoutMargins:{v5, v7, v9, v11}];
+  tableView = [(WDAddDataViewController *)self tableView];
+  [tableView setDirectionalLayoutMargins:{v5, v7, v9, v11}];
 }
 
 - (void)_updateMargins
 {
-  v3 = [(WDAddDataViewController *)self traitCollection];
-  v4 = [(WDAddDataViewController *)self _widthDesignationFromTraitCollection:v3];
+  traitCollection = [(WDAddDataViewController *)self traitCollection];
+  v4 = [(WDAddDataViewController *)self _widthDesignationFromTraitCollection:traitCollection];
 
   [(WDAddDataViewController *)self _updateMarginsForWidthDesignation:v4];
 }
 
-- (void)setSavingEnabled:(BOOL)a3
+- (void)setSavingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(WDAddDataViewController *)self navigationItem];
-  v4 = [v5 rightBarButtonItem];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  navigationItem = [(WDAddDataViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 }
 
 - (BOOL)savingEnabled
 {
-  v2 = [(WDAddDataViewController *)self navigationItem];
-  v3 = [v2 rightBarButtonItem];
-  v4 = [v3 isEnabled];
+  navigationItem = [(WDAddDataViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  isEnabled = [rightBarButtonItem isEnabled];
 
-  return v4;
+  return isEnabled;
 }
 
-- (void)addButtonTapped:(id)a3
+- (void)addButtonTapped:(id)tapped
 {
-  v4 = [(WDAddDataViewController *)self navigationItem];
-  v5 = [v4 rightBarButtonItem];
-  [v5 setEnabled:0];
+  navigationItem = [(WDAddDataViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -326,13 +326,13 @@ void __43__WDAddDataViewController_addButtonTapped___block_invoke(uint64_t a1, i
   }
 }
 
-- (void)_showValidationErrorAlertWithErrorString:(id)a3
+- (void)_showValidationErrorAlertWithErrorString:(id)string
 {
   v4 = MEMORY[0x1E69DC650];
-  v5 = a3;
+  stringCopy = string;
   v6 = HABundle();
   v7 = [v6 localizedStringForKey:@"OUT_OF_RANGE_ALERT_ERROR_TITLE" value:&stru_1F3823B88 table:@"AddDataLocalization"];
-  v8 = [v4 alertControllerWithTitle:v7 message:v5 preferredStyle:1];
+  v8 = [v4 alertControllerWithTitle:v7 message:stringCopy preferredStyle:1];
 
   v9 = MEMORY[0x1E69DC648];
   v10 = HABundle();
@@ -355,13 +355,13 @@ void __68__WDAddDataViewController__showValidationErrorAlertWithErrorString___bl
   [v1 setEnabled:1];
 }
 
-- (void)_showValidationConfirmAlertWithErrorString:(id)a3
+- (void)_showValidationConfirmAlertWithErrorString:(id)string
 {
   v4 = MEMORY[0x1E69DC650];
-  v5 = a3;
+  stringCopy = string;
   v6 = HABundle();
   v7 = [v6 localizedStringForKey:@"OUT_OF_RANGE_ALERT_CONFIRM_TITLE" value:&stru_1F3823B88 table:@"AddDataLocalization"];
-  v8 = [v4 alertControllerWithTitle:v7 message:v5 preferredStyle:1];
+  v8 = [v4 alertControllerWithTitle:v7 message:stringCopy preferredStyle:1];
 
   v9 = MEMORY[0x1E69DC648];
   v10 = HABundle();
@@ -434,16 +434,16 @@ void __41__WDAddDataViewController__dataValidated__block_invoke(uint64_t a1, cha
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)validateMaximumAllowedDurationFor:(id)a3 endDate:(id)a4 competion:(id)a5
+- (void)validateMaximumAllowedDurationFor:(id)for endDate:(id)date competion:(id)competion
 {
-  v36 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v8 timeIntervalSinceDate:v36];
+  forCopy = for;
+  dateCopy = date;
+  competionCopy = competion;
+  [dateCopy timeIntervalSinceDate:forCopy];
   v11 = v10;
   validationController = self->_validationController;
-  v13 = [(HKDisplayType *)self->_displayType sampleType];
-  v14 = [(HKManualEntryValidationController *)validationController validateMaximumAllowedDuration:v13 ofType:v11];
+  sampleType = [(HKDisplayType *)self->_displayType sampleType];
+  v14 = [(HKManualEntryValidationController *)validationController validateMaximumAllowedDuration:sampleType ofType:v11];
 
   if (v14)
   {
@@ -453,14 +453,14 @@ void __41__WDAddDataViewController__dataValidated__block_invoke(uint64_t a1, cha
       v28 = CPDateFormatStringForFormatType();
       [v19 setDateFormat:v28];
 
-      v21 = [v19 stringFromDate:v36];
-      v29 = [v19 stringFromDate:v8];
+      v21 = [v19 stringFromDate:forCopy];
+      v29 = [v19 stringFromDate:dateCopy];
       v30 = MEMORY[0x1E696AEC0];
       v31 = HABundle();
       v32 = [v31 localizedStringForKey:@"OUT_OF_RANGE_ALERT_TWO_ITEMS_FORMAT_%@_%@" value:&stru_1F3823B88 table:@"AddDataLocalization"];
       v33 = [v30 stringWithFormat:v32, v21, v29];
 
-      v9[2](v9, 0, v33, 1);
+      competionCopy[2](competionCopy, 0, v33, 1);
     }
 
     else
@@ -470,8 +470,8 @@ void __41__WDAddDataViewController__dataValidated__block_invoke(uint64_t a1, cha
         goto LABEL_14;
       }
 
-      v15 = [(HKDisplayType *)self->_displayType sampleType];
-      [v15 maximumAllowedDuration];
+      sampleType2 = [(HKDisplayType *)self->_displayType sampleType];
+      [sampleType2 maximumAllowedDuration];
       v17 = v16;
 
       v18 = (v17 / 86400.0);
@@ -489,15 +489,15 @@ void __41__WDAddDataViewController__dataValidated__block_invoke(uint64_t a1, cha
 
       [v19 setUnitsStyle:v20];
       v21 = [MEMORY[0x1E695DF10] hk_componentsWithDays:v18];
-      v22 = [(HKDisplayType *)self->_displayType wd_outOfRangeAlertDisplayName];
+      wd_outOfRangeAlertDisplayName = [(HKDisplayType *)self->_displayType wd_outOfRangeAlertDisplayName];
       v23 = MEMORY[0x1E696AEC0];
       v24 = HABundle();
       v25 = v24;
-      if (v22)
+      if (wd_outOfRangeAlertDisplayName)
       {
         v26 = [v24 localizedStringForKey:@"OUT_OF_RANGE_ALERT_SAMPLE_DURATION_ERROR_%@_%@" value:&stru_1F3823B88 table:@"AddDataLocalization"];
         v27 = [v19 stringFromDateComponents:v21];
-        [v23 stringWithFormat:v26, v27, v22];
+        [v23 stringWithFormat:v26, v27, wd_outOfRangeAlertDisplayName];
       }
 
       else
@@ -508,28 +508,28 @@ void __41__WDAddDataViewController__dataValidated__block_invoke(uint64_t a1, cha
       }
       v34 = ;
 
-      v9[2](v9, 0, v34, 0);
+      competionCopy[2](competionCopy, 0, v34, 0);
     }
   }
 
   else
   {
-    v9[2](v9, 1, 0, 0);
+    competionCopy[2](competionCopy, 1, 0, 0);
   }
 
 LABEL_14:
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(WDAddDataViewController *)self _sectionHeaderView:a3];
+    v6 = [(WDAddDataViewController *)self _sectionHeaderView:view];
   }
 
   return v6;
@@ -542,12 +542,12 @@ LABEL_14:
   return v2;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
   v9 = [(WDAddDataManualEntryTableData *)self->_model itemForCell:v8];
   [v9 cellForItemTapped:v8];
   v10 = MEMORY[0x1E69DD250];
@@ -555,11 +555,11 @@ LABEL_14:
   v13[1] = 3221225472;
   v13[2] = __61__WDAddDataViewController_tableView_didSelectRowAtIndexPath___block_invoke;
   v13[3] = &unk_1E7EEB480;
-  v14 = v6;
-  v15 = v7;
-  v16 = self;
-  v11 = v7;
-  v12 = v6;
+  v14 = viewCopy;
+  v15 = pathCopy;
+  selfCopy = self;
+  v11 = pathCopy;
+  v12 = viewCopy;
   [v10 animateWithDuration:v13 animations:0.2];
 }
 
@@ -633,9 +633,9 @@ uint64_t __61__WDAddDataViewController_tableView_didSelectRowAtIndexPath___block
   return [a1[4] scrollToRowAtIndexPath:a1[5] atScrollPosition:0 animated:1];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [(WDAddDataManualEntryTableData *)self->_model cellForRowAtIndexPath:a4];
+  v4 = [(WDAddDataManualEntryTableData *)self->_model cellForRowAtIndexPath:path];
   if (![v4 conformsToProtocol:&unk_1F3858B38])
   {
     goto LABEL_5;
@@ -657,11 +657,11 @@ LABEL_6:
   return v7;
 }
 
-- (void)saveHKObjectWithCompletion:(id)a3
+- (void)saveHKObjectWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WDAddDataViewController *)self generateHKObjects];
-  [(HKHealthStore *)self->_healthStore saveObjects:v5 withCompletion:v4];
+  completionCopy = completion;
+  generateHKObjects = [(WDAddDataViewController *)self generateHKObjects];
+  [(HKHealthStore *)self->_healthStore saveObjects:generateHKObjects withCompletion:completionCopy];
 }
 
 - (id)defaultMetadata
@@ -681,7 +681,7 @@ LABEL_6:
   return 0;
 }
 
-- (id)manualEntryItemsForSection:(int64_t)a3
+- (id)manualEntryItemsForSection:(int64_t)section
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

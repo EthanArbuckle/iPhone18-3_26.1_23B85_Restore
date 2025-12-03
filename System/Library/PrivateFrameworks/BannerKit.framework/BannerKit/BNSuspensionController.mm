@@ -1,7 +1,7 @@
 @interface BNSuspensionController
 + (void)initialize;
 - (BOOL)isSuspended;
-- (BOOL)setSuspended:(BOOL)a3 forReason:(id)a4;
+- (BOOL)setSuspended:(BOOL)suspended forReason:(id)reason;
 - (NSSet)activeSuspensionReasons;
 @end
 
@@ -9,17 +9,17 @@
 
 - (BOOL)isSuspended
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableSet *)v2->_suspensionReasons count]!= 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableSet *)selfCopy->_suspensionReasons count]!= 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     BNRegisterBannerKitLogging();
@@ -28,9 +28,9 @@
 
 - (NSSet)activeSuspensionReasons
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  suspensionReasons = v2->_suspensionReasons;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  suspensionReasons = selfCopy->_suspensionReasons;
   if (suspensionReasons)
   {
     v4 = suspensionReasons;
@@ -42,47 +42,47 @@
   }
 
   v5 = v4;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (BOOL)setSuspended:(BOOL)a3 forReason:(id)a4
+- (BOOL)setSuspended:(BOOL)suspended forReason:(id)reason
 {
-  v4 = a3;
+  suspendedCopy = suspended;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [BNSuspensionController setSuspended:a2 forReason:self];
     v27 = 0;
     goto LABEL_17;
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(BNSuspensionController *)v8 isSuspended];
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isSuspended = [(BNSuspensionController *)selfCopy isSuspended];
+  if (suspendedCopy)
   {
-    suspensionReasons = v8->_suspensionReasons;
+    suspensionReasons = selfCopy->_suspensionReasons;
     if (!suspensionReasons)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v12 = v8->_suspensionReasons;
-      v8->_suspensionReasons = v11;
+      v12 = selfCopy->_suspensionReasons;
+      selfCopy->_suspensionReasons = v11;
 
-      suspensionReasons = v8->_suspensionReasons;
+      suspensionReasons = selfCopy->_suspensionReasons;
     }
 
-    [(NSMutableSet *)suspensionReasons addObject:v7];
+    [(NSMutableSet *)suspensionReasons addObject:reasonCopy];
     v13 = BNLogSuspending;
     if (os_log_type_enabled(BNLogSuspending, OS_LOG_TYPE_DEFAULT))
     {
-      identifier = v8->_identifier;
+      identifier = selfCopy->_identifier;
       *v29 = 138543618;
       *&v29[4] = identifier;
       *&v29[12] = 2114;
-      *&v29[14] = v7;
+      *&v29[14] = reasonCopy;
       _os_log_impl(&dword_1C42DC000, v13, OS_LOG_TYPE_DEFAULT, "(%{public}@) Suspension requested with reason: %{public}@", v29, 0x16u);
     }
   }
@@ -92,26 +92,26 @@
     v15 = BNLogSuspending;
     if (os_log_type_enabled(BNLogSuspending, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = v8->_identifier;
+      v16 = selfCopy->_identifier;
       *v29 = 138543618;
       *&v29[4] = v16;
       *&v29[12] = 2114;
-      *&v29[14] = v7;
+      *&v29[14] = reasonCopy;
       _os_log_impl(&dword_1C42DC000, v15, OS_LOG_TYPE_DEFAULT, "(%{public}@) Resumption requested with reason: %{public}@", v29, 0x16u);
     }
 
-    [(NSMutableSet *)v8->_suspensionReasons removeObject:v7];
+    [(NSMutableSet *)selfCopy->_suspensionReasons removeObject:reasonCopy];
   }
 
-  v17 = [(BNSuspensionController *)v8 isSuspended];
+  isSuspended2 = [(BNSuspensionController *)selfCopy isSuspended];
   v18 = BNLogSuspending;
   v19 = os_log_type_enabled(BNLogSuspending, OS_LOG_TYPE_DEFAULT);
-  if (v17)
+  if (isSuspended2)
   {
     if (v19)
     {
-      v21 = v8->_suspensionReasons;
-      v20 = v8->_identifier;
+      v21 = selfCopy->_suspensionReasons;
+      v20 = selfCopy->_identifier;
       *v29 = 138543618;
       *&v29[4] = v20;
       *&v29[12] = 2114;
@@ -126,7 +126,7 @@ LABEL_15:
 
   else if (v19)
   {
-    v25 = v8->_identifier;
+    v25 = selfCopy->_identifier;
     *v29 = 138543362;
     *&v29[4] = v25;
     v22 = "(%{public}@) Resumed";
@@ -135,10 +135,10 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v26 = [(BNSuspensionController *)v8 isSuspended:*v29];
-  objc_sync_exit(v8);
+  v26 = [(BNSuspensionController *)selfCopy isSuspended:*v29];
+  objc_sync_exit(selfCopy);
 
-  v27 = v9 ^ v26;
+  v27 = isSuspended ^ v26;
 LABEL_17:
 
   return v27;

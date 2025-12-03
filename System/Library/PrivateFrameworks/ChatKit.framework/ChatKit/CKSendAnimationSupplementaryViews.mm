@@ -6,12 +6,12 @@
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   whiteTextFadeView = self->_whiteTextFadeView;
   if (whiteTextFadeView)
   {
-    [v3 setObject:whiteTextFadeView forKeyedSubscript:@"CKSendAnimationSupplementaryViewWhiteTextFadeView"];
+    [dictionary setObject:whiteTextFadeView forKeyedSubscript:@"CKSendAnimationSupplementaryViewWhiteTextFadeView"];
   }
 
   imageFadeoutView = self->_imageFadeoutView;

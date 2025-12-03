@@ -1,30 +1,30 @@
 @interface SBHMappedIconListLayoutProvider
-- (SBHMappedIconListLayoutProvider)initWithTargetListLayoutProvider:(id)a3;
-- (id)layoutForIconLocation:(id)a3;
-- (void)mapIconLocation:(id)a3 toIconLocation:(id)a4;
+- (SBHMappedIconListLayoutProvider)initWithTargetListLayoutProvider:(id)provider;
+- (id)layoutForIconLocation:(id)location;
+- (void)mapIconLocation:(id)location toIconLocation:(id)iconLocation;
 @end
 
 @implementation SBHMappedIconListLayoutProvider
 
-- (SBHMappedIconListLayoutProvider)initWithTargetListLayoutProvider:(id)a3
+- (SBHMappedIconListLayoutProvider)initWithTargetListLayoutProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SBHMappedIconListLayoutProvider;
   v6 = [(SBHMappedIconListLayoutProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_targetListLayoutProvider, a3);
+    objc_storeStrong(&v6->_targetListLayoutProvider, provider);
   }
 
   return v7;
 }
 
-- (void)mapIconLocation:(id)a3 toIconLocation:(id)a4
+- (void)mapIconLocation:(id)location toIconLocation:(id)iconLocation
 {
-  v10 = a3;
-  v6 = a4;
+  locationCopy = location;
+  iconLocationCopy = iconLocation;
   mappedIconLocations = self->_mappedIconLocations;
   if (!mappedIconLocations)
   {
@@ -35,20 +35,20 @@
     mappedIconLocations = self->_mappedIconLocations;
   }
 
-  [(NSMutableDictionary *)mappedIconLocations setObject:v6 forKey:v10];
+  [(NSMutableDictionary *)mappedIconLocations setObject:iconLocationCopy forKey:locationCopy];
 }
 
-- (id)layoutForIconLocation:(id)a3
+- (id)layoutForIconLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_mappedIconLocations objectForKey:v4];
+  locationCopy = location;
+  v5 = [(NSMutableDictionary *)self->_mappedIconLocations objectForKey:locationCopy];
   if (!v5)
   {
-    v5 = v4;
+    v5 = locationCopy;
   }
 
-  v6 = [(SBHMappedIconListLayoutProvider *)self targetListLayoutProvider];
-  v7 = [v6 layoutForIconLocation:v5];
+  targetListLayoutProvider = [(SBHMappedIconListLayoutProvider *)self targetListLayoutProvider];
+  v7 = [targetListLayoutProvider layoutForIconLocation:v5];
 
   return v7;
 }

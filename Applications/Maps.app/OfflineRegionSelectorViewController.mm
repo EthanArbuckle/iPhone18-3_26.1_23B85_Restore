@@ -2,7 +2,7 @@
 - (CGSize)preferredContentSize;
 - (OfflineRegionSelectorActionCoordination)delegate;
 - (OfflineRegionSelectorViewController)init;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (id)_autoUpdateDisclaimerText;
 - (int64_t)_preferredButtonStackOrientation;
 - (unint64_t)supportedInterfaceOrientations;
@@ -13,7 +13,7 @@
 - (void)_setupViews;
 - (void)_updateForCurrentState;
 - (void)_updateLayoutForAX;
-- (void)setState:(unint64_t)a3;
+- (void)setState:(unint64_t)state;
 - (void)viewDidLoad;
 @end
 
@@ -26,27 +26,27 @@
   return WeakRetained;
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v3 = -1.0;
-  if (a3 == 5)
+  if (layout == 5)
   {
-    v5 = [(OfflineRegionSelectorViewController *)self contentStackView];
-    v6 = [(ContaineeViewController *)self contentView];
-    [v6 bounds];
-    [v5 _maps_compressedSizeForWidth:0 withBlock:CGRectGetWidth(v16)];
+    contentStackView = [(OfflineRegionSelectorViewController *)self contentStackView];
+    contentView = [(ContaineeViewController *)self contentView];
+    [contentView bounds];
+    [contentStackView _maps_compressedSizeForWidth:0 withBlock:CGRectGetWidth(v16)];
     v8 = v7;
 
     [(NSLayoutConstraint *)self->_contentStackViewTopConstraint constant];
     v3 = v9 + v8 + kMUPlacePlatterPadding;
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    [v10 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     v12 = v11;
 
     if (v12 > 0.0)
     {
-      v13 = [(ContaineeViewController *)self cardPresentationController];
-      [v13 bottomSafeOffset];
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController2 bottomSafeOffset];
       v3 = v3 + v14 + 2.0;
     }
   }
@@ -61,73 +61,73 @@
     dispatch_once(&qword_10195E078, &stru_101631428);
   }
 
-  v3 = [(OfflineRegionSelectorViewController *)self state];
+  state = [(OfflineRegionSelectorViewController *)self state];
   v4 = 0;
-  if (v3 <= 1)
+  if (state <= 1)
   {
-    if (!v3)
+    if (!state)
     {
       v8 = +[NSBundle mainBundle];
       v9 = v8;
       v16 = @"Calculating...";
 LABEL_18:
       v18 = [v8 localizedStringForKey:v16 value:@"localized string not found" table:@"Offline"];
-      v19 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-      [v19 setText:v18];
+      sizeLabel = [(OfflineRegionSelectorViewController *)self sizeLabel];
+      [sizeLabel setText:v18];
 
-      v17 = [(OfflineRegionSelectorViewController *)self downloadButton];
-      [v17 setEnabled:0];
+      downloadButton = [(OfflineRegionSelectorViewController *)self downloadButton];
+      [downloadButton setEnabled:0];
       v4 = 0;
       goto LABEL_23;
     }
 
-    if (v3 != 1)
+    if (state != 1)
     {
       goto LABEL_24;
     }
 
-    v12 = [(OfflineRegionSelectorViewController *)self traitCollection];
-    v13 = [v12 preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v13))
+    traitCollection = [(OfflineRegionSelectorViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
     }
 
     else
     {
-      v20 = [(OfflineRegionSelectorViewController *)self traitCollection];
-      v21 = [v20 preferredContentSizeCategory];
-      v22 = UIContentSizeCategoryCompareToCategory(v21, UIContentSizeCategoryExtraExtraLarge);
+      traitCollection2 = [(OfflineRegionSelectorViewController *)self traitCollection];
+      preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+      v22 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory2, UIContentSizeCategoryExtraExtraLarge);
 
       if (v22 != NSOrderedDescending)
       {
         v23 = +[NSBundle mainBundle];
-        v24 = [v23 localizedStringForKey:@"Size of selected map: %@" value:@"localized string not found" table:@"Offline"];
+        sizeLabel3 = [v23 localizedStringForKey:@"Size of selected map: %@" value:@"localized string not found" table:@"Offline"];
         v25 = [qword_10195E070 stringFromByteCount:self->_estimatedDiskSize];
-        v26 = [NSString localizedStringWithFormat:v24, v25];
-        v27 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-        [v27 setText:v26];
+        v26 = [NSString localizedStringWithFormat:sizeLabel3, v25];
+        sizeLabel2 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+        [sizeLabel2 setText:v26];
 
         goto LABEL_22;
       }
     }
 
     v23 = [qword_10195E070 stringFromByteCount:self->_estimatedDiskSize];
-    v24 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-    [v24 setText:v23];
+    sizeLabel3 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+    [sizeLabel3 setText:v23];
 LABEL_22:
 
-    v17 = [(OfflineRegionSelectorViewController *)self downloadButton];
+    downloadButton = [(OfflineRegionSelectorViewController *)self downloadButton];
     v4 = 1;
-    [v17 setEnabled:1];
+    [downloadButton setEnabled:1];
     goto LABEL_23;
   }
 
-  switch(v3)
+  switch(state)
   {
     case 2:
-      v14 = [(OfflineRegionSelectorViewController *)self traitCollection];
-      v15 = [v14 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v15);
+      traitCollection3 = [(OfflineRegionSelectorViewController *)self traitCollection];
+      preferredContentSizeCategory3 = [traitCollection3 preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory3);
 
       v8 = +[NSBundle mainBundle];
       v9 = v8;
@@ -146,16 +146,16 @@ LABEL_13:
 
       goto LABEL_18;
     case 3:
-      v17 = [(OfflineRegionSelectorViewController *)self downloadButton];
-      [v17 setEnabled:0];
+      downloadButton = [(OfflineRegionSelectorViewController *)self downloadButton];
+      [downloadButton setEnabled:0];
       v4 = 1;
 LABEL_23:
 
       break;
     case 4:
-      v5 = [(OfflineRegionSelectorViewController *)self traitCollection];
-      v6 = [v5 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+      traitCollection4 = [(OfflineRegionSelectorViewController *)self traitCollection];
+      preferredContentSizeCategory4 = [traitCollection4 preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory4);
 
       v8 = +[NSBundle mainBundle];
       v9 = v8;
@@ -165,13 +165,13 @@ LABEL_23:
   }
 
 LABEL_24:
-  v28 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-  v29 = [v28 text];
-  v30 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-  [v30 setAccessibilityLabel:v29];
+  sizeLabel4 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  text = [sizeLabel4 text];
+  sizeLabel5 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  [sizeLabel5 setAccessibilityLabel:text];
 
-  v31 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-  if (v31 && (v32 = v31, -[OfflineRegionSelectorViewController autoUpdateDisclaimerLabel](self, "autoUpdateDisclaimerLabel"), v33 = objc_claimAutoreleasedReturnValue(), v34 = [v33 isHidden], v33, v32, v4 == v34))
+  autoUpdateDisclaimerLabel = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+  if (autoUpdateDisclaimerLabel && (v32 = autoUpdateDisclaimerLabel, -[OfflineRegionSelectorViewController autoUpdateDisclaimerLabel](self, "autoUpdateDisclaimerLabel"), v33 = objc_claimAutoreleasedReturnValue(), v34 = [v33 isHidden], v33, v32, v4 == v34))
   {
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
@@ -184,37 +184,37 @@ LABEL_24:
 
   else
   {
-    v35 = [(ContaineeViewController *)self cardPresentationController];
-    [v35 updateHeightForCurrentLayout];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController updateHeightForCurrentLayout];
 
-    v36 = [(OfflineRegionSelectorViewController *)self view];
-    [v36 layoutIfNeeded];
+    view = [(OfflineRegionSelectorViewController *)self view];
+    [view layoutIfNeeded];
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(OfflineRegionSelectorViewController *)self _updateForCurrentState];
   }
 }
 
 - (void)_download
 {
-  v3 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+  autoUpdateDisclaimerLabel = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
 
-  if (v3)
+  if (autoUpdateDisclaimerLabel)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     [v4 setBool:1 forKey:@"OfflineMapsAutoUpdateDisclaimerDisplayed"];
   }
 
-  v5 = [(OfflineRegionSelectorViewController *)self delegate];
-  v6 = [v5 downloadSelectedOfflineRegion];
+  delegate = [(OfflineRegionSelectorViewController *)self delegate];
+  downloadSelectedOfflineRegion = [delegate downloadSelectedOfflineRegion];
 
-  if (v6)
+  if (downloadSelectedOfflineRegion)
   {
 
     [(OfflineRegionSelectorViewController *)self setState:3];
@@ -223,8 +223,8 @@ LABEL_24:
 
 - (void)_cancel
 {
-  v3 = [(OfflineRegionSelectorViewController *)self delegate];
-  [v3 closeOfflineRegionSelector];
+  delegate = [(OfflineRegionSelectorViewController *)self delegate];
+  [delegate closeOfflineRegionSelector];
 
   if ([(OfflineRegionSelectorViewController *)self downloadable])
   {
@@ -242,9 +242,9 @@ LABEL_24:
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 30;
   }
@@ -257,11 +257,11 @@ LABEL_24:
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  v4 = [v3 containerViewController];
-  v5 = [v4 view];
-  v6 = [v5 window];
-  [v6 bounds];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerViewController = [cardPresentationController containerViewController];
+  view = [containerViewController view];
+  window = [view window];
+  [window bounds];
   v8 = v7;
 
   [(OfflineRegionSelectorViewController *)self heightForLayout:5];
@@ -274,10 +274,10 @@ LABEL_24:
 
 - (void)_addButtonsToStackView
 {
-  v3 = [(OfflineRegionSelectorViewController *)self cancelButton];
-  v33[0] = v3;
-  v4 = [(OfflineRegionSelectorViewController *)self downloadButton];
-  v33[1] = v4;
+  cancelButton = [(OfflineRegionSelectorViewController *)self cancelButton];
+  v33[0] = cancelButton;
+  downloadButton = [(OfflineRegionSelectorViewController *)self downloadButton];
+  v33[1] = downloadButton;
   v5 = [NSArray arrayWithObjects:v33 count:2];
 
   v29 = 0u;
@@ -311,16 +311,16 @@ LABEL_24:
     while (v8);
   }
 
-  v11 = [(OfflineRegionSelectorViewController *)self traitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+  traitCollection = [(OfflineRegionSelectorViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    v14 = [v6 reverseObjectEnumerator];
-    v15 = [v14 allObjects];
+    reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v6 = v15;
+    v6 = allObjects;
   }
 
   v25 = 0u;
@@ -344,8 +344,8 @@ LABEL_24:
         }
 
         v21 = *(*(&v23 + 1) + 8 * v20);
-        v22 = [(OfflineRegionSelectorViewController *)self buttonStackView];
-        [v22 addArrangedSubview:v21];
+        buttonStackView = [(OfflineRegionSelectorViewController *)self buttonStackView];
+        [buttonStackView addArrangedSubview:v21];
 
         v20 = v20 + 1;
       }
@@ -360,18 +360,18 @@ LABEL_24:
 
 - (int64_t)_preferredButtonStackOrientation
 {
-  v2 = [(OfflineRegionSelectorViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  traitCollection = [(OfflineRegionSelectorViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
 
 - (id)_autoUpdateDisclaimerText
 {
-  v2 = [(OfflineRegionSelectorViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  traitCollection = [(OfflineRegionSelectorViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v5 = +[NSBundle mainBundle];
   v6 = v5;
@@ -393,64 +393,64 @@ LABEL_24:
 - (void)_updateLayoutForAX
 {
   [(OfflineRegionSelectorViewController *)self _updateForCurrentState];
-  v3 = [(OfflineRegionSelectorViewController *)self _autoUpdateDisclaimerText];
-  v4 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-  [v4 setText:v3];
+  _autoUpdateDisclaimerText = [(OfflineRegionSelectorViewController *)self _autoUpdateDisclaimerText];
+  autoUpdateDisclaimerLabel = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+  [autoUpdateDisclaimerLabel setText:_autoUpdateDisclaimerText];
 
-  v5 = [(OfflineRegionSelectorViewController *)self _preferredButtonStackOrientation];
-  v6 = [(OfflineRegionSelectorViewController *)self buttonStackView];
-  [v6 setAxis:v5];
+  _preferredButtonStackOrientation = [(OfflineRegionSelectorViewController *)self _preferredButtonStackOrientation];
+  buttonStackView = [(OfflineRegionSelectorViewController *)self buttonStackView];
+  [buttonStackView setAxis:_preferredButtonStackOrientation];
 
   [(OfflineRegionSelectorViewController *)self _addButtonsToStackView];
-  v7 = [(ContaineeViewController *)self cardPresentationController];
-  [v7 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-  v4 = [v3 widthAnchor];
-  v30 = [v4 constraintEqualToConstant:400.0];
+  sizeLabel = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  widthAnchor = [sizeLabel widthAnchor];
+  v30 = [widthAnchor constraintEqualToConstant:400.0];
 
   LODWORD(v5) = 1144750080;
   [v30 setPriority:v5];
-  v6 = [(OfflineRegionSelectorViewController *)self buttonStackView];
-  v7 = [v6 widthAnchor];
-  v8 = [v7 constraintEqualToConstant:400.0];
+  buttonStackView = [(OfflineRegionSelectorViewController *)self buttonStackView];
+  widthAnchor2 = [buttonStackView widthAnchor];
+  v8 = [widthAnchor2 constraintEqualToConstant:400.0];
 
   LODWORD(v9) = 1144750080;
   [v8 setPriority:v9];
-  v10 = [(OfflineRegionSelectorViewController *)self contentStackView];
-  v11 = [(ContaineeViewController *)self contentView];
+  contentStackView = [(OfflineRegionSelectorViewController *)self contentStackView];
+  contentView = [(ContaineeViewController *)self contentView];
   LODWORD(v12) = 1148846080;
-  v13 = [v10 _maps_constraintsEqualToEdgesOfView:v11 insets:kMUPlacePlatterPadding priority:{kMUPlacePlatterPadding, 0.0, kMUPlacePlatterPadding, v12}];
+  v13 = [contentStackView _maps_constraintsEqualToEdgesOfView:contentView insets:kMUPlacePlatterPadding priority:{kMUPlacePlatterPadding, 0.0, kMUPlacePlatterPadding, v12}];
 
-  v14 = [v13 topConstraint];
+  topConstraint = [v13 topConstraint];
   contentStackViewTopConstraint = self->_contentStackViewTopConstraint;
-  self->_contentStackViewTopConstraint = v14;
+  self->_contentStackViewTopConstraint = topConstraint;
 
-  v16 = [(ContaineeViewController *)self headerView];
-  v17 = [v16 heightAnchor];
-  v18 = [v17 constraintEqualToConstant:0.0];
+  headerView = [(ContaineeViewController *)self headerView];
+  heightAnchor = [headerView heightAnchor];
+  v18 = [heightAnchor constraintEqualToConstant:0.0];
   v19 = self->_contentStackViewTopConstraint;
   v32[0] = v18;
   v32[1] = v19;
-  v20 = [v13 leadingConstraint];
-  v32[2] = v20;
-  v21 = [v13 trailingConstraint];
-  v32[3] = v21;
+  leadingConstraint = [v13 leadingConstraint];
+  v32[2] = leadingConstraint;
+  trailingConstraint = [v13 trailingConstraint];
+  v32[3] = trailingConstraint;
   v32[4] = v30;
   v32[5] = v8;
   v22 = [NSArray arrayWithObjects:v32 count:6];
   v23 = [v22 mutableCopy];
 
-  v24 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+  autoUpdateDisclaimerLabel = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
 
-  if (v24)
+  if (autoUpdateDisclaimerLabel)
   {
-    v25 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-    v26 = [v25 widthAnchor];
-    v27 = [v26 constraintEqualToConstant:400.0];
+    autoUpdateDisclaimerLabel2 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+    widthAnchor3 = [autoUpdateDisclaimerLabel2 widthAnchor];
+    v27 = [widthAnchor3 constraintEqualToConstant:400.0];
 
     LODWORD(v28) = 1144750080;
     [v27 setPriority:v28];
@@ -465,11 +465,11 @@ LABEL_24:
 - (void)_setupViews
 {
   v3 = +[UIColor clearColor];
-  v4 = [(OfflineRegionSelectorViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(OfflineRegionSelectorViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(ContaineeViewController *)self contentView];
-  [v5 setAccessibilityIdentifier:@"RegionSelectorContentView"];
+  contentView = [(ContaineeViewController *)self contentView];
+  [contentView setAccessibilityIdentifier:@"RegionSelectorContentView"];
 
   v6 = [UIStackView alloc];
   y = CGRectZero.origin.y;
@@ -478,71 +478,71 @@ LABEL_24:
   v10 = [v6 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(OfflineRegionSelectorViewController *)self setContentStackView:v10];
 
-  v11 = [(OfflineRegionSelectorViewController *)self contentStackView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentStackView = [(OfflineRegionSelectorViewController *)self contentStackView];
+  [contentStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(OfflineRegionSelectorViewController *)self contentStackView];
-  [v12 setAlignment:3];
+  contentStackView2 = [(OfflineRegionSelectorViewController *)self contentStackView];
+  [contentStackView2 setAlignment:3];
 
-  v13 = [(OfflineRegionSelectorViewController *)self contentStackView];
-  [v13 setClipsToBounds:1];
+  contentStackView3 = [(OfflineRegionSelectorViewController *)self contentStackView];
+  [contentStackView3 setClipsToBounds:1];
 
-  v14 = [(OfflineRegionSelectorViewController *)self contentStackView];
-  [v14 setAxis:1];
+  contentStackView4 = [(OfflineRegionSelectorViewController *)self contentStackView];
+  [contentStackView4 setAxis:1];
 
-  v15 = [(OfflineRegionSelectorViewController *)self contentStackView];
-  [v15 setDistribution:0];
+  contentStackView5 = [(OfflineRegionSelectorViewController *)self contentStackView];
+  [contentStackView5 setDistribution:0];
 
-  v16 = [(OfflineRegionSelectorViewController *)self contentStackView];
+  contentStackView6 = [(OfflineRegionSelectorViewController *)self contentStackView];
   LODWORD(v17) = 1148846080;
-  [v16 setContentHuggingPriority:1 forAxis:v17];
+  [contentStackView6 setContentHuggingPriority:1 forAxis:v17];
 
-  v18 = [(OfflineRegionSelectorViewController *)self contentStackView];
+  contentStackView7 = [(OfflineRegionSelectorViewController *)self contentStackView];
   LODWORD(v19) = 1148846080;
-  [v18 setContentCompressionResistancePriority:1 forAxis:v19];
+  [contentStackView7 setContentCompressionResistancePriority:1 forAxis:v19];
 
-  v20 = [(ContaineeViewController *)self contentView];
-  v21 = [(OfflineRegionSelectorViewController *)self contentStackView];
-  [v20 addSubview:v21];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  contentStackView8 = [(OfflineRegionSelectorViewController *)self contentStackView];
+  [contentView2 addSubview:contentStackView8];
 
   v22 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(OfflineRegionSelectorViewController *)self setSizeLabel:v22];
 
-  v23 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-  [v23 setTextAlignment:1];
+  sizeLabel = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  [sizeLabel setTextAlignment:1];
 
   v24 = +[UIColor secondaryLabelColor];
-  v25 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-  [v25 setTextColor:v24];
+  sizeLabel2 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  [sizeLabel2 setTextColor:v24];
 
-  v26 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-  [v26 setNumberOfLines:0];
+  sizeLabel3 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  [sizeLabel3 setNumberOfLines:0];
 
-  v27 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-  [v27 setAccessibilityIdentifier:@"Size"];
+  sizeLabel4 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  [sizeLabel4 setAccessibilityIdentifier:@"Size"];
 
-  v28 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  sizeLabel5 = [(OfflineRegionSelectorViewController *)self sizeLabel];
   LODWORD(v29) = 1148846080;
-  [v28 setContentHuggingPriority:1 forAxis:v29];
+  [sizeLabel5 setContentHuggingPriority:1 forAxis:v29];
 
-  v30 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  sizeLabel6 = [(OfflineRegionSelectorViewController *)self sizeLabel];
   LODWORD(v31) = 1132068864;
-  [v30 setContentCompressionResistancePriority:0 forAxis:v31];
+  [sizeLabel6 setContentCompressionResistancePriority:0 forAxis:v31];
 
-  v32 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  sizeLabel7 = [(OfflineRegionSelectorViewController *)self sizeLabel];
   LODWORD(v33) = 1148846080;
-  [v32 setContentCompressionResistancePriority:1 forAxis:v33];
+  [sizeLabel7 setContentCompressionResistancePriority:1 forAxis:v33];
 
-  v34 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-  [DynamicTypeWizard autorefreshLabel:v34 withFontProvider:&stru_101631408];
+  sizeLabel8 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  [DynamicTypeWizard autorefreshLabel:sizeLabel8 withFontProvider:&stru_101631408];
 
-  v35 = [(OfflineRegionSelectorViewController *)self contentStackView];
-  v36 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-  [v35 addArrangedSubview:v36];
+  contentStackView9 = [(OfflineRegionSelectorViewController *)self contentStackView];
+  sizeLabel9 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  [contentStackView9 addArrangedSubview:sizeLabel9];
 
-  v37 = [(OfflineRegionSelectorViewController *)self contentStackView];
-  v38 = [(OfflineRegionSelectorViewController *)self sizeLabel];
-  [v37 setCustomSpacing:v38 afterView:12.0];
+  contentStackView10 = [(OfflineRegionSelectorViewController *)self contentStackView];
+  sizeLabel10 = [(OfflineRegionSelectorViewController *)self sizeLabel];
+  [contentStackView10 setCustomSpacing:sizeLabel10 afterView:12.0];
 
   if (GEOConfigGetBOOL())
   {
@@ -554,86 +554,86 @@ LABEL_24:
       v41 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
       [(OfflineRegionSelectorViewController *)self setAutoUpdateDisclaimerLabel:v41];
 
-      v42 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-      [v42 setTextAlignment:1];
+      autoUpdateDisclaimerLabel = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      [autoUpdateDisclaimerLabel setTextAlignment:1];
 
       v43 = +[UIColor secondaryLabelColor];
-      v44 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-      [v44 setTextColor:v43];
+      autoUpdateDisclaimerLabel2 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      [autoUpdateDisclaimerLabel2 setTextColor:v43];
 
-      v45 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-      [v45 setNumberOfLines:0];
+      autoUpdateDisclaimerLabel3 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      [autoUpdateDisclaimerLabel3 setNumberOfLines:0];
 
-      v46 = [(OfflineRegionSelectorViewController *)self _autoUpdateDisclaimerText];
-      v47 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-      [v47 setText:v46];
+      _autoUpdateDisclaimerText = [(OfflineRegionSelectorViewController *)self _autoUpdateDisclaimerText];
+      autoUpdateDisclaimerLabel4 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      [autoUpdateDisclaimerLabel4 setText:_autoUpdateDisclaimerText];
 
-      v48 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      autoUpdateDisclaimerLabel5 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
       LODWORD(v49) = 1148846080;
-      [v48 setContentHuggingPriority:1 forAxis:v49];
+      [autoUpdateDisclaimerLabel5 setContentHuggingPriority:1 forAxis:v49];
 
-      v50 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      autoUpdateDisclaimerLabel6 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
       LODWORD(v51) = 1132068864;
-      [v50 setContentCompressionResistancePriority:0 forAxis:v51];
+      [autoUpdateDisclaimerLabel6 setContentCompressionResistancePriority:0 forAxis:v51];
 
-      v52 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      autoUpdateDisclaimerLabel7 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
       LODWORD(v53) = 1148846080;
-      [v52 setContentCompressionResistancePriority:1 forAxis:v53];
+      [autoUpdateDisclaimerLabel7 setContentCompressionResistancePriority:1 forAxis:v53];
 
-      v54 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-      [DynamicTypeWizard autorefreshLabel:v54 withFontProvider:&stru_101631408];
+      autoUpdateDisclaimerLabel8 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      [DynamicTypeWizard autorefreshLabel:autoUpdateDisclaimerLabel8 withFontProvider:&stru_101631408];
 
-      v55 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-      [v55 setAccessibilityIdentifier:@"AutoUpdateDisclaimer"];
+      autoUpdateDisclaimerLabel9 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      [autoUpdateDisclaimerLabel9 setAccessibilityIdentifier:@"AutoUpdateDisclaimer"];
 
-      v56 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-      [v56 setAlpha:0.0];
+      autoUpdateDisclaimerLabel10 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      [autoUpdateDisclaimerLabel10 setAlpha:0.0];
 
-      v57 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-      [v57 setHidden:1];
+      autoUpdateDisclaimerLabel11 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      [autoUpdateDisclaimerLabel11 setHidden:1];
 
-      v58 = [(OfflineRegionSelectorViewController *)self contentStackView];
-      v59 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-      [v58 addArrangedSubview:v59];
+      contentStackView11 = [(OfflineRegionSelectorViewController *)self contentStackView];
+      autoUpdateDisclaimerLabel12 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      [contentStackView11 addArrangedSubview:autoUpdateDisclaimerLabel12];
 
-      v60 = [(OfflineRegionSelectorViewController *)self contentStackView];
-      v61 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
-      [v60 setCustomSpacing:v61 afterView:12.0];
+      contentStackView12 = [(OfflineRegionSelectorViewController *)self contentStackView];
+      autoUpdateDisclaimerLabel13 = [(OfflineRegionSelectorViewController *)self autoUpdateDisclaimerLabel];
+      [contentStackView12 setCustomSpacing:autoUpdateDisclaimerLabel13 afterView:12.0];
     }
   }
 
   v62 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(OfflineRegionSelectorViewController *)self setButtonStackView:v62];
 
-  v63 = [(OfflineRegionSelectorViewController *)self _preferredButtonStackOrientation];
-  v64 = [(OfflineRegionSelectorViewController *)self buttonStackView];
-  [v64 setAxis:v63];
+  _preferredButtonStackOrientation = [(OfflineRegionSelectorViewController *)self _preferredButtonStackOrientation];
+  buttonStackView = [(OfflineRegionSelectorViewController *)self buttonStackView];
+  [buttonStackView setAxis:_preferredButtonStackOrientation];
 
-  v65 = [(OfflineRegionSelectorViewController *)self buttonStackView];
-  [v65 setDistribution:1];
+  buttonStackView2 = [(OfflineRegionSelectorViewController *)self buttonStackView];
+  [buttonStackView2 setDistribution:1];
 
-  v66 = [(OfflineRegionSelectorViewController *)self buttonStackView];
-  [v66 setAlignment:0];
+  buttonStackView3 = [(OfflineRegionSelectorViewController *)self buttonStackView];
+  [buttonStackView3 setAlignment:0];
 
   kMUPlaceHorizontalStackSpacing();
   v68 = v67;
-  v69 = [(OfflineRegionSelectorViewController *)self buttonStackView];
-  [v69 setSpacing:v68];
+  buttonStackView4 = [(OfflineRegionSelectorViewController *)self buttonStackView];
+  [buttonStackView4 setSpacing:v68];
 
-  v70 = [(OfflineRegionSelectorViewController *)self buttonStackView];
-  [v70 setAccessibilityIdentifier:@"ButtonStackView"];
+  buttonStackView5 = [(OfflineRegionSelectorViewController *)self buttonStackView];
+  [buttonStackView5 setAccessibilityIdentifier:@"ButtonStackView"];
 
-  v71 = [(OfflineRegionSelectorViewController *)self buttonStackView];
+  buttonStackView6 = [(OfflineRegionSelectorViewController *)self buttonStackView];
   LODWORD(v72) = 1148846080;
-  [v71 setContentHuggingPriority:1 forAxis:v72];
+  [buttonStackView6 setContentHuggingPriority:1 forAxis:v72];
 
-  v73 = [(OfflineRegionSelectorViewController *)self buttonStackView];
+  buttonStackView7 = [(OfflineRegionSelectorViewController *)self buttonStackView];
   LODWORD(v74) = 1148846080;
-  [v73 setContentCompressionResistancePriority:1 forAxis:v74];
+  [buttonStackView7 setContentCompressionResistancePriority:1 forAxis:v74];
 
-  v75 = [(OfflineRegionSelectorViewController *)self contentStackView];
-  v76 = [(OfflineRegionSelectorViewController *)self buttonStackView];
-  [v75 addArrangedSubview:v76];
+  contentStackView13 = [(OfflineRegionSelectorViewController *)self contentStackView];
+  buttonStackView8 = [(OfflineRegionSelectorViewController *)self buttonStackView];
+  [contentStackView13 addArrangedSubview:buttonStackView8];
 
   v100 = +[UIButtonConfiguration _maps_secondaryCardFooterActionButtonConfiguration];
   v77 = +[NSBundle mainBundle];
@@ -643,23 +643,23 @@ LABEL_24:
   v79 = [UIButton buttonWithConfiguration:v100 primaryAction:0];
   [(OfflineRegionSelectorViewController *)self setCancelButton:v79];
 
-  v80 = [(OfflineRegionSelectorViewController *)self cancelButton];
-  [v80 addTarget:self action:"_cancel" forControlEvents:0x2000];
+  cancelButton = [(OfflineRegionSelectorViewController *)self cancelButton];
+  [cancelButton addTarget:self action:"_cancel" forControlEvents:0x2000];
 
-  v81 = [(OfflineRegionSelectorViewController *)self cancelButton];
-  [v81 setAccessibilityIdentifier:@"Cancel"];
+  cancelButton2 = [(OfflineRegionSelectorViewController *)self cancelButton];
+  [cancelButton2 setAccessibilityIdentifier:@"Cancel"];
 
-  v82 = [v100 title];
-  v83 = [(OfflineRegionSelectorViewController *)self cancelButton];
-  [v83 setAccessibilityLabel:v82];
+  title = [v100 title];
+  cancelButton3 = [(OfflineRegionSelectorViewController *)self cancelButton];
+  [cancelButton3 setAccessibilityLabel:title];
 
-  v84 = [(OfflineRegionSelectorViewController *)self cancelButton];
+  cancelButton4 = [(OfflineRegionSelectorViewController *)self cancelButton];
   LODWORD(v85) = 1148846080;
-  [v84 setContentHuggingPriority:1 forAxis:v85];
+  [cancelButton4 setContentHuggingPriority:1 forAxis:v85];
 
-  v86 = [(OfflineRegionSelectorViewController *)self cancelButton];
+  cancelButton5 = [(OfflineRegionSelectorViewController *)self cancelButton];
   LODWORD(v87) = 1148846080;
-  [v86 setContentCompressionResistancePriority:1 forAxis:v87];
+  [cancelButton5 setContentCompressionResistancePriority:1 forAxis:v87];
 
   v88 = +[UIButtonConfiguration _maps_primaryCardFooterActionButtonConfiguration];
   v89 = +[NSBundle mainBundle];
@@ -669,23 +669,23 @@ LABEL_24:
   v91 = [UIButton buttonWithConfiguration:v88 primaryAction:0];
   [(OfflineRegionSelectorViewController *)self setDownloadButton:v91];
 
-  v92 = [(OfflineRegionSelectorViewController *)self downloadButton];
-  [v92 setAccessibilityIdentifier:@"Download"];
+  downloadButton = [(OfflineRegionSelectorViewController *)self downloadButton];
+  [downloadButton setAccessibilityIdentifier:@"Download"];
 
-  v93 = [v88 title];
-  v94 = [(OfflineRegionSelectorViewController *)self downloadButton];
-  [v94 setAccessibilityLabel:v93];
+  title2 = [v88 title];
+  downloadButton2 = [(OfflineRegionSelectorViewController *)self downloadButton];
+  [downloadButton2 setAccessibilityLabel:title2];
 
-  v95 = [(OfflineRegionSelectorViewController *)self downloadButton];
-  [v95 addTarget:self action:"_download" forControlEvents:0x2000];
+  downloadButton3 = [(OfflineRegionSelectorViewController *)self downloadButton];
+  [downloadButton3 addTarget:self action:"_download" forControlEvents:0x2000];
 
-  v96 = [(OfflineRegionSelectorViewController *)self downloadButton];
+  downloadButton4 = [(OfflineRegionSelectorViewController *)self downloadButton];
   LODWORD(v97) = 1148846080;
-  [v96 setContentHuggingPriority:1 forAxis:v97];
+  [downloadButton4 setContentHuggingPriority:1 forAxis:v97];
 
-  v98 = [(OfflineRegionSelectorViewController *)self downloadButton];
+  downloadButton5 = [(OfflineRegionSelectorViewController *)self downloadButton];
   LODWORD(v99) = 1148846080;
-  [v98 setContentCompressionResistancePriority:1 forAxis:v99];
+  [downloadButton5 setContentCompressionResistancePriority:1 forAxis:v99];
 
   [(OfflineRegionSelectorViewController *)self _addButtonsToStackView];
   [(OfflineRegionSelectorViewController *)self _updateForCurrentState];
@@ -712,29 +712,29 @@ LABEL_24:
   v3 = v2;
   if (v2)
   {
-    v4 = [(ContaineeViewController *)v2 cardPresentationController];
-    [v4 setPresentedModally:1];
+    cardPresentationController = [(ContaineeViewController *)v2 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v5 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v5 setTakesAvailableHeight:0];
+    cardPresentationController2 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:0];
 
-    v6 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v6 setTakesAvailableWidth:1];
+    cardPresentationController3 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController3 setTakesAvailableWidth:1];
 
-    v7 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v7 setAllowsSwipeToDismiss:0];
+    cardPresentationController4 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController4 setAllowsSwipeToDismiss:0];
 
-    v8 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v8 setHideGrabber:1];
+    cardPresentationController5 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController5 setHideGrabber:1];
 
-    v9 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v9 setDefaultContaineeLayout:5];
+    cardPresentationController6 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController6 setDefaultContaineeLayout:5];
 
-    v10 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v10 setEdgeAttachedRegularHeightDimmingBehavior:1];
+    cardPresentationController7 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController7 setEdgeAttachedRegularHeightDimmingBehavior:1];
 
-    v11 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v11 setShouldHidePreviousCards:1];
+    cardPresentationController8 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController8 setShouldHidePreviousCards:1];
   }
 
   return v3;

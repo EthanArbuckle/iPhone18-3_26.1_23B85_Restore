@@ -1,15 +1,15 @@
 @interface UpdateMetricsEvent
-- (UpdateMetricsEvent)initWithTopic:(id)a3;
+- (UpdateMetricsEvent)initWithTopic:(id)topic;
 - (id)description;
 @end
 
 @implementation UpdateMetricsEvent
 
-- (UpdateMetricsEvent)initWithTopic:(id)a3
+- (UpdateMetricsEvent)initWithTopic:(id)topic
 {
   v7.receiver = self;
   v7.super_class = UpdateMetricsEvent;
-  v3 = [(UpdateMetricsEvent *)&v7 initWithTopic:a3];
+  v3 = [(UpdateMetricsEvent *)&v7 initWithTopic:topic];
   v4 = v3;
   if (v3)
   {

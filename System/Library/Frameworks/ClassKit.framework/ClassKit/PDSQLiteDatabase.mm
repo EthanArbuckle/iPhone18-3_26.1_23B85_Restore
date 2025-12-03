@@ -1,34 +1,34 @@
 @interface PDSQLiteDatabase
-+ (BOOL)_stepStatement:(sqlite3_stmt *)a3 hasRow:(BOOL *)a4 resultCode:(int *)a5 error:(id *)a6;
-- (BOOL)_enableDisableForeignKeys:(BOOL)a3 error:(id *)a4;
-- (BOOL)_executeSQL:(id)a3 error:(id *)a4 retryIfBusy:(BOOL)a5;
-- (BOOL)_integerValueForPragma:(id)a3 databaseName:(id)a4 value:(int64_t *)a5 error:(id *)a6;
-- (BOOL)_setPragma:(id)a3 integerValue:(int64_t)a4 withDatabaseName:(id)a5 error:(id *)a6;
-- (BOOL)_verifyDatabaseOpenAndReturnError:(id *)a3;
-- (BOOL)attachDatabaseWithName:(id)a3 fileURL:(id)a4 error:(id *)a5;
-- (BOOL)detachDatabaseWithName:(id)a3 error:(id *)a4;
-- (BOOL)enableIncrementalAutovacuumWithError:(id *)a3;
-- (BOOL)incrementalVacuumDatabaseIfNeeded:(id)a3 error:(id *)a4;
-- (BOOL)isDatabaseWithNameAttached:(id)a3;
-- (BOOL)performTransactionWithType:(int64_t)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)tableWithName:(id)a3 containsColumnWithName:(id)a4;
-- (BOOL)validateForeignKeysForTable:(id)a3 databaseName:(id)a4 error:(id *)a5;
-- (PDSQLiteDatabase)initWithDatabaseURL:(id)a3;
++ (BOOL)_stepStatement:(sqlite3_stmt *)statement hasRow:(BOOL *)row resultCode:(int *)code error:(id *)error;
+- (BOOL)_enableDisableForeignKeys:(BOOL)keys error:(id *)error;
+- (BOOL)_executeSQL:(id)l error:(id *)error retryIfBusy:(BOOL)busy;
+- (BOOL)_integerValueForPragma:(id)pragma databaseName:(id)name value:(int64_t *)value error:(id *)error;
+- (BOOL)_setPragma:(id)pragma integerValue:(int64_t)value withDatabaseName:(id)name error:(id *)error;
+- (BOOL)_verifyDatabaseOpenAndReturnError:(id *)error;
+- (BOOL)attachDatabaseWithName:(id)name fileURL:(id)l error:(id *)error;
+- (BOOL)detachDatabaseWithName:(id)name error:(id *)error;
+- (BOOL)enableIncrementalAutovacuumWithError:(id *)error;
+- (BOOL)incrementalVacuumDatabaseIfNeeded:(id)needed error:(id *)error;
+- (BOOL)isDatabaseWithNameAttached:(id)attached;
+- (BOOL)performTransactionWithType:(int64_t)type error:(id *)error usingBlock:(id)block;
+- (BOOL)tableWithName:(id)name containsColumnWithName:(id)withName;
+- (BOOL)validateForeignKeysForTable:(id)table databaseName:(id)name error:(id *)error;
+- (PDSQLiteDatabase)initWithDatabaseURL:(id)l;
 - (id).cxx_construct;
-- (id)getLastErrorWithResultCode:(int)a3;
+- (id)getLastErrorWithResultCode:(int)code;
 - (id)lastInsertRowID;
-- (int)_openForWriting:(BOOL)a3 error:(id *)a4;
-- (int64_t)userVersionWithDatabaseName:(id)a3 error:(id *)a4;
-- (sqlite3_stmt)_statementForSQL:(id)a3 cache:(BOOL)a4 error:(id *)a5;
+- (int)_openForWriting:(BOOL)writing error:(id *)error;
+- (int64_t)userVersionWithDatabaseName:(id)name error:(id *)error;
+- (sqlite3_stmt)_statementForSQL:(id)l cache:(BOOL)cache error:(id *)error;
 - (void)_assertNoActiveStatements;
-- (void)_resetStatement:(sqlite3_stmt *)a3 finalize:(BOOL)a4;
-- (void)accessDatabaseUsingBlock:(id)a3;
+- (void)_resetStatement:(sqlite3_stmt *)statement finalize:(BOOL)finalize;
+- (void)accessDatabaseUsingBlock:(id)block;
 - (void)clearStatementCache;
 - (void)close;
 - (void)dealloc;
-- (void)onCommit:(id)a3 orRollback:(id)a4;
-- (void)onRowUpdate:(id)a3;
-- (void)performUpdateBlock:(id)a3 changeType:(int64_t)a4;
+- (void)onCommit:(id)commit orRollback:(id)rollback;
+- (void)onRowUpdate:(id)update;
+- (void)performUpdateBlock:(id)block changeType:(int64_t)type;
 - (void)releaseMemory;
 - (void)requireRollback;
 - (void)truncate;
@@ -36,11 +36,11 @@
 
 @implementation PDSQLiteDatabase
 
-- (PDSQLiteDatabase)initWithDatabaseURL:(id)a3
+- (PDSQLiteDatabase)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isFileURL] & 1) == 0)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy && ([lCopy isFileURL] & 1) == 0)
   {
 
     self = 0;
@@ -76,23 +76,23 @@
   [(PDSQLiteDatabase *)&v3 dealloc];
 }
 
-- (int)_openForWriting:(BOOL)a3 error:(id *)a4
+- (int)_openForWriting:(BOOL)writing error:(id *)error
 {
-  v5 = a3;
+  writingCopy = writing;
   fileURL = self->_fileURL;
   if (fileURL)
   {
-    v8 = [(NSURL *)fileURL path];
+    path = [(NSURL *)fileURL path];
   }
 
   else
   {
-    v8 = @":memory:";
+    path = @":memory:";
   }
 
-  v32 = v8;
-  v9 = [(__CFString *)v8 fileSystemRepresentation];
-  if (v5)
+  v32 = path;
+  fileSystemRepresentation = [(__CFString *)path fileSystemRepresentation];
+  if (writingCopy)
   {
     v10 = 3145734;
   }
@@ -102,7 +102,7 @@
     v10 = 3145729;
   }
 
-  busy = sqlite3_open_v2(v9, &self->_db, v10, 0);
+  busy = sqlite3_open_v2(fileSystemRepresentation, &self->_db, v10, 0);
   if (busy)
   {
     v12 = @"opening database";
@@ -121,7 +121,7 @@
       busy = sqlite3_busy_timeout(self->_db, 60000);
       if (!busy)
       {
-        if (v5)
+        if (writingCopy)
         {
           busy = sub_1000479FC(self->_db, "PRAGMA journal_mode = WAL", 0, 0, 0);
           if (busy)
@@ -138,7 +138,7 @@
           }
         }
 
-        busy = ![(PDSQLiteDatabase *)self enableIncrementalAutovacuumWithError:a4];
+        busy = ![(PDSQLiteDatabase *)self enableIncrementalAutovacuumWithError:error];
         goto LABEL_21;
       }
 
@@ -178,25 +178,25 @@ LABEL_13:
   *buf = v23;
   v38[0] = NSUnderlyingErrorKey;
   v38[1] = NSLocalizedDescriptionKey;
-  v24 = [v23 localizedDescription];
-  v8 = v32;
-  v25 = [NSString stringWithFormat:@"SQLite error: %@", v24];
+  localizedDescription = [v23 localizedDescription];
+  path = v32;
+  v25 = [NSString stringWithFormat:@"SQLite error: %@", localizedDescription];
   *&buf[8] = v25;
   v26 = [NSDictionary dictionaryWithObjects:buf forKeys:v38 count:2];
 
   v27 = [NSError errorWithDomain:@"com.apple.progressd.SQLite" code:4 userInfo:v26];
 
-  if (a4)
+  if (error)
   {
     v28 = v27;
-    *a4 = v27;
+    *error = v27;
   }
 
   CLSInitLog();
   v29 = CLSLogDatabase;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
-    v31 = [v27 localizedDescription];
+    localizedDescription2 = [v27 localizedDescription];
     *buf = 138544130;
     *&buf[4] = v17;
     *&buf[12] = 1024;
@@ -204,7 +204,7 @@ LABEL_13:
     v34 = 2114;
     v35 = v32;
     v36 = 2112;
-    v37 = v31;
+    v37 = localizedDescription2;
     _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Error %{public}@: [%d, %{public}@] (%@)", buf, 0x26u);
   }
 
@@ -214,7 +214,7 @@ LABEL_21:
   return busy;
 }
 
-- (BOOL)_enableDisableForeignKeys:(BOOL)a3 error:(id *)a4
+- (BOOL)_enableDisableForeignKeys:(BOOL)keys error:(id *)error
 {
   if (self->_isInTransaction)
   {
@@ -226,15 +226,15 @@ LABEL_21:
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Foreign keys cannot be turned on or off while inside a transaction", buf, 2u);
     }
 
-    [NSError cls_assignError:a4 code:2 format:@"Foreign keys cannot be turned on or off while inside a transaction"];
+    [NSError cls_assignError:error code:2 format:@"Foreign keys cannot be turned on or off while inside a transaction"];
     return 0;
   }
 
   else
   {
-    v7 = a3;
+    keysCopy = keys;
     v9 = @"OFF";
-    if (a3)
+    if (keys)
     {
       v9 = @"ON";
     }
@@ -245,13 +245,13 @@ LABEL_21:
     if (v11)
     {
       v12 = @"disabling";
-      if (v7)
+      if (keysCopy)
       {
         v12 = @"enabling";
       }
 
       v13 = [NSString stringWithFormat:@"%@ foreign keys", v12];
-      [NSError cls_assignError:a4 code:100 format:@"Error %@: [%d]", v13, v11];
+      [NSError cls_assignError:error code:100 format:@"Error %@: [%d]", v13, v11];
       CLSInitLog();
       v14 = CLSLogDatabase;
       if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_ERROR))
@@ -330,43 +330,43 @@ LABEL_21:
   }
 }
 
-- (void)accessDatabaseUsingBlock:(id)a3
+- (void)accessDatabaseUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_db)
   {
-    v4[2]();
+    blockCopy[2]();
   }
 }
 
-- (BOOL)_verifyDatabaseOpenAndReturnError:(id *)a3
+- (BOOL)_verifyDatabaseOpenAndReturnError:(id *)error
 {
   db = self->_db;
   if (!db)
   {
-    [NSError cls_assignError:a3 code:2 description:@"Database connection is closed"];
+    [NSError cls_assignError:error code:2 description:@"Database connection is closed"];
   }
 
   return db != 0;
 }
 
-- (BOOL)_executeSQL:(id)a3 error:(id *)a4 retryIfBusy:(BOOL)a5
+- (BOOL)_executeSQL:(id)l error:(id *)error retryIfBusy:(BOOL)busy
 {
-  v5 = a5;
-  v8 = a3;
-  if ([(PDSQLiteDatabase *)self _verifyDatabaseOpenAndReturnError:a4])
+  busyCopy = busy;
+  lCopy = l;
+  if ([(PDSQLiteDatabase *)self _verifyDatabaseOpenAndReturnError:error])
   {
     v17 = 0;
     db = self->_db;
-    v10 = [v8 UTF8String];
-    if (v5)
+    uTF8String = [lCopy UTF8String];
+    if (busyCopy)
     {
-      v11 = sub_1000479FC(db, v10, 0, 0, &v17);
+      v11 = sub_1000479FC(db, uTF8String, 0, 0, &v17);
     }
 
     else
     {
-      v11 = (_sqlite3_exec)(db, v10, 0, 0, &v17);
+      v11 = (_sqlite3_exec)(db, uTF8String, 0, 0, &v17);
     }
 
     v12 = v11;
@@ -384,7 +384,7 @@ LABEL_21:
       if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v19 = v8;
+        v19 = lCopy;
         v20 = 1024;
         v21 = v12;
         v22 = 2082;
@@ -392,9 +392,9 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Could not execute SQL: %@: [%d, %{public}s]", buf, 0x1Cu);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = [(PDSQLiteDatabase *)self getLastErrorWithResultCode:v12];
+        *error = [(PDSQLiteDatabase *)self getLastErrorWithResultCode:v12];
       }
 
       if (v17)
@@ -412,22 +412,22 @@ LABEL_21:
   return v13;
 }
 
-- (id)getLastErrorWithResultCode:(int)a3
+- (id)getLastErrorWithResultCode:(int)code
 {
   db = self->_db;
   if (db)
   {
-    db = sub_100048150(db, a3);
+    db = sub_100048150(db, code);
     v3 = vars8;
   }
 
   return db;
 }
 
-- (BOOL)performTransactionWithType:(int64_t)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)performTransactionWithType:(int64_t)type error:(id *)error usingBlock:(id)block
 {
-  v8 = a5;
-  if (![(PDSQLiteDatabase *)self _verifyDatabaseOpenAndReturnError:a4])
+  blockCopy = block;
+  if (![(PDSQLiteDatabase *)self _verifyDatabaseOpenAndReturnError:error])
   {
     goto LABEL_41;
   }
@@ -436,13 +436,13 @@ LABEL_21:
   if (isInTransaction)
   {
     transactionType = self->_transactionType;
-    if (transactionType >= a3)
+    if (transactionType >= type)
     {
       goto LABEL_22;
     }
 
     v11 = @"DEFERRED";
-    if (a3 == 1)
+    if (type == 1)
     {
       v12 = @"IMMEDIATE";
     }
@@ -452,7 +452,7 @@ LABEL_21:
       v12 = @"DEFERRED";
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v12 = @"EXCLUSIVE";
     }
@@ -480,18 +480,18 @@ LABEL_21:
   {
     v15 = [NSString alloc];
     v16 = @"DEFERRED";
-    if (a3 == 1)
+    if (type == 1)
     {
       v16 = @"IMMEDIATE";
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v16 = @"EXCLUSIVE";
     }
 
     v14 = [v15 initWithFormat:@"BEGIN %@ TRANSACTION", v16];
-    v17 = [(PDSQLiteDatabase *)self _executeSQL:v14 error:a4 retryIfBusy:1];
+    v17 = [(PDSQLiteDatabase *)self _executeSQL:v14 error:error retryIfBusy:1];
     self->_isInTransaction = v17;
     if (!v17)
     {
@@ -499,7 +499,7 @@ LABEL_21:
       goto LABEL_41;
     }
 
-    self->_transactionType = a3;
+    self->_transactionType = type;
   }
 
   if (!self->_isInTransaction)
@@ -511,9 +511,9 @@ LABEL_41:
 
 LABEL_22:
   v40 = 0;
-  v18 = v8[2](v8, &v40);
+  v18 = blockCopy[2](blockCopy, &v40);
   v19 = v40;
-  if (a4)
+  if (error)
   {
     v20 = v18;
   }
@@ -526,7 +526,7 @@ LABEL_22:
   if ((v20 & 1) == 0)
   {
     v19 = v19;
-    *a4 = v19;
+    *error = v19;
   }
 
   if (!isInTransaction)
@@ -539,7 +539,7 @@ LABEL_22:
     [(PDSQLiteDatabase *)self _assertNoActiveStatements];
     if (v18)
     {
-      v21 = [(PDSQLiteDatabase *)self _executeSQL:@"COMMIT;" error:a4];
+      v21 = [(PDSQLiteDatabase *)self _executeSQL:@"COMMIT;" error:error];
       self->_isHandlingTransactionEnd = 1;
       if (v21)
       {
@@ -590,7 +590,7 @@ LABEL_51:
       self->_isHandlingTransactionEnd = 1;
     }
 
-    [(PDSQLiteDatabase *)self _executeSQL:@"ROLLBACK;" error:a4];
+    [(PDSQLiteDatabase *)self _executeSQL:@"ROLLBACK;" error:error];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -627,17 +627,17 @@ LABEL_52:
   return v18;
 }
 
-- (void)_resetStatement:(sqlite3_stmt *)a3 finalize:(BOOL)a4
+- (void)_resetStatement:(sqlite3_stmt *)statement finalize:(BOOL)finalize
 {
-  if (a4)
+  if (finalize)
   {
-    sqlite3_finalize(a3);
+    sqlite3_finalize(statement);
   }
 
   else
   {
-    sqlite3_reset(a3);
-    sqlite3_clear_bindings(a3);
+    sqlite3_reset(statement);
+    sqlite3_clear_bindings(statement);
   }
 
   size = self->_activeStatements.__table_.__bucket_list_.__deleter_.__size_;
@@ -646,8 +646,8 @@ LABEL_52:
     return;
   }
 
-  v7 = 0x9DDFEA08EB382D69 * ((8 * (a3 & 0x1FFFFFFF) + 8) ^ (a3 >> 32));
-  v8 = 0x9DDFEA08EB382D69 * ((a3 >> 32) ^ (v7 >> 47) ^ v7);
+  v7 = 0x9DDFEA08EB382D69 * ((8 * (statement & 0x1FFFFFFF) + 8) ^ (statement >> 32));
+  v8 = 0x9DDFEA08EB382D69 * ((statement >> 32) ^ (v7 >> 47) ^ v7);
   v9 = 0x9DDFEA08EB382D69 * (v8 ^ (v8 >> 47));
   v10 = vcnt_s8(size);
   v10.i16[0] = vaddlv_u8(v10);
@@ -713,7 +713,7 @@ LABEL_20:
     }
   }
 
-  if (*&isa->_isInTransaction != a3)
+  if (*&isa->_isInTransaction != statement)
   {
     goto LABEL_20;
   }
@@ -828,10 +828,10 @@ LABEL_43:
   operator delete(isa);
 }
 
-- (int64_t)userVersionWithDatabaseName:(id)a3 error:(id *)a4
+- (int64_t)userVersionWithDatabaseName:(id)name error:(id *)error
 {
   v5 = -1;
-  [(PDSQLiteDatabase *)self _integerValueForPragma:@"user_version" databaseName:a3 value:&v5 error:a4];
+  [(PDSQLiteDatabase *)self _integerValueForPragma:@"user_version" databaseName:name value:&v5 error:error];
   return v5;
 }
 
@@ -842,21 +842,21 @@ LABEL_43:
   return [NSNumber numberWithLongLong:insert_rowid];
 }
 
-- (BOOL)_setPragma:(id)a3 integerValue:(int64_t)a4 withDatabaseName:(id)a5 error:(id *)a6
+- (BOOL)_setPragma:(id)pragma integerValue:(int64_t)value withDatabaseName:(id)name error:(id *)error
 {
-  v10 = a3;
-  v11 = sub_100049330(a5);
-  v12 = [NSString stringWithFormat:@"PRAGMA %@%@=%lld", v11, v10, a4];
+  pragmaCopy = pragma;
+  v11 = sub_100049330(name);
+  value = [NSString stringWithFormat:@"PRAGMA %@%@=%lld", v11, pragmaCopy, value];
 
-  LOBYTE(a6) = [(PDSQLiteDatabase *)self _executeSQL:v12 error:a6];
-  return a6;
+  LOBYTE(error) = [(PDSQLiteDatabase *)self _executeSQL:value error:error];
+  return error;
 }
 
-- (BOOL)_integerValueForPragma:(id)a3 databaseName:(id)a4 value:(int64_t *)a5 error:(id *)a6
+- (BOOL)_integerValueForPragma:(id)pragma databaseName:(id)name value:(int64_t *)value error:(id *)error
 {
-  v10 = a3;
-  v11 = sub_100049330(a4);
-  v12 = [NSString stringWithFormat:@"PRAGMA %@%@", v11, v10];;
+  pragmaCopy = pragma;
+  v11 = sub_100049330(name);
+  pragmaCopy = [NSString stringWithFormat:@"PRAGMA %@%@", v11, pragmaCopy];;
 
   v15 = 0;
   v16 = &v15;
@@ -867,24 +867,24 @@ LABEL_43:
   v14[2] = sub_10004950C;
   v14[3] = &unk_100203098;
   v14[4] = &v15;
-  v14[5] = a5;
-  [(PDSQLiteDatabase *)self _executeSQL:v12 cache:0 error:a6 bindingHandler:0 enumerationHandler:v14];
-  LOBYTE(a6) = *(v16 + 24);
+  v14[5] = value;
+  [(PDSQLiteDatabase *)self _executeSQL:pragmaCopy cache:0 error:error bindingHandler:0 enumerationHandler:v14];
+  LOBYTE(error) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
 
-  return a6;
+  return error;
 }
 
-- (void)onCommit:(id)a3 orRollback:(id)a4
+- (void)onCommit:(id)commit orRollback:(id)rollback
 {
-  v16 = a3;
-  v6 = a4;
+  commitCopy = commit;
+  rollbackCopy = rollback;
   if (!self->_isHandlingTransactionEnd)
   {
-    if (v16)
+    if (commitCopy)
     {
       onCommitBlocks = self->_onCommitBlocks;
-      v8 = v16;
+      v8 = commitCopy;
       if (!onCommitBlocks)
       {
         v9 = objc_alloc_init(NSMutableArray);
@@ -892,14 +892,14 @@ LABEL_43:
         self->_onCommitBlocks = v9;
 
         onCommitBlocks = self->_onCommitBlocks;
-        v8 = v16;
+        v8 = commitCopy;
       }
 
       v11 = objc_retainBlock(v8);
       [(NSMutableArray *)onCommitBlocks addObject:v11];
     }
 
-    if (v6)
+    if (rollbackCopy)
     {
       onRollbackBlocks = self->_onRollbackBlocks;
       if (!onRollbackBlocks)
@@ -911,7 +911,7 @@ LABEL_43:
         onRollbackBlocks = self->_onRollbackBlocks;
       }
 
-      v15 = objc_retainBlock(v6);
+      v15 = objc_retainBlock(rollbackCopy);
       [(NSMutableArray *)onRollbackBlocks addObject:v15];
     }
   }
@@ -925,27 +925,27 @@ LABEL_43:
   }
 }
 
-- (void)performUpdateBlock:(id)a3 changeType:(int64_t)a4
+- (void)performUpdateBlock:(id)block changeType:(int64_t)type
 {
-  v7 = a3;
+  blockCopy = block;
   updateBlock = self->_updateBlock;
   if (updateBlock)
   {
-    updateBlock[2](updateBlock, v7, a4);
+    updateBlock[2](updateBlock, blockCopy, type);
   }
 }
 
-- (void)onRowUpdate:(id)a3
+- (void)onRowUpdate:(id)update
 {
-  v7 = a3;
+  updateCopy = update;
   if (self->_db)
   {
-    v4 = objc_retainBlock(v7);
+    v4 = objc_retainBlock(updateCopy);
     updateBlock = self->_updateBlock;
     self->_updateBlock = v4;
 
     db = self->_db;
-    if (v7)
+    if (updateCopy)
     {
       sqlite3_update_hook(db, sub_1000497A0, self);
     }
@@ -957,14 +957,14 @@ LABEL_43:
   }
 }
 
-- (BOOL)validateForeignKeysForTable:(id)a3 databaseName:(id)a4 error:(id *)a5
+- (BOOL)validateForeignKeysForTable:(id)table databaseName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = sub_100049330(v9);
-  if (v8)
+  tableCopy = table;
+  nameCopy = name;
+  v10 = sub_100049330(nameCopy);
+  if (tableCopy)
   {
-    [NSString stringWithFormat:@"PRAGMA %@foreign_key_check(%@)", v10, v8];
+    [NSString stringWithFormat:@"PRAGMA %@foreign_key_check(%@)", v10, tableCopy];
   }
 
   else
@@ -982,7 +982,7 @@ LABEL_43:
   v16[2] = sub_100049B80;
   v16[3] = &unk_1002030C0;
   v16[4] = &v17;
-  if ([(PDSQLiteDatabase *)self _executeSQL:v11 cache:0 error:a5 bindingHandler:0 enumerationHandler:v16])
+  if ([(PDSQLiteDatabase *)self _executeSQL:v11 cache:0 error:error bindingHandler:0 enumerationHandler:v16])
   {
     v12 = *(v18 + 24) ^ 1;
   }
@@ -993,7 +993,7 @@ LABEL_43:
     v13 = CLSLogDatabase;
     if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_ERROR))
     {
-      v15 = *a5;
+      v15 = *error;
       *buf = 138543362;
       v22 = v15;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to validate foreign keys: %{public}@", buf, 0xCu);
@@ -1007,7 +1007,7 @@ LABEL_43:
   return v12 & 1;
 }
 
-- (BOOL)enableIncrementalAutovacuumWithError:(id *)a3
+- (BOOL)enableIncrementalAutovacuumWithError:(id *)error
 {
   v31 = 0;
   v32 = 0;
@@ -1023,18 +1023,18 @@ LABEL_43:
       *buf = 138543362;
       v34 = v7;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to get value for pragma 'AUTO_VACUUM': %{public}@", buf, 0xCu);
-      if (a3)
+      if (error)
       {
         goto LABEL_6;
       }
     }
 
-    else if (a3)
+    else if (error)
     {
 LABEL_6:
       v10 = v7;
       v8 = 0;
-      *a3 = v7;
+      *error = v7;
       goto LABEL_26;
     }
 
@@ -1085,7 +1085,7 @@ LABEL_6:
         }
       }
 
-      v8 = [(PDSQLiteDatabase *)self _executeSQL:@"VACUUM;" error:a3];
+      v8 = [(PDSQLiteDatabase *)self _executeSQL:@"VACUUM;" error:error];
       v26 = v18;
       v20 = [(PDSQLiteDatabase *)self _setPragma:@"CACHE_SPILL" integerValue:v29 withDatabaseName:0 error:&v26];
       v21 = v26;
@@ -1112,18 +1112,18 @@ LABEL_6:
       *buf = 138543362;
       v34 = v12;
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Failed to set value for pragma 'AUTO_VACUUM': %{public}@", buf, 0xCu);
-      if (a3)
+      if (error)
       {
         goto LABEL_20;
       }
     }
 
-    else if (a3)
+    else if (error)
     {
 LABEL_20:
       v24 = v12;
       v8 = 0;
-      *a3 = v12;
+      *error = v12;
 LABEL_25:
       v7 = v12;
       goto LABEL_26;
@@ -1139,11 +1139,11 @@ LABEL_26:
   return v8;
 }
 
-- (BOOL)incrementalVacuumDatabaseIfNeeded:(id)a3 error:(id *)a4
+- (BOOL)incrementalVacuumDatabaseIfNeeded:(id)needed error:(id *)error
 {
-  v6 = a3;
+  neededCopy = needed;
   v12 = 0;
-  if (![(PDSQLiteDatabase *)self _integerValueForPragma:@"FREELIST_COUNT" databaseName:v6 value:&v12 error:a4])
+  if (![(PDSQLiteDatabase *)self _integerValueForPragma:@"FREELIST_COUNT" databaseName:neededCopy value:&v12 error:error])
   {
     goto LABEL_8;
   }
@@ -1156,7 +1156,7 @@ LABEL_9:
   }
 
   v11 = 0;
-  if (![(PDSQLiteDatabase *)self _integerValueForPragma:@"PAGE_SIZE" databaseName:v6 value:&v11 error:a4])
+  if (![(PDSQLiteDatabase *)self _integerValueForPragma:@"PAGE_SIZE" databaseName:neededCopy value:&v11 error:error])
   {
 LABEL_8:
     v9 = 0;
@@ -1169,28 +1169,28 @@ LABEL_8:
   }
 
   v7 = @"main";
-  if (v6)
+  if (neededCopy)
   {
-    v7 = v6;
+    v7 = neededCopy;
   }
 
   v8 = [NSString stringWithFormat:@"PRAGMA %@.incremental_vacuum(%lld)", v7, v12 - 0x200000 / v11];
-  v9 = [(PDSQLiteDatabase *)self _executeSQL:v8 error:a4];
+  v9 = [(PDSQLiteDatabase *)self _executeSQL:v8 error:error];
 
 LABEL_10:
   return v9;
 }
 
-- (BOOL)attachDatabaseWithName:(id)a3 fileURL:(id)a4 error:(id *)a5
+- (BOOL)attachDatabaseWithName:(id)name fileURL:(id)l error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v8 length])
+  nameCopy = name;
+  lCopy = l;
+  if (![nameCopy length])
   {
     [NSException raise:NSInvalidArgumentException format:@"Invalid database name"];
   }
 
-  if (([v9 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
     [NSException raise:NSInvalidArgumentException format:@"Invalid database URL"];
   }
@@ -1198,11 +1198,11 @@ LABEL_10:
   attachedDatabaseURLsByName = self->_attachedDatabaseURLsByName;
   if (attachedDatabaseURLsByName)
   {
-    v11 = [(NSMutableDictionary *)attachedDatabaseURLsByName objectForKeyedSubscript:v8];
+    v11 = [(NSMutableDictionary *)attachedDatabaseURLsByName objectForKeyedSubscript:nameCopy];
     v12 = v11;
     if (v11)
     {
-      LOBYTE(v13) = [v11 isEqual:v9];
+      LOBYTE(v13) = [v11 isEqual:lCopy];
       if (v13)
       {
         v14 = 0;
@@ -1224,36 +1224,36 @@ LABEL_10:
     self->_attachedDatabaseURLsByName = v15;
   }
 
-  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"ATTACH DATABASE %s AS %@", [v9 fileSystemRepresentation], v8);
+  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"ATTACH DATABASE %s AS %@", [lCopy fileSystemRepresentation], nameCopy);
   v19 = 0;
   v13 = [(PDSQLiteDatabase *)self _executeSQL:v12 error:&v19 retryIfBusy:1];
   v14 = v19;
   if (v13)
   {
-    [(NSMutableDictionary *)self->_attachedDatabaseURLsByName setObject:v9 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_attachedDatabaseURLsByName setObject:lCopy forKeyedSubscript:nameCopy];
   }
 
 LABEL_13:
 
-  if (a5)
+  if (error)
   {
     v17 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   return v13;
 }
 
-- (BOOL)detachDatabaseWithName:(id)a3 error:(id *)a4
+- (BOOL)detachDatabaseWithName:(id)name error:(id *)error
 {
-  v6 = a3;
-  if ([(PDSQLiteDatabase *)self isDatabaseWithNameAttached:v6])
+  nameCopy = name;
+  if ([(PDSQLiteDatabase *)self isDatabaseWithNameAttached:nameCopy])
   {
-    v7 = [NSString stringWithFormat:@"DETACH DATABASE %@", v6];
-    v8 = [(PDSQLiteDatabase *)self _executeSQL:v7 error:a4];
+    nameCopy = [NSString stringWithFormat:@"DETACH DATABASE %@", nameCopy];
+    v8 = [(PDSQLiteDatabase *)self _executeSQL:nameCopy error:error];
     if (v8)
     {
-      [(NSMutableDictionary *)self->_attachedDatabaseURLsByName removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_attachedDatabaseURLsByName removeObjectForKey:nameCopy];
     }
   }
 
@@ -1265,22 +1265,22 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)isDatabaseWithNameAttached:(id)a3
+- (BOOL)isDatabaseWithNameAttached:(id)attached
 {
-  v3 = [(NSMutableDictionary *)self->_attachedDatabaseURLsByName objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_attachedDatabaseURLsByName objectForKeyedSubscript:attached];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)tableWithName:(id)a3 containsColumnWithName:(id)a4
+- (BOOL)tableWithName:(id)name containsColumnWithName:(id)withName
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_db && [v6 length] && objc_msgSend(v7, "length"))
+  nameCopy = name;
+  withNameCopy = withName;
+  if (self->_db && [nameCopy length] && objc_msgSend(withNameCopy, "length"))
   {
-    v8 = [v6 stringByAppendingFormat:@".%@", v7];
-    v9 = [(NSMutableDictionary *)self->_tableColumnNameCache objectForKey:v8];
+    withNameCopy = [nameCopy stringByAppendingFormat:@".%@", withNameCopy];
+    v9 = [(NSMutableDictionary *)self->_tableColumnNameCache objectForKey:withNameCopy];
     v10 = v9;
     if (v9)
     {
@@ -1289,10 +1289,10 @@ LABEL_13:
 
     else
     {
-      v11 = sqlite3_table_column_metadata(self->_db, 0, [v6 UTF8String], objc_msgSend(v7, "UTF8String"), 0, 0, 0, 0, 0) == 0;
+      v11 = sqlite3_table_column_metadata(self->_db, 0, [nameCopy UTF8String], objc_msgSend(withNameCopy, "UTF8String"), 0, 0, 0, 0, 0) == 0;
       tableColumnNameCache = self->_tableColumnNameCache;
       v13 = [NSNumber numberWithBool:v11];
-      [(NSMutableDictionary *)tableColumnNameCache setObject:v13 forKey:v8];
+      [(NSMutableDictionary *)tableColumnNameCache setObject:v13 forKey:withNameCopy];
     }
   }
 
@@ -1304,27 +1304,27 @@ LABEL_13:
   return v11;
 }
 
-+ (BOOL)_stepStatement:(sqlite3_stmt *)a3 hasRow:(BOOL *)a4 resultCode:(int *)a5 error:(id *)a6
++ (BOOL)_stepStatement:(sqlite3_stmt *)statement hasRow:(BOOL *)row resultCode:(int *)code error:(id *)error
 {
-  if (a4)
+  if (row)
   {
-    *a4 = 0;
+    *row = 0;
   }
 
-  if (!a3)
+  if (!statement)
   {
     return 1;
   }
 
   while (1)
   {
-    v10 = sqlite3_step(a3);
+    v10 = sqlite3_step(statement);
     v11 = v10;
     if (v10 == 9)
     {
-      if (a5)
+      if (code)
       {
-        *a5 = 9;
+        *code = 9;
       }
 
       goto LABEL_22;
@@ -1343,9 +1343,9 @@ LABEL_13:
     v12 = v10;
     if (v10 - 7 <= 0xFFFFFFFD)
     {
-      if (a5)
+      if (code)
       {
-        *a5 = v10;
+        *code = v10;
       }
 
       CLSInitLog();
@@ -1355,8 +1355,8 @@ LABEL_13:
       {
         if (v14)
         {
-          v19 = sqlite3_sql(a3);
-          v20 = sqlite3_db_handle(a3);
+          v19 = sqlite3_sql(statement);
+          v20 = sqlite3_db_handle(statement);
           v23 = 136315650;
           v24 = v19;
           v25 = 1024;
@@ -1369,8 +1369,8 @@ LABEL_13:
 
       else if (v14)
       {
-        v21 = sqlite3_sql(a3);
-        v22 = sqlite3_db_handle(a3);
+        v21 = sqlite3_sql(statement);
+        v22 = sqlite3_db_handle(statement);
         v23 = 136315650;
         v24 = v21;
         v25 = 1024;
@@ -1381,45 +1381,45 @@ LABEL_13:
       }
 
 LABEL_22:
-      if (!a6)
+      if (!error)
       {
         return 0;
       }
 
-      v16 = sqlite3_db_handle(a3);
+      v16 = sqlite3_db_handle(statement);
       v17 = sub_100048150(v16, v11);
       v18 = v17;
       result = 0;
-      *a6 = v17;
+      *error = v17;
       return result;
     }
   }
 
   result = 1;
-  if (a4)
+  if (row)
   {
-    *a4 = 1;
+    *row = 1;
   }
 
   return result;
 }
 
-- (sqlite3_stmt)_statementForSQL:(id)a3 cache:(BOOL)a4 error:(id *)a5
+- (sqlite3_stmt)_statementForSQL:(id)l cache:(BOOL)cache error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  if ([(PDSQLiteDatabase *)self _verifyDatabaseOpenAndReturnError:a5])
+  cacheCopy = cache;
+  lCopy = l;
+  if ([(PDSQLiteDatabase *)self _verifyDatabaseOpenAndReturnError:error])
   {
     ppStmt = 0;
-    if (!v6 || (v9 = self->_statementCache) == 0 || (Value = CFDictionaryGetValue(v9, v8), (ppStmt = Value) == 0))
+    if (!cacheCopy || (v9 = self->_statementCache) == 0 || (Value = CFDictionaryGetValue(v9, lCopy), (ppStmt = Value) == 0))
     {
       v11 = objc_autoreleasePoolPush();
       do
       {
         *pzTail = 0;
         db = self->_db;
-        v13 = v8;
-        v14 = sqlite3_prepare_v2(db, [v8 UTF8String], objc_msgSend(v8, "length"), &ppStmt, pzTail);
+        v13 = lCopy;
+        v14 = sqlite3_prepare_v2(db, [lCopy UTF8String], objc_msgSend(lCopy, "length"), &ppStmt, pzTail);
         v15 = v14;
       }
 
@@ -1432,7 +1432,7 @@ LABEL_22:
         {
           v30 = sqlite3_errmsg(self->_db);
           *pzTail = 138412802;
-          *&pzTail[4] = v8;
+          *&pzTail[4] = lCopy;
           v33 = 1024;
           v34 = v15;
           v35 = 2080;
@@ -1445,7 +1445,7 @@ LABEL_22:
 
       else
       {
-        if (v6)
+        if (cacheCopy)
         {
           statementCache = self->_statementCache;
           if (!statementCache)
@@ -1456,7 +1456,7 @@ LABEL_22:
 
           if (ppStmt)
           {
-            CFDictionarySetValue(statementCache, v8, ppStmt);
+            CFDictionarySetValue(statementCache, lCopy, ppStmt);
           }
         }
 
@@ -1464,16 +1464,16 @@ LABEL_22:
       }
 
       objc_autoreleasePoolPop(v11);
-      if (a5)
+      if (error)
       {
         v19 = v17;
-        *a5 = v17;
+        *error = v17;
       }
 
       Value = ppStmt;
       if (ppStmt)
       {
-        if (!v6)
+        if (!cacheCopy)
         {
           v20 = 0x9DDFEA08EB382D69 * ((8 * (ppStmt & 0x1FFFFFFF) + 8) ^ (ppStmt >> 32));
           v21 = 0x9DDFEA08EB382D69 * ((ppStmt >> 32) ^ (v20 >> 47) ^ v20);

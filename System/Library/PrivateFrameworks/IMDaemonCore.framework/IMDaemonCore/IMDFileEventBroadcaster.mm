@@ -1,7 +1,7 @@
 @interface IMDFileEventBroadcaster
 + (id)sharedInstance;
 - (IMDFileEventBroadcaster)init;
-- (void)observeChangesInPath:(id)a3;
+- (void)observeChangesInPath:(id)path;
 - (void)stopObserving;
 @end
 
@@ -19,11 +19,11 @@
   return v3;
 }
 
-- (void)observeChangesInPath:(id)a3
+- (void)observeChangesInPath:(id)path
 {
   v4 = sub_22B7DB6A8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   IMDFileEventBroadcaster.observeChanges(in:)(v8);
@@ -33,7 +33,7 @@
 {
   if (*(&self->super.isa + OBJC_IVAR___IMDFileEventBroadcaster_fileEventStream))
   {
-    v2 = self;
+    selfCopy = self;
 
     FileEventStream.stop()();
   }

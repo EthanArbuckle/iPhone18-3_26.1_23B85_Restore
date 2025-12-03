@@ -1,6 +1,6 @@
 @interface RSDVirtualMachineHostDevice
 - (id)initHostDevice;
-- (int)connectToService:(char *)a3 withTcpOption:(id *)a4;
+- (int)connectToService:(char *)service withTcpOption:(id *)option;
 - (void)needsConnect;
 @end
 
@@ -33,13 +33,13 @@
   if (os_log_type_enabled(qword_1000646B0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> needsConnect", buf, 0xCu);
   }
 
-  v4 = [(RSDRemoteDevice *)self connection];
+  connection = [(RSDRemoteDevice *)self connection];
 
-  if (v4)
+  if (connection)
   {
     v5 = qword_1000646B0;
     if (!os_log_type_enabled(qword_1000646B0, OS_LOG_TYPE_DEFAULT))
@@ -48,7 +48,7 @@
     }
 
     *buf = 138543362;
-    v12 = self;
+    selfCopy4 = self;
     v6 = "%{public}@> already have a connection, skip";
 LABEL_9:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, v6, buf, 0xCu);
@@ -64,7 +64,7 @@ LABEL_9:
     }
 
     *buf = 138543362;
-    v12 = self;
+    selfCopy4 = self;
     v6 = "%{public}@> already connecting, skip";
     goto LABEL_9;
   }
@@ -87,7 +87,7 @@ LABEL_9:
     if (os_log_type_enabled(qword_1000646B0, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v12 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%{public}@> connectVsock completed successfully", buf, 0xCu);
     }
 
@@ -101,15 +101,15 @@ LABEL_9:
   }
 }
 
-- (int)connectToService:(char *)a3 withTcpOption:(id *)a4
+- (int)connectToService:(char *)service withTcpOption:(id *)option
 {
-  v6 = strtoull(a3, 0, 0);
+  v6 = strtoull(service, 0, 0);
   if (HIDWORD(v6) || !v6)
   {
     v8 = qword_1000646B0;
     if (os_log_type_enabled(qword_1000646B0, OS_LOG_TYPE_ERROR))
     {
-      sub_100044AF0(self, a3, v8);
+      sub_100044AF0(self, service, v8);
     }
 
     return -1;

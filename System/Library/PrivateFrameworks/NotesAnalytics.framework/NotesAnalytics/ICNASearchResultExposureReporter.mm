@@ -1,24 +1,24 @@
 @interface ICNASearchResultExposureReporter
 - (ICNAEventReporter)eventReporter;
-- (ICNASearchResultExposureReporter)initWithWindow:(id)a3;
+- (ICNASearchResultExposureReporter)initWithWindow:(id)window;
 - (UIWindow)window;
 - (id)_exposureDataThreadUnsafe;
-- (void)analyticsSessionWillEnd:(id)a3;
+- (void)analyticsSessionWillEnd:(id)end;
 - (void)dealloc;
-- (void)eventReporterLostSession:(id)a3;
+- (void)eventReporterLostSession:(id)session;
 - (void)invalidateSearchSessionID;
-- (void)startTrackingNewSearchString:(id)a3;
+- (void)startTrackingNewSearchString:(id)string;
 - (void)submitEventIfApplicable;
-- (void)updateSearchResultWasSelected:(BOOL)a3;
-- (void)updateSearchSessionID:(id)a3;
-- (void)updateWithTopHitResultCount:(unint64_t)a3 nonTopHitResultCount:(unint64_t)a4 attachmentSectionCount:(unint64_t)a5;
+- (void)updateSearchResultWasSelected:(BOOL)selected;
+- (void)updateSearchSessionID:(id)d;
+- (void)updateWithTopHitResultCount:(unint64_t)count nonTopHitResultCount:(unint64_t)resultCount attachmentSectionCount:(unint64_t)sectionCount;
 @end
 
 @implementation ICNASearchResultExposureReporter
 
-- (ICNASearchResultExposureReporter)initWithWindow:(id)a3
+- (ICNASearchResultExposureReporter)initWithWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v13.receiver = self;
   v13.super_class = ICNASearchResultExposureReporter;
   v5 = [(ICNASearchResultExposureReporter *)&v13 init];
@@ -29,13 +29,13 @@
     isolationQueue = v5->_isolationQueue;
     v5->_isolationQueue = v7;
 
-    objc_storeWeak(&v5->_window, v4);
+    objc_storeWeak(&v5->_window, windowCopy);
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     searchResultExposureItems = v5->_searchResultExposureItems;
     v5->_searchResultExposureItems = v9;
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v5 selector:sel_analyticsSessionWillEnd_ name:@"ICNASessionWillEndNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_analyticsSessionWillEnd_ name:@"ICNASessionWillEndNotification" object:0];
   }
 
   return v5;
@@ -43,26 +43,26 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICNASearchResultExposureReporter;
   [(ICNASearchResultExposureReporter *)&v4 dealloc];
 }
 
-- (void)updateSearchSessionID:(id)a3
+- (void)updateSearchSessionID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICNASearchResultExposureReporter *)self isolationQueue];
+  dCopy = d;
+  isolationQueue = [(ICNASearchResultExposureReporter *)self isolationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__ICNASearchResultExposureReporter_updateSearchSessionID___block_invoke;
   v7[3] = &unk_2799AF050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_barrier_async(isolationQueue, v7);
 }
 
 void __58__ICNASearchResultExposureReporter_updateSearchSessionID___block_invoke(uint64_t a1)
@@ -74,13 +74,13 @@ void __58__ICNASearchResultExposureReporter_updateSearchSessionID___block_invoke
 
 - (void)invalidateSearchSessionID
 {
-  v3 = [(ICNASearchResultExposureReporter *)self isolationQueue];
+  isolationQueue = [(ICNASearchResultExposureReporter *)self isolationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__ICNASearchResultExposureReporter_invalidateSearchSessionID__block_invoke;
   block[3] = &unk_2799AF130;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(isolationQueue, block);
 }
 
 void __61__ICNASearchResultExposureReporter_invalidateSearchSessionID__block_invoke(uint64_t a1)
@@ -90,18 +90,18 @@ void __61__ICNASearchResultExposureReporter_invalidateSearchSessionID__block_inv
   [v2 removeAllObjects];
 }
 
-- (void)startTrackingNewSearchString:(id)a3
+- (void)startTrackingNewSearchString:(id)string
 {
-  v4 = a3;
-  v5 = [(ICNASearchResultExposureReporter *)self isolationQueue];
+  stringCopy = string;
+  isolationQueue = [(ICNASearchResultExposureReporter *)self isolationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__ICNASearchResultExposureReporter_startTrackingNewSearchString___block_invoke;
   v7[3] = &unk_2799AF050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = stringCopy;
+  v6 = stringCopy;
+  dispatch_barrier_async(isolationQueue, v7);
 }
 
 void __65__ICNASearchResultExposureReporter_startTrackingNewSearchString___block_invoke(uint64_t a1)
@@ -124,18 +124,18 @@ void __65__ICNASearchResultExposureReporter_startTrackingNewSearchString___block
   }
 }
 
-- (void)updateWithTopHitResultCount:(unint64_t)a3 nonTopHitResultCount:(unint64_t)a4 attachmentSectionCount:(unint64_t)a5
+- (void)updateWithTopHitResultCount:(unint64_t)count nonTopHitResultCount:(unint64_t)resultCount attachmentSectionCount:(unint64_t)sectionCount
 {
-  v9 = [(ICNASearchResultExposureReporter *)self isolationQueue];
+  isolationQueue = [(ICNASearchResultExposureReporter *)self isolationQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __108__ICNASearchResultExposureReporter_updateWithTopHitResultCount_nonTopHitResultCount_attachmentSectionCount___block_invoke;
   v10[3] = &unk_2799AF430;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
-  v10[7] = a5;
-  dispatch_barrier_async(v9, v10);
+  v10[5] = count;
+  v10[6] = resultCount;
+  v10[7] = sectionCount;
+  dispatch_barrier_async(isolationQueue, v10);
 }
 
 void __108__ICNASearchResultExposureReporter_updateWithTopHitResultCount_nonTopHitResultCount_attachmentSectionCount___block_invoke(uint64_t a1)
@@ -151,16 +151,16 @@ void __108__ICNASearchResultExposureReporter_updateWithTopHitResultCount_nonTopH
   }
 }
 
-- (void)updateSearchResultWasSelected:(BOOL)a3
+- (void)updateSearchResultWasSelected:(BOOL)selected
 {
-  v5 = [(ICNASearchResultExposureReporter *)self isolationQueue];
+  isolationQueue = [(ICNASearchResultExposureReporter *)self isolationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__ICNASearchResultExposureReporter_updateSearchResultWasSelected___block_invoke;
   v6[3] = &unk_2799AF458;
   v6[4] = self;
-  v7 = a3;
-  dispatch_barrier_async(v5, v6);
+  selectedCopy = selected;
+  dispatch_barrier_async(isolationQueue, v6);
 }
 
 void __66__ICNASearchResultExposureReporter_updateSearchResultWasSelected___block_invoke(uint64_t a1)
@@ -178,13 +178,13 @@ void __66__ICNASearchResultExposureReporter_updateSearchResultWasSelected___bloc
 
 - (void)submitEventIfApplicable
 {
-  v3 = [(ICNASearchResultExposureReporter *)self isolationQueue];
+  isolationQueue = [(ICNASearchResultExposureReporter *)self isolationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__ICNASearchResultExposureReporter_submitEventIfApplicable__block_invoke;
   block[3] = &unk_2799AF130;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(isolationQueue, block);
 }
 
 void __59__ICNASearchResultExposureReporter_submitEventIfApplicable__block_invoke(uint64_t a1)
@@ -213,10 +213,10 @@ void __59__ICNASearchResultExposureReporter_submitEventIfApplicable__block_invok
   if (v35)
   {
     v32 = 0;
-    v33 = 0;
+    attachmentSectionCount2 = 0;
     v3 = 0;
     v30 = *v38;
-    v31 = 0;
+    topHitResultCount2 = 0;
     do
     {
       for (i = 0; i != v35; ++i)
@@ -227,45 +227,45 @@ void __59__ICNASearchResultExposureReporter_submitEventIfApplicable__block_invok
         }
 
         v5 = *(*(&v37 + 1) + 8 * i);
-        v6 = [v5 searchString];
-        v7 = [v6 length];
-        v8 = [v6 length];
+        searchString = [v5 searchString];
+        v7 = [searchString length];
+        v8 = [searchString length];
         v9 = v8;
         if (v7 <= v3)
         {
           v36 = v3;
           if (v8 == v3)
           {
-            v10 = [v5 topHitResultCount];
-            v11 = v31;
-            if (v31 <= v10)
+            topHitResultCount = [v5 topHitResultCount];
+            v11 = topHitResultCount2;
+            if (topHitResultCount2 <= topHitResultCount)
             {
-              v11 = v10;
+              v11 = topHitResultCount;
             }
 
-            v31 = v11;
-            v12 = [v5 attachmentSectionCount];
-            v13 = v33;
-            if (v33 <= v12)
+            topHitResultCount2 = v11;
+            attachmentSectionCount = [v5 attachmentSectionCount];
+            v13 = attachmentSectionCount2;
+            if (attachmentSectionCount2 <= attachmentSectionCount)
             {
-              v13 = v12;
+              v13 = attachmentSectionCount;
             }
 
-            v33 = v13;
+            attachmentSectionCount2 = v13;
             v32 |= [v5 nonTopHitResultCount] != 0;
           }
         }
 
         else
         {
-          v31 = [v5 topHitResultCount];
-          v33 = [v5 attachmentSectionCount];
+          topHitResultCount2 = [v5 topHitResultCount];
+          attachmentSectionCount2 = [v5 attachmentSectionCount];
           v32 = [v5 nonTopHitResultCount] != 0;
           v36 = v9;
         }
 
         v14 = [ICASSearchBufferArrayData alloc];
-        v15 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v6, "length"))}];
+        v15 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(searchString, "length"))}];
         v16 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v5, "topHitResultCount"))}];
         v17 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "nonTopHitResultCount") != 0}];
         v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "searchResultWasSelected")}];
@@ -286,14 +286,14 @@ void __59__ICNASearchResultExposureReporter_submitEventIfApplicable__block_invok
   else
   {
     v32 = 0;
-    v33 = 0;
-    v31 = 0;
+    attachmentSectionCount2 = 0;
+    topHitResultCount2 = 0;
   }
 
   v22 = [ICASSearchResultExposureData alloc];
-  v23 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v31)];
+  v23 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(topHitResultCount2)];
   v24 = [MEMORY[0x277CCABB0] numberWithBool:v32 & 1];
-  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v33];
+  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:attachmentSectionCount2];
   v26 = [(ICASSearchResultExposureData *)v22 initWithTopHitCountForLongestSearchString:v23 hasNonTopHitResultsForLongestSearchString:v24 attachmentHitCountForLongestSearchString:v25 searchBufferArray:v34];
 
   v27 = *MEMORY[0x277D85DE8];
@@ -301,21 +301,21 @@ void __59__ICNASearchResultExposureReporter_submitEventIfApplicable__block_invok
   return v26;
 }
 
-- (void)analyticsSessionWillEnd:(id)a3
+- (void)analyticsSessionWillEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [endCopy object];
 
   v6 = ICDynamicCast();
 
-  v7 = [v6 session];
-  v8 = [v7 persistentIdentifier];
-  v9 = [(ICNASearchResultExposureReporter *)self window];
-  v10 = [v9 windowScene];
-  v11 = [v10 session];
-  v12 = [v11 persistentIdentifier];
-  v13 = [v8 isEqual:v12];
+  session = [v6 session];
+  persistentIdentifier = [session persistentIdentifier];
+  window = [(ICNASearchResultExposureReporter *)self window];
+  windowScene = [window windowScene];
+  session2 = [windowScene session];
+  persistentIdentifier2 = [session2 persistentIdentifier];
+  v13 = [persistentIdentifier isEqual:persistentIdentifier2];
 
   if (v13)
   {
@@ -390,13 +390,13 @@ void __60__ICNASearchResultExposureReporter_analyticsSessionWillEnd___block_invo
     v3 = [ICNAEventReporter alloc];
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(ICNASearchResultExposureReporter *)self window];
-    v7 = [(ICNAEventReporter *)v3 initWithSubTrackerName:v5 window:v6];
+    window = [(ICNASearchResultExposureReporter *)self window];
+    v7 = [(ICNAEventReporter *)v3 initWithSubTrackerName:v5 window:window];
     eventReporter = self->_eventReporter;
     self->_eventReporter = v7;
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel_eventReporterLostSession_ name:@"ICNAEventReporterLostSessionNotification" object:self->_eventReporter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_eventReporterLostSession_ name:@"ICNAEventReporterLostSessionNotification" object:self->_eventReporter];
   }
 
   v10 = self->_eventReporter;
@@ -404,16 +404,16 @@ void __60__ICNASearchResultExposureReporter_analyticsSessionWillEnd___block_invo
   return v10;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  v6 = [v5 object];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  object = [sessionCopy object];
 
-  [v7 removeObserver:self name:@"ICNAEventReporterLostSessionNotification" object:v6];
+  [defaultCenter removeObserver:self name:@"ICNAEventReporterLostSessionNotification" object:object];
 }
 
 - (UIWindow)window

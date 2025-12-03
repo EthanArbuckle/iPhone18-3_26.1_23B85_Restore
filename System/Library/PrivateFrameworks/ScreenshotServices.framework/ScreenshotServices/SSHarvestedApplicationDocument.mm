@@ -1,22 +1,22 @@
 @interface SSHarvestedApplicationDocument
 - (CGRect)PDFVisibleRect;
 - (NSString)loggableDescription;
-- (SSHarvestedApplicationDocument)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (SSHarvestedApplicationDocument)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SSHarvestedApplicationDocument
 
-- (SSHarvestedApplicationDocument)initWithBSXPCCoder:(id)a3
+- (SSHarvestedApplicationDocument)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSHarvestedApplicationDocument *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSSHarvestedApplicationMetadataPDFDataKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSSHarvestedApplicationMetadataPDFDataKey"];
   PDFData = v5->_PDFData;
   v5->_PDFData = v6;
 
-  v5->_PDFPage = [v4 decodeInt64ForKey:@"kSSHarvestedApplicationMetadataPDFPageKey"];
-  [v4 decodeCGRectForKey:@"kSSHarvestedApplicationMetadataPDFVisibleRectKey"];
+  v5->_PDFPage = [coderCopy decodeInt64ForKey:@"kSSHarvestedApplicationMetadataPDFPageKey"];
+  [coderCopy decodeCGRectForKey:@"kSSHarvestedApplicationMetadataPDFVisibleRectKey"];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -29,29 +29,29 @@
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(SSHarvestedApplicationDocument *)self PDFData];
-  [v5 encodeObject:v4 forKey:@"kSSHarvestedApplicationMetadataPDFDataKey"];
+  coderCopy = coder;
+  pDFData = [(SSHarvestedApplicationDocument *)self PDFData];
+  [coderCopy encodeObject:pDFData forKey:@"kSSHarvestedApplicationMetadataPDFDataKey"];
 
-  [v5 encodeInt64:-[SSHarvestedApplicationDocument PDFPage](self forKey:{"PDFPage"), @"kSSHarvestedApplicationMetadataPDFPageKey"}];
+  [coderCopy encodeInt64:-[SSHarvestedApplicationDocument PDFPage](self forKey:{"PDFPage"), @"kSSHarvestedApplicationMetadataPDFPageKey"}];
   [(SSHarvestedApplicationDocument *)self PDFVisibleRect];
-  [v5 encodeCGRect:@"kSSHarvestedApplicationMetadataPDFVisibleRectKey" forKey:?];
+  [coderCopy encodeCGRect:@"kSSHarvestedApplicationMetadataPDFVisibleRectKey" forKey:?];
 }
 
 - (NSString)loggableDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(SSHarvestedApplicationDocument *)self PDFData];
-  v6 = [(SSHarvestedApplicationDocument *)self PDFPage];
+  pDFData = [(SSHarvestedApplicationDocument *)self PDFData];
+  pDFPage = [(SSHarvestedApplicationDocument *)self PDFPage];
   [(SSHarvestedApplicationDocument *)self PDFVisibleRect];
   v7 = NSStringFromCGRect(v11);
-  v8 = [v4 stringWithFormat:@" has pdfData: %d, page:%d, visibleRect:%@", v5 != 0, v6, v7];
-  [v3 appendString:v8];
+  v8 = [v4 stringWithFormat:@" has pdfData: %d, page:%d, visibleRect:%@", pDFData != 0, pDFPage, v7];
+  [string appendString:v8];
 
-  return v3;
+  return string;
 }
 
 - (CGRect)PDFVisibleRect

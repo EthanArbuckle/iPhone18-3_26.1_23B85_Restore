@@ -1,38 +1,38 @@
 @interface IKAppDynamicUIResult
-+ (id)_rawResultWithDynamicUIResult:(id)a3;
-+ (id)_responseDictionaryWithCarrierLinkResult:(id)a3;
-- (IKAppDynamicUIResult)initWithCarrierLinkResult:(id)a3;
-- (IKAppDynamicUIResult)initWithPurchaseResult:(id)a3;
++ (id)_rawResultWithDynamicUIResult:(id)result;
++ (id)_responseDictionaryWithCarrierLinkResult:(id)result;
+- (IKAppDynamicUIResult)initWithCarrierLinkResult:(id)result;
+- (IKAppDynamicUIResult)initWithPurchaseResult:(id)result;
 - (id)rawResponse;
 @end
 
 @implementation IKAppDynamicUIResult
 
-- (IKAppDynamicUIResult)initWithPurchaseResult:(id)a3
+- (IKAppDynamicUIResult)initWithPurchaseResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = IKAppDynamicUIResult;
   v6 = [(IKAppDynamicUIResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_purchaseResult, a3);
+    objc_storeStrong(&v6->_purchaseResult, result);
   }
 
   return v7;
 }
 
-- (IKAppDynamicUIResult)initWithCarrierLinkResult:(id)a3
+- (IKAppDynamicUIResult)initWithCarrierLinkResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = IKAppDynamicUIResult;
   v6 = [(IKAppDynamicUIResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_carrierLinkResult, a3);
+    objc_storeStrong(&v6->_carrierLinkResult, result);
   }
 
   return v7;
@@ -45,16 +45,16 @@
   return [v3 _rawResultWithDynamicUIResult:self];
 }
 
-+ (id)_responseDictionaryWithCarrierLinkResult:(id)a3
++ (id)_responseDictionaryWithCarrierLinkResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 response];
-  if (v4)
+  resultCopy = result;
+  response = [resultCopy response];
+  if (response)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v4];
-    v6 = [v3 linkParams];
-    v7 = [v6 dictionary];
-    [v5 setObject:v7 forKeyedSubscript:@"linkParams"];
+    v5 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:response];
+    linkParams = [resultCopy linkParams];
+    dictionary = [linkParams dictionary];
+    [v5 setObject:dictionary forKeyedSubscript:@"linkParams"];
   }
 
   else
@@ -65,22 +65,22 @@
   return v5;
 }
 
-+ (id)_rawResultWithDynamicUIResult:(id)a3
++ (id)_rawResultWithDynamicUIResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 purchaseResult];
-  v5 = [v4 responseDictionary];
-  v6 = v5;
-  if (v5)
+  resultCopy = result;
+  purchaseResult = [resultCopy purchaseResult];
+  responseDictionary = [purchaseResult responseDictionary];
+  v6 = responseDictionary;
+  if (responseDictionary)
   {
-    v7 = v5;
+    v7 = responseDictionary;
   }
 
   else
   {
     v8 = objc_opt_class();
-    v9 = [v3 carrierLinkResult];
-    v7 = [v8 _responseDictionaryWithCarrierLinkResult:v9];
+    carrierLinkResult = [resultCopy carrierLinkResult];
+    v7 = [v8 _responseDictionaryWithCarrierLinkResult:carrierLinkResult];
   }
 
   return v7;

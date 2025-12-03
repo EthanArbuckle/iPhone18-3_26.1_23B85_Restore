@@ -1,52 +1,52 @@
 @interface ARGeoTrackingTechniqueService
-- (ARGeoTrackingTechniqueService)initWithConnection:(id)a3;
-- (id)processData:(id)a3;
-- (id)processDeviceOrientationData:(id)a3;
-- (id)processLocationData:(id)a3;
-- (void)getLocationFromWorldPosition:(id)a3 reply:(id)a4;
-- (void)posteriorVisualLocalizationCallIntervalWithReply:(id)a3;
-- (void)setPosteriorVisualLocalizationCallInterval:(double)a3;
-- (void)setSupportEnablementOptions:(unint64_t)a3;
-- (void)setVisualLocalizationCallInterval:(double)a3;
-- (void)setVisualLocalizationCallIntervalTimeThreshold:(double)a3;
-- (void)supportEnablementOptionsWithReply:(id)a3;
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6;
-- (void)visualLocalizationCallIntervalTimeThresholdWithReply:(id)a3;
-- (void)visualLocalizationCallIntervalWithReply:(id)a3;
-- (void)visualLocalizationUpdatesRequestedWithReply:(id)a3;
+- (ARGeoTrackingTechniqueService)initWithConnection:(id)connection;
+- (id)processData:(id)data;
+- (id)processDeviceOrientationData:(id)data;
+- (id)processLocationData:(id)data;
+- (void)getLocationFromWorldPosition:(id)position reply:(id)reply;
+- (void)posteriorVisualLocalizationCallIntervalWithReply:(id)reply;
+- (void)setPosteriorVisualLocalizationCallInterval:(double)interval;
+- (void)setSupportEnablementOptions:(unint64_t)options;
+- (void)setVisualLocalizationCallInterval:(double)interval;
+- (void)setVisualLocalizationCallIntervalTimeThreshold:(double)threshold;
+- (void)supportEnablementOptionsWithReply:(id)reply;
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context;
+- (void)visualLocalizationCallIntervalTimeThresholdWithReply:(id)reply;
+- (void)visualLocalizationCallIntervalWithReply:(id)reply;
+- (void)visualLocalizationUpdatesRequestedWithReply:(id)reply;
 @end
 
 @implementation ARGeoTrackingTechniqueService
 
-- (ARGeoTrackingTechniqueService)initWithConnection:(id)a3
+- (ARGeoTrackingTechniqueService)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = ARRemoteGeoTrackingTechniqueServiceInterface();
   v6 = ARRemoteGeoTrackingTechniqueClientInterface();
   v13.receiver = self;
   v13.super_class = ARGeoTrackingTechniqueService;
-  v7 = [(ARTechniqueService *)&v13 initWithConnection:v4 exportedInterface:v5 remoteObjectInterface:v6];
+  v7 = [(ARTechniqueService *)&v13 initWithConnection:connectionCopy exportedInterface:v5 remoteObjectInterface:v6];
 
   if (v7)
   {
-    v8 = [v4 remoteObjectProxy];
-    [(ARTechniqueService *)v7 setClientProxy:v8];
+    remoteObjectProxy = [connectionCopy remoteObjectProxy];
+    [(ARTechniqueService *)v7 setClientProxy:remoteObjectProxy];
 
-    v9 = [objc_alloc(MEMORY[0x277D0EAC0]) initWithNSXPCConnection:v4];
+    v9 = [objc_alloc(MEMORY[0x277D0EAC0]) initWithNSXPCConnection:connectionCopy];
     v10 = [objc_alloc(MEMORY[0x277CE52A8]) initWithAuditToken:v9];
     [(ARTechniqueService *)v7 setTechnique:v10];
 
-    v11 = [(ARTechniqueService *)v7 technique];
-    [v11 setDelegate:v7];
+    technique = [(ARTechniqueService *)v7 technique];
+    [technique setDelegate:v7];
   }
 
   return v7;
 }
 
-- (id)processLocationData:(id)a3
+- (id)processLocationData:(id)data
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if (![(ARDaemonService *)self isActive])
   {
     v19 = _ARLogDaemon();
@@ -57,19 +57,19 @@
       *buf = 138543874;
       v32 = v21;
       v33 = 2048;
-      v34 = self;
+      selfCopy3 = self;
       v35 = 2112;
-      v36 = v4;
+      v36 = dataCopy;
       _os_log_impl(&dword_23D391000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Service not active; skipping processing of location data: %@", buf, 0x20u);
     }
 
-    v22 = v4;
+    v22 = dataCopy;
     goto LABEL_13;
   }
 
   if (self->_lastProcessedLocationData)
   {
-    [v4 timestamp];
+    [dataCopy timestamp];
     v6 = v5;
     [(ARLocationData *)self->_lastProcessedLocationData timestamp];
     if (v6 <= v7)
@@ -79,16 +79,16 @@
       {
         v24 = objc_opt_class();
         v25 = NSStringFromClass(v24);
-        v26 = [v4 isSecure];
-        [v4 timestamp];
+        isSecure = [dataCopy isSecure];
+        [dataCopy timestamp];
         *buf = 138544386;
         v32 = v25;
         v33 = 2048;
-        v34 = self;
+        selfCopy3 = self;
         v35 = 2048;
-        v36 = v4;
+        v36 = dataCopy;
         v37 = 1024;
-        *v38 = v26;
+        *v38 = isSecure;
         *&v38[4] = 2048;
         *&v38[6] = v27;
         _os_log_impl(&dword_23D391000, v23, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: processLocationData - Already processed locationData (%p), isSecure: %d, timestamp: %f", buf, 0x30u);
@@ -106,27 +106,27 @@ LABEL_13:
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v4 isSecure];
-    [v4 timestamp];
+    isSecure2 = [dataCopy isSecure];
+    [dataCopy timestamp];
     *buf = 138544642;
     v32 = v10;
     v33 = 2048;
-    v34 = self;
+    selfCopy3 = self;
     v35 = 2048;
-    v36 = v4;
+    v36 = dataCopy;
     v37 = 2112;
-    *v38 = v4;
+    *v38 = dataCopy;
     *&v38[8] = 1024;
-    *&v38[10] = v11;
+    *&v38[10] = isSecure2;
     v39 = 2048;
     v40 = v12;
     _os_log_impl(&dword_23D391000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: processLocationData - Processing locationData (%p): %@, isSecure: %d, timestamp: %f", buf, 0x3Au);
   }
 
-  v13 = [(ARDaemonService *)self dataSource];
-  v14 = [v13 service:self peerServiceOfType:objc_opt_class()];
+  dataSource = [(ARDaemonService *)self dataSource];
+  v14 = [dataSource service:self peerServiceOfType:objc_opt_class()];
 
-  v15 = [v14 updateFromLocationData:v4];
+  v15 = [v14 updateFromLocationData:dataCopy];
   lastProcessedLocationData = self->_lastProcessedLocationData;
   self->_lastProcessedLocationData = v15;
 
@@ -141,10 +141,10 @@ LABEL_14:
   return v18;
 }
 
-- (id)processDeviceOrientationData:(id)a3
+- (id)processDeviceOrientationData:(id)data
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if (![(ARDaemonService *)self isActive])
   {
     v18 = _ARLogDaemon();
@@ -155,19 +155,19 @@ LABEL_14:
       *buf = 138543874;
       v30 = v20;
       v31 = 2048;
-      v32 = self;
+      selfCopy3 = self;
       v33 = 2112;
-      v34 = v4;
+      v34 = dataCopy;
       _os_log_impl(&dword_23D391000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Service not active; skipping processing of device orientation data: %@", buf, 0x20u);
     }
 
-    v21 = v4;
+    v21 = dataCopy;
     goto LABEL_13;
   }
 
   if (self->_lastProcessedDeviceOrientationData)
   {
-    [v4 timestamp];
+    [dataCopy timestamp];
     v6 = v5;
     [(ARDeviceOrientationData *)self->_lastProcessedDeviceOrientationData timestamp];
     if (v6 <= v7)
@@ -177,13 +177,13 @@ LABEL_14:
       {
         v23 = objc_opt_class();
         v24 = NSStringFromClass(v23);
-        [v4 timestamp];
+        [dataCopy timestamp];
         *buf = 138544130;
         v30 = v24;
         v31 = 2048;
-        v32 = self;
+        selfCopy3 = self;
         v33 = 2048;
-        v34 = v4;
+        v34 = dataCopy;
         v35 = 2048;
         v36 = v25;
         _os_log_impl(&dword_23D391000, v22, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: processDeviceOrientationData - Already processed data (%p), timestamp: %f", buf, 0x2Au);
@@ -201,24 +201,24 @@ LABEL_13:
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v4 timestamp];
+    [dataCopy timestamp];
     *buf = 138544386;
     v30 = v10;
     v31 = 2048;
-    v32 = self;
+    selfCopy3 = self;
     v33 = 2048;
-    v34 = v4;
+    v34 = dataCopy;
     v35 = 2112;
-    v36 = v4;
+    v36 = dataCopy;
     v37 = 2048;
     v38 = v11;
     _os_log_impl(&dword_23D391000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: processDeviceOrientationData - Processing data (%p): %@, timestamp: %f", buf, 0x34u);
   }
 
-  v12 = [(ARDaemonService *)self dataSource];
-  v13 = [v12 service:self peerServiceOfType:objc_opt_class()];
+  dataSource = [(ARDaemonService *)self dataSource];
+  v13 = [dataSource service:self peerServiceOfType:objc_opt_class()];
 
-  v14 = [v13 updateFromDeviceOrientationData:v4];
+  v14 = [v13 updateFromDeviceOrientationData:dataCopy];
   lastProcessedDeviceOrientationData = self->_lastProcessedDeviceOrientationData;
   self->_lastProcessedDeviceOrientationData = v14;
 
@@ -233,17 +233,17 @@ LABEL_14:
   return v17;
 }
 
-- (void)getLocationFromWorldPosition:(id)a3 reply:(id)a4
+- (void)getLocationFromWorldPosition:(id)position reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   ARVector3FromNSData();
   v15 = v6;
-  v7 = [(ARTechniqueService *)self technique];
-  v9 = v7;
+  technique = [(ARTechniqueService *)self technique];
+  v9 = technique;
   v19 = 0;
-  if (v7)
+  if (technique)
   {
-    [v7 getLocationFromWorldPosition:&v19 error:v15];
+    [technique getLocationFromWorldPosition:&v19 error:v15];
     v10 = v19;
     v16 = v17;
     v8 = vextq_s8(v16, v16, 8uLL);
@@ -266,78 +266,78 @@ LABEL_14:
   v20[0] = v11;
   v20[1] = v13;
   v12 = [MEMORY[0x277CBEA90] dataWithBytes:v20 length:32];
-  v5[2](v5, v12, v10);
+  replyCopy[2](replyCopy, v12, v10);
 }
 
-- (void)setVisualLocalizationCallInterval:(double)a3
+- (void)setVisualLocalizationCallInterval:(double)interval
 {
-  v4 = [(ARTechniqueService *)self technique];
-  [v4 setVisualLocalizationCallInterval:a3];
+  technique = [(ARTechniqueService *)self technique];
+  [technique setVisualLocalizationCallInterval:interval];
 }
 
-- (void)visualLocalizationCallIntervalWithReply:(id)a3
+- (void)visualLocalizationCallIntervalWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(ARTechniqueService *)self technique];
-  [v6 visualLocalizationCallInterval];
-  (*(a3 + 2))(v5, 0);
+  replyCopy = reply;
+  technique = [(ARTechniqueService *)self technique];
+  [technique visualLocalizationCallInterval];
+  (*(reply + 2))(replyCopy, 0);
 }
 
-- (void)setPosteriorVisualLocalizationCallInterval:(double)a3
+- (void)setPosteriorVisualLocalizationCallInterval:(double)interval
 {
-  v4 = [(ARTechniqueService *)self technique];
-  [v4 setPosteriorVisualLocalizationCallInterval:a3];
+  technique = [(ARTechniqueService *)self technique];
+  [technique setPosteriorVisualLocalizationCallInterval:interval];
 }
 
-- (void)posteriorVisualLocalizationCallIntervalWithReply:(id)a3
+- (void)posteriorVisualLocalizationCallIntervalWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(ARTechniqueService *)self technique];
-  [v6 posteriorVisualLocalizationCallInterval];
-  (*(a3 + 2))(v5, 0);
+  replyCopy = reply;
+  technique = [(ARTechniqueService *)self technique];
+  [technique posteriorVisualLocalizationCallInterval];
+  (*(reply + 2))(replyCopy, 0);
 }
 
-- (void)setVisualLocalizationCallIntervalTimeThreshold:(double)a3
+- (void)setVisualLocalizationCallIntervalTimeThreshold:(double)threshold
 {
-  v4 = [(ARTechniqueService *)self technique];
-  [v4 setVisualLocalizationCallIntervalTimeThreshold:a3];
+  technique = [(ARTechniqueService *)self technique];
+  [technique setVisualLocalizationCallIntervalTimeThreshold:threshold];
 }
 
-- (void)visualLocalizationCallIntervalTimeThresholdWithReply:(id)a3
+- (void)visualLocalizationCallIntervalTimeThresholdWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(ARTechniqueService *)self technique];
-  [v6 visualLocalizationCallIntervalTimeThreshold];
-  (*(a3 + 2))(v5, 0);
+  replyCopy = reply;
+  technique = [(ARTechniqueService *)self technique];
+  [technique visualLocalizationCallIntervalTimeThreshold];
+  (*(reply + 2))(replyCopy, 0);
 }
 
-- (void)visualLocalizationUpdatesRequestedWithReply:(id)a3
+- (void)visualLocalizationUpdatesRequestedWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(ARTechniqueService *)self technique];
-  (*(a3 + 2))(v5, [v6 visualLocalizationUpdatesRequested], 0);
+  replyCopy = reply;
+  technique = [(ARTechniqueService *)self technique];
+  (*(reply + 2))(replyCopy, [technique visualLocalizationUpdatesRequested], 0);
 }
 
-- (void)setSupportEnablementOptions:(unint64_t)a3
+- (void)setSupportEnablementOptions:(unint64_t)options
 {
-  v4 = [(ARTechniqueService *)self technique];
-  [v4 setSupportEnablementOptions:a3];
+  technique = [(ARTechniqueService *)self technique];
+  [technique setSupportEnablementOptions:options];
 }
 
-- (void)supportEnablementOptionsWithReply:(id)a3
+- (void)supportEnablementOptionsWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(ARTechniqueService *)self technique];
-  (*(a3 + 2))(v5, [v6 supportEnablementOptions], 0);
+  replyCopy = reply;
+  technique = [(ARTechniqueService *)self technique];
+  (*(reply + 2))(replyCopy, [technique supportEnablementOptions], 0);
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ARGeoTrackingTechniqueService *)self processLocationData:v4];
+    v5 = [(ARGeoTrackingTechniqueService *)self processLocationData:dataCopy];
   }
 
   else
@@ -345,14 +345,14 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(ARGeoTrackingTechniqueService *)self processDeviceOrientationData:v4];
+      v5 = [(ARGeoTrackingTechniqueService *)self processDeviceOrientationData:dataCopy];
     }
 
     else
     {
       v8.receiver = self;
       v8.super_class = ARGeoTrackingTechniqueService;
-      v5 = [(ARTechniqueService *)&v8 processData:v4];
+      v5 = [(ARTechniqueService *)&v8 processData:dataCopy];
     }
   }
 
@@ -361,19 +361,19 @@ LABEL_14:
   return v6;
 }
 
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context
 {
   v66 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v44 = a6;
-  v10 = [(ARDaemonService *)self dataSource];
-  v11 = [v10 service:self peerServiceOfType:objc_opt_class()];
+  dataCopy = data;
+  contextCopy = context;
+  dataSource = [(ARDaemonService *)self dataSource];
+  v11 = [dataSource service:self peerServiceOfType:objc_opt_class()];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v12 = v9;
+  v12 = dataCopy;
   v13 = [v12 countByEnumeratingWithState:&v49 objects:v65 count:16];
   if (v13)
   {
@@ -399,9 +399,9 @@ LABEL_14:
         if (objc_opt_isKindOfClass())
         {
           v20 = v18;
-          v21 = [v20 localizationResult];
+          localizationResult = [v20 localizationResult];
 
-          if (v21)
+          if (localizationResult)
           {
             v22 = _ARLogDaemon();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -412,7 +412,7 @@ LABEL_14:
               *buf = 138543875;
               v54 = v24;
               v55 = 2048;
-              v56 = self;
+              selfCopy3 = self;
               v57 = 2049;
               v58 = v25;
               _os_log_impl(&dword_23D391000, v22, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: vlHeading,%{private}f", buf, 0x20u);
@@ -431,12 +431,12 @@ LABEL_14:
               v34 = v33 = v16;
               [v34 coordinate];
               v36 = v35;
-              v37 = [v20 location];
-              [v37 altitude];
+              location = [v20 location];
+              [location altitude];
               *buf = 138544387;
               v54 = v28;
               v55 = 2048;
-              v56 = self;
+              selfCopy3 = self;
               v57 = 2049;
               v58 = v32;
               v59 = 2049;
@@ -461,7 +461,7 @@ LABEL_14:
               *buf = 138544642;
               v54 = v41;
               v55 = 2048;
-              v56 = self;
+              selfCopy3 = self;
               v57 = 2048;
               v58 = v11;
               v59 = 2112;
@@ -469,7 +469,7 @@ LABEL_14:
               v61 = 2112;
               v62 = v20;
               v63 = 2048;
-              v64 = a5;
+              timestampCopy = timestamp;
               _os_log_impl(&dword_23D391000, v39, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: technique:didOutputResultData: - Calling updateFromVisualLocalizationResult on locationSensorService (%p): %@, with visResult: %@, timestamp: %f", buf, 0x3Eu);
 
               v14 = v47;
@@ -489,10 +489,10 @@ LABEL_14:
     while (v14);
   }
 
-  v42 = [(ARTechniqueService *)self technique];
+  technique = [(ARTechniqueService *)self technique];
   v48.receiver = self;
   v48.super_class = ARGeoTrackingTechniqueService;
-  [(ARTechniqueService *)&v48 technique:v42 didOutputResultData:v12 timestamp:v44 context:a5];
+  [(ARTechniqueService *)&v48 technique:technique didOutputResultData:v12 timestamp:contextCopy context:timestamp];
 
   v43 = *MEMORY[0x277D85DE8];
 }

@@ -1,18 +1,18 @@
 @interface UserGuidesContextConfiguration
 - (_TtC4Maps30UserGuidesContextConfiguration)init;
-- (_TtC4Maps30UserGuidesContextConfiguration)initWithCollectionHandler:(id)a3 excludedPlaceCardContent:(int64_t)a4;
+- (_TtC4Maps30UserGuidesContextConfiguration)initWithCollectionHandler:(id)handler excludedPlaceCardContent:(int64_t)content;
 @end
 
 @implementation UserGuidesContextConfiguration
 
-- (_TtC4Maps30UserGuidesContextConfiguration)initWithCollectionHandler:(id)a3 excludedPlaceCardContent:(int64_t)a4
+- (_TtC4Maps30UserGuidesContextConfiguration)initWithCollectionHandler:(id)handler excludedPlaceCardContent:(int64_t)content
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps30UserGuidesContextConfiguration_collectionHandler) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps30UserGuidesContextConfiguration_excludedPlaceCardContent) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps30UserGuidesContextConfiguration_collectionHandler) = handler;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps30UserGuidesContextConfiguration_excludedPlaceCardContent) = content;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = a3;
+  handlerCopy = handler;
   return [(UserGuidesContextConfiguration *)&v10 init];
 }
 

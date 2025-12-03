@@ -1,45 +1,45 @@
 @interface MSDComponent
 - (BOOL)result;
-- (MSDComponent)initWithName:(id)a3 andOperations:(id)a4;
+- (MSDComponent)initWithName:(id)name andOperations:(id)operations;
 - (MSDComponentObserver)observer;
 - (NSString)description;
 - (id)_cloneComponent;
-- (id)_cloneOperations:(id)a3;
-- (id)_handleRetryableOperation:(id)a3;
+- (id)_cloneOperations:(id)operations;
+- (id)_handleRetryableOperation:(id)operation;
 - (id)activateStagedOperations;
 - (id)createRemovableCounterpartComponent;
 - (id)errors;
 - (id)finishedOperationContexts;
-- (id)setupIntraComponentDependency:(BOOL)a3;
-- (void)_addStagedOperation:(id)a3 forRollback:(BOOL)a4;
+- (id)setupIntraComponentDependency:(BOOL)dependency;
+- (void)_addStagedOperation:(id)operation forRollback:(BOOL)rollback;
 - (void)_cancelRemainingOperations;
-- (void)_estimateDiskSpaceRequirementFromOperations:(id)a3;
+- (void)_estimateDiskSpaceRequirementFromOperations:(id)operations;
 - (void)_handleActiveOperationsDepleted;
-- (void)_handleCancelledOperation:(id)a3;
-- (void)_handleFailedOperation:(id)a3;
-- (void)_handleSkippedOperation:(id)a3;
-- (void)_handleSuccessfulOperation:(id)a3;
+- (void)_handleCancelledOperation:(id)operation;
+- (void)_handleFailedOperation:(id)operation;
+- (void)_handleSkippedOperation:(id)operation;
+- (void)_handleSuccessfulOperation:(id)operation;
 - (void)_rollbackFinishedOperations;
-- (void)addInstallDependency:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addRemoveOperations:(id)a3;
+- (void)addInstallDependency:(id)dependency;
+- (void)addObserver:(id)observer;
+- (void)addRemoveOperations:(id)operations;
 - (void)discardStagedOperationsAndTriggerCompletion;
-- (void)operationWillFinish:(id)a3;
+- (void)operationWillFinish:(id)finish;
 @end
 
 @implementation MSDComponent
 
-- (MSDComponent)initWithName:(id)a3 andOperations:(id)a4
+- (MSDComponent)initWithName:(id)name andOperations:(id)operations
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  operationsCopy = operations;
   v15.receiver = self;
   v15.super_class = MSDComponent;
   v8 = [(MSDComponent *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    [(MSDComponent *)v8 setName:v6];
+    [(MSDComponent *)v8 setName:nameCopy];
     [(MSDComponent *)v9 setRetryCount:3];
     [(MSDComponent *)v9 setForRemoval:0];
     v10 = objc_alloc_init(NSMutableOrderedSet);
@@ -54,8 +54,8 @@
     v13 = objc_alloc_init(NSMutableOrderedSet);
     [(MSDComponent *)v9 setFinishedOperations:v13];
 
-    [(MSDComponent *)v9 _addStagedOperations:v7 forRollback:0];
-    [(MSDComponent *)v9 _estimateDiskSpaceRequirementFromOperations:v7];
+    [(MSDComponent *)v9 _addStagedOperations:operationsCopy forRollback:0];
+    [(MSDComponent *)v9 _estimateDiskSpaceRequirementFromOperations:operationsCopy];
     [(MSDComponent *)v9 setObserver:0];
     [(MSDComponent *)v9 setComponentLock:0];
   }
@@ -70,8 +70,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(MSDComponent *)self finishedOperations];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  finishedOperations = [(MSDComponent *)self finishedOperations];
+  v4 = [finishedOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -82,7 +82,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(finishedOperations);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -93,7 +93,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [finishedOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -118,8 +118,8 @@ LABEL_12:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MSDComponent *)self finishedOperations];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  finishedOperations = [(MSDComponent *)self finishedOperations];
+  v5 = [finishedOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -130,17 +130,17 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(finishedOperations);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) context];
-        if (v9)
+        context = [*(*(&v11 + 1) + 8 * i) context];
+        if (context)
         {
-          [v3 addObject:v9];
+          [v3 addObject:context];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [finishedOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -159,8 +159,8 @@ LABEL_12:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(MSDComponent *)self finishedOperations];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  finishedOperations = [(MSDComponent *)self finishedOperations];
+  v5 = [finishedOperations countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -171,20 +171,20 @@ LABEL_12:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(finishedOperations);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 error];
+        error = [v9 error];
 
-        if (v10)
+        if (error)
         {
-          v11 = [v9 error];
-          [v3 addObject:v11];
+          error2 = [v9 error];
+          [v3 addObject:error2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [finishedOperations countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -195,26 +195,26 @@ LABEL_12:
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  if (([v5 conformsToProtocol:&OBJC_PROTOCOL___MSDComponentObserver] & 1) == 0)
+  observerCopy = observer;
+  if (([observerCopy conformsToProtocol:&OBJC_PROTOCOL___MSDComponentObserver] & 1) == 0)
   {
     sub_1000C9AE4(a2, self);
   }
 
   os_unfair_lock_lock(&self->_componentLock);
-  [(MSDComponent *)self setObserver:v5];
+  [(MSDComponent *)self setObserver:observerCopy];
 
   os_unfair_lock_unlock(&self->_componentLock);
 }
 
-- (void)addRemoveOperations:(id)a3
+- (void)addRemoveOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   os_unfair_lock_lock(&self->_componentLock);
-  v5 = [(MSDComponent *)self removeOperations];
-  [v5 addObjectsFromArray:v4];
+  removeOperations = [(MSDComponent *)self removeOperations];
+  [removeOperations addObjectsFromArray:operationsCopy];
 
   os_unfair_lock_unlock(&self->_componentLock);
 }
@@ -222,14 +222,14 @@ LABEL_12:
 - (id)activateStagedOperations
 {
   os_unfair_lock_lock(&self->_componentLock);
-  v3 = [(MSDComponent *)self stagedOperations];
-  v4 = [v3 copy];
+  stagedOperations = [(MSDComponent *)self stagedOperations];
+  v4 = [stagedOperations copy];
 
-  v5 = [(MSDComponent *)self stagedOperations];
-  [v5 removeAllObjects];
+  stagedOperations2 = [(MSDComponent *)self stagedOperations];
+  [stagedOperations2 removeAllObjects];
 
-  v6 = [(MSDComponent *)self activeOperations];
-  [v6 unionOrderedSet:v4];
+  activeOperations = [(MSDComponent *)self activeOperations];
+  [activeOperations unionOrderedSet:v4];
 
   os_unfair_lock_unlock(&self->_componentLock);
 
@@ -239,16 +239,16 @@ LABEL_12:
 - (id)createRemovableCounterpartComponent
 {
   os_unfair_lock_lock(&self->_componentLock);
-  v3 = [(MSDComponent *)self removeOperations];
-  v4 = [v3 count];
+  removeOperations = [(MSDComponent *)self removeOperations];
+  v4 = [removeOperations count];
 
   if (v4)
   {
     v5 = [MSDComponent alloc];
-    v6 = [(MSDComponent *)self name];
-    v7 = [(MSDComponent *)self removeOperations];
-    v8 = [v7 array];
-    v9 = [(MSDComponent *)v5 initWithName:v6 andOperations:v8];
+    name = [(MSDComponent *)self name];
+    removeOperations2 = [(MSDComponent *)self removeOperations];
+    array = [removeOperations2 array];
+    v9 = [(MSDComponent *)v5 initWithName:name andOperations:array];
 
     [(MSDComponent *)v9 setForRemoval:1];
   }
@@ -263,7 +263,7 @@ LABEL_12:
   return v9;
 }
 
-- (id)setupIntraComponentDependency:(BOOL)a3
+- (id)setupIntraComponentDependency:(BOOL)dependency
 {
   v4 = objc_alloc_init(NSMutableDictionary);
   os_unfair_lock_lock(&self->_componentLock);
@@ -271,7 +271,7 @@ LABEL_12:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v33 = self;
+  selfCopy = self;
   obj = [(MSDComponent *)self stagedOperations];
   v5 = [obj countByEnumeratingWithState:&v51 objects:v61 count:16];
   if (v5)
@@ -295,19 +295,19 @@ LABEL_12:
         if ([v9 type] == 1)
         {
           v41 = v8;
-          v10 = [v9 context];
-          v11 = [v10 uniqueName];
+          context = [v9 context];
+          uniqueName = [context uniqueName];
 
-          v40 = v11;
-          v39 = [v4 objectForKey:v11];
+          v40 = uniqueName;
+          v39 = [v4 objectForKey:uniqueName];
           v42 = objc_alloc_init(NSMutableArray);
           [v42 addObject:v9];
           v49 = 0u;
           v50 = 0u;
           v47 = 0u;
           v48 = 0u;
-          v12 = [v9 dependents];
-          v13 = [v12 countByEnumeratingWithState:&v47 objects:v60 count:16];
+          dependents = [v9 dependents];
+          v13 = [dependents countByEnumeratingWithState:&v47 objects:v60 count:16];
           if (v13)
           {
             v14 = v13;
@@ -318,24 +318,24 @@ LABEL_12:
               {
                 if (*v48 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(dependents);
                 }
 
                 v17 = *(*(&v47 + 1) + 8 * i);
                 if ([v17 type] == 2)
                 {
-                  v18 = [v17 context];
-                  v19 = [v9 context];
+                  context2 = [v17 context];
+                  context3 = [v9 context];
 
-                  if (v18 == v19)
+                  if (context2 == context3)
                   {
                     [v42 addObject:v17];
                     v45 = 0u;
                     v46 = 0u;
                     v43 = 0u;
                     v44 = 0u;
-                    v20 = [v17 dependents];
-                    v21 = [v20 countByEnumeratingWithState:&v43 objects:v59 count:16];
+                    dependents2 = [v17 dependents];
+                    v21 = [dependents2 countByEnumeratingWithState:&v43 objects:v59 count:16];
                     if (v21)
                     {
                       v22 = v21;
@@ -346,16 +346,16 @@ LABEL_12:
                         {
                           if (*v44 != v23)
                           {
-                            objc_enumerationMutation(v20);
+                            objc_enumerationMutation(dependents2);
                           }
 
                           v25 = *(*(&v43 + 1) + 8 * j);
                           if ([v25 type] == 3)
                           {
-                            v26 = [v25 context];
-                            v27 = [v17 context];
+                            context4 = [v25 context];
+                            context5 = [v17 context];
 
-                            if (v26 == v27)
+                            if (context4 == context5)
                             {
                               [v42 addObject:v25];
                               goto LABEL_28;
@@ -363,7 +363,7 @@ LABEL_12:
                           }
                         }
 
-                        v22 = [v20 countByEnumeratingWithState:&v43 objects:v59 count:16];
+                        v22 = [dependents2 countByEnumeratingWithState:&v43 objects:v59 count:16];
                         if (v22)
                         {
                           continue;
@@ -381,7 +381,7 @@ LABEL_28:
                 }
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v47 objects:v60 count:16];
+              v14 = [dependents countByEnumeratingWithState:&v47 objects:v60 count:16];
               if (v14)
               {
                 continue;
@@ -396,32 +396,32 @@ LABEL_29:
           v8 = v41;
           if (v39)
           {
-            v28 = sub_100063A54();
-            v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG);
-            if (a3)
+            lastObject2 = sub_100063A54();
+            v29 = os_log_type_enabled(lastObject2, OS_LOG_TYPE_DEBUG);
+            if (dependency)
             {
               if (v29)
               {
-                v30 = [v39 lastObject];
+                lastObject = [v39 lastObject];
                 *buf = 138412546;
                 v56 = v9;
                 v57 = 2112;
-                v58 = v30;
-                _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "Setting up intra-component dependency: %@ -> %@", buf, 0x16u);
+                v58 = lastObject;
+                _os_log_debug_impl(&_mh_execute_header, lastObject2, OS_LOG_TYPE_DEBUG, "Setting up intra-component dependency: %@ -> %@", buf, 0x16u);
               }
 
-              v28 = [v39 lastObject];
-              [v9 addDependency:v28];
+              lastObject2 = [v39 lastObject];
+              [v9 addDependency:lastObject2];
             }
 
             else if (v29)
             {
-              v31 = [v39 lastObject];
+              lastObject3 = [v39 lastObject];
               *buf = 138412546;
               v56 = v9;
               v57 = 2112;
-              v58 = v31;
-              _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "Skipping intra-component dependency linking: %@ -> %@", buf, 0x16u);
+              v58 = lastObject3;
+              _os_log_debug_impl(&_mh_execute_header, lastObject2, OS_LOG_TYPE_DEBUG, "Skipping intra-component dependency linking: %@ -> %@", buf, 0x16u);
             }
           }
 
@@ -441,22 +441,22 @@ LABEL_29:
     while (v6);
   }
 
-  os_unfair_lock_unlock(&v33->_componentLock);
+  os_unfair_lock_unlock(&selfCopy->_componentLock);
 
   return v4;
 }
 
-- (void)addInstallDependency:(id)a3
+- (void)addInstallDependency:(id)dependency
 {
-  v4 = a3;
-  v25 = self;
+  dependencyCopy = dependency;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_componentLock);
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v23 = v4;
-  obj = [v4 stagedOperations];
+  v23 = dependencyCopy;
+  obj = [dependencyCopy stagedOperations];
   v5 = [obj countByEnumeratingWithState:&v33 objects:v46 count:16];
   if (v5)
   {
@@ -477,8 +477,8 @@ LABEL_29:
         v9 = *(*(&v33 + 1) + 8 * v8);
         if ([v9 type] == 3)
         {
-          v10 = [v9 identifier];
-          if (![v10 isEqualToString:@"MSDProvisioningProfileInstallOperation"])
+          identifier = [v9 identifier];
+          if (![identifier isEqualToString:@"MSDProvisioningProfileInstallOperation"])
           {
 
 LABEL_11:
@@ -487,8 +487,8 @@ LABEL_11:
             v32 = 0u;
             v29 = 0u;
             v30 = 0u;
-            v12 = [(MSDComponent *)v25 stagedOperations];
-            v13 = [v12 countByEnumeratingWithState:&v29 objects:v45 count:16];
+            stagedOperations = [(MSDComponent *)selfCopy stagedOperations];
+            v13 = [stagedOperations countByEnumeratingWithState:&v29 objects:v45 count:16];
             if (!v13)
             {
               goto LABEL_27;
@@ -502,18 +502,18 @@ LABEL_11:
 LABEL_14:
               if (*v30 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(stagedOperations);
               }
 
               v17 = *(*(&v29 + 1) + 8 * v16);
               if ([v17 type] == 3 && (objc_msgSend(v17, "runInstallInParallel") & 1) == 0)
               {
-                v18 = [v17 identifier];
-                if ([v18 isEqualToString:@"MSDProvisioningProfileInstallOperation"])
+                identifier2 = [v17 identifier];
+                if ([identifier2 isEqualToString:@"MSDProvisioningProfileInstallOperation"])
                 {
-                  v19 = [v17 isLeaf];
+                  isLeaf = [v17 isLeaf];
 
-                  if ((v19 & 1) == 0)
+                  if ((isLeaf & 1) == 0)
                   {
                     goto LABEL_25;
                   }
@@ -526,16 +526,16 @@ LABEL_14:
                 v20 = sub_100063A54();
                 if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
                 {
-                  v21 = [v17 component];
-                  v22 = [v9 component];
+                  component = [v17 component];
+                  component2 = [v9 component];
                   *buf = 138413058;
                   v38 = v17;
                   v39 = 2112;
-                  v40 = v21;
+                  v40 = component;
                   v41 = 2112;
                   v42 = v9;
                   v43 = 2112;
-                  v44 = v22;
+                  v44 = component2;
                   _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Setting up install dependency: %@(%@) -> %@(%@)", buf, 0x2Au);
                 }
 
@@ -545,7 +545,7 @@ LABEL_14:
 LABEL_25:
               if (v14 == ++v16)
               {
-                v14 = [v12 countByEnumeratingWithState:&v29 objects:v45 count:16];
+                v14 = [stagedOperations countByEnumeratingWithState:&v29 objects:v45 count:16];
                 if (!v14)
                 {
 LABEL_27:
@@ -563,9 +563,9 @@ LABEL_27:
             }
           }
 
-          v11 = [v9 isLeaf];
+          isLeaf2 = [v9 isLeaf];
 
-          if (v11)
+          if (isLeaf2)
           {
             goto LABEL_11;
           }
@@ -582,7 +582,7 @@ LABEL_28:
     while (v6);
   }
 
-  os_unfair_lock_unlock(&v25->_componentLock);
+  os_unfair_lock_unlock(&selfCopy->_componentLock);
 }
 
 - (void)discardStagedOperationsAndTriggerCompletion
@@ -592,8 +592,8 @@ LABEL_28:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(MSDComponent *)self stagedOperations];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  stagedOperations = [(MSDComponent *)self stagedOperations];
+  v4 = [stagedOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -605,7 +605,7 @@ LABEL_28:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(stagedOperations);
         }
 
         [*(*(&v11 + 1) + 8 * v7) cancel];
@@ -613,84 +613,84 @@ LABEL_28:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [stagedOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(MSDComponent *)self finishedOperations];
-  v9 = [(MSDComponent *)self stagedOperations];
-  [v8 unionOrderedSet:v9];
+  finishedOperations = [(MSDComponent *)self finishedOperations];
+  stagedOperations2 = [(MSDComponent *)self stagedOperations];
+  [finishedOperations unionOrderedSet:stagedOperations2];
 
-  v10 = [(MSDComponent *)self stagedOperations];
-  [v10 removeAllObjects];
+  stagedOperations3 = [(MSDComponent *)self stagedOperations];
+  [stagedOperations3 removeAllObjects];
 
   [(MSDComponent *)self _handleActiveOperationsDepleted];
   os_unfair_lock_unlock(&self->_componentLock);
 }
 
-- (void)operationWillFinish:(id)a3
+- (void)operationWillFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v4;
+    v18 = finishCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Operation will finish: %{public}@", &v15, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_componentLock);
-  if (([v4 isCancelled] & 1) == 0)
+  if (([finishCopy isCancelled] & 1) == 0)
   {
-    if ([v4 type] == 5)
+    if ([finishCopy type] == 5)
     {
       os_unfair_lock_unlock(&self->_componentLock);
       v6 = 0;
 LABEL_7:
-      v7 = [(MSDComponent *)self observer];
-      [v7 componentDidComplete:self];
+      observer = [(MSDComponent *)self observer];
+      [observer componentDidComplete:self];
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    if ([v4 result])
+    if ([finishCopy result])
     {
-      [(MSDComponent *)self _handleSuccessfulOperation:v4];
+      [(MSDComponent *)self _handleSuccessfulOperation:finishCopy];
     }
 
-    else if ([v4 skipped])
+    else if ([finishCopy skipped])
     {
-      [(MSDComponent *)self _handleSkippedOperation:v4];
+      [(MSDComponent *)self _handleSkippedOperation:finishCopy];
     }
 
     else
     {
-      if ([v4 retryable])
+      if ([finishCopy retryable])
       {
-        v6 = [(MSDComponent *)self _handleRetryableOperation:v4];
+        v6 = [(MSDComponent *)self _handleRetryableOperation:finishCopy];
         goto LABEL_18;
       }
 
-      [(MSDComponent *)self _handleFailedOperation:v4];
+      [(MSDComponent *)self _handleFailedOperation:finishCopy];
     }
 
     v6 = 0;
 LABEL_18:
-    v8 = [(MSDComponent *)self stagedOperations];
-    v9 = [v8 count];
+    stagedOperations = [(MSDComponent *)self stagedOperations];
+    v9 = [stagedOperations count];
 
     if (v9)
     {
       os_unfair_lock_unlock(&self->_componentLock);
       if (!v6)
       {
-        v7 = [(MSDComponent *)self observer];
-        [v7 componentDidHaveNewOperationStaged:self];
+        observer = [(MSDComponent *)self observer];
+        [observer componentDidHaveNewOperationStaged:self];
         goto LABEL_8;
       }
 
@@ -699,16 +699,16 @@ LABEL_18:
 
     else
     {
-      v11 = [(MSDComponent *)self stagedOperations];
-      if ([v11 count])
+      stagedOperations2 = [(MSDComponent *)self stagedOperations];
+      if ([stagedOperations2 count])
       {
         v10 = 0;
       }
 
       else
       {
-        v12 = [(MSDComponent *)self activeOperations];
-        v10 = [v12 count] == 0;
+        activeOperations = [(MSDComponent *)self activeOperations];
+        v10 = [activeOperations count] == 0;
       }
 
       os_unfair_lock_unlock(&self->_componentLock);
@@ -724,13 +724,13 @@ LABEL_29:
       }
     }
 
-    v13 = [(MSDComponent *)self observer];
-    [v13 component:self didProduceClonedComponent:v6];
+    observer2 = [(MSDComponent *)self observer];
+    [observer2 component:self didProduceClonedComponent:v6];
 
     if (v9)
     {
-      v14 = [(MSDComponent *)self observer];
-      [v14 componentDidHaveNewOperationStaged:self];
+      observer3 = [(MSDComponent *)self observer];
+      [observer3 componentDidHaveNewOperationStaged:self];
 
       if (!v10)
       {
@@ -743,34 +743,34 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  [(MSDComponent *)self _handleCancelledOperation:v4];
+  [(MSDComponent *)self _handleCancelledOperation:finishCopy];
   os_unfair_lock_unlock(&self->_componentLock);
   v6 = 0;
 LABEL_9:
 }
 
-- (void)_addStagedOperation:(id)a3 forRollback:(BOOL)a4
+- (void)_addStagedOperation:(id)operation forRollback:(BOOL)rollback
 {
-  v7 = a3;
-  v6 = [(MSDComponent *)self stagedOperations];
-  [v6 addObject:v7];
+  operationCopy = operation;
+  stagedOperations = [(MSDComponent *)self stagedOperations];
+  [stagedOperations addObject:operationCopy];
 
-  if (!a4)
+  if (!rollback)
   {
-    [v7 associateWithComponent:self];
-    [v7 addObserver:self];
+    [operationCopy associateWithComponent:self];
+    [operationCopy addObserver:self];
   }
 }
 
-- (void)_estimateDiskSpaceRequirementFromOperations:(id)a3
+- (void)_estimateDiskSpaceRequirementFromOperations:(id)operations
 {
-  v3 = a3;
+  operationsCopy = operations;
   v4 = +[NSMutableSet set];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = operationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -786,20 +786,20 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * i) context];
-        v12 = [v11 uniqueName];
-        v13 = [v11 diskSpacedRequired];
-        if (v13)
+        context = [*(*(&v18 + 1) + 8 * i) context];
+        uniqueName = [context uniqueName];
+        diskSpacedRequired = [context diskSpacedRequired];
+        if (diskSpacedRequired)
         {
-          v14 = v13;
-          v15 = [v4 containsObject:v12];
+          v14 = diskSpacedRequired;
+          v15 = [v4 containsObject:uniqueName];
 
           if ((v15 & 1) == 0)
           {
-            v16 = [v11 diskSpacedRequired];
-            v8 += [v16 unsignedLongLongValue];
+            diskSpacedRequired2 = [context diskSpacedRequired];
+            v8 += [diskSpacedRequired2 unsignedLongLongValue];
 
-            [v4 addObject:v12];
+            [v4 addObject:uniqueName];
           }
         }
       }
@@ -821,42 +821,42 @@ LABEL_9:
 - (id)_cloneComponent
 {
   v3 = objc_alloc_init(NSMutableOrderedSet);
-  v4 = [(MSDComponent *)self stagedOperations];
-  [v3 unionOrderedSet:v4];
+  stagedOperations = [(MSDComponent *)self stagedOperations];
+  [v3 unionOrderedSet:stagedOperations];
 
-  v5 = [(MSDComponent *)self activeOperations];
-  [v3 unionOrderedSet:v5];
+  activeOperations = [(MSDComponent *)self activeOperations];
+  [v3 unionOrderedSet:activeOperations];
 
-  v6 = [v3 array];
-  v7 = [(MSDComponent *)self _cloneOperations:v6];
+  array = [v3 array];
+  v7 = [(MSDComponent *)self _cloneOperations:array];
 
   v8 = [MSDComponent alloc];
-  v9 = [(MSDComponent *)self name];
-  v10 = [(MSDComponent *)v8 initWithName:v9 andOperations:v7];
+  name = [(MSDComponent *)self name];
+  v10 = [(MSDComponent *)v8 initWithName:name andOperations:v7];
 
   [(MSDComponent *)v10 setRetryCount:[(MSDComponent *)self retryCount]];
-  v11 = [(MSDComponent *)self finishedOperations];
-  v12 = [v11 mutableCopy];
+  finishedOperations = [(MSDComponent *)self finishedOperations];
+  v12 = [finishedOperations mutableCopy];
   [(MSDComponent *)v10 setFinishedOperations:v12];
 
   return v10;
 }
 
-- (id)_cloneOperations:(id)a3
+- (id)_cloneOperations:(id)operations
 {
-  v3 = a3;
+  operationsCopy = operations;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = objc_alloc_init(NSMutableArray);
-  if ([v3 count])
+  if ([operationsCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v3 objectAtIndex:v6];
+      v7 = [operationsCopy objectAtIndex:v6];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v7 context];
-      v11 = [MSDOperationRepository createOperationFromIdentifier:v9 withContext:v10];
+      context = [v7 context];
+      v11 = [MSDOperationRepository createOperationFromIdentifier:v9 withContext:context];
 
       [v5 addObject:v11];
       v12 = [NSNumber numberWithInt:v6];
@@ -866,13 +866,13 @@ LABEL_9:
       ++v6;
     }
 
-    while ([v3 count] > v6);
+    while ([operationsCopy count] > v6);
   }
 
   if ([v5 count])
   {
     v14 = 0;
-    v26 = v3;
+    v26 = operationsCopy;
     do
     {
       v15 = [v5 objectAtIndex:{v14, v26}];
@@ -881,10 +881,10 @@ LABEL_9:
       v30 = 0u;
       v31 = 0u;
       v27 = v14;
-      v16 = [v3 objectAtIndex:v14];
-      v17 = [v16 dependencies];
+      v16 = [operationsCopy objectAtIndex:v14];
+      dependencies = [v16 dependencies];
 
-      v18 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v18 = [dependencies countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v18)
       {
         v19 = v18;
@@ -895,7 +895,7 @@ LABEL_9:
           {
             if (*v29 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(dependencies);
             }
 
             v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [*(*(&v28 + 1) + 8 * i) hash]);
@@ -908,14 +908,14 @@ LABEL_9:
             }
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v19 = [dependencies countByEnumeratingWithState:&v28 objects:v32 count:16];
         }
 
         while (v19);
       }
 
       v14 = v27 + 1;
-      v3 = v26;
+      operationsCopy = v26;
     }
 
     while ([v5 count] > v27 + 1);
@@ -926,8 +926,8 @@ LABEL_9:
 
 - (void)_cancelRemainingOperations
 {
-  v2 = [(MSDComponent *)self activeOperations];
-  v3 = [v2 mutableCopy];
+  activeOperations = [(MSDComponent *)self activeOperations];
+  v3 = [activeOperations mutableCopy];
 
   v13 = v3;
   if ([v3 count])
@@ -991,8 +991,8 @@ LABEL_9:
 
 - (void)_rollbackFinishedOperations
 {
-  v3 = [(MSDComponent *)self finishedOperations];
-  v4 = [v3 copy];
+  finishedOperations = [(MSDComponent *)self finishedOperations];
+  v4 = [finishedOperations copy];
 
   [(MSDComponent *)self setRollbackOperations:1];
   v14 = 0u;
@@ -1041,31 +1041,31 @@ LABEL_9:
   if (![(MSDComponent *)self forRemoval])
   {
     v3 = objc_alloc_init(MSDOperationContext);
-    v4 = [(MSDComponent *)self name];
-    [(MSDOperationContext *)v3 setIdentifier:v4];
+    name = [(MSDComponent *)self name];
+    [(MSDOperationContext *)v3 setIdentifier:name];
 
     v5 = [MSDOperationRepository createOperationFromIdentifier:@"MSDComponentCompleteOperation" withContext:v3];
     [(MSDComponent *)self _addStagedOperation:v5 forRollback:0];
   }
 }
 
-- (void)_handleSuccessfulOperation:(id)a3
+- (void)_handleSuccessfulOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_1000C9B58();
   }
 
-  v6 = [(MSDComponent *)self activeOperations];
-  [v6 removeObject:v4];
+  activeOperations = [(MSDComponent *)self activeOperations];
+  [activeOperations removeObject:operationCopy];
 
-  v7 = [(MSDComponent *)self finishedOperations];
-  [v7 addObject:v4];
+  finishedOperations = [(MSDComponent *)self finishedOperations];
+  [finishedOperations addObject:operationCopy];
 
-  v8 = [(MSDComponent *)self activeOperations];
-  v9 = [v8 count];
+  activeOperations2 = [(MSDComponent *)self activeOperations];
+  v9 = [activeOperations2 count];
 
   if (!v9)
   {
@@ -1073,9 +1073,9 @@ LABEL_9:
   }
 }
 
-- (void)_handleFailedOperation:(id)a3
+- (void)_handleFailedOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1085,9 +1085,9 @@ LABEL_9:
   if (os_variant_has_internal_content())
   {
     v6 = +[MSDTestPreferences sharedInstance];
-    v7 = [v6 pauseContentUpdateOnError];
+    pauseContentUpdateOnError = [v6 pauseContentUpdateOnError];
 
-    if (v7)
+    if (pauseContentUpdateOnError)
     {
       do
       {
@@ -1100,34 +1100,34 @@ LABEL_9:
 
         sleep(0x1Eu);
         v9 = +[MSDTestPreferences sharedInstance];
-        v10 = [v9 pauseContentUpdateOnError];
+        pauseContentUpdateOnError2 = [v9 pauseContentUpdateOnError];
       }
 
-      while ((v10 & 1) != 0);
+      while ((pauseContentUpdateOnError2 & 1) != 0);
     }
   }
 
-  v11 = [(MSDComponent *)self activeOperations];
-  [v11 removeObject:v4];
+  activeOperations = [(MSDComponent *)self activeOperations];
+  [activeOperations removeObject:operationCopy];
 
-  v12 = [(MSDComponent *)self finishedOperations];
-  [v12 addObject:v4];
+  finishedOperations = [(MSDComponent *)self finishedOperations];
+  [finishedOperations addObject:operationCopy];
 
   [(MSDComponent *)self _cancelRemainingOperations];
   [(MSDComponent *)self _rollbackFinishedOperations];
-  v13 = [(MSDComponent *)self finishedOperations];
-  v14 = [(MSDComponent *)self activeOperations];
-  [v13 unionOrderedSet:v14];
+  finishedOperations2 = [(MSDComponent *)self finishedOperations];
+  activeOperations2 = [(MSDComponent *)self activeOperations];
+  [finishedOperations2 unionOrderedSet:activeOperations2];
 
-  v15 = [(MSDComponent *)self activeOperations];
-  [v15 removeAllObjects];
+  activeOperations3 = [(MSDComponent *)self activeOperations];
+  [activeOperations3 removeAllObjects];
 
   [(MSDComponent *)self _handleActiveOperationsDepleted];
 }
 
-- (id)_handleRetryableOperation:(id)a3
+- (id)_handleRetryableOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1141,38 +1141,38 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Component retry count exhausted.", &v9, 0xCu);
     }
 
-    [(MSDComponent *)self _handleFailedOperation:v4];
-    v6 = 0;
+    [(MSDComponent *)self _handleFailedOperation:operationCopy];
+    _cloneComponent = 0;
   }
 
   else
   {
     [(MSDComponent *)self _cancelRemainingOperations];
-    v6 = [(MSDComponent *)self _cloneComponent];
+    _cloneComponent = [(MSDComponent *)self _cloneComponent];
   }
 
-  return v6;
+  return _cloneComponent;
 }
 
-- (void)_handleSkippedOperation:(id)a3
+- (void)_handleSkippedOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_1000C9C90();
   }
 
-  [(MSDComponent *)self _handleSuccessfulOperation:v4];
+  [(MSDComponent *)self _handleSuccessfulOperation:operationCopy];
 }
 
-- (void)_handleCancelledOperation:(id)a3
+- (void)_handleCancelledOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1185,11 +1185,11 @@ LABEL_9:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v4;
+      v8 = operationCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Rolling back cancelled operation: %{public}@", &v7, 0xCu);
     }
 
-    [v4 rollback];
+    [operationCopy rollback];
   }
 }
 
@@ -1197,8 +1197,8 @@ LABEL_9:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(MSDComponent *)self name];
-  v6 = [NSString stringWithFormat:@"<%@: Name: %@>", v4, v5];
+  name = [(MSDComponent *)self name];
+  v6 = [NSString stringWithFormat:@"<%@: Name: %@>", v4, name];
 
   return v6;
 }

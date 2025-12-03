@@ -1,56 +1,56 @@
 @interface CCRapportSyncEngine
-- (BOOL)currentPlatformHasSetsSupportingSync:(id *)a3;
-- (BOOL)didRemoteDeviceInitiateSyncWithMessage:(id)a3 beforeLocalInteraction:(id)a4;
-- (BOOL)rapportManager:(id)a3 isDeviceSupported:(id)a4;
-- (CCRapportSyncEngine)initWithQueue:(id)a3 error:(id *)a4;
-- (CCRapportSyncEngine)initWithQueue:(id)a3 rapportManager:(id)a4 readAccess:(id)a5 donateServiceProvider:(id)a6 localDeviceUUID:(id)a7;
+- (BOOL)currentPlatformHasSetsSupportingSync:(id *)sync;
+- (BOOL)didRemoteDeviceInitiateSyncWithMessage:(id)message beforeLocalInteraction:(id)interaction;
+- (BOOL)rapportManager:(id)manager isDeviceSupported:(id)supported;
+- (CCRapportSyncEngine)initWithQueue:(id)queue error:(id *)error;
+- (CCRapportSyncEngine)initWithQueue:(id)queue rapportManager:(id)manager readAccess:(id)access donateServiceProvider:(id)provider localDeviceUUID:(id)d;
 - (NSString)description;
-- (id)buildBasePeerToPeerMessageForInteraction:(id)a3;
-- (id)buildDoneFetchingMergeableDeltasMessageForInteraction:(id)a3;
+- (id)buildBasePeerToPeerMessageForInteraction:(id)interaction;
+- (id)buildDoneFetchingMergeableDeltasMessageForInteraction:(id)interaction;
 - (id)doneFetchingMergeableDeltasRequestHandler;
 - (id)fetchMergeableDeltasRequestHandler;
-- (id)readSetForDiscovery:(id)a3 senderDeviceUUID:(id)a4;
+- (id)readSetForDiscovery:(id)discovery senderDeviceUUID:(id)d;
 - (id)setDiscoveryRequestHandler;
 - (id)setIdentifiersSupportingInboundSync;
 - (id)setIdentifiersSupportingOutboundSync;
 - (id)setUUIDsSupportingInboundSync;
 - (id)setUUIDsSupportingOutboundSync;
-- (id)validateInRequest:(id)a3 inOptions:(id)a4 inResponseHandler:(id)a5 isInitiatingRequest:(BOOL)a6 outPlatform:(int64_t *)a7;
-- (unint64_t)syncErrorCodeFromReadAccessError:(id)a3;
-- (unsigned)determineSyncOperationForDiscoveredSet:(id)a3 forInteraction:(id)a4 outFetchRequest:(id *)a5;
-- (unsigned)syncOperationForDiscoveredSet:(id)a3 withDevice:(id)a4 versionedMergeable:(id)a5 readAccessError:(id)a6;
+- (id)validateInRequest:(id)request inOptions:(id)options inResponseHandler:(id)handler isInitiatingRequest:(BOOL)initiatingRequest outPlatform:(int64_t *)platform;
+- (unint64_t)syncErrorCodeFromReadAccessError:(id)error;
+- (unsigned)determineSyncOperationForDiscoveredSet:(id)set forInteraction:(id)interaction outFetchRequest:(id *)request;
+- (unsigned)syncOperationForDiscoveredSet:(id)set withDevice:(id)device versionedMergeable:(id)mergeable readAccessError:(id)error;
 - (void)_deactivateSession;
-- (void)_failToActivateSessionWithError:(id)a3 activationHandler:(id)a4 sessionCompletionHandler:(id)a5;
-- (void)activateClientWithReason:(unsigned __int8)a3 activity:(id)a4 completionHandler:(id)a5;
-- (void)activateServerWithReason:(unsigned __int8)a3 activationHandler:(id)a4;
-- (void)addOmittedSetsFromSetDiscovery:(id)a3 forInteraction:(id)a4;
-- (void)continueAfterHandlingAllSetsToSyncForInteraction:(id)a3;
-- (void)continueToDiscoverSetsToSyncForInteraction:(id)a3;
-- (void)continueToHandleNextSetToSyncAtIndex:(unint64_t)a3 forInteraction:(id)a4;
-- (void)expireDevice:(id)a3 fromSet:(id)a4;
-- (void)handleIncomingMergeableDeltaFileTransfer:(id)a3 fromDevice:(id)a4;
-- (void)rapportManager:(id)a3 didLoseNearbyCCRapportDevice:(id)a4;
-- (void)recordDiscoveredSetResources:(id)a3 forInteraction:(id)a4;
-- (void)sendDoneFetchingMergeableDeltasRequest:(id)a3 forInteraction:(id)a4;
-- (void)sendFetchMergeableDeltasRequest:(id)a3 forInteraction:(id)a4 continueSync:(id)a5;
-- (void)sendSetDiscoveryRequest:(id)a3 forInteraction:(id)a4 continueSync:(id)a5;
+- (void)_failToActivateSessionWithError:(id)error activationHandler:(id)handler sessionCompletionHandler:(id)completionHandler;
+- (void)activateClientWithReason:(unsigned __int8)reason activity:(id)activity completionHandler:(id)handler;
+- (void)activateServerWithReason:(unsigned __int8)reason activationHandler:(id)handler;
+- (void)addOmittedSetsFromSetDiscovery:(id)discovery forInteraction:(id)interaction;
+- (void)continueAfterHandlingAllSetsToSyncForInteraction:(id)interaction;
+- (void)continueToDiscoverSetsToSyncForInteraction:(id)interaction;
+- (void)continueToHandleNextSetToSyncAtIndex:(unint64_t)index forInteraction:(id)interaction;
+- (void)expireDevice:(id)device fromSet:(id)set;
+- (void)handleIncomingMergeableDeltaFileTransfer:(id)transfer fromDevice:(id)device;
+- (void)rapportManager:(id)manager didLoseNearbyCCRapportDevice:(id)device;
+- (void)recordDiscoveredSetResources:(id)resources forInteraction:(id)interaction;
+- (void)sendDoneFetchingMergeableDeltasRequest:(id)request forInteraction:(id)interaction;
+- (void)sendFetchMergeableDeltasRequest:(id)request forInteraction:(id)interaction continueSync:(id)sync;
+- (void)sendSetDiscoveryRequest:(id)request forInteraction:(id)interaction continueSync:(id)sync;
 @end
 
 @implementation CCRapportSyncEngine
 
-- (CCRapportSyncEngine)initWithQueue:(id)a3 error:(id *)a4
+- (CCRapportSyncEngine)initWithQueue:(id)queue error:(id *)error
 {
-  v5 = a3;
+  queueCopy = queue;
   v13 = 0;
   v6 = [MEMORY[0x1E6993A90] readDefaultLocalDeviceUUID:&v13];
   v7 = v13;
   if (v6)
   {
-    v8 = [[CCRapportManager alloc] initWithQueue:v5 forSharedUse:0];
+    v8 = [[CCRapportManager alloc] initWithQueue:queueCopy forSharedUse:0];
     v9 = [MEMORY[0x1E69939B0] defaultInstanceWithUseCase:*MEMORY[0x1E698E958]];
-    self = [(CCRapportSyncEngine *)self initWithQueue:v5 rapportManager:v8 readAccess:v9 donateServiceProvider:0 localDeviceUUID:v6];
+    self = [(CCRapportSyncEngine *)self initWithQueue:queueCopy rapportManager:v8 readAccess:v9 donateServiceProvider:0 localDeviceUUID:v6];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -62,34 +62,34 @@
     }
 
     CCSetError();
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (CCRapportSyncEngine)initWithQueue:(id)a3 rapportManager:(id)a4 readAccess:(id)a5 donateServiceProvider:(id)a6 localDeviceUUID:(id)a7
+- (CCRapportSyncEngine)initWithQueue:(id)queue rapportManager:(id)manager readAccess:(id)access donateServiceProvider:(id)provider localDeviceUUID:(id)d
 {
-  v21 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  queueCopy = queue;
+  managerCopy = manager;
+  accessCopy = access;
+  providerCopy = provider;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = CCRapportSyncEngine;
   v17 = [(CCRapportSyncEngine *)&v22 init];
   if (v17)
   {
-    v18 = [MEMORY[0x1E698E9D0] currentPersonaIdentifier];
+    currentPersonaIdentifier = [MEMORY[0x1E698E9D0] currentPersonaIdentifier];
     personaIdentifier = v17->_personaIdentifier;
-    v17->_personaIdentifier = v18;
+    v17->_personaIdentifier = currentPersonaIdentifier;
 
-    objc_storeStrong(&v17->_queue, a3);
-    objc_storeStrong(&v17->_rapportManager, a4);
+    objc_storeStrong(&v17->_queue, queue);
+    objc_storeStrong(&v17->_rapportManager, manager);
     [(CCRapportManager *)v17->_rapportManager setDelegate:v17];
-    objc_storeStrong(&v17->_readAcccess, a5);
-    objc_storeStrong(&v17->_donateServiceProvider, a6);
-    objc_storeStrong(&v17->_localDeviceUUID, a7);
+    objc_storeStrong(&v17->_readAcccess, access);
+    objc_storeStrong(&v17->_donateServiceProvider, provider);
+    objc_storeStrong(&v17->_localDeviceUUID, d);
   }
 
   return v17;
@@ -99,46 +99,46 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CCRapportSyncEngine *)self siteSuffix];
-  v6 = v5;
+  siteSuffix = [(CCRapportSyncEngine *)self siteSuffix];
+  v6 = siteSuffix;
   currentSession = self->_currentSession;
   if (!currentSession)
   {
     currentSession = &stru_1F55F1328;
   }
 
-  v8 = [v3 stringWithFormat:@"%@[%@] %@", v4, v5, currentSession];
+  currentSession = [v3 stringWithFormat:@"%@[%@] %@", v4, siteSuffix, currentSession];
 
-  return v8;
+  return currentSession;
 }
 
-- (void)activateClientWithReason:(unsigned __int8)a3 activity:(id)a4 completionHandler:(id)a5
+- (void)activateClientWithReason:(unsigned __int8)reason activity:(id)activity completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__CCRapportSyncEngine_activateClientWithReason_activity_completionHandler___block_invoke;
   block[3] = &unk_1E85C2AB8;
-  v12 = a3;
+  reasonCopy = reason;
   block[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)activateServerWithReason:(unsigned __int8)a3 activationHandler:(id)a4
+- (void)activateServerWithReason:(unsigned __int8)reason activationHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__CCRapportSyncEngine_activateServerWithReason_activationHandler___block_invoke;
   block[3] = &unk_1E85C2AB8;
-  v11 = a3;
+  reasonCopy = reason;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -218,35 +218,35 @@ void __116__CCRapportSyncEngine__activateSyncSessionWithReason_forInteractionTyp
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_failToActivateSessionWithError:(id)a3 activationHandler:(id)a4 sessionCompletionHandler:(id)a5
+- (void)_failToActivateSessionWithError:(id)error activationHandler:(id)handler sessionCompletionHandler:(id)completionHandler
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  errorCopy = error;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v10 = __biome_log_for_category();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     [CCRapportSyncEngine _failToActivateSessionWithError:activationHandler:sessionCompletionHandler:];
   }
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8, v7);
+    handlerCopy[2](handlerCopy, errorCopy);
   }
 
-  if (v9)
+  if (completionHandlerCopy)
   {
-    if (v7)
+    if (errorCopy)
     {
-      v13[0] = v7;
+      v13[0] = errorCopy;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-      v9[2](v9, MEMORY[0x1E695E0F0], v11);
+      completionHandlerCopy[2](completionHandlerCopy, MEMORY[0x1E695E0F0], v11);
     }
 
     else
     {
-      v9[2](v9, MEMORY[0x1E695E0F0], 0);
+      completionHandlerCopy[2](completionHandlerCopy, MEMORY[0x1E695E0F0], 0);
     }
   }
 
@@ -264,24 +264,24 @@ void __116__CCRapportSyncEngine__activateSyncSessionWithReason_forInteractionTyp
   }
 }
 
-- (void)continueToDiscoverSetsToSyncForInteraction:(id)a3
+- (void)continueToDiscoverSetsToSyncForInteraction:(id)interaction
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interactionCopy = interaction;
   dispatch_assert_queue_V2(self->_queue);
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1DA444000, v5, OS_LOG_TYPE_DEFAULT, "%@: discovering sets to sync", buf, 0xCu);
   }
 
-  v6 = [(CCRapportSyncEngine *)self setUUIDsSupportingInboundSync];
-  v7 = [(CCRapportSyncEngine *)self buildBasePeerToPeerMessageForInteraction:v4];
-  v8 = [v4 options];
-  v9 = [v4 repeatDiscoveryAfterSet];
-  v10 = [CCSetDiscoveryRequest setDiscoveryRequestFromPeerToPeerMessage:v7 setUUIDsToDiscover:v6 requestOptions:v8 startAfterSet:v9 sizeThreshold:&unk_1F55F5A88];
+  setUUIDsSupportingInboundSync = [(CCRapportSyncEngine *)self setUUIDsSupportingInboundSync];
+  v7 = [(CCRapportSyncEngine *)self buildBasePeerToPeerMessageForInteraction:interactionCopy];
+  options = [interactionCopy options];
+  repeatDiscoveryAfterSet = [interactionCopy repeatDiscoveryAfterSet];
+  v10 = [CCSetDiscoveryRequest setDiscoveryRequestFromPeerToPeerMessage:v7 setUUIDsToDiscover:setUUIDsSupportingInboundSync requestOptions:options startAfterSet:repeatDiscoveryAfterSet sizeThreshold:&unk_1F55F5A88];
 
   objc_initWeak(buf, self);
   v13[0] = MEMORY[0x1E69E9820];
@@ -289,7 +289,7 @@ void __116__CCRapportSyncEngine__activateSyncSessionWithReason_forInteractionTyp
   v13[2] = __66__CCRapportSyncEngine_continueToDiscoverSetsToSyncForInteraction___block_invoke;
   v13[3] = &unk_1E85C2B58;
   objc_copyWeak(&v15, buf);
-  v11 = v4;
+  v11 = interactionCopy;
   v14 = v11;
   [(CCRapportSyncEngine *)self sendSetDiscoveryRequest:v10 forInteraction:v11 continueSync:v13];
 
@@ -330,31 +330,31 @@ void __66__CCRapportSyncEngine_continueToDiscoverSetsToSyncForInteraction___bloc
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)continueToHandleNextSetToSyncAtIndex:(unint64_t)a3 forInteraction:(id)a4
+- (void)continueToHandleNextSetToSyncAtIndex:(unint64_t)index forInteraction:(id)interaction
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  interactionCopy = interaction;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [v6 setsToSync];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  setsToSync = [interactionCopy setsToSync];
+  v8 = [setsToSync objectAtIndexedSubscript:index];
 
   v9 = __biome_log_for_category();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 setsToSync];
+    setsToSync2 = [interactionCopy setsToSync];
     *buf = 138413058;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 1024;
-    *v33 = a3 + 1;
+    *v33 = index + 1;
     *&v33[4] = 1024;
-    *&v33[6] = [v10 count];
+    *&v33[6] = [setsToSync2 count];
     LOWORD(v34[0]) = 2112;
     *(v34 + 2) = v8;
     _os_log_impl(&dword_1DA444000, v9, OS_LOG_TYPE_DEFAULT, "%@: handling set (%u / %u): %@", buf, 0x22u);
   }
 
   v29 = 0;
-  v11 = [(CCRapportSyncEngine *)self determineSyncOperationForDiscoveredSet:v8 forInteraction:v6 outFetchRequest:&v29];
+  v11 = [(CCRapportSyncEngine *)self determineSyncOperationForDiscoveredSet:v8 forInteraction:interactionCopy outFetchRequest:&v29];
   v12 = v29;
   v13 = __biome_log_for_category();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -370,7 +370,7 @@ void __66__CCRapportSyncEngine_continueToDiscoverSetsToSyncForInteraction___bloc
     }
 
     *buf = 138412802;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2112;
     *v33 = v14;
     *&v33[8] = 2112;
@@ -384,8 +384,8 @@ void __66__CCRapportSyncEngine_continueToDiscoverSetsToSyncForInteraction___bloc
   v25 = __75__CCRapportSyncEngine_continueToHandleNextSetToSyncAtIndex_forInteraction___block_invoke;
   v26 = &unk_1E85C2D78;
   objc_copyWeak(v28, buf);
-  v28[1] = a3;
-  v15 = v6;
+  v28[1] = index;
+  v15 = interactionCopy;
   v27 = v15;
   v16 = MEMORY[0x1DA74EA40](&v23);
   if (v11 >= 2)
@@ -393,11 +393,11 @@ void __66__CCRapportSyncEngine_continueToDiscoverSetsToSyncForInteraction___bloc
     if (v11 == 2)
     {
       v17 = [CCSetVersionedMergeable writeOnlyInstanceForSet:v8 donateServiceProvider:self->_donateServiceProvider, v23, v24, v25, v26];
-      v18 = [v15 device];
-      v19 = [v18 cascadeDeviceUUID];
-      v20 = [v8 deviceSite];
-      v21 = [v8 relayedDeviceSites];
-      [v17 attestInSyncPeerDeviceUUID:v19 deviceSite:v20 relayedDeviceSites:v21];
+      device = [v15 device];
+      cascadeDeviceUUID = [device cascadeDeviceUUID];
+      deviceSite = [v8 deviceSite];
+      relayedDeviceSites = [v8 relayedDeviceSites];
+      [v17 attestInSyncPeerDeviceUUID:cascadeDeviceUUID deviceSite:deviceSite relayedDeviceSites:relayedDeviceSites];
     }
 
     v16[2](v16);
@@ -449,86 +449,86 @@ void __75__CCRapportSyncEngine_continueToHandleNextSetToSyncAtIndex_forInteracti
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)continueAfterHandlingAllSetsToSyncForInteraction:(id)a3
+- (void)continueAfterHandlingAllSetsToSyncForInteraction:(id)interaction
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interactionCopy = interaction;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 repeatDiscoveryAfterSet];
+  repeatDiscoveryAfterSet = [interactionCopy repeatDiscoveryAfterSet];
 
-  if (v5)
+  if (repeatDiscoveryAfterSet)
   {
     v6 = __biome_log_for_category();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DA444000, v6, OS_LOG_TYPE_DEFAULT, "%@: repeating set discovery to sync additional sets", &v12, 0xCu);
     }
 
-    [(CCRapportSyncEngine *)self continueToDiscoverSetsToSyncForInteraction:v4];
+    [(CCRapportSyncEngine *)self continueToDiscoverSetsToSyncForInteraction:interactionCopy];
   }
 
   else
   {
-    v7 = [(CCRapportSyncEngine *)self buildDoneFetchingMergeableDeltasMessageForInteraction:v4];
+    v7 = [(CCRapportSyncEngine *)self buildDoneFetchingMergeableDeltasMessageForInteraction:interactionCopy];
     v8 = __biome_log_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 isReciprocalRequest];
+      isReciprocalRequest = [v7 isReciprocalRequest];
       v10 = &stru_1F55F1328;
-      if (v9)
+      if (isReciprocalRequest)
       {
         v10 = @"NOT ";
       }
 
       v12 = 138412546;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2112;
       v15 = v10;
       _os_log_impl(&dword_1DA444000, v8, OS_LOG_TYPE_DEFAULT, "%@: done syncing sets and %@expecting reciprocation", &v12, 0x16u);
     }
 
-    [(CCRapportSyncEngine *)self sendDoneFetchingMergeableDeltasRequest:v7 forInteraction:v4];
+    [(CCRapportSyncEngine *)self sendDoneFetchingMergeableDeltasRequest:v7 forInteraction:interactionCopy];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendSetDiscoveryRequest:(id)a3 forInteraction:(id)a4 continueSync:(id)a5
+- (void)sendSetDiscoveryRequest:(id)request forInteraction:(id)interaction continueSync:(id)sync
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  interactionCopy = interaction;
+  syncCopy = sync;
   dispatch_assert_queue_V2(self->_queue);
   objc_initWeak(&location, self);
-  v11 = [v9 device];
-  [v9 setTimeoutForRapportRequest:@"com.apple.biomesyncd.cascade.setDiscoveryRequest"];
-  v12 = [v8 startAfterSet];
+  device = [interactionCopy device];
+  [interactionCopy setTimeoutForRapportRequest:@"com.apple.biomesyncd.cascade.setDiscoveryRequest"];
+  startAfterSet = [requestCopy startAfterSet];
 
-  if (!v12)
+  if (!startAfterSet)
   {
-    [v8 walltime];
-    [v9 setInitiatingRequestSentWalltime:?];
+    [requestCopy walltime];
+    [interactionCopy setInitiatingRequestSentWalltime:?];
   }
 
-  v13 = [v8 dictionaryRepresentation];
+  dictionaryRepresentation = [requestCopy dictionaryRepresentation];
   rapportManager = self->_rapportManager;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __75__CCRapportSyncEngine_sendSetDiscoveryRequest_forInteraction_continueSync___block_invoke;
   v19[3] = &unk_1E85C2DA0;
   objc_copyWeak(&v25, &location);
-  v15 = v9;
+  v15 = interactionCopy;
   v20 = v15;
-  v16 = v11;
+  v16 = device;
   v21 = v16;
-  v17 = v8;
+  v17 = requestCopy;
   v22 = v17;
-  v18 = v10;
-  v23 = self;
+  v18 = syncCopy;
+  selfCopy = self;
   v24 = v18;
-  [(CCRapportManager *)rapportManager sendRequest:@"com.apple.biomesyncd.cascade.setDiscoveryRequest" request:v13 toDevice:v16 responseHandler:v19];
+  [(CCRapportManager *)rapportManager sendRequest:@"com.apple.biomesyncd.cascade.setDiscoveryRequest" request:dictionaryRepresentation toDevice:v16 responseHandler:v19];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
@@ -695,60 +695,60 @@ LABEL_30:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendFetchMergeableDeltasRequest:(id)a3 forInteraction:(id)a4 continueSync:(id)a5
+- (void)sendFetchMergeableDeltasRequest:(id)request forInteraction:(id)interaction continueSync:(id)sync
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  interactionCopy = interaction;
+  syncCopy = sync;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [v9 device];
+  device = [interactionCopy device];
   rapportManager = self->_rapportManager;
   v38 = 0;
-  v13 = [(CCRapportManager *)rapportManager initiateFileTransferSessionWithServerDevice:v11 error:&v38];
+  v13 = [(CCRapportManager *)rapportManager initiateFileTransferSessionWithServerDevice:device error:&v38];
   v24 = v38;
   if (v13)
   {
-    [v9 setTimeoutForRapportRequest:@"com.apple.biomesyncd.cascade.fetchMergeableDeltas"];
-    v14 = [MEMORY[0x1E698E9D0] currentPersonaIdentifier];
-    v23 = [v13 selfPublicKey];
+    [interactionCopy setTimeoutForRapportRequest:@"com.apple.biomesyncd.cascade.fetchMergeableDeltas"];
+    currentPersonaIdentifier = [MEMORY[0x1E698E9D0] currentPersonaIdentifier];
+    selfPublicKey = [v13 selfPublicKey];
     objc_initWeak(&location, self);
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __83__CCRapportSyncEngine_sendFetchMergeableDeltasRequest_forInteraction_continueSync___block_invoke;
     v31[3] = &unk_1E85C2E18;
     objc_copyWeak(&v36, &location);
-    v22 = v14;
+    v22 = currentPersonaIdentifier;
     v32 = v22;
-    v33 = v9;
-    v15 = v11;
+    v33 = interactionCopy;
+    v15 = device;
     v34 = v15;
-    v16 = v10;
+    v16 = syncCopy;
     v35 = v16;
     [v13 setReceivedItemHandler:v31];
     v17 = __biome_log_for_category();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v40 = self;
+      selfCopy = self;
       v41 = 2112;
-      v42 = v23;
+      v42 = selfPublicKey;
       _os_log_impl(&dword_1DA444000, v17, OS_LOG_TYPE_DEFAULT, "%@: client registering to receive incoming files with peer key %@", buf, 0x16u);
     }
 
-    [v8 setPeerPublicKey:v23];
-    v18 = [v8 dictionaryRepresentation];
+    [requestCopy setPeerPublicKey:selfPublicKey];
+    dictionaryRepresentation = [requestCopy dictionaryRepresentation];
     v19 = self->_rapportManager;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __83__CCRapportSyncEngine_sendFetchMergeableDeltasRequest_forInteraction_continueSync___block_invoke_49;
     v25[3] = &unk_1E85C2E40;
     objc_copyWeak(&v30, &location);
-    v26 = v8;
+    v26 = requestCopy;
     v27 = v15;
     v29 = v16;
     v28 = v13;
-    [(CCRapportManager *)v19 sendRequest:@"com.apple.biomesyncd.cascade.fetchMergeableDeltas" request:v18 toDevice:v27 responseHandler:v25];
+    [(CCRapportManager *)v19 sendRequest:@"com.apple.biomesyncd.cascade.fetchMergeableDeltas" request:dictionaryRepresentation toDevice:v27 responseHandler:v25];
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(&v36);
@@ -763,7 +763,7 @@ LABEL_30:
       [CCRapportSyncEngine sendFetchMergeableDeltasRequest:forInteraction:continueSync:];
     }
 
-    v10[2](v10);
+    syncCopy[2](syncCopy);
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -935,31 +935,31 @@ void __83__CCRapportSyncEngine_sendFetchMergeableDeltasRequest_forInteraction_co
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendDoneFetchingMergeableDeltasRequest:(id)a3 forInteraction:(id)a4
+- (void)sendDoneFetchingMergeableDeltasRequest:(id)request forInteraction:(id)interaction
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  interactionCopy = interaction;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v7 device];
-  [v7 setTimeoutForRapportRequest:@"com.apple.biomesyncd.cascade.doneFetchingMergeableDeltas"];
+  device = [interactionCopy device];
+  [interactionCopy setTimeoutForRapportRequest:@"com.apple.biomesyncd.cascade.doneFetchingMergeableDeltas"];
   objc_initWeak(&location, self);
-  v9 = [v6 dictionaryRepresentation];
+  dictionaryRepresentation = [requestCopy dictionaryRepresentation];
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
-  v19 = [v6 isReciprocalRequest] ^ 1;
+  v19 = [requestCopy isReciprocalRequest] ^ 1;
   rapportManager = self->_rapportManager;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__CCRapportSyncEngine_sendDoneFetchingMergeableDeltasRequest_forInteraction___block_invoke;
   v13[3] = &unk_1E85C2E68;
   objc_copyWeak(&v17, &location);
-  v11 = v7;
+  v11 = interactionCopy;
   v14 = v11;
-  v12 = v8;
+  v12 = device;
   v15 = v12;
   v16 = v18;
-  [(CCRapportManager *)rapportManager sendRequest:@"com.apple.biomesyncd.cascade.doneFetchingMergeableDeltas" request:v9 toDevice:v12 responseHandler:v13];
+  [(CCRapportManager *)rapportManager sendRequest:@"com.apple.biomesyncd.cascade.doneFetchingMergeableDeltas" request:dictionaryRepresentation toDevice:v12 responseHandler:v13];
 
   objc_destroyWeak(&v17);
   _Block_object_dispose(v18, 8);
@@ -1047,54 +1047,54 @@ void __77__CCRapportSyncEngine_sendDoneFetchingMergeableDeltasRequest_forInterac
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleIncomingMergeableDeltaFileTransfer:(id)a3 fromDevice:(id)a4
+- (void)handleIncomingMergeableDeltaFileTransfer:(id)transfer fromDevice:(id)device
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 itemURL];
+  transferCopy = transfer;
+  deviceCopy = device;
+  itemURL = [transferCopy itemURL];
   v9 = [CCMergeableDeltaFileTransferMessageMetadata alloc];
-  v10 = [v6 metadata];
-  v11 = [(CCMergeableDeltaFileTransferMessageMetadata *)v9 initFromDictionary:v10];
+  metadata = [transferCopy metadata];
+  v11 = [(CCMergeableDeltaFileTransferMessageMetadata *)v9 initFromDictionary:metadata];
 
   v12 = [v11 set];
   v13 = __biome_log_for_category();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v6 metadata];
+    metadata2 = [transferCopy metadata];
     *buf = 138412546;
-    v31 = self;
+    selfCopy = self;
     v32 = 2112;
-    v33 = v14;
+    v33 = metadata2;
     _os_log_impl(&dword_1DA444000, v13, OS_LOG_TYPE_DEFAULT, "%@: handling mergeable delta file transfer with metadata: %@", buf, 0x16u);
   }
 
-  v15 = [v11 deviceSite];
-  v16 = v15;
-  if (v12 && v15)
+  deviceSite = [v11 deviceSite];
+  v16 = deviceSite;
+  if (v12 && deviceSite)
   {
     if ([v11 fileFormatVersion] == 1)
     {
       v17 = [CCSetVersionedMergeable writeOnlyInstanceForSet:v12 donateServiceProvider:self->_donateServiceProvider];
       v18 = MEMORY[0x1E695B990];
-      v19 = [v11 mergeableDeltaMetadataVectors];
+      mergeableDeltaMetadataVectors = [v11 mergeableDeltaMetadataVectors];
       v29 = 0;
-      v20 = [v18 decodeMergeableDeltaMetadata:v19 withError:&v29];
+      v20 = [v18 decodeMergeableDeltaMetadata:mergeableDeltaMetadataVectors withError:&v29];
 
       v28 = v20;
-      v21 = [objc_alloc(MEMORY[0x1E695B988]) initWithFileURL:v8 metadata:v20];
-      v22 = [v7 cascadeDeviceUUID];
+      v21 = [objc_alloc(MEMORY[0x1E695B988]) initWithFileURL:itemURL metadata:v20];
+      cascadeDeviceUUID = [deviceCopy cascadeDeviceUUID];
 
-      if (!v22)
+      if (!cascadeDeviceUUID)
       {
-        v23 = [v16 device];
-        v24 = [v23 deviceUUID];
-        [v7 setCascadeDeviceUUID:v24];
+        device = [v16 device];
+        deviceUUID = [device deviceUUID];
+        [deviceCopy setCascadeDeviceUUID:deviceUUID];
       }
 
-      v25 = [v7 cascadeDeviceUUID];
-      v26 = [v11 relayedDeviceSites];
-      [v17 mergeUpdateFromPeerDeviceUUID:v25 deviceSite:v16 relayedDeviceSites:v26 mergeableDelta:v21];
+      cascadeDeviceUUID2 = [deviceCopy cascadeDeviceUUID];
+      relayedDeviceSites = [v11 relayedDeviceSites];
+      [v17 mergeUpdateFromPeerDeviceUUID:cascadeDeviceUUID2 deviceSite:v16 relayedDeviceSites:relayedDeviceSites mergeableDelta:v21];
     }
 
     else
@@ -1112,53 +1112,53 @@ void __77__CCRapportSyncEngine_sendDoneFetchingMergeableDeltasRequest_forInterac
     v17 = __biome_log_for_category();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [CCRapportSyncEngine handleIncomingMergeableDeltaFileTransfer:v6 fromDevice:?];
+      [CCRapportSyncEngine handleIncomingMergeableDeltaFileTransfer:transferCopy fromDevice:?];
     }
   }
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)expireDevice:(id)a3 fromSet:(id)a4
+- (void)expireDevice:(id)device fromSet:(id)set
 {
   donateServiceProvider = self->_donateServiceProvider;
-  v6 = a3;
-  v8 = [CCSetVersionedMergeable writeOnlyInstanceForSet:a4 donateServiceProvider:donateServiceProvider];
-  v7 = [v6 cascadeDeviceUUID];
+  deviceCopy = device;
+  v8 = [CCSetVersionedMergeable writeOnlyInstanceForSet:set donateServiceProvider:donateServiceProvider];
+  cascadeDeviceUUID = [deviceCopy cascadeDeviceUUID];
 
-  [v8 expirePeerDeviceUUID:v7];
+  [v8 expirePeerDeviceUUID:cascadeDeviceUUID];
 }
 
-- (id)buildBasePeerToPeerMessageForInteraction:(id)a3
+- (id)buildBasePeerToPeerMessageForInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   v5 = [CCPeerToPeerMessage alloc];
-  v6 = [v4 reason];
+  reason = [interactionCopy reason];
 
-  v7 = [(CCPeerToPeerMessage *)v5 initWithSyncReason:v6 senderDeviceUUID:self->_localDeviceUUID protocolVersion:[(CCRapportSyncEngine *)self protocolVersion] wallTime:CFAbsoluteTimeGetCurrent()];
+  v7 = [(CCPeerToPeerMessage *)v5 initWithSyncReason:reason senderDeviceUUID:self->_localDeviceUUID protocolVersion:[(CCRapportSyncEngine *)self protocolVersion] wallTime:CFAbsoluteTimeGetCurrent()];
 
   return v7;
 }
 
-- (void)addOmittedSetsFromSetDiscovery:(id)a3 forInteraction:(id)a4
+- (void)addOmittedSetsFromSetDiscovery:(id)discovery forInteraction:(id)interaction
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  interactionCopy = interaction;
+  discoveryCopy = discovery;
   v8 = objc_opt_new();
   v9 = [objc_alloc(MEMORY[0x1E69939C8]) initWithReadAccess:self->_readAcccess];
   v26 = 0;
-  v10 = [(CCRapportSyncEngine *)self setIdentifiersSupportingInboundSync];
+  setIdentifiersSupportingInboundSync = [(CCRapportSyncEngine *)self setIdentifiersSupportingInboundSync];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __69__CCRapportSyncEngine_addOmittedSetsFromSetDiscovery_forInteraction___block_invoke;
   v22 = &unk_1E85C2E90;
-  v11 = v6;
+  v11 = interactionCopy;
   v23 = v11;
-  v24 = self;
+  selfCopy = self;
   v12 = v8;
   v25 = v12;
-  v13 = [v9 enumerateAllSets:&v26 withOptions:1 setIdentifiers:v10 descriptors:0 startAfterSet:0 usingBlock:&v19];
+  v13 = [v9 enumerateAllSets:&v26 withOptions:1 setIdentifiers:setIdentifiersSupportingInboundSync descriptors:0 startAfterSet:0 usingBlock:&v19];
   v14 = v26;
 
   if (!v13 || v14)
@@ -1175,7 +1175,7 @@ void __77__CCRapportSyncEngine_sendDoneFetchingMergeableDeltasRequest_forInterac
   {
     v17 = [v12 count];
     *buf = 138412802;
-    v28 = self;
+    selfCopy2 = self;
     v29 = 1024;
     v30 = v17;
     v31 = 2112;
@@ -1183,7 +1183,7 @@ void __77__CCRapportSyncEngine_sendDoneFetchingMergeableDeltasRequest_forInterac
     _os_log_impl(&dword_1DA444000, v16, OS_LOG_TYPE_DEFAULT, "%@: local set enumeration found %u eligible candidate set(s) omitted from set discovery response: %@", buf, 0x1Cu);
   }
 
-  [v7 addObjectsFromArray:v12];
+  [discoveryCopy addObjectsFromArray:v12];
   v18 = *MEMORY[0x1E69E9840];
 }
 
@@ -1215,16 +1215,16 @@ void __69__CCRapportSyncEngine_addOmittedSetsFromSetDiscovery_forInteraction___b
   }
 }
 
-- (void)recordDiscoveredSetResources:(id)a3 forInteraction:(id)a4
+- (void)recordDiscoveredSetResources:(id)resources forInteraction:(id)interaction
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  resourcesCopy = resources;
+  interactionCopy = interaction;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [resourcesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1236,19 +1236,19 @@ void __69__CCRapportSyncEngine_addOmittedSetsFromSetDiscovery_forInteraction___b
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(resourcesCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [v6 discoveredResources];
-        v13 = [v11 toResourceSpecifier];
-        [v12 addObject:v13];
+        discoveredResources = [interactionCopy discoveredResources];
+        toResourceSpecifier = [v11 toResourceSpecifier];
+        [discoveredResources addObject:toResourceSpecifier];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [resourcesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -1257,40 +1257,40 @@ void __69__CCRapportSyncEngine_addOmittedSetsFromSetDiscovery_forInteraction___b
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (unsigned)determineSyncOperationForDiscoveredSet:(id)a3 forInteraction:(id)a4 outFetchRequest:(id *)a5
+- (unsigned)determineSyncOperationForDiscoveredSet:(id)set forInteraction:(id)interaction outFetchRequest:(id *)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  setCopy = set;
+  interactionCopy = interaction;
   readAcccess = self->_readAcccess;
   v25 = 0;
-  v10 = [(CCDataResourceReadAccess *)readAcccess databaseReadAccessForSet:v7 error:&v25];
+  v10 = [(CCDataResourceReadAccess *)readAcccess databaseReadAccessForSet:setCopy error:&v25];
   v11 = v25;
   if (v10)
   {
-    v12 = [(CCRapportManager *)self->_rapportManager fileTransferDirectory];
-    v13 = [CCSetVersionedMergeable readOnlyInstanceForSet:v7 mergeableDeltasFileURL:v12 database:v10];
+    fileTransferDirectory = [(CCRapportManager *)self->_rapportManager fileTransferDirectory];
+    v13 = [CCSetVersionedMergeable readOnlyInstanceForSet:setCopy mergeableDeltasFileURL:fileTransferDirectory database:v10];
   }
 
   else
   {
-    v12 = __biome_log_for_category();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    fileTransferDirectory = __biome_log_for_category();
+    if (os_log_type_enabled(fileTransferDirectory, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2112;
-      v29 = v7;
+      v29 = setCopy;
       v30 = 2112;
       v31 = v11;
-      _os_log_impl(&dword_1DA444000, v12, OS_LOG_TYPE_DEFAULT, "%@: No database access for discovered set: %@ (error: %@)", buf, 0x20u);
+      _os_log_impl(&dword_1DA444000, fileTransferDirectory, OS_LOG_TYPE_DEFAULT, "%@: No database access for discovered set: %@ (error: %@)", buf, 0x20u);
     }
 
     v13 = 0;
   }
 
-  v14 = [v8 device];
-  v15 = [(CCRapportSyncEngine *)self syncOperationForDiscoveredSet:v7 withDevice:v14 versionedMergeable:v13 readAccessError:v11];
+  device = [interactionCopy device];
+  v15 = [(CCRapportSyncEngine *)self syncOperationForDiscoveredSet:setCopy withDevice:device versionedMergeable:v13 readAccessError:v11];
 
   if ((v15 - 2) >= 2)
   {
@@ -1308,28 +1308,28 @@ void __69__CCRapportSyncEngine_addOmittedSetsFromSetDiscovery_forInteraction___b
     if (v13)
     {
 LABEL_10:
-      v16 = [v13 stateVector];
+      stateVector = [v13 stateVector];
     }
 
     else
     {
-      v16 = +[CCSetVersionedMergeable emptyStateVector];
+      stateVector = +[CCSetVersionedMergeable emptyStateVector];
     }
 
-    v17 = v16;
+    v17 = stateVector;
 LABEL_13:
 
     v24 = 0;
-    v18 = [objc_alloc(MEMORY[0x1E6993A50]) initWithSet:v7 error:&v24];
+    v18 = [objc_alloc(MEMORY[0x1E6993A50]) initWithSet:setCopy error:&v24];
     v11 = v24;
     if (v18)
     {
-      v19 = [(CCRapportSyncEngine *)self buildBasePeerToPeerMessageForInteraction:v8];
+      v19 = [(CCRapportSyncEngine *)self buildBasePeerToPeerMessageForInteraction:interactionCopy];
       v20 = [CCFetchMergeableDeltasRequest fetchMergableDeltasRequestFromPeerToPeerMessage:v19 set:v18 stateVector:v17 atomBatchVersion:3 requestOptions:0];
-      if (a5)
+      if (request)
       {
         v20 = v20;
-        *a5 = v20;
+        *request = v20;
       }
     }
 
@@ -1339,9 +1339,9 @@ LABEL_13:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v27 = self;
+        selfCopy2 = self;
         v28 = 2112;
-        v29 = v7;
+        v29 = setCopy;
         v30 = 2112;
         v31 = v11;
         _os_log_error_impl(&dword_1DA444000, v19, OS_LOG_TYPE_ERROR, "%@: Failed to downcast discovered set: %@ error: %@", buf, 0x20u);
@@ -1353,15 +1353,15 @@ LABEL_13:
   return v15;
 }
 
-- (unsigned)syncOperationForDiscoveredSet:(id)a3 withDevice:(id)a4 versionedMergeable:(id)a5 readAccessError:(id)a6
+- (unsigned)syncOperationForDiscoveredSet:(id)set withDevice:(id)device versionedMergeable:(id)mergeable readAccessError:(id)error
 {
   v61 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 discoveryErrorCode];
-  if (v14 == 12)
+  setCopy = set;
+  deviceCopy = device;
+  mergeableCopy = mergeable;
+  errorCopy = error;
+  discoveryErrorCode = [setCopy discoveryErrorCode];
+  if (discoveryErrorCode == 12)
   {
     v15 = __biome_log_for_category();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1372,63 +1372,63 @@ LABEL_5:
     }
 
     *buf = 138412546;
-    v52 = self;
+    selfCopy11 = self;
     v53 = 2112;
-    v54 = v10;
+    v54 = setCopy;
     v16 = "%@: will skip sync due to discovery error for set: %@";
 LABEL_4:
     _os_log_impl(&dword_1DA444000, v15, OS_LOG_TYPE_DEFAULT, v16, buf, 0x16u);
     goto LABEL_5;
   }
 
-  v18 = v14;
-  if (v12)
+  v18 = discoveryErrorCode;
+  if (mergeableCopy)
   {
-    v19 = [v11 cascadeDeviceUUID];
-    v15 = [v12 storedActiveDeviceSiteWithDeviceUUID:v19];
+    cascadeDeviceUUID = [deviceCopy cascadeDeviceUUID];
+    v15 = [mergeableCopy storedActiveDeviceSiteWithDeviceUUID:cascadeDeviceUUID];
 
     if (v15)
     {
-      v20 = [v10 deviceSite];
-      if (v20)
+      deviceSite = [setCopy deviceSite];
+      if (deviceSite)
       {
-        v21 = [v15 resourceGeneration];
-        v22 = [v20 resourceGeneration];
-        v23 = [v21 isEqual:v22];
+        resourceGeneration = [v15 resourceGeneration];
+        resourceGeneration2 = [deviceSite resourceGeneration];
+        v23 = [resourceGeneration isEqual:resourceGeneration2];
 
         if ((v23 & 1) == 0)
         {
-          v27 = __biome_log_for_category();
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+          deltaGeneration = __biome_log_for_category();
+          if (os_log_type_enabled(deltaGeneration, OS_LOG_TYPE_DEFAULT))
           {
-            v36 = [v15 resourceGeneration];
-            v37 = [v20 resourceGeneration];
+            resourceGeneration3 = [v15 resourceGeneration];
+            resourceGeneration4 = [deviceSite resourceGeneration];
             *buf = 138412802;
-            v52 = self;
+            selfCopy11 = self;
             v53 = 2112;
-            v54 = v36;
+            v54 = resourceGeneration3;
             v55 = 2112;
-            v56 = v37;
-            _os_log_impl(&dword_1DA444000, v27, OS_LOG_TYPE_DEFAULT, "%@: resourceGeneration (%@) is out of sync with discovered (%@)", buf, 0x20u);
+            v56 = resourceGeneration4;
+            _os_log_impl(&dword_1DA444000, deltaGeneration, OS_LOG_TYPE_DEFAULT, "%@: resourceGeneration (%@) is out of sync with discovered (%@)", buf, 0x20u);
           }
 
           goto LABEL_33;
         }
 
-        v24 = [v15 expirationDate];
-        [v24 timeIntervalSinceNow];
+        expirationDate = [v15 expirationDate];
+        [expirationDate timeIntervalSinceNow];
         v26 = v25;
 
         if (v26 >= 3600.0)
         {
-          v27 = [v15 deltaGeneration];
-          v40 = [v20 deltaGeneration];
-          if ([v40 longLongValue]>= 1 && [v40 isEqual:v27])
+          deltaGeneration = [v15 deltaGeneration];
+          deltaGeneration2 = [deviceSite deltaGeneration];
+          if ([deltaGeneration2 longLongValue]>= 1 && [deltaGeneration2 isEqual:deltaGeneration])
           {
-            v50 = v40;
-            v41 = [v20 expirationDate];
-            v42 = [v15 expirationDate];
-            [v41 timeIntervalSinceDate:v42];
+            v50 = deltaGeneration2;
+            expirationDate2 = [deviceSite expirationDate];
+            expirationDate3 = [v15 expirationDate];
+            [expirationDate2 timeIntervalSinceDate:expirationDate3];
             v44 = v43;
 
             v45 = __biome_log_for_category();
@@ -1437,13 +1437,13 @@ LABEL_4:
             {
               if (v46)
               {
-                v49 = [v15 expirationDate];
+                expirationDate4 = [v15 expirationDate];
                 *buf = 138412802;
-                v52 = self;
+                selfCopy11 = self;
                 v53 = 2112;
-                v54 = v27;
+                v54 = deltaGeneration;
                 v55 = 2112;
-                v56 = v49;
+                v56 = expirationDate4;
                 _os_log_impl(&dword_1DA444000, v45, OS_LOG_TYPE_DEFAULT, "%@: deltaGeneration (%@) already synced - stored expiration date (%@) to be extended", buf, 0x20u);
               }
 
@@ -1454,14 +1454,14 @@ LABEL_4:
             {
               if (v46)
               {
-                v47 = [v15 expirationDate];
-                [v20 expirationDate];
+                expirationDate5 = [v15 expirationDate];
+                [deviceSite expirationDate];
                 *buf = 138413314;
-                v52 = self;
+                selfCopy11 = self;
                 v53 = 2112;
-                v54 = v27;
+                v54 = deltaGeneration;
                 v55 = 2112;
-                v56 = v47;
+                v56 = expirationDate5;
                 v57 = 2048;
                 v58 = 0x40F5180000000000;
                 v60 = v59 = 2112;
@@ -1472,7 +1472,7 @@ LABEL_4:
               v17 = 3;
             }
 
-            v40 = v50;
+            deltaGeneration2 = v50;
           }
 
           else
@@ -1481,11 +1481,11 @@ LABEL_4:
             if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412802;
-              v52 = self;
+              selfCopy11 = self;
               v53 = 2112;
-              v54 = v27;
+              v54 = deltaGeneration;
               v55 = 2112;
-              v56 = v40;
+              v56 = deltaGeneration2;
               _os_log_impl(&dword_1DA444000, v45, OS_LOG_TYPE_DEFAULT, "%@: deltaGeneration (%@) out of sync with discovered (%@)", buf, 0x20u);
             }
 
@@ -1495,15 +1495,15 @@ LABEL_4:
           goto LABEL_34;
         }
 
-        v27 = __biome_log_for_category();
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+        deltaGeneration = __biome_log_for_category();
+        if (os_log_type_enabled(deltaGeneration, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v52 = self;
+          selfCopy11 = self;
           v53 = 2112;
           v54 = v15;
           v28 = "%@: Expiration is imminent for stored device site: %@";
-          v29 = v27;
+          v29 = deltaGeneration;
           v30 = 22;
 LABEL_30:
           _os_log_impl(&dword_1DA444000, v29, OS_LOG_TYPE_DEFAULT, v28, buf, v30);
@@ -1512,17 +1512,17 @@ LABEL_30:
 
       else
       {
-        v27 = __biome_log_for_category();
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+        deltaGeneration = __biome_log_for_category();
+        if (os_log_type_enabled(deltaGeneration, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v52 = self;
+          selfCopy11 = self;
           v53 = 2112;
           v54 = v15;
           v55 = 2112;
-          v56 = v10;
+          v56 = setCopy;
           v28 = "%@: Discovery response missing device site (found active stored site): %@ for set: %@";
-          v29 = v27;
+          v29 = deltaGeneration;
           v30 = 32;
           goto LABEL_30;
         }
@@ -1538,13 +1538,13 @@ LABEL_34:
     v31 = __biome_log_for_category();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v11 cascadeDeviceUUID];
+      cascadeDeviceUUID2 = [deviceCopy cascadeDeviceUUID];
       *buf = 138412802;
-      v52 = self;
+      selfCopy11 = self;
       v53 = 2112;
-      v54 = v32;
+      v54 = cascadeDeviceUUID2;
       v55 = 2112;
-      v56 = v10;
+      v56 = setCopy;
       _os_log_impl(&dword_1DA444000, v31, OS_LOG_TYPE_DEFAULT, "%@: Found no active stored equivalent for peer deviceUUID: %@ in set: %@", buf, 0x20u);
     }
 
@@ -1561,7 +1561,7 @@ LABEL_34:
 
   else
   {
-    if (v14 == 17)
+    if (discoveryErrorCode == 17)
     {
       v15 = __biome_log_for_category();
       if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1570,14 +1570,14 @@ LABEL_34:
       }
 
       *buf = 138412546;
-      v52 = self;
+      selfCopy11 = self;
       v53 = 2112;
-      v54 = v10;
+      v54 = setCopy;
       v16 = "%@: will skip omitted set: %@ without local database access";
       goto LABEL_4;
     }
 
-    v34 = [(CCRapportSyncEngine *)self syncErrorCodeFromReadAccessError:v13];
+    v34 = [(CCRapportSyncEngine *)self syncErrorCodeFromReadAccessError:errorCopy];
     v15 = __biome_log_for_category();
     v35 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
     if (v18 == 18 && v34 == 14)
@@ -1588,9 +1588,9 @@ LABEL_34:
       }
 
       *buf = 138412546;
-      v52 = self;
+      selfCopy11 = self;
       v53 = 2112;
-      v54 = v10;
+      v54 = setCopy;
       v16 = "%@: will skip empty set: %@ with nonexistent local database";
       goto LABEL_4;
     }
@@ -1598,9 +1598,9 @@ LABEL_34:
     if (v35)
     {
       *buf = 138412546;
-      v52 = self;
+      selfCopy11 = self;
       v53 = 2112;
-      v54 = v10;
+      v54 = setCopy;
       _os_log_impl(&dword_1DA444000, v15, OS_LOG_TYPE_DEFAULT, "%@: full sync required for set: %@ without local database access", buf, 0x16u);
     }
 
@@ -1613,22 +1613,22 @@ LABEL_35:
   return v17;
 }
 
-- (id)buildDoneFetchingMergeableDeltasMessageForInteraction:(id)a3
+- (id)buildDoneFetchingMergeableDeltasMessageForInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(CCRapportSyncEngine *)self buildBasePeerToPeerMessageForInteraction:v4];
-  v6 = [v4 reason];
+  interactionCopy = interaction;
+  v5 = [(CCRapportSyncEngine *)self buildBasePeerToPeerMessageForInteraction:interactionCopy];
+  reason = [interactionCopy reason];
 
-  v7 = [CCSignalDoneFetchingMergeableDeltas doneFetchingMergeableDeltasMessageFromPeerToPeerMessage:v5 isReciprocal:v6 == 4];
+  v7 = [CCSignalDoneFetchingMergeableDeltas doneFetchingMergeableDeltasMessageFromPeerToPeerMessage:v5 isReciprocal:reason == 4];
 
   return v7;
 }
 
-- (BOOL)didRemoteDeviceInitiateSyncWithMessage:(id)a3 beforeLocalInteraction:(id)a4
+- (BOOL)didRemoteDeviceInitiateSyncWithMessage:(id)message beforeLocalInteraction:(id)interaction
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  [a3 walltime];
+  interactionCopy = interaction;
+  [message walltime];
   if (v7 <= 0.0)
   {
     v11 = 0;
@@ -1637,7 +1637,7 @@ LABEL_35:
   else
   {
     v8 = v7;
-    [v6 initiatingRequestSentWalltime];
+    [interactionCopy initiatingRequestSentWalltime];
     v10 = v9;
     v11 = v8 < v9;
     v12 = __biome_log_for_category();
@@ -1653,9 +1653,9 @@ LABEL_35:
         v13 = &stru_1F55F1328;
       }
 
-      [v6 initiatingRequestSentWalltime];
+      [interactionCopy initiatingRequestSentWalltime];
       v17 = 138413314;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
       v20 = v13;
       v21 = 2048;
@@ -1663,7 +1663,7 @@ LABEL_35:
       v23 = 2048;
       v24 = v14;
       v25 = 2112;
-      v26 = v6;
+      v26 = interactionCopy;
       _os_log_impl(&dword_1DA444000, v12, OS_LOG_TYPE_DEFAULT, "%@: Remote device DID%@ initiate sync (%lf) prior to our local interaction (%lf): %@", &v17, 0x34u);
     }
   }
@@ -1672,21 +1672,21 @@ LABEL_35:
   return v11;
 }
 
-- (id)validateInRequest:(id)a3 inOptions:(id)a4 inResponseHandler:(id)a5 isInitiatingRequest:(BOOL)a6 outPlatform:(int64_t *)a7
+- (id)validateInRequest:(id)request inOptions:(id)options inResponseHandler:(id)handler isInitiatingRequest:(BOOL)initiatingRequest outPlatform:(int64_t *)platform
 {
-  v8 = a6;
+  initiatingRequestCopy = initiatingRequest;
   v44 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
   rapportManager = self->_rapportManager;
-  v16 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69C6BF0]];
+  v16 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69C6BF0]];
   v17 = [(CCRapportManager *)rapportManager deviceWithIdentifier:v16];
 
   if (v17)
   {
-    v18 = [[CCPeerToPeerMessage alloc] initFromDictionary:v12];
-    if (v8)
+    v18 = [[CCPeerToPeerMessage alloc] initFromDictionary:requestCopy];
+    if (initiatingRequestCopy)
     {
       v19 = [(CCRapportSyncSession *)self->_currentSession interactionOfType:1 withDevice:v17];
       if ([v19 isRunning])
@@ -1701,7 +1701,7 @@ LABEL_35:
           if (v22)
           {
             *buf = 138412802;
-            v39 = self;
+            selfCopy2 = self;
             v40 = 2112;
             v41 = v37;
             v42 = 2112;
@@ -1709,14 +1709,14 @@ LABEL_35:
             _os_log_impl(&dword_1DA444000, v21, OS_LOG_TYPE_DEFAULT, "%@: Responding with %@ due to existing interaction with device: %@", buf, 0x20u);
           }
 
-          (*(v14 + 2))(v14, 0, 0, v37);
+          (*(handlerCopy + 2))(handlerCopy, 0, 0, v37);
           goto LABEL_32;
         }
 
         if (v22)
         {
           *buf = 138412546;
-          v39 = self;
+          selfCopy2 = self;
           v40 = 2112;
           v41 = v19;
           _os_log_impl(&dword_1DA444000, v21, OS_LOG_TYPE_DEFAULT, "%@: Yielding to device which started sync before us; canceling client interaction: %@", buf, 0x16u);
@@ -1735,13 +1735,13 @@ LABEL_35:
     v19 = [(CCRapportSyncSession *)self->_currentSession interactionOfType:0 withDevice:v17];
     if ([v19 isRunning])
     {
-      if (a7)
+      if (platform)
       {
-        v25 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69C6BF8]];
+        v25 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69C6BF8]];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v28 = [v13 description];
+          v28 = [optionsCopy description];
           v29 = CCRapportSyncErrorWithDetails(5, 0, v28);
 
           v30 = __biome_log_for_category();
@@ -1750,11 +1750,11 @@ LABEL_35:
             [CCRapportSyncEngine validateInRequest:inOptions:inResponseHandler:isInitiatingRequest:outPlatform:];
           }
 
-          (*(v14 + 2))(v14, 0, 0, v29);
+          (*(handlerCopy + 2))(handlerCopy, 0, 0, v29);
           goto LABEL_33;
         }
 
-        *a7 = BMDevicePlatformFromModelString();
+        *platform = BMDevicePlatformFromModelString();
       }
 
       if ([v18 protocolVersion] == 4 || objc_msgSend(v18, "protocolVersion") == 5)
@@ -1777,8 +1777,8 @@ LABEL_34:
       }
 
       v33 = [(CCRapportSyncEngine *)self buildBasePeerToPeerMessageForInteraction:v19];
-      v34 = [v33 dictionaryRepresentation];
-      (*(v14 + 2))(v14, v34, 0, v26);
+      dictionaryRepresentation = [v33 dictionaryRepresentation];
+      (*(handlerCopy + 2))(handlerCopy, dictionaryRepresentation, 0, v26);
     }
 
     else
@@ -1790,7 +1790,7 @@ LABEL_34:
         [CCRapportSyncEngine validateInRequest:inOptions:inResponseHandler:isInitiatingRequest:outPlatform:];
       }
 
-      (*(v14 + 2))(v14, 0, 0, v26);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v26);
       [(CCRapportSyncSession *)self->_currentSession cancelInteractionType:0 withDevice:v17 dueToError:v26];
     }
 
@@ -1808,7 +1808,7 @@ LABEL_33:
   }
 
   v18 = CCRapportSyncError(7);
-  (*(v14 + 2))(v14, 0, 0, v18);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v18);
   v24 = 0;
 LABEL_35:
 
@@ -2018,26 +2018,26 @@ void __49__CCRapportSyncEngine_setDiscoveryRequestHandler__block_invoke_70(uint6
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (id)readSetForDiscovery:(id)a3 senderDeviceUUID:(id)a4
+- (id)readSetForDiscovery:(id)discovery senderDeviceUUID:(id)d
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  discoveryCopy = discovery;
+  dCopy = d;
   readAcccess = self->_readAcccess;
   v25 = 0;
-  v9 = [(CCDataResourceReadAccess *)readAcccess databaseReadAccessForSet:v6 error:&v25];
+  v9 = [(CCDataResourceReadAccess *)readAcccess databaseReadAccessForSet:discoveryCopy error:&v25];
   v10 = v25;
   if (v9)
   {
-    v11 = [(CCRapportManager *)self->_rapportManager fileTransferDirectory];
-    v12 = [CCSetVersionedMergeable readOnlyInstanceForSet:v6 mergeableDeltasFileURL:v11 database:v9];
+    fileTransferDirectory = [(CCRapportManager *)self->_rapportManager fileTransferDirectory];
+    v12 = [CCSetVersionedMergeable readOnlyInstanceForSet:discoveryCopy mergeableDeltasFileURL:fileTransferDirectory database:v9];
 
     v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:1209600.0];
     v14 = [v12 localDeviceSiteAddingExpirationDate:v13];
 
     if (v14)
     {
-      v15 = [v12 relayedDeviceSitesExcludingRequestingDeviceUUID:v7];
+      v15 = [v12 relayedDeviceSitesExcludingRequestingDeviceUUID:dCopy];
       if ([v12 hasNoPresentContent])
       {
         v16 = 18;
@@ -2064,7 +2064,7 @@ void __49__CCRapportSyncEngine_setDiscoveryRequestHandler__block_invoke_70(uint6
   }
 
   v24 = v10;
-  v17 = [[CCDiscoveredSet alloc] initWithSet:v6 deviceSite:v14 relayedDeviceSites:v15 discoveryErrorCode:v16 error:&v24];
+  v17 = [[CCDiscoveredSet alloc] initWithSet:discoveryCopy deviceSite:v14 relayedDeviceSites:v15 discoveryErrorCode:v16 error:&v24];
   v18 = v24;
 
   if (!v17 || v18)
@@ -2072,10 +2072,10 @@ void __49__CCRapportSyncEngine_setDiscoveryRequestHandler__block_invoke_70(uint6
     v19 = __biome_log_for_category();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"while handling set discovery request for set %@", v6];
-      v22 = CCRapportSyncErrorWithDetails(v16, v18, v23);
+      discoveryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"while handling set discovery request for set %@", discoveryCopy];
+      v22 = CCRapportSyncErrorWithDetails(v16, v18, discoveryCopy);
       *buf = 138412546;
-      v27 = self;
+      selfCopy = self;
       v28 = 2112;
       v29 = v22;
       _os_log_error_impl(&dword_1DA444000, v19, OS_LOG_TYPE_ERROR, "%@: %@", buf, 0x16u);
@@ -2487,15 +2487,15 @@ void __64__CCRapportSyncEngine_doneFetchingMergeableDeltasRequestHandler__block_
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)syncErrorCodeFromReadAccessError:(id)a3
+- (unint64_t)syncErrorCodeFromReadAccessError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqual:*MEMORY[0x1E69939A0]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqual:*MEMORY[0x1E69939A0]];
 
   if (v5)
   {
-    if ([v3 code] == 4)
+    if ([errorCopy code] == 4)
     {
       v6 = 14;
     }
@@ -2750,15 +2750,15 @@ void __59__CCRapportSyncEngine_setIdentifiersSupportingOutboundSync__block_invok
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)currentPlatformHasSetsSupportingSync:(id *)a3
+- (BOOL)currentPlatformHasSetsSupportingSync:(id *)sync
 {
-  v4 = [(CCRapportSyncEngine *)self setUUIDsSupportingInboundSync];
-  v5 = [v4 count];
+  setUUIDsSupportingInboundSync = [(CCRapportSyncEngine *)self setUUIDsSupportingInboundSync];
+  v5 = [setUUIDsSupportingInboundSync count];
   v6 = v5 != 0;
   if (!v5)
   {
-    v7 = [(CCRapportSyncEngine *)self setUUIDsSupportingOutboundSync];
-    v8 = [v7 count];
+    setUUIDsSupportingOutboundSync = [(CCRapportSyncEngine *)self setUUIDsSupportingOutboundSync];
+    v8 = [setUUIDsSupportingOutboundSync count];
 
     if (v8)
     {
@@ -2769,7 +2769,7 @@ void __59__CCRapportSyncEngine_setIdentifiersSupportingOutboundSync__block_invok
     [MEMORY[0x1E698E9A0] platform];
     v11 = BMDevicePlatformToString();
     v12 = [v10 stringWithFormat:@"The current device platform (%@) has no inbound or outbound sets configured for sync", v11];
-    v4 = CCRapportSyncErrorWithDetails(15, 0, v12);
+    setUUIDsSupportingInboundSync = CCRapportSyncErrorWithDetails(15, 0, v12);
 
     CCSetError();
   }
@@ -2777,17 +2777,17 @@ void __59__CCRapportSyncEngine_setIdentifiersSupportingOutboundSync__block_invok
   return v6;
 }
 
-- (BOOL)rapportManager:(id)a3 isDeviceSupported:(id)a4
+- (BOOL)rapportManager:(id)manager isDeviceSupported:(id)supported
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = [MEMORY[0x1E698E9A0] platform];
+  supportedCopy = supported;
+  platform = [MEMORY[0x1E698E9A0] platform];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [MEMORY[0x1E6993A70] syncableSetConfigurations];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  syncableSetConfigurations = [MEMORY[0x1E6993A70] syncableSetConfigurations];
+  v7 = [syncableSetConfigurations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2799,17 +2799,17 @@ void __59__CCRapportSyncEngine_setIdentifiersSupportingOutboundSync__block_invok
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(syncableSetConfigurations);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) syncPolicy];
-        [v11 supportsSyncingWithPlatform:objc_msgSend(v4 overTransport:"platform") inDirection:2 fromPlatform:{3, v5}];
+        syncPolicy = [*(*(&v14 + 1) + 8 * v10) syncPolicy];
+        [syncPolicy supportsSyncingWithPlatform:objc_msgSend(supportedCopy overTransport:"platform") inDirection:2 fromPlatform:{3, platform}];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [syncableSetConfigurations countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -2819,12 +2819,12 @@ void __59__CCRapportSyncEngine_setIdentifiersSupportingOutboundSync__block_invok
   return 0;
 }
 
-- (void)rapportManager:(id)a3 didLoseNearbyCCRapportDevice:(id)a4
+- (void)rapportManager:(id)manager didLoseNearbyCCRapportDevice:(id)device
 {
   currentSession = self->_currentSession;
-  v5 = a4;
+  deviceCopy = device;
   v6 = CCRapportSyncError(7);
-  [(CCRapportSyncSession *)currentSession cancelInteractionType:1 withDevice:v5 dueToError:v6];
+  [(CCRapportSyncSession *)currentSession cancelInteractionType:1 withDevice:deviceCopy dueToError:v6];
 }
 
 - (void)initWithQueue:error:.cold.1()

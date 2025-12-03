@@ -1,28 +1,28 @@
 @interface RCEndpointResponseProcessing
-+ (id)_configurationErrorForErrorDicts:(id)a3;
-+ (void)parseEndpointResponse:(id)a3 configurationSettings:(id)a4 maxAge:(id)a5 loggingPrefix:(id)a6 completion:(id)a7;
-+ (void)parseEndpointResponseDict:(id)a3 parsingError:(id)a4 configurationSettings:(id)a5 maxAge:(id)a6 loggingPrefix:(id)a7 completion:(id)a8;
++ (id)_configurationErrorForErrorDicts:(id)dicts;
++ (void)parseEndpointResponse:(id)response configurationSettings:(id)settings maxAge:(id)age loggingPrefix:(id)prefix completion:(id)completion;
++ (void)parseEndpointResponseDict:(id)dict parsingError:(id)error configurationSettings:(id)settings maxAge:(id)age loggingPrefix:(id)prefix completion:(id)completion;
 @end
 
 @implementation RCEndpointResponseProcessing
 
-+ (void)parseEndpointResponse:(id)a3 configurationSettings:(id)a4 maxAge:(id)a5 loggingPrefix:(id)a6 completion:(id)a7
++ (void)parseEndpointResponse:(id)response configurationSettings:(id)settings maxAge:(id)age loggingPrefix:(id)prefix completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 rc_gzipInflate];
-  v18 = v17;
-  if (v17)
+  responseCopy = response;
+  settingsCopy = settings;
+  ageCopy = age;
+  prefixCopy = prefix;
+  completionCopy = completion;
+  rc_gzipInflate = [responseCopy rc_gzipInflate];
+  v18 = rc_gzipInflate;
+  if (rc_gzipInflate)
   {
-    v19 = v17;
+    v19 = rc_gzipInflate;
   }
 
   else
   {
-    v19 = v12;
+    v19 = responseCopy;
   }
 
   v23 = 0;
@@ -33,27 +33,27 @@
     v22 = RCSharedLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      [RCEndpointResponseProcessing parseEndpointResponse:v15 configurationSettings:v21 maxAge:v22 loggingPrefix:? completion:?];
+      [RCEndpointResponseProcessing parseEndpointResponse:prefixCopy configurationSettings:v21 maxAge:v22 loggingPrefix:? completion:?];
     }
   }
 
-  [a1 parseEndpointResponseDict:v20 parsingError:v21 configurationSettings:v13 maxAge:v14 loggingPrefix:v15 completion:v16];
+  [self parseEndpointResponseDict:v20 parsingError:v21 configurationSettings:settingsCopy maxAge:ageCopy loggingPrefix:prefixCopy completion:completionCopy];
 }
 
-+ (void)parseEndpointResponseDict:(id)a3 parsingError:(id)a4 configurationSettings:(id)a5 maxAge:(id)a6 loggingPrefix:(id)a7 completion:(id)a8
++ (void)parseEndpointResponseDict:(id)dict parsingError:(id)error configurationSettings:(id)settings maxAge:(id)age loggingPrefix:(id)prefix completion:(id)completion
 {
   v106 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v68 = a7;
-  v18 = a8;
-  v19 = v18;
-  if (v14)
+  dictCopy = dict;
+  errorCopy = error;
+  settingsCopy = settings;
+  ageCopy = age;
+  prefixCopy = prefix;
+  completionCopy = completion;
+  v19 = completionCopy;
+  if (dictCopy)
   {
-    v62 = v18;
-    v61 = RCJSONDictionaryValue(v14, @"errorWrapper");
+    v62 = completionCopy;
+    v61 = RCJSONDictionaryValue(dictCopy, @"errorWrapper");
     v63 = RCJSONArrayValue(v61, @"errors");
     if ([v63 count])
     {
@@ -61,7 +61,7 @@
       v84[1] = 3221225472;
       v84[2] = __125__RCEndpointResponseProcessing_parseEndpointResponseDict_parsingError_configurationSettings_maxAge_loggingPrefix_completion___block_invoke_2;
       v84[3] = &unk_27822FF10;
-      v87 = a1;
+      selfCopy = self;
       v85 = v63;
       v20 = v62;
       v86 = v62;
@@ -72,24 +72,24 @@
 
     else
     {
-      v60 = v15;
-      v23 = RCJSONDictionaryValue(v14, @"userInfo");
+      v60 = errorCopy;
+      v23 = RCJSONDictionaryValue(dictCopy, @"userInfo");
       v73 = RCJSONArrayValue(v23, @"treatmentIds");
       v59 = v23;
       v72 = RCJSONArrayValue(v23, @"segmentSetIds");
-      v71 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v80 = 0u;
       v81 = 0u;
       v82 = 0u;
       v83 = 0u;
-      obj = [v16 requestInfos];
+      obj = [settingsCopy requestInfos];
       v74 = [obj countByEnumeratingWithState:&v80 objects:v105 count:16];
       if (v74)
       {
         v70 = *v81;
-        v65 = v16;
-        v66 = v14;
-        v64 = v17;
+        v65 = settingsCopy;
+        v66 = dictCopy;
+        v64 = ageCopy;
         do
         {
           for (i = 0; i != v74; ++i)
@@ -101,8 +101,8 @@
 
             v25 = *(*(&v80 + 1) + 8 * i);
             context = objc_autoreleasePoolPush();
-            v26 = [v25 responseKey];
-            v27 = RCJSONDictionaryValue(v14, v26);
+            responseKey = [v25 responseKey];
+            v27 = RCJSONDictionaryValue(dictCopy, responseKey);
 
             v28 = RCJSONDictionaryValue(v27, @"configuration");
             if (v28)
@@ -117,29 +117,29 @@
 
             v30 = objc_alloc_init(RCConfigurationResource);
             v76 = v25;
-            v31 = [v25 requestCacheKey];
-            [(RCConfigurationResource *)v30 setRequestKey:v31];
+            requestCacheKey = [v25 requestCacheKey];
+            [(RCConfigurationResource *)v30 setRequestKey:requestCacheKey];
 
             v79 = v29;
-            v32 = [v29 rc_gzipDeflate];
-            [(RCConfigurationResource *)v30 setGzippedConfigurationData:v32];
+            rc_gzipDeflate = [v29 rc_gzipDeflate];
+            [(RCConfigurationResource *)v30 setGzippedConfigurationData:rc_gzipDeflate];
 
-            v33 = [v16 debugOverrides];
+            debugOverrides = [settingsCopy debugOverrides];
             v75 = v28;
-            v34 = +[RCUserSegmentationConfiguration userSegmentationConfigurationWithConfigDict:environment:](RCUserSegmentationConfiguration, "userSegmentationConfigurationWithConfigDict:environment:", v28, [v33 debugEnvironment]);
+            v34 = +[RCUserSegmentationConfiguration userSegmentationConfigurationWithConfigDict:environment:](RCUserSegmentationConfiguration, "userSegmentationConfigurationWithConfigDict:environment:", v28, [debugOverrides debugEnvironment]);
             [(RCConfigurationResource *)v30 setUserSegmentationConfiguration:v34];
 
             [(RCConfigurationResource *)v30 setTreatmentIDs:v73];
             [(RCConfigurationResource *)v30 setSegmentSetIDs:v72];
-            v35 = [v16 userID];
-            [(RCConfigurationResource *)v30 setUserID:v35];
+            userID = [settingsCopy userID];
+            [(RCConfigurationResource *)v30 setUserID:userID];
 
-            v36 = [v16 storefrontID];
-            [(RCConfigurationResource *)v30 setStorefrontID:v36];
+            storefrontID = [settingsCopy storefrontID];
+            [(RCConfigurationResource *)v30 setStorefrontID:storefrontID];
 
-            v37 = [v16 deviceInfo];
-            v38 = [v37 preferredLanguages];
-            [(RCConfigurationResource *)v30 setPreferredLanguages:v38];
+            deviceInfo = [settingsCopy deviceInfo];
+            preferredLanguages = [deviceInfo preferredLanguages];
+            [(RCConfigurationResource *)v30 setPreferredLanguages:preferredLanguages];
 
             v39 = RCJSONStringValue(v27, @"id", 0);
             [(RCConfigurationResource *)v30 setConfigurationID:v39];
@@ -151,67 +151,67 @@
             v41 = RCJSONStringValue(v27, @"lastModified", 0);
             [(RCConfigurationResource *)v30 setLastModifiedString:v41];
 
-            v42 = [MEMORY[0x277CBEAA8] date];
-            [(RCConfigurationResource *)v30 setLastFetchedDate:v42];
+            date = [MEMORY[0x277CBEAA8] date];
+            [(RCConfigurationResource *)v30 setLastFetchedDate:date];
 
-            [(RCConfigurationResource *)v30 setEndpointMaxAge:v17];
-            v43 = [v16 endpointConfig];
-            -[RCConfigurationResource setEnvironment:](v30, "setEnvironment:", [v43 environment]);
+            [(RCConfigurationResource *)v30 setEndpointMaxAge:ageCopy];
+            endpointConfig = [settingsCopy endpointConfig];
+            -[RCConfigurationResource setEnvironment:](v30, "setEnvironment:", [endpointConfig environment]);
 
             v44 = RCSharedLog();
             if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
             {
               [(RCConfigurationResource *)v30 configurationID];
               v45 = v69 = i;
-              v46 = [(RCConfigurationResource *)v30 lastModifiedString];
-              v47 = [(RCConfigurationResource *)v30 lastFetchedDate];
-              v48 = [(RCConfigurationResource *)v30 endpointMaxAge];
-              v49 = [(RCConfigurationResource *)v30 treatmentIDs];
-              v50 = [v49 rc_description];
-              v51 = [(RCConfigurationResource *)v30 segmentSetIDs];
-              v52 = [v51 rc_description];
+              lastModifiedString = [(RCConfigurationResource *)v30 lastModifiedString];
+              lastFetchedDate = [(RCConfigurationResource *)v30 lastFetchedDate];
+              endpointMaxAge = [(RCConfigurationResource *)v30 endpointMaxAge];
+              treatmentIDs = [(RCConfigurationResource *)v30 treatmentIDs];
+              rc_description = [treatmentIDs rc_description];
+              segmentSetIDs = [(RCConfigurationResource *)v30 segmentSetIDs];
+              rc_description2 = [segmentSetIDs rc_description];
               *buf = 138544898;
-              v92 = v68;
+              v92 = prefixCopy;
               v93 = 2114;
               v94 = v45;
               v95 = 2114;
-              v96 = v46;
+              v96 = lastModifiedString;
               v97 = 2114;
-              v98 = v47;
+              v98 = lastFetchedDate;
               v99 = 2112;
-              v100 = v48;
+              v100 = endpointMaxAge;
               v101 = 2114;
-              v102 = v50;
+              v102 = rc_description;
               v103 = 2114;
-              v104 = v52;
+              v104 = rc_description2;
               _os_log_impl(&dword_2179FC000, v44, OS_LOG_TYPE_DEFAULT, "%{public}@ endpoint: received configuration with configurationID: %{public}@ lastModified: %{public}@ lastFetched: %{public}@ maxAge: %@ treatmentIDs: %{public}@ segmentSetIDs: %{public}@", buf, 0x48u);
 
-              v14 = v66;
+              dictCopy = v66;
               i = v69;
 
-              v16 = v65;
-              v17 = v64;
+              settingsCopy = v65;
+              ageCopy = v64;
             }
 
-            v53 = [v16 debugOverrides];
-            v54 = [v53 enableExtraLogs];
+            debugOverrides2 = [settingsCopy debugOverrides];
+            enableExtraLogs = [debugOverrides2 enableExtraLogs];
 
-            if (v54)
+            if (enableExtraLogs)
             {
               v55 = RCSharedLog();
               if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
               {
                 v56 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v79 encoding:4];
                 *buf = 138543618;
-                v92 = v68;
+                v92 = prefixCopy;
                 v93 = 2112;
                 v94 = v56;
                 _os_log_impl(&dword_2179FC000, v55, OS_LOG_TYPE_DEFAULT, "%{public}@ Endpoint JSON response: %@", buf, 0x16u);
               }
             }
 
-            v57 = [v76 requestCacheKey];
-            [v71 setObject:v30 forKeyedSubscript:v57];
+            requestCacheKey2 = [v76 requestCacheKey];
+            [dictionary setObject:v30 forKeyedSubscript:requestCacheKey2];
 
             objc_autoreleasePoolPop(context);
           }
@@ -223,10 +223,10 @@
       }
 
       v20 = v62;
-      (v62)[2](v62, v71, 0);
+      (v62)[2](v62, dictionary, 0);
 
       v21 = v59;
-      v15 = v60;
+      errorCopy = v60;
     }
 
     v22 = v61;
@@ -238,7 +238,7 @@
     v88[1] = 3221225472;
     v88[2] = __125__RCEndpointResponseProcessing_parseEndpointResponseDict_parsingError_configurationSettings_maxAge_loggingPrefix_completion___block_invoke;
     v88[3] = &unk_27822F1A8;
-    v89 = v15;
+    v89 = errorCopy;
     v90 = v19;
     __125__RCEndpointResponseProcessing_parseEndpointResponseDict_parsingError_configurationSettings_maxAge_loggingPrefix_completion___block_invoke(v88);
 
@@ -272,9 +272,9 @@ void __125__RCEndpointResponseProcessing_parseEndpointResponseDict_parsingError_
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)_configurationErrorForErrorDicts:(id)a3
++ (id)_configurationErrorForErrorDicts:(id)dicts
 {
-  v3 = [a3 rc_arrayByTransformingWithBlock:&__block_literal_global_8];
+  v3 = [dicts rc_arrayByTransformingWithBlock:&__block_literal_global_8];
   v4 = [MEMORY[0x277CCA9B8] rc_endpointErrorWithUnderlyingEndpointErrors:v3];
 
   return v4;

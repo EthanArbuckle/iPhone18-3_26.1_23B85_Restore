@@ -1,19 +1,19 @@
 @interface GKLocalPlayer
 + (GKLocalPlayer)local;
-+ (id)_localPlayersFromInternals:(id)a3 authenticated:(BOOL)a4;
-+ (id)_userInfoForAuthAPINotificationForLoggedInPlayerInternals:(id)a3 loggedOutPlayerInternals:(id)a4 oldPrimary:(id)a5 newPrimary:(id)a6;
++ (id)_localPlayersFromInternals:(id)internals authenticated:(BOOL)authenticated;
++ (id)_userInfoForAuthAPINotificationForLoggedInPlayerInternals:(id)internals loggedOutPlayerInternals:(id)playerInternals oldPrimary:(id)primary newPrimary:(id)newPrimary;
 + (id)accountServicePrivate;
-+ (id)authenticatedLocalPlayersFiltered:(int64_t)a3;
-+ (id)authenticatedLocalPlayersWithStatus:(unint64_t)a3;
++ (id)authenticatedLocalPlayersFiltered:(int64_t)filtered;
++ (id)authenticatedLocalPlayersWithStatus:(unint64_t)status;
 + (id)localPlayerAccessQueue;
-+ (id)localPlayerForCredential:(id)a3;
++ (id)localPlayerForCredential:(id)credential;
 + (id)localPlayers;
-+ (void)authenticateWithUsername:(id)a3 password:(id)a4 completionHandler:(id)a5;
-+ (void)authenticatedLocalPlayersDidChange:(id)a3 complete:(id)a4;
-+ (void)loadHighlightsDataWithCompletionHandler:(id)a3;
++ (void)authenticateWithUsername:(id)username password:(id)password completionHandler:(id)handler;
++ (void)authenticatedLocalPlayersDidChange:(id)change complete:(id)complete;
++ (void)loadHighlightsDataWithCompletionHandler:(id)handler;
 + (void)localPlayers;
-+ (void)performAsync:(id)a3;
-+ (void)performSync:(id)a3;
++ (void)performAsync:(id)async;
++ (void)performSync:(id)sync;
 - (BOOL)isDefaultContactsIntegrationConsent;
 - (BOOL)isDefaultNickname;
 - (BOOL)isDefaultPrivacyVisibility;
@@ -21,56 +21,56 @@
 - (BOOL)isPersonalizedCommunicationRestricted;
 - (BOOL)isShowingInGameUI;
 - (BOOL)isWelcomeBannerTooLate;
-- (BOOL)shouldDisplayWelcomeBannerForPlayer:(id)a3 lastAuthDate:(id)a4 remoteUI:(BOOL)a5 timeBetweenBanners:(double)a6;
+- (BOOL)shouldDisplayWelcomeBannerForPlayer:(id)player lastAuthDate:(id)date remoteUI:(BOOL)i timeBetweenBanners:(double)banners;
 - (BOOL)shouldPreserveOnboardingUI;
-- (GKLocalPlayer)initWithCoder:(id)a3;
+- (GKLocalPlayer)initWithCoder:(id)coder;
 - (GKPlayerInternalOnboarding)onboarding;
 - (NSArray)friends;
 - (id)_gkFriendListUsageDescription;
-- (id)displayNameWithOptions:(unsigned __int8)a3;
+- (id)displayNameWithOptions:(unsigned __int8)options;
 - (id)friendService;
 - (id)friendServicePrivate;
 - (id)internalPlayerID;
-- (void)_loadFriendPlayersWithCompletionHandler:(id)a3;
-- (void)_loadFriendsListGlobalAccessOptInFlow:(id)a3;
-- (void)_loadFriendsListPerGameAuthorizedFlow:(id)a3;
-- (void)_loadFriendsListPerGameNotDeterminedFlow:(id)a3;
+- (void)_loadFriendPlayersWithCompletionHandler:(id)handler;
+- (void)_loadFriendsListGlobalAccessOptInFlow:(id)flow;
+- (void)_loadFriendsListPerGameAuthorizedFlow:(id)flow;
+- (void)_loadFriendsListPerGameNotDeterminedFlow:(id)flow;
 - (void)_startAuthenticationForExistingPrimaryPlayer;
-- (void)_updatePerGameSettings:(int64_t)a3 withCompletionHandler:(id)a4;
-- (void)acceptFriendRequestWithIdentifier:(id)a3 sendPush:(BOOL)a4 handler:(id)a5;
+- (void)_updatePerGameSettings:(int64_t)settings withCompletionHandler:(id)handler;
+- (void)acceptFriendRequestWithIdentifier:(id)identifier sendPush:(BOOL)push handler:(id)handler;
 - (void)authenticateHandler;
-- (void)callAuthHandlerWithError:(id)a3;
-- (void)cancelFriendRequestWithIdentifier:(id)a3 handler:(id)a4;
-- (void)cancelGameInvite:(id)a3;
-- (void)cancelInviteWithNotification:(id)a3;
-- (void)createFriendRequestWithIdentifier:(id)a3 handler:(id)a4;
+- (void)callAuthHandlerWithError:(id)error;
+- (void)cancelFriendRequestWithIdentifier:(id)identifier handler:(id)handler;
+- (void)cancelGameInvite:(id)invite;
+- (void)cancelInviteWithNotification:(id)notification;
+- (void)createFriendRequestWithIdentifier:(id)identifier handler:(id)handler;
 - (void)dealloc;
 - (void)deleteSavedGamesWithName:(NSString *)name completionHandler:(void *)handler;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)fetchItemsForIdentityVerificationSignature:(void *)completionHandler;
 - (void)fetchSavedGamesWithCompletionHandler:(void *)handler;
 - (void)fetchTurnBasedEvent;
 - (void)friends;
 - (void)generateIdentityVerificationSignatureWithCompletionHandler:(void *)completionHandler;
-- (void)getPlayerIDFromFriendCode:(id)a3 handler:(id)a4;
-- (void)handleChallengableFriendsResults:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)inviteeAcceptedGameInviteWithNotification:(id)a3;
-- (void)inviteeDeclinedGameInviteWithNotification:(id)a3;
-- (void)inviteeUpdateGameInviteWithNotification:(id)a3;
+- (void)getPlayerIDFromFriendCode:(id)code handler:(id)handler;
+- (void)handleChallengableFriendsResults:(id)results error:(id)error completion:(id)completion;
+- (void)inviteeAcceptedGameInviteWithNotification:(id)notification;
+- (void)inviteeDeclinedGameInviteWithNotification:(id)notification;
+- (void)inviteeUpdateGameInviteWithNotification:(id)notification;
 - (void)loadChallengableFriendsWithCompletionHandler:(void *)completionHandler;
-- (void)loadChallengableFriendsWithFetchOptions:(unint64_t)a3 completion:(id)a4;
+- (void)loadChallengableFriendsWithFetchOptions:(unint64_t)options completion:(id)completion;
 - (void)loadDefaultLeaderboardIdentifierWithCompletionHandler:(void *)completionHandler;
 - (void)loadFriends:(void *)completionHandler;
 - (void)loadFriendsAuthorizationStatus:(void *)completionHandler;
 - (void)loadFriendsWithCompletionHandler:(void *)completionHandler;
 - (void)loadFriendsWithIdentifiers:(NSArray *)identifiers completionHandler:(void *)completionHandler;
 - (void)loadRecentPlayersWithCompletionHandler:(void *)completionHandler;
-- (void)promotePlayerInternalToLocalPlayerInternal:(id)a3;
-- (void)refreshInternalWithCompletion:(id)a3;
+- (void)promotePlayerInternalToLocalPlayerInternal:(id)internal;
+- (void)refreshInternalWithCompletion:(id)completion;
 - (void)registerListener:(id)listener;
-- (void)rejectFriendRequestWithIdentifier:(id)a3 handler:(id)a4;
-- (void)removeAllFriendsWithBlock:(id)a3;
-- (void)removeFriend:(id)a3 block:(id)a4;
+- (void)rejectFriendRequestWithIdentifier:(id)identifier handler:(id)handler;
+- (void)removeAllFriendsWithBlock:(id)block;
+- (void)removeFriend:(id)friend block:(id)block;
 - (void)reportAuthenticatingWithAuthKitInvocation;
 - (void)reportAuthenticatingWithGreenBuddyInvocation;
 - (void)reportAuthenticationErrorNoInternetConnection;
@@ -82,19 +82,19 @@
 - (void)saveGameData:(NSData *)data withName:(NSString *)name completionHandler:(void *)handler;
 - (void)setAuthenticateHandler:(void *)authenticateHandler;
 - (void)setDefaultLeaderboardIdentifier:(NSString *)leaderboardIdentifier completionHandler:(void *)completionHandler;
-- (void)setFriendListAuthorizationStatus:(int64_t)a3 forBundleID:(id)a4 handler:(id)a5;
-- (void)setLastContactsIntegrationConsentVersion:(id)a3;
-- (void)setLastFriendSuggestionsVersion:(id)a3;
-- (void)setLastPersonalizationVersion:(id)a3;
-- (void)setLastPrivacyNoticeVersion:(unint64_t)a3;
-- (void)setLastProfilePrivacyVersion:(id)a3;
-- (void)setLastWelcomeWhatsNewCopyVersion:(unint64_t)a3;
-- (void)setOnboarding:(id)a3;
-- (void)setStatus:(id)a3 withCompletionHandler:(id)a4;
+- (void)setFriendListAuthorizationStatus:(int64_t)status forBundleID:(id)d handler:(id)handler;
+- (void)setLastContactsIntegrationConsentVersion:(id)version;
+- (void)setLastFriendSuggestionsVersion:(id)version;
+- (void)setLastPersonalizationVersion:(id)version;
+- (void)setLastPrivacyNoticeVersion:(unint64_t)version;
+- (void)setLastProfilePrivacyVersion:(id)version;
+- (void)setLastWelcomeWhatsNewCopyVersion:(unint64_t)version;
+- (void)setOnboarding:(id)onboarding;
+- (void)setStatus:(id)status withCompletionHandler:(id)handler;
 - (void)unregisterAllListeners;
 - (void)unregisterListener:(id)listener;
-- (void)updateFromLocalPlayer:(id)a3;
-- (void)updateLoginStatus:(unint64_t)a3 completionHandler:(id)a4;
+- (void)updateFromLocalPlayer:(id)player;
+- (void)updateLoginStatus:(unint64_t)status completionHandler:(id)handler;
 @end
 
 @implementation GKLocalPlayer
@@ -147,7 +147,7 @@ uint64_t __22__GKLocalPlayer_local__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __22__GKLocalPlayer_local__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (local_sDispatchOnceToken != -1)
   {
     dispatch_once(&local_sDispatchOnceToken, block);
@@ -170,49 +170,49 @@ uint64_t __22__GKLocalPlayer_local__block_invoke(uint64_t a1)
 
 - (BOOL)isDefaultPrivacyVisibility
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 isDefaultPrivacyVisibility];
+  internal = [(GKPlayer *)self internal];
+  isDefaultPrivacyVisibility = [internal isDefaultPrivacyVisibility];
 
-  return v3;
+  return isDefaultPrivacyVisibility;
 }
 
 - (BOOL)isDefaultNickname
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 isDefaultNickname];
+  internal = [(GKPlayer *)self internal];
+  isDefaultNickname = [internal isDefaultNickname];
 
-  return v3;
+  return isDefaultNickname;
 }
 
 - (BOOL)isDefaultContactsIntegrationConsent
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 isDefaultContactsIntegrationConsent];
+  internal = [(GKPlayer *)self internal];
+  isDefaultContactsIntegrationConsent = [internal isDefaultContactsIntegrationConsent];
 
-  return v3;
+  return isDefaultContactsIntegrationConsent;
 }
 
 - (GKPlayerInternalOnboarding)onboarding
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 onboarding];
+  internal = [(GKPlayer *)self internal];
+  onboarding = [internal onboarding];
 
-  return v3;
+  return onboarding;
 }
 
-- (void)setOnboarding:(id)a3
+- (void)setOnboarding:(id)onboarding
 {
-  v4 = a3;
-  v5 = [(GKPlayer *)self internal];
-  [v5 setOnboarding:v4];
+  onboardingCopy = onboarding;
+  internal = [(GKPlayer *)self internal];
+  [internal setOnboarding:onboardingCopy];
 }
 
 - (id)internalPlayerID
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 playerID];
+  internal = [(GKPlayer *)self internal];
+  playerID = [internal playerID];
 
-  return v3;
+  return playerID;
 }
 
 + (id)localPlayerAccessQueue
@@ -235,26 +235,26 @@ void __39__GKLocalPlayer_localPlayerAccessQueue__block_invoke()
   localPlayerAccessQueue_sLocalPlayerAccessQueue = v0;
 }
 
-+ (void)performSync:(id)a3
++ (void)performSync:(id)sync
 {
-  v4 = a3;
-  v5 = [a1 localPlayerAccessQueue];
-  dispatch_sync(v5, v4);
+  syncCopy = sync;
+  localPlayerAccessQueue = [self localPlayerAccessQueue];
+  dispatch_sync(localPlayerAccessQueue, syncCopy);
 }
 
-+ (void)performAsync:(id)a3
++ (void)performAsync:(id)async
 {
-  v4 = a3;
-  v5 = [a1 localPlayerAccessQueue];
-  dispatch_async(v5, v4);
+  asyncCopy = async;
+  localPlayerAccessQueue = [self localPlayerAccessQueue];
+  dispatch_async(localPlayerAccessQueue, asyncCopy);
 }
 
 + (id)localPlayers
 {
-  v3 = [a1 local];
-  v4 = [v3 isAuthenticated];
+  local = [self local];
+  isAuthenticated = [local isAuthenticated];
 
-  if (v4)
+  if (isAuthenticated)
   {
     v11 = 0;
     v12 = &v11;
@@ -267,10 +267,10 @@ void __39__GKLocalPlayer_localPlayerAccessQueue__block_invoke()
     v10[2] = __29__GKLocalPlayer_localPlayers__block_invoke;
     v10[3] = &unk_2785DE990;
     v10[4] = &v11;
-    v10[5] = a1;
-    [a1 performSync:v10];
-    v5 = [a1 local];
-    v6 = [v12[5] indexOfObject:v5];
+    v10[5] = self;
+    [self performSync:v10];
+    local2 = [self local];
+    v6 = [v12[5] indexOfObject:local2];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (!os_log_GKGeneral)
@@ -289,7 +289,7 @@ void __39__GKLocalPlayer_localPlayerAccessQueue__block_invoke()
       [v12[5] removeObjectAtIndex:v6];
     }
 
-    [v12[5] insertObject:v5 atIndex:0];
+    [v12[5] insertObject:local2 atIndex:0];
     v8 = v12[5];
 
     _Block_object_dispose(&v11, 8);
@@ -314,8 +314,8 @@ void __29__GKLocalPlayer_localPlayers__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKLocalPlayer;
@@ -339,26 +339,26 @@ void __29__GKLocalPlayer_localPlayers__block_invoke(uint64_t a1)
   return showingInGameUI;
 }
 
-- (void)setStatus:(id)a3 withCompletionHandler:(id)a4
+- (void)setStatus:(id)status withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKLocalPlayer *)self status];
+  handlerCopy = handler;
+  statusCopy = status;
+  status = [(GKLocalPlayer *)self status];
   v17.receiver = self;
   v17.super_class = GKLocalPlayer;
-  [(GKLocalPlayer *)&v17 setStatus:v7];
+  [(GKLocalPlayer *)&v17 setStatus:statusCopy];
   v9 = +[GKDaemonProxy proxyForLocalPlayer];
-  v10 = [v9 profileServicePrivate];
+  profileServicePrivate = [v9 profileServicePrivate];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __49__GKLocalPlayer_setStatus_withCompletionHandler___block_invoke;
   v13[3] = &unk_2785DDC60;
-  v14 = v8;
-  v15 = self;
-  v16 = v6;
-  v11 = v6;
-  v12 = v8;
-  [v10 setStatus:v7 handler:v13];
+  v14 = status;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = status;
+  [profileServicePrivate setStatus:statusCopy handler:v13];
 }
 
 void __49__GKLocalPlayer_setStatus_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -403,11 +403,11 @@ void __49__GKLocalPlayer_setStatus_withCompletionHandler___block_invoke(uint64_t
   return shouldPreserveOnboardingUI;
 }
 
-- (id)displayNameWithOptions:(unsigned __int8)a3
+- (id)displayNameWithOptions:(unsigned __int8)options
 {
   v5.receiver = self;
   v5.super_class = GKLocalPlayer;
-  v3 = [(GKPlayer *)&v5 displayNameWithOptions:a3 | 1u];
+  v3 = [(GKPlayer *)&v5 displayNameWithOptions:options | 1u];
 
   return v3;
 }
@@ -415,23 +415,23 @@ void __49__GKLocalPlayer_setStatus_withCompletionHandler___block_invoke(uint64_t
 - (BOOL)isMultiplayerGamingRestricted
 {
   v2 = +[GKPreferences shared];
-  v3 = [v2 isMultiplayerGamingRestricted];
+  isMultiplayerGamingRestricted = [v2 isMultiplayerGamingRestricted];
 
-  return v3;
+  return isMultiplayerGamingRestricted;
 }
 
 - (BOOL)isPersonalizedCommunicationRestricted
 {
   v2 = +[GKPreferences shared];
-  v3 = [v2 shouldAllowCustomCommunication];
+  shouldAllowCustomCommunication = [v2 shouldAllowCustomCommunication];
 
-  return v3 ^ 1;
+  return shouldAllowCustomCommunication ^ 1;
 }
 
-- (void)promotePlayerInternalToLocalPlayerInternal:(id)a3
+- (void)promotePlayerInternalToLocalPlayerInternal:(id)internal
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  internalCopy = internal;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -448,85 +448,85 @@ void __49__GKLocalPlayer_setStatus_withCompletionHandler___block_invoke(uint64_t
   }
 
   v9 = objc_alloc_init(GKLocalPlayerInternal);
-  v10 = [v4 internal];
-  v11 = [v10 playerID];
-  [(GKPlayerInternal *)v9 setPlayerID:v11];
+  internal = [internalCopy internal];
+  playerID = [internal playerID];
+  [(GKPlayerInternal *)v9 setPlayerID:playerID];
 
-  v12 = [v4 internal];
-  v13 = [v12 scopedIDs];
-  [(GKPlayerInternal *)v9 setScopedIDs:v13];
+  internal2 = [internalCopy internal];
+  scopedIDs = [internal2 scopedIDs];
+  [(GKPlayerInternal *)v9 setScopedIDs:scopedIDs];
 
-  v14 = [v4 internal];
-  v15 = [v14 accountName];
-  [(GKLocalPlayerInternal *)v9 setAccountName:v15];
+  internal3 = [internalCopy internal];
+  accountName = [internal3 accountName];
+  [(GKLocalPlayerInternal *)v9 setAccountName:accountName];
 
-  v16 = [v4 internal];
-  -[GKLocalPlayerInternal setDefaultNickname:](v9, "setDefaultNickname:", [v16 isDefaultNickname]);
+  internal4 = [internalCopy internal];
+  -[GKLocalPlayerInternal setDefaultNickname:](v9, "setDefaultNickname:", [internal4 isDefaultNickname]);
 
-  v17 = [v4 internal];
-  -[GKLocalPlayerInternal setDefaultPrivacyVisibility:](v9, "setDefaultPrivacyVisibility:", [v17 isDefaultPrivacyVisibility]);
+  internal5 = [internalCopy internal];
+  -[GKLocalPlayerInternal setDefaultPrivacyVisibility:](v9, "setDefaultPrivacyVisibility:", [internal5 isDefaultPrivacyVisibility]);
 
-  v18 = [v4 internal];
-  -[GKLocalPlayerInternal setDefaultContactsIntegrationConsent:](v9, "setDefaultContactsIntegrationConsent:", [v18 isDefaultContactsIntegrationConsent]);
+  internal6 = [internalCopy internal];
+  -[GKLocalPlayerInternal setDefaultContactsIntegrationConsent:](v9, "setDefaultContactsIntegrationConsent:", [internal6 isDefaultContactsIntegrationConsent]);
 
-  v19 = [v4 internal];
-  v20 = [v19 alias];
-  [(GKPlayerInternal *)v9 setAlias:v20];
+  internal7 = [internalCopy internal];
+  alias = [internal7 alias];
+  [(GKPlayerInternal *)v9 setAlias:alias];
 
-  v21 = [v4 internal];
-  v22 = [v21 firstName];
-  [(GKFamiliarPlayerInternal *)v9 setFirstName:v22];
+  internal8 = [internalCopy internal];
+  firstName = [internal8 firstName];
+  [(GKFamiliarPlayerInternal *)v9 setFirstName:firstName];
 
-  v23 = [v4 internal];
-  v24 = [v23 lastName];
-  [(GKFamiliarPlayerInternal *)v9 setLastName:v24];
+  internal9 = [internalCopy internal];
+  lastName = [internal9 lastName];
+  [(GKFamiliarPlayerInternal *)v9 setLastName:lastName];
 
-  v25 = [v4 internal];
-  -[GKLocalPlayerInternal setUnderage:](v9, "setUnderage:", [v25 isUnderage]);
+  internal10 = [internalCopy internal];
+  -[GKLocalPlayerInternal setUnderage:](v9, "setUnderage:", [internal10 isUnderage]);
 
-  v26 = [v4 internal];
-  -[GKPlayerInternal setNumberOfAchievementPoints:](v9, "setNumberOfAchievementPoints:", [v26 numberOfAchievementPoints]);
+  internal11 = [internalCopy internal];
+  -[GKPlayerInternal setNumberOfAchievementPoints:](v9, "setNumberOfAchievementPoints:", [internal11 numberOfAchievementPoints]);
 
-  v27 = [v4 internal];
-  -[GKPlayerInternal setNumberOfAchievements:](v9, "setNumberOfAchievements:", [v27 numberOfAchievements]);
+  internal12 = [internalCopy internal];
+  -[GKPlayerInternal setNumberOfAchievements:](v9, "setNumberOfAchievements:", [internal12 numberOfAchievements]);
 
-  v28 = [v4 internal];
-  -[GKPlayerInternal setNumberOfFriends:](v9, "setNumberOfFriends:", [v28 numberOfFriends]);
+  internal13 = [internalCopy internal];
+  -[GKPlayerInternal setNumberOfFriends:](v9, "setNumberOfFriends:", [internal13 numberOfFriends]);
 
-  v29 = [v4 internal];
-  -[GKPlayerInternal setNumberOfGames:](v9, "setNumberOfGames:", [v29 numberOfGames]);
+  internal14 = [internalCopy internal];
+  -[GKPlayerInternal setNumberOfGames:](v9, "setNumberOfGames:", [internal14 numberOfGames]);
 
-  v30 = [v4 internal];
-  -[GKLocalPlayerInternal setNumberOfTurns:](v9, "setNumberOfTurns:", [v30 numberOfTurns]);
+  internal15 = [internalCopy internal];
+  -[GKLocalPlayerInternal setNumberOfTurns:](v9, "setNumberOfTurns:", [internal15 numberOfTurns]);
 
-  v31 = [v4 internal];
-  v32 = [v31 compositeName];
-  [(GKFamiliarPlayerInternal *)v9 setCompositeName:v32];
+  internal16 = [internalCopy internal];
+  compositeName = [internal16 compositeName];
+  [(GKFamiliarPlayerInternal *)v9 setCompositeName:compositeName];
 
   [(GKPlayer *)self setInternal:v9];
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateFromLocalPlayer:(id)a3
+- (void)updateFromLocalPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [v4 internal];
-  v6 = [v5 isLocalPlayer];
+  playerCopy = player;
+  internal = [playerCopy internal];
+  isLocalPlayer = [internal isLocalPlayer];
 
-  if (v6)
+  if (isLocalPlayer)
   {
-    v7 = [v4 internal];
-    [(GKPlayer *)self setInternal:v7];
+    internal2 = [playerCopy internal];
+    [(GKPlayer *)self setInternal:internal2];
   }
 
   else
   {
-    [(GKLocalPlayer *)self promotePlayerInternalToLocalPlayerInternal:v4];
+    [(GKLocalPlayer *)self promotePlayerInternalToLocalPlayerInternal:playerCopy];
   }
 
-  v8 = [v4 isAuthenticated];
+  isAuthenticated = [playerCopy isAuthenticated];
 
-  self->_authenticated = v8;
+  self->_authenticated = isAuthenticated;
 }
 
 - (NSArray)friends
@@ -545,34 +545,34 @@ void __49__GKLocalPlayer_setStatus_withCompletionHandler___block_invoke(uint64_t
     }
 
     v8[0] = @"playerID is no longer available";
-    v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
+    friends = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = GKLocalPlayer;
-    v4 = [(GKPlayer *)&v7 friends];
+    friends = [(GKPlayer *)&v7 friends];
   }
 
   v5 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return friends;
 }
 
-- (void)_loadFriendPlayersWithCompletionHandler:(id)a3
+- (void)_loadFriendPlayersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[GKDaemonProxy proxyForLocalPlayer];
-  v6 = [v5 friendService];
-  v7 = [(GKPlayer *)self internal];
+  friendService = [v5 friendService];
+  internal = [(GKPlayer *)self internal];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__GKLocalPlayer__loadFriendPlayersWithCompletionHandler___block_invoke;
   v9[3] = &unk_2785DDCB0;
-  v10 = v4;
-  v8 = v4;
-  [v6 getFriendsForPlayer:v7 handler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [friendService getFriendsForPlayer:internal handler:v9];
 }
 
 void __57__GKLocalPlayer__loadFriendPlayersWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -598,8 +598,8 @@ GKPlayer *__57__GKLocalPlayer__loadFriendPlayersWithCompletionHandler___block_in
 {
   v4 = completionHandler;
   objc_initWeak(&location, self);
-  v5 = [(GKLocalPlayer *)self friendService];
-  v6 = [(GKPlayer *)self internal];
+  friendService = [(GKLocalPlayer *)self friendService];
+  internal = [(GKPlayer *)self internal];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__GKLocalPlayer_loadChallengableFriendsWithCompletionHandler___block_invoke;
@@ -607,7 +607,7 @@ GKPlayer *__57__GKLocalPlayer__loadFriendPlayersWithCompletionHandler___block_in
   objc_copyWeak(&v10, &location);
   v7 = v4;
   v9 = v7;
-  [v5 getChallengableFriendsForPlayer:v6 handler:v8];
+  [friendService getChallengableFriendsForPlayer:internal handler:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -621,20 +621,20 @@ void __62__GKLocalPlayer_loadChallengableFriendsWithCompletionHandler___block_in
   [WeakRetained handleChallengableFriendsResults:v6 error:v5 completion:*(a1 + 32)];
 }
 
-- (void)loadChallengableFriendsWithFetchOptions:(unint64_t)a3 completion:(id)a4
+- (void)loadChallengableFriendsWithFetchOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v7 = [(GKLocalPlayer *)self friendServicePrivate];
-  v8 = [(GKPlayer *)self internal];
+  friendServicePrivate = [(GKLocalPlayer *)self friendServicePrivate];
+  internal = [(GKPlayer *)self internal];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__GKLocalPlayer_loadChallengableFriendsWithFetchOptions_completion___block_invoke;
   v10[3] = &unk_2785DE9D8;
   objc_copyWeak(&v12, &location);
-  v9 = v6;
+  v9 = completionCopy;
   v11 = v9;
-  [v7 getChallengableFriendsForPlayer:v8 fetchOptions:a3 completion:v10];
+  [friendServicePrivate getChallengableFriendsForPlayer:internal fetchOptions:options completion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -648,19 +648,19 @@ void __68__GKLocalPlayer_loadChallengableFriendsWithFetchOptions_completion___bl
   [WeakRetained handleChallengableFriendsResults:v6 error:v5 completion:*(a1 + 32)];
 }
 
-- (void)handleChallengableFriendsResults:(id)a3 error:(id)a4 completion:(id)a5
+- (void)handleChallengableFriendsResults:(id)results error:(id)error completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  errorCopy = error;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (errorCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__GKLocalPlayer_handleChallengableFriendsResults_error_completion___block_invoke;
     block[3] = &unk_2785DDC10;
-    v20 = v8;
-    v19 = v7;
+    v20 = completionCopy;
+    v19 = errorCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     v10 = v20;
@@ -668,7 +668,7 @@ void __68__GKLocalPlayer_loadChallengableFriendsWithFetchOptions_completion___bl
 
   else
   {
-    v11 = [a3 _gkMapWithBlock:&__block_literal_global_129];
+    v11 = [results _gkMapWithBlock:&__block_literal_global_129];
     v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"friendBiDirectional == %@", &unk_283B33220];
     v13 = [v11 filteredArrayUsingPredicate:v12];
     v14 = [v13 sortedArrayUsingComparator:&__block_literal_global_138];
@@ -805,15 +805,15 @@ void __56__GKLocalPlayer_loadRecentPlayersWithCompletionHandler___block_invoke_3
   if (!GKApplicationLinkedOnOrAfter(917504, 659456))
   {
     v7 = +[GKDaemonProxy proxyForLocalPlayer];
-    v8 = [v7 friendService];
-    v9 = [(GKPlayer *)self internal];
+    friendService = [v7 friendService];
+    internal = [(GKPlayer *)self internal];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __50__GKLocalPlayer_loadFriendsWithCompletionHandler___block_invoke;
     v10[3] = &unk_2785DDC38;
     v10[4] = self;
     v11 = v4;
-    [v8 getFriendsForPlayer:v9 handler:v10];
+    [friendService getFriendsForPlayer:internal handler:v10];
 
     goto LABEL_8;
   }
@@ -909,9 +909,9 @@ LABEL_12:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)authenticatedLocalPlayersFiltered:(int64_t)a3
++ (id)authenticatedLocalPlayersFiltered:(int64_t)filtered
 {
-  if ((a3 & 2) != 0)
+  if ((filtered & 2) != 0)
   {
     v3 = 5;
   }
@@ -926,18 +926,18 @@ LABEL_12:
   return [v4 authenticatedLocalPlayersWithStatus:v3];
 }
 
-+ (id)authenticatedLocalPlayersWithStatus:(unint64_t)a3
++ (id)authenticatedLocalPlayersWithStatus:(unint64_t)status
 {
   v4 = +[GKDaemonProxy daemonProxy];
-  v5 = [v4 authenticatedLocalPlayersWithStatus:a3];
+  v5 = [v4 authenticatedLocalPlayersWithStatus:status];
 
   return v5;
 }
 
-- (void)updateLoginStatus:(unint64_t)a3 completionHandler:(id)a4
+- (void)updateLoginStatus:(unint64_t)status completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -948,7 +948,7 @@ LABEL_12:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v23 = a3;
+    statusCopy = status;
     _os_log_impl(&dword_227904000, v7, OS_LOG_TYPE_INFO, "GKLocalPlayer: updateLoginStatus: %lX", buf, 0xCu);
   }
 
@@ -964,26 +964,26 @@ LABEL_12:
     _os_log_impl(&dword_227904000, v10, OS_LOG_TYPE_INFO, "GKLocalPlayer: setLoginStatus:", buf, 2u);
   }
 
-  if ((a3 & 0x1C) == 0)
+  if ((status & 0x1C) == 0)
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/API/GKLocalPlayer.m"];
-    v14 = [v13 lastPathComponent];
-    v15 = [v11 stringWithFormat:@"%@ ((status & GKLocalPlayerLoginStatusSettableMask) != 0)\n[%s (%s:%d)]", v12, "-[GKLocalPlayer updateLoginStatus:completionHandler:]", objc_msgSend(v14, "UTF8String"), 607];
+    lastPathComponent = [v13 lastPathComponent];
+    v15 = [v11 stringWithFormat:@"%@ ((status & GKLocalPlayerLoginStatusSettableMask) != 0)\n[%s (%s:%d)]", v12, "-[GKLocalPlayer updateLoginStatus:completionHandler:]", objc_msgSend(lastPathComponent, "UTF8String"), 607];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v15}];
   }
 
-  v16 = [(GKLocalPlayer *)self daemonProxy];
-  v17 = [v16 accountServicePrivate];
+  daemonProxy = [(GKLocalPlayer *)self daemonProxy];
+  accountServicePrivate = [daemonProxy accountServicePrivate];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __53__GKLocalPlayer_updateLoginStatus_completionHandler___block_invoke;
   v20[3] = &unk_2785DE008;
-  v21 = v6;
-  v18 = v6;
-  [v17 setLoginStatus:a3 handler:v20];
+  v21 = handlerCopy;
+  v18 = handlerCopy;
+  [accountServicePrivate setLoginStatus:status handler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -1011,21 +1011,21 @@ void __53__GKLocalPlayer_updateLoginStatus_completionHandler___block_invoke(uint
   }
 }
 
-+ (id)localPlayerForCredential:(id)a3
++ (id)localPlayerForCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__5;
   v16 = __Block_byref_object_dispose__5;
   v17 = 0;
-  v5 = [a1 authenticatedLocalPlayersWithStatus:1];
+  v5 = [self authenticatedLocalPlayersWithStatus:1];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__GKLocalPlayer_localPlayerForCredential___block_invoke;
   v9[3] = &unk_2785DEA48;
-  v6 = v4;
+  v6 = credentialCopy;
   v10 = v6;
   v11 = &v12;
   [v5 enumerateObjectsUsingBlock:v9];
@@ -1050,17 +1050,17 @@ void __42__GKLocalPlayer_localPlayerForCredential___block_invoke(uint64_t a1, vo
   }
 }
 
-+ (id)_localPlayersFromInternals:(id)a3 authenticated:(BOOL)a4
++ (id)_localPlayersFromInternals:(id)internals authenticated:(BOOL)authenticated
 {
-  if (a3)
+  if (internals)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __58__GKLocalPlayer__localPlayersFromInternals_authenticated___block_invoke;
     v7[3] = &__block_descriptor_41_e49___GKLocalPlayer_24__0__GKLocalPlayerInternal_8Q16l;
-    v7[4] = a1;
-    v8 = a4;
-    v5 = [a3 _gkMapWithBlock:v7];
+    v7[4] = self;
+    authenticatedCopy = authenticated;
+    v5 = [internals _gkMapWithBlock:v7];
   }
 
   else
@@ -1083,56 +1083,56 @@ id __58__GKLocalPlayer__localPlayersFromInternals_authenticated___block_invoke(u
   return v5;
 }
 
-+ (id)_userInfoForAuthAPINotificationForLoggedInPlayerInternals:(id)a3 loggedOutPlayerInternals:(id)a4 oldPrimary:(id)a5 newPrimary:(id)a6
++ (id)_userInfoForAuthAPINotificationForLoggedInPlayerInternals:(id)internals loggedOutPlayerInternals:(id)playerInternals oldPrimary:(id)primary newPrimary:(id)newPrimary
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = [a1 _localPlayersFromInternals:a3 authenticated:1];
-  v14 = [a1 _localPlayersFromInternals:v12 authenticated:0];
+  primaryCopy = primary;
+  newPrimaryCopy = newPrimary;
+  playerInternalsCopy = playerInternals;
+  v13 = [self _localPlayersFromInternals:internals authenticated:1];
+  v14 = [self _localPlayersFromInternals:playerInternalsCopy authenticated:0];
 
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([v13 count])
   {
     v16 = [v13 copy];
-    [v15 setObject:v16 forKey:@"GKPlayersSignedIn"];
+    [dictionary setObject:v16 forKey:@"GKPlayersSignedIn"];
   }
 
   if ([v14 count])
   {
     v17 = [v14 copy];
-    [v15 setObject:v17 forKey:@"GKPlayersSignedOut"];
+    [dictionary setObject:v17 forKey:@"GKPlayersSignedOut"];
   }
 
   if ([MEMORY[0x277CCA8D8] _gkMainBundleIsGameCenterSystemProcess])
   {
-    v18 = [v11 playerID];
+    playerID = [newPrimaryCopy playerID];
 
-    if (v18)
+    if (playerID)
     {
-      v19 = [v11 playerID];
-      v20 = [v19 copy];
-      [v15 setObject:v20 forKey:@"GKPlayerDidAuthenticateNewPlayerID"];
+      playerID2 = [newPrimaryCopy playerID];
+      v20 = [playerID2 copy];
+      [dictionary setObject:v20 forKey:@"GKPlayerDidAuthenticateNewPlayerID"];
     }
 
-    v21 = [v10 playerID];
+    playerID3 = [primaryCopy playerID];
 
-    if (v21)
+    if (playerID3)
     {
-      v22 = [v10 playerID];
-      v23 = [v22 copy];
-      [v15 setObject:v23 forKey:@"GKPlayerDidAuthenticateOldPlayerID"];
+      playerID4 = [primaryCopy playerID];
+      v23 = [playerID4 copy];
+      [dictionary setObject:v23 forKey:@"GKPlayerDidAuthenticateOldPlayerID"];
     }
   }
 
-  return v15;
+  return dictionary;
 }
 
-+ (void)authenticatedLocalPlayersDidChange:(id)a3 complete:(id)a4
++ (void)authenticatedLocalPlayersDidChange:(id)change complete:(id)complete
 {
   v64 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  changeCopy = change;
+  completeCopy = complete;
   v9 = +[GKLocalPlayer localPlayer];
   v10 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
@@ -1148,13 +1148,13 @@ id __58__GKLocalPlayer__localPlayersFromInternals_authenticated___block_invoke(u
     *buf = 138412546;
     *&buf[4] = v13;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = changeCopy;
     _os_log_impl(&dword_227904000, v12, OS_LOG_TYPE_INFO, "%@ %@", buf, 0x16u);
   }
 
-  v14 = [v9 appIsInBackground];
+  appIsInBackground = [v9 appIsInBackground];
   v15 = os_log_GKGeneral;
-  if (v14)
+  if (appIsInBackground)
   {
     if (!os_log_GKGeneral)
     {
@@ -1171,9 +1171,9 @@ id __58__GKLocalPlayer__localPlayersFromInternals_authenticated___block_invoke(u
       _os_log_impl(&dword_227904000, v17, OS_LOG_TYPE_INFO, "%@: skipping, in background", buf, 0xCu);
     }
 
-    if (v8)
+    if (completeCopy)
     {
-      v8[2](v8);
+      completeCopy[2](completeCopy);
     }
   }
 
@@ -1194,7 +1194,7 @@ id __58__GKLocalPlayer__localPlayersFromInternals_authenticated___block_invoke(u
       _os_log_impl(&dword_227904000, v20, OS_LOG_TYPE_INFO, "%@: appear not to be in the background!", buf, 0xCu);
     }
 
-    v22 = [MEMORY[0x277CBEB98] setWithArray:v7];
+    v22 = [MEMORY[0x277CBEB98] setWithArray:changeCopy];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -1206,27 +1206,27 @@ id __58__GKLocalPlayer__localPlayersFromInternals_authenticated___block_invoke(u
     v57[2] = __61__GKLocalPlayer_authenticatedLocalPlayersDidChange_complete___block_invoke;
     v57[3] = &unk_2785DEA90;
     v59 = buf;
-    v23 = v7;
+    v23 = changeCopy;
     v58 = v23;
-    [a1 performSync:v57];
-    v24 = [a1 local];
-    v25 = [v24 internal];
+    [self performSync:v57];
+    local = [self local];
+    internal = [local internal];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = 0;
+      internal2 = 0;
     }
 
     else
     {
-      v27 = [a1 local];
-      v26 = [v27 internal];
+      local2 = [self local];
+      internal2 = [local2 internal];
 
-      v25 = v27;
+      internal = local2;
     }
 
-    v28 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v29 = *(*&buf[8] + 40);
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
@@ -1234,16 +1234,16 @@ id __58__GKLocalPlayer__localPlayersFromInternals_authenticated___block_invoke(u
     v54[3] = &unk_2785DEAB8;
     v30 = v22;
     v55 = v30;
-    v31 = v28;
+    v31 = array;
     v56 = v31;
     [v29 enumerateObjectsUsingBlock:v54];
-    v32 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __61__GKLocalPlayer_authenticatedLocalPlayersDidChange_complete___block_invoke_3;
     v51[3] = &unk_2785DEAE0;
     v53 = buf;
-    v33 = v32;
+    v33 = array2;
     v52 = v33;
     [v30 enumerateObjectsUsingBlock:v51];
     v45 = 0;
@@ -1258,9 +1258,9 @@ id __58__GKLocalPlayer__localPlayersFromInternals_authenticated___block_invoke(u
     v44[3] = &unk_2785DEB08;
     v44[4] = &v45;
     [v23 enumerateObjectsUsingBlock:v44];
-    if ([v33 count] || objc_msgSend(v31, "count") || v26 != v46[5] && (objc_msgSend(v26, "isEqual:") & 1) == 0)
+    if ([v33 count] || objc_msgSend(v31, "count") || internal2 != v46[5] && (objc_msgSend(internal2, "isEqual:") & 1) == 0)
     {
-      v34 = [a1 _userInfoForAuthAPINotificationForLoggedInPlayerInternals:v33 loggedOutPlayerInternals:v31 oldPrimary:v26 newPrimary:v46[5]];
+      v34 = [self _userInfoForAuthAPINotificationForLoggedInPlayerInternals:v33 loggedOutPlayerInternals:v31 oldPrimary:internal2 newPrimary:v46[5]];
       v35 = 1;
     }
 
@@ -1279,11 +1279,11 @@ id __58__GKLocalPlayer__localPlayersFromInternals_authenticated___block_invoke(u
     v43 = v35;
     v36 = v34;
     v40 = v36;
-    v42 = a1;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], v38);
-    if (v8)
+    if (completeCopy)
     {
-      v8[2](v8);
+      completeCopy[2](completeCopy);
     }
 
     _Block_object_dispose(&v45, 8);
@@ -1456,40 +1456,40 @@ uint64_t __61__GKLocalPlayer_authenticatedLocalPlayersDidChange_complete___block
 + (id)accountServicePrivate
 {
   v2 = +[GKDaemonProxy daemonProxy];
-  v3 = [v2 accountServicePrivate];
+  accountServicePrivate = [v2 accountServicePrivate];
 
-  return v3;
+  return accountServicePrivate;
 }
 
 - (id)friendServicePrivate
 {
-  v2 = [(GKLocalPlayer *)self daemonProxy];
-  v3 = [v2 friendServicePrivate];
+  daemonProxy = [(GKLocalPlayer *)self daemonProxy];
+  friendServicePrivate = [daemonProxy friendServicePrivate];
 
-  return v3;
+  return friendServicePrivate;
 }
 
 - (id)friendService
 {
-  v2 = [(GKLocalPlayer *)self daemonProxy];
-  v3 = [v2 friendService];
+  daemonProxy = [(GKLocalPlayer *)self daemonProxy];
+  friendService = [daemonProxy friendService];
 
-  return v3;
+  return friendService;
 }
 
-+ (void)authenticateWithUsername:(id)a3 password:(id)a4 completionHandler:(id)a5
++ (void)authenticateWithUsername:(id)username password:(id)password completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  usernameCopy = username;
+  passwordCopy = password;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/API/GKLocalPlayer.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = [v10 stringWithFormat:@"%@ (completionHandler != ((void*)0))\n[%s (%s:%d)]", v11, "+[GKLocalPlayer authenticateWithUsername:password:completionHandler:]", objc_msgSend(v13, "UTF8String"), 839];
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = [v10 stringWithFormat:@"%@ (completionHandler != ((void*)0))\n[%s (%s:%d)]", v11, "+[GKLocalPlayer authenticateWithUsername:password:completionHandler:]", objc_msgSend(lastPathComponent, "UTF8String"), 839];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v14}];
   }
@@ -1504,7 +1504,7 @@ uint64_t __61__GKLocalPlayer_authenticatedLocalPlayersDidChange_complete___block
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v7;
+    v25 = usernameCopy;
     _os_log_impl(&dword_227904000, v15, OS_LOG_TYPE_INFO, "authenticateWithUsername:%@", buf, 0xCu);
   }
 
@@ -1513,11 +1513,11 @@ uint64_t __61__GKLocalPlayer_authenticatedLocalPlayersDidChange_complete___block
   v21[1] = 3221225472;
   v21[2] = __69__GKLocalPlayer_authenticateWithUsername_password_completionHandler___block_invoke;
   v21[3] = &unk_2785DEB80;
-  v22 = v7;
-  v23 = v9;
-  v18 = v9;
-  v19 = v7;
-  [v17 authenticatePlayerWithUsername:v19 password:v8 altDSID:0 usingFastPath:1 handler:v21];
+  v22 = usernameCopy;
+  v23 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = usernameCopy;
+  [v17 authenticatePlayerWithUsername:v19 password:passwordCopy altDSID:0 usingFastPath:1 handler:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -1561,9 +1561,9 @@ void __69__GKLocalPlayer_authenticateWithUsername_password_completionHandler___b
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshInternalWithCompletion:(id)a3
+- (void)refreshInternalWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLocalPlayer.m", 976, "-[GKLocalPlayer refreshInternalWithCompletion:]"];
   v6 = [GKDispatchGroup dispatchGroupWithName:v5];
 
@@ -1580,9 +1580,9 @@ void __69__GKLocalPlayer_authenticateWithUsername_password_completionHandler___b
   v10[2] = __47__GKLocalPlayer_refreshInternalWithCompletion___block_invoke_3;
   v10[3] = &unk_2785DE948;
   v11 = v7;
-  v12 = self;
-  v13 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
   v9 = v7;
   [v9 notifyOnQueue:MEMORY[0x277D85CD0] block:v10];
 }
@@ -1643,10 +1643,10 @@ void __47__GKLocalPlayer_refreshInternalWithCompletion___block_invoke_3(uint64_t
   v4();
 }
 
-- (void)callAuthHandlerWithError:(id)a3
+- (void)callAuthHandlerWithError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -1657,13 +1657,13 @@ void __47__GKLocalPlayer_refreshInternalWithCompletion___block_invoke_3(uint64_t
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = errorCopy;
     _os_log_impl(&dword_227904000, v5, OS_LOG_TYPE_DEFAULT, "Calling AuthenticateHandlerWithError: %@", buf, 0xCu);
   }
 
-  v7 = [(GKPlayer *)self playerID];
+  playerID = [(GKPlayer *)self playerID];
 
-  if (v7)
+  if (playerID)
   {
     v8 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
@@ -1679,13 +1679,13 @@ void __47__GKLocalPlayer_refreshInternalWithCompletion___block_invoke_3(uint64_t
     }
   }
 
-  v10 = [(GKPlayer *)self internal];
+  internal = [(GKPlayer *)self internal];
   v11 = +[GKLocalPlayer local];
-  [v11 setInternal:v10];
+  [v11 setInternal:internal];
 
-  v12 = [(GKLocalPlayer *)self isAuthenticated];
+  isAuthenticated = [(GKLocalPlayer *)self isAuthenticated];
   v13 = +[GKLocalPlayer local];
-  [v13 setAuthenticated:v12];
+  [v13 setAuthenticated:isAuthenticated];
 
   if ([(GKLocalPlayer *)self isAuthenticated])
   {
@@ -1706,8 +1706,8 @@ void __47__GKLocalPlayer_refreshInternalWithCompletion___block_invoke_3(uint64_t
   v19[2] = __42__GKLocalPlayer_callAuthHandlerWithError___block_invoke;
   v19[3] = &unk_2785DEBA8;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
+  v20 = errorCopy;
+  v17 = errorCopy;
   [v16 updateScopedIDs:v19];
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1813,22 +1813,22 @@ uint64_t __40__GKLocalPlayer_setAuthenticateHandler___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)removeFriend:(id)a3 block:(id)a4
+- (void)removeFriend:(id)friend block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  friendCopy = friend;
   v8 = +[GKDaemonProxy proxyForLocalPlayer];
-  v9 = [v8 friendServicePrivate];
-  v10 = [v7 internal];
+  friendServicePrivate = [v8 friendServicePrivate];
+  internal = [friendCopy internal];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __36__GKLocalPlayer_removeFriend_block___block_invoke;
   v12[3] = &unk_2785DD8E8;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v9 removeFriendWithPlayer:v10 handler:v12];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [friendServicePrivate removeFriendWithPlayer:internal handler:v12];
 }
 
 uint64_t __36__GKLocalPlayer_removeFriend_block___block_invoke(uint64_t a1, void *a2)
@@ -1849,9 +1849,9 @@ uint64_t __36__GKLocalPlayer_removeFriend_block___block_invoke(uint64_t a1, void
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)removeAllFriendsWithBlock:(id)a3
+- (void)removeAllFriendsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -1865,15 +1865,15 @@ uint64_t __36__GKLocalPlayer_removeFriend_block___block_invoke(uint64_t a1, void
   }
 
   v7 = +[GKDaemonProxy proxyForLocalPlayer];
-  v8 = [v7 friendServicePrivate];
+  friendServicePrivate = [v7 friendServicePrivate];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __43__GKLocalPlayer_removeAllFriendsWithBlock___block_invoke;
   v10[3] = &unk_2785DD8E8;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v8 removeAllFriendsWithHandler:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [friendServicePrivate removeAllFriendsWithHandler:v10];
 }
 
 uint64_t __43__GKLocalPlayer_removeAllFriendsWithBlock___block_invoke(uint64_t a1, void *a2)
@@ -1897,15 +1897,15 @@ uint64_t __43__GKLocalPlayer_removeAllFriendsWithBlock___block_invoke(uint64_t a
 - (void)_startAuthenticationForExistingPrimaryPlayer
 {
   [(GKLocalPlayer *)self setAuthenticationState:1];
-  v4 = [(GKLocalPlayer *)self daemonProxy];
-  v5 = [v4 accountService];
+  daemonProxy = [(GKLocalPlayer *)self daemonProxy];
+  accountService = [daemonProxy accountService];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__GKLocalPlayer__startAuthenticationForExistingPrimaryPlayer__block_invoke;
   v6[3] = &unk_2785DEBF8;
   v6[4] = self;
   v6[5] = a2;
-  [v5 authenticatePlayerWithExistingCredentialsWithHandler:v6];
+  [accountService authenticatePlayerWithExistingCredentialsWithHandler:v6];
 }
 
 void __61__GKLocalPlayer__startAuthenticationForExistingPrimaryPlayer__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2205,9 +2205,9 @@ void __61__GKLocalPlayer__startAuthenticationForExistingPrimaryPlayer__block_inv
   [v4 lookForEvent];
 }
 
-- (void)cancelGameInvite:(id)a3
+- (void)cancelGameInvite:(id)invite
 {
-  v4 = a3;
+  inviteCopy = invite;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -2220,14 +2220,14 @@ void __61__GKLocalPlayer__startAuthenticationForExistingPrimaryPlayer__block_inv
     _os_log_impl(&dword_227904000, v6, OS_LOG_TYPE_INFO, "GKLocalPlayer: daemonCancelledGameInvite", buf, 2u);
   }
 
-  if (v4)
+  if (inviteCopy)
   {
     acceptedInvite = self->_acceptedInvite;
-    if (acceptedInvite && (-[GKInvite inviteID](acceptedInvite, "inviteID"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqualToString:v4], v8, v9))
+    if (acceptedInvite && (-[GKInvite inviteID](acceptedInvite, "inviteID"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqualToString:inviteCopy], v8, v9))
     {
       v10 = MEMORY[0x277CBEA60];
-      v11 = [(GKInvite *)self->_acceptedInvite inviter];
-      v12 = [v10 arrayWithObject:v11];
+      inviter = [(GKInvite *)self->_acceptedInvite inviter];
+      v12 = [v10 arrayWithObject:inviter];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __34__GKLocalPlayer_cancelGameInvite___block_invoke;
@@ -2238,9 +2238,9 @@ void __61__GKLocalPlayer__startAuthenticationForExistingPrimaryPlayer__block_inv
 
     else
     {
-      v13 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v4 forKey:@"invite-id"];
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v14 postNotificationName:@"GKInviterCancelledGameInvite" object:self userInfo:v13];
+      v13 = [MEMORY[0x277CBEAC0] dictionaryWithObject:inviteCopy forKey:@"invite-id"];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"GKInviterCancelledGameInvite" object:self userInfo:v13];
     }
   }
 
@@ -2268,33 +2268,33 @@ void __34__GKLocalPlayer_cancelGameInvite___block_invoke(uint64_t a1, void *a2)
   [*(a1 + 32) setAcceptedInvite:0];
 }
 
-- (void)inviteeAcceptedGameInviteWithNotification:(id)a3
+- (void)inviteeAcceptedGameInviteWithNotification:(id)notification
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 postNotificationName:@"GKInviteeAcceptedGameInvite" object:self userInfo:v5];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter postNotificationName:@"GKInviteeAcceptedGameInvite" object:self userInfo:notificationCopy];
 }
 
-- (void)inviteeDeclinedGameInviteWithNotification:(id)a3
+- (void)inviteeDeclinedGameInviteWithNotification:(id)notification
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 postNotificationName:@"GKInviteeDeclinedGameInvite" object:self userInfo:v5];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter postNotificationName:@"GKInviteeDeclinedGameInvite" object:self userInfo:notificationCopy];
 }
 
-- (void)inviteeUpdateGameInviteWithNotification:(id)a3
+- (void)inviteeUpdateGameInviteWithNotification:(id)notification
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 postNotificationName:@"GKUpdateGameInviteNotification" object:self userInfo:v5];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter postNotificationName:@"GKUpdateGameInviteNotification" object:self userInfo:notificationCopy];
 }
 
-- (void)cancelInviteWithNotification:(id)a3
+- (void)cancelInviteWithNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -2307,8 +2307,8 @@ void __34__GKLocalPlayer_cancelGameInvite___block_invoke(uint64_t a1, void *a2)
     _os_log_impl(&dword_227904000, v6, OS_LOG_TYPE_INFO, "posting GKCancelledGameInviteNotification", v8, 2u);
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"GKInviterCancelledGameInvite" object:self userInfo:v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"GKInviterCancelledGameInvite" object:self userInfo:notificationCopy];
 }
 
 - (void)setDefaultLeaderboardIdentifier:(NSString *)leaderboardIdentifier completionHandler:(void *)completionHandler
@@ -2435,8 +2435,8 @@ void __67__GKLocalPlayer_setDefaultLeaderboardIdentifier_completionHandler___blo
   {
     v3 = completionHandler;
     v5 = +[GKDaemonProxy proxyForLocalPlayer];
-    v4 = [v5 gameStatService];
-    [v4 getDefaultLeaderboardIDWithHandler:v3];
+    gameStatService = [v5 gameStatService];
+    [gameStatService getDefaultLeaderboardIDWithHandler:v3];
   }
 }
 
@@ -2446,13 +2446,13 @@ void __67__GKLocalPlayer_setDefaultLeaderboardIdentifier_completionHandler___blo
   if (v3)
   {
     v4 = +[GKDaemonProxy proxyForLocalPlayer];
-    v5 = [v4 accountService];
+    accountService = [v4 accountService];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __76__GKLocalPlayer_generateIdentityVerificationSignatureWithCompletionHandler___block_invoke;
     v6[3] = &unk_2785DEC70;
     v7 = v3;
-    [v5 generateIdentityVerificationSignatureWithCompletionHandler:v6];
+    [accountService generateIdentityVerificationSignatureWithCompletionHandler:v6];
   }
 }
 
@@ -2489,13 +2489,13 @@ void __76__GKLocalPlayer_generateIdentityVerificationSignatureWithCompletionHand
   if (v3)
   {
     v4 = +[GKDaemonProxy proxyForLocalPlayer];
-    v5 = [v4 accountService];
+    accountService = [v4 accountService];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __60__GKLocalPlayer_fetchItemsForIdentityVerificationSignature___block_invoke;
     v6[3] = &unk_2785DEC70;
     v7 = v3;
-    [v5 fetchItemsForIdentityVerificationSignature:v6];
+    [accountService fetchItemsForIdentityVerificationSignature:v6];
   }
 }
 
@@ -2526,10 +2526,10 @@ void __60__GKLocalPlayer_fetchItemsForIdentityVerificationSignature___block_invo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getPlayerIDFromFriendCode:(id)a3 handler:(id)a4
+- (void)getPlayerIDFromFriendCode:(id)code handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  codeCopy = code;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLocalPlayer.m", 1371, "-[GKLocalPlayer getPlayerIDFromFriendCode:handler:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
@@ -2537,19 +2537,19 @@ void __60__GKLocalPlayer_fetchItemsForIdentityVerificationSignature___block_invo
   v16[1] = 3221225472;
   v16[2] = __51__GKLocalPlayer_getPlayerIDFromFriendCode_handler___block_invoke;
   v16[3] = &unk_2785DD898;
-  v17 = v5;
+  v17 = codeCopy;
   v9 = v8;
   v18 = v9;
-  v10 = v5;
+  v10 = codeCopy;
   [v9 perform:v16];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __51__GKLocalPlayer_getPlayerIDFromFriendCode_handler___block_invoke_3;
   v13[3] = &unk_2785DDC10;
   v14 = v9;
-  v15 = v6;
+  v15 = handlerCopy;
   v11 = v9;
-  v12 = v6;
+  v12 = handlerCopy;
   [v11 notifyOnMainQueueWithBlock:v13];
 }
 
@@ -2612,10 +2612,10 @@ void __51__GKLocalPlayer_getPlayerIDFromFriendCode_handler___block_invoke_3(uint
   (*(v2 + 16))(v2, v7, v3, v4, v5, v6);
 }
 
-- (void)createFriendRequestWithIdentifier:(id)a3 handler:(id)a4
+- (void)createFriendRequestWithIdentifier:(id)identifier handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLocalPlayer.m", 1395, "-[GKLocalPlayer createFriendRequestWithIdentifier:handler:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
@@ -2623,19 +2623,19 @@ void __51__GKLocalPlayer_getPlayerIDFromFriendCode_handler___block_invoke_3(uint
   v16[1] = 3221225472;
   v16[2] = __59__GKLocalPlayer_createFriendRequestWithIdentifier_handler___block_invoke;
   v16[3] = &unk_2785DD898;
-  v17 = v5;
+  v17 = identifierCopy;
   v9 = v8;
   v18 = v9;
-  v10 = v5;
+  v10 = identifierCopy;
   [v9 perform:v16];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__GKLocalPlayer_createFriendRequestWithIdentifier_handler___block_invoke_5;
   v13[3] = &unk_2785DDC10;
   v14 = v9;
-  v15 = v6;
+  v15 = handlerCopy;
   v11 = v9;
-  v12 = v6;
+  v12 = handlerCopy;
   [v11 notifyOnMainQueueWithBlock:v13];
 }
 
@@ -2707,10 +2707,10 @@ void __59__GKLocalPlayer_createFriendRequestWithIdentifier_handler___block_invok
   (*(v2 + 16))(v2, v5, v3, v4);
 }
 
-- (void)cancelFriendRequestWithIdentifier:(id)a3 handler:(id)a4
+- (void)cancelFriendRequestWithIdentifier:(id)identifier handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLocalPlayer.m", 1419, "-[GKLocalPlayer cancelFriendRequestWithIdentifier:handler:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
@@ -2718,19 +2718,19 @@ void __59__GKLocalPlayer_createFriendRequestWithIdentifier_handler___block_invok
   v16[1] = 3221225472;
   v16[2] = __59__GKLocalPlayer_cancelFriendRequestWithIdentifier_handler___block_invoke;
   v16[3] = &unk_2785DD898;
-  v17 = v5;
+  v17 = identifierCopy;
   v9 = v8;
   v18 = v9;
-  v10 = v5;
+  v10 = identifierCopy;
   [v9 perform:v16];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__GKLocalPlayer_cancelFriendRequestWithIdentifier_handler___block_invoke_3;
   v13[3] = &unk_2785DDC10;
   v14 = v9;
-  v15 = v6;
+  v15 = handlerCopy;
   v11 = v9;
-  v12 = v6;
+  v12 = handlerCopy;
   [v11 notifyOnMainQueueWithBlock:v13];
 }
 
@@ -2765,10 +2765,10 @@ void __59__GKLocalPlayer_cancelFriendRequestWithIdentifier_handler___block_invok
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)acceptFriendRequestWithIdentifier:(id)a3 sendPush:(BOOL)a4 handler:(id)a5
+- (void)acceptFriendRequestWithIdentifier:(id)identifier sendPush:(BOOL)push handler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLocalPlayer.m", 1435, "-[GKLocalPlayer acceptFriendRequestWithIdentifier:sendPush:handler:]"];
   v10 = [GKDispatchGroup dispatchGroupWithName:v9];
 
@@ -2776,20 +2776,20 @@ void __59__GKLocalPlayer_cancelFriendRequestWithIdentifier_handler___block_invok
   v18[1] = 3221225472;
   v18[2] = __68__GKLocalPlayer_acceptFriendRequestWithIdentifier_sendPush_handler___block_invoke;
   v18[3] = &unk_2785DECC0;
-  v19 = v7;
-  v21 = a4;
+  v19 = identifierCopy;
+  pushCopy = push;
   v11 = v10;
   v20 = v11;
-  v12 = v7;
+  v12 = identifierCopy;
   [v11 perform:v18];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__GKLocalPlayer_acceptFriendRequestWithIdentifier_sendPush_handler___block_invoke_3;
   v15[3] = &unk_2785DDC10;
   v16 = v11;
-  v17 = v8;
+  v17 = handlerCopy;
   v13 = v11;
-  v14 = v8;
+  v14 = handlerCopy;
   [v13 notifyOnMainQueueWithBlock:v15];
 }
 
@@ -2825,10 +2825,10 @@ void __68__GKLocalPlayer_acceptFriendRequestWithIdentifier_sendPush_handler___bl
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)rejectFriendRequestWithIdentifier:(id)a3 handler:(id)a4
+- (void)rejectFriendRequestWithIdentifier:(id)identifier handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLocalPlayer.m", 1451, "-[GKLocalPlayer rejectFriendRequestWithIdentifier:handler:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
@@ -2836,19 +2836,19 @@ void __68__GKLocalPlayer_acceptFriendRequestWithIdentifier_sendPush_handler___bl
   v16[1] = 3221225472;
   v16[2] = __59__GKLocalPlayer_rejectFriendRequestWithIdentifier_handler___block_invoke;
   v16[3] = &unk_2785DD898;
-  v17 = v5;
+  v17 = identifierCopy;
   v9 = v8;
   v18 = v9;
-  v10 = v5;
+  v10 = identifierCopy;
   [v9 perform:v16];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__GKLocalPlayer_rejectFriendRequestWithIdentifier_handler___block_invoke_3;
   v13[3] = &unk_2785DDC10;
   v14 = v9;
-  v15 = v6;
+  v15 = handlerCopy;
   v11 = v9;
-  v12 = v6;
+  v12 = handlerCopy;
   [v11 notifyOnMainQueueWithBlock:v13];
 }
 
@@ -2883,10 +2883,10 @@ void __59__GKLocalPlayer_rejectFriendRequestWithIdentifier_handler___block_invok
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)shouldDisplayWelcomeBannerForPlayer:(id)a3 lastAuthDate:(id)a4 remoteUI:(BOOL)a5 timeBetweenBanners:(double)a6
+- (BOOL)shouldDisplayWelcomeBannerForPlayer:(id)player lastAuthDate:(id)date remoteUI:(BOOL)i timeBetweenBanners:(double)banners
 {
-  v10 = a3;
-  v11 = a4;
+  playerCopy = player;
+  dateCopy = date;
   if (+[GKGame isGameCenter])
   {
     v12 = 0;
@@ -2894,9 +2894,9 @@ void __59__GKLocalPlayer_rejectFriendRequestWithIdentifier_handler___block_invok
 
   else
   {
-    v13 = [(GKLocalPlayer *)self authenticateHandler];
+    authenticateHandler = [(GKLocalPlayer *)self authenticateHandler];
     v12 = 0;
-    if (v13 && !a5)
+    if (authenticateHandler && !i)
     {
       if (+[GKGame isPreferences](GKGame, "isPreferences") || +[GKGame isFirstParty])
       {
@@ -2905,8 +2905,8 @@ void __59__GKLocalPlayer_rejectFriendRequestWithIdentifier_handler___block_invok
 
       else
       {
-        v14 = [MEMORY[0x277CCA8D8] mainBundle];
-        if ([v14 _gkIsPurpleBuddy])
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        if ([mainBundle _gkIsPurpleBuddy])
         {
           v12 = 0;
         }
@@ -2914,15 +2914,15 @@ void __59__GKLocalPlayer_rejectFriendRequestWithIdentifier_handler___block_invok
         else
         {
           v12 = 1;
-          if (v10 && v11)
+          if (playerCopy && dateCopy)
           {
-            v15 = [(GKPlayer *)self internal];
-            v16 = [v15 playerID];
-            if ([v10 isEqualToString:v16])
+            internal = [(GKPlayer *)self internal];
+            playerID = [internal playerID];
+            if ([playerCopy isEqualToString:playerID])
             {
-              v17 = [MEMORY[0x277CBEAA8] date];
-              [v17 timeIntervalSinceDate:v11];
-              v12 = v18 >= a6;
+              date = [MEMORY[0x277CBEAA8] date];
+              [date timeIntervalSinceDate:dateCopy];
+              v12 = v18 >= banners;
             }
           }
         }
@@ -2947,8 +2947,8 @@ void __59__GKLocalPlayer_rejectFriendRequestWithIdentifier_handler___block_invok
 
   else
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v8 = v7;
     v9 = +[GKLocalPlayer localPlayer];
     [v9 authStartTimeStamp];
@@ -2961,8 +2961,8 @@ void __59__GKLocalPlayer_rejectFriendRequestWithIdentifier_handler___block_invok
 
     else
     {
-      v12 = [(GKPlayer *)self playerID];
-      v13 = [v12 componentsSeparatedByString:@":"];
+      playerID = [(GKPlayer *)self playerID];
+      v13 = [playerID componentsSeparatedByString:@":"];
 
       if ([v13 count] < 2)
       {
@@ -2972,16 +2972,16 @@ void __59__GKLocalPlayer_rejectFriendRequestWithIdentifier_handler___block_invok
       else
       {
         v14 = [v13 objectAtIndexedSubscript:1];
-        v15 = [v14 longLongValue];
+        longLongValue = [v14 longLongValue];
 
-        v16 = (v15 >> 2) & 1;
+        v16 = (longLongValue >> 2) & 1;
       }
     }
 
     v17 = +[GKReporter reporter];
-    v18 = [(GKLocalPlayer *)self authenticationType];
+    authenticationType = [(GKLocalPlayer *)self authenticationType];
     v19 = GKReporterPlayerAuthenticationElapsedTime;
-    if (v18)
+    if (authenticationType)
     {
       v19 = GKReporterPlayerAuthenticationElapsedTimeWithUI;
     }
@@ -3130,67 +3130,67 @@ void __59__GKLocalPlayer_rejectFriendRequestWithIdentifier_handler___block_invok
   }
 }
 
-- (GKLocalPlayer)initWithCoder:(id)a3
+- (GKLocalPlayer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = GKLocalPlayer;
-  v5 = [(GKPlayer *)&v7 initWithCoder:v4];
+  v5 = [(GKPlayer *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_authenticated = [v4 decodeBoolForKey:@"authenticated"];
+    v5->_authenticated = [coderCopy decodeBoolForKey:@"authenticated"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GKLocalPlayer;
-  v4 = a3;
-  [(GKPlayer *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_authenticated forKey:{@"authenticated", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(GKPlayer *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_authenticated forKey:{@"authenticated", v5.receiver, v5.super_class}];
 }
 
 - (void)registerListener:(id)listener
 {
   [(GKLocalPlayerListenerPrivate *)self->_eventEmitter registerListener:listener];
-  v4 = [(GKLocalPlayer *)self matchmaker];
-  [v4 registeredListenersChanged];
+  matchmaker = [(GKLocalPlayer *)self matchmaker];
+  [matchmaker registeredListenersChanged];
 }
 
 - (void)unregisterListener:(id)listener
 {
   [(GKLocalPlayerListenerPrivate *)self->_eventEmitter unregisterListener:listener];
-  v4 = [(GKLocalPlayer *)self matchmaker];
-  [v4 registeredListenersChanged];
+  matchmaker = [(GKLocalPlayer *)self matchmaker];
+  [matchmaker registeredListenersChanged];
 }
 
 - (void)unregisterAllListeners
 {
   [(GKLocalPlayerListenerPrivate *)self->_eventEmitter unregisterAllListeners];
-  v3 = [(GKLocalPlayer *)self matchmaker];
-  [v3 registeredListenersChanged];
+  matchmaker = [(GKLocalPlayer *)self matchmaker];
+  [matchmaker registeredListenersChanged];
 }
 
-- (void)setFriendListAuthorizationStatus:(int64_t)a3 forBundleID:(id)a4 handler:(id)a5
+- (void)setFriendListAuthorizationStatus:(int64_t)status forBundleID:(id)d handler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
+  handlerCopy = handler;
+  dCopy = d;
   v9 = objc_opt_new();
-  [v9 setBundleID:v8];
+  [v9 setBundleID:dCopy];
 
-  [v9 setAllowFriendListAccess:a3];
+  [v9 setAllowFriendListAccess:status];
   v10 = +[GKDaemonProxy proxyForLocalPlayer];
-  v11 = [v10 gameService];
+  gameService = [v10 gameService];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __90__GKLocalPlayer_FriendsListPrivate__setFriendListAuthorizationStatus_forBundleID_handler___block_invoke;
   v13[3] = &unk_2785DE008;
-  v14 = v7;
-  v12 = v7;
-  [v11 setPerGameSettings:v9 handler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [gameService setPerGameSettings:v9 handler:v13];
 }
 
 uint64_t __90__GKLocalPlayer_FriendsListPrivate__setFriendListAuthorizationStatus_forBundleID_handler___block_invoke(uint64_t a1)
@@ -3207,8 +3207,8 @@ uint64_t __90__GKLocalPlayer_FriendsListPrivate__setFriendListAuthorizationStatu
 - (void)resetTCCAuthorization
 {
   v3 = +[GKDaemonProxy proxyForLocalPlayer];
-  v2 = [v3 gameService];
-  [v2 resetTCCAuthorization:&__block_literal_global_475];
+  gameService = [v3 gameService];
+  [gameService resetTCCAuthorization:&__block_literal_global_475];
 }
 
 - (void)loadFriendsAuthorizationStatus:(void *)completionHandler
@@ -3216,20 +3216,20 @@ uint64_t __90__GKLocalPlayer_FriendsListPrivate__setFriendListAuthorizationStatu
   v4 = completionHandler;
   v5 = +[GKReporter reporter];
   v6 = +[GKGame currentGame];
-  v7 = [v6 bundleIdentifier];
-  [v5 reportEvent:@"com.apple.GameKit.PlayerProfileDashboard" type:@"FriendsAPICheckAuthorizationStatusCalled" bundleID:v7];
+  bundleIdentifier = [v6 bundleIdentifier];
+  [v5 reportEvent:@"com.apple.GameKit.PlayerProfileDashboard" type:@"FriendsAPICheckAuthorizationStatusCalled" bundleID:bundleIdentifier];
 
   if (+[GKReachability _gkIsOnline])
   {
     v8 = +[GKPreferences shared];
-    v9 = [v8 isFriendsSharingRestricted];
+    isFriendsSharingRestricted = [v8 isFriendsSharingRestricted];
 
-    if (v9)
+    if (isFriendsSharingRestricted)
     {
       v10 = +[GKReporter reporter];
       v11 = +[GKGame currentGame];
-      v12 = [v11 bundleIdentifier];
-      [v10 reportEvent:@"com.apple.GameKit.PlayerProfileDashboard" type:@"FriendsAPIDeveloperAccessRestricted" bundleID:v12];
+      bundleIdentifier2 = [v11 bundleIdentifier];
+      [v10 reportEvent:@"com.apple.GameKit.PlayerProfileDashboard" type:@"FriendsAPIDeveloperAccessRestricted" bundleID:bundleIdentifier2];
 
       if (!os_log_GKGeneral)
       {
@@ -3243,16 +3243,16 @@ uint64_t __90__GKLocalPlayer_FriendsListPrivate__setFriendListAuthorizationStatu
         _os_log_impl(&dword_227904000, v14, OS_LOG_TYPE_INFO, "Friends API: loadFriendsAuthorizationStatus returning GKFriendsAuthorizationStatusRestricted", buf, 2u);
       }
 
-      v15 = [(GKLocalPlayer *)self _friendsAPIRestrictedError];
-      v4[2](v4, 1, v15);
+      _friendsAPIRestrictedError = [(GKLocalPlayer *)self _friendsAPIRestrictedError];
+      v4[2](v4, 1, _friendsAPIRestrictedError);
       goto LABEL_13;
     }
 
     v18 = +[GKLocalPlayer local];
-    v19 = [v18 internal];
-    v20 = [v19 globalFriendListAccess];
+    internal = [v18 internal];
+    globalFriendListAccess = [internal globalFriendListAccess];
 
-    if ((v20 - 1) < 2)
+    if ((globalFriendListAccess - 1) < 2)
     {
       if (!os_log_GKGeneral)
       {
@@ -3266,24 +3266,24 @@ uint64_t __90__GKLocalPlayer_FriendsListPrivate__setFriendListAuthorizationStatu
         _os_log_impl(&dword_227904000, v22, OS_LOG_TYPE_INFO, "Friends API: loadFriendsAuthorizationStatus returning GKFriendsAuthorizationStatusDenied", buf, 2u);
       }
 
-      v15 = [(GKLocalPlayer *)self _friendsAPIDeniedError];
-      v4[2](v4, 2, v15);
+      _friendsAPIRestrictedError = [(GKLocalPlayer *)self _friendsAPIDeniedError];
+      v4[2](v4, 2, _friendsAPIRestrictedError);
       goto LABEL_13;
     }
 
-    if (!v20)
+    if (!globalFriendListAccess)
     {
-      v23 = [(GKLocalPlayer *)self daemonProxy];
-      v24 = [v23 gameService];
+      daemonProxy = [(GKLocalPlayer *)self daemonProxy];
+      gameService = [daemonProxy gameService];
       v25 = +[GKGame currentGame];
-      v26 = [v25 bundleIdentifier];
+      bundleIdentifier3 = [v25 bundleIdentifier];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __61__GKLocalPlayer_FriendsList__loadFriendsAuthorizationStatus___block_invoke;
       v27[3] = &unk_2785DECE8;
       v27[4] = self;
       v28 = v4;
-      [v24 getPerGameSettingsForBundleID:v26 handler:v27];
+      [gameService getPerGameSettingsForBundleID:bundleIdentifier3 handler:v27];
 
       goto LABEL_14;
     }
@@ -3304,8 +3304,8 @@ uint64_t __90__GKLocalPlayer_FriendsListPrivate__setFriendListAuthorizationStatu
     }
   }
 
-  v15 = [(GKLocalPlayer *)self _friendsAPICommunicationsError];
-  v4[2](v4, 0, v15);
+  _friendsAPIRestrictedError = [(GKLocalPlayer *)self _friendsAPICommunicationsError];
+  v4[2](v4, 0, _friendsAPIRestrictedError);
 LABEL_13:
 
 LABEL_14:
@@ -3392,58 +3392,58 @@ LABEL_22:
   v19 = completionHandler;
   v4 = +[GKReporter reporter];
   v5 = +[GKGame currentGame];
-  v6 = [v5 bundleIdentifier];
-  [v4 reportEvent:@"com.apple.GameKit.PlayerProfileDashboard" type:@"FriendsAPILoadFriendsListCalled" bundleID:v6];
+  bundleIdentifier = [v5 bundleIdentifier];
+  [v4 reportEvent:@"com.apple.GameKit.PlayerProfileDashboard" type:@"FriendsAPILoadFriendsListCalled" bundleID:bundleIdentifier];
 
   if (!+[GKReachability _gkIsOnline])
   {
     goto LABEL_10;
   }
 
-  v7 = [(GKLocalPlayer *)self _gkFriendListUsageDescription];
-  v8 = [v7 length];
+  _gkFriendListUsageDescription = [(GKLocalPlayer *)self _gkFriendListUsageDescription];
+  v8 = [_gkFriendListUsageDescription length];
 
   if (!v8)
   {
-    v14 = [(GKLocalPlayer *)self _friendsAPIDescriptionMissingError];
+    _friendsAPIDescriptionMissingError = [(GKLocalPlayer *)self _friendsAPIDescriptionMissingError];
     goto LABEL_11;
   }
 
   v9 = +[GKPreferences shared];
-  v10 = [v9 isFriendsSharingRestricted];
+  isFriendsSharingRestricted = [v9 isFriendsSharingRestricted];
 
-  if (!v10)
+  if (!isFriendsSharingRestricted)
   {
     v15 = +[GKLocalPlayer local];
-    v16 = [v15 internal];
-    v17 = [v16 globalFriendListAccess];
+    internal = [v15 internal];
+    globalFriendListAccess = [internal globalFriendListAccess];
 
-    if ((v17 - 1) < 2)
+    if ((globalFriendListAccess - 1) < 2)
     {
-      v14 = [(GKLocalPlayer *)self _friendsAPIDeniedError];
+      _friendsAPIDescriptionMissingError = [(GKLocalPlayer *)self _friendsAPIDeniedError];
       goto LABEL_11;
     }
 
-    if (!v17)
+    if (!globalFriendListAccess)
     {
       [(GKLocalPlayer *)self _loadFriendsListGlobalAccessOptInFlow:v19];
       goto LABEL_12;
     }
 
 LABEL_10:
-    v14 = [(GKLocalPlayer *)self _friendsAPICommunicationsError];
+    _friendsAPIDescriptionMissingError = [(GKLocalPlayer *)self _friendsAPICommunicationsError];
     goto LABEL_11;
   }
 
   v11 = +[GKReporter reporter];
   v12 = +[GKGame currentGame];
-  v13 = [v12 bundleIdentifier];
-  [v11 reportEvent:@"com.apple.GameKit.PlayerProfileDashboard" type:@"FriendsAPIDeveloperAccessRestricted" bundleID:v13];
+  bundleIdentifier2 = [v12 bundleIdentifier];
+  [v11 reportEvent:@"com.apple.GameKit.PlayerProfileDashboard" type:@"FriendsAPIDeveloperAccessRestricted" bundleID:bundleIdentifier2];
 
-  v14 = [(GKLocalPlayer *)self _friendsAPIRestrictedError];
+  _friendsAPIDescriptionMissingError = [(GKLocalPlayer *)self _friendsAPIRestrictedError];
 LABEL_11:
-  v18 = v14;
-  v19[2](v19, 0, v14);
+  v18 = _friendsAPIDescriptionMissingError;
+  v19[2](v19, 0, _friendsAPIDescriptionMissingError);
 
 LABEL_12:
 }
@@ -3556,21 +3556,21 @@ void __75__GKLocalPlayer_FriendsList__loadFriendsWithIdentifiers_completionHandl
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_loadFriendsListGlobalAccessOptInFlow:(id)a3
+- (void)_loadFriendsListGlobalAccessOptInFlow:(id)flow
 {
-  v4 = a3;
-  v5 = [(GKLocalPlayer *)self daemonProxy];
-  v6 = [v5 gameService];
+  flowCopy = flow;
+  daemonProxy = [(GKLocalPlayer *)self daemonProxy];
+  gameService = [daemonProxy gameService];
   v7 = +[GKGame currentGame];
-  v8 = [v7 bundleIdentifier];
+  bundleIdentifier = [v7 bundleIdentifier];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__GKLocalPlayer_FriendsList___loadFriendsListGlobalAccessOptInFlow___block_invoke;
   v10[3] = &unk_2785DED38;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v6 getPerGameSettingsForBundleID:v8 handler:v10];
+  v11 = flowCopy;
+  v9 = flowCopy;
+  [gameService getPerGameSettingsForBundleID:bundleIdentifier handler:v10];
 }
 
 void __68__GKLocalPlayer_FriendsList___loadFriendsListGlobalAccessOptInFlow___block_invoke(uint64_t a1, void *a2)
@@ -3621,19 +3621,19 @@ LABEL_10:
   [v6 _loadFriendsListPerGameAuthorizedFlow:v7];
 }
 
-- (void)_loadFriendsListPerGameNotDeterminedFlow:(id)a3
+- (void)_loadFriendsListPerGameNotDeterminedFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v5 = +[GKDaemonProxy proxyForLocalPlayer];
-  v6 = [v5 gameService];
+  gameService = [v5 gameService];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__GKLocalPlayer_FriendsList___loadFriendsListPerGameNotDeterminedFlow___block_invoke;
   v8[3] = &unk_2785DED88;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 checkTCCAuthorization:v8];
+  v9 = flowCopy;
+  v7 = flowCopy;
+  [gameService checkTCCAuthorization:v8];
 }
 
 void __71__GKLocalPlayer_FriendsList___loadFriendsListPerGameNotDeterminedFlow___block_invoke(uint64_t a1, int a2)
@@ -3703,21 +3703,21 @@ void __71__GKLocalPlayer_FriendsList___loadFriendsListPerGameNotDeterminedFlow__
   }
 }
 
-- (void)_loadFriendsListPerGameAuthorizedFlow:(id)a3
+- (void)_loadFriendsListPerGameAuthorizedFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v5 = +[GKGame currentGame];
-  v6 = [v5 bundleIdentifier];
+  bundleIdentifier = [v5 bundleIdentifier];
 
-  v7 = [(GKLocalPlayer *)self daemonProxy];
-  v8 = [v7 gameService];
+  daemonProxy = [(GKLocalPlayer *)self daemonProxy];
+  gameService = [daemonProxy gameService];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__GKLocalPlayer_FriendsList___loadFriendsListPerGameAuthorizedFlow___block_invoke;
   v10[3] = &unk_2785DDCB0;
-  v11 = v4;
-  v9 = v4;
-  [v8 getPerGameFriendsForBundleID:v6 handler:v10];
+  v11 = flowCopy;
+  v9 = flowCopy;
+  [gameService getPerGameFriendsForBundleID:bundleIdentifier handler:v10];
 }
 
 void __68__GKLocalPlayer_FriendsList___loadFriendsListPerGameAuthorizedFlow___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -3776,29 +3776,29 @@ void __68__GKLocalPlayer_FriendsList___loadFriendsListPerGameAuthorizedFlow___bl
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updatePerGameSettings:(int64_t)a3 withCompletionHandler:(id)a4
+- (void)_updatePerGameSettings:(int64_t)settings withCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (a3 == 3)
+  handlerCopy = handler;
+  if (settings == 3)
   {
     v6 = 2;
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (settings == 2)
   {
     v6 = 1;
 LABEL_5:
     v7 = +[GKLocalPlayer local];
     v8 = +[GKGame currentGame];
-    v9 = [v8 bundleIdentifier];
+    bundleIdentifier = [v8 bundleIdentifier];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __75__GKLocalPlayer_FriendsList___updatePerGameSettings_withCompletionHandler___block_invoke;
     v13[3] = &unk_2785DE008;
-    v14 = v5;
-    [v7 setFriendListAuthorizationStatus:v6 forBundleID:v9 handler:v13];
+    v14 = handlerCopy;
+    [v7 setFriendListAuthorizationStatus:v6 forBundleID:bundleIdentifier handler:v13];
 
     goto LABEL_6;
   }
@@ -3823,69 +3823,69 @@ LABEL_6:
 
 - (id)_gkFriendListUsageDescription
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 infoDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"NSGKFriendListUsageDescription"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v4 = [infoDictionary objectForKeyedSubscript:@"NSGKFriendListUsageDescription"];
 
   return v4;
 }
 
-- (void)setLastWelcomeWhatsNewCopyVersion:(unint64_t)a3
+- (void)setLastWelcomeWhatsNewCopyVersion:(unint64_t)version
 {
   v5 = +[GKDaemonProxy proxyForLocalPlayer];
-  v4 = [v5 accountService];
-  [v4 setLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayer:a3];
+  accountService = [v5 accountService];
+  [accountService setLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayer:version];
 }
 
-- (void)setLastPrivacyNoticeVersion:(unint64_t)a3
+- (void)setLastPrivacyNoticeVersion:(unint64_t)version
 {
   v5 = +[GKDaemonProxy proxyForLocalPlayer];
-  v4 = [v5 accountService];
-  [v4 setLastPrivacyNoticeVersionDisplayedForSignedInPlayer:a3];
+  accountService = [v5 accountService];
+  [accountService setLastPrivacyNoticeVersionDisplayedForSignedInPlayer:version];
 }
 
-- (void)setLastPersonalizationVersion:(id)a3
+- (void)setLastPersonalizationVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v5 = +[GKDaemonProxy proxyForLocalPlayer];
-  v4 = [v5 accountService];
-  [v4 setLastPersonalizationVersionDisplayedForSignedInPlayer:v3];
+  accountService = [v5 accountService];
+  [accountService setLastPersonalizationVersionDisplayedForSignedInPlayer:versionCopy];
 }
 
-- (void)setLastProfilePrivacyVersion:(id)a3
+- (void)setLastProfilePrivacyVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v5 = +[GKDaemonProxy proxyForLocalPlayer];
-  v4 = [v5 accountService];
-  [v4 setLastProfilePrivacyVersionDisplayedForSignedInPlayer:v3];
+  accountService = [v5 accountService];
+  [accountService setLastProfilePrivacyVersionDisplayedForSignedInPlayer:versionCopy];
 }
 
-- (void)setLastFriendSuggestionsVersion:(id)a3
+- (void)setLastFriendSuggestionsVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v5 = +[GKDaemonProxy proxyForLocalPlayer];
-  v4 = [v5 accountService];
-  [v4 setLastFriendSuggestionsVersionDisplayedForSignedInPlayer:v3];
+  accountService = [v5 accountService];
+  [accountService setLastFriendSuggestionsVersionDisplayedForSignedInPlayer:versionCopy];
 }
 
-- (void)setLastContactsIntegrationConsentVersion:(id)a3
+- (void)setLastContactsIntegrationConsentVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v5 = +[GKDaemonProxy proxyForLocalPlayer];
-  v4 = [v5 accountService];
-  [v4 setLastContactsIntegrationConsentVersionDisplayedForSignedInPlayer:v3];
+  accountService = [v5 accountService];
+  [accountService setLastContactsIntegrationConsentVersionDisplayedForSignedInPlayer:versionCopy];
 }
 
-+ (void)loadHighlightsDataWithCompletionHandler:(id)a3
++ (void)loadHighlightsDataWithCompletionHandler:(id)handler
 {
-  v3 = a3;
-  if (v3)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLocalPlayer.m", 1932, "+[GKLocalPlayer(DashboardHighlight) loadHighlightsDataWithCompletionHandler:]"];
     v5 = [GKDispatchGroup dispatchGroupWithName:v4];
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    [v5 setResult:v6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [v5 setResult:dictionary];
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -3906,7 +3906,7 @@ LABEL_6:
     v10[2] = __77__GKLocalPlayer_DashboardHighlight__loadHighlightsDataWithCompletionHandler___block_invoke_5;
     v10[3] = &unk_2785DDC10;
     v11 = v8;
-    v12 = v3;
+    v12 = handlerCopy;
     v9 = v8;
     [v9 notifyOnMainQueueWithBlock:v10];
   }

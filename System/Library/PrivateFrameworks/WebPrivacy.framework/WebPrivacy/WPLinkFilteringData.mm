@@ -1,27 +1,27 @@
 @interface WPLinkFilteringData
 - (NSDictionary)scopedQueryParameters;
-- (WPLinkFilteringData)initWithQueryParameters:(id)a3;
-- (WPLinkFilteringData)initWithQueryParameters:(id)a3 domains:(id)a4 paths:(id)a5;
-- (WPLinkFilteringData)initWithRules:(id)a3;
+- (WPLinkFilteringData)initWithQueryParameters:(id)parameters;
+- (WPLinkFilteringData)initWithQueryParameters:(id)parameters domains:(id)domains paths:(id)paths;
+- (WPLinkFilteringData)initWithRules:(id)rules;
 @end
 
 @implementation WPLinkFilteringData
 
-- (WPLinkFilteringData)initWithQueryParameters:(id)a3
+- (WPLinkFilteringData)initWithQueryParameters:(id)parameters
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parametersCopy = parameters;
   v22.receiver = self;
   v22.super_class = WPLinkFilteringData;
   v5 = [(WPLinkFilteringData *)&v22 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(parametersCopy, "count")}];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v4;
+    v7 = parametersCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v8)
     {
@@ -61,35 +61,35 @@
   return v5;
 }
 
-- (WPLinkFilteringData)initWithQueryParameters:(id)a3 domains:(id)a4 paths:(id)a5
+- (WPLinkFilteringData)initWithQueryParameters:(id)parameters domains:(id)domains paths:(id)paths
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  parametersCopy = parameters;
+  domainsCopy = domains;
+  pathsCopy = paths;
   v25.receiver = self;
   v25.super_class = WPLinkFilteringData;
   v11 = [(WPLinkFilteringData *)&v25 init];
   if (v11)
   {
-    v12 = [v8 count];
-    if (v12 != [v9 count] || (v13 = objc_msgSend(v8, "count"), v13 != objc_msgSend(v10, "count")))
+    v12 = [parametersCopy count];
+    if (v12 != [domainsCopy count] || (v13 = objc_msgSend(parametersCopy, "count"), v13 != objc_msgSend(pathsCopy, "count")))
     {
       __assert_rtn("[WPLinkFilteringData initWithQueryParameters:domains:paths:]", "WPLinkFilteringData.mm", 72, "queryParameters.count == domains.count && queryParameters.count == paths.count");
     }
 
-    v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(parametersCopy, "count")}];
     for (i = 0; ; i = v16 + 1)
     {
       v16 = i;
-      if ([v8 count] <= i)
+      if ([parametersCopy count] <= i)
       {
         break;
       }
 
       v17 = [WPLinkFilteringRule alloc];
-      v18 = [v8 objectAtIndexedSubscript:i];
-      v19 = [v9 objectAtIndexedSubscript:v16];
-      v20 = [v10 objectAtIndexedSubscript:v16];
+      v18 = [parametersCopy objectAtIndexedSubscript:i];
+      v19 = [domainsCopy objectAtIndexedSubscript:v16];
+      v20 = [pathsCopy objectAtIndexedSubscript:v16];
       v21 = [(WPLinkFilteringRule *)v17 initWithQueryParameter:v18 domain:v19 path:v20];
       [(NSArray *)v14 addObject:v21];
     }
@@ -103,16 +103,16 @@
   return v11;
 }
 
-- (WPLinkFilteringData)initWithRules:(id)a3
+- (WPLinkFilteringData)initWithRules:(id)rules
 {
-  v5 = a3;
+  rulesCopy = rules;
   v10.receiver = self;
   v10.super_class = WPLinkFilteringData;
   v6 = [(WPLinkFilteringData *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rules, a3);
+    objc_storeStrong(&v6->_rules, rules);
     v8 = v7;
   }
 
@@ -142,38 +142,38 @@
         }
 
         v8 = *(*(&v26 + 1) + 8 * i);
-        v9 = [v8 queryParameter];
-        v10 = [v3 objectForKey:v9];
+        queryParameter = [v8 queryParameter];
+        v10 = [v3 objectForKey:queryParameter];
         v11 = v10 == 0;
 
         if (v11)
         {
           v12 = objc_alloc_init(WPLinkFilteringConditionals);
-          v13 = [v8 queryParameter];
-          [v3 setObject:v12 forKey:v13];
+          queryParameter2 = [v8 queryParameter];
+          [v3 setObject:v12 forKey:queryParameter2];
         }
 
-        v14 = [v8 queryParameter];
-        v15 = [v3 objectForKey:v14];
+        queryParameter3 = [v8 queryParameter];
+        v15 = [v3 objectForKey:queryParameter3];
 
-        v16 = [v8 domain];
-        v17 = [v16 length] == 0;
+        domain = [v8 domain];
+        v17 = [domain length] == 0;
 
         if (!v17)
         {
-          v18 = [v15 domains];
-          v19 = [v8 domain];
-          [v18 addObject:v19];
+          domains = [v15 domains];
+          domain2 = [v8 domain];
+          [domains addObject:domain2];
         }
 
-        v20 = [v8 path];
-        v21 = [v20 length] == 0;
+        path = [v8 path];
+        v21 = [path length] == 0;
 
         if (!v21)
         {
-          v22 = [v15 paths];
-          v23 = [v8 path];
-          [v22 addObject:v23];
+          paths = [v15 paths];
+          path2 = [v8 path];
+          [paths addObject:path2];
         }
       }
 

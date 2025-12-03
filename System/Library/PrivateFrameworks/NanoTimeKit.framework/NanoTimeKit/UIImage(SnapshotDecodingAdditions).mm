@@ -7,11 +7,11 @@
 + (id)imageFromSnapshotResultFileURL:()SnapshotDecodingAdditions
 {
   v3 = a3;
-  v4 = [v3 absoluteURL];
-  v5 = [v4 path];
+  absoluteURL = [v3 absoluteURL];
+  path = [absoluteURL path];
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:path];
 
   if (v7)
   {

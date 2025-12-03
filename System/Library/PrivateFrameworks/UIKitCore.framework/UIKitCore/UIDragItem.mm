@@ -9,15 +9,15 @@
 - (_UIDragSetDownAnimationTarget)_sourceVisualTarget;
 - (id)_currentPreviewProvider;
 - (id)_currentPreviewProviderView;
-- (id)_previewProviderForType:(unint64_t)a3;
+- (id)_previewProviderForType:(unint64_t)type;
 - (void)_loadOriginalImageComponentProvider;
-- (void)_previewNeedsUpdateForType:(unint64_t)a3;
-- (void)_setDeferPreviewUpdates:(BOOL)a3;
-- (void)_setDragDropSession:(id)a3;
-- (void)_setPreviewProvider:(id)a3 systemSet:(BOOL)a4;
+- (void)_previewNeedsUpdateForType:(unint64_t)type;
+- (void)_setDeferPreviewUpdates:(BOOL)updates;
+- (void)_setDragDropSession:(id)session;
+- (void)_setPreviewProvider:(id)provider systemSet:(BOOL)set;
 - (void)_updatePreferredPreview;
 - (void)previewProvider;
-- (void)set_suggestedTransform:(CGAffineTransform *)a3;
+- (void)set_suggestedTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation UIDragItem
@@ -50,20 +50,20 @@
   }
 }
 
-- (void)_setDeferPreviewUpdates:(BOOL)a3
+- (void)_setDeferPreviewUpdates:(BOOL)updates
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  if (self->_deferPreviewUpdates != a3)
+  if (self->_deferPreviewUpdates != updates)
   {
-    self->_deferPreviewUpdates = a3;
-    if (!a3)
+    self->_deferPreviewUpdates = updates;
+    if (!updates)
     {
       if (self->_updatedPreviewType)
       {
-        v4 = [(UIDragItem *)self _dragDropSession];
+        _dragDropSession = [(UIDragItem *)self _dragDropSession];
         v6[0] = self;
         v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
-        [v4 _itemsNeedUpdate:v5];
+        [_dragDropSession _itemsNeedUpdate:v5];
       }
     }
   }
@@ -75,16 +75,16 @@
   [v2 imageComponent];
 }
 
-- (void)_setPreviewProvider:(id)a3 systemSet:(BOOL)a4
+- (void)_setPreviewProvider:(id)provider systemSet:(BOOL)set
 {
-  v6 = a3;
-  if (a4 || !self->_previewProviderIsSystemSet)
+  providerCopy = provider;
+  if (set || !self->_previewProviderIsSystemSet)
   {
-    self->_previewProviderIsSystemSet = a4;
-    if (self->_previewProvider != v6)
+    self->_previewProviderIsSystemSet = set;
+    if (self->_previewProvider != providerCopy)
     {
-      v11 = v6;
-      v7 = _Block_copy(v6);
+      v11 = providerCopy;
+      v7 = _Block_copy(providerCopy);
       previewProvider = self->_previewProvider;
       self->_previewProvider = v7;
 
@@ -102,7 +102,7 @@
       self->_dragPreviewBlockProvider = v9;
 
       [(UIDragItem *)self _previewNeedsUpdateForType:2];
-      v6 = v11;
+      providerCopy = v11;
     }
   }
 }
@@ -122,9 +122,9 @@
   return v3;
 }
 
-- (void)_setDragDropSession:(id)a3
+- (void)_setDragDropSession:(id)session
 {
-  obj = a3;
+  obj = session;
   WeakRetained = objc_loadWeakRetained(&self->_dragDropSession);
 
   if (WeakRetained != obj)
@@ -148,55 +148,55 @@
   }
 }
 
-- (void)_previewNeedsUpdateForType:(unint64_t)a3
+- (void)_previewNeedsUpdateForType:(unint64_t)type
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  self->_updatedPreviewType = a3;
+  self->_updatedPreviewType = type;
   if (!self->_deferPreviewUpdates)
   {
-    v4 = [(UIDragItem *)self _dragDropSession];
+    _dragDropSession = [(UIDragItem *)self _dragDropSession];
     v6[0] = self;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
-    [v4 _itemsNeedUpdate:v5];
+    [_dragDropSession _itemsNeedUpdate:v5];
   }
 }
 
-- (id)_previewProviderForType:(unint64_t)a3
+- (id)_previewProviderForType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = 96;
 LABEL_5:
-    v6 = [*(&self->super.isa + v5) _dragPreviewProvider];
+    _dragPreviewProvider = [*(&self->super.isa + v5) _dragPreviewProvider];
 
-    return v6;
+    return _dragPreviewProvider;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v5 = 40;
     goto LABEL_5;
   }
 
-  v6 = 0;
+  _dragPreviewProvider = 0;
 
-  return v6;
+  return _dragPreviewProvider;
 }
 
 - (id)_currentPreviewProvider
 {
-  v3 = [(UIDragItem *)self preferredPreviewType];
+  preferredPreviewType = [(UIDragItem *)self preferredPreviewType];
 
-  return [(UIDragItem *)self _previewProviderForType:v3];
+  return [(UIDragItem *)self _previewProviderForType:preferredPreviewType];
 }
 
 - (id)_currentPreviewProviderView
 {
   v2 = [(UIDragItem *)self _previewProviderForType:[(UIDragItem *)self preferredPreviewType]];
-  v3 = [v2 imageComponent];
-  v4 = [v3 view];
+  imageComponent = [v2 imageComponent];
+  view = [imageComponent view];
 
-  return v4;
+  return view;
 }
 
 - (_UIDragDropSessionInternal)_dragDropSession
@@ -258,11 +258,11 @@ LABEL_5:
   return self;
 }
 
-- (void)set_suggestedTransform:(CGAffineTransform *)a3
+- (void)set_suggestedTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->__suggestedTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->__suggestedTransform.tx = *&transform->tx;
   *&self->__suggestedTransform.c = v4;
   *&self->__suggestedTransform.a = v3;
 }

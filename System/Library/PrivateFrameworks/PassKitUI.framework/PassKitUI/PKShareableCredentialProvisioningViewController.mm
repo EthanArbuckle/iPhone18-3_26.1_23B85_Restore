@@ -1,67 +1,67 @@
 @interface PKShareableCredentialProvisioningViewController
 - (BOOL)_isProvisioningMultipleCredentials;
 - (PKPushableCredentialProvisioningViewControllerCoordinator)coordinator;
-- (PKShareableCredentialProvisioningViewController)initWithContext:(int64_t)a3 credentials:(id)a4 configuration:(id)a5 reporter:(id)a6;
-- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)a3 error:(id)a4;
+- (PKShareableCredentialProvisioningViewController)initWithContext:(int64_t)context credentials:(id)credentials configuration:(id)configuration reporter:(id)reporter;
+- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)failed error:(id)error;
 - (void)_continueProvisioning;
 - (void)_loadPassThumbnail;
 - (void)_showExitingLostModeUI;
 - (void)_startProvisioning;
-- (void)_terminateSetupFlowWithPasses:(id)a3 error:(id)a4;
-- (void)activationCodeDidChangeToCode:(id)a3;
+- (void)_terminateSetupFlowWithPasses:(id)passes error:(id)error;
+- (void)activationCodeDidChangeToCode:(id)code;
 - (void)cancelButtonPressed;
 - (void)continueButtonPressed;
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4;
-- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)a3;
-- (void)setInvitation:(id)a3;
-- (void)setPassThumbnailImage:(id)a3;
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading;
+- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)result;
+- (void)setInvitation:(id)invitation;
+- (void)setPassThumbnailImage:(id)image;
 - (void)showLoadingUI;
 - (void)showStartingUI;
 - (void)showSuccessUI;
-- (void)showWithProvisioningError:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)showWithProvisioningError:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKShareableCredentialProvisioningViewController
 
-- (PKShareableCredentialProvisioningViewController)initWithContext:(int64_t)a3 credentials:(id)a4 configuration:(id)a5 reporter:(id)a6
+- (PKShareableCredentialProvisioningViewController)initWithContext:(int64_t)context credentials:(id)credentials configuration:(id)configuration reporter:(id)reporter
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  credentialsCopy = credentials;
+  configurationCopy = configuration;
+  reporterCopy = reporter;
   v25.receiver = self;
   v25.super_class = PKShareableCredentialProvisioningViewController;
   v14 = [(PKPassShareRedemptionViewController *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    v14->_context = a3;
-    objc_storeStrong(&v14->_credentials, a4);
-    objc_storeStrong(&v15->_configuration, a5);
-    objc_storeStrong(&v15->_reporter, a6);
+    v14->_context = context;
+    objc_storeStrong(&v14->_credentials, credentials);
+    objc_storeStrong(&v15->_configuration, configuration);
+    objc_storeStrong(&v15->_reporter, reporter);
     v15->_isRunningInForeground = 1;
-    v16 = [(PKAddShareablePassConfiguration *)v15->_configuration credentialsMetadata];
-    v17 = [v16 firstObject];
-    v18 = [v17 preview];
-    v19 = [v18 provisioningTemplateIdentifier];
+    credentialsMetadata = [(PKAddShareablePassConfiguration *)v15->_configuration credentialsMetadata];
+    firstObject = [credentialsMetadata firstObject];
+    preview = [firstObject preview];
+    provisioningTemplateIdentifier = [preview provisioningTemplateIdentifier];
     provisioningTemplateIdentifier = v15->_provisioningTemplateIdentifier;
-    v15->_provisioningTemplateIdentifier = v19;
+    v15->_provisioningTemplateIdentifier = provisioningTemplateIdentifier;
 
-    LOBYTE(v16) = [(NSArray *)v15->_credentials pk_containsObjectPassingTest:&__block_literal_global_254];
-    v21 = [(PKAddShareablePassConfiguration *)v15->_configuration credentialsMetadata];
-    LOBYTE(v18) = [v21 pk_containsObjectPassingTest:&__block_literal_global_67];
+    LOBYTE(credentialsMetadata) = [(NSArray *)v15->_credentials pk_containsObjectPassingTest:&__block_literal_global_254];
+    credentialsMetadata2 = [(PKAddShareablePassConfiguration *)v15->_configuration credentialsMetadata];
+    LOBYTE(preview) = [credentialsMetadata2 pk_containsObjectPassingTest:&__block_literal_global_67];
 
-    v15->_isUnifiedAccessPass = (v16 | v18) & 1;
-    v22 = [(NSArray *)v15->_credentials firstObject];
-    v23 = [v22 cardType];
-    if (v23 <= 4)
+    v15->_isUnifiedAccessPass = (credentialsMetadata | preview) & 1;
+    firstObject2 = [(NSArray *)v15->_credentials firstObject];
+    cardType = [firstObject2 cardType];
+    if (cardType <= 4)
     {
-      v21 = **(&unk_1E8026BA0 + v23);
+      credentialsMetadata2 = **(&unk_1E8026BA0 + cardType);
     }
 
-    [(PKProvisioningAnalyticsSessionUIReporter *)v15->_reporter setProductType:v21 subtype:0];
+    [(PKProvisioningAnalyticsSessionUIReporter *)v15->_reporter setProductType:credentialsMetadata2 subtype:0];
   }
 
   return v15;
@@ -84,61 +84,61 @@ BOOL __102__PKShareableCredentialProvisioningViewController_initWithContext_cred
   [(PKShareableCredentialProvisioningViewController *)self _loadPassThumbnail];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKShareableCredentialProvisioningViewController;
-  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKShareableCredentialProvisioningViewController;
-  [(PKShareableCredentialProvisioningViewController *)&v4 viewDidDisappear:a3];
+  [(PKShareableCredentialProvisioningViewController *)&v4 viewDidDisappear:disappear];
   if ([(PKShareableCredentialProvisioningViewController *)self isMovingFromParentViewController])
   {
     [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter resetProductTypes];
   }
 }
 
-- (void)setInvitation:(id)a3
+- (void)setInvitation:(id)invitation
 {
-  v14 = a3;
-  objc_storeStrong(&self->_invitation, a3);
-  v5 = [(PKSharingPushProvisioningInvitation *)self->_invitation activationOptions];
-  [(PKPassShareRedemptionViewController *)self setActivationOptions:v5];
+  invitationCopy = invitation;
+  objc_storeStrong(&self->_invitation, invitation);
+  activationOptions = [(PKSharingPushProvisioningInvitation *)self->_invitation activationOptions];
+  [(PKPassShareRedemptionViewController *)self setActivationOptions:activationOptions];
 
-  v6 = [(PKSharingPushProvisioningInvitation *)self->_invitation proprietaryData];
-  v7 = [v6 displayableSharedEntitlements];
-  [(PKPassShareRedemptionViewController *)self setDisplayableSharedEntitlements:v7];
+  proprietaryData = [(PKSharingPushProvisioningInvitation *)self->_invitation proprietaryData];
+  displayableSharedEntitlements = [proprietaryData displayableSharedEntitlements];
+  [(PKPassShareRedemptionViewController *)self setDisplayableSharedEntitlements:displayableSharedEntitlements];
 
   [(PKPassShareRedemptionViewController *)self setAnalyticsEnabled:1];
-  v8 = [(PKSharingPushProvisioningInvitation *)self->_invitation proprietaryData];
-  v9 = [v8 accessType];
+  proprietaryData2 = [(PKSharingPushProvisioningInvitation *)self->_invitation proprietaryData];
+  accessType = [proprietaryData2 accessType];
 
-  v10 = [(PKPassShareRedemptionViewController *)self analyticsReporter];
-  [v10 setAccessPassType:v9];
+  analyticsReporter = [(PKPassShareRedemptionViewController *)self analyticsReporter];
+  [analyticsReporter setAccessPassType:accessType];
 
-  v11 = [(NSArray *)self->_credentials firstObject];
-  v12 = [v11 cardType];
-  if (v12 <= 4)
+  firstObject = [(NSArray *)self->_credentials firstObject];
+  cardType = [firstObject cardType];
+  if (cardType <= 4)
   {
-    v10 = **(&unk_1E8026BA0 + v12);
+    analyticsReporter = **(&unk_1E8026BA0 + cardType);
   }
 
-  if (v9 >= 7)
+  if (accessType >= 7)
   {
     v13 = *MEMORY[0x1E69BB3A8];
   }
 
   else
   {
-    v13 = off_1E8026BC8[v9];
+    v13 = off_1E8026BC8[accessType];
   }
 
-  [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter setProductType:v10 subtype:v13];
+  [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter setProductType:analyticsReporter subtype:v13];
 }
 
 - (void)cancelButtonPressed
@@ -168,16 +168,16 @@ BOOL __102__PKShareableCredentialProvisioningViewController_initWithContext_cred
   }
 }
 
-- (void)activationCodeDidChangeToCode:(id)a3
+- (void)activationCodeDidChangeToCode:(id)code
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  codeCopy = code;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PKAddShareablePassConfiguration *)self->_configuration credentialsMetadata];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  credentialsMetadata = [(PKAddShareablePassConfiguration *)self->_configuration credentialsMetadata];
+  v6 = [credentialsMetadata countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -188,16 +188,16 @@ BOOL __102__PKShareableCredentialProvisioningViewController_initWithContext_cred
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(credentialsMetadata);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * i) provisioningTarget];
-        [v10 setVerificationCode:v4];
+        provisioningTarget = [*(*(&v11 + 1) + 8 * i) provisioningTarget];
+        [provisioningTarget setVerificationCode:codeCopy];
 
         self->_hasConfiguredCredential = 0;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [credentialsMetadata countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -253,14 +253,14 @@ BOOL __102__PKShareableCredentialProvisioningViewController_initWithContext_cred
       objc_destroyWeak(&v13);
     }
 
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __69__PKShareableCredentialProvisioningViewController__startProvisioning__block_invoke_5;
     v10[3] = &unk_1E8019B30;
     objc_copyWeak(&v11, buf);
     v10[4] = self;
-    v9 = [v7 evaluateWithInput:v8 completion:v10];
+    v9 = [v7 evaluateWithInput:null completion:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
@@ -409,8 +409,8 @@ void __69__PKShareableCredentialProvisioningViewController__startProvisioning__b
 
 - (void)_loadPassThumbnail
 {
-  v3 = [(PKPassShareRedemptionViewController *)self cardHeaderView];
-  [v3 showLoadingContent];
+  cardHeaderView = [(PKPassShareRedemptionViewController *)self cardHeaderView];
+  [cardHeaderView showLoadingContent];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__block_invoke;
@@ -421,7 +421,7 @@ void __69__PKShareableCredentialProvisioningViewController__startProvisioning__b
   if (self->_provisioningTemplateIdentifier)
   {
     objc_initWeak(&location, self);
-    v6 = [MEMORY[0x1E69B90D8] sharedInstance];
+    mEMORY[0x1E69B90D8] = [MEMORY[0x1E69B90D8] sharedInstance];
     provisioningTemplateIdentifier = self->_provisioningTemplateIdentifier;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -429,7 +429,7 @@ void __69__PKShareableCredentialProvisioningViewController__startProvisioning__b
     v8[3] = &unk_1E8019B80;
     objc_copyWeak(&v10, &location);
     v9 = v5;
-    [v6 cardArtworkForTemplateIdentifier:provisioningTemplateIdentifier completion:v8];
+    [mEMORY[0x1E69B90D8] cardArtworkForTemplateIdentifier:provisioningTemplateIdentifier completion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -521,14 +521,14 @@ void __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__b
   }
 }
 
-- (void)setPassThumbnailImage:(id)a3
+- (void)setPassThumbnailImage:(id)image
 {
-  objc_storeStrong(&self->_passThumbnailImage, a3);
-  v5 = a3;
-  v6 = [(PKPassShareRedemptionViewController *)self cardHeaderView];
-  [v6 setCardImage:self->_passThumbnailImage];
+  objc_storeStrong(&self->_passThumbnailImage, image);
+  imageCopy = image;
+  cardHeaderView = [(PKPassShareRedemptionViewController *)self cardHeaderView];
+  [cardHeaderView setCardImage:self->_passThumbnailImage];
 
-  [v6 hideLoadingContent];
+  [cardHeaderView hideLoadingContent];
 }
 
 - (void)showStartingUI
@@ -536,12 +536,12 @@ void __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__b
   v51.receiver = self;
   v51.super_class = PKShareableCredentialProvisioningViewController;
   [(PKPassShareRedemptionViewController *)&v51 showStartingUI];
-  v3 = [(PKAddShareablePassConfiguration *)self->_configuration primaryAction];
+  primaryAction = [(PKAddShareablePassConfiguration *)self->_configuration primaryAction];
   configuration = self->_configuration;
   if (configuration)
   {
-    v5 = [(PKAddShareablePassConfiguration *)configuration credentialsMetadata];
-    v6 = [v5 count];
+    credentialsMetadata = [(PKAddShareablePassConfiguration *)configuration credentialsMetadata];
+    v6 = [credentialsMetadata count];
   }
 
   else
@@ -549,15 +549,15 @@ void __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__b
     v6 = [(NSArray *)self->_credentials count];
   }
 
-  v7 = [(PKAddShareablePassConfiguration *)self->_configuration credentialsMetadata];
-  if (v3 == PKAddShareablePassConfigurationPrimaryActionShare)
+  credentialsMetadata2 = [(PKAddShareablePassConfiguration *)self->_configuration credentialsMetadata];
+  if (primaryAction == PKAddShareablePassConfigurationPrimaryActionShare)
   {
-    v8 = [MEMORY[0x1E69B90D8] sharedInstance];
-    v9 = v8;
+    mEMORY[0x1E69B90D8] = [MEMORY[0x1E69B90D8] sharedInstance];
+    v9 = mEMORY[0x1E69B90D8];
     provisioningTemplateIdentifier = self->_provisioningTemplateIdentifier;
     if (v6 < 2)
     {
-      v19 = [v8 provisioningString:@"SHARE_ONE_SHAREABLE_CREDENTIAL_PASS" templateIdentifier:provisioningTemplateIdentifier];
+      v19 = [mEMORY[0x1E69B90D8] provisioningString:@"SHARE_ONE_SHAREABLE_CREDENTIAL_PASS" templateIdentifier:provisioningTemplateIdentifier];
       v20 = v19;
       if (v19)
       {
@@ -571,16 +571,16 @@ void __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__b
 
       v33 = v21;
 
-      v34 = [v7 objectAtIndexedSubscript:0];
-      v35 = [v34 preview];
-      v36 = [v35 ownerDisplayName];
+      v34 = [credentialsMetadata2 objectAtIndexedSubscript:0];
+      preview = [v34 preview];
+      ownerDisplayName = [preview ownerDisplayName];
       v37 = PKStringWithValidatedFormat();
-      [(PKPaymentSetupOptionsViewController *)self setTitleText:v37, v36];
+      [(PKPaymentSetupOptionsViewController *)self setTitleText:v37, ownerDisplayName];
     }
 
     else
     {
-      v11 = [v8 provisioningString:@"SHARE_CREDENTIAL_MULTIPLE_PASS_TITLE" templateIdentifier:provisioningTemplateIdentifier];
+      v11 = [mEMORY[0x1E69B90D8] provisioningString:@"SHARE_CREDENTIAL_MULTIPLE_PASS_TITLE" templateIdentifier:provisioningTemplateIdentifier];
       v12 = v11;
       if (v11)
       {
@@ -598,8 +598,8 @@ void __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__b
       [(PKPaymentSetupOptionsViewController *)self setTitleText:v34, v6];
     }
 
-    v38 = [MEMORY[0x1E69B90D8] sharedInstance];
-    v39 = [v38 provisioningString:@"SHARE_CREDENTIAL_EXPLANATION" templateIdentifier:self->_provisioningTemplateIdentifier];
+    mEMORY[0x1E69B90D8]2 = [MEMORY[0x1E69B90D8] sharedInstance];
+    v39 = [mEMORY[0x1E69B90D8]2 provisioningString:@"SHARE_CREDENTIAL_EXPLANATION" templateIdentifier:self->_provisioningTemplateIdentifier];
     v40 = v39;
     if (v39)
     {
@@ -622,10 +622,10 @@ void __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__b
     invitation = self->_invitation;
     if (invitation)
     {
-      v15 = [(PKSharingPushProvisioningInvitation *)self->_invitation proprietaryData];
-      v16 = [v15 accessType];
+      proprietaryData = [(PKSharingPushProvisioningInvitation *)self->_invitation proprietaryData];
+      accessType = [proprietaryData accessType];
 
-      if (v16 >= 7)
+      if (accessType >= 7)
       {
         v17 = 0;
         v18 = 0;
@@ -633,8 +633,8 @@ void __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__b
 
       else
       {
-        v17 = off_1E8026C00[v16];
-        v18 = off_1E8026C38[v16];
+        v17 = off_1E8026C00[accessType];
+        v18 = off_1E8026C38[accessType];
       }
     }
 
@@ -661,8 +661,8 @@ void __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__b
       }
     }
 
-    v22 = [MEMORY[0x1E69B90D8] sharedInstance];
-    v23 = [v22 provisioningString:v17 templateIdentifier:self->_provisioningTemplateIdentifier];
+    mEMORY[0x1E69B90D8]3 = [MEMORY[0x1E69B90D8] sharedInstance];
+    v23 = [mEMORY[0x1E69B90D8]3 provisioningString:v17 templateIdentifier:self->_provisioningTemplateIdentifier];
     v24 = v23;
     if (v23)
     {
@@ -687,8 +687,8 @@ void __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__b
       [(PKPaymentSetupOptionsViewController *)self setTitleText:v27, v6];
     }
 
-    v28 = [MEMORY[0x1E69B90D8] sharedInstance];
-    v29 = [v28 provisioningString:v18 templateIdentifier:self->_provisioningTemplateIdentifier];
+    mEMORY[0x1E69B90D8]4 = [MEMORY[0x1E69B90D8] sharedInstance];
+    v29 = [mEMORY[0x1E69B90D8]4 provisioningString:v18 templateIdentifier:self->_provisioningTemplateIdentifier];
     v30 = v29;
     if (v29)
     {
@@ -707,14 +707,14 @@ void __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__b
 
   v42 = [MEMORY[0x1E69B7D50] pk_privacyLinkForContext:8];
   [(PKPaymentSetupOptionsViewController *)self setPrivacyLink:v42];
-  if (v3 == PKAddShareablePassConfigurationPrimaryActionShare)
+  if (primaryAction == PKAddShareablePassConfigurationPrimaryActionShare)
   {
-    v43 = [MEMORY[0x1E69B90D8] sharedInstance];
-    v44 = v43;
+    mEMORY[0x1E69B90D8]5 = [MEMORY[0x1E69B90D8] sharedInstance];
+    mEMORY[0x1E69B90D8]6 = mEMORY[0x1E69B90D8]5;
     v45 = self->_provisioningTemplateIdentifier;
     if (v6 < 2)
     {
-      v46 = [v43 provisioningString:@"SHARE_SHAREABLE_CREDENTIAL_PASS_TITLE" templateIdentifier:v45];
+      v46 = [mEMORY[0x1E69B90D8]5 provisioningString:@"SHARE_SHAREABLE_CREDENTIAL_PASS_TITLE" templateIdentifier:v45];
       if (!v46)
       {
         v47 = @"SHARE_SHAREABLE_CREDENTIAL_PASS_TITLE";
@@ -724,7 +724,7 @@ void __69__PKShareableCredentialProvisioningViewController__loadPassThumbnail__b
 
     else
     {
-      v46 = [v43 provisioningString:@"SHARE_SHAREABLE_CREDENTIAL_PASSES_TITLE" templateIdentifier:v45];
+      v46 = [mEMORY[0x1E69B90D8]5 provisioningString:@"SHARE_SHAREABLE_CREDENTIAL_PASSES_TITLE" templateIdentifier:v45];
       if (!v46)
       {
         v47 = @"SHARE_SHAREABLE_CREDENTIAL_PASSES_TITLE";
@@ -738,8 +738,8 @@ LABEL_47:
 
   else
   {
-    v44 = [MEMORY[0x1E69B90D8] sharedInstance];
-    v46 = [v44 provisioningString:@"ADD_SHAREABLE_CREDENTIAL_PASS_CONTINUE_TITLE" templateIdentifier:self->_provisioningTemplateIdentifier];
+    mEMORY[0x1E69B90D8]6 = [MEMORY[0x1E69B90D8] sharedInstance];
+    v46 = [mEMORY[0x1E69B90D8]6 provisioningString:@"ADD_SHAREABLE_CREDENTIAL_PASS_CONTINUE_TITLE" templateIdentifier:self->_provisioningTemplateIdentifier];
     if (!v46)
     {
       v47 = @"ADD_SHAREABLE_CREDENTIAL_PASS_CONTINUE_TITLE";
@@ -758,8 +758,8 @@ LABEL_48:
 - (void)_showExitingLostModeUI
 {
   [(PKShareableCredentialProvisioningViewController *)self showLoadingUI];
-  v3 = [MEMORY[0x1E69B90D8] sharedInstance];
-  v4 = [v3 provisioningString:@"EXITING_LOST_MODE_SHAREABLE_CREDENTIAL_PASS" templateIdentifier:self->_provisioningTemplateIdentifier];
+  mEMORY[0x1E69B90D8] = [MEMORY[0x1E69B90D8] sharedInstance];
+  v4 = [mEMORY[0x1E69B90D8] provisioningString:@"EXITING_LOST_MODE_SHAREABLE_CREDENTIAL_PASS" templateIdentifier:self->_provisioningTemplateIdentifier];
   v5 = v4;
   if (v4)
   {
@@ -781,16 +781,16 @@ LABEL_48:
   v11.receiver = self;
   v11.super_class = PKShareableCredentialProvisioningViewController;
   [(PKPassShareRedemptionViewController *)&v11 showLoadingUI];
-  v3 = [(PKShareableCredentialProvisioningViewController *)self _isProvisioningMultipleCredentials];
+  _isProvisioningMultipleCredentials = [(PKShareableCredentialProvisioningViewController *)self _isProvisioningMultipleCredentials];
   v4 = @"ADDING_SHAREABLE_CREDENTIAL_PASS";
-  if (v3)
+  if (_isProvisioningMultipleCredentials)
   {
     v4 = @"ADDING_SHAREABLE_CREDENTIAL_PASSES";
   }
 
   v5 = v4;
-  v6 = [MEMORY[0x1E69B90D8] sharedInstance];
-  v7 = [v6 provisioningString:v5 templateIdentifier:self->_provisioningTemplateIdentifier];
+  mEMORY[0x1E69B90D8] = [MEMORY[0x1E69B90D8] sharedInstance];
+  v7 = [mEMORY[0x1E69B90D8] provisioningString:v5 templateIdentifier:self->_provisioningTemplateIdentifier];
   v8 = v7;
   if (v7)
   {
@@ -811,26 +811,26 @@ LABEL_48:
 - (void)showSuccessUI
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPassShareRedemptionViewController *)self analyticsReporter];
+  analyticsReporter = [(PKPassShareRedemptionViewController *)self analyticsReporter];
   v14 = *MEMORY[0x1E69BB5D0];
   v15[0] = *MEMORY[0x1E69BA7B0];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  [v3 sendEventForPage:2 specifics:v4];
+  [analyticsReporter sendEventForPage:2 specifics:v4];
 
   [(PKPaymentSetupOptionsViewController *)self setShowHeaderSpinner:0];
-  v5 = [(PKPaymentSetupOptionsViewController *)self headerView];
-  [v5 setShowCheckmark:1];
+  headerView = [(PKPaymentSetupOptionsViewController *)self headerView];
+  [headerView setShowCheckmark:1];
 
-  v6 = [(PKShareableCredentialProvisioningViewController *)self _isProvisioningMultipleCredentials];
+  _isProvisioningMultipleCredentials = [(PKShareableCredentialProvisioningViewController *)self _isProvisioningMultipleCredentials];
   v7 = @"ADDING_SHAREABLE_CREDENTIAL_PASS";
-  if (v6)
+  if (_isProvisioningMultipleCredentials)
   {
     v7 = @"ADDING_SHAREABLE_CREDENTIAL_PASSES";
   }
 
   v8 = v7;
-  v9 = [MEMORY[0x1E69B90D8] sharedInstance];
-  v10 = [v9 provisioningString:v8 templateIdentifier:self->_provisioningTemplateIdentifier];
+  mEMORY[0x1E69B90D8] = [MEMORY[0x1E69B90D8] sharedInstance];
+  v10 = [mEMORY[0x1E69B90D8] provisioningString:v8 templateIdentifier:self->_provisioningTemplateIdentifier];
   v11 = v10;
   if (v10)
   {
@@ -851,8 +851,8 @@ LABEL_48:
 {
   if (self->_configuration)
   {
-    v2 = [(PKAddShareablePassConfiguration *)self->_configuration credentialsMetadata];
-    v3 = [v2 count];
+    credentialsMetadata = [(PKAddShareablePassConfiguration *)self->_configuration credentialsMetadata];
+    v3 = [credentialsMetadata count];
   }
 
   else
@@ -863,18 +863,18 @@ LABEL_48:
   return v3 > 1;
 }
 
-- (void)showWithProvisioningError:(id)a3
+- (void)showWithProvisioningError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (([v4 hasLocalizedTitleAndMessage] & 1) == 0)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (([errorCopy hasLocalizedTitleAndMessage] & 1) == 0)
   {
     v6 = [(NSArray *)self->_credentials count];
-    v7 = [(PKAddShareablePassConfiguration *)self->_configuration credentialsMetadata];
-    v8 = fmax(v6, [v7 count]);
+    credentialsMetadata = [(PKAddShareablePassConfiguration *)self->_configuration credentialsMetadata];
+    v8 = fmax(v6, [credentialsMetadata count]);
 
-    v9 = [v4 underlyingError];
-    v5 = [(PKShareableCredentialProvisioningViewController *)self _provisioningErrorWithNumberOfPassesFailed:v8 error:v9];
+    underlyingError = [errorCopy underlyingError];
+    v5 = [(PKShareableCredentialProvisioningViewController *)self _provisioningErrorWithNumberOfPassesFailed:v8 error:underlyingError];
   }
 
   v10 = MEMORY[0x1E69DC650];
@@ -884,12 +884,12 @@ LABEL_48:
   v14[2] = __77__PKShareableCredentialProvisioningViewController_showWithProvisioningError___block_invoke_2;
   v14[3] = &unk_1E8010A10;
   v14[4] = self;
-  v15 = v4;
+  v15 = errorCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__PKShareableCredentialProvisioningViewController_showWithProvisioningError___block_invoke_3;
   v13[3] = &unk_1E8010970;
-  v11 = v4;
+  v11 = errorCopy;
   v12 = [v10 alertForErrorWithError:v11 acknowledgeButtonText:0 exitButtonText:0 onAcknowledge:&__block_literal_global_177 onExit:v14 onTryAgain:v13];
   [(PKShareableCredentialProvisioningViewController *)self presentViewController:v12 animated:1 completion:0];
 }
@@ -914,11 +914,11 @@ void __77__PKShareableCredentialProvisioningViewController_showWithProvisioningE
   [WeakRetained cancel];
 }
 
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading
 {
-  if (a4)
+  if (loading)
   {
-    if (a3 == 1)
+    if (to == 1)
     {
       [(PKShareableCredentialProvisioningViewController *)self _showExitingLostModeUI];
     }
@@ -929,7 +929,7 @@ void __77__PKShareableCredentialProvisioningViewController_showWithProvisioningE
     }
   }
 
-  else if (a3 == 8)
+  else if (to == 8)
   {
     [(PKShareableCredentialProvisioningViewController *)self showSuccessUI];
   }
@@ -940,30 +940,30 @@ void __77__PKShareableCredentialProvisioningViewController_showWithProvisioningE
   }
 }
 
-- (void)_terminateSetupFlowWithPasses:(id)a3 error:(id)a4
+- (void)_terminateSetupFlowWithPasses:(id)passes error:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  passesCopy = passes;
+  errorCopy = error;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v17 = [v6 count];
+    v17 = [passesCopy count];
     v18 = 2112;
-    v19 = v7;
+    v19 = errorCopy;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Shareable Credential VC - Terminating setup flow with passes: %lu error: %@", buf, 0x16u);
   }
 
-  v9 = [(PKPassShareRedemptionViewController *)self analyticsReporter];
-  if (v7)
+  analyticsReporter = [(PKPassShareRedemptionViewController *)self analyticsReporter];
+  if (errorCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = v6 == 0;
+    v10 = passesCopy == 0;
   }
 
   v14 = *MEMORY[0x1E69BB5D0];
@@ -979,20 +979,20 @@ void __77__PKShareableCredentialProvisioningViewController_showWithProvisioningE
 
   v15 = *v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-  [v9 sendEventForPage:2 error:v7 specifics:{v12, v14}];
+  [analyticsReporter sendEventForPage:2 error:errorCopy specifics:{v12, v14}];
 
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  [WeakRetained pushableViewController:self didFailWithError:v7];
+  [WeakRetained pushableViewController:self didFailWithError:errorCopy];
 }
 
-- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)a3 error:(id)a4
+- (id)_provisioningErrorWithNumberOfPassesFailed:(int64_t)failed error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v17 = 1;
-  v7 = [(PKSharingPushProvisioningInvitation *)self->_invitation proprietaryData];
-  v8 = [v7 accessType];
+  proprietaryData = [(PKSharingPushProvisioningInvitation *)self->_invitation proprietaryData];
+  accessType = [proprietaryData accessType];
 
-  v9 = PKAddSEPassDisplayableError(v6, a3, v8, &v17);
+  v9 = PKAddSEPassDisplayableError(errorCopy, failed, accessType, &v17);
   v10 = v9;
   if (v9)
   {
@@ -1001,7 +1001,7 @@ void __77__PKShareableCredentialProvisioningViewController_showWithProvisioningE
 
   else
   {
-    v11 = PKAddSEPassGenericDisplayableError(a3, v8);
+    v11 = PKAddSEPassGenericDisplayableError(failed, accessType);
   }
 
   v12 = v11;
@@ -1023,7 +1023,7 @@ void __77__PKShareableCredentialProvisioningViewController_showWithProvisioningE
 
   else
   {
-    v14 = v6;
+    v14 = errorCopy;
   }
 
   v15 = [MEMORY[0x1E69B90E8] errorWithUnderlyingError:v14 defaultSeverity:v13];
@@ -1031,7 +1031,7 @@ void __77__PKShareableCredentialProvisioningViewController_showWithProvisioningE
   return v15;
 }
 
-- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)a3
+- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)result
 {
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1040,7 +1040,7 @@ void __77__PKShareableCredentialProvisioningViewController_showWithProvisioningE
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Shareable Credential VC - Terminate Setup flow", v7, 2u);
   }
 
-  if (a3)
+  if (result)
   {
     v6 = 0;
   }

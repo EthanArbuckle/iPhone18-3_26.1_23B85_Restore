@@ -1,31 +1,31 @@
 @interface AuthenticateAccountsStartViewController
-- (_TtC18SharingViewService39AuthenticateAccountsStartViewController)initWithContentView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC18SharingViewService39AuthenticateAccountsStartViewController)initWithContentView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AuthenticateAccountsStartViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10009DAB8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10009DECC(a3);
+  selfCopy = self;
+  sub_10009DECC(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10009E094(a3);
+  selfCopy = self;
+  sub_10009E094(disappear);
 }
 
-- (_TtC18SharingViewService39AuthenticateAccountsStartViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService39AuthenticateAccountsStartViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,8 +1,8 @@
 @interface AppleKeyboardStateManager
 + (id)sharedManager;
 - (AppleKeyboardStateManager)init;
-- (BOOL)isCapsLockEnabled:(id)a3;
-- (void)setCapsLockEnabled:(BOOL)a3 locationID:(id)a4;
+- (BOOL)isCapsLockEnabled:(id)enabled;
+- (void)setCapsLockEnabled:(BOOL)enabled locationID:(id)d;
 @end
 
 @implementation AppleKeyboardStateManager
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_29D42BDB0;
   block[3] = &unk_29F34F180;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2A17A28F0 != -1)
   {
     dispatch_once(&qword_2A17A28F0, block);
@@ -41,15 +41,15 @@
   return v2;
 }
 
-- (BOOL)isCapsLockEnabled:(id)a3
+- (BOOL)isCapsLockEnabled:(id)enabled
 {
-  v4 = a3;
-  if (v4)
+  enabledCopy = enabled;
+  if (enabledCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableSet *)v5->_capsLockStateTable containsObject:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableSet *)selfCopy->_capsLockStateTable containsObject:enabledCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -60,17 +60,17 @@
   return v6;
 }
 
-- (void)setCapsLockEnabled:(BOOL)a3 locationID:(id)a4
+- (void)setCapsLockEnabled:(BOOL)enabled locationID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6)
+  enabledCopy = enabled;
+  dCopy = d;
+  if (dCopy)
   {
-    v9 = v6;
-    v7 = self;
-    objc_sync_enter(v7);
-    capsLockStateTable = v7->_capsLockStateTable;
-    if (v4)
+    v9 = dCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    capsLockStateTable = selfCopy->_capsLockStateTable;
+    if (enabledCopy)
     {
       [(NSMutableSet *)capsLockStateTable addObject:v9];
     }
@@ -80,9 +80,9 @@
       [(NSMutableSet *)capsLockStateTable removeObject:v9];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
 
-    v6 = v9;
+    dCopy = v9;
   }
 }
 

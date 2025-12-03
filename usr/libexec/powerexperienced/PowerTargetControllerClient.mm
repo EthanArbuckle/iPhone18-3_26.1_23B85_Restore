@@ -1,21 +1,21 @@
 @interface PowerTargetControllerClient
-- (PowerTargetControllerClient)initWithConnection:(id)a3 identifier:(id)a4;
+- (PowerTargetControllerClient)initWithConnection:(id)connection identifier:(id)identifier;
 @end
 
 @implementation PowerTargetControllerClient
 
-- (PowerTargetControllerClient)initWithConnection:(id)a3 identifier:(id)a4
+- (PowerTargetControllerClient)initWithConnection:(id)connection identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = PowerTargetControllerClient;
   v9 = [(PowerTargetControllerClient *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    objc_storeStrong(&v10->_identifer, a4);
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeStrong(&v10->_identifer, identifier);
   }
 
   return v10;

@@ -7,17 +7,17 @@
 
 - (id)hex
 {
-  v2 = [MEMORY[0x277CCAB68] string];
-  v3 = [a1 UTF8String];
-  v4 = strlen(v3);
+  string = [MEMORY[0x277CCAB68] string];
+  uTF8String = [self UTF8String];
+  v4 = strlen(uTF8String);
   if (v4)
   {
     v5 = v4;
     do
     {
-      v6 = *v3++;
+      v6 = *uTF8String++;
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02x", v6];
-      [v2 appendString:v7];
+      [string appendString:v7];
 
       --v5;
     }
@@ -25,13 +25,13 @@
     while (v5);
   }
 
-  return v2;
+  return string;
 }
 
 - (id)fromHex
 {
-  v2 = [a1 UTF8String];
-  v3 = strlen(v2);
+  uTF8String = [self UTF8String];
+  v3 = strlen(uTF8String);
   v4 = v3;
   if ((v3 & 1) == 0)
   {
@@ -51,16 +51,16 @@ LABEL_10:
       v7 = 0;
       while (1)
       {
-        v12[0] = v2[v7];
-        v8 = v2[v7 + 1];
-        v12[1] = v2[v7 + 1];
+        v12[0] = uTF8String[v7];
+        v8 = uTF8String[v7 + 1];
+        v12[1] = uTF8String[v7 + 1];
         v12[2] = 0;
-        if (![a1 _validHexChar:?])
+        if (![self _validHexChar:?])
         {
           break;
         }
 
-        if (([a1 _validHexChar:v8] & 1) == 0)
+        if (([self _validHexChar:v8] & 1) == 0)
         {
           break;
         }

@@ -22,8 +22,8 @@
 
 - (void)removeAllObjects
 {
-  v2 = [(CRLMPSImageConversionStorage *)self storage];
-  [v2 removeAllObjects];
+  storage = [(CRLMPSImageConversionStorage *)self storage];
+  [storage removeAllObjects];
 }
 
 @end

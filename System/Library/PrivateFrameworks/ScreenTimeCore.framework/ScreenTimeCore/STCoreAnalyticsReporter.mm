@@ -1,15 +1,15 @@
 @interface STCoreAnalyticsReporter
-+ (void)reportEvent:(id)a3;
++ (void)reportEvent:(id)event;
 @end
 
 @implementation STCoreAnalyticsReporter
 
-+ (void)reportEvent:(id)a3
++ (void)reportEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = v3;
+  eventCopy = event;
+  name = [eventCopy name];
+  v5 = eventCopy;
   v6 = AnalyticsSendEventLazy();
 
   v7 = +[STLog coreAnalytics];
@@ -19,11 +19,11 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = [v5 description];
-      v10 = [v5 payload];
+      payload = [v5 payload];
       *buf = 138412546;
       v13 = v9;
       v14 = 2112;
-      v15 = v10;
+      v15 = payload;
       _os_log_impl(&dword_1B831F000, v8, OS_LOG_TYPE_DEFAULT, "Sent Core Analytics event: %@ %@", buf, 0x16u);
     }
   }

@@ -1,13 +1,13 @@
 @interface BuddyPrivacySplashController
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyPrivacySplashController
 
 - (void)viewDidLoad
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v9.receiver = self;
   v9.super_class = BuddyPrivacySplashController;
@@ -24,22 +24,22 @@
   v12[4] = v6;
   location = [NSArray arrayWithObjects:v12 count:5];
 
-  v7 = [(BuddyPrivacySplashController *)v11 buddy_animationController:@"PrivacyPane" animatedStates:location startAtFirstState:1];
-  [(BuddyPrivacySplashController *)v11 setAnimationController:v7];
+  v7 = [(BuddyPrivacySplashController *)selfCopy buddy_animationController:@"PrivacyPane" animatedStates:location startAtFirstState:1];
+  [(BuddyPrivacySplashController *)selfCopy setAnimationController:v7];
 
   objc_storeStrong(&location, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = BuddyPrivacySplashController;
-  [(BuddyPrivacySplashController *)&v4 viewWillAppear:a3];
-  v3 = [(BuddyPrivacySplashController *)v7 animationController];
-  [(OBAnimationController *)v3 startAnimation];
+  [(BuddyPrivacySplashController *)&v4 viewWillAppear:appear];
+  animationController = [(BuddyPrivacySplashController *)selfCopy animationController];
+  [(OBAnimationController *)animationController startAnimation];
 }
 
 @end

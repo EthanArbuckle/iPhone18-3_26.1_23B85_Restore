@@ -1,30 +1,30 @@
 @interface SXTextTangierFlowRep
 - (BOOL)accessibilitySupportsTextSelection;
 - (BOOL)isAccessibilityElement;
-- (BOOL)p_doesRep:(id)a3 containCharIndex:(unint64_t)a4 isStart:(BOOL)a5;
+- (BOOL)p_doesRep:(id)rep containCharIndex:(unint64_t)index isStart:(BOOL)start;
 - (BOOL)updateFromVisualPosition;
 - (CGRect)accessibilityFrameForScrolling;
 - (CGRect)frameInCanvas;
 - (SXTextTangierInteractiveCanvasController)icc;
 - (SXTextTangierRepAccessibilityDataSource)accessibilityDataSource;
 - (_NSRange)_accessibilitySelectedTextRange;
-- (id)accessibilityHitTest:(CGPoint)a3;
+- (id)accessibilityHitTest:(CGPoint)test;
 - (id)accessibilityNextTextNavigationElement;
 - (id)accessibilityPreviousTextNavigationElement;
 - (id)automationElements;
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5;
-- (id)itemsForCustomRotor:(id)a3;
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test;
+- (id)itemsForCustomRotor:(id)rotor;
 - (id)orderedSiblings;
-- (id)repForCharIndex:(unint64_t)a3 isStart:(BOOL)a4;
+- (id)repForCharIndex:(unint64_t)index isStart:(BOOL)start;
 - (id)siblings;
 - (id)storage;
 - (id)supportedCustomRotors;
 - (id)sxaxLinkElements;
-- (id)sxaxNameForEditRotorAction:(id)a3;
+- (id)sxaxNameForEditRotorAction:(id)action;
 - (id)sxaxSupportedEditRotorActions;
 - (unint64_t)accessibilityTraits;
-- (unint64_t)charIndexForPointWithPinning:(CGPoint)a3 isTail:(BOOL)a4 selectionType:(int)a5;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (unint64_t)charIndexForPointWithPinning:(CGPoint)pinning isTail:(BOOL)tail selectionType:(int)type;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 - (void)dealloc;
 @end
 
@@ -32,25 +32,25 @@
 
 - (id)storage
 {
-  v2 = [(SXTextTangierFlowRep *)self info];
-  v3 = [v2 storage];
+  info = [(SXTextTangierFlowRep *)self info];
+  storage = [info storage];
 
-  return v3;
+  return storage;
 }
 
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = rep.y;
+  x = rep.x;
   v29 = *MEMORY[0x1E69E9840];
-  v22 = a4;
-  v9 = a5;
+  gestureCopy = gesture;
+  testCopy = test;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [(SXTextTangierFlowRep *)self childReps];
-  v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  childReps = [(SXTextTangierFlowRep *)self childReps];
+  v11 = [childReps countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
     v12 = v11;
@@ -61,16 +61,16 @@
       {
         if (*v25 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(childReps);
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v15 layout];
-          v17 = [v16 geometry];
-          [v17 frame];
+          layout = [v15 layout];
+          geometry = [layout geometry];
+          [geometry frame];
           v31.x = x;
           v31.y = y;
           v18 = CGRectContainsPoint(v32, v31);
@@ -79,13 +79,13 @@
           {
 
             v20 = 0;
-            v19 = v22;
+            v19 = gestureCopy;
             goto LABEL_12;
           }
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v12 = [childReps countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v12)
       {
         continue;
@@ -97,38 +97,38 @@
 
   v23.receiver = self;
   v23.super_class = SXTextTangierFlowRep;
-  v19 = v22;
-  v20 = [(SXTextTangierFlowRep *)&v23 hitRep:v22 withGesture:v9 passingTest:x, y];
+  v19 = gestureCopy;
+  v20 = [(SXTextTangierFlowRep *)&v23 hitRep:gestureCopy withGesture:testCopy passingTest:x, y];
 LABEL_12:
 
   return v20;
 }
 
-- (BOOL)p_doesRep:(id)a3 containCharIndex:(unint64_t)a4 isStart:(BOOL)a5
+- (BOOL)p_doesRep:(id)rep containCharIndex:(unint64_t)index isStart:(BOOL)start
 {
-  v5 = a5;
-  v7 = [a3 range];
-  if (v5 && v7 <= a4)
+  startCopy = start;
+  range = [rep range];
+  if (startCopy && range <= index)
   {
-    return v7 + v8 > a4;
+    return range + v8 > index;
   }
 
-  v10 = v7 + v8 >= a4;
-  if (v7 >= a4)
+  v10 = range + v8 >= index;
+  if (range >= index)
   {
     v10 = 0;
   }
 
-  return !v5 && v10;
+  return !startCopy && v10;
 }
 
-- (id)repForCharIndex:(unint64_t)a3 isStart:(BOOL)a4
+- (id)repForCharIndex:(unint64_t)index isStart:(BOOL)start
 {
-  v4 = a4;
+  startCopy = start;
   v20 = *MEMORY[0x1E69E9840];
-  if ([(SXTextTangierFlowRep *)self p_doesRep:self containCharIndex:a3 isStart:a4])
+  if ([(SXTextTangierFlowRep *)self p_doesRep:self containCharIndex:index isStart:start])
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -137,8 +137,8 @@ LABEL_12:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(SXTextTangierFlowRep *)self siblings];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    siblings = [(SXTextTangierFlowRep *)self siblings];
+    v9 = [siblings countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -149,19 +149,19 @@ LABEL_12:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(siblings);
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
-          if ([(SXTextTangierFlowRep *)self p_doesRep:v13 containCharIndex:a3 isStart:v4])
+          if ([(SXTextTangierFlowRep *)self p_doesRep:v13 containCharIndex:index isStart:startCopy])
           {
-            v7 = v13;
+            selfCopy = v13;
 
             goto LABEL_13;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [siblings countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v10)
         {
           continue;
@@ -171,37 +171,37 @@ LABEL_12:
       }
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
 LABEL_13:
 
-  return v7;
+  return selfCopy;
 }
 
-- (unint64_t)charIndexForPointWithPinning:(CGPoint)a3 isTail:(BOOL)a4 selectionType:(int)a5
+- (unint64_t)charIndexForPointWithPinning:(CGPoint)pinning isTail:(BOOL)tail selectionType:(int)type
 {
-  v6 = a4;
+  tailCopy = tail;
   v15.receiver = self;
   v15.super_class = SXTextTangierFlowRep;
-  v8 = [(SXTextTangierFlowRep *)&v15 charIndexForPointWithPinning:a3.x isTail:a3.y selectionType:?];
+  v8 = [(SXTextTangierFlowRep *)&v15 charIndexForPointWithPinning:pinning.x isTail:pinning.y selectionType:?];
   result = 0x7FFFFFFFFFFFFFFFLL;
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [(SXTextTangierFlowRep *)self storage];
-    v11 = [v10 length];
-    if (a5 == 7 && v8 < v11 && v6)
+    storage = [(SXTextTangierFlowRep *)self storage];
+    v11 = [storage length];
+    if (type == 7 && v8 < v11 && tailCopy)
     {
-      v13 = [(SXTextTangierFlowRep *)self storage];
-      v14 = [v13 characterAtIndex:v8];
+      storage2 = [(SXTextTangierFlowRep *)self storage];
+      v14 = [storage2 characterAtIndex:v8];
 
       if (v14 != 10)
       {
         return v8;
       }
 
-      v10 = [(SXTextTangierFlowRep *)self storage];
-      v8 = [v10 previousCharacterIndex:v8];
+      storage = [(SXTextTangierFlowRep *)self storage];
+      v8 = [storage previousCharacterIndex:v8];
     }
 
     return v8;
@@ -213,9 +213,9 @@ LABEL_13:
 - (id)siblings
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(SXTextTangierFlowRep *)self orderedSiblings];
-  v4 = [v3 array];
-  v5 = [v2 setWithArray:v4];
+  orderedSiblings = [(SXTextTangierFlowRep *)self orderedSiblings];
+  array = [orderedSiblings array];
+  v5 = [v2 setWithArray:array];
 
   return v5;
 }
@@ -228,9 +228,9 @@ LABEL_13:
   v17 = 0u;
   v18 = 0u;
   v4 = [(SXTextTangierFlowRep *)self canvas:0];
-  v5 = [v4 topLevelReps];
+  topLevelReps = [v4 topLevelReps];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [topLevelReps countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -241,21 +241,21 @@ LABEL_13:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(topLevelReps);
         }
 
         objc_opt_class();
         v10 = TSUDynamicCast();
-        v11 = [v10 storage];
-        v12 = [(SXTextTangierFlowRep *)self storage];
+        storage = [v10 storage];
+        storage2 = [(SXTextTangierFlowRep *)self storage];
 
-        if (v11 == v12)
+        if (storage == storage2)
         {
           [v3 addObject:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [topLevelReps countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -268,9 +268,9 @@ LABEL_13:
 
 - (BOOL)updateFromVisualPosition
 {
-  v3 = [(SXTextTangierFlowRep *)self layout];
-  v4 = [v3 geometry];
-  [v4 frame];
+  layout = [(SXTextTangierFlowRep *)self layout];
+  geometry = [layout geometry];
+  [geometry frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -291,8 +291,8 @@ LABEL_13:
     v18 = objc_alloc(MEMORY[0x1E69D5668]);
     [(SXTextTangierFlowRep *)self frameInCanvas];
     v19 = [v18 initWithFrame:?];
-    v20 = [(SXTextTangierFlowRep *)self layout];
-    [v20 setGeometry:v19];
+    layout2 = [(SXTextTangierFlowRep *)self layout];
+    [layout2 setGeometry:v19];
   }
 
   return !v17;
@@ -313,18 +313,18 @@ LABEL_13:
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
-  v3 = [(SXTextTangierFlowRep *)self accessibilityDataSource];
-  v15 = [v3 accessibilityCustomRotorMembershipForRep:self];
+  accessibilityDataSource = [(SXTextTangierFlowRep *)self accessibilityDataSource];
+  v15 = [accessibilityDataSource accessibilityCustomRotorMembershipForRep:self];
 
-  v4 = [(SXTextTangierFlowRep *)self storage];
-  v5 = [(SXTextTangierFlowRep *)self range];
+  storage = [(SXTextTangierFlowRep *)self storage];
+  range = [(SXTextTangierFlowRep *)self range];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__SXTextTangierFlowRep_supportedCustomRotors__block_invoke;
   v9[3] = &unk_1E8502040;
   v9[4] = self;
   v9[5] = &v10;
-  [v4 enumerateSmartFieldsWithAttributeKind:6 inRange:v5 usingBlock:{v6, v9}];
+  [storage enumerateSmartFieldsWithAttributeKind:6 inRange:range usingBlock:{v6, v9}];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -351,20 +351,20 @@ void __45__SXTextTangierFlowRep_supportedCustomRotors__block_invoke(uint64_t a1,
   *a5 = 1;
 }
 
-- (id)itemsForCustomRotor:(id)a3
+- (id)itemsForCustomRotor:(id)rotor
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SXTextTangierFlowRep *)self headingsRotor];
-  v6 = v5;
-  if (v5 == v4)
+  rotorCopy = rotor;
+  headingsRotor = [(SXTextTangierFlowRep *)self headingsRotor];
+  v6 = headingsRotor;
+  if (headingsRotor == rotorCopy)
   {
-    v10 = [(SXTextTangierFlowRep *)self headingsRotor];
+    headingsRotor2 = [(SXTextTangierFlowRep *)self headingsRotor];
 
-    if (v10)
+    if (headingsRotor2)
     {
       v11 = [objc_alloc(MEMORY[0x1E69DC5F8]) initWithTargetElement:self targetRange:0];
-      v9 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithObject:v11];
+      linkRotor2 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithObject:v11];
 
       goto LABEL_16;
     }
@@ -374,21 +374,21 @@ void __45__SXTextTangierFlowRep_supportedCustomRotors__block_invoke(uint64_t a1,
   {
   }
 
-  v7 = [(SXTextTangierFlowRep *)self linkRotor];
-  v8 = v7;
-  if (v7 == v4)
+  linkRotor = [(SXTextTangierFlowRep *)self linkRotor];
+  v8 = linkRotor;
+  if (linkRotor == rotorCopy)
   {
-    v9 = [(SXTextTangierFlowRep *)self linkRotor];
+    linkRotor2 = [(SXTextTangierFlowRep *)self linkRotor];
 
-    if (v9)
+    if (linkRotor2)
     {
-      v12 = [(SXTextTangierFlowRep *)self sxaxLinkElements];
+      sxaxLinkElements = [(SXTextTangierFlowRep *)self sxaxLinkElements];
       v13 = objc_opt_new();
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v14 = v12;
+      v14 = sxaxLinkElements;
       v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v15)
       {
@@ -415,19 +415,19 @@ void __45__SXTextTangierFlowRep_supportedCustomRotors__block_invoke(uint64_t a1,
         while (v16);
       }
 
-      v9 = [v13 copy];
+      linkRotor2 = [v13 copy];
     }
   }
 
   else
   {
 
-    v9 = 0;
+    linkRotor2 = 0;
   }
 
 LABEL_16:
 
-  return v9;
+  return linkRotor2;
 }
 
 - (id)sxaxLinkElements
@@ -436,17 +436,17 @@ LABEL_16:
   if (![v3 count])
   {
     v4 = objc_opt_new();
-    v5 = [(SXTextTangierFlowRep *)self storage];
-    v6 = [(SXTextTangierFlowRep *)self range];
+    storage = [(SXTextTangierFlowRep *)self storage];
+    range = [(SXTextTangierFlowRep *)self range];
     v8 = v7;
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __40__SXTextTangierFlowRep_sxaxLinkElements__block_invoke;
     v15 = &unk_1E84FF8A0;
-    v16 = self;
+    selfCopy = self;
     v17 = v4;
     v9 = v4;
-    [v5 enumerateSmartFieldsWithAttributeKind:6 inRange:v6 usingBlock:{v8, &v12}];
+    [storage enumerateSmartFieldsWithAttributeKind:6 inRange:range usingBlock:{v8, &v12}];
 
     v10 = [v9 copy];
     [(SXTextTangierFlowRep *)self _accessibilitySetRetainedValue:v10 forKey:@"SXAXLinkElementsKey"];
@@ -472,30 +472,30 @@ void __40__SXTextTangierFlowRep_sxaxLinkElements__block_invoke(uint64_t a1, void
 
 - (id)automationElements
 {
-  v3 = [(SXTextTangierFlowRep *)self sxaxLinkElements];
-  if ([v3 count])
+  sxaxLinkElements = [(SXTextTangierFlowRep *)self sxaxLinkElements];
+  if ([sxaxLinkElements count])
   {
-    v4 = v3;
+    automationElements = sxaxLinkElements;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SXTextTangierFlowRep;
-    v4 = [(SXTextTangierFlowRep *)&v7 automationElements];
+    automationElements = [(SXTextTangierFlowRep *)&v7 automationElements];
   }
 
-  v5 = v4;
+  v5 = automationElements;
 
   return v5;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(SXTextTangierFlowRep *)self info];
-  v4 = [v3 hasSpeakableContent];
+  info = [(SXTextTangierFlowRep *)self info];
+  hasSpeakableContent = [info hasSpeakableContent];
 
-  if (!v4)
+  if (!hasSpeakableContent)
   {
     return 0;
   }
@@ -505,10 +505,10 @@ void __40__SXTextTangierFlowRep_sxaxLinkElements__block_invoke(uint64_t a1, void
   return [(TSWPRep *)&v6 isAccessibilityElement];
 }
 
-- (id)accessibilityHitTest:(CGPoint)a3
+- (id)accessibilityHitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v20 = *MEMORY[0x1E69E9840];
   [(SXTextTangierFlowRep *)self accessibilityElements];
   v15 = 0u;
@@ -565,16 +565,16 @@ LABEL_3:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SXTextTangierFlowRep *)self _accessibilityScrollParent];
-  [v11 contentInset];
+  _accessibilityScrollParent = [(SXTextTangierFlowRep *)self _accessibilityScrollParent];
+  [_accessibilityScrollParent contentInset];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [v11 adjustedContentInset];
+  [_accessibilityScrollParent adjustedContentInset];
   if (v15 == v23 && v13 == v20 && v19 == v22 && v17 == v21)
   {
-    [v11 safeAreaInsets];
+    [_accessibilityScrollParent safeAreaInsets];
     v28 = fmin(-v27, 0.0);
     v30 = fmin(-v29, 0.0);
     v4 = v4 + v30;
@@ -598,11 +598,11 @@ LABEL_3:
 {
   v10.receiver = self;
   v10.super_class = SXTextTangierFlowRep;
-  v3 = [(SXTextTangierFlowRep *)&v10 accessibilityTraits];
-  v4 = [(SXTextTangierFlowRep *)self accessibilityDataSource];
-  v5 = [v4 accessibilityCustomRotorMembershipForRep:self];
-  v6 = [(SXTextTangierFlowRep *)self headingsRotor];
-  v7 = [v5 containsObject:v6];
+  accessibilityTraits = [(SXTextTangierFlowRep *)&v10 accessibilityTraits];
+  accessibilityDataSource = [(SXTextTangierFlowRep *)self accessibilityDataSource];
+  v5 = [accessibilityDataSource accessibilityCustomRotorMembershipForRep:self];
+  headingsRotor = [(SXTextTangierFlowRep *)self headingsRotor];
+  v7 = [v5 containsObject:headingsRotor];
 
   v8 = *MEMORY[0x1E69DD9C8];
   if (!v7)
@@ -610,38 +610,38 @@ LABEL_3:
     v8 = 0;
   }
 
-  return v8 | v3;
+  return v8 | accessibilityTraits;
 }
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v3 = [(SXTextTangierFlowRep *)self accessibilityDataSource];
-  v4 = [v3 accessibilityRepIsSelectable:self];
+  accessibilityDataSource = [(SXTextTangierFlowRep *)self accessibilityDataSource];
+  v4 = [accessibilityDataSource accessibilityRepIsSelectable:self];
 
   if (v4)
   {
     v7.receiver = self;
     v7.super_class = SXTextTangierFlowRep;
-    v5 = [(TSWPRep *)&v7 _accessibilitySelectedTextRange];
+    _accessibilitySelectedTextRange = [(TSWPRep *)&v7 _accessibilitySelectedTextRange];
   }
 
   else
   {
-    v5 = 0;
+    _accessibilitySelectedTextRange = 0;
     v6 = 0;
   }
 
   result.length = v6;
-  result.location = v5;
+  result.location = _accessibilitySelectedTextRange;
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(SXTextTangierFlowRep *)self accessibilityDataSource];
-  v7 = [v6 accessibilityRepIsSelectable:self];
+  length = range.length;
+  location = range.location;
+  accessibilityDataSource = [(SXTextTangierFlowRep *)self accessibilityDataSource];
+  v7 = [accessibilityDataSource accessibilityRepIsSelectable:self];
 
   if (v7)
   {
@@ -653,16 +653,16 @@ LABEL_3:
 
 - (id)accessibilityNextTextNavigationElement
 {
-  v3 = [(SXTextTangierFlowRep *)self orderedSiblings];
-  v4 = [v3 indexOfObject:self];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4, v4 >= [v3 count] - 1))
+  orderedSiblings = [(SXTextTangierFlowRep *)self orderedSiblings];
+  v4 = [orderedSiblings indexOfObject:self];
+  if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4, v4 >= [orderedSiblings count] - 1))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v3 objectAtIndexedSubscript:v5 + 1];
+    v6 = [orderedSiblings objectAtIndexedSubscript:v5 + 1];
   }
 
   return v6;
@@ -670,12 +670,12 @@ LABEL_3:
 
 - (id)accessibilityPreviousTextNavigationElement
 {
-  v3 = [(SXTextTangierFlowRep *)self orderedSiblings];
-  v4 = [v3 indexOfObject:self];
+  orderedSiblings = [(SXTextTangierFlowRep *)self orderedSiblings];
+  v4 = [orderedSiblings indexOfObject:self];
   v5 = 0;
   if (v4 && v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [v3 objectAtIndexedSubscript:v4 - 1];
+    v5 = [orderedSiblings objectAtIndexedSubscript:v4 - 1];
   }
 
   return v5;
@@ -683,48 +683,48 @@ LABEL_3:
 
 - (BOOL)accessibilitySupportsTextSelection
 {
-  v2 = self;
-  v3 = [(SXTextTangierFlowRep *)self accessibilityDataSource];
-  LOBYTE(v2) = [v3 accessibilityRepIsSelectable:v2];
+  selfCopy = self;
+  accessibilityDataSource = [(SXTextTangierFlowRep *)self accessibilityDataSource];
+  LOBYTE(selfCopy) = [accessibilityDataSource accessibilityRepIsSelectable:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)sxaxSupportedEditRotorActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7.receiver = self;
   v7.super_class = SXTextTangierFlowRep;
-  v4 = [(TSWPRep *)&v7 sxaxSupportedEditRotorActions];
-  if (v4)
+  sxaxSupportedEditRotorActions = [(TSWPRep *)&v7 sxaxSupportedEditRotorActions];
+  if (sxaxSupportedEditRotorActions)
   {
-    [v3 addObjectsFromArray:v4];
+    [array addObjectsFromArray:sxaxSupportedEditRotorActions];
   }
 
-  if (([v3 containsObject:@"lookup:"] & 1) == 0)
+  if (([array containsObject:@"lookup:"] & 1) == 0)
   {
-    [v3 addObject:@"lookup:"];
+    [array addObject:@"lookup:"];
   }
 
-  v5 = [v3 copy];
+  v5 = [array copy];
 
   return v5;
 }
 
-- (id)sxaxNameForEditRotorAction:(id)a3
+- (id)sxaxNameForEditRotorAction:(id)action
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"lookup:"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"lookup:"])
   {
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Lookup" value:&stru_1F532F6C0 table:0];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Lookup" value:&stru_1F532F6C0 table:0];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SXTextTangierFlowRep;
-    v6 = [(TSWPRep *)&v8 sxaxNameForEditRotorAction:v4];
+    v6 = [(TSWPRep *)&v8 sxaxNameForEditRotorAction:actionCopy];
   }
 
   return v6;

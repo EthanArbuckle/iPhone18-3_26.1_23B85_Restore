@@ -1,25 +1,25 @@
 @interface AAAudioSessionControl
 - (AAAudioSessionControl)init;
-- (AAAudioSessionControl)initWithCoder:(id)a3;
+- (AAAudioSessionControl)initWithCoder:(id)coder;
 - (id)_ensureXPCStarted;
 - (id)description;
-- (void)_activateDirect:(id)a3;
-- (void)_activateXPC:(id)a3 reactivate:(BOOL)a4;
+- (void)_activateDirect:(id)direct;
+- (void)_activateXPC:(id)c reactivate:(BOOL)reactivate;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_reportError:(id)error;
+- (void)activateWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)setConversationDetectSignal:(int)a3;
-- (void)setMuteAction:(int)a3 auditToken:(id *)a4 bundleIdentifier:(id)a5;
+- (void)setConversationDetectSignal:(int)signal;
+- (void)setMuteAction:(int)action auditToken:(id *)token bundleIdentifier:(id)identifier;
 @end
 
 @implementation AAAudioSessionControl
 
-- (AAAudioSessionControl)initWithCoder:(id)a3
+- (AAAudioSessionControl)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AAAudioSessionControl *)self init];
   if (v5)
   {
@@ -39,22 +39,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   clientID = self->_clientID;
-  v7 = v4;
+  v7 = coderCopy;
   if (clientID)
   {
-    [v4 encodeInt64:clientID forKey:@"cid"];
-    v4 = v7;
+    [coderCopy encodeInt64:clientID forKey:@"cid"];
+    coderCopy = v7;
   }
 
   conversationDetectSignal = self->_conversationDetectSignal;
   if (conversationDetectSignal)
   {
     [v7 encodeInteger:conversationDetectSignal forKey:@"cds"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
@@ -98,53 +98,53 @@
   return v2;
 }
 
-- (void)setConversationDetectSignal:(int)a3
+- (void)setConversationDetectSignal:(int)signal
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_activateCalled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v4->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10000C62C;
     v6[3] = &unk_1002B68F8;
-    v6[4] = v4;
-    v7 = a3;
+    v6[4] = selfCopy;
+    signalCopy = signal;
     dispatch_async(dispatchQueue, v6);
   }
 
   else
   {
-    v4->_conversationDetectSignal = a3;
+    selfCopy->_conversationDetectSignal = signal;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setMuteAction:(int)a3 auditToken:(id *)a4 bundleIdentifier:(id)a5
+- (void)setMuteAction:(int)action auditToken:(id *)token bundleIdentifier:(id)identifier
 {
-  v8 = a5;
+  identifierCopy = identifier;
   if (dword_1002F5E10 <= 30 && (dword_1002F5E10 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001D1ED4(a3);
+    sub_1001D1ED4(action);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  if (v9->_activateCalled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v9->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
-    v11 = *&a4->var0[4];
-    v15 = *a4->var0;
+    v11 = *&token->var0[4];
+    v15 = *token->var0;
     block[2] = sub_10000C86C;
     block[3] = &unk_1002B6920;
-    block[4] = v9;
-    v14 = a3;
+    block[4] = selfCopy;
+    actionCopy = action;
     v16 = v11;
-    v13 = v8;
+    v13 = identifierCopy;
     dispatch_async(dispatchQueue, block);
   }
 
@@ -153,26 +153,26 @@
     LogPrintF();
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000C9D4;
   v7[3] = &unk_1002B6948;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateDirect:(id)a3
+- (void)_activateDirect:(id)direct
 {
-  v4 = a3;
+  directCopy = direct;
   if (dword_1002F5E10 <= 30 && (dword_1002F5E10 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D207C(self);
@@ -184,16 +184,16 @@
   v7[2] = sub_10000CF04;
   v7[3] = &unk_1002B69C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = directCopy;
+  v6 = directCopy;
   [v5 activateAudioSessionControl:self completion:v7];
 }
 
-- (void)_activateXPC:(id)a3 reactivate:(BOOL)a4
+- (void)_activateXPC:(id)c reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  reactivateCopy = reactivate;
+  cCopy = c;
+  if (reactivateCopy)
   {
     if (dword_1002F5E10 > 30)
     {
@@ -226,10 +226,10 @@ LABEL_9:
   }
 
 LABEL_12:
-  v7 = [(AAAudioSessionControl *)self _ensureXPCStarted];
-  if (v7)
+  _ensureXPCStarted = [(AAAudioSessionControl *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v6[2](v6, v7);
+    cCopy[2](cCopy, _ensureXPCStarted);
   }
 
   else
@@ -239,8 +239,8 @@ LABEL_12:
     v13[1] = 3221225472;
     v13[2] = sub_10000D1D0;
     v13[3] = &unk_1002B69E8;
-    v15 = v4;
-    v9 = v6;
+    v15 = reactivateCopy;
+    v9 = cCopy;
     v14 = v9;
     v10 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v13];
     v11[0] = _NSConcreteStackBlock;
@@ -378,9 +378,9 @@ LABEL_12:
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (dword_1002F5E10 <= 90 && (dword_1002F5E10 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D2210();
@@ -392,7 +392,7 @@ LABEL_12:
 
   if (v4)
   {
-    v4[2](v4, v6);
+    v4[2](v4, errorCopy);
   }
 }
 

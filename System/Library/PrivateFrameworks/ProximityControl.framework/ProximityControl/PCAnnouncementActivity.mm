@@ -1,7 +1,7 @@
 @interface PCAnnouncementActivity
 - (BOOL)isValid;
 - (PCAnnouncementActivity)init;
-- (PCAnnouncementActivity)initWithActivity:(id)a3;
+- (PCAnnouncementActivity)initWithActivity:(id)activity;
 - (id)image;
 @end
 
@@ -30,36 +30,36 @@
   return v3;
 }
 
-- (PCAnnouncementActivity)initWithActivity:(id)a3
+- (PCAnnouncementActivity)initWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  v6 = [@"com.apple.ProximityControl.activity.annoucement" isEqualToString:v5];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v6 = [@"com.apple.ProximityControl.activity.annoucement" isEqualToString:activityType];
 
   if (v6)
   {
-    v7 = [v4 activityType];
+    activityType2 = [activityCopy activityType];
     v12.receiver = self;
     v12.super_class = PCAnnouncementActivity;
-    v8 = [(PCAnnouncementActivity *)&v12 initWithActivityType:v7];
+    v8 = [(PCAnnouncementActivity *)&v12 initWithActivityType:activityType2];
 
     if (v8)
     {
       makeIneligibleForProcessing(v8);
-      v9 = [v4 userInfo];
-      [(PCAnnouncementActivity *)v8 setUserInfo:v9];
+      userInfo = [activityCopy userInfo];
+      [(PCAnnouncementActivity *)v8 setUserInfo:userInfo];
     }
 
     self = v8;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)image
@@ -75,8 +75,8 @@
     v4 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:32.0];
     v5 = [v3 imageWithConfiguration:v4];
 
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    v7 = [v5 imageWithTintColor:v6 renderingMode:2];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v7 = [v5 imageWithTintColor:whiteColor renderingMode:2];
 
     [v7 size];
     v9 = v8;
@@ -91,8 +91,8 @@
     v22.size.height = height;
     CGContextAddEllipseInRect(CurrentContext, v22);
     CGContextClosePath(CurrentContext);
-    v12 = [MEMORY[0x277D75348] orangeColor];
-    CGContextSetFillColorWithColor(CurrentContext, [v12 CGColor]);
+    orangeColor = [MEMORY[0x277D75348] orangeColor];
+    CGContextSetFillColorWithColor(CurrentContext, [orangeColor CGColor]);
 
     CGContextFillPath(CurrentContext);
     v13 = UIGraphicsGetImageFromCurrentImageContext();
@@ -101,8 +101,8 @@
     v20.height = height;
     UIGraphicsBeginImageContext(v20);
     v14 = UIGraphicsGetCurrentContext();
-    v15 = [MEMORY[0x277D75348] whiteColor];
-    CGContextSetFillColorWithColor(v14, [v15 CGColor]);
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    CGContextSetFillColorWithColor(v14, [whiteColor2 CGColor]);
 
     v23.origin.x = 0.0;
     v23.origin.y = 0.0;
@@ -127,9 +127,9 @@
 
 - (BOOL)isValid
 {
-  v2 = [(PCAnnouncementActivity *)self userInfo];
-  v3 = [v2 allKeys];
-  v4 = [v3 count] != 0;
+  userInfo = [(PCAnnouncementActivity *)self userInfo];
+  allKeys = [userInfo allKeys];
+  v4 = [allKeys count] != 0;
 
   return v4;
 }

@@ -1,23 +1,23 @@
 @interface SUUIViewReuseCollectionViewCell
-- (SUUIViewReuseCollectionViewCell)initWithFrame:(CGRect)a3;
+- (SUUIViewReuseCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
-- (id)existingViewForIndex:(int64_t)a3;
-- (id)existingViewsForReuseIdentifier:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (id)existingViewForIndex:(int64_t)index;
+- (id)existingViewsForReuseIdentifier:(id)identifier;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
-- (void)enumerateExistingViewsForReuseIdentifier:(id)a3 usingBlock:(id)a4;
-- (void)modifyUsingBlock:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)enumerateExistingViewsForReuseIdentifier:(id)identifier usingBlock:(id)block;
+- (void)modifyUsingBlock:(id)block;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SUUIViewReuseCollectionViewCell
 
-- (SUUIViewReuseCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIViewReuseCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUUIViewReuseCollectionViewCell;
-  v3 = [(SUUICollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[SUUIViewReusePool alloc] initWithParentView:v3];
@@ -73,11 +73,11 @@
   [(SUUIViewReuseCollectionViewCell *)&v9 dealloc];
 }
 
-- (void)enumerateExistingViewsForReuseIdentifier:(id)a3 usingBlock:(id)a4
+- (void)enumerateExistingViewsForReuseIdentifier:(id)identifier usingBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -100,10 +100,10 @@
 
         v14 = *(*(&v17 + 1) + 8 * i);
         v15 = SUUIReuseIdentifierForView(v14);
-        if (v15 && [v6 isEqualToString:v15])
+        if (v15 && [identifierCopy isEqualToString:v15])
         {
           v16 = 0;
-          v7[2](v7, v14, v11, &v16);
+          blockCopy[2](blockCopy, v14, v11, &v16);
           if (v16)
           {
 
@@ -127,26 +127,26 @@
 LABEL_14:
 }
 
-- (id)existingViewForIndex:(int64_t)a3
+- (id)existingViewForIndex:(int64_t)index
 {
-  if ([(NSArray *)self->_allExistingViews count]<= a3)
+  if ([(NSArray *)self->_allExistingViews count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_allExistingViews objectAtIndex:a3];
+    v5 = [(NSArray *)self->_allExistingViews objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (id)existingViewsForReuseIdentifier:(id)a3
+- (id)existingViewsForReuseIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -168,9 +168,9 @@ LABEL_14:
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = SUUIReuseIdentifierForView(v11);
-        if (v12 && [v4 isEqualToString:{v12, v14}])
+        if (v12 && [identifierCopy isEqualToString:{v12, v14}])
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -180,13 +180,13 @@ LABEL_14:
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (void)modifyUsingBlock:(id)a3
+- (void)modifyUsingBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   if (self->_allExistingViews)
   {
     [(SUUIViewReusePool *)self->_viewPool recycleReusableViews:?];
@@ -195,16 +195,16 @@ LABEL_14:
   }
 
   v6 = [[SUUIViewModification alloc] initWithViewReusePool:self->_viewPool];
-  v4[2](v4, v6);
-  v7 = [(SUUIViewReuseCollectionViewCell *)self backgroundColor];
-  v8 = [(SUUIViewReuseCollectionViewCell *)self contentView];
-  v9 = [(SUUIViewModification *)v6 allViewTextProperties];
+  blockCopy[2](blockCopy, v6);
+  backgroundColor = [(SUUIViewReuseCollectionViewCell *)self backgroundColor];
+  contentView = [(SUUIViewReuseCollectionViewCell *)self contentView];
+  allViewTextProperties = [(SUUIViewModification *)v6 allViewTextProperties];
   allViewTextProperties = self->_allViewTextProperties;
-  self->_allViewTextProperties = v9;
+  self->_allViewTextProperties = allViewTextProperties;
 
-  v11 = [(SUUIViewModification *)v6 views];
+  views = [(SUUIViewModification *)v6 views];
   v12 = self->_allExistingViews;
-  self->_allExistingViews = v11;
+  self->_allExistingViews = views;
 
   v21 = 0u;
   v22 = 0u;
@@ -226,8 +226,8 @@ LABEL_14:
         }
 
         v18 = *(*(&v19 + 1) + 8 * i);
-        [v18 setBackgroundColor:v7];
-        [v8 addSubview:v18];
+        [v18 setBackgroundColor:backgroundColor];
+        [contentView addSubview:v18];
       }
 
       v15 = [(NSArray *)v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -240,24 +240,24 @@ LABEL_14:
   [(SUUIViewReuseCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUIViewReuseCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 backgroundColor];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -278,7 +278,7 @@ LABEL_14:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) setBackgroundColor:v5];
+        [*(*(&v12 + 1) + 8 * v10++) setBackgroundColor:backgroundColor];
       }
 
       while (v8 != v10);
@@ -290,13 +290,13 @@ LABEL_14:
 
   v11.receiver = self;
   v11.super_class = SUUIViewReuseCollectionViewCell;
-  [(SUUICollectionViewCell *)&v11 applyLayoutAttributes:v4];
+  [(SUUICollectionViewCell *)&v11 applyLayoutAttributes:attributesCopy];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -317,7 +317,7 @@ LABEL_14:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:v4];
+        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:colorCopy];
       }
 
       while (v7 != v9);
@@ -329,7 +329,7 @@ LABEL_14:
 
   v10.receiver = self;
   v10.super_class = SUUIViewReuseCollectionViewCell;
-  [(SUUICollectionViewCell *)&v10 setBackgroundColor:v4];
+  [(SUUICollectionViewCell *)&v10 setBackgroundColor:colorCopy];
 }
 
 - (UIEdgeInsets)contentInset

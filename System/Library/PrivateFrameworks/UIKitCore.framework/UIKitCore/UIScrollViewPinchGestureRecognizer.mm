@@ -1,13 +1,13 @@
 @interface UIScrollViewPinchGestureRecognizer
 - (UIScrollView)scrollView;
-- (UIScrollViewPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (UIScrollViewPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (_BYTE)_updateHysteresis;
-- (void)_transformChangedWithEvent:(id)a3;
-- (void)removeTarget:(id)a3 action:(SEL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setScrollView:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)_transformChangedWithEvent:(id)event;
+- (void)removeTarget:(id)target action:(SEL)action;
+- (void)setDelegate:(id)delegate;
+- (void)setScrollView:(id)view;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIScrollViewPinchGestureRecognizer
@@ -19,49 +19,49 @@
   return WeakRetained;
 }
 
-- (UIScrollViewPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIScrollViewPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v10.receiver = self;
   v10.super_class = UIScrollViewPinchGestureRecognizer;
-  v5 = [(UIPinchGestureRecognizer *)&v10 initWithTarget:a3 action:?];
+  v5 = [(UIPinchGestureRecognizer *)&v10 initWithTarget:target action:?];
   v6 = v5;
   if (v5)
   {
-    if (a4)
+    if (action)
     {
-      v7 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v7 = 0;
+      actionCopy = 0;
     }
 
-    v5->_scrollViewAction = v7;
+    v5->_scrollViewAction = actionCopy;
     v8 = v5;
   }
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(UIScrollViewPinchGestureRecognizer *)self scrollView];
-  v6 = v5;
-  if (v5 && v5 != v4)
+  delegateCopy = delegate;
+  scrollView = [(UIScrollViewPinchGestureRecognizer *)self scrollView];
+  v6 = scrollView;
+  if (scrollView && scrollView != delegateCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"UIScrollView's built-in pinch gesture recognizer must have its scroll view as its delegate."];
   }
 
   v7.receiver = self;
   v7.super_class = UIScrollViewPinchGestureRecognizer;
-  [(UIGestureRecognizer *)&v7 setDelegate:v4];
+  [(UIGestureRecognizer *)&v7 setDelegate:delegateCopy];
 }
 
-- (void)setScrollView:(id)a3
+- (void)setScrollView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
 
   v5 = obj;
@@ -81,9 +81,9 @@
   }
 
   v1 = result;
-  v2 = [result scrollView];
-  v3 = [v2 _parentScrollView];
-  if (!v3)
+  scrollView = [result scrollView];
+  _parentScrollView = [scrollView _parentScrollView];
+  if (!_parentScrollView)
   {
 
     goto LABEL_8;
@@ -103,11 +103,11 @@ LABEL_8:
   return [v1 _setHysteresis:0.0];
 }
 
-- (void)removeTarget:(id)a3 action:(SEL)a4
+- (void)removeTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
-  v7 = [(UIScrollViewPinchGestureRecognizer *)self scrollView];
-  if (v7 == v6)
+  targetCopy = target;
+  scrollView = [(UIScrollViewPinchGestureRecognizer *)self scrollView];
+  if (scrollView == targetCopy)
   {
     if (self->_scrollViewAction)
     {
@@ -119,7 +119,7 @@ LABEL_8:
       scrollViewAction = 0;
     }
 
-    if (scrollViewAction == a4)
+    if (scrollViewAction == action)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"You can't remove a scroll view's target/action pair from its built-in pinch gesture recognizer."];
     }
@@ -131,20 +131,20 @@ LABEL_8:
 
   v9.receiver = self;
   v9.super_class = UIScrollViewPinchGestureRecognizer;
-  [(UIGestureRecognizer *)&v9 removeTarget:v6 action:a4];
+  [(UIGestureRecognizer *)&v9 removeTarget:targetCopy action:action];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIGestureRecognizer *)self _activeTouchesForEvent:v7];
+  beganCopy = began;
+  eventCopy = event;
+  v8 = [(UIGestureRecognizer *)self _activeTouchesForEvent:eventCopy];
   v9 = [v8 count];
 
   if (v9 == 2)
   {
-    v10 = [(UIScrollViewPinchGestureRecognizer *)self scrollView];
-    [v10 zoomScale];
+    scrollView = [(UIScrollViewPinchGestureRecognizer *)self scrollView];
+    [scrollView zoomScale];
     v12 = v11;
 
     CGAffineTransformMakeScale(&v15, v12, v12);
@@ -154,20 +154,20 @@ LABEL_8:
 
   v13.receiver = self;
   v13.super_class = UIScrollViewPinchGestureRecognizer;
-  [(UIGestureRecognizer *)&v13 touchesBegan:v6 withEvent:v7];
+  [(UIGestureRecognizer *)&v13 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = UIScrollViewPinchGestureRecognizer;
-  [(UIGestureRecognizer *)&v10 touchesMoved:a3 withEvent:v6];
+  [(UIGestureRecognizer *)&v10 touchesMoved:moved withEvent:eventCopy];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStateBegan)
   {
-    v7 = [(UIScrollViewPinchGestureRecognizer *)self scrollView];
-    v8 = [v6 touchesForGestureRecognizer:self];
-    v9 = [v7 _canCancelContentTouches:v8];
+    scrollView = [(UIScrollViewPinchGestureRecognizer *)self scrollView];
+    v8 = [eventCopy touchesForGestureRecognizer:self];
+    v9 = [scrollView _canCancelContentTouches:v8];
 
     if ((v9 & 1) == 0)
     {
@@ -176,12 +176,12 @@ LABEL_8:
   }
 }
 
-- (void)_transformChangedWithEvent:(id)a3
+- (void)_transformChangedWithEvent:(id)event
 {
-  if ([a3 phase] == 1)
+  if ([event phase] == 1)
   {
-    v4 = [(UIScrollViewPinchGestureRecognizer *)self scrollView];
-    [v4 zoomScale];
+    scrollView = [(UIScrollViewPinchGestureRecognizer *)self scrollView];
+    [scrollView zoomScale];
     v6 = v5;
 
     CGAffineTransformMakeScale(&v8, v6, v6);

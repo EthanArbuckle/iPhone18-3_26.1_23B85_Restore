@@ -1,32 +1,32 @@
 @interface _UIVisualEffectAlphaEntry
-- (_UIVisualEffectAlphaEntry)initWithInitialAlpha:(double)a3 finalAlpha:(double)a4;
+- (_UIVisualEffectAlphaEntry)initWithInitialAlpha:(double)alpha finalAlpha:(double)finalAlpha;
 - (id)copyForTransitionOut;
-- (id)copyForTransitionToEffect:(id)a3;
+- (id)copyForTransitionToEffect:(id)effect;
 - (id)description;
 @end
 
 @implementation _UIVisualEffectAlphaEntry
 
-- (_UIVisualEffectAlphaEntry)initWithInitialAlpha:(double)a3 finalAlpha:(double)a4
+- (_UIVisualEffectAlphaEntry)initWithInitialAlpha:(double)alpha finalAlpha:(double)finalAlpha
 {
   v7.receiver = self;
   v7.super_class = _UIVisualEffectAlphaEntry;
   result = [(_UIVisualEffectAlphaEntry *)&v7 init];
   if (result)
   {
-    result->_initialAlpha = a3;
-    result->_finalAlpha = a4;
+    result->_initialAlpha = alpha;
+    result->_finalAlpha = finalAlpha;
   }
 
   return result;
 }
 
-- (id)copyForTransitionToEffect:(id)a3
+- (id)copyForTransitionToEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   v5 = [_UIVisualEffectAlphaEntry alloc];
   finalAlpha = self->_finalAlpha;
-  v7 = v4[3];
+  v7 = effectCopy[3];
 
   return [(_UIVisualEffectAlphaEntry *)v5 initWithInitialAlpha:finalAlpha finalAlpha:v7];
 }

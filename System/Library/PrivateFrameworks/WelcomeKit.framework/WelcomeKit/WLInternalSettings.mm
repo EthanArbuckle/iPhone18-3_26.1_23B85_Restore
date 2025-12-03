@@ -1,32 +1,32 @@
 @interface WLInternalSettings
-+ (id)settingsWithData:(id)a3;
-- (WLInternalSettings)initWithJSONDictionary:(id)a3;
++ (id)settingsWithData:(id)data;
+- (WLInternalSettings)initWithJSONDictionary:(id)dictionary;
 @end
 
 @implementation WLInternalSettings
 
-- (WLInternalSettings)initWithJSONDictionary:(id)a3
+- (WLInternalSettings)initWithJSONDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7.receiver = self;
   v7.super_class = WLInternalSettings;
   v5 = [(WLInternalSettings *)&v7 init];
   if (v5)
   {
-    -[WLInternalSettings setEnableAccessibilityDisplayInversion:](v5, "setEnableAccessibilityDisplayInversion:", [v4 wl_BOOLForKey:@"accessibility_display_inversion_enabled"]);
-    -[WLInternalSettings setEnableDisplayDarkMode:](v5, "setEnableDisplayDarkMode:", [v4 wl_BOOLForKey:@"display_dark_mode_enabled"]);
-    -[WLInternalSettings setEnableDisplayZoom:](v5, "setEnableDisplayZoom:", [v4 wl_BOOLForKey:@"display_zoom_enabled"]);
-    [v4 wl_floatForKey:@"accessibility_font_scale"];
+    -[WLInternalSettings setEnableAccessibilityDisplayInversion:](v5, "setEnableAccessibilityDisplayInversion:", [dictionaryCopy wl_BOOLForKey:@"accessibility_display_inversion_enabled"]);
+    -[WLInternalSettings setEnableDisplayDarkMode:](v5, "setEnableDisplayDarkMode:", [dictionaryCopy wl_BOOLForKey:@"display_dark_mode_enabled"]);
+    -[WLInternalSettings setEnableDisplayZoom:](v5, "setEnableDisplayZoom:", [dictionaryCopy wl_BOOLForKey:@"display_zoom_enabled"]);
+    [dictionaryCopy wl_floatForKey:@"accessibility_font_scale"];
     [(WLInternalSettings *)v5 setAccessibilityFontScale:?];
   }
 
   return v5;
 }
 
-+ (id)settingsWithData:(id)a3
++ (id)settingsWithData:(id)data
 {
-  v9 = a3;
-  if (!v9)
+  dataCopy = data;
+  if (!dataCopy)
   {
     _WLLog(v3, 0, @"data was nil and did skip", v4, v5, v6, v7, v8, v28);
     v20 = 0;
@@ -34,7 +34,7 @@
   }
 
   v29 = 0;
-  v10 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v9 options:0 error:&v29];
+  v10 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v29];
   v11 = v29;
   if (v11)
   {
@@ -48,7 +48,7 @@
 
   if (v12)
   {
-    v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4];
+    v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
     v14 = [v11 description];
     _WLLog(v3, 0, @"did fail to convert json to object %@\n%@", v15, v16, v17, v18, v19, v14);
 

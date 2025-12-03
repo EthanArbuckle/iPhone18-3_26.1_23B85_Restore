@@ -1,35 +1,35 @@
 @interface PlaceCardOfflineMapProvider
 - (NSProgress)downloadProgress;
-- (PlaceCardOfflineMapProvider)initWithMapItem:(id)a3;
+- (PlaceCardOfflineMapProvider)initWithMapItem:(id)item;
 - (int64_t)downloadState;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setSubscriptionInfo:(id)a3;
-- (void)subscriptionInfosDidChange:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setSubscriptionInfo:(id)info;
+- (void)subscriptionInfosDidChange:(id)change;
 @end
 
 @implementation PlaceCardOfflineMapProvider
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_101934E30 != a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_101934E30 != context)
   {
     goto LABEL_8;
   }
 
-  v13 = [(PlaceCardOfflineMapProvider *)self subscriptionInfo];
-  v14 = [v13 state];
-  v15 = v14;
-  if (v14 != v11)
+  subscriptionInfo = [(PlaceCardOfflineMapProvider *)self subscriptionInfo];
+  state = [subscriptionInfo state];
+  v15 = state;
+  if (state != objectCopy)
   {
 
 LABEL_8:
     v17.receiver = self;
     v17.super_class = PlaceCardOfflineMapProvider;
-    [(PlaceCardOfflineMapProvider *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PlaceCardOfflineMapProvider *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_9;
   }
 
@@ -38,7 +38,7 @@ LABEL_8:
     dispatch_once(&qword_10195EEC8, &stru_101650A10);
   }
 
-  v16 = [qword_10195EED0 containsObject:v10];
+  v16 = [qword_10195EED0 containsObject:pathCopy];
 
   if (!v16)
   {
@@ -58,13 +58,13 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)subscriptionInfosDidChange:(id)a3
+- (void)subscriptionInfosDidChange:(id)change
 {
   v4 = +[MapsOfflineUIHelper sharedHelper];
-  v5 = [(PlaceCardOfflineMapProvider *)self mapItem];
-  v6 = [v5 _geoMapItem];
-  v7 = [v6 offlineDownloadRegion];
-  v8 = [v4 subscriptionInfoForRegion:v7];
+  mapItem = [(PlaceCardOfflineMapProvider *)self mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
+  offlineDownloadRegion = [_geoMapItem offlineDownloadRegion];
+  v8 = [v4 subscriptionInfoForRegion:offlineDownloadRegion];
   [(PlaceCardOfflineMapProvider *)self setSubscriptionInfo:v8];
 
   observers = self->_observers;
@@ -74,55 +74,55 @@ LABEL_9:
 
 - (NSProgress)downloadProgress
 {
-  v2 = [(PlaceCardOfflineMapProvider *)self subscriptionInfo];
-  v3 = [v2 state];
-  v4 = [v3 downloadProgress];
+  subscriptionInfo = [(PlaceCardOfflineMapProvider *)self subscriptionInfo];
+  state = [subscriptionInfo state];
+  downloadProgress = [state downloadProgress];
 
-  return v4;
+  return downloadProgress;
 }
 
 - (int64_t)downloadState
 {
-  v3 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
-  v4 = [v3 loadState];
+  state = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
+  loadState = [state loadState];
 
-  if ((v4 - 1) < 2)
+  if ((loadState - 1) < 2)
   {
     return 5;
   }
 
-  if (v4 == 3)
+  if (loadState == 3)
   {
     return 1;
   }
 
-  if (v4)
+  if (loadState)
   {
     return 0;
   }
 
-  v5 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
-  v6 = [v5 downloadState];
+  state2 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
+  downloadState = [state2 downloadState];
 
-  if (v6 >= 6)
+  if (downloadState >= 6)
   {
     return 0;
   }
 
-  return qword_101215AF8[v6];
+  return qword_101215AF8[downloadState];
 }
 
-- (void)setSubscriptionInfo:(id)a3
+- (void)setSubscriptionInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   subscriptionInfo = self->_subscriptionInfo;
-  if (subscriptionInfo != v5 && ![(MapDataSubscriptionInfo *)subscriptionInfo isEqual:v5])
+  if (subscriptionInfo != infoCopy && ![(MapDataSubscriptionInfo *)subscriptionInfo isEqual:infoCopy])
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v21 = v5;
+    v21 = infoCopy;
     if (qword_10195EEC8 != -1)
     {
       dispatch_once(&qword_10195EEC8, &stru_101650A10);
@@ -144,8 +144,8 @@ LABEL_9:
           }
 
           v12 = *(*(&v26 + 1) + 8 * i);
-          v13 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
-          [v13 removeObserver:self forKeyPath:v12 context:off_101934E30];
+          state = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
+          [state removeObserver:self forKeyPath:v12 context:off_101934E30];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -154,7 +154,7 @@ LABEL_9:
       while (v9);
     }
 
-    objc_storeStrong(&self->_subscriptionInfo, a3);
+    objc_storeStrong(&self->_subscriptionInfo, info);
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -164,7 +164,7 @@ LABEL_9:
       dispatch_once(&qword_10195EEC8, &stru_101650A10);
     }
 
-    v5 = v21;
+    infoCopy = v21;
     v14 = qword_10195EED0;
     v15 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v15)
@@ -181,8 +181,8 @@ LABEL_9:
           }
 
           v19 = *(*(&v22 + 1) + 8 * j);
-          v20 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
-          [v20 addObserver:self forKeyPath:v19 options:0 context:off_101934E30];
+          state2 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
+          [state2 addObserver:self forKeyPath:v19 options:0 context:off_101934E30];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -204,9 +204,9 @@ LABEL_9:
   [(PlaceCardOfflineMapProvider *)&v4 dealloc];
 }
 
-- (PlaceCardOfflineMapProvider)initWithMapItem:(id)a3
+- (PlaceCardOfflineMapProvider)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = PlaceCardOfflineMapProvider;
   v6 = [(PlaceCardOfflineMapProvider *)&v16 init];
@@ -216,15 +216,15 @@ LABEL_9:
     observers = v6->_observers;
     v6->_observers = v7;
 
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
     v9 = +[MapsOfflineUIHelper sharedHelper];
     [v9 addObserver:v6];
 
     v10 = +[MapsOfflineUIHelper sharedHelper];
-    v11 = [(PlaceCardOfflineMapProvider *)v6 mapItem];
-    v12 = [v11 _geoMapItem];
-    v13 = [v12 offlineDownloadRegion];
-    v14 = [v10 subscriptionInfoForRegion:v13];
+    mapItem = [(PlaceCardOfflineMapProvider *)v6 mapItem];
+    _geoMapItem = [mapItem _geoMapItem];
+    offlineDownloadRegion = [_geoMapItem offlineDownloadRegion];
+    v14 = [v10 subscriptionInfoForRegion:offlineDownloadRegion];
     [(PlaceCardOfflineMapProvider *)v6 setSubscriptionInfo:v14];
   }
 

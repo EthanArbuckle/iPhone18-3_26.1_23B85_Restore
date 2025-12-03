@@ -1,21 +1,21 @@
 @interface IDSRegisteredDevice
-+ (id)registeredDeviceFromDependentRegistrationDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRegisteredDevice:(id)a3;
-- (IDSRegisteredDevice)initWithCoder:(id)a3;
-- (IDSRegisteredDevice)initWithName:(id)a3 hardwareVersion:(id)a4 pushToken:(id)a5 URIs:(id)a6 linkedURIs:(id)a7 publicDeviceIdentity:(id)a8;
++ (id)registeredDeviceFromDependentRegistrationDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRegisteredDevice:(id)device;
+- (IDSRegisteredDevice)initWithCoder:(id)coder;
+- (IDSRegisteredDevice)initWithName:(id)name hardwareVersion:(id)version pushToken:(id)token URIs:(id)is linkedURIs:(id)rIs publicDeviceIdentity:(id)identity;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSRegisteredDevice
 
-+ (id)registeredDeviceFromDependentRegistrationDictionary:(id)a3
++ (id)registeredDeviceFromDependentRegistrationDictionary:(id)dictionary
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"device-name"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"device-name"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -29,7 +29,7 @@
 
   v6 = v5;
 
-  v7 = [v3 objectForKeyedSubscript:@"hardware-version"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"hardware-version"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -58,7 +58,7 @@
   {
     v39 = v9;
     v40 = v6;
-    v12 = [v3 objectForKeyedSubscript:@"push-token"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"push-token"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
 
     v38 = v13;
 
-    v14 = [v3 objectForKeyedSubscript:@"client-data"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"client-data"];
     v15 = [v14 objectForKeyedSubscript:@"public-message-identity-key"];
 
     objc_opt_class();
@@ -93,8 +93,8 @@
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v41 = v3;
-    v18 = [v3 objectForKeyedSubscript:@"identities"];
+    v41 = dictionaryCopy;
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"identities"];
     v19 = [v18 countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v19)
     {
@@ -193,46 +193,46 @@
       v35 = v37;
     }
 
-    v3 = v41;
+    dictionaryCopy = v41;
   }
 
   return v10;
 }
 
-- (IDSRegisteredDevice)initWithName:(id)a3 hardwareVersion:(id)a4 pushToken:(id)a5 URIs:(id)a6 linkedURIs:(id)a7 publicDeviceIdentity:(id)a8
+- (IDSRegisteredDevice)initWithName:(id)name hardwareVersion:(id)version pushToken:(id)token URIs:(id)is linkedURIs:(id)rIs publicDeviceIdentity:(id)identity
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  nameCopy = name;
+  versionCopy = version;
+  tokenCopy = token;
+  isCopy = is;
+  rIsCopy = rIs;
+  identityCopy = identity;
   v34.receiver = self;
   v34.super_class = IDSRegisteredDevice;
   v20 = [(IDSRegisteredDevice *)&v34 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [nameCopy copy];
     name = v20->_name;
     v20->_name = v21;
 
-    v23 = [v15 copy];
+    v23 = [versionCopy copy];
     hardwareVersion = v20->_hardwareVersion;
     v20->_hardwareVersion = v23;
 
-    v25 = [v16 copy];
+    v25 = [tokenCopy copy];
     pushToken = v20->_pushToken;
     v20->_pushToken = v25;
 
-    v27 = [v17 copy];
+    v27 = [isCopy copy];
     URIs = v20->_URIs;
     v20->_URIs = v27;
 
-    v29 = [v18 copy];
+    v29 = [rIsCopy copy];
     linkedURIs = v20->_linkedURIs;
     v20->_linkedURIs = v29;
 
-    v31 = [v19 copy];
+    v31 = [identityCopy copy];
     publicDeviceIdentity = v20->_publicDeviceIdentity;
     v20->_publicDeviceIdentity = v31;
   }
@@ -244,22 +244,22 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSRegisteredDevice *)self name];
-  v6 = [(IDSRegisteredDevice *)self hardwareVersion];
-  v7 = [(IDSRegisteredDevice *)self pushToken];
-  v8 = [(IDSRegisteredDevice *)self URIs];
-  v9 = [(IDSRegisteredDevice *)self linkedURIs];
-  v10 = [(IDSRegisteredDevice *)self publicDeviceIdentity];
-  v11 = [IDSLogFormatter descriptionForData:v10 options:2];
-  v12 = [v3 stringWithFormat:@"<%@: %p name: %@, hardwareVersion: %@, pushToken: %@, identities: %@, linkedURIs: %@, publicKey: %@>", v4, self, v5, v6, v7, v8, v9, v11];
+  name = [(IDSRegisteredDevice *)self name];
+  hardwareVersion = [(IDSRegisteredDevice *)self hardwareVersion];
+  pushToken = [(IDSRegisteredDevice *)self pushToken];
+  uRIs = [(IDSRegisteredDevice *)self URIs];
+  linkedURIs = [(IDSRegisteredDevice *)self linkedURIs];
+  publicDeviceIdentity = [(IDSRegisteredDevice *)self publicDeviceIdentity];
+  v11 = [IDSLogFormatter descriptionForData:publicDeviceIdentity options:2];
+  v12 = [v3 stringWithFormat:@"<%@: %p name: %@, hardwareVersion: %@, pushToken: %@, identities: %@, linkedURIs: %@, publicKey: %@>", v4, self, name, hardwareVersion, pushToken, uRIs, linkedURIs, v11];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -267,52 +267,52 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSRegisteredDevice *)self isEqualToRegisteredDevice:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSRegisteredDevice *)self isEqualToRegisteredDevice:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToRegisteredDevice:(id)a3
+- (BOOL)isEqualToRegisteredDevice:(id)device
 {
-  v6 = a3;
-  v7 = v6;
-  if (self == v6)
+  deviceCopy = device;
+  v7 = deviceCopy;
+  if (self == deviceCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if (v6)
+    if (deviceCopy)
     {
-      v8 = [(IDSRegisteredDevice *)self name];
-      v9 = [(IDSRegisteredDevice *)v7 name];
-      if (v8 != v9)
+      name = [(IDSRegisteredDevice *)self name];
+      name2 = [(IDSRegisteredDevice *)v7 name];
+      if (name != name2)
       {
-        v3 = [(IDSRegisteredDevice *)self name];
-        v54 = [(IDSRegisteredDevice *)v7 name];
-        v55 = v3;
-        if (![v3 isEqual:?])
+        name3 = [(IDSRegisteredDevice *)self name];
+        name4 = [(IDSRegisteredDevice *)v7 name];
+        v55 = name3;
+        if (![name3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_36;
         }
       }
 
-      v11 = [(IDSRegisteredDevice *)self hardwareVersion];
-      v12 = [(IDSRegisteredDevice *)v7 hardwareVersion];
-      if (v11 != v12)
+      hardwareVersion = [(IDSRegisteredDevice *)self hardwareVersion];
+      hardwareVersion2 = [(IDSRegisteredDevice *)v7 hardwareVersion];
+      if (hardwareVersion != hardwareVersion2)
       {
-        v3 = [(IDSRegisteredDevice *)self hardwareVersion];
-        v4 = [(IDSRegisteredDevice *)v7 hardwareVersion];
-        if (![v3 isEqual:v4])
+        name3 = [(IDSRegisteredDevice *)self hardwareVersion];
+        hardwareVersion3 = [(IDSRegisteredDevice *)v7 hardwareVersion];
+        if (![name3 isEqual:hardwareVersion3])
         {
           v10 = 0;
 LABEL_34:
 
 LABEL_35:
-          if (v8 == v9)
+          if (name == name2)
           {
 LABEL_37:
 
@@ -325,23 +325,23 @@ LABEL_36:
         }
       }
 
-      v13 = [(IDSRegisteredDevice *)self pushToken];
-      v14 = [(IDSRegisteredDevice *)v7 pushToken];
-      v53 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      pushToken = [(IDSRegisteredDevice *)self pushToken];
+      pushToken2 = [(IDSRegisteredDevice *)v7 pushToken];
+      v53 = pushToken;
+      v15 = pushToken == pushToken2;
+      v16 = pushToken2;
       if (v15)
       {
-        v48 = v11;
-        v18 = v14;
+        v48 = hardwareVersion;
+        v18 = pushToken2;
       }
 
       else
       {
-        v17 = [(IDSRegisteredDevice *)self pushToken];
-        v46 = [(IDSRegisteredDevice *)v7 pushToken];
-        v47 = v17;
-        if (![v17 isEqual:?])
+        pushToken3 = [(IDSRegisteredDevice *)self pushToken];
+        pushToken4 = [(IDSRegisteredDevice *)v7 pushToken];
+        v47 = pushToken3;
+        if (![pushToken3 isEqual:?])
         {
           v10 = 0;
           v25 = v16;
@@ -349,7 +349,7 @@ LABEL_36:
 LABEL_32:
 
 LABEL_33:
-          if (v11 == v12)
+          if (hardwareVersion == hardwareVersion2)
           {
             goto LABEL_35;
           }
@@ -357,27 +357,27 @@ LABEL_33:
           goto LABEL_34;
         }
 
-        v48 = v11;
+        v48 = hardwareVersion;
         v18 = v16;
       }
 
-      v19 = [(IDSRegisteredDevice *)self URIs];
-      v20 = [(IDSRegisteredDevice *)v7 URIs];
-      v50 = v19;
-      v51 = v4;
-      v15 = v19 == v20;
-      v21 = v20;
-      v52 = v3;
+      uRIs = [(IDSRegisteredDevice *)self URIs];
+      uRIs2 = [(IDSRegisteredDevice *)v7 URIs];
+      v50 = uRIs;
+      v51 = hardwareVersion3;
+      v15 = uRIs == uRIs2;
+      v21 = uRIs2;
+      v52 = name3;
       if (!v15)
       {
-        v22 = [(IDSRegisteredDevice *)self URIs];
-        v41 = [(IDSRegisteredDevice *)v7 URIs];
-        v42 = v22;
-        if (![v22 isEqual:?])
+        uRIs3 = [(IDSRegisteredDevice *)self URIs];
+        uRIs4 = [(IDSRegisteredDevice *)v7 URIs];
+        v42 = uRIs3;
+        if (![uRIs3 isEqual:?])
         {
           v23 = v18;
           v10 = 0;
-          v11 = v48;
+          hardwareVersion = v48;
           v24 = v50;
 LABEL_30:
 
@@ -385,8 +385,8 @@ LABEL_31:
           v26 = v53;
           v25 = v23;
           v15 = v53 == v23;
-          v4 = v51;
-          v3 = v52;
+          hardwareVersion3 = v51;
+          name3 = v52;
           if (v15)
           {
             goto LABEL_33;
@@ -396,37 +396,37 @@ LABEL_31:
         }
       }
 
-      v27 = [(IDSRegisteredDevice *)self linkedURIs];
-      v43 = [(IDSRegisteredDevice *)v7 linkedURIs];
-      v44 = v27;
+      linkedURIs = [(IDSRegisteredDevice *)self linkedURIs];
+      linkedURIs2 = [(IDSRegisteredDevice *)v7 linkedURIs];
+      v44 = linkedURIs;
       v45 = v21;
-      if (v27 == v43)
+      if (linkedURIs == linkedURIs2)
       {
         v30 = v18;
       }
 
       else
       {
-        v28 = [(IDSRegisteredDevice *)self linkedURIs];
-        v39 = [(IDSRegisteredDevice *)v7 linkedURIs];
-        v40 = v28;
-        v29 = [v28 isEqual:?];
+        linkedURIs3 = [(IDSRegisteredDevice *)self linkedURIs];
+        linkedURIs4 = [(IDSRegisteredDevice *)v7 linkedURIs];
+        v40 = linkedURIs3;
+        v29 = [linkedURIs3 isEqual:?];
         v30 = v18;
         if (!v29)
         {
           v10 = 0;
-          v11 = v48;
-          v32 = v43;
+          hardwareVersion = v48;
+          v32 = linkedURIs2;
           v31 = v44;
           goto LABEL_27;
         }
       }
 
-      v11 = v48;
-      v33 = [(IDSRegisteredDevice *)self publicDeviceIdentity];
-      v34 = [(IDSRegisteredDevice *)v7 publicDeviceIdentity];
-      v35 = v34;
-      if (v33 == v34)
+      hardwareVersion = v48;
+      publicDeviceIdentity = [(IDSRegisteredDevice *)self publicDeviceIdentity];
+      publicDeviceIdentity2 = [(IDSRegisteredDevice *)v7 publicDeviceIdentity];
+      v35 = publicDeviceIdentity2;
+      if (publicDeviceIdentity == publicDeviceIdentity2)
       {
 
         v10 = 1;
@@ -434,17 +434,17 @@ LABEL_31:
 
       else
       {
-        v36 = [(IDSRegisteredDevice *)self publicDeviceIdentity];
+        publicDeviceIdentity3 = [(IDSRegisteredDevice *)self publicDeviceIdentity];
         [(IDSRegisteredDevice *)v7 publicDeviceIdentity];
         v37 = v49 = v30;
-        v10 = [v36 isEqual:v37];
+        v10 = [publicDeviceIdentity3 isEqual:v37];
 
         v30 = v49;
       }
 
-      v32 = v43;
+      v32 = linkedURIs2;
       v31 = v44;
-      if (v44 == v43)
+      if (v44 == linkedURIs2)
       {
         v23 = v30;
 LABEL_29:
@@ -475,59 +475,59 @@ LABEL_38:
 
 - (unint64_t)hash
 {
-  v3 = [(IDSRegisteredDevice *)self name];
-  v4 = [v3 hash];
-  v5 = [(IDSRegisteredDevice *)self hardwareVersion];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(IDSRegisteredDevice *)self pushToken];
-  v8 = [v7 hash];
+  name = [(IDSRegisteredDevice *)self name];
+  v4 = [name hash];
+  hardwareVersion = [(IDSRegisteredDevice *)self hardwareVersion];
+  v6 = [hardwareVersion hash] ^ v4;
+  pushToken = [(IDSRegisteredDevice *)self pushToken];
+  v8 = [pushToken hash];
 
   return v6 ^ v8;
 }
 
-- (IDSRegisteredDevice)initWithCoder:(id)a3
+- (IDSRegisteredDevice)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSRegisteredDeviceNameKey"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSRegisteredDeviceHardwareVersionKey"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"IDSRegisteredDevicePushTokenKey"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSRegisteredDeviceNameKey"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSRegisteredDeviceHardwareVersionKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSRegisteredDevicePushTokenKey"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v3 decodeObjectOfClasses:v9 forKey:@"IDSRegisteredDeviceURIsKey"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"IDSRegisteredDeviceURIsKey"];
 
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v3 decodeObjectOfClasses:v13 forKey:@"IDSRegisteredDeviceLinkedURIsKey"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"IDSRegisteredDeviceLinkedURIsKey"];
 
   v15 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  v16 = [v3 decodeObjectOfClasses:v15 forKey:@"IDSRegisteredDevicePublicDeviceIdentityKey"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"IDSRegisteredDevicePublicDeviceIdentityKey"];
 
   v17 = [(IDSRegisteredDevice *)self initWithName:v4 hardwareVersion:v5 pushToken:v6 URIs:v10 linkedURIs:v14 publicDeviceIdentity:v16];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSRegisteredDevice *)self name];
-  [v4 encodeObject:v5 forKey:@"IDSRegisteredDeviceNameKey"];
+  coderCopy = coder;
+  name = [(IDSRegisteredDevice *)self name];
+  [coderCopy encodeObject:name forKey:@"IDSRegisteredDeviceNameKey"];
 
-  v6 = [(IDSRegisteredDevice *)self hardwareVersion];
-  [v4 encodeObject:v6 forKey:@"IDSRegisteredDeviceHardwareVersionKey"];
+  hardwareVersion = [(IDSRegisteredDevice *)self hardwareVersion];
+  [coderCopy encodeObject:hardwareVersion forKey:@"IDSRegisteredDeviceHardwareVersionKey"];
 
-  v7 = [(IDSRegisteredDevice *)self pushToken];
-  [v4 encodeObject:v7 forKey:@"IDSRegisteredDevicePushTokenKey"];
+  pushToken = [(IDSRegisteredDevice *)self pushToken];
+  [coderCopy encodeObject:pushToken forKey:@"IDSRegisteredDevicePushTokenKey"];
 
-  v8 = [(IDSRegisteredDevice *)self URIs];
-  [v4 encodeObject:v8 forKey:@"IDSRegisteredDeviceURIsKey"];
+  uRIs = [(IDSRegisteredDevice *)self URIs];
+  [coderCopy encodeObject:uRIs forKey:@"IDSRegisteredDeviceURIsKey"];
 
-  v9 = [(IDSRegisteredDevice *)self linkedURIs];
-  [v4 encodeObject:v9 forKey:@"IDSRegisteredDeviceLinkedURIsKey"];
+  linkedURIs = [(IDSRegisteredDevice *)self linkedURIs];
+  [coderCopy encodeObject:linkedURIs forKey:@"IDSRegisteredDeviceLinkedURIsKey"];
 
-  v10 = [(IDSRegisteredDevice *)self publicDeviceIdentity];
-  [v4 encodeObject:v10 forKey:@"IDSRegisteredDevicePublicDeviceIdentityKey"];
+  publicDeviceIdentity = [(IDSRegisteredDevice *)self publicDeviceIdentity];
+  [coderCopy encodeObject:publicDeviceIdentity forKey:@"IDSRegisteredDevicePublicDeviceIdentityKey"];
 }
 
 @end

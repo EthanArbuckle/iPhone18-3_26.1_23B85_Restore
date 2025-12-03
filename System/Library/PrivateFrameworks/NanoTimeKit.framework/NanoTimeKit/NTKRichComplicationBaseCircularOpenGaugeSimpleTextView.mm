@@ -1,12 +1,12 @@
 @interface NTKRichComplicationBaseCircularOpenGaugeSimpleTextView
-- (NTKRichComplicationBaseCircularOpenGaugeSimpleTextView)initWithFamily:(int64_t)a3;
+- (NTKRichComplicationBaseCircularOpenGaugeSimpleTextView)initWithFamily:(int64_t)family;
 - (int64_t)_innerFilterStyle;
 - (int64_t)_outerFilterStyle;
 - (void)_editingDidEnd;
-- (void)_enumerateLabelsWithBlock:(id)a3;
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3;
+- (void)_enumerateLabelsWithBlock:(id)block;
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration;
 - (void)layoutSubviews;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -14,8 +14,8 @@
 
 - (int64_t)_outerFilterStyle
 {
-  v2 = [(CDRichComplicationView *)self device];
-  v3 = NTKShowGossamerUI(v2);
+  device = [(CDRichComplicationView *)self device];
+  v3 = NTKShowGossamerUI(device);
 
   if (v3)
   {
@@ -30,8 +30,8 @@
 
 - (int64_t)_innerFilterStyle
 {
-  v2 = [(CDRichComplicationView *)self device];
-  v3 = NTKShowGossamerUI(v2);
+  device = [(CDRichComplicationView *)self device];
+  v3 = NTKShowGossamerUI(device);
 
   if (v3)
   {
@@ -44,7 +44,7 @@
   }
 }
 
-- (NTKRichComplicationBaseCircularOpenGaugeSimpleTextView)initWithFamily:(int64_t)a3
+- (NTKRichComplicationBaseCircularOpenGaugeSimpleTextView)initWithFamily:(int64_t)family
 {
   v23.receiver = self;
   v23.super_class = NTKRichComplicationBaseCircularOpenGaugeSimpleTextView;
@@ -55,28 +55,28 @@
     v22 = 0.0;
     v21 = 0u;
     v6 = [(CDRichComplicationView *)v4 device:0];
-    _LayoutConstants_5(v6, a3, &v20);
+    _LayoutConstants_5(v6, family, &v20);
 
     v7 = [off_27877BEA8 alloc];
     v8 = *(&v21 + 1);
     v9 = v22;
     v10 = 6.28318531 - v22;
-    v11 = [(CDRichComplicationView *)v5 device];
-    v12 = [v7 initWithFamily:a3 curveWidth:v11 padding:-[NTKRichComplicationBaseCircularOpenGaugeSimpleTextView _outerFilterStyle](v5 beginAngle:"_outerFilterStyle") endAngle:0 forDevice:v8 withFilterStyle:0.0 progressFillStyle:{v9, v10}];
+    device = [(CDRichComplicationView *)v5 device];
+    v12 = [v7 initWithFamily:family curveWidth:device padding:-[NTKRichComplicationBaseCircularOpenGaugeSimpleTextView _outerFilterStyle](v5 beginAngle:"_outerFilterStyle") endAngle:0 forDevice:v8 withFilterStyle:0.0 progressFillStyle:{v9, v10}];
     progressView = v5->_progressView;
     v5->_progressView = v12;
 
     [(CDRichComplicationCurvedProgressView *)v5->_progressView setFilterProvider:v5];
-    v14 = [(NTKRichComplicationCircularBaseView *)v5 contentView];
-    [v14 addSubview:v5->_progressView];
+    contentView = [(NTKRichComplicationCircularBaseView *)v5 contentView];
+    [contentView addSubview:v5->_progressView];
 
-    v15 = [(NTKRichComplicationCircularBaseView *)v5 _createAndAddColoringLabel];
+    _createAndAddColoringLabel = [(NTKRichComplicationCircularBaseView *)v5 _createAndAddColoringLabel];
     smallLabel = v5->_smallLabel;
-    v5->_smallLabel = v15;
+    v5->_smallLabel = _createAndAddColoringLabel;
 
-    v17 = [(NTKRichComplicationCircularBaseView *)v5 _createAndAddColoringLabel];
+    _createAndAddColoringLabel2 = [(NTKRichComplicationCircularBaseView *)v5 _createAndAddColoringLabel];
     centerLabel = v5->_centerLabel;
-    v5->_centerLabel = v17;
+    v5->_centerLabel = _createAndAddColoringLabel2;
   }
 
   return v5;
@@ -94,11 +94,11 @@
   v36 = 0u;
   v37 = 0u;
   v35 = 0u;
-  v3 = [(CDRichComplicationView *)self device];
-  _LayoutConstants_5(v3, [(CDRichComplicationView *)self family], &v35);
+  device = [(CDRichComplicationView *)self device];
+  _LayoutConstants_5(device, [(CDRichComplicationView *)self family], &v35);
 
-  v4 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v4 bounds];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -121,13 +121,13 @@
   [(NTKRichComplicationCircularBaseView *)self _adjustFontSizeForLabel:centerLabel fontWeight:v18 possibleMaxWidths:v21 possibleFontSizes:v14];
 
   [(CLKUIColoringLabel *)self->_centerLabel frame];
-  v22 = [(CLKUIColoringLabel *)self->_centerLabel text];
-  [v22 length];
+  text = [(CLKUIColoringLabel *)self->_centerLabel text];
+  [text length];
 
-  v23 = [(CLKUIColoringLabel *)self->_centerLabel font];
-  [v23 ascender];
+  font = [(CLKUIColoringLabel *)self->_centerLabel font];
+  [font ascender];
 
-  v24 = [(CDRichComplicationView *)self device];
+  device2 = [(CDRichComplicationView *)self device];
   CLKPixelAlignRectForDevice();
   [(CLKUIColoringLabel *)self->_centerLabel setFrame:?];
 
@@ -146,41 +146,41 @@
   [(NTKRichComplicationCircularBaseView *)self _adjustFontSizeForLabel:smallLabel fontWeight:v29 possibleMaxWidths:v32 possibleFontSizes:v14];
 
   [(CLKUIColoringLabel *)self->_smallLabel frame];
-  v33 = [(CLKUIColoringLabel *)self->_smallLabel font];
-  [v33 ascender];
+  font2 = [(CLKUIColoringLabel *)self->_smallLabel font];
+  [font2 ascender];
 
-  v34 = [(CDRichComplicationView *)self device];
+  device3 = [(CDRichComplicationView *)self device];
   CLKPixelAlignRectForDevice();
   [(CLKUIColoringLabel *)self->_smallLabel setFrame:?];
 }
 
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration
 {
-  v10[0] = a3->var0;
-  v5 = a3->var1;
-  var2 = a3->var2;
+  v10[0] = configuration->var0;
+  v5 = configuration->var1;
+  var2 = configuration->var2;
   v11 = v5;
   v12 = var2;
   v9.receiver = self;
   v9.super_class = NTKRichComplicationBaseCircularOpenGaugeSimpleTextView;
   [(CDRichComplicationView *)&v9 _setFontConfiguration:v10];
-  v7 = a3->var1;
+  v7 = configuration->var1;
   if (v7)
   {
-    v8 = a3->var2;
+    v8 = configuration->var2;
     [(CDRichComplicationView *)self _updateColoringLabel:self->_smallLabel withFontDescriptor:v7 andSizeFactor:v8];
     [(CDRichComplicationView *)self _updateColoringLabel:self->_centerLabel withFontDescriptor:v7 andSizeFactor:v8];
   }
 }
 
-- (void)_enumerateLabelsWithBlock:(id)a3
+- (void)_enumerateLabelsWithBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularOpenGaugeSimpleTextView;
-  v4 = a3;
-  [(CDRichComplicationView *)&v5 _enumerateLabelsWithBlock:v4];
-  v4[2](v4, self->_smallLabel);
-  v4[2](v4, self->_centerLabel);
+  blockCopy = block;
+  [(CDRichComplicationView *)&v5 _enumerateLabelsWithBlock:blockCopy];
+  blockCopy[2](blockCopy, self->_smallLabel);
+  blockCopy[2](blockCopy, self->_centerLabel);
 }
 
 - (void)_editingDidEnd
@@ -191,13 +191,13 @@
   [(CLKUIColoringLabel *)centerLabel editingDidEnd];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  [(CLKUIColoringLabel *)self->_centerLabel transitionToMonochromeWithFraction:[(NTKRichComplicationBaseCircularOpenGaugeSimpleTextView *)self _innerFilterStyle] style:a3];
-  [(CLKUIColoringLabel *)self->_smallLabel transitionToMonochromeWithFraction:[(NTKRichComplicationBaseCircularOpenGaugeSimpleTextView *)self _outerFilterStyle] style:a3];
+  [(CLKUIColoringLabel *)self->_centerLabel transitionToMonochromeWithFraction:[(NTKRichComplicationBaseCircularOpenGaugeSimpleTextView *)self _innerFilterStyle] style:fraction];
+  [(CLKUIColoringLabel *)self->_smallLabel transitionToMonochromeWithFraction:[(NTKRichComplicationBaseCircularOpenGaugeSimpleTextView *)self _outerFilterStyle] style:fraction];
   progressView = self->_progressView;
 
-  [(CDRichComplicationCurvedProgressView *)progressView transitionToMonochromeWithFraction:a3];
+  [(CDRichComplicationCurvedProgressView *)progressView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor

@@ -1,25 +1,25 @@
 @interface LNSpotlightAppEntityMapper
-+ (void)tagCSSearchableItem:(id)a3 entityInstanceIdentifier:(id)a4 typeIdentifier:(id)a5 displayTitle:(id)a6 displaySubtitle:(id)a7 displaySynonyms:(id)a8 typeDisplayName:(id)a9 typeDisplaySynonyms:(id)a10 propertyDictionary:(id)a11 priority:(id)a12;
++ (void)tagCSSearchableItem:(id)item entityInstanceIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier displayTitle:(id)title displaySubtitle:(id)subtitle displaySynonyms:(id)synonyms typeDisplayName:(id)name typeDisplaySynonyms:(id)self0 propertyDictionary:(id)self1 priority:(id)self2;
 @end
 
 @implementation LNSpotlightAppEntityMapper
 
-+ (void)tagCSSearchableItem:(id)a3 entityInstanceIdentifier:(id)a4 typeIdentifier:(id)a5 displayTitle:(id)a6 displaySubtitle:(id)a7 displaySynonyms:(id)a8 typeDisplayName:(id)a9 typeDisplaySynonyms:(id)a10 propertyDictionary:(id)a11 priority:(id)a12
++ (void)tagCSSearchableItem:(id)item entityInstanceIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier displayTitle:(id)title displaySubtitle:(id)subtitle displaySynonyms:(id)synonyms typeDisplayName:(id)name typeDisplaySynonyms:(id)self0 propertyDictionary:(id)self1 priority:(id)self2
 {
   v53 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v47 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v46 = a11;
-  v24 = a12;
-  if (v17)
+  itemCopy = item;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  synonymsCopy = synonyms;
+  nameCopy = name;
+  displaySynonymsCopy = displaySynonyms;
+  dictionaryCopy = dictionary;
+  priorityCopy = priority;
+  if (itemCopy)
   {
-    if (v18)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -27,31 +27,31 @@
 
   else
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"LNSpotlightAppEntityMapper.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"attributes"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNSpotlightAppEntityMapper.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"attributes"}];
 
-    if (v18)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v35 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v35 handleFailureInMethod:a2 object:a1 file:@"LNSpotlightAppEntityMapper.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"instanceIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNSpotlightAppEntityMapper.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"instanceIdentifier"}];
 
 LABEL_3:
-  if (v47)
+  if (typeIdentifierCopy)
   {
-    if (v19)
+    if (titleCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_27:
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:a1 file:@"LNSpotlightAppEntityMapper.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNSpotlightAppEntityMapper.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"title"}];
 
-    if (v24)
+    if (priorityCopy)
     {
       goto LABEL_6;
     }
@@ -59,59 +59,59 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v36 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v36 handleFailureInMethod:a2 object:a1 file:@"LNSpotlightAppEntityMapper.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"typeIdentifier"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"LNSpotlightAppEntityMapper.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"typeIdentifier"}];
 
-  if (!v19)
+  if (!titleCopy)
   {
     goto LABEL_27;
   }
 
 LABEL_5:
-  if (v24)
+  if (priorityCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_28:
-  v38 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v38 handleFailureInMethod:a2 object:a1 file:@"LNSpotlightAppEntityMapper.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"priority"}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"LNSpotlightAppEntityMapper.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"priority"}];
 
 LABEL_6:
-  [v17 setAttribute:v18 forKey:@"_kMDItemAppEntityInstanceIdentifier"];
-  [v17 setAttribute:v47 forKey:@"_kMDItemAppEntityTypeIdentifier"];
-  [v17 setAttribute:v19 forKey:@"kMDItemAppEntityTitle"];
-  if (v20)
+  [itemCopy setAttribute:identifierCopy forKey:@"_kMDItemAppEntityInstanceIdentifier"];
+  [itemCopy setAttribute:typeIdentifierCopy forKey:@"_kMDItemAppEntityTypeIdentifier"];
+  [itemCopy setAttribute:titleCopy forKey:@"kMDItemAppEntityTitle"];
+  if (subtitleCopy)
   {
-    [v17 setAttribute:v20 forKey:@"kMDItemAppEntitySubtitle"];
+    [itemCopy setAttribute:subtitleCopy forKey:@"kMDItemAppEntitySubtitle"];
   }
 
-  if (v21 && [v21 count])
+  if (synonymsCopy && [synonymsCopy count])
   {
-    [v17 setAttribute:v21 forKey:@"kMDItemAppEntityDisplayRepresentationSynonyms"];
+    [itemCopy setAttribute:synonymsCopy forKey:@"kMDItemAppEntityDisplayRepresentationSynonyms"];
   }
 
-  v43 = v19;
-  if (v22)
+  v43 = titleCopy;
+  if (nameCopy)
   {
-    [v17 setAttribute:v22 forKey:@"_kMDItemAppEntityTypeDisplayRepresentationName"];
+    [itemCopy setAttribute:nameCopy forKey:@"_kMDItemAppEntityTypeDisplayRepresentationName"];
   }
 
-  v40 = v21;
-  v41 = v20;
-  v45 = v18;
-  if (v23 && [v23 count])
+  v40 = synonymsCopy;
+  v41 = subtitleCopy;
+  v45 = identifierCopy;
+  if (displaySynonymsCopy && [displaySynonymsCopy count])
   {
-    [v17 setAttribute:v23 forKey:@"_kMDItemAppEntityTypeDisplayRepresentationSynonyms"];
+    [itemCopy setAttribute:displaySynonymsCopy forKey:@"_kMDItemAppEntityTypeDisplayRepresentationSynonyms"];
   }
 
-  v39 = v23;
+  v39 = displaySynonymsCopy;
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v25 = [v46 allKeys];
-  v26 = [v25 countByEnumeratingWithState:&v48 objects:v52 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v26 = [allKeys countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (v26)
   {
     v27 = v26;
@@ -122,22 +122,22 @@ LABEL_6:
       {
         if (*v49 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(allKeys);
         }
 
         v30 = *(*(&v48 + 1) + 8 * i);
-        v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@_%@", @"kMDItemAppEntity", v47, v30];
-        v32 = [v46 objectForKey:v30];
-        [v17 setAttribute:v32 forKey:v31];
+        v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@_%@", @"kMDItemAppEntity", typeIdentifierCopy, v30];
+        v32 = [dictionaryCopy objectForKey:v30];
+        [itemCopy setAttribute:v32 forKey:v31];
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v48 objects:v52 count:16];
+      v27 = [allKeys countByEnumeratingWithState:&v48 objects:v52 count:16];
     }
 
     while (v27);
   }
 
-  [v17 setAttribute:v24 forKey:@"_kMDItemAppEntityPriority"];
+  [itemCopy setAttribute:priorityCopy forKey:@"_kMDItemAppEntityPriority"];
   v33 = *MEMORY[0x1E69E9840];
 }
 

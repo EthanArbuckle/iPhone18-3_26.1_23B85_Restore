@@ -1,51 +1,51 @@
 @interface WFAskForInputIntentHandler
-- (void)handleAskForInput:(id)a3 completion:(id)a4;
-- (void)resolveDateAndTimeAnswerForAskForInput:(id)a3 withCompletion:(id)a4;
-- (void)resolveDateAnswerForAskForInput:(id)a3 withCompletion:(id)a4;
-- (void)resolveDefaultURLAnswerForAskForInput:(id)a3 withCompletion:(id)a4;
-- (void)resolveNumberAnswerForAskForInput:(id)a3 withCompletion:(id)a4;
-- (void)resolveQuestionForAskForInput:(id)a3 withCompletion:(id)a4;
-- (void)resolveStringAnswerForAskForInput:(id)a3 withCompletion:(id)a4;
-- (void)resolveTimeAnswerForAskForInput:(id)a3 withCompletion:(id)a4;
-- (void)resolveTypeForAskForInput:(id)a3 withCompletion:(id)a4;
-- (void)resolveUrlAnswerForAskForInput:(id)a3 withCompletion:(id)a4;
+- (void)handleAskForInput:(id)input completion:(id)completion;
+- (void)resolveDateAndTimeAnswerForAskForInput:(id)input withCompletion:(id)completion;
+- (void)resolveDateAnswerForAskForInput:(id)input withCompletion:(id)completion;
+- (void)resolveDefaultURLAnswerForAskForInput:(id)input withCompletion:(id)completion;
+- (void)resolveNumberAnswerForAskForInput:(id)input withCompletion:(id)completion;
+- (void)resolveQuestionForAskForInput:(id)input withCompletion:(id)completion;
+- (void)resolveStringAnswerForAskForInput:(id)input withCompletion:(id)completion;
+- (void)resolveTimeAnswerForAskForInput:(id)input withCompletion:(id)completion;
+- (void)resolveTypeForAskForInput:(id)input withCompletion:(id)completion;
+- (void)resolveUrlAnswerForAskForInput:(id)input withCompletion:(id)completion;
 @end
 
 @implementation WFAskForInputIntentHandler
 
-- (void)handleAskForInput:(id)a3 completion:(id)a4
+- (void)handleAskForInput:(id)input completion:(id)completion
 {
-  v20 = a3;
-  v5 = a4;
-  v6 = [v20 type];
-  if ((v6 - 1) >= 6)
+  inputCopy = input;
+  completionCopy = completion;
+  type = [inputCopy type];
+  if ((type - 1) >= 6)
   {
     v8 = [[WFAskForInputIntentResponse alloc] initWithCode:5 userActivity:0];
-    v5[2](v5, v8);
+    completionCopy[2](completionCopy, v8);
   }
 
   else
   {
-    v7 = off_278C1B570[v6 - 1];
+    v7 = off_278C1B570[type - 1];
     v8 = [[WFAskForInputIntentResponse alloc] initWithCode:4 userActivity:0];
-    v9 = [v20 valueForKey:v7];
-    v10 = [v20 _codableDescription];
-    v11 = [v10 attributeByName:v7];
-    v12 = [v11 metadata];
+    v9 = [inputCopy valueForKey:v7];
+    _codableDescription = [inputCopy _codableDescription];
+    v11 = [_codableDescription attributeByName:v7];
+    metadata = [v11 metadata];
 
     v13 = [MEMORY[0x277CD4208] localizerForLanguage:0];
-    v14 = [v9 _intents_readableTitleWithLocalizer:v13 metadata:v12];
+    v14 = [v9 _intents_readableTitleWithLocalizer:v13 metadata:metadata];
 
     v15 = [WFAskForInputResult alloc];
-    v16 = [MEMORY[0x277CCAD78] UUID];
-    v17 = [v16 UUIDString];
-    v18 = [(WFAskForInputResult *)v15 initWithIdentifier:v17 displayString:v14];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v18 = [(WFAskForInputResult *)v15 initWithIdentifier:uUIDString displayString:v14];
 
-    -[WFAskForInputResult setType:](v18, "setType:", [v20 type]);
-    v19 = [v20 type];
-    if (v19 > 3)
+    -[WFAskForInputResult setType:](v18, "setType:", [inputCopy type]);
+    type2 = [inputCopy type];
+    if (type2 > 3)
     {
-      switch(v19)
+      switch(type2)
       {
         case 4:
           [(WFAskForInputResult *)v18 setDateValue:v9];
@@ -61,7 +61,7 @@
 
     else
     {
-      switch(v19)
+      switch(type2)
       {
         case 1:
           [(WFAskForInputResult *)v18 setStringValue:v9];
@@ -76,144 +76,144 @@
     }
 
     [(WFAskForInputIntentResponse *)v8 setResult:v18];
-    v5[2](v5, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-- (void)resolveDateAndTimeAnswerForAskForInput:(id)a3 withCompletion:(id)a4
+- (void)resolveDateAndTimeAnswerForAskForInput:(id)input withCompletion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 dateAndTimeAnswer];
-  if (v7 && (v8 = v7, v9 = [(WFAskForInputIntentHandler *)self resolvedValue], v8, v9))
+  inputCopy = input;
+  completionCopy = completion;
+  dateAndTimeAnswer = [inputCopy dateAndTimeAnswer];
+  if (dateAndTimeAnswer && (v8 = dateAndTimeAnswer, v9 = [(WFAskForInputIntentHandler *)self resolvedValue], v8, v9))
   {
     [(WFAskForInputIntentHandler *)self setResolvedValue:0];
     v10 = MEMORY[0x277CD3B78];
-    v11 = [v13 dateAndTimeAnswer];
-    v12 = [v10 successWithResolvedDateComponents:v11];
-    v6[2](v6, v12);
+    dateAndTimeAnswer2 = [inputCopy dateAndTimeAnswer];
+    v12 = [v10 successWithResolvedDateComponents:dateAndTimeAnswer2];
+    completionCopy[2](completionCopy, v12);
   }
 
   else
   {
     [(WFAskForInputIntentHandler *)self setResolvedValue:1];
-    v11 = [MEMORY[0x277CD3B78] needsValue];
-    v6[2](v6, v11);
+    dateAndTimeAnswer2 = [MEMORY[0x277CD3B78] needsValue];
+    completionCopy[2](completionCopy, dateAndTimeAnswer2);
   }
 }
 
-- (void)resolveTimeAnswerForAskForInput:(id)a3 withCompletion:(id)a4
+- (void)resolveTimeAnswerForAskForInput:(id)input withCompletion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 timeAnswer];
-  if (v7 && (v8 = v7, v9 = [(WFAskForInputIntentHandler *)self resolvedValue], v8, v9))
+  inputCopy = input;
+  completionCopy = completion;
+  timeAnswer = [inputCopy timeAnswer];
+  if (timeAnswer && (v8 = timeAnswer, v9 = [(WFAskForInputIntentHandler *)self resolvedValue], v8, v9))
   {
     [(WFAskForInputIntentHandler *)self setResolvedValue:0];
     v10 = MEMORY[0x277CD3B78];
-    v11 = [v13 timeAnswer];
-    v12 = [v10 successWithResolvedDateComponents:v11];
-    v6[2](v6, v12);
+    timeAnswer2 = [inputCopy timeAnswer];
+    v12 = [v10 successWithResolvedDateComponents:timeAnswer2];
+    completionCopy[2](completionCopy, v12);
   }
 
   else
   {
     [(WFAskForInputIntentHandler *)self setResolvedValue:1];
-    v11 = [MEMORY[0x277CD3B78] needsValue];
-    v6[2](v6, v11);
+    timeAnswer2 = [MEMORY[0x277CD3B78] needsValue];
+    completionCopy[2](completionCopy, timeAnswer2);
   }
 }
 
-- (void)resolveDateAnswerForAskForInput:(id)a3 withCompletion:(id)a4
+- (void)resolveDateAnswerForAskForInput:(id)input withCompletion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 dateAnswer];
-  if (v7 && (v8 = v7, v9 = [(WFAskForInputIntentHandler *)self resolvedValue], v8, v9))
+  inputCopy = input;
+  completionCopy = completion;
+  dateAnswer = [inputCopy dateAnswer];
+  if (dateAnswer && (v8 = dateAnswer, v9 = [(WFAskForInputIntentHandler *)self resolvedValue], v8, v9))
   {
     [(WFAskForInputIntentHandler *)self setResolvedValue:0];
     v10 = MEMORY[0x277CD3B78];
-    v11 = [v13 dateAnswer];
-    v12 = [v10 successWithResolvedDateComponents:v11];
-    v6[2](v6, v12);
+    dateAnswer2 = [inputCopy dateAnswer];
+    v12 = [v10 successWithResolvedDateComponents:dateAnswer2];
+    completionCopy[2](completionCopy, v12);
   }
 
   else
   {
     [(WFAskForInputIntentHandler *)self setResolvedValue:1];
-    v11 = [MEMORY[0x277CD3B78] needsValue];
-    v6[2](v6, v11);
+    dateAnswer2 = [MEMORY[0x277CD3B78] needsValue];
+    completionCopy[2](completionCopy, dateAnswer2);
   }
 }
 
-- (void)resolveUrlAnswerForAskForInput:(id)a3 withCompletion:(id)a4
+- (void)resolveUrlAnswerForAskForInput:(id)input withCompletion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 urlAnswer];
-  if (v7 && (v8 = v7, v9 = [(WFAskForInputIntentHandler *)self resolvedValue], v8, v9))
+  inputCopy = input;
+  completionCopy = completion;
+  urlAnswer = [inputCopy urlAnswer];
+  if (urlAnswer && (v8 = urlAnswer, v9 = [(WFAskForInputIntentHandler *)self resolvedValue], v8, v9))
   {
     [(WFAskForInputIntentHandler *)self setResolvedValue:0];
     v10 = MEMORY[0x277CD4288];
-    v11 = [v13 urlAnswer];
-    v12 = [v10 successWithResolvedURL:v11];
-    v6[2](v6, v12);
+    urlAnswer2 = [inputCopy urlAnswer];
+    v12 = [v10 successWithResolvedURL:urlAnswer2];
+    completionCopy[2](completionCopy, v12);
   }
 
   else
   {
     [(WFAskForInputIntentHandler *)self setResolvedValue:1];
-    v11 = [MEMORY[0x277CD4288] needsValue];
-    v6[2](v6, v11);
+    urlAnswer2 = [MEMORY[0x277CD4288] needsValue];
+    completionCopy[2](completionCopy, urlAnswer2);
   }
 }
 
-- (void)resolveDefaultURLAnswerForAskForInput:(id)a3 withCompletion:(id)a4
+- (void)resolveDefaultURLAnswerForAskForInput:(id)input withCompletion:(id)completion
 {
   v5 = MEMORY[0x277CD4218];
-  v6 = a4;
-  v7 = [v5 notRequired];
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  notRequired = [v5 notRequired];
+  (*(completion + 2))(completionCopy, notRequired);
 }
 
-- (void)resolveNumberAnswerForAskForInput:(id)a3 withCompletion:(id)a4
+- (void)resolveNumberAnswerForAskForInput:(id)input withCompletion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 numberAnswer];
-  if (v7 && (v8 = v7, v9 = [(WFAskForInputIntentHandler *)self resolvedValue], v8, v9))
+  inputCopy = input;
+  completionCopy = completion;
+  numberAnswer = [inputCopy numberAnswer];
+  if (numberAnswer && (v8 = numberAnswer, v9 = [(WFAskForInputIntentHandler *)self resolvedValue], v8, v9))
   {
     [(WFAskForInputIntentHandler *)self setResolvedValue:0];
-    v10 = [v12 numberAnswer];
-    [v10 doubleValue];
+    numberAnswer2 = [inputCopy numberAnswer];
+    [numberAnswer2 doubleValue];
     v11 = [WFAskForInputNumberAnswerResolutionResult successWithResolvedValue:?];
-    v6[2](v6, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   else
   {
     [(WFAskForInputIntentHandler *)self setResolvedValue:1];
-    v10 = +[WFAskForInputNumberAnswerResolutionResult needsValue];
-    v6[2](v6, v10);
+    numberAnswer2 = +[WFAskForInputNumberAnswerResolutionResult needsValue];
+    completionCopy[2](completionCopy, numberAnswer2);
   }
 }
 
-- (void)resolveStringAnswerForAskForInput:(id)a3 withCompletion:(id)a4
+- (void)resolveStringAnswerForAskForInput:(id)input withCompletion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 stringAnswer];
-  if ([v7 length])
+  inputCopy = input;
+  completionCopy = completion;
+  stringAnswer = [inputCopy stringAnswer];
+  if ([stringAnswer length])
   {
-    v8 = [(WFAskForInputIntentHandler *)self resolvedValue];
+    resolvedValue = [(WFAskForInputIntentHandler *)self resolvedValue];
 
-    if (v8)
+    if (resolvedValue)
     {
       [(WFAskForInputIntentHandler *)self setResolvedValue:0];
       v9 = MEMORY[0x277CD4218];
-      v10 = [v12 stringAnswer];
-      v11 = [v9 successWithResolvedString:v10];
-      v6[2](v6, v11);
+      stringAnswer2 = [inputCopy stringAnswer];
+      v11 = [v9 successWithResolvedString:stringAnswer2];
+      completionCopy[2](completionCopy, v11);
 
       goto LABEL_6;
     }
@@ -224,18 +224,18 @@
   }
 
   [(WFAskForInputIntentHandler *)self setResolvedValue:1];
-  v10 = [MEMORY[0x277CD4218] needsValue];
-  v6[2](v6, v10);
+  stringAnswer2 = [MEMORY[0x277CD4218] needsValue];
+  completionCopy[2](completionCopy, stringAnswer2);
 LABEL_6:
 }
 
-- (void)resolveTypeForAskForInput:(id)a3 withCompletion:(id)a4
+- (void)resolveTypeForAskForInput:(id)input withCompletion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
-  if ([v7 type])
+  inputCopy = input;
+  completionCopy = completion;
+  if ([inputCopy type])
   {
-    +[WFAskForInputTypeResolutionResult successWithResolvedAskForInputType:](WFAskForInputTypeResolutionResult, "successWithResolvedAskForInputType:", [v7 type]);
+    +[WFAskForInputTypeResolutionResult successWithResolvedAskForInputType:](WFAskForInputTypeResolutionResult, "successWithResolvedAskForInputType:", [inputCopy type]);
   }
 
   else
@@ -243,17 +243,17 @@ LABEL_6:
     +[WFAskForInputTypeResolutionResult needsValue];
   }
   v6 = ;
-  v5[2](v5, v6);
+  completionCopy[2](completionCopy, v6);
 }
 
-- (void)resolveQuestionForAskForInput:(id)a3 withCompletion:(id)a4
+- (void)resolveQuestionForAskForInput:(id)input withCompletion:(id)completion
 {
-  v11 = a3;
-  v5 = a4;
-  v6 = [v11 question];
-  if (![v6 length])
+  inputCopy = input;
+  completionCopy = completion;
+  question = [inputCopy question];
+  if (![question length])
   {
-    v7 = [v11 type] - 2;
+    v7 = [inputCopy type] - 2;
     if (v7 > 4)
     {
       v8 = @"What’s the text?";
@@ -266,11 +266,11 @@ LABEL_6:
 
     v9 = WFLocalizedString(v8);
 
-    v6 = v9;
+    question = v9;
   }
 
-  v10 = [MEMORY[0x277CD4218] successWithResolvedString:v6];
-  v5[2](v5, v10);
+  v10 = [MEMORY[0x277CD4218] successWithResolvedString:question];
+  completionCopy[2](completionCopy, v10);
 }
 
 @end

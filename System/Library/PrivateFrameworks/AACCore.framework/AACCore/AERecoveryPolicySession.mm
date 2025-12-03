@@ -1,7 +1,7 @@
 @interface AERecoveryPolicySession
-- (id)initWithPolicyStore:(void *)a3 performancePrimitives:(void *)a4 persistentDeactivations:(void *)a5 queue:;
-- (void)deactivateWithCompletion:(id)a3;
-- (void)deactivateWithRemainingPersistentDeactivations:(uint64_t)a3 currentEvent:(void *)a4 errors:(void *)a5 completion:;
+- (id)initWithPolicyStore:(void *)store performancePrimitives:(void *)primitives persistentDeactivations:(void *)deactivations queue:;
+- (void)deactivateWithCompletion:(id)completion;
+- (void)deactivateWithRemainingPersistentDeactivations:(uint64_t)deactivations currentEvent:(void *)event errors:(void *)errors completion:;
 @end
 
 @implementation AERecoveryPolicySession
@@ -22,36 +22,36 @@ BOOL __105__AERecoveryPolicySession_deactivateWithRemainingPersistentDeactivatio
   return v4;
 }
 
-- (id)initWithPolicyStore:(void *)a3 performancePrimitives:(void *)a4 persistentDeactivations:(void *)a5 queue:
+- (id)initWithPolicyStore:(void *)store performancePrimitives:(void *)primitives persistentDeactivations:(void *)deactivations queue:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  storeCopy = store;
+  primitivesCopy = primitives;
+  deactivationsCopy = deactivations;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = AERecoveryPolicySession;
-    a1 = objc_msgSendSuper2(&v17, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v17, sel_init);
+    if (self)
     {
-      v14 = [v12 copy];
-      v15 = a1[1];
-      a1[1] = v14;
+      v14 = [primitivesCopy copy];
+      v15 = self[1];
+      self[1] = v14;
 
-      objc_storeStrong(a1 + 2, a2);
-      objc_storeStrong(a1 + 3, a3);
-      objc_storeStrong(a1 + 4, a5);
+      objc_storeStrong(self + 2, a2);
+      objc_storeStrong(self + 3, store);
+      objc_storeStrong(self + 4, deactivations);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)deactivateWithCompletion:(id)a3
+- (void)deactivateWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (self)
   {
     performancePrimitives = self->_performancePrimitives;
@@ -101,9 +101,9 @@ BOOL __105__AERecoveryPolicySession_deactivateWithRemainingPersistentDeactivatio
   v17 = __52__AERecoveryPolicySession_deactivateWithCompletion___block_invoke_5;
   v18 = &unk_278BB6E98;
   v19 = v7;
-  v20 = self;
-  v21 = v4;
-  v13 = v4;
+  selfCopy = self;
+  v21 = completionCopy;
+  v13 = completionCopy;
   [(AERecoveryPolicySession *)self deactivateWithRemainingPersistentDeactivations:v12 currentEvent:0 errors:MEMORY[0x277CBEBF8] completion:v15];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -207,28 +207,28 @@ LABEL_19:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deactivateWithRemainingPersistentDeactivations:(uint64_t)a3 currentEvent:(void *)a4 errors:(void *)a5 completion:
+- (void)deactivateWithRemainingPersistentDeactivations:(uint64_t)deactivations currentEvent:(void *)event errors:(void *)errors completion:
 {
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  eventCopy = event;
+  errorsCopy = errors;
+  if (self)
   {
     v12 = [v9 count];
-    if (a3 <= 5 && v12)
+    if (deactivations <= 5 && v12)
     {
       v31 = 0;
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __105__AERecoveryPolicySession_deactivateWithRemainingPersistentDeactivations_currentEvent_errors_completion___block_invoke;
       v30[3] = &__block_descriptor_40_e34_B16__0__AEPersistentDeactivation_8l;
-      v30[4] = a3;
+      v30[4] = deactivations;
       v20 = [v9 ae_split:&v31 includeBlock:v30];
       v13 = v31;
       v14 = [AEDeactivationPool alloc];
-      v15 = *(a1 + 16);
-      v16 = *(a1 + 32);
-      v17 = *(a1 + 24);
+      v15 = *(self + 16);
+      v16 = *(self + 32);
+      v17 = *(self + 24);
       v18 = v15;
       v19 = [(AEDeactivationPool *)&v14->super.isa initWithPolicyStore:v18 performancePrimitives:v17 persistentDeactivations:v13 queue:v16];
 
@@ -236,17 +236,17 @@ LABEL_19:
       v22 = 3221225472;
       v23 = __105__AERecoveryPolicySession_deactivateWithRemainingPersistentDeactivations_currentEvent_errors_completion___block_invoke_2;
       v24 = &unk_278BB7040;
-      v25 = a1;
-      v26 = v10;
+      selfCopy = self;
+      v26 = eventCopy;
       v27 = v20;
-      v29 = a3;
-      v28 = v11;
+      deactivationsCopy = deactivations;
+      v28 = errorsCopy;
       [(AEDeactivationPool *)v19 deactivateWithCompletion:v21];
     }
 
     else
     {
-      (*(v11 + 2))(v11, v10);
+      (*(errorsCopy + 2))(errorsCopy, eventCopy);
     }
   }
 }

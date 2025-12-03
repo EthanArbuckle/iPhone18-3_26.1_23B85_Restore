@@ -1,35 +1,35 @@
 @interface MSCMSSignerInfo
-+ (id)decodeSignerInfo:(SignerInfo *)a3 certificates:(id)a4 LAContext:(id)a5 error:(id *)a6;
-- (BOOL)createRequiredAttributes:(id *)a3;
-- (BOOL)encodeSignerInfo:(SignerInfo *)a3 error:(id *)a4;
-- (BOOL)sign:(id *)a3;
-- (BOOL)verifyContentTypeAttribute:(id *)a3;
-- (BOOL)verifyCountersignatures:(id *)a3;
-- (BOOL)verifyCountersignaturesAndCountersignersWithPolicies:(id)a3 verifyTime:(id)a4 anchorCertificates:(id)a5 error:(id *)a6;
-- (BOOL)verifyMessageDigestAttribute:(id)a3 error:(id *)a4;
-- (BOOL)verifySignature:(id *)a3;
-- (BOOL)verifySignatureAndSignerWithPolicies:(id)a3 verifyTime:(id)a4 anchorCertificates:(id)a5 error:(id *)a6;
-- (BOOL)verifyTimestamps:(BOOL)a3 error:(id *)a4;
++ (id)decodeSignerInfo:(SignerInfo *)info certificates:(id)certificates LAContext:(id)context error:(id *)error;
+- (BOOL)createRequiredAttributes:(id *)attributes;
+- (BOOL)encodeSignerInfo:(SignerInfo *)info error:(id *)error;
+- (BOOL)sign:(id *)sign;
+- (BOOL)verifyContentTypeAttribute:(id *)attribute;
+- (BOOL)verifyCountersignatures:(id *)countersignatures;
+- (BOOL)verifyCountersignaturesAndCountersignersWithPolicies:(id)policies verifyTime:(id)time anchorCertificates:(id)certificates error:(id *)error;
+- (BOOL)verifyMessageDigestAttribute:(id)attribute error:(id *)error;
+- (BOOL)verifySignature:(id *)signature;
+- (BOOL)verifySignatureAndSignerWithPolicies:(id)policies verifyTime:(id)time anchorCertificates:(id)certificates error:(id *)error;
+- (BOOL)verifyTimestamps:(BOOL)timestamps error:(id *)error;
 - (MSCMSSignedData)containingSignedData;
-- (MSCMSSignerInfo)initWithCertificate:(__SecCertificate *)a3 recipientsAlgorithmCapabilities:(id)a4 error:(id *)a5;
-- (MSCMSSignerInfo)initWithCertificate:(__SecCertificate *)a3 signatureAlgorithm:(id)a4 error:(id *)a5;
-- (MSCMSSignerInfo)initWithEmail:(id)a3 recipientsAlgorithmCapabilities:(id)a4 LAContext:(id)a5 error:(id *)a6;
-- (MSCMSSignerInfo)initWithEmail:(id)a3 signatureAlgorithm:(id)a4 LAContext:(id)a5 error:(id *)a6;
-- (MSCMSSignerInfo)initWithIdentity:(__SecIdentity *)a3 recipientsAlgorithmCapabilities:(id)a4 error:(id *)a5;
-- (MSCMSSignerInfo)initWithIdentity:(__SecIdentity *)a3 signatureAlgorithm:(id)a4 error:(id *)a5;
+- (MSCMSSignerInfo)initWithCertificate:(__SecCertificate *)certificate recipientsAlgorithmCapabilities:(id)capabilities error:(id *)error;
+- (MSCMSSignerInfo)initWithCertificate:(__SecCertificate *)certificate signatureAlgorithm:(id)algorithm error:(id *)error;
+- (MSCMSSignerInfo)initWithEmail:(id)email recipientsAlgorithmCapabilities:(id)capabilities LAContext:(id)context error:(id *)error;
+- (MSCMSSignerInfo)initWithEmail:(id)email signatureAlgorithm:(id)algorithm LAContext:(id)context error:(id *)error;
+- (MSCMSSignerInfo)initWithIdentity:(__SecIdentity *)identity recipientsAlgorithmCapabilities:(id)capabilities error:(id *)error;
+- (MSCMSSignerInfo)initWithIdentity:(__SecIdentity *)identity signatureAlgorithm:(id)algorithm error:(id *)error;
 - (NSArray)certificates;
-- (__SecTrust)createTrustObjectWithPolicies:(id)a3 verifyTime:(id)a4 anchorCertificates:(id)a5 error:(id *)a6;
-- (id)calculateSignatureDigestWithAlgorithm:(id)a3 error:(id *)a4;
-- (id)calculateSignedAttributesDigest:(id *)a3;
-- (id)calculateSignerInfoDigest:(id *)a3;
-- (id)getAttributesWithType:(id)a3;
-- (id)getAttributesWithType:(id)a3 protectedAttributes:(BOOL)a4;
-- (id)verifyTime:(id)a3;
-- (void)addCounterSignerAttribute:(id)a3;
+- (__SecTrust)createTrustObjectWithPolicies:(id)policies verifyTime:(id)time anchorCertificates:(id)certificates error:(id *)error;
+- (id)calculateSignatureDigestWithAlgorithm:(id)algorithm error:(id *)error;
+- (id)calculateSignedAttributesDigest:(id *)digest;
+- (id)calculateSignerInfoDigest:(id *)digest;
+- (id)getAttributesWithType:(id)type;
+- (id)getAttributesWithType:(id)type protectedAttributes:(BOOL)attributes;
+- (id)verifyTime:(id)time;
+- (void)addCounterSignerAttribute:(id)attribute;
 - (void)addMultipleSignaturesAttribute;
-- (void)addProtectedAttribute:(id)a3;
-- (void)addSMIMECapabilitiesAttribute:(id)a3;
-- (void)addSMIMEEncryptionKeyPreferenceAttribute:(id)a3;
+- (void)addProtectedAttribute:(id)attribute;
+- (void)addSMIMECapabilitiesAttribute:(id)attribute;
+- (void)addSMIMEEncryptionKeyPreferenceAttribute:(id)attribute;
 - (void)dealloc;
 @end
 
@@ -37,21 +37,21 @@
 
 - (NSArray)certificates
 {
-  v3 = [(MSCMSSignerInfo *)self containingSignedData];
+  containingSignedData = [(MSCMSSignerInfo *)self containingSignedData];
 
-  if (v3)
+  if (containingSignedData)
   {
-    v4 = [(MSCMSSignerInfo *)self containingSignedData];
-    v5 = [v4 certificates];
-    v6 = [v5 allObjects];
+    containingSignedData2 = [(MSCMSSignerInfo *)self containingSignedData];
+    certificates = [containingSignedData2 certificates];
+    allObjects = [certificates allObjects];
   }
 
   else
   {
-    v6 = 0;
+    allObjects = 0;
   }
 
-  return v6;
+  return allObjects;
 }
 
 - (MSCMSSignedData)containingSignedData
@@ -89,10 +89,10 @@
   [(MSCMSSignerInfo *)&v5 dealloc];
 }
 
-- (MSCMSSignerInfo)initWithCertificate:(__SecCertificate *)a3 signatureAlgorithm:(id)a4 error:(id *)a5
+- (MSCMSSignerInfo)initWithCertificate:(__SecCertificate *)certificate signatureAlgorithm:(id)algorithm error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  algorithmCopy = algorithm;
   v35.receiver = self;
   v35.super_class = MSCMSSignerInfo;
   v8 = [(MSCMSSignerInfo *)&v35 init];
@@ -101,12 +101,12 @@
     goto LABEL_20;
   }
 
-  if (a3)
+  if (certificate)
   {
-    CFRetain(a3);
+    CFRetain(certificate);
   }
 
-  v8->_signerCertificate = a3;
+  v8->_signerCertificate = certificate;
   v9 = +[MSCMSMutableAttributeArray array];
   protectedAttributes = v8->_protectedAttributes;
   v8->_protectedAttributes = v9;
@@ -121,13 +121,13 @@
   v8->_signatureCalculated = 0;
   v8->_signerPrivKey = 0;
   v8->_encodedSignerInfo = 0;
-  if (!v7)
+  if (!algorithmCopy)
   {
     p_signatureAlgorithm = &v8->_signatureAlgorithm;
     goto LABEL_17;
   }
 
-  KeyTypeForCertificate = getKeyTypeForCertificate(a3);
+  KeyTypeForCertificate = getKeyTypeForCertificate(certificate);
   if (KeyTypeForCertificate == 3)
   {
     if (initWithCertificate_signatureAlgorithm_error__onceToken_4 != -1)
@@ -136,8 +136,8 @@
     }
 
     v33 = initWithCertificate_signatureAlgorithm_error__sAllowedECSigAlgs;
-    v34 = [v7 OIDString];
-    LODWORD(v33) = [v33 containsObject:v34];
+    oIDString = [algorithmCopy OIDString];
+    LODWORD(v33) = [v33 containsObject:oIDString];
 
     if (!v33)
     {
@@ -158,8 +158,8 @@
     }
 
     v15 = initWithCertificate_signatureAlgorithm_error__sAllowedRSASigAlgs;
-    v16 = [v7 OIDString];
-    LOBYTE(v15) = [v15 containsObject:v16];
+    oIDString2 = [algorithmCopy OIDString];
+    LOBYTE(v15) = [v15 containsObject:oIDString2];
 
     if ((v15 & 1) == 0)
     {
@@ -167,7 +167,7 @@
     }
   }
 
-  v17 = [MSAlgorithmIdentifier algorithmIdentifierWithOID:v7];
+  v17 = [MSAlgorithmIdentifier algorithmIdentifierWithOID:algorithmCopy];
   signatureAlgorithm = v8->_signatureAlgorithm;
   v8->_signatureAlgorithm = v17;
 
@@ -187,10 +187,10 @@ LABEL_11:
   if (os_log_type_enabled(MS_DEFAULT_LOG_INTERNAL, OS_LOG_TYPE_DEFAULT))
   {
     v21 = v20;
-    v22 = [v7 OIDString];
-    v23 = getKeyTypeForCertificate(a3);
+    oIDString3 = [algorithmCopy OIDString];
+    v23 = getKeyTypeForCertificate(certificate);
     *buf = 138412546;
-    v37 = v22;
+    v37 = oIDString3;
     v38 = 2048;
     v39 = v23;
     _os_log_impl(&dword_258C80000, v21, OS_LOG_TYPE_DEFAULT, "MSCMSSignerInfo init signature aglorithm %@ not permitted for certificate key type %ld", buf, 0x16u);
@@ -199,7 +199,7 @@ LABEL_11:
 LABEL_17:
   if (!*p_signatureAlgorithm)
   {
-    v24 = findBestMutuallySupportedSignatureAlgorithm(a3, 0);
+    v24 = findBestMutuallySupportedSignatureAlgorithm(certificate, 0);
     v25 = [MSAlgorithmIdentifier algorithmIdentifierWithOID:v24];
     v26 = *p_signatureAlgorithm;
     *p_signatureAlgorithm = v25;
@@ -270,14 +270,14 @@ uint64_t __64__MSCMSSignerInfo_initWithCertificate_signatureAlgorithm_error___bl
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (MSCMSSignerInfo)initWithEmail:(id)a3 signatureAlgorithm:(id)a4 LAContext:(id)a5 error:(id *)a6
+- (MSCMSSignerInfo)initWithEmail:(id)email signatureAlgorithm:(id)algorithm LAContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 && *a6)
+  emailCopy = email;
+  algorithmCopy = algorithm;
+  contextCopy = context;
+  if (error && *error)
   {
-    v13 = [*a6 copy];
+    v13 = [*error copy];
   }
 
   else
@@ -286,17 +286,17 @@ uint64_t __64__MSCMSSignerInfo_initWithCertificate_signatureAlgorithm_error___bl
   }
 
   v20 = v13;
-  IdentityByEmailAddress = findIdentityByEmailAddress(v10, v12, &v20);
+  IdentityByEmailAddress = findIdentityByEmailAddress(emailCopy, contextCopy, &v20);
   v15 = v20;
 
   if (IdentityByEmailAddress)
   {
     v19 = v15;
-    self = [(MSCMSSignerInfo *)self initWithIdentity:IdentityByEmailAddress signatureAlgorithm:v11 error:&v19];
-    v16 = v19;
+    self = [(MSCMSSignerInfo *)self initWithIdentity:IdentityByEmailAddress signatureAlgorithm:algorithmCopy error:&v19];
+    emailCopy = v19;
 
-    [(MSCMSSignerInfo *)self setLAContext:v12];
-    if (!a6)
+    [(MSCMSSignerInfo *)self setLAContext:contextCopy];
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -304,18 +304,18 @@ uint64_t __64__MSCMSSignerInfo_initWithCertificate_signatureAlgorithm_error___bl
 
   else
   {
-    v16 = [MSError MSErrorWithDomain:MSErrorKeychainDomain[0] code:-25300 underlyingError:v15 description:@"unable to find identity matching %@", v10];
+    emailCopy = [MSError MSErrorWithDomain:MSErrorKeychainDomain[0] code:-25300 underlyingError:v15 description:@"unable to find identity matching %@", emailCopy];
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_11;
     }
   }
 
-  if (v16)
+  if (emailCopy)
   {
-    v17 = v16;
-    *a6 = v16;
+    v17 = emailCopy;
+    *error = emailCopy;
   }
 
 LABEL_11:
@@ -327,22 +327,22 @@ LABEL_11:
   return self;
 }
 
-- (MSCMSSignerInfo)initWithCertificate:(__SecCertificate *)a3 recipientsAlgorithmCapabilities:(id)a4 error:(id *)a5
+- (MSCMSSignerInfo)initWithCertificate:(__SecCertificate *)certificate recipientsAlgorithmCapabilities:(id)capabilities error:(id *)error
 {
-  v8 = findBestMutuallySupportedSignatureAlgorithm(a3, a4);
-  v9 = [(MSCMSSignerInfo *)self initWithCertificate:a3 signatureAlgorithm:v8 error:a5];
+  v8 = findBestMutuallySupportedSignatureAlgorithm(certificate, capabilities);
+  v9 = [(MSCMSSignerInfo *)self initWithCertificate:certificate signatureAlgorithm:v8 error:error];
 
   return v9;
 }
 
-- (MSCMSSignerInfo)initWithEmail:(id)a3 recipientsAlgorithmCapabilities:(id)a4 LAContext:(id)a5 error:(id *)a6
+- (MSCMSSignerInfo)initWithEmail:(id)email recipientsAlgorithmCapabilities:(id)capabilities LAContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 && *a6)
+  emailCopy = email;
+  capabilitiesCopy = capabilities;
+  contextCopy = context;
+  if (error && *error)
   {
-    v13 = [*a6 copy];
+    v13 = [*error copy];
   }
 
   else
@@ -350,15 +350,15 @@ LABEL_11:
     v13 = 0;
   }
 
-  IdentityByEmailAddress = findIdentityByEmailAddress(v10, v12, a6);
+  IdentityByEmailAddress = findIdentityByEmailAddress(emailCopy, contextCopy, error);
   if (IdentityByEmailAddress)
   {
     v18 = v13;
-    self = [(MSCMSSignerInfo *)self initWithIdentity:IdentityByEmailAddress recipientsAlgorithmCapabilities:v11 error:&v18];
-    v15 = v18;
+    self = [(MSCMSSignerInfo *)self initWithIdentity:IdentityByEmailAddress recipientsAlgorithmCapabilities:capabilitiesCopy error:&v18];
+    emailCopy = v18;
 
-    [(MSCMSSignerInfo *)self setLAContext:v12];
-    if (!a6)
+    [(MSCMSSignerInfo *)self setLAContext:contextCopy];
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -366,18 +366,18 @@ LABEL_11:
 
   else
   {
-    v15 = [MSError MSErrorWithDomain:MSErrorKeychainDomain[0] code:-25300 underlyingError:v13 description:@"unable to find identity matching %@", v10];
+    emailCopy = [MSError MSErrorWithDomain:MSErrorKeychainDomain[0] code:-25300 underlyingError:v13 description:@"unable to find identity matching %@", emailCopy];
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_11;
     }
   }
 
-  if (v15)
+  if (emailCopy)
   {
-    v16 = v15;
-    *a6 = v15;
+    v16 = emailCopy;
+    *error = emailCopy;
   }
 
 LABEL_11:
@@ -389,30 +389,30 @@ LABEL_11:
   return self;
 }
 
-- (void)addCounterSignerAttribute:(id)a3
+- (void)addCounterSignerAttribute:(id)attribute
 {
-  v11 = a3;
-  if (v11)
+  attributeCopy = attribute;
+  if (attributeCopy)
   {
-    v4 = [(MSCMSSignerInfo *)self unprotectedAttributes];
-    [v4 addObject:v11];
+    unprotectedAttributes = [(MSCMSSignerInfo *)self unprotectedAttributes];
+    [unprotectedAttributes addObject:attributeCopy];
 
-    [v11 setContainingSignerInfo:self];
-    v5 = [(MSCMSSignerInfo *)self containingSignedData];
+    [attributeCopy setContainingSignerInfo:self];
+    containingSignedData = [(MSCMSSignerInfo *)self containingSignedData];
 
-    if (v5)
+    if (containingSignedData)
     {
-      v6 = [(MSCMSSignerInfo *)self containingSignedData];
-      [v6 addCounterSignerCertificates:self mode:objc_msgSend(v11 error:{"chainMode"), 0}];
+      containingSignedData2 = [(MSCMSSignerInfo *)self containingSignedData];
+      [containingSignedData2 addCounterSignerCertificates:self mode:objc_msgSend(attributeCopy error:{"chainMode"), 0}];
 
-      v7 = [v11 additionalCertificates];
+      additionalCertificates = [attributeCopy additionalCertificates];
 
-      if (v7)
+      if (additionalCertificates)
       {
-        v8 = [(MSCMSSignerInfo *)self containingSignedData];
-        v9 = [v8 certificates];
-        v10 = [v11 additionalCertificates];
-        [v9 addObjectsFromArray:v10];
+        containingSignedData3 = [(MSCMSSignerInfo *)self containingSignedData];
+        certificates = [containingSignedData3 certificates];
+        additionalCertificates2 = [attributeCopy additionalCertificates];
+        [certificates addObjectsFromArray:additionalCertificates2];
       }
     }
   }
@@ -420,38 +420,38 @@ LABEL_11:
 
 - (void)addMultipleSignaturesAttribute
 {
-  v3 = [(MSCMSSignerInfo *)self containingSignedData];
+  containingSignedData = [(MSCMSSignerInfo *)self containingSignedData];
 
-  if (v3)
+  if (containingSignedData)
   {
     v4 = +[MSCMSMutableAttributeArray array];
-    v5 = [(MSCMSSignerInfo *)self protectedAttributes];
+    protectedAttributes = [(MSCMSSignerInfo *)self protectedAttributes];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __49__MSCMSSignerInfo_addMultipleSignaturesAttribute__block_invoke;
     v12[3] = &unk_2798BE6D8;
     v6 = v4;
     v13 = v6;
-    [v5 enumerateObjectsUsingBlock:v12];
+    [protectedAttributes enumerateObjectsUsingBlock:v12];
 
     [(MSCMSSignerInfo *)self setProtectedAttributes:v6];
-    v7 = [(MSCMSSignerInfo *)self containingSignedData];
-    v8 = [v7 signers];
+    containingSignedData2 = [(MSCMSSignerInfo *)self containingSignedData];
+    signers = [containingSignedData2 signers];
 
-    if ([v8 count] != 1)
+    if ([signers count] != 1)
     {
       v9 = 0;
       do
       {
         v10 = [MSCMSMultipleSignaturesAttribute alloc];
         [(MSCMSMultipleSignaturesAttribute *)v10 setSignedAttrsHashAlgorithm:self->_digestAlgorithm];
-        v11 = [(MSCMSSignerInfo *)self protectedAttributes];
-        [v11 addObject:v10];
+        protectedAttributes2 = [(MSCMSSignerInfo *)self protectedAttributes];
+        [protectedAttributes2 addObject:v10];
 
         ++v9;
       }
 
-      while (v9 < [v8 count] - 1);
+      while (v9 < [signers count] - 1);
     }
   }
 }
@@ -468,22 +468,22 @@ void __49__MSCMSSignerInfo_addMultipleSignaturesAttribute__block_invoke(uint64_t
   }
 }
 
-- (void)addSMIMECapabilitiesAttribute:(id)a3
+- (void)addSMIMECapabilitiesAttribute:(id)attribute
 {
-  if (a3)
+  if (attribute)
   {
-    v4 = a3;
+    attributeCopy = attribute;
     v5 = +[MSCMSMutableAttributeArray array];
-    v6 = [(MSCMSSignerInfo *)self protectedAttributes];
+    protectedAttributes = [(MSCMSSignerInfo *)self protectedAttributes];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __49__MSCMSSignerInfo_addSMIMECapabilitiesAttribute___block_invoke;
     v8[3] = &unk_2798BE6D8;
     v9 = v5;
     v7 = v5;
-    [v6 enumerateObjectsUsingBlock:v8];
+    [protectedAttributes enumerateObjectsUsingBlock:v8];
 
-    [v7 addObject:v4];
+    [v7 addObject:attributeCopy];
     [(MSCMSSignerInfo *)self setProtectedAttributes:v7];
   }
 }
@@ -500,22 +500,22 @@ void __49__MSCMSSignerInfo_addSMIMECapabilitiesAttribute___block_invoke(uint64_t
   }
 }
 
-- (void)addSMIMEEncryptionKeyPreferenceAttribute:(id)a3
+- (void)addSMIMEEncryptionKeyPreferenceAttribute:(id)attribute
 {
-  if (a3)
+  if (attribute)
   {
-    v4 = a3;
+    attributeCopy = attribute;
     v5 = +[MSCMSMutableAttributeArray array];
-    v6 = [(MSCMSSignerInfo *)self protectedAttributes];
+    protectedAttributes = [(MSCMSSignerInfo *)self protectedAttributes];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __60__MSCMSSignerInfo_addSMIMEEncryptionKeyPreferenceAttribute___block_invoke;
     v8[3] = &unk_2798BE6D8;
     v9 = v5;
     v7 = v5;
-    [v6 enumerateObjectsUsingBlock:v8];
+    [protectedAttributes enumerateObjectsUsingBlock:v8];
 
-    [v7 addObject:v4];
+    [v7 addObject:attributeCopy];
     [(MSCMSSignerInfo *)self setProtectedAttributes:v7];
   }
 }
@@ -532,20 +532,20 @@ void __60__MSCMSSignerInfo_addSMIMEEncryptionKeyPreferenceAttribute___block_invo
   }
 }
 
-- (void)addProtectedAttribute:(id)a3
+- (void)addProtectedAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = [(MSCMSSignerInfo *)self protectedAttributes];
-  [v5 addObject:v4];
+  attributeCopy = attribute;
+  protectedAttributes = [(MSCMSSignerInfo *)self protectedAttributes];
+  [protectedAttributes addObject:attributeCopy];
 
   [(MSCMSSignerInfo *)self createRequiredAttributes:0];
 }
 
-- (id)calculateSignedAttributesDigest:(id *)a3
+- (id)calculateSignedAttributesDigest:(id *)digest
 {
-  if (a3 && *a3)
+  if (digest && *digest)
   {
-    v5 = [*a3 copy];
+    v5 = [*digest copy];
   }
 
   else
@@ -581,7 +581,7 @@ void __60__MSCMSSignerInfo_addSMIMEEncryptionKeyPreferenceAttribute___block_invo
 
     v10 = 0;
     v11 = v14[1];
-    if (!a3)
+    if (!digest)
     {
       goto LABEL_12;
     }
@@ -593,7 +593,7 @@ LABEL_9:
   v10 = [MSCMSMutableAttributeArray calculateAttributesWithDigest:"calculateAttributesWithDigest:error:" error:?];
   v11 = v5;
 
-  if (!a3)
+  if (!digest)
   {
     goto LABEL_12;
   }
@@ -602,7 +602,7 @@ LABEL_10:
   if (v11)
   {
     v12 = v11;
-    *a3 = v11;
+    *digest = v11;
   }
 
 LABEL_12:
@@ -610,11 +610,11 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)verifyContentTypeAttribute:(id *)a3
+- (BOOL)verifyContentTypeAttribute:(id *)attribute
 {
-  if (a3 && *a3)
+  if (attribute && *attribute)
   {
-    v5 = [*a3 copy];
+    v5 = [*attribute copy];
   }
 
   else
@@ -678,10 +678,10 @@ LABEL_16:
     }
   }
 
-  v17 = [(MSCMSContentTypeAttribute *)v13 contentType];
-  v18 = [(MSCMSSignerInfo *)self containingSignedData];
-  v19 = [v18 contentType];
-  v20 = [v17 isEqual:v19];
+  contentType = [(MSCMSContentTypeAttribute *)v13 contentType];
+  containingSignedData = [(MSCMSSignerInfo *)self containingSignedData];
+  contentType2 = [containingSignedData contentType];
+  v20 = [contentType isEqual:contentType2];
 
   if ((v20 & 1) == 0)
   {
@@ -690,7 +690,7 @@ LABEL_17:
 
     v21 = 0;
     v7 = v24;
-    if (!a3)
+    if (!attribute)
     {
       goto LABEL_20;
     }
@@ -699,7 +699,7 @@ LABEL_17:
   }
 
   v21 = 1;
-  if (!a3)
+  if (!attribute)
   {
     goto LABEL_20;
   }
@@ -708,7 +708,7 @@ LABEL_18:
   if (v7)
   {
     v25 = v7;
-    *a3 = v7;
+    *attribute = v7;
   }
 
 LABEL_20:
@@ -716,12 +716,12 @@ LABEL_20:
   return v21;
 }
 
-- (BOOL)verifyMessageDigestAttribute:(id)a3 error:(id *)a4
+- (BOOL)verifyMessageDigestAttribute:(id)attribute error:(id *)error
 {
-  v6 = a3;
-  if (a4 && *a4)
+  attributeCopy = attribute;
+  if (error && *error)
   {
-    v7 = [*a4 copy];
+    v7 = [*error copy];
   }
 
   else
@@ -785,8 +785,8 @@ LABEL_16:
     }
   }
 
-  v19 = [(MSCMSMessageDigestAttribute *)v15 messageDigest];
-  v20 = [v19 isEqual:v6];
+  messageDigest = [(MSCMSMessageDigestAttribute *)v15 messageDigest];
+  v20 = [messageDigest isEqual:attributeCopy];
 
   if ((v20 & 1) == 0)
   {
@@ -795,7 +795,7 @@ LABEL_17:
 
     v21 = 0;
     v9 = v24;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -804,7 +804,7 @@ LABEL_17:
   }
 
   v21 = 1;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_20;
   }
@@ -813,7 +813,7 @@ LABEL_18:
   if (v9)
   {
     v25 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_20:
@@ -821,12 +821,12 @@ LABEL_20:
   return v21;
 }
 
-- (BOOL)verifySignature:(id *)a3
+- (BOOL)verifySignature:(id *)signature
 {
   v44 = *MEMORY[0x277D85DE8];
-  if (a3 && *a3)
+  if (signature && *signature)
   {
-    v5 = [*a3 copy];
+    v5 = [*signature copy];
   }
 
   else
@@ -837,11 +837,11 @@ LABEL_20:
   v37 = v5;
   cf = 0;
   v6 = [(MSCMSSignerInfo *)self calculateSignerInfoDigest:&v37];
-  v7 = v37;
+  algorithm5 = v37;
 
   if (!v6)
   {
-    [(MSCMSSignerInfo *)v7 verifySignature:buf];
+    [(MSCMSSignerInfo *)algorithm5 verifySignature:buf];
     v8 = 0;
 LABEL_36:
     v25 = 0;
@@ -852,22 +852,22 @@ LABEL_36:
   v8 = SecCertificateCopyKey([(MSCMSSignerInfo *)self signerCertificate]);
   if (!v8)
   {
-    [(MSCMSSignerInfo *)v7 verifySignature:buf];
+    [(MSCMSSignerInfo *)algorithm5 verifySignature:buf];
     goto LABEL_36;
   }
 
-  v9 = [(MSCMSSignerInfo *)self signature];
+  signature = [(MSCMSSignerInfo *)self signature];
 
-  if (!v9)
+  if (!signature)
   {
-    [(MSCMSSignerInfo *)v7 verifySignature:buf];
+    [(MSCMSSignerInfo *)algorithm5 verifySignature:buf];
     goto LABEL_36;
   }
 
-  v10 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
-  v11 = [v10 secKeyAlgorithm];
+  algorithm = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
+  secKeyAlgorithm = [algorithm secKeyAlgorithm];
 
-  if (!v11)
+  if (!secKeyAlgorithm)
   {
     if (MS_DEFAULT_LOG_BLOCK != -1)
     {
@@ -879,41 +879,41 @@ LABEL_36:
     {
       signatureAlgorithm = self->_signatureAlgorithm;
       log = v12;
-      v35 = [(MSAlgorithmIdentifier *)signatureAlgorithm algorithm];
-      v32 = [v35 OIDString];
-      v33 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
-      v14 = [v33 OIDString];
-      v15 = [(MSCMSSignerInfo *)self digestAlgorithm];
-      v16 = [v15 algorithm];
-      v17 = [v16 OIDString];
+      algorithm2 = [(MSAlgorithmIdentifier *)signatureAlgorithm algorithm];
+      oIDString = [algorithm2 OIDString];
+      algorithm3 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
+      oIDString2 = [algorithm3 OIDString];
+      digestAlgorithm = [(MSCMSSignerInfo *)self digestAlgorithm];
+      algorithm4 = [digestAlgorithm algorithm];
+      oIDString3 = [algorithm4 OIDString];
       *buf = 138412802;
-      *&buf[4] = v32;
+      *&buf[4] = oIDString;
       v40 = 2112;
-      v41 = v14;
+      v41 = oIDString2;
       v42 = 2112;
-      v43 = v17;
+      v43 = oIDString3;
       _os_log_impl(&dword_258C80000, log, OS_LOG_TYPE_INFO, "Bad signature algorithm %@. Trying to compose signature algorithm from %@ and digest %@", buf, 0x20u);
     }
 
     v18 = self->_signatureAlgorithm;
     digestAlgorithm = self->_digestAlgorithm;
-    v36 = v7;
+    v36 = algorithm5;
     v20 = [(MSAlgorithmIdentifier *)v18 signatureAlgorithmWithDigestAlgorithm:digestAlgorithm error:&v36];
     v21 = v36;
 
-    v11 = [v20 secKeyAlgorithm];
-    if (!v11)
+    secKeyAlgorithm = [v20 secKeyAlgorithm];
+    if (!secKeyAlgorithm)
     {
       v27 = MSErrorCryptoDomain[0];
-      v7 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
-      v28 = [v7 OIDString];
-      v26 = [MSError MSErrorWithDomain:v27 code:-4 underlyingError:v21 description:@"%@ is not a supported signature algorithm", v28];
+      algorithm5 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
+      oIDString4 = [algorithm5 OIDString];
+      v26 = [MSError MSErrorWithDomain:v27 code:-4 underlyingError:v21 description:@"%@ is not a supported signature algorithm", oIDString4];
 
       v25 = 0;
       goto LABEL_27;
     }
 
-    v7 = v21;
+    algorithm5 = v21;
   }
 
   if (self->_LAContext)
@@ -943,11 +943,11 @@ LABEL_36:
     }
   }
 
-  v25 = SecKeyVerifySignature(v8, v11, v6, [(MSCMSSignerInfo *)self signature], &cf) != 0;
+  v25 = SecKeyVerifySignature(v8, secKeyAlgorithm, v6, [(MSCMSSignerInfo *)self signature], &cf) != 0;
   v26 = cf;
   if (!cf)
   {
-    if (!a3)
+    if (!signature)
     {
       goto LABEL_30;
     }
@@ -957,17 +957,17 @@ LABEL_36:
 
 LABEL_27:
 
-  v7 = v26;
-  if (!a3)
+  algorithm5 = v26;
+  if (!signature)
   {
     goto LABEL_30;
   }
 
 LABEL_28:
-  if (v7)
+  if (algorithm5)
   {
-    v29 = v7;
-    *a3 = v7;
+    v29 = algorithm5;
+    *signature = algorithm5;
   }
 
 LABEL_30:
@@ -998,13 +998,13 @@ uint64_t __35__MSCMSSignerInfo_verifySignature___block_invoke_62()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (id)verifyTime:(id)a3
+- (id)verifyTime:(id)time
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  timeCopy = time;
+  v5 = timeCopy;
+  if (timeCopy)
   {
-    v6 = v4;
+    date = timeCopy;
     goto LABEL_15;
   }
 
@@ -1050,37 +1050,37 @@ uint64_t __35__MSCMSSignerInfo_verifySignature___block_invoke_62()
 LABEL_12:
 
 LABEL_13:
-      v6 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       goto LABEL_14;
     }
   }
 
-  v16 = [(MSCMSTimestampAttribute *)v13 timestampTime];
+  timestampTime = [(MSCMSTimestampAttribute *)v13 timestampTime];
 
-  if (!v16)
+  if (!timestampTime)
   {
     goto LABEL_12;
   }
 
-  v6 = [(MSCMSTimestampAttribute *)v13 timestampTime];
+  date = [(MSCMSTimestampAttribute *)v13 timestampTime];
 
 LABEL_14:
 LABEL_15:
 
-  return v6;
+  return date;
 }
 
-- (id)calculateSignatureDigestWithAlgorithm:(id)a3 error:(id *)a4
+- (id)calculateSignatureDigestWithAlgorithm:(id)algorithm error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 ccdigest];
-  if (v7)
+  algorithmCopy = algorithm;
+  ccdigest = [algorithmCopy ccdigest];
+  if (ccdigest)
   {
-    v8 = [MEMORY[0x277CBEB28] dataWithLength:*v7];
-    v9 = [(MSCMSSignerInfo *)self signature];
-    [v9 length];
-    v10 = [(MSCMSSignerInfo *)self signature];
-    [v10 bytes];
+    v8 = [MEMORY[0x277CBEB28] dataWithLength:*ccdigest];
+    signature = [(MSCMSSignerInfo *)self signature];
+    [signature length];
+    signature2 = [(MSCMSSignerInfo *)self signature];
+    [signature2 bytes];
     [v8 mutableBytes];
     ccdigest();
 
@@ -1088,13 +1088,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = MSErrorCryptoDomain[0];
-    v12 = *a4;
-    v9 = [v6 OIDString];
-    [MSError MSErrorWithDomain:v11 code:-4 underlyingError:v12 description:@"%@ is not a supported digest algorithm", v9];
-    *a4 = v8 = 0;
+    v12 = *error;
+    signature = [algorithmCopy OIDString];
+    [MSError MSErrorWithDomain:v11 code:-4 underlyingError:v12 description:@"%@ is not a supported digest algorithm", signature];
+    *error = v8 = 0;
     goto LABEL_5;
   }
 
@@ -1104,11 +1104,11 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)verifyCountersignatures:(id *)a3
+- (BOOL)verifyCountersignatures:(id *)countersignatures
 {
-  v5 = [(MSCMSSignerInfo *)self unprotectedAttributes];
+  unprotectedAttributes = [(MSCMSSignerInfo *)self unprotectedAttributes];
   v6 = [MSOID OIDWithString:@"1.2.840.113549.1.9.6" error:0];
-  v7 = [v5 getAttributesWithType:v6];
+  v7 = [unprotectedAttributes getAttributesWithType:v6];
 
   if (v7)
   {
@@ -1121,10 +1121,10 @@ LABEL_6:
     v16 = 0x3032000000;
     v17 = __Block_byref_object_copy__4;
     v18 = __Block_byref_object_dispose__4;
-    if (a3)
+    if (countersignatures)
     {
-      v8 = *a3;
-      if (*a3)
+      v8 = *countersignatures;
+      if (*countersignatures)
       {
         v8 = [v8 copy];
       }
@@ -1144,12 +1144,12 @@ LABEL_6:
     v13[5] = buf;
     v13[6] = &v20;
     [v7 enumerateObjectsUsingBlock:v13];
-    if (a3)
+    if (countersignatures)
     {
       v11 = *(v15 + 5);
       if (v11)
       {
-        *a3 = v11;
+        *countersignatures = v11;
       }
     }
 
@@ -1246,14 +1246,14 @@ LABEL_9:
   }
 }
 
-- (BOOL)verifyCountersignaturesAndCountersignersWithPolicies:(id)a3 verifyTime:(id)a4 anchorCertificates:(id)a5 error:(id *)a6
+- (BOOL)verifyCountersignaturesAndCountersignersWithPolicies:(id)policies verifyTime:(id)time anchorCertificates:(id)certificates error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(MSCMSSignerInfo *)self unprotectedAttributes];
+  policiesCopy = policies;
+  timeCopy = time;
+  certificatesCopy = certificates;
+  unprotectedAttributes = [(MSCMSSignerInfo *)self unprotectedAttributes];
   v14 = [MSOID OIDWithString:@"1.2.840.113549.1.9.6" error:0];
-  v15 = [v13 getAttributesWithType:v14];
+  v15 = [unprotectedAttributes getAttributesWithType:v14];
 
   if (v15)
   {
@@ -1266,10 +1266,10 @@ LABEL_9:
     v29 = 0x3032000000;
     v30 = __Block_byref_object_copy__4;
     v31 = __Block_byref_object_dispose__4;
-    if (a6)
+    if (error)
     {
-      v16 = *a6;
-      if (*a6)
+      v16 = *error;
+      if (*error)
       {
         v16 = [v16 copy];
       }
@@ -1287,17 +1287,17 @@ LABEL_9:
     v21[3] = &unk_2798BE728;
     v21[4] = self;
     v25 = buf;
-    v22 = v10;
-    v23 = v11;
-    v24 = v12;
+    v22 = policiesCopy;
+    v23 = timeCopy;
+    v24 = certificatesCopy;
     v26 = &v33;
     [v15 enumerateObjectsUsingBlock:v21];
-    if (a6)
+    if (error)
     {
       v19 = *(v28 + 5);
       if (v19)
       {
-        *a6 = v19;
+        *error = v19;
       }
     }
 
@@ -1398,7 +1398,7 @@ LABEL_9:
   }
 }
 
-- (BOOL)verifyTimestamps:(BOOL)a3 error:(id *)a4
+- (BOOL)verifyTimestamps:(BOOL)timestamps error:(id *)error
 {
   v27[0] = 0;
   v27[1] = v27;
@@ -1411,10 +1411,10 @@ LABEL_9:
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__4;
   v25 = __Block_byref_object_dispose__4;
-  if (a4)
+  if (error)
   {
-    v7 = *a4;
-    if (*a4)
+    v7 = *error;
+    if (*error)
     {
       v7 = [v7 copy];
     }
@@ -1434,7 +1434,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (a3)
+  if (timestamps)
   {
     v10 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-67808 underlyingError:v22[5] description:@"unable to verify timestamp signature because there are no timestamps"];
     v11 = v22[5];
@@ -1454,12 +1454,12 @@ LABEL_8:
     v16[6] = v27;
     v16[7] = buf;
     [v9 enumerateObjectsUsingBlock:v16];
-    if (a4)
+    if (error)
     {
       v12 = v22[5];
       if (v12)
       {
-        *a4 = v12;
+        *error = v12;
       }
     }
 
@@ -1558,10 +1558,10 @@ LABEL_9:
   }
 }
 
-- (id)getAttributesWithType:(id)a3
+- (id)getAttributesWithType:(id)type
 {
-  v4 = a3;
-  v5 = [(MSCMSSignerInfo *)self getAttributesWithType:v4 protectedAttributes:1];
+  typeCopy = type;
+  v5 = [(MSCMSSignerInfo *)self getAttributesWithType:typeCopy protectedAttributes:1];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB18] arrayWithArray:v5];
@@ -1572,7 +1572,7 @@ LABEL_9:
     v6 = 0;
   }
 
-  v7 = [(MSCMSSignerInfo *)self getAttributesWithType:v4 protectedAttributes:0];
+  v7 = [(MSCMSSignerInfo *)self getAttributesWithType:typeCopy protectedAttributes:0];
   if (v7)
   {
     if (v6)
@@ -1589,11 +1589,11 @@ LABEL_9:
   return v6;
 }
 
-- (id)getAttributesWithType:(id)a3 protectedAttributes:(BOOL)a4
+- (id)getAttributesWithType:(id)type protectedAttributes:(BOOL)attributes
 {
-  v6 = a3;
+  typeCopy = type;
   v7 = self->_protectedAttributes;
-  if (!a4)
+  if (!attributes)
   {
     v8 = self->_unprotectedAttributes;
 
@@ -1604,7 +1604,7 @@ LABEL_9:
   v15[1] = 3221225472;
   v15[2] = __61__MSCMSSignerInfo_getAttributesWithType_protectedAttributes___block_invoke;
   v15[3] = &unk_2798BE778;
-  v9 = v6;
+  v9 = typeCopy;
   v16 = v9;
   v10 = [(MSCMSMutableAttributeArray *)v7 indexesOfObjectsPassingTest:v15];
   if ([v10 count])
@@ -1631,19 +1631,19 @@ uint64_t __61__MSCMSSignerInfo_getAttributesWithType_protectedAttributes___block
   return v5;
 }
 
-- (__SecTrust)createTrustObjectWithPolicies:(id)a3 verifyTime:(id)a4 anchorCertificates:(id)a5 error:(id *)a6
+- (__SecTrust)createTrustObjectWithPolicies:(id)policies verifyTime:(id)time anchorCertificates:(id)certificates error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  policiesCopy = policies;
+  timeCopy = time;
+  certificatesCopy = certificates;
   v13 = MEMORY[0x277CBEB18];
-  v14 = [(MSCMSSignerInfo *)self certificates];
-  v15 = [v13 arrayWithArray:v14];
+  certificates = [(MSCMSSignerInfo *)self certificates];
+  v15 = [v13 arrayWithArray:certificates];
 
   trust = 0;
-  if (a6 && *a6)
+  if (error && *error)
   {
-    v16 = [*a6 copy];
+    v16 = [*error copy];
   }
 
   else
@@ -1660,7 +1660,7 @@ LABEL_19:
   }
 
   [v15 insertObject:self->_signerCertificate atIndex:0];
-  v17 = SecTrustCreateWithCertificates(v15, v10, &trust);
+  v17 = SecTrustCreateWithCertificates(v15, policiesCopy, &trust);
   if (v17)
   {
     v23 = [MSError MSErrorWithDomain:*MEMORY[0x277CCA590] code:v17 underlyingError:v16 description:@"unable to create trust object due to security error"];
@@ -1670,9 +1670,9 @@ LABEL_19:
     goto LABEL_11;
   }
 
-  if (v11)
+  if (timeCopy)
   {
-    v18 = SecTrustSetVerifyDate(trust, v11);
+    v18 = SecTrustSetVerifyDate(trust, timeCopy);
     if (v18)
     {
       [MSCMSSignerInfo createTrustObjectWithPolicies:v18 verifyTime:v16 anchorCertificates:&v25 error:?];
@@ -1680,9 +1680,9 @@ LABEL_19:
     }
   }
 
-  if (v12)
+  if (certificatesCopy)
   {
-    v19 = SecTrustSetAnchorCertificates(trust, v12);
+    v19 = SecTrustSetAnchorCertificates(trust, certificatesCopy);
     if (v19)
     {
       [MSCMSSignerInfo createTrustObjectWithPolicies:v19 verifyTime:v16 anchorCertificates:&v25 error:?];
@@ -1691,10 +1691,10 @@ LABEL_19:
   }
 
 LABEL_11:
-  if (a6 && v16)
+  if (error && v16)
   {
     v20 = v16;
-    *a6 = v16;
+    *error = v16;
   }
 
   v21 = trust;
@@ -1702,12 +1702,12 @@ LABEL_11:
   return v21;
 }
 
-- (BOOL)sign:(id *)a3
+- (BOOL)sign:(id *)sign
 {
   buf[3] = *MEMORY[0x277D85DE8];
-  if (a3 && *a3)
+  if (sign && *sign)
   {
-    v5 = [*a3 copy];
+    v5 = [*sign copy];
   }
 
   else
@@ -1767,18 +1767,18 @@ LABEL_11:
       }
     }
 
-    v14 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
-    v15 = [v14 secKeyAlgorithm];
+    algorithm = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
+    secKeyAlgorithm = [algorithm secKeyAlgorithm];
 
-    if (!v15)
+    if (!secKeyAlgorithm)
     {
       v27 = MSErrorCryptoDomain[0];
-      v28 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
-      v29 = [v28 OIDString];
-      v5 = [MSError MSErrorWithDomain:v27 code:-4 underlyingError:v8 description:@"%@ is not a supported signature algorithm", v29];
+      algorithm2 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
+      oIDString = [algorithm2 OIDString];
+      v5 = [MSError MSErrorWithDomain:v27 code:-4 underlyingError:v8 description:@"%@ is not a supported signature algorithm", oIDString];
 
       v6 = 0;
-      if (!a3)
+      if (!sign)
       {
 LABEL_31:
         self->_signatureCalculated = v6;
@@ -1789,14 +1789,14 @@ LABEL_29:
       if (v5)
       {
         v30 = v5;
-        *a3 = v5;
+        *sign = v5;
       }
 
       goto LABEL_31;
     }
 
-    v16 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
-    v17 = [v16 isEqualToString:@"1.2.840.113549.1.1.4"];
+    algorithm3 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
+    v17 = [algorithm3 isEqualToString:@"1.2.840.113549.1.1.4"];
 
     if (!v17)
     {
@@ -1829,8 +1829,8 @@ LABEL_29:
       }
 
       v22 = self->_signerPrivKey;
-      v23 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
-      Signature = SecKeyCreateSignature(v22, [v23 secKeyAlgorithm], v7, &cf);
+      algorithm4 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm algorithm];
+      Signature = SecKeyCreateSignature(v22, [algorithm4 secKeyAlgorithm], v7, &cf);
       v25 = self->_signature;
       self->_signature = Signature;
 
@@ -1844,7 +1844,7 @@ LABEL_29:
       v6 = self->_signature != 0;
 
       v5 = v8;
-      if (!a3)
+      if (!sign)
       {
         goto LABEL_31;
       }
@@ -1856,7 +1856,7 @@ LABEL_29:
 LABEL_39:
     v6 = 0;
     v5 = buf[0];
-    if (!a3)
+    if (!sign)
     {
       goto LABEL_31;
     }
@@ -1880,7 +1880,7 @@ uint64_t __24__MSCMSSignerInfo_sign___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (BOOL)createRequiredAttributes:(id *)a3
+- (BOOL)createRequiredAttributes:(id *)attributes
 {
   protectedAttributes = self->_protectedAttributes;
   if (!protectedAttributes || ![(MSCMSMutableAttributeArray *)protectedAttributes count])
@@ -1893,8 +1893,8 @@ uint64_t __24__MSCMSSignerInfo_sign___block_invoke()
 
     v7 = WeakRetained;
     v8 = objc_loadWeakRetained(&self->_containingSignedData);
-    v9 = [v8 contentType];
-    v10 = [v9 isEqualToString:@"1.2.840.113549.1.7.1"];
+    contentType = [v8 contentType];
+    v10 = [contentType isEqualToString:@"1.2.840.113549.1.7.1"];
 
     if (v10)
     {
@@ -1915,9 +1915,9 @@ LABEL_5:
   }
 
   v17 = objc_loadWeakRetained(&self->_containingSignedData);
-  v18 = [(MSAlgorithmIdentifier *)self->_digestAlgorithm algorithm];
+  algorithm = [(MSAlgorithmIdentifier *)self->_digestAlgorithm algorithm];
   v43 = 0;
-  v19 = [v17 calculateContentDigestWithAlgorithm:v18 error:&v43];
+  v19 = [v17 calculateContentDigestWithAlgorithm:algorithm error:&v43];
   v20 = v43;
 
   v42 = v20;
@@ -1955,8 +1955,8 @@ LABEL_16:
 
     [(MSCMSMutableAttributeArray *)v31 removeAttributes:v32];
     v33 = objc_loadWeakRetained(&self->_containingSignedData);
-    v34 = [v33 contentType];
-    v35 = [MSCMSContentTypeAttribute contentTypeAttributeWithOID:v34];
+    contentType2 = [v33 contentType];
+    v35 = [MSCMSContentTypeAttribute contentTypeAttributeWithOID:contentType2];
 
     v36 = [MSCMSMessageDigestAttribute messageDigestAttributeWithDigest:v19];
     if (!v35 || ([(MSCMSMutableAttributeArray *)self->_protectedAttributes addObject:v35], !v36))
@@ -1982,10 +1982,10 @@ LABEL_19:
 
   v12 = 1;
 LABEL_20:
-  if (a3 && v11)
+  if (attributes && v11)
   {
     v37 = v11;
-    *a3 = v11;
+    *attributes = v11;
   }
 
 LABEL_23:
@@ -1993,11 +1993,11 @@ LABEL_23:
   return v12;
 }
 
-- (BOOL)encodeSignerInfo:(SignerInfo *)a3 error:(id *)a4
+- (BOOL)encodeSignerInfo:(SignerInfo *)info error:(id *)error
 {
-  if (a4 && *a4)
+  if (error && *error)
   {
-    v7 = [*a4 copy];
+    v7 = [*error copy];
   }
 
   else
@@ -2005,7 +2005,7 @@ LABEL_23:
     v7 = 0;
   }
 
-  if (!a3)
+  if (!info)
   {
     [MSCMSSignerInfo encodeSignerInfo:error:];
 LABEL_47:
@@ -2017,19 +2017,19 @@ LABEL_52:
     goto LABEL_37;
   }
 
-  a3->var6 = 0;
-  *&a3->var4.var0.components = 0u;
-  a3->var5 = 0u;
-  *&a3->var2.var0.components = 0u;
-  *&a3->var3 = 0u;
-  *&a3->var0 = 0u;
-  *&a3->var1.var1 = 0u;
+  info->var6 = 0;
+  *&info->var4.var0.components = 0u;
+  info->var5 = 0u;
+  *&info->var2.var0.components = 0u;
+  *&info->var3 = 0u;
+  *&info->var0 = 0u;
+  *&info->var1.var1 = 0u;
   if (self->_encodedSignerInfo && !copy_SignerInfo() && [(MSCMSSignerInfo *)self verifySignature:0])
   {
     if (!self->_encodedSignerInfo->var6)
     {
-      v8 = [(MSCMSSignerInfo *)self unprotectedAttributes];
-      v9 = [v8 count];
+      unprotectedAttributes = [(MSCMSSignerInfo *)self unprotectedAttributes];
+      v9 = [unprotectedAttributes count];
 
       if (!v9)
       {
@@ -2037,8 +2037,8 @@ LABEL_52:
       }
     }
 
-    v10 = [(MSCMSSignerInfo *)self unprotectedAttributes];
-    v11 = [v10 encodeImplicitAttributesWithError:0];
+    unprotectedAttributes2 = [(MSCMSSignerInfo *)self unprotectedAttributes];
+    v11 = [unprotectedAttributes2 encodeImplicitAttributesWithError:0];
 
     if (v11 && [v11 length] == self->_encodedSignerInfo->var6->var0)
     {
@@ -2060,7 +2060,7 @@ LABEL_14:
   v12 = SecCertificateGetSubjectKeyID();
   if (v12 && ![(MSCMSSignerInfo *)self useIssuerAndSerialNumber])
   {
-    a3->var0 = 3;
+    info->var0 = 3;
     v18 = [MEMORY[0x277CCABB0] numberWithInteger:3];
     version = self->_version;
     self->_version = v18;
@@ -2070,7 +2070,7 @@ LABEL_14:
 
   else
   {
-    a3->var0 = 1;
+    info->var0 = 1;
     v13 = [MEMORY[0x277CCABB0] numberWithInteger:1];
     v14 = self->_version;
     self->_version = v13;
@@ -2086,10 +2086,10 @@ LABEL_14:
   v21 = v52;
 
   [(MSCMSSignerInfo *)self setIdentifierData:v20];
-  v22 = [(MSCMSSignerInfo *)self identifierData];
-  v51[1] = [v22 length];
-  v23 = [(MSCMSSignerInfo *)self identifierData];
-  v51[2] = [v23 bytes];
+  identifierData = [(MSCMSSignerInfo *)self identifierData];
+  v51[1] = [identifierData length];
+  identifierData2 = [(MSCMSSignerInfo *)self identifierData];
+  v51[2] = [identifierData2 bytes];
 
   copy_SignerIdentifier();
   signatureAlgorithm = self->_signatureAlgorithm;
@@ -2149,7 +2149,7 @@ LABEL_26:
   protectedAttributes = self->_protectedAttributes;
   if (protectedAttributes && [(MSCMSMutableAttributeArray *)protectedAttributes count])
   {
-    a3->var3 = malloc_type_malloc(0x10uLL, 0x108004057E67DB5uLL);
+    info->var3 = malloc_type_malloc(0x10uLL, 0x108004057E67DB5uLL);
     v32 = self->_protectedAttributes;
     v49 = v7;
     v33 = [(MSCMSMutableAttributeArray *)v32 encodeImplicitAttributesWithError:&v49];
@@ -2157,8 +2157,8 @@ LABEL_26:
 
     [(MSCMSSignerInfo *)self setSignedAttrsData:v33];
     v47 = [v33 length];
-    v48 = [v33 bytes];
-    MEMORY[0x259C98450](&v47, a3->var3);
+    bytes = [v33 bytes];
+    MEMORY[0x259C98450](&v47, info->var3);
 
     v7 = v34;
   }
@@ -2176,7 +2176,7 @@ LABEL_26:
     unprotectedAttributes = self->_unprotectedAttributes;
     if (unprotectedAttributes && [(MSCMSMutableAttributeArray *)unprotectedAttributes count])
     {
-      a3->var6 = malloc_type_malloc(0x10uLL, 0x108004057E67DB5uLL);
+      info->var6 = malloc_type_malloc(0x10uLL, 0x108004057E67DB5uLL);
       v38 = self->_unprotectedAttributes;
       v45[0] = v7;
       v39 = [(MSCMSMutableAttributeArray *)v38 encodeImplicitAttributesWithError:v45];
@@ -2184,8 +2184,8 @@ LABEL_26:
 
       [(MSCMSSignerInfo *)self setUnsignedAttrsData:v39];
       v47 = [v39 length];
-      v48 = [v39 bytes];
-      MEMORY[0x259C98450](&v47, a3->var6);
+      bytes = [v39 bytes];
+      MEMORY[0x259C98450](&v47, info->var6);
 
       v41 = 1;
       v7 = v40;
@@ -2193,9 +2193,9 @@ LABEL_26:
 
     else
     {
-      if (a3->var6)
+      if (info->var6)
       {
-        a3->var6 = 0;
+        info->var6 = 0;
       }
 
       v41 = 1;
@@ -2209,23 +2209,23 @@ LABEL_44:
   }
 
 LABEL_37:
-  if (a4 && v7)
+  if (error && v7)
   {
     v42 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   if ((v41 & 1) == 0)
   {
     free_SignerInfo();
     v43 = 0;
-    a3->var6 = 0;
-    *&a3->var4.var0.components = 0u;
-    a3->var5 = 0u;
-    *&a3->var2.var0.components = 0u;
-    *&a3->var3 = 0u;
-    *&a3->var0 = 0u;
-    *&a3->var1.var1 = 0u;
+    info->var6 = 0;
+    *&info->var4.var0.components = 0u;
+    info->var5 = 0u;
+    *&info->var2.var0.components = 0u;
+    *&info->var3 = 0u;
+    *&info->var0 = 0u;
+    *&info->var1.var1 = 0u;
     goto LABEL_43;
   }
 
@@ -2236,12 +2236,12 @@ LABEL_43:
   return v43;
 }
 
-- (MSCMSSignerInfo)initWithIdentity:(__SecIdentity *)a3 signatureAlgorithm:(id)a4 error:(id *)a5
+- (MSCMSSignerInfo)initWithIdentity:(__SecIdentity *)identity signatureAlgorithm:(id)algorithm error:(id *)error
 {
-  v8 = a4;
-  if (a5 && *a5)
+  algorithmCopy = algorithm;
+  if (error && *error)
   {
-    v9 = [*a5 copy];
+    v9 = [*error copy];
   }
 
   else
@@ -2250,13 +2250,13 @@ LABEL_43:
   }
 
   v18 = v9;
-  v10 = MSSecIdentityCopyCertificateWithError(a3, &v18);
+  v10 = MSSecIdentityCopyCertificateWithError(identity, &v18);
   v11 = v18;
 
   if (!v10)
   {
     v13 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -2265,14 +2265,14 @@ LABEL_43:
   }
 
   v17 = v11;
-  self = [(MSCMSSignerInfo *)self initWithCertificate:v10 signatureAlgorithm:v8 error:&v17];
+  self = [(MSCMSSignerInfo *)self initWithCertificate:v10 signatureAlgorithm:algorithmCopy error:&v17];
   v12 = v17;
 
   if (!self)
   {
     v13 = 0;
     v11 = v12;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -2281,7 +2281,7 @@ LABEL_43:
   }
 
   v16 = v12;
-  v13 = MSSecIdentityCopyKeyWithError(a3, &v16);
+  v13 = MSSecIdentityCopyKeyWithError(identity, &v16);
   v11 = v16;
 
   if (v13)
@@ -2290,13 +2290,13 @@ LABEL_43:
   }
 
   self->_signerPrivKey = v13;
-  if (a5)
+  if (error)
   {
 LABEL_12:
     if (v11)
     {
       v14 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -2314,12 +2314,12 @@ LABEL_14:
   return self;
 }
 
-- (MSCMSSignerInfo)initWithIdentity:(__SecIdentity *)a3 recipientsAlgorithmCapabilities:(id)a4 error:(id *)a5
+- (MSCMSSignerInfo)initWithIdentity:(__SecIdentity *)identity recipientsAlgorithmCapabilities:(id)capabilities error:(id *)error
 {
-  v8 = a4;
-  if (a5 && *a5)
+  capabilitiesCopy = capabilities;
+  if (error && *error)
   {
-    v9 = [*a5 copy];
+    v9 = [*error copy];
   }
 
   else
@@ -2328,14 +2328,14 @@ LABEL_14:
   }
 
   v19 = v9;
-  v10 = MSSecIdentityCopyCertificateWithError(a3, &v19);
+  v10 = MSSecIdentityCopyCertificateWithError(identity, &v19);
   v11 = v19;
 
   if (!v10)
   {
     v14 = 0;
     v12 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -2343,7 +2343,7 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  v12 = findBestMutuallySupportedSignatureAlgorithm(v10, v8);
+  v12 = findBestMutuallySupportedSignatureAlgorithm(v10, capabilitiesCopy);
   v18 = v11;
   self = [(MSCMSSignerInfo *)self initWithCertificate:v10 signatureAlgorithm:v12 error:&v18];
   v13 = v18;
@@ -2352,7 +2352,7 @@ LABEL_14:
   {
     v14 = 0;
     v11 = v13;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -2361,7 +2361,7 @@ LABEL_14:
   }
 
   v17 = v13;
-  v14 = MSSecIdentityCopyKeyWithError(a3, &v17);
+  v14 = MSSecIdentityCopyKeyWithError(identity, &v17);
   v11 = v17;
 
   if (v14)
@@ -2370,13 +2370,13 @@ LABEL_14:
   }
 
   self->_signerPrivKey = v14;
-  if (a5)
+  if (error)
   {
 LABEL_12:
     if (v11)
     {
       v15 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -2394,11 +2394,11 @@ LABEL_14:
   return self;
 }
 
-- (id)calculateSignerInfoDigest:(id *)a3
+- (id)calculateSignerInfoDigest:(id *)digest
 {
-  if (a3 && *a3)
+  if (digest && *digest)
   {
-    v5 = [*a3 copy];
+    v5 = [*digest copy];
   }
 
   else
@@ -2449,9 +2449,9 @@ LABEL_20:
   v5 = v12;
 LABEL_11:
   v14 = objc_loadWeakRetained(&self->_containingSignedData);
-  v15 = [(MSAlgorithmIdentifier *)self->_digestAlgorithm algorithm];
+  algorithm = [(MSAlgorithmIdentifier *)self->_digestAlgorithm algorithm];
   v29 = v5;
-  v16 = [v14 calculateContentDigestWithAlgorithm:v15 error:&v29];
+  v16 = [v14 calculateContentDigestWithAlgorithm:algorithm error:&v29];
   v17 = v29;
 
   if (!v16)
@@ -2470,7 +2470,7 @@ LABEL_11:
       v21 = 0;
 LABEL_16:
       v17 = v19;
-      if (!a3)
+      if (!digest)
       {
         goto LABEL_26;
       }
@@ -2493,7 +2493,7 @@ LABEL_16:
 
 LABEL_21:
     v21 = 0;
-    if (!a3)
+    if (!digest)
     {
       goto LABEL_26;
     }
@@ -2503,7 +2503,7 @@ LABEL_21:
 
   v16 = v16;
   v21 = v16;
-  if (!a3)
+  if (!digest)
   {
     goto LABEL_26;
   }
@@ -2512,7 +2512,7 @@ LABEL_24:
   if (v17)
   {
     v24 = v17;
-    *a3 = v17;
+    *digest = v17;
   }
 
 LABEL_26:
@@ -2520,14 +2520,14 @@ LABEL_26:
   return v21;
 }
 
-- (BOOL)verifySignatureAndSignerWithPolicies:(id)a3 verifyTime:(id)a4 anchorCertificates:(id)a5 error:(id *)a6
+- (BOOL)verifySignatureAndSignerWithPolicies:(id)policies verifyTime:(id)time anchorCertificates:(id)certificates error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 && *a6)
+  policiesCopy = policies;
+  timeCopy = time;
+  certificatesCopy = certificates;
+  if (error && *error)
   {
-    v13 = [*a6 copy];
+    v13 = [*error copy];
   }
 
   else
@@ -2546,8 +2546,8 @@ LABEL_26:
     goto LABEL_18;
   }
 
-  v16 = [(MSCMSSignerInfo *)self verifyTime:v11];
-  v17 = [(MSCMSSignerInfo *)self createTrustObjectWithPolicies:v10 verifyTime:v16 anchorCertificates:v12 error:a6];
+  v16 = [(MSCMSSignerInfo *)self verifyTime:timeCopy];
+  v17 = [(MSCMSSignerInfo *)self createTrustObjectWithPolicies:policiesCopy verifyTime:v16 anchorCertificates:certificatesCopy error:error];
 
   if (!v17)
   {
@@ -2559,17 +2559,17 @@ LABEL_18:
   if (SecTrustEvaluateWithError(v17, &error))
   {
     v26 = v15;
-    v18 = [(MSCMSSignerInfo *)self verifyCountersignaturesAndCountersignersWithPolicies:v10 verifyTime:v11 anchorCertificates:v12 error:&v26];
-    v19 = v26;
+    v18 = [(MSCMSSignerInfo *)self verifyCountersignaturesAndCountersignersWithPolicies:policiesCopy verifyTime:timeCopy anchorCertificates:certificatesCopy error:&v26];
+    errorCopy = v26;
 
     if (!v18)
     {
       v20 = 0;
-      v15 = v19;
+      v15 = errorCopy;
       goto LABEL_11;
     }
 
-    v25 = v19;
+    v25 = errorCopy;
     v20 = [(MSCMSSignerInfo *)self verifyTimestamps:&v25];
     v21 = v25;
   }
@@ -2579,26 +2579,26 @@ LABEL_18:
     if (error)
     {
       Code = CFErrorGetCode(error);
-      v19 = error;
+      errorCopy = error;
     }
 
     else
     {
-      v19 = 0;
+      errorCopy = 0;
       Code = -1;
     }
 
-    v21 = [MSError MSErrorWithDomain:*MEMORY[0x277CCA590] code:Code underlyingError:v19 description:@"trust evaluation of signer failed"];
+    v21 = [MSError MSErrorWithDomain:*MEMORY[0x277CCA590] code:Code underlyingError:errorCopy description:@"trust evaluation of signer failed"];
 
     v20 = 0;
   }
 
   v15 = v21;
 LABEL_11:
-  if (a6 && v15)
+  if (error && v15)
   {
     v22 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   if (v17)
@@ -2609,13 +2609,13 @@ LABEL_11:
   return v20;
 }
 
-+ (id)decodeSignerInfo:(SignerInfo *)a3 certificates:(id)a4 LAContext:(id)a5 error:(id *)a6
++ (id)decodeSignerInfo:(SignerInfo *)info certificates:(id)certificates LAContext:(id)context error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
-  if (a6 && *a6)
+  certificatesCopy = certificates;
+  contextCopy = context;
+  if (error && *error)
   {
-    v13 = [*a6 copy];
+    v13 = [*error copy];
   }
 
   else
@@ -2623,33 +2623,33 @@ LABEL_11:
     v13 = 0;
   }
 
-  v14 = [MEMORY[0x277CCABB0] numberWithInt:a3->var0];
-  v15 = [MSCMSIdentifier decodeIdentifier:&a3->var1 error:a6];
+  v14 = [MEMORY[0x277CCABB0] numberWithInt:info->var0];
+  v15 = [MSCMSIdentifier decodeIdentifier:&info->var1 error:error];
   v16 = v15;
   v41 = v14;
-  v42 = v12;
+  v42 = contextCopy;
   if (v15)
   {
-    v17 = [v15 type];
-    if (v17 == 1)
+    type = [v15 type];
+    if (type == 1)
     {
       if ([v14 intValue] == 1)
       {
 LABEL_9:
         v47 = v13;
-        CertificateForIdentifier = findCertificateForIdentifier(&a3->var1, v11, v12, &v47);
+        CertificateForIdentifier = findCertificateForIdentifier(&info->var1, certificatesCopy, contextCopy, &v47);
         v19 = v47;
 
         if (CertificateForIdentifier)
         {
-          v39 = v11;
-          v20 = [a1 alloc];
+          v39 = certificatesCopy;
+          v20 = [self alloc];
           [v20 setSignerCertificate:CertificateForIdentifier];
           v46 = v19;
-          v40 = [MSAlgorithmIdentifier algorithmIdentifierWithAsn1AlgId:&a3->var2 error:&v46];
+          v40 = [MSAlgorithmIdentifier algorithmIdentifierWithAsn1AlgId:&info->var2 error:&v46];
           v21 = v46;
 
-          var3 = a3->var3;
+          var3 = info->var3;
           v23 = 0x2798BD000uLL;
           if (var3)
           {
@@ -2678,11 +2678,11 @@ LABEL_9:
                   v23 = 0x2798BD000;
 LABEL_19:
                   v44 = v21;
-                  a1 = [MSAlgorithmIdentifier algorithmIdentifierWithAsn1AlgId:&a3->var4 error:&v44];
+                  self = [MSAlgorithmIdentifier algorithmIdentifierWithAsn1AlgId:&info->var4 error:&v44];
                   v13 = v44;
 
-                  CertificateForIdentifier = NSDataFromOctetString(&a3->var5.var0);
-                  var6 = a3->var6;
+                  CertificateForIdentifier = NSDataFromOctetString(&info->var5.var0);
+                  var6 = info->var6;
                   if (var6)
                   {
                     v32 = *(v23 + 3224);
@@ -2709,7 +2709,7 @@ LABEL_19:
                   [v20 setVersion:v41];
                   [v20 setDigestAlgorithm:v40];
                   [v20 setProtectedAttributes:v6];
-                  [v20 setSignatureAlgorithm:a1];
+                  [v20 setSignatureAlgorithm:self];
                   [v20 setUnprotectedAttributes:v30];
                   [v20 setSignature:CertificateForIdentifier];
                   [v20 setLAContext:v42];
@@ -2737,8 +2737,8 @@ LABEL_19:
                   }
 
 LABEL_27:
-                  v11 = v39;
-                  if (!a6)
+                  certificatesCopy = v39;
+                  if (!error)
                   {
                     goto LABEL_30;
                   }
@@ -2752,7 +2752,7 @@ LABEL_27:
             {
             }
 
-            a1 = 0;
+            self = 0;
             CertificateForIdentifier = 0;
             v30 = 0;
             v20 = 0;
@@ -2770,21 +2770,21 @@ LABEL_27:
       }
     }
 
-    else if (v17 == 2 && [v14 intValue] == 3)
+    else if (type == 2 && [v14 intValue] == 3)
     {
       goto LABEL_9;
     }
 
     [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-26275 underlyingError:v13 description:@"decode failed for signerInfo due to RFC 5652 violation (version)"];
-    v29 = v28 = v11;
+    v29 = v28 = certificatesCopy;
 
     OUTLINED_FUNCTION_2_2();
     CertificateForIdentifier = 0;
     v30 = 0;
     v20 = 0;
     v13 = v29;
-    v11 = v28;
-    if (!a6)
+    certificatesCopy = v28;
+    if (!error)
     {
       goto LABEL_30;
     }
@@ -2797,7 +2797,7 @@ LABEL_27:
 LABEL_33:
   v30 = 0;
   v20 = 0;
-  if (!a6)
+  if (!error)
   {
     goto LABEL_30;
   }
@@ -2806,7 +2806,7 @@ LABEL_28:
   if (v13)
   {
     v36 = v13;
-    *a6 = v13;
+    *error = v13;
   }
 
 LABEL_30:

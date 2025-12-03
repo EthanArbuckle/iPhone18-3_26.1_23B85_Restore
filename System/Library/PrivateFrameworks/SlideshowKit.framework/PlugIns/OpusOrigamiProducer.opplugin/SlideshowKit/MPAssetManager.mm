@@ -1,14 +1,14 @@
 @interface MPAssetManager
-+ (id)convertCGImageToBuffer:(CGImage *)a3;
-+ (id)convertCGImageToBufferUsingDataProvider:(CGImage *)a3;
-+ (id)convertCGImageToBufferUsingRGBDevice:(CGImage *)a3;
++ (id)convertCGImageToBuffer:(CGImage *)buffer;
++ (id)convertCGImageToBufferUsingDataProvider:(CGImage *)provider;
++ (id)convertCGImageToBufferUsingRGBDevice:(CGImage *)device;
 + (id)sharedManager;
 + (void)releaseSharedManager;
-- (CGSize)resolutionForAssetAtPath:(id)a3;
-- (double)posterTimeForAssetAtPath:(id)a3;
-- (id)regionsOfInterestForAsset:(CGImage *)a3;
-- (id)regionsOfInterestForAssetAtPath:(id)a3;
-- (unint64_t)mediaTypeForAssetAtPath:(id)a3;
+- (CGSize)resolutionForAssetAtPath:(id)path;
+- (double)posterTimeForAssetAtPath:(id)path;
+- (id)regionsOfInterestForAsset:(CGImage *)asset;
+- (id)regionsOfInterestForAssetAtPath:(id)path;
+- (unint64_t)mediaTypeForAssetAtPath:(id)path;
 @end
 
 @implementation MPAssetManager
@@ -25,13 +25,13 @@
 
     else
     {
-      objc_sync_enter(a1);
+      objc_sync_enter(self);
       if (!qword_1EF370)
       {
         qword_1EF370 = objc_alloc_init(MPEmbeddedAssetManager);
       }
 
-      objc_sync_exit(a1);
+      objc_sync_exit(self);
       return qword_1EF370;
     }
   }
@@ -43,24 +43,24 @@
 {
   if (qword_1EF370)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     v3 = qword_1EF370;
     objc_sync_enter(qword_1EF370);
 
     qword_1EF370 = 0;
     objc_sync_exit(v3);
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
-- (CGSize)resolutionForAssetAtPath:(id)a3
+- (CGSize)resolutionForAssetAtPath:(id)path
 {
   v41 = CGSizeZero;
   height = CGSizeZero.height;
-  if (a3)
+  if (path)
   {
-    v5 = [a3 isAbsolutePath] ? +[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", a3) : +[NSURL URLWithString:](NSURL, "URLWithString:", a3);
+    v5 = [path isAbsolutePath] ? +[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", path) : +[NSURL URLWithString:](NSURL, "URLWithString:", path);
     v6 = v5;
     v7 = [AVURLAsset assetWithURL:v5];
     if (!v7)
@@ -190,11 +190,11 @@ LABEL_21:
   return result;
 }
 
-- (unint64_t)mediaTypeForAssetAtPath:(id)a3
+- (unint64_t)mediaTypeForAssetAtPath:(id)path
 {
   v5 = 0;
   v4 = 0;
-  [MPFileValidationManager checkFileExtension:a3 isAudio:&v5 + 1 isImage:&v5 isVideo:&v4];
+  [MPFileValidationManager checkFileExtension:path isAudio:&v5 + 1 isImage:&v5 isVideo:&v4];
   if (v5)
   {
     return 2;
@@ -213,13 +213,13 @@ LABEL_21:
   return -1;
 }
 
-- (id)regionsOfInterestForAsset:(CGImage *)a3
+- (id)regionsOfInterestForAsset:(CGImage *)asset
 {
   v4 = objc_autoreleasePoolPush();
-  if (a3)
+  if (asset)
   {
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
+    Width = CGImageGetWidth(asset);
+    Height = CGImageGetHeight(asset);
     if (Width && Height && ((v7 = Width, v8 = Height, v9 = Width / Height, v9 >= 0.5) ? (v10 = v9 <= 2.0) : (v10 = 0), v10))
     {
       v11 = 0;
@@ -235,7 +235,7 @@ LABEL_21:
 
       if (v13 >= 200.0 && Width >= 0x32 && Height >= 0x32)
       {
-        v14 = [[CIDetector detectorOfType:0 context:[NSDictionary dictionaryWithObject:CIDetectorAccuracyLow forKey:CIDetectorAccuracy] options:?], "featuresInImage:", [CIImage imageWithCGImage:a3]];
+        v14 = [[CIDetector detectorOfType:0 context:[NSDictionary dictionaryWithObject:CIDetectorAccuracyLow forKey:CIDetectorAccuracy] options:?], "featuresInImage:", [CIImage imageWithCGImage:asset]];
         v11 = +[NSMutableArray array];
         v23 = 0u;
         v24 = 0u;
@@ -297,10 +297,10 @@ LABEL_21:
   return v11;
 }
 
-- (id)regionsOfInterestForAssetAtPath:(id)a3
+- (id)regionsOfInterestForAssetAtPath:(id)path
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [[NSData alloc] initWithContentsOfFile:a3 options:2 error:0];
+  v6 = [[NSData alloc] initWithContentsOfFile:path options:2 error:0];
   if (!v6)
   {
     goto LABEL_20;
@@ -386,9 +386,9 @@ LABEL_21:
   return v17;
 }
 
-- (double)posterTimeForAssetAtPath:(id)a3
+- (double)posterTimeForAssetAtPath:(id)path
 {
-  v3 = [(MPAssetManager *)self mediaTypeForAssetAtPath:a3];
+  v3 = [(MPAssetManager *)self mediaTypeForAssetAtPath:path];
   result = 0.0;
   if (v3 == 3)
   {
@@ -398,32 +398,32 @@ LABEL_21:
   return result;
 }
 
-+ (id)convertCGImageToBuffer:(CGImage *)a3
++ (id)convertCGImageToBuffer:(CGImage *)buffer
 {
   result = [MPAssetManager convertCGImageToBufferUsingDataProvider:?];
   if (!result)
   {
 
-    return [MPAssetManager convertCGImageToBufferUsingRGBDevice:a3];
+    return [MPAssetManager convertCGImageToBufferUsingRGBDevice:buffer];
   }
 
   return result;
 }
 
-+ (id)convertCGImageToBufferUsingRGBDevice:(CGImage *)a3
++ (id)convertCGImageToBufferUsingRGBDevice:(CGImage *)device
 {
   CGColorSpaceCreateDeviceRGB();
-  CGImageGetWidth(a3);
-  CGImageGetHeight(a3);
+  CGImageGetWidth(device);
+  CGImageGetHeight(device);
   operator new[]();
 }
 
-+ (id)convertCGImageToBufferUsingDataProvider:(CGImage *)a3
++ (id)convertCGImageToBufferUsingDataProvider:(CGImage *)provider
 {
-  if ((CGImageGetAlphaInfo(a3) & 5) != 0 && CGImageGetBitsPerComponent(a3) == 8 && CGImageGetBitsPerPixel(a3) == 32)
+  if ((CGImageGetAlphaInfo(provider) & 5) != 0 && CGImageGetBitsPerComponent(provider) == 8 && CGImageGetBitsPerPixel(provider) == 32)
   {
-    CGImageGetWidth(a3);
-    CGImageGetHeight(a3);
+    CGImageGetWidth(provider);
+    CGImageGetHeight(provider);
     CGColorSpaceCreateDeviceGray();
     operator new[]();
   }

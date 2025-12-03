@@ -1,6 +1,6 @@
 @interface NTKPoodleColorEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)colorNameForColorValue:(unint64_t)a3;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)colorNameForColorValue:(unint64_t)value;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 - (id)pigmentEditOption;
@@ -8,25 +8,25 @@
 
 @implementation NTKPoodleColorEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 9)
+  if (value > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_44AA0[a3];
+    return off_44AA0[value];
   }
 }
 
 - (id)localizedName
 {
-  v2 = [(NTKPoodleColorEditOption *)self pigmentEditOption];
-  v3 = [v2 localizedName];
+  pigmentEditOption = [(NTKPoodleColorEditOption *)self pigmentEditOption];
+  localizedName = [pigmentEditOption localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (id)_valueToFaceBundleStringDict
@@ -49,16 +49,16 @@
   return v3;
 }
 
-+ (id)colorNameForColorValue:(unint64_t)a3
++ (id)colorNameForColorValue:(unint64_t)value
 {
-  if (a3 > 9)
+  if (value > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_44AF0[a3];
+    return off_44AF0[value];
   }
 }
 

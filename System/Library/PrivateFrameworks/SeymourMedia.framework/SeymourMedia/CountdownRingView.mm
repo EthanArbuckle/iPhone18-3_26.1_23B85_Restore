@@ -1,26 +1,26 @@
 @interface CountdownRingView
-- (_TtC12SeymourMedia17CountdownRingView)initWithFrame:(CGRect)a3;
-- (void)countdownAnimator:(id)a3 performingAnimation:(id)a4 withDuration:(double)a5;
-- (void)countdownAnimatorDidFinishAnimating:(id)a3;
+- (_TtC12SeymourMedia17CountdownRingView)initWithFrame:(CGRect)frame;
+- (void)countdownAnimator:(id)animator performingAnimation:(id)animation withDuration:(double)duration;
+- (void)countdownAnimatorDidFinishAnimating:(id)animating;
 @end
 
 @implementation CountdownRingView
 
-- (_TtC12SeymourMedia17CountdownRingView)initWithFrame:(CGRect)a3
+- (_TtC12SeymourMedia17CountdownRingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)countdownAnimatorDidFinishAnimating:(id)a3
+- (void)countdownAnimatorDidFinishAnimating:(id)animating
 {
   v4 = (self + OBJC_IVAR____TtC12SeymourMedia17CountdownRingView_onCountdownCompleted);
   swift_beginAccess();
   v5 = *v4;
   if (*v4)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = sub_20C487984(v5);
     v5(v7);
 
@@ -28,12 +28,12 @@
   }
 }
 
-- (void)countdownAnimator:(id)a3 performingAnimation:(id)a4 withDuration:(double)a5
+- (void)countdownAnimator:(id)animator performingAnimation:(id)animation withDuration:(double)duration
 {
-  v7 = a3;
+  animatorCopy = animator;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_20C5710E8(a4);
+  selfCopy = self;
+  sub_20C5710E8(animation);
 
   swift_unknownObjectRelease();
 }

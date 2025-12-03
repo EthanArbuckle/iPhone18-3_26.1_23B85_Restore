@@ -1,10 +1,10 @@
 @interface LACPreboardAMFIHelper
-+ (BOOL)installProfileWithUUID:(id)a3 signature:(id)a4 error:(id *)a5;
++ (BOOL)installProfileWithUUID:(id)d signature:(id)signature error:(id *)error;
 + (id)getUPPProfile;
-+ (int64_t)_useCaseFromBootMode:(unsigned int)a3;
++ (int64_t)_useCaseFromBootMode:(unsigned int)mode;
 + (int64_t)armedUseCase;
 + (int64_t)useCase;
-+ (void)completeCurrentBootModeWithSuccess:(BOOL)a3;
++ (void)completeCurrentBootModeWithSuccess:(BOOL)success;
 + (void)getUPPProfile;
 @end
 
@@ -12,32 +12,32 @@
 
 + (int64_t)useCase
 {
-  v3 = [a1 _securityBootMode];
+  _securityBootMode = [self _securityBootMode];
 
-  return [a1 _useCaseFromBootMode:v3];
+  return [self _useCaseFromBootMode:_securityBootMode];
 }
 
 + (int64_t)armedUseCase
 {
-  v3 = [a1 _armedSecurityBootMode];
+  _armedSecurityBootMode = [self _armedSecurityBootMode];
 
-  return [a1 _useCaseFromBootMode:v3];
+  return [self _useCaseFromBootMode:_armedSecurityBootMode];
 }
 
-+ (void)completeCurrentBootModeWithSuccess:(BOOL)a3
++ (void)completeCurrentBootModeWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a1 _securityBootMode];
-  v5 = v4;
-  if (v4 == 2)
+  _securityBootMode = [self _securityBootMode];
+  v5 = _securityBootMode;
+  if (_securityBootMode == 2)
   {
     v11 = AMFIDeveloperModeCommit();
     v7 = LACLogPreboard();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 67109376;
-      v16 = v3;
+      v16 = successCopy;
       v17 = 1024;
       v18 = v11;
       v8 = "Committing developer mode value: %u with result: %u";
@@ -51,7 +51,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v4 == 3 && !v3)
+  if (_securityBootMode == 3 && !successCopy)
   {
     v6 = AMFIProfileCommitProfile();
     v7 = LACLogPreboard();
@@ -107,12 +107,12 @@ LABEL_10:
   return v4;
 }
 
-+ (BOOL)installProfileWithUUID:(id)a3 signature:(id)a4 error:(id *)a5
++ (BOOL)installProfileWithUUID:(id)d signature:(id)signature error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 copy];
+  dCopy = d;
+  signatureCopy = signature;
+  v9 = [signatureCopy copy];
   v10 = AMFIProfileSetTrustWithOptions();
   v11 = LACLogDefault();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -124,7 +124,7 @@ LABEL_10:
 
   if (v10)
   {
-    if (!a5)
+    if (!error)
     {
       v15 = 0;
       goto LABEL_13;
@@ -144,12 +144,12 @@ LABEL_10:
   }
 
   v15 = v13 == 0;
-  if (a5 && v13)
+  if (error && v13)
   {
     v12 = [LACError errorWithCode:-1000 debugDescription:@"Unable to commit profile"];
 LABEL_11:
     v15 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_13:
@@ -158,16 +158,16 @@ LABEL_13:
   return v15;
 }
 
-+ (int64_t)_useCaseFromBootMode:(unsigned int)a3
++ (int64_t)_useCaseFromBootMode:(unsigned int)mode
 {
   v3 = &LACPreboardUseCaseUPP;
   v4 = &LACPreboardUseCaseDeveloperMode;
-  if (a3 != 2)
+  if (mode != 2)
   {
     v4 = &LACPreboardUseCaseUnknown;
   }
 
-  if (a3 != 3)
+  if (mode != 3)
   {
     v3 = v4;
   }
@@ -179,7 +179,7 @@ LABEL_13:
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_1B0233000, a2, OS_LOG_TYPE_ERROR, "AMFIProfileGetScheduledProfile returned error code: %d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

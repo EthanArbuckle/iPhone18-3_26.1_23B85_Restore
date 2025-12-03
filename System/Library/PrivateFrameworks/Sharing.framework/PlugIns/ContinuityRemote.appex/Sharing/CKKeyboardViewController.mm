@@ -1,6 +1,6 @@
 @interface CKKeyboardViewController
 - (void)doneButtonPressed;
-- (void)updatePrompt:(id)a3;
+- (void)updatePrompt:(id)prompt;
 @end
 
 @implementation CKKeyboardViewController
@@ -14,17 +14,17 @@
 
   v5 = SFRemoteTextInputPayloadFromLegacyAPI();
   v3 = SFTextInputDataForRTIDataPayload();
-  v4 = [self->super._mainController riSession];
-  [v4 sendPayload:v3];
+  riSession = [self->super._mainController riSession];
+  [riSession sendPayload:v3];
 }
 
-- (void)updatePrompt:(id)a3
+- (void)updatePrompt:(id)prompt
 {
-  v4 = a3;
-  v6 = v4;
-  if (gLogCategory_ContinuityKeyboard > 30 || gLogCategory_ContinuityKeyboard == -1 && (v5 = _LogCategory_Initialize(), v4 = v6, !v5))
+  promptCopy = prompt;
+  v6 = promptCopy;
+  if (gLogCategory_ContinuityKeyboard > 30 || gLogCategory_ContinuityKeyboard == -1 && (v5 = _LogCategory_Initialize(), promptCopy = v6, !v5))
   {
-    if (!v4)
+    if (!promptCopy)
     {
       goto LABEL_6;
     }

@@ -1,36 +1,36 @@
 @interface SWConfigurationScript
 - (NSString)executableScript;
-- (SWConfigurationScript)initWithConfiguration:(id)a3;
+- (SWConfigurationScript)initWithConfiguration:(id)configuration;
 - (WKUserScript)userScript;
 @end
 
 @implementation SWConfigurationScript
 
-- (SWConfigurationScript)initWithConfiguration:(id)a3
+- (SWConfigurationScript)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     v10.receiver = self;
     v10.super_class = SWConfigurationScript;
     v5 = [(SWConfigurationScript *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [configurationCopy copy];
       configuration = v5->_configuration;
       v5->_configuration = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (WKUserScript)userScript

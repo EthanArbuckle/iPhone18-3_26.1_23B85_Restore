@@ -1,64 +1,64 @@
 @interface MTGenericCollectionCell
-+ (CGSize)artworkSizeForViewWidth:(double)a3;
++ (CGSize)artworkSizeForViewWidth:(double)width;
 + (Class)textStackViewClass;
-+ (double)heightForWidth:(double)a3;
++ (double)heightForWidth:(double)width;
 + (double)preferredContentWidth;
-- (CGRect)artworkFrameForContentViewSize:(CGSize)a3;
-- (CGRect)sideViewFrameForContentViewSize:(CGSize)a3;
-- (CGRect)textStackFrameForContentViewSize:(CGSize)a3 artworkFrame:(CGRect)a4 sideViewFrame:(CGRect)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)artworkFrameForContentViewSize:(CGSize)size;
+- (CGRect)sideViewFrameForContentViewSize:(CGSize)size;
+- (CGRect)textStackFrameForContentViewSize:(CGSize)size artworkFrame:(CGRect)frame sideViewFrame:(CGRect)viewFrame;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MTArtworkView)artworkView;
 - (MTLabelStackView)textStackView;
 - (NSString)artworkKey;
 - (NSString)subtitle;
 - (NSString)title;
-- (double)textViewMaxXForArtworkFrame:(CGRect)a3 sideViewFrame:(CGRect)a4;
-- (double)textViewMinXForArtworkFrame:(CGRect)a3 sideViewFrame:(CGRect)a4;
+- (double)textViewMaxXForArtworkFrame:(CGRect)frame sideViewFrame:(CGRect)viewFrame;
+- (double)textViewMinXForArtworkFrame:(CGRect)frame sideViewFrame:(CGRect)viewFrame;
 - (void)configureSubviews;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setArtworkKey:(id)a3;
-- (void)setShowsArtwork:(BOOL)a3;
-- (void)setSideView:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setArtworkKey:(id)key;
+- (void)setShowsArtwork:(BOOL)artwork;
+- (void)setSideView:(id)view;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 - (void)updateColors;
 @end
 
 @implementation MTGenericCollectionCell
 
-+ (double)heightForWidth:(double)a3
++ (double)heightForWidth:(double)width
 {
-  if ([a1 showsArtwork])
+  if ([self showsArtwork])
   {
-    [a1 artworkSizeForViewWidth:a3];
+    [self artworkSizeForViewWidth:width];
     return v5 + 5.0 + 5.0;
   }
 
   else
   {
-    v7 = [a1 textStackViewClass];
-    v8 = [v7 defaultTitleFont];
-    v9 = [v7 defaultSubtitleFont];
-    v10 = [v7 defaultTitleNumberOfLines] != 1;
-    [v8 lineHeight];
+    textStackViewClass = [self textStackViewClass];
+    defaultTitleFont = [textStackViewClass defaultTitleFont];
+    defaultSubtitleFont = [textStackViewClass defaultSubtitleFont];
+    v10 = [textStackViewClass defaultTitleNumberOfLines] != 1;
+    [defaultTitleFont lineHeight];
     v12 = v11;
-    [v8 mt_offsetFromCapHeightToAscent];
+    [defaultTitleFont mt_offsetFromCapHeightToAscent];
     v14 = v12 - v13 + 10.0;
-    [v7 distanceBetweenLabelFramesWithTitleFont:v8 subtitleFont:v9 multilineTitle:v10];
+    [textStackViewClass distanceBetweenLabelFramesWithTitleFont:defaultTitleFont subtitleFont:defaultSubtitleFont multilineTitle:v10];
     v16 = v15 + v14;
-    [v9 lineHeight];
+    [defaultSubtitleFont lineHeight];
     v18 = v17;
-    [v9 mt_offsetFromLastBaselineToBottom];
+    [defaultSubtitleFont mt_offsetFromLastBaselineToBottom];
     v6 = v16 + v18 - v19 + 10.0;
   }
 
   return v6;
 }
 
-+ (CGSize)artworkSizeForViewWidth:(double)a3
++ (CGSize)artworkSizeForViewWidth:(double)width
 {
-  v3 = +[MTEpisodeLockup styleForWidth:showsArtwork:](MTEpisodeLockup, "styleForWidth:showsArtwork:", [a1 showsArtwork], a3);
+  v3 = +[MTEpisodeLockup styleForWidth:showsArtwork:](MTEpisodeLockup, "styleForWidth:showsArtwork:", [self showsArtwork], width);
 
   [MTEpisodeLockup artworkSizeForStyle:v3];
   result.height = v5;
@@ -68,7 +68,7 @@
 
 + (Class)textStackViewClass
 {
-  [a1 showsArtwork];
+  [self showsArtwork];
   v2 = objc_opt_class();
 
   return v2;
@@ -76,7 +76,7 @@
 
 + (double)preferredContentWidth
 {
-  v2 = [objc_msgSend(a1 "textStackViewClass")];
+  v2 = [objc_msgSend(self "textStackViewClass")];
   v3 = [UIFont mt_preferredFontForTextStyle:v2];
   [v3 _scaledValueForValue:384.0];
   v5 = v4;
@@ -86,57 +86,57 @@
 
 - (NSString)title
 {
-  v2 = [(MTGenericCollectionCell *)self textStackView];
-  v3 = [v2 title];
+  textStackView = [(MTGenericCollectionCell *)self textStackView];
+  title = [textStackView title];
 
-  return v3;
+  return title;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(MTGenericCollectionCell *)self textStackView];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  textStackView = [(MTGenericCollectionCell *)self textStackView];
+  [textStackView setTitle:titleCopy];
 }
 
 - (NSString)subtitle
 {
-  v2 = [(MTGenericCollectionCell *)self textStackView];
-  v3 = [v2 subtitle];
+  textStackView = [(MTGenericCollectionCell *)self textStackView];
+  subtitle = [textStackView subtitle];
 
-  return v3;
+  return subtitle;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(MTGenericCollectionCell *)self textStackView];
-  [v5 setSubtitle:v4];
+  subtitleCopy = subtitle;
+  textStackView = [(MTGenericCollectionCell *)self textStackView];
+  [textStackView setSubtitle:subtitleCopy];
 }
 
 - (NSString)artworkKey
 {
   if ([(MTGenericCollectionCell *)self showsArtwork])
   {
-    v3 = [(MTGenericCollectionCell *)self artworkView];
-    v4 = [v3 artworkKey];
+    artworkView = [(MTGenericCollectionCell *)self artworkView];
+    artworkKey = [artworkView artworkKey];
   }
 
   else
   {
-    v4 = 0;
+    artworkKey = 0;
   }
 
-  return v4;
+  return artworkKey;
 }
 
-- (void)setArtworkKey:(id)a3
+- (void)setArtworkKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   if ([(MTGenericCollectionCell *)self showsArtwork])
   {
-    v4 = [(MTGenericCollectionCell *)self artworkView];
-    [v4 setArtworkKey:v5];
+    artworkView = [(MTGenericCollectionCell *)self artworkView];
+    [artworkView setArtworkKey:keyCopy];
   }
 }
 
@@ -150,14 +150,14 @@
   self->_showsArtwork = [objc_opt_class() showsArtwork];
   if ([(MTGenericCollectionCell *)self showsArtwork])
   {
-    v3 = [(MTCollectionViewCell *)self contentView];
-    v4 = [(MTGenericCollectionCell *)self artworkView];
-    [v3 addSubview:v4];
+    contentView = [(MTCollectionViewCell *)self contentView];
+    artworkView = [(MTGenericCollectionCell *)self artworkView];
+    [contentView addSubview:artworkView];
   }
 
-  v5 = [(MTCollectionViewCell *)self contentView];
-  v6 = [(MTGenericCollectionCell *)self textStackView];
-  [v5 addSubview:v6];
+  contentView2 = [(MTCollectionViewCell *)self contentView];
+  textStackView = [(MTGenericCollectionCell *)self textStackView];
+  [contentView2 addSubview:textStackView];
 
   [(MTGenericCollectionCell *)self updateFonts];
   [(MTGenericCollectionCell *)self updateColors];
@@ -166,55 +166,55 @@
 
 - (void)updateColors
 {
-  v3 = [(MTCollectionViewCell *)self contentView];
-  [v3 setOpaque:1];
+  contentView = [(MTCollectionViewCell *)self contentView];
+  [contentView setOpaque:1];
 
   v5 = +[UIColor backgroundColor];
-  v4 = [(MTCollectionViewCell *)self contentView];
-  [v4 setBackgroundColor:v5];
+  contentView2 = [(MTCollectionViewCell *)self contentView];
+  [contentView2 setBackgroundColor:v5];
 }
 
-- (void)setShowsArtwork:(BOOL)a3
+- (void)setShowsArtwork:(BOOL)artwork
 {
-  if (self->_showsArtwork != a3)
+  if (self->_showsArtwork != artwork)
   {
-    self->_showsArtwork = a3;
-    if (a3)
+    self->_showsArtwork = artwork;
+    if (artwork)
     {
-      v6 = [(MTCollectionViewCell *)self contentView];
-      v5 = [(MTGenericCollectionCell *)self artworkView];
-      [v6 addSubview:v5];
+      contentView = [(MTCollectionViewCell *)self contentView];
+      artworkView = [(MTGenericCollectionCell *)self artworkView];
+      [contentView addSubview:artworkView];
     }
 
     else
     {
-      v6 = [(MTGenericCollectionCell *)self artworkView];
-      [v6 removeFromSuperview];
+      contentView = [(MTGenericCollectionCell *)self artworkView];
+      [contentView removeFromSuperview];
     }
   }
 }
 
-- (void)setSideView:(id)a3
+- (void)setSideView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   sideView = self->_sideView;
-  if (sideView != v5)
+  if (sideView != viewCopy)
   {
-    v9 = v5;
-    v7 = [(UIView *)sideView isEqual:v5];
-    v5 = v9;
+    v9 = viewCopy;
+    v7 = [(UIView *)sideView isEqual:viewCopy];
+    viewCopy = v9;
     if ((v7 & 1) == 0)
     {
       [(UIView *)self->_sideView removeFromSuperview];
-      objc_storeStrong(&self->_sideView, a3);
+      objc_storeStrong(&self->_sideView, view);
       if (v9)
       {
-        v8 = [(MTCollectionViewCell *)self contentView];
-        [v8 addSubview:v9];
+        contentView = [(MTCollectionViewCell *)self contentView];
+        [contentView addSubview:v9];
       }
 
       [(MTGenericCollectionCell *)self setNeedsLayout];
-      v5 = v9;
+      viewCopy = v9;
     }
   }
 }
@@ -224,8 +224,8 @@
   v37.receiver = self;
   v37.super_class = MTGenericCollectionCell;
   [(MTCollectionViewCell *)&v37 layoutSubviews];
-  v3 = [(MTCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MTCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
@@ -236,24 +236,24 @@
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(MTGenericCollectionCell *)self artworkView];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  artworkView = [(MTGenericCollectionCell *)self artworkView];
+  [artworkView setFrame:{v9, v11, v13, v15}];
 
   [(MTGenericCollectionCell *)self sideViewFrameForContentViewSize:v5, v7];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(MTGenericCollectionCell *)self sideView];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  sideView = [(MTGenericCollectionCell *)self sideView];
+  [sideView setFrame:{v18, v20, v22, v24}];
 
   [(MTGenericCollectionCell *)self textStackFrameForContentViewSize:v5 artworkFrame:v7 sideViewFrame:v36, v35, v13, v15, *&v18, *&v20, *&v22, *&v24];
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  v34 = [(MTGenericCollectionCell *)self textStackView];
-  [v34 setFrame:{v27, v29, v31, v33}];
+  textStackView = [(MTGenericCollectionCell *)self textStackView];
+  [textStackView setFrame:{v27, v29, v31, v33}];
 }
 
 - (void)prepareForReuse
@@ -267,10 +267,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [objc_opt_class() heightForWidth:a3.width];
+  width = fits.width;
+  [objc_opt_class() heightForWidth:fits.width];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -278,10 +278,10 @@
   return result;
 }
 
-- (CGRect)artworkFrameForContentViewSize:(CGSize)a3
+- (CGRect)artworkFrameForContentViewSize:(CGSize)size
 {
-  width = a3.width;
-  [objc_opt_class() artworkSizeForViewWidth:a3.width];
+  width = size.width;
+  [objc_opt_class() artworkSizeForViewWidth:size.width];
   v6 = v5;
   v8 = v7;
   [(MTGenericCollectionCell *)self layoutMargins];
@@ -308,21 +308,21 @@
   return result;
 }
 
-- (CGRect)sideViewFrameForContentViewSize:(CGSize)a3
+- (CGRect)sideViewFrameForContentViewSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   [(MTGenericCollectionCell *)self layoutMargins];
   v6 = v5;
-  v7 = [(MTGenericCollectionCell *)self sideView];
-  [v7 frame];
+  sideView = [(MTGenericCollectionCell *)self sideView];
+  [sideView frame];
   v9 = v8;
   v11 = v10;
 
   IMRoundToPixel();
   v13 = v12;
-  v14 = [(MTGenericCollectionCell *)self mt_isRTL];
+  mt_isRTL = [(MTGenericCollectionCell *)self mt_isRTL];
   v15 = width - v6 - v9;
-  if (v14)
+  if (mt_isRTL)
   {
     v15 = v6;
   }
@@ -337,18 +337,18 @@
   return result;
 }
 
-- (CGRect)textStackFrameForContentViewSize:(CGSize)a3 artworkFrame:(CGRect)a4 sideViewFrame:(CGRect)a5
+- (CGRect)textStackFrameForContentViewSize:(CGSize)size artworkFrame:(CGRect)frame sideViewFrame:(CGRect)viewFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [(MTGenericCollectionCell *)self textViewMinXForArtworkFrame:a4.origin.x sideViewFrame:a4.origin.y, a4.size.width, a4.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(MTGenericCollectionCell *)self textViewMinXForArtworkFrame:frame.origin.x sideViewFrame:frame.origin.y, frame.size.width, frame.size.height, viewFrame.origin.x, viewFrame.origin.y, viewFrame.size.width, viewFrame.size.height];
   v10 = v9;
-  [(MTGenericCollectionCell *)self textViewMaxXForArtworkFrame:x sideViewFrame:y, width, height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(MTGenericCollectionCell *)self textViewMaxXForArtworkFrame:x sideViewFrame:y, width, height, viewFrame.origin.x, viewFrame.origin.y, viewFrame.size.width, viewFrame.size.height];
   v12 = v11 - v10;
-  v13 = [(MTGenericCollectionCell *)self textStackView];
-  [v13 sizeThatFits:{v12, 1.79769313e308}];
+  textStackView = [(MTGenericCollectionCell *)self textStackView];
+  [textStackView sizeThatFits:{v12, 1.79769313e308}];
   v15 = v14;
 
   IMRoundToPixel();
@@ -363,16 +363,16 @@
   return result;
 }
 
-- (double)textViewMinXForArtworkFrame:(CGRect)a3 sideViewFrame:(CGRect)a4
+- (double)textViewMinXForArtworkFrame:(CGRect)frame sideViewFrame:(CGRect)viewFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = viewFrame.size.height;
+  width = viewFrame.size.width;
+  y = viewFrame.origin.y;
+  x = viewFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   if (![(MTGenericCollectionCell *)self mt_isRTL])
   {
     x = v11;
@@ -400,16 +400,16 @@
   return MaxX + v14;
 }
 
-- (double)textViewMaxXForArtworkFrame:(CGRect)a3 sideViewFrame:(CGRect)a4
+- (double)textViewMaxXForArtworkFrame:(CGRect)frame sideViewFrame:(CGRect)viewFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = viewFrame.size.height;
+  width = viewFrame.size.width;
+  y = viewFrame.origin.y;
+  x = viewFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   if ([(MTGenericCollectionCell *)self mt_isRTL])
   {
     x = v11;

@@ -33,9 +33,9 @@
     v4 = v4 + -360.0;
   }
 
-  v5 = (a3 - a1) * 0.0174532925;
+  v5 = (a3 - self) * 0.0174532925;
   v6 = v4 * 0.0174532925;
-  v7 = __sincos_stret((a1 + a3) * 0.0174532925 * 0.5);
+  v7 = __sincos_stret((self + a3) * 0.0174532925 * 0.5);
   v8 = sqrt(v7.__sinval * -0.00669437999 * v7.__sinval + 1.0);
   return sqrt(v7.__cosval * (6378137.0 / v8) * v6 * (v7.__cosval * (6378137.0 / v8) * v6) + v5 * (6335439.33 / (v8 * (v8 * v8))) * (v5 * (6335439.33 / (v8 * (v8 * v8)))));
 }
@@ -44,9 +44,9 @@
 {
   v4 = MEMORY[0x277D01160];
   v5 = a3;
-  [a1 latitude];
+  [self latitude];
   v7 = v6;
-  [a1 longitude];
+  [self longitude];
   v9 = v8;
   [v5 latitude];
   v11 = v10;
@@ -60,23 +60,23 @@
 {
   v2 = objc_opt_new();
   v3 = MEMORY[0x277CCABB0];
-  [a1 latitude];
+  [self latitude];
   v4 = [v3 numberWithDouble:?];
   [v2 setObject:v4 forKeyedSubscript:@"locationLatitude"];
 
   v5 = MEMORY[0x277CCABB0];
-  [a1 longitude];
+  [self longitude];
   v6 = [v5 numberWithDouble:?];
   [v2 setObject:v6 forKeyedSubscript:@"locationLongitude"];
 
   v7 = MEMORY[0x277CCABB0];
-  [a1 horizontalUncertainty];
+  [self horizontalUncertainty];
   v8 = [v7 numberWithDouble:?];
   [v2 setObject:v8 forKeyedSubscript:@"locationHorizontalUncertainty"];
 
   v9 = MEMORY[0x277CCABB0];
-  v10 = [a1 date];
-  [v10 timeIntervalSinceReferenceDate];
+  date = [self date];
+  [date timeIntervalSinceReferenceDate];
   v11 = [v9 numberWithDouble:?];
   [v2 setObject:v11 forKeyedSubscript:@"locationDate"];
 

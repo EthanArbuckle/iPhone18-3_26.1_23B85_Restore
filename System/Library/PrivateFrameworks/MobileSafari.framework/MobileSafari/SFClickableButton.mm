@@ -1,14 +1,14 @@
 @interface SFClickableButton
-- (void)setClickEnabled:(BOOL)a3;
+- (void)setClickEnabled:(BOOL)enabled;
 @end
 
 @implementation SFClickableButton
 
-- (void)setClickEnabled:(BOOL)a3
+- (void)setClickEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   clickInteraction = self->_clickInteraction;
-  if (v3)
+  if (enabledCopy)
   {
     if (!clickInteraction)
     {

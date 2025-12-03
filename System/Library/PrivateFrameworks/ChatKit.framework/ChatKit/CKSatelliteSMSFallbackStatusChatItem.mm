@@ -1,27 +1,27 @@
 @interface CKSatelliteSMSFallbackStatusChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (UIEdgeInsets)contentInsets;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems;
 - (id)loadTranscriptText;
 - (void)unloadTranscriptText;
 @end
 
 @implementation CKSatelliteSMSFallbackStatusChatItem
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = [v11 objectAtIndex:a4 - 1];
+    v13 = [itemsCopy objectAtIndex:index - 1];
   }
 
   v14 = +[CKUIBehavior sharedBehaviors];
@@ -41,10 +41,10 @@
     goto LABEL_12;
   }
 
-  v20 = [v13 layoutType];
-  if (v20 <= 0x18)
+  layoutType = [v13 layoutType];
+  if (layoutType <= 0x18)
   {
-    if (((1 << v20) & 0x180FF4C) != 0)
+    if (((1 << layoutType) & 0x180FF4C) != 0)
     {
       if (IMOSLoggingEnabled())
       {
@@ -62,7 +62,7 @@
       goto LABEL_12;
     }
 
-    if (((1 << v20) & 0x22) != 0)
+    if (((1 << layoutType) & 0x22) != 0)
     {
       goto LABEL_12;
     }
@@ -93,24 +93,24 @@ LABEL_12:
 - (id)loadTranscriptText
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v28 = [v3 transcriptEmphasizedFontAttributes];
+  transcriptEmphasizedFontAttributes = [v3 transcriptEmphasizedFontAttributes];
 
   v4 = +[CKUIBehavior sharedBehaviors];
-  v27 = [v4 transcriptRegularFontAttributes];
+  transcriptRegularFontAttributes = [v4 transcriptRegularFontAttributes];
 
   v5 = CKFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"PLACEHOLDER_TEXT_VIEW_SATELLITE_MESSAGE_SMS" value:&stru_1F04268F8 table:@"ChatKit-CarrierPigeon"];
 
-  v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v6 attributes:v28];
-  v8 = [(CKChatItem *)self IMChatItem];
-  v9 = [v8 handle];
-  v10 = [v9 _displayNameWithAbbreviation];
+  v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v6 attributes:transcriptEmphasizedFontAttributes];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  handle = [iMChatItem handle];
+  _displayNameWithAbbreviation = [handle _displayNameWithAbbreviation];
 
-  LODWORD(v9) = [v8 canSMSReply];
+  LODWORD(handle) = [iMChatItem canSMSReply];
   v11 = MEMORY[0x1E696AEC0];
   v12 = CKFrameworkBundle();
   v13 = v12;
-  if (v9)
+  if (handle)
   {
     v14 = @"SMS_FALLBACK_STATUS_MESSAGE";
   }
@@ -121,12 +121,12 @@ LABEL_12:
   }
 
   v15 = [v12 localizedStringForKey:v14 value:&stru_1F04268F8 table:@"ChatKit-CarrierPigeon"];
-  v16 = [v11 localizedStringWithFormat:v15, v10];
+  v16 = [v11 localizedStringWithFormat:v15, _displayNameWithAbbreviation];
 
-  v17 = [MEMORY[0x1E69DC668] sharedApplication];
-  v18 = [v17 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v18 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v19 = @"\u200F";
   }
@@ -138,7 +138,7 @@ LABEL_12:
 
   v20 = [(__CFString *)v19 stringByAppendingString:v16];
 
-  v21 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v20 attributes:v27];
+  v21 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v20 attributes:transcriptRegularFontAttributes];
   v22 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n"];
   [(NSAttributedString *)v7 appendLocalizedFormat:v22];
   [(NSAttributedString *)v7 appendLocalizedFormat:v21];
@@ -171,24 +171,24 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [(CKSatelliteSMSFallbackStatusChatItem *)self loadTranscriptText];
-  [v9 boundingRectWithSize:1 options:0 context:{width, height}];
+  loadTranscriptText = [(CKSatelliteSMSFallbackStatusChatItem *)self loadTranscriptText];
+  [loadTranscriptText boundingRectWithSize:1 options:0 context:{width, height}];
   v11 = v10;
 
   [v8 smallTranscriptSpace];
   v13 = v12;
   [v8 transcriptBoldTextAlignmentInsets];
-  if (a4)
+  if (insets)
   {
-    a4->top = v14;
-    a4->left = v15;
-    a4->bottom = v16;
-    a4->right = v17;
+    insets->top = v14;
+    insets->left = v15;
+    insets->bottom = v16;
+    insets->right = v17;
   }
 
   v18 = v11 - v14 + v13 + v11 - v16;

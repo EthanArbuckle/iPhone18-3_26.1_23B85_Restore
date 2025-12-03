@@ -7,9 +7,9 @@
 - (uint64_t)dnds_lifetimePhaseForDate:()LifetimePhase
 {
   v4 = a3;
-  v5 = [a1 startDate];
-  v6 = [a1 endDate];
-  v7 = DNDSGetLifetimePhase(v4, v5, v6);
+  startDate = [self startDate];
+  endDate = [self endDate];
+  v7 = DNDSGetLifetimePhase(v4, startDate, endDate);
 
   return v7;
 }

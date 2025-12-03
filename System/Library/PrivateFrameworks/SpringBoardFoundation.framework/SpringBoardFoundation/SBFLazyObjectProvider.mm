@@ -1,19 +1,19 @@
 @interface SBFLazyObjectProvider
-- (SBFLazyObjectProvider)initWithGenerator:(id)a3;
+- (SBFLazyObjectProvider)initWithGenerator:(id)generator;
 - (id)object;
 @end
 
 @implementation SBFLazyObjectProvider
 
-- (SBFLazyObjectProvider)initWithGenerator:(id)a3
+- (SBFLazyObjectProvider)initWithGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v9.receiver = self;
   v9.super_class = SBFLazyObjectProvider;
   v5 = [(SBFLazyObjectProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [generatorCopy copy];
     generator = v5->_generator;
     v5->_generator = v6;
   }

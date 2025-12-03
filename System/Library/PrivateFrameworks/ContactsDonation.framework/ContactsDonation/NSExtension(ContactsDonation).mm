@@ -9,13 +9,13 @@
   v4 = MEMORY[0x277CFBE90];
   v5 = a3;
   v6 = objc_alloc_init(v4);
-  v7 = [v6 completionHandlerAdapter];
-  [a1 beginExtensionRequestWithInputItems:v5 completion:v7];
+  completionHandlerAdapter = [v6 completionHandlerAdapter];
+  [self beginExtensionRequestWithInputItems:v5 completion:completionHandlerAdapter];
 
-  v8 = [v6 future];
-  [v8 addFailureBlock:&__block_literal_global_3];
+  future = [v6 future];
+  [future addFailureBlock:&__block_literal_global_3];
 
-  return v8;
+  return future;
 }
 
 @end

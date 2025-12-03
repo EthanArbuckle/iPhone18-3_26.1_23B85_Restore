@@ -1,73 +1,73 @@
 @interface HMDeviceAHPSConnectionManager
-- (HMDeviceAHPSConnectionManager)initWithQueue:(id)a3;
-- (void)_activateWithBluetoothDeviceUUID:(id)a3;
+- (HMDeviceAHPSConnectionManager)initWithQueue:(id)queue;
+- (void)_activateWithBluetoothDeviceUUID:(id)d;
 - (void)_centralManagerEnsureStarted;
 - (void)_centralManagerEnsureStopped;
 - (void)_discoverAccessory;
 - (void)_invalidate;
-- (void)_triggerOnDemandDiagnosticCheckWithCompletionHandler:(id)a3;
-- (void)_writeHMSettingsConfigsData:(id)a3 completion:(id)a4;
-- (void)activateWithBluetoothDeviceUUID:(id)a3;
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)_triggerOnDemandDiagnosticCheckWithCompletionHandler:(id)handler;
+- (void)_writeHMSettingsConfigsData:(id)data completion:(id)completion;
+- (void)activateWithBluetoothDeviceUUID:(id)d;
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)invalidate;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)triggerOnDemandDiagnosticCheckWithCompletionHandler:(id)a3;
-- (void)writeHMSettingsConfigsData:(id)a3 completion:(id)a4;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)triggerOnDemandDiagnosticCheckWithCompletionHandler:(id)handler;
+- (void)writeHMSettingsConfigsData:(id)data completion:(id)completion;
 @end
 
 @implementation HMDeviceAHPSConnectionManager
 
-- (HMDeviceAHPSConnectionManager)initWithQueue:(id)a3
+- (HMDeviceAHPSConnectionManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = HMDeviceAHPSConnectionManager;
   v6 = [(HMDeviceAHPSConnectionManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)activateWithBluetoothDeviceUUID:(id)a3
+- (void)activateWithBluetoothDeviceUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__HMDeviceAHPSConnectionManager_activateWithBluetoothDeviceUUID___block_invoke;
   v7[3] = &unk_2796EFEC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithBluetoothDeviceUUID:(id)a3
+- (void)_activateWithBluetoothDeviceUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   if (!self->_activateCalled)
   {
-    v6 = v5;
+    v6 = dCopy;
     self->_activateCalled = 1;
     if (gLogCategory_HMDeviceAHPSConnectionManager <= 30 && (gLogCategory_HMDeviceAHPSConnectionManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceAHPSConnectionManager _activateWithBluetoothDeviceUUID:];
     }
 
-    objc_storeStrong(&self->_identifier, a3);
+    objc_storeStrong(&self->_identifier, d);
     [(HMDeviceAHPSConnectionManager *)self _centralManagerEnsureStarted];
-    v5 = v6;
+    dCopy = v6;
   }
 }
 
@@ -252,15 +252,15 @@ LABEL_6:
 LABEL_11:
 }
 
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral
 {
-  v15 = a5;
+  peripheralCopy = peripheral;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   identifier = self->_identifier;
-  v9 = [v15 identifier];
-  v10 = [v9 UUIDString];
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
   v11 = identifier;
-  v12 = v10;
+  v12 = uUIDString;
   v13 = v12;
   if (v11 == v12)
   {
@@ -284,27 +284,27 @@ LABEL_17:
     }
   }
 
-  if (a4 == 1 && !self->_selectedPeripheral)
+  if (occur == 1 && !self->_selectedPeripheral)
   {
     if (gLogCategory_HMDeviceAHPSConnectionManager <= 30 && (gLogCategory_HMDeviceAHPSConnectionManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceAHPSConnectionManager centralManager:connectionEventDidOccur:forPeripheral:];
     }
 
-    objc_storeStrong(&self->_selectedPeripheral, a5);
-    [(CBCentralManager *)self->_centralManager connectPeripheral:v15 options:0];
+    objc_storeStrong(&self->_selectedPeripheral, peripheral);
+    [(CBCentralManager *)self->_centralManager connectPeripheral:peripheralCopy options:0];
   }
 
 LABEL_12:
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = [a3 state];
-  v5 = v4 == 5;
+  state = [state state];
+  v5 = state == 5;
   if (self->_isCentralManagerOn != v5)
   {
-    v6 = v4;
+    v6 = state;
     if (gLogCategory_HMDeviceAHPSConnectionManager <= 30 && (gLogCategory_HMDeviceAHPSConnectionManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceAHPSConnectionManager centralManagerDidUpdateState:];
@@ -319,15 +319,15 @@ LABEL_12:
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v17 = a4;
+  peripheralCopy = peripheral;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   identifier = self->_identifier;
-  v6 = [v17 identifier];
-  v7 = [v6 UUIDString];
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
   v8 = identifier;
-  v9 = v7;
+  v9 = uUIDString;
   v10 = v9;
   if (v8 == v9)
   {
@@ -351,13 +351,13 @@ LABEL_15:
     }
   }
 
-  v12 = v17;
+  v12 = peripheralCopy;
   if (gLogCategory_HMDeviceAHPSConnectionManager <= 30)
   {
-    if (gLogCategory_HMDeviceAHPSConnectionManager != -1 || (v13 = _LogCategory_Initialize(), v12 = v17, v13))
+    if (gLogCategory_HMDeviceAHPSConnectionManager != -1 || (v13 = _LogCategory_Initialize(), v12 = peripheralCopy, v13))
     {
       [HMDeviceAHPSConnectionManager centralManager:v12 didConnectPeripheral:?];
-      v12 = v17;
+      v12 = peripheralCopy;
     }
   }
 
@@ -365,20 +365,20 @@ LABEL_15:
   v14 = MEMORY[0x277CBEA60];
   v15 = [MEMORY[0x277CBE0A0] UUIDWithString:*MEMORY[0x277CBDF60]];
   v16 = [v14 arrayWithObjects:{v15, 0}];
-  [v17 discoverServices:v16];
+  [peripheralCopy discoverServices:v16];
 
 LABEL_10:
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v14 = a4;
+  peripheralCopy = peripheral;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   identifier = self->_identifier;
-  v7 = [v14 identifier];
-  v8 = [v7 UUIDString];
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
   v9 = identifier;
-  v10 = v8;
+  v10 = uUIDString;
   v11 = v10;
   if (v9 == v10)
   {
@@ -404,7 +404,7 @@ LABEL_15:
 
   if (gLogCategory_HMDeviceAHPSConnectionManager <= 30 && (gLogCategory_HMDeviceAHPSConnectionManager != -1 || _LogCategory_Initialize()))
   {
-    [HMDeviceAHPSConnectionManager centralManager:v14 didDisconnectPeripheral:? error:?];
+    [HMDeviceAHPSConnectionManager centralManager:peripheralCopy didDisconnectPeripheral:? error:?];
   }
 
   selectedPeripheral = self->_selectedPeripheral;
@@ -413,15 +413,15 @@ LABEL_15:
 LABEL_10:
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v5 = a3;
+  peripheralCopy = peripheral;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   identifier = self->_identifier;
-  v7 = [v5 identifier];
-  v8 = [v7 UUIDString];
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
   v9 = identifier;
-  v10 = v8;
+  v10 = uUIDString;
   v11 = v10;
   if (v9 == v10)
   {
@@ -445,13 +445,13 @@ LABEL_9:
     }
   }
 
-  v13 = [v5 services];
+  services = [peripheralCopy services];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__HMDeviceAHPSConnectionManager_peripheral_didDiscoverServices___block_invoke;
   v14[3] = &unk_2796EFF40;
-  v15 = v5;
-  [v13 enumerateObjectsUsingBlock:v14];
+  v15 = peripheralCopy;
+  [services enumerateObjectsUsingBlock:v14];
 
 LABEL_7:
 }
@@ -474,16 +474,16 @@ void __64__HMDeviceAHPSConnectionManager_peripheral_didDiscoverServices___block_
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   identifier = self->_identifier;
-  v10 = [v7 identifier];
-  v11 = [v10 UUIDString];
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
   v12 = identifier;
-  v13 = v11;
+  v13 = uUIDString;
   v14 = v13;
   if (v12 == v13)
   {
@@ -509,16 +509,16 @@ LABEL_20:
 
   if (gLogCategory_HMDeviceAHPSConnectionManager <= 30 && (gLogCategory_HMDeviceAHPSConnectionManager != -1 || _LogCategory_Initialize()))
   {
-    [HMDeviceAHPSConnectionManager peripheral:v8 didDiscoverCharacteristicsForService:? error:?];
+    [HMDeviceAHPSConnectionManager peripheral:serviceCopy didDiscoverCharacteristicsForService:? error:?];
   }
 
-  v16 = [v7 services];
+  services = [peripheralCopy services];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __87__HMDeviceAHPSConnectionManager_peripheral_didDiscoverCharacteristicsForService_error___block_invoke;
   v17[3] = &unk_2796EFF40;
-  v18 = v7;
-  [v16 enumerateObjectsUsingBlock:v17];
+  v18 = peripheralCopy;
+  [services enumerateObjectsUsingBlock:v17];
 
   if (self->_isDiagnosticCheckPending)
   {
@@ -637,16 +637,16 @@ void __87__HMDeviceAHPSConnectionManager_peripheral_didDiscoverCharacteristicsFo
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   identifier = self->_identifier;
-  v10 = [v7 identifier];
-  v11 = [v10 UUIDString];
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
   v12 = identifier;
-  v13 = v11;
+  v13 = uUIDString;
   v14 = v13;
   if (v12 == v13)
   {
@@ -670,30 +670,30 @@ LABEL_47:
     }
   }
 
-  v16 = [v8 UUID];
+  uUID = [characteristicCopy UUID];
   v17 = [MEMORY[0x277CBE0A0] UUIDWithString:@"a4120005-95c5-4d6f-9098-0f0b41457e0a"];
-  v18 = v16;
+  value = uUID;
   v19 = v17;
   v20 = v19;
-  if (v18 == v19)
+  if (value == v19)
   {
 
     goto LABEL_11;
   }
 
-  if ((v18 != 0) == (v19 == 0))
+  if ((value != 0) == (v19 == 0))
   {
 
 LABEL_17:
     goto LABEL_18;
   }
 
-  v21 = [v18 isEqual:v19];
+  v21 = [value isEqual:v19];
 
   if (v21)
   {
 LABEL_11:
-    v18 = [v8 value];
+    value = [characteristicCopy value];
     if (gLogCategory_HMDeviceAHPSConnectionManager <= 30 && (gLogCategory_HMDeviceAHPSConnectionManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceAHPSConnectionManager peripheral:didUpdateValueForCharacteristic:error:];
@@ -702,39 +702,39 @@ LABEL_11:
     settingsUpdateHandler = self->_settingsUpdateHandler;
     if (settingsUpdateHandler)
     {
-      settingsUpdateHandler[2](settingsUpdateHandler, self->_identifier, v18);
+      settingsUpdateHandler[2](settingsUpdateHandler, self->_identifier, value);
     }
 
     goto LABEL_17;
   }
 
 LABEL_18:
-  v23 = [v8 UUID];
+  uUID2 = [characteristicCopy UUID];
   v24 = [MEMORY[0x277CBE0A0] UUIDWithString:@"a48fec08-3921-43db-82aa-afbce8ebb4fb"];
-  v25 = v23;
+  value2 = uUID2;
   v26 = v24;
   v27 = v26;
-  if (v25 == v26)
+  if (value2 == v26)
   {
 
     goto LABEL_23;
   }
 
-  if ((v25 != 0) == (v26 == 0))
+  if ((value2 != 0) == (v26 == 0))
   {
 
 LABEL_29:
     goto LABEL_30;
   }
 
-  v28 = [v25 isEqual:v26];
+  v28 = [value2 isEqual:v26];
 
   if (v28)
   {
 LABEL_23:
-    v25 = [v8 value];
+    value2 = [characteristicCopy value];
     v37 = 1;
-    [v25 getBytes:&v37 length:1];
+    [value2 getBytes:&v37 length:1];
     if (gLogCategory_HMDeviceAHPSConnectionManager <= 30 && (gLogCategory_HMDeviceAHPSConnectionManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceAHPSConnectionManager peripheral:didUpdateValueForCharacteristic:error:];
@@ -750,16 +750,16 @@ LABEL_23:
   }
 
 LABEL_30:
-  v30 = [v8 UUID];
+  uUID3 = [characteristicCopy UUID];
   v31 = [MEMORY[0x277CBE0A0] UUIDWithString:@"a4120002-95c5-4d6f-9098-0f0b41457e0a"];
-  v32 = v30;
+  value3 = uUID3;
   v33 = v31;
   v34 = v33;
-  if (v32 == v33)
+  if (value3 == v33)
   {
 
 LABEL_35:
-    v32 = [v8 value];
+    value3 = [characteristicCopy value];
     if (gLogCategory_HMDeviceAHPSConnectionManager <= 30 && (gLogCategory_HMDeviceAHPSConnectionManager != -1 || _LogCategory_Initialize()))
     {
       [HMDeviceAHPSConnectionManager peripheral:didUpdateValueForCharacteristic:error:];
@@ -768,15 +768,15 @@ LABEL_35:
     diagnosticStatusUpdateHandler = self->_diagnosticStatusUpdateHandler;
     if (diagnosticStatusUpdateHandler)
     {
-      diagnosticStatusUpdateHandler[2](diagnosticStatusUpdateHandler, self->_identifier, v32);
+      diagnosticStatusUpdateHandler[2](diagnosticStatusUpdateHandler, self->_identifier, value3);
     }
 
     goto LABEL_41;
   }
 
-  if ((v32 != 0) != (v33 == 0))
+  if ((value3 != 0) != (v33 == 0))
   {
-    v35 = [v32 isEqual:v33];
+    v35 = [value3 isEqual:v33];
 
     if ((v35 & 1) == 0)
     {
@@ -790,19 +790,19 @@ LABEL_41:
 LABEL_42:
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v9)
+  if (errorCopy)
   {
     if (gLogCategory_HMDeviceAHPSConnectionManager <= 30 && (gLogCategory_HMDeviceAHPSConnectionManager != -1 || _LogCategory_Initialize()))
     {
-      v18 = v8;
-      v19 = v9;
-      v17 = v20;
+      v18 = characteristicCopy;
+      v19 = errorCopy;
+      v17 = peripheralCopy;
 LABEL_8:
       LogPrintF();
     }
@@ -810,14 +810,14 @@ LABEL_8:
 
   else if (gLogCategory_HMDeviceAHPSConnectionManager <= 30 && (gLogCategory_HMDeviceAHPSConnectionManager != -1 || _LogCategory_Initialize()))
   {
-    v17 = v20;
-    v18 = v8;
+    v17 = peripheralCopy;
+    v18 = characteristicCopy;
     goto LABEL_8;
   }
 
-  v10 = [v8 UUID];
+  uUID = [characteristicCopy UUID];
   v11 = [MEMORY[0x277CBE0A0] UUIDWithString:@"a4120004-95c5-4d6f-9098-0f0b41457e0a"];
-  v12 = v10;
+  v12 = uUID;
   v13 = v11;
   v14 = v13;
   if (v12 == v13)
@@ -844,7 +844,7 @@ LABEL_17:
 
     if (v12)
     {
-      (*(v12 + 2))(v12, v9);
+      (*(v12 + 2))(v12, errorCopy);
     }
 
     goto LABEL_20;
@@ -853,27 +853,27 @@ LABEL_17:
 LABEL_21:
 }
 
-- (void)writeHMSettingsConfigsData:(id)a3 completion:(id)a4
+- (void)writeHMSettingsConfigsData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__HMDeviceAHPSConnectionManager_writeHMSettingsConfigsData_completion___block_invoke;
   block[3] = &unk_2796EFF90;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dataCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_writeHMSettingsConfigsData:(id)a3 completion:(id)a4
+- (void)_writeHMSettingsConfigsData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   selectedPeripheral = self->_selectedPeripheral;
   if (selectedPeripheral)
@@ -882,20 +882,20 @@ LABEL_21:
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v9 = [(CBPeripheral *)selectedPeripheral services];
+    services = [(CBPeripheral *)selectedPeripheral services];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __72__HMDeviceAHPSConnectionManager__writeHMSettingsConfigsData_completion___block_invoke;
     v16[3] = &unk_2796EFFE0;
     v16[4] = self;
-    v17 = v6;
+    v17 = dataCopy;
     v18 = &v19;
-    [v9 enumerateObjectsUsingBlock:v16];
+    [services enumerateObjectsUsingBlock:v16];
 
     if (v20[3])
     {
       v10 = 0;
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_16;
       }
@@ -912,13 +912,13 @@ LABEL_21:
       v12 = *MEMORY[0x277CCA590];
       identifier = self->_identifier;
       v10 = NSErrorF();
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_16;
       }
     }
 
-    v7[2](v7, v10);
+    completionCopy[2](completionCopy, v10);
 LABEL_16:
 
     _Block_object_dispose(&v19, 8);
@@ -933,9 +933,9 @@ LABEL_16:
   v11 = *MEMORY[0x277CCA590];
   v13 = self->_identifier;
   v10 = NSErrorF();
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v10);
+    completionCopy[2](completionCopy, v10);
   }
 
 LABEL_17:
@@ -996,25 +996,25 @@ LABEL_6:
 LABEL_11:
 }
 
-- (void)triggerOnDemandDiagnosticCheckWithCompletionHandler:(id)a3
+- (void)triggerOnDemandDiagnosticCheckWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __85__HMDeviceAHPSConnectionManager_triggerOnDemandDiagnosticCheckWithCompletionHandler___block_invoke;
   v7[3] = &unk_2796F0008;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_triggerOnDemandDiagnosticCheckWithCompletionHandler:(id)a3
+- (void)_triggerOnDemandDiagnosticCheckWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = MEMORY[0x253095540](v4);
+  v5 = MEMORY[0x253095540](handlerCopy);
   diagnosticCheckWriteCompletion = self->_diagnosticCheckWriteCompletion;
   self->_diagnosticCheckWriteCompletion = v5;
 
@@ -1025,14 +1025,14 @@ LABEL_11:
     v17 = &v16;
     v18 = 0x2020000000;
     v19 = 0;
-    v8 = [(CBPeripheral *)selectedPeripheral services];
+    services = [(CBPeripheral *)selectedPeripheral services];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __86__HMDeviceAHPSConnectionManager__triggerOnDemandDiagnosticCheckWithCompletionHandler___block_invoke;
     v15[3] = &unk_2796F0058;
     v15[4] = self;
     v15[5] = &v16;
-    [v8 enumerateObjectsUsingBlock:v15];
+    [services enumerateObjectsUsingBlock:v15];
 
     if ((v17[3] & 1) == 0)
     {

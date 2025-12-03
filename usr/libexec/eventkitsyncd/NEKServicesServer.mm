@@ -1,7 +1,7 @@
 @interface NEKServicesServer
 + (id)log;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (NEKServicesServer)initWithEnvironment:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (NEKServicesServer)initWithEnvironment:(id)environment;
 @end
 
 @implementation NEKServicesServer
@@ -18,16 +18,16 @@
   return v3;
 }
 
-- (NEKServicesServer)initWithEnvironment:(id)a3
+- (NEKServicesServer)initWithEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v13.receiver = self;
   v13.super_class = NEKServicesServer;
   v6 = [(NEKServicesServer *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_environment, a3);
+    objc_storeStrong(&v6->_environment, environment);
     v8 = [NSXPCListener alloc];
     v9 = [v8 initWithMachServiceName:EKSSMachServiceName];
     listener = v7->_listener;
@@ -45,17 +45,17 @@
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[NEKServicesClient alloc] initWithConnection:v7 andEnvironment:self->_environment];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [[NEKServicesClient alloc] initWithConnection:connectionCopy andEnvironment:self->_environment];
   v9 = EKSSServiceXPCInterface();
-  [v7 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  [v7 setExportedObject:v8];
+  [connectionCopy setExportedObject:v8];
   v10 = EKSSClientXPCInterface();
-  [v7 setRemoteObjectInterface:v10];
+  [connectionCopy setRemoteObjectInterface:v10];
 
   v11 = objc_initWeak(&location, self);
   v12 = [(NEKServicesServer *)self description];
@@ -66,15 +66,15 @@
   v19[3] = &unk_1000B4B90;
   v13 = v12;
   v20 = v13;
-  [v7 setInterruptionHandler:v19];
+  [connectionCopy setInterruptionHandler:v19];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000A008;
   v17[3] = &unk_1000B4B90;
   v14 = v13;
   v18 = v14;
-  [v7 setInvalidationHandler:v17];
-  [v7 resume];
+  [connectionCopy setInvalidationHandler:v17];
+  [connectionCopy resume];
   v15 = +[NEKServicesServer log];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {

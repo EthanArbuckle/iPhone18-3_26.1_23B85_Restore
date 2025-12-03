@@ -1,9 +1,9 @@
 @interface PSUIDataPlanDetailsController
 - (PSUIDataPlanDetailsController)init;
-- (PSUIDataPlanDetailsController)initWithParentSpecifier:(id)a3;
+- (PSUIDataPlanDetailsController)initWithParentSpecifier:(id)specifier;
 - (id)specifiers;
 - (id)titleDescription;
-- (void)createOrUpdateSubscriptionContextMenuGroup:(id)a3;
+- (void)createOrUpdateSubscriptionContextMenuGroup:(id)group;
 @end
 
 @implementation PSUIDataPlanDetailsController
@@ -22,20 +22,20 @@
   return v3;
 }
 
-- (PSUIDataPlanDetailsController)initWithParentSpecifier:(id)a3
+- (PSUIDataPlanDetailsController)initWithParentSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v10.receiver = self;
   v10.super_class = PSUIDataPlanDetailsController;
   v6 = [(PSUIDataPlanDetailsController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parentSpecifier, a3);
-    v8 = [(PSUIDataPlanDetailsController *)v7 titleDescription];
-    if ([v8 length])
+    objc_storeStrong(&v6->_parentSpecifier, specifier);
+    titleDescription = [(PSUIDataPlanDetailsController *)v7 titleDescription];
+    if ([titleDescription length])
     {
-      [(PSUIDataPlanDetailsController *)v7 setTitle:v8];
+      [(PSUIDataPlanDetailsController *)v7 setTitle:titleDescription];
     }
   }
 
@@ -46,12 +46,12 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(PSSpecifier *)self->_parentSpecifier userInfo];
-  v5 = [v4 item];
-  v6 = v5;
-  if (v5)
+  userInfo = [(PSSpecifier *)self->_parentSpecifier userInfo];
+  item = [userInfo item];
+  v6 = item;
+  if (item)
   {
-    if ([v5 isSelected])
+    if ([item isSelected])
     {
       v7 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"CELLULAR_ACCOUNT_DETAILS_GROUP"];
       if (![(PSUICellularDataPlanDetailGroup *)self->_cellularDataPlanDetailGroup isFlowRunning])
@@ -61,29 +61,29 @@
         self->_cellularDataPlanDetailGroup = v8;
       }
 
-      v10 = [(PSUICellularDataPlanDetailGroup *)self->_cellularDataPlanDetailGroup specifiers];
-      if ([v10 count])
+      specifiers = [(PSUICellularDataPlanDetailGroup *)self->_cellularDataPlanDetailGroup specifiers];
+      if ([specifiers count])
       {
         [v3 addObject:v7];
-        [v3 ps_addSpecifiers:v10 toGroup:v7];
+        [v3 ps_addSpecifiers:specifiers toGroup:v7];
       }
     }
 
-    v11 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SUBSCRIPTION_CONTEXT_MENUS_GROUP"];
-    [(PSUIDataPlanDetailsController *)self createOrUpdateSubscriptionContextMenuGroup:v11];
-    v12 = [(PSUISubscriptionContextMenusGroup *)self->_subscriptionContextMenus specifiers];
-    if ([v12 count])
+    getLogger2 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SUBSCRIPTION_CONTEXT_MENUS_GROUP"];
+    [(PSUIDataPlanDetailsController *)self createOrUpdateSubscriptionContextMenuGroup:getLogger2];
+    specifiers2 = [(PSUISubscriptionContextMenusGroup *)self->_subscriptionContextMenus specifiers];
+    if ([specifiers2 count])
     {
-      v13 = [(PSUIDataPlanDetailsController *)self getLogger];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      getLogger = [(PSUIDataPlanDetailsController *)self getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 136315138;
         v20 = "[PSUIDataPlanDetailsController specifiers]";
-        _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "%s showing subscription context menus group", &v19, 0xCu);
+        _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s showing subscription context menus group", &v19, 0xCu);
       }
 
-      [v3 addObject:v11];
-      [v3 ps_addSpecifiers:v12 toGroup:v11];
+      [v3 addObject:getLogger2];
+      [v3 ps_addSpecifiers:specifiers2 toGroup:getLogger2];
     }
 
     v14 = *MEMORY[0x277D3FC48];
@@ -96,11 +96,11 @@
 
   else
   {
-    v11 = [(PSUIDataPlanDetailsController *)self getLogger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSUIDataPlanDetailsController *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v19) = 0;
-      _os_log_impl(&dword_2658DE000, v11, OS_LOG_TYPE_DEFAULT, "Plan item is not set!", &v19, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Plan item is not set!", &v19, 2u);
     }
   }
 
@@ -109,9 +109,9 @@
   return v3;
 }
 
-- (void)createOrUpdateSubscriptionContextMenuGroup:(id)a3
+- (void)createOrUpdateSubscriptionContextMenuGroup:(id)group
 {
-  v17 = a3;
+  groupCopy = group;
   if (self->_subscriptionContextMenus)
   {
     v4 = *MEMORY[0x277D3FD20];
@@ -120,9 +120,9 @@
 
     if (v6)
     {
-      v7 = [(PSUISubscriptionContextMenusGroup *)self->_subscriptionContextMenus parentSpecifier];
+      parentSpecifier = [(PSUISubscriptionContextMenusGroup *)self->_subscriptionContextMenus parentSpecifier];
       v8 = [*(&self->super.super.super.super.super.isa + v4) propertyForKey:v5];
-      [v7 setProperty:v8 forKey:v5];
+      [parentSpecifier setProperty:v8 forKey:v5];
     }
 
     v9 = *MEMORY[0x277D3FE70];
@@ -130,18 +130,18 @@
 
     if (v10)
     {
-      v11 = [(PSUISubscriptionContextMenusGroup *)self->_subscriptionContextMenus parentSpecifier];
+      parentSpecifier2 = [(PSUISubscriptionContextMenusGroup *)self->_subscriptionContextMenus parentSpecifier];
       v12 = [*(&self->super.super.super.super.super.isa + v4) propertyForKey:v9];
-      [v11 setProperty:v12 forKey:v9];
+      [parentSpecifier2 setProperty:v12 forKey:v9];
     }
 
-    [(PSUISubscriptionContextMenusGroup *)self->_subscriptionContextMenus setGroupSpecifier:v17];
+    [(PSUISubscriptionContextMenusGroup *)self->_subscriptionContextMenus setGroupSpecifier:groupCopy];
   }
 
   else
   {
     v13 = [PSUISubscriptionContextMenusGroup alloc];
-    v14 = [[PSUISubscriptionContextMenusProductionFactory alloc] initWithHostController:self parentSpecifier:self->_parentSpecifier groupSpecifier:v17 popViewControllerOnPlanRemoval:0];
+    v14 = [[PSUISubscriptionContextMenusProductionFactory alloc] initWithHostController:self parentSpecifier:self->_parentSpecifier groupSpecifier:groupCopy popViewControllerOnPlanRemoval:0];
     v15 = [(PSUISubscriptionContextMenusGroup *)v13 initWithFactory:v14];
     subscriptionContextMenus = self->_subscriptionContextMenus;
     self->_subscriptionContextMenus = v15;
@@ -150,51 +150,51 @@
 
 - (id)titleDescription
 {
-  v2 = [(PSSpecifier *)self->_parentSpecifier userInfo];
-  v3 = [v2 item];
-  if ([v3 isBackedByCellularPlan])
+  userInfo = [(PSSpecifier *)self->_parentSpecifier userInfo];
+  item = [userInfo item];
+  if ([item isBackedByCellularPlan])
   {
-    v4 = [v3 plan];
-    v5 = [v4 planDescription];
+    plan = [item plan];
+    planDescription = [plan planDescription];
 
-    v6 = [v3 plan];
-    v7 = [v6 carrierName];
+    plan2 = [item plan];
+    carrierName = [plan2 carrierName];
 
-    if ([v5 length] && objc_msgSend(v7, "length") && (objc_msgSend(v5, "isEqualToString:", v7) & 1) == 0)
+    if ([planDescription length] && objc_msgSend(carrierName, "length") && (objc_msgSend(planDescription, "isEqualToString:", carrierName) & 1) == 0)
     {
       v10 = MEMORY[0x277CCACA8];
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v12 = [v11 localizedStringForKey:@"CELLULAR_PLAN_CARRIER_AND_PLAN_NAME" value:&stru_287733598 table:@"Cellular"];
-      v9 = [v10 stringWithFormat:v12, v7, v5];
+      name2 = [v10 stringWithFormat:v12, carrierName, planDescription];
     }
 
     else
     {
-      if (v5)
+      if (planDescription)
       {
-        v8 = v5;
+        name = planDescription;
       }
 
-      else if (v7)
+      else if (carrierName)
       {
-        v8 = v7;
+        name = carrierName;
       }
 
       else
       {
-        v8 = [v3 name];
+        name = [item name];
       }
 
-      v9 = v8;
+      name2 = name;
     }
   }
 
   else
   {
-    v9 = [v3 name];
+    name2 = [item name];
   }
 
-  return v9;
+  return name2;
 }
 
 @end

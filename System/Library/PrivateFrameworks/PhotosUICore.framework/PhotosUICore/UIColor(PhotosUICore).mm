@@ -9,8 +9,8 @@
 {
   v4 = MEMORY[0x1E696AAE8];
   v5 = a3;
-  v6 = [v4 px_bundle];
-  v7 = [a1 px_colorNamed:v5 inBundle:v6];
+  px_bundle = [v4 px_bundle];
+  v7 = [self px_colorNamed:v5 inBundle:px_bundle];
 
   return v7;
 }

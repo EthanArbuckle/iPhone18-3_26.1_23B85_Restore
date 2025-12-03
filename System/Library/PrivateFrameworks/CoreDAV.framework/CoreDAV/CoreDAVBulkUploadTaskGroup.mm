@@ -1,48 +1,48 @@
 @interface CoreDAVBulkUploadTaskGroup
 - (Class)multiPutTaskClass;
-- (CoreDAVBulkUploadTaskGroup)initWithFolderURL:(id)a3 checkCTag:(id)a4 uuidsToAddActions:(id)a5 hrefsToModDeleteActions:(id)a6 context:(id)a7 accountInfoProvider:(id)a8 taskManager:(id)a9;
+- (CoreDAVBulkUploadTaskGroup)initWithFolderURL:(id)l checkCTag:(id)tag uuidsToAddActions:(id)actions hrefsToModDeleteActions:(id)deleteActions context:(id)context accountInfoProvider:(id)provider taskManager:(id)manager;
 - (NSString)description;
 - (void)_sendNextBatch;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation CoreDAVBulkUploadTaskGroup
 
-- (CoreDAVBulkUploadTaskGroup)initWithFolderURL:(id)a3 checkCTag:(id)a4 uuidsToAddActions:(id)a5 hrefsToModDeleteActions:(id)a6 context:(id)a7 accountInfoProvider:(id)a8 taskManager:(id)a9
+- (CoreDAVBulkUploadTaskGroup)initWithFolderURL:(id)l checkCTag:(id)tag uuidsToAddActions:(id)actions hrefsToModDeleteActions:(id)deleteActions context:(id)context accountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v44 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
+  lCopy = l;
+  tagCopy = tag;
+  actionsCopy = actions;
+  deleteActionsCopy = deleteActions;
+  contextCopy = context;
+  providerCopy = provider;
+  managerCopy = manager;
   if ([(CoreDAVBulkUploadTaskGroup *)self isMemberOfClass:objc_opt_class()])
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"CoreDAVBulkUploadTaskGroup.m" lineNumber:50 description:{@"You instantiated a class that doesn't want to be instantiated.  Please choose a concrete subclass of %@", objc_opt_class(), v44}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CoreDAVBulkUploadTaskGroup.m" lineNumber:50 description:{@"You instantiated a class that doesn't want to be instantiated.  Please choose a concrete subclass of %@", objc_opt_class(), lCopy}];
 
-    v24 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v45.receiver = self;
     v45.super_class = CoreDAVBulkUploadTaskGroup;
-    v25 = [(CoreDAVTaskGroup *)&v45 initWithAccountInfoProvider:v21 taskManager:v22];
+    v25 = [(CoreDAVTaskGroup *)&v45 initWithAccountInfoProvider:providerCopy taskManager:managerCopy];
     v26 = v25;
     if (v25)
     {
-      [(CoreDAVTaskGroup *)v25 setContext:v20];
-      objc_storeStrong(&v26->_folderURL, a3);
-      objc_storeStrong(&v26->_lastKnownCTag, a4);
+      [(CoreDAVTaskGroup *)v25 setContext:contextCopy];
+      objc_storeStrong(&v26->_folderURL, l);
+      objc_storeStrong(&v26->_lastKnownCTag, tag);
       v26->_multiPutBatchMaxNumResources = 25;
       v26->_multiPutBatchMaxSize = 0;
-      v27 = [v18 mutableCopy];
+      v27 = [actionsCopy mutableCopy];
       remainingUUIDsToAddActions = v26->_remainingUUIDsToAddActions;
       v26->_remainingUUIDsToAddActions = v27;
 
-      v29 = [v19 mutableCopy];
+      v29 = [deleteActionsCopy mutableCopy];
       remainingHREFsToModDeleteActions = v26->_remainingHREFsToModDeleteActions;
       v26->_remainingHREFsToModDeleteActions = v29;
 
@@ -72,10 +72,10 @@
     }
 
     self = v26;
-    v24 = self;
+    selfCopy = self;
   }
 
-  return v24;
+  return selfCopy;
 }
 
 - (NSString)description
@@ -149,8 +149,8 @@
           {
             [v10 context];
             v11 = v50 = v4;
-            v12 = [v11 dataPayload];
-            v13 = [v12 length];
+            dataPayload = [v11 dataPayload];
+            v13 = [dataPayload length];
 
             v6 = v46;
             v4 = v50;
@@ -213,8 +213,8 @@ LABEL_23:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v18 = [v54 allKeys];
-    v19 = [v18 countByEnumeratingWithState:&v63 objects:v73 count:16];
+    allKeys = [v54 allKeys];
+    v19 = [allKeys countByEnumeratingWithState:&v63 objects:v73 count:16];
     if (v19)
     {
       v20 = v19;
@@ -225,13 +225,13 @@ LABEL_23:
         {
           if (*v64 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allKeys);
           }
 
           [(NSMutableDictionary *)self->_remainingHREFsToModDeleteActions removeObjectForKey:*(*(&v63 + 1) + 8 * i)];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v63 objects:v73 count:16];
+        v20 = [allKeys countByEnumeratingWithState:&v63 objects:v73 count:16];
       }
 
       while (v20);
@@ -263,9 +263,9 @@ LABEL_23:
 
             v26 = *(*(&v59 + 1) + 8 * v23);
             v27 = [(NSMutableDictionary *)self->_remainingUUIDsToAddActions objectForKey:v26];
-            v28 = [v27 context];
-            v29 = [v28 dataPayload];
-            v30 = [v29 length];
+            context = [v27 context];
+            dataPayload2 = [context dataPayload];
+            v30 = [dataPayload2 length];
 
             v31 = self->_multiPutBatchMaxNumResources;
             if (v31)
@@ -308,8 +308,8 @@ LABEL_47:
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v34 = [v49 allKeys];
-    v35 = [v34 countByEnumeratingWithState:&v55 objects:v71 count:16];
+    allKeys2 = [v49 allKeys];
+    v35 = [allKeys2 countByEnumeratingWithState:&v55 objects:v71 count:16];
     if (v35)
     {
       v36 = v35;
@@ -320,13 +320,13 @@ LABEL_47:
         {
           if (*v56 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(allKeys2);
           }
 
           [(NSMutableDictionary *)self->_remainingUUIDsToAddActions removeObjectForKey:*(*(&v55 + 1) + 8 * j)];
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v55 objects:v71 count:16];
+        v36 = [allKeys2 countByEnumeratingWithState:&v55 objects:v71 count:16];
       }
 
       while (v36);
@@ -354,13 +354,13 @@ LABEL_47:
   }
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(NSMutableSet *)self->super._outstandingTasks removeObject:v6];
-  v8 = v6;
+  taskCopy = task;
+  errorCopy = error;
+  [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
+  v8 = taskCopy;
   v9 = +[CoreDAVLogging sharedLogging];
   WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
   v11 = [v9 logHandleForAccountInfoProvider:WeakRetained];
@@ -370,48 +370,48 @@ LABEL_47:
     v12 = v11;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v8 uuidToHREF];
-      v14 = [v8 hrefToETag];
+      uuidToHREF = [v8 uuidToHREF];
+      hrefToETag = [v8 hrefToETag];
       v40 = 138412802;
-      v41 = v13;
+      v41 = uuidToHREF;
       v42 = 2112;
-      v43 = v14;
+      v43 = hrefToETag;
       v44 = 2112;
-      v45 = v7;
+      v45 = errorCopy;
       _os_log_impl(&dword_2452FB000, v12, OS_LOG_TYPE_INFO, "MultiPutTask finished.  uuidToHREF %@\nhrefToETAG %@\nerror %@", &v40, 0x20u);
     }
   }
 
   uuidToHREF = self->_uuidToHREF;
-  v16 = [v8 uuidToHREF];
-  [(NSMutableDictionary *)uuidToHREF addEntriesFromDictionary:v16];
+  uuidToHREF2 = [v8 uuidToHREF];
+  [(NSMutableDictionary *)uuidToHREF addEntriesFromDictionary:uuidToHREF2];
 
   hrefToETag = self->_hrefToETag;
-  v18 = [v8 hrefToETag];
-  [(NSMutableDictionary *)hrefToETag addEntriesFromDictionary:v18];
+  hrefToETag2 = [v8 hrefToETag];
+  [(NSMutableDictionary *)hrefToETag addEntriesFromDictionary:hrefToETag2];
 
   uuidToErrorItems = self->_uuidToErrorItems;
-  v20 = [v8 uuidToErrorItems];
-  [(NSMutableDictionary *)uuidToErrorItems addEntriesFromDictionary:v20];
+  uuidToErrorItems = [v8 uuidToErrorItems];
+  [(NSMutableDictionary *)uuidToErrorItems addEntriesFromDictionary:uuidToErrorItems];
 
   hrefToErrorItems = self->_hrefToErrorItems;
-  v22 = [v8 hrefToErrorItems];
-  [(NSMutableDictionary *)hrefToErrorItems addEntriesFromDictionary:v22];
+  hrefToErrorItems = [v8 hrefToErrorItems];
+  [(NSMutableDictionary *)hrefToErrorItems addEntriesFromDictionary:hrefToErrorItems];
 
   uuidToStatus = self->_uuidToStatus;
-  v24 = [v8 uuidToStatus];
-  [(NSMutableDictionary *)uuidToStatus addEntriesFromDictionary:v24];
+  uuidToStatus = [v8 uuidToStatus];
+  [(NSMutableDictionary *)uuidToStatus addEntriesFromDictionary:uuidToStatus];
 
   hrefToStatus = self->_hrefToStatus;
-  v26 = [v8 hrefToStatus];
-  [(NSMutableDictionary *)hrefToStatus addEntriesFromDictionary:v26];
+  hrefToStatus = [v8 hrefToStatus];
+  [(NSMutableDictionary *)hrefToStatus addEntriesFromDictionary:hrefToStatus];
 
-  if (v7)
+  if (errorCopy)
   {
-    if ([v7 code] == 412)
+    if ([errorCopy code] == 412)
     {
-      v27 = [v7 domain];
-      v28 = [v27 isEqualToString:@"CoreDAVHTTPStatusErrorDomain"];
+      domain = [errorCopy domain];
+      v28 = [domain isEqualToString:@"CoreDAVHTTPStatusErrorDomain"];
 
       if (v28)
       {
@@ -429,18 +429,18 @@ LABEL_47:
       }
     }
 
-    [(CoreDAVTaskGroup *)self bailWithError:v7];
+    [(CoreDAVTaskGroup *)self bailWithError:errorCopy];
   }
 
   else
   {
-    v32 = [v8 nextCTag];
-    v33 = [v32 length];
+    nextCTag = [v8 nextCTag];
+    v33 = [nextCTag length];
 
     if (v33)
     {
-      v34 = [v8 nextCTag];
-      [(CoreDAVBulkUploadTaskGroup *)self setNextCTag:v34];
+      nextCTag2 = [v8 nextCTag];
+      [(CoreDAVBulkUploadTaskGroup *)self setNextCTag:nextCTag2];
 
       [(CoreDAVBulkUploadTaskGroup *)self _sendNextBatch];
     }

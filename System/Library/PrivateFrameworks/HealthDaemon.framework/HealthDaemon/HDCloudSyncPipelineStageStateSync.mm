@@ -6,7 +6,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   v60 = *MEMORY[0x277D85DE8];
   if (self)
   {
@@ -15,13 +15,13 @@
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v4 = [(HDCloudSyncOperation *)v2 profile];
-    v5 = [v4 daemon];
-    v6 = [v5 cloudSyncCoordinator];
-    v7 = [v6 stateSyncEntityClasses];
+    profile = [(HDCloudSyncOperation *)selfCopy profile];
+    daemon = [profile daemon];
+    cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+    stateSyncEntityClasses = [cloudSyncCoordinator stateSyncEntityClasses];
 
-    obj = v7;
-    v8 = [v7 countByEnumeratingWithState:&v55 objects:buf count:16];
+    obj = stateSyncEntityClasses;
+    v8 = [stateSyncEntityClasses countByEnumeratingWithState:&v55 objects:buf count:16];
     if (v8)
     {
       v9 = v8;
@@ -40,19 +40,19 @@
           if ([v13 conformsToProtocol:v11[326]])
           {
             v14 = MEMORY[0x277CBC5F8];
-            [(HDCloudSyncOperation *)v2 configuration];
-            v16 = v15 = v2;
-            v17 = [v16 syncContainerPrefix];
-            v18 = [v13 stateEntitySchema];
-            [v18 domain];
+            [(HDCloudSyncOperation *)selfCopy configuration];
+            v16 = v15 = selfCopy;
+            syncContainerPrefix = [v16 syncContainerPrefix];
+            stateEntitySchema = [v13 stateEntitySchema];
+            [stateEntitySchema domain];
             v19 = v10;
             v21 = v20 = v3;
-            v22 = [v14 hd_stateSyncZoneIDForSyncCircleIdentifier:v17 domain:v21];
+            v22 = [v14 hd_stateSyncZoneIDForSyncCircleIdentifier:syncContainerPrefix domain:v21];
 
             v3 = v20;
             v10 = v19;
 
-            v2 = v15;
+            selfCopy = v15;
             v11 = &selRef_remote_saveDataObjects_skipInsertionFilter_transactionIdentifier_final_handler_;
             v23 = [objc_alloc(MEMORY[0x277CBC5E8]) initWithZoneID:v22];
             [v3 addObject:v23];
@@ -74,40 +74,40 @@
   if ([v3 count])
   {
     v24 = [HDCloudSyncCompoundOperation alloc];
-    v25 = [(HDCloudSyncOperation *)v2 configuration];
-    v26 = [(HDCloudSyncCompoundOperation *)v24 initWithConfiguration:v25 cloudState:0 name:@"State Sync" continueOnSubOperationError:1];
+    configuration = [(HDCloudSyncOperation *)selfCopy configuration];
+    v26 = [(HDCloudSyncCompoundOperation *)v24 initWithConfiguration:configuration cloudState:0 name:@"State Sync" continueOnSubOperationError:1];
 
     v27 = [HDCloudSyncCreateZonesOperation alloc];
-    v28 = [(HDCloudSyncOperation *)v2 configuration];
-    v29 = [(HDCloudSyncOperation *)v2 configuration];
-    [v29 repository];
-    v31 = v30 = v2;
-    v32 = [v31 primaryCKContainer];
+    configuration2 = [(HDCloudSyncOperation *)selfCopy configuration];
+    configuration3 = [(HDCloudSyncOperation *)selfCopy configuration];
+    [configuration3 repository];
+    v31 = v30 = selfCopy;
+    primaryCKContainer = [v31 primaryCKContainer];
     obja = v3;
-    v33 = [(HDCloudSyncCreateZonesOperation *)v27 initWithConfiguration:v28 cloudState:0 zones:v3 container:v32];
+    v33 = [(HDCloudSyncCreateZonesOperation *)v27 initWithConfiguration:configuration2 cloudState:0 zones:v3 container:primaryCKContainer];
 
     [(HDCloudSyncCompoundOperation *)v26 addOperation:v33 transitionHandler:0];
     v34 = MEMORY[0x277CBEB98];
-    v35 = [(HDCloudSyncOperation *)v30 configuration];
-    v36 = [v35 repository];
-    v37 = [v36 secondaryCKContainers];
-    v38 = [v34 setWithArray:v37];
+    configuration4 = [(HDCloudSyncOperation *)v30 configuration];
+    repository = [configuration4 repository];
+    secondaryCKContainers = [repository secondaryCKContainers];
+    v38 = [v34 setWithArray:secondaryCKContainers];
 
     v39 = [HDCloudSyncStateSyncOperation alloc];
-    v40 = [(HDCloudSyncOperation *)v30 configuration];
-    v41 = [(HDCloudSyncStateSyncOperation *)v39 initWithConfiguration:v40 containers:v38];
+    configuration5 = [(HDCloudSyncOperation *)v30 configuration];
+    v41 = [(HDCloudSyncStateSyncOperation *)v39 initWithConfiguration:configuration5 containers:v38];
 
     [(HDCloudSyncCompoundOperation *)v26 addOperation:v41 transitionHandler:0];
-    v42 = [(HDCloudSyncOperation *)v30 configuration];
-    v43 = [v42 repository];
-    v44 = [v43 primaryCKContainer];
+    configuration6 = [(HDCloudSyncOperation *)v30 configuration];
+    repository2 = [configuration6 repository];
+    primaryCKContainer2 = [repository2 primaryCKContainer];
 
-    if (v44)
+    if (primaryCKContainer2)
     {
       v45 = [HDCloudSyncStateSyncOperation alloc];
-      v46 = [(HDCloudSyncOperation *)v30 configuration];
-      v47 = [MEMORY[0x277CBEB98] setWithObject:v44];
-      v48 = [(HDCloudSyncStateSyncOperation *)v45 initWithConfiguration:v46 containers:v47];
+      configuration7 = [(HDCloudSyncOperation *)v30 configuration];
+      v47 = [MEMORY[0x277CBEB98] setWithObject:primaryCKContainer2];
+      v48 = [(HDCloudSyncStateSyncOperation *)v45 initWithConfiguration:configuration7 containers:v47];
 
       [(HDCloudSyncCompoundOperation *)v26 addOperation:v48 transitionHandler:0];
     }
@@ -139,7 +139,7 @@
       _os_log_impl(&dword_228986000, v49, OS_LOG_TYPE_DEFAULT, "No State Entites found locally", buf, 2u);
     }
 
-    [(HDCloudSyncOperation *)v2 finishWithSuccess:1 error:0];
+    [(HDCloudSyncOperation *)selfCopy finishWithSuccess:1 error:0];
   }
 
   v50 = *MEMORY[0x277D85DE8];

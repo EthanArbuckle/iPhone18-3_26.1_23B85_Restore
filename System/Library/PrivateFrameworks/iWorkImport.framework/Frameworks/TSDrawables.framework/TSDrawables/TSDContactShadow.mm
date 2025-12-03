@@ -1,40 +1,40 @@
 @interface TSDContactShadow
-+ (id)contactShadowWithOffset:(double)a3 height:(double)a4 radius:(double)a5 opacity:(double)a6 color:(id)a7 enabled:(BOOL)a8;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CGImage)newShadowImageForRep:(id)a3 withSize:(CGSize)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6;
-- (CGImage)newShadowImageFromContext:(CGContext *)a3 withSize:(CGSize)a4 bounds:(CGRect)a5 unflipped:(BOOL)a6;
-- (CGRect)boundsForRep:(id)a3;
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3;
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
-- (TSDContactShadow)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSDContactShadow)initWithOffset:(double)a3 height:(double)a4 radius:(double)a5 opacity:(double)a6 color:(id)a7 enabled:(BOOL)a8;
++ (id)contactShadowWithOffset:(double)offset height:(double)height radius:(double)radius opacity:(double)opacity color:(id)color enabled:(BOOL)enabled;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal;
+- (CGImage)newShadowImageForRep:(id)rep withSize:(CGSize)size drawSelector:(SEL)selector unflipped:(BOOL)unflipped;
+- (CGImage)newShadowImageFromContext:(CGContext *)context withSize:(CGSize)size bounds:(CGRect)bounds unflipped:(BOOL)unflipped;
+- (CGRect)boundsForRep:(id)rep;
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep;
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform;
+- (TSDContactShadow)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSDContactShadow)initWithOffset:(double)offset height:(double)height radius:(double)radius opacity:(double)opacity color:(id)color enabled:(BOOL)enabled;
 - (TSDContactShadow)shadowWithClampedValues;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)newShadowClampedForSwatches;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 - (unint64_t)hash;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDContactShadow
 
-+ (id)contactShadowWithOffset:(double)a3 height:(double)a4 radius:(double)a5 opacity:(double)a6 color:(id)a7 enabled:(BOOL)a8
++ (id)contactShadowWithOffset:(double)offset height:(double)height radius:(double)radius opacity:(double)opacity color:(id)color enabled:(BOOL)enabled
 {
-  v8 = a8;
-  v14 = a7;
-  v15 = [a1 alloc];
-  v17 = objc_msgSend_initWithOffset_height_radius_opacity_color_enabled_(v15, v16, v14, v8, a3, a4, a5, a6);
+  enabledCopy = enabled;
+  colorCopy = color;
+  v15 = [self alloc];
+  v17 = objc_msgSend_initWithOffset_height_radius_opacity_color_enabled_(v15, v16, colorCopy, enabledCopy, offset, height, radius, opacity);
 
   return v17;
 }
 
-- (TSDContactShadow)initWithOffset:(double)a3 height:(double)a4 radius:(double)a5 opacity:(double)a6 color:(id)a7 enabled:(BOOL)a8
+- (TSDContactShadow)initWithOffset:(double)offset height:(double)height radius:(double)radius opacity:(double)opacity color:(id)color enabled:(BOOL)enabled
 {
-  v8 = a8;
-  v15 = a7;
-  if (!v15)
+  enabledCopy = enabled;
+  colorCopy = color;
+  if (!colorCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSDContactShadow initWithOffset:height:radius:opacity:color:enabled:]");
@@ -46,11 +46,11 @@
 
   v26.receiver = self;
   v26.super_class = TSDContactShadow;
-  v23 = [(TSDShadow *)&v26 i_initWithOpacity:v15 color:v8 angle:a6 offset:0.0 radius:a3 enabled:a5];
+  v23 = [(TSDShadow *)&v26 i_initWithOpacity:colorCopy color:enabledCopy angle:opacity offset:0.0 radius:offset enabled:radius];
   v24 = v23;
   if (v23)
   {
-    v23[7] = a4;
+    v23[7] = height;
   }
 
   return v24;
@@ -74,14 +74,14 @@
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -108,7 +108,7 @@
   return [(TSDShadow *)&v3 hash];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSDMutableContactShadow alloc];
   objc_msgSend_offset(self, v5, v6);
@@ -147,18 +147,18 @@
   return v26;
 }
 
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (objc_msgSend_isEnabled(self, a2, a4))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (objc_msgSend_isEnabled(self, a2, transform))
   {
-    v10 = *&a4->c;
-    *&v34.a = *&a4->a;
+    v10 = *&transform->c;
+    *&v34.a = *&transform->a;
     *&v34.c = v10;
-    *&v34.tx = *&a4->tx;
+    *&v34.tx = *&transform->tx;
     CGAffineTransformInvert(&v35, &v34);
     v36.origin.x = x;
     v36.origin.y = y;
@@ -195,10 +195,10 @@
     v40.size.height = v22;
     v41 = CGRectOffset(v40, 0.0, v26);
     v42 = CGRectInset(v41, -120.0, 0.0);
-    v27 = *&a4->c;
-    *&v35.a = *&a4->a;
+    v27 = *&transform->c;
+    *&v35.a = *&transform->a;
     *&v35.c = v27;
-    *&v35.tx = *&a4->tx;
+    *&v35.tx = *&transform->tx;
     v46 = CGRectApplyAffineTransform(v42, &v35);
     v43.origin.x = x;
     v43.origin.y = y;
@@ -222,9 +222,9 @@
   return result;
 }
 
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep
 {
-  v3 = objc_msgSend_styledLayout(a3, a2, a3);
+  v3 = objc_msgSend_styledLayout(rep, a2, rep);
   objc_msgSend_alignmentFrameInRoot(v3, v4, v5);
   v7 = v6;
   v9 = v8;
@@ -241,9 +241,9 @@
   return result;
 }
 
-- (CGRect)boundsForRep:(id)a3
+- (CGRect)boundsForRep:(id)rep
 {
-  v3 = objc_msgSend_styledLayout(a3, a2, a3);
+  v3 = objc_msgSend_styledLayout(rep, a2, rep);
   objc_msgSend_alignmentFrameInRoot(v3, v4, v5);
   v7 = v6;
   v9 = v8;
@@ -262,32 +262,32 @@
   return result;
 }
 
-- (CGImage)newShadowImageForRep:(id)a3 withSize:(CGSize)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6
+- (CGImage)newShadowImageForRep:(id)rep withSize:(CGSize)size drawSelector:(SEL)selector unflipped:(BOOL)unflipped
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
+  unflippedCopy = unflipped;
+  height = size.height;
+  width = size.width;
+  repCopy = rep;
   v14 = objc_msgSend_sharedDelegate(MEMORY[0x277D80610], v12, v13);
   shouldRenderContactShadow = objc_msgSend_shouldRenderContactShadow(v14, v15, v16);
 
   if (shouldRenderContactShadow)
   {
-    objc_msgSend_boundsForRep_(self, v18, v11);
+    objc_msgSend_boundsForRep_(self, v18, repCopy);
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v28 = TSDBitmapContextCreate(3, v24, 150.0);
-    v31 = objc_msgSend_canvas(v11, v29, v30);
+    v31 = objc_msgSend_canvas(repCopy, v29, v30);
     isPrinting = objc_msgSend_isPrinting(v31, v32, v33);
-    v37 = objc_msgSend_canvas(v11, v35, v36);
+    v37 = objc_msgSend_canvas(repCopy, v35, v36);
     isDrawingIntoPDF = objc_msgSend_isDrawingIntoPDF(v37, v38, v39);
-    v43 = objc_msgSend_canvas(v11, v41, v42);
+    v43 = objc_msgSend_canvas(repCopy, v41, v42);
     objc_msgSend_contentsScale(v43, v44, v45);
     TSDSetCGContextInfo(v28, isPrinting, isDrawingIntoPDF, 1, 0, v46);
 
-    v49 = objc_msgSend_layout(v11, v47, v48);
+    v49 = objc_msgSend_layout(repCopy, v47, v48);
     v52 = v49;
     if (v49)
     {
@@ -305,7 +305,7 @@
     CGContextTranslateCTM(v28, -v21, -v23);
     CGContextTranslateCTM(v28, 0.0, v27 * 0.5);
     memset(&v65, 0, sizeof(v65));
-    v57 = objc_msgSend_styledLayout(v11, v55, v56);
+    v57 = objc_msgSend_styledLayout(repCopy, v55, v56);
     v60 = v57;
     if (v57)
     {
@@ -319,8 +319,8 @@
 
     v64 = v65;
     CGContextConcatCTM(v28, &v64);
-    objc_msgSend_performSelector_withObject_(v11, v61, a5, v28);
-    v53 = objc_msgSend_newShadowImageFromContext_withSize_bounds_unflipped_(self, v62, v28, v6, width, height, v21, v23, v25, v27);
+    objc_msgSend_performSelector_withObject_(repCopy, v61, selector, v28);
+    v53 = objc_msgSend_newShadowImageFromContext_withSize_bounds_unflipped_(self, v62, v28, unflippedCopy, width, height, v21, v23, v25, v27);
     CGContextRelease(v28);
   }
 
@@ -332,19 +332,19 @@
   return v53;
 }
 
-- (CGImage)newShadowImageFromContext:(CGContext *)a3 withSize:(CGSize)a4 bounds:(CGRect)a5 unflipped:(BOOL)a6
+- (CGImage)newShadowImageFromContext:(CGContext *)context withSize:(CGSize)size bounds:(CGRect)bounds unflipped:(BOOL)unflipped
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v215[4] = *MEMORY[0x277D85DE8];
-  v10 = a5.size.height * 0.5;
-  objc_msgSend_radius(self, a2, a3, a6, a4.width, a4.height, a5.origin.x, a5.origin.y, a5.size.width);
+  v10 = bounds.size.height * 0.5;
+  objc_msgSend_radius(self, a2, context, unflipped, size.width, size.height, bounds.origin.x, bounds.origin.y, bounds.size.width);
   v12 = v11;
   objc_msgSend_radius(self, v13, v14);
   v16 = v15;
   objc_msgSend_height(self, v17, v18);
   v20 = v19;
-  image = CGBitmapContextCreateImage(a3);
+  image = CGBitmapContextCreateImage(context);
   v22 = objc_msgSend_imageWithCGImage_(MEMORY[0x277CBF758], v21, image);
   v25 = objc_msgSend_color(self, v23, v24);
   objc_msgSend_getRGBAComponents_(v25, v26, v215);
@@ -378,7 +378,7 @@
 
   v55 = MEMORY[0x277CBF788];
   v56 = v215[3];
-  v196 = self;
+  selfCopy = self;
   objc_msgSend_opacity(self, v57, v58);
   v62 = objc_msgSend_vectorWithX_Y_Z_W_(v55, v60, v61, 0.0, 0.0, 0.0, v56 * v59);
   objc_msgSend_setValue_forKey_(v38, v63, v62, @"inputAVector");
@@ -530,7 +530,7 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v186, v190, v187, v189, 396, 0, "Cannot render contact shadow, the size is too large for the CIContext to render. Returning empty image instead");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v191, v192);
-    CGImage_fromRect = objc_msgSend_i_newEmptyImage(v196, v193, v194);
+    CGImage_fromRect = objc_msgSend_i_newEmptyImage(selfCopy, v193, v194);
   }
 
   else
@@ -548,9 +548,9 @@
   return CGImage_fromRect;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -597,54 +597,54 @@
   return v34;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = self;
-  v7 = a4;
+  selfCopy = self;
+  objectCopy = object;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
-  if (objc_msgSend_isEnabled(v6, v9, v10) & 1) != 0 || (objc_msgSend_isEnabled(v8, v11, v12))
+  if (objc_msgSend_isEnabled(selfCopy, v9, v10) & 1) != 0 || (objc_msgSend_isEnabled(v8, v11, v12))
   {
-    if ((objc_msgSend_isEnabled(v6, v11, v12) & 1) == 0 && v8)
+    if ((objc_msgSend_isEnabled(selfCopy, v11, v12) & 1) == 0 && v8)
     {
       v15 = v8;
 
-      v6 = v15;
+      selfCopy = v15;
     }
 
     if ((objc_msgSend_isEnabled(v8, v13, v14) & 1) == 0)
     {
-      v18 = v6;
+      v18 = selfCopy;
 
       v8 = v18;
     }
 
-    objc_msgSend_offset(v6, v16, v17);
+    objc_msgSend_offset(selfCopy, v16, v17);
     objc_msgSend_offset(v8, v19, v20);
     TSUMix();
     v22 = v21;
-    objc_msgSend_height(v6, v23, v24);
+    objc_msgSend_height(selfCopy, v23, v24);
     objc_msgSend_height(v8, v25, v26);
     TSUMix();
     v28 = v27;
-    objc_msgSend_radius(v6, v29, v30);
+    objc_msgSend_radius(selfCopy, v29, v30);
     objc_msgSend_radius(v8, v31, v32);
     TSUMix();
     v34 = v33;
-    objc_msgSend_opacity(v6, v35, v36);
+    objc_msgSend_opacity(selfCopy, v35, v36);
     objc_msgSend_opacity(v8, v37, v38);
     TSUMix();
     v40 = v39;
-    v43 = objc_msgSend_color(v6, v41, v42);
+    v43 = objc_msgSend_color(selfCopy, v41, v42);
     v46 = objc_msgSend_color(v8, v44, v45);
     isEqual = objc_msgSend_isEqual_(v43, v47, v46);
 
-    v53 = objc_msgSend_color(v6, v49, v50);
+    v53 = objc_msgSend_color(selfCopy, v49, v50);
     if ((isEqual & 1) == 0)
     {
       v54 = objc_msgSend_color(v8, v51, v52);
-      v56 = objc_msgSend_blendedColorWithFraction_ofColor_(v53, v55, v54, a3);
+      v56 = objc_msgSend_blendedColorWithFraction_ofColor_(v53, v55, v54, fraction);
 
       v53 = v56;
     }
@@ -655,20 +655,20 @@
 
   else
   {
-    v6 = v6;
-    v59 = v6;
+    selfCopy = selfCopy;
+    v59 = selfCopy;
   }
 
   return v59;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
-  if (TSD::ShadowArchive::ByteSizeLong(a3))
+  unarchiverCopy = unarchiver;
+  if (TSD::ShadowArchive::ByteSizeLong(archive))
   {
     v8 = [TSDContactShadow alloc];
-    v10 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, a3, v5);
+    v10 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, archive, unarchiverCopy);
   }
 
   else
@@ -681,14 +681,14 @@
   return v11;
 }
 
-- (TSDContactShadow)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDContactShadow)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v7.receiver = self;
   v7.super_class = TSDContactShadow;
-  result = [(TSDShadow *)&v7 initWithArchive:a3 unarchiver:a4];
+  result = [(TSDShadow *)&v7 initWithArchive:archive unarchiver:unarchiver];
   if (result)
   {
-    v6 = *(a3 + 5);
+    v6 = *(archive + 5);
     if (!v6)
     {
       v6 = &TSD::_ContactShadowArchive_default_instance_;
@@ -700,24 +700,24 @@
   return result;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v10.receiver = self;
   v10.super_class = TSDContactShadow;
-  [(TSDShadow *)&v10 saveToArchive:a3 archiver:v6];
-  *(a3 + 4) |= 4u;
-  v7 = *(a3 + 5);
+  [(TSDShadow *)&v10 saveToArchive:archive archiver:archiverCopy];
+  *(archive + 4) |= 4u;
+  v7 = *(archive + 5);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = google::protobuf::Arena::CreateMaybeMessage<TSD::ContactShadowArchive>(v8);
-    *(a3 + 5) = v7;
+    *(archive + 5) = v7;
   }
 
   mHeight = self->mHeight;

@@ -1,6 +1,6 @@
 @interface HMDRemoteLoginAuthentication
 + (id)logCategory;
-- (HMDRemoteLoginAuthentication)initWithSessionID:(id)a3 remoteDevice:(id)a4 workQueue:(id)a5 remoteMessageSender:(id)a6;
+- (HMDRemoteLoginAuthentication)initWithSessionID:(id)d remoteDevice:(id)device workQueue:(id)queue remoteMessageSender:(id)sender;
 - (void)authenticate;
 @end
 
@@ -19,22 +19,22 @@
   objc_exception_throw(v7);
 }
 
-- (HMDRemoteLoginAuthentication)initWithSessionID:(id)a3 remoteDevice:(id)a4 workQueue:(id)a5 remoteMessageSender:(id)a6
+- (HMDRemoteLoginAuthentication)initWithSessionID:(id)d remoteDevice:(id)device workQueue:(id)queue remoteMessageSender:(id)sender
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  deviceCopy = device;
+  queueCopy = queue;
+  senderCopy = sender;
   v18.receiver = self;
   v18.super_class = HMDRemoteLoginAuthentication;
   v15 = [(HMDRemoteLoginAuthentication *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sessionID, a3);
-    objc_storeStrong(&v16->_remoteDevice, a4);
-    objc_storeStrong(&v16->_workQueue, a5);
-    objc_storeStrong(&v16->_remoteMessageSender, a6);
+    objc_storeStrong(&v15->_sessionID, d);
+    objc_storeStrong(&v16->_remoteDevice, device);
+    objc_storeStrong(&v16->_workQueue, queue);
+    objc_storeStrong(&v16->_remoteMessageSender, sender);
   }
 
   return v16;

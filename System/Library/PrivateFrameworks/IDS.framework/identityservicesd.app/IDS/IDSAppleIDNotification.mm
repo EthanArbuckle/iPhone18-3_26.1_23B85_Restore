@@ -1,8 +1,8 @@
 @interface IDSAppleIDNotification
 - (IDSAppleIDNotification)init;
-- (void)addAlias:(id)a3;
-- (void)addCompletionBlock:(id)a3 forSession:(id)a4;
-- (void)addSession:(id)a3;
+- (void)addAlias:(id)alias;
+- (void)addCompletionBlock:(id)block forSession:(id)session;
+- (void)addSession:(id)session;
 @end
 
 @implementation IDSAppleIDNotification
@@ -34,32 +34,32 @@
   return v2;
 }
 
-- (void)addAlias:(id)a3
+- (void)addAlias:(id)alias
 {
-  if (a3)
+  if (alias)
   {
     [(NSMutableSet *)self->_aliases addObject:?];
   }
 }
 
-- (void)addSession:(id)a3
+- (void)addSession:(id)session
 {
-  v4 = a3;
-  if ([v4 length])
+  sessionCopy = session;
+  if ([sessionCopy length])
   {
-    [(NSMutableSet *)self->_sessions addObject:v4];
+    [(NSMutableSet *)self->_sessions addObject:sessionCopy];
   }
 }
 
-- (void)addCompletionBlock:(id)a3 forSession:(id)a4
+- (void)addCompletionBlock:(id)block forSession:(id)session
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9 && [v6 length])
+  blockCopy = block;
+  sessionCopy = session;
+  if (blockCopy && [sessionCopy length])
   {
     sessionToBlockMap = self->_sessionToBlockMap;
-    v8 = [v9 copy];
-    [(NSMutableDictionary *)sessionToBlockMap setObject:v8 forKey:v6];
+    v8 = [blockCopy copy];
+    [(NSMutableDictionary *)sessionToBlockMap setObject:v8 forKey:sessionCopy];
   }
 }
 

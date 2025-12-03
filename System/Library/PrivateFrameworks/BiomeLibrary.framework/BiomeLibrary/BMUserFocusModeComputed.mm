@@ -1,15 +1,15 @@
 @interface BMUserFocusModeComputed
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMUserFocusModeComputed)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMUserFocusModeComputed)initWithMode:(id)a3 starting:(id)a4 updateReason:(int)a5 semanticType:(int)a6 updateSource:(int)a7 semanticModeIdentifier:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMUserFocusModeComputed)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMUserFocusModeComputed)initWithMode:(id)mode starting:(id)starting updateReason:(int)reason semanticType:(int)type updateSource:(int)source semanticModeIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMUserFocusModeComputed
@@ -36,25 +36,25 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMUserFocusModeComputed *)self mode];
-    v7 = [v5 mode];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    mode = [(BMUserFocusModeComputed *)self mode];
+    mode2 = [v5 mode];
+    v8 = mode2;
+    if (mode == mode2)
     {
     }
 
     else
     {
-      v9 = [(BMUserFocusModeComputed *)self mode];
-      v10 = [v5 mode];
-      v11 = [v9 isEqual:v10];
+      mode3 = [(BMUserFocusModeComputed *)self mode];
+      mode4 = [v5 mode];
+      v11 = [mode3 isEqual:mode4];
 
       if (!v11)
       {
@@ -64,27 +64,27 @@
 
     if (!-[BMUserFocusModeComputed hasStarting](self, "hasStarting") && ![v5 hasStarting] || -[BMUserFocusModeComputed hasStarting](self, "hasStarting") && objc_msgSend(v5, "hasStarting") && (v13 = -[BMUserFocusModeComputed starting](self, "starting"), v13 == objc_msgSend(v5, "starting")))
     {
-      v14 = [(BMUserFocusModeComputed *)self updateReason];
-      if (v14 == [v5 updateReason])
+      updateReason = [(BMUserFocusModeComputed *)self updateReason];
+      if (updateReason == [v5 updateReason])
       {
-        v15 = [(BMUserFocusModeComputed *)self semanticType];
-        if (v15 == [v5 semanticType])
+        semanticType = [(BMUserFocusModeComputed *)self semanticType];
+        if (semanticType == [v5 semanticType])
         {
-          v16 = [(BMUserFocusModeComputed *)self updateSource];
-          if (v16 == [v5 updateSource])
+          updateSource = [(BMUserFocusModeComputed *)self updateSource];
+          if (updateSource == [v5 updateSource])
           {
-            v17 = [(BMUserFocusModeComputed *)self semanticModeIdentifier];
-            v18 = [v5 semanticModeIdentifier];
-            if (v17 == v18)
+            semanticModeIdentifier = [(BMUserFocusModeComputed *)self semanticModeIdentifier];
+            semanticModeIdentifier2 = [v5 semanticModeIdentifier];
+            if (semanticModeIdentifier == semanticModeIdentifier2)
             {
               v12 = 1;
             }
 
             else
             {
-              v19 = [(BMUserFocusModeComputed *)self semanticModeIdentifier];
-              v20 = [v5 semanticModeIdentifier];
-              v12 = [v19 isEqual:v20];
+              semanticModeIdentifier3 = [(BMUserFocusModeComputed *)self semanticModeIdentifier];
+              semanticModeIdentifier4 = [v5 semanticModeIdentifier];
+              v12 = [semanticModeIdentifier3 isEqual:semanticModeIdentifier4];
             }
 
             goto LABEL_18;
@@ -109,7 +109,7 @@ LABEL_19:
 - (id)jsonDictionary
 {
   v23[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMUserFocusModeComputed *)self mode];
+  mode = [(BMUserFocusModeComputed *)self mode];
   if ([(BMUserFocusModeComputed *)self hasStarting])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMUserFocusModeComputed starting](self, "starting")}];
@@ -123,60 +123,60 @@ LABEL_19:
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMUserFocusModeComputed updateReason](self, "updateReason")}];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMUserFocusModeComputed semanticType](self, "semanticType")}];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMUserFocusModeComputed updateSource](self, "updateSource")}];
-  v8 = [(BMUserFocusModeComputed *)self semanticModeIdentifier];
+  semanticModeIdentifier = [(BMUserFocusModeComputed *)self semanticModeIdentifier];
   v22[0] = @"mode";
-  v9 = v3;
-  if (!v3)
+  null = mode;
+  if (!mode)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v21 = v3;
-  v23[0] = v9;
+  v20 = null;
+  v21 = mode;
+  v23[0] = null;
   v22[1] = @"starting";
-  v10 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v10;
-  v23[1] = v10;
+  v18 = null2;
+  v23[1] = null2;
   v22[2] = @"updateReason";
-  v11 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v11;
+  v23[2] = null3;
   v22[3] = @"semanticType";
-  v12 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v12;
+  v23[3] = null4;
   v22[4] = @"updateSource";
-  v13 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v13;
+  v23[4] = null5;
   v22[5] = @"semanticModeIdentifier";
-  v14 = v8;
-  if (!v8)
+  null6 = semanticModeIdentifier;
+  if (!semanticModeIdentifier)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[5] = v14;
+  v23[5] = null6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:{6, v18}];
-  if (v8)
+  if (semanticModeIdentifier)
   {
     if (v7)
     {
@@ -242,11 +242,11 @@ LABEL_21:
   return v15;
 }
 
-- (BMUserFocusModeComputed)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMUserFocusModeComputed)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v62[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"mode"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"mode"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -255,7 +255,7 @@ LABEL_21:
       if (!p_isa)
       {
         v50 = 0;
-        v25 = self;
+        selfCopy6 = self;
         goto LABEL_48;
       }
 
@@ -281,7 +281,7 @@ LABEL_21:
     v50 = 0;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"starting"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"starting"];
   if (v7)
   {
     objc_opt_class();
@@ -312,14 +312,14 @@ LABEL_21:
 
       v49 = 0;
 LABEL_59:
-      v25 = self;
+      selfCopy6 = self;
       goto LABEL_47;
     }
   }
 
   v49 = 0;
 LABEL_7:
-  v8 = [v5 objectForKeyedSubscript:@"updateReason"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"updateReason"];
   v45 = v6;
   if (v8)
   {
@@ -360,14 +360,14 @@ LABEL_22:
 
       v48 = 0;
 LABEL_65:
-      v25 = self;
+      selfCopy6 = self;
       goto LABEL_46;
     }
   }
 
   v48 = 0;
 LABEL_23:
-  v18 = [v5 objectForKeyedSubscript:@"semanticType"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"semanticType"];
   if (v18)
   {
     objc_opt_class();
@@ -407,14 +407,14 @@ LABEL_30:
 
       v46 = 0;
 LABEL_67:
-      v25 = self;
+      selfCopy6 = self;
       goto LABEL_45;
     }
   }
 
   v46 = 0;
 LABEL_31:
-  v20 = [v5 objectForKeyedSubscript:@"updateSource"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"updateSource"];
   if (v20)
   {
     objc_opt_class();
@@ -454,14 +454,14 @@ LABEL_38:
 
       v21 = 0;
 LABEL_69:
-      v25 = self;
+      selfCopy6 = self;
       goto LABEL_44;
     }
   }
 
   v21 = 0;
 LABEL_39:
-  v23 = [v5 objectForKeyedSubscript:@"semanticModeIdentifier"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"semanticModeIdentifier"];
   if (v23)
   {
     objc_opt_class();
@@ -495,15 +495,15 @@ LABEL_39:
       }
 
 LABEL_63:
-      v25 = self;
+      selfCopy6 = self;
       goto LABEL_43;
     }
   }
 
   v24 = 0;
 LABEL_42:
-  v25 = -[BMUserFocusModeComputed initWithMode:starting:updateReason:semanticType:updateSource:semanticModeIdentifier:](self, "initWithMode:starting:updateReason:semanticType:updateSource:semanticModeIdentifier:", v50, v49, [v48 intValue], objc_msgSend(v46, "intValue"), objc_msgSend(v21, "intValue"), v24);
-  p_isa = &v25->super.super.isa;
+  selfCopy6 = -[BMUserFocusModeComputed initWithMode:starting:updateReason:semanticType:updateSource:semanticModeIdentifier:](self, "initWithMode:starting:updateReason:semanticType:updateSource:semanticModeIdentifier:", v50, v49, [v48 intValue], objc_msgSend(v46, "intValue"), objc_msgSend(v21, "intValue"), v24);
+  p_isa = &selfCopy6->super.super.isa;
 LABEL_43:
 
 LABEL_44:
@@ -523,14 +523,14 @@ LABEL_48:
 {
   v3 = objc_opt_new();
   [(BMUserFocusModeComputed *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_mode)
   {
     PBDataWriterWriteStringField();
@@ -554,9 +554,9 @@ LABEL_48:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v47.receiver = self;
   v47.super_class = BMUserFocusModeComputed;
   v5 = [(BMEventBase *)&v47 init];
@@ -565,12 +565,12 @@ LABEL_48:
     goto LABEL_84;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -581,18 +581,18 @@ LABEL_48:
       while (1)
       {
         v48 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v48 & 0x7F) << v7;
@@ -610,9 +610,9 @@ LABEL_48:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -628,18 +628,18 @@ LABEL_16:
           while (1)
           {
             v48 = 0;
-            v32 = [v4 position] + 1;
-            if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+            v32 = [fromCopy position] + 1;
+            if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
             {
-              v34 = [v4 data];
-              [v34 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v48 & 0x7F) << v30;
@@ -656,7 +656,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 0xB)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 0xB)
           {
 LABEL_68:
             LODWORD(v18) = 0;
@@ -687,18 +687,18 @@ LABEL_53:
           while (1)
           {
             v48 = 0;
-            v25 = [v4 position] + 1;
-            if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+            v25 = [fromCopy position] + 1;
+            if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
             {
-              v27 = [v4 data];
-              [v27 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v48 & 0x7F) << v23;
@@ -715,7 +715,7 @@ LABEL_53:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 3)
           {
 LABEL_76:
             LODWORD(v18) = 0;
@@ -742,18 +742,18 @@ LABEL_76:
             while (1)
             {
               v48 = 0;
-              v38 = [v4 position] + 1;
-              if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 1, v39 <= objc_msgSend(v4, "length")))
+              v38 = [fromCopy position] + 1;
+              if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 1, v39 <= objc_msgSend(fromCopy, "length")))
               {
-                v40 = [v4 data];
-                [v40 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v37 |= (v48 & 0x7F) << v35;
@@ -771,7 +771,7 @@ LABEL_76:
               }
             }
 
-            v41 = (v37 != 0) & ~[v4 hasError];
+            v41 = (v37 != 0) & ~[fromCopy hasError];
 LABEL_80:
             v5->_starting = v41;
             goto LABEL_81;
@@ -788,18 +788,18 @@ LABEL_80:
           while (1)
           {
             v48 = 0;
-            v19 = [v4 position] + 1;
-            if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+            v19 = [fromCopy position] + 1;
+            if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
             {
-              v21 = [v4 data];
-              [v21 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v48 & 0x7F) << v16;
@@ -816,7 +816,7 @@ LABEL_80:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 3)
           {
 LABEL_72:
             LODWORD(v18) = 0;
@@ -834,13 +834,13 @@ LABEL_72:
       *(&v5->super.super.isa + v29) = v28;
 
 LABEL_81:
-      v44 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v44 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_83:
     v45 = 0;
@@ -858,33 +858,33 @@ LABEL_84:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMUserFocusModeComputed *)self mode];
+  mode = [(BMUserFocusModeComputed *)self mode];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMUserFocusModeComputed starting](self, "starting")}];
   v6 = BMUserFocusModeComputedUpdateReasonAsString([(BMUserFocusModeComputed *)self updateReason]);
   v7 = BMUserFocusModeComputedSemanticTypeAsString([(BMUserFocusModeComputed *)self semanticType]);
   v8 = BMUserFocusModeComputedUpdateSourceAsString([(BMUserFocusModeComputed *)self updateSource]);
-  v9 = [(BMUserFocusModeComputed *)self semanticModeIdentifier];
-  v10 = [v3 initWithFormat:@"BMUserFocusModeComputed with mode: %@, starting: %@, updateReason: %@, semanticType: %@, updateSource: %@, semanticModeIdentifier: %@", v4, v5, v6, v7, v8, v9];
+  semanticModeIdentifier = [(BMUserFocusModeComputed *)self semanticModeIdentifier];
+  v10 = [v3 initWithFormat:@"BMUserFocusModeComputed with mode: %@, starting: %@, updateReason: %@, semanticType: %@, updateSource: %@, semanticModeIdentifier: %@", mode, v5, v6, v7, v8, semanticModeIdentifier];
 
   return v10;
 }
 
-- (BMUserFocusModeComputed)initWithMode:(id)a3 starting:(id)a4 updateReason:(int)a5 semanticType:(int)a6 updateSource:(int)a7 semanticModeIdentifier:(id)a8
+- (BMUserFocusModeComputed)initWithMode:(id)mode starting:(id)starting updateReason:(int)reason semanticType:(int)type updateSource:(int)source semanticModeIdentifier:(id)identifier
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
+  modeCopy = mode;
+  startingCopy = starting;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = BMUserFocusModeComputed;
   v18 = [(BMEventBase *)&v20 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_mode, a3);
-    if (v16)
+    objc_storeStrong(&v18->_mode, mode);
+    if (startingCopy)
     {
       v18->_hasStarting = 1;
-      v18->_starting = [v16 BOOLValue];
+      v18->_starting = [startingCopy BOOLValue];
     }
 
     else
@@ -893,10 +893,10 @@ LABEL_84:
       v18->_starting = 0;
     }
 
-    v18->_updateReason = a5;
-    v18->_semanticType = a6;
-    v18->_updateSource = a7;
-    objc_storeStrong(&v18->_semanticModeIdentifier, a8);
+    v18->_updateReason = reason;
+    v18->_semanticType = type;
+    v18->_updateSource = source;
+    objc_storeStrong(&v18->_semanticModeIdentifier, identifier);
   }
 
   return v18;
@@ -924,24 +924,24 @@ LABEL_84:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMUserFocusModeComputed_v1;
   }
 
   else
   {
-    if (a4 != 2)
+    if (version != 2)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMUserFocusModeComputed;
   }
 
@@ -949,7 +949,7 @@ LABEL_84:
   v9 = v8;
   if (v8)
   {
-    *(v8 + 20) = a4;
+    *(v8 + 20) = version;
   }
 
 LABEL_9:

@@ -1,16 +1,16 @@
 @interface PCSCKKSEnsurePCSFieldsOperation
 - (BOOL)haveCKKSPlaintextEntitlements;
-- (PCSCKKSEnsurePCSFieldsOperation)initWithItemModifyContext:(id)a3;
-- (int)updateKeychain:(id)a3 withAttributes:(id)a4;
+- (PCSCKKSEnsurePCSFieldsOperation)initWithItemModifyContext:(id)context;
+- (int)updateKeychain:(id)keychain withAttributes:(id)attributes;
 - (void)start;
 @end
 
 @implementation PCSCKKSEnsurePCSFieldsOperation
 
-- (PCSCKKSEnsurePCSFieldsOperation)initWithItemModifyContext:(id)a3
+- (PCSCKKSEnsurePCSFieldsOperation)initWithItemModifyContext:(id)context
 {
-  v5 = a3;
-  if ((PCSCurrentPersonaMatchesDSIDFromSet([v5 set]) & 1) == 0)
+  contextCopy = context;
+  if ((PCSCurrentPersonaMatchesDSIDFromSet([contextCopy set]) & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -21,46 +21,46 @@
     goto LABEL_9;
   }
 
-  if (!v5)
+  if (!contextCopy)
   {
     goto LABEL_9;
   }
 
-  v6 = [v5 serviceContexts];
-  v7 = [v6 count];
+  serviceContexts = [contextCopy serviceContexts];
+  v7 = [serviceContexts count];
 
   if (!v7 || (v18.receiver = self, v18.super_class = PCSCKKSEnsurePCSFieldsOperation, v8 = [(PCSCKKSEnsurePCSFieldsOperation *)&v18 init], (self = v8) == 0))
   {
 LABEL_9:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v8->_context, a3);
-  v9 = [v5 serviceContexts];
-  v10 = [v9 count];
+  objc_storeStrong(&v8->_context, context);
+  serviceContexts2 = [contextCopy serviceContexts];
+  v10 = [serviceContexts2 count];
 
   v11 = MEMORY[0x1E696AEC0];
   if (v10 == 1)
   {
-    v12 = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
-    v13 = [v12 allKeys];
-    v14 = [v13 objectAtIndexedSubscript:0];
+    serviceContexts3 = [(PCSCKKSItemModifyContext *)self->_context serviceContexts];
+    allKeys = [serviceContexts3 allKeys];
+    v14 = [allKeys objectAtIndexedSubscript:0];
     v15 = [v11 stringWithFormat:@"EnsurePCSFields service: %@", v14];
     [(PCSCKKSEnsurePCSFieldsOperation *)self setName:v15];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"EnsurePCSFields service: %@", @"bulk-service-identity-creation-identifier"];
-    [(PCSCKKSEnsurePCSFieldsOperation *)self setName:v12];
+    serviceContexts3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"EnsurePCSFields service: %@", @"bulk-service-identity-creation-identifier"];
+    [(PCSCKKSEnsurePCSFieldsOperation *)self setName:serviceContexts3];
   }
 
   self = self;
-  v16 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v16;
+  return selfCopy;
 }
 
 - (BOOL)haveCKKSPlaintextEntitlements
@@ -72,8 +72,8 @@ LABEL_10:
 
   else
   {
-    v4 = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
-    v5 = PCSCurrentPersonaMatchesDSIDFromSet([v4 set]);
+    context = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
+    v5 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
     if (v5)
     {
@@ -128,8 +128,8 @@ void __64__PCSCKKSEnsurePCSFieldsOperation_haveCKKSPlaintextEntitlements__block_
   PCSMigrationLog([(PCSCKKSItemModifyContext *)self->_context log], @"Starting: %s", "[PCSCKKSEnsurePCSFieldsOperation start]");
   if ([(PCSCKKSOperation *)self startOperation])
   {
-    v4 = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
-    v5 = PCSCurrentPersonaMatchesDSIDFromSet([v4 set]);
+    context = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
+    v5 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
     if (v5)
     {
@@ -137,17 +137,17 @@ void __64__PCSCKKSEnsurePCSFieldsOperation_haveCKKSPlaintextEntitlements__block_
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v6 = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
-      v7 = [v6 serviceContexts];
-      v8 = [v7 allKeys];
+      context2 = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
+      serviceContexts = [context2 serviceContexts];
+      allKeys = [serviceContexts allKeys];
 
-      v9 = [v8 countByEnumeratingWithState:&v35 objects:v42 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v35 objects:v42 count:16];
       if (v9)
       {
         v10 = v9;
         v11 = *v36;
         v33 = *MEMORY[0x1E697B3C8];
-        v34 = v8;
+        v34 = allKeys;
         do
         {
           v12 = 0;
@@ -155,50 +155,50 @@ void __64__PCSCKKSEnsurePCSFieldsOperation_haveCKKSPlaintextEntitlements__block_
           {
             if (*v36 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allKeys);
             }
 
             v13 = *(*(&v35 + 1) + 8 * v12);
-            v14 = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
-            v15 = [v14 serviceContexts];
-            v16 = [v15 objectForKeyedSubscript:v13];
+            context3 = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
+            serviceContexts2 = [context3 serviceContexts];
+            v16 = [serviceContexts2 objectForKeyedSubscript:v13];
 
             if ([v16 currentIdentity])
             {
-              v17 = [v16 currentItemReference];
-              if (v17)
+              currentItemReference = [v16 currentItemReference];
+              if (currentItemReference)
               {
-                v18 = v17;
-                v19 = [(PCSCKKSEnsurePCSFieldsOperation *)self haveCKKSPlaintextEntitlements];
+                v18 = currentItemReference;
+                haveCKKSPlaintextEntitlements = [(PCSCKKSEnsurePCSFieldsOperation *)self haveCKKSPlaintextEntitlements];
 
-                if (v19)
+                if (haveCKKSPlaintextEntitlements)
                 {
-                  v20 = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
-                  v21 = [v20 mtt];
+                  context4 = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
+                  v21 = [context4 mtt];
                   v22 = [v21 measurePoint:@"EnsurePCSAttributes"];
 
                   if ((_PCSIdentityHavePCSCKKSAttributes([v16 currentIdentity]) & 1) == 0)
                   {
-                    v23 = [MEMORY[0x1E695DF90] dictionary];
+                    dictionary = [MEMORY[0x1E695DF90] dictionary];
                     v40 = v33;
-                    v24 = [v16 currentItemReference];
-                    v41 = v24;
+                    currentItemReference2 = [v16 currentItemReference];
+                    v41 = currentItemReference2;
                     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
 
-                    if (_PCSKeychainAmendCKKSEntry([v16 currentIdentity], v23))
+                    if (_PCSKeychainAmendCKKSEntry([v16 currentIdentity], dictionary))
                     {
-                      v26 = [(PCSCKKSEnsurePCSFieldsOperation *)self updateKeychain:v25 withAttributes:v23];
+                      v26 = [(PCSCKKSEnsurePCSFieldsOperation *)self updateKeychain:v25 withAttributes:dictionary];
                       v32 = v25;
                       v27 = v3;
                       v28 = [*(&self->super.super.super.isa + v3) log];
-                      v31 = [v16 currentIdentity];
+                      currentIdentity = [v16 currentIdentity];
                       v29 = v28;
                       v3 = v27;
                       v25 = v32;
-                      PCSMigrationLog(v29, @"Updated identity %@ with CKKS attributes: status: %d", v31, v26);
+                      PCSMigrationLog(v29, @"Updated identity %@ with CKKS attributes: status: %d", currentIdentity, v26);
                       if (!v26)
                       {
-                        _PCSIdentityCheckPCSAttributes([v16 currentIdentity], v23);
+                        _PCSIdentityCheckPCSAttributes([v16 currentIdentity], dictionary);
                       }
                     }
 
@@ -209,7 +209,7 @@ void __64__PCSCKKSEnsurePCSFieldsOperation_haveCKKSPlaintextEntitlements__block_
 
                     [v22 complete:1];
 
-                    v8 = v34;
+                    allKeys = v34;
                   }
                 }
               }
@@ -219,7 +219,7 @@ void __64__PCSCKKSEnsurePCSFieldsOperation_haveCKKSPlaintextEntitlements__block_
           }
 
           while (v10 != v12);
-          v10 = [v8 countByEnumeratingWithState:&v35 objects:v42 count:16];
+          v10 = [allKeys countByEnumeratingWithState:&v35 objects:v42 count:16];
         }
 
         while (v10);
@@ -238,16 +238,16 @@ void __64__PCSCKKSEnsurePCSFieldsOperation_haveCKKSPlaintextEntitlements__block_
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (int)updateKeychain:(id)a3 withAttributes:(id)a4
+- (int)updateKeychain:(id)keychain withAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
-  v9 = PCSCurrentPersonaMatchesDSIDFromSet([v8 set]);
+  keychainCopy = keychain;
+  attributesCopy = attributes;
+  context = [(PCSCKKSEnsurePCSFieldsOperation *)self context];
+  v9 = PCSCurrentPersonaMatchesDSIDFromSet([context set]);
 
   if (v9)
   {
-    v10 = qword_1ED6F2358(v6, v7);
+    v10 = qword_1ED6F2358(keychainCopy, attributesCopy);
   }
 
   else

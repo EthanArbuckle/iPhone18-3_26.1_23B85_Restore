@@ -1,18 +1,18 @@
 @interface _UIViewAnimationDelegate
-- (_UIViewAnimationDelegate)initWithCompletionBlock:(id)a3;
+- (_UIViewAnimationDelegate)initWithCompletionBlock:(id)block;
 @end
 
 @implementation _UIViewAnimationDelegate
 
-- (_UIViewAnimationDelegate)initWithCompletionBlock:(id)a3
+- (_UIViewAnimationDelegate)initWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = _UIViewAnimationDelegate;
   v5 = [(_UIViewAnimationDelegate *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     completionBlock = v5->_completionBlock;
     v5->_completionBlock = v6;
   }

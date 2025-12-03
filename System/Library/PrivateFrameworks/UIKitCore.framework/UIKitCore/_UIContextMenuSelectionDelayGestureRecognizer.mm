@@ -1,11 +1,11 @@
 @interface _UIContextMenuSelectionDelayGestureRecognizer
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation _UIContextMenuSelectionDelayGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5 = [[UIDelayedAction alloc] initWithTarget:self action:sel__timerSatisfied userInfo:0 delay:0.15];
   delayedAction = self->_delayedAction;

@@ -1,17 +1,17 @@
 @interface FeatureDiscoveryCollectionViewCell
-+ (double)estimatedHeightForContext:(unint64_t)a3;
-- (FeatureDiscoveryCollectionViewCell)initWithFrame:(CGRect)a3;
++ (double)estimatedHeightForContext:(unint64_t)context;
+- (FeatureDiscoveryCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_updateFeatureDiscoveryViewConstraints;
-- (void)setContext:(unint64_t)a3;
+- (void)setContext:(unint64_t)context;
 @end
 
 @implementation FeatureDiscoveryCollectionViewCell
 
-- (void)setContext:(unint64_t)a3
+- (void)setContext:(unint64_t)context
 {
-  if (self->_context != a3)
+  if (self->_context != context)
   {
-    self->_context = a3;
+    self->_context = context;
     [(FeatureDiscoveryCollectionViewCell *)self _updateFeatureDiscoveryViewConstraints];
   }
 }
@@ -24,9 +24,9 @@
   }
 
   featureDiscoveryView = self->_featureDiscoveryView;
-  v4 = [(FeatureDiscoveryCollectionViewCell *)self contentView];
-  v5 = [(FeatureDiscoveryCollectionViewCell *)self traitCollection];
-  v6 = +[FeatureDiscoveryView _constraintsForFeatureDiscoveryView:centeredInContentView:withIdiom:context:](FeatureDiscoveryView, "_constraintsForFeatureDiscoveryView:centeredInContentView:withIdiom:context:", featureDiscoveryView, v4, [v5 userInterfaceIdiom], self->_context);
+  contentView = [(FeatureDiscoveryCollectionViewCell *)self contentView];
+  traitCollection = [(FeatureDiscoveryCollectionViewCell *)self traitCollection];
+  v6 = +[FeatureDiscoveryView _constraintsForFeatureDiscoveryView:centeredInContentView:withIdiom:context:](FeatureDiscoveryView, "_constraintsForFeatureDiscoveryView:centeredInContentView:withIdiom:context:", featureDiscoveryView, contentView, [traitCollection userInterfaceIdiom], self->_context);
   featureDiscoveryViewConstraints = self->_featureDiscoveryViewConstraints;
   self->_featureDiscoveryViewConstraints = v6;
 
@@ -35,30 +35,30 @@
   [NSLayoutConstraint activateConstraints:v8];
 }
 
-- (FeatureDiscoveryCollectionViewCell)initWithFrame:(CGRect)a3
+- (FeatureDiscoveryCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = FeatureDiscoveryCollectionViewCell;
-  v3 = [(MapsThemeCollectionViewCell *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsThemeCollectionViewCell *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
     [(FeatureDiscoveryCollectionViewCell *)v3 setBackgroundColor:v4];
 
     v5 = +[UIColor clearColor];
-    v6 = [(FeatureDiscoveryCollectionViewCell *)v3 contentView];
-    [v6 setBackgroundColor:v5];
+    contentView = [(FeatureDiscoveryCollectionViewCell *)v3 contentView];
+    [contentView setBackgroundColor:v5];
 
     v7 = [FeatureDiscoveryView alloc];
-    v8 = [(FeatureDiscoveryCollectionViewCell *)v3 contentView];
-    [v8 bounds];
+    contentView2 = [(FeatureDiscoveryCollectionViewCell *)v3 contentView];
+    [contentView2 bounds];
     v9 = [(FeatureDiscoveryView *)v7 initWithFrame:?];
     featureDiscoveryView = v3->_featureDiscoveryView;
     v3->_featureDiscoveryView = v9;
 
     [(FeatureDiscoveryView *)v3->_featureDiscoveryView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [(FeatureDiscoveryCollectionViewCell *)v3 contentView];
-    [v11 addSubview:v3->_featureDiscoveryView];
+    contentView3 = [(FeatureDiscoveryCollectionViewCell *)v3 contentView];
+    [contentView3 addSubview:v3->_featureDiscoveryView];
 
     [(FeatureDiscoveryCollectionViewCell *)v3 _updateFeatureDiscoveryViewConstraints];
   }
@@ -66,12 +66,12 @@
   return v3;
 }
 
-+ (double)estimatedHeightForContext:(unint64_t)a3
++ (double)estimatedHeightForContext:(unint64_t)context
 {
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  [FeatureDiscoveryView _cellMetricsForIdiom:v5 context:a3];
+  [FeatureDiscoveryView _cellMetricsForIdiom:userInterfaceIdiom context:context];
   v7 = v6;
   v9 = v8;
   +[FeatureDiscoveryView estimatedHeight];

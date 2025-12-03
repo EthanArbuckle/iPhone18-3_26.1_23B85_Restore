@@ -1,30 +1,30 @@
 @interface MKMapItemMetadata
-- (MKMapItemMetadata)initWithBusiness:(id)a3;
+- (MKMapItemMetadata)initWithBusiness:(id)business;
 - (NSMutableDictionary)imageCache;
 - (id)description;
-- (id)imageForURL:(id)a3;
-- (void)addImage:(id)a3 forURL:(id)a4;
+- (id)imageForURL:(id)l;
+- (void)addImage:(id)image forURL:(id)l;
 @end
 
 @implementation MKMapItemMetadata
 
-- (id)imageForURL:(id)a3
+- (id)imageForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MKMapItemMetadata *)self imageCache];
-  v6 = [v5 objectForKey:v4];
+  lCopy = l;
+  imageCache = [(MKMapItemMetadata *)self imageCache];
+  v6 = [imageCache objectForKey:lCopy];
 
   return v6;
 }
 
-- (void)addImage:(id)a3 forURL:(id)a4
+- (void)addImage:(id)image forURL:(id)l
 {
-  if (a3)
+  if (image)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(MKMapItemMetadata *)self imageCache];
-    [v8 setObject:v7 forKey:v6];
+    lCopy = l;
+    imageCopy = image;
+    imageCache = [(MKMapItemMetadata *)self imageCache];
+    [imageCache setObject:imageCopy forKey:lCopy];
   }
 }
 
@@ -54,16 +54,16 @@
   return v5;
 }
 
-- (MKMapItemMetadata)initWithBusiness:(id)a3
+- (MKMapItemMetadata)initWithBusiness:(id)business
 {
-  v5 = a3;
+  businessCopy = business;
   v10.receiver = self;
   v10.super_class = MKMapItemMetadata;
   v6 = [(MKMapItemMetadata *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_business, a3);
+    objc_storeStrong(&v6->_business, business);
     v8 = v7;
   }
 

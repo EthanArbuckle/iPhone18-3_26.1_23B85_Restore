@@ -1,37 +1,37 @@
 @interface SHRecordingBuffer
-- (SHRecordingBuffer)initWithTap:(id)a3;
-- (SHRecordingBuffer)initWithTap:(id)a3 signatureGenerator:(id)a4;
+- (SHRecordingBuffer)initWithTap:(id)tap;
+- (SHRecordingBuffer)initWithTap:(id)tap signatureGenerator:(id)generator;
 @end
 
 @implementation SHRecordingBuffer
 
-- (SHRecordingBuffer)initWithTap:(id)a3
+- (SHRecordingBuffer)initWithTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   v5 = [[SHSignatureGenerator alloc] initSignatureRingBufferWithDuration:3.0];
-  v6 = [(SHRecordingBuffer *)self initWithTap:v4 signatureGenerator:v5];
+  v6 = [(SHRecordingBuffer *)self initWithTap:tapCopy signatureGenerator:v5];
 
   return v6;
 }
 
-- (SHRecordingBuffer)initWithTap:(id)a3 signatureGenerator:(id)a4
+- (SHRecordingBuffer)initWithTap:(id)tap signatureGenerator:(id)generator
 {
-  v7 = a3;
-  v8 = a4;
+  tapCopy = tap;
+  generatorCopy = generator;
   v16.receiver = self;
   v16.super_class = SHRecordingBuffer;
   v9 = [(SHRecordingBuffer *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tap, a3);
-    objc_storeStrong(&v10->_signatureGenerator, a4);
+    objc_storeStrong(&v9->_tap, tap);
+    objc_storeStrong(&v10->_signatureGenerator, generator);
     objc_initWeak(&location, v10);
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100006D98;
     v12[3] = &unk_10007CF00;
-    v13 = v8;
+    v13 = generatorCopy;
     objc_copyWeak(&v14, &location);
     [(SHAudioTap *)v10->_tap setCompletion:v12];
     objc_destroyWeak(&v14);

@@ -1,47 +1,47 @@
 @interface HFAccessoryBatteryLevelItem
-- (HFAccessoryBatteryLevelItem)initWithAccessory:(id)a3 valueSource:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFAccessoryBatteryLevelItem)initWithAccessory:(id)accessory valueSource:(id)source;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFAccessoryBatteryLevelItem
 
-- (HFAccessoryBatteryLevelItem)initWithAccessory:(id)a3 valueSource:(id)a4
+- (HFAccessoryBatteryLevelItem)initWithAccessory:(id)accessory valueSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  accessoryCopy = accessory;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = HFAccessoryBatteryLevelItem;
   v9 = [(HFAccessoryBatteryLevelItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessory, a3);
-    objc_storeStrong(&v10->_valueSource, a4);
+    objc_storeStrong(&v9->_accessory, accessory);
+    objc_storeStrong(&v10->_valueSource, source);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFAccessoryBatteryLevelItem *)self accessory];
-  v6 = [(HFAccessoryBatteryLevelItem *)self valueSource];
-  v7 = [v4 initWithAccessory:v5 valueSource:v6];
+  accessory = [(HFAccessoryBatteryLevelItem *)self accessory];
+  valueSource = [(HFAccessoryBatteryLevelItem *)self valueSource];
+  v7 = [v4 initWithAccessory:accessory valueSource:valueSource];
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFAccessoryBatteryLevelItem *)self accessory];
-  v6 = [v5 services];
-  v7 = [v6 na_firstObjectPassingTest:&__block_literal_global_27];
+  optionsCopy = options;
+  accessory = [(HFAccessoryBatteryLevelItem *)self accessory];
+  services = [accessory services];
+  v7 = [services na_firstObjectPassingTest:&__block_literal_global_27];
 
-  v8 = [v4 objectForKeyedSubscript:@"accessoryBatteryDesiredKeys"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"accessoryBatteryDesiredKeys"];
   v9 = [MEMORY[0x277CBEB58] set];
   v10 = [v7 hf_characteristicOfType:*MEMORY[0x277CCF780]];
   if (!v8 || [v8 containsObject:@"batteryPercentage"])
@@ -64,15 +64,15 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v14 = [(HFAccessoryBatteryLevelItem *)self accessory];
-    v15 = [v14 services];
+    accessory2 = [(HFAccessoryBatteryLevelItem *)self accessory];
+    services2 = [accessory2 services];
 
-    v16 = [v15 countByEnumeratingWithState:&v35 objects:v41 count:16];
+    v16 = [services2 countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v16)
     {
       v17 = v16;
       v29 = v10;
-      v30 = v4;
+      v30 = optionsCopy;
       v18 = *v36;
       while (2)
       {
@@ -80,7 +80,7 @@
         {
           if (*v36 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(services2);
           }
 
           v20 = [*(*(&v35 + 1) + 8 * i) hf_characteristicOfType:v12];
@@ -91,7 +91,7 @@
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v35 objects:v41 count:16];
+        v17 = [services2 countByEnumeratingWithState:&v35 objects:v41 count:16];
         if (v17)
         {
           continue;
@@ -103,7 +103,7 @@
       v13 = 0;
 LABEL_20:
       v10 = v29;
-      v4 = v30;
+      optionsCopy = v30;
     }
 
     else
@@ -133,10 +133,10 @@ LABEL_23:
 LABEL_24:
   [v9 na_safeAddObject:v13];
 LABEL_25:
-  v21 = [v4 objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
-  v22 = [v21 BOOLValue];
+  v21 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
+  bOOLValue = [v21 BOOLValue];
 
-  if (v22)
+  if (bOOLValue)
   {
     v23 = MEMORY[0x277D2C900];
     v39[0] = @"dependentHomeKitObjects";
@@ -145,15 +145,15 @@ LABEL_25:
     v40[1] = MEMORY[0x277CBEC38];
     v39[2] = @"readsSkipped";
     v40[2] = MEMORY[0x277CBEC38];
-    v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:3];
-    v25 = [HFItemUpdateOutcome outcomeWithResults:v24];
+    valueSource = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:3];
+    v25 = [HFItemUpdateOutcome outcomeWithResults:valueSource];
     v26 = [v23 futureWithResult:v25];
   }
 
   else
   {
-    v24 = [(HFAccessoryBatteryLevelItem *)self valueSource];
-    v25 = [v24 readValuesForCharacteristics:v9];
+    valueSource = [(HFAccessoryBatteryLevelItem *)self valueSource];
+    v25 = [valueSource readValuesForCharacteristics:v9];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __59__HFAccessoryBatteryLevelItem__subclass_updateWithOptions___block_invoke_2;

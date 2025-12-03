@@ -1,28 +1,28 @@
 @interface EQKitCompoundBox
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)erasableBounds;
 - (CGRect)p_cacheErasableBounds;
-- (EQKitCompoundBox)initWithChildBoxes:(id)a3;
+- (EQKitCompoundBox)initWithChildBoxes:(id)boxes;
 - (double)depth;
 - (double)height;
 - (double)width;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5;
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width;
 @end
 
 @implementation EQKitCompoundBox
 
-- (EQKitCompoundBox)initWithChildBoxes:(id)a3
+- (EQKitCompoundBox)initWithChildBoxes:(id)boxes
 {
   v9.receiver = self;
   v9.super_class = EQKitCompoundBox;
   v7 = [(EQKitCompoundBox *)&v9 init];
   if (v7)
   {
-    v7->mChildBoxes = objc_msgSend_copy(a3, v4, v5, v6);
+    v7->mChildBoxes = objc_msgSend_copy(boxes, v4, v5, v6);
   }
 
   return v7;
@@ -35,30 +35,30 @@
   [(EQKitCompoundBox *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v5, v6, a3, v7);
+  v8 = objc_msgSend_allocWithZone_(v5, v6, zone, v7);
   v13 = objc_msgSend_childBoxes(self, v9, v10, v11);
 
   return objc_msgSend_initWithChildBoxes_(v8, v12, v13, v14);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
       v6 = objc_opt_class();
-      LODWORD(self) = objc_msgSend_isMemberOfClass_(a3, v7, v6, v8);
+      LODWORD(self) = objc_msgSend_isMemberOfClass_(equal, v7, v6, v8);
       if (self)
       {
-        v12 = objc_msgSend_childBoxes(v3, v9, v10, v11);
-        self = objc_msgSend_childBoxes(a3, v13, v14, v15);
+        v12 = objc_msgSend_childBoxes(selfCopy, v9, v10, v11);
+        self = objc_msgSend_childBoxes(equal, v13, v14, v15);
         if (v12 == self)
         {
           LOBYTE(self) = 1;
@@ -66,12 +66,12 @@
 
         else
         {
-          v18 = self;
+          selfCopy2 = self;
           LOBYTE(self) = 0;
-          if (v12 && v18)
+          if (v12 && selfCopy2)
           {
 
-            LOBYTE(self) = objc_msgSend_isEqual_(v12, v16, v18, v17);
+            LOBYTE(self) = objc_msgSend_isEqual_(v12, v16, selfCopy2, v17);
           }
         }
       }
@@ -162,21 +162,21 @@
   return objc_msgSend_stringWithFormat_(v3, v24, @"<%@ %p>: height=%f depth=%f width=%f childBoxes=%@", v25, v4, self, v9, v14, v19, v23);
 }
 
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width
 {
-  if (a3)
+  if (height)
   {
-    *a3 = 0.0;
+    *height = 0.0;
   }
 
-  if (a4)
+  if (depth)
   {
-    *a4 = 0.0;
+    *depth = 0.0;
   }
 
-  if (a5)
+  if (width)
   {
-    *a5 = 0.0;
+    *width = 0.0;
   }
 }
 

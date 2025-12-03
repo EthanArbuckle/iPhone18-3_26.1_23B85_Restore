@@ -1,5 +1,5 @@
 @interface _AFASRSharedUserInfoMutation
-- (_AFASRSharedUserInfoMutation)initWithBase:(id)a3;
+- (_AFASRSharedUserInfoMutation)initWithBase:(id)base;
 - (id)getLoggableSharedUserId;
 - (id)getLoggableUserIdHash;
 - (id)getPersonaId;
@@ -12,72 +12,72 @@
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_personaId;
+    personaId = self->_personaId;
   }
 
   else
   {
-    v2 = [(AFASRSharedUserInfo *)self->_base personaId];
+    personaId = [(AFASRSharedUserInfo *)self->_base personaId];
   }
 
-  return v2;
+  return personaId;
 }
 
 - (id)getLoggableUserIdHash
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_loggableUserIdHash;
+    loggableUserIdHash = self->_loggableUserIdHash;
   }
 
   else
   {
-    v2 = [(AFASRSharedUserInfo *)self->_base loggableUserIdHash];
+    loggableUserIdHash = [(AFASRSharedUserInfo *)self->_base loggableUserIdHash];
   }
 
-  return v2;
+  return loggableUserIdHash;
 }
 
 - (id)getLoggableSharedUserId
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_loggableSharedUserId;
+    loggableSharedUserId = self->_loggableSharedUserId;
   }
 
   else
   {
-    v2 = [(AFASRSharedUserInfo *)self->_base loggableSharedUserId];
+    loggableSharedUserId = [(AFASRSharedUserInfo *)self->_base loggableSharedUserId];
   }
 
-  return v2;
+  return loggableSharedUserId;
 }
 
 - (id)getSharedUserId
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_sharedUserId;
+    sharedUserId = self->_sharedUserId;
   }
 
   else
   {
-    v2 = [(AFASRSharedUserInfo *)self->_base sharedUserId];
+    sharedUserId = [(AFASRSharedUserInfo *)self->_base sharedUserId];
   }
 
-  return v2;
+  return sharedUserId;
 }
 
-- (_AFASRSharedUserInfoMutation)initWithBase:(id)a3
+- (_AFASRSharedUserInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFASRSharedUserInfoMutation;
   v6 = [(_AFASRSharedUserInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

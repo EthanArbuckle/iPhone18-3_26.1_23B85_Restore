@@ -1,7 +1,7 @@
 @interface FMDInternalBluetoothManagerDevice
-+ (id)externalAccessoryForMacAddress:(id)a3;
++ (id)externalAccessoryForMacAddress:(id)address;
 - (BOOL)bluetoothConnected;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isTemporaryPaired;
 - (FMDAccessoryStyleDescriptor)styleDescriptor;
 - (FMDIdentifiable)accessoryIdentifier;
@@ -21,8 +21,8 @@
 - (unint64_t)hash;
 - (unsigned)productID;
 - (unsigned)vendorID;
-- (void)addAudioChannelStatus:(id)a3;
-- (void)addBLEBeacon:(id)a3;
+- (void)addAudioChannelStatus:(id)status;
+- (void)addBLEBeacon:(id)beacon;
 @end
 
 @implementation FMDInternalBluetoothManagerDevice
@@ -44,10 +44,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -57,14 +57,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(FMDInternalBluetoothManagerDevice *)v5 address];
-      v7 = [(FMDInternalBluetoothManagerDevice *)self address];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      address = [(FMDInternalBluetoothManagerDevice *)v5 address];
+      address2 = [(FMDInternalBluetoothManagerDevice *)self address];
+      if ([address isEqualToString:address2])
       {
-        v8 = [(FMDInternalBluetoothManagerDevice *)self audioChannelInfo];
-        v9 = [(FMDInternalBluetoothManagerDevice *)v5 audioChannelInfo];
-        v10 = [v8 isEqualToArray:v9];
+        audioChannelInfo = [(FMDInternalBluetoothManagerDevice *)self audioChannelInfo];
+        audioChannelInfo2 = [(FMDInternalBluetoothManagerDevice *)v5 audioChannelInfo];
+        v10 = [audioChannelInfo isEqualToArray:audioChannelInfo2];
       }
 
       else
@@ -77,7 +77,7 @@
     {
       v12.receiver = self;
       v12.super_class = FMDInternalBluetoothManagerDevice;
-      v10 = [(FMDInternalBluetoothManagerDevice *)&v12 isEqual:v4];
+      v10 = [(FMDInternalBluetoothManagerDevice *)&v12 isEqual:equalCopy];
     }
   }
 
@@ -86,8 +86,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self address];
-  v3 = [v2 hash];
+  address = [(FMDInternalBluetoothManagerDevice *)self address];
+  v3 = [address hash];
 
   return v3;
 }
@@ -95,76 +95,76 @@
 - (FMDIdentifiable)accessoryIdentifier
 {
   v3 = [FMDAccessoryIdentifier alloc];
-  v4 = [(FMDInternalBluetoothManagerDevice *)self address];
-  v5 = [v3 initWithAddress:v4];
+  address = [(FMDInternalBluetoothManagerDevice *)self address];
+  v5 = [v3 initWithAddress:address];
 
   return v5;
 }
 
 - (unsigned)vendorID
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
-  v3 = [v2 vendorID];
+  bluetoothDevice = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
+  vendorID = [bluetoothDevice vendorID];
 
-  return v3;
+  return vendorID;
 }
 
 - (unsigned)productID
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
-  v3 = [v2 productID];
+  bluetoothDevice = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
+  productID = [bluetoothDevice productID];
 
-  return v3;
+  return productID;
 }
 
 - (NSString)address
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
-  v3 = [v2 btAddressData];
-  v4 = [v3 fm_MACAddressString];
+  bluetoothDevice = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
+  btAddressData = [bluetoothDevice btAddressData];
+  fm_MACAddressString = [btAddressData fm_MACAddressString];
 
-  return v4;
+  return fm_MACAddressString;
 }
 
 - (NSString)scoUID
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self address];
-  v3 = [NSString stringWithFormat:@"%@-tsco", v2];
+  address = [(FMDInternalBluetoothManagerDevice *)self address];
+  v3 = [NSString stringWithFormat:@"%@-tsco", address];
 
   return v3;
 }
 
 - (BOOL)bluetoothConnected
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
-  v3 = ([v2 discoveryFlags] >> 21) & 1;
+  bluetoothDevice = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
+  v3 = ([bluetoothDevice discoveryFlags] >> 21) & 1;
 
   return v3;
 }
 
 - (NSString)name
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
-  v3 = [v2 name];
+  bluetoothDevice = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
+  name = [bluetoothDevice name];
 
-  return v3;
+  return name;
 }
 
 - (BOOL)isTemporaryPaired
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
-  v3 = ([v2 deviceFlags] >> 25) & 1;
+  bluetoothDevice = [(FMDInternalBluetoothManagerDevice *)self bluetoothDevice];
+  v3 = ([bluetoothDevice deviceFlags] >> 25) & 1;
 
   return v3;
 }
 
-- (void)addBLEBeacon:(id)a3
+- (void)addBLEBeacon:(id)beacon
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isValid];
+  beaconCopy = beacon;
+  identifier = [beaconCopy identifier];
+  isValid = [identifier isValid];
 
-  if (v6)
+  if (isValid)
   {
     v7 = sub_100002880();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -172,24 +172,24 @@
       v10 = 138543874;
       v11 = objc_opt_class();
       v12 = 2050;
-      v13 = self;
+      selfCopy = self;
       v14 = 2050;
-      v15 = v4;
+      v15 = beaconCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p> addBLEBeacon: <%{public}p>", &v10, 0x20u);
     }
 
-    v8 = [(FMDInternalBluetoothManagerDevice *)self beaconsByIdentifier];
-    v9 = [v4 identifier];
-    [v8 setObject:v4 forKeyedSubscript:v9];
+    beaconsByIdentifier = [(FMDInternalBluetoothManagerDevice *)self beaconsByIdentifier];
+    identifier2 = [beaconCopy identifier];
+    [beaconsByIdentifier setObject:beaconCopy forKeyedSubscript:identifier2];
   }
 }
 
-- (void)addAudioChannelStatus:(id)a3
+- (void)addAudioChannelStatus:(id)status
 {
-  v4 = a3;
-  v5 = [v4 channelName];
+  statusCopy = status;
+  channelName = [statusCopy channelName];
 
-  if (v5)
+  if (channelName)
   {
     v6 = sub_100002880();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -197,119 +197,119 @@
       v9 = 138544130;
       v10 = objc_opt_class();
       v11 = 2050;
-      v12 = self;
+      selfCopy = self;
       v13 = 2050;
-      v14 = v4;
+      v14 = statusCopy;
       v15 = 2112;
-      v16 = v4;
+      v16 = statusCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p> addAudioChannelStatus: <%{public}p> %@", &v9, 0x2Au);
     }
 
-    v7 = [(FMDInternalBluetoothManagerDevice *)self audioChannelsByName];
-    v8 = [v4 channelName];
-    [v7 setObject:v4 forKeyedSubscript:v8];
+    audioChannelsByName = [(FMDInternalBluetoothManagerDevice *)self audioChannelsByName];
+    channelName2 = [statusCopy channelName];
+    [audioChannelsByName setObject:statusCopy forKeyedSubscript:channelName2];
   }
 }
 
 - (NSNumber)accessoryRSSI
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self primaryBeacon];
-  v3 = [v2 rssi];
+  primaryBeacon = [(FMDInternalBluetoothManagerDevice *)self primaryBeacon];
+  rssi = [primaryBeacon rssi];
 
-  return v3;
+  return rssi;
 }
 
 - (NSDate)rssiUpdateDate
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self primaryBeacon];
-  v3 = [v2 updateDate];
+  primaryBeacon = [(FMDInternalBluetoothManagerDevice *)self primaryBeacon];
+  updateDate = [primaryBeacon updateDate];
 
-  return v3;
+  return updateDate;
 }
 
 - (NSArray)audioChannelInfo
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self audioChannelsByName];
-  v3 = [v2 allValues];
+  audioChannelsByName = [(FMDInternalBluetoothManagerDevice *)self audioChannelsByName];
+  allValues = [audioChannelsByName allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (NSNumber)bluetoothColorCode
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self primaryBeacon];
-  v3 = [v2 colorCode];
+  primaryBeacon = [(FMDInternalBluetoothManagerDevice *)self primaryBeacon];
+  colorCode = [primaryBeacon colorCode];
 
-  return v3;
+  return colorCode;
 }
 
 - (FMDAccessoryStyleDescriptor)styleDescriptor
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self primaryBeacon];
-  v3 = [v2 styleDescriptor];
+  primaryBeacon = [(FMDInternalBluetoothManagerDevice *)self primaryBeacon];
+  styleDescriptor = [primaryBeacon styleDescriptor];
 
-  return v3;
+  return styleDescriptor;
 }
 
 - (id)primaryBeacon
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self beacons];
-  v3 = [FMDBLEAudioAdvertisementParser primaryBeaconForBeacons:v2];
+  beacons = [(FMDInternalBluetoothManagerDevice *)self beacons];
+  v3 = [FMDBLEAudioAdvertisementParser primaryBeaconForBeacons:beacons];
 
   return v3;
 }
 
 - (NSArray)beacons
 {
-  v2 = [(FMDInternalBluetoothManagerDevice *)self beaconsByIdentifier];
-  v3 = [v2 allValues];
+  beaconsByIdentifier = [(FMDInternalBluetoothManagerDevice *)self beaconsByIdentifier];
+  allValues = [beaconsByIdentifier allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (id)serialNumber
 {
   v3 = objc_opt_class();
-  v4 = [(FMDInternalBluetoothManagerDevice *)self address];
-  v5 = [v3 externalAccessoryForMacAddress:v4];
+  address = [(FMDInternalBluetoothManagerDevice *)self address];
+  v5 = [v3 externalAccessoryForMacAddress:address];
 
-  v6 = [v5 serialNumber];
+  serialNumber = [v5 serialNumber];
 
-  return v6;
+  return serialNumber;
 }
 
 - (NSString)firmwareRevision
 {
   v3 = objc_opt_class();
-  v4 = [(FMDInternalBluetoothManagerDevice *)self address];
-  v5 = [v3 externalAccessoryForMacAddress:v4];
+  address = [(FMDInternalBluetoothManagerDevice *)self address];
+  v5 = [v3 externalAccessoryForMacAddress:address];
 
-  v6 = [v5 firmwareRevision];
+  firmwareRevision = [v5 firmwareRevision];
 
-  return v6;
+  return firmwareRevision;
 }
 
 - (NSString)hardwareRevision
 {
   v3 = objc_opt_class();
-  v4 = [(FMDInternalBluetoothManagerDevice *)self address];
-  v5 = [v3 externalAccessoryForMacAddress:v4];
+  address = [(FMDInternalBluetoothManagerDevice *)self address];
+  v5 = [v3 externalAccessoryForMacAddress:address];
 
-  v6 = [v5 hardwareRevision];
+  hardwareRevision = [v5 hardwareRevision];
 
-  return v6;
+  return hardwareRevision;
 }
 
-+ (id)externalAccessoryForMacAddress:(id)a3
++ (id)externalAccessoryForMacAddress:(id)address
 {
-  v3 = a3;
+  addressCopy = address;
   v4 = +[EAAccessoryManager sharedAccessoryManager];
-  v5 = [v4 connectedAccessories];
+  connectedAccessories = [v4 connectedAccessories];
 
   v6 = sub_100002880();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_1002267BC(v5, v6);
+    sub_1002267BC(connectedAccessories, v6);
   }
 
   v13 = 0;
@@ -322,10 +322,10 @@
   v10[1] = 3221225472;
   v10[2] = sub_10013A7E0;
   v10[3] = &unk_1002CD9E0;
-  v7 = v3;
+  v7 = addressCopy;
   v11 = v7;
   v12 = &v13;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [connectedAccessories enumerateObjectsUsingBlock:v10];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);

@@ -1,37 +1,37 @@
 @interface MNRouteAttributes
-- (BOOL)shouldRetryForError:(id)a3;
-- (MNRouteAttributes)initWithAttributes:(id)a3 latLngs:(id)a4 isStepping:(BOOL)a5;
-- (MNRouteAttributes)initWithAttributes:(id)a3 waypoints:(id)a4;
-- (MNRouteAttributes)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)shouldRetryForError:(id)error;
+- (MNRouteAttributes)initWithAttributes:(id)attributes latLngs:(id)lngs isStepping:(BOOL)stepping;
+- (MNRouteAttributes)initWithAttributes:(id)attributes waypoints:(id)waypoints;
+- (MNRouteAttributes)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)vehicle;
 - (void)_commonInit;
-- (void)_loadRulesIfNecessaryWithVehicle:(id)a3 queue:(id)a4 finishedHandler:(id)a5;
-- (void)_populateRouteAttributesWithVehicle:(id)a3 finishedHandler:(id)a4;
-- (void)_resolveSelectedVehicle:(id)a3;
+- (void)_loadRulesIfNecessaryWithVehicle:(id)vehicle queue:(id)queue finishedHandler:(id)handler;
+- (void)_populateRouteAttributesWithVehicle:(id)vehicle finishedHandler:(id)handler;
+- (void)_resolveSelectedVehicle:(id)vehicle;
 - (void)_updateMiscOptions;
-- (void)buildRouteAttributes:(id)a3 queue:(id)a4 result:(id)a5;
-- (void)buildRouteAttributes:(id)a3 result:(id)a4;
-- (void)buildRouteAttributesForETAUpdateRequest:(id)a3 queue:(id)a4 result:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)buildRouteAttributes:(id)attributes queue:(id)queue result:(id)result;
+- (void)buildRouteAttributes:(id)attributes result:(id)result;
+- (void)buildRouteAttributesForETAUpdateRequest:(id)request queue:(id)queue result:(id)result;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNRouteAttributes
 
-- (BOOL)shouldRetryForError:(id)a3
+- (BOOL)shouldRetryForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v6 = GEOErrorDomain();
-  if (![v5 isEqualToString:v6])
+  if (![domain isEqualToString:v6])
   {
 
     goto LABEL_5;
   }
 
-  v7 = [v4 code];
+  code = [errorCopy code];
 
-  if (v7 != -28)
+  if (code != -28)
   {
 LABEL_5:
     v8 = 0;
@@ -46,21 +46,21 @@ LABEL_6:
   return v8;
 }
 
-- (void)buildRouteAttributesForETAUpdateRequest:(id)a3 queue:(id)a4 result:(id)a5
+- (void)buildRouteAttributesForETAUpdateRequest:(id)request queue:(id)queue result:(id)result
 {
-  v22 = a4;
-  v8 = a5;
-  v9 = [a3 currentUserLocation];
-  if (v9)
+  queueCopy = queue;
+  resultCopy = result;
+  currentUserLocation = [request currentUserLocation];
+  if (currentUserLocation)
   {
     if ([(NSArray *)self->_latLngs count])
     {
-      v10 = [(NSArray *)self->_latLngs firstObject];
-      [v10 coordinate];
+      firstObject = [(NSArray *)self->_latLngs firstObject];
+      [firstObject coordinate];
       v12 = v11;
       v14 = v13;
 
-      [v9 coordinate];
+      [currentUserLocation coordinate];
       if (vabdd_f64(v15, v12) >= 0.0001 || vabdd_f64(v16, v14) >= 0.0001)
       {
         v17 = [objc_alloc(MEMORY[0x1E69A1E50]) initWithCoordinate:{v15, v16}];
@@ -88,39 +88,39 @@ LABEL_6:
     }
   }
 
-  [(MNRouteAttributes *)self buildRouteAttributes:v22 result:v8];
+  [(MNRouteAttributes *)self buildRouteAttributes:queueCopy result:resultCopy];
 }
 
-- (void)buildRouteAttributes:(id)a3 result:(id)a4
+- (void)buildRouteAttributes:(id)attributes result:(id)result
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  attributesCopy = attributes;
+  resultCopy = result;
+  if (resultCopy)
   {
     if ([(MNRouteAttributes *)self mainTransportType])
     {
       v8 = MNGetMNRouteAttributesLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(MNRouteAttributes *)self mainTransportType];
-        if (v9 >= 7)
+        mainTransportType = [(MNRouteAttributes *)self mainTransportType];
+        if (mainTransportType >= 7)
         {
-          v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v9];
+          v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", mainTransportType];
         }
 
         else
         {
-          v10 = off_1E842F2A0[v9];
+          v10 = off_1E842F2A0[mainTransportType];
         }
 
-        v16 = [(MNRouteAttributes *)self formattedText];
+        formattedText = [(MNRouteAttributes *)self formattedText];
         *buf = 134218498;
-        v27 = self;
+        selfCopy2 = self;
         v28 = 2112;
         v29 = v10;
         v30 = 2112;
-        *v31 = v16;
+        *v31 = formattedText;
         _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_ERROR, "%p Requested updated route attributes for an unsupported transportType: %@, attributes:\n%@", buf, 0x20u);
       }
 
@@ -129,8 +129,8 @@ LABEL_6:
       block[2] = __49__MNRouteAttributes_buildRouteAttributes_result___block_invoke;
       block[3] = &unk_1E842F580;
       block[4] = self;
-      v25 = v7;
-      dispatch_async(v6, block);
+      v25 = resultCopy;
+      dispatch_async(attributesCopy, block);
       v11 = v25;
     }
 
@@ -140,16 +140,16 @@ LABEL_6:
       v14 = MNGetMNRouteAttributesLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(MNRouteAttributes *)self formattedText];
+        formattedText2 = [(MNRouteAttributes *)self formattedText];
         *buf = 134218242;
-        v27 = self;
+        selfCopy2 = self;
         v28 = 2112;
-        v29 = v15;
+        v29 = formattedText2;
         _os_log_impl(&dword_1D311E000, v14, OS_LOG_TYPE_DEFAULT, "%p Requesting updated route attributes:\n%@", buf, 0x16u);
       }
 
       [(MNRouteAttributes *)self _updateMiscOptions];
-      v11 = [[MNSequence alloc] initWithQueue:v6];
+      v11 = [[MNSequence alloc] initWithQueue:attributesCopy];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __49__MNRouteAttributes_buildRouteAttributes_result___block_invoke_102;
@@ -161,7 +161,7 @@ LABEL_6:
       v21[2] = __49__MNRouteAttributes_buildRouteAttributes_result___block_invoke_2;
       v21[3] = &unk_1E842F200;
       v21[4] = self;
-      v22 = v6;
+      v22 = attributesCopy;
       [(MNSequence *)v11 addStep:v21];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
@@ -174,7 +174,7 @@ LABEL_6:
       v18[2] = __49__MNRouteAttributes_buildRouteAttributes_result___block_invoke_4;
       v18[3] = &unk_1E842F250;
       v18[4] = self;
-      v19 = v7;
+      v19 = resultCopy;
       [(MNSequence *)v11 addStep:v18];
       [(MNSequence *)v11 start];
     }
@@ -187,7 +187,7 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 136316162;
-      v27 = "[MNRouteAttributes buildRouteAttributes:result:]";
+      selfCopy2 = "[MNRouteAttributes buildRouteAttributes:result:]";
       v28 = 2080;
       v29 = "/Library/Caches/com.apple.xbs/Sources/Navigation/Extras/GEORouteAttributes+MNExtras.m";
       v30 = 1024;
@@ -272,20 +272,20 @@ LABEL_9:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)buildRouteAttributes:(id)a3 queue:(id)a4 result:(id)a5
+- (void)buildRouteAttributes:(id)attributes queue:(id)queue result:(id)result
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10 && ![(MNRouteAttributes *)self mainTransportType])
+  attributesCopy = attributes;
+  queueCopy = queue;
+  resultCopy = result;
+  if (resultCopy && ![(MNRouteAttributes *)self mainTransportType])
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(attributesCopy, "count")}];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = v8;
+    v12 = attributesCopy;
     v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v13)
     {
@@ -301,10 +301,10 @@ LABEL_9:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * v16) bestLatLng];
-          if (v17)
+          bestLatLng = [*(*(&v20 + 1) + 8 * v16) bestLatLng];
+          if (bestLatLng)
           {
-            [(NSArray *)v11 addObject:v17];
+            [(NSArray *)v11 addObject:bestLatLng];
           }
 
           ++v16;
@@ -321,19 +321,19 @@ LABEL_9:
     self->_latLngs = v11;
   }
 
-  [(MNRouteAttributes *)self buildRouteAttributes:v9 result:v10, v20];
+  [(MNRouteAttributes *)self buildRouteAttributes:queueCopy result:resultCopy, v20];
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateRouteAttributesWithVehicle:(id)a3 finishedHandler:(id)a4
+- (void)_populateRouteAttributesWithVehicle:(id)vehicle finishedHandler:(id)handler
 {
   v165 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  vehicleCopy = vehicle;
+  handlerCopy = handler;
   v8 = [(MNRouteAttributes *)self copy];
-  v9 = [v8 automobileOptions];
-  [v9 setVehicleSpecifications:0];
+  automobileOptions = [v8 automobileOptions];
+  [automobileOptions setVehicleSpecifications:0];
 
   v10 = *MEMORY[0x1E69A1A88];
   v11 = *(MEMORY[0x1E69A1A88] + 8);
@@ -351,83 +351,83 @@ LABEL_9:
     v16 = 0;
   }
 
-  v147 = v6;
-  if ([v6 isPureElectricVehicle] && (v16 & 1) == 0)
+  v147 = vehicleCopy;
+  if ([vehicleCopy isPureElectricVehicle] && (v16 & 1) == 0)
   {
-    v145 = self;
-    v139 = v7;
+    selfCopy = self;
+    v139 = handlerCopy;
     v141 = v8;
-    v17 = [v6 identifier];
-    v18 = [MEMORY[0x1E69DF8B8] sharedService];
-    [v18 setActiveVehicleIdentifier:v17];
+    identifier = [vehicleCopy identifier];
+    mEMORY[0x1E69DF8B8] = [MEMORY[0x1E69DF8B8] sharedService];
+    [mEMORY[0x1E69DF8B8] setActiveVehicleIdentifier:identifier];
 
     v19 = objc_alloc_init(MEMORY[0x1E69A1D78]);
-    v20 = [v6 currentVehicleState];
-    v21 = [v20 consumptionArguments];
-    v22 = [v21 copy];
+    currentVehicleState = [vehicleCopy currentVehicleState];
+    consumptionArguments = [currentVehicleState consumptionArguments];
+    v22 = [consumptionArguments copy];
     [v19 setConsumptionArguments:v22];
 
-    v23 = [v6 currentVehicleState];
-    v24 = [v23 chargingArguments];
-    v25 = [v24 copy];
+    currentVehicleState2 = [vehicleCopy currentVehicleState];
+    chargingArguments = [currentVehicleState2 chargingArguments];
+    v25 = [chargingArguments copy];
     [v19 setChargingArguments:v25];
 
-    v26 = [v6 currentVehicleState];
-    v27 = [v26 maxEVRange];
-    v28 = [MEMORY[0x1E696B058] meters];
-    v29 = [v27 measurementByConvertingToUnit:v28];
+    currentVehicleState3 = [vehicleCopy currentVehicleState];
+    maxEVRange = [currentVehicleState3 maxEVRange];
+    meters = [MEMORY[0x1E696B058] meters];
+    v29 = [maxEVRange measurementByConvertingToUnit:meters];
     [v29 doubleValue];
     [v19 setMaxRange:v30];
 
-    v31 = [v6 currentVehicleState];
-    v32 = [v31 minBatteryCapacity];
-    v33 = [MEMORY[0x1E696B030] kilowattHours];
-    v34 = [v32 measurementByConvertingToUnit:v33];
+    currentVehicleState4 = [vehicleCopy currentVehicleState];
+    minBatteryCapacity = [currentVehicleState4 minBatteryCapacity];
+    kilowattHours = [MEMORY[0x1E696B030] kilowattHours];
+    v34 = [minBatteryCapacity measurementByConvertingToUnit:kilowattHours];
     [v34 doubleValue];
     [v19 setMinBatteryCharge:(v35 * 1000.0)];
 
     v36 = +[MNVirtualGarageManager sharedManager];
-    LODWORD(v32) = [v36 assumesFullCharge];
+    LODWORD(minBatteryCapacity) = [v36 assumesFullCharge];
 
-    v37 = [v6 currentVehicleState];
-    v38 = v37;
-    if (v32)
+    currentVehicleState5 = [vehicleCopy currentVehicleState];
+    v38 = currentVehicleState5;
+    if (minBatteryCapacity)
     {
-      v39 = [v37 maxBatteryCapacity];
-      v40 = [MEMORY[0x1E696B030] kilowattHours];
-      v41 = [v39 measurementByConvertingToUnit:v40];
+      maxBatteryCapacity = [currentVehicleState5 maxBatteryCapacity];
+      kilowattHours2 = [MEMORY[0x1E696B030] kilowattHours];
+      v41 = [maxBatteryCapacity measurementByConvertingToUnit:kilowattHours2];
       [v41 doubleValue];
       [v19 setCurrentBatteryCharge:(v42 * 1000.0)];
 
-      v43 = 100;
+      displayedBatteryPercentage = 100;
     }
 
     else
     {
-      v44 = [v37 currentBatteryCapacity];
-      v45 = [MEMORY[0x1E696B030] kilowattHours];
-      v46 = [v44 measurementByConvertingToUnit:v45];
+      currentBatteryCapacity = [currentVehicleState5 currentBatteryCapacity];
+      kilowattHours3 = [MEMORY[0x1E696B030] kilowattHours];
+      v46 = [currentBatteryCapacity measurementByConvertingToUnit:kilowattHours3];
       [v46 doubleValue];
       [v19 setCurrentBatteryCharge:(v47 * 1000.0)];
 
-      v43 = [v6 displayedBatteryPercentage];
+      displayedBatteryPercentage = [vehicleCopy displayedBatteryPercentage];
     }
 
-    [v19 setCurrentBatteryPercentage:v43];
-    v48 = [v6 currentVehicleState];
-    v49 = [v48 maxBatteryCapacity];
-    v50 = [MEMORY[0x1E696B030] kilowattHours];
-    v51 = [v49 measurementByConvertingToUnit:v50];
+    [v19 setCurrentBatteryPercentage:displayedBatteryPercentage];
+    currentVehicleState6 = [vehicleCopy currentVehicleState];
+    maxBatteryCapacity2 = [currentVehicleState6 maxBatteryCapacity];
+    kilowattHours4 = [MEMORY[0x1E696B030] kilowattHours];
+    v51 = [maxBatteryCapacity2 measurementByConvertingToUnit:kilowattHours4];
     [v51 doubleValue];
     [v19 setMaxBatteryCharge:(v52 * 1000.0)];
 
-    v53 = [v6 currentVehicleState];
-    v54 = [v53 dateOfUpdate];
-    [v54 timeIntervalSinceReferenceDate];
+    currentVehicleState7 = [vehicleCopy currentVehicleState];
+    dateOfUpdate = [currentVehicleState7 dateOfUpdate];
+    [dateOfUpdate timeIntervalSinceReferenceDate];
     [v19 setLastSocUpdateDate:v55];
 
-    v56 = [v6 currentVehicleState];
-    [v19 setIsCharging:{objc_msgSend(v56, "isCharging")}];
+    currentVehicleState8 = [vehicleCopy currentVehicleState];
+    [v19 setIsCharging:{objc_msgSend(currentVehicleState8, "isCharging")}];
 
     v57 = objc_alloc_init(MEMORY[0x1E69A1BE8]);
     [v19 setChargerPlugsInfo:v57];
@@ -436,8 +436,8 @@ LABEL_9:
     v156 = 0u;
     v153 = 0u;
     v154 = 0u;
-    v58 = [v6 powerByConnector];
-    v59 = [v58 countByEnumeratingWithState:&v153 objects:v160 count:16];
+    powerByConnector = [vehicleCopy powerByConnector];
+    v59 = [powerByConnector countByEnumeratingWithState:&v153 objects:v160 count:16];
     if (v59)
     {
       v60 = v59;
@@ -448,7 +448,7 @@ LABEL_9:
         {
           if (*v154 != v61)
           {
-            objc_enumerationMutation(v58);
+            objc_enumerationMutation(powerByConnector);
           }
 
           v63 = *(*(&v153 + 1) + 8 * i);
@@ -463,14 +463,14 @@ LABEL_9:
 
             v69 = objc_alloc_init(MEMORY[0x1E69A1BE0]);
             [v69 setType:v65];
-            v70 = [MEMORY[0x1E696B068] watts];
-            v71 = [v68 measurementByConvertingToUnit:v70];
+            watts = [MEMORY[0x1E696B068] watts];
+            v71 = [v68 measurementByConvertingToUnit:watts];
             [v71 doubleValue];
             [v69 setMaximumPower:v72];
 
             v19 = v66;
-            v73 = [v66 chargerPlugsInfo];
-            [v73 addSupportedChargerPlug:v69];
+            chargerPlugsInfo = [v66 chargerPlugsInfo];
+            [chargerPlugsInfo addSupportedChargerPlug:v69];
           }
 
           else
@@ -479,7 +479,7 @@ LABEL_9:
             if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
             {
               *buf = 134218242;
-              *&buf[4] = v145;
+              *&buf[4] = selfCopy;
               *&buf[12] = 2112;
               *&buf[14] = v63;
               _os_log_impl(&dword_1D311E000, v68, OS_LOG_TYPE_ERROR, "%p Skipping unknown VG connector: %@", buf, 0x16u);
@@ -487,26 +487,26 @@ LABEL_9:
           }
         }
 
-        v60 = [v58 countByEnumeratingWithState:&v153 objects:v160 count:16];
+        v60 = [powerByConnector countByEnumeratingWithState:&v153 objects:v160 count:16];
       }
 
       while (v60);
     }
 
-    v74 = [v8 _vehicleSpecifications];
-    [v74 setEvInfo:v19];
-    v6 = v147;
+    _vehicleSpecifications = [v8 _vehicleSpecifications];
+    [_vehicleSpecifications setEvInfo:v19];
+    vehicleCopy = v147;
     if ([v147 usesPreferredNetworksForRouting])
     {
-      v137 = v74;
+      v137 = _vehicleSpecifications;
       v143 = v19;
       v75 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v149 = 0u;
       v150 = 0u;
       v151 = 0u;
       v152 = 0u;
-      v76 = [v147 preferredChargingNetworks];
-      v77 = [v76 countByEnumeratingWithState:&v149 objects:v159 count:16];
+      preferredChargingNetworks = [v147 preferredChargingNetworks];
+      v77 = [preferredChargingNetworks countByEnumeratingWithState:&v149 objects:v159 count:16];
       if (v77)
       {
         v78 = v77;
@@ -517,7 +517,7 @@ LABEL_9:
           {
             if (*v150 != v79)
             {
-              objc_enumerationMutation(v76);
+              objc_enumerationMutation(preferredChargingNetworks);
             }
 
             v81 = *(*(&v149 + 1) + 8 * j);
@@ -529,43 +529,43 @@ LABEL_9:
             [v75 addObject:v82];
           }
 
-          v78 = [v76 countByEnumeratingWithState:&v149 objects:v159 count:16];
+          v78 = [preferredChargingNetworks countByEnumeratingWithState:&v149 objects:v159 count:16];
         }
 
         while (v78);
       }
 
       v8 = v141;
-      v84 = [v141 _userPreferences];
+      _userPreferences = [v141 _userPreferences];
       v85 = [v75 copy];
-      [v84 setEvChargingPreferences:v85];
+      [_userPreferences setEvChargingPreferences:v85];
 
-      v6 = v147;
+      vehicleCopy = v147;
       v19 = v143;
-      v74 = v137;
+      _vehicleSpecifications = v137;
     }
 
-    v7 = v139;
-    self = v145;
+    handlerCopy = v139;
+    self = selfCopy;
   }
 
   if ([(NSArray *)self->_lprRules count])
   {
-    v86 = [v6 licensePlate];
-    v87 = [v86 length];
+    licensePlate = [vehicleCopy licensePlate];
+    v87 = [licensePlate length];
 
     if (v87)
     {
-      v146 = self;
+      selfCopy2 = self;
       v88 = objc_alloc_init(MEMORY[0x1E69A1E48]);
-      v89 = [v6 licensePlate];
-      [v88 setLicensePlate:v89];
+      licensePlate2 = [vehicleCopy licensePlate];
+      [v88 setLicensePlate:licensePlate2];
 
-      v90 = [v6 lprVehicleType];
-      [v88 setVehicleTypeKey:v90];
+      lprVehicleType = [vehicleCopy lprVehicleType];
+      [v88 setVehicleTypeKey:lprVehicleType];
 
-      v91 = [v6 lprPowerType];
-      [v88 setPowerTypeKey:v91];
+      lprPowerType = [vehicleCopy lprPowerType];
+      [v88 setPowerTypeKey:lprPowerType];
 
       v92 = GEOConfigGetDate();
       v142 = v8;
@@ -581,36 +581,36 @@ LABEL_9:
           _os_log_impl(&dword_1D311E000, v94, OS_LOG_TYPE_DEFAULT, "!!!IMPORTANT!!! The date for LPR masking has been overridden to %@ !!!IMPORTANT!!! ", buf, 0xCu);
         }
 
-        v95 = 0;
+        localTimeZone = 0;
       }
 
       else
       {
         v93 = [MEMORY[0x1E695DF00] now];
-        v95 = [MEMORY[0x1E695DFE8] localTimeZone];
+        localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
       }
 
-      v102 = [[MNLPRRuleMatcher alloc] initForVehicle:v88 withRules:v146->_lprRules];
-      latLngs = v146->_latLngs;
+      v102 = [[MNLPRRuleMatcher alloc] initForVehicle:v88 withRules:selfCopy2->_lprRules];
+      latLngs = selfCopy2->_latLngs;
       v148 = 0;
       v138 = v102;
-      v140 = v95;
-      v104 = [v102 generateMaskedPlateForWaypoints:latLngs date:v93 timeZone:v95 error:&v148];
+      v140 = localTimeZone;
+      v104 = [v102 generateMaskedPlateForWaypoints:latLngs date:v93 timeZone:localTimeZone error:&v148];
       v105 = v148;
       v106 = objc_alloc_init(MEMORY[0x1E69A1E28]);
-      v107 = [v147 lprVehicleType];
-      [v106 setVehicleTypeKey:v107];
+      lprVehicleType2 = [v147 lprVehicleType];
+      [v106 setVehicleTypeKey:lprVehicleType2];
 
-      v108 = [v147 lprPowerType];
-      [v106 setPowerTypeKey:v108];
+      lprPowerType2 = [v147 lprPowerType];
+      [v106 setPowerTypeKey:lprPowerType2];
 
       [v93 timeIntervalSinceReferenceDate];
       [v106 setTimestamp:v109];
       [v106 setMaskedplateGeneratorValidatorVersion:2];
-      if (!v146->_forceUpdate)
+      if (!selfCopy2->_forceUpdate)
       {
-        v110 = [MEMORY[0x1E69A2398] sharedPlatform];
-        if ([v110 isInternalInstall])
+        mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+        if ([mEMORY[0x1E69A2398] isInternalInstall])
         {
           HasValue = _GEOConfigHasValue();
 
@@ -637,7 +637,7 @@ LABEL_9:
 LABEL_53:
                 if (_GEOConfigHasValue())
                 {
-                  v118 = v7;
+                  v118 = handlerCopy;
                   Integer = GEOConfigGetInteger();
                   v120 = MEMORY[0x1E696ABC0];
                   v157 = *MEMORY[0x1E695E618];
@@ -664,7 +664,7 @@ LABEL_53:
                     _GEOConfigRemoveValue();
                   }
 
-                  v7 = v118;
+                  handlerCopy = v118;
                 }
 
                 else
@@ -684,24 +684,24 @@ LABEL_53:
             }
 
 LABEL_59:
-            v125 = [v142 _vehicleSpecifications];
+            _vehicleSpecifications2 = [v142 _vehicleSpecifications];
             if (![v104 length] || v105)
             {
-              v126 = v7;
+              v126 = handlerCopy;
               v127 = MNGetMNRouteAttributesLog();
               if (os_log_type_enabled(v127, OS_LOG_TYPE_ERROR))
               {
                 *buf = 134218242;
-                *&buf[4] = v146;
+                *&buf[4] = selfCopy2;
                 *&buf[12] = 2112;
                 *&buf[14] = v105;
                 _os_log_impl(&dword_1D311E000, v127, OS_LOG_TYPE_ERROR, "%p Failed to mask license plate. Error: %@", buf, 0x16u);
               }
 
-              v128 = [v105 domain];
-              v129 = [v128 isEqualToString:@"MapsNavLPRErrorDomain"];
+              domain = [v105 domain];
+              v129 = [domain isEqualToString:@"MapsNavLPRErrorDomain"];
 
-              v7 = v126;
+              handlerCopy = v126;
               if (v129)
               {
                 if (([v105 code] + 12) > 2)
@@ -714,7 +714,7 @@ LABEL_59:
                   v130 = 2;
                 }
 
-                [v125 setLprPlateMissingReason:v130];
+                [_vehicleSpecifications2 setLprPlateMissingReason:v130];
               }
             }
 
@@ -723,9 +723,9 @@ LABEL_59:
               [v106 setLicensePlate:v104];
             }
 
-            [v125 setLprInfo:v106];
+            [_vehicleSpecifications2 setLprInfo:v106];
 
-            v6 = v147;
+            vehicleCopy = v147;
             v8 = v142;
             goto LABEL_70;
           }
@@ -736,9 +736,9 @@ LABEL_59:
         }
       }
 
-      v116 = [(NSArray *)v146->_lprRules firstObject];
-      v117 = [v116 version];
-      [v106 setVersionId:v117];
+      firstObject = [(NSArray *)selfCopy2->_lprRules firstObject];
+      version = [firstObject version];
+      [v106 setVersionId:version];
 
       if (!v105)
       {
@@ -749,15 +749,15 @@ LABEL_59:
     }
   }
 
-  if (!v6)
+  if (!vehicleCopy)
   {
     v100 = +[MNVirtualGarageManager sharedManager];
-    v101 = [v100 vehiclesCount];
+    vehiclesCount = [v100 vehiclesCount];
 
-    if (v101)
+    if (vehiclesCount)
     {
-      v98 = [v8 _vehicleSpecifications];
-      v88 = v98;
+      _vehicleSpecifications3 = [v8 _vehicleSpecifications];
+      v88 = _vehicleSpecifications3;
       v99 = 1;
       goto LABEL_43;
     }
@@ -767,16 +767,16 @@ LABEL_59:
   {
     if (![(NSArray *)self->_lprRules count])
     {
-      v96 = [v6 licensePlate];
-      v97 = [v96 length];
+      licensePlate3 = [vehicleCopy licensePlate];
+      v97 = [licensePlate3 length];
 
       if (v97)
       {
-        v98 = [v8 _vehicleSpecifications];
-        v88 = v98;
+        _vehicleSpecifications3 = [v8 _vehicleSpecifications];
+        v88 = _vehicleSpecifications3;
         v99 = 3;
 LABEL_43:
-        [v98 setLprPlateMissingReason:v99];
+        [_vehicleSpecifications3 setLprPlateMissingReason:v99];
 LABEL_70:
       }
     }
@@ -789,34 +789,34 @@ LABEL_70:
   v133 = +[MNVirtualGarageManager sharedManager];
   [v131 setIntentsConnectionStatus:{objc_msgSend(v133, "isProviderStarted")}];
 
-  v134 = [v8 _vehicleSpecifications];
-  [v134 setVehicleInfo:v131];
+  _vehicleSpecifications4 = [v8 _vehicleSpecifications];
+  [_vehicleSpecifications4 setVehicleInfo:v131];
 
-  v7[2](v7, v8, 1);
+  handlerCopy[2](handlerCopy, v8, 1);
   v135 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_loadRulesIfNecessaryWithVehicle:(id)a3 queue:(id)a4 finishedHandler:(id)a5
+- (void)_loadRulesIfNecessaryWithVehicle:(id)vehicle queue:(id)queue finishedHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 licensePlate];
-  if ([v11 length])
+  vehicleCopy = vehicle;
+  queueCopy = queue;
+  handlerCopy = handler;
+  licensePlate = [vehicleCopy licensePlate];
+  if ([licensePlate length])
   {
-    v12 = [(MNRouteAttributes *)self hasResolvedRules];
+    hasResolvedRules = [(MNRouteAttributes *)self hasResolvedRules];
 
-    if (!v12)
+    if (!hasResolvedRules)
     {
       v13 = MNGetMNRouteAttributesLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v8 licensePlate];
+        licensePlate2 = [vehicleCopy licensePlate];
         *buf = 134218240;
-        v27 = self;
+        selfCopy2 = self;
         v28 = 1024;
-        v29 = [v14 length];
+        v29 = [licensePlate2 length];
         _os_log_impl(&dword_1D311E000, v13, OS_LOG_TYPE_INFO, "%p Will load rules for plate of %d chars length", buf, 0x12u);
       }
 
@@ -827,9 +827,9 @@ LABEL_70:
       v23[2] = __76__MNRouteAttributes__loadRulesIfNecessaryWithVehicle_queue_finishedHandler___block_invoke;
       v23[3] = &unk_1E842F338;
       v23[4] = self;
-      v25 = v10;
-      v24 = v8;
-      [MNRouteAttributes _loadLPRRulesForWaypoints:latLngs forceUpdate:forceUpdate queue:v9 completion:v23];
+      v25 = handlerCopy;
+      v24 = vehicleCopy;
+      [MNRouteAttributes _loadLPRRulesForWaypoints:latLngs forceUpdate:forceUpdate queue:queueCopy completion:v23];
 
       goto LABEL_12;
     }
@@ -842,13 +842,13 @@ LABEL_70:
   v17 = MNGetMNRouteAttributesLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v8 licensePlate];
-    v19 = [v18 length];
-    v20 = [(MNRouteAttributes *)self hasResolvedRules];
+    licensePlate3 = [vehicleCopy licensePlate];
+    v19 = [licensePlate3 length];
+    hasResolvedRules2 = [(MNRouteAttributes *)self hasResolvedRules];
     v21 = "NO";
     *buf = 134218498;
-    v27 = self;
-    if (v20)
+    selfCopy2 = self;
+    if (hasResolvedRules2)
     {
       v21 = "YES";
     }
@@ -860,7 +860,7 @@ LABEL_70:
     _os_log_impl(&dword_1D311E000, v17, OS_LOG_TYPE_INFO, "%p Not loading rules plate is %d chars & hasResolvedRules: %s", buf, 0x1Cu);
   }
 
-  (*(v10 + 2))(v10, v8, 1);
+  (*(handlerCopy + 2))(handlerCopy, vehicleCopy, 1);
 LABEL_12:
 
   v22 = *MEMORY[0x1E69E9840];
@@ -885,15 +885,15 @@ void __76__MNRouteAttributes__loadRulesIfNecessaryWithVehicle_queue_finishedHand
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_resolveSelectedVehicle:(id)a3
+- (void)_resolveSelectedVehicle:(id)vehicle
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = MNGetMNRouteAttributesLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_INFO, "%p _resolveSelectedVehicle: calling into MNVirtualGarageManager to get selected vehicle", buf, 0xCu);
   }
 
@@ -903,8 +903,8 @@ void __76__MNRouteAttributes__loadRulesIfNecessaryWithVehicle_queue_finishedHand
   v9[2] = __45__MNRouteAttributes__resolveSelectedVehicle___block_invoke;
   v9[3] = &unk_1E8430900;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = vehicleCopy;
+  v7 = vehicleCopy;
   [v6 updatedVehicleStateWithHandler:v9];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -1020,8 +1020,8 @@ void __45__MNRouteAttributes__resolveSelectedVehicle___block_invoke_2(void *a1)
 
 - (void)_updateMiscOptions
 {
-  v2 = [(GEORouteAttributes *)self _automobileOptions];
-  [v2 setOptoutIncidentReporting:GEOConfigGetBOOL() ^ 1];
+  _automobileOptions = [(GEORouteAttributes *)self _automobileOptions];
+  [_automobileOptions setOptoutIncidentReporting:GEOConfigGetBOOL() ^ 1];
 }
 
 void __41__MNRouteAttributes_setHasResolvedRules___block_invoke(uint64_t a1)
@@ -1088,10 +1088,10 @@ void __28__MNRouteAttributes_vehicle__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (MNRouteAttributes)initWithAttributes:(id)a3 latLngs:(id)a4 isStepping:(BOOL)a5
+- (MNRouteAttributes)initWithAttributes:(id)attributes latLngs:(id)lngs isStepping:(BOOL)stepping
 {
-  v8 = a3;
-  v9 = a4;
+  attributesCopy = attributes;
+  lngsCopy = lngs;
   v15.receiver = self;
   v15.super_class = MNRouteAttributes;
   v10 = [(MNRouteAttributes *)&v15 init];
@@ -1099,35 +1099,35 @@ void __28__MNRouteAttributes_vehicle__block_invoke(uint64_t a1)
   if (v10)
   {
     [(MNRouteAttributes *)v10 _commonInit];
-    if (v8)
+    if (attributesCopy)
     {
-      [(MNRouteAttributes *)v11 mergeFrom:v8];
+      [(MNRouteAttributes *)v11 mergeFrom:attributesCopy];
     }
 
-    v12 = [v9 copy];
+    v12 = [lngsCopy copy];
     latLngs = v11->_latLngs;
     v11->_latLngs = v12;
 
-    v11->_isStepping = a5;
+    v11->_isStepping = stepping;
   }
 
   return v11;
 }
 
-- (MNRouteAttributes)initWithAttributes:(id)a3 waypoints:(id)a4
+- (MNRouteAttributes)initWithAttributes:(id)attributes waypoints:(id)waypoints
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 firstObject];
-  v9 = [v8 isCurrentLocation];
+  attributesCopy = attributes;
+  waypointsCopy = waypoints;
+  firstObject = [waypointsCopy firstObject];
+  isCurrentLocation = [firstObject isCurrentLocation];
 
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(waypointsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v7;
+  v11 = waypointsCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -1143,10 +1143,10 @@ void __28__MNRouteAttributes_vehicle__block_invoke(uint64_t a1)
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v20 + 1) + 8 * v15) bestLatLng];
-        if (v16)
+        bestLatLng = [*(*(&v20 + 1) + 8 * v15) bestLatLng];
+        if (bestLatLng)
         {
-          [v10 addObject:v16];
+          [v10 addObject:bestLatLng];
         }
 
         ++v15;
@@ -1159,16 +1159,16 @@ void __28__MNRouteAttributes_vehicle__block_invoke(uint64_t a1)
     while (v13);
   }
 
-  v17 = [(MNRouteAttributes *)self initWithAttributes:v6 latLngs:v10 isStepping:v9 ^ 1u];
+  v17 = [(MNRouteAttributes *)self initWithAttributes:attributesCopy latLngs:v10 isStepping:isCurrentLocation ^ 1u];
   v18 = *MEMORY[0x1E69E9840];
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = MNRouteAttributes;
-  v4 = [(MNRouteAttributes *)&v8 copyWithZone:a3];
+  v4 = [(MNRouteAttributes *)&v8 copyWithZone:zone];
   v5 = [(NSArray *)self->_latLngs copy];
   v6 = *(v4 + 28);
   *(v4 + 28) = v5;
@@ -1183,14 +1183,14 @@ void __28__MNRouteAttributes_vehicle__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MNRouteAttributes;
-  v4 = a3;
-  [(MNRouteAttributes *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_latLngs forKey:{@"LatLngs", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_isStepping forKey:@"IsStepping"];
+  coderCopy = coder;
+  [(MNRouteAttributes *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_latLngs forKey:{@"LatLngs", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_isStepping forKey:@"IsStepping"];
 }
 
 - (void)_commonInit
@@ -1200,12 +1200,12 @@ void __28__MNRouteAttributes_vehicle__block_invoke(uint64_t a1)
   self->_vehicleIsolator = v3;
 }
 
-- (MNRouteAttributes)initWithCoder:(id)a3
+- (MNRouteAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MNRouteAttributes;
-  v5 = [(MNRouteAttributes *)&v13 initWithCoder:v4];
+  v5 = [(MNRouteAttributes *)&v13 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -1213,11 +1213,11 @@ void __28__MNRouteAttributes_vehicle__block_invoke(uint64_t a1)
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"LatLngs"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"LatLngs"];
     latLngs = v6->_latLngs;
     v6->_latLngs = v10;
 
-    v6->_isStepping = [v4 decodeBoolForKey:@"IsStepping"];
+    v6->_isStepping = [coderCopy decodeBoolForKey:@"IsStepping"];
   }
 
   return v6;

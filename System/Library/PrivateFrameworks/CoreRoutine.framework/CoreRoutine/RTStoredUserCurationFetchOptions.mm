@@ -1,22 +1,22 @@
 @interface RTStoredUserCurationFetchOptions
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFetchOptions:(id)a3;
-- (RTStoredUserCurationFetchOptions)initWithAscending:(BOOL)a3 sortIndex:(unint64_t)a4 submissionDateInterval:(id)a5 visitDateInterval:(id)a6 limit:(id)a7;
-- (RTStoredUserCurationFetchOptions)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFetchOptions:(id)options;
+- (RTStoredUserCurationFetchOptions)initWithAscending:(BOOL)ascending sortIndex:(unint64_t)index submissionDateInterval:(id)interval visitDateInterval:(id)dateInterval limit:(id)limit;
+- (RTStoredUserCurationFetchOptions)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTStoredUserCurationFetchOptions
 
-- (RTStoredUserCurationFetchOptions)initWithAscending:(BOOL)a3 sortIndex:(unint64_t)a4 submissionDateInterval:(id)a5 visitDateInterval:(id)a6 limit:(id)a7
+- (RTStoredUserCurationFetchOptions)initWithAscending:(BOOL)ascending sortIndex:(unint64_t)index submissionDateInterval:(id)interval visitDateInterval:(id)dateInterval limit:(id)limit
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (v15 && ![v15 unsignedIntegerValue])
+  intervalCopy = interval;
+  dateIntervalCopy = dateInterval;
+  limitCopy = limit;
+  v16 = limitCopy;
+  if (limitCopy && ![limitCopy unsignedIntegerValue])
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -25,7 +25,7 @@
       _os_log_error_impl(&dword_1BF1C4000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: !limit || (limit && limit.unsignedIntegerValue > 0)", buf, 2u);
     }
 
-    v19 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -36,76 +36,76 @@
     p_isa = &v17->super.isa;
     if (v17)
     {
-      v17->_ascending = a3;
-      v17->_sortIndex = a4;
-      objc_storeStrong(&v17->_submissionDateInterval, a5);
-      objc_storeStrong(p_isa + 4, a6);
-      objc_storeStrong(p_isa + 5, a7);
+      v17->_ascending = ascending;
+      v17->_sortIndex = index;
+      objc_storeStrong(&v17->_submissionDateInterval, interval);
+      objc_storeStrong(p_isa + 4, dateInterval);
+      objc_storeStrong(p_isa + 5, limit);
     }
 
     self = p_isa;
-    v19 = self;
+    selfCopy = self;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ascending = self->_ascending;
-  v5 = a3;
-  [v5 encodeBool:ascending forKey:@"ascending"];
-  [v5 encodeInteger:self->_sortIndex forKey:@"sortIndex"];
-  [v5 encodeObject:self->_submissionDateInterval forKey:@"submissionDateInterval"];
-  [v5 encodeObject:self->_visitDateInterval forKey:@"visitDateInterval"];
-  [v5 encodeObject:self->_limit forKey:@"limit"];
+  coderCopy = coder;
+  [coderCopy encodeBool:ascending forKey:@"ascending"];
+  [coderCopy encodeInteger:self->_sortIndex forKey:@"sortIndex"];
+  [coderCopy encodeObject:self->_submissionDateInterval forKey:@"submissionDateInterval"];
+  [coderCopy encodeObject:self->_visitDateInterval forKey:@"visitDateInterval"];
+  [coderCopy encodeObject:self->_limit forKey:@"limit"];
 }
 
-- (RTStoredUserCurationFetchOptions)initWithCoder:(id)a3
+- (RTStoredUserCurationFetchOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"ascending"];
-  v6 = [v4 decodeIntegerForKey:@"sortIndex"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"submissionDateInterval"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visitDateInterval"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"ascending"];
+  v6 = [coderCopy decodeIntegerForKey:@"sortIndex"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"submissionDateInterval"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visitDateInterval"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
 
   v10 = [(RTStoredUserCurationFetchOptions *)self initWithAscending:v5 sortIndex:v6 submissionDateInterval:v7 visitDateInterval:v8 limit:v9];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTStoredUserCurationFetchOptions *)self isEqualToFetchOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTStoredUserCurationFetchOptions *)self isEqualToFetchOptions:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFetchOptions:(id)a3
+- (BOOL)isEqualToFetchOptions:(id)options
 {
-  v6 = a3;
+  optionsCopy = options;
   ascending = self->_ascending;
-  v7 = [v6 ascending];
+  ascending = [optionsCopy ascending];
   sortIndex = self->_sortIndex;
-  v8 = [v6 sortIndex];
+  sortIndex = [optionsCopy sortIndex];
   submissionDateInterval = self->_submissionDateInterval;
   if (submissionDateInterval)
   {
     goto LABEL_2;
   }
 
-  v3 = [v6 submissionDateInterval];
-  if (!v3)
+  submissionDateInterval = [optionsCopy submissionDateInterval];
+  if (!submissionDateInterval)
   {
     v13 = 1;
     goto LABEL_11;
@@ -114,13 +114,13 @@
   if (self->_submissionDateInterval)
   {
 LABEL_2:
-    v10 = [v6 submissionDateInterval];
-    if (v10)
+    submissionDateInterval2 = [optionsCopy submissionDateInterval];
+    if (submissionDateInterval2)
     {
-      v4 = v10;
+      visitDateInterval = submissionDateInterval2;
       v11 = self->_submissionDateInterval;
-      v12 = [v6 submissionDateInterval];
-      v13 = [(NSDateInterval *)v11 isEqualToDateInterval:v12];
+      submissionDateInterval3 = [optionsCopy submissionDateInterval];
+      v13 = [(NSDateInterval *)v11 isEqualToDateInterval:submissionDateInterval3];
 
       if (submissionDateInterval)
       {
@@ -152,8 +152,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v4 = [v6 visitDateInterval];
-  if (!v4)
+  visitDateInterval = [optionsCopy visitDateInterval];
+  if (!visitDateInterval)
   {
     v19 = 1;
     goto LABEL_22;
@@ -168,13 +168,13 @@ LABEL_22:
   }
 
 LABEL_13:
-  v15 = [v6 visitDateInterval];
-  if (v15)
+  visitDateInterval2 = [optionsCopy visitDateInterval];
+  if (visitDateInterval2)
   {
-    v16 = v15;
+    v16 = visitDateInterval2;
     v17 = self->_visitDateInterval;
-    v18 = [v6 visitDateInterval];
-    v19 = [(NSDateInterval *)v17 isEqualToDateInterval:v18];
+    visitDateInterval3 = [optionsCopy visitDateInterval];
+    v19 = [(NSDateInterval *)v17 isEqualToDateInterval:visitDateInterval3];
 
     if (!visitDateInterval)
     {
@@ -198,8 +198,8 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v4 = [v6 limit];
-  if (!v4)
+  visitDateInterval = [optionsCopy limit];
+  if (!visitDateInterval)
   {
     v25 = 1;
     goto LABEL_33;
@@ -208,13 +208,13 @@ LABEL_23:
   if (self->_limit)
   {
 LABEL_24:
-    v21 = [v6 limit];
-    if (v21)
+    limit = [optionsCopy limit];
+    if (limit)
     {
-      v22 = v21;
+      v22 = limit;
       v23 = self->_limit;
-      v24 = [v6 limit];
-      v25 = [(NSNumber *)v23 isEqualToNumber:v24];
+      limit2 = [optionsCopy limit];
+      v25 = [(NSNumber *)v23 isEqualToNumber:limit2];
 
       if (limit)
       {
@@ -240,7 +240,7 @@ LABEL_24:
 LABEL_33:
 
 LABEL_34:
-  v27 = ascending == v7 && sortIndex == v8;
+  v27 = ascending == ascending && sortIndex == sortIndex;
 
   return v27 & v13 & v19 & v25;
 }
@@ -273,15 +273,15 @@ LABEL_34:
   v15 = v3;
   v16 = MEMORY[0x1E696AD60];
   sortIndex = self->_sortIndex;
-  v5 = [(NSDateInterval *)self->_submissionDateInterval startDate];
-  v6 = [v5 stringFromDate];
-  v7 = [(NSDateInterval *)self->_submissionDateInterval endDate];
-  v8 = [v7 stringFromDate];
-  v9 = [(NSDateInterval *)self->_visitDateInterval startDate];
-  v10 = [v9 stringFromDate];
-  v11 = [(NSDateInterval *)self->_visitDateInterval endDate];
-  v12 = [v11 stringFromDate];
-  v13 = [v16 stringWithFormat:@"ascending, %@, sortIndex, %lu, submissionStartDate, %@, submissionEndDate, %@, visitStartDate, %@, visitEndDate, %@, limit, %@", v15, sortIndex, v6, v8, v10, v12, self->_limit];
+  startDate = [(NSDateInterval *)self->_submissionDateInterval startDate];
+  stringFromDate = [startDate stringFromDate];
+  endDate = [(NSDateInterval *)self->_submissionDateInterval endDate];
+  stringFromDate2 = [endDate stringFromDate];
+  startDate2 = [(NSDateInterval *)self->_visitDateInterval startDate];
+  stringFromDate3 = [startDate2 stringFromDate];
+  endDate2 = [(NSDateInterval *)self->_visitDateInterval endDate];
+  stringFromDate4 = [endDate2 stringFromDate];
+  v13 = [v16 stringWithFormat:@"ascending, %@, sortIndex, %lu, submissionStartDate, %@, submissionEndDate, %@, visitStartDate, %@, visitEndDate, %@, limit, %@", v15, sortIndex, stringFromDate, stringFromDate2, stringFromDate3, stringFromDate4, self->_limit];
 
   return v13;
 }

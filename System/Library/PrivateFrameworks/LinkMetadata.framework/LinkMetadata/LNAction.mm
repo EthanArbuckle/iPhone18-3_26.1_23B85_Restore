@@ -1,39 +1,39 @@
 @interface LNAction
-- (BOOL)isEqual:(id)a3;
-- (LNAction)actionWithByMergingParameters:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNAction)actionWithByMergingParameters:(id)parameters;
 - (LNAction)actionWithNonSecureParameters;
-- (LNAction)actionWithParameters:(id)a3;
-- (LNAction)actionWithURL:(id)a3;
-- (LNAction)initWithBSXPCCoder:(id)a3;
-- (LNAction)initWithCoder:(id)a3;
-- (LNAction)initWithMetadata:(id)a3 bundleIdentifier:(id)a4 parameters:(id)a5;
-- (LNAction)initWithMetadata:(id)a3 mangledName:(id)a4 parameters:(id)a5;
-- (LNAction)initWithMetadata:(id)a3 mangledTypeName:(id)a4 parameters:(id)a5;
+- (LNAction)actionWithParameters:(id)parameters;
+- (LNAction)actionWithURL:(id)l;
+- (LNAction)initWithBSXPCCoder:(id)coder;
+- (LNAction)initWithCoder:(id)coder;
+- (LNAction)initWithMetadata:(id)metadata bundleIdentifier:(id)identifier parameters:(id)parameters;
+- (LNAction)initWithMetadata:(id)metadata mangledName:(id)name parameters:(id)parameters;
+- (LNAction)initWithMetadata:(id)metadata mangledTypeName:(id)name parameters:(id)parameters;
 - (NSString)description;
-- (id)_initWithIdentifier:(id)a3 mangledTypeName:(id)a4 openAppWhenRun:(BOOL)a5 explicitAuthenticationPolicy:(id)a6 outputFlags:(id)a7 outputType:(id)a8 systemProtocols:(id)a9 parameters:(id)a10 metadata:(id)a11;
-- (id)_initWithMetadata:(id)a3 mangledTypeName:(id)a4 parameters:(id)a5;
-- (id)authenticationPolicyAllowingImplicit:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithIdentifier:(id)identifier mangledTypeName:(id)name openAppWhenRun:(BOOL)run explicitAuthenticationPolicy:(id)policy outputFlags:(id)flags outputType:(id)type systemProtocols:(id)protocols parameters:(id)self0 metadata:(id)self1;
+- (id)_initWithMetadata:(id)metadata mangledTypeName:(id)name parameters:(id)parameters;
+- (id)authenticationPolicyAllowingImplicit:(BOOL)implicit;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)presentationStyle;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateParameterValuesOfValueType:(id)a3 block:(id)a4;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateParameterValuesOfValueType:(id)type block:(id)block;
 @end
 
 @implementation LNAction
 
-- (void)enumerateParameterValuesOfValueType:(id)a3 block:(id)a4
+- (void)enumerateParameterValuesOfValueType:(id)type block:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  blockCopy = block;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(LNAction *)self parameters];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  parameters = [(LNAction *)self parameters];
+  v9 = [parameters countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -44,17 +44,17 @@
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(parameters);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 value];
-        v15 = [v14 valueType];
-        v16 = [v13 value];
-        [v15 enumerateValuesOfValueType:v6 value:v16 block:v7];
+        value = [v13 value];
+        valueType = [value valueType];
+        value2 = [v13 value];
+        [valueType enumerateValuesOfValueType:typeCopy value:value2 block:blockCopy];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [parameters countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
@@ -63,25 +63,25 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(systemProtocols3) = 0;
 LABEL_64:
 
       goto LABEL_65;
     }
 
-    v7 = [(LNAction *)self identifier];
-    v8 = [(LNAction *)v6 identifier];
-    v9 = v7;
-    v10 = v8;
+    identifier = [(LNAction *)self identifier];
+    identifier2 = [(LNAction *)v6 identifier];
+    v9 = identifier;
+    v10 = identifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -89,7 +89,7 @@ LABEL_64:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(systemProtocols3) = 0;
       v13 = v10;
       v14 = v9;
       if (!v9 || !v10)
@@ -101,17 +101,17 @@ LABEL_64:
 
       if (!v15)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(systemProtocols3) = 0;
 LABEL_63:
 
         goto LABEL_64;
       }
     }
 
-    v16 = [(LNAction *)self mangledTypeName];
-    v17 = [(LNAction *)v6 mangledTypeName];
-    v14 = v16;
-    v18 = v17;
+    mangledTypeName = [(LNAction *)self mangledTypeName];
+    mangledTypeName2 = [(LNAction *)v6 mangledTypeName];
+    v14 = mangledTypeName;
+    v18 = mangledTypeName2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -119,7 +119,7 @@ LABEL_63:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(systemProtocols3) = 0;
       v19 = v18;
       v20 = v14;
       if (!v14 || !v18)
@@ -135,20 +135,20 @@ LABEL_63:
       }
     }
 
-    v22 = [(LNAction *)self openAppWhenRun];
-    if (v22 != [(LNAction *)v6 openAppWhenRun])
+    openAppWhenRun = [(LNAction *)self openAppWhenRun];
+    if (openAppWhenRun != [(LNAction *)v6 openAppWhenRun])
     {
 LABEL_19:
-      LOBYTE(v12) = 0;
+      LOBYTE(systemProtocols3) = 0;
 LABEL_62:
 
       goto LABEL_63;
     }
 
-    v23 = [(LNAction *)self outputFlags];
-    v24 = [(LNAction *)v6 outputFlags];
-    v20 = v23;
-    v25 = v24;
+    outputFlags = [(LNAction *)self outputFlags];
+    outputFlags2 = [(LNAction *)v6 outputFlags];
+    v20 = outputFlags;
+    v25 = outputFlags2;
     v19 = v25;
     v75 = v20;
     if (v20 == v25)
@@ -157,31 +157,31 @@ LABEL_62:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(systemProtocols3) = 0;
       v26 = v25;
       if (!v20 || !v25)
       {
         goto LABEL_60;
       }
 
-      LODWORD(v12) = [v20 isEqual:v25];
+      LODWORD(systemProtocols3) = [v20 isEqual:v25];
 
-      if (!v12)
+      if (!systemProtocols3)
       {
         goto LABEL_61;
       }
     }
 
     v74 = v19;
-    v27 = [(LNAction *)self outputType];
-    v28 = [(LNAction *)v6 outputType];
-    v29 = v27;
-    v30 = v28;
+    outputType = [(LNAction *)self outputType];
+    outputType2 = [(LNAction *)v6 outputType];
+    v29 = outputType;
+    v30 = outputType2;
     v31 = v30;
     v73 = v29;
     if (v29 != v30)
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(systemProtocols3) = 0;
       v32 = v30;
       if (v29)
       {
@@ -195,35 +195,35 @@ LABEL_62:
           if (!v34)
           {
 LABEL_45:
-            LOBYTE(v12) = 0;
+            LOBYTE(systemProtocols3) = 0;
             goto LABEL_46;
           }
 
 LABEL_32:
-          v35 = [(LNAction *)self systemProtocols];
-          v36 = [(LNAction *)v6 systemProtocols];
+          systemProtocols = [(LNAction *)self systemProtocols];
+          systemProtocols2 = [(LNAction *)v6 systemProtocols];
 
-          if (v35 != v36)
+          if (systemProtocols != systemProtocols2)
           {
-            v12 = [(LNAction *)self systemProtocols];
-            if (!v12)
+            systemProtocols3 = [(LNAction *)self systemProtocols];
+            if (!systemProtocols3)
             {
               goto LABEL_46;
             }
 
-            v37 = [(LNAction *)v6 systemProtocols];
+            systemProtocols4 = [(LNAction *)v6 systemProtocols];
 
-            if (!v37)
+            if (!systemProtocols4)
             {
               goto LABEL_45;
             }
 
             v38 = MEMORY[0x1E695DFD8];
-            v69 = [(LNAction *)self systemProtocols];
-            v39 = [v38 setWithArray:v69];
+            systemProtocols5 = [(LNAction *)self systemProtocols];
+            v39 = [v38 setWithArray:systemProtocols5];
             v40 = MEMORY[0x1E695DFD8];
-            v41 = [(LNAction *)v6 systemProtocols];
-            v42 = [v40 setWithArray:v41];
+            systemProtocols6 = [(LNAction *)v6 systemProtocols];
+            v42 = [v40 setWithArray:systemProtocols6];
             LODWORD(v66) = [v39 isEqualToSet:v42];
 
             if (!v66)
@@ -232,30 +232,30 @@ LABEL_32:
             }
           }
 
-          v43 = [(LNAction *)self parameters];
-          v44 = [(LNAction *)v6 parameters];
+          parameters = [(LNAction *)self parameters];
+          parameters2 = [(LNAction *)v6 parameters];
 
-          if (v43 == v44)
+          if (parameters == parameters2)
           {
             goto LABEL_40;
           }
 
-          v12 = [(LNAction *)self parameters];
-          if (v12)
+          systemProtocols3 = [(LNAction *)self parameters];
+          if (systemProtocols3)
           {
-            v45 = [(LNAction *)v6 parameters];
+            parameters3 = [(LNAction *)v6 parameters];
 
-            if (!v45)
+            if (!parameters3)
             {
               goto LABEL_45;
             }
 
             v46 = MEMORY[0x1E695DFD8];
-            v70 = [(LNAction *)self parameters];
-            v47 = [v46 setWithArray:v70];
+            parameters4 = [(LNAction *)self parameters];
+            v47 = [v46 setWithArray:parameters4];
             v48 = MEMORY[0x1E695DFD8];
-            v49 = [(LNAction *)v6 parameters];
-            v50 = [v48 setWithArray:v49];
+            parameters5 = [(LNAction *)v6 parameters];
+            v50 = [v48 setWithArray:parameters5];
             LODWORD(v67) = [v47 isEqualToSet:v50];
 
             if (!v67)
@@ -275,7 +275,7 @@ LABEL_40:
 
             else
             {
-              LOBYTE(v12) = 0;
+              LOBYTE(systemProtocols3) = 0;
               if (!v29)
               {
                 v54 = v53;
@@ -299,7 +299,7 @@ LABEL_57:
 
               if (!v56)
               {
-                LOBYTE(v12) = 0;
+                LOBYTE(systemProtocols3) = 0;
                 v19 = v74;
 LABEL_58:
                 v32 = v71;
@@ -308,26 +308,26 @@ LABEL_58:
               }
             }
 
-            v57 = [(LNAction *)self explicitAuthenticationPolicy];
-            v58 = [(LNAction *)v6 explicitAuthenticationPolicy];
-            v59 = v57;
-            v60 = v58;
+            explicitAuthenticationPolicy = [(LNAction *)self explicitAuthenticationPolicy];
+            explicitAuthenticationPolicy2 = [(LNAction *)v6 explicitAuthenticationPolicy];
+            v59 = explicitAuthenticationPolicy;
+            v60 = explicitAuthenticationPolicy2;
             v61 = v59;
             v68 = v60;
             if (v59 == v60)
             {
-              LOBYTE(v12) = 1;
+              LOBYTE(systemProtocols3) = 1;
             }
 
             else
             {
-              LOBYTE(v12) = 0;
+              LOBYTE(systemProtocols3) = 0;
               if (v59)
               {
                 v19 = v74;
                 if (v60)
                 {
-                  LOBYTE(v12) = [v61 isEqual:v60];
+                  LOBYTE(systemProtocols3) = [v61 isEqual:v60];
                 }
 
                 goto LABEL_55;
@@ -374,79 +374,79 @@ LABEL_59:
     goto LABEL_32;
   }
 
-  LOBYTE(v12) = 1;
+  LOBYTE(systemProtocols3) = 1;
 LABEL_65:
 
-  return v12;
+  return systemProtocols3;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNAction *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(LNAction *)self mangledTypeName];
-  v6 = [v5 hash] ^ v4;
+  identifier = [(LNAction *)self identifier];
+  v4 = [identifier hash];
+  mangledTypeName = [(LNAction *)self mangledTypeName];
+  v6 = [mangledTypeName hash] ^ v4;
   v7 = v6 ^ [(LNAction *)self openAppWhenRun];
-  v8 = [(LNAction *)self outputFlags];
-  v9 = [v8 hash];
-  v10 = [(LNAction *)self outputType];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(LNAction *)self systemProtocols];
-  v13 = v7 ^ v11 ^ [v12 hash];
-  v14 = [(LNAction *)self parameters];
-  v15 = [v14 hash];
+  outputFlags = [(LNAction *)self outputFlags];
+  v9 = [outputFlags hash];
+  outputType = [(LNAction *)self outputType];
+  v11 = v9 ^ [outputType hash];
+  systemProtocols = [(LNAction *)self systemProtocols];
+  v13 = v7 ^ v11 ^ [systemProtocols hash];
+  parameters = [(LNAction *)self parameters];
+  v15 = [parameters hash];
   v16 = [(LNAction *)self url];
   v17 = v15 ^ [v16 hash];
-  v18 = [(LNAction *)self explicitAuthenticationPolicy];
-  v19 = v17 ^ [v18 hash];
+  explicitAuthenticationPolicy = [(LNAction *)self explicitAuthenticationPolicy];
+  v19 = v17 ^ [explicitAuthenticationPolicy hash];
 
   return v13 ^ v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAction *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNAction *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNAction *)self mangledTypeName];
-  [v4 encodeObject:v6 forKey:@"mangledTypeName"];
+  mangledTypeName = [(LNAction *)self mangledTypeName];
+  [coderCopy encodeObject:mangledTypeName forKey:@"mangledTypeName"];
 
-  [v4 encodeBool:-[LNAction openAppWhenRun](self forKey:{"openAppWhenRun"), @"openAppWhenRun"}];
-  v7 = [(LNAction *)self explicitAuthenticationPolicy];
-  [v4 encodeObject:v7 forKey:@"explicitAuthenticationPolicy"];
+  [coderCopy encodeBool:-[LNAction openAppWhenRun](self forKey:{"openAppWhenRun"), @"openAppWhenRun"}];
+  explicitAuthenticationPolicy = [(LNAction *)self explicitAuthenticationPolicy];
+  [coderCopy encodeObject:explicitAuthenticationPolicy forKey:@"explicitAuthenticationPolicy"];
 
-  v8 = [(LNAction *)self outputFlags];
-  [v4 encodeObject:v8 forKey:@"outputFlags"];
+  outputFlags = [(LNAction *)self outputFlags];
+  [coderCopy encodeObject:outputFlags forKey:@"outputFlags"];
 
-  v9 = [(LNAction *)self outputType];
-  [v4 encodeObject:v9 forKey:@"outputType"];
+  outputType = [(LNAction *)self outputType];
+  [coderCopy encodeObject:outputType forKey:@"outputType"];
 
-  v10 = [(LNAction *)self systemProtocols];
-  [v4 encodeObject:v10 forKey:@"systemProtocols"];
+  systemProtocols = [(LNAction *)self systemProtocols];
+  [coderCopy encodeObject:systemProtocols forKey:@"systemProtocols"];
 
-  v11 = [(LNAction *)self parameters];
-  [v4 encodeObject:v11 forKey:@"parameters"];
+  parameters = [(LNAction *)self parameters];
+  [coderCopy encodeObject:parameters forKey:@"parameters"];
 
   v12 = [(LNAction *)self url];
-  [v4 encodeObject:v12 forKey:@"url"];
+  [coderCopy encodeObject:v12 forKey:@"url"];
 
-  v13 = [(LNAction *)self metadata];
-  [v4 encodeObject:v13 forKey:@"metadata"];
+  metadata = [(LNAction *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
 }
 
-- (LNAction)initWithCoder:(id)a3
+- (LNAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mangledTypeName"];
-  v25 = [v4 decodeBoolForKey:@"openAppWhenRun"];
-  v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outputFlags"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outputType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mangledTypeName"];
+  v25 = [coderCopy decodeBoolForKey:@"openAppWhenRun"];
+  v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outputFlags"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outputType"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"systemProtocols"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"systemProtocols"];
   v11 = v10;
   v12 = MEMORY[0x1E695E0F0];
   if (v10)
@@ -459,14 +459,14 @@ LABEL_65:
   v14 = MEMORY[0x1E695DFD8];
   v15 = objc_opt_class();
   v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-  v17 = [v4 decodeObjectOfClasses:v16 forKey:@"parameters"];
+  v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"parameters"];
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"explicitAuthenticationPolicy"];
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
-  v20 = 0;
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"explicitAuthenticationPolicy"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+  selfCopy = 0;
   if (v5 && v17)
   {
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     v22 = v26;
     v23 = [(LNAction *)self _initWithIdentifier:v5 mangledTypeName:v26 openAppWhenRun:v25 explicitAuthenticationPolicy:v18 outputFlags:v27 outputType:v6 systemProtocols:v13 parameters:v17 metadata:v19];
     self = v23;
@@ -475,7 +475,7 @@ LABEL_65:
       objc_storeStrong(&v23->_url, v21);
     }
 
-    v20 = self;
+    selfCopy = self;
   }
 
   else
@@ -483,51 +483,51 @@ LABEL_65:
     v22 = v26;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAction *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNAction *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNAction *)self mangledTypeName];
-  [v4 encodeObject:v6 forKey:@"mangledTypeName"];
+  mangledTypeName = [(LNAction *)self mangledTypeName];
+  [coderCopy encodeObject:mangledTypeName forKey:@"mangledTypeName"];
 
-  [v4 encodeBool:-[LNAction openAppWhenRun](self forKey:{"openAppWhenRun"), @"openAppWhenRun"}];
-  v7 = [(LNAction *)self explicitAuthenticationPolicy];
-  [v4 encodeObject:v7 forKey:@"explicitAuthenticationPolicy"];
+  [coderCopy encodeBool:-[LNAction openAppWhenRun](self forKey:{"openAppWhenRun"), @"openAppWhenRun"}];
+  explicitAuthenticationPolicy = [(LNAction *)self explicitAuthenticationPolicy];
+  [coderCopy encodeObject:explicitAuthenticationPolicy forKey:@"explicitAuthenticationPolicy"];
 
-  v8 = [(LNAction *)self outputFlags];
-  [v4 encodeObject:v8 forKey:@"outputFlags"];
+  outputFlags = [(LNAction *)self outputFlags];
+  [coderCopy encodeObject:outputFlags forKey:@"outputFlags"];
 
-  v9 = [(LNAction *)self outputType];
-  [v4 encodeObject:v9 forKey:@"outputType"];
+  outputType = [(LNAction *)self outputType];
+  [coderCopy encodeObject:outputType forKey:@"outputType"];
 
-  v10 = [(LNAction *)self systemProtocols];
-  [v4 encodeObject:v10 forKey:@"systemProtocols"];
+  systemProtocols = [(LNAction *)self systemProtocols];
+  [coderCopy encodeObject:systemProtocols forKey:@"systemProtocols"];
 
-  v11 = [(LNAction *)self parameters];
-  [v4 encodeObject:v11 forKey:@"parameters"];
+  parameters = [(LNAction *)self parameters];
+  [coderCopy encodeObject:parameters forKey:@"parameters"];
 
   v12 = [(LNAction *)self url];
-  [v4 encodeObject:v12 forKey:@"url"];
+  [coderCopy encodeObject:v12 forKey:@"url"];
 
-  v13 = [(LNAction *)self metadata];
-  [v4 encodeObject:v13 forKey:@"metadata"];
+  metadata = [(LNAction *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
 }
 
-- (LNAction)initWithBSXPCCoder:(id)a3
+- (LNAction)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mangledTypeName"];
-  v21 = [v4 decodeBoolForKey:@"openAppWhenRun"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outputFlags"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outputType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mangledTypeName"];
+  v21 = [coderCopy decodeBoolForKey:@"openAppWhenRun"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outputFlags"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outputType"];
   v8 = objc_opt_class();
-  v9 = [v4 decodeCollectionOfClass:v8 containingClass:objc_opt_class() forKey:@"systemProtocols"];
+  v9 = [coderCopy decodeCollectionOfClass:v8 containingClass:objc_opt_class() forKey:@"systemProtocols"];
   v10 = v9;
   v11 = MEMORY[0x1E695E0F0];
   if (v9)
@@ -538,13 +538,13 @@ LABEL_65:
   v12 = v11;
 
   v13 = objc_opt_class();
-  v14 = [v4 decodeCollectionOfClass:v13 containingClass:objc_opt_class() forKey:@"parameters"];
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"explicitAuthenticationPolicy"];
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
-  v17 = 0;
+  v14 = [coderCopy decodeCollectionOfClass:v13 containingClass:objc_opt_class() forKey:@"parameters"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"explicitAuthenticationPolicy"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+  selfCopy = 0;
   if (v5 && v14)
   {
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     v19 = [(LNAction *)self _initWithIdentifier:v5 mangledTypeName:v22 openAppWhenRun:v21 explicitAuthenticationPolicy:v15 outputFlags:v6 outputType:v7 systemProtocols:v12 parameters:v14 metadata:v16];
     self = v19;
     if (v19)
@@ -552,10 +552,10 @@ LABEL_65:
       objc_storeStrong(&v19->_url, v18);
     }
 
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (NSString)description
@@ -563,41 +563,41 @@ LABEL_65:
   v20 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v19 = NSStringFromClass(v3);
-  v4 = [(LNAction *)self identifier];
-  v5 = [(LNAction *)self mangledTypeName];
-  v6 = [(LNAction *)self openAppWhenRun];
+  identifier = [(LNAction *)self identifier];
+  mangledTypeName = [(LNAction *)self mangledTypeName];
+  openAppWhenRun = [(LNAction *)self openAppWhenRun];
   v7 = @"NO";
-  if (v6)
+  if (openAppWhenRun)
   {
     v7 = @"YES";
   }
 
   v17 = v7;
-  v8 = [(LNAction *)self outputFlags];
-  v9 = [(LNAction *)self outputType];
-  v18 = [(LNAction *)self systemProtocols];
-  v10 = [v18 valueForKeyPath:@"description"];
+  outputFlags = [(LNAction *)self outputFlags];
+  outputType = [(LNAction *)self outputType];
+  systemProtocols = [(LNAction *)self systemProtocols];
+  v10 = [systemProtocols valueForKeyPath:@"description"];
   v11 = [v10 componentsJoinedByString:{@", "}];
-  v12 = [(LNAction *)self parameters];
+  parameters = [(LNAction *)self parameters];
   v13 = [(LNAction *)self url];
-  v14 = [(LNAction *)self explicitAuthenticationPolicy];
-  v15 = [v20 stringWithFormat:@"<%@: %p, identifier: %@, mangledTypeName: %@, openAppWhenRun: %@, outputFlags: %@, outputType: %@, systemProtocols: %@, parameters: %@, url: %@, explicitAuthenticationPolicy: %@", v19, self, v4, v5, v17, v8, v9, v11, v12, v13, v14];
+  explicitAuthenticationPolicy = [(LNAction *)self explicitAuthenticationPolicy];
+  v15 = [v20 stringWithFormat:@"<%@: %p, identifier: %@, mangledTypeName: %@, openAppWhenRun: %@, outputFlags: %@, outputType: %@, systemProtocols: %@, parameters: %@, url: %@, explicitAuthenticationPolicy: %@", v19, self, identifier, mangledTypeName, v17, outputFlags, outputType, v11, parameters, v13, explicitAuthenticationPolicy];
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(LNAction *)self parameters];
-  v5 = [(LNAction *)self actionWithParameters:v4];
+  parameters = [(LNAction *)self parameters];
+  v5 = [(LNAction *)self actionWithParameters:parameters];
 
   return v5;
 }
 
-- (id)authenticationPolicyAllowingImplicit:(BOOL)a3
+- (id)authenticationPolicyAllowingImplicit:(BOOL)implicit
 {
   explicitAuthenticationPolicy = self->_explicitAuthenticationPolicy;
-  if (a3 && !explicitAuthenticationPolicy)
+  if (implicit && !explicitAuthenticationPolicy)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:0];
   }
@@ -610,14 +610,14 @@ LABEL_65:
   return v4;
 }
 
-- (LNAction)actionWithURL:(id)a3
+- (LNAction)actionWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = [(LNAction *)self copy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong((v6 + 16), a3);
+    objc_storeStrong((v6 + 16), l);
   }
 
   return v7;
@@ -625,8 +625,8 @@ LABEL_65:
 
 - (LNAction)actionWithNonSecureParameters
 {
-  v3 = [(LNAction *)self parameters];
-  v4 = [v3 if_objectsPassingTest:&__block_literal_global_9432];
+  parameters = [(LNAction *)self parameters];
+  v4 = [parameters if_objectsPassingTest:&__block_literal_global_9432];
 
   v5 = [(LNAction *)self actionWithParameters:v4];
 
@@ -650,17 +650,17 @@ uint64_t __41__LNAction_actionWithNonSecureParameters__block_invoke(uint64_t a1,
   return v4;
 }
 
-- (LNAction)actionWithByMergingParameters:(id)a3
+- (LNAction)actionWithByMergingParameters:(id)parameters
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [(LNAction *)self parameters];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  parameters = [(LNAction *)self parameters];
+  v7 = [parameters countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v7)
   {
     v8 = v7;
@@ -671,15 +671,15 @@ uint64_t __41__LNAction_actionWithNonSecureParameters__block_invoke(uint64_t a1,
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(parameters);
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        [v5 setObject:v11 forKeyedSubscript:v12];
+        identifier = [v11 identifier];
+        [v5 setObject:v11 forKeyedSubscript:identifier];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v8 = [parameters countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v8);
@@ -689,7 +689,7 @@ uint64_t __41__LNAction_actionWithNonSecureParameters__block_invoke(uint64_t a1,
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = v4;
+  v13 = parametersCopy;
   v14 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v14)
   {
@@ -705,8 +705,8 @@ uint64_t __41__LNAction_actionWithNonSecureParameters__block_invoke(uint64_t a1,
         }
 
         v18 = *(*(&v24 + 1) + 8 * j);
-        v19 = [v18 identifier];
-        [v5 setObject:v18 forKeyedSubscript:v19];
+        identifier2 = [v18 identifier];
+        [v5 setObject:v18 forKeyedSubscript:identifier2];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -715,99 +715,99 @@ uint64_t __41__LNAction_actionWithNonSecureParameters__block_invoke(uint64_t a1,
     while (v15);
   }
 
-  v20 = [v5 allValues];
-  v21 = [(LNAction *)self actionWithParameters:v20];
+  allValues = [v5 allValues];
+  v21 = [(LNAction *)self actionWithParameters:allValues];
 
   v22 = *MEMORY[0x1E69E9840];
 
   return v21;
 }
 
-- (LNAction)actionWithParameters:(id)a3
+- (LNAction)actionWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(LNAction *)self identifier];
-  v7 = [(LNAction *)self mangledTypeName];
-  v8 = [(LNAction *)self openAppWhenRun];
-  v9 = [(LNAction *)self explicitAuthenticationPolicy];
-  v10 = [(LNAction *)self outputFlags];
-  v11 = [(LNAction *)self outputType];
-  v12 = [(LNAction *)self systemProtocols];
-  v13 = [(LNAction *)self metadata];
-  v14 = [v5 _initWithIdentifier:v6 mangledTypeName:v7 openAppWhenRun:v8 explicitAuthenticationPolicy:v9 outputFlags:v10 outputType:v11 systemProtocols:v12 parameters:v4 metadata:v13];
+  identifier = [(LNAction *)self identifier];
+  mangledTypeName = [(LNAction *)self mangledTypeName];
+  openAppWhenRun = [(LNAction *)self openAppWhenRun];
+  explicitAuthenticationPolicy = [(LNAction *)self explicitAuthenticationPolicy];
+  outputFlags = [(LNAction *)self outputFlags];
+  outputType = [(LNAction *)self outputType];
+  systemProtocols = [(LNAction *)self systemProtocols];
+  metadata = [(LNAction *)self metadata];
+  v14 = [v5 _initWithIdentifier:identifier mangledTypeName:mangledTypeName openAppWhenRun:openAppWhenRun explicitAuthenticationPolicy:explicitAuthenticationPolicy outputFlags:outputFlags outputType:outputType systemProtocols:systemProtocols parameters:parametersCopy metadata:metadata];
 
   return v14;
 }
 
-- (LNAction)initWithMetadata:(id)a3 mangledName:(id)a4 parameters:(id)a5
+- (LNAction)initWithMetadata:(id)metadata mangledName:(id)name parameters:(id)parameters
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 identifier];
-  v12 = [v10 openAppWhenRun];
-  v13 = [v10 authenticationPolicyAllowingImplicit:0];
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "outputFlags")}];
-  v15 = [v10 outputType];
-  v16 = [v10 systemProtocols];
-  v17 = [(LNAction *)self _initWithIdentifier:v11 mangledTypeName:v9 openAppWhenRun:v12 explicitAuthenticationPolicy:v13 outputFlags:v14 outputType:v15 systemProtocols:v16 parameters:v8 metadata:v10];
+  parametersCopy = parameters;
+  nameCopy = name;
+  metadataCopy = metadata;
+  identifier = [metadataCopy identifier];
+  openAppWhenRun = [metadataCopy openAppWhenRun];
+  v13 = [metadataCopy authenticationPolicyAllowingImplicit:0];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(metadataCopy, "outputFlags")}];
+  outputType = [metadataCopy outputType];
+  systemProtocols = [metadataCopy systemProtocols];
+  v17 = [(LNAction *)self _initWithIdentifier:identifier mangledTypeName:nameCopy openAppWhenRun:openAppWhenRun explicitAuthenticationPolicy:v13 outputFlags:v14 outputType:outputType systemProtocols:systemProtocols parameters:parametersCopy metadata:metadataCopy];
 
   return v17;
 }
 
-- (id)_initWithMetadata:(id)a3 mangledTypeName:(id)a4 parameters:(id)a5
+- (id)_initWithMetadata:(id)metadata mangledTypeName:(id)name parameters:(id)parameters
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 identifier];
-  v12 = [v10 openAppWhenRun];
-  v13 = [v10 authenticationPolicyAllowingImplicit:0];
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "outputFlags")}];
-  v15 = [v10 outputType];
-  v16 = [v10 systemProtocols];
-  v17 = [(LNAction *)self _initWithIdentifier:v11 mangledTypeName:v9 openAppWhenRun:v12 explicitAuthenticationPolicy:v13 outputFlags:v14 outputType:v15 systemProtocols:v16 parameters:v8 metadata:v10];
+  parametersCopy = parameters;
+  nameCopy = name;
+  metadataCopy = metadata;
+  identifier = [metadataCopy identifier];
+  openAppWhenRun = [metadataCopy openAppWhenRun];
+  v13 = [metadataCopy authenticationPolicyAllowingImplicit:0];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(metadataCopy, "outputFlags")}];
+  outputType = [metadataCopy outputType];
+  systemProtocols = [metadataCopy systemProtocols];
+  v17 = [(LNAction *)self _initWithIdentifier:identifier mangledTypeName:nameCopy openAppWhenRun:openAppWhenRun explicitAuthenticationPolicy:v13 outputFlags:v14 outputType:outputType systemProtocols:systemProtocols parameters:parametersCopy metadata:metadataCopy];
 
   return v17;
 }
 
-- (id)_initWithIdentifier:(id)a3 mangledTypeName:(id)a4 openAppWhenRun:(BOOL)a5 explicitAuthenticationPolicy:(id)a6 outputFlags:(id)a7 outputType:(id)a8 systemProtocols:(id)a9 parameters:(id)a10 metadata:(id)a11
+- (id)_initWithIdentifier:(id)identifier mangledTypeName:(id)name openAppWhenRun:(BOOL)run explicitAuthenticationPolicy:(id)policy outputFlags:(id)flags outputType:(id)type systemProtocols:(id)protocols parameters:(id)self0 metadata:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v37 = a6;
-  v36 = a7;
-  v35 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
+  identifierCopy = identifier;
+  nameCopy = name;
+  policyCopy = policy;
+  flagsCopy = flags;
+  typeCopy = type;
+  protocolsCopy = protocols;
+  parametersCopy = parameters;
+  metadataCopy = metadata;
   v38.receiver = self;
   v38.super_class = LNAction;
   v22 = [(LNAction *)&v38 init];
   if (v22)
   {
-    v23 = [v17 copy];
+    v23 = [identifierCopy copy];
     identifier = v22->_identifier;
     v22->_identifier = v23;
 
-    v25 = [v18 copy];
+    v25 = [nameCopy copy];
     mangledTypeName = v22->_mangledTypeName;
     v22->_mangledTypeName = v25;
 
-    v22->_openAppWhenRun = a5;
-    objc_storeStrong(&v22->_explicitAuthenticationPolicy, a6);
-    objc_storeStrong(&v22->_outputFlags, a7);
-    objc_storeStrong(&v22->_outputType, a8);
-    v27 = [v19 copy];
+    v22->_openAppWhenRun = run;
+    objc_storeStrong(&v22->_explicitAuthenticationPolicy, policy);
+    objc_storeStrong(&v22->_outputFlags, flags);
+    objc_storeStrong(&v22->_outputType, type);
+    v27 = [protocolsCopy copy];
     systemProtocols = v22->_systemProtocols;
     v22->_systemProtocols = v27;
 
-    v29 = [v20 copy];
+    v29 = [parametersCopy copy];
     parameters = v22->_parameters;
     v22->_parameters = v29;
 
-    v31 = [v21 copy];
+    v31 = [metadataCopy copy];
     metadata = v22->_metadata;
     v22->_metadata = v31;
 
@@ -817,36 +817,36 @@ uint64_t __41__LNAction_actionWithNonSecureParameters__block_invoke(uint64_t a1,
   return v22;
 }
 
-- (LNAction)initWithMetadata:(id)a3 bundleIdentifier:(id)a4 parameters:(id)a5
+- (LNAction)initWithMetadata:(id)metadata bundleIdentifier:(id)identifier parameters:(id)parameters
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 identifier];
-  v12 = [v10 mangledTypeNameForBundleIdentifier:v9];
+  parametersCopy = parameters;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  identifier = [metadataCopy identifier];
+  v12 = [metadataCopy mangledTypeNameForBundleIdentifier:identifierCopy];
 
-  v13 = [v10 openAppWhenRun];
-  v14 = [v10 authenticationPolicyAllowingImplicit:0];
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "outputFlags")}];
-  v16 = [v10 outputType];
-  v17 = [v10 systemProtocols];
-  v18 = [(LNAction *)self _initWithIdentifier:v11 mangledTypeName:v12 openAppWhenRun:v13 explicitAuthenticationPolicy:v14 outputFlags:v15 outputType:v16 systemProtocols:v17 parameters:v8 metadata:v10];
+  openAppWhenRun = [metadataCopy openAppWhenRun];
+  v14 = [metadataCopy authenticationPolicyAllowingImplicit:0];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(metadataCopy, "outputFlags")}];
+  outputType = [metadataCopy outputType];
+  systemProtocols = [metadataCopy systemProtocols];
+  v18 = [(LNAction *)self _initWithIdentifier:identifier mangledTypeName:v12 openAppWhenRun:openAppWhenRun explicitAuthenticationPolicy:v14 outputFlags:v15 outputType:outputType systemProtocols:systemProtocols parameters:parametersCopy metadata:metadataCopy];
 
   return v18;
 }
 
-- (LNAction)initWithMetadata:(id)a3 mangledTypeName:(id)a4 parameters:(id)a5
+- (LNAction)initWithMetadata:(id)metadata mangledTypeName:(id)name parameters:(id)parameters
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 identifier];
-  v12 = [v10 openAppWhenRun];
-  v13 = [v10 authenticationPolicyAllowingImplicit:0];
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "outputFlags")}];
-  v15 = [v10 outputType];
-  v16 = [v10 systemProtocols];
-  v17 = [(LNAction *)self _initWithIdentifier:v11 mangledTypeName:v9 openAppWhenRun:v12 explicitAuthenticationPolicy:v13 outputFlags:v14 outputType:v15 systemProtocols:v16 parameters:v8 metadata:v10];
+  parametersCopy = parameters;
+  nameCopy = name;
+  metadataCopy = metadata;
+  identifier = [metadataCopy identifier];
+  openAppWhenRun = [metadataCopy openAppWhenRun];
+  v13 = [metadataCopy authenticationPolicyAllowingImplicit:0];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(metadataCopy, "outputFlags")}];
+  outputType = [metadataCopy outputType];
+  systemProtocols = [metadataCopy systemProtocols];
+  v17 = [(LNAction *)self _initWithIdentifier:identifier mangledTypeName:nameCopy openAppWhenRun:openAppWhenRun explicitAuthenticationPolicy:v13 outputFlags:v14 outputType:outputType systemProtocols:systemProtocols parameters:parametersCopy metadata:metadataCopy];
 
   return v17;
 }

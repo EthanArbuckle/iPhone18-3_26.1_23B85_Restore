@@ -1,25 +1,25 @@
 @interface InfiniteScrollFooterView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore24InfiniteScrollFooterView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore24InfiniteScrollFooterView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation InfiniteScrollFooterView
 
-- (_TtC8AppStore24InfiniteScrollFooterView)initWithCoder:(id)a3
+- (_TtC8AppStore24InfiniteScrollFooterView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  v5 = [(InfiniteScrollFooterView *)v4 traitCollection];
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(InfiniteScrollFooterView *)selfCopy traitCollection];
   if (qword_10096E6C0 != -1)
   {
     swift_once();
@@ -31,8 +31,8 @@
   sub_10002849C(&qword_100973210);
   v7 = swift_allocObject();
   *(v7 + 16) = xmmword_1007B0B70;
-  *(v7 + 32) = v5;
-  v8 = v5;
+  *(v7 + 32) = traitCollection;
+  v8 = traitCollection;
   v9 = TraitEnvironmentPlaceholder.__allocating_init(_:)();
   dispatch thunk of AnyDimension.rawValue(in:)();
   v11 = v10;
@@ -46,8 +46,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(InfiniteScrollFooterView *)v2 traitCollection];
+  selfCopy = self;
+  traitCollection = [(InfiniteScrollFooterView *)selfCopy traitCollection];
   if (qword_10096E6C0 != -1)
   {
     swift_once();
@@ -59,8 +59,8 @@
   sub_10002849C(&qword_100973210);
   v5 = swift_allocObject();
   *(v5 + 16) = xmmword_1007B0B70;
-  *(v5 + 32) = v3;
-  v6 = v3;
+  *(v5 + 32) = traitCollection;
+  v6 = traitCollection;
   v7 = TraitEnvironmentPlaceholder.__allocating_init(_:)();
   dispatch thunk of AnyDimension.rawValue(in:)();
   v9 = v8;

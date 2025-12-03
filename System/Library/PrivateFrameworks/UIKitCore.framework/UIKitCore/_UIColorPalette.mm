@@ -10,31 +10,31 @@
 + (id)textAssistantReplacementBuildInPalette;
 + (id)textAssistantReplacementBuildOutPalette;
 + (id)textAssistantReplacementSheenPalette;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGGradient)gradientRepresentation;
-- (_UIColorPalette)initWithColors:(id)a3 locations:(id)a4 colorSpaceName:(id)a5;
-- (id)paletteByMergingPalette:(id)a3;
+- (_UIColorPalette)initWithColors:(id)colors locations:(id)locations colorSpaceName:(id)name;
+- (id)paletteByMergingPalette:(id)palette;
 - (unint64_t)hash;
 @end
 
 @implementation _UIColorPalette
 
-- (_UIColorPalette)initWithColors:(id)a3 locations:(id)a4 colorSpaceName:(id)a5
+- (_UIColorPalette)initWithColors:(id)colors locations:(id)locations colorSpaceName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  colorsCopy = colors;
+  locationsCopy = locations;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = _UIColorPalette;
   v12 = [(_UIColorPalette *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_colors, a3);
-    objc_storeStrong(&v13->_locations, a4);
-    if (v11)
+    objc_storeStrong(&v12->_colors, colors);
+    objc_storeStrong(&v13->_locations, locations);
+    if (nameCopy)
     {
-      v14 = v11;
+      v14 = nameCopy;
     }
 
     else
@@ -48,65 +48,65 @@
   return v13;
 }
 
-- (id)paletteByMergingPalette:(id)a3
+- (id)paletteByMergingPalette:(id)palette
 {
-  v5 = a3;
-  v6 = [v5 locations];
-  if ([v6 count])
+  paletteCopy = palette;
+  locations = [paletteCopy locations];
+  if ([locations count])
   {
   }
 
   else
   {
-    v7 = [(_UIColorPalette *)self locations];
-    v8 = [v7 count];
+    locations2 = [(_UIColorPalette *)self locations];
+    v8 = [locations2 count];
 
     if (!v8)
     {
-      v37 = [(_UIColorPalette *)self colors];
-      v38 = [v5 colors];
-      v13 = [v37 arrayByAddingObjectsFromArray:v38];
+      colors = [(_UIColorPalette *)self colors];
+      colors2 = [paletteCopy colors];
+      currentHandler = [colors arrayByAddingObjectsFromArray:colors2];
 
-      v36 = [(_UIColorPalette *)self initWithColors:v13];
+      v36 = [(_UIColorPalette *)self initWithColors:currentHandler];
       goto LABEL_26;
     }
   }
 
-  v9 = [v5 locations];
-  if (![v9 count])
+  locations3 = [paletteCopy locations];
+  if (![locations3 count])
   {
 
     goto LABEL_24;
   }
 
-  v10 = [(_UIColorPalette *)self locations];
-  v11 = [v10 count];
+  locations4 = [(_UIColorPalette *)self locations];
+  v11 = [locations4 count];
 
   if (!v11)
   {
 LABEL_24:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIColorPalette.m" lineNumber:63 description:{@"Can't merge a _UIColorPalette with locations, and one without locations."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIColorPalette.m" lineNumber:63 description:{@"Can't merge a _UIColorPalette with locations, and one without locations."}];
     v36 = 0;
     goto LABEL_26;
   }
 
-  v12 = [(_UIColorPalette *)self colors];
-  v13 = [v12 mutableCopy];
+  colors3 = [(_UIColorPalette *)self colors];
+  currentHandler = [colors3 mutableCopy];
 
-  v14 = [(_UIColorPalette *)self locations];
-  v15 = [v14 mutableCopy];
+  locations5 = [(_UIColorPalette *)self locations];
+  v15 = [locations5 mutableCopy];
 
-  v16 = [v5 colors];
-  v17 = [v16 count];
+  colors4 = [paletteCopy colors];
+  v17 = [colors4 count];
 
   if (v17)
   {
     v18 = 0;
     do
     {
-      v19 = [v5 locations];
-      v20 = [v19 objectAtIndex:v18];
+      locations6 = [paletteCopy locations];
+      v20 = [locations6 objectAtIndex:v18];
       v21 = v20;
       if (v20)
       {
@@ -148,26 +148,26 @@ LABEL_24:
           }
         }
 
-        v29 = [v5 colors];
-        v30 = [v29 objectAtIndex:v18];
-        [v13 insertObject:v30 atIndex:v24];
+        colors5 = [paletteCopy colors];
+        v30 = [colors5 objectAtIndex:v18];
+        [currentHandler insertObject:v30 atIndex:v24];
 
-        v31 = [v5 locations];
-        v32 = [v31 objectAtIndex:v18];
+        locations7 = [paletteCopy locations];
+        v32 = [locations7 objectAtIndex:v18];
         [v15 insertObject:v32 atIndex:v24];
       }
 
 LABEL_19:
       ++v18;
-      v33 = [v5 colors];
-      v34 = [v33 count];
+      colors6 = [paletteCopy colors];
+      v34 = [colors6 count];
     }
 
     while (v18 < v34);
   }
 
-  v35 = [v5 colorSpaceName];
-  v36 = [(_UIColorPalette *)self initWithColors:v13 locations:v15 colorSpaceName:v35];
+  colorSpaceName = [paletteCopy colorSpaceName];
+  v36 = [(_UIColorPalette *)self initWithColors:currentHandler locations:v15 colorSpaceName:colorSpaceName];
 
 LABEL_26:
 
@@ -180,8 +180,8 @@ LABEL_26:
   v4 = CGColorSpaceCreateWithName(self->_colorSpaceName);
   if (!v4)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"_UIColorPalette.m" lineNumber:72 description:{@"Unable to create colorspace for name %@", self->_colorSpaceName}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIColorPalette.m" lineNumber:72 description:{@"Unable to create colorspace for name %@", self->_colorSpaceName}];
   }
 
   v5 = *MEMORY[0x1E695E480];
@@ -247,17 +247,17 @@ LABEL_26:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_UIColorPalette *)self colorSpaceName];
-    v7 = [v5 colorSpaceName];
-    v8 = v6;
-    v9 = v7;
+    v5 = equalCopy;
+    colorSpaceName = [(_UIColorPalette *)self colorSpaceName];
+    colorSpaceName2 = [v5 colorSpaceName];
+    v8 = colorSpaceName;
+    v9 = colorSpaceName2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -279,19 +279,19 @@ LABEL_26:
       }
     }
 
-    v13 = [(_UIColorPalette *)self colors];
-    v14 = [v5 colors];
-    v8 = v13;
-    v15 = v14;
+    colors = [(_UIColorPalette *)self colors];
+    colors2 = [v5 colors];
+    v8 = colors;
+    v15 = colors2;
     v10 = v15;
     if (v8 == v15)
     {
 
 LABEL_15:
-      v17 = [(_UIColorPalette *)self locations];
-      v18 = [v5 locations];
-      v8 = v17;
-      v19 = v18;
+      locations = [(_UIColorPalette *)self locations];
+      locations2 = [v5 locations];
+      v8 = locations;
+      v19 = locations2;
       v10 = v19;
       if (v8 == v19)
       {
@@ -340,17 +340,17 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(_UIColorPalette *)self colorSpaceName];
-  v5 = [v3 appendString:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  colorSpaceName = [(_UIColorPalette *)self colorSpaceName];
+  v5 = [builder appendString:colorSpaceName];
 
-  v6 = [(_UIColorPalette *)self colors];
-  v7 = [v3 appendObject:v6];
+  colors = [(_UIColorPalette *)self colors];
+  v7 = [builder appendObject:colors];
 
-  v8 = [(_UIColorPalette *)self locations];
-  v9 = [v3 appendObject:v8];
+  locations = [(_UIColorPalette *)self locations];
+  v9 = [builder appendObject:locations];
 
-  v10 = [v3 hash];
+  v10 = [builder hash];
   return v10;
 }
 
@@ -380,10 +380,10 @@ LABEL_22:
 
 + (id)intelligenceAmbientPalette
 {
-  v3 = [a1 alloc];
-  v4 = [a1 _warmColors];
-  v5 = [a1 _coolColors];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  v3 = [self alloc];
+  _warmColors = [self _warmColors];
+  _coolColors = [self _coolColors];
+  v6 = [_warmColors arrayByAddingObjectsFromArray:_coolColors];
   v7 = [v3 initWithColors:v6];
 
   return v7;
@@ -391,18 +391,18 @@ LABEL_22:
 
 + (id)intelligenceProcessingPalette
 {
-  v3 = [a1 alloc];
-  v4 = [a1 _warmColors];
-  v5 = [v3 initWithColors:v4];
+  v3 = [self alloc];
+  _warmColors = [self _warmColors];
+  v5 = [v3 initWithColors:_warmColors];
 
   return v5;
 }
 
 + (id)intelligenceComputedPalette
 {
-  v3 = [a1 alloc];
-  v4 = [a1 _coolColors];
-  v5 = [v3 initWithColors:v4];
+  v3 = [self alloc];
+  _coolColors = [self _coolColors];
+  v5 = [v3 initWithColors:_coolColors];
 
   return v5;
 }
@@ -410,7 +410,7 @@ LABEL_22:
 + (id)textAssistantPonderingFillPalette
 {
   v11[5] = *MEMORY[0x1E69E9840];
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [UIColor colorWithHue:0.12 saturation:1.0 brightness:1.0 alpha:0.0];
   v4 = [UIColor colorWithHue:0.81 saturation:1.0 brightness:1.0 alpha:1.0, v3];
   v11[1] = v4;
@@ -429,7 +429,7 @@ LABEL_22:
 + (id)textAssistantPonderingLightSheenPalette
 {
   v11[5] = *MEMORY[0x1E69E9840];
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.0];
   v4 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0, v3];
   v11[1] = v4;
@@ -448,7 +448,7 @@ LABEL_22:
 + (id)textAssistantReplacementBuildInPalette
 {
   v13[7] = *MEMORY[0x1E69E9840];
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [UIColor colorWithRed:0.489 green:0.631 blue:0.845 alpha:0.0];
   v4 = [UIColor colorWithRed:0.49 green:0.631 blue:0.847 alpha:0.5, v3];
   v13[1] = v4;
@@ -471,7 +471,7 @@ LABEL_22:
 + (id)textAssistantReplacementBuildOutPalette
 {
   v10[4] = *MEMORY[0x1E69E9840];
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [UIColor colorWithWhite:1.0 alpha:1.0];
   v10[0] = v3;
   v4 = [UIColor colorWithRed:0.945 green:0.678 blue:0.388 alpha:1.0];
@@ -489,7 +489,7 @@ LABEL_22:
 + (id)textAssistantReplacementSheenPalette
 {
   v13[7] = *MEMORY[0x1E69E9840];
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.0];
   v4 = [UIColor colorWithRed:1.2 green:1.2 blue:1.2 alpha:0.31, v3];
   v13[1] = v4;
@@ -512,7 +512,7 @@ LABEL_22:
 + (id)intelligenceSymbolLivingColorPalette
 {
   v10[4] = *MEMORY[0x1E69E9840];
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [UIColor colorWithRed:1.0 green:0.471 blue:0.2 alpha:1.0];
   v10[0] = v3;
   v4 = [UIColor colorWithRed:0.98 green:0.263 blue:0.408 alpha:1.0];

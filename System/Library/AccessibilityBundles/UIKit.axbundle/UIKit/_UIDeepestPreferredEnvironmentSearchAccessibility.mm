@@ -1,31 +1,31 @@
 @interface _UIDeepestPreferredEnvironmentSearchAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_overridingPreferredFocusEnvironmentForPreferredEnvironment:(id)a3 visitedFocusEnvironments:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_overridingPreferredFocusEnvironmentForPreferredEnvironment:(id)environment visitedFocusEnvironments:(id)environments;
 @end
 
 @implementation _UIDeepestPreferredEnvironmentSearchAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIDeepestPreferredEnvironmentSearch" hasInstanceMethod:@"_overridingPreferredFocusEnvironmentForPreferredEnvironment:visitedFocusEnvironments:" withFullSignature:{"@", "@", 0}];
   objc_storeStrong(v4, obj);
 }
 
-- (id)_overridingPreferredFocusEnvironmentForPreferredEnvironment:(id)a3 visitedFocusEnvironments:(id)a4
+- (id)_overridingPreferredFocusEnvironmentForPreferredEnvironment:(id)environment visitedFocusEnvironments:(id)environments
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, environment);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v15.receiver = v19;
+  objc_storeStrong(&v17, environments);
+  v15.receiver = selfCopy;
   v15.super_class = _UIDeepestPreferredEnvironmentSearchAccessibility;
   v16 = [(_UIDeepestPreferredEnvironmentSearchAccessibility *)&v15 _overridingPreferredFocusEnvironmentForPreferredEnvironment:location[0] visitedFocusEnvironments:v17];
   v13 = 0;
@@ -39,25 +39,25 @@
     goto LABEL_9;
   }
 
-  v10 = [location[0] parentFocusEnvironment];
-  while (v10)
+  parentFocusEnvironment = [location[0] parentFocusEnvironment];
+  while (parentFocusEnvironment)
   {
-    if (v10 == v16)
+    if (parentFocusEnvironment == v16)
     {
       v20 = 0;
       v9 = 1;
       goto LABEL_8;
     }
 
-    v4 = [v10 parentFocusEnvironment];
-    v5 = v10;
-    v10 = v4;
+    v10ParentFocusEnvironment = [parentFocusEnvironment parentFocusEnvironment];
+    v5 = parentFocusEnvironment;
+    parentFocusEnvironment = v10ParentFocusEnvironment;
     MEMORY[0x29EDC9740](v5);
   }
 
   v9 = 0;
 LABEL_8:
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&parentFocusEnvironment, 0);
   if (!v9)
   {
 LABEL_9:

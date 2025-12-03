@@ -1,20 +1,20 @@
 @interface _EAEmailAddressSetEnumerator
-- (_EAEmailAddressSetEnumerator)initWithSet:(id)a3;
+- (_EAEmailAddressSetEnumerator)initWithSet:(id)set;
 - (id)nextObject;
 @end
 
 @implementation _EAEmailAddressSetEnumerator
 
-- (_EAEmailAddressSetEnumerator)initWithSet:(id)a3
+- (_EAEmailAddressSetEnumerator)initWithSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v9.receiver = self;
   v9.super_class = _EAEmailAddressSetEnumerator;
   v6 = [(_EAEmailAddressSetEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_set, a3);
+    objc_storeStrong(&v6->_set, set);
   }
 
   return v7;

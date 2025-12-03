@@ -20,7 +20,7 @@
   if ((a5 & 1) == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -58,16 +58,16 @@
     v3 = [objc_msgSend(objc_opt_class() "cd_modelClass")];
     if (v3)
     {
-      v4 = [a1 hmd_lastKnownValueForKey:v3];
-      v5 = [v4 hmd_modelID];
+      v4 = [self hmd_lastKnownValueForKey:v3];
+      hmd_modelID = [v4 hmd_modelID];
     }
 
     else
     {
-      v5 = [MEMORY[0x277CCAD78] hmf_zeroUUID];
+      hmd_modelID = [MEMORY[0x277CCAD78] hmf_zeroUUID];
     }
 
-    return v5;
+    return hmd_modelID;
   }
 
   else
@@ -82,11 +82,11 @@
   v2 = objc_opt_class();
   if (HMDManagedObjectClassIsBSORepresentable(v2))
   {
-    v3 = a1;
+    selfCopy = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = selfCopy;
     }
 
     else
@@ -112,11 +112,11 @@
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if ([a1 isDeleted])
+  if ([self isDeleted])
   {
     v13[0] = v4;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    v6 = [a1 committedValuesForKeys:v5];
+    v6 = [self committedValuesForKeys:v5];
     v7 = [v6 objectForKeyedSubscript:v4];
     v8 = v7;
     if (*MEMORY[0x277CBEEE8] == v7)
@@ -134,7 +134,7 @@
 
   else
   {
-    v10 = [a1 valueForKey:v4];
+    v10 = [self valueForKey:v4];
   }
 
   v11 = *MEMORY[0x277D85DE8];

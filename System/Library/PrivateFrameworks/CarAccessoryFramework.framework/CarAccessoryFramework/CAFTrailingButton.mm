@@ -1,22 +1,22 @@
 @interface CAFTrailingButton
-- (CAFTrailingButton)initWithContentURLAction:(id)a3 type:(unsigned __int8)a4;
-- (CAFTrailingButton)initWithDictionary:(id)a3;
+- (CAFTrailingButton)initWithContentURLAction:(id)action type:(unsigned __int8)type;
+- (CAFTrailingButton)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFTrailingButton
 
-- (CAFTrailingButton)initWithDictionary:(id)a3
+- (CAFTrailingButton)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CAFTrailingButton;
   v5 = [(CAFTrailingButton *)&v12 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"contentURLAction"];
+    v6 = [dictionaryCopy objectForKey:@"contentURLAction"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
     v5->_contentURLAction = v7;
 
     objc_opt_class();
-    v9 = [v4 objectForKey:@"type"];
+    v9 = [dictionaryCopy objectForKey:@"type"];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -48,17 +48,17 @@
   return v5;
 }
 
-- (CAFTrailingButton)initWithContentURLAction:(id)a3 type:(unsigned __int8)a4
+- (CAFTrailingButton)initWithContentURLAction:(id)action type:(unsigned __int8)type
 {
-  v7 = a3;
+  actionCopy = action;
   v11.receiver = self;
   v11.super_class = CAFTrailingButton;
   v8 = [(CAFTrailingButton *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_contentURLAction, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_contentURLAction, action);
+    v9->_type = type;
   }
 
   return v9;
@@ -68,20 +68,20 @@
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"contentURLAction";
-  v3 = [(CAFTrailingButton *)self contentURLAction];
-  v4 = v3;
-  if (!v3)
+  contentURLAction = [(CAFTrailingButton *)self contentURLAction];
+  null = contentURLAction;
+  if (!contentURLAction)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   v9[1] = @"type";
-  v10[0] = v4;
+  v10[0] = null;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{-[CAFTrailingButton type](self, "type")}];
   v10[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
-  if (!v3)
+  if (!contentURLAction)
   {
   }
 
@@ -94,8 +94,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFTrailingButton *)self contentURLAction];
-  v6 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %hhu }>", v4, self, @"contentURLAction", v5, @"type", -[CAFTrailingButton type](self, "type")];
+  contentURLAction = [(CAFTrailingButton *)self contentURLAction];
+  v6 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %hhu }>", v4, self, @"contentURLAction", contentURLAction, @"type", -[CAFTrailingButton type](self, "type")];
 
   return v6;
 }

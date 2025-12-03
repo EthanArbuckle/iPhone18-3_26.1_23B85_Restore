@@ -1,26 +1,26 @@
 @interface LPContactsBadgeView
 - (CGRect)layoutExclusionRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPContactsBadgeView)initWithHost:(id)a3 contacts:(id)a4 highlighted:(BOOL)a5 style:(id)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPContactsBadgeView)initWithHost:(id)host contacts:(id)contacts highlighted:(BOOL)highlighted style:(id)style;
 - (void)dealloc;
 - (void)layoutComponentView;
 @end
 
 @implementation LPContactsBadgeView
 
-- (LPContactsBadgeView)initWithHost:(id)a3 contacts:(id)a4 highlighted:(BOOL)a5 style:(id)a6
+- (LPContactsBadgeView)initWithHost:(id)host contacts:(id)contacts highlighted:(BOOL)highlighted style:(id)style
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v38 = a6;
+  highlightedCopy = highlighted;
+  hostCopy = host;
+  contactsCopy = contacts;
+  styleCopy = style;
   v39.receiver = self;
   v39.super_class = LPContactsBadgeView;
-  v12 = [(LPComponentView *)&v39 initWithHost:v10];
+  v12 = [(LPComponentView *)&v39 initWithHost:hostCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_style, a6);
+    objc_storeStrong(&v12->_style, style);
     [(LPContactsBadgeView *)v13 setUserInteractionEnabled:0];
     v41 = 0;
     v42 = &v41;
@@ -41,10 +41,10 @@
     v15 = v14;
     _Block_object_dispose(&v41, 8);
     v16 = objc_alloc_init(v14);
-    [v16 setContacts:v11];
+    [v16 setContacts:contactsCopy];
     objc_storeStrong(&v13->_avatarView, v16);
     [(LPContactsBadgeView *)v13 addSubview:v13->_avatarView];
-    if (v7)
+    if (highlightedCopy)
     {
       v17 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
       highlightIndicatorView = v13->_highlightIndicatorView;
@@ -56,12 +56,12 @@
       [(UIImageView *)v13->_highlightIndicatorView setImage:v21];
 
       v22 = v13->_highlightIndicatorView;
-      v23 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UIImageView *)v22 _lp_setTintColor:v23];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UIImageView *)v22 _lp_setTintColor:whiteColor];
 
       v24 = v13->_highlightIndicatorView;
-      v25 = [MEMORY[0x1E69DC888] systemYellowColor];
-      [(UIImageView *)v24 _lp_setBackgroundColor:v25];
+      systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+      [(UIImageView *)v24 _lp_setBackgroundColor:systemYellowColor];
 
       [(UIView *)v13 _lp_insertSubview:v13->_highlightIndicatorView belowSubview:v13->_avatarView];
       [(UIImageView *)v13->_highlightIndicatorView setContentMode:4];
@@ -75,8 +75,8 @@
         [(UIView *)v13->_highlightShadowView _lp_setShadowOffset:0.0, 3.0];
         [(UIView *)v13->_highlightShadowView _lp_setShadowOpacity:0.5];
         v28 = v13->_highlightShadowView;
-        v29 = [MEMORY[0x1E69DC888] systemYellowColor];
-        [(UIView *)v28 _lp_setShadowColor:v29];
+        systemYellowColor2 = [MEMORY[0x1E69DC888] systemYellowColor];
+        [(UIView *)v28 _lp_setShadowColor:systemYellowColor2];
 
         [(UIView *)v13 _lp_insertSubview:v13->_highlightShadowView belowSubview:v13->_highlightIndicatorView];
       }
@@ -86,12 +86,12 @@
       v13->_maskLayer = v30;
 
       [(CAShapeLayer *)v13->_maskLayer setFillRule:*MEMORY[0x1E69797F8]];
-      v32 = [MEMORY[0x1E69DC888] blackColor];
-      -[CAShapeLayer setFillColor:](v13->_maskLayer, "setFillColor:", [v32 CGColor]);
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      -[CAShapeLayer setFillColor:](v13->_maskLayer, "setFillColor:", [blackColor CGColor]);
 
       v33 = v13->_maskLayer;
-      v34 = [(UIImageView *)v13->_highlightIndicatorView layer];
-      [v34 setMask:v33];
+      layer = [(UIImageView *)v13->_highlightIndicatorView layer];
+      [layer setMask:v33];
     }
 
     if ([(LPContactsBadgeStyle *)v13->_style useShadow])
@@ -99,8 +99,8 @@
       [(UIView *)v13 _lp_setShadowRadius:4.0];
       [(UIView *)v13 _lp_setShadowOffset:0.0, 2.0];
       [(UIView *)v13 _lp_setShadowOpacity:0.5];
-      v35 = [MEMORY[0x1E69DC888] blackColor];
-      [(UIView *)v13 _lp_setShadowColor:v35];
+      blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+      [(UIView *)v13 _lp_setShadowColor:blackColor2];
     }
 
     v36 = v13;
@@ -150,8 +150,8 @@
       Mutable = CGPathCreateMutable();
       [(UIView *)self->_highlightShadowView bounds];
       CGPathAddEllipseInRect(Mutable, 0, v39);
-      v28 = [(UIView *)self->_highlightShadowView layer];
-      [v28 setShadowPath:Mutable];
+      layer = [(UIView *)self->_highlightShadowView layer];
+      [layer setShadowPath:Mutable];
 
       CGPathRelease(Mutable);
     }
@@ -179,10 +179,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   highlightIndicatorView = self->_highlightIndicatorView;
-  v5 = [(LPContactsBadgeStyle *)self->_style size:a3.width];
+  v5 = [(LPContactsBadgeStyle *)self->_style size:fits.width];
   [v5 value];
   v7 = v6;
   if (highlightIndicatorView)

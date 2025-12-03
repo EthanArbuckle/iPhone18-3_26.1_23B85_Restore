@@ -1,21 +1,21 @@
 @interface LACustomPasswordVerificationAction
 + (LACustomPasswordVerificationAction)terminateAction;
 + (LACustomPasswordVerificationAction)userCancelAction;
-+ (id)submitCustomPasswordAction:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)submitCustomPasswordAction:(id)action;
+- (BOOL)isEqual:(id)equal;
 - (id)initWithType:(id *)result;
-- (id)initWithType:(void *)a3 customPassword:;
+- (id)initWithType:(void *)type customPassword:;
 @end
 
 @implementation LACustomPasswordVerificationAction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5[1] == self->_type)
     {
@@ -55,23 +55,23 @@
   return result;
 }
 
-- (id)initWithType:(void *)a3 customPassword:
+- (id)initWithType:(void *)type customPassword:
 {
-  v6 = a3;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = LACustomPasswordVerificationAction;
     v7 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       v7[1] = a2;
-      objc_storeStrong(v7 + 2, a3);
+      objc_storeStrong(v7 + 2, type);
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (LACustomPasswordVerificationAction)terminateAction
@@ -96,10 +96,10 @@
   return v2;
 }
 
-+ (id)submitCustomPasswordAction:(id)a3
++ (id)submitCustomPasswordAction:(id)action
 {
-  v3 = a3;
-  v4 = [[LACustomPasswordVerificationAction alloc] initWithType:v3 customPassword:?];
+  actionCopy = action;
+  v4 = [[LACustomPasswordVerificationAction alloc] initWithType:actionCopy customPassword:?];
 
   return v4;
 }

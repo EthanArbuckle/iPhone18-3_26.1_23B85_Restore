@@ -1,11 +1,11 @@
 @interface FigCaptureSinkConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FigCaptureSinkConfiguration)initWithCoder:(id)a3;
-- (FigCaptureSinkConfiguration)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FigCaptureSinkConfiguration)initWithCoder:(id)coder;
+- (FigCaptureSinkConfiguration)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FigCaptureSinkConfiguration
@@ -29,9 +29,9 @@
   [(FigCaptureSinkConfiguration *)&v3 dealloc];
 }
 
-- (FigCaptureSinkConfiguration)initWithXPCEncoding:(id)a3
+- (FigCaptureSinkConfiguration)initWithXPCEncoding:(id)encoding
 {
-  if (a3)
+  if (encoding)
   {
     v6.receiver = self;
     v6.super_class = FigCaptureSinkConfiguration;
@@ -39,7 +39,7 @@
     if (v4)
     {
       FigXPCMessageCopyCFString();
-      v4->_deferredStartEnabled = xpc_dictionary_get_BOOL(a3, "deferredStartEnabled");
+      v4->_deferredStartEnabled = xpc_dictionary_get_BOOL(encoding, "deferredStartEnabled");
     }
   }
 
@@ -52,38 +52,38 @@
   return v4;
 }
 
-- (FigCaptureSinkConfiguration)initWithCoder:(id)a3
+- (FigCaptureSinkConfiguration)initWithCoder:(id)coder
 {
   v4 = [(FigCaptureSinkConfiguration *)self init];
   if (v4)
   {
-    v4->_sinkID = [a3 decodeObjectOfClass:objc_opt_class() forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "sinkID")}];
-    v4->_deferredStartEnabled = [a3 decodeBoolForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "deferredStartEnabled")}];
+    v4->_sinkID = [coder decodeObjectOfClass:objc_opt_class() forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "sinkID")}];
+    v4->_deferredStartEnabled = [coder decodeBoolForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "deferredStartEnabled")}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_sinkID forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "sinkID")}];
+  [coder encodeObject:self->_sinkID forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "sinkID")}];
   deferredStartEnabled = self->_deferredStartEnabled;
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"deferredStartEnabled"];
 
-  [a3 encodeBool:deferredStartEnabled forKey:v6];
+  [coder encodeBool:deferredStartEnabled forKey:v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setSinkID:{-[FigCaptureSinkConfiguration sinkID](self, "sinkID")}];
   [v4 setDeferredStartEnabled:{-[FigCaptureSinkConfiguration deferredStartEnabled](self, "deferredStartEnabled")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v13) = 1;
   }
@@ -94,13 +94,13 @@
     v17 = v4;
     v18 = v3;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v11 = -[FigCaptureSinkConfiguration sinkType](self, "sinkType"), v11 == [a3 sinkType]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v11 = -[FigCaptureSinkConfiguration sinkType](self, "sinkType"), v11 == [equal sinkType]))
     {
-      v12 = [(FigCaptureSinkConfiguration *)self sinkID];
-      if (v12 == [a3 sinkID] || (v13 = -[NSString isEqual:](-[FigCaptureSinkConfiguration sinkID](self, "sinkID"), "isEqual:", objc_msgSend(a3, "sinkID"))) != 0)
+      sinkID = [(FigCaptureSinkConfiguration *)self sinkID];
+      if (sinkID == [equal sinkID] || (v13 = -[NSString isEqual:](-[FigCaptureSinkConfiguration sinkID](self, "sinkID"), "isEqual:", objc_msgSend(equal, "sinkID"))) != 0)
       {
         v14 = [(FigCaptureSinkConfiguration *)self deferredStartEnabled:v6];
-        LOBYTE(v13) = v14 ^ [a3 deferredStartEnabled] ^ 1;
+        LOBYTE(v13) = v14 ^ [equal deferredStartEnabled] ^ 1;
       }
     }
 

@@ -1,39 +1,39 @@
 @interface DSIconTableViewCell
-+ (id)disabledIconTableViewCellFromTableView:(id)a3 withText:(id)a4 detail:(id)a5 icon:(id)a6;
-+ (id)iconTableViewCellFromTableView:(id)a3 withRightAlignedLabel:(id)a4 detail:(id)a5 icon:(id)a6;
-+ (id)iconTableViewCellFromTableView:(id)a3 withText:(id)a4 detail:(id)a5 icon:(id)a6;
-- (DSIconTableViewCell)initWithRightAlignedLabel:(id)a3 detail:(id)a4 icon:(id)a5;
-- (DSIconTableViewCell)initWithText:(id)a3 detail:(id)a4 icon:(id)a5;
-- (NSDirectionalEdgeInsets)directionalLayoutMarginsForCellWithIcon:(BOOL)a3 withSecondaryText:(BOOL)a4;
-- (id)contentConfigurationWithText:(id)a3 secondaryText:(id)a4 icon:(id)a5;
-- (id)initDisabledCellWithText:(id)a3 detail:(id)a4 icon:(id)a5;
++ (id)disabledIconTableViewCellFromTableView:(id)view withText:(id)text detail:(id)detail icon:(id)icon;
++ (id)iconTableViewCellFromTableView:(id)view withRightAlignedLabel:(id)label detail:(id)detail icon:(id)icon;
++ (id)iconTableViewCellFromTableView:(id)view withText:(id)text detail:(id)detail icon:(id)icon;
+- (DSIconTableViewCell)initWithRightAlignedLabel:(id)label detail:(id)detail icon:(id)icon;
+- (DSIconTableViewCell)initWithText:(id)text detail:(id)detail icon:(id)icon;
+- (NSDirectionalEdgeInsets)directionalLayoutMarginsForCellWithIcon:(BOOL)icon withSecondaryText:(BOOL)text;
+- (id)contentConfigurationWithText:(id)text secondaryText:(id)secondaryText icon:(id)icon;
+- (id)initDisabledCellWithText:(id)text detail:(id)detail icon:(id)icon;
 - (id)subtitleFont;
 - (id)titleFont;
 - (void)addDisabledOverlay;
 - (void)customizeProperties;
-- (void)setIcon:(id)a3;
-- (void)setTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)setIcon:(id)icon;
+- (void)setTitle:(id)title detailText:(id)text icon:(id)icon;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation DSIconTableViewCell
 
-+ (id)iconTableViewCellFromTableView:(id)a3 withText:(id)a4 detail:(id)a5 icon:(id)a6
++ (id)iconTableViewCellFromTableView:(id)view withText:(id)text detail:(id)detail icon:(id)icon
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 dequeueReusableCellWithIdentifier:@"DSCell"];
+  textCopy = text;
+  detailCopy = detail;
+  iconCopy = icon;
+  v13 = [view dequeueReusableCellWithIdentifier:@"DSCell"];
   v14 = v13;
   if (v13)
   {
-    [v13 setTitle:v10 detailText:v11 icon:v12];
+    [v13 setTitle:textCopy detailText:detailCopy icon:iconCopy];
     v15 = v14;
   }
 
   else
   {
-    v15 = [[a1 alloc] initWithText:v10 detail:v11 icon:v12];
+    v15 = [[self alloc] initWithText:textCopy detail:detailCopy icon:iconCopy];
   }
 
   v16 = v15;
@@ -41,22 +41,22 @@
   return v16;
 }
 
-+ (id)iconTableViewCellFromTableView:(id)a3 withRightAlignedLabel:(id)a4 detail:(id)a5 icon:(id)a6
++ (id)iconTableViewCellFromTableView:(id)view withRightAlignedLabel:(id)label detail:(id)detail icon:(id)icon
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 dequeueReusableCellWithIdentifier:@"DSCellRightAligned"];
+  labelCopy = label;
+  detailCopy = detail;
+  iconCopy = icon;
+  v13 = [view dequeueReusableCellWithIdentifier:@"DSCellRightAligned"];
   v14 = v13;
   if (v13)
   {
-    [v13 setTitle:v10 detailText:v11 icon:v12];
+    [v13 setTitle:labelCopy detailText:detailCopy icon:iconCopy];
     v15 = v14;
   }
 
   else
   {
-    v15 = [[a1 alloc] initWithRightAlignedLabel:v10 detail:v11 icon:v12];
+    v15 = [[self alloc] initWithRightAlignedLabel:labelCopy detail:detailCopy icon:iconCopy];
   }
 
   v16 = v15;
@@ -64,36 +64,36 @@
   return v16;
 }
 
-- (DSIconTableViewCell)initWithText:(id)a3 detail:(id)a4 icon:(id)a5
+- (DSIconTableViewCell)initWithText:(id)text detail:(id)detail icon:(id)icon
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  detailCopy = detail;
+  iconCopy = icon;
   v14.receiver = self;
   v14.super_class = DSIconTableViewCell;
   v11 = [(DSIconTableViewCell *)&v14 initWithStyle:3 reuseIdentifier:@"DSCell"];
   v12 = v11;
   if (v11)
   {
-    [(DSIconTableViewCell *)v11 setTitle:v8 detailText:v9 icon:v10];
+    [(DSIconTableViewCell *)v11 setTitle:textCopy detailText:detailCopy icon:iconCopy];
     [(DSIconTableViewCell *)v12 customizeProperties];
   }
 
   return v12;
 }
 
-- (DSIconTableViewCell)initWithRightAlignedLabel:(id)a3 detail:(id)a4 icon:(id)a5
+- (DSIconTableViewCell)initWithRightAlignedLabel:(id)label detail:(id)detail icon:(id)icon
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  labelCopy = label;
+  detailCopy = detail;
+  iconCopy = icon;
   v14.receiver = self;
   v14.super_class = DSIconTableViewCell;
   v11 = [(DSIconTableViewCell *)&v14 initWithStyle:1 reuseIdentifier:@"DSCellRightAligned"];
   v12 = v11;
   if (v11)
   {
-    [(DSIconTableViewCell *)v11 setTitle:v8 detailText:v9 icon:v10];
+    [(DSIconTableViewCell *)v11 setTitle:labelCopy detailText:detailCopy icon:iconCopy];
     [(DSIconTableViewCell *)v12 customizeProperties];
   }
 
@@ -104,51 +104,51 @@
 {
   if (+[DSFeatureFlags isNaturalUIEnabled])
   {
-    v3 = [(DSIconTableViewCell *)self heightAnchor];
-    v4 = [v3 constraintGreaterThanOrEqualToConstant:52.0];
+    heightAnchor = [(DSIconTableViewCell *)self heightAnchor];
+    v4 = [heightAnchor constraintGreaterThanOrEqualToConstant:52.0];
     [v4 setActive:1];
   }
 
   else
   {
-    v5 = [(DSIconTableViewCell *)self textLabel];
-    [v5 setNumberOfLines:0];
+    textLabel = [(DSIconTableViewCell *)self textLabel];
+    [textLabel setNumberOfLines:0];
 
-    v6 = [(DSIconTableViewCell *)self textLabel];
-    [v6 setLineBreakMode:0];
+    textLabel2 = [(DSIconTableViewCell *)self textLabel];
+    [textLabel2 setLineBreakMode:0];
 
-    v7 = [(DSIconTableViewCell *)self detailTextLabel];
-    v8 = [(DSIconTableViewCell *)self subtitleFont];
-    [v7 setFont:v8];
+    detailTextLabel = [(DSIconTableViewCell *)self detailTextLabel];
+    subtitleFont = [(DSIconTableViewCell *)self subtitleFont];
+    [detailTextLabel setFont:subtitleFont];
 
-    v9 = [(DSIconTableViewCell *)self detailTextLabel];
-    v10 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v9 setTextColor:v10];
+    detailTextLabel2 = [(DSIconTableViewCell *)self detailTextLabel];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [detailTextLabel2 setTextColor:secondaryLabelColor];
 
-    v11 = [(DSIconTableViewCell *)self detailTextLabel];
-    [v11 setNumberOfLines:0];
+    detailTextLabel3 = [(DSIconTableViewCell *)self detailTextLabel];
+    [detailTextLabel3 setNumberOfLines:0];
 
-    v3 = [(DSIconTableViewCell *)self detailTextLabel];
-    [v3 setLineBreakMode:0];
+    heightAnchor = [(DSIconTableViewCell *)self detailTextLabel];
+    [heightAnchor setLineBreakMode:0];
   }
 
-  v12 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-  [(DSIconTableViewCell *)self setBackgroundColor:v12];
+  tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  [(DSIconTableViewCell *)self setBackgroundColor:tertiarySystemFillColor];
 
   [(DSIconTableViewCell *)self setIsAccessibilityElement:1];
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
-  v3 = a3;
+  stateCopy = state;
   v7.receiver = self;
   v7.super_class = DSIconTableViewCell;
   [(DSIconTableViewCell *)&v7 willTransitionToState:?];
-  if (v3)
+  if (stateCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v5 setBackgroundColor:clearColor];
 
     [(DSIconTableViewCell *)self setSelectedBackgroundView:v5];
   }
@@ -181,94 +181,94 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (void)setTitle:(id)title detailText:(id)text icon:(id)icon
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  textCopy = text;
+  iconCopy = icon;
   if (+[DSFeatureFlags isNaturalUIEnabled])
   {
-    v10 = [(DSIconTableViewCell *)self contentConfigurationWithText:v13 secondaryText:v8 icon:v9];
-    [(DSIconTableViewCell *)self setContentConfiguration:v10];
+    imageView = [(DSIconTableViewCell *)self contentConfigurationWithText:titleCopy secondaryText:textCopy icon:iconCopy];
+    [(DSIconTableViewCell *)self setContentConfiguration:imageView];
   }
 
   else
   {
-    v11 = [(DSIconTableViewCell *)self textLabel];
-    [v11 setText:v13];
+    textLabel = [(DSIconTableViewCell *)self textLabel];
+    [textLabel setText:titleCopy];
 
-    v12 = [(DSIconTableViewCell *)self detailTextLabel];
-    [v12 setText:v8];
+    detailTextLabel = [(DSIconTableViewCell *)self detailTextLabel];
+    [detailTextLabel setText:textCopy];
 
-    if (!v9)
+    if (!iconCopy)
     {
       goto LABEL_6;
     }
 
-    v10 = [(DSIconTableViewCell *)self imageView];
-    [v10 setImage:v9];
+    imageView = [(DSIconTableViewCell *)self imageView];
+    [imageView setImage:iconCopy];
   }
 
 LABEL_6:
 }
 
-- (id)contentConfigurationWithText:(id)a3 secondaryText:(id)a4 icon:(id)a5
+- (id)contentConfigurationWithText:(id)text secondaryText:(id)secondaryText icon:(id)icon
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(DSIconTableViewCell *)self defaultContentConfiguration];
-  [v11 setText:v10];
+  secondaryTextCopy = secondaryText;
+  iconCopy = icon;
+  textCopy = text;
+  defaultContentConfiguration = [(DSIconTableViewCell *)self defaultContentConfiguration];
+  [defaultContentConfiguration setText:textCopy];
 
-  v12 = [(DSIconTableViewCell *)self titleFont];
-  v13 = [v11 textProperties];
-  [v13 setFont:v12];
+  titleFont = [(DSIconTableViewCell *)self titleFont];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setFont:titleFont];
 
-  if (v8)
+  if (secondaryTextCopy)
   {
-    [v11 setSecondaryText:v8];
-    v14 = [(DSIconTableViewCell *)self subtitleFont];
-    v15 = [v11 secondaryTextProperties];
-    [v15 setFont:v14];
+    [defaultContentConfiguration setSecondaryText:secondaryTextCopy];
+    subtitleFont = [(DSIconTableViewCell *)self subtitleFont];
+    secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+    [secondaryTextProperties setFont:subtitleFont];
 
-    v16 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v17 = [v11 secondaryTextProperties];
-    [v17 setColor:v16];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    secondaryTextProperties2 = [defaultContentConfiguration secondaryTextProperties];
+    [secondaryTextProperties2 setColor:secondaryLabelColor];
   }
 
-  if (v9)
+  if (iconCopy)
   {
-    [v9 size];
-    if (v18 < 32.0 || ([v9 size], v19 < 32.0))
+    [iconCopy size];
+    if (v18 < 32.0 || ([iconCopy size], v19 < 32.0))
     {
-      v20 = [v9 imageByPreparingThumbnailOfSize:{32.0, 32.0}];
+      v20 = [iconCopy imageByPreparingThumbnailOfSize:{32.0, 32.0}];
 
-      v9 = v20;
+      iconCopy = v20;
     }
 
-    [v11 setImage:v9];
-    v21 = [v11 imageProperties];
-    [v21 setCornerRadius:7.0];
+    [defaultContentConfiguration setImage:iconCopy];
+    imageProperties = [defaultContentConfiguration imageProperties];
+    [imageProperties setCornerRadius:7.0];
 
-    v9 = v9 != 0;
+    iconCopy = iconCopy != 0;
   }
 
-  -[DSIconTableViewCell directionalLayoutMarginsForCellWithIcon:withSecondaryText:](self, "directionalLayoutMarginsForCellWithIcon:withSecondaryText:", v9, [v8 length] != 0);
-  [v11 setDirectionalLayoutMargins:?];
+  -[DSIconTableViewCell directionalLayoutMarginsForCellWithIcon:withSecondaryText:](self, "directionalLayoutMarginsForCellWithIcon:withSecondaryText:", iconCopy, [secondaryTextCopy length] != 0);
+  [defaultContentConfiguration setDirectionalLayoutMargins:?];
 
-  return v11;
+  return defaultContentConfiguration;
 }
 
-- (NSDirectionalEdgeInsets)directionalLayoutMarginsForCellWithIcon:(BOOL)a3 withSecondaryText:(BOOL)a4
+- (NSDirectionalEdgeInsets)directionalLayoutMarginsForCellWithIcon:(BOOL)icon withSecondaryText:(BOOL)text
 {
   v4 = 15.0;
   v5 = 10.0;
-  if ((a3 & ~a4) == 0)
+  if ((icon & ~text) == 0)
   {
     v5 = 15.0;
   }
 
-  if (a3)
+  if (icon)
   {
     v4 = 13.0;
   }
@@ -282,22 +282,22 @@ LABEL_6:
   return result;
 }
 
-+ (id)disabledIconTableViewCellFromTableView:(id)a3 withText:(id)a4 detail:(id)a5 icon:(id)a6
++ (id)disabledIconTableViewCellFromTableView:(id)view withText:(id)text detail:(id)detail icon:(id)icon
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 dequeueReusableCellWithIdentifier:@"DSCellOverlay"];
+  textCopy = text;
+  detailCopy = detail;
+  iconCopy = icon;
+  v13 = [view dequeueReusableCellWithIdentifier:@"DSCellOverlay"];
   v14 = v13;
   if (v13)
   {
-    [v13 setTitle:v10 detailText:v11 icon:v12];
+    [v13 setTitle:textCopy detailText:detailCopy icon:iconCopy];
     v15 = v14;
   }
 
   else
   {
-    v15 = [[a1 alloc] initDisabledCellWithText:v10 detail:v11 icon:v12];
+    v15 = [[self alloc] initDisabledCellWithText:textCopy detail:detailCopy icon:iconCopy];
   }
 
   v16 = v15;
@@ -305,18 +305,18 @@ LABEL_6:
   return v16;
 }
 
-- (id)initDisabledCellWithText:(id)a3 detail:(id)a4 icon:(id)a5
+- (id)initDisabledCellWithText:(id)text detail:(id)detail icon:(id)icon
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  detailCopy = detail;
+  iconCopy = icon;
   v14.receiver = self;
   v14.super_class = DSIconTableViewCell;
   v11 = [(DSIconTableViewCell *)&v14 initWithStyle:3 reuseIdentifier:@"DSCellOverlay"];
   v12 = v11;
   if (v11)
   {
-    [(DSIconTableViewCell *)v11 setTitle:v8 detailText:v9 icon:v10];
+    [(DSIconTableViewCell *)v11 setTitle:textCopy detailText:detailCopy icon:iconCopy];
     [(DSIconTableViewCell *)v12 customizeProperties];
     [(DSIconTableViewCell *)v12 addDisabledOverlay];
   }
@@ -330,56 +330,56 @@ LABEL_6:
   {
     if (+[DSFeatureFlags isNaturalUIEnabled]&& ([(DSIconTableViewCell *)self contentConfiguration], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
     {
-      v4 = [(DSIconTableViewCell *)self contentConfiguration];
-      [v4 setAlpha:0.5];
-      [(DSIconTableViewCell *)self setContentConfiguration:v4];
+      contentConfiguration = [(DSIconTableViewCell *)self contentConfiguration];
+      [contentConfiguration setAlpha:0.5];
+      [(DSIconTableViewCell *)self setContentConfiguration:contentConfiguration];
     }
 
     else
     {
-      v5 = [(DSIconTableViewCell *)self textLabel];
-      [v5 setAlpha:0.5];
+      textLabel = [(DSIconTableViewCell *)self textLabel];
+      [textLabel setAlpha:0.5];
 
-      v6 = [(DSIconTableViewCell *)self detailTextLabel];
-      [v6 setAlpha:0.5];
+      detailTextLabel = [(DSIconTableViewCell *)self detailTextLabel];
+      [detailTextLabel setAlpha:0.5];
 
-      v4 = [(DSIconTableViewCell *)self imageView];
-      [v4 setAlpha:0.5];
+      contentConfiguration = [(DSIconTableViewCell *)self imageView];
+      [contentConfiguration setAlpha:0.5];
     }
 
-    v7 = [(DSIconTableViewCell *)self interactionTintColor];
-    v8 = [v7 colorWithAlphaComponent:0.5];
+    interactionTintColor = [(DSIconTableViewCell *)self interactionTintColor];
+    v8 = [interactionTintColor colorWithAlphaComponent:0.5];
 
     [(DSIconTableViewCell *)self setInteractionTintColor:v8];
   }
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v8 = a3;
-  [v8 size];
-  if (v4 < 32.0 || ([v8 size], v5 < 32.0))
+  iconCopy = icon;
+  [iconCopy size];
+  if (v4 < 32.0 || ([iconCopy size], v5 < 32.0))
   {
-    v6 = [v8 imageByPreparingThumbnailOfSize:{32.0, 32.0}];
+    v6 = [iconCopy imageByPreparingThumbnailOfSize:{32.0, 32.0}];
 
-    v8 = v6;
+    iconCopy = v6;
   }
 
   if (+[DSFeatureFlags isNaturalUIEnabled])
   {
-    v7 = [(DSIconTableViewCell *)self contentConfiguration];
+    contentConfiguration = [(DSIconTableViewCell *)self contentConfiguration];
     if (objc_opt_respondsToSelector())
     {
-      [v7 performSelector:sel_setImage_ withObject:v8];
+      [contentConfiguration performSelector:sel_setImage_ withObject:iconCopy];
     }
 
-    [(DSIconTableViewCell *)self setContentConfiguration:v7];
+    [(DSIconTableViewCell *)self setContentConfiguration:contentConfiguration];
   }
 
   else
   {
-    v7 = [(DSIconTableViewCell *)self imageView];
-    [v7 setImage:v8];
+    contentConfiguration = [(DSIconTableViewCell *)self imageView];
+    [contentConfiguration setImage:iconCopy];
   }
 }
 

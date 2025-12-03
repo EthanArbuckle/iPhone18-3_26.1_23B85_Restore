@@ -1,33 +1,33 @@
 @interface CBSDeviceInformationField
-+ (id)fieldWithFormat:(unint64_t)a3 value:(id)a4;
-- (CBSDeviceInformationField)initWithFormat:(unint64_t)a3 value:(id)a4;
++ (id)fieldWithFormat:(unint64_t)format value:(id)value;
+- (CBSDeviceInformationField)initWithFormat:(unint64_t)format value:(id)value;
 - (NSArray)formattedValuesArray;
 - (NSString)formattedTitle;
 - (NSString)formattedValue;
-- (id)_formattedIMEI:(id)a3;
+- (id)_formattedIMEI:(id)i;
 @end
 
 @implementation CBSDeviceInformationField
 
-+ (id)fieldWithFormat:(unint64_t)a3 value:(id)a4
++ (id)fieldWithFormat:(unint64_t)format value:(id)value
 {
-  v5 = a4;
-  v6 = [[CBSDeviceInformationField alloc] initWithFormat:a3 value:v5];
+  valueCopy = value;
+  v6 = [[CBSDeviceInformationField alloc] initWithFormat:format value:valueCopy];
 
   return v6;
 }
 
-- (CBSDeviceInformationField)initWithFormat:(unint64_t)a3 value:(id)a4
+- (CBSDeviceInformationField)initWithFormat:(unint64_t)format value:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = CBSDeviceInformationField;
   v8 = [(CBSDeviceInformationField *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_format = a3;
-    objc_storeStrong(&v8->_value, a4);
+    v8->_format = format;
+    objc_storeStrong(&v8->_value, value);
   }
 
   return v9;
@@ -35,18 +35,18 @@
 
 - (NSString)formattedTitle
 {
-  v2 = [(CBSDeviceInformationField *)self format];
-  if (v2 == 2)
+  format = [(CBSDeviceInformationField *)self format];
+  if (format == 2)
   {
     v4 = @"IMEI";
   }
 
-  else if (v2 == 1)
+  else if (format == 1)
   {
     v4 = @"MEID";
   }
 
-  else if (v2)
+  else if (format)
   {
     v4 = @"ID";
   }
@@ -62,21 +62,21 @@
 
 - (NSString)formattedValue
 {
-  v3 = [(CBSDeviceInformationField *)self format];
-  v4 = [(CBSDeviceInformationField *)self value];
-  if (v3 == 2)
+  format = [(CBSDeviceInformationField *)self format];
+  value = [(CBSDeviceInformationField *)self value];
+  if (format == 2)
   {
-    v5 = [(CBSDeviceInformationField *)self _formattedIMEI:v4];
+    v5 = [(CBSDeviceInformationField *)self _formattedIMEI:value];
 
-    v4 = v5;
+    value = v5;
   }
 
-  return v4;
+  return value;
 }
 
-- (id)_formattedIMEI:(id)a3
+- (id)_formattedIMEI:(id)i
 {
-  v3 = [a3 mutableCopy];
+  v3 = [i mutableCopy];
   if ([v3 length] >= 3)
   {
     [v3 insertString:@" " atIndex:2];
@@ -103,8 +103,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CBSDeviceInformationField *)self value];
-  v5 = [v4 componentsSeparatedByString:@""];;
+  value = [(CBSDeviceInformationField *)self value];
+  v5 = [value componentsSeparatedByString:@""];;
 
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)

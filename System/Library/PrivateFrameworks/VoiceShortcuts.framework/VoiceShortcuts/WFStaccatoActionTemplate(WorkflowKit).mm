@@ -17,8 +17,8 @@
     }
 
 LABEL_19:
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"sectionIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"sectionIdentifier"}];
 
     if (v11)
     {
@@ -28,8 +28,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:a2 object:a1 file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
   if (!v10)
   {
@@ -43,11 +43,11 @@ LABEL_3:
   }
 
 LABEL_20:
-  v29 = [MEMORY[0x277CCA890] currentHandler];
-  [v29 handleFailureInMethod:a2 object:a1 file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"linkAction"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplate_WorkflowKit.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"linkAction"}];
 
 LABEL_4:
-  v33.receiver = a1;
+  v33.receiver = self;
   v33.super_class = &off_28460BEE0;
   v12 = objc_msgSendSuper2(&v33, sel_init);
   if (v12)
@@ -76,16 +76,16 @@ LABEL_4:
 
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v16 hiddenParameterKeysForStaccato];
+      hiddenParameterKeysForStaccato = [v16 hiddenParameterKeysForStaccato];
     }
 
     else
     {
-      v17 = objc_alloc_init(MEMORY[0x277CBEB98]);
+      hiddenParameterKeysForStaccato = objc_alloc_init(MEMORY[0x277CBEB98]);
     }
 
-    v18 = v17;
-    v19 = [v14 parameters];
+    v18 = hiddenParameterKeysForStaccato;
+    parameters = [v14 parameters];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __89__WFStaccatoActionTemplate_WorkflowKit__initWithIdentifier_sectionIdentifier_linkAction___block_invoke;
@@ -94,7 +94,7 @@ LABEL_4:
     v31 = v20;
     v21 = v14;
     v32 = v21;
-    v22 = [v19 if_compactMap:v30];
+    v22 = [parameters if_compactMap:v30];
 
     if (objc_opt_respondsToSelector())
     {
@@ -106,9 +106,9 @@ LABEL_4:
       [v21 localizedName];
     }
     v23 = ;
-    v24 = [v21 identifier];
-    v25 = [v21 localizedDescriptionSummary];
-    v12 = [v12 initWithIdentifier:v9 sectionIdentifier:v10 actionIdentifier:v24 localizedTitle:v23 localizedDescription:v25 parameters:v22];
+    identifier = [v21 identifier];
+    localizedDescriptionSummary = [v21 localizedDescriptionSummary];
+    v12 = [v12 initWithIdentifier:v9 sectionIdentifier:v10 actionIdentifier:identifier localizedTitle:v23 localizedDescription:localizedDescriptionSummary parameters:v22];
   }
 
   return v12;

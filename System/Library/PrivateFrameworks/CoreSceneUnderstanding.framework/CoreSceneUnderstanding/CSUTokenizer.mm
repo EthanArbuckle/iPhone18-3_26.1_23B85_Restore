@@ -1,10 +1,10 @@
 @interface CSUTokenizer
-+ (id)TokenizerForRevision:(int64_t)a3 error:(id *)a4;
++ (id)TokenizerForRevision:(int64_t)revision error:(id *)error;
 + (id)availableRevisionsForTokenizer;
-- (CSUTokenizer)initWithRevision:(int64_t)a3 error:(id *)a4;
-- (id)getTextFromTokenIds:(id)a3 error:(id *)a4;
-- (id)getTokenIDsForText:(id)a3;
-- (id)getTokensForText:(id)a3;
+- (CSUTokenizer)initWithRevision:(int64_t)revision error:(id *)error;
+- (id)getTextFromTokenIds:(id)ids error:(id *)error;
+- (id)getTokenIDsForText:(id)text;
+- (id)getTokensForText:(id)text;
 @end
 
 @implementation CSUTokenizer
@@ -24,24 +24,24 @@
   return v28;
 }
 
-+ (id)TokenizerForRevision:(int64_t)a3 error:(id *)a4
++ (id)TokenizerForRevision:(int64_t)revision error:(id *)error
 {
   v6 = [CSUTokenizer alloc];
-  v9 = objc_msgSend_initWithRevision_error_(v6, v7, a3, a4, v8);
+  v9 = objc_msgSend_initWithRevision_error_(v6, v7, revision, error, v8);
 
   return v9;
 }
 
-- (CSUTokenizer)initWithRevision:(int64_t)a3 error:(id *)a4
+- (CSUTokenizer)initWithRevision:(int64_t)revision error:(id *)error
 {
-  v7 = objc_msgSend_createForRevision_error_(CSUTextEncoderConfiguration, a2, a3, a4, v4);
+  v7 = objc_msgSend_createForRevision_error_(CSUTextEncoderConfiguration, a2, revision, error, v4);
   config = self->_config;
   self->_config = v7;
 
   v13 = self->_config;
   if (v13)
   {
-    self->_revision = a3;
+    self->_revision = revision;
     ptr = self->_vocabulary.__ptr_;
     self->_vocabulary.__ptr_ = 0;
     if (ptr)
@@ -123,13 +123,13 @@
   return v35;
 }
 
-- (id)getTokenIDsForText:(id)a3
+- (id)getTokenIDsForText:(id)text
 {
-  v4 = a3;
-  v9 = v4;
+  textCopy = text;
+  v9 = textCopy;
   if (self->_toLower)
   {
-    v10 = objc_msgSend_lowercaseString(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_lowercaseString(textCopy, v5, v6, v7, v8);
 
     v9 = v10;
   }
@@ -198,13 +198,13 @@
   return v24;
 }
 
-- (id)getTokensForText:(id)a3
+- (id)getTokensForText:(id)text
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  textCopy = text;
+  if (textCopy)
   {
-    v38 = objc_msgSend_getTokenIDsForText_(self, v4, v7, v5, v6);
+    v38 = objc_msgSend_getTokenIDsForText_(self, v4, textCopy, v5, v6);
     v8 = objc_opt_new();
     v44 = 0u;
     v45 = 0u;
@@ -268,13 +268,13 @@
   return v34;
 }
 
-- (id)getTextFromTokenIds:(id)a3 error:(id *)a4
+- (id)getTextFromTokenIds:(id)ids error:(id *)error
 {
-  v5 = a3;
-  v10 = v5;
-  if (!v5)
+  idsCopy = ids;
+  v10 = idsCopy;
+  if (!idsCopy)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -283,7 +283,7 @@
     goto LABEL_9;
   }
 
-  v11 = objc_msgSend_count(v5, v6, v7, v8, v9);
+  v11 = objc_msgSend_count(idsCopy, v6, v7, v8, v9);
   if (v11)
   {
     if (!(v11 >> 62))
@@ -294,11 +294,11 @@
     sub_1AC060AAC();
   }
 
-  if (a4)
+  if (error)
   {
     v15 = objc_msgSend_errorForInternalErrorWithLocalizedDescription_(CSUError, v12, @"input has no tokens ids!", v13, v14);
 LABEL_9:
-    *a4 = v15;
+    *error = v15;
   }
 
 LABEL_10:

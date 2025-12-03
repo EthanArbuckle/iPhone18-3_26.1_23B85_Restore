@@ -1,5 +1,5 @@
 @interface CABatchInfo
-+ (CABatchInfo)_newInfoWithUnownedPort:(unint64_t)a3 name:;
++ (CABatchInfo)_newInfoWithUnownedPort:(unint64_t)port name:;
 - (id)newBatchHandle;
 - (id)newXPCBatchHandle;
 - (void)dealloc;
@@ -74,7 +74,7 @@ LABEL_3:
   return v4;
 }
 
-+ (CABatchInfo)_newInfoWithUnownedPort:(unint64_t)a3 name:
++ (CABatchInfo)_newInfoWithUnownedPort:(unint64_t)port name:
 {
   v7 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -94,7 +94,7 @@ LABEL_3:
       __assert_rtn("[CABatchInfo _initWithUnownedPort:name:]", "CABatchHandle.mm", 84, "MACH_PORT_VALID (port)");
     }
 
-    result->_batch_name = a3;
+    result->_batch_name = port;
     result->_port = a2;
     result->_invalidated = 0;
   }

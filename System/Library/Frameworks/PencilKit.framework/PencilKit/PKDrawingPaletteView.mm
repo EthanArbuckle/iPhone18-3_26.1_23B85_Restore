@@ -1,12 +1,12 @@
 @interface PKDrawingPaletteView
 - (BOOL)_canHandlePencilInteraction;
 - (BOOL)_canShowFingerDrawsOption;
-- (BOOL)_hasToolWithIdentifier:(id)a3;
+- (BOOL)_hasToolWithIdentifier:(id)identifier;
 - (BOOL)_isPaletteContentViewHidden;
 - (BOOL)_shouldShowFingerDrawsOption;
 - (BOOL)_wantsClearBackgroundColor;
 - (BOOL)canShowResetHandwritingEducationPane;
-- (BOOL)colorPickerShouldDisplayColorSelection:(id)a3;
+- (BOOL)colorPickerShouldDisplayColorSelection:(id)selection;
 - (BOOL)enableKeyboardButtons;
 - (BOOL)hasContextMenuVisible;
 - (BOOL)isAnnotationSupportEnabled;
@@ -14,15 +14,15 @@
 - (BOOL)isExtendedColorPickerVisible;
 - (BOOL)isHandwritingToolSelected;
 - (BOOL)isPalettePresentingPopover;
-- (BOOL)toolPicker:(id)a3 canSelectTool:(id)a4 fromTap:(BOOL)a5;
+- (BOOL)toolPicker:(id)picker canSelectTool:(id)tool fromTap:(BOOL)tap;
 - (BOOL)wantsScrollableTools;
 - (CGRect)plusButtonFrame;
-- (CGRect)sourceRectForPopoverPresentationForSourceView:(id)a3;
-- (CGRect)toolPickerViewSourceRectForPopoverPresentation:(id)a3 fromCorner:(unint64_t)a4;
-- (CGSize)paletteSizeForEdge:(unint64_t)a3;
+- (CGRect)sourceRectForPopoverPresentationForSourceView:(id)view;
+- (CGRect)toolPickerViewSourceRectForPopoverPresentation:(id)presentation fromCorner:(unint64_t)corner;
+- (CGSize)paletteSizeForEdge:(unint64_t)edge;
 - (NSArray)inputAssistantItems;
-- (PKDrawingPaletteView)initWithTools:(id)a3;
-- (PKDrawingPaletteView)initWithTools:(id)a3 wantsEllipsisButtonVisibleInCompactSize:(BOOL)a4;
+- (PKDrawingPaletteView)initWithTools:(id)tools;
+- (PKDrawingPaletteView)initWithTools:(id)tools wantsEllipsisButtonVisibleInCompactSize:(BOOL)size;
 - (PKPaletteButton)_plusButton;
 - (PKPaletteToolView)selectedToolView;
 - (PKPaletteViewAnnotationDelegate)annotationDelegate;
@@ -36,140 +36,140 @@
 - (double)_paletteWidthForHorizontalOrientation;
 - (double)_paletteWidthForHorizontalOrientationWithoutTools;
 - (double)_toolsContainerWidth;
-- (double)borderWidthForTraitCollection:(id)a3;
+- (double)borderWidthForTraitCollection:(id)collection;
 - (double)shadowOpacity;
 - (double)shadowRadius;
-- (double)toolPickerView:(id)a3 widthForToolAtIndex:(int64_t)a4 isCompactSize:(BOOL)a5;
-- (id)_clippingViewBackgroundColor:(BOOL)a3;
+- (double)toolPickerView:(id)view widthForToolAtIndex:(int64_t)index isCompactSize:(BOOL)size;
+- (id)_clippingViewBackgroundColor:(BOOL)color;
 - (id)_currentFirstResponder;
-- (id)_paletteToolViewAtIndex:(unint64_t)a3;
+- (id)_paletteToolViewAtIndex:(unint64_t)index;
 - (id)_selectedToolViewInToolPicker;
-- (id)borderColorForTraitCollection:(id)a3;
+- (id)borderColorForTraitCollection:(id)collection;
 - (id)contentScrollView;
-- (id)keyboardSelectionMenuForAdditionalOptionsView:(id)a3;
-- (id)keyboardSelectionMenuForContentView:(id)a3;
-- (id)toolPickerView:(id)a3 viewForToolAtIndex:(int64_t)a4;
+- (id)keyboardSelectionMenuForAdditionalOptionsView:(id)view;
+- (id)keyboardSelectionMenuForContentView:(id)view;
+- (id)toolPickerView:(id)view viewForToolAtIndex:(int64_t)index;
 - (id)undoManager;
-- (unint64_t)_indexOfToolPassingTest:(id)a3;
-- (void)_centerPaletteContainerSubviewToCurrentlySelectedToolForEdge:(unint64_t)a3 needsContainerViewLayout:(BOOL)a4;
-- (void)_dictationAvailabilityDidChange:(id)a3;
-- (void)_didTapPlusButton:(id)a3;
-- (void)_didTapShapeButton:(id)a3;
-- (void)_didTapTextButton:(id)a3;
+- (unint64_t)_indexOfToolPassingTest:(id)test;
+- (void)_centerPaletteContainerSubviewToCurrentlySelectedToolForEdge:(unint64_t)edge needsContainerViewLayout:(BOOL)layout;
+- (void)_dictationAvailabilityDidChange:(id)change;
+- (void)_didTapPlusButton:(id)button;
+- (void)_didTapShapeButton:(id)button;
+- (void)_didTapTextButton:(id)button;
 - (void)_dismissEyeDropper;
-- (void)_installPaletteContentViewInView:(id)a3;
-- (void)_pencilInteraction:(id)a3 didReceiveSqueeze:(id)a4;
-- (void)_performPencilInteraction:(id)a3 preferredAction:(int64_t)a4;
+- (void)_installPaletteContentViewInView:(id)view;
+- (void)_pencilInteraction:(id)interaction didReceiveSqueeze:(id)squeeze;
+- (void)_performPencilInteraction:(id)interaction preferredAction:(int64_t)action;
 - (void)_performPencilPreferredActionShowColorPalette;
 - (void)_performPencilPreferredActionShowInkAttributes;
 - (void)_performPencilPreferredActionSwitchEraser;
 - (void)_performPencilPreferredActionSwitchPrevious;
 - (void)_presentOrDismissFloatingKeyboard;
-- (void)_presentViewController:(id)a3 asPopoverFromItem:(id)a4;
-- (void)_presentViewController:(id)a3 asPopoverFromView:(id)a4;
-- (void)_presentViewController:(void *)a3 configurationBlock:;
+- (void)_presentViewController:(id)controller asPopoverFromItem:(id)item;
+- (void)_presentViewController:(id)controller asPopoverFromView:(id)view;
+- (void)_presentViewController:(void *)controller configurationBlock:;
 - (void)_releaseUndoManager;
-- (void)_reloadImageForToolItem:(id)a3;
-- (void)_replaceToolAtIndex:(unint64_t)a3 withTool:(id)a4 notifyDelegate:(BOOL)a5;
-- (void)_scrollToolViewAtIndex:(unint64_t)a3 toVisibleAnimated:(BOOL)a4;
-- (void)_selectToolAtIndex:(unint64_t)a3 updateUI:(BOOL)a4 notifyDelegate:(BOOL)a5;
-- (void)_setPlusButton:(id)a3;
-- (void)_setSelectedColor:(id)a3 isFromExtendedColorPicker:(BOOL)a4 isContinuousColorSelection:(BOOL)a5;
-- (void)_setSelectedToolColor:(id)a3 ignoreColorOpacity:(BOOL)a4 isContinuousColorSelection:(BOOL)a5;
-- (void)_setTools:(id)a3 resetSelectedTool:(BOOL)a4 updateUI:(BOOL)a5 notifyDelegate:(BOOL)a6;
+- (void)_reloadImageForToolItem:(id)item;
+- (void)_replaceToolAtIndex:(unint64_t)index withTool:(id)tool notifyDelegate:(BOOL)delegate;
+- (void)_scrollToolViewAtIndex:(unint64_t)index toVisibleAnimated:(BOOL)animated;
+- (void)_selectToolAtIndex:(unint64_t)index updateUI:(BOOL)i notifyDelegate:(BOOL)delegate;
+- (void)_setPlusButton:(id)button;
+- (void)_setSelectedColor:(id)color isFromExtendedColorPicker:(BOOL)picker isContinuousColorSelection:(BOOL)selection;
+- (void)_setSelectedToolColor:(id)color ignoreColorOpacity:(BOOL)opacity isContinuousColorSelection:(BOOL)selection;
+- (void)_setTools:(id)tools resetSelectedTool:(BOOL)tool updateUI:(BOOL)i notifyDelegate:(BOOL)delegate;
 - (void)_setUpUpdateLink;
-- (void)_toolViewStateDidChange:(id)a3;
-- (void)_toolViewStateDidLiveUpdate:(id)a3;
-- (void)_updateHandwritingAssistantItemsFromResponder:(id)a3;
+- (void)_toolViewStateDidChange:(id)change;
+- (void)_toolViewStateDidLiveUpdate:(id)update;
+- (void)_updateHandwritingAssistantItemsFromResponder:(id)responder;
 - (void)_updateKeyboardSceneDelegateInputAssistantSupressionState;
-- (void)_updateToolPreviewContentsAnimated:(BOOL)a3;
-- (void)_updateToolPreviewPositionForEdge:(unint64_t)a3;
+- (void)_updateToolPreviewContentsAnimated:(BOOL)animated;
+- (void)_updateToolPreviewPositionForEdge:(unint64_t)edge;
 - (void)_updateToolsContainerScrollingEnabled;
-- (void)_updateUIReloadTools:(BOOL)a3;
-- (void)_willDockPaletteToCorner:(unint64_t)a3;
-- (void)_willDockPaletteToEdge:(unint64_t)a3 prepareForExpansion:(BOOL)a4 isPaletteChangingOrientation:(BOOL)a5;
-- (void)additionalOptionsViewDidPressTapToRadarButton:(id)a3;
-- (void)colorPickerDidChangeSelectedColor:(id)a3 isFromExtendedColorPicker:(BOOL)a4 isContinuousColorSelection:(BOOL)a5;
+- (void)_updateUIReloadTools:(BOOL)tools;
+- (void)_willDockPaletteToCorner:(unint64_t)corner;
+- (void)_willDockPaletteToEdge:(unint64_t)edge prepareForExpansion:(BOOL)expansion isPaletteChangingOrientation:(BOOL)orientation;
+- (void)additionalOptionsViewDidPressTapToRadarButton:(id)button;
+- (void)colorPickerDidChangeSelectedColor:(id)color isFromExtendedColorPicker:(BOOL)picker isContinuousColorSelection:(BOOL)selection;
 - (void)configureForDockedAtCorner;
-- (void)configureForDockedAtEdge:(unint64_t)a3;
-- (void)contentViewDidResize:(id)a3;
-- (void)contentViewDidSelectCloseButton:(id)a3;
+- (void)configureForDockedAtEdge:(unint64_t)edge;
+- (void)contentViewDidResize:(id)resize;
+- (void)contentViewDidSelectCloseButton:(id)button;
 - (void)dealloc;
 - (void)didChangePaletteScaleFactor;
 - (void)didEndAppearanceAnimation;
 - (void)didMoveToWindow;
 - (void)dismissContextMenu;
-- (void)dismissPalettePopoverWithCompletion:(id)a3;
+- (void)dismissPalettePopoverWithCompletion:(id)completion;
 - (void)endOpacityEditing;
-- (void)floatingKeyboardController:(id)a3 didChangeKeyboardType:(int64_t)a4;
-- (void)floatingKeyboardControllerWillHide:(id)a3;
-- (void)floatingKeyboardControllerWillShow:(id)a3;
+- (void)floatingKeyboardController:(id)controller didChangeKeyboardType:(int64_t)type;
+- (void)floatingKeyboardControllerWillHide:(id)hide;
+- (void)floatingKeyboardControllerWillShow:(id)show;
 - (void)handwritingEducationPaneSettingsDidChange;
-- (void)hostView:(id)a3 didDockPaletteToPosition:(int64_t)a4;
-- (void)hostView:(id)a3 willDockPaletteToPosition:(int64_t)a4 prepareForExpansion:(BOOL)a5;
+- (void)hostView:(id)view didDockPaletteToPosition:(int64_t)position;
+- (void)hostView:(id)view willDockPaletteToPosition:(int64_t)position prepareForExpansion:(BOOL)expansion;
 - (void)layoutSubviews;
-- (void)pencilInteractionDidTap:(id)a3;
-- (void)performOnUpdateLink:(id)a3;
-- (void)setAnnotationDelegate:(id)a3;
-- (void)setCloseButtonVisible:(BOOL)a3;
-- (void)setColorMaximumLinearExposure:(double)a3;
-- (void)setColorSwatchesVisible:(BOOL)a3;
-- (void)setColorUserInterfaceStyle:(int64_t)a3;
-- (void)setContextEditingMode:(int64_t)a3;
-- (void)setEditingExternalElementsSelection:(BOOL)a3;
-- (void)setEditingStrokeSelection:(BOOL)a3;
-- (void)setEditingTextSelection:(BOOL)a3;
-- (void)setFingerDrawsOptionEnabled:(BOOL)a3;
-- (void)setInterItemToolsSpacingInCompactSize:(double)a3 shouldNotify:(BOOL)a4;
-- (void)setInterItemUndoRedoButtonsSpacingInCompactSize:(double)a3;
-- (void)setLassoToolEditingViewIdentifier:(id)a3;
-- (void)setPlusButtonViewController:(id)a3;
-- (void)setPrefersLargeContextualEditingUI:(BOOL)a3;
-- (void)setSelectedAnnotationType:(int64_t)a3;
-- (void)setShadowVisible:(BOOL)a3;
-- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)a3;
-- (void)setShowsLassoToolEditingView:(BOOL)a3;
-- (void)setShowsPlusButton:(BOOL)a3;
-- (void)setShowsShapeButton:(BOOL)a3;
-- (void)setShowsTextButton:(BOOL)a3;
-- (void)setUndoManager:(id)a3;
-- (void)setUseEqualSpacingLayoutInCompactSize:(BOOL)a3;
-- (void)setWantsBottomLineDividerVisibleInCompactSize:(BOOL)a3;
-- (void)setWantsClearBackgroundColorInCompactSize:(BOOL)a3;
-- (void)setWantsEllipsisButtonVisibleInCompactSize:(BOOL)a3;
-- (void)setWantsMulticolorSwatchShadowInCompactSize:(BOOL)a3;
-- (void)setWantsUndoRedoButtonsShadowInCompactSize:(BOOL)a3;
-- (void)setWantsUndoRedoButtonsVisibleInCompactSize:(BOOL)a3;
-- (void)showImageWandTipWithController:(id)a3;
+- (void)pencilInteractionDidTap:(id)tap;
+- (void)performOnUpdateLink:(id)link;
+- (void)setAnnotationDelegate:(id)delegate;
+- (void)setCloseButtonVisible:(BOOL)visible;
+- (void)setColorMaximumLinearExposure:(double)exposure;
+- (void)setColorSwatchesVisible:(BOOL)visible;
+- (void)setColorUserInterfaceStyle:(int64_t)style;
+- (void)setContextEditingMode:(int64_t)mode;
+- (void)setEditingExternalElementsSelection:(BOOL)selection;
+- (void)setEditingStrokeSelection:(BOOL)selection;
+- (void)setEditingTextSelection:(BOOL)selection;
+- (void)setFingerDrawsOptionEnabled:(BOOL)enabled;
+- (void)setInterItemToolsSpacingInCompactSize:(double)size shouldNotify:(BOOL)notify;
+- (void)setInterItemUndoRedoButtonsSpacingInCompactSize:(double)size;
+- (void)setLassoToolEditingViewIdentifier:(id)identifier;
+- (void)setPlusButtonViewController:(id)controller;
+- (void)setPrefersLargeContextualEditingUI:(BOOL)i;
+- (void)setSelectedAnnotationType:(int64_t)type;
+- (void)setShadowVisible:(BOOL)visible;
+- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)controls;
+- (void)setShowsLassoToolEditingView:(BOOL)view;
+- (void)setShowsPlusButton:(BOOL)button;
+- (void)setShowsShapeButton:(BOOL)button;
+- (void)setShowsTextButton:(BOOL)button;
+- (void)setUndoManager:(id)manager;
+- (void)setUseEqualSpacingLayoutInCompactSize:(BOOL)size;
+- (void)setWantsBottomLineDividerVisibleInCompactSize:(BOOL)size;
+- (void)setWantsClearBackgroundColorInCompactSize:(BOOL)size;
+- (void)setWantsEllipsisButtonVisibleInCompactSize:(BOOL)size;
+- (void)setWantsMulticolorSwatchShadowInCompactSize:(BOOL)size;
+- (void)setWantsUndoRedoButtonsShadowInCompactSize:(BOOL)size;
+- (void)setWantsUndoRedoButtonsVisibleInCompactSize:(BOOL)size;
+- (void)showImageWandTipWithController:(id)controller;
 - (void)startOpacityEditing;
-- (void)toolPicker:(id)a3 didSelectTool:(id)a4 atIndex:(unint64_t)a5;
-- (void)toolPickerDidToggleRulerTool:(id)a3;
-- (void)toolPickerViewDidChangeTraitCollectionSizeClass:(id)a3;
-- (void)toolPreviewDidChangeToolColor:(id)a3 isContinuousColorSelection:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)undoRedoViewDidTapRedo:(id)a3;
-- (void)undoRedoViewDidTapUndo:(id)a3;
+- (void)toolPicker:(id)picker didSelectTool:(id)tool atIndex:(unint64_t)index;
+- (void)toolPickerDidToggleRulerTool:(id)tool;
+- (void)toolPickerViewDidChangeTraitCollectionSizeClass:(id)class;
+- (void)toolPreviewDidChangeToolColor:(id)color isContinuousColorSelection:(BOOL)selection;
+- (void)traitCollectionDidChange:(id)change;
+- (void)undoRedoViewDidTapRedo:(id)redo;
+- (void)undoRedoViewDidTapUndo:(id)undo;
 - (void)updateColorPickerSelectedColor;
 - (void)updateHandwritingAssistantItems;
 - (void)updatePopoverUI;
 - (void)updateUndoRedo;
-- (void)willStartAppearanceAnimation:(BOOL)a3;
-- (void)windowFirstResponderController:(id)a3 didChangeFirstResponder:(id)a4;
+- (void)willStartAppearanceAnimation:(BOOL)animation;
+- (void)windowFirstResponderController:(id)controller didChangeFirstResponder:(id)responder;
 @end
 
 @implementation PKDrawingPaletteView
 
-- (PKDrawingPaletteView)initWithTools:(id)a3
+- (PKDrawingPaletteView)initWithTools:(id)tools
 {
-  v4 = a3;
-  v5 = [(PKDrawingPaletteView *)self initWithTools:v4 wantsEllipsisButtonVisibleInCompactSize:PKIsPadDevice()];
+  toolsCopy = tools;
+  v5 = [(PKDrawingPaletteView *)self initWithTools:toolsCopy wantsEllipsisButtonVisibleInCompactSize:PKIsPadDevice()];
 
   return v5;
 }
 
-- (PKDrawingPaletteView)initWithTools:(id)a3 wantsEllipsisButtonVisibleInCompactSize:(BOOL)a4
+- (PKDrawingPaletteView)initWithTools:(id)tools wantsEllipsisButtonVisibleInCompactSize:(BOOL)size
 {
-  v6 = a3;
+  toolsCopy = tools;
   v57.receiver = self;
   v57.super_class = PKDrawingPaletteView;
   v7 = [(PKPaletteView *)&v57 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -186,15 +186,15 @@
     v8->_backgroundColorFactory = v11;
 
     v8->_wantsClearBackgroundColorInCompactSize = 0;
-    v8->_wantsEllipsisButtonVisibleInCompactSize = a4;
+    v8->_wantsEllipsisButtonVisibleInCompactSize = size;
     v8->_wantsBottomLineDividerVisibleInCompactSize = 1;
     v8->_pencilInteractionEnabledWhenNotVisible = 0;
-    v13 = [v6 copy];
+    v13 = [toolsCopy copy];
     tools = v8->_tools;
     v8->_tools = v13;
 
     v8->_indexOfSelectedTool = 0x7FFFFFFFFFFFFFFFLL;
-    v15 = [v6 count];
+    v15 = [toolsCopy count];
     v16 = 5.0;
     v17 = 2.0;
     if (!v8->_showsPlusButton)
@@ -234,55 +234,55 @@
     v56[5] = v25;
     [(PKPaletteInputAssistantButtonProvider *)v8->_inputAssistantButtonProvider setInclusionFilter:v56];
     v8->_colorMaximumLinearExposure = 1.0;
-    v26 = [(PKPaletteView *)v8 containerView];
-    v27 = [v26 contentView];
-    [(PKDrawingPaletteView *)v8 _installPaletteContentViewInView:v27];
+    containerView = [(PKPaletteView *)v8 containerView];
+    contentView = [containerView contentView];
+    [(PKDrawingPaletteView *)v8 _installPaletteContentViewInView:contentView];
 
-    v28 = [(PKDrawingPaletteView *)v8 contentView];
-    [v28 setDelegate:v8];
+    contentView2 = [(PKDrawingPaletteView *)v8 contentView];
+    [contentView2 setDelegate:v8];
 
-    v29 = [(PKDrawingPaletteView *)v8 contentView];
-    v30 = [v29 undoRedoView];
-    [v30 setDelegate:v8];
+    contentView3 = [(PKDrawingPaletteView *)v8 contentView];
+    undoRedoView = [contentView3 undoRedoView];
+    [undoRedoView setDelegate:v8];
 
-    v31 = [(PKDrawingPaletteView *)v8 contentView];
-    v32 = [v31 toolPickerView];
-    [v32 setDelegate:v8];
+    contentView4 = [(PKDrawingPaletteView *)v8 contentView];
+    toolPickerView = [contentView4 toolPickerView];
+    [toolPickerView setDelegate:v8];
 
-    v33 = [(PKDrawingPaletteView *)v8 contentView];
-    v34 = [v33 colorPickerView];
-    [v34 setDelegate:v8];
+    contentView5 = [(PKDrawingPaletteView *)v8 contentView];
+    colorPickerView = [contentView5 colorPickerView];
+    [colorPickerView setDelegate:v8];
 
-    v35 = [(PKDrawingPaletteView *)v8 contentView];
-    v36 = [v35 additionalOptionsView];
-    [v36 setDelegate:v8];
+    contentView6 = [(PKDrawingPaletteView *)v8 contentView];
+    additionalOptionsView = [contentView6 additionalOptionsView];
+    [additionalOptionsView setDelegate:v8];
 
-    v37 = [(PKDrawingPaletteView *)v8 contentView];
-    v38 = [v37 toolAndColorPickerContainerView];
-    v39 = [v38 plusButton];
-    [v39 addTarget:v8 action:sel__didTapPlusButton_ forControlEvents:64];
+    contentView7 = [(PKDrawingPaletteView *)v8 contentView];
+    toolAndColorPickerContainerView = [contentView7 toolAndColorPickerContainerView];
+    plusButton = [toolAndColorPickerContainerView plusButton];
+    [plusButton addTarget:v8 action:sel__didTapPlusButton_ forControlEvents:64];
 
-    v40 = [(PKDrawingPaletteView *)v8 contentView];
-    v41 = [v40 additionalOptionsView];
-    [v41 setPalettePopoverPresenting:v8];
+    contentView8 = [(PKDrawingPaletteView *)v8 contentView];
+    additionalOptionsView2 = [contentView8 additionalOptionsView];
+    [additionalOptionsView2 setPalettePopoverPresenting:v8];
 
-    v42 = [(PKDrawingPaletteView *)v8 contentView];
-    v43 = [v42 additionalOptionsView];
-    v44 = [v43 plusButton];
-    [v44 addTarget:v8 action:sel__didTapPlusButton_ forControlEvents:64];
+    contentView9 = [(PKDrawingPaletteView *)v8 contentView];
+    additionalOptionsView3 = [contentView9 additionalOptionsView];
+    plusButton2 = [additionalOptionsView3 plusButton];
+    [plusButton2 addTarget:v8 action:sel__didTapPlusButton_ forControlEvents:64];
 
-    v45 = [(PKDrawingPaletteView *)v8 contentView];
-    v46 = [v45 additionalOptionsView];
-    v47 = [v46 textButton];
-    [v47 addTarget:v8 action:sel__didTapTextButton_ forControlEvents:64];
+    contentView10 = [(PKDrawingPaletteView *)v8 contentView];
+    additionalOptionsView4 = [contentView10 additionalOptionsView];
+    textButton = [additionalOptionsView4 textButton];
+    [textButton addTarget:v8 action:sel__didTapTextButton_ forControlEvents:64];
 
-    v48 = [(PKDrawingPaletteView *)v8 contentView];
-    v49 = [v48 additionalOptionsView];
-    v50 = [v49 shapeButton];
-    [v50 addTarget:v8 action:sel__didTapShapeButton_ forControlEvents:64];
+    contentView11 = [(PKDrawingPaletteView *)v8 contentView];
+    additionalOptionsView5 = [contentView11 additionalOptionsView];
+    shapeButton = [additionalOptionsView5 shapeButton];
+    [shapeButton addTarget:v8 action:sel__didTapShapeButton_ forControlEvents:64];
 
-    v51 = [(PKPaletteView *)v8 toolPreview];
-    [v51 setDelegate:v8];
+    toolPreview = [(PKPaletteView *)v8 toolPreview];
+    [toolPreview setDelegate:v8];
 
     [(PKDrawingPaletteView *)v8 updateColorPickerSelectedColor];
     v52 = +[PKPencilInteraction fallbackPencilInteraction];
@@ -294,8 +294,8 @@
     [(PKDrawingPaletteView *)v8 _setUpUpdateLink];
     [(PKPaletteView *)v8 setPalettePopoverLayoutSceneMargins:10.0, 10.0, 10.0, 10.0];
     [(PKDrawingPaletteView *)v8 _updateUI];
-    v54 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v54 addObserver:v8 selector:sel__dictationAvailabilityDidChange_ name:*MEMORY[0x1E69DDF60] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__dictationAvailabilityDidChange_ name:*MEMORY[0x1E69DDF60] object:0];
   }
 
   return v8;
@@ -311,9 +311,9 @@ BOOL __78__PKDrawingPaletteView_initWithTools_wantsEllipsisButtonVisibleInCompac
 
 - (void)_setUpUpdateLink
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   blocksToPerformOnUpdateLink = self->_blocksToPerformOnUpdateLink;
-  self->_blocksToPerformOnUpdateLink = v3;
+  self->_blocksToPerformOnUpdateLink = array;
 
   v5 = [MEMORY[0x1E69DD238] updateLinkForView:self];
   updateLink = self->_updateLink;
@@ -375,23 +375,23 @@ void __40__PKDrawingPaletteView__setUpUpdateLink__block_invoke(uint64_t a1)
   }
 }
 
-- (void)performOnUpdateLink:(id)a3
+- (void)performOnUpdateLink:(id)link
 {
   blocksToPerformOnUpdateLink = self->_blocksToPerformOnUpdateLink;
-  v5 = [a3 copy];
+  v5 = [link copy];
   v4 = _Block_copy(v5);
   [(NSMutableArray *)blocksToPerformOnUpdateLink addObject:v4];
 }
 
-- (void)_dictationAvailabilityDidChange:(id)a3
+- (void)_dictationAvailabilityDidChange:(id)change
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = os_log_create("com.apple.pencilkit", "PKPalette");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changeCopy;
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_INFO, "Dictation availability did change: %@. Update UI.", &v6, 0xCu);
   }
 
@@ -403,8 +403,8 @@ void __40__PKDrawingPaletteView__setUpUpdateLink__block_invoke(uint64_t a1)
   v4.receiver = self;
   v4.super_class = PKDrawingPaletteView;
   [(PKPaletteView *)&v4 didChangePaletteScaleFactor];
-  v3 = [(PKDrawingPaletteView *)self contentView];
-  [v3 paletteViewStateDidChangeScaleFactor:self];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  [contentView paletteViewStateDidChangeScaleFactor:self];
 
   [(PKDrawingPaletteView *)self _updateUI];
   [(PKDrawingPaletteView *)self setNeedsUpdateConstraints];
@@ -415,32 +415,32 @@ void __40__PKDrawingPaletteView__setUpUpdateLink__block_invoke(uint64_t a1)
   v7.receiver = self;
   v7.super_class = PKDrawingPaletteView;
   [(PKDrawingPaletteView *)&v7 didMoveToWindow];
-  v3 = [(PKDrawingPaletteView *)self window];
+  window = [(PKDrawingPaletteView *)self window];
 
-  if (v3)
+  if (window)
   {
     firstResponderController = self->_firstResponderController;
-    v5 = [(PKDrawingPaletteView *)self windowScene];
-    [(PKTextInputWindowFirstResponderController *)firstResponderController updateFirstResponderFromWindowScene:v5 sendDelegateCallback:0];
+    windowScene = [(PKDrawingPaletteView *)self windowScene];
+    [(PKTextInputWindowFirstResponderController *)firstResponderController updateFirstResponderFromWindowScene:windowScene sendDelegateCallback:0];
   }
 
   else
   {
-    v5 = [(PKDrawingPaletteView *)self floatingKeyboardController];
-    [(PKPaletteFloatingKeyboardController *)v5 dismissWithReason:?];
+    windowScene = [(PKDrawingPaletteView *)self floatingKeyboardController];
+    [(PKPaletteFloatingKeyboardController *)windowScene dismissWithReason:?];
   }
 
-  v6 = [(PKDrawingPaletteView *)self windowScene];
-  [(PKDrawingPaletteView *)self setIsQuickNoteUI:PKIsQuickNoteWindowScene(v6)];
+  windowScene2 = [(PKDrawingPaletteView *)self windowScene];
+  [(PKDrawingPaletteView *)self setIsQuickNoteUI:PKIsQuickNoteWindowScene(windowScene2)];
 }
 
 - (id)contentScrollView
 {
-  v2 = [(PKDrawingPaletteView *)self contentView];
-  v3 = [v2 toolPickerView];
-  v4 = [v3 scrollView];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView = [contentView toolPickerView];
+  scrollView = [toolPickerView scrollView];
 
-  return v4;
+  return scrollView;
 }
 
 - (void)dealloc
@@ -451,113 +451,113 @@ void __40__PKDrawingPaletteView__setUpUpdateLink__block_invoke(uint64_t a1)
   [(PKDrawingPaletteView *)&v3 dealloc];
 }
 
-- (void)_installPaletteContentViewInView:(id)a3
+- (void)_installPaletteContentViewInView:(id)view
 {
   v31[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = [[PKPaletteContentView alloc] initWithPaletteViewStateObservable:self];
   [(PKDrawingPaletteView *)self setContentView:v5];
 
-  v6 = [(PKDrawingPaletteView *)self contentView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(PKDrawingPaletteView *)self contentView];
-  [v4 addSubview:v7];
+  contentView2 = [(PKDrawingPaletteView *)self contentView];
+  [viewCopy addSubview:contentView2];
 
-  v8 = [(PKDrawingPaletteView *)self contentView];
-  v9 = [v8 bottomAnchor];
-  v10 = [v4 bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  contentView3 = [(PKDrawingPaletteView *)self contentView];
+  bottomAnchor = [contentView3 bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   contentViewBottomConstraint = self->_contentViewBottomConstraint;
   self->_contentViewBottomConstraint = v11;
 
   v26 = MEMORY[0x1E696ACD8];
-  v30 = [(PKDrawingPaletteView *)self contentView];
-  v29 = [v30 topAnchor];
-  v28 = [v4 topAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  contentView4 = [(PKDrawingPaletteView *)self contentView];
+  topAnchor = [contentView4 topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v13 = self->_contentViewBottomConstraint;
   v31[0] = v27;
   v31[1] = v13;
-  v14 = [(PKDrawingPaletteView *)self contentView];
-  v15 = [v14 leftAnchor];
-  v16 = [v4 leftAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  contentView5 = [(PKDrawingPaletteView *)self contentView];
+  leftAnchor = [contentView5 leftAnchor];
+  leftAnchor2 = [viewCopy leftAnchor];
+  v17 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v31[2] = v17;
-  v18 = [(PKDrawingPaletteView *)self contentView];
-  v19 = [v18 rightAnchor];
-  v20 = [v4 rightAnchor];
+  contentView6 = [(PKDrawingPaletteView *)self contentView];
+  rightAnchor = [contentView6 rightAnchor];
+  rightAnchor2 = [viewCopy rightAnchor];
 
-  v21 = [v19 constraintEqualToAnchor:v20];
+  v21 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v31[3] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
   [v26 activateConstraints:v22];
 
-  v23 = [(PKPaletteContentView *)self->_contentView heightAnchor];
+  heightAnchor = [(PKPaletteContentView *)self->_contentView heightAnchor];
   [(PKDrawingPaletteView *)self compactPaletteHeight];
-  v24 = [v23 constraintEqualToConstant:?];
+  v24 = [heightAnchor constraintEqualToConstant:?];
   compactContentViewHeightConstraint = self->_compactContentViewHeightConstraint;
   self->_compactContentViewHeightConstraint = v24;
 }
 
-- (id)borderColorForTraitCollection:(id)a3
+- (id)borderColorForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DC888] clearColor];
+  collectionCopy = collection;
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
   if (!PKIsVisionDevice())
   {
     if (UIAccessibilityDarkerSystemColorsEnabled())
     {
-      v6 = [MEMORY[0x1E69DC888] systemGray4Color];
+      systemGray4Color = [MEMORY[0x1E69DC888] systemGray4Color];
     }
 
     else
     {
-      v7 = [(PKDrawingPaletteView *)self window];
-      v8 = [v7 windowScene];
-      if (PKUseCompactSize(v4, v8))
+      window = [(PKDrawingPaletteView *)self window];
+      windowScene = [window windowScene];
+      if (PKUseCompactSize(collectionCopy, windowScene))
       {
 
         goto LABEL_7;
       }
 
-      v11 = [v4 userInterfaceStyle];
+      userInterfaceStyle = [collectionCopy userInterfaceStyle];
 
-      if (v11 != 2)
+      if (userInterfaceStyle != 2)
       {
         goto LABEL_8;
       }
 
-      v6 = [MEMORY[0x1E69DC888] colorWithRed:0.172549024 green:0.172549024 blue:0.180392161 alpha:1.0];
+      systemGray4Color = [MEMORY[0x1E69DC888] colorWithRed:0.172549024 green:0.172549024 blue:0.180392161 alpha:1.0];
     }
 
-    v7 = v5;
-    v5 = v6;
+    window = clearColor;
+    clearColor = systemGray4Color;
 LABEL_7:
   }
 
 LABEL_8:
-  v9 = v5;
+  v9 = clearColor;
 
-  return v5;
+  return clearColor;
 }
 
-- (double)borderWidthForTraitCollection:(id)a3
+- (double)borderWidthForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = 0.0;
   if (!PKIsVisionDevice())
   {
-    v6 = [(PKDrawingPaletteView *)self window];
-    v7 = [v6 windowScene];
-    v8 = PKUseCompactSize(v4, v7);
+    window = [(PKDrawingPaletteView *)self window];
+    windowScene = [window windowScene];
+    v8 = PKUseCompactSize(collectionCopy, windowScene);
 
     if (!v8)
     {
       v5 = 1.0;
       if (!UIAccessibilityDarkerSystemColorsEnabled())
       {
-        if ([v4 userInterfaceStyle] == 2)
+        if ([collectionCopy userInterfaceStyle] == 2)
         {
           v5 = 0.5;
         }
@@ -573,20 +573,20 @@ LABEL_8:
   return v5;
 }
 
-- (void)setShadowVisible:(BOOL)a3
+- (void)setShadowVisible:(BOOL)visible
 {
   v5.receiver = self;
   v5.super_class = PKDrawingPaletteView;
-  [(PKPaletteView *)&v5 setShadowVisible:a3];
-  v4 = [(PKPaletteView *)self internalDelegate];
-  [v4 paletteViewStateDidChange:self updatePaletteAppearance:1];
+  [(PKPaletteView *)&v5 setShadowVisible:visible];
+  internalDelegate = [(PKPaletteView *)self internalDelegate];
+  [internalDelegate paletteViewStateDidChange:self updatePaletteAppearance:1];
 }
 
 - (double)shadowOpacity
 {
-  v2 = [(PKPaletteView *)self shadowVisible];
+  shadowVisible = [(PKPaletteView *)self shadowVisible];
   result = 0.0;
-  if (v2)
+  if (shadowVisible)
   {
     v4 = UIAccessibilityDarkerSystemColorsEnabled();
     result = 0.25;
@@ -601,9 +601,9 @@ LABEL_8:
 
 - (double)shadowRadius
 {
-  v2 = [(PKPaletteView *)self shadowVisible];
+  shadowVisible = [(PKPaletteView *)self shadowVisible];
   result = 0.0;
-  if (v2)
+  if (shadowVisible)
   {
     v4 = UIAccessibilityDarkerSystemColorsEnabled();
     result = 38.0;
@@ -616,141 +616,141 @@ LABEL_8:
   return result;
 }
 
-- (void)setWantsUndoRedoButtonsShadowInCompactSize:(BOOL)a3
+- (void)setWantsUndoRedoButtonsShadowInCompactSize:(BOOL)size
 {
-  if (self->_wantsUndoRedoButtonsShadowInCompactSize != a3)
+  if (self->_wantsUndoRedoButtonsShadowInCompactSize != size)
   {
-    self->_wantsUndoRedoButtonsShadowInCompactSize = a3;
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    [v5 paletteViewStateDidChange:self];
+    self->_wantsUndoRedoButtonsShadowInCompactSize = size;
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
   }
 }
 
-- (void)setWantsMulticolorSwatchShadowInCompactSize:(BOOL)a3
+- (void)setWantsMulticolorSwatchShadowInCompactSize:(BOOL)size
 {
-  if (self->_wantsMulticolorSwatchShadowInCompactSize != a3)
+  if (self->_wantsMulticolorSwatchShadowInCompactSize != size)
   {
-    self->_wantsMulticolorSwatchShadowInCompactSize = a3;
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    [v5 paletteViewStateDidChange:self];
+    self->_wantsMulticolorSwatchShadowInCompactSize = size;
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
   }
 }
 
-- (void)setCloseButtonVisible:(BOOL)a3
+- (void)setCloseButtonVisible:(BOOL)visible
 {
-  if (self->_closeButtonVisible != a3)
+  if (self->_closeButtonVisible != visible)
   {
-    self->_closeButtonVisible = a3;
+    self->_closeButtonVisible = visible;
     [(PKDrawingPaletteView *)self _updateUI];
   }
 }
 
-- (void)setColorMaximumLinearExposure:(double)a3
+- (void)setColorMaximumLinearExposure:(double)exposure
 {
-  if (self->_colorMaximumLinearExposure != a3)
+  if (self->_colorMaximumLinearExposure != exposure)
   {
-    self->_colorMaximumLinearExposure = a3;
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    [v5 setColorMaximumLinearExposure:a3];
+    self->_colorMaximumLinearExposure = exposure;
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView setColorMaximumLinearExposure:exposure];
 
     [(PKDrawingPaletteView *)self _updateUI];
   }
 }
 
-- (void)_updateUIReloadTools:(BOOL)a3
+- (void)_updateUIReloadTools:(BOOL)tools
 {
-  v3 = a3;
+  toolsCopy = tools;
   v85 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.pencilkit", "ToolPickerLayout");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v84 = v3;
+    v84 = toolsCopy;
     _os_log_debug_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEBUG, "PKDrawingPaletteView._updateUIReloadTools: %d", buf, 8u);
   }
 
-  if (v3)
+  if (toolsCopy)
   {
-    v6 = [(PKDrawingPaletteView *)self contentView];
-    v7 = [v6 toolPickerView];
-    [v7 reloadToolViewsWithDataSource:self];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    toolPickerView = [contentView toolPickerView];
+    [toolPickerView reloadToolViewsWithDataSource:self];
   }
 
   v8 = MEMORY[0x1E696ACD8];
-  v9 = [(PKDrawingPaletteView *)self contentViewBottomConstraint];
-  v82[0] = v9;
-  v10 = [(PKDrawingPaletteView *)self compactContentViewHeightConstraint];
-  v82[1] = v10;
+  contentViewBottomConstraint = [(PKDrawingPaletteView *)self contentViewBottomConstraint];
+  v82[0] = contentViewBottomConstraint;
+  compactContentViewHeightConstraint = [(PKDrawingPaletteView *)self compactContentViewHeightConstraint];
+  v82[1] = compactContentViewHeightConstraint;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:2];
   [v8 deactivateConstraints:v11];
 
-  v12 = [(UIView *)self _pk_useCompactLayout];
+  _pk_useCompactLayout = [(UIView *)self _pk_useCompactLayout];
   v13 = MEMORY[0x1E696ACD8];
-  if (v12)
+  if (_pk_useCompactLayout)
   {
-    v14 = [(PKDrawingPaletteView *)self compactContentViewHeightConstraint];
-    v81 = v14;
+    compactContentViewHeightConstraint2 = [(PKDrawingPaletteView *)self compactContentViewHeightConstraint];
+    v81 = compactContentViewHeightConstraint2;
     v15 = &v81;
   }
 
   else
   {
-    v14 = [(PKDrawingPaletteView *)self contentViewBottomConstraint];
-    v80 = v14;
+    compactContentViewHeightConstraint2 = [(PKDrawingPaletteView *)self contentViewBottomConstraint];
+    v80 = compactContentViewHeightConstraint2;
     v15 = &v80;
   }
 
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:{1, v80, v81}];
   [v13 activateConstraints:v16];
 
-  v17 = [(PKDrawingPaletteView *)self closeButtonVisible];
-  v18 = [(PKDrawingPaletteView *)self contentView];
-  [v18 setCloseButtonVisible:v17];
+  closeButtonVisible = [(PKDrawingPaletteView *)self closeButtonVisible];
+  contentView2 = [(PKDrawingPaletteView *)self contentView];
+  [contentView2 setCloseButtonVisible:closeButtonVisible];
 
   [(PKDrawingPaletteView *)self colorMaximumLinearExposure];
   v20 = v19;
-  v21 = [(PKDrawingPaletteView *)self contentView];
-  [v21 setColorMaximumLinearExposure:v20];
+  contentView3 = [(PKDrawingPaletteView *)self contentView];
+  [contentView3 setColorMaximumLinearExposure:v20];
 
-  v22 = [(PKDrawingPaletteView *)self contentView];
-  v23 = [v22 undoRedoView];
-  [v23 updateUI];
+  contentView4 = [(PKDrawingPaletteView *)self contentView];
+  undoRedoView = [contentView4 undoRedoView];
+  [undoRedoView updateUI];
 
-  v24 = [(PKDrawingPaletteView *)self colorUserInterfaceStyle];
-  v25 = [(PKDrawingPaletteView *)self contentView];
-  v26 = [v25 colorPickerView];
-  [v26 setColorUserInterfaceStyle:v24];
+  colorUserInterfaceStyle = [(PKDrawingPaletteView *)self colorUserInterfaceStyle];
+  contentView5 = [(PKDrawingPaletteView *)self contentView];
+  colorPickerView = [contentView5 colorPickerView];
+  [colorPickerView setColorUserInterfaceStyle:colorUserInterfaceStyle];
 
-  v27 = [(PKDrawingPaletteView *)self colorUserInterfaceStyle];
-  v28 = [(PKDrawingPaletteView *)self contentView];
-  v29 = [v28 toolPickerView];
-  [v29 setColorUserInterfaceStyle:v27];
+  colorUserInterfaceStyle2 = [(PKDrawingPaletteView *)self colorUserInterfaceStyle];
+  contentView6 = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView2 = [contentView6 toolPickerView];
+  [toolPickerView2 setColorUserInterfaceStyle:colorUserInterfaceStyle2];
 
-  v30 = [(PKPaletteView *)self isAutoHideEnabled];
-  v31 = [(PKDrawingPaletteView *)self contentView];
-  v32 = [v31 additionalOptionsView];
-  [v32 setAutoHideOn:v30];
+  isAutoHideEnabled = [(PKPaletteView *)self isAutoHideEnabled];
+  contentView7 = [(PKDrawingPaletteView *)self contentView];
+  additionalOptionsView = [contentView7 additionalOptionsView];
+  [additionalOptionsView setAutoHideOn:isAutoHideEnabled];
 
-  v33 = [(PKDrawingPaletteView *)self _shouldShowFingerDrawsOption];
-  v34 = [(PKDrawingPaletteView *)self contentView];
-  v35 = [v34 additionalOptionsView];
-  [v35 setShouldShowFingerDrawsOption:v33];
+  _shouldShowFingerDrawsOption = [(PKDrawingPaletteView *)self _shouldShowFingerDrawsOption];
+  contentView8 = [(PKDrawingPaletteView *)self contentView];
+  additionalOptionsView2 = [contentView8 additionalOptionsView];
+  [additionalOptionsView2 setShouldShowFingerDrawsOption:_shouldShowFingerDrawsOption];
 
-  v36 = [(PKDrawingPaletteView *)self shouldAlwaysShowAutoRefineControls];
-  v37 = [(PKDrawingPaletteView *)self contentView];
-  v38 = [v37 additionalOptionsView];
-  [v38 setShouldAlwaysShowAutoRefineControls:v36];
+  shouldAlwaysShowAutoRefineControls = [(PKDrawingPaletteView *)self shouldAlwaysShowAutoRefineControls];
+  contentView9 = [(PKDrawingPaletteView *)self contentView];
+  additionalOptionsView3 = [contentView9 additionalOptionsView];
+  [additionalOptionsView3 setShouldAlwaysShowAutoRefineControls:shouldAlwaysShowAutoRefineControls];
 
-  v39 = [(PKDrawingPaletteView *)self colorUserInterfaceStyle];
-  v40 = [(PKPaletteView *)self toolPreview];
-  [v40 setColorUserInterfaceStyle:v39];
+  colorUserInterfaceStyle3 = [(PKDrawingPaletteView *)self colorUserInterfaceStyle];
+  toolPreview = [(PKPaletteView *)self toolPreview];
+  [toolPreview setColorUserInterfaceStyle:colorUserInterfaceStyle3];
 
-  v41 = [(PKDrawingPaletteView *)self tools];
-  v42 = [v41 count];
-  v43 = [(PKDrawingPaletteView *)self showsPlusButton];
+  tools = [(PKDrawingPaletteView *)self tools];
+  v42 = [tools count];
+  showsPlusButton = [(PKDrawingPaletteView *)self showsPlusButton];
   v44 = 5.0;
   v45 = 2.0;
-  if (!v43)
+  if (!showsPlusButton)
   {
     v45 = 5.0;
   }
@@ -803,46 +803,46 @@ LABEL_8:
 
   [(PKPaletteView *)self paletteScaleFactor];
   v52 = v51;
-  v53 = [(PKPaletteView *)self containerView];
-  [v53 setScalingFactor:v52];
+  containerView = [(PKPaletteView *)self containerView];
+  [containerView setScalingFactor:v52];
 
   indexOfSelectedTool = self->_indexOfSelectedTool;
   if (indexOfSelectedTool != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v55 = [(PKDrawingPaletteView *)self contentView];
-    v56 = [v55 toolPickerView];
-    [v56 selectToolViewAtIndex:indexOfSelectedTool];
+    contentView10 = [(PKDrawingPaletteView *)self contentView];
+    toolPickerView3 = [contentView10 toolPickerView];
+    [toolPickerView3 selectToolViewAtIndex:indexOfSelectedTool];
 
-    v57 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-    v58 = [v57 tool];
-    if ([v58 isLassoTool])
+    _selectedToolViewInToolPicker = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+    tool = [_selectedToolViewInToolPicker tool];
+    if ([tool isLassoTool])
     {
     }
 
     else
     {
-      v59 = [(PKDrawingPaletteView *)self selectedTool];
-      v60 = [v59 _isLassoTool];
+      selectedTool = [(PKDrawingPaletteView *)self selectedTool];
+      _isLassoTool = [selectedTool _isLassoTool];
 
-      if (!v60)
+      if (!_isLassoTool)
       {
         goto LABEL_28;
       }
     }
 
-    v61 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-    [v61 setSupportsDisplayingSelectedColor:0];
+    _selectedToolViewInToolPicker2 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+    [_selectedToolViewInToolPicker2 setSupportsDisplayingSelectedColor:0];
 
 LABEL_28:
     [(PKDrawingPaletteView *)self updateColorPickerSelectedColor];
-    v62 = [(PKPaletteView *)self paletteViewHosting];
-    if (v62)
+    paletteViewHosting = [(PKPaletteView *)self paletteViewHosting];
+    if (paletteViewHosting)
     {
-      v63 = v62;
-      v64 = [(PKPaletteView *)self paletteViewHosting];
-      v65 = [v64 isPaletteVisualStateMinimized];
+      v63 = paletteViewHosting;
+      paletteViewHosting2 = [(PKPaletteView *)self paletteViewHosting];
+      isPaletteVisualStateMinimized = [paletteViewHosting2 isPaletteVisualStateMinimized];
 
-      if (v65)
+      if (isPaletteVisualStateMinimized)
       {
 LABEL_30:
         v66 = 1;
@@ -883,8 +883,8 @@ LABEL_37:
 
   else if ([(PKDrawingPaletteView *)self hasHandwritingTool])
   {
-    v69 = [(PKDrawingPaletteView *)self floatingKeyboardController];
-    [(PKPaletteFloatingKeyboardController *)v69 dismissWithReason:?];
+    floatingKeyboardController = [(PKDrawingPaletteView *)self floatingKeyboardController];
+    [(PKPaletteFloatingKeyboardController *)floatingKeyboardController dismissWithReason:?];
   }
 
   if (![(PKDrawingPaletteView *)self isAnnotationSupportEnabled]&& [(PKDrawingPaletteView *)self selectedAnnotationType])
@@ -892,103 +892,103 @@ LABEL_37:
     [(PKDrawingPaletteView *)self setSelectedAnnotationType:0];
   }
 
-  v70 = [(PKDrawingPaletteView *)self bottomLineDividerView];
-  v71 = [v70 isDescendantOfView:self];
+  bottomLineDividerView = [(PKDrawingPaletteView *)self bottomLineDividerView];
+  v71 = [bottomLineDividerView isDescendantOfView:self];
 
   if (_UISolariumEnabled())
   {
-    LOBYTE(v72) = 0;
+    LOBYTE(wantsBottomLineDividerVisibleInCompactSize) = 0;
   }
 
   else
   {
-    v72 = [(PKDrawingPaletteView *)self wantsBottomLineDividerVisibleInCompactSize];
-    if (v72)
+    wantsBottomLineDividerVisibleInCompactSize = [(PKDrawingPaletteView *)self wantsBottomLineDividerVisibleInCompactSize];
+    if (wantsBottomLineDividerVisibleInCompactSize)
     {
-      LOBYTE(v72) = [(UIView *)self _pk_useCompactLayout];
+      LOBYTE(wantsBottomLineDividerVisibleInCompactSize) = [(UIView *)self _pk_useCompactLayout];
     }
   }
 
-  if (v72 || ((v71 ^ 1) & 1) != 0)
+  if (wantsBottomLineDividerVisibleInCompactSize || ((v71 ^ 1) & 1) != 0)
   {
-    if (!(v71 & 1 | !v72))
+    if (!(v71 & 1 | !wantsBottomLineDividerVisibleInCompactSize))
     {
       v74 = objc_alloc_init(MEMORY[0x1E69DD250]);
       bottomLineDividerView = self->_bottomLineDividerView;
       self->_bottomLineDividerView = v74;
 
-      v76 = [(PKDrawingPaletteView *)self bottomLineDividerView];
-      [(PKDrawingPaletteView *)self addSubview:v76];
+      bottomLineDividerView2 = [(PKDrawingPaletteView *)self bottomLineDividerView];
+      [(PKDrawingPaletteView *)self addSubview:bottomLineDividerView2];
     }
   }
 
   else
   {
-    v73 = [(PKDrawingPaletteView *)self bottomLineDividerView];
-    [v73 removeFromSuperview];
+    bottomLineDividerView3 = [(PKDrawingPaletteView *)self bottomLineDividerView];
+    [bottomLineDividerView3 removeFromSuperview];
 
     [(PKDrawingPaletteView *)self setBottomLineDividerView:0];
   }
 
-  if (v3)
+  if (toolsCopy)
   {
-    v77 = [(PKDrawingPaletteView *)self contentView];
-    [v77 paletteViewStateDidChange:self];
+    contentView11 = [(PKDrawingPaletteView *)self contentView];
+    [contentView11 paletteViewStateDidChange:self];
 
-    v78 = [(PKPaletteView *)self internalDelegate];
-    [v78 paletteViewStateDidChange:self];
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewStateDidChange:self];
 
-    v79 = [(PKPaletteView *)self delegate];
-    [v79 paletteViewContentSizeDidChange:self];
+    delegate = [(PKPaletteView *)self delegate];
+    [delegate paletteViewContentSizeDidChange:self];
   }
 }
 
 - (BOOL)_canShowFingerDrawsOption
 {
-  v2 = [(PKDrawingPaletteView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] != 0;
+  traitCollection = [(PKDrawingPaletteView *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] != 0;
 
   return v3;
 }
 
 - (BOOL)_shouldShowFingerDrawsOption
 {
-  v3 = [(PKDrawingPaletteView *)self _canShowFingerDrawsOption];
-  if (v3)
+  _canShowFingerDrawsOption = [(PKDrawingPaletteView *)self _canShowFingerDrawsOption];
+  if (_canShowFingerDrawsOption)
   {
 
-    LOBYTE(v3) = [(PKDrawingPaletteView *)self isFingerDrawsOptionEnabled];
+    LOBYTE(_canShowFingerDrawsOption) = [(PKDrawingPaletteView *)self isFingerDrawsOptionEnabled];
   }
 
-  return v3;
+  return _canShowFingerDrawsOption;
 }
 
 - (void)_updateToolsContainerScrollingEnabled
 {
-  v3 = [(PKDrawingPaletteView *)self contentView];
-  v4 = [v3 toolPickerView];
-  v5 = [v4 isScrollingEnabled];
-  v6 = [(PKDrawingPaletteView *)self wantsScrollableTools];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView = [contentView toolPickerView];
+  isScrollingEnabled = [toolPickerView isScrollingEnabled];
+  wantsScrollableTools = [(PKDrawingPaletteView *)self wantsScrollableTools];
 
-  if (v5 != v6)
+  if (isScrollingEnabled != wantsScrollableTools)
   {
-    v7 = [(PKDrawingPaletteView *)self contentView];
-    [v7 paletteViewStateDidChange:self];
+    contentView2 = [(PKDrawingPaletteView *)self contentView];
+    [contentView2 paletteViewStateDidChange:self];
   }
 }
 
 - (BOOL)wantsScrollableTools
 {
-  v3 = [(PKDrawingPaletteView *)self tools];
-  v4 = [v3 count];
+  tools = [(PKDrawingPaletteView *)self tools];
+  v4 = [tools count];
 
   if (v4 < 8)
   {
     return 0;
   }
 
-  v5 = [(PKDrawingPaletteView *)self windowScene];
-  v6 = PKIsSmallestQuickNoteWindowScene(v5);
+  windowScene = [(PKDrawingPaletteView *)self windowScene];
+  v6 = PKIsSmallestQuickNoteWindowScene(windowScene);
 
   v7 = 7.0;
   if (v6)
@@ -1001,22 +1001,22 @@ LABEL_37:
 
 - (BOOL)isExtendedColorPickerVisible
 {
-  v2 = [(PKDrawingPaletteView *)self contentView];
-  v3 = [v2 colorPickerView];
-  v4 = [v3 _isExtendedColorPickerVisible];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  colorPickerView = [contentView colorPickerView];
+  _isExtendedColorPickerVisible = [colorPickerView _isExtendedColorPickerVisible];
 
-  return v4;
+  return _isExtendedColorPickerVisible;
 }
 
 - (void)_dismissEyeDropper
 {
-  v2 = [(PKDrawingPaletteView *)self contentView];
-  [v2 dismissEyeDropper];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  [contentView dismissEyeDropper];
 }
 
-- (CGSize)paletteSizeForEdge:(unint64_t)a3
+- (CGSize)paletteSizeForEdge:(unint64_t)edge
 {
-  if (a3 == 8 || a3 == 2)
+  if (edge == 8 || edge == 2)
   {
     [(PKDrawingPaletteView *)self _paletteHeightForVerticalOrientation];
     v5 = v4;
@@ -1053,9 +1053,9 @@ LABEL_37:
   }
 
   v10 = v4 + v9;
-  v11 = [(PKDrawingPaletteView *)self showsPlusButton];
+  showsPlusButton = [(PKDrawingPaletteView *)self showsPlusButton];
   v12 = 48.0;
-  if (!v11)
+  if (!showsPlusButton)
   {
     v12 = 26.0;
   }
@@ -1085,9 +1085,9 @@ LABEL_37:
     v4 = v3 + 12.0 + v4;
   }
 
-  v5 = [(PKDrawingPaletteView *)self isEllipsisButtonVisible];
+  isEllipsisButtonVisible = [(PKDrawingPaletteView *)self isEllipsisButtonVisible];
   v6 = v3 + v4;
-  if (!v5)
+  if (!isEllipsisButtonVisible)
   {
     v6 = v4;
   }
@@ -1097,8 +1097,8 @@ LABEL_37:
 
 - (double)_toolsContainerWidth
 {
-  v3 = [(PKDrawingPaletteView *)self tools];
-  v4 = [v3 count];
+  tools = [(PKDrawingPaletteView *)self tools];
+  v4 = [tools count];
 
   v5 = v4 - 1;
   if (v4 == 1)
@@ -1113,9 +1113,9 @@ LABEL_37:
   }
 
   v6 = v4 * 46.0 + v7 * v5;
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 bundleIdentifier];
-  v10 = [v9 isEqualToString:@"com.apple.mobilenotes"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v10 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
   if (v10)
   {
@@ -1137,10 +1137,10 @@ LABEL_37:
     [(PKDrawingPaletteView *)self _paletteWidthForHorizontalOrientationWithoutTools];
     v17 = v16;
     v18 = v6 + v16;
-    v19 = [(PKDrawingPaletteView *)self windowScene];
-    v20 = [v19 effectiveGeometry];
-    v21 = [v20 coordinateSpace];
-    [v21 bounds];
+    windowScene = [(PKDrawingPaletteView *)self windowScene];
+    effectiveGeometry = [windowScene effectiveGeometry];
+    coordinateSpace = [effectiveGeometry coordinateSpace];
+    [coordinateSpace bounds];
     v23 = v22;
 
     if (v23 <= v18)
@@ -1196,30 +1196,30 @@ LABEL_37:
   return v6;
 }
 
-- (CGRect)sourceRectForPopoverPresentationForSourceView:(id)a3
+- (CGRect)sourceRectForPopoverPresentationForSourceView:(id)view
 {
-  v4 = a3;
-  [v4 frame];
+  viewCopy = view;
+  [viewCopy frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 superview];
+  superview = [viewCopy superview];
 
   [(PKDrawingPaletteView *)self frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(PKDrawingPaletteView *)self superview];
-  [v13 convertRect:v22 fromView:{v15, v17, v19, v21}];
+  superview2 = [(PKDrawingPaletteView *)self superview];
+  [superview convertRect:superview2 fromView:{v15, v17, v19, v21}];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
 
-  v31 = [(PKPaletteView *)self palettePosition];
-  if (v31 == 4)
+  palettePosition = [(PKPaletteView *)self palettePosition];
+  if (palettePosition == 4)
   {
     v32 = v24;
   }
@@ -1229,7 +1229,7 @@ LABEL_37:
     v32 = v6;
   }
 
-  if (v31 == 4)
+  if (palettePosition == 4)
   {
     v33 = v8;
   }
@@ -1239,7 +1239,7 @@ LABEL_37:
     v33 = v26;
   }
 
-  if (v31 == 4)
+  if (palettePosition == 4)
   {
     v34 = v28;
   }
@@ -1249,7 +1249,7 @@ LABEL_37:
     v34 = v10;
   }
 
-  if (v31 == 4)
+  if (palettePosition == 4)
   {
     v35 = v12;
   }
@@ -1259,7 +1259,7 @@ LABEL_37:
     v35 = v30;
   }
 
-  if (v31 == 2)
+  if (palettePosition == 2)
   {
     v32 = v24;
     v33 = v8;
@@ -1272,24 +1272,24 @@ LABEL_37:
 
 - (void)updatePopoverUI
 {
-  v3 = [(PKDrawingPaletteView *)self contentView];
-  v4 = [v3 toolPickerView];
-  [v4 updatePopoverUI];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView = [contentView toolPickerView];
+  [toolPickerView updatePopoverUI];
 
-  v5 = [(PKDrawingPaletteView *)self contentView];
-  v6 = [v5 colorPickerView];
-  [v6 updatePopoverUI];
+  contentView2 = [(PKDrawingPaletteView *)self contentView];
+  colorPickerView = [contentView2 colorPickerView];
+  [colorPickerView updatePopoverUI];
 
-  v8 = [(PKDrawingPaletteView *)self contentView];
-  v7 = [v8 additionalOptionsView];
-  [v7 updatePopoverUI];
+  contentView3 = [(PKDrawingPaletteView *)self contentView];
+  additionalOptionsView = [contentView3 additionalOptionsView];
+  [additionalOptionsView updatePopoverUI];
 }
 
-- (void)setWantsClearBackgroundColorInCompactSize:(BOOL)a3
+- (void)setWantsClearBackgroundColorInCompactSize:(BOOL)size
 {
-  if (self->_wantsClearBackgroundColorInCompactSize != a3)
+  if (self->_wantsClearBackgroundColorInCompactSize != size)
   {
-    self->_wantsClearBackgroundColorInCompactSize = a3;
+    self->_wantsClearBackgroundColorInCompactSize = size;
     [(PKDrawingPaletteView *)self setNeedsLayout];
   }
 }
@@ -1300,13 +1300,13 @@ LABEL_37:
   v28.super_class = PKDrawingPaletteView;
   [(PKPaletteView *)&v28 layoutSubviews];
   [(PKDrawingPaletteView *)self updateUndoRedo];
-  v3 = [(PKDrawingPaletteView *)self _wantsClearBackgroundColor];
-  v4 = [(PKDrawingPaletteView *)self _clippingViewBackgroundColor:v3];
-  v5 = [(PKPaletteView *)self clippingView];
-  [v5 setBackgroundColor:v4];
+  _wantsClearBackgroundColor = [(PKDrawingPaletteView *)self _wantsClearBackgroundColor];
+  v4 = [(PKDrawingPaletteView *)self _clippingViewBackgroundColor:_wantsClearBackgroundColor];
+  clippingView = [(PKPaletteView *)self clippingView];
+  [clippingView setBackgroundColor:v4];
 
-  v6 = [(PKPaletteView *)self clippingView];
-  [v6 bounds];
+  clippingView2 = [(PKPaletteView *)self clippingView];
+  [clippingView2 bounds];
   x = v7;
   y = v9;
   width = v11;
@@ -1325,18 +1325,18 @@ LABEL_37:
     height = v30.size.height;
   }
 
-  v15 = [(PKPaletteView *)self backgroundMaterialView];
-  [v15 setFrame:{x, y, width, height}];
+  backgroundMaterialView = [(PKPaletteView *)self backgroundMaterialView];
+  [backgroundMaterialView setFrame:{x, y, width, height}];
 
-  v16 = [(PKPaletteView *)self backgroundMaterialView];
-  [v16 setHidden:v3];
+  backgroundMaterialView2 = [(PKPaletteView *)self backgroundMaterialView];
+  [backgroundMaterialView2 setHidden:_wantsClearBackgroundColor];
 
   [(PKDrawingPaletteView *)self compactPaletteHeight];
   v18 = v17;
   [(PKDrawingPaletteView *)self bounds];
   v19 = CGRectGetWidth(v31);
-  v20 = [(PKDrawingPaletteView *)self bottomLineDividerView];
-  [v20 setFrame:{0.0, v18, v19, 1.0}];
+  bottomLineDividerView = [(PKDrawingPaletteView *)self bottomLineDividerView];
+  [bottomLineDividerView setFrame:{0.0, v18, v19, 1.0}];
 
   if ([(UIView *)self _pk_useCompactLayout])
   {
@@ -1348,26 +1348,26 @@ LABEL_37:
     [MEMORY[0x1E69DC888] clearColor];
   }
   v21 = ;
-  v22 = [(PKDrawingPaletteView *)self bottomLineDividerView];
-  [v22 setBackgroundColor:v21];
+  bottomLineDividerView2 = [(PKDrawingPaletteView *)self bottomLineDividerView];
+  [bottomLineDividerView2 setBackgroundColor:v21];
 
-  v23 = [MEMORY[0x1E696AAE8] mainBundle];
-  v24 = [v23 bundleIdentifier];
-  v25 = [v24 isEqualToString:@"com.apple.ScreenshotServicesService"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v25 = [bundleIdentifier isEqualToString:@"com.apple.ScreenshotServicesService"];
 
   if (v25)
   {
-    v26 = 2;
+    userInterfaceStyle = 2;
   }
 
   else
   {
-    v23 = [(PKDrawingPaletteView *)self traitCollection];
-    v26 = [v23 userInterfaceStyle];
+    mainBundle = [(PKDrawingPaletteView *)self traitCollection];
+    userInterfaceStyle = [mainBundle userInterfaceStyle];
   }
 
-  v27 = [(PKDrawingPaletteView *)self bottomLineDividerView];
-  [v27 setOverrideUserInterfaceStyle:v26];
+  bottomLineDividerView3 = [(PKDrawingPaletteView *)self bottomLineDividerView];
+  [bottomLineDividerView3 setOverrideUserInterfaceStyle:userInterfaceStyle];
 
   if ((v25 & 1) == 0)
   {
@@ -1383,25 +1383,25 @@ LABEL_37:
 {
   if ([(PKPaletteView *)self _wantsGlassBackground])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(_pk_useCompactLayout) = 1;
   }
 
   else
   {
-    v3 = [(UIView *)self _pk_useCompactLayout];
-    if (v3)
+    _pk_useCompactLayout = [(UIView *)self _pk_useCompactLayout];
+    if (_pk_useCompactLayout)
     {
 
-      LOBYTE(v3) = [(PKDrawingPaletteView *)self wantsClearBackgroundColorInCompactSize];
+      LOBYTE(_pk_useCompactLayout) = [(PKDrawingPaletteView *)self wantsClearBackgroundColorInCompactSize];
     }
   }
 
-  return v3;
+  return _pk_useCompactLayout;
 }
 
-- (id)_clippingViewBackgroundColor:(BOOL)a3
+- (id)_clippingViewBackgroundColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -1415,19 +1415,19 @@ LABEL_37:
   return v3;
 }
 
-- (void)setUseEqualSpacingLayoutInCompactSize:(BOOL)a3
+- (void)setUseEqualSpacingLayoutInCompactSize:(BOOL)size
 {
-  if (self->_useEqualSpacingLayoutInCompactSize != a3)
+  if (self->_useEqualSpacingLayoutInCompactSize != size)
   {
-    self->_useEqualSpacingLayoutInCompactSize = a3;
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    [v5 paletteViewStateDidChange:self];
+    self->_useEqualSpacingLayoutInCompactSize = size;
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
   }
 }
 
-- (void)setAnnotationDelegate:(id)a3
+- (void)setAnnotationDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_annotationDelegate);
 
   v5 = obj;
@@ -1441,21 +1441,21 @@ LABEL_37:
 
 - (BOOL)isAnnotationSupportEnabled
 {
-  v2 = [(PKDrawingPaletteView *)self annotationDelegate];
-  v3 = v2 != 0;
+  annotationDelegate = [(PKDrawingPaletteView *)self annotationDelegate];
+  v3 = annotationDelegate != 0;
 
   return v3;
 }
 
 - (void)updateUndoRedo
 {
-  v3 = [(PKPaletteView *)self delegate];
+  delegate = [(PKPaletteView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKPaletteView *)self delegate];
-    v12 = [v5 paletteViewUndoManager:self];
+    delegate2 = [(PKPaletteView *)self delegate];
+    v12 = [delegate2 paletteViewUndoManager:self];
   }
 
   else
@@ -1464,36 +1464,36 @@ LABEL_37:
   }
 
   [(PKDrawingPaletteView *)self setUndoManager:v12];
-  v6 = [v12 canUndo];
-  v7 = [(PKDrawingPaletteView *)self contentView];
-  v8 = [v7 undoRedoView];
-  [v8 setUndoEnabled:v6];
+  canUndo = [v12 canUndo];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  undoRedoView = [contentView undoRedoView];
+  [undoRedoView setUndoEnabled:canUndo];
 
-  v9 = [v12 canRedo];
-  v10 = [(PKDrawingPaletteView *)self contentView];
-  v11 = [v10 undoRedoView];
-  [v11 setRedoEnabled:v9];
+  canRedo = [v12 canRedo];
+  contentView2 = [(PKDrawingPaletteView *)self contentView];
+  undoRedoView2 = [contentView2 undoRedoView];
+  [undoRedoView2 setRedoEnabled:canRedo];
 }
 
 - (NSArray)inputAssistantItems
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(PKDrawingPaletteView *)self window];
-  v4 = [v3 windowScene];
+  window = [(PKDrawingPaletteView *)self window];
+  windowScene = [window windowScene];
 
-  v5 = [(__CFString *)v4 keyboardSceneDelegate];
-  if (v5)
+  keyboardSceneDelegate = [(__CFString *)windowScene keyboardSceneDelegate];
+  if (keyboardSceneDelegate)
   {
-    v6 = [(PKPaletteView *)self isVisible];
-    v7 = [(PKDrawingPaletteView *)self isHandwritingToolSelected];
-    v8 = [v5 shouldSuppressInputAssistantUpdates];
-    v9 = MEMORY[0x1E695E0F0];
-    if (v7 && v6)
+    isVisible = [(PKPaletteView *)self isVisible];
+    isHandwritingToolSelected = [(PKDrawingPaletteView *)self isHandwritingToolSelected];
+    shouldSuppressInputAssistantUpdates = [keyboardSceneDelegate shouldSuppressInputAssistantUpdates];
+    buttonsForCurrentConfiguration = MEMORY[0x1E695E0F0];
+    if (isHandwritingToolSelected && isVisible)
     {
-      if ((_os_feature_enabled_impl() | v8))
+      if ((_os_feature_enabled_impl() | shouldSuppressInputAssistantUpdates))
       {
-        v10 = [(PKDrawingPaletteView *)self inputAssistantButtonProvider];
-        v9 = [v10 buttonsForCurrentConfiguration];
+        inputAssistantButtonProvider = [(PKDrawingPaletteView *)self inputAssistantButtonProvider];
+        buttonsForCurrentConfiguration = [inputAssistantButtonProvider buttonsForCurrentConfiguration];
       }
 
       else
@@ -1516,17 +1516,17 @@ LABEL_37:
           dispatch_once(&inputAssistantItems_onceToken, block);
         }
 
-        v9 = MEMORY[0x1E695E0F0];
+        buttonsForCurrentConfiguration = MEMORY[0x1E695E0F0];
       }
     }
 
     v11 = os_log_create("com.apple.pencilkit", "PKPalette");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
-      v14 = [MEMORY[0x1E696AD98] numberWithBool:v7];
-      v15 = [MEMORY[0x1E696AD98] numberWithBool:v6];
-      v16 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(buttonsForCurrentConfiguration, "count")}];
+      v14 = [MEMORY[0x1E696AD98] numberWithBool:isHandwritingToolSelected];
+      v15 = [MEMORY[0x1E696AD98] numberWithBool:isVisible];
+      v16 = [MEMORY[0x1E696AD98] numberWithBool:shouldSuppressInputAssistantUpdates];
       *buf = 138413058;
       v21 = v13;
       v22 = 2112;
@@ -1545,16 +1545,16 @@ LABEL_37:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v21 = v4;
+      v21 = windowScene;
       v22 = 2048;
       v23 = 0;
       _os_log_impl(&dword_1C7CCA000, v11, OS_LOG_TYPE_INFO, "No input assistant items. Either drawing palette is not in a scene (%p), or has not input responder controller (%p).", buf, 0x16u);
     }
 
-    v9 = MEMORY[0x1E695E0F0];
+    buttonsForCurrentConfiguration = MEMORY[0x1E695E0F0];
   }
 
-  return v9;
+  return buttonsForCurrentConfiguration;
 }
 
 void __43__PKDrawingPaletteView_inputAssistantItems__block_invoke(uint64_t a1)
@@ -1572,13 +1572,13 @@ void __43__PKDrawingPaletteView_inputAssistantItems__block_invoke(uint64_t a1)
 
 - (BOOL)enableKeyboardButtons
 {
-  v3 = [(PKDrawingPaletteView *)self window];
-  v4 = [v3 windowScene];
-  v5 = [v4 keyboardSceneDelegate];
+  window = [(PKDrawingPaletteView *)self window];
+  windowScene = [window windowScene];
+  keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 hasNullInputView] ^ 1;
+    v6 = [keyboardSceneDelegate hasNullInputView] ^ 1;
   }
 
   else
@@ -1586,16 +1586,16 @@ void __43__PKDrawingPaletteView_inputAssistantItems__block_invoke(uint64_t a1)
     v6 = 1;
   }
 
-  v7 = [(PKDrawingPaletteView *)self window];
-  v8 = [v7 windowScene];
-  v9 = [v8 screen];
-  v10 = [v9 _isEmbeddedScreen];
+  window2 = [(PKDrawingPaletteView *)self window];
+  windowScene2 = [window2 windowScene];
+  screen = [windowScene2 screen];
+  _isEmbeddedScreen = [screen _isEmbeddedScreen];
 
-  if (v10)
+  if (_isEmbeddedScreen)
   {
-    v11 = [(PKDrawingPaletteView *)self firstResponderController];
-    v12 = [v11 firstResponder];
-    v13 = [v12 isEditableTextInput] & v6;
+    firstResponderController = [(PKDrawingPaletteView *)self firstResponderController];
+    firstResponder = [firstResponderController firstResponder];
+    v13 = [firstResponder isEditableTextInput] & v6;
   }
 
   else
@@ -1623,25 +1623,25 @@ void __43__PKDrawingPaletteView_inputAssistantItems__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setUndoManager:(id)a3
+- (void)setUndoManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   undoManager = self->_undoManager;
-  v8 = v5;
-  if (undoManager != v5)
+  v8 = managerCopy;
+  if (undoManager != managerCopy)
   {
     if (undoManager)
     {
       [(PKDrawingPaletteView *)self _releaseUndoManager];
     }
 
-    objc_storeStrong(&self->_undoManager, a3);
+    objc_storeStrong(&self->_undoManager, manager);
     if (self->_undoManager)
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:self selector:sel__changeWasUndone_ name:*MEMORY[0x1E696AA30] object:self->_undoManager];
-      [v7 addObserver:self selector:sel__changeWasRedone_ name:*MEMORY[0x1E696AA28] object:self->_undoManager];
-      [v7 addObserver:self selector:sel__changeWasDone_ name:*MEMORY[0x1E696AA18] object:self->_undoManager];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__changeWasUndone_ name:*MEMORY[0x1E696AA30] object:self->_undoManager];
+      [defaultCenter addObserver:self selector:sel__changeWasRedone_ name:*MEMORY[0x1E696AA28] object:self->_undoManager];
+      [defaultCenter addObserver:self selector:sel__changeWasDone_ name:*MEMORY[0x1E696AA18] object:self->_undoManager];
     }
   }
 }
@@ -1650,10 +1650,10 @@ void __43__PKDrawingPaletteView_inputAssistantItems__block_invoke(uint64_t a1)
 {
   if (self->_undoManager)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x1E696AA30] object:self->_undoManager];
-    [v4 removeObserver:self name:*MEMORY[0x1E696AA28] object:self->_undoManager];
-    [v4 removeObserver:self name:*MEMORY[0x1E696AA18] object:self->_undoManager];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA30] object:self->_undoManager];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA28] object:self->_undoManager];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA18] object:self->_undoManager];
     undoManager = self->_undoManager;
     self->_undoManager = 0;
   }
@@ -1661,142 +1661,142 @@ void __43__PKDrawingPaletteView_inputAssistantItems__block_invoke(uint64_t a1)
 
 - (PKPaletteButton)_plusButton
 {
-  v3 = [(PKDrawingPaletteView *)self traitCollection];
-  v4 = [(PKDrawingPaletteView *)self window];
-  v5 = [v4 windowScene];
-  v6 = PKUseCompactSize(v3, v5);
-  v7 = [(PKDrawingPaletteView *)self contentView];
-  v8 = v7;
+  traitCollection = [(PKDrawingPaletteView *)self traitCollection];
+  window = [(PKDrawingPaletteView *)self window];
+  windowScene = [window windowScene];
+  v6 = PKUseCompactSize(traitCollection, windowScene);
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  v8 = contentView;
   if (v6)
   {
-    [v7 toolAndColorPickerContainerView];
+    [contentView toolAndColorPickerContainerView];
   }
 
   else
   {
-    [v7 additionalOptionsView];
+    [contentView additionalOptionsView];
   }
   v9 = ;
-  v10 = [v9 plusButton];
+  plusButton = [v9 plusButton];
 
-  return v10;
+  return plusButton;
 }
 
-- (void)_setPlusButton:(id)a3
+- (void)_setPlusButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PKDrawingPaletteView *)self contentView];
-  v6 = [v5 additionalOptionsView];
-  [v6 setPlusButton:v4];
+  buttonCopy = button;
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  additionalOptionsView = [contentView additionalOptionsView];
+  [additionalOptionsView setPlusButton:buttonCopy];
 
-  v8 = [(PKDrawingPaletteView *)self contentView];
-  v7 = [v8 toolAndColorPickerContainerView];
-  [v7 setPlusButton:v4];
+  contentView2 = [(PKDrawingPaletteView *)self contentView];
+  toolAndColorPickerContainerView = [contentView2 toolAndColorPickerContainerView];
+  [toolAndColorPickerContainerView setPlusButton:buttonCopy];
 }
 
-- (void)setShowsPlusButton:(BOOL)a3
+- (void)setShowsPlusButton:(BOOL)button
 {
-  if (self->_showsPlusButton != a3)
+  if (self->_showsPlusButton != button)
   {
-    self->_showsPlusButton = a3;
-    v5 = [(PKPaletteView *)self internalDelegate];
-    [v5 paletteViewStateDidChange:self];
+    self->_showsPlusButton = button;
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewStateDidChange:self];
 
-    v6 = [(PKDrawingPaletteView *)self contentView];
-    [v6 paletteViewStateDidChange:self];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
 
-    v7 = [(PKPaletteView *)self delegate];
-    [v7 paletteViewContentSizeDidChange:self];
+    delegate = [(PKPaletteView *)self delegate];
+    [delegate paletteViewContentSizeDidChange:self];
 
     [(PKDrawingPaletteView *)self _updateUI];
   }
 }
 
-- (void)setPlusButtonViewController:(id)a3
+- (void)setPlusButtonViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_plusButtonViewController != v5)
+  controllerCopy = controller;
+  if (self->_plusButtonViewController != controllerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_plusButtonViewController, a3);
-    v6 = [(PKDrawingPaletteView *)self contentView];
-    [v6 paletteViewStateDidChange:self];
+    v7 = controllerCopy;
+    objc_storeStrong(&self->_plusButtonViewController, controller);
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
 
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setShowsTextButton:(BOOL)a3
+- (void)setShowsTextButton:(BOOL)button
 {
-  if (self->_showsTextButton != a3)
+  if (self->_showsTextButton != button)
   {
-    self->_showsTextButton = a3;
-    v5 = [(PKPaletteView *)self internalDelegate];
-    [v5 paletteViewStateDidChange:self];
+    self->_showsTextButton = button;
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewStateDidChange:self];
 
-    v6 = [(PKDrawingPaletteView *)self contentView];
-    [v6 paletteViewStateDidChange:self];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
 
-    v7 = [(PKPaletteView *)self delegate];
-    [v7 paletteViewContentSizeDidChange:self];
+    delegate = [(PKPaletteView *)self delegate];
+    [delegate paletteViewContentSizeDidChange:self];
 
     [(PKDrawingPaletteView *)self _updateUI];
   }
 }
 
-- (void)setShowsShapeButton:(BOOL)a3
+- (void)setShowsShapeButton:(BOOL)button
 {
-  if (self->_showsShapeButton != a3)
+  if (self->_showsShapeButton != button)
   {
-    self->_showsShapeButton = a3;
-    v5 = [(PKPaletteView *)self internalDelegate];
-    [v5 paletteViewStateDidChange:self];
+    self->_showsShapeButton = button;
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewStateDidChange:self];
 
-    v6 = [(PKDrawingPaletteView *)self contentView];
-    [v6 paletteViewStateDidChange:self];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
 
-    v7 = [(PKPaletteView *)self delegate];
-    [v7 paletteViewContentSizeDidChange:self];
+    delegate = [(PKPaletteView *)self delegate];
+    [delegate paletteViewContentSizeDidChange:self];
 
     [(PKDrawingPaletteView *)self _updateUI];
   }
 }
 
-- (void)setWantsUndoRedoButtonsVisibleInCompactSize:(BOOL)a3
+- (void)setWantsUndoRedoButtonsVisibleInCompactSize:(BOOL)size
 {
-  if (self->_wantsUndoRedoButtonsVisibleInCompactSize != a3)
+  if (self->_wantsUndoRedoButtonsVisibleInCompactSize != size)
   {
-    self->_wantsUndoRedoButtonsVisibleInCompactSize = a3;
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    [v5 paletteViewStateDidChange:self];
+    self->_wantsUndoRedoButtonsVisibleInCompactSize = size;
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
   }
 }
 
-- (void)setWantsEllipsisButtonVisibleInCompactSize:(BOOL)a3
+- (void)setWantsEllipsisButtonVisibleInCompactSize:(BOOL)size
 {
-  if (self->_wantsEllipsisButtonVisibleInCompactSize != a3)
+  if (self->_wantsEllipsisButtonVisibleInCompactSize != size)
   {
-    self->_wantsEllipsisButtonVisibleInCompactSize = a3;
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    [v5 paletteViewStateDidChange:self];
+    self->_wantsEllipsisButtonVisibleInCompactSize = size;
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
   }
 }
 
-- (void)setWantsBottomLineDividerVisibleInCompactSize:(BOOL)a3
+- (void)setWantsBottomLineDividerVisibleInCompactSize:(BOOL)size
 {
-  if (self->_wantsBottomLineDividerVisibleInCompactSize != a3)
+  if (self->_wantsBottomLineDividerVisibleInCompactSize != size)
   {
-    self->_wantsBottomLineDividerVisibleInCompactSize = a3;
+    self->_wantsBottomLineDividerVisibleInCompactSize = size;
     [(PKDrawingPaletteView *)self _updateUI];
   }
 }
 
 - (BOOL)isEllipsisButtonVisible
 {
-  v2 = [(PKDrawingPaletteView *)self contentView];
-  v3 = [v2 isEllipsisButtonVisible];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  isEllipsisButtonVisible = [contentView isEllipsisButtonVisible];
 
-  return v3;
+  return isEllipsisButtonVisible;
 }
 
 - (BOOL)isPalettePresentingPopover
@@ -1808,27 +1808,27 @@ void __43__PKDrawingPaletteView_inputAssistantItems__block_invoke(uint64_t a1)
     return 1;
   }
 
-  v4 = [(PKPaletteView *)self palettePopoverPresentingController];
-  v5 = [v4 presentedViewController];
+  palettePopoverPresentingController = [(PKPaletteView *)self palettePopoverPresentingController];
+  presentedViewController = [palettePopoverPresentingController presentedViewController];
 
-  if (v5 && ([MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()], v6 = objc_claimAutoreleasedReturnValue(), v7 = MEMORY[0x1E696AAE8], -[PKDrawingPaletteView annotationDelegate](self, "annotationDelegate"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "bundleForClass:", objc_opt_class()), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v6, v6 == v9) || (objc_msgSend(v5, "popoverPresentationController"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "sourceView"), v11 = objc_claimAutoreleasedReturnValue(), -[PKDrawingPaletteView contextualEditingView](self, "contextualEditingView"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "isDescendantOfView:", v12), v12, v11, v10, (v13 & 1) != 0) || (objc_msgSend(v5, "popoverPresentationController"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "sourceItem"), v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v17 = objc_opt_isKindOfClass(), v16, v15, (v17 & 1) != 0) && (objc_msgSend(v5, "popoverPresentationController"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "sourceItem"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isDescendantOfView:", self), v19, v18, (v20 & 1) != 0))
+  if (presentedViewController && ([MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()], v6 = objc_claimAutoreleasedReturnValue(), v7 = MEMORY[0x1E696AAE8], -[PKDrawingPaletteView annotationDelegate](self, "annotationDelegate"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "bundleForClass:", objc_opt_class()), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v6, v6 == v9) || (objc_msgSend(presentedViewController, "popoverPresentationController"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "sourceView"), v11 = objc_claimAutoreleasedReturnValue(), -[PKDrawingPaletteView contextualEditingView](self, "contextualEditingView"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "isDescendantOfView:", v12), v12, v11, v10, (v13 & 1) != 0) || (objc_msgSend(presentedViewController, "popoverPresentationController"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "sourceItem"), v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v17 = objc_opt_isKindOfClass(), v16, v15, (v17 & 1) != 0) && (objc_msgSend(presentedViewController, "popoverPresentationController"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "sourceItem"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isDescendantOfView:", self), v19, v18, (v20 & 1) != 0))
   {
     v3 = 1;
   }
 
   else
   {
-    v21 = [v5 popoverPresentationController];
-    v22 = [v21 sourceItem];
+    popoverPresentationController = [presentedViewController popoverPresentationController];
+    sourceItem = [popoverPresentationController sourceItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v24 = [v5 popoverPresentationController];
-      v25 = [v24 sourceItem];
-      v26 = [v25 view];
-      v3 = [v26 isDescendantOfView:self];
+      popoverPresentationController2 = [presentedViewController popoverPresentationController];
+      sourceItem2 = [popoverPresentationController2 sourceItem];
+      view = [sourceItem2 view];
+      v3 = [view isDescendantOfView:self];
     }
 
     else
@@ -1849,115 +1849,115 @@ void __43__PKDrawingPaletteView_inputAssistantItems__block_invoke(uint64_t a1)
     return 1;
   }
 
-  v4 = [(PKDrawingPaletteView *)self _plusButton];
-  v3 = [v4 hasContextMenuVisible];
+  _plusButton = [(PKDrawingPaletteView *)self _plusButton];
+  hasContextMenuVisible = [_plusButton hasContextMenuVisible];
 
-  return v3;
+  return hasContextMenuVisible;
 }
 
 - (void)dismissContextMenu
 {
-  v2 = [(PKDrawingPaletteView *)self _plusButton];
-  [v2 dismissContextMenu];
+  _plusButton = [(PKDrawingPaletteView *)self _plusButton];
+  [_plusButton dismissContextMenu];
 }
 
-- (void)_setSelectedToolColor:(id)a3 ignoreColorOpacity:(BOOL)a4 isContinuousColorSelection:(BOOL)a5
+- (void)_setSelectedToolColor:(id)color ignoreColorOpacity:(BOOL)opacity isContinuousColorSelection:(BOOL)selection
 {
-  v5 = a5;
-  v22 = a3;
-  v8 = [(PKDrawingPaletteView *)self contentView];
-  v9 = [v8 toolPickerView];
-  v10 = [v9 selectedToolView];
+  selectionCopy = selection;
+  colorCopy = color;
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView = [contentView toolPickerView];
+  selectedToolView = [toolPickerView selectedToolView];
 
-  if ([v10 supportsDisplayingSelectedColor])
+  if ([selectedToolView supportsDisplayingSelectedColor])
   {
-    v11 = [v10 tool];
-    v12 = [v11 inkingTool];
+    tool = [selectedToolView tool];
+    inkingTool = [tool inkingTool];
 
-    if (v12)
+    if (inkingTool)
     {
-      v13 = [v12 ink];
+      v13 = [inkingTool ink];
 
       if (v13)
       {
-        v14 = [v12 ink];
-        v15 = [v14 color];
-        [v15 alphaComponent];
+        v14 = [inkingTool ink];
+        color = [v14 color];
+        [color alphaComponent];
         v17 = v16;
 
-        if (a4)
+        if (opacity)
         {
-          v18 = [v22 colorWithAlphaComponent:v17];
+          v18 = [colorCopy colorWithAlphaComponent:v17];
         }
 
         else
         {
-          v18 = v22;
+          v18 = colorCopy;
         }
 
         v19 = v18;
-        [v12 setInkColor:v18];
+        [inkingTool setInkColor:v18];
         v20 = [(NSArray *)self->_tools objectAtIndexedSubscript:self->_indexOfSelectedTool];
-        v21 = [PKToolFromPaletteTool toolByApplyingPropertiesFromPaletteTool:v12 toTool:v20];
+        v21 = [PKToolFromPaletteTool toolByApplyingPropertiesFromPaletteTool:inkingTool toTool:v20];
 
-        [(PKDrawingPaletteView *)self _replaceToolAtIndex:self->_indexOfSelectedTool withTool:v21 notifyDelegate:!v5];
+        [(PKDrawingPaletteView *)self _replaceToolAtIndex:self->_indexOfSelectedTool withTool:v21 notifyDelegate:!selectionCopy];
       }
     }
   }
 }
 
-- (void)setColorUserInterfaceStyle:(int64_t)a3
+- (void)setColorUserInterfaceStyle:(int64_t)style
 {
-  if (self->_colorUserInterfaceStyle != a3)
+  if (self->_colorUserInterfaceStyle != style)
   {
-    self->_colorUserInterfaceStyle = a3;
+    self->_colorUserInterfaceStyle = style;
     [(PKDrawingPaletteView *)self _updateUI];
   }
 }
 
-- (void)setFingerDrawsOptionEnabled:(BOOL)a3
+- (void)setFingerDrawsOptionEnabled:(BOOL)enabled
 {
-  if (self->_fingerDrawsOptionEnabled != a3)
+  if (self->_fingerDrawsOptionEnabled != enabled)
   {
-    self->_fingerDrawsOptionEnabled = a3;
+    self->_fingerDrawsOptionEnabled = enabled;
     [(PKDrawingPaletteView *)self _updateUI];
   }
 }
 
-- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)a3
+- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)controls
 {
-  if (self->_shouldAlwaysShowAutoRefineControls != a3)
+  if (self->_shouldAlwaysShowAutoRefineControls != controls)
   {
-    self->_shouldAlwaysShowAutoRefineControls = a3;
+    self->_shouldAlwaysShowAutoRefineControls = controls;
     [(PKDrawingPaletteView *)self _updateUI];
   }
 }
 
-- (void)setEditingStrokeSelection:(BOOL)a3
+- (void)setEditingStrokeSelection:(BOOL)selection
 {
-  if (self->_editingStrokeSelection != a3)
+  if (self->_editingStrokeSelection != selection)
   {
-    self->_editingStrokeSelection = a3;
+    self->_editingStrokeSelection = selection;
     [(PKDrawingPaletteView *)self updateColorPickerSelectedColor];
   }
 }
 
-- (void)setEditingTextSelection:(BOOL)a3
+- (void)setEditingTextSelection:(BOOL)selection
 {
-  if (self->_editingTextSelection != a3)
+  if (self->_editingTextSelection != selection)
   {
-    self->_editingTextSelection = a3;
-    v5 = [(PKDrawingPaletteView *)self isEditingTextSelection];
+    self->_editingTextSelection = selection;
+    isEditingTextSelection = [(PKDrawingPaletteView *)self isEditingTextSelection];
 
-    [(PKDrawingPaletteView *)self setContextEditingMode:v5];
+    [(PKDrawingPaletteView *)self setContextEditingMode:isEditingTextSelection];
   }
 }
 
-- (void)setEditingExternalElementsSelection:(BOOL)a3
+- (void)setEditingExternalElementsSelection:(BOOL)selection
 {
-  if (self->_editingExternalElementsSelection != a3)
+  if (self->_editingExternalElementsSelection != selection)
   {
-    self->_editingExternalElementsSelection = a3;
+    self->_editingExternalElementsSelection = selection;
     if ([(PKDrawingPaletteView *)self isEditingExternalElementsSelection])
     {
       v5 = 4;
@@ -1974,23 +1974,23 @@ void __43__PKDrawingPaletteView_inputAssistantItems__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShowsLassoToolEditingView:(BOOL)a3
+- (void)setShowsLassoToolEditingView:(BOOL)view
 {
-  if (self->_showsLassoToolEditingView != a3)
+  if (self->_showsLassoToolEditingView != view)
   {
-    self->_showsLassoToolEditingView = a3;
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    [v5 paletteViewStateDidChange:self];
+    self->_showsLassoToolEditingView = view;
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
   }
 }
 
-- (void)setLassoToolEditingViewIdentifier:(id)a3
+- (void)setLassoToolEditingViewIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self->_lassoToolEditingViewIdentifier;
-  v6 = v4;
+  identifierCopy = identifier;
+  contentView = self->_lassoToolEditingViewIdentifier;
+  v6 = identifierCopy;
   v11 = v6;
-  if (v5 == v6)
+  if (contentView == v6)
   {
 
 LABEL_9:
@@ -1998,14 +1998,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !contentView)
   {
 
     v8 = v11;
     goto LABEL_8;
   }
 
-  v7 = [(NSString *)v5 isEqualToString:v6];
+  v7 = [(NSString *)contentView isEqualToString:v6];
 
   v8 = v11;
   if (!v7)
@@ -2015,61 +2015,61 @@ LABEL_8:
     lassoToolEditingViewIdentifier = self->_lassoToolEditingViewIdentifier;
     self->_lassoToolEditingViewIdentifier = v9;
 
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    [(NSString *)v5 setLassoToolEditingViewIdentifier:self->_lassoToolEditingViewIdentifier];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [(NSString *)contentView setLassoToolEditingViewIdentifier:self->_lassoToolEditingViewIdentifier];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)setColorSwatchesVisible:(BOOL)a3
+- (void)setColorSwatchesVisible:(BOOL)visible
 {
-  if (self->_colorSwatchesVisible != a3)
+  if (self->_colorSwatchesVisible != visible)
   {
-    self->_colorSwatchesVisible = a3;
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    [v5 paletteViewStateDidChange:self];
+    self->_colorSwatchesVisible = visible;
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
   }
 }
 
-- (void)setPrefersLargeContextualEditingUI:(BOOL)a3
+- (void)setPrefersLargeContextualEditingUI:(BOOL)i
 {
-  if (self->_prefersLargeContextualEditingUI != a3)
+  if (self->_prefersLargeContextualEditingUI != i)
   {
-    self->_prefersLargeContextualEditingUI = a3;
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    [v5 paletteViewStateDidChange:self];
+    self->_prefersLargeContextualEditingUI = i;
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
   }
 }
 
-- (void)setSelectedAnnotationType:(int64_t)a3
+- (void)setSelectedAnnotationType:(int64_t)type
 {
-  if (self->_selectedAnnotationType == a3)
+  if (self->_selectedAnnotationType == type)
   {
     return;
   }
 
   v10 = v3;
   v9 = 0;
-  self->_selectedAnnotationType = a3;
-  if (a3 > 10)
+  self->_selectedAnnotationType = type;
+  if (type > 10)
   {
-    if (a3 == 11)
+    if (type == 11)
     {
       v9 = 3;
       goto LABEL_10;
     }
 
-    if (a3 != 12)
+    if (type != 12)
     {
       goto LABEL_8;
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 10)
+    if (type == 10)
     {
       v9 = 1;
       goto LABEL_10;
@@ -2087,11 +2087,11 @@ LABEL_10:
 
 - (void)updateColorPickerSelectedColor
 {
-  v3 = [(PKDrawingPaletteView *)self contextEditingMode];
-  if ((v3 - 1) < 3)
+  contextEditingMode = [(PKDrawingPaletteView *)self contextEditingMode];
+  if ((contextEditingMode - 1) < 3)
   {
-    v4 = [(PKDrawingPaletteView *)self annotationDelegate];
-    v5 = [v4 paletteViewSelectedAnnotationColor:self];
+    annotationDelegate = [(PKDrawingPaletteView *)self annotationDelegate];
+    v5 = [annotationDelegate paletteViewSelectedAnnotationColor:self];
 LABEL_3:
     v25 = v5;
 LABEL_4:
@@ -2099,28 +2099,28 @@ LABEL_4:
     goto LABEL_17;
   }
 
-  if (v3 == 4)
+  if (contextEditingMode == 4)
   {
-    v14 = [(PKPaletteView *)self delegate];
+    delegate = [(PKPaletteView *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v4 = [(PKPaletteView *)self delegate];
-      v5 = [v4 paletteViewCurrentSelectionColor:self];
+      annotationDelegate = [(PKPaletteView *)self delegate];
+      v5 = [annotationDelegate paletteViewCurrentSelectionColor:self];
       goto LABEL_3;
     }
   }
 
-  else if (!v3)
+  else if (!contextEditingMode)
   {
-    v6 = [(PKDrawingPaletteView *)self isEditingStrokeSelection];
-    v7 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-    v4 = v7;
-    if (v6)
+    isEditingStrokeSelection = [(PKDrawingPaletteView *)self isEditingStrokeSelection];
+    _selectedToolViewInToolPicker = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+    annotationDelegate = _selectedToolViewInToolPicker;
+    if (isEditingStrokeSelection)
     {
-      v8 = [v7 tool];
-      if (![v8 isLassoTool])
+      tool = [_selectedToolViewInToolPicker tool];
+      if (![tool isLassoTool])
       {
         v25 = 0;
 LABEL_27:
@@ -2128,17 +2128,17 @@ LABEL_27:
         goto LABEL_4;
       }
 
-      v9 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-      if (![v9 supportsDisplayingSelectedColor])
+      _selectedToolViewInToolPicker2 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+      if (![_selectedToolViewInToolPicker2 supportsDisplayingSelectedColor])
       {
         v25 = 0;
         goto LABEL_26;
       }
 
-      v10 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-      v11 = [v10 tool];
-      v12 = [v11 inkingTool];
-      v13 = [v12 ink];
+      _selectedToolViewInToolPicker3 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+      tool2 = [_selectedToolViewInToolPicker3 tool];
+      inkingTool = [tool2 inkingTool];
+      v13 = [inkingTool ink];
       v25 = [v13 colorForUIAllowHDR:{-[PKDrawingPaletteView allowHDR](self, "allowHDR")}];
 
 LABEL_15:
@@ -2147,33 +2147,33 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v16 = [v7 supportsDisplayingSelectedColor];
+    supportsDisplayingSelectedColor = [_selectedToolViewInToolPicker supportsDisplayingSelectedColor];
 
-    if (v16)
+    if (supportsDisplayingSelectedColor)
     {
-      v4 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-      v8 = [v4 tool];
-      v9 = [v8 inkingTool];
-      v10 = [v9 ink];
-      v25 = [v10 colorForUIAllowHDR:{-[PKDrawingPaletteView allowHDR](self, "allowHDR")}];
+      annotationDelegate = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+      tool = [annotationDelegate tool];
+      _selectedToolViewInToolPicker2 = [tool inkingTool];
+      _selectedToolViewInToolPicker3 = [_selectedToolViewInToolPicker2 ink];
+      v25 = [_selectedToolViewInToolPicker3 colorForUIAllowHDR:{-[PKDrawingPaletteView allowHDR](self, "allowHDR")}];
       goto LABEL_15;
     }
   }
 
   v25 = 0;
 LABEL_17:
-  v17 = [(PKDrawingPaletteView *)self contentView];
-  v18 = [v17 colorPickerView];
-  [v18 setSelectedColor:v25];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  colorPickerView = [contentView colorPickerView];
+  [colorPickerView setSelectedColor:v25];
 
-  v19 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-  v20 = [v19 configuration];
-  v21 = v20;
-  if (v20)
+  _selectedToolViewInToolPicker4 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+  configuration = [_selectedToolViewInToolPicker4 configuration];
+  v21 = configuration;
+  if (configuration)
   {
-    if (*(v20 + 18) == 1)
+    if (*(configuration + 18) == 1)
     {
-      v22 = *(v20 + 19);
+      v22 = *(configuration + 19);
     }
 
     else
@@ -2187,112 +2187,112 @@ LABEL_17:
     v22 = 0;
   }
 
-  v23 = [(PKDrawingPaletteView *)self contentView];
-  v24 = [v23 colorPickerView];
-  [v24 setSupportsAlpha:v22 & 1];
+  contentView2 = [(PKDrawingPaletteView *)self contentView];
+  colorPickerView2 = [contentView2 colorPickerView];
+  [colorPickerView2 setSupportsAlpha:v22 & 1];
 }
 
 - (id)_selectedToolViewInToolPicker
 {
-  v2 = [(PKDrawingPaletteView *)self contentView];
-  v3 = [v2 toolPickerView];
-  v4 = [v3 selectedToolView];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView = [contentView toolPickerView];
+  selectedToolView = [toolPickerView selectedToolView];
 
-  return v4;
+  return selectedToolView;
 }
 
 - (BOOL)_isPaletteContentViewHidden
 {
-  v2 = [(PKDrawingPaletteView *)self contentView];
-  v3 = [v2 toolPickerView];
-  v4 = [v3 isHidden];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView = [contentView toolPickerView];
+  isHidden = [toolPickerView isHidden];
 
-  return v4;
+  return isHidden;
 }
 
-- (void)_updateToolPreviewPositionForEdge:(unint64_t)a3
+- (void)_updateToolPreviewPositionForEdge:(unint64_t)edge
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v5 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-  if (v5 && [(PKPaletteView *)self isToolPreviewInstalled])
+  _selectedToolViewInToolPicker = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+  if (_selectedToolViewInToolPicker && [(PKPaletteView *)self isToolPreviewInstalled])
   {
     v6 = MEMORY[0x1E696ACD8];
-    v7 = [(PKPaletteView *)self toolPreviewCenterXConstraint];
-    v29[0] = v7;
-    v8 = [(PKPaletteView *)self toolPreviewCenterYConstraint];
-    v29[1] = v8;
+    toolPreviewCenterXConstraint = [(PKPaletteView *)self toolPreviewCenterXConstraint];
+    v29[0] = toolPreviewCenterXConstraint;
+    toolPreviewCenterYConstraint = [(PKPaletteView *)self toolPreviewCenterYConstraint];
+    v29[1] = toolPreviewCenterYConstraint;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
     [v6 deactivateConstraints:v9];
 
-    if (a3 == 8 || a3 == 2)
+    if (edge == 8 || edge == 2)
     {
-      v10 = [(PKPaletteView *)self toolPreview];
-      v11 = [v10 centerXAnchor];
-      v12 = [(PKPaletteView *)self containerView];
-      v13 = [v12 centerXAnchor];
-      v14 = [v11 constraintEqualToAnchor:v13];
+      toolPreview = [(PKPaletteView *)self toolPreview];
+      centerXAnchor = [toolPreview centerXAnchor];
+      containerView = [(PKPaletteView *)self containerView];
+      centerXAnchor2 = [containerView centerXAnchor];
+      v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [(PKPaletteView *)self setToolPreviewCenterXConstraint:v14];
 
-      v15 = [(PKPaletteView *)self toolPreview];
-      v16 = [v15 centerYAnchor];
-      v17 = [v5 centerYAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
-      [(PKPaletteView *)self setToolPreviewCenterYConstraint:v18];
+      toolPreview2 = [(PKPaletteView *)self toolPreview];
+      centerYAnchor = [toolPreview2 centerYAnchor];
+      centerYAnchor2 = [_selectedToolViewInToolPicker centerYAnchor];
+      v17CenterYAnchor = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+      [(PKPaletteView *)self setToolPreviewCenterYConstraint:v17CenterYAnchor];
     }
 
     else
     {
-      v19 = [(PKPaletteView *)self toolPreview];
-      v20 = [v19 centerXAnchor];
-      v21 = [v5 centerXAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      toolPreview3 = [(PKPaletteView *)self toolPreview];
+      centerXAnchor3 = [toolPreview3 centerXAnchor];
+      centerXAnchor4 = [_selectedToolViewInToolPicker centerXAnchor];
+      v22 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
       [(PKPaletteView *)self setToolPreviewCenterXConstraint:v22];
 
-      v15 = [(PKPaletteView *)self toolPreview];
-      v16 = [v15 centerYAnchor];
-      v17 = [(PKPaletteView *)self containerView];
-      v18 = [v17 centerYAnchor];
-      v23 = [v16 constraintEqualToAnchor:v18];
+      toolPreview2 = [(PKPaletteView *)self toolPreview];
+      centerYAnchor = [toolPreview2 centerYAnchor];
+      centerYAnchor2 = [(PKPaletteView *)self containerView];
+      v17CenterYAnchor = [centerYAnchor2 centerYAnchor];
+      v23 = [centerYAnchor constraintEqualToAnchor:v17CenterYAnchor];
       [(PKPaletteView *)self setToolPreviewCenterYConstraint:v23];
     }
 
     v24 = MEMORY[0x1E696ACD8];
-    v25 = [(PKPaletteView *)self toolPreviewCenterXConstraint];
-    v28[0] = v25;
-    v26 = [(PKPaletteView *)self toolPreviewCenterYConstraint];
-    v28[1] = v26;
+    toolPreviewCenterXConstraint2 = [(PKPaletteView *)self toolPreviewCenterXConstraint];
+    v28[0] = toolPreviewCenterXConstraint2;
+    toolPreviewCenterYConstraint2 = [(PKPaletteView *)self toolPreviewCenterYConstraint];
+    v28[1] = toolPreviewCenterYConstraint2;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
     [v24 activateConstraints:v27];
   }
 }
 
-- (void)_updateToolPreviewContentsAnimated:(BOOL)a3
+- (void)_updateToolPreviewContentsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-  v8 = [v5 tool];
+  animatedCopy = animated;
+  _selectedToolViewInToolPicker = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+  tool = [_selectedToolViewInToolPicker tool];
 
-  v6 = [(PKPaletteView *)self toolPreview];
-  [v6 showPreviewForTool:v8 animated:v3];
+  toolPreview = [(PKPaletteView *)self toolPreview];
+  [toolPreview showPreviewForTool:tool animated:animatedCopy];
 
-  v7 = [(PKPaletteView *)self toolPreview];
-  [v7 setEdgeLocation:4];
+  toolPreview2 = [(PKPaletteView *)self toolPreview];
+  [toolPreview2 setEdgeLocation:4];
 }
 
-- (void)undoRedoViewDidTapUndo:(id)a3
+- (void)undoRedoViewDidTapUndo:(id)undo
 {
-  v4 = [(PKDrawingPaletteView *)self undoManager];
-  [v4 undo];
+  undoManager = [(PKDrawingPaletteView *)self undoManager];
+  [undoManager undo];
 
   [(PKDrawingPaletteView *)self setNeedsLayout];
 
   +[PKTextInputUtilities markAnalyticsForUndo];
 }
 
-- (void)undoRedoViewDidTapRedo:(id)a3
+- (void)undoRedoViewDidTapRedo:(id)redo
 {
-  v4 = [(PKDrawingPaletteView *)self undoManager];
-  [v4 redo];
+  undoManager = [(PKDrawingPaletteView *)self undoManager];
+  [undoManager redo];
 
   [(PKDrawingPaletteView *)self setNeedsLayout];
 
@@ -2301,62 +2301,62 @@ LABEL_17:
 
 - (UIWindowScene)windowScene
 {
-  v2 = [(PKDrawingPaletteView *)self window];
-  v3 = [v2 windowScene];
+  window = [(PKDrawingPaletteView *)self window];
+  windowScene = [window windowScene];
 
-  return v3;
+  return windowScene;
 }
 
-- (void)windowFirstResponderController:(id)a3 didChangeFirstResponder:(id)a4
+- (void)windowFirstResponderController:(id)controller didChangeFirstResponder:(id)responder
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = [v6 _responderWindow];
-  v8 = [v7 windowScene];
-  v9 = [(PKDrawingPaletteView *)self window];
-  v10 = [v9 windowScene];
+  controllerCopy = controller;
+  responderCopy = responder;
+  _responderWindow = [responderCopy _responderWindow];
+  windowScene = [_responderWindow windowScene];
+  window = [(PKDrawingPaletteView *)self window];
+  windowScene2 = [window windowScene];
 
-  if (v8 != v10)
+  if (windowScene != windowScene2)
   {
     goto LABEL_9;
   }
 
-  v11 = [v21 firstResponder];
-  v12 = [v11 isNotesHandwritingResponder];
+  firstResponder = [controllerCopy firstResponder];
+  isNotesHandwritingResponder = [firstResponder isNotesHandwritingResponder];
 
-  if (v12)
+  if (isNotesHandwritingResponder)
   {
-    [(PKDrawingPaletteView *)self _updateHandwritingAssistantItemsFromResponder:v6];
-    v13 = [(PKDrawingPaletteView *)self contentView];
-    [v13 paletteViewStateDidChangeEnableKeyboardButtons:self];
+    [(PKDrawingPaletteView *)self _updateHandwritingAssistantItemsFromResponder:responderCopy];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChangeEnableKeyboardButtons:self];
 
-    v14 = [(PKPaletteView *)self internalDelegate];
-    [v14 paletteViewStateDidChangeEnableKeyboardButtons:self];
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewStateDidChangeEnableKeyboardButtons:self];
   }
 
   else
   {
-    v15 = [(PKDrawingPaletteView *)self selectedTool];
-    v16 = [v15 ink];
-    v17 = [v16 _isHandwritingInk];
+    selectedTool = [(PKDrawingPaletteView *)self selectedTool];
+    v16 = [selectedTool ink];
+    _isHandwritingInk = [v16 _isHandwritingInk];
 
-    if (v17)
+    if (_isHandwritingInk)
     {
       goto LABEL_7;
     }
 
-    v14 = [(PKDrawingPaletteView *)self floatingKeyboardController];
-    [(PKPaletteFloatingKeyboardController *)v14 dismissWithReason:?];
+    internalDelegate = [(PKDrawingPaletteView *)self floatingKeyboardController];
+    [(PKPaletteFloatingKeyboardController *)internalDelegate dismissWithReason:?];
   }
 
 LABEL_7:
-  v18 = [(PKPaletteView *)self delegate];
+  delegate = [(PKPaletteView *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(PKPaletteView *)self delegate];
-    [v20 paletteViewFirstResponderDidUpdate:self];
+    delegate2 = [(PKPaletteView *)self delegate];
+    [delegate2 paletteViewFirstResponderDidUpdate:self];
   }
 
 LABEL_9:
@@ -2364,59 +2364,59 @@ LABEL_9:
 
 - (PKTextInputWindowFirstResponder)windowFirstResponder
 {
-  v2 = [(PKDrawingPaletteView *)self firstResponderController];
-  v3 = [v2 firstResponder];
+  firstResponderController = [(PKDrawingPaletteView *)self firstResponderController];
+  firstResponder = [firstResponderController firstResponder];
 
-  return v3;
+  return firstResponder;
 }
 
-- (void)floatingKeyboardControllerWillShow:(id)a3
+- (void)floatingKeyboardControllerWillShow:(id)show
 {
-  v3 = [(PKDrawingPaletteView *)self firstResponderController];
-  [v3 setPaletteFloatingMode:1];
+  firstResponderController = [(PKDrawingPaletteView *)self firstResponderController];
+  [firstResponderController setPaletteFloatingMode:1];
 }
 
-- (void)floatingKeyboardControllerWillHide:(id)a3
+- (void)floatingKeyboardControllerWillHide:(id)hide
 {
-  v3 = [(PKDrawingPaletteView *)self firstResponderController];
-  [v3 setPaletteFloatingMode:0];
+  firstResponderController = [(PKDrawingPaletteView *)self firstResponderController];
+  [firstResponderController setPaletteFloatingMode:0];
 }
 
-- (void)floatingKeyboardController:(id)a3 didChangeKeyboardType:(int64_t)a4
+- (void)floatingKeyboardController:(id)controller didChangeKeyboardType:(int64_t)type
 {
-  v5 = [(PKDrawingPaletteView *)self contentView:a3];
+  v5 = [(PKDrawingPaletteView *)self contentView:controller];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PKDrawingPaletteView *)self contentView];
-    [v7 paletteViewStateDidChangeFloatingKeyboardType:self];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChangeFloatingKeyboardType:self];
   }
 }
 
-- (BOOL)toolPicker:(id)a3 canSelectTool:(id)a4 fromTap:(BOOL)a5
+- (BOOL)toolPicker:(id)picker canSelectTool:(id)tool fromTap:(BOOL)tap
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [v7 tool];
-  v9 = [v8 isRulerTool];
+  tapCopy = tap;
+  toolCopy = tool;
+  tool = [toolCopy tool];
+  isRulerTool = [tool isRulerTool];
 
-  if (v9)
+  if (isRulerTool)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [(PKDrawingPaletteView *)self _hostingWindow];
-    if (v5)
+    _hostingWindow = [(PKDrawingPaletteView *)self _hostingWindow];
+    if (tapCopy)
     {
-      v12 = [v7 tool];
+      tool2 = [toolCopy tool];
       v10 = 1;
-      if ([v12 isGenerationTool] && v11)
+      if ([tool2 isGenerationTool] && _hostingWindow)
       {
         v13 = +[PKGenerationModelAvailabilityController sharedInstance];
-        v14 = [v13 presentGreymatterAvailabilityAlertControllerInWindow:v11];
+        v14 = [v13 presentGreymatterAvailabilityAlertControllerInWindow:_hostingWindow];
 
         v10 = v14 ^ 1;
       }
@@ -2431,28 +2431,28 @@ LABEL_9:
   return v10;
 }
 
-- (void)toolPicker:(id)a3 didSelectTool:(id)a4 atIndex:(unint64_t)a5
+- (void)toolPicker:(id)picker didSelectTool:(id)tool atIndex:(unint64_t)index
 {
-  v7 = [(PKDrawingPaletteView *)self contentView:a3];
-  v8 = [v7 colorPickerView];
-  [v8 reloadColorsForCurrentColorPickerMode];
+  v7 = [(PKDrawingPaletteView *)self contentView:picker];
+  colorPickerView = [v7 colorPickerView];
+  [colorPickerView reloadColorsForCurrentColorPickerMode];
 
-  [(PKDrawingPaletteView *)self _selectToolAtIndex:a5 updateUI:1 notifyDelegate:1];
+  [(PKDrawingPaletteView *)self _selectToolAtIndex:index updateUI:1 notifyDelegate:1];
 }
 
-- (void)toolPickerDidToggleRulerTool:(id)a3
+- (void)toolPickerDidToggleRulerTool:(id)tool
 {
-  v4 = [(PKPaletteView *)self delegate];
+  delegate = [(PKPaletteView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PKPaletteView *)self delegate];
-    [v6 paletteViewDidToggleRuler:self];
+    delegate2 = [(PKPaletteView *)self delegate];
+    [delegate2 paletteViewDidToggleRuler:self];
   }
 }
 
-- (void)toolPickerViewDidChangeTraitCollectionSizeClass:(id)a3
+- (void)toolPickerViewDidChangeTraitCollectionSizeClass:(id)class
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];
@@ -2471,47 +2471,47 @@ void __72__PKDrawingPaletteView_toolPickerViewDidChangeTraitCollectionSizeClass_
   [WeakRetained _updateUI];
 }
 
-- (double)toolPickerView:(id)a3 widthForToolAtIndex:(int64_t)a4 isCompactSize:(BOOL)a5
+- (double)toolPickerView:(id)view widthForToolAtIndex:(int64_t)index isCompactSize:(BOOL)size
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(PKDrawingPaletteView *)self contentView];
-  [v9 toolPickerView:v8 widthForToolAtIndex:a4 isCompactSize:v5];
+  sizeCopy = size;
+  viewCopy = view;
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  [contentView toolPickerView:viewCopy widthForToolAtIndex:index isCompactSize:sizeCopy];
   v11 = v10;
 
   return v11;
 }
 
-- (CGRect)toolPickerViewSourceRectForPopoverPresentation:(id)a3 fromCorner:(unint64_t)a4
+- (CGRect)toolPickerViewSourceRectForPopoverPresentation:(id)presentation fromCorner:(unint64_t)corner
 {
-  [(PKDrawingPaletteView *)self bounds:a3];
+  [(PKDrawingPaletteView *)self bounds:presentation];
 
   return CGRectInset(*&v4, 0.0, -5.0);
 }
 
-- (void)colorPickerDidChangeSelectedColor:(id)a3 isFromExtendedColorPicker:(BOOL)a4 isContinuousColorSelection:(BOOL)a5
+- (void)colorPickerDidChangeSelectedColor:(id)color isFromExtendedColorPicker:(BOOL)picker isContinuousColorSelection:(BOOL)selection
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [a3 selectedColor];
-  if (v8)
+  selectionCopy = selection;
+  pickerCopy = picker;
+  selectedColor = [color selectedColor];
+  if (selectedColor)
   {
-    v9 = v8;
-    [(PKDrawingPaletteView *)self _setSelectedColor:v8 isFromExtendedColorPicker:v6 isContinuousColorSelection:v5];
-    v8 = v9;
+    v9 = selectedColor;
+    [(PKDrawingPaletteView *)self _setSelectedColor:selectedColor isFromExtendedColorPicker:pickerCopy isContinuousColorSelection:selectionCopy];
+    selectedColor = v9;
   }
 }
 
-- (void)_setSelectedColor:(id)a3 isFromExtendedColorPicker:(BOOL)a4 isContinuousColorSelection:(BOOL)a5
+- (void)_setSelectedColor:(id)color isFromExtendedColorPicker:(BOOL)picker isContinuousColorSelection:(BOOL)selection
 {
-  v5 = a5;
-  v6 = a4;
-  v22 = a3;
-  v8 = [(PKPaletteView *)self delegate];
+  selectionCopy = selection;
+  pickerCopy = picker;
+  colorCopy = color;
+  delegate = [(PKPaletteView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(PKPaletteView *)self delegate];
-    v10 = [v9 paletteView:self shouldChangeSelectedToolColor:v22];
+    delegate2 = [(PKPaletteView *)self delegate];
+    v10 = [delegate2 paletteView:self shouldChangeSelectedToolColor:colorCopy];
 
     if (!v10)
     {
@@ -2526,26 +2526,26 @@ void __72__PKDrawingPaletteView_toolPickerViewDidChangeTraitCollectionSizeClass_
 
   if (![(PKDrawingPaletteView *)self isEditingStrokeSelection])
   {
-    [(PKDrawingPaletteView *)self _setSelectedToolColor:v22 ignoreColorOpacity:!v6 isContinuousColorSelection:v5];
+    [(PKDrawingPaletteView *)self _setSelectedToolColor:colorCopy ignoreColorOpacity:!pickerCopy isContinuousColorSelection:selectionCopy];
   }
 
-  v12 = [(PKDrawingPaletteView *)self selectedTool];
-  v13 = [v12 _isLassoTool];
+  selectedTool = [(PKDrawingPaletteView *)self selectedTool];
+  _isLassoTool = [selectedTool _isLassoTool];
 
-  if (v13)
+  if (_isLassoTool)
   {
     editingStrokeSelection = self->_editingStrokeSelection;
-    v15 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-    [v15 setSupportsDisplayingSelectedColor:editingStrokeSelection];
+    _selectedToolViewInToolPicker = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+    [_selectedToolViewInToolPicker setSupportsDisplayingSelectedColor:editingStrokeSelection];
 
-    [(PKDrawingPaletteView *)self _setSelectedToolColor:v22 ignoreColorOpacity:!v6 isContinuousColorSelection:v5];
+    [(PKDrawingPaletteView *)self _setSelectedToolColor:colorCopy ignoreColorOpacity:!pickerCopy isContinuousColorSelection:selectionCopy];
   }
 
   v11 = 0;
 LABEL_10:
-  v16 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-  v17 = [v16 tool];
-  if (([v17 isLassoTool] & 1) != 0 || -[PKDrawingPaletteView isEditingStrokeSelection](self, "isEditingStrokeSelection"))
+  _selectedToolViewInToolPicker2 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+  tool = [_selectedToolViewInToolPicker2 tool];
+  if (([tool isLassoTool] & 1) != 0 || -[PKDrawingPaletteView isEditingStrokeSelection](self, "isEditingStrokeSelection"))
   {
   }
 
@@ -2559,13 +2559,13 @@ LABEL_10:
     }
   }
 
-  v18 = [(PKPaletteView *)self delegate];
+  delegate3 = [(PKPaletteView *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(PKPaletteView *)self delegate];
-    [v20 paletteView:self didChangeColor:v22];
+    delegate4 = [(PKPaletteView *)self delegate];
+    [delegate4 paletteView:self didChangeColor:colorCopy];
   }
 
 LABEL_16:
@@ -2573,17 +2573,17 @@ LABEL_16:
   [(PKDrawingPaletteView *)self _updateToolPreviewContentsAnimated:0];
 }
 
-- (BOOL)colorPickerShouldDisplayColorSelection:(id)a3
+- (BOOL)colorPickerShouldDisplayColorSelection:(id)selection
 {
-  v3 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-  v4 = [v3 supportsDisplayingSelectedColor];
+  _selectedToolViewInToolPicker = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+  supportsDisplayingSelectedColor = [_selectedToolViewInToolPicker supportsDisplayingSelectedColor];
 
-  return v4;
+  return supportsDisplayingSelectedColor;
 }
 
-- (void)_reloadImageForToolItem:(id)a3
+- (void)_reloadImageForToolItem:(id)item
 {
-  v20 = a3;
+  itemCopy = item;
   v4 = [(NSArray *)self->_tools count];
   if (v4)
   {
@@ -2592,9 +2592,9 @@ LABEL_16:
     while (1)
     {
       v7 = [(NSArray *)self->_tools objectAtIndexedSubscript:v6];
-      v8 = [v7 _toolPickerItemIdentifier];
-      v9 = [v20 identifier];
-      v10 = [v8 isEqualToString:v9];
+      _toolPickerItemIdentifier = [v7 _toolPickerItemIdentifier];
+      identifier = [itemCopy identifier];
+      v10 = [_toolPickerItemIdentifier isEqualToString:identifier];
 
       if (v10)
       {
@@ -2607,76 +2607,76 @@ LABEL_16:
       }
     }
 
-    v11 = [(PKDrawingPaletteView *)self contentView];
-    v12 = [v11 toolPickerView];
-    v13 = [v12 toolViews];
-    v14 = [v13 objectAtIndexedSubscript:v6];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    toolPickerView = [contentView toolPickerView];
+    toolViews = [toolPickerView toolViews];
+    v14 = [toolViews objectAtIndexedSubscript:v6];
     [v14 _setToolImageNeedsReload];
   }
 
 LABEL_7:
-  v15 = [(PKPaletteView *)self toolPreview];
-  v16 = [v15 itemIdentifier];
-  v17 = [v20 identifier];
-  v18 = [v16 isEqualToString:v17];
+  toolPreview = [(PKPaletteView *)self toolPreview];
+  itemIdentifier = [toolPreview itemIdentifier];
+  identifier2 = [itemCopy identifier];
+  v18 = [itemIdentifier isEqualToString:identifier2];
 
   if (v18)
   {
-    v19 = [(PKPaletteView *)self toolPreview];
-    [v19 setToolImageNeedsReload];
+    toolPreview2 = [(PKPaletteView *)self toolPreview];
+    [toolPreview2 setToolImageNeedsReload];
   }
 }
 
-- (void)hostView:(id)a3 willDockPaletteToPosition:(int64_t)a4 prepareForExpansion:(BOOL)a5
+- (void)hostView:(id)view willDockPaletteToPosition:(int64_t)position prepareForExpansion:(BOOL)expansion
 {
   v8.receiver = self;
   v8.super_class = PKDrawingPaletteView;
-  [(PKPaletteView *)&v8 hostView:a3 willDockPaletteToPosition:a4 prepareForExpansion:a5];
-  v6 = [(PKDrawingPaletteView *)self contentView];
-  v7 = [v6 toolPickerView];
-  [v7 updateClippingViewEdgesVisibility];
+  [(PKPaletteView *)&v8 hostView:view willDockPaletteToPosition:position prepareForExpansion:expansion];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView = [contentView toolPickerView];
+  [toolPickerView updateClippingViewEdgesVisibility];
 }
 
-- (void)hostView:(id)a3 didDockPaletteToPosition:(int64_t)a4
+- (void)hostView:(id)view didDockPaletteToPosition:(int64_t)position
 {
   v5.receiver = self;
   v5.super_class = PKDrawingPaletteView;
-  [(PKPaletteView *)&v5 hostView:a3 didDockPaletteToPosition:a4];
+  [(PKPaletteView *)&v5 hostView:view didDockPaletteToPosition:position];
   [(PKPaletteView *)self _saveOptions];
 }
 
-- (void)_willDockPaletteToEdge:(unint64_t)a3 prepareForExpansion:(BOOL)a4 isPaletteChangingOrientation:(BOOL)a5
+- (void)_willDockPaletteToEdge:(unint64_t)edge prepareForExpansion:(BOOL)expansion isPaletteChangingOrientation:(BOOL)orientation
 {
-  v5 = a5;
-  v6 = a4;
+  orientationCopy = orientation;
+  expansionCopy = expansion;
   v12.receiver = self;
   v12.super_class = PKDrawingPaletteView;
   [PKPaletteView _willDockPaletteToEdge:sel__willDockPaletteToEdge_prepareForExpansion_isPaletteChangingOrientation_ prepareForExpansion:? isPaletteChangingOrientation:?];
-  v9 = [(PKDrawingPaletteView *)self contentView];
-  [v9 setEdgeLocation:a3];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  [contentView setEdgeLocation:edge];
 
-  v10 = [(PKDrawingPaletteView *)self contentView];
-  [v10 setCornerLocation:-1];
+  contentView2 = [(PKDrawingPaletteView *)self contentView];
+  [contentView2 setCornerLocation:-1];
 
   [(PKDrawingPaletteView *)self setNeedsLayout];
   [(PKDrawingPaletteView *)self layoutIfNeeded];
-  if (v6)
+  if (expansionCopy)
   {
-    if (v5)
+    if (orientationCopy)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __96__PKDrawingPaletteView__willDockPaletteToEdge_prepareForExpansion_isPaletteChangingOrientation___block_invoke;
       v11[3] = &unk_1E82D7170;
       v11[4] = self;
-      v11[5] = a3;
+      v11[5] = edge;
       [MEMORY[0x1E69DD250] _performWithoutRetargetingAnimations:v11];
     }
 
     else
     {
-      [(PKDrawingPaletteView *)self _centerPaletteContainerSubviewToCurrentlySelectedToolForEdge:a3 needsContainerViewLayout:0];
-      [(PKDrawingPaletteView *)self _updateToolPreviewPositionForEdge:a3];
+      [(PKDrawingPaletteView *)self _centerPaletteContainerSubviewToCurrentlySelectedToolForEdge:edge needsContainerViewLayout:0];
+      [(PKDrawingPaletteView *)self _updateToolPreviewPositionForEdge:edge];
       [(PKDrawingPaletteView *)self _updateToolPreviewContentsAnimated:0];
     }
   }
@@ -2692,131 +2692,131 @@ uint64_t __96__PKDrawingPaletteView__willDockPaletteToEdge_prepareForExpansion_i
   return [v2 layoutIfNeeded];
 }
 
-- (void)_willDockPaletteToCorner:(unint64_t)a3
+- (void)_willDockPaletteToCorner:(unint64_t)corner
 {
   v8.receiver = self;
   v8.super_class = PKDrawingPaletteView;
   [(PKPaletteView *)&v8 _willDockPaletteToCorner:?];
-  v5 = [(PKDrawingPaletteView *)self contentView];
-  [v5 dismissPalettePopoverWithCompletion:0];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  [contentView dismissPalettePopoverWithCompletion:0];
 
   [(PKDrawingPaletteView *)self _updateToolPreviewPositionForEdge:[(PKPaletteView *)self lastPaletteEdgePositionWhileDragging]];
   [(PKDrawingPaletteView *)self _updateToolPreviewContentsAnimated:0];
-  v6 = [(PKDrawingPaletteView *)self contentView];
-  [v6 setCornerLocation:a3];
+  contentView2 = [(PKDrawingPaletteView *)self contentView];
+  [contentView2 setCornerLocation:corner];
 
-  v7 = [(PKDrawingPaletteView *)self contentView];
-  [v7 setEdgeLocation:15];
+  contentView3 = [(PKDrawingPaletteView *)self contentView];
+  [contentView3 setEdgeLocation:15];
 }
 
-- (void)_centerPaletteContainerSubviewToCurrentlySelectedToolForEdge:(unint64_t)a3 needsContainerViewLayout:(BOOL)a4
+- (void)_centerPaletteContainerSubviewToCurrentlySelectedToolForEdge:(unint64_t)edge needsContainerViewLayout:(BOOL)layout
 {
-  v4 = a4;
-  v28 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
-  if (v28 && v4)
+  layoutCopy = layout;
+  _selectedToolViewInToolPicker = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+  if (_selectedToolViewInToolPicker && layoutCopy)
   {
-    v7 = [(PKPaletteView *)self containerView];
-    [v7 layoutIfNeeded];
+    containerView = [(PKPaletteView *)self containerView];
+    [containerView layoutIfNeeded];
   }
 
-  else if (!v28)
+  else if (!_selectedToolViewInToolPicker)
   {
     goto LABEL_10;
   }
 
-  v8 = [(PKDrawingPaletteView *)self contentView];
-  v9 = [v8 toolPickerView];
-  [v9 scrollSelectedToolViewToVisibleAnimated:0];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView = [contentView toolPickerView];
+  [toolPickerView scrollSelectedToolViewToVisibleAnimated:0];
 
-  v10 = [(PKPaletteView *)self containerView];
-  [v28 center];
+  containerView2 = [(PKPaletteView *)self containerView];
+  [_selectedToolViewInToolPicker center];
   v12 = v11;
   v14 = v13;
-  v15 = [v28 superview];
-  [v10 convertPoint:v15 fromView:{v12, v14}];
+  superview = [_selectedToolViewInToolPicker superview];
+  [containerView2 convertPoint:superview fromView:{v12, v14}];
   v17 = v16;
   v19 = v18;
 
-  [(PKDrawingPaletteView *)self paletteSizeForEdge:a3];
-  if (a3 == 8 || a3 == 2)
+  [(PKDrawingPaletteView *)self paletteSizeForEdge:edge];
+  if (edge == 8 || edge == 2)
   {
     v22 = v21 * 0.5 - v19;
-    v23 = [(PKPaletteView *)self paletteContainerCenterYConstraint];
-    [v23 setConstant:v22];
+    paletteContainerCenterYConstraint = [(PKPaletteView *)self paletteContainerCenterYConstraint];
+    [paletteContainerCenterYConstraint setConstant:v22];
 
-    v24 = [(PKPaletteView *)self paletteContainerCenterXConstraint];
+    paletteContainerCenterXConstraint = [(PKPaletteView *)self paletteContainerCenterXConstraint];
   }
 
   else
   {
     v25 = v20 * 0.5 - v17;
-    v26 = [(PKPaletteView *)self paletteContainerCenterXConstraint];
-    [v26 setConstant:v25];
+    paletteContainerCenterXConstraint2 = [(PKPaletteView *)self paletteContainerCenterXConstraint];
+    [paletteContainerCenterXConstraint2 setConstant:v25];
 
-    v24 = [(PKPaletteView *)self paletteContainerCenterYConstraint];
+    paletteContainerCenterXConstraint = [(PKPaletteView *)self paletteContainerCenterYConstraint];
   }
 
-  v27 = v24;
-  [v24 setConstant:0.0];
+  v27 = paletteContainerCenterXConstraint;
+  [paletteContainerCenterXConstraint setConstant:0.0];
 
 LABEL_10:
 }
 
-- (void)toolPreviewDidChangeToolColor:(id)a3 isContinuousColorSelection:(BOOL)a4
+- (void)toolPreviewDidChangeToolColor:(id)color isContinuousColorSelection:(BOOL)selection
 {
-  v4 = a4;
-  v6 = [a3 toolColor];
-  if (v6)
+  selectionCopy = selection;
+  toolColor = [color toolColor];
+  if (toolColor)
   {
-    v7 = v6;
-    [(PKDrawingPaletteView *)self _setSelectedToolColor:v6 ignoreColorOpacity:0 isContinuousColorSelection:v4];
+    v7 = toolColor;
+    [(PKDrawingPaletteView *)self _setSelectedToolColor:toolColor ignoreColorOpacity:0 isContinuousColorSelection:selectionCopy];
     [(PKDrawingPaletteView *)self updateColorPickerSelectedColor];
-    v6 = v7;
+    toolColor = v7;
   }
 }
 
-- (void)_didTapPlusButton:(id)a3
+- (void)_didTapPlusButton:(id)button
 {
-  v6 = a3;
-  v4 = [(PKDrawingPaletteView *)self plusButtonViewController];
+  buttonCopy = button;
+  plusButtonViewController = [(PKDrawingPaletteView *)self plusButtonViewController];
 
-  if (v4)
+  if (plusButtonViewController)
   {
-    v5 = [(PKDrawingPaletteView *)self plusButtonViewController];
-    [(PKDrawingPaletteView *)self _presentViewController:v5 asPopoverFromView:v6];
+    plusButtonViewController2 = [(PKDrawingPaletteView *)self plusButtonViewController];
+    [(PKDrawingPaletteView *)self _presentViewController:plusButtonViewController2 asPopoverFromView:buttonCopy];
   }
 
   else
   {
-    v5 = [(PKDrawingPaletteView *)self annotationDelegate];
-    [v5 paletteViewDidSelectPlusButton:self];
+    plusButtonViewController2 = [(PKDrawingPaletteView *)self annotationDelegate];
+    [plusButtonViewController2 paletteViewDidSelectPlusButton:self];
   }
 }
 
-- (void)_didTapTextButton:(id)a3
+- (void)_didTapTextButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PKDrawingPaletteView *)self textButtonViewController];
-  [(PKDrawingPaletteView *)self _presentViewController:v5 asPopoverFromView:v4];
+  buttonCopy = button;
+  textButtonViewController = [(PKDrawingPaletteView *)self textButtonViewController];
+  [(PKDrawingPaletteView *)self _presentViewController:textButtonViewController asPopoverFromView:buttonCopy];
 }
 
-- (void)_didTapShapeButton:(id)a3
+- (void)_didTapShapeButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PKDrawingPaletteView *)self shapeButtonViewController];
-  [(PKDrawingPaletteView *)self _presentViewController:v5 asPopoverFromView:v4];
+  buttonCopy = button;
+  shapeButtonViewController = [(PKDrawingPaletteView *)self shapeButtonViewController];
+  [(PKDrawingPaletteView *)self _presentViewController:shapeButtonViewController asPopoverFromView:buttonCopy];
 }
 
-- (void)_presentViewController:(id)a3 asPopoverFromItem:(id)a4
+- (void)_presentViewController:(id)controller asPopoverFromItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7 || (objc_opt_respondsToSelector() & 1) == 0)
+  controllerCopy = controller;
+  itemCopy = item;
+  if (!itemCopy || (objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v8 = [v7 valueForKey:@"view"];
+  v8 = [itemCopy valueForKey:@"view"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2831,8 +2831,8 @@ LABEL_7:
     v10[1] = 3221225472;
     v10[2] = __65__PKDrawingPaletteView__presentViewController_asPopoverFromItem___block_invoke_2;
     v10[3] = &unk_1E82DC9E8;
-    v11 = v7;
-    [(PKDrawingPaletteView *)self _presentViewController:v6 configurationBlock:v10];
+    v11 = itemCopy;
+    [(PKDrawingPaletteView *)self _presentViewController:controllerCopy configurationBlock:v10];
     v9 = v11;
     goto LABEL_8;
   }
@@ -2844,7 +2844,7 @@ LABEL_7:
   v12[4] = self;
   v13 = v8;
   v9 = v8;
-  [(PKDrawingPaletteView *)self _presentViewController:v6 configurationBlock:v12];
+  [(PKDrawingPaletteView *)self _presentViewController:controllerCopy configurationBlock:v12];
 
 LABEL_8:
 }
@@ -2861,25 +2861,25 @@ void __65__PKDrawingPaletteView__presentViewController_asPopoverFromItem___block
   }
 }
 
-- (void)_presentViewController:(void *)a3 configurationBlock:
+- (void)_presentViewController:(void *)controller configurationBlock:
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  controllerCopy = controller;
+  if (self)
   {
     if (!v5)
     {
       goto LABEL_7;
     }
 
-    v7 = [a1 palettePopoverPresentingController];
-    if (!v7)
+    palettePopoverPresentingController = [self palettePopoverPresentingController];
+    if (!palettePopoverPresentingController)
     {
       goto LABEL_7;
     }
 
-    v8 = v7;
+    v8 = palettePopoverPresentingController;
     v9 = v5;
     if ([v9 isBeingPresented])
     {
@@ -2887,40 +2887,40 @@ void __65__PKDrawingPaletteView__presentViewController_asPopoverFromItem___block
       goto LABEL_7;
     }
 
-    v10 = [v9 isBeingDismissed];
+    isBeingDismissed = [v9 isBeingDismissed];
 
-    if (v10)
+    if (isBeingDismissed)
     {
 LABEL_7:
-      v11 = os_log_create("com.apple.pencilkit", "PKPalette");
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      palettePopoverPresentingController2 = os_log_create("com.apple.pencilkit", "PKPalette");
+      if (os_log_type_enabled(palettePopoverPresentingController2, OS_LOG_TYPE_DEFAULT))
       {
         v24 = 138412290;
         v25 = v5;
-        _os_log_impl(&dword_1C7CCA000, v11, OS_LOG_TYPE_DEFAULT, "Can't present view controller: %@", &v24, 0xCu);
+        _os_log_impl(&dword_1C7CCA000, palettePopoverPresentingController2, OS_LOG_TYPE_DEFAULT, "Can't present view controller: %@", &v24, 0xCu);
       }
 
       goto LABEL_9;
     }
 
     [v9 setModalPresentationStyle:7];
-    v12 = [v9 popoverPresentationController];
-    v6[2](v6, v12);
+    popoverPresentationController = [v9 popoverPresentationController];
+    controllerCopy[2](controllerCopy, popoverPresentationController);
 
-    v13 = [v9 popoverPresentationController];
-    [v13 setDelegate:a1];
+    popoverPresentationController2 = [v9 popoverPresentationController];
+    [popoverPresentationController2 setDelegate:self];
 
-    v14 = [a1 traitCollection];
-    v15 = [a1 window];
-    v16 = [v15 windowScene];
-    if (PKUseCompactSize(v14, v16))
+    traitCollection = [self traitCollection];
+    window = [self window];
+    windowScene = [window windowScene];
+    if (PKUseCompactSize(traitCollection, windowScene))
     {
       v17 = 2;
     }
 
     else
     {
-      v18 = [a1 palettePosition] - 1;
+      v18 = [self palettePosition] - 1;
       if (v18 > 7)
       {
         v17 = 15;
@@ -2932,41 +2932,41 @@ LABEL_7:
       }
     }
 
-    v19 = [v9 popoverPresentationController];
-    [v19 setPermittedArrowDirections:v17];
+    popoverPresentationController3 = [v9 popoverPresentationController];
+    [popoverPresentationController3 setPermittedArrowDirections:v17];
 
-    v20 = [v9 popoverPresentationController];
-    [v20 _setShouldDisableInteractionDuringTransitions:0];
+    popoverPresentationController4 = [v9 popoverPresentationController];
+    [popoverPresentationController4 _setShouldDisableInteractionDuringTransitions:0];
 
-    v21 = [a1 palettePopoverPassthroughViews];
-    v22 = [v9 popoverPresentationController];
-    [v22 setPassthroughViews:v21];
+    palettePopoverPassthroughViews = [self palettePopoverPassthroughViews];
+    popoverPresentationController5 = [v9 popoverPresentationController];
+    [popoverPresentationController5 setPassthroughViews:palettePopoverPassthroughViews];
 
-    v23 = [v9 popoverPresentationController];
-    [v23 _setIgnoresKeyboardNotifications:1];
+    popoverPresentationController6 = [v9 popoverPresentationController];
+    [popoverPresentationController6 _setIgnoresKeyboardNotifications:1];
 
-    [a1 updatePalettePopover:v9];
-    if ([a1 shouldPalettePresentPopover] && (objc_msgSend(a1, "isPalettePresentingPopover") & 1) == 0)
+    [self updatePalettePopover:v9];
+    if ([self shouldPalettePresentPopover] && (objc_msgSend(self, "isPalettePresentingPopover") & 1) == 0)
     {
-      [a1 setPresentedPopoverViewController:v9];
-      v11 = [a1 palettePopoverPresentingController];
-      [v11 presentViewController:v9 animated:1 completion:0];
+      [self setPresentedPopoverViewController:v9];
+      palettePopoverPresentingController2 = [self palettePopoverPresentingController];
+      [palettePopoverPresentingController2 presentViewController:v9 animated:1 completion:0];
 LABEL_9:
     }
   }
 }
 
-- (void)_presentViewController:(id)a3 asPopoverFromView:(id)a4
+- (void)_presentViewController:(id)controller asPopoverFromView:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__PKDrawingPaletteView__presentViewController_asPopoverFromView___block_invoke;
   v8[3] = &unk_1E82DC9C0;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
-  [(PKDrawingPaletteView *)self _presentViewController:a3 configurationBlock:v8];
+  v9 = viewCopy;
+  selfCopy = self;
+  v7 = viewCopy;
+  [(PKDrawingPaletteView *)self _presentViewController:controller configurationBlock:v8];
 }
 
 void __65__PKDrawingPaletteView__presentViewController_asPopoverFromView___block_invoke(uint64_t a1, void *a2)
@@ -2992,75 +2992,75 @@ void __65__PKDrawingPaletteView__presentViewController_asPopoverFromView___block
   [v11 setSourceView:*(a1 + 32)];
 }
 
-- (void)additionalOptionsViewDidPressTapToRadarButton:(id)a3
+- (void)additionalOptionsViewDidPressTapToRadarButton:(id)button
 {
-  v3 = [(PKDrawingPaletteView *)self tapToRadarCommand];
-  [v3 execute];
+  tapToRadarCommand = [(PKDrawingPaletteView *)self tapToRadarCommand];
+  [tapToRadarCommand execute];
 }
 
-- (id)keyboardSelectionMenuForAdditionalOptionsView:(id)a3
+- (id)keyboardSelectionMenuForAdditionalOptionsView:(id)view
 {
-  v3 = [(PKDrawingPaletteView *)self floatingKeyboardController];
-  v4 = [(PKPaletteFloatingKeyboardController *)v3 keyboardSelectionMenu];
+  floatingKeyboardController = [(PKDrawingPaletteView *)self floatingKeyboardController];
+  keyboardSelectionMenu = [(PKPaletteFloatingKeyboardController *)floatingKeyboardController keyboardSelectionMenu];
 
-  return v4;
+  return keyboardSelectionMenu;
 }
 
 - (void)_presentOrDismissFloatingKeyboard
 {
-  v2 = [(PKDrawingPaletteView *)self floatingKeyboardController];
-  [(PKPaletteFloatingKeyboardController *)v2 presentOrDismissIfPresented];
+  floatingKeyboardController = [(PKDrawingPaletteView *)self floatingKeyboardController];
+  [(PKPaletteFloatingKeyboardController *)floatingKeyboardController presentOrDismissIfPresented];
 }
 
-- (id)keyboardSelectionMenuForContentView:(id)a3
+- (id)keyboardSelectionMenuForContentView:(id)view
 {
-  v3 = [(PKDrawingPaletteView *)self floatingKeyboardController];
-  v4 = [(PKPaletteFloatingKeyboardController *)v3 keyboardSelectionMenu];
+  floatingKeyboardController = [(PKDrawingPaletteView *)self floatingKeyboardController];
+  keyboardSelectionMenu = [(PKPaletteFloatingKeyboardController *)floatingKeyboardController keyboardSelectionMenu];
 
-  return v4;
+  return keyboardSelectionMenu;
 }
 
-- (void)contentViewDidResize:(id)a3
+- (void)contentViewDidResize:(id)resize
 {
-  v4 = [(PKPaletteView *)self internalDelegate];
-  [v4 paletteViewStateDidChange:self];
+  internalDelegate = [(PKPaletteView *)self internalDelegate];
+  [internalDelegate paletteViewStateDidChange:self];
 
-  v5 = [(PKPaletteView *)self delegate];
-  [v5 paletteViewContentSizeDidChange:self];
+  delegate = [(PKPaletteView *)self delegate];
+  [delegate paletteViewContentSizeDidChange:self];
 }
 
-- (void)contentViewDidSelectCloseButton:(id)a3
+- (void)contentViewDidSelectCloseButton:(id)button
 {
-  v4 = [(PKPaletteView *)self delegate];
+  delegate = [(PKPaletteView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PKPaletteView *)self delegate];
-    [v6 paletteViewDidTapCloseButton:self];
+    delegate2 = [(PKPaletteView *)self delegate];
+    [delegate2 paletteViewDidTapCloseButton:self];
   }
 }
 
-- (void)_performPencilInteraction:(id)a3 preferredAction:(int64_t)a4
+- (void)_performPencilInteraction:(id)interaction preferredAction:(int64_t)action
 {
-  v6 = [(PKDrawingPaletteView *)self windowScene];
+  windowScene = [(PKDrawingPaletteView *)self windowScene];
 
-  if (v6)
+  if (windowScene)
   {
-    v7 = [(PKDrawingPaletteView *)self windowScene];
-    v8 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:v7];
-    v9 = [v8 _paletteViewVisible];
+    windowScene2 = [(PKDrawingPaletteView *)self windowScene];
+    v8 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:windowScene2];
+    _paletteViewVisible = [v8 _paletteViewVisible];
 
-    if (v9)
+    if (_paletteViewVisible)
     {
-      v10 = os_log_create("com.apple.pencilkit", "PKPalette");
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      internalDelegate = os_log_create("com.apple.pencilkit", "PKPalette");
+      if (os_log_type_enabled(internalDelegate, OS_LOG_TYPE_DEFAULT))
       {
         v57 = 0;
         v11 = "Ignore pencil interaction";
         v12 = &v57;
 LABEL_13:
-        _os_log_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_DEFAULT, v11, v12, 2u);
+        _os_log_impl(&dword_1C7CCA000, internalDelegate, OS_LOG_TYPE_DEFAULT, v11, v12, 2u);
         goto LABEL_54;
       }
 
@@ -3077,8 +3077,8 @@ LABEL_13:
 
   if (![(PKDrawingPaletteView *)self _canHandlePencilInteraction])
   {
-    v10 = os_log_create("com.apple.pencilkit", "PKPalette");
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    internalDelegate = os_log_create("com.apple.pencilkit", "PKPalette");
+    if (os_log_type_enabled(internalDelegate, OS_LOG_TYPE_DEFAULT))
     {
       *v55 = 0;
       v11 = "Can't handle pencil interaction.";
@@ -3091,40 +3091,40 @@ LABEL_54:
     return;
   }
 
-  v14 = [(PKPaletteView *)self hoverDelegate];
-  [v14 paletteViewPencilDidTap:self];
+  hoverDelegate = [(PKPaletteView *)self hoverDelegate];
+  [hoverDelegate paletteViewPencilDidTap:self];
 
   if ([(PKPaletteView *)self isVisible]&& ([(PKPaletteView *)self palettePosition]- 1) <= 3)
   {
-    v14 = [(PKPaletteView *)self paletteViewHosting];
-    v15 = [v14 tooltipPresentationHandle];
+    hoverDelegate = [(PKPaletteView *)self paletteViewHosting];
+    tooltipPresentationHandle = [hoverDelegate tooltipPresentationHandle];
     v16 = 1;
   }
 
   else
   {
     v16 = 0;
-    v15 = 0;
+    tooltipPresentationHandle = 0;
   }
 
-  v17 = [(PKDrawingPaletteView *)self contentView];
-  v18 = [v17 toolPickerView];
-  [v18 setTooltipPresentationHandle:v15];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView = [contentView toolPickerView];
+  [toolPickerView setTooltipPresentationHandle:tooltipPresentationHandle];
 
   if (v16)
   {
   }
 
-  if (a4 > 2)
+  if (action > 2)
   {
-    if (a4 == 3)
+    if (action == 3)
     {
       [(PKDrawingPaletteView *)self _performPencilPreferredActionShowColorPalette];
     }
 
     else
     {
-      if (a4 != 4)
+      if (action != 4)
       {
 LABEL_24:
         v19 = os_log_create("com.apple.pencilkit", "PKPalette");
@@ -3145,32 +3145,32 @@ LABEL_44:
     goto LABEL_51;
   }
 
-  if (a4 == 1)
+  if (action == 1)
   {
     [(PKDrawingPaletteView *)self _performPencilPreferredActionSwitchEraser];
     goto LABEL_28;
   }
 
-  if (a4 != 2)
+  if (action != 2)
   {
     goto LABEL_24;
   }
 
   [(PKDrawingPaletteView *)self _performPencilPreferredActionSwitchPrevious];
 LABEL_28:
-  v20 = [(PKPaletteView *)self paletteViewHosting];
-  v21 = [v20 hostingView];
+  paletteViewHosting = [(PKPaletteView *)self paletteViewHosting];
+  hostingView = [paletteViewHosting hostingView];
 
-  v22 = [(PKDrawingPaletteView *)self selectedToolView];
-  v23 = [v22 toolName];
+  selectedToolView = [(PKDrawingPaletteView *)self selectedToolView];
+  toolName = [selectedToolView toolName];
 
-  v24 = [(PKPaletteView *)self hoverDelegate];
-  [v24 paletteViewPencilDidTap:self];
+  hoverDelegate2 = [(PKPaletteView *)self hoverDelegate];
+  [hoverDelegate2 paletteViewPencilDidTap:self];
 
-  v25 = [(PKPaletteView *)self _paletteViewHoverView];
-  if (v25)
+  _paletteViewHoverView = [(PKPaletteView *)self _paletteViewHoverView];
+  if (_paletteViewHoverView)
   {
-    v26 = v21 == 0;
+    v26 = hostingView == 0;
   }
 
   else
@@ -3184,24 +3184,24 @@ LABEL_28:
     [(PKPaletteView *)self _paletteViewHoverLocation];
     v28 = *MEMORY[0x1E695F060];
     v29 = *(MEMORY[0x1E695F060] + 8);
-    v32 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v25, v21, v30, v31, *MEMORY[0x1E695F060], v29);
+    v32 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(_paletteViewHoverView, hostingView, v30, v31, *MEMORY[0x1E695F060], v29);
     v34 = v33;
-    v35 = [(PKPaletteView *)self paletteViewHosting];
-    v36 = [v35 tooltipPresentationHandle];
-    v37 = [(PKDrawingPaletteView *)self traitCollection];
-    [v36 showWithText:v23 fromView:v21 rect:4 atEdge:v37 offset:v32 traitCollection:{v34, v28, v29, 28.0}];
+    paletteViewHosting2 = [(PKPaletteView *)self paletteViewHosting];
+    tooltipPresentationHandle2 = [paletteViewHosting2 tooltipPresentationHandle];
+    traitCollection = [(PKDrawingPaletteView *)self traitCollection];
+    [tooltipPresentationHandle2 showWithText:toolName fromView:hostingView rect:4 atEdge:traitCollection offset:v32 traitCollection:{v34, v28, v29, 28.0}];
   }
 
-  v38 = [(PKPaletteView *)self hoverDelegate];
-  [v38 paletteViewHoverDidSwitchToolsViaPencilInteraction:self];
+  hoverDelegate3 = [(PKPaletteView *)self hoverDelegate];
+  [hoverDelegate3 paletteViewHoverDidSwitchToolsViaPencilInteraction:self];
 
-  if ((v27 & 1) == 0 && v21 && [(PKPaletteView *)self isVisible]&& ([(PKPaletteView *)self palettePosition]- 5) <= 3)
+  if ((v27 & 1) == 0 && hostingView && [(PKPaletteView *)self isVisible]&& ([(PKPaletteView *)self palettePosition]- 5) <= 3)
   {
     v39 = [(PKPaletteView *)self palettePosition]- 1;
-    v40 = [(PKPaletteView *)self palettePosition];
+    palettePosition = [(PKPaletteView *)self palettePosition];
     if (v39 > 3)
     {
-      if ((v40 - 5) >= 2)
+      if ((palettePosition - 5) >= 2)
       {
         [(PKPaletteView *)self palettePosition];
         v41 = 4;
@@ -3213,149 +3213,149 @@ LABEL_28:
       }
     }
 
-    else if ((v40 - 1) >= 4)
+    else if ((palettePosition - 1) >= 4)
     {
       v41 = 0;
     }
 
     else
     {
-      v41 = qword_1C801F5C0[v40 - 1];
+      v41 = qword_1C801F5C0[palettePosition - 1];
     }
 
-    v43 = [(PKPaletteView *)self paletteViewHosting];
-    v44 = [v43 tooltipPresentationHandle];
+    paletteViewHosting3 = [(PKPaletteView *)self paletteViewHosting];
+    tooltipPresentationHandle3 = [paletteViewHosting3 tooltipPresentationHandle];
     [(PKDrawingPaletteView *)self bounds];
     v46 = v45;
     v48 = v47;
     v50 = v49;
     v52 = v51;
-    v53 = [(PKDrawingPaletteView *)self traitCollection];
-    [v44 showWithText:v23 fromView:self rect:v41 atEdge:v53 offset:v46 traitCollection:{v48, v50, v52, 10.0}];
+    traitCollection2 = [(PKDrawingPaletteView *)self traitCollection];
+    [tooltipPresentationHandle3 showWithText:toolName fromView:self rect:v41 atEdge:traitCollection2 offset:v46 traitCollection:{v48, v50, v52, 10.0}];
   }
 
   v42 = 1;
 LABEL_51:
   if (![(PKPaletteView *)self isVisible]&& (v42 & [(PKDrawingPaletteView *)self isPencilInteractionEnabledWhenNotVisible]) == 1)
   {
-    v10 = [(PKPaletteView *)self internalDelegate];
-    [v10 paletteViewShowFeedbackForToolChange:self];
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewShowFeedbackForToolChange:self];
     goto LABEL_54;
   }
 }
 
-- (void)pencilInteractionDidTap:(id)a3
+- (void)pencilInteractionDidTap:(id)tap
 {
-  v8 = a3;
+  tapCopy = tap;
   v4 = +[PKStatisticsManager sharedStatisticsManager];
   [MEMORY[0x1E69DCD58] preferredTapAction];
   [PKStatisticsManager recordPencilAction:v4 doubleTap:?];
 
-  v5 = [(PKPaletteView *)self delegate];
+  delegate = [(PKPaletteView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PKPaletteView *)self delegate];
-    [v7 paletteView:self didReceivePencilInteractionDidTap:v8];
+    delegate2 = [(PKPaletteView *)self delegate];
+    [delegate2 paletteView:self didReceivePencilInteractionDidTap:tapCopy];
   }
 
-  -[PKDrawingPaletteView _performPencilInteraction:preferredAction:](self, "_performPencilInteraction:preferredAction:", v8, [MEMORY[0x1E69DCD58] preferredTapAction]);
+  -[PKDrawingPaletteView _performPencilInteraction:preferredAction:](self, "_performPencilInteraction:preferredAction:", tapCopy, [MEMORY[0x1E69DCD58] preferredTapAction]);
 }
 
-- (void)_pencilInteraction:(id)a3 didReceiveSqueeze:(id)a4
+- (void)_pencilInteraction:(id)interaction didReceiveSqueeze:(id)squeeze
 {
-  v8 = a3;
-  v6 = a4;
-  if (_os_feature_enabled_impl() && ![v6 _phase])
+  interactionCopy = interaction;
+  squeezeCopy = squeeze;
+  if (_os_feature_enabled_impl() && ![squeezeCopy _phase])
   {
     v7 = +[PKStatisticsManager sharedStatisticsManager];
     [MEMORY[0x1E69DCD58] preferredSqueezeAction];
     [PKStatisticsManager recordPencilAction:v7 doubleTap:?];
 
-    -[PKDrawingPaletteView _performPencilInteraction:preferredAction:](self, "_performPencilInteraction:preferredAction:", v8, [MEMORY[0x1E69DCD58] preferredSqueezeAction]);
+    -[PKDrawingPaletteView _performPencilInteraction:preferredAction:](self, "_performPencilInteraction:preferredAction:", interactionCopy, [MEMORY[0x1E69DCD58] preferredSqueezeAction]);
   }
 }
 
 - (void)_performPencilPreferredActionSwitchEraser
 {
-  v3 = [(PKDrawingPaletteView *)self _canHandlePencilInteraction];
-  v4 = os_log_create("com.apple.pencilkit", "PKPalette");
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  _canHandlePencilInteraction = [(PKDrawingPaletteView *)self _canHandlePencilInteraction];
+  contentView = os_log_create("com.apple.pencilkit", "PKPalette");
+  v5 = os_log_type_enabled(contentView, OS_LOG_TYPE_DEFAULT);
+  if (_canHandlePencilInteraction)
   {
     if (v5)
     {
       *v8 = 0;
-      _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Switch to or from eraser tool", v8, 2u);
+      _os_log_impl(&dword_1C7CCA000, contentView, OS_LOG_TYPE_DEFAULT, "Switch to or from eraser tool", v8, 2u);
     }
 
     [(PKDrawingPaletteView *)self dismissContextMenu];
     [(PKDrawingPaletteView *)self dismissPalettePopoverWithCompletion:0];
     v6 = ([(PKPaletteView *)self palettePosition]- 9) < 0xFFFFFFFFFFFFFFFCLL;
-    v4 = [(PKDrawingPaletteView *)self contentView];
-    v7 = [v4 toolPickerView];
-    [v7 toggleSelectedToolAndEraserAnimated:v6];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    toolPickerView = [contentView toolPickerView];
+    [toolPickerView toggleSelectedToolAndEraserAnimated:v6];
   }
 
   else if (v5)
   {
     *buf = 0;
-    _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Can't handle pencil interaction.", buf, 2u);
+    _os_log_impl(&dword_1C7CCA000, contentView, OS_LOG_TYPE_DEFAULT, "Can't handle pencil interaction.", buf, 2u);
   }
 }
 
 - (void)_performPencilPreferredActionSwitchPrevious
 {
-  v3 = [(PKDrawingPaletteView *)self _canHandlePencilInteraction];
-  v4 = os_log_create("com.apple.pencilkit", "PKPalette");
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  _canHandlePencilInteraction = [(PKDrawingPaletteView *)self _canHandlePencilInteraction];
+  contentView = os_log_create("com.apple.pencilkit", "PKPalette");
+  v5 = os_log_type_enabled(contentView, OS_LOG_TYPE_DEFAULT);
+  if (_canHandlePencilInteraction)
   {
     if (v5)
     {
       *v8 = 0;
-      _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Switch to previous tool", v8, 2u);
+      _os_log_impl(&dword_1C7CCA000, contentView, OS_LOG_TYPE_DEFAULT, "Switch to previous tool", v8, 2u);
     }
 
     [(PKDrawingPaletteView *)self dismissContextMenu];
     [(PKDrawingPaletteView *)self dismissPalettePopoverWithCompletion:0];
     v6 = ([(PKPaletteView *)self palettePosition]- 9) < 0xFFFFFFFFFFFFFFFCLL;
-    v4 = [(PKDrawingPaletteView *)self contentView];
-    v7 = [v4 toolPickerView];
-    [v7 toggleSelectedToolAndLastSelectedToolAnimated:v6];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    toolPickerView = [contentView toolPickerView];
+    [toolPickerView toggleSelectedToolAndLastSelectedToolAnimated:v6];
   }
 
   else if (v5)
   {
     *buf = 0;
-    _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Can't handle pencil interaction.", buf, 2u);
+    _os_log_impl(&dword_1C7CCA000, contentView, OS_LOG_TYPE_DEFAULT, "Can't handle pencil interaction.", buf, 2u);
   }
 }
 
 - (void)_performPencilPreferredActionShowColorPalette
 {
-  v3 = [(PKDrawingPaletteView *)self _canHandlePencilInteraction];
-  v4 = os_log_create("com.apple.pencilkit", "PKPalette");
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  _canHandlePencilInteraction = [(PKDrawingPaletteView *)self _canHandlePencilInteraction];
+  contentView = os_log_create("com.apple.pencilkit", "PKPalette");
+  v5 = os_log_type_enabled(contentView, OS_LOG_TYPE_DEFAULT);
+  if (_canHandlePencilInteraction)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Show color palette", buf, 2u);
+      _os_log_impl(&dword_1C7CCA000, contentView, OS_LOG_TYPE_DEFAULT, "Show color palette", buf, 2u);
     }
 
     [(PKDrawingPaletteView *)self dismissContextMenu];
     if (([(PKPaletteView *)self palettePosition]- 5) <= 3)
     {
-      v6 = [(PKPaletteView *)self toolPreview];
-      [v6 toggleColorSelectionPopover];
+      toolPreview = [(PKPaletteView *)self toolPreview];
+      [toolPreview toggleColorSelectionPopover];
 
       return;
     }
 
-    v4 = [(PKDrawingPaletteView *)self contentView];
+    contentView = [(PKDrawingPaletteView *)self contentView];
     v7[4] = self;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -3366,13 +3366,13 @@ LABEL_51:
     v7[1] = 3221225472;
     v7[2] = __69__PKDrawingPaletteView__performPencilPreferredActionShowColorPalette__block_invoke_2;
     v7[3] = &unk_1E82D7148;
-    [v4 _dismissPalettePopoverUsingConfirmationBlock:v8 completion:v7];
+    [contentView _dismissPalettePopoverUsingConfirmationBlock:v8 completion:v7];
   }
 
   else if (v5)
   {
     *buf = 0;
-    _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Can't handle pencil interaction.", buf, 2u);
+    _os_log_impl(&dword_1C7CCA000, contentView, OS_LOG_TYPE_DEFAULT, "Can't handle pencil interaction.", buf, 2u);
   }
 }
 
@@ -3397,32 +3397,32 @@ void __69__PKDrawingPaletteView__performPencilPreferredActionShowColorPalette__b
 
 - (void)_performPencilPreferredActionShowInkAttributes
 {
-  v3 = [(PKDrawingPaletteView *)self _canHandlePencilInteraction];
-  v4 = os_log_create("com.apple.pencilkit", "PKPalette");
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  _canHandlePencilInteraction = [(PKDrawingPaletteView *)self _canHandlePencilInteraction];
+  contentView = os_log_create("com.apple.pencilkit", "PKPalette");
+  v5 = os_log_type_enabled(contentView, OS_LOG_TYPE_DEFAULT);
+  if (_canHandlePencilInteraction)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Show ink attributes", buf, 2u);
+      _os_log_impl(&dword_1C7CCA000, contentView, OS_LOG_TYPE_DEFAULT, "Show ink attributes", buf, 2u);
     }
 
     [(PKDrawingPaletteView *)self dismissContextMenu];
-    v4 = [(PKDrawingPaletteView *)self contentView];
-    v6 = [v4 colorPickerView];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    colorPickerView = [contentView colorPickerView];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __70__PKDrawingPaletteView__performPencilPreferredActionShowInkAttributes__block_invoke;
     v7[3] = &unk_1E82D7148;
     v7[4] = self;
-    [v6 dismissPalettePopoverWithCompletion:v7];
+    [colorPickerView dismissPalettePopoverWithCompletion:v7];
   }
 
   else if (v5)
   {
     *buf = 0;
-    _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Can't handle pencil interaction.", buf, 2u);
+    _os_log_impl(&dword_1C7CCA000, contentView, OS_LOG_TYPE_DEFAULT, "Can't handle pencil interaction.", buf, 2u);
   }
 }
 
@@ -3456,26 +3456,26 @@ void __70__PKDrawingPaletteView__performPencilPreferredActionShowInkAttributes__
 
 - (BOOL)_canHandlePencilInteraction
 {
-  v2 = self;
+  selfCopy = self;
   if ([(PKPaletteView *)self isVisible])
   {
-    v3 = [(PKPaletteView *)v2 paletteViewHosting];
-    LODWORD(v2) = [v3 isPaletteDragging] ^ 1;
+    paletteViewHosting = [(PKPaletteView *)selfCopy paletteViewHosting];
+    LODWORD(selfCopy) = [paletteViewHosting isPaletteDragging] ^ 1;
   }
 
   else
   {
-    if (![(PKDrawingPaletteView *)v2 isPencilInteractionEnabledWhenNotVisible]|| ([(PKPaletteView *)v2 delegate], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) == 0))
+    if (![(PKDrawingPaletteView *)selfCopy isPencilInteractionEnabledWhenNotVisible]|| ([(PKPaletteView *)selfCopy delegate], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) == 0))
     {
-      LOBYTE(v2) = 0;
-      return v2;
+      LOBYTE(selfCopy) = 0;
+      return selfCopy;
     }
 
-    v3 = [(PKPaletteView *)v2 delegate];
-    LOBYTE(v2) = [v3 shouldHandlePencilInteractionWhenNotVisible:v2];
+    paletteViewHosting = [(PKPaletteView *)selfCopy delegate];
+    LOBYTE(selfCopy) = [paletteViewHosting shouldHandlePencilInteractionWhenNotVisible:selfCopy];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)configureForDockedAtCorner
@@ -3488,26 +3488,26 @@ void __70__PKDrawingPaletteView__performPencilPreferredActionShowInkAttributes__
   [(PKDrawingPaletteView *)self _updateToolPreviewContentsAnimated:0];
 }
 
-- (void)configureForDockedAtEdge:(unint64_t)a3
+- (void)configureForDockedAtEdge:(unint64_t)edge
 {
   v6.receiver = self;
   v6.super_class = PKDrawingPaletteView;
-  [(PKPaletteView *)&v6 configureForDockedAtEdge:a3];
-  v4 = [(PKPaletteView *)self paletteContainerCenterXConstraint];
-  [v4 setConstant:0.0];
+  [(PKPaletteView *)&v6 configureForDockedAtEdge:edge];
+  paletteContainerCenterXConstraint = [(PKPaletteView *)self paletteContainerCenterXConstraint];
+  [paletteContainerCenterXConstraint setConstant:0.0];
 
-  v5 = [(PKPaletteView *)self paletteContainerCenterYConstraint];
-  [v5 setConstant:0.0];
+  paletteContainerCenterYConstraint = [(PKPaletteView *)self paletteContainerCenterYConstraint];
+  [paletteContainerCenterYConstraint setConstant:0.0];
 }
 
-- (void)willStartAppearanceAnimation:(BOOL)a3
+- (void)willStartAppearanceAnimation:(BOOL)animation
 {
   v14.receiver = self;
   v14.super_class = PKDrawingPaletteView;
-  [(PKPaletteView *)&v14 willStartAppearanceAnimation:a3];
+  [(PKPaletteView *)&v14 willStartAppearanceAnimation:animation];
   [(PKDrawingPaletteView *)self _updateKeyboardSceneDelegateInputAssistantSupressionState];
-  v4 = [(PKDrawingPaletteView *)self contentView];
-  [v4 paletteViewStateDidChangeIsVisible:self];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  [contentView paletteViewStateDidChangeIsVisible:self];
 
   if (([(PKPaletteView *)self palettePosition]- 5) <= 3)
   {
@@ -3516,21 +3516,21 @@ void __70__PKDrawingPaletteView__performPencilPreferredActionShowInkAttributes__
 
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    v6 = [v5 layer];
-    [v6 setShouldRasterize:1];
+    contentView2 = [(PKDrawingPaletteView *)self contentView];
+    layer = [contentView2 layer];
+    [layer setShouldRasterize:1];
   }
 
-  v7 = [(PKDrawingPaletteView *)self contentView];
-  v8 = [v7 layer];
-  [v8 setPreloadsCache:1];
+  contentView3 = [(PKDrawingPaletteView *)self contentView];
+  layer2 = [contentView3 layer];
+  [layer2 setPreloadsCache:1];
 
-  v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v11 = v10;
-  v12 = [(PKDrawingPaletteView *)self contentView];
-  v13 = [v12 layer];
-  [v13 setRasterizationScale:v11];
+  contentView4 = [(PKDrawingPaletteView *)self contentView];
+  layer3 = [contentView4 layer];
+  [layer3 setRasterizationScale:v11];
 }
 
 - (void)didEndAppearanceAnimation
@@ -3540,14 +3540,14 @@ void __70__PKDrawingPaletteView__performPencilPreferredActionShowInkAttributes__
   [(PKPaletteView *)&v9 didEndAppearanceAnimation];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKDrawingPaletteView *)self contentView];
-    v4 = [v3 layer];
-    [v4 setShouldRasterize:0];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    layer = [contentView layer];
+    [layer setShouldRasterize:0];
   }
 
-  v5 = [(PKDrawingPaletteView *)self contentView];
-  v6 = [v5 layer];
-  [v6 setPreloadsCache:0];
+  contentView2 = [(PKDrawingPaletteView *)self contentView];
+  layer2 = [contentView2 layer];
+  [layer2 setPreloadsCache:0];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3557,8 +3557,8 @@ void __70__PKDrawingPaletteView__performPencilPreferredActionShowInkAttributes__
   dispatch_async(MEMORY[0x1E69E96A0], block);
   if (![(PKPaletteView *)self isVisible])
   {
-    v7 = [(PKDrawingPaletteView *)self floatingKeyboardController];
-    [(PKPaletteFloatingKeyboardController *)v7 dismissWithReason:?];
+    floatingKeyboardController = [(PKDrawingPaletteView *)self floatingKeyboardController];
+    [(PKPaletteFloatingKeyboardController *)floatingKeyboardController dismissWithReason:?];
 
     [(PKDrawingPaletteView *)self setSelectedAnnotationType:0];
   }
@@ -3577,47 +3577,47 @@ uint64_t __49__PKDrawingPaletteView_didEndAppearanceAnimation__block_invoke(uint
   v36[4] = *MEMORY[0x1E69E9840];
   if (![(PKDrawingPaletteView *)self isEditingOpacity])
   {
-    v3 = [(PKDrawingPaletteView *)self opacityEditingView];
+    opacityEditingView = [(PKDrawingPaletteView *)self opacityEditingView];
 
-    if (!v3)
+    if (!opacityEditingView)
     {
       v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
       opacityEditingView = self->_opacityEditingView;
       self->_opacityEditingView = v4;
 
-      v6 = [(PKDrawingPaletteView *)self opacityEditingView];
-      [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+      opacityEditingView2 = [(PKDrawingPaletteView *)self opacityEditingView];
+      [opacityEditingView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v7 = [(PKDrawingPaletteView *)self opacityEditingView];
-      [(PKDrawingPaletteView *)self addSubview:v7];
+      opacityEditingView3 = [(PKDrawingPaletteView *)self opacityEditingView];
+      [(PKDrawingPaletteView *)self addSubview:opacityEditingView3];
 
-      v8 = [(PKDrawingPaletteView *)self opacityEditingView];
-      [v8 setAlpha:0.0];
+      opacityEditingView4 = [(PKDrawingPaletteView *)self opacityEditingView];
+      [opacityEditingView4 setAlpha:0.0];
 
       v19 = MEMORY[0x1E696ACD8];
-      v31 = [(PKDrawingPaletteView *)self opacityEditingView];
-      v29 = [v31 bottomAnchor];
-      v30 = [(PKPaletteView *)self containerView];
-      v28 = [v30 bottomAnchor];
-      v27 = [v29 constraintEqualToAnchor:v28];
+      opacityEditingView5 = [(PKDrawingPaletteView *)self opacityEditingView];
+      bottomAnchor = [opacityEditingView5 bottomAnchor];
+      containerView = [(PKPaletteView *)self containerView];
+      bottomAnchor2 = [containerView bottomAnchor];
+      v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v36[0] = v27;
-      v26 = [(PKDrawingPaletteView *)self opacityEditingView];
-      v24 = [v26 leftAnchor];
-      v25 = [(PKPaletteView *)self containerView];
-      v23 = [v25 leftAnchor];
-      v22 = [v24 constraintEqualToAnchor:v23];
+      opacityEditingView6 = [(PKDrawingPaletteView *)self opacityEditingView];
+      leftAnchor = [opacityEditingView6 leftAnchor];
+      containerView2 = [(PKPaletteView *)self containerView];
+      leftAnchor2 = [containerView2 leftAnchor];
+      v22 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v36[1] = v22;
-      v21 = [(PKDrawingPaletteView *)self opacityEditingView];
-      v20 = [v21 rightAnchor];
-      v9 = [(PKPaletteView *)self containerView];
-      v10 = [v9 rightAnchor];
-      v11 = [v20 constraintEqualToAnchor:v10];
+      opacityEditingView7 = [(PKDrawingPaletteView *)self opacityEditingView];
+      rightAnchor = [opacityEditingView7 rightAnchor];
+      containerView3 = [(PKPaletteView *)self containerView];
+      rightAnchor2 = [containerView3 rightAnchor];
+      v11 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       v36[2] = v11;
-      v12 = [(PKDrawingPaletteView *)self opacityEditingView];
-      v13 = [v12 topAnchor];
-      v14 = [(PKPaletteView *)self containerView];
-      v15 = [v14 topAnchor];
-      v16 = [v13 constraintEqualToAnchor:v15];
+      opacityEditingView8 = [(PKDrawingPaletteView *)self opacityEditingView];
+      topAnchor = [opacityEditingView8 topAnchor];
+      containerView4 = [(PKPaletteView *)self containerView];
+      topAnchor2 = [containerView4 topAnchor];
+      v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v36[3] = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:4];
       [v19 activateConstraints:v17];
@@ -3682,21 +3682,21 @@ void __41__PKDrawingPaletteView_endOpacityEditing__block_invoke(uint64_t a1)
   [v4 setAlpha:0.0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = PKDrawingPaletteView;
-  [(PKPaletteView *)&v10 traitCollectionDidChange:v4];
-  v5 = [v4 horizontalSizeClass];
-  v6 = [(PKDrawingPaletteView *)self traitCollection];
-  if (v5 == [v6 horizontalSizeClass])
+  [(PKPaletteView *)&v10 traitCollectionDidChange:changeCopy];
+  horizontalSizeClass = [changeCopy horizontalSizeClass];
+  traitCollection = [(PKDrawingPaletteView *)self traitCollection];
+  if (horizontalSizeClass == [traitCollection horizontalSizeClass])
   {
-    v7 = [v4 verticalSizeClass];
-    v8 = [(PKDrawingPaletteView *)self traitCollection];
-    v9 = [v8 verticalSizeClass];
+    verticalSizeClass = [changeCopy verticalSizeClass];
+    traitCollection2 = [(PKDrawingPaletteView *)self traitCollection];
+    verticalSizeClass2 = [traitCollection2 verticalSizeClass];
 
-    if (v7 == v9)
+    if (verticalSizeClass == verticalSizeClass2)
     {
       goto LABEL_6;
     }
@@ -3713,18 +3713,18 @@ void __41__PKDrawingPaletteView_endOpacityEditing__block_invoke(uint64_t a1)
 LABEL_6:
 }
 
-- (void)dismissPalettePopoverWithCompletion:(id)a3
+- (void)dismissPalettePopoverWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__PKDrawingPaletteView_dismissPalettePopoverWithCompletion___block_invoke;
   v7[3] = &unk_1E82D7AE8;
   v7[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v6.receiver = self;
   v6.super_class = PKDrawingPaletteView;
-  v5 = v4;
+  v5 = completionCopy;
   [(PKPaletteView *)&v6 dismissPalettePopoverWithCompletion:v7];
 }
 
@@ -3845,15 +3845,15 @@ void __60__PKDrawingPaletteView_dismissPalettePopoverWithCompletion___block_invo
 
 - (CGRect)plusButtonFrame
 {
-  v3 = [(PKDrawingPaletteView *)self contentView];
-  [v3 plusButtonFrame];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  [contentView plusButtonFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PKDrawingPaletteView *)self contentView];
-  [(PKDrawingPaletteView *)self convertRect:v12 fromView:v5, v7, v9, v11];
+  contentView2 = [(PKDrawingPaletteView *)self contentView];
+  [(PKDrawingPaletteView *)self convertRect:contentView2 fromView:v5, v7, v9, v11];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -3870,42 +3870,42 @@ void __60__PKDrawingPaletteView_dismissPalettePopoverWithCompletion___block_invo
   return result;
 }
 
-- (void)setContextEditingMode:(int64_t)a3
+- (void)setContextEditingMode:(int64_t)mode
 {
-  if (self->_contextEditingMode != a3)
+  if (self->_contextEditingMode != mode)
   {
-    self->_contextEditingMode = a3;
-    v4 = [(PKDrawingPaletteView *)self contentView];
-    [v4 setContextEditingMode:self->_contextEditingMode];
+    self->_contextEditingMode = mode;
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView setContextEditingMode:self->_contextEditingMode];
   }
 }
 
 - (UIView)contextualEditingView
 {
-  v2 = [(PKDrawingPaletteView *)self contentView];
-  v3 = [v2 contextualEditingView];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  contextualEditingView = [contentView contextualEditingView];
 
-  return v3;
+  return contextualEditingView;
 }
 
 - (UIView)lassoToolEditingView
 {
-  v2 = [(PKDrawingPaletteView *)self contentView];
-  v3 = [v2 lassoToolEditingView];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  lassoToolEditingView = [contentView lassoToolEditingView];
 
-  return v3;
+  return lassoToolEditingView;
 }
 
-- (BOOL)_hasToolWithIdentifier:(id)a3
+- (BOOL)_hasToolWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   tools = self->_tools;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__PKDrawingPaletteView__hasToolWithIdentifier___block_invoke;
   v8[3] = &unk_1E82D7058;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   LOBYTE(tools) = [(NSArray *)tools indexOfObjectPassingTest:v8]!= 0x7FFFFFFFFFFFFFFFLL;
 
   return tools;
@@ -3922,67 +3922,67 @@ uint64_t __47__PKDrawingPaletteView__hasToolWithIdentifier___block_invoke(uint64
 
 - (BOOL)isHandwritingToolSelected
 {
-  v2 = [(PKDrawingPaletteView *)self selectedTool];
-  v3 = [v2 ink];
-  v4 = [v3 _isHandwritingInk];
+  selectedTool = [(PKDrawingPaletteView *)self selectedTool];
+  v3 = [selectedTool ink];
+  _isHandwritingInk = [v3 _isHandwritingInk];
 
-  return v4;
+  return _isHandwritingInk;
 }
 
 - (void)handwritingEducationPaneSettingsDidChange
 {
-  v3 = [(PKDrawingPaletteView *)self contentView];
-  [v3 paletteViewStateDidChange:self];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  [contentView paletteViewStateDidChange:self];
 }
 
 - (BOOL)canShowResetHandwritingEducationPane
 {
   v2 = +[PKHandwritingEducationPaneSettings sharedInstance];
-  v3 = [(PKHandwritingEducationPaneSettings *)v2 canShowResetPaneInPalette];
+  canShowResetPaneInPalette = [(PKHandwritingEducationPaneSettings *)v2 canShowResetPaneInPalette];
 
-  return v3;
+  return canShowResetPaneInPalette;
 }
 
 - (void)_updateKeyboardSceneDelegateInputAssistantSupressionState
 {
   if ([(PKDrawingPaletteView *)self isHandwritingToolSelected])
   {
-    v3 = [(PKPaletteView *)self isVisible];
+    isVisible = [(PKPaletteView *)self isVisible];
   }
 
   else
   {
-    v3 = 0;
+    isVisible = 0;
   }
 
-  v6 = [(PKDrawingPaletteView *)self window];
-  v4 = [v6 windowScene];
-  v5 = [v4 keyboardSceneDelegate];
-  [v5 setShouldSuppressInputAssistantUpdates:v3];
+  window = [(PKDrawingPaletteView *)self window];
+  windowScene = [window windowScene];
+  keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
+  [keyboardSceneDelegate setShouldSuppressInputAssistantUpdates:isVisible];
 }
 
 - (void)updateHandwritingAssistantItems
 {
-  v3 = [(PKDrawingPaletteView *)self _currentFirstResponder];
-  [(PKDrawingPaletteView *)self _updateHandwritingAssistantItemsFromResponder:v3];
+  _currentFirstResponder = [(PKDrawingPaletteView *)self _currentFirstResponder];
+  [(PKDrawingPaletteView *)self _updateHandwritingAssistantItemsFromResponder:_currentFirstResponder];
 }
 
-- (void)_updateHandwritingAssistantItemsFromResponder:(id)a3
+- (void)_updateHandwritingAssistantItemsFromResponder:(id)responder
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKDrawingPaletteView *)self inputAssistantButtonProvider];
-  v6 = [v5 inputAssistantItem];
-  v31 = [v4 inputAssistantItem];
+  responderCopy = responder;
+  inputAssistantButtonProvider = [(PKDrawingPaletteView *)self inputAssistantButtonProvider];
+  inputAssistantItem = [inputAssistantButtonProvider inputAssistantItem];
+  inputAssistantItem2 = [responderCopy inputAssistantItem];
 
-  v32 = v6;
-  v7 = [(PKDrawingPaletteView *)self inputAssistantButtonProvider];
-  v8 = [v7 inputAssistantItem];
-  v9 = [v8 leadingBarButtonGroups];
-  v10 = [v4 inputAssistantItem];
-  v11 = [v10 leadingBarButtonGroups];
-  v12 = v9;
-  v13 = v11;
+  v32 = inputAssistantItem;
+  inputAssistantButtonProvider2 = [(PKDrawingPaletteView *)self inputAssistantButtonProvider];
+  inputAssistantItem3 = [inputAssistantButtonProvider2 inputAssistantItem];
+  leadingBarButtonGroups = [inputAssistantItem3 leadingBarButtonGroups];
+  inputAssistantItem4 = [responderCopy inputAssistantItem];
+  leadingBarButtonGroups2 = [inputAssistantItem4 leadingBarButtonGroups];
+  v12 = leadingBarButtonGroups;
+  v13 = leadingBarButtonGroups2;
   v14 = v13;
   if (!(v12 | v13))
   {
@@ -4005,13 +4005,13 @@ LABEL_2:
   {
   }
 
-  v30 = [(PKDrawingPaletteView *)self inputAssistantButtonProvider];
-  v29 = [v30 inputAssistantItem];
-  v17 = [v29 trailingBarButtonGroups];
-  v28 = [v4 inputAssistantItem];
-  v18 = [v28 trailingBarButtonGroups];
-  v19 = v17;
-  v20 = v18;
+  inputAssistantButtonProvider3 = [(PKDrawingPaletteView *)self inputAssistantButtonProvider];
+  inputAssistantItem5 = [inputAssistantButtonProvider3 inputAssistantItem];
+  trailingBarButtonGroups = [inputAssistantItem5 trailingBarButtonGroups];
+  inputAssistantItem6 = [responderCopy inputAssistantItem];
+  trailingBarButtonGroups2 = [inputAssistantItem6 trailingBarButtonGroups];
+  v19 = trailingBarButtonGroups;
+  v20 = trailingBarButtonGroups2;
   v21 = v20;
   if (v19 | v20)
   {
@@ -4028,38 +4028,38 @@ LABEL_2:
   }
 
 LABEL_14:
-  v22 = [v4 inputAssistantItem];
-  v23 = [(PKDrawingPaletteView *)self inputAssistantButtonProvider];
-  [v23 setInputAssistantItem:v22];
+  inputAssistantItem7 = [responderCopy inputAssistantItem];
+  inputAssistantButtonProvider4 = [(PKDrawingPaletteView *)self inputAssistantButtonProvider];
+  [inputAssistantButtonProvider4 setInputAssistantItem:inputAssistantItem7];
 
-  if (v32 != v31 || v15)
+  if (v32 != inputAssistantItem2 || v15)
   {
     v24 = os_log_create("com.apple.pencilkit", "PKPalette");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v4 _pkDebugStringRepresentation];
+      _pkDebugStringRepresentation = [responderCopy _pkDebugStringRepresentation];
       *buf = 138412290;
-      v34 = v25;
+      v34 = _pkDebugStringRepresentation;
       _os_log_impl(&dword_1C7CCA000, v24, OS_LOG_TYPE_DEFAULT, "Input assistant items did change from responder: %@", buf, 0xCu);
     }
 
-    v26 = [(PKDrawingPaletteView *)self contentView];
-    [v26 paletteViewStateDidChangeInputAssistantItems:self];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChangeInputAssistantItems:self];
 
-    v27 = [(PKPaletteView *)self internalDelegate];
-    [v27 paletteViewStateDidChangeInputAssistantItems:self];
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewStateDidChangeInputAssistantItems:self];
   }
 }
 
 - (id)_currentFirstResponder
 {
-  v3 = [(PKPaletteView *)self delegate];
+  delegate = [(PKPaletteView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKPaletteView *)self delegate];
-    v6 = [v5 paletteViewCurrentFirstResponder:self];
+    delegate2 = [(PKPaletteView *)self delegate];
+    v6 = [delegate2 paletteViewCurrentFirstResponder:self];
   }
 
   else
@@ -4070,33 +4070,33 @@ LABEL_14:
   return v6;
 }
 
-- (void)_setTools:(id)a3 resetSelectedTool:(BOOL)a4 updateUI:(BOOL)a5 notifyDelegate:(BOOL)a6
+- (void)_setTools:(id)tools resetSelectedTool:(BOOL)tool updateUI:(BOOL)i notifyDelegate:(BOOL)delegate
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v21 = a3;
+  delegateCopy = delegate;
+  iCopy = i;
+  toolCopy = tool;
+  toolsCopy = tools;
   if (([(NSArray *)self->_tools isEqual:?]& 1) == 0)
   {
-    v10 = [v21 copy];
+    v10 = [toolsCopy copy];
     tools = self->_tools;
     self->_tools = v10;
 
-    if (v8)
+    if (toolCopy)
     {
       self->_indexOfSelectedTool = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (v7)
+    if (iCopy)
     {
       [(PKDrawingPaletteView *)self _updateUIReloadTools:1];
     }
   }
 
-  if (v6)
+  if (delegateCopy)
   {
     v12 = self->_toolsWhenLastNotifyingDelegate;
-    v13 = v21;
+    v13 = toolsCopy;
     if (v13 | v12)
     {
       v14 = v13;
@@ -4118,13 +4118,13 @@ LABEL_14:
       toolsWhenLastNotifyingDelegate = self->_toolsWhenLastNotifyingDelegate;
       self->_toolsWhenLastNotifyingDelegate = v16;
 
-      v18 = [(PKPaletteView *)self delegate];
+      delegate = [(PKPaletteView *)self delegate];
       v19 = objc_opt_respondsToSelector();
 
       if (v19)
       {
-        v20 = [(PKPaletteView *)self delegate];
-        [v20 paletteViewToolsDidChange:self];
+        delegate2 = [(PKPaletteView *)self delegate];
+        [delegate2 paletteViewToolsDidChange:self];
       }
     }
   }
@@ -4132,17 +4132,17 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_replaceToolAtIndex:(unint64_t)a3 withTool:(id)a4 notifyDelegate:(BOOL)a5
+- (void)_replaceToolAtIndex:(unint64_t)index withTool:(id)tool notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
+  delegateCopy = delegate;
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if ([(PKDrawingPaletteView *)self _canReplaceToolAtIndex:a3 withTool:v8])
+  toolCopy = tool;
+  if ([(PKDrawingPaletteView *)self _canReplaceToolAtIndex:index withTool:toolCopy])
   {
     v9 = [(NSArray *)self->_tools mutableCopy];
-    [v9 replaceObjectAtIndex:a3 withObject:v8];
+    [v9 replaceObjectAtIndex:index withObject:toolCopy];
     v10 = [v9 copy];
-    [(PKDrawingPaletteView *)self _setTools:v10 resetSelectedTool:0 updateUI:0 notifyDelegate:v5];
+    [(PKDrawingPaletteView *)self _setTools:v10 resetSelectedTool:0 updateUI:0 notifyDelegate:delegateCopy];
   }
 
   else
@@ -4151,41 +4151,41 @@ LABEL_15:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134218242;
-      v13 = a3;
+      indexCopy = index;
       v14 = 2112;
-      v15 = v8;
+      v15 = toolCopy;
       _os_log_impl(&dword_1C7CCA000, v11, OS_LOG_TYPE_DEFAULT, "Can't replace tool at index: %lu with tool: %@", &v12, 0x16u);
     }
   }
 }
 
-- (void)_selectToolAtIndex:(unint64_t)a3 updateUI:(BOOL)a4 notifyDelegate:(BOOL)a5
+- (void)_selectToolAtIndex:(unint64_t)index updateUI:(BOOL)i notifyDelegate:(BOOL)delegate
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_indexOfSelectedTool != a3)
+  if (self->_indexOfSelectedTool != index)
   {
-    v5 = a5;
-    v6 = a4;
+    delegateCopy = delegate;
+    iCopy = i;
     if ([(PKDrawingPaletteView *)self _canSelectToolAtIndex:?])
     {
-      self->_indexOfSelectedTool = a3;
-      if (v6)
+      self->_indexOfSelectedTool = index;
+      if (iCopy)
       {
         [(PKDrawingPaletteView *)self _updateUI];
-        v9 = [(PKDrawingPaletteView *)self contentView];
-        [v9 paletteViewStateDidChangeSelectedTool:self];
+        contentView = [(PKDrawingPaletteView *)self contentView];
+        [contentView paletteViewStateDidChangeSelectedTool:self];
       }
 
-      if (v5)
+      if (delegateCopy)
       {
-        v10 = [(PKPaletteView *)self delegate];
+        delegate = [(PKPaletteView *)self delegate];
         v11 = objc_opt_respondsToSelector();
 
         if (v11)
         {
           v14 = [(NSArray *)self->_tools objectAtIndex:self->_indexOfSelectedTool];
-          v12 = [(PKPaletteView *)self delegate];
-          [v12 paletteView:self didSelectTool:v14 atIndex:self->_indexOfSelectedTool];
+          delegate2 = [(PKPaletteView *)self delegate];
+          [delegate2 paletteView:self didSelectTool:v14 atIndex:self->_indexOfSelectedTool];
         }
       }
     }
@@ -4196,7 +4196,7 @@ LABEL_15:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v16 = a3;
+        indexCopy = index;
         _os_log_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_DEFAULT, "Can't select tool at index: %lu", buf, 0xCu);
       }
     }
@@ -4220,56 +4220,56 @@ LABEL_15:
 
 - (PKPaletteToolView)selectedToolView
 {
-  v3 = [(PKDrawingPaletteView *)self selectedTool];
+  selectedTool = [(PKDrawingPaletteView *)self selectedTool];
 
-  if (v3)
+  if (selectedTool)
   {
-    v4 = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
+    _selectedToolViewInToolPicker = [(PKDrawingPaletteView *)self _selectedToolViewInToolPicker];
   }
 
   else
   {
-    v4 = 0;
+    _selectedToolViewInToolPicker = 0;
   }
 
-  return v4;
+  return _selectedToolViewInToolPicker;
 }
 
-- (void)setInterItemToolsSpacingInCompactSize:(double)a3 shouldNotify:(BOOL)a4
+- (void)setInterItemToolsSpacingInCompactSize:(double)size shouldNotify:(BOOL)notify
 {
-  if (vabdd_f64(self->_interItemToolsSpacingInCompactSize, a3) >= 0.00999999978)
+  if (vabdd_f64(self->_interItemToolsSpacingInCompactSize, size) >= 0.00999999978)
   {
-    self->_interItemToolsSpacingInCompactSize = a3;
-    if (a4)
+    self->_interItemToolsSpacingInCompactSize = size;
+    if (notify)
     {
-      v6 = [(PKPaletteView *)self delegate];
+      delegate = [(PKPaletteView *)self delegate];
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
       {
-        v8 = [(PKPaletteView *)self delegate];
-        [v8 paletteViewDidChangeInterItemToolsSpacingInCompactSize:self];
+        delegate2 = [(PKPaletteView *)self delegate];
+        [delegate2 paletteViewDidChangeInterItemToolsSpacingInCompactSize:self];
       }
     }
 
-    v9 = [(PKDrawingPaletteView *)self contentView];
-    [v9 paletteViewStateDidChange:self];
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
   }
 }
 
-- (void)setInterItemUndoRedoButtonsSpacingInCompactSize:(double)a3
+- (void)setInterItemUndoRedoButtonsSpacingInCompactSize:(double)size
 {
-  if (vabdd_f64(self->_interItemUndoRedoButtonsSpacingInCompactSize, a3) >= 0.00999999978)
+  if (vabdd_f64(self->_interItemUndoRedoButtonsSpacingInCompactSize, size) >= 0.00999999978)
   {
-    self->_interItemUndoRedoButtonsSpacingInCompactSize = a3;
-    v5 = [(PKDrawingPaletteView *)self contentView];
-    [v5 paletteViewStateDidChange:self];
+    self->_interItemUndoRedoButtonsSpacingInCompactSize = size;
+    contentView = [(PKDrawingPaletteView *)self contentView];
+    [contentView paletteViewStateDidChange:self];
   }
 }
 
-- (id)toolPickerView:(id)a3 viewForToolAtIndex:(int64_t)a4
+- (id)toolPickerView:(id)view viewForToolAtIndex:(int64_t)index
 {
-  v5 = [(NSArray *)self->_tools objectAtIndex:a4];
+  v5 = [(NSArray *)self->_tools objectAtIndex:index];
   v6 = [(PKPaletteToolViewFactory *)self->_toolViewFactory makePaletteToolViewForTool:v5];
   [v6 addTarget:self action:sel__toolViewStateDidChange_ forControlEvents:4096];
   [v6 addTarget:self action:sel__toolViewStateDidLiveUpdate_ forControlEvents:4];
@@ -4277,16 +4277,16 @@ LABEL_15:
   return v6;
 }
 
-- (void)_toolViewStateDidChange:(id)a3
+- (void)_toolViewStateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PKDrawingPaletteView *)self selectedToolView];
+  changeCopy = change;
+  selectedToolView = [(PKDrawingPaletteView *)self selectedToolView];
 
-  if (v5 == v4)
+  if (selectedToolView == changeCopy)
   {
-    v7 = [v4 tool];
+    tool = [changeCopy tool];
     v8 = [(NSArray *)self->_tools objectAtIndexedSubscript:[(PKDrawingPaletteView *)self indexOfSelectedTool]];
-    v9 = [PKToolFromPaletteTool toolByApplyingPropertiesFromPaletteTool:v7 toTool:v8];
+    v9 = [PKToolFromPaletteTool toolByApplyingPropertiesFromPaletteTool:tool toTool:v8];
 
     [(PKDrawingPaletteView *)self _replaceToolAtIndex:[(PKDrawingPaletteView *)self indexOfSelectedTool] withTool:v9 notifyDelegate:1];
     [(PKDrawingPaletteView *)self updateColorPickerSelectedColor];
@@ -4304,12 +4304,12 @@ LABEL_15:
   }
 }
 
-- (void)_toolViewStateDidLiveUpdate:(id)a3
+- (void)_toolViewStateDidLiveUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(PKDrawingPaletteView *)self selectedToolView];
+  updateCopy = update;
+  selectedToolView = [(PKDrawingPaletteView *)self selectedToolView];
 
-  if (v5 == v4)
+  if (selectedToolView == updateCopy)
   {
 
     [(PKDrawingPaletteView *)self _updateToolPreviewContentsAnimated:0];
@@ -4324,43 +4324,43 @@ uint64_t __46__PKDrawingPaletteView__indexOfGenerationTool__block_invoke(uint64_
   return v3;
 }
 
-- (unint64_t)_indexOfToolPassingTest:(id)a3
+- (unint64_t)_indexOfToolPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   tools = self->_tools;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__PKDrawingPaletteView__indexOfToolPassingTest___block_invoke;
   v9[3] = &unk_1E82D6FE8;
-  v10 = v4;
-  v6 = v4;
+  v10 = testCopy;
+  v6 = testCopy;
   v7 = [(NSArray *)tools indexOfObjectPassingTest:v9];
 
   return v7;
 }
 
-- (id)_paletteToolViewAtIndex:(unint64_t)a3
+- (id)_paletteToolViewAtIndex:(unint64_t)index
 {
-  v4 = [(PKDrawingPaletteView *)self contentView];
-  v5 = [v4 toolPickerView];
-  v6 = [v5 toolViews];
-  v7 = [v6 objectAtIndex:a3];
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView = [contentView toolPickerView];
+  toolViews = [toolPickerView toolViews];
+  v7 = [toolViews objectAtIndex:index];
 
   return v7;
 }
 
-- (void)_scrollToolViewAtIndex:(unint64_t)a3 toVisibleAnimated:(BOOL)a4
+- (void)_scrollToolViewAtIndex:(unint64_t)index toVisibleAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(PKDrawingPaletteView *)self contentView];
-  v6 = [v7 toolPickerView];
-  [v6 scrollToolViewAtIndex:a3 toVisibleAnimated:v4];
+  animatedCopy = animated;
+  contentView = [(PKDrawingPaletteView *)self contentView];
+  toolPickerView = [contentView toolPickerView];
+  [toolPickerView scrollToolViewAtIndex:index toVisibleAnimated:animatedCopy];
 }
 
-- (void)showImageWandTipWithController:(id)a3
+- (void)showImageWandTipWithController:(id)controller
 {
-  v4 = a3;
-  if ([v4 tipStatusIsInvalid])
+  controllerCopy = controller;
+  if ([controllerCopy tipStatusIsInvalid])
   {
     v5 = os_log_create("com.apple.pencilkit", "PKPalette");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4375,7 +4375,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v4 tipStatusIsPending])
+  if ([controllerCopy tipStatusIsPending])
   {
     v5 = os_log_create("com.apple.pencilkit", "PKPalette");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4390,7 +4390,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (([v4 tipStatusIsAvailable] & 1) == 0)
+  if (([controllerCopy tipStatusIsAvailable] & 1) == 0)
   {
     v5 = os_log_create("com.apple.pencilkit", "PKPalette");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4403,10 +4403,10 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v7 = [(PKPaletteView *)self paletteViewHosting];
-  v8 = [v7 isPaletteDragging];
+  paletteViewHosting = [(PKPaletteView *)self paletteViewHosting];
+  isPaletteDragging = [paletteViewHosting isPaletteDragging];
 
-  if (v8)
+  if (isPaletteDragging)
   {
     v5 = os_log_create("com.apple.pencilkit", "PKPalette");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4419,8 +4419,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v9 = [(PKDrawingPaletteView *)self _indexOfGenerationTool];
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+  _indexOfGenerationTool = [(PKDrawingPaletteView *)self _indexOfGenerationTool];
+  if (_indexOfGenerationTool == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = os_log_create("com.apple.pencilkit", "PKPalette");
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4433,7 +4433,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v10 = v9;
+  v10 = _indexOfGenerationTool;
   v11 = [(PKPaletteView *)self palettePosition]- 1;
   v12 = v11 < 4;
   if (v11 <= 3)
@@ -4455,7 +4455,7 @@ LABEL_14:
   v17 = v12;
   v14[4] = self;
   v16 = v10;
-  v15 = v4;
+  v15 = controllerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 
 LABEL_15:

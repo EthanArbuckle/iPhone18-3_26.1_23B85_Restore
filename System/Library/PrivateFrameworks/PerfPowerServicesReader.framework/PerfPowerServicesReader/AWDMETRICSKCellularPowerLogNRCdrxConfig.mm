@@ -1,22 +1,22 @@
 @interface AWDMETRICSKCellularPowerLogNRCdrxConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsEndc:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasVonrCallOngoing:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsEndc:(BOOL)endc;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasVonrCallOngoing:(BOOL)ongoing;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogNRCdrxConfig
 
-- (void)setHasVonrCallOngoing:(BOOL)a3
+- (void)setHasVonrCallOngoing:(BOOL)ongoing
 {
-  if (a3)
+  if (ongoing)
   {
     v3 = 8;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsEndc:(BOOL)a3
+- (void)setHasIsEndc:(BOOL)endc
 {
-  if (a3)
+  if (endc)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -65,68 +65,68 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogNRCdrxConfig;
   v4 = [(AWDMETRICSKCellularPowerLogNRCdrxConfig *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogNRCdrxConfig *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogNRCdrxConfig *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   mcgDefaultDrx = self->_mcgDefaultDrx;
   if (mcgDefaultDrx)
   {
-    v6 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)mcgDefaultDrx dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"mcg_default_drx"];
+    dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)mcgDefaultDrx dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"mcg_default_drx"];
   }
 
   mcgSecondaryDrx = self->_mcgSecondaryDrx;
   if (mcgSecondaryDrx)
   {
-    v8 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)mcgSecondaryDrx dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"mcg_secondary_drx"];
+    dictionaryRepresentation2 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)mcgSecondaryDrx dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"mcg_secondary_drx"];
   }
 
   scgDefaultDrx = self->_scgDefaultDrx;
   if (scgDefaultDrx)
   {
-    v10 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)scgDefaultDrx dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"scg_default_drx"];
+    dictionaryRepresentation3 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)scgDefaultDrx dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"scg_default_drx"];
   }
 
   scgSecondaryDrx = self->_scgSecondaryDrx;
   if (scgSecondaryDrx)
   {
-    v12 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)scgSecondaryDrx dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"scg_secondary_drx"];
+    dictionaryRepresentation4 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)scgSecondaryDrx dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"scg_secondary_drx"];
   }
 
   endcScgDefaultDrx = self->_endcScgDefaultDrx;
   if (endcScgDefaultDrx)
   {
-    v14 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)endcScgDefaultDrx dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"endc_scg_default_drx"];
+    dictionaryRepresentation5 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)endcScgDefaultDrx dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"endc_scg_default_drx"];
   }
 
   endcScgSecondaryDrx = self->_endcScgSecondaryDrx;
   if (endcScgSecondaryDrx)
   {
-    v16 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)endcScgSecondaryDrx dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"endc_scg_secondary_drx"];
+    dictionaryRepresentation6 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)endcScgSecondaryDrx dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"endc_scg_secondary_drx"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_vonrCallOngoing];
-    [v3 setObject:v20 forKey:@"vonr_call_ongoing"];
+    [dictionary setObject:v20 forKey:@"vonr_call_ongoing"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -147,23 +147,23 @@ LABEL_17:
   }
 
   v21 = [MEMORY[0x277CCABB0] numberWithBool:self->_isEndc];
-  [v3 setObject:v21 forKey:@"is_endc"];
+  [dictionary setObject:v21 forKey:@"is_endc"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_18:
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v18 forKey:@"subs_id"];
+    [dictionary setObject:v18 forKey:@"subs_id"];
   }
 
 LABEL_19:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -235,57 +235,57 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 72) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 72) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_mcgDefaultDrx)
   {
-    [v4 setMcgDefaultDrx:?];
-    v4 = v6;
+    [toCopy setMcgDefaultDrx:?];
+    toCopy = v6;
   }
 
   if (self->_mcgSecondaryDrx)
   {
     [v6 setMcgSecondaryDrx:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_scgDefaultDrx)
   {
     [v6 setScgDefaultDrx:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_scgSecondaryDrx)
   {
     [v6 setScgSecondaryDrx:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_endcScgDefaultDrx)
   {
     [v6 setEndcScgDefaultDrx:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_endcScgSecondaryDrx)
   {
     [v6 setEndcScgSecondaryDrx:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 69) = self->_vonrCallOngoing;
-    *(v4 + 72) |= 8u;
+    *(toCopy + 69) = self->_vonrCallOngoing;
+    *(toCopy + 72) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -304,21 +304,21 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *(v4 + 68) = self->_isEndc;
-  *(v4 + 72) |= 4u;
+  *(toCopy + 68) = self->_isEndc;
+  *(toCopy + 72) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_18:
-    *(v4 + 16) = self->_subsId;
-    *(v4 + 72) |= 2u;
+    *(toCopy + 16) = self->_subsId;
+    *(toCopy + 72) |= 2u;
   }
 
 LABEL_19:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -326,27 +326,27 @@ LABEL_19:
     *(v5 + 72) |= 1u;
   }
 
-  v7 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)self->_mcgDefaultDrx copyWithZone:a3];
+  v7 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)self->_mcgDefaultDrx copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
-  v9 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)self->_mcgSecondaryDrx copyWithZone:a3];
+  v9 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)self->_mcgSecondaryDrx copyWithZone:zone];
   v10 = *(v6 + 40);
   *(v6 + 40) = v9;
 
-  v11 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)self->_scgDefaultDrx copyWithZone:a3];
+  v11 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)self->_scgDefaultDrx copyWithZone:zone];
   v12 = *(v6 + 48);
   *(v6 + 48) = v11;
 
-  v13 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)self->_scgSecondaryDrx copyWithZone:a3];
+  v13 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)self->_scgSecondaryDrx copyWithZone:zone];
   v14 = *(v6 + 56);
   *(v6 + 56) = v13;
 
-  v15 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)self->_endcScgDefaultDrx copyWithZone:a3];
+  v15 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)self->_endcScgDefaultDrx copyWithZone:zone];
   v16 = *(v6 + 16);
   *(v6 + 16) = v15;
 
-  v17 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)self->_endcScgSecondaryDrx copyWithZone:a3];
+  v17 = [(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)self->_endcScgSecondaryDrx copyWithZone:zone];
   v18 = *(v6 + 24);
   *(v6 + 24) = v17;
 
@@ -388,36 +388,36 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(equalCopy + 72);
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_38;
   }
 
   mcgDefaultDrx = self->_mcgDefaultDrx;
-  if (mcgDefaultDrx | *(v4 + 4) && ![(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)mcgDefaultDrx isEqual:?])
+  if (mcgDefaultDrx | *(equalCopy + 4) && ![(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)mcgDefaultDrx isEqual:?])
   {
     goto LABEL_38;
   }
 
   mcgSecondaryDrx = self->_mcgSecondaryDrx;
-  if (mcgSecondaryDrx | *(v4 + 5))
+  if (mcgSecondaryDrx | *(equalCopy + 5))
   {
     if (![(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)mcgSecondaryDrx isEqual:?])
     {
@@ -426,7 +426,7 @@ LABEL_6:
   }
 
   scgDefaultDrx = self->_scgDefaultDrx;
-  if (scgDefaultDrx | *(v4 + 6))
+  if (scgDefaultDrx | *(equalCopy + 6))
   {
     if (![(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)scgDefaultDrx isEqual:?])
     {
@@ -435,7 +435,7 @@ LABEL_6:
   }
 
   scgSecondaryDrx = self->_scgSecondaryDrx;
-  if (scgSecondaryDrx | *(v4 + 7))
+  if (scgSecondaryDrx | *(equalCopy + 7))
   {
     if (![(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)scgSecondaryDrx isEqual:?])
     {
@@ -444,7 +444,7 @@ LABEL_6:
   }
 
   endcScgDefaultDrx = self->_endcScgDefaultDrx;
-  if (endcScgDefaultDrx | *(v4 + 2))
+  if (endcScgDefaultDrx | *(equalCopy + 2))
   {
     if (![(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxConfigPerCellGroup *)endcScgDefaultDrx isEqual:?])
     {
@@ -453,7 +453,7 @@ LABEL_6:
   }
 
   endcScgSecondaryDrx = self->_endcScgSecondaryDrx;
-  if (endcScgSecondaryDrx | *(v4 + 3))
+  if (endcScgSecondaryDrx | *(equalCopy + 3))
   {
     if (![(AWDMETRICSKCellularPowerLogNRCdrxConfigNrCdrxSecondaryConfigPerCellGroup *)endcScgSecondaryDrx isEqual:?])
     {
@@ -463,34 +463,34 @@ LABEL_6:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0)
+    if ((*(equalCopy + 72) & 8) == 0)
     {
       goto LABEL_38;
     }
 
-    v13 = *(v4 + 69);
+    v13 = *(equalCopy + 69);
     if (self->_vonrCallOngoing)
     {
-      if ((*(v4 + 69) & 1) == 0)
+      if ((*(equalCopy + 69) & 1) == 0)
       {
         goto LABEL_38;
       }
     }
 
-    else if (*(v4 + 69))
+    else if (*(equalCopy + 69))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 72) & 4) == 0)
+    if ((*(equalCopy + 72) & 4) == 0)
     {
       goto LABEL_23;
     }
@@ -500,30 +500,30 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if ((*(v4 + 72) & 4) == 0)
+  if ((*(equalCopy + 72) & 4) == 0)
   {
     goto LABEL_38;
   }
 
-  v14 = *(v4 + 68);
+  v14 = *(equalCopy + 68);
   if (self->_isEndc)
   {
-    if ((*(v4 + 68) & 1) == 0)
+    if ((*(equalCopy + 68) & 1) == 0)
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_38;
   }
 
 LABEL_23:
-  v12 = (*(v4 + 72) & 2) == 0;
+  v12 = (*(equalCopy + 72) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_subsId != *(v4 + 16))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_subsId != *(equalCopy + 16))
     {
       goto LABEL_38;
     }
@@ -592,13 +592,13 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[9])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[9])
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 

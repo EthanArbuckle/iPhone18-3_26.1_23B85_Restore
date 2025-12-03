@@ -1,36 +1,36 @@
 @interface SUUIRedeemResultSimpleTableViewCell
 - (UIEdgeInsets)childContentInsets;
 - (void)layoutSubviews;
-- (void)setChildContentView:(id)a3;
+- (void)setChildContentView:(id)view;
 @end
 
 @implementation SUUIRedeemResultSimpleTableViewCell
 
-- (void)setChildContentView:(id)a3
+- (void)setChildContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   childContentView = self->_childContentView;
-  v8 = v5;
-  if (childContentView == v5)
+  v8 = viewCopy;
+  if (childContentView == viewCopy)
   {
-    if (!v5)
+    if (!viewCopy)
     {
       goto LABEL_9;
     }
 
     childContentView = [childContentView isDescendantOfView:self];
-    v5 = v8;
+    viewCopy = v8;
     if (childContentView)
     {
       goto LABEL_9;
     }
 
 LABEL_8:
-    v7 = [(SUUIRedeemResultSimpleTableViewCell *)self contentView];
-    [v7 addSubview:self->_childContentView];
+    contentView = [(SUUIRedeemResultSimpleTableViewCell *)self contentView];
+    [contentView addSubview:self->_childContentView];
 
     childContentView = [(SUUIRedeemResultSimpleTableViewCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
     goto LABEL_9;
   }
 
@@ -39,8 +39,8 @@ LABEL_8:
     [(UIView *)self->_childContentView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_childContentView, a3);
-  v5 = v8;
+  objc_storeStrong(&self->_childContentView, view);
+  viewCopy = v8;
   if (v8)
   {
     goto LABEL_8;
@@ -48,7 +48,7 @@ LABEL_8:
 
 LABEL_9:
 
-  MEMORY[0x2821F96F8](childContentView, v5);
+  MEMORY[0x2821F96F8](childContentView, viewCopy);
 }
 
 - (void)layoutSubviews
@@ -59,8 +59,8 @@ LABEL_9:
   [(UIView *)self->_childContentView frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(SUUIRedeemResultSimpleTableViewCell *)self contentView];
-  [v7 frame];
+  contentView = [(SUUIRedeemResultSimpleTableViewCell *)self contentView];
+  [contentView frame];
   v9 = (v8 - v4) * 0.5;
 
   [(UIView *)self->_childContentView setFrame:v9, self->_childContentInsets.top, v4, v6];

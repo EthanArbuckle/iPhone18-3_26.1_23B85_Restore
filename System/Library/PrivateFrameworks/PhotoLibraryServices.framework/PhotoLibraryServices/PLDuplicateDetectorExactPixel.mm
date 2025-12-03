@@ -1,37 +1,37 @@
 @interface PLDuplicateDetectorExactPixel
 + (id)invalidHashData;
-- (BOOL)_postProcessDuplicateWithPhotoLibrary:(id)a3 resultContainer:(id)a4 error:(id *)a5;
-- (PLDuplicateDetectorExactPixel)initWithSourceOIDs:(id)a3;
-- (id)_generateDuplicateContainerFromProcessedHashOIDMap:(id)a3 oidHashMap:(id)a4;
-- (id)_generateDuplicateContainerFromResults:(id)a3;
+- (BOOL)_postProcessDuplicateWithPhotoLibrary:(id)library resultContainer:(id)container error:(id *)error;
+- (PLDuplicateDetectorExactPixel)initWithSourceOIDs:(id)ds;
+- (id)_generateDuplicateContainerFromProcessedHashOIDMap:(id)map oidHashMap:(id)hashMap;
+- (id)_generateDuplicateContainerFromResults:(id)results;
 - (id)_hashIsValidPredicate;
-- (id)_limitedSelectionPredicateWithPhotoLibrary:(id)a3;
-- (id)_postProcessFetchMetadataWithPhotoLibrary:(id)a3 resultContainer:(id)a4 error:(id *)a5;
-- (id)_postProcessingRequestAssetsFromDuplicateAssetOIDs:(id)a3;
-- (id)_postProcessingRequestWithDuplicateAssetOIDs:(id)a3 pathManager:(id)a4;
-- (id)_predicateWithPhotoLibrary:(id)a3;
+- (id)_limitedSelectionPredicateWithPhotoLibrary:(id)library;
+- (id)_postProcessFetchMetadataWithPhotoLibrary:(id)library resultContainer:(id)container error:(id *)error;
+- (id)_postProcessingRequestAssetsFromDuplicateAssetOIDs:(id)ds;
+- (id)_postProcessingRequestWithDuplicateAssetOIDs:(id)ds pathManager:(id)manager;
+- (id)_predicateWithPhotoLibrary:(id)library;
 - (id)_propertiesToFetch;
-- (id)_sceneprintRequestWithPhotoLibrary:(id)a3;
-- (id)detectDuplicatesWithPhotoLibrary:(id)a3 error:(id *)a4;
-- (void)_addKey:(id)a3 value:(id)a4 map:(id)a5;
-- (void)_fetchLimitedSelectionHashes:(id *)a3 alternativeHashes:(id *)a4 photoLibrary:(id)a5;
-- (void)_updateDuplicateAssetOIDResults:(id)a3 forAssetOID:(id)a4 relatedProcessedHashOIDMap:(id)a5 oidHashMap:(id)a6;
-- (void)_updateDuplicateAssetOIDResults:(id)a3 forHash:(id)a4 relatedProcessedHashOIDMap:(id)a5 oidHashMap:(id)a6;
+- (id)_sceneprintRequestWithPhotoLibrary:(id)library;
+- (id)detectDuplicatesWithPhotoLibrary:(id)library error:(id *)error;
+- (void)_addKey:(id)key value:(id)value map:(id)map;
+- (void)_fetchLimitedSelectionHashes:(id *)hashes alternativeHashes:(id *)alternativeHashes photoLibrary:(id)library;
+- (void)_updateDuplicateAssetOIDResults:(id)results forAssetOID:(id)d relatedProcessedHashOIDMap:(id)map oidHashMap:(id)hashMap;
+- (void)_updateDuplicateAssetOIDResults:(id)results forHash:(id)hash relatedProcessedHashOIDMap:(id)map oidHashMap:(id)hashMap;
 @end
 
 @implementation PLDuplicateDetectorExactPixel
 
-- (id)_postProcessingRequestAssetsFromDuplicateAssetOIDs:(id)a3
+- (id)_postProcessingRequestAssetsFromDuplicateAssetOIDs:(id)ds
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695D5E0];
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[PLManagedAsset entityName];
   v6 = [v3 fetchRequestWithEntityName:v5];
 
-  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v4];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
 
-  [v6 setPredicate:v7];
+  [v6 setPredicate:dsCopy];
   [v6 setReturnsObjectsAsFaults:0];
   [v6 setFetchBatchSize:100];
   v10[0] = @"master.mediaMetadata";
@@ -42,18 +42,18 @@
   return v6;
 }
 
-- (id)_postProcessingRequestWithDuplicateAssetOIDs:(id)a3 pathManager:(id)a4
+- (id)_postProcessingRequestWithDuplicateAssetOIDs:(id)ds pathManager:(id)manager
 {
   v40[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D5E0];
-  v6 = a4;
-  v7 = a3;
+  managerCopy = manager;
+  dsCopy = ds;
   v8 = +[PLManagedAsset entityName];
   v9 = [v5 fetchRequestWithEntityName:v8];
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v7];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
 
-  [v9 setPredicate:v10];
+  [v9 setPredicate:dsCopy];
   [v9 setResultType:2];
   v40[0] = @"additionalAttributes";
   v40[1] = @"extendedAttributes";
@@ -87,7 +87,7 @@
   v37[3] = @"extendedAttributes.dateCreated";
   v37[4] = v18;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:5];
-  LODWORD(v20) = [PLDuplicateProcessor sharedLibraryDedupeEnabledWithPathManager:v6];
+  LODWORD(v20) = [PLDuplicateProcessor sharedLibraryDedupeEnabledWithPathManager:managerCopy];
 
   if (v20)
   {
@@ -121,17 +121,17 @@
   return v9;
 }
 
-- (id)_postProcessFetchMetadataWithPhotoLibrary:(id)a3 resultContainer:(id)a4 error:(id *)a5
+- (id)_postProcessFetchMetadataWithPhotoLibrary:(id)library resultContainer:(id)container error:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  libraryCopy = library;
+  containerCopy = container;
+  v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(containerCopy, "count")}];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v9 = v7;
+  v9 = containerCopy;
   v10 = [v9 countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v10)
   {
@@ -145,9 +145,9 @@
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v61 + 1) + 8 * i) group];
-        v14 = [v13 allObjects];
-        [v8 addObjectsFromArray:v14];
+        group = [*(*(&v61 + 1) + 8 * i) group];
+        allObjects = [group allObjects];
+        [v8 addObjectsFromArray:allObjects];
       }
 
       v10 = [v9 countByEnumeratingWithState:&v61 objects:v66 count:16];
@@ -181,7 +181,7 @@
   v41[4] = self;
   v31 = v8;
   v42 = v31;
-  v15 = v6;
+  v15 = libraryCopy;
   v43 = v15;
   v44 = &v49;
   v45 = &v55;
@@ -192,10 +192,10 @@
     v27 = v56[5];
     v17 = 0;
 LABEL_26:
-    if (a5)
+    if (error)
     {
       v27 = v27;
-      *a5 = v27;
+      *error = v27;
     }
 
     goto LABEL_28;
@@ -255,7 +255,7 @@ LABEL_26:
     v33[3] = &unk_1E7578820;
     v36 = v47;
     v34 = v17;
-    v35 = self;
+    selfCopy = self;
     [v15 performBlockAndWait:v33];
   }
 
@@ -472,15 +472,15 @@ void __97__PLDuplicateDetectorExactPixel__postProcessFetchMetadataWithPhotoLibra
   }
 }
 
-- (BOOL)_postProcessDuplicateWithPhotoLibrary:(id)a3 resultContainer:(id)a4 error:(id *)a5
+- (BOOL)_postProcessDuplicateWithPhotoLibrary:(id)library resultContainer:(id)container error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  libraryCopy = library;
+  containerCopy = container;
   v44 = 0;
-  v32 = self;
-  v33 = v8;
-  v10 = [(PLDuplicateDetectorExactPixel *)self _postProcessFetchMetadataWithPhotoLibrary:v8 resultContainer:v9 error:&v44];
+  selfCopy = self;
+  v33 = libraryCopy;
+  v10 = [(PLDuplicateDetectorExactPixel *)self _postProcessFetchMetadataWithPhotoLibrary:libraryCopy resultContainer:containerCopy error:&v44];
   v11 = v44;
   v12 = v11;
   if (v10)
@@ -489,7 +489,7 @@ void __97__PLDuplicateDetectorExactPixel__postProcessFetchMetadataWithPhotoLibra
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v13 = v9;
+    v13 = containerCopy;
     v34 = [v13 countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v34)
     {
@@ -513,7 +513,7 @@ void __97__PLDuplicateDetectorExactPixel__postProcessFetchMetadataWithPhotoLibra
           v37[3] = &unk_1E756D5A0;
           v17 = v10;
           v38 = v17;
-          v39 = v32;
+          v39 = selfCopy;
           [PLDuplicateDetectorPostProcessing postProcessDuplicateSubGroupWithResult:v15 metadataMap:v17 metadataKey:v16 secondarySortKey:0 subGroupSplitDecisionBlock:v37];
 
           v18 = [PLDuplicateDetectorSortKey sortKey:@"aspectR" reverse:0];
@@ -525,8 +525,8 @@ void __97__PLDuplicateDetectorExactPixel__postProcessFetchMetadataWithPhotoLibra
           v36 = v19;
           [PLDuplicateDetectorPostProcessing postProcessDuplicateSubGroupWithResult:v15 metadataMap:v19 metadataKey:v18 secondarySortKey:0 subGroupSplitDecisionBlock:v35];
 
-          v20 = [v33 pathManager];
-          LODWORD(v16) = [PLDuplicateProcessor sharedLibraryDedupeEnabledWithPathManager:v20];
+          pathManager = [v33 pathManager];
+          LODWORD(v16) = [PLDuplicateProcessor sharedLibraryDedupeEnabledWithPathManager:pathManager];
 
           if (v16)
           {
@@ -557,10 +557,10 @@ void __97__PLDuplicateDetectorExactPixel__postProcessFetchMetadataWithPhotoLibra
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v27 = v11;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v10 != 0;
@@ -641,13 +641,13 @@ BOOL __93__PLDuplicateDetectorExactPixel__postProcessDuplicateWithPhotoLibrary_r
   return v2;
 }
 
-- (void)_fetchLimitedSelectionHashes:(id *)a3 alternativeHashes:(id *)a4 photoLibrary:(id)a5
+- (void)_fetchLimitedSelectionHashes:(id *)hashes alternativeHashes:(id *)alternativeHashes photoLibrary:(id)library
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  libraryCopy = library;
   v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{-[NSArray count](self->_sourceAssetOIDs, "count")}];
   v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{-[NSArray count](self->_sourceAssetOIDs, "count")}];
-  if (a3 | a4)
+  if (hashes | alternativeHashes)
   {
     v11 = MEMORY[0x1E695D5E0];
     v12 = +[PLManagedAsset entityName];
@@ -666,9 +666,9 @@ BOOL __93__PLDuplicateDetectorExactPixel__postProcessDuplicateWithPhotoLibrary_r
     v21[1] = 3221225472;
     v21[2] = __93__PLDuplicateDetectorExactPixel__fetchLimitedSelectionHashes_alternativeHashes_photoLibrary___block_invoke;
     v21[3] = &unk_1E75730F8;
-    v22 = v8;
+    v22 = libraryCopy;
     v23 = v13;
-    v24 = self;
+    selfCopy = self;
     v16 = v9;
     v25 = v16;
     v17 = v10;
@@ -676,16 +676,16 @@ BOOL __93__PLDuplicateDetectorExactPixel__postProcessDuplicateWithPhotoLibrary_r
     v18 = v13;
     [v22 performBlockAndWait:v21];
 
-    if (a3)
+    if (hashes)
     {
       v19 = v16;
-      *a3 = v16;
+      *hashes = v16;
     }
 
-    if (a4)
+    if (alternativeHashes)
     {
       v20 = v17;
-      *a4 = v17;
+      *alternativeHashes = v17;
     }
   }
 }
@@ -771,17 +771,17 @@ void __93__PLDuplicateDetectorExactPixel__fetchLimitedSelectionHashes_alternativ
   }
 }
 
-- (id)_predicateWithPhotoLibrary:(id)a3
+- (id)_predicateWithPhotoLibrary:(id)library
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AB28];
-  v5 = a3;
-  v6 = [(PLDuplicateDetectorExactPixel *)self _limitedSelectionPredicateWithPhotoLibrary:v5];
-  v7 = [(PLDuplicateDetectorExactPixel *)self _hashIsValidPredicate];
-  v13[1] = v7;
-  v8 = [v5 pathManager];
+  libraryCopy = library;
+  v6 = [(PLDuplicateDetectorExactPixel *)self _limitedSelectionPredicateWithPhotoLibrary:libraryCopy];
+  _hashIsValidPredicate = [(PLDuplicateDetectorExactPixel *)self _hashIsValidPredicate];
+  v13[1] = _hashIsValidPredicate;
+  pathManager = [libraryCopy pathManager];
 
-  v9 = [PLDuplicateDetector duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:@"additionalAssetAttributes.asset" processingType:2 pathManager:v8];
+  v9 = [PLDuplicateDetector duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:@"additionalAssetAttributes.asset" processingType:2 pathManager:pathManager];
   v13[2] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
   v11 = [v4 andPredicateWithSubpredicates:v10];
@@ -807,15 +807,15 @@ void __93__PLDuplicateDetectorExactPixel__fetchLimitedSelectionHashes_alternativ
   return v9;
 }
 
-- (id)_limitedSelectionPredicateWithPhotoLibrary:(id)a3
+- (id)_limitedSelectionPredicateWithPhotoLibrary:(id)library
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   if ([(NSArray *)self->_sourceAssetOIDs count])
   {
     v13 = 0;
     v14 = 0;
-    [(PLDuplicateDetectorExactPixel *)self _fetchLimitedSelectionHashes:&v14 alternativeHashes:&v13 photoLibrary:v4];
+    [(PLDuplicateDetectorExactPixel *)self _fetchLimitedSelectionHashes:&v14 alternativeHashes:&v13 photoLibrary:libraryCopy];
     v5 = v14;
     v6 = v13;
     v7 = MEMORY[0x1E696AB28];
@@ -835,19 +835,19 @@ void __93__PLDuplicateDetectorExactPixel__fetchLimitedSelectionHashes_alternativ
   return v11;
 }
 
-- (id)_sceneprintRequestWithPhotoLibrary:(id)a3
+- (id)_sceneprintRequestWithPhotoLibrary:(id)library
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  libraryCopy = library;
   v6 = +[PLSceneprint entityName];
   v7 = [v4 fetchRequestWithEntityName:v6];
 
-  v8 = [(PLDuplicateDetectorExactPixel *)self _predicateWithPhotoLibrary:v5];
+  v8 = [(PLDuplicateDetectorExactPixel *)self _predicateWithPhotoLibrary:libraryCopy];
 
   [v7 setPredicate:v8];
-  v9 = [(PLDuplicateDetectorExactPixel *)self _propertiesToFetch];
-  [v7 setPropertiesToFetch:v9];
+  _propertiesToFetch = [(PLDuplicateDetectorExactPixel *)self _propertiesToFetch];
+  [v7 setPropertiesToFetch:_propertiesToFetch];
 
   [v7 setResultType:2];
   v12[0] = @"additionalAssetAttributes.asset";
@@ -857,21 +857,21 @@ void __93__PLDuplicateDetectorExactPixel__fetchLimitedSelectionHashes_alternativ
   return v7;
 }
 
-- (void)_updateDuplicateAssetOIDResults:(id)a3 forHash:(id)a4 relatedProcessedHashOIDMap:(id)a5 oidHashMap:(id)a6
+- (void)_updateDuplicateAssetOIDResults:(id)results forHash:(id)hash relatedProcessedHashOIDMap:(id)map oidHashMap:(id)hashMap
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (([(NSMutableSet *)self->_processedHashes containsObject:v11]& 1) == 0)
+  resultsCopy = results;
+  hashCopy = hash;
+  mapCopy = map;
+  hashMapCopy = hashMap;
+  if (([(NSMutableSet *)self->_processedHashes containsObject:hashCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_processedHashes addObject:v11];
+    [(NSMutableSet *)self->_processedHashes addObject:hashCopy];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v14 = [v12 objectForKeyedSubscript:{v11, 0}];
+    v14 = [mapCopy objectForKeyedSubscript:{hashCopy, 0}];
     v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v15)
     {
@@ -887,7 +887,7 @@ void __93__PLDuplicateDetectorExactPixel__fetchLimitedSelectionHashes_alternativ
             objc_enumerationMutation(v14);
           }
 
-          [(PLDuplicateDetectorExactPixel *)self _updateDuplicateAssetOIDResults:v10 forAssetOID:*(*(&v19 + 1) + 8 * v18++) relatedProcessedHashOIDMap:v12 oidHashMap:v13];
+          [(PLDuplicateDetectorExactPixel *)self _updateDuplicateAssetOIDResults:resultsCopy forAssetOID:*(*(&v19 + 1) + 8 * v18++) relatedProcessedHashOIDMap:mapCopy oidHashMap:hashMapCopy];
         }
 
         while (v16 != v18);
@@ -899,22 +899,22 @@ void __93__PLDuplicateDetectorExactPixel__fetchLimitedSelectionHashes_alternativ
   }
 }
 
-- (void)_updateDuplicateAssetOIDResults:(id)a3 forAssetOID:(id)a4 relatedProcessedHashOIDMap:(id)a5 oidHashMap:(id)a6
+- (void)_updateDuplicateAssetOIDResults:(id)results forAssetOID:(id)d relatedProcessedHashOIDMap:(id)map oidHashMap:(id)hashMap
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (([(NSMutableSet *)self->_processedOIDs containsObject:v11]& 1) == 0)
+  resultsCopy = results;
+  dCopy = d;
+  mapCopy = map;
+  hashMapCopy = hashMap;
+  if (([(NSMutableSet *)self->_processedOIDs containsObject:dCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_processedOIDs addObject:v11];
-    [v10 addObject:v11];
+    [(NSMutableSet *)self->_processedOIDs addObject:dCopy];
+    [resultsCopy addObject:dCopy];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v14 = [v13 objectForKeyedSubscript:{v11, 0}];
+    v14 = [hashMapCopy objectForKeyedSubscript:{dCopy, 0}];
     v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v15)
     {
@@ -930,7 +930,7 @@ void __93__PLDuplicateDetectorExactPixel__fetchLimitedSelectionHashes_alternativ
             objc_enumerationMutation(v14);
           }
 
-          [(PLDuplicateDetectorExactPixel *)self _updateDuplicateAssetOIDResults:v10 forHash:*(*(&v19 + 1) + 8 * v18++) relatedProcessedHashOIDMap:v12 oidHashMap:v13];
+          [(PLDuplicateDetectorExactPixel *)self _updateDuplicateAssetOIDResults:resultsCopy forHash:*(*(&v19 + 1) + 8 * v18++) relatedProcessedHashOIDMap:mapCopy oidHashMap:hashMapCopy];
         }
 
         while (v16 != v18);
@@ -942,10 +942,10 @@ void __93__PLDuplicateDetectorExactPixel__fetchLimitedSelectionHashes_alternativ
   }
 }
 
-- (id)_generateDuplicateContainerFromProcessedHashOIDMap:(id)a3 oidHashMap:(id)a4
+- (id)_generateDuplicateContainerFromProcessedHashOIDMap:(id)map oidHashMap:(id)hashMap
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  hashMapCopy = hashMap;
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v20[0] = 0;
   v20[1] = v20;
@@ -959,9 +959,9 @@ void __93__PLDuplicateDetectorExactPixel__fetchLimitedSelectionHashes_alternativ
   v15[3] = &unk_1E756D578;
   v19 = v20;
   v15[4] = self;
-  v9 = v6;
+  v9 = mapCopy;
   v16 = v9;
-  v10 = v7;
+  v10 = hashMapCopy;
   v17 = v10;
   v11 = v8;
   v18 = v11;
@@ -1019,27 +1019,27 @@ void __95__PLDuplicateDetectorExactPixel__generateDuplicateContainerFromProcesse
   }
 }
 
-- (void)_addKey:(id)a3 value:(id)a4 map:(id)a5
+- (void)_addKey:(id)key value:(id)value map:(id)map
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v10 && v7)
+  keyCopy = key;
+  valueCopy = value;
+  mapCopy = map;
+  if (keyCopy && valueCopy)
   {
-    v9 = [v8 objectForKeyedSubscript:v10];
+    v9 = [mapCopy objectForKeyedSubscript:keyCopy];
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      [v8 setObject:v9 forKeyedSubscript:v10];
+      [mapCopy setObject:v9 forKeyedSubscript:keyCopy];
     }
 
-    [v9 addObject:v7];
+    [v9 addObject:valueCopy];
   }
 }
 
-- (id)_generateDuplicateContainerFromResults:(id)a3
+- (id)_generateDuplicateContainerFromResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1052,7 +1052,7 @@ void __95__PLDuplicateDetectorExactPixel__generateDuplicateContainerFromProcesse
   v21 = v7;
   v8 = v7;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v19];
+  [resultsCopy enumerateObjectsUsingBlock:v19];
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v9, "count")}];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
@@ -1092,10 +1092,10 @@ void __72__PLDuplicateDetectorExactPixel__generateDuplicateContainerFromResults_
   }
 }
 
-- (id)detectDuplicatesWithPhotoLibrary:(id)a3 error:(id *)a4
+- (id)detectDuplicatesWithPhotoLibrary:(id)library error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  libraryCopy = library;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -1113,7 +1113,7 @@ void __72__PLDuplicateDetectorExactPixel__generateDuplicateContainerFromResults_
   v20[2] = __72__PLDuplicateDetectorExactPixel_detectDuplicatesWithPhotoLibrary_error___block_invoke;
   v20[3] = &unk_1E7578898;
   v20[4] = self;
-  v7 = v6;
+  v7 = libraryCopy;
   v21 = v7;
   v22 = &v24;
   v23 = &v30;
@@ -1175,7 +1175,7 @@ LABEL_6:
     v15 = [(PLDuplicateDetectorExactPixel *)self _postProcessDuplicateWithPhotoLibrary:v7 resultContainer:v8 error:&obj];
     objc_storeStrong(v14, obj);
     v16 = v31[5];
-    if (a4)
+    if (error)
     {
       v17 = v15;
     }
@@ -1188,16 +1188,16 @@ LABEL_6:
     if ((v17 & 1) == 0)
     {
       v16 = v16;
-      *a4 = v16;
+      *error = v16;
     }
   }
 
   else
   {
     v8 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v31[5];
+      *error = v31[5];
     }
   }
 
@@ -1261,16 +1261,16 @@ void __72__PLDuplicateDetectorExactPixel_detectDuplicatesWithPhotoLibrary_error_
   }
 }
 
-- (PLDuplicateDetectorExactPixel)initWithSourceOIDs:(id)a3
+- (PLDuplicateDetectorExactPixel)initWithSourceOIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v17.receiver = self;
   v17.super_class = PLDuplicateDetectorExactPixel;
   v6 = [(PLDuplicateDetectorExactPixel *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceAssetOIDs, a3);
+    objc_storeStrong(&v6->_sourceAssetOIDs, ds);
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     processedOIDs = v7->_processedOIDs;
     v7->_processedOIDs = v8;
@@ -1280,17 +1280,17 @@ void __72__PLDuplicateDetectorExactPixel_detectDuplicatesWithPhotoLibrary_error_
     v7->_processedHashes = v10;
 
     v7->_enableEXIFDataAccess = 0;
-    v12 = [objc_opt_class() invalidHashData];
+    invalidHashData = [objc_opt_class() invalidHashData];
     invalidHashDataToExclude = v7->_invalidHashDataToExclude;
-    v7->_invalidHashDataToExclude = v12;
+    v7->_invalidHashDataToExclude = invalidHashData;
 
     if (MEMORY[0x19EAEE230]())
     {
-      v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v7->_enableScreenshotProcessing = [v14 BOOLForKey:@"PLDuplicateEnableScreenshotProcessing"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v7->_enableScreenshotProcessing = [standardUserDefaults BOOLForKey:@"PLDuplicateEnableScreenshotProcessing"];
 
-      v15 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v7->_disablePostProcessing = [v15 BOOLForKey:@"PLDuplicateDisablePostProcessing"];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v7->_disablePostProcessing = [standardUserDefaults2 BOOLForKey:@"PLDuplicateDisablePostProcessing"];
     }
   }
 

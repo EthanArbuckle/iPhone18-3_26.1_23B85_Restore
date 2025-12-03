@@ -1,5 +1,5 @@
 @interface InCallControlsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (int64_t)_axDevicePosition;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,20 +8,20 @@
 
 @implementation InCallControlsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.InCallControlsViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"ConversationKit.InCallControlsViewController" hasSwiftField:@"delegate" withSwiftType:"Optional<InCallControlsViewControllerDelegate>"];
-  [v3 validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityHotdog" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityJoinLeaveButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityEffectsButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityCameraButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityCameraLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityDisableVideoButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"shouldShowLeaveButton" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MultiwayViewControllerAccessibility" hasInstanceMethod:@"_accessibilityExpandControls" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsViewController" hasSwiftField:@"delegate" withSwiftType:"Optional<InCallControlsViewControllerDelegate>"];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityHotdog" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityJoinLeaveButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityEffectsButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityCameraButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityCameraLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"accessibilityDisableVideoButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"shouldShowLeaveButton" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.InCallControlsViewController" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MultiwayViewControllerAccessibility" hasInstanceMethod:@"_accessibilityExpandControls" withFullSignature:{"v", 0}];
 }
 
 - (BOOL)accessibilityPerformEscape
@@ -32,18 +32,18 @@
   }
 
   v4 = [(InCallControlsViewControllerAccessibility *)self safeValueForKey:@"accessibilityEffectsButton"];
-  v5 = [v4 accessibilityTraits];
-  if ((*MEMORY[0x29EDC7FC0] & ~v5) != 0)
+  accessibilityTraits = [v4 accessibilityTraits];
+  if ((*MEMORY[0x29EDC7FC0] & ~accessibilityTraits) != 0)
   {
-    v3 = 0;
+    accessibilityActivate = 0;
   }
 
   else
   {
-    v3 = [v4 accessibilityActivate];
+    accessibilityActivate = [v4 accessibilityActivate];
   }
 
-  return v3;
+  return accessibilityActivate;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

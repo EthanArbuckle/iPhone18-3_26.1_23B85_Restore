@@ -1,10 +1,10 @@
 @interface PUInteractiveTileTracker
 - (PUDisplayVelocity)currentVelocity;
-- (PUInteractiveTileTracker)initWithTilingView:(id)a3;
+- (PUInteractiveTileTracker)initWithTilingView:(id)view;
 - (PUInteractiveTileTrackerDelegate)delegate;
-- (void)_setState:(int64_t)a3;
+- (void)_setState:(int64_t)state;
 - (void)_updateTrackedTileController;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)startTileControllerTracking;
 - (void)stopTileControllerTracking;
 - (void)update;
@@ -32,46 +32,46 @@
   return WeakRetained;
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
   state = self->__state;
-  if (state != a3)
+  if (state != state)
   {
     if (state)
     {
-      if (state == 1 && a3 == 2)
+      if (state == 1 && state == 2)
       {
         goto LABEL_8;
       }
     }
 
-    else if ((a3 - 1) < 2)
+    else if ((state - 1) < 2)
     {
       goto LABEL_8;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->__state];
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUInteractiveTileTracker.m" lineNumber:189 description:{@"invalid state transition %@ -> %@", v9, v10}];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUInteractiveTileTracker.m" lineNumber:189 description:{@"invalid state transition %@ -> %@", v9, v10}];
 
 LABEL_8:
-    self->__state = a3;
+    self->__state = state;
   }
 }
 
 - (void)_updateTrackedTileController
 {
-  v3 = [(PUInteractiveTileTracker *)self trackedTileController];
-  if (!v3)
+  trackedTileController = [(PUInteractiveTileTracker *)self trackedTileController];
+  if (!trackedTileController)
   {
-    v3 = [(PUInteractiveTileTracker *)self tileControllerToTrack];
-    if (v3)
+    trackedTileController = [(PUInteractiveTileTracker *)self tileControllerToTrack];
+    if (trackedTileController)
     {
-      v4 = v3;
-      [(PUInteractiveTileTracker *)self _setTrackedTileController:v3];
+      v4 = trackedTileController;
+      [(PUInteractiveTileTracker *)self _setTrackedTileController:trackedTileController];
       [(PUInteractiveTileTracker *)self startTileControllerTracking];
-      v3 = v4;
+      trackedTileController = v4;
     }
   }
 }
@@ -79,11 +79,11 @@ LABEL_8:
 - (void)stopTileControllerTracking
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [(PUInteractiveTileTracker *)self trackedTileController];
-  if (!v4)
+  trackedTileController = [(PUInteractiveTileTracker *)self trackedTileController];
+  if (!trackedTileController)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PUInteractiveTileTracker.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"tileController != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUInteractiveTileTracker.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"tileController != nil"}];
   }
 
   [(PUInteractiveTileTracker *)self currentVelocity];
@@ -101,30 +101,30 @@ LABEL_8:
   }
 
   v15 = objc_alloc_init(PUTileReattachmentContext);
-  [(PUTileReattachmentContext *)v15 setVelocity:v4 forTileController:v6, v8, v10, v12];
+  [(PUTileReattachmentContext *)v15 setVelocity:trackedTileController forTileController:v6, v8, v10, v12];
   [(PUInteractiveTileTracker *)self configureTileReattachmentContext:v15];
-  v16 = [(PUInteractiveTileTracker *)self tilingView];
-  v21 = v4;
+  tilingView = [(PUInteractiveTileTracker *)self tilingView];
+  v21 = trackedTileController;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
-  [v16 reattachTileControllers:v17 withContext:v15];
+  [tilingView reattachTileControllers:v17 withContext:v15];
 
   if (self->_delegateFlags.respondsToDidStopTrackingTileController)
   {
-    v18 = [(PUInteractiveTileTracker *)self delegate];
-    [v18 interactiveTileTracker:self didStopTrackingTileController:v4];
+    delegate = [(PUInteractiveTileTracker *)self delegate];
+    [delegate interactiveTileTracker:self didStopTrackingTileController:trackedTileController];
   }
 
-  v19 = [(PUInteractiveTileTracker *)self _tileHider];
-  if (v19)
+  _tileHider = [(PUInteractiveTileTracker *)self _tileHider];
+  if (_tileHider)
   {
     if ([(PUInteractiveTileTracker *)self shouldFinish])
     {
-      [v19 reattachTiles];
+      [_tileHider reattachTiles];
     }
 
     else
     {
-      [v19 unhideTilesAnimated:1];
+      [_tileHider unhideTilesAnimated:1];
     }
 
     [(PUInteractiveTileTracker *)self _setTileHider:0];
@@ -134,31 +134,31 @@ LABEL_8:
 - (void)startTileControllerTracking
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PUInteractiveTileTracker *)self trackedTileController];
-  if (!v4)
+  trackedTileController = [(PUInteractiveTileTracker *)self trackedTileController];
+  if (!trackedTileController)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUInteractiveTileTracker.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"tileController != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUInteractiveTileTracker.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"tileController != nil"}];
   }
 
-  v5 = [(PUInteractiveTileTracker *)self tilingView];
-  v14[0] = v4;
+  tilingView = [(PUInteractiveTileTracker *)self tilingView];
+  v14[0] = trackedTileController;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v5 detachTileControllers:v6];
+  [tilingView detachTileControllers:v6];
 
   if (self->_delegateFlags.respondsToWillStartTrackingTileController)
   {
-    v7 = [(PUInteractiveTileTracker *)self delegate];
-    [v7 interactiveTileTracker:self willStartTrackingTileController:v4];
+    delegate = [(PUInteractiveTileTracker *)self delegate];
+    [delegate interactiveTileTracker:self willStartTrackingTileController:trackedTileController];
   }
 
-  v8 = [[PUTileHider alloc] initWithTilingView:v5];
+  v8 = [[PUTileHider alloc] initWithTilingView:tilingView];
   [(PUInteractiveTileTracker *)self _setTileHider:v8];
-  v9 = [v4 presentationLayoutInfo];
+  presentationLayoutInfo = [trackedTileController presentationLayoutInfo];
   v10 = +[PUOneUpTilingLayout centerTileKinds];
-  v11 = [v9 indexPath];
-  v12 = [v9 dataSourceIdentifier];
-  [(PUTileHider *)v8 hideTilesAtIndexPath:v11 withKinds:v10 dataSourceIdentifier:v12 animated:1];
+  indexPath = [presentationLayoutInfo indexPath];
+  dataSourceIdentifier = [presentationLayoutInfo dataSourceIdentifier];
+  [(PUTileHider *)v8 hideTilesAtIndexPath:indexPath withKinds:v10 dataSourceIdentifier:dataSourceIdentifier animated:1];
 }
 
 - (void)update
@@ -167,10 +167,10 @@ LABEL_8:
   {
     [(PUInteractiveTileTracker *)self updateGestureRecognizerTracking];
     [(PUInteractiveTileTracker *)self _updateTrackedTileController];
-    v3 = [(PUInteractiveTileTracker *)self trackedTileController];
+    trackedTileController = [(PUInteractiveTileTracker *)self trackedTileController];
     if ([(PUInteractiveTileTracker *)self shouldEnd])
     {
-      if (v3)
+      if (trackedTileController)
       {
         [(PUInteractiveTileTracker *)self stopTileControllerTracking];
         [(PUInteractiveTileTracker *)self _setTrackedTileController:0];
@@ -188,9 +188,9 @@ LABEL_8:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -201,13 +201,13 @@ LABEL_8:
   }
 }
 
-- (PUInteractiveTileTracker)initWithTilingView:(id)a3
+- (PUInteractiveTileTracker)initWithTilingView:(id)view
 {
-  v6 = a3;
-  if (!v6)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUInteractiveTileTracker.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUInteractiveTileTracker.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
   }
 
   v11.receiver = self;
@@ -216,7 +216,7 @@ LABEL_8:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_tilingView, a3);
+    objc_storeStrong(&v7->_tilingView, view);
     v8->_shouldFinish = 1;
   }
 

@@ -1,16 +1,16 @@
 @interface IMDSpotlightTextDataProvider
-- (id)dataForGUID:(id)a3 error:(id *)a4;
+- (id)dataForGUID:(id)d error:(id *)error;
 @end
 
 @implementation IMDSpotlightTextDataProvider
 
-- (id)dataForGUID:(id)a3 error:(id *)a4
+- (id)dataForGUID:(id)d error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc(MEMORY[0x1E69A8148]);
-  v7 = v4;
-  v52 = objc_msgSend_initWithEncodedMessagePartGUID_(v5, v6, v4);
+  v7 = dCopy;
+  v52 = objc_msgSend_initWithEncodedMessagePartGUID_(v5, v6, dCopy);
   if (v52)
   {
     v7 = objc_msgSend_messageGUID(v52, v8, v9);
@@ -60,7 +60,7 @@
             v29 = objc_msgSend_messagePartGUIDForMessageGUID_(v28, v24, v7);
             v32 = objc_msgSend_encodedMessagePartGUID(v29, v30, v31);
 
-            if (objc_msgSend_isEqualToString_(v32, v33, v4))
+            if (objc_msgSend_isEqualToString_(v32, v33, dCopy))
             {
               v36 = objc_msgSend_messagePartRange(v28, v34, v35);
               v38 = objc_msgSend_attributedSubstringFromRange_(v17, v37, v36, v37);
@@ -82,22 +82,22 @@
     v68 = @"text";
     v69 = v40;
     v42 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v41, &v69, &v68, 1);
-    v44 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v43, v42, 0, a4);
+    v44 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v43, v42, 0, error);
     if (IMOSLoggingEnabled())
     {
       v45 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
       {
-        v46 = a4;
-        if (a4)
+        errorCopy = error;
+        if (error)
         {
-          v46 = *a4;
+          errorCopy = *error;
         }
 
         *buf = 138412546;
         v65 = v44;
         v66 = 2112;
-        v67 = v46;
+        v67 = errorCopy;
         _os_log_impl(&dword_1B7AD5000, v45, OS_LOG_TYPE_INFO, "Returning data %@ to spotlight with error %@", buf, 0x16u);
       }
     }
@@ -111,7 +111,7 @@
       if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v65 = v4;
+        v65 = dCopy;
         _os_log_impl(&dword_1B7AD5000, v47, OS_LOG_TYPE_INFO, "Failed to find plain text for spotlight because no message was found for guid %@", buf, 0xCu);
       }
     }

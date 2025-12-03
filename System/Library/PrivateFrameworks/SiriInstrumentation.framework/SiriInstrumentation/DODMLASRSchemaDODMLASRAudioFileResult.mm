@@ -1,28 +1,28 @@
 @interface DODMLASRSchemaDODMLASRAudioFileResult
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRAudioFileResult)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRAudioFileResult)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRAudioFileResult)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRAudioFileResult)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addDecodingResults:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDecodingResults:(id)results;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRAudioFileResult
 
-- (DODMLASRSchemaDODMLASRAudioFileResult)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRAudioFileResult)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = DODMLASRSchemaDODMLASRAudioFileResult;
   v5 = [(DODMLASRSchemaDODMLASRAudioFileResult *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"asrId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"asrId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(DODMLASRSchemaDODMLASRAudioFileResult *)v5 setAsrId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"decodingResults"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"decodingResults"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       v6 = v20;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"linkId"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,30 +90,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRAudioFileResult)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRAudioFileResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRAudioFileResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRAudioFileResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -127,26 +127,26 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_asrId)
   {
-    v4 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    asrId = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
+    dictionaryRepresentation = [asrId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"asrId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"asrId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"asrId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"asrId"];
     }
   }
 
   if ([(NSArray *)self->_decodingResults count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -166,16 +166,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -185,28 +185,28 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"decodingResults"];
+    [dictionary setObject:array forKeyedSubscript:@"decodingResults"];
   }
 
   if (self->_linkId)
   {
-    v15 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    linkId = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
+    dictionaryRepresentation3 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"linkId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"linkId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v19];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v19];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -216,28 +216,28 @@
   return v4 ^ [(SISchemaUUID *)self->_linkId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
-  v6 = [v4 asrId];
-  if ((v5 != 0) == (v6 == 0))
+  asrId = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
+  asrId2 = [equalCopy asrId];
+  if ((asrId != 0) == (asrId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
-  if (v7)
+  asrId3 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
+  if (asrId3)
   {
-    v8 = v7;
-    v9 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
-    v10 = [v4 asrId];
-    v11 = [v9 isEqual:v10];
+    v8 = asrId3;
+    asrId4 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
+    asrId5 = [equalCopy asrId];
+    v11 = [asrId4 isEqual:asrId5];
 
     if (!v11)
     {
@@ -249,20 +249,20 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self decodingResults];
-  v6 = [v4 decodingResults];
-  if ((v5 != 0) == (v6 == 0))
+  asrId = [(DODMLASRSchemaDODMLASRAudioFileResult *)self decodingResults];
+  asrId2 = [equalCopy decodingResults];
+  if ((asrId != 0) == (asrId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self decodingResults];
-  if (v12)
+  decodingResults = [(DODMLASRSchemaDODMLASRAudioFileResult *)self decodingResults];
+  if (decodingResults)
   {
-    v13 = v12;
-    v14 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self decodingResults];
-    v15 = [v4 decodingResults];
-    v16 = [v14 isEqual:v15];
+    v13 = decodingResults;
+    decodingResults2 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self decodingResults];
+    decodingResults3 = [equalCopy decodingResults];
+    v16 = [decodingResults2 isEqual:decodingResults3];
 
     if (!v16)
     {
@@ -274,12 +274,12 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) != (v6 == 0))
+  asrId = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
+  asrId2 = [equalCopy linkId];
+  if ((asrId != 0) != (asrId2 == 0))
   {
-    v17 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
-    if (!v17)
+    linkId = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
+    if (!linkId)
     {
 
 LABEL_20:
@@ -287,10 +287,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
-    v20 = [v4 linkId];
-    v21 = [v19 isEqual:v20];
+    v18 = linkId;
+    linkId2 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
+    linkId3 = [equalCopy linkId];
+    v21 = [linkId2 isEqual:linkId3];
 
     if (v21)
     {
@@ -310,15 +310,15 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
+  toCopy = to;
+  asrId = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
 
-  if (v5)
+  if (asrId)
   {
-    v6 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
+    asrId2 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -353,57 +353,57 @@ LABEL_18:
     while (v9);
   }
 
-  v12 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
+  linkId = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
 
-  if (v12)
+  if (linkId)
   {
-    v13 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
+    linkId2 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addDecodingResults:(id)a3
+- (void)addDecodingResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   decodingResults = self->_decodingResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!decodingResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_decodingResults;
-    self->_decodingResults = v6;
+    self->_decodingResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     decodingResults = self->_decodingResults;
   }
 
-  [(NSArray *)decodingResults addObject:v4];
+  [(NSArray *)decodingResults addObject:resultsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = DODMLASRSchemaDODMLASRAudioFileResult;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  asrId = [(DODMLASRSchemaDODMLASRAudioFileResult *)self asrId];
+  v7 = [asrId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DODMLASRSchemaDODMLASRAudioFileResult *)self deleteAsrId];
   }
 
-  v9 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self decodingResults];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  decodingResults = [(DODMLASRSchemaDODMLASRAudioFileResult *)self decodingResults];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:decodingResults underConditions:policyCopy];
   [(DODMLASRSchemaDODMLASRAudioFileResult *)self setDecodingResults:v10];
 
-  v11 = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  linkId = [(DODMLASRSchemaDODMLASRAudioFileResult *)self linkId];
+  v12 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(DODMLASRSchemaDODMLASRAudioFileResult *)self deleteLinkId];
   }

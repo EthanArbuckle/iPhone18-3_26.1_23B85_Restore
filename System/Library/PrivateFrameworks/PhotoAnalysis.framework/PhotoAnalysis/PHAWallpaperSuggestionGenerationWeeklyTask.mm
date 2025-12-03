@@ -1,15 +1,15 @@
 @interface PHAWallpaperSuggestionGenerationWeeklyTask
-+ (id)generationOptionNameFromSingleOption:(unint64_t)a3;
-+ (void)sendWallpaperGenerationCompletedBiomeEvent:(id)a3;
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
++ (id)generationOptionNameFromSingleOption:(unint64_t)option;
++ (void)sendWallpaperGenerationCompletedBiomeEvent:(id)event;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
 - (NSString)name;
-- (PHAWallpaperSuggestionGenerationWeeklyTask)initWithGenerationOptions:(unint64_t)a3;
+- (PHAWallpaperSuggestionGenerationWeeklyTask)initWithGenerationOptions:(unint64_t)options;
 - (double)period;
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
 - (id)taskClassDependencies;
 - (unint64_t)featureCode;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAWallpaperSuggestionGenerationWeeklyTask
@@ -28,29 +28,29 @@
   }
 }
 
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v111 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v91 = [v8 workingContextForSuggestions];
-  v10 = [v91 loggingConnection];
-  v92 = [[PHASuggestionController alloc] initWithGraphManager:v8];
+  managerCopy = manager;
+  reporterCopy = reporter;
+  workingContextForSuggestions = [managerCopy workingContextForSuggestions];
+  loggingConnection = [workingContextForSuggestions loggingConnection];
+  v92 = [[PHASuggestionController alloc] initWithGraphManager:managerCopy];
   v93 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v94 = [v8 photoLibrary];
+  photoLibrary = [managerCopy photoLibrary];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __105__PHAWallpaperSuggestionGenerationWeeklyTask_generateSuggestionsWithGraphManager_progressReporter_error___block_invoke;
   aBlock[3] = &unk_2788B3038;
-  v11 = v10;
+  v11 = loggingConnection;
   v103 = v11;
-  v104 = a5;
+  errorCopy = error;
   v12 = _Block_copy(aBlock);
   v99[0] = MEMORY[0x277D85DD0];
   v99[1] = 3221225472;
   v99[2] = __105__PHAWallpaperSuggestionGenerationWeeklyTask_generateSuggestionsWithGraphManager_progressReporter_error___block_invoke_298;
   v99[3] = &unk_2788B3060;
-  v13 = v9;
+  v13 = reporterCopy;
   v100 = v13;
   oslog = v11;
   v101 = oslog;
@@ -62,8 +62,8 @@
     goto LABEL_65;
   }
 
-  v90 = [objc_alloc(MEMORY[0x277D3BC40]) initWithPhotoLibrary:v94];
-  v85 = [v90 libraryIsProcessedEnough];
+  v90 = [objc_alloc(MEMORY[0x277D3BC40]) initWithPhotoLibrary:photoLibrary];
+  libraryIsProcessedEnough = [v90 libraryIsProcessedEnough];
   v16 = 0;
   v98 = 0;
   if (self->_generationOptions)
@@ -75,27 +75,27 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = v13;
-      v21 = a5;
+      errorCopy2 = error;
       v22 = v17;
-      v23 = self;
+      selfCopy = self;
       v24 = v14;
       v25 = v12;
       v26 = [v18 count];
       [v18 componentsJoinedByString:{@", "}];
-      v27 = v81 = v8;
+      v27 = v81 = managerCopy;
       *buf = 67109378;
       *v110 = v26;
       v12 = v25;
       v14 = v24;
-      self = v23;
+      self = selfCopy;
       v17 = v22;
-      a5 = v21;
+      error = errorCopy2;
       v13 = v20;
       *&v110[4] = 2112;
       *&v110[6] = v27;
       _os_log_impl(&dword_22FA28000, v19, OS_LOG_TYPE_INFO, "[PHAWallpaperSuggestionGenerationWeeklyTask] Generated %d wallpaper shuffle suggestions with local identifiers %@", buf, 0x12u);
 
-      v8 = v81;
+      managerCopy = v81;
     }
 
     [v93 addObjectsFromArray:v18];
@@ -118,30 +118,30 @@
   if ((self->_generationOptions & 2) != 0)
   {
     v28 = [v13 childProgressReporterFromStart:0.31 toEnd:0.59];
-    v29 = self;
+    selfCopy2 = self;
     v30 = v28;
-    v87 = v29;
-    v31 = [PHAWallpaperSuggestionGenerationUtils generateSuggestionsWithOptionsDictionary:v29->_suggestionOptionsDictionary contentMode:1 suggestionController:v92 progressReporter:v28 shouldReload:&v97];
+    v87 = selfCopy2;
+    v31 = [PHAWallpaperSuggestionGenerationUtils generateSuggestionsWithOptionsDictionary:selfCopy2->_suggestionOptionsDictionary contentMode:1 suggestionController:v92 progressReporter:v28 shouldReload:&v97];
     v16 = (v97 | v16) != 0;
     v32 = oslog;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
       v33 = v14;
-      v34 = a5;
+      errorCopy3 = error;
       v35 = v12;
       v36 = [v31 count];
       [v31 componentsJoinedByString:{@", "}];
-      v37 = v82 = v8;
+      v37 = v82 = managerCopy;
       *buf = 67109378;
       *v110 = v36;
       v12 = v35;
-      a5 = v34;
+      error = errorCopy3;
       v14 = v33;
       *&v110[4] = 2112;
       *&v110[6] = v37;
       _os_log_impl(&dword_22FA28000, v32, OS_LOG_TYPE_INFO, "[PHAWallpaperSuggestionGenerationWeeklyTask] Generated %d wallpaper top suggestions with local identifiers %@", buf, 0x12u);
 
-      v8 = v82;
+      managerCopy = v82;
     }
 
     [v93 addObjectsFromArray:v31];
@@ -170,9 +170,9 @@
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
     {
       v83 = v13;
-      v41 = a5;
+      errorCopy4 = error;
       v42 = v38;
-      v43 = self;
+      selfCopy3 = self;
       v44 = v14;
       v45 = v12;
       v46 = [v39 count];
@@ -181,9 +181,9 @@
       *v110 = v46;
       v12 = v45;
       v14 = v44;
-      self = v43;
+      self = selfCopy3;
       v38 = v42;
-      a5 = v41;
+      error = errorCopy4;
       v13 = v83;
       *&v110[4] = 2112;
       *&v110[6] = v47;
@@ -199,20 +199,20 @@
 
     else
     {
-      if ((v85 & 1) == 0)
+      if ((libraryIsProcessedEnough & 1) == 0)
       {
         v48 = v12;
-        v49 = [v90 libraryIsEmpty];
+        libraryIsEmpty = [v90 libraryIsEmpty];
         goto LABEL_25;
       }
 
       v48 = v12;
     }
 
-    v49 = 1;
+    libraryIsEmpty = 1;
 LABEL_25:
-    v50 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v50 setBool:v49 forKey:@"PHAWallpaperSuggestionGenerationWeeklyTaskLibraryIsProcessedEnoughForAmbient"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setBool:libraryIsEmpty forKey:@"PHAWallpaperSuggestionGenerationWeeklyTaskLibraryIsProcessedEnoughForAmbient"];
 
     v14[2](v14, [v39 count]);
     v12 = v48;
@@ -232,24 +232,24 @@ LABEL_25:
     v53 = oslog;
     if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
     {
-      v54 = self;
+      selfCopy4 = self;
       v55 = v14;
-      v56 = a5;
+      errorCopy5 = error;
       v57 = v12;
       v58 = [v52 count];
       [v52 componentsJoinedByString:{@", "}];
-      v59 = v84 = v8;
+      v59 = v84 = managerCopy;
       *buf = 67109378;
       *v110 = v58;
       v12 = v57;
-      a5 = v56;
+      error = errorCopy5;
       v14 = v55;
-      self = v54;
+      self = selfCopy4;
       *&v110[4] = 2112;
       *&v110[6] = v59;
       _os_log_impl(&dword_22FA28000, v53, OS_LOG_TYPE_INFO, "[PHAWallpaperSuggestionGenerationWeeklyTask] Generated %d Me suggestions with local identifiers %@", buf, 0x12u);
 
-      v8 = v84;
+      managerCopy = v84;
     }
 
     [v93 addObjectsFromArray:v52];
@@ -286,7 +286,7 @@ LABEL_25:
     _os_log_impl(&dword_22FA28000, oslog, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionGenerationWeeklyTask] No preexisting Wallpaper Suggestions, attempting to run refresh session", buf, 2u);
   }
 
-  v60 = [[PHAWallpaperSuggestionRefreshSession alloc] initWithGraphManager:v8];
+  v60 = [[PHAWallpaperSuggestionRefreshSession alloc] initWithGraphManager:managerCopy];
   v96 = 0;
   v61 = [(PHAWallpaperSuggestionRefreshSession *)v60 prepareWithError:&v96];
   v62 = v96;
@@ -313,13 +313,13 @@ LABEL_25:
       *buf = 138412290;
       *v110 = v65;
       _os_log_error_impl(&dword_22FA28000, oslog, OS_LOG_TYPE_ERROR, "[PHAWallpaperSuggestionGenerationWeeklyTask] Failed to run refresh session: %@", buf, 0xCu);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_52;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
 LABEL_52:
 
@@ -327,7 +327,7 @@ LABEL_52:
     }
 
     v67 = v65;
-    *a5 = v65;
+    *error = v65;
     goto LABEL_52;
   }
 
@@ -336,7 +336,7 @@ LABEL_52:
     *buf = 138412290;
     *v110 = v62;
     _os_log_fault_impl(&dword_22FA28000, oslog, OS_LOG_TYPE_FAULT, "[PHAWallpaperSuggestionGenerationWeeklyTask] Failed to prepare refresh session: %@", buf, 0xCu);
-    if (!a5)
+    if (!error)
     {
       goto LABEL_48;
     }
@@ -344,11 +344,11 @@ LABEL_52:
     goto LABEL_47;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_47:
     v66 = v62;
-    *a5 = v62;
+    *error = v62;
   }
 
 LABEL_48:
@@ -356,19 +356,19 @@ LABEL_48:
 LABEL_53:
 
 LABEL_54:
-  v68 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v68 setBool:v85 forKey:@"PHAWallpaperSuggestionGenerationWeeklyTaskLibraryIsProcessedEnough"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 setBool:libraryIsProcessedEnough forKey:@"PHAWallpaperSuggestionGenerationWeeklyTaskLibraryIsProcessedEnough"];
 
-  if (v85 && v97 == 1)
+  if (libraryIsProcessedEnough && v97 == 1)
   {
     [objc_opt_class() sendWallpaperGenerationCompletedBiomeEvent:oslog];
   }
 
-  v69 = [(PHAWallpaperSuggestionGenerationWeeklyTask *)self suggestionOptionsDictionary];
+  suggestionOptionsDictionary = [(PHAWallpaperSuggestionGenerationWeeklyTask *)self suggestionOptionsDictionary];
 
-  if (!v69)
+  if (!suggestionOptionsDictionary)
   {
-    v70 = [[PHAWallpaperSuggestionAnalyticsSender alloc] initWithGraphManager:v8 libraryAnalysisSummary:v90];
+    v70 = [[PHAWallpaperSuggestionAnalyticsSender alloc] initWithGraphManager:managerCopy libraryAnalysisSummary:v90];
     [(PHAWallpaperSuggestionAnalyticsSender *)v70 sendWallpaperGenerationSummaryEventWithGeneratedSuggestionLocalIdentifiers:v93];
     if ((generationOptions & 8) != 0)
     {
@@ -378,11 +378,11 @@ LABEL_54:
 
   if (![v13 isCancelledWithProgress:1.0])
   {
-    v72 = [(PHAWallpaperSuggestionGenerationWeeklyTask *)self suggestionOptionsDictionary];
-    v73 = [v72 objectForKeyedSubscript:*MEMORY[0x277D3B068]];
-    v74 = [v73 BOOLValue];
+    suggestionOptionsDictionary2 = [(PHAWallpaperSuggestionGenerationWeeklyTask *)self suggestionOptionsDictionary];
+    v73 = [suggestionOptionsDictionary2 objectForKeyedSubscript:*MEMORY[0x277D3B068]];
+    bOOLValue = [v73 BOOLValue];
 
-    if (v74)
+    if (bOOLValue)
     {
       v105 = *MEMORY[0x277D3B0D0];
       v106 = v93;
@@ -449,9 +449,9 @@ void __105__PHAWallpaperSuggestionGenerationWeeklyTask_generateSuggestionsWithGr
   }
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAWallpaperSuggestionGenerationWeeklyTask timeoutFatal:]", "PHAWallpaperSuggestionGenerationWeeklyTask.m", 163, "NO");
   }
@@ -463,55 +463,55 @@ void __105__PHAWallpaperSuggestionGenerationWeeklyTask_generateSuggestionsWithGr
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v5 = [(PHAWallpaperSuggestionGenerationWeeklyTask *)self generateSuggestionsWithGraphManager:a3 progressReporter:a4 error:a5];
+  v5 = [(PHAWallpaperSuggestionGenerationWeeklyTask *)self generateSuggestionsWithGraphManager:manager progressReporter:reporter error:error];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 photoLibrary];
-  v6 = [v5 isSystemPhotoLibrary];
+  managerCopy = manager;
+  photoLibrary = [managerCopy photoLibrary];
+  isSystemPhotoLibrary = [photoLibrary isSystemPhotoLibrary];
 
-  if (v6)
+  if (isSystemPhotoLibrary)
   {
     if ((self->_generationOptions & 0x12) != 0)
     {
-      v7 = [v4 isReady];
+      isReady = [managerCopy isReady];
     }
 
     else
     {
-      v7 = 1;
+      isReady = 1;
     }
   }
 
   else
   {
-    v8 = [v4 workingContext];
-    v9 = [v8 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(PHAWallpaperSuggestionGenerationWeeklyTask *)self name];
-      v11 = [v4 photoLibrary];
-      v12 = [v11 debugDescription];
+      name = [(PHAWallpaperSuggestionGenerationWeeklyTask *)self name];
+      photoLibrary2 = [managerCopy photoLibrary];
+      v12 = [photoLibrary2 debugDescription];
       v14 = 138412546;
-      v15 = v10;
+      v15 = name;
       v16 = 2112;
       v17 = v12;
-      _os_log_impl(&dword_22FA28000, v9, OS_LOG_TYPE_DEFAULT, "%@ is running on a non system photo library. Library: %@", &v14, 0x16u);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "%@ is running on a non system photo library. Library: %@", &v14, 0x16u);
     }
 
-    v7 = 0;
+    isReady = 0;
   }
 
-  return v7;
+  return isReady;
 }
 
 - (id)taskClassDependencies
@@ -525,11 +525,11 @@ void __105__PHAWallpaperSuggestionGenerationWeeklyTask_generateSuggestionsWithGr
 
 - (double)period
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"PHAWallpaperSuggestionGenerationWeeklyTaskLibraryIsProcessedEnough"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"PHAWallpaperSuggestionGenerationWeeklyTaskLibraryIsProcessedEnough"];
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"PHAWallpaperSuggestionGenerationWeeklyTaskLibraryIsProcessedEnoughForAmbient"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults2 BOOLForKey:@"PHAWallpaperSuggestionGenerationWeeklyTaskLibraryIsProcessedEnoughForAmbient"];
 
   result = 604800.0;
   if ((v4 & (v6 | ((self->_generationOptions & 8) == 0))) == 0)
@@ -609,47 +609,47 @@ LABEL_6:
   return v8;
 }
 
-- (PHAWallpaperSuggestionGenerationWeeklyTask)initWithGenerationOptions:(unint64_t)a3
+- (PHAWallpaperSuggestionGenerationWeeklyTask)initWithGenerationOptions:(unint64_t)options
 {
   v5.receiver = self;
   v5.super_class = PHAWallpaperSuggestionGenerationWeeklyTask;
   result = [(PHAWallpaperSuggestionGenerationWeeklyTask *)&v5 init];
   if (result)
   {
-    result->_generationOptions = a3;
+    result->_generationOptions = options;
     result->_generatedContent = 0;
   }
 
   return result;
 }
 
-+ (void)sendWallpaperGenerationCompletedBiomeEvent:(id)a3
++ (void)sendWallpaperGenerationCompletedBiomeEvent:(id)event
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
+  eventCopy = event;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v6 = [objc_alloc(MEMORY[0x277CF1168]) initWithContentIdentifier:@"com.apple.photoanalysisd.wallpaper-generation-completed" context:v5 osBuild:0 userInfo:0];
+  v6 = [objc_alloc(MEMORY[0x277CF1168]) initWithContentIdentifier:@"com.apple.photoanalysisd.wallpaper-generation-completed" context:bundleIdentifier osBuild:0 userInfo:0];
   v7 = BiomeLibrary();
-  v8 = [v7 Discoverability];
-  v9 = [v8 Signals];
-  v10 = [v9 source];
+  discoverability = [v7 Discoverability];
+  signals = [discoverability Signals];
+  source = [signals source];
 
-  [v10 sendEvent:v6];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+  [source sendEvent:v6];
+  if (os_log_type_enabled(eventCopy, OS_LOG_TYPE_INFO))
   {
     *v11 = 0;
-    _os_log_impl(&dword_22FA28000, v3, OS_LOG_TYPE_INFO, "[PHAWallpaperSuggestionGenerationWeeklyTask] Sent wallpaper-generation-completed Biome event", v11, 2u);
+    _os_log_impl(&dword_22FA28000, eventCopy, OS_LOG_TYPE_INFO, "[PHAWallpaperSuggestionGenerationWeeklyTask] Sent wallpaper-generation-completed Biome event", v11, 2u);
   }
 }
 
-+ (id)generationOptionNameFromSingleOption:(unint64_t)a3
++ (id)generationOptionNameFromSingleOption:(unint64_t)option
 {
-  if (a3 > 7)
+  if (option > 7)
   {
-    if (a3 != 8)
+    if (option != 8)
     {
-      if (a3 == 16)
+      if (option == 16)
       {
         return @"Me";
       }
@@ -662,9 +662,9 @@ LABEL_6:
 
   else
   {
-    if (a3 != 1)
+    if (option != 1)
     {
-      if (a3 == 2)
+      if (option == 2)
       {
         return @"Top";
       }

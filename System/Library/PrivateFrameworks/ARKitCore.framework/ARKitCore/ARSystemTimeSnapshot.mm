@@ -1,18 +1,18 @@
 @interface ARSystemTimeSnapshot
-+ (id)timeSinceSnapshot:(id)a3;
++ (id)timeSinceSnapshot:(id)snapshot;
 - (ARSystemTimeSnapshot)init;
-- (ARSystemTimeSnapshot)initWithUpTime:(double)a3 upTimeIncludingSleep:(double)a4 upTimeIncludingSleepAndDriftCorrection:(double)a5;
+- (ARSystemTimeSnapshot)initWithUpTime:(double)time upTimeIncludingSleep:(double)sleep upTimeIncludingSleepAndDriftCorrection:(double)correction;
 - (id)description;
-- (id)timeSinceSnapshot:(id)a3;
+- (id)timeSinceSnapshot:(id)snapshot;
 @end
 
 @implementation ARSystemTimeSnapshot
 
-+ (id)timeSinceSnapshot:(id)a3
++ (id)timeSinceSnapshot:(id)snapshot
 {
-  v3 = a3;
+  snapshotCopy = snapshot;
   v4 = objc_opt_new();
-  v5 = [v4 timeSinceSnapshot:v3];
+  v5 = [v4 timeSinceSnapshot:snapshotCopy];
 
   return v5;
 }
@@ -26,33 +26,33 @@
   return [(ARSystemTimeSnapshot *)self initWithUpTime:v3 upTimeIncludingSleep:v4 upTimeIncludingSleepAndDriftCorrection:v5];
 }
 
-- (ARSystemTimeSnapshot)initWithUpTime:(double)a3 upTimeIncludingSleep:(double)a4 upTimeIncludingSleepAndDriftCorrection:(double)a5
+- (ARSystemTimeSnapshot)initWithUpTime:(double)time upTimeIncludingSleep:(double)sleep upTimeIncludingSleepAndDriftCorrection:(double)correction
 {
   v9.receiver = self;
   v9.super_class = ARSystemTimeSnapshot;
   result = [(ARSystemTimeSnapshot *)&v9 init];
   if (result)
   {
-    result->_upTime = a3;
-    result->_upTimeIncludingSleep = a4;
-    result->_upTimeIncludingSleepAndDriftCorrection = a5;
+    result->_upTime = time;
+    result->_upTimeIncludingSleep = sleep;
+    result->_upTimeIncludingSleepAndDriftCorrection = correction;
   }
 
   return result;
 }
 
-- (id)timeSinceSnapshot:(id)a3
+- (id)timeSinceSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v5 = [ARSystemTimeSnapshot alloc];
   upTime = self->_upTime;
-  [v4 upTime];
+  [snapshotCopy upTime];
   v8 = upTime - v7;
   upTimeIncludingSleep = self->_upTimeIncludingSleep;
-  [v4 upTimeIncludingSleep];
+  [snapshotCopy upTimeIncludingSleep];
   v11 = upTimeIncludingSleep - v10;
   upTimeIncludingSleepAndDriftCorrection = self->_upTimeIncludingSleepAndDriftCorrection;
-  [v4 upTimeIncludingSleepAndDriftCorrection];
+  [snapshotCopy upTimeIncludingSleepAndDriftCorrection];
   v14 = v13;
 
   v15 = [(ARSystemTimeSnapshot *)v5 initWithUpTime:v8 upTimeIncludingSleep:v11 upTimeIncludingSleepAndDriftCorrection:upTimeIncludingSleepAndDriftCorrection - v14];

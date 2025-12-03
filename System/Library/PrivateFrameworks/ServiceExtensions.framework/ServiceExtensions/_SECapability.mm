@@ -1,16 +1,16 @@
 @interface _SECapability
-+ (id)assertionWithDomain:(id)a3 name:(id)a4;
-+ (id)assertionWithDomain:(id)a3 name:(id)a4 environmentIdentifier:(id)a5;
-+ (id)assertionWithDomain:(id)a3 name:(id)a4 environmentIdentifier:(id)a5 willInvalidate:(id)a6 didInvalidate:(id)a7;
-+ (id)mediaWithWebsite:(id)a3;
-- (BOOL)setActive:(BOOL)a3;
++ (id)assertionWithDomain:(id)domain name:(id)name;
++ (id)assertionWithDomain:(id)domain name:(id)name environmentIdentifier:(id)identifier;
++ (id)assertionWithDomain:(id)domain name:(id)name environmentIdentifier:(id)identifier willInvalidate:(id)invalidate didInvalidate:(id)didInvalidate;
++ (id)mediaWithWebsite:(id)website;
+- (BOOL)setActive:(BOOL)active;
 - (NSString)mediaEnvironment;
 - (_SECapability)init;
 @end
 
 @implementation _SECapability
 
-+ (id)assertionWithDomain:(id)a3 name:(id)a4
++ (id)assertionWithDomain:(id)domain name:(id)name
 {
   v4 = sub_2657501C8();
   v6 = v5;
@@ -37,7 +37,7 @@
   return v13;
 }
 
-+ (id)assertionWithDomain:(id)a3 name:(id)a4 environmentIdentifier:(id)a5
++ (id)assertionWithDomain:(id)domain name:(id)name environmentIdentifier:(id)identifier
 {
   v5 = sub_2657501C8();
   v7 = v6;
@@ -66,10 +66,10 @@
   return v17;
 }
 
-+ (id)assertionWithDomain:(id)a3 name:(id)a4 environmentIdentifier:(id)a5 willInvalidate:(id)a6 didInvalidate:(id)a7
++ (id)assertionWithDomain:(id)domain name:(id)name environmentIdentifier:(id)identifier willInvalidate:(id)invalidate didInvalidate:(id)didInvalidate
 {
-  v8 = _Block_copy(a6);
-  v9 = _Block_copy(a7);
+  v8 = _Block_copy(invalidate);
+  v9 = _Block_copy(didInvalidate);
   v10 = sub_2657501C8();
   v12 = v11;
   v13 = sub_2657501C8();
@@ -101,7 +101,7 @@
   return v24;
 }
 
-+ (id)mediaWithWebsite:(id)a3
++ (id)mediaWithWebsite:(id)website
 {
   v3 = sub_2657501C8();
   v5 = _s17ServiceExtensions13_SECapabilityC9assertion7websiteACSS_tFZ_0(v3, v4);
@@ -109,7 +109,7 @@
   return v5;
 }
 
-- (BOOL)setActive:(BOOL)a3
+- (BOOL)setActive:(BOOL)active
 {
   v4 = *&self->inner[OBJC_IVAR____SECapability_inner + 40];
   v5 = *&self->inner[OBJC_IVAR____SECapability_inner + 8];
@@ -128,7 +128,7 @@
   v10 = v16[0];
   v11 = v5;
   sub_265747E7C(v16, v21);
-  v8 = sub_265748F00(a3);
+  v8 = sub_265748F00(active);
   v21[2] = v12;
   v21[3] = v13;
   v21[4] = v14;
@@ -161,7 +161,7 @@
       __break(1u);
     }
 
-    v8 = self;
+    selfCopy = self;
     result = sub_265750478();
     __break(1u);
   }

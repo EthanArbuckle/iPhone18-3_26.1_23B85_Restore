@@ -1,16 +1,16 @@
 @interface _UIStackedImageConfiguration
-+ (CGSize)_scaledSizeForSize:(CGSize)result focusSizeIncrease:(double)a4 selectionStyle:(int64_t)a5;
++ (CGSize)_scaledSizeForSize:(CGSize)result focusSizeIncrease:(double)increase selectionStyle:(int64_t)style;
 + (id)newAppIconConfiguration;
 + (id)newStandardConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CACornerRadii)cornerRadii;
 - (CGPoint)translationOffset;
 - (_UIFocusAnimationConfiguration)focusAnimationConfiguration;
 - (_UIStackedImageConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_highContrastFocusIndicatorChanged:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_highContrastFocusIndicatorChanged:(id)changed;
 - (void)dealloc;
-- (void)setCornerRadii:(CACornerRadii *)a3;
+- (void)setCornerRadii:(CACornerRadii *)radii;
 @end
 
 @implementation _UIStackedImageConfiguration
@@ -256,13 +256,13 @@ LABEL_4:
   return v2;
 }
 
-+ (CGSize)_scaledSizeForSize:(CGSize)result focusSizeIncrease:(double)a4 selectionStyle:(int64_t)a5
++ (CGSize)_scaledSizeForSize:(CGSize)result focusSizeIncrease:(double)increase selectionStyle:(int64_t)style
 {
-  if (a4 != 0.0)
+  if (increase != 0.0)
   {
-    if (a5 == 1)
+    if (style == 1)
     {
-      result.height = result.height + a4;
+      result.height = result.height + increase;
     }
 
     else
@@ -275,13 +275,13 @@ LABEL_4:
 
       if (result.width <= result.height)
       {
-        result.height = result.height + a4;
+        result.height = result.height + increase;
         result.width = ceil(result.height * v5);
       }
 
       else
       {
-        result.width = result.width + a4;
+        result.width = result.width + increase;
         result.height = ceil(result.width / v5);
       }
     }
@@ -297,8 +297,8 @@ LABEL_4:
   v2 = [(_UIStackedImageConfiguration *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__highContrastFocusIndicatorChanged_ name:@"UIAccessibilityHighContrastFocusIndicatorChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__highContrastFocusIndicatorChanged_ name:@"UIAccessibilityHighContrastFocusIndicatorChangedNotification" object:0];
   }
 
   return v2;
@@ -306,15 +306,15 @@ LABEL_4:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIAccessibilityHighContrastFocusIndicatorChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityHighContrastFocusIndicatorChangedNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIStackedImageConfiguration;
   [(_UIStackedImageConfiguration *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_UIStackedImageConfiguration);
   [(_UIStackedImageConfiguration *)v4 setSelectionStyle:[(_UIStackedImageConfiguration *)self selectionStyle]];
@@ -387,8 +387,8 @@ LABEL_4:
   [(_UIStackedImageConfiguration *)self defaultSelectedShadowVerticalOffset];
   [(_UIStackedImageConfiguration *)v4 setDefaultSelectedShadowVerticalOffset:?];
   [(_UIStackedImageConfiguration *)v4 setUseSeparateUnfocusedShadowImage:[(_UIStackedImageConfiguration *)self useSeparateUnfocusedShadowImage]];
-  v5 = [(_UIStackedImageConfiguration *)self placeholderImage];
-  [(_UIStackedImageConfiguration *)v4 setPlaceholderImage:v5];
+  placeholderImage = [(_UIStackedImageConfiguration *)self placeholderImage];
+  [(_UIStackedImageConfiguration *)v4 setPlaceholderImage:placeholderImage];
 
   [(_UIStackedImageConfiguration *)v4 setAllowsNonOpaqueShadow:[(_UIStackedImageConfiguration *)self allowsNonOpaqueShadow]];
   [(_UIStackedImageConfiguration *)v4 setBoostBrightness:[(_UIStackedImageConfiguration *)self boostBrightness]];
@@ -425,18 +425,18 @@ LABEL_4:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 selectionStyle];
-    if (v6 == [(_UIStackedImageConfiguration *)self selectionStyle])
+    v5 = equalCopy;
+    selectionStyle = [v5 selectionStyle];
+    if (selectionStyle == [(_UIStackedImageConfiguration *)self selectionStyle])
     {
-      v7 = [v5 maximumParallaxImages];
-      if (v7 == [(_UIStackedImageConfiguration *)self maximumParallaxImages])
+      maximumParallaxImages = [v5 maximumParallaxImages];
+      if (maximumParallaxImages == [(_UIStackedImageConfiguration *)self maximumParallaxImages])
       {
         [v5 maximumParallaxDepth];
         v9 = v8;
@@ -448,16 +448,16 @@ LABEL_4:
           [(_UIStackedImageConfiguration *)self overlayDepth];
           if (vabdd_f64(v12, v13) < 0.00000011920929)
           {
-            v14 = [v5 overlayFixedFrame];
-            if (v14 == [(_UIStackedImageConfiguration *)self overlayFixedFrame])
+            overlayFixedFrame = [v5 overlayFixedFrame];
+            if (overlayFixedFrame == [(_UIStackedImageConfiguration *)self overlayFixedFrame])
             {
               [v5 zDepth];
               v16 = v15;
               [(_UIStackedImageConfiguration *)self zDepth];
               if (vabdd_f64(v16, v17) < 0.00000011920929)
               {
-                v18 = [v5 adjustMotionForSize];
-                if (v18 == [(_UIStackedImageConfiguration *)self adjustMotionForSize])
+                adjustMotionForSize = [v5 adjustMotionForSize];
+                if (adjustMotionForSize == [(_UIStackedImageConfiguration *)self adjustMotionForSize])
                 {
                   [v5 rotationAmount];
                   v20 = v19;
@@ -507,8 +507,8 @@ LABEL_4:
                               [(_UIStackedImageConfiguration *)self isContinuousCornerRadiusEnabled];
                               if (v42 == v43)
                               {
-                                v44 = [v5 flatImageContainsCornerRadius];
-                                if (v44 == [(_UIStackedImageConfiguration *)self flatImageContainsCornerRadius])
+                                flatImageContainsCornerRadius = [v5 flatImageContainsCornerRadius];
+                                if (flatImageContainsCornerRadius == [(_UIStackedImageConfiguration *)self flatImageContainsCornerRadius])
                                 {
                                   [v5 specularHighlightVerticalPosition];
                                   v46 = v45;
@@ -605,12 +605,12 @@ LABEL_4:
                                                                       [(_UIStackedImageConfiguration *)self defaultSelectedShadowVerticalOffset];
                                                                       if (vabdd_f64(v100, v101) < 0.00000011920929)
                                                                       {
-                                                                        v102 = [v5 useSeparateUnfocusedShadowImage];
-                                                                        if (v102 == [(_UIStackedImageConfiguration *)self useSeparateUnfocusedShadowImage])
+                                                                        useSeparateUnfocusedShadowImage = [v5 useSeparateUnfocusedShadowImage];
+                                                                        if (useSeparateUnfocusedShadowImage == [(_UIStackedImageConfiguration *)self useSeparateUnfocusedShadowImage])
                                                                         {
-                                                                          v104 = [v5 placeholderImage];
-                                                                          v105 = [(_UIStackedImageConfiguration *)self placeholderImage];
-                                                                          if ([v104 isEqual:v105] && (v106 = objc_msgSend(v5, "allowsNonOpaqueShadow"), v106 == -[_UIStackedImageConfiguration allowsNonOpaqueShadow](self, "allowsNonOpaqueShadow")) && (v107 = objc_msgSend(v5, "boostBrightness"), v107 == -[_UIStackedImageConfiguration boostBrightness](self, "boostBrightness")) && (v108 = objc_msgSend(v5, "hueShift"), v108 == -[_UIStackedImageConfiguration hueShift](self, "hueShift")) && (v109 = objc_msgSend(v5, "disableMask"), v109 == -[_UIStackedImageConfiguration disableMask](self, "disableMask")) && (v110 = objc_msgSend(v5, "focusCursorEnabled"), v110 == -[_UIStackedImageConfiguration focusCursorEnabled](self, "focusCursorEnabled")) && (objc_msgSend(v5, "focusCursorBorderWidth"), v112 = v111, -[_UIStackedImageConfiguration focusCursorBorderWidth](self, "focusCursorBorderWidth"), vabdd_f64(v112, v113) < 0.00000011920929) && (objc_msgSend(v5, "radiosityOffset"), v115 = v114, -[_UIStackedImageConfiguration radiosityOffset](self, "radiosityOffset"), vabdd_f64(v115, v116) < 0.00000011920929) && (objc_msgSend(v5, "radiosityStrength"), v118 = v117, -[_UIStackedImageConfiguration radiosityStrength](self, "radiosityStrength"), vabdd_f64(v118, v119) < 0.00000011920929) && (objc_msgSend(v5, "shadowSelectionDuration"), v121 = v120, -[_UIStackedImageConfiguration shadowSelectionDuration](self, "shadowSelectionDuration"), vabdd_f64(v121, v122) < 0.00000011920929) && (objc_msgSend(v5, "shadowUnselectionDuration"), v124 = v123, -[_UIStackedImageConfiguration shadowUnselectionDuration](self, "shadowUnselectionDuration"), vabdd_f64(v124, v125) < 0.00000011920929) && (objc_msgSend(v5, "repositionUnselectionDuration"), v127 = v126, -[_UIStackedImageConfiguration repositionUnselectionDuration](self, "repositionUnselectionDuration"), vabdd_f64(v127, v128) < 0.00000011920929) && (objc_msgSend(v5, "layerSelectionDuration"), v130 = v129, -[_UIStackedImageConfiguration layerSelectionDuration](self, "layerSelectionDuration"), vabdd_f64(v130, v131) < 0.00000011920929) && (objc_msgSend(v5, "layerUnselectionDuration"), v133 = v132, -[_UIStackedImageConfiguration layerUnselectionDuration](self, "layerUnselectionDuration"), vabdd_f64(v133, v134) < 0.00000011920929) && (objc_msgSend(v5, "minimumFocusDuration"), v136 = v135, -[_UIStackedImageConfiguration minimumFocusDuration](self, "minimumFocusDuration"), vabdd_f64(v136, v137) < 0.00000011920929) && (objc_msgSend(v5, "pressedDuration"), v139 = v138, -[_UIStackedImageConfiguration pressedDuration](self, "pressedDuration"), vabdd_f64(v139, v140) < 0.00000011920929) && (objc_msgSend(v5, "unpressedDuration"), v142 = v141, -[_UIStackedImageConfiguration unpressedDuration](self, "unpressedDuration"), vabdd_f64(v142, v143) < 0.00000011920929) && (v144 = objc_msgSend(v5, "fullBleedCenteredGrowth"), v144 == -[_UIStackedImageConfiguration fullBleedCenteredGrowth](self, "fullBleedCenteredGrowth")) && (objc_msgSend(v5, "fullBleedOffset"), v146 = v145, -[_UIStackedImageConfiguration fullBleedOffset](self, "fullBleedOffset"), vabdd_f64(v146, v147) < 0.00000011920929))
+                                                                          placeholderImage = [v5 placeholderImage];
+                                                                          placeholderImage2 = [(_UIStackedImageConfiguration *)self placeholderImage];
+                                                                          if ([placeholderImage isEqual:placeholderImage2] && (v106 = objc_msgSend(v5, "allowsNonOpaqueShadow"), v106 == -[_UIStackedImageConfiguration allowsNonOpaqueShadow](self, "allowsNonOpaqueShadow")) && (v107 = objc_msgSend(v5, "boostBrightness"), v107 == -[_UIStackedImageConfiguration boostBrightness](self, "boostBrightness")) && (v108 = objc_msgSend(v5, "hueShift"), v108 == -[_UIStackedImageConfiguration hueShift](self, "hueShift")) && (v109 = objc_msgSend(v5, "disableMask"), v109 == -[_UIStackedImageConfiguration disableMask](self, "disableMask")) && (v110 = objc_msgSend(v5, "focusCursorEnabled"), v110 == -[_UIStackedImageConfiguration focusCursorEnabled](self, "focusCursorEnabled")) && (objc_msgSend(v5, "focusCursorBorderWidth"), v112 = v111, -[_UIStackedImageConfiguration focusCursorBorderWidth](self, "focusCursorBorderWidth"), vabdd_f64(v112, v113) < 0.00000011920929) && (objc_msgSend(v5, "radiosityOffset"), v115 = v114, -[_UIStackedImageConfiguration radiosityOffset](self, "radiosityOffset"), vabdd_f64(v115, v116) < 0.00000011920929) && (objc_msgSend(v5, "radiosityStrength"), v118 = v117, -[_UIStackedImageConfiguration radiosityStrength](self, "radiosityStrength"), vabdd_f64(v118, v119) < 0.00000011920929) && (objc_msgSend(v5, "shadowSelectionDuration"), v121 = v120, -[_UIStackedImageConfiguration shadowSelectionDuration](self, "shadowSelectionDuration"), vabdd_f64(v121, v122) < 0.00000011920929) && (objc_msgSend(v5, "shadowUnselectionDuration"), v124 = v123, -[_UIStackedImageConfiguration shadowUnselectionDuration](self, "shadowUnselectionDuration"), vabdd_f64(v124, v125) < 0.00000011920929) && (objc_msgSend(v5, "repositionUnselectionDuration"), v127 = v126, -[_UIStackedImageConfiguration repositionUnselectionDuration](self, "repositionUnselectionDuration"), vabdd_f64(v127, v128) < 0.00000011920929) && (objc_msgSend(v5, "layerSelectionDuration"), v130 = v129, -[_UIStackedImageConfiguration layerSelectionDuration](self, "layerSelectionDuration"), vabdd_f64(v130, v131) < 0.00000011920929) && (objc_msgSend(v5, "layerUnselectionDuration"), v133 = v132, -[_UIStackedImageConfiguration layerUnselectionDuration](self, "layerUnselectionDuration"), vabdd_f64(v133, v134) < 0.00000011920929) && (objc_msgSend(v5, "minimumFocusDuration"), v136 = v135, -[_UIStackedImageConfiguration minimumFocusDuration](self, "minimumFocusDuration"), vabdd_f64(v136, v137) < 0.00000011920929) && (objc_msgSend(v5, "pressedDuration"), v139 = v138, -[_UIStackedImageConfiguration pressedDuration](self, "pressedDuration"), vabdd_f64(v139, v140) < 0.00000011920929) && (objc_msgSend(v5, "unpressedDuration"), v142 = v141, -[_UIStackedImageConfiguration unpressedDuration](self, "unpressedDuration"), vabdd_f64(v142, v143) < 0.00000011920929) && (v144 = objc_msgSend(v5, "fullBleedCenteredGrowth"), v144 == -[_UIStackedImageConfiguration fullBleedCenteredGrowth](self, "fullBleedCenteredGrowth")) && (objc_msgSend(v5, "fullBleedOffset"), v146 = v145, -[_UIStackedImageConfiguration fullBleedOffset](self, "fullBleedOffset"), vabdd_f64(v146, v147) < 0.00000011920929))
                                                                           {
                                                                             [v5 expansionAmount];
                                                                             v149 = v148;
@@ -688,7 +688,7 @@ LABEL_44:
   return v3;
 }
 
-- (void)_highContrastFocusIndicatorChanged:(id)a3
+- (void)_highContrastFocusIndicatorChanged:(id)changed
 {
   v4 = _AXSHighContrastFocusIndicatorsEnabled() != 0;
 
@@ -715,12 +715,12 @@ LABEL_44:
   return self;
 }
 
-- (void)setCornerRadii:(CACornerRadii *)a3
+- (void)setCornerRadii:(CACornerRadii *)radii
 {
-  minXMaxY = a3->minXMaxY;
-  maxXMaxY = a3->maxXMaxY;
-  minXMinY = a3->minXMinY;
-  self->_cornerRadii.maxXMinY = a3->maxXMinY;
+  minXMaxY = radii->minXMaxY;
+  maxXMaxY = radii->maxXMaxY;
+  minXMinY = radii->minXMinY;
+  self->_cornerRadii.maxXMinY = radii->maxXMinY;
   self->_cornerRadii.minXMinY = minXMinY;
   self->_cornerRadii.minXMaxY = minXMaxY;
   self->_cornerRadii.maxXMaxY = maxXMaxY;

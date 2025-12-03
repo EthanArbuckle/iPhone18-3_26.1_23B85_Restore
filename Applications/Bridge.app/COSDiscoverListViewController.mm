@@ -1,16 +1,16 @@
 @interface COSDiscoverListViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
 - (COSDiscoverListViewController)init;
-- (id)_pluginForIndexPath:(id)a3;
+- (id)_pluginForIndexPath:(id)path;
 - (id)_pluginsToDisplay;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)titleForSectionIndex:(int64_t)a3;
-- (int64_t)_numberOfItemsInDiscoverSection:(int64_t)a3;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
-- (void)reloadContentForTextSizeChange:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)titleForSectionIndex:(int64_t)index;
+- (int64_t)_numberOfItemsInDiscoverSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
+- (void)reloadContentForTextSizeChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -43,10 +43,10 @@
   return v13;
 }
 
-- (void)reloadContentForTextSizeChange:(id)a3
+- (void)reloadContentForTextSizeChange:(id)change
 {
-  v3 = [(COSDiscoverListViewController *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(COSDiscoverListViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)viewDidLoad
@@ -54,15 +54,15 @@
   v20.receiver = self;
   v20.super_class = COSDiscoverListViewController;
   [(COSDiscoverListViewController *)&v20 viewDidLoad];
-  v3 = [(COSDiscoverListViewController *)self collectionView];
+  collectionView = [(COSDiscoverListViewController *)self collectionView];
   v4 = objc_opt_class();
   v5 = +[COSDiscoverCell reuseIdentifier];
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v5];
+  [collectionView registerClass:v4 forCellWithReuseIdentifier:v5];
 
-  v6 = [(COSDiscoverListViewController *)self collectionView];
+  collectionView2 = [(COSDiscoverListViewController *)self collectionView];
   v7 = objc_opt_class();
   v8 = +[COSDiscoverSectionHeader reuseIdentifier];
-  [v6 registerClass:v7 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v8];
+  [collectionView2 registerClass:v7 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v8];
 
   v9 = BPSGetActiveSetupCompletedDevice();
   if (v9)
@@ -78,8 +78,8 @@
   [BCCAReporter incrementDiscoverSuccessType:v10];
 
   v11 = +[UIColor blackColor];
-  v12 = [(COSDiscoverListViewController *)self collectionView];
-  [v12 setBackgroundColor:v11];
+  collectionView3 = [(COSDiscoverListViewController *)self collectionView];
+  [collectionView3 setBackgroundColor:v11];
 
   v13 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
   v14 = NRDevicePropertyIsPaired;
@@ -100,10 +100,10 @@
   }
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v6 = a4;
-  v7 = [v6 isEqualToString:NRDevicePropertyIsPaired];
+  changeCopy = change;
+  v7 = [changeCopy isEqualToString:NRDevicePropertyIsPaired];
   v8 = pbb_setupflow_log();
   v9 = v8;
   if (v7)
@@ -111,7 +111,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v6;
+      v13 = changeCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Discover ~ Reloaded for property change: %@.", buf, 0xCu);
     }
 
@@ -128,7 +128,7 @@
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_1001873EC(v6, v9);
+      sub_1001873EC(changeCopy, v9);
     }
   }
 }
@@ -160,32 +160,32 @@
   return plugins;
 }
 
-- (int64_t)_numberOfItemsInDiscoverSection:(int64_t)a3
+- (int64_t)_numberOfItemsInDiscoverSection:(int64_t)section
 {
-  v5 = [(COSDiscoverListViewController *)self _pluginsToDisplay];
-  v6 = [v5 count];
+  _pluginsToDisplay = [(COSDiscoverListViewController *)self _pluginsToDisplay];
+  v6 = [_pluginsToDisplay count];
 
-  if (v6 <= a3)
+  if (v6 <= section)
   {
     return 0;
   }
 
-  v7 = [(COSDiscoverListViewController *)self _pluginsToDisplay];
-  v8 = [v7 objectAtIndex:a3];
+  _pluginsToDisplay2 = [(COSDiscoverListViewController *)self _pluginsToDisplay];
+  v8 = [_pluginsToDisplay2 objectAtIndex:section];
   v9 = [v8 count];
 
   return v9;
 }
 
-- (id)titleForSectionIndex:(int64_t)a3
+- (id)titleForSectionIndex:(int64_t)index
 {
-  if (!a3)
+  if (!index)
   {
     v3 = @"GET_STARTED";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     v3 = @"GET_MORE_FROM_YOUR_WATCH";
 LABEL_5:
@@ -201,24 +201,24 @@ LABEL_7:
   return v5;
 }
 
-- (id)_pluginForIndexPath:(id)a3
+- (id)_pluginForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
 
-  v7 = [(COSDiscoverListViewController *)self _pluginsToDisplay];
-  v8 = [v7 count];
+  _pluginsToDisplay = [(COSDiscoverListViewController *)self _pluginsToDisplay];
+  v8 = [_pluginsToDisplay count];
 
-  if (v5 >= v8)
+  if (section >= v8)
   {
     v11 = 0;
   }
 
   else
   {
-    v9 = [(COSDiscoverListViewController *)self _pluginsToDisplay];
-    v10 = [v9 objectAtIndex:v5];
+    _pluginsToDisplay2 = [(COSDiscoverListViewController *)self _pluginsToDisplay];
+    v10 = [_pluginsToDisplay2 objectAtIndex:section];
 
     if (v6 >= [v10 count])
     {
@@ -234,30 +234,30 @@ LABEL_7:
   return v11;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   if (self->_loadingPlugins)
   {
     return 0;
   }
 
-  v4 = [(COSDiscoverListViewController *)self _pluginsToDisplay];
-  v5 = [v4 count];
+  _pluginsToDisplay = [(COSDiscoverListViewController *)self _pluginsToDisplay];
+  v5 = [_pluginsToDisplay count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:UICollectionElementKindSectionHeader])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:UICollectionElementKindSectionHeader])
   {
     v11 = +[COSDiscoverSectionHeader reuseIdentifier];
-    v12 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v11 forIndexPath:v10];
+    v12 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v11 forIndexPath:pathCopy];
 
-    v13 = -[COSDiscoverListViewController titleForSectionIndex:](self, "titleForSectionIndex:", [v10 section]);
+    v13 = -[COSDiscoverListViewController titleForSectionIndex:](self, "titleForSectionIndex:", [pathCopy section]);
     if (v12)
     {
       [v12 setSectionTitle:v13];
@@ -268,43 +268,43 @@ LABEL_7:
   {
     v15.receiver = self;
     v15.super_class = COSDiscoverListViewController;
-    v12 = [(COSDiscoverListViewController *)&v15 collectionView:v8 viewForSupplementaryElementOfKind:v9 atIndexPath:v10];
+    v12 = [(COSDiscoverListViewController *)&v15 collectionView:viewCopy viewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
   }
 
   return v12;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[COSDiscoverCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
   [v9 setPreferredWidth:self->_preferredCellWidth];
-  v10 = [(COSDiscoverListViewController *)self _pluginForIndexPath:v6];
+  v10 = [(COSDiscoverListViewController *)self _pluginForIndexPath:pathCopy];
   if (v10)
   {
-    v11 = -[COSDiscoverListViewController _numberOfItemsInDiscoverSection:](self, "_numberOfItemsInDiscoverSection:", [v6 section]);
-    v12 = [v6 row] != (v11 - 1);
-    v13 = [v10 badgeImageForDiscoverPlugin];
-    v14 = [v10 titleForDiscoverPlugin];
-    v15 = [v10 descriptionForDiscoverPlugin];
-    [v9 setImage:v13 title:v14 subtitle:v15 wantsCellDivider:v12];
+    v11 = -[COSDiscoverListViewController _numberOfItemsInDiscoverSection:](self, "_numberOfItemsInDiscoverSection:", [pathCopy section]);
+    v12 = [pathCopy row] != (v11 - 1);
+    badgeImageForDiscoverPlugin = [v10 badgeImageForDiscoverPlugin];
+    titleForDiscoverPlugin = [v10 titleForDiscoverPlugin];
+    descriptionForDiscoverPlugin = [v10 descriptionForDiscoverPlugin];
+    [v9 setImage:badgeImageForDiscoverPlugin title:titleForDiscoverPlugin subtitle:descriptionForDiscoverPlugin wantsCellDivider:v12];
   }
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = [(COSDiscoverListViewController *)self _pluginForIndexPath:a4];
+  v5 = [(COSDiscoverListViewController *)self _pluginForIndexPath:path];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 detailViewControllerToLaunch];
-    if (v6)
+    detailViewControllerToLaunch = [v5 detailViewControllerToLaunch];
+    if (detailViewControllerToLaunch)
     {
-      [(COSDiscoverListViewController *)self presentViewController:v6 animated:1 completion:0];
+      [(COSDiscoverListViewController *)self presentViewController:detailViewControllerToLaunch animated:1 completion:0];
       if (objc_opt_respondsToSelector())
       {
         +[BCCAReporter incrementDiscoverSuccessType:](BCCAReporter, "incrementDiscoverSuccessType:", [v5 analyticsEventType]);
@@ -331,15 +331,15 @@ LABEL_7:
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v6 = [(COSDiscoverListViewController *)self titleForSectionIndex:a5, a4];
+  layout = [(COSDiscoverListViewController *)self titleForSectionIndex:section, layout];
   v7 = objc_opt_new();
   v8 = +[COSDiscoverSectionHeader titleLabelFont];
   [v7 setFont:v8];
 
   [v7 setNumberOfLines:0];
-  [v7 setText:v6];
+  [v7 setText:layout];
   v9 = +[UIColor systemGrayColor];
   [v7 setTextColor:v9];
 

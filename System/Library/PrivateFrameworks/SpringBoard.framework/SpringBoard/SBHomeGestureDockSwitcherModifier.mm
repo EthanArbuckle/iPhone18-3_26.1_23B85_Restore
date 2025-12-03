@@ -1,86 +1,86 @@
 @interface SBHomeGestureDockSwitcherModifier
-- (BOOL)_shouldPresentDockForFinalDestination:(int64_t)a3;
-- (CGPoint)adjustedTranslationForTranslation:(CGPoint)a3;
-- (CGPoint)translationForAdjustedTranslation:(CGPoint)a3;
-- (SBHomeGestureDockSwitcherModifier)initWithDelegate:(id)a3 startingEnvironmentMode:(int64_t)a4 requireVerticalSwipeToTrackDock:(BOOL)a5;
+- (BOOL)_shouldPresentDockForFinalDestination:(int64_t)destination;
+- (CGPoint)adjustedTranslationForTranslation:(CGPoint)translation;
+- (CGPoint)translationForAdjustedTranslation:(CGPoint)translation;
+- (SBHomeGestureDockSwitcherModifier)initWithDelegate:(id)delegate startingEnvironmentMode:(int64_t)mode requireVerticalSwipeToTrackDock:(BOOL)dock;
 - (double)dockProgress;
-- (id)_updateForGestureDidBeginWithEvent:(id)a3;
-- (id)_updateForGestureDidChangeWithEvent:(id)a3;
-- (id)_updateForGestureDidEndWithEvent:(id)a3;
+- (id)_updateForGestureDidBeginWithEvent:(id)event;
+- (id)_updateForGestureDidChangeWithEvent:(id)event;
+- (id)_updateForGestureDidEndWithEvent:(id)event;
 - (id)debugDescription;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleHomeGestureSettingsChangedEvent:(id)a3;
+- (id)handleGestureEvent:(id)event;
+- (id)handleHomeGestureSettingsChangedEvent:(id)event;
 - (id)studyLogData;
-- (int64_t)adjustedFinalDestinationForDestination:(int64_t)a3 withTranslation:(CGPoint)a4 velocity:(CGPoint)a5;
+- (int64_t)adjustedFinalDestinationForDestination:(int64_t)destination withTranslation:(CGPoint)translation velocity:(CGPoint)velocity;
 - (int64_t)dockUpdateMode;
 - (void)_applyPrototypeSettings;
-- (void)_updateGestureTranslationAndVelocityWithEvent:(id)a3;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)_updateGestureTranslationAndVelocityWithEvent:(id)event;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBHomeGestureDockSwitcherModifier
 
-- (SBHomeGestureDockSwitcherModifier)initWithDelegate:(id)a3 startingEnvironmentMode:(int64_t)a4 requireVerticalSwipeToTrackDock:(BOOL)a5
+- (SBHomeGestureDockSwitcherModifier)initWithDelegate:(id)delegate startingEnvironmentMode:(int64_t)mode requireVerticalSwipeToTrackDock:(BOOL)dock
 {
-  v8 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = SBHomeGestureDockSwitcherModifier;
   v9 = [(SBSwitcherModifier *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    v10->_startingEnvironmentMode = a4;
-    v10->_requireVerticalSwipeToTrackDock = a5;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    v10->_startingEnvironmentMode = mode;
+    v10->_requireVerticalSwipeToTrackDock = dock;
   }
 
   return v10;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v5.receiver = self;
   v5.super_class = SBHomeGestureDockSwitcherModifier;
   [(SBChainableModifier *)&v5 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     [(SBHomeGestureDockSwitcherModifier *)self _applyPrototypeSettings];
   }
 }
 
-- (id)handleHomeGestureSettingsChangedEvent:(id)a3
+- (id)handleHomeGestureSettingsChangedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(SBHomeGestureDockSwitcherModifier *)self _applyPrototypeSettings];
   v7.receiver = self;
   v7.super_class = SBHomeGestureDockSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v7 handleHomeGestureSettingsChangedEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v7 handleHomeGestureSettingsChangedEvent:eventCopy];
 
   return v5;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = SBHomeGestureDockSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v11 handleGestureEvent:v4];
-  v6 = [v4 phase];
-  if (v6 < 2)
+  v5 = [(SBSwitcherModifier *)&v11 handleGestureEvent:eventCopy];
+  phase = [eventCopy phase];
+  if (phase < 2)
   {
-    v7 = [(SBHomeGestureDockSwitcherModifier *)self _updateForGestureDidBeginWithEvent:v4];
+    v7 = [(SBHomeGestureDockSwitcherModifier *)self _updateForGestureDidBeginWithEvent:eventCopy];
     goto LABEL_7;
   }
 
-  if (v6 == 2)
+  if (phase == 2)
   {
-    v7 = [(SBHomeGestureDockSwitcherModifier *)self _updateForGestureDidChangeWithEvent:v4];
+    v7 = [(SBHomeGestureDockSwitcherModifier *)self _updateForGestureDidChangeWithEvent:eventCopy];
     goto LABEL_7;
   }
 
-  if (v6 == 3)
+  if (phase == 3)
   {
-    v7 = [(SBHomeGestureDockSwitcherModifier *)self _updateForGestureDidEndWithEvent:v4];
+    v7 = [(SBHomeGestureDockSwitcherModifier *)self _updateForGestureDidEndWithEvent:eventCopy];
 LABEL_7:
     v8 = v7;
     goto LABEL_8;
@@ -93,9 +93,9 @@ LABEL_8:
   return v9;
 }
 
-- (id)_updateForGestureDidBeginWithEvent:(id)a3
+- (id)_updateForGestureDidBeginWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (self->_gestureHasBegun)
   {
     [SBHomeGestureDockSwitcherModifier _updateForGestureDidBeginWithEvent:];
@@ -109,16 +109,16 @@ LABEL_8:
   self->_gestureHasBegun = 1;
   if (([(SBHomeGestureDockSwitcherModifier *)self isFloatingDockFullyPresented]& 1) != 0)
   {
-    v5 = 0;
+    isFloatingDockGesturePossible = 0;
   }
 
   else
   {
-    v5 = [(SBHomeGestureDockSwitcherModifier *)self isFloatingDockGesturePossible];
+    isFloatingDockGesturePossible = [(SBHomeGestureDockSwitcherModifier *)self isFloatingDockGesturePossible];
   }
 
-  self->_wantsDockAssertion = v5;
-  if ([v4 isPointerTouch])
+  self->_wantsDockAssertion = isFloatingDockGesturePossible;
+  if ([eventCopy isPointerTouch])
   {
     self->_wantsDockAssertion = 0;
   }
@@ -133,7 +133,7 @@ LABEL_8:
     v6 = 0.2;
   }
 
-  [v4 averageTouchVelocityOverTimeDuration:0.0416666667];
+  [eventCopy averageTouchVelocityOverTimeDuration:0.0416666667];
   if (self->_wantsDockAssertion)
   {
     v9 = v7;
@@ -161,14 +161,14 @@ LABEL_8:
   self->_hadOpenDockFolderWhenGestureBegan = v12;
   self->_hadOpenHomeScreenFolderWhenGestureBegan = [(SBHomeGestureDockSwitcherModifier *)self homeScreenHasOpenFolderInLocation:*MEMORY[0x277D666D0]];
   self->_hadOpenForegroundLibraryWhenGestureBegan = [(SBHomeGestureDockSwitcherModifier *)self homeScreenHasModalLibraryOpenInForeground];
-  [(SBHomeGestureDockSwitcherModifier *)self _updateGestureTranslationAndVelocityWithEvent:v4];
+  [(SBHomeGestureDockSwitcherModifier *)self _updateGestureTranslationAndVelocityWithEvent:eventCopy];
 
   return 0;
 }
 
-- (id)_updateForGestureDidChangeWithEvent:(id)a3
+- (id)_updateForGestureDidChangeWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (!self->_gestureHasBegun)
   {
     [SBHomeGestureDockSwitcherModifier _updateForGestureDidChangeWithEvent:];
@@ -179,14 +179,14 @@ LABEL_8:
     [SBHomeGestureDockSwitcherModifier _updateForGestureDidChangeWithEvent:];
   }
 
-  [(SBHomeGestureDockSwitcherModifier *)self _updateGestureTranslationAndVelocityWithEvent:v4];
+  [(SBHomeGestureDockSwitcherModifier *)self _updateGestureTranslationAndVelocityWithEvent:eventCopy];
   x = self->_unadjustedGestureTranslation.x;
   y = self->_unadjustedGestureTranslation.y;
-  v7 = [(SBHomeGestureDockSwitcherModifier *)self homeGestureSettings];
-  v8 = v7;
+  homeGestureSettings = [(SBHomeGestureDockSwitcherModifier *)self homeGestureSettings];
+  v8 = homeGestureSettings;
   if (!self->_currentlyTrackingDock)
   {
-    [v7 verticalRubberbandEnd];
+    [homeGestureSettings verticalRubberbandEnd];
     v20 = 199;
     if (self->_highEnoughToShowDock)
     {
@@ -199,17 +199,17 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  [v7 maximumDistanceYThresholdToPresentDock];
+  [homeGestureSettings maximumDistanceYThresholdToPresentDock];
   v10 = v9;
   [v8 horizontalRubberbandStart];
   v12 = v11;
   [v8 horizontalRubberbandEnd];
   v14 = v13;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v16 = [WeakRetained currentFinalDestination];
+  currentFinalDestination = [WeakRetained currentFinalDestination];
 
   v17 = fabs(x);
-  v18 = v17 <= v12 || (v16 - 1) > 1;
+  v18 = v17 <= v12 || (currentFinalDestination - 1) > 1;
   if (v18 && v17 <= v14)
   {
     if (v10 >= -y)
@@ -229,9 +229,9 @@ LABEL_16:
   return 0;
 }
 
-- (id)_updateForGestureDidEndWithEvent:(id)a3
+- (id)_updateForGestureDidEndWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (!self->_gestureHasBegun)
   {
     [SBHomeGestureDockSwitcherModifier _updateForGestureDidEndWithEvent:];
@@ -243,17 +243,17 @@ LABEL_16:
   }
 
   self->_gestureHasEnded = 1;
-  if ([v4 isCanceled])
+  if ([eventCopy isCanceled])
   {
     goto LABEL_16;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained currentFinalDestination];
+  currentFinalDestination = [WeakRetained currentFinalDestination];
 
-  if (v6)
+  if (currentFinalDestination)
   {
-    if (self->_startingEnvironmentMode != 1 || v6 != 4)
+    if (self->_startingEnvironmentMode != 1 || currentFinalDestination != 4)
     {
       goto LABEL_16;
     }
@@ -285,18 +285,18 @@ LABEL_17:
   return v8;
 }
 
-- (void)_updateGestureTranslationAndVelocityWithEvent:(id)a3
+- (void)_updateGestureTranslationAndVelocityWithEvent:(id)event
 {
   p_lastTouchLocation = &self->_lastTouchLocation;
-  v5 = a3;
-  [v5 locationInContainerView];
+  eventCopy = event;
+  [eventCopy locationInContainerView];
   p_lastTouchLocation->x = v6;
   p_lastTouchLocation->y = v7;
   p_unadjustedGestureTranslation = &self->_unadjustedGestureTranslation;
-  [v5 translationInContainerView];
+  [eventCopy translationInContainerView];
   self->_unadjustedGestureTranslation.x = v9;
   self->_unadjustedGestureTranslation.y = v10;
-  [v5 velocityInContainerView];
+  [eventCopy velocityInContainerView];
   v12 = v11;
   v14 = v13;
 
@@ -306,23 +306,23 @@ LABEL_17:
   {
     v15 = p_unadjustedGestureTranslation->f64[0];
     y = self->_unadjustedGestureTranslation.y;
-    v46 = [(SBHomeGestureDockSwitcherModifier *)self homeGestureSettings];
-    [v46 verticalRubberbandStart];
+    homeGestureSettings = [(SBHomeGestureDockSwitcherModifier *)self homeGestureSettings];
+    [homeGestureSettings verticalRubberbandStart];
     v18 = v17;
-    [v46 verticalRubberbandEnd];
+    [homeGestureSettings verticalRubberbandEnd];
     v20 = v19;
     v44 = v19;
-    [v46 verticalRubberbandDistance];
+    [homeGestureSettings verticalRubberbandDistance];
     v45 = v21;
-    [v46 verticalRubberbandExponent];
+    [homeGestureSettings verticalRubberbandExponent];
     __y = v22;
-    [v46 horizontalRubberbandStart];
+    [homeGestureSettings horizontalRubberbandStart];
     v24 = v23;
-    [v46 horizontalRubberbandEnd];
+    [homeGestureSettings horizontalRubberbandEnd];
     v26 = v25;
-    [v46 horizontalRubberbandDistance];
+    [homeGestureSettings horizontalRubberbandDistance];
     v28 = v27;
-    [v46 horizontalRubberbandExponent];
+    [homeGestureSettings horizontalRubberbandExponent];
     v30 = v29;
     v31 = (-y - v18) / (v20 - v18);
     if (v31 <= 0.0)
@@ -384,29 +384,29 @@ LABEL_17:
   }
 }
 
-- (CGPoint)adjustedTranslationForTranslation:(CGPoint)a3
+- (CGPoint)adjustedTranslationForTranslation:(CGPoint)translation
 {
-  v3 = a3.x - self->_translationAdjustmentForFloatingDock.x;
-  v4 = a3.y - self->_translationAdjustmentForFloatingDock.y;
+  v3 = translation.x - self->_translationAdjustmentForFloatingDock.x;
+  v4 = translation.y - self->_translationAdjustmentForFloatingDock.y;
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)translationForAdjustedTranslation:(CGPoint)a3
+- (CGPoint)translationForAdjustedTranslation:(CGPoint)translation
 {
-  v3 = a3.x + self->_translationAdjustmentForFloatingDock.x;
-  v4 = a3.y + self->_translationAdjustmentForFloatingDock.y;
+  v3 = translation.x + self->_translationAdjustmentForFloatingDock.x;
+  v4 = translation.y + self->_translationAdjustmentForFloatingDock.y;
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (int64_t)adjustedFinalDestinationForDestination:(int64_t)a3 withTranslation:(CGPoint)a4 velocity:(CGPoint)a5
+- (int64_t)adjustedFinalDestinationForDestination:(int64_t)destination withTranslation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  y = a5.y;
-  v6 = a4.y;
-  [(SBHomeGestureDockSwitcherModifier *)self floatingDockHeight:a4.x];
+  y = velocity.y;
+  v6 = translation.y;
+  [(SBHomeGestureDockSwitcherModifier *)self floatingDockHeight:translation.x];
   v10 = v9;
   startingEnvironmentMode = self->_startingEnvironmentMode;
   v12 = *&kVelocityYThresholdForUnconditionalHome_0;
@@ -443,7 +443,7 @@ LABEL_17:
     v18 = v16;
   }
 
-  v19 = a3 == 3 && self->_wasTrackingDockWhenGestureBegan;
+  v19 = destination == 3 && self->_wasTrackingDockWhenGestureBegan;
   if ((v19 & v13) != 0)
   {
     v20 = *&v18;
@@ -477,22 +477,22 @@ LABEL_17:
 
   if (v20 >= -v6)
   {
-    v23 = 0;
+    destinationCopy = 0;
   }
 
   else
   {
-    v23 = a3;
+    destinationCopy = destination;
   }
 
   if (v21)
   {
-    return v23;
+    return destinationCopy;
   }
 
   else
   {
-    return a3;
+    return destination;
   }
 }
 
@@ -544,18 +544,18 @@ LABEL_17:
 - (id)debugDescription
 {
   v3 = [(SBChainableModifier *)self descriptionBuilderWithMultilinePrefix:&stru_283094718];
-  v4 = [v3 appendSuper];
+  appendSuper = [v3 appendSuper];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __53__SBHomeGestureDockSwitcherModifier_debugDescription__block_invoke;
   v11 = &unk_2783A92D8;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   [v5 appendBodySectionWithName:0 multilinePrefix:@"\t" block:&v8];
-  v6 = [v5 build];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
 id __53__SBHomeGestureDockSwitcherModifier_debugDescription__block_invoke(uint64_t a1)
@@ -579,21 +579,21 @@ id __53__SBHomeGestureDockSwitcherModifier_debugDescription__block_invoke(uint64
   return [*(a1 + 32) appendBool:*(*(a1 + 40) + 224) withName:@"requireVerticalSwipeToTrackDock"];
 }
 
-- (BOOL)_shouldPresentDockForFinalDestination:(int64_t)a3
+- (BOOL)_shouldPresentDockForFinalDestination:(int64_t)destination
 {
-  if (a3)
+  if (destination)
   {
-    LOBYTE(v5) = a3 == 4 && self->_startingEnvironmentMode == 1;
+    LOBYTE(_hasTraveledSufficientDistanceForHomeOrAppSwitcher) = destination == 4 && self->_startingEnvironmentMode == 1;
   }
 
   else
   {
-    v5 = [(SBHomeGestureDockSwitcherModifier *)self _hasTraveledSufficientDistanceForHomeOrAppSwitcher];
-    if (v5)
+    _hasTraveledSufficientDistanceForHomeOrAppSwitcher = [(SBHomeGestureDockSwitcherModifier *)self _hasTraveledSufficientDistanceForHomeOrAppSwitcher];
+    if (_hasTraveledSufficientDistanceForHomeOrAppSwitcher)
     {
       if ([(SBHomeGestureDockSwitcherModifier *)self _rubberbandedOutOfDockHorizontally])
       {
-        LOBYTE(v5) = 0;
+        LOBYTE(_hasTraveledSufficientDistanceForHomeOrAppSwitcher) = 0;
       }
 
       else
@@ -602,23 +602,23 @@ id __53__SBHomeGestureDockSwitcherModifier_debugDescription__block_invoke(uint64
         [(SBHomeGestureDockSwitcherModifier *)self switcherViewBounds];
         v8 = v7;
         [(SBHomeGestureDockSwitcherModifier *)self floatingDockHeight];
-        LOBYTE(v5) = v6 < v8 + v9 * -0.25;
+        LOBYTE(_hasTraveledSufficientDistanceForHomeOrAppSwitcher) = v6 < v8 + v9 * -0.25;
       }
     }
   }
 
-  return v5;
+  return _hasTraveledSufficientDistanceForHomeOrAppSwitcher;
 }
 
 - (void)_applyPrototypeSettings
 {
   v3 = SBMainScreenPointsPerMillimeter();
-  v7 = [(SBHomeGestureDockSwitcherModifier *)self homeGestureSettings];
-  [v7 minimumYDistanceForHomeOrAppSwitcher];
+  homeGestureSettings = [(SBHomeGestureDockSwitcherModifier *)self homeGestureSettings];
+  [homeGestureSettings minimumYDistanceForHomeOrAppSwitcher];
   *&kMinimumYDistanceForHomeOrAppSwitcher_3 = v3 * v4;
-  [v7 velocityYThresholdForUnconditionalHome];
+  [homeGestureSettings velocityYThresholdForUnconditionalHome];
   *&kVelocityYThresholdForUnconditionalHome_0 = v3 * v5;
-  [v7 maximumDistanceYThresholdToPresentDock];
+  [homeGestureSettings maximumDistanceYThresholdToPresentDock];
   kMaximumDistanceYThresholdToPresentDock = v6;
 }
 

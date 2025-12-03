@@ -1,30 +1,30 @@
 @interface SFAirDropTransferTestingSnapshot
-+ (id)loadSnapshotFromURL:(id)a3 error:(id *)a4;
-+ (id)writeSnapshotForTransfer:(id)a3 initialInfo:(id)a4 name:(id)a5 error:(id *)a6;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
-- (SFAirDropTransferTestingSnapshot)initWithCoder:(id)a3;
-- (SFAirDropTransferTestingSnapshot)initWithTransfer:(id)a3 initialInfo:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)loadSnapshotFromURL:(id)l error:(id *)error;
++ (id)writeSnapshotForTransfer:(id)transfer initialInfo:(id)info name:(id)name error:(id *)error;
+- (BOOL)writeToURL:(id)l error:(id *)error;
+- (SFAirDropTransferTestingSnapshot)initWithCoder:(id)coder;
+- (SFAirDropTransferTestingSnapshot)initWithTransfer:(id)transfer initialInfo:(id)info;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAirDropTransferTestingSnapshot
 
-+ (id)writeSnapshotForTransfer:(id)a3 initialInfo:(id)a4 name:(id)a5 error:(id *)a6
++ (id)writeSnapshotForTransfer:(id)transfer initialInfo:(id)info name:(id)name error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[SFAirDropTransferTestingSnapshot alloc] initWithTransfer:v11 initialInfo:v10];
+  nameCopy = name;
+  infoCopy = info;
+  transferCopy = transfer;
+  v12 = [[SFAirDropTransferTestingSnapshot alloc] initWithTransfer:transferCopy initialInfo:infoCopy];
 
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [v11 identifier];
+  identifier = [transferCopy identifier];
 
-  v15 = [v13 stringWithFormat:@"%@_%@", v14, v9];
+  nameCopy = [v13 stringWithFormat:@"%@_%@", identifier, nameCopy];
 
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
-  v17 = [v16 temporaryDirectory];
-  v18 = [v17 URLByAppendingPathComponent:v15];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v18 = [temporaryDirectory URLByAppendingPathComponent:nameCopy];
 
   v27 = 0;
   v19 = [(SFAirDropTransferTestingSnapshot *)v12 writeToURL:v18 error:&v27];
@@ -52,11 +52,11 @@
       _os_log_impl(&dword_1A9662000, v21, OS_LOG_TYPE_DEFAULT, "Write AirDrop snapshot FAIL {error: %@}", buf, 0xCu);
     }
 
-    if (a6)
+    if (error)
     {
       v24 = v20;
       v23 = 0;
-      *a6 = v20;
+      *error = v20;
     }
 
     else
@@ -70,15 +70,15 @@
   return v23;
 }
 
-+ (id)loadSnapshotFromURL:(id)a3 error:(id *)a4
++ (id)loadSnapshotFromURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x1E695DEF0];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithContentsOfURL:v6];
+  lCopy = l;
+  v7 = [[v5 alloc] initWithContentsOfURL:lCopy];
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:a4];
+    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:error];
     v9 = v8;
     if (v8)
     {
@@ -94,20 +94,20 @@
   return v9;
 }
 
-- (SFAirDropTransferTestingSnapshot)initWithTransfer:(id)a3 initialInfo:(id)a4
+- (SFAirDropTransferTestingSnapshot)initWithTransfer:(id)transfer initialInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  transferCopy = transfer;
+  infoCopy = info;
   v28.receiver = self;
   v28.super_class = SFAirDropTransferTestingSnapshot;
   v9 = [(SFAirDropTransferTestingSnapshot *)&v28 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transfer, a3);
-    if (v8)
+    objc_storeStrong(&v9->_transfer, transfer);
+    if (infoCopy)
     {
-      v11 = [v8 objectForKeyedSubscript:@"SenderNode"];
+      v11 = [infoCopy objectForKeyedSubscript:@"SenderNode"];
 
       if (v11)
       {
@@ -128,9 +128,9 @@
         v10->_nodeContactIdentifier = &v18->isa;
       }
 
-      v20 = [v8 objectForKeyedSubscript:@"FileIcon"];
+      v20 = [infoCopy objectForKeyedSubscript:@"FileIcon"];
 
-      v21 = [v8 objectForKeyedSubscript:@"SmallFileIcon"];
+      v21 = [infoCopy objectForKeyedSubscript:@"SmallFileIcon"];
 
       if (v20)
       {
@@ -158,7 +158,7 @@
       transferSmallFileIcon = v10->_transferSmallFileIcon;
       v10->_transferSmallFileIcon = v24;
 
-      objc_storeStrong(&v10->_initialInfo, a4);
+      objc_storeStrong(&v10->_initialInfo, info);
     }
 
     v26 = v10;
@@ -167,16 +167,16 @@
   return v10;
 }
 
-- (SFAirDropTransferTestingSnapshot)initWithCoder:(id)a3
+- (SFAirDropTransferTestingSnapshot)initWithCoder:(id)coder
 {
   v40[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = SFAirDropTransferTestingSnapshot;
   v5 = [(SFAirDropTransferTestingSnapshot *)&v38 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transfer"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transfer"];
     v7 = *(v5 + 1);
     *(v5 + 1) = v6;
 
@@ -189,23 +189,23 @@
     v40[5] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:6];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"initialInfo"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"initialInfo"];
     v12 = *(v5 + 2);
     *(v5 + 2) = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nodeDisplayName"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nodeDisplayName"];
     v14 = *(v5 + 3);
     *(v5 + 3) = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nodeRealName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nodeRealName"];
     v16 = *(v5 + 4);
     *(v5 + 4) = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nodeIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nodeIdentifier"];
     v18 = *(v5 + 5);
     *(v5 + 5) = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nodeContactIdentifier"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nodeContactIdentifier"];
     v20 = *(v5 + 7);
     *(v5 + 7) = v19;
 
@@ -214,15 +214,15 @@
     v39[1] = objc_opt_class();
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
     v23 = [v21 setWithArray:v22];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"nodeContactIdentifiers"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"nodeContactIdentifiers"];
     v25 = *(v5 + 6);
     *(v5 + 6) = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferFileIcon"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferFileIcon"];
     v27 = *(v5 + 8);
     *(v5 + 8) = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferSmallFileIcon"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferSmallFileIcon"];
     v29 = *(v5 + 9);
     *(v5 + 9) = v28;
 
@@ -260,17 +260,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_transfer forKey:@"transfer"];
-  [v6 encodeObject:self->_nodeDisplayName forKey:@"nodeDisplayName"];
-  [v6 encodeObject:self->_nodeRealName forKey:@"nodeRealName"];
-  [v6 encodeObject:self->_nodeIdentifier forKey:@"nodeIdentifier"];
-  [v6 encodeObject:self->_nodeContactIdentifier forKey:@"nodeContactIdentifier"];
-  [v6 encodeObject:self->_nodeContactIdentifiers forKey:@"nodeContactIdentifiers"];
-  [v6 encodeObject:self->_transferFileIcon forKey:@"transferFileIcon"];
-  [v6 encodeObject:self->_transferSmallFileIcon forKey:@"transferSmallFileIcon"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_transfer forKey:@"transfer"];
+  [coderCopy encodeObject:self->_nodeDisplayName forKey:@"nodeDisplayName"];
+  [coderCopy encodeObject:self->_nodeRealName forKey:@"nodeRealName"];
+  [coderCopy encodeObject:self->_nodeIdentifier forKey:@"nodeIdentifier"];
+  [coderCopy encodeObject:self->_nodeContactIdentifier forKey:@"nodeContactIdentifier"];
+  [coderCopy encodeObject:self->_nodeContactIdentifiers forKey:@"nodeContactIdentifiers"];
+  [coderCopy encodeObject:self->_transferFileIcon forKey:@"transferFileIcon"];
+  [coderCopy encodeObject:self->_transferSmallFileIcon forKey:@"transferSmallFileIcon"];
   initialInfo = self->_initialInfo;
   if (initialInfo)
   {
@@ -278,18 +278,18 @@
     [v5 setObject:0 forKeyedSubscript:@"SenderNode"];
     [v5 setObject:0 forKeyedSubscript:@"FileIcon"];
     [v5 setObject:0 forKeyedSubscript:@"SmallFileIcon"];
-    [v6 encodeObject:v5 forKey:@"initialInfo"];
+    [coderCopy encodeObject:v5 forKey:@"initialInfo"];
   }
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:a4];
+  lCopy = l;
+  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 writeToURL:v6 options:1 error:a4];
+    v9 = [v7 writeToURL:lCopy options:1 error:error];
   }
 
   else

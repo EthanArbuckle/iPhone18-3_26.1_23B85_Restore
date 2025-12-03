@@ -1,9 +1,9 @@
 @interface SFDeviceSetupWHAService
 - (SFDeviceSetupWHAService)init;
 - (void)_cleanup;
-- (void)_handleInfoExchange:(id)a3 responseHandler:(id)a4;
-- (void)_handleSessionEnded:(id)a3;
-- (void)_handleSessionStarted:(id)a3;
+- (void)_handleInfoExchange:(id)exchange responseHandler:(id)handler;
+- (void)_handleSessionEnded:(id)ended;
+- (void)_handleSessionStarted:(id)started;
 - (void)_sfServiceStart;
 - (void)activate;
 - (void)dealloc;
@@ -189,14 +189,14 @@ void __42__SFDeviceSetupWHAService__sfServiceStart__block_invoke_4(uint64_t a1, 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSessionStarted:(id)a3
+- (void)_handleSessionStarted:(id)started
 {
-  v5 = a3;
+  startedCopy = started;
   if (self->_sfSession)
   {
     if (gLogCategory_SFDeviceSetupWHAService <= 60 && (gLogCategory_SFDeviceSetupWHAService != -1 || _LogCategory_Initialize()))
     {
-      [(SFDeviceSetupWHAService *)v5 _handleSessionStarted:?];
+      [(SFDeviceSetupWHAService *)startedCopy _handleSessionStarted:?];
     }
   }
 
@@ -204,16 +204,16 @@ void __42__SFDeviceSetupWHAService__sfServiceStart__block_invoke_4(uint64_t a1, 
   {
     if (gLogCategory_SFDeviceSetupWHAService <= 30 && (gLogCategory_SFDeviceSetupWHAService != -1 || _LogCategory_Initialize()))
     {
-      [SFDeviceSetupWHAService _handleSessionStarted:v5];
+      [SFDeviceSetupWHAService _handleSessionStarted:startedCopy];
     }
 
-    objc_storeStrong(&self->_sfSession, a3);
+    objc_storeStrong(&self->_sfSession, started);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __49__SFDeviceSetupWHAService__handleSessionStarted___block_invoke;
     v11[3] = &unk_1E788B4F8;
     v11[4] = self;
-    [v5 registerRequestID:@"_info" options:0 handler:v11];
+    [startedCopy registerRequestID:@"_info" options:0 handler:v11];
     if (self->_prefCDPEnabled)
     {
       v6 = objc_alloc_init(SFDeviceOperationHandlerCDPSetup);
@@ -221,14 +221,14 @@ void __42__SFDeviceSetupWHAService__sfServiceStart__block_invoke_4(uint64_t a1, 
       self->_cdpSetupHandler = v6;
 
       [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setDispatchQueue:self->_dispatchQueue];
-      [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setSfSession:v5];
+      [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setSfSession:startedCopy];
       [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler activate];
     }
 
     v8 = objc_alloc_init(getHMDeviceSetupOperationHandlerClass_2());
-    objc_setAssociatedObject(v5, "hmDeviceSetup", v8, 0x301);
-    v9 = [v5 trSession];
-    [v8 registerMessageHandlersForSession:v9];
+    objc_setAssociatedObject(startedCopy, "hmDeviceSetup", v8, 0x301);
+    trSession = [startedCopy trSession];
+    [v8 registerMessageHandlersForSession:trSession];
 
     progressHandler = self->_progressHandler;
     if (progressHandler)
@@ -240,17 +240,17 @@ void __42__SFDeviceSetupWHAService__sfServiceStart__block_invoke_4(uint64_t a1, 
   }
 }
 
-- (void)_handleSessionEnded:(id)a3
+- (void)_handleSessionEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   sfSession = self->_sfSession;
-  if (sfSession != v4)
+  if (sfSession != endedCopy)
   {
     goto LABEL_14;
   }
 
-  object = v4;
-  if (v4 && gLogCategory_SFDeviceSetupWHAService <= 30)
+  object = endedCopy;
+  if (endedCopy && gLogCategory_SFDeviceSetupWHAService <= 30)
   {
     if (gLogCategory_SFDeviceSetupWHAService == -1)
     {
@@ -262,7 +262,7 @@ void __42__SFDeviceSetupWHAService__sfServiceStart__block_invoke_4(uint64_t a1, 
       sfSession = self->_sfSession;
     }
 
-    v11 = [(SFSession *)sfSession peer];
+    peer = [(SFSession *)sfSession peer];
     LogPrintF();
   }
 
@@ -294,14 +294,14 @@ LABEL_7:
     v10[2](v10, 32, 0);
   }
 
-  v4 = object;
+  endedCopy = object;
 LABEL_14:
 }
 
-- (void)_handleInfoExchange:(id)a3 responseHandler:(id)a4
+- (void)_handleInfoExchange:(id)exchange responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  exchangeCopy = exchange;
+  handlerCopy = handler;
   if (gLogCategory_SFDeviceSetupWHAService <= 30 && (gLogCategory_SFDeviceSetupWHAService != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceSetupWHAService _handleInfoExchange:responseHandler:];
@@ -309,16 +309,16 @@ LABEL_14:
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = SFMyAltDSID();
-  v10 = [v9 UTF8String];
+  uTF8String = [v9 UTF8String];
 
-  if (v10)
+  if (uTF8String)
   {
     v11 = [(SFSession *)self->_sfSession pairingDeriveKeyForIdentifier:@"AltDSID" keyLength:16];
     v12 = v11;
     if (v11)
     {
       [v11 bytes];
-      strlen(v10);
+      strlen(uTF8String);
       v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:SipHash()];
       [v8 setObject:v13 forKeyedSubscript:@"adh"];
     }
@@ -367,7 +367,7 @@ LABEL_14:
     [SFDeviceSetupWHAService _handleInfoExchange:responseHandler:];
   }
 
-  (*(v7 + 2))(v7, 0, 0, v8);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v8);
 }
 
 - (void)_handleSessionStarted:(void *)a1 .cold.1(void *a1, id *a2)

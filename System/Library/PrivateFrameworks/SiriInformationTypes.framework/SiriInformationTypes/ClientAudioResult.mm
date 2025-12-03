@@ -1,24 +1,24 @@
 @interface ClientAudioResult
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ClientAudioResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC21SiriInformationSearch17ClientAudioResult_vocabularyResult);
-  v5 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = MEMORY[0x1E1299430](0xD000000000000010, 0x80000001DC651840);
-  [v5 encodeObject:v4 forKey:v6];
+  [coderCopy encodeObject:v4 forKey:v6];
 
-  PommesResult.encode(with:)(v5);
+  PommesResult.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientAudioResult.description.getter();
   v5 = v4;
 

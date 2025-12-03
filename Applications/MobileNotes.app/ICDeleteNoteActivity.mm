@@ -1,15 +1,15 @@
 @interface ICDeleteNoteActivity
-- (ICDeleteNoteActivity)initWithDeleteBlock:(id)a3;
+- (ICDeleteNoteActivity)initWithDeleteBlock:(id)block;
 - (id)activityTitle;
 @end
 
 @implementation ICDeleteNoteActivity
 
-- (ICDeleteNoteActivity)initWithDeleteBlock:(id)a3
+- (ICDeleteNoteActivity)initWithDeleteBlock:(id)block
 {
   v4.receiver = self;
   v4.super_class = ICDeleteNoteActivity;
-  return [(ICDeleteNoteActivity *)&v4 initWithPerformActivity:a3];
+  return [(ICDeleteNoteActivity *)&v4 initWithPerformActivity:block];
 }
 
 - (id)activityTitle

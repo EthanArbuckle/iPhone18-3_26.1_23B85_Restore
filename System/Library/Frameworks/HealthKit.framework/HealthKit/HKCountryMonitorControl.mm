@@ -1,26 +1,26 @@
 @interface HKCountryMonitorControl
 + (id)taskIdentifier;
 + (void)checkCurrentCountry;
-+ (void)checkCurrentCountryWithHealthStore:(id)a3;
-- (HKCountryMonitorControl)initWithHealthStore:(id)a3;
++ (void)checkCurrentCountryWithHealthStore:(id)store;
+- (HKCountryMonitorControl)initWithHealthStore:(id)store;
 - (void)dealloc;
-- (void)fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)a3;
+- (void)fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)completion;
 @end
 
 @implementation HKCountryMonitorControl
 
-- (HKCountryMonitorControl)initWithHealthStore:(id)a3
+- (HKCountryMonitorControl)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKCountryMonitorControl;
   v5 = [(HKCountryMonitorControl *)&v12 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -50,13 +50,13 @@
 + (void)checkCurrentCountry
 {
   v3 = objc_alloc_init(HKHealthStore);
-  [a1 checkCurrentCountryWithHealthStore:v3];
+  [self checkCurrentCountryWithHealthStore:v3];
 }
 
-+ (void)checkCurrentCountryWithHealthStore:(id)a3
++ (void)checkCurrentCountryWithHealthStore:(id)store
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHealthStore:v4];
+  storeCopy = store;
+  v5 = [[self alloc] initWithHealthStore:storeCopy];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -91,9 +91,9 @@ void __62__HKCountryMonitorControl_checkCurrentCountryWithHealthStore___block_in
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)a3
+- (void)fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = HKLogInfrastructure();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -112,8 +112,8 @@ void __62__HKCountryMonitorControl_checkCurrentCountryWithHealthStore___block_in
   aBlock[2] = __86__HKCountryMonitorControl_fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion___block_invoke;
   aBlock[3] = &unk_1E737E308;
   aBlock[4] = self;
-  v17 = v4;
-  v8 = v4;
+  v17 = completionCopy;
+  v8 = completionCopy;
   v9 = _Block_copy(aBlock);
   proxyProvider = self->_proxyProvider;
   v14[0] = MEMORY[0x1E69E9820];

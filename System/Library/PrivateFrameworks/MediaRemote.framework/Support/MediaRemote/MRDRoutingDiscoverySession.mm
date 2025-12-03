@@ -1,23 +1,23 @@
 @interface MRDRoutingDiscoverySession
 - (BOOL)devicePresenceDetected;
-- (MRDRoutingDiscoverySession)initWithConfiguration:(id)a3;
+- (MRDRoutingDiscoverySession)initWithConfiguration:(id)configuration;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)availableEndpoints;
 - (unsigned)discoveryMode;
 - (void)dealloc;
-- (void)hostedRoutingController:(id)a3 endpointsDidChange:(id)a4;
-- (void)setDiscoveryMode:(unsigned int)a3;
+- (void)hostedRoutingController:(id)controller endpointsDidChange:(id)change;
+- (void)setDiscoveryMode:(unsigned int)mode;
 @end
 
 @implementation MRDRoutingDiscoverySession
 
 - (unsigned)discoveryMode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  discoveryMode = v2->_discoveryMode;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveryMode = selfCopy->_discoveryMode;
+  objc_sync_exit(selfCopy);
 
   return discoveryMode;
 }
@@ -38,28 +38,28 @@
     v6 = @"NO";
   }
 
-  v7 = [(MRDRoutingDiscoverySession *)self availableEndpoints];
-  v8 = [v7 count];
-  v9 = [(MRDRoutingDiscoverySession *)self availableOutputDevices];
-  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p %@ | %@ | %ldd:%ldd", v4, self, v5, v6, v8, [v9 count]);
+  availableEndpoints = [(MRDRoutingDiscoverySession *)self availableEndpoints];
+  v8 = [availableEndpoints count];
+  availableOutputDevices = [(MRDRoutingDiscoverySession *)self availableOutputDevices];
+  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p %@ | %@ | %ldd:%ldd", v4, self, v5, v6, v8, [availableOutputDevices count]);
 
   return v10;
 }
 
 - (id)availableEndpoints
 {
-  v2 = [(MRDRoutingDiscoverySession *)self endpointsSnapshot];
-  v3 = [v2 msv_map:&stru_1004BA990];
+  endpointsSnapshot = [(MRDRoutingDiscoverySession *)self endpointsSnapshot];
+  v3 = [endpointsSnapshot msv_map:&stru_1004BA990];
 
   return v3;
 }
 
-- (MRDRoutingDiscoverySession)initWithConfiguration:(id)a3
+- (MRDRoutingDiscoverySession)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v25.receiver = self;
   v25.super_class = MRDRoutingDiscoverySession;
-  v5 = [(MRDRoutingDiscoverySession *)&v25 initWithConfiguration:v4];
+  v5 = [(MRDRoutingDiscoverySession *)&v25 initWithConfiguration:configurationCopy];
   if (v5)
   {
     if (qword_100529328 != -1)
@@ -69,7 +69,7 @@
 
     objc_storeStrong(&v5->_workerQueue, qword_100529320);
     v6 = [NSString alloc];
-    [v4 features];
+    [configurationCopy features];
     v7 = MRMediaRemoteEndpointFeaturesDescription();
     v8 = [v6 initWithFormat:@"Direct.%@", v7];
 
@@ -131,18 +131,18 @@
     v6 = @"NO";
   }
 
-  v7 = [(MRDRoutingDiscoverySession *)self availableOutputDevices];
-  v8 = [(MRDRoutingDiscoverySession *)self availableEndpoints];
-  v9 = [NSString stringWithFormat:@"<%@: %p> currentDiscoveryMode: %@\nalwaysAllowUpdates: %@\navailableOutputDevices: %@\navailableEndpoints: %@", v4, self, v5, v6, v7, v8];
+  availableOutputDevices = [(MRDRoutingDiscoverySession *)self availableOutputDevices];
+  availableEndpoints = [(MRDRoutingDiscoverySession *)self availableEndpoints];
+  v9 = [NSString stringWithFormat:@"<%@: %p> currentDiscoveryMode: %@\nalwaysAllowUpdates: %@\navailableOutputDevices: %@\navailableEndpoints: %@", v4, self, v5, v6, availableOutputDevices, availableEndpoints];
 
   return v9;
 }
 
-- (void)setDiscoveryMode:(unsigned int)a3
+- (void)setDiscoveryMode:(unsigned int)mode
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_discoveryMode == a3)
+  if (obj->_discoveryMode == mode)
   {
     objc_sync_exit(obj);
   }
@@ -164,9 +164,9 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[MRDDiscoverySession] %@ setting discoveryMode from %{public}@ to %{public}@", buf, 0x20u);
     }
 
-    obj->_discoveryMode = a3;
+    obj->_discoveryMode = mode;
     discoveryTracker = obj->_discoveryTracker;
-    if (a3)
+    if (mode)
     {
       [(MRActivityTracker *)discoveryTracker startActivityTracking];
     }
@@ -188,16 +188,16 @@
   }
 }
 
-- (void)hostedRoutingController:(id)a3 endpointsDidChange:(id)a4
+- (void)hostedRoutingController:(id)controller endpointsDidChange:(id)change
 {
-  v5 = [a4 msv_map:&stru_1004BA970];
+  v5 = [change msv_map:&stru_1004BA970];
   [(MRDRoutingDiscoverySession *)self notifyEndpointsChanged:v5];
 }
 
 - (BOOL)devicePresenceDetected
 {
-  v2 = [(MRDRoutingDiscoverySession *)self availableOutputDevices];
-  v3 = [v2 count] != 0;
+  availableOutputDevices = [(MRDRoutingDiscoverySession *)self availableOutputDevices];
+  v3 = [availableOutputDevices count] != 0;
 
   return v3;
 }

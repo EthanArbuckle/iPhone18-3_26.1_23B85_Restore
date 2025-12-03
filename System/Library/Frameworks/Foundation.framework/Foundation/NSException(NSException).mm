@@ -8,24 +8,24 @@
 
 - (uint64_t)encodeWithCoder:()NSException
 {
-  v5 = [a3 allowsKeyedCoding];
-  v6 = [a1 name];
-  if (v5)
+  allowsKeyedCoding = [a3 allowsKeyedCoding];
+  name = [self name];
+  if (allowsKeyedCoding)
   {
-    [a3 encodeObject:v6 forKey:@"NS.name"];
-    [a3 encodeObject:objc_msgSend(a1 forKey:{"reason"), @"NS.reason"}];
-    v7 = [a1 userInfo];
+    [a3 encodeObject:name forKey:@"NS.name"];
+    [a3 encodeObject:objc_msgSend(self forKey:{"reason"), @"NS.reason"}];
+    userInfo = [self userInfo];
 
-    return [a3 encodeObject:v7 forKey:@"NS.userinfo"];
+    return [a3 encodeObject:userInfo forKey:@"NS.userinfo"];
   }
 
   else
   {
-    [a3 encodeObject:v6];
-    [a3 encodeObject:{objc_msgSend(a1, "reason")}];
-    v9 = [a1 userInfo];
+    [a3 encodeObject:name];
+    [a3 encodeObject:{objc_msgSend(self, "reason")}];
+    userInfo2 = [self userInfo];
 
-    return [a3 encodeObject:v9];
+    return [a3 encodeObject:userInfo2];
   }
 }
 
@@ -96,7 +96,7 @@
           v14 = [a3 decodeObjectOfClasses:objc_msgSend(objc_msgSend(a3 forKey:{"allowedClasses"), "setByAddingObjectsFromSet:", __NSPropertyListClasses_ForArchival_ErrorAndException()), @"NS.userinfo"}];
           if (!v14 || (_NSIsNSDictionary() & 1) != 0)
           {
-            v15 = [a1 initWithName:v12 reason:v13 userInfo:v14];
+            v15 = [self initWithName:v12 reason:v13 userInfo:v14];
             [v15 _markAsUnarchived];
             return v15;
           }
@@ -135,25 +135,25 @@ LABEL_21:
     return 0;
   }
 
-  v16 = [a3 decodeObject];
-  v17 = [a3 decodeObject];
-  v18 = [a3 decodeObject];
+  decodeObject = [a3 decodeObject];
+  decodeObject2 = [a3 decodeObject];
+  decodeObject3 = [a3 decodeObject];
 
-  return [a1 initWithName:v16 reason:v17 userInfo:v18];
+  return [self initWithName:decodeObject reason:decodeObject2 userInfo:decodeObject3];
 }
 
 - (NSString)debugDescription
 {
-  v2 = [a1 _isUnarchived];
-  v3 = [a1 description];
-  if (v2)
+  _isUnarchived = [self _isUnarchived];
+  v3 = [self description];
+  if (_isUnarchived)
   {
     return [NSString stringWithFormat:@"%@\n UNARCHIVED", v3, v5];
   }
 
   else
   {
-    return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@\n%@", v3, [a1 callStackSymbols]);
+    return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@\n%@", v3, [self callStackSymbols]);
   }
 }
 

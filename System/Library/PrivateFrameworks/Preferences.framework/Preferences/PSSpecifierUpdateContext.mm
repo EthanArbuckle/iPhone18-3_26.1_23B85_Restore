@@ -1,21 +1,21 @@
 @interface PSSpecifierUpdateContext
-+ (PSSpecifierUpdateContext)contextWithUserInfo:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (PSSpecifierUpdateContext)contextWithUserInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation PSSpecifierUpdateContext
 
-+ (PSSpecifierUpdateContext)contextWithUserInfo:(id)a3
++ (PSSpecifierUpdateContext)contextWithUserInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_opt_new();
-  [v4 setUserInfo:v3];
+  [v4 setUserInfo:infoCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setAnimated:self->_animated];

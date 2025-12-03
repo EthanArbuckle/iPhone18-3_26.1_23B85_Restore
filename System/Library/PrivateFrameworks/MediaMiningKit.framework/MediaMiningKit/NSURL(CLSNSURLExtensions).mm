@@ -13,41 +13,41 @@
   v6 = v27;
   if (!v6)
   {
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if ([v12 length])
+    if ([bundleIdentifier length])
     {
-      v9 = v12;
+      processName = bundleIdentifier;
     }
 
     else
     {
-      v13 = [MEMORY[0x277CCAC38] processInfo];
-      v9 = [v13 processName];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      processName = [processInfo processName];
     }
 
     v14 = [v5 URLByAppendingPathComponent:@"com.apple.mediaminingkit"];
-    v15 = [v14 URLByAppendingPathComponent:v9];
+    v15 = [v14 URLByAppendingPathComponent:processName];
 
     if (a3)
     {
       v26 = 0;
-      v16 = [v15 path];
-      v17 = [v4 fileExistsAtPath:v16 isDirectory:&v26];
+      path = [v15 path];
+      v17 = [v4 fileExistsAtPath:path isDirectory:&v26];
 
       if (v17)
       {
         if ((v26 & 1) == 0)
         {
           v18 = +[CLSLogging sharedLogging];
-          v19 = [v18 loggingConnection];
+          loggingConnection = [v18 loggingConnection];
 
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v29 = v15;
-            _os_log_error_impl(&dword_22F907000, v19, OS_LOG_TYPE_ERROR, "Caches directory at %@ is not a directory!", buf, 0xCu);
+            _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Caches directory at %@ is not a directory!", buf, 0xCu);
           }
 
           v7 = 0;
@@ -69,16 +69,16 @@ LABEL_19:
         {
           v7 = v20;
           v21 = +[CLSLogging sharedLogging];
-          v19 = [v21 loggingConnection];
+          loggingConnection = [v21 loggingConnection];
 
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
-            v24 = [v7 localizedDescription];
+            localizedDescription = [v7 localizedDescription];
             *buf = 138412546;
             v29 = v15;
             v30 = 2112;
-            v31 = v24;
-            _os_log_error_impl(&dword_22F907000, v19, OS_LOG_TYPE_ERROR, "Could not create caches directory at %@. %@", buf, 0x16u);
+            v31 = localizedDescription;
+            _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Could not create caches directory at %@. %@", buf, 0x16u);
           }
 
           goto LABEL_17;
@@ -93,14 +93,14 @@ LABEL_19:
 
   v7 = v6;
   v8 = +[CLSLogging sharedLogging];
-  v9 = [v8 loggingConnection];
+  processName = [v8 loggingConnection];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(processName, OS_LOG_TYPE_ERROR))
   {
-    v23 = [v7 localizedDescription];
+    localizedDescription2 = [v7 localizedDescription];
     *buf = 138412290;
-    v29 = v23;
-    _os_log_error_impl(&dword_22F907000, v9, OS_LOG_TYPE_ERROR, "Could not get caches directory. %@", buf, 0xCu);
+    v29 = localizedDescription2;
+    _os_log_error_impl(&dword_22F907000, processName, OS_LOG_TYPE_ERROR, "Could not get caches directory. %@", buf, 0xCu);
   }
 
   v10 = 0;

@@ -1,21 +1,21 @@
 @interface SBNotificationLongLookBannerPresentationObservationToken
-- (SBNotificationLongLookBannerPresentationObservationToken)initWithNotificationBannerDestination:(id)a3 scene:(id)a4;
+- (SBNotificationLongLookBannerPresentationObservationToken)initWithNotificationBannerDestination:(id)destination scene:(id)scene;
 - (int64_t)state;
 - (void)dealloc;
 @end
 
 @implementation SBNotificationLongLookBannerPresentationObservationToken
 
-- (SBNotificationLongLookBannerPresentationObservationToken)initWithNotificationBannerDestination:(id)a3 scene:(id)a4
+- (SBNotificationLongLookBannerPresentationObservationToken)initWithNotificationBannerDestination:(id)destination scene:(id)scene
 {
-  v7 = a3;
+  destinationCopy = destination;
   v11.receiver = self;
   v11.super_class = SBNotificationLongLookBannerPresentationObservationToken;
-  v8 = [(SBPresentationObservationToken *)&v11 initWithScene:a4];
+  v8 = [(SBPresentationObservationToken *)&v11 initWithScene:scene];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_notificationBannerDestination, a3);
+    objc_storeStrong(&v8->_notificationBannerDestination, destination);
     [(SBNotificationBannerDestination *)v9->_notificationBannerDestination registerNotificationBannerDestinationObserver:v9];
   }
 

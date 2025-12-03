@@ -1,8 +1,8 @@
 @interface CalendarMessageSuggestionCell
-+ (id)actionsForNotification:(id)a3;
++ (id)actionsForNotification:(id)notification;
 - (BOOL)notificationIsCancelled;
 - (BOOL)showAsCancelledOrDeclined;
-- (CalendarMessageSuggestionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CalendarMessageSuggestionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_appNameString;
 - (id)_dateString;
 - (id)_fromString;
@@ -11,18 +11,18 @@
 - (id)bodyStringDict;
 - (id)provideAuthorView;
 - (id)titleStrings;
-- (void)_updateSuggestionPropertiesWithNotification:(id)a3;
-- (void)setNotification:(id)a3;
+- (void)_updateSuggestionPropertiesWithNotification:(id)notification;
+- (void)setNotification:(id)notification;
 - (void)updateAuthor;
 @end
 
 @implementation CalendarMessageSuggestionCell
 
-- (CalendarMessageSuggestionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CalendarMessageSuggestionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CalendarMessageSuggestionCell;
-  v4 = [(CalendarMessageCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CalendarMessageCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -41,30 +41,30 @@
 
 - (void)updateAuthor
 {
-  v9 = [(CalendarMessageCell *)self authorView];
+  authorView = [(CalendarMessageCell *)self authorView];
   applicationRecord = self->_applicationRecord;
   if (applicationRecord && (-[LSApplicationRecord applicationState](applicationRecord, "applicationState"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isInstalled], v4, v5))
   {
-    v6 = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
+    bundleIdentifier = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
   }
 
   else
   {
-    v6 = @"com.apple.siri";
+    bundleIdentifier = @"com.apple.siri";
   }
 
   v7 = +[UIScreen mainScreen];
   [v7 scale];
-  v8 = [UIImage _applicationIconImageForBundleIdentifier:v6 format:0 scale:?];
+  v8 = [UIImage _applicationIconImageForBundleIdentifier:bundleIdentifier format:0 scale:?];
 
-  [v9 setImage:v8];
+  [authorView setImage:v8];
 }
 
 - (id)titleStrings
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = [v2 title];
-  v6 = v3;
+  notification = [(CalendarMessageCell *)self notification];
+  title = [notification title];
+  v6 = title;
   v4 = [NSArray arrayWithObjects:&v6 count:1];
 
   return v4;
@@ -73,28 +73,28 @@
 - (id)bodyStringDict
 {
   v3 = objc_opt_new();
-  v4 = [(CalendarMessageSuggestionCell *)self _fromString];
-  if (v4)
+  _fromString = [(CalendarMessageSuggestionCell *)self _fromString];
+  if (_fromString)
   {
-    [v3 setObject:v4 forKeyedSubscript:CUIKNotificationDescriptionKeyPerson];
+    [v3 setObject:_fromString forKeyedSubscript:CUIKNotificationDescriptionKeyPerson];
   }
 
-  v5 = [(CalendarMessageSuggestionCell *)self _dateString];
-  if (v5)
+  _dateString = [(CalendarMessageSuggestionCell *)self _dateString];
+  if (_dateString)
   {
-    [v3 setObject:v5 forKeyedSubscript:CUIKNotificationDescriptionKeyDate];
+    [v3 setObject:_dateString forKeyedSubscript:CUIKNotificationDescriptionKeyDate];
   }
 
-  v6 = [(CalendarMessageSuggestionCell *)self _locationString];
-  if (v6)
+  _locationString = [(CalendarMessageSuggestionCell *)self _locationString];
+  if (_locationString)
   {
-    [v3 setObject:v6 forKeyedSubscript:CUIKNotificationDescriptionKeyAction];
+    [v3 setObject:_locationString forKeyedSubscript:CUIKNotificationDescriptionKeyAction];
   }
 
-  v7 = [(CalendarMessageSuggestionCell *)self _appNameString];
-  if (v7)
+  _appNameString = [(CalendarMessageSuggestionCell *)self _appNameString];
+  if (_appNameString)
   {
-    [v3 setObject:v7 forKeyedSubscript:CUIKNotificationDescriptionKeyApp];
+    [v3 setObject:_appNameString forKeyedSubscript:CUIKNotificationDescriptionKeyApp];
   }
 
   return v3;
@@ -107,10 +107,10 @@
   {
     if (!self->_fromString)
     {
-      v4 = [(CalendarMessageSuggestionCell *)self notificationIsCancelled];
+      notificationIsCancelled = [(CalendarMessageSuggestionCell *)self notificationIsCancelled];
       v5 = [NSBundle bundleForClass:objc_opt_class()];
       v6 = v5;
-      if (v4)
+      if (notificationIsCancelled)
       {
         v7 = @"Canceled by %@";
       }
@@ -133,11 +133,11 @@
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
     {
       v9 = v8;
-      v10 = [(CalendarMessageCell *)self notification];
+      notification = [(CalendarMessageCell *)self notification];
       *buf = 136315394;
       v18 = "[CalendarMessageSuggestionCell _fromString]";
       v19 = 2112;
-      v20 = v10;
+      v20 = notification;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s: Suggested Event Notification had no from name; this is probably unexpected [%@]", buf, 0x16u);
     }
   }
@@ -153,22 +153,22 @@
   dateString = self->_dateString;
   if (!dateString)
   {
-    v4 = [(CalendarMessageCell *)self notification];
-    if ([v4 timeChanged])
+    notification = [(CalendarMessageCell *)self notification];
+    if ([notification timeChanged])
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = [v4 dateChanged] ^ 1;
+      v5 = [notification dateChanged] ^ 1;
     }
 
     v6 = +[CUIKDateDescriptionGenerator sharedGenerator];
-    v7 = [v4 startDateForNextOccurrence];
-    v8 = [v6 dateStringForDate:v7 allDay:objc_msgSend(v4 standalone:"allDay") shortFormat:v5, 0];
+    startDateForNextOccurrence = [notification startDateForNextOccurrence];
+    v8 = [v6 dateStringForDate:startDateForNextOccurrence allDay:objc_msgSend(notification standalone:"allDay") shortFormat:v5, 0];
 
-    if ([v4 timeChanged])
+    if ([notification timeChanged])
     {
       v9 = [NSBundle bundleForClass:objc_opt_class()];
       v10 = v9;
@@ -177,7 +177,7 @@
 
     else
     {
-      if (![v4 dateChanged])
+      if (![notification dateChanged])
       {
         v15 = [NSString stringWithFormat:@"%@", v8];
         v10 = self->_dateString;
@@ -204,8 +204,8 @@ LABEL_11:
 
 - (id)_locationString
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  if ([v2 locationChanged])
+  notification = [(CalendarMessageCell *)self notification];
+  if ([notification locationChanged])
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
     v4 = [v3 localizedStringForKey:@"Location changed" value:&stru_1002133B8 table:0];
@@ -224,8 +224,8 @@ LABEL_11:
   appNameString = self->_appNameString;
   if (!appNameString)
   {
-    v4 = [(LSApplicationRecord *)self->_applicationRecord localizedName];
-    v5 = [CUIKSuggestionDescriptionGenerator originDescriptionStringWithAppName:v4];
+    localizedName = [(LSApplicationRecord *)self->_applicationRecord localizedName];
+    v5 = [CUIKSuggestionDescriptionGenerator originDescriptionStringWithAppName:localizedName];
     v6 = self->_appNameString;
     self->_appNameString = v5;
 
@@ -238,21 +238,21 @@ LABEL_11:
 - (id)actions
 {
   v3 = objc_opt_class();
-  v4 = [(CalendarMessageCell *)self notification];
-  v5 = [v3 actionsForNotification:v4];
+  notification = [(CalendarMessageCell *)self notification];
+  v5 = [v3 actionsForNotification:notification];
 
   return v5;
 }
 
-+ (id)actionsForNotification:(id)a3
++ (id)actionsForNotification:(id)notification
 {
-  v4 = a3;
-  if ([a1 _notificationIsCancelled:v4])
+  notificationCopy = notification;
+  if ([self _notificationIsCancelled:notificationCopy])
   {
     v5 = &off_10021A008;
   }
 
-  else if ([v4 type] == 12)
+  else if ([notificationCopy type] == 12)
   {
     v5 = &off_10021A020;
   }
@@ -282,17 +282,17 @@ LABEL_11:
 
 - (BOOL)notificationIsCancelled
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = [v2 type] == 13;
+  notification = [(CalendarMessageCell *)self notification];
+  v3 = [notification type] == 13;
 
   return v3;
 }
 
-- (void)setNotification:(id)a3
+- (void)setNotification:(id)notification
 {
   fromString = self->_fromString;
   self->_fromString = 0;
-  v5 = a3;
+  notificationCopy = notification;
 
   dateString = self->_dateString;
   self->_dateString = 0;
@@ -300,24 +300,24 @@ LABEL_11:
   appNameString = self->_appNameString;
   self->_appNameString = 0;
 
-  [(CalendarMessageSuggestionCell *)self _updateSuggestionPropertiesWithNotification:v5];
+  [(CalendarMessageSuggestionCell *)self _updateSuggestionPropertiesWithNotification:notificationCopy];
   v8.receiver = self;
   v8.super_class = CalendarMessageSuggestionCell;
-  [(CalendarMessageCell *)&v8 setNotification:v5];
+  [(CalendarMessageCell *)&v8 setNotification:notificationCopy];
 }
 
-- (void)_updateSuggestionPropertiesWithNotification:(id)a3
+- (void)_updateSuggestionPropertiesWithNotification:(id)notification
 {
-  v23 = a3;
-  if (v23)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
-    v4 = [(CalendarMessageCell *)self delegate];
-    v5 = [v4 eventStoreForCell:self];
+    delegate = [(CalendarMessageCell *)self delegate];
+    v5 = [delegate eventStoreForCell:self];
 
-    v6 = [v23 resourceChangeFromEventStore:v5];
-    v7 = [v6 calendarItem];
-    v8 = [v7 localCustomObjectForKey:kSuggestionsEkEventOriginBundleIdKey];
-    v9 = [v7 localCustomObjectForKey:kSuggestionsEkEventOriginDisplayNameKey];
+    v6 = [notificationCopy resourceChangeFromEventStore:v5];
+    calendarItem = [v6 calendarItem];
+    v8 = [calendarItem localCustomObjectForKey:kSuggestionsEkEventOriginBundleIdKey];
+    v9 = [calendarItem localCustomObjectForKey:kSuggestionsEkEventOriginDisplayNameKey];
     if (v8)
     {
       objc_opt_class();
@@ -331,7 +331,7 @@ LABEL_11:
         v10 = 0;
       }
 
-      v11 = v10;
+      bundleId = v10;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -350,20 +350,20 @@ LABEL_11:
 
     else
     {
-      suggestionOriginSenderName = [v23 suggestedEvent];
-      v16 = [suggestionOriginSenderName origin];
-      v11 = [v16 bundleId];
+      suggestionOriginSenderName = [notificationCopy suggestedEvent];
+      origin = [suggestionOriginSenderName origin];
+      bundleId = [origin bundleId];
 
-      v17 = [suggestionOriginSenderName origin];
-      v18 = [v17 fromPerson];
-      v19 = [v18 displayName];
+      origin2 = [suggestionOriginSenderName origin];
+      fromPerson = [origin2 fromPerson];
+      displayName = [fromPerson displayName];
       v20 = self->_suggestionOriginSenderName;
-      self->_suggestionOriginSenderName = v19;
+      self->_suggestionOriginSenderName = displayName;
     }
 
-    if (v11)
+    if (bundleId)
     {
-      v21 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v11 allowPlaceholder:0 error:0];
+      v21 = [[LSApplicationRecord alloc] initWithBundleIdentifier:bundleId allowPlaceholder:0 error:0];
       applicationRecord = self->_applicationRecord;
       self->_applicationRecord = v21;
     }

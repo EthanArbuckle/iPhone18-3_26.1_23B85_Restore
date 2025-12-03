@@ -1,13 +1,13 @@
 @interface _UICollectionLayoutContainer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)contentSize;
 - (CGSize)effectiveContentSize;
 - (NSDirectionalEdgeInsets)contentInsets;
 - (NSDirectionalEdgeInsets)effectiveContentInsets;
 - (NSString)description;
-- (double)initWithContentSize:(double)a3 contentInsets:(double)a4;
-- (id)containerUpdatingContentSize:(double)a3;
-- (id)initWithContentSize:(double)a3 contentInsets:(double)a4 insetsEnvironment:(double)a5;
+- (double)initWithContentSize:(double)size contentInsets:(double)insets;
+- (id)containerUpdatingContentSize:(double)size;
+- (id)initWithContentSize:(double)size contentInsets:(double)insets insetsEnvironment:(double)environment;
 @end
 
 @implementation _UICollectionLayoutContainer
@@ -81,22 +81,22 @@
   return result;
 }
 
-- (double)initWithContentSize:(double)a3 contentInsets:(double)a4
+- (double)initWithContentSize:(double)size contentInsets:(double)insets
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = _UICollectionLayoutContainer;
   v13 = objc_msgSendSuper2(&v18, sel_init);
   v14 = v13;
   if (v13)
   {
     v13[2] = fmax(a2, 0.0);
-    v13[3] = fmax(a3, 0.0);
-    v13[4] = a4;
+    v13[3] = fmax(size, 0.0);
+    v13[4] = insets;
     v13[5] = a5;
     v13[6] = a6;
     v13[7] = a7;
@@ -108,22 +108,22 @@
   return v14;
 }
 
-- (id)initWithContentSize:(double)a3 contentInsets:(double)a4 insetsEnvironment:(double)a5
+- (id)initWithContentSize:(double)size contentInsets:(double)insets insetsEnvironment:(double)environment
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = _UICollectionLayoutContainer;
   v15 = objc_msgSendSuper2(&v18, sel_init);
   v16 = v15;
   if (v15)
   {
-    *(v15 + 2) = fmax(a3, 0.0);
-    *(v15 + 3) = fmax(a4, 0.0);
-    *(v15 + 4) = a5;
+    *(v15 + 2) = fmax(size, 0.0);
+    *(v15 + 3) = fmax(insets, 0.0);
+    *(v15 + 4) = environment;
     *(v15 + 5) = a6;
     *(v15 + 6) = a7;
     *(v15 + 7) = a8;
@@ -133,15 +133,15 @@
   return v16;
 }
 
-- (id)containerUpdatingContentSize:(double)a3
+- (id)containerUpdatingContentSize:(double)size
 {
-  if (a1)
+  if (self)
   {
-    a1 = [[_UICollectionLayoutContainer alloc] initWithContentSize:a2 contentInsets:a3 insetsEnvironment:*(a1 + 4), *(a1 + 5), *(a1 + 6), *(a1 + 7)];
+    self = [[_UICollectionLayoutContainer alloc] initWithContentSize:a2 contentInsets:size insetsEnvironment:*(self + 4), *(self + 5), *(self + 6), *(self + 7)];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (NSString)description
@@ -156,22 +156,22 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    if (self == a3)
+    if (self == equal)
     {
       v6 = 1;
     }
 
     else
     {
-      v4 = a3;
+      equalCopy = equal;
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && (self->_contentSize.width == v4[1].f64[0] ? (v5 = self->_contentSize.height == v4[1].f64[1]) : (v5 = 0), v5))
+      if ((objc_opt_isKindOfClass() & 1) != 0 && (self->_contentSize.width == equalCopy[1].f64[0] ? (v5 = self->_contentSize.height == equalCopy[1].f64[1]) : (v5 = 0), v5))
       {
-        v6 = vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v4[2]), vceqq_f64(*&self->_contentInsets.bottom, v4[3]))));
+        v6 = vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, equalCopy[2]), vceqq_f64(*&self->_contentInsets.bottom, equalCopy[3]))));
       }
 
       else

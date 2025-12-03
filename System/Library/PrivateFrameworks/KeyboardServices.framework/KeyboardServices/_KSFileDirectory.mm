@@ -1,25 +1,25 @@
 @interface _KSFileDirectory
-- (_KSFileDirectory)initWithCoder:(id)a3;
-- (_KSFileDirectory)initWithDirectory:(id)a3 captureContents:(BOOL)a4 storeRoot:(BOOL)a5;
-- (_KSFileDirectory)initWithName:(id)a3;
+- (_KSFileDirectory)initWithCoder:(id)coder;
+- (_KSFileDirectory)initWithDirectory:(id)directory captureContents:(BOOL)contents storeRoot:(BOOL)root;
+- (_KSFileDirectory)initWithName:(id)name;
 - (id)description;
-- (id)findEntryWithComparison:(id)a3 recursively:(BOOL)a4;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)addEntry:(id)a3;
+- (id)findEntryWithComparison:(id)comparison recursively:(BOOL)recursively;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)addEntry:(id)entry;
 - (void)consistencyCheck;
-- (void)encodeWithCoder:(id)a3;
-- (void)performOnEverything:(id)a3;
-- (void)restoreToPath:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)performOnEverything:(id)everything;
+- (void)restoreToPath:(id)path;
 @end
 
 @implementation _KSFileDirectory
 
-- (_KSFileDirectory)initWithCoder:(id)a3
+- (_KSFileDirectory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _KSFileDirectory;
-  v5 = [(_KSFileEntry *)&v15 initWithCoder:v4];
+  v5 = [(_KSFileEntry *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
@@ -27,7 +27,7 @@
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"contents"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"contents"];
     v12 = [v11 mutableCopy];
     contents = v5->_contents;
     v5->_contents = v12;
@@ -36,61 +36,61 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _KSFileDirectory;
-  v4 = a3;
-  [(_KSFileEntry *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_contents forKey:{@"contents", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(_KSFileEntry *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_contents forKey:{@"contents", v5.receiver, v5.super_class}];
 }
 
-- (_KSFileDirectory)initWithName:(id)a3
+- (_KSFileDirectory)initWithName:(id)name
 {
   v7.receiver = self;
   v7.super_class = _KSFileDirectory;
-  v3 = [(_KSFileEntry *)&v7 initWithName:a3];
+  v3 = [(_KSFileEntry *)&v7 initWithName:name];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     contents = v3->_contents;
-    v3->_contents = v4;
+    v3->_contents = dictionary;
   }
 
   return v3;
 }
 
-- (_KSFileDirectory)initWithDirectory:(id)a3 captureContents:(BOOL)a4 storeRoot:(BOOL)a5
+- (_KSFileDirectory)initWithDirectory:(id)directory captureContents:(BOOL)contents storeRoot:(BOOL)root
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (v5)
+  rootCopy = root;
+  contentsCopy = contents;
+  directoryCopy = directory;
+  v9 = directoryCopy;
+  if (rootCopy)
   {
-    v10 = [v8 lastPathComponent];
+    lastPathComponent = [directoryCopy lastPathComponent];
   }
 
   else
   {
-    v10 = &stru_286796E30;
+    lastPathComponent = &stru_286796E30;
   }
 
   v24.receiver = self;
   v24.super_class = _KSFileDirectory;
-  v11 = [(_KSFileEntry *)&v24 initWithName:v10];
-  if (v5)
+  v11 = [(_KSFileEntry *)&v24 initWithName:lastPathComponent];
+  if (rootCopy)
   {
   }
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     contents = v11->_contents;
-    v11->_contents = v12;
+    v11->_contents = dictionary;
 
     [(_KSFileEntry *)v11 loadAttributesFromURL:v9];
-    if (v6)
+    if (contentsCopy)
     {
       v14 = opendir([v9 fileSystemRepresentation]);
       if (v14)
@@ -145,35 +145,35 @@ LABEL_22:
   return v11;
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
   contents = self->_contents;
-  v4 = a3;
-  v5 = [v4 name];
-  [(NSMutableDictionary *)contents setObject:v4 forKey:v5];
+  entryCopy = entry;
+  name = [entryCopy name];
+  [(NSMutableDictionary *)contents setObject:entryCopy forKey:name];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(NSMutableDictionary *)self->_contents allValues];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  allValues = [(NSMutableDictionary *)self->_contents allValues];
+  v9 = [allValues countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }
 
-- (void)performOnEverything:(id)a3
+- (void)performOnEverything:(id)everything
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  everythingCopy = everything;
   v15.receiver = self;
   v15.super_class = _KSFileDirectory;
-  [(_KSFileEntry *)&v15 performOnEverything:v4];
+  [(_KSFileEntry *)&v15 performOnEverything:everythingCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = self;
-  v6 = [(_KSFileDirectory *)v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  selfCopy = self;
+  v6 = [(_KSFileDirectory *)selfCopy countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -185,14 +185,14 @@ LABEL_22:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) performOnEverything:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) performOnEverything:{everythingCopy, v11}];
       }
 
       while (v7 != v9);
-      v7 = [(_KSFileDirectory *)v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v7 = [(_KSFileDirectory *)selfCopy countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v7);
@@ -222,8 +222,8 @@ LABEL_22:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(NSMutableDictionary *)self->_contents allValues];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_contents allValues];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -235,14 +235,14 @@ LABEL_22:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) consistencyCheck];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);
@@ -251,15 +251,15 @@ LABEL_22:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)restoreToPath:(id)a3
+- (void)restoreToPath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_KSFileEntry *)self name];
-  if (v5 && (v6 = v5, -[_KSFileEntry name](self, "name"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqualToString:&stru_286796E30], v7, v6, !v8))
+  pathCopy = path;
+  name = [(_KSFileEntry *)self name];
+  if (name && (v6 = name, -[_KSFileEntry name](self, "name"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqualToString:&stru_286796E30], v7, v6, !v8))
   {
-    v16 = [(_KSFileEntry *)self name];
-    v9 = [v4 URLByAppendingPathComponent:v16];
+    name2 = [(_KSFileEntry *)self name];
+    v9 = [pathCopy URLByAppendingPathComponent:name2];
 
     if (([v9 checkResourceIsReachableAndReturnError:0] & 1) == 0)
     {
@@ -269,7 +269,7 @@ LABEL_22:
 
   else
   {
-    v9 = v4;
+    v9 = pathCopy;
   }
 
   [(_KSFileEntry *)self saveAttributesToURL:v9];
@@ -277,8 +277,8 @@ LABEL_22:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(NSMutableDictionary *)self->_contents allValues];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allValues = [(NSMutableDictionary *)self->_contents allValues];
+  v11 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -290,14 +290,14 @@ LABEL_22:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v17 + 1) + 8 * v14++) restoreToPath:v9];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
@@ -306,17 +306,17 @@ LABEL_22:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findEntryWithComparison:(id)a3 recursively:(BOOL)a4
+- (id)findEntryWithComparison:(id)comparison recursively:(BOOL)recursively
 {
-  v4 = a4;
+  recursivelyCopy = recursively;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  comparisonCopy = comparison;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = self;
-  v8 = [(_KSFileDirectory *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  selfCopy = self;
+  v8 = [(_KSFileDirectory *)selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -327,12 +327,12 @@ LABEL_22:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 name];
-        v14 = v6[2](v6, v13);
+        name = [v12 name];
+        v14 = comparisonCopy[2](comparisonCopy, name);
 
         if (v14)
         {
@@ -342,12 +342,12 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        if (v4)
+        if (recursivelyCopy)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [v12 findEntryWithComparison:v6 recursively:1];
+            v15 = [v12 findEntryWithComparison:comparisonCopy recursively:1];
             if (v15)
             {
               goto LABEL_14;
@@ -356,7 +356,7 @@ LABEL_14:
         }
       }
 
-      v9 = [(_KSFileDirectory *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [(_KSFileDirectory *)selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         continue;

@@ -1,34 +1,34 @@
 @interface CKKSProvideKeySetOperation
-- (CKKSProvideKeySetOperation)initWithIntendedZoneIDs:(id)a3;
-- (void)provideKeySets:(id)a3;
+- (CKKSProvideKeySetOperation)initWithIntendedZoneIDs:(id)ds;
+- (void)provideKeySets:(id)sets;
 @end
 
 @implementation CKKSProvideKeySetOperation
 
-- (void)provideKeySets:(id)a3
+- (void)provideKeySets:(id)sets
 {
-  v4 = a3;
-  v5 = [(CKKSProvideKeySetOperation *)self queue];
+  setsCopy = sets;
+  queue = [(CKKSProvideKeySetOperation *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100111BF8;
   v7[3] = &unk_100343E38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = setsCopy;
+  v6 = setsCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (CKKSProvideKeySetOperation)initWithIntendedZoneIDs:(id)a3
+- (CKKSProvideKeySetOperation)initWithIntendedZoneIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = CKKSProvideKeySetOperation;
   v6 = [(CKKSGroupOperation *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_intendedZoneIDs, a3);
+    objc_storeStrong(&v6->_intendedZoneIDs, ds);
     keysets = v7->_keysets;
     v7->_keysets = 0;
 

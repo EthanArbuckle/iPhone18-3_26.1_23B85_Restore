@@ -1,20 +1,20 @@
 @interface FCRegisterDeviceTokenCommand
-- (FCRegisterDeviceTokenCommand)initWithCoder:(id)a3;
-- (FCRegisterDeviceTokenCommand)initWithUserID:(id)a3 deviceToken:(id)a4 storefrontID:(id)a5 deviceDigestMode:(int)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5;
+- (FCRegisterDeviceTokenCommand)initWithCoder:(id)coder;
+- (FCRegisterDeviceTokenCommand)initWithUserID:(id)d deviceToken:(id)token storefrontID:(id)iD deviceDigestMode:(int)mode;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service;
 @end
 
 @implementation FCRegisterDeviceTokenCommand
 
-- (FCRegisterDeviceTokenCommand)initWithUserID:(id)a3 deviceToken:(id)a4 storefrontID:(id)a5 deviceDigestMode:(int)a6
+- (FCRegisterDeviceTokenCommand)initWithUserID:(id)d deviceToken:(id)token storefrontID:(id)iD deviceDigestMode:(int)mode
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  v15 = 0;
-  if (v11 && v12 && v13)
+  dCopy = d;
+  tokenCopy = token;
+  iDCopy = iD;
+  v14 = iDCopy;
+  selfCopy = 0;
+  if (dCopy && tokenCopy && iDCopy)
   {
     v19.receiver = self;
     v19.super_class = FCRegisterDeviceTokenCommand;
@@ -22,63 +22,63 @@
     v17 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_userID, a3);
-      objc_storeStrong(&v17->_deviceToken, a4);
-      objc_storeStrong(&v17->_storefrontID, a5);
-      v17->_deviceDigestMode = a6;
+      objc_storeStrong(&v16->_userID, d);
+      objc_storeStrong(&v17->_deviceToken, token);
+      objc_storeStrong(&v17->_storefrontID, iD);
+      v17->_deviceDigestMode = mode;
     }
 
     self = v17;
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (FCRegisterDeviceTokenCommand)initWithCoder:(id)a3
+- (FCRegisterDeviceTokenCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserIDKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceTokenKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StorefrontIDKey"];
-  v8 = [v4 decodeIntForKey:@"DigestModeKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserIDKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceTokenKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StorefrontIDKey"];
+  v8 = [coderCopy decodeIntForKey:@"DigestModeKey"];
 
   v9 = [(FCRegisterDeviceTokenCommand *)self initWithUserID:v5 deviceToken:v6 storefrontID:v7 deviceDigestMode:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(FCRegisterDeviceTokenCommand *)self userID];
-  [v7 encodeObject:v4 forKey:@"UserIDKey"];
+  coderCopy = coder;
+  userID = [(FCRegisterDeviceTokenCommand *)self userID];
+  [coderCopy encodeObject:userID forKey:@"UserIDKey"];
 
-  v5 = [(FCRegisterDeviceTokenCommand *)self deviceToken];
-  [v7 encodeObject:v5 forKey:@"DeviceTokenKey"];
+  deviceToken = [(FCRegisterDeviceTokenCommand *)self deviceToken];
+  [coderCopy encodeObject:deviceToken forKey:@"DeviceTokenKey"];
 
-  v6 = [(FCRegisterDeviceTokenCommand *)self storefrontID];
-  [v7 encodeObject:v6 forKey:@"StorefrontIDKey"];
+  storefrontID = [(FCRegisterDeviceTokenCommand *)self storefrontID];
+  [coderCopy encodeObject:storefrontID forKey:@"StorefrontIDKey"];
 
-  [v7 encodeInt:-[FCRegisterDeviceTokenCommand deviceDigestMode](self forKey:{"deviceDigestMode"), @"DigestModeKey"}];
+  [coderCopy encodeInt:-[FCRegisterDeviceTokenCommand deviceDigestMode](self forKey:{"deviceDigestMode"), @"DigestModeKey"}];
 }
 
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service
 {
-  v7 = a4;
-  v8 = [a3 notificationsEndpointConnection];
-  v9 = [(FCRegisterDeviceTokenCommand *)self userID];
-  v10 = [(FCRegisterDeviceTokenCommand *)self deviceToken];
-  v11 = [(FCRegisterDeviceTokenCommand *)self storefrontID];
-  v12 = [(FCRegisterDeviceTokenCommand *)self deviceDigestMode];
+  delegateCopy = delegate;
+  notificationsEndpointConnection = [context notificationsEndpointConnection];
+  userID = [(FCRegisterDeviceTokenCommand *)self userID];
+  deviceToken = [(FCRegisterDeviceTokenCommand *)self deviceToken];
+  storefrontID = [(FCRegisterDeviceTokenCommand *)self storefrontID];
+  deviceDigestMode = [(FCRegisterDeviceTokenCommand *)self deviceDigestMode];
   v13 = dispatch_get_global_queue(-2, 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __77__FCRegisterDeviceTokenCommand_executeWithContext_delegate_qualityOfService___block_invoke;
   v15[3] = &unk_1E7C38080;
-  v16 = v7;
-  v17 = self;
-  v14 = v7;
-  [v8 registerDeviceWithUserID:v9 deviceToken:v10 storefrontID:v11 deviceDigestMode:v12 callbackQueue:v13 completion:v15];
+  v16 = delegateCopy;
+  selfCopy = self;
+  v14 = delegateCopy;
+  [notificationsEndpointConnection registerDeviceWithUserID:userID deviceToken:deviceToken storefrontID:storefrontID deviceDigestMode:deviceDigestMode callbackQueue:v13 completion:v15];
 }
 
 void __77__FCRegisterDeviceTokenCommand_executeWithContext_delegate_qualityOfService___block_invoke(uint64_t a1, int a2, void *a3)

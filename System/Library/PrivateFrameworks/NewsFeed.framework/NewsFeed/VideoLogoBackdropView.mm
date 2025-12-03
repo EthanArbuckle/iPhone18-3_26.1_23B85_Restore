@@ -1,7 +1,7 @@
 @interface VideoLogoBackdropView
 + (Class)layerClass;
-- (_TtC8NewsFeed21VideoLogoBackdropView)initWithCoder:(id)a3;
-- (_TtC8NewsFeed21VideoLogoBackdropView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed21VideoLogoBackdropView)initWithCoder:(id)coder;
+- (_TtC8NewsFeed21VideoLogoBackdropView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation VideoLogoBackdropView
@@ -13,12 +13,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC8NewsFeed21VideoLogoBackdropView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed21VideoLogoBackdropView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC8NewsFeed21VideoLogoBackdropView_gradientDescriptor;
   v10 = sub_1D725E94C();
@@ -28,7 +28,7 @@
   return [(VideoLogoBackdropView *)&v12 initWithFrame:x, y, width, height];
 }
 
-- (_TtC8NewsFeed21VideoLogoBackdropView)initWithCoder:(id)a3
+- (_TtC8NewsFeed21VideoLogoBackdropView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC8NewsFeed21VideoLogoBackdropView_gradientDescriptor;
@@ -36,8 +36,8 @@
   (*(*(v7 - 8) + 56))(self + v6, 1, 1, v7);
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v8 = a3;
-  v9 = [(VideoLogoBackdropView *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(VideoLogoBackdropView *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

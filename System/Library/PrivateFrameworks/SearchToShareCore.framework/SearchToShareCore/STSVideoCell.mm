@@ -1,31 +1,31 @@
 @interface STSVideoCell
-- (STSVideoCell)initWithFrame:(CGRect)a3;
+- (STSVideoCell)initWithFrame:(CGRect)frame;
 - (void)_didPressPlay;
-- (void)_updateHiddenViewsAnimated:(BOOL)a3;
+- (void)_updateHiddenViewsAnimated:(BOOL)animated;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3 animated:(BOOL)a4;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image animated:(BOOL)animated;
 - (void)updateConstraints;
 @end
 
 @implementation STSVideoCell
 
-- (STSVideoCell)initWithFrame:(CGRect)a3
+- (STSVideoCell)initWithFrame:(CGRect)frame
 {
   v51.receiver = self;
   v51.super_class = STSVideoCell;
-  v3 = [(STSImageCell *)&v51 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STSImageCell *)&v51 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(STSVideoCell *)v3 contentView];
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    [v5 setBackgroundColor:v6];
+    contentView = [(STSVideoCell *)v3 contentView];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [contentView setBackgroundColor:whiteColor];
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     constraints = v4->_constraints;
-    v4->_constraints = v7;
+    v4->_constraints = array;
 
     v9 = objc_alloc(MEMORY[0x277D75D18]);
     v10 = *MEMORY[0x277CBF3A0];
@@ -63,8 +63,8 @@
     [(UILabel *)v24 setFont:v25];
 
     v26 = v4->_titleLabel;
-    v27 = [MEMORY[0x277D75348] sts_primaryResultTextColor];
-    [(UILabel *)v26 setTextColor:v27];
+    sts_primaryResultTextColor = [MEMORY[0x277D75348] sts_primaryResultTextColor];
+    [(UILabel *)v26 setTextColor:sts_primaryResultTextColor];
 
     [(UILabel *)v4->_titleLabel setNumberOfLines:2];
     v28 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v10, v11, v12, v13}];
@@ -77,8 +77,8 @@
     [(UILabel *)v30 setFont:v31];
 
     v32 = v4->_subtitleLabel;
-    v33 = [MEMORY[0x277D75348] sts_secondaryResultTextColor];
-    [(UILabel *)v32 setTextColor:v33];
+    sts_secondaryResultTextColor = [MEMORY[0x277D75348] sts_secondaryResultTextColor];
+    [(UILabel *)v32 setTextColor:sts_secondaryResultTextColor];
 
     [(UILabel *)v4->_subtitleLabel setNumberOfLines:2];
     v34 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v10, v11, v12, v13}];
@@ -91,8 +91,8 @@
     [(UILabel *)v36 setFont:v37];
 
     v38 = v4->_providerLabel;
-    v39 = [MEMORY[0x277D75348] sts_primaryResultTextColor];
-    [(UILabel *)v38 setTextColor:v39];
+    sts_primaryResultTextColor2 = [MEMORY[0x277D75348] sts_primaryResultTextColor];
+    [(UILabel *)v38 setTextColor:sts_primaryResultTextColor2];
 
     v40 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v10, v11, v12, v13}];
     durationLabel = v4->_durationLabel;
@@ -104,8 +104,8 @@
     [(UILabel *)v42 setFont:v43];
 
     v44 = v4->_durationLabel;
-    v45 = [MEMORY[0x277D75348] sts_secondaryResultTextColor];
-    [(UILabel *)v44 setTextColor:v45];
+    sts_secondaryResultTextColor2 = [MEMORY[0x277D75348] sts_secondaryResultTextColor];
+    [(UILabel *)v44 setTextColor:sts_secondaryResultTextColor2];
 
     LODWORD(v46) = 1148846080;
     [(UILabel *)v4->_durationLabel setContentCompressionResistancePriority:0 forAxis:v46];
@@ -114,11 +114,11 @@
     [(UIView *)v4->_footerContainer addSubview:v4->_durationLabel];
     [(UIView *)v4->_footerContainer addSubview:v4->_subtitleLabel];
     [(UIView *)v4->_footerContainer addSubview:v4->_titleLabel];
-    v47 = [(STSVideoCell *)v4 contentView];
-    [v47 addSubview:v4->_footerContainer];
+    contentView2 = [(STSVideoCell *)v4 contentView];
+    [contentView2 addSubview:v4->_footerContainer];
 
-    v48 = [(STSVideoCell *)v4 contentView];
-    [v48 addSubview:v4->_playButton];
+    contentView3 = [(STSVideoCell *)v4 contentView];
+    [contentView3 addSubview:v4->_playButton];
 
     [(STSVideoCell *)v4 _updateHiddenViewsAnimated:0];
     [(STSVideoCell *)v4 updateConstraints];
@@ -208,19 +208,19 @@
   [MEMORY[0x277CCAAD0] activateConstraints:self->_constraints];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = STSVideoCell;
-  [(STSVideoCell *)&v21 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(STSVideoCell *)self contentView];
-  [v4 bounds];
+  [(STSVideoCell *)&v21 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  contentView = [(STSVideoCell *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(STSVideoCell *)self contentView];
-  [v13 layoutMargins];
+  contentView2 = [(STSVideoCell *)self contentView];
+  [contentView2 layoutMargins];
   v15 = v8 + v14;
   v18 = v10 - (v16 + v17);
   v22.size.height = v12 - (v14 + v19);
@@ -233,30 +233,30 @@
   [(UILabel *)self->_subtitleLabel setPreferredMaxLayoutWidth:Width];
 }
 
-- (void)setImage:(id)a3 animated:(BOOL)a4
+- (void)setImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6.receiver = self;
   v6.super_class = STSVideoCell;
-  [(STSImageCell *)&v6 setImage:a3 animated:?];
-  [(STSVideoCell *)self _updateHiddenViewsAnimated:v4];
+  [(STSImageCell *)&v6 setImage:image animated:?];
+  [(STSVideoCell *)self _updateHiddenViewsAnimated:animatedCopy];
 }
 
 - (void)_didPressPlay
 {
-  v3 = [(STSVideoCell *)self playButtonAction];
+  playButtonAction = [(STSVideoCell *)self playButtonAction];
 
-  if (v3)
+  if (playButtonAction)
   {
-    v4 = [(STSVideoCell *)self playButtonAction];
-    v4[2]();
+    playButtonAction2 = [(STSVideoCell *)self playButtonAction];
+    playButtonAction2[2]();
   }
 }
 
-- (void)_updateHiddenViewsAnimated:(BOOL)a3
+- (void)_updateHiddenViewsAnimated:(BOOL)animated
 {
-  v4 = [(STSImageCell *)self image];
-  if (v4)
+  image = [(STSImageCell *)self image];
+  if (image)
   {
     v5 = 1.0;
   }

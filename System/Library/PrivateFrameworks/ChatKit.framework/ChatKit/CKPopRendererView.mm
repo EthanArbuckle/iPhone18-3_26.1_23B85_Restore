@@ -1,12 +1,12 @@
 @interface CKPopRendererView
-- (BOOL)playWithSourceView:(id)a3;
-- (CKPopRendererView)initWithFrame:(CGRect)a3;
-- (CKPopRendererView)initWithFrame:(CGRect)a3 device:(id)a4;
+- (BOOL)playWithSourceView:(id)view;
+- (CKPopRendererView)initWithFrame:(CGRect)frame;
+- (CKPopRendererView)initWithFrame:(CGRect)frame device:(id)device;
 - (CKPopRendererViewDelegate)delegate;
 - (void)didMoveToWindow;
-- (void)drawFrom:(id)a3;
+- (void)drawFrom:(id)from;
 - (void)layoutSubviews;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CKPopRendererView
@@ -19,28 +19,28 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___CKPopRendererView_delegate;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (CKPopRendererView)initWithFrame:(CGRect)a3 device:(id)a4
+- (CKPopRendererView)initWithFrame:(CGRect)frame device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectRetain();
-  return PopRendererView.init(frame:device:)(a4, x, y, width, height);
+  return PopRendererView.init(frame:device:)(device, x, y, width, height);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B79FA0();
 }
 
@@ -53,23 +53,23 @@
   [v2 setNeedsLayout];
 }
 
-- (BOOL)playWithSourceView:(id)a3
+- (BOOL)playWithSourceView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_190B7A78C(v4);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(self) = sub_190B7A78C(viewCopy);
 
   return self & 1;
 }
 
-- (void)drawFrom:(id)a3
+- (void)drawFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
-  sub_190B7ADE4(v4);
+  fromCopy = from;
+  selfCopy = self;
+  sub_190B7ADE4(fromCopy);
 }
 
-- (CKPopRendererView)initWithFrame:(CGRect)a3
+- (CKPopRendererView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

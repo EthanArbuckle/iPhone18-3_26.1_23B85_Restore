@@ -1,7 +1,7 @@
 @interface CSCoverSheetTransitionsSettings
 + (id)settingsControllerModule;
-- (void)_setBaseCoverSheetSettingsWithMultiplier:(double)a3;
-- (void)_setInPlaceCoverSheetSettingsWithMultiplier:(double)a3;
+- (void)_setBaseCoverSheetSettingsWithMultiplier:(double)multiplier;
+- (void)_setInPlaceCoverSheetSettingsWithMultiplier:(double)multiplier;
 - (void)setDefaultValues;
 - (void)setDefaultValuesForBaseConfiguration;
 - (void)setDefaultValuesForBlurOnly;
@@ -32,92 +32,92 @@
 {
   [(CSCoverSheetTransitionsSettings *)self _setBaseCoverSheetSettingsWithMultiplier:1.0];
   [(CSCoverSheetTransitionsSettings *)self _setInPlaceCoverSheetSettingsWithMultiplier:1.0];
-  v3 = [(CSCoverSheetTransitionsSettings *)self sameWallpaperInitialTransitionSettings];
-  [v3 setDefaultValues];
-  [v3 setOrientPanelWallpaper:0];
-  [v3 setBlursPanel:0];
-  [v3 setFloatingLayerAsWallpaperOverlay:1];
+  sameWallpaperInitialTransitionSettings = [(CSCoverSheetTransitionsSettings *)self sameWallpaperInitialTransitionSettings];
+  [sameWallpaperInitialTransitionSettings setDefaultValues];
+  [sameWallpaperInitialTransitionSettings setOrientPanelWallpaper:0];
+  [sameWallpaperInitialTransitionSettings setBlursPanel:0];
+  [sameWallpaperInitialTransitionSettings setFloatingLayerAsWallpaperOverlay:1];
 
-  v4 = [(CSCoverSheetTransitionsSettings *)self differentWallpaperInitialTransitionSettings];
-  [v4 setDefaultValues];
-  [v4 setPanelWallpaper:1];
+  differentWallpaperInitialTransitionSettings = [(CSCoverSheetTransitionsSettings *)self differentWallpaperInitialTransitionSettings];
+  [differentWallpaperInitialTransitionSettings setDefaultValues];
+  [differentWallpaperInitialTransitionSettings setPanelWallpaper:1];
 
-  v5 = [(CSCoverSheetTransitionsSettings *)self sameWallpaperSubsequentTransitionSettings];
-  [v5 setDefaultValues];
-  [v5 setOrientPanelWallpaper:0];
-  [v5 setFloatingLayerAsWallpaperOverlay:1];
+  sameWallpaperSubsequentTransitionSettings = [(CSCoverSheetTransitionsSettings *)self sameWallpaperSubsequentTransitionSettings];
+  [sameWallpaperSubsequentTransitionSettings setDefaultValues];
+  [sameWallpaperSubsequentTransitionSettings setOrientPanelWallpaper:0];
+  [sameWallpaperSubsequentTransitionSettings setFloatingLayerAsWallpaperOverlay:1];
 
-  v6 = [(CSCoverSheetTransitionsSettings *)self differentWallpaperSubsequentTransitionSettings];
-  [v6 setDefaultValues];
-  [v6 setPanelWallpaper:1];
+  differentWallpaperSubsequentTransitionSettings = [(CSCoverSheetTransitionsSettings *)self differentWallpaperSubsequentTransitionSettings];
+  [differentWallpaperSubsequentTransitionSettings setDefaultValues];
+  [differentWallpaperSubsequentTransitionSettings setPanelWallpaper:1];
 
-  v7 = [(CSCoverSheetTransitionsSettings *)self overAppTransitionSettings];
-  [v7 setDefaultValues];
-  [v7 setPanelWallpaper:1];
-  [v7 setFloatingLayerAsWallpaperOverlay:1];
-  [v7 setRevealWallpaper:1];
-  [v7 setIconsFlyIn:0];
+  overAppTransitionSettings = [(CSCoverSheetTransitionsSettings *)self overAppTransitionSettings];
+  [overAppTransitionSettings setDefaultValues];
+  [overAppTransitionSettings setPanelWallpaper:1];
+  [overAppTransitionSettings setFloatingLayerAsWallpaperOverlay:1];
+  [overAppTransitionSettings setRevealWallpaper:1];
+  [overAppTransitionSettings setIconsFlyIn:0];
 
-  v8 = [(CSCoverSheetTransitionsSettings *)self captureExtensionToAppTransitionSettings];
-  [v8 setDefaultValues];
-  [v8 setIconsFlyIn:0];
-  [v8 setTransitionStyle:1];
-  [v8 setFadesCoverSheetContent:1];
-  [v8 setDarkensContent:0];
-  [v8 setFadesContent:0];
-  [v8 setBlursPanel:0];
+  captureExtensionToAppTransitionSettings = [(CSCoverSheetTransitionsSettings *)self captureExtensionToAppTransitionSettings];
+  [captureExtensionToAppTransitionSettings setDefaultValues];
+  [captureExtensionToAppTransitionSettings setIconsFlyIn:0];
+  [captureExtensionToAppTransitionSettings setTransitionStyle:1];
+  [captureExtensionToAppTransitionSettings setFadesCoverSheetContent:1];
+  [captureExtensionToAppTransitionSettings setDarkensContent:0];
+  [captureExtensionToAppTransitionSettings setFadesContent:0];
+  [captureExtensionToAppTransitionSettings setBlursPanel:0];
 
-  v9 = [(CSCoverSheetTransitionsSettings *)self overLandscapeTransitionSettings];
-  [v9 setDefaultValues];
-  [v9 setBlursPanel:0];
-  [v9 setPanelWallpaper:1];
-  [v9 setTrackingWallpaper:1];
-  [v9 setRevealWallpaper:1];
-  [v9 setFadesContent:0];
-  [v9 setIconsFlyIn:0];
+  overLandscapeTransitionSettings = [(CSCoverSheetTransitionsSettings *)self overLandscapeTransitionSettings];
+  [overLandscapeTransitionSettings setDefaultValues];
+  [overLandscapeTransitionSettings setBlursPanel:0];
+  [overLandscapeTransitionSettings setPanelWallpaper:1];
+  [overLandscapeTransitionSettings setTrackingWallpaper:1];
+  [overLandscapeTransitionSettings setRevealWallpaper:1];
+  [overLandscapeTransitionSettings setFadesContent:0];
+  [overLandscapeTransitionSettings setIconsFlyIn:0];
 
-  v10 = [(CSCoverSheetTransitionsSettings *)self inactiveOverHomescreenTransitionSettings];
-  [v10 setDefaultValues];
-  [v10 setTransitionStyle:1];
-  [v10 setBlursPanel:0];
-  [v10 setBlursBehindCoverSheet:1];
-  [v10 setBehindCoverSheetBlurRadius:50.0];
-  [v10 setPanelWallpaper:1];
-  [v10 setOrientPanelWallpaper:1];
-  [v10 setFadePanelWallpaper:1];
-  [v10 setFadesContent:0];
-  [v10 setFadesCoverSheetContent:1];
-  [v10 setFadesCoverSheetContentStart:0.8];
-  [v10 setFadesCoverSheetContentEnd:1.0];
-  [v10 setAlwaysFadesCoverSheetContent:0];
-  [v10 setSupportsGlassEffects:0];
+  inactiveOverHomescreenTransitionSettings = [(CSCoverSheetTransitionsSettings *)self inactiveOverHomescreenTransitionSettings];
+  [inactiveOverHomescreenTransitionSettings setDefaultValues];
+  [inactiveOverHomescreenTransitionSettings setTransitionStyle:1];
+  [inactiveOverHomescreenTransitionSettings setBlursPanel:0];
+  [inactiveOverHomescreenTransitionSettings setBlursBehindCoverSheet:1];
+  [inactiveOverHomescreenTransitionSettings setBehindCoverSheetBlurRadius:50.0];
+  [inactiveOverHomescreenTransitionSettings setPanelWallpaper:1];
+  [inactiveOverHomescreenTransitionSettings setOrientPanelWallpaper:1];
+  [inactiveOverHomescreenTransitionSettings setFadePanelWallpaper:1];
+  [inactiveOverHomescreenTransitionSettings setFadesContent:0];
+  [inactiveOverHomescreenTransitionSettings setFadesCoverSheetContent:1];
+  [inactiveOverHomescreenTransitionSettings setFadesCoverSheetContentStart:0.8];
+  [inactiveOverHomescreenTransitionSettings setFadesCoverSheetContentEnd:1.0];
+  [inactiveOverHomescreenTransitionSettings setAlwaysFadesCoverSheetContent:0];
+  [inactiveOverHomescreenTransitionSettings setSupportsGlassEffects:0];
 
-  v11 = [(CSCoverSheetTransitionsSettings *)self inactiveOverAppTransitionSettings];
-  [v11 setDefaultValues];
-  v12 = [(CSCoverSheetTransitionsSettings *)self inactiveOverHomescreenTransitionSettings];
-  [v11 applySettings:v12];
+  inactiveOverAppTransitionSettings = [(CSCoverSheetTransitionsSettings *)self inactiveOverAppTransitionSettings];
+  [inactiveOverAppTransitionSettings setDefaultValues];
+  inactiveOverHomescreenTransitionSettings2 = [(CSCoverSheetTransitionsSettings *)self inactiveOverHomescreenTransitionSettings];
+  [inactiveOverAppTransitionSettings applySettings:inactiveOverHomescreenTransitionSettings2];
 
-  [v11 setIconsFlyIn:0];
-  [v11 setUsesFixedWallpaperPresentationProgress:1];
-  [v11 setFixedWallpaperPresentationProgress:0.0];
-  [v11 setSupportsGlassEffects:0];
+  [inactiveOverAppTransitionSettings setIconsFlyIn:0];
+  [inactiveOverAppTransitionSettings setUsesFixedWallpaperPresentationProgress:1];
+  [inactiveOverAppTransitionSettings setFixedWallpaperPresentationProgress:0.0];
+  [inactiveOverAppTransitionSettings setSupportsGlassEffects:0];
 
-  v13 = [(CSCoverSheetTransitionsSettings *)self flyInSettings];
-  [v13 setDefaultValues];
+  flyInSettings = [(CSCoverSheetTransitionsSettings *)self flyInSettings];
+  [flyInSettings setDefaultValues];
 }
 
-- (void)_setBaseCoverSheetSettingsWithMultiplier:(double)a3
+- (void)_setBaseCoverSheetSettingsWithMultiplier:(double)multiplier
 {
-  [(CSCoverSheetTransitionsSettings *)self setDamping:a3 * 0.9815];
+  [(CSCoverSheetTransitionsSettings *)self setDamping:multiplier * 0.9815];
 
-  [(CSCoverSheetTransitionsSettings *)self setResponse:a3 * 0.36276];
+  [(CSCoverSheetTransitionsSettings *)self setResponse:multiplier * 0.36276];
 }
 
-- (void)_setInPlaceCoverSheetSettingsWithMultiplier:(double)a3
+- (void)_setInPlaceCoverSheetSettingsWithMultiplier:(double)multiplier
 {
   [(CSCoverSheetTransitionsSettings *)self setInPlaceDamping:?];
 
-  [(CSCoverSheetTransitionsSettings *)self setInPlaceResponse:a3 * 0.8];
+  [(CSCoverSheetTransitionsSettings *)self setInPlaceResponse:multiplier * 0.8];
 }
 
 - (void)setDefaultValuesForParallaxOnly
@@ -197,8 +197,8 @@
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v2 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v8 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   v9 = [v5 numberWithInt:v8];
@@ -228,8 +228,8 @@
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    v14 = [v2 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v14 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   v15 = [v11 numberWithInt:v14];
@@ -259,8 +259,8 @@
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    v20 = [v2 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v20 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   v21 = [v17 numberWithInt:v20];

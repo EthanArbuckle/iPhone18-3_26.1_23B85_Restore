@@ -1,27 +1,27 @@
 @interface PKPaletteErasingToolView
 - (NSString)toolIdentifier;
-- (PKPaletteErasingToolView)initWithToolIdentifier:(id)a3 itemIdentifier:(id)a4 variant:(id)a5 configuration:(id)a6;
+- (PKPaletteErasingToolView)initWithToolIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier variant:(id)variant configuration:(id)configuration;
 - (double)weight;
 - (id)attributeViewController;
 - (void)_updateAttributesViewController;
 - (void)_updateAttributesViewControllerWeight;
-- (void)erasingAttributesViewControllerDidChangeErasingType:(id)a3;
-- (void)erasingAttributesViewControllerDidChangeInkThickness:(id)a3;
-- (void)setBitmapEraser:(BOOL)a3;
-- (void)setToolProperties:(id)a3 updateUI:(BOOL)a4;
+- (void)erasingAttributesViewControllerDidChangeErasingType:(id)type;
+- (void)erasingAttributesViewControllerDidChangeInkThickness:(id)thickness;
+- (void)setBitmapEraser:(BOOL)eraser;
+- (void)setToolProperties:(id)properties updateUI:(BOOL)i;
 @end
 
 @implementation PKPaletteErasingToolView
 
-- (PKPaletteErasingToolView)initWithToolIdentifier:(id)a3 itemIdentifier:(id)a4 variant:(id)a5 configuration:(id)a6
+- (PKPaletteErasingToolView)initWithToolIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier variant:(id)variant configuration:(id)configuration
 {
-  v10 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PKPaletteErasingToolView;
-  v11 = [(PKPaletteToolView *)&v13 initWithToolIdentifier:v10 itemIdentifier:a4 variant:a5 configuration:a6];
+  v11 = [(PKPaletteToolView *)&v13 initWithToolIdentifier:identifierCopy itemIdentifier:itemIdentifier variant:variant configuration:configuration];
   if (v11)
   {
-    -[PKPaletteErasingToolView setBitmapEraser:](v11, "setBitmapEraser:", [v10 isEqualToString:@"com.apple.ink.eraser"]);
+    -[PKPaletteErasingToolView setBitmapEraser:](v11, "setBitmapEraser:", [identifierCopy isEqualToString:@"com.apple.ink.eraser"]);
   }
 
   return v11;
@@ -29,9 +29,9 @@
 
 - (NSString)toolIdentifier
 {
-  v2 = [(PKPaletteErasingToolView *)self isBitmapEraser];
+  isBitmapEraser = [(PKPaletteErasingToolView *)self isBitmapEraser];
   v3 = &PKInkIdentifierEraser;
-  if (!v2)
+  if (!isBitmapEraser)
   {
     v3 = &PKInkIdentifierObjectEraser;
   }
@@ -41,17 +41,17 @@
   return v4;
 }
 
-- (void)setBitmapEraser:(BOOL)a3
+- (void)setBitmapEraser:(BOOL)eraser
 {
-  if (self->_bitmapEraser != a3)
+  if (self->_bitmapEraser != eraser)
   {
-    self->_bitmapEraser = a3;
-    v9 = [(PKPaletteErasingToolView *)self toolIdentifier];
-    v5 = [(PKPaletteToolView *)self configuration];
-    v6 = v5;
-    if (v5)
+    self->_bitmapEraser = eraser;
+    toolIdentifier = [(PKPaletteErasingToolView *)self toolIdentifier];
+    configuration = [(PKPaletteToolView *)self configuration];
+    v6 = configuration;
+    if (configuration)
     {
-      v7 = *(v5 + 176);
+      v7 = *(configuration + 176);
     }
 
     else
@@ -59,17 +59,17 @@
       v7 = 0;
     }
 
-    v8 = [PKToolConfiguration defaultConfigurationForToolWithIdentifier:v9 inkVersion:v7];
+    v8 = [PKToolConfiguration defaultConfigurationForToolWithIdentifier:toolIdentifier inkVersion:v7];
     [(PKPaletteToolView *)self setConfiguration:v8];
   }
 }
 
 - (double)weight
 {
-  v3 = [(PKPaletteToolView *)self configuration];
-  if (v3)
+  configuration = [(PKPaletteToolView *)self configuration];
+  if (configuration)
   {
-    v4 = v3[22];
+    v4 = configuration[22];
 
     if (v4 == 3)
     {
@@ -83,13 +83,13 @@
   return result;
 }
 
-- (void)setToolProperties:(id)a3 updateUI:(BOOL)a4
+- (void)setToolProperties:(id)properties updateUI:(BOOL)i
 {
-  v4 = a4;
+  iCopy = i;
   v6.receiver = self;
   v6.super_class = PKPaletteErasingToolView;
-  [(PKPaletteToolView *)&v6 setToolProperties:a3];
-  if (v4)
+  [(PKPaletteToolView *)&v6 setToolProperties:properties];
+  if (iCopy)
   {
     [(PKPaletteErasingToolView *)self _updateAttributesViewController];
   }
@@ -115,11 +115,11 @@
 {
   v3 = self->_attributeViewController;
   [(PKPaletteAttributeViewController *)v3 setEraserType:[(PKPaletteErasingToolView *)self isBitmapEraser]^ 1];
-  v4 = [(PKPaletteToolView *)self configuration];
-  v5 = v4;
-  if (v4)
+  configuration = [(PKPaletteToolView *)self configuration];
+  v5 = configuration;
+  if (configuration)
   {
-    v6 = *(v4 + 176) == 3;
+    v6 = *(configuration + 176) == 3;
   }
 
   else
@@ -137,8 +137,8 @@
   v5 = self->_attributeViewController;
   if ([(PKPaletteErasingToolView *)self isBitmapEraser])
   {
-    v3 = [(PKPaletteToolView *)self toolProperties];
-    v4 = [v3 objectForKeyedSubscript:@"PKInkWeightProperty"];
+    toolProperties = [(PKPaletteToolView *)self toolProperties];
+    v4 = [toolProperties objectForKeyedSubscript:@"PKInkWeightProperty"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [(PKPaletteErasingToolView *)self isBitmapEraser])
@@ -154,26 +154,26 @@
   }
 }
 
-- (void)erasingAttributesViewControllerDidChangeErasingType:(id)a3
+- (void)erasingAttributesViewControllerDidChangeErasingType:(id)type
 {
-  v4 = a3;
-  -[PKPaletteErasingToolView setBitmapEraser:](self, "setBitmapEraser:", [v4 eraserType] == 0);
+  typeCopy = type;
+  -[PKPaletteErasingToolView setBitmapEraser:](self, "setBitmapEraser:", [typeCopy eraserType] == 0);
   [(PKPaletteErasingToolView *)self _updateAttributesViewControllerWeight];
   [(PKPaletteErasingToolView *)self sendActionsForControlEvents:4096];
   v6 = +[PKStatisticsManager sharedStatisticsManager];
-  v5 = [v4 eraserType];
+  eraserType = [typeCopy eraserType];
 
-  [(PKStatisticsManager *)v6 recordPixelObjectEraseModeChange:v5];
+  [(PKStatisticsManager *)v6 recordPixelObjectEraseModeChange:eraserType];
 }
 
-- (void)erasingAttributesViewControllerDidChangeInkThickness:(id)a3
+- (void)erasingAttributesViewControllerDidChangeInkThickness:(id)thickness
 {
-  v4 = a3;
-  v5 = [(PKPaletteToolView *)self toolProperties];
-  v11 = [v5 mutableCopy];
+  thicknessCopy = thickness;
+  toolProperties = [(PKPaletteToolView *)self toolProperties];
+  v11 = [toolProperties mutableCopy];
 
   v6 = MEMORY[0x1E696AD98];
-  [v4 weight];
+  [thicknessCopy weight];
   v8 = v7;
 
   v9 = [v6 numberWithDouble:v8];

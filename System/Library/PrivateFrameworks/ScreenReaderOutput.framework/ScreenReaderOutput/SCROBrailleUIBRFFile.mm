@@ -1,14 +1,14 @@
 @interface SCROBrailleUIBRFFile
-- (SCROBrailleUIBRFFile)initWithBRF:(id)a3 rawInitialLocation:(int64_t)a4 rawBookmarks:(id)a5 reflowSize:(int64_t)a6 shouldWordWrap:(BOOL)a7 shouldStripPageIndicators:(BOOL)a8;
+- (SCROBrailleUIBRFFile)initWithBRF:(id)f rawInitialLocation:(int64_t)location rawBookmarks:(id)bookmarks reflowSize:(int64_t)size shouldWordWrap:(BOOL)wrap shouldStripPageIndicators:(BOOL)indicators;
 @end
 
 @implementation SCROBrailleUIBRFFile
 
-- (SCROBrailleUIBRFFile)initWithBRF:(id)a3 rawInitialLocation:(int64_t)a4 rawBookmarks:(id)a5 reflowSize:(int64_t)a6 shouldWordWrap:(BOOL)a7 shouldStripPageIndicators:(BOOL)a8
+- (SCROBrailleUIBRFFile)initWithBRF:(id)f rawInitialLocation:(int64_t)location rawBookmarks:(id)bookmarks reflowSize:(int64_t)size shouldWordWrap:(BOOL)wrap shouldStripPageIndicators:(BOOL)indicators
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a5;
+  wrapCopy = wrap;
+  fCopy = f;
+  bookmarksCopy = bookmarks;
   v133.receiver = self;
   v133.super_class = SCROBrailleUIBRFFile;
   v16 = [(SCROBrailleUIBRFFile *)&v133 init];
@@ -33,7 +33,7 @@
   v124 = 0;
   v125 = &v124;
   v126 = 0x2020000000;
-  v127 = malloc_type_calloc(a6 + 1, 2uLL, 0x1000040BDFB0063uLL);
+  v127 = malloc_type_calloc(size + 1, 2uLL, 0x1000040BDFB0063uLL);
   v120 = 0;
   v121 = &v120;
   v122 = 0x2020000000;
@@ -55,20 +55,20 @@
   v107 = 0x3032000000;
   v108 = __Block_byref_object_copy__3;
   v109 = __Block_byref_object_dispose__3;
-  v110 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(v14, "length")}];
+  v110 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(fCopy, "length")}];
   v99 = 0;
   v100 = &v99;
   v101 = 0x3032000000;
   v102 = __Block_byref_object_copy__3;
   v103 = __Block_byref_object_dispose__3;
-  v55 = v9;
+  v55 = wrapCopy;
   v104 = objc_opt_new();
   v93 = 0;
   v94 = &v93;
   v95 = 0x3032000000;
   v96 = __Block_byref_object_copy__3;
   v97 = __Block_byref_object_dispose__3;
-  v98 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v14, "length")}];
+  v98 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(fCopy, "length")}];
   v89 = 0;
   v90 = &v89;
   v91 = 0x2020000000;
@@ -79,13 +79,13 @@
   aBlock[3] = &unk_279B74798;
   v80 = &v105;
   v81 = &v89;
-  v88 = a4;
+  locationCopy = location;
   v82 = &v129;
   v83 = v119;
   v84 = &v93;
   v85 = v128;
-  v51 = v15;
-  v79 = v15;
+  v51 = bookmarksCopy;
+  v79 = bookmarksCopy;
   v86 = &v99;
   v87 = &v115;
   v17 = _Block_copy(aBlock);
@@ -102,7 +102,7 @@
   v71[2] = __120__SCROBrailleUIBRFFile_initWithBRF_rawInitialLocation_rawBookmarks_reflowSize_shouldWordWrap_shouldStripPageIndicators___block_invoke_3;
   v71[3] = &unk_279B747E8;
   v73 = &v115;
-  v74 = a6;
+  sizeCopy = size;
   v20 = v19;
   v72 = v20;
   v21 = _Block_copy(v71);
@@ -123,7 +123,7 @@
   v60[3] = &unk_279B74838;
   v63 = &v115;
   v64 = &v120;
-  v65 = a6;
+  sizeCopy2 = size;
   v50 = v20;
   v61 = v50;
   v25 = v24;
@@ -133,15 +133,15 @@
   v57[1] = 3221225472;
   v57[2] = __120__SCROBrailleUIBRFFile_initWithBRF_rawInitialLocation_rawBookmarks_reflowSize_shouldWordWrap_shouldStripPageIndicators___block_invoke_6;
   v57[3] = &unk_279B74860;
-  v59 = a8;
-  v52 = v14;
-  v27 = v14;
+  indicatorsCopy = indicators;
+  v52 = fCopy;
+  v27 = fCopy;
   v58 = v27;
   v28 = _Block_copy(v57);
   v29 = 0;
   v54 = v26;
   v30 = v55;
-  if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+  if (size == 0x7FFFFFFFFFFFFFFFLL)
   {
     v30 = 0;
   }
@@ -168,7 +168,7 @@
       goto LABEL_43;
     }
 
-    if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+    if (size == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (v33 == 10)
       {
@@ -236,12 +236,12 @@ LABEL_27:
     v40 = initWithBRF_rawInitialLocation_rawBookmarks_reflowSize_shouldWordWrap_shouldStripPageIndicators__dictTable;
     v41 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v33];
     v42 = [v40 objectForKeyedSubscript:v41];
-    v43 = [v42 integerValue];
+    integerValue = [v42 integerValue];
 
     if (!v56)
     {
-      (*(v22 + 2))(v22, (v43 + 10240));
-      if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+      (*(v22 + 2))(v22, (integerValue + 10240));
+      if (size == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_48;
       }
@@ -249,11 +249,11 @@ LABEL_27:
       goto LABEL_47;
     }
 
-    if (v43)
+    if (integerValue)
     {
       if (v29)
       {
-        (*(v22 + 2))(v22, (v43 + 10240));
+        (*(v22 + 2))(v22, (integerValue + 10240));
         v44 = v23;
 LABEL_46:
         (v44[2])();
@@ -261,11 +261,11 @@ LABEL_46:
         goto LABEL_47;
       }
 
-      *(v125[3] + 2 * v121[3]) = v43 + 10240;
+      *(v125[3] + 2 * v121[3]) = integerValue + 10240;
       v46 = v121[3];
       v121[3] = v46 + 1;
       v44 = v53;
-      if (v46 >= a6)
+      if (v46 >= size)
       {
         goto LABEL_46;
       }
@@ -319,8 +319,8 @@ LABEL_49:
   _Block_object_dispose(&v124, 8);
   _Block_object_dispose(v128, 8);
   _Block_object_dispose(&v129, 8);
-  v15 = v51;
-  v14 = v52;
+  bookmarksCopy = v51;
+  fCopy = v52;
 LABEL_53:
 
   return v16;

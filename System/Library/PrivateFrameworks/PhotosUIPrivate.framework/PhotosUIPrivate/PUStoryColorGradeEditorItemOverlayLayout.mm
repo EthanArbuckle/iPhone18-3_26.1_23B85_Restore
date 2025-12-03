@@ -1,14 +1,14 @@
 @interface PUStoryColorGradeEditorItemOverlayLayout
 - (NSIndexSet)axSelectedSpriteIndexes;
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3;
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3;
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)objectReferenceForSpriteIndex:(unsigned int)a3;
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)stringAttributesAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index;
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)hitTestResultForSpriteIndex:(unsigned int)index;
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)objectReferenceForSpriteIndex:(unsigned int)index;
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)stringAttributesAtIndex:(unsigned int)index inLayout:(id)layout;
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)displayScaleDidChange;
 - (void)referenceSizeDidChange;
 - (void)update;
@@ -19,31 +19,31 @@
 
 - (void)update
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3893304();
 }
 
 - (void)referenceSizeDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B38934C0();
 }
 
 - (void)displayScaleDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3893560(0, type metadata accessor for StoryColorGradeEditorItemLayout.OverlayLayout, &selRef_displayScaleDidChange, sub_1B3893440);
 }
 
 - (void)viewEnvironmentDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3893630();
 }
 
-- (id)objectReferenceForSpriteIndex:(unsigned int)a3
+- (id)objectReferenceForSpriteIndex:(unsigned int)index
 {
-  sub_1B3893700(a3, v11);
+  sub_1B3893700(index, v11);
   v3 = v12;
   if (v12)
   {
@@ -65,43 +65,43 @@
   return v9;
 }
 
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   sub_1B3C9D1E8();
   swift_unknownObjectRelease();
-  LODWORD(a5) = sub_1B3893888(v10, a4, a5);
+  LODWORD(objectReference) = sub_1B3893888(v10, options, objectReference);
 
   __swift_destroy_boxed_opaque_existential_0Tm(v10);
-  return a5;
+  return objectReference;
 }
 
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3
+- (id)hitTestResultForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v4 = self;
+  v3 = *&index;
+  selfCopy = self;
   v5 = sub_1B38941D0(v3);
 
   return v5;
 }
 
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v6 = a4;
-  v7 = self;
-  sub_1B3894274(a3);
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_1B3894274(index);
 
   v8 = sub_1B3C9C5A8();
 
   return v8;
 }
 
-- (id)stringAttributesAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAttributesAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v6 = a4;
-  v7 = self;
-  v8 = sub_1B3894380(a3);
+  layoutCopy = layout;
+  selfCopy = self;
+  v8 = sub_1B3894380(index);
 
   if (v8)
   {
@@ -118,35 +118,35 @@
   return v9;
 }
 
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = sub_1B3894640(a3);
+  v4 = sub_1B3894640(index);
 
   return v4;
 }
 
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v6 = a4;
-  v7 = self;
-  v8 = sub_1B38946E0(a3);
+  layoutCopy = layout;
+  selfCopy = self;
+  v8 = sub_1B38946E0(index);
 
   return v8;
 }
 
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v6 = a4;
-  v7 = self;
-  v8 = sub_1B3894860(a3);
+  layoutCopy = layout;
+  selfCopy = self;
+  v8 = sub_1B3894860(index);
 
   return v8;
 }
 
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v4 = self;
+  v3 = *&index;
+  selfCopy = self;
   v5 = sub_1B3894B78(v3);
 
   return v5;
@@ -158,7 +158,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_1B3894E84(v6);
 
   v8 = sub_1B3C981E8();

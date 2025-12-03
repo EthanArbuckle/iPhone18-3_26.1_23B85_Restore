@@ -1,6 +1,6 @@
 @interface WFSetupServerState
 - (WFSetupServerState)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFSetupServerState
@@ -22,11 +22,11 @@
   return [(WFSetupServerState *)&v6 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  WFSetupServerState.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  WFSetupServerState.encode(with:)(coderCopy);
 }
 
 @end

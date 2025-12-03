@@ -11,12 +11,12 @@
     +[SSRecentResultsManager preheat];
   }
 
-  v5 = [MEMORY[0x1E696ABB0] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
   v2 = objc_alloc_init(MEMORY[0x1E696ADC8]);
   [v2 setMaxConcurrentOperationCount:1];
   [v2 setUnderlyingQueue:preheat_gCacheManagerQueue];
-  v3 = [v5 addObserverForName:@"com.apple.LaunchServices.applicationRegistered" object:0 suspensionBehavior:3 queue:v2 usingBlock:&__block_literal_global_21];
-  v4 = [v5 addObserverForName:@"com.apple.LaunchServices.applicationUnregistered" object:0 suspensionBehavior:3 queue:v2 usingBlock:&__block_literal_global_21];
+  v3 = [defaultCenter addObserverForName:@"com.apple.LaunchServices.applicationRegistered" object:0 suspensionBehavior:3 queue:v2 usingBlock:&__block_literal_global_21];
+  v4 = [defaultCenter addObserverForName:@"com.apple.LaunchServices.applicationUnregistered" object:0 suspensionBehavior:3 queue:v2 usingBlock:&__block_literal_global_21];
 }
 
 void __33__SSRecentResultsManager_preheat__block_invoke()

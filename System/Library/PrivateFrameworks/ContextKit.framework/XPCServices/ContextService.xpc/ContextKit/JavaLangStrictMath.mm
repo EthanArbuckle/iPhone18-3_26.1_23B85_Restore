@@ -1,94 +1,94 @@
 @interface JavaLangStrictMath
-+ (double)ceilWithDouble:(double)a3;
-+ (double)cosWithDouble:(double)a3;
-+ (double)floorWithDouble:(double)a3;
-+ (double)powWithDouble:(double)a3 withDouble:(double)a4;
++ (double)ceilWithDouble:(double)double;
++ (double)cosWithDouble:(double)double;
++ (double)floorWithDouble:(double)double;
++ (double)powWithDouble:(double)double withDouble:(double)withDouble;
 + (double)random;
-+ (double)rintWithDouble:(double)a3;
-+ (double)sinWithDouble:(double)a3;
-+ (double)sqrtWithDouble:(double)a3;
-+ (double)tanWithDouble:(double)a3;
-+ (int64_t)maxWithLong:(int64_t)a3 withLong:(int64_t)a4;
-+ (int64_t)minWithLong:(int64_t)a3 withLong:(int64_t)a4;
++ (double)rintWithDouble:(double)double;
++ (double)sinWithDouble:(double)double;
++ (double)sqrtWithDouble:(double)double;
++ (double)tanWithDouble:(double)double;
++ (int64_t)maxWithLong:(int64_t)long withLong:(int64_t)withLong;
++ (int64_t)minWithLong:(int64_t)long withLong:(int64_t)withLong;
 + (void)initialize;
 @end
 
 @implementation JavaLangStrictMath
 
-+ (double)ceilWithDouble:(double)a3
++ (double)ceilWithDouble:(double)double
 {
   if ((atomic_load_explicit(&JavaLangStrictMath__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100218228();
   }
 
-  return ceil(a3);
+  return ceil(double);
 }
 
-+ (double)cosWithDouble:(double)a3
++ (double)cosWithDouble:(double)double
 {
   if ((atomic_load_explicit(&JavaLangStrictMath__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100218228();
   }
 
-  return cos(a3);
+  return cos(double);
 }
 
-+ (double)floorWithDouble:(double)a3
++ (double)floorWithDouble:(double)double
 {
   if ((atomic_load_explicit(&JavaLangStrictMath__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100218228();
   }
 
-  return floor(a3);
+  return floor(double);
 }
 
-+ (int64_t)maxWithLong:(int64_t)a3 withLong:(int64_t)a4
++ (int64_t)maxWithLong:(int64_t)long withLong:(int64_t)withLong
 {
   if ((atomic_load_explicit(&JavaLangStrictMath__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100218228();
   }
 
-  if (a3 <= a4)
+  if (long <= withLong)
   {
-    return a4;
+    return withLong;
   }
 
   else
   {
-    return a3;
+    return long;
   }
 }
 
-+ (int64_t)minWithLong:(int64_t)a3 withLong:(int64_t)a4
++ (int64_t)minWithLong:(int64_t)long withLong:(int64_t)withLong
 {
   if ((atomic_load_explicit(&JavaLangStrictMath__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100218228();
   }
 
-  if (a3 >= a4)
+  if (long >= withLong)
   {
-    return a4;
+    return withLong;
   }
 
   else
   {
-    return a3;
+    return long;
   }
 }
 
-+ (double)powWithDouble:(double)a3 withDouble:(double)a4
++ (double)powWithDouble:(double)double withDouble:(double)withDouble
 {
   if ((atomic_load_explicit(&JavaLangStrictMath__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100218228();
   }
 
-  return pow(a3, a4);
+  return pow(double, withDouble);
 }
 
 + (double)random
@@ -105,49 +105,49 @@
   return JavaLangMath_random();
 }
 
-+ (double)rintWithDouble:(double)a3
++ (double)rintWithDouble:(double)double
 {
   if ((atomic_load_explicit(&JavaLangStrictMath__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100218228();
   }
 
-  return rint(a3);
+  return rint(double);
 }
 
-+ (double)sinWithDouble:(double)a3
++ (double)sinWithDouble:(double)double
 {
   if ((atomic_load_explicit(&JavaLangStrictMath__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100218228();
   }
 
-  return sin(a3);
+  return sin(double);
 }
 
-+ (double)sqrtWithDouble:(double)a3
++ (double)sqrtWithDouble:(double)double
 {
   if ((atomic_load_explicit(&JavaLangStrictMath__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100218228();
   }
 
-  return sqrt(a3);
+  return sqrt(double);
 }
 
-+ (double)tanWithDouble:(double)a3
++ (double)tanWithDouble:(double)double
 {
   if ((atomic_load_explicit(&JavaLangStrictMath__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100218228();
   }
 
-  return tan(a3);
+  return tan(double);
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3[0] = xmmword_100315420;
     v3[1] = unk_100315430;

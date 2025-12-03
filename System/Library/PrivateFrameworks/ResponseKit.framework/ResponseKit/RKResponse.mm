@@ -1,5 +1,5 @@
 @interface RKResponse
-- (RKResponse)initWithString:(id)a3 attributes:(id)a4 category:(id)a5;
+- (RKResponse)initWithString:(id)string attributes:(id)attributes category:(id)category;
 @end
 
 @implementation RKResponse
@@ -47,20 +47,20 @@ void __19___RKResponse_type__block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (RKResponse)initWithString:(id)a3 attributes:(id)a4 category:(id)a5
+- (RKResponse)initWithString:(id)string attributes:(id)attributes category:(id)category
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stringCopy = string;
+  attributesCopy = attributes;
+  categoryCopy = category;
   v15.receiver = self;
   v15.super_class = RKResponse;
   v12 = [(RKResponse *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_string, a3);
-    objc_storeStrong(&v13->_attributes, a4);
-    objc_storeStrong(&v13->_category, a5);
+    objc_storeStrong(&v12->_string, string);
+    objc_storeStrong(&v13->_attributes, attributes);
+    objc_storeStrong(&v13->_category, category);
   }
 
   return v13;

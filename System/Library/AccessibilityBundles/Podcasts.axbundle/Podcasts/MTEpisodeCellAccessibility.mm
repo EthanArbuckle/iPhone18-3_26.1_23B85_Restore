@@ -1,5 +1,5 @@
 @interface MTEpisodeCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_axLockup;
 - (id)_privateAccessibilityCustomActions;
@@ -10,14 +10,14 @@
 
 @implementation MTEpisodeCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTEpisodeCell" hasInstanceMethod:@"setExpanded:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"_accessibilityClearChildren" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MTEpisodeCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"MTEpisodeCell" hasInstanceMethod:@"episodeLockup" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTEpisodeCell" hasInstanceMethod:@"setExpanded:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"_accessibilityClearChildren" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MTEpisodeCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"MTEpisodeCell" hasInstanceMethod:@"episodeLockup" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
 }
 
 - (id)_axLockup
@@ -34,56 +34,56 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(MTEpisodeCellAccessibility *)self _axLockup];
+  _axLockup = [(MTEpisodeCellAccessibility *)self _axLockup];
 
-  if (v3)
+  if (_axLockup)
   {
-    v4 = [(MTEpisodeCellAccessibility *)self _axLockup];
-    v5 = [v4 accessibilityLabel];
+    _axLockup2 = [(MTEpisodeCellAccessibility *)self _axLockup];
+    accessibilityLabel = [_axLockup2 accessibilityLabel];
   }
 
   else
   {
-    v5 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [(MTEpisodeCellAccessibility *)self _axLockup];
+  _axLockup = [(MTEpisodeCellAccessibility *)self _axLockup];
 
-  if (v3)
+  if (_axLockup)
   {
-    v4 = [(MTEpisodeCellAccessibility *)self _axLockup];
-    v5 = [v4 _accessibilitySupplementaryFooterViews];
+    _axLockup2 = [(MTEpisodeCellAccessibility *)self _axLockup];
+    _accessibilitySupplementaryFooterViews = [_axLockup2 _accessibilitySupplementaryFooterViews];
   }
 
   else
   {
-    v5 = 0;
+    _accessibilitySupplementaryFooterViews = 0;
   }
 
-  return v5;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 - (id)_privateAccessibilityCustomActions
 {
-  v3 = [(MTEpisodeCellAccessibility *)self _axLockup];
+  _axLockup = [(MTEpisodeCellAccessibility *)self _axLockup];
 
-  if (v3)
+  if (_axLockup)
   {
-    v4 = [(MTEpisodeCellAccessibility *)self _axLockup];
-    v5 = [v4 _privateAccessibilityCustomActions];
+    _axLockup2 = [(MTEpisodeCellAccessibility *)self _axLockup];
+    _privateAccessibilityCustomActions = [_axLockup2 _privateAccessibilityCustomActions];
   }
 
   else
   {
-    v5 = 0;
+    _privateAccessibilityCustomActions = 0;
   }
 
-  return v5;
+  return _privateAccessibilityCustomActions;
 }
 
 - (unint64_t)accessibilityTraits
@@ -92,10 +92,10 @@
   v8.super_class = MTEpisodeCellAccessibility;
   v3 = *MEMORY[0x29EDC7F70] | [(MTEpisodeCellAccessibility *)&v8 accessibilityTraits]| *MEMORY[0x29EDC7FC8];
   v4 = [(MTEpisodeCellAccessibility *)self safeValueForKey:@"isSelected"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = *MEMORY[0x29EDC7FC0];
-  if (!v5)
+  if (!bOOLValue)
   {
     v6 = 0;
   }
@@ -105,20 +105,20 @@
 
 - (id)automationElements
 {
-  v3 = [(MTEpisodeCellAccessibility *)self _axLockup];
+  _axLockup = [(MTEpisodeCellAccessibility *)self _axLockup];
 
-  if (v3)
+  if (_axLockup)
   {
-    v4 = [(MTEpisodeCellAccessibility *)self _axLockup];
-    v5 = [v4 automationElements];
+    _axLockup2 = [(MTEpisodeCellAccessibility *)self _axLockup];
+    automationElements = [_axLockup2 automationElements];
   }
 
   else
   {
-    v5 = 0;
+    automationElements = 0;
   }
 
-  return v5;
+  return automationElements;
 }
 
 @end

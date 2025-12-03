@@ -1,34 +1,34 @@
 @interface ASCAppOfferStateMachine
 - (ASCAppOfferStateCenter)stateCenter;
-- (ASCAppOfferStateMachine)initWithOffer:(id)a3 stateCenter:(id)a4;
-- (id)performActionWithActivity:(id)a3 inContext:(id)a4;
-- (void)addDelegate:(id)a3;
+- (ASCAppOfferStateMachine)initWithOffer:(id)offer stateCenter:(id)center;
+- (id)performActionWithActivity:(id)activity inContext:(id)context;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)enumerateDelegatesUsingBlock:(id)a3;
+- (void)enumerateDelegatesUsingBlock:(id)block;
 - (void)installTemporaryWaitingState;
-- (void)invalidateTemporaryStateForcingUpdate:(BOOL)a3;
-- (void)offerStateDidChange:(id)a3 withMetadata:(id)a4 flags:(int64_t)a5;
-- (void)offerStatusTextDidChange:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)viewAppForAppDistributionOffer:(id)a3;
+- (void)invalidateTemporaryStateForcingUpdate:(BOOL)update;
+- (void)offerStateDidChange:(id)change withMetadata:(id)metadata flags:(int64_t)flags;
+- (void)offerStatusTextDidChange:(id)change;
+- (void)removeDelegate:(id)delegate;
+- (void)viewAppForAppDistributionOffer:(id)offer;
 @end
 
 @implementation ASCAppOfferStateMachine
 
-- (ASCAppOfferStateMachine)initWithOffer:(id)a3 stateCenter:(id)a4
+- (ASCAppOfferStateMachine)initWithOffer:(id)offer stateCenter:(id)center
 {
-  v6 = a3;
-  v7 = a4;
+  offerCopy = offer;
+  centerCopy = center;
   v14.receiver = self;
   v14.super_class = ASCAppOfferStateMachine;
   v8 = [(ASCAppOfferStateMachine *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copyWithZone:0];
+    v9 = [offerCopy copyWithZone:0];
     offer = v8->_offer;
     v8->_offer = v9;
 
-    objc_storeWeak(&v8->_stateCenter, v7);
+    objc_storeWeak(&v8->_stateCenter, centerCopy);
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     delegates = v8->_delegates;
     v8->_delegates = v11;
@@ -42,9 +42,9 @@
   v13 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v3 = [(ASCAppOfferStateMachine *)self stateCenter];
-    v4 = [(ASCAppOfferStateMachine *)self offer];
-    [v3 stopObservingStateForOffer:v4];
+    stateCenter = [(ASCAppOfferStateMachine *)self stateCenter];
+    offer = [(ASCAppOfferStateMachine *)self offer];
+    [stateCenter stopObservingStateForOffer:offer];
   }
 
   else
@@ -52,20 +52,20 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21571A000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%@ is being destroyed on background thread", buf, 0xCu);
     }
 
-    v5 = [(ASCAppOfferStateMachine *)self stateCenter];
-    v6 = [(ASCAppOfferStateMachine *)self offer];
+    stateCenter2 = [(ASCAppOfferStateMachine *)self stateCenter];
+    offer2 = [(ASCAppOfferStateMachine *)self offer];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__ASCAppOfferStateMachine_dealloc__block_invoke;
     block[3] = &unk_2781CC1F8;
-    v9 = v5;
-    v10 = v6;
-    v4 = v6;
-    v3 = v5;
+    v9 = stateCenter2;
+    v10 = offer2;
+    offer = offer2;
+    stateCenter = stateCenter2;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -74,37 +74,37 @@
   [(ASCAppOfferStateMachine *)&v7 dealloc];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [MEMORY[0x277CCAE60] valueWithWeakObject:v4];
-  v6 = [(ASCAppOfferStateMachine *)self delegates];
-  v7 = [v6 containsObject:v5];
+  v5 = [MEMORY[0x277CCAE60] valueWithWeakObject:delegateCopy];
+  delegates = [(ASCAppOfferStateMachine *)self delegates];
+  v7 = [delegates containsObject:v5];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(ASCAppOfferStateMachine *)self delegates];
-    [v8 addObject:v5];
+    delegates2 = [(ASCAppOfferStateMachine *)self delegates];
+    [delegates2 addObject:v5];
 
-    v9 = [(ASCAppOfferStateMachine *)self mostRecentState];
+    mostRecentState = [(ASCAppOfferStateMachine *)self mostRecentState];
 
-    if (v9)
+    if (mostRecentState)
     {
-      v10 = [(ASCAppOfferStateMachine *)self mostRecentState];
-      v11 = [v10 state];
-      v12 = [(ASCAppOfferStateMachine *)self mostRecentState];
-      v13 = [v12 metadata];
-      v14 = [(ASCAppOfferStateMachine *)self mostRecentState];
-      [v4 offerStateDidChange:v11 withMetadata:v13 isActionable:{objc_msgSend(v14, "isActionable")}];
+      mostRecentState2 = [(ASCAppOfferStateMachine *)self mostRecentState];
+      state = [mostRecentState2 state];
+      mostRecentState3 = [(ASCAppOfferStateMachine *)self mostRecentState];
+      metadata = [mostRecentState3 metadata];
+      mostRecentState4 = [(ASCAppOfferStateMachine *)self mostRecentState];
+      [delegateCopy offerStateDidChange:state withMetadata:metadata isActionable:{objc_msgSend(mostRecentState4, "isActionable")}];
     }
 
-    v15 = [(ASCAppOfferStateMachine *)self mostRecentStatusText];
+    mostRecentStatusText = [(ASCAppOfferStateMachine *)self mostRecentStatusText];
 
-    if (v15)
+    if (mostRecentStatusText)
     {
-      v16 = [(ASCAppOfferStateMachine *)self mostRecentStatusText];
-      [v4 offerStatusTextDidChange:v16];
+      mostRecentStatusText2 = [(ASCAppOfferStateMachine *)self mostRecentStatusText];
+      [delegateCopy offerStatusTextDidChange:mostRecentStatusText2];
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -114,18 +114,18 @@
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [MEMORY[0x277CCAE60] valueWithWeakObject:v4];
-  v6 = [(ASCAppOfferStateMachine *)self delegates];
-  v7 = [v6 indexOfObject:v5];
+  v5 = [MEMORY[0x277CCAE60] valueWithWeakObject:delegateCopy];
+  delegates = [(ASCAppOfferStateMachine *)self delegates];
+  v7 = [delegates indexOfObject:v5];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(ASCAppOfferStateMachine *)self delegates];
-    [v8 removeObjectAtIndex:v7];
+    delegates2 = [(ASCAppOfferStateMachine *)self delegates];
+    [delegates2 removeObjectAtIndex:v7];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -134,20 +134,20 @@
   }
 }
 
-- (void)enumerateDelegatesUsingBlock:(id)a3
+- (void)enumerateDelegatesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v6 = [(ASCAppOfferStateMachine *)self delegates];
+  delegates = [(ASCAppOfferStateMachine *)self delegates];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __56__ASCAppOfferStateMachine_enumerateDelegatesUsingBlock___block_invoke;
   v13 = &unk_2781CC220;
   v14 = v5;
-  v15 = v4;
-  v7 = v4;
+  v15 = blockCopy;
+  v7 = blockCopy;
   v8 = v5;
-  [v6 enumerateObjectsUsingBlock:&v10];
+  [delegates enumerateObjectsUsingBlock:&v10];
 
   v9 = [(ASCAppOfferStateMachine *)self delegates:v10];
   [v9 removeObjectsAtIndexes:v8];
@@ -167,30 +167,30 @@ void __56__ASCAppOfferStateMachine_enumerateDelegatesUsingBlock___block_invoke(u
   }
 }
 
-- (void)offerStateDidChange:(id)a3 withMetadata:(id)a4 flags:(int64_t)a5
+- (void)offerStateDidChange:(id)change withMetadata:(id)metadata flags:(int64_t)flags
 {
-  v8 = a3;
-  v9 = a4;
+  changeCopy = change;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v10 = [(ASCAppOfferStateMachine *)self mostRecentState];
-  v11 = [(ASCAppOfferStateMachine *)self overrideState];
-  if (v11)
+  mostRecentState = [(ASCAppOfferStateMachine *)self mostRecentState];
+  overrideState = [(ASCAppOfferStateMachine *)self overrideState];
+  if (overrideState)
   {
-    v12 = v11;
-    v13 = [(ASCAppOfferStateMachine *)self overrideState];
-    v14 = [v13 state];
-    if ([v8 isEqualToString:v14])
+    v12 = overrideState;
+    overrideState2 = [(ASCAppOfferStateMachine *)self overrideState];
+    state = [overrideState2 state];
+    if ([changeCopy isEqualToString:state])
     {
-      v25 = v10;
-      v15 = [(ASCAppOfferStateMachine *)self overrideState];
-      v16 = [v15 metadata];
-      if ([v9 isEqual:v16])
+      v25 = mostRecentState;
+      overrideState3 = [(ASCAppOfferStateMachine *)self overrideState];
+      metadata = [overrideState3 metadata];
+      if ([metadataCopy isEqual:metadata])
       {
-        v17 = [(ASCAppOfferStateMachine *)self overrideState];
-        v24 = [v17 flags];
+        overrideState4 = [(ASCAppOfferStateMachine *)self overrideState];
+        flags = [overrideState4 flags];
 
-        v10 = v25;
-        if (v24 == a5)
+        mostRecentState = v25;
+        if (flags == flags)
         {
           goto LABEL_9;
         }
@@ -198,22 +198,22 @@ void __56__ASCAppOfferStateMachine_enumerateDelegatesUsingBlock___block_invoke(u
         goto LABEL_8;
       }
 
-      v10 = v25;
+      mostRecentState = v25;
     }
   }
 
 LABEL_8:
-  v18 = [[ASCAppOfferSavedState alloc] initWithState:v8 metadata:v9 flags:a5];
+  v18 = [[ASCAppOfferSavedState alloc] initWithState:changeCopy metadata:metadataCopy flags:flags];
   [(ASCAppOfferStateMachine *)self setMostRecentState:v18];
 
 LABEL_9:
-  v19 = [(ASCAppOfferStateMachine *)self mostRecentState];
-  v20 = [v19 isLoadingFullState];
+  mostRecentState2 = [(ASCAppOfferStateMachine *)self mostRecentState];
+  isLoadingFullState = [mostRecentState2 isLoadingFullState];
 
-  if (!v20 || !v10)
+  if (!isLoadingFullState || !mostRecentState)
   {
-    v21 = [(ASCAppOfferStateMachine *)self overrideState];
-    if (v21)
+    overrideState5 = [(ASCAppOfferStateMachine *)self overrideState];
+    if (overrideState5)
     {
       [(ASCAppOfferStateMachine *)self overrideState];
     }
@@ -243,50 +243,50 @@ void __66__ASCAppOfferStateMachine_offerStateDidChange_withMetadata_flags___bloc
   [v4 offerStateDidChange:v6 withMetadata:v5 isActionable:{objc_msgSend(*(a1 + 32), "isActionable")}];
 }
 
-- (void)offerStatusTextDidChange:(id)a3
+- (void)offerStatusTextDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(ASCAppOfferStateMachine *)self setMostRecentStatusText:v4];
+  [(ASCAppOfferStateMachine *)self setMostRecentStatusText:changeCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__ASCAppOfferStateMachine_offerStatusTextDidChange___block_invoke;
   v6[3] = &unk_2781CC248;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   [(ASCAppOfferStateMachine *)self enumerateDelegatesUsingBlock:v6];
 }
 
-- (id)performActionWithActivity:(id)a3 inContext:(id)a4
+- (id)performActionWithActivity:(id)activity inContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASCAppOfferStateMachine *)self stateCenter];
-  v9 = [(ASCAppOfferStateMachine *)self offer];
-  v10 = [v8 performActionOfOffer:v9 withActivity:v7 inContext:v6];
+  contextCopy = context;
+  activityCopy = activity;
+  stateCenter = [(ASCAppOfferStateMachine *)self stateCenter];
+  offer = [(ASCAppOfferStateMachine *)self offer];
+  v10 = [stateCenter performActionOfOffer:offer withActivity:activityCopy inContext:contextCopy];
 
   return v10;
 }
 
-- (void)viewAppForAppDistributionOffer:(id)a3
+- (void)viewAppForAppDistributionOffer:(id)offer
 {
-  v4 = a3;
-  v5 = [(ASCAppOfferStateMachine *)self stateCenter];
-  [v5 viewAppForAppDistributionOffer:v4];
+  offerCopy = offer;
+  stateCenter = [(ASCAppOfferStateMachine *)self stateCenter];
+  [stateCenter viewAppForAppDistributionOffer:offerCopy];
 }
 
 - (void)installTemporaryWaitingState
 {
-  v12 = [(ASCAppOfferStateMachine *)self mostRecentState];
-  v3 = [v12 state];
-  if ([v3 isEqualToString:@"openable"])
+  mostRecentState = [(ASCAppOfferStateMachine *)self mostRecentState];
+  state = [mostRecentState state];
+  if ([state isEqualToString:@"openable"])
   {
     goto LABEL_6;
   }
 
-  v4 = [(ASCAppOfferStateMachine *)self mostRecentState];
-  v5 = [v4 state];
-  if ([v5 isEqualToString:@"waiting"])
+  mostRecentState2 = [(ASCAppOfferStateMachine *)self mostRecentState];
+  state2 = [mostRecentState2 state];
+  if ([state2 isEqualToString:@"waiting"])
   {
 LABEL_5:
 
@@ -294,47 +294,47 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(ASCAppOfferStateMachine *)self mostRecentState];
-  v7 = [v6 state];
-  if ([v7 isEqualToString:@"installing"])
+  mostRecentState3 = [(ASCAppOfferStateMachine *)self mostRecentState];
+  state3 = [mostRecentState3 state];
+  if ([state3 isEqualToString:@"installing"])
   {
 
     goto LABEL_5;
   }
 
-  v8 = [(ASCAppOfferStateMachine *)self mostRecentState];
-  v9 = [v8 state];
-  v10 = [v9 isEqualToString:@"installed"];
+  mostRecentState4 = [(ASCAppOfferStateMachine *)self mostRecentState];
+  state4 = [mostRecentState4 state];
+  v10 = [state4 isEqualToString:@"installed"];
 
   if (v10)
   {
     return;
   }
 
-  v12 = +[ASCOfferMetadata indeterminateProgressMetadata];
-  v11 = [[ASCAppOfferSavedState alloc] initWithState:@"waiting" metadata:v12 flags:0];
+  mostRecentState = +[ASCOfferMetadata indeterminateProgressMetadata];
+  v11 = [[ASCAppOfferSavedState alloc] initWithState:@"waiting" metadata:mostRecentState flags:0];
   [(ASCAppOfferStateMachine *)self setOverrideState:v11];
 
-  [(ASCAppOfferStateMachine *)self offerStateDidChange:@"waiting" withMetadata:v12 flags:0];
+  [(ASCAppOfferStateMachine *)self offerStateDidChange:@"waiting" withMetadata:mostRecentState flags:0];
 LABEL_7:
 }
 
-- (void)invalidateTemporaryStateForcingUpdate:(BOOL)a3
+- (void)invalidateTemporaryStateForcingUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   [(ASCAppOfferStateMachine *)self setOverrideState:0];
-  if (v3)
+  if (updateCopy)
   {
-    v5 = [(ASCAppOfferStateMachine *)self mostRecentState];
+    mostRecentState = [(ASCAppOfferStateMachine *)self mostRecentState];
 
-    if (v5)
+    if (mostRecentState)
     {
-      v10 = [(ASCAppOfferStateMachine *)self mostRecentState];
-      v6 = [v10 state];
-      v7 = [(ASCAppOfferStateMachine *)self mostRecentState];
-      v8 = [v7 metadata];
-      v9 = [(ASCAppOfferStateMachine *)self mostRecentState];
-      -[ASCAppOfferStateMachine offerStateDidChange:withMetadata:flags:](self, "offerStateDidChange:withMetadata:flags:", v6, v8, [v9 flags]);
+      mostRecentState2 = [(ASCAppOfferStateMachine *)self mostRecentState];
+      state = [mostRecentState2 state];
+      mostRecentState3 = [(ASCAppOfferStateMachine *)self mostRecentState];
+      metadata = [mostRecentState3 metadata];
+      mostRecentState4 = [(ASCAppOfferStateMachine *)self mostRecentState];
+      -[ASCAppOfferStateMachine offerStateDidChange:withMetadata:flags:](self, "offerStateDidChange:withMetadata:flags:", state, metadata, [mostRecentState4 flags]);
     }
   }
 }

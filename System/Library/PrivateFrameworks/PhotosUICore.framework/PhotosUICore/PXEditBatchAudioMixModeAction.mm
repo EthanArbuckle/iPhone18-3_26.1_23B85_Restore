@@ -5,8 +5,8 @@
 - (id)localizedProgressToastRedoTitle;
 - (id)localizedProgressToastSuccessTitle;
 - (id)localizedProgressToastUndoTitle;
-- (void)_syncSetAudioMixModeDidFinishWithResults:(id)a3 didCancel:(BOOL)a4 completionHandler:(id)a5;
-- (void)performAction:(id)a3;
+- (void)_syncSetAudioMixModeDidFinishWithResults:(id)results didCancel:(BOOL)cancel completionHandler:(id)handler;
+- (void)performAction:(id)action;
 @end
 
 @implementation PXEditBatchAudioMixModeAction
@@ -15,8 +15,8 @@
 {
   v3 = PXLocalizedStringFromTable(@"PhotoEditAudioMixRedoTitle", @"SpatialAudio");
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(PXEditBatchAudioMixModeAction *)self audioMixModeTitle];
-  v6 = [v4 stringWithFormat:@"%@ %@", v3, v5];
+  audioMixModeTitle = [(PXEditBatchAudioMixModeAction *)self audioMixModeTitle];
+  v6 = [v4 stringWithFormat:@"%@ %@", v3, audioMixModeTitle];
 
   return v6;
 }
@@ -25,8 +25,8 @@
 {
   v3 = PXLocalizedStringFromTable(@"PhotoEditAudioMixUndoTitle", @"SpatialAudio");
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(PXEditBatchAudioMixModeAction *)self audioMixModeTitle];
-  v6 = [v4 stringWithFormat:@"%@ %@", v3, v5];
+  audioMixModeTitle = [(PXEditBatchAudioMixModeAction *)self audioMixModeTitle];
+  v6 = [v4 stringWithFormat:@"%@ %@", v3, audioMixModeTitle];
 
   return v6;
 }
@@ -35,8 +35,8 @@
 {
   v3 = PXLocalizedStringFromTable(@"PhotoEditAudioMixSuccessTitle", @"SpatialAudio");
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(PXEditBatchAudioMixModeAction *)self audioMixModeTitle];
-  v6 = [v4 stringWithFormat:@"%@ %@", v3, v5];
+  audioMixModeTitle = [(PXEditBatchAudioMixModeAction *)self audioMixModeTitle];
+  v6 = [v4 stringWithFormat:@"%@ %@", v3, audioMixModeTitle];
 
   return v6;
 }
@@ -45,8 +45,8 @@
 {
   v3 = PXLocalizedStringFromTable(@"PhotoEditAudioMixProgressTitle", @"SpatialAudio");
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(PXEditBatchAudioMixModeAction *)self audioMixModeTitle];
-  v6 = [v4 stringWithFormat:@"%@ %@", v3, v5];
+  audioMixModeTitle = [(PXEditBatchAudioMixModeAction *)self audioMixModeTitle];
+  v6 = [v4 stringWithFormat:@"%@ %@", v3, audioMixModeTitle];
 
   return v6;
 }
@@ -55,8 +55,8 @@
 {
   v3 = PXLocalizedStringFromTable(@"PhotoEditAudioMixActionName", @"SpatialAudio");
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(PXEditBatchAudioMixModeAction *)self audioMixModeTitle];
-  v6 = [v4 stringWithFormat:@"%@ %@", v3, v5];
+  audioMixModeTitle = [(PXEditBatchAudioMixModeAction *)self audioMixModeTitle];
+  v6 = [v4 stringWithFormat:@"%@ %@", v3, audioMixModeTitle];
 
   return v6;
 }
@@ -64,40 +64,40 @@
 - (id)audioMixModeTitle
 {
   v2 = MEMORY[0x1E69C4318];
-  v3 = [(PXEditBatchAudioMixModeAction *)self audioMixMode];
-  v4 = [v2 audioMixModeForRenderingStyle:v3];
+  audioMixMode = [(PXEditBatchAudioMixModeAction *)self audioMixMode];
+  v4 = [v2 audioMixModeForRenderingStyle:audioMixMode];
 
-  v5 = [v4 localizedTitle];
+  localizedTitle = [v4 localizedTitle];
 
-  return v5;
+  return localizedTitle;
 }
 
-- (void)_syncSetAudioMixModeDidFinishWithResults:(id)a3 didCancel:(BOOL)a4 completionHandler:(id)a5
+- (void)_syncSetAudioMixModeDidFinishWithResults:(id)results didCancel:(BOOL)cancel completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PXEditBatchAction *)self asyncAssets];
-  v11 = v10;
-  if (a4 || ![v10 count])
+  resultsCopy = results;
+  handlerCopy = handler;
+  asyncAssets = [(PXEditBatchAction *)self asyncAssets];
+  v11 = asyncAssets;
+  if (cancel || ![asyncAssets count])
   {
-    [(PXEditBatchAction *)self saveResults:v8 completion:v9];
+    [(PXEditBatchAction *)self saveResults:resultsCopy completion:handlerCopy];
   }
 
   else
   {
     objc_initWeak(&location, self);
     -[PXEditBatchAction willBeginActionIsAsync:itemCount:](self, "willBeginActionIsAsync:itemCount:", 1, [v11 count]);
-    v12 = [(PXEditBatchAction *)self manager];
-    v13 = [(PXEditBatchAudioMixModeAction *)self audioMixMode];
-    v14 = [(PXEditBatchAction *)self asyncProgress];
+    manager = [(PXEditBatchAction *)self manager];
+    audioMixMode = [(PXEditBatchAudioMixModeAction *)self audioMixMode];
+    asyncProgress = [(PXEditBatchAction *)self asyncProgress];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __102__PXEditBatchAudioMixModeAction__syncSetAudioMixModeDidFinishWithResults_didCancel_completionHandler___block_invoke;
     v15[3] = &unk_1E7742CE8;
-    v16 = v8;
+    v16 = resultsCopy;
     objc_copyWeak(&v18, &location);
-    v17 = v9;
-    [v12 setAudioMixModeOnAssets:v11 audioMixMode:v13 async:1 progress:v14 completion:v15];
+    v17 = handlerCopy;
+    [manager setAudioMixModeOnAssets:v11 audioMixMode:audioMixMode async:1 progress:asyncProgress completion:v15];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -115,21 +115,21 @@ void __102__PXEditBatchAudioMixModeAction__syncSetAudioMixModeDidFinishWithResul
   [WeakRetained saveResults:v6 completion:*(a1 + 40)];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXEditBatchAction *)self assets];
-  if ([v5 count])
+  actionCopy = action;
+  assets = [(PXEditBatchAction *)self assets];
+  if ([assets count])
   {
-    v6 = [(PXEditBatchAction *)self manager];
-    if ([v6 isBusyWithBatchAction])
+    manager = [(PXEditBatchAction *)self manager];
+    if ([manager isBusyWithBatchAction])
     {
       v7 = MEMORY[0x1E696ABC0];
       v20 = *MEMORY[0x1E696A278];
       v21 = @"Could not complete PXEditBatchAudioMixModeAction: Edit manager is busy.";
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-      v9 = [v7 errorWithDomain:@"PXEditBatchActionErrorDomain" code:1 userInfo:v8];
+      syncAssets = [v7 errorWithDomain:@"PXEditBatchActionErrorDomain" code:1 userInfo:v8];
 
       v10 = PLUIGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -138,23 +138,23 @@ void __102__PXEditBatchAudioMixModeAction__syncSetAudioMixModeDidFinishWithResul
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "Could not complete PXEditBatchAudioMixModeAction: Edit manager is busy.", &buf, 2u);
       }
 
-      v4[2](v4, 0, v9);
+      actionCopy[2](actionCopy, 0, syncAssets);
     }
 
     else
     {
-      v9 = [(PXEditBatchAction *)self syncAssets];
-      -[PXEditBatchAction willBeginActionIsAsync:itemCount:](self, "willBeginActionIsAsync:itemCount:", 0, [v9 count]);
+      syncAssets = [(PXEditBatchAction *)self syncAssets];
+      -[PXEditBatchAction willBeginActionIsAsync:itemCount:](self, "willBeginActionIsAsync:itemCount:", 0, [syncAssets count]);
       objc_initWeak(&buf, self);
-      v14 = [(PXEditBatchAudioMixModeAction *)self audioMixMode];
-      v15 = [(PXEditBatchAction *)self syncProgress];
+      audioMixMode = [(PXEditBatchAudioMixModeAction *)self audioMixMode];
+      syncProgress = [(PXEditBatchAction *)self syncProgress];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __47__PXEditBatchAudioMixModeAction_performAction___block_invoke;
       v16[3] = &unk_1E7742CC0;
       objc_copyWeak(&v18, &buf);
-      v17 = v4;
-      [v6 setAudioMixModeOnAssets:v9 audioMixMode:v14 async:0 progress:v15 completion:v16];
+      v17 = actionCopy;
+      [manager setAudioMixModeOnAssets:syncAssets audioMixMode:audioMixMode async:0 progress:syncProgress completion:v16];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&buf);
@@ -167,7 +167,7 @@ void __102__PXEditBatchAudioMixModeAction__syncSetAudioMixModeDidFinishWithResul
     v22 = *MEMORY[0x1E696A278];
     v23[0] = @"Could not complete PXEditBatchAudioMixModeAction: No asset found";
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-    v6 = [v11 errorWithDomain:@"PXEditBatchActionErrorDomain" code:2 userInfo:v12];
+    manager = [v11 errorWithDomain:@"PXEditBatchActionErrorDomain" code:2 userInfo:v12];
 
     v13 = PLUIGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -176,7 +176,7 @@ void __102__PXEditBatchAudioMixModeAction__syncSetAudioMixModeDidFinishWithResul
       _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_ERROR, "Could not complete PXEditBatchAudioMixModeAction: No asset found", &buf, 2u);
     }
 
-    v4[2](v4, 0, v6);
+    actionCopy[2](actionCopy, 0, manager);
   }
 }
 

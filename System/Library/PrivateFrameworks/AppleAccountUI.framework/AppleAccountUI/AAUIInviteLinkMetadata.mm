@@ -1,20 +1,20 @@
 @interface AAUIInviteLinkMetadata
-- (AAUIInviteLinkMetadata)initWithContext:(id)a3;
+- (AAUIInviteLinkMetadata)initWithContext:(id)context;
 - (LPLinkMetadata)bubbleMetadata;
 @end
 
 @implementation AAUIInviteLinkMetadata
 
-- (AAUIInviteLinkMetadata)initWithContext:(id)a3
+- (AAUIInviteLinkMetadata)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = AAUIInviteLinkMetadata;
   v6 = [(AAUIInviteLinkMetadata *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -23,47 +23,47 @@
 - (LPLinkMetadata)bubbleMetadata
 {
   v3 = objc_alloc_init(MEMORY[0x1E696ECA0]);
-  v4 = [(AAUIInviteLinkMetadata *)self context];
-  v5 = [v4 title];
-  [v3 setTitle:v5];
+  context = [(AAUIInviteLinkMetadata *)self context];
+  title = [context title];
+  [v3 setTitle:title];
 
-  v6 = [(AAUIInviteLinkMetadata *)self image];
-  [v3 setImage:v6];
+  image = [(AAUIInviteLinkMetadata *)self image];
+  [v3 setImage:image];
 
-  v7 = [(AAUIInviteLinkMetadata *)self context];
-  v8 = [v7 action];
-  [v3 setSummary:v8];
+  context2 = [(AAUIInviteLinkMetadata *)self context];
+  action = [context2 action];
+  [v3 setSummary:action];
 
-  v9 = [(AAUIInviteLinkMetadata *)self context];
-  v10 = [v9 inviteURL];
-  [v3 setOriginalURL:v10];
+  context3 = [(AAUIInviteLinkMetadata *)self context];
+  inviteURL = [context3 inviteURL];
+  [v3 setOriginalURL:inviteURL];
 
-  v11 = [(AAUIInviteLinkMetadata *)self context];
-  v12 = [v11 inviteURL];
-  [v3 setURL:v12];
+  context4 = [(AAUIInviteLinkMetadata *)self context];
+  inviteURL2 = [context4 inviteURL];
+  [v3 setURL:inviteURL2];
 
   v13 = objc_alloc_init(MEMORY[0x1E696ED28]);
-  v14 = [(AAUIInviteLinkMetadata *)self context];
-  v15 = [v14 title];
-  [v13 setTitle:v15];
+  context5 = [(AAUIInviteLinkMetadata *)self context];
+  title2 = [context5 title];
+  [v13 setTitle:title2];
 
-  v16 = [(AAUIInviteLinkMetadata *)self context];
-  v17 = [v16 subtitle];
-  [v13 setSubtitle:v17];
+  context6 = [(AAUIInviteLinkMetadata *)self context];
+  subtitle = [context6 subtitle];
+  [v13 setSubtitle:subtitle];
 
-  v18 = [(AAUIInviteLinkMetadata *)self context];
-  v19 = [v18 action];
-  [v13 setAction:v19];
+  context7 = [(AAUIInviteLinkMetadata *)self context];
+  action2 = [context7 action];
+  [v13 setAction:action2];
 
-  v20 = [v3 image];
-  [v13 setImage:v20];
+  image2 = [v3 image];
+  [v13 setImage:image2];
 
-  v21 = [(AAUIInviteLinkMetadata *)self icon];
-  [v13 setIcon:v21];
+  icon = [(AAUIInviteLinkMetadata *)self icon];
+  [v13 setIcon:icon];
 
-  v22 = [(AAUIInviteLinkMetadata *)self context];
-  v23 = [v22 secondaryTitle];
-  [v13 setKind:v23];
+  context8 = [(AAUIInviteLinkMetadata *)self context];
+  secondaryTitle = [context8 secondaryTitle];
+  [v13 setKind:secondaryTitle];
 
   [v3 setSpecialization:v13];
 

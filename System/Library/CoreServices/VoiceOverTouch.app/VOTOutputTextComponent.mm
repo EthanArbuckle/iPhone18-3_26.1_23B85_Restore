@@ -1,29 +1,29 @@
 @interface VOTOutputTextComponent
-- (void)_handlePerformAction:(id)a3;
-- (void)handleEvent:(id)a3;
+- (void)_handlePerformAction:(id)action;
+- (void)handleEvent:(id)event;
 @end
 
 @implementation VOTOutputTextComponent
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v6 = a3;
-  v4 = [v6 objectForIndex:1];
-  v5 = [v4 unsignedIntValue];
+  eventCopy = event;
+  v4 = [eventCopy objectForIndex:1];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  if (v5 == 6)
+  if (unsignedIntValue == 6)
   {
-    [(VOTOutputTextComponent *)self _handlePerformAction:v6];
+    [(VOTOutputTextComponent *)self _handlePerformAction:eventCopy];
   }
 }
 
-- (void)_handlePerformAction:(id)a3
+- (void)_handlePerformAction:(id)action
 {
-  v4 = a3;
-  v7 = [v4 objectForIndex:14];
+  actionCopy = action;
+  v7 = [actionCopy objectForIndex:14];
   v5 = [objc_allocWithZone(AXIndexMap) init];
   [v5 setObject:v7 forIndex:14];
-  v6 = [v4 objectForIndex:13];
+  v6 = [actionCopy objectForIndex:13];
 
   [v5 setObject:v6 forIndex:13];
   [(VOTOutputComponent *)self notifyActionComplete:v5];

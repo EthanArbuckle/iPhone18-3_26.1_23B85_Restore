@@ -1,7 +1,7 @@
 @interface PLPrimitiveAssetsdClient
 - (PLPrimitiveAssetsdClient)init;
-- (PLPrimitiveAssetsdClient)initWithPhotoLibraryURL:(id)a3 clientState:(id)a4;
-- (id)_setupClientClass:(Class)a3 proxyGetter:(SEL)a4 options:(int64_t)a5;
+- (PLPrimitiveAssetsdClient)initWithPhotoLibraryURL:(id)l clientState:(id)state;
+- (id)_setupClientClass:(Class)class proxyGetter:(SEL)getter options:(int64_t)options;
 - (id)cloudClient;
 - (id)cloudInternalClient;
 - (id)debugClient;
@@ -24,10 +24,10 @@
 - (id)resourceWriteOnlyClient;
 - (id)syncClient;
 - (id)systemLibraryURLReadOnlyClient;
-- (void)_updateLibraryStateConnectionInterrupted:(id)a3;
-- (void)addPhotoLibraryUnavailabilityHandler:(id)a3;
+- (void)_updateLibraryStateConnectionInterrupted:(id)interrupted;
+- (void)addPhotoLibraryUnavailabilityHandler:(id)handler;
 - (void)dealloc;
-- (void)sendDaemonJob:(id)a3 shouldRunSerially:(BOOL)a4 replyHandler:(id)a5;
+- (void)sendDaemonJob:(id)job shouldRunSerially:(BOOL)serially replyHandler:(id)handler;
 - (void)waitUntilConnectionSendsAllMessages;
 @end
 
@@ -106,11 +106,11 @@ void __63__PLPrimitiveAssetsdClient_waitUntilConnectionSendsAllMessages__block_i
   os_activity_scope_leave(&v1);
 }
 
-- (void)sendDaemonJob:(id)a3 shouldRunSerially:(BOOL)a4 replyHandler:(id)a5
+- (void)sendDaemonJob:(id)job shouldRunSerially:(BOOL)serially replyHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  jobCopy = job;
+  handlerCopy = handler;
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
@@ -129,7 +129,7 @@ void __63__PLPrimitiveAssetsdClient_waitUntilConnectionSendsAllMessages__block_i
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v9;
+    v35 = jobCopy;
     _os_log_impl(&dword_1AA9BD000, v14, OS_LOG_TYPE_DEFAULT, "Sending sendDaemonJob:shouldRunSerially:replyHandler: with job %@", buf, 0xCu);
   }
 
@@ -138,7 +138,7 @@ void __63__PLPrimitiveAssetsdClient_waitUntilConnectionSendsAllMessages__block_i
   block[1] = 3254779904;
   block[2] = __73__PLPrimitiveAssetsdClient_sendDaemonJob_shouldRunSerially_replyHandler___block_invoke;
   block[3] = &unk_1F1F72618;
-  v16 = v10;
+  v16 = handlerCopy;
   v24 = v16;
   block[4] = self;
   v25 = v31;
@@ -146,9 +146,9 @@ void __63__PLPrimitiveAssetsdClient_waitUntilConnectionSendsAllMessages__block_i
   v27 = v32;
   v28 = v33;
   v29 = a2;
-  v17 = v9;
+  v17 = jobCopy;
   v23 = v17;
-  v30 = a4;
+  seriallyCopy = serially;
   dispatch_async(isolationQueue, block);
 
   if (v31 == 1)
@@ -251,7 +251,7 @@ void __73__PLPrimitiveAssetsdClient_sendDaemonJob_shouldRunSerially_replyHandler
   }
 }
 
-- (void)_updateLibraryStateConnectionInterrupted:(id)a3
+- (void)_updateLibraryStateConnectionInterrupted:(id)interrupted
 {
   isolationQueue = self->_isolationQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1155,35 +1155,35 @@ void __49__PLPrimitiveAssetsdClient_libraryInternalClient__block_invoke(uint64_t
   }
 }
 
-- (id)_setupClientClass:(Class)a3 proxyGetter:(SEL)a4 options:(int64_t)a5
+- (id)_setupClientClass:(Class)class proxyGetter:(SEL)getter options:(int64_t)options
 {
   v8 = 40;
-  if ((a5 & 1) == 0)
+  if ((options & 1) == 0)
   {
     v8 = 32;
   }
 
   v9 = *(&self->super.isa + v8);
-  v10 = [[a3 alloc] initWithQueue:self->_isolationQueue proxyCreating:v9 proxyGetter:a4 clientState:self->_clientState];
+  v10 = [[class alloc] initWithQueue:self->_isolationQueue proxyCreating:v9 proxyGetter:getter clientState:self->_clientState];
 
   return v10;
 }
 
-- (void)addPhotoLibraryUnavailabilityHandler:(id)a3
+- (void)addPhotoLibraryUnavailabilityHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   connection = self->_connection;
-  v8 = v5;
+  v8 = handlerCopy;
   if (!connection)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLAssetsdClient.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"_connection != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdClient.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"_connection != nil"}];
 
-    v5 = v8;
+    handlerCopy = v8;
     connection = self->_connection;
   }
 
-  [(PLAssetsdClientXPCConnection *)connection addPhotoLibraryUnavailabilityHandler:v5];
+  [(PLAssetsdClientXPCConnection *)connection addPhotoLibraryUnavailabilityHandler:handlerCopy];
 }
 
 - (void)dealloc
@@ -1194,15 +1194,15 @@ void __49__PLPrimitiveAssetsdClient_libraryInternalClient__block_invoke(uint64_t
   [(PLPrimitiveAssetsdClient *)&v3 dealloc];
 }
 
-- (PLPrimitiveAssetsdClient)initWithPhotoLibraryURL:(id)a3 clientState:(id)a4
+- (PLPrimitiveAssetsdClient)initWithPhotoLibraryURL:(id)l clientState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  stateCopy = state;
   pl_dispatch_once(&PLIsReallyAssetsd_didCheckReadOnly, &__block_literal_global_129_3947);
   if ((PLIsReallyAssetsd_isAssetsd & 1) != 0 || __PLIsAssetsdProxyService)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PLAssetsdClient.m" lineNumber:123 description:@"PLAssetsdClient must not be used by assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdClient.m" lineNumber:123 description:@"PLAssetsdClient must not be used by assetsd"];
   }
 
   v23.receiver = self;
@@ -1210,11 +1210,11 @@ void __49__PLPrimitiveAssetsdClient_libraryInternalClient__block_invoke(uint64_t
   v9 = [(PLPrimitiveAssetsdClient *)&v23 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [lCopy copy];
     libraryURL = v9->_libraryURL;
     v9->_libraryURL = v10;
 
-    objc_storeStrong(&v9->_clientState, a4);
+    objc_storeStrong(&v9->_clientState, state);
     v12 = objc_alloc_init(PLAssetsdClientSandboxExtensions);
     sandboxExtensions = v9->_sandboxExtensions;
     v9->_sandboxExtensions = v12;
@@ -1223,7 +1223,7 @@ void __49__PLPrimitiveAssetsdClient_libraryInternalClient__block_invoke(uint64_t
     connection = v9->_connection;
     v9->_connection = v14;
 
-    v16 = [[PLAutoBindingProxyFactory alloc] initWithProxyFactory:v9->_connection photoLibraryURL:v7];
+    v16 = [[PLAutoBindingProxyFactory alloc] initWithProxyFactory:v9->_connection photoLibraryURL:lCopy];
     autoBindingProxyFactory = v9->_autoBindingProxyFactory;
     v9->_autoBindingProxyFactory = v16;
 
@@ -1231,8 +1231,8 @@ void __49__PLPrimitiveAssetsdClient_libraryInternalClient__block_invoke(uint64_t
     isolationQueue = v9->_isolationQueue;
     v9->_isolationQueue = v18;
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v9 selector:sel__updateLibraryStateConnectionInterrupted_ name:@"PLAssetsdClientXPCConnectionInterruptedInternalNotificationName" object:v9->_connection];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__updateLibraryStateConnectionInterrupted_ name:@"PLAssetsdClientXPCConnectionInterruptedInternalNotificationName" object:v9->_connection];
   }
 
   return v9;

@@ -1,19 +1,19 @@
 @interface VLFVIOSessionDistanceMonitor
 - (BOOL)shouldDisableVIOSession;
 - (NSString)description;
-- (VLFVIOSessionDistanceMonitor)initWithStateManager:(id)a3 platformController:(id)a4;
+- (VLFVIOSessionDistanceMonitor)initWithStateManager:(id)manager platformController:(id)controller;
 - (double)_distanceFromOrigin;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)session:(id)session didChangeState:(unint64_t)state;
 @end
 
 @implementation VLFVIOSessionDistanceMonitor
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -23,15 +23,15 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v12 = 134349056;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Navigation started; stop monitoring location updates", &v12, 0xCu);
     }
 
-    v9 = [(VIOSessionMonitor *)self platformController];
-    [v9 unregisterObserver:self];
+    platformController = [(VIOSessionMonitor *)self platformController];
+    [platformController unregisterObserver:self];
 
-    v10 = [(VIOSessionMonitor *)self session];
-    [v10 _removeObserver:self];
+    session = [(VIOSessionMonitor *)self session];
+    [session _removeObserver:self];
 
     v11 = +[MKLocationManager sharedLocationManager];
     [v11 stopLocationUpdateWithObserver:self];
@@ -40,7 +40,7 @@
   }
 }
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
@@ -48,15 +48,15 @@
   block[2] = sub_1007D3834;
   block[3] = &unk_10165FBC0;
   objc_copyWeak(v6, &location);
-  v6[1] = a4;
+  v6[1] = state;
   dispatch_async(&_dispatch_main_q, block);
   objc_destroyWeak(v6);
   objc_destroyWeak(&location);
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -68,7 +68,7 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v22 = 136316418;
-        v23 = "[VLFVIOSessionDistanceMonitor locationManagerUpdatedLocation:]";
+        selfCopy2 = "[VLFVIOSessionDistanceMonitor locationManagerUpdatedLocation:]";
         v24 = 2080;
         v25 = "VLFVIOSessionDistanceMonitor.m";
         v26 = 1024;
@@ -89,22 +89,22 @@
         {
           v21 = +[NSThread callStackSymbols];
           v22 = 138412290;
-          v23 = v21;
+          selfCopy2 = v21;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%@", &v22, 0xCu);
         }
       }
     }
   }
 
-  v8 = [v4 lastLocation];
-  v9 = v8;
-  if (!v8 || ([v8 coordinate], !CLLocationCoordinate2DIsValid(v32)))
+  lastLocation = [locationCopy lastLocation];
+  v9 = lastLocation;
+  if (!lastLocation || ([lastLocation coordinate], !CLLocationCoordinate2DIsValid(v32)))
   {
     v18 = sub_1007D36F4();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       v22 = 134349056;
-      v23 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "[%{public}p] Location was nil or invalid; ignoring update", &v22, 0xCu);
     }
 
@@ -121,7 +121,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v22 = 134349569;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2049;
       v25 = *&v13;
       v26 = 2049;
@@ -129,14 +129,14 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[%{public}p] Distance traveled from origin (%{private}f) is larger than the threshold (%{private}f); disabling VIO session", &v22, 0x20u);
     }
 
-    v15 = [(VIOSessionMonitor *)self stateManager];
-    [v15 recordSessionDisableEvent:9];
+    stateManager = [(VIOSessionMonitor *)self stateManager];
+    [stateManager recordSessionDisableEvent:9];
 
-    v16 = [(VIOSessionMonitor *)self platformController];
-    [v16 unregisterObserver:self];
+    platformController = [(VIOSessionMonitor *)self platformController];
+    [platformController unregisterObserver:self];
 
-    v17 = [(VIOSessionMonitor *)self session];
-    [v17 _removeObserver:self];
+    session = [(VIOSessionMonitor *)self session];
+    [session _removeObserver:self];
 
     v18 = +[MKLocationManager sharedLocationManager];
     [v18 stopLocationUpdateWithObserver:self];
@@ -147,16 +147,16 @@ LABEL_15:
 - (double)_distanceFromOrigin
 {
   v3 = +[MKLocationManager sharedLocationManager];
-  v4 = [v3 lastLocation];
+  lastLocation = [v3 lastLocation];
 
-  v5 = [(VLFVIOSessionDistanceMonitor *)self vlfLocation];
-  [v4 coordinate];
+  vlfLocation = [(VLFVIOSessionDistanceMonitor *)self vlfLocation];
+  [lastLocation coordinate];
   v7 = v6;
   v9 = v8;
-  [v5 coordinate];
+  [vlfLocation coordinate];
   v25 = v10;
   v26 = v11;
-  if (!v4)
+  if (!lastLocation)
   {
     v20 = sub_1007D36F4();
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -165,14 +165,14 @@ LABEL_15:
     }
 
     *buf = 134349056;
-    v28 = self;
+    selfCopy5 = self;
     v21 = "[%{public}p] Current location is nil; ignoring";
 LABEL_15:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, v21, buf, 0xCu);
     goto LABEL_16;
   }
 
-  if (!v5)
+  if (!vlfLocation)
   {
     v20 = sub_1007D36F4();
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -181,7 +181,7 @@ LABEL_15:
     }
 
     *buf = 134349056;
-    v28 = self;
+    selfCopy5 = self;
     v21 = "[%{public}p] Origin location is nil; ignoring";
     goto LABEL_15;
   }
@@ -199,7 +199,7 @@ LABEL_15:
     }
 
     *buf = 134349056;
-    v28 = self;
+    selfCopy5 = self;
     v21 = "[%{public}p] Current coordinate is invalid; ignoring";
     goto LABEL_15;
   }
@@ -212,7 +212,7 @@ LABEL_15:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134349056;
-      v28 = self;
+      selfCopy5 = self;
       v21 = "[%{public}p] Origin coordinate is invalid; ignoring";
       goto LABEL_15;
     }
@@ -223,9 +223,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v14 = [v4 timestamp];
-  v15 = [v5 timestamp];
-  [v14 timeIntervalSinceDate:v15];
+  timestamp = [lastLocation timestamp];
+  timestamp2 = [vlfLocation timestamp];
+  [timestamp timeIntervalSinceDate:timestamp2];
   v17 = v16;
 
   if (v17 <= 0.0)
@@ -233,14 +233,14 @@ LABEL_16:
     v20 = sub_1007D36F4();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [v4 timestamp];
-      v24 = [v5 timestamp];
+      timestamp3 = [lastLocation timestamp];
+      timestamp4 = [vlfLocation timestamp];
       *buf = 134349570;
-      v28 = self;
+      selfCopy5 = self;
       v29 = 2112;
-      v30 = v23;
+      v30 = timestamp3;
       v31 = 2112;
-      v32 = v24;
+      v32 = timestamp4;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "[%{public}p] Current location estimate (%@) was obtained before VLF fix occurred (%@); waiting for a location update before calculating true distance", buf, 0x20u);
     }
 
@@ -282,17 +282,17 @@ LABEL_17:
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     *buf = 134349314;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Disabling %@", buf, 0x16u);
   }
 
-  v6 = [(VIOSessionMonitor *)self platformController];
-  [v6 unregisterObserver:self];
+  platformController = [(VIOSessionMonitor *)self platformController];
+  [platformController unregisterObserver:self];
 
-  v7 = [(VIOSessionMonitor *)self session];
-  [v7 _removeObserver:self];
+  session = [(VIOSessionMonitor *)self session];
+  [session _removeObserver:self];
 
   v8 = +[MKLocationManager sharedLocationManager];
   [v8 stopLocationUpdateWithObserver:self];
@@ -302,11 +302,11 @@ LABEL_17:
   [(VLFVIOSessionDistanceMonitor *)&v9 dealloc];
 }
 
-- (VLFVIOSessionDistanceMonitor)initWithStateManager:(id)a3 platformController:(id)a4
+- (VLFVIOSessionDistanceMonitor)initWithStateManager:(id)manager platformController:(id)controller
 {
   v27.receiver = self;
   v27.super_class = VLFVIOSessionDistanceMonitor;
-  v4 = [(VIOSessionMonitor *)&v27 initWithStateManager:a3 platformController:a4];
+  v4 = [(VIOSessionMonitor *)&v27 initWithStateManager:manager platformController:controller];
   if (v4)
   {
     v5 = sub_1007D36F4();
@@ -321,10 +321,10 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Enabling %@", buf, 0x16u);
     }
 
-    v8 = [(VIOSessionMonitor *)v4 configuration];
-    v9 = [v8 isVLF];
+    configuration = [(VIOSessionMonitor *)v4 configuration];
+    isVLF = [configuration isVLF];
 
-    if (!v9)
+    if (!isVLF)
     {
       [(VIOSessionMonitor *)v4 setEnabled:0];
       v13 = sub_1007D36F4();
@@ -345,8 +345,8 @@ LABEL_13:
       return v4;
     }
 
-    v10 = [(VIOSessionMonitor *)v4 platformController];
-    v11 = [v10 currentSession];
+    platformController = [(VIOSessionMonitor *)v4 platformController];
+    currentSession = [platformController currentSession];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -372,22 +372,22 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    v18 = [(VIOSessionMonitor *)v4 platformController];
-    [v18 registerObserver:v4];
+    platformController2 = [(VIOSessionMonitor *)v4 platformController];
+    [platformController2 registerObserver:v4];
 
-    v19 = [(VIOSessionMonitor *)v4 session];
-    [v19 _addObserver:v4];
+    session = [(VIOSessionMonitor *)v4 session];
+    [session _addObserver:v4];
 
-    v20 = [(VIOSessionMonitor *)v4 session];
-    v21 = [v20 technique];
-    v22 = [v21 vlfLocation];
+    session2 = [(VIOSessionMonitor *)v4 session];
+    technique = [session2 technique];
+    vlfLocation = [technique vlfLocation];
     vlfLocation = v4->_vlfLocation;
-    v4->_vlfLocation = v22;
+    v4->_vlfLocation = vlfLocation;
 
-    v24 = [(VIOSessionMonitor *)v4 session];
-    v25 = [v24 state];
+    session3 = [(VIOSessionMonitor *)v4 session];
+    state = [session3 state];
 
-    if (v25 == 1)
+    if (state == 1)
     {
       v13 = +[MKLocationManager sharedLocationManager];
       [v13 startLocationUpdateWithObserver:v4];

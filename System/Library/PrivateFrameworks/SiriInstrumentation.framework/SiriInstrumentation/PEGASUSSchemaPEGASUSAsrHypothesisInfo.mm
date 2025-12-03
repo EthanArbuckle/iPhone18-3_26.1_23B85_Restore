@@ -1,30 +1,30 @@
 @interface PEGASUSSchemaPEGASUSAsrHypothesisInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSAsrHypothesisInfo)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSAsrHypothesisInfo)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSAsrHypothesisInfo)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSAsrHypothesisInfo)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addCorrections:(id)a3;
-- (void)setHasSelectedAsAlternateSuggestion:(BOOL)a3;
-- (void)setHasSelectedAsPrimaryResponse:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCorrections:(id)corrections;
+- (void)setHasSelectedAsAlternateSuggestion:(BOOL)suggestion;
+- (void)setHasSelectedAsPrimaryResponse:(BOOL)response;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSAsrHypothesisInfo
 
-- (PEGASUSSchemaPEGASUSAsrHypothesisInfo)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSAsrHypothesisInfo)initWithDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = PEGASUSSchemaPEGASUSAsrHypothesisInfo;
   v5 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)&v31 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"postItnUtterance"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"postItnUtterance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)v5 setPostItnUtterance:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"idx"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"idx"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)v5 setIdx:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"score"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,21 +48,21 @@
       [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)v5 setScore:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"selectedAsPrimaryResponse"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"selectedAsPrimaryResponse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAsrHypothesisInfo setSelectedAsPrimaryResponse:](v5, "setSelectedAsPrimaryResponse:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"selectedAsAlternateSuggestion"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"selectedAsAlternateSuggestion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAsrHypothesisInfo setSelectedAsAlternateSuggestion:](v5, "setSelectedAsAlternateSuggestion:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"corrections"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"corrections"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,30 +116,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSAsrHypothesisInfo)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSAsrHypothesisInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -153,10 +153,10 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_corrections count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -176,16 +176,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -195,30 +195,30 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"corrections"];
+    [dictionary setObject:array forKeyedSubscript:@"corrections"];
   }
 
   if (self->_idx)
   {
     v12 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self idx];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    dictionaryRepresentation2 = [v12 dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"idx"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"idx"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"idx"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"idx"];
     }
   }
 
   if (self->_postItnUtterance)
   {
-    v15 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self postItnUtterance];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"postItnUtterance"];
+    postItnUtterance = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self postItnUtterance];
+    v16 = [postItnUtterance copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"postItnUtterance"];
   }
 
   has = self->_has;
@@ -227,7 +227,7 @@
     v20 = MEMORY[0x1E696AD98];
     [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self score];
     v21 = [v20 numberWithFloat:?];
-    [v3 setObject:v21 forKeyedSubscript:@"score"];
+    [dictionary setObject:v21 forKeyedSubscript:@"score"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -248,19 +248,19 @@ LABEL_22:
   }
 
   v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSAsrHypothesisInfo selectedAsAlternateSuggestion](self, "selectedAsAlternateSuggestion", v23)}];
-  [v3 setObject:v22 forKeyedSubscript:@"selectedAsAlternateSuggestion"];
+  [dictionary setObject:v22 forKeyedSubscript:@"selectedAsAlternateSuggestion"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_23:
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSAsrHypothesisInfo selectedAsPrimaryResponse](self, "selectedAsPrimaryResponse", v23)}];
-    [v3 setObject:v18 forKeyedSubscript:@"selectedAsPrimaryResponse"];
+    [dictionary setObject:v18 forKeyedSubscript:@"selectedAsPrimaryResponse"];
   }
 
 LABEL_24:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v23];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v23];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -329,28 +329,28 @@ LABEL_12:
   return v4 ^ v3 ^ v7 ^ v12 ^ v13 ^ [(NSArray *)self->_corrections hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self postItnUtterance];
-  v6 = [v4 postItnUtterance];
-  if ((v5 != 0) == (v6 == 0))
+  postItnUtterance = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self postItnUtterance];
+  postItnUtterance2 = [equalCopy postItnUtterance];
+  if ((postItnUtterance != 0) == (postItnUtterance2 == 0))
   {
     goto LABEL_27;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self postItnUtterance];
-  if (v7)
+  postItnUtterance3 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self postItnUtterance];
+  if (postItnUtterance3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self postItnUtterance];
-    v10 = [v4 postItnUtterance];
-    v11 = [v9 isEqual:v10];
+    v8 = postItnUtterance3;
+    postItnUtterance4 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self postItnUtterance];
+    postItnUtterance5 = [equalCopy postItnUtterance];
+    v11 = [postItnUtterance4 isEqual:postItnUtterance5];
 
     if (!v11)
     {
@@ -362,9 +362,9 @@ LABEL_12:
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self idx];
-  v6 = [v4 idx];
-  if ((v5 != 0) == (v6 == 0))
+  postItnUtterance = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self idx];
+  postItnUtterance2 = [equalCopy idx];
+  if ((postItnUtterance != 0) == (postItnUtterance2 == 0))
   {
     goto LABEL_27;
   }
@@ -374,7 +374,7 @@ LABEL_12:
   {
     v13 = v12;
     v14 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self idx];
-    v15 = [v4 idx];
+    v15 = [equalCopy idx];
     v16 = [v14 isEqual:v15];
 
     if (!v16)
@@ -388,7 +388,7 @@ LABEL_12:
   }
 
   has = self->_has;
-  v18 = v4[40];
+  v18 = equalCopy[40];
   if ((*&has & 1) != (v18 & 1))
   {
     goto LABEL_28;
@@ -397,14 +397,14 @@ LABEL_12:
   if (*&has)
   {
     score = self->_score;
-    [v4 score];
+    [equalCopy score];
     if (score != v20)
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v21 = (*&has >> 1) & 1;
@@ -416,13 +416,13 @@ LABEL_12:
   if (v21)
   {
     selectedAsPrimaryResponse = self->_selectedAsPrimaryResponse;
-    if (selectedAsPrimaryResponse != [v4 selectedAsPrimaryResponse])
+    if (selectedAsPrimaryResponse != [equalCopy selectedAsPrimaryResponse])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v23 = (*&has >> 2) & 1;
@@ -434,23 +434,23 @@ LABEL_12:
   if (v23)
   {
     selectedAsAlternateSuggestion = self->_selectedAsAlternateSuggestion;
-    if (selectedAsAlternateSuggestion != [v4 selectedAsAlternateSuggestion])
+    if (selectedAsAlternateSuggestion != [equalCopy selectedAsAlternateSuggestion])
     {
       goto LABEL_28;
     }
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self corrections];
-  v6 = [v4 corrections];
-  if ((v5 != 0) == (v6 == 0))
+  postItnUtterance = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self corrections];
+  postItnUtterance2 = [equalCopy corrections];
+  if ((postItnUtterance != 0) == (postItnUtterance2 == 0))
   {
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  v25 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self corrections];
-  if (!v25)
+  corrections = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self corrections];
+  if (!corrections)
   {
 
 LABEL_31:
@@ -458,10 +458,10 @@ LABEL_31:
     goto LABEL_29;
   }
 
-  v26 = v25;
-  v27 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self corrections];
-  v28 = [v4 corrections];
-  v29 = [v27 isEqual:v28];
+  v26 = corrections;
+  corrections2 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self corrections];
+  corrections3 = [equalCopy corrections];
+  v29 = [corrections2 isEqual:corrections3];
 
   if (v29)
   {
@@ -475,13 +475,13 @@ LABEL_29:
   return v30;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self postItnUtterance];
+  toCopy = to;
+  postItnUtterance = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self postItnUtterance];
 
-  if (v5)
+  if (postItnUtterance)
   {
     PBDataWriterWriteStringField();
   }
@@ -553,27 +553,27 @@ LABEL_9:
   }
 }
 
-- (void)addCorrections:(id)a3
+- (void)addCorrections:(id)corrections
 {
-  v4 = a3;
+  correctionsCopy = corrections;
   corrections = self->_corrections;
-  v8 = v4;
+  v8 = correctionsCopy;
   if (!corrections)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_corrections;
-    self->_corrections = v6;
+    self->_corrections = array;
 
-    v4 = v8;
+    correctionsCopy = v8;
     corrections = self->_corrections;
   }
 
-  [(NSArray *)corrections addObject:v4];
+  [(NSArray *)corrections addObject:correctionsCopy];
 }
 
-- (void)setHasSelectedAsAlternateSuggestion:(BOOL)a3
+- (void)setHasSelectedAsAlternateSuggestion:(BOOL)suggestion
 {
-  if (a3)
+  if (suggestion)
   {
     v3 = 4;
   }
@@ -586,9 +586,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSelectedAsPrimaryResponse:(BOOL)a3
+- (void)setHasSelectedAsPrimaryResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 2;
   }
@@ -601,48 +601,48 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = PEGASUSSchemaPEGASUSAsrHypothesisInfo;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self deletePostItnUtterance];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self deletePostItnUtterance];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self deletePostItnUtterance];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self deletePostItnUtterance];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self deletePostItnUtterance];
   }
 
   v6 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self idx];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self deleteIdx];
   }
 
-  v9 = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self corrections];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  corrections = [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self corrections];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:corrections underConditions:policyCopy];
   [(PEGASUSSchemaPEGASUSAsrHypothesisInfo *)self setCorrections:v10];
 
   return v5;

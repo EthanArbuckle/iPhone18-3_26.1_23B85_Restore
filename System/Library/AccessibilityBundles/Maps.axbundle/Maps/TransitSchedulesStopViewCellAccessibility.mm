@@ -8,9 +8,9 @@
 {
   v3 = [(TransitSchedulesStopViewCellAccessibility *)self safeValueForKey:@"departureTimeColor"];
   v4 = [(TransitSchedulesStopViewCellAccessibility *)self _accessibilityTextForSubhierarchyIncludingHeaders:0 focusableItems:1 exclusions:0];
-  v5 = [MEMORY[0x29EDC7A00] systemRedColor];
+  systemRedColor = [MEMORY[0x29EDC7A00] systemRedColor];
 
-  if (v3 == v5)
+  if (v3 == systemRedColor)
   {
     v8 = AXMapKitLocString(@"DELAYED_TRANSIT");
     v6 = __UIAXStringForVariables();

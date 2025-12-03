@@ -1,11 +1,11 @@
 @interface FMScrollPocketView
-- (_TtC6FindMy18FMScrollPocketView)initWithCoder:(id)a3;
-- (_TtC6FindMy18FMScrollPocketView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy18FMScrollPocketView)initWithCoder:(id)coder;
+- (_TtC6FindMy18FMScrollPocketView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMScrollPocketView
 
-- (_TtC6FindMy18FMScrollPocketView)initWithCoder:(id)a3
+- (_TtC6FindMy18FMScrollPocketView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy18FMScrollPocketView_titleLabel;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (_TtC6FindMy18FMScrollPocketView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy18FMScrollPocketView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,18 +1,18 @@
 @interface ICRemoteCameraDeviceManager
-- (BOOL)addRemoteCameraDevice:(id)a3 uuidString:(id)a4 deviceName:(id)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)remoteManagerConnectionWithProcessIdentifierAuthorized:(int)a3;
-- (BOOL)removeRemoteCameraDevice:(id)a3;
-- (id)remoteDeviceForPrimaryIdentifier:(id)a3;
-- (id)remoteDeviceForUUID:(id)a3;
-- (void)addRemoteManagerConnection:(id)a3;
-- (void)closeDevice:(id)a3;
+- (BOOL)addRemoteCameraDevice:(id)device uuidString:(id)string deviceName:(id)name;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)remoteManagerConnectionWithProcessIdentifierAuthorized:(int)authorized;
+- (BOOL)removeRemoteCameraDevice:(id)device;
+- (id)remoteDeviceForPrimaryIdentifier:(id)identifier;
+- (id)remoteDeviceForUUID:(id)d;
+- (void)addRemoteManagerConnection:(id)connection;
+- (void)closeDevice:(id)device;
 - (void)dealloc;
-- (void)notifyClientDeviceAdded:(id)a3 uuidString:(id)a4 deviceName:(id)a5;
-- (void)notifyClientDeviceRemoved:(id)a3;
-- (void)openDevice:(id)a3 withReply:(id)a4;
-- (void)removeRemoteManagerConnectionWithProcessIdentifier:(int)a3;
-- (void)requestDeviceListWithOptions:(id)a3 reply:(id)a4;
+- (void)notifyClientDeviceAdded:(id)added uuidString:(id)string deviceName:(id)name;
+- (void)notifyClientDeviceRemoved:(id)removed;
+- (void)openDevice:(id)device withReply:(id)reply;
+- (void)removeRemoteManagerConnectionWithProcessIdentifier:(int)identifier;
+- (void)requestDeviceListWithOptions:(id)options reply:(id)reply;
 @end
 
 @implementation ICRemoteCameraDeviceManager
@@ -31,10 +31,10 @@
   [(ICRemoteCameraDeviceManager *)&v4 dealloc];
 }
 
-- (id)remoteDeviceForUUID:(id)a3
+- (id)remoteDeviceForUUID:(id)d
 {
   v20 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  dCopy = d;
   v5 = [(NSMutableArray *)self->_remoteCameraDevices copy];
   v15 = 0u;
   v16 = 0u;
@@ -55,8 +55,8 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 uuidString];
-        v12 = [v11 isEqualToString:v4];
+        uuidString = [v10 uuidString];
+        v12 = [uuidString isEqualToString:dCopy];
 
         if (v12)
         {
@@ -82,10 +82,10 @@ LABEL_11:
   return v7;
 }
 
-- (id)remoteDeviceForPrimaryIdentifier:(id)a3
+- (id)remoteDeviceForPrimaryIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(NSMutableArray *)self->_remoteCameraDevices copy];
   v15 = 0u;
   v16 = 0u;
@@ -106,8 +106,8 @@ LABEL_11:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 primaryIdentifierString];
-        v12 = [v11 isEqualToString:v4];
+        primaryIdentifierString = [v10 primaryIdentifierString];
+        v12 = [primaryIdentifierString isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -133,40 +133,40 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)removeRemoteCameraDevice:(id)a3
+- (BOOL)removeRemoteCameraDevice:(id)device
 {
   v21 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_remoteCameraDevicesLock);
-  v5 = [(ICRemoteCameraDeviceManager *)self remoteDeviceForPrimaryIdentifier:v4];
+  v5 = [(ICRemoteCameraDeviceManager *)self remoteDeviceForPrimaryIdentifier:deviceCopy];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
     __ICOSLogCreate();
-    v7 = [(ICRemoteCameraDeviceManager *)self managedObjectName];
-    if ([v7 length] >= 0x15)
+    managedObjectName = [(ICRemoteCameraDeviceManager *)self managedObjectName];
+    if ([managedObjectName length] >= 0x15)
     {
-      v8 = [v7 substringWithRange:{0, 18}];
+      v8 = [managedObjectName substringWithRange:{0, 18}];
       v9 = [v8 stringByAppendingString:@".."];
 
-      v7 = v9;
+      managedObjectName = v9;
     }
 
     v10 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"close device"];
     v11 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = v7;
+      v12 = managedObjectName;
       v13 = v11;
       v17 = 136446466;
-      v18 = [v7 UTF8String];
+      uTF8String = [managedObjectName UTF8String];
       v19 = 2114;
       v20 = v10;
       _os_log_impl(&dword_29EB58000, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v17, 0x16u);
     }
 
-    v14 = [v5 uuidString];
-    [(ICRemoteCameraDeviceManager *)self closeDevice:v14];
+    uuidString = [v5 uuidString];
+    [(ICRemoteCameraDeviceManager *)self closeDevice:uuidString];
 
     objc_autoreleasePoolPop(v6);
   }
@@ -177,17 +177,17 @@ LABEL_11:
   return v5 != 0;
 }
 
-- (BOOL)addRemoteCameraDevice:(id)a3 uuidString:(id)a4 deviceName:(id)a5
+- (BOOL)addRemoteCameraDevice:(id)device uuidString:(id)string deviceName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  stringCopy = string;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_remoteCameraDevicesLock);
-  v11 = [(ICRemoteCameraDeviceManager *)self remoteDeviceForPrimaryIdentifier:v8];
+  v11 = [(ICRemoteCameraDeviceManager *)self remoteDeviceForPrimaryIdentifier:deviceCopy];
 
   if (!v11)
   {
-    v12 = [[ICRemoteCameraDeviceProxy alloc] initWithPrimaryIdentifierString:v8 uuidString:v9 localizedName:v10];
+    v12 = [[ICRemoteCameraDeviceProxy alloc] initWithPrimaryIdentifierString:deviceCopy uuidString:stringCopy localizedName:nameCopy];
     [(NSMutableArray *)self->_remoteCameraDevices addObject:v12];
   }
 
@@ -196,14 +196,14 @@ LABEL_11:
   return v11 == 0;
 }
 
-- (void)notifyClientDeviceAdded:(id)a3 uuidString:(id)a4 deviceName:(id)a5
+- (void)notifyClientDeviceAdded:(id)added uuidString:(id)string deviceName:(id)name
 {
   v28 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  if ([(ICRemoteCameraDeviceManager *)self addRemoteCameraDevice:v8 uuidString:a4 deviceName:a5])
+  addedCopy = added;
+  if ([(ICRemoteCameraDeviceManager *)self addRemoteCameraDevice:addedCopy uuidString:string deviceName:name])
   {
-    v20 = v8;
-    v21 = [(ICRemoteCameraDeviceManager *)self remoteDeviceForPrimaryIdentifier:v8];
+    v20 = addedCopy;
+    v21 = [(ICRemoteCameraDeviceManager *)self remoteDeviceForPrimaryIdentifier:addedCopy];
     os_unfair_lock_lock(&self->_remoteManagerConnectionsLock);
     v25 = 0u;
     v26 = 0u;
@@ -228,13 +228,13 @@ LABEL_11:
           v13 = [(NSMutableDictionary *)self->_remoteManagerConnections objectForKeyedSubscript:*(*(&v23 + 1) + 8 * v12)];
           v14 = [v13 objectForKeyedSubscript:@"ICRemoteManagerConnection"];
           v15 = [v13 objectForKeyedSubscript:@"ICRemoteManagerAuthorized"];
-          v16 = [v15 BOOLValue];
+          bOOLValue = [v15 BOOLValue];
 
-          if (v16)
+          if (bOOLValue)
           {
             v17 = [v14 remoteObjectProxyWithErrorHandler:&__block_literal_global_2];
-            v18 = [v21 deviceContext];
-            [v17 notifyAddedDevice:v18];
+            deviceContext = [v21 deviceContext];
+            [v17 notifyAddedDevice:deviceContext];
           }
 
           ++v12;
@@ -248,20 +248,20 @@ LABEL_11:
     }
 
     os_unfair_lock_unlock(&self->_remoteManagerConnectionsLock);
-    v8 = v20;
+    addedCopy = v20;
   }
 
   v19 = *MEMORY[0x29EDCA608];
 }
 
-- (void)notifyClientDeviceRemoved:(id)a3
+- (void)notifyClientDeviceRemoved:(id)removed
 {
   v24 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v17 = [(ICRemoteCameraDeviceManager *)self remoteDeviceForPrimaryIdentifier:v4];
+  removedCopy = removed;
+  v17 = [(ICRemoteCameraDeviceManager *)self remoteDeviceForPrimaryIdentifier:removedCopy];
   if (v17)
   {
-    v16 = v4;
+    v16 = removedCopy;
     os_unfair_lock_lock(&self->_remoteManagerConnectionsLock);
     v21 = 0u;
     v22 = 0u;
@@ -286,13 +286,13 @@ LABEL_11:
           v9 = [(NSMutableDictionary *)self->_remoteManagerConnections objectForKeyedSubscript:*(*(&v19 + 1) + 8 * v8)];
           v10 = [v9 objectForKeyedSubscript:@"ICRemoteManagerConnection"];
           v11 = [v9 objectForKeyedSubscript:@"ICRemoteManagerAuthorized"];
-          v12 = [v11 BOOLValue];
+          bOOLValue = [v11 BOOLValue];
 
-          if (v12)
+          if (bOOLValue)
           {
             v13 = [v10 remoteObjectProxyWithErrorHandler:&__block_literal_global_69];
-            v14 = [v17 deviceContext];
-            [v13 notifyRemovedDevice:v14];
+            deviceContext = [v17 deviceContext];
+            [v13 notifyRemovedDevice:deviceContext];
           }
 
           ++v8;
@@ -306,23 +306,23 @@ LABEL_11:
     }
 
     os_unfair_lock_unlock(&self->_remoteManagerConnectionsLock);
-    v4 = v16;
+    removedCopy = v16;
     [(ICRemoteCameraDeviceManager *)self removeRemoteCameraDevice:v16];
   }
 
   v15 = *MEMORY[0x29EDCA608];
 }
 
-- (void)requestDeviceListWithOptions:(id)a3 reply:(id)a4
+- (void)requestDeviceListWithOptions:(id)options reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __66__ICRemoteCameraDeviceManager_requestDeviceListWithOptions_reply___block_invoke;
   v7[3] = &unk_29F380C20;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(MEMORY[0x29EDCA578], v7);
 }
 
@@ -391,19 +391,19 @@ void __66__ICRemoteCameraDeviceManager_requestDeviceListWithOptions_reply___bloc
   v16 = *MEMORY[0x29EDCA608];
 }
 
-- (void)openDevice:(id)a3 withReply:(id)a4
+- (void)openDevice:(id)device withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  replyCopy = reply;
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __52__ICRemoteCameraDeviceManager_openDevice_withReply___block_invoke;
   block[3] = &unk_29F380C48;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = deviceCopy;
+  v12 = replyCopy;
+  v8 = replyCopy;
+  v9 = deviceCopy;
   dispatch_async(MEMORY[0x29EDCA578], block);
 }
 
@@ -550,39 +550,39 @@ LABEL_22:
   v47 = *MEMORY[0x29EDCA608];
 }
 
-- (void)closeDevice:(id)a3
+- (void)closeDevice:(id)device
 {
   v20 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(ICRemoteCameraDeviceManager *)self remoteDeviceForUUID:v4];
+  v6 = [(ICRemoteCameraDeviceManager *)self remoteDeviceForUUID:deviceCopy];
   if (v6)
   {
     __ICOSLogCreate();
-    v7 = [(ICRemoteCameraDeviceManager *)self managedObjectName];
-    if ([v7 length] >= 0x15)
+    managedObjectName = [(ICRemoteCameraDeviceManager *)self managedObjectName];
+    if ([managedObjectName length] >= 0x15)
     {
-      v8 = [v7 substringWithRange:{0, 18}];
+      v8 = [managedObjectName substringWithRange:{0, 18}];
       v9 = [v8 stringByAppendingString:@".."];
 
-      v7 = v9;
+      managedObjectName = v9;
     }
 
-    v10 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"close: %@", v4];
+    deviceCopy = [MEMORY[0x29EDBA0F8] stringWithFormat:@"close: %@", deviceCopy];
     v11 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = v7;
+      v12 = managedObjectName;
       v13 = v11;
       *buf = 136446466;
-      v17 = [v7 UTF8String];
+      uTF8String = [managedObjectName UTF8String];
       v18 = 2114;
-      v19 = v10;
+      v19 = deviceCopy;
       _os_log_impl(&dword_29EB58000, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    v14 = [v6 camera];
-    [v14 removeAllSessions];
+    camera = [v6 camera];
+    [camera removeAllSessions];
 
     [(NSMutableArray *)self->_remoteCameraDevices removeObject:v6];
   }
@@ -611,10 +611,10 @@ uint64_t __76__ICRemoteCameraDeviceManager_addSelectorToInterface_selectorString
   return MEMORY[0x2A1C71028]();
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = a4;
+  connectionCopy = connection;
   __ICOSLogCreate();
   v6 = @"remoteManager";
   if ([@"remoteManager" length] >= 0x15)
@@ -623,14 +623,14 @@ uint64_t __76__ICRemoteCameraDeviceManager_addSelectorToInterface_selectorString
     v6 = [v7 stringByAppendingString:@".."];
   }
 
-  v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"New Connection: %d", objc_msgSend(v5, "processIdentifier")];
+  v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"New Connection: %d", objc_msgSend(connectionCopy, "processIdentifier")];
   v9 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v6;
     v11 = v9;
     *buf = 136446466;
-    v17 = [(__CFString *)v6 UTF8String];
+    uTF8String = [(__CFString *)v6 UTF8String];
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&dword_29EB58000, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -643,28 +643,28 @@ uint64_t __76__ICRemoteCameraDeviceManager_addSelectorToInterface_selectorString
   [(ICRemoteCameraDeviceManager *)self addSelectorToInterface:v12 selectorString:@"closeDevice:withReply:" origin:1];
   [(ICRemoteCameraDeviceManager *)self addSelectorToInterface:v13 selectorString:@"notifyAddedDevice:" origin:0];
   [(ICRemoteCameraDeviceManager *)self addSelectorToInterface:v13 selectorString:@"notifyRemovedDevice:" origin:0];
-  [v5 setExportedInterface:v12];
-  [v5 setRemoteObjectInterface:v13];
-  [v5 setExportedObject:self];
-  [(ICRemoteCameraDeviceManager *)self addRemoteManagerConnection:v5];
-  [v5 resume];
+  [connectionCopy setExportedInterface:v12];
+  [connectionCopy setRemoteObjectInterface:v13];
+  [connectionCopy setExportedObject:self];
+  [(ICRemoteCameraDeviceManager *)self addRemoteManagerConnection:connectionCopy];
+  [connectionCopy resume];
 
   v14 = *MEMORY[0x29EDCA608];
   return 1;
 }
 
-- (void)addRemoteManagerConnection:(id)a3
+- (void)addRemoteManagerConnection:(id)connection
 {
   v33 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  connectionCopy = connection;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
   v30[3] = __Block_byref_object_copy_;
   v30[4] = __Block_byref_object_dispose_;
-  v5 = self;
-  v31 = v5;
-  v6 = [MEMORY[0x29EDBA070] numberWithInt:{objc_msgSend(v4, "processIdentifier")}];
+  selfCopy = self;
+  v31 = selfCopy;
+  v6 = [MEMORY[0x29EDBA070] numberWithInt:{objc_msgSend(connectionCopy, "processIdentifier")}];
   v27[0] = MEMORY[0x29EDCA5F8];
   v27[1] = 3221225472;
   v27[2] = __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke;
@@ -672,14 +672,14 @@ uint64_t __76__ICRemoteCameraDeviceManager_addSelectorToInterface_selectorString
   v29 = v30;
   v25 = v6;
   v28 = v25;
-  [v4 setInvalidationHandler:v27];
-  v7 = [v4 invalidationHandler];
-  [v4 setInterruptionHandler:v7];
+  [connectionCopy setInvalidationHandler:v27];
+  invalidationHandler = [connectionCopy invalidationHandler];
+  [connectionCopy setInterruptionHandler:invalidationHandler];
 
   memset(&error[1], 0, 32);
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   token = *&error[1];
@@ -691,44 +691,44 @@ uint64_t __76__ICRemoteCameraDeviceManager_addSelectorToInterface_selectorString
     CFRelease(v8);
   }
 
-  os_unfair_lock_lock(&v5->_remoteManagerConnectionsLock);
-  v10 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%05d-%@", objc_msgSend(v4, "processIdentifier"), v9];
+  os_unfair_lock_lock(&selfCopy->_remoteManagerConnectionsLock);
+  v10 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%05d-%@", objc_msgSend(connectionCopy, "processIdentifier"), v9];
   v11 = v10;
   [v10 UTF8String];
   v12 = os_transaction_create();
-  [(NSMutableDictionary *)v5->_osTransactions setObject:v12 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)selfCopy->_osTransactions setObject:v12 forKeyedSubscript:v10];
   __ICOSLogCreate();
-  v13 = [(ICRemoteCameraDeviceManager *)v5 managedObjectName];
-  if ([v13 length] >= 0x15)
+  managedObjectName = [(ICRemoteCameraDeviceManager *)selfCopy managedObjectName];
+  if ([managedObjectName length] >= 0x15)
   {
-    v14 = [v13 substringWithRange:{0, 18}];
+    v14 = [managedObjectName substringWithRange:{0, 18}];
     v15 = [v14 stringByAppendingString:@".."];
 
-    v13 = v15;
+    managedObjectName = v15;
   }
 
   v16 = MEMORY[0x29EDBA0F8];
-  v17 = [(ICRemoteCameraDeviceManager *)v5 osTransactions];
-  v18 = [v17 allKeys];
-  v19 = [v16 stringWithFormat:@"+ %@:[%05lu]", v10, objc_msgSend(v18, "count")];
+  osTransactions = [(ICRemoteCameraDeviceManager *)selfCopy osTransactions];
+  allKeys = [osTransactions allKeys];
+  v19 = [v16 stringWithFormat:@"+ %@:[%05lu]", v10, objc_msgSend(allKeys, "count")];
 
   v20 = _gICOSLog;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = v13;
-    v22 = [v13 UTF8String];
+    v21 = managedObjectName;
+    uTF8String = [managedObjectName UTF8String];
     token.val[0] = 136446466;
-    *&token.val[1] = v22;
+    *&token.val[1] = uTF8String;
     LOWORD(token.val[3]) = 2114;
     *(&token.val[3] + 2) = v19;
     _os_log_impl(&dword_29EB58000, v20, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &token, 0x16u);
   }
 
-  v23 = [MEMORY[0x29EDB8E00] dictionary];
-  [v23 setObject:v4 forKeyedSubscript:@"ICRemoteManagerConnection"];
-  [v23 setObject:MEMORY[0x29EDB8EB0] forKeyedSubscript:@"ICRemoteManagerAuthorized"];
-  [(NSMutableDictionary *)v5->_remoteManagerConnections setObject:v23 forKeyedSubscript:v10];
-  os_unfair_lock_unlock(&v5->_remoteManagerConnectionsLock);
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  [dictionary setObject:connectionCopy forKeyedSubscript:@"ICRemoteManagerConnection"];
+  [dictionary setObject:MEMORY[0x29EDB8EB0] forKeyedSubscript:@"ICRemoteManagerAuthorized"];
+  [(NSMutableDictionary *)selfCopy->_remoteManagerConnections setObject:dictionary forKeyedSubscript:v10];
+  os_unfair_lock_unlock(&selfCopy->_remoteManagerConnectionsLock);
 
   _Block_object_dispose(v30, 8);
   v24 = *MEMORY[0x29EDCA608];
@@ -745,12 +745,12 @@ void __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke
   }
 }
 
-- (void)removeRemoteManagerConnectionWithProcessIdentifier:(int)a3
+- (void)removeRemoteManagerConnectionWithProcessIdentifier:(int)identifier
 {
-  v4 = self;
+  selfCopy = self;
   v66 = *MEMORY[0x29EDCA608];
   os_unfair_lock_lock(&self->_remoteManagerConnectionsLock);
-  v5 = [(NSMutableDictionary *)v4->_remoteManagerConnections copy];
+  v5 = [(NSMutableDictionary *)selfCopy->_remoteManagerConnections copy];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
@@ -761,7 +761,7 @@ void __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke
   {
     v8 = v7;
     v9 = *v57;
-    v50 = a3;
+    identifierCopy = identifier;
     v48 = *v57;
     v49 = v6;
     do
@@ -778,36 +778,36 @@ void __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke
         v11 = *(*(&v56 + 1) + 8 * v10);
         v12 = [v6 objectForKeyedSubscript:v11];
         v13 = [v12 objectForKeyedSubscript:@"ICRemoteManagerConnection"];
-        v14 = [v13 processIdentifier];
-        if (a3 == -1 || v14 == a3)
+        processIdentifier = [v13 processIdentifier];
+        if (identifier == -1 || processIdentifier == identifier)
         {
-          v15 = [(ICRemoteCameraDeviceManager *)v4 osTransactions];
-          [v15 removeObjectForKey:v11];
+          osTransactions = [(ICRemoteCameraDeviceManager *)selfCopy osTransactions];
+          [osTransactions removeObjectForKey:v11];
 
           __ICOSLogCreate();
-          v16 = [(ICRemoteCameraDeviceManager *)v4 managedObjectName];
-          if ([v16 length] >= 0x15)
+          managedObjectName = [(ICRemoteCameraDeviceManager *)selfCopy managedObjectName];
+          if ([managedObjectName length] >= 0x15)
           {
-            v17 = [v16 substringWithRange:{0, 18}];
+            v17 = [managedObjectName substringWithRange:{0, 18}];
             v18 = [v17 stringByAppendingString:@".."];
 
-            v16 = v18;
+            managedObjectName = v18;
           }
 
           v19 = MEMORY[0x29EDBA0F8];
-          v20 = v4;
-          v21 = [(ICRemoteCameraDeviceManager *)v4 osTransactions];
-          v22 = [v21 allKeys];
-          v23 = [v19 stringWithFormat:@"- %@:[%05lu]", v11, objc_msgSend(v22, "count")];
+          v20 = selfCopy;
+          osTransactions2 = [(ICRemoteCameraDeviceManager *)selfCopy osTransactions];
+          allKeys = [osTransactions2 allKeys];
+          v23 = [v19 stringWithFormat:@"- %@:[%05lu]", v11, objc_msgSend(allKeys, "count")];
 
           v24 = _gICOSLog;
           if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = v16;
+            v25 = managedObjectName;
             v26 = v24;
-            v27 = [v16 UTF8String];
+            uTF8String = [managedObjectName UTF8String];
             *buf = 136446466;
-            v62 = v27;
+            v62 = uTF8String;
             v63 = 2114;
             v64 = v23;
             _os_log_impl(&dword_29EB58000, v26, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -816,9 +816,9 @@ void __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke
           [v13 setInvalidationHandler:0];
           [v13 setInterruptionHandler:0];
           [v13 invalidate];
-          v4 = v20;
+          selfCopy = v20;
           [(NSMutableDictionary *)v20->_remoteManagerConnections removeObjectForKey:v11];
-          a3 = v50;
+          identifier = identifierCopy;
           v9 = v48;
           v6 = v49;
           v8 = v51;
@@ -834,10 +834,10 @@ void __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke
     while (v8);
   }
 
-  if (v4->_systemDaemon && ![(NSMutableDictionary *)v4->_remoteManagerConnections count])
+  if (selfCopy->_systemDaemon && ![(NSMutableDictionary *)selfCopy->_remoteManagerConnections count])
   {
-    v29 = v4;
-    v30 = [(NSMutableArray *)v4->_remoteCameraDevices copy];
+    v29 = selfCopy;
+    v30 = [(NSMutableArray *)selfCopy->_remoteCameraDevices copy];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
@@ -857,8 +857,8 @@ void __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke
             objc_enumerationMutation(v31);
           }
 
-          v36 = [*(*(&v52 + 1) + 8 * i) camera];
-          [v36 closeDevice];
+          camera = [*(*(&v52 + 1) + 8 * i) camera];
+          [camera closeDevice];
         }
 
         v33 = [v31 countByEnumeratingWithState:&v52 objects:v60 count:16];
@@ -869,8 +869,8 @@ void __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke
 
     os_unfair_lock_unlock(v29 + 3);
     v37 = MEMORY[0x29EDBA0F8];
-    v38 = [(os_unfair_lock_s *)v29 managedObjectName];
-    v39 = [v37 stringWithFormat:@"%@-[D]", v38];
+    managedObjectName2 = [(os_unfair_lock_s *)v29 managedObjectName];
+    v39 = [v37 stringWithFormat:@"%@-[D]", managedObjectName2];
 
     __ICOSLogCreate();
     v40 = v39;
@@ -887,9 +887,9 @@ void __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke
     {
       v45 = v41;
       v46 = v44;
-      v47 = [v41 UTF8String];
+      uTF8String2 = [v41 UTF8String];
       *buf = 136446466;
-      v62 = v47;
+      v62 = uTF8String2;
       v63 = 2114;
       v64 = v43;
       _os_log_impl(&dword_29EB58000, v46, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -898,12 +898,12 @@ void __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke
     exit(0);
   }
 
-  os_unfair_lock_unlock(&v4->_remoteManagerConnectionsLock);
+  os_unfair_lock_unlock(&selfCopy->_remoteManagerConnectionsLock);
 
   v28 = *MEMORY[0x29EDCA608];
 }
 
-- (BOOL)remoteManagerConnectionWithProcessIdentifierAuthorized:(int)a3
+- (BOOL)remoteManagerConnectionWithProcessIdentifierAuthorized:(int)authorized
 {
   v21 = *MEMORY[0x29EDCA608];
   os_unfair_lock_lock(&self->_remoteManagerConnectionsLock);
@@ -928,10 +928,10 @@ void __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke
 
         v10 = [(NSMutableDictionary *)self->_remoteManagerConnections objectForKeyedSubscript:*(*(&v16 + 1) + 8 * i), v16];
         v11 = [v10 objectForKeyedSubscript:@"ICRemoteManagerConnection"];
-        if ([v11 processIdentifier] == a3)
+        if ([v11 processIdentifier] == authorized)
         {
           v13 = [v10 objectForKeyedSubscript:@"ICRemoteManagerAuthorized"];
-          v12 = [v13 BOOLValue];
+          bOOLValue = [v13 BOOLValue];
 
           goto LABEL_11;
         }
@@ -947,12 +947,12 @@ void __58__ICRemoteCameraDeviceManager_addRemoteManagerConnection___block_invoke
     }
   }
 
-  v12 = 0;
+  bOOLValue = 0;
 LABEL_11:
 
   os_unfair_lock_unlock(&self->_remoteManagerConnectionsLock);
   v14 = *MEMORY[0x29EDCA608];
-  return v12;
+  return bOOLValue;
 }
 
 @end

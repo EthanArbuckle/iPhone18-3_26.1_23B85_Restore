@@ -1,7 +1,7 @@
 @interface SKRemoteEngagementPresentationWindow
 - (SKRemoteEngagementPresentationWindow)init;
 - (id)_presentationViewController;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation SKRemoteEngagementPresentationWindow
@@ -15,8 +15,8 @@
   if (v2)
   {
     [(SKRemoteEngagementPresentationWindow *)v2 setOpaque:0];
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(SKRemoteEngagementPresentationWindow *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SKRemoteEngagementPresentationWindow *)v3 setBackgroundColor:clearColor];
 
     [(SKRemoteEngagementPresentationWindow *)v3 setWindowLevel:*MEMORY[0x1E69DE7E8] + -1.0];
   }
@@ -24,19 +24,19 @@
   return v3;
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SKRemoteEngagementPresentationWindow *)self _presentationViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  _presentationViewController = [(SKRemoteEngagementPresentationWindow *)self _presentationViewController];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __82__SKRemoteEngagementPresentationWindow_presentViewController_animated_completion___block_invoke;
   v12[3] = &unk_1E7B27900;
-  v13 = v8;
-  v11 = v8;
-  [v10 presentViewController:v9 animated:v5 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [_presentationViewController presentViewController:controllerCopy animated:animatedCopy completion:v12];
 }
 
 uint64_t __82__SKRemoteEngagementPresentationWindow_presentViewController_animated_completion___block_invoke(uint64_t a1)
@@ -52,9 +52,9 @@ uint64_t __82__SKRemoteEngagementPresentationWindow_presentViewController_animat
 
 - (id)_presentationViewController
 {
-  v3 = [(SKRemoteEngagementPresentationWindow *)self rootViewController];
+  rootViewController = [(SKRemoteEngagementPresentationWindow *)self rootViewController];
 
-  if (!v3)
+  if (!rootViewController)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DC670]);
     [v4 setSizesWindowToScene:1];

@@ -2,30 +2,30 @@
 + (BOOL)updatesGuideDuringRotation;
 + (UIKeyboardCameraSession)sharedSession;
 + (id)_textContentTypesForDataDetection;
-+ (id)keyboardCameraContentTypeForResponder:(id)a3;
++ (id)keyboardCameraContentTypeForResponder:(id)responder;
 - (UITextInputSessionActionAnalytics)sessionAnalytics;
 - (id)_sessionIdentifier;
 - (id)_textFormattingResponder;
 - (id)_textInputResponder;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)_addObservers;
-- (void)_cleanupKeyboardCameraAndShouldInsertText:(BOOL)a3;
+- (void)_cleanupKeyboardCameraAndShouldInsertText:(BOOL)text;
 - (void)_dismissKeyboardCamera;
-- (void)_firstResponderDidChange:(id)a3;
-- (void)_keyboardAboutToHide:(id)a3;
+- (void)_firstResponderDidChange:(id)change;
+- (void)_keyboardAboutToHide:(id)hide;
 - (void)_keyboardCameraPreparationDidComplete;
 - (void)_makeResponderEditableIfNecessary;
 - (void)_show;
-- (void)_updatePreviewWithString:(id)a3;
+- (void)_updatePreviewWithString:(id)string;
 - (void)dealloc;
 - (void)endActiveSession;
 - (void)keyboardCameraDidAccept;
 - (void)keyboardCameraDidCancel;
-- (void)keyboardCameraDidUpdateString:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)showForResponder:(id)a3 sender:(id)a4 rtiConfiguration:(id)a5;
+- (void)keyboardCameraDidUpdateString:(id)string;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)showForResponder:(id)responder sender:(id)sender rtiConfiguration:(id)configuration;
 @end
 
 @implementation UIKeyboardCameraSession
@@ -48,24 +48,24 @@
 + (BOOL)updatesGuideDuringRotation
 {
   v2 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-  v3 = [v2 keyboardWindow];
-  v4 = [v3 rootViewController];
+  keyboardWindow = [v2 keyboardWindow];
+  rootViewController = [keyboardWindow rootViewController];
 
-  v5 = [v4 presentedViewController];
-  v6 = [v5 presentationController];
+  presentedViewController = [rootViewController presentedViewController];
+  presentationController = [presentedViewController presentationController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 updatesGuideDuringRotation];
+    updatesGuideDuringRotation = [presentationController updatesGuideDuringRotation];
   }
 
   else
   {
-    v7 = 0;
+    updatesGuideDuringRotation = 0;
   }
 
-  return v7;
+  return updatesGuideDuringRotation;
 }
 
 + (id)_textContentTypesForDataDetection
@@ -95,15 +95,15 @@ void __60__UIKeyboardCameraSession__textContentTypesForDataDetection__block_invo
   _MergedGlobals_1189 = v0;
 }
 
-+ (id)keyboardCameraContentTypeForResponder:(id)a3
++ (id)keyboardCameraContentTypeForResponder:(id)responder
 {
-  v4 = a3;
+  responderCopy = responder;
   v5 = &stru_1EFB14550;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 textContentType];
+    textContentType = [responderCopy textContentType];
 
-    if (v6)
+    if (textContentType)
     {
       goto LABEL_14;
     }
@@ -111,7 +111,7 @@ void __60__UIKeyboardCameraSession__textContentTypesForDataDetection__block_invo
 
   else
   {
-    v6 = v5;
+    textContentType = v5;
     if (v5)
     {
       goto LABEL_14;
@@ -123,34 +123,34 @@ void __60__UIKeyboardCameraSession__textContentTypesForDataDetection__block_invo
     goto LABEL_10;
   }
 
-  v7 = [v4 keyboardType];
-  if (v7 == 3)
+  keyboardType = [responderCopy keyboardType];
+  if (keyboardType == 3)
   {
     v8 = &UITextContentTypeURL;
     goto LABEL_13;
   }
 
-  if (v7 == 5)
+  if (keyboardType == 5)
   {
     v8 = &UITextContentTypeTelephoneNumber;
     goto LABEL_13;
   }
 
-  if (v7 != 7)
+  if (keyboardType != 7)
   {
 LABEL_10:
-    v6 = 0;
+    textContentType = 0;
     goto LABEL_14;
   }
 
   v8 = &UITextContentTypeEmailAddress;
 LABEL_13:
-  v6 = *v8;
+  textContentType = *v8;
 LABEL_14:
-  v9 = [a1 _textContentTypesForDataDetection];
-  if ([v9 containsObject:v6])
+  _textContentTypesForDataDetection = [self _textContentTypesForDataDetection];
+  if ([_textContentTypesForDataDetection containsObject:textContentType])
   {
-    v5 = v6;
+    v5 = textContentType;
   }
 
   v10 = v5;
@@ -158,24 +158,24 @@ LABEL_14:
   return v5;
 }
 
-- (void)showForResponder:(id)a3 sender:(id)a4 rtiConfiguration:(id)a5
+- (void)showForResponder:(id)responder sender:(id)sender rtiConfiguration:(id)configuration
 {
-  v21 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIViewController *)self->_keyboardCameraViewController presentingViewController];
+  responderCopy = responder;
+  senderCopy = sender;
+  configurationCopy = configuration;
+  presentingViewController = [(UIViewController *)self->_keyboardCameraViewController presentingViewController];
 
-  if (v11)
+  if (presentingViewController)
   {
     goto LABEL_26;
   }
 
-  v12 = v21;
+  v12 = responderCopy;
   if ([v12 conformsToProtocol:&unk_1EFE8E9A0])
   {
     if (v12)
     {
-      v13 = [v12 textInputTraits];
+      textInputTraits = [v12 textInputTraits];
       v14 = v12;
 LABEL_10:
 
@@ -190,20 +190,20 @@ LABEL_10:
   v14 = v12;
   if (![v14 conformsToProtocol:&unk_1EFE8A940])
   {
-    v13 = 0;
+    textInputTraits = 0;
     goto LABEL_10;
   }
 
   if (v14)
   {
-    v13 = [UITextInputTraits traitsByAdoptingTraits:v14];
+    textInputTraits = [UITextInputTraits traitsByAdoptingTraits:v14];
     goto LABEL_10;
   }
 
-  v13 = 0;
+  textInputTraits = 0;
 LABEL_11:
 
-  objc_storeStrong(&self->_responder, a3);
+  objc_storeStrong(&self->_responder, responder);
   if ([v12 conformsToProtocol:&unk_1F016CC30] & 1) != 0 || (objc_msgSend(v12, "conformsToProtocol:", &unk_1F016C810))
   {
     v15 = 1;
@@ -218,7 +218,7 @@ LABEL_11:
   self->_isTextInputResponder = [v12 conformsToProtocol:&unk_1EFE8B2D0];
   self->_isTextFormattingResponder = [v12 conformsToProtocol:&unk_1EFE896F0];
   self->_respondsToKeyboardInputShouldInsertText = objc_opt_respondsToSelector() & 1;
-  if (([v13 isSingleLineDocument] & 1) != 0 || objc_msgSend(v13, "returnKeyType"))
+  if (([textInputTraits isSingleLineDocument] & 1) != 0 || objc_msgSend(textInputTraits, "returnKeyType"))
   {
     isKindOfClass = 1;
   }
@@ -233,34 +233,34 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v13 isSecureTextEntry];
+    isSecureTextEntry = [textInputTraits isSecureTextEntry];
   }
 
   else
   {
-    v17 = 0;
+    isSecureTextEntry = 0;
   }
 
-  self->_isSecureFieldEditor = v17;
-  objc_storeStrong(&self->_sender, a4);
-  if (v10)
+  self->_isSecureFieldEditor = isSecureTextEntry;
+  objc_storeStrong(&self->_sender, sender);
+  if (configurationCopy)
   {
-    self->_isWebResponder = [v10 isWebKitInteractionView];
-    self->_isSingleLineDocument = [v10 isSingleLineDocument];
-    self->_shouldSuppressSoftwareKeyboard = [v10 shouldSuppressKeyboard];
+    self->_isWebResponder = [configurationCopy isWebKitInteractionView];
+    self->_isSingleLineDocument = [configurationCopy isSingleLineDocument];
+    self->_shouldSuppressSoftwareKeyboard = [configurationCopy shouldSuppressKeyboard];
   }
 
   [(UIKeyboardCameraSession *)self _show];
-  v18 = [(UIKeyboardCameraSession *)self sessionAnalytics];
-  [v18 didBegin];
+  sessionAnalytics = [(UIKeyboardCameraSession *)self sessionAnalytics];
+  [sessionAnalytics didBegin];
 
   v19 = +[UIKeyboard activeKeyboard];
   [v19 acceptAutocorrectionWithCompletionHandler:0];
 
   if (self->_isSecureFieldEditor)
   {
-    v20 = [v12 _inputController];
-    [v20 clearText];
+    _inputController = [v12 _inputController];
+    [_inputController clearText];
   }
 
 LABEL_26:
@@ -269,14 +269,14 @@ LABEL_26:
 - (void)dealloc
 {
   v6[5] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIWindowFirstResponderDidChangeNotification";
   v6[1] = @"UITextInputCurrentInputModeDidChangeNotification";
   v6[2] = @"UIApplicationDidEnterBackgroundNotification";
   v6[3] = @"UIApplicationWillResignActiveNotification";
   v6[4] = @"UIKeyboardPrivateWillHideNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:5];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = UIKeyboardCameraSession;
@@ -301,17 +301,17 @@ LABEL_26:
 
 - (void)_makeResponderEditableIfNecessary
 {
-  v3 = [(UIKeyboardCameraSession *)self responder];
-  v4 = [v3 isFirstResponder];
+  responder = [(UIKeyboardCameraSession *)self responder];
+  isFirstResponder = [responder isFirstResponder];
 
-  v5 = [(UIKeyboardCameraSession *)self responder];
+  responder2 = [(UIKeyboardCameraSession *)self responder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_6:
-    if (v4)
+    if (isFirstResponder)
     {
       return;
     }
@@ -319,24 +319,24 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = [(UIKeyboardCameraSession *)self responder];
-  if (([v7 isEditable] & 1) != 0 || !objc_msgSend(v7, "_shouldBecomeEditableUponFocus"))
+  responder3 = [(UIKeyboardCameraSession *)self responder];
+  if (([responder3 isEditable] & 1) != 0 || !objc_msgSend(responder3, "_shouldBecomeEditableUponFocus"))
   {
 
     goto LABEL_6;
   }
 
-  [v7 setEditable:1];
+  [responder3 setEditable:1];
 
 LABEL_7:
-  v8 = [(UIKeyboardCameraSession *)self responder];
-  v9 = [v8 canBecomeFirstResponder];
+  responder4 = [(UIKeyboardCameraSession *)self responder];
+  canBecomeFirstResponder = [responder4 canBecomeFirstResponder];
 
-  if (v9)
+  if (canBecomeFirstResponder)
   {
     *&self->_shouldSuppressSoftwareKeyboard = 257;
-    v10 = [(UIKeyboardCameraSession *)self responder];
-    [v10 becomeFirstResponder];
+    responder5 = [(UIKeyboardCameraSession *)self responder];
+    [responder5 becomeFirstResponder];
   }
 }
 
@@ -352,15 +352,15 @@ LABEL_7:
     v3 = +[UIKeyboardImpl activeInstance];
     [v3 forwardKeyboardCameraEvent_startCameraInput:v15];
 
-    v4 = [(UIKeyboardCameraSession *)self _textInputResponder];
-    v5 = v4;
-    if (v4 && self->_isSecureFieldEditor)
+    _textInputResponder = [(UIKeyboardCameraSession *)self _textInputResponder];
+    v5 = _textInputResponder;
+    if (_textInputResponder && self->_isSecureFieldEditor)
     {
-      v6 = [v4 _inputController];
-      [v6 clearText];
+      _inputController = [_textInputResponder _inputController];
+      [_inputController clearText];
 
-      v7 = [v5 textField];
-      [v7 setDisplaySecureTextUsingPlainText:1];
+      textField = [v5 textField];
+      [textField setDisplaySecureTextUsingPlainText:1];
     }
 
     [(UIKeyboardCameraSession *)self _addObservers];
@@ -373,17 +373,17 @@ LABEL_7:
     self->_keyboardCameraViewController = v8;
 
     [(UIKeyboardCameraViewController *)self->_keyboardCameraViewController setDelegate:self];
-    v10 = [(UIKeyboardCameraSession *)self responder];
-    v11 = [UIKeyboardCameraSession keyboardCameraContentTypeForResponder:v10];
+    responder = [(UIKeyboardCameraSession *)self responder];
+    v11 = [UIKeyboardCameraSession keyboardCameraContentTypeForResponder:responder];
     [(UIKeyboardCameraViewController *)self->_keyboardCameraViewController setTextContentType:v11];
 
     [(UIViewController *)self->_keyboardCameraViewController setModalPresentationStyle:4];
     [(UIViewController *)self->_keyboardCameraViewController setTransitioningDelegate:self];
-    v12 = [(UIKeyboardCameraSession *)self _textFormattingResponder];
-    v13 = v12;
-    if (v12)
+    _textFormattingResponder = [(UIKeyboardCameraSession *)self _textFormattingResponder];
+    v13 = _textFormattingResponder;
+    if (_textFormattingResponder)
     {
-      [v12 _hideTextFormattingOptions:0];
+      [_textFormattingResponder _hideTextFormattingOptions:0];
     }
 
     objc_initWeak(&location, self);
@@ -417,28 +417,28 @@ void __32__UIKeyboardCameraSession__show__block_invoke(uint64_t a1, int a2)
 {
   if (!+[_UIRemoteKeyboards enabled])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UIKeyboardCameraSession.m" lineNumber:376 description:@"Keyboard Camera is being used without remote keyboards enabled"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardCameraSession.m" lineNumber:376 description:@"Keyboard Camera is being used without remote keyboards enabled"];
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"_UIKeyboardCameraSessionWillPresent" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIKeyboardCameraSessionWillPresent" object:self];
 
   [(UIPresentationController *)self->_presentationController setDelegate:self];
   v5 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-  v6 = [v5 inputWindowRootViewController];
+  inputWindowRootViewController = [v5 inputWindowRootViewController];
 
-  v7 = [v6 placement];
-  self->_presentingOverKeyboard = [v7 showsKeyboard];
+  placement = [inputWindowRootViewController placement];
+  self->_presentingOverKeyboard = [placement showsKeyboard];
 
   if (!self->_presentingOverKeyboard)
   {
     v8 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v9 = [v8 forceCreateKeyboardWindow];
+    forceCreateKeyboardWindow = [v8 forceCreateKeyboardWindow];
   }
 
   v10 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-  v11 = [v10 inputWindowRootViewController];
+  inputWindowRootViewController2 = [v10 inputWindowRootViewController];
 
   v12 = (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1 || !self->_presentingOverKeyboard;
   objc_initWeak(&location, self);
@@ -448,7 +448,7 @@ void __32__UIKeyboardCameraSession__show__block_invoke(uint64_t a1, int a2)
   v15[2] = __64__UIKeyboardCameraSession__keyboardCameraPreparationDidComplete__block_invoke;
   v15[3] = &unk_1E70F5A28;
   objc_copyWeak(&v16, &location);
-  [v11 presentViewController:keyboardCameraViewController animated:v12 completion:v15];
+  [inputWindowRootViewController2 presentViewController:keyboardCameraViewController animated:v12 completion:v15];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
@@ -467,23 +467,23 @@ void __64__UIKeyboardCameraSession__keyboardCameraPreparationDidComplete__block_
   }
 }
 
-- (void)_keyboardAboutToHide:(id)a3
+- (void)_keyboardAboutToHide:(id)hide
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
-  v6 = [v5 BOOLValue];
+  userInfo = [hide userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
 
     [(UIKeyboardCameraSession *)self keyboardCameraDidCancel];
   }
 }
 
-- (void)_firstResponderDidChange:(id)a3
+- (void)_firstResponderDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"UIWindowFirstResponderUserInfoKey"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"UIWindowFirstResponderUserInfoKey"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -494,14 +494,14 @@ void __64__UIKeyboardCameraSession__keyboardCameraPreparationDidComplete__block_
 
 - (void)_addObservers
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v3 = +[UIWindow _applicationKeyWindow];
-  [v4 addObserver:self selector:sel__firstResponderDidChange_ name:@"UIWindowFirstResponderDidChangeNotification" object:v3];
+  [defaultCenter addObserver:self selector:sel__firstResponderDidChange_ name:@"UIWindowFirstResponderDidChangeNotification" object:v3];
 
-  [v4 addObserver:self selector:sel__inputModeDidChange_ name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
-  [v4 addObserver:self selector:sel__didEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:UIApp];
-  [v4 addObserver:self selector:sel__didEnterBackground_ name:@"UIApplicationWillResignActiveNotification" object:UIApp];
-  [v4 addObserver:self selector:sel__keyboardAboutToHide_ name:@"UIKeyboardPrivateWillHideNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__inputModeDidChange_ name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__didEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:UIApp];
+  [defaultCenter addObserver:self selector:sel__didEnterBackground_ name:@"UIApplicationWillResignActiveNotification" object:UIApp];
+  [defaultCenter addObserver:self selector:sel__keyboardAboutToHide_ name:@"UIKeyboardPrivateWillHideNotification" object:0];
 }
 
 - (id)_textInputResponder
@@ -530,42 +530,42 @@ void __64__UIKeyboardCameraSession__keyboardCameraPreparationDidComplete__block_
   }
 }
 
-- (void)_updatePreviewWithString:(id)a3
+- (void)_updatePreviewWithString:(id)string
 {
-  v6 = a3;
-  v4 = [(UIKeyboardCameraSession *)self _textInputResponder];
-  if (v4)
+  stringCopy = string;
+  _textInputResponder = [(UIKeyboardCameraSession *)self _textInputResponder];
+  if (_textInputResponder)
   {
-    if (!self->_respondsToKeyboardInputShouldInsertText || [(UIKeyInput *)self->_responder keyboardInput:self->_responder shouldInsertText:v6 isMarkedText:1])
+    if (!self->_respondsToKeyboardInputShouldInsertText || [(UIKeyInput *)self->_responder keyboardInput:self->_responder shouldInsertText:stringCopy isMarkedText:1])
     {
-      [v4 setMarkedText:v6 selectedRange:{objc_msgSend(v6, "length"), 0}];
+      [_textInputResponder setMarkedText:stringCopy selectedRange:{objc_msgSend(stringCopy, "length"), 0}];
     }
 
     if (+[UIKeyboard isInputSystemUI])
     {
       v5 = +[UIKeyboardImpl activeInstance];
-      [v5 forwardKeyboardCameraEvent_updatePreviewText:v6 asMarkedText:1];
+      [v5 forwardKeyboardCameraEvent_updatePreviewText:stringCopy asMarkedText:1];
     }
   }
 }
 
-- (void)_cleanupKeyboardCameraAndShouldInsertText:(BOOL)a3
+- (void)_cleanupKeyboardCameraAndShouldInsertText:(BOOL)text
 {
   if (!self->_didCleanup)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
 
-    v6 = [(UIKeyboardCameraSession *)self _textInputResponder];
-    v7 = v6;
-    if (a3)
+    _textInputResponder = [(UIKeyboardCameraSession *)self _textInputResponder];
+    v7 = _textInputResponder;
+    if (text)
     {
       v8 = [(NSString *)self->_keyboardCameraCandidateString length];
       v9 = v8 != 0;
       if (v7 && v8)
       {
-        v10 = [v7 inputDelegate];
-        [v10 textWillChange:v7];
+        inputDelegate = [v7 inputDelegate];
+        [inputDelegate textWillChange:v7];
 
         v9 = 1;
       }
@@ -586,7 +586,7 @@ void __64__UIKeyboardCameraSession__keyboardCameraPreparationDidComplete__block_
     {
       v9 = 0;
       v11 = 0;
-      if (!v6)
+      if (!_textInputResponder)
       {
         goto LABEL_27;
       }
@@ -609,8 +609,8 @@ void __64__UIKeyboardCameraSession__keyboardCameraPreparationDidComplete__block_
         }
 
 LABEL_25:
-        v18 = [v7 inputDelegate];
-        [v18 textDidChange:v7];
+        inputDelegate2 = [v7 inputDelegate];
+        [inputDelegate2 textDidChange:v7];
 
 LABEL_26:
         v19 = [(UIKeyboardCameraSession *)self sessionAnalytics:v23];
@@ -630,11 +630,11 @@ LABEL_26:
 LABEL_22:
       v11 = 0;
 LABEL_27:
-      v20 = [(UIKeyboardCameraSession *)self sessionAnalytics];
-      [v20 writeAnalytics];
+      sessionAnalytics = [(UIKeyboardCameraSession *)self sessionAnalytics];
+      [sessionAnalytics writeAnalytics];
 
-      v21 = [(UIKeyboardCameraViewController *)self->_keyboardCameraViewController textContentType];
-      [UIKBAnalyticsDispatcher keyboardCameraSessionEndedForTextContentType:v21 didFindText:self->_didFindText didInsertText:v11 sender:self->_sender];
+      textContentType = [(UIKeyboardCameraViewController *)self->_keyboardCameraViewController textContentType];
+      [UIKBAnalyticsDispatcher keyboardCameraSessionEndedForTextContentType:textContentType didFindText:self->_didFindText didInsertText:v11 sender:self->_sender];
       self->_shouldSuppressSoftwareKeyboard = 0;
       keyboardCameraCandidateString = self->_keyboardCameraCandidateString;
       self->_keyboardCameraCandidateString = 0;
@@ -682,18 +682,18 @@ LABEL_19:
 
 - (void)_dismissKeyboardCamera
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"_UIKeyboardCameraSessionWillDismiss" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIKeyboardCameraSessionWillDismiss" object:self];
 
   objc_initWeak(&location, self);
-  v4 = [(UIViewController *)self->_keyboardCameraViewController presentingViewController];
+  presentingViewController = [(UIViewController *)self->_keyboardCameraViewController presentingViewController];
   v5 = (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1 || !self->_presentingOverKeyboard;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __49__UIKeyboardCameraSession__dismissKeyboardCamera__block_invoke;
   v10 = &unk_1E70F5A28;
   objc_copyWeak(&v11, &location);
-  [v4 dismissViewControllerAnimated:v5 completion:&v7];
+  [presentingViewController dismissViewControllerAnimated:v5 completion:&v7];
   if ([UIKeyboard isInputSystemUI:v7])
   {
     v6 = +[UIKeyboardImpl activeInstance];
@@ -721,9 +721,9 @@ void __49__UIKeyboardCameraSession__dismissKeyboardCamera__block_invoke(uint64_t
   _activeSession = 0;
 }
 
-- (void)keyboardCameraDidUpdateString:(id)a3
+- (void)keyboardCameraDidUpdateString:(id)string
 {
-  obj = a3;
+  obj = string;
   if ([obj length])
   {
     self->_didFindText = 1;
@@ -731,8 +731,8 @@ void __49__UIKeyboardCameraSession__dismissKeyboardCamera__block_invoke(uint64_t
 
   if (self->_isSingleLineDocument)
   {
-    v4 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v5 = [obj componentsSeparatedByCharactersInSet:v4];
+    newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v5 = [obj componentsSeparatedByCharactersInSet:newlineCharacterSet];
     v6 = [v5 componentsJoinedByString:@" "];
 
     v7 = v6;
@@ -745,8 +745,8 @@ void __49__UIKeyboardCameraSession__dismissKeyboardCamera__block_invoke(uint64_t
 
   obja = v7;
   objc_storeStrong(&self->_keyboardCameraCandidateString, v7);
-  v8 = [(UIKeyboardCameraSession *)self _textInputResponder];
-  if (v8)
+  _textInputResponder = [(UIKeyboardCameraSession *)self _textInputResponder];
+  if (_textInputResponder)
   {
     if (self->_isWebResponder)
     {
@@ -755,8 +755,8 @@ void __49__UIKeyboardCameraSession__dismissKeyboardCamera__block_invoke(uint64_t
         goto LABEL_13;
       }
 
-      v9 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v10 = [obja componentsSeparatedByCharactersInSet:v9];
+      newlineCharacterSet2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      v10 = [obja componentsSeparatedByCharactersInSet:newlineCharacterSet2];
       v11 = [v10 componentsJoinedByString:@" "];
 
       objc_storeStrong(&self->_keyboardCameraCandidateString, v11);
@@ -772,7 +772,7 @@ void __49__UIKeyboardCameraSession__dismissKeyboardCamera__block_invoke(uint64_t
     [(UIKeyboardCameraSession *)self _updatePreviewWithString:?];
     if (self->_isSecureFieldEditor)
     {
-      [v8 _unobscureAllText];
+      [_textInputResponder _unobscureAllText];
     }
   }
 
@@ -803,7 +803,7 @@ LABEL_13:
   }
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
@@ -818,7 +818,7 @@ LABEL_13:
   return animationController;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
@@ -833,13 +833,13 @@ LABEL_13:
   return animationController;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v7 = a4;
-  presentationController = a3;
+  viewControllerCopy = viewController;
+  presentationController = controller;
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v9 = [(UIPresentationController *)[UIKeyboardCameraPadPresentationController alloc] initWithPresentedViewController:presentationController presentingViewController:v7];
+    v9 = [(UIPresentationController *)[UIKeyboardCameraPadPresentationController alloc] initWithPresentedViewController:presentationController presentingViewController:viewControllerCopy];
 
     [(UIKeyboardCameraPadPresentationController *)v9 setDimmingViewDelegate:self];
     v10 = v9;
@@ -850,7 +850,7 @@ LABEL_13:
 
   else
   {
-    v10 = [(UIPresentationController *)[UIKeyboardCameraOverlayPresentationController alloc] initWithPresentedViewController:presentationController presentingViewController:v7];
+    v10 = [(UIPresentationController *)[UIKeyboardCameraOverlayPresentationController alloc] initWithPresentedViewController:presentationController presentingViewController:viewControllerCopy];
 
     v11 = 16;
   }
@@ -864,12 +864,12 @@ LABEL_13:
   return v13;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [a3 presentedViewController];
+  presentedViewController = [dismiss presentedViewController];
   keyboardCameraViewController = self->_keyboardCameraViewController;
 
-  if (v4 == keyboardCameraViewController)
+  if (presentedViewController == keyboardCameraViewController)
   {
     [(UIKeyboardCameraSession *)self _cleanupKeyboardCameraAndShouldInsertText:0];
     v6 = self->_keyboardCameraViewController;
@@ -880,19 +880,19 @@ LABEL_13:
 - (id)_sessionIdentifier
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 _sessionIdentifier];
+  _sessionIdentifier = [v2 _sessionIdentifier];
 
-  return v3;
+  return _sessionIdentifier;
 }
 
 - (void)endActiveSession
 {
-  v3 = [(UIKeyboardCameraSession *)self _textInputResponder];
-  v7 = v3;
-  if (v3 && self->_isSecureFieldEditor)
+  _textInputResponder = [(UIKeyboardCameraSession *)self _textInputResponder];
+  v7 = _textInputResponder;
+  if (_textInputResponder && self->_isSecureFieldEditor)
   {
-    v4 = [v3 textField];
-    [v4 setDisplaySecureTextUsingPlainText:0];
+    textField = [_textInputResponder textField];
+    [textField setDisplaySecureTextUsingPlainText:0];
 
     [v7 _obscureAllText];
   }

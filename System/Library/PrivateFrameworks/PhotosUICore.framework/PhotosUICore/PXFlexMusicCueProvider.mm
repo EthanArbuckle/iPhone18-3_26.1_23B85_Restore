@@ -1,9 +1,9 @@
 @interface PXFlexMusicCueProvider
 - (PXFlexMusicCueProvider)init;
-- (id)requestCuesForAudioAsset:(id)a3 resultHandler:(id)a4;
+- (id)requestCuesForAudioAsset:(id)asset resultHandler:(id)handler;
 - (void)_deliverCuesIfNeeded;
-- (void)_fetchCuesForAudioAsset:(id)a3 resultHandler:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)_fetchCuesForAudioAsset:(id)asset resultHandler:(id)handler;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXFlexMusicCueProvider
@@ -39,33 +39,33 @@ void __46__PXFlexMusicCueProvider__deliverCuesIfNeeded__block_invoke(uint64_t a1
   }
 }
 
-- (void)_fetchCuesForAudioAsset:(id)a3 resultHandler:(id)a4
+- (void)_fetchCuesForAudioAsset:(id)asset resultHandler:(id)handler
 {
-  v12 = a3;
+  assetCopy = asset;
   queue = self->_queue;
-  v7 = a4;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(queue);
-  if ([(PXFlexMusicLibrary *)self->_library hasLocalResourceForAsset:v12 resourceType:2])
+  if ([(PXFlexMusicLibrary *)self->_library hasLocalResourceForAsset:assetCopy resourceType:2])
   {
     v8 = +[PXFlexMusicLibrary sharedLibrary];
-    v9 = [v8 cuesForAsset:v12];
+    v9 = [v8 cuesForAsset:assetCopy];
 
-    v7[2](v7, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
   }
 
   else
   {
     requests = self->_requests;
-    v11 = [[_PXFlexMusicCueRequest alloc] initWithAsset:v12 resultHandler:v7];
+    v11 = [[_PXFlexMusicCueRequest alloc] initWithAsset:assetCopy resultHandler:handlerCopy];
 
     [(NSMutableArray *)requests addObject:v11];
-    [(PXFlexMusicLibrary *)self->_library requestDownloadForAsset:v12 resourceType:2];
+    [(PXFlexMusicLibrary *)self->_library requestDownloadForAsset:assetCopy resourceType:2];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 2) != 0 && LibraryContext_166709 == a5)
+  if ((change & 2) != 0 && LibraryContext_166709 == context)
   {
     block[5] = v5;
     block[6] = v6;
@@ -79,22 +79,22 @@ void __46__PXFlexMusicCueProvider__deliverCuesIfNeeded__block_invoke(uint64_t a1
   }
 }
 
-- (id)requestCuesForAudioAsset:(id)a3 resultHandler:(id)a4
+- (id)requestCuesForAudioAsset:(id)asset resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  assetCopy = asset;
+  handlerCopy = handler;
+  v8 = assetCopy;
   if (v8)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFlexMusicCueProvider requestCuesForAudioAsset:resultHandler:]"];
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [v8 px_descriptionForAssertionMessage];
-      [v13 handleFailureInFunction:v14 file:@"PXFlexMusicCueProvider.m" lineNumber:52 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"asset", v16, v17}];
+      px_descriptionForAssertionMessage = [v8 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInFunction:v14 file:@"PXFlexMusicCueProvider.m" lineNumber:52 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"asset", v16, px_descriptionForAssertionMessage}];
     }
   }
 
@@ -106,9 +106,9 @@ void __46__PXFlexMusicCueProvider__deliverCuesIfNeeded__block_invoke(uint64_t a1
   block[3] = &unk_1E773F368;
   objc_copyWeak(&v21, &location);
   v19 = v8;
-  v20 = v7;
+  v20 = handlerCopy;
   v10 = v8;
-  v11 = v7;
+  v11 = handlerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v21);

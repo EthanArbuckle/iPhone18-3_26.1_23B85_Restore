@@ -7,7 +7,7 @@
 - (NRDevice)device;
 - (NSString)countryCodeFromCurrentLocale;
 - (_HKRPOxygenSaturationOnboardingManagerDataSource)init;
-- (id)_lazyPropertyWithLockedBlock:(id)a3;
+- (id)_lazyPropertyWithLockedBlock:(id)block;
 @end
 
 @implementation _HKRPOxygenSaturationOnboardingManagerDataSource
@@ -36,28 +36,28 @@
 
 - (BOOL)shouldAdvertise
 {
-  v2 = [(_HKRPOxygenSaturationOnboardingManagerDataSource *)self countryCodeFromCurrentLocale];
-  v3 = [HKRPOxygenSaturationAvailability isCountryAllowed:v2];
+  countryCodeFromCurrentLocale = [(_HKRPOxygenSaturationOnboardingManagerDataSource *)self countryCodeFromCurrentLocale];
+  v3 = [HKRPOxygenSaturationAvailability isCountryAllowed:countryCodeFromCurrentLocale];
 
   return v3;
 }
 
 - (NSString)countryCodeFromCurrentLocale
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 countryCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  countryCode = [currentLocale countryCode];
 
-  return v3;
+  return countryCode;
 }
 
 - (NRDevice)device
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [MEMORY[0x277D2BCF8] activeDeviceSelectorBlock];
-  v4 = [v2 getDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activeDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activeDeviceSelectorBlock];
+  v4 = [mEMORY[0x277D2BCF8] getDevicesMatching:activeDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (HKFeatureAvailabilityProviding)featureAvailabilityProvider
@@ -96,11 +96,11 @@
   return v2;
 }
 
-- (id)_lazyPropertyWithLockedBlock:(id)a3
+- (id)_lazyPropertyWithLockedBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v5 = v4[2](v4);
+  v5 = blockCopy[2](blockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 

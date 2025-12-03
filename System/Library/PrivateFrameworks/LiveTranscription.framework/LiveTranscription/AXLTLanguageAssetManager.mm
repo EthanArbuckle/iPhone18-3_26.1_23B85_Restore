@@ -1,8 +1,8 @@
 @interface AXLTLanguageAssetManager
 + (id)sharedInstance;
-- (void)deleteSpeechAssetForTaskHint:(int64_t)a3;
-- (void)downloadSpeechAssetForTaskHint:(int64_t)a3 progress:(id)a4 completion:(id)a5;
-- (void)languageAssetAvaliableForTaskHint:(int64_t)a3 completion:(id)a4;
+- (void)deleteSpeechAssetForTaskHint:(int64_t)hint;
+- (void)downloadSpeechAssetForTaskHint:(int64_t)hint progress:(id)progress completion:(id)completion;
+- (void)languageAssetAvaliableForTaskHint:(int64_t)hint completion:(id)completion;
 @end
 
 @implementation AXLTLanguageAssetManager
@@ -26,9 +26,9 @@ uint64_t __42__AXLTLanguageAssetManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)languageAssetAvaliableForTaskHint:(int64_t)a3 completion:(id)a4
+- (void)languageAssetAvaliableForTaskHint:(int64_t)hint completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = AXLogLiveTranscription();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -41,9 +41,9 @@ uint64_t __42__AXLTLanguageAssetManager_sharedInstance__block_invoke()
   v17[2] = __73__AXLTLanguageAssetManager_languageAssetAvaliableForTaskHint_completion___block_invoke;
   v17[3] = &unk_27981C9F8;
   v17[4] = self;
-  v18 = v6;
-  v16 = v6;
-  [v15 installedLanguagesForTaskHint:a3 completion:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [v15 installedLanguagesForTaskHint:hint completion:v17];
 }
 
 void __73__AXLTLanguageAssetManager_languageAssetAvaliableForTaskHint_completion___block_invoke(uint64_t a1, void *a2)
@@ -61,21 +61,21 @@ void __73__AXLTLanguageAssetManager_languageAssetAvaliableForTaskHint_completion
   }
 }
 
-- (void)downloadSpeechAssetForTaskHint:(int64_t)a3 progress:(id)a4 completion:(id)a5
+- (void)downloadSpeechAssetForTaskHint:(int64_t)hint progress:(id)progress completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  progressCopy = progress;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __79__AXLTLanguageAssetManager_downloadSpeechAssetForTaskHint_progress_completion___block_invoke;
   v12[3] = &unk_27981CA70;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
-  [(AXLTLanguageAssetManager *)self languageAssetAvaliableForTaskHint:a3 completion:v12];
+  v13 = progressCopy;
+  v14 = completionCopy;
+  hintCopy = hint;
+  v10 = completionCopy;
+  v11 = progressCopy;
+  [(AXLTLanguageAssetManager *)self languageAssetAvaliableForTaskHint:hint completion:v12];
 }
 
 void __79__AXLTLanguageAssetManager_downloadSpeechAssetForTaskHint_progress_completion___block_invoke(uint64_t a1, char a2)
@@ -130,15 +130,15 @@ uint64_t __79__AXLTLanguageAssetManager_downloadSpeechAssetForTaskHint_progress_
   return result;
 }
 
-- (void)deleteSpeechAssetForTaskHint:(int64_t)a3
+- (void)deleteSpeechAssetForTaskHint:(int64_t)hint
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __57__AXLTLanguageAssetManager_deleteSpeechAssetForTaskHint___block_invoke;
   v3[3] = &unk_27981CA98;
   v3[4] = self;
-  v3[5] = a3;
-  [(AXLTLanguageAssetManager *)self languageAssetAvaliableForTaskHint:a3 completion:v3];
+  v3[5] = hint;
+  [(AXLTLanguageAssetManager *)self languageAssetAvaliableForTaskHint:hint completion:v3];
 }
 
 void __57__AXLTLanguageAssetManager_deleteSpeechAssetForTaskHint___block_invoke(uint64_t a1, int a2)

@@ -4,15 +4,15 @@
 - (MKMapView)mapView;
 - (NSString)instructionalText;
 - (RAPInlineMapViewModelDelegate)delegate;
-- (id)initForPickingFeatureOfKind:(int64_t)a3 centerCoordinate:(CLLocationCoordinate2D)a4 markerViewAttributes:(id)a5 accessPointsEnabled:(BOOL)a6 delegate:(id)a7;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (id)initForPickingFeatureOfKind:(int64_t)kind centerCoordinate:(CLLocationCoordinate2D)coordinate markerViewAttributes:(id)attributes accessPointsEnabled:(BOOL)enabled delegate:(id)delegate;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (void)_initMapView;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)setMapView:(id)a3;
-- (void)setSelectedCoordinate:(CLLocationCoordinate2D)a3;
-- (void)setSelectedViewMode:(int64_t)a3;
-- (void)updateCenterCoordinate:(CLLocationCoordinate2D)a3;
-- (void)updateMapPickingKind:(int64_t)a3;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)setMapView:(id)view;
+- (void)setSelectedCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)setSelectedViewMode:(int64_t)mode;
+- (void)updateCenterCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)updateMapPickingKind:(int64_t)kind;
 @end
 
 @implementation RAPInlineMapViewModel
@@ -49,24 +49,24 @@
   return WeakRetained;
 }
 
-- (void)setSelectedCoordinate:(CLLocationCoordinate2D)a3
+- (void)setSelectedCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  self->_selectedCoordinate = a3;
-  v4 = [(RAPInlineMapViewModel *)self delegate];
+  self->_selectedCoordinate = coordinate;
+  delegate = [(RAPInlineMapViewModel *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(RAPInlineMapViewModel *)self delegate];
-    [v6 inlineMapViewModelUpdatedSelectedCoordinate:self];
+    delegate2 = [(RAPInlineMapViewModel *)self delegate];
+    [delegate2 inlineMapViewModelUpdatedSelectedCoordinate:self];
   }
 }
 
-- (void)setSelectedViewMode:(int64_t)a3
+- (void)setSelectedViewMode:(int64_t)mode
 {
-  if (self->_selectedViewMode != a3)
+  if (self->_selectedViewMode != mode)
   {
-    self->_selectedViewMode = a3;
+    self->_selectedViewMode = mode;
     WeakRetained = objc_loadWeakRetained(&self->_mapView);
     v6 = self->_selectedViewMode - 1;
     if (v6 > 6)
@@ -84,16 +84,16 @@
   }
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  [a3 centerCoordinate];
+  [view centerCoordinate];
 
   [(RAPInlineMapViewModel *)self setSelectedCoordinate:?];
 }
 
-- (void)updateCenterCoordinate:(CLLocationCoordinate2D)a3
+- (void)updateCenterCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  if (fabs(a3.longitude) <= 180.0 && a3.latitude >= -90.0 && a3.latitude <= 90.0)
+  if (fabs(coordinate.longitude) <= 180.0 && coordinate.latitude >= -90.0 && coordinate.latitude <= 90.0)
   {
     [(RAPInlineMapViewModel *)self setSelectedCoordinate:?];
     kind = self->_kind;
@@ -125,14 +125,14 @@
   }
 }
 
-- (void)updateMapPickingKind:(int64_t)a3
+- (void)updateMapPickingKind:(int64_t)kind
 {
-  if (self->_kind != a3)
+  if (self->_kind != kind)
   {
-    self->_kind = a3;
-    v4 = [(RAPInlineMapViewModel *)self instructionalText];
+    self->_kind = kind;
+    instructionalText = [(RAPInlineMapViewModel *)self instructionalText];
     WeakRetained = objc_loadWeakRetained(&self->_mapView);
-    [WeakRetained setAccessibilityLabel:v4];
+    [WeakRetained setAccessibilityLabel:instructionalText];
 
     viewAttributeObserver = self->_viewAttributeObserver;
     if (viewAttributeObserver)
@@ -147,13 +147,13 @@
 - (NSString)instructionalText
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
   kind = self->_kind;
   if (kind == 3)
   {
     v6 = +[NSBundle mainBundle];
-    if (v4 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v7 = @"Click map to edit entrance. [Report an Issue]";
     }
@@ -170,7 +170,7 @@
     v6 = +[NSBundle mainBundle];
     if (accessPointsEnabled)
     {
-      if (v4 == 5)
+      if (userInterfaceIdiom == 5)
       {
         v7 = @"Click map to edit location and entrances [Report an Issue]";
       }
@@ -181,7 +181,7 @@
       }
     }
 
-    else if (v4 == 5)
+    else if (userInterfaceIdiom == 5)
     {
       v7 = @"Click map to edit location [Report an Issue]";
     }
@@ -201,7 +201,7 @@
     }
 
     v6 = +[NSBundle mainBundle];
-    if (v4 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v7 = @"Click map to select a label [Report an Issue]";
     }
@@ -219,13 +219,13 @@ LABEL_19:
   return v9;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  if (self->_centerPointAnnotation == a4)
+  if (self->_centerPointAnnotation == annotation)
   {
     v4 = [[MKMarkerAnnotationView alloc] initWithAnnotation:self->_centerPointAnnotation reuseIdentifier:@"CenterPointAnnotationView"];
-    v6 = [(RAPMarkerViewAttributes *)self->_markerViewAttributes styleAttributes];
-    [v4 _setStyleAttributes:v6];
+    styleAttributes = [(RAPMarkerViewAttributes *)self->_markerViewAttributes styleAttributes];
+    [v4 _setStyleAttributes:styleAttributes];
 
     [v4 setSelected:1];
     LODWORD(v7) = 1148846080;
@@ -284,25 +284,25 @@ LABEL_19:
   v15 = objc_loadWeakRetained(&self->_mapView);
   [v15 setMapType:v14];
 
-  v16 = [(RAPInlineMapViewModel *)self allowsEditing];
+  allowsEditing = [(RAPInlineMapViewModel *)self allowsEditing];
   v17 = objc_loadWeakRetained(&self->_mapView);
-  [v17 setZoomEnabled:v16];
+  [v17 setZoomEnabled:allowsEditing];
 
-  v18 = [(RAPInlineMapViewModel *)self allowsEditing];
+  allowsEditing2 = [(RAPInlineMapViewModel *)self allowsEditing];
   v19 = objc_loadWeakRetained(&self->_mapView);
-  [v19 setScrollEnabled:v18];
+  [v19 setScrollEnabled:allowsEditing2];
 
-  v20 = [(RAPInlineMapViewModel *)self allowsEditing];
+  allowsEditing3 = [(RAPInlineMapViewModel *)self allowsEditing];
   v21 = objc_loadWeakRetained(&self->_mapView);
-  [v21 setPitchEnabled:v20];
+  [v21 setPitchEnabled:allowsEditing3];
 
-  v22 = [(RAPInlineMapViewModel *)self allowsEditing];
+  allowsEditing4 = [(RAPInlineMapViewModel *)self allowsEditing];
   v23 = objc_loadWeakRetained(&self->_mapView);
-  [v23 setRotateEnabled:v22];
+  [v23 setRotateEnabled:allowsEditing4];
 
-  v24 = [(RAPInlineMapViewModel *)self allowsEditing];
+  allowsEditing5 = [(RAPInlineMapViewModel *)self allowsEditing];
   v25 = objc_loadWeakRetained(&self->_mapView);
-  [v25 setUserInteractionEnabled:v24];
+  [v25 setUserInteractionEnabled:allowsEditing5];
 
   kind = self->_kind;
   if (kind)
@@ -327,8 +327,8 @@ LABEL_10:
   if (CLLocationCoordinate2DIsValid(self->_selectedCoordinate))
   {
     v29 = [MKPointAnnotation alloc];
-    v30 = [(RAPMarkerViewAttributes *)self->_markerViewAttributes title];
-    v31 = [v29 initWithCoordinate:v30 title:0 subtitle:{self->_selectedCoordinate.latitude, self->_selectedCoordinate.longitude}];
+    title = [(RAPMarkerViewAttributes *)self->_markerViewAttributes title];
+    v31 = [v29 initWithCoordinate:title title:0 subtitle:{self->_selectedCoordinate.latitude, self->_selectedCoordinate.longitude}];
     centerPointAnnotation = self->_centerPointAnnotation;
     self->_centerPointAnnotation = v31;
 
@@ -337,9 +337,9 @@ LABEL_10:
   }
 }
 
-- (void)setMapView:(id)a3
+- (void)setMapView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
 
   v5 = obj;
@@ -351,30 +351,30 @@ LABEL_10:
   }
 }
 
-- (id)initForPickingFeatureOfKind:(int64_t)a3 centerCoordinate:(CLLocationCoordinate2D)a4 markerViewAttributes:(id)a5 accessPointsEnabled:(BOOL)a6 delegate:(id)a7
+- (id)initForPickingFeatureOfKind:(int64_t)kind centerCoordinate:(CLLocationCoordinate2D)coordinate markerViewAttributes:(id)attributes accessPointsEnabled:(BOOL)enabled delegate:(id)delegate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v13 = a5;
-  v14 = a7;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  attributesCopy = attributes;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = RAPInlineMapViewModel;
   v15 = [(RAPInlineMapViewModel *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_delegate, v14);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     v16->_originalCoordinate.latitude = latitude;
     v16->_originalCoordinate.longitude = longitude;
     v16->_selectedCoordinate.latitude = latitude;
     v16->_selectedCoordinate.longitude = longitude;
-    v16->_kind = a3;
+    v16->_kind = kind;
     v16->_selectedViewMode = 0;
-    v17 = [v13 copy];
+    v17 = [attributesCopy copy];
     markerViewAttributes = v16->_markerViewAttributes;
     v16->_markerViewAttributes = v17;
 
-    v16->_accessPointsEnabled = a6;
+    v16->_accessPointsEnabled = enabled;
     [(RAPInlineMapViewModel *)v16 _initMapView];
   }
 

@@ -1,23 +1,23 @@
 @interface MFSMTPResponse
-- (MFSMTPResponse)initWithStatus:(unint64_t)a3;
+- (MFSMTPResponse)initWithStatus:(unint64_t)status;
 - (id)description;
-- (id)errorMessageWithAddress:(id)a3 defaultMessage:(id)a4;
+- (id)errorMessageWithAddress:(id)address defaultMessage:(id)message;
 - (int64_t)failureReason;
 - (void)_updateEnhancedStatusCodesFromLastResponse;
-- (void)setLastResponseLine:(id)a3;
-- (void)setStatus:(unint64_t)a3;
+- (void)setLastResponseLine:(id)line;
+- (void)setStatus:(unint64_t)status;
 @end
 
 @implementation MFSMTPResponse
 
-- (MFSMTPResponse)initWithStatus:(unint64_t)a3
+- (MFSMTPResponse)initWithStatus:(unint64_t)status
 {
   v5.receiver = self;
   v5.super_class = MFSMTPResponse;
   result = [(MFSMTPResponse *)&v5 init];
   if (result)
   {
-    result->_status = a3;
+    result->_status = status;
     *(result + 13) &= 0xC00Fu;
     *(result + 25) &= 0xF003u;
     *(result + 12) &= 0xFC00u;
@@ -26,11 +26,11 @@
   return result;
 }
 
-- (void)setStatus:(unint64_t)a3
+- (void)setStatus:(unint64_t)status
 {
-  if (self->_status != a3)
+  if (self->_status != status)
   {
-    self->_status = a3;
+    self->_status = status;
     *(self + 13) &= 0xC00Fu;
     *(self + 25) &= 0xF003u;
     *(self + 12) &= 0xFC00u;
@@ -46,13 +46,13 @@
     statusString = self->_statusString;
     self->_statusString = 0;
 
-    v6 = [self->_lastResponseLine bytes];
+    bytes = [self->_lastResponseLine bytes];
     v7 = [self->_lastResponseLine length];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __60__MFSMTPResponse__updateEnhancedStatusCodesFromLastResponse__block_invoke;
     v19 = &unk_1E7AA33B0;
-    v20 = self;
+    selfCopy = self;
     v21 = a2;
     if (_updateEnhancedStatusCodesFromLastResponse_once != -1)
     {
@@ -60,14 +60,14 @@
     }
 
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = [v8 initWithBytesNoCopy:v6 length:v7 encoding:1 freeWhenDone:{0, v16, v17, v18, v19, v20, v21}];
+    v9 = [v8 initWithBytesNoCopy:bytes length:v7 encoding:1 freeWhenDone:{0, v16, v17, v18, v19, selfCopy, v21}];
     v10 = [_updateEnhancedStatusCodesFromLastResponse__responseEnhancedStatusCodesRegex firstMatchInString:v9 options:0 range:{0, v7}];
     v11 = v10;
     if (v10)
     {
-      *(self + 12) = *(self + 12) & 0xFC00 | strtoul((v6 + [v10 rangeAtIndex:1]), 0, 10) & 0x3FF;
-      *(self + 25) = (4 * (strtoul((v6 + [v11 rangeAtIndex:2]), 0, 10) & 0x3FF)) | *(self + 25) & 0xF003;
-      *(self + 13) = (16 * (strtoul((v6 + [v11 rangeAtIndex:3]), 0, 10) & 0x3FF)) | *(self + 13) & 0xC00F;
+      *(self + 12) = *(self + 12) & 0xFC00 | strtoul((bytes + [v10 rangeAtIndex:1]), 0, 10) & 0x3FF;
+      *(self + 25) = (4 * (strtoul((bytes + [v11 rangeAtIndex:2]), 0, 10) & 0x3FF)) | *(self + 25) & 0xF003;
+      *(self + 13) = (16 * (strtoul((bytes + [v11 rangeAtIndex:3]), 0, 10) & 0x3FF)) | *(self + 13) & 0xC00F;
       v13 = [v11 rangeAtIndex:5];
       if (v13 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -106,12 +106,12 @@ void __60__MFSMTPResponse__updateEnhancedStatusCodesFromLastResponse__block_invo
   }
 }
 
-- (void)setLastResponseLine:(id)a3
+- (void)setLastResponseLine:(id)line
 {
-  v5 = a3;
-  if (self->_lastResponseLine != v5)
+  lineCopy = line;
+  if (self->_lastResponseLine != lineCopy)
   {
-    objc_storeStrong(&self->_lastResponseLine, a3);
+    objc_storeStrong(&self->_lastResponseLine, line);
     [(MFSMTPResponse *)self _updateEnhancedStatusCodesFromLastResponse];
   }
 }
@@ -165,27 +165,27 @@ LABEL_17:
   return v9;
 }
 
-- (id)errorMessageWithAddress:(id)a3 defaultMessage:(id)a4
+- (id)errorMessageWithAddress:(id)address defaultMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFSMTPResponse *)self failureReason];
-  if (v8 >= 6)
+  addressCopy = address;
+  messageCopy = message;
+  failureReason = [(MFSMTPResponse *)self failureReason];
+  if (failureReason >= 6)
   {
-    v9 = v7;
+    v9 = messageCopy;
   }
 
   else
   {
-    v9 = MFLookupLocalizedString(off_1E7AA7DC0[v8], off_1E7AA7DF0[v8], off_1E7AA7E20[v8]);
+    v9 = MFLookupLocalizedString(off_1E7AA7DC0[failureReason], off_1E7AA7DF0[failureReason], off_1E7AA7E20[failureReason]);
   }
 
   v10 = v9;
-  if (v6 && v9)
+  if (addressCopy && v9)
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:v9, v6];
+    addressCopy = [MEMORY[0x1E696AEC0] stringWithFormat:v9, addressCopy];
 
-    v10 = v11;
+    v10 = addressCopy;
   }
 
   return v10;

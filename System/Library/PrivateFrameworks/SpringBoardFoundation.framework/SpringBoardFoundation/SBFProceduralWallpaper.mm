@@ -1,6 +1,6 @@
 @interface SBFProceduralWallpaper
 + (id)identifier;
-- (void)setAnimating:(BOOL)a3;
+- (void)setAnimating:(BOOL)animating;
 @end
 
 @implementation SBFProceduralWallpaper
@@ -17,7 +17,7 @@
   __assert_rtn("+[SBFProceduralWallpaper identifier]", "SBFWallpaperUtilties.m", 38, "0");
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
   v3 = SBLogWallpaper();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))

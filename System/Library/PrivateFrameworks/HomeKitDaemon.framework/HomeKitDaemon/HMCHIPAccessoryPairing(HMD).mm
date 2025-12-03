@@ -8,23 +8,23 @@
 - (id)chipPluginPairing
 {
   v14 = objc_alloc(MEMORY[0x277D17B60]);
-  v20 = [a1 identifier];
-  v19 = [a1 home];
-  v2 = [v19 identifier];
-  v18 = [a1 home];
-  v3 = [v18 name];
-  v17 = [a1 home];
-  v16 = [v17 ecosystem];
-  v4 = [v16 rootPublicKey];
-  v13 = [a1 home];
-  v5 = [v13 ecosystem];
-  v6 = [v5 vendor];
-  v7 = [v6 identifier];
-  v8 = [a1 home];
-  v9 = [v8 ecosystem];
-  v10 = [v9 vendor];
-  v11 = [v10 name];
-  v15 = [v14 initWithNodeID:v20 fabricID:v2 fabricLabel:v3 rootPublicKey:v4 vendorID:v7 vendorName:v11];
+  identifier = [self identifier];
+  home = [self home];
+  identifier2 = [home identifier];
+  home2 = [self home];
+  name = [home2 name];
+  home3 = [self home];
+  ecosystem = [home3 ecosystem];
+  rootPublicKey = [ecosystem rootPublicKey];
+  home4 = [self home];
+  ecosystem2 = [home4 ecosystem];
+  vendor = [ecosystem2 vendor];
+  identifier3 = [vendor identifier];
+  home5 = [self home];
+  ecosystem3 = [home5 ecosystem];
+  vendor2 = [ecosystem3 vendor];
+  name2 = [vendor2 name];
+  v15 = [v14 initWithNodeID:identifier fabricID:identifier2 fabricLabel:name rootPublicKey:rootPublicKey vendorID:identifier3 vendorName:name2];
 
   return v15;
 }
@@ -36,28 +36,28 @@
   {
     v7 = v6;
     v8 = objc_alloc(MEMORY[0x277CD1C40]);
-    v9 = [v7 vendorID];
-    v10 = [v7 vendorName];
-    v11 = [v8 initWithIdentifier:v9 name:v10];
+    vendorID = [v7 vendorID];
+    vendorName = [v7 vendorName];
+    v11 = [v8 initWithIdentifier:vendorID name:vendorName];
 
-    v12 = [v11 identifier];
-    [v11 setAppleVendor:{objc_msgSend(v12, "integerValue") == 4937}];
+    identifier = [v11 identifier];
+    [v11 setAppleVendor:{objc_msgSend(identifier, "integerValue") == 4937}];
 
-    v13 = [v11 identifier];
-    [v11 setSystemCommissionerVendor:{objc_msgSend(v13, "integerValue") == 4996}];
+    identifier2 = [v11 identifier];
+    [v11 setSystemCommissionerVendor:{objc_msgSend(identifier2, "integerValue") == 4996}];
 
     v14 = objc_alloc(MEMORY[0x277CD1888]);
-    v15 = [v7 rootPublicKey];
-    v16 = [v14 initWithRootPublicKey:v15 vendor:v11 owned:a4];
+    rootPublicKey = [v7 rootPublicKey];
+    v16 = [v14 initWithRootPublicKey:rootPublicKey vendor:v11 owned:a4];
 
     v17 = objc_alloc(MEMORY[0x277CD1890]);
-    v18 = [v7 fabricID];
-    v19 = [v7 fabricID];
-    v20 = [v7 fabricLabel];
-    v21 = [v17 initWithIdentifier:v18 index:v19 name:v20 ecosystem:v16];
+    fabricID = [v7 fabricID];
+    fabricID2 = [v7 fabricID];
+    fabricLabel = [v7 fabricLabel];
+    v21 = [v17 initWithIdentifier:fabricID index:fabricID2 name:fabricLabel ecosystem:v16];
 
-    v22 = [v7 nodeID];
-    v23 = [a1 initWithIdentifier:v22 home:v21];
+    nodeID = [v7 nodeID];
+    v23 = [self initWithIdentifier:nodeID home:v21];
 
     return v23;
   }

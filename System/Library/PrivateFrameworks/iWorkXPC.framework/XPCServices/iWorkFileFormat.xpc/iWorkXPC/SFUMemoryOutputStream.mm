@@ -1,16 +1,16 @@
 @interface SFUMemoryOutputStream
-- (SFUMemoryOutputStream)initWithData:(id)a3;
+- (SFUMemoryOutputStream)initWithData:(id)data;
 - (void)dealloc;
 @end
 
 @implementation SFUMemoryOutputStream
 
-- (SFUMemoryOutputStream)initWithData:(id)a3
+- (SFUMemoryOutputStream)initWithData:(id)data
 {
   v4 = [(SFUMemoryOutputStream *)self init];
   if (v4)
   {
-    v4->mData = a3;
+    v4->mData = data;
   }
 
   return v4;

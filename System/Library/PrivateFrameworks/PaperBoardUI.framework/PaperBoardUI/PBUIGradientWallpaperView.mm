@@ -1,43 +1,43 @@
 @interface PBUIGradientWallpaperView
-- (BOOL)isDisplayingWallpaperWithConfiguration:(id)a3 forVariant:(int64_t)a4;
-- (PBUIGradientWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8;
-- (double)contrastInRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5;
+- (BOOL)isDisplayingWallpaperWithConfiguration:(id)configuration forVariant:(int64_t)variant;
+- (PBUIGradientWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options;
+- (double)contrastInRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes;
 - (id)_computeAverageColor;
 @end
 
 @implementation PBUIGradientWallpaperView
 
-- (PBUIGradientWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8
+- (PBUIGradientWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v23.receiver = self;
   v23.super_class = PBUIGradientWallpaperView;
-  v18 = [(PBUIWallpaperView *)&v23 initWithFrame:v17 configuration:a5 variant:a6 cacheGroup:a7 delegate:a8 options:x, y, width, height];
-  if (v18)
+  height = [(PBUIWallpaperView *)&v23 initWithFrame:configurationCopy configuration:variant variant:group cacheGroup:delegate delegate:options options:x, y, width, height];
+  if (height)
   {
-    v19 = [v17 wallpaperGradient];
-    wallpaperGradient = v18->_wallpaperGradient;
-    v18->_wallpaperGradient = v19;
+    wallpaperGradient = [configurationCopy wallpaperGradient];
+    wallpaperGradient = height->_wallpaperGradient;
+    height->_wallpaperGradient = wallpaperGradient;
 
-    v21 = [(PBUIGradientWallpaperView *)v18 layer];
-    [(PBUIWallpaperGradient *)v18->_wallpaperGradient configureLayer:v21];
+    layer = [(PBUIGradientWallpaperView *)height layer];
+    [(PBUIWallpaperGradient *)height->_wallpaperGradient configureLayer:layer];
   }
 
-  return v18;
+  return height;
 }
 
-- (BOOL)isDisplayingWallpaperWithConfiguration:(id)a3 forVariant:(int64_t)a4
+- (BOOL)isDisplayingWallpaperWithConfiguration:(id)configuration forVariant:(int64_t)variant
 {
-  v5 = a3;
-  if ([v5 wallpaperType] == 5)
+  configurationCopy = configuration;
+  if ([configurationCopy wallpaperType] == 5)
   {
-    v6 = [v5 wallpaperGradient];
-    v7 = [(PBUIGradientWallpaperView *)self wallpaperGradient];
-    v8 = [v7 isEqual:v6];
+    wallpaperGradient = [configurationCopy wallpaperGradient];
+    wallpaperGradient2 = [(PBUIGradientWallpaperView *)self wallpaperGradient];
+    v8 = [wallpaperGradient2 isEqual:wallpaperGradient];
   }
 
   else
@@ -51,14 +51,14 @@
 - (id)_computeAverageColor
 {
   v26 = *MEMORY[0x277D85DE8];
-  v2 = [(PBUIGradientWallpaperView *)self wallpaperGradient];
-  v3 = [v2 colors];
+  wallpaperGradient = [(PBUIGradientWallpaperView *)self wallpaperGradient];
+  colors = [wallpaperGradient colors];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v4 = [colors countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -72,7 +72,7 @@
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(colors);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
@@ -87,7 +87,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v5 = [colors countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v5);
@@ -109,16 +109,16 @@
   return v15;
 }
 
-- (double)contrastInRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5
+- (double)contrastInRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes
 {
-  if (a4)
+  if (boxes)
   {
-    *a4 = 0.0;
+    *boxes = 0.0;
   }
 
-  if (a5)
+  if (betweenBoxes)
   {
-    *a5 = 0.0;
+    *betweenBoxes = 0.0;
   }
 
   return 0.0;

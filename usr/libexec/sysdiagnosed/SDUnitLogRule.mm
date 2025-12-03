@@ -1,42 +1,42 @@
 @interface SDUnitLogRule
 - (BOOL)canAddToCandidateList;
-- (BOOL)considerURL:(id)a3 forRejection:(unint64_t *)a4;
-- (SDUnitLogRule)initWithDate:(id)a3 withFilter:(id)a4 newestFileCount:(unint64_t)a5 atInternalDirectory:(id)a6 withRuntimeChecks:(unint64_t)a7;
+- (BOOL)considerURL:(id)l forRejection:(unint64_t *)rejection;
+- (SDUnitLogRule)initWithDate:(id)date withFilter:(id)filter newestFileCount:(unint64_t)count atInternalDirectory:(id)directory withRuntimeChecks:(unint64_t)checks;
 - (id)_localUserHomeDirectories;
 - (id)advanceMatchEnumerator;
 - (id)applyFilters;
-- (id)resolveCrashReporterPath:(id)a3;
-- (id)resolvePathToMobileContainer:(id)a3;
-- (void)_getNextVariedSet:(id)a3 withLogs:(id)a4;
-- (void)addPathsToArray:(id)a3 withHighPriority:(id)a4 withMaxVariety:(BOOL)a5;
-- (void)generateMaxVariety:(id)a3 withLogs:(id)a4 withHighPriority:(id)a5;
+- (id)resolveCrashReporterPath:(id)path;
+- (id)resolvePathToMobileContainer:(id)container;
+- (void)_getNextVariedSet:(id)set withLogs:(id)logs;
+- (void)addPathsToArray:(id)array withHighPriority:(id)priority withMaxVariety:(BOOL)variety;
+- (void)generateMaxVariety:(id)variety withLogs:(id)logs withHighPriority:(id)priority;
 @end
 
 @implementation SDUnitLogRule
 
-- (SDUnitLogRule)initWithDate:(id)a3 withFilter:(id)a4 newestFileCount:(unint64_t)a5 atInternalDirectory:(id)a6 withRuntimeChecks:(unint64_t)a7
+- (SDUnitLogRule)initWithDate:(id)date withFilter:(id)filter newestFileCount:(unint64_t)count atInternalDirectory:(id)directory withRuntimeChecks:(unint64_t)checks
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  dateCopy = date;
+  filterCopy = filter;
+  directoryCopy = directory;
   v21.receiver = self;
   v21.super_class = SDUnitLogRule;
   v15 = [(SDUnitLogRule *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    [(SDUnitLogRule *)v15 setCreatedSince:v12];
-    [(SDUnitLogRule *)v16 setFilter:v13];
-    [(SDUnitLogRule *)v16 setNewestFileLimit:a5];
-    v17 = [NSMutableArray arrayWithCapacity:a5];
+    [(SDUnitLogRule *)v15 setCreatedSince:dateCopy];
+    [(SDUnitLogRule *)v16 setFilter:filterCopy];
+    [(SDUnitLogRule *)v16 setNewestFileLimit:count];
+    v17 = [NSMutableArray arrayWithCapacity:count];
     [(SDUnitLogRule *)v16 setLogArray:v17];
 
-    v18 = [NSMutableArray arrayWithCapacity:a5];
+    v18 = [NSMutableArray arrayWithCapacity:count];
     [(SDUnitLogRule *)v16 setLogDates:v18];
 
-    if (v14)
+    if (directoryCopy)
     {
-      v19 = v14;
+      v19 = directoryCopy;
     }
 
     else
@@ -46,7 +46,7 @@
 
     [(SDUnitLogRule *)v16 setRelative:v19];
     [(SDUnitLogRule *)v16 setMaxDepth:1024];
-    [(SDUnit *)v16 setRuntimeChecks:a7];
+    [(SDUnit *)v16 setRuntimeChecks:checks];
     [(SDUnitLogRule *)v16 setMobileContainerClass:0];
     [(SDUnitLogRule *)v16 setMobileContainer:0];
     [(SDUnitLogRule *)v16 setMatchEnumerator:0];
@@ -62,31 +62,31 @@
 
 - (id)advanceMatchEnumerator
 {
-  v3 = [(SDUnitLogRule *)self matchEnumerator];
-  v4 = [v3 count];
+  matchEnumerator = [(SDUnitLogRule *)self matchEnumerator];
+  v4 = [matchEnumerator count];
 
   if (v4)
   {
-    v5 = 0;
+    firstObject = 0;
     while (1)
     {
-      v6 = v5;
+      v6 = firstObject;
       v7 = objc_autoreleasePoolPush();
-      v8 = [(SDUnitLogRule *)self matchEnumerator];
-      v5 = [v8 firstObject];
+      matchEnumerator2 = [(SDUnitLogRule *)self matchEnumerator];
+      firstObject = [matchEnumerator2 firstObject];
 
-      v9 = [v5 getNextMatch];
-      if (v9)
+      getNextMatch = [firstObject getNextMatch];
+      if (getNextMatch)
       {
         break;
       }
 
-      v10 = [(SDUnitLogRule *)self matchEnumerator];
-      [v10 removeObjectAtIndex:0];
+      matchEnumerator3 = [(SDUnitLogRule *)self matchEnumerator];
+      [matchEnumerator3 removeObjectAtIndex:0];
 
       objc_autoreleasePoolPop(v7);
-      v11 = [(SDUnitLogRule *)self matchEnumerator];
-      v12 = [v11 count];
+      matchEnumerator4 = [(SDUnitLogRule *)self matchEnumerator];
+      v12 = [matchEnumerator4 count];
 
       if (!v12)
       {
@@ -95,10 +95,10 @@
       }
     }
 
-    v13 = v9;
+    v13 = getNextMatch;
     objc_autoreleasePoolPop(v7);
 
-    v5 = v13;
+    firstObject = v13;
 LABEL_8:
   }
 
@@ -110,41 +110,41 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)considerURL:(id)a3 forRejection:(unint64_t *)a4
+- (BOOL)considerURL:(id)l forRejection:(unint64_t *)rejection
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ([v6 path], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
+  lCopy = l;
+  v7 = lCopy;
+  if (!lCopy || ([lCopy path], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
     v12 = 0;
     v13 = 1;
     goto LABEL_6;
   }
 
-  v9 = [(SDUnitLogRule *)self logArray];
-  v10 = [v7 path];
-  v11 = [v9 containsObject:v10];
+  logArray = [(SDUnitLogRule *)self logArray];
+  path = [v7 path];
+  v11 = [logArray containsObject:path];
 
   if (!v11)
   {
     v15 = +[NSFileManager defaultManager];
-    v16 = [v7 path];
-    v17 = [v15 fileExistsAtPath:v16];
+    path2 = [v7 path];
+    v17 = [v15 fileExistsAtPath:path2];
 
     if ((v17 & 1) == 0)
     {
       v42 = sub_1000278E8();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
-        v43 = [v7 lastPathComponent];
+        lastPathComponent = [v7 lastPathComponent];
         *buf = 138412290;
-        v67 = v43;
+        v67 = lastPathComponent;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "%@ failed due to file not found", buf, 0xCu);
       }
 
       v44 = +[SDResourceManager sharedResourceManager];
-      v45 = [v7 lastPathComponent];
-      [v44 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"%@ failed due to file not found", v45}];
+      lastPathComponent2 = [v7 lastPathComponent];
+      [v44 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"%@ failed due to file not found", lastPathComponent2}];
 
       v12 = 0;
       v13 = 10;
@@ -161,43 +161,43 @@ LABEL_8:
       v46 = sub_1000278E8();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
-        v47 = [v7 lastPathComponent];
-        v48 = [v20 localizedDescription];
+        lastPathComponent3 = [v7 lastPathComponent];
+        localizedDescription = [v20 localizedDescription];
         *buf = 138412546;
-        v67 = v47;
+        v67 = lastPathComponent3;
         v68 = 2112;
-        *v69 = v48;
+        *v69 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "%@ failed to get date with error %@", buf, 0x16u);
       }
 
       v49 = +[SDResourceManager sharedResourceManager];
-      v50 = [v7 lastPathComponent];
-      v51 = [v20 localizedDescription];
-      [v49 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"%@ failed to get date with error %@", v50, v51}];
+      lastPathComponent4 = [v7 lastPathComponent];
+      localizedDescription2 = [v20 localizedDescription];
+      [v49 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"%@ failed to get date with error %@", lastPathComponent4, localizedDescription2}];
 
       v12 = 0;
-      *a4 = 5;
+      *rejection = 5;
       goto LABEL_36;
     }
 
-    v21 = [(SDUnitLogRule *)self createdSince];
+    createdSince = [(SDUnitLogRule *)self createdSince];
 
-    if (v21 && (-[SDUnitLogRule createdSince](self, "createdSince"), v22 = objc_claimAutoreleasedReturnValue(), [v19 earlierDate:v22], v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v23 == v19))
+    if (createdSince && (-[SDUnitLogRule createdSince](self, "createdSince"), v22 = objc_claimAutoreleasedReturnValue(), [v19 earlierDate:v22], v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v23 == v19))
     {
-      *a4 = 6;
+      *rejection = 6;
       v52 = sub_1000278E8();
       if (!os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_35;
       }
 
-      v53 = [v7 lastPathComponent];
+      lastPathComponent5 = [v7 lastPathComponent];
       [v19 timeIntervalSince1970];
       v55 = v54;
-      v56 = [(SDUnitLogRule *)self createdSince];
-      [v56 timeIntervalSince1970];
+      createdSince2 = [(SDUnitLogRule *)self createdSince];
+      [createdSince2 timeIntervalSince1970];
       *buf = 138412802;
-      v67 = v53;
+      v67 = lastPathComponent5;
       v68 = 1024;
       *v69 = v55;
       *&v69[4] = 1024;
@@ -207,24 +207,24 @@ LABEL_8:
 
     else
     {
-      v24 = [(SDUnitLogRule *)self createdUntil];
+      createdUntil = [(SDUnitLogRule *)self createdUntil];
 
-      if (!v24 || (-[SDUnitLogRule createdUntil](self, "createdUntil"), v25 = objc_claimAutoreleasedReturnValue(), [v19 laterDate:v25], v26 = objc_claimAutoreleasedReturnValue(), v26, v25, v26 != v19))
+      if (!createdUntil || (-[SDUnitLogRule createdUntil](self, "createdUntil"), v25 = objc_claimAutoreleasedReturnValue(), [v19 laterDate:v25], v26 = objc_claimAutoreleasedReturnValue(), v26, v25, v26 != v19))
       {
-        v27 = [(SDUnitLogRule *)self filter];
+        filter = [(SDUnitLogRule *)self filter];
 
-        if (!v27 || (-[SDUnitLogRule filter](self, "filter"), v28 = objc_claimAutoreleasedReturnValue(), [v7 path], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v28, "evaluateWithObject:", v29), v29, v28, (v30 & 1) != 0))
+        if (!filter || (-[SDUnitLogRule filter](self, "filter"), v28 = objc_claimAutoreleasedReturnValue(), [v7 path], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v28, "evaluateWithObject:", v29), v29, v28, (v30 & 1) != 0))
         {
-          v31 = [(SDUnitLogRule *)self logArray];
-          v32 = [v31 count];
+          logArray2 = [(SDUnitLogRule *)self logArray];
+          v32 = [logArray2 count];
 
           v33 = 0;
           if (v32)
           {
             do
             {
-              v34 = [(SDUnitLogRule *)self logDates];
-              v35 = [v34 objectAtIndexedSubscript:v33];
+              logDates = [(SDUnitLogRule *)self logDates];
+              v35 = [logDates objectAtIndexedSubscript:v33];
               v36 = [v35 laterDate:v19];
 
               if (v36 == v19)
@@ -233,34 +233,34 @@ LABEL_8:
               }
 
               ++v33;
-              v37 = [(SDUnitLogRule *)self logArray];
-              v38 = [v37 count];
+              logArray3 = [(SDUnitLogRule *)self logArray];
+              v38 = [logArray3 count];
             }
 
             while (v38 > v33);
           }
 
-          v39 = [(SDUnitLogRule *)self logArray];
-          v40 = [v7 path];
-          [v39 insertObject:v40 atIndex:v33];
+          logArray4 = [(SDUnitLogRule *)self logArray];
+          path3 = [v7 path];
+          [logArray4 insertObject:path3 atIndex:v33];
 
-          v41 = [(SDUnitLogRule *)self logDates];
-          [v41 insertObject:v19 atIndex:v33];
+          logDates2 = [(SDUnitLogRule *)self logDates];
+          [logDates2 insertObject:v19 atIndex:v33];
 
           v12 = 1;
           goto LABEL_36;
         }
 
-        *a4 = 8;
+        *rejection = 8;
         v52 = sub_1000278E8();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
-          v53 = [v7 lastPathComponent];
-          v56 = [(SDUnitLogRule *)self filter];
+          lastPathComponent5 = [v7 lastPathComponent];
+          createdSince2 = [(SDUnitLogRule *)self filter];
           *buf = 138412546;
-          v67 = v53;
+          v67 = lastPathComponent5;
           v68 = 2112;
-          *v69 = v56;
+          *v69 = createdSince2;
           v58 = "%@ failed to pass predicate %@ ";
           v59 = v52;
           v60 = 22;
@@ -276,20 +276,20 @@ LABEL_36:
         goto LABEL_7;
       }
 
-      *a4 = 6;
+      *rejection = 6;
       v52 = sub_1000278E8();
       if (!os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_35;
       }
 
-      v53 = [v7 lastPathComponent];
+      lastPathComponent5 = [v7 lastPathComponent];
       [v19 timeIntervalSince1970];
       v62 = v61;
-      v56 = [(SDUnitLogRule *)self createdUntil];
-      [v56 timeIntervalSince1970];
+      createdSince2 = [(SDUnitLogRule *)self createdUntil];
+      [createdSince2 timeIntervalSince1970];
       *buf = 138412802;
-      v67 = v53;
+      v67 = lastPathComponent5;
       v68 = 1024;
       *v69 = v62;
       *&v69[4] = 1024;
@@ -305,7 +305,7 @@ LABEL_36:
   v12 = 0;
   v13 = 9;
 LABEL_6:
-  *a4 = v13;
+  *rejection = v13;
 LABEL_7:
 
   return v12;
@@ -316,35 +316,35 @@ LABEL_7:
   v3 = +[NSMutableArray array];
   if ([(SDUnitLogRule *)self newestFileLimit])
   {
-    v4 = [(SDUnitLogRule *)self logArray];
-    v5 = [v4 count];
-    v6 = [(SDUnitLogRule *)self newestFileLimit];
+    logArray = [(SDUnitLogRule *)self logArray];
+    v5 = [logArray count];
+    newestFileLimit = [(SDUnitLogRule *)self newestFileLimit];
 
-    if (v5 > v6)
+    if (v5 > newestFileLimit)
     {
-      v8 = [(SDUnitLogRule *)self logArray];
-      v7 = [v8 count];
+      logArray2 = [(SDUnitLogRule *)self logArray];
+      v7 = [logArray2 count];
 
-      LODWORD(v8) = v7 - 1;
+      LODWORD(logArray2) = v7 - 1;
       if ([(SDUnitLogRule *)self newestFileLimit]<= (v7 - 1))
       {
-        v8 = v8;
+        logArray2 = logArray2;
         do
         {
-          v9 = [(SDUnitLogRule *)self logArray];
-          v10 = [v9 objectAtIndexedSubscript:v8];
+          logArray3 = [(SDUnitLogRule *)self logArray];
+          v10 = [logArray3 objectAtIndexedSubscript:logArray2];
 
-          v11 = [(SDUnitLogRule *)self logArray];
-          [v11 removeLastObject];
+          logArray4 = [(SDUnitLogRule *)self logArray];
+          [logArray4 removeLastObject];
 
-          v12 = [(SDUnitLogRule *)self logDates];
-          [v12 removeLastObject];
+          logDates = [(SDUnitLogRule *)self logDates];
+          [logDates removeLastObject];
 
           [v3 addObject:v10];
-          --v8;
+          --logArray2;
         }
 
-        while ([(SDUnitLogRule *)self newestFileLimit]<= v8);
+        while ([(SDUnitLogRule *)self newestFileLimit]<= logArray2);
       }
     }
   }
@@ -352,17 +352,17 @@ LABEL_7:
   return v3;
 }
 
-- (void)_getNextVariedSet:(id)a3 withLogs:(id)a4
+- (void)_getNextVariedSet:(id)set withLogs:(id)logs
 {
-  v5 = a3;
-  v6 = a4;
+  setCopy = set;
+  logsCopy = logs;
   v7 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v5 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [setCopy allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -373,36 +373,36 @@ LABEL_7:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v5 objectForKey:v13];
-        v15 = [v14 lastObject];
-        [v7 addObject:v15];
+        v14 = [setCopy objectForKey:v13];
+        lastObject = [v14 lastObject];
+        [v7 addObject:lastObject];
 
         [v14 removeLastObject];
         if (![v14 count])
         {
-          [v5 removeObjectForKey:v13];
+          [setCopy removeObjectForKey:v13];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
   }
 
   v16 = [v7 sortedArrayUsingSelector:"compareLogDateDescending:"];
-  [v6 addObjectsFromArray:v16];
+  [logsCopy addObjectsFromArray:v16];
 }
 
-- (void)generateMaxVariety:(id)a3 withLogs:(id)a4 withHighPriority:(id)a5
+- (void)generateMaxVariety:(id)variety withLogs:(id)logs withHighPriority:(id)priority
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  varietyCopy = variety;
+  logsCopy = logs;
+  priorityCopy = priority;
   v53 = 0;
   v11 = [NSRegularExpression regularExpressionWithPattern:@"[.]synced$" options:1 error:&v53];
   v12 = v53;
@@ -416,22 +416,22 @@ LABEL_7:
     if (v13)
     {
       v51 = v14;
-      v15 = [NSRegularExpression regularExpressionWithPattern:@"([0-9]{4}(-|_)[0-9]{2}(-|_)[0-9]{2}(-|_)([0-9]{6}|[0-9]{2}(-|_)[0-9]{2}(-|_)[0-9]{2}))" options:1 error:&v51];
+      localizedDescription5 = [NSRegularExpression regularExpressionWithPattern:@"([0-9]{4}(-|_)[0-9]{2}(-|_)[0-9]{2}(-|_)([0-9]{6}|[0-9]{2}(-|_)[0-9]{2}(-|_)[0-9]{2}))" options:1 error:&v51];
       v16 = v51;
 
-      if (v15)
+      if (localizedDescription5)
       {
         v39 = v16;
-        v40 = self;
-        v41 = v10;
-        v42 = v9;
+        selfCopy = self;
+        v41 = priorityCopy;
+        v42 = logsCopy;
         v45 = +[NSMutableDictionary dictionary];
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v43 = v8;
-        obj = [v8 reverseObjectEnumerator];
+        v43 = varietyCopy;
+        obj = [varietyCopy reverseObjectEnumerator];
         v17 = [obj countByEnumeratingWithState:&v47 objects:v54 count:16];
         if (v17)
         {
@@ -448,13 +448,13 @@ LABEL_7:
 
               v21 = *(*(&v47 + 1) + 8 * i);
               v22 = objc_autoreleasePoolPush();
-              v23 = [v21 path];
-              v24 = [v21 path];
-              v25 = [v46 stringByReplacingMatchesInString:v23 options:0 range:0 withTemplate:{objc_msgSend(v24, "length"), &stru_1000A67D8}];
+              path = [v21 path];
+              path2 = [v21 path];
+              v25 = [v46 stringByReplacingMatchesInString:path options:0 range:0 withTemplate:{objc_msgSend(path2, "length"), &stru_1000A67D8}];
 
               v26 = [v13 stringByReplacingMatchesInString:v25 options:0 range:0 withTemplate:{objc_msgSend(v25, "length"), @".ips"}];
 
-              v27 = [v15 stringByReplacingMatchesInString:v26 options:0 range:0 withTemplate:{objc_msgSend(v26, "length"), &stru_1000A67D8}];
+              v27 = [localizedDescription5 stringByReplacingMatchesInString:v26 options:0 range:0 withTemplate:{objc_msgSend(v26, "length"), &stru_1000A67D8}];
 
               if (v27)
               {
@@ -488,17 +488,17 @@ LABEL_14:
           while (v18);
         }
 
-        v10 = v41;
-        v30 = v45;
-        [(SDUnitLogRule *)v40 _getNextVariedSet:v45 withLogs:v41];
+        priorityCopy = v41;
+        localizedDescription3 = v45;
+        [(SDUnitLogRule *)selfCopy _getNextVariedSet:v45 withLogs:v41];
         if ([v45 count])
         {
-          v9 = v42;
-          v8 = v43;
+          logsCopy = v42;
+          varietyCopy = v43;
           v14 = v39;
           do
           {
-            [(SDUnitLogRule *)v40 _getNextVariedSet:v45 withLogs:v42];
+            [(SDUnitLogRule *)selfCopy _getNextVariedSet:v45 withLogs:v42];
           }
 
           while ([v45 count]);
@@ -507,8 +507,8 @@ LABEL_14:
         else
         {
           v14 = v39;
-          v9 = v42;
-          v8 = v43;
+          logsCopy = v42;
+          varietyCopy = v43;
         }
       }
 
@@ -526,9 +526,9 @@ LABEL_14:
           v16 = v36;
         }
 
-        v30 = +[SDResourceManager sharedResourceManager];
-        v38 = [v16 localizedDescription];
-        [v30 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"Failed to compile generateMaxVariety::regex with error: %@", v38}];
+        localizedDescription3 = +[SDResourceManager sharedResourceManager];
+        localizedDescription = [v16 localizedDescription];
+        [localizedDescription3 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"Failed to compile generateMaxVariety::regex with error: %@", localizedDescription}];
 
         v14 = v16;
       }
@@ -539,15 +539,15 @@ LABEL_14:
       v33 = sub_1000278E8();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [v14 localizedDescription];
+        localizedDescription2 = [v14 localizedDescription];
         *buf = 138412290;
-        v56 = v34;
+        v56 = localizedDescription2;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Failed to compile generateMaxVariety::stackTripleRegex with error: %@", buf, 0xCu);
       }
 
-      v15 = +[SDResourceManager sharedResourceManager];
-      v30 = [v14 localizedDescription];
-      [v15 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"Failed to compile generateMaxVariety::stackTripleRegex with error: %@", v30}];
+      localizedDescription5 = +[SDResourceManager sharedResourceManager];
+      localizedDescription3 = [v14 localizedDescription];
+      [localizedDescription5 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"Failed to compile generateMaxVariety::stackTripleRegex with error: %@", localizedDescription3}];
     }
 
     v12 = v14;
@@ -558,52 +558,52 @@ LABEL_14:
     v31 = sub_1000278E8();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v12 localizedDescription];
+      localizedDescription4 = [v12 localizedDescription];
       *buf = 138412290;
-      v56 = v32;
+      v56 = localizedDescription4;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Failed to compile generateMaxVariety::syncedRegex with error: %@", buf, 0xCu);
     }
 
     v13 = +[SDResourceManager sharedResourceManager];
-    v15 = [v12 localizedDescription];
-    [v13 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"Failed to compile generateMaxVariety::syncedRegex with error: %@", v15}];
+    localizedDescription5 = [v12 localizedDescription];
+    [v13 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"Failed to compile generateMaxVariety::syncedRegex with error: %@", localizedDescription5}];
   }
 }
 
-- (void)addPathsToArray:(id)a3 withHighPriority:(id)a4 withMaxVariety:(BOOL)a5
+- (void)addPathsToArray:(id)array withHighPriority:(id)priority withMaxVariety:(BOOL)variety
 {
-  v5 = a5;
-  v41 = a3;
-  v8 = a4;
+  varietyCopy = variety;
+  arrayCopy = array;
+  priorityCopy = priority;
   v9 = +[NSMutableArray array];
-  v10 = [(SDUnitLogRule *)self headDir];
-  v11 = [NSURL fileURLWithPath:v10];
-  v12 = [v11 standardizedURL];
-  v42 = [v12 path];
+  headDir = [(SDUnitLogRule *)self headDir];
+  v11 = [NSURL fileURLWithPath:headDir];
+  standardizedURL = [v11 standardizedURL];
+  path = [standardizedURL path];
 
-  v13 = [(SDUnitLogRule *)self logArray];
-  v14 = [v13 count];
+  logArray = [(SDUnitLogRule *)self logArray];
+  v14 = [logArray count];
 
   if (v14)
   {
-    v39 = v5;
+    v39 = varietyCopy;
     v43 = v9;
-    v40 = v8;
+    v40 = priorityCopy;
     v15 = 0;
-    v16 = 0;
+    stringByDeletingLastPathComponent = 0;
     v17 = 0;
     v18 = 0;
     v19 = 0;
     do
     {
-      v20 = v16;
+      v20 = stringByDeletingLastPathComponent;
       v21 = objc_autoreleasePoolPush();
-      v22 = [(SDUnitLogRule *)self logArray];
-      v23 = [v22 objectAtIndexedSubscript:v15];
-      v16 = [v23 stringByDeletingLastPathComponent];
+      logArray2 = [(SDUnitLogRule *)self logArray];
+      v23 = [logArray2 objectAtIndexedSubscript:v15];
+      stringByDeletingLastPathComponent = [v23 stringByDeletingLastPathComponent];
 
-      v24 = [(SDUnitLogRule *)self headDir];
-      LODWORD(v23) = [v24 isEqualToString:@"."];
+      headDir2 = [(SDUnitLogRule *)self headDir];
+      LODWORD(v23) = [headDir2 isEqualToString:@"."];
 
       if (v23)
       {
@@ -613,35 +613,35 @@ LABEL_14:
 
       else
       {
-        v25 = [v16 componentsSeparatedByString:v42];
-        v26 = [v25 lastObject];
+        v25 = [stringByDeletingLastPathComponent componentsSeparatedByString:path];
+        lastObject = [v25 lastObject];
 
-        v19 = v26;
+        v19 = lastObject;
       }
 
-      v27 = [(SDUnitLogRule *)self relative];
-      v28 = [v27 stringByAppendingPathComponent:v19];
+      relative = [(SDUnitLogRule *)self relative];
+      v28 = [relative stringByAppendingPathComponent:v19];
 
       v29 = [SDLog alloc];
-      v30 = [(SDUnitLogRule *)self logArray];
-      v31 = [v30 objectAtIndexedSubscript:v15];
+      logArray3 = [(SDUnitLogRule *)self logArray];
+      v31 = [logArray3 objectAtIndexedSubscript:v15];
       v32 = [(SDLog *)v29 initWithPath:v31 subdirectory:v28 error:0];
 
       if (v32)
       {
-        v33 = [(SDUnitLogRule *)self offsets];
-        [(SDLog *)v32 setOffsets:v33];
+        offsets = [(SDUnitLogRule *)self offsets];
+        [(SDLog *)v32 setOffsets:offsets];
 
-        v34 = [(SDUnitLogRule *)self sizes];
-        [(SDLog *)v32 setSizes:v34];
+        sizes = [(SDUnitLogRule *)self sizes];
+        [(SDLog *)v32 setSizes:sizes];
 
         [v43 addObject:v32];
       }
 
       objc_autoreleasePoolPop(v21);
       ++v15;
-      v35 = [(SDUnitLogRule *)self logArray];
-      v36 = [v35 count];
+      logArray4 = [(SDUnitLogRule *)self logArray];
+      v36 = [logArray4 count];
 
       v17 = v32;
       v18 = v28;
@@ -649,25 +649,25 @@ LABEL_14:
 
     while (v36 > v15);
 
-    v8 = v40;
+    priorityCopy = v40;
     v9 = v43;
-    v5 = v39;
+    varietyCopy = v39;
   }
 
-  v37 = [(SDUnitLogRule *)self logArray];
-  [v37 removeAllObjects];
+  logArray5 = [(SDUnitLogRule *)self logArray];
+  [logArray5 removeAllObjects];
 
-  v38 = [(SDUnitLogRule *)self logDates];
-  [v38 removeAllObjects];
+  logDates = [(SDUnitLogRule *)self logDates];
+  [logDates removeAllObjects];
 
-  if (v5)
+  if (varietyCopy)
   {
-    [(SDUnitLogRule *)self generateMaxVariety:v9 withLogs:v41 withHighPriority:v8];
+    [(SDUnitLogRule *)self generateMaxVariety:v9 withLogs:arrayCopy withHighPriority:priorityCopy];
   }
 
   else
   {
-    [v41 addObjectsFromArray:v9];
+    [arrayCopy addObjectsFromArray:v9];
   }
 }
 
@@ -721,15 +721,15 @@ LABEL_14:
   return v2;
 }
 
-- (id)resolvePathToMobileContainer:(id)a3
+- (id)resolvePathToMobileContainer:(id)container
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"~"] && (objc_msgSend(v4, "hasPrefix:", @"~~") & 1) == 0)
+  containerCopy = container;
+  if ([containerCopy hasPrefix:@"~"] && (objc_msgSend(containerCopy, "hasPrefix:", @"~~") & 1) == 0)
   {
-    v9 = sub_100024620();
-    if (v9)
+    path = sub_100024620();
+    if (path)
     {
-      v10 = [v4 stringByReplacingOccurrencesOfString:@"~" withString:v9];
+      v10 = [containerCopy stringByReplacingOccurrencesOfString:@"~" withString:path];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -739,17 +739,17 @@ LABEL_14:
 
     else
     {
-      v10 = [v4 stringByReplacingOccurrencesOfString:@"~" withString:@"/private/var/root"];
+      v10 = [containerCopy stringByReplacingOccurrencesOfString:@"~" withString:@"/private/var/root"];
       v16 = sub_1000278E8();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = v4;
+        mobileContainerClass2 = containerCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ cannot be resolved to user home directory. Setting to root home directory.", buf, 0xCu);
       }
 
       v17 = +[SDResourceManager sharedResourceManager];
-      [v17 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"%@ cannot be resolved to user home directory. Setting to root home directory.", v4}];
+      [v17 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"%@ cannot be resolved to user home directory. Setting to root home directory.", containerCopy}];
     }
   }
 
@@ -757,15 +757,15 @@ LABEL_14:
   {
     if ([(SDUnitLogRule *)self mobileContainerClass]&& ([(SDUnitLogRule *)self mobileContainer], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
     {
-      v6 = [(SDUnitLogRule *)self mobileContainerClass];
-      v7 = [(SDUnitLogRule *)self mobileContainer];
-      [v7 UTF8String];
-      if (v6 == 2)
+      mobileContainerClass = [(SDUnitLogRule *)self mobileContainerClass];
+      mobileContainer = [(SDUnitLogRule *)self mobileContainer];
+      [mobileContainer UTF8String];
+      if (mobileContainerClass == 2)
       {
         v8 = container_create_or_lookup_path_for_current_user();
       }
 
-      else if (v6 == 1)
+      else if (mobileContainerClass == 1)
       {
         v8 = container_system_group_path_for_identifier();
       }
@@ -780,7 +780,7 @@ LABEL_14:
       if (v11)
       {
         v12 = [NSURL fileURLWithFileSystemRepresentation:v11 isDirectory:1 relativeToURL:0];
-        v9 = [v12 path];
+        path = [v12 path];
 
         free(v11);
       }
@@ -789,19 +789,19 @@ LABEL_14:
       {
         if ([(SDUnitLogRule *)self mobileContainerClass]== 2)
         {
-          v9 = @"/private/var/mobile/";
+          path = @"/private/var/mobile/";
         }
 
         else
         {
-          v9 = @"/DUMMY/";
+          path = @"/DUMMY/";
         }
 
         v13 = sub_1000278E8();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
-          v19 = [(SDUnitLogRule *)self mobileContainerClass];
+          mobileContainerClass2 = [(SDUnitLogRule *)self mobileContainerClass];
           v20 = 2048;
           v21 = 1;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Error finding container of type %lu with error %llu, setting to bogus path.", buf, 0x16u);
@@ -814,10 +814,10 @@ LABEL_14:
 
     else
     {
-      v9 = @"/";
+      path = @"/";
     }
 
-    v10 = [(__CFString *)v9 stringByAppendingPathComponent:v4];
+    v10 = [(__CFString *)path stringByAppendingPathComponent:containerCopy];
   }
 
   return v10;
@@ -825,8 +825,8 @@ LABEL_14:
 
 - (BOOL)canAddToCandidateList
 {
-  v3 = [(SDUnitLogRule *)self logArray];
-  v4 = [v3 count];
+  logArray = [(SDUnitLogRule *)self logArray];
+  v4 = [logArray count];
 
   if (v4 >= 0x3E8)
   {
@@ -846,19 +846,19 @@ LABEL_14:
   return v4 < 0x3E8;
 }
 
-- (id)resolveCrashReporterPath:(id)a3
+- (id)resolveCrashReporterPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   if (sub_100027804())
   {
-    v4 = [v3 length];
+    v4 = [pathCopy length];
     v5 = sub_100016A64(0);
-    v6 = [v3 stringByReplacingOccurrencesOfString:@"/private/var/mobile/Library/Logs/CrashReporter" withString:v5 options:9 range:{0, v4}];
+    v6 = [pathCopy stringByReplacingOccurrencesOfString:@"/private/var/mobile/Library/Logs/CrashReporter" withString:v5 options:9 range:{0, v4}];
 
-    v3 = v6;
+    pathCopy = v6;
   }
 
-  return v3;
+  return pathCopy;
 }
 
 @end

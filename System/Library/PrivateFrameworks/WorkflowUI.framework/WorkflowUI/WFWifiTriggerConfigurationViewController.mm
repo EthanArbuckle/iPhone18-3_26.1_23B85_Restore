@@ -1,96 +1,96 @@
 @interface WFWifiTriggerConfigurationViewController
-- (WFWifiTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFWifiTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)customSections;
 - (id)fetchWiFiNetworks;
-- (id)infoForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)infoForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (id)tableViewCellClasses;
 - (id)textForSummaryFooterView;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)cell:(id)a3 didSelectOptionWithLeftViewSelected:(BOOL)a4 rightViewSelected:(BOOL)a5;
-- (void)connectionSwitchChanged:(id)a3;
-- (void)presentNavControllerWithRootViewController:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)triggerTableViewController:(id)a3 didFinishWithAnySelected:(BOOL)a4 orSelectedOptions:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)cell:(id)cell didSelectOptionWithLeftViewSelected:(BOOL)selected rightViewSelected:(BOOL)viewSelected;
+- (void)connectionSwitchChanged:(id)changed;
+- (void)presentNavControllerWithRootViewController:(id)controller;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)triggerTableViewController:(id)controller didFinishWithAnySelected:(BOOL)selected orSelectedOptions:(id)options;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFWifiTriggerConfigurationViewController
 
-- (void)cell:(id)a3 didSelectOptionWithLeftViewSelected:(BOOL)a4 rightViewSelected:(BOOL)a5
+- (void)cell:(id)cell didSelectOptionWithLeftViewSelected:(BOOL)selected rightViewSelected:(BOOL)viewSelected
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v8 setOnConnect:v6];
+  viewSelectedCopy = viewSelected;
+  selectedCopy = selected;
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setOnConnect:selectedCopy];
 
-  v9 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v9 setOnDisconnect:v5];
+  trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger2 setOnDisconnect:viewSelectedCopy];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
-  v10 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v10 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)triggerTableViewController:(id)a3 didFinishWithAnySelected:(BOOL)a4 orSelectedOptions:(id)a5
+- (void)triggerTableViewController:(id)controller didFinishWithAnySelected:(BOOL)selected orSelectedOptions:(id)options
 {
-  v5 = a4;
-  v14 = a5;
-  v8 = a3;
-  v9 = [(WFTriggerConfigurationViewController *)self trigger];
-  v10 = v9;
-  if (v5)
+  selectedCopy = selected;
+  optionsCopy = options;
+  controllerCopy = controller;
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  v10 = trigger;
+  if (selectedCopy)
   {
-    [v9 setSelection:0];
+    [trigger setSelection:0];
 
-    v11 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v11 setSelectedNetworks:MEMORY[0x277CBEBF8]];
+    trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger2 setSelectedNetworks:MEMORY[0x277CBEBF8]];
   }
 
   else
   {
-    [v9 setSelection:1];
+    [trigger setSelection:1];
 
-    v11 = [v14 if_map:&__block_literal_global_5482];
-    v12 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v12 setSelectedNetworks:v11];
+    trigger2 = [optionsCopy if_map:&__block_literal_global_5482];
+    trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger3 setSelectedNetworks:trigger2];
   }
 
-  [v8 dismissViewControllerAnimated:1 completion:0];
-  v13 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v13 reloadData];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (void)presentNavControllerWithRootViewController:(id)a3
+- (void)presentNavControllerWithRootViewController:(id)controller
 {
   v4 = MEMORY[0x277D757A0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithRootViewController:v5];
+  controllerCopy = controller;
+  v6 = [[v4 alloc] initWithRootViewController:controllerCopy];
 
   [(WFWifiTriggerConfigurationViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
 - (id)textForSummaryFooterView
 {
-  v3 = [(WFTriggerConfigurationViewController *)self trigger];
-  v4 = [v3 runAfterConnectionInterruption];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  runAfterConnectionInterruption = [trigger runAfterConnectionInterruption];
 
-  v5 = [(WFTriggerConfigurationViewController *)self trigger];
-  v6 = [v5 selection];
+  trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+  selection = [trigger2 selection];
 
-  if (!v6)
+  if (!selection)
   {
-    v15 = [MEMORY[0x277D79F18] currentDevice];
-    v16 = [v15 hasCapability:*MEMORY[0x277D7A3F8]];
+    currentDevice = [MEMORY[0x277D79F18] currentDevice];
+    v16 = [currentDevice hasCapability:*MEMORY[0x277D7A3F8]];
 
     if (v16)
     {
-      if (v4)
+      if (runAfterConnectionInterruption)
       {
         v17 = @"If you reconnect to any WLAN network within 3 minutes of being disconnected, this automation will run again.";
       }
@@ -101,7 +101,7 @@
       }
     }
 
-    else if (v4)
+    else if (runAfterConnectionInterruption)
     {
       v17 = @"If you reconnect to any Wi-Fi network within 3 minutes of being disconnected, this automation will run again.";
     }
@@ -114,18 +114,18 @@
     goto LABEL_27;
   }
 
-  v7 = [(WFTriggerConfigurationViewController *)self trigger];
-  v8 = [v7 selectedNetworks];
-  v9 = [v8 count];
+  trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+  selectedNetworks = [trigger3 selectedNetworks];
+  v9 = [selectedNetworks count];
 
   if (!v9)
   {
-    v18 = [MEMORY[0x277D79F18] currentDevice];
-    v19 = [v18 hasCapability:*MEMORY[0x277D7A3F8]];
+    currentDevice2 = [MEMORY[0x277D79F18] currentDevice];
+    v19 = [currentDevice2 hasCapability:*MEMORY[0x277D7A3F8]];
 
     if (v19)
     {
-      if (v4)
+      if (runAfterConnectionInterruption)
       {
         v17 = @"If you reconnect to a WLAN network within 3 minutes of being disconnected, this automation will run again.";
       }
@@ -136,7 +136,7 @@
       }
     }
 
-    else if (v4)
+    else if (runAfterConnectionInterruption)
     {
       v17 = @"If you reconnect to a Wi-Fi network within 3 minutes of being disconnected, this automation will run again.";
     }
@@ -151,14 +151,14 @@ LABEL_27:
     goto LABEL_32;
   }
 
-  v10 = [(WFTriggerConfigurationViewController *)self trigger];
-  v11 = [v10 selectedNetworks];
-  v12 = [v11 count];
+  trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+  selectedNetworks2 = [trigger4 selectedNetworks];
+  v12 = [selectedNetworks2 count];
 
   if (v12 == 1)
   {
     v13 = MEMORY[0x277CCACA8];
-    if (v4)
+    if (runAfterConnectionInterruption)
     {
       v14 = @"If you reconnect to “%@” within 3 minutes of being disconnected, this automation will run again.";
     }
@@ -169,21 +169,21 @@ LABEL_27:
     }
 
     v24 = WFLocalizedString(v14);
-    v25 = [(WFTriggerConfigurationViewController *)self trigger];
-    v26 = [v25 selectedNetworks];
-    v27 = [v26 firstObject];
-    v28 = [v13 localizedStringWithFormat:v24, v27];
+    trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedNetworks3 = [trigger5 selectedNetworks];
+    firstObject = [selectedNetworks3 firstObject];
+    v28 = [v13 localizedStringWithFormat:v24, firstObject];
   }
 
   else
   {
-    v20 = [MEMORY[0x277D79F18] currentDevice];
-    v21 = [v20 hasCapability:*MEMORY[0x277D7A3F8]];
+    currentDevice3 = [MEMORY[0x277D79F18] currentDevice];
+    v21 = [currentDevice3 hasCapability:*MEMORY[0x277D7A3F8]];
 
     v22 = MEMORY[0x277CCACA8];
     if (v21)
     {
-      if (v4)
+      if (runAfterConnectionInterruption)
       {
         v23 = @"If you reconnect to any of %lu WLAN networks within 3 minutes of being disconnected, these automations will run again.";
       }
@@ -194,7 +194,7 @@ LABEL_27:
       }
     }
 
-    else if (v4)
+    else if (runAfterConnectionInterruption)
     {
       v23 = @"If you reconnect to any of %lu Wi-Fi networks within 3 minutes of being disconnected, these automations will run again.";
     }
@@ -205,9 +205,9 @@ LABEL_27:
     }
 
     v24 = WFLocalizedPluralString(v23);
-    v25 = [(WFTriggerConfigurationViewController *)self trigger];
-    v26 = [v25 selectedNetworks];
-    v28 = [v22 localizedStringWithFormat:v24, objc_msgSend(v26, "count")];
+    trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedNetworks3 = [trigger5 selectedNetworks];
+    v28 = [v22 localizedStringWithFormat:v24, objc_msgSend(selectedNetworks3, "count")];
   }
 
 LABEL_32:
@@ -215,9 +215,9 @@ LABEL_32:
   return v28;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v5 = [(WFWifiTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFWifiTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   v7 = [v6 isEqual:@"switchCell"];
 
@@ -225,8 +225,8 @@ LABEL_32:
   {
     v8 = objc_opt_new();
     [v8 setHorizontalPadding:0.0];
-    v9 = [(WFWifiTriggerConfigurationViewController *)self textForSummaryFooterView];
-    [v8 setText:v9];
+    textForSummaryFooterView = [(WFWifiTriggerConfigurationViewController *)self textForSummaryFooterView];
+    [v8 setText:textForSummaryFooterView];
   }
 
   else
@@ -237,12 +237,12 @@ LABEL_32:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[WFWifiTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[WFWifiTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = [v7 objectForKeyedSubscript:@"identifier"];
   v9 = [v8 isEqual:@"chooseNetwork"];
 
@@ -258,20 +258,20 @@ LABEL_32:
       _os_log_impl(&dword_274719000, v10, OS_LOG_TYPE_DEBUG, "%s didselect section: %{public}@", buf, 0x16u);
     }
 
-    v11 = [(WFWifiTriggerConfigurationViewController *)self allNetworks];
+    allNetworks = [(WFWifiTriggerConfigurationViewController *)self allNetworks];
 
-    if (v11)
+    if (allNetworks)
     {
-      v12 = [(WFWifiTriggerConfigurationViewController *)self allNetworks];
+      allNetworks2 = [(WFWifiTriggerConfigurationViewController *)self allNetworks];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __78__WFWifiTriggerConfigurationViewController_tableView_didSelectRowAtIndexPath___block_invoke;
       v21[3] = &unk_279EE8028;
       v21[4] = self;
-      v13 = [v12 if_map:v21];
+      v13 = [allNetworks2 if_map:v21];
 
-      v14 = [(WFTriggerConfigurationViewController *)self trigger];
-      v15 = [v14 selection] == 0;
+      trigger = [(WFTriggerConfigurationViewController *)self trigger];
+      v15 = [trigger selection] == 0;
 
       v16 = [WFTriggerTableViewController alloc];
       v17 = WFLocalizedString(@"Any Network");
@@ -296,9 +296,9 @@ LABEL_32:
     }
   }
 
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v6 withSectionInfo:v7];
-  v20 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v20 reloadData];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v7];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 WFSelectableListOption *__78__WFWifiTriggerConfigurationViewController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -314,31 +314,31 @@ WFSelectableListOption *__78__WFWifiTriggerConfigurationViewController_tableView
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFWifiTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFWifiTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (void)connectionSwitchChanged:(id)a3
+- (void)connectionSwitchChanged:(id)changed
 {
-  v4 = [a3 isOn];
-  v5 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v5 setRunAfterConnectionInterruption:v4];
+  isOn = [changed isOn];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setRunAfterConnectionInterruption:isOn];
 
-  v6 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v6 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFWifiTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFWifiTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccessoryType:0];
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
@@ -356,40 +356,40 @@ WFSelectableListOption *__78__WFWifiTriggerConfigurationViewController_tableView
 
   if (v14)
   {
-    v15 = v10;
+    switchControl = v10;
     v16 = WFLocalizedString(@"Network");
-    v17 = [v15 textLabel];
-    [v17 setText:v16];
+    textLabel = [switchControl textLabel];
+    [textLabel setText:v16];
 
-    v18 = [(WFTriggerConfigurationViewController *)self trigger];
-    v19 = [v18 selection];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    selection = [trigger selection];
 
-    if (v19 == 1)
+    if (selection == 1)
     {
-      v32 = [(WFTriggerConfigurationViewController *)self trigger];
-      v33 = [v32 selectedNetworks];
-      v34 = [v33 count];
+      trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+      selectedNetworks = [trigger2 selectedNetworks];
+      v34 = [selectedNetworks count];
 
       if (v34)
       {
-        v35 = [(WFTriggerConfigurationViewController *)self trigger];
-        v36 = [v35 selectedNetworks];
-        v37 = [v36 count];
+        trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+        selectedNetworks2 = [trigger3 selectedNetworks];
+        v37 = [selectedNetworks2 count];
 
         if (v37 == 1)
         {
-          v38 = [(WFTriggerConfigurationViewController *)self trigger];
-          v39 = [v38 selectedNetworks];
-          v40 = [v39 objectAtIndex:0];
+          trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+          selectedNetworks3 = [trigger4 selectedNetworks];
+          v40 = [selectedNetworks3 objectAtIndex:0];
         }
 
         else
         {
           v49 = MEMORY[0x277CCACA8];
-          v38 = WFLocalizedString(@"Any of %lu Networks");
-          v39 = [(WFTriggerConfigurationViewController *)self trigger];
-          v50 = [v39 selectedNetworks];
-          v40 = [v49 localizedStringWithFormat:v38, objc_msgSend(v50, "count")];
+          trigger4 = WFLocalizedString(@"Any of %lu Networks");
+          selectedNetworks3 = [(WFTriggerConfigurationViewController *)self trigger];
+          v39SelectedNetworks = [selectedNetworks3 selectedNetworks];
+          v40 = [v49 localizedStringWithFormat:trigger4, objc_msgSend(v39SelectedNetworks, "count")];
         }
 
         goto LABEL_27;
@@ -400,12 +400,12 @@ WFSelectableListOption *__78__WFWifiTriggerConfigurationViewController_tableView
 
     else
     {
-      if (v19)
+      if (selection)
       {
         v40 = 0;
 LABEL_27:
-        v51 = [v15 detailTextLabel];
-        [v51 setText:v40];
+        detailTextLabel = [switchControl detailTextLabel];
+        [detailTextLabel setText:v40];
 
 LABEL_28:
         goto LABEL_29;
@@ -447,25 +447,25 @@ LABEL_28:
 
     v63 = v24;
 
-    v60 = [(WFTriggerConfigurationViewController *)self trigger];
-    v62 = [objc_opt_class() onIcon];
-    v59 = [(WFTriggerConfigurationViewController *)self trigger];
-    v41 = [objc_opt_class() onLabel];
-    v58 = [(WFTriggerConfigurationViewController *)self trigger];
-    v42 = [objc_opt_class() onIconTintColor];
-    v57 = [(WFTriggerConfigurationViewController *)self trigger];
-    v43 = [objc_opt_class() offIcon];
-    v56 = [(WFTriggerConfigurationViewController *)self trigger];
-    v44 = [objc_opt_class() offLabel];
-    v45 = [(WFTriggerConfigurationViewController *)self trigger];
-    v46 = [objc_opt_class() offIconTintColor];
-    [v63 configureWithLeftGlyph:v62 leftTitle:v41 leftTintColor:v42 rightGlyph:v43 rightTitle:v44 rightTintColor:v46];
+    trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+    onIcon = [objc_opt_class() onIcon];
+    trigger6 = [(WFTriggerConfigurationViewController *)self trigger];
+    onLabel = [objc_opt_class() onLabel];
+    trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+    onIconTintColor = [objc_opt_class() onIconTintColor];
+    trigger8 = [(WFTriggerConfigurationViewController *)self trigger];
+    offIcon = [objc_opt_class() offIcon];
+    trigger9 = [(WFTriggerConfigurationViewController *)self trigger];
+    offLabel = [objc_opt_class() offLabel];
+    trigger10 = [(WFTriggerConfigurationViewController *)self trigger];
+    offIconTintColor = [objc_opt_class() offIconTintColor];
+    [v63 configureWithLeftGlyph:onIcon leftTitle:onLabel leftTintColor:onIconTintColor rightGlyph:offIcon rightTitle:offLabel rightTintColor:offIconTintColor];
 
-    v47 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v63 setLeftViewSelected:{objc_msgSend(v47, "onConnect")}];
+    trigger11 = [(WFTriggerConfigurationViewController *)self trigger];
+    [v63 setLeftViewSelected:{objc_msgSend(trigger11, "onConnect")}];
 
-    v48 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v63 setRightViewSelected:{objc_msgSend(v48, "onDisconnect")}];
+    trigger12 = [(WFTriggerConfigurationViewController *)self trigger];
+    [v63 setRightViewSelected:{objc_msgSend(trigger12, "onDisconnect")}];
 
     [v63 setSingleSelection:1];
     [v63 setDelegate:self];
@@ -481,11 +481,11 @@ LABEL_28:
   {
     [v10 setSelectionStyle:0];
     v27 = WFLocalizedString(@"Run After Connection Interruption");
-    v28 = [v10 textLabel];
-    [v28 setText:v27];
+    textLabel2 = [v10 textLabel];
+    [textLabel2 setText:v27];
 
-    v29 = [v10 textLabel];
-    [v29 setNumberOfLines:2];
+    textLabel3 = [v10 textLabel];
+    [textLabel3 setNumberOfLines:2];
 
     v30 = v10;
     if (v30)
@@ -509,41 +509,41 @@ LABEL_28:
 
     v54 = v31;
 
-    v15 = [v54 switchControl];
+    switchControl = [v54 switchControl];
 
-    v55 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v15 setOn:{objc_msgSend(v55, "runAfterConnectionInterruption")}];
+    trigger13 = [(WFTriggerConfigurationViewController *)self trigger];
+    [switchControl setOn:{objc_msgSend(trigger13, "runAfterConnectionInterruption")}];
 
-    [v15 addTarget:self action:sel_connectionSwitchChanged_ forControlEvents:4096];
+    [switchControl addTarget:self action:sel_connectionSwitchChanged_ forControlEvents:4096];
     goto LABEL_28;
   }
 
 LABEL_29:
-  v52 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:v6 sectionInfo:v8];
+  v52 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:pathCopy sectionInfo:v8];
 
   return v52;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFWifiTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFWifiTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [(WFTriggerConfigurationViewController *)self numberOfRowsInSectionWithInfo:v5];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
@@ -582,31 +582,31 @@ LABEL_4:
     CFRelease(v4);
   }
 
-  v9 = [v2 array];
-  v10 = [v9 sortedArrayUsingSelector:sel_localizedStandardCompare_];
+  array = [v2 array];
+  v10 = [array sortedArrayUsingSelector:sel_localizedStandardCompare_];
 
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = WFWifiTriggerConfigurationViewController;
-  [(WFWifiTriggerConfigurationViewController *)&v6 viewWillAppear:a3];
-  v4 = [(WFWifiTriggerConfigurationViewController *)self fetchWiFiNetworks];
-  [(WFWifiTriggerConfigurationViewController *)self setAllNetworks:v4];
+  [(WFWifiTriggerConfigurationViewController *)&v6 viewWillAppear:appear];
+  fetchWiFiNetworks = [(WFWifiTriggerConfigurationViewController *)self fetchWiFiNetworks];
+  [(WFWifiTriggerConfigurationViewController *)self setAllNetworks:fetchWiFiNetworks];
 
-  v5 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v5 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (id)customSections
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v2 = [(WFTriggerConfigurationViewController *)self trigger];
-  v3 = [v2 onConnect];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  onConnect = [trigger onConnect];
 
-  if (v3)
+  if (onConnect)
   {
     v27[0] = @"identifier";
     v27[1] = @"cellIdentifier";
@@ -673,19 +673,19 @@ LABEL_4:
   return v4;
 }
 
-- (WFWifiTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFWifiTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFWifiTriggerConfigurationViewController.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFWifiTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWifiTriggerConfigurationViewController.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFWifiTrigger class]]"}];
   }
 
   v13.receiver = self;
   v13.super_class = WFWifiTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:triggerCopy mode:mode];
   v9 = v8;
   if (v8)
   {

@@ -1,10 +1,10 @@
 @interface CUIMeshBuffer
 - (CUIMeshBuffer)init;
-- (CUIMeshBuffer)initWithBytes:(void *)a3 andLength:(unint64_t)a4 ofType:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CUIMeshBuffer)initWithBytes:(void *)bytes andLength:(unint64_t)length ofType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)map;
 - (void)dealloc;
-- (void)fillData:(id)a3 offset:(unint64_t)a4;
+- (void)fillData:(id)data offset:(unint64_t)offset;
 @end
 
 @implementation CUIMeshBuffer
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (CUIMeshBuffer)initWithBytes:(void *)a3 andLength:(unint64_t)a4 ofType:(unint64_t)a5
+- (CUIMeshBuffer)initWithBytes:(void *)bytes andLength:(unint64_t)length ofType:(unint64_t)type
 {
   v8 = [(CUIMeshBuffer *)self init];
   v9 = v8;
   if (v8)
   {
-    [(NSMutableData *)v8->_data appendBytes:a3 length:a4];
-    v9->_type = a5;
+    [(NSMutableData *)v8->_data appendBytes:bytes length:length];
+    v9->_type = type;
   }
 
   return v9;
@@ -42,26 +42,26 @@
   [(CUIMeshBuffer *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[2] = self->_type;
   data = self->_data;
   if (data)
   {
-    v5[1] = [(NSMutableData *)data copyWithZone:a3];
+    v5[1] = [(NSMutableData *)data copyWithZone:zone];
   }
 
   return v5;
 }
 
-- (void)fillData:(id)a3 offset:(unint64_t)a4
+- (void)fillData:(id)data offset:(unint64_t)offset
 {
   data = self->_data;
-  v7 = [a3 bytes];
-  v8 = [a3 length] - a4;
+  bytes = [data bytes];
+  v8 = [data length] - offset;
 
-  [(NSMutableData *)data appendBytes:&v7[a4] length:v8];
+  [(NSMutableData *)data appendBytes:&bytes[offset] length:v8];
 }
 
 - (id)map

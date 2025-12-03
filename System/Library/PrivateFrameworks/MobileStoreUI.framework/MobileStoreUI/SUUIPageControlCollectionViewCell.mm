@@ -1,20 +1,20 @@
 @interface SUUIPageControlCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SUUIPageControlCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SUUIPageControlCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setNumberOfPages:(int64_t)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setNumberOfPages:(int64_t)pages;
 @end
 
 @implementation SUUIPageControlCollectionViewCell
 
-- (SUUIPageControlCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIPageControlCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SUUIPageControlCollectionViewCell;
-  v3 = [(SUUIViewReuseCollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseCollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D757E0]);
@@ -22,24 +22,24 @@
     v3->_pageControl = v4;
 
     [(UIPageControl *)v3->_pageControl setEnabled:0];
-    v6 = [(SUUIPageControlCollectionViewCell *)v3 contentView];
-    [v6 addSubview:v3->_pageControl];
+    contentView = [(SUUIPageControlCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_pageControl];
   }
 
   return v3;
 }
 
-- (void)setNumberOfPages:(int64_t)a3
+- (void)setNumberOfPages:(int64_t)pages
 {
-  if ([(UIPageControl *)self->_pageControl numberOfPages]!= a3)
+  if ([(UIPageControl *)self->_pageControl numberOfPages]!= pages)
   {
-    [(UIPageControl *)self->_pageControl setNumberOfPages:a3];
+    [(UIPageControl *)self->_pageControl setNumberOfPages:pages];
 
     [(SUUIPageControlCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -48,51 +48,51 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
   v5 = 37.0;
   result.height = v5;
-  result.width = a3;
+  result.width = width;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v10 = [a3 style];
-  self->_pageControlPosition = [v10 elementPosition];
-  v6 = [v10 ikColor];
-  v7 = [v6 color];
+  style = [element style];
+  self->_pageControlPosition = [style elementPosition];
+  ikColor = [style ikColor];
+  color = [ikColor color];
 
-  if (!v7)
+  if (!color)
   {
-    v7 = [MEMORY[0x277D75348] darkGrayColor];
+    color = [MEMORY[0x277D75348] darkGrayColor];
   }
 
-  [(UIPageControl *)self->_pageControl setCurrentPageIndicatorTintColor:v7];
+  [(UIPageControl *)self->_pageControl setCurrentPageIndicatorTintColor:color];
   pageControl = self->_pageControl;
-  v9 = [v7 colorWithAlphaComponent:0.33];
+  v9 = [color colorWithAlphaComponent:0.33];
   [(UIPageControl *)pageControl setPageIndicatorTintColor:v9];
 
   [(SUUIPageControlCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUIPageControlCollectionViewCell *)self setNeedsLayout];
   }
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(SUUIPageControlCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIPageControlCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 

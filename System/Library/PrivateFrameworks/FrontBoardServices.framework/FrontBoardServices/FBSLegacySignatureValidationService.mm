@@ -1,31 +1,31 @@
 @interface FBSLegacySignatureValidationService
 - (BOOL)_workQueue_signatureNeedsExplicitUserTrust;
-- (FBSLegacySignatureValidationService)initWithApplicationInfo:(id)a3 andProvisioningProfiles:(id)a4 isManaged:(BOOL)a5;
+- (FBSLegacySignatureValidationService)initWithApplicationInfo:(id)info andProvisioningProfiles:(id)profiles isManaged:(BOOL)managed;
 - (id)_workQueue_expirationDateForProvisioningProfile;
-- (unint64_t)trustStateForApplication:(id)a3;
-- (void)_initializeProfiles:(id)a3;
+- (unint64_t)trustStateForApplication:(id)application;
+- (void)_initializeProfiles:(id)profiles;
 @end
 
 @implementation FBSLegacySignatureValidationService
 
-- (FBSLegacySignatureValidationService)initWithApplicationInfo:(id)a3 andProvisioningProfiles:(id)a4 isManaged:(BOOL)a5
+- (FBSLegacySignatureValidationService)initWithApplicationInfo:(id)info andProvisioningProfiles:(id)profiles isManaged:(BOOL)managed
 {
-  v10 = a3;
-  v11 = a4;
-  if (!v10)
+  infoCopy = info;
+  profilesCopy = profiles;
+  if (!infoCopy)
   {
     [FBSLegacySignatureValidationService initWithApplicationInfo:a2 andProvisioningProfiles:self isManaged:?];
   }
 
-  v12 = v11;
+  v12 = profilesCopy;
   v16.receiver = self;
   v16.super_class = FBSLegacySignatureValidationService;
   v13 = [(FBSLegacySignatureValidationService *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_appInfo, a3);
-    v14->_isManaged = a5;
+    objc_storeStrong(&v13->_appInfo, info);
+    v14->_isManaged = managed;
     [(FBSLegacySignatureValidationService *)v14 _initializeProfiles:v12];
     BSDispatchQueueCreateSerial();
   }
@@ -33,15 +33,15 @@
   return 0;
 }
 
-- (unint64_t)trustStateForApplication:(id)a3
+- (unint64_t)trustStateForApplication:(id)application
 {
-  v5 = a3;
-  if (self->_appInfo != v5)
+  applicationCopy = application;
+  if (self->_appInfo != applicationCopy)
   {
     [(FBSLegacySignatureValidationService *)a2 trustStateForApplication:?];
   }
 
-  v6 = v5;
+  v6 = applicationCopy;
   kdebug_trace();
   v11 = 0;
   v12 = &v11;
@@ -249,16 +249,16 @@ void __64__FBSLegacySignatureValidationService_trustStateForApplication___block_
   }
 }
 
-- (void)_initializeProfiles:(id)a3
+- (void)_initializeProfiles:(id)profiles
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  profilesCopy = profiles;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = v4;
+  v6 = profilesCopy;
   v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
@@ -276,14 +276,14 @@ void __64__FBSLegacySignatureValidationService_trustStateForApplication___block_
         v11 = *(*(&v29 + 1) + 8 * i);
         if (([v11 isAppleInternalProfile] & 1) == 0)
         {
-          v12 = [(FBSApplicationInfo *)self->_appInfo isBeta];
-          if (v12 != [v11 isBeta])
+          isBeta = [(FBSApplicationInfo *)self->_appInfo isBeta];
+          if (isBeta != [v11 isBeta])
           {
             continue;
           }
 
-          v13 = [(FBSApplicationInfo *)self->_appInfo _appIDEntitlement];
-          v14 = [v11 allowsApplicationIdentifierEntitlement:v13];
+          _appIDEntitlement = [(FBSApplicationInfo *)self->_appInfo _appIDEntitlement];
+          v14 = [v11 allowsApplicationIdentifierEntitlement:_appIDEntitlement];
 
           if (!v14)
           {
@@ -395,8 +395,8 @@ LABEL_20:
         objc_enumerationMutation(v3);
       }
 
-      v9 = [*(*(&v15 + 1) + 8 * i) expirationDate];
-      if (v9)
+      expirationDate = [*(*(&v15 + 1) + 8 * i) expirationDate];
+      if (expirationDate)
       {
         if (v6)
         {
@@ -406,11 +406,11 @@ LABEL_20:
 
       else
       {
-        v9 = [MEMORY[0x1E695DF00] distantFuture];
+        expirationDate = [MEMORY[0x1E695DF00] distantFuture];
         if (v6)
         {
 LABEL_11:
-          [v9 timeIntervalSinceDate:v6];
+          [expirationDate timeIntervalSinceDate:v6];
           if (v10 <= 0.0)
           {
             goto LABEL_13;
@@ -418,7 +418,7 @@ LABEL_11:
         }
       }
 
-      v11 = v9;
+      v11 = expirationDate;
 
       v6 = v11;
 LABEL_13:
@@ -431,8 +431,8 @@ LABEL_13:
 
   if (v6)
   {
-    v12 = [MEMORY[0x1E695DF00] distantFuture];
-    v13 = [(NSArray *)v6 isEqual:v12];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    v13 = [(NSArray *)v6 isEqual:distantFuture];
 
     if (v13)
     {
@@ -454,11 +454,11 @@ LABEL_21:
     return 0;
   }
 
-  v4 = [getMCProfileConnectionClass() sharedConnection];
-  v5 = [v4 trustedCodeSigningIdentities];
+  sharedConnection = [getMCProfileConnectionClass() sharedConnection];
+  trustedCodeSigningIdentities = [sharedConnection trustedCodeSigningIdentities];
 
-  v6 = [(FBSApplicationInfo *)self->_appInfo signerIdentity];
-  v7 = [v5 containsObject:v6];
+  signerIdentity = [(FBSApplicationInfo *)self->_appInfo signerIdentity];
+  v7 = [trustedCodeSigningIdentities containsObject:signerIdentity];
 
   if (v7)
   {

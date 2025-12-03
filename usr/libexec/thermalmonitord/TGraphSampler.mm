@@ -1,22 +1,22 @@
 @interface TGraphSampler
 + (id)sharedInstance;
-- (BOOL)shouldLogSensor:(__CFString *)a3;
-- (BOOL)shouldLogSensorForLiteMode:(__CFString *)a3;
+- (BOOL)shouldLogSensor:(__CFString *)sensor;
+- (BOOL)shouldLogSensorForLiteMode:(__CFString *)mode;
 - (TGraphSampler)init;
-- (__CFString)getTGraphData:(int)a3;
-- (void)addtGraphDataSource:(id)a3;
+- (__CFString)getTGraphData:(int)data;
+- (void)addtGraphDataSource:(id)source;
 - (void)dealloc;
 - (void)genTGraphData;
 - (void)genTGraphHeader;
 - (void)logToPowerlog;
-- (void)setProduct:(id)a3 withComponents:(id)a4 andHotspotSupervisors:(id)a5;
-- (void)setTGraphDataString:(__CFString *)a3;
-- (void)updateAppleCareState:(int)a3 value:(int)a4;
+- (void)setProduct:(id)product withComponents:(id)components andHotspotSupervisors:(id)supervisors;
+- (void)setTGraphDataString:(__CFString *)string;
+- (void)updateAppleCareState:(int)state value:(int)value;
 - (void)updateLiteModePowerLogDictionaryForSensors;
 - (void)updatePowerLogDictionaryForSensors;
-- (void)updatePowerlogLiteMode:(int64_t)a3 pressureLevel:(int64_t)a4;
-- (void)updatePowerlogMiscState:(int)a3 value:(int)a4;
-- (void)updateSubkeyController:(id)a3 forControlList:(id)a4;
+- (void)updatePowerlogLiteMode:(int64_t)mode pressureLevel:(int64_t)level;
+- (void)updatePowerlogMiscState:(int)state value:(int)value;
+- (void)updateSubkeyController:(id)controller forControlList:(id)list;
 @end
 
 @implementation TGraphSampler
@@ -263,11 +263,11 @@
 {
   if (!self->gotDataToLogToLiteMode && self->_powerlogSubkeyController_Sensors_Components)
   {
-    v3 = [(CommonProduct *)self->productObj totalSensors];
-    if (v3 >= 1)
+    totalSensors = [(CommonProduct *)self->productObj totalSensors];
+    if (totalSensors >= 1)
     {
       v4 = 0;
-      v5 = v3;
+      v5 = totalSensors;
       while (1)
       {
         ValueAtIndex = CFArrayGetValueAtIndex([+[HidSensors sensorFourCharCode] sharedInstance];
@@ -363,7 +363,7 @@ LABEL_16:
   return v3;
 }
 
-- (void)setProduct:(id)a3 withComponents:(id)a4 andHotspotSupervisors:(id)a5
+- (void)setProduct:(id)product withComponents:(id)components andHotspotSupervisors:(id)supervisors
 {
   productObj = self->productObj;
   if (productObj)
@@ -383,9 +383,9 @@ LABEL_16:
     CFRelease(listOfSupervisorControl);
   }
 
-  self->productObj = a3;
-  self->listofComponentControl = a4;
-  self->listOfSupervisorControl = a5;
+  self->productObj = product;
+  self->listofComponentControl = components;
+  self->listOfSupervisorControl = supervisors;
   self->isInternal = sub_1000032F4();
 }
 
@@ -397,24 +397,24 @@ LABEL_16:
   [(TGraphSampler *)&v3 dealloc];
 }
 
-- (void)addtGraphDataSource:(id)a3
+- (void)addtGraphDataSource:(id)source
 {
   extratGraphDataSources = self->extratGraphDataSources;
   if (extratGraphDataSources)
   {
-    CFArrayAppendValue(extratGraphDataSources, a3);
+    CFArrayAppendValue(extratGraphDataSources, source);
   }
 }
 
-- (void)updateSubkeyController:(id)a3 forControlList:(id)a4
+- (void)updateSubkeyController:(id)controller forControlList:(id)list
 {
-  if (a3)
+  if (controller)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v6 = [a4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v6 = [list countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -426,15 +426,15 @@ LABEL_16:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(list);
           }
 
-          [a3 setIntValue:objc_msgSend(*(*(&v10 + 1) + 8 * v9) forKey:{"getPowerlogFieldCurrentValue"), objc_msgSend(*(*(&v10 + 1) + 8 * v9), "getPowerlogKey")}];
+          [controller setIntValue:objc_msgSend(*(*(&v10 + 1) + 8 * v9) forKey:{"getPowerlogFieldCurrentValue"), objc_msgSend(*(*(&v10 + 1) + 8 * v9), "getPowerlogKey")}];
           v9 = v9 + 1;
         }
 
         while (v7 != v9);
-        v7 = [a4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [list countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -442,15 +442,15 @@ LABEL_16:
   }
 }
 
-- (BOOL)shouldLogSensor:(__CFString *)a3
+- (BOOL)shouldLogSensor:(__CFString *)sensor
 {
-  LODWORD(v4) = [+[HidSensors sharedInstance](HidSensors shouldRetrieveSensor:"shouldRetrieveSensor:", a3];
+  LODWORD(v4) = [+[HidSensors sharedInstance](HidSensors shouldRetrieveSensor:"shouldRetrieveSensor:", sensor];
   if (v4)
   {
     v5 = -1;
     for (i = &off_100085998; ; ++i)
     {
-      v4 = CFStringCompare(a3, *i, 0);
+      v4 = CFStringCompare(sensor, *i, 0);
       if (v4 == kCFCompareEqualTo)
       {
         break;
@@ -467,9 +467,9 @@ LABEL_16:
   return v4;
 }
 
-- (BOOL)shouldLogSensorForLiteMode:(__CFString *)a3
+- (BOOL)shouldLogSensorForLiteMode:(__CFString *)mode
 {
-  if (CFStringCompare(a3, @"TG0B", 0) == kCFCompareEqualTo)
+  if (CFStringCompare(mode, @"TG0B", 0) == kCFCompareEqualTo)
   {
     return 1;
   }
@@ -483,7 +483,7 @@ LABEL_16:
       break;
     }
 
-    v6 = CFStringCompare(a3, *(&off_1000859F0 + v4 + 1), 0);
+    v6 = CFStringCompare(mode, *(&off_1000859F0 + v4 + 1), 0);
     v4 = v5 + 1;
   }
 
@@ -495,11 +495,11 @@ LABEL_16:
 {
   if (self->_powerlogSubkeyController_Sensors)
   {
-    v3 = [(CommonProduct *)self->productObj totalSensors];
-    if (v3 >= 1)
+    totalSensors = [(CommonProduct *)self->productObj totalSensors];
+    if (totalSensors >= 1)
     {
       v4 = 0;
-      v5 = v3;
+      v5 = totalSensors;
       do
       {
         ValueAtIndex = CFArrayGetValueAtIndex([+[HidSensors sensorFourCharCode] sharedInstance];
@@ -525,7 +525,7 @@ LABEL_16:
   }
 }
 
-- (void)setTGraphDataString:(__CFString *)a3
+- (void)setTGraphDataString:(__CFString *)string
 {
   tGraphDataString = self->tGraphDataString;
   if (tGraphDataString)
@@ -533,9 +533,9 @@ LABEL_16:
     CFRelease(tGraphDataString);
   }
 
-  if (a3)
+  if (string)
   {
-    v6 = CFRetain(a3);
+    v6 = CFRetain(string);
   }
 
   else
@@ -546,14 +546,14 @@ LABEL_16:
   self->tGraphDataString = v6;
 }
 
-- (__CFString)getTGraphData:(int)a3
+- (__CFString)getTGraphData:(int)data
 {
-  if (a3 == 2)
+  if (data == 2)
   {
     [(TGraphSampler *)self genTGraphData];
   }
 
-  else if (a3 == 1)
+  else if (data == 1)
   {
     [(TGraphSampler *)self genTGraphHeader];
   }
@@ -577,9 +577,9 @@ LABEL_16:
   CFArrayAppendValue(Mutable, @"Thermal State");
   Count = CFArrayGetCount([+[HidSensors hidSensorKeys] sharedInstance];
   v5 = CFArrayGetCount([+[HidSensors synthSensorKeys] sharedInstance];
-  v52 = self;
-  v6 = [(CommonProduct *)self->productObj powerSensors];
-  v7 = Count - v6;
+  selfCopy = self;
+  powerSensors = [(CommonProduct *)self->productObj powerSensors];
+  v7 = Count - powerSensors;
   if (v7 < 1)
   {
     v15 = 0;
@@ -587,7 +587,7 @@ LABEL_16:
 
   else
   {
-    v49 = v6;
+    v49 = powerSensors;
     v50 = v5;
     for (i = 0; i != v7; ++i)
     {
@@ -615,11 +615,11 @@ LABEL_16:
     }
 
     v15 = v7;
-    v6 = v49;
+    powerSensors = v49;
     v5 = v50;
   }
 
-  v51 = v6;
+  v51 = powerSensors;
   v16 = v7 + v5;
   if (v5 >= 1)
   {
@@ -660,7 +660,7 @@ LABEL_16:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  listOfSupervisorControl = v52->listOfSupervisorControl;
+  listOfSupervisorControl = selfCopy->listOfSupervisorControl;
   v27 = [(NSMutableArray *)listOfSupervisorControl countByEnumeratingWithState:&v57 objects:v62 count:16];
   if (v27)
   {
@@ -705,7 +705,7 @@ LABEL_16:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  listofComponentControl = v52->listofComponentControl;
+  listofComponentControl = selfCopy->listofComponentControl;
   v35 = [(NSMutableArray *)listofComponentControl countByEnumeratingWithState:&v53 objects:v61 count:16];
   if (v35)
   {
@@ -746,13 +746,13 @@ LABEL_16:
     while (v36);
   }
 
-  extratGraphDataSources = v52->extratGraphDataSources;
+  extratGraphDataSources = selfCopy->extratGraphDataSources;
   if (extratGraphDataSources && CFArrayGetCount(extratGraphDataSources) >= 1)
   {
     v43 = 0;
     do
     {
-      v44 = CFArrayGetValueAtIndex(v52->extratGraphDataSources, v43);
+      v44 = CFArrayGetValueAtIndex(selfCopy->extratGraphDataSources, v43);
       if ([v44 numberOfFields] >= 1)
       {
         v45 = 0;
@@ -775,11 +775,11 @@ LABEL_16:
       ++v43;
     }
 
-    while (CFArrayGetCount(v52->extratGraphDataSources) > v43);
+    while (CFArrayGetCount(selfCopy->extratGraphDataSources) > v43);
   }
 
   v48 = CFStringCreateByCombiningStrings(kCFAllocatorDefault, Mutable, @", ");
-  [(TGraphSampler *)v52 setTGraphDataString:v48];
+  [(TGraphSampler *)selfCopy setTGraphDataString:v48];
   if (Mutable)
   {
     CFRelease(Mutable);
@@ -791,11 +791,11 @@ LABEL_16:
   }
 }
 
-- (void)updatePowerlogMiscState:(int)a3 value:(int)a4
+- (void)updatePowerlogMiscState:(int)state value:(int)value
 {
-  if (a3 <= 6)
+  if (state <= 6)
   {
-    v7 = *(&off_100085960 + a3);
+    v7 = *(&off_100085960 + state);
     if (byte_1000AB2F8 == 1)
     {
       v8 = qword_1000AB718;
@@ -806,13 +806,13 @@ LABEL_16:
         v16 = 2112;
         v17 = v7;
         v18 = 1024;
-        v19 = a4;
+        valueCopy = value;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "<Notice> %s: key %@, value %d", buf, 0x1Cu);
       }
     }
 
     v9 = 360;
-    if (a3 != 2 && a3 != 4)
+    if (state != 2 && state != 4)
     {
       if (!self->isInternal)
       {
@@ -830,7 +830,7 @@ LABEL_16:
       block[1] = 3221225472;
       block[2] = sub_10001E248;
       block[3] = &unk_100085218;
-      v13 = a4;
+      valueCopy2 = value;
       block[4] = v10;
       block[5] = v7;
       dispatch_async(powerlogQueue, block);
@@ -838,13 +838,13 @@ LABEL_16:
   }
 }
 
-- (void)updatePowerlogLiteMode:(int64_t)a3 pressureLevel:(int64_t)a4
+- (void)updatePowerlogLiteMode:(int64_t)mode pressureLevel:(int64_t)level
 {
   v10.tv_sec = 0;
   *&v10.tv_usec = 0;
   if (!gettimeofday(&v10, 0))
   {
-    v7 = [NSArray arrayWithObjects:[NSNumber numberWithDouble:v10.tv_usec / 1000000.0 + v10.tv_sec], [NSNumber numberWithLongLong:a3], [NSNumber numberWithLongLong:a4], 0];
+    v7 = [NSArray arrayWithObjects:[NSNumber numberWithDouble:v10.tv_usec / 1000000.0 + v10.tv_sec], [NSNumber numberWithLongLong:mode], [NSNumber numberWithLongLong:level], 0];
     powerlogQueue = self->_powerlogQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -856,9 +856,9 @@ LABEL_16:
   }
 }
 
-- (void)updateAppleCareState:(int)a3 value:(int)a4
+- (void)updateAppleCareState:(int)state value:(int)value
 {
-  if (a3 <= 4)
+  if (state <= 4)
   {
     if (byte_1000AB2F8 == 1)
     {
@@ -868,9 +868,9 @@ LABEL_16:
         *buf = 136315650;
         v13 = "[TGraphSampler updateAppleCareState:value:]";
         v14 = 1024;
-        v15 = a3;
+        stateCopy = state;
         v16 = 1024;
-        v17 = a4;
+        valueCopy = value;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<Notice> %s: stateType %d, value %d", buf, 0x18u);
       }
     }
@@ -881,8 +881,8 @@ LABEL_16:
     v9[2] = sub_10001E610;
     v9[3] = &unk_1000851A0;
     v9[4] = self;
-    v10 = a3;
-    v11 = a4;
+    stateCopy2 = state;
+    valueCopy2 = value;
     dispatch_async(powerlogQueue, v9);
   }
 }

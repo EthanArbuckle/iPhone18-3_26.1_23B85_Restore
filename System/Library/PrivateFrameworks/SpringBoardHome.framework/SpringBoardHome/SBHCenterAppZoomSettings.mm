@@ -17,7 +17,7 @@
 {
   v28[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69C6638];
-  v25.receiver = a1;
+  v25.receiver = self;
   v25.super_class = &OBJC_METACLASS___SBHCenterAppZoomSettings;
   v3 = objc_msgSendSuper2(&v25, sel_settingsControllerModule);
   v24 = [v2 submoduleWithModule:v3 childSettingsKeyPath:0];
@@ -38,8 +38,8 @@
 
   v13 = MEMORY[0x1E69C6638];
   v14 = MEMORY[0x1E69C65E8];
-  v15 = [MEMORY[0x1E69C6640] action];
-  v16 = [v14 rowWithTitle:@"Restore Defaults" action:v15];
+  action = [MEMORY[0x1E69C6640] action];
+  v16 = [v14 rowWithTitle:@"Restore Defaults" action:action];
   v27 = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
   v18 = [v13 sectionWithRows:v17];

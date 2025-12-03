@@ -1,38 +1,38 @@
 @interface NRFProgressiveBracketingParameters
-- (NRFProgressiveBracketingParameters)initWithOptions:(id)a3 portType:(id)a4 statistics:(id)a5 mode:(int)a6 sphereOffsetEnabled:(BOOL)a7;
-- (double)_computeMaxIntegrationTimeWithOptions:(id)a3 statistics:(id)a4;
-- (double)_computeTotalIntegrationTimeFromFirstGroupParameters:(id)a3 nextGroupParameters:(id)a4 lastGroupParameters:(id)a5 numberOfGroups:(int)a6;
-- (double)_selectBracketsAndComputeExposureTimeWithOption:(id)a3 statistics:(id)a4 getAllInfo:(BOOL)a5 updateDecision:(BOOL)a6 minTotalExposureTime:(double)a7;
-- (double)computeTotalIntegrationTimeWithStatistics:(id)a3 forMode:(int)a4;
-- (float)_estimateSNRatShutterScale:(float)a3 statistics:(id)a4 rawThumbnail:(float *)a5 thumbnailSorted:(BOOL)a6 clippingThreshold:(float)a7 numBrackets:(int)a8;
-- (float)_getGroupExposureTime:(id)a3;
+- (NRFProgressiveBracketingParameters)initWithOptions:(id)options portType:(id)type statistics:(id)statistics mode:(int)mode sphereOffsetEnabled:(BOOL)enabled;
+- (double)_computeMaxIntegrationTimeWithOptions:(id)options statistics:(id)statistics;
+- (double)_computeTotalIntegrationTimeFromFirstGroupParameters:(id)parameters nextGroupParameters:(id)groupParameters lastGroupParameters:(id)lastGroupParameters numberOfGroups:(int)groups;
+- (double)_selectBracketsAndComputeExposureTimeWithOption:(id)option statistics:(id)statistics getAllInfo:(BOOL)info updateDecision:(BOOL)decision minTotalExposureTime:(double)time;
+- (double)computeTotalIntegrationTimeWithStatistics:(id)statistics forMode:(int)mode;
+- (float)_estimateSNRatShutterScale:(float)scale statistics:(id)statistics rawThumbnail:(float *)thumbnail thumbnailSorted:(BOOL)sorted clippingThreshold:(float)threshold numBrackets:(int)brackets;
+- (float)_getGroupExposureTime:(id)time;
 - (float)evZeroTargetGain;
-- (float)evZeroTargetGainWithStatistics:(id)a3 maxNominalEVZeroIntegrationTime:(double)a4;
-- (id)_lowLightFrameParametersWithStatistics:(id)a3 evRatio:(double)a4 maxEVZeroGain:(float)a5 maxNominalEVZeroIntegrationTime:(double)a6 maxIntegrationTime:(double)a7;
-- (id)_truncateGroupParameters:(id)a3 maxTotalExpTime:(float)a4 minNumFrames:(unsigned int)a5;
-- (id)currentBracketingParametersForGroup:(int)a3;
-- (void)_createBracketGroup:(id)a3 statistics:(id)a4 evZeroRatios:(id)a5 maxEVZeroGain:(float)a6 maxNominalEVZeroIntegrationTime:(double)a7 maxIntegrationTime:(double)a8;
-- (void)_preprocessThumbnailWithAEThumbnail:(unsigned int *)a3 processedThumbnail:(float *)a4 statistics:(id)a5 thumbSize:(int)a6 bitMask:(unsigned int)a7 bitShift:(int)a8;
+- (float)evZeroTargetGainWithStatistics:(id)statistics maxNominalEVZeroIntegrationTime:(double)time;
+- (id)_lowLightFrameParametersWithStatistics:(id)statistics evRatio:(double)ratio maxEVZeroGain:(float)gain maxNominalEVZeroIntegrationTime:(double)time maxIntegrationTime:(double)integrationTime;
+- (id)_truncateGroupParameters:(id)parameters maxTotalExpTime:(float)time minNumFrames:(unsigned int)frames;
+- (id)currentBracketingParametersForGroup:(int)group;
+- (void)_createBracketGroup:(id)group statistics:(id)statistics evZeroRatios:(id)ratios maxEVZeroGain:(float)gain maxNominalEVZeroIntegrationTime:(double)time maxIntegrationTime:(double)integrationTime;
+- (void)_preprocessThumbnailWithAEThumbnail:(unsigned int *)thumbnail processedThumbnail:(float *)processedThumbnail statistics:(id)statistics thumbSize:(int)size bitMask:(unsigned int)mask bitShift:(int)shift;
 @end
 
 @implementation NRFProgressiveBracketingParameters
 
-- (NRFProgressiveBracketingParameters)initWithOptions:(id)a3 portType:(id)a4 statistics:(id)a5 mode:(int)a6 sphereOffsetEnabled:(BOOL)a7
+- (NRFProgressiveBracketingParameters)initWithOptions:(id)options portType:(id)type statistics:(id)statistics mode:(int)mode sphereOffsetEnabled:(BOOL)enabled
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  optionsCopy = options;
+  typeCopy = type;
+  statisticsCopy = statistics;
   v19.receiver = self;
   v19.super_class = NRFProgressiveBracketingParameters;
   v16 = [(NRFProgressiveBracketingParameters *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_options, a3);
-    objc_storeStrong(&v17->_portType, a4);
-    objc_storeStrong(&v17->_statistics, a5);
-    v17->_mode = a6;
-    v17->_sphereOffsetEnabled = a7;
+    objc_storeStrong(&v16->_options, options);
+    objc_storeStrong(&v17->_portType, type);
+    objc_storeStrong(&v17->_statistics, statistics);
+    v17->_mode = mode;
+    v17->_sphereOffsetEnabled = enabled;
   }
 
   return v17;
@@ -63,83 +63,83 @@
   return *&v15;
 }
 
-- (float)evZeroTargetGainWithStatistics:(id)a3 maxNominalEVZeroIntegrationTime:(double)a4
+- (float)evZeroTargetGainWithStatistics:(id)statistics maxNominalEVZeroIntegrationTime:(double)time
 {
-  v5 = a3;
-  objc_msgSend_aeAverage(v5, v6, v7, v8);
+  statisticsCopy = statistics;
+  objc_msgSend_aeAverage(statisticsCopy, v6, v7, v8);
   v12 = 1.0;
   if (v13 > 0.0)
   {
-    objc_msgSend_aeTarget(v5, v9, v10, v11);
+    objc_msgSend_aeTarget(statisticsCopy, v9, v10, v11);
     if (v14 > 0.0)
     {
-      objc_msgSend_aeTarget(v5, v9, v10, v11);
+      objc_msgSend_aeTarget(statisticsCopy, v9, v10, v11);
       v16 = v15;
-      objc_msgSend_aeAverage(v5, v17, v18, v19);
+      objc_msgSend_aeAverage(statisticsCopy, v17, v18, v19);
       v12 = (v16 / v20);
     }
   }
 
-  objc_msgSend_integrationTime(v5, v9, v10, v11);
-  if (v24 < a4)
+  objc_msgSend_integrationTime(statisticsCopy, v9, v10, v11);
+  if (v24 < time)
   {
-    objc_msgSend_integrationTime(v5, v21, v22, v23);
-    a4 = v25;
+    objc_msgSend_integrationTime(statisticsCopy, v21, v22, v23);
+    time = v25;
   }
 
-  objc_msgSend_integrationTime(v5, v21, v22, v23);
-  v27 = v26 / a4;
-  objc_msgSend_gain(v5, v28, v29, v30);
+  objc_msgSend_integrationTime(statisticsCopy, v21, v22, v23);
+  v27 = v26 / time;
+  objc_msgSend_gain(statisticsCopy, v28, v29, v30);
   *&v27 = v12 * (v27 * v31);
 
   return *&v27;
 }
 
-- (id)_lowLightFrameParametersWithStatistics:(id)a3 evRatio:(double)a4 maxEVZeroGain:(float)a5 maxNominalEVZeroIntegrationTime:(double)a6 maxIntegrationTime:(double)a7
+- (id)_lowLightFrameParametersWithStatistics:(id)statistics evRatio:(double)ratio maxEVZeroGain:(float)gain maxNominalEVZeroIntegrationTime:(double)time maxIntegrationTime:(double)integrationTime
 {
-  v12 = a3;
-  objc_msgSend_integrationTime(v12, v13, v14, v15);
-  v19 = a6;
-  if (v20 < a6)
+  statisticsCopy = statistics;
+  objc_msgSend_integrationTime(statisticsCopy, v13, v14, v15);
+  timeCopy = time;
+  if (v20 < time)
   {
-    objc_msgSend_integrationTime(v12, v16, v17, v18);
-    v19 = v21;
+    objc_msgSend_integrationTime(statisticsCopy, v16, v17, v18);
+    timeCopy = v21;
   }
 
-  objc_msgSend_evZeroTargetGainWithStatistics_maxNominalEVZeroIntegrationTime_(self, v16, v12, v18, a6);
-  if (v24 < a5)
+  objc_msgSend_evZeroTargetGainWithStatistics_maxNominalEVZeroIntegrationTime_(self, v16, statisticsCopy, v18, time);
+  if (v24 < gain)
   {
-    objc_msgSend_evZeroTargetGainWithStatistics_maxNominalEVZeroIntegrationTime_(self, v22, v12, v23, a6);
-    a5 = v25;
+    objc_msgSend_evZeroTargetGainWithStatistics_maxNominalEVZeroIntegrationTime_(self, v22, statisticsCopy, v23, time);
+    gain = v25;
   }
 
-  v26 = v19 * a5;
-  if (a5 < 1.0)
+  v26 = timeCopy * gain;
+  if (gain < 1.0)
   {
-    v27 = 1.0;
+    gainCopy = 1.0;
   }
 
   else
   {
-    v26 = v19;
-    v27 = a5;
+    v26 = timeCopy;
+    gainCopy = gain;
   }
 
-  v28 = v26 * a4;
-  if (v26 * a4 >= a7)
+  integrationTimeCopy = v26 * ratio;
+  if (v26 * ratio >= integrationTime)
   {
-    v28 = a7;
+    integrationTimeCopy = integrationTime;
   }
 
-  v29 = v26 * v27 / v28;
+  v29 = v26 * gainCopy / integrationTimeCopy;
   if (v29 >= 1.0)
   {
-    v30 = v28;
+    v30 = integrationTimeCopy;
   }
 
   else
   {
-    v30 = v28 * v29;
+    v30 = integrationTimeCopy * v29;
   }
 
   if (v29 >= 1.0)
@@ -153,23 +153,23 @@
   }
 
   v32 = [NRFProgressiveBracketingFrameParameters alloc];
-  objc_msgSend_agc(v12, v33, v34, v35);
+  objc_msgSend_agc(statisticsCopy, v33, v34, v35);
   *&v37 = v31;
   v40 = objc_msgSend_initWithIntegrationTime_gain_AGC_(v32, v38, v36, v39, v30, v37);
 
   return v40;
 }
 
-- (double)_computeTotalIntegrationTimeFromFirstGroupParameters:(id)a3 nextGroupParameters:(id)a4 lastGroupParameters:(id)a5 numberOfGroups:(int)a6
+- (double)_computeTotalIntegrationTimeFromFirstGroupParameters:(id)parameters nextGroupParameters:(id)groupParameters lastGroupParameters:(id)lastGroupParameters numberOfGroups:(int)groups
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  parametersCopy = parameters;
+  groupParametersCopy = groupParameters;
+  lastGroupParametersCopy = lastGroupParameters;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v12, &v57, v56, 16);
+  v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(parametersCopy, v12, &v57, v56, 16);
   v17 = 0.0;
   v18 = 0.0;
   if (v13)
@@ -183,7 +183,7 @@
       {
         if (*v58 != v20)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(parametersCopy);
         }
 
         objc_msgSend_integrationTime(*(*(&v57 + 1) + 8 * v21), v14, v15, v16);
@@ -192,7 +192,7 @@
       }
 
       while (v19 != v21);
-      v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v14, &v57, v56, 16);
+      v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(parametersCopy, v14, &v57, v56, 16);
     }
 
     while (v19);
@@ -202,7 +202,7 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v23 = v10;
+  v23 = groupParametersCopy;
   v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v24, &v52, v51, 16);
   if (v25)
   {
@@ -231,7 +231,7 @@
     while (v29);
   }
 
-  if (v11)
+  if (lastGroupParametersCopy)
   {
     v33 = -2;
   }
@@ -243,10 +243,10 @@
 
   v49 = 0u;
   v50 = 0u;
-  v34 = v18 + (v33 + a6) * v17;
+  v34 = v18 + (v33 + groups) * v17;
   v47 = 0u;
   v48 = 0u;
-  v35 = v11;
+  v35 = lastGroupParametersCopy;
   v37 = objc_msgSend_countByEnumeratingWithState_objects_count_(v35, v36, &v47, v46, 16);
   if (v37)
   {
@@ -277,25 +277,25 @@
   return v34;
 }
 
-- (double)computeTotalIntegrationTimeWithStatistics:(id)a3 forMode:(int)a4
+- (double)computeTotalIntegrationTimeWithStatistics:(id)statistics forMode:(int)mode
 {
-  v8 = a3;
-  if (a4 == 1)
+  statisticsCopy = statistics;
+  if (mode == 1)
   {
     v13 = objc_msgSend_objectForKeyedSubscript_(self->_options, v6, @"MinMode", v7);
-    objc_msgSend__selectBracketsAndComputeExposureTimeWithOption_statistics_getAllInfo_updateDecision_minTotalExposureTime_(self, v14, v13, v8, 0, 0, 0.0);
+    objc_msgSend__selectBracketsAndComputeExposureTimeWithOption_statistics_getAllInfo_updateDecision_minTotalExposureTime_(self, v14, v13, statisticsCopy, 0, 0, 0.0);
     v16 = v15;
 
     v10 = objc_msgSend_objectForKeyedSubscript_(self->_options, v17, @"MaxMode", v18);
-    objc_msgSend__selectBracketsAndComputeExposureTimeWithOption_statistics_getAllInfo_updateDecision_minTotalExposureTime_(self, v19, v10, v8, 0, 0, v16 + 1.0);
+    objc_msgSend__selectBracketsAndComputeExposureTimeWithOption_statistics_getAllInfo_updateDecision_minTotalExposureTime_(self, v19, v10, statisticsCopy, 0, 0, v16 + 1.0);
     goto LABEL_5;
   }
 
   v9 = 0.0;
-  if (!a4)
+  if (!mode)
   {
     v10 = objc_msgSend_objectForKeyedSubscript_(self->_options, v6, @"MinMode", v7);
-    objc_msgSend__selectBracketsAndComputeExposureTimeWithOption_statistics_getAllInfo_updateDecision_minTotalExposureTime_(self, v11, v10, v8, 0, 0, 0.0);
+    objc_msgSend__selectBracketsAndComputeExposureTimeWithOption_statistics_getAllInfo_updateDecision_minTotalExposureTime_(self, v11, v10, statisticsCopy, 0, 0, 0.0);
 LABEL_5:
     v9 = v12;
   }
@@ -303,19 +303,19 @@ LABEL_5:
   return v9;
 }
 
-- (double)_computeMaxIntegrationTimeWithOptions:(id)a3 statistics:(id)a4
+- (double)_computeMaxIntegrationTimeWithOptions:(id)options statistics:(id)statistics
 {
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_objectForKeyedSubscript_(v5, v7, @"MaxIntegrationTime", v8);
+  optionsCopy = options;
+  statisticsCopy = statistics;
+  v9 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v7, @"MaxIntegrationTime", v8);
   objc_msgSend_doubleValue(v9, v10, v11, v12);
   v14 = v13;
 
-  if ((objc_msgSend_stationary(v6, v15, v16, v17) & 1) == 0)
+  if ((objc_msgSend_stationary(statisticsCopy, v15, v16, v17) & 1) == 0)
   {
-    v20 = objc_msgSend_objectForKeyedSubscript_(v5, v18, @"MotionDataBiasErrorThresholdToCapIntegrationTime", v19);
-    v23 = objc_msgSend_objectForKeyedSubscript_(v5, v21, @"MotionDataBiasErrorBasedIntegrationTimeCap", v22);
-    objc_msgSend_motionDataBiasErrorEstimate(v6, v24, v25, v26);
+    v20 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v18, @"MotionDataBiasErrorThresholdToCapIntegrationTime", v19);
+    v23 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v21, @"MotionDataBiasErrorBasedIntegrationTimeCap", v22);
+    objc_msgSend_motionDataBiasErrorEstimate(statisticsCopy, v24, v25, v26);
     v28 = v27;
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -404,14 +404,14 @@ LABEL_5:
       }
     }
 
-    v64 = objc_msgSend_objectForKeyedSubscript_(v5, v56, @"Handheld", v57);
+    v64 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v56, @"Handheld", v57);
     v67 = objc_msgSend_objectForKeyedSubscript_(v64, v65, @"MaxIntegrationTimeForHuman", v66);
     if (v67)
     {
       v71 = v67;
-      if (objc_msgSend_numberOfHumanBodies(v6, v68, v69, v70) <= 0)
+      if (objc_msgSend_numberOfHumanBodies(statisticsCopy, v68, v69, v70) <= 0)
       {
-        v77 = objc_msgSend_numberOfHumanFaces(v6, v72, v73, v74);
+        v77 = objc_msgSend_numberOfHumanFaces(statisticsCopy, v72, v73, v74);
 
         if (v77 <= 0)
         {
@@ -425,12 +425,12 @@ LABEL_34:
       {
       }
 
-      v64 = objc_msgSend_objectForKeyedSubscript_(v5, v75, @"Handheld", v76);
+      v64 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v75, @"Handheld", v76);
       v80 = objc_msgSend_objectForKeyedSubscript_(v64, v78, @"MaxIntegrationTimeForHuman", v79);
       objc_msgSend_doubleValue(v80, v81, v82, v83);
       if (v14 >= v86)
       {
-        v87 = objc_msgSend_objectForKeyedSubscript_(v5, v84, @"Handheld", v85);
+        v87 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v84, @"Handheld", v85);
         v90 = objc_msgSend_objectForKeyedSubscript_(v87, v88, @"MaxIntegrationTimeForHuman", v89);
         objc_msgSend_doubleValue(v90, v91, v92, v93);
         v14 = v94;
@@ -445,43 +445,43 @@ LABEL_35:
   return v14;
 }
 
-- (double)_selectBracketsAndComputeExposureTimeWithOption:(id)a3 statistics:(id)a4 getAllInfo:(BOOL)a5 updateDecision:(BOOL)a6 minTotalExposureTime:(double)a7
+- (double)_selectBracketsAndComputeExposureTimeWithOption:(id)option statistics:(id)statistics getAllInfo:(BOOL)info updateDecision:(BOOL)decision minTotalExposureTime:(double)time
 {
-  v349 = a6;
-  v345 = a5;
-  v9 = a3;
-  v10 = a4;
-  v13 = objc_msgSend_objectForKeyedSubscript_(v9, v11, @"SNRClippingThreshold", v12);
+  decisionCopy = decision;
+  infoCopy = info;
+  optionCopy = option;
+  statisticsCopy = statistics;
+  v13 = objc_msgSend_objectForKeyedSubscript_(optionCopy, v11, @"SNRClippingThreshold", v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v353 = v17;
 
-  v20 = objc_msgSend_objectForKeyedSubscript_(v9, v18, @"MotionAEThreshold", v19);
+  v20 = objc_msgSend_objectForKeyedSubscript_(optionCopy, v18, @"MotionAEThreshold", v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
   v25 = v24;
 
-  v28 = objc_msgSend_objectForKeyedSubscript_(v9, v26, @"UseShorterBracketsForHuman", v27);
+  v28 = objc_msgSend_objectForKeyedSubscript_(optionCopy, v26, @"UseShorterBracketsForHuman", v27);
   v344 = objc_msgSend_BOOLValue(v28, v29, v30, v31);
 
   v32 = [GainValueArray alloc];
-  v35 = objc_msgSend_objectForKeyedSubscript_(v9, v33, @"MinAGC", v34);
+  v35 = objc_msgSend_objectForKeyedSubscript_(optionCopy, v33, @"MinAGC", v34);
   v38 = objc_msgSend_initWithArray_(v32, v36, v35, v37);
 
-  objc_msgSend_gain(v10, v39, v40, v41);
+  objc_msgSend_gain(statisticsCopy, v39, v40, v41);
   v43 = sub_29584472C(v38, v42);
-  v46 = objc_msgSend_objectForKeyedSubscript_(v9, v44, @"PreviewIntegrationTimeThresholdToCapNumOfFrames", v45);
+  v46 = objc_msgSend_objectForKeyedSubscript_(optionCopy, v44, @"PreviewIntegrationTimeThresholdToCapNumOfFrames", v45);
   objc_msgSend_doubleValue(v46, v47, v48, v49);
   v51 = v50;
 
-  v54 = objc_msgSend_objectForKeyedSubscript_(v9, v52, @"PreviewIntegrationTimeBasedNumberOfFramesCap", v53);
+  v54 = objc_msgSend_objectForKeyedSubscript_(optionCopy, v52, @"PreviewIntegrationTimeBasedNumberOfFramesCap", v53);
   v342 = objc_msgSend_intValue(v54, v55, v56, v57);
 
-  v60 = objc_msgSend_objectForKeyedSubscript_(v9, v58, @"MaxNominalEVZeroIntegrationTime", v59);
+  v60 = objc_msgSend_objectForKeyedSubscript_(optionCopy, v58, @"MaxNominalEVZeroIntegrationTime", v59);
   objc_msgSend_doubleValue(v60, v61, v62, v63);
   v65 = v64;
 
-  objc_msgSend__computeMaxIntegrationTimeWithOptions_statistics_(self, v66, v9, v10);
+  objc_msgSend__computeMaxIntegrationTimeWithOptions_statistics_(self, v66, optionCopy, statisticsCopy);
   v68 = v67;
-  v72 = objc_msgSend_stationary(v10, v69, v70, v71);
+  v72 = objc_msgSend_stationary(statisticsCopy, v69, v70, v71);
   v75 = off_29EDDC218;
   if (!v72)
   {
@@ -489,24 +489,24 @@ LABEL_35:
   }
 
   v76 = *v75;
-  v77 = objc_msgSend_objectForKeyedSubscript_(v9, v73, *v75, v74);
+  v77 = objc_msgSend_objectForKeyedSubscript_(optionCopy, v73, *v75, v74);
   v80 = objc_msgSend_objectForKeyedSubscript_(v77, v78, @"BracketGroupTable", v79);
 
-  v83 = objc_msgSend_objectForKeyedSubscript_(v9, v81, v76, v82);
+  v83 = objc_msgSend_objectForKeyedSubscript_(optionCopy, v81, v76, v82);
   v86 = objc_msgSend_objectForKeyedSubscript_(v83, v84, @"MaxTotalExposureTime", v85);
   objc_msgSend_floatValue(v86, v87, v88, v89);
   v91 = v90;
 
   v92 = [GainValueArray alloc];
-  v95 = objc_msgSend_objectForKeyedSubscript_(v9, v93, v76, v94);
+  v95 = objc_msgSend_objectForKeyedSubscript_(optionCopy, v93, v76, v94);
   v98 = objc_msgSend_objectForKeyedSubscript_(v95, v96, @"MinTotalSNRBound", v97);
   v101 = objc_msgSend_initWithArray_(v92, v99, v98, v100);
 
-  objc_msgSend_gain(v10, v102, v103, v104);
+  objc_msgSend_gain(statisticsCopy, v102, v103, v104);
   v106 = sub_29584472C(v101, v105);
   v107 = __exp10f(v106 / 10.0);
-  v354 = v9;
-  v110 = objc_msgSend_objectForKeyedSubscript_(v9, v108, v76, v109);
+  v354 = optionCopy;
+  v110 = objc_msgSend_objectForKeyedSubscript_(optionCopy, v108, v76, v109);
   v113 = objc_msgSend_objectForKeyedSubscript_(v110, v111, @"MaxEVZeroGain", v112);
   objc_msgSend_floatValue(v113, v114, v115, v116);
   v118 = v117;
@@ -527,11 +527,11 @@ LABEL_35:
     goto LABEL_107;
   }
 
-  v361 = self;
+  selfCopy = self;
   v362 = v129;
   v350 = v101;
   v351 = v38;
-  v363 = v10;
+  v363 = statisticsCopy;
   size = objc_msgSend_count(v80, v130, v131, v132);
   v382 = 0u;
   v383 = 0u;
@@ -564,13 +564,13 @@ LABEL_35:
         v151 = objc_msgSend_array(MEMORY[0x29EDB8DE8], v148, v149, v150);
         v154 = objc_msgSend_objectForKeyedSubscript_(v142, v152, @"FirstGroupEV0Ratios", v153);
         LODWORD(v155) = v118;
-        objc_msgSend__createBracketGroup_statistics_evZeroRatios_maxEVZeroGain_maxNominalEVZeroIntegrationTime_maxIntegrationTime_(v361, v156, v151, v10, v154, v155, v65, v68);
+        objc_msgSend__createBracketGroup_statistics_evZeroRatios_maxEVZeroGain_maxNominalEVZeroIntegrationTime_maxIntegrationTime_(selfCopy, v156, v151, statisticsCopy, v154, v155, v65, v68);
 
         objc_msgSend_addObject_(v365, v157, v151, v158);
         v162 = objc_msgSend_array(MEMORY[0x29EDB8DE8], v159, v160, v161);
         v165 = objc_msgSend_objectForKeyedSubscript_(v142, v163, @"NextGroupEV0Ratios", v164);
         LODWORD(v166) = v118;
-        objc_msgSend__createBracketGroup_statistics_evZeroRatios_maxEVZeroGain_maxNominalEVZeroIntegrationTime_maxIntegrationTime_(v361, v167, v162, v10, v165, v166, v65, v68);
+        objc_msgSend__createBracketGroup_statistics_evZeroRatios_maxEVZeroGain_maxNominalEVZeroIntegrationTime_maxIntegrationTime_(selfCopy, v167, v162, statisticsCopy, v165, v166, v65, v68);
 
         objc_msgSend_addObject_(v364, v168, v162, v169);
         ++v140;
@@ -586,12 +586,12 @@ LABEL_35:
 
   v358 = v43;
 
-  v173 = objc_msgSend_aeThumbnail(v10, v170, v171, v172);
+  v173 = objc_msgSend_aeThumbnail(statisticsCopy, v170, v171, v172);
   v174 = v173;
   v178 = objc_msgSend_bytes(v174, v175, v176, v177);
 
-  v182 = objc_msgSend_aeThumbnailWidth(v10, v179, v180, v181);
-  v186 = objc_msgSend_aeThumbnailHeight(v10, v183, v184, v185);
+  v182 = objc_msgSend_aeThumbnailWidth(statisticsCopy, v179, v180, v181);
+  v186 = objc_msgSend_aeThumbnailHeight(statisticsCopy, v183, v184, v185);
   if (v178)
   {
     v187 = size;
@@ -638,7 +638,7 @@ LABEL_35:
     qsort(v192, size, 8uLL, sub_295856960);
     v196 = 0;
     v197 = v193 + 1;
-    v198 = v361;
+    v198 = selfCopy;
     do
     {
       v362[v196] = *(v197 - 1);
@@ -652,12 +652,12 @@ LABEL_35:
     free(v193);
     sizea = 4 * v191;
     v200 = malloc_type_malloc(sizea, 0x100004052888210uLL);
-    objc_msgSend__preprocessThumbnailWithAEThumbnail_processedThumbnail_statistics_thumbSize_bitMask_bitShift_(v361, v201, v178, v200, v10, v191, 1047552, 10);
-    objc_msgSend_integrationTime(v10, v202, v203, v204);
+    objc_msgSend__preprocessThumbnailWithAEThumbnail_processedThumbnail_statistics_thumbSize_bitMask_bitShift_(selfCopy, v201, v178, v200, statisticsCopy, v191, 1047552, 10);
+    objc_msgSend_integrationTime(statisticsCopy, v202, v203, v204);
     v210 = 1.0;
     if (v208 > v65)
     {
-      objc_msgSend_integrationTime(v10, v205, v206, v207);
+      objc_msgSend_integrationTime(statisticsCopy, v205, v206, v207);
       v208 = v65 / v211;
       v210 = v208;
     }
@@ -665,7 +665,7 @@ LABEL_35:
     *&v208 = v210;
     v357 = v200;
     LODWORD(v209) = v353;
-    objc_msgSend__estimateSNRatShutterScale_statistics_rawThumbnail_thumbnailSorted_clippingThreshold_numBrackets_(v361, v205, v10, v200, 0, 1, v208, v209);
+    objc_msgSend__estimateSNRatShutterScale_statistics_rawThumbnail_thumbnailSorted_clippingThreshold_numBrackets_(selfCopy, v205, statisticsCopy, v200, 0, 1, v208, v209);
     v213 = 0;
     v216 = logf(fmaxf(v212, 1.0e-20)) * 4.34;
     obja = v191;
@@ -680,8 +680,8 @@ LABEL_35:
 
     v187 = objc_msgSend_objectAtIndexedSubscript_(v365, v214, *&v190[4 * v213], v215);
     v219 = objc_msgSend_objectAtIndexedSubscript_(v364, v217, *&v190[4 * v213], v218);
-    v226 = v25 < objc_msgSend_motionFromAEMatrix(v10, v220, v221, v222);
-    if (v344 && (objc_msgSend_numberOfHumanBodies(v10, v223, v224, v225) > 0 || objc_msgSend_numberOfHumanFaces(v10, v223, v224, v225) >= 1))
+    v226 = v25 < objc_msgSend_motionFromAEMatrix(statisticsCopy, v220, v221, v222);
+    if (v344 && (objc_msgSend_numberOfHumanBodies(statisticsCopy, v223, v224, v225) > 0 || objc_msgSend_numberOfHumanFaces(statisticsCopy, v223, v224, v225) >= 1))
     {
       v226 = 1;
     }
@@ -701,7 +701,7 @@ LABEL_35:
       v231 = v219;
     }
 
-    objc_msgSend_integrationTime(v10, v223, v224, v225);
+    objc_msgSend_integrationTime(statisticsCopy, v223, v224, v225);
     if (v239 < v51)
     {
       v240 = objc_msgSend_count(v187, v236, v237, v238);
@@ -725,10 +725,10 @@ LABEL_35:
       v234 = 0;
       v233 = 1;
       v187 = v244;
-      v246 = v345;
+      v246 = infoCopy;
 LABEL_62:
       v360 = v231;
-      objc_msgSend__computeTotalIntegrationTimeFromFirstGroupParameters_nextGroupParameters_lastGroupParameters_numberOfGroups_(v361, v245, v187, v231, v234, v233);
+      objc_msgSend__computeTotalIntegrationTimeFromFirstGroupParameters_nextGroupParameters_lastGroupParameters_numberOfGroups_(selfCopy, v245, v187, v231, v234, v233);
       v235 = v274;
       if (v246)
       {
@@ -859,18 +859,18 @@ LABEL_62:
         v326 = __exp10f(v325 / 10.0);
 
         v327 = malloc_type_malloc(sizea, 0x100004052888210uLL);
-        v198 = v361;
-        v10 = v363;
-        objc_msgSend__preprocessThumbnailWithAEThumbnail_processedThumbnail_statistics_thumbSize_bitMask_bitShift_(v361, v328, v346, v327, v363, obja, 1023, 0);
+        v198 = selfCopy;
+        statisticsCopy = v363;
+        objc_msgSend__preprocessThumbnailWithAEThumbnail_processedThumbnail_statistics_thumbSize_bitMask_bitShift_(selfCopy, v328, v346, v327, v363, obja, 1023, 0);
         v329 = malloc_type_malloc(sizea, 0x100004052888210uLL);
-        objc_msgSend__preprocessThumbnailWithAEThumbnail_processedThumbnail_statistics_thumbSize_bitMask_bitShift_(v361, v330, v346, v329, v363, obja, 1072693248, 20);
+        objc_msgSend__preprocessThumbnailWithAEThumbnail_processedThumbnail_statistics_thumbSize_bitMask_bitShift_(selfCopy, v330, v346, v329, v363, obja, 1072693248, 20);
         *&v331 = v210;
         LODWORD(v332) = v353;
-        objc_msgSend__estimateSNRatShutterScale_statistics_rawThumbnail_thumbnailSorted_clippingThreshold_numBrackets_(v361, v333, v363, v327, 0, 1, v331, v332);
+        objc_msgSend__estimateSNRatShutterScale_statistics_rawThumbnail_thumbnailSorted_clippingThreshold_numBrackets_(selfCopy, v333, v363, v327, 0, 1, v331, v332);
         v335 = v334;
         *&v336 = v210;
         LODWORD(v337) = v353;
-        objc_msgSend__estimateSNRatShutterScale_statistics_rawThumbnail_thumbnailSorted_clippingThreshold_numBrackets_(v361, v338, v363, v329, 0, 1, v336, v337);
+        objc_msgSend__estimateSNRatShutterScale_statistics_rawThumbnail_thumbnailSorted_clippingThreshold_numBrackets_(selfCopy, v338, v363, v329, 0, 1, v336, v337);
         if (v335 < v339)
         {
           v339 = v335;
@@ -897,17 +897,17 @@ LABEL_62:
       goto LABEL_103;
     }
 
-    objc_msgSend__getGroupExposureTime_(v361, v236, v187, v238);
+    objc_msgSend__getGroupExposureTime_(selfCopy, v236, v187, v238);
     v248 = v247;
-    objc_msgSend__getGroupExposureTime_(v361, v249, v231, v250);
+    objc_msgSend__getGroupExposureTime_(selfCopy, v249, v231, v250);
     v253 = *&v252;
     if (v248 <= v91)
     {
       LODWORD(v252) = v353;
-      objc_msgSend__getGroupSNR_statistics_rawThumbnail_thumbnailSorted_snrClippingThreshold_(v361, v251, v187, v10, v357, 1, v252);
+      objc_msgSend__getGroupSNR_statistics_rawThumbnail_thumbnailSorted_snrClippingThreshold_(selfCopy, v251, v187, statisticsCopy, v357, 1, v252);
       v256 = v255;
       LODWORD(v257) = v353;
-      objc_msgSend__getGroupSNR_statistics_rawThumbnail_thumbnailSorted_snrClippingThreshold_(v361, v258, v231, v10, v357, 1, v257);
+      objc_msgSend__getGroupSNR_statistics_rawThumbnail_thumbnailSorted_snrClippingThreshold_(selfCopy, v258, v231, statisticsCopy, v357, 1, v257);
       v261 = floorf((v91 - v248) / v253);
       if (v261 <= 0.0)
       {
@@ -944,15 +944,15 @@ LABEL_62:
       if (v262 >= v263)
       {
         v234 = 0;
-        v270 = a7;
-        objc_msgSend__computeTotalIntegrationTimeFromFirstGroupParameters_nextGroupParameters_lastGroupParameters_numberOfGroups_(v361, v259, v187, v231, 0, v233);
+        timeCopy2 = time;
+        objc_msgSend__computeTotalIntegrationTimeFromFirstGroupParameters_nextGroupParameters_lastGroupParameters_numberOfGroups_(selfCopy, v259, v187, v231, 0, v233);
         goto LABEL_58;
       }
 
-      objc_msgSend__computeTotalIntegrationTimeFromFirstGroupParameters_nextGroupParameters_lastGroupParameters_numberOfGroups_(v361, v259, v187, v231, 0, v233);
+      objc_msgSend__computeTotalIntegrationTimeFromFirstGroupParameters_nextGroupParameters_lastGroupParameters_numberOfGroups_(selfCopy, v259, v187, v231, 0, v233);
       *&v265 = v265;
       *&v265 = ((floorf(v91) + 0.5) + -0.0001) - *&v265;
-      v254 = objc_msgSend__truncateGroupParameters_maxTotalExpTime_minNumFrames_(v361, v266, v231, 0, v265);
+      v254 = objc_msgSend__truncateGroupParameters_maxTotalExpTime_minNumFrames_(selfCopy, v266, v231, 0, v265);
       if (objc_msgSend_count(v254, v267, v268, v269))
       {
         v233 = (v233 + 1);
@@ -969,20 +969,20 @@ LABEL_62:
     else
     {
       *&v252 = floorf(v91) + 0.5;
-      objc_msgSend__truncateGroupParameters_maxTotalExpTime_minNumFrames_(v361, v251, v187, 3, v252);
+      objc_msgSend__truncateGroupParameters_maxTotalExpTime_minNumFrames_(selfCopy, v251, v187, 3, v252);
       v234 = 0;
       v254 = v187;
       v187 = v233 = 1;
     }
 
-    v270 = a7;
+    timeCopy2 = time;
 
-    objc_msgSend__computeTotalIntegrationTimeFromFirstGroupParameters_nextGroupParameters_lastGroupParameters_numberOfGroups_(v361, v272, v187, v231, v234, v233);
+    objc_msgSend__computeTotalIntegrationTimeFromFirstGroupParameters_nextGroupParameters_lastGroupParameters_numberOfGroups_(selfCopy, v272, v187, v231, v234, v233);
 LABEL_58:
-    v246 = v345;
-    if (v271 < v270)
+    v246 = infoCopy;
+    if (v271 < timeCopy2)
     {
-      v273 = ceil((v270 - v271) / v253);
+      v273 = ceil((timeCopy2 - v271) / v253);
       if (v273 <= 1.0)
       {
         v273 = 1.0;
@@ -1001,10 +1001,10 @@ LABEL_58:
   v187 = 0;
   v216 = 0.0;
   v235 = 0.0;
-  v198 = v361;
+  v198 = selfCopy;
   v133 = v362;
 LABEL_103:
-  if (!v349)
+  if (!decisionCopy)
   {
     v101 = v350;
     v38 = v351;
@@ -1029,9 +1029,9 @@ LABEL_107:
   return v235;
 }
 
-- (id)currentBracketingParametersForGroup:(int)a3
+- (id)currentBracketingParametersForGroup:(int)group
 {
-  if (a3 == 1)
+  if (group == 1)
   {
     mode = self->_mode;
     if (mode == 1)
@@ -1063,7 +1063,7 @@ LABEL_12:
   }
 
   numberOfGroups = self->_numberOfGroups;
-  if (numberOfGroups == a3)
+  if (numberOfGroups == group)
   {
     lastGroupParameters = self->_lastGroupParameters;
     if (lastGroupParameters)
@@ -1072,7 +1072,7 @@ LABEL_12:
     }
   }
 
-  if (numberOfGroups < a3)
+  if (numberOfGroups < group)
   {
     v11 = MEMORY[0x29EDB8E90];
     goto LABEL_15;
@@ -1088,40 +1088,40 @@ LABEL_15:
   return v11;
 }
 
-- (float)_estimateSNRatShutterScale:(float)a3 statistics:(id)a4 rawThumbnail:(float *)a5 thumbnailSorted:(BOOL)a6 clippingThreshold:(float)a7 numBrackets:(int)a8
+- (float)_estimateSNRatShutterScale:(float)scale statistics:(id)statistics rawThumbnail:(float *)thumbnail thumbnailSorted:(BOOL)sorted clippingThreshold:(float)threshold numBrackets:(int)brackets
 {
-  v12 = a4;
-  objc_msgSend_readNoise_1x(v12, v13, v14, v15);
+  statisticsCopy = statistics;
+  objc_msgSend_readNoise_1x(statisticsCopy, v13, v14, v15);
   v103 = v16;
-  objc_msgSend_readNoise_1x(v12, v17, v18, v19);
+  objc_msgSend_readNoise_1x(statisticsCopy, v17, v18, v19);
   v102 = v20;
-  objc_msgSend_readNoise_8x(v12, v21, v22, v23);
+  objc_msgSend_readNoise_8x(statisticsCopy, v21, v22, v23);
   v101 = v24;
-  objc_msgSend_readNoise_8x(v12, v25, v26, v27);
+  objc_msgSend_readNoise_8x(statisticsCopy, v25, v26, v27);
   v99 = v28;
-  objc_msgSend_readNoise_1x(v12, v29, v30, v31);
+  objc_msgSend_readNoise_1x(statisticsCopy, v29, v30, v31);
   v100 = v32;
-  objc_msgSend_readNoise_1x(v12, v33, v34, v35);
+  objc_msgSend_readNoise_1x(statisticsCopy, v33, v34, v35);
   v98 = v36;
-  objc_msgSend_readNoise_8x(v12, v37, v38, v39);
+  objc_msgSend_readNoise_8x(statisticsCopy, v37, v38, v39);
   v41 = v40;
-  objc_msgSend_readNoise_8x(v12, v42, v43, v44);
+  objc_msgSend_readNoise_8x(statisticsCopy, v42, v43, v44);
   v46 = v45;
-  objc_msgSend_conversionGain(v12, v47, v48, v49);
+  objc_msgSend_conversionGain(statisticsCopy, v47, v48, v49);
   v51 = v50;
-  objc_msgSend_agc(v12, v52, v53, v54);
+  objc_msgSend_agc(statisticsCopy, v52, v53, v54);
   v56 = v55;
-  objc_msgSend_agc(v12, v57, v58, v59);
+  objc_msgSend_agc(statisticsCopy, v57, v58, v59);
   v61 = v60;
-  objc_msgSend_agc(v12, v62, v63, v64);
+  objc_msgSend_agc(statisticsCopy, v62, v63, v64);
   v66 = v65;
-  objc_msgSend_ispDGain(v12, v67, v68, v69);
+  objc_msgSend_ispDGain(statisticsCopy, v67, v68, v69);
   v71 = v70;
-  v75 = objc_msgSend_aeThumbnailWidth(v12, v72, v73, v74);
-  v82 = objc_msgSend_aeThumbnailHeight(v12, v76, v77, v78) * v75;
-  if (!a6)
+  v75 = objc_msgSend_aeThumbnailWidth(statisticsCopy, v72, v73, v74);
+  v82 = objc_msgSend_aeThumbnailHeight(statisticsCopy, v76, v77, v78) * v75;
+  if (!sorted)
   {
-    qsort(a5, v82, 4uLL, sub_29585697C);
+    qsort(thumbnail, v82, 4uLL, sub_29585697C);
   }
 
   v83 = (v82 / 2);
@@ -1137,23 +1137,23 @@ LABEL_15:
     v84 = 0;
     v85 = 0;
     v86 = (v51 / 1023.0) * v66;
-    v87 = a3 * a3;
-    v88 = ((v51 / 1023.0) * ((v51 / 1023.0) * ((((v41 * v46) * -1.0159) + ((v100 * v98) * 1.0159)) + ((((v101 * v99) * 1.0159) + ((v103 * v102) * -0.0159)) * (v56 * v61))))) * a8;
+    v87 = scale * scale;
+    v88 = ((v51 / 1023.0) * ((v51 / 1023.0) * ((((v41 * v46) * -1.0159) + ((v100 * v98) * 1.0159)) + ((((v101 * v99) * 1.0159) + ((v103 * v102) * -0.0159)) * (v56 * v61))))) * brackets;
     v89 = 0.0;
     v90 = 0.0;
     do
     {
-      v91 = a5[v84];
+      v91 = thumbnail[v84];
       v92 = v91 * v91;
-      if (v91 <= (a7 / v71))
+      if (v91 <= (threshold / v71))
       {
-        v90 = v90 + ((v87 * v92) / (v88 + ((v91 * a3) * v86)));
+        v90 = v90 + ((v87 * v92) / (v88 + ((v91 * scale) * v86)));
         ++v85;
       }
 
       if (v84 < v83)
       {
-        v89 = v89 + ((v87 * v92) / (v88 + ((v91 * a3) * v86)));
+        v89 = v89 + ((v87 * v92) / (v88 + ((v91 * scale) * v86)));
       }
 
       ++v84;
@@ -1179,20 +1179,20 @@ LABEL_15:
   }
 
   v95 = (v94 / v83);
-  objc_msgSend_bias(v12, v79, v80, v81);
+  objc_msgSend_bias(statisticsCopy, v79, v80, v81);
   *&v95 = v95 / exp2(v96);
 
   return *&v95;
 }
 
-- (float)_getGroupExposureTime:(id)a3
+- (float)_getGroupExposureTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v16, v15, 16);
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(timeCopy, v4, &v16, v15, 16);
   if (v5)
   {
     v9 = v5;
@@ -1204,7 +1204,7 @@ LABEL_15:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(timeCopy);
         }
 
         objc_msgSend_integrationTime(*(*(&v16 + 1) + 8 * i), v6, v7, v8);
@@ -1212,7 +1212,7 @@ LABEL_15:
         v11 = v11 + *&v13;
       }
 
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v6, &v16, v15, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(timeCopy, v6, &v16, v15, 16);
     }
 
     while (v9);
@@ -1226,14 +1226,14 @@ LABEL_15:
   return v11;
 }
 
-- (id)_truncateGroupParameters:(id)a3 maxTotalExpTime:(float)a4 minNumFrames:(unsigned int)a5
+- (id)_truncateGroupParameters:(id)parameters maxTotalExpTime:(float)time minNumFrames:(unsigned int)frames
 {
-  v7 = a3;
+  parametersCopy = parameters;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v26, v25, 16);
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(parametersCopy, v8, &v26, v25, 16);
   if (v9)
   {
     v13 = v9;
@@ -1246,19 +1246,19 @@ LABEL_15:
       {
         if (*v27 != v15)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(parametersCopy);
         }
 
         objc_msgSend_integrationTime(*(*(&v26 + 1) + 8 * i), v10, v11, v12);
         *&v18 = v18;
         v16 = v16 + *&v18;
-        if (v16 < a4)
+        if (v16 < time)
         {
           ++v14;
         }
       }
 
-      v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v10, &v26, v25, 16);
+      v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(parametersCopy, v10, &v26, v25, 16);
     }
 
     while (v13);
@@ -1269,37 +1269,37 @@ LABEL_15:
     v14 = 0;
   }
 
-  v19 = objc_msgSend_count(v7, v10, v11, v12);
-  if (v14 <= a5)
+  v19 = objc_msgSend_count(parametersCopy, v10, v11, v12);
+  if (v14 <= frames)
   {
-    v22 = a5;
+    framesCopy = frames;
   }
 
   else
   {
-    v22 = v14;
+    framesCopy = v14;
   }
 
-  if (v19 < v22)
+  if (v19 < framesCopy)
   {
-    v22 = objc_msgSend_count(v7, v20, v21, v22);
+    framesCopy = objc_msgSend_count(parametersCopy, v20, v21, framesCopy);
   }
 
-  v23 = objc_msgSend_subarrayWithRange_(v7, v20, 0, v22);
+  v23 = objc_msgSend_subarrayWithRange_(parametersCopy, v20, 0, framesCopy);
 
   return v23;
 }
 
-- (void)_createBracketGroup:(id)a3 statistics:(id)a4 evZeroRatios:(id)a5 maxEVZeroGain:(float)a6 maxNominalEVZeroIntegrationTime:(double)a7 maxIntegrationTime:(double)a8
+- (void)_createBracketGroup:(id)group statistics:(id)statistics evZeroRatios:(id)ratios maxEVZeroGain:(float)gain maxNominalEVZeroIntegrationTime:(double)time maxIntegrationTime:(double)integrationTime
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  groupCopy = group;
+  statisticsCopy = statistics;
+  ratiosCopy = ratios;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v28, v27, 16);
+  v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(ratiosCopy, v14, &v28, v27, 16);
   if (v15)
   {
     v19 = v15;
@@ -1311,28 +1311,28 @@ LABEL_15:
       {
         if (*v29 != v20)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(ratiosCopy);
         }
 
         objc_msgSend_doubleValue(*(*(&v28 + 1) + 8 * v21), v16, v17, v18);
-        v24 = objc_msgSend__lowLightFrameParametersWithStatistics_evRatio_maxEVZeroGain_maxNominalEVZeroIntegrationTime_maxIntegrationTime_(self, v22, v12, v23);
-        objc_msgSend_addObject_(v11, v25, v24, v26);
+        v24 = objc_msgSend__lowLightFrameParametersWithStatistics_evRatio_maxEVZeroGain_maxNominalEVZeroIntegrationTime_maxIntegrationTime_(self, v22, statisticsCopy, v23);
+        objc_msgSend_addObject_(groupCopy, v25, v24, v26);
 
         ++v21;
       }
 
       while (v19 != v21);
-      v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v16, &v28, v27, 16);
+      v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(ratiosCopy, v16, &v28, v27, 16);
     }
 
     while (v19);
   }
 }
 
-- (void)_preprocessThumbnailWithAEThumbnail:(unsigned int *)a3 processedThumbnail:(float *)a4 statistics:(id)a5 thumbSize:(int)a6 bitMask:(unsigned int)a7 bitShift:(int)a8
+- (void)_preprocessThumbnailWithAEThumbnail:(unsigned int *)thumbnail processedThumbnail:(float *)processedThumbnail statistics:(id)statistics thumbSize:(int)size bitMask:(unsigned int)mask bitShift:(int)shift
 {
-  v8 = a8;
-  v13 = a5;
+  shiftCopy = shift;
+  statisticsCopy = statistics;
   v16 = objc_msgSend_objectForKeyedSubscript_(self->_options, v14, @"MinMode", v15);
   v19 = objc_msgSend_objectForKeyedSubscript_(v16, v17, @"LensShadingCorrectionCoefficients", v18);
 
@@ -1352,8 +1352,8 @@ LABEL_15:
   if (!v26)
   {
     v96 = v25;
-    v97 = a7;
-    v98 = v8;
+    maskCopy = mask;
+    v98 = shiftCopy;
     v110 = 0;
     v111 = 0;
     v112 = 0.0;
@@ -1414,14 +1414,14 @@ LABEL_15:
       v54 = 1.0 - v54;
     }
 
-    v58 = objc_msgSend_aeThumbnailWidth(v13, v55, v56, v57);
-    v62 = objc_msgSend_aeThumbnailHeight(v13, v59, v60, v61);
-    objc_msgSend_ispDGain(v13, v63, v64, v65);
+    v58 = objc_msgSend_aeThumbnailWidth(statisticsCopy, v55, v56, v57);
+    v62 = objc_msgSend_aeThumbnailHeight(statisticsCopy, v59, v60, v61);
+    objc_msgSend_ispDGain(statisticsCopy, v63, v64, v65);
     v67 = v66;
-    objc_msgSend_sensorDGain(v13, v68, v69, v70);
+    objc_msgSend_sensorDGain(statisticsCopy, v68, v69, v70);
     v72 = v71;
-    objc_msgSend_ispDGainRangeExpansionFactor(v13, v73, v74, v75);
-    if (a6 >= 1)
+    objc_msgSend_ispDGainRangeExpansionFactor(statisticsCopy, v73, v74, v75);
+    if (size >= 1)
     {
       v80 = 0;
       v101 = *&v110;
@@ -1432,21 +1432,21 @@ LABEL_15:
       v83 = sqrtf((v54 * v54) + (v46 * v46));
       do
       {
-        v84 = ((a3[v80] & v97) >> v98) / 1023.0;
-        a4[v80] = v84;
-        v85 = v80 / objc_msgSend_aeThumbnailWidth(v13, v76, v77, v78);
-        v89 = objc_msgSend_aeThumbnailWidth(v13, v86, v87, v88);
+        v84 = ((thumbnail[v80] & maskCopy) >> v98) / 1023.0;
+        processedThumbnail[v80] = v84;
+        v85 = v80 / objc_msgSend_aeThumbnailWidth(statisticsCopy, v76, v77, v78);
+        v89 = objc_msgSend_aeThumbnailWidth(statisticsCopy, v86, v87, v88);
         v90 = (((v85 + 0.5) * (0.9 / v62)) + 0.05) - v103;
         v91 = ((((v80 % v89) + 0.5) * (0.9 / v58)) + 0.05) - v104;
         v92 = sqrtf((v90 * v90) + (v91 * v91)) / v83;
         v93 = ((v101 * (v92 * v92)) + 1.0) + (v100 * powf(v92, 4.0));
         v94 = v93 + (*&v81 * powf(v92, 6.0));
         v95 = v94 + (*(&v81 + 1) * powf(v92, 8.0));
-        a4[v80] = a4[v80] / (v102 * (v95 + (v82 * powf(v92, 10.0))));
+        processedThumbnail[v80] = processedThumbnail[v80] / (v102 * (v95 + (v82 * powf(v92, 10.0))));
         ++v80;
       }
 
-      while (a6 != v80);
+      while (size != v80);
     }
   }
 }

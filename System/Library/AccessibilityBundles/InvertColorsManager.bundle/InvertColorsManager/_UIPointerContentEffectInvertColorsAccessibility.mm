@@ -9,15 +9,15 @@
 {
   v4 = [(_UIPointerContentEffectInvertColorsAccessibility *)self safeUIViewForKey:@"pointerPortal"];
   IsInvertColorsEnabled = UIAccessibilityIsInvertColorsEnabled();
-  v3 = [v4 layer];
+  layer = [v4 layer];
   if (IsInvertColorsEnabled)
   {
-    [AXInvertColorsAppHelper applyInvertFilterToLayer:v3];
+    [AXInvertColorsAppHelper applyInvertFilterToLayer:layer];
   }
 
   else
   {
-    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:v3];
+    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:layer];
   }
 }
 

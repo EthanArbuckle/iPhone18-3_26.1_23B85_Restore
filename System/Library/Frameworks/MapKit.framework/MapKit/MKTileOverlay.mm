@@ -4,11 +4,11 @@
 - (CLLocationCoordinate2D)coordinate;
 - (MKTileOverlay)initWithURLTemplate:(NSString *)URLTemplate;
 - (NSURL)URLForTilePath:(MKTileOverlayPath *)path;
-- (id)_tilesInMapRect:(id)a3 zoomScale:(double)a4 contentScale:(double)a5;
-- (int)_zoomLevelForScale:(double)a3;
-- (uint64_t)_keyForPath:(double *)a3;
+- (id)_tilesInMapRect:(id)rect zoomScale:(double)scale contentScale:(double)contentScale;
+- (int)_zoomLevelForScale:(double)scale;
+- (uint64_t)_keyForPath:(double *)path;
 - (void)_flushCaches;
-- (void)_loadTile:(uint64_t)a3 result:(void *)a4;
+- (void)_loadTile:(uint64_t)tile result:(void *)result;
 - (void)_minLifetimeCacheCleanupFired;
 - (void)dealloc;
 - (void)loadTileAtPath:(MKTileOverlayPath *)path result:(void *)result;
@@ -37,35 +37,35 @@
   [(GEOTileCache *)minimumLifetimeTileCache removeAllObjects];
 }
 
-- (id)_tilesInMapRect:(id)a3 zoomScale:(double)a4 contentScale:(double)a5
+- (id)_tilesInMapRect:(id)rect zoomScale:(double)scale contentScale:(double)contentScale
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v8 = a3.var0.var1;
-  v9 = a3.var0.var0;
-  v10 = self;
-  v11 = [(MKTileOverlay *)self _zoomLevelForScale:a4];
-  [(MKTileOverlay *)v10 boundingMapRect];
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v8 = rect.var0.var1;
+  v9 = rect.var0.var0;
+  selfCopy = self;
+  v11 = [(MKTileOverlay *)self _zoomLevelForScale:scale];
+  [(MKTileOverlay *)selfCopy boundingMapRect];
   v53 = v13;
   v54 = v12;
   v15 = v14;
   v17 = v16;
-  if ([(MKTileOverlay *)v10 minimumZ]<= v11 && (v18 = v11, [(MKTileOverlay *)v10 maximumZ]>= v11))
+  if ([(MKTileOverlay *)selfCopy minimumZ]<= v11 && (v18 = v11, [(MKTileOverlay *)selfCopy maximumZ]>= v11))
   {
-    width = v10->_tileSize.width;
-    height = v10->_tileSize.height;
-    v23 = vcvtmd_s64_f64(v9 * a4 / width);
-    v24 = vcvtmd_s64_f64((v9 + var0) * a4 / width);
-    v25 = [MEMORY[0x1E695DF70] array];
-    v19 = v25;
+    width = selfCopy->_tileSize.width;
+    height = selfCopy->_tileSize.height;
+    v23 = vcvtmd_s64_f64(v9 * scale / width);
+    v24 = vcvtmd_s64_f64((v9 + var0) * scale / width);
+    array = [MEMORY[0x1E695DF70] array];
+    v19 = array;
     if (v23 <= v24)
     {
       v26 = v23;
       v48 = v24 + 1;
-      v49 = vcvtmd_s64_f64((v8 + var1) * a4 / height);
-      v50 = vcvtmd_s64_f64(v8 * a4 / height);
+      v49 = vcvtmd_s64_f64((v8 + var1) * scale / height);
+      v50 = vcvtmd_s64_f64(v8 * scale / height);
       v27 = (-1 << v18) + 1;
-      v51 = v25;
+      v51 = array;
       do
       {
         if (v50 <= v49)
@@ -74,14 +74,14 @@
           v29 = v50;
           do
           {
-            v30 = [(MKTileOverlay *)v10 isGeometryFlipped];
+            isGeometryFlipped = [(MKTileOverlay *)selfCopy isGeometryFlipped];
             v31 = v27 + v29;
             if (v27 + v29 < 0)
             {
               v31 = -v31;
             }
 
-            if (v30)
+            if (isGeometryFlipped)
             {
               v32 = v31;
             }
@@ -91,12 +91,12 @@
               v32 = v29;
             }
 
-            v33 = v10->_tileSize.width;
-            v34 = v10->_tileSize.height;
-            v35 = v33 * v28 / a4;
-            v36 = v34 * v29 / a4;
-            v37 = v33 / a4;
-            v38 = v34 / a4;
+            v33 = selfCopy->_tileSize.width;
+            v34 = selfCopy->_tileSize.height;
+            v35 = v33 * v28 / scale;
+            v36 = v34 * v29 / scale;
+            v37 = v33 / scale;
+            v38 = v34 / scale;
             v62.origin.x = v35;
             v62.origin.y = v36;
             v62.size.width = v37;
@@ -109,11 +109,11 @@
             {
               v39 = objc_alloc_init(MKTileOverlayTile);
               [(MKTileOverlayTile *)v39 setFrame:v35, v36, v37, v38];
-              [(MKTileOverlayTile *)v39 setScale:a4];
+              [(MKTileOverlayTile *)v39 setScale:scale];
               v57 = v26;
               v58 = v32;
               v59 = v18;
-              v60 = a5;
+              contentScaleCopy2 = contentScale;
               [(MKTileOverlayTile *)v39 setPath:&v57];
               v55 = 0;
               v56 = 0;
@@ -122,21 +122,21 @@
               v58 = v32;
               v41 = v18;
               v59 = v18;
-              v60 = a5;
-              v42 = v10;
-              v55 = [(MKTileOverlay *)v10 _keyForPath:&v57];
+              contentScaleCopy2 = contentScale;
+              v42 = selfCopy;
+              v55 = [(MKTileOverlay *)selfCopy _keyForPath:&v57];
               v56 = v43;
               v44 = _MKOverlayTileLoader();
               v45 = [v44 cachedTileForKey:&v55];
-              v46 = [v45 data];
-              [(MKTileOverlayTile *)v39 setImage:v46];
+              data = [v45 data];
+              [(MKTileOverlayTile *)v39 setImage:data];
 
               v19 = v51;
               [v51 addObject:v39];
 
               v47 = v41;
               v26 = v40;
-              v10 = v42;
+              selfCopy = v42;
               v18 = v47;
             }
 
@@ -161,11 +161,11 @@
   return v19;
 }
 
-- (int)_zoomLevelForScale:(double)a3
+- (int)_zoomLevelForScale:(double)scale
 {
   [(MKTileOverlay *)self tileSize];
   v5 = log2(268435456.0 / v4);
-  v6 = v5 + vcvtmd_s64_f64(log2(a3) + 0.5);
+  v6 = v5 + vcvtmd_s64_f64(log2(scale) + 0.5);
   return v6 & ~(v6 >> 31);
 }
 
@@ -256,19 +256,19 @@ void __60__MKTileOverlay__scheduleMinLifetimeCacheCleanupIfNecessary__block_invo
   [WeakRetained _minLifetimeCacheCleanupFired];
 }
 
-- (void)_loadTile:(uint64_t)a3 result:(void *)a4
+- (void)_loadTile:(uint64_t)tile result:(void *)result
 {
-  v6 = a4;
+  resultCopy = result;
   v7 = _MKOverlayTileLoader();
   v8 = GEOTileLoaderClientIdentifier();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __34__MKTileOverlay__loadTile_result___block_invoke;
   v10[3] = &unk_1E76CD1E8;
-  v10[4] = a1;
-  v9 = v6;
+  v10[4] = self;
+  v9 = resultCopy;
   v11 = v9;
-  [v7 loadKey:a3 priority:2147483646 forClient:v8 options:3 reason:1 callbackQ:MEMORY[0x1E69E96A0] beginNetwork:0 callback:v10];
+  [v7 loadKey:tile priority:2147483646 forClient:v8 options:3 reason:1 callbackQ:MEMORY[0x1E69E96A0] beginNetwork:0 callback:v10];
 }
 
 void __34__MKTileOverlay__loadTile_result___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4, void *a5, void *a6)
@@ -286,17 +286,17 @@ void __34__MKTileOverlay__loadTile_result___block_invoke(uint64_t a1, uint64_t a
   (*(*(a1 + 40) + 16))();
 }
 
-- (uint64_t)_keyForPath:(double *)a3
+- (uint64_t)_keyForPath:(double *)path
 {
-  v5 = a3[3];
+  v5 = path[3];
   +[_MKOverlayTileRequester tileProviderIdentifier];
   *&v12 = GEOTileKeyMakeEmpty();
   *(&v12 + 1) = v6;
-  v7 = *a3;
-  if ([a1 isGeometryFlipped])
+  v7 = *path;
+  if ([self isGeometryFlipped])
   {
-    v8 = *(a3 + 4);
-    v9 = ~*(a3 + 1);
+    v8 = *(path + 4);
+    v9 = ~*(path + 1);
     v10 = v9 + (1 << v8);
     if (v10 >= 0)
     {
@@ -313,8 +313,8 @@ void __34__MKTileOverlay__loadTile_result___block_invoke(uint64_t a1, uint64_t a
 
   else
   {
-    v9 = *(&v12 + 5) & 0xFFFFFFFFFC000000 | *(a3 + 1);
-    v8 = *(a3 + 4);
+    v9 = *(&v12 + 5) & 0xFFFFFFFFFC000000 | *(path + 1);
+    v8 = *(path + 4);
   }
 
   *(&v12 + 1) = v8 & 0x3F | (LODWORD(v7) << 6);
@@ -330,7 +330,7 @@ void __34__MKTileOverlay__loadTile_result___block_invoke(uint64_t a1, uint64_t a
   v17[1] = v7;
   v8 = [(MKTileOverlay *)self URLForTilePath:v17];
   v9 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:v8 cachePolicy:1 timeoutInterval:120.0];
-  v10 = [MEMORY[0x1E696AF78] sharedSession];
+  mEMORY[0x1E696AF78] = [MEMORY[0x1E696AF78] sharedSession];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __39__MKTileOverlay_loadTileAtPath_result___block_invoke;
@@ -340,7 +340,7 @@ void __34__MKTileOverlay__loadTile_result___block_invoke(uint64_t a1, uint64_t a
   v15 = v11;
   v12 = v6;
   v16 = v12;
-  v13 = [v10 dataTaskWithRequest:v9 completionHandler:v14];
+  v13 = [mEMORY[0x1E696AF78] dataTaskWithRequest:v9 completionHandler:v14];
   [v13 resume];
 }
 

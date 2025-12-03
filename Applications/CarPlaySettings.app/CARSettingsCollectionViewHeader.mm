@@ -1,17 +1,17 @@
 @interface CARSettingsCollectionViewHeader
-- (CARSettingsCollectionViewHeader)initWithFrame:(CGRect)a3;
+- (CARSettingsCollectionViewHeader)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)sectionInsets;
-- (void)setSectionInsets:(UIEdgeInsets)a3;
-- (void)setTitle:(id)a3;
+- (void)setSectionInsets:(UIEdgeInsets)insets;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CARSettingsCollectionViewHeader
 
-- (CARSettingsCollectionViewHeader)initWithFrame:(CGRect)a3
+- (CARSettingsCollectionViewHeader)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = CARSettingsCollectionViewHeader;
-  v3 = [(CARSettingsCollectionViewHeader *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CARSettingsCollectionViewHeader *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -26,20 +26,20 @@
 
     [(UILabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CARSettingsCollectionViewHeader *)v3 addSubview:v3->_titleLabel];
-    v8 = [(UILabel *)v3->_titleLabel leadingAnchor];
-    v9 = [(CARSettingsCollectionViewHeader *)v3 leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:0.0];
+    leadingAnchor = [(UILabel *)v3->_titleLabel leadingAnchor];
+    leadingAnchor2 = [(CARSettingsCollectionViewHeader *)v3 leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     leadingConstraint = v3->_leadingConstraint;
     v3->_leadingConstraint = v10;
 
     v21[0] = v3->_leadingConstraint;
-    v12 = [(CARSettingsCollectionViewHeader *)v3 trailingAnchor];
-    v13 = [(UILabel *)v3->_titleLabel trailingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    trailingAnchor = [(CARSettingsCollectionViewHeader *)v3 trailingAnchor];
+    trailingAnchor2 = [(UILabel *)v3->_titleLabel trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v21[1] = v14;
-    v15 = [(CARSettingsCollectionViewHeader *)v3 bottomAnchor];
-    v16 = [(UILabel *)v3->_titleLabel lastBaselineAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:6.0];
+    bottomAnchor = [(CARSettingsCollectionViewHeader *)v3 bottomAnchor];
+    lastBaselineAnchor = [(UILabel *)v3->_titleLabel lastBaselineAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:6.0];
     v21[2] = v17;
     v18 = [NSArray arrayWithObjects:v21 count:3];
     [NSLayoutConstraint activateConstraints:v18];
@@ -48,25 +48,25 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(CARSettingsCollectionViewHeader *)self titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  titleLabel = [(CARSettingsCollectionViewHeader *)self titleLabel];
+  [titleLabel setText:titleCopy];
 }
 
-- (void)setSectionInsets:(UIEdgeInsets)a3
+- (void)setSectionInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  left = a3.left;
-  v6 = [(CARSettingsCollectionViewHeader *)self traitCollection:a3.top];
+  right = insets.right;
+  left = insets.left;
+  v6 = [(CARSettingsCollectionViewHeader *)self traitCollection:insets.top];
   if ([v6 layoutDirection] != 1)
   {
     right = left;
   }
 
-  v7 = [(CARSettingsCollectionViewHeader *)self leadingConstraint];
-  [v7 setConstant:right];
+  leadingConstraint = [(CARSettingsCollectionViewHeader *)self leadingConstraint];
+  [leadingConstraint setConstant:right];
 }
 
 - (UIEdgeInsets)sectionInsets

@@ -1,41 +1,41 @@
 @interface AlertStackCompoundCollectionViewController
-- (_TtC18HealthExperienceUI42AlertStackCompoundCollectionViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI42AlertStackCompoundCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC18HealthExperienceUI42AlertStackCompoundCollectionViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI42AlertStackCompoundCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AlertStackCompoundCollectionViewController
 
-- (_TtC18HealthExperienceUI42AlertStackCompoundCollectionViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI42AlertStackCompoundCollectionViewController)initWithCoder:(id)coder
 {
   result = sub_1BA4A8018();
   __break(1u);
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(AlertStackCompoundCollectionViewController *)&v5 viewWillAppear:v3];
+  [(AlertStackCompoundCollectionViewController *)&v5 viewWillAppear:appearCopy];
   UICollectionViewController.clearSelection()();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(CompoundDataSourceCollectionViewController *)&v8 viewIsAppearing:v3];
-  v5 = [v4 collectionView];
-  if (v5)
+  [(CompoundDataSourceCollectionViewController *)&v8 viewIsAppearing:appearingCopy];
+  collectionView = [v4 collectionView];
+  if (collectionView)
   {
-    v6 = v5;
-    v7 = [objc_opt_self() clearColor];
+    v6 = collectionView;
+    clearColor = [objc_opt_self() clearColor];
     [v6 setBackgroundColor_];
   }
 
@@ -45,7 +45,7 @@
   }
 }
 
-- (_TtC18HealthExperienceUI42AlertStackCompoundCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18HealthExperienceUI42AlertStackCompoundCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

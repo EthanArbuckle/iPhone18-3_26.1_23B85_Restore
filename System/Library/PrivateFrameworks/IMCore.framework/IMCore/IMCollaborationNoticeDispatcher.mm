@@ -2,8 +2,8 @@
 - (IMCollaborationNoticeDispatcher)init;
 - (id)_bestSendingHandle;
 - (void)dealloc;
-- (void)sendClearNotice:(id)a3 toHandles:(id)a4 completion:(id)a5;
-- (void)sendNotice:(id)a3 toHandles:(id)a4 completion:(id)a5;
+- (void)sendClearNotice:(id)notice toHandles:(id)handles completion:(id)completion;
+- (void)sendNotice:(id)notice toHandles:(id)handles completion:(id)completion;
 - (void)setUpConnectionToDaemon;
 @end
 
@@ -43,21 +43,21 @@
   return v2;
 }
 
-- (void)sendNotice:(id)a3 toHandles:(id)a4 completion:(id)a5
+- (void)sendNotice:(id)notice toHandles:(id)handles completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  noticeCopy = notice;
+  handlesCopy = handles;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v25 = v8;
+      v25 = noticeCopy;
       v26 = 2112;
-      v27 = v9;
+      v27 = handlesCopy;
       _os_log_impl(&dword_1A823F000, v13, OS_LOG_TYPE_INFO, "Connecting to daemon to send notice %@ to %@", buf, 0x16u);
     }
   }
@@ -68,32 +68,32 @@
   v20[2] = sub_1A8307428;
   v20[3] = &unk_1E78120D0;
   v20[4] = self;
-  v21 = v8;
-  v22 = v9;
-  v23 = v10;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
+  v21 = noticeCopy;
+  v22 = handlesCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = handlesCopy;
+  v17 = noticeCopy;
   objc_msgSend_connectWithCompletion_(v14, v18, v20);
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendClearNotice:(id)a3 toHandles:(id)a4 completion:(id)a5
+- (void)sendClearNotice:(id)notice toHandles:(id)handles completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  noticeCopy = notice;
+  handlesCopy = handles;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v25 = v8;
+      v25 = noticeCopy;
       v26 = 2112;
-      v27 = v9;
+      v27 = handlesCopy;
       _os_log_impl(&dword_1A823F000, v13, OS_LOG_TYPE_INFO, "Connecting to daemon to send clear notice %@ to %@", buf, 0x16u);
     }
   }
@@ -104,12 +104,12 @@
   v20[2] = sub_1A8307910;
   v20[3] = &unk_1E78120D0;
   v20[4] = self;
-  v21 = v8;
-  v22 = v9;
-  v23 = v10;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
+  v21 = noticeCopy;
+  v22 = handlesCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = handlesCopy;
+  v17 = noticeCopy;
   objc_msgSend_connectWithCompletion_(v14, v18, v20);
 
   v19 = *MEMORY[0x1E69E9840];

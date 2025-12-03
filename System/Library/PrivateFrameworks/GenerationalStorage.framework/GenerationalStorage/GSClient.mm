@@ -1,44 +1,44 @@
 @interface GSClient
-- (BOOL)_validateToken:(id)a3 error:(id *)a4;
-- (GSClient)initWithConnection:(id)a3;
-- (id)_getCachedVolPath:(unint64_t)a3 error:(id *)a4;
-- (id)_volPathFromPath:(id)a3 error:(id *)a4;
-- (int)importCookieFileDescriptorForVolumeURL:(id)a3 forWriting:(BOOL)a4 error:(id *)a5;
-- (void)_removeAdditionsInVolPath:(id)a3 removalSpec:(id)a4 completionHandler:(id)a5;
-- (void)_stagingPrefixCleanup:(id)a3;
-- (void)checkItemAtURLValidInsidePermanentStorage:(id)a3 reply:(id)a4;
-- (void)createAdditionInStorage:(int64_t)a3 stagedFileDescriptor:(id)a4 creationInfo:(id)a5 completionHandler:(id)a6;
+- (BOOL)_validateToken:(id)token error:(id *)error;
+- (GSClient)initWithConnection:(id)connection;
+- (id)_getCachedVolPath:(unint64_t)path error:(id *)error;
+- (id)_volPathFromPath:(id)path error:(id *)error;
+- (int)importCookieFileDescriptorForVolumeURL:(id)l forWriting:(BOOL)writing error:(id *)error;
+- (void)_removeAdditionsInVolPath:(id)path removalSpec:(id)spec completionHandler:(id)handler;
+- (void)_stagingPrefixCleanup:(id)cleanup;
+- (void)checkItemAtURLValidInsidePermanentStorage:(id)storage reply:(id)reply;
+- (void)createAdditionInStorage:(int64_t)storage stagedFileDescriptor:(id)descriptor creationInfo:(id)info completionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteImportCookieDataForVolumeAtURL:(id)a3 reply:(id)a4;
-- (void)getAdditionInStorage:(int64_t)a3 andNameSpace:(id)a4 named:(id)a5 completionHandler:(id)a6;
-- (void)getAdditionsInStorage:(int64_t)a3 andNameSpace:(id)a4 named:(id)a5 completionHandler:(id)a6;
-- (void)hintDocIDCreationForFileHandle:(id)a3;
+- (void)deleteImportCookieDataForVolumeAtURL:(id)l reply:(id)reply;
+- (void)getAdditionInStorage:(int64_t)storage andNameSpace:(id)space named:(id)named completionHandler:(id)handler;
+- (void)getAdditionsInStorage:(int64_t)storage andNameSpace:(id)space named:(id)named completionHandler:(id)handler;
+- (void)hintDocIDCreationForFileHandle:(id)handle;
 - (void)invalidate;
-- (void)isPermanentStorageSupportedForHandle:(id)a3 reply:(id)a4;
-- (void)listAdditionsOfStorage:(int64_t)a3 nameSpace:(id)a4 withOptions:(unint64_t)a5 withoutOptions:(unint64_t)a6 andEnumerationState:(id)a7 completionHandler:(id)a8;
-- (void)listAdditionsUnderPath:(id)a3 withNameSpace:(id)a4 withOptions:(unint64_t)a5 withoutOptions:(unint64_t)a6 andEnumerationState:(id)a7 completionHandler:(id)a8;
-- (void)mergeAdditionInfoValueInStorage:(int64_t)a3 nameSpace:(id)a4 additionName:(id)a5 value:(id)a6 reply:(id)a7;
-- (void)permanentStorageClose:(unint64_t)a3;
-- (void)permanentStorageIDForHandle:(id)a3 reply:(id)a4;
-- (void)permanentStorageOpenForHandle:(id)a3 withRemoteID:(unint64_t)a4 andDocumentID:(id)a5 reply:(id)a6;
-- (void)permanentStoragePrefixForHandle:(id)a3 reply:(id)a4;
-- (void)readImportCookieDataForVolumeAtURL:(id)a3 reply:(id)a4;
-- (void)removeAdditionsInStorage:(int64_t)a3 removalSpec:(id)a4 completionHandler:(id)a5;
-- (void)removeAdditionsUnderPath:(id)a3 additionsList:(id)a4 completionHandler:(id)a5;
-- (void)requestFreeSpace:(unint64_t)a3 forVolume:(id)a4 reply:(id)a5;
-- (void)setAdditionConflictResolvedInStorage:(int64_t)a3 nameSpace:(id)a4 additionName:(id)a5 value:(BOOL)a6 reply:(id)a7;
-- (void)setAdditionDisplayNameInStorage:(int64_t)a3 nameSpace:(id)a4 additionName:(id)a5 value:(id)a6 reply:(id)a7;
-- (void)setAdditionNameSpaceInStorage:(int64_t)a3 nameSpace:(id)a4 additionName:(id)a5 value:(id)a6 completionHandler:(id)a7;
-- (void)setAdditionOptionsInStorage:(int64_t)a3 nameSpace:(id)a4 additionName:(id)a5 value:(unint64_t)a6 reply:(id)a7;
-- (void)stagingPrefixRelinquish:(id)a3;
-- (void)storeImportCookieData:(id)a3 forVolumeURL:(id)a4 reply:(id)a5;
+- (void)isPermanentStorageSupportedForHandle:(id)handle reply:(id)reply;
+- (void)listAdditionsOfStorage:(int64_t)storage nameSpace:(id)space withOptions:(unint64_t)options withoutOptions:(unint64_t)withoutOptions andEnumerationState:(id)state completionHandler:(id)handler;
+- (void)listAdditionsUnderPath:(id)path withNameSpace:(id)space withOptions:(unint64_t)options withoutOptions:(unint64_t)withoutOptions andEnumerationState:(id)state completionHandler:(id)handler;
+- (void)mergeAdditionInfoValueInStorage:(int64_t)storage nameSpace:(id)space additionName:(id)name value:(id)value reply:(id)reply;
+- (void)permanentStorageClose:(unint64_t)close;
+- (void)permanentStorageIDForHandle:(id)handle reply:(id)reply;
+- (void)permanentStorageOpenForHandle:(id)handle withRemoteID:(unint64_t)d andDocumentID:(id)iD reply:(id)reply;
+- (void)permanentStoragePrefixForHandle:(id)handle reply:(id)reply;
+- (void)readImportCookieDataForVolumeAtURL:(id)l reply:(id)reply;
+- (void)removeAdditionsInStorage:(int64_t)storage removalSpec:(id)spec completionHandler:(id)handler;
+- (void)removeAdditionsUnderPath:(id)path additionsList:(id)list completionHandler:(id)handler;
+- (void)requestFreeSpace:(unint64_t)space forVolume:(id)volume reply:(id)reply;
+- (void)setAdditionConflictResolvedInStorage:(int64_t)storage nameSpace:(id)space additionName:(id)name value:(BOOL)value reply:(id)reply;
+- (void)setAdditionDisplayNameInStorage:(int64_t)storage nameSpace:(id)space additionName:(id)name value:(id)value reply:(id)reply;
+- (void)setAdditionNameSpaceInStorage:(int64_t)storage nameSpace:(id)space additionName:(id)name value:(id)value completionHandler:(id)handler;
+- (void)setAdditionOptionsInStorage:(int64_t)storage nameSpace:(id)space additionName:(id)name value:(unint64_t)value reply:(id)reply;
+- (void)stagingPrefixRelinquish:(id)relinquish;
+- (void)storeImportCookieData:(id)data forVolumeURL:(id)l reply:(id)reply;
 @end
 
 @implementation GSClient
 
-- (GSClient)initWithConnection:(id)a3
+- (GSClient)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = GSClient;
   v5 = [(GSClient *)&v13 init];
@@ -52,12 +52,12 @@
     v9 = *(v5 + 2);
     *(v5 + 2) = v8;
 
-    *v12 = [v4 processIdentifier];
-    *&v12[4] = [v4 effectiveUserIdentifier];
-    *&v12[8] = [v4 effectiveGroupIdentifier];
-    if (v4)
+    *v12 = [connectionCopy processIdentifier];
+    *&v12[4] = [connectionCopy effectiveUserIdentifier];
+    *&v12[8] = [connectionCopy effectiveGroupIdentifier];
+    if (connectionCopy)
     {
-      [v4 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -68,7 +68,7 @@
     *(v5 + 24) = *v12;
     *(v5 + 40) = *&v12[16];
     *(v5 + 52) = *&v12[28];
-    v10 = [v4 valueForEntitlement:@"com.apple.fileprovider.import-cookie"];
+    v10 = [connectionCopy valueForEntitlement:@"com.apple.fileprovider.import-cookie"];
     v5[80] = [v10 BOOLValue];
   }
 
@@ -134,7 +134,7 @@
   [(GSClient *)&v3 dealloc];
 }
 
-- (id)_getCachedVolPath:(unint64_t)a3 error:(id *)a4
+- (id)_getCachedVolPath:(unint64_t)path error:(id *)error
 {
   storageVolPaths = self->_storageVolPaths;
   v8 = [NSNumber numberWithUnsignedLongLong:?];
@@ -147,26 +147,26 @@
 
   else
   {
-    v11 = [NSString stringWithFormat:@"Instance id %llu does not exist for %@\n", a3, self];
+    v11 = [NSString stringWithFormat:@"Instance id %llu does not exist for %@\n", path, self];
     v12 = sub_100003164();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       sub_100027C60();
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = sub_10000F0F8(101, v11, 0);
+      *error = sub_10000F0F8(101, v11, 0);
     }
   }
 
   return v9;
 }
 
-- (void)requestFreeSpace:(unint64_t)a3 forVolume:(id)a4 reply:(id)a5
+- (void)requestFreeSpace:(unint64_t)space forVolume:(id)volume reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  volumeCopy = volume;
+  replyCopy = reply;
   memset(&v25, 0, sizeof(v25));
   v10 = sub_100003164();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -174,16 +174,16 @@
     sub_100027CD4();
   }
 
-  if (![v8 isFileURL] || lstat(objc_msgSend(v8, "fileSystemRepresentation"), &v25) < 0)
+  if (![volumeCopy isFileURL] || lstat(objc_msgSend(volumeCopy, "fileSystemRepresentation"), &v25) < 0)
   {
-    v14 = [NSString stringWithFormat:@"invalid path [%@]", v8];
+    volumeCopy = [NSString stringWithFormat:@"invalid path [%@]", volumeCopy];
     v15 = sub_100003164();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       sub_100027DCC();
     }
 
-    v13 = sub_10000F0F8(104, v14, 0);
+    v13 = sub_10000F0F8(104, volumeCopy, 0);
 
     v16 = sub_100003164();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -191,7 +191,7 @@
       sub_100027D50();
     }
 
-    v9[2](v9, 0, v13);
+    replyCopy[2](replyCopy, 0, v13);
   }
 
   else
@@ -205,12 +205,12 @@
       v22[2] = sub_1000132AC;
       v22[3] = &unk_100041270;
       v23 = v11;
-      v24 = a3;
+      spaceCopy = space;
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_1000133A0;
       v20[3] = &unk_100041298;
-      v21 = v9;
+      v21 = replyCopy;
       [v23 purgeWithCredential:&self->_creds whilePredicateIsTrue:v22 done:v20];
 
       v13 = 0;
@@ -233,16 +233,16 @@
         sub_100027D50();
       }
 
-      v9[2](v9, 0, v13);
+      replyCopy[2](replyCopy, 0, v13);
     }
   }
 }
 
-- (void)hintDocIDCreationForFileHandle:(id)a3
+- (void)hintDocIDCreationForFileHandle:(id)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   v11 = 0;
-  v4 = +[GSVolPath volPathOnVolume:withFD:error:](GSVolPath, "volPathOnVolume:withFD:error:", 0, [v3 fileDescriptor], &v11);
+  v4 = +[GSVolPath volPathOnVolume:withFD:error:](GSVolPath, "volPathOnVolume:withFD:error:", 0, [handleCopy fileDescriptor], &v11);
   v5 = v11;
   v6 = sub_100003164();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -269,10 +269,10 @@
   }
 }
 
-- (void)isPermanentStorageSupportedForHandle:(id)a3 reply:(id)a4
+- (void)isPermanentStorageSupportedForHandle:(id)handle reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  handleCopy = handle;
+  replyCopy = reply;
   v7 = sub_100003164();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -280,14 +280,14 @@
   }
 
   v17 = 0;
-  v8 = +[GSVolPath volPathOnVolume:withFD:error:](GSVolPath, "volPathOnVolume:withFD:error:", 0, [v5 fileDescriptor], &v17);
+  v8 = +[GSVolPath volPathOnVolume:withFD:error:](GSVolPath, "volPathOnVolume:withFD:error:", 0, [handleCopy fileDescriptor], &v17);
   v9 = v17;
   if (v8)
   {
     if ([v8 isInIgnoredLocation])
     {
-      v10 = [v8 path];
-      v11 = [NSString stringWithFormat:@"%@ is in an ignored location", v10];
+      path = [v8 path];
+      v11 = [NSString stringWithFormat:@"%@ is in an ignored location", path];
 
       v12 = sub_100003164();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -303,7 +303,7 @@
         sub_1000282C8();
       }
 
-      v6[2](v6, 0, v13);
+      replyCopy[2](replyCopy, 0, v13);
       v9 = v13;
     }
 
@@ -315,7 +315,7 @@
         sub_10002823C();
       }
 
-      v6[2](v6, 1, 0);
+      replyCopy[2](replyCopy, 1, 0);
     }
   }
 
@@ -327,14 +327,14 @@
       sub_1000282C8();
     }
 
-    v6[2](v6, 0, v9);
+    replyCopy[2](replyCopy, 0, v9);
   }
 }
 
-- (void)_stagingPrefixCleanup:(id)a3
+- (void)_stagingPrefixCleanup:(id)cleanup
 {
-  v3 = a3;
-  v4 = open([v3 fileSystemRepresentation], 260);
+  cleanupCopy = cleanup;
+  v4 = open([cleanupCopy fileSystemRepresentation], 260);
   if ((v4 & 0x80000000) != 0)
   {
     v7 = sub_100003164();
@@ -344,7 +344,7 @@
     }
 
     v9 = 138412290;
-    v10 = v3;
+    v10 = cleanupCopy;
 LABEL_8:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[WARNING] Couldn't resolve staging path %@, volume is probably gone", &v9, 0xCu);
     goto LABEL_9;
@@ -361,38 +361,38 @@ LABEL_8:
     }
 
     v9 = 138412290;
-    v10 = v3;
+    v10 = cleanupCopy;
     goto LABEL_8;
   }
 
   v7 = v6;
   close(v5);
   v8 = +[NSFileManager defaultManager];
-  [v8 removeItemAtPath:v3 error:0];
+  [v8 removeItemAtPath:cleanupCopy error:0];
 
 LABEL_9:
 }
 
-- (void)stagingPrefixRelinquish:(id)a3
+- (void)stagingPrefixRelinquish:(id)relinquish
 {
-  v4 = a3;
+  relinquishCopy = relinquish;
   v5 = sub_100003164();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100028568();
   }
 
-  if ([(NSMutableSet *)self->_stagingPrefixes containsObject:v4])
+  if ([(NSMutableSet *)self->_stagingPrefixes containsObject:relinquishCopy])
   {
-    [(NSMutableSet *)self->_stagingPrefixes removeObject:v4];
-    [(GSClient *)self _stagingPrefixCleanup:v4];
+    [(NSMutableSet *)self->_stagingPrefixes removeObject:relinquishCopy];
+    [(GSClient *)self _stagingPrefixCleanup:relinquishCopy];
   }
 }
 
-- (void)permanentStoragePrefixForHandle:(id)a3 reply:(id)a4
+- (void)permanentStoragePrefixForHandle:(id)handle reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  replyCopy = reply;
   v8 = sub_100003164();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -400,7 +400,7 @@ LABEL_9:
   }
 
   v19 = 0;
-  v9 = +[GSVolPath volPathOnVolume:withFD:error:](GSVolPath, "volPathOnVolume:withFD:error:", 0, [v6 fileDescriptor], &v19);
+  v9 = +[GSVolPath volPathOnVolume:withFD:error:](GSVolPath, "volPathOnVolume:withFD:error:", 0, [handleCopy fileDescriptor], &v19);
   v10 = v19;
   v18 = v10;
   v11 = [v9 isValidForCreds:0 documentIdentifier:0 error:&v18];
@@ -413,8 +413,8 @@ LABEL_9:
     v14[2] = sub_100014184;
     v14[3] = &unk_100041300;
     v15 = v9;
-    v16 = self;
-    v17 = v7;
+    selfCopy = self;
+    v17 = replyCopy;
     [v15 performOnResolvedPath:v14];
   }
 
@@ -426,14 +426,14 @@ LABEL_9:
       sub_100028660();
     }
 
-    (*(v7 + 2))(v7, 0, v12);
+    (*(replyCopy + 2))(replyCopy, 0, v12);
   }
 }
 
-- (void)permanentStorageIDForHandle:(id)a3 reply:(id)a4
+- (void)permanentStorageIDForHandle:(id)handle reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  handleCopy = handle;
+  replyCopy = reply;
   v7 = sub_100003164();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -441,7 +441,7 @@ LABEL_9:
   }
 
   v16 = 0;
-  v8 = +[GSVolPath volPathOnVolume:withFD:error:](GSVolPath, "volPathOnVolume:withFD:error:", 0, [v5 fileDescriptor], &v16);
+  v8 = +[GSVolPath volPathOnVolume:withFD:error:](GSVolPath, "volPathOnVolume:withFD:error:", 0, [handleCopy fileDescriptor], &v16);
   v9 = v16;
   v15 = v9;
   v10 = [v8 isValidForCreds:0 documentIdentifier:0 error:&v15];
@@ -453,7 +453,7 @@ LABEL_9:
     v13[1] = 3221225472;
     v13[2] = sub_100014450;
     v13[3] = &unk_100041328;
-    v14 = v6;
+    v14 = replyCopy;
     [v8 performOnResolvedPath:v13];
   }
 
@@ -465,36 +465,36 @@ LABEL_9:
       sub_1000287DC();
     }
 
-    (*(v6 + 2))(v6, 0, v11);
+    (*(replyCopy + 2))(replyCopy, 0, v11);
   }
 }
 
-- (void)permanentStorageOpenForHandle:(id)a3 withRemoteID:(unint64_t)a4 andDocumentID:(id)a5 reply:(id)a6
+- (void)permanentStorageOpenForHandle:(id)handle withRemoteID:(unint64_t)d andDocumentID:(id)iD reply:(id)reply
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  handleCopy = handle;
+  iDCopy = iD;
+  replyCopy = reply;
   v13 = sub_100003164();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315906;
     v33 = "[GSClient permanentStorageOpenForHandle:withRemoteID:andDocumentID:reply:]";
     v34 = 2112;
-    v35 = v10;
+    v35 = handleCopy;
     v36 = 2048;
-    v37 = a4;
+    dCopy = d;
     v38 = 2112;
-    v39 = v11;
+    v39 = iDCopy;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] %s query(%@, %lld, %@)", buf, 0x2Au);
   }
 
   storageVolPaths = self->_storageVolPaths;
-  v15 = [NSNumber numberWithUnsignedLongLong:a4];
+  v15 = [NSNumber numberWithUnsignedLongLong:d];
   v16 = [(NSMutableDictionary *)storageVolPaths objectForKeyedSubscript:v15];
 
   if (v16)
   {
-    v17 = [NSString stringWithFormat:@"Instance %lld already exists", a4];
+    v17 = [NSString stringWithFormat:@"Instance %lld already exists", d];
     v18 = sub_100003164();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -509,17 +509,17 @@ LABEL_9:
       sub_100028954();
     }
 
-    (*(v12 + 2))(v12, 0, 0, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v19);
     v21 = 0;
   }
 
   else
   {
     v31 = 0;
-    v21 = +[GSVolPath volPathOnVolume:withFD:error:](GSVolPath, "volPathOnVolume:withFD:error:", 0, [v10 fileDescriptor], &v31);
+    v21 = +[GSVolPath volPathOnVolume:withFD:error:](GSVolPath, "volPathOnVolume:withFD:error:", 0, [handleCopy fileDescriptor], &v31);
     v22 = v31;
     v30 = v22;
-    v23 = [v21 isValidForCreds:0 documentIdentifier:v11 error:&v30];
+    v23 = [v21 isValidForCreds:0 documentIdentifier:iDCopy error:&v30];
     v19 = v30;
 
     if (v23)
@@ -530,9 +530,9 @@ LABEL_9:
       v25[3] = &unk_100041350;
       v21 = v21;
       v26 = v21;
-      v27 = self;
-      v28 = v12;
-      v29 = a4;
+      selfCopy = self;
+      v28 = replyCopy;
+      dCopy2 = d;
       [v21 performOnResolvedPath:v25];
     }
 
@@ -544,12 +544,12 @@ LABEL_9:
         sub_100028954();
       }
 
-      (*(v12 + 2))(v12, 0, 0, 0, v19);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0, v19);
     }
   }
 }
 
-- (void)permanentStorageClose:(unint64_t)a3
+- (void)permanentStorageClose:(unint64_t)close
 {
   v5 = sub_100003164();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -560,7 +560,7 @@ LABEL_9:
   if ([(NSMutableDictionary *)self->_storageVolPaths count])
   {
     storageVolPaths = self->_storageVolPaths;
-    v7 = [NSNumber numberWithUnsignedLongLong:a3];
+    v7 = [NSNumber numberWithUnsignedLongLong:close];
     [(NSMutableDictionary *)storageVolPaths removeObjectForKey:v7];
 
     if (![(NSMutableDictionary *)self->_storageVolPaths count])
@@ -571,27 +571,27 @@ LABEL_9:
   }
 }
 
-- (void)getAdditionInStorage:(int64_t)a3 andNameSpace:(id)a4 named:(id)a5 completionHandler:(id)a6
+- (void)getAdditionInStorage:(int64_t)storage andNameSpace:(id)space named:(id)named completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  spaceCopy = space;
+  namedCopy = named;
+  handlerCopy = handler;
   v13 = sub_100003164();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315906;
     v30 = "[GSClient getAdditionInStorage:andNameSpace:named:completionHandler:]";
     v31 = 2048;
-    v32 = a3;
+    storageCopy = storage;
     v33 = 2112;
-    v34 = v10;
+    v34 = spaceCopy;
     v35 = 2112;
-    v36 = v11;
+    v36 = namedCopy;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] %s query(%lld, %@, %@)", buf, 0x2Au);
   }
 
   v28 = 0;
-  v14 = [(GSClient *)self _getCachedVolPath:a3 error:&v28];
+  v14 = [(GSClient *)self _getCachedVolPath:storage error:&v28];
   v15 = v28;
   if (!v14)
   {
@@ -605,7 +605,7 @@ LABEL_9:
   }
 
   v27 = 0;
-  v16 = [v11 validateGSName:&v27];
+  v16 = [namedCopy validateGSName:&v27];
   v17 = v27;
 
   if ((v16 & 1) == 0)
@@ -627,7 +627,7 @@ LABEL_9:
 
 LABEL_12:
 
-    (*(v12 + 2))(v12, 0, 0, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v15);
     goto LABEL_13;
   }
 
@@ -636,51 +636,51 @@ LABEL_12:
   v21[2] = sub_100014E64;
   v21[3] = &unk_100041378;
   v22 = v14;
-  v23 = v10;
-  v24 = v11;
-  v25 = self;
-  v26 = v12;
+  v23 = spaceCopy;
+  v24 = namedCopy;
+  selfCopy = self;
+  v26 = handlerCopy;
   [v22 performOnResolvedPath:v21];
 
   v15 = v17;
 LABEL_13:
 }
 
-- (void)getAdditionsInStorage:(int64_t)a3 andNameSpace:(id)a4 named:(id)a5 completionHandler:(id)a6
+- (void)getAdditionsInStorage:(int64_t)storage andNameSpace:(id)space named:(id)named completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  spaceCopy = space;
+  namedCopy = named;
+  handlerCopy = handler;
   v13 = sub_100003164();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315906;
     v29 = "[GSClient getAdditionsInStorage:andNameSpace:named:completionHandler:]";
     v30 = 2048;
-    v31 = a3;
+    storageCopy = storage;
     v32 = 2112;
-    v33 = v10;
+    v33 = spaceCopy;
     v34 = 2112;
-    v35 = v11;
+    v35 = namedCopy;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] %s query(%lld, %@, %@)", buf, 0x2Au);
   }
 
   v27 = 0;
-  v14 = [(GSClient *)self _getCachedVolPath:a3 error:&v27];
+  v14 = [(GSClient *)self _getCachedVolPath:storage error:&v27];
   v15 = v27;
   if (v14)
   {
-    if (sub_10001532C(v11))
+    if (sub_10001532C(namedCopy))
     {
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100015464;
       v21[3] = &unk_100041378;
-      v22 = v11;
+      v22 = namedCopy;
       v23 = v14;
-      v24 = v10;
-      v25 = self;
-      v26 = v12;
+      v24 = spaceCopy;
+      selfCopy = self;
+      v26 = handlerCopy;
       [v23 performOnResolvedPath:v21];
     }
 
@@ -701,7 +701,7 @@ LABEL_13:
         sub_100028BC4();
       }
 
-      (*(v12 + 2))(v12, 0, 0, 0, v19);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v19);
       v15 = v19;
     }
   }
@@ -714,24 +714,24 @@ LABEL_13:
       sub_100028BC4();
     }
 
-    (*(v12 + 2))(v12, 0, 0, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v15);
   }
 }
 
-- (BOOL)_validateToken:(id)a3 error:(id *)a4
+- (BOOL)_validateToken:(id)token error:(id *)error
 {
-  v5 = a3;
+  tokenCopy = token;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 count];
-    if (!a4 || v6 == 3)
+    v6 = [tokenCopy count];
+    if (!error || v6 == 3)
     {
       goto LABEL_9;
     }
   }
 
-  else if (!a4)
+  else if (!error)
   {
     goto LABEL_9;
   }
@@ -746,13 +746,13 @@ LABEL_13:
   v9 = sub_10000F0F8(101, v7, 0);
 
   v10 = v9;
-  *a4 = v9;
+  *error = v9;
 LABEL_9:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = [v5 copy];
+  v11 = [tokenCopy copy];
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -771,7 +771,7 @@ LABEL_9:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v18 = [NSString stringWithFormat:@"invalid enumeration state", v23];
             v19 = sub_100003164();
@@ -784,7 +784,7 @@ LABEL_9:
 
             v21 = v20;
             v17 = 0;
-            *a4 = v20;
+            *error = v20;
           }
 
           else
@@ -812,33 +812,33 @@ LABEL_23:
   return v17;
 }
 
-- (void)listAdditionsOfStorage:(int64_t)a3 nameSpace:(id)a4 withOptions:(unint64_t)a5 withoutOptions:(unint64_t)a6 andEnumerationState:(id)a7 completionHandler:(id)a8
+- (void)listAdditionsOfStorage:(int64_t)storage nameSpace:(id)space withOptions:(unint64_t)options withoutOptions:(unint64_t)withoutOptions andEnumerationState:(id)state completionHandler:(id)handler
 {
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
+  spaceCopy = space;
+  stateCopy = state;
+  handlerCopy = handler;
   v17 = sub_100003164();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136316418;
     v41 = "[GSClient listAdditionsOfStorage:nameSpace:withOptions:withoutOptions:andEnumerationState:completionHandler:]";
     v42 = 2048;
-    v43 = a3;
+    storageCopy = storage;
     v44 = 2112;
-    v45 = v14;
+    v45 = spaceCopy;
     v46 = 2048;
-    v47 = a5;
+    optionsCopy = options;
     v48 = 2048;
-    v49 = a6;
+    withoutOptionsCopy = withoutOptions;
     v50 = 2112;
-    v51 = v15;
+    v51 = stateCopy;
     _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "[DEBUG] %s query(%lld, %@, %llx, %llx, %@)", buf, 0x3Eu);
   }
 
-  if (v15)
+  if (stateCopy)
   {
     v39 = 0;
-    v18 = [(GSClient *)self _validateToken:v15 error:&v39];
+    v18 = [(GSClient *)self _validateToken:stateCopy error:&v39];
     v19 = v39;
     if ((v18 & 1) == 0)
     {
@@ -848,11 +848,11 @@ LABEL_23:
         sub_100028C44();
       }
 
-      (*(v16 + 2))(v16, 0, 0, 0, 0, v19);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v19);
       goto LABEL_16;
     }
 
-    v20 = [v15 mutableCopy];
+    v20 = [stateCopy mutableCopy];
   }
 
   else
@@ -863,7 +863,7 @@ LABEL_23:
 
   v21 = v19;
   v38 = 0;
-  v22 = [(GSClient *)self _getCachedVolPath:a3 error:&v38];
+  v22 = [(GSClient *)self _getCachedVolPath:storage error:&v38];
   v19 = v38;
 
   if (!v22)
@@ -874,14 +874,14 @@ LABEL_23:
       sub_100028C44();
     }
 
-    (*(v16 + 2))(v16, 0, 0, 0, 0, v19);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v19);
 LABEL_16:
     v22 = 0;
     goto LABEL_20;
   }
 
   v37 = 0;
-  v23 = [v14 validateGSName:&v37];
+  v23 = [spaceCopy validateGSName:&v37];
   v28 = v37;
 
   if (v23)
@@ -893,11 +893,11 @@ LABEL_16:
     v30 = v20;
     v22 = v22;
     v31 = v22;
-    v35 = a5;
-    v36 = a6;
-    v32 = v14;
-    v33 = self;
-    v34 = v16;
+    optionsCopy2 = options;
+    withoutOptionsCopy2 = withoutOptions;
+    v32 = spaceCopy;
+    selfCopy = self;
+    v34 = handlerCopy;
     v24 = v20;
     [v22 performOnResolvedPath:v29];
 
@@ -913,26 +913,26 @@ LABEL_16:
       sub_100028C44();
     }
 
-    (*(v16 + 2))(v16, 0, 0, 0, 0, v28);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v28);
   }
 
 LABEL_20:
 }
 
-- (void)checkItemAtURLValidInsidePermanentStorage:(id)a3 reply:(id)a4
+- (void)checkItemAtURLValidInsidePermanentStorage:(id)storage reply:(id)reply
 {
-  v5 = a4;
-  v6 = [a3 isFileURL];
+  replyCopy = reply;
+  isFileURL = [storage isFileURL];
   v7 = sub_100003164();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (isFileURL)
   {
     if (v8)
     {
       sub_100028D70();
     }
 
-    v5[2](v5, 1, 0);
+    replyCopy[2](replyCopy, 1, 0);
   }
 
   else
@@ -943,34 +943,34 @@ LABEL_20:
     }
 
     v9 = [NSError errorWithDomain:NSURLErrorDomain code:-1002 userInfo:0];
-    v5[2](v5, 0, v9);
+    replyCopy[2](replyCopy, 0, v9);
 
-    v5 = v9;
+    replyCopy = v9;
   }
 }
 
-- (void)setAdditionOptionsInStorage:(int64_t)a3 nameSpace:(id)a4 additionName:(id)a5 value:(unint64_t)a6 reply:(id)a7
+- (void)setAdditionOptionsInStorage:(int64_t)storage nameSpace:(id)space additionName:(id)name value:(unint64_t)value reply:(id)reply
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  spaceCopy = space;
+  nameCopy = name;
+  replyCopy = reply;
   v15 = sub_100003164();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136316162;
     v40 = "[GSClient setAdditionOptionsInStorage:nameSpace:additionName:value:reply:]";
     v41 = 2048;
-    v42 = a3;
+    storageCopy = storage;
     v43 = 2112;
-    v44 = v12;
+    v44 = spaceCopy;
     v45 = 2112;
-    v46 = v13;
+    v46 = nameCopy;
     v47 = 2048;
-    v48 = a6;
+    valueCopy = value;
     _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] %s query(%lld, %@, %@, %llx)", buf, 0x34u);
   }
 
-  if ((a6 & 0xFFFFFFFFFFFFFFE1) != 1)
+  if ((value & 0xFFFFFFFFFFFFFFE1) != 1)
   {
     v27 = [NSString stringWithFormat:@"invalid options"];
     v28 = sub_100003164();
@@ -991,7 +991,7 @@ LABEL_20:
   }
 
   v38 = 0;
-  v16 = [v13 validateGSName:&v38];
+  v16 = [nameCopy validateGSName:&v38];
   v17 = v38;
   if (!v16)
   {
@@ -999,7 +999,7 @@ LABEL_20:
   }
 
   v37 = 0;
-  v18 = [v12 validateGSName:&v37];
+  v18 = [spaceCopy validateGSName:&v37];
   v19 = v37;
 
   if ((v18 & 1) == 0)
@@ -1016,7 +1016,7 @@ LABEL_18:
   }
 
   v36 = 0;
-  v20 = [(GSClient *)self _getCachedVolPath:a3 error:&v36];
+  v20 = [(GSClient *)self _getCachedVolPath:storage error:&v36];
   v17 = v36;
 
   if (!v20)
@@ -1029,14 +1029,14 @@ LABEL_18:
 
 LABEL_20:
 
-    v14[2](v14, 0, v17);
+    replyCopy[2](replyCopy, 0, v17);
     goto LABEL_21;
   }
 
-  v21 = [v20 library];
-  v22 = [v21 isReadOnly];
+  library = [v20 library];
+  isReadOnly = [library isReadOnly];
 
-  if (v22)
+  if (isReadOnly)
   {
     v23 = [NSString stringWithFormat:@"storage is read-only"];
     v24 = sub_100003164();
@@ -1053,7 +1053,7 @@ LABEL_20:
       sub_100028E74();
     }
 
-    v14[2](v14, 0, v25);
+    replyCopy[2](replyCopy, 0, v25);
     v17 = v25;
   }
 
@@ -1063,41 +1063,41 @@ LABEL_20:
     v30[1] = 3221225472;
     v30[2] = sub_100016404;
     v30[3] = &unk_1000413C8;
-    v31 = v13;
-    v32 = v12;
-    v33 = self;
-    v35 = a6 & 0xFFFFFFFFFFFFFFEDLL;
-    v34 = v14;
+    v31 = nameCopy;
+    v32 = spaceCopy;
+    selfCopy = self;
+    v35 = value & 0xFFFFFFFFFFFFFFEDLL;
+    v34 = replyCopy;
     [v20 performOnResolvedPath:v30];
   }
 
 LABEL_21:
 }
 
-- (void)mergeAdditionInfoValueInStorage:(int64_t)a3 nameSpace:(id)a4 additionName:(id)a5 value:(id)a6 reply:(id)a7
+- (void)mergeAdditionInfoValueInStorage:(int64_t)storage nameSpace:(id)space additionName:(id)name value:(id)value reply:(id)reply
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  spaceCopy = space;
+  nameCopy = name;
+  valueCopy = value;
+  replyCopy = reply;
   v16 = sub_100003164();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136316162;
     v46 = "[GSClient mergeAdditionInfoValueInStorage:nameSpace:additionName:value:reply:]";
     v47 = 2048;
-    v48 = a3;
+    storageCopy = storage;
     v49 = 2112;
-    v50 = v12;
+    v50 = spaceCopy;
     v51 = 2112;
-    v52 = v13;
+    v52 = nameCopy;
     v53 = 2112;
-    v54 = v14;
+    v54 = valueCopy;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "[DEBUG] %s query(%lld, %@, %@, %@)", buf, 0x34u);
   }
 
   v44 = 0;
-  v17 = [v13 validateGSName:&v44];
+  v17 = [nameCopy validateGSName:&v44];
   v18 = v44;
   if (!v17)
   {
@@ -1105,7 +1105,7 @@ LABEL_21:
   }
 
   v43 = 0;
-  v19 = [v12 validateGSName:&v43];
+  v19 = [spaceCopy validateGSName:&v43];
   v20 = v43;
 
   if ((v19 & 1) == 0)
@@ -1122,7 +1122,7 @@ LABEL_13:
   }
 
   v42 = 0;
-  v21 = [(GSClient *)self _getCachedVolPath:a3 error:&v42];
+  v21 = [(GSClient *)self _getCachedVolPath:storage error:&v42];
   v18 = v42;
 
   if (!v21)
@@ -1135,16 +1135,16 @@ LABEL_13:
 
 LABEL_15:
 
-    v15[2](v15, 0, v18);
+    replyCopy[2](replyCopy, 0, v18);
     v28 = 0;
     v21 = 0;
     goto LABEL_16;
   }
 
-  v22 = [v21 library];
-  v23 = [v22 isReadOnly];
+  library = [v21 library];
+  isReadOnly = [library isReadOnly];
 
-  if (v23)
+  if (isReadOnly)
   {
     v24 = [NSString stringWithFormat:@"storage is read-only"];
     v25 = sub_100003164();
@@ -1161,7 +1161,7 @@ LABEL_15:
       sub_100028F78();
     }
 
-    v15[2](v15, 0, v26);
+    replyCopy[2](replyCopy, 0, v26);
     v28 = 0;
     v18 = v26;
   }
@@ -1169,7 +1169,7 @@ LABEL_15:
   else
   {
     v41 = 0;
-    v28 = [NSPropertyListSerialization propertyListWithData:v14 options:0 format:0 error:&v41];
+    v28 = [NSPropertyListSerialization propertyListWithData:valueCopy options:0 format:0 error:&v41];
     v30 = v41;
 
     objc_opt_class();
@@ -1179,14 +1179,14 @@ LABEL_15:
       v34[1] = 3221225472;
       v34[2] = sub_100016A1C;
       v34[3] = &unk_1000413F0;
-      v35 = v13;
-      v36 = v12;
-      v37 = self;
+      v35 = nameCopy;
+      v36 = spaceCopy;
+      selfCopy = self;
       v21 = v21;
       v38 = v21;
       v28 = v28;
       v39 = v28;
-      v40 = v15;
+      v40 = replyCopy;
       [v21 performOnResolvedPath:v34];
 
       v18 = v30;
@@ -1209,37 +1209,37 @@ LABEL_15:
         sub_100028F78();
       }
 
-      v15[2](v15, 0, v18);
+      replyCopy[2](replyCopy, 0, v18);
     }
   }
 
 LABEL_16:
 }
 
-- (void)setAdditionDisplayNameInStorage:(int64_t)a3 nameSpace:(id)a4 additionName:(id)a5 value:(id)a6 reply:(id)a7
+- (void)setAdditionDisplayNameInStorage:(int64_t)storage nameSpace:(id)space additionName:(id)name value:(id)value reply:(id)reply
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  spaceCopy = space;
+  nameCopy = name;
+  valueCopy = value;
+  replyCopy = reply;
   v16 = sub_100003164();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136316162;
     v43 = "[GSClient setAdditionDisplayNameInStorage:nameSpace:additionName:value:reply:]";
     v44 = 2048;
-    v45 = a3;
+    storageCopy = storage;
     v46 = 2112;
-    v47 = v12;
+    v47 = spaceCopy;
     v48 = 2112;
-    v49 = v13;
+    v49 = nameCopy;
     v50 = 2112;
-    v51 = v14;
+    v51 = valueCopy;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "[DEBUG] %s query(%lld, %@, %@, %@)", buf, 0x34u);
   }
 
   v41 = 0;
-  v17 = [v13 validateGSName:&v41];
+  v17 = [nameCopy validateGSName:&v41];
   v18 = v41;
   if (!v17)
   {
@@ -1247,7 +1247,7 @@ LABEL_16:
   }
 
   v40 = 0;
-  v19 = [v14 validateGSName:&v40];
+  v19 = [valueCopy validateGSName:&v40];
   v20 = v40;
 
   if (!v19)
@@ -1257,7 +1257,7 @@ LABEL_16:
   }
 
   v39 = 0;
-  v21 = [v12 validateGSName:&v39];
+  v21 = [spaceCopy validateGSName:&v39];
   v22 = v39;
 
   if ((v21 & 1) == 0)
@@ -1274,7 +1274,7 @@ LABEL_15:
   }
 
   v38 = 0;
-  v23 = [(GSClient *)self _getCachedVolPath:a3 error:&v38];
+  v23 = [(GSClient *)self _getCachedVolPath:storage error:&v38];
   v18 = v38;
 
   if (!v23)
@@ -1287,15 +1287,15 @@ LABEL_15:
 
 LABEL_17:
 
-    v15[2](v15, 0, v18);
+    replyCopy[2](replyCopy, 0, v18);
     v23 = 0;
     goto LABEL_18;
   }
 
-  v24 = [v23 library];
-  v25 = [v24 isReadOnly];
+  library = [v23 library];
+  isReadOnly = [library isReadOnly];
 
-  if (v25)
+  if (isReadOnly)
   {
     v26 = [NSString stringWithFormat:@"storage is read-only"];
     v27 = sub_100003164();
@@ -1312,7 +1312,7 @@ LABEL_17:
       sub_10002907C();
     }
 
-    v15[2](v15, 0, v28);
+    replyCopy[2](replyCopy, 0, v28);
     v18 = v28;
   }
 
@@ -1322,43 +1322,43 @@ LABEL_17:
     v31[1] = 3221225472;
     v31[2] = sub_100016F70;
     v31[3] = &unk_1000413F0;
-    v32 = v13;
-    v33 = v12;
-    v34 = self;
+    v32 = nameCopy;
+    v33 = spaceCopy;
+    selfCopy = self;
     v23 = v23;
     v35 = v23;
-    v36 = v14;
-    v37 = v15;
+    v36 = valueCopy;
+    v37 = replyCopy;
     [v23 performOnResolvedPath:v31];
   }
 
 LABEL_18:
 }
 
-- (void)setAdditionNameSpaceInStorage:(int64_t)a3 nameSpace:(id)a4 additionName:(id)a5 value:(id)a6 completionHandler:(id)a7
+- (void)setAdditionNameSpaceInStorage:(int64_t)storage nameSpace:(id)space additionName:(id)name value:(id)value completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  spaceCopy = space;
+  nameCopy = name;
+  valueCopy = value;
+  handlerCopy = handler;
   v16 = sub_100003164();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136316162;
     v43 = "[GSClient setAdditionNameSpaceInStorage:nameSpace:additionName:value:completionHandler:]";
     v44 = 2048;
-    v45 = a3;
+    storageCopy = storage;
     v46 = 2112;
-    v47 = v12;
+    v47 = spaceCopy;
     v48 = 2112;
-    v49 = v13;
+    v49 = nameCopy;
     v50 = 2112;
-    v51 = v14;
+    v51 = valueCopy;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "[DEBUG] %s query(%lld, %@, %@, %@)", buf, 0x34u);
   }
 
   v41 = 0;
-  v17 = [v13 validateGSName:&v41];
+  v17 = [nameCopy validateGSName:&v41];
   v18 = v41;
   if (!v17)
   {
@@ -1366,7 +1366,7 @@ LABEL_18:
   }
 
   v40 = 0;
-  v19 = [v12 validateGSName:&v40];
+  v19 = [spaceCopy validateGSName:&v40];
   v20 = v40;
 
   if (!v19)
@@ -1376,7 +1376,7 @@ LABEL_18:
   }
 
   v39 = 0;
-  v21 = [v14 validateGSName:&v39];
+  v21 = [valueCopy validateGSName:&v39];
   v22 = v39;
 
   if ((v21 & 1) == 0)
@@ -1393,7 +1393,7 @@ LABEL_15:
   }
 
   v38 = 0;
-  v23 = [(GSClient *)self _getCachedVolPath:a3 error:&v38];
+  v23 = [(GSClient *)self _getCachedVolPath:storage error:&v38];
   v18 = v38;
 
   if (!v23)
@@ -1406,15 +1406,15 @@ LABEL_15:
 
 LABEL_17:
 
-    v15[2](v15, 0, v18);
+    handlerCopy[2](handlerCopy, 0, v18);
     v23 = 0;
     goto LABEL_18;
   }
 
-  v24 = [v23 library];
-  v25 = [v24 isReadOnly];
+  library = [v23 library];
+  isReadOnly = [library isReadOnly];
 
-  if (v25)
+  if (isReadOnly)
   {
     v26 = [NSString stringWithFormat:@"storage is read-only"];
     v27 = sub_100003164();
@@ -1431,7 +1431,7 @@ LABEL_17:
       sub_100029180();
     }
 
-    v15[2](v15, 0, v28);
+    handlerCopy[2](handlerCopy, 0, v28);
     v18 = v28;
   }
 
@@ -1443,28 +1443,28 @@ LABEL_17:
     v31[3] = &unk_1000413F0;
     v23 = v23;
     v32 = v23;
-    v33 = v12;
-    v34 = v13;
-    v35 = v14;
-    v36 = self;
-    v37 = v15;
+    v33 = spaceCopy;
+    v34 = nameCopy;
+    v35 = valueCopy;
+    selfCopy = self;
+    v37 = handlerCopy;
     [v23 performOnResolvedPath:v31];
   }
 
 LABEL_18:
 }
 
-- (id)_volPathFromPath:(id)a3 error:(id *)a4
+- (id)_volPathFromPath:(id)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   memset(&v21, 0, sizeof(v21));
-  if (lstat([v5 fileSystemRepresentation], &v21))
+  if (lstat([pathCopy fileSystemRepresentation], &v21))
   {
-    if (a4)
+    if (error)
     {
       v6 = *__error();
       v7 = __error();
-      v8 = [NSString stringWithFormat:@"lstat(%@) failed error %d (%s)\n", v5, v6, strerror(*v7)];;
+      v8 = [NSString stringWithFormat:@"lstat(%@) failed error %d (%s)\n", pathCopy, v6, strerror(*v7)];;
       v9 = sub_100003164();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
@@ -1475,7 +1475,7 @@ LABEL_18:
 
       v11 = v10;
       v12 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -1490,16 +1490,16 @@ LABEL_18:
     if (v13)
     {
       v20 = 0;
-      v12 = [GSVolPath volPathOnVolume:v13 withPath:v5 error:&v20];
+      v12 = [GSVolPath volPathOnVolume:v13 withPath:pathCopy error:&v20];
       v14 = v20;
-      if (a4 && !v12)
+      if (error && !v12)
       {
         v14 = v14;
-        *a4 = v14;
+        *error = v14;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v15 = [NSString stringWithFormat:@"Unable to open library"];
       v16 = sub_100003164();
@@ -1512,7 +1512,7 @@ LABEL_18:
 
       v18 = v17;
       v12 = 0;
-      *a4 = v17;
+      *error = v17;
     }
 
     else
@@ -1524,31 +1524,31 @@ LABEL_18:
   return v12;
 }
 
-- (void)listAdditionsUnderPath:(id)a3 withNameSpace:(id)a4 withOptions:(unint64_t)a5 withoutOptions:(unint64_t)a6 andEnumerationState:(id)a7 completionHandler:(id)a8
+- (void)listAdditionsUnderPath:(id)path withNameSpace:(id)space withOptions:(unint64_t)options withoutOptions:(unint64_t)withoutOptions andEnumerationState:(id)state completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  pathCopy = path;
+  spaceCopy = space;
+  stateCopy = state;
+  handlerCopy = handler;
   v18 = sub_100003164();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136316418;
     v39 = "[GSClient listAdditionsUnderPath:withNameSpace:withOptions:withoutOptions:andEnumerationState:completionHandler:]";
     v40 = 2112;
-    v41 = v14;
+    v41 = pathCopy;
     v42 = 2112;
-    v43 = v15;
+    v43 = spaceCopy;
     v44 = 2048;
-    v45 = a5;
+    optionsCopy = options;
     v46 = 2048;
-    v47 = a6;
+    withoutOptionsCopy = withoutOptions;
     v48 = 2112;
-    v49 = v16;
+    v49 = stateCopy;
     _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "[DEBUG] %s query(%@, %@, %llx, %llx, %@)", buf, 0x3Eu);
   }
 
-  if (!v16)
+  if (!stateCopy)
   {
     v21 = 0;
     v20 = 0;
@@ -1556,32 +1556,32 @@ LABEL_18:
   }
 
   v37 = 0;
-  v19 = [(GSClient *)self _validateToken:v16 error:&v37];
+  v19 = [(GSClient *)self _validateToken:stateCopy error:&v37];
   v20 = v37;
   if (v19)
   {
-    v21 = [v16 mutableCopy];
+    v21 = [stateCopy mutableCopy];
 LABEL_7:
     v22 = v20;
     v36 = v20;
-    v23 = [(GSClient *)self _volPathFromPath:v14 error:&v36, v14];
+    pathCopy = [(GSClient *)self _volPathFromPath:pathCopy error:&v36, pathCopy];
     v20 = v36;
 
-    if (v23)
+    if (pathCopy)
     {
-      v24 = [v23 library];
+      library = [pathCopy library];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_100017AD8;
       v28[3] = &unk_100041418;
       v29 = v21;
-      v30 = v23;
-      v34 = a5;
-      v35 = a6;
-      v31 = v15;
-      v32 = self;
-      v33 = v17;
-      [v24 dispatchSync:v28];
+      v30 = pathCopy;
+      optionsCopy2 = options;
+      withoutOptionsCopy2 = withoutOptions;
+      v31 = spaceCopy;
+      selfCopy = self;
+      v33 = handlerCopy;
+      [library dispatchSync:v28];
     }
 
     else
@@ -1592,10 +1592,10 @@ LABEL_7:
         sub_100029280();
       }
 
-      (*(v17 + 2))(v17, 0, 0, v20);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v20);
     }
 
-    v14 = v27;
+    pathCopy = v27;
     goto LABEL_16;
   }
 
@@ -1605,30 +1605,30 @@ LABEL_7:
     sub_100029280();
   }
 
-  (*(v17 + 2))(v17, 0, 0, v20);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v20);
 LABEL_16:
 }
 
-- (void)createAdditionInStorage:(int64_t)a3 stagedFileDescriptor:(id)a4 creationInfo:(id)a5 completionHandler:(id)a6
+- (void)createAdditionInStorage:(int64_t)storage stagedFileDescriptor:(id)descriptor creationInfo:(id)info completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  descriptorCopy = descriptor;
+  infoCopy = info;
+  handlerCopy = handler;
   v13 = sub_100003164();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315906;
     v44 = "[GSClient createAdditionInStorage:stagedFileDescriptor:creationInfo:completionHandler:]";
     v45 = 2048;
-    v46 = a3;
+    storageCopy = storage;
     v47 = 2112;
-    v48 = v10;
+    v48 = descriptorCopy;
     v49 = 2112;
-    v50 = v11;
+    v50 = infoCopy;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] %s query(%lld, %@, %@)", buf, 0x2Au);
   }
 
-  if (fcntl([v10 fileDescriptor], 50, buf) < 0)
+  if (fcntl([descriptorCopy fileDescriptor], 50, buf) < 0)
   {
     v23 = [NSString stringWithFormat:@"Unable to get path for file descriptor"];
     v24 = *__error();
@@ -1650,7 +1650,7 @@ LABEL_16:
   }
 
   memset(&v42, 0, sizeof(v42));
-  if (fstat([v10 fileDescriptor], &v42) < 0)
+  if (fstat([descriptorCopy fileDescriptor], &v42) < 0)
   {
     v27 = [NSString stringWithFormat:@"Unable to stat file descriptor"];
     v28 = *__error();
@@ -1670,7 +1670,7 @@ LABEL_16:
 
 LABEL_21:
 
-    (*(v12 + 2))(v12, 0, 0, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v16);
     v14 = 0;
     v17 = 0;
     goto LABEL_31;
@@ -1678,19 +1678,19 @@ LABEL_21:
 
   v14 = [NSString gs_stringWithFileSystemRepresentation:buf];
   v41 = 0;
-  v15 = sub_1000119BC(v14, v11, &v41);
+  v15 = sub_1000119BC(v14, infoCopy, &v41);
   v16 = v41;
 
   if (v15)
   {
     v40 = 0;
-    v17 = [(GSClient *)self _getCachedVolPath:a3 error:&v40];
+    v17 = [(GSClient *)self _getCachedVolPath:storage error:&v40];
     v18 = v40;
 
     if (v17)
     {
-      v19 = [v17 library];
-      if ([v19 isReadOnly])
+      library = [v17 library];
+      if ([library isReadOnly])
       {
         v20 = [NSString stringWithFormat:@"storage is read-only"];
         v21 = sub_100003164();
@@ -1707,7 +1707,7 @@ LABEL_21:
           sub_100029388();
         }
 
-        (*(v12 + 2))(v12, 0, 0, 0, v16);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v16);
       }
 
       else
@@ -1716,13 +1716,13 @@ LABEL_21:
         v32[1] = 3221225472;
         v32[2] = sub_100018168;
         v32[3] = &unk_100041440;
-        v33 = v19;
+        v33 = library;
         v34 = v15;
         v39 = v42;
         v35 = v14;
-        v36 = self;
+        selfCopy = self;
         v37 = v17;
-        v38 = v12;
+        v38 = handlerCopy;
         [v37 performOnResolvedPath:v32];
 
         v16 = v18;
@@ -1737,12 +1737,12 @@ LABEL_21:
         sub_100029388();
       }
 
-      (*(v12 + 2))(v12, 0, 0, 0, v18);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v18);
       v17 = 0;
       v16 = v18;
     }
 
-    v11 = v15;
+    infoCopy = v15;
   }
 
   else
@@ -1753,30 +1753,30 @@ LABEL_21:
       sub_100029388();
     }
 
-    (*(v12 + 2))(v12, 0, 0, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v16);
     v17 = 0;
-    v11 = 0;
+    infoCopy = 0;
   }
 
 LABEL_31:
 }
 
-- (void)_removeAdditionsInVolPath:(id)a3 removalSpec:(id)a4 completionHandler:(id)a5
+- (void)_removeAdditionsInVolPath:(id)path removalSpec:(id)spec completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  specCopy = spec;
+  handlerCopy = handler;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v11 = v9;
+  v11 = specCopy;
   v12 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v34;
-    v27 = self;
+    selfCopy = self;
 LABEL_3:
     v15 = 0;
     while (1)
@@ -1815,7 +1815,7 @@ LABEL_3:
       if (v13 == ++v15)
       {
         v13 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
-        self = v27;
+        self = selfCopy;
         if (v13)
         {
           goto LABEL_3;
@@ -1848,19 +1848,19 @@ LABEL_21:
 
 LABEL_12:
 
-  v19 = [v8 library];
-  v20 = [v19 isReadOnly];
+  library = [pathCopy library];
+  isReadOnly = [library isReadOnly];
 
-  if (!v20)
+  if (!isReadOnly)
   {
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_1000186B4;
     v28[3] = &unk_100041490;
-    v32 = v10;
+    v32 = handlerCopy;
     v29 = v11;
-    v30 = v8;
-    v31 = self;
+    v30 = pathCopy;
+    selfCopy2 = self;
     [v30 performOnResolvedPath:v28];
 
     v23 = v32;
@@ -1884,14 +1884,14 @@ LABEL_12:
 
 LABEL_22:
 
-  (*(v10 + 2))(v10, 0, v23);
+  (*(handlerCopy + 2))(handlerCopy, 0, v23);
 LABEL_23:
 }
 
-- (void)removeAdditionsInStorage:(int64_t)a3 removalSpec:(id)a4 completionHandler:(id)a5
+- (void)removeAdditionsInStorage:(int64_t)storage removalSpec:(id)spec completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  specCopy = spec;
+  handlerCopy = handler;
   v10 = sub_100003164();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1899,11 +1899,11 @@ LABEL_23:
   }
 
   v14 = 0;
-  v11 = [(GSClient *)self _getCachedVolPath:a3 error:&v14];
+  v11 = [(GSClient *)self _getCachedVolPath:storage error:&v14];
   v12 = v14;
   if (v11)
   {
-    [(GSClient *)self _removeAdditionsInVolPath:v11 removalSpec:v8 completionHandler:v9];
+    [(GSClient *)self _removeAdditionsInVolPath:v11 removalSpec:specCopy completionHandler:handlerCopy];
   }
 
   else
@@ -1914,33 +1914,33 @@ LABEL_23:
       sub_100029724();
     }
 
-    v9[2](v9, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
   }
 }
 
-- (void)removeAdditionsUnderPath:(id)a3 additionsList:(id)a4 completionHandler:(id)a5
+- (void)removeAdditionsUnderPath:(id)path additionsList:(id)list completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  listCopy = list;
+  handlerCopy = handler;
   v11 = sub_100003164();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     sub_1000297A4();
   }
 
-  v12 = [GSRemoveAdditionSpec calculateSpecForAdditionRemovalUnderPath:v9];
+  v12 = [GSRemoveAdditionSpec calculateSpecForAdditionRemovalUnderPath:listCopy];
   if (v12)
   {
     v31 = 0;
-    v13 = [(GSClient *)self _volPathFromPath:v8 error:&v31];
+    v13 = [(GSClient *)self _volPathFromPath:pathCopy error:&v31];
     v14 = v31;
     if (v13)
     {
-      v15 = [v13 library];
-      v16 = [v15 isReadOnly];
+      library = [v13 library];
+      isReadOnly = [library isReadOnly];
 
-      if (v16)
+      if (isReadOnly)
       {
         v17 = [NSString stringWithFormat:@"storage is read-only"];
         v18 = sub_100003164();
@@ -1957,22 +1957,22 @@ LABEL_23:
           sub_100029824();
         }
 
-        v10[2](v10, 0, v19);
+        handlerCopy[2](handlerCopy, 0, v19);
         v14 = v19;
       }
 
       else
       {
-        v25 = [v13 library];
+        library2 = [v13 library];
         v26[0] = _NSConcreteStackBlock;
         v26[1] = 3221225472;
         v26[2] = sub_10001902C;
         v26[3] = &unk_1000414B8;
         v27 = v12;
         v28 = v13;
-        v29 = self;
-        v30 = v10;
-        [v25 dispatchSync:v26];
+        selfCopy = self;
+        v30 = handlerCopy;
+        [library2 dispatchSync:v26];
       }
     }
 
@@ -1984,7 +1984,7 @@ LABEL_23:
         sub_100029824();
       }
 
-      v10[2](v10, 0, v14);
+      handlerCopy[2](handlerCopy, 0, v14);
     }
   }
 
@@ -2005,20 +2005,20 @@ LABEL_23:
       sub_100029824();
     }
 
-    v10[2](v10, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
   }
 }
 
-- (int)importCookieFileDescriptorForVolumeURL:(id)a3 forWriting:(BOOL)a4 error:(id *)a5
+- (int)importCookieFileDescriptorForVolumeURL:(id)l forWriting:(BOOL)writing error:(id *)error
 {
-  v6 = a4;
-  v9 = a3;
-  if (realpath_DARWIN_EXTSN([a3 fileSystemRepresentation], v60))
+  writingCopy = writing;
+  lCopy = l;
+  if (realpath_DARWIN_EXTSN([l fileSystemRepresentation], v60))
   {
     v10 = [NSString stringWithUTF8String:v60];
     v11 = [NSURL fileURLWithPath:v10 isDirectory:1];
 
-    if (v6)
+    if (writingCopy)
     {
       v12 = 536871430;
     }
@@ -2032,7 +2032,7 @@ LABEL_23:
     v57[1] = 3221225472;
     v57[2] = sub_100019CD0;
     v57[3] = &unk_1000414E0;
-    if (v6)
+    if (writingCopy)
     {
       v13 = "file-write-data";
     }
@@ -2062,7 +2062,7 @@ LABEL_23:
             sub_100029928();
           }
 
-          if (a5)
+          if (error)
           {
             v37 = [NSString stringWithFormat:@"Invalid volume URL"];
             v38 = sub_100003164();
@@ -2074,16 +2074,16 @@ LABEL_23:
             v39 = sub_10000F0F8(104, v37, 0);
 
             v40 = v39;
-            *a5 = v39;
+            *error = v39;
           }
         }
 
         goto LABEL_88;
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = [NSError errorWithDomain:NSCocoaErrorDomain code:257 userInfo:0];
+        *error = [NSError errorWithDomain:NSCocoaErrorDomain code:257 userInfo:0];
       }
     }
 
@@ -2093,7 +2093,7 @@ LABEL_23:
       if ((lstat(v60, &v56) & 0x80000000) == 0)
       {
         v15 = [GSStorageManager existingLibraryForDevice:v56.st_dev];
-        if (!v15 && v6)
+        if (!v15 && writingCopy)
         {
           v16 = sub_100003164();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -2116,8 +2116,8 @@ LABEL_23:
 
         if (v15)
         {
-          v19 = [v15 libraryRoot];
-          v20 = [NSURL fileURLWithPath:v19 isDirectory:1];
+          libraryRoot = [v15 libraryRoot];
+          v20 = [NSURL fileURLWithPath:libraryRoot isDirectory:1];
 
           v21 = [v20 URLByAppendingPathComponent:@"fpfs_import_cookie" isDirectory:0];
           if (v21)
@@ -2136,7 +2136,7 @@ LABEL_23:
                 sub_100029A94();
               }
 
-              if (!a5)
+              if (!error)
               {
                 goto LABEL_79;
               }
@@ -2145,14 +2145,14 @@ LABEL_23:
               goto LABEL_64;
             }
 
-            if (a5)
+            if (error)
             {
               v24 = [NSError errorWithDomain:NSCocoaErrorDomain code:257 userInfo:0];
 LABEL_63:
               v22 = -1;
 LABEL_64:
               v44 = v24;
-              *a5 = v24;
+              *error = v24;
 LABEL_79:
 
 LABEL_87:
@@ -2168,7 +2168,7 @@ LABEL_87:
               sub_100029B28();
             }
 
-            if (a5)
+            if (error)
             {
               v42 = [NSString stringWithFormat:@"Can't create cookie URL"];
               v43 = sub_100003164();
@@ -2193,9 +2193,9 @@ LABEL_87:
           sub_100029B64(&v56);
         }
 
-        if (v6)
+        if (writingCopy)
         {
-          if (a5)
+          if (error)
           {
             v31 = [NSString stringWithFormat:@"No storage in volume"];
             v32 = sub_100003164();
@@ -2208,7 +2208,7 @@ LABEL_87:
 
             v34 = v33;
             v21 = 0;
-            *a5 = v33;
+            *error = v33;
           }
 
           else
@@ -2253,7 +2253,7 @@ LABEL_87:
             sub_100029C40();
           }
 
-          if (!a5)
+          if (!error)
           {
             goto LABEL_86;
           }
@@ -2263,7 +2263,7 @@ LABEL_87:
 
         else
         {
-          if (!a5)
+          if (!error)
           {
             v22 = -1;
             goto LABEL_86;
@@ -2273,7 +2273,7 @@ LABEL_87:
           v22 = -1;
         }
 
-        *a5 = v52;
+        *error = v52;
 LABEL_86:
 
         goto LABEL_87;
@@ -2285,7 +2285,7 @@ LABEL_86:
         sub_100029CC8();
       }
 
-      if (a5)
+      if (error)
       {
         v26 = [NSString stringWithFormat:@"Invalid volume"];
         v27 = sub_100003164();
@@ -2298,7 +2298,7 @@ LABEL_86:
 
         v29 = v28;
         v21 = 0;
-        *a5 = v28;
+        *error = v28;
       }
 
       else
@@ -2313,9 +2313,9 @@ LABEL_88:
     goto LABEL_89;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+    *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
   }
 
   v11 = sub_100003164();
@@ -2330,21 +2330,21 @@ LABEL_89:
   return v22;
 }
 
-- (void)storeImportCookieData:(id)a3 forVolumeURL:(id)a4 reply:(id)a5
+- (void)storeImportCookieData:(id)data forVolumeURL:(id)l reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  lCopy = l;
+  replyCopy = reply;
   v11 = sub_100003164();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_100029DD4(v8, v9);
+    sub_100029DD4(dataCopy, lCopy);
   }
 
-  if (v9)
+  if (lCopy)
   {
     v51 = 0;
-    v12 = [(GSClient *)self importCookieFileDescriptorForVolumeURL:v9 forWriting:1 error:&v51];
+    v12 = [(GSClient *)self importCookieFileDescriptorForVolumeURL:lCopy forWriting:1 error:&v51];
     v13 = v51;
     if ((v12 & 0x80000000) != 0)
     {
@@ -2372,13 +2372,13 @@ LABEL_89:
         sub_10002A1F8();
       }
 
-      v10[2](v10, v13);
+      replyCopy[2](replyCopy, v13);
     }
 
     else
     {
       v14 = [[NSFileHandle alloc] initWithFileDescriptor:v12 closeOnDealloc:1];
-      if (v8)
+      if (dataCopy)
       {
         v45 = 0;
         v46 = &v45;
@@ -2397,7 +2397,7 @@ LABEL_89:
         block[3] = &unk_100041508;
         v39 = &v41;
         v37 = v14;
-        v38 = v8;
+        v38 = dataCopy;
         v40 = &v45;
         dispatch_sync(v15, block);
 
@@ -2435,7 +2435,7 @@ LABEL_89:
           v18 = v46[5];
         }
 
-        v10[2](v10, v18);
+        replyCopy[2](replyCopy, v18);
 
         _Block_object_dispose(&v41, 8);
       }
@@ -2491,7 +2491,7 @@ LABEL_89:
           v29 = 0;
         }
 
-        v10[2](v10, v29);
+        replyCopy[2](replyCopy, v29);
       }
 
       _Block_object_dispose(&v45, 8);
@@ -2512,24 +2512,24 @@ LABEL_89:
       sub_100029FD8();
     }
 
-    v10[2](v10, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
-- (void)readImportCookieDataForVolumeAtURL:(id)a3 reply:(id)a4
+- (void)readImportCookieDataForVolumeAtURL:(id)l reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  replyCopy = reply;
   v8 = sub_100003164();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10002A2B0(v6);
+    sub_10002A2B0(lCopy);
   }
 
-  if (v6)
+  if (lCopy)
   {
     v40 = 0;
-    v9 = [(GSClient *)self importCookieFileDescriptorForVolumeURL:v6 forWriting:0 error:&v40];
+    v9 = [(GSClient *)self importCookieFileDescriptorForVolumeURL:lCopy forWriting:0 error:&v40];
     v10 = v40;
     v11 = v10;
     if ((v9 & 0x80000000) != 0)
@@ -2542,7 +2542,7 @@ LABEL_89:
           sub_10002A510();
         }
 
-        (*(v7 + 2))(v7, 0, 0, 0);
+        (*(replyCopy + 2))(replyCopy, 0, 0, 0);
       }
 
       else
@@ -2571,7 +2571,7 @@ LABEL_89:
           sub_10002A490();
         }
 
-        (*(v7 + 2))(v7, 0, 0, v11);
+        (*(replyCopy + 2))(replyCopy, 0, 0, v11);
       }
     }
 
@@ -2611,7 +2611,7 @@ LABEL_89:
 
         v16 = v35[5];
         v17 = +[NSDate distantPast];
-        (*(v7 + 2))(v7, v16, v17, 0);
+        (*(replyCopy + 2))(replyCopy, v16, v17, 0);
       }
 
       else
@@ -2628,7 +2628,7 @@ LABEL_89:
           sub_10002A400(v32);
         }
 
-        (*(v7 + 2))(v7, 0, 0, *(v32[0] + 40));
+        (*(replyCopy + 2))(replyCopy, 0, 0, *(v32[0] + 40));
       }
 
       _Block_object_dispose(&v31, 8);
@@ -2651,13 +2651,13 @@ LABEL_89:
       sub_10002A510();
     }
 
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0);
   }
 }
 
-- (void)deleteImportCookieDataForVolumeAtURL:(id)a3 reply:(id)a4
+- (void)deleteImportCookieDataForVolumeAtURL:(id)l reply:(id)reply
 {
-  v4 = a4;
+  replyCopy = reply;
   v5 = +[NSFileManager defaultManager];
   v6 = [v5 removeItemAtPath:@"/var/mobile/.DocumentRevisions-V100/fpfs_import_cookie" error:0];
 
@@ -2667,33 +2667,33 @@ LABEL_89:
     sub_10002A594();
   }
 
-  v4[2](v4, v6);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)setAdditionConflictResolvedInStorage:(int64_t)a3 nameSpace:(id)a4 additionName:(id)a5 value:(BOOL)a6 reply:(id)a7
+- (void)setAdditionConflictResolvedInStorage:(int64_t)storage nameSpace:(id)space additionName:(id)name value:(BOOL)value reply:(id)reply
 {
-  v8 = a6;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  valueCopy = value;
+  spaceCopy = space;
+  nameCopy = name;
+  replyCopy = reply;
   v15 = sub_100003164();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136316162;
     v38 = "[GSClient setAdditionConflictResolvedInStorage:nameSpace:additionName:value:reply:]";
     v39 = 2048;
-    v40 = a3;
+    storageCopy = storage;
     v41 = 2112;
-    v42 = v12;
+    v42 = spaceCopy;
     v43 = 2112;
-    v44 = v13;
+    v44 = nameCopy;
     v45 = 1024;
-    v46 = v8;
+    v46 = valueCopy;
     _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] %s query(%lld, %@, %@, %hhd)", buf, 0x30u);
   }
 
   v36 = 0;
-  v16 = [v13 validateGSName:&v36];
+  v16 = [nameCopy validateGSName:&v36];
   v17 = v36;
   if (!v16)
   {
@@ -2701,7 +2701,7 @@ LABEL_89:
   }
 
   v35 = 0;
-  v18 = [v12 validateGSName:&v35];
+  v18 = [spaceCopy validateGSName:&v35];
   v19 = v35;
 
   if ((v18 & 1) == 0)
@@ -2718,7 +2718,7 @@ LABEL_13:
   }
 
   v34 = 0;
-  v20 = [(GSClient *)self _getCachedVolPath:a3 error:&v34];
+  v20 = [(GSClient *)self _getCachedVolPath:storage error:&v34];
   v17 = v34;
 
   if (!v20)
@@ -2731,14 +2731,14 @@ LABEL_13:
 
 LABEL_15:
 
-    v14[2](v14, 0, v17);
+    replyCopy[2](replyCopy, 0, v17);
     goto LABEL_16;
   }
 
-  v21 = [v20 library];
-  v22 = [v21 isReadOnly];
+  library = [v20 library];
+  isReadOnly = [library isReadOnly];
 
-  if (v22)
+  if (isReadOnly)
   {
     v23 = [NSString stringWithFormat:@"storage is read-only"];
     v24 = sub_100003164();
@@ -2755,7 +2755,7 @@ LABEL_15:
       sub_10002A618();
     }
 
-    v14[2](v14, 0, v25);
+    replyCopy[2](replyCopy, 0, v25);
     v17 = v25;
   }
 
@@ -2765,11 +2765,11 @@ LABEL_15:
     v28[1] = 3221225472;
     v28[2] = sub_10001AE60;
     v28[3] = &unk_100041580;
-    v29 = v13;
-    v30 = v12;
-    v31 = self;
-    v33 = v8;
-    v32 = v14;
+    v29 = nameCopy;
+    v30 = spaceCopy;
+    selfCopy = self;
+    v33 = valueCopy;
+    v32 = replyCopy;
     [v20 performOnResolvedPath:v28];
   }
 

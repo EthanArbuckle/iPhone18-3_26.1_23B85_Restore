@@ -55,17 +55,17 @@
 + (id)ambientPosterSnapshotDefinitions
 {
   v10[6] = *MEMORY[0x1E69E9840];
-  v2 = [a1 defaultAmbientPosterSnapshotDefinitionWithRenderingContent:0 ambientDisplayStyle:0 idealizedTime:1];
+  v2 = [self defaultAmbientPosterSnapshotDefinitionWithRenderingContent:0 ambientDisplayStyle:0 idealizedTime:1];
   v10[0] = v2;
-  v3 = [a1 defaultAmbientPosterSnapshotDefinitionWithRenderingContent:1 ambientDisplayStyle:0 idealizedTime:1];
+  v3 = [self defaultAmbientPosterSnapshotDefinitionWithRenderingContent:1 ambientDisplayStyle:0 idealizedTime:1];
   v10[1] = v3;
-  v4 = [a1 defaultAmbientPosterSnapshotDefinitionWithRenderingContent:0 ambientDisplayStyle:1 idealizedTime:1];
+  v4 = [self defaultAmbientPosterSnapshotDefinitionWithRenderingContent:0 ambientDisplayStyle:1 idealizedTime:1];
   v10[2] = v4;
-  v5 = [a1 defaultAmbientPosterSnapshotDefinitionWithRenderingContent:1 ambientDisplayStyle:1 idealizedTime:1];
+  v5 = [self defaultAmbientPosterSnapshotDefinitionWithRenderingContent:1 ambientDisplayStyle:1 idealizedTime:1];
   v10[3] = v5;
-  v6 = [a1 defaultAmbientPosterSnapshotDefinitionWithRenderingContent:0 ambientDisplayStyle:2 idealizedTime:1];
+  v6 = [self defaultAmbientPosterSnapshotDefinitionWithRenderingContent:0 ambientDisplayStyle:2 idealizedTime:1];
   v10[4] = v6;
-  v7 = [a1 defaultAmbientPosterSnapshotDefinitionWithRenderingContent:1 ambientDisplayStyle:2 idealizedTime:1];
+  v7 = [self defaultAmbientPosterSnapshotDefinitionWithRenderingContent:1 ambientDisplayStyle:2 idealizedTime:1];
   v10[5] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:6];
 

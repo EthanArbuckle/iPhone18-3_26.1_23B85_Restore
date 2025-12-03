@@ -2,12 +2,12 @@
 - (TSCEPartialResult)root;
 - (TSCEPartialResultTree)init;
 - (id).cxx_construct;
-- (id)lookupSymbol:(unsigned int)a3;
+- (id)lookupSymbol:(unsigned int)symbol;
 - (unsigned)currentThunkOffset;
-- (void)addPartialResult:(id)a3;
-- (void)addSymbol:(unsigned int)a3 mappedToIdentifier:(id)a4;
+- (void)addPartialResult:(id)result;
+- (void)addSymbol:(unsigned int)symbol mappedToIdentifier:(id)identifier;
 - (void)popThunkOffset;
-- (void)pushThunkOffset:(unsigned int)a3;
+- (void)pushThunkOffset:(unsigned int)offset;
 @end
 
 @implementation TSCEPartialResultTree
@@ -19,22 +19,22 @@
   return [(TSCEPartialResultTree *)&v3 init];
 }
 
-- (void)addSymbol:(unsigned int)a3 mappedToIdentifier:(id)a4
+- (void)addSymbol:(unsigned int)symbol mappedToIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  symbolCopy = symbol;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v9 = &v8;
-    v7 = sub_2212E351C(&self->_symbolLookup.__table_.__bucket_list_.__ptr_, &v8);
-    objc_storeStrong(v7 + 3, a4);
+    v9 = &symbolCopy;
+    v7 = sub_2212E351C(&self->_symbolLookup.__table_.__bucket_list_.__ptr_, &symbolCopy);
+    objc_storeStrong(v7 + 3, identifier);
   }
 }
 
-- (id)lookupSymbol:(unsigned int)a3
+- (id)lookupSymbol:(unsigned int)symbol
 {
-  v5 = a3;
-  v3 = sub_2211DC534(&self->_symbolLookup.__table_.__bucket_list_.__ptr_, &v5);
+  symbolCopy = symbol;
+  v3 = sub_2211DC534(&self->_symbolLookup.__table_.__bucket_list_.__ptr_, &symbolCopy);
   if (v3)
   {
     v3 = v3[3];
@@ -71,7 +71,7 @@
   return v18;
 }
 
-- (void)pushThunkOffset:(unsigned int)a3
+- (void)pushThunkOffset:(unsigned int)offset
 {
   end = self->_thunkOffsets.__end_;
   cap = self->_thunkOffsets.__cap_;
@@ -107,7 +107,7 @@
     v15 = end - begin;
     v16 = (4 * v10);
     v17 = (4 * v10 - 4 * v15);
-    *v16 = a3;
+    *v16 = offset;
     v7 = v16 + 1;
     memcpy(v17, begin, v9);
     v18 = self->_thunkOffsets.__begin_;
@@ -122,7 +122,7 @@
 
   else
   {
-    *end = a3;
+    *end = offset;
     v7 = end + 1;
   }
 
@@ -165,16 +165,16 @@
   }
 }
 
-- (void)addPartialResult:(id)a3
+- (void)addPartialResult:(id)result
 {
-  v4 = a3;
-  v73 = v4;
+  resultCopy = result;
+  v73 = resultCopy;
   v9 = objc_msgSend_currentThunkOffset(self, v5, v6, v7, v8);
-  if (v4)
+  if (resultCopy)
   {
     v14 = v9;
-    v15 = objc_msgSend_offset(v4, v10, v11, v12, v13);
-    objc_msgSend_setOffset_(v4, v16, (v15 + v14), v17, v18);
+    v15 = objc_msgSend_offset(resultCopy, v10, v11, v12, v13);
+    objc_msgSend_setOffset_(resultCopy, v16, (v15 + v14), v17, v18);
   }
 
   else
@@ -183,10 +183,10 @@
     v28 = objc_msgSend_nilValue(TSCENilValue, v24, v25, v26, v27);
     v73 = objc_msgSend_initWithValue_(v23, v29, v28, v30, v31);
 
-    v4 = v73;
+    resultCopy = v73;
   }
 
-  v35 = objc_msgSend_numArgs(v4, v19, v20, v21, v22);
+  v35 = objc_msgSend_numArgs(resultCopy, v19, v20, v21, v22);
   v36 = v35;
   if (v35 > (self->_resultStack.var0 - self->_resultStack.__begin_))
   {
@@ -212,7 +212,7 @@
         if (v54)
         {
           objc_msgSend_addObject_(v48, v51, v54, v52, v53);
-          objc_msgSend_setParent_(v54, v55, v4, v56, v57);
+          objc_msgSend_setParent_(v54, v55, resultCopy, v56, v57);
         }
 
         else
@@ -234,7 +234,7 @@
     }
 
     sub_221165C5C(&self->_resultStack, v50, var0);
-    objc_msgSend_setChildren_(v4, v69, v48, v70, v71);
+    objc_msgSend_setChildren_(resultCopy, v69, v48, v70, v71);
   }
 
   sub_2212E2EB8(&self->_resultStack.__begin_, &v73);

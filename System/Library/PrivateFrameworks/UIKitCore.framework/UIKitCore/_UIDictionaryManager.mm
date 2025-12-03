@@ -1,13 +1,13 @@
 @interface _UIDictionaryManager
 + (id)assetManager;
-- (BOOL)_hasDefinitionForTerm:(id)a3;
+- (BOOL)_hasDefinitionForTerm:(id)term;
 - (BOOL)_isTTYEnabled;
 - (_UIDictionaryManager)init;
 - (id)_allAvailableDefinitionDictionaries;
 - (id)_availableDictionaryAssets;
-- (id)_definitionValuesForTerm:(id)a3;
+- (id)_definitionValuesForTerm:(id)term;
 - (id)_dictionaryAssetType;
-- (void)_downloadDictionaryAssetCatalog:(id)a3;
+- (void)_downloadDictionaryAssetCatalog:(id)catalog;
 @end
 
 @implementation _UIDictionaryManager
@@ -20,9 +20,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(_UIDictionaryManager *)v2 _allAvailableDefinitionDictionaries];
+    _allAvailableDefinitionDictionaries = [(_UIDictionaryManager *)v2 _allAvailableDefinitionDictionaries];
     availableDefinitionDictionaries = v3->_availableDefinitionDictionaries;
-    v3->_availableDefinitionDictionaries = v4;
+    v3->_availableDefinitionDictionaries = _allAvailableDefinitionDictionaries;
   }
 
   return v3;
@@ -35,12 +35,12 @@
   return v2;
 }
 
-- (BOOL)_hasDefinitionForTerm:(id)a3
+- (BOOL)_hasDefinitionForTerm:(id)term
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  termCopy = term;
+  v5 = termCopy;
+  if (termCopy && [termCopy length])
   {
     v13 = 0u;
     v14 = 0u;
@@ -88,10 +88,10 @@ LABEL_14:
   return v7;
 }
 
-- (id)_definitionValuesForTerm:(id)a3
+- (id)_definitionValuesForTerm:(id)term
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  termCopy = term;
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:10];
   v16 = 0u;
   v17 = 0u;
@@ -115,13 +115,13 @@ LABEL_14:
         v11 = *(*(&v16 + 1) + 8 * i);
         if ([v11 activated])
         {
-          v12 = [v11 _definitionValueForTerm:v4];
+          v12 = [v11 _definitionValueForTerm:termCopy];
           v13 = v12;
           if (v12)
           {
-            v14 = [v12 definition];
+            definition = [v12 definition];
 
-            if (v14)
+            if (definition)
             {
               [v5 addObject:v13];
             }
@@ -169,9 +169,9 @@ LABEL_14:
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef _DCSDictionaryAssetGetAssetType(void)"];
-    [v6 handleFailureInFunction:v7 file:@"_UIDictionaryManager.m" lineNumber:38 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"_UIDictionaryManager.m" lineNumber:38 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -179,56 +179,56 @@ LABEL_14:
   return result;
 }
 
-- (void)_downloadDictionaryAssetCatalog:(id)a3
+- (void)_downloadDictionaryAssetCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   v5 = objc_opt_new();
   [v5 setAllowsCellularAccess:1];
   [v5 setAllowsExpensiveAccess:1];
   [v5 setDiscretionary:0];
   v6 = MEMORY[0x1E69B18D8];
-  v7 = [(_UIDictionaryManager *)self _dictionaryAssetType];
+  _dictionaryAssetType = [(_UIDictionaryManager *)self _dictionaryAssetType];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56___UIDictionaryManager__downloadDictionaryAssetCatalog___block_invoke;
   v9[3] = &unk_1E70FFB68;
-  v10 = v4;
-  v8 = v4;
-  [v6 startCatalogDownload:v7 options:v5 then:v9];
+  v10 = catalogCopy;
+  v8 = catalogCopy;
+  [v6 startCatalogDownload:_dictionaryAssetType options:v5 then:v9];
 }
 
 - (id)_availableDictionaryAssets
 {
   v3 = objc_alloc(MEMORY[0x1E69B18E8]);
-  v4 = [(_UIDictionaryManager *)self _dictionaryAssetType];
-  v5 = [v3 initWithType:v4];
+  _dictionaryAssetType = [(_UIDictionaryManager *)self _dictionaryAssetType];
+  v5 = [v3 initWithType:_dictionaryAssetType];
 
   [v5 returnTypes:2];
   [v5 setDoNotBlockBeforeFirstUnlock:1];
-  v6 = [v5 queryMetaDataSync];
-  if (v6)
+  queryMetaDataSync = [v5 queryMetaDataSync];
+  if (queryMetaDataSync)
   {
-    NSLog(&cfstr_Uidictionaryma_0.isa, v6);
-    v7 = 0;
+    NSLog(&cfstr_Uidictionaryma_0.isa, queryMetaDataSync);
+    results = 0;
   }
 
   else
   {
-    v7 = [v5 results];
+    results = [v5 results];
   }
 
-  return v7;
+  return results;
 }
 
 - (id)_allAvailableDefinitionDictionaries
 {
   v80 = *MEMORY[0x1E69E9840];
-  v39 = [(_UIDictionaryManager *)self _availableDictionaryAssets];
+  _availableDictionaryAssets = [(_UIDictionaryManager *)self _availableDictionaryAssets];
   v2 = 0x1E695D000uLL;
-  if (v39)
+  if (_availableDictionaryAssets)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 objectForKey:@"AppleLanguages"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults objectForKey:@"AppleLanguages"];
     v43 = [v4 objectAtIndex:0];
 
     v45 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
@@ -236,7 +236,7 @@ LABEL_14:
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v5 = v39;
+    v5 = _availableDictionaryAssets;
     v6 = [v5 countByEnumeratingWithState:&v63 objects:v79 count:16];
     if (v6)
     {
@@ -251,7 +251,7 @@ LABEL_14:
           }
 
           v9 = *(*(&v63 + 1) + 8 * i);
-          v10 = [v9 _formatVersion];
+          _formatVersion = [v9 _formatVersion];
           v72 = 0;
           v73 = &v72;
           v74 = 0x2020000000;
@@ -274,14 +274,14 @@ LABEL_14:
           _Block_object_dispose(&v72, 8);
           if (!v11)
           {
-            v37 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSInteger _DCSDictionaryAssetGetCompatibilityVersion(void)"];
-            [v37 handleFailureInFunction:v38 file:@"_UIDictionaryManager.m" lineNumber:37 description:{@"%s", dlerror()}];
+            [currentHandler handleFailureInFunction:v38 file:@"_UIDictionaryManager.m" lineNumber:37 description:{@"%s", dlerror()}];
 
             __break(1u);
           }
 
-          if (v10 == v11())
+          if (_formatVersion == v11())
           {
             v14 = [[_UIDefinitionDictionary alloc] initWithAsset:v9];
             v15 = v14;
@@ -345,7 +345,7 @@ LABEL_14:
 
         v44 = v19;
         v21 = *(*(&v57 + 1) + 8 * v19);
-        v48 = [v21 rawAsset];
+        rawAsset = [v21 rawAsset];
         v55 = 0u;
         v56 = 0u;
         v53 = 0u;
@@ -367,16 +367,16 @@ LABEL_14:
               v26 = *(*(&v53 + 1) + 8 * j);
               if ([v18 indexOfObjectIdenticalTo:v26] == 0x7FFFFFFFFFFFFFFFLL)
               {
-                v27 = [v21 localizedDictionaryName];
-                v28 = [v26 localizedDictionaryName];
-                v29 = [v27 isEqual:v28];
+                localizedDictionaryName = [v21 localizedDictionaryName];
+                localizedDictionaryName2 = [v26 localizedDictionaryName];
+                v29 = [localizedDictionaryName isEqual:localizedDictionaryName2];
 
                 if (v29)
                 {
-                  v30 = [v26 rawAsset];
-                  if ([v48 state] == 3 || (v31 = objc_msgSend(v30, "_contentVersion"), v31 > objc_msgSend(v48, "_contentVersion")))
+                  rawAsset2 = [v26 rawAsset];
+                  if ([rawAsset state] == 3 || (v31 = objc_msgSend(rawAsset2, "_contentVersion"), v31 > objc_msgSend(rawAsset, "_contentVersion")))
                   {
-                    [v21 setAssetToUpgrade:v30];
+                    [v21 setAssetToUpgrade:rawAsset2];
                   }
 
                   [v40 addObject:v26];
@@ -396,10 +396,10 @@ LABEL_14:
           }
         }
 
-        if ([v48 state] == 3)
+        if ([rawAsset state] == 3)
         {
           [v40 addObject:v21];
-          [v48 purgeSync];
+          [rawAsset purgeSync];
         }
 
 LABEL_43:
@@ -464,10 +464,10 @@ LABEL_43:
 
   v3 = v2;
   _Block_object_dispose(&v8, 8);
-  v4 = [v2 sharedInstance];
-  v5 = [v4 TTYSoftwareEnabled];
+  sharedInstance = [v2 sharedInstance];
+  tTYSoftwareEnabled = [sharedInstance TTYSoftwareEnabled];
 
-  return v5;
+  return tTYSoftwareEnabled;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface PXCMMWorkflowCoordinator
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (BOOL)actionPerformer:(id)a3 presentViewController:(id)a4;
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler;
+- (BOOL)actionPerformer:(id)performer presentViewController:(id)controller;
 - (PXCMMWorkflowCoordinatorDelegate)delegate;
-- (id)_createRootWorkflowViewControllerWithSession:(id)a3 willBeEmbeddedInNavigationController:(BOOL)a4 assetActionManager:(id)a5 assetCollectionActionManager:(id)a6 photosViewConfigurationBlock:(id)a7;
-- (id)_performActionWithType:(id)a3 forSession:(id)a4;
-- (id)_performPublishActionForSession:(id)a3;
+- (id)_createRootWorkflowViewControllerWithSession:(id)session willBeEmbeddedInNavigationController:(BOOL)controller assetActionManager:(id)manager assetCollectionActionManager:(id)actionManager photosViewConfigurationBlock:(id)block;
+- (id)_performActionWithType:(id)type forSession:(id)session;
+- (id)_performPublishActionForSession:(id)session;
 - (id)_presentationEnvironment;
-- (id)_presentingViewControllerForViewController:(id)a3;
-- (id)completeMyMomentViewController:(id)a3 performActionForSession:(id)a4;
-- (id)workflowViewControllerWithContext:(id)a3;
-- (id)workflowViewControllerWithContext:(id)a3 embedInNavigationControllerOfClass:(Class)a4;
-- (id)workflowViewControllerWithContext:(id)a3 embedInNavigationControllerOfClass:(Class)a4 photosViewConfigurationBlock:(id)a5;
-- (id)workflowViewControllerWithSession:(id)a3 embedInNavigationControllerOfClass:(Class)a4 assetActionManager:(id)a5 assetCollectionActionManager:(id)a6 photosViewConfigurationBlock:(id)a7;
-- (void)_completeActionForSession:(id)a3 withSuccess:(BOOL)a4 error:(id)a5;
-- (void)_completeMessageComposeActionForSession:(id)a3 withSuccess:(BOOL)a4 error:(id)a5;
-- (void)_completePhotosPickerActionForSession:(id)a3 withSuccess:(BOOL)a4 error:(id)a5;
-- (void)_completePublishForSession:(id)a3 withURL:(id)a4 error:(id)a5;
-- (void)_didFinishSession:(id)a3 withState:(unint64_t)a4 avoidDismissal:(BOOL)a5;
-- (void)_performCleanupActionForSession:(id)a3;
-- (void)_performMessageComposeActionForSession:(id)a3 shareURL:(id)a4;
-- (void)_performNotifyIfNeededActionForSession:(id)a3;
-- (void)_performPhotosPickerActionForSession:(id)a3 gridPresentation:(id)a4;
-- (void)_presentFailureForSession:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)_session:(id)a3 finishedAccepting:(BOOL)a4 withError:(id)a5;
+- (id)_presentingViewControllerForViewController:(id)controller;
+- (id)completeMyMomentViewController:(id)controller performActionForSession:(id)session;
+- (id)workflowViewControllerWithContext:(id)context;
+- (id)workflowViewControllerWithContext:(id)context embedInNavigationControllerOfClass:(Class)class;
+- (id)workflowViewControllerWithContext:(id)context embedInNavigationControllerOfClass:(Class)class photosViewConfigurationBlock:(id)block;
+- (id)workflowViewControllerWithSession:(id)session embedInNavigationControllerOfClass:(Class)class assetActionManager:(id)manager assetCollectionActionManager:(id)actionManager photosViewConfigurationBlock:(id)block;
+- (void)_completeActionForSession:(id)session withSuccess:(BOOL)success error:(id)error;
+- (void)_completeMessageComposeActionForSession:(id)session withSuccess:(BOOL)success error:(id)error;
+- (void)_completePhotosPickerActionForSession:(id)session withSuccess:(BOOL)success error:(id)error;
+- (void)_completePublishForSession:(id)session withURL:(id)l error:(id)error;
+- (void)_didFinishSession:(id)session withState:(unint64_t)state avoidDismissal:(BOOL)dismissal;
+- (void)_performCleanupActionForSession:(id)session;
+- (void)_performMessageComposeActionForSession:(id)session shareURL:(id)l;
+- (void)_performNotifyIfNeededActionForSession:(id)session;
+- (void)_performPhotosPickerActionForSession:(id)session gridPresentation:(id)presentation;
+- (void)_presentFailureForSession:(id)session error:(id)error completionHandler:(id)handler;
+- (void)_session:(id)_session finishedAccepting:(BOOL)accepting withError:(id)error;
 - (void)cancelWorkflow;
-- (void)completeMyMomentViewController:(id)a3 showPhotoPickerForSession:(id)a4;
-- (void)didCancelCompleteMyMomentViewController:(id)a3;
-- (void)performQuickSaveForContext:(id)a3 completion:(id)a4;
-- (void)startPreloadingTasksForCompleteMyMomentViewController:(id)a3;
+- (void)completeMyMomentViewController:(id)controller showPhotoPickerForSession:(id)session;
+- (void)didCancelCompleteMyMomentViewController:(id)controller;
+- (void)performQuickSaveForContext:(id)context completion:(id)completion;
+- (void)startPreloadingTasksForCompleteMyMomentViewController:(id)controller;
 @end
 
 @implementation PXCMMWorkflowCoordinator
@@ -39,15 +39,15 @@
   return WeakRetained;
 }
 
-- (id)_presentingViewControllerForViewController:(id)a3
+- (id)_presentingViewControllerForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = self->_rootWorkflowViewController;
-  v6 = [(UIViewController *)v5 presentedViewController];
-  v7 = v6;
-  if (v6)
+  presentedViewController = [(UIViewController *)v5 presentedViewController];
+  presentedViewController2 = presentedViewController;
+  if (presentedViewController)
   {
-    v8 = v6 == v4;
+    v8 = presentedViewController == controllerCopy;
   }
 
   else
@@ -60,57 +60,57 @@
     do
     {
       v9 = v5;
-      v5 = v7;
+      v5 = presentedViewController2;
 
-      v7 = [(UIViewController *)v5 presentedViewController];
+      presentedViewController2 = [(UIViewController *)v5 presentedViewController];
     }
 
-    while (v7 && v7 != v4);
+    while (presentedViewController2 && presentedViewController2 != controllerCopy);
   }
 
   return v5;
 }
 
-- (id)_createRootWorkflowViewControllerWithSession:(id)a3 willBeEmbeddedInNavigationController:(BOOL)a4 assetActionManager:(id)a5 assetCollectionActionManager:(id)a6 photosViewConfigurationBlock:(id)a7
+- (id)_createRootWorkflowViewControllerWithSession:(id)session willBeEmbeddedInNavigationController:(BOOL)controller assetActionManager:(id)manager assetCollectionActionManager:(id)actionManager photosViewConfigurationBlock:(id)block
 {
-  v10 = a4;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v13 actionManager];
-  [v17 setPerformerDelegate:self];
+  controllerCopy = controller;
+  sessionCopy = session;
+  managerCopy = manager;
+  actionManagerCopy = actionManager;
+  blockCopy = block;
+  actionManager = [sessionCopy actionManager];
+  [actionManager setPerformerDelegate:self];
 
-  objc_storeStrong(&self->_rootWorkflowSession, a3);
-  v18 = [PXCMMGridController useGridZeroForCMMSession:v13];
-  if (v16 || v18)
+  objc_storeStrong(&self->_rootWorkflowSession, session);
+  v18 = [PXCMMGridController useGridZeroForCMMSession:sessionCopy];
+  if (blockCopy || v18)
   {
-    v20 = [[PXCMMGridController alloc] initWithCMMSession:v13 enableDismissAction:v10 assetActionManager:v14 assetCollectionActionManager:v15 performerDelegate:self photosViewConfigurationBlock:v16];
+    v20 = [[PXCMMGridController alloc] initWithCMMSession:sessionCopy enableDismissAction:controllerCopy assetActionManager:managerCopy assetCollectionActionManager:actionManagerCopy performerDelegate:self photosViewConfigurationBlock:blockCopy];
     gridController = self->_gridController;
     self->_gridController = v20;
 
-    v19 = [(PXCMMGridController *)self->_gridController gridViewController];
+    gridViewController = [(PXCMMGridController *)self->_gridController gridViewController];
   }
 
   else
   {
-    v19 = [[PXCMMViewController alloc] initWithSession:v13];
-    [(PXCMMViewController *)v19 setDelegate:self];
-    [(PXCMMViewController *)v19 setActionDelegate:self];
+    gridViewController = [[PXCMMViewController alloc] initWithSession:sessionCopy];
+    [(PXCMMViewController *)gridViewController setDelegate:self];
+    [(PXCMMViewController *)gridViewController setActionDelegate:self];
   }
 
-  return v19;
+  return gridViewController;
 }
 
-- (void)_presentFailureForSession:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)_presentFailureForSession:(id)session error:(id)error completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 activityType];
-  v12 = v10 == 1 || v10 == 4;
-  v14 = [(PXCMMWorkflowCoordinator *)self _presentationEnvironment];
-  v13 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  PXMomentSharePresentFailureForAction(v13, v12, v9, v14, v8);
+  handlerCopy = handler;
+  errorCopy = error;
+  activityType = [session activityType];
+  v12 = activityType == 1 || activityType == 4;
+  _presentationEnvironment = [(PXCMMWorkflowCoordinator *)self _presentationEnvironment];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  PXMomentSharePresentFailureForAction(px_deprecated_appPhotoLibrary, v12, errorCopy, _presentationEnvironment, handlerCopy);
 }
 
 - (id)_presentationEnvironment
@@ -121,13 +121,13 @@
   return v3;
 }
 
-- (void)completeMyMomentViewController:(id)a3 showPhotoPickerForSession:(id)a4
+- (void)completeMyMomentViewController:(id)controller showPhotoPickerForSession:(id)session
 {
-  v6 = a4;
-  v7 = [a3 px_gridPresentation];
-  if (v7)
+  sessionCopy = session;
+  px_gridPresentation = [controller px_gridPresentation];
+  if (px_gridPresentation)
   {
-    [(PXCMMWorkflowCoordinator *)self _performPhotosPickerActionForSession:v6 gridPresentation:v7];
+    [(PXCMMWorkflowCoordinator *)self _performPhotosPickerActionForSession:sessionCopy gridPresentation:px_gridPresentation];
   }
 
   else
@@ -140,24 +140,24 @@
     }
 
     v9 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1003 debugDescription:@"A grid presentation object is required to display the photos picker"];
-    [(PXCMMWorkflowCoordinator *)self _completePhotosPickerActionForSession:v6 withSuccess:0 error:v9];
+    [(PXCMMWorkflowCoordinator *)self _completePhotosPickerActionForSession:sessionCopy withSuccess:0 error:v9];
   }
 }
 
-- (void)didCancelCompleteMyMomentViewController:(id)a3
+- (void)didCancelCompleteMyMomentViewController:(id)controller
 {
-  v4 = [a3 session];
-  [(PXCMMWorkflowCoordinator *)self _didFinishSession:v4 withState:2];
+  session = [controller session];
+  [(PXCMMWorkflowCoordinator *)self _didFinishSession:session withState:2];
 }
 
-- (void)startPreloadingTasksForCompleteMyMomentViewController:(id)a3
+- (void)startPreloadingTasksForCompleteMyMomentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 session];
-  v6 = [v5 actionManager];
-  v7 = [v6 actionPerformerForActionType:@"PXCMMActionTypeAccept"];
+  controllerCopy = controller;
+  session = [controllerCopy session];
+  actionManager = [session actionManager];
+  v7 = [actionManager actionPerformerForActionType:@"PXCMMActionTypeAccept"];
 
-  if ([v7 canPerformActionWithSession:v5])
+  if ([v7 canPerformActionWithSession:session])
   {
     objc_initWeak(&location, self);
     v14[0] = MEMORY[0x1E69E9820];
@@ -165,23 +165,23 @@
     v14[2] = __82__PXCMMWorkflowCoordinator_startPreloadingTasksForCompleteMyMomentViewController___block_invoke;
     v14[3] = &unk_1E774B2A0;
     objc_copyWeak(&v16, &location);
-    v15 = v5;
+    v15 = session;
     v8 = [v7 performActionWithSession:v15 completionHandler:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
 
-  v9 = [v5 actionManager];
-  v10 = [v9 actionPerformerForActionType:@"PXCMMActionTypeForceSync"];
+  actionManager2 = [session actionManager];
+  v10 = [actionManager2 actionPerformerForActionType:@"PXCMMActionTypeForceSync"];
 
-  if ([v10 canPerformActionWithSession:v5])
+  if ([v10 canPerformActionWithSession:session])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __82__PXCMMWorkflowCoordinator_startPreloadingTasksForCompleteMyMomentViewController___block_invoke_2;
     v12[3] = &unk_1E774C5C0;
-    v13 = v5;
+    v13 = session;
     v11 = [v10 performActionWithSession:v13 completionHandler:v12];
   }
 }
@@ -228,21 +228,21 @@ LABEL_6:
   }
 }
 
-- (void)_session:(id)a3 finishedAccepting:(BOOL)a4 withError:(id)a5
+- (void)_session:(id)_session finishedAccepting:(BOOL)accepting withError:(id)error
 {
-  v6 = a4;
+  acceptingCopy = accepting;
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  _sessionCopy = _session;
+  errorCopy = error;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:426 description:{@"%s must be called on the main thread", "-[PXCMMWorkflowCoordinator _session:finishedAccepting:withError:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:426 description:{@"%s must be called on the main thread", "-[PXCMMWorkflowCoordinator _session:finishedAccepting:withError:]"}];
   }
 
   v11 = PLSharingGetLog();
   v12 = v11;
-  if (v6)
+  if (acceptingCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -256,7 +256,7 @@ LABEL_6:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v18 = v10;
+      v18 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "CMM workflow failed to accept moment share: %@", buf, 0xCu);
     }
 
@@ -266,8 +266,8 @@ LABEL_6:
     v14[2] = __65__PXCMMWorkflowCoordinator__session_finishedAccepting_withError___block_invoke;
     v14[3] = &unk_1E774B330;
     objc_copyWeak(&v16, buf);
-    v15 = v9;
-    [(PXCMMWorkflowCoordinator *)self _presentFailureForSession:v15 error:v10 completionHandler:v14];
+    v15 = _sessionCopy;
+    [(PXCMMWorkflowCoordinator *)self _presentFailureForSession:v15 error:errorCopy completionHandler:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(buf);
@@ -280,31 +280,31 @@ void __65__PXCMMWorkflowCoordinator__session_finishedAccepting_withError___block
   [WeakRetained _didFinishSession:*(a1 + 32) withState:3 avoidDismissal:a2];
 }
 
-- (id)completeMyMomentViewController:(id)a3 performActionForSession:(id)a4
+- (id)completeMyMomentViewController:(id)controller performActionForSession:(id)session
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 activityType];
+  controllerCopy = controller;
+  sessionCopy = session;
+  activityType = [sessionCopy activityType];
   v10 = 0;
-  if (v9 > 1)
+  if (activityType > 1)
   {
-    if (v9 == 2)
+    if (activityType == 2)
     {
-      v12 = [(PXCMMWorkflowCoordinator *)self _performReceiveActionForSession:v8];
+      v12 = [(PXCMMWorkflowCoordinator *)self _performReceiveActionForSession:sessionCopy];
       goto LABEL_10;
     }
 
-    if (v9 == 3)
+    if (activityType == 3)
     {
-      v11 = [v8 sourceType];
-      if (v11 == 1)
+      sourceType = [sessionCopy sourceType];
+      if (sourceType == 1)
       {
-        [(PXCMMWorkflowCoordinator *)self _didFinishSession:v8 withState:1];
+        [(PXCMMWorkflowCoordinator *)self _didFinishSession:sessionCopy withState:1];
       }
 
-      else if (!v11)
+      else if (!sourceType)
       {
-        v12 = [(PXCMMWorkflowCoordinator *)self _performDeleteActionForSession:v8];
+        v12 = [(PXCMMWorkflowCoordinator *)self _performDeleteActionForSession:sessionCopy];
 LABEL_10:
         v10 = v12;
         goto LABEL_17;
@@ -314,25 +314,25 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    if (v9 != 4)
+    if (activityType != 4)
     {
       goto LABEL_17;
     }
 
 LABEL_14:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:417 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:417 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v9 == 1)
+  if (activityType == 1)
   {
-    v12 = [(PXCMMWorkflowCoordinator *)self _performPublishActionForSession:v8];
+    v12 = [(PXCMMWorkflowCoordinator *)self _performPublishActionForSession:sessionCopy];
     goto LABEL_10;
   }
 
-  if (!v9)
+  if (!activityType)
   {
     goto LABEL_14;
   }
@@ -342,17 +342,17 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = v7;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  v9 = controllerCopy;
   v10 = [(PXCMMWorkflowCoordinator *)self _presentingViewControllerForViewController:v9];
-  v11 = [v10 presentedViewController];
-  if (v11 == v9)
+  presentedViewController = [v10 presentedViewController];
+  if (presentedViewController == v9)
   {
-    [v10 dismissViewControllerAnimated:1 completion:v8];
+    [v10 dismissViewControllerAnimated:1 completion:handlerCopy];
   }
 
   else
@@ -363,27 +363,27 @@ LABEL_17:
       v14 = 138412802;
       v15 = v10;
       v16 = 2112;
-      v17 = v11;
+      v17 = presentedViewController;
       v18 = 2112;
       v19 = v9;
       _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "Unexpected view controller presented from %@: %@ (expected: %@)", &v14, 0x20u);
     }
   }
 
-  return v11 == v9;
+  return presentedViewController == v9;
 }
 
-- (BOOL)actionPerformer:(id)a3 presentViewController:(id)a4
+- (BOOL)actionPerformer:(id)performer presentViewController:(id)controller
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXCMMWorkflowCoordinator *)self _presentingViewControllerForViewController:v7];
+  performerCopy = performer;
+  controllerCopy = controller;
+  v8 = [(PXCMMWorkflowCoordinator *)self _presentingViewControllerForViewController:controllerCopy];
   v9 = PLSharingGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = performerCopy;
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "Performer: %@ Presenting Action Performer View Controller", buf, 0xCu);
   }
 
@@ -404,9 +404,9 @@ LABEL_17:
   v15[2] = __66__PXCMMWorkflowCoordinator_actionPerformer_presentViewController___block_invoke;
   v15[3] = &unk_1E774C620;
   v15[4] = self;
-  v16 = v6;
-  v13 = v6;
-  [v8 presentViewController:v7 animated:1 completion:v15];
+  v16 = performerCopy;
+  v13 = performerCopy;
+  [v8 presentViewController:controllerCopy animated:1 completion:v15];
 
   return 1;
 }
@@ -436,15 +436,15 @@ void __66__PXCMMWorkflowCoordinator_actionPerformer_presentViewController___bloc
   }
 }
 
-- (void)_completeActionForSession:(id)a3 withSuccess:(BOOL)a4 error:(id)a5
+- (void)_completeActionForSession:(id)session withSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  successCopy = success;
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  sessionCopy = session;
+  errorCopy = error;
+  if (successCopy)
   {
-    [(PXCMMWorkflowCoordinator *)self _didFinishSession:v8 withState:1];
+    [(PXCMMWorkflowCoordinator *)self _didFinishSession:sessionCopy withState:1];
   }
 
   else
@@ -453,7 +453,7 @@ void __66__PXCMMWorkflowCoordinator_actionPerformer_presentViewController___bloc
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v15 = v9;
+      v15 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "Action failed with error: %@", buf, 0xCu);
     }
 
@@ -463,8 +463,8 @@ void __66__PXCMMWorkflowCoordinator_actionPerformer_presentViewController___bloc
     v11[2] = __72__PXCMMWorkflowCoordinator__completeActionForSession_withSuccess_error___block_invoke;
     v11[3] = &unk_1E774B330;
     objc_copyWeak(&v13, buf);
-    v12 = v8;
-    [(PXCMMWorkflowCoordinator *)self _presentFailureForSession:v12 error:v9 completionHandler:v11];
+    v12 = sessionCopy;
+    [(PXCMMWorkflowCoordinator *)self _presentFailureForSession:v12 error:errorCopy completionHandler:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
@@ -477,20 +477,20 @@ void __72__PXCMMWorkflowCoordinator__completeActionForSession_withSuccess_error_
   [WeakRetained _didFinishSession:*(a1 + 32) withState:3];
 }
 
-- (void)_completeMessageComposeActionForSession:(id)a3 withSuccess:(BOOL)a4 error:(id)a5
+- (void)_completeMessageComposeActionForSession:(id)session withSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
+  successCopy = success;
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  if (!v5)
+  errorCopy = error;
+  sessionCopy = session;
+  if (!successCopy)
   {
-    v10 = [v8 domain];
-    if ([v10 isEqualToString:@"PXCMMErrorDomain"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"PXCMMErrorDomain"])
     {
-      v11 = [v8 code];
+      code = [errorCopy code];
 
-      if (v11 == -1007)
+      if (code == -1007)
       {
         v12 = PLSharingGetLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -501,7 +501,7 @@ void __72__PXCMMWorkflowCoordinator__completeActionForSession_withSuccess_error_
 
 LABEL_11:
 
-        [(PXCMMWorkflowCoordinator *)self _performCleanupActionForSession:v9];
+        [(PXCMMWorkflowCoordinator *)self _performCleanupActionForSession:sessionCopy];
         goto LABEL_12;
       }
     }
@@ -514,7 +514,7 @@ LABEL_11:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v8;
+      v17 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_ERROR, "Message compose failed with error: %@", buf, 0xCu);
     }
 
@@ -522,13 +522,13 @@ LABEL_11:
     v14[1] = 3221225472;
     v14[2] = __86__PXCMMWorkflowCoordinator__completeMessageComposeActionForSession_withSuccess_error___block_invoke;
     v14[3] = &unk_1E774B308;
-    v15 = v8;
-    [(PXCMMWorkflowCoordinator *)self _presentFailureForSession:v9 error:v15 completionHandler:v14];
+    v15 = errorCopy;
+    [(PXCMMWorkflowCoordinator *)self _presentFailureForSession:sessionCopy error:v15 completionHandler:v14];
     v12 = v15;
     goto LABEL_11;
   }
 
-  [(PXCMMWorkflowCoordinator *)self _completeActionForSession:v9 withSuccess:1 error:v8];
+  [(PXCMMWorkflowCoordinator *)self _completeActionForSession:sessionCopy withSuccess:1 error:errorCopy];
 LABEL_12:
 }
 
@@ -545,53 +545,53 @@ void __86__PXCMMWorkflowCoordinator__completeMessageComposeActionForSession_with
   }
 }
 
-- (void)_completePhotosPickerActionForSession:(id)a3 withSuccess:(BOOL)a4 error:(id)a5
+- (void)_completePhotosPickerActionForSession:(id)session withSuccess:(BOOL)success error:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  if (!a4)
+  errorCopy = error;
+  if (!success)
   {
     v7 = PLSharingGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = v6;
+      v9 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_ERROR, "Photos Picker action failed with error: %@", &v8, 0xCu);
     }
   }
 }
 
-- (void)_completePublishForSession:(id)a3 withURL:(id)a4 error:(id)a5
+- (void)_completePublishForSession:(id)session withURL:(id)l error:(id)error
 {
-  v10 = a3;
-  v8 = a4;
-  if (v8)
+  sessionCopy = session;
+  lCopy = l;
+  if (lCopy)
   {
-    v9 = [(PXCMMWorkflowCoordinator *)self delegate];
+    delegate = [(PXCMMWorkflowCoordinator *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v9 workflowCoordinator:self didPublishToURL:v8];
-      [(PXCMMWorkflowCoordinator *)self _completeActionForSession:v10 withSuccess:1 error:0];
+      [delegate workflowCoordinator:self didPublishToURL:lCopy];
+      [(PXCMMWorkflowCoordinator *)self _completeActionForSession:sessionCopy withSuccess:1 error:0];
     }
 
-    if ([v10 activityType] == 1 && !objc_msgSend(v10, "sourceType"))
+    if ([sessionCopy activityType] == 1 && !objc_msgSend(sessionCopy, "sourceType"))
     {
-      [(PXCMMWorkflowCoordinator *)self _performMessageComposeActionForSession:v10 shareURL:v8];
+      [(PXCMMWorkflowCoordinator *)self _performMessageComposeActionForSession:sessionCopy shareURL:lCopy];
     }
   }
 
   else
   {
-    [(PXCMMWorkflowCoordinator *)self _completeActionForSession:v10 withSuccess:0 error:a5];
+    [(PXCMMWorkflowCoordinator *)self _completeActionForSession:sessionCopy withSuccess:0 error:error];
   }
 }
 
-- (void)_didFinishSession:(id)a3 withState:(unint64_t)a4 avoidDismissal:(BOOL)a5
+- (void)_didFinishSession:(id)session withState:(unint64_t)state avoidDismissal:(BOOL)dismissal
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = [v9 activityType];
-  if (a4 != 2 && v5 && v10 == 2)
+  dismissalCopy = dismissal;
+  sessionCopy = session;
+  activityType = [sessionCopy activityType];
+  if (state != 2 && dismissalCopy && activityType == 2)
   {
     v11 = PLSharingGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -603,17 +603,17 @@ void __86__PXCMMWorkflowCoordinator__completeMessageComposeActionForSession_with
 
   else
   {
-    if (a4 == 1 || v10 != 1)
+    if (state == 1 || activityType != 1)
     {
-      if (v10 == 2)
+      if (activityType == 2)
       {
-        [(PXCMMWorkflowCoordinator *)self _performNotifyIfNeededActionForSession:v9];
+        [(PXCMMWorkflowCoordinator *)self _performNotifyIfNeededActionForSession:sessionCopy];
       }
     }
 
     else
     {
-      [(PXCMMWorkflowCoordinator *)self _performCleanupActionForSession:v9];
+      [(PXCMMWorkflowCoordinator *)self _performCleanupActionForSession:sessionCopy];
     }
 
     v12 = self->_navigationController;
@@ -638,13 +638,13 @@ void __86__PXCMMWorkflowCoordinator__completeMessageComposeActionForSession_with
     gridController = self->_gridController;
     self->_gridController = 0;
 
-    v19 = [(PXCMMWorkflowCoordinator *)self delegate];
+    delegate = [(PXCMMWorkflowCoordinator *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       if (!(v12 | v14))
       {
-        v21 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v21 handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:291 description:{@"Invalid parameter not satisfying: %@", @"navigationController || workflowViewController"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:291 description:{@"Invalid parameter not satisfying: %@", @"navigationController || workflowViewController"}];
       }
 
       if (v12)
@@ -657,25 +657,25 @@ void __86__PXCMMWorkflowCoordinator__completeMessageComposeActionForSession_with
         v20 = v14;
       }
 
-      [v19 workflowCoordinator:self workflowViewController:v20 didFinishSession:v9 withActivityState:a4];
+      [delegate workflowCoordinator:self workflowViewController:v20 didFinishSession:sessionCopy withActivityState:state];
     }
   }
 }
 
-- (void)_performNotifyIfNeededActionForSession:(id)a3
+- (void)_performNotifyIfNeededActionForSession:(id)session
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 actionManager];
-  v5 = [v4 actionPerformerForActionType:@"PXCMMActionTypeNotifyWhenReadyIfNeeded"];
+  sessionCopy = session;
+  actionManager = [sessionCopy actionManager];
+  v5 = [actionManager actionPerformerForActionType:@"PXCMMActionTypeNotifyWhenReadyIfNeeded"];
 
-  if ([v5 canPerformActionWithSession:v3])
+  if ([v5 canPerformActionWithSession:sessionCopy])
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __67__PXCMMWorkflowCoordinator__performNotifyIfNeededActionForSession___block_invoke;
     v8[3] = &unk_1E774C5C0;
-    v9 = v3;
+    v9 = sessionCopy;
     v6 = [v5 performActionWithSession:v9 completionHandler:v8];
     v7 = v9;
   }
@@ -686,7 +686,7 @@ void __86__PXCMMWorkflowCoordinator__completeMessageComposeActionForSession_with
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v3;
+      v11 = sessionCopy;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "Unable to perform notify if needed action. Skipping for session: %@", buf, 0xCu);
     }
   }
@@ -729,20 +729,20 @@ LABEL_6:
   }
 }
 
-- (void)_performCleanupActionForSession:(id)a3
+- (void)_performCleanupActionForSession:(id)session
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 actionManager];
-  v5 = [v4 actionPerformerForActionType:@"PXCMMActionTypeCleanup"];
+  sessionCopy = session;
+  actionManager = [sessionCopy actionManager];
+  v5 = [actionManager actionPerformerForActionType:@"PXCMMActionTypeCleanup"];
 
-  if ([v5 canPerformActionWithSession:v3])
+  if ([v5 canPerformActionWithSession:sessionCopy])
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __60__PXCMMWorkflowCoordinator__performCleanupActionForSession___block_invoke;
     v8[3] = &unk_1E774C5C0;
-    v9 = v3;
+    v9 = sessionCopy;
     v6 = [v5 performActionWithSession:v9 completionHandler:v8];
     v7 = v9;
   }
@@ -753,7 +753,7 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v3;
+      v11 = sessionCopy;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "Unable to perform cleanup action. Skipping for session: %@", buf, 0xCu);
     }
   }
@@ -796,14 +796,14 @@ LABEL_6:
   }
 }
 
-- (void)_performPhotosPickerActionForSession:(id)a3 gridPresentation:(id)a4
+- (void)_performPhotosPickerActionForSession:(id)session gridPresentation:(id)presentation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 actionManager];
-  v9 = [v8 photosPickerActionPerformer];
+  sessionCopy = session;
+  presentationCopy = presentation;
+  actionManager = [sessionCopy actionManager];
+  photosPickerActionPerformer = [actionManager photosPickerActionPerformer];
 
-  if (v9)
+  if (photosPickerActionPerformer)
   {
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x1E69E9820];
@@ -811,8 +811,8 @@ LABEL_6:
     v11[2] = __82__PXCMMWorkflowCoordinator__performPhotosPickerActionForSession_gridPresentation___block_invoke;
     v11[3] = &unk_1E774B2A0;
     objc_copyWeak(&v13, &location);
-    v12 = v6;
-    [v9 performPhotosPickerActionWithSession:v12 gridPresentation:v7 completionHandler:v11];
+    v12 = sessionCopy;
+    [photosPickerActionPerformer performPhotosPickerActionWithSession:v12 gridPresentation:presentationCopy completionHandler:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -820,8 +820,8 @@ LABEL_6:
 
   else
   {
-    v10 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1000 underlyingError:0 debugDescription:{@"No performer for photos picker action, session: %@", v6}];
-    [(PXCMMWorkflowCoordinator *)self _completePhotosPickerActionForSession:v6 withSuccess:0 error:v10];
+    v10 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1000 underlyingError:0 debugDescription:{@"No performer for photos picker action, session: %@", sessionCopy}];
+    [(PXCMMWorkflowCoordinator *)self _completePhotosPickerActionForSession:sessionCopy withSuccess:0 error:v10];
   }
 }
 
@@ -832,14 +832,14 @@ void __82__PXCMMWorkflowCoordinator__performPhotosPickerActionForSession_gridPre
   [WeakRetained _completePhotosPickerActionForSession:*(a1 + 32) withSuccess:a2 error:v5];
 }
 
-- (void)_performMessageComposeActionForSession:(id)a3 shareURL:(id)a4
+- (void)_performMessageComposeActionForSession:(id)session shareURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 actionManager];
-  v9 = [v8 messageComposeActionPerformer];
+  sessionCopy = session;
+  lCopy = l;
+  actionManager = [sessionCopy actionManager];
+  messageComposeActionPerformer = [actionManager messageComposeActionPerformer];
 
-  if (v9)
+  if (messageComposeActionPerformer)
   {
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x1E69E9820];
@@ -847,8 +847,8 @@ void __82__PXCMMWorkflowCoordinator__performPhotosPickerActionForSession_gridPre
     v11[2] = __76__PXCMMWorkflowCoordinator__performMessageComposeActionForSession_shareURL___block_invoke;
     v11[3] = &unk_1E774B2A0;
     objc_copyWeak(&v13, &location);
-    v12 = v6;
-    [v9 performMessageComposeActionWithSession:v12 shareURL:v7 completionHandler:v11];
+    v12 = sessionCopy;
+    [messageComposeActionPerformer performMessageComposeActionWithSession:v12 shareURL:lCopy completionHandler:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -856,8 +856,8 @@ void __82__PXCMMWorkflowCoordinator__performPhotosPickerActionForSession_gridPre
 
   else
   {
-    v10 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1000 underlyingError:0 debugDescription:{@"No performer for message compose action, session: %@", v6}];
-    [(PXCMMWorkflowCoordinator *)self _completeActionForSession:v6 withSuccess:0 error:v10];
+    v10 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1000 underlyingError:0 debugDescription:{@"No performer for message compose action, session: %@", sessionCopy}];
+    [(PXCMMWorkflowCoordinator *)self _completeActionForSession:sessionCopy withSuccess:0 error:v10];
   }
 }
 
@@ -868,18 +868,18 @@ void __76__PXCMMWorkflowCoordinator__performMessageComposeActionForSession_share
   [WeakRetained _completeMessageComposeActionForSession:*(a1 + 32) withSuccess:a2 error:v5];
 }
 
-- (id)_performPublishActionForSession:(id)a3
+- (id)_performPublishActionForSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 actionManager];
-  v6 = [v5 publishActionPerformer];
+  sessionCopy = session;
+  actionManager = [sessionCopy actionManager];
+  publishActionPerformer = [actionManager publishActionPerformer];
 
-  if (v6)
+  if (publishActionPerformer)
   {
-    v7 = [(PXCMMWorkflowCoordinator *)self delegate];
+    delegate = [(PXCMMWorkflowCoordinator *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 shareOriginForSession:v4 workflowCoordinator:self];
+      v8 = [delegate shareOriginForSession:sessionCopy workflowCoordinator:self];
     }
 
     else
@@ -893,8 +893,8 @@ void __76__PXCMMWorkflowCoordinator__performMessageComposeActionForSession_share
     v12[2] = __60__PXCMMWorkflowCoordinator__performPublishActionForSession___block_invoke;
     v12[3] = &unk_1E774B2C8;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
-    v10 = [v6 performPublishActionWithSession:v13 shareOrigin:v8 completionHandler:v12];
+    v13 = sessionCopy;
+    v10 = [publishActionPerformer performPublishActionWithSession:v13 shareOrigin:v8 completionHandler:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -902,8 +902,8 @@ void __76__PXCMMWorkflowCoordinator__performMessageComposeActionForSession_share
 
   else
   {
-    v9 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1000 underlyingError:0 debugDescription:{@"No performer for publish action, session: %@", v4}];
-    [(PXCMMWorkflowCoordinator *)self _completeActionForSession:v4 withSuccess:0 error:v9];
+    v9 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1000 underlyingError:0 debugDescription:{@"No performer for publish action, session: %@", sessionCopy}];
+    [(PXCMMWorkflowCoordinator *)self _completeActionForSession:sessionCopy withSuccess:0 error:v9];
 
     v10 = 0;
   }
@@ -919,12 +919,12 @@ void __60__PXCMMWorkflowCoordinator__performPublishActionForSession___block_invo
   [WeakRetained _completePublishForSession:*(a1 + 32) withURL:v6 error:v5];
 }
 
-- (id)_performActionWithType:(id)a3 forSession:(id)a4
+- (id)_performActionWithType:(id)type forSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 actionManager];
-  v9 = [v8 actionPerformerForActionType:v6];
+  typeCopy = type;
+  sessionCopy = session;
+  actionManager = [sessionCopy actionManager];
+  v9 = [actionManager actionPerformerForActionType:typeCopy];
 
   if (v9)
   {
@@ -934,7 +934,7 @@ void __60__PXCMMWorkflowCoordinator__performPublishActionForSession___block_invo
     v13[2] = __62__PXCMMWorkflowCoordinator__performActionWithType_forSession___block_invoke;
     v13[3] = &unk_1E774B2A0;
     objc_copyWeak(&v15, &location);
-    v14 = v7;
+    v14 = sessionCopy;
     v10 = [v9 performActionWithSession:v14 completionHandler:v13];
 
     objc_destroyWeak(&v15);
@@ -943,8 +943,8 @@ void __60__PXCMMWorkflowCoordinator__performPublishActionForSession___block_invo
 
   else
   {
-    v11 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1000 underlyingError:0 debugDescription:{@"No performer for action type: %@, session: %@", v6, v7}];
-    [(PXCMMWorkflowCoordinator *)self _completeActionForSession:v7 withSuccess:0 error:v11];
+    v11 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1000 underlyingError:0 debugDescription:{@"No performer for action type: %@, session: %@", typeCopy, sessionCopy}];
+    [(PXCMMWorkflowCoordinator *)self _completeActionForSession:sessionCopy withSuccess:0 error:v11];
 
     v10 = 0;
   }
@@ -959,26 +959,26 @@ void __62__PXCMMWorkflowCoordinator__performActionWithType_forSession___block_in
   [WeakRetained _completeActionForSession:*(a1 + 32) withSuccess:a2 error:v5];
 }
 
-- (void)performQuickSaveForContext:(id)a3 completion:(id)a4
+- (void)performQuickSaveForContext:(id)context completion:(id)completion
 {
-  v11 = a4;
-  v5 = [a3 createSession];
-  v6 = [v5 actionManager];
-  v7 = [v6 actionPerformerForActionType:@"PXCMMActionTypeSaveToLibrary"];
+  completionCopy = completion;
+  createSession = [context createSession];
+  actionManager = [createSession actionManager];
+  v7 = [actionManager actionPerformerForActionType:@"PXCMMActionTypeSaveToLibrary"];
 
-  v8 = [v5 viewModel];
-  v9 = [v8 selectionManager];
-  [v9 performChanges:&__block_literal_global_250788];
+  viewModel = [createSession viewModel];
+  selectionManager = [viewModel selectionManager];
+  [selectionManager performChanges:&__block_literal_global_250788];
 
-  v10 = [v7 performActionWithSession:v5 completionHandler:v11];
+  v10 = [v7 performActionWithSession:createSession completionHandler:completionCopy];
 }
 
 - (void)cancelWorkflow
 {
   if (!self->_rootWorkflowViewController)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"_rootWorkflowViewController"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"_rootWorkflowViewController"}];
   }
 
   rootWorkflowSession = self->_rootWorkflowSession;
@@ -986,15 +986,15 @@ void __62__PXCMMWorkflowCoordinator__performActionWithType_forSession___block_in
   [(PXCMMWorkflowCoordinator *)self _didFinishSession:rootWorkflowSession withState:2];
 }
 
-- (id)workflowViewControllerWithSession:(id)a3 embedInNavigationControllerOfClass:(Class)a4 assetActionManager:(id)a5 assetCollectionActionManager:(id)a6 photosViewConfigurationBlock:(id)a7
+- (id)workflowViewControllerWithSession:(id)session embedInNavigationControllerOfClass:(Class)class assetActionManager:(id)manager assetCollectionActionManager:(id)actionManager photosViewConfigurationBlock:(id)block
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v13)
+  sessionCopy = session;
+  managerCopy = manager;
+  actionManagerCopy = actionManager;
+  blockCopy = block;
+  if (sessionCopy)
   {
-    if (!a4)
+    if (!class)
     {
       goto LABEL_5;
     }
@@ -1002,19 +1002,19 @@ void __62__PXCMMWorkflowCoordinator__performActionWithType_forSession___block_in
 
   else
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"session"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"session"}];
 
-    if (!a4)
+    if (!class)
     {
       goto LABEL_5;
     }
   }
 
-  if (([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"!navigationControllerClass || [navigationControllerClass isSubclassOfClass:[UINavigationController class]]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCMMWorkflowCoordinator.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"!navigationControllerClass || [navigationControllerClass isSubclassOfClass:[UINavigationController class]]"}];
   }
 
 LABEL_5:
@@ -1041,16 +1041,16 @@ LABEL_5:
     self->_rootWorkflowSession = 0;
   }
 
-  v22 = [(PXCMMWorkflowCoordinator *)self _createRootWorkflowViewControllerWithSession:v13 willBeEmbeddedInNavigationController:a4 != 0 assetActionManager:v14 assetCollectionActionManager:v15 photosViewConfigurationBlock:v16];
+  v22 = [(PXCMMWorkflowCoordinator *)self _createRootWorkflowViewControllerWithSession:sessionCopy willBeEmbeddedInNavigationController:class != 0 assetActionManager:managerCopy assetCollectionActionManager:actionManagerCopy photosViewConfigurationBlock:blockCopy];
   v23 = self->_rootWorkflowViewController;
   self->_rootWorkflowViewController = v22;
 
-  if (a4)
+  if (class)
   {
-    v24 = [(UIViewController *)self->_rootWorkflowViewController navigationItem];
+    navigationItem = [(UIViewController *)self->_rootWorkflowViewController navigationItem];
     v25 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_cancelWorkflow];
-    [v24 setLeftBarButtonItem:v25];
-    v26 = [[a4 alloc] initWithRootViewController:self->_rootWorkflowViewController];
+    [navigationItem setLeftBarButtonItem:v25];
+    v26 = [[class alloc] initWithRootViewController:self->_rootWorkflowViewController];
     v27 = self->_navigationController;
     self->_navigationController = v26;
 
@@ -1068,27 +1068,27 @@ LABEL_5:
   return v28;
 }
 
-- (id)workflowViewControllerWithContext:(id)a3 embedInNavigationControllerOfClass:(Class)a4 photosViewConfigurationBlock:(id)a5
+- (id)workflowViewControllerWithContext:(id)context embedInNavigationControllerOfClass:(Class)class photosViewConfigurationBlock:(id)block
 {
-  v8 = a5;
-  v9 = [a3 createSession];
-  v10 = [(PXCMMWorkflowCoordinator *)self workflowViewControllerWithSession:v9 embedInNavigationControllerOfClass:a4 assetActionManager:0 assetCollectionActionManager:0 photosViewConfigurationBlock:v8];
+  blockCopy = block;
+  createSession = [context createSession];
+  v10 = [(PXCMMWorkflowCoordinator *)self workflowViewControllerWithSession:createSession embedInNavigationControllerOfClass:class assetActionManager:0 assetCollectionActionManager:0 photosViewConfigurationBlock:blockCopy];
 
   return v10;
 }
 
-- (id)workflowViewControllerWithContext:(id)a3 embedInNavigationControllerOfClass:(Class)a4
+- (id)workflowViewControllerWithContext:(id)context embedInNavigationControllerOfClass:(Class)class
 {
-  v6 = [a3 createSession];
-  v7 = [(PXCMMWorkflowCoordinator *)self workflowViewControllerWithSession:v6 embedInNavigationControllerOfClass:a4 assetActionManager:0 assetCollectionActionManager:0 photosViewConfigurationBlock:0];
+  createSession = [context createSession];
+  v7 = [(PXCMMWorkflowCoordinator *)self workflowViewControllerWithSession:createSession embedInNavigationControllerOfClass:class assetActionManager:0 assetCollectionActionManager:0 photosViewConfigurationBlock:0];
 
   return v7;
 }
 
-- (id)workflowViewControllerWithContext:(id)a3
+- (id)workflowViewControllerWithContext:(id)context
 {
-  v4 = [a3 createSession];
-  v5 = [(PXCMMWorkflowCoordinator *)self workflowViewControllerWithSession:v4 embedInNavigationControllerOfClass:0 assetActionManager:0 assetCollectionActionManager:0 photosViewConfigurationBlock:0];
+  createSession = [context createSession];
+  v5 = [(PXCMMWorkflowCoordinator *)self workflowViewControllerWithSession:createSession embedInNavigationControllerOfClass:0 assetActionManager:0 assetCollectionActionManager:0 photosViewConfigurationBlock:0];
 
   return v5;
 }

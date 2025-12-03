@@ -1,66 +1,66 @@
 @interface HDMutableDatabaseTransactionContext
-+ (id)contextForAccessibilityAssertion:(id)a3;
++ (id)contextForAccessibilityAssertion:(id)assertion;
 + (id)contextForReading;
 + (id)contextForReadingProtectedData;
 + (id)contextForWriting;
 + (id)contextForWritingProtectedData;
-- (HDMutableDatabaseTransactionContext)contextWithAccessibilityAssertion:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addAccessibilityAssertion:(id)a3;
-- (void)addAccessibilityAssertions:(id)a3;
-- (void)setAllowsJournalingDuringProtectedRead:(BOOL)a3;
-- (void)setHighPriority:(BOOL)a3;
-- (void)setRequiresNewDatabaseConnection:(BOOL)a3;
-- (void)setRequiresProtectedData:(BOOL)a3;
-- (void)setRequiresWrite:(BOOL)a3;
-- (void)setSkipJournalMerge:(BOOL)a3;
-- (void)setSkipTransactionStartTasks:(BOOL)a3;
+- (HDMutableDatabaseTransactionContext)contextWithAccessibilityAssertion:(id)assertion;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addAccessibilityAssertion:(id)assertion;
+- (void)addAccessibilityAssertions:(id)assertions;
+- (void)setAllowsJournalingDuringProtectedRead:(BOOL)read;
+- (void)setHighPriority:(BOOL)priority;
+- (void)setRequiresNewDatabaseConnection:(BOOL)connection;
+- (void)setRequiresProtectedData:(BOOL)data;
+- (void)setRequiresWrite:(BOOL)write;
+- (void)setSkipJournalMerge:(BOOL)merge;
+- (void)setSkipTransactionStartTasks:(BOOL)tasks;
 @end
 
 @implementation HDMutableDatabaseTransactionContext
 
-- (void)addAccessibilityAssertion:(id)a3
+- (void)addAccessibilityAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   accessibilityAssertions = self->super._accessibilityAssertions;
-  v8 = v4;
+  v8 = assertionCopy;
   if (!accessibilityAssertions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->super._accessibilityAssertions;
     self->super._accessibilityAssertions = v6;
 
-    v4 = v8;
+    assertionCopy = v8;
     accessibilityAssertions = self->super._accessibilityAssertions;
   }
 
-  [(NSMutableSet *)accessibilityAssertions addObject:v4];
+  [(NSMutableSet *)accessibilityAssertions addObject:assertionCopy];
 }
 
-- (void)addAccessibilityAssertions:(id)a3
+- (void)addAccessibilityAssertions:(id)assertions
 {
   accessibilityAssertions = self->super._accessibilityAssertions;
   if (accessibilityAssertions)
   {
-    v9 = a3;
-    [(NSMutableSet *)accessibilityAssertions addObjectsFromArray:v9];
-    v4 = v9;
+    assertionsCopy = assertions;
+    [(NSMutableSet *)accessibilityAssertions addObjectsFromArray:assertionsCopy];
+    v4 = assertionsCopy;
   }
 
   else
   {
     v6 = MEMORY[0x277CBEB58];
-    v7 = a3;
-    v8 = [[v6 alloc] initWithArray:v7];
+    assertionsCopy2 = assertions;
+    v8 = [[v6 alloc] initWithArray:assertionsCopy2];
 
     v4 = self->super._accessibilityAssertions;
     self->super._accessibilityAssertions = v8;
   }
 }
 
-- (HDMutableDatabaseTransactionContext)contextWithAccessibilityAssertion:(id)a3
+- (HDMutableDatabaseTransactionContext)contextWithAccessibilityAssertion:(id)assertion
 {
-  if (a3)
+  if (assertion)
   {
     [(HDMutableDatabaseTransactionContext *)self addAccessibilityAssertion:?];
   }
@@ -70,7 +70,7 @@
 
 + (id)contextForWriting
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___HDMutableDatabaseTransactionContext;
   v2 = objc_msgSendSuper2(&v5, sel_contextForWriting);
   v3 = [v2 mutableCopy];
@@ -80,7 +80,7 @@
 
 + (id)contextForWritingProtectedData
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___HDMutableDatabaseTransactionContext;
   v2 = objc_msgSendSuper2(&v5, sel_contextForWritingProtectedData);
   v3 = [v2 mutableCopy];
@@ -90,7 +90,7 @@
 
 + (id)contextForReading
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___HDMutableDatabaseTransactionContext;
   v2 = objc_msgSendSuper2(&v5, sel_contextForReading);
   v3 = [v2 mutableCopy];
@@ -100,7 +100,7 @@
 
 + (id)contextForReadingProtectedData
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___HDMutableDatabaseTransactionContext;
   v2 = objc_msgSendSuper2(&v5, sel_contextForReadingProtectedData);
   v3 = [v2 mutableCopy];
@@ -108,30 +108,30 @@
   return v3;
 }
 
-+ (id)contextForAccessibilityAssertion:(id)a3
++ (id)contextForAccessibilityAssertion:(id)assertion
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HDMutableDatabaseTransactionContext;
-  v3 = objc_msgSendSuper2(&v6, sel_contextForAccessibilityAssertion_, a3);
+  v3 = objc_msgSendSuper2(&v6, sel_contextForAccessibilityAssertion_, assertion);
   v4 = [v3 mutableCopy];
 
   return v4;
 }
 
-- (void)setRequiresWrite:(BOOL)a3
+- (void)setRequiresWrite:(BOOL)write
 {
   if (self)
   {
-    self->super._options = self->super._options & 0xFFFFFFFFFFFFFFFELL | a3;
+    self->super._options = self->super._options & 0xFFFFFFFFFFFFFFFELL | write;
   }
 }
 
-- (void)setRequiresProtectedData:(BOOL)a3
+- (void)setRequiresProtectedData:(BOOL)data
 {
   if (self)
   {
     v3 = 2;
-    if (!a3)
+    if (!data)
     {
       v3 = 0;
     }
@@ -140,12 +140,12 @@
   }
 }
 
-- (void)setHighPriority:(BOOL)a3
+- (void)setHighPriority:(BOOL)priority
 {
   if (self)
   {
     v3 = 16;
-    if (!a3)
+    if (!priority)
     {
       v3 = 0;
     }
@@ -154,12 +154,12 @@
   }
 }
 
-- (void)setSkipJournalMerge:(BOOL)a3
+- (void)setSkipJournalMerge:(BOOL)merge
 {
   if (self)
   {
     v3 = 4;
-    if (!a3)
+    if (!merge)
     {
       v3 = 0;
     }
@@ -168,12 +168,12 @@
   }
 }
 
-- (void)setSkipTransactionStartTasks:(BOOL)a3
+- (void)setSkipTransactionStartTasks:(BOOL)tasks
 {
   if (self)
   {
     v3 = 32;
-    if (!a3)
+    if (!tasks)
     {
       v3 = 0;
     }
@@ -182,12 +182,12 @@
   }
 }
 
-- (void)setRequiresNewDatabaseConnection:(BOOL)a3
+- (void)setRequiresNewDatabaseConnection:(BOOL)connection
 {
   if (self)
   {
     v3 = 8;
-    if (!a3)
+    if (!connection)
     {
       v3 = 0;
     }
@@ -196,12 +196,12 @@
   }
 }
 
-- (void)setAllowsJournalingDuringProtectedRead:(BOOL)a3
+- (void)setAllowsJournalingDuringProtectedRead:(BOOL)read
 {
   if (self)
   {
     v3 = 64;
-    if (!a3)
+    if (!read)
     {
       v3 = 0;
     }
@@ -210,7 +210,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HDDatabaseTransactionContext alloc];
   journalType = self->super._journalType;

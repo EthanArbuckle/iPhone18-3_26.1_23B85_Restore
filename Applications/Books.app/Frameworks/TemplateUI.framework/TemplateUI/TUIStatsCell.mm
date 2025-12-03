@@ -29,11 +29,11 @@
   TUIStatsAppendEvents(v8, self->_eventProvider, @"\n");
   v4 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
   v5 = [v8 stringByTrimmingCharactersInSet:v4];
-  v6 = [(TUIStatsCell *)self label];
-  [v6 setText:v5];
+  label = [(TUIStatsCell *)self label];
+  [label setText:v5];
 
-  v7 = [(TUIStatsCell *)self label];
-  [v7 sizeToFit];
+  label2 = [(TUIStatsCell *)self label];
+  [label2 sizeToFit];
 }
 
 - (UILabel)label

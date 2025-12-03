@@ -11,7 +11,7 @@
 - (BOOL)_savePCSDataToCache;
 - (BOOL)hasAllPCSData;
 - (BOOL)needsChainPCSCreation;
-- (void)_handlePCSDataFetched:(id)a3 withError:(id)a4;
+- (void)_handlePCSDataFetched:(id)fetched withError:(id)error;
 @end
 
 @implementation CKDPCSCacheRecordFetchOperation
@@ -43,13 +43,13 @@
   return v6;
 }
 
-- (void)_handlePCSDataFetched:(id)a3 withError:(id)a4
+- (void)_handlePCSDataFetched:(id)fetched withError:(id)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  fetchedCopy = fetched;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -60,18 +60,18 @@
   v11 = *MEMORY[0x277CBC830];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v22 = objc_msgSend_operationID(v8, v12, v13);
-    v25 = objc_msgSend_pcsKeyID(v6, v23, v24);
-    v28 = objc_msgSend_zoneishPublicKeyID(v6, v26, v27);
+    v22 = objc_msgSend_operationID(selfCopy, v12, v13);
+    v25 = objc_msgSend_pcsKeyID(fetchedCopy, v23, v24);
+    v28 = objc_msgSend_zoneishPublicKeyID(fetchedCopy, v26, v27);
     v29 = v28;
     v30 = @" and error ";
     *v42 = 138544386;
     v31 = &stru_28385ED00;
     *&v42[4] = v22;
     *&v42[12] = 2114;
-    if (v7)
+    if (errorCopy)
     {
-      v31 = v7;
+      v31 = errorCopy;
     }
 
     else
@@ -89,7 +89,7 @@
     _os_log_debug_impl(&dword_22506F000, v11, OS_LOG_TYPE_DEBUG, "Record PCS fetch operation %{public}@ received PCS data (%{public}@/%{public}@)%{public}@%@", v42, 0x34u);
   }
 
-  if (objc_msgSend_didFetchData(v8, v14, v15))
+  if (objc_msgSend_didFetchData(selfCopy, v14, v15))
   {
     if (*v9 != -1)
     {
@@ -99,10 +99,10 @@
     v17 = *v10;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v32 = objc_msgSend_operationID(v8, v18, v19);
-      v35 = objc_msgSend_recordPCSData(v8, v33, v34);
+      v32 = objc_msgSend_operationID(selfCopy, v18, v19);
+      v35 = objc_msgSend_recordPCSData(selfCopy, v33, v34);
       v38 = objc_msgSend_pcsKeyID(v35, v36, v37);
-      v41 = objc_msgSend_pcsKeyID(v6, v39, v40);
+      v41 = objc_msgSend_pcsKeyID(fetchedCopy, v39, v40);
       *v42 = 138544130;
       *&v42[4] = v32;
       *&v42[12] = 2112;
@@ -110,23 +110,23 @@
       v43 = 2112;
       v44 = v41;
       v45 = 2112;
-      v46 = v7;
+      v46 = errorCopy;
       _os_log_debug_impl(&dword_22506F000, v17, OS_LOG_TYPE_DEBUG, "Record PCS fetch operation %{public}@ already has PCS data %@. Ignoring the fetch callback with %@/%@", v42, 0x2Au);
     }
   }
 
   else
   {
-    if (v6)
+    if (fetchedCopy)
     {
-      objc_msgSend_setRecordPCSData_(v8, v16, v6);
-      objc_msgSend_setDidFetchData_(v8, v20, 1);
+      objc_msgSend_setRecordPCSData_(selfCopy, v16, fetchedCopy);
+      objc_msgSend_setDidFetchData_(selfCopy, v20, 1);
     }
 
-    objc_msgSend_setFetchError_(v8, v16, v7, *v42);
+    objc_msgSend_setFetchError_(selfCopy, v16, errorCopy, *v42);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v21 = *MEMORY[0x277D85DE8];
 }

@@ -1,11 +1,11 @@
 @interface VCWiFiChannelSequenceMonitor
 - (VCWiFiChannelSequenceMonitor)init;
 - (int)activate;
-- (int)copyAWDLChannelSequence:(id *)a3 twoPtFourGHzChannelCount:(int *)a4 fiveGHzChannelCount:(int *)a5 dfsChannelCount:(int *)a6 inactiveSlotCount:(int *)a7;
+- (int)copyAWDLChannelSequence:(id *)sequence twoPtFourGHzChannelCount:(int *)count fiveGHzChannelCount:(int *)channelCount dfsChannelCount:(int *)dfsChannelCount inactiveSlotCount:(int *)slotCount;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)processNewChannelSequence:(id)a3;
+- (void)processNewChannelSequence:(id)sequence;
 @end
 
 @implementation VCWiFiChannelSequenceMonitor
@@ -62,7 +62,7 @@ uint64_t __40__VCWiFiChannelSequenceMonitor_activate__block_invoke(uint64_t a1, 
 
 - (void)invalidate
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -81,7 +81,7 @@ LABEL_10:
   {
     if (objc_opt_respondsToSelector())
     {
-      [a1 performSelector:sel_logPrefix];
+      [self performSelector:sel_logPrefix];
     }
 
     if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -102,13 +102,13 @@ LABEL_10:
 {
   v5 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_0();
   v4 = 80;
   _os_log_error_impl(&dword_1DB56E000, v1, OS_LOG_TYPE_ERROR, " [%s] %s:%d Not invalidated", &v2, 0x1Cu);
 }
 
-- (int)copyAWDLChannelSequence:(id *)a3 twoPtFourGHzChannelCount:(int *)a4 fiveGHzChannelCount:(int *)a5 dfsChannelCount:(int *)a6 inactiveSlotCount:(int *)a7
+- (int)copyAWDLChannelSequence:(id *)sequence twoPtFourGHzChannelCount:(int *)count fiveGHzChannelCount:(int *)channelCount dfsChannelCount:(int *)dfsChannelCount inactiveSlotCount:(int *)slotCount
 {
   v63 = *MEMORY[0x1E69E9840];
   v47 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -177,7 +177,7 @@ LABEL_10:
       v59 = 2112;
       v60 = v24;
       v61 = 2048;
-      v62 = self;
+      selfCopy2 = self;
       v28 = " [%s] %s:%d %@(%p) Not activated";
       v29 = v37;
       v30 = 48;
@@ -250,7 +250,7 @@ LABEL_10:
       v59 = 2112;
       v60 = v25;
       v61 = 2048;
-      v62 = self;
+      selfCopy2 = self;
       v33 = " [%s] %s:%d %@(%p) ChannelSequence update not received";
       v34 = v39;
       v35 = 48;
@@ -262,18 +262,18 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v40 = a4;
-  v41 = a5;
-  v42 = a6;
-  v43 = a3;
+  countCopy = count;
+  channelCountCopy = channelCount;
+  dfsChannelCountCopy = dfsChannelCount;
+  sequenceCopy = sequence;
   v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](-[VCWiFiChannelSequenceMonitor currentChannelSequence](self, "currentChannelSequence"), "count")}];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v44 = self;
-  v14 = [(VCWiFiChannelSequenceMonitor *)self currentChannelSequence];
-  v15 = [(NSArray *)v14 countByEnumeratingWithState:&v49 objects:v48 count:16];
+  selfCopy3 = self;
+  currentChannelSequence = [(VCWiFiChannelSequenceMonitor *)self currentChannelSequence];
+  v15 = [(NSArray *)currentChannelSequence countByEnumeratingWithState:&v49 objects:v48 count:16];
   if (v15)
   {
     v16 = v15;
@@ -285,7 +285,7 @@ LABEL_29:
       {
         if (*v50 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(currentChannelSequence);
         }
 
         v20 = *(*(&v49 + 1) + 8 * i);
@@ -307,7 +307,7 @@ LABEL_29:
         }
       }
 
-      v16 = [(NSArray *)v14 countByEnumeratingWithState:&v49 objects:v48 count:16];
+      v16 = [(NSArray *)currentChannelSequence countByEnumeratingWithState:&v49 objects:v48 count:16];
     }
 
     while (v16);
@@ -318,31 +318,31 @@ LABEL_29:
     v17 = 0;
   }
 
-  if (v40)
+  if (countCopy)
   {
-    *v40 = [v47 count];
+    *countCopy = [v47 count];
   }
 
-  self = v44;
-  if (v41)
+  self = selfCopy3;
+  if (channelCountCopy)
   {
-    *v41 = [v46 count];
+    *channelCountCopy = [v46 count];
   }
 
-  if (v42)
+  if (dfsChannelCountCopy)
   {
-    *v42 = [v45 count];
+    *dfsChannelCountCopy = [v45 count];
   }
 
-  if (a7)
+  if (slotCount)
   {
-    *a7 = v17;
+    *slotCount = v17;
   }
 
   v22 = 0;
-  if (v43)
+  if (sequenceCopy)
   {
-    *v43 = v13;
+    *sequenceCopy = v13;
     goto LABEL_29;
   }
 
@@ -352,13 +352,13 @@ LABEL_30:
   return v22;
 }
 
-- (void)processNewChannelSequence:(id)a3
+- (void)processNewChannelSequence:(id)sequence
 {
   v15 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
   if (self->_state == 1)
   {
-    [(VCWiFiChannelSequenceMonitor *)self setCurrentChannelSequence:a3];
+    [(VCWiFiChannelSequenceMonitor *)self setCurrentChannelSequence:sequence];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v5 = VRTraceErrorLogLevelToCSTR();
@@ -372,7 +372,7 @@ LABEL_30:
         v11 = 1024;
         v12 = 164;
         v13 = 2112;
-        v14 = a3;
+        sequenceCopy = sequence;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d New WiFiChannelSequence=%@", &v7, 0x26u);
       }
     }
@@ -389,7 +389,7 @@ LABEL_30:
 - (void)activate
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -414,7 +414,7 @@ LABEL_11:
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = [a1 performSelector:sel_logPrefix];
+      v4 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -435,7 +435,7 @@ LABEL_11:
         v15 = 2112;
         v16 = v4;
         v17 = 2048;
-        v18 = a1;
+        selfCopy = self;
         v7 = " [%s] %s:%d %@(%p) Already activated";
         v8 = v11;
         v9 = 48;

@@ -1,24 +1,24 @@
 @interface MRDIDSServiceConnection
 - (BOOL)isConnected;
-- (BOOL)sendMessage:(id)a3 type:(id)a4 destination:(id)a5 session:(id)a6 options:(id)a7 priority:(int64_t)a8 response:(id)a9;
+- (BOOL)sendMessage:(id)message type:(id)type destination:(id)destination session:(id)session options:(id)options priority:(int64_t)priority response:(id)response;
 - (IDSDevice)device;
 - (MRDIDSServiceConnection)init;
-- (MRDIDSServiceConnection)initWithDevice:(id)a3;
-- (MRDIDSServiceConnection)initWithDeviceUID:(id)a3;
+- (MRDIDSServiceConnection)initWithDevice:(id)device;
+- (MRDIDSServiceConnection)initWithDeviceUID:(id)d;
 - (NSString)debugDescription;
 - (NSString)name;
-- (id)_configurationFromDestination:(id)a3 session:(id)a4;
+- (id)_configurationFromDestination:(id)destination session:(id)session;
 - (unint64_t)_generateMessageID;
 - (void)_maybeDeviceConnectionStatusChanged;
 - (void)dealloc;
 - (void)handleDidReceiveResetConnectionRequest;
-- (void)handleIncomingMessage:(id)a3 type:(id)a4 destination:(id)a5 session:(id)a6 messageID:(id)a7 replyID:(id)a8;
-- (void)removeMessageHandlerForType:(id)a3;
-- (void)removeMessageHandlerForType:(id)a3 destination:(id)a4 session:(id)a5;
+- (void)handleIncomingMessage:(id)message type:(id)type destination:(id)destination session:(id)session messageID:(id)d replyID:(id)iD;
+- (void)removeMessageHandlerForType:(id)type;
+- (void)removeMessageHandlerForType:(id)type destination:(id)destination session:(id)session;
 - (void)resetConnection;
-- (void)setDevice:(id)a3;
-- (void)setMessageHandler:(id)a3 forType:(id)a4;
-- (void)setMessageHandler:(id)a3 forType:(id)a4 destination:(id)a5 session:(id)a6;
+- (void)setDevice:(id)device;
+- (void)setMessageHandler:(id)handler forType:(id)type;
+- (void)setMessageHandler:(id)handler forType:(id)type destination:(id)destination session:(id)session;
 @end
 
 @implementation MRDIDSServiceConnection
@@ -39,9 +39,9 @@
     mrService = v2->_mrService;
     v2->_mrService = v6;
 
-    v8 = [(MRDIDSService *)v2->_mrService idsService];
+    idsService = [(MRDIDSService *)v2->_mrService idsService];
     idsService = v2->_idsService;
-    v2->_idsService = v8;
+    v2->_idsService = idsService;
 
     [(IDSService *)v2->_idsService addDelegate:v2 queue:v2->_queue];
   }
@@ -49,28 +49,28 @@
   return v2;
 }
 
-- (MRDIDSServiceConnection)initWithDevice:(id)a3
+- (MRDIDSServiceConnection)initWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 uniqueIDOverride];
-  v6 = [(MRDIDSServiceConnection *)self initWithDeviceUID:v5];
+  deviceCopy = device;
+  uniqueIDOverride = [deviceCopy uniqueIDOverride];
+  v6 = [(MRDIDSServiceConnection *)self initWithDeviceUID:uniqueIDOverride];
 
   if (v6)
   {
-    [(MRDIDSServiceConnection *)v6 setDevice:v4];
+    [(MRDIDSServiceConnection *)v6 setDevice:deviceCopy];
   }
 
   return v6;
 }
 
-- (MRDIDSServiceConnection)initWithDeviceUID:(id)a3
+- (MRDIDSServiceConnection)initWithDeviceUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v6 = [(MRDIDSServiceConnection *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deviceUID, a3);
+    objc_storeStrong(&v6->_deviceUID, d);
     objc_initWeak(&location, v7);
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -110,110 +110,110 @@
 - (NSString)debugDescription
 {
   v3 = [[NSMutableString alloc] initWithFormat:@"<%@:%p {\n", objc_opt_class(), self];
-  v4 = self;
-  objc_sync_enter(v4);
-  [v3 appendFormat:@" deviceUID = %@\n", v4->_deviceUID];
-  device = v4->_device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [v3 appendFormat:@" deviceUID = %@\n", selfCopy->_deviceUID];
+  device = selfCopy->_device;
   v6 = MRCreateIndentedDebugDescriptionFromObject();
   [v3 appendFormat:@" device = %@\n", v6];
 
-  [v3 appendFormat:@" service = %@\n", v4->_mrService];
-  messageHandlers = v4->_messageHandlers;
+  [v3 appendFormat:@" service = %@\n", selfCopy->_mrService];
+  messageHandlers = selfCopy->_messageHandlers;
   v8 = MRCreateIndentedDebugDescriptionFromObject();
   [v3 appendFormat:@" messageHandlers = %@\n", v8];
 
-  destinationMessageHandlers = v4->_destinationMessageHandlers;
+  destinationMessageHandlers = selfCopy->_destinationMessageHandlers;
   v10 = MRCreateIndentedDebugDescriptionFromObject();
   [v3 appendFormat:@" destinationMessageHandlers = %@\n", v10];
 
-  responseHandlers = v4->_responseHandlers;
+  responseHandlers = selfCopy->_responseHandlers;
   v12 = MRCreateIndentedDebugDescriptionFromObject();
   [v3 appendFormat:@" responseMessageHandlers = %@\n", v12];
 
-  [v3 appendFormat:@" deviceMessageHandler = %@\n", v4->_serviceHandlerToken];
-  v13 = objc_retainBlock(v4->_invalidationHandler);
+  [v3 appendFormat:@" deviceMessageHandler = %@\n", selfCopy->_serviceHandlerToken];
+  v13 = objc_retainBlock(selfCopy->_invalidationHandler);
   [v3 appendFormat:@" invalidationHandler = %@\n", v13];
 
-  v14 = objc_retainBlock(v4->_connectionHandler);
+  v14 = objc_retainBlock(selfCopy->_connectionHandler);
   [v3 appendFormat:@" connectionHandler = %@\n", v14];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   [v3 appendFormat:@"}>"];
 
   return v3;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MRDIDSServiceConnection *)self device];
-    v7 = [v6 uniqueIDOverride];
+    device = [(MRDIDSServiceConnection *)self device];
+    uniqueIDOverride = [device uniqueIDOverride];
     *buf = 138412802;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v7;
+    v19 = uniqueIDOverride;
     v20 = 2112;
-    v21 = v4;
+    v21 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDIDSServiceConnection] %@ Setting IDSDevice from %@ to %@", buf, 0x20u);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_serviceHandlerToken)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (selfCopy2->_serviceHandlerToken)
   {
-    [(MRDIDSService *)v8->_mrService removeHandler:?];
-    serviceHandlerToken = v8->_serviceHandlerToken;
-    v8->_serviceHandlerToken = 0;
+    [(MRDIDSService *)selfCopy2->_mrService removeHandler:?];
+    serviceHandlerToken = selfCopy2->_serviceHandlerToken;
+    selfCopy2->_serviceHandlerToken = 0;
   }
 
-  if (v4)
+  if (deviceCopy)
   {
-    objc_initWeak(buf, v8);
-    mrService = v8->_mrService;
+    objc_initWeak(buf, selfCopy2);
+    mrService = selfCopy2->_mrService;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10018AFAC;
     v14[3] = &unk_1004C04A8;
     objc_copyWeak(&v15, buf);
-    v11 = [(MRDIDSService *)mrService _addMessageHandlerForDevice:v4 handler:v14];
-    v12 = v8->_serviceHandlerToken;
-    v8->_serviceHandlerToken = v11;
+    v11 = [(MRDIDSService *)mrService _addMessageHandlerForDevice:deviceCopy handler:v14];
+    v12 = selfCopy2->_serviceHandlerToken;
+    selfCopy2->_serviceHandlerToken = v11;
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(buf);
   }
 
-  device = v8->_device;
-  v8->_device = v4;
+  device = selfCopy2->_device;
+  selfCopy2->_device = deviceCopy;
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy2);
 }
 
 - (IDSDevice)device
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_device;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_device;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)name
 {
-  v2 = [(MRDIDSServiceConnection *)self device];
-  v3 = [v2 name];
+  device = [(MRDIDSServiceConnection *)self device];
+  name = [device name];
 
-  return v3;
+  return name;
 }
 
 - (BOOL)isConnected
 {
-  v2 = [(MRDIDSServiceConnection *)self device];
-  v3 = v2 != 0;
+  device = [(MRDIDSServiceConnection *)self device];
+  v3 = device != 0;
 
   return v3;
 }
@@ -228,154 +228,154 @@
   }
 }
 
-- (BOOL)sendMessage:(id)a3 type:(id)a4 destination:(id)a5 session:(id)a6 options:(id)a7 priority:(int64_t)a8 response:(id)a9
+- (BOOL)sendMessage:(id)message type:(id)type destination:(id)destination session:(id)session options:(id)options priority:(int64_t)priority response:(id)response
 {
   mrService = self->_mrService;
-  v17 = a9;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [(MRDIDSServiceConnection *)self device];
-  LOBYTE(a8) = [(MRDIDSService *)mrService _sendMessage:v22 device:v23 type:v21 destination:v20 session:v19 options:v18 priority:a8 replyID:0 response:v17];
+  responseCopy = response;
+  optionsCopy = options;
+  sessionCopy = session;
+  destinationCopy = destination;
+  typeCopy = type;
+  messageCopy = message;
+  device = [(MRDIDSServiceConnection *)self device];
+  LOBYTE(priority) = [(MRDIDSService *)mrService _sendMessage:messageCopy device:device type:typeCopy destination:destinationCopy session:sessionCopy options:optionsCopy priority:priority replyID:0 response:responseCopy];
 
-  return a8;
+  return priority;
 }
 
-- (void)setMessageHandler:(id)a3 forType:(id)a4
+- (void)setMessageHandler:(id)handler forType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (!v8->_messageHandlers)
+  handlerCopy = handler;
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_messageHandlers)
   {
     v9 = objc_alloc_init(NSMutableDictionary);
-    messageHandlers = v8->_messageHandlers;
-    v8->_messageHandlers = v9;
+    messageHandlers = selfCopy->_messageHandlers;
+    selfCopy->_messageHandlers = v9;
   }
 
-  v11 = [v6 copy];
+  v11 = [handlerCopy copy];
   v12 = objc_retainBlock(v11);
-  [(NSMutableDictionary *)v8->_messageHandlers setObject:v12 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)selfCopy->_messageHandlers setObject:v12 forKeyedSubscript:typeCopy];
 
   v13 = _MRLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = v8->_messageHandlers;
+    v14 = selfCopy->_messageHandlers;
     v15 = 138412802;
-    v16 = v8;
+    v16 = selfCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = typeCopy;
     v19 = 2112;
     v20 = v14;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "[MRDIDSServiceConnection] %@ Added handler for %@ %@", &v15, 0x20u);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setMessageHandler:(id)a3 forType:(id)a4 destination:(id)a5 session:(id)a6
+- (void)setMessageHandler:(id)handler forType:(id)type destination:(id)destination session:(id)session
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  objc_sync_enter(v14);
-  destinationMessageHandlers = v14->_destinationMessageHandlers;
+  handlerCopy = handler;
+  typeCopy = type;
+  destinationCopy = destination;
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  destinationMessageHandlers = selfCopy->_destinationMessageHandlers;
   if (!destinationMessageHandlers)
   {
     v16 = objc_alloc_init(NSMutableDictionary);
-    v17 = v14->_destinationMessageHandlers;
-    v14->_destinationMessageHandlers = v16;
+    v17 = selfCopy->_destinationMessageHandlers;
+    selfCopy->_destinationMessageHandlers = v16;
 
-    destinationMessageHandlers = v14->_destinationMessageHandlers;
+    destinationMessageHandlers = selfCopy->_destinationMessageHandlers;
   }
 
-  v18 = [(NSMutableDictionary *)destinationMessageHandlers objectForKeyedSubscript:v11];
+  v18 = [(NSMutableDictionary *)destinationMessageHandlers objectForKeyedSubscript:typeCopy];
   if (!v18)
   {
     v18 = objc_alloc_init(NSMutableDictionary);
-    [(NSMutableDictionary *)v14->_destinationMessageHandlers setObject:v18 forKeyedSubscript:v11];
+    [(NSMutableDictionary *)selfCopy->_destinationMessageHandlers setObject:v18 forKeyedSubscript:typeCopy];
   }
 
-  v19 = [v10 copy];
-  v20 = [(MRDIDSServiceConnection *)v14 _configurationFromDestination:v12 session:v13];
+  v19 = [handlerCopy copy];
+  v20 = [(MRDIDSServiceConnection *)selfCopy _configurationFromDestination:destinationCopy session:sessionCopy];
   [v18 setObject:v19 forKeyedSubscript:v20];
 
   v21 = _MRLogForCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v22 = v14->_destinationMessageHandlers;
+    v22 = selfCopy->_destinationMessageHandlers;
     v23 = 138413058;
-    v24 = v11;
+    v24 = typeCopy;
     v25 = 2112;
-    v26 = v12;
+    v26 = destinationCopy;
     v27 = 2112;
-    v28 = v13;
+    v28 = sessionCopy;
     v29 = 2112;
     v30 = v22;
     _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "[MRDIDSServiceConnection] Added destination handler for type=%@, destination=%@, session=%@, %@", &v23, 0x2Au);
   }
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeMessageHandlerForType:(id)a3
+- (void)removeMessageHandlerForType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_messageHandlers objectForKeyedSubscript:v4];
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_messageHandlers objectForKeyedSubscript:typeCopy];
 
   if (v6)
   {
-    [(NSMutableDictionary *)v5->_messageHandlers setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)selfCopy->_messageHandlers setObject:0 forKeyedSubscript:typeCopy];
     v7 = _MRLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_1003AC860(v4, &v5->_messageHandlers, v7);
+      sub_1003AC860(typeCopy, &selfCopy->_messageHandlers, v7);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeMessageHandlerForType:(id)a3 destination:(id)a4 session:(id)a5
+- (void)removeMessageHandlerForType:(id)type destination:(id)destination session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(MRDIDSServiceConnection *)v11 _configurationFromDestination:v9 session:v10];
-  v13 = [(NSMutableDictionary *)v11->_destinationMessageHandlers objectForKeyedSubscript:v8];
+  typeCopy = type;
+  destinationCopy = destination;
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = [(MRDIDSServiceConnection *)selfCopy _configurationFromDestination:destinationCopy session:sessionCopy];
+  v13 = [(NSMutableDictionary *)selfCopy->_destinationMessageHandlers objectForKeyedSubscript:typeCopy];
   v14 = [v13 objectForKeyedSubscript:v12];
 
   if (v14)
   {
-    v15 = [(NSMutableDictionary *)v11->_destinationMessageHandlers objectForKeyedSubscript:v8];
+    v15 = [(NSMutableDictionary *)selfCopy->_destinationMessageHandlers objectForKeyedSubscript:typeCopy];
     [v15 setObject:0 forKeyedSubscript:v12];
 
     v16 = _MRLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      destinationMessageHandlers = v11->_destinationMessageHandlers;
+      destinationMessageHandlers = selfCopy->_destinationMessageHandlers;
       v18 = 138413058;
-      v19 = v8;
+      v19 = typeCopy;
       v20 = 2112;
-      v21 = v9;
+      v21 = destinationCopy;
       v22 = 2112;
-      v23 = v10;
+      v23 = sessionCopy;
       v24 = 2112;
       v25 = destinationMessageHandlers;
       _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "[MRDIDSServiceConnection] Remove destination handler for type=%@, destination=%@, session=%@, %@", &v18, 0x2Au);
     }
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)handleDidReceiveResetConnectionRequest
@@ -389,46 +389,46 @@
   dispatch_async(queue, block);
 }
 
-- (void)handleIncomingMessage:(id)a3 type:(id)a4 destination:(id)a5 session:(id)a6 messageID:(id)a7 replyID:(id)a8
+- (void)handleIncomingMessage:(id)message type:(id)type destination:(id)destination session:(id)session messageID:(id)d replyID:(id)iD
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v40 = a7;
-  v18 = a8;
+  messageCopy = message;
+  typeCopy = type;
+  destinationCopy = destination;
+  sessionCopy = session;
+  dCopy = d;
+  iDCopy = iD;
   v19 = _MRLogForCategory();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v14 data];
+    data = [messageCopy data];
     *buf = 138413826;
-    v53 = self;
+    selfCopy = self;
     v54 = 2112;
-    v55 = v40;
+    v55 = dCopy;
     v56 = 2112;
-    v57 = v20;
+    v57 = data;
     v58 = 2112;
-    v59 = v15;
+    v59 = typeCopy;
     v60 = 2112;
-    v61 = v16;
+    v61 = destinationCopy;
     v62 = 2112;
-    v63 = v17;
+    v63 = sessionCopy;
     v64 = 2112;
-    v65 = v18;
+    v65 = iDCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[MRDIDSServiceConnection] %@ Message received<%@>: data=%@ type=%@ destination=%@ session=%@ replyID=%@", buf, 0x48u);
   }
 
-  v21 = self;
-  objc_sync_enter(v21);
-  v22 = [(NSMutableDictionary *)v21->_messageHandlers objectForKeyedSubscript:v15];
-  v23 = [(NSMutableDictionary *)v21->_destinationMessageHandlers objectForKeyedSubscript:v15];
-  v24 = [(MRDIDSServiceConnection *)v21 _configurationFromDestination:v16 session:v17];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  v22 = [(NSMutableDictionary *)selfCopy2->_messageHandlers objectForKeyedSubscript:typeCopy];
+  v23 = [(NSMutableDictionary *)selfCopy2->_destinationMessageHandlers objectForKeyedSubscript:typeCopy];
+  v24 = [(MRDIDSServiceConnection *)selfCopy2 _configurationFromDestination:destinationCopy session:sessionCopy];
   v25 = [v23 objectForKeyedSubscript:v24];
 
-  if (v18)
+  if (iDCopy)
   {
-    v26 = [(NSMutableDictionary *)v21->_responseHandlers objectForKeyedSubscript:v18];
-    [(NSMutableDictionary *)v21->_responseHandlers setObject:0 forKeyedSubscript:v18];
+    v26 = [(NSMutableDictionary *)selfCopy2->_responseHandlers objectForKeyedSubscript:iDCopy];
+    [(NSMutableDictionary *)selfCopy2->_responseHandlers setObject:0 forKeyedSubscript:iDCopy];
   }
 
   else
@@ -436,16 +436,16 @@
     v26 = 0;
   }
 
-  objc_sync_exit(v21);
+  objc_sync_exit(selfCopy2);
   if (v26)
   {
-    v37 = v18;
-    queue = v15;
+    v37 = iDCopy;
+    queue = typeCopy;
     v27 = v22;
-    v28 = v17;
-    v29 = v16;
-    v30 = v21->_queue;
-    v31 = v14;
+    v28 = sessionCopy;
+    v29 = destinationCopy;
+    v30 = selfCopy2->_queue;
+    v31 = messageCopy;
     v49[0] = _NSConcreteStackBlock;
     v49[1] = 3221225472;
     v49[2] = sub_10018BE50;
@@ -459,39 +459,39 @@
 LABEL_12:
     dispatch_async(v30, v35);
 
-    v14 = v34;
-    v16 = v29;
-    v17 = v28;
+    messageCopy = v34;
+    destinationCopy = v29;
+    sessionCopy = v28;
     v22 = v27;
-    v18 = v37;
-    v15 = queue;
+    iDCopy = v37;
+    typeCopy = queue;
 
     goto LABEL_13;
   }
 
   if (v22)
   {
-    queuea = v21->_queue;
+    queuea = selfCopy2->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10018BE64;
     block[3] = &unk_1004BB398;
     v48 = v22;
-    v45 = v14;
-    v46 = v16;
-    v47 = v17;
+    v45 = messageCopy;
+    v46 = destinationCopy;
+    v47 = sessionCopy;
     dispatch_async(queuea, block);
   }
 
   if (v25)
   {
-    v37 = v18;
-    queue = v15;
+    v37 = iDCopy;
+    queue = typeCopy;
     v27 = v22;
-    v28 = v17;
-    v29 = v16;
-    v30 = v21->_queue;
-    v36 = v14;
+    v28 = sessionCopy;
+    v29 = destinationCopy;
+    v30 = selfCopy2->_queue;
+    v36 = messageCopy;
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_10018BE7C;
@@ -530,9 +530,9 @@ LABEL_13:
         }
 
         v7 = *(*(&v19 + 1) + 8 * i);
-        v8 = [v7 uniqueIDOverride];
-        v9 = [(MRDIDSServiceConnection *)self deviceUID];
-        v10 = [v8 isEqualToString:v9];
+        uniqueIDOverride = [v7 uniqueIDOverride];
+        deviceUID = [(MRDIDSServiceConnection *)self deviceUID];
+        v10 = [uniqueIDOverride isEqualToString:deviceUID];
 
         if (v10)
         {
@@ -553,25 +553,25 @@ LABEL_13:
 
 LABEL_11:
 
-  v11 = [(MRDIDSServiceConnection *)self device];
-  if (v4 != v11 && ([v4 isEqual:v11] & 1) == 0)
+  device = [(MRDIDSServiceConnection *)self device];
+  if (v4 != device && ([v4 isEqual:device] & 1) == 0)
   {
     [(MRDIDSServiceConnection *)self setDevice:v4];
-    v12 = self;
-    objc_sync_enter(v12);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (v4)
     {
-      v13 = [v12->_connectionHandler copy];
+      v13 = [selfCopy->_connectionHandler copy];
       v14 = 0;
     }
 
     else
     {
-      v14 = [v12->_invalidationHandler copy];
+      v14 = [selfCopy->_invalidationHandler copy];
       v13 = 0;
     }
 
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy);
 
     if (v13 | v14)
     {
@@ -589,24 +589,24 @@ LABEL_11:
 
 - (unint64_t)_generateMessageID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_totalOutgoingMessageCount + 1;
-  v2->_totalOutgoingMessageCount = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_totalOutgoingMessageCount + 1;
+  selfCopy->_totalOutgoingMessageCount = v3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)_configurationFromDestination:(id)a3 session:(id)a4
+- (id)_configurationFromDestination:(id)destination session:(id)session
 {
-  v5 = a4;
-  v6 = a3;
+  sessionCopy = session;
+  destinationCopy = destination;
   v7 = [NSString alloc];
   v8 = @"default";
-  if (v6)
+  if (destinationCopy)
   {
-    v9 = v6;
+    v9 = destinationCopy;
   }
 
   else
@@ -614,9 +614,9 @@ LABEL_11:
     v9 = @"default";
   }
 
-  if (v5)
+  if (sessionCopy)
   {
-    v8 = v5;
+    v8 = sessionCopy;
   }
 
   v10 = [v7 initWithFormat:@"%@-%@", v9, v8];

@@ -138,7 +138,7 @@ LABEL_7:
     {
       v11 = MEMORY[0x1E696AE18];
       [MEMORY[0x1E6978628] vcp_ocrGatingThreshold];
-      v6 = [v11 predicateWithFormat:@"SUBQUERY(additionalAttributes.sceneClassifications, $s, $s.sceneIdentifier = %d AND $s.confidence >= %f).@count = 0", 2147482063, v12];
+      mad_nonPrioritizedAssetsForFaceDetectionInternalPredicate = [v11 predicateWithFormat:@"SUBQUERY(additionalAttributes.sceneClassifications, $s, $s.sceneIdentifier = %d AND $s.confidence >= %f).@count = 0", 2147482063, v12];
       goto LABEL_14;
     }
 
@@ -146,7 +146,7 @@ LABEL_7:
     {
       v7 = MEMORY[0x1E696AE18];
       [MEMORY[0x1E6978628] vcp_ocrGatingThreshold];
-      v6 = [v7 predicateWithFormat:@"SUBQUERY(additionalAttributes.sceneClassifications, $s, $s.sceneIdentifier = %d AND $s.confidence >= %f).@count > 0", 2147482063, v8];
+      mad_nonPrioritizedAssetsForFaceDetectionInternalPredicate = [v7 predicateWithFormat:@"SUBQUERY(additionalAttributes.sceneClassifications, $s, $s.sceneIdentifier = %d AND $s.confidence >= %f).@count > 0", 2147482063, v8];
       goto LABEL_14;
     }
   }
@@ -156,13 +156,13 @@ LABEL_7:
     switch(a3)
     {
       case 3:
-        v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kindSubtype == %d", 1];
+        mad_nonPrioritizedAssetsForFaceDetectionInternalPredicate = [MEMORY[0x1E696AE18] predicateWithFormat:@"kindSubtype == %d", 1];
         goto LABEL_14;
       case 2:
-        v6 = [MEMORY[0x1E696AE18] mad_nonPrioritizedAssetsForFaceDetectionInternalPredicate];
+        mad_nonPrioritizedAssetsForFaceDetectionInternalPredicate = [MEMORY[0x1E696AE18] mad_nonPrioritizedAssetsForFaceDetectionInternalPredicate];
         goto LABEL_14;
       case 1:
-        v6 = [MEMORY[0x1E696AE18] mad_prioritizedAssetsForFaceDetectionInternalPredicate];
+        mad_nonPrioritizedAssetsForFaceDetectionInternalPredicate = [MEMORY[0x1E696AE18] mad_prioritizedAssetsForFaceDetectionInternalPredicate];
         goto LABEL_14;
     }
   }
@@ -177,10 +177,10 @@ LABEL_7:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Predicate requested for unsupported task (%@) & priority (%d)", buf, 0x12u);
   }
 
-  v6 = 0;
+  mad_nonPrioritizedAssetsForFaceDetectionInternalPredicate = 0;
 LABEL_14:
 
-  return v6;
+  return mad_nonPrioritizedAssetsForFaceDetectionInternalPredicate;
 }
 
 + (id)mad_internalPredicateNeedsProcessingForTaskID:()MediaAnalysis

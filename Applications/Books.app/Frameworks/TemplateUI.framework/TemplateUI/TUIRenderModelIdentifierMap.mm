@@ -1,8 +1,8 @@
 @interface TUIRenderModelIdentifierMap
 - (TUIRenderModelIdentifierMap)init;
-- (TUIRenderModelIdentifierMap)initWithView:(id)a3;
-- (id)collectInterestWithInvalidationQueue:(id)a3;
-- (id)mapViewModels:(id)a3;
+- (TUIRenderModelIdentifierMap)initWithView:(id)view;
+- (id)collectInterestWithInvalidationQueue:(id)queue;
+- (id)mapViewModels:(id)models;
 @end
 
 @implementation TUIRenderModelIdentifierMap
@@ -22,34 +22,34 @@
   return v2;
 }
 
-- (TUIRenderModelIdentifierMap)initWithView:(id)a3
+- (TUIRenderModelIdentifierMap)initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = TUIRenderModelIdentifierMap;
   v6 = [(TUIRenderModelIdentifierMap *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_view, a3);
+    objc_storeStrong(&v6->_view, view);
   }
 
   return v7;
 }
 
-- (id)mapViewModels:(id)a3
+- (id)mapViewModels:(id)models
 {
-  v3 = [(_TUIRenderModelIdentifierMap *)self->_view mapRenderModels:a3];
+  v3 = [(_TUIRenderModelIdentifierMap *)self->_view mapRenderModels:models];
 
   return v3;
 }
 
-- (id)collectInterestWithInvalidationQueue:(id)a3
+- (id)collectInterestWithInvalidationQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_opt_new();
   [(_TUIRenderModelIdentifierMap *)self->_view _appendInterests:v5];
-  v6 = [[TUIRenderModelIdentifierInterest alloc] initWithQueue:v4 interests:v5];
+  v6 = [[TUIRenderModelIdentifierInterest alloc] initWithQueue:queueCopy interests:v5];
 
   return v6;
 }

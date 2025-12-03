@@ -1,27 +1,27 @@
 @interface PXGadgetDataSourceManager
 + (OS_os_log)gadgetDataSourceManagerLog;
-- (BOOL)gadget:(id)a3 transitionToViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (BOOL)gadget:(id)gadget transitionToViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (NSArray)cachedProviders;
 - (NSArray)gadgetProviders;
-- (PXGadgetDataSourceManager)initWithQueueName:(id)a3;
+- (PXGadgetDataSourceManager)initWithQueueName:(id)name;
 - (PXGadgetDelegate)nextGadgetResponder;
 - (id)_dataSourceSnapshot;
 - (id)createInitialDataSource;
-- (id)gadgetViewControllerHostingGadget:(id)a3;
-- (id)presentationEnvironmentForGadget:(id)a3;
-- (void)_loadDataFromProviders:(id)a3 withGadgetMinimum:(unint64_t)a4;
-- (void)_loadPriorityForProviders:(id)a3;
+- (id)gadgetViewControllerHostingGadget:(id)gadget;
+- (id)presentationEnvironmentForGadget:(id)gadget;
+- (void)_loadDataFromProviders:(id)providers withGadgetMinimum:(unint64_t)minimum;
+- (void)_loadPriorityForProviders:(id)providers;
 - (void)_updateDataSource;
-- (void)beginLoadingInitialGadgets:(unint64_t)a3;
+- (void)beginLoadingInitialGadgets:(unint64_t)gadgets;
 - (void)didPerformChanges;
-- (void)dismissGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)gadget:(id)a3 animateChanges:(id)a4;
-- (void)gadget:(id)a3 didChange:(unint64_t)a4;
+- (void)dismissGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)gadget:(id)gadget animateChanges:(id)changes;
+- (void)gadget:(id)gadget didChange:(unint64_t)change;
 - (void)invalidateGadgets;
-- (void)loadRemainingGadgetsIfNeededWithGenerateGadgetFinishedBlock:(id)a3 completion:(id)a4;
-- (void)presentGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)loadRemainingGadgetsIfNeededWithGenerateGadgetFinishedBlock:(id)block completion:(id)completion;
+- (void)presentGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)removeCachedProviders;
-- (void)setCanLoadRemainingDataForProviders:(BOOL)a3;
+- (void)setCanLoadRemainingDataForProviders:(BOOL)providers;
 - (void)willPerformChanges;
 @end
 
@@ -34,14 +34,14 @@
   return WeakRetained;
 }
 
-- (id)gadgetViewControllerHostingGadget:(id)a3
+- (id)gadgetViewControllerHostingGadget:(id)gadget
 {
-  v4 = a3;
-  v5 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
-  if (v5 && (v6 = v5, [(PXGadgetDataSourceManager *)self nextGadgetResponder], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  gadgetCopy = gadget;
+  nextGadgetResponder = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+  if (nextGadgetResponder && (v6 = nextGadgetResponder, [(PXGadgetDataSourceManager *)self nextGadgetResponder], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
-    v10 = [v9 gadgetViewControllerHostingGadget:v4];
+    nextGadgetResponder2 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+    v10 = [nextGadgetResponder2 gadgetViewControllerHostingGadget:gadgetCopy];
   }
 
   else
@@ -52,81 +52,81 @@
   return v10;
 }
 
-- (void)gadget:(id)a3 animateChanges:(id)a4
+- (void)gadget:(id)gadget animateChanges:(id)changes
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
-  if (v7)
+  gadgetCopy = gadget;
+  changesCopy = changes;
+  nextGadgetResponder = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+  if (nextGadgetResponder)
   {
-    v8 = v7;
-    v9 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+    v8 = nextGadgetResponder;
+    nextGadgetResponder2 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
-      [v11 gadget:v12 animateChanges:v6];
+      nextGadgetResponder3 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+      [nextGadgetResponder3 gadget:gadgetCopy animateChanges:changesCopy];
     }
   }
 }
 
-- (void)gadget:(id)a3 didChange:(unint64_t)a4
+- (void)gadget:(id)gadget didChange:(unint64_t)change
 {
-  v11 = a3;
-  v6 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
-  if (v6)
+  gadgetCopy = gadget;
+  nextGadgetResponder = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+  if (nextGadgetResponder)
   {
-    v7 = v6;
-    v8 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+    v7 = nextGadgetResponder;
+    nextGadgetResponder2 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
-      [v10 gadget:v11 didChange:a4];
+      nextGadgetResponder3 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+      [nextGadgetResponder3 gadget:gadgetCopy didChange:change];
     }
   }
 }
 
-- (id)presentationEnvironmentForGadget:(id)a3
+- (id)presentationEnvironmentForGadget:(id)gadget
 {
-  v4 = a3;
-  v5 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
-  v6 = [v5 presentationEnvironmentForGadget:v4];
+  gadgetCopy = gadget;
+  nextGadgetResponder = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+  v6 = [nextGadgetResponder presentationEnvironmentForGadget:gadgetCopy];
 
   return v6;
 }
 
-- (void)dismissGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
-  [v10 dismissGadgetViewController:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  nextGadgetResponder = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+  [nextGadgetResponder dismissGadgetViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)presentGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
-  [v10 presentGadgetViewController:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  nextGadgetResponder = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+  [nextGadgetResponder presentGadgetViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (BOOL)gadget:(id)a3 transitionToViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (BOOL)gadget:(id)gadget transitionToViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
-  v14 = v13;
-  if (v13)
+  animatedCopy = animated;
+  gadgetCopy = gadget;
+  controllerCopy = controller;
+  completionCopy = completion;
+  nextGadgetResponder = [(PXGadgetDataSourceManager *)self nextGadgetResponder];
+  v14 = nextGadgetResponder;
+  if (nextGadgetResponder)
   {
-    v15 = [v13 gadget:v10 transitionToViewController:v11 animated:v7 completion:v12];
+    v15 = [nextGadgetResponder gadget:gadgetCopy transitionToViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 
   else
@@ -157,24 +157,24 @@
 - (id)_dataSourceSnapshot
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(PXGadgetDataSourceManager *)self cachedProviders];
-  v4 = [v3 mutableCopy];
+  cachedProviders = [(PXGadgetDataSourceManager *)self cachedProviders];
+  v4 = [cachedProviders mutableCopy];
 
-  v23 = self;
-  v5 = [(PXGadgetDataSourceManager *)self gadgetProviderSortComparator];
-  if (v5)
+  selfCopy = self;
+  gadgetProviderSortComparator = [(PXGadgetDataSourceManager *)self gadgetProviderSortComparator];
+  if (gadgetProviderSortComparator)
   {
-    [v4 sortUsingComparator:v5];
+    [v4 sortUsingComparator:gadgetProviderSortComparator];
   }
 
-  v22 = v5;
-  v6 = [(PXGadgetDataSourceManager *)self hiddenGadgetProviders];
-  if ([v6 count])
+  v22 = gadgetProviderSortComparator;
+  hiddenGadgetProviders = [(PXGadgetDataSourceManager *)self hiddenGadgetProviders];
+  if ([hiddenGadgetProviders count])
   {
-    [v4 removeObjectsInArray:v6];
+    [v4 removeObjectsInArray:hiddenGadgetProviders];
   }
 
-  v21 = v6;
+  v21 = hiddenGadgetProviders;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = 0u;
   v25 = 0u;
@@ -196,22 +196,22 @@
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 gadgets];
-        if ([v14 count])
+        gadgets = [v13 gadgets];
+        if ([gadgets count])
         {
-          if ([v14 count] >= 2)
+          if ([gadgets count] >= 2)
           {
-            v15 = [(PXGadgetDataSourceManager *)v23 gadgetSortComparator];
-            if (v15)
+            gadgetSortComparator = [(PXGadgetDataSourceManager *)selfCopy gadgetSortComparator];
+            if (gadgetSortComparator)
             {
-              v16 = [v14 sortedArrayUsingComparator:v15];
+              v16 = [gadgets sortedArrayUsingComparator:gadgetSortComparator];
 
-              v14 = v16;
+              gadgets = v16;
             }
           }
 
-          v17 = [v13 identifier];
-          v18 = [[PXGadgetSection alloc] initWithIdentifier:v17 gadgets:v14];
+          identifier = [v13 identifier];
+          v18 = [[PXGadgetSection alloc] initWithIdentifier:identifier gadgets:gadgets];
           [v7 addObject:v18];
         }
       }
@@ -236,24 +236,24 @@
   }
 
   self->_dataSourceNeedsUpdate = 0;
-  v3 = [(PXSectionedDataSourceManager *)self dataSource];
-  v4 = [(PXGadgetDataSourceManager *)self _dataSourceSnapshot];
-  v5 = [v3 gadgetSections];
-  v6 = [v4 gadgetSections];
-  v7 = [off_1E7721450 changeDetailsFromArray:v5 toArray:v6 changedObjects:MEMORY[0x1E695E0F0] objectComparator:&__block_literal_global_169330];
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  _dataSourceSnapshot = [(PXGadgetDataSourceManager *)self _dataSourceSnapshot];
+  gadgetSections = [dataSource gadgetSections];
+  gadgetSections2 = [_dataSourceSnapshot gadgetSections];
+  v7 = [off_1E7721450 changeDetailsFromArray:gadgetSections toArray:gadgetSections2 changedObjects:MEMORY[0x1E695E0F0] objectComparator:&__block_literal_global_169330];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __46__PXGadgetDataSourceManager__updateDataSource__block_invoke_2;
   v16 = &unk_1E773F640;
-  v17 = v3;
+  v17 = dataSource;
   v18 = v8;
   v9 = v8;
-  v10 = v3;
-  [v6 enumerateObjectsUsingBlock:&v13];
+  v10 = dataSource;
+  [gadgetSections2 enumerateObjectsUsingBlock:&v13];
   v11 = [off_1E77218B0 alloc];
-  v12 = [v11 initWithFromDataSourceIdentifier:objc_msgSend(v10 toDataSourceIdentifier:"identifier" sectionChanges:v13 itemChangeDetailsBySection:v14 subitemChangeDetailsByItemBySection:{v15, v16), objc_msgSend(v4, "identifier"), v7, v9, 0}];
-  [(PXSectionedDataSourceManager *)self setDataSource:v4 changeDetails:v12];
+  v12 = [v11 initWithFromDataSourceIdentifier:objc_msgSend(v10 toDataSourceIdentifier:"identifier" sectionChanges:v13 itemChangeDetailsBySection:v14 subitemChangeDetailsByItemBySection:{v15, v16), objc_msgSend(_dataSourceSnapshot, "identifier"), v7, v9, 0}];
+  [(PXSectionedDataSourceManager *)self setDataSource:_dataSourceSnapshot changeDetails:v12];
 }
 
 void __46__PXGadgetDataSourceManager__updateDataSource__block_invoke_2(uint64_t a1, void *a2, uint64_t a3)
@@ -300,18 +300,18 @@ uint64_t __46__PXGadgetDataSourceManager__updateDataSource__block_invoke(uint64_
   return v7;
 }
 
-- (void)_loadDataFromProviders:(id)a3 withGadgetMinimum:(unint64_t)a4
+- (void)_loadDataFromProviders:(id)providers withGadgetMinimum:(unint64_t)minimum
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  v21 = self;
-  v7 = [objc_opt_class() gadgetDataSourceManagerLog];
+  providersCopy = providers;
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(providersCopy, "count")}];
+  selfCopy = self;
+  gadgetDataSourceManagerLog = [objc_opt_class() gadgetDataSourceManagerLog];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = providersCopy;
   v8 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v8)
   {
@@ -327,14 +327,14 @@ LABEL_3:
         objc_enumerationMutation(obj);
       }
 
-      if (v10 >= a4)
+      if (v10 >= minimum)
       {
         break;
       }
 
       v13 = *(*(&v27 + 1) + 8 * v12);
-      v14 = os_signpost_id_generate(v7);
-      v15 = v7;
+      v14 = os_signpost_id_generate(gadgetDataSourceManagerLog);
+      v15 = gadgetDataSourceManagerLog;
       v16 = v15;
       if (v14 - 1 > 0xFFFFFFFFFFFFFFFDLL)
       {
@@ -375,32 +375,32 @@ LABEL_3:
     }
   }
 
-  lookupQueue = v21->_lookupQueue;
+  lookupQueue = selfCopy->_lookupQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__PXGadgetDataSourceManager__loadDataFromProviders_withGadgetMinimum___block_invoke;
   block[3] = &unk_1E774C620;
-  block[4] = v21;
+  block[4] = selfCopy;
   v25 = v6;
   v20 = v6;
   dispatch_sync(lookupQueue, block);
 }
 
-- (void)_loadPriorityForProviders:(id)a3
+- (void)_loadPriorityForProviders:(id)providers
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providersCopy = providers;
   if (![(PXGadgetDataSourceManager *)self hasLoadedPriorities])
   {
-    v5 = [(PXGadgetDataSourceManager *)self gadgetProviderSortComparator];
+    gadgetProviderSortComparator = [(PXGadgetDataSourceManager *)self gadgetProviderSortComparator];
 
-    if (v5)
+    if (gadgetProviderSortComparator)
     {
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v6 = v4;
+      v6 = providersCopy;
       v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
@@ -435,13 +435,13 @@ LABEL_3:
   cachedProviders = self->_cachedProviders;
   if (!cachedProviders)
   {
-    v5 = [(PXGadgetDataSourceManager *)self gadgetProviders];
+    gadgetProviders = [(PXGadgetDataSourceManager *)self gadgetProviders];
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v5;
+    v7 = gadgetProviders;
     v8 = [(NSArray *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -460,16 +460,16 @@ LABEL_3:
           v13 = *(*(&v18 + 1) + 8 * i);
           [v13 setDelegate:self];
           [v13 setNextGadgetResponder:self];
-          v14 = [v13 identifier];
-          if ([v6 containsObject:v14])
+          identifier = [v13 identifier];
+          if ([v6 containsObject:identifier])
           {
-            v15 = [*(v11 + 2728) currentHandler];
-            [v15 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSourceManager.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"![gadgetProviderIdentifiers containsObject:gadgetProviderIdentifier]"}];
+            currentHandler = [*(v11 + 2728) currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetDataSourceManager.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"![gadgetProviderIdentifiers containsObject:gadgetProviderIdentifier]"}];
 
             v11 = 0x1E696A000;
           }
 
-          [v6 addObject:v14];
+          [v6 addObject:identifier];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -487,18 +487,18 @@ LABEL_3:
   return cachedProviders;
 }
 
-- (void)setCanLoadRemainingDataForProviders:(BOOL)a3
+- (void)setCanLoadRemainingDataForProviders:(BOOL)providers
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_canLoadRemainingDataForProviders != a3)
+  if (self->_canLoadRemainingDataForProviders != providers)
   {
-    self->_canLoadRemainingDataForProviders = a3;
+    self->_canLoadRemainingDataForProviders = providers;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(PXGadgetDataSourceManager *)self cachedProviders];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    cachedProviders = [(PXGadgetDataSourceManager *)self cachedProviders];
+    v5 = [cachedProviders countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -510,7 +510,7 @@ LABEL_3:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(cachedProviders);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -528,7 +528,7 @@ LABEL_3:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [cachedProviders countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -536,17 +536,17 @@ LABEL_3:
   }
 }
 
-- (void)loadRemainingGadgetsIfNeededWithGenerateGadgetFinishedBlock:(id)a3 completion:(id)a4
+- (void)loadRemainingGadgetsIfNeededWithGenerateGadgetFinishedBlock:(id)block completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v6 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   v7 = self->_deferredGadgetLoadingGroup;
   if ([(PXGadgetDataSourceManager *)self needsToLoadAllProviders])
   {
     [(PXGadgetDataSourceManager *)self setNeedsToLoadAllProviders:0];
     queue = self->_lookupQueue;
-    v8 = [(PXGadgetDataSourceManager *)self cachedProviders];
+    cachedProviders = [(PXGadgetDataSourceManager *)self cachedProviders];
     v39 = 0;
     v40 = &v39;
     v41 = 0x3032000000;
@@ -557,16 +557,16 @@ LABEL_3:
     block[1] = 3221225472;
     block[2] = __100__PXGadgetDataSourceManager_loadRemainingGadgetsIfNeededWithGenerateGadgetFinishedBlock_completion___block_invoke;
     block[3] = &unk_1E7746448;
-    v9 = v8;
+    v9 = cachedProviders;
     v36 = v9;
-    v37 = self;
+    selfCopy = self;
     v38 = &v39;
     dispatch_sync(queue, block);
     v34[0] = 0;
     v34[1] = v34;
     v34[2] = 0x2020000000;
     v34[3] = 0;
-    v10 = [objc_opt_class() gadgetDataSourceManagerLog];
+    gadgetDataSourceManagerLog = [objc_opt_class() gadgetDataSourceManagerLog];
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
@@ -591,11 +591,11 @@ LABEL_3:
           v21[1] = 3221225472;
           v21[2] = __100__PXGadgetDataSourceManager_loadRemainingGadgetsIfNeededWithGenerateGadgetFinishedBlock_completion___block_invoke_2;
           v21[3] = &unk_1E773F5F8;
-          v22 = v10;
+          v22 = gadgetDataSourceManagerLog;
           v23 = v14;
           v24 = queue;
-          v25 = self;
-          v27 = v18;
+          selfCopy2 = self;
+          v27 = blockCopy;
           v28 = v34;
           v29 = &v39;
           v26 = v7;
@@ -614,16 +614,16 @@ LABEL_3:
     v19[2] = __100__PXGadgetDataSourceManager_loadRemainingGadgetsIfNeededWithGenerateGadgetFinishedBlock_completion___block_invoke_23;
     v19[3] = &unk_1E774C2F0;
     v19[4] = self;
-    v20 = v6;
+    v20 = completionCopy;
     dispatch_group_notify(v7, MEMORY[0x1E69E96A0], v19);
 
     _Block_object_dispose(v34, 8);
     _Block_object_dispose(&v39, 8);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    dispatch_group_notify(v7, MEMORY[0x1E69E96A0], v6);
+    dispatch_group_notify(v7, MEMORY[0x1E69E96A0], completionCopy);
   }
 }
 
@@ -749,12 +749,12 @@ void __100__PXGadgetDataSourceManager_loadRemainingGadgetsIfNeededWithGenerateGa
   dispatch_group_leave(*(a1 + 56));
 }
 
-- (void)beginLoadingInitialGadgets:(unint64_t)a3
+- (void)beginLoadingInitialGadgets:(unint64_t)gadgets
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() gadgetDataSourceManagerLog];
-  v4 = os_signpost_id_generate(v3);
-  v5 = v3;
+  gadgetDataSourceManagerLog = [objc_opt_class() gadgetDataSourceManagerLog];
+  v4 = os_signpost_id_generate(gadgetDataSourceManagerLog);
+  v5 = gadgetDataSourceManagerLog;
   v6 = v5;
   spid = v4;
   v26 = v4 - 1;
@@ -764,7 +764,7 @@ void __100__PXGadgetDataSourceManager_loadRemainingGadgetsIfNeededWithGenerateGa
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "LoadInitialGadgets", "", buf, 2u);
   }
 
-  v7 = [(PXGadgetDataSourceManager *)self cachedProviders];
+  cachedProviders = [(PXGadgetDataSourceManager *)self cachedProviders];
   v8 = self->_lookupQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -774,14 +774,14 @@ void __100__PXGadgetDataSourceManager_loadRemainingGadgetsIfNeededWithGenerateGa
   queue = v8;
   dispatch_sync(v8, block);
   [(PXGadgetDataSourceManager *)self setLoadingInitialGadgets:1];
-  [(PXGadgetDataSourceManager *)self _loadPriorityForProviders:v7];
+  [(PXGadgetDataSourceManager *)self _loadPriorityForProviders:cachedProviders];
   [(PXGadgetDataSourceManager *)self didLoadDataForPriorities];
-  v29 = v7;
-  v27 = [(PXGadgetDataSourceManager *)self gadgetProviderSortComparator];
+  v29 = cachedProviders;
+  gadgetProviderSortComparator = [(PXGadgetDataSourceManager *)self gadgetProviderSortComparator];
   v9 = v29;
-  if (v27)
+  if (gadgetProviderSortComparator)
   {
-    v10 = [v29 sortedArrayUsingComparator:v27];
+    v10 = [v29 sortedArrayUsingComparator:gadgetProviderSortComparator];
 
     v9 = v10;
   }
@@ -894,10 +894,10 @@ uint64_t __56__PXGadgetDataSourceManager_beginLoadingInitialGadgets___block_invo
 
 - (NSArray)gadgetProviders
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSourceManager.m" lineNumber:100 description:{@"Method %s is a responsibility of subclass %@", "-[PXGadgetDataSourceManager gadgetProviders]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetDataSourceManager.m" lineNumber:100 description:{@"Method %s is a responsibility of subclass %@", "-[PXGadgetDataSourceManager gadgetProviders]", v6}];
 
   abort();
 }
@@ -934,22 +934,22 @@ uint64_t __56__PXGadgetDataSourceManager_beginLoadingInitialGadgets___block_invo
 
 - (id)createInitialDataSource
 {
-  v3 = [(PXGadgetDataSourceManager *)self _dataSourceSnapshot];
+  _dataSourceSnapshot = [(PXGadgetDataSourceManager *)self _dataSourceSnapshot];
   [(PXGadgetDataSourceManager *)self setNeedsToLoadAllProviders:1];
 
-  return v3;
+  return _dataSourceSnapshot;
 }
 
-- (PXGadgetDataSourceManager)initWithQueueName:(id)a3
+- (PXGadgetDataSourceManager)initWithQueueName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = PXGadgetDataSourceManager;
   v5 = [(PXSectionedDataSourceManager *)&v18 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-lookup", v4];
-    v7 = dispatch_queue_create([v6 UTF8String], 0);
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-lookup", nameCopy];
+    v7 = dispatch_queue_create([nameCopy UTF8String], 0);
     lookupQueue = v5->_lookupQueue;
     v5->_lookupQueue = v7;
 

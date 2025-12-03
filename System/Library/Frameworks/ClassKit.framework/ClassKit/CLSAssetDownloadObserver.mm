@@ -1,6 +1,6 @@
 @interface CLSAssetDownloadObserver
 - (BOOL)isDownloaded;
-- (CLSAssetDownloadObserver)initWithAsset:(id)a3;
+- (CLSAssetDownloadObserver)initWithAsset:(id)asset;
 - (NSError)downloadError;
 - (double)downloadProgress;
 - (void)startObserving;
@@ -9,16 +9,16 @@
 
 @implementation CLSAssetDownloadObserver
 
-- (CLSAssetDownloadObserver)initWithAsset:(id)a3
+- (CLSAssetDownloadObserver)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = CLSAssetDownloadObserver;
   v6 = [(CLSAssetDownloadObserver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
+    objc_storeStrong(&v6->_asset, asset);
   }
 
   return v7;

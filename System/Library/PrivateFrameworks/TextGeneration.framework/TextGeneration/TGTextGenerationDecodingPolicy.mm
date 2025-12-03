@@ -1,7 +1,7 @@
 @interface TGTextGenerationDecodingPolicy
 + (id)defaultDecodingPolicy;
-- (BOOL)isEqual:(id)a3;
-- (TGTextGenerationDecodingPolicy)initWithType:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (TGTextGenerationDecodingPolicy)initWithType:(unint64_t)type;
 @end
 
 @implementation TGTextGenerationDecodingPolicy
@@ -13,7 +13,7 @@
   return v2;
 }
 
-- (TGTextGenerationDecodingPolicy)initWithType:(unint64_t)a3
+- (TGTextGenerationDecodingPolicy)initWithType:(unint64_t)type
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v12.receiver = self;
@@ -22,19 +22,19 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v13 = @"type";
-    if (a3)
+    if (type)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown decoding policy type: %d", a3];
+      type = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown decoding policy type: %d", type];
     }
 
     else
     {
-      v6 = @"Greedy";
+      type = @"Greedy";
     }
 
-    v14[0] = v6;
+    v14[0] = type;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v8 = [v7 description];
     description = v5->_description;
@@ -45,19 +45,19 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
-    v7 = v4;
-    v8 = [(TGTextGenerationDecodingPolicy *)self type];
-    v9 = [v7 type];
+    v7 = equalCopy;
+    type = [(TGTextGenerationDecodingPolicy *)self type];
+    type2 = [v7 type];
 
-    v6 = v8 == v9;
+    v6 = type == type2;
   }
 
   return v6;

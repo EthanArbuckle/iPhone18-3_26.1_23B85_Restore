@@ -1,9 +1,9 @@
 @interface ICPagesHandoffActivity
 - (ICNAEventReporter)eventReporter;
-- (ICPagesHandoffActivity)initWithNote:(id)a3 viewController:(id)a4;
+- (ICPagesHandoffActivity)initWithNote:(id)note viewController:(id)controller;
 - (UIViewController)viewController;
 - (id)activityTitle;
-- (void)eventReporterLostSession:(id)a3;
+- (void)eventReporterLostSession:(id)session;
 - (void)performActivity;
 @end
 
@@ -15,17 +15,17 @@
   {
     if (+[ICNAEventReporter isOptedInForAnalytics])
     {
-      v3 = [(ICPagesHandoffActivity *)self viewController];
-      v4 = [v3 viewIfLoaded];
+      viewController = [(ICPagesHandoffActivity *)self viewController];
+      viewIfLoaded = [viewController viewIfLoaded];
 
-      if (v4)
+      if (viewIfLoaded)
       {
         v5 = [ICNAEventReporter alloc];
         v6 = objc_opt_class();
         v7 = NSStringFromClass(v6);
-        v8 = [(ICPagesHandoffActivity *)self viewController];
-        v9 = [v8 view];
-        v10 = [v5 initWithSubTrackerName:v7 view:v9];
+        viewController2 = [(ICPagesHandoffActivity *)self viewController];
+        view = [viewController2 view];
+        v10 = [v5 initWithSubTrackerName:v7 view:view];
         eventReporter = self->_eventReporter;
         self->_eventReporter = v10;
 
@@ -40,31 +40,31 @@
   return v13;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
   v8 = +[NSNotificationCenter defaultCenter];
   v6 = ICNAEventReporterLostSessionNotification;
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [v8 removeObserver:self name:v6 object:object];
 }
 
-- (ICPagesHandoffActivity)initWithNote:(id)a3 viewController:(id)a4
+- (ICPagesHandoffActivity)initWithNote:(id)note viewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  noteCopy = note;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = ICPagesHandoffActivity;
   v9 = [(ICPagesHandoffActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_note, a3);
-    objc_storeWeak(&v10->_viewController, v8);
+    objc_storeStrong(&v9->_note, note);
+    objc_storeWeak(&v10->_viewController, controllerCopy);
   }
 
   return v10;
@@ -81,16 +81,16 @@
 - (void)performActivity
 {
   v11 = objc_alloc_init(ICPagesHandoffManager);
-  v3 = [(ICPagesHandoffActivity *)self note];
-  v4 = [(ICPagesHandoffActivity *)self viewController];
-  [(ICPagesHandoffManager *)v11 launchPagesWithArchiveFromNote:v3 viewController:v4];
+  note = [(ICPagesHandoffActivity *)self note];
+  viewController = [(ICPagesHandoffActivity *)self viewController];
+  [(ICPagesHandoffManager *)v11 launchPagesWithArchiveFromNote:note viewController:viewController];
 
   objc_opt_class();
-  v5 = [(ICPagesHandoffActivity *)self viewController];
+  viewController2 = [(ICPagesHandoffActivity *)self viewController];
   v6 = ICDynamicCast();
 
   objc_opt_class();
-  v7 = [(ICPagesHandoffActivity *)self viewController];
+  viewController3 = [(ICPagesHandoffActivity *)self viewController];
   v8 = ICDynamicCast();
 
   if (v6 | v8)
@@ -103,8 +103,8 @@
     v9 = 1;
   }
 
-  v10 = [(ICPagesHandoffActivity *)self eventReporter];
-  [v10 submitNotesToPagesEventWithContextPath:v9];
+  eventReporter = [(ICPagesHandoffActivity *)self eventReporter];
+  [eventReporter submitNotesToPagesEventWithContextPath:v9];
 
   [(ICPagesHandoffActivity *)self activityDidFinish:1];
 }

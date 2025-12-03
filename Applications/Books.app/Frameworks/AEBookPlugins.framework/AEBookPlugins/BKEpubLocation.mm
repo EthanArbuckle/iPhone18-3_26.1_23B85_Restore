@@ -1,44 +1,44 @@
 @interface BKEpubLocation
-+ (id)deserializeLocationFromDictionary:(id)a3;
-- (BKEpubLocation)initWithCoder:(id)a3;
-- (BKEpubLocation)initWithLocationDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)deserializeLocationFromDictionary:(id)dictionary;
+- (BKEpubLocation)initWithCoder:(id)coder;
+- (BKEpubLocation)initWithLocationDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)jsonObject;
-- (_NSRange)adjustRangeForSinglePageMode:(_NSRange)a3;
+- (_NSRange)adjustRangeForSinglePageMode:(_NSRange)mode;
 - (id)serializeLocationToDictionary;
 - (id)stringValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKEpubLocation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13.receiver = self;
     v13.super_class = BKEpubLocation;
-    if ([(BKLocation *)&v13 isEqual:v4])
+    if ([(BKLocation *)&v13 isEqual:equalCopy])
     {
-      v5 = v4;
-      v6 = [v5 startPath];
-      if ([v6 count])
+      v5 = equalCopy;
+      startPath = [v5 startPath];
+      if ([startPath count])
       {
-        v7 = [(BKEpubLocation *)self startPath];
-        [v7 count];
-        v8 = [v5 endPath];
-        [v8 count];
+        startPath2 = [(BKEpubLocation *)self startPath];
+        [startPath2 count];
+        endPath = [v5 endPath];
+        [endPath count];
       }
 
-      v9 = [v5 endPath];
-      if ([v9 count])
+      endPath2 = [v5 endPath];
+      if ([endPath2 count])
       {
-        v10 = [(BKEpubLocation *)self endPath];
-        [v10 count];
-        v11 = [v5 endPath];
-        [v11 count];
+        endPath3 = [(BKEpubLocation *)self endPath];
+        [endPath3 count];
+        endPath4 = [v5 endPath];
+        [endPath4 count];
       }
     }
   }
@@ -50,9 +50,9 @@
 {
   v14.receiver = self;
   v14.super_class = BKEpubLocation;
-  v3 = [(BKLocation *)&v14 serializeLocationToDictionary];
+  serializeLocationToDictionary = [(BKLocation *)&v14 serializeLocationToDictionary];
   v4 = objc_alloc_init(NSMutableDictionary);
-  [v4 setObject:v3 forKey:@"super"];
+  [v4 setObject:serializeLocationToDictionary forKey:@"super"];
   *&v5 = [(BKEpubLocation *)self startOffset];
   v6 = [NSNumber numberWithFloat:v5];
   [v4 setObject:v6 forKey:@"startOffset"];
@@ -61,20 +61,20 @@
   v8 = [NSNumber numberWithFloat:v7];
   [v4 setObject:v8 forKey:@"endOffset"];
 
-  v9 = [(BKEpubLocation *)self startPath];
+  startPath = [(BKEpubLocation *)self startPath];
 
-  if (v9)
+  if (startPath)
   {
-    v10 = [(BKEpubLocation *)self startPath];
-    [v4 setObject:v10 forKey:@"startPath"];
+    startPath2 = [(BKEpubLocation *)self startPath];
+    [v4 setObject:startPath2 forKey:@"startPath"];
   }
 
-  v11 = [(BKEpubLocation *)self endPath];
+  endPath = [(BKEpubLocation *)self endPath];
 
-  if (v11)
+  if (endPath)
   {
-    v12 = [(BKEpubLocation *)self endPath];
-    [v4 setObject:v12 forKey:@"endPath"];
+    endPath2 = [(BKEpubLocation *)self endPath];
+    [v4 setObject:endPath2 forKey:@"endPath"];
   }
 
   [v4 setObject:@"BKEpubLocation" forKey:@"class"];
@@ -82,38 +82,38 @@
   return v4;
 }
 
-- (BKEpubLocation)initWithLocationDictionary:(id)a3
+- (BKEpubLocation)initWithLocationDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"super"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"super"];
   v12.receiver = self;
   v12.super_class = BKEpubLocation;
   v6 = [(BKLocation *)&v12 initWithLocationDictionary:v5];
   if (v6)
   {
-    v7 = [v4 objectForKey:@"startPath"];
+    v7 = [dictionaryCopy objectForKey:@"startPath"];
     [(BKEpubLocation *)v6 setStartPath:v7];
 
-    v8 = [v4 objectForKey:@"startOffset"];
+    v8 = [dictionaryCopy objectForKey:@"startOffset"];
     -[BKEpubLocation setStartOffset:](v6, "setStartOffset:", [v8 unsignedIntValue]);
 
-    v9 = [v4 objectForKey:@"endPath"];
+    v9 = [dictionaryCopy objectForKey:@"endPath"];
     [(BKEpubLocation *)v6 setEndPath:v9];
 
-    v10 = [v4 objectForKey:@"endOffset"];
+    v10 = [dictionaryCopy objectForKey:@"endOffset"];
     -[BKEpubLocation setEndOffset:](v6, "setEndOffset:", [v10 unsignedIntValue]);
   }
 
   return v6;
 }
 
-+ (id)deserializeLocationFromDictionary:(id)a3
++ (id)deserializeLocationFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"class"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"class"];
   if ([v4 isEqualToString:@"BKEpubLocation"])
   {
-    v5 = [[BKEpubLocation alloc] initWithLocationDictionary:v3];
+    v5 = [[BKEpubLocation alloc] initWithLocationDictionary:dictionaryCopy];
   }
 
   else
@@ -124,48 +124,48 @@
   return v5;
 }
 
-- (BKEpubLocation)initWithCoder:(id)a3
+- (BKEpubLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = BKEpubLocation;
-  v5 = [(BKLocation *)&v13 initWithCoder:v4];
+  v5 = [(BKLocation *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v6, v7, v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"startPath"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"startPath"];
     [(BKEpubLocation *)v5 setStartPath:v10];
 
-    -[BKEpubLocation setStartOffset:](v5, "setStartOffset:", [v4 decodeIntegerForKey:@"startOffset"]);
-    v11 = [v4 decodeObjectOfClasses:v9 forKey:@"endPath"];
+    -[BKEpubLocation setStartOffset:](v5, "setStartOffset:", [coderCopy decodeIntegerForKey:@"startOffset"]);
+    v11 = [coderCopy decodeObjectOfClasses:v9 forKey:@"endPath"];
     [(BKEpubLocation *)v5 setEndPath:v11];
 
-    -[BKEpubLocation setEndOffset:](v5, "setEndOffset:", [v4 decodeIntegerForKey:@"endOffset"]);
+    -[BKEpubLocation setEndOffset:](v5, "setEndOffset:", [coderCopy decodeIntegerForKey:@"endOffset"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BKEpubLocation;
-  v4 = a3;
-  [(BKLocation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_startPath forKey:{@"startPath", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_startOffset forKey:@"startOffset"];
-  [v4 encodeObject:self->_endPath forKey:@"endPath"];
-  [v4 encodeInteger:self->_endOffset forKey:@"endOffset"];
+  coderCopy = coder;
+  [(BKLocation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_startPath forKey:{@"startPath", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_startOffset forKey:@"startOffset"];
+  [coderCopy encodeObject:self->_endPath forKey:@"endPath"];
+  [coderCopy encodeInteger:self->_endOffset forKey:@"endOffset"];
 }
 
-- (_NSRange)adjustRangeForSinglePageMode:(_NSRange)a3
+- (_NSRange)adjustRangeForSinglePageMode:(_NSRange)mode
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(BKEpubLocation *)self singlePage];
+  length = mode.length;
+  location = mode.location;
+  singlePage = [(BKEpubLocation *)self singlePage];
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0x7FFFFFFFFFFFFFFFLL;
@@ -192,8 +192,8 @@
     v7 = length;
   }
 
-  v8 = v5 == 0;
-  if (v5)
+  v8 = singlePage == 0;
+  if (singlePage)
   {
     v9 = v6;
   }
@@ -222,31 +222,31 @@
 {
   v6.receiver = self;
   v6.super_class = BKEpubLocation;
-  v3 = [(BKLocation *)&v6 stringValue];
-  v4 = [NSString stringWithFormat:@"{ %@, singlePage: %d, startOffset:%lu, endOffset:%lu, startPath:%@, endPath:%@ }", v3, self->_singlePage, self->_startOffset, self->_endOffset, self->_startPath, self->_endPath];
+  stringValue = [(BKLocation *)&v6 stringValue];
+  v4 = [NSString stringWithFormat:@"{ %@, singlePage: %d, startOffset:%lu, endOffset:%lu, startPath:%@, endPath:%@ }", stringValue, self->_singlePage, self->_startOffset, self->_endOffset, self->_startPath, self->_endPath];
 
   return v4;
 }
 
 - (NSDictionary)jsonObject
 {
-  v3 = [(BKEpubLocation *)self startPath];
-  if ([v3 count])
+  startPath = [(BKEpubLocation *)self startPath];
+  if ([startPath count])
   {
-    v4 = [(BKEpubLocation *)self endPath];
-    v5 = [v4 count];
+    endPath = [(BKEpubLocation *)self endPath];
+    v5 = [endPath count];
 
     if (v5)
     {
       v12[0] = @"startPath";
-      v6 = [(BKEpubLocation *)self startPath];
-      v13[0] = v6;
+      startPath2 = [(BKEpubLocation *)self startPath];
+      v13[0] = startPath2;
       v12[1] = @"startOffset";
       v7 = [NSNumber numberWithUnsignedInteger:[(BKEpubLocation *)self startOffset]];
       v13[1] = v7;
       v12[2] = @"endPath";
-      v8 = [(BKEpubLocation *)self endPath];
-      v13[2] = v8;
+      endPath2 = [(BKEpubLocation *)self endPath];
+      v13[2] = endPath2;
       v12[3] = @"endOffset";
       v9 = [NSNumber numberWithUnsignedInteger:[(BKEpubLocation *)self endOffset]];
       v13[3] = v9;

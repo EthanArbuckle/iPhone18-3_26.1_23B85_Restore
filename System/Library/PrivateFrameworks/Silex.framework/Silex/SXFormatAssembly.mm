@@ -1,21 +1,21 @@
 @interface SXFormatAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXFormatAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F53D02B8 factory:&__block_literal_global_26];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F53D02B8 factory:&__block_literal_global_26];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerProtocol:&unk_1F53D6B20 factory:&__block_literal_global_55_3];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerProtocol:&unk_1F53D6B20 factory:&__block_literal_global_55_3];
 
-  v9 = [v3 privateContainer];
+  privateContainer = [registryCopy privateContainer];
 
-  v8 = [v9 registerProtocol:&unk_1F53AF000 factory:&__block_literal_global_128_0];
+  v8 = [privateContainer registerProtocol:&unk_1F53AF000 factory:&__block_literal_global_128_0];
 }
 
 SXFormatModule *__35__SXFormatAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

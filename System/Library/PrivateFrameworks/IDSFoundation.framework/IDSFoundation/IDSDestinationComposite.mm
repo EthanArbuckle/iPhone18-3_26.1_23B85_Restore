@@ -1,10 +1,10 @@
 @interface IDSDestinationComposite
-- (IDSDestinationComposite)initWithCoder:(id)a3;
-- (IDSDestinationComposite)initWithDestinations:(id)a3;
+- (IDSDestinationComposite)initWithCoder:(id)coder;
+- (IDSDestinationComposite)initWithDestinations:(id)destinations;
 - (id)description;
 - (id)destinationLightweightStatus;
 - (id)destinationURIs;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSDestinationComposite
@@ -17,8 +17,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(IDSDestinationComposite *)self destinations];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  destinations = [(IDSDestinationComposite *)self destinations];
+  v5 = [destinations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -29,21 +29,21 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(destinations);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 destinationURIs];
-        v11 = [v10 count];
+        destinationURIs = [v9 destinationURIs];
+        v11 = [destinationURIs count];
 
         if (v11)
         {
-          v12 = [v9 destinationURIs];
-          [v3 unionSet:v12];
+          destinationURIs2 = [v9 destinationURIs];
+          [v3 unionSet:destinationURIs2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [destinations countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -56,21 +56,21 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSDestinationComposite *)self destinations];
-  v6 = [v3 stringWithFormat:@"<%@: %p destinations: %@>", v4, self, v5];
+  destinations = [(IDSDestinationComposite *)self destinations];
+  v6 = [v3 stringWithFormat:@"<%@: %p destinations: %@>", v4, self, destinations];
 
   return v6;
 }
 
-- (IDSDestinationComposite)initWithDestinations:(id)a3
+- (IDSDestinationComposite)initWithDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v9.receiver = self;
   v9.super_class = IDSDestinationComposite;
   v5 = [(IDSDestinationComposite *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [destinationsCopy copy];
     destinations = v5->_destinations;
     v5->_destinations = v6;
   }
@@ -78,25 +78,25 @@
   return v5;
 }
 
-- (IDSDestinationComposite)initWithCoder:(id)a3
+- (IDSDestinationComposite)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 setWithObject:objc_opt_class()];
   v7 = +[IDSDestination classesForStrictUnarchiving];
   [v6 addObjectsFromArray:v7];
 
-  v8 = [v5 decodeObjectOfClasses:v6 forKey:@"kIDSCompositeDestinationDestinations"];
+  v8 = [coderCopy decodeObjectOfClasses:v6 forKey:@"kIDSCompositeDestinationDestinations"];
 
   v9 = [(IDSDestinationComposite *)self initWithDestinations:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSDestinationComposite *)self destinations];
-  [v4 encodeObject:v5 forKey:@"kIDSCompositeDestinationDestinations"];
+  coderCopy = coder;
+  destinations = [(IDSDestinationComposite *)self destinations];
+  [coderCopy encodeObject:destinations forKey:@"kIDSCompositeDestinationDestinations"];
 }
 
 - (id)destinationLightweightStatus
@@ -107,8 +107,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(IDSDestinationComposite *)self destinations];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  destinations = [(IDSDestinationComposite *)self destinations];
+  v5 = [destinations countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -120,20 +120,20 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(destinations);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v10 destinationLightweightStatus];
+          destinationLightweightStatus = [v10 destinationLightweightStatus];
 
-          [v3 addEntriesFromDictionary:v11];
-          v7 = v11;
+          [v3 addEntriesFromDictionary:destinationLightweightStatus];
+          v7 = destinationLightweightStatus;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [destinations countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

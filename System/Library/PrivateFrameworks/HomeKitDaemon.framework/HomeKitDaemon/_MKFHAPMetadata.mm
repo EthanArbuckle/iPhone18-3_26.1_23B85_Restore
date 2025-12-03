@@ -1,6 +1,6 @@
 @interface _MKFHAPMetadata
-+ (id)modelIDForParentRelationshipTo:(id)a3;
-- (BOOL)validateForInsertOrUpdate:(id *)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
+- (BOOL)validateForInsertOrUpdate:(id *)update;
 - (MKFHAPMetadataDatabaseID)databaseID;
 @end
 
@@ -13,26 +13,26 @@
   return v2;
 }
 
-- (BOOL)validateForInsertOrUpdate:(id *)a3
+- (BOOL)validateForInsertOrUpdate:(id *)update
 {
   v9.receiver = self;
   v9.super_class = _MKFHAPMetadata;
   LODWORD(v5) = [(_MKFModel *)&v9 validateForInsertOrUpdate:?];
   if (v5)
   {
-    v6 = [(_MKFHAPMetadata *)self homeManager];
+    homeManager = [(_MKFHAPMetadata *)self homeManager];
 
-    if (v6)
+    if (homeManager)
     {
       LOBYTE(v5) = 1;
     }
 
-    else if (a3)
+    else if (update)
     {
       v7 = [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:@"homeManager is required"];
       v5 = v7;
       LOBYTE(v5) = 0;
-      *a3 = v7;
+      *update = v7;
     }
 
     else
@@ -44,9 +44,9 @@
   return v5;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

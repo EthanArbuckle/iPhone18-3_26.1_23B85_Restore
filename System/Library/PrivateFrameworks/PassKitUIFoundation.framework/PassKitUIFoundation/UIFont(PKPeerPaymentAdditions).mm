@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __60__UIFont_PKPeerPaymentAdditions__pk_loadPeerPaymentCashFont__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (pk_loadPeerPaymentCashFont_onceToken != -1)
   {
     dispatch_once(&pk_loadPeerPaymentCashFont_onceToken, block);
@@ -85,7 +85,7 @@
   block[1] = 3221225472;
   block[2] = __56__UIFont_PKPeerPaymentAdditions__pk_loadFDICSignageFont__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (pk_loadFDICSignageFont_onceToken != -1)
   {
     dispatch_once(&pk_loadFDICSignageFont_onceToken, block);
@@ -96,7 +96,7 @@
 
 + (id)pk_fdicSignageFont
 {
-  if ([a1 pk_loadFDICSignageFont])
+  if ([self pk_loadFDICSignageFont])
   {
     v1 = [objc_opt_class() fontWithName:@"Source Sans 3" size:12.8];
   }
@@ -111,7 +111,7 @@
 
 + (id)pk_peerPaymentCashFontOfSize:()PKPeerPaymentAdditions
 {
-  if ([a1 pk_loadPeerPaymentCashFont])
+  if ([self pk_loadPeerPaymentCashFont])
   {
     v3 = [objc_opt_class() fontWithName:@"SFCash-Plain" size:a2];
   }
@@ -129,7 +129,7 @@
   v2 = +[PKPeerPaymentFontHelper chiseledCashFontDescriptor];
   if (v2)
   {
-    v3 = [objc_opt_class() fontWithDescriptor:v2 size:a1];
+    v3 = [objc_opt_class() fontWithDescriptor:v2 size:self];
   }
 
   else
@@ -146,7 +146,7 @@
   block[1] = 3221225472;
   block[2] = __69__UIFont_PKPeerPaymentAdditions__pk_loadTextCondensedRegularCashFont__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (pk_loadTextCondensedRegularCashFont_onceToken != -1)
   {
     dispatch_once(&pk_loadTextCondensedRegularCashFont_onceToken, block);
@@ -158,7 +158,7 @@
 + (id)pk_textCondensedRegularCashFontOfSize:()PKPeerPaymentAdditions
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  if ([a1 pk_loadTextCondensedRegularCashFont])
+  if ([self pk_loadTextCondensedRegularCashFont])
   {
     v3 = *MEMORY[0x277D74340];
     v17[0] = @"SFCashTextCondensed-Regular";
@@ -196,7 +196,7 @@
   block[1] = 3221225472;
   block[2] = __70__UIFont_PKPeerPaymentAdditions__pk_loadTextCondensedSemiboldCashFont__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (pk_loadTextCondensedSemiboldCashFont_onceToken != -1)
   {
     dispatch_once(&pk_loadTextCondensedSemiboldCashFont_onceToken, block);
@@ -208,7 +208,7 @@
 + (id)pk_textCondensedSemiboldCashFontOfSize:()PKPeerPaymentAdditions
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  if ([a1 pk_loadTextCondensedSemiboldCashFont])
+  if ([self pk_loadTextCondensedSemiboldCashFont])
   {
     v3 = *MEMORY[0x277D74340];
     v17[0] = @"SFCashTextCondensed-Semibold";
@@ -246,7 +246,7 @@
   block[1] = 3221225472;
   block[2] = __68__UIFont_PKPeerPaymentAdditions__pk_loadTextCondensedMediumCashFont__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (pk_loadTextCondensedMediumCashFont_onceToken != -1)
   {
     dispatch_once(&pk_loadTextCondensedMediumCashFont_onceToken, block);
@@ -258,7 +258,7 @@
 + (id)pk_textCondensedMediumCashFontOfSize:()PKPeerPaymentAdditions
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  if ([a1 pk_loadTextCondensedMediumCashFont])
+  if ([self pk_loadTextCondensedMediumCashFont])
   {
     v3 = *MEMORY[0x277D74340];
     v17[0] = @"SFCashTextCondensed-Medium";
@@ -306,8 +306,8 @@
   v15 = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
 
-  v7 = [a1 fontDescriptor];
-  v8 = [v7 fontDescriptorByAddingAttributes:v6];
+  fontDescriptor = [self fontDescriptor];
+  v8 = [fontDescriptor fontDescriptorByAddingAttributes:v6];
 
   v9 = MEMORY[0x277D74300];
   [v8 pointSize];

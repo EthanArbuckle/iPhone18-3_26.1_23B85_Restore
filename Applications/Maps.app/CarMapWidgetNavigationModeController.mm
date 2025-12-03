@@ -2,34 +2,34 @@
 - (BOOL)hidesStatusBanner;
 - (BOOL)showsHeadingIndicator;
 - (CarMapWidgetETACardViewController)etaCard;
-- (CarMapWidgetNavigationModeController)initWithPresentationType:(unint64_t)a3;
+- (CarMapWidgetNavigationModeController)initWithPresentationType:(unint64_t)type;
 - (ChromeViewController)chromeViewController;
 - (id)desiredCards;
 - (id)mapView;
 - (id)personalizedItemSources;
 - (void)_cancelAlertDismissTimer;
-- (void)_carDisplayConfigDidChangeNotification:(id)a3;
-- (void)_dismissAlertIfNeeded:(id)a3 withResponse:(id)a4;
-- (void)_trafficAlertVisibilityChanged:(id)a3;
+- (void)_carDisplayConfigDidChangeNotification:(id)notification;
+- (void)_dismissAlertIfNeeded:(id)needed withResponse:(id)response;
+- (void)_trafficAlertVisibilityChanged:(id)changed;
 - (void)_updateDisplayETA;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)carChromeNavigationCameraStyleManager:(id)a3 didChangeCenterConsoleCameraStyle:(int64_t)a4;
-- (void)carChromeNavigationCameraStyleManager:(id)a3 didChangeInstrumentClusterCameraStyle:(int64_t)a4;
-- (void)configureCard:(id)a3 forKey:(id)a4;
-- (void)configureNavigationDisplay:(id)a3;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)carChromeNavigationCameraStyleManager:(id)manager didChangeCenterConsoleCameraStyle:(int64_t)style;
+- (void)carChromeNavigationCameraStyleManager:(id)manager didChangeInstrumentClusterCameraStyle:(int64_t)style;
+- (void)configureCard:(id)card forKey:(id)key;
+- (void)configureNavigationDisplay:(id)display;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didDismissTrafficIncidentAlert:(id)a4;
-- (void)navigationService:(id)a3 didInvalidateTrafficIncidentAlert:(id)a4;
-- (void)navigationService:(id)a3 didReceiveTrafficIncidentAlert:(id)a4 responseCallback:(id)a5;
-- (void)navigationService:(id)a3 didUpdateTrafficIncidentAlert:(id)a4;
-- (void)prepareToEnterStackInChromeViewController:(id)a3;
-- (void)refreshCameraTypeAnimated:(BOOL)a3;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setCameraStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)setCurrentRoute:(id)a3;
-- (void)setHasArrived:(BOOL)a3;
-- (void)setHasETAInfo:(BOOL)a3;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didDismissTrafficIncidentAlert:(id)alert;
+- (void)navigationService:(id)service didInvalidateTrafficIncidentAlert:(id)alert;
+- (void)navigationService:(id)service didReceiveTrafficIncidentAlert:(id)alert responseCallback:(id)callback;
+- (void)navigationService:(id)service didUpdateTrafficIncidentAlert:(id)alert;
+- (void)prepareToEnterStackInChromeViewController:(id)controller;
+- (void)refreshCameraTypeAnimated:(BOOL)animated;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setCameraStyle:(int64_t)style animated:(BOOL)animated;
+- (void)setCurrentRoute:(id)route;
+- (void)setHasArrived:(BOOL)arrived;
+- (void)setHasETAInfo:(BOOL)info;
 @end
 
 @implementation CarMapWidgetNavigationModeController
@@ -40,15 +40,15 @@
   if ([v11 navigationState] != 5)
   {
     v3 = [GuidanceETA alloc];
-    v4 = [v11 displayEtaInfo];
-    v5 = [v11 remainingDistanceInfo];
-    v6 = [v11 batteryChargeInfo];
-    v7 = [v11 upcomingStop];
-    v8 = [v7 timezone];
-    v9 = -[GuidanceETA initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:](v3, "initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:", v4, v5, v6, v8, [v11 navigationTransportType]);
+    displayEtaInfo = [v11 displayEtaInfo];
+    remainingDistanceInfo = [v11 remainingDistanceInfo];
+    batteryChargeInfo = [v11 batteryChargeInfo];
+    upcomingStop = [v11 upcomingStop];
+    timezone = [upcomingStop timezone];
+    v9 = -[GuidanceETA initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:](v3, "initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:", displayEtaInfo, remainingDistanceInfo, batteryChargeInfo, timezone, [v11 navigationTransportType]);
 
-    v10 = [(CarMapWidgetNavigationModeController *)self etaCard];
-    [v10 setLatestETA:v9];
+    etaCard = [(CarMapWidgetNavigationModeController *)self etaCard];
+    [etaCard setLatestETA:v9];
 
     [(CarMapWidgetNavigationModeController *)self setHasETAInfo:v9 != 0];
   }
@@ -76,38 +76,38 @@
   return WeakRetained;
 }
 
-- (void)carChromeNavigationCameraStyleManager:(id)a3 didChangeInstrumentClusterCameraStyle:(int64_t)a4
+- (void)carChromeNavigationCameraStyleManager:(id)manager didChangeInstrumentClusterCameraStyle:(int64_t)style
 {
-  v6 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
-  v7 = [v6 view];
-  v8 = [v7 window];
-  v9 = [v8 _car_hybridInstrumentClusterDisplayLocation];
+  chromeViewController = [(CarMapWidgetNavigationModeController *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  _car_hybridInstrumentClusterDisplayLocation = [window _car_hybridInstrumentClusterDisplayLocation];
 
-  if (v9 <= 1)
+  if (_car_hybridInstrumentClusterDisplayLocation <= 1)
   {
 
-    [(CarMapWidgetNavigationModeController *)self setCameraStyle:a4 animated:1];
+    [(CarMapWidgetNavigationModeController *)self setCameraStyle:style animated:1];
   }
 }
 
-- (void)carChromeNavigationCameraStyleManager:(id)a3 didChangeCenterConsoleCameraStyle:(int64_t)a4
+- (void)carChromeNavigationCameraStyleManager:(id)manager didChangeCenterConsoleCameraStyle:(int64_t)style
 {
-  v6 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
-  v7 = [v6 view];
-  v8 = [v7 window];
-  v9 = [v8 _car_hybridInstrumentClusterDisplayLocation];
+  chromeViewController = [(CarMapWidgetNavigationModeController *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  _car_hybridInstrumentClusterDisplayLocation = [window _car_hybridInstrumentClusterDisplayLocation];
 
-  if (v9 == 2)
+  if (_car_hybridInstrumentClusterDisplayLocation == 2)
   {
 
-    [(CarMapWidgetNavigationModeController *)self setCameraStyle:a4 animated:1];
+    [(CarMapWidgetNavigationModeController *)self setCameraStyle:style animated:1];
   }
 }
 
-- (void)_carDisplayConfigDidChangeNotification:(id)a3
+- (void)_carDisplayConfigDidChangeNotification:(id)notification
 {
-  v3 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-  [v3 setNeedsUpdateComponent:@"statusBanner" animated:0];
+  carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+  [carChromeViewController setNeedsUpdateComponent:@"statusBanner" animated:0];
 }
 
 - (void)_cancelAlertDismissTimer
@@ -117,16 +117,16 @@
   self->_alertDismissTimer = 0;
 }
 
-- (void)_dismissAlertIfNeeded:(id)a3 withResponse:(id)a4
+- (void)_dismissAlertIfNeeded:(id)needed withResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  responseCopy = response;
   v8 = +[CarDisplayController sharedInstance];
-  v9 = [v8 isCurrentlyConnectedToCarAppScene];
+  isCurrentlyConnectedToCarAppScene = [v8 isCurrentlyConnectedToCarAppScene];
 
   v10 = sub_100799BCC();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-  if (v9)
+  if (isCurrentlyConnectedToCarAppScene)
   {
     if (v11)
     {
@@ -145,98 +145,98 @@
 
     [(CarMapWidgetNavigationModeController *)self _cancelAlertDismissTimer];
     invalidatedAlertIds = self->_invalidatedAlertIds;
-    v13 = [v6 alertID];
-    [(NSMutableSet *)invalidatedAlertIds addObject:v13];
+    alertID = [neededCopy alertID];
+    [(NSMutableSet *)invalidatedAlertIds addObject:alertID];
 
-    v14 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-    v15 = [v14 navigationDisplay];
-    [v15 setTrafficAlert:0];
+    carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+    navigationDisplay = [carChromeViewController navigationDisplay];
+    [navigationDisplay setTrafficAlert:0];
 
-    if (v7)
+    if (responseCopy)
     {
-      v7[2](v7, 0);
+      responseCopy[2](responseCopy, 0);
     }
   }
 }
 
-- (void)_trafficAlertVisibilityChanged:(id)a3
+- (void)_trafficAlertVisibilityChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-  v6 = [v5 navigationDisplay];
-  v15 = [v6 trafficAlert];
+  changedCopy = changed;
+  carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+  navigationDisplay = [carChromeViewController navigationDisplay];
+  trafficAlert = [navigationDisplay trafficAlert];
 
-  v7 = [v4 userInfo];
+  userInfo = [changedCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:@"kCarTrafficAlertIdKey"];
-  v9 = [v15 alertID];
-  v10 = [v8 isEqual:v9];
+  v8 = [userInfo objectForKeyedSubscript:@"kCarTrafficAlertIdKey"];
+  alertID = [trafficAlert alertID];
+  v10 = [v8 isEqual:alertID];
 
   if (v10)
   {
     invalidatedAlertIds = self->_invalidatedAlertIds;
-    v12 = [v15 alertID];
-    [(NSMutableSet *)invalidatedAlertIds addObject:v12];
+    alertID2 = [trafficAlert alertID];
+    [(NSMutableSet *)invalidatedAlertIds addObject:alertID2];
 
-    v13 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-    v14 = [v13 navigationDisplay];
-    [v14 setTrafficAlert:0];
+    carChromeViewController2 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+    navigationDisplay2 = [carChromeViewController2 navigationDisplay];
+    [navigationDisplay2 setTrafficAlert:0];
   }
 }
 
-- (void)navigationService:(id)a3 didDismissTrafficIncidentAlert:(id)a4
+- (void)navigationService:(id)service didDismissTrafficIncidentAlert:(id)alert
 {
   invalidatedAlertIds = self->_invalidatedAlertIds;
-  v6 = [a4 alertID];
-  [(NSMutableSet *)invalidatedAlertIds addObject:v6];
+  alertID = [alert alertID];
+  [(NSMutableSet *)invalidatedAlertIds addObject:alertID];
 
-  v8 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-  v7 = [v8 navigationDisplay];
-  [v7 setTrafficAlert:0];
+  carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+  navigationDisplay = [carChromeViewController navigationDisplay];
+  [navigationDisplay setTrafficAlert:0];
 }
 
-- (void)navigationService:(id)a3 didInvalidateTrafficIncidentAlert:(id)a4
+- (void)navigationService:(id)service didInvalidateTrafficIncidentAlert:(id)alert
 {
   invalidatedAlertIds = self->_invalidatedAlertIds;
-  v6 = [a4 alertID];
-  [(NSMutableSet *)invalidatedAlertIds addObject:v6];
+  alertID = [alert alertID];
+  [(NSMutableSet *)invalidatedAlertIds addObject:alertID];
 
-  v8 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-  v7 = [v8 navigationDisplay];
-  [v7 setTrafficAlert:0];
+  carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+  navigationDisplay = [carChromeViewController navigationDisplay];
+  [navigationDisplay setTrafficAlert:0];
 }
 
-- (void)navigationService:(id)a3 didUpdateTrafficIncidentAlert:(id)a4
+- (void)navigationService:(id)service didUpdateTrafficIncidentAlert:(id)alert
 {
-  v5 = a4;
+  alertCopy = alert;
   invalidatedAlertIds = self->_invalidatedAlertIds;
-  v10 = v5;
-  v7 = [v5 alertID];
-  LOBYTE(invalidatedAlertIds) = [(NSMutableSet *)invalidatedAlertIds containsObject:v7];
+  v10 = alertCopy;
+  alertID = [alertCopy alertID];
+  LOBYTE(invalidatedAlertIds) = [(NSMutableSet *)invalidatedAlertIds containsObject:alertID];
 
   if ((invalidatedAlertIds & 1) == 0)
   {
-    v8 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-    v9 = [v8 navigationDisplay];
-    [v9 setTrafficAlert:v10];
+    carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+    navigationDisplay = [carChromeViewController navigationDisplay];
+    [navigationDisplay setTrafficAlert:v10];
   }
 }
 
-- (void)navigationService:(id)a3 didReceiveTrafficIncidentAlert:(id)a4 responseCallback:(id)a5
+- (void)navigationService:(id)service didReceiveTrafficIncidentAlert:(id)alert responseCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-  v12 = [v11 navigationDisplay];
-  [v12 setTrafficAlert:v9];
+  serviceCopy = service;
+  alertCopy = alert;
+  callbackCopy = callback;
+  carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+  navigationDisplay = [carChromeViewController navigationDisplay];
+  [navigationDisplay setTrafficAlert:alertCopy];
 
   [(CarMapWidgetNavigationModeController *)self _cancelAlertDismissTimer];
   objc_initWeak(&location, self);
   v13 = +[CarDisplayController sharedInstance];
-  LOBYTE(v12) = [v13 isCurrentlyConnectedToCarAppScene];
+  LOBYTE(navigationDisplay) = [v13 isCurrentlyConnectedToCarAppScene];
 
-  if ((v12 & 1) == 0)
+  if ((navigationDisplay & 1) == 0)
   {
     v14 = sub_100799BCC();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -245,15 +245,15 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "didReceiveTrafficIncidentAlert and was not connected to carApp scene. Starting auto dismiss timer.", buf, 2u);
     }
 
-    [v9 alertDisplayDuration];
+    [alertCopy alertDisplayDuration];
     v16 = v15;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1006A4538;
     v19[3] = &unk_101626058;
     objc_copyWeak(&v22, &location);
-    v20 = v9;
-    v21 = v10;
+    v20 = alertCopy;
+    v21 = callbackCopy;
     v17 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v19 block:v16];
     alertDismissTimer = self->_alertDismissTimer;
     self->_alertDismissTimer = v17;
@@ -264,58 +264,58 @@
   objc_destroyWeak(&location);
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = a3;
+  serviceCopy = service;
   if (MNNavigationServiceStateChangedToNavigating())
   {
-    v6 = [v7 route];
-    [(CarMapWidgetNavigationModeController *)self setCurrentRoute:v6];
+    route = [serviceCopy route];
+    [(CarMapWidgetNavigationModeController *)self setCurrentRoute:route];
   }
 }
 
-- (void)refreshCameraTypeAnimated:(BOOL)a3
+- (void)refreshCameraTypeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
-  [v5 setNeedsUpdateComponent:@"mapcontrols" animated:1];
+  animatedCopy = animated;
+  chromeViewController = [(CarMapWidgetNavigationModeController *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"mapcontrols" animated:1];
 
-  v6 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
-  [v6 setNeedsUpdateComponent:@"accessories" animated:1];
+  chromeViewController2 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
+  [chromeViewController2 setNeedsUpdateComponent:@"accessories" animated:1];
 
-  v7 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
-  [v7 setNeedsUpdateMapInsets];
+  chromeViewController3 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
+  [chromeViewController3 setNeedsUpdateMapInsets];
 
-  v8 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-  v9 = [v8 navigationDisplay];
+  carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+  navigationDisplay = [carChromeViewController navigationDisplay];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1006A4738;
   v10[3] = &unk_10164F208;
   v10[4] = self;
-  [v9 configureDisplay:v10 animated:v3];
+  [navigationDisplay configureDisplay:v10 animated:animatedCopy];
 }
 
-- (void)setCameraStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setCameraStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (self->_cameraStyle != a3)
+  if (self->_cameraStyle != style)
   {
-    self->_cameraStyle = a3;
-    [(CarMapWidgetNavigationModeController *)self refreshCameraTypeAnimated:a4];
+    self->_cameraStyle = style;
+    [(CarMapWidgetNavigationModeController *)self refreshCameraTypeAnimated:animated];
   }
 }
 
 - (id)personalizedItemSources
 {
-  v3 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
-  v4 = [v3 searchPinsManager];
+  chromeViewController = [(CarMapWidgetNavigationModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
 
-  if (v4)
+  if (searchPinsManager)
   {
-    v5 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
-    v6 = [v5 searchPinsManager];
-    v7 = [v6 routeStartEndItemSource];
-    v10 = v7;
+    chromeViewController2 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
+    searchPinsManager2 = [chromeViewController2 searchPinsManager];
+    routeStartEndItemSource = [searchPinsManager2 routeStartEndItemSource];
+    v10 = routeStartEndItemSource;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
   }
 
@@ -327,26 +327,26 @@
   return v8;
 }
 
-- (void)configureNavigationDisplay:(id)a3
+- (void)configureNavigationDisplay:(id)display
 {
-  v4 = a3;
-  [v4 setCameraStyle:{-[CarMapWidgetNavigationModeController cameraStyle](self, "cameraStyle")}];
-  [v4 setCameraPaused:0];
+  displayCopy = display;
+  [displayCopy setCameraStyle:{-[CarMapWidgetNavigationModeController cameraStyle](self, "cameraStyle")}];
+  [displayCopy setCameraPaused:0];
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  v27 = a3;
-  if ([a4 isEqualToString:@"DashboardETACardKey"])
+  cardCopy = card;
+  if ([key isEqualToString:@"DashboardETACardKey"])
   {
-    v6 = [(CarMapWidgetNavigationModeController *)self etaCard];
-    [v27 setContent:v6];
+    etaCard = [(CarMapWidgetNavigationModeController *)self etaCard];
+    [cardCopy setContent:etaCard];
 
-    v7 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-    v8 = [v7 sceneType];
+    carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+    sceneType = [carChromeViewController sceneType];
     v9 = 3;
     v10 = 1000.0;
-    if (v8 <= 6 && ((1 << v8) & 0x72) != 0)
+    if (sceneType <= 6 && ((1 << sceneType) & 0x72) != 0)
     {
       if (self->_presentationType)
       {
@@ -383,11 +383,11 @@
     [(CarCardLayout *)v11 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
     [(CarCardLayout *)v11 setFlipForRightHandDrive:1];
     v14 = v11;
-    v15 = [(CarCardLayout *)v14 primaryAxis];
-    v16 = [(CarCardLayout *)v14 cornerPosition];
-    if (v15 == 1)
+    primaryAxis = [(CarCardLayout *)v14 primaryAxis];
+    cornerPosition = [(CarCardLayout *)v14 cornerPosition];
+    if (primaryAxis == 1)
     {
-      if (v16 == 4 || [(CarCardLayout *)v14 cornerPosition]== 1 || [(CarCardLayout *)v14 edgePosition]== 2)
+      if (cornerPosition == 4 || [(CarCardLayout *)v14 cornerPosition]== 1 || [(CarCardLayout *)v14 edgePosition]== 2)
       {
         v17 = 8;
       }
@@ -412,7 +412,7 @@
 
     else
     {
-      v18 = v16 == 4 || [(CarCardLayout *)v14 cornerPosition]== 8 || [(CarCardLayout *)v14 edgePosition]== 4;
+      v18 = cornerPosition == 4 || [(CarCardLayout *)v14 cornerPosition]== 8 || [(CarCardLayout *)v14 edgePosition]== 4;
       if ([(CarCardLayout *)v14 cornerPosition]== 1 || [(CarCardLayout *)v14 cornerPosition]== 2 || [(CarCardLayout *)v14 edgePosition]== 1)
       {
         v18 |= 4uLL;
@@ -435,11 +435,11 @@
     if (presentationType == 2)
     {
       [(CarCardLayout *)v14 setMargins:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-      v20 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
-      v21 = [v20 view];
-      v22 = [v21 window];
-      v23 = [v22 screen];
-      [v23 nativeScale];
+      chromeViewController = [(CarMapWidgetNavigationModeController *)self chromeViewController];
+      view = [chromeViewController view];
+      window = [view window];
+      screen = [window screen];
+      [screen nativeScale];
       v25 = [NSNumber numberWithDouble:436.0 / v24];
       [(CarCardLayout *)v14 setSecondaryAxisFillUpperLimit:v25];
     }
@@ -464,8 +464,8 @@
     [(CarCardLayout *)v14 setPrimaryAxisFillLowerLimit:v26];
 
 LABEL_41:
-    [v27 setLayout:v14];
-    [v27 setAccessoryType:0];
+    [cardCopy setLayout:v14];
+    [cardCopy setAccessoryType:0];
   }
 }
 
@@ -485,19 +485,19 @@ LABEL_41:
   return v3;
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1006A4E14;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addPreparation:v4 animations:&stru_101626030 completion:0];
+  [animation addPreparation:v4 animations:&stru_101626030 completion:0];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = a4;
+  animationCopy = animation;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1006A4F80;
@@ -508,51 +508,51 @@ LABEL_41:
   v6[2] = sub_1006A500C;
   v6[3] = &unk_101661AE0;
   v6[4] = self;
-  v7 = [v5 isAnimated];
-  [v5 addPreparation:v8 animations:v6 completion:0];
+  isAnimated = [animationCopy isAnimated];
+  [animationCopy addPreparation:v8 animations:v6 completion:0];
 }
 
-- (void)prepareToEnterStackInChromeViewController:(id)a3
+- (void)prepareToEnterStackInChromeViewController:(id)controller
 {
   cameraStyleManager = self->_cameraStyleManager;
-  v5 = a3;
+  controllerCopy = controller;
   [(CarChromeNavigationCameraStyleManager *)cameraStyleManager unregisterObserver:self];
   v6 = +[CarChromeNavigationCameraStyleManager sharedInstance];
   v7 = self->_cameraStyleManager;
   self->_cameraStyleManager = v6;
 
   [(CarChromeNavigationCameraStyleManager *)self->_cameraStyleManager registerObserver:self];
-  v8 = [v5 view];
+  view = [controllerCopy view];
 
-  v9 = [v8 window];
-  v10 = [v9 _car_hybridInstrumentClusterDisplayLocation];
+  window = [view window];
+  _car_hybridInstrumentClusterDisplayLocation = [window _car_hybridInstrumentClusterDisplayLocation];
 
-  if (v10 >= 2)
+  if (_car_hybridInstrumentClusterDisplayLocation >= 2)
   {
-    if (v10 == 2)
+    if (_car_hybridInstrumentClusterDisplayLocation == 2)
     {
-      v11 = [(CarChromeNavigationCameraStyleManager *)self->_cameraStyleManager centerConsoleCameraStyle];
+      centerConsoleCameraStyle = [(CarChromeNavigationCameraStyleManager *)self->_cameraStyleManager centerConsoleCameraStyle];
     }
 
     else
     {
-      v11 = 1;
+      centerConsoleCameraStyle = 1;
     }
   }
 
   else
   {
-    v11 = [(CarChromeNavigationCameraStyleManager *)self->_cameraStyleManager instrumentClusterCameraStyle];
+    centerConsoleCameraStyle = [(CarChromeNavigationCameraStyleManager *)self->_cameraStyleManager instrumentClusterCameraStyle];
   }
 
-  self->_cameraStyle = v11;
+  self->_cameraStyle = centerConsoleCameraStyle;
 }
 
-- (void)setCurrentRoute:(id)a3
+- (void)setCurrentRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   v6 = self->_currentRoute;
-  v7 = v5;
+  v7 = routeCopy;
   if (v7 | v6)
   {
     v8 = [v6 isEqual:v7];
@@ -568,48 +568,48 @@ LABEL_41:
       if (os_log_type_enabled(qword_10195CED8, OS_LOG_TYPE_INFO))
       {
         v10 = v9;
-        v11 = [v7 uniqueRouteID];
-        v12 = [v11 UUIDString];
+        uniqueRouteID = [v7 uniqueRouteID];
+        uUIDString = [uniqueRouteID UUIDString];
         v15 = 134349314;
-        v16 = self;
+        selfCopy = self;
         v17 = 2112;
-        v18 = v12;
+        v18 = uUIDString;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] Updating route: %@", &v15, 0x16u);
       }
 
-      objc_storeStrong(&self->_currentRoute, a3);
-      v13 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-      v14 = [v13 navigationDisplay];
-      [v14 updateWithRoute:self->_currentRoute];
+      objc_storeStrong(&self->_currentRoute, route);
+      carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+      navigationDisplay = [carChromeViewController navigationDisplay];
+      [navigationDisplay updateWithRoute:self->_currentRoute];
     }
   }
 }
 
-- (void)setHasArrived:(BOOL)a3
+- (void)setHasArrived:(BOOL)arrived
 {
-  if (self->_hasArrived != a3)
+  if (self->_hasArrived != arrived)
   {
-    self->_hasArrived = a3;
-    v5 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
-    [v5 updateCardsForContext:self animated:1];
+    self->_hasArrived = arrived;
+    chromeViewController = [(CarMapWidgetNavigationModeController *)self chromeViewController];
+    [chromeViewController updateCardsForContext:self animated:1];
   }
 }
 
-- (void)setHasETAInfo:(BOOL)a3
+- (void)setHasETAInfo:(BOOL)info
 {
-  if (self->_hasETAInfo != a3)
+  if (self->_hasETAInfo != info)
   {
-    self->_hasETAInfo = a3;
-    v5 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
-    [v5 updateCardsForContext:self animated:1];
+    self->_hasETAInfo = info;
+    chromeViewController = [(CarMapWidgetNavigationModeController *)self chromeViewController];
+    [chromeViewController updateCardsForContext:self animated:1];
   }
 }
 
 - (BOOL)hidesStatusBanner
 {
-  v2 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-  v3 = [v2 sceneType];
-  if (v3 > 6 || ((1 << v3) & 0x72) == 0)
+  carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+  sceneType = [carChromeViewController sceneType];
+  if (sceneType > 6 || ((1 << sceneType) & 0x72) == 0)
   {
 
     return 0;
@@ -624,20 +624,20 @@ LABEL_41:
 
 - (BOOL)showsHeadingIndicator
 {
-  v2 = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
-  v3 = [v2 sceneType];
-  v4 = v3 < 7;
-  v5 = 0x72u >> v3;
+  carChromeViewController = [(CarMapWidgetNavigationModeController *)self carChromeViewController];
+  sceneType = [carChromeViewController sceneType];
+  v4 = sceneType < 7;
+  v5 = 0x72u >> sceneType;
 
   return v4 & v5;
 }
 
 - (id)mapView
 {
-  v2 = [(CarMapWidgetNavigationModeController *)self chromeViewController];
-  v3 = [v2 mapView];
+  chromeViewController = [(CarMapWidgetNavigationModeController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v3;
+  return mapView;
 }
 
 - (void)dealloc
@@ -648,7 +648,7 @@ LABEL_41:
   [(CarMapWidgetNavigationModeController *)&v3 dealloc];
 }
 
-- (CarMapWidgetNavigationModeController)initWithPresentationType:(unint64_t)a3
+- (CarMapWidgetNavigationModeController)initWithPresentationType:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = CarMapWidgetNavigationModeController;
@@ -656,7 +656,7 @@ LABEL_41:
   v5 = v4;
   if (v4)
   {
-    v4->_presentationType = a3;
+    v4->_presentationType = type;
     v6 = objc_alloc_init(NSMutableSet);
     invalidatedAlertIds = v5->_invalidatedAlertIds;
     v5->_invalidatedAlertIds = v6;

@@ -1,7 +1,7 @@
 @interface PXAnalyticsFeatureUsageCountDestination
 - (PHPhotoLibrary)photoLibrary;
-- (void)processEvent:(id)a3;
-- (void)setPhotoLibrary:(id)a3;
+- (void)processEvent:(id)event;
+- (void)setPhotoLibrary:(id)library;
 @end
 
 @implementation PXAnalyticsFeatureUsageCountDestination
@@ -13,28 +13,28 @@
   return WeakRetained;
 }
 
-- (void)processEvent:(id)a3
+- (void)processEvent:(id)event
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXAnalyticsFeatureUsageCountDestination *)self photoLibrary];
+  eventCopy = event;
+  photoLibrary = [(PXAnalyticsFeatureUsageCountDestination *)self photoLibrary];
 
-  if (v5)
+  if (photoLibrary)
   {
-    v6 = [v4 name];
-    v7 = [v6 isEqualToString:*MEMORY[0x1E6991C90]];
+    name = [eventCopy name];
+    v7 = [name isEqualToString:*MEMORY[0x1E6991C90]];
 
     if (v7)
     {
-      v8 = [v4 copyRawPayload];
-      if ([v8 count])
+      copyRawPayload = [eventCopy copyRawPayload];
+      if ([copyRawPayload count])
       {
-        v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v8, "count")}];
+        v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(copyRawPayload, "count")}];
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = v8;
+        v10 = copyRawPayload;
         v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v11)
         {
@@ -60,9 +60,9 @@
           while (v12);
         }
 
-        v17 = [(PXAnalyticsFeatureUsageCountDestination *)self photoLibrary];
-        v18 = [v17 photoAnalysisClient];
-        [v18 recordFeatureUsageFromCounts:v9 reply:&__block_literal_global_107210];
+        photoLibrary2 = [(PXAnalyticsFeatureUsageCountDestination *)self photoLibrary];
+        photoAnalysisClient = [photoLibrary2 photoAnalysisClient];
+        [photoAnalysisClient recordFeatureUsageFromCounts:v9 reply:&__block_literal_global_107210];
       }
     }
   }
@@ -100,10 +100,10 @@ LABEL_6:
   }
 }
 
-- (void)setPhotoLibrary:(id)a3
+- (void)setPhotoLibrary:(id)library
 {
-  v4 = a3;
-  if (v4)
+  libraryCopy = library;
+  if (libraryCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_photoLibrary);
 
@@ -113,7 +113,7 @@ LABEL_6:
     }
   }
 
-  objc_storeWeak(&self->_photoLibrary, v4);
+  objc_storeWeak(&self->_photoLibrary, libraryCopy);
 }
 
 @end

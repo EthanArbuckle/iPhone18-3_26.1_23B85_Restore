@@ -14,7 +14,7 @@
   v6 = v5;
   v9 = v6;
   v10 = a3;
-  [a1 enumerateIndexesUsingBlock:v8];
+  [self enumerateIndexesUsingBlock:v8];
 
   return v6;
 }

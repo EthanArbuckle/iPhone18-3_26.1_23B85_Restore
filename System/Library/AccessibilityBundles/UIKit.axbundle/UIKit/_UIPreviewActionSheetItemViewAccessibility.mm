@@ -1,18 +1,18 @@
 @interface _UIPreviewActionSheetItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation _UIPreviewActionSheetItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = "@";
   [location[0] validateClass:@"_UIPreviewActionSheetItemView" hasInstanceMethod:@"action" withFullSignature:0];
   [location[0] validateClass:@"UIPreviewMenuItem" hasInstanceMethod:@"title" withFullSignature:{v3, 0}];
@@ -21,11 +21,11 @@
 
 - (id)accessibilityLabel
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7 = 0;
   objc_opt_class();
-  v4 = [(_UIPreviewActionSheetItemViewAccessibility *)v9 safeValueForKey:@"action"];
+  v4 = [(_UIPreviewActionSheetItemViewAccessibility *)selfCopy safeValueForKey:@"action"];
   v3 = [v4 safeValueForKey:@"title"];
   v6 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v3);

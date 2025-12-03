@@ -1,33 +1,33 @@
 @interface CSVTUIASRGrammars
 + (id)sharedGrammars;
 - (CSVTUIASRGrammars)init;
-- (id)_getLMEWithGrammar:(id)a3 withLocale:(id)a4;
-- (id)_getLeadingPatternsWithGrammars:(id)a3 withLocale:(id)a4;
-- (id)_getRegexPatternsWithGrammars:(id)a3 withUtt:(int64_t)a4 withLocale:(id)a5;
-- (id)_getTrailingPatternsWithGrammars:(id)a3 withLocale:(id)a4;
+- (id)_getLMEWithGrammar:(id)grammar withLocale:(id)locale;
+- (id)_getLeadingPatternsWithGrammars:(id)grammars withLocale:(id)locale;
+- (id)_getRegexPatternsWithGrammars:(id)grammars withUtt:(int64_t)utt withLocale:(id)locale;
+- (id)_getTrailingPatternsWithGrammars:(id)grammars withLocale:(id)locale;
 - (id)createGrammars;
-- (id)getLMEforLocale:(id)a3;
-- (id)getLeadingPatternsForUtt:(int64_t)a3 Locale:(id)a4;
-- (id)getRegexPatternsForUtt:(int64_t)a3 Locale:(id)a4;
-- (id)getTrailingPatternsForUtt:(int64_t)a3 Locale:(id)a4;
+- (id)getLMEforLocale:(id)locale;
+- (id)getLeadingPatternsForUtt:(int64_t)utt Locale:(id)locale;
+- (id)getRegexPatternsForUtt:(int64_t)utt Locale:(id)locale;
+- (id)getTrailingPatternsForUtt:(int64_t)utt Locale:(id)locale;
 @end
 
 @implementation CSVTUIASRGrammars
 
-- (id)_getLMEWithGrammar:(id)a3 withLocale:(id)a4
+- (id)_getLMEWithGrammar:(id)grammar withLocale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:v6];
+  grammarCopy = grammar;
+  localeCopy = locale;
+  v7 = [grammarCopy objectForKey:localeCopy];
 
   if (v7)
   {
-    v8 = [v5 objectForKey:v6];
+    v8 = [grammarCopy objectForKey:localeCopy];
     v9 = [v8 objectForKey:@"lme"];
 
     if (v9)
     {
-      v10 = [v5 objectForKey:v6];
+      v10 = [grammarCopy objectForKey:localeCopy];
       v7 = [v10 objectForKey:@"lme"];
     }
 
@@ -40,15 +40,15 @@
   return v7;
 }
 
-- (id)getLMEforLocale:(id)a3
+- (id)getLMEforLocale:(id)locale
 {
   v5 = 0;
-  if (a3)
+  if (locale)
   {
     grammar = self->_grammar;
     if (grammar)
     {
-      v5 = [(CSVTUIASRGrammars *)self _getLMEWithGrammar:grammar withLocale:a3];
+      v5 = [(CSVTUIASRGrammars *)self _getLMEWithGrammar:grammar withLocale:locale];
       v3 = vars8;
     }
   }
@@ -56,20 +56,20 @@
   return v5;
 }
 
-- (id)_getRegexPatternsWithGrammars:(id)a3 withUtt:(int64_t)a4 withLocale:(id)a5
+- (id)_getRegexPatternsWithGrammars:(id)grammars withUtt:(int64_t)utt withLocale:(id)locale
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 objectForKey:v8];
+  grammarsCopy = grammars;
+  localeCopy = locale;
+  v9 = [grammarsCopy objectForKey:localeCopy];
 
-  if (v9 && ([v7 objectForKey:v8], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKey:", @"regex"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  if (v9 && ([grammarsCopy objectForKey:localeCopy], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKey:", @"regex"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
-    v12 = [v7 objectForKey:v8];
+    v12 = [grammarsCopy objectForKey:localeCopy];
     v13 = [v12 objectForKey:@"regex"];
 
-    if (v13 && [v13 count] >= a4)
+    if (v13 && [v13 count] >= utt)
     {
-      v14 = [v13 objectAtIndex:a4 - 1];
+      v14 = [v13 objectAtIndex:utt - 1];
     }
 
     else
@@ -86,15 +86,15 @@
   return v14;
 }
 
-- (id)getRegexPatternsForUtt:(int64_t)a3 Locale:(id)a4
+- (id)getRegexPatternsForUtt:(int64_t)utt Locale:(id)locale
 {
   v7 = 0;
-  if (a4)
+  if (locale)
   {
     grammar = self->_grammar;
     if (grammar)
     {
-      v7 = [(CSVTUIASRGrammars *)self _getRegexPatternsWithGrammars:grammar withUtt:a3 withLocale:a4];
+      v7 = [(CSVTUIASRGrammars *)self _getRegexPatternsWithGrammars:grammar withUtt:utt withLocale:locale];
       v4 = vars8;
     }
   }
@@ -102,20 +102,20 @@
   return v7;
 }
 
-- (id)_getLeadingPatternsWithGrammars:(id)a3 withLocale:(id)a4
+- (id)_getLeadingPatternsWithGrammars:(id)grammars withLocale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:v6];
+  grammarsCopy = grammars;
+  localeCopy = locale;
+  v7 = [grammarsCopy objectForKey:localeCopy];
 
   if (v7)
   {
-    v8 = [v5 objectForKey:v6];
+    v8 = [grammarsCopy objectForKey:localeCopy];
     v9 = [v8 objectForKey:@"leading_garbage"];
 
     if (v9)
     {
-      v10 = [v5 objectForKey:v6];
+      v10 = [grammarsCopy objectForKey:localeCopy];
       v7 = [v10 objectForKey:@"leading_garbage"];
     }
 
@@ -128,10 +128,10 @@
   return v7;
 }
 
-- (id)getLeadingPatternsForUtt:(int64_t)a3 Locale:(id)a4
+- (id)getLeadingPatternsForUtt:(int64_t)utt Locale:(id)locale
 {
   v6 = 0;
-  if (a4 && self->_grammar)
+  if (locale && self->_grammar)
   {
     v6 = [CSVTUIASRGrammars _getLeadingPatternsWithGrammars:"_getLeadingPatternsWithGrammars:withLocale:" withLocale:?];
     v4 = vars8;
@@ -140,20 +140,20 @@
   return v6;
 }
 
-- (id)_getTrailingPatternsWithGrammars:(id)a3 withLocale:(id)a4
+- (id)_getTrailingPatternsWithGrammars:(id)grammars withLocale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:v6];
+  grammarsCopy = grammars;
+  localeCopy = locale;
+  v7 = [grammarsCopy objectForKey:localeCopy];
 
   if (v7)
   {
-    v8 = [v5 objectForKey:v6];
+    v8 = [grammarsCopy objectForKey:localeCopy];
     v9 = [v8 objectForKey:@"trailing_garbage"];
 
     if (v9)
     {
-      v10 = [v5 objectForKey:v6];
+      v10 = [grammarsCopy objectForKey:localeCopy];
       v7 = [v10 objectForKey:@"trailing_garbage"];
     }
 
@@ -166,10 +166,10 @@
   return v7;
 }
 
-- (id)getTrailingPatternsForUtt:(int64_t)a3 Locale:(id)a4
+- (id)getTrailingPatternsForUtt:(int64_t)utt Locale:(id)locale
 {
   v6 = 0;
-  if (a4 && self->_grammar)
+  if (locale && self->_grammar)
   {
     v6 = [CSVTUIASRGrammars _getTrailingPatternsWithGrammars:"_getTrailingPatternsWithGrammars:withLocale:" withLocale:?];
     v4 = vars8;
@@ -181,12 +181,12 @@
 - (id)createGrammars
 {
   v2 = objc_alloc_init(MEMORY[0x277CBEAC0]);
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [v4 bundlePath];
+  bundlePath = [v4 bundlePath];
 
-  v6 = [v5 stringByAppendingPathComponent:@"regex.json"];
-  if ([v3 fileExistsAtPath:v6])
+  v6 = [bundlePath stringByAppendingPathComponent:@"regex.json"];
+  if ([defaultManager fileExistsAtPath:v6])
   {
     v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v6];
     v11 = 0;
@@ -217,9 +217,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CSVTUIASRGrammars *)v2 createGrammars];
+    createGrammars = [(CSVTUIASRGrammars *)v2 createGrammars];
     grammar = v3->_grammar;
-    v3->_grammar = v4;
+    v3->_grammar = createGrammars;
   }
 
   return v3;

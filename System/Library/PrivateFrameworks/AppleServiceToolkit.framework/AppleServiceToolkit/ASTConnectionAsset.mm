@@ -1,26 +1,26 @@
 @interface ASTConnectionAsset
-- (ASTConnectionAsset)initWithServerURL:(id)a3 endpoint:(id)a4 assetName:(id)a5 destinationFileHandle:(id)a6;
+- (ASTConnectionAsset)initWithServerURL:(id)l endpoint:(id)endpoint assetName:(id)name destinationFileHandle:(id)handle;
 - (id)endpoint;
 @end
 
 @implementation ASTConnectionAsset
 
-- (ASTConnectionAsset)initWithServerURL:(id)a3 endpoint:(id)a4 assetName:(id)a5 destinationFileHandle:(id)a6
+- (ASTConnectionAsset)initWithServerURL:(id)l endpoint:(id)endpoint assetName:(id)name destinationFileHandle:(id)handle
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  endpointCopy = endpoint;
+  nameCopy = name;
+  handleCopy = handle;
   v18.receiver = self;
   v18.super_class = ASTConnectionAsset;
   v15 = [(ASTMaterializedConnection *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_serverURL, a3);
-    objc_storeStrong(&v16->_endpoint, a4);
-    objc_storeStrong(&v16->_assetName, a5);
-    objc_storeStrong(&v16->_destinationFileHandle, a6);
+    objc_storeStrong(&v15->_serverURL, l);
+    objc_storeStrong(&v16->_endpoint, endpoint);
+    objc_storeStrong(&v16->_assetName, name);
+    objc_storeStrong(&v16->_destinationFileHandle, handle);
   }
 
   return v16;
@@ -29,15 +29,15 @@
 - (id)endpoint
 {
   endpoint = self->_endpoint;
-  v3 = [(ASTConnectionAsset *)self assetName];
+  assetName = [(ASTConnectionAsset *)self assetName];
   if (endpoint)
   {
-    v4 = [(NSString *)endpoint stringByAppendingPathComponent:v3];
+    v4 = [(NSString *)endpoint stringByAppendingPathComponent:assetName];
 
-    v3 = v4;
+    assetName = v4;
   }
 
-  return v3;
+  return assetName;
 }
 
 @end

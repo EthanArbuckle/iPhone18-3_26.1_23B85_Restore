@@ -1,13 +1,13 @@
 @interface AVMediaPresentationSelector
-- (AVMediaPresentationSelector)initWithFigAssetCustomMediaSelectionSchemeSelector:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_settingsSatisfiableByOptions:(id)a3 satisfiableLanguages:(id)a4;
+- (AVMediaPresentationSelector)initWithFigAssetCustomMediaSelectionSchemeSelector:(id)selector;
+- (BOOL)isEqual:(id)equal;
+- (id)_settingsSatisfiableByOptions:(id)options satisfiableLanguages:(id)languages;
 - (void)dealloc;
 @end
 
 @implementation AVMediaPresentationSelector
 
-- (AVMediaPresentationSelector)initWithFigAssetCustomMediaSelectionSchemeSelector:(id)a3
+- (AVMediaPresentationSelector)initWithFigAssetCustomMediaSelectionSchemeSelector:(id)selector
 {
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -15,10 +15,10 @@
   v4 = [(AVMediaPresentationSelector *)&v18 init];
   if (v4)
   {
-    v4->_identifier = [objc_msgSend(a3 objectForKey:{@"CustomMediaSelectionSchemeSelector", "copy"}];
-    v4->_displayNames = [a3 objectForKey:@"CustomMediaSelectionSchemeSelectorDisplayNames"];
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [a3 objectForKey:@"CustomMediaSelectionSchemeSelectorSettings"];
+    v4->_identifier = [objc_msgSend(selector objectForKey:{@"CustomMediaSelectionSchemeSelector", "copy"}];
+    v4->_displayNames = [selector objectForKey:@"CustomMediaSelectionSchemeSelectorDisplayNames"];
+    array = [MEMORY[0x1E695DF70] array];
+    v6 = [selector objectForKey:@"CustomMediaSelectionSchemeSelectorSettings"];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -42,7 +42,7 @@
           if (v11)
           {
             v12 = v11;
-            [v5 addObject:v11];
+            [array addObject:v11];
           }
 
           ++v10;
@@ -55,7 +55,7 @@
       while (v8);
     }
 
-    v4->_mediaPresentationSettings = v5;
+    v4->_mediaPresentationSettings = array;
   }
 
   return v4;
@@ -68,7 +68,7 @@
   [(AVMediaPresentationSelector *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -77,15 +77,15 @@
   }
 
   identifier = self->_identifier;
-  v6 = [a3 identifier];
+  identifier = [equal identifier];
 
-  return [(NSString *)identifier isEqualToString:v6];
+  return [(NSString *)identifier isEqualToString:identifier];
 }
 
-- (id)_settingsSatisfiableByOptions:(id)a3 satisfiableLanguages:(id)a4
+- (id)_settingsSatisfiableByOptions:(id)options satisfiableLanguages:(id)languages
 {
   v33 = *MEMORY[0x1E69E9840];
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -106,12 +106,12 @@
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v31 = [v11 mediaCharacteristic];
-        v12 = +[AVMediaSelectionGroup mediaSelectionOptionsFromArray:withMediaCharacteristics:](AVMediaSelectionGroup, "mediaSelectionOptionsFromArray:withMediaCharacteristics:", a3, [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1]);
+        mediaCharacteristic = [v11 mediaCharacteristic];
+        v12 = +[AVMediaSelectionGroup mediaSelectionOptionsFromArray:withMediaCharacteristics:](AVMediaSelectionGroup, "mediaSelectionOptionsFromArray:withMediaCharacteristics:", options, [MEMORY[0x1E695DEC8] arrayWithObjects:&mediaCharacteristic count:1]);
         if ([(NSArray *)v12 count])
         {
-          [v21 addObject:v11];
-          if (a4)
+          [array addObject:v11];
+          if (languages)
           {
             v24 = 0u;
             v25 = 0u;
@@ -131,13 +131,13 @@
                     objc_enumerationMutation(v12);
                   }
 
-                  v17 = [*(*(&v22 + 1) + 8 * j) extendedLanguageTag];
-                  if (v17)
+                  extendedLanguageTag = [*(*(&v22 + 1) + 8 * j) extendedLanguageTag];
+                  if (extendedLanguageTag)
                   {
-                    v18 = v17;
-                    if (([a4 containsObject:v17] & 1) == 0)
+                    v18 = extendedLanguageTag;
+                    if (([languages containsObject:extendedLanguageTag] & 1) == 0)
                     {
-                      [a4 addObject:v18];
+                      [languages addObject:v18];
                     }
                   }
                 }
@@ -157,7 +157,7 @@
     while (v8);
   }
 
-  return v21;
+  return array;
 }
 
 @end

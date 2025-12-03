@@ -1,8 +1,8 @@
 @interface CPListItem
 + (CGSize)maximumImageSize;
-+ (void)_setMaximumImageSize:(CGSize)a3;
-- (BOOL)isEqual:(id)a3;
-- (CPListItem)initWithCoder:(id)a3;
++ (void)_setMaximumImageSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
+- (CPListItem)initWithCoder:(id)coder;
 - (CPListItem)initWithText:(NSString *)text detailText:(NSString *)detailText;
 - (CPListItem)initWithText:(NSString *)text detailText:(NSString *)detailText image:(UIImage *)image;
 - (CPListItem)initWithText:(NSString *)text detailText:(NSString *)detailText image:(UIImage *)image accessoryImage:(UIImage *)accessoryImage accessoryType:(CPListItemAccessoryType)accessoryType;
@@ -12,7 +12,7 @@
 - (UIImage)image;
 - (unint64_t)hash;
 - (void)_setNeedsUpdate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAccessoryImage:(UIImage *)accessoryImage;
 - (void)setAccessoryType:(CPListItemAccessoryType)accessoryType;
 - (void)setDetailText:(NSString *)detailText;
@@ -21,16 +21,16 @@
 - (void)setImage:(UIImage *)image;
 - (void)setPlaying:(BOOL)playing;
 - (void)setPlayingIndicatorLocation:(CPListItemPlayingIndicatorLocation)playingIndicatorLocation;
-- (void)setShowsDisclosureIndicator:(BOOL)a3;
+- (void)setShowsDisclosureIndicator:(BOOL)indicator;
 - (void)setText:(NSString *)text;
 @end
 
 @implementation CPListItem
 
-+ (void)_setMaximumImageSize:(CGSize)a3
++ (void)_setMaximumImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v11 = *MEMORY[0x277D85DE8];
   v5 = CarPlayFrameworkGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -77,9 +77,9 @@
   v9 = [(CPListItem *)&v13 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v9->_identifier;
-    v9->_identifier = v10;
+    v9->_identifier = uUID;
 
     objc_storeStrong(&v9->_text, text);
     objc_storeStrong(&v9->_detailText, detailText);
@@ -163,72 +163,72 @@ id __73__CPListItem_initWithText_detailText_image_accessoryImage_accessoryType__
   return v6;
 }
 
-- (CPListItem)initWithCoder:(id)a3
+- (CPListItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CPListItem;
   v5 = [(CPListItem *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListItemTextKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListItemTextKey"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListItemIdentifierKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListItemIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListItemDetailTextKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListItemDetailTextKey"];
     detailText = v5->_detailText;
     v5->_detailText = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListItemImageKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListItemImageKey"];
     imageSet = v5->_imageSet;
     v5->_imageSet = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListItemAccessoryImageSetKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListItemAccessoryImageSetKey"];
     accessoryImageSet = v5->_accessoryImageSet;
     v5->_accessoryImageSet = v14;
 
-    v5->_explicitContent = [v4 decodeBoolForKey:@"kCPListItemExplicitLabelKey"];
-    v5->_accessoryType = [v4 decodeIntegerForKey:@"kCPListItemAccessoryTypeKey"];
-    [v4 decodeFloatForKey:@"kCPListItemProgressBarKey"];
+    v5->_explicitContent = [coderCopy decodeBoolForKey:@"kCPListItemExplicitLabelKey"];
+    v5->_accessoryType = [coderCopy decodeIntegerForKey:@"kCPListItemAccessoryTypeKey"];
+    [coderCopy decodeFloatForKey:@"kCPListItemProgressBarKey"];
     v5->_playbackProgress = v16;
-    v5->_playing = [v4 decodeBoolForKey:@"kCPListItemPlayingKey"];
-    v5->_playingIndicatorLocation = [v4 decodeIntegerForKey:@"kCPListItemPlayingIndicatorLocationKey"];
-    v5->_enabled = [v4 decodeBoolForKey:@"kCPListItemEnabledKey"];
+    v5->_playing = [coderCopy decodeBoolForKey:@"kCPListItemPlayingKey"];
+    v5->_playingIndicatorLocation = [coderCopy decodeIntegerForKey:@"kCPListItemPlayingIndicatorLocationKey"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"kCPListItemEnabledKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(CPListItem *)self text];
-  [v10 encodeObject:v4 forKey:@"kCPListItemTextKey"];
+  coderCopy = coder;
+  text = [(CPListItem *)self text];
+  [coderCopy encodeObject:text forKey:@"kCPListItemTextKey"];
 
-  v5 = [(CPListItem *)self identifier];
-  [v10 encodeObject:v5 forKey:@"kCPListItemIdentifierKey"];
+  identifier = [(CPListItem *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPListItemIdentifierKey"];
 
-  v6 = [(CPListItem *)self detailText];
-  [v10 encodeObject:v6 forKey:@"kCPListItemDetailTextKey"];
+  detailText = [(CPListItem *)self detailText];
+  [coderCopy encodeObject:detailText forKey:@"kCPListItemDetailTextKey"];
 
-  v7 = [(CPListItem *)self imageSet];
-  [v10 encodeObject:v7 forKey:@"kCPListItemImageKey"];
+  imageSet = [(CPListItem *)self imageSet];
+  [coderCopy encodeObject:imageSet forKey:@"kCPListItemImageKey"];
 
-  v8 = [(CPListItem *)self accessoryImageSet];
-  [v10 encodeObject:v8 forKey:@"kCPListItemAccessoryImageSetKey"];
+  accessoryImageSet = [(CPListItem *)self accessoryImageSet];
+  [coderCopy encodeObject:accessoryImageSet forKey:@"kCPListItemAccessoryImageSetKey"];
 
-  [v10 encodeBool:-[CPListItem isExplicitContent](self forKey:{"isExplicitContent"), @"kCPListItemExplicitLabelKey"}];
-  [v10 encodeInteger:-[CPListItem accessoryType](self forKey:{"accessoryType"), @"kCPListItemAccessoryTypeKey"}];
+  [coderCopy encodeBool:-[CPListItem isExplicitContent](self forKey:{"isExplicitContent"), @"kCPListItemExplicitLabelKey"}];
+  [coderCopy encodeInteger:-[CPListItem accessoryType](self forKey:{"accessoryType"), @"kCPListItemAccessoryTypeKey"}];
   [(CPListItem *)self playbackProgress];
   *&v9 = v9;
-  [v10 encodeFloat:@"kCPListItemProgressBarKey" forKey:v9];
-  [v10 encodeBool:-[CPListItem isPlaying](self forKey:{"isPlaying"), @"kCPListItemPlayingKey"}];
-  [v10 encodeInteger:-[CPListItem playingIndicatorLocation](self forKey:{"playingIndicatorLocation"), @"kCPListItemPlayingIndicatorLocationKey"}];
-  [v10 encodeBool:-[CPListItem isEnabled](self forKey:{"isEnabled"), @"kCPListItemEnabledKey"}];
+  [coderCopy encodeFloat:@"kCPListItemProgressBarKey" forKey:v9];
+  [coderCopy encodeBool:-[CPListItem isPlaying](self forKey:{"isPlaying"), @"kCPListItemPlayingKey"}];
+  [coderCopy encodeInteger:-[CPListItem playingIndicatorLocation](self forKey:{"playingIndicatorLocation"), @"kCPListItemPlayingIndicatorLocationKey"}];
+  [coderCopy encodeBool:-[CPListItem isEnabled](self forKey:{"isEnabled"), @"kCPListItemEnabledKey"}];
 }
 
 - (NSString)description
@@ -237,30 +237,30 @@ id __73__CPListItem_initWithText_detailText_image_accessoryImage_accessoryType__
   v12.receiver = self;
   v12.super_class = CPListItem;
   v4 = [(CPListItem *)&v12 description];
-  v5 = [(CPListItem *)self identifier];
-  v6 = [(CPListItem *)self text];
+  identifier = [(CPListItem *)self identifier];
+  text = [(CPListItem *)self text];
   detailText = self->_detailText;
   imageSet = self->_imageSet;
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CPListItem accessoryType](self, "accessoryType")}];
-  v10 = [v3 stringWithFormat:@"%@: {identifier: %@, text: %@, detailText: %@, image: %@, accessory: %@}", v4, v5, v6, detailText, imageSet, v9];
+  v10 = [v3 stringWithFormat:@"%@: {identifier: %@, text: %@, detailText: %@, image: %@, accessory: %@}", v4, identifier, text, detailText, imageSet, v9];
 
   return v10;
 }
 
 - (UIImage)image
 {
-  v2 = [(CPListItem *)self imageSet];
-  v3 = [v2 image];
+  imageSet = [(CPListItem *)self imageSet];
+  image = [imageSet image];
 
-  return v3;
+  return image;
 }
 
 - (UIImage)accessoryImage
 {
-  v2 = [(CPListItem *)self accessoryImageSet];
-  v3 = [v2 image];
+  accessoryImageSet = [(CPListItem *)self accessoryImageSet];
+  image = [accessoryImageSet image];
 
-  return v3;
+  return image;
 }
 
 - (void)setEnabled:(BOOL)enabled
@@ -284,8 +284,8 @@ id __73__CPListItem_initWithText_detailText_image_accessoryImage_accessoryType__
 
 - (void)_setNeedsUpdate
 {
-  v3 = [(CPListItem *)self listTemplate];
-  [v3 _setItemNeedsUpdate:self];
+  listTemplate = [(CPListItem *)self listTemplate];
+  [listTemplate _setItemNeedsUpdate:self];
 }
 
 - (void)setDetailText:(NSString *)detailText
@@ -416,10 +416,10 @@ id __32__CPListItem_setAccessoryImage___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setShowsDisclosureIndicator:(BOOL)a3
+- (void)setShowsDisclosureIndicator:(BOOL)indicator
 {
-  self->_showsDisclosureIndicator = a3;
-  if (a3)
+  self->_showsDisclosureIndicator = indicator;
+  if (indicator)
   {
     self->_accessoryType = 1;
   }
@@ -427,29 +427,29 @@ id __32__CPListItem_setAccessoryImage___block_invoke(uint64_t a1, void *a2)
 
 - (unint64_t)hash
 {
-  v3 = [(CPListItem *)self text];
-  v4 = [v3 hash];
-  v5 = [(CPListItem *)self detailText];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CPListItem *)self identifier];
-  v8 = [v7 hash];
+  text = [(CPListItem *)self text];
+  v4 = [text hash];
+  detailText = [(CPListItem *)self detailText];
+  v6 = [detailText hash] ^ v4;
+  identifier = [(CPListItem *)self identifier];
+  v8 = [identifier hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 text];
-    v6 = [(CPListItem *)self text];
-    if ([v5 isEqualToString:v6])
+    text = [equalCopy text];
+    text2 = [(CPListItem *)self text];
+    if ([text isEqualToString:text2])
     {
-      v7 = [v4 detailText];
-      v8 = [(CPListItem *)self detailText];
-      v9 = [v7 isEqualToString:v8];
+      detailText = [equalCopy detailText];
+      detailText2 = [(CPListItem *)self detailText];
+      v9 = [detailText isEqualToString:detailText2];
     }
 
     else

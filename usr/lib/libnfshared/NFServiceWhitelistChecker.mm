@@ -1,35 +1,35 @@
 @interface NFServiceWhitelistChecker
-- (BOOL)_BOOLValueOfEntitlement:(id)a3 secTask:(__SecTask *)a4;
-- (BOOL)_isAIDStringValid:(id)a3;
+- (BOOL)_BOOLValueOfEntitlement:(id)entitlement secTask:(__SecTask *)task;
+- (BOOL)_isAIDStringValid:(id)valid;
 - (BOOL)externalReaderAccessAllow;
-- (NFServiceWhitelistChecker)initWithConnection:(id)a3 coreNFCConnection:(BOOL)a4;
+- (NFServiceWhitelistChecker)initWithConnection:(id)connection coreNFCConnection:(BOOL)cConnection;
 - (double)sessionTimeLimit;
-- (id)_arrayValueOfEntitlement:(id)a3 secTask:(__SecTask *)a4;
-- (id)_createAccessDictionaryFromICCode:(id)a3 serialNumber:(id)a4 maximumFilterStringLength:(unint64_t)a5;
-- (id)_stringFromArray:(id)a3;
+- (id)_arrayValueOfEntitlement:(id)entitlement secTask:(__SecTask *)task;
+- (id)_createAccessDictionaryFromICCode:(id)code serialNumber:(id)number maximumFilterStringLength:(unint64_t)length;
+- (id)_stringFromArray:(id)array;
 - (id)_stringFromISO15693AccessFilterList;
-- (id)_stringValueOfEntitlement:(id)a3 secTask:(__SecTask *)a4;
+- (id)_stringValueOfEntitlement:(id)entitlement secTask:(__SecTask *)task;
 - (id)bundleIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)getAppInfoDictionary;
-- (unsigned)validateISO15693TagAccessWithManufacturerCode:(unint64_t)a3;
-- (unsigned)validateISO15693TagAccessWithManufacturerCode:(unint64_t)a3 serialNumber:(id)a4;
-- (unsigned)validateISO15693TagAcesssWithUID:(id)a3;
-- (void)_copyValueOfEntitlement:(id)a3 secTask:(__SecTask *)a4;
-- (void)_initCardSessionEntitlementsWithSecTask:(__SecTask *)a3;
-- (void)_initCoreNFCEntitlements:(id)a3 secTask:(__SecTask *)a4;
-- (void)_initISO7816PermissibleAIDListWithSecTask:(__SecTask *)a3 infoPlist:(id)a4;
-- (void)_initTagSpecifier:(id)a3 maximumFilterStringLength:(unint64_t)a4;
+- (unsigned)validateISO15693TagAccessWithManufacturerCode:(unint64_t)code;
+- (unsigned)validateISO15693TagAccessWithManufacturerCode:(unint64_t)code serialNumber:(id)number;
+- (unsigned)validateISO15693TagAcesssWithUID:(id)d;
+- (void)_copyValueOfEntitlement:(id)entitlement secTask:(__SecTask *)task;
+- (void)_initCardSessionEntitlementsWithSecTask:(__SecTask *)task;
+- (void)_initCoreNFCEntitlements:(id)entitlements secTask:(__SecTask *)task;
+- (void)_initISO7816PermissibleAIDListWithSecTask:(__SecTask *)task infoPlist:(id)plist;
+- (void)_initTagSpecifier:(id)specifier maximumFilterStringLength:(unint64_t)length;
 @end
 
 @implementation NFServiceWhitelistChecker
 
-- (void)_copyValueOfEntitlement:(id)a3 secTask:(__SecTask *)a4
+- (void)_copyValueOfEntitlement:(id)entitlement secTask:(__SecTask *)task
 {
   v34 = *MEMORY[0x277D85DE8];
   error = 0;
-  v6 = SecTaskCopyValueForEntitlement(a4, a3, &error);
+  v6 = SecTaskCopyValueForEntitlement(task, entitlement, &error);
   if (error)
   {
     v7 = kNFLOG_DISPATCH_SPECIFIC_KEY;
@@ -93,9 +93,9 @@
   return v6;
 }
 
-- (BOOL)_BOOLValueOfEntitlement:(id)a3 secTask:(__SecTask *)a4
+- (BOOL)_BOOLValueOfEntitlement:(id)entitlement secTask:(__SecTask *)task
 {
-  v4 = objc_msgSend__copyValueOfEntitlement_secTask_(self, a2, a3, a4);
+  v4 = objc_msgSend__copyValueOfEntitlement_secTask_(self, a2, entitlement, task);
   if (!v4)
   {
     return 0;
@@ -108,9 +108,9 @@
   return v7;
 }
 
-- (id)_arrayValueOfEntitlement:(id)a3 secTask:(__SecTask *)a4
+- (id)_arrayValueOfEntitlement:(id)entitlement secTask:(__SecTask *)task
 {
-  v4 = objc_msgSend__copyValueOfEntitlement_secTask_(self, a2, a3, a4);
+  v4 = objc_msgSend__copyValueOfEntitlement_secTask_(self, a2, entitlement, task);
   v5 = v4;
   if (v4)
   {
@@ -125,9 +125,9 @@
   return v5;
 }
 
-- (id)_stringValueOfEntitlement:(id)a3 secTask:(__SecTask *)a4
+- (id)_stringValueOfEntitlement:(id)entitlement secTask:(__SecTask *)task
 {
-  v4 = objc_msgSend__copyValueOfEntitlement_secTask_(self, a2, a3, a4);
+  v4 = objc_msgSend__copyValueOfEntitlement_secTask_(self, a2, entitlement, task);
   v5 = v4;
   if (v4)
   {
@@ -142,27 +142,27 @@
   return v5;
 }
 
-- (id)_createAccessDictionaryFromICCode:(id)a3 serialNumber:(id)a4 maximumFilterStringLength:(unint64_t)a5
+- (id)_createAccessDictionaryFromICCode:(id)code serialNumber:(id)number maximumFilterStringLength:(unint64_t)length
 {
   v47[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  codeCopy = code;
+  numberCopy = number;
   v9 = objc_opt_new();
   v11 = objc_msgSend_characterSetWithCharactersInString_(MEMORY[0x277CCA900], v10, @"0123456789abcdefABCDEF*");
-  if (objc_msgSend_length(v7, v12, v13) <= 2)
+  if (objc_msgSend_length(codeCopy, v12, v13) <= 2)
   {
     v45 = 0;
-    v15 = objc_msgSend_scannerWithString_(MEMORY[0x277CCAC80], v14, v7);
+    v15 = objc_msgSend_scannerWithString_(MEMORY[0x277CCAC80], v14, codeCopy);
     v17 = objc_msgSend_scanHexInt_(v15, v16, &v45);
 
     if (v17)
     {
-      v19 = objc_msgSend_scannerWithString_(MEMORY[0x277CCAC80], v18, v8);
+      v19 = objc_msgSend_scannerWithString_(MEMORY[0x277CCAC80], v18, numberCopy);
       v44 = 0;
       objc_msgSend_scanCharactersFromSet_intoString_(v19, v20, v11, &v44);
       v21 = v44;
 
-      if (objc_msgSend_length(v21, v22, v23) <= a5)
+      if (objc_msgSend_length(v21, v22, v23) <= length)
       {
         hasPrefix = objc_msgSend_hasPrefix_(v21, v24, @"*");
         hasSuffix = objc_msgSend_hasSuffix_(v21, v26, @"*");
@@ -211,19 +211,19 @@
   return v9;
 }
 
-- (void)_initTagSpecifier:(id)a3 maximumFilterStringLength:(unint64_t)a4
+- (void)_initTagSpecifier:(id)specifier maximumFilterStringLength:(unint64_t)length
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  specifierCopy = specifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v40 = v6;
+    v40 = specifierCopy;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v7 = v6;
+    v7 = specifierCopy;
     v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v41, v45, 16);
     if (!v9)
     {
@@ -273,7 +273,7 @@
 LABEL_18:
             v31 = objc_msgSend_objectAtIndexedSubscript_(v29, v30, 0);
             v33 = objc_msgSend_objectAtIndexedSubscript_(v29, v32, 1);
-            v15 = objc_msgSend__createAccessDictionaryFromICCode_serialNumber_maximumFilterStringLength_(self, v34, v31, v33, a4);
+            v15 = objc_msgSend__createAccessDictionaryFromICCode_serialNumber_maximumFilterStringLength_(self, v34, v31, v33, length);
 
             if (objc_msgSend_count(v15, v35, v36))
             {
@@ -311,7 +311,7 @@ LABEL_21:
       {
 LABEL_23:
 
-        v6 = v40;
+        specifierCopy = v40;
         break;
       }
     }
@@ -320,13 +320,13 @@ LABEL_23:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isAIDStringValid:(id)a3
+- (BOOL)_isAIDStringValid:(id)valid
 {
   v74 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA900];
-  v6 = a3;
+  validCopy = valid;
   v8 = objc_msgSend_characterSetWithCharactersInString_(v5, v7, @"0123456789ABCDEF");
-  v11 = objc_msgSend_uppercaseString(v6, v9, v10);
+  v11 = objc_msgSend_uppercaseString(validCopy, v9, v10);
 
   if (objc_msgSend_length(v11, v12, v13) <= 9)
   {
@@ -537,10 +537,10 @@ LABEL_41:
   return IsMember;
 }
 
-- (void)_initCoreNFCEntitlements:(id)a3 secTask:(__SecTask *)a4
+- (void)_initCoreNFCEntitlements:(id)entitlements secTask:(__SecTask *)task
 {
   v32 = *MEMORY[0x277D85DE8];
-  v25 = objc_msgSend_getAppInfoDictionary(self, a2, a3);
+  v25 = objc_msgSend_getAppInfoDictionary(self, a2, entitlements);
   v6 = objc_msgSend_NF_stringForKey_(v25, v5, @"NFCReaderUsageDescription");
   if (objc_msgSend_length(v6, v7, v8))
   {
@@ -548,7 +548,7 @@ LABEL_41:
   }
 
   v24 = v6;
-  v10 = objc_msgSend__arrayValueOfEntitlement_secTask_(self, v9, @"com.apple.developer.nfc.readersession.formats", a4);
+  v10 = objc_msgSend__arrayValueOfEntitlement_secTask_(self, v9, @"com.apple.developer.nfc.readersession.formats", task);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -578,7 +578,7 @@ LABEL_41:
 
           else if (objc_msgSend_isEqualToString_(v17, v18, @"ISO15693"))
           {
-            v20 = objc_msgSend__arrayValueOfEntitlement_secTask_(self, v19, @"com.apple.developer.nfc.readersession.iso15693.tag-identifiers", a4);
+            v20 = objc_msgSend__arrayValueOfEntitlement_secTask_(self, v19, @"com.apple.developer.nfc.readersession.iso15693.tag-identifiers", task);
             objc_msgSend__initISO15693TagSpecifier_(self, v21, v20);
             self->_iso15693ReaderAccess = 1;
           }
@@ -607,16 +607,16 @@ LABEL_41:
     while (v14);
   }
 
-  objc_msgSend__initISO7816PermissibleAIDListWithSecTask_infoPlist_(self, v13, a4, v25);
-  objc_msgSend__initCardSessionEntitlementsWithSecTask_(self, v22, a4);
+  objc_msgSend__initISO7816PermissibleAIDListWithSecTask_infoPlist_(self, v13, task, v25);
+  objc_msgSend__initCardSessionEntitlementsWithSecTask_(self, v22, task);
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_initISO7816PermissibleAIDListWithSecTask:(__SecTask *)a3 infoPlist:(id)a4
+- (void)_initISO7816PermissibleAIDListWithSecTask:(__SecTask *)task infoPlist:(id)plist
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend__arrayValueOfEntitlement_secTask_(self, a2, @"com.apple.developer.nfc.readersession.iso7816.select-identifiers.trusted", a3);
+  v5 = objc_msgSend__arrayValueOfEntitlement_secTask_(self, a2, @"com.apple.developer.nfc.readersession.iso7816.select-identifiers.trusted", task);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -660,15 +660,15 @@ LABEL_41:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_initCardSessionEntitlementsWithSecTask:(__SecTask *)a3
+- (void)_initCardSessionEntitlementsWithSecTask:(__SecTask *)task
 {
   v56 = *MEMORY[0x277D85DE8];
-  self->_nfcCardSessionAccess = objc_msgSend__BOOLValueOfEntitlement_secTask_(self, a2, @"com.apple.developer.nfc.hce", a3);
+  self->_nfcCardSessionAccess = objc_msgSend__BOOLValueOfEntitlement_secTask_(self, a2, @"com.apple.developer.nfc.hce", task);
   v6 = objc_opt_new();
   nfcCardSessionAIDPrefixList = self->_nfcCardSessionAIDPrefixList;
   self->_nfcCardSessionAIDPrefixList = v6;
 
-  v9 = objc_msgSend__arrayValueOfEntitlement_secTask_(self, v8, @"com.apple.developer.nfc.hce.iso7816.select-identifier-prefixes", a3);
+  v9 = objc_msgSend__arrayValueOfEntitlement_secTask_(self, v8, @"com.apple.developer.nfc.hce.iso7816.select-identifier-prefixes", task);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -766,11 +766,11 @@ LABEL_41:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (NFServiceWhitelistChecker)initWithConnection:(id)a3 coreNFCConnection:(BOOL)a4
+- (NFServiceWhitelistChecker)initWithConnection:(id)connection coreNFCConnection:(BOOL)cConnection
 {
-  v4 = a4;
+  cConnectionCopy = cConnection;
   v92 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  connectionCopy = connection;
   v87.receiver = self;
   v87.super_class = NFServiceWhitelistChecker;
   v10 = [(NFServiceWhitelistChecker *)&v87 init];
@@ -779,7 +779,7 @@ LABEL_41:
     goto LABEL_33;
   }
 
-  v11 = objc_msgSend_processIdentifier(v7, v8, v9);
+  v11 = objc_msgSend_processIdentifier(connectionCopy, v8, v9);
   v10->_clientProcessIdentifier = v11;
   memset(buffer, 0, 255);
   proc_name(v11, buffer, 0xFEu);
@@ -797,9 +797,9 @@ LABEL_41:
   v10->_trustedISO7816AidList = v18;
 
   v22 = *MEMORY[0x277CBECE8];
-  if (v7)
+  if (connectionCopy)
   {
-    objc_msgSend_auditToken(v7, v20, v21);
+    objc_msgSend_auditToken(connectionCopy, v20, v21);
   }
 
   else
@@ -836,9 +836,9 @@ LABEL_41:
     v10->_bgTagReadingAssertion = objc_msgSend__BOOLValueOfEntitlement_secTask_(v10, v48, @"com.apple.nfcd.assertion.tagreading", v25);
     v10->_chAssertion = objc_msgSend__BOOLValueOfEntitlement_secTask_(v10, v49, @"com.apple.nfcd.assertion.handover", v25);
     v10->_nfcHardwareRegistersAccess = objc_msgSend__BOOLValueOfEntitlement_secTask_(v10, v50, @"com.apple.nfcd.session.hardwareRegisters", v25);
-    if (v4)
+    if (cConnectionCopy)
     {
-      objc_msgSend__initCoreNFCEntitlements_secTask_(v10, v51, v7, v25);
+      objc_msgSend__initCoreNFCEntitlements_secTask_(v10, v51, connectionCopy, v25);
     }
 
     v10->_useUnfilteredApplets = objc_msgSend__BOOLValueOfEntitlement_secTask_(v10, v51, @"com.apple.internal.nfc.use.unfiltered.applets", v25);
@@ -933,7 +933,7 @@ LABEL_35:
       v61 = 43;
     }
 
-    v58(3, "%c[%{public}s %{public}s]:%i Cannot create SecTaskRef with XPC Connection: %{public}@", v61, v83, v85, 314, v7);
+    v58(3, "%c[%{public}s %{public}s]:%i Cannot create SecTaskRef with XPC Connection: %{public}@", v61, v83, v85, 314, connectionCopy);
     v56 = kNFLOG_DISPATCH_SPECIFIC_KEY;
   }
 
@@ -963,7 +963,7 @@ LABEL_35:
     *&token[28] = 1024;
     *&token[30] = 314;
     v89 = 2114;
-    v90 = v7;
+    v90 = connectionCopy;
     _os_log_impl(&dword_22EEC4000, v63, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Cannot create SecTaskRef with XPC Connection: %{public}@", token, 0x2Cu);
   }
 
@@ -974,14 +974,14 @@ LABEL_34:
   return v68;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v11 = objc_msgSend_init(v7, v8, v9);
   if (v11)
   {
-    v12 = objc_msgSend_copyWithZone_(self->_clientName, v10, a3);
+    v12 = objc_msgSend_copyWithZone_(self->_clientName, v10, zone);
     v13 = *(v11 + 32);
     *(v11 + 32) = v12;
 
@@ -991,23 +991,23 @@ LABEL_34:
     *(v11 + 67) = self->_miniNVWriteAccess;
     *(v11 + 68) = self->_lpmFactoryTest;
     *(v11 + 69) = self->_remoteAdminAccess;
-    v15 = objc_msgSend_copyWithZone_(self->_iso15693TagAccessFilters, v14, a3);
+    v15 = objc_msgSend_copyWithZone_(self->_iso15693TagAccessFilters, v14, zone);
     v16 = *(v11 + 8);
     *(v11 + 8) = v15;
 
     *(v11 + 62) = self->_ndefReaderAccess;
-    v18 = objc_msgSend_copyWithZone_(self->_readerPurposeString, v17, a3);
+    v18 = objc_msgSend_copyWithZone_(self->_readerPurposeString, v17, zone);
     v19 = *(v11 + 40);
     *(v11 + 40) = v18;
 
     *(v11 + 70) = self->_allowBackgroundedSession;
     *(v11 + 71) = self->_ignoreAppStateMonitor;
     *(v11 + 61) = self->_vasReaderAccess;
-    v21 = objc_msgSend_copyWithZone_(self->_applicationIdentifier, v20, a3);
+    v21 = objc_msgSend_copyWithZone_(self->_applicationIdentifier, v20, zone);
     v22 = *(v11 + 48);
     *(v11 + 48) = v21;
 
-    v24 = objc_msgSend_copyWithZone_(self->_trustedISO7816AidList, v23, a3);
+    v24 = objc_msgSend_copyWithZone_(self->_trustedISO7816AidList, v23, zone);
     v25 = *(v11 + 16);
     *(v11 + 16) = v24;
 
@@ -1032,7 +1032,7 @@ LABEL_34:
     *(v11 + 89) = self->_chAssertion;
     *(v11 + 90) = self->_seCredentialManagerAccess;
     *(v11 + 64) = self->_nfcCardSessionAccess;
-    v27 = objc_msgSend_copyWithZone_(self->_nfcCardSessionAIDPrefixList, v26, a3);
+    v27 = objc_msgSend_copyWithZone_(self->_nfcCardSessionAIDPrefixList, v26, zone);
     v28 = *(v11 + 24);
     *(v11 + 24) = v27;
 
@@ -1042,12 +1042,12 @@ LABEL_34:
   return v11;
 }
 
-- (unsigned)validateISO15693TagAcesssWithUID:(id)a3
+- (unsigned)validateISO15693TagAcesssWithUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   v8 = objc_msgSend_bytes(v5, v6, v7);
-  if (objc_msgSend_length(v4, v9, v10) == 8 && *(v8 + 7) == 224)
+  if (objc_msgSend_length(dCopy, v9, v10) == 8 && *(v8 + 7) == 224)
   {
     if (objc_msgSend_count(self->_iso15693TagAccessFilters, v11, v12))
     {
@@ -1079,10 +1079,10 @@ LABEL_34:
   return v21;
 }
 
-- (unsigned)validateISO15693TagAccessWithManufacturerCode:(unint64_t)a3 serialNumber:(id)a4
+- (unsigned)validateISO15693TagAccessWithManufacturerCode:(unint64_t)code serialNumber:(id)number
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_NF_asHexString(a4, a2, a3);
+  v6 = objc_msgSend_NF_asHexString(number, a2, code);
   if (objc_msgSend_length(v6, v7, v8))
   {
     v61 = 0u;
@@ -1108,7 +1108,7 @@ LABEL_4:
         v16 = objc_msgSend_objectForKeyedSubscript_(v15, v11, @"TagManufacturerCode");
         v19 = objc_msgSend_unsignedIntegerValue(v16, v17, v18);
 
-        if (v19 != a3)
+        if (v19 != code)
         {
           goto LABEL_19;
         }
@@ -1191,7 +1191,7 @@ LABEL_24:
   return v55;
 }
 
-- (unsigned)validateISO15693TagAccessWithManufacturerCode:(unint64_t)a3
+- (unsigned)validateISO15693TagAccessWithManufacturerCode:(unint64_t)code
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
@@ -1216,7 +1216,7 @@ LABEL_24:
         v11 = objc_msgSend_objectForKeyedSubscript_(*(*(&v18 + 1) + 8 * i), v7, @"TagManufacturerCode", v18);
         v14 = objc_msgSend_unsignedIntegerValue(v11, v12, v13);
 
-        if (v14 == a3)
+        if (v14 == code)
         {
           v15 = 0;
           goto LABEL_11;
@@ -1379,12 +1379,12 @@ LABEL_7:
   return v10;
 }
 
-- (id)_stringFromArray:(id)a3
+- (id)_stringFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc(MEMORY[0x277CCAB68]);
   v6 = objc_msgSend_initWithString_(v4, v5, @"[");
-  if (objc_msgSend_count(v3, v7, v8))
+  if (objc_msgSend_count(arrayCopy, v7, v8))
   {
     v10 = 0;
     while (1)
@@ -1394,7 +1394,7 @@ LABEL_7:
         objc_msgSend_appendString_(v6, v9, @", ");
       }
 
-      v11 = objc_msgSend_objectAtIndexedSubscript_(v3, v9, v10);
+      v11 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v9, v10);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1404,14 +1404,14 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = objc_msgSend_objectAtIndexedSubscript_(v3, v16, v10);
+        v14 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v16, v10);
         objc_msgSend_appendFormat_(v6, v17, @"%@", v14);
         goto LABEL_9;
       }
 
 LABEL_10:
 
-      if (objc_msgSend_count(v3, v18, v19) <= ++v10)
+      if (objc_msgSend_count(arrayCopy, v18, v19) <= ++v10)
       {
         goto LABEL_11;
       }

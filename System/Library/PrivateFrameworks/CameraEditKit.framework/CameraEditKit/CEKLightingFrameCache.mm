@@ -2,13 +2,13 @@
 - (BOOL)_needsBackgroundFrame;
 - (BOOL)_needsForegroundFrames;
 - (CEKLightingFrameCache)init;
-- (id)_appearanceForLightingType:(int64_t)a3;
-- (id)_renderBackgroundFramesForAbsoluteAngles:(id)a3 lightingType:(int64_t)a4 scale:(double)a5;
-- (id)_renderForegroundFramesForAbsoluteAngles:(id)a3 scale:(double)a4;
-- (id)_renderFrameForAngle:(int64_t)a3 scale:(double)a4 components:(int64_t)a5 appearance:(id)a6;
-- (id)backgroundFrameForAngle:(int64_t)a3 lightingType:(int64_t)a4;
-- (id)foregroundFrameForAngle:(int64_t)a3;
-- (int64_t)angleOfAvailableFrameForAngle:(int64_t)a3;
+- (id)_appearanceForLightingType:(int64_t)type;
+- (id)_renderBackgroundFramesForAbsoluteAngles:(id)angles lightingType:(int64_t)type scale:(double)scale;
+- (id)_renderForegroundFramesForAbsoluteAngles:(id)angles scale:(double)scale;
+- (id)_renderFrameForAngle:(int64_t)angle scale:(double)scale components:(int64_t)components appearance:(id)appearance;
+- (id)backgroundFrameForAngle:(int64_t)angle lightingType:(int64_t)type;
+- (id)foregroundFrameForAngle:(int64_t)angle;
+- (int64_t)angleOfAvailableFrameForAngle:(int64_t)angle;
 - (void)preloadBackgroundFrames;
 - (void)preloadForegroundFrames;
 @end
@@ -23,38 +23,38 @@
   v2 = [(CEKLightingFrameCache *)&v19 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     for (i = 0; i != 20; ++i)
     {
-      [v3 addIndex:CEKLightingFrameAbsoluteAngles[i]];
+      [indexSet addIndex:CEKLightingFrameAbsoluteAngles[i]];
     }
 
-    v5 = [(CEKLightingFrameCache *)v2 angleCount];
-    v6 = [v3 copy];
+    angleCount = [(CEKLightingFrameCache *)v2 angleCount];
+    v6 = [indexSet copy];
     availableAbsoluteAngles = v2->__availableAbsoluteAngles;
     v2->__availableAbsoluteAngles = v6;
 
-    v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v5];
+    v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:angleCount];
     foregroundFramesByAvailableAngle = v2->__foregroundFramesByAvailableAngle;
     v2->__foregroundFramesByAvailableAngle = v8;
 
     v20[0] = &unk_1F2FDFE68;
-    v10 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v5];
+    v10 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:angleCount];
     v21[0] = v10;
     v20[1] = &unk_1F2FDFE80;
-    v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v5];
+    v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:angleCount];
     v21[1] = v11;
     v20[2] = &unk_1F2FDFE98;
-    v12 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v5];
+    v12 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:angleCount];
     v21[2] = v12;
     v20[3] = &unk_1F2FDFEB0;
-    v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v5];
+    v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:angleCount];
     v21[3] = v13;
     v20[4] = &unk_1F2FDFEC8;
-    v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v5];
+    v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:angleCount];
     v21[4] = v14;
     v20[5] = &unk_1F2FDFEE0;
-    v15 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v5];
+    v15 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:angleCount];
     v21[5] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:6];
     backgroundFrameMapsByLightingType = v2->__backgroundFrameMapsByLightingType;
@@ -68,11 +68,11 @@
 {
   if ([(CEKLightingFrameCache *)self _needsForegroundFrames])
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v5 = v4;
 
-    v6 = [(CEKLightingFrameCache *)self _availableAbsoluteAngles];
+    _availableAbsoluteAngles = [(CEKLightingFrameCache *)self _availableAbsoluteAngles];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v8 = v7;
     objc_initWeak(&location, self);
@@ -82,10 +82,10 @@
     block[2] = __48__CEKLightingFrameCache_preloadForegroundFrames__block_invoke;
     block[3] = &unk_1E7CC6B88;
     objc_copyWeak(v13, &location);
-    v12 = v6;
+    v12 = _availableAbsoluteAngles;
     v13[1] = v5;
     v13[2] = v8;
-    v10 = v6;
+    v10 = _availableAbsoluteAngles;
     dispatch_async(v9, block);
 
     objc_destroyWeak(v13);
@@ -134,11 +134,11 @@ void __48__CEKLightingFrameCache_preloadForegroundFrames__block_invoke_2(uint64_
 {
   if ([(CEKLightingFrameCache *)self _needsForegroundFrames])
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v5 = v4;
 
-    v6 = [(CEKLightingFrameCache *)self _availableAbsoluteAngles];
+    _availableAbsoluteAngles = [(CEKLightingFrameCache *)self _availableAbsoluteAngles];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v8 = v7;
     objc_initWeak(&location, self);
@@ -148,10 +148,10 @@ void __48__CEKLightingFrameCache_preloadForegroundFrames__block_invoke_2(uint64_
     block[2] = __48__CEKLightingFrameCache_preloadBackgroundFrames__block_invoke;
     block[3] = &unk_1E7CC6B88;
     objc_copyWeak(v13, &location);
-    v12 = v6;
+    v12 = _availableAbsoluteAngles;
     v13[1] = v5;
     v13[2] = v8;
-    v10 = v6;
+    v10 = _availableAbsoluteAngles;
     dispatch_async(v9, block);
 
     objc_destroyWeak(v13);
@@ -230,22 +230,22 @@ void __48__CEKLightingFrameCache_preloadBackgroundFrames__block_invoke_2(uint64_
   [WeakRetained set_backgroundFrameMapsByLightingType:v7];
 }
 
-- (int64_t)angleOfAvailableFrameForAngle:(int64_t)a3
+- (int64_t)angleOfAvailableFrameForAngle:(int64_t)angle
 {
-  v4 = [(CEKLightingFrameCache *)self _availableAbsoluteAngles];
-  v5 = v4;
-  if (a3 >= 0)
+  _availableAbsoluteAngles = [(CEKLightingFrameCache *)self _availableAbsoluteAngles];
+  v5 = _availableAbsoluteAngles;
+  if (angle >= 0)
   {
-    v6 = a3;
+    angleCopy = angle;
   }
 
   else
   {
-    v6 = -a3;
+    angleCopy = -angle;
   }
 
-  v7 = [v4 cek_indexNearestToIndex:v6];
-  if (a3 >= 0)
+  v7 = [_availableAbsoluteAngles cek_indexNearestToIndex:angleCopy];
+  if (angle >= 0)
   {
     v8 = v7;
   }
@@ -258,46 +258,46 @@ void __48__CEKLightingFrameCache_preloadBackgroundFrames__block_invoke_2(uint64_
   return v8;
 }
 
-- (id)foregroundFrameForAngle:(int64_t)a3
+- (id)foregroundFrameForAngle:(int64_t)angle
 {
   v5 = [(CEKLightingFrameCache *)self angleOfAvailableFrameForAngle:?];
-  v6 = [(CEKLightingFrameCache *)self _foregroundFramesByAvailableAngle];
+  _foregroundFramesByAvailableAngle = [(CEKLightingFrameCache *)self _foregroundFramesByAvailableAngle];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [_foregroundFramesByAvailableAngle objectForKeyedSubscript:v7];
 
   if (!v8)
   {
     v9 = [(CEKLightingFrameCache *)self _appearanceForLightingType:1];
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 scale];
-    v8 = [(CEKLightingFrameCache *)self _renderFrameForAngle:a3 scale:48 components:v9 appearance:?];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v8 = [(CEKLightingFrameCache *)self _renderFrameForAngle:angle scale:48 components:v9 appearance:?];
 
     if (v8)
     {
       v11 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-      [v6 setObject:v8 forKeyedSubscript:v11];
+      [_foregroundFramesByAvailableAngle setObject:v8 forKeyedSubscript:v11];
     }
   }
 
   return v8;
 }
 
-- (id)backgroundFrameForAngle:(int64_t)a3 lightingType:(int64_t)a4
+- (id)backgroundFrameForAngle:(int64_t)angle lightingType:(int64_t)type
 {
   v7 = [(CEKLightingFrameCache *)self angleOfAvailableFrameForAngle:?];
-  v8 = [(CEKLightingFrameCache *)self _backgroundFrameMapsByLightingType];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  _backgroundFrameMapsByLightingType = [(CEKLightingFrameCache *)self _backgroundFrameMapsByLightingType];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v10 = [_backgroundFrameMapsByLightingType objectForKeyedSubscript:v9];
 
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
   v12 = [v10 objectForKeyedSubscript:v11];
 
   if (!v12)
   {
-    v13 = [(CEKLightingFrameCache *)self _appearanceForLightingType:a4];
-    v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v14 scale];
-    v12 = [(CEKLightingFrameCache *)self _renderFrameForAngle:a3 scale:15 components:v13 appearance:?];
+    v13 = [(CEKLightingFrameCache *)self _appearanceForLightingType:type];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v12 = [(CEKLightingFrameCache *)self _renderFrameForAngle:angle scale:15 components:v13 appearance:?];
 
     if (v12)
     {
@@ -311,12 +311,12 @@ void __48__CEKLightingFrameCache_preloadBackgroundFrames__block_invoke_2(uint64_
 
 - (BOOL)_needsForegroundFrames
 {
-  v2 = self;
-  v3 = [(CEKLightingFrameCache *)self _foregroundFramesByAvailableAngle];
-  v4 = [v3 count];
-  LOBYTE(v2) = v4 < [(CEKLightingFrameCache *)v2 angleCount];
+  selfCopy = self;
+  _foregroundFramesByAvailableAngle = [(CEKLightingFrameCache *)self _foregroundFramesByAvailableAngle];
+  v4 = [_foregroundFramesByAvailableAngle count];
+  LOBYTE(selfCopy) = v4 < [(CEKLightingFrameCache *)selfCopy angleCount];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_needsBackgroundFrame
@@ -365,12 +365,12 @@ LABEL_11:
   return v9;
 }
 
-- (id)_appearanceForLightingType:(int64_t)a3
+- (id)_appearanceForLightingType:(int64_t)type
 {
   v3 = 0;
-  if (a3 > 3)
+  if (type > 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 4:
         v3 = +[CEKLightingCubeStyleGlowing stageAppearance];
@@ -386,7 +386,7 @@ LABEL_11:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
         v3 = +[CEKLightingCubeStyleGlowing naturalAppearance];
@@ -403,24 +403,24 @@ LABEL_11:
   return v3;
 }
 
-- (id)_renderForegroundFramesForAbsoluteAngles:(id)a3 scale:(double)a4
+- (id)_renderForegroundFramesForAbsoluteAngles:(id)angles scale:(double)scale
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v8 = [v6 dictionaryWithCapacity:{2 * objc_msgSend(v7, "count")}];
+  anglesCopy = angles;
+  v8 = [v6 dictionaryWithCapacity:{2 * objc_msgSend(anglesCopy, "count")}];
   v9 = [(CEKLightingFrameCache *)self _appearanceForLightingType:1];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__CEKLightingFrameCache__renderForegroundFramesForAbsoluteAngles_scale___block_invoke;
   v15[3] = &unk_1E7CC6BD8;
-  v18 = a4;
+  scaleCopy = scale;
   v19 = 48;
   v15[4] = self;
   v16 = v9;
   v10 = v8;
   v17 = v10;
   v11 = v9;
-  [v7 enumerateIndexesUsingBlock:v15];
+  [anglesCopy enumerateIndexesUsingBlock:v15];
 
   v12 = v17;
   v13 = v10;
@@ -441,14 +441,14 @@ void __72__CEKLightingFrameCache__renderForegroundFramesForAbsoluteAngles_scale_
   [v7 setObject:v6 forKeyedSubscript:v8];
 }
 
-- (id)_renderBackgroundFramesForAbsoluteAngles:(id)a3 lightingType:(int64_t)a4 scale:(double)a5
+- (id)_renderBackgroundFramesForAbsoluteAngles:(id)angles lightingType:(int64_t)type scale:(double)scale
 {
   v8 = MEMORY[0x1E695DF90];
-  v9 = a3;
-  v10 = [v8 dictionaryWithCapacity:{2 * objc_msgSend(v9, "count")}];
-  v11 = [(CEKLightingFrameCache *)self _appearanceForLightingType:a4];
-  v12 = [(CEKLightingFrameCache *)self _appearanceForLightingType:a4];
-  v13 = [(CEKLightingFrameCache *)self _appearanceForLightingType:a4];
+  anglesCopy = angles;
+  v10 = [v8 dictionaryWithCapacity:{2 * objc_msgSend(anglesCopy, "count")}];
+  v11 = [(CEKLightingFrameCache *)self _appearanceForLightingType:type];
+  v12 = [(CEKLightingFrameCache *)self _appearanceForLightingType:type];
+  v13 = [(CEKLightingFrameCache *)self _appearanceForLightingType:type];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __85__CEKLightingFrameCache__renderBackgroundFramesForAbsoluteAngles_lightingType_scale___block_invoke;
@@ -457,14 +457,14 @@ void __72__CEKLightingFrameCache__renderForegroundFramesForAbsoluteAngles_scale_
   v23 = v13;
   v14 = v10;
   v24 = v14;
-  v25 = self;
-  v27 = a5;
+  selfCopy = self;
+  scaleCopy = scale;
   v28 = 15;
   v26 = v12;
   v15 = v12;
   v16 = v13;
   v17 = v11;
-  [v9 enumerateIndexesUsingBlock:v21];
+  [anglesCopy enumerateIndexesUsingBlock:v21];
 
   v18 = v26;
   v19 = v14;
@@ -490,22 +490,22 @@ void __85__CEKLightingFrameCache__renderBackgroundFramesForAbsoluteAngles_lighti
   [v11 setObject:v10 forKeyedSubscript:v12];
 }
 
-- (id)_renderFrameForAngle:(int64_t)a3 scale:(double)a4 components:(int64_t)a5 appearance:(id)a6
+- (id)_renderFrameForAngle:(int64_t)angle scale:(double)scale components:(int64_t)components appearance:(id)appearance
 {
-  v8 = 49.0 - 1.0 / a4;
-  v9 = 3.0 - 1.0 / a4;
-  v10 = 1.0 / a4 + 1.0;
-  v11 = a3 * 3.14159265 / 180.0;
-  v12 = a6;
+  v8 = 49.0 - 1.0 / scale;
+  v9 = 3.0 - 1.0 / scale;
+  v10 = 1.0 / scale + 1.0;
+  v11 = angle * 3.14159265 / 180.0;
+  appearanceCopy = appearance;
   v13 = [[CEKLightingCube alloc] initWithRotationAngle:v11];
-  v14 = [[CEKLightingCubeRenderer alloc] initWithCube:v13 appearance:v12 components:a5];
+  v14 = [[CEKLightingCubeRenderer alloc] initWithCube:v13 appearance:appearanceCopy components:components];
 
   v19.width = v8;
   v19.height = v8;
-  UIGraphicsBeginImageContextWithOptions(v19, 0, a4);
+  UIGraphicsBeginImageContextWithOptions(v19, 0, scale);
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextTranslateCTM(CurrentContext, v8 * 0.5, v8 * 0.5);
-  [(CEKLightingCubeRenderer *)v14 renderInContext:CurrentContext size:v8 scale:v8 cornerRadius:a4 stroke:v9, v10];
+  [(CEKLightingCubeRenderer *)v14 renderInContext:CurrentContext size:v8 scale:v8 cornerRadius:scale stroke:v9, v10];
   CGContextTranslateCTM(CurrentContext, v8 * -0.5, v8 * -0.5);
   v16 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();

@@ -1,15 +1,15 @@
 @interface FMPFView
 - (NSString)description;
-- (_TtC10TVRemoteUI8FMPFView)initWithFrame:(CGRect)a3;
+- (_TtC10TVRemoteUI8FMPFView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)thermalStateDidChangeWithNotification:(id)a3;
+- (void)thermalStateDidChangeWithNotification:(id)notification;
 @end
 
 @implementation FMPFView
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FMR1HapticsController.description.getter();
   v5 = v4;
 
@@ -21,7 +21,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10TVRemoteUI8FMPFView_ecoModeObservation);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     v5 = v3;
@@ -33,14 +33,14 @@
   [(FMPFView *)&v6 dealloc];
 }
 
-- (void)thermalStateDidChangeWithNotification:(id)a3
+- (void)thermalStateDidChangeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  FMPFView.thermalStateDidChange(notification:)(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  FMPFView.thermalStateDidChange(notification:)(notificationCopy);
 }
 
-- (_TtC10TVRemoteUI8FMPFView)initWithFrame:(CGRect)a3
+- (_TtC10TVRemoteUI8FMPFView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

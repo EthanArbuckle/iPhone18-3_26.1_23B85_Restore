@@ -1,15 +1,15 @@
 @interface SecJWSDecoder
-- (BOOL)_validateJWSProtectedHeader:(id)a3;
-- (SecJWSDecoder)initWithJWSCompactEncodedString:(id)a3 keyID:(id)a4 publicKey:(__SecKey *)a5;
-- (id)dataWithBase64URLEncodedString:(id)a3;
-- (void)_validateJWSSignature:(id)a3 ofHeader:(id)a4 andPayload:(id)a5 withPublicKey:(__SecKey *)a6;
+- (BOOL)_validateJWSProtectedHeader:(id)header;
+- (SecJWSDecoder)initWithJWSCompactEncodedString:(id)string keyID:(id)d publicKey:(__SecKey *)key;
+- (id)dataWithBase64URLEncodedString:(id)string;
+- (void)_validateJWSSignature:(id)signature ofHeader:(id)header andPayload:(id)payload withPublicKey:(__SecKey *)key;
 @end
 
 @implementation SecJWSDecoder
 
-- (id)dataWithBase64URLEncodedString:(id)a3
+- (id)dataWithBase64URLEncodedString:(id)string
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"-" withString:@"+"];
+  v3 = [string stringByReplacingOccurrencesOfString:@"-" withString:@"+"];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"_" withString:@"/"];
 
   if (([v4 length] & 3) != 0)
@@ -34,14 +34,14 @@
   return v6;
 }
 
-- (void)_validateJWSSignature:(id)a3 ofHeader:(id)a4 andPayload:(id)a5 withPublicKey:(__SecKey *)a6
+- (void)_validateJWSSignature:(id)signature ofHeader:(id)header andPayload:(id)payload withPublicKey:(__SecKey *)key
 {
   v10 = MEMORY[0x1E696AEC0];
-  v11 = a3;
-  v12 = [v10 stringWithFormat:@"%@.%@", a4, a5];
-  v13 = [v12 dataUsingEncoding:4];
+  signatureCopy = signature;
+  payload = [v10 stringWithFormat:@"%@.%@", header, payload];
+  v13 = [payload dataUsingEncoding:4];
 
-  v14 = [(SecJWSDecoder *)self _createASN1SignatureFromJWSSignature:v11];
+  v14 = [(SecJWSDecoder *)self _createASN1SignatureFromJWSSignature:signatureCopy];
 
   if (!v14)
   {
@@ -51,7 +51,7 @@
   }
 
   error = 0;
-  if (SecKeyVerifySignature(a6, @"algid:sign:ECDSA:message-X962:SHA256", v13, v14, &error))
+  if (SecKeyVerifySignature(key, @"algid:sign:ECDSA:message-X962:SHA256", v13, v14, &error))
   {
     v15 = error == 0;
   }
@@ -72,9 +72,9 @@ LABEL_8:
   }
 }
 
-- (BOOL)_validateJWSProtectedHeader:(id)a3
+- (BOOL)_validateJWSProtectedHeader:(id)header
 {
-  v4 = [(SecJWSDecoder *)self dataWithBase64URLEncodedString:a3];
+  v4 = [(SecJWSDecoder *)self dataWithBase64URLEncodedString:header];
   if (v4)
   {
     v34 = 0;
@@ -194,21 +194,21 @@ LABEL_14:
   return v11;
 }
 
-- (SecJWSDecoder)initWithJWSCompactEncodedString:(id)a3 keyID:(id)a4 publicKey:(__SecKey *)a5
+- (SecJWSDecoder)initWithJWSCompactEncodedString:(id)string keyID:(id)d publicKey:(__SecKey *)key
 {
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  dCopy = d;
   v31.receiver = self;
   v31.super_class = SecJWSDecoder;
   v10 = [(SecJWSDecoder *)&v31 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_keyID, a4);
+    objc_storeStrong(&v10->_keyID, d);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v8 componentsSeparatedByString:@"."];
+      v12 = [stringCopy componentsSeparatedByString:@"."];
       if ([v12 count] != 3)
       {
         v25 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.security.errors.jws" code:1 userInfo:0];
@@ -234,15 +234,15 @@ LABEL_14:
 
         if (v11->_payload && v11->_signature)
         {
-          if (a5)
+          if (key)
           {
-            CFRetain(a5);
+            CFRetain(key);
             v21 = v11->_signature;
             v22 = [v12 objectAtIndexedSubscript:0];
             v23 = [v12 objectAtIndexedSubscript:1];
-            [(SecJWSDecoder *)v11 _validateJWSSignature:v21 ofHeader:v22 andPayload:v23 withPublicKey:a5];
+            [(SecJWSDecoder *)v11 _validateJWSSignature:v21 ofHeader:v22 andPayload:v23 withPublicKey:key];
 
-            CFRelease(a5);
+            CFRelease(key);
 LABEL_13:
 
             goto LABEL_14;

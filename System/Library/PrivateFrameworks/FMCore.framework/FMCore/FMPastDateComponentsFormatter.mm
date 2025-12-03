@@ -1,22 +1,22 @@
 @interface FMPastDateComponentsFormatter
-- (id)stringForObjectValue:(id)a3 withReferenceDate:(id)a4;
+- (id)stringForObjectValue:(id)value withReferenceDate:(id)date;
 @end
 
 @implementation FMPastDateComponentsFormatter
 
-- (id)stringForObjectValue:(id)a3 withReferenceDate:(id)a4
+- (id)stringForObjectValue:(id)value withReferenceDate:(id)date
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  valueCopy = value;
+  dateCopy = date;
+  if (!valueCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v12 = 0;
     goto LABEL_31;
   }
 
-  v8 = [(NSDateComponentsFormatter *)self allowedUnits];
-  if (!v8)
+  allowedUnits = [(NSDateComponentsFormatter *)self allowedUnits];
+  if (!allowedUnits)
   {
     goto LABEL_8;
   }
@@ -24,24 +24,24 @@
   v9 = 0;
   do
   {
-    v9 += v8 & 1;
-    v10 = v8 > 1;
-    v8 >>= 1;
+    v9 += allowedUnits & 1;
+    v10 = allowedUnits > 1;
+    allowedUnits >>= 1;
   }
 
   while (v10);
   if (v9 == 1)
   {
-    v11 = v6;
+    v11 = valueCopy;
     v26 = 0;
     if ([(NSDateComponentsFormatter *)self allowedUnits]== 128)
     {
-      v13 = [v11 second];
+      second = [v11 second];
     }
 
     else if ([(NSDateComponentsFormatter *)self allowedUnits]== 64)
     {
-      v13 = [v11 minute];
+      second = [v11 minute];
     }
 
     else
@@ -51,10 +51,10 @@
         goto LABEL_21;
       }
 
-      v13 = [v11 hour];
+      second = [v11 hour];
     }
 
-    if (v13 < 0)
+    if (second < 0)
     {
       v15 = [(NSDateComponentsFormatter *)self unitsStyle]- 1;
       if (v15 <= 4)
@@ -68,10 +68,10 @@
         v18 = dword_24A307550[v17];
       }
 
-      v19 = [(NSDateComponentsFormatter *)self calendar];
-      v20 = [v19 locale];
-      v21 = [v20 localeIdentifier];
-      [v21 UTF8String];
+      calendar = [(NSDateComponentsFormatter *)self calendar];
+      locale = [calendar locale];
+      localeIdentifier = [locale localeIdentifier];
+      [localeIdentifier UTF8String];
       ureldatefmt_open();
 
       v22 = ureldatefmt_formatNumeric();

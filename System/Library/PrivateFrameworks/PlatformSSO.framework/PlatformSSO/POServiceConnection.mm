@@ -2,15 +2,15 @@
 + (id)xpcQueue;
 - (BOOL)_connectToService;
 - (void)_connectToService;
-- (void)createUserAccount:(id)a3 passwordContext:(id)a4 smartCardContext:(id)a5 tokenId:(id)a6 completion:(id)a7;
+- (void)createUserAccount:(id)account passwordContext:(id)context smartCardContext:(id)cardContext tokenId:(id)id completion:(id)completion;
 - (void)dealloc;
-- (void)getLoginTypeForUser:(id)a3 completion:(id)a4;
-- (void)passwordDidChangeForUsername:(id)a3 passwordContext:(id)a4 completion:(id)a5;
-- (void)retainContextForUserName:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)saveCredentialForUserName:(id)a3 passwordContext:(id)a4 completion:(id)a5;
-- (void)updateLocalAccountPassword:(id)a3 passwordContextData:(id)a4 completion:(id)a5;
-- (void)verifyPasswordLogin:(id)a3 passwordContext:(id)a4 completion:(id)a5;
-- (void)verifyUserAccount:(id)a3 passwordContext:(id)a4 smartCardContext:(id)a5 tokenId:(id)a6 completion:(id)a7;
+- (void)getLoginTypeForUser:(id)user completion:(id)completion;
+- (void)passwordDidChangeForUsername:(id)username passwordContext:(id)context completion:(id)completion;
+- (void)retainContextForUserName:(id)name context:(id)context completion:(id)completion;
+- (void)saveCredentialForUserName:(id)name passwordContext:(id)context completion:(id)completion;
+- (void)updateLocalAccountPassword:(id)password passwordContextData:(id)data completion:(id)completion;
+- (void)verifyPasswordLogin:(id)login passwordContext:(id)context completion:(id)completion;
+- (void)verifyUserAccount:(id)account passwordContext:(id)context smartCardContext:(id)cardContext tokenId:(id)id completion:(id)completion;
 @end
 
 @implementation POServiceConnection
@@ -40,32 +40,32 @@ uint64_t __31__POServiceConnection_xpcQueue__block_invoke()
   v3 = 136315394;
   v4 = "[POServiceConnection dealloc]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_25E831000, a2, OS_LOG_TYPE_DEBUG, "%s  on %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getLoginTypeForUser:(id)a3 completion:(id)a4
+- (void)getLoginTypeForUser:(id)user completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  completionCopy = completion;
   if ([(POServiceConnection *)self _connectToService])
   {
-    v8 = [(POServiceConnection *)self xpcConnection];
+    xpcConnection = [(POServiceConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __54__POServiceConnection_getLoginTypeForUser_completion___block_invoke;
     v12[3] = &unk_279A3A270;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 getLoginTypeForUser:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 getLoginTypeForUser:userCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -117,28 +117,28 @@ void __112__POServiceConnection_performPasswordLogin_loginUserName_passwordConte
   }
 }
 
-- (void)verifyPasswordLogin:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)verifyPasswordLogin:(id)login passwordContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  loginCopy = login;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(POServiceConnection *)self _connectToService])
   {
-    v11 = [(POServiceConnection *)self xpcConnection];
+    xpcConnection = [(POServiceConnection *)self xpcConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __70__POServiceConnection_verifyPasswordLogin_passwordContext_completion___block_invoke;
     v15[3] = &unk_279A3A270;
-    v12 = v10;
+    v12 = completionCopy;
     v16 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v13 verifyPasswordLogin:v8 passwordContext:v9 completion:v12];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [v13 verifyPasswordLogin:loginCopy passwordContext:contextCopy completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v14 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v10 + 2))(v10, 2, v14);
+    (*(completionCopy + 2))(completionCopy, 2, v14);
   }
 }
 
@@ -158,30 +158,30 @@ void __70__POServiceConnection_verifyPasswordLogin_passwordContext_completion___
   }
 }
 
-- (void)createUserAccount:(id)a3 passwordContext:(id)a4 smartCardContext:(id)a5 tokenId:(id)a6 completion:(id)a7
+- (void)createUserAccount:(id)account passwordContext:(id)context smartCardContext:(id)cardContext tokenId:(id)id completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accountCopy = account;
+  contextCopy = context;
+  cardContextCopy = cardContext;
+  idCopy = id;
+  completionCopy = completion;
   if ([(POServiceConnection *)self _connectToService])
   {
-    v17 = [(POServiceConnection *)self xpcConnection];
+    xpcConnection = [(POServiceConnection *)self xpcConnection];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __93__POServiceConnection_createUserAccount_passwordContext_smartCardContext_tokenId_completion___block_invoke;
     v21[3] = &unk_279A3A270;
-    v18 = v16;
+    v18 = completionCopy;
     v22 = v18;
-    v19 = [v17 synchronousRemoteObjectProxyWithErrorHandler:v21];
-    [v19 createUserAccount:v12 passwordContext:v13 smartCardContext:v14 tokenId:v15 completion:v18];
+    v19 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v21];
+    [v19 createUserAccount:accountCopy passwordContext:contextCopy smartCardContext:cardContextCopy tokenId:idCopy completion:v18];
   }
 
-  else if (v16)
+  else if (completionCopy)
   {
     v20 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v16 + 2))(v16, 2, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 2, 0, v20);
   }
 }
 
@@ -217,30 +217,30 @@ void __130__POServiceConnection_authenticateTemporaryUserAccount_forLogin_passwo
   }
 }
 
-- (void)verifyUserAccount:(id)a3 passwordContext:(id)a4 smartCardContext:(id)a5 tokenId:(id)a6 completion:(id)a7
+- (void)verifyUserAccount:(id)account passwordContext:(id)context smartCardContext:(id)cardContext tokenId:(id)id completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accountCopy = account;
+  contextCopy = context;
+  cardContextCopy = cardContext;
+  idCopy = id;
+  completionCopy = completion;
   if ([(POServiceConnection *)self _connectToService])
   {
-    v17 = [(POServiceConnection *)self xpcConnection];
+    xpcConnection = [(POServiceConnection *)self xpcConnection];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __93__POServiceConnection_verifyUserAccount_passwordContext_smartCardContext_tokenId_completion___block_invoke;
     v21[3] = &unk_279A3A270;
-    v18 = v16;
+    v18 = completionCopy;
     v22 = v18;
-    v19 = [v17 synchronousRemoteObjectProxyWithErrorHandler:v21];
-    [v19 verifyUserAccount:v12 passwordContext:v13 smartCardContext:v14 tokenId:v15 completion:v18];
+    v19 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v21];
+    [v19 verifyUserAccount:accountCopy passwordContext:contextCopy smartCardContext:cardContextCopy tokenId:idCopy completion:v18];
   }
 
-  else if (v16)
+  else if (completionCopy)
   {
     v20 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v16 + 2))(v16, 2, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 2, 0, v20);
   }
 }
 
@@ -260,28 +260,28 @@ void __93__POServiceConnection_verifyUserAccount_passwordContext_smartCardContex
   }
 }
 
-- (void)saveCredentialForUserName:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)saveCredentialForUserName:(id)name passwordContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(POServiceConnection *)self _connectToService])
   {
-    v11 = [(POServiceConnection *)self xpcConnection];
+    xpcConnection = [(POServiceConnection *)self xpcConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __76__POServiceConnection_saveCredentialForUserName_passwordContext_completion___block_invoke;
     v15[3] = &unk_279A3A270;
-    v12 = v10;
+    v12 = completionCopy;
     v16 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v13 saveCredentialForUserName:v8 passwordContext:v9 completion:v12];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [v13 saveCredentialForUserName:nameCopy passwordContext:contextCopy completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v14 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v10 + 2))(v10, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -301,28 +301,28 @@ void __76__POServiceConnection_saveCredentialForUserName_passwordContext_complet
   }
 }
 
-- (void)passwordDidChangeForUsername:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)passwordDidChangeForUsername:(id)username passwordContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  usernameCopy = username;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(POServiceConnection *)self _connectToService])
   {
-    v11 = [(POServiceConnection *)self xpcConnection];
+    xpcConnection = [(POServiceConnection *)self xpcConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __79__POServiceConnection_passwordDidChangeForUsername_passwordContext_completion___block_invoke;
     v15[3] = &unk_279A3A270;
-    v12 = v10;
+    v12 = completionCopy;
     v16 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v13 passwordDidChangeForUsername:v8 passwordContext:v9 completion:v12];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [v13 passwordDidChangeForUsername:usernameCopy passwordContext:contextCopy completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v14 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v10 + 2))(v10, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -358,28 +358,28 @@ void __133__POServiceConnection_screenDidUnlockWithCredentialContext_smartCardCo
   }
 }
 
-- (void)retainContextForUserName:(id)a3 context:(id)a4 completion:(id)a5
+- (void)retainContextForUserName:(id)name context:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(POServiceConnection *)self _connectToService])
   {
-    v11 = [(POServiceConnection *)self xpcConnection];
+    xpcConnection = [(POServiceConnection *)self xpcConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __67__POServiceConnection_retainContextForUserName_context_completion___block_invoke;
     v15[3] = &unk_279A3A270;
-    v12 = v10;
+    v12 = completionCopy;
     v16 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v13 retainContextForUserName:v8 context:v9 completion:v12];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [v13 retainContextForUserName:nameCopy context:contextCopy completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v14 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v10 + 2))(v10, v14);
+    (*(completionCopy + 2))(completionCopy, v14);
   }
 }
 
@@ -399,28 +399,28 @@ void __67__POServiceConnection_retainContextForUserName_context_completion___blo
   }
 }
 
-- (void)updateLocalAccountPassword:(id)a3 passwordContextData:(id)a4 completion:(id)a5
+- (void)updateLocalAccountPassword:(id)password passwordContextData:(id)data completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passwordCopy = password;
+  dataCopy = data;
+  completionCopy = completion;
   if ([(POServiceConnection *)self _connectToService])
   {
-    v11 = [(POServiceConnection *)self xpcConnection];
+    xpcConnection = [(POServiceConnection *)self xpcConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __81__POServiceConnection_updateLocalAccountPassword_passwordContextData_completion___block_invoke;
     v15[3] = &unk_279A3A270;
-    v12 = v10;
+    v12 = completionCopy;
     v16 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v13 updateLocalAccountPassword:v8 passwordContextData:v9 completion:v12];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [v13 updateLocalAccountPassword:passwordCopy passwordContextData:dataCopy completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v14 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v10 + 2))(v10, 3, v14);
+    (*(completionCopy + 2))(completionCopy, 3, v14);
   }
 }
 

@@ -1,14 +1,14 @@
 @interface SuggestionsWalletOrderAttachment
-+ (id)readContentsOfOrderAt:(id)a3 error:(id *)a4;
++ (id)readContentsOfOrderAt:(id)at error:(id *)error;
 - (NSData)data;
 - (NSString)fqoid;
 - (NSURL)url;
 - (_TtC10FinanceKit32SuggestionsWalletOrderAttachment)init;
 - (int64_t)state;
-- (void)setData:(id)a3;
-- (void)setFqoid:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setUrl:(id)a3;
+- (void)setData:(id)data;
+- (void)setFqoid:(id)fqoid;
+- (void)setState:(int64_t)state;
+- (void)setUrl:(id)url;
 @end
 
 @implementation SuggestionsWalletOrderAttachment
@@ -28,7 +28,7 @@
   return v8;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v4 = sub_1B77FF4F8();
   v5 = *(v4 - 8);
@@ -38,7 +38,7 @@
   v8 = OBJC_IVAR____TtC10FinanceKit32SuggestionsWalletOrderAttachment_url;
   swift_beginAccess();
   v9 = *(v5 + 40);
-  v10 = self;
+  selfCopy = self;
   v9(self + v8, v7, v4);
   swift_endAccess();
 }
@@ -56,14 +56,14 @@
   return v5;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v4 = a3;
-  v5 = self;
+  dataCopy = data;
+  selfCopy = self;
   v6 = sub_1B77FF5B8();
   v8 = v7;
 
-  v9 = (v5 + OBJC_IVAR____TtC10FinanceKit32SuggestionsWalletOrderAttachment_data);
+  v9 = (selfCopy + OBJC_IVAR____TtC10FinanceKit32SuggestionsWalletOrderAttachment_data);
   swift_beginAccess();
   v10 = *v9;
   v11 = v9[1];
@@ -81,7 +81,7 @@
   return v2;
 }
 
-- (void)setFqoid:(id)a3
+- (void)setFqoid:(id)fqoid
 {
   v4 = sub_1B7800868();
   v6 = v5;
@@ -98,14 +98,14 @@
   return *(self + v3);
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v5 = OBJC_IVAR____TtC10FinanceKit32SuggestionsWalletOrderAttachment_state;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = state;
 }
 
-+ (id)readContentsOfOrderAt:(id)a3 error:(id *)a4
++ (id)readContentsOfOrderAt:(id)at error:(id *)error
 {
   v4 = sub_1B77FF4F8();
   v5 = *(v4 - 8);

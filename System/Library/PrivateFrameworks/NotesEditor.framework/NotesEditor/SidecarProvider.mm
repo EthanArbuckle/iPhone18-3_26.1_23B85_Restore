@@ -1,14 +1,14 @@
 @interface SidecarProvider
-- (void)setActiveRequest:(id)a3;
+- (void)setActiveRequest:(id)request;
 @end
 
 @implementation SidecarProvider
 
-- (void)setActiveRequest:(id)a3
+- (void)setActiveRequest:(id)request
 {
   activeRequest = self->activeRequest;
-  self->activeRequest = a3;
-  v3 = a3;
+  self->activeRequest = request;
+  requestCopy = request;
 }
 
 @end

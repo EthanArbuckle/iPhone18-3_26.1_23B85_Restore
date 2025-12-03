@@ -2,7 +2,7 @@
 - (NSArray)mobileDocumentRequests;
 - (NSURL)origin;
 - (WKIdentityDocumentPresentmentRequest)init;
-- (WKIdentityDocumentPresentmentRequest)initWithOrigin:(id)a3 mobileDocumentRequests:(id)a4;
+- (WKIdentityDocumentPresentmentRequest)initWithOrigin:(id)origin mobileDocumentRequests:(id)requests;
 @end
 
 @implementation WKIdentityDocumentPresentmentRequest
@@ -16,7 +16,7 @@
   v7 = v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_23B5806A4(self + OBJC_IVAR___WKIdentityDocumentPresentmentRequest__unsafeOrigin, v13);
   sub_23B582C30(0, &qword_27E15AB08, 0x277CBEBC0);
-  v8 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v9 = v12[1];
   sub_23B59D2C0();
@@ -37,7 +37,7 @@
   return v3;
 }
 
-- (WKIdentityDocumentPresentmentRequest)initWithOrigin:(id)a3 mobileDocumentRequests:(id)a4
+- (WKIdentityDocumentPresentmentRequest)initWithOrigin:(id)origin mobileDocumentRequests:(id)requests
 {
   v5 = sub_23B59D2D0();
   v6 = *(v5 - 8);

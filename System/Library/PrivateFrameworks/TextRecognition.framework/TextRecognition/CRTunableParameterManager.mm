@@ -1,11 +1,11 @@
 @interface CRTunableParameterManager
 + (id)sharedManager;
 - (CRTunableParameterManager)init;
-- (id)_overrideDictionary:(id)a3 withParametersFromDictionary:(id)a4 currentKeyPath:(id)a5;
-- (id)overrideDictionary:(id)a3 withParametersFromDictionaryAtKeyPath:(id)a4;
-- (id)parameterDictionaryForKeyPath:(id)a3;
-- (id)parameterForKeyPath:(id)a3;
-- (void)_processOverriddenKeyPath:(id)a3 withValue:(id)a4;
+- (id)_overrideDictionary:(id)dictionary withParametersFromDictionary:(id)fromDictionary currentKeyPath:(id)path;
+- (id)overrideDictionary:(id)dictionary withParametersFromDictionaryAtKeyPath:(id)path;
+- (id)parameterDictionaryForKeyPath:(id)path;
+- (id)parameterForKeyPath:(id)path;
+- (void)_processOverriddenKeyPath:(id)path withValue:(id)value;
 @end
 
 @implementation CRTunableParameterManager
@@ -29,8 +29,8 @@
       v4 = @"/tmp/CRParameters.json";
     }
 
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:v4];
 
     if (v6)
     {
@@ -163,7 +163,7 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __42__CRTunableParameterManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED95FD58 != -1)
   {
     dispatch_once(&qword_1ED95FD58, block);
@@ -181,41 +181,41 @@ void __42__CRTunableParameterManager_sharedManager__block_invoke()
   _MergedGlobals_10 = v0;
 }
 
-- (id)parameterForKeyPath:(id)a3
+- (id)parameterForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CRTunableParameterManager *)self parametersDict];
-  v6 = [v5 valueForKeyPath:v4];
+  pathCopy = path;
+  parametersDict = [(CRTunableParameterManager *)self parametersDict];
+  v6 = [parametersDict valueForKeyPath:pathCopy];
 
-  [(CRTunableParameterManager *)self _processOverriddenKeyPath:v4 withValue:v6];
+  [(CRTunableParameterManager *)self _processOverriddenKeyPath:pathCopy withValue:v6];
 
   return v6;
 }
 
-- (id)parameterDictionaryForKeyPath:(id)a3
+- (id)parameterDictionaryForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CRTunableParameterManager *)self parametersDict];
-  v6 = [v5 valueForKeyPath:v4];
+  pathCopy = path;
+  parametersDict = [(CRTunableParameterManager *)self parametersDict];
+  v6 = [parametersDict valueForKeyPath:pathCopy];
 
-  [(CRTunableParameterManager *)self _processOverriddenKeyPath:v4 withValue:v6];
+  [(CRTunableParameterManager *)self _processOverriddenKeyPath:pathCopy withValue:v6];
 
   return v6;
 }
 
-- (id)overrideDictionary:(id)a3 withParametersFromDictionaryAtKeyPath:(id)a4
+- (id)overrideDictionary:(id)dictionary withParametersFromDictionaryAtKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRTunableParameterManager *)self parameterDictionaryForKeyPath:v7];
+  dictionaryCopy = dictionary;
+  pathCopy = path;
+  v8 = [(CRTunableParameterManager *)self parameterDictionaryForKeyPath:pathCopy];
   if (v8)
   {
-    v9 = [(CRTunableParameterManager *)self _overrideDictionary:v6 withParametersFromDictionary:v8 currentKeyPath:v7];
+    v9 = [(CRTunableParameterManager *)self _overrideDictionary:dictionaryCopy withParametersFromDictionary:v8 currentKeyPath:pathCopy];
   }
 
   else
   {
-    v9 = v6;
+    v9 = dictionaryCopy;
   }
 
   v10 = v9;
@@ -223,27 +223,27 @@ void __42__CRTunableParameterManager_sharedManager__block_invoke()
   return v10;
 }
 
-- (void)_processOverriddenKeyPath:(id)a3 withValue:(id)a4
+- (void)_processOverriddenKeyPath:(id)path withValue:(id)value
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pathCopy = path;
+  valueCopy = value;
+  if (valueCopy)
   {
-    v8 = [(CRTunableParameterManager *)self overriddenKeyPaths];
-    v9 = [v8 containsObject:v6];
+    overriddenKeyPaths = [(CRTunableParameterManager *)self overriddenKeyPaths];
+    v9 = [overriddenKeyPaths containsObject:pathCopy];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(CRTunableParameterManager *)self overriddenKeyPaths];
-      [v10 addObject:v6];
+      overriddenKeyPaths2 = [(CRTunableParameterManager *)self overriddenKeyPaths];
+      [overriddenKeyPaths2 addObject:pathCopy];
 
       v11 = CROSLogForCategory(0);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v7 description];
+        v12 = [valueCopy description];
         v13 = 138412546;
-        v14 = v6;
+        v14 = pathCopy;
         v15 = 2112;
         v16 = v12;
         _os_log_impl(&dword_1B40D2000, v11, OS_LOG_TYPE_DEFAULT, "* Overriding tunable parameter at key path '%@' with value: %@", &v13, 0x16u);
@@ -252,22 +252,22 @@ void __42__CRTunableParameterManager_sharedManager__block_invoke()
   }
 }
 
-- (id)_overrideDictionary:(id)a3 withParametersFromDictionary:(id)a4 currentKeyPath:(id)a5
+- (id)_overrideDictionary:(id)dictionary withParametersFromDictionary:(id)fromDictionary currentKeyPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a3];
+  fromDictionaryCopy = fromDictionary;
+  pathCopy = path;
+  v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:dictionary];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __93__CRTunableParameterManager__overrideDictionary_withParametersFromDictionary_currentKeyPath___block_invoke;
   v19 = &unk_1E7BC2000;
-  v20 = v8;
-  v21 = v9;
+  v20 = fromDictionaryCopy;
+  v21 = pathCopy;
   v22 = v10;
-  v23 = self;
+  selfCopy = self;
   v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v12 = pathCopy;
+  v13 = fromDictionaryCopy;
   [v11 enumerateKeysAndObjectsUsingBlock:&v16];
   v14 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:{v11, v16, v17, v18, v19}];
 

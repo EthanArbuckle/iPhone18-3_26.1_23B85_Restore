@@ -1,23 +1,23 @@
 @interface CallTranslationDisclosureProvider
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4;
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
 @end
 
 @implementation CallTranslationDisclosureProvider
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
-  v5 = a3;
-  v6 = self;
-  sub_10044B7EC(v5);
+  playingCopy = playing;
+  selfCopy = self;
+  sub_10044B7EC(playingCopy);
 }
 
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_10044C018(v6, a4);
+  occurCopy = occur;
+  selfCopy = self;
+  errorCopy = error;
+  sub_10044C018(occurCopy, error);
 }
 
 @end

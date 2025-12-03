@@ -1,47 +1,47 @@
 @interface UIPointerInteractionAnimator
-- (void)addAnimations:(id)a3;
-- (void)addCompletion:(id)a3;
+- (void)addAnimations:(id)animations;
+- (void)addCompletion:(id)completion;
 - (void)performAllAnimations;
-- (void)performAllCompletions:(BOOL)a3;
+- (void)performAllCompletions:(BOOL)completions;
 @end
 
 @implementation UIPointerInteractionAnimator
 
-- (void)addAnimations:(id)a3
+- (void)addAnimations:(id)animations
 {
-  v4 = a3;
+  animationsCopy = animations;
   animations = self->_animations;
-  aBlock = v4;
+  aBlock = animationsCopy;
   if (!animations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_animations;
-    self->_animations = v6;
+    self->_animations = array;
 
-    v4 = aBlock;
+    animationsCopy = aBlock;
     animations = self->_animations;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(animationsCopy);
   [(NSMutableArray *)animations addObject:v8];
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   completions = self->_completions;
-  aBlock = v4;
+  aBlock = completionCopy;
   if (!completions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_completions;
-    self->_completions = v6;
+    self->_completions = array;
 
-    v4 = aBlock;
+    completionCopy = aBlock;
     completions = self->_completions;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(completionCopy);
   [(NSMutableArray *)completions addObject:v8];
 }
 
@@ -52,12 +52,12 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(UIPointerInteractionAnimator *)self debugName];
-    v6 = v5;
+    debugName = [(UIPointerInteractionAnimator *)self debugName];
+    v6 = debugName;
     v7 = &stru_1EFB14550;
-    if (v5)
+    if (debugName)
     {
-      v7 = v5;
+      v7 = debugName;
     }
 
     *buf = 138412290;
@@ -69,8 +69,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(UIPointerInteractionAnimator *)self animations];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  animations = [(UIPointerInteractionAnimator *)self animations];
+  v9 = [animations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -82,14 +82,14 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(animations);
         }
 
         (*(*(*(&v14 + 1) + 8 * v12++) + 16))();
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [animations countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -99,7 +99,7 @@
   self->_animations = 0;
 }
 
-- (void)performAllCompletions:(BOOL)a3
+- (void)performAllCompletions:(BOOL)completions
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = *(__UILogGetCategoryCachedImpl("UIPointerInteraction", &performAllCompletions____s_category) + 8);
@@ -107,12 +107,12 @@
   {
     v5 = v4;
     v6 = NSStringFromBOOL();
-    v7 = [(UIPointerInteractionAnimator *)self debugName];
-    v8 = v7;
+    debugName = [(UIPointerInteractionAnimator *)self debugName];
+    v8 = debugName;
     v9 = &stru_1EFB14550;
-    if (v7)
+    if (debugName)
     {
-      v9 = v7;
+      v9 = debugName;
     }
 
     *buf = 138412546;
@@ -126,8 +126,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [(UIPointerInteractionAnimator *)self completions];
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  completions = [(UIPointerInteractionAnimator *)self completions];
+  v11 = [completions countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -139,14 +139,14 @@
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(completions);
         }
 
         (*(*(*(&v16 + 1) + 8 * v14++) + 16))();
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [completions countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);

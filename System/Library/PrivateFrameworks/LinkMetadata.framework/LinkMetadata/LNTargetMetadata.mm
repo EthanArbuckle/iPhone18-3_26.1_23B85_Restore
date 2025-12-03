@@ -1,30 +1,30 @@
 @interface LNTargetMetadata
 + (LNTargetMetadata)defaultTarget;
 + (LNTargetMetadata)mainTarget;
-- (BOOL)isEqual:(id)a3;
-- (LNTargetMetadata)initWithCoder:(id)a3;
-- (LNTargetMetadata)initWithType:(int64_t)a3 bundleIdentifier:(id)a4 conditions:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNTargetMetadata)initWithCoder:(id)coder;
+- (LNTargetMetadata)initWithType:(int64_t)type bundleIdentifier:(id)identifier conditions:(id)conditions;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNTargetMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNTargetMetadata *)self type];
-        if (v7 != [(LNTargetMetadata *)v6 type])
+        type = [(LNTargetMetadata *)self type];
+        if (type != [(LNTargetMetadata *)v6 type])
         {
           LOBYTE(v13) = 0;
 LABEL_24:
@@ -32,10 +32,10 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v8 = [(LNTargetMetadata *)self bundleIdentifier];
-        v9 = [(LNTargetMetadata *)v6 bundleIdentifier];
-        v10 = v8;
-        v11 = v9;
+        bundleIdentifier = [(LNTargetMetadata *)self bundleIdentifier];
+        bundleIdentifier2 = [(LNTargetMetadata *)v6 bundleIdentifier];
+        v10 = bundleIdentifier;
+        v11 = bundleIdentifier2;
         v12 = v11;
         if (v10 == v11)
         {
@@ -62,10 +62,10 @@ LABEL_22:
           }
         }
 
-        v16 = [(LNTargetMetadata *)self conditions];
-        v17 = [(LNTargetMetadata *)v6 conditions];
-        v15 = v16;
-        v18 = v17;
+        conditions = [(LNTargetMetadata *)self conditions];
+        conditions2 = [(LNTargetMetadata *)v6 conditions];
+        v15 = conditions;
+        v18 = conditions2;
         v14 = v18;
         if (v15 == v18)
         {
@@ -108,93 +108,93 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(LNTargetMetadata *)self type];
-  v4 = [(LNTargetMetadata *)self bundleIdentifier];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(LNTargetMetadata *)self conditions];
-  v7 = [v6 hash];
+  type = [(LNTargetMetadata *)self type];
+  bundleIdentifier = [(LNTargetMetadata *)self bundleIdentifier];
+  v5 = [bundleIdentifier hash] ^ type;
+  conditions = [(LNTargetMetadata *)self conditions];
+  v7 = [conditions hash];
 
   return v5 ^ v7;
 }
 
 - (id)description
 {
-  v3 = [(LNTargetMetadata *)self type];
+  type = [(LNTargetMetadata *)self type];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  if (v3 == 2)
+  if (type == 2)
   {
-    v7 = [(LNTargetMetadata *)self bundleIdentifier];
-    v8 = [(LNTargetMetadata *)self conditions];
-    [v4 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, conditions: %@>", v6, self, v7, v8];
+    bundleIdentifier = [(LNTargetMetadata *)self bundleIdentifier];
+    conditions = [(LNTargetMetadata *)self conditions];
+    [v4 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, conditions: %@>", v6, self, bundleIdentifier, conditions];
   }
 
   else
   {
-    v9 = [(LNTargetMetadata *)self type];
+    type2 = [(LNTargetMetadata *)self type];
     v10 = @"Default";
-    if (v9 == 1)
+    if (type2 == 1)
     {
       v10 = @"Main";
     }
 
-    if (v9 == 2)
+    if (type2 == 2)
     {
       v10 = @"BundleIdentifier";
     }
 
-    v8 = v10;
-    v7 = [(LNTargetMetadata *)self conditions];
-    [v4 stringWithFormat:@"<%@: %p, type: %@, conditions: %@>", v6, self, v8, v7];
+    conditions = v10;
+    bundleIdentifier = [(LNTargetMetadata *)self conditions];
+    [v4 stringWithFormat:@"<%@: %p, type: %@, conditions: %@>", v6, self, conditions, bundleIdentifier];
   }
   v11 = ;
 
   return v11;
 }
 
-- (LNTargetMetadata)initWithCoder:(id)a3
+- (LNTargetMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"conditions"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"conditions"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
 
   v11 = [(LNTargetMetadata *)self initWithType:v5 bundleIdentifier:v10 conditions:v9];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[LNTargetMetadata type](self forKey:{"type"), @"type"}];
-  v5 = [(LNTargetMetadata *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[LNTargetMetadata type](self forKey:{"type"), @"type"}];
+  bundleIdentifier = [(LNTargetMetadata *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v6 = [(LNTargetMetadata *)self conditions];
-  [v4 encodeObject:v6 forKey:@"conditions"];
+  conditions = [(LNTargetMetadata *)self conditions];
+  [coderCopy encodeObject:conditions forKey:@"conditions"];
 }
 
-- (LNTargetMetadata)initWithType:(int64_t)a3 bundleIdentifier:(id)a4 conditions:(id)a5
+- (LNTargetMetadata)initWithType:(int64_t)type bundleIdentifier:(id)identifier conditions:(id)conditions
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  conditionsCopy = conditions;
   v18.receiver = self;
   v18.super_class = LNTargetMetadata;
   v10 = [(LNTargetMetadata *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v12 = [v8 copy];
+    v10->_type = type;
+    v12 = [identifierCopy copy];
     bundleIdentifier = v11->_bundleIdentifier;
     v11->_bundleIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [conditionsCopy copy];
     conditions = v11->_conditions;
     v11->_conditions = v14;
 
@@ -206,14 +206,14 @@ LABEL_25:
 
 + (LNTargetMetadata)mainTarget
 {
-  v2 = [[a1 alloc] initWithType:1 bundleIdentifier:0 conditions:0];
+  v2 = [[self alloc] initWithType:1 bundleIdentifier:0 conditions:0];
 
   return v2;
 }
 
 + (LNTargetMetadata)defaultTarget
 {
-  v2 = [[a1 alloc] initWithType:0 bundleIdentifier:0 conditions:0];
+  v2 = [[self alloc] initWithType:0 bundleIdentifier:0 conditions:0];
 
   return v2;
 }

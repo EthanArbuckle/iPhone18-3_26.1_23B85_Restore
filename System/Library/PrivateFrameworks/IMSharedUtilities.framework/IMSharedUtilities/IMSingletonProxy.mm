@@ -1,11 +1,11 @@
 @interface IMSingletonProxy
 + (void)initialize;
-- (IMSingletonProxy)initWithSingleton:(id)a3 singletonOverride:(id)a4;
+- (IMSingletonProxy)initWithSingleton:(id)singleton singletonOverride:(id)override;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)singletonOverrideRef;
-- (void)forwardInvocation:(id)a3;
-- (void)setSingletonOverride:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)setSingletonOverride:(id)override;
 @end
 
 @implementation IMSingletonProxy
@@ -30,38 +30,38 @@
   return WeakRetained;
 }
 
-- (IMSingletonProxy)initWithSingleton:(id)a3 singletonOverride:(id)a4
+- (IMSingletonProxy)initWithSingleton:(id)singleton singletonOverride:(id)override
 {
-  objc_storeStrong(&self->_singleton, a3);
-  v6 = a4;
-  [(IMSingletonProxy *)self setSingletonOverride:v6];
+  objc_storeStrong(&self->_singleton, singleton);
+  overrideCopy = override;
+  [(IMSingletonProxy *)self setSingletonOverride:overrideCopy];
 
   return self;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v8 = a3;
+  invocationCopy = invocation;
   WeakRetained = objc_loadWeakRetained(&self->_singletonOverride);
   if (!WeakRetained)
   {
     singleton = self->_singleton;
 LABEL_5:
-    v6 = v8;
+    v6 = invocationCopy;
     goto LABEL_10;
   }
 
-  v5 = [v8 selector];
+  selector = [invocationCopy selector];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v6 = v8;
+      v6 = invocationCopy;
       singleton = self->_singleton;
       goto LABEL_10;
     }
 
-    if (![WeakRetained shouldInvokeSelector:v5 onSingleton:self->_singleton])
+    if (![WeakRetained shouldInvokeSelector:selector onSingleton:self->_singleton])
     {
       goto LABEL_11;
     }
@@ -70,15 +70,15 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v6 = v8;
+  v6 = invocationCopy;
   singleton = WeakRetained;
 LABEL_10:
   [v6 setTarget:singleton];
-  [v8 invoke];
+  [invocationCopy invoke];
 LABEL_11:
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_singletonOverride);
   if (!WeakRetained && self->_overrideClass)
@@ -95,13 +95,13 @@ LABEL_11:
   singleton = self->_singleton;
   if (singleton)
   {
-    v8 = [singleton methodSignatureForSelector:a3];
+    v8 = [singleton methodSignatureForSelector:selector];
     if (v8)
     {
       goto LABEL_12;
     }
 
-    v8 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v8 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
     if (v8)
     {
       goto LABEL_12;
@@ -110,11 +110,11 @@ LABEL_11:
 
   v9 = objc_loadWeakRetained(&self->_singletonOverride);
 
-  if (!v9 || (v10 = objc_loadWeakRetained(&self->_singletonOverride), [v10 methodSignatureForSelector:a3], v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
+  if (!v9 || (v10 = objc_loadWeakRetained(&self->_singletonOverride), [v10 methodSignatureForSelector:selector], v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
   {
     v13.receiver = self;
     v13.super_class = IMSingletonProxy;
-    v8 = [(IMSingletonProxy *)&v13 methodSignatureForSelector:a3];
+    v8 = [(IMSingletonProxy *)&v13 methodSignatureForSelector:selector];
 LABEL_12:
     v11 = v8;
   }
@@ -122,18 +122,18 @@ LABEL_12:
   return v11;
 }
 
-- (void)setSingletonOverride:(id)a3
+- (void)setSingletonOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   WeakRetained = objc_loadWeakRetained(&self->_singletonOverride);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [WeakRetained didOverrideSingleton:0];
   }
 
-  v6 = objc_storeWeak(&self->_singletonOverride, v4);
+  v6 = objc_storeWeak(&self->_singletonOverride, overrideCopy);
 
-  if (v4)
+  if (overrideCopy)
   {
     v7 = objc_loadWeakRetained(&self->_singletonOverride);
     v8 = objc_opt_respondsToSelector();

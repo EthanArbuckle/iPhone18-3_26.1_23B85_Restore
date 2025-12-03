@@ -1,123 +1,123 @@
 @interface WiFiAwareDataSessionStatisticsReport
-- (BOOL)isEqual:(id)a3;
-- (WiFiAwareDataSessionStatisticsReport)initWithCoder:(id)a3;
-- (WiFiAwareDataSessionStatisticsReport)initWithPeerAddress:(id)a3 infrastructureChannel:(id)a4 txCCAHistogram:(id)a5 rxRSSIHistogram:(id)a6 preferred2GChannelsCount:(id)a7 preferred5GChannelsCount:(id)a8 dfsChannelsCount:(id)a9 csaCount:(id)a10 quietIECount:(id)a11 txErrorCount:(id)a12 packetsOn2GCount:(id)a13 packetsNAVOn2GCount:(id)a14 packetsHOFOn2GCount:(id)a15 packetsOn5GCount:(id)a16 packetsOverridenOn5GCount:(id)a17 infraRelayOperationStatus:(BOOL)a18 infraRelayRequestersCount:(id)a19 txExpiredCount:(id)a20 txNoACKCount:(id)a21 txFailedCount:(id)a22 txNoResourcesCount:(id)a23 txIOErrorCount:(id)a24 txMemoryErrorCount:(id)a25 txChipModeErrorCount:(id)a26 txNoRemotePeerCount:(id)a27 txInternalErrorCount:(id)a28 txDroppedCount:(id)a29 txFirmwareFreePacketCount:(id)a30 txMaxRetriesCount:(id)a31 txForceLifetimeExpiredCount:(id)a32 channelSequenceMismatchOn5GCount:(id)a33 channelSequenceMismatchOn2GCount:(id)a34 infraScanCount:(id)a35 infraAssocCount:(id)a36 infraDisassocCount:(id)a37 countryCode:(id)a38 txConsecutiveErrorsHistogram:(id)a39 rxFWDelayHistogram:(id)a40 rxIPCDelayHistogram:(id)a41 txPacketExpiryHistogram:(id)a42;
+- (BOOL)isEqual:(id)equal;
+- (WiFiAwareDataSessionStatisticsReport)initWithCoder:(id)coder;
+- (WiFiAwareDataSessionStatisticsReport)initWithPeerAddress:(id)address infrastructureChannel:(id)channel txCCAHistogram:(id)histogram rxRSSIHistogram:(id)iHistogram preferred2GChannelsCount:(id)count preferred5GChannelsCount:(id)channelsCount dfsChannelsCount:(id)dfsChannelsCount csaCount:(id)self0 quietIECount:(id)self1 txErrorCount:(id)self2 packetsOn2GCount:(id)self3 packetsNAVOn2GCount:(id)self4 packetsHOFOn2GCount:(id)self5 packetsOn5GCount:(id)self6 packetsOverridenOn5GCount:(id)self7 infraRelayOperationStatus:(BOOL)self8 infraRelayRequestersCount:(id)self9 txExpiredCount:(id)expiredCount txNoACKCount:(id)kCount txFailedCount:(id)failedCount txNoResourcesCount:(id)resourcesCount txIOErrorCount:(id)oErrorCount txMemoryErrorCount:(id)memoryErrorCount txChipModeErrorCount:(id)modeErrorCount txNoRemotePeerCount:(id)peerCount txInternalErrorCount:(id)internalErrorCount txDroppedCount:(id)droppedCount txFirmwareFreePacketCount:(id)address0 txMaxRetriesCount:(id)address1 txForceLifetimeExpiredCount:(id)address2 channelSequenceMismatchOn5GCount:(id)address3 channelSequenceMismatchOn2GCount:(id)address4 infraScanCount:(id)address5 infraAssocCount:(id)address6 infraDisassocCount:(id)address7 countryCode:(id)address8 txConsecutiveErrorsHistogram:(id)address9 rxFWDelayHistogram:(id)channel0 rxIPCDelayHistogram:(id)channel1 txPacketExpiryHistogram:(id)channel2;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiAwareDataSessionStatisticsReport
 
-- (WiFiAwareDataSessionStatisticsReport)initWithPeerAddress:(id)a3 infrastructureChannel:(id)a4 txCCAHistogram:(id)a5 rxRSSIHistogram:(id)a6 preferred2GChannelsCount:(id)a7 preferred5GChannelsCount:(id)a8 dfsChannelsCount:(id)a9 csaCount:(id)a10 quietIECount:(id)a11 txErrorCount:(id)a12 packetsOn2GCount:(id)a13 packetsNAVOn2GCount:(id)a14 packetsHOFOn2GCount:(id)a15 packetsOn5GCount:(id)a16 packetsOverridenOn5GCount:(id)a17 infraRelayOperationStatus:(BOOL)a18 infraRelayRequestersCount:(id)a19 txExpiredCount:(id)a20 txNoACKCount:(id)a21 txFailedCount:(id)a22 txNoResourcesCount:(id)a23 txIOErrorCount:(id)a24 txMemoryErrorCount:(id)a25 txChipModeErrorCount:(id)a26 txNoRemotePeerCount:(id)a27 txInternalErrorCount:(id)a28 txDroppedCount:(id)a29 txFirmwareFreePacketCount:(id)a30 txMaxRetriesCount:(id)a31 txForceLifetimeExpiredCount:(id)a32 channelSequenceMismatchOn5GCount:(id)a33 channelSequenceMismatchOn2GCount:(id)a34 infraScanCount:(id)a35 infraAssocCount:(id)a36 infraDisassocCount:(id)a37 countryCode:(id)a38 txConsecutiveErrorsHistogram:(id)a39 rxFWDelayHistogram:(id)a40 rxIPCDelayHistogram:(id)a41 txPacketExpiryHistogram:(id)a42
+- (WiFiAwareDataSessionStatisticsReport)initWithPeerAddress:(id)address infrastructureChannel:(id)channel txCCAHistogram:(id)histogram rxRSSIHistogram:(id)iHistogram preferred2GChannelsCount:(id)count preferred5GChannelsCount:(id)channelsCount dfsChannelsCount:(id)dfsChannelsCount csaCount:(id)self0 quietIECount:(id)self1 txErrorCount:(id)self2 packetsOn2GCount:(id)self3 packetsNAVOn2GCount:(id)self4 packetsHOFOn2GCount:(id)self5 packetsOn5GCount:(id)self6 packetsOverridenOn5GCount:(id)self7 infraRelayOperationStatus:(BOOL)self8 infraRelayRequestersCount:(id)self9 txExpiredCount:(id)expiredCount txNoACKCount:(id)kCount txFailedCount:(id)failedCount txNoResourcesCount:(id)resourcesCount txIOErrorCount:(id)oErrorCount txMemoryErrorCount:(id)memoryErrorCount txChipModeErrorCount:(id)modeErrorCount txNoRemotePeerCount:(id)peerCount txInternalErrorCount:(id)internalErrorCount txDroppedCount:(id)droppedCount txFirmwareFreePacketCount:(id)address0 txMaxRetriesCount:(id)address1 txForceLifetimeExpiredCount:(id)address2 channelSequenceMismatchOn5GCount:(id)address3 channelSequenceMismatchOn2GCount:(id)address4 infraScanCount:(id)address5 infraAssocCount:(id)address6 infraDisassocCount:(id)address7 countryCode:(id)address8 txConsecutiveErrorsHistogram:(id)address9 rxFWDelayHistogram:(id)channel0 rxIPCDelayHistogram:(id)channel1 txPacketExpiryHistogram:(id)channel2
 {
-  v85 = a3;
-  v58 = a4;
-  v84 = a4;
-  v82 = a5;
-  v81 = a6;
-  v59 = a7;
-  v79 = a7;
-  v60 = a8;
-  v93 = a8;
-  v92 = a9;
-  v91 = a10;
-  v90 = a11;
-  v89 = a12;
-  v88 = a13;
-  v87 = a14;
-  v86 = a15;
-  v83 = a16;
-  v80 = a17;
-  v78 = a19;
-  v77 = a20;
-  v76 = a21;
-  v75 = a22;
-  v74 = a23;
-  v73 = a24;
-  v72 = a25;
-  v71 = a26;
-  v70 = a27;
-  v69 = a28;
-  v68 = a29;
-  v67 = a30;
-  v66 = a31;
-  v65 = a32;
-  v47 = a33;
-  v63 = a34;
-  v62 = a35;
-  v64 = a36;
-  v48 = a37;
-  v49 = a38;
-  v50 = a39;
-  v51 = a40;
-  v52 = a41;
-  v53 = a42;
+  addressCopy = address;
+  channelCopy = channel;
+  channelCopy2 = channel;
+  histogramCopy = histogram;
+  iHistogramCopy = iHistogram;
+  countCopy = count;
+  countCopy2 = count;
+  channelsCountCopy = channelsCount;
+  channelsCountCopy2 = channelsCount;
+  dfsChannelsCountCopy = dfsChannelsCount;
+  csaCountCopy = csaCount;
+  eCountCopy = eCount;
+  errorCountCopy = errorCount;
+  gCountCopy = gCount;
+  on2GCountCopy = on2GCount;
+  fOn2GCountCopy = fOn2GCount;
+  on5GCountCopy = on5GCount;
+  overridenOn5GCountCopy = overridenOn5GCount;
+  requestersCountCopy = requestersCount;
+  expiredCountCopy = expiredCount;
+  kCountCopy = kCount;
+  failedCountCopy = failedCount;
+  resourcesCountCopy = resourcesCount;
+  oErrorCountCopy = oErrorCount;
+  memoryErrorCountCopy = memoryErrorCount;
+  modeErrorCountCopy = modeErrorCount;
+  peerCountCopy = peerCount;
+  internalErrorCountCopy = internalErrorCount;
+  droppedCountCopy = droppedCount;
+  packetCountCopy = packetCount;
+  retriesCountCopy = retriesCount;
+  lifetimeExpiredCountCopy = lifetimeExpiredCount;
+  mismatchOn5GCountCopy = mismatchOn5GCount;
+  mismatchOn2GCountCopy = mismatchOn2GCount;
+  scanCountCopy = scanCount;
+  assocCountCopy = assocCount;
+  disassocCountCopy = disassocCount;
+  codeCopy = code;
+  errorsHistogramCopy = errorsHistogram;
+  delayHistogramCopy = delayHistogram;
+  cDelayHistogramCopy = cDelayHistogram;
+  expiryHistogramCopy = expiryHistogram;
   v94.receiver = self;
   v94.super_class = WiFiAwareDataSessionStatisticsReport;
   v54 = [(WiFiAwareDataSessionStatisticsReport *)&v94 init];
   v55 = v54;
   if (v54)
   {
-    objc_storeStrong(&v54->_peerAddress, a3);
-    objc_storeStrong(&v55->_infrastructureChannel, v58);
-    objc_storeStrong(&v55->_txCCAHistogram, a5);
-    objc_storeStrong(&v55->_rxRSSIHistogram, a6);
-    objc_storeStrong(&v55->_preferred2GChannelsCount, v59);
-    objc_storeStrong(&v55->_preferred5GChannelsCount, v60);
-    objc_storeStrong(&v55->_dfsChannelsCount, a9);
-    objc_storeStrong(&v55->_preferred2GChannelsCount, v59);
-    objc_storeStrong(&v55->_preferred5GChannelsCount, v60);
-    objc_storeStrong(&v55->_dfsChannelsCount, a9);
-    objc_storeStrong(&v55->_csaCount, a10);
-    objc_storeStrong(&v55->_quietIECount, a11);
-    objc_storeStrong(&v55->_txErrorCount, a12);
-    objc_storeStrong(&v55->_packetsOn2GCount, a13);
-    objc_storeStrong(&v55->_packetsNAVOn2GCount, a14);
-    objc_storeStrong(&v55->_packetsHOFOn2GCount, a15);
-    objc_storeStrong(&v55->_packetsOn5GCount, a16);
-    objc_storeStrong(&v55->_packetsOverridenOn5GCount, a17);
-    v55->_infraRelayOperationStatus = a18;
-    objc_storeStrong(&v55->_infraRelayRequestersCount, a19);
-    objc_storeStrong(&v55->_txExpiredCount, a20);
-    objc_storeStrong(&v55->_txNoACKCount, a21);
-    objc_storeStrong(&v55->_txFailedCount, a22);
-    objc_storeStrong(&v55->_txNoResourcesCount, a23);
-    objc_storeStrong(&v55->_txIOErrorCount, a24);
-    objc_storeStrong(&v55->_txMemoryErrorCount, a25);
-    objc_storeStrong(&v55->_txChipModeErrorCount, a26);
-    objc_storeStrong(&v55->_txNoRemotePeerCount, a27);
-    objc_storeStrong(&v55->_txInternalErrorCount, a28);
-    objc_storeStrong(&v55->_txDroppedCount, a29);
-    objc_storeStrong(&v55->_txFirmwareFreePacketCount, a30);
-    objc_storeStrong(&v55->_txMaxRetriesCount, a31);
-    objc_storeStrong(&v55->_txForceLifetimeExpiredCount, a32);
-    objc_storeStrong(&v55->_channelSequenceMismatchOn5GCount, a33);
-    objc_storeStrong(&v55->_channelSequenceMismatchOn2GCount, a34);
-    objc_storeStrong(&v55->_infraScanCount, a35);
-    objc_storeStrong(&v55->_infraAssocCount, a36);
-    objc_storeStrong(&v55->_infraDisassocCount, a37);
-    objc_storeStrong(&v55->_countryCode, a38);
-    objc_storeStrong(&v55->_txConsecutiveErrorsHistogram, a39);
-    objc_storeStrong(&v55->_rxFWDelayHistogram, a40);
-    objc_storeStrong(&v55->_rxIPCDelayHistogram, a41);
-    objc_storeStrong(&v55->_txPacketExpiryHistogram, a42);
+    objc_storeStrong(&v54->_peerAddress, address);
+    objc_storeStrong(&v55->_infrastructureChannel, channelCopy);
+    objc_storeStrong(&v55->_txCCAHistogram, histogram);
+    objc_storeStrong(&v55->_rxRSSIHistogram, iHistogram);
+    objc_storeStrong(&v55->_preferred2GChannelsCount, countCopy);
+    objc_storeStrong(&v55->_preferred5GChannelsCount, channelsCountCopy);
+    objc_storeStrong(&v55->_dfsChannelsCount, dfsChannelsCount);
+    objc_storeStrong(&v55->_preferred2GChannelsCount, countCopy);
+    objc_storeStrong(&v55->_preferred5GChannelsCount, channelsCountCopy);
+    objc_storeStrong(&v55->_dfsChannelsCount, dfsChannelsCount);
+    objc_storeStrong(&v55->_csaCount, csaCount);
+    objc_storeStrong(&v55->_quietIECount, eCount);
+    objc_storeStrong(&v55->_txErrorCount, errorCount);
+    objc_storeStrong(&v55->_packetsOn2GCount, gCount);
+    objc_storeStrong(&v55->_packetsNAVOn2GCount, on2GCount);
+    objc_storeStrong(&v55->_packetsHOFOn2GCount, fOn2GCount);
+    objc_storeStrong(&v55->_packetsOn5GCount, on5GCount);
+    objc_storeStrong(&v55->_packetsOverridenOn5GCount, overridenOn5GCount);
+    v55->_infraRelayOperationStatus = status;
+    objc_storeStrong(&v55->_infraRelayRequestersCount, requestersCount);
+    objc_storeStrong(&v55->_txExpiredCount, expiredCount);
+    objc_storeStrong(&v55->_txNoACKCount, kCount);
+    objc_storeStrong(&v55->_txFailedCount, failedCount);
+    objc_storeStrong(&v55->_txNoResourcesCount, resourcesCount);
+    objc_storeStrong(&v55->_txIOErrorCount, oErrorCount);
+    objc_storeStrong(&v55->_txMemoryErrorCount, memoryErrorCount);
+    objc_storeStrong(&v55->_txChipModeErrorCount, modeErrorCount);
+    objc_storeStrong(&v55->_txNoRemotePeerCount, peerCount);
+    objc_storeStrong(&v55->_txInternalErrorCount, internalErrorCount);
+    objc_storeStrong(&v55->_txDroppedCount, droppedCount);
+    objc_storeStrong(&v55->_txFirmwareFreePacketCount, packetCount);
+    objc_storeStrong(&v55->_txMaxRetriesCount, retriesCount);
+    objc_storeStrong(&v55->_txForceLifetimeExpiredCount, lifetimeExpiredCount);
+    objc_storeStrong(&v55->_channelSequenceMismatchOn5GCount, mismatchOn5GCount);
+    objc_storeStrong(&v55->_channelSequenceMismatchOn2GCount, mismatchOn2GCount);
+    objc_storeStrong(&v55->_infraScanCount, scanCount);
+    objc_storeStrong(&v55->_infraAssocCount, assocCount);
+    objc_storeStrong(&v55->_infraDisassocCount, disassocCount);
+    objc_storeStrong(&v55->_countryCode, code);
+    objc_storeStrong(&v55->_txConsecutiveErrorsHistogram, errorsHistogram);
+    objc_storeStrong(&v55->_rxFWDelayHistogram, delayHistogram);
+    objc_storeStrong(&v55->_rxIPCDelayHistogram, cDelayHistogram);
+    objc_storeStrong(&v55->_txPacketExpiryHistogram, expiryHistogram);
   }
 
   return v55;
 }
 
-- (WiFiAwareDataSessionStatisticsReport)initWithCoder:(id)a3
+- (WiFiAwareDataSessionStatisticsReport)initWithCoder:(id)coder
 {
   v89[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WiFiAwareDataSessionStatisticsReport *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.peerAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.peerAddress"];
     peerAddress = v5->_peerAddress;
     v5->_peerAddress = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.infrastructureChannel"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.infrastructureChannel"];
     infrastructureChannel = v5->_infrastructureChannel;
     v5->_infrastructureChannel = v8;
 
@@ -127,152 +127,152 @@
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v89 count:2];
     v12 = [v10 setWithArray:v11];
 
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.txCCAHistogram"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.txCCAHistogram"];
     txCCAHistogram = v5->_txCCAHistogram;
     v5->_txCCAHistogram = v13;
 
-    v15 = [v4 decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.rxRSSIHistogram"];
+    v15 = [coderCopy decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.rxRSSIHistogram"];
     rxRSSIHistogram = v5->_rxRSSIHistogram;
     v5->_rxRSSIHistogram = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.preferred2GChannelsCount"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.preferred2GChannelsCount"];
     preferred2GChannelsCount = v5->_preferred2GChannelsCount;
     v5->_preferred2GChannelsCount = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.preferred5GChannelsCount"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.preferred5GChannelsCount"];
     preferred5GChannelsCount = v5->_preferred5GChannelsCount;
     v5->_preferred5GChannelsCount = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.dfsChannelsCount"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.dfsChannelsCount"];
     dfsChannelsCount = v5->_dfsChannelsCount;
     v5->_dfsChannelsCount = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.csaCount"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.csaCount"];
     csaCount = v5->_csaCount;
     v5->_csaCount = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.quietIECount"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.quietIECount"];
     quietIECount = v5->_quietIECount;
     v5->_quietIECount = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txErrorCount"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txErrorCount"];
     txErrorCount = v5->_txErrorCount;
     v5->_txErrorCount = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOn2GCount"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOn2GCount"];
     packetsOn2GCount = v5->_packetsOn2GCount;
     v5->_packetsOn2GCount = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.packetsNAVOn2GCount"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.packetsNAVOn2GCount"];
     packetsNAVOn2GCount = v5->_packetsNAVOn2GCount;
     v5->_packetsNAVOn2GCount = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.packetsHOFOn2GCount"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.packetsHOFOn2GCount"];
     packetsHOFOn2GCount = v5->_packetsHOFOn2GCount;
     v5->_packetsHOFOn2GCount = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOn5GCount"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOn5GCount"];
     packetsOn5GCount = v5->_packetsOn5GCount;
     v5->_packetsOn5GCount = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOverridenOn5GCount"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOverridenOn5GCount"];
     packetsOverridenOn5GCount = v5->_packetsOverridenOn5GCount;
     v5->_packetsOverridenOn5GCount = v37;
 
-    v5->_infraRelayOperationStatus = [v4 decodeBoolForKey:@"WiFiAwareDataSessionStatisticsReport.infraRelayOperationStatus"];
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.infraRelayRequestersCount"];
+    v5->_infraRelayOperationStatus = [coderCopy decodeBoolForKey:@"WiFiAwareDataSessionStatisticsReport.infraRelayOperationStatus"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.infraRelayRequestersCount"];
     infraRelayRequestersCount = v5->_infraRelayRequestersCount;
     v5->_infraRelayRequestersCount = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txExpiredCount"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txExpiredCount"];
     txExpiredCount = v5->_txExpiredCount;
     v5->_txExpiredCount = v41;
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txNoACKCount"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txNoACKCount"];
     txNoACKCount = v5->_txNoACKCount;
     v5->_txNoACKCount = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txFailedCount"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txFailedCount"];
     txFailedCount = v5->_txFailedCount;
     v5->_txFailedCount = v45;
 
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txNoResourcesCount"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txNoResourcesCount"];
     txNoResourcesCount = v5->_txNoResourcesCount;
     v5->_txNoResourcesCount = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txIOErrorCount"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txIOErrorCount"];
     txIOErrorCount = v5->_txIOErrorCount;
     v5->_txIOErrorCount = v49;
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txMemoryErrorCount"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txMemoryErrorCount"];
     txMemoryErrorCount = v5->_txMemoryErrorCount;
     v5->_txMemoryErrorCount = v51;
 
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txChipModeErrorCount"];
+    v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txChipModeErrorCount"];
     txChipModeErrorCount = v5->_txChipModeErrorCount;
     v5->_txChipModeErrorCount = v53;
 
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txNoRemotePeerCount"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txNoRemotePeerCount"];
     txNoRemotePeerCount = v5->_txNoRemotePeerCount;
     v5->_txNoRemotePeerCount = v55;
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txInternalErrorCount"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txInternalErrorCount"];
     txInternalErrorCount = v5->_txInternalErrorCount;
     v5->_txInternalErrorCount = v57;
 
-    v59 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txDroppedCount"];
+    v59 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txDroppedCount"];
     txDroppedCount = v5->_txDroppedCount;
     v5->_txDroppedCount = v59;
 
-    v61 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txFirmwareFreePacketCount"];
+    v61 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txFirmwareFreePacketCount"];
     txFirmwareFreePacketCount = v5->_txFirmwareFreePacketCount;
     v5->_txFirmwareFreePacketCount = v61;
 
-    v63 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txMaxRetriesCount"];
+    v63 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txMaxRetriesCount"];
     txMaxRetriesCount = v5->_txMaxRetriesCount;
     v5->_txMaxRetriesCount = v63;
 
-    v65 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txForceLifetimeExpiredCount"];
+    v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.txForceLifetimeExpiredCount"];
     txForceLifetimeExpiredCount = v5->_txForceLifetimeExpiredCount;
     v5->_txForceLifetimeExpiredCount = v65;
 
-    v67 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.channelSequenceMismatchOn5GCount"];
+    v67 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.channelSequenceMismatchOn5GCount"];
     channelSequenceMismatchOn5GCount = v5->_channelSequenceMismatchOn5GCount;
     v5->_channelSequenceMismatchOn5GCount = v67;
 
-    v69 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.channelSequenceMismatchOn2GCount"];
+    v69 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.channelSequenceMismatchOn2GCount"];
     channelSequenceMismatchOn2GCount = v5->_channelSequenceMismatchOn2GCount;
     v5->_channelSequenceMismatchOn2GCount = v69;
 
-    v71 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.infraScanCount"];
+    v71 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.infraScanCount"];
     infraScanCount = v5->_infraScanCount;
     v5->_infraScanCount = v71;
 
-    v73 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.infraAssocCount"];
+    v73 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.infraAssocCount"];
     infraAssocCount = v5->_infraAssocCount;
     v5->_infraAssocCount = v73;
 
-    v75 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.infraDisassocCount"];
+    v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.infraDisassocCount"];
     infraDisassocCount = v5->_infraDisassocCount;
     v5->_infraDisassocCount = v75;
 
-    v77 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.countryCode"];
+    v77 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionStatisticsReport.countryCode"];
     countryCode = v5->_countryCode;
     v5->_countryCode = v77;
 
-    v79 = [v4 decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.txConsecutiveErrorsHistogram"];
+    v79 = [coderCopy decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.txConsecutiveErrorsHistogram"];
     txConsecutiveErrorsHistogram = v5->_txConsecutiveErrorsHistogram;
     v5->_txConsecutiveErrorsHistogram = v79;
 
-    v81 = [v4 decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.rxFWDelayHistogram"];
+    v81 = [coderCopy decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.rxFWDelayHistogram"];
     rxFWDelayHistogram = v5->_rxFWDelayHistogram;
     v5->_rxFWDelayHistogram = v81;
 
-    v83 = [v4 decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.rxIPCDelayHistogram"];
+    v83 = [coderCopy decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.rxIPCDelayHistogram"];
     rxIPCDelayHistogram = v5->_rxIPCDelayHistogram;
     v5->_rxIPCDelayHistogram = v83;
 
-    v85 = [v4 decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.txPacketExpiryHistogram"];
+    v85 = [coderCopy decodeObjectOfClasses:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.txPacketExpiryHistogram"];
     txPacketExpiryHistogram = v5->_txPacketExpiryHistogram;
     v5->_txPacketExpiryHistogram = v85;
   }
@@ -281,157 +281,157 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WiFiAwareDataSessionStatisticsReport *)self peerAddress];
-  [v4 encodeObject:v5 forKey:@"WiFiAwareDataSessionStatisticsReport.peerAddress"];
+  coderCopy = coder;
+  peerAddress = [(WiFiAwareDataSessionStatisticsReport *)self peerAddress];
+  [coderCopy encodeObject:peerAddress forKey:@"WiFiAwareDataSessionStatisticsReport.peerAddress"];
 
-  v6 = [(WiFiAwareDataSessionStatisticsReport *)self infrastructureChannel];
-  [v4 encodeObject:v6 forKey:@"WiFiAwareDataSessionStatisticsReport.infrastructureChannel"];
+  infrastructureChannel = [(WiFiAwareDataSessionStatisticsReport *)self infrastructureChannel];
+  [coderCopy encodeObject:infrastructureChannel forKey:@"WiFiAwareDataSessionStatisticsReport.infrastructureChannel"];
 
-  v7 = [(WiFiAwareDataSessionStatisticsReport *)self txCCAHistogram];
-  [v4 encodeObject:v7 forKey:@"WiFiAwareDataSessionStatisticsReport.txCCAHistogram"];
+  txCCAHistogram = [(WiFiAwareDataSessionStatisticsReport *)self txCCAHistogram];
+  [coderCopy encodeObject:txCCAHistogram forKey:@"WiFiAwareDataSessionStatisticsReport.txCCAHistogram"];
 
-  v8 = [(WiFiAwareDataSessionStatisticsReport *)self rxRSSIHistogram];
-  [v4 encodeObject:v8 forKey:@"WiFiAwareDataSessionStatisticsReport.rxRSSIHistogram"];
+  rxRSSIHistogram = [(WiFiAwareDataSessionStatisticsReport *)self rxRSSIHistogram];
+  [coderCopy encodeObject:rxRSSIHistogram forKey:@"WiFiAwareDataSessionStatisticsReport.rxRSSIHistogram"];
 
-  v9 = [(WiFiAwareDataSessionStatisticsReport *)self preferred2GChannelsCount];
-  [v4 encodeObject:v9 forKey:@"WiFiAwareDataSessionStatisticsReport.preferred2GChannelsCount"];
+  preferred2GChannelsCount = [(WiFiAwareDataSessionStatisticsReport *)self preferred2GChannelsCount];
+  [coderCopy encodeObject:preferred2GChannelsCount forKey:@"WiFiAwareDataSessionStatisticsReport.preferred2GChannelsCount"];
 
-  v10 = [(WiFiAwareDataSessionStatisticsReport *)self preferred5GChannelsCount];
-  [v4 encodeObject:v10 forKey:@"WiFiAwareDataSessionStatisticsReport.preferred5GChannelsCount"];
+  preferred5GChannelsCount = [(WiFiAwareDataSessionStatisticsReport *)self preferred5GChannelsCount];
+  [coderCopy encodeObject:preferred5GChannelsCount forKey:@"WiFiAwareDataSessionStatisticsReport.preferred5GChannelsCount"];
 
-  v11 = [(WiFiAwareDataSessionStatisticsReport *)self dfsChannelsCount];
-  [v4 encodeObject:v11 forKey:@"WiFiAwareDataSessionStatisticsReport.dfsChannelsCount"];
+  dfsChannelsCount = [(WiFiAwareDataSessionStatisticsReport *)self dfsChannelsCount];
+  [coderCopy encodeObject:dfsChannelsCount forKey:@"WiFiAwareDataSessionStatisticsReport.dfsChannelsCount"];
 
-  v12 = [(WiFiAwareDataSessionStatisticsReport *)self csaCount];
-  [v4 encodeObject:v12 forKey:@"WiFiAwareDataSessionStatisticsReport.csaCount"];
+  csaCount = [(WiFiAwareDataSessionStatisticsReport *)self csaCount];
+  [coderCopy encodeObject:csaCount forKey:@"WiFiAwareDataSessionStatisticsReport.csaCount"];
 
-  v13 = [(WiFiAwareDataSessionStatisticsReport *)self quietIECount];
-  [v4 encodeObject:v13 forKey:@"WiFiAwareDataSessionStatisticsReport.quietIECount"];
+  quietIECount = [(WiFiAwareDataSessionStatisticsReport *)self quietIECount];
+  [coderCopy encodeObject:quietIECount forKey:@"WiFiAwareDataSessionStatisticsReport.quietIECount"];
 
-  v14 = [(WiFiAwareDataSessionStatisticsReport *)self txErrorCount];
-  [v4 encodeObject:v14 forKey:@"WiFiAwareDataSessionStatisticsReport.txErrorCount"];
+  txErrorCount = [(WiFiAwareDataSessionStatisticsReport *)self txErrorCount];
+  [coderCopy encodeObject:txErrorCount forKey:@"WiFiAwareDataSessionStatisticsReport.txErrorCount"];
 
-  v15 = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn2GCount];
-  [v4 encodeObject:v15 forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOn2GCount"];
+  packetsOn2GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn2GCount];
+  [coderCopy encodeObject:packetsOn2GCount forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOn2GCount"];
 
-  v16 = [(WiFiAwareDataSessionStatisticsReport *)self packetsNAVOn2GCount];
-  [v4 encodeObject:v16 forKey:@"WiFiAwareDataSessionStatisticsReport.packetsNAVOn2GCount"];
+  packetsNAVOn2GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsNAVOn2GCount];
+  [coderCopy encodeObject:packetsNAVOn2GCount forKey:@"WiFiAwareDataSessionStatisticsReport.packetsNAVOn2GCount"];
 
-  v17 = [(WiFiAwareDataSessionStatisticsReport *)self packetsHOFOn2GCount];
-  [v4 encodeObject:v17 forKey:@"WiFiAwareDataSessionStatisticsReport.packetsHOFOn2GCount"];
+  packetsHOFOn2GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsHOFOn2GCount];
+  [coderCopy encodeObject:packetsHOFOn2GCount forKey:@"WiFiAwareDataSessionStatisticsReport.packetsHOFOn2GCount"];
 
-  v18 = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn5GCount];
-  [v4 encodeObject:v18 forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOn5GCount"];
+  packetsOn5GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn5GCount];
+  [coderCopy encodeObject:packetsOn5GCount forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOn5GCount"];
 
-  v19 = [(WiFiAwareDataSessionStatisticsReport *)self packetsOverridenOn5GCount];
-  [v4 encodeObject:v19 forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOverridenOn5GCount"];
+  packetsOverridenOn5GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsOverridenOn5GCount];
+  [coderCopy encodeObject:packetsOverridenOn5GCount forKey:@"WiFiAwareDataSessionStatisticsReport.packetsOverridenOn5GCount"];
 
-  [v4 encodeBool:-[WiFiAwareDataSessionStatisticsReport infraRelayOperationStatus](self forKey:{"infraRelayOperationStatus"), @"WiFiAwareDataSessionStatisticsReport.infraRelayOperationStatus"}];
-  v20 = [(WiFiAwareDataSessionStatisticsReport *)self infraRelayRequestersCount];
-  [v4 encodeObject:v20 forKey:@"WiFiAwareDataSessionStatisticsReport.infraRelayRequestersCount"];
+  [coderCopy encodeBool:-[WiFiAwareDataSessionStatisticsReport infraRelayOperationStatus](self forKey:{"infraRelayOperationStatus"), @"WiFiAwareDataSessionStatisticsReport.infraRelayOperationStatus"}];
+  infraRelayRequestersCount = [(WiFiAwareDataSessionStatisticsReport *)self infraRelayRequestersCount];
+  [coderCopy encodeObject:infraRelayRequestersCount forKey:@"WiFiAwareDataSessionStatisticsReport.infraRelayRequestersCount"];
 
-  v21 = [(WiFiAwareDataSessionStatisticsReport *)self txExpiredCount];
-  [v4 encodeObject:v21 forKey:@"WiFiAwareDataSessionStatisticsReport.txExpiredCount"];
+  txExpiredCount = [(WiFiAwareDataSessionStatisticsReport *)self txExpiredCount];
+  [coderCopy encodeObject:txExpiredCount forKey:@"WiFiAwareDataSessionStatisticsReport.txExpiredCount"];
 
-  v22 = [(WiFiAwareDataSessionStatisticsReport *)self txNoACKCount];
-  [v4 encodeObject:v22 forKey:@"WiFiAwareDataSessionStatisticsReport.txNoACKCount"];
+  txNoACKCount = [(WiFiAwareDataSessionStatisticsReport *)self txNoACKCount];
+  [coderCopy encodeObject:txNoACKCount forKey:@"WiFiAwareDataSessionStatisticsReport.txNoACKCount"];
 
-  v23 = [(WiFiAwareDataSessionStatisticsReport *)self txFailedCount];
-  [v4 encodeObject:v23 forKey:@"WiFiAwareDataSessionStatisticsReport.txFailedCount"];
+  txFailedCount = [(WiFiAwareDataSessionStatisticsReport *)self txFailedCount];
+  [coderCopy encodeObject:txFailedCount forKey:@"WiFiAwareDataSessionStatisticsReport.txFailedCount"];
 
-  v24 = [(WiFiAwareDataSessionStatisticsReport *)self txNoResourcesCount];
-  [v4 encodeObject:v24 forKey:@"WiFiAwareDataSessionStatisticsReport.txNoResourcesCount"];
+  txNoResourcesCount = [(WiFiAwareDataSessionStatisticsReport *)self txNoResourcesCount];
+  [coderCopy encodeObject:txNoResourcesCount forKey:@"WiFiAwareDataSessionStatisticsReport.txNoResourcesCount"];
 
-  v25 = [(WiFiAwareDataSessionStatisticsReport *)self txIOErrorCount];
-  [v4 encodeObject:v25 forKey:@"WiFiAwareDataSessionStatisticsReport.txIOErrorCount"];
+  txIOErrorCount = [(WiFiAwareDataSessionStatisticsReport *)self txIOErrorCount];
+  [coderCopy encodeObject:txIOErrorCount forKey:@"WiFiAwareDataSessionStatisticsReport.txIOErrorCount"];
 
-  v26 = [(WiFiAwareDataSessionStatisticsReport *)self txMemoryErrorCount];
-  [v4 encodeObject:v26 forKey:@"WiFiAwareDataSessionStatisticsReport.txMemoryErrorCount"];
+  txMemoryErrorCount = [(WiFiAwareDataSessionStatisticsReport *)self txMemoryErrorCount];
+  [coderCopy encodeObject:txMemoryErrorCount forKey:@"WiFiAwareDataSessionStatisticsReport.txMemoryErrorCount"];
 
-  v27 = [(WiFiAwareDataSessionStatisticsReport *)self txChipModeErrorCount];
-  [v4 encodeObject:v27 forKey:@"WiFiAwareDataSessionStatisticsReport.txChipModeErrorCount"];
+  txChipModeErrorCount = [(WiFiAwareDataSessionStatisticsReport *)self txChipModeErrorCount];
+  [coderCopy encodeObject:txChipModeErrorCount forKey:@"WiFiAwareDataSessionStatisticsReport.txChipModeErrorCount"];
 
-  v28 = [(WiFiAwareDataSessionStatisticsReport *)self txNoRemotePeerCount];
-  [v4 encodeObject:v28 forKey:@"WiFiAwareDataSessionStatisticsReport.txNoRemotePeerCount"];
+  txNoRemotePeerCount = [(WiFiAwareDataSessionStatisticsReport *)self txNoRemotePeerCount];
+  [coderCopy encodeObject:txNoRemotePeerCount forKey:@"WiFiAwareDataSessionStatisticsReport.txNoRemotePeerCount"];
 
-  v29 = [(WiFiAwareDataSessionStatisticsReport *)self txInternalErrorCount];
-  [v4 encodeObject:v29 forKey:@"WiFiAwareDataSessionStatisticsReport.txInternalErrorCount"];
+  txInternalErrorCount = [(WiFiAwareDataSessionStatisticsReport *)self txInternalErrorCount];
+  [coderCopy encodeObject:txInternalErrorCount forKey:@"WiFiAwareDataSessionStatisticsReport.txInternalErrorCount"];
 
-  v30 = [(WiFiAwareDataSessionStatisticsReport *)self txDroppedCount];
-  [v4 encodeObject:v30 forKey:@"WiFiAwareDataSessionStatisticsReport.txDroppedCount"];
+  txDroppedCount = [(WiFiAwareDataSessionStatisticsReport *)self txDroppedCount];
+  [coderCopy encodeObject:txDroppedCount forKey:@"WiFiAwareDataSessionStatisticsReport.txDroppedCount"];
 
-  v31 = [(WiFiAwareDataSessionStatisticsReport *)self txFirmwareFreePacketCount];
-  [v4 encodeObject:v31 forKey:@"WiFiAwareDataSessionStatisticsReport.txFirmwareFreePacketCount"];
+  txFirmwareFreePacketCount = [(WiFiAwareDataSessionStatisticsReport *)self txFirmwareFreePacketCount];
+  [coderCopy encodeObject:txFirmwareFreePacketCount forKey:@"WiFiAwareDataSessionStatisticsReport.txFirmwareFreePacketCount"];
 
-  v32 = [(WiFiAwareDataSessionStatisticsReport *)self txMaxRetriesCount];
-  [v4 encodeObject:v32 forKey:@"WiFiAwareDataSessionStatisticsReport.txMaxRetriesCount"];
+  txMaxRetriesCount = [(WiFiAwareDataSessionStatisticsReport *)self txMaxRetriesCount];
+  [coderCopy encodeObject:txMaxRetriesCount forKey:@"WiFiAwareDataSessionStatisticsReport.txMaxRetriesCount"];
 
-  v33 = [(WiFiAwareDataSessionStatisticsReport *)self txForceLifetimeExpiredCount];
-  [v4 encodeObject:v33 forKey:@"WiFiAwareDataSessionStatisticsReport.txForceLifetimeExpiredCount"];
+  txForceLifetimeExpiredCount = [(WiFiAwareDataSessionStatisticsReport *)self txForceLifetimeExpiredCount];
+  [coderCopy encodeObject:txForceLifetimeExpiredCount forKey:@"WiFiAwareDataSessionStatisticsReport.txForceLifetimeExpiredCount"];
 
-  v34 = [(WiFiAwareDataSessionStatisticsReport *)self channelSequenceMismatchOn5GCount];
-  [v4 encodeObject:v34 forKey:@"WiFiAwareDataSessionStatisticsReport.channelSequenceMismatchOn5GCount"];
+  channelSequenceMismatchOn5GCount = [(WiFiAwareDataSessionStatisticsReport *)self channelSequenceMismatchOn5GCount];
+  [coderCopy encodeObject:channelSequenceMismatchOn5GCount forKey:@"WiFiAwareDataSessionStatisticsReport.channelSequenceMismatchOn5GCount"];
 
-  v35 = [(WiFiAwareDataSessionStatisticsReport *)self channelSequenceMismatchOn2GCount];
-  [v4 encodeObject:v35 forKey:@"WiFiAwareDataSessionStatisticsReport.channelSequenceMismatchOn2GCount"];
+  channelSequenceMismatchOn2GCount = [(WiFiAwareDataSessionStatisticsReport *)self channelSequenceMismatchOn2GCount];
+  [coderCopy encodeObject:channelSequenceMismatchOn2GCount forKey:@"WiFiAwareDataSessionStatisticsReport.channelSequenceMismatchOn2GCount"];
 
-  v36 = [(WiFiAwareDataSessionStatisticsReport *)self infraScanCount];
-  [v4 encodeObject:v36 forKey:@"WiFiAwareDataSessionStatisticsReport.infraScanCount"];
+  infraScanCount = [(WiFiAwareDataSessionStatisticsReport *)self infraScanCount];
+  [coderCopy encodeObject:infraScanCount forKey:@"WiFiAwareDataSessionStatisticsReport.infraScanCount"];
 
-  v37 = [(WiFiAwareDataSessionStatisticsReport *)self infraAssocCount];
-  [v4 encodeObject:v37 forKey:@"WiFiAwareDataSessionStatisticsReport.infraAssocCount"];
+  infraAssocCount = [(WiFiAwareDataSessionStatisticsReport *)self infraAssocCount];
+  [coderCopy encodeObject:infraAssocCount forKey:@"WiFiAwareDataSessionStatisticsReport.infraAssocCount"];
 
-  v38 = [(WiFiAwareDataSessionStatisticsReport *)self infraDisassocCount];
-  [v4 encodeObject:v38 forKey:@"WiFiAwareDataSessionStatisticsReport.infraDisassocCount"];
+  infraDisassocCount = [(WiFiAwareDataSessionStatisticsReport *)self infraDisassocCount];
+  [coderCopy encodeObject:infraDisassocCount forKey:@"WiFiAwareDataSessionStatisticsReport.infraDisassocCount"];
 
-  v39 = [(WiFiAwareDataSessionStatisticsReport *)self countryCode];
-  [v4 encodeObject:v39 forKey:@"WiFiAwareDataSessionStatisticsReport.countryCode"];
+  countryCode = [(WiFiAwareDataSessionStatisticsReport *)self countryCode];
+  [coderCopy encodeObject:countryCode forKey:@"WiFiAwareDataSessionStatisticsReport.countryCode"];
 
-  v40 = [(WiFiAwareDataSessionStatisticsReport *)self txConsecutiveErrorsHistogram];
-  [v4 encodeObject:v40 forKey:@"WiFiAwareDataSessionStatisticsReport.txConsecutiveErrorsHistogram"];
+  txConsecutiveErrorsHistogram = [(WiFiAwareDataSessionStatisticsReport *)self txConsecutiveErrorsHistogram];
+  [coderCopy encodeObject:txConsecutiveErrorsHistogram forKey:@"WiFiAwareDataSessionStatisticsReport.txConsecutiveErrorsHistogram"];
 
-  v41 = [(WiFiAwareDataSessionStatisticsReport *)self rxFWDelayHistogram];
-  [v4 encodeObject:v41 forKey:@"WiFiAwareDataSessionStatisticsReport.rxFWDelayHistogram"];
+  rxFWDelayHistogram = [(WiFiAwareDataSessionStatisticsReport *)self rxFWDelayHistogram];
+  [coderCopy encodeObject:rxFWDelayHistogram forKey:@"WiFiAwareDataSessionStatisticsReport.rxFWDelayHistogram"];
 
-  v42 = [(WiFiAwareDataSessionStatisticsReport *)self rxIPCDelayHistogram];
-  [v4 encodeObject:v42 forKey:@"WiFiAwareDataSessionStatisticsReport.rxIPCDelayHistogram"];
+  rxIPCDelayHistogram = [(WiFiAwareDataSessionStatisticsReport *)self rxIPCDelayHistogram];
+  [coderCopy encodeObject:rxIPCDelayHistogram forKey:@"WiFiAwareDataSessionStatisticsReport.rxIPCDelayHistogram"];
 
-  v43 = [(WiFiAwareDataSessionStatisticsReport *)self txPacketExpiryHistogram];
-  [v4 encodeObject:v43 forKey:@"WiFiAwareDataSessionStatisticsReport.txPacketExpiryHistogram"];
+  txPacketExpiryHistogram = [(WiFiAwareDataSessionStatisticsReport *)self txPacketExpiryHistogram];
+  [coderCopy encodeObject:txPacketExpiryHistogram forKey:@"WiFiAwareDataSessionStatisticsReport.txPacketExpiryHistogram"];
 }
 
 - (id)description
 {
   v18 = MEMORY[0x277CCACA8];
-  v17 = [(WiFiAwareDataSessionStatisticsReport *)self peerAddress];
-  v16 = [(WiFiAwareDataSessionStatisticsReport *)self infrastructureChannel];
-  v22 = [(WiFiAwareDataSessionStatisticsReport *)self preferred2GChannelsCount];
-  v15 = [(WiFiAwareDataSessionStatisticsReport *)self preferred5GChannelsCount];
-  v21 = [(WiFiAwareDataSessionStatisticsReport *)self dfsChannelsCount];
-  v14 = [(WiFiAwareDataSessionStatisticsReport *)self csaCount];
-  v20 = [(WiFiAwareDataSessionStatisticsReport *)self quietIECount];
-  v13 = [(WiFiAwareDataSessionStatisticsReport *)self txErrorCount];
-  v3 = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn2GCount];
-  v12 = [(WiFiAwareDataSessionStatisticsReport *)self packetsNAVOn2GCount];
-  v4 = [(WiFiAwareDataSessionStatisticsReport *)self packetsHOFOn2GCount];
-  v11 = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn5GCount];
-  v5 = [(WiFiAwareDataSessionStatisticsReport *)self packetsOverridenOn5GCount];
-  v6 = [(WiFiAwareDataSessionStatisticsReport *)self infraRelayOperationStatus];
-  v7 = [(WiFiAwareDataSessionStatisticsReport *)self infraRelayRequestersCount];
-  v8 = [(WiFiAwareDataSessionStatisticsReport *)self txCCAHistogram];
-  v9 = [(WiFiAwareDataSessionStatisticsReport *)self rxRSSIHistogram];
-  v19 = [v18 stringWithFormat:@"<WiFiAwareDataSessionStatisticsReport peerAddress=%@, infrastructureChannel=%@, preferred2GChannelsCount=%@, preferred5GChannelsCount=%@, dfsChannelsCount=%@, csaCount=%@, quietIECount=%@, txErrorCount=%@, packetsOn2GCount=%@, packetsNAVOn2GCount=%@, packetsHOFOn2GCount=%@, packetsOn5GCount=%@, packetsOverridenOn5GCount=%@>, infraRelayOperationStatus=%d, infraRelayRequestersCount=%@\ntxCCA=\n%@\nrxRSSI=%@\n", v17, v16, v22, v15, v21, v14, v20, v13, v3, v12, v4, v11, v5, v6, v7, v8, v9];
+  peerAddress = [(WiFiAwareDataSessionStatisticsReport *)self peerAddress];
+  infrastructureChannel = [(WiFiAwareDataSessionStatisticsReport *)self infrastructureChannel];
+  preferred2GChannelsCount = [(WiFiAwareDataSessionStatisticsReport *)self preferred2GChannelsCount];
+  preferred5GChannelsCount = [(WiFiAwareDataSessionStatisticsReport *)self preferred5GChannelsCount];
+  dfsChannelsCount = [(WiFiAwareDataSessionStatisticsReport *)self dfsChannelsCount];
+  csaCount = [(WiFiAwareDataSessionStatisticsReport *)self csaCount];
+  quietIECount = [(WiFiAwareDataSessionStatisticsReport *)self quietIECount];
+  txErrorCount = [(WiFiAwareDataSessionStatisticsReport *)self txErrorCount];
+  packetsOn2GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn2GCount];
+  packetsNAVOn2GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsNAVOn2GCount];
+  packetsHOFOn2GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsHOFOn2GCount];
+  packetsOn5GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn5GCount];
+  packetsOverridenOn5GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsOverridenOn5GCount];
+  infraRelayOperationStatus = [(WiFiAwareDataSessionStatisticsReport *)self infraRelayOperationStatus];
+  infraRelayRequestersCount = [(WiFiAwareDataSessionStatisticsReport *)self infraRelayRequestersCount];
+  txCCAHistogram = [(WiFiAwareDataSessionStatisticsReport *)self txCCAHistogram];
+  rxRSSIHistogram = [(WiFiAwareDataSessionStatisticsReport *)self rxRSSIHistogram];
+  v19 = [v18 stringWithFormat:@"<WiFiAwareDataSessionStatisticsReport peerAddress=%@, infrastructureChannel=%@, preferred2GChannelsCount=%@, preferred5GChannelsCount=%@, dfsChannelsCount=%@, csaCount=%@, quietIECount=%@, txErrorCount=%@, packetsOn2GCount=%@, packetsNAVOn2GCount=%@, packetsHOFOn2GCount=%@, packetsOn5GCount=%@, packetsOverridenOn5GCount=%@>, infraRelayOperationStatus=%d, infraRelayRequestersCount=%@\ntxCCA=\n%@\nrxRSSI=%@\n", peerAddress, infrastructureChannel, preferred2GChannelsCount, preferred5GChannelsCount, dfsChannelsCount, csaCount, quietIECount, txErrorCount, packetsOn2GCount, packetsNAVOn2GCount, packetsHOFOn2GCount, packetsOn5GCount, packetsOverridenOn5GCount, infraRelayOperationStatus, infraRelayRequestersCount, txCCAHistogram, rxRSSIHistogram];
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
     goto LABEL_93;
@@ -440,200 +440,200 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(WiFiAwareDataSessionStatisticsReport *)self peerAddress];
-    v160 = [(WiFiAwareDataSessionStatisticsReport *)v5 peerAddress];
-    v161 = v6;
-    v159 = [v6 isEqual:v160];
+    v5 = equalCopy;
+    peerAddress = [(WiFiAwareDataSessionStatisticsReport *)self peerAddress];
+    peerAddress2 = [(WiFiAwareDataSessionStatisticsReport *)v5 peerAddress];
+    v161 = peerAddress;
+    v159 = [peerAddress isEqual:peerAddress2];
     if (v159 && (-[WiFiAwareDataSessionStatisticsReport infrastructureChannel](self, "infrastructureChannel"), v8 = objc_claimAutoreleasedReturnValue(), -[WiFiAwareDataSessionStatisticsReport infrastructureChannel](v5, "infrastructureChannel"), v147 = objc_claimAutoreleasedReturnValue(), v148 = v8, [v8 isEqual:v147]))
     {
-      v9 = [(WiFiAwareDataSessionStatisticsReport *)self preferred2GChannelsCount];
+      preferred2GChannelsCount = [(WiFiAwareDataSessionStatisticsReport *)self preferred2GChannelsCount];
       [(WiFiAwareDataSessionStatisticsReport *)v5 preferred2GChannelsCount];
-      v143 = v144 = v9;
-      if ([v9 isEqual:?])
+      v143 = v144 = preferred2GChannelsCount;
+      if ([preferred2GChannelsCount isEqual:?])
       {
-        v10 = [(WiFiAwareDataSessionStatisticsReport *)self preferred5GChannelsCount];
+        preferred5GChannelsCount = [(WiFiAwareDataSessionStatisticsReport *)self preferred5GChannelsCount];
         [(WiFiAwareDataSessionStatisticsReport *)v5 preferred5GChannelsCount];
-        v141 = v142 = v10;
-        if ([v10 isEqual:?])
+        v141 = v142 = preferred5GChannelsCount;
+        if ([preferred5GChannelsCount isEqual:?])
         {
-          v11 = [(WiFiAwareDataSessionStatisticsReport *)self dfsChannelsCount];
+          dfsChannelsCount = [(WiFiAwareDataSessionStatisticsReport *)self dfsChannelsCount];
           [(WiFiAwareDataSessionStatisticsReport *)v5 dfsChannelsCount];
-          v139 = v140 = v11;
-          if ([v11 isEqual:?])
+          v139 = v140 = dfsChannelsCount;
+          if ([dfsChannelsCount isEqual:?])
           {
-            v12 = [(WiFiAwareDataSessionStatisticsReport *)self csaCount];
+            csaCount = [(WiFiAwareDataSessionStatisticsReport *)self csaCount];
             [(WiFiAwareDataSessionStatisticsReport *)v5 csaCount];
-            v137 = v138 = v12;
-            if ([v12 isEqual:?])
+            v137 = v138 = csaCount;
+            if ([csaCount isEqual:?])
             {
-              v13 = [(WiFiAwareDataSessionStatisticsReport *)self quietIECount];
-              v135 = [(WiFiAwareDataSessionStatisticsReport *)v5 quietIECount];
-              v136 = v13;
-              if ([v13 isEqual:v135])
+              quietIECount = [(WiFiAwareDataSessionStatisticsReport *)self quietIECount];
+              quietIECount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 quietIECount];
+              v136 = quietIECount;
+              if ([quietIECount isEqual:quietIECount2])
               {
-                v14 = [(WiFiAwareDataSessionStatisticsReport *)self txErrorCount];
-                v133 = [(WiFiAwareDataSessionStatisticsReport *)v5 txErrorCount];
-                v134 = v14;
-                if ([v14 isEqual:v133])
+                txErrorCount = [(WiFiAwareDataSessionStatisticsReport *)self txErrorCount];
+                txErrorCount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 txErrorCount];
+                v134 = txErrorCount;
+                if ([txErrorCount isEqual:txErrorCount2])
                 {
-                  v15 = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn2GCount];
-                  v131 = [(WiFiAwareDataSessionStatisticsReport *)v5 packetsOn2GCount];
-                  v132 = v15;
-                  if ([v15 isEqual:v131])
+                  packetsOn2GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn2GCount];
+                  packetsOn2GCount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 packetsOn2GCount];
+                  v132 = packetsOn2GCount;
+                  if ([packetsOn2GCount isEqual:packetsOn2GCount2])
                   {
-                    v16 = [(WiFiAwareDataSessionStatisticsReport *)self packetsNAVOn2GCount];
-                    v129 = [(WiFiAwareDataSessionStatisticsReport *)v5 packetsNAVOn2GCount];
-                    v130 = v16;
-                    if ([v16 isEqual:v129])
+                    packetsNAVOn2GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsNAVOn2GCount];
+                    packetsNAVOn2GCount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 packetsNAVOn2GCount];
+                    v130 = packetsNAVOn2GCount;
+                    if ([packetsNAVOn2GCount isEqual:packetsNAVOn2GCount2])
                     {
-                      v17 = [(WiFiAwareDataSessionStatisticsReport *)self packetsHOFOn2GCount];
-                      v127 = [(WiFiAwareDataSessionStatisticsReport *)v5 packetsHOFOn2GCount];
-                      v128 = v17;
-                      if ([v17 isEqual:v127])
+                      packetsHOFOn2GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsHOFOn2GCount];
+                      packetsHOFOn2GCount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 packetsHOFOn2GCount];
+                      v128 = packetsHOFOn2GCount;
+                      if ([packetsHOFOn2GCount isEqual:packetsHOFOn2GCount2])
                       {
-                        v18 = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn5GCount];
-                        v125 = [(WiFiAwareDataSessionStatisticsReport *)v5 packetsOn5GCount];
-                        v126 = v18;
-                        if ([v18 isEqual:v125])
+                        packetsOn5GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsOn5GCount];
+                        packetsOn5GCount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 packetsOn5GCount];
+                        v126 = packetsOn5GCount;
+                        if ([packetsOn5GCount isEqual:packetsOn5GCount2])
                         {
-                          v19 = [(WiFiAwareDataSessionStatisticsReport *)self packetsOverridenOn5GCount];
-                          v123 = [(WiFiAwareDataSessionStatisticsReport *)v5 packetsOverridenOn5GCount];
-                          v124 = v19;
-                          if ([v19 isEqual:v123])
+                          packetsOverridenOn5GCount = [(WiFiAwareDataSessionStatisticsReport *)self packetsOverridenOn5GCount];
+                          packetsOverridenOn5GCount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 packetsOverridenOn5GCount];
+                          v124 = packetsOverridenOn5GCount;
+                          if ([packetsOverridenOn5GCount isEqual:packetsOverridenOn5GCount2])
                           {
-                            v20 = [(WiFiAwareDataSessionStatisticsReport *)self txCCAHistogram];
+                            txCCAHistogram = [(WiFiAwareDataSessionStatisticsReport *)self txCCAHistogram];
                             v145 = v5;
-                            v121 = [(WiFiAwareDataSessionStatisticsReport *)v5 txCCAHistogram];
-                            v122 = v20;
-                            if ([v20 isEqual:v121])
+                            txCCAHistogram2 = [(WiFiAwareDataSessionStatisticsReport *)v5 txCCAHistogram];
+                            v122 = txCCAHistogram;
+                            if ([txCCAHistogram isEqual:txCCAHistogram2])
                             {
-                              v21 = [(WiFiAwareDataSessionStatisticsReport *)self rxRSSIHistogram];
-                              v119 = [(WiFiAwareDataSessionStatisticsReport *)v5 rxRSSIHistogram];
-                              v120 = v21;
-                              if ([v21 isEqual:v119] && (v22 = -[WiFiAwareDataSessionStatisticsReport infraRelayOperationStatus](self, "infraRelayOperationStatus"), v22 == -[WiFiAwareDataSessionStatisticsReport infraRelayOperationStatus](v5, "infraRelayOperationStatus")))
+                              rxRSSIHistogram = [(WiFiAwareDataSessionStatisticsReport *)self rxRSSIHistogram];
+                              rxRSSIHistogram2 = [(WiFiAwareDataSessionStatisticsReport *)v5 rxRSSIHistogram];
+                              v120 = rxRSSIHistogram;
+                              if ([rxRSSIHistogram isEqual:rxRSSIHistogram2] && (v22 = -[WiFiAwareDataSessionStatisticsReport infraRelayOperationStatus](self, "infraRelayOperationStatus"), v22 == -[WiFiAwareDataSessionStatisticsReport infraRelayOperationStatus](v5, "infraRelayOperationStatus")))
                               {
-                                v46 = [(WiFiAwareDataSessionStatisticsReport *)self infraRelayRequestersCount];
-                                v117 = [(WiFiAwareDataSessionStatisticsReport *)v5 infraRelayRequestersCount];
-                                v118 = v46;
-                                if ([v46 isEqual:v117])
+                                infraRelayRequestersCount = [(WiFiAwareDataSessionStatisticsReport *)self infraRelayRequestersCount];
+                                infraRelayRequestersCount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 infraRelayRequestersCount];
+                                v118 = infraRelayRequestersCount;
+                                if ([infraRelayRequestersCount isEqual:infraRelayRequestersCount2])
                                 {
-                                  v47 = [(WiFiAwareDataSessionStatisticsReport *)self txExpiredCount];
-                                  v115 = [(WiFiAwareDataSessionStatisticsReport *)v5 txExpiredCount];
-                                  v116 = v47;
-                                  if ([v47 isEqual:v115])
+                                  txExpiredCount = [(WiFiAwareDataSessionStatisticsReport *)self txExpiredCount];
+                                  txExpiredCount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 txExpiredCount];
+                                  v116 = txExpiredCount;
+                                  if ([txExpiredCount isEqual:txExpiredCount2])
                                   {
-                                    v48 = [(WiFiAwareDataSessionStatisticsReport *)self txNoACKCount];
-                                    v113 = [(WiFiAwareDataSessionStatisticsReport *)v5 txNoACKCount];
-                                    v114 = v48;
-                                    if ([v48 isEqual:v113])
+                                    txNoACKCount = [(WiFiAwareDataSessionStatisticsReport *)self txNoACKCount];
+                                    txNoACKCount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 txNoACKCount];
+                                    v114 = txNoACKCount;
+                                    if ([txNoACKCount isEqual:txNoACKCount2])
                                     {
-                                      v49 = [(WiFiAwareDataSessionStatisticsReport *)self txFailedCount];
-                                      v111 = [(WiFiAwareDataSessionStatisticsReport *)v5 txFailedCount];
-                                      v112 = v49;
-                                      if ([v49 isEqual:v111])
+                                      txFailedCount = [(WiFiAwareDataSessionStatisticsReport *)self txFailedCount];
+                                      txFailedCount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 txFailedCount];
+                                      v112 = txFailedCount;
+                                      if ([txFailedCount isEqual:txFailedCount2])
                                       {
-                                        v50 = [(WiFiAwareDataSessionStatisticsReport *)self txNoResourcesCount];
-                                        v109 = [(WiFiAwareDataSessionStatisticsReport *)v5 txNoResourcesCount];
-                                        v110 = v50;
-                                        if ([v50 isEqual:v109])
+                                        txNoResourcesCount = [(WiFiAwareDataSessionStatisticsReport *)self txNoResourcesCount];
+                                        txNoResourcesCount2 = [(WiFiAwareDataSessionStatisticsReport *)v5 txNoResourcesCount];
+                                        v110 = txNoResourcesCount;
+                                        if ([txNoResourcesCount isEqual:txNoResourcesCount2])
                                         {
-                                          v51 = [(WiFiAwareDataSessionStatisticsReport *)self txIOErrorCount];
-                                          v107 = [(WiFiAwareDataSessionStatisticsReport *)v145 txIOErrorCount];
-                                          v108 = v51;
-                                          if ([v51 isEqual:v107])
+                                          txIOErrorCount = [(WiFiAwareDataSessionStatisticsReport *)self txIOErrorCount];
+                                          txIOErrorCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 txIOErrorCount];
+                                          v108 = txIOErrorCount;
+                                          if ([txIOErrorCount isEqual:txIOErrorCount2])
                                           {
-                                            v52 = [(WiFiAwareDataSessionStatisticsReport *)self txMemoryErrorCount];
-                                            v105 = [(WiFiAwareDataSessionStatisticsReport *)v145 txMemoryErrorCount];
-                                            v106 = v52;
-                                            if ([v52 isEqual:v105])
+                                            txMemoryErrorCount = [(WiFiAwareDataSessionStatisticsReport *)self txMemoryErrorCount];
+                                            txMemoryErrorCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 txMemoryErrorCount];
+                                            v106 = txMemoryErrorCount;
+                                            if ([txMemoryErrorCount isEqual:txMemoryErrorCount2])
                                             {
-                                              v53 = [(WiFiAwareDataSessionStatisticsReport *)self txChipModeErrorCount];
-                                              v103 = [(WiFiAwareDataSessionStatisticsReport *)v145 txChipModeErrorCount];
-                                              v104 = v53;
-                                              if ([v53 isEqual:v103])
+                                              txChipModeErrorCount = [(WiFiAwareDataSessionStatisticsReport *)self txChipModeErrorCount];
+                                              txChipModeErrorCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 txChipModeErrorCount];
+                                              v104 = txChipModeErrorCount;
+                                              if ([txChipModeErrorCount isEqual:txChipModeErrorCount2])
                                               {
-                                                v54 = [(WiFiAwareDataSessionStatisticsReport *)self txNoRemotePeerCount];
-                                                v101 = [(WiFiAwareDataSessionStatisticsReport *)v145 txNoRemotePeerCount];
-                                                v102 = v54;
-                                                if ([v54 isEqual:v101])
+                                                txNoRemotePeerCount = [(WiFiAwareDataSessionStatisticsReport *)self txNoRemotePeerCount];
+                                                txNoRemotePeerCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 txNoRemotePeerCount];
+                                                v102 = txNoRemotePeerCount;
+                                                if ([txNoRemotePeerCount isEqual:txNoRemotePeerCount2])
                                                 {
-                                                  v55 = [(WiFiAwareDataSessionStatisticsReport *)self txInternalErrorCount];
-                                                  v99 = [(WiFiAwareDataSessionStatisticsReport *)v145 txInternalErrorCount];
-                                                  v100 = v55;
-                                                  if ([v55 isEqual:v99])
+                                                  txInternalErrorCount = [(WiFiAwareDataSessionStatisticsReport *)self txInternalErrorCount];
+                                                  txInternalErrorCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 txInternalErrorCount];
+                                                  v100 = txInternalErrorCount;
+                                                  if ([txInternalErrorCount isEqual:txInternalErrorCount2])
                                                   {
-                                                    v56 = [(WiFiAwareDataSessionStatisticsReport *)self txDroppedCount];
-                                                    v97 = [(WiFiAwareDataSessionStatisticsReport *)v145 txDroppedCount];
-                                                    v98 = v56;
-                                                    if ([v56 isEqual:v97])
+                                                    txDroppedCount = [(WiFiAwareDataSessionStatisticsReport *)self txDroppedCount];
+                                                    txDroppedCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 txDroppedCount];
+                                                    v98 = txDroppedCount;
+                                                    if ([txDroppedCount isEqual:txDroppedCount2])
                                                     {
-                                                      v57 = [(WiFiAwareDataSessionStatisticsReport *)self txFirmwareFreePacketCount];
-                                                      v95 = [(WiFiAwareDataSessionStatisticsReport *)v145 txFirmwareFreePacketCount];
-                                                      v96 = v57;
-                                                      if ([v57 isEqual:v95])
+                                                      txFirmwareFreePacketCount = [(WiFiAwareDataSessionStatisticsReport *)self txFirmwareFreePacketCount];
+                                                      txFirmwareFreePacketCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 txFirmwareFreePacketCount];
+                                                      v96 = txFirmwareFreePacketCount;
+                                                      if ([txFirmwareFreePacketCount isEqual:txFirmwareFreePacketCount2])
                                                       {
-                                                        v58 = [(WiFiAwareDataSessionStatisticsReport *)self txMaxRetriesCount];
-                                                        v93 = [(WiFiAwareDataSessionStatisticsReport *)v145 txMaxRetriesCount];
-                                                        v94 = v58;
-                                                        if ([v58 isEqual:v93])
+                                                        txMaxRetriesCount = [(WiFiAwareDataSessionStatisticsReport *)self txMaxRetriesCount];
+                                                        txMaxRetriesCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 txMaxRetriesCount];
+                                                        v94 = txMaxRetriesCount;
+                                                        if ([txMaxRetriesCount isEqual:txMaxRetriesCount2])
                                                         {
-                                                          v59 = [(WiFiAwareDataSessionStatisticsReport *)self txForceLifetimeExpiredCount];
-                                                          v91 = [(WiFiAwareDataSessionStatisticsReport *)v145 txForceLifetimeExpiredCount];
-                                                          v92 = v59;
-                                                          if ([v59 isEqual:v91])
+                                                          txForceLifetimeExpiredCount = [(WiFiAwareDataSessionStatisticsReport *)self txForceLifetimeExpiredCount];
+                                                          txForceLifetimeExpiredCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 txForceLifetimeExpiredCount];
+                                                          v92 = txForceLifetimeExpiredCount;
+                                                          if ([txForceLifetimeExpiredCount isEqual:txForceLifetimeExpiredCount2])
                                                           {
-                                                            v60 = [(WiFiAwareDataSessionStatisticsReport *)self channelSequenceMismatchOn5GCount];
-                                                            v89 = [(WiFiAwareDataSessionStatisticsReport *)v145 channelSequenceMismatchOn5GCount];
-                                                            v90 = v60;
-                                                            if ([v60 isEqual:v89])
+                                                            channelSequenceMismatchOn5GCount = [(WiFiAwareDataSessionStatisticsReport *)self channelSequenceMismatchOn5GCount];
+                                                            channelSequenceMismatchOn5GCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 channelSequenceMismatchOn5GCount];
+                                                            v90 = channelSequenceMismatchOn5GCount;
+                                                            if ([channelSequenceMismatchOn5GCount isEqual:channelSequenceMismatchOn5GCount2])
                                                             {
-                                                              v61 = [(WiFiAwareDataSessionStatisticsReport *)self channelSequenceMismatchOn2GCount];
-                                                              v87 = [(WiFiAwareDataSessionStatisticsReport *)v145 channelSequenceMismatchOn2GCount];
-                                                              v88 = v61;
-                                                              if ([v61 isEqual:v87])
+                                                              channelSequenceMismatchOn2GCount = [(WiFiAwareDataSessionStatisticsReport *)self channelSequenceMismatchOn2GCount];
+                                                              channelSequenceMismatchOn2GCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 channelSequenceMismatchOn2GCount];
+                                                              v88 = channelSequenceMismatchOn2GCount;
+                                                              if ([channelSequenceMismatchOn2GCount isEqual:channelSequenceMismatchOn2GCount2])
                                                               {
-                                                                v62 = [(WiFiAwareDataSessionStatisticsReport *)self infraScanCount];
-                                                                v85 = [(WiFiAwareDataSessionStatisticsReport *)v145 infraScanCount];
-                                                                v86 = v62;
-                                                                if ([v62 isEqual:v85])
+                                                                infraScanCount = [(WiFiAwareDataSessionStatisticsReport *)self infraScanCount];
+                                                                infraScanCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 infraScanCount];
+                                                                v86 = infraScanCount;
+                                                                if ([infraScanCount isEqual:infraScanCount2])
                                                                 {
-                                                                  v63 = [(WiFiAwareDataSessionStatisticsReport *)self infraAssocCount];
-                                                                  v83 = [(WiFiAwareDataSessionStatisticsReport *)v145 infraAssocCount];
-                                                                  v84 = v63;
-                                                                  if ([v63 isEqual:v83])
+                                                                  infraAssocCount = [(WiFiAwareDataSessionStatisticsReport *)self infraAssocCount];
+                                                                  infraAssocCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 infraAssocCount];
+                                                                  v84 = infraAssocCount;
+                                                                  if ([infraAssocCount isEqual:infraAssocCount2])
                                                                   {
-                                                                    v64 = [(WiFiAwareDataSessionStatisticsReport *)self infraDisassocCount];
-                                                                    v81 = [(WiFiAwareDataSessionStatisticsReport *)v145 infraDisassocCount];
-                                                                    v82 = v64;
-                                                                    if ([v64 isEqual:v81])
+                                                                    infraDisassocCount = [(WiFiAwareDataSessionStatisticsReport *)self infraDisassocCount];
+                                                                    infraDisassocCount2 = [(WiFiAwareDataSessionStatisticsReport *)v145 infraDisassocCount];
+                                                                    v82 = infraDisassocCount;
+                                                                    if ([infraDisassocCount isEqual:infraDisassocCount2])
                                                                     {
-                                                                      v65 = [(WiFiAwareDataSessionStatisticsReport *)self countryCode];
-                                                                      v79 = [(WiFiAwareDataSessionStatisticsReport *)v145 countryCode];
-                                                                      v80 = v65;
-                                                                      if ([v65 isEqual:v79])
+                                                                      countryCode = [(WiFiAwareDataSessionStatisticsReport *)self countryCode];
+                                                                      countryCode2 = [(WiFiAwareDataSessionStatisticsReport *)v145 countryCode];
+                                                                      v80 = countryCode;
+                                                                      if ([countryCode isEqual:countryCode2])
                                                                       {
-                                                                        v66 = [(WiFiAwareDataSessionStatisticsReport *)self txConsecutiveErrorsHistogram];
-                                                                        v77 = [(WiFiAwareDataSessionStatisticsReport *)v145 txConsecutiveErrorsHistogram];
-                                                                        v78 = v66;
-                                                                        if ([v66 isEqual:v77])
+                                                                        txConsecutiveErrorsHistogram = [(WiFiAwareDataSessionStatisticsReport *)self txConsecutiveErrorsHistogram];
+                                                                        txConsecutiveErrorsHistogram2 = [(WiFiAwareDataSessionStatisticsReport *)v145 txConsecutiveErrorsHistogram];
+                                                                        v78 = txConsecutiveErrorsHistogram;
+                                                                        if ([txConsecutiveErrorsHistogram isEqual:txConsecutiveErrorsHistogram2])
                                                                         {
-                                                                          v67 = [(WiFiAwareDataSessionStatisticsReport *)self rxFWDelayHistogram];
-                                                                          v75 = [(WiFiAwareDataSessionStatisticsReport *)v145 rxFWDelayHistogram];
-                                                                          v76 = v67;
-                                                                          if ([v67 isEqual:v75])
+                                                                          rxFWDelayHistogram = [(WiFiAwareDataSessionStatisticsReport *)self rxFWDelayHistogram];
+                                                                          rxFWDelayHistogram2 = [(WiFiAwareDataSessionStatisticsReport *)v145 rxFWDelayHistogram];
+                                                                          v76 = rxFWDelayHistogram;
+                                                                          if ([rxFWDelayHistogram isEqual:rxFWDelayHistogram2])
                                                                           {
-                                                                            v68 = [(WiFiAwareDataSessionStatisticsReport *)self rxIPCDelayHistogram];
-                                                                            v73 = [(WiFiAwareDataSessionStatisticsReport *)v145 rxIPCDelayHistogram];
-                                                                            v74 = v68;
-                                                                            if ([v68 isEqual:v73])
+                                                                            rxIPCDelayHistogram = [(WiFiAwareDataSessionStatisticsReport *)self rxIPCDelayHistogram];
+                                                                            rxIPCDelayHistogram2 = [(WiFiAwareDataSessionStatisticsReport *)v145 rxIPCDelayHistogram];
+                                                                            v74 = rxIPCDelayHistogram;
+                                                                            if ([rxIPCDelayHistogram isEqual:rxIPCDelayHistogram2])
                                                                             {
-                                                                              v69 = [(WiFiAwareDataSessionStatisticsReport *)self txPacketExpiryHistogram];
+                                                                              txPacketExpiryHistogram = [(WiFiAwareDataSessionStatisticsReport *)self txPacketExpiryHistogram];
                                                                               v5 = v145;
-                                                                              v70 = [(WiFiAwareDataSessionStatisticsReport *)v145 txPacketExpiryHistogram];
-                                                                              v72 = v69;
-                                                                              v71 = [v69 isEqual:v70];
-                                                                              v7 = v70;
+                                                                              txPacketExpiryHistogram2 = [(WiFiAwareDataSessionStatisticsReport *)v145 txPacketExpiryHistogram];
+                                                                              v72 = txPacketExpiryHistogram;
+                                                                              v71 = [txPacketExpiryHistogram isEqual:txPacketExpiryHistogram2];
+                                                                              v7 = txPacketExpiryHistogram2;
                                                                               v28 = 1;
                                                                               v158[2] = 0x100000001;
                                                                               v158[1] = 0x100000001;
@@ -664,7 +664,7 @@ LABEL_24:
                                                                               if (v28)
                                                                               {
                                                                                 v146 = v23;
-                                                                                v35 = v4;
+                                                                                v35 = equalCopy;
                                                                                 v36 = v5;
                                                                                 v37 = v32;
                                                                                 v38 = v24;
@@ -684,7 +684,7 @@ LABEL_24:
                                                                                 v24 = v38;
                                                                                 v32 = v37;
                                                                                 v5 = v36;
-                                                                                v4 = v35;
+                                                                                equalCopy = v35;
                                                                                 v23 = v146;
                                                                                 if (!v45)
                                                                                 {

@@ -1,15 +1,15 @@
 @interface PUSlideshowViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_updateAirplayButton;
 @end
 
 @implementation PUSlideshowViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUSlideshowViewController" hasInstanceMethod:@"_updateAirplayButton" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUSlideshowViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUSlideshowViewController" hasInstanceMethod:@"_updateAirplayButton" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUSlideshowViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_updateAirplayButton
@@ -19,8 +19,8 @@
   [(PUSlideshowViewControllerAccessibility *)&v6 _updateAirplayButton];
   v3 = [(PUSlideshowViewControllerAccessibility *)self safeValueForKey:@"navigationItem"];
   v4 = accessibilityUIKitLocalizedString();
-  v5 = [v3 rightBarButtonItem];
-  [v5 setAccessibilityLabel:v4];
+  rightBarButtonItem = [v3 rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityLabel:v4];
 }
 
 @end

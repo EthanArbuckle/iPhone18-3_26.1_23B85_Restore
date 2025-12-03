@@ -1,38 +1,38 @@
 @interface MSUUpdateBrainLocator
-+ (id)brainLocatorWithUpdateAttributes:(id)a3;
++ (id)brainLocatorWithUpdateAttributes:(id)attributes;
 + (id)locatorsDictionary;
 + (id)locatorsStateQueue;
-+ (id)newBrainAssetName:(id)a3;
-+ (id)stateSummary:(id)a3;
-- (BOOL)_purgeInstalledUpdateBrains:(id *)a3;
-- (BOOL)cancelAllDownloadsExcept:(id)a3 error:(id *)a4;
-- (BOOL)cancelInstall:(id *)a3;
-- (BOOL)purgeInstalledUpdateBrains:(id *)a3;
-- (MSUUpdateBrainLocator)initWithUpdateAssetAttributes:(id)a3;
++ (id)newBrainAssetName:(id)name;
++ (id)stateSummary:(id)summary;
+- (BOOL)_purgeInstalledUpdateBrains:(id *)brains;
+- (BOOL)cancelAllDownloadsExcept:(id)except error:(id *)error;
+- (BOOL)cancelInstall:(id *)install;
+- (BOOL)purgeInstalledUpdateBrains:(id *)brains;
+- (MSUUpdateBrainLocator)initWithUpdateAssetAttributes:(id)attributes;
 - (NSString)deviceType;
-- (char)copyUpdateBrainPath:(id *)a3;
-- (id)newBestAssetFromResults:(id)a3 error:(id *)a4;
-- (id)newBrainAsset:(id *)a3;
+- (char)copyUpdateBrainPath:(id *)path;
+- (id)newBestAssetFromResults:(id)results error:(id *)error;
+- (id)newBrainAsset:(id *)asset;
 - (id)newBrainQuery;
 - (id)newFilteredBrainQuery;
-- (void)_clientRequestBegin:(id)a3;
-- (void)_clientRequestComplete:(id)a3 nameForNumber:(id)a4 valueForNumber:(int64_t)a5 withError:(id)a6 handler:(id)a7;
-- (void)_clientRequestComplete:(id)a3 withError:(id)a4;
-- (void)_clientRequestComplete:(id)a3 withError:(id)a4 handler:(id)a5;
-- (void)_clientRequestComplete:(id)a3 withError:(id)a4 wasSuccessful:(BOOL)a5;
-- (void)adjustDownloadOptions:(id)a3 handler:(id)a4;
-- (void)adjustMADownloadOptions:(id)a3 callback:(id)a4;
-- (void)appendCatalogDownloadOptionsToExistingOptions:(id)a3;
-- (void)createBestAsset:(id)a3;
+- (void)_clientRequestBegin:(id)begin;
+- (void)_clientRequestComplete:(id)complete nameForNumber:(id)number valueForNumber:(int64_t)forNumber withError:(id)error handler:(id)handler;
+- (void)_clientRequestComplete:(id)complete withError:(id)error;
+- (void)_clientRequestComplete:(id)complete withError:(id)error handler:(id)handler;
+- (void)_clientRequestComplete:(id)complete withError:(id)error wasSuccessful:(BOOL)successful;
+- (void)adjustDownloadOptions:(id)options handler:(id)handler;
+- (void)adjustMADownloadOptions:(id)options callback:(id)callback;
+- (void)appendCatalogDownloadOptionsToExistingOptions:(id)options;
+- (void)createBestAsset:(id)asset;
 - (void)dealloc;
-- (void)downloadBrainAsset:(id)a3 handler:(id)a4;
-- (void)installMAUpdateBrain:(id)a3 handler:(id)a4;
-- (void)requiredDiskSpace:(id)a3;
+- (void)downloadBrainAsset:(id)asset handler:(id)handler;
+- (void)installMAUpdateBrain:(id)brain handler:(id)handler;
+- (void)requiredDiskSpace:(id)space;
 @end
 
 @implementation MSUUpdateBrainLocator
 
-+ (id)brainLocatorWithUpdateAttributes:(id)a3
++ (id)brainLocatorWithUpdateAttributes:(id)attributes
 {
   v13 = 0;
   v14 = &v13;
@@ -49,7 +49,7 @@
       v6 = CFGetTypeID(v4);
       if (v6 == CFStringGetTypeID())
       {
-        v7 = a3 ? CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, a3) : CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+        v7 = attributes ? CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, attributes) : CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
         v8 = v7;
         if (v7)
         {
@@ -66,7 +66,7 @@
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] WARNING WARNING WARNING: '%{public}@' default is defined in '%{public}@' domain with path {%{public}@}. Will attempt to use specified custom brain path.", buf, 0x20u);
           }
 
-          a3 = v8;
+          attributes = v8;
         }
       }
 
@@ -78,7 +78,7 @@
   v12[1] = 3221225472;
   v12[2] = __58__MSUUpdateBrainLocator_brainLocatorWithUpdateAttributes___block_invoke;
   v12[3] = &unk_100049288;
-  v12[4] = a3;
+  v12[4] = attributes;
   v12[5] = &v13;
   dispatch_sync(+[MSUUpdateBrainLocator locatorsStateQueue], v12);
   v10 = v14[5];
@@ -123,14 +123,14 @@ void __58__MSUUpdateBrainLocator_brainLocatorWithUpdateAttributes___block_invoke
   return locatorsDictionary_locators;
 }
 
-- (MSUUpdateBrainLocator)initWithUpdateAssetAttributes:(id)a3
+- (MSUUpdateBrainLocator)initWithUpdateAssetAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = MSUUpdateBrainLocator;
   v4 = [(MSUUpdateBrainLocator *)&v6 init];
   if (v4)
   {
-    v4->_updateAssetAttributes = a3;
+    v4->_updateAssetAttributes = attributes;
     v4->_brainAsset = 0;
     v4->_brainVersion = 0;
   }
@@ -152,7 +152,7 @@ void __58__MSUUpdateBrainLocator_brainLocatorWithUpdateAttributes___block_invoke
   return v2;
 }
 
-- (char)copyUpdateBrainPath:(id *)a3
+- (char)copyUpdateBrainPath:(id *)path
 {
   v24 = 0;
   [(MSUUpdateBrainLocator *)self _clientRequestBegin:@"copyUpdateBrainPath"];
@@ -169,15 +169,15 @@ void __58__MSUUpdateBrainLocator_brainLocatorWithUpdateAttributes___block_invoke
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] {%{public}@} | Using provided local brain location at: %{public}s", buf, 0x16u);
     }
 
-    v9 = 0;
+    newFilteredBrainQuery = 0;
     v10 = 0;
   }
 
   else
   {
-    v9 = [(MSUUpdateBrainLocator *)self newFilteredBrainQuery];
-    [v9 returnTypes:1];
-    [v9 setDoNotBlockOnNetworkStatus:1];
+    newFilteredBrainQuery = [(MSUUpdateBrainLocator *)self newFilteredBrainQuery];
+    [newFilteredBrainQuery returnTypes:1];
+    [newFilteredBrainQuery setDoNotBlockOnNetworkStatus:1];
     v11 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -186,7 +186,7 @@ void __58__MSUUpdateBrainLocator_brainLocatorWithUpdateAttributes___block_invoke
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] {%{public}@} | queryMetaDataSync...", buf, 0xCu);
     }
 
-    if ([v9 queryMetaDataSync])
+    if ([newFilteredBrainQuery queryMetaDataSync])
     {
       v12 = MAStringForMAQueryResult();
       v24 = _create_error_internal_cf(@"MobileSoftwareUpdateErrorDomain", 35, 0, 0, @"Failed to query for update brain asset, result:%@", v13, v14, v15, v12);
@@ -209,7 +209,7 @@ void __58__MSUUpdateBrainLocator_brainLocatorWithUpdateAttributes___block_invoke
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] {%{public}@} | ...queryMetaDataSync | SUCCESS | MAQueryResult:%{public}@", buf, 0x16u);
       }
 
-      v18 = -[MSUUpdateBrainLocator newBestAssetFromResults:error:](self, "newBestAssetFromResults:error:", [v9 results], &v24);
+      v18 = -[MSUUpdateBrainLocator newBestAssetFromResults:error:](self, "newBestAssetFromResults:error:", [newFilteredBrainQuery results], &v24);
       if (v18)
       {
         v10 = v18;
@@ -233,9 +233,9 @@ void __58__MSUUpdateBrainLocator_brainLocatorWithUpdateAttributes___block_invoke
 LABEL_17:
 
   [(MSUUpdateBrainLocator *)self _clientRequestComplete:@"copyUpdateBrainPath" withError:v24 wasSuccessful:v7 != 0];
-  if (a3 && v24)
+  if (path && v24)
   {
-    *a3 = v24;
+    *path = v24;
   }
 
   return v7;
@@ -260,17 +260,17 @@ LABEL_17:
   return v7;
 }
 
-- (id)newBestAssetFromResults:(id)a3 error:(id *)a4
+- (id)newBestAssetFromResults:(id)results error:(id *)error
 {
   v7 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v41 = [a3 count];
+    v41 = [results count];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] {newBestAssetFromResults} | starting with: %lu query results", buf, 0xCu);
   }
 
-  if (!a3 || ![a3 count])
+  if (!results || ![results count])
   {
     v28 = _create_error_internal_cf(@"MobileSoftwareUpdateErrorDomain", 803, 0, 0, @"Query resulted in no update brain assets", v8, v9, v10, v31);
     v29 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
@@ -283,7 +283,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v11 = [a3 sortedArrayUsingComparator:&__block_literal_global_37];
+  v11 = [results sortedArrayUsingComparator:&__block_literal_global_37];
   v12 = [objc_msgSend(v11 "lastObject")];
   v13 = [v12 objectForKey:ASAttributeContentVersion];
   v14 = [objc_msgSend(v11 "lastObject")];
@@ -344,10 +344,10 @@ LABEL_17:
     v28 = _create_error_internal_cf(@"MobileSoftwareUpdateErrorDomain", 805, 0, 0, @"No matching update brains found", v23, v24, v25, v31);
 LABEL_18:
     v26 = 0;
-    if (a4 && v28)
+    if (error && v28)
     {
       v26 = 0;
-      *a4 = v28;
+      *error = v28;
     }
   }
 
@@ -438,7 +438,7 @@ int64_t __55__MSUUpdateBrainLocator_newBestAssetFromResults_error___block_invoke
   return [(NSNumber *)v4 compare:v5];
 }
 
-- (void)installMAUpdateBrain:(id)a3 handler:(id)a4
+- (void)installMAUpdateBrain:(id)brain handler:(id)handler
 {
   [(MSUUpdateBrainLocator *)self _clientRequestBegin:@"installMAUpdateBrain"];
   v7[0] = _NSConcreteStackBlock;
@@ -447,9 +447,9 @@ int64_t __55__MSUUpdateBrainLocator_newBestAssetFromResults_error___block_invoke
   v7[3] = &unk_100049418;
   v7[4] = self;
   v7[5] = @"installMAUpdateBrain";
-  v7[6] = a3;
-  v7[7] = a4;
-  [(MSUUpdateBrainLocator *)self downloadBrainAsset:a3 handler:v7];
+  v7[6] = brain;
+  v7[7] = handler;
+  [(MSUUpdateBrainLocator *)self downloadBrainAsset:brain handler:v7];
 }
 
 void __54__MSUUpdateBrainLocator_installMAUpdateBrain_handler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -710,7 +710,7 @@ void __54__MSUUpdateBrainLocator_installMAUpdateBrain_handler___block_invoke_2_7
   [v8 _clientRequestComplete:v9 reportingState:v10 withError:v12 moreToCome:0 handler:v11];
 }
 
-- (void)adjustMADownloadOptions:(id)a3 callback:(id)a4
+- (void)adjustMADownloadOptions:(id)options callback:(id)callback
 {
   [(MSUUpdateBrainLocator *)self _clientRequestBegin:@"adjustMADownloadOptions"];
   v7[0] = _NSConcreteStackBlock;
@@ -719,8 +719,8 @@ void __54__MSUUpdateBrainLocator_installMAUpdateBrain_handler___block_invoke_2_7
   v7[3] = &unk_100049440;
   v7[4] = self;
   v7[5] = @"adjustMADownloadOptions";
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = options;
+  v7[7] = callback;
   dispatch_sync(+[MSUUpdateBrainLocator locatorsStateQueue], v7);
 }
 
@@ -813,20 +813,20 @@ id __58__MSUUpdateBrainLocator_adjustMADownloadOptions_callback___block_invoke(u
   }
 }
 
-- (void)adjustDownloadOptions:(id)a3 handler:(id)a4
+- (void)adjustDownloadOptions:(id)options handler:(id)handler
 {
   v6 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = [a3 safeSummary];
+    safeSummary = [options safeSummary];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] {adjustDownloadOptions} | Ignored options are: %{public}@", &v7, 0xCu);
   }
 
-  (*(a4 + 2))(a4, 0);
+  (*(handler + 2))(handler, 0);
 }
 
-- (BOOL)cancelInstall:(id *)a3
+- (BOOL)cancelInstall:(id *)install
 {
   v26 = 0;
   [(MSUUpdateBrainLocator *)self _clientRequestBegin:@"cancelInstall"];
@@ -834,10 +834,10 @@ id __58__MSUUpdateBrainLocator_adjustMADownloadOptions_callback___block_invoke(u
   if (v8)
   {
     v9 = [MSUUpdateBrainLocator newBrainAssetName:v8];
-    v10 = [v8 state];
+    state = [v8 state];
     v11 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v10 == 4)
+    if (state == 4)
     {
       if (v12)
       {
@@ -918,19 +918,19 @@ LABEL_10:
 LABEL_18:
 
   [(MSUUpdateBrainLocator *)self _clientRequestComplete:@"cancelInstall" withError:v26 wasSuccessful:v18];
-  if (a3 && v26)
+  if (install && v26)
   {
-    *a3 = v26;
+    *install = v26;
   }
 
   return v18;
 }
 
-- (void)createBestAsset:(id)a3
+- (void)createBestAsset:(id)asset
 {
   v15 = 0;
-  v5 = [(MSUUpdateBrainLocator *)self newFilteredBrainQuery];
-  [v5 returnTypes:0];
+  newFilteredBrainQuery = [(MSUUpdateBrainLocator *)self newFilteredBrainQuery];
+  [newFilteredBrainQuery returnTypes:0];
   v6 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -938,7 +938,7 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] {createBestAsset} | queryMetaDataSync...", buf, 2u);
   }
 
-  if ([v5 queryMetaDataSync])
+  if ([newFilteredBrainQuery queryMetaDataSync])
   {
     v7 = MAStringForMAQueryResult();
     v11 = _create_error_internal_cf(@"MobileSoftwareUpdateErrorDomain", 811, 0, 0, @"Failed to query for assets, MAQueryResult:%@", v8, v9, v10, v7);
@@ -948,7 +948,7 @@ LABEL_18:
       [MSUUpdateBrainLocator createBestAsset:];
     }
 
-    (*(a3 + 2))(a3, 0, v11);
+    (*(asset + 2))(asset, 0, v11);
   }
 
   else
@@ -962,14 +962,14 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] {createBestAsset} | ...queryMetaDataSync | SUCCESS | MAQueryResult:%{public}@", buf, 0xCu);
     }
 
-    v14 = -[MSUUpdateBrainLocator newBestAssetFromResults:error:](self, "newBestAssetFromResults:error:", [v5 results], &v15);
-    (*(a3 + 2))(a3, v14, 0);
+    v14 = -[MSUUpdateBrainLocator newBestAssetFromResults:error:](self, "newBestAssetFromResults:error:", [newFilteredBrainQuery results], &v15);
+    (*(asset + 2))(asset, v14, 0);
   }
 }
 
-- (void)appendCatalogDownloadOptionsToExistingOptions:(id)a3
+- (void)appendCatalogDownloadOptionsToExistingOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
     v5 = objc_opt_new();
     v6 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
@@ -992,7 +992,7 @@ LABEL_18:
       }
     }
 
-    [a3 setAdditionalServerParams:v5];
+    [options setAdditionalServerParams:v5];
   }
 
   else
@@ -1005,26 +1005,26 @@ LABEL_18:
   }
 }
 
-- (void)downloadBrainAsset:(id)a3 handler:(id)a4
+- (void)downloadBrainAsset:(id)asset handler:(id)handler
 {
-  if (a3)
+  if (asset)
   {
-    v7 = a3;
-    v8 = a3;
+    assetCopy = asset;
+    assetCopy2 = asset;
   }
 
   else
   {
-    v8 = objc_opt_new();
-    [v8 setDiscretionary:0];
+    assetCopy2 = objc_opt_new();
+    [assetCopy2 setDiscretionary:0];
   }
 
-  [(MSUUpdateBrainLocator *)self appendCatalogDownloadOptionsToExistingOptions:v8];
+  [(MSUUpdateBrainLocator *)self appendCatalogDownloadOptionsToExistingOptions:assetCopy2];
   v9 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"client provided";
-    if (!a3)
+    if (!asset)
     {
       v10 = @"default";
     }
@@ -1032,7 +1032,7 @@ LABEL_18:
     *buf = 138543618;
     v14 = v10;
     v15 = 2114;
-    v16 = v8;
+    v16 = assetCopy2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] {downloadBrainAsset} | Using %{public}@ downloadOptions for brainAssetDownload, options:%{public}@", buf, 0x16u);
   }
 
@@ -1047,10 +1047,10 @@ LABEL_18:
   v12[1] = 3221225472;
   v12[2] = __52__MSUUpdateBrainLocator_downloadBrainAsset_handler___block_invoke;
   v12[3] = &unk_100049468;
-  v12[5] = v8;
-  v12[6] = a4;
+  v12[5] = assetCopy2;
+  v12[6] = handler;
   v12[4] = self;
-  [MAAsset startCatalogDownload:MSUBrainAssetType[0] options:v8 completionWithError:v12];
+  [MAAsset startCatalogDownload:MSUBrainAssetType[0] options:assetCopy2 completionWithError:v12];
 }
 
 void __52__MSUUpdateBrainLocator_downloadBrainAsset_handler___block_invoke(uint64_t a1, uint64_t a2, const void *a3)
@@ -1081,9 +1081,9 @@ void __52__MSUUpdateBrainLocator_downloadBrainAsset_handler___block_invoke(uint6
   }
 }
 
-- (id)newBrainAsset:(id *)a3
+- (id)newBrainAsset:(id *)asset
 {
-  v5 = [(MSUUpdateBrainLocator *)self newFilteredBrainQuery];
+  newFilteredBrainQuery = [(MSUUpdateBrainLocator *)self newFilteredBrainQuery];
   v36 = 0;
   v30 = 0;
   v31 = &v30;
@@ -1111,7 +1111,7 @@ void __52__MSUUpdateBrainLocator_downloadBrainAsset_handler___block_invoke(uint6
   v22[1] = 3221225472;
   v22[2] = __39__MSUUpdateBrainLocator_newBrainAsset___block_invoke;
   v22[3] = &unk_100049490;
-  v22[4] = v5;
+  v22[4] = newFilteredBrainQuery;
   v22[5] = v6;
   v22[6] = &v24;
   v22[7] = &v30;
@@ -1153,9 +1153,9 @@ LABEL_11:
     v36 = v20;
   }
 
-  if (a3 && v20)
+  if (asset && v20)
   {
-    *a3 = v20;
+    *asset = v20;
   }
 
   _Block_object_dispose(&v24, 8);
@@ -1224,25 +1224,25 @@ intptr_t __39__MSUUpdateBrainLocator_newBrainAsset___block_invoke(uint64_t a1, u
   return [v2 initWithType:v3];
 }
 
-- (BOOL)purgeInstalledUpdateBrains:(id *)a3
+- (BOOL)purgeInstalledUpdateBrains:(id *)brains
 {
   v7 = 0;
   [(MSUUpdateBrainLocator *)self _clientRequestBegin:@"purgeInstalledUpdateBrains"];
   v5 = [(MSUUpdateBrainLocator *)self _purgeInstalledUpdateBrains:&v7];
   [(MSUUpdateBrainLocator *)self _clientRequestComplete:@"purgeInstalledUpdateBrains" withError:v7 wasSuccessful:v5];
-  if (a3 && v7)
+  if (brains && v7)
   {
-    *a3 = v7;
+    *brains = v7;
   }
 
   return v5;
 }
 
-- (BOOL)_purgeInstalledUpdateBrains:(id *)a3
+- (BOOL)_purgeInstalledUpdateBrains:(id *)brains
 {
-  v4 = [(MSUUpdateBrainLocator *)self newBrainQuery];
-  [v4 returnTypes:1];
-  [v4 setDoNotBlockOnNetworkStatus:1];
+  newBrainQuery = [(MSUUpdateBrainLocator *)self newBrainQuery];
+  [newBrainQuery returnTypes:1];
+  [newBrainQuery setDoNotBlockOnNetworkStatus:1];
   v5 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1251,9 +1251,9 @@ intptr_t __39__MSUUpdateBrainLocator_newBrainAsset___block_invoke(uint64_t a1, u
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] {%{public}@} | queryMetaDataSync...", buf, 0xCu);
   }
 
-  v29 = v4;
-  v30 = a3;
-  if ([v4 queryMetaDataSync])
+  v29 = newBrainQuery;
+  brainsCopy = brains;
+  if ([newBrainQuery queryMetaDataSync])
   {
     v31 = _create_error_internal_cf(@"MobileSoftwareUpdateErrorDomain", 811, 0, 0, @"Failed to query for installed update brains", v6, v7, v8, v28);
     if (os_log_type_enabled([+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")], OS_LOG_TYPE_ERROR))
@@ -1264,7 +1264,7 @@ intptr_t __39__MSUUpdateBrainLocator_newBrainAsset___block_invoke(uint64_t a1, u
     goto LABEL_6;
   }
 
-  v10 = [v4 results];
+  results = [newBrainQuery results];
   v11 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1280,7 +1280,7 @@ intptr_t __39__MSUUpdateBrainLocator_newBrainAsset___block_invoke(uint64_t a1, u
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v13 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v13 = [results countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (!v13)
   {
     v31 = 0;
@@ -1300,7 +1300,7 @@ LABEL_6:
     {
       if (*v33 != v15)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(results);
       }
 
       v17 = *(*(&v32 + 1) + 8 * v16);
@@ -1352,21 +1352,21 @@ LABEL_6:
     }
 
     while (v14 != v16);
-    v14 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    v14 = [results countByEnumeratingWithState:&v32 objects:v36 count:16];
   }
 
   while (v14);
 LABEL_26:
 
-  if (v30 && v31)
+  if (brainsCopy && v31)
   {
-    *v30 = v31;
+    *brainsCopy = v31;
   }
 
   return v9;
 }
 
-- (void)requiredDiskSpace:(id)a3
+- (void)requiredDiskSpace:(id)space
 {
   [(MSUUpdateBrainLocator *)self _clientRequestBegin:@"requiredDiskSpace"];
   v5[0] = _NSConcreteStackBlock;
@@ -1375,7 +1375,7 @@ LABEL_26:
   v5[3] = &unk_1000494B8;
   v5[4] = self;
   v5[5] = @"requiredDiskSpace";
-  v5[6] = a3;
+  v5[6] = space;
   [(MSUUpdateBrainLocator *)self downloadBrainAsset:0 handler:v5];
 }
 
@@ -1432,7 +1432,7 @@ LABEL_8:
   return [v19 _clientRequestComplete:v20 nameForNumber:v23 valueForNumber:v21 withError:v24 handler:v22];
 }
 
-- (BOOL)cancelAllDownloadsExcept:(id)a3 error:(id *)a4
+- (BOOL)cancelAllDownloadsExcept:(id)except error:(id *)error
 {
   v7 = [MSUUpdateBrainLocator newBrainAssetName:?];
   v8 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
@@ -1443,23 +1443,23 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] {cancelAllDownloadsExcept} | %{public}@", buf, 0xCu);
   }
 
-  v9 = [(MSUUpdateBrainLocator *)self newBrainQuery];
-  [v9 returnTypes:0];
-  v36 = v9;
-  v37 = a4;
-  if ([v9 queryMetaDataSync])
+  newBrainQuery = [(MSUUpdateBrainLocator *)self newBrainQuery];
+  [newBrainQuery returnTypes:0];
+  v36 = newBrainQuery;
+  errorCopy = error;
+  if ([newBrainQuery queryMetaDataSync])
   {
     v39 = _create_error_internal_cf(@"MobileSoftwareUpdateErrorDomain", 811, 0, 0, @"Failed to query for update brains", v10, v11, v12, v35);
     v38 = 0;
     goto LABEL_28;
   }
 
-  v13 = [v9 results];
+  results = [newBrainQuery results];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v40 objects:v50 count:16];
+  v14 = [results countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (!v14)
   {
     v39 = 0;
@@ -1478,7 +1478,7 @@ LABEL_8:
     {
       if (*v41 != v16)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(results);
       }
 
       v18 = *(*(&v40 + 1) + 8 * v17);
@@ -1551,37 +1551,37 @@ LABEL_21:
     }
 
     while (v15 != v17);
-    v33 = [v13 countByEnumeratingWithState:&v40 objects:v50 count:16];
+    v33 = [results countByEnumeratingWithState:&v40 objects:v50 count:16];
     v15 = v33;
   }
 
   while (v33);
 LABEL_28:
 
-  if (v37 && v39)
+  if (errorCopy && v39)
   {
-    *v37 = v39;
+    *errorCopy = v39;
   }
 
   return v38;
 }
 
-- (void)_clientRequestBegin:(id)a3
+- (void)_clientRequestBegin:(id)begin
 {
   v4 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = a3;
+    beginCopy = begin;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] | %{public}@ | BEGIN client request", &v5, 0xCu);
   }
 }
 
-- (void)_clientRequestComplete:(id)a3 withError:(id)a4
+- (void)_clientRequestComplete:(id)complete withError:(id)error
 {
   v6 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
   v7 = v6;
-  if (a4)
+  if (error)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -1592,20 +1592,20 @@ LABEL_28:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = a3;
+    completeCopy = complete;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] | %{public}@ | END client request | SUCCESS", &v8, 0xCu);
   }
 }
 
-- (void)_clientRequestComplete:(id)a3 withError:(id)a4 wasSuccessful:(BOOL)a5
+- (void)_clientRequestComplete:(id)complete withError:(id)error wasSuccessful:(BOOL)successful
 {
-  v5 = a5;
+  successfulCopy = successful;
   v8 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
   v9 = v8;
-  if (a4)
+  if (error)
   {
     v10 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
-    if (v5)
+    if (successfulCopy)
     {
       if (v10)
       {
@@ -1622,7 +1622,7 @@ LABEL_28:
   else
   {
     v11 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (successfulCopy)
     {
       if (!v11)
       {
@@ -1630,7 +1630,7 @@ LABEL_28:
       }
 
       v13 = 138543362;
-      v14 = a3;
+      completeCopy2 = complete;
       v12 = "[BRAIN_LOCATOR] | %{public}@ | END client request | SUCCESS";
     }
 
@@ -1642,7 +1642,7 @@ LABEL_28:
       }
 
       v13 = 138543362;
-      v14 = a3;
+      completeCopy2 = complete;
       v12 = "[BRAIN_LOCATOR] | %{public}@ | END client request | FAILURE | no error provided";
     }
 
@@ -1650,13 +1650,13 @@ LABEL_28:
   }
 }
 
-- (void)_clientRequestComplete:(id)a3 withError:(id)a4 handler:(id)a5
+- (void)_clientRequestComplete:(id)complete withError:(id)error handler:(id)handler
 {
   v8 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
   v9 = v8;
-  if (a5)
+  if (handler)
   {
-    if (a4)
+    if (error)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -1667,14 +1667,14 @@ LABEL_28:
     else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = a3;
+      completeCopy2 = complete;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] | %{public}@ | END client request (calling completion handler) | SUCCESS", &v10, 0xCu);
     }
 
-    (*(a5 + 2))(a5, a4);
+    (*(handler + 2))(handler, error);
   }
 
-  else if (a4)
+  else if (error)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -1685,17 +1685,17 @@ LABEL_28:
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = a3;
+    completeCopy2 = complete;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] | %{public}@ | END client request (no completion handler) | SUCCESS", &v10, 0xCu);
   }
 }
 
-- (void)_clientRequestComplete:(id)a3 nameForNumber:(id)a4 valueForNumber:(int64_t)a5 withError:(id)a6 handler:(id)a7
+- (void)_clientRequestComplete:(id)complete nameForNumber:(id)number valueForNumber:(int64_t)forNumber withError:(id)error handler:(id)handler
 {
-  if (a6)
+  if (error)
   {
     v10 = os_log_type_enabled([+[SUCoreLog sharedLogger](SUCoreLog sharedLogger], OS_LOG_TYPE_ERROR);
-    if (a7)
+    if (handler)
     {
       if (v10)
       {
@@ -1704,7 +1704,7 @@ LABEL_28:
 
       v11 = 0;
 LABEL_9:
-      (*(a7 + 2))(a7, v11, a6);
+      (*(handler + 2))(handler, v11, error);
       return;
     }
 
@@ -1716,19 +1716,19 @@ LABEL_9:
 
   else
   {
-    v11 = [NSNumber numberWithLongLong:a5];
+    v11 = [NSNumber numberWithLongLong:forNumber];
     v14 = [+[SUCoreLog sharedLogger](SUCoreLog "sharedLogger")];
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (a7)
+    if (handler)
     {
       if (v15)
       {
         v16 = 138543874;
-        v17 = a3;
+        completeCopy2 = complete;
         v18 = 2114;
-        v19 = a4;
+        numberCopy2 = number;
         v20 = 2048;
-        v21 = a5;
+        forNumberCopy2 = forNumber;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] | %{public}@ | END client request (calling completion handler) | SUCCESS | %{public}@=%llu", &v16, 0x20u);
       }
 
@@ -1738,38 +1738,38 @@ LABEL_9:
     if (v15)
     {
       v16 = 138543874;
-      v17 = a3;
+      completeCopy2 = complete;
       v18 = 2114;
-      v19 = a4;
+      numberCopy2 = number;
       v20 = 2048;
-      v21 = a5;
+      forNumberCopy2 = forNumber;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOCATOR] | %{public}@ | END client request (no completion handler) | SUCCESS | %{public}@=%lld", &v16, 0x20u);
     }
   }
 }
 
-+ (id)stateSummary:(id)a3
++ (id)stateSummary:(id)summary
 {
-  if (!a3)
+  if (!summary)
   {
     return @"NONE";
   }
 
   v4 = @"CommitSelfDestruct";
-  if ([a3 objectForKeyedSubscript:@"CommitSelfDestruct"])
+  if ([summary objectForKeyedSubscript:@"CommitSelfDestruct"])
   {
     return v4;
   }
 
-  return [a3 safeSummary];
+  return [summary safeSummary];
 }
 
-+ (id)newBrainAssetName:(id)a3
++ (id)newBrainAssetName:(id)name
 {
   v4 = [NSString alloc];
-  v5 = [a3 assetId];
-  [a3 state];
-  return [v4 initWithFormat:@"brainAsset[%@](%@)", v5, MAStringForMAAssetState()];
+  assetId = [name assetId];
+  [name state];
+  return [v4 initWithFormat:@"brainAsset[%@](%@)", assetId, MAStringForMAAssetState()];
 }
 
 - (void)copyUpdateBrainPath:.cold.1()

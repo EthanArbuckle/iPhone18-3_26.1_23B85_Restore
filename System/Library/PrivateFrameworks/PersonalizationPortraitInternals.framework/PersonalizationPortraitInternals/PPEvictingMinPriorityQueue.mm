@@ -1,9 +1,9 @@
 @interface PPEvictingMinPriorityQueue
-- (PPEvictingMinPriorityQueue)initWithCapacity:(unint64_t)a3;
+- (PPEvictingMinPriorityQueue)initWithCapacity:(unint64_t)capacity;
 - (id)extractSortedMutableArray;
 - (id)getMinItemWithoutPopping;
 - (id)popItem;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)dealloc;
 @end
 
@@ -65,20 +65,20 @@
   return v4;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   capacity = self->_capacity;
   if (capacity)
   {
     queue = self->_queue;
-    v27 = v4;
+    v27 = objectCopy;
     if (capacity <= (queue[1] - *queue) >> 3)
     {
-      [v4 score];
+      [objectCopy score];
       v8 = v7;
       [**self->_queue score];
-      v4 = v27;
+      objectCopy = v27;
       if (v8 < v9)
       {
         goto LABEL_23;
@@ -86,10 +86,10 @@
 
       std::priority_queue<PPScoredItem * {__strong},std::vector<PPScoredItem * {__strong}>,PPScoredItemCompareGreater>::pop(self->_queue);
       queue = self->_queue;
-      v4 = v27;
+      objectCopy = v27;
     }
 
-    v10 = v4;
+    v10 = objectCopy;
     v11 = v10;
     v13 = queue[1];
     v12 = queue[2];
@@ -168,7 +168,7 @@
 
     queue[1] = v14;
     std::__sift_up[abi:ne200100]<std::_ClassicAlgPolicy,PPScoredItemCompareGreater &,std::__wrap_iter<PPScoredItem * {__strong}*>>(*queue, v14, (v14 - *queue) >> 3);
-    v4 = v27;
+    objectCopy = v27;
   }
 
 LABEL_23:
@@ -189,14 +189,14 @@ LABEL_23:
   [(PPEvictingMinPriorityQueue *)&v4 dealloc];
 }
 
-- (PPEvictingMinPriorityQueue)initWithCapacity:(unint64_t)a3
+- (PPEvictingMinPriorityQueue)initWithCapacity:(unint64_t)capacity
 {
   v6.receiver = self;
   v6.super_class = PPEvictingMinPriorityQueue;
   v4 = [(PPEvictingMinPriorityQueue *)&v6 init];
   if (v4)
   {
-    v4->_capacity = a3;
+    v4->_capacity = capacity;
     operator new();
   }
 

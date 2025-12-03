@@ -1,7 +1,7 @@
 @interface UIRemoteKeyboardWindowHosted
 + (BOOL)_isHostedInAnotherProcess;
 - (CGSize)keyboardScreenReferenceSize;
-- (double)_adjustedWindowLevelFromLevel:(double)a3;
+- (double)_adjustedWindowLevelFromLevel:(double)level;
 - (double)keyboardWidthForCurrentDevice;
 @end
 
@@ -23,15 +23,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 _isHostedInAnotherProcess];
+    _isHostedInAnotherProcess = [v2 _isHostedInAnotherProcess];
   }
 
   else
   {
-    v4 = 1;
+    _isHostedInAnotherProcess = 1;
   }
 
-  return v4;
+  return _isHostedInAnotherProcess;
 }
 
 void __57__UIRemoteKeyboardWindowHosted__isHostedInAnotherProcess__block_invoke()
@@ -40,7 +40,7 @@ void __57__UIRemoteKeyboardWindowHosted__isHostedInAnotherProcess__block_invoke(
   byte_1ED499712 = [v0 isEqualToString:@"com.apple.InCallService"];
 }
 
-- (double)_adjustedWindowLevelFromLevel:(double)a3
+- (double)_adjustedWindowLevelFromLevel:(double)level
 {
   if (dyld_program_sdk_at_least() && (_UIApplicationIsSystemApplication() & 1) == 0 && ([UIApp _isSpringBoard] & 1) == 0 && !_AXSProcessDrawsAssistiveUI())
   {
@@ -49,7 +49,7 @@ void __57__UIRemoteKeyboardWindowHosted__isHostedInAnotherProcess__block_invoke(
 
   v6.receiver = self;
   v6.super_class = UIRemoteKeyboardWindowHosted;
-  [(UIRemoteKeyboardWindow *)&v6 _adjustedWindowLevelFromLevel:a3];
+  [(UIRemoteKeyboardWindow *)&v6 _adjustedWindowLevelFromLevel:level];
   return result;
 }
 

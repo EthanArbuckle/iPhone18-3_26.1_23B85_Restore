@@ -1,9 +1,9 @@
 @interface VCSessionStatsController
-- (VCSessionStatsController)initWithDelegate:(id)a3 connectionManager:(id)a4 uplinkStatsCollector:(id)a5 downlinkStatsCollector:(id)a6 reportingAgent:(opaqueRTCReporting *)a7 transportSessionID:(unsigned int)a8 streamID:(unsigned __int16)a9 mediaQueue:(tagVCMediaQueue *)a10;
+- (VCSessionStatsController)initWithDelegate:(id)delegate connectionManager:(id)manager uplinkStatsCollector:(id)collector downlinkStatsCollector:(id)statsCollector reportingAgent:(opaqueRTCReporting *)agent transportSessionID:(unsigned int)d streamID:(unsigned __int16)iD mediaQueue:(tagVCMediaQueue *)self0;
 - (void)dealloc;
 - (void)deregisterPeriodicTask;
 - (void)flushRealTimeReportingStats;
-- (void)periodicTask:(void *)a3;
+- (void)periodicTask:(void *)task;
 - (void)registerPeriodicTask;
 - (void)reset;
 - (void)sendLocalStats;
@@ -15,9 +15,9 @@
 
 @implementation VCSessionStatsController
 
-- (VCSessionStatsController)initWithDelegate:(id)a3 connectionManager:(id)a4 uplinkStatsCollector:(id)a5 downlinkStatsCollector:(id)a6 reportingAgent:(opaqueRTCReporting *)a7 transportSessionID:(unsigned int)a8 streamID:(unsigned __int16)a9 mediaQueue:(tagVCMediaQueue *)a10
+- (VCSessionStatsController)initWithDelegate:(id)delegate connectionManager:(id)manager uplinkStatsCollector:(id)collector downlinkStatsCollector:(id)statsCollector reportingAgent:(opaqueRTCReporting *)agent transportSessionID:(unsigned int)d streamID:(unsigned __int16)iD mediaQueue:(tagVCMediaQueue *)self0
 {
-  v10 = *&a8;
+  v10 = *&d;
   v37 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = VCSessionStatsController;
@@ -25,20 +25,20 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_weakDelegate, a3);
-    objc_storeWeak(&v17->_reportingAgentWeak, a7);
+    objc_storeWeak(&v16->_weakDelegate, delegate);
+    objc_storeWeak(&v17->_reportingAgentWeak, agent);
     *&v17->_remoteStats.linkID = 0;
     *&v17->_remoteStats.uplinkBandwidthSample = 0;
     v17->_remoteStats.responseTime = 0.0;
     v17->_statsRequestCounter = 0;
-    v17->_streamID = a9;
-    v17->_uplinkStatisticsCollector = a5;
-    v17->_downlinkStatisticsCollector = a6;
-    v17->_connectionManager = a4;
+    v17->_streamID = iD;
+    v17->_uplinkStatisticsCollector = collector;
+    v17->_downlinkStatisticsCollector = statsCollector;
+    v17->_connectionManager = manager;
     v18 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{&unk_1F579B3E8, @"transportStreamStreamTypeKey", 0}];
     v17->_transportStream = [[VCTransportStreamGFT alloc] initWithTransportSessionID:v10 options:v18];
 
-    [(VCTransportStreamGFT *)v17->_transportStream setMediaQueue:a10];
+    [(VCTransportStreamGFT *)v17->_transportStream setMediaQueue:queue];
     v17->_statsArrayIndex = -1;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -95,7 +95,7 @@
       v14 = 1024;
       v15 = 83;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 1024;
       v19 = numStatsProcessed;
       v20 = 1024;
@@ -339,7 +339,7 @@ intptr_t __55__VCSessionStatsController_stopLocalSessionStatsUpdate__block_invok
   reportingRegisterPeriodicTaskWeak();
 }
 
-- (void)periodicTask:(void *)a3
+- (void)periodicTask:(void *)task
 {
   v5 = micro();
   v6 = v5 - self->_lastUpdateTime;
@@ -409,14 +409,14 @@ intptr_t __55__VCSessionStatsController_stopLocalSessionStatsUpdate__block_invok
 
   self->_minReceivedRate = v19;
   self->_bytesReceivedToReport += v14;
-  if (a3)
+  if (task)
   {
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"SSMinBytesSent"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxSentRate), @"SSMaxBytesSent"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_bytesSentToReport), @"SSRawBytesSent"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_minReceivedRate), @"SSMinBytesReceived"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxReceivedRate), @"SSMaxBytesReceived"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_bytesReceivedToReport), @"SSRawBytesReceived"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"SSMinBytesSent"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxSentRate), @"SSMaxBytesSent"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_bytesSentToReport), @"SSRawBytesSent"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_minReceivedRate), @"SSMinBytesReceived"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxReceivedRate), @"SSMaxBytesReceived"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_bytesReceivedToReport), @"SSRawBytesReceived"}];
 
     [(VCSessionStatsController *)self flushRealTimeReportingStats];
   }

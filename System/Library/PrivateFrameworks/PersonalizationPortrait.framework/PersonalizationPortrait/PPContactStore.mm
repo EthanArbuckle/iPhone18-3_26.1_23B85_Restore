@@ -1,32 +1,32 @@
 @interface PPContactStore
-- (BOOL)iterContactNameRecordsForClient:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)iterRankedContactsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)loadContactNameRecordsAndMonitorChangesWithDelegate:(id)a3 error:(id *)a4;
+- (BOOL)iterContactNameRecordsForClient:(id)client error:(id *)error block:(id)block;
+- (BOOL)iterRankedContactsWithQuery:(id)query error:(id *)error block:(id)block;
+- (BOOL)loadContactNameRecordsAndMonitorChangesWithDelegate:(id)delegate error:(id *)error;
 - (PPContactStore)init;
-- (id)contactHandlesForSource:(id)a3 error:(id *)a4;
-- (id)contactHandlesForTopics:(id)a3 error:(id *)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)upcomingRelevantContactsForQuery:(id)a3 error:(id *)a4;
-- (void)_loadContactNameRecordsWithDelegate:(id)a3;
+- (id)contactHandlesForSource:(id)source error:(id *)error;
+- (id)contactHandlesForTopics:(id)topics error:(id *)error;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)upcomingRelevantContactsForQuery:(id)query error:(id *)error;
+- (void)_loadContactNameRecordsWithDelegate:(id)delegate;
 - (void)_sendChangesToDelegates;
-- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)a3 chosenContactIdentifier:(id)a4 completion:(id)a5;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)identifiers chosenContactIdentifier:(id)identifier completion:(id)completion;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPContactStore
 
-- (BOOL)loadContactNameRecordsAndMonitorChangesWithDelegate:(id)a3 error:(id *)a4
+- (BOOL)loadContactNameRecordsAndMonitorChangesWithDelegate:(id)delegate error:(id *)error
 {
-  v5 = a3;
+  delegateCopy = delegate;
   objc_initWeak(&location, self);
   monitoringHelper = self->_monitoringHelper;
-  v7 = [(PPContactStore *)self _recordGenerator];
+  _recordGenerator = [(PPContactStore *)self _recordGenerator];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__PPContactStore_loadContactNameRecordsAndMonitorChangesWithDelegate_error___block_invoke;
   v9[3] = &unk_1E77F7970;
   objc_copyWeak(&v10, &location);
-  LOBYTE(monitoringHelper) = [(PPRecordMonitoringHelper *)monitoringHelper loadRecordsAndMonitorChangesWithDelegate:v5 recordGenerator:v7 notificationRegistrationBlock:v9];
+  LOBYTE(monitoringHelper) = [(PPRecordMonitoringHelper *)monitoringHelper loadRecordsAndMonitorChangesWithDelegate:delegateCopy recordGenerator:_recordGenerator notificationRegistrationBlock:v9];
   objc_destroyWeak(&v10);
 
   objc_destroyWeak(&location);
@@ -64,19 +64,19 @@ void __76__PPContactStore_loadContactNameRecordsAndMonitorChangesWithDelegate_er
   }
 }
 
-- (void)_loadContactNameRecordsWithDelegate:(id)a3
+- (void)_loadContactNameRecordsWithDelegate:(id)delegate
 {
   monitoringHelper = self->_monitoringHelper;
-  v5 = a3;
-  v6 = [(PPContactStore *)self _recordGenerator];
-  [(PPRecordMonitoringHelper *)monitoringHelper loadRecordsWithDelegate:v5 recordGenerator:v6];
+  delegateCopy = delegate;
+  _recordGenerator = [(PPContactStore *)self _recordGenerator];
+  [(PPRecordMonitoringHelper *)monitoringHelper loadRecordsWithDelegate:delegateCopy recordGenerator:_recordGenerator];
 }
 
 - (void)_sendChangesToDelegates
 {
   monitoringHelper = self->_monitoringHelper;
-  v3 = [(PPContactStore *)self _recordGenerator];
-  [(PPRecordMonitoringHelper *)monitoringHelper sendChangesToDelegatesWithChangeGenerator:&__block_literal_global_31 recordGenerator:v3];
+  _recordGenerator = [(PPContactStore *)self _recordGenerator];
+  [(PPRecordMonitoringHelper *)monitoringHelper sendChangesToDelegatesWithChangeGenerator:&__block_literal_global_31 recordGenerator:_recordGenerator];
 }
 
 id __41__PPContactStore__sendChangesToDelegates__block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -215,19 +215,19 @@ int64_t __34__PPContactStore__recordGenerator__block_invoke_24(uint64_t a1, void
   return [PPUtils reverseCompareDouble:v6 withDouble:v8];
 }
 
-- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)a3 chosenContactIdentifier:(id)a4 completion:(id)a5
+- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)identifiers chosenContactIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v10 = +[PPContactClient sharedInstance];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __104__PPContactStore_feedbackDisambiguationResultWithChoicesIdentifiers_chosenContactIdentifier_completion___block_invoke;
   v12[3] = &unk_1E77F69D8;
-  v13 = v7;
-  v11 = v7;
-  [v10 feedbackDisambiguationResultWithChoicesIdentifiers:v9 chosenContactIdentifier:v8 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v10 feedbackDisambiguationResultWithChoicesIdentifiers:identifiersCopy chosenContactIdentifier:identifierCopy completion:v12];
 }
 
 void __104__PPContactStore_feedbackDisambiguationResultWithChoicesIdentifiers_chosenContactIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -254,7 +254,7 @@ void __104__PPContactStore_feedbackDisambiguationResultWithChoicesIdentifiers_ch
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   clientFeedbackHelper = self->_clientFeedbackHelper;
   if (objc_opt_respondsToSelector())
@@ -270,29 +270,29 @@ void __104__PPContactStore_feedbackDisambiguationResultWithChoicesIdentifiers_ch
   return v5;
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 isMapped])
+  completionCopy = completion;
+  feedbackCopy = feedback;
+  if ([feedbackCopy isMapped])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PPContactStore.m" lineNumber:131 description:@"You cannot send mapped feedback on named entities. Please use PPFeedback to create the feedback for named entities."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPContactStore.m" lineNumber:131 description:@"You cannot send mapped feedback on named entities. Please use PPFeedback to create the feedback for named entities."];
   }
 
-  v9 = [(PPContactStore *)self clientIdentifier];
-  v10 = [v9 length];
+  clientIdentifier = [(PPContactStore *)self clientIdentifier];
+  v10 = [clientIdentifier length];
 
   if (!v10)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    [v15 handleFailureInMethod:a2 object:self file:@"PPContactStore.m" lineNumber:132 description:{@"The clientIdentifier property must be set on the %@ in order to send feedback.", v17}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPContactStore.m" lineNumber:132 description:{@"The clientIdentifier property must be set on the %@ in order to send feedback.", v17}];
   }
 
-  v11 = [(PPContactStore *)self clientIdentifier];
-  [v8 setClientIdentifier:v11];
+  clientIdentifier2 = [(PPContactStore *)self clientIdentifier];
+  [feedbackCopy setClientIdentifier:clientIdentifier2];
 
   v12 = +[PPContactClient sharedInstance];
   v18[0] = MEMORY[0x1E69E9820];
@@ -300,9 +300,9 @@ void __104__PPContactStore_feedbackDisambiguationResultWithChoicesIdentifiers_ch
   v18[2] = __46__PPContactStore_registerFeedback_completion___block_invoke;
   v18[3] = &unk_1E77F7D98;
   v18[4] = self;
-  v19 = v7;
-  v13 = v7;
-  [v12 registerFeedback:v8 completion:v18];
+  v19 = completionCopy;
+  v13 = completionCopy;
+  [v12 registerFeedback:feedbackCopy completion:v18];
 }
 
 void __46__PPContactStore_registerFeedback_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -330,9 +330,9 @@ void __46__PPContactStore_registerFeedback_completion___block_invoke(uint64_t a1
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)contactHandlesForSource:(id)a3 error:(id *)a4
+- (id)contactHandlesForSource:(id)source error:(id *)error
 {
-  v5 = a3;
+  sourceCopy = source;
   v6 = objc_opt_new();
   v7 = pp_contacts_signpost_handle();
   v8 = os_signpost_id_generate(v7);
@@ -352,7 +352,7 @@ void __46__PPContactStore_registerFeedback_completion___block_invoke(uint64_t a1
   v19[3] = &unk_1E77F6DC8;
   v20 = v6;
   v12 = v6;
-  v13 = [v11 contactHandlesForSource:v5 error:a4 handleBatch:v19];
+  v13 = [v11 contactHandlesForSource:sourceCopy error:error handleBatch:v19];
 
   v14 = pp_contacts_signpost_handle();
   v15 = v14;
@@ -377,9 +377,9 @@ void __46__PPContactStore_registerFeedback_completion___block_invoke(uint64_t a1
   return v16;
 }
 
-- (id)contactHandlesForTopics:(id)a3 error:(id *)a4
+- (id)contactHandlesForTopics:(id)topics error:(id *)error
 {
-  v5 = a3;
+  topicsCopy = topics;
   v6 = objc_opt_new();
   v7 = pp_contacts_signpost_handle();
   v8 = os_signpost_id_generate(v7);
@@ -399,7 +399,7 @@ void __46__PPContactStore_registerFeedback_completion___block_invoke(uint64_t a1
   v19[3] = &unk_1E77F6DC8;
   v20 = v6;
   v12 = v6;
-  v13 = [v11 contactHandlesForTopics:v5 error:a4 handleBatch:v19];
+  v13 = [v11 contactHandlesForTopics:topicsCopy error:error handleBatch:v19];
 
   v14 = pp_contacts_signpost_handle();
   v15 = v14;
@@ -424,9 +424,9 @@ void __46__PPContactStore_registerFeedback_completion___block_invoke(uint64_t a1
   return v16;
 }
 
-- (id)upcomingRelevantContactsForQuery:(id)a3 error:(id *)a4
+- (id)upcomingRelevantContactsForQuery:(id)query error:(id *)error
 {
-  v5 = a3;
+  queryCopy = query;
   v6 = objc_opt_new();
   v7 = pp_contacts_signpost_handle();
   v8 = os_signpost_id_generate(v7);
@@ -446,7 +446,7 @@ void __46__PPContactStore_registerFeedback_completion___block_invoke(uint64_t a1
   v19[3] = &unk_1E77F6DC8;
   v20 = v6;
   v12 = v6;
-  v13 = [v11 upcomingRelevantContactsForQuery:v5 error:a4 handleBatch:v19];
+  v13 = [v11 upcomingRelevantContactsForQuery:queryCopy error:error handleBatch:v19];
 
   v14 = pp_contacts_signpost_handle();
   v15 = v14;
@@ -471,20 +471,20 @@ void __46__PPContactStore_registerFeedback_completion___block_invoke(uint64_t a1
   return v16;
 }
 
-- (BOOL)iterContactNameRecordsForClient:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterContactNameRecordsForClient:(id)client error:(id *)error block:(id)block
 {
-  v7 = a5;
-  v8 = a3;
+  blockCopy = block;
+  clientCopy = client;
   v9 = +[PPContactClient sharedInstance];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__PPContactStore_iterContactNameRecordsForClient_error_block___block_invoke;
   v12[3] = &unk_1E77F7D70;
-  v13 = v7;
-  v10 = v7;
-  LOBYTE(a4) = [v9 contactNameRecordsForClient:v8 error:a4 handleBatch:v12];
+  v13 = blockCopy;
+  v10 = blockCopy;
+  LOBYTE(error) = [v9 contactNameRecordsForClient:clientCopy error:error handleBatch:v12];
 
-  return a4;
+  return error;
 }
 
 void __62__PPContactStore_iterContactNameRecordsForClient_error_block___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -537,20 +537,20 @@ LABEL_4:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)iterRankedContactsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterRankedContactsWithQuery:(id)query error:(id *)error block:(id)block
 {
-  v7 = a5;
-  v8 = a3;
+  blockCopy = block;
+  queryCopy = query;
   v9 = +[PPContactClient sharedInstance];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__PPContactStore_iterRankedContactsWithQuery_error_block___block_invoke;
   v12[3] = &unk_1E77F7D70;
-  v13 = v7;
-  v10 = v7;
-  LOBYTE(a4) = [v9 rankedContactsWithQuery:v8 error:a4 handleBatch:v12];
+  v13 = blockCopy;
+  v10 = blockCopy;
+  LOBYTE(error) = [v9 rankedContactsWithQuery:queryCopy error:error handleBatch:v12];
 
-  return a4;
+  return error;
 }
 
 void __58__PPContactStore_iterRankedContactsWithQuery_error_block___block_invoke(uint64_t a1, void *a2, _BYTE *a3)

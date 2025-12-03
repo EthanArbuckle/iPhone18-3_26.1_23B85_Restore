@@ -1,5 +1,5 @@
 @interface _HKDimension
-+ (id)dimensionFromString:(id)a3;
++ (id)dimensionFromString:(id)string;
 - (_HKDimension)init;
 - (id)_baseDimensions;
 - (id)description;
@@ -21,26 +21,26 @@
   return result;
 }
 
-+ (id)dimensionFromString:(id)a3
++ (id)dimensionFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (_HKDimensionGrammar_onceToken != -1)
   {
     +[_HKDimension dimensionFromString:];
   }
 
-  v4 = [_HKFactorization factorizationFromString:v3 factorGrammar:_HKDimensionGrammar___grammar];
+  v4 = [_HKFactorization factorizationFromString:stringCopy factorGrammar:_HKDimensionGrammar___grammar];
   if ([v4 factorCount] == 1 && (objc_msgSend(v4, "anyFactor"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "exponentForFactor:", v5), v5, v6 == 1))
   {
-    v7 = [v4 anyFactor];
+    anyFactor = [v4 anyFactor];
   }
 
   else
   {
-    v7 = [_HKCompoundDimension dimensionWithBaseDimensions:v4];
+    anyFactor = [_HKCompoundDimension dimensionWithBaseDimensions:v4];
   }
 
-  v8 = v7;
+  v8 = anyFactor;
 
   return v8;
 }
@@ -51,14 +51,14 @@
   if (!self->_reduction)
   {
     v3 = +[(_HKFactorization *)_HKMutableFactorization];
-    v4 = [(_HKDimension *)self _baseDimensions];
+    _baseDimensions = [(_HKDimension *)self _baseDimensions];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __25___HKDimension_reduction__block_invoke;
     v10[3] = &unk_1E737DE48;
     v11 = v3;
     v5 = v3;
-    [v4 enumerateFactorsWithHandler:v10];
+    [_baseDimensions enumerateFactorsWithHandler:v10];
 
     v6 = [v5 copy];
     reduction = self->_reduction;
@@ -73,8 +73,8 @@
 
 - (id)description
 {
-  v2 = [(_HKDimension *)self _baseDimensions];
-  v3 = [v2 description];
+  _baseDimensions = [(_HKDimension *)self _baseDimensions];
+  v3 = [_baseDimensions description];
 
   return v3;
 }

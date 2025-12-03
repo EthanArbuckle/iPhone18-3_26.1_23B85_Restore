@@ -20,16 +20,16 @@
   {
     v26 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(CalendarUsageBundleDetailController *)self specifier];
-    v6 = [v5 propertyForKey:PSUsageBundleAppKey];
+    specifier = [(CalendarUsageBundleDetailController *)self specifier];
+    v6 = [specifier propertyForKey:PSUsageBundleAppKey];
 
-    v7 = [v6 name];
-    v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:0 set:0 get:0 detail:0 cell:0 edit:0];
+    name = [v6 name];
+    v8 = [PSSpecifier preferenceSpecifierNamed:name target:0 set:0 get:0 detail:0 cell:0 edit:0];
 
     [v8 setProperty:@"PSUsageSizeHeader" forKey:PSHeaderCellClassGroupKey];
-    v29 = self;
-    v9 = [(CalendarUsageBundleDetailController *)self specifier];
-    v10 = [v9 propertyForKey:@"TOTAL_SIZE"];
+    selfCopy = self;
+    specifier2 = [(CalendarUsageBundleDetailController *)self specifier];
+    v10 = [specifier2 propertyForKey:@"TOTAL_SIZE"];
     [v8 setProperty:v10 forKey:@"SIZE"];
 
     v28 = v4;
@@ -59,12 +59,12 @@
           }
 
           v18 = *(*(&v30 + 1) + 8 * i);
-          v19 = [v18 name];
-          v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:v29 set:0 get:"sizeForSpecifier:" detail:0 cell:4 edit:0];
+          name2 = [v18 name];
+          v20 = [PSSpecifier preferenceSpecifierNamed:name2 target:selfCopy set:0 get:"sizeForSpecifier:" detail:0 cell:4 edit:0];
 
           [v20 setProperty:v18 forKey:v14];
-          v21 = [v18 name];
-          [v20 setProperty:v21 forKey:v15];
+          name3 = [v18 name];
+          [v20 setProperty:name3 forKey:v15];
 
           [v20 setProperty:objc_opt_class() forKey:v16];
           [v28 addObject:v20];
@@ -76,10 +76,10 @@
       while (v12);
     }
 
-    v22 = *&v29->PSUsageBundleDetailController_opaque[v26];
-    *&v29->PSUsageBundleDetailController_opaque[v26] = v28;
+    v22 = *&selfCopy->PSUsageBundleDetailController_opaque[v26];
+    *&selfCopy->PSUsageBundleDetailController_opaque[v26] = v28;
 
-    v3 = *&v29->PSUsageBundleDetailController_opaque[v26];
+    v3 = *&selfCopy->PSUsageBundleDetailController_opaque[v26];
   }
 
   return v3;

@@ -1,10 +1,10 @@
 @interface UAQhash
-- (id)initQhash:(unsigned int)a3 withTime:(int)a4;
+- (id)initQhash:(unsigned int)qhash withTime:(int)time;
 @end
 
 @implementation UAQhash
 
-- (id)initQhash:(unsigned int)a3 withTime:(int)a4
+- (id)initQhash:(unsigned int)qhash withTime:(int)time
 {
   v10.receiver = self;
   v10.super_class = UAQhash;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_qhash = a3;
-    v6->_time = a4;
+    v6->_qhash = qhash;
+    v6->_time = time;
     v8 = v6;
   }
 

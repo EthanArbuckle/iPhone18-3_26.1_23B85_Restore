@@ -1,17 +1,17 @@
 @interface DDScannerService
-+ (id)scanQuery:(__DDScanQuery *)a3 configuration:(id)a4;
-+ (id)scanString:(id)a3 range:(_NSRange)a4 configuration:(id)a5;
-+ (int64_t)scanQuery:(__DDScanQuery *)a3 configuration:(id)a4 completionBlock:(id)a5;
-+ (int64_t)scanString:(id)a3 range:(_NSRange)a4 configuration:(id)a5 completionBlock:(id)a6;
-+ (void)appendWatchOSLinksToString:(id)a3;
-+ (void)cancelJob:(int64_t)a3;
++ (id)scanQuery:(__DDScanQuery *)query configuration:(id)configuration;
++ (id)scanString:(id)string range:(_NSRange)range configuration:(id)configuration;
++ (int64_t)scanQuery:(__DDScanQuery *)query configuration:(id)configuration completionBlock:(id)block;
++ (int64_t)scanString:(id)string range:(_NSRange)range configuration:(id)configuration completionBlock:(id)block;
++ (void)appendWatchOSLinksToString:(id)string;
++ (void)cancelJob:(int64_t)job;
 @end
 
 @implementation DDScannerService
 
-+ (void)cancelJob:(int64_t)a3
++ (void)cancelJob:(int64_t)job
 {
-  if (a3 >= 1)
+  if (job >= 1)
   {
     block[8] = v3;
     v11 = v4;
@@ -25,7 +25,7 @@
       block[2] = __36__DDScanServerDispatcher_cancelJob___block_invoke;
       block[3] = &unk_1E8001BA8;
       block[4] = v7;
-      block[5] = a3;
+      block[5] = job;
       v9 = v7;
       dispatch_async(v8, block);
       v7 = v9;
@@ -35,35 +35,35 @@
   }
 }
 
-+ (int64_t)scanQuery:(__DDScanQuery *)a3 configuration:(id)a4 completionBlock:(id)a5
++ (int64_t)scanQuery:(__DDScanQuery *)query configuration:(id)configuration completionBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
+  configurationCopy = configuration;
+  blockCopy = block;
   v9 = _getSharedDispatcher();
-  v10 = [v7 completionQueue];
-  v11 = v10;
-  if (v10)
+  completionQueue = [configurationCopy completionQueue];
+  v11 = completionQueue;
+  if (completionQueue)
   {
-    v12 = v10;
+    reportQueue = completionQueue;
   }
 
   else
   {
-    v12 = [(DDScanServerDispatcher *)v9 reportQueue];
+    reportQueue = [(DDScanServerDispatcher *)v9 reportQueue];
   }
 
-  v13 = v12;
+  v13 = reportQueue;
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __60__DDScannerService_scanQuery_configuration_completionBlock___block_invoke;
   v18[3] = &unk_1E8001D10;
-  v20 = v8;
-  v21 = a3;
+  v20 = blockCopy;
+  queryCopy = query;
   v19 = v13;
-  v14 = v8;
+  v14 = blockCopy;
   v15 = v13;
-  v16 = [(DDScanServerDispatcher *)v9 scannerConf:v7 sync:0 string:0 runTask:v18];
+  v16 = [(DDScanServerDispatcher *)v9 scannerConf:configurationCopy sync:0 string:0 runTask:v18];
 
   return v16;
 }
@@ -111,33 +111,33 @@ void __60__DDScannerService_scanQuery_configuration_completionBlock___block_invo
   dispatch_async(v4, v7);
 }
 
-+ (int64_t)scanString:(id)a3 range:(_NSRange)a4 configuration:(id)a5 completionBlock:(id)a6
++ (int64_t)scanString:(id)string range:(_NSRange)range configuration:(id)configuration completionBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  configurationCopy = configuration;
+  blockCopy = block;
   v13 = _getSharedDispatcher();
-  v14 = [v11 completionQueue];
-  v15 = v14;
-  if (v14)
+  completionQueue = [configurationCopy completionQueue];
+  v15 = completionQueue;
+  if (completionQueue)
   {
-    v16 = v14;
+    reportQueue = completionQueue;
   }
 
   else
   {
-    v16 = [(DDScanServerDispatcher *)v13 reportQueue];
+    reportQueue = [(DDScanServerDispatcher *)v13 reportQueue];
   }
 
-  v17 = v16;
+  v17 = reportQueue;
 
-  v18 = [v10 length];
+  v18 = [stringCopy length];
   if (v18)
   {
     v19 = v18;
-    v20 = [v10 copy];
+    v20 = [stringCopy copy];
 
     v43.location = location;
     v43.length = length;
@@ -148,14 +148,14 @@ void __60__DDScannerService_scanQuery_configuration_completionBlock___block_invo
     v30[2] = __67__DDScannerService_scanString_range_configuration_completionBlock___block_invoke_2;
     v30[3] = &unk_1E8001CE8;
     v24 = &v31;
-    v10 = v20;
-    v31 = v10;
+    stringCopy = v20;
+    v31 = stringCopy;
     v34 = v21;
     v35 = v23;
     v32 = v17;
-    v33 = v12;
-    v25 = v12;
-    v26 = [(DDScanServerDispatcher *)v13 scannerConf:v11 sync:0 string:v10 runTask:v30];
+    v33 = blockCopy;
+    v25 = blockCopy;
+    v26 = [(DDScanServerDispatcher *)v13 scannerConf:configurationCopy sync:0 string:stringCopy runTask:v30];
   }
 
   else
@@ -165,8 +165,8 @@ void __60__DDScannerService_scanQuery_configuration_completionBlock___block_invo
     block[2] = __67__DDScannerService_scanString_range_configuration_completionBlock___block_invoke;
     block[3] = &unk_1E80023A8;
     v24 = &v37;
-    v37 = v12;
-    v27 = v12;
+    v37 = blockCopy;
+    v27 = blockCopy;
     dispatch_async(v17, block);
     if (v13)
     {
@@ -238,9 +238,9 @@ void __67__DDScannerService_scanString_range_configuration_completionBlock___blo
   dispatch_async(v4, v7);
 }
 
-+ (id)scanQuery:(__DDScanQuery *)a3 configuration:(id)a4
++ (id)scanQuery:(__DDScanQuery *)query configuration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -253,8 +253,8 @@ void __67__DDScannerService_scanString_range_configuration_completionBlock___blo
   v9[2] = __44__DDScannerService_scanQuery_configuration___block_invoke;
   v9[3] = &unk_1E8001C70;
   v9[4] = &v10;
-  v9[5] = a3;
-  [(DDScanServerDispatcher *)v6 scannerConf:v5 sync:1 string:0 runTask:v9];
+  v9[5] = query;
+  [(DDScanServerDispatcher *)v6 scannerConf:configurationCopy sync:1 string:0 runTask:v9];
   v7 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -281,13 +281,13 @@ uint64_t __44__DDScannerService_scanQuery_configuration___block_invoke(uint64_t 
   return MEMORY[0x1EEE66BB8](v4, v6);
 }
 
-+ (id)scanString:(id)a3 range:(_NSRange)a4 configuration:(id)a5
++ (id)scanString:(id)string range:(_NSRange)range configuration:(id)configuration
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 length];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  configurationCopy = configuration;
+  v10 = [stringCopy length];
   if (v10)
   {
     v22 = 0;
@@ -306,10 +306,10 @@ uint64_t __44__DDScannerService_scanQuery_configuration___block_invoke(uint64_t 
     v17[2] = __51__DDScannerService_scanString_range_configuration___block_invoke;
     v17[3] = &unk_1E8001C48;
     v19 = &v22;
-    v18 = v8;
+    v18 = stringCopy;
     v20 = v11;
     v21 = v13;
-    [(DDScanServerDispatcher *)v14 scannerConf:v9 sync:1 string:v18 runTask:v17];
+    [(DDScanServerDispatcher *)v14 scannerConf:configurationCopy sync:1 string:v18 runTask:v17];
     v15 = v23[5];
 
     _Block_object_dispose(&v22, 8);
@@ -342,21 +342,21 @@ uint64_t __51__DDScannerService_scanString_range_configuration___block_invoke(ui
   return MEMORY[0x1EEE66BB8](v4, v6);
 }
 
-+ (void)appendWatchOSLinksToString:(id)a3
++ (void)appendWatchOSLinksToString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 string];
-  if ([v4 length])
+  stringCopy = string;
+  string = [stringCopy string];
+  if ([string length])
   {
     v5 = _getSharedDispatcher();
-    v6 = [v3 string];
+    string2 = [stringCopy string];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __47__DDScannerService_appendWatchOSLinksToString___block_invoke;
     v7[3] = &unk_1E8001C20;
-    v8 = v4;
-    v9 = v3;
-    [(DDScanServerDispatcher *)v5 scannerConf:1 sync:v6 string:v7 runTask:?];
+    v8 = string;
+    v9 = stringCopy;
+    [(DDScanServerDispatcher *)v5 scannerConf:1 sync:string2 string:v7 runTask:?];
   }
 }
 

@@ -59,8 +59,8 @@
           v15 = [[AMSURLRequest alloc] initWithRequest:v14 bag:log];
           v16 = objc_alloc_init(AMSPromise);
           v17 = +[AMSURLSession defaultSession];
-          v18 = [v16 completionHandlerAdapter];
-          v19 = [v17 dataTaskWithRequest:v15 completionHandler:v18];
+          completionHandlerAdapter = [v16 completionHandlerAdapter];
+          v19 = [v17 dataTaskWithRequest:v15 completionHandler:completionHandlerAdapter];
 
           [v19 resume];
           v27 = 0;

@@ -2,7 +2,7 @@
 - (NSData)data;
 - (NSData)sessionId;
 - (_TtC21transparencyStaticKey12GSASSelected)init;
-- (void)setSessionId:(id)a3;
+- (void)setSessionId:(id)id;
 @end
 
 @implementation GSASSelected
@@ -14,7 +14,7 @@
   __chkstk_darwin(v3 - 8);
   v6 = (&v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0));
   v7 = *((swift_isaMask & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v7();
 
   v9 = *v6;
@@ -27,14 +27,14 @@
   return v11.super.isa;
 }
 
-- (void)setSessionId:(id)a3
+- (void)setSessionId:(id)id
 {
-  v4 = a3;
-  v5 = self;
+  idCopy = id;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
-  v9 = *((swift_isaMask & v5->super.isa) + 0x68);
+  v9 = *((swift_isaMask & selfCopy->super.isa) + 0x68);
   sub_10005F0F8(v6, v8);
   v10 = v9(v14);
   v12 = *v11;
@@ -68,7 +68,7 @@
   __chkstk_darwin(v3);
   v6 = &v14 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *((swift_isaMask & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v7();
   sub_10006CE3C(&qword_1000AE3D0, type metadata accessor for SASSelected);
   v9 = Message.serializedData(partial:)();

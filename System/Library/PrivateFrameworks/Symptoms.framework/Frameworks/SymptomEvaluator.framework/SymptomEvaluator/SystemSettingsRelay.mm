@@ -5,22 +5,22 @@
 - (SystemSettingsRelay)init;
 - (id)getPacketFilterStateFromKernel;
 - (int)autoBugCaptureEnhancedBetaFeedbackState;
-- (void)_setAirplaneModeSwitchEnabled:(BOOL)a3;
-- (void)_setAutoBugCaptureAvailable:(BOOL)a3;
-- (void)_setAutoBugCaptureEnabled:(BOOL)a3;
-- (void)_setAutoFeedbackAssistantEnable:(BOOL)a3;
-- (void)_setCellDataSwitchEnabled:(BOOL)a3;
-- (void)_setCellOutrankEnabled:(BOOL)a3;
-- (void)_setNoBackhaulEnabled:(BOOL)a3;
-- (void)_setRnfEnabled:(BOOL)a3;
-- (void)_setSmartDataModeEnabled:(BOOL)a3;
-- (void)_setWifiEnabled:(BOOL)a3;
-- (void)ctServerConnectionNotification:(__CFString *)a3 notificationInfo:(__CFDictionary *)a4;
+- (void)_setAirplaneModeSwitchEnabled:(BOOL)enabled;
+- (void)_setAutoBugCaptureAvailable:(BOOL)available;
+- (void)_setAutoBugCaptureEnabled:(BOOL)enabled;
+- (void)_setAutoFeedbackAssistantEnable:(BOOL)enable;
+- (void)_setCellDataSwitchEnabled:(BOOL)enabled;
+- (void)_setCellOutrankEnabled:(BOOL)enabled;
+- (void)_setNoBackhaulEnabled:(BOOL)enabled;
+- (void)_setRnfEnabled:(BOOL)enabled;
+- (void)_setSmartDataModeEnabled:(BOOL)enabled;
+- (void)_setWifiEnabled:(BOOL)enabled;
+- (void)ctServerConnectionNotification:(__CFString *)notification notificationInfo:(__CFDictionary *)info;
 - (void)dealloc;
 - (void)getAutoBugCaptureConfiguration;
 - (void)recalculateAndSetCellOutrankEnabled;
 - (void)registerForAutoBugCaptureChangeNotifications;
-- (void)setAutoBugCaptureConfiguration:(id)a3;
+- (void)setAutoBugCaptureConfiguration:(id)configuration;
 @end
 
 @implementation SystemSettingsRelay
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = __35__SystemSettingsRelay_defaultRelay__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultRelay_instancePred != -1)
   {
     dispatch_once(&defaultRelay_instancePred, block);
@@ -217,8 +217,8 @@ LABEL_12:
   [(SystemSettingsRelay *)v2 setQueue:v3];
 
   v4 = dispatch_get_global_queue(-32768, 0);
-  v5 = [(SystemSettingsRelay *)v2 queue];
-  dispatch_set_target_queue(v5, v4);
+  queue = [(SystemSettingsRelay *)v2 queue];
+  dispatch_set_target_queue(queue, v4);
 
   *&context.version = xmmword_27898FF28;
   memset(&context.retain, 0, 24);
@@ -228,8 +228,8 @@ LABEL_12:
   {
     SCPreferencesSetCallback(v6, _preferencesChanged, &context);
     v7 = sWifi;
-    v8 = [(SystemSettingsRelay *)v2 queue];
-    SCPreferencesSetDispatchQueue(v7, v8);
+    queue2 = [(SystemSettingsRelay *)v2 queue];
+    SCPreferencesSetDispatchQueue(v7, queue2);
   }
 
   else
@@ -332,8 +332,8 @@ LABEL_12:
   {
     SCPreferencesSetCallback(v22, _preferencesChanged, &buf);
     v23 = sAirplane;
-    v24 = [(SystemSettingsRelay *)v2 queue];
-    SCPreferencesSetDispatchQueue(v23, v24);
+    queue3 = [(SystemSettingsRelay *)v2 queue];
+    SCPreferencesSetDispatchQueue(v23, queue3);
   }
 
   else
@@ -353,9 +353,9 @@ LABEL_12:
   v29 = +[CoreTelephonyShim sharedInstance];
   if (([v21 isSymptomsdHelper] & 1) == 0)
   {
-    v30 = [v29 ctServerConnection];
-    v2->_serverConnection = v30;
-    if (v30)
+    ctServerConnection = [v29 ctServerConnection];
+    v2->_serverConnection = ctServerConnection;
+    if (ctServerConnection)
     {
       [v29 addDelegate:v2];
       serverConnection = v2->_serverConnection;
@@ -420,7 +420,7 @@ LABEL_40:
   }
 
   [(SystemSettingsRelay *)v2 setTurboRNFFeatureFlagEnabled:v41];
-  v44 = [(SystemSettingsRelay *)v2 queue];
+  queue4 = [(SystemSettingsRelay *)v2 queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __27__SystemSettingsRelay_init__block_invoke;
@@ -430,7 +430,7 @@ LABEL_40:
   v52 = v29;
   v45 = v29;
   v46 = v21;
-  dispatch_async(v44, block);
+  dispatch_async(queue4, block);
 
 LABEL_45:
   v47 = *MEMORY[0x277D85DE8];
@@ -740,13 +740,13 @@ void __27__SystemSettingsRelay_init__block_invoke_44(uint64_t a1, uint64_t a2, v
 
 - (void)getAutoBugCaptureConfiguration
 {
-  v3 = [(SystemSettingsRelay *)self queue];
+  queue = [(SystemSettingsRelay *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SystemSettingsRelay_getAutoBugCaptureConfiguration__block_invoke;
   block[3] = &unk_27898A0C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __53__SystemSettingsRelay_getAutoBugCaptureConfiguration__block_invoke(uint64_t a1)
@@ -794,9 +794,9 @@ void __53__SystemSettingsRelay_getAutoBugCaptureConfiguration__block_invoke_49(u
 - (NSString)symptomEvaluatorDatabaseContainerPath
 {
   v2 = +[SystemProperties sharedInstance];
-  v3 = [v2 internalBuild];
+  internalBuild = [v2 internalBuild];
 
-  if (v3)
+  if (internalBuild)
   {
     shared_prefs_store = get_shared_prefs_store();
     if (shared_prefs_store)
@@ -881,111 +881,111 @@ void __60__SystemSettingsRelay_symptomEvaluatorDatabaseContainerPath__block_invo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setAirplaneModeSwitchEnabled:(BOOL)a3
+- (void)_setAirplaneModeSwitchEnabled:(BOOL)enabled
 {
-  if (self->_airplaneModeSwitchEnabled != a3)
+  if (self->_airplaneModeSwitchEnabled != enabled)
   {
     [(SystemSettingsRelay *)self willChangeValueForKey:@"airplaneModeSwitchEnabled"];
-    self->_airplaneModeSwitchEnabled = a3;
+    self->_airplaneModeSwitchEnabled = enabled;
 
     [(SystemSettingsRelay *)self didChangeValueForKey:@"airplaneModeSwitchEnabled"];
   }
 }
 
-- (void)_setCellDataSwitchEnabled:(BOOL)a3
+- (void)_setCellDataSwitchEnabled:(BOOL)enabled
 {
-  if (self->_cellDataSwitchEnabled != a3)
+  if (self->_cellDataSwitchEnabled != enabled)
   {
     [(SystemSettingsRelay *)self willChangeValueForKey:@"cellDataSwitchEnabled"];
-    self->_cellDataSwitchEnabled = a3;
+    self->_cellDataSwitchEnabled = enabled;
 
     [(SystemSettingsRelay *)self didChangeValueForKey:@"cellDataSwitchEnabled"];
   }
 }
 
-- (void)_setRnfEnabled:(BOOL)a3
+- (void)_setRnfEnabled:(BOOL)enabled
 {
-  if (self->_rnfEnabled != a3)
+  if (self->_rnfEnabled != enabled)
   {
     [(SystemSettingsRelay *)self willChangeValueForKey:@"rnfEnabled"];
-    self->_rnfEnabled = a3;
+    self->_rnfEnabled = enabled;
 
     [(SystemSettingsRelay *)self didChangeValueForKey:@"rnfEnabled"];
   }
 }
 
-- (void)_setCellOutrankEnabled:(BOOL)a3
+- (void)_setCellOutrankEnabled:(BOOL)enabled
 {
-  if (self->_cellOutrankEnabled != a3)
+  if (self->_cellOutrankEnabled != enabled)
   {
     [(SystemSettingsRelay *)self willChangeValueForKey:@"cellOutrankEnabled"];
-    self->_cellOutrankEnabled = a3;
+    self->_cellOutrankEnabled = enabled;
 
     [(SystemSettingsRelay *)self didChangeValueForKey:@"cellOutrankEnabled"];
   }
 }
 
-- (void)_setSmartDataModeEnabled:(BOOL)a3
+- (void)_setSmartDataModeEnabled:(BOOL)enabled
 {
-  if (self->_smartDataModeEnabled != a3)
+  if (self->_smartDataModeEnabled != enabled)
   {
     [(SystemSettingsRelay *)self willChangeValueForKey:@"smartDataModeEnabled"];
-    self->_smartDataModeEnabled = a3;
+    self->_smartDataModeEnabled = enabled;
 
     [(SystemSettingsRelay *)self didChangeValueForKey:@"smartDataModeEnabled"];
   }
 }
 
-- (void)_setWifiEnabled:(BOOL)a3
+- (void)_setWifiEnabled:(BOOL)enabled
 {
-  if (self->_wifiEnabled != a3)
+  if (self->_wifiEnabled != enabled)
   {
     [(SystemSettingsRelay *)self willChangeValueForKey:@"wifiEnabled"];
-    self->_wifiEnabled = a3;
+    self->_wifiEnabled = enabled;
 
     [(SystemSettingsRelay *)self didChangeValueForKey:@"wifiEnabled"];
   }
 }
 
-- (void)_setNoBackhaulEnabled:(BOOL)a3
+- (void)_setNoBackhaulEnabled:(BOOL)enabled
 {
-  if (self->_noBackhaulEnabled != a3)
+  if (self->_noBackhaulEnabled != enabled)
   {
     [(SystemSettingsRelay *)self willChangeValueForKey:@"noBackhaulEnabled"];
-    self->_noBackhaulEnabled = a3;
+    self->_noBackhaulEnabled = enabled;
 
     [(SystemSettingsRelay *)self didChangeValueForKey:@"noBackhaulEnabled"];
   }
 }
 
-- (void)_setAutoBugCaptureEnabled:(BOOL)a3
+- (void)_setAutoBugCaptureEnabled:(BOOL)enabled
 {
-  if (self->_autoBugCaptureEnabled != a3)
+  if (self->_autoBugCaptureEnabled != enabled)
   {
     [(SystemSettingsRelay *)self willChangeValueForKey:@"autoBugCaptureEnabled"];
-    self->_autoBugCaptureEnabled = a3;
+    self->_autoBugCaptureEnabled = enabled;
 
     [(SystemSettingsRelay *)self didChangeValueForKey:@"autoBugCaptureEnabled"];
   }
 }
 
-- (void)_setAutoBugCaptureAvailable:(BOOL)a3
+- (void)_setAutoBugCaptureAvailable:(BOOL)available
 {
-  if (self->_autoBugCaptureAvailable != a3)
+  if (self->_autoBugCaptureAvailable != available)
   {
     [(SystemSettingsRelay *)self willChangeValueForKey:@"autoBugCaptureAvailable"];
-    self->_autoBugCaptureAvailable = a3;
+    self->_autoBugCaptureAvailable = available;
 
     [(SystemSettingsRelay *)self didChangeValueForKey:@"autoBugCaptureAvailable"];
   }
 }
 
-- (void)_setAutoFeedbackAssistantEnable:(BOOL)a3
+- (void)_setAutoFeedbackAssistantEnable:(BOOL)enable
 {
-  if (self->_autoFeedbackAssistantEnable != a3)
+  if (self->_autoFeedbackAssistantEnable != enable)
   {
     [(SystemSettingsRelay *)self willChangeValueForKey:@"autoFeedbackAssistantEnable"];
-    self->_autoFeedbackAssistantEnable = a3;
+    self->_autoFeedbackAssistantEnable = enable;
     [(SystemSettingsRelay *)self didChangeValueForKey:@"autoFeedbackAssistantEnable"];
   }
 
@@ -1055,17 +1055,17 @@ LABEL_7:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ctServerConnectionNotification:(__CFString *)a3 notificationInfo:(__CFDictionary *)a4
+- (void)ctServerConnectionNotification:(__CFString *)notification notificationInfo:(__CFDictionary *)info
 {
-  if (a3)
+  if (notification)
   {
-    v6 = [(SystemSettingsRelay *)self queue:a3];
+    v6 = [(SystemSettingsRelay *)self queue:notification];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __71__SystemSettingsRelay_ctServerConnectionNotification_notificationInfo___block_invoke;
     v8[3] = &unk_27898AFE0;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = notification;
     dispatch_async(v6, v8);
   }
 
@@ -1165,15 +1165,15 @@ LABEL_7:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAutoBugCaptureConfiguration:(id)a3
+- (void)setAutoBugCaptureConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   autoBugCaptureConfiguration = self->_autoBugCaptureConfiguration;
-  v15 = v5;
-  if (autoBugCaptureConfiguration != v5 || (v7 = [(NSDictionary *)autoBugCaptureConfiguration isEqualToDictionary:v5], v8 = v15, (v7 & 1) == 0))
+  v15 = configurationCopy;
+  if (autoBugCaptureConfiguration != configurationCopy || (v7 = [(NSDictionary *)autoBugCaptureConfiguration isEqualToDictionary:configurationCopy], v8 = v15, (v7 & 1) == 0))
   {
     [(SystemSettingsRelay *)self willChangeValueForKey:@"autoBugCaptureConfiguration"];
-    objc_storeStrong(&self->_autoBugCaptureConfiguration, a3);
+    objc_storeStrong(&self->_autoBugCaptureConfiguration, configuration);
     [(SystemSettingsRelay *)self didChangeValueForKey:@"autoBugCaptureConfiguration"];
     v9 = [(NSDictionary *)v15 objectForKeyedSubscript:@"autoBugCaptureEnabled"];
     v10 = v9;

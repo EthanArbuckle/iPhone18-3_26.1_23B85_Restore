@@ -7,16 +7,16 @@
 
 + (id)no
 {
-  v2 = [a1 type];
-  v3 = [_DKCategory categoryWithInteger:0 type:v2];
+  type = [self type];
+  v3 = [_DKCategory categoryWithInteger:0 type:type];
 
   return v3;
 }
 
 + (id)yes
 {
-  v2 = [a1 type];
-  v3 = [_DKCategory categoryWithInteger:1 type:v2];
+  type = [self type];
+  v3 = [_DKCategory categoryWithInteger:1 type:type];
 
   return v3;
 }

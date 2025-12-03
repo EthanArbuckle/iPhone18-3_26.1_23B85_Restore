@@ -1,9 +1,9 @@
 @interface PHSafeNSCacheDelegateReflector
 + (id)sharedInstance;
-+ (void)setDelegate:(id)a3 forCache:(id)a4;
++ (void)setDelegate:(id)delegate forCache:(id)cache;
 - (PHSafeNSCacheDelegateReflector)init;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
-- (void)setDelegate:(id)a3 forCache:(id)a4;
+- (void)cache:(id)cache willEvictObject:(id)object;
+- (void)setDelegate:(id)delegate forCache:(id)cache;
 @end
 
 @implementation PHSafeNSCacheDelegateReflector
@@ -32,9 +32,9 @@ uint64_t __48__PHSafeNSCacheDelegateReflector_sharedInstance__block_invoke()
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     delegatesByCache = v3->_delegatesByCache;
-    v3->_delegatesByCache = v4;
+    v3->_delegatesByCache = weakToWeakObjectsMapTable;
 
     v6 = v3;
   }
@@ -42,18 +42,18 @@ uint64_t __48__PHSafeNSCacheDelegateReflector_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  objectCopy = object;
   v10 = MEMORY[0x1E69E9820];
-  v11 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = cacheCopy;
   v12 = v8;
   v9 = PLResultWithUnfairLock();
   if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v9 cache:v8 willEvictObject:{v7, v10, 3221225472, __56__PHSafeNSCacheDelegateReflector_cache_willEvictObject___block_invoke, &unk_1E75A34C8, v11, v8}];
+    [v9 cache:v8 willEvictObject:{objectCopy, v10, 3221225472, __56__PHSafeNSCacheDelegateReflector_cache_willEvictObject___block_invoke, &unk_1E75A34C8, selfCopy, v8}];
   }
 }
 
@@ -66,15 +66,15 @@ id __56__PHSafeNSCacheDelegateReflector_cache_willEvictObject___block_invoke(uin
   return v3;
 }
 
-- (void)setDelegate:(id)a3 forCache:(id)a4
+- (void)setDelegate:(id)delegate forCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  delegateCopy = delegate;
+  cacheCopy = cache;
+  v9 = cacheCopy;
+  if (!delegateCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PHSafeNSCacheDelegateReflector.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"delegate != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSafeNSCacheDelegateReflector.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"delegate != nil"}];
 
     if (v9)
     {
@@ -82,22 +82,22 @@ id __56__PHSafeNSCacheDelegateReflector_cache_willEvictObject___block_invoke(uin
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PHSafeNSCacheDelegateReflector.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"cache != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSafeNSCacheDelegateReflector.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"cache != nil"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!cacheCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v14 = v7;
+  v14 = delegateCopy;
   v15 = v9;
   v10 = v9;
-  v11 = v7;
+  v11 = delegateCopy;
   PLRunWithUnfairLock();
   [v10 setDelegate:self];
 }
@@ -110,12 +110,12 @@ void __55__PHSafeNSCacheDelegateReflector_setDelegate_forCache___block_invoke(vo
   objc_autoreleasePoolPop(v2);
 }
 
-+ (void)setDelegate:(id)a3 forCache:(id)a4
++ (void)setDelegate:(id)delegate forCache:(id)cache
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 sharedInstance];
-  [v8 setDelegate:v7 forCache:v6];
+  cacheCopy = cache;
+  delegateCopy = delegate;
+  sharedInstance = [self sharedInstance];
+  [sharedInstance setDelegate:delegateCopy forCache:cacheCopy];
 }
 
 @end

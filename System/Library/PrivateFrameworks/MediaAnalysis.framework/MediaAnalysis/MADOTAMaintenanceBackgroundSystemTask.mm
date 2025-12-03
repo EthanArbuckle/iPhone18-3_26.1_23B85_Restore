@@ -1,6 +1,6 @@
 @interface MADOTAMaintenanceBackgroundSystemTask
 + (id)sharedTask;
-- (void)executeWith:(id)a3 completionHandler:(id)a4;
+- (void)executeWith:(id)with completionHandler:(id)handler;
 @end
 
 @implementation MADOTAMaintenanceBackgroundSystemTask
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = sub_100080668;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B8218 != -1)
   {
     dispatch_once(&qword_1002B8218, block);
@@ -22,12 +22,12 @@
   return v2;
 }
 
-- (void)executeWith:(id)a3 completionHandler:(id)a4
+- (void)executeWith:(id)with completionHandler:(id)handler
 {
-  v19 = a3;
-  v20 = a4;
-  v18 = [objc_opt_class() identifier];
-  [NSString stringWithFormat:@"[%@][%@]", objc_opt_class(), v18];
+  withCopy = with;
+  handlerCopy = handler;
+  identifier = [objc_opt_class() identifier];
+  [NSString stringWithFormat:@"[%@][%@]", objc_opt_class(), identifier];
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -40,7 +40,7 @@
   v30[2] = 0x3032000000;
   v30[3] = sub_100080BF4;
   v30[4] = sub_100080C04;
-  v31 = VCPTransactionWithName(v18);
+  v31 = VCPTransactionWithName(identifier);
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100080C0C;
@@ -56,22 +56,22 @@
   v7 = v5;
   v24 = v7;
   v27 = v30;
-  v8 = v20;
+  v8 = handlerCopy;
   v25 = v8;
   v9 = objc_retainBlock(v23);
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100080E68;
   v21[3] = &unk_1002842C8;
-  v10 = v19;
+  v10 = withCopy;
   v22 = v10;
   v11 = objc_retainBlock(v21);
   v12 = objc_autoreleasePoolPush();
   v13 = [MADOTAMaintenanceProcessingTask taskWithCancelBlock:v11 progressHandler:v6 completionHandler:v9];
   v14 = +[VCPMADTaskScheduler sharedInstance];
-  LODWORD(a4) = [v14 addBackgroundTask:v13 withQoS:17] == 0;
+  LODWORD(handler) = [v14 addBackgroundTask:v13 withQoS:17] == 0;
 
-  if (a4)
+  if (handler)
   {
     if (MediaAnalysisLogLevel() >= 4)
     {

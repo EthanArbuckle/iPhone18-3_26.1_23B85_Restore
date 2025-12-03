@@ -1,11 +1,11 @@
 @interface CarFloatingControlsButtonView
-- (CarFloatingControlsButtonView)initWithFrame:(CGRect)a3;
+- (CarFloatingControlsButtonView)initWithFrame:(CGRect)frame;
 - (CarFloatingControlsButtonViewDelegate)delegate;
 - (NSArray)focusOrderSubItems;
-- (void)_pressed3DButton:(id)a3;
+- (void)_pressed3DButton:(id)button;
 - (void)_rebuild;
-- (void)setEnable3DButton:(BOOL)a3;
-- (void)setEnableTrackingButton:(BOOL)a3;
+- (void)setEnable3DButton:(BOOL)button;
+- (void)setEnableTrackingButton:(BOOL)button;
 @end
 
 @implementation CarFloatingControlsButtonView
@@ -17,8 +17,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CarMultiButtonView *)self buttons];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  buttons = [(CarMultiButtonView *)self buttons];
+  v5 = [buttons countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -29,7 +29,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttons);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -40,12 +40,12 @@
 
         else if (objc_opt_respondsToSelector())
         {
-          v10 = [v9 focusOrderSubItems];
-          [v3 addObjectsFromArray:v10];
+          focusOrderSubItems = [v9 focusOrderSubItems];
+          [v3 addObjectsFromArray:focusOrderSubItems];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [buttons countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -78,41 +78,41 @@
   [(CarMultiButtonView *)self setButtons:v3];
 }
 
-- (void)setEnable3DButton:(BOOL)a3
+- (void)setEnable3DButton:(BOOL)button
 {
-  if (self->_enable3DButton != a3)
+  if (self->_enable3DButton != button)
   {
-    self->_enable3DButton = a3;
+    self->_enable3DButton = button;
     [(CarFloatingControlsButtonView *)self _rebuild];
   }
 }
 
-- (void)setEnableTrackingButton:(BOOL)a3
+- (void)setEnableTrackingButton:(BOOL)button
 {
-  if (self->_enableTrackingButton != a3)
+  if (self->_enableTrackingButton != button)
   {
-    self->_enableTrackingButton = a3;
+    self->_enableTrackingButton = button;
     [(CarFloatingControlsButtonView *)self _rebuild];
   }
 }
 
-- (void)_pressed3DButton:(id)a3
+- (void)_pressed3DButton:(id)button
 {
-  v4 = [(CarFloatingControlsButtonView *)self delegate];
+  delegate = [(CarFloatingControlsButtonView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CarFloatingControlsButtonView *)self delegate];
-    [v6 mode3DButtonPressed];
+    delegate2 = [(CarFloatingControlsButtonView *)self delegate];
+    [delegate2 mode3DButtonPressed];
   }
 }
 
-- (CarFloatingControlsButtonView)initWithFrame:(CGRect)a3
+- (CarFloatingControlsButtonView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CarFloatingControlsButtonView;
-  v3 = [(CarMultiButtonView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarMultiButtonView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [CarUserTrackingButtonView buttonWithUserTrackingView:0];

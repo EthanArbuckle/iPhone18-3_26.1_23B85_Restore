@@ -1,28 +1,28 @@
 @interface RTPointOfInterestSampler
-- (RTPointOfInterestSampler)initWithDefaultsManager:(id)a3 locationManager:(id)a4 placeInferenceManager:(id)a5 timerManager:(id)a6 wifiManager:(id)a7;
-- (void)_addRequester:(id)a3 samplingInterval:(double)a4;
-- (void)_removeRequester:(id)a3;
-- (void)_shutdownWithHandler:(id)a3;
+- (RTPointOfInterestSampler)initWithDefaultsManager:(id)manager locationManager:(id)locationManager placeInferenceManager:(id)inferenceManager timerManager:(id)timerManager wifiManager:(id)wifiManager;
+- (void)_addRequester:(id)requester samplingInterval:(double)interval;
+- (void)_removeRequester:(id)requester;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)_startSampling;
 - (void)_updateSamplingInterval;
-- (void)onWiFiScanNotification:(id)a3;
-- (void)setRegisteredForWifiScan:(BOOL)a3;
-- (void)setSamplingInterval:(double)a3;
-- (void)startSamplingPointOfInterestFromRequester:(id)a3 samplingInterval:(double)a4;
-- (void)stopSamplingPointOfInterestFromRequester:(id)a3;
+- (void)onWiFiScanNotification:(id)notification;
+- (void)setRegisteredForWifiScan:(BOOL)scan;
+- (void)setSamplingInterval:(double)interval;
+- (void)startSamplingPointOfInterestFromRequester:(id)requester samplingInterval:(double)interval;
+- (void)stopSamplingPointOfInterestFromRequester:(id)requester;
 @end
 
 @implementation RTPointOfInterestSampler
 
-- (RTPointOfInterestSampler)initWithDefaultsManager:(id)a3 locationManager:(id)a4 placeInferenceManager:(id)a5 timerManager:(id)a6 wifiManager:(id)a7
+- (RTPointOfInterestSampler)initWithDefaultsManager:(id)manager locationManager:(id)locationManager placeInferenceManager:(id)inferenceManager timerManager:(id)timerManager wifiManager:(id)wifiManager
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v30 = v17;
-  if (!v13)
+  managerCopy = manager;
+  locationManagerCopy = locationManager;
+  inferenceManagerCopy = inferenceManager;
+  timerManagerCopy = timerManager;
+  wifiManagerCopy = wifiManager;
+  v30 = wifiManagerCopy;
+  if (!managerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -37,7 +37,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v14)
+  if (!locationManagerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -50,7 +50,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v15)
+  if (!inferenceManagerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -63,7 +63,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v16)
+  if (!timerManagerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -76,7 +76,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v17)
+  if (!wifiManagerCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -88,7 +88,7 @@ LABEL_19:
 
 LABEL_20:
 
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
@@ -98,11 +98,11 @@ LABEL_20:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_defaultsManager, a3);
-    objc_storeStrong(&v19->_locationManager, a4);
-    objc_storeStrong(&v19->_placeInferenceManager, a5);
-    objc_storeStrong(&v19->_timerManager, a6);
-    objc_storeStrong(&v19->_wifiManager, a7);
+    objc_storeStrong(&v18->_defaultsManager, manager);
+    objc_storeStrong(&v19->_locationManager, locationManager);
+    objc_storeStrong(&v19->_placeInferenceManager, inferenceManager);
+    objc_storeStrong(&v19->_timerManager, timerManager);
+    objc_storeStrong(&v19->_wifiManager, wifiManager);
     v20 = objc_opt_new();
     requesters = v19->_requesters;
     v19->_requesters = v20;
@@ -124,68 +124,68 @@ LABEL_20:
   }
 
   self = v19;
-  v26 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v26;
+  return selfCopy;
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   [(RTPointOfInterestSampler *)self setRegisteredForWifiScan:0];
   [(RTPointOfInterestSampler *)self setRunning:0];
   [(RTPointOfInterestSampler *)self setShouldRun:0];
-  v4 = [(RTPointOfInterestSampler *)self wifiScanTimer];
-  [v4 invalidate];
+  wifiScanTimer = [(RTPointOfInterestSampler *)self wifiScanTimer];
+  [wifiScanTimer invalidate];
 
   [(RTPointOfInterestSampler *)self setWifiScanTimer:0];
-  v5 = [(RTPointOfInterestSampler *)self samplingTimer];
-  [v5 invalidate];
+  samplingTimer = [(RTPointOfInterestSampler *)self samplingTimer];
+  [samplingTimer invalidate];
 
   [(RTPointOfInterestSampler *)self setSamplingTimer:0];
-  v6 = v7;
-  if (v7)
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0);
-    v6 = v7;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v6 = handlerCopy;
   }
 }
 
-- (void)startSamplingPointOfInterestFromRequester:(id)a3 samplingInterval:(double)a4
+- (void)startSamplingPointOfInterestFromRequester:(id)requester samplingInterval:(double)interval
 {
-  v6 = a3;
-  v7 = [(RTNotifier *)self queue];
+  requesterCopy = requester;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__RTPointOfInterestSampler_startSamplingPointOfInterestFromRequester_samplingInterval___block_invoke;
   block[3] = &unk_2788C5020;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = requesterCopy;
+  intervalCopy = interval;
+  v8 = requesterCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)stopSamplingPointOfInterestFromRequester:(id)a3
+- (void)stopSamplingPointOfInterestFromRequester:(id)requester
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  requesterCopy = requester;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__RTPointOfInterestSampler_stopSamplingPointOfInterestFromRequester___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requesterCopy;
+  v6 = requesterCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_addRequester:(id)a3 samplingInterval:(double)a4
+- (void)_addRequester:(id)requester samplingInterval:(double)interval
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (a4 <= 0.0)
+  requesterCopy = requester;
+  if (interval <= 0.0)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -206,27 +206,27 @@ LABEL_21:
         v13 = 138412802;
         v14 = v9;
         v15 = 2112;
-        v16 = v7;
+        v16 = requesterCopy;
         v17 = 2048;
-        v18 = a4;
+        intervalCopy = interval;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, add requester, %@, sampling interval, %.1f", &v13, 0x20u);
       }
     }
 
-    v10 = [(RTPointOfInterestSampler *)self requesters];
-    v11 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-    [v10 setObject:v11 forKey:v7];
+    requesters = [(RTPointOfInterestSampler *)self requesters];
+    v11 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
+    [requesters setObject:v11 forKey:requesterCopy];
 
     [(RTPointOfInterestSampler *)self _updateSamplingInterval];
   }
 }
 
-- (void)_removeRequester:(id)a3
+- (void)_removeRequester:(id)requester
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(RTPointOfInterestSampler *)self requesters];
-  v7 = [v6 objectForKey:v5];
+  requesterCopy = requester;
+  requesters = [(RTPointOfInterestSampler *)self requesters];
+  v7 = [requesters objectForKey:requesterCopy];
 
   if (v7)
   {
@@ -239,13 +239,13 @@ LABEL_21:
         v13 = 138412546;
         v14 = v9;
         v15 = 2112;
-        v16 = v5;
+        v16 = requesterCopy;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, remove requester, %@", &v13, 0x16u);
       }
     }
 
-    v10 = [(RTPointOfInterestSampler *)self requesters];
-    [v10 removeObjectForKey:v5];
+    requesters2 = [(RTPointOfInterestSampler *)self requesters];
+    [requesters2 removeObjectForKey:requesterCopy];
 
     [(RTPointOfInterestSampler *)self _updateSamplingInterval];
   }
@@ -259,7 +259,7 @@ LABEL_21:
       v13 = 138412546;
       v14 = v12;
       v15 = 2112;
-      v16 = v5;
+      v16 = requesterCopy;
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "%@, requester not found, %@", &v13, 0x16u);
     }
   }
@@ -272,8 +272,8 @@ LABEL_21:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(RTPointOfInterestSampler *)self requesters];
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v36 count:16];
+  requesters = [(RTPointOfInterestSampler *)self requesters];
+  v4 = [requesters countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v4)
   {
     v6 = v4;
@@ -288,7 +288,7 @@ LABEL_21:
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(requesters);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
@@ -298,8 +298,8 @@ LABEL_21:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
           {
             v17 = NSStringFromSelector(a2);
-            v23 = [(RTPointOfInterestSampler *)self requesters];
-            v18 = [v23 objectForKey:*&v11];
+            requesters2 = [(RTPointOfInterestSampler *)self requesters];
+            v18 = [requesters2 objectForKey:*&v11];
             *buf = v21;
             v29 = v17;
             v30 = 2112;
@@ -312,8 +312,8 @@ LABEL_21:
           }
         }
 
-        v13 = [(RTPointOfInterestSampler *)self requesters];
-        v14 = [v13 objectForKey:*&v11];
+        requesters3 = [(RTPointOfInterestSampler *)self requesters];
+        v14 = [requesters3 objectForKey:*&v11];
         [v14 doubleValue];
         v16 = v15;
 
@@ -323,7 +323,7 @@ LABEL_21:
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v24 objects:v36 count:16];
+      v6 = [requesters countByEnumeratingWithState:&v24 objects:v36 count:16];
     }
 
     while (v6);
@@ -351,12 +351,12 @@ LABEL_21:
   [(RTPointOfInterestSampler *)self setSamplingInterval:v8];
 }
 
-- (void)setSamplingInterval:(double)a3
+- (void)setSamplingInterval:(double)interval
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 > 0.0)
+  if (interval > 0.0)
   {
-    if (vabdd_f64(self->_samplingInterval, a3) >= 0.1)
+    if (vabdd_f64(self->_samplingInterval, interval) >= 0.1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -367,13 +367,13 @@ LABEL_21:
           v9 = 138412546;
           v10 = v8;
           v11 = 2048;
-          v12 = a3;
+          intervalCopy = interval;
           _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, updated interval, %.1f", &v9, 0x16u);
         }
       }
 
-      self->_samplingInterval = a3;
-      if (a3 == 1.79769313e308)
+      self->_samplingInterval = interval;
+      if (interval == 1.79769313e308)
       {
         [(RTPointOfInterestSampler *)self setShouldRun:0];
       }
@@ -405,14 +405,14 @@ LABEL_21:
   if (![(RTPointOfInterestSampler *)self running])
   {
     [(RTPointOfInterestSampler *)self setRunning:1];
-    v4 = [(RTPointOfInterestSampler *)self locationManager];
+    locationManager = [(RTPointOfInterestSampler *)self locationManager];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __42__RTPointOfInterestSampler__startSampling__block_invoke;
     v5[3] = &unk_2788CC668;
     v5[4] = self;
     v5[5] = a2;
-    [v4 fetchCurrentLocationWithHandler:v5];
+    [locationManager fetchCurrentLocationWithHandler:v5];
   }
 }
 
@@ -791,13 +791,13 @@ uint64_t __42__RTPointOfInterestSampler__startSampling__block_invoke_20(uint64_t
   return result;
 }
 
-- (void)setRegisteredForWifiScan:(BOOL)a3
+- (void)setRegisteredForWifiScan:(BOOL)scan
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_registeredForWifiScan != a3)
+  if (self->_registeredForWifiScan != scan)
   {
-    v3 = a3;
-    self->_registeredForWifiScan = a3;
+    scanCopy = scan;
+    self->_registeredForWifiScan = scan;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -828,37 +828,37 @@ uint64_t __42__RTPointOfInterestSampler__startSampling__block_invoke_20(uint64_t
       }
     }
 
-    else if (!v3)
+    else if (!scanCopy)
     {
 LABEL_9:
-      v10 = [(RTPointOfInterestSampler *)self wifiManager];
+      wifiManager = [(RTPointOfInterestSampler *)self wifiManager];
       v11 = +[(RTNotification *)RTWiFiManagerNotificationScanResults];
-      [v10 removeObserver:self fromNotification:v11];
+      [wifiManager removeObserver:self fromNotification:v11];
 LABEL_12:
 
       return;
     }
 
-    v10 = [(RTPointOfInterestSampler *)self wifiManager];
+    wifiManager = [(RTPointOfInterestSampler *)self wifiManager];
     v11 = +[(RTNotification *)RTWiFiManagerNotificationScanResults];
-    [v10 addObserver:self selector:sel_onWiFiScanNotification_ name:v11];
+    [wifiManager addObserver:self selector:sel_onWiFiScanNotification_ name:v11];
     goto LABEL_12;
   }
 }
 
-- (void)onWiFiScanNotification:(id)a3
+- (void)onWiFiScanNotification:(id)notification
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__RTPointOfInterestSampler_onWiFiScanNotification___block_invoke;
   block[3] = &unk_2788C5020;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v9 = notificationCopy;
+  v7 = notificationCopy;
+  dispatch_async(queue, block);
 }
 
 void __51__RTPointOfInterestSampler_onWiFiScanNotification___block_invoke(uint64_t a1)

@@ -1,13 +1,13 @@
 @interface SLProgressiveCheckerContext
-- (SLProgressiveCheckerContext)initWithContext:(id)a3 error:(id *)a4;
+- (SLProgressiveCheckerContext)initWithContext:(id)context error:(id *)error;
 @end
 
 @implementation SLProgressiveCheckerContext
 
-- (SLProgressiveCheckerContext)initWithContext:(id)a3 error:(id *)a4
+- (SLProgressiveCheckerContext)initWithContext:(id)context error:(id *)error
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v29.receiver = self;
   v29.super_class = SLProgressiveCheckerContext;
   v7 = [(SLProgressiveCheckerContext *)&v29 init];
@@ -23,34 +23,34 @@ LABEL_18:
     dispatch_once(&SLLogInitIfNeeded_once, &__block_literal_global);
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"SLInvocationType"];
+  v8 = [contextCopy objectForKeyedSubscript:@"SLInvocationType"];
   if (v8)
   {
     v9 = v8;
-    v10 = [v6 objectForKeyedSubscript:@"SLAudioSourceOption"];
+    v10 = [contextCopy objectForKeyedSubscript:@"SLAudioSourceOption"];
     if (v10)
     {
       v11 = v10;
-      v12 = [v6 objectForKeyedSubscript:@"SLLanguageCode"];
+      v12 = [contextCopy objectForKeyedSubscript:@"SLLanguageCode"];
 
       if (v12)
       {
 LABEL_14:
-        v19 = [v6 objectForKeyedSubscript:@"SLAudioSourceOption"];
+        v19 = [contextCopy objectForKeyedSubscript:@"SLAudioSourceOption"];
         v7->_audioOption = [v19 unsignedIntegerValue];
 
-        v20 = [v6 objectForKeyedSubscript:@"SLInvocationType"];
+        v20 = [contextCopy objectForKeyedSubscript:@"SLInvocationType"];
         v7->_invocationType = [v20 unsignedIntegerValue];
 
-        v21 = [v6 objectForKeyedSubscript:@"SLLanguageCode"];
+        v21 = [contextCopy objectForKeyedSubscript:@"SLLanguageCode"];
         locale = v7->_locale;
         v7->_locale = v21;
 
-        v23 = [v6 objectForKeyedSubscript:@"SLVoiceTriggerEventInfo"];
+        v23 = [contextCopy objectForKeyedSubscript:@"SLVoiceTriggerEventInfo"];
         v24 = v23;
         if (v23)
         {
-          v23 = [v6 objectForKeyedSubscript:@"SLVoiceTriggerEventInfo"];
+          v23 = [contextCopy objectForKeyedSubscript:@"SLVoiceTriggerEventInfo"];
         }
 
         vtei = v7->_vtei;
@@ -77,7 +77,7 @@ LABEL_14:
 
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing keys in context"];
   v14 = v13;
-  if (!a4)
+  if (!error)
   {
 
     goto LABEL_14;
@@ -87,7 +87,7 @@ LABEL_14:
   v34 = @"reason";
   v35[0] = v13;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
-  *a4 = [v15 errorWithDomain:@"com.apple.sl" code:102 userInfo:v16];
+  *error = [v15 errorWithDomain:@"com.apple.sl" code:102 userInfo:v16];
 
   v17 = SLLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))

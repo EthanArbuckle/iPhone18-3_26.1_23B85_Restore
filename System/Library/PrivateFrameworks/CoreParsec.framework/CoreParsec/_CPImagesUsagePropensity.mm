@@ -1,7 +1,7 @@
 @interface _CPImagesUsagePropensity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPImagesUsagePropensity
@@ -55,34 +55,34 @@
   return *&veor_s8(*v26.i8, *&vextq_s8(v26, v26, 8uLL)) ^ ((*vbslq_s8(v17, v20, v21).i64 * 2654435760.0) + vcvtd_n_u64_f64(v25 - *v21.i64, 0x40uLL)) ^ (2654435761 * self->_totalEngagements);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_7;
   }
 
   zkw = self->_zkw;
-  [v4 zkw];
+  [equalCopy zkw];
   if (zkw != v6)
   {
     goto LABEL_7;
   }
 
   recentResult = self->_recentResult;
-  [v4 recentResult];
+  [equalCopy recentResult];
   if (recentResult != v8)
   {
     goto LABEL_7;
   }
 
   other = self->_other;
-  [v4 other];
-  if (other == v10 && (querySuggestion = self->_querySuggestion, [v4 querySuggestion], querySuggestion == v12) && (image = self->_image, objc_msgSend(v4, "image"), image == v14))
+  [equalCopy other];
+  if (other == v10 && (querySuggestion = self->_querySuggestion, [equalCopy querySuggestion], querySuggestion == v12) && (image = self->_image, objc_msgSend(equalCopy, "image"), image == v14))
   {
     totalEngagements = self->_totalEngagements;
-    v15 = totalEngagements == [v4 totalEngagements];
+    v15 = totalEngagements == [equalCopy totalEngagements];
   }
 
   else
@@ -94,9 +94,9 @@ LABEL_7:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   [(_CPImagesUsagePropensity *)self zkw];
   if (v4 != 0.0)
   {

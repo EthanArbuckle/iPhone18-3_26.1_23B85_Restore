@@ -1,17 +1,17 @@
 @interface CCDonateConnection
 - (BOOL)isAlive;
 - (CCDonateConnection)init;
-- (CCDonateConnection)initWithRequestManager:(id)a3 xpcConnection:(id)a4;
+- (CCDonateConnection)initWithRequestManager:(id)manager xpcConnection:(id)connection;
 - (CCDonateRequest)request;
 - (NSXPCConnection)xpcConnection;
-- (void)_cleanupDonation:(int64_t)a3;
+- (void)_cleanupDonation:(int64_t)donation;
 - (void)_cleanupRequestState;
 - (void)abortSetDonation;
-- (void)addItemsWithContents:(id)a3 metaContents:(id)a4 completion:(id)a5;
-- (void)endSetDonationWithOptions:(unsigned __int16)a3 revisionToken:(id)a4 completion:(id)a5;
+- (void)addItemsWithContents:(id)contents metaContents:(id)metaContents completion:(id)completion;
+- (void)endSetDonationWithOptions:(unsigned __int16)options revisionToken:(id)token completion:(id)completion;
 - (void)rejectConnection;
-- (void)remoteUpdateFromDeviceUUID:(id)a3 options:(unsigned __int16)a4 mergeableDelta:(id)a5 peerDeviceSite:(id)a6 relayedDeviceSites:(id)a7 completion:(id)a8;
-- (void)removeSourceItemIdentifier:(id)a3 completion:(id)a4;
+- (void)remoteUpdateFromDeviceUUID:(id)d options:(unsigned __int16)options mergeableDelta:(id)delta peerDeviceSite:(id)site relayedDeviceSites:(id)sites completion:(id)completion;
+- (void)removeSourceItemIdentifier:(id)identifier completion:(id)completion;
 - (void)resume;
 - (void)timeout;
 @end
@@ -46,7 +46,7 @@ void __29__CCDonateConnection_isAlive__block_invoke(uint64_t a1)
 - (void)resume
 {
   v12 = *MEMORY[0x1E69E9840];
-  v9 = MEMORY[0x1DA74EA40](*a1);
+  v9 = MEMORY[0x1DA74EA40](*self);
   WeakRetained = objc_loadWeakRetained((a2 + 32));
   v11 = *(a2 + 56);
   OUTLINED_FUNCTION_0_0();
@@ -71,19 +71,19 @@ void __29__CCDonateConnection_isAlive__block_invoke(uint64_t a1)
   objc_exception_throw(v2);
 }
 
-- (CCDonateConnection)initWithRequestManager:(id)a3 xpcConnection:(id)a4
+- (CCDonateConnection)initWithRequestManager:(id)manager xpcConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = CCDonateConnection;
   v9 = [(CCDonateConnection *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestManager, a3);
-    v11 = objc_storeWeak(&v10->_xpcConnection, v8);
-    v10->_isXPC = v8 != 0;
+    objc_storeStrong(&v9->_requestManager, manager);
+    v11 = objc_storeWeak(&v10->_xpcConnection, connectionCopy);
+    v10->_isXPC = connectionCopy != 0;
 
     openStreamCompletion = v10->_openStreamCompletion;
     v10->_openStreamCompletion = 0;
@@ -119,11 +119,11 @@ void __29__CCDonateConnection_isAlive__block_invoke(uint64_t a1)
   dispatch_sync(queue, block);
 }
 
-- (void)endSetDonationWithOptions:(unsigned __int16)a3 revisionToken:(id)a4 completion:(id)a5
+- (void)endSetDonationWithOptions:(unsigned __int16)options revisionToken:(id)token completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  completionCopy = completion;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -133,17 +133,17 @@ void __29__CCDonateConnection_isAlive__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __73__CCDonateConnection_endSetDonationWithOptions_revisionToken_completion___block_invoke;
   block[3] = &unk_1E85C2C60;
-  v25 = a3;
+  optionsCopy = options;
   block[4] = self;
   v24 = &v26;
-  v11 = v8;
+  v11 = tokenCopy;
   v22 = v11;
-  v12 = v9;
+  v12 = completionCopy;
   v23 = v12;
   dispatch_sync(queue, block);
   if (*(v27 + 24) == 1)
   {
-    v13 = [(CCDifferentialUpdater *)self->_updater waitForCommit:a3 & 1];
+    v13 = [(CCDifferentialUpdater *)self->_updater waitForCommit:options & 1];
     WeakRetained = objc_loadWeakRetained(&self->_request);
     v15 = WeakRetained;
     if (v13)
@@ -254,7 +254,7 @@ void __38__CCDonateConnection_abortSetDonation__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_cleanupDonation:(int64_t)a3
+- (void)_cleanupDonation:(int64_t)donation
 {
   v17 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -266,7 +266,7 @@ void __38__CCDonateConnection_abortSetDonation__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_loadWeakRetained(&self->_request);
-      v8 = CCDonateRequestTerminationTypeDescription(a3);
+      v8 = CCDonateRequestTerminationTypeDescription(donation);
       v13 = 138412546;
       v14 = v7;
       v15 = 2112;
@@ -276,7 +276,7 @@ void __38__CCDonateConnection_abortSetDonation__block_invoke(uint64_t a1)
 
     [(CCDifferentialUpdater *)self->_updater abort];
     v9 = objc_loadWeakRetained(&self->_request);
-    [v9 terminateWithType:a3];
+    [v9 terminateWithType:donation];
 
     [(CCDonateConnection *)self _cleanupRequestState];
   }
@@ -292,23 +292,23 @@ void __38__CCDonateConnection_abortSetDonation__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addItemsWithContents:(id)a3 metaContents:(id)a4 completion:(id)a5
+- (void)addItemsWithContents:(id)contents metaContents:(id)metaContents completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contentsCopy = contents;
+  metaContentsCopy = metaContents;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__CCDonateConnection_addItemsWithContents_metaContents_completion___block_invoke;
   v15[3] = &unk_1E85C2C88;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = contentsCopy;
+  v17 = metaContentsCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = metaContentsCopy;
+  v14 = contentsCopy;
   dispatch_sync(queue, v15);
 }
 
@@ -375,20 +375,20 @@ uint64_t __67__CCDonateConnection_addItemsWithContents_metaContents_completion__
   return v3();
 }
 
-- (void)removeSourceItemIdentifier:(id)a3 completion:(id)a4
+- (void)removeSourceItemIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__CCDonateConnection_removeSourceItemIdentifier_completion___block_invoke;
   block[3] = &unk_1E85C2CB0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_sync(queue, block);
 }
 
@@ -452,30 +452,30 @@ uint64_t __60__CCDonateConnection_removeSourceItemIdentifier_completion___block_
   return v3();
 }
 
-- (void)remoteUpdateFromDeviceUUID:(id)a3 options:(unsigned __int16)a4 mergeableDelta:(id)a5 peerDeviceSite:(id)a6 relayedDeviceSites:(id)a7 completion:(id)a8
+- (void)remoteUpdateFromDeviceUUID:(id)d options:(unsigned __int16)options mergeableDelta:(id)delta peerDeviceSite:(id)site relayedDeviceSites:(id)sites completion:(id)completion
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  dCopy = d;
+  deltaCopy = delta;
+  siteCopy = site;
+  sitesCopy = sites;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __117__CCDonateConnection_remoteUpdateFromDeviceUUID_options_mergeableDelta_peerDeviceSite_relayedDeviceSites_completion___block_invoke;
   block[3] = &unk_1E85C2CD8;
   block[4] = self;
-  v26 = v14;
-  v31 = a4;
-  v27 = v15;
-  v28 = v16;
-  v29 = v17;
-  v30 = v18;
-  v20 = v17;
-  v21 = v16;
-  v22 = v15;
-  v23 = v14;
-  v24 = v18;
+  v26 = dCopy;
+  optionsCopy = options;
+  v27 = deltaCopy;
+  v28 = siteCopy;
+  v29 = sitesCopy;
+  v30 = completionCopy;
+  v20 = sitesCopy;
+  v21 = siteCopy;
+  v22 = deltaCopy;
+  v23 = dCopy;
+  v24 = completionCopy;
   dispatch_sync(queue, block);
 }
 

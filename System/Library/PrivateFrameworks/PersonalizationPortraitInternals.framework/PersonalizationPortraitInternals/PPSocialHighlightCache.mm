@@ -1,13 +1,13 @@
 @interface PPSocialHighlightCache
 - (PPSocialHighlightCache)init;
 - (id)database;
-- (id)initWithStream:(void *)a3 database:;
-- (id)lastCacheInvalidationDateForClient:(void *)a1;
-- (uint64_t)cachedHighlightsArrayIsValid:(void *)a3 queryResults:;
-- (void)cachedRankedHighlightsForClient:(uint64_t)a1 variant:(void *)a2 completion:(void *)a3;
-- (void)deleteMatchingPredicate:(uint64_t)a1;
-- (void)invalidateCacheForClient:(void *)a1;
-- (void)saveOrderedBatch:(uint64_t)a1;
+- (id)initWithStream:(void *)stream database:;
+- (id)lastCacheInvalidationDateForClient:(void *)client;
+- (uint64_t)cachedHighlightsArrayIsValid:(void *)valid queryResults:;
+- (void)cachedRankedHighlightsForClient:(uint64_t)client variant:(void *)variant completion:(void *)completion;
+- (void)deleteMatchingPredicate:(uint64_t)predicate;
+- (void)invalidateCacheForClient:(void *)client;
+- (void)saveOrderedBatch:(uint64_t)batch;
 @end
 
 @implementation PPSocialHighlightCache
@@ -46,45 +46,45 @@
   return v11;
 }
 
-- (id)initWithStream:(void *)a3 database:
+- (id)initWithStream:(void *)stream database:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  streamCopy = stream;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = PPSocialHighlightCache;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v7 = [objc_alloc(MEMORY[0x277D425F8]) initWithGuardedData:v5];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, stream);
       v9 = [MEMORY[0x277D425A0] autoreleasingSerialQueueWithLabel:"SocialHighlightCache"];
-      v10 = a1[3];
-      a1[3] = v9;
+      v10 = self[3];
+      self[3] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)cachedRankedHighlightsForClient:(uint64_t)a1 variant:(void *)a2 completion:(void *)a3
+- (void)cachedRankedHighlightsForClient:(uint64_t)client variant:(void *)variant completion:(void *)completion
 {
-  v5 = a2;
-  v6 = a3;
-  if (a1)
+  variantCopy = variant;
+  completionCopy = completion;
+  if (client)
   {
-    v7 = *(a1 + 24);
+    v7 = *(client + 24);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__PPSocialHighlightCache_cachedRankedHighlightsForClient_variant_completion___block_invoke;
     block[3] = &unk_278979060;
-    block[4] = a1;
-    v9 = v5;
-    v10 = v6;
+    block[4] = client;
+    v9 = variantCopy;
+    v10 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -182,11 +182,11 @@ void __77__PPSocialHighlightCache_cachedRankedHighlightsForClient_variant_comple
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)lastCacheInvalidationDateForClient:(void *)a1
+- (id)lastCacheInvalidationDateForClient:(void *)client
 {
   v28 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (client)
   {
     v18 = 0;
     v19 = &v18;
@@ -194,7 +194,7 @@ void __77__PPSocialHighlightCache_cachedRankedHighlightsForClient_variant_comple
     v21 = __Block_byref_object_copy__658;
     v22 = __Block_byref_object_dispose__659;
     v23 = 0;
-    v4 = [a1 database];
+    database = [client database];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __61__PPSocialHighlightCache_lastCacheInvalidationDateForClient___block_invoke;
@@ -202,7 +202,7 @@ void __77__PPSocialHighlightCache_cachedRankedHighlightsForClient_variant_comple
     v17 = &v18;
     v5 = v3;
     v16 = v5;
-    [v4 readTransactionWithClient:0 block:&v12];
+    [database readTransactionWithClient:0 block:&v12];
 
     if (v19[5])
     {
@@ -219,7 +219,7 @@ void __77__PPSocialHighlightCache_cachedRankedHighlightsForClient_variant_comple
 
       v8 = objc_alloc(MEMORY[0x277CBEAA8]);
       [v19[5] doubleValue];
-      a1 = [v8 initWithTimeIntervalSinceReferenceDate:?];
+      client = [v8 initWithTimeIntervalSinceReferenceDate:?];
     }
 
     else
@@ -231,7 +231,7 @@ void __77__PPSocialHighlightCache_cachedRankedHighlightsForClient_variant_comple
         _os_log_impl(&dword_23224A000, v9, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightCache: no last invalidation date of cache", buf, 2u);
       }
 
-      a1 = 0;
+      client = 0;
     }
 
     _Block_object_dispose(&v18, 8);
@@ -239,7 +239,7 @@ void __77__PPSocialHighlightCache_cachedRankedHighlightsForClient_variant_comple
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return client;
 }
 
 void __77__PPSocialHighlightCache_cachedRankedHighlightsForClient_variant_completion___block_invoke_20(uint64_t a1, void *a2)
@@ -381,12 +381,12 @@ void __61__PPSocialHighlightCache_lastCacheInvalidationDateForClient___block_inv
   *(v6 + 40) = v5;
 }
 
-- (uint64_t)cachedHighlightsArrayIsValid:(void *)a3 queryResults:
+- (uint64_t)cachedHighlightsArrayIsValid:(void *)valid queryResults:
 {
   v82 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  validCopy = valid;
+  if (!self)
   {
     v47 = 0;
     goto LABEL_62;
@@ -408,7 +408,7 @@ LABEL_56:
   }
 
   v7 = [v5 count];
-  if (v7 != [v6 count])
+  if (v7 != [validCopy count])
   {
     v8 = pp_social_highlights_log_handle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -436,7 +436,7 @@ LABEL_56:
   v53 = v5;
   v61 = *v72;
   v58 = v8;
-  v59 = v6;
+  v59 = validCopy;
 LABEL_6:
   v9 = 0;
 LABEL_7:
@@ -464,15 +464,15 @@ LABEL_7:
       goto LABEL_59;
     }
 
-    v52 = [v10 highlightIdentifier];
+    highlightIdentifier = [v10 highlightIdentifier];
     *buf = 138739971;
-    v81 = v52;
+    v81 = highlightIdentifier;
     _os_log_impl(&dword_23224A000, v49, OS_LOG_TYPE_DEFAULT, "PPSocialHighlightCache: highlight %{sensitive}@ found to be expired, invalidating cache.", buf, 0xCu);
     goto LABEL_68;
   }
 
   v19 = v10;
-  v20 = v6;
+  v20 = validCopy;
   if (![v19 hasAttributionIdentifier] || !objc_msgSend(v19, "hasHighlightIdentifier"))
   {
 
@@ -509,80 +509,80 @@ LABEL_7:
         goto LABEL_29;
       }
 
-      v27 = [v26 attributionIdentifier];
-      v28 = [v19 attributionIdentifier];
-      if (![v27 isEqualToString:v28] || (v29 = objc_msgSend(v26, "highlightType"), v29 != objc_msgSend(v19, "highlightType")))
+      attributionIdentifier = [v26 attributionIdentifier];
+      attributionIdentifier2 = [v19 attributionIdentifier];
+      if (![attributionIdentifier isEqualToString:attributionIdentifier2] || (v29 = objc_msgSend(v26, "highlightType"), v29 != objc_msgSend(v19, "highlightType")))
       {
 
         goto LABEL_29;
       }
 
-      v30 = [v26 highlightIdentifier];
-      v31 = [v19 highlightIdentifier];
-      if (![v30 isEqualToString:v31] || (objc_msgSend(v26, "syndicationSecondsSinceReferenceDate"), v33 = v32, objc_msgSend(v19, "syndicationSecondsSinceReferenceDate"), v33 != v34))
+      highlightIdentifier2 = [v26 highlightIdentifier];
+      highlightIdentifier3 = [v19 highlightIdentifier];
+      if (![highlightIdentifier2 isEqualToString:highlightIdentifier3] || (objc_msgSend(v26, "syndicationSecondsSinceReferenceDate"), v33 = v32, objc_msgSend(v19, "syndicationSecondsSinceReferenceDate"), v33 != v34))
       {
         v37 = 0;
         goto LABEL_28;
       }
 
-      v70 = v30;
-      v35 = [v26 isCollaboration];
-      if (v35 != [v19 isCollaboration] || (v36 = objc_msgSend(v26, "hasCollaborationIdentifier"), v36 != objc_msgSend(v19, "hasCollaborationIdentifier")))
+      v70 = highlightIdentifier2;
+      isCollaboration = [v26 isCollaboration];
+      if (isCollaboration != [v19 isCollaboration] || (v36 = objc_msgSend(v26, "hasCollaborationIdentifier"), v36 != objc_msgSend(v19, "hasCollaborationIdentifier")))
       {
         v37 = 0;
-        v30 = v70;
+        highlightIdentifier2 = v70;
         goto LABEL_28;
       }
 
-      v38 = [v26 collaborationIdentifier];
-      v68 = [v19 collaborationIdentifier];
-      v69 = v38;
-      if (v38 != v68)
+      collaborationIdentifier = [v26 collaborationIdentifier];
+      collaborationIdentifier2 = [v19 collaborationIdentifier];
+      v69 = collaborationIdentifier;
+      if (collaborationIdentifier != collaborationIdentifier2)
       {
-        v39 = [v26 collaborationIdentifier];
-        v63 = [v19 collaborationIdentifier];
-        v64 = v39;
-        if (![v39 isEqual:?])
+        collaborationIdentifier3 = [v26 collaborationIdentifier];
+        collaborationIdentifier4 = [v19 collaborationIdentifier];
+        v64 = collaborationIdentifier3;
+        if (![collaborationIdentifier3 isEqual:?])
         {
           v37 = 0;
-          v30 = v70;
+          highlightIdentifier2 = v70;
 LABEL_45:
 
           goto LABEL_46;
         }
       }
 
-      v40 = [v26 contentType];
-      v66 = [v19 contentType];
-      v67 = v40;
-      if (v40 != v66)
+      contentType = [v26 contentType];
+      contentType2 = [v19 contentType];
+      v67 = contentType;
+      if (contentType != contentType2)
       {
-        v41 = [v26 contentType];
+        contentType3 = [v26 contentType];
         [v19 contentType];
-        v65 = v60 = v41;
-        if (![v41 isEqual:?])
+        v65 = v60 = contentType3;
+        if (![contentType3 isEqual:?])
         {
           v37 = 0;
 LABEL_40:
           v45 = v65;
-          v30 = v70;
+          highlightIdentifier2 = v70;
           goto LABEL_43;
         }
       }
 
-      v42 = [v26 contentDisplayName];
-      v43 = [v19 contentDisplayName];
-      if (v42 != v43)
+      contentDisplayName = [v26 contentDisplayName];
+      contentDisplayName2 = [v19 contentDisplayName];
+      if (contentDisplayName != contentDisplayName2)
       {
-        v56 = v43;
-        v54 = [v26 contentDisplayName];
+        v56 = contentDisplayName2;
+        contentDisplayName3 = [v26 contentDisplayName];
         [v19 contentDisplayName];
-        v44 = v55 = v42;
-        v37 = [v54 isEqual:v44];
+        v44 = v55 = contentDisplayName;
+        v37 = [contentDisplayName3 isEqual:v44];
 
-        if (v67 == v66)
+        if (v67 == contentType2)
         {
-          v30 = v70;
+          highlightIdentifier2 = v70;
           goto LABEL_44;
         }
 
@@ -590,8 +590,8 @@ LABEL_40:
       }
 
       v37 = 1;
-      v30 = v70;
-      if (v67 == v66)
+      highlightIdentifier2 = v70;
+      if (v67 == contentType2)
       {
         goto LABEL_44;
       }
@@ -601,7 +601,7 @@ LABEL_43:
       v65 = v45;
 
 LABEL_44:
-      if (v69 != v68)
+      if (v69 != collaborationIdentifier2)
       {
         goto LABEL_45;
       }
@@ -614,7 +614,7 @@ LABEL_28:
 
         v9 = v62 + 1;
         v8 = v58;
-        v6 = v59;
+        validCopy = v59;
         if (v62 + 1 != v57)
         {
           goto LABEL_7;
@@ -649,15 +649,15 @@ LABEL_29:
 LABEL_57:
 
   v8 = v58;
-  v6 = v59;
+  validCopy = v59;
 LABEL_58:
   v49 = pp_social_highlights_log_handle();
   v5 = v53;
   if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
   {
-    v52 = [v19 highlightIdentifier];
+    highlightIdentifier = [v19 highlightIdentifier];
     *buf = 138739971;
-    v81 = v52;
+    v81 = highlightIdentifier;
     _os_log_debug_impl(&dword_23224A000, v49, OS_LOG_TYPE_DEBUG, "PPSocialHighlightCache: found highlight %{sensitive}@ in the cache that was not in the Spotlight query, invaldating cache.", buf, 0xCu);
 LABEL_68:
   }
@@ -673,18 +673,18 @@ LABEL_62:
   return v47;
 }
 
-- (void)invalidateCacheForClient:(void *)a1
+- (void)invalidateCacheForClient:(void *)client
 {
   v3 = a2;
-  if (a1)
+  if (client)
   {
-    v4 = [a1 database];
+    database = [client database];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __51__PPSocialHighlightCache_invalidateCacheForClient___block_invoke;
     v5[3] = &unk_278978B68;
     v6 = v3;
-    [v4 writeTransactionWithClient:0 block:v5];
+    [database writeTransactionWithClient:0 block:v5];
   }
 }
 
@@ -715,18 +715,18 @@ void __51__PPSocialHighlightCache_invalidateCacheForClient___block_invoke(uint64
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteMatchingPredicate:(uint64_t)a1
+- (void)deleteMatchingPredicate:(uint64_t)predicate
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (predicate)
   {
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v5 = *(a1 + 8);
+    v5 = *(predicate + 8);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __50__PPSocialHighlightCache_deleteMatchingPredicate___block_invoke;
@@ -776,13 +776,13 @@ uint64_t __50__PPSocialHighlightCache_deleteMatchingPredicate___block_invoke_2(u
   return v5;
 }
 
-- (void)saveOrderedBatch:(uint64_t)a1
+- (void)saveOrderedBatch:(uint64_t)batch
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (batch)
   {
-    v5 = *(a1 + 8);
+    v5 = *(batch + 8);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __43__PPSocialHighlightCache_saveOrderedBatch___block_invoke;

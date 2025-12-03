@@ -1,5 +1,5 @@
 @interface DOCImageViewContainerView
-- (void)effectiveAppearanceDidChange:(id)a3;
+- (void)effectiveAppearanceDidChange:(id)change;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
@@ -21,7 +21,7 @@
   v8[2] = thunk for @escaping @callee_guaranteed () -> ();
   v8[3] = &block_descriptor_147_0;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation_];
   _Block_release(v6);
@@ -33,13 +33,13 @@
   }
 }
 
-- (void)effectiveAppearanceDidChange:(id)a3
+- (void)effectiveAppearanceDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for DOCImageViewContainerView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(DOCImageViewContainerView *)&v6 effectiveAppearanceDidChange:v4];
+  [(DOCImageViewContainerView *)&v6 effectiveAppearanceDidChange:changeCopy];
   (*((*MEMORY[0x277D85000] & *v5) + 0xD0))(1);
 }
 

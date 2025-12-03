@@ -1,10 +1,10 @@
 @interface NSData
-+ (id)bcs_dataWithHexString:(uint64_t)a1;
++ (id)bcs_dataWithHexString:(uint64_t)string;
 @end
 
 @implementation NSData
 
-+ (id)bcs_dataWithHexString:(uint64_t)a1
++ (id)bcs_dataWithHexString:(uint64_t)string
 {
   v20 = *MEMORY[0x277D85DE8];
   v2 = a2;

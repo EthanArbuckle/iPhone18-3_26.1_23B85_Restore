@@ -1,15 +1,15 @@
 @interface SYErrorInfo
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (SYErrorInfo)initWithError:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SYErrorInfo)initWithError:(id)error;
 - (id)_usefulDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYErrorInfo
@@ -20,20 +20,20 @@
   v8.receiver = self;
   v8.super_class = SYErrorInfo;
   v4 = [(SYErrorInfo *)&v8 description];
-  v5 = [(SYErrorInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYErrorInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_code];
@@ -48,9 +48,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (!self->_domain)
   {
     [SYErrorInfo writeTo:];
@@ -65,41 +65,41 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setDomain:self->_domain];
-  v4 = v5;
-  v5[2] = self->_code;
+  toCopy = to;
+  [toCopy setDomain:self->_domain];
+  v4 = toCopy;
+  toCopy[2] = self->_code;
   if (self->_userInfo)
   {
-    [v5 setUserInfo:?];
-    v4 = v5;
+    [toCopy setUserInfo:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 8) = self->_code;
-  v8 = [(NSData *)self->_userInfo copyWithZone:a3];
+  v8 = [(NSData *)self->_userInfo copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | v4[2])) || -[NSString isEqual:](domain, "isEqual:")) && self->_code == *(v4 + 2))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | equalCopy[2])) || -[NSString isEqual:](domain, "isEqual:")) && self->_code == *(equalCopy + 2))
   {
     userInfo = self->_userInfo;
-    if (userInfo | v4[3])
+    if (userInfo | equalCopy[3])
     {
       v7 = [(NSData *)userInfo isEqual:?];
     }
@@ -125,30 +125,30 @@
   return v4 ^ v3 ^ [(NSData *)self->_userInfo hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(SYErrorInfo *)self setDomain:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_code = v4[2];
-  if (*(v4 + 3))
+  self->_code = fromCopy[2];
+  if (*(fromCopy + 3))
   {
     [(SYErrorInfo *)self setUserInfo:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    InstanceMethod = class_getInstanceMethod(a1, sel_description);
-    v4 = class_getInstanceMethod(a1, sel__usefulDescription);
+    InstanceMethod = class_getInstanceMethod(self, sel_description);
+    v4 = class_getInstanceMethod(self, sel__usefulDescription);
     if (InstanceMethod && v4 != 0)
     {
 
@@ -157,35 +157,35 @@
   }
 }
 
-- (SYErrorInfo)initWithError:(id)a3
+- (SYErrorInfo)initWithError:(id)error
 {
-  v4 = a3;
-  if (v4 && (v12.receiver = self, v12.super_class = SYErrorInfo, (self = [(SYErrorInfo *)&v12 init]) != 0))
+  errorCopy = error;
+  if (errorCopy && (v12.receiver = self, v12.super_class = SYErrorInfo, (self = [(SYErrorInfo *)&v12 init]) != 0))
   {
-    v5 = [v4 domain];
-    [(SYErrorInfo *)self setDomain:v5];
+    domain = [errorCopy domain];
+    [(SYErrorInfo *)self setDomain:domain];
 
-    -[SYErrorInfo setCode:](self, "setCode:", [v4 code]);
-    v6 = [v4 userInfo];
+    -[SYErrorInfo setCode:](self, "setCode:", [errorCopy code]);
+    userInfo = [errorCopy userInfo];
 
-    if (v6)
+    if (userInfo)
     {
       v7 = MEMORY[0x1E696ACC8];
-      v8 = [v4 userInfo];
-      v9 = [v7 archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+      userInfo2 = [errorCopy userInfo];
+      v9 = [v7 archivedDataWithRootObject:userInfo2 requiringSecureCoding:1 error:0];
       [(SYErrorInfo *)self setUserInfo:v9];
     }
 
     self = self;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)_usefulDescription
@@ -194,20 +194,20 @@
   v13.receiver = self;
   v13.super_class = SYErrorInfo;
   v4 = [(SYErrorInfo *)&v13 description];
-  v5 = [(SYErrorInfo *)self domain];
-  v6 = [(SYErrorInfo *)self code];
-  v7 = [(SYErrorInfo *)self userInfo];
-  if (v7)
+  domain = [(SYErrorInfo *)self domain];
+  code = [(SYErrorInfo *)self code];
+  userInfo = [(SYErrorInfo *)self userInfo];
+  if (userInfo)
   {
     v8 = MEMORY[0x1E696ACD0];
-    v9 = [(SYErrorInfo *)self userInfo];
-    v10 = [v8 sy_unarchivedObjectFromData:v9];
-    v11 = [v3 stringWithFormat:@"%@: domain=%@, code=%ld, userInfo=%@", v4, v5, v6, v10];
+    userInfo2 = [(SYErrorInfo *)self userInfo];
+    v10 = [v8 sy_unarchivedObjectFromData:userInfo2];
+    v11 = [v3 stringWithFormat:@"%@: domain=%@, code=%ld, userInfo=%@", v4, domain, code, v10];
   }
 
   else
   {
-    v11 = [v3 stringWithFormat:@"%@: domain=%@, code=%ld, userInfo=%@", v4, v5, v6, @"(nil)"];
+    v11 = [v3 stringWithFormat:@"%@: domain=%@, code=%ld, userInfo=%@", v4, domain, code, @"(nil)"];
   }
 
   return v11;

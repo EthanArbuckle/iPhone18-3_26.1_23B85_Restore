@@ -1,24 +1,24 @@
 @interface SBTransitionSwitcherModifierRemovalContext
-- (SBTransitionSwitcherModifierRemovalContext)initWithAnimationStyle:(int64_t)a3 displayItem:(id)a4;
+- (SBTransitionSwitcherModifierRemovalContext)initWithAnimationStyle:(int64_t)style displayItem:(id)item;
 @end
 
 @implementation SBTransitionSwitcherModifierRemovalContext
 
-- (SBTransitionSwitcherModifierRemovalContext)initWithAnimationStyle:(int64_t)a3 displayItem:(id)a4
+- (SBTransitionSwitcherModifierRemovalContext)initWithAnimationStyle:(int64_t)style displayItem:(id)item
 {
-  v8 = a4;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = SBTransitionSwitcherModifierRemovalContext;
   v9 = [(SBTransitionSwitcherModifierRemovalContext *)&v11 init];
   if (v9)
   {
-    if (!v8)
+    if (!itemCopy)
     {
       [SBTransitionSwitcherModifierRemovalContext initWithAnimationStyle:a2 displayItem:v9];
     }
 
-    v9->_animationStyle = a3;
-    objc_storeStrong(&v9->_displayItem, a4);
+    v9->_animationStyle = style;
+    objc_storeStrong(&v9->_displayItem, item);
   }
 
   return v9;

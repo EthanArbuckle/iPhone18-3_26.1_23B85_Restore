@@ -2,25 +2,25 @@
 - (BOOL)canBeReused;
 - (CGPoint)normalizedAnchorPoint;
 - (CGPoint)visibleLocation;
-- (CGRect)adjustVisibleRect:(CGRect)a3;
+- (CGRect)adjustVisibleRect:(CGRect)rect;
 - (CGRect)visibleRect;
 - (CGSize)contentSize;
 - (NSString)description;
 - (NSString)diagnosticDescription;
 - (PXGAnchor)init;
-- (PXGAnchor)initWithLayout:(id)a3;
+- (PXGAnchor)initWithLayout:(id)layout;
 - (PXGAnchorDelegate)delegate;
 - (PXGLayout)layout;
 - (UIEdgeInsets)padding;
-- (id)copyWithLayout:(id)a3;
+- (id)copyWithLayout:(id)layout;
 - (unint64_t)anchoredContentEdges;
-- (unsigned)anchoredSpriteIndexInLayout:(id)a3;
-- (void)_enumerateSpriteConstraintsUsingBlock:(id)a3;
-- (void)adjustReferencedSpriteIndexesWithChangeDetails:(id)a3 appliedToLayout:(id)a4;
-- (void)enumerateAllSpriteReferencesUsingBlock:(id)a3;
-- (void)enumerateSpritesWithEnumerationOptions:(unint64_t)a3 referencingOptions:(unint64_t)a4 usingBlock:(id)a5;
+- (unsigned)anchoredSpriteIndexInLayout:(id)layout;
+- (void)_enumerateSpriteConstraintsUsingBlock:(id)block;
+- (void)adjustReferencedSpriteIndexesWithChangeDetails:(id)details appliedToLayout:(id)layout;
+- (void)enumerateAllSpriteReferencesUsingBlock:(id)block;
+- (void)enumerateSpritesWithEnumerationOptions:(unint64_t)options referencingOptions:(unint64_t)referencingOptions usingBlock:(id)block;
 - (void)invalidate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PXGAnchor
@@ -34,8 +34,8 @@
 
 - (void)invalidate
 {
-  v3 = [(PXGAnchor *)self layout];
-  [v3 removeAnchor:self];
+  layout = [(PXGAnchor *)self layout];
+  [layout removeAnchor:self];
 }
 
 - (unint64_t)anchoredContentEdges
@@ -113,24 +113,24 @@
   v3 = objc_alloc(MEMORY[0x277CCAB68]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXGAnchor *)self priority];
+  priority = [(PXGAnchor *)self priority];
   v7 = @"unknown";
   v8 = @"Default";
-  if (v6 != 1)
+  if (priority != 1)
   {
     v8 = @"unknown";
   }
 
-  if (!v6)
+  if (!priority)
   {
     v8 = @"Low";
   }
 
   v9 = v8;
-  v10 = [(PXGAnchor *)self type];
-  if (v10 <= 5)
+  type = [(PXGAnchor *)self type];
+  if (type <= 5)
   {
-    v7 = off_2782A8D10[v10];
+    v7 = off_2782A8D10[type];
   }
 
   v11 = v7;
@@ -144,32 +144,32 @@
   v17 = NSStringFromCGSize(v34);
   v18 = [v3 initWithFormat:@"<%@: %p, priority=%@ type=%@ layout=<%@: %p>\n\tvisibleRect=%@ contentSize=%@\n", v5, self, v9, v11, v14, v15, v16, v17];
 
-  v19 = [(PXGAnchor *)self spriteReferences];
+  spriteReferences = [(PXGAnchor *)self spriteReferences];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __34__PXGAnchor_diagnosticDescription__block_invoke;
   v32[3] = &unk_2782A8BB8;
   v20 = v18;
   v33 = v20;
-  [v19 enumerateObjectsUsingBlock:v32];
+  [spriteReferences enumerateObjectsUsingBlock:v32];
 
-  v21 = [(PXGAnchor *)self constraints];
+  constraints = [(PXGAnchor *)self constraints];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __34__PXGAnchor_diagnosticDescription__block_invoke_2;
   v30[3] = &unk_2782A8BE0;
   v22 = v20;
   v31 = v22;
-  [v21 enumerateObjectsUsingBlock:v30];
+  [constraints enumerateObjectsUsingBlock:v30];
 
-  v23 = [(PXGAnchor *)self spriteRects];
+  spriteRects = [(PXGAnchor *)self spriteRects];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __34__PXGAnchor_diagnosticDescription__block_invoke_3;
   v28[3] = &unk_2782A8C08;
   v24 = v22;
   v29 = v24;
-  [v23 enumerateObjectsUsingBlock:v28];
+  [spriteRects enumerateObjectsUsingBlock:v28];
 
   [v24 appendString:@">"];
   v25 = v29;
@@ -178,10 +178,10 @@
   return v24;
 }
 
-- (void)_enumerateSpriteConstraintsUsingBlock:(id)a3
+- (void)_enumerateSpriteConstraintsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXGAnchor *)self layout];
+  blockCopy = block;
+  layout = [(PXGAnchor *)self layout];
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
@@ -202,7 +202,7 @@
   v17[3] = "";
   v18 = 0u;
   v19 = 0u;
-  v6 = [(PXGAnchor *)self constraints];
+  constraints = [(PXGAnchor *)self constraints];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__PXGAnchor__enumerateSpriteConstraintsUsingBlock___block_invoke;
@@ -211,12 +211,12 @@
   v14 = v22;
   v15 = v20;
   v16 = v17;
-  v7 = v5;
+  v7 = layout;
   v10 = v7;
-  v11 = self;
-  v8 = v4;
+  selfCopy = self;
+  v8 = blockCopy;
   v12 = v8;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [constraints enumerateObjectsUsingBlock:v9];
 
   _Block_object_dispose(v17, 8);
   _Block_object_dispose(v20, 8);
@@ -290,18 +290,18 @@ void __51__PXGAnchor__enumerateSpriteConstraintsUsingBlock___block_invoke(uint64
   }
 }
 
-- (void)enumerateSpritesWithEnumerationOptions:(unint64_t)a3 referencingOptions:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateSpritesWithEnumerationOptions:(unint64_t)options referencingOptions:(unint64_t)referencingOptions usingBlock:(id)block
 {
-  v6 = a5;
-  v7 = [(PXGAnchor *)self layout];
+  blockCopy = block;
+  layout = [(PXGAnchor *)self layout];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __82__PXGAnchor_enumerateSpritesWithEnumerationOptions_referencingOptions_usingBlock___block_invoke;
   v10[3] = &unk_2782A8B68;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = layout;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = layout;
   [(PXGAnchor *)self enumerateAllSpriteReferencesUsingBlock:v10];
 }
 
@@ -322,17 +322,17 @@ uint64_t __82__PXGAnchor_enumerateSpritesWithEnumerationOptions_referencingOptio
   return result;
 }
 
-- (id)copyWithLayout:(id)a3
+- (id)copyWithLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithLayout:v4];
+  layoutCopy = layout;
+  v5 = [objc_alloc(objc_opt_class()) initWithLayout:layoutCopy];
   *(v5 + 40) = self->_type;
   *(v5 + 48) = self->_priority;
   origin = self->_visibleRect.origin;
   *(v5 + 184) = self->_visibleRect.size;
   *(v5 + 168) = origin;
   *(v5 + 120) = self->_contentSize;
-  v22 = v4;
+  v22 = layoutCopy;
   v7 = PXMap();
   v8 = [v7 copy];
   v9 = *(v5 + 56);
@@ -388,23 +388,23 @@ id __28__PXGAnchor_copyWithLayout___block_invoke_2(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)enumerateAllSpriteReferencesUsingBlock:(id)a3
+- (void)enumerateAllSpriteReferencesUsingBlock:(id)block
 {
-  v5 = a3;
-  v6 = [(PXGAnchor *)self spriteReferences];
-  v7 = [(PXGAnchor *)self constraints];
-  if ([v6 count] && objc_msgSend(v7, "count"))
+  blockCopy = block;
+  spriteReferences = [(PXGAnchor *)self spriteReferences];
+  constraints = [(PXGAnchor *)self constraints];
+  if ([spriteReferences count] && objc_msgSend(constraints, "count"))
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXGAnchor.m" lineNumber:511 description:{@"an anchor (%@) cannot have both spriteReferences (%@) and constraints (%@)", self, v6, v7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAnchor.m" lineNumber:511 description:{@"an anchor (%@) cannot have both spriteReferences (%@) and constraints (%@)", self, spriteReferences, constraints}];
   }
 
-  v8 = [(PXGAnchor *)self spriteRects];
+  spriteRects = [(PXGAnchor *)self spriteRects];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __52__PXGAnchor_enumerateAllSpriteReferencesUsingBlock___block_invoke;
   v26[3] = &unk_2782A8AA0;
-  v9 = v8;
+  v9 = spriteRects;
   v27 = v9;
   v10 = MEMORY[0x21CEE40A0](v26);
   v24[0] = 0;
@@ -415,13 +415,13 @@ id __28__PXGAnchor_copyWithLayout___block_invoke_2(uint64_t a1, void *a2)
   v20[1] = 3221225472;
   v20[2] = __52__PXGAnchor_enumerateAllSpriteReferencesUsingBlock___block_invoke_2;
   v20[3] = &unk_2782A8AC8;
-  v11 = v5;
+  v11 = blockCopy;
   v20[4] = self;
   v21 = v11;
   v12 = v10;
   v22 = v12;
   v23 = v24;
-  [v6 enumerateObjectsUsingBlock:v20];
+  [spriteReferences enumerateObjectsUsingBlock:v20];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __52__PXGAnchor_enumerateAllSpriteReferencesUsingBlock___block_invoke_3;
@@ -431,7 +431,7 @@ id __28__PXGAnchor_copyWithLayout___block_invoke_2(uint64_t a1, void *a2)
   v14 = v12;
   v18 = v14;
   v19 = v24;
-  [v7 enumerateObjectsUsingBlock:v16];
+  [constraints enumerateObjectsUsingBlock:v16];
 
   _Block_object_dispose(v24, 8);
 }
@@ -477,10 +477,10 @@ void __52__PXGAnchor_enumerateAllSpriteReferencesUsingBlock___block_invoke_3(voi
   }
 }
 
-- (void)adjustReferencedSpriteIndexesWithChangeDetails:(id)a3 appliedToLayout:(id)a4
+- (void)adjustReferencedSpriteIndexesWithChangeDetails:(id)details appliedToLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  detailsCopy = details;
+  layoutCopy = layout;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -496,9 +496,9 @@ void __52__PXGAnchor_enumerateAllSpriteReferencesUsingBlock___block_invoke_3(voi
   v12 = __76__PXGAnchor_adjustReferencedSpriteIndexesWithChangeDetails_appliedToLayout___block_invoke;
   v13 = &unk_2782A8A78;
   v16 = &v22;
-  v8 = v6;
+  v8 = detailsCopy;
   v14 = v8;
-  v9 = v7;
+  v9 = layoutCopy;
   v15 = v9;
   v17 = &v18;
   [(PXGAnchor *)self enumerateAllSpriteReferencesUsingBlock:&v10];
@@ -535,15 +535,15 @@ void __76__PXGAnchor_adjustReferencedSpriteIndexesWithChangeDetails_appliedToLay
   }
 }
 
-- (unsigned)anchoredSpriteIndexInLayout:(id)a3
+- (unsigned)anchoredSpriteIndexInLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = -1;
-  v5 = [(PXGAnchor *)self type];
-  if (v5 == 1)
+  type = [(PXGAnchor *)self type];
+  if (type == 1)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -553,20 +553,20 @@ void __76__PXGAnchor_adjustReferencedSpriteIndexesWithChangeDetails_appliedToLay
     [(PXGAnchor *)self _enumerateSpriteConstraintsUsingBlock:v11];
   }
 
-  else if (v5 == 2)
+  else if (type == 2)
   {
-    v6 = [(PXGAnchor *)self referencingOptions];
+    referencingOptions = [(PXGAnchor *)self referencingOptions];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __41__PXGAnchor_anchoredSpriteIndexInLayout___block_invoke_2;
     v10[3] = &unk_2782A8A50;
     v10[4] = &v12;
-    [(PXGAnchor *)self enumerateSpritesWithEnumerationOptions:0 referencingOptions:v6 usingBlock:v10];
+    [(PXGAnchor *)self enumerateSpritesWithEnumerationOptions:0 referencingOptions:referencingOptions usingBlock:v10];
   }
 
   v7 = *(v13 + 6);
-  v8 = [(PXGAnchor *)self layout];
-  LODWORD(v7) = [v4 convertSpriteIndex:v7 fromLayout:v8];
+  layout = [(PXGAnchor *)self layout];
+  LODWORD(v7) = [layoutCopy convertSpriteIndex:v7 fromLayout:layout];
 
   _Block_object_dispose(&v12, 8);
   return v7;
@@ -586,18 +586,18 @@ uint64_t __41__PXGAnchor_anchoredSpriteIndexInLayout___block_invoke_2(uint64_t r
   return result;
 }
 
-- (CGRect)adjustVisibleRect:(CGRect)a3
+- (CGRect)adjustVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  rect = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  rect = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v106 = 0;
   v107 = &v106;
   v108 = 0x3010000000;
   v109 = "";
   v110 = *MEMORY[0x277CBF348];
-  v8 = [(PXGAnchor *)self layout];
+  layout = [(PXGAnchor *)self layout];
   if (([(PXGAnchor *)self scrollPosition]& 0x100) != 0)
   {
     v74 = *(MEMORY[0x277D3CF90] + 8);
@@ -606,7 +606,7 @@ uint64_t __41__PXGAnchor_anchoredSpriteIndexInLayout___block_invoke_2(uint64_t r
 
   else
   {
-    [v8 safeAreaInsets];
+    [layout safeAreaInsets];
     v74 = v10;
     v75 = v9;
   }
@@ -618,26 +618,26 @@ uint64_t __41__PXGAnchor_anchoredSpriteIndexInLayout___block_invoke_2(uint64_t r
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(PXGAnchor *)self type];
-  if (v19 > 2)
+  type = [(PXGAnchor *)self type];
+  if (type > 2)
   {
-    if (v19 != 3)
+    if (type != 3)
     {
-      if (v19 != 4)
+      if (type != 4)
       {
         goto LABEL_22;
       }
 
-      v22 = [(PXGAnchor *)self edges];
+      edges = [(PXGAnchor *)self edges];
       v78[0] = MEMORY[0x277D85DD0];
       v78[1] = 3221225472;
       v78[2] = __31__PXGAnchor_adjustVisibleRect___block_invoke_5;
       v78[3] = &unk_2782A8A00;
       v81 = a2;
-      v82 = v22;
+      v82 = edges;
       v78[4] = self;
       v80 = &v106;
-      v79 = v8;
+      v79 = layout;
       v83 = v12;
       v84 = v14;
       v85 = v16;
@@ -651,8 +651,8 @@ uint64_t __41__PXGAnchor_anchoredSpriteIndexInLayout___block_invoke_2(uint64_t r
     }
 
     v24 = height;
-    v25 = [(PXGAnchor *)self edges];
-    if (v25)
+    edges2 = [(PXGAnchor *)self edges];
+    if (edges2)
     {
       [(PXGAnchor *)self visibleRect];
       MinY = CGRectGetMinY(v111);
@@ -663,7 +663,7 @@ uint64_t __41__PXGAnchor_anchoredSpriteIndexInLayout___block_invoke_2(uint64_t r
       v107[5] = MinY - CGRectGetMinY(v112);
     }
 
-    if ((v25 & 2) != 0)
+    if ((edges2 & 2) != 0)
     {
       [(PXGAnchor *)self visibleRect];
       MinX = CGRectGetMinX(v113);
@@ -674,9 +674,9 @@ uint64_t __41__PXGAnchor_anchoredSpriteIndexInLayout___block_invoke_2(uint64_t r
       v107[4] = MinX - CGRectGetMinX(v114);
     }
 
-    if ((v25 & 4) != 0)
+    if ((edges2 & 4) != 0)
     {
-      [v8 contentSize];
+      [layout contentSize];
       v29 = v28;
       v115.origin.x = x;
       v115.origin.y = y;
@@ -690,9 +690,9 @@ uint64_t __41__PXGAnchor_anchoredSpriteIndexInLayout___block_invoke_2(uint64_t r
     }
 
     height = v24;
-    if ((v25 & 8) != 0)
+    if ((edges2 & 8) != 0)
     {
-      [v8 contentSize];
+      [layout contentSize];
       v34 = v33;
       v117.origin.x = x;
       v117.origin.y = y;
@@ -709,7 +709,7 @@ uint64_t __41__PXGAnchor_anchoredSpriteIndexInLayout___block_invoke_2(uint64_t r
 
   else
   {
-    switch(v19)
+    switch(type)
     {
       case 1:
         [(PXGAnchor *)self visibleRect];
@@ -739,13 +739,13 @@ uint64_t __41__PXGAnchor_anchoredSpriteIndexInLayout___block_invoke_2(uint64_t r
         _Block_object_dispose(v104, 8);
         break;
       case 2:
-        v20 = [(PXGAnchor *)self referencingOptions];
+        referencingOptions = [(PXGAnchor *)self referencingOptions];
         v87[0] = MEMORY[0x277D85DD0];
         v87[1] = 3221225472;
         v87[2] = __31__PXGAnchor_adjustVisibleRect___block_invoke_3;
         v87[3] = &unk_2782A89D8;
-        v88 = v8;
-        v89 = self;
+        v88 = layout;
+        selfCopy = self;
         v91 = v12;
         v92 = v14;
         v93 = v16;
@@ -753,20 +753,20 @@ uint64_t __41__PXGAnchor_anchoredSpriteIndexInLayout___block_invoke_2(uint64_t r
         v90 = &v106;
         v95 = x;
         v96 = y;
-        v97 = rect;
+        rectCopy = rect;
         v98 = height;
         v99 = x;
         v100 = y;
-        v101 = rect;
+        rectCopy2 = rect;
         v102 = height;
-        [(PXGAnchor *)self enumerateSpritesWithEnumerationOptions:0 referencingOptions:v20 usingBlock:v87];
+        [(PXGAnchor *)self enumerateSpritesWithEnumerationOptions:0 referencingOptions:referencingOptions usingBlock:v87];
         v21 = v88;
 LABEL_11:
 
         break;
       case 0:
-        v70 = [MEMORY[0x277CCA890] currentHandler];
-        [v70 handleFailureInMethod:a2 object:self file:@"PXGAnchor.m" lineNumber:190 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAnchor.m" lineNumber:190 description:@"Code which should be unreachable has been reached"];
 
         abort();
     }
@@ -779,14 +779,14 @@ LABEL_22:
   v45 = v44;
   if (self->_delegateRespondsTo.visibleRectOriginForProposedVisibleRectForLayout)
   {
-    v46 = [(PXGAnchor *)self delegate];
-    [v46 anchor:self visibleRectOriginForProposedVisibleRect:v8 forLayout:{v43, v45, rect, height}];
+    delegate = [(PXGAnchor *)self delegate];
+    [delegate anchor:self visibleRectOriginForProposedVisibleRect:layout forLayout:{v43, v45, rect, height}];
     v43 = v47;
     v45 = v48;
   }
 
-  v49 = [v8 superlayout];
-  if (v49)
+  superlayout = [layout superlayout];
+  if (superlayout)
   {
 
 LABEL_27:
@@ -800,7 +800,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  [v8 scrollableAxis];
+  [layout scrollableAxis];
   PXEdgesForAxis();
   PXEdgeInsetsForEdges();
   v73 = height;
@@ -810,7 +810,7 @@ LABEL_27:
   v58 = v119.size.height;
   v72 = v119.origin.x;
   v59 = CGRectGetMaxY(v119);
-  [v8 contentSize];
+  [layout contentSize];
   v61 = v60;
   v120.origin.x = v72;
   v120.origin.y = v56;
@@ -871,7 +871,7 @@ LABEL_27:
   v126.size.width = v63;
   v126.size.height = v71;
   v66 = CGRectGetMaxX(v126);
-  [v8 contentSize];
+  [layout contentSize];
   v68 = v66 - v67;
   if (v68 <= 0.0)
   {
@@ -919,10 +919,10 @@ LABEL_28:
   _Block_object_dispose(&v106, 8);
   v52 = v51;
   v53 = v50;
-  v54 = rect;
+  rectCopy3 = rect;
   v55 = height;
   result.size.height = v55;
-  result.size.width = v54;
+  result.size.width = rectCopy3;
   result.origin.y = v53;
   result.origin.x = v52;
   return result;
@@ -1359,8 +1359,8 @@ LABEL_12:
 
 - (BOOL)canBeReused
 {
-  v3 = [(PXGAnchor *)self date];
-  [v3 timeIntervalSinceNow];
+  date = [(PXGAnchor *)self date];
+  [date timeIntervalSinceNow];
   v5 = v4;
 
   if (v5 > 0.0 || v5 <= -120.0)
@@ -1447,10 +1447,10 @@ uint64_t __24__PXGAnchor_canBeReused__block_invoke(uint64_t a1, void *a2, uint64
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
   v12 = objc_loadWeakRetained(&self->_layout);
-  v13 = [(PXGAnchor *)self constraints];
-  v14 = [v13 componentsJoinedByString:{@", \n"}];
-  v15 = [(PXGAnchor *)self spriteReferences];
-  v16 = [v15 componentsJoinedByString:{@", \n"}];
+  constraints = [(PXGAnchor *)self constraints];
+  v14 = [constraints componentsJoinedByString:{@", \n"}];
+  spriteReferences = [(PXGAnchor *)self spriteReferences];
+  v16 = [spriteReferences componentsJoinedByString:{@", \n"}];
   v17 = v16;
   v18 = &stru_282C556B8;
   if (v16)
@@ -1463,9 +1463,9 @@ uint64_t __24__PXGAnchor_canBeReused__block_invoke(uint64_t a1, void *a2, uint64
   return v19;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -1475,16 +1475,16 @@ uint64_t __24__PXGAnchor_canBeReused__block_invoke(uint64_t a1, void *a2, uint64
   }
 }
 
-- (PXGAnchor)initWithLayout:(id)a3
+- (PXGAnchor)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = PXGAnchor;
   v5 = [(PXGAnchor *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_layout, v4);
+    objc_storeWeak(&v5->_layout, layoutCopy);
     v6->_priority = 1;
     v6->_visibleLocation = *MEMORY[0x277D3CFB0];
   }
@@ -1494,8 +1494,8 @@ uint64_t __24__PXGAnchor_canBeReused__block_invoke(uint64_t a1, void *a2, uint64
 
 - (PXGAnchor)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGAnchor.m" lineNumber:121 description:{@"%s is not available as initializer", "-[PXGAnchor init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAnchor.m" lineNumber:121 description:{@"%s is not available as initializer", "-[PXGAnchor init]"}];
 
   abort();
 }

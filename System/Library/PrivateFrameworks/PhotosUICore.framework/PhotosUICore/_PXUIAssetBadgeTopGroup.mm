@@ -5,7 +5,7 @@
 - (CGRect)imageFrame;
 - (CGRect)labelFrame;
 - (PXAssetBadgeInfo)badgeInfo;
-- (void)setBadgeInfo:(PXAssetBadgeInfo *)a3;
+- (void)setBadgeInfo:(PXAssetBadgeInfo *)info;
 @end
 
 @implementation _PXUIAssetBadgeTopGroup
@@ -75,10 +75,10 @@
   return result;
 }
 
-- (void)setBadgeInfo:(PXAssetBadgeInfo *)a3
+- (void)setBadgeInfo:(PXAssetBadgeInfo *)info
 {
-  v3 = *&a3->count;
-  *&self->_badgeInfo.badges = *&a3->badges;
+  v3 = *&info->count;
+  *&self->_badgeInfo.badges = *&info->badges;
   *&self->_badgeInfo.count = v3;
 }
 

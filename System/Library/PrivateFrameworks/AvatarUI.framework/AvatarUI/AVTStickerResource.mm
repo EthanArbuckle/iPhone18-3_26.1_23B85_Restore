@@ -1,40 +1,40 @@
 @interface AVTStickerResource
-- (AVTStickerResource)initWithCoder:(id)a3;
-- (AVTStickerResource)initWithImage:(id)a3 URL:(id)a4 clippingRect:(CGRect)a5;
+- (AVTStickerResource)initWithCoder:(id)coder;
+- (AVTStickerResource)initWithImage:(id)image URL:(id)l clippingRect:(CGRect)rect;
 - (CGRect)clippingRect;
-- (void)encodeWithCoder:(id)a3;
-- (void)setURL:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setURL:(id)l;
 @end
 
 @implementation AVTStickerResource
 
-- (AVTStickerResource)initWithImage:(id)a3 URL:(id)a4 clippingRect:(CGRect)a5
+- (AVTStickerResource)initWithImage:(id)image URL:(id)l clippingRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3;
-  v13 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  imageCopy = image;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = AVTStickerResource;
   v14 = [(AVTStickerResource *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_image, a3);
-    if (v13)
+    objc_storeStrong(&v14->_image, image);
+    if (lCopy)
     {
       v16 = [AVTUINSURL alloc];
-      v17 = [v13 path];
-      v18 = [(AVTUINSURL *)v16 initFileURLWithPath:v17];
+      path = [lCopy path];
+      v18 = [(AVTUINSURL *)v16 initFileURLWithPath:path];
       internalURL = v15->_internalURL;
       v15->_internalURL = v18;
     }
 
     else
     {
-      v17 = v15->_internalURL;
+      path = v15->_internalURL;
       v15->_internalURL = 0;
     }
 
@@ -47,12 +47,12 @@
   return v15;
 }
 
-- (AVTStickerResource)initWithCoder:(id)a3
+- (AVTStickerResource)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-  [v4 decodeCGRectForKey:@"clippingRect"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  [coderCopy decodeCGRectForKey:@"clippingRect"];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -62,34 +62,34 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(AVTStickerResource *)self image];
-  [v6 encodeObject:v4 forKey:@"image"];
+  coderCopy = coder;
+  image = [(AVTStickerResource *)self image];
+  [coderCopy encodeObject:image forKey:@"image"];
 
   v5 = [(AVTStickerResource *)self URL];
-  [v6 encodeObject:v5 forKey:@"url"];
+  [coderCopy encodeObject:v5 forKey:@"url"];
 
   [(AVTStickerResource *)self clippingRect];
-  [v6 encodeCGRect:@"clippingRect" forKey:?];
+  [coderCopy encodeCGRect:@"clippingRect" forKey:?];
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v8 = a3;
-  if (v8)
+  lCopy = l;
+  if (lCopy)
   {
     v4 = [AVTUINSURL alloc];
-    v5 = [v8 path];
-    v6 = [(AVTUINSURL *)v4 initFileURLWithPath:v5];
+    path = [lCopy path];
+    v6 = [(AVTUINSURL *)v4 initFileURLWithPath:path];
     internalURL = self->_internalURL;
     self->_internalURL = v6;
   }
 
   else
   {
-    v5 = self->_internalURL;
+    path = self->_internalURL;
     self->_internalURL = 0;
   }
 }

@@ -1,15 +1,15 @@
 @interface MSDMacAppPkg
-+ (BOOL)isMacApp:(id)a3;
-+ (id)codeSignaturePath:(id)a3;
++ (BOOL)isMacApp:(id)app;
++ (id)codeSignaturePath:(id)path;
 @end
 
 @implementation MSDMacAppPkg
 
-+ (BOOL)isMacApp:(id)a3
++ (BOOL)isMacApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v23 = 0;
-  v4 = [NSBundle bundleWithPath:v3];
+  v4 = [NSBundle bundleWithPath:appCopy];
   v5 = v4;
   if (!v4)
   {
@@ -22,9 +22,9 @@
     goto LABEL_19;
   }
 
-  v6 = [v4 infoDictionary];
+  infoDictionary = [v4 infoDictionary];
 
-  if (!v6)
+  if (!infoDictionary)
   {
     v8 = sub_100063A54();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -37,8 +37,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v7 = [v5 infoDictionary];
-  v8 = [v7 objectForKey:@"CFBundleSupportedPlatforms"];
+  infoDictionary2 = [v5 infoDictionary];
+  v8 = [infoDictionary2 objectForKey:@"CFBundleSupportedPlatforms"];
 
   if (v8)
   {
@@ -86,7 +86,7 @@ LABEL_19:
   }
 
   v14 = +[NSFileManager defaultManager];
-  v15 = [v3 stringByAppendingPathComponent:@"Contents/MacOS"];
+  v15 = [appCopy stringByAppendingPathComponent:@"Contents/MacOS"];
   v16 = [v14 fileExistsAtPath:v15 isDirectory:&v23];
   v17 = v16 & v23;
 
@@ -94,9 +94,9 @@ LABEL_20:
   return v17;
 }
 
-+ (id)codeSignaturePath:(id)a3
++ (id)codeSignaturePath:(id)path
 {
-  v3 = [a3 stringByAppendingPathComponent:@"Contents"];
+  v3 = [path stringByAppendingPathComponent:@"Contents"];
   v4 = [v3 stringByAppendingPathComponent:@"_CodeSignature"];
 
   return v4;

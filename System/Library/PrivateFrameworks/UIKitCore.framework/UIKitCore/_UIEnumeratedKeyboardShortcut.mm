@@ -1,23 +1,23 @@
 @interface _UIEnumeratedKeyboardShortcut
 - (UIKeyCommand)keyCommand;
 - (UIResponder)originatingResponder;
-- (_UIEnumeratedKeyboardShortcut)initWithKeyboardShortcutLeaf:(id)a3 originatingResponder:(id)a4;
+- (_UIEnumeratedKeyboardShortcut)initWithKeyboardShortcutLeaf:(id)leaf originatingResponder:(id)responder;
 @end
 
 @implementation _UIEnumeratedKeyboardShortcut
 
-- (_UIEnumeratedKeyboardShortcut)initWithKeyboardShortcutLeaf:(id)a3 originatingResponder:(id)a4
+- (_UIEnumeratedKeyboardShortcut)initWithKeyboardShortcutLeaf:(id)leaf originatingResponder:(id)responder
 {
-  v7 = a3;
-  v8 = a4;
+  leafCopy = leaf;
+  responderCopy = responder;
   v12.receiver = self;
   v12.super_class = _UIEnumeratedKeyboardShortcut;
   v9 = [(_UIEnumeratedKeyboardShortcut *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_keyboardShortcutLeaf, a3);
-    objc_storeWeak(&v10->_originatingResponder, v8);
+    objc_storeStrong(&v9->_keyboardShortcutLeaf, leaf);
+    objc_storeWeak(&v10->_originatingResponder, responderCopy);
   }
 
   return v10;

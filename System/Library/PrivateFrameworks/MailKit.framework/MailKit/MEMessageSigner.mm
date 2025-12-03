@@ -1,9 +1,9 @@
 @interface MEMessageSigner
-- (BOOL)isEqual:(id)a3;
-- (MEMessageSigner)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MEMessageSigner)initWithCoder:(id)coder;
 - (MEMessageSigner)initWithEmailAddresses:(NSArray *)emailAddresses signatureLabel:(NSString *)label context:(NSData *)context;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MEMessageSigner
@@ -27,52 +27,52 @@
   return v13;
 }
 
-- (MEMessageSigner)initWithCoder:(id)a3
+- (MEMessageSigner)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"EFPropertyKey_emailAddresses"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"EFPropertyKey_emailAddresses"];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_label"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_context"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_label"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_context"];
   v11 = [(MEMessageSigner *)self initWithEmailAddresses:v8 signatureLabel:v9 context:v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(MEMessageSigner *)self emailAddresses];
-  [v7 encodeObject:v4 forKey:@"EFPropertyKey_emailAddresses"];
+  coderCopy = coder;
+  emailAddresses = [(MEMessageSigner *)self emailAddresses];
+  [coderCopy encodeObject:emailAddresses forKey:@"EFPropertyKey_emailAddresses"];
 
-  v5 = [(MEMessageSigner *)self label];
-  [v7 encodeObject:v5 forKey:@"EFPropertyKey_label"];
+  label = [(MEMessageSigner *)self label];
+  [coderCopy encodeObject:label forKey:@"EFPropertyKey_label"];
 
-  v6 = [(MEMessageSigner *)self context];
-  [v7 encodeObject:v6 forKey:@"EFPropertyKey_context"];
+  context = [(MEMessageSigner *)self context];
+  [coderCopy encodeObject:context forKey:@"EFPropertyKey_context"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isEqual:objc_opt_class()])
   {
-    v6 = v4;
-    v7 = [(MEMessageSigner *)self emailAddresses];
-    v8 = [v6 emailAddresses];
-    if ([v7 isEqual:v8])
+    v6 = equalCopy;
+    emailAddresses = [(MEMessageSigner *)self emailAddresses];
+    emailAddresses2 = [v6 emailAddresses];
+    if ([emailAddresses isEqual:emailAddresses2])
     {
-      v9 = [(MEMessageSigner *)self label];
-      v10 = [v6 label];
-      if ([v9 isEqual:v10])
+      label = [(MEMessageSigner *)self label];
+      label2 = [v6 label];
+      if ([label isEqual:label2])
       {
-        v11 = [(MEMessageSigner *)self context];
-        v12 = [v6 context];
-        v13 = [v11 isEqual:v12];
+        context = [(MEMessageSigner *)self context];
+        context2 = [v6 context];
+        v13 = [context isEqual:context2];
       }
 
       else
@@ -97,14 +97,14 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MEMessageSigner *)self emailAddresses];
-  v4 = [v3 hash];
+  emailAddresses = [(MEMessageSigner *)self emailAddresses];
+  v4 = [emailAddresses hash];
 
-  v5 = [(MEMessageSigner *)self label];
-  v6 = [v5 hash];
+  label = [(MEMessageSigner *)self label];
+  v6 = [label hash];
 
-  v7 = [(MEMessageSigner *)self context];
-  v8 = [v7 hash] + 193376997;
+  context = [(MEMessageSigner *)self context];
+  v8 = [context hash] + 193376997;
 
   return 33 * (33 * v4 + v6) + v8;
 }

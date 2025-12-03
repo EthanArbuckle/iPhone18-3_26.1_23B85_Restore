@@ -1,8 +1,8 @@
 @interface BuddyDisplayMonitor
 - (BuddyDisplayMonitor)init;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
 - (void)dealloc;
-- (void)wakeDisplay:(id)a3;
+- (void)wakeDisplay:(id)display;
 @end
 
 @implementation BuddyDisplayMonitor
@@ -28,29 +28,29 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = +[BLSBacklight sharedBacklight];
-  [v2 removeObserver:v5];
+  [v2 removeObserver:selfCopy];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = BuddyDisplayMonitor;
   [(BuddyDisplayMonitor *)&v3 dealloc];
 }
 
-- (void)wakeDisplay:(id)a3
+- (void)wakeDisplay:(id)display
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, display);
   v3 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v3);
 
   v4 = +[BLSBacklight sharedBacklight];
-  v5 = [v4 backlightState];
+  backlightState = [v4 backlightState];
 
-  if (v5 == 2)
+  if (backlightState == 2)
   {
     if (location[0])
     {
@@ -71,7 +71,7 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(BuddyDisplayMonitor *)v17 setCompletionBlock:location[0]];
+    [(BuddyDisplayMonitor *)selfCopy setCompletionBlock:location[0]];
     v12 = @"post-migration/restore wake for reboot";
     v11 = [[BLSBacklightChangeRequest alloc] initWithRequestedActivityState:1 explanation:v12 timestamp:mach_continuous_time() sourceEvent:10 sourceEventMetadata:0];
     v8 = +[BLSBacklight sharedBacklight];
@@ -101,24 +101,24 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
+  objc_storeStrong(location, backlight);
+  stateCopy = state;
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  v7 = [(BuddyDisplayMonitor *)v12 completionBlock];
-  LOBYTE(a5) = v7 == 0;
+  objc_storeStrong(&v9, event);
+  completionBlock = [(BuddyDisplayMonitor *)selfCopy completionBlock];
+  LOBYTE(event) = completionBlock == 0;
 
-  if ((a5 & 1) == 0 && v10 == 2)
+  if ((event & 1) == 0 && stateCopy == 2)
   {
-    v8 = [(BuddyDisplayMonitor *)v12 completionBlock];
-    v8[2](v8);
+    completionBlock2 = [(BuddyDisplayMonitor *)selfCopy completionBlock];
+    completionBlock2[2](completionBlock2);
 
-    [(BuddyDisplayMonitor *)v12 setCompletionBlock:0];
+    [(BuddyDisplayMonitor *)selfCopy setCompletionBlock:0];
   }
 
   objc_storeStrong(&v9, 0);

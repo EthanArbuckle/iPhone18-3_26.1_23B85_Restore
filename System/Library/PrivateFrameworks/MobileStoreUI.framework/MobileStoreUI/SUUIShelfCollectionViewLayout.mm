@@ -1,8 +1,8 @@
 @interface SUUIShelfCollectionViewLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (CGSize)collectionViewContentSize;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 @end
 
 @implementation SUUIShelfCollectionViewLayout
@@ -15,13 +15,13 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v40 = [MEMORY[0x277CBEB18] array];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  array = [MEMORY[0x277CBEB18] array];
   [(SUUIShelfLayoutData *)self->_layoutData contentInset];
   v8 = v7;
   v10 = v9;
@@ -92,22 +92,22 @@
   v41[4] = v42;
   v41[5] = &v43;
   [(SUUIShelfLayoutData *)v25 enumerateRowsUsingBlock:v41];
-  v26 = [(SUUIShelfCollectionViewLayout *)self collectionView];
-  v27 = [v26 delegate];
+  collectionView = [(SUUIShelfCollectionViewLayout *)self collectionView];
+  delegate = [collectionView delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
-    v27 = 0;
+    delegate = 0;
   }
 
-  v28 = [v26 numberOfItemsInSection:0];
-  v39 = [(SUUIShelfLayoutData *)self->_layoutData numberOfRows];
+  v28 = [collectionView numberOfItemsInSection:0];
+  numberOfRows = [(SUUIShelfLayoutData *)self->_layoutData numberOfRows];
   v29 = v53;
   v30 = v53[4];
   if (v30 < v53[5] + v30)
   {
     v31 = v44;
-    v32 = v30 * v39;
+    v32 = v30 * numberOfRows;
     do
     {
       v33 = v31[4];
@@ -120,8 +120,8 @@
             v34 = [MEMORY[0x277CCAA70] indexPathForItem:? inSection:?];
             v35 = [(SUUIShelfCollectionViewLayout *)self layoutAttributesForItemAtIndexPath:v34];
 
-            [v27 collectionView:v26 layout:self willApplyLayoutAttributes:v35];
-            [v40 addObject:v35];
+            [delegate collectionView:collectionView layout:self willApplyLayoutAttributes:v35];
+            [array addObject:v35];
 
             v31 = v44;
           }
@@ -134,7 +134,7 @@
       }
 
       ++v30;
-      v32 += v39;
+      v32 += numberOfRows;
     }
 
     while (v30 < v29[5] + v29[4]);
@@ -145,7 +145,7 @@
   _Block_object_dispose(v51, 8);
   _Block_object_dispose(&v52, 8);
 
-  return v40;
+  return array;
 }
 
 double __67__SUUIShelfCollectionViewLayout_layoutAttributesForElementsInRect___block_invoke(uint64_t a1, uint64_t a2, BOOL *a3, double a4)
@@ -212,20 +212,20 @@ double __67__SUUIShelfCollectionViewLayout_layoutAttributesForElementsInRect___b
   return result;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [objc_msgSend(objc_opt_class() "layoutAttributesClass")];
-  v6 = [(SUUIShelfCollectionViewLayout *)self collectionView];
-  v7 = [v6 backgroundColor];
-  [v5 setBackgroundColor:v7];
+  collectionView = [(SUUIShelfCollectionViewLayout *)self collectionView];
+  backgroundColor = [collectionView backgroundColor];
+  [v5 setBackgroundColor:backgroundColor];
 
   [(SUUIShelfLayoutData *)self->_layoutData contentInset];
   v9 = v8;
   v11 = v10;
-  v12 = [v4 item];
-  v13 = [(SUUIShelfLayoutData *)self->_layoutData numberOfRows];
-  v14 = v12 / v13;
+  item = [pathCopy item];
+  numberOfRows = [(SUUIShelfLayoutData *)self->_layoutData numberOfRows];
+  v14 = item / numberOfRows;
   if (storeShouldReverseLayoutDirection())
   {
     for (i = [(SUUIShelfLayoutData *)self->_layoutData numberOfColumns]- 1; i > v14; --i)
@@ -248,7 +248,7 @@ double __67__SUUIShelfCollectionViewLayout_layoutAttributesForElementsInRect___b
     }
   }
 
-  v23 = v12 % v13;
+  v23 = item % numberOfRows;
   if (v23 >= 1)
   {
     for (k = 0; k != v23; ++k)
@@ -266,10 +266,10 @@ double __67__SUUIShelfCollectionViewLayout_layoutAttributesForElementsInRect___b
   return v5;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
+  y = velocity.y;
+  x = velocity.x;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3010000000;
@@ -278,7 +278,7 @@ double __67__SUUIShelfCollectionViewLayout_layoutAttributesForElementsInRect___b
   v21 = "";
   v17.receiver = self;
   v17.super_class = SUUIShelfCollectionViewLayout;
-  [(SUUIShelfCollectionViewLayout *)&v17 targetContentOffsetForProposedContentOffset:a3.x withScrollingVelocity:a3.y, a4.x];
+  [(SUUIShelfCollectionViewLayout *)&v17 targetContentOffsetForProposedContentOffset:offset.x withScrollingVelocity:offset.y, velocity.x];
   v22 = v7;
   v23 = v8;
   [(SUUIShelfLayoutData *)self->_layoutData columnSpacing];

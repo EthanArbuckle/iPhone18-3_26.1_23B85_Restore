@@ -6,19 +6,19 @@
 
 - (BOOL)dd_checkCurrentRangeAgainstString:()DDExtensions_Private
 {
-  v5 = [a1 currentRange];
-  v6 = [v5 startContainer];
-  v7 = [v5 endContainer];
+  currentRange = [self currentRange];
+  startContainer = [currentRange startContainer];
+  endContainer = [currentRange endContainer];
 
-  if (v6 == v7)
+  if (startContainer == endContainer)
   {
-    v9 = [v5 startContainer];
+    startContainer2 = [currentRange startContainer];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = CFStringCreateWithCharacters(*MEMORY[0x277CBECE8], [a1 currentTextPointer], objc_msgSend(a1, "currentTextLength"));
+      v11 = CFStringCreateWithCharacters(*MEMORY[0x277CBECE8], [self currentTextPointer], objc_msgSend(self, "currentTextLength"));
       v12 = CFStringCompare(v11, a3, 0);
       v8 = v12 == kCFCompareEqualTo;
       if (v12)

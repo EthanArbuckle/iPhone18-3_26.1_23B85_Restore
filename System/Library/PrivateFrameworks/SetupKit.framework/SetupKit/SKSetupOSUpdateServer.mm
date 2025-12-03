@@ -1,11 +1,11 @@
 @interface SKSetupOSUpdateServer
 - (BOOL)_bleAdvertiserShouldRun;
 - (SKSetupOSUpdateServer)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
 - (void)_bleAdvertiserEnsureStarted;
 - (void)_bleAdvertiserEnsureStopped;
-- (void)_bleServerAcceptConnecton:(id)a3;
+- (void)_bleServerAcceptConnecton:(id)connecton;
 - (void)_bleServerEnsureStarted;
 - (void)_bleServerEnsureStopped;
 - (void)_invalidate;
@@ -26,10 +26,10 @@
   }
 }
 
-- (void)_bleServerAcceptConnecton:(id)a3
+- (void)_bleServerAcceptConnecton:(id)connecton
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectonCopy = connecton;
   v5 = self->super._skCnx;
   if (v5)
   {
@@ -38,19 +38,19 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412546;
-      v10 = v4;
+      v10 = connectonCopy;
       v11 = 2112;
       v12 = v6;
       _os_log_error_impl(&dword_265B01000, v7, OS_LOG_TYPE_ERROR, "### Reject BLE connection when already connected: %@ vs %@", &v9, 0x16u);
     }
 
-    [v4 invalidate];
+    [connectonCopy invalidate];
   }
 
   else
   {
     v6 = objc_alloc_init(SKConnection);
-    [(SKConnection *)v6 setBleConnection:v4];
+    [(SKConnection *)v6 setBleConnection:connectonCopy];
     [(SKSetupBase *)self _connectionStartWithSKConnection:v6 clientMode:0 completeOnFailure:0 completion:&__block_literal_global_1097];
   }
 
@@ -289,19 +289,19 @@ void __52__SKSetupOSUpdateServer__bleAdvertiserEnsureStarted__block_invoke(uint6
 {
   if (self->_completed)
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(bleListeningPSM) = 0;
   }
 
   else
   {
-    v2 = [(CBServer *)self->_bleServer bleListeningPSM];
-    if (v2)
+    bleListeningPSM = [(CBServer *)self->_bleServer bleListeningPSM];
+    if (bleListeningPSM)
     {
-      LOBYTE(v2) = [(SKConnection *)self->super._skCnx state]!= 1;
+      LOBYTE(bleListeningPSM) = [(SKConnection *)self->super._skCnx state]!= 1;
     }
   }
 
-  return v2;
+  return bleListeningPSM;
 }
 
 - (void)_run
@@ -380,9 +380,9 @@ void __38__SKSetupOSUpdateServer__prepareSteps__block_invoke(uint64_t a1, void *
   [(SKSetupBase *)&v3 _activate];
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v3 = 0;
   }

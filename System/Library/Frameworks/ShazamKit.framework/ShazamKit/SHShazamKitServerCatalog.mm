@@ -1,39 +1,39 @@
 @interface SHShazamKitServerCatalog
-- (SHShazamKitServerCatalog)initWithClientIdentifier:(id)a3 clientType:(int64_t)a4 installationID:(id)a5 musicalFeaturesConfiguration:(id)a6;
+- (SHShazamKitServerCatalog)initWithClientIdentifier:(id)identifier clientType:(int64_t)type installationID:(id)d musicalFeaturesConfiguration:(id)configuration;
 - (id)_createMatcher;
-- (id)_initWithConfiguration:(id)a3 installationID:(id)a4;
-- (void)loadConfiguration:(id)a3;
-- (void)loadContext:(id)a3;
+- (id)_initWithConfiguration:(id)configuration installationID:(id)d;
+- (void)loadConfiguration:(id)configuration;
+- (void)loadContext:(id)context;
 @end
 
 @implementation SHShazamKitServerCatalog
 
-- (SHShazamKitServerCatalog)initWithClientIdentifier:(id)a3 clientType:(int64_t)a4 installationID:(id)a5 musicalFeaturesConfiguration:(id)a6
+- (SHShazamKitServerCatalog)initWithClientIdentifier:(id)identifier clientType:(int64_t)type installationID:(id)d musicalFeaturesConfiguration:(id)configuration
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (([objc_opt_class() validateClientIdentifier:v11] & 1) == 0)
+  identifierCopy = identifier;
+  dCopy = d;
+  configurationCopy = configuration;
+  if (([objc_opt_class() validateClientIdentifier:identifierCopy] & 1) == 0)
   {
-    v22 = [NSString stringWithFormat:@"%@ is not a valid client identifier", v11];
-    v23 = [NSException exceptionWithName:NSInvalidArgumentException reason:v22 userInfo:0];
+    identifierCopy = [NSString stringWithFormat:@"%@ is not a valid client identifier", identifierCopy];
+    v23 = [NSException exceptionWithName:NSInvalidArgumentException reason:identifierCopy userInfo:0];
     v24 = v23;
 
     objc_exception_throw(v23);
   }
 
   v14 = objc_alloc_init(SHCatalogConfiguration);
-  [v14 setInstallationID:v12];
-  [v14 setMusicalFeaturesConfiguration:v13];
+  [v14 setInstallationID:dCopy];
+  [v14 setMusicalFeaturesConfiguration:configurationCopy];
   v25.receiver = self;
   v25.super_class = SHShazamKitServerCatalog;
   v15 = [(SHShazamKitServerCatalog *)&v25 initWithConfiguration:v14 error:0];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_clientIdentifier, a3);
-    v16->_clientType = a4;
-    objc_storeStrong(&v16->_installationID, a5);
+    objc_storeStrong(&v15->_clientIdentifier, identifier);
+    v16->_clientType = type;
+    objc_storeStrong(&v16->_installationID, d);
     v17 = objc_alloc_init(SHShazamKitServerURLBuilder);
     URLBuilder = v16->_URLBuilder;
     v16->_URLBuilder = v17;
@@ -46,30 +46,30 @@
   return v16;
 }
 
-- (id)_initWithConfiguration:(id)a3 installationID:(id)a4
+- (id)_initWithConfiguration:(id)configuration installationID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  dCopy = d;
   v7 = +[NSException exceptionWithName:reason:userInfo:](NSException, "exceptionWithName:reason:userInfo:", NSInternalInconsistencyException, @"-[_initWithConfiguration:installationID:] should not be used on this class", 0);
   objc_exception_throw(v7);
 }
 
-- (void)loadConfiguration:(id)a3
+- (void)loadConfiguration:(id)configuration
 {
-  v4 = a3;
-  v8 = [(SHShazamKitServerCatalog *)self URLBuilder];
-  v5 = [(SHShazamKitServerCatalog *)self clientIdentifier];
-  v6 = [(SHShazamKitServerCatalog *)self clientType];
-  v7 = [(SHShazamKitServerCatalog *)self installationID];
-  [v8 loadMatchEndpointForClientIdentifier:v5 clientType:v6 installationID:v7 callback:v4];
+  configurationCopy = configuration;
+  uRLBuilder = [(SHShazamKitServerCatalog *)self URLBuilder];
+  clientIdentifier = [(SHShazamKitServerCatalog *)self clientIdentifier];
+  clientType = [(SHShazamKitServerCatalog *)self clientType];
+  installationID = [(SHShazamKitServerCatalog *)self installationID];
+  [uRLBuilder loadMatchEndpointForClientIdentifier:clientIdentifier clientType:clientType installationID:installationID callback:configurationCopy];
 }
 
-- (void)loadContext:(id)a3
+- (void)loadContext:(id)context
 {
-  v4 = a3;
-  v6 = [(SHShazamKitServerCatalog *)self contextBuilder];
-  v5 = [(SHShazamKitServerCatalog *)self clientIdentifier];
-  [v6 loadContextForClientIdentifier:v5 completion:v4];
+  contextCopy = context;
+  contextBuilder = [(SHShazamKitServerCatalog *)self contextBuilder];
+  clientIdentifier = [(SHShazamKitServerCatalog *)self clientIdentifier];
+  [contextBuilder loadContextForClientIdentifier:clientIdentifier completion:contextCopy];
 }
 
 - (id)_createMatcher

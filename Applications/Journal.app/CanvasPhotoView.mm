@@ -1,36 +1,36 @@
 @interface CanvasPhotoView
-- (_TtC7Journal15CanvasPhotoView)initWithCoder:(id)a3;
-- (_TtC7Journal15CanvasPhotoView)initWithFrame:(CGRect)a3;
-- (_TtC7Journal15CanvasPhotoView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC7Journal15CanvasPhotoView)initWithCoder:(id)coder;
+- (_TtC7Journal15CanvasPhotoView)initWithFrame:(CGRect)frame;
+- (_TtC7Journal15CanvasPhotoView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 @end
 
 @implementation CanvasPhotoView
 
-- (_TtC7Journal15CanvasPhotoView)initWithFrame:(CGRect)a3
+- (_TtC7Journal15CanvasPhotoView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for CanvasPhotoView();
-  v7 = [(CanvasPhotoView *)&v10 initWithFrame:x, y, width, height];
-  [(CanvasPhotoView *)v7 setContentMode:2];
-  v8 = [(CanvasPhotoView *)v7 layer];
-  [v8 setCornerRadius:7.0];
+  height = [(CanvasPhotoView *)&v10 initWithFrame:x, y, width, height];
+  [(CanvasPhotoView *)height setContentMode:2];
+  layer = [(CanvasPhotoView *)height layer];
+  [layer setCornerRadius:7.0];
 
-  [(CanvasPhotoView *)v7 setClipsToBounds:1];
-  return v7;
+  [(CanvasPhotoView *)height setClipsToBounds:1];
+  return height;
 }
 
-- (_TtC7Journal15CanvasPhotoView)initWithCoder:(id)a3
+- (_TtC7Journal15CanvasPhotoView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (_TtC7Journal15CanvasPhotoView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC7Journal15CanvasPhotoView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

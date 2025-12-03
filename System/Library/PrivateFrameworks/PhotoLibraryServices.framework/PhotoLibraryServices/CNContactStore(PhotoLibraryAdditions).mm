@@ -27,7 +27,7 @@
   v12 = v11;
   v19 = v12;
   v13 = v6;
-  [a1 enumerateContactsWithFetchRequest:v9 error:0 usingBlock:v17];
+  [self enumerateContactsWithFetchRequest:v9 error:0 usingBlock:v17];
   v14 = v19;
   v15 = v12;
 
@@ -54,7 +54,7 @@
   v12 = v11;
   v19 = v12;
   v13 = v6;
-  [a1 enumerateContactsWithFetchRequest:v9 error:0 usingBlock:v17];
+  [self enumerateContactsWithFetchRequest:v9 error:0 usingBlock:v17];
   v14 = v19;
   v15 = v12;
 
@@ -68,7 +68,7 @@
   v7 = a4;
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v32 = 0;
-  v9 = [a1 unifiedContactsMatchingPredicate:v6 keysToFetch:v7 error:&v32];
+  v9 = [self unifiedContactsMatchingPredicate:v6 keysToFetch:v7 error:&v32];
   v10 = v32;
   if (v9)
   {
@@ -81,7 +81,7 @@
     if (v12)
     {
       v13 = v12;
-      v24 = a1;
+      selfCopy = self;
       v14 = *v29;
       do
       {
@@ -92,15 +92,15 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v28 + 1) + 8 * i) identifier];
-          [v8 addObject:v16];
+          identifier = [*(*(&v28 + 1) + 8 * i) identifier];
+          [v8 addObject:identifier];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v28 objects:v35 count:16];
       }
 
       while (v13);
-      a1 = v24;
+      self = selfCopy;
     }
   }
 
@@ -125,7 +125,7 @@
   v25[3] = &unk_1E75640D0;
   v18 = v8;
   v26 = v18;
-  v19 = [a1 enumerateContactsWithFetchRequest:v17 error:&v27 usingBlock:v25];
+  v19 = [self enumerateContactsWithFetchRequest:v17 error:&v27 usingBlock:v25];
   v20 = v27;
 
   if ((v19 & 1) == 0)
@@ -158,7 +158,7 @@
     v25[0] = *MEMORY[0x1E695C208];
     v25[1] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
-    v14 = [a1 _allContactIDsMatchingPredicate:v11 keysToFetch:v13];
+    v14 = [self _allContactIDsMatchingPredicate:v11 keysToFetch:v13];
     [v8 unionSet:v14];
   }
 
@@ -172,7 +172,7 @@
       v24[0] = *MEMORY[0x1E695C330];
       v24[1] = v17;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
-      v19 = [a1 _allContactIDsMatchingPredicate:v16 keysToFetch:v18];
+      v19 = [self _allContactIDsMatchingPredicate:v16 keysToFetch:v18];
       [v8 unionSet:v19];
     }
 
@@ -188,9 +188,9 @@
     }
   }
 
-  v20 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v20;
+  return allObjects;
 }
 
 @end

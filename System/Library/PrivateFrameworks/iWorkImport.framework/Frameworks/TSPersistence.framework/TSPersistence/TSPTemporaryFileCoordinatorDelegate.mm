@@ -1,6 +1,6 @@
 @interface TSPTemporaryFileCoordinatorDelegate
 - (TSPTemporaryFileCoordinatorDelegate)init;
-- (TSPTemporaryFileCoordinatorDelegate)initWithURL:(id)a3;
+- (TSPTemporaryFileCoordinatorDelegate)initWithURL:(id)l;
 @end
 
 @implementation TSPTemporaryFileCoordinatorDelegate
@@ -21,15 +21,15 @@
   objc_exception_throw(v13);
 }
 
-- (TSPTemporaryFileCoordinatorDelegate)initWithURL:(id)a3
+- (TSPTemporaryFileCoordinatorDelegate)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = TSPTemporaryFileCoordinatorDelegate;
   v7 = [(TSPTemporaryFileCoordinatorDelegate *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(lCopy, v5, v6);
     URL = v7->_URL;
     v7->_URL = v8;
   }

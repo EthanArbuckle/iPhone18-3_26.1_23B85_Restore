@@ -2,7 +2,7 @@
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axRepostFirstResponderWhenReady;
 - (void)dealloc;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation WKContentViewAccessibility__MessageUI__WebKit
@@ -24,9 +24,9 @@
 
 - (void)_axRepostFirstResponderWhenReady
 {
-  v3 = [(WKContentViewAccessibility__MessageUI__WebKit *)self _accessibilityResponderElement];
+  _accessibilityResponderElement = [(WKContentViewAccessibility__MessageUI__WebKit *)self _accessibilityResponderElement];
 
-  if (v3)
+  if (_accessibilityResponderElement)
   {
     v4 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{-[WKContentViewAccessibility__MessageUI__WebKit hash](self, "hash")}];
     AXRemoveNotificationCallback();
@@ -40,8 +40,8 @@
   else
   {
     Current = CFAbsoluteTimeGetCurrent();
-    v7 = [(WKContentViewAccessibility__MessageUI__WebKit *)self _axFirstResponderStartRepost];
-    [v7 doubleValue];
+    _axFirstResponderStartRepost = [(WKContentViewAccessibility__MessageUI__WebKit *)self _axFirstResponderStartRepost];
+    [_axFirstResponderStartRepost doubleValue];
     v9 = Current - v8;
 
     if (v9 < 3.0)
@@ -51,11 +51,11 @@
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = WKContentViewAccessibility__MessageUI__WebKit;
-  [(WKContentViewAccessibility__MessageUI__WebKit *)&v4 willMoveToWindow:a3];
+  [(WKContentViewAccessibility__MessageUI__WebKit *)&v4 willMoveToWindow:window];
   [(WKContentViewAccessibility__MessageUI__WebKit *)self _accessibilityLoadAccessibilityInformation];
 }
 

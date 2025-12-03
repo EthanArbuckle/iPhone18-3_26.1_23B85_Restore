@@ -1,9 +1,9 @@
 @interface CKFrameworkFingerprint
-- (BOOL)isLikelyEqual:(id)a3;
+- (BOOL)isLikelyEqual:(id)equal;
 - (CKFrameworkFingerprint)init;
-- (CKFrameworkFingerprint)initWithCoder:(id)a3;
+- (CKFrameworkFingerprint)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKFrameworkFingerprint
@@ -99,9 +99,9 @@
   return v2;
 }
 
-- (CKFrameworkFingerprint)initWithCoder:(id)a3
+- (CKFrameworkFingerprint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = CKFrameworkFingerprint;
   v5 = [(CKFrameworkFingerprint *)&v27 init];
@@ -109,25 +109,25 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_uuid);
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v6, v7);
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v6, v7);
     uuid = v5->_uuid;
     v5->_uuid = v9;
 
     v11 = objc_opt_class();
     v12 = NSStringFromSelector(sel_version);
-    v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v13, v11, v12);
+    v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v13, v11, v12);
     version = v5->_version;
     v5->_version = v14;
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(sel_cpuType);
-    v19 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v18, v16, v17);
+    v19 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v18, v16, v17);
     cpuType = v5->_cpuType;
     v5->_cpuType = v19;
 
     v21 = objc_opt_class();
     v22 = NSStringFromSelector(sel_cpuSubtype);
-    v24 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v23, v21, v22);
+    v24 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v23, v21, v22);
     cpuSubtype = v5->_cpuSubtype;
     v5->_cpuSubtype = v24;
   }
@@ -135,39 +135,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7 = objc_msgSend_uuid(self, v5, v6);
   v8 = NSStringFromSelector(sel_uuid);
-  objc_msgSend_encodeObject_forKey_(v4, v9, v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v7, v8);
 
   v12 = objc_msgSend_version(self, v10, v11);
   v13 = NSStringFromSelector(sel_version);
-  objc_msgSend_encodeObject_forKey_(v4, v14, v12, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, v12, v13);
 
   v17 = objc_msgSend_cpuType(self, v15, v16);
   v18 = NSStringFromSelector(sel_cpuType);
-  objc_msgSend_encodeObject_forKey_(v4, v19, v17, v18);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, v17, v18);
 
   v24 = objc_msgSend_cpuSubtype(self, v20, v21);
   v22 = NSStringFromSelector(sel_cpuSubtype);
-  objc_msgSend_encodeObject_forKey_(v4, v23, v24, v22);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v23, v24, v22);
 }
 
 - (id)description
 {
-  v3 = self;
+  selfCopy = self;
   v6 = objc_msgSend_cpuType(self, a2, v2);
   if (v6)
   {
-    v7 = objc_msgSend_cpuSubtype(v3, v4, v5);
+    v7 = objc_msgSend_cpuSubtype(selfCopy, v4, v5);
 
     if (v7)
     {
-      v8 = objc_msgSend_cpuType(v3, v4, v5);
+      v8 = objc_msgSend_cpuType(selfCopy, v4, v5);
       v11 = objc_msgSend_intValue(v8, v9, v10);
-      v14 = objc_msgSend_cpuSubtype(v3, v12, v13);
+      v14 = objc_msgSend_cpuSubtype(selfCopy, v12, v13);
       v17 = objc_msgSend_intValue(v14, v15, v16);
       v6 = macho_arch_name_for_cpu_type(v11, v17);
 
@@ -184,39 +184,39 @@
   }
 
   v18 = MEMORY[0x1E696AEC0];
-  v21 = objc_msgSend_uuid(v3, v4, v5);
-  if (v3)
+  v21 = objc_msgSend_uuid(selfCopy, v4, v5);
+  if (selfCopy)
   {
-    v22 = objc_msgSend_version(v3, v19, v20);
+    v22 = objc_msgSend_version(selfCopy, v19, v20);
 
     if (v22)
     {
       v24 = MEMORY[0x1E696AEC0];
-      v25 = objc_msgSend_version(v3, v19, v23);
+      v25 = objc_msgSend_version(selfCopy, v19, v23);
       v28 = objc_msgSend_unsignedIntValue(v25, v26, v27) >> 16;
-      v31 = objc_msgSend_version(v3, v29, v30);
+      v31 = objc_msgSend_version(selfCopy, v29, v30);
       v34 = (objc_msgSend_unsignedIntValue(v31, v32, v33) >> 8);
-      v37 = objc_msgSend_version(v3, v35, v36);
+      v37 = objc_msgSend_version(selfCopy, v35, v36);
       v40 = objc_msgSend_unsignedIntValue(v37, v38, v39);
-      v3 = objc_msgSend_stringWithFormat_(v24, v41, @"%u.%u.%u", v28, v34, v40);
+      selfCopy = objc_msgSend_stringWithFormat_(v24, v41, @"%u.%u.%u", v28, v34, v40);
     }
 
     else
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  v42 = objc_msgSend_stringWithFormat_(v18, v19, @"%@, %@, %@", v21, v3, v6);
+  v42 = objc_msgSend_stringWithFormat_(v18, v19, @"%@, %@, %@", v21, selfCopy, v6);
 
   return v42;
 }
 
-- (BOOL)isLikelyEqual:(id)a3
+- (BOOL)isLikelyEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = objc_msgSend_uuid(self, v5, v6);
-  v10 = objc_msgSend_uuid(v4, v8, v9);
+  v10 = objc_msgSend_uuid(equalCopy, v8, v9);
   isEqual = objc_msgSend_isEqual_(v7, v11, v10);
 
   if (isEqual)
@@ -227,7 +227,7 @@
   else
   {
     v16 = objc_msgSend_version(self, v13, v14);
-    v19 = objc_msgSend_version(v4, v17, v18);
+    v19 = objc_msgSend_version(equalCopy, v17, v18);
     v21 = objc_msgSend_isEqual_(v16, v20, v19);
 
     if (v21)
@@ -239,11 +239,11 @@
         if (v29)
         {
           v30 = objc_msgSend_cpuType(self, v27, v28);
-          v33 = objc_msgSend_cpuType(v4, v31, v32);
+          v33 = objc_msgSend_cpuType(equalCopy, v31, v32);
           if (objc_msgSend_isEqual_(v30, v34, v33))
           {
             v37 = objc_msgSend_cpuSubtype(self, v35, v36);
-            v40 = objc_msgSend_cpuSubtype(v4, v38, v39);
+            v40 = objc_msgSend_cpuSubtype(equalCopy, v38, v39);
             v15 = objc_msgSend_isEqual_(v37, v41, v40) ^ 1;
           }
 

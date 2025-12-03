@@ -1,9 +1,9 @@
 @interface AVOutputContextManager
 + (id)outputContextManagerForAllOutputContexts;
-- (AVOutputContextManager)initWithOutputContextManagerImpl:(id)a3;
+- (AVOutputContextManager)initWithOutputContextManagerImpl:(id)impl;
 - (void)dealloc;
-- (void)outputContextManagerImpl:(id)a3 observedFailureToConnectToOutputDevice:(id)a4 reason:(id)a5 didFailToConnectToOutputDeviceDictionary:(id)a6;
-- (void)outputContextManagerImplDidExpireWithReplacementImpl:(id)a3;
+- (void)outputContextManagerImpl:(id)impl observedFailureToConnectToOutputDevice:(id)device reason:(id)reason didFailToConnectToOutputDeviceDictionary:(id)dictionary;
+- (void)outputContextManagerImplDidExpireWithReplacementImpl:(id)impl;
 @end
 
 @implementation AVOutputContextManager
@@ -63,24 +63,24 @@ void __66__AVOutputContextManager_outputContextManagerForAllOutputContexts__bloc
   [(AVOutputContextManager *)&v5 dealloc];
 }
 
-- (void)outputContextManagerImpl:(id)a3 observedFailureToConnectToOutputDevice:(id)a4 reason:(id)a5 didFailToConnectToOutputDeviceDictionary:(id)a6
+- (void)outputContextManagerImpl:(id)impl observedFailureToConnectToOutputDevice:(id)device reason:(id)reason didFailToConnectToOutputDeviceDictionary:(id)dictionary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  v11 = v10;
-  if (a5)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v11 = dictionary;
+  if (reason)
   {
-    [v10 setObject:a5 forKeyedSubscript:@"AVOutputContextManagerFailureReasonKey"];
+    [dictionary setObject:reason forKeyedSubscript:@"AVOutputContextManagerFailureReasonKey"];
   }
 
-  if (a4)
+  if (device)
   {
-    [v11 setObject:a4 forKeyedSubscript:@"AVOutputContextManagerOutputDeviceKey"];
+    [v11 setObject:device forKeyedSubscript:@"AVOutputContextManagerOutputDeviceKey"];
   }
 
-  if (a6)
+  if (dictionary)
   {
-    [v11 setObject:a6 forKeyedSubscript:@"AVOutputContextManagerDidFailToConnectToOutputDeviceUserInfoKey"];
+    [v11 setObject:dictionary forKeyedSubscript:@"AVOutputContextManagerDidFailToConnectToOutputDeviceUserInfoKey"];
   }
 
   if (dword_1ED6F6B88)
@@ -94,7 +94,7 @@ void __66__AVOutputContextManager_outputContextManagerForAllOutputContexts__bloc
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)outputContextManagerImplDidExpireWithReplacementImpl:(id)a3
+- (void)outputContextManagerImplDidExpireWithReplacementImpl:(id)impl
 {
   v7 = 0;
   v8 = &v7;
@@ -107,12 +107,12 @@ void __66__AVOutputContextManager_outputContextManagerForAllOutputContexts__bloc
   block[1] = 3221225472;
   block[2] = __79__AVOutputContextManager_outputContextManagerImplDidExpireWithReplacementImpl___block_invoke;
   block[3] = &unk_1E794EE90;
-  block[5] = a3;
+  block[5] = impl;
   block[6] = &v7;
   block[4] = self;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
   [v8[5] setParentOutputContextManager:0];
-  [a3 setParentOutputContextManager:self];
+  [impl setParentOutputContextManager:self];
 
   _Block_object_dispose(&v7, 8);
 }
@@ -126,12 +126,12 @@ id __79__AVOutputContextManager_outputContextManagerImplDidExpireWithReplacement
   return result;
 }
 
-- (AVOutputContextManager)initWithOutputContextManagerImpl:(id)a3
+- (AVOutputContextManager)initWithOutputContextManagerImpl:(id)impl
 {
   v10.receiver = self;
   v10.super_class = AVOutputContextManager;
   v4 = [(AVOutputContextManager *)&v10 init];
-  if (v4 && (v5 = objc_alloc_init(AVOutputContextManagerInternal), (v4->_ivars = v5) != 0) && (v4->_ivars->impl = a3) != 0)
+  if (v4 && (v5 = objc_alloc_init(AVOutputContextManagerInternal), (v4->_ivars = v5) != 0) && (v4->_ivars->impl = impl) != 0)
   {
     v6 = av_readwrite_dispatch_queue_create("com.apple.avfoundation.outputcontextmanager.ivars");
     OUTLINED_FUNCTION_0_3(v6);

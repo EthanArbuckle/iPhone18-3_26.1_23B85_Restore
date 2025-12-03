@@ -1,22 +1,22 @@
 @interface JSABase64
-+ (id)decode:(id)a3;
-+ (id)encode:(id)a3;
++ (id)decode:(id)decode;
++ (id)encode:(id)encode;
 @end
 
 @implementation JSABase64
 
-+ (id)encode:(id)a3
++ (id)encode:(id)encode
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [encode dataUsingEncoding:4];
   v4 = [v3 base64EncodedStringWithOptions:0];
 
   return v4;
 }
 
-+ (id)decode:(id)a3
++ (id)decode:(id)decode
 {
-  v3 = a3;
-  v4 = [[NSData alloc] initWithBase64EncodedString:v3 options:0];
+  decodeCopy = decode;
+  v4 = [[NSData alloc] initWithBase64EncodedString:decodeCopy options:0];
 
   v5 = [[NSString alloc] initWithData:v4 encoding:4];
 

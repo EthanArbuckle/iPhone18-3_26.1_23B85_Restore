@@ -1,19 +1,19 @@
 @interface SIMovWriter
-- (id)initWriterWithVideoURL:(id)a3 frameSize:(CGSize)a4;
+- (id)initWriterWithVideoURL:(id)l frameSize:(CGSize)size;
 - (void)dealloc;
 - (void)finishRecording;
 - (void)startRecording;
-- (void)writeFrame:(__CVBuffer *)a3 andTime:(id *)a4;
+- (void)writeFrame:(__CVBuffer *)frame andTime:(id *)time;
 @end
 
 @implementation SIMovWriter
 
-- (id)initWriterWithVideoURL:(id)a3 frameSize:(CGSize)a4
+- (id)initWriterWithVideoURL:(id)l frameSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  lCopy = l;
   v31.receiver = self;
   v31.super_class = SIMovWriter;
   v8 = [(SIMovWriter *)&v31 init];
@@ -27,7 +27,7 @@ LABEL_6:
   v9 = objc_alloc(MEMORY[0x277CE6460]);
   v10 = *MEMORY[0x277CE5DA8];
   v30 = 0;
-  v11 = [v9 initWithURL:v7 fileType:v10 error:&v30];
+  v11 = [v9 initWithURL:lCopy fileType:v10 error:&v30];
   v12 = v30;
   writer = v8->_writer;
   v8->_writer = v11;
@@ -83,45 +83,45 @@ LABEL_10:
   return v26;
 }
 
-- (void)writeFrame:(__CVBuffer *)a3 andTime:(id *)a4
+- (void)writeFrame:(__CVBuffer *)frame andTime:(id *)time
 {
   v20 = *MEMORY[0x277D85DE8];
   if ([(AVAssetWriterInput *)self->_writerInput isReadyForMoreMediaData])
   {
     inputAdaptor = self->_inputAdaptor;
-    *v17 = *&a4->var0;
-    *&v17[16] = a4->var3;
-    if (![(AVAssetWriterInputPixelBufferAdaptor *)inputAdaptor appendPixelBuffer:a3 withPresentationTime:v17])
+    *v17 = *&time->var0;
+    *&v17[16] = time->var3;
+    if (![(AVAssetWriterInputPixelBufferAdaptor *)inputAdaptor appendPixelBuffer:frame withPresentationTime:v17])
     {
       v8 = __SceneIntelligenceLogSharedInstance();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(AVAssetWriter *)self->_writer error];
-        v10 = [v9 code];
-        v11 = [(AVAssetWriter *)self->_writer error];
-        v12 = [v11 localizedDescription];
-        v13 = [v12 UTF8String];
+        error = [(AVAssetWriter *)self->_writer error];
+        code = [error code];
+        error2 = [(AVAssetWriter *)self->_writer error];
+        localizedDescription = [error2 localizedDescription];
+        uTF8String = [localizedDescription UTF8String];
         *v17 = 136381443;
         *&v17[4] = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/SIMovWriter.m";
         *&v17[12] = 1025;
         *&v17[14] = 60;
         *&v17[18] = 2048;
-        *&v17[20] = v10;
+        *&v17[20] = code;
         v18 = 2081;
-        v19 = v13;
+        v19 = uTF8String;
         _os_log_impl(&dword_21DE0D000, v8, OS_LOG_TYPE_DEFAULT, " %{private}s:%{private}d *** assetWriter.error %ld %{private}s \n ***", v17, 0x26u);
       }
 
       v14 = __SceneIntelligenceLogSharedInstance();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(AVAssetWriter *)self->_writer status];
+        status = [(AVAssetWriter *)self->_writer status];
         *v17 = 136381187;
         *&v17[4] = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/SIMovWriter.m";
         *&v17[12] = 1025;
         *&v17[14] = 61;
         *&v17[18] = 1024;
-        *&v17[20] = v15;
+        *&v17[20] = status;
         _os_log_impl(&dword_21DE0D000, v14, OS_LOG_TYPE_DEFAULT, " %{private}s:%{private}d *** assetWriter.status = %u\n ***", v17, 0x18u);
       }
     }

@@ -1,12 +1,12 @@
 @interface VUIImageProxyAnimator
 - (NSTimer)transitionTimer;
 - (VUIImageProxyAnimator)init;
-- (VUIImageProxyAnimator)initWithImageView:(id)a3 andProxies:(id)a4;
-- (void)_displayIntervalTimerFired:(id)a3;
+- (VUIImageProxyAnimator)initWithImageView:(id)view andProxies:(id)proxies;
+- (void)_displayIntervalTimerFired:(id)fired;
 - (void)_fetchNext;
-- (void)_setImage:(id)a3 animated:(BOOL)a4;
-- (void)_updateImageWithIndex:(unint64_t)a3;
-- (void)loadImageProxy:(id)a3 withWeakObject:(id)a4 completionHandler:(id)a5;
+- (void)_setImage:(id)image animated:(BOOL)animated;
+- (void)_updateImageWithIndex:(unint64_t)index;
+- (void)loadImageProxy:(id)proxy withWeakObject:(id)object completionHandler:(id)handler;
 - (void)startAnimation;
 - (void)stopAnimation;
 @end
@@ -21,10 +21,10 @@
   return v4;
 }
 
-- (VUIImageProxyAnimator)initWithImageView:(id)a3 andProxies:(id)a4
+- (VUIImageProxyAnimator)initWithImageView:(id)view andProxies:(id)proxies
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  proxiesCopy = proxies;
   v12.receiver = self;
   v12.super_class = VUIImageProxyAnimator;
   v9 = [(VUIImageProxyAnimator *)&v12 init];
@@ -32,9 +32,9 @@
   if (v9)
   {
     v9->_cachingEnabled = 1;
-    objc_storeStrong(&v9->_imageProxies, a4);
+    objc_storeStrong(&v9->_imageProxies, proxies);
     *&v10->_displayImageIndex = xmmword_1E4296DA0;
-    objc_storeStrong(&v10->_imageView, a3);
+    objc_storeStrong(&v10->_imageView, view);
     v10->_animating = 0;
     v10->_animationOptions = 5243008;
     *&v10->_animationDuration = xmmword_1E4296DB0;
@@ -46,8 +46,8 @@
 
 - (void)startAnimation
 {
-  v3 = [(VUIImageProxyAnimator *)self imageProxies];
-  v4 = [v3 count];
+  imageProxies = [(VUIImageProxyAnimator *)self imageProxies];
+  v4 = [imageProxies count];
 
   if (v4 >= 2)
   {
@@ -61,42 +61,42 @@
 
 - (void)stopAnimation
 {
-  v3 = [(VUIImageProxyAnimator *)self transitionTimer];
-  [v3 invalidate];
+  transitionTimer = [(VUIImageProxyAnimator *)self transitionTimer];
+  [transitionTimer invalidate];
 
   [(VUIImageProxyAnimator *)self setTransitionTimer:0];
 
   [(VUIImageProxyAnimator *)self setAnimating:0];
 }
 
-- (void)_setImage:(id)a3 animated:(BOOL)a4
+- (void)_setImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(VUIImageProxyAnimator *)self imageView];
+  animatedCopy = animated;
+  imageCopy = image;
+  imageView = [(VUIImageProxyAnimator *)self imageView];
 
-  if (v7)
+  if (imageView)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v8 = MEMORY[0x1E69DD250];
-      v9 = [(VUIImageProxyAnimator *)self imageView];
+      imageView2 = [(VUIImageProxyAnimator *)self imageView];
       [(VUIImageProxyAnimator *)self animationDuration];
       v11 = v10;
-      v12 = [(VUIImageProxyAnimator *)self animationOptions];
+      animationOptions = [(VUIImageProxyAnimator *)self animationOptions];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __44__VUIImageProxyAnimator__setImage_animated___block_invoke;
       v14[3] = &unk_1E872D990;
       v14[4] = self;
-      v15 = v6;
-      [v8 transitionWithView:v9 duration:v12 options:v14 animations:0 completion:v11];
+      v15 = imageCopy;
+      [v8 transitionWithView:imageView2 duration:animationOptions options:v14 animations:0 completion:v11];
     }
 
     else
     {
-      v13 = [(VUIImageProxyAnimator *)self imageView];
-      [v13 setImage:v6];
+      imageView3 = [(VUIImageProxyAnimator *)self imageView];
+      [imageView3 setImage:imageCopy];
     }
   }
 }
@@ -107,23 +107,23 @@ void __44__VUIImageProxyAnimator__setImage_animated___block_invoke(uint64_t a1)
   [v2 setImage:*(a1 + 40)];
 }
 
-- (void)loadImageProxy:(id)a3 withWeakObject:(id)a4 completionHandler:(id)a5
+- (void)loadImageProxy:(id)proxy withWeakObject:(id)object completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  objc_initWeak(&location, v8);
-  objc_initWeak(&from, v7);
+  proxyCopy = proxy;
+  objectCopy = object;
+  handlerCopy = handler;
+  objc_initWeak(&location, objectCopy);
+  objc_initWeak(&from, proxyCopy);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__VUIImageProxyAnimator_loadImageProxy_withWeakObject_completionHandler___block_invoke;
   v11[3] = &unk_1E872F9C0;
   objc_copyWeak(&v13, &from);
   objc_copyWeak(&v14, &location);
-  v10 = v9;
+  v10 = handlerCopy;
   v12 = v10;
-  [v7 setCompletionHandler:v11];
-  [v7 load];
+  [proxyCopy setCompletionHandler:v11];
+  [proxyCopy load];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v13);
@@ -149,15 +149,15 @@ void __73__VUIImageProxyAnimator_loadImageProxy_withWeakObject_completionHandler
   }
 }
 
-- (void)_updateImageWithIndex:(unint64_t)a3
+- (void)_updateImageWithIndex:(unint64_t)index
 {
-  v5 = [(VUIImageProxyAnimator *)self imageProxies];
-  v6 = [v5 count];
+  imageProxies = [(VUIImageProxyAnimator *)self imageProxies];
+  v6 = [imageProxies count];
 
-  if (v6 > a3)
+  if (v6 > index)
   {
-    v7 = [(VUIImageProxyAnimator *)self imageProxies];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    imageProxies2 = [(VUIImageProxyAnimator *)self imageProxies];
+    v8 = [imageProxies2 objectAtIndexedSubscript:index];
 
     if ([(VUIImageProxyAnimator *)self isCachingEnabled])
     {
@@ -170,7 +170,7 @@ void __73__VUIImageProxyAnimator_loadImageProxy_withWeakObject_completionHandler
     v9[1] = 3221225472;
     v9[2] = __47__VUIImageProxyAnimator__updateImageWithIndex___block_invoke;
     v9[3] = &unk_1E872FA10;
-    v10[1] = a3;
+    v10[1] = index;
     v9[4] = self;
     objc_copyWeak(v10, &location);
     [(VUIImageProxyAnimator *)self loadImageProxy:v8 withWeakObject:self completionHandler:v9];
@@ -284,15 +284,15 @@ LABEL_14:
     v3 = [(VUIImageProxyAnimator *)self indexOfFetchedImage]+ 1;
   }
 
-  v4 = [(VUIImageProxyAnimator *)self imageProxies];
-  v5 = [v4 count];
+  imageProxies = [(VUIImageProxyAnimator *)self imageProxies];
+  v5 = [imageProxies count];
 
   if (v3 < v5)
   {
     while (1)
     {
-      v6 = [(VUIImageProxyAnimator *)self imageProxies];
-      v7 = [v6 objectAtIndex:v3];
+      imageProxies2 = [(VUIImageProxyAnimator *)self imageProxies];
+      v7 = [imageProxies2 objectAtIndex:v3];
 
       if (([v7 isImageAvailable] & 1) == 0)
       {
@@ -358,16 +358,16 @@ void __35__VUIImageProxyAnimator__fetchNext__block_invoke_2(uint64_t a1)
   [*(a1 + 40) _fetchNext];
 }
 
-- (void)_displayIntervalTimerFired:(id)a3
+- (void)_displayIntervalTimerFired:(id)fired
 {
-  v4 = [(VUIImageProxyAnimator *)self transitionTimer];
-  [v4 invalidate];
+  transitionTimer = [(VUIImageProxyAnimator *)self transitionTimer];
+  [transitionTimer invalidate];
 
   [(VUIImageProxyAnimator *)self setTransitionTimer:0];
   v5 = [(VUIImageProxyAnimator *)self displayImageIndex]+ 1;
-  v6 = [(VUIImageProxyAnimator *)self imageProxies];
+  imageProxies = [(VUIImageProxyAnimator *)self imageProxies];
   v7 = 0;
-  if (v5 < [v6 count])
+  if (v5 < [imageProxies count])
   {
     v7 = [(VUIImageProxyAnimator *)self displayImageIndex]+ 1;
   }

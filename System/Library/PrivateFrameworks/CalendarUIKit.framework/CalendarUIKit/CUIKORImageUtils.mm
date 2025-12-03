@@ -1,26 +1,26 @@
 @interface CUIKORImageUtils
-+ (CGRect)_frameMutatedForProximityToHourLine:(CGRect)a3;
-+ (CGRect)backgroundImageFrameForState:(id)a3;
-+ (UIEdgeInsets)_edgeInsets:(UIEdgeInsets)a3 scaledByFont:(id)a4;
-+ (UIEdgeInsets)standardBackgroundMargins:(BOOL)a3;
-+ (id)_calendarColorDotImageForColor:(id)a3 baseSize:(double)a4 font:(id)a5;
-+ (id)_calendarColorDotImageForColor:(id)a3 diameter:(double)a4;
-+ (id)_calendarColorDotImageForColor:(id)a3 diameter:(double)a4 enabled:(BOOL)a5 adjustWhiteColor:(BOOL)a6;
-+ (id)scaledCalendarInvitationDotForFont:(id)a3;
-+ (unint64_t)_uniqueDotHashForColor:(id)a3 diameter:(double)a4;
-+ (void)calculateBackgroundImageFrame:(CGRect *)a3 travelTimeFrame:(CGRect *)a4 forState:(id)a5 withMargins:(UIEdgeInsets)a6;
++ (CGRect)_frameMutatedForProximityToHourLine:(CGRect)line;
++ (CGRect)backgroundImageFrameForState:(id)state;
++ (UIEdgeInsets)_edgeInsets:(UIEdgeInsets)insets scaledByFont:(id)font;
++ (UIEdgeInsets)standardBackgroundMargins:(BOOL)margins;
++ (id)_calendarColorDotImageForColor:(id)color baseSize:(double)size font:(id)font;
++ (id)_calendarColorDotImageForColor:(id)color diameter:(double)diameter;
++ (id)_calendarColorDotImageForColor:(id)color diameter:(double)diameter enabled:(BOOL)enabled adjustWhiteColor:(BOOL)whiteColor;
++ (id)scaledCalendarInvitationDotForFont:(id)font;
++ (unint64_t)_uniqueDotHashForColor:(id)color diameter:(double)diameter;
++ (void)calculateBackgroundImageFrame:(CGRect *)frame travelTimeFrame:(CGRect *)timeFrame forState:(id)state withMargins:(UIEdgeInsets)margins;
 @end
 
 @implementation CUIKORImageUtils
 
-+ (id)scaledCalendarInvitationDotForFont:(id)a3
++ (id)scaledCalendarInvitationDotForFont:(id)font
 {
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [v4 systemBlueColor];
-  v7 = [a1 _calendarColorDotImageForColor:v6 baseSize:v5 font:6.0];
+  fontCopy = font;
+  systemBlueColor = [v4 systemBlueColor];
+  v7 = [self _calendarColorDotImageForColor:systemBlueColor baseSize:fontCopy font:6.0];
 
-  [a1 _edgeInsets:v5 scaledByFont:{1.0, 0.0, 0.5, 3.0}];
+  [self _edgeInsets:fontCopy scaledByFont:{1.0, 0.0, 0.5, 3.0}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -31,28 +31,28 @@
   return v16;
 }
 
-+ (id)_calendarColorDotImageForColor:(id)a3 diameter:(double)a4 enabled:(BOOL)a5 adjustWhiteColor:(BOOL)a6
++ (id)_calendarColorDotImageForColor:(id)color diameter:(double)diameter enabled:(BOOL)enabled adjustWhiteColor:(BOOL)whiteColor
 {
-  v9 = a3;
+  colorCopy = color;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x4010000000;
   v19[4] = 0;
   v19[5] = 0;
   v19[3] = &unk_1CADB7076;
-  v20 = a4;
-  v21 = a4;
+  diameterCopy = diameter;
+  diameterCopy2 = diameter;
   v10 = MEMORY[0x1E69DCAB8];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __85__CUIKORImageUtils__calendarColorDotImageForColor_diameter_enabled_adjustWhiteColor___block_invoke;
   v14[3] = &unk_1E839A458;
-  v11 = v9;
-  v17 = a5;
+  v11 = colorCopy;
+  enabledCopy = enabled;
   v15 = v11;
   v16 = v19;
-  v18 = a6;
-  v12 = [v10 cuik_drawImageWithSize:v14 drawBlock:{v20, v21}];
+  whiteColorCopy = whiteColor;
+  v12 = [v10 cuik_drawImageWithSize:v14 drawBlock:{diameterCopy, diameterCopy2}];
 
   _Block_object_dispose(v19, 8);
 
@@ -84,23 +84,23 @@ void __85__CUIKORImageUtils__calendarColorDotImageForColor_diameter_enabled_adju
   }
 }
 
-+ (unint64_t)_uniqueDotHashForColor:(id)a3 diameter:(double)a4
++ (unint64_t)_uniqueDotHashForColor:(id)color diameter:(double)diameter
 {
   v8 = 0.0;
   v9 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
-  [a3 cuik_getRed:&v9 green:&v8 blue:&v7 alpha:&v6];
-  return (v9 * 100.0) | ((a4 * 100.0) << 28) | ((v8 * 100.0) << 7) | ((v7 * 100.0) << 14) | ((v6 * 100.0) << 21);
+  [color cuik_getRed:&v9 green:&v8 blue:&v7 alpha:&v6];
+  return (v9 * 100.0) | ((diameter * 100.0) << 28) | ((v8 * 100.0) << 7) | ((v7 * 100.0) << 14) | ((v6 * 100.0) << 21);
 }
 
-+ (id)_calendarColorDotImageForColor:(id)a3 diameter:(double)a4
++ (id)_calendarColorDotImageForColor:(id)color diameter:(double)diameter
 {
-  v6 = a3;
-  v7 = v6;
+  colorCopy = color;
+  v7 = colorCopy;
   if (_calendarColorDotImageForColor_diameter__onceToken == -1)
   {
-    if (v6)
+    if (colorCopy)
     {
       goto LABEL_3;
     }
@@ -118,15 +118,15 @@ LABEL_8:
   }
 
 LABEL_3:
-  v8 = [MEMORY[0x1E69DC888] cuik_systemBackgroundColor];
-  v9 = CUIKAdjustedColorForBackgroundColor(v7, v8);
+  cuik_systemBackgroundColor = [MEMORY[0x1E69DC888] cuik_systemBackgroundColor];
+  v9 = CUIKAdjustedColorForBackgroundColor(v7, cuik_systemBackgroundColor);
 
-  v10 = [a1 _uniqueDotHashForColor:v9 diameter:a4];
+  v10 = [self _uniqueDotHashForColor:v9 diameter:diameter];
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
   v12 = [_calendarColorDotImageForColor_diameter____CachedDotImages objectForKey:v11];
   if (!v12)
   {
-    v12 = [a1 _calendarColorDotImageForColor:v9 diameter:1 enabled:1 adjustWhiteColor:a4];
+    v12 = [self _calendarColorDotImageForColor:v9 diameter:1 enabled:1 adjustWhiteColor:diameter];
     if (v12)
     {
       [_calendarColorDotImageForColor_diameter____CachedDotImages setObject:v12 forKey:v11];
@@ -147,29 +147,29 @@ uint64_t __60__CUIKORImageUtils__calendarColorDotImageForColor_diameter___block_
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)_calendarColorDotImageForColor:(id)a3 baseSize:(double)a4 font:(id)a5
++ (id)_calendarColorDotImageForColor:(id)color baseSize:(double)size font:(id)font
 {
-  v8 = a3;
-  [a5 cuik_scaledValueForValue:a4];
-  v9 = [a1 _calendarColorDotImageForColor:v8 diameter:?];
+  colorCopy = color;
+  [font cuik_scaledValueForValue:size];
+  v9 = [self _calendarColorDotImageForColor:colorCopy diameter:?];
 
   return v9;
 }
 
-+ (UIEdgeInsets)_edgeInsets:(UIEdgeInsets)a3 scaledByFont:(id)a4
++ (UIEdgeInsets)_edgeInsets:(UIEdgeInsets)insets scaledByFont:(id)font
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = a4;
-  [v8 cuik_scaledValueForValue:top];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  fontCopy = font;
+  [fontCopy cuik_scaledValueForValue:top];
   v10 = v9;
-  [v8 cuik_scaledValueForValue:left];
+  [fontCopy cuik_scaledValueForValue:left];
   v12 = v11;
-  [v8 cuik_scaledValueForValue:bottom];
+  [fontCopy cuik_scaledValueForValue:bottom];
   v14 = v13;
-  [v8 cuik_scaledValueForValue:right];
+  [fontCopy cuik_scaledValueForValue:right];
   v16 = v15;
 
   v17 = v10;
@@ -183,13 +183,13 @@ uint64_t __60__CUIKORImageUtils__calendarColorDotImageForColor_diameter___block_
   return result;
 }
 
-+ (CGRect)backgroundImageFrameForState:(id)a3
++ (CGRect)backgroundImageFrameForState:(id)state
 {
   v9 = 0u;
   v10 = 0u;
-  v4 = a3;
-  [a1 standardBackgroundMargins:1];
-  [a1 calculateBackgroundImageFrame:&v9 travelTimeFrame:0 forState:v4 withMargins:?];
+  stateCopy = state;
+  [self standardBackgroundMargins:1];
+  [self calculateBackgroundImageFrame:&v9 travelTimeFrame:0 forState:stateCopy withMargins:?];
 
   v6 = *(&v9 + 1);
   v5 = *&v9;
@@ -202,28 +202,28 @@ uint64_t __60__CUIKORImageUtils__calendarColorDotImageForColor_diameter___block_
   return result;
 }
 
-+ (void)calculateBackgroundImageFrame:(CGRect *)a3 travelTimeFrame:(CGRect *)a4 forState:(id)a5 withMargins:(UIEdgeInsets)a6
++ (void)calculateBackgroundImageFrame:(CGRect *)frame travelTimeFrame:(CGRect *)timeFrame forState:(id)state withMargins:(UIEdgeInsets)margins
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
-  v43 = a5;
-  [v43 travelTimeHeight];
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
+  stateCopy = state;
+  [stateCopy travelTimeHeight];
   v14 = v13;
-  [v43 backgroundRect];
+  [stateCopy backgroundRect];
   v15 = left + 0.0;
   v16 = top + 0.0;
   v18 = v17 - (left + right);
   v20 = v19 - (top + bottom);
-  [a1 _frameMutatedForProximityToHourLine:{v15, top + 0.0, v18, v20}];
+  [self _frameMutatedForProximityToHourLine:{v15, top + 0.0, v18, v20}];
   MaxY = v14 + v23;
   v26 = v25 - v14;
-  if (a4)
+  if (timeFrame)
   {
     v41 = v22;
     v42 = v21;
-    [v43 travelTimeHeight];
+    [stateCopy travelTimeHeight];
     if (v27 <= 0.0)
     {
       x = CUIKRoundRectToScreenScale(v42, MaxY, v41, v26);
@@ -234,7 +234,7 @@ uint64_t __60__CUIKORImageUtils__calendarColorDotImageForColor_diameter___block_
 
     else
     {
-      [a1 _frameMutatedForProximityToHourLine:{v15, v16, v18, v20}];
+      [self _frameMutatedForProximityToHourLine:{v15, v16, v18, v20}];
       v45.origin.x = CUIKRoundRectToScreenScale(v28, v29, v30, fmax(v14 - bottom, 0.0));
       x = v45.origin.x;
       y = v45.origin.y;
@@ -243,33 +243,33 @@ uint64_t __60__CUIKORImageUtils__calendarColorDotImageForColor_diameter___block_
       MaxY = CGRectGetMaxY(v45);
     }
 
-    a4->origin.x = x;
-    a4->origin.y = y;
-    a4->size.width = width;
-    a4->size.height = height;
+    timeFrame->origin.x = x;
+    timeFrame->origin.y = y;
+    timeFrame->size.width = width;
+    timeFrame->size.height = height;
     v22 = v41;
     v21 = v42;
   }
 
   v37 = CUIKRoundRectToScreenScale(v21, MaxY, v22, v26);
-  if (a3)
+  if (frame)
   {
-    a3->origin.x = v37;
-    a3->origin.y = v38;
-    a3->size.width = v39;
-    a3->size.height = v40;
+    frame->origin.x = v37;
+    frame->origin.y = v38;
+    frame->size.width = v39;
+    frame->size.height = v40;
   }
 }
 
-+ (UIEdgeInsets)standardBackgroundMargins:(BOOL)a3
++ (UIEdgeInsets)standardBackgroundMargins:(BOOL)margins
 {
-  if (a3)
+  if (margins)
   {
     v3 = +[CUIKInterface shared];
-    v4 = [v3 interfaceIsLeftToRight];
+    interfaceIsLeftToRight = [v3 interfaceIsLeftToRight];
 
     v5 = 1.0;
-    if (v4)
+    if (interfaceIsLeftToRight)
     {
       v6 = 1.0;
     }
@@ -279,7 +279,7 @@ uint64_t __60__CUIKORImageUtils__calendarColorDotImageForColor_diameter___block_
       v6 = 0.0;
     }
 
-    if (v4)
+    if (interfaceIsLeftToRight)
     {
       v5 = 0.0;
     }
@@ -300,12 +300,12 @@ uint64_t __60__CUIKORImageUtils__calendarColorDotImageForColor_diameter___block_
   return result;
 }
 
-+ (CGRect)_frameMutatedForProximityToHourLine:(CGRect)a3
++ (CGRect)_frameMutatedForProximityToHourLine:(CGRect)line
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = line.size.height;
+  width = line.size.width;
+  y = line.origin.y;
+  x = line.origin.x;
   CUIKRoundToScreenScale(0.5);
   v8 = y + v7;
   CUIKRoundToScreenScale(0.5);

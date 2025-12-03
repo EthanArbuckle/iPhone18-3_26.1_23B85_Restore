@@ -1,41 +1,41 @@
 @interface WTAnalyticsDelegate
-- (WTAnalyticsDelegate)initWithSmartReplyBool:(BOOL)a3 smartReplyConfig:(id)a4 analyticsUUID:(id)a5 requestedTool:(int64_t)a6 isEditable:(BOOL)a7;
-- (id)getWritingToolsFeatureDetailsForCompositionSessionType:(int64_t)a3;
-- (id)getWritingToolsFeatureDetailsForRequestedTool:(int64_t)a3;
+- (WTAnalyticsDelegate)initWithSmartReplyBool:(BOOL)bool smartReplyConfig:(id)config analyticsUUID:(id)d requestedTool:(int64_t)tool isEditable:(BOOL)editable;
+- (id)getWritingToolsFeatureDetailsForCompositionSessionType:(int64_t)type;
+- (id)getWritingToolsFeatureDetailsForRequestedTool:(int64_t)tool;
 - (void)applicationDidBecomeActive;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillTerminate;
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4;
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4;
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts;
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted;
 - (void)endWritingTools;
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6;
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context;
 - (void)redo;
-- (void)sendWritingToolsOnlySignal:(id)a3 withPayload:(id)a4;
-- (void)sendWritingToolsOrSmartReplySignal:(id)a3 withPayload:(id)a4;
+- (void)sendWritingToolsOnlySignal:(id)signal withPayload:(id)payload;
+- (void)sendWritingToolsOrSmartReplySignal:(id)signal withPayload:(id)payload;
 - (void)undo;
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4;
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4;
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts;
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action;
 @end
 
 @implementation WTAnalyticsDelegate
 
-- (WTAnalyticsDelegate)initWithSmartReplyBool:(BOOL)a3 smartReplyConfig:(id)a4 analyticsUUID:(id)a5 requestedTool:(int64_t)a6 isEditable:(BOOL)a7
+- (WTAnalyticsDelegate)initWithSmartReplyBool:(BOOL)bool smartReplyConfig:(id)config analyticsUUID:(id)d requestedTool:(int64_t)tool isEditable:(BOOL)editable
 {
-  v7 = a7;
-  v10 = a3;
+  editableCopy = editable;
+  boolCopy = bool;
   v48[3] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
+  configCopy = config;
+  dCopy = d;
   v37.receiver = self;
   v37.super_class = WTAnalyticsDelegate;
   v14 = [(WTAnalyticsDelegate *)&v37 init];
   v15 = v14;
   if (v14)
   {
-    [(WTAnalyticsDelegate *)v14 setFromSmartReply:v10];
-    [(WTAnalyticsDelegate *)v15 setIsEditableText:v7];
+    [(WTAnalyticsDelegate *)v14 setFromSmartReply:boolCopy];
+    [(WTAnalyticsDelegate *)v15 setIsEditableText:editableCopy];
     v16 = WTIATextAssistantLog();
     if (os_signpost_enabled(v16))
     {
@@ -49,21 +49,21 @@
       [WTAnalyticsDelegate initWithSmartReplyBool:v17 smartReplyConfig:? analyticsUUID:? requestedTool:? isEditable:?];
     }
 
-    if (v12)
+    if (configCopy)
     {
-      v18 = [v12 inputContextHistory];
-      v19 = [v18 threadIdentifier];
+      inputContextHistory = [configCopy inputContextHistory];
+      threadIdentifier = [inputContextHistory threadIdentifier];
       threadIdentifier = v15->_threadIdentifier;
-      v15->_threadIdentifier = v19;
+      v15->_threadIdentifier = threadIdentifier;
     }
 
     else
     {
-      v18 = v15->_threadIdentifier;
+      inputContextHistory = v15->_threadIdentifier;
       v15->_threadIdentifier = 0;
     }
 
-    objc_storeStrong(&v15->_analyticsUUID, a5);
+    objc_storeStrong(&v15->_analyticsUUID, d);
     v43 = 0;
     v44 = &v43;
     v45 = 0x2020000000;
@@ -92,7 +92,7 @@
     v24 = *v21;
     v25 = getIAPayloadKeyWritingToolsFeatureDetails();
     v47[0] = v25;
-    v26 = [(WTAnalyticsDelegate *)v15 getWritingToolsFeatureDetailsForRequestedTool:a6];
+    v26 = [(WTAnalyticsDelegate *)v15 getWritingToolsFeatureDetailsForRequestedTool:tool];
     v48[0] = v26;
     v43 = 0;
     v44 = &v43;
@@ -132,23 +132,23 @@ LABEL_17:
     v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:3];
     [(WTAnalyticsDelegate *)v15 sendWritingToolsOnlySignal:v24 withPayload:v34];
 
-    v35 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v35 addObserver:v15 selector:sel_applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
-    [v35 addObserver:v15 selector:sel_applicationDidBecomeActive name:*MEMORY[0x1E69DDAB0] object:0];
-    [v35 addObserver:v15 selector:sel_applicationWillTerminate name:*MEMORY[0x1E69DDBD0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel_applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
+    [defaultCenter addObserver:v15 selector:sel_applicationDidBecomeActive name:*MEMORY[0x1E69DDAB0] object:0];
+    [defaultCenter addObserver:v15 selector:sel_applicationWillTerminate name:*MEMORY[0x1E69DDBD0] object:0];
   }
 
   return v15;
 }
 
-- (id)getWritingToolsFeatureDetailsForCompositionSessionType:(int64_t)a3
+- (id)getWritingToolsFeatureDetailsForCompositionSessionType:(int64_t)type
 {
   v3 = @"SummaryTransform";
-  if (a3 > 6)
+  if (type > 6)
   {
-    if (a3 > 9)
+    if (type > 9)
     {
-      switch(a3)
+      switch(type)
       {
         case 10:
           v3 = @"Compose";
@@ -162,14 +162,14 @@ LABEL_17:
       }
     }
 
-    else if (a3 == 7)
+    else if (type == 7)
     {
       v3 = getIAPayloadValueWritingToolsFeatureDetailsTakeawaysTransform();
     }
 
     else
     {
-      if (a3 == 8)
+      if (type == 8)
       {
         getIAPayloadValueWritingToolsFeatureDetailsBulletsTransform();
       }
@@ -182,9 +182,9 @@ LABEL_17:
     }
   }
 
-  else if (a3 > 2)
+  else if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         v3 = getIAPayloadValueWritingToolsFeatureDetailsProfessionalTone();
@@ -198,14 +198,14 @@ LABEL_17:
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v3 = getIAPayloadValueWritingToolsFeatureDetailsMagicRewrite();
     }
 
-    else if (a3 == 2)
+    else if (type == 2)
     {
       v3 = getIAPayloadValueWritingToolsFeatureDetailsFriendlyTone();
     }
@@ -240,22 +240,22 @@ LABEL_17:
   return v3;
 }
 
-- (id)getWritingToolsFeatureDetailsForRequestedTool:(int64_t)a3
+- (id)getWritingToolsFeatureDetailsForRequestedTool:(int64_t)tool
 {
   v3 = @"Index";
-  if (a3 <= 18)
+  if (tool <= 18)
   {
-    if (a3 <= 10)
+    if (tool <= 10)
     {
-      if (a3 != 1)
+      if (tool != 1)
       {
-        if (a3 == 2)
+        if (tool == 2)
         {
           v3 = getIAPayloadValueWritingToolsFeatureDetailsMagicRewrite();
           goto LABEL_31;
         }
 
-        if (a3 != 3)
+        if (tool != 3)
         {
           goto LABEL_31;
         }
@@ -265,7 +265,7 @@ LABEL_17:
       goto LABEL_31;
     }
 
-    switch(a3)
+    switch(tool)
     {
       case 11:
         v3 = getIAPayloadValueWritingToolsFeatureDetailsFriendlyTone();
@@ -279,9 +279,9 @@ LABEL_17:
     }
   }
 
-  else if (a3 <= 22)
+  else if (tool <= 22)
   {
-    switch(a3)
+    switch(tool)
     {
       case 19:
         v3 = getIAPayloadValueWritingToolsFeatureDetailsOpenEndedTone();
@@ -295,15 +295,15 @@ LABEL_17:
     }
   }
 
-  else if (a3 > 100)
+  else if (tool > 100)
   {
     v4 = @"Compose";
-    if (a3 != 201)
+    if (tool != 201)
     {
       v4 = @"Index";
     }
 
-    if (a3 == 101)
+    if (tool == 101)
     {
       v3 = @"SmartReply";
     }
@@ -314,12 +314,12 @@ LABEL_17:
     }
   }
 
-  else if (a3 == 23)
+  else if (tool == 23)
   {
     v3 = getIAPayloadValueWritingToolsFeatureDetailsBulletsTransform();
   }
 
-  else if (a3 == 24)
+  else if (tool == 24)
   {
     v3 = getIAPayloadValueWritingToolsFeatureDetailsTablesTransform();
   }
@@ -329,23 +329,23 @@ LABEL_31:
   return v3;
 }
 
-- (void)sendWritingToolsOnlySignal:(id)a3 withPayload:(id)a4
+- (void)sendWritingToolsOnlySignal:(id)signal withPayload:(id)payload
 {
-  v10 = a3;
-  v6 = a4;
+  signalCopy = signal;
+  payloadCopy = payload;
   if (![(WTAnalyticsDelegate *)self fromSmartReply])
   {
     IASignalAnalyticsClass = getIASignalAnalyticsClass();
     v8 = getIAChannelWritingTools();
-    v9 = [(NSUUID *)self->_analyticsUUID UUIDString];
-    [IASignalAnalyticsClass sendSignal:v10 toChannel:v8 withUniqueStringID:v9 withPayload:v6];
+    uUIDString = [(NSUUID *)self->_analyticsUUID UUIDString];
+    [IASignalAnalyticsClass sendSignal:signalCopy toChannel:v8 withUniqueStringID:uUIDString withPayload:payloadCopy];
   }
 }
 
-- (void)sendWritingToolsOrSmartReplySignal:(id)a3 withPayload:(id)a4
+- (void)sendWritingToolsOrSmartReplySignal:(id)signal withPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  signalCopy = signal;
+  payloadCopy = payload;
   if ([(WTAnalyticsDelegate *)self fromSmartReply])
   {
     v16 = 0;
@@ -380,16 +380,16 @@ LABEL_31:
   v11 = v10;
   if ([(WTAnalyticsDelegate *)self fromSmartReply]&& (threadIdentifier = self->_threadIdentifier) != 0)
   {
-    v13 = [(NSString *)threadIdentifier copy];
+    uUIDString = [(NSString *)threadIdentifier copy];
   }
 
   else
   {
-    v13 = [(NSUUID *)self->_analyticsUUID UUIDString];
+    uUIDString = [(NSUUID *)self->_analyticsUUID UUIDString];
   }
 
-  v14 = v13;
-  [getIASignalAnalyticsClass() sendSignal:v6 toChannel:v11 withUniqueStringID:v13 withPayload:v7];
+  v14 = uUIDString;
+  [getIASignalAnalyticsClass() sendSignal:signalCopy toChannel:v11 withUniqueStringID:uUIDString withPayload:payloadCopy];
 }
 
 - (void)applicationDidEnterBackground
@@ -468,7 +468,7 @@ LABEL_31:
   [(WTAnalyticsDelegate *)self sendWritingToolsOrSmartReplySignal:*v3 withPayload:0];
 }
 
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(WTAnalyticsDelegate *)self setProofreadingSuggestions:v5];
@@ -481,19 +481,19 @@ LABEL_31:
   [(WTAnalyticsDelegate *)self setCurrentDraftNumber:0];
 }
 
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts
 {
   v63 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v45 = v5;
-  v46 = [v5 type];
-  v44 = [v5 compositionSessionType];
+  sessionCopy = session;
+  contextsCopy = contexts;
+  v45 = sessionCopy;
+  type = [sessionCopy type];
+  compositionSessionType = [sessionCopy compositionSessionType];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v6;
+  obj = contextsCopy;
   v7 = [obj countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v7)
   {
@@ -509,48 +509,48 @@ LABEL_31:
         }
 
         v11 = *(*(&v49 + 1) + 8 * i);
-        v12 = [v11 range];
+        range = [v11 range];
         [v11 range];
         v14 = v13;
-        v15 = [v11 attributedText];
-        v16 = [v15 string];
-        LOBYTE(v12) = v14 + v12 > [v16 length];
+        attributedText = [v11 attributedText];
+        string = [attributedText string];
+        LOBYTE(range) = v14 + range > [string length];
 
-        v17 = [v11 attributedText];
-        v18 = [v17 string];
-        if (v12)
+        attributedText2 = [v11 attributedText];
+        string2 = [attributedText2 string];
+        if (range)
         {
 
-          v17 = WTIAWritingToolsLog();
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+          attributedText2 = WTIAWritingToolsLog();
+          if (os_log_type_enabled(attributedText2, OS_LOG_TYPE_ERROR))
           {
-            v19 = [v11 range];
+            range2 = [v11 range];
             [v11 range];
             v21 = v20;
-            v22 = [v11 attributedText];
-            v23 = [v22 string];
-            v24 = [v23 length];
+            attributedText3 = [v11 attributedText];
+            string3 = [attributedText3 string];
+            v24 = [string3 length];
             *buf = 134218496;
-            *&buf[4] = v19;
+            *&buf[4] = range2;
             *&buf[12] = 2048;
             *&buf[14] = v21;
             *&buf[22] = 2048;
             v61 = v24;
-            _os_log_error_impl(&dword_1D451D000, v17, OS_LOG_TYPE_ERROR, "context.range (%lu, %lu) out of bounds (%lu)!", buf, 0x20u);
+            _os_log_error_impl(&dword_1D451D000, attributedText2, OS_LOG_TYPE_ERROR, "context.range (%lu, %lu) out of bounds (%lu)!", buf, 0x20u);
           }
         }
 
         else
         {
-          v25 = [v11 range];
-          v27 = [v18 substringWithRange:{v25, v26}];
+          range3 = [v11 range];
+          v27 = [string2 substringWithRange:{range3, v26}];
 
-          v18 = v27;
+          string2 = v27;
         }
 
-        if (v18)
+        if (string2)
         {
-          v28 = [(__CFString *)v9 stringByAppendingString:v18];
+          v28 = [(__CFString *)v9 stringByAppendingString:string2];
 
           v9 = v28;
         }
@@ -567,14 +567,14 @@ LABEL_31:
     v9 = &stru_1F4FC5520;
   }
 
-  if (v46 == 2)
+  if (type == 2)
   {
-    v29 = [(WTAnalyticsDelegate *)self getWritingToolsFeatureDetailsForCompositionSessionType:v44];
+    v29 = [(WTAnalyticsDelegate *)self getWritingToolsFeatureDetailsForCompositionSessionType:compositionSessionType];
   }
 
   else
   {
-    if (v46 != 1)
+    if (type != 1)
     {
       v30 = WTIAWritingToolsLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -662,11 +662,11 @@ LABEL_30:
   }
 }
 
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 type] == 2)
+  sessionCopy = session;
+  if ([sessionCopy type] == 2)
   {
     v7 = getIAPayloadValueWritingToolsUIRewritingView();
   }
@@ -696,9 +696,9 @@ LABEL_30:
   }
 
   v10 = v7;
-  if (a4 != 3)
+  if (action != 3)
   {
-    if (a4 == 2)
+    if (action == 2)
     {
       v11 = getIASignalWritingToolsButtonTapped();
       v18 = getIAPayloadKeyWritingToolsInteractionType();
@@ -731,7 +731,7 @@ LABEL_30:
 
     else
     {
-      if (a4 != 1)
+      if (action != 1)
       {
         v11 = WTIAWritingToolsLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -797,18 +797,18 @@ LABEL_25:
 LABEL_24:
 }
 
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted
 {
-  v4 = a4;
+  acceptedCopy = accepted;
   v71 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 type] == 1)
+  sessionCopy = session;
+  if ([sessionCopy type] == 1)
   {
-    v56 = v6;
+    v56 = sessionCopy;
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v9 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
-    v10 = [v9 count];
+    proofreadingSuggestions = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
+    v10 = [proofreadingSuggestions count];
 
     v11 = 0;
     if (v10)
@@ -816,20 +816,20 @@ LABEL_24:
       v12 = 0;
       do
       {
-        if (v4)
+        if (acceptedCopy)
         {
-          v13 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
-          v14 = [v13 objectAtIndexedSubscript:v12];
-          v15 = [v14 state];
+          proofreadingSuggestions2 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
+          v14 = [proofreadingSuggestions2 objectAtIndexedSubscript:v12];
+          state = [v14 state];
 
-          if (v15 == 3)
+          if (state == 3)
           {
             v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
             v18 = v8;
             goto LABEL_13;
           }
 
-          if (v15 == 1)
+          if (state == 1)
           {
             v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
             v18 = v7;
@@ -839,16 +839,16 @@ LABEL_13:
             goto LABEL_16;
           }
 
-          if (v15)
+          if (state)
           {
             v16 = WTIAWritingToolsLog();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
             {
-              v21 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
-              v22 = [v21 objectAtIndexedSubscript:v12];
-              v23 = [v22 state];
+              proofreadingSuggestions3 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
+              v22 = [proofreadingSuggestions3 objectAtIndexedSubscript:v12];
+              state2 = [v22 state];
               *buf = 134218240;
-              v68 = v23;
+              v68 = state2;
               v69 = 2048;
               v70 = v12;
               _os_log_error_impl(&dword_1D451D000, v16, OS_LOG_TYPE_ERROR, "didEndWritingToolsSession: Unexpected proofreading suggestion state %lu for index %lu", buf, 0x16u);
@@ -871,8 +871,8 @@ LABEL_13:
 LABEL_16:
 
         ++v12;
-        v19 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
-        v20 = [v19 count];
+        proofreadingSuggestions4 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
+        v20 = [proofreadingSuggestions4 count];
       }
 
       while (v12 < v20);
@@ -902,8 +902,8 @@ LABEL_16:
       else
       {
         v28 = [v7 count];
-        v53 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
-        v27 = v28 == [v53 count];
+        proofreadingSuggestions5 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
+        v27 = v28 == [proofreadingSuggestions5 count];
       }
 
       v29 = [v26 numberWithInt:v27];
@@ -928,7 +928,7 @@ LABEL_16:
       v34 = getIASignalWritingToolsResultsRejected();
       v35 = getIAPayloadKeyWritingToolsRejectedAll();
       v63[0] = v35;
-      v36 = [MEMORY[0x1E696AD98] numberWithInt:!v4];
+      v36 = [MEMORY[0x1E696AD98] numberWithInt:!acceptedCopy];
       v64[0] = v36;
       v37 = getIAPayloadKeyWritingToolsResultIndices();
       v63[1] = v37;
@@ -937,32 +937,32 @@ LABEL_16:
       [(WTAnalyticsDelegate *)self sendWritingToolsOnlySignal:v34 withPayload:v38];
     }
 
-    v6 = v56;
+    sessionCopy = v56;
     goto LABEL_39;
   }
 
-  if ([v6 type] != 2)
+  if ([sessionCopy type] != 2)
   {
     v7 = WTIAWritingToolsLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [WTAnalyticsDelegate didEndWritingToolsSession:v6 accepted:v7];
+      [WTAnalyticsDelegate didEndWritingToolsSession:sessionCopy accepted:v7];
     }
 
     goto LABEL_39;
   }
 
-  if (v4)
+  if (acceptedCopy)
   {
     if (InputAnalyticsLibraryCore() && getIAPayloadValueWritingToolsInteractionTypeUnspecifiedSymbolLoc())
     {
-      v24 = v6;
+      v24 = sessionCopy;
       v7 = getIAPayloadValueWritingToolsInteractionTypeUnspecified();
     }
 
     else
     {
-      v24 = v6;
+      v24 = sessionCopy;
       v7 = @"Unspecified";
     }
 
@@ -982,15 +982,15 @@ LABEL_16:
     v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:v61 count:3];
     [(WTAnalyticsDelegate *)self sendWritingToolsOrSmartReplySignal:v46 withPayload:v52];
 
-    v6 = v24;
+    sessionCopy = v24;
     goto LABEL_39;
   }
 
-  if ([v6 requestedTool] != 201 || -[WTAnalyticsDelegate currentDraftNumber](self, "currentDraftNumber") >= 1)
+  if ([sessionCopy requestedTool] != 201 || -[WTAnalyticsDelegate currentDraftNumber](self, "currentDraftNumber") >= 1)
   {
     v7 = getIASignalWritingToolsResultsRejected();
     getIAPayloadKeyWritingToolsRejectedAll();
-    v40 = v39 = v6;
+    v40 = v39 = sessionCopy;
     v58[0] = v40;
     v41 = [MEMORY[0x1E696AD98] numberWithInt:1];
     v59[0] = v41;
@@ -1003,7 +1003,7 @@ LABEL_16:
     v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:v58 count:2];
     [(WTAnalyticsDelegate *)self sendWritingToolsOrSmartReplySignal:v7 withPayload:v45];
 
-    v6 = v39;
+    sessionCopy = v39;
 LABEL_39:
   }
 
@@ -1011,18 +1011,18 @@ LABEL_39:
   [(WTAnalyticsDelegate *)self setUuidSuggestionMapping:0];
 }
 
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v7 = a7;
+  finishedCopy = finished;
   v31[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
-  [v10 addObjectsFromArray:v9];
+  suggestionsCopy = suggestions;
+  proofreadingSuggestions = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
+  [proofreadingSuggestions addObjectsFromArray:suggestionsCopy];
 
-  if (v7)
+  if (finishedCopy)
   {
-    v11 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
-    v12 = [v11 count];
+    proofreadingSuggestions2 = [(WTAnalyticsDelegate *)self proofreadingSuggestions];
+    v12 = [proofreadingSuggestions2 count];
 
     v13 = getIASignalWritingToolsResultsOffered();
     v14 = getIAPayloadKeyWritingToolsNumResultsOffered();
@@ -1037,7 +1037,7 @@ LABEL_39:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = v9;
+  v17 = suggestionsCopy;
   v18 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v18)
   {
@@ -1054,9 +1054,9 @@ LABEL_39:
         }
 
         v22 = *(*(&v25 + 1) + 8 * v21);
-        v23 = [(WTAnalyticsDelegate *)self uuidSuggestionMapping];
-        v24 = [v22 uuid];
-        [v23 setObject:v22 forKeyedSubscript:v24];
+        uuidSuggestionMapping = [(WTAnalyticsDelegate *)self uuidSuggestionMapping];
+        uuid = [v22 uuid];
+        [uuidSuggestionMapping setObject:v22 forKeyedSubscript:uuid];
 
         ++v21;
       }
@@ -1069,25 +1069,25 @@ LABEL_39:
   }
 }
 
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context
 {
-  v8 = a5;
-  v10 = [(WTAnalyticsDelegate *)self uuidSuggestionMapping];
-  v9 = [v10 objectForKeyedSubscript:v8];
+  dCopy = d;
+  uuidSuggestionMapping = [(WTAnalyticsDelegate *)self uuidSuggestionMapping];
+  v9 = [uuidSuggestionMapping objectForKeyedSubscript:dCopy];
 
-  [v9 setState:a4];
+  [v9 setState:state];
 }
 
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v7 = a7;
+  finishedCopy = finished;
   v30[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v7)
+  sessionCopy = session;
+  textCopy = text;
+  contextCopy = context;
+  if (finishedCopy)
   {
-    v14 = [(WTAnalyticsDelegate *)self numDrafts];
+    numDrafts = [(WTAnalyticsDelegate *)self numDrafts];
     v15 = getIASignalWritingToolsResultsOffered();
     v16 = getIAPayloadKeyWritingToolsNumResultsOffered();
     v28 = v16;
@@ -1116,7 +1116,7 @@ LABEL_39:
     v29 = *v18;
     v20 = MEMORY[0x1E696AD98];
     v21 = v29;
-    v22 = [v20 numberWithUnsignedInteger:v14];
+    v22 = [v20 numberWithUnsignedInteger:numDrafts];
     v30[1] = v22;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v28 count:2];
     [(WTAnalyticsDelegate *)self sendWritingToolsOnlySignal:v15 withPayload:v23];
@@ -1151,11 +1151,11 @@ LABEL_39:
 
 - (void)undo
 {
-  v3 = [(WTAnalyticsDelegate *)self currentDraftNumber];
+  currentDraftNumber = [(WTAnalyticsDelegate *)self currentDraftNumber];
   v4 = 2;
-  if (v3 > 2)
+  if (currentDraftNumber > 2)
   {
-    v4 = v3;
+    v4 = currentDraftNumber;
   }
 
   [(WTAnalyticsDelegate *)self setCurrentDraftNumber:v4 - 1];
@@ -1163,16 +1163,16 @@ LABEL_39:
 
 - (void)redo
 {
-  v3 = [(WTAnalyticsDelegate *)self currentDraftNumber];
-  v4 = [(WTAnalyticsDelegate *)self numDrafts];
-  if (v3 + 1 > v4)
+  currentDraftNumber = [(WTAnalyticsDelegate *)self currentDraftNumber];
+  numDrafts = [(WTAnalyticsDelegate *)self numDrafts];
+  if (currentDraftNumber + 1 > numDrafts)
   {
-    v5 = v3 + 1;
+    v5 = currentDraftNumber + 1;
   }
 
   else
   {
-    v5 = v4;
+    v5 = numDrafts;
   }
 
   [(WTAnalyticsDelegate *)self setCurrentDraftNumber:v5];

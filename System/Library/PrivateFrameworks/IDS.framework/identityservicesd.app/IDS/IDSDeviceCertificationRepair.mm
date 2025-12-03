@@ -1,5 +1,5 @@
 @interface IDSDeviceCertificationRepair
-- (BOOL)_missingDeviceIdentity:(BOOL *)a3;
+- (BOOL)_missingDeviceIdentity:(BOOL *)identity;
 - (IDSDeviceCertificationRepair)init;
 - (IDSDeviceCertificationRepairDelegate)delegate;
 - (void)recertifyDeviceIfNeeded;
@@ -33,9 +33,9 @@
 - (void)recertifyDeviceIfNeeded
 {
   v3 = +[IMSystemMonitor sharedInstance];
-  v4 = [v3 isUnderFirstDataProtectionLock];
+  isUnderFirstDataProtectionLock = [v3 isUnderFirstDataProtectionLock];
 
-  if (v4)
+  if (isUnderFirstDataProtectionLock)
   {
     v5 = +[IMRGLog warning];
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -66,7 +66,7 @@ LABEL_4:
     v15 = 3221225472;
     v16 = sub_1006DA798;
     v17 = &unk_100BD6ED0;
-    v18 = self;
+    selfCopy = self;
 LABEL_10:
     im_dispatch_after_primary_queue();
     return;
@@ -121,11 +121,11 @@ LABEL_10:
   dispatch_async(v11, v12);
 }
 
-- (BOOL)_missingDeviceIdentity:(BOOL *)a3
+- (BOOL)_missingDeviceIdentity:(BOOL *)identity
 {
-  if (a3)
+  if (identity)
   {
-    *a3 = 0;
+    *identity = 0;
   }
 
   *buf = 0;
@@ -133,9 +133,9 @@ LABEL_10:
   v5 = 0;
   v6 = sub_1006DA200(v5);
 
-  v7 = [sub_1006DAF6C() copyIdentity];
-  v8 = v7;
-  if (v7)
+  copyIdentity = [sub_1006DAF6C() copyIdentity];
+  v8 = copyIdentity;
+  if (copyIdentity)
   {
     v9 = 0;
   }
@@ -145,7 +145,7 @@ LABEL_10:
     v9 = -25300;
   }
 
-  if (v4 && v7)
+  if (v4 && copyIdentity)
   {
     cf = 0;
     certificateRef = 0;
@@ -254,9 +254,9 @@ LABEL_45:
 
   if (v6 == -34019)
   {
-    if (a3)
+    if (identity)
     {
-      *a3 = 1;
+      *identity = 1;
     }
   }
 

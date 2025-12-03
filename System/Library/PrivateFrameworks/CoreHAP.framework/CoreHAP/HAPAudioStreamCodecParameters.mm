@@ -1,12 +1,12 @@
 @interface HAPAudioStreamCodecParameters
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPAudioStreamCodecParameters)init;
-- (HAPAudioStreamCodecParameters)initWithNumAudioChannels:(id)a3 bitRate:(id)a4 sampleRate:(id)a5 packetTime:(id)a6;
+- (HAPAudioStreamCodecParameters)initWithNumAudioChannels:(id)channels bitRate:(id)rate sampleRate:(id)sampleRate packetTime:(id)time;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPAudioStreamCodecParameters
@@ -14,19 +14,19 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
-  v5 = [(HAPAudioStreamCodecParameters *)self bitRate];
-  v6 = [(HAPAudioStreamCodecParameters *)self sampleRate];
-  v7 = [(HAPAudioStreamCodecParameters *)self packetTime];
-  v8 = [v3 stringWithFormat:@"<HAPAudioStreamCodecParameters numAudioChannels=%@, bitRate=%@, sampleRate=%@, packetTime=%@>", v4, v5, v6, v7];
+  numAudioChannels = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
+  bitRate = [(HAPAudioStreamCodecParameters *)self bitRate];
+  sampleRate = [(HAPAudioStreamCodecParameters *)self sampleRate];
+  packetTime = [(HAPAudioStreamCodecParameters *)self packetTime];
+  v8 = [v3 stringWithFormat:@"<HAPAudioStreamCodecParameters numAudioChannels=%@, bitRate=%@, sampleRate=%@, packetTime=%@>", numAudioChannels, bitRate, sampleRate, packetTime];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -36,34 +36,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
-      v8 = [(HAPAudioStreamCodecParameters *)v6 numAudioChannels];
-      if (v7 != v8)
+      v6 = equalCopy;
+      numAudioChannels = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
+      numAudioChannels2 = [(HAPAudioStreamCodecParameters *)v6 numAudioChannels];
+      if (numAudioChannels != numAudioChannels2)
       {
-        v9 = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
+        numAudioChannels3 = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
         [(HAPAudioStreamCodecParameters *)v6 numAudioChannels];
-        v33 = v32 = v9;
-        if (![v9 isEqual:?])
+        v33 = v32 = numAudioChannels3;
+        if (![numAudioChannels3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
         }
       }
 
-      v11 = [(HAPAudioStreamCodecParameters *)self bitRate];
-      v12 = [(HAPAudioStreamCodecParameters *)v6 bitRate];
-      if (v11 != v12)
+      bitRate = [(HAPAudioStreamCodecParameters *)self bitRate];
+      bitRate2 = [(HAPAudioStreamCodecParameters *)v6 bitRate];
+      if (bitRate != bitRate2)
       {
-        v3 = [(HAPAudioStreamCodecParameters *)self bitRate];
-        v30 = [(HAPAudioStreamCodecParameters *)v6 bitRate];
-        if (![v3 isEqual:?])
+        bitRate3 = [(HAPAudioStreamCodecParameters *)self bitRate];
+        bitRate4 = [(HAPAudioStreamCodecParameters *)v6 bitRate];
+        if (![bitRate3 isEqual:?])
         {
           v10 = 0;
 LABEL_22:
 
 LABEL_23:
-          if (v7 == v8)
+          if (numAudioChannels == numAudioChannels2)
           {
 LABEL_25:
 
@@ -76,38 +76,38 @@ LABEL_24:
         }
       }
 
-      v13 = [(HAPAudioStreamCodecParameters *)self sampleRate];
-      v14 = [(HAPAudioStreamCodecParameters *)v6 sampleRate];
-      v31 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      sampleRate = [(HAPAudioStreamCodecParameters *)self sampleRate];
+      sampleRate2 = [(HAPAudioStreamCodecParameters *)v6 sampleRate];
+      v31 = sampleRate;
+      v15 = sampleRate == sampleRate2;
+      v16 = sampleRate2;
       if (v15)
       {
-        v28 = v3;
-        v29 = v12;
+        v28 = bitRate3;
+        v29 = bitRate2;
       }
 
       else
       {
-        v17 = [(HAPAudioStreamCodecParameters *)self sampleRate];
-        v25 = [(HAPAudioStreamCodecParameters *)v6 sampleRate];
-        v26 = v17;
-        if (![v17 isEqual:?])
+        sampleRate3 = [(HAPAudioStreamCodecParameters *)self sampleRate];
+        sampleRate4 = [(HAPAudioStreamCodecParameters *)v6 sampleRate];
+        v26 = sampleRate3;
+        if (![sampleRate3 isEqual:?])
         {
           v10 = 0;
           v23 = v31;
           goto LABEL_20;
         }
 
-        v28 = v3;
-        v29 = v12;
+        v28 = bitRate3;
+        v29 = bitRate2;
       }
 
       v27 = v16;
-      v18 = [(HAPAudioStreamCodecParameters *)self packetTime];
-      v19 = [(HAPAudioStreamCodecParameters *)v6 packetTime];
-      v20 = v19;
-      if (v18 == v19)
+      packetTime = [(HAPAudioStreamCodecParameters *)self packetTime];
+      packetTime2 = [(HAPAudioStreamCodecParameters *)v6 packetTime];
+      v20 = packetTime2;
+      if (packetTime == packetTime2)
       {
 
         v10 = 1;
@@ -115,20 +115,20 @@ LABEL_24:
 
       else
       {
-        v21 = [(HAPAudioStreamCodecParameters *)self packetTime];
-        v22 = [(HAPAudioStreamCodecParameters *)v6 packetTime];
-        v10 = [v21 isEqual:v22];
+        packetTime3 = [(HAPAudioStreamCodecParameters *)self packetTime];
+        packetTime4 = [(HAPAudioStreamCodecParameters *)v6 packetTime];
+        v10 = [packetTime3 isEqual:packetTime4];
       }
 
       v23 = v31;
       v16 = v27;
-      v3 = v28;
-      v12 = v29;
+      bitRate3 = v28;
+      bitRate2 = v29;
       if (v31 == v27)
       {
 LABEL_21:
 
-        if (v11 == v12)
+        if (bitRate == bitRate2)
         {
           goto LABEL_23;
         }
@@ -149,19 +149,19 @@ LABEL_26:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPAudioStreamCodecParameters allocWithZone:a3];
-  v5 = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
-  v6 = [(HAPAudioStreamCodecParameters *)self bitRate];
-  v7 = [(HAPAudioStreamCodecParameters *)self sampleRate];
-  v8 = [(HAPAudioStreamCodecParameters *)self packetTime];
-  v9 = [(HAPAudioStreamCodecParameters *)v4 initWithNumAudioChannels:v5 bitRate:v6 sampleRate:v7 packetTime:v8];
+  v4 = [HAPAudioStreamCodecParameters allocWithZone:zone];
+  numAudioChannels = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
+  bitRate = [(HAPAudioStreamCodecParameters *)self bitRate];
+  sampleRate = [(HAPAudioStreamCodecParameters *)self sampleRate];
+  packetTime = [(HAPAudioStreamCodecParameters *)self packetTime];
+  v9 = [(HAPAudioStreamCodecParameters *)v4 initWithNumAudioChannels:numAudioChannels bitRate:bitRate sampleRate:sampleRate packetTime:packetTime];
 
   return v9;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
   v44 = 0u;
@@ -186,13 +186,13 @@ LABEL_26:
   v27 = 0u;
   v25 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
+  numAudioChannels = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
 
-  if (v5)
+  if (numAudioChannels)
   {
-    v6 = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
+    numAudioChannels2 = [(HAPAudioStreamCodecParameters *)self numAudioChannels];
     v24 = 0;
-    v7 = [v6 serializeWithError:&v24];
+    v7 = [numAudioChannels2 serializeWithError:&v24];
     v8 = v24;
 
     if (v8)
@@ -209,16 +209,16 @@ LABEL_26:
     }
   }
 
-  v10 = [(HAPAudioStreamCodecParameters *)self bitRate];
+  bitRate = [(HAPAudioStreamCodecParameters *)self bitRate];
 
-  if (!v10)
+  if (!bitRate)
   {
     goto LABEL_9;
   }
 
-  v11 = [(HAPAudioStreamCodecParameters *)self bitRate];
+  bitRate2 = [(HAPAudioStreamCodecParameters *)self bitRate];
   v23 = 0;
-  v7 = [v11 serializeWithError:&v23];
+  v7 = [bitRate2 serializeWithError:&v23];
   v8 = v23;
 
   if (v8)
@@ -235,11 +235,11 @@ LABEL_12:
     v14 = v9;
 
 LABEL_13:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus(v14);
       v8 = 0;
-      *a3 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_22;
     }
 
@@ -250,13 +250,13 @@ LABEL_21:
   }
 
 LABEL_9:
-  v12 = [(HAPAudioStreamCodecParameters *)self sampleRate];
+  sampleRate = [(HAPAudioStreamCodecParameters *)self sampleRate];
 
-  if (v12)
+  if (sampleRate)
   {
-    v13 = [(HAPAudioStreamCodecParameters *)self sampleRate];
+    sampleRate2 = [(HAPAudioStreamCodecParameters *)self sampleRate];
     v22 = 0;
-    v7 = [v13 serializeWithError:&v22];
+    v7 = [sampleRate2 serializeWithError:&v22];
     v8 = v22;
 
     if (v8)
@@ -273,24 +273,24 @@ LABEL_9:
     }
   }
 
-  v16 = [(HAPAudioStreamCodecParameters *)self packetTime];
+  packetTime = [(HAPAudioStreamCodecParameters *)self packetTime];
 
-  if (v16)
+  if (packetTime)
   {
-    v17 = [(HAPAudioStreamCodecParameters *)self packetTime];
+    packetTime2 = [(HAPAudioStreamCodecParameters *)self packetTime];
     v21 = 0;
-    v7 = [v17 serializeWithError:&v21];
+    v7 = [packetTime2 serializeWithError:&v21];
     v8 = v21;
 
     if (v8)
     {
 LABEL_19:
 
-      if (a3)
+      if (error)
       {
         v18 = v8;
         v15 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_22;
       }
 
@@ -317,22 +317,22 @@ LABEL_22:
   return v15;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 >= 1)
   {
-    v24 = self;
-    v25 = a4;
-    v26 = v6;
+    selfCopy = self;
+    errorCopy = error;
+    v26 = dataCopy;
     v9 = 0;
     v10 = 0;
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    v14 = v7 + v8;
+    v14 = bytes + v8;
     while (1)
     {
       v34 = 0;
@@ -342,10 +342,10 @@ LABEL_22:
       Next = TLV8GetNext();
       if (Next)
       {
-        if (v25)
+        if (errorCopy)
         {
           HMErrorFromOSStatus(Next);
-          *v25 = v21 = 0;
+          *errorCopy = v21 = 0;
         }
 
         else
@@ -353,7 +353,7 @@ LABEL_22:
           v21 = 0;
         }
 
-        v6 = v26;
+        dataCopy = v26;
         goto LABEL_28;
       }
 
@@ -424,12 +424,12 @@ LABEL_14:
         if (v9)
         {
 LABEL_17:
-          v6 = v26;
-          if (v25)
+          dataCopy = v26;
+          if (errorCopy)
           {
             v20 = v9;
             v21 = 0;
-            *v25 = v9;
+            *errorCopy = v9;
           }
 
           else
@@ -441,8 +441,8 @@ LABEL_17:
         }
 
 LABEL_23:
-        v6 = v26;
-        self = v24;
+        dataCopy = v26;
+        self = selfCopy;
         goto LABEL_24;
       }
     }
@@ -464,22 +464,22 @@ LABEL_28:
   return v21;
 }
 
-- (HAPAudioStreamCodecParameters)initWithNumAudioChannels:(id)a3 bitRate:(id)a4 sampleRate:(id)a5 packetTime:(id)a6
+- (HAPAudioStreamCodecParameters)initWithNumAudioChannels:(id)channels bitRate:(id)rate sampleRate:(id)sampleRate packetTime:(id)time
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  channelsCopy = channels;
+  rateCopy = rate;
+  sampleRateCopy = sampleRate;
+  timeCopy = time;
   v18.receiver = self;
   v18.super_class = HAPAudioStreamCodecParameters;
   v15 = [(HAPAudioStreamCodecParameters *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_numAudioChannels, a3);
-    objc_storeStrong(&v16->_bitRate, a4);
-    objc_storeStrong(&v16->_sampleRate, a5);
-    objc_storeStrong(&v16->_packetTime, a6);
+    objc_storeStrong(&v15->_numAudioChannels, channels);
+    objc_storeStrong(&v16->_bitRate, rate);
+    objc_storeStrong(&v16->_sampleRate, sampleRate);
+    objc_storeStrong(&v16->_packetTime, time);
   }
 
   return v16;
@@ -492,24 +492,24 @@ LABEL_28:
   return [(HAPAudioStreamCodecParameters *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPAudioStreamCodecParameters);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPAudioStreamCodecParameters *)v6 parseFromData:v5 error:&v11];
+    [(HAPAudioStreamCodecParameters *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

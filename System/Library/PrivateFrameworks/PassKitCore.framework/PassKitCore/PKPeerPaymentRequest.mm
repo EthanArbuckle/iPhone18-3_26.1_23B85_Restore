@@ -1,24 +1,24 @@
 @interface PKPeerPaymentRequest
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentRequest)initWithCoder:(id)a3;
-- (PKPeerPaymentRequest)initWithPeerPaymentQuote:(id)a3 peerPaymentType:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentRequest)initWithCoder:(id)coder;
+- (PKPeerPaymentRequest)initWithPeerPaymentQuote:(id)quote peerPaymentType:(unint64_t)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentRequest
 
-- (PKPeerPaymentRequest)initWithPeerPaymentQuote:(id)a3 peerPaymentType:(unint64_t)a4
+- (PKPeerPaymentRequest)initWithPeerPaymentQuote:(id)quote peerPaymentType:(unint64_t)type
 {
-  v7 = a3;
+  quoteCopy = quote;
   v30.receiver = self;
   v30.super_class = PKPeerPaymentRequest;
   v8 = [(PKPaymentRequest *)&v30 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_peerPaymentQuote, a3);
-    v9->_peerPaymentType = a4;
+    objc_storeStrong(&v8->_peerPaymentQuote, quote);
+    v9->_peerPaymentType = type;
     [(PKPaymentRequest *)v9 setRequestType:9];
     v10 = [MEMORY[0x1E695DFD8] set];
     [(PKPaymentRequest *)v9 setRequiredShippingContactFields:v10];
@@ -26,34 +26,34 @@
     v11 = [MEMORY[0x1E695DFD8] set];
     [(PKPaymentRequest *)v9 setRequiredBillingContactFields:v11];
 
-    v12 = [v7 totalReceiveAmountCurrency];
-    [(PKPaymentRequest *)v9 setCurrencyCode:v12];
+    totalReceiveAmountCurrency = [quoteCopy totalReceiveAmountCurrency];
+    [(PKPaymentRequest *)v9 setCurrencyCode:totalReceiveAmountCurrency];
 
-    v13 = [v7 firstQuoteItemOfType:1];
+    v13 = [quoteCopy firstQuoteItemOfType:1];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 merchantIdentifier];
-      [(PKPaymentRequest *)v9 setMerchantIdentifier:v15];
+      merchantIdentifier = [v13 merchantIdentifier];
+      [(PKPaymentRequest *)v9 setMerchantIdentifier:merchantIdentifier];
 
-      v16 = [v14 supportedNetworks];
-      [(PKPaymentRequest *)v9 setSupportedNetworks:v16];
+      supportedNetworks = [v14 supportedNetworks];
+      [(PKPaymentRequest *)v9 setSupportedNetworks:supportedNetworks];
 
       -[PKPaymentRequest setMerchantCapabilities:](v9, "setMerchantCapabilities:", [v14 merchantCapabilities]);
-      v17 = [v14 countryCode];
-      [(PKPaymentRequest *)v9 setCountryCode:v17];
+      countryCode = [v14 countryCode];
+      [(PKPaymentRequest *)v9 setCountryCode:countryCode];
 
       v18 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v19 = [v14 countryCode];
-      [v18 pk_safelyAddObject:v19];
+      countryCode2 = [v14 countryCode];
+      [v18 pk_safelyAddObject:countryCode2];
 
-      v20 = [v14 supportedFundingSourceCountryCodes];
-      v21 = [v20 count];
+      supportedFundingSourceCountryCodes = [v14 supportedFundingSourceCountryCodes];
+      v21 = [supportedFundingSourceCountryCodes count];
 
       if (v21)
       {
-        v22 = [v14 supportedFundingSourceCountryCodes];
-        [v18 unionSet:v22];
+        supportedFundingSourceCountryCodes2 = [v14 supportedFundingSourceCountryCodes];
+        [v18 unionSet:supportedFundingSourceCountryCodes2];
       }
 
       v23 = [v18 copy];
@@ -63,16 +63,16 @@
       [(PKPaymentRequest *)v9 setRequiredBillingContactFields:v24];
     }
 
-    v25 = [v7 firstQuoteItemOfType:3];
-    v26 = [v7 firstQuoteItemOfType:4];
+    v25 = [quoteCopy firstQuoteItemOfType:3];
+    v26 = [quoteCopy firstQuoteItemOfType:4];
     if (v25 | v26)
     {
       [(PKPaymentRequest *)v9 setConfirmationStyle:1];
       if (v26)
       {
         [(PKPaymentRequest *)v9 setSupportsInstantFundsIn:1];
-        v27 = [v26 supportedNetworks];
-        [(PKPaymentRequest *)v9 setSupportedNetworks:v27];
+        supportedNetworks2 = [v26 supportedNetworks];
+        [(PKPaymentRequest *)v9 setSupportedNetworks:supportedNetworks2];
 
         v28 = [MEMORY[0x1E695DFD8] setWithObjects:{@"post", 0}];
         [(PKPaymentRequest *)v9 setRequiredBillingContactFields:v28];
@@ -85,23 +85,23 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v17.receiver = self;
     v17.super_class = PKPeerPaymentRequest;
-    if ([(PKPaymentRequest *)&v17 isEqual:v4])
+    if ([(PKPaymentRequest *)&v17 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       peerPaymentQuote = self->_peerPaymentQuote;
-      v7 = [v5 peerPaymentQuote];
-      v8 = v7;
+      peerPaymentQuote = [v5 peerPaymentQuote];
+      v8 = peerPaymentQuote;
       if (peerPaymentQuote)
       {
-        v9 = v7 == 0;
+        v9 = peerPaymentQuote == 0;
       }
 
       else
@@ -111,15 +111,15 @@
 
       if (!v9)
       {
-        [(PKPeerPaymentQuote *)peerPaymentQuote isEqual:v7];
+        [(PKPeerPaymentQuote *)peerPaymentQuote isEqual:peerPaymentQuote];
       }
 
       analyticsMessagesContext = self->_analyticsMessagesContext;
-      v11 = [v5 analyticsMessagesContext];
-      v12 = v11;
+      analyticsMessagesContext = [v5 analyticsMessagesContext];
+      v12 = analyticsMessagesContext;
       if (analyticsMessagesContext)
       {
-        v13 = v11 == 0;
+        v13 = analyticsMessagesContext == 0;
       }
 
       else
@@ -140,7 +140,7 @@ LABEL_17:
 
       else
       {
-        v15 = [(NSDictionary *)analyticsMessagesContext isEqual:v11];
+        v15 = [(NSDictionary *)analyticsMessagesContext isEqual:analyticsMessagesContext];
 
         if (v15)
         {
@@ -163,48 +163,48 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_peerPaymentQuote];
-  [v3 safelyAddObject:self->_analyticsMessagesContext];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_peerPaymentQuote];
+  [array safelyAddObject:self->_analyticsMessagesContext];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (PKPeerPaymentRequest)initWithCoder:(id)a3
+- (PKPeerPaymentRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKPeerPaymentRequest;
-  v5 = [(PKPaymentRequest *)&v14 initWithCoder:v4];
+  v5 = [(PKPaymentRequest *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentQuote"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentQuote"];
     peerPaymentQuote = v5->_peerPaymentQuote;
     v5->_peerPaymentQuote = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"analyticsMessagesContext"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"analyticsMessagesContext"];
     analyticsMessagesContext = v5->_analyticsMessagesContext;
     v5->_analyticsMessagesContext = v11;
 
-    v5->_peerPaymentType = [v4 decodeIntegerForKey:@"peerPaymentType"];
+    v5->_peerPaymentType = [coderCopy decodeIntegerForKey:@"peerPaymentType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPeerPaymentRequest;
-  v4 = a3;
-  [(PKPaymentRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_peerPaymentQuote forKey:{@"peerPaymentQuote", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_analyticsMessagesContext forKey:@"analyticsMessagesContext"];
-  [v4 encodeInteger:self->_peerPaymentType forKey:@"peerPaymentType"];
+  coderCopy = coder;
+  [(PKPaymentRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_peerPaymentQuote forKey:{@"peerPaymentQuote", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_analyticsMessagesContext forKey:@"analyticsMessagesContext"];
+  [coderCopy encodeInteger:self->_peerPaymentType forKey:@"peerPaymentType"];
 }
 
 @end

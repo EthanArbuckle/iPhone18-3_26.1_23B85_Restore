@@ -1,36 +1,36 @@
 @interface ASMGATTConnectionManager
-- (ASMGATTConnectionManager)initWithQueue:(id)a3;
+- (ASMGATTConnectionManager)initWithQueue:(id)queue;
 - (ASMPeripheral)peripheral;
-- (void)_activateWithPeripheral:(id)a3 completion:(id)a4;
+- (void)_activateWithPeripheral:(id)peripheral completion:(id)completion;
 - (void)_centralManagerEnsureStarted;
 - (void)_centralManagerEnsureStopped;
 - (void)_connectedPeripheralsChanged;
 - (void)_discoverAccessory;
 - (void)_invalidate;
-- (void)_writeWithData:(id)a3 characteristic:(id)a4 completion:(id)a5;
-- (void)activateWithPeripheral:(id)a3 completion:(id)a4;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)_writeWithData:(id)data characteristic:(id)characteristic completion:(id)completion;
+- (void)activateWithPeripheral:(id)peripheral completion:(id)completion;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)invalidate;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)writeWithData:(id)a3 characteristic:(id)a4 completion:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)writeWithData:(id)data characteristic:(id)characteristic completion:(id)completion;
 @end
 
 @implementation ASMGATTConnectionManager
 
-- (ASMGATTConnectionManager)initWithQueue:(id)a3
+- (ASMGATTConnectionManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = ASMGATTConnectionManager;
   v6 = [(ASMGATTConnectionManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
     if (dword_10001A208 <= 30 && (dword_10001A208 != -1 || _LogCategory_Initialize()))
     {
       sub_10000898C(&v7->_dispatchQueue);
@@ -42,27 +42,27 @@
   return v7;
 }
 
-- (void)activateWithPeripheral:(id)a3 completion:(id)a4
+- (void)activateWithPeripheral:(id)peripheral completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002A98;
   block[3] = &unk_100014378;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = peripheralCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = peripheralCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_activateWithPeripheral:(id)a3 completion:(id)a4
+- (void)_activateWithPeripheral:(id)peripheral completion:(id)completion
 {
-  obj = a3;
-  v6 = a4;
+  obj = peripheral;
+  completionCopy = completion;
   if (!self->_activateCalled)
   {
     self->_activateCalled = 1;
@@ -71,11 +71,11 @@
       sub_1000089D0(obj);
     }
 
-    v7 = [obj bluetoothUUID];
+    bluetoothUUID = [obj bluetoothUUID];
     identifier = self->_identifier;
-    self->_identifier = v7;
+    self->_identifier = bluetoothUUID;
 
-    v9 = objc_retainBlock(v6);
+    v9 = objc_retainBlock(completionCopy);
     completion = self->_completion;
     self->_completion = v9;
 
@@ -205,13 +205,13 @@ LABEL_5:
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = [a3 state];
-  v5 = v4 == 5;
+  state = [state state];
+  v5 = state == 5;
   if (self->_isCentralManagerOn != v5)
   {
-    v6 = v4;
+    v6 = state;
     if (dword_10001A208 <= 30 && (dword_10001A208 != -1 || _LogCategory_Initialize()))
     {
       sub_100008B28();
@@ -226,29 +226,29 @@ LABEL_5:
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v7 = a4;
+  peripheralCopy = peripheral;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_10001A208 <= 30 && (dword_10001A208 != -1 || _LogCategory_Initialize()))
   {
     sub_100008B80();
   }
 
-  [v7 setDelegate:self];
+  [peripheralCopy setDelegate:self];
   v5 = [CBUUID UUIDWithString:@"1b8d9548-c066-4fbf-bc7e-cf3e5a3fabbf"];
   v6 = [NSArray arrayWithObjects:v5, 0];
-  [v7 discoverServices:v6];
+  [peripheralCopy discoverServices:v6];
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v14 = a3;
-  obj = [v14 services];
+  peripheralCopy = peripheral;
+  obj = [peripheralCopy services];
   v4 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
@@ -271,9 +271,9 @@ LABEL_5:
           sub_100008BC0();
         }
 
-        v10 = [v9 UUID];
+        uUID = [v9 UUID];
         v11 = [CBUUID UUIDWithString:v7];
-        v12 = [v10 isEqual:v11];
+        v12 = [uUID isEqual:v11];
 
         if (v12)
         {
@@ -282,7 +282,7 @@ LABEL_5:
             sub_100008C00();
           }
 
-          [v14 discoverCharacteristics:0 forService:v9];
+          [peripheralCopy discoverCharacteristics:0 forService:v9];
         }
 
         v8 = v8 + 1;
@@ -297,27 +297,27 @@ LABEL_5:
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_10001A208 <= 30 && (dword_10001A208 != -1 || _LogCategory_Initialize()))
   {
-    sub_100008C40(v7);
+    sub_100008C40(serviceCopy);
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (dword_10001A208 <= 90 && (dword_10001A208 != -1 || _LogCategory_Initialize()))
     {
-      sub_100008CAC(v9);
+      sub_100008CAC(errorCopy);
     }
   }
 
@@ -332,20 +332,20 @@ LABEL_5:
 
   if (v10)
   {
-    v10[2](v10, v9);
+    v10[2](v10, errorCopy);
   }
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (dword_10001A208 <= 90 && (dword_10001A208 != -1 || _LogCategory_Initialize()))
     {
-      sub_100008D24(v9);
+      sub_100008D24(errorCopy);
     }
   }
 
@@ -358,38 +358,38 @@ LABEL_5:
   v11 = v10;
   if (v10)
   {
-    (*(v10 + 2))(v10, v9);
+    (*(v10 + 2))(v10, errorCopy);
   }
 
   writeCompletion = self->_writeCompletion;
   self->_writeCompletion = 0;
 }
 
-- (void)writeWithData:(id)a3 characteristic:(id)a4 completion:(id)a5
+- (void)writeWithData:(id)data characteristic:(id)characteristic completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  characteristicCopy = characteristic;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100003964;
   v15[3] = &unk_100014450;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dataCopy;
+  v17 = characteristicCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = characteristicCopy;
+  v14 = dataCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
-- (void)_writeWithData:(id)a3 characteristic:(id)a4 completion:(id)a5
+- (void)_writeWithData:(id)data characteristic:(id)characteristic completion:(id)completion
 {
-  v29 = a3;
-  v7 = a4;
-  v8 = a5;
+  dataCopy = data;
+  characteristicCopy = characteristic;
+  completionCopy = completion;
   if (dword_10001A208 <= 30 && (dword_10001A208 != -1 || _LogCategory_Initialize()))
   {
     sub_100008D90();
@@ -405,19 +405,19 @@ LABEL_5:
   v41[3] = &unk_100014478;
   v43 = &v44;
   v41[4] = self;
-  v28 = v8;
+  v28 = completionCopy;
   v42 = v28;
   v26 = objc_retainBlock(v41);
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = [(CBPeripheral *)self->_selectedPeripheral services];
-  v10 = [v9 countByEnumeratingWithState:&v37 objects:v49 count:16];
+  services = [(CBPeripheral *)self->_selectedPeripheral services];
+  v10 = [services countByEnumeratingWithState:&v37 objects:v49 count:16];
   if (v10)
   {
     v30 = *v38;
-    obj = v9;
+    obj = services;
     do
     {
       v31 = v10;
@@ -433,8 +433,8 @@ LABEL_5:
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v13 = [v12 characteristics];
-        v14 = [v13 countByEnumeratingWithState:&v33 objects:v48 count:16];
+        characteristics = [v12 characteristics];
+        v14 = [characteristics countByEnumeratingWithState:&v33 objects:v48 count:16];
         if (v14)
         {
           v15 = *v34;
@@ -444,20 +444,20 @@ LABEL_5:
             {
               if (*v34 != v15)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(characteristics);
               }
 
               v17 = *(*(&v33 + 1) + 8 * j);
-              v18 = [v17 UUID];
-              v19 = [CBUUID UUIDWithString:v7];
-              v20 = v18;
+              uUID = [v17 UUID];
+              v19 = [CBUUID UUIDWithString:characteristicCopy];
+              v20 = uUID;
               v21 = v19;
               v22 = v21;
               if (v20 == v21)
               {
 
 LABEL_24:
-                [(CBPeripheral *)self->_selectedPeripheral writeValue:v29 forCharacteristic:v17 type:0];
+                [(CBPeripheral *)self->_selectedPeripheral writeValue:dataCopy forCharacteristic:v17 type:0];
                 *(v45 + 24) = 1;
                 v24 = objc_retainBlock(v28);
                 writeCompletion = self->_writeCompletion;
@@ -481,7 +481,7 @@ LABEL_24:
               }
             }
 
-            v14 = [v13 countByEnumeratingWithState:&v33 objects:v48 count:16];
+            v14 = [characteristics countByEnumeratingWithState:&v33 objects:v48 count:16];
             if (v14)
             {
               continue;
@@ -494,7 +494,7 @@ LABEL_24:
 LABEL_25:
       }
 
-      v9 = obj;
+      services = obj;
       v10 = [obj countByEnumeratingWithState:&v37 objects:v49 count:16];
     }
 

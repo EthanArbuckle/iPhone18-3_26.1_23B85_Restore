@@ -1,5 +1,5 @@
 @interface SUSUISetupUpgradeAlertItem
-- (SUSUISetupUpgradeAlertItem)initWithAcknowledgementBlock:(id)a3;
+- (SUSUISetupUpgradeAlertItem)initWithAcknowledgementBlock:(id)block;
 - (id)buttons;
 - (id)currentSystemVersion;
 - (id)graphicIcon;
@@ -10,31 +10,31 @@
 
 @implementation SUSUISetupUpgradeAlertItem
 
-- (SUSUISetupUpgradeAlertItem)initWithAcknowledgementBlock:(id)a3
+- (SUSUISetupUpgradeAlertItem)initWithAcknowledgementBlock:(id)block
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, block);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10 = [(SUSUIBaseAlertItem *)v3 init];
-  v12 = v10;
-  objc_storeStrong(&v12, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
     v4 = objc_retainBlock(location[0]);
-    v5 = *(&v12->super._isUILocked + 1);
-    *(&v12->super._isUILocked + 1) = v4;
+    v5 = *(&selfCopy->super._isUILocked + 1);
+    *(&selfCopy->super._isUILocked + 1) = v4;
 
     v9 = +[SUSUIPreferences sharedInstance];
-    v6 = [(SUSUIPreferences *)v9 lastAppliedUpdateWasSplatOnly];
-    BYTE1(v12->_acknowledgementBlock) = v6;
+    lastAppliedUpdateWasSplatOnly = [(SUSUIPreferences *)v9 lastAppliedUpdateWasSplatOnly];
+    BYTE1(selfCopy->_acknowledgementBlock) = lastAppliedUpdateWasSplatOnly;
   }
 
-  v8 = v12;
+  v8 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
@@ -84,11 +84,11 @@
 
 - (id)message
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   v16[0] = 0;
-  v15 = [(SUSUISetupUpgradeAlertItem *)self currentSystemVersion];
-  if (BYTE1(v17->_acknowledgementBlock))
+  currentSystemVersion = [(SUSUISetupUpgradeAlertItem *)self currentSystemVersion];
+  if (BYTE1(selfCopy->_acknowledgementBlock))
   {
     v2 = @"LOCKSCREEN_SPLAT_UPGRADE_ALERT_MESSAGE";
   }
@@ -102,7 +102,7 @@
   v12 = sub_AF64();
   v11 = [UIDevice modelSpecificLocalizedStringKeyForKey:v14];
   v10 = [v12 localizedStringForKey:? value:? table:?];
-  v3 = [NSString stringWithFormat:v15];
+  v3 = [NSString stringWithFormat:currentSystemVersion];
   v4 = v16[0];
   v16[0] = v3;
 
@@ -113,9 +113,9 @@
 
     if (location)
     {
-      v5 = [v16[0] stringByAppendingFormat:@" (%@)", location];
+      location = [v16[0] stringByAppendingFormat:@" (%@)", location];
       v6 = v16[0];
-      v16[0] = v5;
+      v16[0] = location;
     }
 
     objc_storeStrong(&location, 0);
@@ -123,7 +123,7 @@
 
   v8 = v16[0];
   objc_storeStrong(&v14, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&currentSystemVersion, 0);
   objc_storeStrong(v16, 0);
 
   return v8;
@@ -170,16 +170,16 @@
   if (v5)
   {
     v4 = +[UIDevice currentDevice];
-    v9 = [(UIDevice *)v4 systemVersion];
+    systemVersion = [(UIDevice *)v4 systemVersion];
   }
 
   else
   {
-    v9 = [location[0] objectForKeyedSubscript:_kCFSystemVersionShortVersionStringKey];
+    systemVersion = [location[0] objectForKeyedSubscript:_kCFSystemVersionShortVersionStringKey];
   }
 
   objc_storeStrong(location, 0);
-  v2 = v9;
+  v2 = systemVersion;
 
   return v2;
 }

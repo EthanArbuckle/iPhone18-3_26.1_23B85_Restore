@@ -9,30 +9,30 @@
 
 - (uint64_t)displayString
 {
-  v2 = [a1 form];
+  form = [self form];
 
-  return [a1 displayStringWithPreferredForm:v2 includeTimeZone:0];
+  return [self displayStringWithPreferredForm:form includeTimeZone:0];
 }
 
 - (uint64_t)displayStringWithTimeZone
 {
-  v2 = [a1 form];
+  form = [self form];
 
-  return [a1 displayStringWithPreferredForm:v2 includeTimeZone:1];
+  return [self displayStringWithPreferredForm:form includeTimeZone:1];
 }
 
 - (id)displayStringWithPreferredForm:()Display includeTimeZone:
 {
-  if ([a1 isCompatibleWithMedicalDateForm:?])
+  if ([self isCompatibleWithMedicalDateForm:?])
   {
-    v7 = [MEMORY[0x1E696C240] referenceCalendarWithLocalTimezone];
-    v8 = [a1 adjustedDateForCalendar:v7];
+    referenceCalendarWithLocalTimezone = [MEMORY[0x1E696C240] referenceCalendarWithLocalTimezone];
+    v8 = [self adjustedDateForCalendar:referenceCalendarWithLocalTimezone];
 
     v9 = MEMORY[0x1E696C240];
     if (a4)
     {
-      v10 = [a1 originalTimeZoneString];
-      v11 = [v9 displayStringForDate:v8 form:a3 originalTimeZoneString:v10];
+      originalTimeZoneString = [self originalTimeZoneString];
+      v11 = [v9 displayStringForDate:v8 form:a3 originalTimeZoneString:originalTimeZoneString];
     }
 
     else

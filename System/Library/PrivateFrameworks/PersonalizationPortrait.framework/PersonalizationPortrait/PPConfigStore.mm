@@ -1,8 +1,8 @@
 @interface PPConfigStore
 + (id)defaultStore;
-- (id)readableTrialTreatmentsMappingWithError:(id *)a3;
-- (id)variantNameWithError:(id *)a3;
-- (unint64_t)assetVersionWithError:(id *)a3;
+- (id)readableTrialTreatmentsMappingWithError:(id *)error;
+- (id)variantNameWithError:(id *)error;
+- (unint64_t)assetVersionWithError:(id *)error;
 @end
 
 @implementation PPConfigStore
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __29__PPConfigStore_defaultStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultStore__pasOnceToken2 != -1)
   {
     dispatch_once(&defaultStore__pasOnceToken2, block);
@@ -35,26 +35,26 @@ void __29__PPConfigStore_defaultStore__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)readableTrialTreatmentsMappingWithError:(id *)a3
+- (id)readableTrialTreatmentsMappingWithError:(id *)error
 {
   v4 = +[PPConfigClient sharedInstance];
-  v5 = [v4 readableTrialTreatmentsMappingWithError:a3];
+  v5 = [v4 readableTrialTreatmentsMappingWithError:error];
 
   return v5;
 }
 
-- (id)variantNameWithError:(id *)a3
+- (id)variantNameWithError:(id *)error
 {
   v4 = +[PPConfigClient sharedInstance];
-  v5 = [v4 variantNameWithError:a3];
+  v5 = [v4 variantNameWithError:error];
 
   return v5;
 }
 
-- (unint64_t)assetVersionWithError:(id *)a3
+- (unint64_t)assetVersionWithError:(id *)error
 {
   v4 = +[PPConfigClient sharedInstance];
-  v5 = [v4 assetVersionWithError:a3];
+  v5 = [v4 assetVersionWithError:error];
 
   return v5;
 }

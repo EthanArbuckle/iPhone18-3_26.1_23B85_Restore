@@ -1,7 +1,7 @@
 @interface nw_ip_channel_inbox
 - (BOOL)cancel;
 - (id)description;
-- (id)initWithPath:(void *)a3 flow:(void *)a4 parameters:(void *)a5 delegate:;
+- (id)initWithPath:(void *)path flow:(void *)flow parameters:(void *)parameters delegate:;
 @end
 
 @implementation nw_ip_channel_inbox
@@ -47,15 +47,15 @@
   return 0;
 }
 
-- (id)initWithPath:(void *)a3 flow:(void *)a4 parameters:(void *)a5 delegate:
+- (id)initWithPath:(void *)path flow:(void *)flow parameters:(void *)parameters delegate:
 {
   v146 = *MEMORY[0x1E69E9840];
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (!a1)
+  pathCopy = path;
+  flowCopy = flow;
+  parametersCopy = parameters;
+  v14 = parametersCopy;
+  if (!self)
   {
     goto LABEL_100;
   }
@@ -134,7 +134,7 @@ LABEL_188:
     goto LABEL_208;
   }
 
-  if (!v11)
+  if (!pathCopy)
   {
     v84 = __nwlog_obj();
     *buf = 136446210;
@@ -208,7 +208,7 @@ LABEL_194:
     goto LABEL_208;
   }
 
-  if (!v12)
+  if (!flowCopy)
   {
     v88 = __nwlog_obj();
     *buf = 136446210;
@@ -282,7 +282,7 @@ LABEL_200:
     goto LABEL_208;
   }
 
-  if (!v13)
+  if (!parametersCopy)
   {
     v92 = __nwlog_obj();
     *buf = 136446210;
@@ -358,10 +358,10 @@ LABEL_208:
     goto LABEL_99;
   }
 
-  v139.receiver = a1;
+  v139.receiver = self;
   v139.super_class = nw_ip_channel_inbox;
-  v15 = objc_msgSendSuper2(&v139, sel_initWithDelegate_, v13);
-  a1 = v15;
+  v15 = objc_msgSendSuper2(&v139, sel_initWithDelegate_, parametersCopy);
+  self = v15;
   if (!v15)
   {
     goto LABEL_100;
@@ -369,21 +369,21 @@ LABEL_208:
 
   v16 = v15;
   objc_storeStrong(v15 + 8, a2);
-  objc_storeStrong(a1 + 9, a3);
-  objc_storeStrong(a1 + 6, a4);
-  v17 = v11;
+  objc_storeStrong(self + 9, path);
+  objc_storeStrong(self + 6, flow);
+  v17 = pathCopy;
   v18 = _nw_path_flow_copy_interface(v17);
 
-  v19 = a1[5];
-  a1[5] = v18;
+  v19 = self[5];
+  self[5] = v18;
 
   v20 = v17;
   v21 = _nw_path_flow_copy_local_endpoint(v20);
 
-  v22 = a1[4];
-  a1[4] = v21;
+  v22 = self[4];
+  self[4] = v21;
 
-  if (!a1[4])
+  if (!self[4])
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -484,7 +484,7 @@ LABEL_82:
   v23 = v20;
   protocol_level = _nw_path_flow_get_protocol_level(v23);
 
-  *(a1 + 14) = protocol_level;
+  *(self + 14) = protocol_level;
   if (!protocol_level)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -497,15 +497,15 @@ LABEL_82:
       _os_log_impl(&dword_181A37000, v25, OS_LOG_TYPE_ERROR, "%{public}s flow level undefined, using internet-level", buf, 0xCu);
     }
 
-    *(a1 + 14) = 2;
+    *(self + 14) = 2;
   }
 
-  address = nw_endpoint_get_address(a1[4]);
-  a1[19] = address;
+  address = nw_endpoint_get_address(self[4]);
+  self[19] = address;
   if (!address)
   {
     v108 = __nwlog_obj();
-    v109 = a1[4];
+    v109 = self[4];
     *buf = 136446466;
     *&buf[4] = "[nw_ip_channel_inbox initWithPath:flow:parameters:delegate:]";
     *&buf[12] = 2112;
@@ -603,7 +603,7 @@ LABEL_220:
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
     v46 = gLogObj;
-    v47 = a1[4];
+    v47 = self[4];
     *buf = 136446466;
     *&buf[4] = "[nw_ip_channel_inbox initWithPath:flow:parameters:delegate:]";
     *&buf[12] = 2112;
@@ -713,9 +713,9 @@ LABEL_91:
 LABEL_25:
   v28 = *(&address->sa_len + v33) != 0;
 LABEL_26:
-  *(a1 + 167) = *(a1 + 167) & 0xFE | v28;
-  *(a1 + 82) = *(a1[19] + 1);
-  v34 = _nw_parameters_copy_context(v12);
+  *(self + 167) = *(self + 167) & 0xFE | v28;
+  *(self + 82) = *(self[19] + 1);
+  v34 = _nw_parameters_copy_context(flowCopy);
   if (!v34)
   {
     __nwlog_obj();
@@ -806,7 +806,7 @@ LABEL_215:
     goto LABEL_40;
   }
 
-  v35 = a1[9];
+  v35 = self[9];
   if (!v35)
   {
     __nwlog_obj();
@@ -932,10 +932,10 @@ LABEL_40:
   *buf = nexus_key;
   v45 = nw_channel_create_with_attributes(v34, uu, v140, buf);
 LABEL_41:
-  v53 = a1[10];
-  a1[10] = v45;
+  v53 = self[10];
+  self[10] = v45;
 
-  if (!a1[10])
+  if (!self[10])
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -955,15 +955,15 @@ LABEL_41:
     goto LABEL_99;
   }
 
-  a1[13] = nw_ip_channel_inbox_protocol_identifier;
-  a1[14] = &nw_ip_channel_inbox_protocol_callbacks;
-  a1[16] = a1;
-  nw_path_flow_get_id(a1[9], a1 + 88);
-  nw_channel_set_close_automatically(a1[10], 1);
-  nw_channel_set_defer_input_available(a1[10], 1);
-  nw_channel_set_protocol_level(a1[10], *(a1 + 14));
-  protocol_handler = nw_channel_get_protocol_handler(a1[10]);
-  if (((**(protocol_handler + 24))(protocol_handler, (a1 + 11)) & 1) == 0)
+  self[13] = nw_ip_channel_inbox_protocol_identifier;
+  self[14] = &nw_ip_channel_inbox_protocol_callbacks;
+  self[16] = self;
+  nw_path_flow_get_id(self[9], self + 88);
+  nw_channel_set_close_automatically(self[10], 1);
+  nw_channel_set_defer_input_available(self[10], 1);
+  nw_channel_set_protocol_level(self[10], *(self + 14));
+  protocol_handler = nw_channel_get_protocol_handler(self[10]);
+  if (((**(protocol_handler + 24))(protocol_handler, (self + 11)) & 1) == 0)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -1044,7 +1044,7 @@ LABEL_41:
 LABEL_98:
 
 LABEL_99:
-      a1 = 0;
+      self = 0;
       goto LABEL_100;
     }
 
@@ -1053,20 +1053,20 @@ LABEL_97:
     goto LABEL_98;
   }
 
-  (*(*(protocol_handler + 24) + 24))(protocol_handler, a1 + 11);
-  *(a1 + 166) = nw_parameters_get_ip_protocol(v12);
-  v55 = a1[5];
+  (*(*(protocol_handler + 24) + 24))(protocol_handler, self + 11);
+  *(self + 166) = nw_parameters_get_ip_protocol(flowCopy);
+  v55 = self[5];
   if (v55)
   {
     LODWORD(v55) = _nw_interface_get_index(v55);
   }
 
-  *(a1 + 40) = v55;
-  a1 = a1;
-  a1[16] = a1;
+  *(self + 40) = v55;
+  self = self;
+  self[16] = self;
 LABEL_100:
 
-  return a1;
+  return self;
 }
 
 @end

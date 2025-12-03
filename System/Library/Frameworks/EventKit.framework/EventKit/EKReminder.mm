@@ -1,16 +1,16 @@
 @interface EKReminder
 + (EKReminder)reminderWithEventStore:(EKEventStore *)eventStore;
-+ (id)generateUniqueIDWithReminder:(id)a3 calendar:(id)a4;
++ (id)generateUniqueIDWithReminder:(id)reminder calendar:(id)calendar;
 + (id)knownSingleValueKeysForComparison;
-+ (void)_removeSnoozedAlarmsFromReminder:(id)a3 usingDueDate:(id)a4;
++ (void)_removeSnoozedAlarmsFromReminder:(id)reminder usingDueDate:(id)date;
 - (BOOL)_reset;
 - (BOOL)dueDateAllDay;
 - (BOOL)isCompleted;
 - (BOOL)refresh;
-- (BOOL)save:(id *)a3;
-- (BOOL)validate:(id *)a3;
+- (BOOL)save:(id *)save;
+- (BOOL)validate:(id *)validate;
 - (EKReminder)init;
-- (EKReminder)initWithPersistentObject:(id)a3;
+- (EKReminder)initWithPersistentObject:(id)object;
 - (NSTimeZone)dueDateTimeZone;
 - (id)_generateNewUniqueID;
 - (id)bestDisplayAlarm;
@@ -22,29 +22,29 @@
 - (id)timeZone;
 - (id)title;
 - (unint64_t)displayOrder;
-- (void)_adjustAfterMovingOrCopyingFromOldCalendar:(id)a3 toNewCalendar:(id)a4 cachedConstraintsForOldCalendar:(id)a5 savingItem:(id)a6;
-- (void)_adjustPersistedStartDateComponentsForNewTimeZone:(id)a3;
-- (void)forceUpdateFrozenCalendar:(id)a3;
+- (void)_adjustAfterMovingOrCopyingFromOldCalendar:(id)calendar toNewCalendar:(id)newCalendar cachedConstraintsForOldCalendar:(id)oldCalendar savingItem:(id)item;
+- (void)_adjustPersistedStartDateComponentsForNewTimeZone:(id)zone;
+- (void)forceUpdateFrozenCalendar:(id)calendar;
 - (void)reset;
 - (void)rollback;
-- (void)setAllDay:(BOOL)a3;
+- (void)setAllDay:(BOOL)day;
 - (void)setCompleted:(BOOL)completed;
 - (void)setCompletionDate:(NSDate *)completionDate;
-- (void)setDisplayOrder:(unint64_t)a3;
-- (void)setDueDate:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)snoozeAlarm:(id)a3 withTimeIntervalFromNow:(double)a4 pinsTriggerToStartDate:(BOOL)a5;
+- (void)setDisplayOrder:(unint64_t)order;
+- (void)setDueDate:(id)date;
+- (void)setTimeZone:(id)zone;
+- (void)snoozeAlarm:(id)alarm withTimeIntervalFromNow:(double)now pinsTriggerToStartDate:(BOOL)date;
 @end
 
 @implementation EKReminder
 
-- (void)forceUpdateFrozenCalendar:(id)a3
+- (void)forceUpdateFrozenCalendar:(id)calendar
 {
-  v5 = a3;
-  v4 = [(EKObject *)self changeSet];
-  if ([v4 hasUnsavedChangeForKey:@"calendar"])
+  calendarCopy = calendar;
+  changeSet = [(EKObject *)self changeSet];
+  if ([changeSet hasUnsavedChangeForKey:@"calendar"])
   {
-    [v4 forceChangeValue:v5 forKey:@"calendar"];
+    [changeSet forceChangeValue:calendarCopy forKey:@"calendar"];
   }
 }
 
@@ -54,7 +54,7 @@
   block[1] = 3221225472;
   block[2] = __47__EKReminder_knownSingleValueKeysForComparison__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (knownSingleValueKeysForComparison_onceToken_3 != -1)
   {
     dispatch_once(&knownSingleValueKeysForComparison_onceToken_3, block);
@@ -90,23 +90,23 @@ void __47__EKReminder_knownSingleValueKeysForComparison__block_invoke(uint64_t a
     }
   }
 
-  v5 = [(EKEventStore *)v3 reminderStore];
-  v6 = [v5 createNewReminder];
+  reminderStore = [(EKEventStore *)v3 reminderStore];
+  createNewReminder = [reminderStore createNewReminder];
 
-  return v6;
+  return createNewReminder;
 }
 
-- (EKReminder)initWithPersistentObject:(id)a3
+- (EKReminder)initWithPersistentObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = EKReminder;
-  v5 = [(EKObject *)&v9 initWithPersistentObject:v4];
-  if (v5 && [v4 isNew])
+  v5 = [(EKObject *)&v9 initWithPersistentObject:objectCopy];
+  if (v5 && [objectCopy isNew])
   {
-    v6 = [v4 eventStore];
-    v7 = [v6 timeZone];
-    [(EKReminder *)v5 setTimeZone:v7];
+    eventStore = [objectCopy eventStore];
+    timeZone = [eventStore timeZone];
+    [(EKReminder *)v5 setTimeZone:timeZone];
   }
 
   return v5;
@@ -126,26 +126,26 @@ void __47__EKReminder_knownSingleValueKeysForComparison__block_invoke(uint64_t a
 {
   v4.receiver = self;
   v4.super_class = EKReminder;
-  v2 = [(EKCalendarItem *)&v4 title];
-  if (!v2)
+  title = [(EKCalendarItem *)&v4 title];
+  if (!title)
   {
-    v2 = &stru_1F1B49D68;
+    title = &stru_1F1B49D68;
   }
 
-  return v2;
+  return title;
 }
 
 - (id)externalURI
 {
-  v2 = [(EKReminder *)self reminderIdentifier];
-  if (v2)
+  reminderIdentifier = [(EKReminder *)self reminderIdentifier];
+  if (reminderIdentifier)
   {
     if (externalURI_onceToken != -1)
     {
       [EKReminder externalURI];
     }
 
-    v3 = [v2 stringByAddingPercentEncodingWithAllowedCharacters:externalURI_allowedCharacters];
+    v3 = [reminderIdentifier stringByAddingPercentEncodingWithAllowedCharacters:externalURI_allowedCharacters];
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@/%@", @"x-apple-reminderkit", @"REMCDReminder", v3];
     v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
   }
@@ -191,14 +191,14 @@ void __25__EKReminder_externalURI__block_invoke()
 - (unint64_t)displayOrder
 {
   v2 = [(EKObject *)self singleChangedValueForKey:@"displayOrder"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setDisplayOrder:(unint64_t)a3
+- (void)setDisplayOrder:(unint64_t)order
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:order];
   [(EKObject *)self setSingleChangedValue:v4 forKey:@"displayOrder"];
 }
 
@@ -206,13 +206,13 @@ void __25__EKReminder_externalURI__block_invoke()
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKReminder *)self title];
-  v6 = [(EKReminder *)self dueDate];
-  v7 = [(EKReminder *)self completionDate];
-  v8 = [(EKCalendarItem *)self priority];
-  v9 = [(EKCalendarItem *)self calendarItemIdentifier];
-  v10 = [(EKCalendarItem *)self alarms];
-  v11 = [v3 stringWithFormat:@"%@ <%p> {title = %@ dueDate = %@; completionDate = %@; priority = %ld; calendarItemIdentifier = %@; alarms = %@}", v4, self, v5, v6, v7, v8, v9, v10];;
+  title = [(EKReminder *)self title];
+  dueDate = [(EKReminder *)self dueDate];
+  completionDate = [(EKReminder *)self completionDate];
+  priority = [(EKCalendarItem *)self priority];
+  calendarItemIdentifier = [(EKCalendarItem *)self calendarItemIdentifier];
+  alarms = [(EKCalendarItem *)self alarms];
+  v11 = [v3 stringWithFormat:@"%@ <%p> {title = %@ dueDate = %@; completionDate = %@; priority = %ld; calendarItemIdentifier = %@; alarms = %@}", v4, self, title, dueDate, completionDate, priority, calendarItemIdentifier, alarms];;
 
   return v11;
 }
@@ -221,8 +221,8 @@ void __25__EKReminder_externalURI__block_invoke()
 {
   if (completed)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    [(EKReminder *)self setCompletionDate:v4];
+    date = [MEMORY[0x1E695DF00] date];
+    [(EKReminder *)self setCompletionDate:date];
   }
 
   else
@@ -234,61 +234,61 @@ void __25__EKReminder_externalURI__block_invoke()
 
 - (BOOL)isCompleted
 {
-  v2 = [(EKReminder *)self completionDate];
-  v3 = v2 != 0;
+  completionDate = [(EKReminder *)self completionDate];
+  v3 = completionDate != 0;
 
   return v3;
 }
 
-- (void)snoozeAlarm:(id)a3 withTimeIntervalFromNow:(double)a4 pinsTriggerToStartDate:(BOOL)a5
+- (void)snoozeAlarm:(id)alarm withTimeIntervalFromNow:(double)now pinsTriggerToStartDate:(BOOL)date
 {
-  v24 = a3;
-  v7 = [MEMORY[0x1E695DF00] date];
-  [v24 setAcknowledgedDate:v7];
-  v8 = [(EKCalendarItem *)self calendar];
-  v9 = [v8 constraints];
-  v10 = [v9 maxAlarmsAllowed];
+  alarmCopy = alarm;
+  date = [MEMORY[0x1E695DF00] date];
+  [alarmCopy setAcknowledgedDate:date];
+  calendar = [(EKCalendarItem *)self calendar];
+  constraints = [calendar constraints];
+  maxAlarmsAllowed = [constraints maxAlarmsAllowed];
 
-  if (v10 > 1)
+  if (maxAlarmsAllowed > 1)
   {
-    v11 = [v24 duplicate];
+    duplicate = [alarmCopy duplicate];
   }
 
   else
   {
-    v11 = v24;
+    duplicate = alarmCopy;
   }
 
-  v12 = v11;
-  v13 = [v7 dateByAddingTimeInterval:a4];
-  v14 = [(EKReminder *)self dueDate];
+  v12 = duplicate;
+  v13 = [date dateByAddingTimeInterval:now];
+  dueDate = [(EKReminder *)self dueDate];
 
-  if (v14)
+  if (dueDate)
   {
-    v15 = [(EKReminder *)self dueDate];
-    [v13 timeIntervalSinceDate:v15];
+    dueDate2 = [(EKReminder *)self dueDate];
+    [v13 timeIntervalSinceDate:dueDate2];
     v17 = v16;
 
-    if (v17 > 0.0 && v17 < a4)
+    if (v17 > 0.0 && v17 < now)
     {
-      v19 = [(EKReminder *)self dueDate];
+      dueDate3 = [(EKReminder *)self dueDate];
 
       v17 = 0.0;
-      v13 = v19;
+      v13 = dueDate3;
     }
 
-    v20 = [v12 absoluteDate];
+    absoluteDate = [v12 absoluteDate];
 
-    if (v20)
+    if (absoluteDate)
     {
       [v12 setAbsoluteDate:v13];
     }
 
     else
     {
-      v22 = [v12 structuredLocation];
+      structuredLocation = [v12 structuredLocation];
 
-      if (!v22)
+      if (!structuredLocation)
       {
         [v12 setRelativeOffset:v17];
       }
@@ -297,13 +297,13 @@ void __25__EKReminder_externalURI__block_invoke()
 
   else
   {
-    v21 = [v7 dateByAddingTimeInterval:a4];
+    v21 = [date dateByAddingTimeInterval:now];
     [v12 setAbsoluteDate:v21];
   }
 
-  if (v10 >= 2)
+  if (maxAlarmsAllowed >= 2)
   {
-    v23 = [(EKCalendarItem *)self findOriginalAlarmStartingWith:v24];
+    v23 = [(EKCalendarItem *)self findOriginalAlarmStartingWith:alarmCopy];
     [v12 setOriginalAlarm:v23];
     [(EKCalendarItem *)self addAlarm:v12];
   }
@@ -312,26 +312,26 @@ void __25__EKReminder_externalURI__block_invoke()
 - (id)committedConstraints
 {
   v2 = [(EKObject *)self committedValueForKey:*MEMORY[0x1E6992570]];
-  v3 = [v2 constraints];
+  constraints = [v2 constraints];
 
-  return v3;
+  return constraints;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v18.receiver = self;
   v18.super_class = EKReminder;
   LODWORD(v5) = [(EKCalendarItem *)&v18 validate:?];
   if (v5)
   {
-    v6 = [(EKCalendarItem *)self calendar];
-    v7 = [v6 allowReminders];
+    calendar = [(EKCalendarItem *)self calendar];
+    allowReminders = [calendar allowReminders];
 
-    if (v7)
+    if (allowReminders)
     {
       if ([(EKCalendarItem *)self hasRecurrenceRules]&& ([(EKReminder(Shared) *)self dueDateComponents], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
       {
-        if (a3)
+        if (validate)
         {
           v12 = 18;
           goto LABEL_11;
@@ -340,15 +340,15 @@ void __25__EKReminder_externalURI__block_invoke()
 
       else
       {
-        v9 = [(EKReminder *)self constraints];
-        v10 = [v9 supportsReminderLocations];
+        constraints = [(EKReminder *)self constraints];
+        supportsReminderLocations = [constraints supportsReminderLocations];
 
-        if ((v10 & 1) != 0 || ([(EKCalendarItem *)self structuredLocation], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+        if ((supportsReminderLocations & 1) != 0 || ([(EKCalendarItem *)self structuredLocation], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
         {
-          v14 = [(EKReminder *)self constraints];
-          v15 = [v14 supportsReminderActions];
+          constraints2 = [(EKReminder *)self constraints];
+          supportsReminderActions = [constraints2 supportsReminderActions];
 
-          if ((v15 & 1) != 0 || ([(EKCalendarItem *)self action], v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
+          if ((supportsReminderActions & 1) != 0 || ([(EKCalendarItem *)self action], v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
           {
             if ([(EKCalendarItem *)self priority]< 0xA)
             {
@@ -356,34 +356,34 @@ void __25__EKReminder_externalURI__block_invoke()
               return v5;
             }
 
-            if (a3)
+            if (validate)
             {
               v12 = 26;
               goto LABEL_11;
             }
           }
 
-          else if (a3)
+          else if (validate)
           {
             v12 = 42;
             goto LABEL_11;
           }
         }
 
-        else if (a3)
+        else if (validate)
         {
           v12 = 20;
 LABEL_11:
           v13 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:v12];
           v5 = v13;
           LOBYTE(v5) = 0;
-          *a3 = v13;
+          *validate = v13;
           return v5;
         }
       }
     }
 
-    else if (a3)
+    else if (validate)
     {
       v12 = 23;
       goto LABEL_11;
@@ -395,7 +395,7 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
   if (![(EKObject *)self isNew])
   {
@@ -403,8 +403,8 @@ LABEL_11:
     if ([(EKObject *)self _hasChangesForKey:*MEMORY[0x1E6992570]])
     {
       v5 = [(EKObject *)self committedValueForKey:v4];
-      v6 = [(EKCalendarItem *)self calendar];
-      [(EKReminder *)self _adjustAfterMovingOrCopyingFromOldCalendar:v5 toNewCalendar:v6 cachedConstraintsForOldCalendar:0 savingItem:self];
+      calendar = [(EKCalendarItem *)self calendar];
+      [(EKReminder *)self _adjustAfterMovingOrCopyingFromOldCalendar:v5 toNewCalendar:calendar cachedConstraintsForOldCalendar:0 savingItem:self];
     }
   }
 
@@ -412,33 +412,33 @@ LABEL_11:
   return 1;
 }
 
-- (void)_adjustAfterMovingOrCopyingFromOldCalendar:(id)a3 toNewCalendar:(id)a4 cachedConstraintsForOldCalendar:(id)a5 savingItem:(id)a6
+- (void)_adjustAfterMovingOrCopyingFromOldCalendar:(id)calendar toNewCalendar:(id)newCalendar cachedConstraintsForOldCalendar:(id)oldCalendar savingItem:(id)item
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v12;
-  v15 = v14;
+  calendarCopy = calendar;
+  newCalendarCopy = newCalendar;
+  oldCalendarCopy = oldCalendar;
+  itemCopy = item;
+  v14 = oldCalendarCopy;
+  constraints = v14;
   if (!v14)
   {
-    v15 = [v10 constraints];
+    constraints = [calendarCopy constraints];
   }
 
-  if ([v15 supportsAlarmProximity])
+  if ([constraints supportsAlarmProximity])
   {
-    v16 = [v11 constraints];
-    v17 = [v16 supportsAlarmProximity];
+    constraints2 = [newCalendarCopy constraints];
+    supportsAlarmProximity = [constraints2 supportsAlarmProximity];
 
-    if ((v17 & 1) == 0)
+    if ((supportsAlarmProximity & 1) == 0)
     {
-      v18 = [(EKCalendarItem *)self alarms];
+      alarms = [(EKCalendarItem *)self alarms];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v19 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v19 = [alarms countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v19)
       {
         v20 = v19;
@@ -449,7 +449,7 @@ LABEL_11:
           {
             if (*v26 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(alarms);
             }
 
             v23 = *(*(&v25 + 1) + 8 * i);
@@ -459,7 +459,7 @@ LABEL_11:
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v20 = [alarms countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v20);
@@ -473,8 +473,8 @@ LABEL_11:
 - (id)_generateNewUniqueID
 {
   v3 = objc_opt_class();
-  v4 = [(EKCalendarItem *)self calendar];
-  v5 = [v3 generateUniqueIDWithReminder:self calendar:v4];
+  calendar = [(EKCalendarItem *)self calendar];
+  v5 = [v3 generateUniqueIDWithReminder:self calendar:calendar];
 
   return v5;
 }
@@ -483,8 +483,8 @@ LABEL_11:
 {
   v7.receiver = self;
   v7.super_class = EKReminder;
-  v3 = [(EKObject *)&v7 _reset];
-  if (v3)
+  _reset = [(EKObject *)&v7 _reset];
+  if (_reset)
   {
     v4 = objc_opt_class();
     v6[0] = MEMORY[0x1E69E9820];
@@ -492,10 +492,10 @@ LABEL_11:
     v6[2] = __20__EKReminder__reset__block_invoke;
     v6[3] = &unk_1E77FE7D0;
     v6[4] = self;
-    LOBYTE(v3) = [(EKObject *)self _resetIfBackingObjectIsOfClass:v4 fetchResetFrozenObjectBlock:v6];
+    LOBYTE(_reset) = [(EKObject *)self _resetIfBackingObjectIsOfClass:v4 fetchResetFrozenObjectBlock:v6];
   }
 
-  return v3;
+  return _reset;
 }
 
 id __20__EKReminder__reset__block_invoke(uint64_t a1)
@@ -508,53 +508,53 @@ id __20__EKReminder__reset__block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (void)_removeSnoozedAlarmsFromReminder:(id)a3 usingDueDate:(id)a4
++ (void)_removeSnoozedAlarmsFromReminder:(id)reminder usingDueDate:(id)date
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 constraints];
-  if ([v7 maxAlarmsAllowed] >= 2)
+  reminderCopy = reminder;
+  dateCopy = date;
+  constraints = [reminderCopy constraints];
+  if ([constraints maxAlarmsAllowed] >= 2)
   {
 
-    if (v6)
+    if (dateCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_25:
-    v28 = [v5 dueDateComponents];
-    v29 = [v5 eventStore];
-    v30 = [v29 timeZone];
-    v6 = EKDateComponentsGetDate();
+    dueDateComponents = [reminderCopy dueDateComponents];
+    eventStore = [reminderCopy eventStore];
+    timeZone = [eventStore timeZone];
+    dateCopy = EKDateComponentsGetDate();
 
     goto LABEL_4;
   }
 
-  v8 = [v5 allAlarms];
-  v9 = [v8 count];
+  allAlarms = [reminderCopy allAlarms];
+  v9 = [allAlarms count];
 
   if (v9 < 2)
   {
     goto LABEL_23;
   }
 
-  if (!v6)
+  if (!dateCopy)
   {
     goto LABEL_25;
   }
 
 LABEL_4:
   v10 = MEMORY[0x1E695DF70];
-  v11 = [v5 allAlarms];
-  v12 = [v10 arrayWithCapacity:{objc_msgSend(v11, "count")}];
+  allAlarms2 = [reminderCopy allAlarms];
+  v12 = [v10 arrayWithCapacity:{objc_msgSend(allAlarms2, "count")}];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v13 = [v5 allAlarms];
-  v14 = [v13 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  allAlarms3 = [reminderCopy allAlarms];
+  v14 = [allAlarms3 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v14)
   {
     v15 = v14;
@@ -565,21 +565,21 @@ LABEL_4:
       {
         if (*v36 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allAlarms3);
         }
 
         v18 = *(*(&v35 + 1) + 8 * i);
-        v19 = [v18 originalAlarm];
+        originalAlarm = [v18 originalAlarm];
 
-        if (!v19)
+        if (!originalAlarm)
         {
           if (![v18 isAbsolute])
           {
             continue;
           }
 
-          v20 = [v18 absoluteDate];
-          v21 = [v20 compare:v6];
+          absoluteDate = [v18 absoluteDate];
+          v21 = [absoluteDate compare:dateCopy];
 
           if (v21 != 1)
           {
@@ -590,7 +590,7 @@ LABEL_4:
         [v12 addObject:v18];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v15 = [allAlarms3 countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v15);
@@ -615,7 +615,7 @@ LABEL_4:
           objc_enumerationMutation(v22);
         }
 
-        [v5 removeAlarm:{*(*(&v31 + 1) + 8 * j), v31}];
+        [reminderCopy removeAlarm:{*(*(&v31 + 1) + 8 * j), v31}];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -632,8 +632,8 @@ LABEL_23:
 {
   v47 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(EKCalendarItem *)self alarms];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  alarms = [(EKCalendarItem *)self alarms];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(alarms, "count")}];
 
   if ([(EKCalendarItem *)self hasAlarms])
   {
@@ -641,8 +641,8 @@ LABEL_23:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v6 = [(EKCalendarItem *)self allAlarms];
-    v7 = [v6 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    allAlarms = [(EKCalendarItem *)self allAlarms];
+    v7 = [allAlarms countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v7)
     {
       v8 = v7;
@@ -655,13 +655,13 @@ LABEL_23:
         {
           if (*v42 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allAlarms);
           }
 
           v12 = *(*(&v41 + 1) + 8 * v11);
-          v13 = [v12 structuredLocation];
+          structuredLocation = [v12 structuredLocation];
 
-          if (v13)
+          if (structuredLocation)
           {
             v34 = v12;
 LABEL_57:
@@ -670,9 +670,9 @@ LABEL_57:
             goto LABEL_58;
           }
 
-          v14 = [v12 originalAlarm];
+          originalAlarm = [v12 originalAlarm];
 
-          if (v14 || ([v5 addObject:v12], (v9 & 1) != 0))
+          if (originalAlarm || ([v5 addObject:v12], (v9 & 1) != 0))
           {
             if ([v5 count] >= 2)
             {
@@ -692,7 +692,7 @@ LABEL_57:
         }
 
         while (v8 != v11);
-        v15 = [v6 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v15 = [allAlarms countByEnumeratingWithState:&v41 objects:v46 count:16];
         v8 = v15;
         if (!v15)
         {
@@ -712,9 +712,9 @@ LABEL_57:
 LABEL_20:
   if ([v5 count])
   {
-    v17 = [(EKReminder(Shared) *)self dueDateComponents];
-    v18 = [(EKObject *)self eventStore];
-    v19 = [v18 timeZone];
+    dueDateComponents = [(EKReminder(Shared) *)self dueDateComponents];
+    eventStore = [(EKObject *)self eventStore];
+    timeZone = [eventStore timeZone];
     v20 = EKDateComponentsGetDate();
 
     v39 = 0u;
@@ -840,18 +840,18 @@ LABEL_58:
 
 - (id)constraints
 {
-  v3 = [(EKObject *)self eventStore];
-  v4 = [v3 cachedConstraintsForReminder:self];
+  eventStore = [(EKObject *)self eventStore];
+  v4 = [eventStore cachedConstraintsForReminder:self];
 
   return v4;
 }
 
-+ (id)generateUniqueIDWithReminder:(id)a3 calendar:(id)a4
++ (id)generateUniqueIDWithReminder:(id)reminder calendar:(id)calendar
 {
-  v4 = [a4 constraints];
-  v5 = [v4 requiresMSFormattedUID];
+  constraints = [calendar constraints];
+  requiresMSFormattedUID = [constraints requiresMSFormattedUID];
 
-  if (v5)
+  if (requiresMSFormattedUID)
   {
     _EKMSUUIDString();
   }
@@ -901,19 +901,19 @@ id __41__EKReminder_Shared__startDateComponents__block_invoke(uint64_t a1)
 
 - (NSTimeZone)dueDateTimeZone
 {
-  v2 = [(EKReminder(Shared) *)self dueDateComponents];
-  v3 = [v2 timeZone];
+  dueDateComponents = [(EKReminder(Shared) *)self dueDateComponents];
+  timeZone = [dueDateComponents timeZone];
 
-  return v3;
+  return timeZone;
 }
 
 - (BOOL)dueDateAllDay
 {
-  v2 = [(EKReminder(Shared) *)self dueDateComponents];
-  v3 = v2;
-  if (v2)
+  dueDateComponents = [(EKReminder(Shared) *)self dueDateComponents];
+  v3 = dueDateComponents;
+  if (dueDateComponents)
   {
-    v4 = [v2 hour] == 0x7FFFFFFFFFFFFFFFLL;
+    v4 = [dueDateComponents hour] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -926,45 +926,45 @@ id __41__EKReminder_Shared__startDateComponents__block_invoke(uint64_t a1)
 
 - (id)dueDate
 {
-  v3 = [(EKReminder *)self dueDateTimeZone];
+  dueDateTimeZone = [(EKReminder *)self dueDateTimeZone];
 
-  v4 = [(EKReminder(Shared) *)self dueDateComponents];
-  v5 = v4;
-  if (v3)
+  dueDateComponents = [(EKReminder(Shared) *)self dueDateComponents];
+  v5 = dueDateComponents;
+  if (dueDateTimeZone)
   {
-    v6 = [v4 date];
+    date = [dueDateComponents date];
   }
 
   else
   {
-    v7 = [(EKObject *)self eventStore];
-    v8 = [v7 timeZone];
-    v6 = EKDateComponentsGetDate();
+    eventStore = [(EKObject *)self eventStore];
+    timeZone = [eventStore timeZone];
+    date = EKDateComponentsGetDate();
   }
 
-  return v6;
+  return date;
 }
 
-- (void)setDueDate:(id)a3
+- (void)setDueDate:(id)date
 {
   v4 = MEMORY[0x1E695DEE8];
-  v5 = a3;
+  dateCopy = date;
   v6 = [v4 alloc];
   v10 = [v6 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v7 = [(EKObject *)self eventStore];
-  v8 = [v7 timeZone];
-  [v10 setTimeZone:v8];
+  eventStore = [(EKObject *)self eventStore];
+  timeZone = [eventStore timeZone];
+  [v10 setTimeZone:timeZone];
 
-  v9 = [v10 components:2097278 fromDate:v5];
+  v9 = [v10 components:2097278 fromDate:dateCopy];
 
   [v9 setCalendar:v10];
   [(EKReminder(Shared) *)self setDueDateComponents:v9];
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v17 = a3;
-  v4 = [(EKReminder *)self timeZone];
+  zoneCopy = zone;
+  timeZone = [(EKReminder *)self timeZone];
   if ([(EKReminder *)self isAllDay])
   {
 
@@ -973,22 +973,22 @@ id __41__EKReminder_Shared__startDateComponents__block_invoke(uint64_t a1)
 
   else
   {
-    v5 = v17;
+    v5 = zoneCopy;
   }
 
   v18 = v5;
-  if (v4 | v5 && ([v4 isEqual:v5] & 1) == 0)
+  if (timeZone | v5 && ([timeZone isEqual:v5] & 1) == 0)
   {
-    v6 = [(EKReminder(Shared) *)self startDateComponents];
-    v7 = [(EKReminder(Shared) *)self dueDateComponents];
-    v8 = v7;
-    if (v7)
+    startDateComponents = [(EKReminder(Shared) *)self startDateComponents];
+    dueDateComponents = [(EKReminder(Shared) *)self dueDateComponents];
+    v8 = dueDateComponents;
+    if (dueDateComponents)
     {
-      v9 = [v7 date];
-      v10 = [v8 hour];
+      date = [dueDateComponents date];
+      hour = [v8 hour];
       v11 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
       v12 = v11;
-      if (v10 == 0x7FFFFFFFFFFFFFFFLL)
+      if (hour == 0x7FFFFFFFFFFFFFFFLL)
       {
         v13 = 1048606;
       }
@@ -1001,14 +1001,14 @@ id __41__EKReminder_Shared__startDateComponents__block_invoke(uint64_t a1)
       if (v18)
       {
         [v11 setTimeZone:v18];
-        v14 = [v12 components:v13 fromDate:v9];
+        v14 = [v12 components:v13 fromDate:date];
         v15 = v14;
         v16 = v18;
       }
 
       else
       {
-        v14 = [v11 components:v13 fromDate:v9];
+        v14 = [v11 components:v13 fromDate:date];
         v15 = v14;
         v16 = 0;
       }
@@ -1017,22 +1017,22 @@ id __41__EKReminder_Shared__startDateComponents__block_invoke(uint64_t a1)
       [(EKObject *)self setSingleChangedValue:v15 forKey:@"dueDateComponents"];
     }
 
-    if (v6)
+    if (startDateComponents)
     {
-      [v6 setTimeZone:v18];
+      [startDateComponents setTimeZone:v18];
       [(EKObject *)self setSingleChangedValue:v18 forKey:@"timeZone"];
-      [(EKReminder(Shared) *)self setStartDateComponents:v6];
+      [(EKReminder(Shared) *)self setStartDateComponents:startDateComponents];
     }
   }
 }
 
 - (id)timeZone
 {
-  v3 = [(EKReminder(Shared) *)self dueDateComponents];
-  v4 = v3;
-  if (v3)
+  dueDateComponents = [(EKReminder(Shared) *)self dueDateComponents];
+  v4 = dueDateComponents;
+  if (dueDateComponents)
   {
-    [v3 timeZone];
+    [dueDateComponents timeZone];
   }
 
   else
@@ -1044,33 +1044,33 @@ id __41__EKReminder_Shared__startDateComponents__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setAllDay:(BOOL)a3
+- (void)setAllDay:(BOOL)day
 {
-  v3 = a3;
-  v11 = [(EKReminder(Shared) *)self dueDateComponents];
-  v5 = [v11 hour] == 0x7FFFFFFFFFFFFFFFLL;
-  v6 = v11;
+  dayCopy = day;
+  dueDateComponents = [(EKReminder(Shared) *)self dueDateComponents];
+  v5 = [dueDateComponents hour] == 0x7FFFFFFFFFFFFFFFLL;
+  v6 = dueDateComponents;
   v7 = !v5;
-  if (v11 && ((v7 ^ v3) & 1) == 0)
+  if (dueDateComponents && ((v7 ^ dayCopy) & 1) == 0)
   {
-    v8 = [v11 date];
+    date = [dueDateComponents date];
     v9 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-    v10 = [v9 components:1048606 fromDate:v8];
+    v10 = [v9 components:1048606 fromDate:date];
     [v10 setTimeZone:0];
     [(EKReminder(Shared) *)self setDueDateComponents:v10];
 
-    v6 = v11;
+    v6 = dueDateComponents;
   }
 }
 
-- (void)_adjustPersistedStartDateComponentsForNewTimeZone:(id)a3
+- (void)_adjustPersistedStartDateComponentsForNewTimeZone:(id)zone
 {
-  v5 = [(EKReminder *)self startDateComponentsRaw];
-  if (v5)
+  startDateComponentsRaw = [(EKReminder *)self startDateComponentsRaw];
+  if (startDateComponentsRaw)
   {
-    v13 = v5;
-    v6 = [(EKReminder *)self dueDateTimeZone];
-    if ((a3 == 0) == (v6 != 0))
+    v13 = startDateComponentsRaw;
+    dueDateTimeZone = [(EKReminder *)self dueDateTimeZone];
+    if ((zone == 0) == (dueDateTimeZone != 0))
     {
       if ([v13 hour] == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -1083,22 +1083,22 @@ id __41__EKReminder_Shared__startDateComponents__block_invoke(uint64_t a1)
       }
 
       v8 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-      if (a3)
+      if (zone)
       {
-        v9 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-        [v13 setTimeZone:v9];
+        defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+        [v13 setTimeZone:defaultTimeZone];
 
-        v10 = [v13 date];
+        date = [v13 date];
         v11 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"GMT"];
         [v8 setTimeZone:v11];
 
-        v12 = [v8 components:v7 fromDate:v10];
+        v12 = [v8 components:v7 fromDate:date];
       }
 
       else
       {
-        v10 = [v13 date];
-        v12 = [v8 components:v7 fromDate:v10];
+        date = [v13 date];
+        v12 = [v8 components:v7 fromDate:date];
         [v12 setTimeZone:0];
       }
 
@@ -1106,7 +1106,7 @@ id __41__EKReminder_Shared__startDateComponents__block_invoke(uint64_t a1)
       [(EKObject *)self clearCachedValueForKey:@"startDateComponents"];
     }
 
-    v5 = v13;
+    startDateComponentsRaw = v13;
   }
 }
 
@@ -1130,13 +1130,13 @@ id __41__EKReminder_Shared__startDateComponents__block_invoke(uint64_t a1)
 {
   v5.receiver = self;
   v5.super_class = EKReminder;
-  v3 = [(EKObject *)&v5 refresh];
-  if (v3)
+  refresh = [(EKObject *)&v5 refresh];
+  if (refresh)
   {
     [(EKObject *)self clearCachedValueForKey:@"startDateComponents"];
   }
 
-  return v3;
+  return refresh;
 }
 
 @end

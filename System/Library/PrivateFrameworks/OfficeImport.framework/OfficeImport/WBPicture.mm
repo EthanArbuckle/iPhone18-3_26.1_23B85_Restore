@@ -1,42 +1,42 @@
 @interface WBPicture
-+ (id)readDrawableFromReader:(id)a3 textType:(int)a4;
-+ (void)readFrom:(id)a3 at:(int)a4 textRun:(WrdCharacterTextRun *)a5 paragraph:(id)a6 to:(id)a7;
++ (id)readDrawableFromReader:(id)reader textType:(int)type;
++ (void)readFrom:(id)from at:(int)at textRun:(WrdCharacterTextRun *)run paragraph:(id)paragraph to:(id)to;
 @end
 
 @implementation WBPicture
 
-+ (void)readFrom:(id)a3 at:(int)a4 textRun:(WrdCharacterTextRun *)a5 paragraph:(id)a6 to:(id)a7
++ (void)readFrom:(id)from at:(int)at textRun:(WrdCharacterTextRun *)run paragraph:(id)paragraph to:(id)to
 {
-  v69 = a3;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  fromCopy = from;
+  paragraphCopy = paragraph;
+  toCopy = to;
+  if (toCopy)
   {
-    var4 = a5->var4;
-    var5 = a5->var5;
+    var4 = run->var4;
+    var5 = run->var5;
     v18 = [WDCharacterProperties alloc];
-    v19 = [v14 document];
-    v68 = [(WDCharacterProperties *)v18 initWithDocument:v19];
+    document = [paragraphCopy document];
+    v68 = [(WDCharacterProperties *)v18 initWithDocument:document];
 
-    v20 = [v14 document];
-    [WBCharacterProperties readFrom:v69 wrdProperties:var4 tracked:var5 document:v20 properties:v68];
+    document2 = [paragraphCopy document];
+    [WBCharacterProperties readFrom:fromCopy wrdProperties:var4 tracked:var5 document:document2 properties:v68];
 
-    [v15 setProperties:v68];
-    v21 = [v14 textType];
+    [toCopy setProperties:v68];
+    textType = [paragraphCopy textType];
     WrdPictureProperties::WrdPictureProperties(v72);
-    var1 = a5->var1;
-    v73 = a4;
+    var1 = run->var1;
+    atCopy = at;
     v74 = var1;
-    v23 = [v69 wrdReader];
-    (*(*v23 + 416))(v23, v72);
+    wrdReader = [fromCopy wrdReader];
+    (*(*wrdReader + 416))(wrdReader, v72);
     if (v75 <= 0x63u)
     {
       if (v75 == 98)
       {
         v70 = &unk_286ED5478;
         CsString::CsString(&v71);
-        v32 = [v69 wrdReader];
-        (*(*v32 + 432))(v32, &v70);
+        wrdReader2 = [fromCopy wrdReader];
+        (*(*wrdReader2 + 432))(wrdReader2, &v70);
         v70 = &unk_286ED5478;
         CsString::~CsString(&v71);
       }
@@ -54,9 +54,9 @@
     {
       v70 = &unk_286ED5478;
       CsString::CsString(&v71);
-      v33 = [v69 wrdReader];
-      (*(*v33 + 432))(v33, &v70);
-      v24 = [a1 readDrawableFromReader:v69 textType:v21];
+      wrdReader3 = [fromCopy wrdReader];
+      (*(*wrdReader3 + 432))(wrdReader3, &v70);
+      v24 = [self readDrawableFromReader:fromCopy textType:textType];
       v70 = &unk_286ED5478;
       CsString::~CsString(&v71);
       if (!v24)
@@ -69,7 +69,7 @@
 
     if (v75 == 100)
     {
-      v24 = [a1 readDrawableFromReader:v69 textType:v21];
+      v24 = [self readDrawableFromReader:fromCopy textType:textType];
       if (!v24)
       {
         goto LABEL_16;
@@ -81,8 +81,8 @@
 LABEL_10:
     v70 = &unk_286ED5438;
     OcBinaryData::OcBinaryData(&v71);
-    v25 = [v69 wrdReader];
-    (*(*v25 + 424))(v25, &v70);
+    wrdReader4 = [fromCopy wrdReader];
+    (*(*wrdReader4 + 424))(wrdReader4, &v70);
     v26 = [ESDBlipContext alloc];
     v66 = [(ESDBlipContext *)v26 initWithOffset:v71.var1 byteCount:v71.var3 stream:v71.var7 streamID:v71.var2];
     v67 = [[OADSubBlip alloc] initWithData:0 type:4];
@@ -93,13 +93,13 @@ LABEL_10:
     v29 = objc_alloc_init(OADImageFill);
     [(OADImageFill *)v29 setBlipRef:v28];
     v24 = objc_alloc_init(OADImage);
-    v30 = [(OADImage *)v24 imageProperties];
-    [v30 setImageFill:v29];
+    imageProperties = [(OADImage *)v24 imageProperties];
+    [imageProperties setImageFill:v29];
 
     v31 = objc_alloc_init(WDAContent);
     [(OADDrawable *)v24 setClientData:v31];
     [(WDAContent *)v31 setDrawable:v24];
-    [(WDAContent *)v31 setTextType:v21];
+    [(WDAContent *)v31 setTextType:textType];
 
     v70 = &unk_286ED5438;
     OcBinaryData::~OcBinaryData(&v71);
@@ -112,9 +112,9 @@ LABEL_16:
       v38 = v79;
       LOWORD(v8) = v80;
       LOWORD(v7) = v81;
-      v39 = [(OADDrawable *)v24 drawableProperties];
-      v40 = [v39 orientedBounds];
-      [v40 rotation];
+      drawableProperties = [(OADDrawable *)v24 drawableProperties];
+      orientedBounds = [drawableProperties orientedBounds];
+      [orientedBounds rotation];
       v41 = [OADOrientedBounds directionCloserToVerticalThanToHorizontal:?];
       v42 = v35 / 20.0;
       v43 = v36 / 20.0;
@@ -133,9 +133,9 @@ LABEL_16:
         v49 = v52;
       }
 
-      v53 = [(OADDrawable *)v24 drawableProperties];
-      v54 = [v53 orientedBounds];
-      [v54 setBounds:{v46, v47, v48, v49}];
+      drawableProperties2 = [(OADDrawable *)v24 drawableProperties];
+      orientedBounds2 = [drawableProperties2 orientedBounds];
+      [orientedBounds2 setBounds:{v46, v47, v48, v49}];
 
       v55 = objc_opt_class();
       v56 = TSUDynamicCast(v55, v24);
@@ -145,13 +145,13 @@ LABEL_16:
         goto LABEL_31;
       }
 
-      v58 = [v56 graphicProperties];
-      if ([v58 hasStroke])
+      graphicProperties = [v56 graphicProperties];
+      if ([graphicProperties hasStroke])
       {
-        v59 = [v58 stroke];
-        if ([v59 isFillOverridden])
+        stroke = [graphicProperties stroke];
+        if ([stroke isFillOverridden])
         {
-          v60 = [v59 fill];
+          fill = [stroke fill];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -179,17 +179,17 @@ LABEL_16:
         goto LABEL_30;
       }
 
-      v59 = objc_opt_new();
-      v60 = objc_opt_new();
+      stroke = objc_opt_new();
+      fill = objc_opt_new();
       v63 = [OITSUColor colorWithCsColour:v62 + 8];
       v64 = [OADRgbColor rgbColorWithTSUColor:v63];
 
-      [v60 setColor:v64];
-      [v59 setFill:v60];
+      [fill setColor:v64];
+      [stroke setFill:fill];
       v65 = vcvtd_n_f64_u32(*(v62 + 25), 3uLL);
       *&v65 = v65;
-      [v59 setWidth:v65];
-      [v58 setStroke:v59];
+      [stroke setWidth:v65];
+      [graphicProperties setStroke:stroke];
 
 LABEL_29:
 LABEL_30:
@@ -201,9 +201,9 @@ LABEL_31:
     }
 
 LABEL_15:
-    v34 = [(OADDrawable *)v24 clientData];
-    [v15 setDrawable:v24];
-    [v34 setTextType:a5->var1];
+    clientData = [(OADDrawable *)v24 clientData];
+    [toCopy setDrawable:v24];
+    [clientData setTextType:run->var1];
 
     goto LABEL_16;
   }
@@ -211,26 +211,26 @@ LABEL_15:
 LABEL_32:
 }
 
-+ (id)readDrawableFromReader:(id)a3 textType:(int)a4
++ (id)readDrawableFromReader:(id)reader textType:(int)type
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&type;
+  readerCopy = reader;
   v6 = [[WBOfficeArtReaderState alloc] initWithClient:objc_opt_class()];
   [(WBOfficeArtReaderState *)v6 setCurrentTextType:v4];
-  v7 = [v5 officeArtState];
-  [v5 setOfficeArtState:v6];
+  officeArtState = [readerCopy officeArtState];
+  [readerCopy setOfficeArtState:v6];
   v31 = 4;
-  v8 = [WBEscher readRootWithType:&v31 reader:v5];
+  v8 = [WBEscher readRootWithType:&v31 reader:readerCopy];
   v9 = v8;
   if (v8 && [v8 childCount])
   {
     v10 = [v9 childAt:0];
-    v11 = [v5 officeArtState];
-    v12 = [OABDrawable readDrawableFromObject:v10 state:v11];
+    officeArtState2 = [readerCopy officeArtState];
+    v12 = [OABDrawable readDrawableFromObject:v10 state:officeArtState2];
 
     v13 = [v9 childAt:0];
-    v14 = [v13 eshObject];
-    if (v14)
+    eshObject = [v13 eshObject];
+    if (eshObject)
     {
       if (v15)
       {
@@ -260,7 +260,7 @@ LABEL_17:
         }
 
         v31 = 5;
-        v9 = [WBEscher readRootWithType:&v31 reader:v5];
+        v9 = [WBEscher readRootWithType:&v31 reader:readerCopy];
 
         if (!v9 || ![v9 childCount])
         {
@@ -268,8 +268,8 @@ LABEL_17:
         }
 
         v30 = [v9 childAt:0];
-        v20 = [v30 eshObject];
-        if ((*(*v20 + 16))(v20) != 61447)
+        eshObject2 = [v30 eshObject];
+        if ((*(*eshObject2 + 16))(eshObject2) != 61447)
         {
 LABEL_33:
 
@@ -283,9 +283,9 @@ LABEL_33:
           if (objc_opt_isKindOfClass())
           {
             objc_opt_class();
-            v21 = [v12 graphicProperties];
-            v26 = [v21 stroke];
-            v23 = [v26 fill];
+            graphicProperties = [v12 graphicProperties];
+            stroke = [graphicProperties stroke];
+            fill = [stroke fill];
 
 LABEL_24:
             goto LABEL_26;
@@ -298,10 +298,10 @@ LABEL_24:
           if (objc_opt_isKindOfClass())
           {
             objc_opt_class();
-            v21 = [v12 graphicProperties];
-            v22 = [v21 fill];
+            graphicProperties = [v12 graphicProperties];
+            fill2 = [graphicProperties fill];
 LABEL_23:
-            v23 = v22;
+            fill = fill2;
             goto LABEL_24;
           }
         }
@@ -312,19 +312,19 @@ LABEL_23:
           if (objc_opt_isKindOfClass())
           {
             objc_opt_class();
-            v21 = [v12 imageProperties];
-            v22 = [v21 imageFill];
+            graphicProperties = [v12 imageProperties];
+            fill2 = [graphicProperties imageFill];
             goto LABEL_23;
           }
         }
 
-        v23 = 0;
+        fill = 0;
 LABEL_26:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = [v23 blipRef];
-          [v24 setBlip:v29];
+          blipRef = [fill blipRef];
+          [blipRef setBlip:v29];
         }
 
         else
@@ -335,12 +335,12 @@ LABEL_26:
             goto LABEL_32;
           }
 
-          v24 = [v23 pattern];
+          blipRef = [fill pattern];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v27 = [v24 blipRef];
-            [v27 setBlip:v29];
+            v24BlipRef = [blipRef blipRef];
+            [v24BlipRef setBlip:v29];
           }
         }
 
@@ -358,7 +358,7 @@ LABEL_35:
     v12 = 0;
   }
 
-  [v5 setOfficeArtState:v7];
+  [readerCopy setOfficeArtState:officeArtState];
 
   return v12;
 }

@@ -1,63 +1,63 @@
 @interface NTKModularLargeColumnTemplateView
 - (id)_newBodyLabelSubview;
 - (id)_newHeaderLabelSubview;
-- (id)_newLabelSubviewWithFont:(id)a3;
-- (void)_layoutRowsOfColumnsWithAlignment:(int64_t)a3;
-- (void)_positionLeadingAlignedImageView:(id)a3 label:(id)a4 withBaselineOffset:(double)a5;
+- (id)_newLabelSubviewWithFont:(id)font;
+- (void)_layoutRowsOfColumnsWithAlignment:(int64_t)alignment;
+- (void)_positionLeadingAlignedImageView:(id)view label:(id)label withBaselineOffset:(double)offset;
 @end
 
 @implementation NTKModularLargeColumnTemplateView
 
-- (void)_positionLeadingAlignedImageView:(id)a3 label:(id)a4 withBaselineOffset:(double)a5
+- (void)_positionLeadingAlignedImageView:(id)view label:(id)label withBaselineOffset:(double)offset
 {
-  v27 = a3;
-  v8 = a4;
-  if (v27)
+  viewCopy = view;
+  labelCopy = label;
+  if (viewCopy)
   {
-    [v27 frame];
+    [viewCopy frame];
     if (v9 > 0.0)
     {
-      v10 = [v8 font];
-      [v10 capHeight];
-      v11 = [(NTKModuleView *)self device];
+      font = [labelCopy font];
+      [font capHeight];
+      device = [(NTKModuleView *)self device];
       CLKRoundForDevice();
-      v13 = a5 - v12;
+      v13 = offset - v12;
 
-      [v27 setCenter:{0.0, v13}];
+      [viewCopy setCenter:{0.0, v13}];
     }
   }
 
-  [v8 frame];
+  [labelCopy frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v8 font];
-  [v20 ascender];
-  v22 = a5 - v21;
+  font2 = [labelCopy font];
+  [font2 ascender];
+  v22 = offset - v21;
 
-  [v8 setFrame:{v15, v22, v17, v19}];
-  v23 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_55(v23, &v30);
+  [labelCopy setFrame:{v15, v22, v17, v19}];
+  device2 = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_55(device2, &v30);
   v24 = *(&v30 + 1);
-  v25 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_55(v25, &v28);
-  v26 = [(NTKModuleView *)self viewsAndSpacingArrayForSpace:v27 view:v8 space:v24 view:v29];
+  device3 = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_55(device3, &v28);
+  v26 = [(NTKModuleView *)self viewsAndSpacingArrayForSpace:viewCopy view:labelCopy space:v24 view:v29];
 
   [(NTKModuleView *)self naturalHorizontalLayoutForViewsAndSpacing:v26 columnAlignmentSpacing:0];
 }
 
-- (void)_layoutRowsOfColumnsWithAlignment:(int64_t)a3
+- (void)_layoutRowsOfColumnsWithAlignment:(int64_t)alignment
 {
-  v5 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_55(v5, &v40);
+  device = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_55(device, &v40);
   v6 = v41;
 
-  v7 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_55(v7, &v39);
+  device2 = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_55(device2, &v39);
   v8 = *(&v39 + 1);
 
-  v9 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_55(v9, &v37);
+  device3 = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_55(device3, &v37);
   v10 = v38;
 
   v33 = 0;
@@ -83,19 +83,19 @@
   v24[6] = &v29;
   v24[7] = &v25;
   [(NTKModularLargeColumnTemplateView *)self _enumerateColumnRowsWithBlock:v24];
-  v11 = [(NTKModuleView *)self contentView];
-  [v11 bounds];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView bounds];
   v13 = v12;
 
-  v14 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_55(v14, &v22);
+  device4 = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_55(device4, &v22);
   v15 = v23;
 
   v16 = 0.0;
   if (!self->_useNoColumnPadding)
   {
-    v17 = [(NTKModuleView *)self device];
-    ___LayoutConstants_block_invoke_55(v17, &v20);
+    device5 = [(NTKModuleView *)self device];
+    ___LayoutConstants_block_invoke_55(device5, &v20);
     v16 = v21;
   }
 
@@ -113,7 +113,7 @@
   *&v19[6] = v18;
   v19[4] = self;
   *&v19[7] = v13 - v8 - v18 - v16 - v15;
-  v19[8] = a3;
+  v19[8] = alignment;
   *&v19[9] = v8;
   *&v19[10] = v16;
   *&v19[11] = v13;
@@ -254,14 +254,14 @@ void __71__NTKModularLargeColumnTemplateView__layoutRowsOfColumnsWithAlignment__
   [*(a1 + 32) naturalHorizontalLayoutForViewsAndSpacing:v22 columnAlignmentSpacing:1];
 }
 
-- (id)_newLabelSubviewWithFont:(id)a3
+- (id)_newLabelSubviewWithFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v5 = objc_alloc_init(off_27877BEF8);
-  [v5 setFont:v4];
+  [v5 setFont:fontCopy];
   [v5 setUppercase:0];
-  v6 = [(NTKModularTemplateView *)self timeTravelDate];
-  [v5 setInTimeTravel:v6 != 0];
+  timeTravelDate = [(NTKModularTemplateView *)self timeTravelDate];
+  [v5 setInTimeTravel:timeTravelDate != 0];
 
   [v5 setNowProvider:&__block_literal_global_141];
   objc_initWeak(&location, self);
@@ -290,8 +290,8 @@ void __62__NTKModularLargeColumnTemplateView__newLabelSubviewWithFont___block_in
 - (id)_newHeaderLabelSubview
 {
   v3 = MEMORY[0x277CBBB08];
-  v4 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_55(v4, v8);
+  device = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_55(device, v8);
   v5 = [v3 systemFontOfSize:v8[0] weight:*MEMORY[0x277D74410]];
 
   v6 = [(NTKModularLargeColumnTemplateView *)self _newLabelSubviewWithFont:v5];
@@ -301,8 +301,8 @@ void __62__NTKModularLargeColumnTemplateView__newLabelSubviewWithFont___block_in
 - (id)_newBodyLabelSubview
 {
   v3 = MEMORY[0x277CBBB08];
-  v4 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_55(v4, v8);
+  device = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_55(device, v8);
   v5 = [v3 systemFontOfSize:v8[0]];
 
   v6 = [(NTKModularLargeColumnTemplateView *)self _newLabelSubviewWithFont:v5];

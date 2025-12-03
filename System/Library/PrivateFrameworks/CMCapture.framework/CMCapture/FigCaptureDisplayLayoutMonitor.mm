@@ -6,22 +6,22 @@
 - (BOOL)isOnHomeScreen;
 - (BOOL)isOnLockScreen;
 - (FigCaptureDisplayLayout)currentLayout;
-- (FigCaptureDisplayLayoutMonitor)initWithFBSDisplayLayoutMonitorCreateFunction:(void *)a3 displayType:(int64_t)a4;
+- (FigCaptureDisplayLayoutMonitor)initWithFBSDisplayLayoutMonitorCreateFunction:(void *)function displayType:(int64_t)type;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)osStatePropertyList;
-- (uint64_t)_displayIdentityForDisplayInfo:(uint64_t)a1;
+- (uint64_t)_displayIdentityForDisplayInfo:(uint64_t)info;
 - (uint64_t)_isFBSDisplayLayoutOnHomeScreen:(uint64_t)result;
 - (uint64_t)_isFBSDisplayLayoutOnLockScreen:(uint64_t)result;
 - (uint64_t)_parseFBSDisplayLayout:(uint64_t)result;
 - (uint64_t)_stopMonitoringDisplayWithIdentity:(uint64_t)result;
-- (void)_addLayoutObserver:(int)a3 withImmediateCallback:;
-- (void)_startMonitoringDisplayWithIdentity:(uint64_t)a1;
-- (void)_updateObserversWithLayout:(uint64_t)a1;
+- (void)_addLayoutObserver:(int)observer withImmediateCallback:;
+- (void)_startMonitoringDisplayWithIdentity:(uint64_t)identity;
+- (void)_updateObserversWithLayout:(uint64_t)layout;
 - (void)dealloc;
-- (void)externalDisplayDidConnect:(id)a3;
-- (void)externalDisplayWillDisconnect:(id)a3;
-- (void)removeLayoutObserver:(id)a3;
+- (void)externalDisplayDidConnect:(id)connect;
+- (void)externalDisplayWillDisconnect:(id)disconnect;
+- (void)removeLayoutObserver:(id)observer;
 @end
 
 @implementation FigCaptureDisplayLayoutMonitor
@@ -69,7 +69,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -99,7 +99,7 @@ FigCaptureDisplayLayoutMonitor *__70__FigCaptureDisplayLayoutMonitor_sharedConti
   return result;
 }
 
-- (FigCaptureDisplayLayoutMonitor)initWithFBSDisplayLayoutMonitorCreateFunction:(void *)a3 displayType:(int64_t)a4
+- (FigCaptureDisplayLayoutMonitor)initWithFBSDisplayLayoutMonitorCreateFunction:(void *)function displayType:(int64_t)type
 {
   v19.receiver = self;
   v19.super_class = FigCaptureDisplayLayoutMonitor;
@@ -107,7 +107,7 @@ FigCaptureDisplayLayoutMonitor *__70__FigCaptureDisplayLayoutMonitor_sharedConti
   v7 = v6;
   if (v6)
   {
-    v6->_displayType = a4;
+    v6->_displayType = type;
     v6->_layoutObserversLock = FigSimpleMutexCreate();
     v7->_layoutObservers = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7->_layoutLock = FigSimpleMutexCreate();
@@ -130,7 +130,7 @@ FigCaptureDisplayLayoutMonitor *__70__FigCaptureDisplayLayoutMonitor_sharedConti
     v14[3] = &unk_1E7999730;
     objc_copyWeak(&v15, location);
     v7->_displayConnected = v7->_displayType == 0;
-    v7->_layoutMonitor = (a3)(v14);
+    v7->_layoutMonitor = (function)(v14);
     displayType = v7->_displayType;
     if (displayType == 1)
     {
@@ -177,7 +177,7 @@ uint64_t __92__FigCaptureDisplayLayoutMonitor_initWithFBSDisplayLayoutMonitorCre
   [(FigCaptureDisplayLayoutMonitor *)&v3 dealloc];
 }
 
-- (void)removeLayoutObserver:(id)a3
+- (void)removeLayoutObserver:(id)observer
 {
   FigSimpleMutexLock();
   FigSimpleMutexLock();
@@ -202,10 +202,10 @@ uint64_t __92__FigCaptureDisplayLayoutMonitor_initWithFBSDisplayLayoutMonitorCre
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 referencedObject];
+        referencedObject = [v10 referencedObject];
 
         objc_autoreleasePoolPop(v11);
-        if (v12 == a3)
+        if (referencedObject == observer)
         {
           if (v10)
           {
@@ -241,32 +241,32 @@ LABEL_12:
 
 - (BOOL)isOnHomeScreen
 {
-  v3 = [(FBSDisplayLayoutMonitor *)self->_layoutMonitor currentLayout];
+  currentLayout = [(FBSDisplayLayoutMonitor *)self->_layoutMonitor currentLayout];
 
-  return [(FigCaptureDisplayLayoutMonitor *)self _isFBSDisplayLayoutOnHomeScreen:v3];
+  return [(FigCaptureDisplayLayoutMonitor *)self _isFBSDisplayLayoutOnHomeScreen:currentLayout];
 }
 
 - (BOOL)isOnLockScreen
 {
-  v3 = [(FBSDisplayLayoutMonitor *)self->_layoutMonitor currentLayout];
+  currentLayout = [(FBSDisplayLayoutMonitor *)self->_layoutMonitor currentLayout];
 
-  return [(FigCaptureDisplayLayoutMonitor *)self _isFBSDisplayLayoutOnLockScreen:v3];
+  return [(FigCaptureDisplayLayoutMonitor *)self _isFBSDisplayLayoutOnLockScreen:currentLayout];
 }
 
-- (void)_startMonitoringDisplayWithIdentity:(uint64_t)a1
+- (void)_startMonitoringDisplayWithIdentity:(uint64_t)identity
 {
-  if (a1)
+  if (identity)
   {
     v14[0] = 0;
     v14[1] = v14;
     v14[2] = 0x3052000000;
     v14[3] = __Block_byref_object_copy__30;
     v14[4] = __Block_byref_object_dispose__30;
-    v14[5] = a1;
-    v4 = *(a1 + 8);
+    v14[5] = identity;
+    v4 = *(identity + 8);
     if (v4 == 1)
     {
-      v5 = [a2 isExternal];
+      isExternal = [a2 isExternal];
     }
 
     else
@@ -278,10 +278,10 @@ LABEL_12:
         return;
       }
 
-      v5 = [a2 isMainDisplay];
+      isExternal = [a2 isMainDisplay];
     }
 
-    if (v5)
+    if (isExternal)
     {
       if ([a2 isExternal])
       {
@@ -306,10 +306,10 @@ LABEL_12:
           [v8 setNeedsUserInteractivePriority:1];
           [v8 setTransitionHandler:v11];
           FigSimpleMutexLock();
-          *(a1 + 40) = 1;
-          [*(a1 + 64) invalidate];
+          *(identity + 40) = 1;
+          [*(identity + 64) invalidate];
 
-          *(a1 + 64) = [MEMORY[0x1E699FAE0] monitorWithConfiguration:v8];
+          *(identity + 64) = [MEMORY[0x1E699FAE0] monitorWithConfiguration:v8];
           FigSimpleMutexUnlock();
         }
       }
@@ -321,7 +321,7 @@ LABEL_12:
 
 - (id)osStatePropertyList
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   FigSimpleMutexLock();
   v19 = 0u;
   v20 = 0u;
@@ -344,8 +344,8 @@ LABEL_12:
 
         v9 = *(*(&v19 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 referencedObject];
-        [v3 addObject:{objc_msgSend(v11, "description")}];
+        referencedObject = [v9 referencedObject];
+        [array addObject:{objc_msgSend(referencedObject, "description")}];
 
         objc_autoreleasePoolPop(v10);
       }
@@ -372,7 +372,7 @@ LABEL_12:
 
   FigSimpleMutexUnlock();
   v17[0] = [MEMORY[0x1E696AD98] numberWithBool:{displayConnected, @"connected"}];
-  v17[1] = v3;
+  v17[1] = array;
   v16[1] = @"observers";
   v16[2] = @"layout";
   v16[3] = @"FBSDisplayLayout";
@@ -399,10 +399,10 @@ LABEL_12:
   }
 
   v3 = result;
-  v57 = [MEMORY[0x1E695DF70] array];
-  v54 = [MEMORY[0x1E695DF70] array];
-  v59 = [MEMORY[0x1E695DF70] array];
-  v46 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   result = [MEMORY[0x1E695DF70] array];
   v47 = result;
   if (dword_1ED8440F0)
@@ -457,20 +457,20 @@ LABEL_13:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v6 = [a2 elements];
-  v7 = [v6 countByEnumeratingWithState:&v68 objects:v67 count:16];
+  elements = [a2 elements];
+  v7 = [elements countByEnumeratingWithState:&v68 objects:v67 count:16];
   v60 = v3;
   if (!v7)
   {
-    v9 = 0;
+    level3 = 0;
 LABEL_25:
     FigSimpleMutexLock();
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v16 = [a2 elements];
-    v17 = [v16 countByEnumeratingWithState:&v63 objects:v62 count:16];
+    elements2 = [a2 elements];
+    v17 = [elements2 countByEnumeratingWithState:&v63 objects:v62 count:16];
     if (!v17)
     {
       OUTLINED_FUNCTION_7_51();
@@ -493,7 +493,7 @@ LABEL_25:
       {
         if (*v64 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(elements2);
         }
 
         v21 = *(*(&v63 + 1) + 8 * i);
@@ -514,12 +514,12 @@ LABEL_25:
         v34 = CGRectEqualToRect(v74, v75);
         if ([v21 isUIApplicationElement])
         {
-          if ([v21 level] < v9)
+          if ([v21 level] < level3)
           {
-            v35 = [v21 bundleIdentifier];
-            v36 = v59;
+            bundleIdentifier = [v21 bundleIdentifier];
+            v36 = array3;
 LABEL_34:
-            [v36 addObject:v35];
+            [v36 addObject:bundleIdentifier];
             continue;
           }
 
@@ -527,7 +527,7 @@ LABEL_34:
           {
             if (([v21 sb_isStashedPIP] & 1) == 0)
             {
-              v35 = [v21 bundleIdentifier];
+              bundleIdentifier = [v21 bundleIdentifier];
               v36 = v47;
               goto LABEL_34;
             }
@@ -535,31 +535,31 @@ LABEL_34:
 
           else
           {
-            if (([v57 containsObject:{objc_msgSend(v21, "bundleIdentifier")}] & 1) == 0 && (objc_msgSend(v54, "containsObject:", objc_msgSend(v21, "bundleIdentifier")) & 1) == 0)
+            if (([array containsObject:{objc_msgSend(v21, "bundleIdentifier")}] & 1) == 0 && (objc_msgSend(array2, "containsObject:", objc_msgSend(v21, "bundleIdentifier")) & 1) == 0)
             {
-              v38 = [v21 bundleIdentifier];
+              bundleIdentifier2 = [v21 bundleIdentifier];
               if (v34)
               {
-                v39 = v57;
+                v39 = array;
               }
 
               else
               {
-                v39 = v54;
+                v39 = array2;
               }
 
-              [v39 addObject:v38];
+              [v39 addObject:bundleIdentifier2];
             }
 
-            if ([v21 level] > v58)
+            if ([v21 level] > level)
             {
-              v58 = [v21 level];
+              level = [v21 level];
             }
 
             if ([v21 sb_isTransitioning])
             {
-              v35 = [v21 bundleIdentifier];
-              v36 = v46;
+              bundleIdentifier = [v21 bundleIdentifier];
+              v36 = array4;
               goto LABEL_34;
             }
           }
@@ -567,8 +567,8 @@ LABEL_34:
 
         else
         {
-          v37 = [v21 bundleIdentifier];
-          if ([v37 length])
+          bundleIdentifier3 = [v21 bundleIdentifier];
+          if ([bundleIdentifier3 length])
           {
             if (!v34)
             {
@@ -578,7 +578,7 @@ LABEL_34:
 
           else
           {
-            v37 = [v21 identifier];
+            bundleIdentifier3 = [v21 identifier];
             if (!v34)
             {
               continue;
@@ -601,60 +601,60 @@ LABEL_34:
             *(v60 + 56) = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:11];
           }
 
-          if ([v37 hasPrefix:@"SUIS-ProximityReaderSceneUI-ProximityReader:"])
+          if ([bundleIdentifier3 hasPrefix:@"SUIS-ProximityReaderSceneUI-ProximityReader:"])
           {
             v56 = 1;
           }
 
-          else if ([v37 hasPrefix:@"SUIS-ProximityReaderSceneUI-ProximityReaderIDVerifier:"])
+          else if ([bundleIdentifier3 hasPrefix:@"SUIS-ProximityReaderSceneUI-ProximityReaderIDVerifier:"])
           {
             v45 = 1;
           }
 
-          else if ([*(v60 + 56) containsObject:v37])
+          else if ([*(v60 + 56) containsObject:bundleIdentifier3])
           {
-            v44 |= [v37 isEqualToString:v55];
+            v44 |= [bundleIdentifier3 isEqualToString:v55];
           }
 
-          else if ([v21 level] >= v43)
+          else if ([v21 level] >= level2)
           {
-            v42 = v37;
-            v43 = [v21 level];
+            v42 = bundleIdentifier3;
+            level2 = [v21 level];
           }
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v63 objects:v62 count:16];
+      v18 = [elements2 countByEnumeratingWithState:&v63 objects:v62 count:16];
       v3 = v60;
       if (!v18)
       {
 LABEL_64:
-        if (v43 > v58 || (v56 & 1) != 0 || (v45 & 1) != 0)
+        if (level2 > level || (v56 & 1) != 0 || (v45 & 1) != 0)
         {
-          [v59 addObjectsFromArray:v57];
-          [v59 addObjectsFromArray:v54];
-          [v59 addObjectsFromArray:v47];
-          [v57 removeAllObjects];
-          [v54 removeAllObjects];
+          [array3 addObjectsFromArray:array];
+          [array3 addObjectsFromArray:array2];
+          [array3 addObjectsFromArray:v47];
+          [array removeAllObjects];
+          [array2 removeAllObjects];
           [v47 removeAllObjects];
           if (!((v42 == 0) | (v56 | v45) & 1))
           {
-            [v57 addObject:v42];
+            [array addObject:v42];
           }
         }
 
-        [v57 count];
-        [v54 count];
+        [array count];
+        [array2 count];
 
         *(v3 + 48) = [[FigCaptureDisplayLayout alloc] _init];
         [a2 timestamp];
         [OUTLINED_FUNCTION_6_53() setTimestamp:?];
         [*(v3 + 48) setDisplayType:*(v3 + 8)];
-        [v57 arrayByAddingObjectsFromArray:v54];
+        [array arrayByAddingObjectsFromArray:array2];
         [OUTLINED_FUNCTION_6_53() setForegroundApps:?];
-        [MEMORY[0x1E695DEC8] arrayWithArray:v59];
+        [MEMORY[0x1E695DEC8] arrayWithArray:array3];
         [OUTLINED_FUNCTION_6_53() setObscuredApps:?];
-        [MEMORY[0x1E695DEC8] arrayWithArray:v46];
+        [MEMORY[0x1E695DEC8] arrayWithArray:array4];
         [OUTLINED_FUNCTION_6_53() setTransitioningApps:?];
         [MEMORY[0x1E695DEC8] arrayWithArray:v47];
         [OUTLINED_FUNCTION_6_53() setPipApps:?];
@@ -675,7 +675,7 @@ LABEL_64:
   }
 
   v8 = v7;
-  v9 = 0;
+  level3 = 0;
   v10 = 0;
   v11 = *v69;
   v12 = *MEMORY[0x1E69D43B8];
@@ -687,7 +687,7 @@ LABEL_64:
     {
       if (*v69 != v11)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(elements);
       }
 
       v15 = *(*(&v68 + 1) + 8 * v14);
@@ -698,14 +698,14 @@ LABEL_64:
 
       else if ([objc_msgSend(v15 "identifier")])
       {
-        v9 = [v15 level];
+        level3 = [v15 level];
       }
 
       ++v14;
     }
 
     while (v8 != v14);
-    result = [v6 countByEnumeratingWithState:&v68 objects:v67 count:16];
+    result = [elements countByEnumeratingWithState:&v68 objects:v67 count:16];
     v8 = result;
   }
 
@@ -719,19 +719,19 @@ LABEL_64:
   return result;
 }
 
-- (void)_addLayoutObserver:(int)a3 withImmediateCallback:
+- (void)_addLayoutObserver:(int)observer withImmediateCallback:
 {
-  if (a1)
+  if (self)
   {
     v6 = [[FigWeakReference alloc] initWithReferencedObject:a2];
     FigSimpleMutexLock();
-    [*(a1 + 24) addObject:v6];
+    [*(self + 24) addObject:v6];
     FigSimpleMutexUnlock();
 
-    if (a3)
+    if (observer)
     {
       FigSimpleMutexLock();
-      [a2 layoutMonitor:a1 didUpdateLayout:*(a1 + 48)];
+      [a2 layoutMonitor:self didUpdateLayout:*(self + 48)];
 
       FigSimpleMutexUnlock();
     }
@@ -817,7 +817,7 @@ LABEL_6:
         v6 = *v15;
         v7 = *MEMORY[0x1E699F8A0];
         v8 = 0x8000000000000000;
-        v9 = 0x8000000000000000;
+        level2 = 0x8000000000000000;
         do
         {
           for (i = 0; i != v5; ++i)
@@ -829,15 +829,15 @@ LABEL_6:
 
             v11 = *(v14 + 8 * i);
             v12 = [objc_msgSend(v11 "identifier")];
-            v13 = [v11 level];
+            level = [v11 level];
             if (v12)
             {
-              v8 = v13;
+              v8 = level;
             }
 
-            else if (v13 > v9)
+            else if (level > level2)
             {
-              v9 = [v11 level];
+              level2 = [v11 level];
             }
           }
 
@@ -851,10 +851,10 @@ LABEL_6:
       else
       {
         v8 = 0x8000000000000000;
-        v9 = 0x8000000000000000;
+        level2 = 0x8000000000000000;
       }
 
-      return v8 > v9;
+      return v8 > level2;
     }
   }
 
@@ -913,9 +913,9 @@ LABEL_6:
   return result;
 }
 
-- (void)_updateObserversWithLayout:(uint64_t)a1
+- (void)_updateObserversWithLayout:(uint64_t)layout
 {
-  if (a1)
+  if (layout)
   {
     FigSimpleMutexCheckIsLockedOnThisThread();
     if (dword_1ED8440F0)
@@ -929,7 +929,7 @@ LABEL_6:
         v67 = 136315650;
         v68 = "[FigCaptureDisplayLayoutMonitor _updateObserversWithLayout:]";
         v69 = 2114;
-        v70 = a1;
+        layoutCopy = layout;
         v71 = 2114;
         v72 = a2;
         LODWORD(v32) = 32;
@@ -942,7 +942,7 @@ LABEL_6:
     }
 
     FigSimpleMutexLock();
-    v6 = [*(a1 + 24) copy];
+    v6 = [*(layout + 24) copy];
     v7 = FigSimpleMutexUnlock();
     v15 = OUTLINED_FUNCTION_17_0(v7, v8, v9, v10, v11, v12, v13, v14, v30, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, v64, 0);
     if (v15)
@@ -960,8 +960,8 @@ LABEL_6:
 
           v19 = *(8 * i);
           v20 = objc_autoreleasePoolPush();
-          v21 = [v19 referencedObject];
-          [v21 layoutMonitor:a1 didUpdateLayout:a2];
+          referencedObject = [v19 referencedObject];
+          [referencedObject layoutMonitor:layout didUpdateLayout:a2];
 
           objc_autoreleasePoolPop(v20);
         }
@@ -974,15 +974,15 @@ LABEL_6:
   }
 }
 
-- (uint64_t)_displayIdentityForDisplayInfo:(uint64_t)a1
+- (uint64_t)_displayIdentityForDisplayInfo:(uint64_t)info
 {
-  if (!a1)
+  if (!info)
   {
     return 0;
   }
 
   v4 = objc_alloc_init(MEMORY[0x1E699FB10]);
-  v5 = [v4 connectedIdentities];
+  connectedIdentities = [v4 connectedIdentities];
   OUTLINED_FUNCTION_43();
   v7 = [v6 countByEnumeratingWithState:? objects:? count:?];
   if (v7)
@@ -995,11 +995,11 @@ LABEL_6:
       {
         if (MEMORY[0] != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedIdentities);
         }
 
         v11 = *(8 * i);
-        v12 = *(a1 + 8);
+        v12 = *(info + 8);
         if (v12 == 1)
         {
           if (![*(8 * i) isExternal])
@@ -1020,7 +1020,7 @@ LABEL_6:
       }
 
       OUTLINED_FUNCTION_43();
-      v8 = [v5 countByEnumeratingWithState:? objects:? count:?];
+      v8 = [connectedIdentities countByEnumeratingWithState:? objects:? count:?];
     }
 
     while (v8);
@@ -1033,7 +1033,7 @@ LABEL_16:
   return v11;
 }
 
-- (void)externalDisplayDidConnect:(id)a3
+- (void)externalDisplayDidConnect:(id)connect
 {
   if (dword_1ED8440F0)
   {
@@ -1073,7 +1073,7 @@ LABEL_9:
   }
 }
 
-- (void)externalDisplayWillDisconnect:(id)a3
+- (void)externalDisplayWillDisconnect:(id)disconnect
 {
   if (dword_1ED8440F0)
   {

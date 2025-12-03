@@ -1,6 +1,6 @@
 @interface FigCaptureCIFilterUnarchiverDelegate
 + (id)sharedInstance;
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5;
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes;
 @end
 
 @implementation FigCaptureCIFilterUnarchiverDelegate
@@ -22,14 +22,14 @@ FigCaptureCIFilterUnarchiverDelegate *__54__FigCaptureCIFilterUnarchiverDelegate
   return result;
 }
 
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes
 {
-  if (![a5 containsObject:@"CIFilter"])
+  if (![classes containsObject:@"CIFilter"])
   {
     return 0;
   }
 
-  [MEMORY[0x1E695F648] filterWithName:a4];
+  [MEMORY[0x1E695F648] filterWithName:name];
 
   return objc_opt_class();
 }

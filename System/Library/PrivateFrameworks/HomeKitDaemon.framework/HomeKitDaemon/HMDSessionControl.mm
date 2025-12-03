@@ -1,37 +1,37 @@
 @interface HMDSessionControl
 - (BOOL)_parseFromTLVData;
-- (HMDSessionControl)initWithCoder:(id)a3;
-- (HMDSessionControl)initWithCommand:(unint64_t)a3 sessionIdentifier:(id)a4;
+- (HMDSessionControl)initWithCoder:(id)coder;
+- (HMDSessionControl)initWithCommand:(unint64_t)command sessionIdentifier:(id)identifier;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDSessionControl
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[HMDSessionControl controlCommand](self forKey:{"controlCommand"), @"kSessionControl__Command"}];
-  v5 = [(HMDSessionControl *)self sessionID];
-  [v4 encodeObject:v5 forKey:@"kSessionControl__SessionIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[HMDSessionControl controlCommand](self forKey:{"controlCommand"), @"kSessionControl__Command"}];
+  sessionID = [(HMDSessionControl *)self sessionID];
+  [coderCopy encodeObject:sessionID forKey:@"kSessionControl__SessionIdentifier"];
 }
 
-- (HMDSessionControl)initWithCoder:(id)a3
+- (HMDSessionControl)initWithCoder:(id)coder
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HMDSessionControl;
   v5 = [(HMDSessionControl *)&v13 init];
   if (v5)
   {
-    v5->_controlCommand = [v4 decodeInt32ForKey:@"kSessionControl__Command"];
+    v5->_controlCommand = [coderCopy decodeInt32ForKey:@"kSessionControl__Command"];
     v6 = MEMORY[0x277CBEB98];
     v14[0] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kSessionControl__SessionIdentifier"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kSessionControl__SessionIdentifier"];
     sessionID = v5->_sessionID;
     v5->_sessionID = v9;
   }
@@ -40,43 +40,43 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n %@ tlvDatablob = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n %@ tlvDatablob = %@ ", indentCopy, tlvDatablob];
 
-  v9 = [(HMDSessionControl *)self controlCommand];
-  if (v9 >= 5)
+  controlCommand = [(HMDSessionControl *)self controlCommand];
+  if (controlCommand >= 5)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDSessionControlCommand %tu", v9];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDSessionControlCommand %tu", controlCommand];
   }
 
   else
   {
-    v10 = off_27867B9F8[v9];
+    v10 = off_27867B9F8[controlCommand];
   }
 
-  [v7 appendFormat:@"\n %@ controlCommand = %@ ", v6, v10];
+  [descriptionCopy appendFormat:@"\n %@ controlCommand = %@ ", indentCopy, v10];
 
-  v12 = [(HMDSessionControl *)self sessionID];
-  v11 = [v12 UUIDString];
-  [v7 appendFormat:@"\n %@ sessionID = %@ ", v6, v11];
+  sessionID = [(HMDSessionControl *)self sessionID];
+  uUIDString = [sessionID UUIDString];
+  [descriptionCopy appendFormat:@"\n %@ sessionID = %@ ", indentCopy, uUIDString];
 }
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
+  creator = [MEMORY[0x277CFEC80] creator];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDSessionControl controlCommand](self, "controlCommand")}];
-  [v3 addTLV:2 number:v4];
+  [creator addTLV:2 number:v4];
 
-  v5 = [(HMDSessionControl *)self sessionID];
-  [v3 addTLV:1 uuid:v5];
+  sessionID = [(HMDSessionControl *)self sessionID];
+  [creator addTLV:1 uuid:sessionID];
 
-  v6 = [v3 serialize];
+  serialize = [creator serialize];
 
-  return v6;
+  return serialize;
 }
 
 - (BOOL)_parseFromTLVData
@@ -90,29 +90,29 @@
   v6 = [(HAPTLVBase *)self _parse:v5];
   if (v6)
   {
-    v7 = [v3 field];
-    self->_controlCommand = [v7 unsignedIntegerValue];
+    field = [v3 field];
+    self->_controlCommand = [field unsignedIntegerValue];
 
-    v8 = [v4 field];
+    field2 = [v4 field];
     sessionID = self->_sessionID;
-    self->_sessionID = v8;
+    self->_sessionID = field2;
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (HMDSessionControl)initWithCommand:(unint64_t)a3 sessionIdentifier:(id)a4
+- (HMDSessionControl)initWithCommand:(unint64_t)command sessionIdentifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = HMDSessionControl;
   v8 = [(HMDSessionControl *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_controlCommand = a3;
-    objc_storeStrong(&v8->_sessionID, a4);
+    v8->_controlCommand = command;
+    objc_storeStrong(&v8->_sessionID, identifier);
   }
 
   return v9;

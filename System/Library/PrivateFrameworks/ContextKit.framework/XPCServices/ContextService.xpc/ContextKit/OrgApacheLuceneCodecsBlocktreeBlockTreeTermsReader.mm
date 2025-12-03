@@ -1,10 +1,10 @@
 @interface OrgApacheLuceneCodecsBlocktreeBlockTreeTermsReader
 + (void)initialize;
-- (id)brToStringWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (id)brToStringWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)description;
 - (id)getChildResources;
 - (id)iterator;
-- (id)termsWithNSString:(id)a3;
+- (id)termsWithNSString:(id)string;
 - (int)size;
 - (int64_t)ramBytesUsed;
 - (void)checkIntegrity;
@@ -41,7 +41,7 @@
   return [(JavaUtilCollections_UnmodifiableCollection *)v3 iterator];
 }
 
-- (id)termsWithNSString:(id)a3
+- (id)termsWithNSString:(id)string
 {
   fields = self->fields_;
   if (!fields)
@@ -49,7 +49,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilTreeMap *)fields getWithId:a3];
+  return [(JavaUtilTreeMap *)fields getWithId:string];
 }
 
 - (int)size
@@ -63,15 +63,15 @@
   return [(JavaUtilTreeMap *)fields size];
 }
 
-- (id)brToStringWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)brToStringWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     return @"null";
   }
 
-  v3 = [a3 utf8ToString];
-  return JreStrcat("$C@", v4, v5, v6, v7, v8, v9, v10, v3);
+  utf8ToString = [ref utf8ToString];
+  return JreStrcat("$C@", v4, v5, v6, v7, v8, v9, v10, utf8ToString);
 }
 
 - (int64_t)ramBytesUsed
@@ -160,7 +160,7 @@ LABEL_13:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     Singleton = OrgApacheLuceneUtilFstByteSequenceOutputs_getSingleton();
     JreStrongAssign(&OrgApacheLuceneCodecsBlocktreeBlockTreeTermsReader_FST_OUTPUTS_, Singleton);

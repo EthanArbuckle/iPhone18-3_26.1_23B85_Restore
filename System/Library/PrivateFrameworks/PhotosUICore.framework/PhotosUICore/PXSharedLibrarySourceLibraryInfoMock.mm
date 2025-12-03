@@ -1,23 +1,23 @@
 @interface PXSharedLibrarySourceLibraryInfoMock
-- (BOOL)isSharedLibraryNotFoundError:(id)a3;
-- (BOOL)presentCustomInformationForError:(id)a3 customTitle:(id *)a4 customMessage:(id *)a5;
+- (BOOL)isSharedLibraryNotFoundError:(id)error;
+- (BOOL)presentCustomInformationForError:(id)error customTitle:(id *)title customMessage:(id *)message;
 - (PXSharedLibraryStatusProvider)sharedLibraryStatusProvider;
 - (id)pickerConfiguration;
-- (void)fetchEstimatedAssetsCountsForStartDate:(id)a3 personUUIDs:(id)a4 completion:(id)a5;
-- (void)fetchEstimatedAssetsCountsShareEverythingPolicyWithCompletion:(id)a3;
-- (void)fetchSuggestedStartDateForPersonUUIDs:(id)a3 completion:(id)a4;
+- (void)fetchEstimatedAssetsCountsForStartDate:(id)date personUUIDs:(id)ds completion:(id)completion;
+- (void)fetchEstimatedAssetsCountsShareEverythingPolicyWithCompletion:(id)completion;
+- (void)fetchSuggestedStartDateForPersonUUIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation PXSharedLibrarySourceLibraryInfoMock
 
-- (BOOL)isSharedLibraryNotFoundError:(id)a3
+- (BOOL)isSharedLibraryNotFoundError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    if ([v5 isEqualToString:@"PXSharedLibraryErrorDomain"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"PXSharedLibraryErrorDomain"])
     {
       v6 = [v4 code] == -1002;
     }
@@ -36,12 +36,12 @@
   return v6;
 }
 
-- (BOOL)presentCustomInformationForError:(id)a3 customTitle:(id *)a4 customMessage:(id *)a5
+- (BOOL)presentCustomInformationForError:(id)error customTitle:(id *)title customMessage:(id *)message
 {
-  v9 = a3;
-  if (a4)
+  errorCopy = error;
+  if (title)
   {
-    if (a5)
+    if (message)
     {
       goto LABEL_3;
     }
@@ -49,24 +49,24 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySourceLibraryInfoMock.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"customTitle"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySourceLibraryInfoMock.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"customTitle"}];
 
-    if (a5)
+    if (message)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySourceLibraryInfoMock.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"customMessage"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySourceLibraryInfoMock.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"customMessage"}];
 
 LABEL_3:
-  v10 = [(PXSharedLibrarySourceLibraryInfoMock *)self isSharedLibraryNotFoundError:v9];
+  v10 = [(PXSharedLibrarySourceLibraryInfoMock *)self isSharedLibraryNotFoundError:errorCopy];
   if (v10)
   {
-    *a4 = PXLocalizedSharedLibraryString(@"PXSharedLibraryFetchInvitationFailureAlertTitle_Permanent");
-    *a5 = 0;
+    *title = PXLocalizedSharedLibraryString(@"PXSharedLibraryFetchInvitationFailureAlertTitle_Permanent");
+    *message = 0;
   }
 
   return v10;
@@ -74,9 +74,9 @@ LABEL_3:
 
 - (PXSharedLibraryStatusProvider)sharedLibraryStatusProvider
 {
-  v2 = [(PXSharedLibrarySourceLibraryInfoMock *)self pickerConfiguration];
-  v3 = [v2 photoLibrary];
-  v4 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v3];
+  pickerConfiguration = [(PXSharedLibrarySourceLibraryInfoMock *)self pickerConfiguration];
+  photoLibrary = [pickerConfiguration photoLibrary];
+  v4 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
 
   return v4;
 }
@@ -88,21 +88,21 @@ LABEL_3:
   return v2;
 }
 
-- (void)fetchEstimatedAssetsCountsShareEverythingPolicyWithCompletion:(id)a3
+- (void)fetchEstimatedAssetsCountsShareEverythingPolicyWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySourceLibraryInfoMock.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySourceLibraryInfoMock.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __102__PXSharedLibrarySourceLibraryInfoMock_fetchEstimatedAssetsCountsShareEverythingPolicyWithCompletion___block_invoke;
   block[3] = &unk_1E774C250;
-  v9 = v5;
-  v6 = v5;
+  v9 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -114,21 +114,21 @@ uint64_t __102__PXSharedLibrarySourceLibraryInfoMock_fetchEstimatedAssetsCountsS
   return (*(v3 + 16))(v3, &v5, a3);
 }
 
-- (void)fetchEstimatedAssetsCountsForStartDate:(id)a3 personUUIDs:(id)a4 completion:(id)a5
+- (void)fetchEstimatedAssetsCountsForStartDate:(id)date personUUIDs:(id)ds completion:(id)completion
 {
-  v7 = a5;
-  if (!v7)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySourceLibraryInfoMock.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySourceLibraryInfoMock.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __102__PXSharedLibrarySourceLibraryInfoMock_fetchEstimatedAssetsCountsForStartDate_personUUIDs_completion___block_invoke;
   block[3] = &unk_1E774C250;
-  v11 = v7;
-  v8 = v7;
+  v11 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -140,15 +140,15 @@ uint64_t __102__PXSharedLibrarySourceLibraryInfoMock_fetchEstimatedAssetsCountsF
   return (*(v3 + 16))(v3, &v5, a3);
 }
 
-- (void)fetchSuggestedStartDateForPersonUUIDs:(id)a3 completion:(id)a4
+- (void)fetchSuggestedStartDateForPersonUUIDs:(id)ds completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__PXSharedLibrarySourceLibraryInfoMock_fetchSuggestedStartDateForPersonUUIDs_completion___block_invoke;
   block[3] = &unk_1E774C250;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 

@@ -2,15 +2,15 @@
 - (CGRect)containerBounds;
 - (CGRect)leftStatusBarPartIntersectionRegion;
 - (CGRect)rightStatusBarPartIntersectionRegion;
-- (id)initWithContainerBounds:(void *)a3 screenScale:(double)a4 dockHeightWithBottomEdgePadding:(double)a5 leftStatusBarPartIntersectionRegion:(double)a6 rightStatusBarPartIntersectionRegion:(double)a7 windowingConfiguration:(double)a8;
+- (id)initWithContainerBounds:(void *)bounds screenScale:(double)scale dockHeightWithBottomEdgePadding:(double)padding leftStatusBarPartIntersectionRegion:(double)region rightStatusBarPartIntersectionRegion:(double)intersectionRegion windowingConfiguration:(double)configuration;
 @end
 
 @implementation SBContinuousExposeAutoLayoutConfiguration
 
-- (id)initWithContainerBounds:(void *)a3 screenScale:(double)a4 dockHeightWithBottomEdgePadding:(double)a5 leftStatusBarPartIntersectionRegion:(double)a6 rightStatusBarPartIntersectionRegion:(double)a7 windowingConfiguration:(double)a8
+- (id)initWithContainerBounds:(void *)bounds screenScale:(double)scale dockHeightWithBottomEdgePadding:(double)padding leftStatusBarPartIntersectionRegion:(double)region rightStatusBarPartIntersectionRegion:(double)intersectionRegion windowingConfiguration:(double)configuration
 {
-  v31 = a3;
-  v40.receiver = a1;
+  boundsCopy = bounds;
+  v40.receiver = self;
   v40.super_class = SBContinuousExposeAutoLayoutConfiguration;
   v32 = objc_msgSendSuper2(&v40, sel_init);
   if (v32)
@@ -21,7 +21,7 @@
     v36 = a20;
     v37 = a21;
     v38 = a22;
-    if (!v31)
+    if (!boundsCopy)
     {
       [SBContinuousExposeAutoLayoutConfiguration initWithContainerBounds:a2 screenScale:v32 dockHeightWithBottomEdgePadding:? leftStatusBarPartIntersectionRegion:? rightStatusBarPartIntersectionRegion:? windowingConfiguration:?];
       v38 = a22;
@@ -32,11 +32,11 @@
       v33 = a17;
     }
 
-    *(v32 + 4) = a4;
-    *(v32 + 5) = a5;
-    *(v32 + 6) = a6;
-    *(v32 + 7) = a7;
-    *(v32 + 1) = a8;
+    *(v32 + 4) = scale;
+    *(v32 + 5) = padding;
+    *(v32 + 6) = region;
+    *(v32 + 7) = intersectionRegion;
+    *(v32 + 1) = configuration;
     *(v32 + 2) = a9;
     *(v32 + 8) = a15;
     *(v32 + 9) = a16;
@@ -46,7 +46,7 @@
     *(v32 + 13) = v36;
     *(v32 + 14) = v37;
     *(v32 + 15) = v38;
-    objc_storeStrong(v32 + 3, a3);
+    objc_storeStrong(v32 + 3, bounds);
   }
 
   return v32;

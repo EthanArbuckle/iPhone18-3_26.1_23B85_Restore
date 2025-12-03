@@ -8,7 +8,7 @@
 + (id)crystalMigrateWalkingSteadinessEnablementToFeatureSettingsWithUserDefaults:()HealthMobilityDaemon
 {
   v4 = a3;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __124__HDSettingsMigrationStep_HealthMobilityDaemon__crystalMigrateWalkingSteadinessEnablementToFeatureSettingsWithUserDefaults___block_invoke;
@@ -23,7 +23,7 @@
 + (id)crystalMigrateWalkingSteadinessMoveOnboardingTileDismissalDateToKeyValueStorageWithUserDefaults:()HealthMobilityDaemon
 {
   v4 = a3;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __145__HDSettingsMigrationStep_HealthMobilityDaemon__crystalMigrateWalkingSteadinessMoveOnboardingTileDismissalDateToKeyValueStorageWithUserDefaults___block_invoke;

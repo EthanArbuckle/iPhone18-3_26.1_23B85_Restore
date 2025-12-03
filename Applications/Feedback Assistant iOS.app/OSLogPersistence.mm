@@ -6,28 +6,28 @@
 
 - (BOOL)fba_hasValidStartAndEndDates
 {
-  v3 = [(OSLogPersistence *)self startDate];
-  if (v3)
+  startDate = [(OSLogPersistence *)self startDate];
+  if (startDate)
   {
-    v4 = v3;
-    v5 = [(OSLogPersistence *)self endDate];
+    v4 = startDate;
+    endDate = [(OSLogPersistence *)self endDate];
 
-    if (v5)
+    if (endDate)
     {
-      v6 = [(OSLogPersistence *)self startDate];
-      v7 = [(OSLogPersistence *)self endDate];
-      v8 = [v6 compare:v7];
+      startDate2 = [(OSLogPersistence *)self startDate];
+      endDate2 = [(OSLogPersistence *)self endDate];
+      v8 = [startDate2 compare:endDate2];
 
-      LOBYTE(v3) = v8 == -1;
+      LOBYTE(startDate) = v8 == -1;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(startDate) = 0;
     }
   }
 
-  return v3;
+  return startDate;
 }
 
 @end

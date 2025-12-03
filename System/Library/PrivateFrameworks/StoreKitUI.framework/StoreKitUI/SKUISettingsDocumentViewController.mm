@@ -1,59 +1,59 @@
 @interface SKUISettingsDocumentViewController
-+ (double)_heightThatFitsWidth:(double)a3 withSettingsHeaderFooterDescription:(id)a4 context:(id)a5;
-+ (id)_settingsGroupsFromTemplateElement:(id)a3 withDelegate:(id)a4 settingsContext:(id)a5;
-- (SKUISettingsDocumentViewController)initWithTemplateElement:(id)a3 clientContext:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
++ (double)_heightThatFitsWidth:(double)width withSettingsHeaderFooterDescription:(id)description context:(id)context;
++ (id)_settingsGroupsFromTemplateElement:(id)element withDelegate:(id)delegate settingsContext:(id)context;
+- (SKUISettingsDocumentViewController)initWithTemplateElement:(id)element clientContext:(id)context;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_barButtonItemCancel;
 - (id)_barButtonItemDone;
 - (id)_barButtonItemEdit;
-- (id)_dequeueHeaderFooterViewWithReuseIdentifier:(id)a3;
+- (id)_dequeueHeaderFooterViewWithReuseIdentifier:(id)identifier;
 - (id)_layoutContext;
 - (id)_resourceLoader;
 - (id)_tableView;
 - (id)_textLayoutCache;
-- (id)_viewForSettingsHeaderFooterDescription:(id)a3;
-- (id)settingsGroupsDescription:(id)a3 viewForSettingAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)_cancelButtonAction:(id)a3;
-- (void)_deselectItemsAnimated:(BOOL)a3;
-- (void)_doneButtonAction:(id)a3;
-- (void)_editButtonAction:(id)a3;
+- (id)_viewForSettingsHeaderFooterDescription:(id)description;
+- (id)settingsGroupsDescription:(id)description viewForSettingAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)_cancelButtonAction:(id)action;
+- (void)_deselectItemsAnimated:(BOOL)animated;
+- (void)_doneButtonAction:(id)action;
+- (void)_editButtonAction:(id)action;
 - (void)_invalidateLayout;
-- (void)_showBarItemLeft:(id)a3 right:(id)a4 animated:(BOOL)a5;
-- (void)_showEditBarButtonItemAnimated:(BOOL)a3;
-- (void)_showEditingBarButtonItemsEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (void)_showBarItemLeft:(id)left right:(id)right animated:(BOOL)animated;
+- (void)_showEditBarButtonItemAnimated:(BOOL)animated;
+- (void)_showEditingBarButtonItemsEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
 - (void)loadView;
-- (void)settingsDocumentViewDidChangeTintColor:(id)a3;
-- (void)settingsEditTransaction:(id)a3 isValid:(BOOL)a4;
-- (void)settingsEditTransactionDidFailTransaction:(id)a3;
-- (void)settingsEditTransactionWillBeginTransaction:(id)a3;
-- (void)settingsEditTransactionWillCommitTransaction:(id)a3;
-- (void)settingsGroupsDescription:(id)a3 deletedSettingAtIndexPath:(id)a4;
-- (void)settingsGroupsDescription:(id)a3 deletedSettingsGroupAtIndex:(unint64_t)a4;
-- (void)settingsGroupsDescription:(id)a3 didUpdateSettingsDescription:(id)a4;
-- (void)settingsGroupsDescription:(id)a3 dismissViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)settingsGroupsDescription:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)settingsGroupsDescriptionDidUpdateValidity:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)settingsDocumentViewDidChangeTintColor:(id)color;
+- (void)settingsEditTransaction:(id)transaction isValid:(BOOL)valid;
+- (void)settingsEditTransactionDidFailTransaction:(id)transaction;
+- (void)settingsEditTransactionWillBeginTransaction:(id)transaction;
+- (void)settingsEditTransactionWillCommitTransaction:(id)transaction;
+- (void)settingsGroupsDescription:(id)description deletedSettingAtIndexPath:(id)path;
+- (void)settingsGroupsDescription:(id)description deletedSettingsGroupAtIndex:(unint64_t)index;
+- (void)settingsGroupsDescription:(id)description didUpdateSettingsDescription:(id)settingsDescription;
+- (void)settingsGroupsDescription:(id)description dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)settingsGroupsDescription:(id)description presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)settingsGroupsDescriptionDidUpdateValidity:(id)validity;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SKUISettingsDocumentViewController
 
-- (SKUISettingsDocumentViewController)initWithTemplateElement:(id)a3 clientContext:(id)a4
+- (SKUISettingsDocumentViewController)initWithTemplateElement:(id)element clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISettingsDocumentViewController initWithTemplateElement:clientContext:];
@@ -65,18 +65,18 @@
   v10 = v9;
   if (v9)
   {
-    [(SKUIViewController *)v9 setClientContext:v8];
-    v11 = [[SKUISettingsContext alloc] initWithClientContext:v8];
+    [(SKUIViewController *)v9 setClientContext:contextCopy];
+    v11 = [[SKUISettingsContext alloc] initWithClientContext:contextCopy];
     settingsContext = v10->_settingsContext;
     v10->_settingsContext = v11;
 
-    objc_storeStrong(&v10->_templateElement, a3);
+    objc_storeStrong(&v10->_templateElement, element);
     v13 = [objc_opt_class() _settingsGroupsFromTemplateElement:v10->_templateElement withDelegate:v10 settingsContext:v10->_settingsContext];
     settingsGroupsDescription = v10->_settingsGroupsDescription;
     v10->_settingsGroupsDescription = v13;
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v10 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
     [(SKUISettingsDocumentViewController *)v10 _reloadData];
     [(SKUISettingsDocumentViewController *)v10 _invalidateLayout];
   }
@@ -86,26 +86,26 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = SKUISettingsDocumentViewController;
   [(SKUIViewController *)&v4 dealloc];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 bounds];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy bounds];
   Width = CGRectGetWidth(v16);
-  v9 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription settingDescriptionAtIndexPath:v6];
+  v9 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription settingDescriptionAtIndexPath:pathCopy];
   v10 = objc_alloc_init([SKUISettingDescription viewClassForSettingDescription:v9]);
-  v11 = [(SKUISettingsDocumentViewController *)self _layoutContext];
-  [v10 reloadWithSettingDescription:v9 width:v11 context:Width];
+  _layoutContext = [(SKUISettingsDocumentViewController *)self _layoutContext];
+  [v10 reloadWithSettingDescription:v9 width:_layoutContext context:Width];
 
-  v12 = [v7 dequeueReusableCellWithIdentifier:@"SKUISettingsTableViewCellReuseIdentifier" forIndexPath:v6];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:@"SKUISettingsTableViewCellReuseIdentifier" forIndexPath:pathCopy];
 
   [v12 displaySettingDescriptionView:v10];
   if ([v9 allowsSelection])
@@ -123,12 +123,12 @@
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   objc_initWeak(&location, self);
-  v8 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription settingDescriptionAtIndexPath:v7];
+  v8 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription settingDescriptionAtIndexPath:pathCopy];
   v9 = v8;
   if (v8 && [v8 allowsSelection])
   {
@@ -155,13 +155,13 @@ void __72__SKUISettingsDocumentViewController_tableView_didSelectRowAtIndexPath_
   [WeakRetained _deselectItemsAnimated:1];
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   settingsGroupsDescription = self->_settingsGroupsDescription;
-  v7 = a3;
-  v8 = [(SKUISettingsGroupsDescription *)settingsGroupsDescription footerDescriptionForGroupAtIndex:a4];
+  viewCopy = view;
+  v8 = [(SKUISettingsGroupsDescription *)settingsGroupsDescription footerDescriptionForGroupAtIndex:section];
   v9 = objc_opt_class();
-  [v7 bounds];
+  [viewCopy bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -172,18 +172,18 @@ void __72__SKUISettingsDocumentViewController_tableView_didSelectRowAtIndexPath_
   v26.size.width = v15;
   v26.size.height = v17;
   Width = CGRectGetWidth(v26);
-  v19 = [(SKUISettingsDocumentViewController *)self _layoutContext];
-  [v9 _heightThatFitsWidth:v8 withSettingsHeaderFooterDescription:v19 context:Width];
+  _layoutContext = [(SKUISettingsDocumentViewController *)self _layoutContext];
+  [v9 _heightThatFitsWidth:v8 withSettingsHeaderFooterDescription:_layoutContext context:Width];
   v21 = v20;
 
-  if ([(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription numberOfGroups]- 1 == a4)
+  if ([(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription numberOfGroups]- 1 == section)
   {
     v22 = 36.0;
   }
 
   else
   {
-    v23 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription shouldShowHeaderForGroupAtIndex:a4 + 1];
+    v23 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription shouldShowHeaderForGroupAtIndex:section + 1];
     v22 = 36.0;
     if (v23)
     {
@@ -196,13 +196,13 @@ void __72__SKUISettingsDocumentViewController_tableView_didSelectRowAtIndexPath_
   return v24;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   settingsGroupsDescription = self->_settingsGroupsDescription;
-  v7 = a3;
-  v8 = [(SKUISettingsGroupsDescription *)settingsGroupsDescription headerDescriptionForGroupAtIndex:a4];
+  viewCopy = view;
+  v8 = [(SKUISettingsGroupsDescription *)settingsGroupsDescription headerDescriptionForGroupAtIndex:section];
   v9 = objc_opt_class();
-  [v7 bounds];
+  [viewCopy bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -213,13 +213,13 @@ void __72__SKUISettingsDocumentViewController_tableView_didSelectRowAtIndexPath_
   v26.size.width = v15;
   v26.size.height = v17;
   Width = CGRectGetWidth(v26);
-  v19 = [(SKUISettingsDocumentViewController *)self _layoutContext];
-  [v9 _heightThatFitsWidth:v8 withSettingsHeaderFooterDescription:v19 context:Width];
+  _layoutContext = [(SKUISettingsDocumentViewController *)self _layoutContext];
+  [v9 _heightThatFitsWidth:v8 withSettingsHeaderFooterDescription:_layoutContext context:Width];
   v21 = v20;
 
-  if (a4)
+  if (section)
   {
-    v22 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription shouldShowHeaderForGroupAtIndex:a4];
+    v22 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription shouldShowHeaderForGroupAtIndex:section];
     v23 = 2.22044605e-16;
     if (v22)
     {
@@ -237,26 +237,26 @@ void __72__SKUISettingsDocumentViewController_tableView_didSelectRowAtIndexPath_
   return v24;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 bounds];
+  pathCopy = path;
+  [view bounds];
   Width = CGRectGetWidth(v14);
-  v8 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription settingDescriptionAtIndexPath:v6];
+  v8 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription settingDescriptionAtIndexPath:pathCopy];
 
   v9 = [SKUISettingDescription viewClassForSettingDescription:v8];
-  v10 = [(SKUISettingsDocumentViewController *)self _layoutContext];
-  [(objc_class *)v9 sizeThatFitsWidth:v8 settingDescription:v10 context:Width];
+  _layoutContext = [(SKUISettingsDocumentViewController *)self _layoutContext];
+  [(objc_class *)v9 sizeThatFitsWidth:v8 settingDescription:_layoutContext context:Width];
   v12 = v11;
 
   return fmax(v12, 48.0);
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if ([(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription shouldShowFooterForGroupAtIndex:a4])
+  if ([(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription shouldShowFooterForGroupAtIndex:section])
   {
-    v6 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription footerDescriptionForGroupAtIndex:a4];
+    v6 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription footerDescriptionForGroupAtIndex:section];
     v7 = [(SKUISettingsDocumentViewController *)self _viewForSettingsHeaderFooterDescription:v6];
   }
 
@@ -268,11 +268,11 @@ void __72__SKUISettingsDocumentViewController_tableView_didSelectRowAtIndexPath_
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if ([(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription shouldShowHeaderForGroupAtIndex:a4])
+  if ([(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription shouldShowHeaderForGroupAtIndex:section])
   {
-    v6 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription headerDescriptionForGroupAtIndex:a4];
+    v6 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription headerDescriptionForGroupAtIndex:section];
     v7 = [(SKUISettingsDocumentViewController *)self _viewForSettingsHeaderFooterDescription:v6];
   }
 
@@ -288,7 +288,7 @@ void __72__SKUISettingsDocumentViewController_tableView_didSelectRowAtIndexPath_
 {
   v5 = objc_alloc_init(SKUISettingsDocumentView);
   [(SKUISettingsDocumentView *)v5 setDelegate:self];
-  v3 = [(SKUISettingsDocumentViewController *)self _tableView];
+  _tableView = [(SKUISettingsDocumentViewController *)self _tableView];
   if (storeShouldReverseLayoutDirection())
   {
     v4 = 4;
@@ -299,29 +299,29 @@ void __72__SKUISettingsDocumentViewController_tableView_didSelectRowAtIndexPath_
     v4 = 3;
   }
 
-  [v3 setSemanticContentAttribute:v4];
-  [(SKUISettingsDocumentView *)v5 addSubview:v3];
+  [_tableView setSemanticContentAttribute:v4];
+  [(SKUISettingsDocumentView *)v5 addSubview:_tableView];
   [(SKUISettingsDocumentViewController *)self setView:v5];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = SKUISettingsDocumentViewController;
   [(SKUISettingsDocumentViewController *)&v5 viewDidAppear:?];
   [(SKUIResourceLoader *)self->_resourceLoader enterForeground];
   if ([(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription hasEditableSettingDescriptions])
   {
-    [(SKUISettingsDocumentViewController *)self _showEditBarButtonItemAnimated:v3];
+    [(SKUISettingsDocumentViewController *)self _showEditBarButtonItemAnimated:appearCopy];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SKUISettingsDocumentViewController;
-  [(SKUIViewController *)&v4 viewWillAppear:a3];
+  [(SKUIViewController *)&v4 viewWillAppear:appear];
   [(SKUISettingsDocumentViewController *)self _reloadData];
   [(SKUISettingsDocumentViewController *)self _invalidateLayout];
 }
@@ -334,25 +334,25 @@ void __72__SKUISettingsDocumentViewController_tableView_didSelectRowAtIndexPath_
   [(SKUISettingsDocumentViewController *)self _invalidateLayout];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SKUISettingsDocumentViewController;
-  [(SKUISettingsDocumentViewController *)&v4 viewDidDisappear:a3];
+  [(SKUISettingsDocumentViewController *)&v4 viewDidDisappear:disappear];
   [(SKUIResourceLoader *)self->_resourceLoader enterBackground];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  imageCopy = image;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(UITableView *)self->_tableView visibleCells];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  visibleCells = [(UITableView *)self->_tableView visibleCells];
+  v9 = [visibleCells countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -363,12 +363,12 @@ LABEL_3:
     {
       if (*v16 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(visibleCells);
       }
 
       v13 = *(*(&v15 + 1) + 8 * v12);
-      v14 = [(SKUISettingsDocumentViewController *)self _layoutContext];
-      LOBYTE(v13) = [v13 setImage:v7 forArtworkRequest:v6 context:v14];
+      _layoutContext = [(SKUISettingsDocumentViewController *)self _layoutContext];
+      LOBYTE(v13) = [v13 setImage:imageCopy forArtworkRequest:requestCopy context:_layoutContext];
 
       if (v13)
       {
@@ -377,7 +377,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [visibleCells countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -389,9 +389,9 @@ LABEL_3:
   }
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v10 = a3;
+  updateCopy = update;
   settingsGroupsDescription = self->_settingsGroupsDescription;
   if (settingsGroupsDescription)
   {
@@ -400,9 +400,9 @@ LABEL_3:
     self->_settingsGroupsDescription = 0;
   }
 
-  v6 = [v10 templateElement];
+  templateElement = [updateCopy templateElement];
   templateElement = self->_templateElement;
-  self->_templateElement = v6;
+  self->_templateElement = templateElement;
 
   v8 = [objc_opt_class() _settingsGroupsFromTemplateElement:self->_templateElement withDelegate:self settingsContext:self->_settingsContext];
   v9 = self->_settingsGroupsDescription;
@@ -417,165 +417,165 @@ LABEL_3:
   [(SKUISettingsDocumentViewController *)self _invalidateLayout];
 }
 
-- (void)settingsDocumentViewDidChangeTintColor:(id)a3
+- (void)settingsDocumentViewDidChangeTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(SKUISettingsDocumentViewController *)self _layoutContext];
-  v6 = [v4 tintColor];
+  colorCopy = color;
+  _layoutContext = [(SKUISettingsDocumentViewController *)self _layoutContext];
+  tintColor = [colorCopy tintColor];
 
-  [v5 setTintColor:v6];
+  [_layoutContext setTintColor:tintColor];
 
   [(SKUISettingsDocumentViewController *)self _invalidateLayout];
 }
 
-- (void)settingsEditTransactionDidFailTransaction:(id)a3
+- (void)settingsEditTransactionDidFailTransaction:(id)transaction
 {
-  v3 = [(SKUISettingsDocumentViewController *)self _barButtonItemDone];
-  [v3 setEnabled:1];
+  _barButtonItemDone = [(SKUISettingsDocumentViewController *)self _barButtonItemDone];
+  [_barButtonItemDone setEnabled:1];
 }
 
-- (void)settingsEditTransactionWillBeginTransaction:(id)a3
+- (void)settingsEditTransactionWillBeginTransaction:(id)transaction
 {
-  v4 = [a3 isValid];
+  isValid = [transaction isValid];
 
-  [(SKUISettingsDocumentViewController *)self _showEditingBarButtonItemsEnabled:v4 animated:1];
+  [(SKUISettingsDocumentViewController *)self _showEditingBarButtonItemsEnabled:isValid animated:1];
 }
 
-- (void)settingsEditTransactionWillCommitTransaction:(id)a3
+- (void)settingsEditTransactionWillCommitTransaction:(id)transaction
 {
-  v3 = [(SKUISettingsDocumentViewController *)self _barButtonItemDone];
-  [v3 setEnabled:0];
+  _barButtonItemDone = [(SKUISettingsDocumentViewController *)self _barButtonItemDone];
+  [_barButtonItemDone setEnabled:0];
 }
 
-- (void)settingsEditTransaction:(id)a3 isValid:(BOOL)a4
+- (void)settingsEditTransaction:(id)transaction isValid:(BOOL)valid
 {
-  v4 = a4;
-  v5 = [(SKUISettingsDocumentViewController *)self _barButtonItemDone];
-  [v5 setEnabled:v4];
+  validCopy = valid;
+  _barButtonItemDone = [(SKUISettingsDocumentViewController *)self _barButtonItemDone];
+  [_barButtonItemDone setEnabled:validCopy];
 }
 
-- (void)settingsGroupsDescription:(id)a3 deletedSettingAtIndexPath:(id)a4
+- (void)settingsGroupsDescription:(id)description deletedSettingAtIndexPath:(id)path
 {
   v5 = MEMORY[0x277CBEA60];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithObjects:{v6, 0}];
+  pathCopy = path;
+  v7 = [[v5 alloc] initWithObjects:{pathCopy, 0}];
 
   [(UITableView *)self->_tableView deleteRowsAtIndexPaths:v7 withRowAnimation:0];
 }
 
-- (void)settingsGroupsDescription:(id)a3 deletedSettingsGroupAtIndex:(unint64_t)a4
+- (void)settingsGroupsDescription:(id)description deletedSettingsGroupAtIndex:(unint64_t)index
 {
-  v5 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndex:a4];
+  v5 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndex:index];
   [(UITableView *)self->_tableView deleteSections:v5 withRowAnimation:0];
 }
 
-- (void)settingsGroupsDescription:(id)a3 didUpdateSettingsDescription:(id)a4
+- (void)settingsGroupsDescription:(id)description didUpdateSettingsDescription:(id)settingsDescription
 {
-  v13 = a4;
-  v5 = [v13 updateType];
-  if (v5 > 2)
+  settingsDescriptionCopy = settingsDescription;
+  updateType = [settingsDescriptionCopy updateType];
+  if (updateType > 2)
   {
-    switch(v5)
+    switch(updateType)
     {
       case 3:
         tableView = self->_tableView;
-        v7 = [v13 indexPaths];
-        [(UITableView *)tableView deleteRowsAtIndexPaths:v7 withRowAnimation:0];
+        indexPaths = [settingsDescriptionCopy indexPaths];
+        [(UITableView *)tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:0];
         break;
       case 4:
         v12 = self->_tableView;
-        v7 = [v13 indexPaths];
-        [(UITableView *)v12 insertRowsAtIndexPaths:v7 withRowAnimation:0];
+        indexPaths = [settingsDescriptionCopy indexPaths];
+        [(UITableView *)v12 insertRowsAtIndexPaths:indexPaths withRowAnimation:0];
         break;
       case 5:
         v8 = self->_tableView;
-        v7 = [v13 indexPaths];
-        [(UITableView *)v8 reloadRowsAtIndexPaths:v7 withRowAnimation:5];
+        indexPaths = [settingsDescriptionCopy indexPaths];
+        [(UITableView *)v8 reloadRowsAtIndexPaths:indexPaths withRowAnimation:5];
         break;
       default:
         goto LABEL_15;
     }
   }
 
-  else if (v5)
+  else if (updateType)
   {
-    if (v5 == 1)
+    if (updateType == 1)
     {
       v11 = self->_tableView;
-      v7 = [v13 indexSet];
-      [(UITableView *)v11 insertSections:v7 withRowAnimation:0];
+      indexPaths = [settingsDescriptionCopy indexSet];
+      [(UITableView *)v11 insertSections:indexPaths withRowAnimation:0];
     }
 
     else
     {
-      if (v5 != 2)
+      if (updateType != 2)
       {
         goto LABEL_15;
       }
 
       v6 = self->_tableView;
-      v7 = [v13 indexSet];
-      [(UITableView *)v6 reloadSections:v7 withRowAnimation:0];
+      indexPaths = [settingsDescriptionCopy indexSet];
+      [(UITableView *)v6 reloadSections:indexPaths withRowAnimation:0];
     }
   }
 
   else
   {
     v9 = self->_tableView;
-    v7 = [v13 indexSet];
-    [(UITableView *)v9 deleteSections:v7 withRowAnimation:0];
+    indexPaths = [settingsDescriptionCopy indexSet];
+    [(UITableView *)v9 deleteSections:indexPaths withRowAnimation:0];
   }
 
 LABEL_15:
 }
 
-- (void)settingsGroupsDescription:(id)a3 dismissViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)settingsGroupsDescription:(id)description dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v12 = a6;
-  v9 = a4;
-  v10 = [(SKUISettingsDocumentViewController *)self presentedViewController];
-  v11 = [v10 isEqual:v9];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  presentedViewController = [(SKUISettingsDocumentViewController *)self presentedViewController];
+  v11 = [presentedViewController isEqual:controllerCopy];
 
   if (v11)
   {
-    [(SKUISettingsDocumentViewController *)self dismissViewControllerAnimated:v6 completion:v12];
+    [(SKUISettingsDocumentViewController *)self dismissViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)settingsGroupsDescription:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)settingsGroupsDescription:(id)description presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v11 = a4;
-  v9 = a6;
-  v10 = [(SKUISettingsDocumentViewController *)self presentedViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  presentedViewController = [(SKUISettingsDocumentViewController *)self presentedViewController];
 
-  if (!v10)
+  if (!presentedViewController)
   {
-    [(SKUISettingsDocumentViewController *)self presentViewController:v11 animated:v7 completion:v9];
+    [(SKUISettingsDocumentViewController *)self presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (id)settingsGroupsDescription:(id)a3 viewForSettingAtIndexPath:(id)a4
+- (id)settingsGroupsDescription:(id)description viewForSettingAtIndexPath:(id)path
 {
-  v4 = [(UITableView *)self->_tableView cellForRowAtIndexPath:a4];
-  v5 = [v4 settingDescriptionView];
+  v4 = [(UITableView *)self->_tableView cellForRowAtIndexPath:path];
+  settingDescriptionView = [v4 settingDescriptionView];
 
-  return v5;
+  return settingDescriptionView;
 }
 
-- (void)settingsGroupsDescriptionDidUpdateValidity:(id)a3
+- (void)settingsGroupsDescriptionDidUpdateValidity:(id)validity
 {
   if (self->_editTransaction)
   {
     barButtonItemDone = self->_barButtonItemDone;
-    v4 = [(SKUISettingsEditTransaction *)self->_editTransaction isValid];
+    isValid = [(SKUISettingsEditTransaction *)self->_editTransaction isValid];
 
-    [(UIBarButtonItem *)barButtonItemDone setEnabled:v4];
+    [(UIBarButtonItem *)barButtonItemDone setEnabled:isValid];
   }
 }
 
-- (void)_cancelButtonAction:(id)a3
+- (void)_cancelButtonAction:(id)action
 {
   if ([(SKUISettingsEditTransaction *)self->_editTransaction isCommiting])
   {
@@ -586,10 +586,10 @@ LABEL_15:
 
   else
   {
-    v5 = [(SKUISettingsDocumentViewController *)self view];
-    v6 = [v5 window];
-    v7 = [v6 firstResponder];
-    [v7 resignFirstResponder];
+    view = [(SKUISettingsDocumentViewController *)self view];
+    window = [view window];
+    firstResponder = [window firstResponder];
+    [firstResponder resignFirstResponder];
 
     [(SKUISettingsEditTransaction *)self->_editTransaction rollbackTransaction];
     v8 = self->_editTransaction;
@@ -597,23 +597,23 @@ LABEL_15:
   }
 }
 
-- (void)_doneButtonAction:(id)a3
+- (void)_doneButtonAction:(id)action
 {
-  v4 = [(SKUISettingsDocumentViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 firstResponder];
-  [v6 resignFirstResponder];
+  view = [(SKUISettingsDocumentViewController *)self view];
+  window = [view window];
+  firstResponder = [window firstResponder];
+  [firstResponder resignFirstResponder];
 
   editTransaction = self->_editTransaction;
 
   [(SKUISettingsEditTransaction *)editTransaction commitTransaction];
 }
 
-- (void)_editButtonAction:(id)a3
+- (void)_editButtonAction:(id)action
 {
-  v4 = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription createEditTransaction];
+  createEditTransaction = [(SKUISettingsGroupsDescription *)self->_settingsGroupsDescription createEditTransaction];
   editTransaction = self->_editTransaction;
-  self->_editTransaction = v4;
+  self->_editTransaction = createEditTransaction;
 
   [(SKUISettingsEditTransaction *)self->_editTransaction setDelegate:self];
   v6 = self->_editTransaction;
@@ -621,27 +621,27 @@ LABEL_15:
   [(SKUISettingsEditTransaction *)v6 beginTransaction];
 }
 
-+ (double)_heightThatFitsWidth:(double)a3 withSettingsHeaderFooterDescription:(id)a4 context:(id)a5
++ (double)_heightThatFitsWidth:(double)width withSettingsHeaderFooterDescription:(id)description context:(id)context
 {
-  if (!a4)
+  if (!description)
   {
     return 0.0;
   }
 
-  v7 = a5;
-  v8 = a4;
-  [(objc_class *)[SKUISettingsHeaderFooterDescription viewClassForSettingsHeaderFooterDescription:?]settingsHeaderFooterDescription:"sizeThatFitsWidth:settingsHeaderFooterDescription:context:" context:v8, v7, a3];
+  contextCopy = context;
+  descriptionCopy = description;
+  [(objc_class *)[SKUISettingsHeaderFooterDescription viewClassForSettingsHeaderFooterDescription:?]settingsHeaderFooterDescription:"sizeThatFitsWidth:settingsHeaderFooterDescription:context:" context:descriptionCopy, contextCopy, width];
   v10 = v9;
 
   return v10;
 }
 
-+ (id)_settingsGroupsFromTemplateElement:(id)a3 withDelegate:(id)a4 settingsContext:(id)a5
++ (id)_settingsGroupsFromTemplateElement:(id)element withDelegate:(id)delegate settingsContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[SKUISettingsGroupsDescription alloc] initWithDelegate:v8 settingsContext:v7];
+  contextCopy = context;
+  delegateCopy = delegate;
+  elementCopy = element;
+  v10 = [[SKUISettingsGroupsDescription alloc] initWithDelegate:delegateCopy settingsContext:contextCopy];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -649,7 +649,7 @@ LABEL_15:
   v13[3] = &unk_2781F9640;
   v11 = v10;
   v14 = v11;
-  [v9 enumerateChildrenUsingBlock:v13];
+  [elementCopy enumerateChildrenUsingBlock:v13];
 
   return v11;
 }
@@ -668,11 +668,11 @@ void __102__SKUISettingsDocumentViewController__settingsGroupsFromTemplateElemen
   barButtonItemCancel = self->_barButtonItemCancel;
   if (!barButtonItemCancel)
   {
-    v4 = [(SKUIViewController *)self clientContext];
-    v5 = v4;
-    if (v4)
+    clientContext = [(SKUIViewController *)self clientContext];
+    v5 = clientContext;
+    if (clientContext)
     {
-      [v4 localizedStringForKey:@"SETTINGS_NAVIGATION_CANCEL" inTable:@"Settings"];
+      [clientContext localizedStringForKey:@"SETTINGS_NAVIGATION_CANCEL" inTable:@"Settings"];
     }
 
     else
@@ -696,11 +696,11 @@ void __102__SKUISettingsDocumentViewController__settingsGroupsFromTemplateElemen
   barButtonItemDone = self->_barButtonItemDone;
   if (!barButtonItemDone)
   {
-    v4 = [(SKUIViewController *)self clientContext];
-    v5 = v4;
-    if (v4)
+    clientContext = [(SKUIViewController *)self clientContext];
+    v5 = clientContext;
+    if (clientContext)
     {
-      [v4 localizedStringForKey:@"SETTINGS_NAVIGATION_DONE" inTable:@"Settings"];
+      [clientContext localizedStringForKey:@"SETTINGS_NAVIGATION_DONE" inTable:@"Settings"];
     }
 
     else
@@ -724,11 +724,11 @@ void __102__SKUISettingsDocumentViewController__settingsGroupsFromTemplateElemen
   barButtonItemEdit = self->_barButtonItemEdit;
   if (!barButtonItemEdit)
   {
-    v4 = [(SKUIViewController *)self clientContext];
-    v5 = v4;
-    if (v4)
+    clientContext = [(SKUIViewController *)self clientContext];
+    v5 = clientContext;
+    if (clientContext)
     {
-      [v4 localizedStringForKey:@"SETTINGS_NAVIGATION_EDIT" inTable:@"Settings"];
+      [clientContext localizedStringForKey:@"SETTINGS_NAVIGATION_EDIT" inTable:@"Settings"];
     }
 
     else
@@ -747,25 +747,25 @@ void __102__SKUISettingsDocumentViewController__settingsGroupsFromTemplateElemen
   return barButtonItemEdit;
 }
 
-- (id)_dequeueHeaderFooterViewWithReuseIdentifier:(id)a3
+- (id)_dequeueHeaderFooterViewWithReuseIdentifier:(id)identifier
 {
-  v4 = [(UITableView *)self->_tableView dequeueReusableHeaderFooterViewWithIdentifier:a3];
+  v4 = [(UITableView *)self->_tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
   [(UITableView *)self->_tableView layoutMargins];
   [v4 setLayoutMargins:?];
 
   return v4;
 }
 
-- (void)_deselectItemsAnimated:(BOOL)a3
+- (void)_deselectItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [(UITableView *)self->_tableView indexPathsForSelectedRows];
+  indexPathsForSelectedRows = [(UITableView *)self->_tableView indexPathsForSelectedRows];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [indexPathsForSelectedRows countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -777,14 +777,14 @@ void __102__SKUISettingsDocumentViewController__settingsGroupsFromTemplateElemen
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
-        [(UITableView *)self->_tableView deselectRowAtIndexPath:*(*(&v10 + 1) + 8 * v9++) animated:v3];
+        [(UITableView *)self->_tableView deselectRowAtIndexPath:*(*(&v10 + 1) + 8 * v9++) animated:animatedCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [indexPathsForSelectedRows countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -798,21 +798,21 @@ void __102__SKUISettingsDocumentViewController__settingsGroupsFromTemplateElemen
     settingsGroupsDescription = self->_settingsGroupsDescription;
     [(UITableView *)self->_tableView bounds];
     Width = CGRectGetWidth(v14);
-    v5 = [(SKUISettingsDocumentViewController *)self _layoutContext];
-    [(SKUISettingsGroupsDescription *)settingsGroupsDescription requestLayoutForWidth:v5 context:Width];
+    _layoutContext = [(SKUISettingsDocumentViewController *)self _layoutContext];
+    [(SKUISettingsGroupsDescription *)settingsGroupsDescription requestLayoutForWidth:_layoutContext context:Width];
 
-    v6 = [(SKUISettingsDocumentViewController *)self _textLayoutCache];
-    v7 = [v6 layoutCache];
-    [v7 commitLayoutRequests];
+    _textLayoutCache = [(SKUISettingsDocumentViewController *)self _textLayoutCache];
+    layoutCache = [_textLayoutCache layoutCache];
+    [layoutCache commitLayoutRequests];
 
-    v12 = [(SKUISettingsTemplateViewElement *)self->_templateElement style];
-    v8 = [v12 valueForStyle:*MEMORY[0x277D1AFA0]];
+    style = [(SKUISettingsTemplateViewElement *)self->_templateElement style];
+    v8 = [style valueForStyle:*MEMORY[0x277D1AFA0]];
     v9 = v8;
     if (v8)
     {
       tableView = self->_tableView;
-      v11 = [v8 color];
-      [(UITableView *)tableView setBackgroundColor:v11];
+      color = [v8 color];
+      [(UITableView *)tableView setBackgroundColor:color];
     }
 
     [(UITableView *)self->_tableView reloadData];
@@ -830,21 +830,21 @@ void __102__SKUISettingsDocumentViewController__settingsGroupsFromTemplateElemen
 
     [(SKUIViewElementLayoutContext *)self->_layoutContext setArtworkRequestDelegate:self];
     v6 = self->_layoutContext;
-    v7 = [(SKUISettingsDocumentViewController *)self _textLayoutCache];
-    [(SKUIViewElementLayoutContext *)v6 setLabelLayoutCache:v7];
+    _textLayoutCache = [(SKUISettingsDocumentViewController *)self _textLayoutCache];
+    [(SKUIViewElementLayoutContext *)v6 setLabelLayoutCache:_textLayoutCache];
 
     v8 = self->_layoutContext;
-    v9 = [(SKUISettingsDocumentViewController *)self _resourceLoader];
-    [(SKUIViewElementLayoutContext *)v8 setResourceLoader:v9];
+    _resourceLoader = [(SKUISettingsDocumentViewController *)self _resourceLoader];
+    [(SKUIViewElementLayoutContext *)v8 setResourceLoader:_resourceLoader];
 
     v10 = self->_layoutContext;
-    v11 = [(SKUIViewController *)self clientContext];
-    [(SKUIViewElementLayoutContext *)v10 setClientContext:v11];
+    clientContext = [(SKUIViewController *)self clientContext];
+    [(SKUIViewElementLayoutContext *)v10 setClientContext:clientContext];
 
     v12 = self->_layoutContext;
-    v13 = [(SKUISettingsDocumentViewController *)self view];
-    v14 = [v13 tintColor];
-    [(SKUIViewElementLayoutContext *)v12 setTintColor:v14];
+    view = [(SKUISettingsDocumentViewController *)self view];
+    tintColor = [view tintColor];
+    [(SKUIViewElementLayoutContext *)v12 setTintColor:tintColor];
 
     layoutContext = self->_layoutContext;
   }
@@ -858,8 +858,8 @@ void __102__SKUISettingsDocumentViewController__settingsGroupsFromTemplateElemen
   if (!resourceLoader)
   {
     v4 = [SKUIResourceLoader alloc];
-    v5 = [(SKUIViewController *)self clientContext];
-    v6 = [(SKUIResourceLoader *)v4 initWithClientContext:v5];
+    clientContext = [(SKUIViewController *)self clientContext];
+    v6 = [(SKUIResourceLoader *)v4 initWithClientContext:clientContext];
     v7 = self->_resourceLoader;
     self->_resourceLoader = v6;
 
@@ -873,49 +873,49 @@ void __102__SKUISettingsDocumentViewController__settingsGroupsFromTemplateElemen
   return resourceLoader;
 }
 
-- (void)_showBarItemLeft:(id)a3 right:(id)a4 animated:(BOOL)a5
+- (void)_showBarItemLeft:(id)left right:(id)right animated:(BOOL)animated
 {
-  v5 = a5;
-  v13 = a3;
-  v8 = a4;
-  v9 = [(SKUISettingsDocumentViewController *)self parentViewController];
-  v10 = [v9 navigationItem];
+  animatedCopy = animated;
+  leftCopy = left;
+  rightCopy = right;
+  parentViewController = [(SKUISettingsDocumentViewController *)self parentViewController];
+  navigationItem = [parentViewController navigationItem];
 
-  if (v13)
+  if (leftCopy)
   {
-    [v10 setHidesBackButton:1 animated:v5];
-    v11 = v10;
-    v12 = v13;
+    [navigationItem setHidesBackButton:1 animated:animatedCopy];
+    v11 = navigationItem;
+    v12 = leftCopy;
   }
 
   else
   {
-    [v10 setHidesBackButton:0 animated:v5];
-    v11 = v10;
+    [navigationItem setHidesBackButton:0 animated:animatedCopy];
+    v11 = navigationItem;
     v12 = 0;
   }
 
-  [v11 setLeftBarButtonItem:v12 animated:v5];
-  [v10 setRightBarButtonItem:v8 animated:v5];
+  [v11 setLeftBarButtonItem:v12 animated:animatedCopy];
+  [navigationItem setRightBarButtonItem:rightCopy animated:animatedCopy];
 }
 
-- (void)_showEditBarButtonItemAnimated:(BOOL)a3
+- (void)_showEditBarButtonItemAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SKUISettingsDocumentViewController *)self _barButtonItemEdit];
-  [(SKUISettingsDocumentViewController *)self _showBarItemLeft:0 right:v5 animated:v3];
+  animatedCopy = animated;
+  _barButtonItemEdit = [(SKUISettingsDocumentViewController *)self _barButtonItemEdit];
+  [(SKUISettingsDocumentViewController *)self _showBarItemLeft:0 right:_barButtonItemEdit animated:animatedCopy];
 }
 
-- (void)_showEditingBarButtonItemsEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)_showEditingBarButtonItemsEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(SKUISettingsDocumentViewController *)self _barButtonItemDone];
-  [v7 setEnabled:v5];
+  animatedCopy = animated;
+  enabledCopy = enabled;
+  _barButtonItemDone = [(SKUISettingsDocumentViewController *)self _barButtonItemDone];
+  [_barButtonItemDone setEnabled:enabledCopy];
 
-  v9 = [(SKUISettingsDocumentViewController *)self _barButtonItemCancel];
-  v8 = [(SKUISettingsDocumentViewController *)self _barButtonItemDone];
-  [(SKUISettingsDocumentViewController *)self _showBarItemLeft:v9 right:v8 animated:v4];
+  _barButtonItemCancel = [(SKUISettingsDocumentViewController *)self _barButtonItemCancel];
+  _barButtonItemDone2 = [(SKUISettingsDocumentViewController *)self _barButtonItemDone];
+  [(SKUISettingsDocumentViewController *)self _showBarItemLeft:_barButtonItemCancel right:_barButtonItemDone2 animated:animatedCopy];
 }
 
 - (id)_textLayoutCache
@@ -956,14 +956,14 @@ void __102__SKUISettingsDocumentViewController__settingsGroupsFromTemplateElemen
   return tableView;
 }
 
-- (id)_viewForSettingsHeaderFooterDescription:(id)a3
+- (id)_viewForSettingsHeaderFooterDescription:(id)description
 {
-  v4 = a3;
-  v5 = objc_alloc_init([SKUISettingsHeaderFooterDescription viewClassForSettingsHeaderFooterDescription:v4]);
+  descriptionCopy = description;
+  v5 = objc_alloc_init([SKUISettingsHeaderFooterDescription viewClassForSettingsHeaderFooterDescription:descriptionCopy]);
   [(UITableView *)self->_tableView bounds];
   Width = CGRectGetWidth(v11);
-  v7 = [(SKUISettingsDocumentViewController *)self _layoutContext];
-  [v5 reloadWithSettingsHeaderFooterDescription:v4 width:v7 context:Width];
+  _layoutContext = [(SKUISettingsDocumentViewController *)self _layoutContext];
+  [v5 reloadWithSettingsHeaderFooterDescription:descriptionCopy width:_layoutContext context:Width];
 
   v8 = [(SKUISettingsDocumentViewController *)self _dequeueHeaderFooterViewWithReuseIdentifier:@"SKUISettingsTableViewHeaderFooterViewReuseIdentifier"];
   [v8 displaySettingsHeaderFooterDescriptionView:v5];

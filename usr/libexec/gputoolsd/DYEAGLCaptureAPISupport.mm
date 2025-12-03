@@ -1,6 +1,6 @@
 @interface DYEAGLCaptureAPISupport
-- (DYEAGLCaptureAPISupport)initWithAPI:(unsigned int)a3;
-- (id)_createContextInfo:(unint64_t)a3;
+- (DYEAGLCaptureAPISupport)initWithAPI:(unsigned int)i;
+- (id)_createContextInfo:(unint64_t)info;
 - (id)diagnosticsDylibPath;
 - (id)graphicsAPIInfo;
 - (id)interposeDylibPath;
@@ -8,11 +8,11 @@
 
 @implementation DYEAGLCaptureAPISupport
 
-- (DYEAGLCaptureAPISupport)initWithAPI:(unsigned int)a3
+- (DYEAGLCaptureAPISupport)initWithAPI:(unsigned int)i
 {
-  if (a3)
+  if (i)
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -20,10 +20,10 @@
     v5.receiver = self;
     v5.super_class = DYEAGLCaptureAPISupport;
     self = [(DYEAGLCaptureAPISupport *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)interposeDylibPath
@@ -40,9 +40,9 @@
   return [NSString stringWithUTF8String:v2];
 }
 
-- (id)_createContextInfo:(unint64_t)a3
+- (id)_createContextInfo:(unint64_t)info
 {
-  v4 = [[EAGLContext alloc] initWithAPI:a3];
+  v4 = [[EAGLContext alloc] initWithAPI:info];
   if (v4)
   {
     v5 = GLIContextFromEAGLContext();
@@ -57,21 +57,21 @@
       __assert_rtn("[DYEAGLCaptureAPISupport _createContextInfo:]", ", 0, "dispatch"");
     }
 
-    if (a3 - 1 > 2)
+    if (info - 1 > 2)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = dword_100008F78[a3 - 1];
+      v7 = dword_100008F78[info - 1];
     }
 
     v9 = [DYRendererInfo rendererInfoWithGLIContext:v5 dispatch:v6 api:v7];
     v10 = [[NSArray alloc] initWithObjects:{v9, 0}];
     v11 = [DYContextInfo alloc];
-    v12 = [v4 sharegroup];
-    v8 = [v11 initWithIdentifier:v4 sharegroupIdentifier:v12 renderers:v10 currentRendererIndex:0 api:v7];
+    sharegroup = [v4 sharegroup];
+    v8 = [v11 initWithIdentifier:v4 sharegroupIdentifier:sharegroup renderers:v10 currentRendererIndex:0 api:v7];
   }
 
   else

@@ -1,39 +1,39 @@
 @interface VIAFeedbackSubmitter
-- (VIAFeedbackSubmitter)initWithPARSession:(id)a3;
+- (VIAFeedbackSubmitter)initWithPARSession:(id)session;
 - (VIAnalyticsTestingDelegate)testingDelegate;
-- (void)didHitCacheForQueryId:(unint64_t)a3;
-- (void)reportFeedback:(id)a3 queryId:(int64_t)a4;
+- (void)didHitCacheForQueryId:(unint64_t)id;
+- (void)reportFeedback:(id)feedback queryId:(int64_t)id;
 @end
 
 @implementation VIAFeedbackSubmitter
 
-- (VIAFeedbackSubmitter)initWithPARSession:(id)a3
+- (VIAFeedbackSubmitter)initWithPARSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = VIAFeedbackSubmitter;
   v6 = [(VIAFeedbackSubmitter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parSession, a3);
+    objc_storeStrong(&v6->_parSession, session);
   }
 
   return v7;
 }
 
-- (void)reportFeedback:(id)a3 queryId:(int64_t)a4
+- (void)reportFeedback:(id)feedback queryId:(int64_t)id
 {
   v82 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  feedbackCopy = feedback;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v6 && (isKindOfClass & 1) != 0)
+  if (feedbackCopy && (isKindOfClass & 1) != 0)
   {
-    a4 = [v6 queryId];
+    id = [feedbackCopy queryId];
   }
 
-  [(PARSession *)self->_parSession reportFeedback:v6 queryId:a4];
+  [(PARSession *)self->_parSession reportFeedback:feedbackCopy queryId:id];
   WeakRetained = objc_loadWeakRetained(&self->_testingDelegate);
 
   if (WeakRetained)
@@ -41,8 +41,8 @@
     v9 = objc_loadWeakRetained(&self->_testingDelegate);
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v6 timestamp];
-    v13 = v6;
+    timestamp = [feedbackCopy timestamp];
+    v13 = feedbackCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v78 count:1];
 LABEL_56:
 
-      [v9 didLogEventName:v11 queryID:a4 timestamp:v12 metadata:v18];
+      [v9 didLogEventName:v11 queryID:id timestamp:timestamp metadata:v18];
       goto LABEL_57;
     }
 
@@ -81,14 +81,14 @@ LABEL_56:
 
     v20 = v19;
     v17 = v20;
-    v60 = v12;
+    v60 = timestamp;
     if (v20)
     {
-      v21 = [(__CFString *)v20 suggestions];
-      v22 = VICompactMapArray(v21, &__block_literal_global_1);
+      suggestions = [(__CFString *)v20 suggestions];
+      v22 = VICompactMapArray(suggestions, &__block_literal_global_1);
 
-      v23 = [(__CFString *)v17 suggestions];
-      v24 = VICompactMapArray(v23, &__block_literal_global_29);
+      suggestions2 = [(__CFString *)v17 suggestions];
+      v24 = VICompactMapArray(suggestions2, &__block_literal_global_29);
 
       v78 = @"identifierList";
       v79 = @"topicIdentifier";
@@ -115,25 +115,25 @@ LABEL_56:
       {
         v59 = v13;
         v58 = v26;
-        v27 = [(__CFString *)v26 suggestion];
+        suggestion = [(__CFString *)v26 suggestion];
         v78 = @"identifier";
-        v28 = [(__CFString *)v27 identifier];
-        v29 = v28;
+        identifier = [(__CFString *)suggestion identifier];
+        v29 = identifier;
         v30 = @"missing-identifier";
-        if (v28)
+        if (identifier)
         {
-          v30 = v28;
+          v30 = identifier;
         }
 
         v80 = v30;
         v79 = @"suggestion";
-        v57 = v27;
-        v31 = [(__CFString *)v27 suggestion];
-        v32 = v31;
+        v57 = suggestion;
+        v27Suggestion = [(__CFString *)suggestion suggestion];
+        v32 = v27Suggestion;
         v33 = @"missing-suggestion";
-        if (v31)
+        if (v27Suggestion)
         {
-          v33 = v31;
+          v33 = v27Suggestion;
         }
 
         v81 = v33;
@@ -166,8 +166,8 @@ LABEL_56:
         v59 = v13;
         v53 = v11;
         v54 = v9;
-        v55 = a4;
-        v56 = v6;
+        idCopy = id;
+        v56 = feedbackCopy;
         v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v71 = 0u;
         v72 = 0u;
@@ -194,8 +194,8 @@ LABEL_56:
               v68 = 0u;
               v69 = 0u;
               v70 = 0u;
-              v39 = [v38 results];
-              v40 = [v39 countByEnumeratingWithState:&v67 objects:&v78 count:16];
+              results = [v38 results];
+              v40 = [results countByEnumeratingWithState:&v67 objects:&v78 count:16];
               if (v40)
               {
                 v41 = v40;
@@ -206,11 +206,11 @@ LABEL_56:
                   {
                     if (*v68 != v42)
                     {
-                      objc_enumerationMutation(v39);
+                      objc_enumerationMutation(results);
                     }
 
-                    v44 = [*(*(&v67 + 1) + 8 * j) result];
-                    v45 = [v44 fbr];
+                    result = [*(*(&v67 + 1) + 8 * j) result];
+                    v45 = [result fbr];
 
                     if (v45)
                     {
@@ -218,7 +218,7 @@ LABEL_56:
                     }
                   }
 
-                  v41 = [v39 countByEnumeratingWithState:&v67 objects:&v78 count:16];
+                  v41 = [results countByEnumeratingWithState:&v67 objects:&v78 count:16];
                 }
 
                 while (v41);
@@ -228,10 +228,10 @@ LABEL_56:
               v66 = 0u;
               v63 = 0u;
               v64 = 0u;
-              v46 = [v38 section];
-              v47 = [v46 results];
+              section = [v38 section];
+              results2 = [section results];
 
-              v48 = [v47 countByEnumeratingWithState:&v63 objects:v77 count:16];
+              v48 = [results2 countByEnumeratingWithState:&v63 objects:v77 count:16];
               if (v48)
               {
                 v49 = v48;
@@ -242,7 +242,7 @@ LABEL_56:
                   {
                     if (*v64 != v50)
                     {
-                      objc_enumerationMutation(v47);
+                      objc_enumerationMutation(results2);
                     }
 
                     v52 = [*(*(&v63 + 1) + 8 * k) fbr];
@@ -252,7 +252,7 @@ LABEL_56:
                     }
                   }
 
-                  v49 = [v47 countByEnumeratingWithState:&v63 objects:v77 count:16];
+                  v49 = [results2 countByEnumeratingWithState:&v63 objects:v77 count:16];
                 }
 
                 while (v49);
@@ -268,8 +268,8 @@ LABEL_56:
         v75 = @"feedbackResponseList";
         v76 = v29;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-        a4 = v55;
-        v6 = v56;
+        id = idCopy;
+        feedbackCopy = v56;
         v11 = v53;
         v9 = v54;
       }
@@ -283,22 +283,22 @@ LABEL_56:
 
 LABEL_55:
 
-    v12 = v60;
+    timestamp = v60;
     goto LABEL_56;
   }
 
 LABEL_57:
 }
 
-- (void)didHitCacheForQueryId:(unint64_t)a3
+- (void)didHitCacheForQueryId:(unint64_t)id
 {
-  [(PARSession *)self->_parSession didSkipSearch:4 forInput:0 queryId:a3];
+  [(PARSession *)self->_parSession didSkipSearch:4 forInput:0 queryId:id];
   WeakRetained = objc_loadWeakRetained(&self->_testingDelegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_testingDelegate);
-    [v6 didLogEventName:@"SFSkipSearchFeedback" queryID:a3 timestamp:mach_absolute_time() metadata:MEMORY[0x1E695E0F8]];
+    [v6 didLogEventName:@"SFSkipSearchFeedback" queryID:id timestamp:mach_absolute_time() metadata:MEMORY[0x1E695E0F8]];
   }
 }
 

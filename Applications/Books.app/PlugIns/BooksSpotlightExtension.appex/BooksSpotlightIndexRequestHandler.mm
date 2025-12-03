@@ -1,44 +1,44 @@
 @interface BooksSpotlightIndexRequestHandler
-- (id)searchableIndexProvideDataForIndex:(id)a3 identifier:(id)a4 type:(id)a5 error:(id *)a6;
-- (id)searchableIndexProvideFileURLForIndex:(id)a3 identifier:(id)a4 type:(id)a5 error:(id *)a6;
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4;
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5;
+- (id)searchableIndexProvideDataForIndex:(id)index identifier:(id)identifier type:(id)type error:(id *)error;
+- (id)searchableIndexProvideFileURLForIndex:(id)index identifier:(id)identifier type:(id)type error:(id *)error;
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
 @end
 
 @implementation BooksSpotlightIndexRequestHandler
 
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  indexCopy = index;
+  handlerCopy = handler;
   v7 = sub_100001864();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_100001C10(v5, v7);
+    sub_100001C10(indexCopy, v7);
   }
 
-  v6[2](v6);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  indexCopy = index;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v10 = sub_100001864();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     sub_100001C88();
   }
 
-  v9[2](v9);
+  handlerCopy[2](handlerCopy);
 }
 
-- (id)searchableIndexProvideDataForIndex:(id)a3 identifier:(id)a4 type:(id)a5 error:(id *)a6
+- (id)searchableIndexProvideDataForIndex:(id)index identifier:(id)identifier type:(id)type error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  indexCopy = index;
+  identifierCopy = identifier;
+  typeCopy = type;
   v11 = sub_100001864();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -46,14 +46,14 @@
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = sub_100001440(v8, v9);
-  v14 = [UTTypeURL identifier];
-  v15 = [v10 isEqualToString:v14];
+  v13 = sub_100001440(indexCopy, identifierCopy);
+  identifier = [UTTypeURL identifier];
+  v15 = [typeCopy isEqualToString:identifier];
 
   if (!v15)
   {
-    v26 = [UTTypeUTF8PlainText identifier];
-    v27 = [v10 isEqualToString:v26];
+    identifier2 = [UTTypeUTF8PlainText identifier];
+    v27 = [typeCopy isEqualToString:identifier2];
 
     if (!v27)
     {
@@ -63,53 +63,53 @@
 
     v28 = v13;
     v29 = objc_alloc_init(NSMutableArray);
-    v30 = [v28 title];
-    if ([v30 length])
+    title = [v28 title];
+    if ([title length])
     {
-      [v29 addObject:v30];
+      [v29 addObject:title];
     }
 
-    v47 = v30;
-    v31 = [v28 contentType];
-    v32 = [UTTypeEPUB identifier];
+    v47 = title;
+    contentType = [v28 contentType];
+    identifier3 = [UTTypeEPUB identifier];
     v49 = v12;
-    if ([v31 isEqualToString:v32] & 1) != 0 || (objc_msgSend(v31, "isEqualToString:", @"com.apple.ibooks-container") & 1) != 0 || (objc_msgSend(v31, "isEqualToString:", @"com.apple.ibooks") & 1) != 0 || (objc_msgSend(v31, "isEqualToString:", @"com.apple.ibooks-folder"))
+    if ([contentType isEqualToString:identifier3] & 1) != 0 || (objc_msgSend(contentType, "isEqualToString:", @"com.apple.ibooks-container") & 1) != 0 || (objc_msgSend(contentType, "isEqualToString:", @"com.apple.ibooks") & 1) != 0 || (objc_msgSend(contentType, "isEqualToString:", @"com.apple.ibooks-folder"))
     {
     }
 
     else
     {
-      v39 = [v31 isEqualToString:@"com.apple.m4a-audio"];
+      v39 = [contentType isEqualToString:@"com.apple.m4a-audio"];
 
       if ((v39 & 1) == 0)
       {
-        v40 = [UTTypePDF identifier];
-        v41 = [v31 isEqualToString:v40];
+        identifier4 = [UTTypePDF identifier];
+        v41 = [contentType isEqualToString:identifier4];
 
         if (!v41)
         {
           goto LABEL_20;
         }
 
-        v42 = [v28 contributors];
-        v34 = [v42 componentsJoinedByString:{@", "}];
+        contributors = [v28 contributors];
+        v34 = [contributors componentsJoinedByString:{@", "}];
 
         if ([v34 length])
         {
           [v29 addObject:v34];
         }
 
-        v35 = [UTTypePDF preferredFilenameExtension];
-        if ([v35 length])
+        preferredFilenameExtension = [UTTypePDF preferredFilenameExtension];
+        if ([preferredFilenameExtension length])
         {
-          v43 = [v35 uppercaseString];
-          [v29 addObject:v43];
+          uppercaseString = [preferredFilenameExtension uppercaseString];
+          [v29 addObject:uppercaseString];
         }
 
-        v44 = [v28 fileSize];
-        v46 = [v44 longLongValue];
+        fileSize = [v28 fileSize];
+        longLongValue = [fileSize longLongValue];
 
-        if (v46 >= 1)
+        if (longLongValue >= 1)
         {
           v45 = [NSByteCountFormatter stringFromByteCount:"stringFromByteCount:countStyle:" countStyle:?];
           [v29 addObject:v45];
@@ -136,18 +136,18 @@ LABEL_20:
       }
     }
 
-    v33 = [v28 contributors];
-    v34 = [v33 componentsJoinedByString:{@", "}];
+    contributors2 = [v28 contributors];
+    v34 = [contributors2 componentsJoinedByString:{@", "}];
 
     if ([v34 length])
     {
       [v29 addObject:v34];
     }
 
-    v35 = [v28 si_stringAttributeForKey:@"com_apple_iBooks_storeURL"];
-    if ([v35 length])
+    preferredFilenameExtension = [v28 si_stringAttributeForKey:@"com_apple_iBooks_storeURL"];
+    if ([preferredFilenameExtension length])
     {
-      [v29 addObject:v35];
+      [v29 addObject:preferredFilenameExtension];
     }
 
     goto LABEL_19;
@@ -167,7 +167,7 @@ LABEL_20:
     v56 = sub_1000018EC;
     v57 = sub_1000018FC;
     v58 = 0;
-    v21 = [UTTypeURL identifier];
+    identifier5 = [UTTypeURL identifier];
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_100001B78;
@@ -175,7 +175,7 @@ LABEL_20:
     v52 = &v53;
     v22 = v20;
     v51 = v22;
-    v23 = [v19 loadDataWithTypeIdentifier:v21 forItemProviderCompletionHandler:v50];
+    v23 = [v19 loadDataWithTypeIdentifier:identifier5 forItemProviderCompletionHandler:v50];
 
     v24 = dispatch_time(0, 20000000000);
     dispatch_group_wait(v22, v24);
@@ -205,11 +205,11 @@ LABEL_29:
   return v37;
 }
 
-- (id)searchableIndexProvideFileURLForIndex:(id)a3 identifier:(id)a4 type:(id)a5 error:(id *)a6
+- (id)searchableIndexProvideFileURLForIndex:(id)index identifier:(id)identifier type:(id)type error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  indexCopy = index;
+  identifierCopy = identifier;
+  typeCopy = type;
   v11 = sub_100001864();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -217,7 +217,7 @@ LABEL_29:
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = sub_100001440(v8, v9);
+  v13 = sub_100001440(indexCopy, identifierCopy);
   v14 = [v13 si_stringAttributeForKey:@"com_apple_iBooks_localFileURL"];
   if ([v14 length])
   {

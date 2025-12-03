@@ -1,18 +1,18 @@
 @interface NTKFoghornFaceBezelStyleEditOption
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKFoghornFaceBezelStyleEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v6 = objc_msgSend_arrayByAddingObject_(&unk_284EB72A0, v4, v5, &unk_284EB7540);
-  v9 = objc_msgSend_supportsPDRCapability_(v3, v7, v8, 554439219);
+  v9 = objc_msgSend_supportsPDRCapability_(deviceCopy, v7, v8, 554439219);
 
   if (v9)
   {
@@ -24,29 +24,29 @@
   return v6;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 5)
+  if (value > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_278BA12D8[a3];
+    return off_278BA12D8[value];
   }
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 5)
+  if (value > 5)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = objc_msgSend_stringByAppendingString_(@"EDIT_OPTION_LABEL_FOGHORN_BEZEL_", a2, v5, off_278BA1308[a3], a4);
+    v6 = objc_msgSend_stringByAppendingString_(@"EDIT_OPTION_LABEL_FOGHORN_BEZEL_", a2, v5, off_278BA1308[value], device);
   }
 
   return v6;

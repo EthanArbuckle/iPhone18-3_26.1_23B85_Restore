@@ -1,5 +1,5 @@
 @interface MSDWelcomeViewController
-+ (void)needsToRun:(id)a3;
++ (void)needsToRun:(id)run;
 - (BOOL)_bothWifiAndCellularActive;
 - (MSDWelcomeViewController)init;
 - (void)_checkIn;
@@ -10,17 +10,17 @@
 
 @implementation MSDWelcomeViewController
 
-+ (void)needsToRun:(id)a3
++ (void)needsToRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v5 = dispatch_get_global_queue(25, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__MSDWelcomeViewController_needsToRun___block_invoke;
   v7[3] = &unk_2798F1C98;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
+  v8 = runCopy;
+  selfCopy = self;
+  v6 = runCopy;
   dispatch_async(v5, v7);
 }
 
@@ -81,8 +81,8 @@ uint64_t __39__MSDWelcomeViewController_needsToRun___block_invoke(uint64_t a1)
     [(MSDWelcomeViewController *)v4 setController:v5];
 
     [(MSDWelcomeViewController *)v4 setCurrentSSID:0];
-    v6 = [(OBBaseWelcomeController *)v4 navigationItem];
-    [v6 setHidesBackButton:1];
+    navigationItem = [(OBBaseWelcomeController *)v4 navigationItem];
+    [navigationItem setHidesBackButton:1];
   }
 
   return v4;
@@ -115,26 +115,26 @@ LABEL_14:
       _os_log_impl(&dword_259BCA000, v12, OS_LOG_TYPE_DEFAULT, "Checking In with Demo Unit ...", buf, 2u);
     }
 
-    v13 = [MEMORY[0x277D29520] sharedInstance];
+    mEMORY[0x277D29520] = [MEMORY[0x277D29520] sharedInstance];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __36__MSDWelcomeViewController__checkIn__block_invoke;
     v14[3] = &unk_2798F1CE8;
     v14[4] = self;
-    [v13 checkInWithCompletion:v14];
+    [mEMORY[0x277D29520] checkInWithCompletion:v14];
 
     return;
   }
 
   v3 = +[MSDTestPreferences sharedInstance];
-  v4 = [v3 storePickerUIMode];
+  storePickerUIMode = [v3 storePickerUIMode];
 
   v5 = +[MSDTestPreferences sharedInstance];
-  v6 = [v5 disassociateWiFiBeforeCheckIn];
+  disassociateWiFiBeforeCheckIn = [v5 disassociateWiFiBeforeCheckIn];
 
-  if (v4 != 1)
+  if (storePickerUIMode != 1)
   {
-    if (!v4)
+    if (!storePickerUIMode)
     {
       v7 = defaultLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -143,13 +143,13 @@ LABEL_14:
         _os_log_impl(&dword_259BCA000, v7, OS_LOG_TYPE_DEFAULT, "Skipping CheckIn and calling demod...", buf, 2u);
       }
 
-      v8 = [(MSDWelcomeViewController *)self controller];
-      [v8 setupCompleteWithStoreID:0];
+      controller = [(MSDWelcomeViewController *)self controller];
+      [controller setupCompleteWithStoreID:0];
 
       return;
     }
 
-    if (v6)
+    if (disassociateWiFiBeforeCheckIn)
     {
       v10 = defaultLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -158,8 +158,8 @@ LABEL_14:
         _os_log_impl(&dword_259BCA000, v10, OS_LOG_TYPE_DEFAULT, "Disconnecting WiFi...", buf, 2u);
       }
 
-      v11 = [(MSDWelcomeViewController *)self controller];
-      [v11 disconnectWiFi];
+      controller2 = [(MSDWelcomeViewController *)self controller];
+      [controller2 disconnectWiFi];
     }
 
     goto LABEL_14;
@@ -447,8 +447,8 @@ void __63__MSDWelcomeViewController__showNetworkInterfaceSelectionAlert__block_i
 - (void)_showNextView
 {
   v4 = objc_alloc_init(MSDDemoSetupViewController);
-  v3 = [(MSDWelcomeViewController *)self controller];
-  [v3 pushViewController:v4 andRemoveTopmostView:0];
+  controller = [(MSDWelcomeViewController *)self controller];
+  [controller pushViewController:v4 andRemoveTopmostView:0];
 }
 
 - (void)viewDidAppear:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

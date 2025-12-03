@@ -11,10 +11,10 @@
 - (void)_adjustStackViewPadding;
 - (void)awakeFromNib;
 - (void)prepareForReuse;
-- (void)setHotspotDetails:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHotspotDetails:(id)details;
+- (void)setState:(int64_t)state;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WFHotspotCell
@@ -27,12 +27,12 @@
   [(WFHotspotCell *)self _adjustStackViewPadding];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [a3 preferredContentSizeCategory];
-  v5 = [(WFHotspotCell *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 isEqualToString:v6];
+  preferredContentSizeCategory = [change preferredContentSizeCategory];
+  traitCollection = [(WFHotspotCell *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v7 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v7 & 1) == 0)
   {
@@ -45,20 +45,20 @@
 {
   [(WFHotspotCell *)self _verticalPadding];
   v4 = v3;
-  v5 = [(WFHotspotCell *)self stackViewTopConstraint];
-  [v5 setConstant:v4];
+  stackViewTopConstraint = [(WFHotspotCell *)self stackViewTopConstraint];
+  [stackViewTopConstraint setConstant:v4];
 
   [(WFHotspotCell *)self _verticalPadding];
   v7 = v6;
-  v8 = [(WFHotspotCell *)self stackViewBottomConstraint];
-  [v8 setConstant:v7];
+  stackViewBottomConstraint = [(WFHotspotCell *)self stackViewBottomConstraint];
+  [stackViewBottomConstraint setConstant:v7];
 }
 
 - (double)_verticalPadding
 {
-  v2 = [(WFHotspotCell *)self nameLabel];
-  v3 = [v2 font];
-  [v3 _bodyLeading];
+  nameLabel = [(WFHotspotCell *)self nameLabel];
+  font = [nameLabel font];
+  [font _bodyLeading];
   v5 = v4 * 0.5;
 
   v6 = _os_feature_enabled_impl();
@@ -71,18 +71,18 @@
   return result;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v4 = [(WFHotspotCell *)self associationStateView];
-  [v4 setState:a3];
+  associationStateView = [(WFHotspotCell *)self associationStateView];
+  [associationStateView setState:state];
 }
 
 - (int64_t)state
 {
-  v2 = [(WFHotspotCell *)self associationStateView];
-  v3 = [v2 state];
+  associationStateView = [(WFHotspotCell *)self associationStateView];
+  state = [associationStateView state];
 
-  return v3;
+  return state;
 }
 
 - (void)prepareForReuse
@@ -94,45 +94,45 @@
   [(WFHotspotCell *)self setHotspotDetails:0];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_nameLabel);
-  [WeakRetained setText:v5];
+  [WeakRetained setText:titleCopy];
 
   v8 = objc_loadWeakRetained(&self->_nameLabel);
-  v7 = [MEMORY[0x277D75348] defaultTextColor];
+  defaultTextColor = [MEMORY[0x277D75348] defaultTextColor];
 
-  [v8 setTextColor:v7];
+  [v8 setTextColor:defaultTextColor];
 }
 
-- (void)setHotspotDetails:(id)a3
+- (void)setHotspotDetails:(id)details
 {
-  v16 = a3;
+  detailsCopy = details;
   if (![(WFHotspotDetails *)self->_hotspotDetails isEqual:?])
   {
-    objc_storeStrong(&self->_hotspotDetails, a3);
-    v5 = [(WFHotspotDetails *)self->_hotspotDetails cellularProtocolString];
-    v6 = [(WFHotspotCell *)self hotspotDetailsView];
-    [v6 setCellularProtocolString:v5];
+    objc_storeStrong(&self->_hotspotDetails, details);
+    cellularProtocolString = [(WFHotspotDetails *)self->_hotspotDetails cellularProtocolString];
+    hotspotDetailsView = [(WFHotspotCell *)self hotspotDetailsView];
+    [hotspotDetailsView setCellularProtocolString:cellularProtocolString];
 
-    v7 = [(WFHotspotDetails *)self->_hotspotDetails signalStrength];
-    v8 = [v7 unsignedIntegerValue];
-    v9 = [(WFHotspotCell *)self hotspotDetailsView];
-    [v9 setSignalBars:v8];
+    signalStrength = [(WFHotspotDetails *)self->_hotspotDetails signalStrength];
+    unsignedIntegerValue = [signalStrength unsignedIntegerValue];
+    hotspotDetailsView2 = [(WFHotspotCell *)self hotspotDetailsView];
+    [hotspotDetailsView2 setSignalBars:unsignedIntegerValue];
 
-    v10 = [(WFHotspotDetails *)self->_hotspotDetails batteryLife];
-    v11 = [v10 unsignedIntegerValue];
-    v12 = [(WFHotspotCell *)self hotspotDetailsView];
-    [v12 setBatteryCharge:v11];
+    batteryLife = [(WFHotspotDetails *)self->_hotspotDetails batteryLife];
+    unsignedIntegerValue2 = [batteryLife unsignedIntegerValue];
+    hotspotDetailsView3 = [(WFHotspotCell *)self hotspotDetailsView];
+    [hotspotDetailsView3 setBatteryCharge:unsignedIntegerValue2];
 
-    v13 = [(WFHotspotCell *)self stackView];
-    v14 = [(WFHotspotCell *)self hotspotDetailsView];
-    [v13 addArrangedSubview:v14];
+    stackView = [(WFHotspotCell *)self stackView];
+    hotspotDetailsView4 = [(WFHotspotCell *)self hotspotDetailsView];
+    [stackView addArrangedSubview:hotspotDetailsView4];
 
-    v15 = [(WFHotspotCell *)self stackView];
-    [v15 setLayoutMarginsRelativeArrangement:1];
+    stackView2 = [(WFHotspotCell *)self stackView];
+    [stackView2 setLayoutMarginsRelativeArrangement:1];
 
     [(WFHotspotCell *)self setNeedsLayout];
   }

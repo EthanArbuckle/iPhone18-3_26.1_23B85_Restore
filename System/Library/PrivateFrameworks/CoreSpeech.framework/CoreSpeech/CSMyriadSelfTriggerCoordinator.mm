@@ -1,6 +1,6 @@
 @interface CSMyriadSelfTriggerCoordinator
 - (CSMyriadSelfTriggerCoordinatorDelegate)delegate;
-- (void)selfTriggerDetector:(id)a3 didDetectSelfTrigger:(id)a4;
+- (void)selfTriggerDetector:(id)detector didDetectSelfTrigger:(id)trigger;
 @end
 
 @implementation CSMyriadSelfTriggerCoordinator
@@ -12,17 +12,17 @@
   return WeakRetained;
 }
 
-- (void)selfTriggerDetector:(id)a3 didDetectSelfTrigger:(id)a4
+- (void)selfTriggerDetector:(id)detector didDetectSelfTrigger:(id)trigger
 {
-  v5 = a4;
+  triggerCopy = trigger;
   v6 = [NSMutableData dataWithCapacity:13];
   v19 = 0;
   v18 = 0;
   v17 = 0;
-  v7 = [v5 objectForKeyedSubscript:kVTEItriggerEndMachTime];
+  v7 = [triggerCopy objectForKeyedSubscript:kVTEItriggerEndMachTime];
 
-  v8 = [v7 unsignedIntegerValue];
-  [v6 appendBytes:&v19 length:{2, v8}];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  [v6 appendBytes:&v19 length:{2, unsignedIntegerValue}];
   [v6 appendBytes:&v18 length:1];
   [v6 appendBytes:&v18 + 1 length:1];
   [v6 appendBytes:&v16 length:8];
@@ -38,9 +38,9 @@
   }
 
   v10 = +[CSFPreferences sharedPreferences];
-  v11 = [v10 myriadHashFilePath];
+  myriadHashFilePath = [v10 myriadHashFilePath];
 
-  if (([v6 writeToFile:v11 atomically:0] & 1) == 0)
+  if (([v6 writeToFile:myriadHashFilePath atomically:0] & 1) == 0)
   {
     v12 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))

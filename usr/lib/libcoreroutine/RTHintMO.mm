@@ -1,16 +1,16 @@
 @interface RTHintMO
-+ (id)managedObjectWithHint:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)managedObjectWithLatitude:(double)a3 longitude:(double)a4 horizontalUncertainty:(double)a5 source:(int64_t)a6 date:(id)a7 inManagedObjectContext:(id)a8;
++ (id)managedObjectWithHint:(id)hint inManagedObjectContext:(id)context;
++ (id)managedObjectWithLatitude:(double)latitude longitude:(double)longitude horizontalUncertainty:(double)uncertainty source:(int64_t)source date:(id)date inManagedObjectContext:(id)context;
 @end
 
 @implementation RTHintMO
 
-+ (id)managedObjectWithHint:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithHint:(id)hint inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  hintCopy = hint;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!hintCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -26,20 +26,20 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [v5 location];
-    [v8 latitude];
+    location = [hintCopy location];
+    [location latitude];
     v10 = v9;
-    v11 = [v5 location];
-    [v11 longitude];
+    location2 = [hintCopy location];
+    [location2 longitude];
     v13 = v12;
-    v14 = [v5 location];
-    [v14 horizontalUncertainty];
+    location3 = [hintCopy location];
+    [location3 horizontalUncertainty];
     v16 = v15;
-    v17 = [v5 source];
-    v18 = [v5 date];
-    v19 = [RTHintMO managedObjectWithLatitude:v17 longitude:v18 horizontalUncertainty:v7 source:v10 date:v13 inManagedObjectContext:v16];
+    source = [hintCopy source];
+    date = [hintCopy date];
+    v19 = [RTHintMO managedObjectWithLatitude:source longitude:date horizontalUncertainty:v7 source:v10 date:v13 inManagedObjectContext:v16];
 
     goto LABEL_8;
   }
@@ -61,12 +61,12 @@ LABEL_8:
   return v19;
 }
 
-+ (id)managedObjectWithLatitude:(double)a3 longitude:(double)a4 horizontalUncertainty:(double)a5 source:(int64_t)a6 date:(id)a7 inManagedObjectContext:(id)a8
++ (id)managedObjectWithLatitude:(double)latitude longitude:(double)longitude horizontalUncertainty:(double)uncertainty source:(int64_t)source date:(id)date inManagedObjectContext:(id)context
 {
-  v13 = a7;
-  v14 = a8;
-  v15 = v14;
-  if (v14)
+  dateCopy = date;
+  contextCopy = context;
+  v15 = contextCopy;
+  if (contextCopy)
   {
     v26 = 0;
     v27 = &v26;
@@ -79,12 +79,12 @@ LABEL_8:
     v18[2] = __105__RTHintMO_managedObjectWithLatitude_longitude_horizontalUncertainty_source_date_inManagedObjectContext___block_invoke;
     v18[3] = &unk_2788CD948;
     v21 = &v26;
-    v19 = v14;
-    v22 = a3;
-    v23 = a4;
-    v24 = a5;
-    v25 = a6;
-    v20 = v13;
+    v19 = contextCopy;
+    latitudeCopy = latitude;
+    longitudeCopy = longitude;
+    uncertaintyCopy = uncertainty;
+    sourceCopy = source;
+    v20 = dateCopy;
     [v19 performBlockAndWait:v18];
     v16 = v27[5];
 

@@ -1,33 +1,33 @@
 @interface CSEnhancedModalButton
-- (CSEnhancedModalButton)initWithFrame:(CGRect)a3;
+- (CSEnhancedModalButton)initWithFrame:(CGRect)frame;
 - (void)_addBackgroundHighlightView;
 - (void)_addVisualEffect;
-- (void)_buttonPressed:(id)a3;
-- (void)_buttonReleased:(id)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_buttonPressed:(id)pressed;
+- (void)_buttonReleased:(id)released;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)layoutSubviews;
 @end
 
 @implementation CSEnhancedModalButton
 
-- (CSEnhancedModalButton)initWithFrame:(CGRect)a3
+- (CSEnhancedModalButton)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CSEnhancedModalButton;
-  v3 = [(CSEnhancedModalButton *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSEnhancedModalButton *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(CSEnhancedModalButton *)v3 addTarget:v3 action:sel__buttonPressed_ forControlEvents:5];
     [(CSEnhancedModalButton *)v4 addTarget:v4 action:sel__buttonReleased_ forControlEvents:456];
-    v5 = [(CSEnhancedModalButton *)v4 titleLabel];
-    [v5 setNumberOfLines:1];
-    [v5 setBaselineAdjustment:1];
-    [v5 setLineBreakMode:0];
-    [v5 setTextAlignment:1];
+    titleLabel = [(CSEnhancedModalButton *)v4 titleLabel];
+    [titleLabel setNumberOfLines:1];
+    [titleLabel setBaselineAdjustment:1];
+    [titleLabel setLineBreakMode:0];
+    [titleLabel setTextAlignment:1];
     [(CSEnhancedModalButton *)v4 setContentEdgeInsets:16.0, 16.0, 16.0, 16.0];
-    v6 = [(CSEnhancedModalButton *)v4 layer];
-    [v6 setHitTestsAsOpaque:1];
+    layer = [(CSEnhancedModalButton *)v4 layer];
+    [layer setHitTestsAsOpaque:1];
 
     [(CSEnhancedModalButton *)v4 _addVisualEffect];
     [(CSEnhancedModalButton *)v4 _addBackgroundHighlightView];
@@ -55,8 +55,8 @@
   v16 = [MEMORY[0x277D75210] effectWithBlurRadius:30.0];
   v17[0] = v16;
   v6 = MEMORY[0x277D75D58];
-  v7 = [MEMORY[0x277D75348] blackColor];
-  v8 = [v6 effectCompositingColor:v7 withMode:1010 alpha:0.12];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v8 = [v6 effectCompositingColor:blackColor withMode:1010 alpha:0.12];
   v17[1] = v8;
   v9 = MEMORY[0x277D75358];
   v10 = [MEMORY[0x277D755B8] kitImageNamed:@"UICoverSheetButtonLuminanceMap"];
@@ -78,8 +78,8 @@
 - (void)_addBackgroundHighlightView
 {
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [(UIVisualEffectView *)self->_effectView contentView];
-  [v4 bounds];
+  contentView = [(UIVisualEffectView *)self->_effectView contentView];
+  [contentView bounds];
   v5 = [v3 initWithFrame:?];
   highlightedView = self->_highlightedView;
   self->_highlightedView = v5;
@@ -90,16 +90,16 @@
 
   [(UIView *)self->_highlightedView setAlpha:0.0];
   [(UIView *)self->_highlightedView setUserInteractionEnabled:0];
-  v8 = [(UIVisualEffectView *)self->_effectView contentView];
-  [v8 addSubview:self->_highlightedView];
+  contentView2 = [(UIVisualEffectView *)self->_effectView contentView];
+  [contentView2 addSubview:self->_highlightedView];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = CSEnhancedModalButton;
   [(CSEnhancedModalButton *)&v5 _setContinuousCornerRadius:?];
-  [(UIVisualEffectView *)self->_effectView _setContinuousCornerRadius:a3];
+  [(UIVisualEffectView *)self->_effectView _setContinuousCornerRadius:radius];
 }
 
 - (void)layoutSubviews
@@ -112,7 +112,7 @@
   [(UIVisualEffectView *)effectView setFrame:?];
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -122,7 +122,7 @@
   [MEMORY[0x277D75D18] animateWithDuration:v3 animations:0.2];
 }
 
-- (void)_buttonReleased:(id)a3
+- (void)_buttonReleased:(id)released
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;

@@ -1,11 +1,11 @@
 @interface NEVPNIKEv1ProposalParameters
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (NEVPNIKEv1ProposalParameters)init;
-- (NEVPNIKEv1ProposalParameters)initWithCoder:(id)a3;
+- (NEVPNIKEv1ProposalParameters)initWithCoder:(id)coder;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEVPNIKEv1ProposalParameters
@@ -64,9 +64,9 @@ LABEL_15:
   return v3;
 }
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = NEVPNIKEv1ProposalParameters;
   v5 = [(NEVPNIKEv1ProposalParameters *)&v31 init];
@@ -75,12 +75,12 @@ LABEL_15:
     goto LABEL_22;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"EncryptionAlgorithm"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"EncryptionAlgorithm"];
   v7 = isa_nsstring(v6);
 
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:@"EncryptionAlgorithm"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"EncryptionAlgorithm"];
     v9 = [@"DES" isEqualToString:v8];
 
     if (v9)
@@ -90,7 +90,7 @@ LABEL_15:
 
     else
     {
-      v11 = [v4 objectForKeyedSubscript:@"EncryptionAlgorithm"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"EncryptionAlgorithm"];
       v12 = [@"3DES" isEqualToString:v11];
 
       if (v12)
@@ -100,7 +100,7 @@ LABEL_15:
 
       else
       {
-        v13 = [v4 objectForKeyedSubscript:@"EncryptionAlgorithm"];
+        v13 = [dictionaryCopy objectForKeyedSubscript:@"EncryptionAlgorithm"];
         v14 = [@"AES" isEqualToString:v13];
 
         if (v14)
@@ -110,7 +110,7 @@ LABEL_15:
 
         else
         {
-          v15 = [v4 objectForKeyedSubscript:@"EncryptionAlgorithm"];
+          v15 = [dictionaryCopy objectForKeyedSubscript:@"EncryptionAlgorithm"];
           v16 = [@"AES256" isEqualToString:v15];
 
           if (!v16)
@@ -127,12 +127,12 @@ LABEL_15:
   }
 
 LABEL_12:
-  v17 = [v4 objectForKeyedSubscript:@"HashAlgorithm"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"HashAlgorithm"];
   v18 = isa_nsstring(v17);
 
   if (v18)
   {
-    v19 = [v4 objectForKeyedSubscript:@"HashAlgorithm"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"HashAlgorithm"];
     v20 = [@"SHA1" isEqualToString:v19];
 
     if (v20)
@@ -143,7 +143,7 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"HashAlgorithm"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"HashAlgorithm"];
     v23 = [@"MD5" isEqualToString:v22];
 
     if (v23)
@@ -154,21 +154,21 @@ LABEL_17:
   }
 
 LABEL_18:
-  v24 = [v4 objectForKeyedSubscript:@"DHGroup"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"DHGroup"];
   v25 = isa_nsnumber(v24);
 
   if (v25)
   {
-    v26 = [v4 objectForKeyedSubscript:@"DHGroup"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"DHGroup"];
     -[NEVPNIKEv1ProposalParameters setDiffieHellmanGroup:](v5, "setDiffieHellmanGroup:", [v26 intValue]);
   }
 
-  v27 = [v4 objectForKeyedSubscript:@"Lifetime"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"Lifetime"];
   v28 = isa_nsnumber(v27);
 
   if (v28)
   {
-    v29 = [v4 objectForKeyedSubscript:@"Lifetime"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"Lifetime"];
     -[NEVPNIKEv1ProposalParameters setLifetimeSeconds:](v5, "setLifetimeSeconds:", [v29 intValue]);
   }
 
@@ -177,9 +177,9 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   if ([(NEVPNIKEv1ProposalParameters *)self lifetimeSeconds]>= 600 && [(NEVPNIKEv1ProposalParameters *)self lifetimeSeconds]<= 86400)
   {
     v6 = 1;
@@ -187,8 +187,8 @@ LABEL_22:
 
   else
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid SA lifetime seconds (%d), valid range is %d to %d inclusive", -[NEVPNIKEv1ProposalParameters lifetimeSeconds](self, "lifetimeSeconds"), 600, 86400];
-    [NEConfiguration addError:v5 toList:v4];
+    86400 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid SA lifetime seconds (%d), valid range is %d to %d inclusive", -[NEVPNIKEv1ProposalParameters lifetimeSeconds](self, "lifetimeSeconds"), 600, 86400];
+    [NEConfiguration addError:86400 toList:errorsCopy];
 
     v6 = 0;
   }
@@ -196,7 +196,7 @@ LABEL_22:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEVPNIKEv1ProposalParameters allocWithZone:?]];
   if (v4)
@@ -210,25 +210,25 @@ LABEL_22:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[NEVPNIKEv1ProposalParameters encryptionAlgorithm](self forKey:{"encryptionAlgorithm"), @"LegacyEncryptionAlgorithm"}];
-  [v4 encodeInt32:-[NEVPNIKEv1ProposalParameters integrityAlgorithm](self forKey:{"integrityAlgorithm"), @"LegacyIntegrityAlgorithm"}];
-  [v4 encodeInt32:-[NEVPNIKEv1ProposalParameters diffieHellmanGroup](self forKey:{"diffieHellmanGroup"), @"LegacyDiffieHellmanGroup"}];
-  [v4 encodeInt32:-[NEVPNIKEv1ProposalParameters lifetimeSeconds](self forKey:{"lifetimeSeconds"), @"LegacyLifeTime"}];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[NEVPNIKEv1ProposalParameters encryptionAlgorithm](self forKey:{"encryptionAlgorithm"), @"LegacyEncryptionAlgorithm"}];
+  [coderCopy encodeInt32:-[NEVPNIKEv1ProposalParameters integrityAlgorithm](self forKey:{"integrityAlgorithm"), @"LegacyIntegrityAlgorithm"}];
+  [coderCopy encodeInt32:-[NEVPNIKEv1ProposalParameters diffieHellmanGroup](self forKey:{"diffieHellmanGroup"), @"LegacyDiffieHellmanGroup"}];
+  [coderCopy encodeInt32:-[NEVPNIKEv1ProposalParameters lifetimeSeconds](self forKey:{"lifetimeSeconds"), @"LegacyLifeTime"}];
 }
 
-- (NEVPNIKEv1ProposalParameters)initWithCoder:(id)a3
+- (NEVPNIKEv1ProposalParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NEVPNIKEv1ProposalParameters *)self init];
   if (v5)
   {
-    v5->_encryptionAlgorithm = [v4 decodeInt32ForKey:@"LegacyEncryptionAlgorithm"];
-    v5->_integrityAlgorithm = [v4 decodeInt32ForKey:@"LegacyIntegrityAlgorithm"];
-    v5->_diffieHellmanGroup = [v4 decodeInt32ForKey:@"LegacyDiffieHellmanGroup"];
-    v5->_lifetimeSeconds = [v4 decodeInt32ForKey:@"LegacyLifeTime"];
+    v5->_encryptionAlgorithm = [coderCopy decodeInt32ForKey:@"LegacyEncryptionAlgorithm"];
+    v5->_integrityAlgorithm = [coderCopy decodeInt32ForKey:@"LegacyIntegrityAlgorithm"];
+    v5->_diffieHellmanGroup = [coderCopy decodeInt32ForKey:@"LegacyDiffieHellmanGroup"];
+    v5->_lifetimeSeconds = [coderCopy decodeInt32ForKey:@"LegacyLifeTime"];
   }
 
   return v5;

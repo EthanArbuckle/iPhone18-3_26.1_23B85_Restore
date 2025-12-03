@@ -1,39 +1,39 @@
 @interface PosterRackOffsetMenuButton
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
-- (_TtC11PosterBoard26PosterRackOffsetMenuButton)initWithCoder:(id)a3;
-- (_TtC11PosterBoard26PosterRackOffsetMenuButton)initWithFrame:(CGRect)a3;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
+- (_TtC11PosterBoard26PosterRackOffsetMenuButton)initWithCoder:(id)coder;
+- (_TtC11PosterBoard26PosterRackOffsetMenuButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation PosterRackOffsetMenuButton
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PosterRackOffsetMenuButton();
-  [(PosterRackOffsetMenuButton *)&v7 menuAttachmentPointForConfiguration:a3];
+  [(PosterRackOffsetMenuButton *)&v7 menuAttachmentPointForConfiguration:configuration];
   v6 = v5 + -8.0;
   result.y = v6;
   result.x = v4;
   return result;
 }
 
-- (_TtC11PosterBoard26PosterRackOffsetMenuButton)initWithFrame:(CGRect)a3
+- (_TtC11PosterBoard26PosterRackOffsetMenuButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PosterRackOffsetMenuButton();
   return [(PosterRackOffsetMenuButton *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC11PosterBoard26PosterRackOffsetMenuButton)initWithCoder:(id)a3
+- (_TtC11PosterBoard26PosterRackOffsetMenuButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PosterRackOffsetMenuButton();
-  v4 = a3;
-  v5 = [(PosterRackOffsetMenuButton *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PosterRackOffsetMenuButton *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

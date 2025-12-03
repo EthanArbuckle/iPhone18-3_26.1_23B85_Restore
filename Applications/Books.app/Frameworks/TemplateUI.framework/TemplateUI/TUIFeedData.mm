@@ -1,27 +1,27 @@
 @interface TUIFeedData
-+ (id)feedDataWithDictionary:(id)a3;
-- (TUIFeedData)initWithDictionary:(id)a3;
++ (id)feedDataWithDictionary:(id)dictionary;
+- (TUIFeedData)initWithDictionary:(id)dictionary;
 @end
 
 @implementation TUIFeedData
 
-+ (id)feedDataWithDictionary:(id)a3
++ (id)feedDataWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[TUIFeedData alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[TUIFeedData alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }
 
-- (TUIFeedData)initWithDictionary:(id)a3
+- (TUIFeedData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = TUIFeedData;
   v5 = [(TUIFeedData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
   }

@@ -2,15 +2,15 @@
 - ($873BFAB23BBB6E2F0B0288ED2F935688)_coordinatePickingMapRect;
 - (BOOL)_isStreetRAP;
 - (RAPWebBundleMapDelegate)delegate;
-- (RAPWebBundleMapViewController)initWithReport:(id)a3 coordinate:(CLLocationCoordinate2D)a4;
+- (RAPWebBundleMapViewController)initWithReport:(id)report coordinate:(CLLocationCoordinate2D)coordinate;
 - (id)_viewAttributes;
 - (id)_webBundleQuestion;
-- (void)_didChangeCenterCoordinate:(CLLocationCoordinate2D)a3 fromEditLocationMapView:(id)a4;
+- (void)_didChangeCenterCoordinate:(CLLocationCoordinate2D)coordinate fromEditLocationMapView:(id)view;
 - (void)_didTapButton;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
-- (void)editLocationMapView:(id)a3 didChangeCenterCoordinate:(CLLocationCoordinate2D)a4;
-- (void)editLocationMapViewFinishedRenderingMap:(id)a3;
+- (void)editLocationMapView:(id)view didChangeCenterCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)editLocationMapViewFinishedRenderingMap:(id)map;
 @end
 
 @implementation RAPWebBundleMapViewController
@@ -22,28 +22,28 @@
   return WeakRetained;
 }
 
-- (void)editLocationMapViewFinishedRenderingMap:(id)a3
+- (void)editLocationMapViewFinishedRenderingMap:(id)map
 {
   if (!self->_mapIsInitialized)
   {
-    v4 = a3;
-    [v4 centerCoordinate];
-    [(RAPWebBundleMapViewController *)self _didChangeCenterCoordinate:v4 fromEditLocationMapView:?];
+    mapCopy = map;
+    [mapCopy centerCoordinate];
+    [(RAPWebBundleMapViewController *)self _didChangeCenterCoordinate:mapCopy fromEditLocationMapView:?];
 
     self->_mapIsInitialized = 1;
   }
 }
 
-- (void)editLocationMapView:(id)a3 didChangeCenterCoordinate:(CLLocationCoordinate2D)a4
+- (void)editLocationMapView:(id)view didChangeCenterCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  viewCopy = view;
   self->_selectedCoordinate.latitude = latitude;
   self->_selectedCoordinate.longitude = longitude;
   if ([(RAPWebBundleMapViewController *)self _isStreetRAP])
   {
-    [v7 updateAnnotationTitleWithCenterCoordinate:{latitude, longitude}];
+    [viewCopy updateAnnotationTitleWithCenterCoordinate:{latitude, longitude}];
   }
 
   [(RAPWebBundleMapViewController *)self _didChangeCenterCoordinate:self->_editLocationMapView fromEditLocationMapView:latitude, longitude];
@@ -58,54 +58,54 @@
   return v4;
 }
 
-- (void)_didChangeCenterCoordinate:(CLLocationCoordinate2D)a3 fromEditLocationMapView:(id)a4
+- (void)_didChangeCenterCoordinate:(CLLocationCoordinate2D)coordinate fromEditLocationMapView:(id)view
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v7 = a4;
-  v8 = [v7 mapView];
-  v9 = [v8 _mapLayer];
-  v10 = [v7 mapView];
-  [v10 convertCoordinate:v7 toPointToView:{latitude, longitude}];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  viewCopy = view;
+  mapView = [viewCopy mapView];
+  _mapLayer = [mapView _mapLayer];
+  mapView2 = [viewCopy mapView];
+  [mapView2 convertCoordinate:viewCopy toPointToView:{latitude, longitude}];
   v12 = v11;
   v14 = v13;
 
-  v16 = [v9 rapMarkerAtPoint:{v12, v14}];
+  v16 = [_mapLayer rapMarkerAtPoint:{v12, v14}];
 
-  v15 = [(RAPWebBundleMapViewController *)self delegate];
-  [v15 rapWebBundleMapViewController:self marker:v16 didUpdateLocationTo:{latitude, longitude}];
+  delegate = [(RAPWebBundleMapViewController *)self delegate];
+  [delegate rapWebBundleMapViewController:self marker:v16 didUpdateLocationTo:{latitude, longitude}];
 }
 
 - (BOOL)_isStreetRAP
 {
-  v2 = [(RAPWebBundleMapViewController *)self _webBundleQuestion];
-  v3 = [v2 questionType] == 21 || objc_msgSend(v2, "questionType") == 22;
+  _webBundleQuestion = [(RAPWebBundleMapViewController *)self _webBundleQuestion];
+  v3 = [_webBundleQuestion questionType] == 21 || objc_msgSend(_webBundleQuestion, "questionType") == 22;
 
   return v3;
 }
 
 - (id)_webBundleQuestion
 {
-  v3 = [(RAPReport *)self->_report initialQuestion];
+  initialQuestion = [(RAPReport *)self->_report initialQuestion];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(RAPReport *)self->_report initialQuestion];
+    initialQuestion2 = [(RAPReport *)self->_report initialQuestion];
   }
 
   else
   {
-    v5 = 0;
+    initialQuestion2 = 0;
   }
 
-  return v5;
+  return initialQuestion2;
 }
 
 - (void)_didTapButton
 {
-  v3 = [(RAPWebBundleMapViewController *)self _isStreetRAP];
+  _isStreetRAP = [(RAPWebBundleMapViewController *)self _isStreetRAP];
   objc_initWeak(location, self);
   v26 = [RAPWebBundleEditLocationViewController alloc];
   [(RAPWebBundleMapViewController *)self _coordinatePickingMapRect];
@@ -113,12 +113,12 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(RAPReport *)self->_report _context];
-  v13 = [v12 mapType];
-  v14 = [(RAPReport *)self->_report _context];
-  v15 = [v14 isShowingTraffic];
-  v16 = [(RAPWebBundleMapViewController *)self _viewAttributes];
-  if (v3)
+  _context = [(RAPReport *)self->_report _context];
+  mapType = [_context mapType];
+  _context2 = [(RAPReport *)self->_report _context];
+  isShowingTraffic = [_context2 isShowingTraffic];
+  _viewAttributes = [(RAPWebBundleMapViewController *)self _viewAttributes];
+  if (_isStreetRAP)
   {
     v17 = 1;
   }
@@ -138,41 +138,41 @@
   v27[2] = sub_100A7E8A4;
   v27[3] = &unk_101661B98;
   objc_copyWeak(&v28, location);
-  v18 = [(RAPWebBundleEditLocationViewController *)v26 initWithInitialCoordinates:v13 inMapRect:v15 mapType:1158 isShowingTraffic:v16 analyticsTarget:v3 markerViewAttributes:v17 showAnnotationTitle:self->_selectedCoordinate.latitude searchResultTypes:self->_selectedCoordinate.longitude selectionHandler:v5 cancelSelectionHandler:v7, v9, v11, v29, v27];
+  v18 = [(RAPWebBundleEditLocationViewController *)v26 initWithInitialCoordinates:mapType inMapRect:isShowingTraffic mapType:1158 isShowingTraffic:_viewAttributes analyticsTarget:_isStreetRAP markerViewAttributes:v17 showAnnotationTitle:self->_selectedCoordinate.latitude searchResultTypes:self->_selectedCoordinate.longitude selectionHandler:v5 cancelSelectionHandler:v7, v9, v11, v29, v27];
   editLocationViewController = self->_editLocationViewController;
   self->_editLocationViewController = v18;
 
-  v20 = [(RAPWebBundleMapViewController *)self _webBundleQuestion];
-  v21 = [v20 questionType];
+  _webBundleQuestion = [(RAPWebBundleMapViewController *)self _webBundleQuestion];
+  questionType = [_webBundleQuestion questionType];
 
-  if (v21 > 0x1A)
+  if (questionType > 0x1A)
   {
     goto LABEL_9;
   }
 
-  if (((1 << v21) & 0x3001200) != 0)
+  if (((1 << questionType) & 0x3001200) != 0)
   {
     v22 = +[NSBundle mainBundle];
     v23 = [v22 localizedStringForKey:@"[RAP Web Module] Map Footer Place" value:@"localized string not found" table:0];
     goto LABEL_14;
   }
 
-  if (((1 << v21) & 0x4000C00) != 0)
+  if (((1 << questionType) & 0x4000C00) != 0)
   {
     goto LABEL_13;
   }
 
-  if (((1 << v21) & 0x600000) == 0)
+  if (((1 << questionType) & 0x600000) == 0)
   {
 LABEL_9:
-    if (v21 - 2 < 7)
+    if (questionType - 2 < 7)
     {
       v22 = +[NSBundle mainBundle];
       v23 = [v22 localizedStringForKey:@"[RAP Web Module] Map Footer Add" value:@"localized string not found" table:0];
       goto LABEL_14;
     }
 
-    if (v21 != 1)
+    if (questionType != 1)
     {
       v24 = 0;
       goto LABEL_15;
@@ -203,60 +203,60 @@ LABEL_15:
 
 - (void)_setupConstraints
 {
-  v39 = [(RAPEditLocationMapView *)self->_editLocationMapView leadingAnchor];
-  v41 = [(RAPWebBundleMapViewController *)self view];
-  v37 = [v41 leadingAnchor];
-  v35 = [v39 constraintEqualToAnchor:v37];
+  leadingAnchor = [(RAPEditLocationMapView *)self->_editLocationMapView leadingAnchor];
+  view = [(RAPWebBundleMapViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v44[0] = v35;
-  v31 = [(RAPEditLocationMapView *)self->_editLocationMapView trailingAnchor];
-  v33 = [(RAPWebBundleMapViewController *)self view];
-  v29 = [v33 trailingAnchor];
-  v27 = [v31 constraintEqualToAnchor:v29];
+  trailingAnchor = [(RAPEditLocationMapView *)self->_editLocationMapView trailingAnchor];
+  view2 = [(RAPWebBundleMapViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v44[1] = v27;
-  v3 = [(RAPEditLocationMapView *)self->_editLocationMapView topAnchor];
-  v4 = [(RAPWebBundleMapViewController *)self view];
-  v5 = [v4 topAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  topAnchor = [(RAPEditLocationMapView *)self->_editLocationMapView topAnchor];
+  view3 = [(RAPWebBundleMapViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v44[2] = v6;
-  v7 = [(RAPEditLocationMapView *)self->_editLocationMapView bottomAnchor];
-  v8 = [(RAPWebBundleMapViewController *)self view];
-  v9 = [v8 bottomAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  bottomAnchor = [(RAPEditLocationMapView *)self->_editLocationMapView bottomAnchor];
+  view4 = [(RAPWebBundleMapViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v44[3] = v10;
   v11 = [NSArray arrayWithObjects:v44 count:4];
   [NSLayoutConstraint activateConstraints:v11];
 
   if (sub_10000FA08(self) != 5)
   {
-    v42 = [(UIButton *)self->_alternateButton topAnchor];
-    v40 = [(RAPEditLocationMapView *)self->_editLocationMapView topAnchor];
-    v38 = [v42 constraintEqualToAnchor:v40];
+    topAnchor3 = [(UIButton *)self->_alternateButton topAnchor];
+    topAnchor4 = [(RAPEditLocationMapView *)self->_editLocationMapView topAnchor];
+    v38 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v43[0] = v38;
-    v36 = [(UIButton *)self->_alternateButton leadingAnchor];
-    v34 = [(RAPEditLocationMapView *)self->_editLocationMapView leadingAnchor];
-    v32 = [v36 constraintEqualToAnchor:v34];
+    leadingAnchor3 = [(UIButton *)self->_alternateButton leadingAnchor];
+    leadingAnchor4 = [(RAPEditLocationMapView *)self->_editLocationMapView leadingAnchor];
+    v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v43[1] = v32;
-    v30 = [(UIButton *)self->_alternateButton heightAnchor];
-    v28 = [v30 constraintEqualToConstant:40.0];
+    heightAnchor = [(UIButton *)self->_alternateButton heightAnchor];
+    v28 = [heightAnchor constraintEqualToConstant:40.0];
     v43[2] = v28;
-    v26 = [(UIButton *)self->_alternateButton widthAnchor];
-    v25 = [(UIButton *)self->_alternateButton heightAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    widthAnchor = [(UIButton *)self->_alternateButton widthAnchor];
+    heightAnchor2 = [(UIButton *)self->_alternateButton heightAnchor];
+    v24 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
     v43[3] = v24;
-    v23 = [(UIVisualEffectView *)self->_backgroundBlurView centerXAnchor];
-    v22 = [(UIButton *)self->_alternateButton centerXAnchor];
-    v12 = [v23 constraintEqualToAnchor:v22];
+    centerXAnchor = [(UIVisualEffectView *)self->_backgroundBlurView centerXAnchor];
+    centerXAnchor2 = [(UIButton *)self->_alternateButton centerXAnchor];
+    v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v43[4] = v12;
-    v13 = [(UIVisualEffectView *)self->_backgroundBlurView centerYAnchor];
-    v14 = [(UIButton *)self->_alternateButton centerYAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    centerYAnchor = [(UIVisualEffectView *)self->_backgroundBlurView centerYAnchor];
+    centerYAnchor2 = [(UIButton *)self->_alternateButton centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v43[5] = v15;
-    v16 = [(UIVisualEffectView *)self->_backgroundBlurView heightAnchor];
-    v17 = [v16 constraintEqualToConstant:30.0];
+    heightAnchor3 = [(UIVisualEffectView *)self->_backgroundBlurView heightAnchor];
+    v17 = [heightAnchor3 constraintEqualToConstant:30.0];
     v43[6] = v17;
-    v18 = [(UIVisualEffectView *)self->_backgroundBlurView widthAnchor];
-    v19 = [(UIVisualEffectView *)self->_backgroundBlurView heightAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    widthAnchor2 = [(UIVisualEffectView *)self->_backgroundBlurView widthAnchor];
+    heightAnchor4 = [(UIVisualEffectView *)self->_backgroundBlurView heightAnchor];
+    v20 = [widthAnchor2 constraintEqualToAnchor:heightAnchor4];
     v43[7] = v20;
     v21 = [NSArray arrayWithObjects:v43 count:8];
     [NSLayoutConstraint activateConstraints:v21];
@@ -271,20 +271,20 @@ LABEL_15:
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = 32;
-  v13 = [(RAPReport *)self->_report _context];
-  v14 = [v13 isShowingTraffic];
-  if (v14)
+  _context2 = 32;
+  _context = [(RAPReport *)self->_report _context];
+  isShowingTraffic = [_context isShowingTraffic];
+  if (isShowingTraffic)
   {
     v15 = 7;
     goto LABEL_18;
   }
 
-  v12 = [(RAPReport *)self->_report _context];
-  v16 = [v12 mapType];
-  if (v16 <= 3)
+  _context2 = [(RAPReport *)self->_report _context];
+  mapType = [_context2 mapType];
+  if (mapType <= 3)
   {
-    if (v16 == 1)
+    if (mapType == 1)
     {
       v15 = 2;
       goto LABEL_18;
@@ -292,36 +292,36 @@ LABEL_15:
 
     v17 = 1;
     v18 = 6;
-    if (v16 != 3)
+    if (mapType != 3)
     {
       v18 = 0;
     }
 
-    v19 = v16 == 2;
+    v19 = mapType == 2;
   }
 
-  else if (v16 > 103)
+  else if (mapType > 103)
   {
     v17 = 3;
     v18 = 7;
-    if (v16 != 108)
+    if (mapType != 108)
     {
       v18 = 0;
     }
 
-    v19 = v16 == 104;
+    v19 = mapType == 104;
   }
 
   else
   {
     v17 = 5;
     v18 = -1;
-    if (v16 != 103)
+    if (mapType != 103)
     {
       v18 = 0;
     }
 
-    v19 = v16 == 4;
+    v19 = mapType == 4;
   }
 
   if (v19)
@@ -335,12 +335,12 @@ LABEL_15:
   }
 
 LABEL_18:
-  v20 = [(RAPWebBundleMapViewController *)self _viewAttributes];
-  v21 = [(RAPEditLocationMapView *)v3 initWithMapRect:v15 viewMode:v20 markerViewAttributes:v5, v7, v9, v11];
+  _viewAttributes = [(RAPWebBundleMapViewController *)self _viewAttributes];
+  v21 = [(RAPEditLocationMapView *)v3 initWithMapRect:v15 viewMode:_viewAttributes markerViewAttributes:v5, v7, v9, v11];
   editLocationMapView = self->_editLocationMapView;
   self->_editLocationMapView = v21;
 
-  if ((v14 & 1) == 0)
+  if ((isShowingTraffic & 1) == 0)
   {
   }
 
@@ -348,20 +348,20 @@ LABEL_18:
   [(RAPEditLocationMapView *)self->_editLocationMapView setDelegate:self];
   [(RAPEditLocationMapView *)self->_editLocationMapView setCrosshairEnabled:1];
   [(RAPEditLocationMapView *)self->_editLocationMapView setHideAllSuplementaryViews:1];
-  v23 = [(RAPEditLocationMapView *)self->_editLocationMapView mapView];
-  [v23 setPitchEnabled:0];
+  mapView = [(RAPEditLocationMapView *)self->_editLocationMapView mapView];
+  [mapView setPitchEnabled:0];
 
-  v24 = [(RAPEditLocationMapView *)self->_editLocationMapView mapView];
-  [v24 setRotateEnabled:0];
+  mapView2 = [(RAPEditLocationMapView *)self->_editLocationMapView mapView];
+  [mapView2 setRotateEnabled:0];
 
-  v25 = [(RAPEditLocationMapView *)self->_editLocationMapView layer];
-  [v25 setCornerRadius:10.0];
+  layer = [(RAPEditLocationMapView *)self->_editLocationMapView layer];
+  [layer setCornerRadius:10.0];
 
-  v26 = [(RAPEditLocationMapView *)self->_editLocationMapView layer];
-  [v26 setMasksToBounds:1];
+  layer2 = [(RAPEditLocationMapView *)self->_editLocationMapView layer];
+  [layer2 setMasksToBounds:1];
 
-  v27 = [(RAPWebBundleMapViewController *)self view];
-  [v27 addSubview:self->_editLocationMapView];
+  view = [(RAPWebBundleMapViewController *)self view];
+  [view addSubview:self->_editLocationMapView];
 
   if (sub_10000FA08(self) != 5)
   {
@@ -384,8 +384,8 @@ LABEL_18:
     [(UIButton *)v32 setPreferredSymbolConfiguration:v33 forImageInState:0];
 
     [(UIButton *)self->_alternateButton addTarget:self action:"_didTapButton" forControlEvents:64];
-    v34 = [(RAPWebBundleMapViewController *)self view];
-    [v34 addSubview:self->_alternateButton];
+    view2 = [(RAPWebBundleMapViewController *)self view];
+    [view2 addSubview:self->_alternateButton];
 
     v35 = [UIVisualEffectView alloc];
     v36 = [UIBlurEffect effectWithStyle:16];
@@ -395,8 +395,8 @@ LABEL_18:
 
     [(UIVisualEffectView *)self->_backgroundBlurView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIVisualEffectView *)self->_backgroundBlurView _setCornerRadius:6.0];
-    v39 = [(RAPWebBundleMapViewController *)self view];
-    [v39 insertSubview:self->_backgroundBlurView belowSubview:self->_alternateButton];
+    view3 = [(RAPWebBundleMapViewController *)self view];
+    [view3 insertSubview:self->_backgroundBlurView belowSubview:self->_alternateButton];
   }
 }
 
@@ -405,9 +405,9 @@ LABEL_18:
   longitude = self->_selectedCoordinate.longitude;
   if (fabs(longitude) > 180.0 || (latitude = self->_selectedCoordinate.latitude, latitude < -90.0) || latitude > 90.0)
   {
-    v12 = [(RAPReport *)self->_report initialQuestion];
-    v13 = [v12 reportedPlace];
-    v5 = sub_1007A3A38(v13);
+    initialQuestion = [(RAPReport *)self->_report initialQuestion];
+    reportedPlace = [initialQuestion reportedPlace];
+    v5 = sub_1007A3A38(reportedPlace);
     v7 = v14;
     v9 = v15;
     v11 = v16;
@@ -434,18 +434,18 @@ LABEL_18:
   return result;
 }
 
-- (RAPWebBundleMapViewController)initWithReport:(id)a3 coordinate:(CLLocationCoordinate2D)a4
+- (RAPWebBundleMapViewController)initWithReport:(id)report coordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v8 = a3;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  reportCopy = report;
   v12.receiver = self;
   v12.super_class = RAPWebBundleMapViewController;
   v9 = [(RAPWebBundleMapViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_report, a3);
+    objc_storeStrong(&v9->_report, report);
     v10->_originalCoordinate.latitude = latitude;
     v10->_originalCoordinate.longitude = longitude;
     v10->_selectedCoordinate.latitude = latitude;

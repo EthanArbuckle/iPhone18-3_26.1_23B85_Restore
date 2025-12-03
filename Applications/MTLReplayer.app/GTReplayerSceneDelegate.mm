@@ -1,6 +1,6 @@
 @interface GTReplayerSceneDelegate
 - (UIWindow)window;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation GTReplayerSceneDelegate
@@ -8,51 +8,51 @@
 - (UIWindow)window
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
-  v4 = [v3 window];
+  window = [delegate window];
 
-  return v4;
+  return window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v17 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  sessionCopy = session;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 role];
-    v8 = [v7 isEqualToString:UIWindowSceneSessionRoleApplication];
+    role = [sessionCopy role];
+    v8 = [role isEqualToString:UIWindowSceneSessionRoleApplication];
 
     if (v8)
     {
-      v9 = v17;
+      v9 = sceneCopy;
       v10 = +[UIApplication sharedApplication];
-      v11 = [v10 delegate];
+      delegate = [v10 delegate];
 
-      v12 = [v11 window];
+      window = [delegate window];
 
-      if (v12)
+      if (window)
       {
-        v13 = [v11 window];
-        v14 = [v13 windowScene];
+        window2 = [delegate window];
+        windowScene = [window2 windowScene];
 
-        if (v14 != v9)
+        if (windowScene != v9)
         {
-          v15 = [v11 window];
-          [v15 setWindowScene:v9];
+          window3 = [delegate window];
+          [window3 setWindowScene:v9];
         }
 
-        v16 = [v11 window];
-        [v16 makeKeyAndVisible];
+        window4 = [delegate window];
+        [window4 makeKeyAndVisible];
       }
 
       else
       {
-        v16 = [[UIWindow alloc] initWithWindowScene:v9];
-        [v11 setWindow:v16];
-        [v11 _applicationDidFinishLaunching];
+        window4 = [[UIWindow alloc] initWithWindowScene:v9];
+        [delegate setWindow:window4];
+        [delegate _applicationDidFinishLaunching];
       }
     }
   }

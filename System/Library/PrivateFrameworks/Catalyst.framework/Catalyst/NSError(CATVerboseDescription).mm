@@ -9,22 +9,22 @@
 - (id)verboseDescriptionWithIdentation:()CATVerboseDescription
 {
   v4 = [&stru_2855FDC88 stringByPaddingToLength:a3 withString:@" " startingAtIndex:0];
-  v5 = [a1 userInfo];
-  v6 = [v5 mutableCopy];
+  userInfo = [self userInfo];
+  v6 = [userInfo mutableCopy];
 
-  v7 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@%@: %p\n", v4, objc_opt_class(), a1];
-  v8 = [a1 localizedDescription];
-  v9 = v8;
-  if (v8)
+  v7 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@%@: %p\n", v4, objc_opt_class(), self];
+  localizedDescription = [self localizedDescription];
+  v9 = localizedDescription;
+  if (localizedDescription)
   {
-    [v7 appendFormat:@"%@Desc   : %@\n", v4, v8];
+    [v7 appendFormat:@"%@Desc   : %@\n", v4, localizedDescription];
   }
 
-  v10 = [a1 localizedRecoverySuggestion];
-  v11 = v10;
-  if (v10)
+  localizedRecoverySuggestion = [self localizedRecoverySuggestion];
+  v11 = localizedRecoverySuggestion;
+  if (localizedRecoverySuggestion)
   {
-    [v7 appendFormat:@"%@Sugg   : %@\n", v4, v10];
+    [v7 appendFormat:@"%@Sugg   : %@\n", v4, localizedRecoverySuggestion];
   }
 
   v12 = [v6 objectForKeyedSubscript:@"NSDescription"];
@@ -41,15 +41,15 @@
     [v7 appendFormat:@"%@US Sugg: %@\n", v4, v14];
   }
 
-  v16 = [a1 domain];
-  [v7 appendFormat:@"%@Domain : %@\n", v4, v16];
+  domain = [self domain];
+  [v7 appendFormat:@"%@Domain : %@\n", v4, domain];
 
-  v17 = [a1 formattedCode];
-  [v7 appendFormat:@"%@Code   : %@\n", v4, v17];
+  formattedCode = [self formattedCode];
+  [v7 appendFormat:@"%@Code   : %@\n", v4, formattedCode];
 
-  v18 = [a1 userInfo];
+  userInfo2 = [self userInfo];
   v19 = *MEMORY[0x277CCA7E8];
-  v20 = [v18 objectForKey:*MEMORY[0x277CCA7E8]];
+  v20 = [userInfo2 objectForKey:*MEMORY[0x277CCA7E8]];
 
   if (v20)
   {
@@ -77,9 +77,9 @@
   v6 = v5;
   if (v4)
   {
-    v7 = [v5 stringByAppendingFormat:@" [sys = 0x%1$lX, sub = 0x%2$lX, code = 0x%3$lX (%3$ld)]", v4, (a3 >> 14) & 0xFFF, a3 & 0x3FFF];
+    0x3FFF = [v5 stringByAppendingFormat:@" [sys = 0x%1$lX, sub = 0x%2$lX, code = 0x%3$lX (%3$ld)]", v4, (a3 >> 14) & 0xFFF, a3 & 0x3FFF];
 
-    v6 = v7;
+    v6 = 0x3FFF;
   }
 
   return v6;
@@ -88,9 +88,9 @@
 - (uint64_t)formattedCode
 {
   v1 = MEMORY[0x277CCA9B8];
-  v2 = [a1 code];
+  code = [self code];
 
-  return [v1 formattedCode:v2];
+  return [v1 formattedCode:code];
 }
 
 @end

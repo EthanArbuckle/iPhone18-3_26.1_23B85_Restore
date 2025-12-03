@@ -1,12 +1,12 @@
 @interface PSDAnalyticsUtils
-+ (id)binPercentageRangeForInputDuration:(double)a3 withTotalDuration:(double)a4;
++ (id)binPercentageRangeForInputDuration:(double)duration withTotalDuration:(double)totalDuration;
 @end
 
 @implementation PSDAnalyticsUtils
 
-+ (id)binPercentageRangeForInputDuration:(double)a3 withTotalDuration:(double)a4
++ (id)binPercentageRangeForInputDuration:(double)duration withTotalDuration:(double)totalDuration
 {
-  v6 = vcvtpd_s64_f64(a3 / a4 * 100.0);
+  v6 = vcvtpd_s64_f64(duration / totalDuration * 100.0);
   if (v6 <= 99)
   {
     if (v6 < 1)

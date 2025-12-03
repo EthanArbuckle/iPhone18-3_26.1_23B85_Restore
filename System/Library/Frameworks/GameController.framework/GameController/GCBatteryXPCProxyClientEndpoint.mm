@@ -1,20 +1,20 @@
 @interface GCBatteryXPCProxyClientEndpoint
 - (GCBatteryXPCProxyClientEndpoint)init;
-- (GCBatteryXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialBattery:(id)a4;
-- (void)_remoteEndpointHasSetBattery:(id)a3;
-- (void)fetchObjectIdentifierWithReply:(id)a3;
+- (GCBatteryXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialBattery:(id)battery;
+- (void)_remoteEndpointHasSetBattery:(id)battery;
+- (void)fetchObjectIdentifierWithReply:(id)reply;
 - (void)invalidateConnection;
-- (void)newBattery:(id)a3;
+- (void)newBattery:(id)battery;
 - (void)refreshBattery;
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4;
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection;
 @end
 
 @implementation GCBatteryXPCProxyClientEndpoint
 
-- (GCBatteryXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialBattery:(id)a4
+- (GCBatteryXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialBattery:(id)battery
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  batteryCopy = battery;
   v12.receiver = self;
   v12.super_class = GCBatteryXPCProxyClientEndpoint;
   v8 = [(GCBatteryXPCProxyClientEndpoint *)&v12 init];
@@ -25,11 +25,11 @@
       [GCBatteryXPCProxyClientEndpoint initWithIdentifier:initialBattery:];
     }
 
-    v9 = [v6 copyWithZone:0];
+    v9 = [identifierCopy copyWithZone:0];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_battery, a4);
+    objc_storeStrong(&v8->_battery, battery);
   }
 
   return v8;
@@ -42,10 +42,10 @@
   return 0;
 }
 
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
@@ -53,15 +53,15 @@
   v18 = &unk_1E8418D18;
   objc_copyWeak(&v19, &location);
   v9 = _Block_copy(&v15);
-  v10 = [v8 addInterruptionHandler:{v9, v15, v16, v17, v18}];
+  v10 = [connectionCopy addInterruptionHandler:{v9, v15, v16, v17, v18}];
   connectionInterruptionRegistration = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = v10;
 
-  v12 = [v8 addInvalidationHandler:v9];
+  v12 = [connectionCopy addInvalidationHandler:v9];
   connectionInvalidationRegistration = self->_connectionInvalidationRegistration;
   self->_connectionInvalidationRegistration = v12;
 
-  objc_storeStrong(&self->_serverEndpoint, a3);
+  objc_storeStrong(&self->_serverEndpoint, endpoint);
   if (gc_isInternalBuild())
   {
     v14 = getGCLogger();
@@ -95,9 +95,9 @@ void __64__GCBatteryXPCProxyClientEndpoint_setRemoteEndpoint_connection___block_
   }
 }
 
-- (void)_remoteEndpointHasSetBattery:(id)a3
+- (void)_remoteEndpointHasSetBattery:(id)battery
 {
-  v4 = a3;
+  batteryCopy = battery;
   if (gc_isInternalBuild())
   {
     [GCBatteryXPCProxyClientEndpoint _remoteEndpointHasSetBattery:];
@@ -106,22 +106,22 @@ void __64__GCBatteryXPCProxyClientEndpoint_setRemoteEndpoint_connection___block_
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   [WeakRetained willChangeValueForKey:@"battery"];
   battery = self->_battery;
-  [v4 batteryLevel];
+  [batteryCopy batteryLevel];
   [(GCDeviceBattery *)battery _setBatteryLevel:?];
-  -[GCDeviceBattery _setBatteryState:](self->_battery, "_setBatteryState:", [v4 batteryState]);
+  -[GCDeviceBattery _setBatteryState:](self->_battery, "_setBatteryState:", [batteryCopy batteryState]);
   [WeakRetained didChangeValueForKey:@"battery"];
 }
 
-- (void)newBattery:(id)a3
+- (void)newBattery:(id)battery
 {
-  v4 = a3;
+  batteryCopy = battery;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__GCBatteryXPCProxyClientEndpoint_newBattery___block_invoke;
   v6[3] = &unk_1E8418C50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = batteryCopy;
+  v5 = batteryCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(Battery XPC Proxy Client Endpoint) New Battery", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -187,11 +187,11 @@ void __55__GCBatteryXPCProxyClientEndpoint_invalidateConnection__block_invoke(ui
   *(v6 + 16) = 0;
 }
 
-- (void)fetchObjectIdentifierWithReply:(id)a3
+- (void)fetchObjectIdentifierWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(GCBatteryXPCProxyClientEndpoint *)self identifier];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  identifier = [(GCBatteryXPCProxyClientEndpoint *)self identifier];
+  (*(reply + 2))(replyCopy, identifier);
 }
 
 - (void)initWithIdentifier:initialBattery:.cold.1()

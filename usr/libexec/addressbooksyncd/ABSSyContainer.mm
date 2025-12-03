@@ -1,18 +1,18 @@
 @interface ABSSyContainer
-- (ABSSyContainer)initWithData:(id)a3;
+- (ABSSyContainer)initWithData:(id)data;
 @end
 
 @implementation ABSSyContainer
 
-- (ABSSyContainer)initWithData:(id)a3
+- (ABSSyContainer)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v22.receiver = self;
   v22.super_class = ABSSyContainer;
   v5 = [(ABSSyContainer *)&v22 init];
   if (v5)
   {
-    v6 = [[ABSPBSyncObject alloc] initWithData:v4];
+    v6 = [[ABSPBSyncObject alloc] initWithData:dataCopy];
     pbObject = v5->_pbObject;
     v5->_pbObject = v6;
 
@@ -29,15 +29,15 @@
     if ([(ABSPBSyncObject *)v5->_pbObject hasSequenceNumber])
     {
       os_unfair_lock_lock(&stru_100071CA4);
-      v13 = [(ABSPBSyncObject *)v5->_pbObject sequenceNumber];
-      v14 = [(ABSPBSyncObject *)v5->_pbObject sequenceNumber];
-      v15 = v14;
-      v16 = dword_100071968 == 0x80000000 || v13 < 0;
-      v17 = v14 & 0x7FFFFFFF;
+      sequenceNumber = [(ABSPBSyncObject *)v5->_pbObject sequenceNumber];
+      sequenceNumber2 = [(ABSPBSyncObject *)v5->_pbObject sequenceNumber];
+      v15 = sequenceNumber2;
+      v16 = dword_100071968 == 0x80000000 || sequenceNumber < 0;
+      v17 = sequenceNumber2 & 0x7FFFFFFF;
       v18 = (dword_100071968 + 1) & 0x7FFFFFFF;
       if (v16)
       {
-        v18 = v14 & 0x7FFFFFFF;
+        v18 = sequenceNumber2 & 0x7FFFFFFF;
       }
 
       dword_100071968 = v18;

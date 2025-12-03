@@ -1,13 +1,13 @@
 @interface TSDKernelClock
 + (id)availableKernelClockIdentifiers;
-+ (id)clockNameForClockIdentifier:(unint64_t)a3;
-+ (id)diagnosticInfoForClockIdentifier:(unint64_t)a3;
-+ (id)diagnosticInfoForService:(id)a3;
-+ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)a3;
-+ (id)serviceForClockIdentifier:(unint64_t)a3;
++ (id)clockNameForClockIdentifier:(unint64_t)identifier;
++ (id)diagnosticInfoForClockIdentifier:(unint64_t)identifier;
++ (id)diagnosticInfoForService:(id)service;
++ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)identifier;
++ (id)serviceForClockIdentifier:(unint64_t)identifier;
 - (BOOL)deregisterAsyncCallback;
-- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 machAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 withError:(id *)a7;
-- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 timeSyncAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 withError:(id *)a7;
+- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator machAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor withError:(id *)error;
+- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator timeSyncAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor withError:(id *)error;
 - (BOOL)registerAsyncCallback;
 - (IODConnection)connection;
 - (IOKService)service;
@@ -15,21 +15,21 @@
 - (double)hostRateRatio;
 - (id)clients;
 - (int)_lockState;
-- (unint64_t)convertFromDomainIntervalToMachAbsoluteInterval:(unint64_t)a3;
-- (unint64_t)convertFromDomainIntervalToTimeSyncTimeInterval:(unint64_t)a3;
-- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)a3;
-- (unint64_t)convertFromDomainToTimeSyncTime:(unint64_t)a3;
-- (unint64_t)convertFromMachAbsoluteIntervalToDomainInterval:(unint64_t)a3;
-- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)a3;
-- (unint64_t)convertFromTimeSyncTimeIntervalToDomainInterval:(unint64_t)a3;
-- (unint64_t)convertFromTimeSyncToDomainTime:(unint64_t)a3;
+- (unint64_t)convertFromDomainIntervalToMachAbsoluteInterval:(unint64_t)interval;
+- (unint64_t)convertFromDomainIntervalToTimeSyncTimeInterval:(unint64_t)interval;
+- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)time;
+- (unint64_t)convertFromDomainToTimeSyncTime:(unint64_t)time;
+- (unint64_t)convertFromMachAbsoluteIntervalToDomainInterval:(unint64_t)interval;
+- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)time;
+- (unint64_t)convertFromTimeSyncTimeIntervalToDomainInterval:(unint64_t)interval;
+- (unint64_t)convertFromTimeSyncToDomainTime:(unint64_t)time;
 - (unsigned)getCoreAudioReanchors;
-- (void)_handleNotification:(unsigned int)a3 withArg1:(unint64_t)a4 andArg2:(unint64_t)a5;
+- (void)_handleNotification:(unsigned int)notification withArg1:(unint64_t)arg1 andArg2:(unint64_t)arg2;
 - (void)_refreshLockStateOnNotificationQueue;
-- (void)addClient:(id)a3;
+- (void)addClient:(id)client;
 - (void)finalizeNotifications;
-- (void)removeClient:(id)a3;
-- (void)updateCoreAudioReanchors:(unsigned int)a3;
+- (void)removeClient:(id)client;
+- (void)updateCoreAudioReanchors:(unsigned int)reanchors;
 @end
 
 @implementation TSDKernelClock
@@ -37,10 +37,10 @@
 - (id)clients
 {
   os_unfair_lock_lock(&self->_clientsLock);
-  v3 = [(NSPointerArray *)self->_clients allObjects];
+  allObjects = [(NSPointerArray *)self->_clients allObjects];
   os_unfair_lock_unlock(&self->_clientsLock);
 
-  return v3;
+  return allObjects;
 }
 
 - (IODConnection)connection
@@ -64,8 +64,8 @@
 - (int)_lockState
 {
   v5 = 1;
-  v2 = [(TSDKernelClock *)self connection];
-  v3 = [v2 callMethodWithSelector:2 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v7 scalarOutputCount:&v5 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v3 = [connection callMethodWithSelector:2 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v7 scalarOutputCount:&v5 error:0];
 
   if (v3)
   {
@@ -78,44 +78,44 @@
 
 - (void)_refreshLockStateOnNotificationQueue
 {
-  v3 = [(TSDKernelClock *)self _lockState];
-  v4 = [(TSDKernelClock *)self propertyUpdateQueue];
-  if (!v4)
+  _lockState = [(TSDKernelClock *)self _lockState];
+  propertyUpdateQueue = [(TSDKernelClock *)self propertyUpdateQueue];
+  if (!propertyUpdateQueue)
   {
     goto LABEL_4;
   }
 
-  v5 = v4;
-  v6 = [(TSDKernelClock *)self propertyUpdateQueue];
-  v7 = [(TSDKernelClock *)self notificationQueue];
+  v5 = propertyUpdateQueue;
+  propertyUpdateQueue2 = [(TSDKernelClock *)self propertyUpdateQueue];
+  notificationQueue = [(TSDKernelClock *)self notificationQueue];
 
-  if (v6 == v7)
+  if (propertyUpdateQueue2 == notificationQueue)
   {
 LABEL_4:
-    if (v3 != [(TSDKernelClock *)self lockState])
+    if (_lockState != [(TSDKernelClock *)self lockState])
     {
-      [(TSDKernelClock *)self setLockState:v3];
+      [(TSDKernelClock *)self setLockState:_lockState];
     }
   }
 
   else
   {
-    v8 = [(TSDKernelClock *)self propertyUpdateQueue];
+    propertyUpdateQueue3 = [(TSDKernelClock *)self propertyUpdateQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001A280;
     block[3] = &unk_10004CFA0;
-    v20 = v3;
+    v20 = _lockState;
     block[4] = self;
-    dispatch_sync(v8, block);
+    dispatch_sync(propertyUpdateQueue3, block);
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(TSDKernelClock *)self clients];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  clients = [(TSDKernelClock *)self clients];
+  v10 = [clients countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -127,20 +127,20 @@ LABEL_4:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(clients);
         }
 
         v14 = *(*(&v15 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          [v14 didChangeLockStateTo:v3 forClock:self];
+          [v14 didChangeLockStateTo:_lockState forClock:self];
         }
 
         v13 = v13 + 1;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v11 = [clients countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v11);
@@ -164,13 +164,13 @@ LABEL_4:
   return v5;
 }
 
-+ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)a3
++ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)identifier
 {
   v9[0] = @"IOProviderClass";
   v9[1] = @"IOPropertyMatch";
   v10[0] = @"IOTimeSyncService";
   v7 = @"ClockIdentifier";
-  v3 = [NSNumber numberWithUnsignedLongLong:a3];
+  v3 = [NSNumber numberWithUnsignedLongLong:identifier];
   v8 = v3;
   v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   v10[1] = v4;
@@ -179,15 +179,15 @@ LABEL_4:
   return v5;
 }
 
-- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)a3
+- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)time
 {
   v7[0] = -1;
   v7[1] = 0;
   v6 = 2;
-  v8[0] = a3;
+  v8[0] = time;
   v8[1] = 0;
-  v3 = [(TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:0 scalarInputs:v8 scalarInputCount:2 scalarOutputs:v7 scalarOutputCount:&v6 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:0 scalarInputs:v8 scalarInputCount:2 scalarOutputs:v7 scalarOutputCount:&v6 error:0];
 
   if ((v4 & 1) == 0)
   {
@@ -205,15 +205,15 @@ LABEL_4:
   }
 }
 
-- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)a3
+- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)time
 {
   v7[0] = -1;
   v7[1] = 0;
   v6 = 2;
-  v8[0] = a3;
+  v8[0] = time;
   v8[1] = 0;
-  v3 = [(TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:1 scalarInputs:v8 scalarInputCount:2 scalarOutputs:v7 scalarOutputCount:&v6 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:1 scalarInputs:v8 scalarInputCount:2 scalarOutputs:v7 scalarOutputCount:&v6 error:0];
 
   if ((v4 & 1) == 0)
   {
@@ -231,13 +231,13 @@ LABEL_4:
   }
 }
 
-- (unint64_t)convertFromMachAbsoluteIntervalToDomainInterval:(unint64_t)a3
+- (unint64_t)convertFromMachAbsoluteIntervalToDomainInterval:(unint64_t)interval
 {
   v7 = -1;
-  v8 = a3;
+  intervalCopy = interval;
   v6 = 1;
-  v3 = [(TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:9 scalarInputs:&v8 scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:9 scalarInputs:&intervalCopy scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
 
   if ((v4 & 1) == 0)
   {
@@ -255,13 +255,13 @@ LABEL_4:
   }
 }
 
-- (unint64_t)convertFromDomainIntervalToMachAbsoluteInterval:(unint64_t)a3
+- (unint64_t)convertFromDomainIntervalToMachAbsoluteInterval:(unint64_t)interval
 {
   v7 = -1;
-  v8 = a3;
+  intervalCopy = interval;
   v6 = 1;
-  v3 = [(TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:10 scalarInputs:&v8 scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:10 scalarInputs:&intervalCopy scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
 
   if ((v4 & 1) == 0)
   {
@@ -282,8 +282,8 @@ LABEL_4:
 - (double)hostRateRatio
 {
   v5 = 2;
-  v2 = [(TSDKernelClock *)self connection];
-  v3 = [v2 callMethodWithSelector:3 scalarInputs:0 scalarInputCount:0 scalarOutputs:v7 scalarOutputCount:&v5 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v3 = [connection callMethodWithSelector:3 scalarInputs:0 scalarInputCount:0 scalarOutputs:v7 scalarOutputCount:&v5 error:0];
 
   if (v3)
   {
@@ -299,18 +299,18 @@ LABEL_4:
   }
 }
 
-- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 machAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 withError:(id *)a7
+- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator machAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor withError:(id *)error
 {
   v15 = vdupq_n_s64(1uLL);
   v16 = -1;
   v17 = -1;
   v14 = 4;
-  v11 = [(TSDKernelClock *)self connection:a3];
+  v11 = [(TSDKernelClock *)self connection:numerator];
   v12 = [v11 callMethodWithSelector:8 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v15 scalarOutputCount:&v14 error:0];
 
   if (v12)
   {
-    if (!a3)
+    if (!numerator)
     {
       goto LABEL_4;
     }
@@ -319,38 +319,38 @@ LABEL_4:
   }
 
   sub_10002C458();
-  if (a3)
+  if (numerator)
   {
 LABEL_3:
-    *a3 = v15.i64[0];
+    *numerator = v15.i64[0];
   }
 
 LABEL_4:
-  if (a4)
+  if (denominator)
   {
-    *a4 = v15.u64[1];
+    *denominator = v15.u64[1];
   }
 
-  if (a5)
+  if (anchor)
   {
-    *a5 = v16;
+    *anchor = v16;
   }
 
-  if (a6)
+  if (domainAnchor)
   {
-    *a6 = v17;
+    *domainAnchor = v17;
   }
 
   return v12;
 }
 
-- (unint64_t)convertFromTimeSyncToDomainTime:(unint64_t)a3
+- (unint64_t)convertFromTimeSyncToDomainTime:(unint64_t)time
 {
   v7 = -1;
-  v8 = a3;
+  timeCopy = time;
   v6 = 1;
-  v3 = [(TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:11 scalarInputs:&v8 scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:11 scalarInputs:&timeCopy scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
 
   if ((v4 & 1) == 0)
   {
@@ -368,13 +368,13 @@ LABEL_4:
   }
 }
 
-- (unint64_t)convertFromDomainToTimeSyncTime:(unint64_t)a3
+- (unint64_t)convertFromDomainToTimeSyncTime:(unint64_t)time
 {
   v7 = -1;
-  v8 = a3;
+  timeCopy = time;
   v6 = 1;
-  v3 = [(TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:12 scalarInputs:&v8 scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:12 scalarInputs:&timeCopy scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
 
   if ((v4 & 1) == 0)
   {
@@ -392,13 +392,13 @@ LABEL_4:
   }
 }
 
-- (unint64_t)convertFromTimeSyncTimeIntervalToDomainInterval:(unint64_t)a3
+- (unint64_t)convertFromTimeSyncTimeIntervalToDomainInterval:(unint64_t)interval
 {
   v7 = -1;
-  v8 = a3;
+  intervalCopy = interval;
   v6 = 1;
-  v3 = [(TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:16 scalarInputs:&v8 scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:16 scalarInputs:&intervalCopy scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
 
   if ((v4 & 1) == 0)
   {
@@ -416,13 +416,13 @@ LABEL_4:
   }
 }
 
-- (unint64_t)convertFromDomainIntervalToTimeSyncTimeInterval:(unint64_t)a3
+- (unint64_t)convertFromDomainIntervalToTimeSyncTimeInterval:(unint64_t)interval
 {
   v7 = -1;
-  v8 = a3;
+  intervalCopy = interval;
   v6 = 1;
-  v3 = [(TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:17 scalarInputs:&v8 scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:17 scalarInputs:&intervalCopy scalarInputCount:1 scalarOutputs:&v7 scalarOutputCount:&v6 error:0];
 
   if ((v4 & 1) == 0)
   {
@@ -440,18 +440,18 @@ LABEL_4:
   }
 }
 
-- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 timeSyncAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 withError:(id *)a7
+- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator timeSyncAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor withError:(id *)error
 {
   v15 = vdupq_n_s64(1uLL);
   v16 = -1;
   v17 = -1;
   v14 = 4;
-  v11 = [(TSDKernelClock *)self connection:a3];
+  v11 = [(TSDKernelClock *)self connection:numerator];
   v12 = [v11 callMethodWithSelector:15 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v15 scalarOutputCount:&v14 error:0];
 
   if (v12)
   {
-    if (!a3)
+    if (!numerator)
     {
       goto LABEL_4;
     }
@@ -460,43 +460,43 @@ LABEL_4:
   }
 
   sub_10002C940();
-  if (a3)
+  if (numerator)
   {
 LABEL_3:
-    *a3 = v15.i64[0];
+    *numerator = v15.i64[0];
   }
 
 LABEL_4:
-  if (a4)
+  if (denominator)
   {
-    *a4 = v15.u64[1];
+    *denominator = v15.u64[1];
   }
 
-  if (a5)
+  if (anchor)
   {
-    *a5 = v16;
+    *anchor = v16;
   }
 
-  if (a6)
+  if (domainAnchor)
   {
-    *a6 = v17;
+    *domainAnchor = v17;
   }
 
   return v12;
 }
 
-- (void)updateCoreAudioReanchors:(unsigned int)a3
+- (void)updateCoreAudioReanchors:(unsigned int)reanchors
 {
-  v8 = a3;
+  reanchorsCopy = reanchors;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = a3;
+    v7[1] = reanchors;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Updating Core Audio Reanchors += %u\n", v7, 8u);
   }
 
-  v5 = [(TSDKernelClock *)self connection];
-  v6 = [v5 callMethodWithSelector:53 scalarInputs:&v8 scalarInputCount:1 scalarOutputs:0 scalarOutputCount:0 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v6 = [connection callMethodWithSelector:53 scalarInputs:&reanchorsCopy scalarInputCount:1 scalarOutputs:0 scalarOutputCount:0 error:0];
 
   if ((v6 & 1) == 0)
   {
@@ -507,8 +507,8 @@ LABEL_4:
 - (unsigned)getCoreAudioReanchors
 {
   v5 = 1;
-  v2 = [(TSDKernelClock *)self connection];
-  v3 = [v2 callMethodWithSelector:54 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v6 scalarOutputCount:&v5 error:0];
+  connection = [(TSDKernelClock *)self connection];
+  v3 = [connection callMethodWithSelector:54 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v6 scalarOutputCount:&v5 error:0];
 
   if ((v3 & 1) == 0)
   {
@@ -518,10 +518,10 @@ LABEL_4:
   return v6;
 }
 
-- (void)_handleNotification:(unsigned int)a3 withArg1:(unint64_t)a4 andArg2:(unint64_t)a5
+- (void)_handleNotification:(unsigned int)notification withArg1:(unint64_t)arg1 andArg2:(unint64_t)arg2
 {
-  v20 = a5;
-  if (a3 == 2001)
+  arg2Copy = arg2;
+  if (notification == 2001)
   {
 
     [(TSDKernelClock *)self _refreshLockStateOnNotificationQueue];
@@ -533,8 +533,8 @@ LABEL_4:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [(TSDKernelClock *)self clients];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    clients = [(TSDKernelClock *)self clients];
+    v8 = [clients countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -546,13 +546,13 @@ LABEL_4:
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(clients);
           }
 
           v12 = *(*(&v21 + 1) + 8 * v11);
-          if (a3 > 2003)
+          if (notification > 2003)
           {
-            switch(a3)
+            switch(notification)
             {
               case 0x7D4u:
                 v16 = *(*(&v21 + 1) + 8 * v11);
@@ -563,7 +563,7 @@ LABEL_4:
 
                 if (objc_opt_respondsToSelector())
                 {
-                  [v12 didEndClockGrandmasterChangeWithGrandmasterID:a4 localPort:v20 forClock:self];
+                  [v12 didEndClockGrandmasterChangeWithGrandmasterID:arg1 localPort:arg2Copy forClock:self];
                 }
 
                 break;
@@ -579,7 +579,7 @@ LABEL_4:
                 v14 = *(*(&v21 + 1) + 8 * v11);
                 if (objc_opt_respondsToSelector())
                 {
-                  [v12 didChangeLocalPortWithGrandmasterID:a4 localPort:v20 forClock:self];
+                  [v12 didChangeLocalPortWithGrandmasterID:arg1 localPort:arg2Copy forClock:self];
                 }
 
                 break;
@@ -588,7 +588,7 @@ LABEL_4:
 
           else
           {
-            switch(a3)
+            switch(notification)
             {
               case 0x7D0u:
                 v15 = *(*(&v21 + 1) + 8 * v11);
@@ -615,7 +615,7 @@ LABEL_4:
 
                 if (objc_opt_respondsToSelector())
                 {
-                  [v12 didBeginClockGrandmasterChangeWithGrandmasterID:a4 localPort:v20 forClock:self];
+                  [v12 didBeginClockGrandmasterChangeWithGrandmasterID:arg1 localPort:arg2Copy forClock:self];
                 }
 
                 break;
@@ -626,7 +626,7 @@ LABEL_4:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [clients countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v9);
@@ -640,8 +640,8 @@ LABEL_4:
   self->_asyncCallbackRefcon = [v3 allocateRefcon:self];
   p_asyncCallbackRefcon = &self->_asyncCallbackRefcon;
 
-  v5 = [(TSDKernelClock *)self connection];
-  v6 = [v5 registerAsyncNotificationsWithSelector:6 callBack:sub_100001370 refcon:self->_asyncCallbackRefcon callbackQueue:self->_notificationsQueue];
+  connection = [(TSDKernelClock *)self connection];
+  v6 = [connection registerAsyncNotificationsWithSelector:6 callBack:sub_100001370 refcon:self->_asyncCallbackRefcon callbackQueue:self->_notificationsQueue];
 
   if ((v6 & 1) == 0)
   {
@@ -656,25 +656,25 @@ LABEL_4:
   v3 = +[TSDCallbackRefconMap sharedTSDCallbackRefconMap];
   [v3 releaseRefcon:self->_asyncCallbackRefcon];
 
-  v4 = [(TSDKernelClock *)self connection];
-  LOBYTE(v3) = [v4 deregisterAsyncNotificationsWithSelector:7];
+  connection = [(TSDKernelClock *)self connection];
+  LOBYTE(v3) = [connection deregisterAsyncNotificationsWithSelector:7];
 
   return v3;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_clientsLock);
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v4 description];
-    v6 = [v5 UTF8String];
+    v5 = [clientCopy description];
+    uTF8String = [v5 UTF8String];
     v7 = [(TSDKernelClock *)self description];
     *buf = 136315394;
-    v19 = v6;
+    v19 = uTF8String;
     v20 = 2080;
-    v21 = [v7 UTF8String];
+    uTF8String2 = [v7 UTF8String];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Adding Client %s to clock %s\n", buf, 0x16u);
   }
 
@@ -699,7 +699,7 @@ LABEL_4:
           objc_enumerationMutation(v8);
         }
 
-        if (*(*(&v13 + 1) + 8 * v12) == v4)
+        if (*(*(&v13 + 1) + 8 * v12) == clientCopy)
         {
 
           goto LABEL_13;
@@ -719,24 +719,24 @@ LABEL_4:
     }
   }
 
-  [(NSPointerArray *)self->_clients addPointer:v4, v13];
+  [(NSPointerArray *)self->_clients addPointer:clientCopy, v13];
 LABEL_13:
   os_unfair_lock_unlock(&self->_clientsLock);
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_clientsLock);
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v4 description];
-    v6 = [v5 UTF8String];
+    v5 = [clientCopy description];
+    uTF8String = [v5 UTF8String];
     v7 = [(TSDKernelClock *)self description];
     *buf = 136315394;
-    v21 = v6;
+    v21 = uTF8String;
     v22 = 2080;
-    v23 = [v7 UTF8String];
+    uTF8String2 = [v7 UTF8String];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Removing Client %s from clock %s\n", buf, 0x16u);
   }
 
@@ -764,7 +764,7 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        if (*(*(&v15 + 1) + 8 * v13) == v4)
+        if (*(*(&v15 + 1) + 8 * v13) == clientCopy)
         {
 
           [(NSPointerArray *)self->_clients removePointerAtIndex:v14, v15];
@@ -792,20 +792,20 @@ LABEL_13:
 
 - (NSString)clockName
 {
-  v3 = [(TSDKernelClock *)self service];
+  service = [(TSDKernelClock *)self service];
 
-  if (v3)
+  if (service)
   {
-    v4 = [(TSDKernelClock *)self service];
-    v5 = [v4 ioClassName];
-    v6 = [NSString stringWithFormat:@"%@ 0x%016llx", v5, [(TSDKernelClock *)self clockIdentifier]];
+    service2 = [(TSDKernelClock *)self service];
+    ioClassName = [service2 ioClassName];
+    v6 = [NSString stringWithFormat:@"%@ 0x%016llx", ioClassName, [(TSDKernelClock *)self clockIdentifier]];
   }
 
   else
   {
     v7 = objc_opt_class();
-    v4 = NSStringFromClass(v7);
-    v6 = [NSString stringWithFormat:@"%@ 0x%016llx", v4, [(TSDKernelClock *)self clockIdentifier]];
+    service2 = NSStringFromClass(v7);
+    v6 = [NSString stringWithFormat:@"%@ 0x%016llx", service2, [(TSDKernelClock *)self clockIdentifier]];
   }
 
   return v6;
@@ -821,52 +821,52 @@ LABEL_13:
   self->_notificationPort = 0;
 }
 
-+ (id)serviceForClockIdentifier:(unint64_t)a3
++ (id)serviceForClockIdentifier:(unint64_t)identifier
 {
-  v3 = [a1 iokitMatchingDictionaryForClockIdentifier:a3];
+  v3 = [self iokitMatchingDictionaryForClockIdentifier:identifier];
   v4 = [IOKService matchingService:v3];
 
   return v4;
 }
 
-+ (id)diagnosticInfoForService:(id)a3
++ (id)diagnosticInfoForService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 ioClassName];
-  [v4 setObject:v5 forKeyedSubscript:@"ClassName"];
+  ioClassName = [serviceCopy ioClassName];
+  [v4 setObject:ioClassName forKeyedSubscript:@"ClassName"];
 
-  v6 = [v3 iodProperties];
+  iodProperties = [serviceCopy iodProperties];
 
-  [v4 addEntriesFromDictionary:v6];
+  [v4 addEntriesFromDictionary:iodProperties];
   [v4 removeObjectForKey:@"IOUserClientClass"];
   [v4 removeObjectForKey:@"IOGeneralInterest"];
 
   return v4;
 }
 
-+ (id)diagnosticInfoForClockIdentifier:(unint64_t)a3
++ (id)diagnosticInfoForClockIdentifier:(unint64_t)identifier
 {
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [NSNumber numberWithLongLong:a3];
+  v6 = [NSNumber numberWithLongLong:identifier];
   [v5 setObject:v6 forKeyedSubscript:@"ClockIdentifier"];
 
-  v7 = [objc_opt_class() clockNameForClockIdentifier:a3];
+  v7 = [objc_opt_class() clockNameForClockIdentifier:identifier];
   [v5 setObject:v7 forKeyedSubscript:@"ClockName"];
 
-  v8 = [a1 serviceForClockIdentifier:a3];
+  v8 = [self serviceForClockIdentifier:identifier];
   if (v8)
   {
-    v9 = [a1 diagnosticInfoForService:v8];
+    v9 = [self diagnosticInfoForService:v8];
     [v5 addEntriesFromDictionary:v9];
   }
 
   return v5;
 }
 
-+ (id)clockNameForClockIdentifier:(unint64_t)a3
++ (id)clockNameForClockIdentifier:(unint64_t)identifier
 {
-  v4 = [a1 serviceForClockIdentifier:?];
+  v4 = [self serviceForClockIdentifier:?];
   v5 = v4;
   if (v4)
   {
@@ -879,9 +879,9 @@ LABEL_13:
     NSStringFromClass(v6);
   }
   v7 = ;
-  v8 = [NSString stringWithFormat:@"%@ 0x%016llx", v7, a3];
+  identifier = [NSString stringWithFormat:@"%@ 0x%016llx", v7, identifier];
 
-  return v8;
+  return identifier;
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface NavigationButtonBar.GroupLayout
-- (BOOL)_item:(id)a3 removeAllSymbolEffectsWithOptions:(id)a4 animated:(BOOL)a5;
-- (BOOL)_itemDidUpdateMenu:(id)a3 fromMenu:(id)a4;
-- (CGRect)_rectForPresenting:(id)a3;
+- (BOOL)_item:(id)_item removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated;
+- (BOOL)_itemDidUpdateMenu:(id)menu fromMenu:(id)fromMenu;
+- (CGRect)_rectForPresenting:(id)presenting;
 - (_TtCC5UIKit19NavigationButtonBar11GroupLayout)init;
-- (id)_contextMenuInteractionForItem:(id)a3;
+- (id)_contextMenuInteractionForItem:(id)item;
 - (id)_overflowFallbackItem;
-- (id)_viewForPresenting:(id)a3;
-- (void)_groupDidUpdateItems:(id)a3 removedItems:(id)a4;
-- (void)_groupDidUpdatePlatterizationPreference:(void *)a3;
-- (void)_groupDidUpdateRepresentative:(id)a3 fromRepresentative:(id)a4;
-- (void)_item:(id)a3 applyContentTransition:(id)a4 options:(id)a5;
-- (void)_itemCustomViewDidChange:(id)a3 fromView:(id)a4;
-- (void)_itemDidChangeHiddenState:(id)a3;
-- (void)_itemDidChangePlatterizationPreference:(id)a3;
-- (void)_itemDidChangeSelectionState:(id)a3;
-- (void)_itemDidChangeWidth:(void *)a3;
+- (id)_viewForPresenting:(id)presenting;
+- (void)_groupDidUpdateItems:(id)items removedItems:(id)removedItems;
+- (void)_groupDidUpdatePlatterizationPreference:(void *)preference;
+- (void)_groupDidUpdateRepresentative:(id)representative fromRepresentative:(id)fromRepresentative;
+- (void)_item:(id)_item applyContentTransition:(id)transition options:(id)options;
+- (void)_itemCustomViewDidChange:(id)change fromView:(id)view;
+- (void)_itemDidChangeHiddenState:(id)state;
+- (void)_itemDidChangePlatterizationPreference:(id)preference;
+- (void)_itemDidChangeSelectionState:(id)state;
+- (void)_itemDidChangeWidth:(void *)width;
 @end
 
 @implementation NavigationButtonBar.GroupLayout
 
-- (BOOL)_itemDidUpdateMenu:(id)a3 fromMenu:(id)a4
+- (BOOL)_itemDidUpdateMenu:(id)menu fromMenu:(id)fromMenu
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 view];
-  if (v7)
+  menuCopy = menu;
+  fromMenuCopy = fromMenu;
+  view = [menuCopy view];
+  if (view)
   {
-    v8 = v7;
+    v8 = view;
     objc_opt_self();
     v9 = swift_dynamicCastObjCClass();
     if (v9)
@@ -37,36 +37,36 @@
 
     else
     {
-      v10 = v5;
-      v5 = v6;
-      v6 = v8;
+      v10 = menuCopy;
+      menuCopy = fromMenuCopy;
+      fromMenuCopy = v8;
     }
   }
 
   return 0;
 }
 
-- (void)_itemDidChangeWidth:(void *)a3
+- (void)_itemDidChangeWidth:(void *)width
 {
-  v4 = a3;
-  v5 = a1;
-  sub_18907E9C4(v4);
+  widthCopy = width;
+  selfCopy = self;
+  sub_18907E9C4(widthCopy);
 }
 
-- (void)_groupDidUpdatePlatterizationPreference:(void *)a3
+- (void)_groupDidUpdatePlatterizationPreference:(void *)preference
 {
-  v4 = a3;
-  v5 = a1;
-  sub_188CF4A54(v4);
+  preferenceCopy = preference;
+  selfCopy = self;
+  sub_188CF4A54(preferenceCopy);
 }
 
-- (void)_groupDidUpdateItems:(id)a3 removedItems:(id)a4
+- (void)_groupDidUpdateItems:(id)items removedItems:(id)removedItems
 {
   sub_188A34624(0, &qword_1ED48E8C0);
   v6 = sub_18A4A7548();
-  v7 = a3;
-  v8 = self;
-  sub_188CF57A4(v7, v6);
+  itemsCopy = items;
+  selfCopy = self;
+  sub_188CF57A4(itemsCopy, v6);
 }
 
 - (_TtCC5UIKit19NavigationButtonBar11GroupLayout)init
@@ -76,29 +76,29 @@
   return result;
 }
 
-- (void)_groupDidUpdateRepresentative:(id)a3 fromRepresentative:(id)a4
+- (void)_groupDidUpdateRepresentative:(id)representative fromRepresentative:(id)fromRepresentative
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_18907D394(v6, v7);
+  representativeCopy = representative;
+  fromRepresentativeCopy = fromRepresentative;
+  selfCopy = self;
+  sub_18907D394(representativeCopy, fromRepresentativeCopy);
 }
 
-- (void)_itemCustomViewDidChange:(id)a3 fromView:(id)a4
+- (void)_itemCustomViewDidChange:(id)change fromView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_18907E9C4(v6);
+  changeCopy = change;
+  viewCopy = view;
+  selfCopy = self;
+  sub_18907E9C4(changeCopy);
 }
 
-- (void)_itemDidChangeSelectionState:(id)a3
+- (void)_itemDidChangeSelectionState:(id)state
 {
-  v8 = a3;
-  v3 = [v8 view];
-  if (v3)
+  stateCopy = state;
+  view = [stateCopy view];
+  if (view)
   {
-    v4 = v3;
+    v4 = view;
     objc_opt_self();
     v5 = swift_dynamicCastObjCClass();
     if (v5)
@@ -110,70 +110,70 @@
 
     else
     {
-      v7 = v8;
-      v8 = v4;
+      v7 = stateCopy;
+      stateCopy = v4;
     }
   }
 }
 
-- (void)_itemDidChangeHiddenState:(id)a3
+- (void)_itemDidChangeHiddenState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_18907D650(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_18907D650(stateCopy);
 }
 
-- (void)_itemDidChangePlatterizationPreference:(id)a3
+- (void)_itemDidChangePlatterizationPreference:(id)preference
 {
-  v4 = a3;
-  v5 = self;
+  preferenceCopy = preference;
+  selfCopy = self;
   sub_18907EAA8();
 }
 
-- (id)_contextMenuInteractionForItem:(id)a3
+- (id)_contextMenuInteractionForItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 view];
-  if (v4)
+  itemCopy = item;
+  view = [itemCopy view];
+  if (view)
   {
-    v5 = v4;
+    v5 = view;
     objc_opt_self();
-    v6 = swift_dynamicCastObjCClass();
-    if (v6)
+    contextMenuInteraction = swift_dynamicCastObjCClass();
+    if (contextMenuInteraction)
     {
       v7 = v5;
-      v6 = [v6 contextMenuInteraction];
+      contextMenuInteraction = [contextMenuInteraction contextMenuInteraction];
     }
 
     else
     {
-      v7 = v3;
-      v3 = v5;
+      v7 = itemCopy;
+      itemCopy = v5;
     }
   }
 
   else
   {
-    v6 = 0;
+    contextMenuInteraction = 0;
   }
 
-  return v6;
+  return contextMenuInteraction;
 }
 
-- (BOOL)_item:(id)a3 removeAllSymbolEffectsWithOptions:(id)a4 animated:(BOOL)a5
+- (BOOL)_item:(id)_item removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 view];
-  if (v9)
+  animatedCopy = animated;
+  _itemCopy = _item;
+  optionsCopy = options;
+  view = [_itemCopy view];
+  if (view)
   {
-    v10 = v9;
+    v10 = view;
     objc_opt_self();
     v11 = swift_dynamicCastObjCClass();
     if (v11)
     {
-      [v11 removeAllSymbolEffectsWithOptions:v8 animated:v5];
+      [v11 removeAllSymbolEffectsWithOptions:optionsCopy animated:animatedCopy];
       v12 = 0;
       v13 = v10;
     }
@@ -181,9 +181,9 @@
     else
     {
       v12 = 1;
-      v13 = v7;
-      v7 = v8;
-      v8 = v10;
+      v13 = _itemCopy;
+      _itemCopy = optionsCopy;
+      optionsCopy = v10;
     }
   }
 
@@ -195,50 +195,50 @@
   return v12;
 }
 
-- (void)_item:(id)a3 applyContentTransition:(id)a4 options:(id)a5
+- (void)_item:(id)_item applyContentTransition:(id)transition options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v13 = a5;
-  v9 = [v7 view];
-  if (v9)
+  _itemCopy = _item;
+  transitionCopy = transition;
+  optionsCopy = options;
+  view = [_itemCopy view];
+  if (view)
   {
-    v10 = v9;
+    v10 = view;
     objc_opt_self();
     v11 = swift_dynamicCastObjCClass();
     if (v11)
     {
-      [v11 applyContentTransition:v8 options:v13];
+      [v11 applyContentTransition:transitionCopy options:optionsCopy];
       v12 = v10;
     }
 
     else
     {
-      v12 = v7;
-      v7 = v8;
-      v8 = v13;
-      v13 = v10;
+      v12 = _itemCopy;
+      _itemCopy = transitionCopy;
+      transitionCopy = optionsCopy;
+      optionsCopy = v10;
     }
   }
 }
 
 - (id)_overflowFallbackItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_18907DB40();
   v4 = v3;
 
   return v4;
 }
 
-- (id)_viewForPresenting:(id)a3
+- (id)_viewForPresenting:(id)presenting
 {
-  v3 = [a3 view];
+  view = [presenting view];
 
-  return v3;
+  return view;
 }
 
-- (CGRect)_rectForPresenting:(id)a3
+- (CGRect)_rectForPresenting:(id)presenting
 {
   v3 = *MEMORY[0x1E695F050];
   v4 = *(MEMORY[0x1E695F050] + 8);

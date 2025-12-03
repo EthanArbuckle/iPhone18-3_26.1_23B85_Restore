@@ -1,12 +1,12 @@
 @interface SegmentedTabControl
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20CommunicationDetails19SegmentedTabControl)initWithCoder:(id)a3;
-- (_TtC20CommunicationDetails19SegmentedTabControl)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20CommunicationDetails19SegmentedTabControl)initWithCoder:(id)coder;
+- (_TtC20CommunicationDetails19SegmentedTabControl)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SegmentedTabControl
 
-- (_TtC20CommunicationDetails19SegmentedTabControl)initWithCoder:(id)a3
+- (_TtC20CommunicationDetails19SegmentedTabControl)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -31,9 +31,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -43,7 +43,7 @@
   }
 
   v5 = *(&self->super.super._responderFlags + OBJC_IVAR____TtC20CommunicationDetails19SegmentedTabControl_styleGuide) + *(&self->super.super._responderFlags + OBJC_IVAR____TtC20CommunicationDetails19SegmentedTabControl_styleGuide);
-  v6 = self;
+  selfCopy = self;
   v7 = SegmentedTabControl.segmentedControl.getter();
   [v7 intrinsicContentSize];
   v9 = v8;
@@ -55,7 +55,7 @@
   return result;
 }
 
-- (_TtC20CommunicationDetails19SegmentedTabControl)initWithFrame:(CGRect)a3
+- (_TtC20CommunicationDetails19SegmentedTabControl)initWithFrame:(CGRect)frame
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

@@ -1,41 +1,41 @@
 @interface BTCloudSoundProfileRecord
-+ (id)soundProfileRecordWithCustomData:(id)a3;
-+ (id)soundProfileRecordWithFileURL:(id)a3;
-- (BTCloudSoundProfileRecord)initWithCoder:(id)a3;
-- (BTCloudSoundProfileRecord)initWithCustomData:(id)a3;
-- (BTCloudSoundProfileRecord)initWithFileURL:(id)a3;
++ (id)soundProfileRecordWithCustomData:(id)data;
++ (id)soundProfileRecordWithFileURL:(id)l;
+- (BTCloudSoundProfileRecord)initWithCoder:(id)coder;
+- (BTCloudSoundProfileRecord)initWithCustomData:(id)data;
+- (BTCloudSoundProfileRecord)initWithFileURL:(id)l;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BTCloudSoundProfileRecord
 
-- (BTCloudSoundProfileRecord)initWithCustomData:(id)a3
+- (BTCloudSoundProfileRecord)initWithCustomData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = BTCloudSoundProfileRecord;
   v5 = [(BTCloudSoundProfileRecord *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BTCloudSoundProfileRecord *)v5 setSoundProfileData:v4];
+    [(BTCloudSoundProfileRecord *)v5 setSoundProfileData:dataCopy];
   }
 
   return v6;
 }
 
-- (BTCloudSoundProfileRecord)initWithFileURL:(id)a3
+- (BTCloudSoundProfileRecord)initWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = BTCloudSoundProfileRecord;
   v5 = [(BTCloudSoundProfileRecord *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(BTCloudSoundProfileRecord *)v5 setSoundProfileFileURL:v4];
-    v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v4 options:1 error:0];
+    [(BTCloudSoundProfileRecord *)v5 setSoundProfileFileURL:lCopy];
+    v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:1 error:0];
     [(BTCloudSoundProfileRecord *)v6 setSoundProfileData:v7];
   }
 
@@ -45,53 +45,53 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BTCloudSoundProfileRecord *)self soundProfileData];
-  v5 = v4;
-  if (v4)
+  soundProfileData = [(BTCloudSoundProfileRecord *)self soundProfileData];
+  v5 = soundProfileData;
+  if (soundProfileData)
   {
-    v6 = [v3 stringWithFormat:@"BTCloudSoundProfileRecord: %@", v4];
+    v6 = [v3 stringWithFormat:@"BTCloudSoundProfileRecord: %@", soundProfileData];
   }
 
   else
   {
-    v7 = [(BTCloudSoundProfileRecord *)self soundProfileFileURL];
-    v6 = [v3 stringWithFormat:@"BTCloudSoundProfileRecord: %@", v7];
+    soundProfileFileURL = [(BTCloudSoundProfileRecord *)self soundProfileFileURL];
+    v6 = [v3 stringWithFormat:@"BTCloudSoundProfileRecord: %@", soundProfileFileURL];
   }
 
   return v6;
 }
 
-+ (id)soundProfileRecordWithCustomData:(id)a3
++ (id)soundProfileRecordWithCustomData:(id)data
 {
-  v3 = a3;
-  v4 = [[BTCloudSoundProfileRecord alloc] initWithCustomData:v3];
+  dataCopy = data;
+  v4 = [[BTCloudSoundProfileRecord alloc] initWithCustomData:dataCopy];
 
   return v4;
 }
 
-+ (id)soundProfileRecordWithFileURL:(id)a3
++ (id)soundProfileRecordWithFileURL:(id)l
 {
-  v3 = a3;
-  v4 = [[BTCloudSoundProfileRecord alloc] initWithFileURL:v3];
+  lCopy = l;
+  v4 = [[BTCloudSoundProfileRecord alloc] initWithFileURL:lCopy];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BTCloudSoundProfileRecord *)self soundProfileData];
+  coderCopy = coder;
+  soundProfileData = [(BTCloudSoundProfileRecord *)self soundProfileData];
   v6 = NSStringFromSelector(sel_soundProfileData);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:soundProfileData forKey:v6];
 
-  v8 = [(BTCloudSoundProfileRecord *)self soundProfileFileURL];
+  soundProfileFileURL = [(BTCloudSoundProfileRecord *)self soundProfileFileURL];
   v7 = NSStringFromSelector(sel_soundProfileFileURL);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:soundProfileFileURL forKey:v7];
 }
 
-- (BTCloudSoundProfileRecord)initWithCoder:(id)a3
+- (BTCloudSoundProfileRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = BTCloudSoundProfileRecord;
   v5 = [(BTCloudSoundProfileRecord *)&v13 init];
@@ -99,12 +99,12 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_soundProfileData);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     [(BTCloudSoundProfileRecord *)v5 setSoundProfileData:v8];
 
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_soundProfileFileURL);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     [(BTCloudSoundProfileRecord *)v5 setSoundProfileFileURL:v11];
   }
 

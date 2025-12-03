@@ -1,27 +1,27 @@
 @interface AXAuditReportGenerator
 - (AXAuditReportGenerator)init;
-- (id)_anyAuditIssueFromResults:(id)a3;
-- (id)_fileExtensionForReportType:(int64_t)a3;
-- (id)_fullOutputPathForReportType:(int64_t)a3 outputPath:(id)a4 outputFilename:(id)a5;
+- (id)_anyAuditIssueFromResults:(id)results;
+- (id)_fileExtensionForReportType:(int64_t)type;
+- (id)_fullOutputPathForReportType:(int64_t)type outputPath:(id)path outputFilename:(id)filename;
 - (id)_generateHTMLSourceFromTemplates;
 - (id)_htmlTemplate;
 - (id)_htmlTemplatePath;
-- (id)_jsonArrayForIssues:(id)a3 screenName:(id)a4;
+- (id)_jsonArrayForIssues:(id)issues screenName:(id)name;
 - (id)_jsonData;
 - (id)_jsonDictionary;
-- (id)_jsonDictionaryForAuditIssueImage:(id)a3 thumbnailOnly:(BOOL)a4;
-- (id)_jsonDictionaryForIssue:(id)a3 screenName:(id)a4;
-- (id)_jsonDictionaryForScreen:(id)a3 issuesOnScreen:(id)a4;
+- (id)_jsonDictionaryForAuditIssueImage:(id)image thumbnailOnly:(BOOL)only;
+- (id)_jsonDictionaryForIssue:(id)issue screenName:(id)name;
+- (id)_jsonDictionaryForScreen:(id)screen issuesOnScreen:(id)onScreen;
 - (id)_jsonString;
-- (id)_locStringForKey:(id)a3;
-- (id)generateReportType:(int64_t)a3 outputPath:(id)a4 outputFilename:(id)a5 error:(id *)a6;
-- (id)imageDataForIssue:(id)a3 thumbnailOnly:(BOOL)a4;
-- (id)reportHeaderForIssues:(id)a3;
-- (id)textDescriptionForIssues:(id)a3;
-- (void)_generateMapOfScreensToIssues:(id)a3;
-- (void)_processScreenshotsForAXAuditResult:(id)a3 completion:(id)a4;
-- (void)appendIssues:(id)a3;
-- (void)generateXCTestReportType:(int64_t)a3 forAuditResult:(id)a4 completion:(id)a5;
+- (id)_locStringForKey:(id)key;
+- (id)generateReportType:(int64_t)type outputPath:(id)path outputFilename:(id)filename error:(id *)error;
+- (id)imageDataForIssue:(id)issue thumbnailOnly:(BOOL)only;
+- (id)reportHeaderForIssues:(id)issues;
+- (id)textDescriptionForIssues:(id)issues;
+- (void)_generateMapOfScreensToIssues:(id)issues;
+- (void)_processScreenshotsForAXAuditResult:(id)result completion:(id)completion;
+- (void)appendIssues:(id)issues;
+- (void)generateXCTestReportType:(int64_t)type forAuditResult:(id)result completion:(id)completion;
 @end
 
 @implementation AXAuditReportGenerator
@@ -45,26 +45,26 @@
   return v2;
 }
 
-- (void)appendIssues:(id)a3
+- (void)appendIssues:(id)issues
 {
-  v5 = a3;
-  if ([v5 count])
+  issuesCopy = issues;
+  if ([issuesCopy count])
   {
-    v4 = [(AXAuditReportGenerator *)self _issues];
-    [v4 addObjectsFromArray:v5];
+    _issues = [(AXAuditReportGenerator *)self _issues];
+    [_issues addObjectsFromArray:issuesCopy];
   }
 
-  [(AXAuditReportGenerator *)self _generateMapOfScreensToIssues:v5];
+  [(AXAuditReportGenerator *)self _generateMapOfScreensToIssues:issuesCopy];
 }
 
-- (void)_generateMapOfScreensToIssues:(id)a3
+- (void)_generateMapOfScreensToIssues:(id)issues
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __56__AXAuditReportGenerator__generateMapOfScreensToIssues___block_invoke;
   v3[3] = &unk_278BE3020;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [issues enumerateObjectsUsingBlock:v3];
 }
 
 void __56__AXAuditReportGenerator__generateMapOfScreensToIssues___block_invoke(uint64_t a1, void *a2)
@@ -87,38 +87,38 @@ void __56__AXAuditReportGenerator__generateMapOfScreensToIssues___block_invoke(u
   }
 }
 
-- (id)_fileExtensionForReportType:(int64_t)a3
+- (id)_fileExtensionForReportType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"txt";
   }
 
   else
   {
-    return off_278BE30B8[a3];
+    return off_278BE30B8[type];
   }
 }
 
-- (id)_fullOutputPathForReportType:(int64_t)a3 outputPath:(id)a4 outputFilename:(id)a5
+- (id)_fullOutputPathForReportType:(int64_t)type outputPath:(id)path outputFilename:(id)filename
 {
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  pathCopy = path;
+  filenameCopy = filename;
+  if (!pathCopy)
   {
-    v8 = [(AXAuditReportGenerator *)self _defaultSavePath];
+    pathCopy = [(AXAuditReportGenerator *)self _defaultSavePath];
   }
 
-  if (![v9 length])
+  if (![filenameCopy length])
   {
-    v10 = [(AXAuditReportGenerator *)self _issues];
-    v11 = [v10 firstObject];
+    _issues = [(AXAuditReportGenerator *)self _issues];
+    firstObject = [_issues firstObject];
 
-    v12 = [v11 timeStamp];
-    if (v12)
+    timeStamp = [firstObject timeStamp];
+    if (timeStamp)
     {
-      v13 = v12;
-      v14 = [v12 stringByReplacingOccurrencesOfString:@":" withString:@"-"];
+      v13 = timeStamp;
+      v14 = [timeStamp stringByReplacingOccurrencesOfString:@":" withString:@"-"];
 
       v15 = [v14 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
     }
@@ -127,8 +127,8 @@ void __56__AXAuditReportGenerator__generateMapOfScreensToIssues___block_invoke(u
     {
       v14 = objc_opt_new();
       v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
-      v17 = [MEMORY[0x277CBEBB0] systemTimeZone];
-      [v14 setTimeZone:v17];
+      systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+      [v14 setTimeZone:systemTimeZone];
 
       [v14 setDateFormat:@"yyyy-MM-dd_HH-mm:ss"];
       v15 = [v14 stringFromDate:v16];
@@ -136,19 +136,19 @@ void __56__AXAuditReportGenerator__generateMapOfScreensToIssues___block_invoke(u
 
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"AuditReport_%@", v15];
 
-    v19 = [(AXAuditReportGenerator *)self _fileExtensionForReportType:a3];
-    v9 = [v18 stringByAppendingPathExtension:v19];
+    v19 = [(AXAuditReportGenerator *)self _fileExtensionForReportType:type];
+    filenameCopy = [v18 stringByAppendingPathExtension:v19];
   }
 
-  v20 = [v8 stringByAppendingPathComponent:v9];
+  v20 = [pathCopy stringByAppendingPathComponent:filenameCopy];
 
   return v20;
 }
 
-- (void)generateXCTestReportType:(int64_t)a3 forAuditResult:(id)a4 completion:(id)a5
+- (void)generateXCTestReportType:(int64_t)type forAuditResult:(id)result completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  resultCopy = result;
+  completionCopy = completion;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -168,13 +168,13 @@ void __56__AXAuditReportGenerator__generateMapOfScreensToIssues___block_invoke(u
   v12[1] = 3221225472;
   v12[2] = __77__AXAuditReportGenerator_generateXCTestReportType_forAuditResult_completion___block_invoke;
   v12[3] = &unk_278BE3048;
-  v16 = a3;
+  typeCopy = type;
   v14 = v19;
   v12[4] = self;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
   v15 = v17;
-  [(AXAuditReportGenerator *)self _processScreenshotsForAXAuditResult:v8 completion:v12];
+  [(AXAuditReportGenerator *)self _processScreenshotsForAXAuditResult:resultCopy completion:v12];
 
   _Block_object_dispose(v17, 8);
   _Block_object_dispose(v19, 8);
@@ -210,47 +210,47 @@ LABEL_6:
   return v8();
 }
 
-- (void)_processScreenshotsForAXAuditResult:(id)a3 completion:(id)a4
+- (void)_processScreenshotsForAXAuditResult:(id)result completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 auditIssues];
-  v9 = [v8 count];
+  resultCopy = result;
+  completionCopy = completion;
+  auditIssues = [resultCopy auditIssues];
+  v9 = [auditIssues count];
 
   if (v9)
   {
-    v10 = [v6 auditIssues];
-    v11 = [v10 mutableCopy];
+    auditIssues2 = [resultCopy auditIssues];
+    v11 = [auditIssues2 mutableCopy];
     [(AXAuditReportGenerator *)self set_issues:v11];
 
     v12 = +[AXAuditScreenshotManager sharedManager];
-    v13 = [v6 auditIssues];
-    v14 = [v13 count];
+    auditIssues3 = [resultCopy auditIssues];
+    v14 = [auditIssues3 count];
 
     if (v14)
     {
       for (i = 0; i != v14; ++i)
       {
-        v16 = [v6 auditIssues];
-        v17 = [v16 objectAtIndexedSubscript:i];
+        auditIssues4 = [resultCopy auditIssues];
+        v17 = [auditIssues4 objectAtIndexedSubscript:i];
 
-        v18 = [v6 screenshotInfoDictionaryForAuditIssue:v17];
-        v19 = [v17 timeStamp];
+        v18 = [resultCopy screenshotInfoDictionaryForAuditIssue:v17];
+        timeStamp = [v17 timeStamp];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __73__AXAuditReportGenerator__processScreenshotsForAXAuditResult_completion___block_invoke;
         v20[3] = &unk_278BE3070;
         v23 = i;
         v22 = v14;
-        v21 = v7;
-        [v12 addScreenshotWithInfo:v18 timestamp:v19 completion:v20];
+        v21 = completionCopy;
+        [v12 addScreenshotWithInfo:v18 timestamp:timeStamp completion:v20];
       }
     }
   }
 
   else
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -264,26 +264,26 @@ uint64_t __73__AXAuditReportGenerator__processScreenshotsForAXAuditResult_comple
   return result;
 }
 
-- (id)generateReportType:(int64_t)a3 outputPath:(id)a4 outputFilename:(id)a5 error:(id *)a6
+- (id)generateReportType:(int64_t)type outputPath:(id)path outputFilename:(id)filename error:(id *)error
 {
-  v9 = [(AXAuditReportGenerator *)self _fullOutputPathForReportType:a3 outputPath:a4 outputFilename:a5];
-  if (a3 == 3)
+  v9 = [(AXAuditReportGenerator *)self _fullOutputPathForReportType:type outputPath:path outputFilename:filename];
+  if (type == 3)
   {
-    v10 = [(AXAuditReportGenerator *)self _jsonString];
+    _jsonString = [(AXAuditReportGenerator *)self _jsonString];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_6;
     }
 
-    v10 = [(AXAuditReportGenerator *)self _generateHTMLSourceFromTemplates];
+    _jsonString = [(AXAuditReportGenerator *)self _generateHTMLSourceFromTemplates];
   }
 
-  v11 = v10;
-  [v10 writeToFile:v9 atomically:1 encoding:4 error:a6];
+  v11 = _jsonString;
+  [_jsonString writeToFile:v9 atomically:1 encoding:4 error:error];
 
 LABEL_6:
   if (v9)
@@ -301,7 +301,7 @@ LABEL_6:
   return v12;
 }
 
-- (id)_locStringForKey:(id)a3
+- (id)_locStringForKey:(id)key
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -309,13 +309,13 @@ LABEL_6:
   block[3] = &unk_278BE2CD0;
   block[4] = self;
   v3 = _locStringForKey__onceToken;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     dispatch_once(&_locStringForKey__onceToken, block);
   }
 
-  v5 = [_locStringForKey__myBundle localizedStringForKey:v4 value:v4 table:@"Localizable"];
+  v5 = [_locStringForKey__myBundle localizedStringForKey:keyCopy value:keyCopy table:@"Localizable"];
 
   return v5;
 }
@@ -328,35 +328,35 @@ uint64_t __43__AXAuditReportGenerator__locStringForKey___block_invoke(uint64_t a
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)reportHeaderForIssues:(id)a3
+- (id)reportHeaderForIssues:(id)issues
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  issuesCopy = issues;
   v6 = [v4 alloc];
   v7 = [(AXAuditReportGenerator *)self _locStringForKey:@"axAuditReport"];
   v8 = [(AXAuditReportGenerator *)self _locStringForKey:@"timeStamp"];
-  v9 = [v5 firstObject];
-  v10 = [v9 timeStamp];
+  firstObject = [issuesCopy firstObject];
+  timeStamp = [firstObject timeStamp];
   v11 = [(AXAuditReportGenerator *)self _locStringForKey:@"device"];
-  v12 = [(AXAuditReportGenerator *)self deviceName];
+  deviceName = [(AXAuditReportGenerator *)self deviceName];
   v13 = [(AXAuditReportGenerator *)self _locStringForKey:@"numOfIssuesFound"];
-  v14 = [v5 count];
+  v14 = [issuesCopy count];
 
-  v15 = [v6 initWithFormat:@"%@\n%@: %@\n%@: %@\n%@: %ld\n\n", v7, v8, v10, v11, v12, v13, v14];
+  v15 = [v6 initWithFormat:@"%@\n%@: %@\n%@: %@\n%@: %ld\n\n", v7, v8, timeStamp, v11, deviceName, v13, v14];
 
   return v15;
 }
 
-- (id)textDescriptionForIssues:(id)a3
+- (id)textDescriptionForIssues:(id)issues
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  issuesCopy = issues;
   v5 = &stru_284FBB130;
-  if ([v4 count])
+  if ([issuesCopy count])
   {
     v6 = objc_opt_new();
     v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
-    v8 = [(AXAuditReportGenerator *)self reportHeaderForIssues:v4];
+    v8 = [(AXAuditReportGenerator *)self reportHeaderForIssues:issuesCopy];
     v25 = v7;
     [(__CFString *)v7 appendString:v8];
 
@@ -364,8 +364,8 @@ uint64_t __43__AXAuditReportGenerator__locStringForKey___block_invoke(uint64_t a
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v22 = v4;
-    obj = v4;
+    v22 = issuesCopy;
+    obj = issuesCopy;
     v26 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v26)
     {
@@ -381,13 +381,13 @@ uint64_t __43__AXAuditReportGenerator__locStringForKey___block_invoke(uint64_t a
           }
 
           v11 = *(*(&v27 + 1) + 8 * i);
-          v12 = [v11 issueClassification];
+          issueClassification = [v11 issueClassification];
           v13 = [v6 shortTitleForAuditIssue:v11];
           v14 = [v6 longDescriptionForAuditIssue:v11];
           v15 = objc_alloc(MEMORY[0x277CCACA8]);
           v16 = [(AXAuditReportGenerator *)self _locStringForKey:@"issue"];
           v17 = [(AXAuditReportGenerator *)self _locStringForKey:@"errorCode"];
-          v18 = [v15 initWithFormat:@"\n%@ %ld: %@\n%@: %ld\n%@\n", v16, v9, v13, v17, v12, v14];
+          v18 = [v15 initWithFormat:@"\n%@ %ld: %@\n%@: %ld\n%@\n", v16, v9, v13, v17, issueClassification, v14];
 
           [(__CFString *)v25 appendString:v18];
           ++v9;
@@ -407,7 +407,7 @@ uint64_t __43__AXAuditReportGenerator__locStringForKey___block_invoke(uint64_t a
 
     v5 = v19;
 
-    v4 = v22;
+    issuesCopy = v22;
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -415,23 +415,23 @@ uint64_t __43__AXAuditReportGenerator__locStringForKey___block_invoke(uint64_t a
   return v5;
 }
 
-- (id)imageDataForIssue:(id)a3 thumbnailOnly:(BOOL)a4
+- (id)imageDataForIssue:(id)issue thumbnailOnly:(BOOL)only
 {
-  v4 = a4;
-  v5 = a3;
+  onlyCopy = only;
+  issueCopy = issue;
   v6 = +[AXAuditScreenshotManager sharedManager];
-  v7 = [v5 timeStamp];
-  [v6 screenshotScaleFactorForTimestamp:v7];
+  timeStamp = [issueCopy timeStamp];
+  [v6 screenshotScaleFactorForTimestamp:timeStamp];
   v9 = v8;
 
-  if (v4)
+  if (onlyCopy)
   {
-    [v6 thumbnailImageOfIssue:v5];
+    [v6 thumbnailImageOfIssue:issueCopy];
   }
 
   else
   {
-    [v6 screenshotForIssue:v5 elementRect:0];
+    [v6 screenshotForIssue:issueCopy elementRect:0];
   }
   v10 = ;
 
@@ -453,12 +453,12 @@ uint64_t __43__AXAuditReportGenerator__locStringForKey___block_invoke(uint64_t a
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(CurrentContext, 0.0, v16);
     CGContextScaleCTM(CurrentContext, 1.0, -1.0);
-    v19 = [v10 CGImage];
+    cGImage = [v10 CGImage];
     v25.origin.x = 0.0;
     v25.origin.y = 0.0;
     v25.size.width = v17;
     v25.size.height = v16;
-    CGContextDrawImage(CurrentContext, v25, v19);
+    CGContextDrawImage(CurrentContext, v25, cGImage);
     v20 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     v21 = UIImageJPEGRepresentation(v20, 0.75);
@@ -477,10 +477,10 @@ uint64_t __43__AXAuditReportGenerator__locStringForKey___block_invoke(uint64_t a
 
 - (id)_htmlTemplate
 {
-  v2 = [(AXAuditReportGenerator *)self _htmlTemplatePath];
-  if ([v2 length])
+  _htmlTemplatePath = [(AXAuditReportGenerator *)self _htmlTemplatePath];
+  if ([_htmlTemplatePath length])
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v2 encoding:4 error:0];
+    v3 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:_htmlTemplatePath encoding:4 error:0];
   }
 
   else
@@ -493,33 +493,33 @@ uint64_t __43__AXAuditReportGenerator__locStringForKey___block_invoke(uint64_t a
 
 - (id)_generateHTMLSourceFromTemplates
 {
-  v3 = [(AXAuditReportGenerator *)self _htmlTemplate];
-  v4 = [v3 mutableCopy];
+  _htmlTemplate = [(AXAuditReportGenerator *)self _htmlTemplate];
+  v4 = [_htmlTemplate mutableCopy];
 
-  v5 = [(AXAuditReportGenerator *)self _jsonString];
-  [v4 replaceOccurrencesOfString:@"[[JSON_OBJ_REPLACE]]" withString:v5 options:2 range:{0, objc_msgSend(v4, "length")}];
+  _jsonString = [(AXAuditReportGenerator *)self _jsonString];
+  [v4 replaceOccurrencesOfString:@"[[JSON_OBJ_REPLACE]]" withString:_jsonString options:2 range:{0, objc_msgSend(v4, "length")}];
 
   return v4;
 }
 
-- (id)_jsonDictionaryForIssue:(id)a3 screenName:(id)a4
+- (id)_jsonDictionaryForIssue:(id)issue screenName:(id)name
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  issueCopy = issue;
+  nameCopy = name;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = [v5 issueClassification];
-  v10 = [v8 longDescriptionForAuditIssue:v5];
-  v36 = [v8 longDescExtraInfoForAuditIssue:v5];
-  v11 = [v8 shortTitleForAuditIssue:v5];
-  v35 = [v5 screenGroupId];
-  v12 = [v5 isDuplicate];
-  v34 = [v8 humanReadableDescriptionForAuditIssueTestType:v5];
-  v13 = [MEMORY[0x277CCABB0] numberWithLong:v9];
+  issueClassification = [issueCopy issueClassification];
+  v10 = [v8 longDescriptionForAuditIssue:issueCopy];
+  v36 = [v8 longDescExtraInfoForAuditIssue:issueCopy];
+  v11 = [v8 shortTitleForAuditIssue:issueCopy];
+  screenGroupId = [issueCopy screenGroupId];
+  isDuplicate = [issueCopy isDuplicate];
+  v34 = [v8 humanReadableDescriptionForAuditIssueTestType:issueCopy];
+  v13 = [MEMORY[0x277CCABB0] numberWithLong:issueClassification];
   [v7 setObject:v13 forKey:@"_axKeyErrorCode"];
 
-  v14 = [v8 suggestionDescriptionForAuditIssue:v5];
+  v14 = [v8 suggestionDescriptionForAuditIssue:issueCopy];
   if ([v11 length])
   {
     [v7 setObject:v11 forKey:@"_axKeyShortDesc"];
@@ -536,20 +536,20 @@ uint64_t __43__AXAuditReportGenerator__locStringForKey___block_invoke(uint64_t a
     [v7 setObject:v36 forKey:@"_axKeyLongDescExtraInfo"];
   }
 
-  v15 = [v5 elementText];
-  v16 = [v15 length];
+  elementText = [issueCopy elementText];
+  v16 = [elementText length];
 
   if (v16)
   {
-    v17 = [v5 elementText];
-    [v7 setObject:v17 forKey:@"_axKeyElementText"];
+    elementText2 = [issueCopy elementText];
+    [v7 setObject:elementText2 forKey:@"_axKeyElementText"];
   }
 
-  if (v35)
+  if (screenGroupId)
   {
-    [v7 setObject:v35 forKey:@"_axKeyScreenGroupName"];
+    [v7 setObject:screenGroupId forKey:@"_axKeyScreenGroupName"];
     v18 = v34;
-    if (!v6)
+    if (!nameCopy)
     {
       goto LABEL_15;
     }
@@ -560,16 +560,16 @@ uint64_t __43__AXAuditReportGenerator__locStringForKey___block_invoke(uint64_t a
   else
   {
     v18 = v34;
-    if (!v6)
+    if (!nameCopy)
     {
       goto LABEL_15;
     }
 
-    [v7 setObject:v6 forKey:@"_axKeyScreenName"];
+    [v7 setObject:nameCopy forKey:@"_axKeyScreenName"];
     v19 = @"_axKeyScreenGroupName";
   }
 
-  [v7 setObject:v6 forKey:v19];
+  [v7 setObject:nameCopy forKey:v19];
 LABEL_15:
   v32 = v10;
   if (v18)
@@ -577,16 +577,16 @@ LABEL_15:
     [v7 setObject:v18 forKey:@"_axKeyIssueTestType"];
   }
 
-  v33 = v6;
+  v33 = nameCopy;
   if (v14)
   {
     [v7 setObject:v14 forKey:@"_axKeyIssueSuggestion"];
   }
 
-  v20 = [MEMORY[0x277CCABB0] numberWithBool:v12];
+  v20 = [MEMORY[0x277CCABB0] numberWithBool:isDuplicate];
   [v7 setObject:v20 forKey:@"_axKeyIssueIsDuplicate"];
 
-  v21 = [(AXAuditReportGenerator *)self _jsonDictionaryForAuditIssueImage:v5 thumbnailOnly:1];
+  v21 = [(AXAuditReportGenerator *)self _jsonDictionaryForAuditIssueImage:issueCopy thumbnailOnly:1];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -624,15 +624,15 @@ LABEL_15:
   return v7;
 }
 
-- (id)_anyAuditIssueFromResults:(id)a3
+- (id)_anyAuditIssueFromResults:(id)results
 {
   v28 = *MEMORY[0x277D85DE8];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  resultsCopy = results;
+  v4 = [resultsCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -643,7 +643,7 @@ LABEL_15:
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
@@ -651,8 +651,8 @@ LABEL_15:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v9 = [v8 caseResults];
-        v10 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        caseResults = [v8 caseResults];
+        v10 = [caseResults countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v10)
         {
           v11 = v10;
@@ -663,20 +663,20 @@ LABEL_15:
             {
               if (*v19 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(caseResults);
               }
 
-              v14 = [*(*(&v18 + 1) + 8 * j) auditIssues];
-              v15 = [v14 firstObject];
+              auditIssues = [*(*(&v18 + 1) + 8 * j) auditIssues];
+              firstObject = [auditIssues firstObject];
 
-              if (v15)
+              if (firstObject)
               {
 
                 goto LABEL_19;
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v11 = [caseResults countByEnumeratingWithState:&v18 objects:v26 count:16];
             if (v11)
             {
               continue;
@@ -687,8 +687,8 @@ LABEL_15:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
-      v15 = 0;
+      v5 = [resultsCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
+      firstObject = 0;
     }
 
     while (v5);
@@ -696,46 +696,46 @@ LABEL_15:
 
   else
   {
-    v15 = 0;
+    firstObject = 0;
   }
 
 LABEL_19:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return firstObject;
 }
 
-- (id)_jsonDictionaryForAuditIssueImage:(id)a3 thumbnailOnly:(BOOL)a4
+- (id)_jsonDictionaryForAuditIssueImage:(id)image thumbnailOnly:(BOOL)only
 {
-  v4 = a4;
-  v5 = a3;
+  onlyCopy = only;
+  imageCopy = image;
   v6 = +[AXAuditScreenshotManager sharedManager];
   v7 = objc_opt_new();
-  v8 = [v5 timeStamp];
-  [v6 screenshotScaleFactorForTimestamp:v8];
+  timeStamp = [imageCopy timeStamp];
+  [v6 screenshotScaleFactorForTimestamp:timeStamp];
   v59 = v9;
 
-  v10 = [v5 timeStamp];
-  [v6 screenshotRotationForTimestamp:v10];
+  timeStamp2 = [imageCopy timeStamp];
+  [v6 screenshotRotationForTimestamp:timeStamp2];
   v12 = v11;
 
-  v13 = [v5 timeStamp];
-  [v6 screenshotDisplayBoundsForTimestamp:v13];
+  timeStamp3 = [imageCopy timeStamp];
+  [v6 screenshotDisplayBoundsForTimestamp:timeStamp3];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
   v22 = objc_autoreleasePoolPush();
-  if (v4)
+  if (onlyCopy)
   {
-    [v6 thumbnailImageOfIssue:v5];
+    [v6 thumbnailImageOfIssue:imageCopy];
   }
 
   else
   {
-    [v6 screenshotForIssue:v5 elementRect:0];
+    [v6 screenshotForIssue:imageCopy elementRect:0];
   }
   v23 = ;
   v24 = v23;
@@ -750,12 +750,12 @@ LABEL_19:
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(CurrentContext, 0.0, v28);
     CGContextScaleCTM(CurrentContext, 1.0, -1.0);
-    v30 = [v24 CGImage];
+    cGImage = [v24 CGImage];
     v64.origin.x = 0.0;
     v64.origin.y = 0.0;
     v64.size.width = v26;
     v64.size.height = v28;
-    CGContextDrawImage(CurrentContext, v64, v30);
+    CGContextDrawImage(CurrentContext, v64, cGImage);
     v31 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     v32 = UIImageJPEGRepresentation(v31, 0.75);
@@ -767,7 +767,7 @@ LABEL_19:
       v58 = v22;
       v34 = [@"data:image/jpegbase64 "];;
       v35 = @"_axKeyImageFull";
-      if (v4)
+      if (onlyCopy)
       {
         v35 = @"_axKeyImageThumbnail";
       }
@@ -782,12 +782,12 @@ LABEL_19:
       [v37 setObject:v39 forKey:@"_axKeyImageHeight"];
 
       [v7 setObject:v37 forKey:v36];
-      if (v4)
+      if (onlyCopy)
       {
         v40 = *(MEMORY[0x277CBF3A0] + 16);
         v60 = *MEMORY[0x277CBF3A0];
         v61 = v40;
-        v41 = [v6 screenshotForIssue:v5 elementRect:&v60];
+        v41 = [v6 screenshotForIssue:imageCopy elementRect:&v60];
         v42 = vdupq_lane_s64(v59, 0);
         v60 = vdivq_f64(v60, v42);
         v61 = vdivq_f64(v61, v42);
@@ -839,17 +839,17 @@ LABEL_19:
   return v7;
 }
 
-- (id)_jsonArrayForIssues:(id)a3 screenName:(id)a4
+- (id)_jsonArrayForIssues:(id)issues screenName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  issuesCopy = issues;
+  nameCopy = name;
   v8 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = issuesCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -864,7 +864,7 @@ LABEL_19:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(AXAuditReportGenerator *)self _jsonDictionaryForIssue:*(*(&v17 + 1) + 8 * i) screenName:v7, v17];
+        v14 = [(AXAuditReportGenerator *)self _jsonDictionaryForIssue:*(*(&v17 + 1) + 8 * i) screenName:nameCopy, v17];
         if (v14)
         {
           [v8 addObject:v14];
@@ -882,14 +882,14 @@ LABEL_19:
   return v8;
 }
 
-- (id)_jsonDictionaryForScreen:(id)a3 issuesOnScreen:(id)a4
+- (id)_jsonDictionaryForScreen:(id)screen issuesOnScreen:(id)onScreen
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  screenCopy = screen;
+  onScreenCopy = onScreen;
   v8 = objc_opt_new();
-  v9 = [(AXAuditReportGenerator *)self _jsonArrayForIssues:v7 screenName:v6];
-  [v8 setObject:v6 forKeyedSubscript:@"_axKeyScreenName"];
+  v9 = [(AXAuditReportGenerator *)self _jsonArrayForIssues:onScreenCopy screenName:screenCopy];
+  [v8 setObject:screenCopy forKeyedSubscript:@"_axKeyScreenName"];
   if (v9 && [v9 count])
   {
     [v8 setObject:v9 forKeyedSubscript:@"_axKeyAllIssues"];
@@ -897,12 +897,12 @@ LABEL_19:
     v10 = [v22 objectForKeyedSubscript:@"_axKeyScreenGroupName"];
     if (!v10)
     {
-      v10 = v6;
+      v10 = screenCopy;
     }
 
     v21 = v10;
     [v8 setObject:v10 forKeyedSubscript:@"_axKeyScreenGroupName"];
-    v20 = [v7 firstObject];
+    firstObject = [onScreenCopy firstObject];
     v11 = [AXAuditReportGenerator _jsonDictionaryForAuditIssueImage:"_jsonDictionaryForAuditIssueImage:thumbnailOnly:" thumbnailOnly:?];
     v23 = 0u;
     v24 = 0u;
@@ -948,10 +948,10 @@ LABEL_19:
   v4 = objc_opt_new();
   [v3 setObject:v4 forKeyedSubscript:@"_axKeyAllScreens"];
 
-  v5 = [(AXAuditReportGenerator *)self _auditScreenToIssuesMapping];
-  v6 = [v5 allKeys];
+  _auditScreenToIssuesMapping = [(AXAuditReportGenerator *)self _auditScreenToIssuesMapping];
+  allKeys = [_auditScreenToIssuesMapping allKeys];
 
-  if ([v6 count])
+  if ([allKeys count])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -960,14 +960,14 @@ LABEL_19:
     v14[4] = self;
     v7 = v3;
     v15 = v7;
-    [v6 enumerateObjectsUsingBlock:v14];
+    [allKeys enumerateObjectsUsingBlock:v14];
     v8 = v7;
   }
 
   else
   {
-    v9 = [(AXAuditReportGenerator *)self _issues];
-    v10 = [(AXAuditReportGenerator *)self _jsonDictionaryForScreen:@"Screen1" issuesOnScreen:v9];
+    _issues = [(AXAuditReportGenerator *)self _issues];
+    v10 = [(AXAuditReportGenerator *)self _jsonDictionaryForScreen:@"Screen1" issuesOnScreen:_issues];
 
     v11 = [v3 objectForKeyedSubscript:@"_axKeyAllScreens"];
     [v11 addObject:v10];
@@ -992,10 +992,10 @@ void __41__AXAuditReportGenerator__jsonDictionary__block_invoke(uint64_t a1, voi
 
 - (id)_jsonData
 {
-  v2 = [(AXAuditReportGenerator *)self _jsonDictionary];
-  if ([v2 count])
+  _jsonDictionary = [(AXAuditReportGenerator *)self _jsonDictionary];
+  if ([_jsonDictionary count])
   {
-    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:1 error:0];
+    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:_jsonDictionary options:1 error:0];
   }
 
   else
@@ -1008,8 +1008,8 @@ void __41__AXAuditReportGenerator__jsonDictionary__block_invoke(uint64_t a1, voi
 
 - (id)_jsonString
 {
-  v2 = [(AXAuditReportGenerator *)self _jsonData];
-  v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v2 encoding:4];
+  _jsonData = [(AXAuditReportGenerator *)self _jsonData];
+  v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:_jsonData encoding:4];
 
   return v3;
 }

@@ -1,10 +1,10 @@
 @interface CNAtomView
-+ (BOOL)presentationOptions:(unint64_t *)a3 encodedIntoAddress:(id)a4;
++ (BOOL)presentationOptions:(unint64_t *)options encodedIntoAddress:(id)address;
 + (CGPoint)defaultBaselinePoint;
-+ (id)_badgeImagesForPresentationOptions:(unint64_t)a3 iconOrder:(const unint64_t *)a4 orderingLength:(unint64_t)a5 tintColor:(id)a6 large:(BOOL)a7 variant:(int)a8;
-+ (id)_badgeImagesForPresentationOptions:(unint64_t)a3 iconOrder:(const unint64_t *)a4 orderingLength:(unint64_t)a5 tintColor:(id)a6 large:(BOOL)a7 variant:(int)a8 selected:(BOOL)a9;
-+ (id)_defaultLabelAttributesWithFont:(id)a3 wrappingEnabled:(BOOL)a4;
-+ (id)_defaultLabelAttributesWithWrappingEnabled:(BOOL)a3;
++ (id)_badgeImagesForPresentationOptions:(unint64_t)options iconOrder:(const unint64_t *)order orderingLength:(unint64_t)length tintColor:(id)color large:(BOOL)large variant:(int)variant;
++ (id)_badgeImagesForPresentationOptions:(unint64_t)options iconOrder:(const unint64_t *)order orderingLength:(unint64_t)length tintColor:(id)color large:(BOOL)large variant:(int)variant selected:(BOOL)selected;
++ (id)_defaultLabelAttributesWithFont:(id)font wrappingEnabled:(BOOL)enabled;
++ (id)_defaultLabelAttributesWithWrappingEnabled:(BOOL)enabled;
 + (id)_faceTimeTintColor;
 + (id)_newTextLabel;
 + (id)defaultFont;
@@ -15,8 +15,8 @@
 - (CGPoint)baselinePoint;
 - (CGRect)selectionFrame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CNAtomView)initWithFrame:(CGRect)a3 presentationOptions:(unint64_t)a4 separatorStyle:(int)a5 wrappingSupported:(BOOL)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CNAtomView)initWithFrame:(CGRect)frame presentationOptions:(unint64_t)options separatorStyle:(int)style wrappingSupported:(BOOL)supported;
 - (NSString)description;
 - (UIColor)effectiveTintColor;
 - (UIEdgeInsets)edgeInsets;
@@ -24,14 +24,14 @@
 - (double)_leftPadding;
 - (double)_rightInset;
 - (double)_rightPadding;
-- (double)preferredWidthWithSizeConstraints:(CGSize)a3;
-- (id)_centeredTextAttachmentWithImage:(id)a3;
+- (double)preferredWidthWithSizeConstraints:(CGSize)constraints;
+- (id)_centeredTextAttachmentWithImage:(id)image;
 - (id)_chevronTextAttachment;
 - (int)_preferredIconVariant;
 - (int)separatorStyle;
 - (void)_invalidatePresentationOptions;
-- (void)_setEffectiveTintColor:(id)a3;
-- (void)_setPresentationOption:(unint64_t)a3 enabled:(BOOL)a4;
+- (void)_setEffectiveTintColor:(id)color;
+- (void)_setPresentationOption:(unint64_t)option enabled:(BOOL)enabled;
 - (void)_setupOverlayLabelForNonColoredGlyphs;
 - (void)_updateActivityIndicator;
 - (void)_updateCompositingFilters;
@@ -40,23 +40,23 @@
 - (void)_updateLabelAttributes;
 - (void)_updateOverlayLabelText;
 - (void)_updateSubviewsForWrapping;
-- (void)displaySelectionChangeWithAnimation:(BOOL)a3;
+- (void)displaySelectionChangeWithAnimation:(BOOL)animation;
 - (void)layoutSubviews;
-- (void)performBuildInAnimationFromTextColor:(id)a3 withDuration:(double)a4;
-- (void)setFirstLineIndent:(double)a3;
-- (void)setIsPrimaryAddressAtom:(BOOL)a3;
-- (void)setPresentationOptions:(unint64_t)a3;
-- (void)setScale:(double)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 style:(unint64_t)a5;
-- (void)setSeparatorHidden:(BOOL)a3;
-- (void)setSeparatorIsLeftAligned:(BOOL)a3;
-- (void)setSeparatorStyle:(int)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setupOverlayLabelTextForEmojiRanges:(id)a3;
+- (void)performBuildInAnimationFromTextColor:(id)color withDuration:(double)duration;
+- (void)setFirstLineIndent:(double)indent;
+- (void)setIsPrimaryAddressAtom:(BOOL)atom;
+- (void)setPresentationOptions:(unint64_t)options;
+- (void)setScale:(double)scale;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated style:(unint64_t)style;
+- (void)setSeparatorHidden:(BOOL)hidden;
+- (void)setSeparatorIsLeftAligned:(BOOL)aligned;
+- (void)setSeparatorStyle:(int)style;
+- (void)setTitle:(id)title;
+- (void)setTitleFont:(id)font;
+- (void)setupOverlayLabelTextForEmojiRanges:(id)ranges;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateDisplayForInvalidAddressForSelectedState:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateDisplayForInvalidAddressForSelectedState:(BOOL)state;
 @end
 
 @implementation CNAtomView
@@ -188,13 +188,13 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-+ (id)_defaultLabelAttributesWithWrappingEnabled:(BOOL)a3
++ (id)_defaultLabelAttributesWithWrappingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v14[3] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   v5 = v4;
-  if (v3)
+  if (enabledCopy)
   {
     [v4 setLineBreakMode:0];
     LODWORD(v6) = 1.0;
@@ -221,9 +221,9 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
   return v11;
 }
 
-- (void)setFirstLineIndent:(double)a3
+- (void)setFirstLineIndent:(double)indent
 {
-  self->_firstLineIndent = a3;
+  self->_firstLineIndent = indent;
   if ([(CNAtomView *)self isWrappingEnabled])
   {
 
@@ -231,39 +231,39 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-+ (id)_defaultLabelAttributesWithFont:(id)a3 wrappingEnabled:(BOOL)a4
++ (id)_defaultLabelAttributesWithFont:(id)font wrappingEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [CNAtomView _defaultLabelAttributesWithWrappingEnabled:v4];
+  enabledCopy = enabled;
+  fontCopy = font;
+  v6 = [CNAtomView _defaultLabelAttributesWithWrappingEnabled:enabledCopy];
   v7 = [v6 mutableCopy];
 
-  [v7 setObject:v5 forKey:*MEMORY[0x1E69DB648]];
+  [v7 setObject:fontCopy forKey:*MEMORY[0x1E69DB648]];
 
   return v7;
 }
 
-+ (id)_badgeImagesForPresentationOptions:(unint64_t)a3 iconOrder:(const unint64_t *)a4 orderingLength:(unint64_t)a5 tintColor:(id)a6 large:(BOOL)a7 variant:(int)a8
++ (id)_badgeImagesForPresentationOptions:(unint64_t)options iconOrder:(const unint64_t *)order orderingLength:(unint64_t)length tintColor:(id)color large:(BOOL)large variant:(int)variant
 {
-  v8 = *&a8;
-  v9 = a7;
-  v13 = a6;
+  v8 = *&variant;
+  largeCopy = large;
+  colorCopy = color;
   LOBYTE(v16) = 0;
-  v14 = [objc_opt_class() _badgeImagesForPresentationOptions:a3 iconOrder:a4 orderingLength:a5 tintColor:v13 large:v9 variant:v8 selected:v16];
+  v14 = [objc_opt_class() _badgeImagesForPresentationOptions:options iconOrder:order orderingLength:length tintColor:colorCopy large:largeCopy variant:v8 selected:v16];
 
   return v14;
 }
 
-+ (id)_badgeImagesForPresentationOptions:(unint64_t)a3 iconOrder:(const unint64_t *)a4 orderingLength:(unint64_t)a5 tintColor:(id)a6 large:(BOOL)a7 variant:(int)a8 selected:(BOOL)a9
++ (id)_badgeImagesForPresentationOptions:(unint64_t)options iconOrder:(const unint64_t *)order orderingLength:(unint64_t)length tintColor:(id)color large:(BOOL)large variant:(int)variant selected:(BOOL)selected
 {
-  v12 = a6;
+  colorCopy = color;
   for (i = [MEMORY[0x1E695DF70] array];
   {
-    v16 = *a4++;
+    v16 = *order++;
     v15 = v16;
-    if ((v16 & a3) != 0)
+    if ((v16 & options) != 0)
     {
-      v17 = CNIconImageForPresentationOption(v15, v12, v13, 0, a9);
+      v17 = CNIconImageForPresentationOption(v15, colorCopy, v13, 0, selected);
       if (v17)
       {
         [i addObject:v17];
@@ -274,25 +274,25 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
   return i;
 }
 
-+ (BOOL)presentationOptions:(unint64_t *)a3 encodedIntoAddress:(id)a4
++ (BOOL)presentationOptions:(unint64_t *)options encodedIntoAddress:(id)address
 {
-  v5 = a4;
-  if ([v5 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
     v6 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"(?:\\{PO\\:)([0-9]+)(?:\\})" options:0 error:0];
-    v7 = [v5 length];
-    if ([v6 numberOfMatchesInString:v5 options:0 range:{0, v7}])
+    v7 = [addressCopy length];
+    if ([v6 numberOfMatchesInString:addressCopy options:0 range:{0, v7}])
     {
-      v8 = [v6 firstMatchInString:v5 options:0 range:{0, v7}];
+      v8 = [v6 firstMatchInString:addressCopy options:0 range:{0, v7}];
       v9 = [v8 rangeAtIndex:1];
       v11 = v10;
 
-      v12 = [v5 substringWithRange:{v9, v11}];
+      v12 = [addressCopy substringWithRange:{v9, v11}];
       v13 = [v12 length];
       v14 = v13 != 0;
       if (v13)
       {
-        *a3 = [v12 integerValue];
+        *options = [v12 integerValue];
       }
     }
 
@@ -310,23 +310,23 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
   return v14;
 }
 
-- (CNAtomView)initWithFrame:(CGRect)a3 presentationOptions:(unint64_t)a4 separatorStyle:(int)a5 wrappingSupported:(BOOL)a6
+- (CNAtomView)initWithFrame:(CGRect)frame presentationOptions:(unint64_t)options separatorStyle:(int)style wrappingSupported:(BOOL)supported
 {
-  v7 = *&a5;
+  v7 = *&style;
   v37.receiver = self;
   v37.super_class = CNAtomView;
-  v9 = [(CNAtomView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(CNAtomView *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v10 = v9;
   if (v9)
   {
     v9->_scalingFactor = 1.0;
     v9->_separatorHidden = 0;
-    v9->_presentationOptions = a4;
+    v9->_presentationOptions = options;
     v9->_firstLineIndent = 0.0;
-    v9->_wrappingSupported = a6;
+    v9->_wrappingSupported = supported;
     v9->_cachedIsWrappingEnabled = [(CNAtomView *)v9 isWrappingEnabled];
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
-    v10->_separatorIsLeftAligned = [v11 userInterfaceLayoutDirection] == 1;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v10->_separatorIsLeftAligned = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 1;
 
     v12 = objc_alloc(MEMORY[0x1E69DD250]);
     v13 = [v12 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -348,8 +348,8 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
     [(CNAtomView *)v10 bounds];
     v19 = [(CNModernAtomBackgroundView *)v18 initWithFrame:?];
     [(CNModernAtomBackgroundView *)v19 setOpaque:0];
-    v20 = [MEMORY[0x1E69DC888] clearColor];
-    [(CNModernAtomBackgroundView *)v19 setBackgroundColor:v20];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CNModernAtomBackgroundView *)v19 setBackgroundColor:clearColor];
 
     [(CNModernAtomBackgroundView *)v19 setUserInteractionEnabled:0];
     [(CNModernAtomBackgroundView *)v19 setAutoresizingMask:18];
@@ -370,8 +370,8 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
 
     [(CNModernAtomIconView *)v10->_badgeIconView setIconPadding:1.25];
     [(CNModernAtomIconView *)v10->_badgeIconView setAutoresizingMask:16];
-    v26 = [MEMORY[0x1E69DC888] clearColor];
-    [(CNModernAtomIconView *)v10->_badgeIconView setBackgroundColor:v26];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(CNModernAtomIconView *)v10->_badgeIconView setBackgroundColor:clearColor2];
 
     [(CNModernAtomIconView *)v10->_badgeIconView setContentMode:3];
     v27 = [CNModernAtomIconView alloc];
@@ -382,13 +382,13 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
 
     [(CNModernAtomIconView *)v10->_accessoryIconView setIconPadding:2.5];
     [(CNModernAtomIconView *)v10->_accessoryIconView setAutoresizingMask:20];
-    v30 = [MEMORY[0x1E69DC888] clearColor];
-    [(CNModernAtomIconView *)v10->_accessoryIconView setBackgroundColor:v30];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [(CNModernAtomIconView *)v10->_accessoryIconView setBackgroundColor:clearColor3];
 
     [(CNModernAtomIconView *)v10->_accessoryIconView setContentMode:3];
     [(CNAtomView *)v10 _updateIconViewsSemanticContentAttribute];
     [(CNAtomView *)v10 _updateSubviewsForWrapping];
-    if ((a4 & 0x204) != 0)
+    if ((options & 0x204) != 0)
     {
       v31 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:4];
       activityIndicator = v10->_activityIndicator;
@@ -396,15 +396,15 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
     }
 
     v10->_disabledPresentationOptions = 0;
-    v33 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v33 addObserver:v10 selector:sel__invalidatePresentationOptions name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__invalidatePresentationOptions name:*MEMORY[0x1E69DDC48] object:0];
 
-    v34 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    [(CNAtomView *)v10 setBackgroundColor:v34];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    [(CNAtomView *)v10 setBackgroundColor:quaternarySystemFillColor];
 
     [(CNAtomView *)v10 _setContinuousCornerRadius:4.5];
-    v35 = [objc_opt_class() _defaultTintColor];
-    [(CNAtomView *)v10 setTintColor:v35];
+    _defaultTintColor = [objc_opt_class() _defaultTintColor];
+    [(CNAtomView *)v10 setTintColor:_defaultTintColor];
   }
 
   return v10;
@@ -417,8 +417,8 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
   v5 = NSStringFromClass(v4);
   [(CNAtomView *)self frame];
   v6 = NSStringFromCGRect(v11);
-  v7 = [(UILabel *)self->_label text];
-  v8 = [v3 stringWithFormat:@"<%@: %x frame = %@; text = '%@'>", v5, self, v6, v7];;
+  text = [(UILabel *)self->_label text];
+  v8 = [v3 stringWithFormat:@"<%@: %x frame = %@; text = '%@'>", v5, self, v6, text];;
 
   return v8;
 }
@@ -445,8 +445,8 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
   v26[10] = *MEMORY[0x1E69DDC28];
   v26[11] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:12];
-  v10 = [MEMORY[0x1E69DC668] sharedApplication];
-  v11 = [v10 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
   v23 = 0u;
   v24 = 0u;
@@ -471,7 +471,7 @@ id __34__CNAtomView__hoveredSMSTintColor__block_invoke(uint64_t a1, void *a2)
           objc_enumerationMutation(v12);
         }
 
-        if ([*(*(&v21 + 1) + 8 * v17) isEqualToString:{v11, v21}])
+        if ([*(*(&v21 + 1) + 8 * v17) isEqualToString:{preferredContentSizeCategory, v21}])
         {
           v15 = v18;
           goto LABEL_12;
@@ -536,9 +536,9 @@ LABEL_12:
 
 - (void)_updateSubviewsForWrapping
 {
-  v3 = [(CNAtomView *)self isWrappingEnabled];
-  [(UILabel *)self->_label setNumberOfLines:!v3];
-  if (v3)
+  isWrappingEnabled = [(CNAtomView *)self isWrappingEnabled];
+  [(UILabel *)self->_label setNumberOfLines:!isWrappingEnabled];
+  if (isWrappingEnabled)
   {
     v4 = 0;
   }
@@ -549,14 +549,14 @@ LABEL_12:
   }
 
   [(UILabel *)self->_label setLineBreakMode:v4];
-  v5 = [(CNAtomView *)self separatorStyle];
-  v6 = [(CNAtomView *)self backgroundView];
-  [v6 setSeparatorStyle:2];
+  separatorStyle = [(CNAtomView *)self separatorStyle];
+  backgroundView = [(CNAtomView *)self backgroundView];
+  [backgroundView setSeparatorStyle:2];
 
-  v7 = [(CNAtomView *)self backgroundView];
-  [v7 setSeparatorStyle:v5];
+  backgroundView2 = [(CNAtomView *)self backgroundView];
+  [backgroundView2 setSeparatorStyle:separatorStyle];
 
-  if (v3)
+  if (isWrappingEnabled)
   {
     [(CNModernAtomIconView *)self->_badgeIconView removeFromSuperview];
     accessoryIconView = self->_accessoryIconView;
@@ -575,26 +575,26 @@ LABEL_12:
   }
 }
 
-- (id)_centeredTextAttachmentWithImage:(id)a3
+- (id)_centeredTextAttachmentWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_alloc_init(CNAtomCenteredTextAttachment);
-  [v4 size];
+  [imageCopy size];
   v7 = v6;
-  [v4 size];
+  [imageCopy size];
   v9 = v8;
-  [v4 size];
+  [imageCopy size];
   v11 = v10 + 3.0;
-  [v4 size];
+  [imageCopy size];
   v13 = v12;
-  v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v14 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v16 = v15;
   v20.width = v11;
   v20.height = v13;
   UIGraphicsBeginImageContextWithOptions(v20, 0, v16);
 
-  [v4 drawInRect:{3.0, 0.0, v7, v9}];
+  [imageCopy drawInRect:{3.0, 0.0, v7, v9}];
   v17 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   [(UIFont *)self->_titleFont capHeight];
@@ -608,13 +608,13 @@ LABEL_12:
 {
   v3 = objc_alloc_init(CNAtomCenteredTextAttachment);
   v4 = MEMORY[0x1E69DCAD8];
-  v5 = [(CNAtomView *)self titleFont];
-  [v5 pointSize];
+  titleFont = [(CNAtomView *)self titleFont];
+  [titleFont pointSize];
   v6 = [v4 configurationWithPointSize:6 weight:1 scale:?];
 
   v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward" withConfiguration:v6];
-  v8 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  v9 = [v7 imageWithTintColor:v8 renderingMode:1];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  v9 = [v7 imageWithTintColor:tertiaryLabelColor renderingMode:1];
 
   [v9 size];
   v11 = v10;
@@ -624,8 +624,8 @@ LABEL_12:
   v15 = v14 + 9.0;
   [v9 size];
   v17 = v16;
-  v18 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v18 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v20 = v19;
   v24.width = v15;
   v24.height = v17;
@@ -648,19 +648,19 @@ LABEL_12:
     return 0;
   }
 
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
 
-- (void)setIsPrimaryAddressAtom:(BOOL)a3
+- (void)setIsPrimaryAddressAtom:(BOOL)atom
 {
-  if (self->_isPrimaryAddressAtom != a3)
+  if (self->_isPrimaryAddressAtom != atom)
   {
-    self->_isPrimaryAddressAtom = a3;
-    if (a3)
+    self->_isPrimaryAddressAtom = atom;
+    if (atom)
     {
       +[CNAtomView primaryAtomFont];
     }
@@ -679,31 +679,31 @@ LABEL_12:
   effectiveTintColor = self->_effectiveTintColor;
   if (effectiveTintColor)
   {
-    v3 = effectiveTintColor;
+    tintColor = effectiveTintColor;
   }
 
   else
   {
-    v3 = [(CNAtomView *)self tintColor];
+    tintColor = [(CNAtomView *)self tintColor];
   }
 
-  return v3;
+  return tintColor;
 }
 
-- (void)_setEffectiveTintColor:(id)a3
+- (void)_setEffectiveTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_effectiveTintColor != v5)
+  colorCopy = color;
+  if (self->_effectiveTintColor != colorCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_effectiveTintColor, a3);
+    v9 = colorCopy;
+    objc_storeStrong(&self->_effectiveTintColor, color);
     label = self->_label;
     v7 = v9;
     [(UILabel *)label setTextColor:v7];
-    v8 = [(CNAtomView *)self backgroundView];
-    [v8 setTintColor:v7];
+    backgroundView = [(CNAtomView *)self backgroundView];
+    [backgroundView setTintColor:v7];
 
-    v5 = v9;
+    colorCopy = v9;
   }
 }
 
@@ -711,8 +711,8 @@ LABEL_12:
 {
   if (!self->_effectiveTintColor || (-[CNAtomView effectiveTintColor](self, "effectiveTintColor"), v3 = objc_claimAutoreleasedReturnValue(), -[CNAtomView tintColor](self, "tintColor"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v3 isEqual:v4], v4, v3, (v5 & 1) == 0))
   {
-    v6 = [(CNAtomView *)self tintColor];
-    [(CNAtomView *)self _setEffectiveTintColor:v6];
+    tintColor = [(CNAtomView *)self tintColor];
+    [(CNAtomView *)self _setEffectiveTintColor:tintColor];
 
     [(CNAtomView *)self _invalidatePresentationOptions];
   }
@@ -733,17 +733,17 @@ LABEL_12:
   return titleFont;
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v10 = a3;
+  fontCopy = font;
   if (([(UIFont *)self->_titleFont isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_titleFont, a3);
-    v5 = [(UILabel *)self->_label attributedText];
-    v6 = [v5 length];
+    objc_storeStrong(&self->_titleFont, font);
+    attributedText = [(UILabel *)self->_label attributedText];
+    v6 = [attributedText length];
 
-    v7 = [(UILabel *)self->_label attributedText];
-    v8 = [v7 mutableCopy];
+    attributedText2 = [(UILabel *)self->_label attributedText];
+    v8 = [attributedText2 mutableCopy];
 
     v9 = *MEMORY[0x1E69DB648];
     [v8 removeAttribute:*MEMORY[0x1E69DB648] range:{0, v6}];
@@ -754,9 +754,9 @@ LABEL_12:
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 
@@ -765,8 +765,8 @@ LABEL_12:
 
 - (void)_updateLabelAttributes
 {
-  v3 = [(CNAtomView *)self title];
-  v4 = [v3 length];
+  title = [(CNAtomView *)self title];
+  v4 = [title length];
 
   if (!v4)
   {
@@ -776,43 +776,43 @@ LABEL_12:
   v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"⁠"];
   if ([(CNAtomView *)self isWrappingEnabled])
   {
-    v6 = [(CNAtomView *)self titleFont];
-    v7 = [CNAtomView _defaultLabelAttributesWithFont:v6 wrappingEnabled:1];
-    v8 = [v7 mutableCopy];
+    titleFont = [(CNAtomView *)self titleFont];
+    v7 = [CNAtomView _defaultLabelAttributesWithFont:titleFont wrappingEnabled:1];
+    titleFont3 = [v7 mutableCopy];
 
-    v9 = [(CNAtomView *)self effectiveTintColor];
+    effectiveTintColor = [(CNAtomView *)self effectiveTintColor];
     v10 = *MEMORY[0x1E69DB650];
-    [v8 setObject:v9 forKey:*MEMORY[0x1E69DB650]];
-    v38 = [v8 objectForKey:*MEMORY[0x1E69DB688]];
+    [titleFont3 setObject:effectiveTintColor forKey:*MEMORY[0x1E69DB650]];
+    v38 = [titleFont3 objectForKey:*MEMORY[0x1E69DB688]];
     [v38 setFirstLineHeadIndent:self->_firstLineIndent];
     v11 = [MEMORY[0x1E696AD60] stringWithString:self->_title];
     [v11 insertString:@"​" atIndex:0];
     v37 = v11;
-    v40 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v11 attributes:v8];
-    v12 = [(CNAtomView *)self separatorStyle];
-    if (v12 == 1)
+    v40 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v11 attributes:titleFont3];
+    separatorStyle = [(CNAtomView *)self separatorStyle];
+    if (separatorStyle == 1)
     {
       v22 = MEMORY[0x1E696AD40];
-      v14 = [(CNAtomView *)self _chevronTextAttachment];
-      v13 = [v22 attributedStringWithAttachment:v14];
+      _chevronTextAttachment = [(CNAtomView *)self _chevronTextAttachment];
+      v13 = [v22 attributedStringWithAttachment:_chevronTextAttachment];
     }
 
     else
     {
       v13 = 0;
-      if (v12)
+      if (separatorStyle)
       {
 LABEL_10:
         v36 = v13;
-        v39 = v9;
-        v23 = [(CNModernAtomIconView *)self->_accessoryIconView iconImages];
-        v24 = [(CNModernAtomIconView *)self->_badgeIconView iconImages];
-        if ([v24 count])
+        v39 = effectiveTintColor;
+        iconImages = [(CNModernAtomIconView *)self->_accessoryIconView iconImages];
+        iconImages2 = [(CNModernAtomIconView *)self->_badgeIconView iconImages];
+        if ([iconImages2 count])
         {
           v25 = 0;
           do
           {
-            v26 = [v24 objectAtIndex:v25];
+            v26 = [iconImages2 objectAtIndex:v25];
             v27 = MEMORY[0x1E696AAB0];
             v28 = [(CNAtomView *)self _centeredTextAttachmentWithImage:v26];
             v29 = [v27 attributedStringWithAttachment:v28];
@@ -823,15 +823,15 @@ LABEL_10:
             ++v25;
           }
 
-          while ([v24 count] > v25);
+          while ([iconImages2 count] > v25);
         }
 
-        if ([v23 count])
+        if ([iconImages count])
         {
           v30 = 0;
           do
           {
-            v31 = [v23 objectAtIndex:v30];
+            v31 = [iconImages objectAtIndex:v30];
             v32 = MEMORY[0x1E696AAB0];
             v33 = [(CNAtomView *)self _centeredTextAttachmentWithImage:v31];
             v34 = [v32 attributedStringWithAttachment:v33];
@@ -842,7 +842,7 @@ LABEL_10:
             ++v30;
           }
 
-          while ([v23 count] > v30);
+          while ([iconImages count] > v30);
         }
 
         if (v36 && !self->_separatorHidden)
@@ -855,16 +855,16 @@ LABEL_10:
         goto LABEL_20;
       }
 
-      v14 = [MEMORY[0x1E695DF90] dictionary];
-      v15 = [(CNAtomView *)self titleFont];
-      [v14 setObject:v15 forKey:*MEMORY[0x1E69DB648]];
+      _chevronTextAttachment = [MEMORY[0x1E695DF90] dictionary];
+      titleFont2 = [(CNAtomView *)self titleFont];
+      [_chevronTextAttachment setObject:titleFont2 forKey:*MEMORY[0x1E69DB648]];
 
       v16 = [MEMORY[0x1E69DC888] colorWithWhite:0.5 alpha:1.0];
-      [v14 setObject:v16 forKey:v10];
+      [_chevronTextAttachment setObject:v16 forKey:v10];
 
       v17 = objc_alloc(MEMORY[0x1E696AD40]);
       v18 = CNAUILocalizedAddressSeparator();
-      v13 = [v17 initWithString:v18 attributes:v14];
+      v13 = [v17 initWithString:v18 attributes:_chevronTextAttachment];
     }
 
     goto LABEL_10;
@@ -872,14 +872,14 @@ LABEL_10:
 
   v19 = objc_alloc(MEMORY[0x1E696AD40]);
   title = self->_title;
-  v8 = [(CNAtomView *)self titleFont];
-  v21 = [CNAtomView _defaultLabelAttributesWithFont:v8 wrappingEnabled:0];
+  titleFont3 = [(CNAtomView *)self titleFont];
+  v21 = [CNAtomView _defaultLabelAttributesWithFont:titleFont3 wrappingEnabled:0];
   v40 = [v19 initWithString:title attributes:v21];
 LABEL_20:
 
   [(UILabel *)self->_label setAttributedText:v40];
-  v35 = [(CNAtomView *)self effectiveTintColor];
-  [(UILabel *)self->_label setTextColor:v35];
+  effectiveTintColor2 = [(CNAtomView *)self effectiveTintColor];
+  [(UILabel *)self->_label setTextColor:effectiveTintColor2];
   [(CNAtomView *)self _updateOverlayLabelText];
   [(UILabel *)self->_label sizeToFit];
   [(CNAtomView *)self sizeToFit];
@@ -891,7 +891,7 @@ LABEL_20:
   [(CNAtomView *)self invalidateIntrinsicContentSize];
   if ([(CNAtomView *)self tintAdjustmentMode]== 2)
   {
-    v3 = 0;
+    tintColor = 0;
     goto LABEL_18;
   }
 
@@ -925,29 +925,29 @@ LABEL_20:
     if (([(CNAtomView *)self presentationOptions]& 0x20000) == 0)
     {
 LABEL_16:
-      v3 = [(CNAtomView *)self tintColor];
+      tintColor = [(CNAtomView *)self tintColor];
       goto LABEL_17;
     }
 
     v4 = +[CNAtomView _invalidAddressTintColor];
   }
 
-  v3 = v4;
+  tintColor = v4;
   if (!v4)
   {
     goto LABEL_16;
   }
 
 LABEL_17:
-  [(CNAtomView *)self _setEffectiveTintColor:v3];
+  [(CNAtomView *)self _setEffectiveTintColor:tintColor];
 LABEL_18:
-  v5 = [(CNAtomView *)self presentationOptions];
-  v6 = [(CNAtomView *)self _preferredIconVariant];
-  v11 = v3;
-  v7 = [(CNAtomView *)self isPrimaryAddressAtom];
-  v8 = [CNAtomView _badgeImagesForPresentationOptions:v5 iconOrder:&_badgeStyleOrder orderingLength:6 tintColor:v11 large:v7 variant:v6];
+  presentationOptions = [(CNAtomView *)self presentationOptions];
+  _preferredIconVariant = [(CNAtomView *)self _preferredIconVariant];
+  v11 = tintColor;
+  isPrimaryAddressAtom = [(CNAtomView *)self isPrimaryAddressAtom];
+  v8 = [CNAtomView _badgeImagesForPresentationOptions:presentationOptions iconOrder:&_badgeStyleOrder orderingLength:6 tintColor:v11 large:isPrimaryAddressAtom variant:_preferredIconVariant];
   [(CNModernAtomIconView *)self->_badgeIconView setIconImages:v8];
-  v9 = [CNAtomView _badgeImagesForPresentationOptions:v5 iconOrder:&_accessoryStyleOrder orderingLength:5 tintColor:v11 large:v7 variant:v6];
+  v9 = [CNAtomView _badgeImagesForPresentationOptions:presentationOptions iconOrder:&_accessoryStyleOrder orderingLength:5 tintColor:v11 large:isPrimaryAddressAtom variant:_preferredIconVariant];
   [(CNModernAtomIconView *)self->_accessoryIconView setIconImages:v9];
   [(CNAtomView *)self _updateActivityIndicator];
   [(CNAtomView *)self setNeedsLayout];
@@ -969,35 +969,35 @@ LABEL_18:
   [(CNModernAtomBackgroundView *)self->_background setNeedsLayout];
 }
 
-- (void)setPresentationOptions:(unint64_t)a3
+- (void)setPresentationOptions:(unint64_t)options
 {
-  if (self->_presentationOptions != a3)
+  if (self->_presentationOptions != options)
   {
-    self->_presentationOptions = a3;
+    self->_presentationOptions = options;
     [(CNAtomView *)self _invalidatePresentationOptions];
   }
 }
 
-- (void)_setPresentationOption:(unint64_t)a3 enabled:(BOOL)a4
+- (void)_setPresentationOption:(unint64_t)option enabled:(BOOL)enabled
 {
-  if (a4)
+  if (enabled)
   {
-    v4 = self->_disabledPresentationOptions & ~a3;
+    v4 = self->_disabledPresentationOptions & ~option;
   }
 
   else
   {
-    v4 = self->_disabledPresentationOptions | a3;
+    v4 = self->_disabledPresentationOptions | option;
   }
 
   self->_disabledPresentationOptions = v4;
   [(CNAtomView *)self _invalidatePresentationOptions];
 }
 
-- (void)setSeparatorHidden:(BOOL)a3
+- (void)setSeparatorHidden:(BOOL)hidden
 {
-  v3 = a3;
-  self->_separatorHidden = a3;
+  hiddenCopy = hidden;
+  self->_separatorHidden = hidden;
   if ([(CNAtomView *)self isWrappingEnabled])
   {
     [(CNAtomView *)self _updateLabelAttributes];
@@ -1005,9 +1005,9 @@ LABEL_18:
 
   else
   {
-    v5 = [(CNAtomView *)self backgroundView];
-    v6 = [v5 separatorView];
-    [v6 setHidden:v3];
+    backgroundView = [(CNAtomView *)self backgroundView];
+    separatorView = [backgroundView separatorView];
+    [separatorView setHidden:hiddenCopy];
   }
 
   [(CNAtomView *)self invalidateIntrinsicContentSize];
@@ -1020,18 +1020,18 @@ LABEL_18:
     return 1;
   }
 
-  v3 = [(CNAtomView *)self backgroundView];
-  v2 = [v3 separatorStyle] == 2;
+  backgroundView = [(CNAtomView *)self backgroundView];
+  v2 = [backgroundView separatorStyle] == 2;
 
   return v2;
 }
 
-- (void)setSeparatorStyle:(int)a3
+- (void)setSeparatorStyle:(int)style
 {
-  v3 = *&a3;
-  self->_separatorStyle = a3;
-  v5 = [(CNAtomView *)self backgroundView];
-  [v5 setSeparatorStyle:v3];
+  v3 = *&style;
+  self->_separatorStyle = style;
+  backgroundView = [(CNAtomView *)self backgroundView];
+  [backgroundView setSeparatorStyle:v3];
 
   if ([(CNAtomView *)self isWrappingEnabled])
   {
@@ -1048,20 +1048,20 @@ LABEL_18:
 
 - (int)separatorStyle
 {
-  v2 = [(CNAtomView *)self backgroundView];
-  v3 = [v2 separatorStyle];
+  backgroundView = [(CNAtomView *)self backgroundView];
+  separatorStyle = [backgroundView separatorStyle];
 
-  return v3;
+  return separatorStyle;
 }
 
-- (void)setSeparatorIsLeftAligned:(BOOL)a3
+- (void)setSeparatorIsLeftAligned:(BOOL)aligned
 {
-  if (self->_separatorIsLeftAligned != a3)
+  if (self->_separatorIsLeftAligned != aligned)
   {
-    self->_separatorIsLeftAligned = a3;
+    self->_separatorIsLeftAligned = aligned;
     [(CNAtomView *)self _updateIconViewsSemanticContentAttribute];
-    v5 = [(CNAtomView *)self backgroundView];
-    [v5 layoutSubviews];
+    backgroundView = [(CNAtomView *)self backgroundView];
+    [backgroundView layoutSubviews];
 
     [(CNAtomView *)self layoutSubviews];
   }
@@ -1074,53 +1074,53 @@ LABEL_18:
     return 0;
   }
 
-  v3 = [(CNAtomView *)self traitCollection];
-  v4 = [v3 activeAppearance] == 1;
+  traitCollection = [(CNAtomView *)self traitCollection];
+  v4 = [traitCollection activeAppearance] == 1;
 
   return v4;
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 style:(unint64_t)a5
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated style:(unint64_t)style
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(CNAtomView *)self traitCollection];
-  v10 = [v9 activeAppearance];
+  animatedCopy = animated;
+  selectedCopy = selected;
+  traitCollection = [(CNAtomView *)self traitCollection];
+  activeAppearance = [traitCollection activeAppearance];
 
-  v11 = [(CNAtomView *)self backgroundView];
-  [v11 setSelected:v7 animated:v6 style:a5 updateVisualSelection:v10 == 1];
+  backgroundView = [(CNAtomView *)self backgroundView];
+  [backgroundView setSelected:selectedCopy animated:animatedCopy style:style updateVisualSelection:activeAppearance == 1];
 
-  if (self->_selected != v7)
+  if (self->_selected != selectedCopy)
   {
-    self->_selected = v7;
-    if (v10 == 1)
+    self->_selected = selectedCopy;
+    if (activeAppearance == 1)
     {
 
-      [(CNAtomView *)self displaySelectionChangeWithAnimation:v6];
+      [(CNAtomView *)self displaySelectionChangeWithAnimation:animatedCopy];
     }
   }
 }
 
-- (void)displaySelectionChangeWithAnimation:(BOOL)a3
+- (void)displaySelectionChangeWithAnimation:(BOOL)animation
 {
   [(CNAtomView *)self _updateActivityIndicator];
-  v5 = [(CNAtomView *)self appearsSelected];
+  appearsSelected = [(CNAtomView *)self appearsSelected];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke;
   v9[3] = &unk_1E7CD2750;
   v9[4] = self;
-  v10 = v5;
+  v10 = appearsSelected;
   v6 = MEMORY[0x1B8CB9350](v9);
   v7 = v6;
-  if (!a3)
+  if (!animation)
   {
     (*(v6 + 16))(v6);
     goto LABEL_5;
   }
 
   [MEMORY[0x1E69DD250] animateWithDuration:v6 animations:0.15];
-  if (v5)
+  if (appearsSelected)
   {
 LABEL_5:
     [(CNAtomView *)self _updateCompositingFilters];
@@ -1158,18 +1158,18 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
   }
 }
 
-- (void)updateDisplayForInvalidAddressForSelectedState:(BOOL)a3
+- (void)updateDisplayForInvalidAddressForSelectedState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
-    v8 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(CNAtomView *)self _setEffectiveTintColor:v8];
-    v5 = [(CNAtomView *)self backgroundView];
-    [v5 setTintColor:v4];
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(CNAtomView *)self _setEffectiveTintColor:systemWhiteColor];
+    backgroundView = [(CNAtomView *)self backgroundView];
+    [backgroundView setTintColor:secondaryLabelColor];
 
     LOBYTE(v7) = 1;
-    v6 = [CNAtomView _badgeImagesForPresentationOptions:self->_presentationOptions iconOrder:&_badgeStyleOrder orderingLength:6 tintColor:v8 large:[(CNAtomView *)self isPrimaryAddressAtom] variant:[(CNAtomView *)self _preferredIconVariant] selected:v7];
+    v6 = [CNAtomView _badgeImagesForPresentationOptions:self->_presentationOptions iconOrder:&_badgeStyleOrder orderingLength:6 tintColor:systemWhiteColor large:[(CNAtomView *)self isPrimaryAddressAtom] variant:[(CNAtomView *)self _preferredIconVariant] selected:v7];
     [(CNModernAtomIconView *)self->_badgeIconView setIconImages:v6];
   }
 
@@ -1186,8 +1186,8 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
   v3 = [v2 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v3 setAutoresizingMask:16];
   [v3 setOpaque:0];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   [v3 setAdjustsFontForContentSizeCategory:1];
   [v3 setUserInteractionEnabled:0];
@@ -1200,32 +1200,32 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
 {
   if (self->_overlayLabelForNonColoredGlyphs)
   {
-    v3 = [(UILabel *)self->_label text];
+    text = [(UILabel *)self->_label text];
     v4 = CNSubstringRangesContainingEmojiInString();
 
     [(CNAtomView *)self setupOverlayLabelTextForEmojiRanges:v4];
   }
 }
 
-- (void)setupOverlayLabelTextForEmojiRanges:(id)a3
+- (void)setupOverlayLabelTextForEmojiRanges:(id)ranges
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rangesCopy = ranges;
   v5 = objc_alloc(MEMORY[0x1E696AD40]);
-  v6 = [(UILabel *)self->_label attributedText];
-  v7 = [v5 initWithAttributedString:v6];
+  attributedText = [(UILabel *)self->_label attributedText];
+  v7 = [v5 initWithAttributedString:attributedText];
 
   v8 = [v7 length];
   [v7 addAttribute:*MEMORY[0x1E69DB648] value:self->_titleFont range:{0, v8}];
   v9 = *MEMORY[0x1E69DB650];
-  v10 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 addAttribute:v9 value:v10 range:{0, v8}];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v7 addAttribute:v9 value:clearColor range:{0, v8}];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v4;
+  v11 = rangesCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -1242,9 +1242,9 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
         }
 
         v16 = *(*(&v20 + 1) + 8 * v15);
-        v17 = [MEMORY[0x1E69DC888] labelColor];
-        v18 = [v16 rangeValue];
-        [v7 addAttribute:v9 value:v17 range:{v18, v19}];
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
+        rangeValue = [v16 rangeValue];
+        [v7 addAttribute:v9 value:labelColor range:{rangeValue, v19}];
 
         ++v15;
       }
@@ -1263,7 +1263,7 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
 {
   if (!self->_overlayLabelForNonColoredGlyphs)
   {
-    v3 = [(UILabel *)self->_label text];
+    text = [(UILabel *)self->_label text];
     v6 = CNSubstringRangesContainingEmojiInString();
 
     if ([v6 count])
@@ -1296,13 +1296,13 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
   v10[0] = self->_badgeIconView;
   v10[1] = self->_accessoryIconView;
   v10[2] = self->_label;
-  v6 = [(CNAtomView *)self backgroundView];
-  v10[3] = [v6 separatorView];
+  backgroundView = [(CNAtomView *)self backgroundView];
+  v10[3] = [backgroundView separatorView];
 
   for (i = 0; i != 4; ++i)
   {
-    v8 = [v10[i] layer];
-    [v8 setCompositingFilter:v5];
+    layer = [v10[i] layer];
+    [layer setCompositingFilter:v5];
   }
 
   for (j = 3; j != -1; --j)
@@ -1310,23 +1310,23 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = CNAtomView;
-  [(CNAtomView *)&v9 traitCollectionDidChange:v4];
+  [(CNAtomView *)&v9 traitCollectionDidChange:changeCopy];
   [(CNAtomView *)self _updateActivityIndicator];
   if ([(CNAtomView *)self isSelected])
   {
-    v5 = [(CNAtomView *)self traitCollection];
-    v6 = [v5 activeAppearance];
-    v7 = [v4 activeAppearance];
+    traitCollection = [(CNAtomView *)self traitCollection];
+    activeAppearance = [traitCollection activeAppearance];
+    activeAppearance2 = [changeCopy activeAppearance];
 
-    if (v6 != v7)
+    if (activeAppearance != activeAppearance2)
     {
-      v8 = [(CNAtomView *)self backgroundView];
-      [v8 displaySelectionChangeWithAnimation:0];
+      backgroundView = [(CNAtomView *)self backgroundView];
+      [backgroundView displaySelectionChangeWithAnimation:0];
 
       [(CNAtomView *)self displaySelectionChangeWithAnimation:0];
     }
@@ -1343,8 +1343,8 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
 
   else
   {
-    v5 = [(CNAtomView *)self traitCollection];
-    if ([v5 userInterfaceStyle] == 2)
+    traitCollection = [(CNAtomView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       v4 = 3;
     }
@@ -1393,7 +1393,7 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
 {
   if ([(CNAtomView *)self isPrimaryAddressAtom])
   {
-    v3 = [objc_opt_class() primaryAtomFont];
+    primaryAtomFont = [objc_opt_class() primaryAtomFont];
   }
 
   else
@@ -1401,8 +1401,8 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
     titleFont = self->_titleFont;
     if (titleFont)
     {
-      v5 = [objc_opt_class() primaryAtomFont];
-      v6 = [(UIFont *)titleFont isEqual:v5];
+      primaryAtomFont2 = [objc_opt_class() primaryAtomFont];
+      v6 = [(UIFont *)titleFont isEqual:primaryAtomFont2];
 
       if (!v6)
       {
@@ -1410,17 +1410,17 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
       }
     }
 
-    v3 = [objc_opt_class() defaultFont];
+    primaryAtomFont = [objc_opt_class() defaultFont];
   }
 
-  v7 = v3;
+  v7 = primaryAtomFont;
   [(CNAtomView *)self setTitleFont:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([(CNAtomView *)self isWrappingEnabled])
   {
     [(CNAtomView *)self _leftPadding];
@@ -1444,16 +1444,16 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
   return result;
 }
 
-- (double)preferredWidthWithSizeConstraints:(CGSize)a3
+- (double)preferredWidthWithSizeConstraints:(CGSize)constraints
 {
-  height = a3.height;
-  width = a3.width;
+  height = constraints.height;
+  width = constraints.width;
   [(CNAtomView *)self _leftPadding];
   v7 = v6;
   [(CNAtomView *)self _rightPadding];
   v9 = fmax(width - (v7 + v8), 0.0);
-  v10 = [(UILabel *)self->_label attributedText];
-  [v10 boundingRectWithSize:1 options:0 context:{v9, height}];
+  attributedText = [(UILabel *)self->_label attributedText];
+  [attributedText boundingRectWithSize:1 options:0 context:{v9, height}];
   v12 = ceil(v11);
 
   [(CNAtomView *)self _leftPadding];
@@ -1482,14 +1482,14 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
   v12 = v11;
   [(UILabel *)self->_label bounds];
   v14 = v13;
-  v15 = [(UILabel *)self->_label font];
-  [v15 lineHeight];
+  font = [(UILabel *)self->_label font];
+  [font lineHeight];
   v17 = round(v14 / v16);
 
   if ([(CNAtomView *)self isWrappingEnabled])
   {
-    v18 = [(CNAtomView *)self titleLabel];
-    [v18 frame];
+    titleLabel = [(CNAtomView *)self titleLabel];
+    [titleLabel frame];
     v12 = v19 + 8.0;
 
     if (v17 == 1.0)
@@ -1510,8 +1510,8 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
     v21 = 0.0;
     if (![(CNAtomView *)self separatorHidden]&& ![(CNAtomView *)self separatorStyle])
     {
-      v22 = [(CNAtomView *)self backgroundView];
-      [v22 separatorWidth];
+      backgroundView = [(CNAtomView *)self backgroundView];
+      [backgroundView separatorWidth];
       v12 = v12 - v23;
     }
   }
@@ -1564,8 +1564,8 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
     [(UILabel *)self->_overlayLabelForNonColoredGlyphs setFrame:?];
   }
 
-  v41 = [(CNAtomView *)self isWrappingEnabled];
-  if (v17 != 1.0 || !v41)
+  isWrappingEnabled = [(CNAtomView *)self isWrappingEnabled];
+  if (v17 != 1.0 || !isWrappingEnabled)
   {
     titleLabelFillView = self->_titleLabelFillView;
     v44 = v34;
@@ -1641,8 +1641,8 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
         goto LABEL_39;
       }
 
-      v67 = [(CNAtomView *)self backgroundView];
-      [v67 separatorWidth];
+      backgroundView2 = [(CNAtomView *)self backgroundView];
+      [backgroundView2 separatorWidth];
       v66 = v66 + v68;
     }
 
@@ -1660,8 +1660,8 @@ void __50__CNAtomView_displaySelectionChangeWithAnimation___block_invoke(uint64_
         goto LABEL_39;
       }
 
-      v67 = [(CNAtomView *)self backgroundView];
-      [v67 separatorWidth];
+      backgroundView2 = [(CNAtomView *)self backgroundView];
+      [backgroundView2 separatorWidth];
       v66 = v66 - v70;
     }
 
@@ -1678,8 +1678,8 @@ LABEL_39:
 
 - (CGRect)selectionFrame
 {
-  v3 = [(CNModernAtomBackgroundView *)self->_background selectedView];
-  [v3 frame];
+  selectedView = [(CNModernAtomBackgroundView *)self->_background selectedView];
+  [selectedView frame];
   [(CNAtomView *)self convertRect:self->_background fromView:?];
   v5 = v4;
   v7 = v6;
@@ -1718,8 +1718,8 @@ LABEL_39:
   v3 = 3.0;
   if (![(CNAtomView *)self separatorHidden])
   {
-    v4 = [(CNAtomView *)self backgroundView];
-    [v4 separatorWidth];
+    backgroundView = [(CNAtomView *)self backgroundView];
+    [backgroundView separatorWidth];
     v3 = v5 + 5.0;
   }
 
@@ -1734,7 +1734,7 @@ LABEL_39:
 
 - (double)_rightPadding
 {
-  v3 = [(CNAtomView *)self separatorHidden];
+  separatorHidden = [(CNAtomView *)self separatorHidden];
   if ([(CNAtomView *)self isWrappingEnabled])
   {
     v4 = 1;
@@ -1742,18 +1742,18 @@ LABEL_39:
 
   else
   {
-    v5 = [(CNModernAtomIconView *)self->_accessoryIconView iconImages];
-    v4 = [v5 count] == 0;
+    iconImages = [(CNModernAtomIconView *)self->_accessoryIconView iconImages];
+    v4 = [iconImages count] == 0;
   }
 
   v6 = 8.0;
-  if (!v3 || !v4)
+  if (!separatorHidden || !v4)
   {
     v6 = 6.0;
-    if (!v3)
+    if (!separatorHidden)
     {
-      v7 = [(CNAtomView *)self backgroundView];
-      [v7 separatorWidth];
+      backgroundView = [(CNAtomView *)self backgroundView];
+      [backgroundView separatorWidth];
       v9 = v8 + 6.0;
 
       v6 = v9 + 2.0;
@@ -1795,20 +1795,20 @@ LABEL_39:
   return v3;
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scalingFactor != a3)
+  if (self->_scalingFactor != scale)
   {
-    self->_scalingFactor = a3;
-    v5 = [(CNAtomView *)self backgroundView];
-    [v5 setScalingFactor:a3];
+    self->_scalingFactor = scale;
+    backgroundView = [(CNAtomView *)self backgroundView];
+    [backgroundView setScalingFactor:scale];
 
-    v6 = [(CNAtomView *)self titleFont];
-    v7 = v6;
-    if (a3 != 1.0)
+    titleFont = [(CNAtomView *)self titleFont];
+    v7 = titleFont;
+    if (scale != 1.0)
     {
-      v9 = v6;
-      v8 = [v6 _fontScaledByScaleFactor:self->_scalingFactor];
+      v9 = titleFont;
+      v8 = [titleFont _fontScaledByScaleFactor:self->_scalingFactor];
 
       v7 = v8;
     }
@@ -1851,18 +1851,18 @@ LABEL_39:
   return result;
 }
 
-- (void)performBuildInAnimationFromTextColor:(id)a3 withDuration:(double)a4
+- (void)performBuildInAnimationFromTextColor:(id)color withDuration:(double)duration
 {
   v6 = MEMORY[0x1E69DCC10];
-  v7 = a3;
+  colorCopy = color;
   v8 = [v6 alloc];
   v9 = [v8 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v10 = [(UILabel *)self->_label attributedText];
-  [v9 setAttributedText:v10];
+  attributedText = [(UILabel *)self->_label attributedText];
+  [v9 setAttributedText:attributedText];
 
   [(UILabel *)self->_label frame];
   [v9 setFrame:?];
-  [v9 setTextColor:v7];
+  [v9 setTextColor:colorCopy];
 
   [(CNAtomView *)self addSubview:v9];
   [(CNModernAtomBackgroundView *)self->_background setAlpha:0.0];
@@ -1880,7 +1880,7 @@ LABEL_39:
   v13[3] = &unk_1E7CD1D90;
   v14 = v16;
   v12 = v16;
-  [v11 animateWithDuration:v15 animations:v13 completion:a4];
+  [v11 animateWithDuration:v15 animations:v13 completion:duration];
 }
 
 uint64_t __64__CNAtomView_performBuildInAnimationFromTextColor_withDuration___block_invoke(uint64_t a1)

@@ -1,6 +1,6 @@
 @interface SSPurchasableAppItem
 + (id)allPropertyKeys;
-+ (id)itemsFromDatabase:(id)a3 forAccount:(int64_t)a4 matching:(id)a5 sortedBy:(id)a6 sortAscending:(BOOL)a7;
++ (id)itemsFromDatabase:(id)database forAccount:(int64_t)account matching:(id)matching sortedBy:(id)by sortAscending:(BOOL)ascending;
 - (BOOL)hasMessagesExtension;
 - (BOOL)is32BitOnly;
 - (BOOL)isFamilyShareable;
@@ -28,7 +28,7 @@
 
 @implementation SSPurchasableAppItem
 
-+ (id)itemsFromDatabase:(id)a3 forAccount:(int64_t)a4 matching:(id)a5 sortedBy:(id)a6 sortAscending:(BOOL)a7
++ (id)itemsFromDatabase:(id)database forAccount:(int64_t)account matching:(id)matching sortedBy:(id)by sortAscending:(BOOL)ascending
 {
   v11 = 0;
   v12 = &v11;
@@ -40,12 +40,12 @@
   v9[1] = 3221225472;
   v9[2] = __85__SSPurchasableAppItem_itemsFromDatabase_forAccount_matching_sortedBy_sortAscending___block_invoke;
   v9[3] = &unk_1E84B31C8;
-  v10 = a7;
-  v9[4] = a6;
-  v9[5] = a5;
+  ascendingCopy = ascending;
+  v9[4] = by;
+  v9[5] = matching;
   v9[6] = &v11;
-  v9[7] = a4;
-  [a3 readUsingTransactionBlock:v9];
+  v9[7] = account;
+  [database readUsingTransactionBlock:v9];
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
   return v7;
@@ -124,23 +124,23 @@ void __85__SSPurchasableAppItem_itemsFromDatabase_forAccount_matching_sortedBy_s
 
 - (id)accountIdentifier
 {
-  v2 = [(SSPurchasableItem *)self propertyValues];
+  propertyValues = [(SSPurchasableItem *)self propertyValues];
 
-  return [v2 objectForKey:@"account_unique_identifier"];
+  return [propertyValues objectForKey:@"account_unique_identifier"];
 }
 
 - (id)category
 {
-  v2 = [(SSPurchasableItem *)self propertyValues];
+  propertyValues = [(SSPurchasableItem *)self propertyValues];
 
-  return [v2 objectForKey:@"category"];
+  return [propertyValues objectForKey:@"category"];
 }
 
 - (id)companyName
 {
-  v2 = [(SSPurchasableItem *)self propertyValues];
+  propertyValues = [(SSPurchasableItem *)self propertyValues];
 
-  return [v2 objectForKey:@"company_title"];
+  return [propertyValues objectForKey:@"company_title"];
 }
 
 - (int64_t)contentRatingFlags
@@ -152,9 +152,9 @@ void __85__SSPurchasableAppItem_itemsFromDatabase_forAccount_matching_sortedBy_s
 
 - (id)bundleID
 {
-  v2 = [(SSPurchasableItem *)self propertyValues];
+  propertyValues = [(SSPurchasableItem *)self propertyValues];
 
-  return [v2 objectForKey:@"bundle_id"];
+  return [propertyValues objectForKey:@"bundle_id"];
 }
 
 - (BOOL)hasMessagesExtension
@@ -166,9 +166,9 @@ void __85__SSPurchasableAppItem_itemsFromDatabase_forAccount_matching_sortedBy_s
 
 - (id)iconTitle
 {
-  v2 = [(SSPurchasableItem *)self propertyValues];
+  propertyValues = [(SSPurchasableItem *)self propertyValues];
 
-  return [v2 objectForKey:@"icon_title"];
+  return [propertyValues objectForKey:@"icon_title"];
 }
 
 - (id)iconURL
@@ -202,9 +202,9 @@ void __85__SSPurchasableAppItem_itemsFromDatabase_forAccount_matching_sortedBy_s
 
 - (id)longTitle
 {
-  v2 = [(SSPurchasableItem *)self propertyValues];
+  propertyValues = [(SSPurchasableItem *)self propertyValues];
 
-  return [v2 objectForKey:@"long_title"];
+  return [propertyValues objectForKey:@"long_title"];
 }
 
 - (unsigned)minimumOS
@@ -216,9 +216,9 @@ void __85__SSPurchasableAppItem_itemsFromDatabase_forAccount_matching_sortedBy_s
 
 - (id)ovalIconURLString
 {
-  v2 = [(SSPurchasableItem *)self propertyValues];
+  propertyValues = [(SSPurchasableItem *)self propertyValues];
 
-  return [v2 objectForKey:@"oval_icon_url"];
+  return [propertyValues objectForKey:@"oval_icon_url"];
 }
 
 - (BOOL)is32BitOnly
@@ -244,16 +244,16 @@ void __85__SSPurchasableAppItem_itemsFromDatabase_forAccount_matching_sortedBy_s
 
 - (id)redownloadParams
 {
-  v2 = [(SSPurchasableItem *)self propertyValues];
+  propertyValues = [(SSPurchasableItem *)self propertyValues];
 
-  return [v2 objectForKey:@"redownload_params"];
+  return [propertyValues objectForKey:@"redownload_params"];
 }
 
 - (id)humanReadableVersion
 {
-  v2 = [(SSPurchasableItem *)self propertyValues];
+  propertyValues = [(SSPurchasableItem *)self propertyValues];
 
-  return [v2 objectForKey:@"version_human_readable"];
+  return [propertyValues objectForKey:@"version_human_readable"];
 }
 
 - (int64_t)iTunesVersion
@@ -272,9 +272,9 @@ void __85__SSPurchasableAppItem_itemsFromDatabase_forAccount_matching_sortedBy_s
 
 - (id)requiredCapabilitiesString
 {
-  v2 = [(SSPurchasableItem *)self propertyValues];
+  propertyValues = [(SSPurchasableItem *)self propertyValues];
 
-  return [v2 objectForKey:@"required_capabilities"];
+  return [propertyValues objectForKey:@"required_capabilities"];
 }
 
 - (id)description
@@ -290,7 +290,7 @@ void __85__SSPurchasableAppItem_itemsFromDatabase_forAccount_matching_sortedBy_s
   block[1] = 3221225472;
   block[2] = __39__SSPurchasableAppItem_allPropertyKeys__block_invoke;
   block[3] = &unk_1E84AC408;
-  block[4] = a1;
+  block[4] = self;
   if (allPropertyKeys_onceToken_0 != -1)
   {
     dispatch_once(&allPropertyKeys_onceToken_0, block);

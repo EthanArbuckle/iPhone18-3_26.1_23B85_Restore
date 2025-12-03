@@ -7,8 +7,8 @@
 - (id)nps_pairedPdrDevice
 {
   v3 = +[NPSPairedDeviceRegistry registry];
-  v4 = [(PSYServiceSyncSession *)self pairingID];
-  v5 = [v3 deviceForPairingID:v4];
+  pairingID = [(PSYServiceSyncSession *)self pairingID];
+  v5 = [v3 deviceForPairingID:pairingID];
 
   return v5;
 }

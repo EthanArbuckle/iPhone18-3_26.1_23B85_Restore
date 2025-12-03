@@ -1,19 +1,19 @@
 @interface PassRelevancyDates
-+ (BOOL)hasRelevancyDatesForPassPID:(unint64_t)a3 inDatabase:(id)a4;
-+ (id)_predicateForPassPID:(int64_t)a3;
-+ (id)_propertyValuesForPassRelevancyDates:(id)a3 passPID:(int64_t)a4;
-+ (id)_relevantDatesInDatabase:(id)a3 matchingPredicate:(id)a4;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)relevancyDatesForPassPID:(unint64_t)a3 inDatabase:(id)a4;
-+ (void)deleteEntitiesForPassPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)insertPassRelevancyDates:(id)a3 forPassPID:(int64_t)a4 inDatabase:(id)a5;
++ (BOOL)hasRelevancyDatesForPassPID:(unint64_t)d inDatabase:(id)database;
++ (id)_predicateForPassPID:(int64_t)d;
++ (id)_propertyValuesForPassRelevancyDates:(id)dates passPID:(int64_t)d;
++ (id)_relevantDatesInDatabase:(id)database matchingPredicate:(id)predicate;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)relevancyDatesForPassPID:(unint64_t)d inDatabase:(id)database;
++ (void)deleteEntitiesForPassPID:(int64_t)d inDatabase:(id)database;
++ (void)insertPassRelevancyDates:(id)dates forPassPID:(int64_t)d inDatabase:(id)database;
 @end
 
 @implementation PassRelevancyDates
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"pass_pid";
   }
@@ -24,62 +24,62 @@
   }
 }
 
-+ (void)insertPassRelevancyDates:(id)a3 forPassPID:(int64_t)a4 inDatabase:(id)a5
++ (void)insertPassRelevancyDates:(id)dates forPassPID:(int64_t)d inDatabase:(id)database
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000F5978;
   v8[3] = &unk_10083F170;
-  v11 = a1;
-  v12 = a4;
-  v9 = a3;
-  v10 = a5;
-  v6 = v10;
-  v7 = v9;
+  selfCopy = self;
+  dCopy = d;
+  datesCopy = dates;
+  databaseCopy = database;
+  v6 = databaseCopy;
+  v7 = datesCopy;
   sub_1005D4424(v6, v8);
 }
 
-+ (BOOL)hasRelevancyDatesForPassPID:(unint64_t)a3 inDatabase:(id)a4
++ (BOOL)hasRelevancyDatesForPassPID:(unint64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForPassPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPassPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8 != 0;
 }
 
-+ (id)relevancyDatesForPassPID:(unint64_t)a3 inDatabase:(id)a4
++ (id)relevancyDatesForPassPID:(unint64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForPassPID:a3];
-  v8 = [a1 _relevantDatesInDatabase:v6 matchingPredicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPassPID:d];
+  v8 = [self _relevantDatesInDatabase:databaseCopy matchingPredicate:v7];
 
   return v8;
 }
 
-+ (void)deleteEntitiesForPassPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForPassPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForPassPID:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForPassPID:d];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)_predicateForPassPID:(int64_t)a3
++ (id)_predicateForPassPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"pass_pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_relevantDatesInDatabase:(id)a3 matchingPredicate:(id)a4
++ (id)_relevantDatesInDatabase:(id)database matchingPredicate:(id)predicate
 {
-  v5 = a4;
-  v6 = a3;
+  predicateCopy = predicate;
+  databaseCopy = database;
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [(SQLiteEntity *)PassRelevancyDates queryWithDatabase:v6 predicate:v5];
+  v8 = [(SQLiteEntity *)PassRelevancyDates queryWithDatabase:databaseCopy predicate:predicateCopy];
 
   v17[0] = @"relevant_date";
   v17[1] = @"start_date";
@@ -109,24 +109,24 @@
   return v12;
 }
 
-+ (id)_propertyValuesForPassRelevancyDates:(id)a3 passPID:(int64_t)a4
++ (id)_propertyValuesForPassRelevancyDates:(id)dates passPID:(int64_t)d
 {
-  v5 = a3;
+  datesCopy = dates;
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [v5 effectiveStartDate];
+  effectiveStartDate = [datesCopy effectiveStartDate];
   v8 = _SQLValueForDate();
   [v6 setObjectOrNull:v8 forKey:@"start_date"];
 
-  v9 = [v5 effectiveEndDate];
+  effectiveEndDate = [datesCopy effectiveEndDate];
   v10 = _SQLValueForDate();
   [v6 setObjectOrNull:v10 forKey:@"end_date"];
 
-  v11 = [v5 date];
+  date = [datesCopy date];
 
   v12 = _SQLValueForDate();
   [v6 setObjectOrNull:v12 forKey:@"relevant_date"];
 
-  v13 = [NSNumber numberWithLongLong:a4];
+  v13 = [NSNumber numberWithLongLong:d];
   [v6 setObject:v13 forKey:@"pass_pid"];
 
   v14 = [v6 copy];

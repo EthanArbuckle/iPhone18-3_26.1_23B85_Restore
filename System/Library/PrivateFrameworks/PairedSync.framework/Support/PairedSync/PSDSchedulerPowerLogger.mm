@@ -1,24 +1,24 @@
 @interface PSDSchedulerPowerLogger
-- (id)stringForPowerLogEvent:(unint64_t)a3;
-- (void)didFinishActivity:(id)a3;
+- (id)stringForPowerLogEvent:(unint64_t)event;
+- (void)didFinishActivity:(id)activity;
 - (void)didFinishSession;
-- (void)didStartActivity:(id)a3;
-- (void)didStartSyncSessionWithActivityCount:(unint64_t)a3 isResuming:(BOOL)a4;
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4;
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4;
+- (void)didStartActivity:(id)activity;
+- (void)didStartSyncSessionWithActivityCount:(unint64_t)count isResuming:(BOOL)resuming;
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update;
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session;
 @end
 
 @implementation PSDSchedulerPowerLogger
 
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 activities];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  activities = [sessionCopy activities];
+  v7 = [activities countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -30,7 +30,7 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activities);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) activityState] != 2)
@@ -39,7 +39,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [activities countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -50,75 +50,75 @@
     v9 = 0;
   }
 
-  -[PSDSchedulerPowerLogger didStartSyncSessionWithActivityCount:isResuming:](self, "didStartSyncSessionWithActivityCount:isResuming:", v9, [v5 syncSessionState] == 1);
+  -[PSDSchedulerPowerLogger didStartSyncSessionWithActivityCount:isResuming:](self, "didStartSyncSessionWithActivityCount:isResuming:", v9, [sessionCopy syncSessionState] == 1);
 }
 
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100016DE4;
   v8[3] = &unk_10002C9A0;
   v8[4] = self;
-  v5 = a4;
-  [v5 enumerateNewlyRunningActivitiesWithBlock:v8];
+  updateCopy = update;
+  [updateCopy enumerateNewlyRunningActivitiesWithBlock:v8];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100016DEC;
   v7[3] = &unk_10002C9A0;
   v7[4] = self;
-  [v5 enumerateNewlyCompletedActivitiesWithBlock:v7];
-  v6 = [v5 didUpdateCompleteSyncSession];
+  [updateCopy enumerateNewlyCompletedActivitiesWithBlock:v7];
+  didUpdateCompleteSyncSession = [updateCopy didUpdateCompleteSyncSession];
 
-  if (v6)
+  if (didUpdateCompleteSyncSession)
   {
     [(PSDSchedulerPowerLogger *)self didFinishSession];
   }
 }
 
-- (void)didStartActivity:(id)a3
+- (void)didStartActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = [(PSDSchedulerPowerLogger *)self stringForPowerLogEvent:0];
   v9[0] = @"state";
   v9[1] = @"activity";
   v10[0] = v5;
-  v6 = [v4 activityInfo];
+  activityInfo = [activityCopy activityInfo];
 
-  v7 = [v6 label];
-  v10[1] = v7;
+  label = [activityInfo label];
+  v10[1] = label;
   v8 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   PLLogRegisteredEvent();
 }
 
-- (void)didFinishActivity:(id)a3
+- (void)didFinishActivity:(id)activity
 {
-  v8 = [a3 error];
+  error = [activity error];
   v4 = [(PSDSchedulerPowerLogger *)self stringForPowerLogEvent:1];
-  v5 = [NSNumber numberWithBool:v8 == 0];
+  v5 = [NSNumber numberWithBool:error == 0];
   v6 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v4, @"state", v5, @"success", 0];
 
-  if (v8)
+  if (error)
   {
-    v7 = [v8 localizedDescription];
-    if (v7)
+    localizedDescription = [error localizedDescription];
+    if (localizedDescription)
     {
-      [v6 setObject:v7 forKeyedSubscript:@"error"];
+      [v6 setObject:localizedDescription forKeyedSubscript:@"error"];
     }
   }
 
   PLLogRegisteredEvent();
 }
 
-- (void)didStartSyncSessionWithActivityCount:(unint64_t)a3 isResuming:(BOOL)a4
+- (void)didStartSyncSessionWithActivityCount:(unint64_t)count isResuming:(BOOL)resuming
 {
-  v4 = a4;
+  resumingCopy = resuming;
   v8 = [(PSDSchedulerPowerLogger *)self stringForPowerLogEvent:0];
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
+  v6 = [NSNumber numberWithUnsignedInteger:count];
   v7 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v8, @"state", v6, @"activityCount", 0];
 
-  if (v4)
+  if (resumingCopy)
   {
     [v7 setObject:&__kCFBooleanTrue forKeyedSubscript:@"resuming"];
   }
@@ -135,15 +135,15 @@
   PLLogRegisteredEvent();
 }
 
-- (id)stringForPowerLogEvent:(unint64_t)a3
+- (id)stringForPowerLogEvent:(unint64_t)event
 {
   v3 = @"end";
-  if (a3 != 1)
+  if (event != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (event)
   {
     return v3;
   }

@@ -1,9 +1,9 @@
 @interface UIInlineTextCompletionController
-+ (id)_documentTextThroughSelection:(id)a3;
-- (BOOL)_doesFirstPredictedCharacterEndWord:(id)a3;
++ (id)_documentTextThroughSelection:(id)selection;
+- (BOOL)_doesFirstPredictedCharacterEndWord:(id)word;
 - (BOOL)_inlineCompletionPreference;
-- (BOOL)_isCompletion:(id)a3 continuingLastCompletion:(id)a4;
-- (BOOL)_shouldAcceptFirstWordOfCandidateForWordTerminator:(unsigned int)a3;
+- (BOOL)_isCompletion:(id)completion continuingLastCompletion:(id)lastCompletion;
+- (BOOL)_shouldAcceptFirstWordOfCandidateForWordTerminator:(unsigned int)terminator;
 - (BOOL)_shouldShowInlineTextCompletionCoachingUI;
 - (BOOL)canUndoAcceptedTextCompletion;
 - (BOOL)hasPrompt;
@@ -11,39 +11,39 @@
 - (UIKBAnalyticsDispatcher)analyticsDispatcher;
 - (UITextInput)inputDelegate;
 - (_UIInlineTextCompletion)oneWordTextCompletion;
-- (id)_acceptTextCompletionWithInteraction:(int64_t)a3 wordTerminator:(id)a4;
+- (id)_acceptTextCompletionWithInteraction:(int64_t)interaction wordTerminator:(id)terminator;
 - (id)_bestTextCompletion;
 - (id)_candidateToUndoAcceptedTextCompletion;
 - (id)_markedTextAttributes;
-- (id)_oneWordTextCompletionFromTextCompletion:(id)a3;
-- (id)_textCompletionPromptRectsForInput:(id)a3;
+- (id)_oneWordTextCompletionFromTextCompletion:(id)completion;
+- (id)_textCompletionPromptRectsForInput:(id)input;
 - (id)_textCompletions;
-- (id)_upToNextWordTextCompletionFromTextCompletion:(id)a3;
-- (id)acceptTextCompletionWithInteraction:(int64_t)a3 wordTerminator:(id)a4 outputHandledByCaller:(BOOL)a5;
-- (int64_t)_acceptTypeForInteraction:(int64_t)a3 wordTerminator:(id)a4;
-- (int64_t)_acceptTypeForTypeWordTerminator:(id)a3;
-- (unint64_t)_inlineCompletionModeForTraitsWithCurrentPreference:(BOOL)a3;
+- (id)_upToNextWordTextCompletionFromTextCompletion:(id)completion;
+- (id)acceptTextCompletionWithInteraction:(int64_t)interaction wordTerminator:(id)terminator outputHandledByCaller:(BOOL)caller;
+- (int64_t)_acceptTypeForInteraction:(int64_t)interaction wordTerminator:(id)terminator;
+- (int64_t)_acceptTypeForTypeWordTerminator:(id)terminator;
+- (unint64_t)_inlineCompletionModeForTraitsWithCurrentPreference:(BOOL)preference;
 - (unint64_t)currentInlineTextCompletionMode;
-- (void)_acceptTextCompletion:(id)a3 learningMode:(id)a4;
+- (void)_acceptTextCompletion:(id)completion learningMode:(id)mode;
 - (void)_clearInlineCompletionCoachingTimer;
 - (void)_clearTextCompletionPromptTimer;
-- (void)_presentInlineTextCompletionCoachingUIWithExecutionContext:(id)a3;
-- (void)_registerLearningForInlineCompletion:(id)a3 learningMode:(id)a4;
-- (void)_removeTextCompletionPromptForReason:(int64_t)a3;
+- (void)_presentInlineTextCompletionCoachingUIWithExecutionContext:(id)context;
+- (void)_registerLearningForInlineCompletion:(id)completion learningMode:(id)mode;
+- (void)_removeTextCompletionPromptForReason:(int64_t)reason;
 - (void)_touchInlineCompletionCoachingTimer;
 - (void)_touchTextCompletionPromptTimer;
-- (void)_updateTextCompletionPrompt:(id)a3 executionContext:(id)a4;
-- (void)_updateTextCompletionPrompt:(id)a3 inputRects:(id)a4;
-- (void)_updateTextCompletionPromptWithTextCompletion:(id)a3 parentView:(id)a4 inputRects:(id)a5;
-- (void)didPerformKeyboardOutput:(id)a3;
+- (void)_updateTextCompletionPrompt:(id)prompt executionContext:(id)context;
+- (void)_updateTextCompletionPrompt:(id)prompt inputRects:(id)rects;
+- (void)_updateTextCompletionPromptWithTextCompletion:(id)completion parentView:(id)view inputRects:(id)rects;
+- (void)didPerformKeyboardOutput:(id)output;
 - (void)selectionDidChange;
-- (void)undoAcceptedTextCompletionExecutionContext:(id)a3;
+- (void)undoAcceptedTextCompletionExecutionContext:(id)context;
 - (void)updateTextCompletionDisplay;
 - (void)updateTextCompletionPrompt;
-- (void)updateTextCompletionPromptExecutionContext:(id)a3;
-- (void)updateTextCompletionWithExternalSuggestion:(id)a3;
-- (void)willAcceptPredictiveInput:(id)a3;
-- (void)willPerformKeyboardOutput:(id)a3;
+- (void)updateTextCompletionPromptExecutionContext:(id)context;
+- (void)updateTextCompletionWithExternalSuggestion:(id)suggestion;
+- (void)willAcceptPredictiveInput:(id)input;
+- (void)willPerformKeyboardOutput:(id)output;
 @end
 
 @implementation UIInlineTextCompletionController
@@ -65,12 +65,12 @@
 - (BOOL)_inlineCompletionPreference
 {
   v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v2 preferencesActions];
-  if ([v3 BOOLForPreferenceKey:*MEMORY[0x1E69D98B0]])
+  preferencesActions = [v2 preferencesActions];
+  if ([preferencesActions BOOLForPreferenceKey:*MEMORY[0x1E69D98B0]])
   {
     v4 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v5 = [v4 preferencesActions];
-    v6 = [v5 BOOLForPreferenceKey:*MEMORY[0x1E69D9850]];
+    preferencesActions2 = [v4 preferencesActions];
+    v6 = [preferencesActions2 BOOLForPreferenceKey:*MEMORY[0x1E69D9850]];
   }
 
   else
@@ -102,16 +102,16 @@
 
 - (void)_clearInlineCompletionCoachingTimer
 {
-  v3 = [(UIInlineTextCompletionController *)self inlineCompletionCoachingTask];
-  [v3 invalidate];
+  inlineCompletionCoachingTask = [(UIInlineTextCompletionController *)self inlineCompletionCoachingTask];
+  [inlineCompletionCoachingTask invalidate];
 
   [(UIInlineTextCompletionController *)self setInlineCompletionCoachingTask:0];
 }
 
 - (void)_clearTextCompletionPromptTimer
 {
-  v3 = [(UIInlineTextCompletionController *)self textCompletionPromptTask];
-  [v3 invalidate];
+  textCompletionPromptTask = [(UIInlineTextCompletionController *)self textCompletionPromptTask];
+  [textCompletionPromptTask invalidate];
 
   [(UIInlineTextCompletionController *)self setTextCompletionPromptTask:0];
 }
@@ -120,11 +120,11 @@
 {
   if (!+[UIKeyboard usesInputSystemUI])
   {
-    v3 = [(UIInlineTextCompletionController *)self delegate];
-    v4 = [v3 inputDelegateManager];
-    v5 = [v4 hasAsyncCapableInputDelegate];
+    delegate = [(UIInlineTextCompletionController *)self delegate];
+    inputDelegateManager = [delegate inputDelegateManager];
+    hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
-    if ((v5 & 1) == 0 && -[UIInlineTextCompletionController hasPrompt](self, "hasPrompt") && (-[UIInlineTextCompletionController delegate](self, "delegate"), v6 = objc_claimAutoreleasedReturnValue(), [v6 autocorrectionController], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "hasAutocorrection"), v7, v6, v8))
+    if ((hasAsyncCapableInputDelegate & 1) == 0 && -[UIInlineTextCompletionController hasPrompt](self, "hasPrompt") && (-[UIInlineTextCompletionController delegate](self, "delegate"), v6 = objc_claimAutoreleasedReturnValue(), [v6 autocorrectionController], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "hasAutocorrection"), v7, v6, v8))
     {
 
       [(UIInlineTextCompletionController *)self updateTextCompletionPrompt];
@@ -145,47 +145,47 @@
     return self->m_textCompletionPrompt != 0;
   }
 
-  v3 = [(UIInlineTextCompletionController *)self presentingTextCompletionAsMarkedText];
-  v4 = [v3 length] != 0;
+  presentingTextCompletionAsMarkedText = [(UIInlineTextCompletionController *)self presentingTextCompletionAsMarkedText];
+  v4 = [presentingTextCompletionAsMarkedText length] != 0;
 
   return v4;
 }
 
 - (UITextInput)inputDelegate
 {
-  v2 = [(UIInlineTextCompletionController *)self delegate];
-  v3 = [v2 inputDelegateManager];
-  v4 = [v3 textInputDelegate];
+  delegate = [(UIInlineTextCompletionController *)self delegate];
+  inputDelegateManager = [delegate inputDelegateManager];
+  textInputDelegate = [inputDelegateManager textInputDelegate];
 
-  return v4;
+  return textInputDelegate;
 }
 
 - (void)_touchTextCompletionPromptTimer
 {
-  v3 = [(UIInlineTextCompletionController *)self inputDelegate];
+  inputDelegate = [(UIInlineTextCompletionController *)self inputDelegate];
 
-  if (v3)
+  if (inputDelegate)
   {
-    v4 = [(UIInlineTextCompletionController *)self textCompletionPromptTask];
-    v5 = [v4 isValid];
+    textCompletionPromptTask = [(UIInlineTextCompletionController *)self textCompletionPromptTask];
+    isValid = [textCompletionPromptTask isValid];
 
-    if (v5)
+    if (isValid)
     {
-      v9 = [(UIInlineTextCompletionController *)self textCompletionPromptTask];
-      [v9 resetTimer];
+      textCompletionPromptTask2 = [(UIInlineTextCompletionController *)self textCompletionPromptTask];
+      [textCompletionPromptTask2 resetTimer];
     }
 
     else
     {
-      v6 = [(UIInlineTextCompletionController *)self delegate];
-      v7 = [v6 taskQueue];
+      delegate = [(UIInlineTextCompletionController *)self delegate];
+      taskQueue = [delegate taskQueue];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __67__UIInlineTextCompletionController__touchTextCompletionPromptTimer__block_invoke;
       v10[3] = &unk_1E70FD058;
       v10[4] = self;
       [(UIInlineTextCompletionController *)self _updatePromptDelay];
-      v8 = [v7 scheduleTask:v10 timeInterval:0 repeats:?];
+      v8 = [taskQueue scheduleTask:v10 timeInterval:0 repeats:?];
       [(UIInlineTextCompletionController *)self setTextCompletionPromptTask:v8];
     }
   }
@@ -205,15 +205,15 @@
   return v4;
 }
 
-- (BOOL)_doesFirstPredictedCharacterEndWord:(id)a3
+- (BOOL)_doesFirstPredictedCharacterEndWord:(id)word
 {
-  v4 = a3;
-  v5 = [v4 candidate];
-  v6 = v5;
+  wordCopy = word;
+  candidate = [wordCopy candidate];
+  v6 = candidate;
   v7 = &stru_1EFB14550;
-  if (v5)
+  if (candidate)
   {
-    v8 = v5;
+    v8 = candidate;
   }
 
   else
@@ -223,11 +223,11 @@
 
   v9 = v8;
 
-  v10 = [v4 input];
+  input = [wordCopy input];
 
-  if (v10)
+  if (input)
   {
-    v11 = v10;
+    v11 = input;
   }
 
   else
@@ -255,9 +255,9 @@
 
   if ([(__CFString *)v16 length])
   {
-    v17 = [(UIInlineTextCompletionController *)self delegate];
-    v18 = [v17 inputManagerState];
-    v19 = [v18 stringEndsWord:v16];
+    delegate = [(UIInlineTextCompletionController *)self delegate];
+    inputManagerState = [delegate inputManagerState];
+    v19 = [inputManagerState stringEndsWord:v16];
   }
 
   else
@@ -268,11 +268,11 @@
   return v19;
 }
 
-- (unint64_t)_inlineCompletionModeForTraitsWithCurrentPreference:(BOOL)a3
+- (unint64_t)_inlineCompletionModeForTraitsWithCurrentPreference:(BOOL)preference
 {
-  v3 = a3;
-  v5 = [(UIInlineTextCompletionController *)self delegate];
-  v6 = [v5 textInputTraits];
+  preferenceCopy = preference;
+  delegate = [(UIInlineTextCompletionController *)self delegate];
+  textInputTraits = [delegate textInputTraits];
 
   if (+[UIDictationController isRunning])
   {
@@ -298,51 +298,51 @@ LABEL_13:
 
     if (+[UIKeyboard presentsInlineTextCompletionAsMarkedText])
     {
-      v11 = [(UIInlineTextCompletionController *)self delegate];
-      v12 = [v11 delegateSupportsCorrectionUI];
+      delegate2 = [(UIInlineTextCompletionController *)self delegate];
+      delegateSupportsCorrectionUI = [delegate2 delegateSupportsCorrectionUI];
     }
 
     else
     {
-      v12 = 1;
+      delegateSupportsCorrectionUI = 1;
     }
 
     v10 = 0;
-    if (v12 && v3)
+    if (delegateSupportsCorrectionUI && preferenceCopy)
     {
-      if ([v6 isSecureTextEntry])
+      if ([textInputTraits isSecureTextEntry])
       {
         goto LABEL_13;
       }
 
-      v14 = [v6 keyboardType];
+      keyboardType = [textInputTraits keyboardType];
       v10 = 0;
-      if ((v14 > 0xB || ((1 << v14) & 0x930) == 0) && v14 != 127)
+      if ((keyboardType > 0xB || ((1 << keyboardType) & 0x930) == 0) && keyboardType != 127)
       {
-        v15 = [v6 inlinePredictionType];
-        if (v15 == 2)
+        inlinePredictionType = [textInputTraits inlinePredictionType];
+        if (inlinePredictionType == 2)
         {
           v10 = 1;
           goto LABEL_14;
         }
 
-        if (v15)
+        if (inlinePredictionType)
         {
           goto LABEL_13;
         }
 
-        v16 = [(UIInlineTextCompletionController *)self delegate];
-        v17 = [v16 inlineTextCompletionAllowedForAutocorrectionType];
+        delegate3 = [(UIInlineTextCompletionController *)self delegate];
+        inlineTextCompletionAllowedForAutocorrectionType = [delegate3 inlineTextCompletionAllowedForAutocorrectionType];
 
-        v18 = [v6 textContentType];
-        if (v18)
+        textContentType = [textInputTraits textContentType];
+        if (textContentType)
         {
           v10 = 0;
         }
 
         else
         {
-          v10 = v17;
+          v10 = inlineTextCompletionAllowedForAutocorrectionType;
         }
       }
     }
@@ -353,38 +353,38 @@ LABEL_14:
   return v10;
 }
 
-- (id)_oneWordTextCompletionFromTextCompletion:(id)a3
+- (id)_oneWordTextCompletionFromTextCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  completionCopy = completion;
+  v4 = completionCopy;
+  if (completionCopy)
   {
-    v5 = [v3 input];
-    v6 = [v4 candidate];
+    input = [completionCopy input];
+    candidate = [v4 candidate];
     v19 = 0;
     v20 = &v19;
     v21 = 0x3032000000;
     v22 = __Block_byref_object_copy__221;
     v23 = __Block_byref_object_dispose__221;
     v24 = 0;
-    v7 = [v6 length];
+    v7 = [candidate length];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __77__UIInlineTextCompletionController__oneWordTextCompletionFromTextCompletion___block_invoke;
     v15[3] = &unk_1E7127BC0;
-    v8 = v5;
+    v8 = input;
     v16 = v8;
     v18 = &v19;
-    v9 = v6;
+    v9 = candidate;
     v17 = v9;
     [v9 enumerateSubstringsInRange:0 options:v7 usingBlock:{3, v15}];
     if ([v20[5] length])
     {
-      v10 = [v4 completion];
-      v11 = [v10 candidateByReplacingWithCandidate:v20[5] input:v8];
+      completion = [v4 completion];
+      v11 = [completion candidateByReplacingWithCandidate:v20[5] input:v8];
 
-      v12 = [v4 completion];
-      v13 = [_UIInlineTextCompletion inlineTextCompletion:v11 source:v12];
+      completion2 = [v4 completion];
+      v13 = [_UIInlineTextCompletion inlineTextCompletion:v11 source:completion2];
     }
 
     else
@@ -417,38 +417,38 @@ void __77__UIInlineTextCompletionController__oneWordTextCompletionFromTextComple
   }
 }
 
-- (id)_upToNextWordTextCompletionFromTextCompletion:(id)a3
+- (id)_upToNextWordTextCompletionFromTextCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  completionCopy = completion;
+  v4 = completionCopy;
+  if (completionCopy)
   {
-    v5 = [v3 input];
-    v6 = [v4 candidate];
+    input = [completionCopy input];
+    candidate = [v4 candidate];
     v19 = 0;
     v20 = &v19;
     v21 = 0x3032000000;
     v22 = __Block_byref_object_copy__221;
     v23 = __Block_byref_object_dispose__221;
     v24 = 0;
-    v7 = [v6 length];
+    v7 = [candidate length];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __82__UIInlineTextCompletionController__upToNextWordTextCompletionFromTextCompletion___block_invoke;
     v15[3] = &unk_1E7127BC0;
-    v8 = v5;
+    v8 = input;
     v16 = v8;
     v18 = &v19;
-    v9 = v6;
+    v9 = candidate;
     v17 = v9;
     [v9 enumerateSubstringsInRange:0 options:v7 usingBlock:{3, v15}];
     if ([v20[5] length])
     {
-      v10 = [v4 completion];
-      v11 = [v10 candidateByReplacingWithCandidate:v20[5] input:v8];
+      completion = [v4 completion];
+      v11 = [completion candidateByReplacingWithCandidate:v20[5] input:v8];
 
-      v12 = [v4 completion];
-      v13 = [_UIInlineTextCompletion inlineTextCompletion:v11 source:v12];
+      completion2 = [v4 completion];
+      v13 = [_UIInlineTextCompletion inlineTextCompletion:v11 source:completion2];
     }
 
     else
@@ -482,28 +482,28 @@ void __82__UIInlineTextCompletionController__upToNextWordTextCompletionFromTextC
 
 - (_UIInlineTextCompletion)oneWordTextCompletion
 {
-  v3 = [(UIInlineTextCompletionController *)self textCompletion];
-  v4 = [(UIInlineTextCompletionController *)self _oneWordTextCompletionFromTextCompletion:v3];
+  textCompletion = [(UIInlineTextCompletionController *)self textCompletion];
+  v4 = [(UIInlineTextCompletionController *)self _oneWordTextCompletionFromTextCompletion:textCompletion];
 
   return v4;
 }
 
 - (id)_textCompletions
 {
-  v3 = [(UIInlineTextCompletionController *)self delegate];
-  v4 = [v3 autocorrectionController];
-  v5 = [v4 hasAutocorrection];
+  delegate = [(UIInlineTextCompletionController *)self delegate];
+  autocorrectionController = [delegate autocorrectionController];
+  hasAutocorrection = [autocorrectionController hasAutocorrection];
 
   v6 = MEMORY[0x1E695E0F0];
-  if (v5)
+  if (hasAutocorrection)
   {
-    v7 = [(UIInlineTextCompletionController *)self delegate];
-    v8 = [v7 autocorrectionController];
-    v9 = [v8 textCompletions];
-    v10 = v9;
-    if (v9)
+    delegate2 = [(UIInlineTextCompletionController *)self delegate];
+    autocorrectionController2 = [delegate2 autocorrectionController];
+    textCompletions = [autocorrectionController2 textCompletions];
+    v10 = textCompletions;
+    if (textCompletions)
     {
-      v11 = v9;
+      v11 = textCompletions;
     }
 
     else
@@ -524,8 +524,8 @@ void __82__UIInlineTextCompletionController__upToNextWordTextCompletionFromTextC
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v2 = [(UIInlineTextCompletionController *)self _textCompletions];
-  v3 = [v2 countByEnumeratingWithState:&v54 objects:v62 count:16];
+  _textCompletions = [(UIInlineTextCompletionController *)self _textCompletions];
+  v3 = [_textCompletions countByEnumeratingWithState:&v54 objects:v62 count:16];
   if (!v3)
   {
     goto LABEL_29;
@@ -537,7 +537,7 @@ void __82__UIInlineTextCompletionController__upToNextWordTextCompletionFromTextC
   *&v4 = 138412546;
   v47 = v4;
   v48 = *v55;
-  v49 = v2;
+  v49 = _textCompletions;
   do
   {
     v8 = 0;
@@ -546,18 +546,18 @@ void __82__UIInlineTextCompletionController__upToNextWordTextCompletionFromTextC
     {
       if (*v55 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(_textCompletions);
       }
 
       v9 = *(*(&v54 + 1) + 8 * v8);
-      v10 = [v9 candidate];
-      v11 = [v10 lowercaseString];
+      candidate = [v9 candidate];
+      lowercaseString = [candidate lowercaseString];
 
-      v12 = [v9 input];
-      v13 = [v12 lowercaseString];
+      input = [v9 input];
+      lowercaseString2 = [input lowercaseString];
 
-      v14 = [v9 input];
-      if (![v14 length])
+      input2 = [v9 input];
+      if (![input2 length])
       {
 
 LABEL_11:
@@ -565,18 +565,18 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v15 = [v11 hasPrefix:v13];
+      v15 = [lowercaseString hasPrefix:lowercaseString2];
 
       if (v15)
       {
         goto LABEL_11;
       }
 
-      v53 = v11;
-      v16 = [v9 candidate];
-      v17 = [v16 length];
-      v18 = [v9 input];
-      v19 = [v18 length];
+      v53 = lowercaseString;
+      candidate2 = [v9 candidate];
+      v17 = [candidate2 length];
+      input3 = [v9 input];
+      v19 = [input3 length];
 
       if (v17 < v19)
       {
@@ -586,34 +586,34 @@ LABEL_11:
       }
 
       v21 = v9;
-      v22 = [v21 input];
-      v23 = [v22 componentsSeparatedByString:@" "];
+      input4 = [v21 input];
+      v23 = [input4 componentsSeparatedByString:@" "];
 
       v24 = v21;
       if ([v23 count] >= 2)
       {
-        v25 = [v23 lastObject];
-        v26 = [v21 candidate];
-        v24 = [v21 candidateByReplacingWithCandidate:v26 input:v25];
+        lastObject = [v23 lastObject];
+        candidate3 = [v21 candidate];
+        v24 = [v21 candidateByReplacingWithCandidate:candidate3 input:lastObject];
       }
 
       v51 = v21;
       v52 = v23;
-      v27 = [v24 candidate];
-      v28 = [v27 length];
-      v29 = [v24 input];
-      v30 = v28 - [v29 length];
+      candidate4 = [v24 candidate];
+      v28 = [candidate4 length];
+      input5 = [v24 input];
+      v30 = v28 - [input5 length];
 
       v31 = 0;
       while (1)
       {
-        v32 = [v24 candidate];
-        v33 = [v32 substringFromIndex:v31];
+        candidate5 = [v24 candidate];
+        v33 = [candidate5 substringFromIndex:v31];
 
-        v34 = [v33 lowercaseString];
-        v35 = [v24 input];
-        v36 = [v35 lowercaseString];
-        v37 = [v34 hasPrefix:v36];
+        lowercaseString3 = [v33 lowercaseString];
+        input6 = [v24 input];
+        lowercaseString4 = [input6 lowercaseString];
+        v37 = [lowercaseString3 hasPrefix:lowercaseString4];
 
         if (v37)
         {
@@ -626,8 +626,8 @@ LABEL_11:
         }
       }
 
-      v38 = [v24 input];
-      v39 = [v24 candidateByReplacingWithCandidate:v33 input:v38];
+      input7 = [v24 input];
+      v39 = [v24 candidateByReplacingWithCandidate:v33 input:input7];
 
       v20 = [_UIInlineTextCompletion inlineTextCompletion:v39 source:v51];
       v40 = _UIKBInlineTextCompletionLog();
@@ -658,10 +658,10 @@ LABEL_24:
       }
 
       v6 = v48;
-      v2 = v49;
+      _textCompletions = v49;
       v5 = v50;
       p_info = (_UIKeyboardPopover + 32);
-      v11 = v53;
+      lowercaseString = v53;
 LABEL_12:
 
       if (v20)
@@ -674,7 +674,7 @@ LABEL_13:
     }
 
     while (v8 != v5);
-    v45 = [v2 countByEnumeratingWithState:&v54 objects:v62 count:16];
+    v45 = [_textCompletions countByEnumeratingWithState:&v54 objects:v62 count:16];
     v5 = v45;
   }
 
@@ -686,28 +686,28 @@ LABEL_30:
   return v20;
 }
 
-- (void)updateTextCompletionWithExternalSuggestion:(id)a3
+- (void)updateTextCompletionWithExternalSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  suggestionCopy = suggestion;
+  v5 = suggestionCopy;
+  if (suggestionCopy)
   {
-    v6 = [v4 inputText];
-    v7 = [v6 length];
+    inputText = [suggestionCopy inputText];
+    v7 = [inputText length];
 
     if (v7)
     {
-      v8 = [v5 _keyboardCandidate];
-      v9 = [v5 _keyboardCandidate];
-      v10 = [_UIInlineTextCompletion inlineTextCompletion:v8 source:v9];
+      _keyboardCandidate = [v5 _keyboardCandidate];
+      _keyboardCandidate2 = [v5 _keyboardCandidate];
+      v10 = [_UIInlineTextCompletion inlineTextCompletion:_keyboardCandidate source:_keyboardCandidate2];
 
       if (qword_1ED4A2498 != -1)
       {
         dispatch_once(&qword_1ED4A2498, &__block_literal_global_637);
       }
 
-      v11 = [(UIInlineTextCompletionController *)self delegate];
-      v12 = [v11 taskQueue];
+      delegate = [(UIInlineTextCompletionController *)self delegate];
+      taskQueue = [delegate taskQueue];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __79__UIInlineTextCompletionController_updateTextCompletionWithExternalSuggestion___block_invoke_3;
@@ -716,7 +716,7 @@ LABEL_30:
       v16 = v10;
       v13 = _MergedGlobals_1340;
       v14 = v10;
-      [v12 performSingleTask:v15 breadcrumb:v13];
+      [taskQueue performSingleTask:v15 breadcrumb:v13];
     }
   }
 }
@@ -728,46 +728,46 @@ void __79__UIInlineTextCompletionController_updateTextCompletionWithExternalSugg
   _MergedGlobals_1340 = v0;
 }
 
-- (BOOL)_isCompletion:(id)a3 continuingLastCompletion:(id)a4
+- (BOOL)_isCompletion:(id)completion continuingLastCompletion:(id)lastCompletion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if ((v6 == 0) == (v7 != 0))
+  completionCopy = completion;
+  lastCompletionCopy = lastCompletion;
+  v8 = lastCompletionCopy;
+  if ((completionCopy == 0) == (lastCompletionCopy != 0))
   {
     goto LABEL_6;
   }
 
-  if (v6 != v7)
+  if (completionCopy != lastCompletionCopy)
   {
-    v9 = [v7 candidate];
-    v10 = [v6 candidate];
-    v11 = [v9 hasSuffix:v10];
+    candidate = [lastCompletionCopy candidate];
+    candidate2 = [completionCopy candidate];
+    v11 = [candidate hasSuffix:candidate2];
 
     if (v11)
     {
-      v12 = [v6 input];
-      v13 = [v8 input];
-      v14 = [v12 hasPrefix:v13];
+      input = [completionCopy input];
+      input2 = [v8 input];
+      v14 = [input hasPrefix:input2];
 
       if (v14)
       {
         goto LABEL_5;
       }
 
-      v17 = [(UIInlineTextCompletionController *)self delegate];
-      v18 = [v17 documentState];
-      v19 = [v18 contextBeforeInput];
+      delegate = [(UIInlineTextCompletionController *)self delegate];
+      documentState = [delegate documentState];
+      contextBeforeInput = [documentState contextBeforeInput];
 
-      v20 = [v6 input];
-      if ([v20 length])
+      input3 = [completionCopy input];
+      if ([input3 length])
       {
         goto LABEL_9;
       }
 
-      v21 = [v19 length];
-      v22 = [v8 input];
-      v23 = [v22 length];
+      v21 = [contextBeforeInput length];
+      input4 = [v8 input];
+      v23 = [input4 length];
 
       if (v21 < v23)
       {
@@ -775,11 +775,11 @@ void __79__UIInlineTextCompletionController_updateTextCompletionWithExternalSugg
         goto LABEL_11;
       }
 
-      v24 = [v8 candidate];
-      v20 = [v24 componentsSeparatedByString:@" "];
+      candidate3 = [v8 candidate];
+      input3 = [candidate3 componentsSeparatedByString:@" "];
 
-      v25 = [v20 firstObject];
-      if (!v25)
+      firstObject = [input3 firstObject];
+      if (!firstObject)
       {
 LABEL_9:
         v15 = 0;
@@ -787,11 +787,11 @@ LABEL_9:
 
       else
       {
-        v26 = v25;
-        v27 = [v8 input];
-        if ([v26 hasPrefix:v27])
+        v26 = firstObject;
+        input5 = [v8 input];
+        if ([v26 hasPrefix:input5])
         {
-          v15 = [v19 hasSuffix:v26];
+          v15 = [contextBeforeInput hasSuffix:v26];
         }
 
         else
@@ -816,42 +816,42 @@ LABEL_7:
   return v15;
 }
 
-+ (id)_documentTextThroughSelection:(id)a3
++ (id)_documentTextThroughSelection:(id)selection
 {
-  v3 = a3;
-  v4 = [v3 contextBeforeInput];
-  v5 = v4;
+  selectionCopy = selection;
+  contextBeforeInput = [selectionCopy contextBeforeInput];
+  v5 = contextBeforeInput;
   v6 = &stru_1EFB14550;
-  if (v4)
+  if (contextBeforeInput)
   {
-    v6 = v4;
+    v6 = contextBeforeInput;
   }
 
   v7 = v6;
 
-  v8 = [v3 markedText];
-  v9 = [v8 length];
+  markedText = [selectionCopy markedText];
+  v9 = [markedText length];
 
   if (v9)
   {
-    v10 = [v3 markedText];
-    v11 = [v3 selectedRangeInMarkedText];
-    v13 = [v10 substringWithRange:{0, v11 + v12}];
+    markedText2 = [selectionCopy markedText];
+    selectedRangeInMarkedText = [selectionCopy selectedRangeInMarkedText];
+    selectedText2 = [markedText2 substringWithRange:{0, selectedRangeInMarkedText + v12}];
   }
 
   else
   {
-    v14 = [v3 selectedText];
+    selectedText = [selectionCopy selectedText];
 
-    if (!v14)
+    if (!selectedText)
     {
       goto LABEL_8;
     }
 
-    v13 = [v3 selectedText];
+    selectedText2 = [selectionCopy selectedText];
   }
 
-  v15 = [(__CFString *)v7 stringByAppendingString:v13];
+  v15 = [(__CFString *)v7 stringByAppendingString:selectedText2];
 
   v7 = v15;
 LABEL_8:
@@ -859,29 +859,29 @@ LABEL_8:
   return v7;
 }
 
-- (void)willPerformKeyboardOutput:(id)a3
+- (void)willPerformKeyboardOutput:(id)output
 {
-  v19 = a3;
+  outputCopy = output;
   if (![(UIInlineTextCompletionController *)self _deleteToUndoEnabled])
   {
-    v4 = [(UIInlineTextCompletionController *)self delegate];
-    v5 = [v4 documentState];
+    delegate = [(UIInlineTextCompletionController *)self delegate];
+    documentState = [delegate documentState];
 
-    if (_outputIsSimpleDeletion(v19) || ([v5 selectedText], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
+    if (_outputIsSimpleDeletion(outputCopy) || ([documentState selectedText], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
     {
       [(UIInlineTextCompletionController *)self setHasForwardProgress:0];
-      v8 = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
+      lastAcceptedTextCompletion = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
 
-      if (v8)
+      if (lastAcceptedTextCompletion)
       {
-        v9 = [objc_opt_class() _documentTextThroughSelection:v5];
-        v10 = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
-        v11 = [v10 candidate];
-        v12 = v11;
+        v9 = [objc_opt_class() _documentTextThroughSelection:documentState];
+        lastAcceptedTextCompletion2 = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
+        candidate = [lastAcceptedTextCompletion2 candidate];
+        v12 = candidate;
         v13 = &stru_1EFB14550;
-        if (v11)
+        if (candidate)
         {
-          v13 = v11;
+          v13 = candidate;
         }
 
         v14 = v13;
@@ -889,8 +889,8 @@ LABEL_8:
         v15 = [v9 hasSuffix:v14];
         if (v15)
         {
-          v16 = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
-          [(UIInlineTextCompletionController *)self _registerLearningForInlineCompletion:v16 learningMode:*MEMORY[0x1E69D9930]];
+          lastAcceptedTextCompletion3 = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
+          [(UIInlineTextCompletionController *)self _registerLearningForInlineCompletion:lastAcceptedTextCompletion3 learningMode:*MEMORY[0x1E69D9930]];
 
           [(UIInlineTextCompletionController *)self setLastAcceptedTextCompletion:0];
         }
@@ -900,37 +900,37 @@ LABEL_8:
 
   if (+[UIKeyboard presentsInlineTextCompletionAsMarkedText])
   {
-    v17 = [(UIInlineTextCompletionController *)self presentingTextCompletionAsMarkedText];
+    presentingTextCompletionAsMarkedText = [(UIInlineTextCompletionController *)self presentingTextCompletionAsMarkedText];
 
-    if (v17)
+    if (presentingTextCompletionAsMarkedText)
     {
-      v18 = [(UIInlineTextCompletionController *)self textCompletion];
+      textCompletion = [(UIInlineTextCompletionController *)self textCompletion];
       [(UIInlineTextCompletionController *)self _removeTextCompletionPromptForReason:7];
-      [(UIInlineTextCompletionController *)self setCandidateRemovedOnWillPerformOutput:v18];
+      [(UIInlineTextCompletionController *)self setCandidateRemovedOnWillPerformOutput:textCompletion];
     }
   }
 }
 
-- (void)didPerformKeyboardOutput:(id)a3
+- (void)didPerformKeyboardOutput:(id)output
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(UIInlineTextCompletionController *)self setDeleting:_outputIsSimpleDeletion(v4)];
-  v5 = [v4 insertionText];
-  v6 = [v5 length];
+  outputCopy = output;
+  [(UIInlineTextCompletionController *)self setDeleting:_outputIsSimpleDeletion(outputCopy)];
+  insertionText = [outputCopy insertionText];
+  v6 = [insertionText length];
 
   if (v6)
   {
     [(UIInlineTextCompletionController *)self setHasForwardProgress:1];
   }
 
-  v7 = [(UIInlineTextCompletionController *)self candidateRemovedOnWillPerformOutput];
+  candidateRemovedOnWillPerformOutput = [(UIInlineTextCompletionController *)self candidateRemovedOnWillPerformOutput];
   [(UIInlineTextCompletionController *)self setCandidateRemovedOnWillPerformOutput:0];
-  if (v7)
+  if (candidateRemovedOnWillPerformOutput)
   {
-    v8 = v4;
-    v9 = [v8 insertionText];
-    v10 = [v9 length];
+    v8 = outputCopy;
+    insertionText2 = [v8 insertionText];
+    v10 = [insertionText2 length];
 
     if (!v10 || [v8 deletionCount] || objc_msgSend(v8, "forwardDeletionCount"))
     {
@@ -938,47 +938,47 @@ LABEL_8:
 
     else
     {
-      v11 = [v8 acceptedCandidate];
+      acceptedCandidate = [v8 acceptedCandidate];
 
-      if (!v11)
+      if (!acceptedCandidate)
       {
-        v12 = [v7 candidate];
-        v13 = [v12 length];
-        v14 = [v7 input];
-        v15 = [v14 length];
+        candidate = [candidateRemovedOnWillPerformOutput candidate];
+        v13 = [candidate length];
+        input = [candidateRemovedOnWillPerformOutput input];
+        v15 = [input length];
 
         if (v13 > v15)
         {
-          v16 = [v7 candidate];
-          v17 = [v7 input];
-          v18 = [v16 substringFromIndex:{objc_msgSend(v17, "length")}];
+          candidate2 = [candidateRemovedOnWillPerformOutput candidate];
+          input2 = [candidateRemovedOnWillPerformOutput input];
+          v18 = [candidate2 substringFromIndex:{objc_msgSend(input2, "length")}];
 
           v19 = [v18 length];
-          v20 = [v8 insertionText];
-          v21 = [v20 length];
+          insertionText3 = [v8 insertionText];
+          v21 = [insertionText3 length];
 
           if (v19 > v21)
           {
-            v22 = [v8 insertionText];
-            v23 = [v18 hasPrefix:v22];
+            insertionText4 = [v8 insertionText];
+            v23 = [v18 hasPrefix:insertionText4];
 
             if (v23)
             {
-              v24 = [v7 input];
-              v25 = [v8 insertionText];
-              v26 = [v24 stringByAppendingString:v25];
+              input3 = [candidateRemovedOnWillPerformOutput input];
+              insertionText5 = [v8 insertionText];
+              v26 = [input3 stringByAppendingString:insertionText5];
 
-              v27 = [v7 completion];
-              v28 = [v7 candidate];
-              v29 = [v27 candidateByReplacingWithCandidate:v28 input:v26];
+              completion = [candidateRemovedOnWillPerformOutput completion];
+              candidate3 = [candidateRemovedOnWillPerformOutput candidate];
+              v29 = [completion candidateByReplacingWithCandidate:candidate3 input:v26];
 
-              v30 = [v7 source];
-              v31 = [_UIInlineTextCompletion inlineTextCompletion:v29 source:v30];
+              source = [candidateRemovedOnWillPerformOutput source];
+              v31 = [_UIInlineTextCompletion inlineTextCompletion:v29 source:source];
 
               v32 = _UIKBInlineTextCompletionLog();
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
               {
-                v38 = _shortCompletionDescr(v7);
+                v38 = _shortCompletionDescr(candidateRemovedOnWillPerformOutput);
                 v39 = _shortCompletionDescr(v31);
                 *buf = 138412546;
                 v43 = v38;
@@ -992,8 +992,8 @@ LABEL_8:
                 dispatch_once(&qword_1ED4A24A8, &__block_literal_global_73_2);
               }
 
-              v33 = [(UIInlineTextCompletionController *)self delegate];
-              v34 = [v33 taskQueue];
+              delegate = [(UIInlineTextCompletionController *)self delegate];
+              taskQueue = [delegate taskQueue];
               v40[0] = MEMORY[0x1E69E9820];
               v40[1] = 3221225472;
               v40[2] = __61__UIInlineTextCompletionController_didPerformKeyboardOutput___block_invoke_3;
@@ -1002,7 +1002,7 @@ LABEL_8:
               v41 = v31;
               v35 = qword_1ED4A24A0;
               v36 = v31;
-              [v34 performSingleTask:v40 breadcrumb:v35];
+              [taskQueue performSingleTask:v40 breadcrumb:v35];
             }
 
             else
@@ -1010,7 +1010,7 @@ LABEL_8:
               v26 = _UIKBInlineTextCompletionLog();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
               {
-                v37 = _shortCompletionDescr(v7);
+                v37 = _shortCompletionDescr(candidateRemovedOnWillPerformOutput);
                 *buf = 138412290;
                 v43 = v37;
                 _os_log_impl(&dword_188A29000, v26, OS_LOG_TYPE_DEFAULT, "Declining last text completion (output does not match completion text): %@", buf, 0xCu);
@@ -1030,28 +1030,28 @@ void __61__UIInlineTextCompletionController_didPerformKeyboardOutput___block_inv
   qword_1ED4A24A0 = v0;
 }
 
-- (void)willAcceptPredictiveInput:(id)a3
+- (void)willAcceptPredictiveInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   if (!+[UIKeyboard usesInputSystemUI])
   {
-    v5 = [(UIInlineTextCompletionController *)self acceptingTextCompletion];
+    acceptingTextCompletion = [(UIInlineTextCompletionController *)self acceptingTextCompletion];
 
-    if (!v5)
+    if (!acceptingTextCompletion)
     {
-      v6 = [(UIInlineTextCompletionController *)self textCompletion];
+      textCompletion = [(UIInlineTextCompletionController *)self textCompletion];
 
-      if (v6)
+      if (textCompletion)
       {
-        v7 = [(UIInlineTextCompletionController *)self textCompletion];
-        v8 = [(UIInlineTextCompletionController *)self _oneWordTextCompletionFromTextCompletion:v7];
+        textCompletion2 = [(UIInlineTextCompletionController *)self textCompletion];
+        v8 = [(UIInlineTextCompletionController *)self _oneWordTextCompletionFromTextCompletion:textCompletion2];
 
-        v9 = [v8 candidate];
-        v10 = [v4 candidate];
-        v11 = v10;
-        if (v10)
+        candidate = [v8 candidate];
+        candidate2 = [inputCopy candidate];
+        v11 = candidate2;
+        if (candidate2)
         {
-          v12 = v10;
+          v12 = candidate2;
         }
 
         else
@@ -1059,14 +1059,14 @@ void __61__UIInlineTextCompletionController_didPerformKeyboardOutput___block_inv
           v12 = &stru_1EFB14550;
         }
 
-        if ([v9 isEqualToString:v12])
+        if ([candidate isEqualToString:v12])
         {
-          v13 = [v8 input];
-          v14 = [v4 input];
-          v15 = v14;
-          if (v14)
+          input = [v8 input];
+          input2 = [inputCopy input];
+          v15 = input2;
+          if (input2)
           {
-            v16 = v14;
+            v16 = input2;
           }
 
           else
@@ -1074,7 +1074,7 @@ void __61__UIInlineTextCompletionController_didPerformKeyboardOutput___block_inv
             v16 = &stru_1EFB14550;
           }
 
-          v17 = [v13 isEqualToString:v16];
+          v17 = [input isEqualToString:v16];
         }
 
         else
@@ -1082,12 +1082,12 @@ void __61__UIInlineTextCompletionController_didPerformKeyboardOutput___block_inv
           v17 = 0;
         }
 
-        v18 = [v4 input];
-        v19 = [v4 candidate];
-        v20 = v19;
-        if (v19)
+        input3 = [inputCopy input];
+        candidate3 = [inputCopy candidate];
+        v20 = candidate3;
+        if (candidate3)
         {
-          v21 = v19;
+          v21 = candidate3;
         }
 
         else
@@ -1095,7 +1095,7 @@ void __61__UIInlineTextCompletionController_didPerformKeyboardOutput___block_inv
           v21 = &stru_1EFB14550;
         }
 
-        v22 = [v18 isEqualToString:v21];
+        v22 = [input3 isEqualToString:v21];
 
         if (v17)
         {
@@ -1107,7 +1107,7 @@ void __61__UIInlineTextCompletionController_didPerformKeyboardOutput___block_inv
           }
 
           [(UIInlineTextCompletionController *)self _registerLearningForInlineCompletion:v8 learningMode:*MEMORY[0x1E69D9910]];
-          v24 = self;
+          selfCopy2 = self;
           v25 = 2;
         }
 
@@ -1115,11 +1115,11 @@ void __61__UIInlineTextCompletionController_didPerformKeyboardOutput___block_inv
         {
           if ((v22 & 1) == 0)
           {
-            v27 = [v4 candidate];
-            v28 = v27;
-            if (v27)
+            candidate4 = [inputCopy candidate];
+            v28 = candidate4;
+            if (candidate4)
             {
-              v29 = v27;
+              v29 = candidate4;
             }
 
             else
@@ -1129,20 +1129,20 @@ void __61__UIInlineTextCompletionController_didPerformKeyboardOutput___block_inv
 
             v30 = v29;
 
-            v31 = [v8 input];
-            v32 = [v31 stringByAppendingString:v30];
-            v33 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-            v34 = [v32 componentsSeparatedByCharactersInSet:v33];
+            input4 = [v8 input];
+            v32 = [input4 stringByAppendingString:v30];
+            whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+            v34 = [v32 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
-            v35 = [v8 candidate];
-            v36 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+            candidate5 = [v8 candidate];
+            whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
 
-            v37 = [v35 componentsSeparatedByCharactersInSet:v36];
+            v37 = [candidate5 componentsSeparatedByCharactersInSet:whitespaceCharacterSet2];
 
-            LODWORD(v36) = [v34 isEqual:v37];
+            LODWORD(whitespaceCharacterSet2) = [v34 isEqual:v37];
             v38 = _UIKBInlineTextCompletionLog();
             v39 = os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG);
-            if (v36)
+            if (whitespaceCharacterSet2)
             {
               if (v39)
               {
@@ -1180,18 +1180,18 @@ void __61__UIInlineTextCompletionController_didPerformKeyboardOutput___block_inv
           }
 
           [(UIInlineTextCompletionController *)self _registerLearningForInlineCompletion:v8 learningMode:*MEMORY[0x1E69D9938]];
-          v24 = self;
+          selfCopy2 = self;
           v25 = 5;
         }
 
-        [(UIInlineTextCompletionController *)v24 _removeTextCompletionPromptForReason:v25];
+        [(UIInlineTextCompletionController *)selfCopy2 _removeTextCompletionPromptForReason:v25];
 LABEL_36:
       }
     }
   }
 }
 
-- (void)_removeTextCompletionPromptForReason:(int64_t)a3
+- (void)_removeTextCompletionPromptForReason:(int64_t)reason
 {
   v18 = *MEMORY[0x1E69E9840];
   if (!+[UIKeyboard usesInputSystemUI])
@@ -1200,12 +1200,12 @@ LABEL_36:
     v5 = +[UIKeyboardImpl activeInstance];
     [v5 dismissEducationTip];
 
-    v6 = [(UIInlineTextCompletionController *)self presentingTextCompletionAsMarkedText];
-    if (v6)
+    presentingTextCompletionAsMarkedText = [(UIInlineTextCompletionController *)self presentingTextCompletionAsMarkedText];
+    if (presentingTextCompletionAsMarkedText)
     {
 
 LABEL_4:
-      if (a3 == 5 && ![(UIInlineTextCompletionController *)self _isCompletion:0 continuingLastCompletion:self->_textCompletion])
+      if (reason == 5 && ![(UIInlineTextCompletionController *)self _isCompletion:0 continuingLastCompletion:self->_textCompletion])
       {
         v7 = _UIKBInlineTextCompletionLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1217,20 +1217,20 @@ LABEL_4:
         }
       }
 
-      v9 = [(UIInlineTextCompletionController *)self delegate];
-      [v9 updateKeyboardConfigurations];
+      delegate = [(UIInlineTextCompletionController *)self delegate];
+      [delegate updateKeyboardConfigurations];
 
       [(UIInlineTextCompletionController *)self _clearTextCompletionPromptTimer];
       if (+[UIKeyboard presentsInlineTextCompletionAsMarkedText])
       {
-        v10 = [(UIInlineTextCompletionController *)self presentingTextCompletionAsMarkedText];
+        presentingTextCompletionAsMarkedText2 = [(UIInlineTextCompletionController *)self presentingTextCompletionAsMarkedText];
 
-        if (v10)
+        if (presentingTextCompletionAsMarkedText2)
         {
           m_textCompletionPrompt = [(UIInlineTextCompletionController *)self presentingTextCompletionAsMarkedText];
           [(UIInlineTextCompletionController *)self setPresentingTextCompletionAsMarkedText:0];
-          v12 = [(UIInlineTextCompletionController *)self delegate];
-          [v12 removeTextCompletionFromMarkedText:m_textCompletionPrompt];
+          delegate2 = [(UIInlineTextCompletionController *)self delegate];
+          [delegate2 removeTextCompletionFromMarkedText:m_textCompletionPrompt];
 
 LABEL_14:
         }
@@ -1238,9 +1238,9 @@ LABEL_14:
 
       else
       {
-        v13 = [(UIView *)self->m_textCompletionPrompt superview];
+        superview = [(UIView *)self->m_textCompletionPrompt superview];
 
-        if (v13)
+        if (superview)
         {
           [(UIView *)self->m_textCompletionPrompt removeFromSuperview];
           [(UIInlineTextCompletionPrompt *)self->m_textCompletionPrompt setDelegate:0];
@@ -1257,9 +1257,9 @@ LABEL_14:
       return;
     }
 
-    v15 = [(UIInlineTextCompletionController *)self acceptingTextCompletion];
+    acceptingTextCompletion = [(UIInlineTextCompletionController *)self acceptingTextCompletion];
 
-    if (!v15)
+    if (!acceptingTextCompletion)
     {
       goto LABEL_4;
     }
@@ -1286,29 +1286,29 @@ void __67__UIInlineTextCompletionController__touchTextCompletionPromptTimer__blo
 
 - (void)_touchInlineCompletionCoachingTimer
 {
-  v3 = [(UIInlineTextCompletionController *)self inputDelegate];
+  inputDelegate = [(UIInlineTextCompletionController *)self inputDelegate];
 
-  if (v3)
+  if (inputDelegate)
   {
-    v4 = [(UIInlineTextCompletionController *)self inlineCompletionCoachingTask];
-    v5 = [v4 isValid];
+    inlineCompletionCoachingTask = [(UIInlineTextCompletionController *)self inlineCompletionCoachingTask];
+    isValid = [inlineCompletionCoachingTask isValid];
 
-    if (v5)
+    if (isValid)
     {
-      v9 = [(UIInlineTextCompletionController *)self inlineCompletionCoachingTask];
-      [v9 resetTimer];
+      inlineCompletionCoachingTask2 = [(UIInlineTextCompletionController *)self inlineCompletionCoachingTask];
+      [inlineCompletionCoachingTask2 resetTimer];
     }
 
     else
     {
-      v6 = [(UIInlineTextCompletionController *)self delegate];
-      v7 = [v6 taskQueue];
+      delegate = [(UIInlineTextCompletionController *)self delegate];
+      taskQueue = [delegate taskQueue];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __71__UIInlineTextCompletionController__touchInlineCompletionCoachingTimer__block_invoke;
       v10[3] = &unk_1E70FD058;
       v10[4] = self;
-      v8 = [v7 scheduleTask:v10 timeInterval:0 repeats:2.0];
+      v8 = [taskQueue scheduleTask:v10 timeInterval:0 repeats:2.0];
       [(UIInlineTextCompletionController *)self setInlineCompletionCoachingTask:v8];
     }
   }
@@ -1338,14 +1338,14 @@ void __71__UIInlineTextCompletionController__touchInlineCompletionCoachingTimer_
     dispatch_once(&qword_1ED4A24B8, &__block_literal_global_79_2);
   }
 
-  v3 = [(UIInlineTextCompletionController *)self delegate];
-  v4 = [v3 taskQueue];
+  delegate = [(UIInlineTextCompletionController *)self delegate];
+  taskQueue = [delegate taskQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __62__UIInlineTextCompletionController_updateTextCompletionPrompt__block_invoke_3;
   v5[3] = &unk_1E70FD058;
   v5[4] = self;
-  [v4 performSingleTask:v5 breadcrumb:qword_1ED4A24B0];
+  [taskQueue performSingleTask:v5 breadcrumb:qword_1ED4A24B0];
 }
 
 void __62__UIInlineTextCompletionController_updateTextCompletionPrompt__block_invoke()
@@ -1355,37 +1355,37 @@ void __62__UIInlineTextCompletionController_updateTextCompletionPrompt__block_in
   qword_1ED4A24B0 = v0;
 }
 
-- (void)updateTextCompletionPromptExecutionContext:(id)a3
+- (void)updateTextCompletionPromptExecutionContext:(id)context
 {
-  v10 = a3;
+  contextCopy = context;
   if (+[UIKeyboard usesInputSystemUI])
   {
     goto LABEL_2;
   }
 
-  v4 = [(UIInlineTextCompletionController *)self presentingTextCompletionAsMarkedText];
-  if (v4)
+  presentingTextCompletionAsMarkedText = [(UIInlineTextCompletionController *)self presentingTextCompletionAsMarkedText];
+  if (presentingTextCompletionAsMarkedText)
   {
   }
 
   else
   {
-    v9 = [(UIInlineTextCompletionController *)self acceptingTextCompletion];
+    acceptingTextCompletion = [(UIInlineTextCompletionController *)self acceptingTextCompletion];
 
-    if (v9)
+    if (acceptingTextCompletion)
     {
 LABEL_2:
-      [v10 returnExecutionToParent];
+      [contextCopy returnExecutionToParent];
       goto LABEL_13;
     }
   }
 
-  v5 = [(UIInlineTextCompletionController *)self delegate];
-  v6 = [v5 autocorrectionController];
+  delegate = [(UIInlineTextCompletionController *)self delegate];
+  autocorrectionController = [delegate autocorrectionController];
 
-  v7 = [v6 textCompletions];
+  textCompletions = [autocorrectionController textCompletions];
 
-  if (!v7)
+  if (!textCompletions)
   {
     goto LABEL_11;
   }
@@ -1394,27 +1394,27 @@ LABEL_2:
   {
     [(UIInlineTextCompletionController *)self _touchTextCompletionPromptTimer];
 LABEL_11:
-    [v10 returnExecutionToParent];
+    [contextCopy returnExecutionToParent];
     goto LABEL_12;
   }
 
-  v8 = [(UIInlineTextCompletionController *)self _bestTextCompletion];
-  [(UIInlineTextCompletionController *)self _updateTextCompletionPrompt:v8 executionContext:v10];
+  _bestTextCompletion = [(UIInlineTextCompletionController *)self _bestTextCompletion];
+  [(UIInlineTextCompletionController *)self _updateTextCompletionPrompt:_bestTextCompletion executionContext:contextCopy];
 
 LABEL_12:
 LABEL_13:
 }
 
-- (void)_updateTextCompletionPrompt:(id)a3 executionContext:(id)a4
+- (void)_updateTextCompletionPrompt:(id)prompt executionContext:(id)context
 {
   v82 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 candidate];
-  v10 = v9;
-  if (v9)
+  promptCopy = prompt;
+  contextCopy = context;
+  candidate = [promptCopy candidate];
+  v10 = candidate;
+  if (candidate)
   {
-    v11 = v9;
+    v11 = candidate;
   }
 
   else
@@ -1424,11 +1424,11 @@ LABEL_13:
 
   v12 = v11;
 
-  v13 = [v7 input];
-  v14 = v13;
-  if (v13)
+  input = [promptCopy input];
+  v14 = input;
+  if (input)
   {
-    v15 = v13;
+    v15 = input;
   }
 
   else
@@ -1446,12 +1446,12 @@ LABEL_13:
     location = &self->_textCompletion;
     if (textCompletion)
     {
-      v21 = v8;
-      v22 = [(_UIInlineTextCompletion *)textCompletion candidate];
-      v23 = v22;
-      if (v22)
+      v21 = contextCopy;
+      candidate2 = [(_UIInlineTextCompletion *)textCompletion candidate];
+      v23 = candidate2;
+      if (candidate2)
       {
-        v24 = v22;
+        v24 = candidate2;
       }
 
       else
@@ -1461,11 +1461,11 @@ LABEL_13:
 
       v25 = v24;
 
-      v26 = [*location input];
-      v27 = v26;
-      if (v26)
+      input2 = [*location input];
+      v27 = input2;
+      if (input2)
       {
-        v28 = v26;
+        v28 = input2;
       }
 
       else
@@ -1477,19 +1477,19 @@ LABEL_13:
 
       if ([(__CFString *)v25 isEqualToString:v12]&& [(__CFString *)v29 isEqualToString:v16])
       {
-        v8 = v21;
+        contextCopy = v21;
         [v21 returnExecutionToParent];
 
         goto LABEL_15;
       }
 
-      v8 = v21;
+      contextCopy = v21;
     }
 
     v30 = _UIKBInlineTextCompletionLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      v48 = _shortCompletionDescr(v7);
+      v48 = _shortCompletionDescr(promptCopy);
       *buf = 138412290;
       v81 = v48;
       _os_log_debug_impl(&dword_188A29000, v30, OS_LOG_TYPE_DEBUG, "Trying to present inline text completion: %@", buf, 0xCu);
@@ -1504,16 +1504,16 @@ LABEL_13:
         _os_log_impl(&dword_188A29000, v34, OS_LOG_TYPE_DEFAULT, "Will not present text completion (no forward progress)", buf, 2u);
       }
 
-      v18 = self;
+      selfCopy7 = self;
       v19 = 9;
       goto LABEL_14;
     }
 
-    v31 = [(UIInlineTextCompletionController *)self delegate];
-    v32 = [v31 documentState];
+    delegate = [(UIInlineTextCompletionController *)self delegate];
+    documentState = [delegate documentState];
 
-    v33 = [v32 markedText];
-    if ([v33 length])
+    markedText = [documentState markedText];
+    if ([markedText length])
     {
 
 LABEL_36:
@@ -1525,31 +1525,31 @@ LABEL_36:
       }
 
       [(UIInlineTextCompletionController *)self _removeTextCompletionPromptForReason:10];
-      [v8 returnExecutionToParent];
+      [contextCopy returnExecutionToParent];
       goto LABEL_39;
     }
 
-    [v32 selectedText];
-    v35 = v73 = v8;
+    [documentState selectedText];
+    v35 = v73 = contextCopy;
     v36 = [v35 length];
 
-    v8 = v73;
+    contextCopy = v73;
     if (v36)
     {
       goto LABEL_36;
     }
 
-    v38 = [v32 contextAfterInput];
-    v39 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v40 = [v38 stringByTrimmingCharactersInSet:v39];
+    contextAfterInput = [documentState contextAfterInput];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v40 = [contextAfterInput stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     if ([v40 length])
     {
-      v41 = [v40 _firstLongCharacter];
-      v42 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      LOBYTE(v41) = [v42 longCharacterIsMember:v41];
+      _firstLongCharacter = [v40 _firstLongCharacter];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      LOBYTE(_firstLongCharacter) = [newlineCharacterSet longCharacterIsMember:_firstLongCharacter];
 
-      if ((v41 & 1) == 0)
+      if ((_firstLongCharacter & 1) == 0)
       {
         v49 = _UIKBInlineTextCompletionLog();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
@@ -1558,15 +1558,15 @@ LABEL_36:
           _os_log_impl(&dword_188A29000, v49, OS_LOG_TYPE_DEFAULT, "Will not present text completion: contextAfterInput is not empty and has non-whitespace characters before the first newline", buf, 2u);
         }
 
-        v50 = self;
+        selfCopy6 = self;
         v51 = 10;
         goto LABEL_61;
       }
     }
 
-    v43 = [(UIInlineTextCompletionController *)self inputDelegate];
+    inputDelegate = [(UIInlineTextCompletionController *)self inputDelegate];
 
-    if (!v43)
+    if (!inputDelegate)
     {
       v52 = _UIKBInlineTextCompletionLog();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
@@ -1575,15 +1575,15 @@ LABEL_36:
         _os_log_impl(&dword_188A29000, v52, OS_LOG_TYPE_DEFAULT, "Will not present text completion: no input delegate", buf, 2u);
       }
 
-      v50 = self;
+      selfCopy6 = self;
       v51 = 13;
       goto LABEL_61;
     }
 
-    v44 = [(UIInlineTextCompletionController *)self delegate];
-    v45 = [v44 isSelecting];
+    delegate2 = [(UIInlineTextCompletionController *)self delegate];
+    isSelecting = [delegate2 isSelecting];
 
-    if (v45)
+    if (isSelecting)
     {
       v46 = _UIKBInlineTextCompletionLog();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
@@ -1606,15 +1606,15 @@ LABEL_56:
           _os_log_impl(&dword_188A29000, v55, OS_LOG_TYPE_DEFAULT, "Will not present text completion: inline completion text completion mode for traits is NO", buf, 2u);
         }
 
-        v50 = self;
+        selfCopy6 = self;
         v51 = 12;
         goto LABEL_61;
       }
 
-      v53 = [(UIInlineTextCompletionController *)self delegate];
-      v54 = [v53 showingEmojiSearch];
+      delegate3 = [(UIInlineTextCompletionController *)self delegate];
+      showingEmojiSearch = [delegate3 showingEmojiSearch];
 
-      if (!v54)
+      if (!showingEmojiSearch)
       {
         if (+[UIKeyboard presentsInlineTextCompletionAsMarkedText])
         {
@@ -1622,58 +1622,58 @@ LABEL_56:
           v57 = _UIKBInlineTextCompletionLog();
           if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
           {
-            v58 = _shortCompletionDescr(v7);
+            v58 = _shortCompletionDescr(promptCopy);
             *buf = 138412290;
             v81 = v58;
             _os_log_impl(&dword_188A29000, v57, OS_LOG_TYPE_DEFAULT, "Presenting inline text completion now: %@", buf, 0xCu);
           }
 
           v59 = objc_alloc(MEMORY[0x1E696AAB0]);
-          v60 = [(UIInlineTextCompletionController *)self _markedTextAttributes];
-          v61 = [v59 initWithString:v56 attributes:v60];
+          _markedTextAttributes = [(UIInlineTextCompletionController *)self _markedTextAttributes];
+          v61 = [v59 initWithString:v56 attributes:_markedTextAttributes];
 
           v62 = [MEMORY[0x1E69C6F88] intermediateTextWithInputString:v56 displayString:v61 selectionLocation:0];
           [(UIInlineTextCompletionController *)self setPresentingTextCompletionAsMarkedText:v56];
-          objc_storeStrong(location, a3);
-          v63 = [(UIInlineTextCompletionController *)self delegate];
-          [v63 presentTextCompletionAsMarkedText:v62];
+          objc_storeStrong(location, prompt);
+          delegate4 = [(UIInlineTextCompletionController *)self delegate];
+          [delegate4 presentTextCompletionAsMarkedText:v62];
 
-          v64 = [(UIInlineTextCompletionController *)self delegate];
-          [v64 removeAutocorrectPrompt];
+          delegate5 = [(UIInlineTextCompletionController *)self delegate];
+          [delegate5 removeAutocorrectPrompt];
 
           [(UIInlineTextCompletionController *)self _touchInlineCompletionCoachingTimer];
           [v73 returnExecutionToParent];
 
-          v8 = v73;
+          contextCopy = v73;
         }
 
         else
         {
-          v65 = v32;
-          v66 = [(UIInlineTextCompletionController *)self delegate];
-          v67 = [v66 inputDelegateManager];
-          v68 = [v67 asyncCapableInputDelegate];
+          v65 = documentState;
+          delegate6 = [(UIInlineTextCompletionController *)self delegate];
+          inputDelegateManager = [delegate6 inputDelegateManager];
+          asyncCapableInputDelegate = [inputDelegateManager asyncCapableInputDelegate];
 
-          if (v68)
+          if (asyncCapableInputDelegate)
           {
             aBlock[0] = MEMORY[0x1E69E9820];
             aBlock[1] = 3221225472;
             aBlock[2] = __81__UIInlineTextCompletionController__updateTextCompletionPrompt_executionContext___block_invoke;
             aBlock[3] = &unk_1E70FD280;
-            v76 = v68;
+            v76 = asyncCapableInputDelegate;
             v77 = v16;
-            v78 = self;
-            v79 = v7;
+            selfCopy5 = self;
+            v79 = promptCopy;
             v69 = _Block_copy(aBlock);
-            v8 = v73;
+            contextCopy = v73;
             if (qword_1ED4A24D8 != -1)
             {
               dispatch_once(&qword_1ED4A24D8, &__block_literal_global_90_5);
             }
 
-            v70 = [(UIInlineTextCompletionController *)self delegate];
-            v71 = [v70 taskQueue];
-            [v71 addTask:v69 breadcrumb:qword_1ED4A24D0];
+            delegate7 = [(UIInlineTextCompletionController *)self delegate];
+            taskQueue = [delegate7 taskQueue];
+            [taskQueue addTask:v69 breadcrumb:qword_1ED4A24D0];
 
             [v73 returnExecutionToParent];
             v72 = v76;
@@ -1682,12 +1682,12 @@ LABEL_56:
           else
           {
             v72 = [(UIInlineTextCompletionController *)self _textCompletionPromptRectsForInput:v16];
-            [(UIInlineTextCompletionController *)self _updateTextCompletionPrompt:v7 inputRects:v72];
-            v8 = v73;
+            [(UIInlineTextCompletionController *)self _updateTextCompletionPrompt:promptCopy inputRects:v72];
+            contextCopy = v73;
             [v73 returnExecutionToParent];
           }
 
-          v32 = v65;
+          documentState = v65;
         }
 
         goto LABEL_62;
@@ -1702,11 +1702,11 @@ LABEL_56:
       }
     }
 
-    v50 = self;
+    selfCopy6 = self;
     v51 = 11;
 LABEL_61:
-    [(UIInlineTextCompletionController *)v50 _removeTextCompletionPromptForReason:v51];
-    v8 = v73;
+    [(UIInlineTextCompletionController *)selfCopy6 _removeTextCompletionPromptForReason:v51];
+    contextCopy = v73;
     [v73 returnExecutionToParent];
 LABEL_62:
 
@@ -1724,11 +1724,11 @@ LABEL_39:
     }
   }
 
-  v18 = self;
+  selfCopy7 = self;
   v19 = 4;
 LABEL_14:
-  [(UIInlineTextCompletionController *)v18 _removeTextCompletionPromptForReason:v19];
-  [v8 returnExecutionToParent];
+  [(UIInlineTextCompletionController *)selfCopy7 _removeTextCompletionPromptForReason:v19];
+  [contextCopy returnExecutionToParent];
 LABEL_15:
 }
 
@@ -1811,11 +1811,11 @@ void __81__UIInlineTextCompletionController__updateTextCompletionPrompt_executio
   qword_1ED4A24D0 = v0;
 }
 
-- (id)_textCompletionPromptRectsForInput:(id)a3
+- (id)_textCompletionPromptRectsForInput:(id)input
 {
-  v4 = a3;
-  v5 = [(UIInlineTextCompletionController *)self delegate];
-  v6 = [v5 rangeForTextCompletionInput:v4];
+  inputCopy = input;
+  delegate = [(UIInlineTextCompletionController *)self delegate];
+  v6 = [delegate rangeForTextCompletionInput:inputCopy];
 
   if (!v6)
   {
@@ -1824,22 +1824,22 @@ void __81__UIInlineTextCompletionController__updateTextCompletionPrompt_executio
 
   if (([v6 isEmpty] & 1) == 0)
   {
-    v28 = [(UIInlineTextCompletionController *)self inputDelegate];
-    [v28 firstRectForRange:v6];
+    inputDelegate = [(UIInlineTextCompletionController *)self inputDelegate];
+    [inputDelegate firstRectForRange:v6];
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
 
-    v37 = [(UIInlineTextCompletionController *)self inputDelegate];
-    [v37 _lastRectForRange:v6];
+    inputDelegate2 = [(UIInlineTextCompletionController *)self inputDelegate];
+    [inputDelegate2 _lastRectForRange:v6];
     v39 = v38;
     v41 = v40;
     v43 = v42;
     v45 = v44;
 
-    v17 = [(UIInlineTextCompletionController *)self delegate];
-    v18 = v17;
+    delegate2 = [(UIInlineTextCompletionController *)self delegate];
+    v18 = delegate2;
     v19 = v30;
     v20 = v32;
     v21 = v34;
@@ -1858,16 +1858,16 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v7 = [(UIInlineTextCompletionController *)self inputDelegate];
-  v8 = [v6 start];
-  [v7 caretRectForPosition:v8];
+  inputDelegate3 = [(UIInlineTextCompletionController *)self inputDelegate];
+  start = [v6 start];
+  [inputDelegate3 caretRectForPosition:start];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(UIInlineTextCompletionController *)self delegate];
-  v18 = v17;
+  delegate2 = [(UIInlineTextCompletionController *)self delegate];
+  v18 = delegate2;
   v19 = v10;
   v20 = v12;
   v21 = v14;
@@ -1877,20 +1877,20 @@ LABEL_5:
   v25 = v14;
   v26 = v16;
 LABEL_7:
-  v27 = [v17 textCompletionInputRectsFromFirstRect:v19 lastRect:{v20, v21, v22, v23, v24, v25, v26}];
+  v27 = [delegate2 textCompletionInputRectsFromFirstRect:v19 lastRect:{v20, v21, v22, v23, v24, v25, v26}];
 
 LABEL_8:
 
   return v27;
 }
 
-- (void)_updateTextCompletionPrompt:(id)a3 inputRects:(id)a4
+- (void)_updateTextCompletionPrompt:(id)prompt inputRects:(id)rects
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 candidate];
-  v9 = [v6 input];
-  if (![v7 count])
+  promptCopy = prompt;
+  rectsCopy = rects;
+  candidate = [promptCopy candidate];
+  input = [promptCopy input];
+  if (![rectsCopy count])
   {
     v19 = _UIKBInlineTextCompletionLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1907,8 +1907,8 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  v10 = [v7 lastObject];
-  [v10 rect];
+  lastObject = [rectsCopy lastObject];
+  [lastObject rect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -1934,15 +1934,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v22 = [(UIInlineTextCompletionController *)self delegate];
-  v23 = [v22 inputOverlayContainer];
+  delegate = [(UIInlineTextCompletionController *)self delegate];
+  inputOverlayContainer = [delegate inputOverlayContainer];
 
-  if (v23)
+  if (inputOverlayContainer)
   {
-    v24 = [(UIInlineTextCompletionController *)self delegate];
-    [v24 updateKeyboardConfigurations];
+    delegate2 = [(UIInlineTextCompletionController *)self delegate];
+    [delegate2 updateKeyboardConfigurations];
 
-    [(UIInlineTextCompletionController *)self _updateTextCompletionPromptWithTextCompletion:v6 parentView:v23 inputRects:v7];
+    [(UIInlineTextCompletionController *)self _updateTextCompletionPromptWithTextCompletion:promptCopy parentView:inputOverlayContainer inputRects:rectsCopy];
   }
 
   else
@@ -1960,15 +1960,15 @@ LABEL_7:
 LABEL_15:
 }
 
-- (void)_updateTextCompletionPromptWithTextCompletion:(id)a3 parentView:(id)a4 inputRects:(id)a5
+- (void)_updateTextCompletionPromptWithTextCompletion:(id)completion parentView:(id)view inputRects:(id)rects
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_UIInlineTextCompletion *)v8 candidate];
-  v12 = [(_UIInlineTextCompletion *)v8 input];
-  if ([(UIInlineTextCompletionController *)self _isCompletion:v8 continuingLastCompletion:self->_textCompletion])
+  completionCopy = completion;
+  viewCopy = view;
+  rectsCopy = rects;
+  candidate = [(_UIInlineTextCompletion *)completionCopy candidate];
+  input = [(_UIInlineTextCompletion *)completionCopy input];
+  if ([(UIInlineTextCompletionController *)self _isCompletion:completionCopy continuingLastCompletion:self->_textCompletion])
   {
     v13 = _UIKBInlineTextCompletionLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1976,7 +1976,7 @@ LABEL_15:
       goto LABEL_11;
     }
 
-    v14 = _shortCompletionDescr(v8);
+    v14 = _shortCompletionDescr(completionCopy);
     *v38 = 138412290;
     *&v38[4] = v14;
     v15 = "Continuing presentation of text completion: %@";
@@ -1998,7 +1998,7 @@ LABEL_15:
   v13 = _UIKBInlineTextCompletionLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = _shortCompletionDescr(v8);
+    v14 = _shortCompletionDescr(completionCopy);
     *v38 = 138412290;
     *&v38[4] = v14;
     v15 = "Presenting user with new text completion: %@";
@@ -2011,9 +2011,9 @@ LABEL_11:
   m_textCompletionPrompt = self->m_textCompletionPrompt;
   if (m_textCompletionPrompt)
   {
-    v19 = [(UIView *)m_textCompletionPrompt superview];
+    superview = [(UIView *)m_textCompletionPrompt superview];
 
-    if (v19 == v9)
+    if (superview == viewCopy)
     {
       goto LABEL_16;
     }
@@ -2029,34 +2029,34 @@ LABEL_11:
     [(UIInlineTextCompletionPrompt *)self->m_textCompletionPrompt setDelegate:self];
   }
 
-  [v9 addSubview:{self->m_textCompletionPrompt, *v38}];
+  [viewCopy addSubview:{self->m_textCompletionPrompt, *v38}];
 LABEL_16:
   v23 = self->m_textCompletionPrompt;
-  v24 = [(UIInlineTextCompletionController *)self inputDelegate];
-  v25 = [v24 textInputView];
-  [v25 _convertVisualAltitude:self->m_textCompletionPrompt toView:0.0];
+  inputDelegate = [(UIInlineTextCompletionController *)self inputDelegate];
+  textInputView = [inputDelegate textInputView];
+  [textInputView _convertVisualAltitude:self->m_textCompletionPrompt toView:0.0];
   [(UIView *)v23 _setVisualAltitude:?];
 
-  v26 = [v10 lastObject];
+  lastObject = [rectsCopy lastObject];
 
-  [v26 rect];
+  [lastObject rect];
   v28 = v27;
   v30 = v29;
   v32 = v31;
   v34 = v33;
 
   v35 = self->m_textCompletionPrompt;
-  v36 = [(_UIInlineTextCompletion *)v8 completion];
-  [(UIInlineTextCompletionPrompt *)v35 setTextCompletion:v36 inRect:v28, v30, v32, v34];
+  completion = [(_UIInlineTextCompletion *)completionCopy completion];
+  [(UIInlineTextCompletionPrompt *)v35 setTextCompletion:completion inRect:v28, v30, v32, v34];
 
   [(UIView *)self->m_textCompletionPrompt setSize:v32, v34];
   textCompletion = self->_textCompletion;
-  self->_textCompletion = v8;
+  self->_textCompletion = completionCopy;
 }
 
-- (void)_presentInlineTextCompletionCoachingUIWithExecutionContext:(id)a3
+- (void)_presentInlineTextCompletionCoachingUIWithExecutionContext:(id)context
 {
-  v9 = a3;
+  contextCopy = context;
   [(UIInlineTextCompletionController *)self _clearInlineCompletionCoachingTimer];
   if ([(UIInlineTextCompletionController *)self _shouldShowInlineTextCompletionCoachingUI])
   {
@@ -2066,18 +2066,18 @@ LABEL_16:
     [v6 presentEducationTipWithTitle:v4 description:v5];
 
     v7 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v8 = [v7 preferencesActions];
-    [v8 didTriggerOneTimeAction:@"DidShowInlineCompletionEducationTip"];
+    preferencesActions = [v7 preferencesActions];
+    [preferencesActions didTriggerOneTimeAction:@"DidShowInlineCompletionEducationTip"];
   }
 
-  [v9 returnExecutionToParent];
+  [contextCopy returnExecutionToParent];
 }
 
 - (BOOL)_shouldShowInlineTextCompletionCoachingUI
 {
   v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v2 preferencesActions];
-  v4 = [v3 oneTimeActionCompleted:@"DidShowInlineCompletionEducationTip"];
+  preferencesActions = [v2 preferencesActions];
+  v4 = [preferencesActions oneTimeActionCompleted:@"DidShowInlineCompletionEducationTip"];
 
   if (v4)
   {
@@ -2085,50 +2085,50 @@ LABEL_16:
   }
 
   v6 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v7 = [v6 preferencesActions];
-  v8 = [v7 valueForPreferenceKey:@"InlineCompletionAcceptedBySpaceEventCount"];
-  v9 = [v8 integerValue];
+  preferencesActions2 = [v6 preferencesActions];
+  v8 = [preferencesActions2 valueForPreferenceKey:@"InlineCompletionAcceptedBySpaceEventCount"];
+  integerValue = [v8 integerValue];
 
-  return v9 < 3;
+  return integerValue < 3;
 }
 
-- (void)_acceptTextCompletion:(id)a3 learningMode:(id)a4
+- (void)_acceptTextCompletion:(id)completion learningMode:(id)mode
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  modeCopy = mode;
   if (!+[UIKeyboard usesInputSystemUI])
   {
     v8 = _UIKBInlineTextCompletionLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = _shortCompletionDescr(v6);
+      v9 = _shortCompletionDescr(completionCopy);
       v13 = 138412290;
       v14 = v9;
       _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "User accepted text completion: %@", &v13, 0xCu);
     }
 
-    [(UIInlineTextCompletionController *)self setAcceptingTextCompletion:v6];
-    if (*MEMORY[0x1E69D9918] == v7)
+    [(UIInlineTextCompletionController *)self setAcceptingTextCompletion:completionCopy];
+    if (*MEMORY[0x1E69D9918] == modeCopy)
     {
-      v10 = [(UIInlineTextCompletionController *)self analyticsDispatcher];
-      [v10 setNextCandidateReplacementSource:7];
+      analyticsDispatcher = [(UIInlineTextCompletionController *)self analyticsDispatcher];
+      [analyticsDispatcher setNextCandidateReplacementSource:7];
     }
 
-    [(UIInlineTextCompletionController *)self _registerLearningForInlineCompletion:v6 learningMode:v7];
-    v11 = [(UIInlineTextCompletionController *)self delegate];
-    v12 = [v6 completion];
-    [v11 acceptPredictiveInput:v12];
+    [(UIInlineTextCompletionController *)self _registerLearningForInlineCompletion:completionCopy learningMode:modeCopy];
+    delegate = [(UIInlineTextCompletionController *)self delegate];
+    completion = [completionCopy completion];
+    [delegate acceptPredictiveInput:completion];
 
     [(UIInlineTextCompletionController *)self setAcceptingTextCompletion:0];
-    [(UIInlineTextCompletionController *)self setLastAcceptedTextCompletion:v6];
+    [(UIInlineTextCompletionController *)self setLastAcceptedTextCompletion:completionCopy];
     [(UIInlineTextCompletionController *)self _removeTextCompletionPromptForReason:2];
   }
 }
 
-- (BOOL)_shouldAcceptFirstWordOfCandidateForWordTerminator:(unsigned int)a3
+- (BOOL)_shouldAcceptFirstWordOfCandidateForWordTerminator:(unsigned int)terminator
 {
-  v3 = *&a3;
+  v3 = *&terminator;
   if (qword_1ED4A24E8 != -1)
   {
     dispatch_once(&qword_1ED4A24E8, &__block_literal_global_101_3);
@@ -2151,27 +2151,27 @@ void __87__UIInlineTextCompletionController__shouldAcceptFirstWordOfCandidateFor
   qword_1ED4A24E0 = v0;
 }
 
-- (int64_t)_acceptTypeForTypeWordTerminator:(id)a3
+- (int64_t)_acceptTypeForTypeWordTerminator:(id)terminator
 {
-  v4 = a3;
-  if ([v4 length])
+  terminatorCopy = terminator;
+  if ([terminatorCopy length])
   {
-    v5 = [v4 _rangeOfLongCharacterAtIndex:0];
+    v5 = [terminatorCopy _rangeOfLongCharacterAtIndex:0];
     v7 = v6;
-    v8 = [v4 length];
+    v8 = [terminatorCopy length];
     v9 = 0;
     if (!v5 && v7 == v8)
     {
-      if (-[UIInlineTextCompletionController _shouldAcceptFirstWordOfCandidateForWordTerminator:](self, "_shouldAcceptFirstWordOfCandidateForWordTerminator:", [v4 _firstLongCharacter]))
+      if (-[UIInlineTextCompletionController _shouldAcceptFirstWordOfCandidateForWordTerminator:](self, "_shouldAcceptFirstWordOfCandidateForWordTerminator:", [terminatorCopy _firstLongCharacter]))
       {
         v9 = 2;
       }
 
       else
       {
-        v10 = [(UIInlineTextCompletionController *)self delegate];
-        v11 = [v10 inputManagerState];
-        v12 = [v11 stringEndsWord:v4];
+        delegate = [(UIInlineTextCompletionController *)self delegate];
+        inputManagerState = [delegate inputManagerState];
+        v12 = [inputManagerState stringEndsWord:terminatorCopy];
 
         v9 = v12;
       }
@@ -2186,32 +2186,32 @@ void __87__UIInlineTextCompletionController__shouldAcceptFirstWordOfCandidateFor
   return v9;
 }
 
-- (int64_t)_acceptTypeForInteraction:(int64_t)a3 wordTerminator:(id)a4
+- (int64_t)_acceptTypeForInteraction:(int64_t)interaction wordTerminator:(id)terminator
 {
-  v6 = a4;
+  terminatorCopy = terminator;
   v7 = 1;
-  if ((a3 - 1) >= 2 && a3 != 4)
+  if ((interaction - 1) >= 2 && interaction != 4)
   {
-    if (a3)
+    if (interaction)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [(UIInlineTextCompletionController *)self _acceptTypeForTypeWordTerminator:v6];
+      v7 = [(UIInlineTextCompletionController *)self _acceptTypeForTypeWordTerminator:terminatorCopy];
     }
   }
 
   return v7;
 }
 
-- (id)_acceptTextCompletionWithInteraction:(int64_t)a3 wordTerminator:(id)a4
+- (id)_acceptTextCompletionWithInteraction:(int64_t)interaction wordTerminator:(id)terminator
 {
-  v6 = [(UIInlineTextCompletionController *)self _acceptTypeForInteraction:a3 wordTerminator:a4];
+  v6 = [(UIInlineTextCompletionController *)self _acceptTypeForInteraction:interaction wordTerminator:terminator];
   if (v6 == 2)
   {
-    v7 = [(UIInlineTextCompletionController *)self oneWordTextCompletion];
+    oneWordTextCompletion = [(UIInlineTextCompletionController *)self oneWordTextCompletion];
   }
 
   else
@@ -2222,34 +2222,34 @@ void __87__UIInlineTextCompletionController__shouldAcceptFirstWordOfCandidateFor
       goto LABEL_11;
     }
 
-    v7 = [(UIInlineTextCompletionController *)self textCompletion];
+    oneWordTextCompletion = [(UIInlineTextCompletionController *)self textCompletion];
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = oneWordTextCompletion;
+  if (!oneWordTextCompletion)
   {
 LABEL_11:
     v11 = 0;
     goto LABEL_17;
   }
 
-  if (![(UIInlineTextCompletionController *)self _doesFirstPredictedCharacterEndWord:v7])
+  if (![(UIInlineTextCompletionController *)self _doesFirstPredictedCharacterEndWord:oneWordTextCompletion])
   {
 LABEL_13:
     v8 = v8;
     goto LABEL_14;
   }
 
-  if (![(UIInlineTextCompletionController *)self _shouldAcceptUpToNextWordOfCandidateOnWordBoundaryForInteraction:a3])
+  if (![(UIInlineTextCompletionController *)self _shouldAcceptUpToNextWordOfCandidateOnWordBoundaryForInteraction:interaction])
   {
-    if (a3 != 2)
+    if (interaction != 2)
     {
-      v14 = [v8 completion];
-      v15 = [v8 input];
-      v16 = [v14 candidateByReplacingWithCandidate:v15];
+      completion = [v8 completion];
+      input = [v8 input];
+      v16 = [completion candidateByReplacingWithCandidate:input];
 
-      v17 = [v8 source];
-      v18 = [_UIInlineTextCompletion inlineTextCompletion:v16 source:v17];
+      source = [v8 source];
+      v18 = [_UIInlineTextCompletion inlineTextCompletion:v16 source:source];
 
       [(UIInlineTextCompletionController *)self _registerLearningForInlineCompletion:v18 learningMode:*MEMORY[0x1E69D9928]];
       v19 = _UIKBInlineTextCompletionLog();
@@ -2265,8 +2265,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v9 = [(UIInlineTextCompletionController *)self textCompletion];
-  v10 = [(UIInlineTextCompletionController *)self _upToNextWordTextCompletionFromTextCompletion:v9];
+  textCompletion = [(UIInlineTextCompletionController *)self textCompletion];
+  v10 = [(UIInlineTextCompletionController *)self _upToNextWordTextCompletionFromTextCompletion:textCompletion];
 
   v8 = v10;
   if (!v8)
@@ -2276,7 +2276,7 @@ LABEL_13:
 
 LABEL_14:
   v12 = MEMORY[0x1E69D9918];
-  if (a3 != 2)
+  if (interaction != 2)
   {
     v12 = MEMORY[0x1E69D9920];
   }
@@ -2288,20 +2288,20 @@ LABEL_17:
   return v11;
 }
 
-- (id)acceptTextCompletionWithInteraction:(int64_t)a3 wordTerminator:(id)a4 outputHandledByCaller:(BOOL)a5
+- (id)acceptTextCompletionWithInteraction:(int64_t)interaction wordTerminator:(id)terminator outputHandledByCaller:(BOOL)caller
 {
-  if (!a5)
+  if (!caller)
   {
-    v10 = [(UIInlineTextCompletionController *)self _acceptTextCompletionWithInteraction:a3 wordTerminator:a4];
-    v11 = [v10 completion];
+    v10 = [(UIInlineTextCompletionController *)self _acceptTextCompletionWithInteraction:interaction wordTerminator:terminator];
+    completion = [v10 completion];
     goto LABEL_28;
   }
 
-  v7 = [(UIInlineTextCompletionController *)self _acceptTypeForInteraction:a3 wordTerminator:a4];
+  v7 = [(UIInlineTextCompletionController *)self _acceptTypeForInteraction:interaction wordTerminator:terminator];
   v8 = v7;
   if (v7 == 2)
   {
-    v9 = [(UIInlineTextCompletionController *)self oneWordTextCompletion];
+    oneWordTextCompletion = [(UIInlineTextCompletionController *)self oneWordTextCompletion];
   }
 
   else
@@ -2312,18 +2312,18 @@ LABEL_17:
       goto LABEL_15;
     }
 
-    v9 = [(UIInlineTextCompletionController *)self textCompletion];
+    oneWordTextCompletion = [(UIInlineTextCompletionController *)self textCompletion];
   }
 
-  v10 = v9;
-  if (v9)
+  v10 = oneWordTextCompletion;
+  if (oneWordTextCompletion)
   {
-    if ([(UIInlineTextCompletionController *)self _doesFirstPredictedCharacterEndWord:v9])
+    if ([(UIInlineTextCompletionController *)self _doesFirstPredictedCharacterEndWord:oneWordTextCompletion])
     {
-      if ([(UIInlineTextCompletionController *)self _shouldAcceptUpToNextWordOfCandidateOnWordBoundaryForInteraction:a3])
+      if ([(UIInlineTextCompletionController *)self _shouldAcceptUpToNextWordOfCandidateOnWordBoundaryForInteraction:interaction])
       {
-        v12 = [(UIInlineTextCompletionController *)self textCompletion];
-        v13 = [(UIInlineTextCompletionController *)self _upToNextWordTextCompletionFromTextCompletion:v12];
+        textCompletion = [(UIInlineTextCompletionController *)self textCompletion];
+        v13 = [(UIInlineTextCompletionController *)self _upToNextWordTextCompletionFromTextCompletion:textCompletion];
 
         v14 = _UIKBInlineTextCompletionLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2340,7 +2340,7 @@ LABEL_17:
 
 LABEL_24:
         v20 = MEMORY[0x1E69D9918];
-        if (a3 != 2)
+        if (interaction != 2)
         {
           v20 = MEMORY[0x1E69D9920];
         }
@@ -2352,14 +2352,14 @@ LABEL_24:
         goto LABEL_27;
       }
 
-      if (a3 != 2)
+      if (interaction != 2)
       {
-        v22 = [v10 completion];
-        v23 = [v10 input];
-        v24 = [v22 candidateByReplacingWithCandidate:v23];
+        completion2 = [v10 completion];
+        input = [v10 input];
+        v24 = [completion2 candidateByReplacingWithCandidate:input];
 
-        v25 = [v10 source];
-        v26 = [_UIInlineTextCompletion inlineTextCompletion:v24 source:v25];
+        source = [v10 source];
+        v26 = [_UIInlineTextCompletion inlineTextCompletion:v24 source:source];
 
         [(UIInlineTextCompletionController *)self _registerLearningForInlineCompletion:v26 learningMode:*MEMORY[0x1E69D9928]];
         v27 = _UIKBInlineTextCompletionLog();
@@ -2402,27 +2402,27 @@ LABEL_22:
 LABEL_15:
   v15 = 0;
 LABEL_27:
-  v11 = [v15 completion];
+  completion = [v15 completion];
 
 LABEL_28:
 
-  return v11;
+  return completion;
 }
 
 - (id)_candidateToUndoAcceptedTextCompletion
 {
-  v3 = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
+  lastAcceptedTextCompletion = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
 
-  if (v3)
+  if (lastAcceptedTextCompletion)
   {
-    v4 = [(UIInlineTextCompletionController *)self delegate];
-    v5 = [v4 documentState];
+    delegate = [(UIInlineTextCompletionController *)self delegate];
+    documentState = [delegate documentState];
 
-    v6 = [v5 contextBeforeInput];
-    v7 = v6;
-    if (v6)
+    contextBeforeInput = [documentState contextBeforeInput];
+    v7 = contextBeforeInput;
+    if (contextBeforeInput)
     {
-      v8 = v6;
+      v8 = contextBeforeInput;
     }
 
     else
@@ -2432,12 +2432,12 @@ LABEL_28:
 
     v9 = v8;
 
-    v10 = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
-    v11 = [v10 candidate];
-    v12 = v11;
-    if (v11)
+    lastAcceptedTextCompletion2 = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
+    candidate = [lastAcceptedTextCompletion2 candidate];
+    v12 = candidate;
+    if (candidate)
     {
-      v13 = v11;
+      v13 = candidate;
     }
 
     else
@@ -2447,11 +2447,11 @@ LABEL_28:
 
     v14 = v13;
 
-    v15 = [v10 input];
-    v16 = v15;
-    if (v15)
+    input = [lastAcceptedTextCompletion2 input];
+    v16 = input;
+    if (input)
     {
-      v17 = v15;
+      v17 = input;
     }
 
     else
@@ -2466,9 +2466,9 @@ LABEL_28:
     {
       v20 = [(__CFString *)v9 _rangeOfLongCharacterAtIndex:[(__CFString *)v9 length]- 1];
       v22 = [(__CFString *)v9 substringWithRange:v20, v21];
-      v23 = [(UIInlineTextCompletionController *)self delegate];
-      v24 = [v23 inputManagerState];
-      v25 = [v24 stringEndsWord:v22];
+      delegate2 = [(UIInlineTextCompletionController *)self delegate];
+      inputManagerState = [delegate2 inputManagerState];
+      v25 = [inputManagerState stringEndsWord:v22];
 
       v26 = v19;
       if (v25)
@@ -2479,8 +2479,8 @@ LABEL_28:
       if ([(__CFString *)v9 hasSuffix:v26])
       {
         v27 = [MEMORY[0x1E69D95F0] candidateWithCandidate:v18 forInput:v26];
-        v28 = [v10 source];
-        v29 = [_UIInlineTextCompletion inlineTextCompletion:v27 source:v28];
+        source = [lastAcceptedTextCompletion2 source];
+        v29 = [_UIInlineTextCompletion inlineTextCompletion:v27 source:source];
       }
 
       else
@@ -2511,25 +2511,25 @@ LABEL_28:
     return 0;
   }
 
-  v3 = [(UIInlineTextCompletionController *)self _candidateToUndoAcceptedTextCompletion];
-  v4 = v3 != 0;
+  _candidateToUndoAcceptedTextCompletion = [(UIInlineTextCompletionController *)self _candidateToUndoAcceptedTextCompletion];
+  v4 = _candidateToUndoAcceptedTextCompletion != 0;
 
   return v4;
 }
 
-- (void)undoAcceptedTextCompletionExecutionContext:(id)a3
+- (void)undoAcceptedTextCompletionExecutionContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIInlineTextCompletionController *)self _candidateToUndoAcceptedTextCompletion];
-  if (v5)
+  contextCopy = context;
+  _candidateToUndoAcceptedTextCompletion = [(UIInlineTextCompletionController *)self _candidateToUndoAcceptedTextCompletion];
+  if (_candidateToUndoAcceptedTextCompletion)
   {
     v6 = _UIKBInlineTextCompletionLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
-      v8 = _shortCompletionDescr(v7);
-      v9 = _shortCompletionDescr(v5);
+      lastAcceptedTextCompletion = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
+      v8 = _shortCompletionDescr(lastAcceptedTextCompletion);
+      v9 = _shortCompletionDescr(_candidateToUndoAcceptedTextCompletion);
       *buf = 138412546;
       v17 = v8;
       v18 = 2112;
@@ -2537,30 +2537,30 @@ LABEL_28:
       _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "Undo accepted text completion: (Accepted: %@, Undo: %@)", buf, 0x16u);
     }
 
-    v10 = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
-    if (v10)
+    lastAcceptedTextCompletion2 = [(UIInlineTextCompletionController *)self lastAcceptedTextCompletion];
+    if (lastAcceptedTextCompletion2)
     {
-      [(UIInlineTextCompletionController *)self _registerLearningForInlineCompletion:v10 learningMode:*MEMORY[0x1E69D9930]];
+      [(UIInlineTextCompletionController *)self _registerLearningForInlineCompletion:lastAcceptedTextCompletion2 learningMode:*MEMORY[0x1E69D9930]];
     }
 
     lastAcceptedTextCompletion = self->_lastAcceptedTextCompletion;
     self->_lastAcceptedTextCompletion = 0;
 
     [(UIInlineTextCompletionController *)self _removeTextCompletionPromptForReason:3];
-    v12 = [(UIInlineTextCompletionController *)self delegate];
-    v13 = [v5 completion];
+    delegate = [(UIInlineTextCompletionController *)self delegate];
+    completion = [_candidateToUndoAcceptedTextCompletion completion];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __79__UIInlineTextCompletionController_undoAcceptedTextCompletionExecutionContext___block_invoke;
     v15[3] = &unk_1E70FD058;
     v15[4] = self;
-    v14 = [v4 childWithContinuation:v15];
-    [v12 acceptPredictiveInput:v13 appendSeparator:0 executionContext:v14];
+    v14 = [contextCopy childWithContinuation:v15];
+    [delegate acceptPredictiveInput:completion appendSeparator:0 executionContext:v14];
   }
 
   else
   {
-    [v4 returnExecutionToParent];
+    [contextCopy returnExecutionToParent];
   }
 }
 
@@ -2575,62 +2575,62 @@ void __79__UIInlineTextCompletionController_undoAcceptedTextCompletionExecutionC
   [v5 returnExecutionToParent];
 }
 
-- (void)_registerLearningForInlineCompletion:(id)a3 learningMode:(id)a4
+- (void)_registerLearningForInlineCompletion:(id)completion learningMode:(id)mode
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (*MEMORY[0x1E69D9920] == v7)
+  completionCopy = completion;
+  modeCopy = mode;
+  if (*MEMORY[0x1E69D9920] == modeCopy)
   {
     v8 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v9 = [v8 preferencesActions];
-    v10 = [v9 valueForPreferenceKey:@"InlineCompletionAcceptedBySpaceEventCount"];
-    v11 = [v10 integerValue];
+    preferencesActions = [v8 preferencesActions];
+    v10 = [preferencesActions valueForPreferenceKey:@"InlineCompletionAcceptedBySpaceEventCount"];
+    integerValue = [v10 integerValue];
 
     v12 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v13 = [v12 preferencesActions];
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:v11 + 1];
-    [v13 setValue:v14 forPreferenceKey:@"InlineCompletionAcceptedBySpaceEventCount"];
+    preferencesActions2 = [v12 preferencesActions];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
+    [preferencesActions2 setValue:v14 forPreferenceKey:@"InlineCompletionAcceptedBySpaceEventCount"];
   }
 
-  v15 = [(UIInlineTextCompletionController *)self delegate];
-  [v15 refreshKeyboardState];
+  delegate = [(UIInlineTextCompletionController *)self delegate];
+  [delegate refreshKeyboardState];
 
-  v16 = [(UIInlineTextCompletionController *)self delegate];
-  v17 = [v16 keyboardState];
+  delegate2 = [(UIInlineTextCompletionController *)self delegate];
+  keyboardState = [delegate2 keyboardState];
 
   v18 = _UIKBInlineTextCompletionLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v23 = _shortCompletionDescr(v6);
-    v24 = [v6 source];
-    v25 = _shortCandidateDescr(v24);
+    v23 = _shortCompletionDescr(completionCopy);
+    source = [completionCopy source];
+    v25 = _shortCandidateDescr(source);
     v26 = 138412802;
     v27 = v23;
     v28 = 2112;
     v29 = v25;
     v30 = 2112;
-    v31 = v7;
+    v31 = modeCopy;
     _os_log_debug_impl(&dword_188A29000, v18, OS_LOG_TYPE_DEBUG, "Register learning for completion:%@ sourceCandidate:%@ mode:%@", &v26, 0x20u);
   }
 
-  v19 = [(UIInlineTextCompletionController *)self delegate];
-  v20 = [v19 inlineTextCompletionLearner];
+  delegate3 = [(UIInlineTextCompletionController *)self delegate];
+  inlineTextCompletionLearner = [delegate3 inlineTextCompletionLearner];
 
-  if (v20)
+  if (inlineTextCompletionLearner)
   {
-    v21 = [v6 completion];
-    v22 = [v6 source];
-    [v20 registerLearning:v21 fullCandidate:v22 keyboardState:v17 mode:v7];
+    completion = [completionCopy completion];
+    source2 = [completionCopy source];
+    [inlineTextCompletionLearner registerLearning:completion fullCandidate:source2 keyboardState:keyboardState mode:modeCopy];
   }
 
   else
   {
-    v21 = _UIKBInlineTextCompletionLog();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    completion = _UIKBInlineTextCompletionLog();
+    if (os_log_type_enabled(completion, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v26) = 0;
-      _os_log_impl(&dword_188A29000, v21, OS_LOG_TYPE_DEFAULT, "NOTE: inlineTextCompletionLearner not found", &v26, 2u);
+      _os_log_impl(&dword_188A29000, completion, OS_LOG_TYPE_DEFAULT, "NOTE: inlineTextCompletionLearner not found", &v26, 2u);
     }
   }
 }

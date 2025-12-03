@@ -1,25 +1,25 @@
 @interface BDSDistributedPriceTrackingConfigNotification
-- (BDSDistributedPriceTrackingConfigNotification)initWithCoder:(id)a3;
-- (BDSDistributedPriceTrackingConfigNotification)initWithTitleSingleAudiobook:(id)a3 titleSingleBook:(id)a4 titleMultiple:(id)a5 bodySingleAudiobook:(id)a6 bodySingleBook:(id)a7 bodyMultiple:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (BDSDistributedPriceTrackingConfigNotification)initWithCoder:(id)coder;
+- (BDSDistributedPriceTrackingConfigNotification)initWithTitleSingleAudiobook:(id)audiobook titleSingleBook:(id)book titleMultiple:(id)multiple bodySingleAudiobook:(id)singleAudiobook bodySingleBook:(id)singleBook bodyMultiple:(id)bodyMultiple;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSDistributedPriceTrackingConfigNotification
 
-- (BDSDistributedPriceTrackingConfigNotification)initWithTitleSingleAudiobook:(id)a3 titleSingleBook:(id)a4 titleMultiple:(id)a5 bodySingleAudiobook:(id)a6 bodySingleBook:(id)a7 bodyMultiple:(id)a8
+- (BDSDistributedPriceTrackingConfigNotification)initWithTitleSingleAudiobook:(id)audiobook titleSingleBook:(id)book titleMultiple:(id)multiple bodySingleAudiobook:(id)singleAudiobook bodySingleBook:(id)singleBook bodyMultiple:(id)bodyMultiple
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  audiobookCopy = audiobook;
+  bookCopy = book;
+  multipleCopy = multiple;
+  singleAudiobookCopy = singleAudiobook;
+  singleBookCopy = singleBook;
+  bodyMultipleCopy = bodyMultiple;
   v40.receiver = self;
   v40.super_class = BDSDistributedPriceTrackingConfigNotification;
   v20 = [(BDSDistributedPriceTrackingConfigNotification *)&v40 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [audiobookCopy copy];
     v22 = v21;
     if (v21)
     {
@@ -33,7 +33,7 @@
 
     objc_storeStrong(&v20->_titleSingleAudiobook, v23);
 
-    v24 = [v15 copy];
+    v24 = [bookCopy copy];
     v25 = v24;
     if (v24)
     {
@@ -47,7 +47,7 @@
 
     objc_storeStrong(&v20->_titleSingleBook, v26);
 
-    v27 = [v16 copy];
+    v27 = [multipleCopy copy];
     v28 = v27;
     if (v27)
     {
@@ -61,7 +61,7 @@
 
     objc_storeStrong(&v20->_titleMultiple, v29);
 
-    v30 = [v17 copy];
+    v30 = [singleAudiobookCopy copy];
     v31 = v30;
     if (v30)
     {
@@ -75,7 +75,7 @@
 
     objc_storeStrong(&v20->_bodySingleAudiobook, v32);
 
-    v33 = [v18 copy];
+    v33 = [singleBookCopy copy];
     v34 = v33;
     if (v33)
     {
@@ -89,7 +89,7 @@
 
     objc_storeStrong(&v20->_bodySingleBook, v35);
 
-    v36 = [v19 copy];
+    v36 = [bodyMultipleCopy copy];
     v37 = v36;
     if (v36)
     {
@@ -107,37 +107,37 @@
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BDSDistributedPriceTrackingConfigNotification *)self titleSingleAudiobook];
-  [v4 encodeObject:v5 forKey:@"titleSingleAudiobook"];
+  coderCopy = coder;
+  titleSingleAudiobook = [(BDSDistributedPriceTrackingConfigNotification *)self titleSingleAudiobook];
+  [coderCopy encodeObject:titleSingleAudiobook forKey:@"titleSingleAudiobook"];
 
-  v6 = [(BDSDistributedPriceTrackingConfigNotification *)self titleSingleBook];
-  [v4 encodeObject:v6 forKey:@"titleSingleBook"];
+  titleSingleBook = [(BDSDistributedPriceTrackingConfigNotification *)self titleSingleBook];
+  [coderCopy encodeObject:titleSingleBook forKey:@"titleSingleBook"];
 
-  v7 = [(BDSDistributedPriceTrackingConfigNotification *)self titleMultiple];
-  [v4 encodeObject:v7 forKey:@"titleMultiple"];
+  titleMultiple = [(BDSDistributedPriceTrackingConfigNotification *)self titleMultiple];
+  [coderCopy encodeObject:titleMultiple forKey:@"titleMultiple"];
 
-  v8 = [(BDSDistributedPriceTrackingConfigNotification *)self bodySingleAudiobook];
-  [v4 encodeObject:v8 forKey:@"bodySingleAudiobook"];
+  bodySingleAudiobook = [(BDSDistributedPriceTrackingConfigNotification *)self bodySingleAudiobook];
+  [coderCopy encodeObject:bodySingleAudiobook forKey:@"bodySingleAudiobook"];
 
-  v9 = [(BDSDistributedPriceTrackingConfigNotification *)self bodySingleBook];
-  [v4 encodeObject:v9 forKey:@"bodySingleBook"];
+  bodySingleBook = [(BDSDistributedPriceTrackingConfigNotification *)self bodySingleBook];
+  [coderCopy encodeObject:bodySingleBook forKey:@"bodySingleBook"];
 
-  v10 = [(BDSDistributedPriceTrackingConfigNotification *)self bodyMultiple];
-  [v4 encodeObject:v10 forKey:@"bodyMultiple"];
+  bodyMultiple = [(BDSDistributedPriceTrackingConfigNotification *)self bodyMultiple];
+  [coderCopy encodeObject:bodyMultiple forKey:@"bodyMultiple"];
 }
 
-- (BDSDistributedPriceTrackingConfigNotification)initWithCoder:(id)a3
+- (BDSDistributedPriceTrackingConfigNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleSingleAudiobook"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleSingleBook"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleMultiple"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bodySingleAudiobook"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bodySingleBook"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bodyMultiple"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleSingleAudiobook"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleSingleBook"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleMultiple"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bodySingleAudiobook"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bodySingleBook"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bodyMultiple"];
 
   v11 = [(BDSDistributedPriceTrackingConfigNotification *)self initWithTitleSingleAudiobook:v5 titleSingleBook:v6 titleMultiple:v7 bodySingleAudiobook:v8 bodySingleBook:v9 bodyMultiple:v10];
   return v11;

@@ -1,14 +1,14 @@
 @interface PHLocalVideoDisabledOverlayView
-- (PHLocalVideoDisabledOverlayView)initWithFrame:(CGRect)a3;
+- (PHLocalVideoDisabledOverlayView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation PHLocalVideoDisabledOverlayView
 
-- (PHLocalVideoDisabledOverlayView)initWithFrame:(CGRect)a3
+- (PHLocalVideoDisabledOverlayView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PHLocalVideoDisabledOverlayView;
-  v3 = [(PHLocalVideoDisabledOverlayView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHLocalVideoDisabledOverlayView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [_UIBackdropView alloc];

@@ -1,7 +1,7 @@
 @interface NotificationReceiptReporterEndpoint
 - (NSString)name;
 - (NSURL)url;
-- (id)endpointURLWithContentType:(int64_t)a3;
+- (id)endpointURLWithContentType:(int64_t)type;
 @end
 
 @implementation NotificationReceiptReporterEndpoint
@@ -30,13 +30,13 @@
   return v8;
 }
 
-- (id)endpointURLWithContentType:(int64_t)a3
+- (id)endpointURLWithContentType:(int64_t)type
 {
   sub_217A520D0(0, &qword_2811C8CA0, MEMORY[0x277CC9260], MEMORY[0x277D83D88]);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v16 - v7;
-  if (a3 >= 8)
+  if (type >= 8)
   {
     v14 = sub_217D87BAC();
     (*(*(v14 - 8) + 56))(v8, 1, 1, v14);
@@ -45,7 +45,7 @@
 
   else
   {
-    v9 = *off_278232AA0[a3];
+    v9 = *off_278232AA0[type];
     v10 = sub_217D87BAC();
     v11 = *(v10 - 8);
     (*(v11 + 16))(v8, self + v9, v10);

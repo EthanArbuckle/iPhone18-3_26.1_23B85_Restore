@@ -1,12 +1,12 @@
 @interface FootnoteView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore12FootnoteView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore12FootnoteView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation FootnoteView
 
-- (_TtC8AppStore12FootnoteView)initWithCoder:(id)a3
+- (_TtC8AppStore12FootnoteView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore12FootnoteView_chevronView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore12FootnoteView_hasChevron) = 0;
@@ -17,9 +17,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_10007AC80();
   v6 = v5;
 
@@ -32,7 +32,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10007AF3C();
 }
 

@@ -1,16 +1,16 @@
 @interface SKUIProductPageCopyrightView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)copyrightString;
 - (void)layoutSubviews;
-- (void)setColorScheme:(id)a3;
-- (void)setCopyrightString:(id)a3;
+- (void)setColorScheme:(id)scheme;
+- (void)setCopyrightString:(id)string;
 @end
 
 @implementation SKUIProductPageCopyrightView
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
+  schemeCopy = scheme;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -23,22 +23,22 @@
     }
   }
 
-  if (self->_colorScheme != v5)
+  if (self->_colorScheme != schemeCopy)
   {
-    objc_storeStrong(&self->_colorScheme, a3);
+    objc_storeStrong(&self->_colorScheme, scheme);
     copyrightLabel = self->_copyrightLabel;
-    v15 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v15)
+    secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      v16 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-      v17 = SKUIColorWithAlpha(v16, 0.3);
+      secondaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+      v17 = SKUIColorWithAlpha(secondaryTextColor2, 0.3);
       [(UILabel *)copyrightLabel setTextColor:v17];
     }
 
     else
     {
-      v16 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
-      [(UILabel *)copyrightLabel setTextColor:v16];
+      secondaryTextColor2 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
+      [(UILabel *)copyrightLabel setTextColor:secondaryTextColor2];
     }
   }
 }
@@ -57,14 +57,14 @@
     }
   }
 
-  v11 = [(UILabel *)self->_copyrightLabel text];
+  text = [(UILabel *)self->_copyrightLabel text];
 
-  return v11;
+  return text;
 }
 
-- (void)setCopyrightString:(id)a3
+- (void)setCopyrightString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -77,13 +77,13 @@
     }
   }
 
-  v13 = [(UILabel *)self->_copyrightLabel text];
-  v14 = [v13 isEqualToString:v4];
+  text = [(UILabel *)self->_copyrightLabel text];
+  v14 = [text isEqualToString:stringCopy];
 
   if ((v14 & 1) == 0)
   {
     copyrightLabel = self->_copyrightLabel;
-    if (v4)
+    if (stringCopy)
     {
       if (!copyrightLabel)
       {
@@ -97,25 +97,25 @@
 
         [(UILabel *)self->_copyrightLabel setNumberOfLines:0];
         v20 = self->_copyrightLabel;
-        v21 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v21)
+        secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          v22 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-          v23 = SKUIColorWithAlpha(v22, 0.3);
+          secondaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+          v23 = SKUIColorWithAlpha(secondaryTextColor2, 0.3);
           [(UILabel *)v20 setTextColor:v23];
         }
 
         else
         {
-          v22 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
-          [(UILabel *)v20 setTextColor:v22];
+          secondaryTextColor2 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
+          [(UILabel *)v20 setTextColor:secondaryTextColor2];
         }
 
         [(SKUIProductPageCopyrightView *)self addSubview:self->_copyrightLabel];
         copyrightLabel = self->_copyrightLabel;
       }
 
-      [(UILabel *)copyrightLabel setText:v4];
+      [(UILabel *)copyrightLabel setText:stringCopy];
     }
 
     else
@@ -155,10 +155,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())

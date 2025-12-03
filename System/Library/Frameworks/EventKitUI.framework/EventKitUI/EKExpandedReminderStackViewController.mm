@@ -1,35 +1,35 @@
 @interface EKExpandedReminderStackViewController
 - (BOOL)expandedReminderStackShouldDoCompactLayout;
 - (CGRect)stackedReminderViewFrame;
-- (EKExpandedReminderStackViewController)initWithEvents:(id)a3 delegate:(id)a4;
-- (id)_eventAtIndexPath:(id)a3;
-- (id)cellForItemIdentifier:(id)a3 indexPath:(id)a4 collectionView:(id)a5;
+- (EKExpandedReminderStackViewController)initWithEvents:(id)events delegate:(id)delegate;
+- (id)_eventAtIndexPath:(id)path;
+- (id)cellForItemIdentifier:(id)identifier indexPath:(id)path collectionView:(id)view;
 - (id)collectionViewDataSource;
-- (id)loadReminderWithEKEvent:(id)a3;
-- (void)_handleBackgroundTap:(id)a3;
+- (id)loadReminderWithEKEvent:(id)event;
+- (void)_handleBackgroundTap:(id)tap;
 - (void)_reloadCollectionViewDataWithoutAnimation;
 - (void)_updateBlurBackground;
 - (void)_updatePopoverSize;
-- (void)animateTransition:(id)a3;
-- (void)clearSnapshotWithAnimating:(BOOL)a3 completion:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)animateTransition:(id)transition;
+- (void)clearSnapshotWithAnimating:(BOOL)animating completion:(id)completion;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dismissCurrentViewController;
-- (void)loadSnapshotWithAnimating:(BOOL)a3 completion:(id)a4;
-- (void)reminderDetailDismissedWithDeletedEvent:(id)a3;
-- (void)reminderToggled:(id)a3;
-- (void)setEKExpandedReminderStackViewControllerDelegate:(id)a3;
-- (void)setOccurrenceViewOnCanvasHidden:(BOOL)a3;
-- (void)setSelectedOccurrenceViewOnCanvasHidden:(BOOL)a3;
+- (void)loadSnapshotWithAnimating:(BOOL)animating completion:(id)completion;
+- (void)reminderDetailDismissedWithDeletedEvent:(id)event;
+- (void)reminderToggled:(id)toggled;
+- (void)setEKExpandedReminderStackViewControllerDelegate:(id)delegate;
+- (void)setOccurrenceViewOnCanvasHidden:(BOOL)hidden;
+- (void)setSelectedOccurrenceViewOnCanvasHidden:(BOOL)hidden;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EKExpandedReminderStackViewController
 
-- (EKExpandedReminderStackViewController)initWithEvents:(id)a3 delegate:(id)a4
+- (EKExpandedReminderStackViewController)initWithEvents:(id)events delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  eventsCopy = events;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = EKExpandedReminderStackViewController;
   v9 = [(EKExpandedReminderStackViewController *)&v13 init];
@@ -37,24 +37,24 @@
   if (v9)
   {
     [(EKExpandedReminderStackViewController *)v9 setPreferModalPresentation:0];
-    objc_storeStrong(&v10->_events, a3);
-    objc_storeStrong(&v10->_delegate, a4);
+    objc_storeStrong(&v10->_events, events);
+    objc_storeStrong(&v10->_delegate, delegate);
     v10->_presentingTransitionCancelled = 0;
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v10 selector:sel__eventModified_ name:*MEMORY[0x1E6966918] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__eventModified_ name:*MEMORY[0x1E6966918] object:0];
   }
 
   return v10;
 }
 
-- (id)loadReminderWithEKEvent:(id)a3
+- (id)loadReminderWithEKEvent:(id)event
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isReminderIntegrationEvent])
+  eventCopy = event;
+  if ([eventCopy isReminderIntegrationEvent])
   {
-    v5 = [v4 uniqueID];
-    v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
+    uniqueID = [eventCopy uniqueID];
+    v6 = [MEMORY[0x1E695DFF8] URLWithString:uniqueID];
     v23 = 0;
     v24 = &v23;
     v25 = 0x2050000000;
@@ -136,7 +136,7 @@
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = eventCopy;
       _os_log_impl(&dword_1D3400000, v20, OS_LOG_TYPE_ERROR, "Trying to reload reminder with EKEvent, but it's not a reminder. %@", buf, 0xCu);
     }
 
@@ -146,10 +146,10 @@
   return v19;
 }
 
-- (void)setEKExpandedReminderStackViewControllerDelegate:(id)a3
+- (void)setEKExpandedReminderStackViewControllerDelegate:(id)delegate
 {
-  objc_storeStrong(&self->_delegate, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_delegate, delegate);
+  delegateCopy = delegate;
   collectionView = self->_collectionView;
   v7 = [[EKExpandedReminderStackLayout alloc] initWithDelegate:self];
   [(UICollectionView *)collectionView setCollectionViewLayout:v7 animated:0];
@@ -171,21 +171,21 @@
   collectionView = self->_collectionView;
   self->_collectionView = v5;
 
-  v7 = [(EKExpandedReminderStackViewController *)self collectionViewDataSource];
-  [(UICollectionView *)self->_collectionView setDataSource:v7];
+  collectionViewDataSource = [(EKExpandedReminderStackViewController *)self collectionViewDataSource];
+  [(UICollectionView *)self->_collectionView setDataSource:collectionViewDataSource];
 
   [(UICollectionView *)self->_collectionView setDelegate:self];
   [(UICollectionView *)self->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_collectionView setBackgroundView:0];
-  v9 = [(EKExpandedReminderStackViewController *)self view];
-  [v9 addSubview:self->_collectionView];
+  view = [(EKExpandedReminderStackViewController *)self view];
+  [view addSubview:self->_collectionView];
 
-  v10 = [(EKExpandedReminderStackViewController *)self transitioningDelegate];
+  transitioningDelegate = [(EKExpandedReminderStackViewController *)self transitioningDelegate];
 
-  if (!v10)
+  if (!transitioningDelegate)
   {
     [(EKExpandedReminderStackViewController *)self loadSnapshotWithAnimating:0 completion:0];
   }
@@ -197,41 +197,41 @@
   v31 = NSStringFromClass(v12);
   [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:v31];
   v23 = MEMORY[0x1E696ACD8];
-  v29 = [(UICollectionView *)self->_collectionView topAnchor];
-  v30 = [(EKExpandedReminderStackViewController *)self view];
-  v28 = [v30 topAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  topAnchor = [(UICollectionView *)self->_collectionView topAnchor];
+  view2 = [(EKExpandedReminderStackViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v34[0] = v27;
-  v25 = [(UICollectionView *)self->_collectionView bottomAnchor];
-  v26 = [(EKExpandedReminderStackViewController *)self view];
-  v24 = [v26 bottomAnchor];
-  v13 = [v25 constraintEqualToAnchor:v24];
+  bottomAnchor = [(UICollectionView *)self->_collectionView bottomAnchor];
+  view3 = [(EKExpandedReminderStackViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v34[1] = v13;
-  v14 = [(UICollectionView *)self->_collectionView leadingAnchor];
-  v15 = [(EKExpandedReminderStackViewController *)self view];
-  v16 = [v15 leadingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  leadingAnchor = [(UICollectionView *)self->_collectionView leadingAnchor];
+  view4 = [(EKExpandedReminderStackViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v34[2] = v17;
-  v18 = [(UICollectionView *)self->_collectionView trailingAnchor];
-  v19 = [(EKExpandedReminderStackViewController *)self view];
-  v20 = [v19 trailingAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  trailingAnchor = [(UICollectionView *)self->_collectionView trailingAnchor];
+  view5 = [(EKExpandedReminderStackViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v34[3] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:4];
   [v23 activateConstraints:v22];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = EKExpandedReminderStackViewController;
-  [(EKExpandedReminderStackViewController *)&v6 viewWillAppear:a3];
+  [(EKExpandedReminderStackViewController *)&v6 viewWillAppear:appear];
   [(EKExpandedReminderStackViewController *)self _updateBlurBackground];
-  v4 = [(EKExpandedReminderStackViewController *)self navigationController];
-  [v4 setNavigationBarHidden:1];
+  navigationController = [(EKExpandedReminderStackViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1];
 
-  v5 = [(EKExpandedReminderStackViewController *)self navigationController];
-  [v5 setToolbarHidden:1];
+  navigationController2 = [(EKExpandedReminderStackViewController *)self navigationController];
+  [navigationController2 setToolbarHidden:1];
 
   [(EKExpandedReminderStackViewController *)self _updatePopoverSize];
   if (objc_opt_respondsToSelector())
@@ -240,14 +240,14 @@
   }
 }
 
-- (void)reminderDetailDismissedWithDeletedEvent:(id)a3
+- (void)reminderDetailDismissedWithDeletedEvent:(id)event
 {
-  if (a3)
+  if (event)
   {
     events = self->_events;
-    v5 = a3;
+    eventCopy = event;
     v6 = [(NSArray *)events mutableCopy];
-    [(NSArray *)v6 removeObject:v5];
+    [(NSArray *)v6 removeObject:eventCopy];
 
     v7 = self->_events;
     self->_events = v6;
@@ -256,26 +256,26 @@
   [(EKExpandedReminderStackViewController *)self _reloadCollectionViewDataWithoutAnimation];
 }
 
-- (id)cellForItemIdentifier:(id)a3 indexPath:(id)a4 collectionView:(id)a5
+- (id)cellForItemIdentifier:(id)identifier indexPath:(id)path collectionView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  identifierCopy = identifier;
+  pathCopy = path;
+  viewCopy = view;
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [(EKExpandedReminderStackViewControllerDelegate *)self->_delegate overrideCellColor];
+    overrideCellColor = [(EKExpandedReminderStackViewControllerDelegate *)self->_delegate overrideCellColor];
 
-    v11 = v12;
+    systemBackgroundColor = overrideCellColor;
   }
 
-  v13 = [v8 event];
-  v36 = v9;
-  v37 = v11;
-  v35 = self;
-  if ([v13 hasRecurrenceRules])
+  event = [identifierCopy event];
+  v36 = pathCopy;
+  v37 = systemBackgroundColor;
+  selfCopy = self;
+  if ([event hasRecurrenceRules])
   {
-    v14 = [(EKExpandedReminderStackViewController *)self loadReminderWithEKEvent:v13];
+    v14 = [(EKExpandedReminderStackViewController *)self loadReminderWithEKEvent:event];
     v39 = 0;
     v40 = &v39;
     v41 = 0x2050000000;
@@ -294,14 +294,14 @@
 
     v16 = v15;
     _Block_object_dispose(&v39, 8);
-    v17 = [v14 recurrenceRules];
-    v18 = [v17 firstObject];
-    v19 = [v13 startDate];
-    v20 = [v13 eventStore];
-    v21 = [v20 timeZone];
-    v22 = [v15 shortNaturalLanguageDescriptionForRecurrenceRule:v18 date:v19 timeZone:v21 lowercase:0];
+    recurrenceRules = [v14 recurrenceRules];
+    firstObject = [recurrenceRules firstObject];
+    startDate = [event startDate];
+    eventStore = [event eventStore];
+    timeZone = [eventStore timeZone];
+    v22 = [v15 shortNaturalLanguageDescriptionForRecurrenceRule:firstObject date:startDate timeZone:timeZone lowercase:0];
 
-    v9 = v36;
+    pathCopy = v36;
   }
 
   else
@@ -311,21 +311,21 @@
 
   v23 = objc_opt_class();
   v24 = NSStringFromClass(v23);
-  v34 = v10;
-  v25 = [v10 dequeueReusableCellWithReuseIdentifier:v24 forIndexPath:v9];
+  v34 = viewCopy;
+  v25 = [viewCopy dequeueReusableCellWithReuseIdentifier:v24 forIndexPath:pathCopy];
 
-  v26 = [v8 title];
-  v27 = [v8 completed];
-  v28 = [v8 editable];
-  v29 = [v8 date];
-  v30 = [v8 color];
-  v31 = [v8 buttonImageName];
-  [v25 setupCellWithTitle:v26 completed:v27 editable:v28 date:v29 buttonColor:v30 buttonImageName:v31 backgroundColor:v37 recurringString:v22 delegate:v35];
+  title = [identifierCopy title];
+  completed = [identifierCopy completed];
+  editable = [identifierCopy editable];
+  date = [identifierCopy date];
+  color = [identifierCopy color];
+  buttonImageName = [identifierCopy buttonImageName];
+  [v25 setupCellWithTitle:title completed:completed editable:editable date:date buttonColor:color buttonImageName:buttonImageName backgroundColor:v37 recurringString:v22 delegate:selfCopy];
 
   if (CalendarLinkLibraryCore())
   {
-    v32 = [v8 event];
-    [v25 Cal_annotateWithEvent:v32];
+    event2 = [identifierCopy event];
+    [v25 Cal_annotateWithEvent:event2];
   }
 
   return v25;
@@ -419,11 +419,11 @@ id __65__EKExpandedReminderStackViewController_collectionViewDataSource__block_i
   return v13;
 }
 
-- (void)loadSnapshotWithAnimating:(BOOL)a3 completion:(id)a4
+- (void)loadSnapshotWithAnimating:(BOOL)animating completion:(id)completion
 {
-  v17 = a3;
+  animatingCopy = animating;
   v25[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  completionCopy = completion;
   v6 = objc_opt_new();
   v25[0] = @"section";
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
@@ -464,14 +464,14 @@ id __65__EKExpandedReminderStackViewController_collectionViewDataSource__block_i
   }
 
   [v6 appendItemsWithIdentifiers:v8];
-  v15 = [(EKExpandedReminderStackViewController *)self collectionViewDataSource];
+  collectionViewDataSource = [(EKExpandedReminderStackViewController *)self collectionViewDataSource];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __78__EKExpandedReminderStackViewController_loadSnapshotWithAnimating_completion___block_invoke;
   v18[3] = &unk_1E843F340;
-  v19 = v5;
-  v16 = v5;
-  [v15 applySnapshot:v6 animatingDifferences:v17 completion:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  [collectionViewDataSource applySnapshot:v6 animatingDifferences:animatingCopy completion:v18];
 }
 
 uint64_t __78__EKExpandedReminderStackViewController_loadSnapshotWithAnimating_completion___block_invoke(uint64_t a1)
@@ -485,19 +485,19 @@ uint64_t __78__EKExpandedReminderStackViewController_loadSnapshotWithAnimating_c
   return result;
 }
 
-- (void)clearSnapshotWithAnimating:(BOOL)a3 completion:(id)a4
+- (void)clearSnapshotWithAnimating:(BOOL)animating completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatingCopy = animating;
+  completionCopy = completion;
   v7 = objc_opt_new();
-  v8 = [(EKExpandedReminderStackViewController *)self collectionViewDataSource];
+  collectionViewDataSource = [(EKExpandedReminderStackViewController *)self collectionViewDataSource];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_completion___block_invoke;
   v10[3] = &unk_1E843F340;
-  v11 = v6;
-  v9 = v6;
-  [v8 applySnapshot:v7 animatingDifferences:v4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [collectionViewDataSource applySnapshot:v7 animatingDifferences:animatingCopy completion:v10];
 }
 
 uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_completion___block_invoke(uint64_t a1)
@@ -511,10 +511,10 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   delegate = self->_delegate;
-  v5 = [(EKExpandedReminderStackViewController *)self _eventAtIndexPath:a4];
+  v5 = [(EKExpandedReminderStackViewController *)self _eventAtIndexPath:path];
   [(EKExpandedReminderStackViewControllerDelegate *)delegate showReminderDetail:v5];
 }
 
@@ -535,29 +535,29 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
-    v4 = [(NSArray *)self->_events firstObject];
-    v5 = [(EKExpandedReminderStackViewControllerDelegate *)delegate occurrenceViewForEvent:v4];
+    firstObject = [(NSArray *)self->_events firstObject];
+    v5 = [(EKExpandedReminderStackViewControllerDelegate *)delegate occurrenceViewForEvent:firstObject];
 
     [v5 bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(EKExpandedReminderStackViewController *)self view];
-    [v5 convertRect:v14 toView:{v7, v9, v11, v13}];
+    view = [(EKExpandedReminderStackViewController *)self view];
+    [v5 convertRect:view toView:{v7, v9, v11, v13}];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
-    v23 = [(EKExpandedReminderStackViewController *)self view];
-    [v23 safeAreaInsets];
+    view2 = [(EKExpandedReminderStackViewController *)self view];
+    [view2 safeAreaInsets];
     v25 = v24;
 
     if ((CalInterfaceIsLeftToRight() & 1) == 0)
     {
-      v26 = [(EKExpandedReminderStackViewController *)self view];
-      [v26 frame];
+      view3 = [(EKExpandedReminderStackViewController *)self view];
+      [view3 frame];
       v16 = v27 - v16 - v20;
     }
 
@@ -598,10 +598,10 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
 - (void)_updateBlurBackground
 {
   v34[4] = *MEMORY[0x1E69E9840];
-  v3 = [(EKExpandedReminderStackViewController *)self expandedReminderStackShouldDoCompactLayout];
-  v4 = [(EKExpandedReminderStackViewController *)self visualEffectView];
-  v5 = v4;
-  if (v3)
+  expandedReminderStackShouldDoCompactLayout = [(EKExpandedReminderStackViewController *)self expandedReminderStackShouldDoCompactLayout];
+  visualEffectView = [(EKExpandedReminderStackViewController *)self visualEffectView];
+  v5 = visualEffectView;
+  if (expandedReminderStackShouldDoCompactLayout)
   {
 
     if (!v5)
@@ -609,33 +609,33 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
       v6 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:0];
       [(EKExpandedReminderStackViewController *)self setVisualEffectView:v6];
 
-      v7 = [(EKExpandedReminderStackViewController *)self visualEffectView];
-      [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+      visualEffectView2 = [(EKExpandedReminderStackViewController *)self visualEffectView];
+      [visualEffectView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v8 = [(EKExpandedReminderStackViewController *)self view];
-      v9 = [(EKExpandedReminderStackViewController *)self visualEffectView];
-      [v8 addSubview:v9];
+      view = [(EKExpandedReminderStackViewController *)self view];
+      visualEffectView3 = [(EKExpandedReminderStackViewController *)self visualEffectView];
+      [view addSubview:visualEffectView3];
 
       v26 = MEMORY[0x1E696ACD8];
-      v32 = [(UIVisualEffectView *)self->_visualEffectView leadingAnchor];
-      v33 = [(EKExpandedReminderStackViewController *)self view];
-      v31 = [v33 leadingAnchor];
-      v30 = [v32 constraintEqualToAnchor:v31];
+      leadingAnchor = [(UIVisualEffectView *)self->_visualEffectView leadingAnchor];
+      view2 = [(EKExpandedReminderStackViewController *)self view];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v34[0] = v30;
-      v28 = [(UIVisualEffectView *)self->_visualEffectView topAnchor];
-      v29 = [(EKExpandedReminderStackViewController *)self view];
-      v27 = [v29 topAnchor];
-      v25 = [v28 constraintEqualToAnchor:v27];
+      topAnchor = [(UIVisualEffectView *)self->_visualEffectView topAnchor];
+      view3 = [(EKExpandedReminderStackViewController *)self view];
+      topAnchor2 = [view3 topAnchor];
+      v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v34[1] = v25;
-      v10 = [(UIVisualEffectView *)self->_visualEffectView trailingAnchor];
-      v11 = [(EKExpandedReminderStackViewController *)self view];
-      v12 = [v11 trailingAnchor];
-      v13 = [v10 constraintEqualToAnchor:v12];
+      trailingAnchor = [(UIVisualEffectView *)self->_visualEffectView trailingAnchor];
+      view4 = [(EKExpandedReminderStackViewController *)self view];
+      trailingAnchor2 = [view4 trailingAnchor];
+      v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v34[2] = v13;
-      v14 = [(UIVisualEffectView *)self->_visualEffectView bottomAnchor];
-      v15 = [(EKExpandedReminderStackViewController *)self view];
-      v16 = [v15 bottomAnchor];
-      v17 = [v14 constraintEqualToAnchor:v16];
+      bottomAnchor = [(UIVisualEffectView *)self->_visualEffectView bottomAnchor];
+      view5 = [(EKExpandedReminderStackViewController *)self view];
+      bottomAnchor2 = [view5 bottomAnchor];
+      v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v34[3] = v17;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:4];
       [v26 activateConstraints:v18];
@@ -643,13 +643,13 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
       v19 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleBackgroundTap_];
       [v19 setCancelsTouchesInView:0];
       [(UICollectionView *)self->_collectionView addGestureRecognizer:v19];
-      v20 = [(EKExpandedReminderStackViewController *)self view];
-      v21 = [(EKExpandedReminderStackViewController *)self visualEffectView];
-      [v20 sendSubviewToBack:v21];
+      view6 = [(EKExpandedReminderStackViewController *)self view];
+      visualEffectView4 = [(EKExpandedReminderStackViewController *)self visualEffectView];
+      [view6 sendSubviewToBack:visualEffectView4];
 
-      v22 = [(EKExpandedReminderStackViewController *)self transitioningDelegate];
+      transitioningDelegate = [(EKExpandedReminderStackViewController *)self transitioningDelegate];
 
-      if (!v22)
+      if (!transitioningDelegate)
       {
         v23 = [MEMORY[0x1E69DC730] effectWithStyle:6];
         [(UIVisualEffectView *)self->_visualEffectView setEffect:v23];
@@ -662,17 +662,17 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
 
     if (v5)
     {
-      v24 = [(EKExpandedReminderStackViewController *)self visualEffectView];
-      [v24 removeFromSuperview];
+      visualEffectView5 = [(EKExpandedReminderStackViewController *)self visualEffectView];
+      [visualEffectView5 removeFromSuperview];
 
       [(EKExpandedReminderStackViewController *)self setVisualEffectView:0];
     }
   }
 }
 
-- (void)_handleBackgroundTap:(id)a3
+- (void)_handleBackgroundTap:(id)tap
 {
-  [a3 locationInView:self->_collectionView];
+  [tap locationInView:self->_collectionView];
   v7 = [(UICollectionView *)self->_collectionView indexPathForItemAtPoint:?];
   if (!v7 || ([(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v7], (v4 = objc_claimAutoreleasedReturnValue()) == 0) || (v5 = v4, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) == 0))
   {
@@ -680,10 +680,10 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
   }
 }
 
-- (id)_eventAtIndexPath:(id)a3
+- (id)_eventAtIndexPath:(id)path
 {
   events = self->_events;
-  v4 = [a3 row];
+  v4 = [path row];
 
   return [(NSArray *)events objectAtIndexedSubscript:v4];
 }
@@ -718,23 +718,23 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
   [(EKExpandedReminderStackViewController *)self preferredContentSize];
   v15 = v14;
   v17 = v16;
-  v18 = [(EKExpandedReminderStackViewController *)self navigationController];
-  [v18 setPreferredContentSize:{v15, v17}];
+  navigationController = [(EKExpandedReminderStackViewController *)self navigationController];
+  [navigationController setPreferredContentSize:{v15, v17}];
 }
 
-- (void)reminderToggled:(id)a3
+- (void)reminderToggled:(id)toggled
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(UICollectionView *)self->_collectionView indexPathForCell:a3];
+  v4 = [(UICollectionView *)self->_collectionView indexPathForCell:toggled];
   v5 = [(EKExpandedReminderStackViewController *)self _eventAtIndexPath:v4];
 
   if ([v5 CUIK_reminderShouldBeEditable])
   {
     v6 = v5;
     [v6 setCompleted:{objc_msgSend(v6, "completed") ^ 1}];
-    v7 = [(UIResponder *)self EKUI_editor];
+    eKUI_editor = [(UIResponder *)self EKUI_editor];
     v11 = 0;
-    v8 = [v7 saveEvent:v6 span:0 error:&v11];
+    v8 = [eKUI_editor saveEvent:v6 span:0 error:&v11];
     v9 = v11;
 
     if ((v8 & 1) == 0)
@@ -778,9 +778,9 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v26 = self;
-    v6 = [(UICollectionView *)self->_collectionView visibleCells];
-    v7 = [v6 countByEnumeratingWithState:&v42 objects:v50 count:16];
+    selfCopy = self;
+    visibleCells = [(UICollectionView *)self->_collectionView visibleCells];
+    v7 = [visibleCells countByEnumeratingWithState:&v42 objects:v50 count:16];
     if (v7)
     {
       v8 = v7;
@@ -791,7 +791,7 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
         {
           if (*v43 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(visibleCells);
           }
 
           v11 = *(*(&v42 + 1) + 8 * i);
@@ -812,7 +812,7 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
           [v13 startAnimation];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v42 objects:v50 count:16];
+        v8 = [visibleCells countByEnumeratingWithState:&v42 objects:v50 count:16];
       }
 
       while (v8);
@@ -822,7 +822,7 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v14 = [(UICollectionView *)v26->_collectionView visibleSupplementaryViewsOfKind:*MEMORY[0x1E69DDC08]];
+    v14 = [(UICollectionView *)selfCopy->_collectionView visibleSupplementaryViewsOfKind:*MEMORY[0x1E69DDC08]];
     v15 = [v14 countByEnumeratingWithState:&v35 objects:v49 count:16];
     if (v15)
     {
@@ -841,21 +841,21 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v20 = [MEMORY[0x1E69DD278] expandingStackedRemindersSpringAnimator];
+            expandingStackedRemindersSpringAnimator = [MEMORY[0x1E69DD278] expandingStackedRemindersSpringAnimator];
             v34[0] = MEMORY[0x1E69E9820];
             v34[1] = 3221225472;
             v34[2] = __69__EKExpandedReminderStackViewController_dismissCurrentViewController__block_invoke_5;
             v34[3] = &unk_1E843EC60;
             v34[4] = v19;
-            [v20 addAnimations:v34];
+            [expandingStackedRemindersSpringAnimator addAnimations:v34];
             dispatch_group_enter(v5);
             v32[0] = MEMORY[0x1E69E9820];
             v32[1] = 3221225472;
             v32[2] = __69__EKExpandedReminderStackViewController_dismissCurrentViewController__block_invoke_6;
             v32[3] = &unk_1E843F4F8;
             v33 = v5;
-            [v20 addCompletion:v32];
-            [v20 startAnimation];
+            [expandingStackedRemindersSpringAnimator addCompletion:v32];
+            [expandingStackedRemindersSpringAnimator startAnimation];
           }
         }
 
@@ -866,7 +866,7 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
     }
 
     dispatch_group_enter(v5);
-    collectionView = v26->_collectionView;
+    collectionView = selfCopy->_collectionView;
     v22 = [EKExpandedReminderStackDismissingLayout alloc];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -874,10 +874,10 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
     v30[3] = &unk_1E843EC60;
     v31 = v5;
     v23 = v5;
-    v24 = [(EKExpandedReminderStackDismissingLayout *)v22 initWithDelegate:v26 completionHandler:v30];
+    v24 = [(EKExpandedReminderStackDismissingLayout *)v22 initWithDelegate:selfCopy completionHandler:v30];
     [(UICollectionView *)collectionView setCollectionViewLayout:v24 animated:1 completion:0];
 
-    objc_initWeak(&location, v26);
+    objc_initWeak(&location, selfCopy);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __69__EKExpandedReminderStackViewController_dismissCurrentViewController__block_invoke_8;
@@ -890,9 +890,9 @@ uint64_t __79__EKExpandedReminderStackViewController_clearSnapshotWithAnimating_
 
   else
   {
-    v25 = [(EKExpandedReminderStackViewController *)self transitioningDelegate];
+    transitioningDelegate = [(EKExpandedReminderStackViewController *)self transitioningDelegate];
 
-    if (!v25)
+    if (!transitioningDelegate)
     {
       [(EKExpandedReminderStackViewController *)self setModalTransitionStyle:2];
     }
@@ -916,19 +916,19 @@ void __69__EKExpandedReminderStackViewController_dismissCurrentViewController__b
   }
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v132 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v92 = v5;
-  v93 = self;
+  transitionCopy = transition;
+  v92 = transitionCopy;
+  selfCopy = self;
   if (![(EKExpandedReminderStackViewController *)self isBeingPresented])
   {
-    v36 = [v5 viewControllerForKey:*MEMORY[0x1E69DE768]];
-    v37 = [v36 view];
+    v36 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+    view = [v36 view];
 
-    v91 = v37;
-    [v37 setAlpha:1.0];
+    v91 = view;
+    [view setAlpha:1.0];
     [(UICollectionView *)self->_collectionView setUserInteractionEnabled:0];
     v110[0] = MEMORY[0x1E69E9820];
     v110[1] = 3221225472;
@@ -959,14 +959,14 @@ void __69__EKExpandedReminderStackViewController_dismissCurrentViewController__b
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v44 = [MEMORY[0x1E69DD278] expandingStackedRemindersSpringAnimator];
+            expandingStackedRemindersSpringAnimator = [MEMORY[0x1E69DD278] expandingStackedRemindersSpringAnimator];
             v105[0] = MEMORY[0x1E69E9820];
             v105[1] = 3221225472;
             v105[2] = __59__EKExpandedReminderStackViewController_animateTransition___block_invoke_6;
             v105[3] = &unk_1E843EC60;
             v105[4] = v43;
-            [v44 addAnimations:v105];
-            [v44 startAnimation];
+            [expandingStackedRemindersSpringAnimator addAnimations:v105];
+            [expandingStackedRemindersSpringAnimator startAnimation];
           }
         }
 
@@ -976,15 +976,15 @@ void __69__EKExpandedReminderStackViewController_dismissCurrentViewController__b
       while (v40);
     }
 
-    v45 = self;
+    selfCopy2 = self;
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       goto LABEL_55;
     }
 
     delegate = self->_delegate;
-    v47 = [(NSArray *)self->_events firstObject];
-    v48 = [(EKExpandedReminderStackViewControllerDelegate *)delegate occurrenceViewForEvent:v47];
+    firstObject = [(NSArray *)self->_events firstObject];
+    v48 = [(EKExpandedReminderStackViewControllerDelegate *)delegate occurrenceViewForEvent:firstObject];
 
     [v48 setHidden:0];
     v49 = [v48 snapshotViewAfterScreenUpdates:1];
@@ -997,8 +997,8 @@ void __69__EKExpandedReminderStackViewController_dismissCurrentViewController__b
       v104 = 0u;
       v101 = 0u;
       v102 = 0u;
-      v50 = [(UICollectionView *)self->_collectionView visibleCells];
-      v51 = [v50 countByEnumeratingWithState:&v101 objects:v126 count:16];
+      visibleCells = [(UICollectionView *)self->_collectionView visibleCells];
+      v51 = [visibleCells countByEnumeratingWithState:&v101 objects:v126 count:16];
       if (v51)
       {
         v52 = v51;
@@ -1009,49 +1009,49 @@ void __69__EKExpandedReminderStackViewController_dismissCurrentViewController__b
           {
             if (*v102 != v53)
             {
-              objc_enumerationMutation(v50);
+              objc_enumerationMutation(visibleCells);
             }
 
-            v55 = [*(*(&v101 + 1) + 8 * j) backgroundImageView];
-            [v55 setImage:0];
+            backgroundImageView = [*(*(&v101 + 1) + 8 * j) backgroundImageView];
+            [backgroundImageView setImage:0];
           }
 
-          v52 = [v50 countByEnumeratingWithState:&v101 objects:v126 count:16];
+          v52 = [visibleCells countByEnumeratingWithState:&v101 objects:v126 count:16];
         }
 
         while (v52);
       }
 
-      collectionView = v93->_collectionView;
+      collectionView = selfCopy->_collectionView;
       v57 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
       v58 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v57];
-      v59 = [v58 backgroundImageView];
+      backgroundImageView2 = [v58 backgroundImageView];
 
-      [v59 addSubview:v49];
+      [backgroundImageView2 addSubview:v49];
       [v49 setTranslatesAutoresizingMaskIntoConstraints:0];
       v84 = MEMORY[0x1E696ACD8];
-      v89 = [v49 leadingAnchor];
-      v88 = [v59 leadingAnchor];
-      v87 = [v89 constraintEqualToAnchor:v88];
+      leadingAnchor = [v49 leadingAnchor];
+      leadingAnchor2 = [backgroundImageView2 leadingAnchor];
+      v87 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v125[0] = v87;
-      v86 = [v49 topAnchor];
-      v85 = [v59 topAnchor];
-      v83 = [v86 constraintEqualToAnchor:v85];
+      topAnchor = [v49 topAnchor];
+      topAnchor2 = [backgroundImageView2 topAnchor];
+      v83 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v125[1] = v83;
-      v60 = [v49 trailingAnchor];
-      v61 = [v59 trailingAnchor];
-      v62 = [v60 constraintEqualToAnchor:v61];
+      trailingAnchor = [v49 trailingAnchor];
+      trailingAnchor2 = [backgroundImageView2 trailingAnchor];
+      v62 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v125[2] = v62;
-      v63 = [v49 bottomAnchor];
-      [v59 bottomAnchor];
+      bottomAnchor = [v49 bottomAnchor];
+      [backgroundImageView2 bottomAnchor];
       v65 = v64 = v48;
-      v66 = [v63 constraintEqualToAnchor:v65];
+      v66 = [bottomAnchor constraintEqualToAnchor:v65];
       v125[3] = v66;
       v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v125 count:4];
       [v84 activateConstraints:v67];
 
       v48 = v64;
-      v45 = v93;
+      selfCopy2 = selfCopy;
 
       goto LABEL_47;
     }
@@ -1064,9 +1064,9 @@ void __69__EKExpandedReminderStackViewController_dismissCurrentViewController__b
       {
         events = self->_events;
         v71 = v68;
-        v72 = [(NSArray *)events firstObject];
+        firstObject2 = [(NSArray *)events firstObject];
         *buf = 138412290;
-        v128 = v72;
+        v128 = firstObject2;
         v73 = "Couldn't snapshot occurrence view for event: %@";
 LABEL_46:
         _os_log_impl(&dword_1D3400000, v71, OS_LOG_TYPE_ERROR, v73, buf, 0xCu);
@@ -1077,9 +1077,9 @@ LABEL_46:
     {
       v74 = self->_events;
       v71 = v68;
-      v72 = [(NSArray *)v74 firstObject];
+      firstObject2 = [(NSArray *)v74 firstObject];
       *buf = 138412290;
-      v128 = v72;
+      v128 = firstObject2;
       v73 = "Couldn't find occurrence view for event: %@";
       goto LABEL_46;
     }
@@ -1089,8 +1089,8 @@ LABEL_47:
     v98 = 0u;
     v99 = 0u;
     v97 = 0u;
-    v75 = [(UICollectionView *)v45->_collectionView visibleCells];
-    v76 = [v75 countByEnumeratingWithState:&v97 objects:v124 count:16];
+    visibleCells2 = [(UICollectionView *)selfCopy2->_collectionView visibleCells];
+    v76 = [visibleCells2 countByEnumeratingWithState:&v97 objects:v124 count:16];
     if (v76)
     {
       v77 = v76;
@@ -1101,7 +1101,7 @@ LABEL_47:
         {
           if (*v98 != v78)
           {
-            objc_enumerationMutation(v75);
+            objc_enumerationMutation(visibleCells2);
           }
 
           v80 = *(*(&v97 + 1) + 8 * k);
@@ -1115,7 +1115,7 @@ LABEL_47:
           [v82 startAnimation];
         }
 
-        v77 = [v75 countByEnumeratingWithState:&v97 objects:v124 count:16];
+        v77 = [visibleCells2 countByEnumeratingWithState:&v97 objects:v124 count:16];
       }
 
       while (v77);
@@ -1126,26 +1126,26 @@ LABEL_55:
     v94[1] = 3221225472;
     v94[2] = __59__EKExpandedReminderStackViewController_animateTransition___block_invoke_2_105;
     v94[3] = &unk_1E843EFB8;
-    v94[4] = v45;
+    v94[4] = selfCopy2;
     v35 = v92;
     v95 = v92;
-    [(EKExpandedReminderStackViewController *)v45 clearSnapshotWithAnimating:1 completion:v94];
+    [(EKExpandedReminderStackViewController *)selfCopy2 clearSnapshotWithAnimating:1 completion:v94];
 
     goto LABEL_56;
   }
 
-  v6 = [v5 containerView];
-  v7 = [(EKExpandedReminderStackViewController *)self view];
-  v91 = v6;
-  [v6 addSubview:v7];
+  containerView = [transitionCopy containerView];
+  view2 = [(EKExpandedReminderStackViewController *)self view];
+  v91 = containerView;
+  [containerView addSubview:view2];
 
-  objc_storeStrong(&self->_transitionContext, a3);
+  objc_storeStrong(&self->_transitionContext, transition);
   v122[0] = MEMORY[0x1E69E9820];
   v122[1] = 3221225472;
   v122[2] = __59__EKExpandedReminderStackViewController_animateTransition___block_invoke;
   v122[3] = &unk_1E843EFB8;
   v122[4] = self;
-  v123 = v5;
+  v123 = transitionCopy;
   [(EKExpandedReminderStackViewController *)self loadSnapshotWithAnimating:1 completion:v122];
   v121[0] = MEMORY[0x1E69E9820];
   v121[1] = 3221225472;
@@ -1177,14 +1177,14 @@ LABEL_55:
         if (objc_opt_isKindOfClass())
         {
           [v13 setBlurFilterRadius:20.0];
-          v14 = [MEMORY[0x1E69DD278] expandingStackedRemindersSpringAnimator];
+          expandingStackedRemindersSpringAnimator2 = [MEMORY[0x1E69DD278] expandingStackedRemindersSpringAnimator];
           v116[0] = MEMORY[0x1E69E9820];
           v116[1] = 3221225472;
           v116[2] = __59__EKExpandedReminderStackViewController_animateTransition___block_invoke_3;
           v116[3] = &unk_1E843EC60;
           v116[4] = v13;
-          [v14 addAnimations:v116];
-          [v14 startAnimation];
+          [expandingStackedRemindersSpringAnimator2 addAnimations:v116];
+          [expandingStackedRemindersSpringAnimator2 startAnimation];
         }
       }
 
@@ -1197,8 +1197,8 @@ LABEL_55:
   if (objc_opt_respondsToSelector())
   {
     v15 = self->_delegate;
-    v16 = [(NSArray *)self->_events firstObject];
-    v17 = [(EKExpandedReminderStackViewControllerDelegate *)v15 occurrenceViewForEvent:v16];
+    firstObject3 = [(NSArray *)self->_events firstObject];
+    v17 = [(EKExpandedReminderStackViewControllerDelegate *)v15 occurrenceViewForEvent:firstObject3];
 
     [v17 bounds];
     v133.width = v18;
@@ -1206,8 +1206,8 @@ LABEL_55:
     UIGraphicsBeginImageContextWithOptions(v133, 0, 0.0);
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSaveGState(CurrentContext);
-    v21 = [v17 layer];
-    [v21 renderInContext:CurrentContext];
+    layer = [v17 layer];
+    [layer renderInContext:CurrentContext];
 
     CGContextRestoreGState(CurrentContext);
     v22 = UIGraphicsGetImageFromCurrentImageContext();
@@ -1215,15 +1215,15 @@ LABEL_55:
     v23 = self->_collectionView;
     v24 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
     v25 = [(UICollectionView *)v23 cellForItemAtIndexPath:v24];
-    v26 = [v25 backgroundImageView];
-    [v26 setImage:v22];
+    backgroundImageView3 = [v25 backgroundImageView];
+    [backgroundImageView3 setImage:v22];
 
     v114 = 0u;
     v115 = 0u;
     v112 = 0u;
     v113 = 0u;
-    v27 = [(UICollectionView *)self->_collectionView visibleCells];
-    v28 = [v27 countByEnumeratingWithState:&v112 objects:v130 count:16];
+    visibleCells3 = [(UICollectionView *)self->_collectionView visibleCells];
+    v28 = [visibleCells3 countByEnumeratingWithState:&v112 objects:v130 count:16];
     if (v28)
     {
       v29 = v28;
@@ -1234,7 +1234,7 @@ LABEL_55:
         {
           if (*v113 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(visibleCells3);
           }
 
           v32 = *(*(&v112 + 1) + 8 * n);
@@ -1249,13 +1249,13 @@ LABEL_55:
           [v34 startAnimation];
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v112 objects:v130 count:16];
+        v29 = [visibleCells3 countByEnumeratingWithState:&v112 objects:v130 count:16];
       }
 
       while (v29);
     }
 
-    self = v93;
+    self = selfCopy;
   }
 
   [(EKExpandedReminderStackViewController *)self setOccurrenceViewOnCanvasHidden:1];
@@ -1290,28 +1290,28 @@ uint64_t __59__EKExpandedReminderStackViewController_animateTransition___block_i
   return [v2 completeTransition:1];
 }
 
-- (void)setOccurrenceViewOnCanvasHidden:(BOOL)a3
+- (void)setOccurrenceViewOnCanvasHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
-    v7 = [(NSArray *)self->_events firstObject];
-    v6 = [(EKExpandedReminderStackViewControllerDelegate *)delegate occurrenceViewForEvent:v7];
-    [v6 setHidden:v3];
+    firstObject = [(NSArray *)self->_events firstObject];
+    v6 = [(EKExpandedReminderStackViewControllerDelegate *)delegate occurrenceViewForEvent:firstObject];
+    [v6 setHidden:hiddenCopy];
   }
 }
 
-- (void)setSelectedOccurrenceViewOnCanvasHidden:(BOOL)a3
+- (void)setSelectedOccurrenceViewOnCanvasHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
-    v8 = [(NSArray *)self->_events firstObject];
-    v6 = [(EKExpandedReminderStackViewControllerDelegate *)delegate occurrenceViewForEvent:v8];
-    v7 = [v6 selectedCopy];
-    [v7 setHidden:v3];
+    firstObject = [(NSArray *)self->_events firstObject];
+    v6 = [(EKExpandedReminderStackViewControllerDelegate *)delegate occurrenceViewForEvent:firstObject];
+    selectedCopy = [v6 selectedCopy];
+    [selectedCopy setHidden:hiddenCopy];
   }
 }
 

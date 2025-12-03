@@ -1,51 +1,51 @@
 @interface NTKComplicationController
-+ (Class)_controllerClassForComplicationType:(unint64_t)a3 family:(int64_t)a4 device:(id)a5 resolvedFamily:(int64_t *)a6;
-+ (id)DEPRECATEDControllerForComplication:(id)a3 withLegacyDisplay:(id)a4 forDevice:(id)a5;
-+ (id)_newOrCachedControllerOfClass:(Class)a3 complication:(id)a4 variant:(id)a5 device:(id)a6;
-+ (id)controllerForComplication:(id)a3 variant:(id)a4 device:(id)a5;
++ (Class)_controllerClassForComplicationType:(unint64_t)type family:(int64_t)family device:(id)device resolvedFamily:(int64_t *)resolvedFamily;
++ (id)DEPRECATEDControllerForComplication:(id)complication withLegacyDisplay:(id)display forDevice:(id)device;
++ (id)_newOrCachedControllerOfClass:(Class)class complication:(id)complication variant:(id)variant device:(id)device;
++ (id)controllerForComplication:(id)complication variant:(id)variant device:(id)device;
 - (BOOL)wantsLegacyDisplay;
 - (CDComplicationDisplay)legacyDisplay;
-- (NTKComplicationController)initWithComplication:(id)a3 variant:(id)a4 device:(id)a5;
-- (id)_initWithComplication:(id)a3 legacyDisplay:(id)a4 forDevice:(id)a5;
-- (id)displayPropertiesForDisplayWrapper:(id)a3;
-- (void)_openApp:(id)a3 withURL:(id)a4 forDisplayWrapper:(id)a5 result:(id)a6;
-- (void)_openAppWithURL:(id)a3 forDisplayWrapper:(id)a4;
-- (void)_openUserActivity:(id)a3 forApp:(id)a4 forDisplayWrapper:(id)a5 result:(id)a6;
+- (NTKComplicationController)initWithComplication:(id)complication variant:(id)variant device:(id)device;
+- (id)_initWithComplication:(id)complication legacyDisplay:(id)display forDevice:(id)device;
+- (id)displayPropertiesForDisplayWrapper:(id)wrapper;
+- (void)_openApp:(id)app withURL:(id)l forDisplayWrapper:(id)wrapper result:(id)result;
+- (void)_openAppWithURL:(id)l forDisplayWrapper:(id)wrapper;
+- (void)_openUserActivity:(id)activity forApp:(id)app forDisplayWrapper:(id)wrapper result:(id)result;
 - (void)_updateActive;
 - (void)_updateEffectiveAnimationMode;
 - (void)_updateEffectiveCachingMode;
 - (void)_updateEffectiveFaceDataMode;
 - (void)_updateEffectiveUpdatingMode;
-- (void)_updateInternalModes:(BOOL)a3;
+- (void)_updateInternalModes:(BOOL)modes;
 - (void)activate;
-- (void)addDataModeAssertion:(id)a3;
-- (void)addDisplayWrapper:(id)a3;
-- (void)addDisplayWrapper:(id)a3 withDisplayProperties:(id)a4;
+- (void)addDataModeAssertion:(id)assertion;
+- (void)addDisplayWrapper:(id)wrapper;
+- (void)addDisplayWrapper:(id)wrapper withDisplayProperties:(id)properties;
 - (void)deactivate;
 - (void)dealloc;
-- (void)enumerateDisplayWrappersWithBlock:(id)a3;
-- (void)removeDataModeAssertion:(id)a3;
-- (void)removeDisplayWrapper:(id)a3;
-- (void)setDisplayProperties:(id)a3 forDisplayWrapper:(id)a4;
-- (void)setFaceZooming:(BOOL)a3;
-- (void)setTouchObserver:(id)a3 forDisplayWrapper:(id)a4;
-- (void)updateDataModeAssertion:(id)a3;
-- (void)updatePropertiesForDisplayWrapper:(id)a3 withBlock:(id)a4;
+- (void)enumerateDisplayWrappersWithBlock:(id)block;
+- (void)removeDataModeAssertion:(id)assertion;
+- (void)removeDisplayWrapper:(id)wrapper;
+- (void)setDisplayProperties:(id)properties forDisplayWrapper:(id)wrapper;
+- (void)setFaceZooming:(BOOL)zooming;
+- (void)setTouchObserver:(id)observer forDisplayWrapper:(id)wrapper;
+- (void)updateDataModeAssertion:(id)assertion;
+- (void)updatePropertiesForDisplayWrapper:(id)wrapper withBlock:(id)block;
 @end
 
 @implementation NTKComplicationController
 
-+ (id)controllerForComplication:(id)a3 variant:(id)a4 device:(id)a5
++ (id)controllerForComplication:(id)complication variant:(id)variant device:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v15 = [v9 family];
-  v14 = v15;
-  v11 = [a1 _controllerClassForComplicationType:objc_msgSend(v8 family:"complicationType") device:v15 resolvedFamily:{v10, &v15}];
+  complicationCopy = complication;
+  variantCopy = variant;
+  deviceCopy = device;
+  family = [variantCopy family];
+  v14 = family;
+  v11 = [self _controllerClassForComplicationType:objc_msgSend(complicationCopy family:"complicationType") device:family resolvedFamily:{deviceCopy, &family}];
   if (!v11)
   {
-    while (![NTKLocalBundleTimelineComplicationController acceptsComplication:v8 family:v14 forDevice:v10])
+    while (![NTKLocalBundleTimelineComplicationController acceptsComplication:complicationCopy family:v14 forDevice:deviceCopy])
     {
       if ((NTKFallbackComplicationFamilyForFamily(v14, &v14) & 1) == 0)
       {
@@ -64,22 +64,22 @@ LABEL_6:
   }
 
 LABEL_7:
-  v12 = [a1 _newOrCachedControllerOfClass:v11 complication:v8 variant:v9 device:v10];
+  v12 = [self _newOrCachedControllerOfClass:v11 complication:complicationCopy variant:variantCopy device:deviceCopy];
 
   return v12;
 }
 
-+ (Class)_controllerClassForComplicationType:(unint64_t)a3 family:(int64_t)a4 device:(id)a5 resolvedFamily:(int64_t *)a6
++ (Class)_controllerClassForComplicationType:(unint64_t)type family:(int64_t)family device:(id)device resolvedFamily:(int64_t *)resolvedFamily
 {
   v34 = *MEMORY[0x277D85DE8];
-  v31 = a4;
-  v8 = a5;
+  familyCopy = family;
+  deviceCopy = device;
   v9 = 0uLL;
   do
   {
-    if (a6)
+    if (resolvedFamily)
     {
-      *a6 = v31;
+      *resolvedFamily = familyCopy;
     }
 
     v29 = v9;
@@ -107,7 +107,7 @@ LABEL_8:
         }
 
         v15 = *(*(&v27 + 1) + 8 * v14);
-        if ([v15 _acceptsComplicationType:a3 family:v31 forDevice:v8])
+        if ([v15 _acceptsComplicationType:type family:familyCopy forDevice:deviceCopy])
         {
           goto LABEL_26;
         }
@@ -125,12 +125,12 @@ LABEL_8:
       }
     }
 
-    v16 = NTKFallbackComplicationFamilyForFamily(v31, &v31);
+    v16 = NTKFallbackComplicationFamilyForFamily(familyCopy, &familyCopy);
     v9 = 0uLL;
   }
 
   while ((v16 & 1) != 0);
-  if (NTKIsRichComplicationFamily(v31))
+  if (NTKIsRichComplicationFamily(familyCopy))
   {
     v17 = 0;
     goto LABEL_28;
@@ -161,7 +161,7 @@ LABEL_19:
     }
 
     v15 = *(*(&v23 + 1) + 8 * v21);
-    if ([v15 _acceptsComplicationType:a3 forDevice:{v8, v23}])
+    if ([v15 _acceptsComplicationType:type forDevice:{deviceCopy, v23}])
     {
       break;
     }
@@ -187,24 +187,24 @@ LABEL_28:
   return v17;
 }
 
-+ (id)_newOrCachedControllerOfClass:(Class)a3 complication:(id)a4 variant:(id)a5 device:(id)a6
++ (id)_newOrCachedControllerOfClass:(Class)class complication:(id)complication variant:(id)variant device:(id)device
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  complicationCopy = complication;
+  variantCopy = variant;
+  deviceCopy = device;
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __87__NTKComplicationController__newOrCachedControllerOfClass_complication_variant_device___block_invoke;
   v22 = &unk_278786BE0;
-  v26 = a3;
-  v12 = v9;
+  classCopy = class;
+  v12 = complicationCopy;
   v23 = v12;
-  v13 = v10;
+  v13 = variantCopy;
   v24 = v13;
-  v14 = v11;
+  v14 = deviceCopy;
   v25 = v14;
   v15 = _Block_copy(&v19);
-  if ([(objc_class *)a3 _isLegacy:v19])
+  if ([(objc_class *)class _isLegacy:v19])
   {
     v16 = v15[2](v15);
   }
@@ -232,13 +232,13 @@ id __87__NTKComplicationController__newOrCachedControllerOfClass_complication_va
   return [v2 _isLegacy];
 }
 
-+ (id)DEPRECATEDControllerForComplication:(id)a3 withLegacyDisplay:(id)a4 forDevice:(id)a5
++ (id)DEPRECATEDControllerForComplication:(id)complication withLegacyDisplay:(id)display forDevice:(id)device
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 complicationType];
+  complicationCopy = complication;
+  displayCopy = display;
+  deviceCopy = device;
+  complicationType = [complicationCopy complicationType];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -259,7 +259,7 @@ LABEL_3:
       }
 
       v16 = *(*(&v19 + 1) + 8 * v15);
-      if ([v16 _acceptsComplicationType:v10 forDevice:{v9, v19}])
+      if ([v16 _acceptsComplicationType:complicationType forDevice:{deviceCopy, v19}])
       {
         break;
       }
@@ -289,40 +289,40 @@ LABEL_9:
 
   v16 = objc_opt_class();
 LABEL_12:
-  v17 = [[v16 alloc] _initWithComplication:v7 legacyDisplay:v8 forDevice:v9];
+  v17 = [[v16 alloc] _initWithComplication:complicationCopy legacyDisplay:displayCopy forDevice:deviceCopy];
 
   return v17;
 }
 
-- (NTKComplicationController)initWithComplication:(id)a3 variant:(id)a4 device:(id)a5
+- (NTKComplicationController)initWithComplication:(id)complication variant:(id)variant device:(id)device
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  complicationCopy = complication;
+  variantCopy = variant;
+  deviceCopy = device;
   v23.receiver = self;
   v23.super_class = NTKComplicationController;
   v12 = [(NTKComplicationController *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_complication, a3);
-    v13->_complicationFamily = [v10 family];
+    objc_storeStrong(&v12->_complication, complication);
+    v13->_complicationFamily = [variantCopy family];
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
     displayWrappers = v13->_displayWrappers;
     v13->_displayWrappers = v14;
 
-    v16 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     displayWrappersToDisplayProperties = v13->_displayWrappersToDisplayProperties;
-    v13->_displayWrappersToDisplayProperties = v16;
+    v13->_displayWrappersToDisplayProperties = strongToStrongObjectsMapTable;
 
-    v18 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     displayWrappersToTouchObservers = v13->_displayWrappersToTouchObservers;
-    v13->_displayWrappersToTouchObservers = v18;
+    v13->_displayWrappersToTouchObservers = strongToWeakObjectsMapTable;
 
-    objc_storeStrong(&v13->_device, a5);
-    v20 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v13->_device, device);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     assertions = v13->_assertions;
-    v13->_assertions = v20;
+    v13->_assertions = weakObjectsHashTable;
 
     [(NTKComplicationController *)v13 _updateInternalModes:1];
   }
@@ -330,26 +330,26 @@ LABEL_12:
   return v13;
 }
 
-- (id)_initWithComplication:(id)a3 legacyDisplay:(id)a4 forDevice:(id)a5
+- (id)_initWithComplication:(id)complication legacyDisplay:(id)display forDevice:(id)device
 {
-  v8 = a4;
-  v9 = a5;
+  displayCopy = display;
+  deviceCopy = device;
   v10 = *MEMORY[0x277CBF3A8];
   v11 = *(MEMORY[0x277CBF3A8] + 8);
   v12 = *MEMORY[0x277D768C8];
   v13 = *(MEMORY[0x277D768C8] + 8);
   v14 = *(MEMORY[0x277D768C8] + 16);
   v15 = *(MEMORY[0x277D768C8] + 24);
-  v16 = a3;
+  complicationCopy = complication;
   v17 = [NTKComplicationMetrics metricsWithSize:0 safeAreaInsets:v10 cornerRadius:v11 opaque:v12, v13, v14, v15, 0.0];
   v18 = [NTKComplicationVariant variantWithFamily:-1 metrics:v17];
-  v19 = [(NTKComplicationController *)self initWithComplication:v16 variant:v18 device:v9];
+  v19 = [(NTKComplicationController *)self initWithComplication:complicationCopy variant:v18 device:deviceCopy];
 
   if (v19)
   {
-    objc_storeStrong(&v19->_device, a5);
-    objc_storeWeak(&v19->_legacyDisplayDEPRECATED, v8);
-    [(NTKComplicationController *)v19 _configureForLegacyDisplay:v8];
+    objc_storeStrong(&v19->_device, device);
+    objc_storeWeak(&v19->_legacyDisplayDEPRECATED, displayCopy);
+    [(NTKComplicationController *)v19 _configureForLegacyDisplay:displayCopy];
   }
 
   return v19;
@@ -491,14 +491,14 @@ LABEL_12:
   self->_effectiveFaceDataMode = v6;
 }
 
-- (void)_updateInternalModes:(BOOL)a3
+- (void)_updateInternalModes:(BOOL)modes
 {
-  v3 = a3;
+  modesCopy = modes;
   v26 = *MEMORY[0x277D85DE8];
   effectiveFaceDataMode = self->_effectiveFaceDataMode;
   [(NTKComplicationController *)self _updateEffectiveFaceDataMode];
   v6 = self->_effectiveFaceDataMode;
-  v7 = effectiveFaceDataMode == v6 && !v3;
+  v7 = effectiveFaceDataMode == v6 && !modesCopy;
   v8 = effectiveFaceDataMode;
   if (!v7)
   {
@@ -531,18 +531,18 @@ LABEL_12:
     v8 = self->_effectiveFaceDataMode;
   }
 
-  if (effectiveFaceDataMode != v8 || v3)
+  if (effectiveFaceDataMode != v8 || modesCopy)
   {
     v13 = (v8 > 5) | (6u >> v8) & 1;
-    if (((effectiveFaceDataMode > 5) | (6u >> effectiveFaceDataMode) & 1) != v13 || v3)
+    if (((effectiveFaceDataMode > 5) | (6u >> effectiveFaceDataMode) & 1) != v13 || modesCopy)
     {
       v15 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(NTKComplicationController *)self complication];
+        complication = [(NTKComplicationController *)self complication];
         v17 = self->_effectiveFaceDataMode;
         v18 = 138413058;
-        v19 = v16;
+        v19 = complication;
         v20 = 2048;
         v21 = effectiveFaceDataMode;
         v22 = 2048;
@@ -557,39 +557,39 @@ LABEL_12:
   }
 }
 
-- (void)setDisplayProperties:(id)a3 forDisplayWrapper:(id)a4
+- (void)setDisplayProperties:(id)properties forDisplayWrapper:(id)wrapper
 {
-  v9 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  wrapperCopy = wrapper;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (v6)
+  if (wrapperCopy)
   {
     displayWrappersToDisplayProperties = self->_displayWrappersToDisplayProperties;
-    v8 = [v9 copy];
-    [(NSMapTable *)displayWrappersToDisplayProperties setObject:v8 forKey:v6];
+    v8 = [propertiesCopy copy];
+    [(NSMapTable *)displayWrappersToDisplayProperties setObject:v8 forKey:wrapperCopy];
 
-    [v6 setTapEnabled:{objc_msgSend(v9, "tapEnabled")}];
-    [v6 setTapAnimationEnabled:{objc_msgSend(v9, "defaultTapAnimationEnabled")}];
-    [v6 setPaused:{objc_msgSend(v9, "faceDataMode") != 1}];
-    [v6 setTapInternalInputEnabled:1];
+    [wrapperCopy setTapEnabled:{objc_msgSend(propertiesCopy, "tapEnabled")}];
+    [wrapperCopy setTapAnimationEnabled:{objc_msgSend(propertiesCopy, "defaultTapAnimationEnabled")}];
+    [wrapperCopy setPaused:{objc_msgSend(propertiesCopy, "faceDataMode") != 1}];
+    [wrapperCopy setTapInternalInputEnabled:1];
     [(NTKComplicationController *)self _updateInternalModes:0];
   }
 }
 
-- (id)displayPropertiesForDisplayWrapper:(id)a3
+- (id)displayPropertiesForDisplayWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(NSMapTable *)self->_displayWrappersToDisplayProperties objectForKey:v4];
+  v5 = [(NSMapTable *)self->_displayWrappersToDisplayProperties objectForKey:wrapperCopy];
 
   return v5;
 }
 
-- (void)updatePropertiesForDisplayWrapper:(id)a3 withBlock:(id)a4
+- (void)updatePropertiesForDisplayWrapper:(id)wrapper withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKComplicationController *)self displayPropertiesForDisplayWrapper:v7];
+  blockCopy = block;
+  wrapperCopy = wrapper;
+  v8 = [(NTKComplicationController *)self displayPropertiesForDisplayWrapper:wrapperCopy];
   if (!v8)
   {
     v8 = objc_opt_new();
@@ -597,17 +597,17 @@ LABEL_12:
 
   v11 = v8;
   v9 = [v8 mutableCopy];
-  v6[2](v6, v9);
+  blockCopy[2](blockCopy, v9);
 
   v10 = [v9 copy];
-  [(NTKComplicationController *)self setDisplayProperties:v10 forDisplayWrapper:v7];
+  [(NTKComplicationController *)self setDisplayProperties:v10 forDisplayWrapper:wrapperCopy];
 }
 
-- (void)setFaceZooming:(BOOL)a3
+- (void)setFaceZooming:(BOOL)zooming
 {
-  if (self->_faceZooming != a3)
+  if (self->_faceZooming != zooming)
   {
-    self->_faceZooming = a3;
+    self->_faceZooming = zooming;
     [(NTKComplicationController *)self _updateInternalModes:1];
   }
 }
@@ -626,7 +626,7 @@ LABEL_12:
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_22D9C5000, a2, OS_LOG_TYPE_DEBUG, "Activating controller %@", &v2, 0xCu);
 }
 
@@ -638,55 +638,55 @@ LABEL_12:
   [(NTKComplicationController *)&v3 dealloc];
 }
 
-- (void)addDisplayWrapper:(id)a3 withDisplayProperties:(id)a4
+- (void)addDisplayWrapper:(id)wrapper withDisplayProperties:(id)properties
 {
   displayWrappersToDisplayProperties = self->_displayWrappersToDisplayProperties;
-  v7 = a4;
-  v9 = a3;
-  v8 = [v7 copy];
-  [(NSMapTable *)displayWrappersToDisplayProperties setObject:v8 forKey:v9];
+  propertiesCopy = properties;
+  wrapperCopy = wrapper;
+  v8 = [propertiesCopy copy];
+  [(NSMapTable *)displayWrappersToDisplayProperties setObject:v8 forKey:wrapperCopy];
 
-  [(NTKComplicationController *)self addDisplayWrapper:v9];
-  [(NTKComplicationController *)self setDisplayProperties:v7 forDisplayWrapper:v9];
+  [(NTKComplicationController *)self addDisplayWrapper:wrapperCopy];
+  [(NTKComplicationController *)self setDisplayProperties:propertiesCopy forDisplayWrapper:wrapperCopy];
 }
 
-- (void)addDisplayWrapper:(id)a3
+- (void)addDisplayWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   if (![(NSMutableArray *)self->_displayWrappers count])
   {
     [(NTKComplicationController *)self activate];
   }
 
-  [(NSMutableArray *)self->_displayWrappers addObject:v4];
+  [(NSMutableArray *)self->_displayWrappers addObject:wrapperCopy];
   if ([(NSMutableArray *)self->_displayWrappers count]== 1)
   {
-    v5 = [(NTKComplicationController *)self legacyDisplay];
-    [(NTKComplicationController *)self _configureForLegacyDisplay:v5];
+    legacyDisplay = [(NTKComplicationController *)self legacyDisplay];
+    [(NTKComplicationController *)self _configureForLegacyDisplay:legacyDisplay];
   }
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
+  objc_initWeak(&from, wrapperCopy);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__NTKComplicationController_addDisplayWrapper___block_invoke;
   v11[3] = &unk_278786C08;
   objc_copyWeak(&v12, &location);
   objc_copyWeak(&v13, &from);
-  [v4 setTouchDownHandler:v11];
+  [wrapperCopy setTouchDownHandler:v11];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__NTKComplicationController_addDisplayWrapper___block_invoke_2;
   v8[3] = &unk_278786C08;
   objc_copyWeak(&v9, &location);
   objc_copyWeak(&v10, &from);
-  [v4 setTouchUpInsideHandler:v8];
+  [wrapperCopy setTouchUpInsideHandler:v8];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__NTKComplicationController_addDisplayWrapper___block_invoke_3;
   v6[3] = &unk_278786C30;
   objc_copyWeak(&v7, &location);
-  [v4 setRenderStatsHandler:v6];
+  [wrapperCopy setRenderStatsHandler:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v9);
@@ -734,14 +734,14 @@ void __47__NTKComplicationController_addDisplayWrapper___block_invoke_3(uint64_t
   [WeakRetained _handleRenderStatsForDisplayWrapper:v7 withTime:a3 cost:a4];
 }
 
-- (void)removeDisplayWrapper:(id)a3
+- (void)removeDisplayWrapper:(id)wrapper
 {
   displayWrappers = self->_displayWrappers;
-  v5 = a3;
-  [(NSMutableArray *)displayWrappers removeObjectIdenticalTo:v5];
-  [(NSMapTable *)self->_displayWrappersToDisplayProperties removeObjectForKey:v5];
-  [(NSMapTable *)self->_displayWrappersToTouchObservers removeObjectForKey:v5];
-  [v5 setTouchUpInsideHandler:0];
+  wrapperCopy = wrapper;
+  [(NSMutableArray *)displayWrappers removeObjectIdenticalTo:wrapperCopy];
+  [(NSMapTable *)self->_displayWrappersToDisplayProperties removeObjectForKey:wrapperCopy];
+  [(NSMapTable *)self->_displayWrappersToTouchObservers removeObjectForKey:wrapperCopy];
+  [wrapperCopy setTouchUpInsideHandler:0];
 
   [(NTKComplicationController *)self _updateInternalModes:0];
   if (![(NSMutableArray *)self->_displayWrappers count])
@@ -751,21 +751,21 @@ void __47__NTKComplicationController_addDisplayWrapper___block_invoke_3(uint64_t
 
   if ([(NSMutableArray *)self->_displayWrappers count]== 1)
   {
-    v6 = [(NTKComplicationController *)self legacyDisplay];
-    [(NTKComplicationController *)self _configureForLegacyDisplay:v6];
+    legacyDisplay = [(NTKComplicationController *)self legacyDisplay];
+    [(NTKComplicationController *)self _configureForLegacyDisplay:legacyDisplay];
   }
 }
 
-- (void)enumerateDisplayWrappersWithBlock:(id)a3
+- (void)enumerateDisplayWrappersWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   displayWrappers = self->_displayWrappers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__NTKComplicationController_enumerateDisplayWrappersWithBlock___block_invoke;
   v7[3] = &unk_278786C58;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableArray *)displayWrappers enumerateObjectsUsingBlock:v7];
 }
 
@@ -775,48 +775,48 @@ void __47__NTKComplicationController_addDisplayWrapper___block_invoke_3(uint64_t
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    display = WeakRetained;
   }
 
   else
   {
-    v6 = [(NSMutableArray *)self->_displayWrappers firstObject];
-    v5 = [v6 display];
+    firstObject = [(NSMutableArray *)self->_displayWrappers firstObject];
+    display = [firstObject display];
   }
 
-  return v5;
+  return display;
 }
 
-- (void)_openAppWithURL:(id)a3 forDisplayWrapper:(id)a4
+- (void)_openAppWithURL:(id)l forDisplayWrapper:(id)wrapper
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKComplicationController *)self complicationApplicationIdentifier];
-  [(NTKComplicationController *)self _openApp:v8 withURL:v7 forDisplayWrapper:v6 result:0];
+  wrapperCopy = wrapper;
+  lCopy = l;
+  complicationApplicationIdentifier = [(NTKComplicationController *)self complicationApplicationIdentifier];
+  [(NTKComplicationController *)self _openApp:complicationApplicationIdentifier withURL:lCopy forDisplayWrapper:wrapperCopy result:0];
 }
 
-- (void)_openApp:(id)a3 withURL:(id)a4 forDisplayWrapper:(id)a5 result:(id)a6
+- (void)_openApp:(id)app withURL:(id)l forDisplayWrapper:(id)wrapper result:(id)result
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(NTKComplicationController *)self displayPropertiesForDisplayWrapper:v11];
-  v15 = [v14 launchLocation];
+  resultCopy = result;
+  wrapperCopy = wrapper;
+  lCopy = l;
+  appCopy = app;
+  v14 = [(NTKComplicationController *)self displayPropertiesForDisplayWrapper:wrapperCopy];
+  launchLocation = [v14 launchLocation];
 
-  [v11 willPerformAppLaunchForComplication:self];
-  NTKLaunchApp(v12);
+  [wrapperCopy willPerformAppLaunchForComplication:self];
+  NTKLaunchApp(lCopy);
 }
 
-- (void)_openUserActivity:(id)a3 forApp:(id)a4 forDisplayWrapper:(id)a5 result:(id)a6
+- (void)_openUserActivity:(id)activity forApp:(id)app forDisplayWrapper:(id)wrapper result:(id)result
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(NTKComplicationController *)self displayPropertiesForDisplayWrapper:a5];
-  v14 = [v13 launchLocation];
+  resultCopy = result;
+  appCopy = app;
+  activityCopy = activity;
+  v13 = [(NTKComplicationController *)self displayPropertiesForDisplayWrapper:wrapper];
+  launchLocation = [v13 launchLocation];
 
-  NTKOpenUserActivity(v12, v11, v14, v10);
+  NTKOpenUserActivity(activityCopy, appCopy, launchLocation, resultCopy);
 }
 
 - (void)_updateActive
@@ -839,42 +839,42 @@ void __47__NTKComplicationController_addDisplayWrapper___block_invoke_3(uint64_t
   }
 }
 
-- (void)addDataModeAssertion:(id)a3
+- (void)addDataModeAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(NSHashTable *)self->_assertions addObject:v4];
+  [(NSHashTable *)self->_assertions addObject:assertionCopy];
 
   [(NTKComplicationController *)self _updateActive];
 
   [(NTKComplicationController *)self _updateInternalModes:0];
 }
 
-- (void)updateDataModeAssertion:(id)a3
+- (void)updateDataModeAssertion:(id)assertion
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
 
   [(NTKComplicationController *)self _updateInternalModes:0];
 }
 
-- (void)removeDataModeAssertion:(id)a3
+- (void)removeDataModeAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(NSHashTable *)self->_assertions removeObject:v4];
+  [(NSHashTable *)self->_assertions removeObject:assertionCopy];
 
   [(NTKComplicationController *)self _updateActive];
 
   [(NTKComplicationController *)self _updateInternalModes:0];
 }
 
-- (void)setTouchObserver:(id)a3 forDisplayWrapper:(id)a4
+- (void)setTouchObserver:(id)observer forDisplayWrapper:(id)wrapper
 {
-  v7 = a3;
-  v6 = a4;
-  if ([(NSMutableArray *)self->_displayWrappers containsObject:v6])
+  observerCopy = observer;
+  wrapperCopy = wrapper;
+  if ([(NSMutableArray *)self->_displayWrappers containsObject:wrapperCopy])
   {
-    [(NSMapTable *)self->_displayWrappersToTouchObservers setObject:v7 forKey:v6];
+    [(NSMapTable *)self->_displayWrappersToTouchObservers setObject:observerCopy forKey:wrapperCopy];
   }
 }
 

@@ -1,30 +1,30 @@
 @interface VMUCallTreeLeafNode
-- (void)addAddress:(unint64_t)a3;
-- (void)getBrowserName:(id)a3;
+- (void)addAddress:(unint64_t)address;
+- (void)getBrowserName:(id)name;
 @end
 
 @implementation VMUCallTreeLeafNode
 
-- (void)addAddress:(unint64_t)a3
+- (void)addAddress:(unint64_t)address
 {
   addresses = self->_addresses;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:address];
   [(NSCountedSet *)addresses addObject:v5];
 
   combinedName = self->_combinedName;
   self->_combinedName = 0;
 }
 
-- (void)getBrowserName:(id)a3
+- (void)getBrowserName:(id)name
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_autoreleasePoolPush();
   v6 = v5;
   if (!self->_combinedName)
   {
     v26 = v5;
-    v28 = v4;
+    v28 = nameCopy;
     v39 = 0;
     v40 = 0;
     v37 = 0;
@@ -33,14 +33,14 @@
     v25 = v39;
     v24 = v38;
     v23 = v37;
-    v7 = [(NSCountedSet *)self->_addresses allObjects];
+    allObjects = [(NSCountedSet *)self->_addresses allObjects];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __38__VMUCallTreeLeafNode_getBrowserName___block_invoke;
     v36[3] = &unk_1E8279EA0;
-    v27 = self;
+    selfCopy = self;
     v36[4] = self;
-    v8 = [v7 sortedArrayUsingComparator:v36];
+    v8 = [allObjects sortedArrayUsingComparator:v36];
 
     v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v30 = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -85,9 +85,9 @@
               [v30 appendString:{@", "}];
             }
 
-            v17 = [v16 unsignedLongLongValue];
-            [v9 appendFormat:@"%qu", v17 - v40];
-            [v30 appendFormat:@"0x%qx", v17];
+            unsignedLongLongValue = [v16 unsignedLongLongValue];
+            [v9 appendFormat:@"%qu", unsignedLongLongValue - v40];
+            [v30 appendFormat:@"0x%qx", unsignedLongLongValue];
           }
 
           ++v13;
@@ -108,12 +108,12 @@
 
 LABEL_16:
 
-    self = v27;
-    v18 = [(VMUCallTreeNode *)v27 nameWithStringsForSymbol:v25 library:v24 loadAddress:0 offset:v9 address:v30 suffix:v23];
-    combinedName = v27->_combinedName;
-    v27->_combinedName = v18;
+    self = selfCopy;
+    v18 = [(VMUCallTreeNode *)selfCopy nameWithStringsForSymbol:v25 library:v24 loadAddress:0 offset:v9 address:v30 suffix:v23];
+    combinedName = selfCopy->_combinedName;
+    selfCopy->_combinedName = v18;
 
-    v4 = v28;
+    nameCopy = v28;
     v6 = v26;
   }
 
@@ -121,7 +121,7 @@ LABEL_16:
   objc_storeStrong(&self->super._name, self->_combinedName);
   v31.receiver = self;
   v31.super_class = VMUCallTreeLeafNode;
-  [(VMUCallTreeNode *)&v31 getBrowserName:v4];
+  [(VMUCallTreeNode *)&v31 getBrowserName:nameCopy];
   name = self->super._name;
   self->super._name = v20;
 

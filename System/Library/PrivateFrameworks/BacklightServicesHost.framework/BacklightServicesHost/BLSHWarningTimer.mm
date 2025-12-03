@@ -6,9 +6,9 @@
 
 - (void)timerFired
 {
-  v3 = [(BLSHAssertionAttributeTimer *)self service];
-  v4 = [(BLSHAssertionAttributeTimer *)self assertion];
-  [v3 willCancelAssertion:v4];
+  service = [(BLSHAssertionAttributeTimer *)self service];
+  assertion = [(BLSHAssertionAttributeTimer *)self assertion];
+  [service willCancelAssertion:assertion];
 
   [(BLSHAssertionAttributeTimer *)self invalidate];
 }

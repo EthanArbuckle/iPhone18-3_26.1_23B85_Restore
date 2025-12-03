@@ -1,23 +1,23 @@
 @interface OFFlowEstimate
-- (BOOL)bindCVPixelBuffers:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6;
-- (BOOL)estimateFlow:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6 callback:(id)a7;
-- (OFFlowEstimate)initWithMode:(int64_t)a3 level:(unsigned int)a4 revision:(int64_t)a5;
+- (BOOL)bindCVPixelBuffers:(__CVBuffer *)buffers correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)flow output:(__CVBuffer *)output;
+- (BOOL)estimateFlow:(__CVBuffer *)flow correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)a5 output:(__CVBuffer *)output callback:(id)callback;
+- (OFFlowEstimate)initWithMode:(int64_t)mode level:(unsigned int)level revision:(int64_t)revision;
 - (void)setupNetworkModel;
 @end
 
 @implementation OFFlowEstimate
 
-- (OFFlowEstimate)initWithMode:(int64_t)a3 level:(unsigned int)a4 revision:(int64_t)a5
+- (OFFlowEstimate)initWithMode:(int64_t)mode level:(unsigned int)level revision:(int64_t)revision
 {
-  v6 = *&a4;
-  [(OFFlowEstimate *)self setLevel:*&a4];
-  [(VEEspressoModel *)self setUsage:a3];
-  [(OFFlowEstimate *)self setRevision:a5];
+  v6 = *&level;
+  [(OFFlowEstimate *)self setLevel:*&level];
+  [(VEEspressoModel *)self setUsage:mode];
+  [(OFFlowEstimate *)self setRevision:revision];
   [(OFFlowEstimate *)self setupNetworkModel];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", self->_espresso_base_name, (v6 + 1)];
   v16.receiver = self;
   v16.super_class = OFFlowEstimate;
-  v10 = [(VEEspressoModel *)&v16 initWithModelName:v9 usage:a3];
+  v10 = [(VEEspressoModel *)&v16 initWithModelName:v9 usage:mode];
   if (v10)
   {
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Optical Flow Estimate Level %d", v6];
@@ -65,7 +65,7 @@
   self->_concatenatedInputBlob = *self->_inputBlobs;
 }
 
-- (BOOL)bindCVPixelBuffers:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6
+- (BOOL)bindCVPixelBuffers:(__CVBuffer *)buffers correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)flow output:(__CVBuffer *)output
 {
   if (self->_level < 2)
   {
@@ -163,9 +163,9 @@ LABEL_22:
   return v7;
 }
 
-- (BOOL)estimateFlow:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6 callback:(id)a7
+- (BOOL)estimateFlow:(__CVBuffer *)flow correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)a5 output:(__CVBuffer *)output callback:(id)callback
 {
-  v12 = a7;
+  callbackCopy = callback;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -175,14 +175,14 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = __64__OFFlowEstimate_estimateFlow_correlation_flow_output_callback___block_invoke;
   block[3] = &unk_278F53790;
-  v20 = a4;
+  correlationCopy = correlation;
   v21 = a5;
-  v22 = a6;
+  outputCopy = output;
   v18 = &v23;
-  v19 = a3;
+  flowCopy = flow;
   block[4] = self;
-  v17 = v12;
-  v14 = v12;
+  v17 = callbackCopy;
+  v14 = callbackCopy;
   dispatch_sync(submissionQueue, block);
   LOBYTE(a5) = *(v24 + 24);
 

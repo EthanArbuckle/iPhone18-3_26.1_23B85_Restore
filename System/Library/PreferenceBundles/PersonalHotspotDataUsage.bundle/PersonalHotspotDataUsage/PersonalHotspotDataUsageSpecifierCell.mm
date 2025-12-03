@@ -1,6 +1,6 @@
 @interface PersonalHotspotDataUsageSpecifierCell
 - (id)getLazyIcon;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PersonalHotspotDataUsageSpecifierCell
@@ -10,52 +10,52 @@
   v3 = [PersonalHotspotDeviceImage alloc];
   v7.receiver = self;
   v7.super_class = PersonalHotspotDataUsageSpecifierCell;
-  v4 = [(PersonalHotspotDataUsageSpecifierCell *)&v7 getLazyIcon];
-  v5 = -[PersonalHotspotDeviceImage initWithCGImage:](v3, "initWithCGImage:", [v4 CGImage]);
+  getLazyIcon = [(PersonalHotspotDataUsageSpecifierCell *)&v7 getLazyIcon];
+  v5 = -[PersonalHotspotDeviceImage initWithCGImage:](v3, "initWithCGImage:", [getLazyIcon CGImage]);
 
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v116.receiver = self;
   v116.super_class = PersonalHotspotDataUsageSpecifierCell;
-  [(PersonalHotspotDataUsageSpecifierCell *)&v116 refreshCellContentsWithSpecifier:v4];
-  v5 = [(PersonalHotspotDataUsageSpecifierCell *)self textLabel];
-  [v5 removeFromSuperview];
+  [(PersonalHotspotDataUsageSpecifierCell *)&v116 refreshCellContentsWithSpecifier:specifierCopy];
+  textLabel = [(PersonalHotspotDataUsageSpecifierCell *)self textLabel];
+  [textLabel removeFromSuperview];
 
-  v6 = [(PersonalHotspotDataUsageSpecifierCell *)self detailTextLabel];
-  [v6 removeFromSuperview];
+  detailTextLabel = [(PersonalHotspotDataUsageSpecifierCell *)self detailTextLabel];
+  [detailTextLabel removeFromSuperview];
 
   [(PersonalHotspotDataUsageSpecifierCell *)self setTitle:0];
   dataUsageLabel = self->_dataUsageLabel;
-  v8 = [(UILabel *)dataUsageLabel constraints];
-  [(UILabel *)dataUsageLabel removeConstraints:v8];
+  constraints = [(UILabel *)dataUsageLabel constraints];
+  [(UILabel *)dataUsageLabel removeConstraints:constraints];
 
   productNameLabel = self->_productNameLabel;
-  v10 = [(UILabel *)self->_dataUsageLabel constraints];
-  [(UILabel *)productNameLabel removeConstraints:v10];
+  constraints2 = [(UILabel *)self->_dataUsageLabel constraints];
+  [(UILabel *)productNameLabel removeConstraints:constraints2];
 
   deviceNameLabel = self->_deviceNameLabel;
-  v12 = [(UILabel *)self->_dataUsageLabel constraints];
-  [(UILabel *)deviceNameLabel removeConstraints:v12];
+  constraints3 = [(UILabel *)self->_dataUsageLabel constraints];
+  [(UILabel *)deviceNameLabel removeConstraints:constraints3];
 
   [(UILabel *)self->_dataUsageLabel removeFromSuperview];
   [(UILabel *)self->_productNameLabel removeFromSuperview];
   [(UILabel *)self->_deviceNameLabel removeFromSuperview];
   v13 = +[UIDevice currentDevice];
-  v14 = [v13 sf_isChinaRegionCellularDevice];
+  sf_isChinaRegionCellularDevice = [v13 sf_isChinaRegionCellularDevice];
 
-  v15 = [v4 properties];
-  v16 = [v15 objectForKeyedSubscript:PSLazyIconURL];
+  properties = [specifierCopy properties];
+  v16 = [properties objectForKeyedSubscript:PSLazyIconURL];
 
-  v17 = [v4 properties];
-  v18 = [v17 objectForKeyedSubscript:PSLazyIconLoading];
-  v19 = [v18 BOOLValue];
+  properties2 = [specifierCopy properties];
+  v18 = [properties2 objectForKeyedSubscript:PSLazyIconLoading];
+  bOOLValue = [v18 BOOLValue];
 
   v20 = @"macbook.and.iphone";
-  if (v19)
+  if (bOOLValue)
   {
     v20 = @"questionmark.app.dashed";
   }
@@ -73,14 +73,14 @@
     v23 = [UIImage systemImageNamed:v21];
     v22 = UIFontTextStyleBody;
     [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleBody scale:-1];
-    v25 = v24 = v14;
-    v26 = [(PersonalHotspotDataUsageSpecifierCell *)self imageView];
-    [v26 setImage:v23];
+    v25 = v24 = sf_isChinaRegionCellularDevice;
+    imageView = [(PersonalHotspotDataUsageSpecifierCell *)self imageView];
+    [imageView setImage:v23];
 
-    v27 = [(PersonalHotspotDataUsageSpecifierCell *)self imageView];
-    [v27 setSymbolConfiguration:v25];
+    imageView2 = [(PersonalHotspotDataUsageSpecifierCell *)self imageView];
+    [imageView2 setSymbolConfiguration:v25];
 
-    v14 = v24;
+    sf_isChinaRegionCellularDevice = v24;
   }
 
   v28 = objc_alloc_init(UILabel);
@@ -95,14 +95,14 @@
   [(UILabel *)self->_dataUsageLabel setTextColor:v31];
 
   [(UILabel *)self->_dataUsageLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v32 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
-  [v32 addSubview:self->_dataUsageLabel];
+  contentView = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
+  [contentView addSubview:self->_dataUsageLabel];
 
-  v113 = v14;
-  if ((v14 & 1) == 0)
+  v113 = sf_isChinaRegionCellularDevice;
+  if ((sf_isChinaRegionCellularDevice & 1) == 0)
   {
     v34 = self->_dataUsageLabel;
-    v35 = [v4 propertyForKey:PSValueKey];
+    v35 = [specifierCopy propertyForKey:PSValueKey];
     [(UILabel *)v34 setText:v35];
   }
 
@@ -110,19 +110,19 @@
   [(UILabel *)self->_dataUsageLabel setContentCompressionResistancePriority:0 forAxis:v33];
   LODWORD(v36) = 1148846080;
   [(UILabel *)self->_dataUsageLabel setContentHuggingPriority:0 forAxis:v36];
-  v37 = [(UILabel *)self->_dataUsageLabel trailingAnchor];
-  v38 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
-  v39 = [v38 layoutMarginsGuide];
-  [v39 trailingAnchor];
-  v41 = v40 = v4;
-  v42 = [v37 constraintEqualToAnchor:v41];
+  trailingAnchor = [(UILabel *)self->_dataUsageLabel trailingAnchor];
+  contentView2 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  [layoutMarginsGuide trailingAnchor];
+  v41 = v40 = specifierCopy;
+  v42 = [trailingAnchor constraintEqualToAnchor:v41];
   [v42 setActive:1];
 
-  v43 = [(UILabel *)self->_dataUsageLabel centerYAnchor];
-  v44 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
-  v45 = [v44 layoutMarginsGuide];
-  v46 = [v45 centerYAnchor];
-  v47 = [v43 constraintEqualToAnchor:v46];
+  centerYAnchor = [(UILabel *)self->_dataUsageLabel centerYAnchor];
+  contentView3 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  centerYAnchor2 = [layoutMarginsGuide2 centerYAnchor];
+  v47 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v47 setActive:1];
 
   v48 = objc_alloc_init(UILabel);
@@ -137,28 +137,28 @@
 
   [(UILabel *)self->_deviceNameLabel setNumberOfLines:0];
   [(UILabel *)self->_deviceNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v52 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
-  [v52 addSubview:self->_deviceNameLabel];
+  contentView4 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
+  [contentView4 addSubview:self->_deviceNameLabel];
 
   LODWORD(v53) = 1148846080;
   [(UILabel *)self->_deviceNameLabel setContentCompressionResistancePriority:1 forAxis:v53];
-  v54 = [(UILabel *)self->_deviceNameLabel leadingAnchor];
-  v55 = [(PersonalHotspotDataUsageSpecifierCell *)self imageView];
-  v56 = [v55 layoutMarginsGuide];
-  v57 = [v56 trailingAnchor];
-  v58 = [v54 constraintEqualToAnchor:v57 constant:20.0];
+  leadingAnchor = [(UILabel *)self->_deviceNameLabel leadingAnchor];
+  imageView3 = [(PersonalHotspotDataUsageSpecifierCell *)self imageView];
+  layoutMarginsGuide3 = [imageView3 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+  v58 = [leadingAnchor constraintEqualToAnchor:trailingAnchor2 constant:20.0];
   [v58 setActive:1];
 
-  v59 = [(UILabel *)self->_deviceNameLabel trailingAnchor];
-  v60 = [(UILabel *)self->_dataUsageLabel leadingAnchor];
-  v61 = [v59 constraintEqualToAnchor:v60];
+  trailingAnchor3 = [(UILabel *)self->_deviceNameLabel trailingAnchor];
+  leadingAnchor2 = [(UILabel *)self->_dataUsageLabel leadingAnchor];
+  v61 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor2];
   [v61 setActive:1];
 
-  v62 = [(UILabel *)self->_deviceNameLabel trailingAnchor];
-  v63 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
-  v64 = [v63 layoutMarginsGuide];
-  v65 = [v64 trailingAnchor];
-  v66 = [v62 constraintLessThanOrEqualToAnchor:v65];
+  trailingAnchor4 = [(UILabel *)self->_deviceNameLabel trailingAnchor];
+  contentView5 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
+  layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+  trailingAnchor5 = [layoutMarginsGuide4 trailingAnchor];
+  v66 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:trailingAnchor5];
   [v66 setActive:1];
 
   v67 = self->_deviceNameLabel;
@@ -178,27 +178,27 @@
   v72 = +[UIColor secondaryLabelColor];
   [(UILabel *)self->_productNameLabel setTextColor:v72];
 
-  v73 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
-  [v73 addSubview:self->_productNameLabel];
+  contentView6 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
+  [contentView6 addSubview:self->_productNameLabel];
 
   v117 = NSFontAttributeName;
-  v74 = [(PersonalHotspotDataUsageSpecifierCell *)self titleLabel];
-  v75 = [v74 font];
-  v118 = v75;
+  titleLabel = [(PersonalHotspotDataUsageSpecifierCell *)self titleLabel];
+  font = [titleLabel font];
+  v118 = font;
   v76 = [NSDictionary dictionaryWithObjects:&v118 forKeys:&v117 count:1];
   [@"iPhone" sizeWithAttributes:v76];
   v78 = v77;
 
-  v79 = [(UILabel *)self->_productNameLabel leadingAnchor];
-  v80 = [(PersonalHotspotDataUsageSpecifierCell *)self imageView];
-  v81 = [v80 layoutMarginsGuide];
-  v82 = [v81 trailingAnchor];
-  v83 = [v79 constraintEqualToAnchor:v82 constant:20.0];
+  leadingAnchor3 = [(UILabel *)self->_productNameLabel leadingAnchor];
+  imageView4 = [(PersonalHotspotDataUsageSpecifierCell *)self imageView];
+  layoutMarginsGuide5 = [imageView4 layoutMarginsGuide];
+  trailingAnchor6 = [layoutMarginsGuide5 trailingAnchor];
+  v83 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor6 constant:20.0];
   [v83 setActive:1];
 
-  v84 = [(UILabel *)self->_productNameLabel widthAnchor];
-  v85 = [(UILabel *)self->_deviceNameLabel widthAnchor];
-  v86 = [v84 constraintEqualToAnchor:v85];
+  widthAnchor = [(UILabel *)self->_productNameLabel widthAnchor];
+  widthAnchor2 = [(UILabel *)self->_deviceNameLabel widthAnchor];
+  v86 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v86 setActive:1];
 
   if (v113)
@@ -218,54 +218,54 @@
 
   [(UILabel *)v90 setText:v89];
 
-  v91 = [(UILabel *)self->_productNameLabel text];
+  text = [(UILabel *)self->_productNameLabel text];
 
-  if (v91)
+  if (text)
   {
     LODWORD(v92) = 1148846080;
     [(UILabel *)self->_productNameLabel setContentCompressionResistancePriority:1 forAxis:v92];
-    v93 = [(UILabel *)self->_productNameLabel firstBaselineAnchor];
-    v94 = [(UILabel *)self->_deviceNameLabel lastBaselineAnchor];
-    v95 = [v93 constraintEqualToSystemSpacingBelowAnchor:v94 multiplier:1.2];
+    firstBaselineAnchor = [(UILabel *)self->_productNameLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)self->_deviceNameLabel lastBaselineAnchor];
+    v95 = [firstBaselineAnchor constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.2];
     [v95 setActive:1];
 
-    v96 = [(UILabel *)self->_deviceNameLabel topAnchor];
-    v97 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
-    v98 = [v97 layoutMarginsGuide];
-    v99 = [v98 topAnchor];
-    v100 = [v96 constraintEqualToAnchor:v99];
+    topAnchor = [(UILabel *)self->_deviceNameLabel topAnchor];
+    contentView7 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
+    layoutMarginsGuide6 = [contentView7 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide6 topAnchor];
+    v100 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v100 setActive:1];
 
-    v101 = [(UILabel *)self->_productNameLabel bottomAnchor];
-    v102 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
-    v103 = [v102 layoutMarginsGuide];
-    v104 = [v103 bottomAnchor];
-    [v101 constraintEqualToAnchor:v104];
+    bottomAnchor = [(UILabel *)self->_productNameLabel bottomAnchor];
+    contentView8 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
+    layoutMarginsGuide7 = [contentView8 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide7 bottomAnchor];
+    [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   }
 
   else
   {
     v105 = ceil(v78);
-    v106 = [(UILabel *)self->_deviceNameLabel topAnchor];
-    v107 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
-    v108 = [v107 layoutMarginsGuide];
-    v109 = [v108 topAnchor];
-    v110 = [v106 constraintEqualToAnchor:v109 constant:v105 * 0.5];
+    topAnchor3 = [(UILabel *)self->_deviceNameLabel topAnchor];
+    contentView9 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
+    layoutMarginsGuide8 = [contentView9 layoutMarginsGuide];
+    topAnchor4 = [layoutMarginsGuide8 topAnchor];
+    v110 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v105 * 0.5];
     [v110 setActive:1];
 
-    v101 = [(UILabel *)self->_deviceNameLabel bottomAnchor];
-    v102 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
-    v103 = [v102 layoutMarginsGuide];
-    v104 = [v103 bottomAnchor];
-    [v101 constraintEqualToAnchor:v104 constant:-(v105 * 0.5)];
+    bottomAnchor = [(UILabel *)self->_deviceNameLabel bottomAnchor];
+    contentView8 = [(PersonalHotspotDataUsageSpecifierCell *)self contentView];
+    layoutMarginsGuide7 = [contentView8 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide7 bottomAnchor];
+    [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-(v105 * 0.5)];
   }
   v111 = ;
   [v111 setActive:1];
 
   if (v115)
   {
-    v112 = [(PersonalHotspotDataUsageSpecifierCell *)self imageView];
-    [v112 setContentMode:2];
+    imageView5 = [(PersonalHotspotDataUsageSpecifierCell *)self imageView];
+    [imageView5 setContentMode:2];
   }
 
   [(PersonalHotspotDataUsageSpecifierCell *)self setNeedsLayout];

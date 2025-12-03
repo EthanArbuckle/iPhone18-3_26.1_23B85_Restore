@@ -5,7 +5,7 @@
 - (CGSize)getSize;
 - (TSTMergeRangeSortedSet)init;
 - (UIEdgeInsets)getPaddingInsets;
-- (void)addRange:(id)a3 andSize:(CGSize)a4 andPaddingInsets:(UIEdgeInsets)a5 andIsCheckbox:(BOOL)a6;
+- (void)addRange:(id)range andSize:(CGSize)size andPaddingInsets:(UIEdgeInsets)insets andIsCheckbox:(BOOL)checkbox;
 - (void)dealloc;
 - (void)reset;
 @end
@@ -39,15 +39,15 @@
   [(TSTMergeRangeSortedSet *)&v4 dealloc];
 }
 
-- (void)addRange:(id)a3 andSize:(CGSize)a4 andPaddingInsets:(UIEdgeInsets)a5 andIsCheckbox:(BOOL)a6
+- (void)addRange:(id)range andSize:(CGSize)size andPaddingInsets:(UIEdgeInsets)insets andIsCheckbox:(BOOL)checkbox
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = ((LOBYTE(a3.var1.var0) + a3.var0.var1 - 1) | ((*&a3.var0 + a3.var1.var1) << 16)) - 0x10000;
-  v11 = a6;
+  rangeCopy = range;
+  sizeCopy = size;
+  insetsCopy = insets;
+  v10 = ((LOBYTE(range.var1.var0) + range.var0.var1 - 1) | ((*&range.var0 + range.var1.var1) << 16)) - 0x10000;
+  checkboxCopy = checkbox;
   dispatch_semaphore_wait(self->mSem, 0xFFFFFFFFFFFFFFFFLL);
-  std::__tree<TSTMergeRangeElem,TSTMergeRangeElemCompare,std::allocator<TSTMergeRangeElem>>::__emplace_unique_key_args<TSTMergeRangeElem,TSTMergeRangeElem const&>(self->mSet, &v7);
+  std::__tree<TSTMergeRangeElem,TSTMergeRangeElemCompare,std::allocator<TSTMergeRangeElem>>::__emplace_unique_key_args<TSTMergeRangeElem,TSTMergeRangeElem const&>(self->mSet, &rangeCopy);
   dispatch_semaphore_signal(self->mSem);
 }
 

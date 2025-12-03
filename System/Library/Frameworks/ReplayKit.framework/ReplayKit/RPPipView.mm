@@ -1,5 +1,5 @@
 @interface RPPipView
-- (void)addPreviewLayer:(id)a3;
+- (void)addPreviewLayer:(id)layer;
 - (void)layoutSubviews;
 @end
 
@@ -12,19 +12,19 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(RPPipView *)self previewLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  previewLayer = [(RPPipView *)self previewLayer];
+  [previewLayer setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)addPreviewLayer:(id)a3
+- (void)addPreviewLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [(RPPipView *)self layer];
-  [v5 setMasksToBounds:1];
+  layerCopy = layer;
+  layer = [(RPPipView *)self layer];
+  [layer setMasksToBounds:1];
 
-  [(RPPipView *)self setPreviewLayer:v4];
-  v6 = [(RPPipView *)self layer];
-  [v6 addSublayer:v4];
+  [(RPPipView *)self setPreviewLayer:layerCopy];
+  layer2 = [(RPPipView *)self layer];
+  [layer2 addSublayer:layerCopy];
 }
 
 @end

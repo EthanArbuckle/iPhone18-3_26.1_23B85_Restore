@@ -18,16 +18,16 @@
 
     [(SFDownloadsBarButtonItemView *)v2->_buttonView setProgress:-2.0];
     [(SFDownloadsBarButtonItemView *)v2->_buttonView setUserInteractionEnabled:0];
-    v5 = [(SFUnifiedBarItemView *)v2 contentView];
-    [v5 addSubview:v2->_buttonView];
+    contentView = [(SFUnifiedBarItemView *)v2 contentView];
+    [contentView addSubview:v2->_buttonView];
     v6 = MEMORY[0x1E696ACD8];
-    v7 = [(SFDownloadsBarButtonItemView *)v2->_buttonView centerXAnchor];
-    v8 = [v5 centerXAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    centerXAnchor = [(SFDownloadsBarButtonItemView *)v2->_buttonView centerXAnchor];
+    centerXAnchor2 = [contentView centerXAnchor];
+    v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v18[0] = v9;
-    v10 = [(SFDownloadsBarButtonItemView *)v2->_buttonView centerYAnchor];
-    v11 = [v5 centerYAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    centerYAnchor = [(SFDownloadsBarButtonItemView *)v2->_buttonView centerYAnchor];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v18[1] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
     [v6 activateConstraints:v13];

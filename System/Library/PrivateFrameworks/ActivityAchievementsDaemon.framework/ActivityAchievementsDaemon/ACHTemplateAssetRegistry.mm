@@ -1,20 +1,20 @@
 @interface ACHTemplateAssetRegistry
-- (ACHTemplateAssetRegistry)initWithRemoteTemplateAvailabilityKeyProvider:(id)a3;
+- (ACHTemplateAssetRegistry)initWithRemoteTemplateAvailabilityKeyProvider:(id)provider;
 - (ACHTemplateAssetRegistryDelegate)delegate;
-- (void)_setBundleURLsForAchievement:(id)a3;
-- (void)deregisterTemplateAssetSource:(id)a3;
-- (void)populateResourcePropertiesForAchievement:(id)a3;
-- (void)registerTemplateAssetSource:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)templateAssetSourceDidUpdateAssets:(id)a3;
-- (void)templateSourceDidUpdateAssets:(id)a3;
+- (void)_setBundleURLsForAchievement:(id)achievement;
+- (void)deregisterTemplateAssetSource:(id)source;
+- (void)populateResourcePropertiesForAchievement:(id)achievement;
+- (void)registerTemplateAssetSource:(id)source;
+- (void)setDelegate:(id)delegate;
+- (void)templateAssetSourceDidUpdateAssets:(id)assets;
+- (void)templateSourceDidUpdateAssets:(id)assets;
 @end
 
 @implementation ACHTemplateAssetRegistry
 
-- (ACHTemplateAssetRegistry)initWithRemoteTemplateAvailabilityKeyProvider:(id)a3
+- (ACHTemplateAssetRegistry)initWithRemoteTemplateAvailabilityKeyProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = ACHTemplateAssetRegistry;
   v6 = [(ACHTemplateAssetRegistry *)&v12 init];
@@ -28,38 +28,38 @@
     serialQueue = v6->_serialQueue;
     v6->_serialQueue = v9;
 
-    objc_storeStrong(&v6->_remoteTemplateAvailabilityKeyProvider, a3);
+    objc_storeStrong(&v6->_remoteTemplateAvailabilityKeyProvider, provider);
   }
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(ACHTemplateAssetRegistry *)self serialQueue];
+  delegateCopy = delegate;
+  serialQueue = [(ACHTemplateAssetRegistry *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__ACHTemplateAssetRegistry_setDelegate___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(serialQueue, v7);
 }
 
-- (void)registerTemplateAssetSource:(id)a3
+- (void)registerTemplateAssetSource:(id)source
 {
-  v4 = a3;
-  v5 = [(ACHTemplateAssetRegistry *)self serialQueue];
+  sourceCopy = source;
+  serialQueue = [(ACHTemplateAssetRegistry *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__ACHTemplateAssetRegistry_registerTemplateAssetSource___block_invoke;
   v7[3] = &unk_278490898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = sourceCopy;
+  selfCopy = self;
+  v6 = sourceCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __56__ACHTemplateAssetRegistry_registerTemplateAssetSource___block_invoke(uint64_t a1)
@@ -119,18 +119,18 @@ void __56__ACHTemplateAssetRegistry_registerTemplateAssetSource___block_invoke_3
   [v4 templateAssetRegistry:v2 didUpdateResourcesForTemplatesWithSourceName:v3];
 }
 
-- (void)deregisterTemplateAssetSource:(id)a3
+- (void)deregisterTemplateAssetSource:(id)source
 {
-  v4 = a3;
-  v5 = [(ACHTemplateAssetRegistry *)self serialQueue];
+  sourceCopy = source;
+  serialQueue = [(ACHTemplateAssetRegistry *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__ACHTemplateAssetRegistry_deregisterTemplateAssetSource___block_invoke;
   v7[3] = &unk_278490898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = sourceCopy;
+  selfCopy = self;
+  v6 = sourceCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __58__ACHTemplateAssetRegistry_deregisterTemplateAssetSource___block_invoke(uint64_t a1)
@@ -203,60 +203,60 @@ LABEL_18:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)populateResourcePropertiesForAchievement:(id)a3
+- (void)populateResourcePropertiesForAchievement:(id)achievement
 {
-  v4 = a3;
+  achievementCopy = achievement;
   v5 = ACHLogAssets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(ACHTemplateAssetRegistry *)v4 populateResourcePropertiesForAchievement:v5];
+    [(ACHTemplateAssetRegistry *)achievementCopy populateResourcePropertiesForAchievement:v5];
   }
 
-  [(ACHTemplateAssetRegistry *)self _setBundleURLsForAchievement:v4];
+  [(ACHTemplateAssetRegistry *)self _setBundleURLsForAchievement:achievementCopy];
   v6 = ACHLogAssets();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(ACHTemplateAssetRegistry *)v4 populateResourcePropertiesForAchievement:v6];
+    [(ACHTemplateAssetRegistry *)achievementCopy populateResourcePropertiesForAchievement:v6];
   }
 
   ACHApplyBadgePropertiesToAchievement();
 }
 
-- (void)_setBundleURLsForAchievement:(id)a3
+- (void)_setBundleURLsForAchievement:(id)achievement
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 template];
+  achievementCopy = achievement;
+  template = [achievementCopy template];
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__5;
   v38 = __Block_byref_object_dispose__5;
   v39 = 0;
-  v6 = [(ACHTemplateAssetRegistry *)self serialQueue];
+  serialQueue = [(ACHTemplateAssetRegistry *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__ACHTemplateAssetRegistry__setBundleURLsForAchievement___block_invoke;
   block[3] = &unk_278491010;
   v33 = &v34;
   block[4] = self;
-  v7 = v5;
+  v7 = template;
   v32 = v7;
-  dispatch_sync(v6, block);
+  dispatch_sync(serialQueue, block);
 
   v8 = [v35[5] localizationBundleURLForTemplate:v7];
   v9 = [v35[5] resourceBundleURLForTemplate:v7];
   v10 = [v35[5] propertyListBundleURLForTemplate:v7];
   v11 = [v35[5] stickerBundleURLForTemplate:v7];
-  [v4 setLocalizationBundleURL:v8];
-  [v4 setResourceBundleURL:v9];
-  [v4 setPropertyListBundleURL:v10];
-  [v4 setStickerBundleURL:v11];
+  [achievementCopy setLocalizationBundleURL:v8];
+  [achievementCopy setResourceBundleURL:v9];
+  [achievementCopy setPropertyListBundleURL:v10];
+  [achievementCopy setStickerBundleURL:v11];
   if (ACHTemplateIsRemote())
   {
-    v12 = [(ACHTemplateAssetRegistry *)self remoteTemplateAvailabilityKeyProvider];
+    remoteTemplateAvailabilityKeyProvider = [(ACHTemplateAssetRegistry *)self remoteTemplateAvailabilityKeyProvider];
     v30 = 0;
-    v13 = [v12 templateAvailableOnPairedDevice:v7 error:&v30];
+    v13 = [remoteTemplateAvailabilityKeyProvider templateAvailableOnPairedDevice:v7 error:&v30];
     v14 = v30;
 
     if (v14)
@@ -287,7 +287,7 @@ LABEL_18:
     v29 = 0;
     v25 = [v24 customPlaceholderValuesForTemplate:v7 error:&v29];
     v26 = v29;
-    [v4 setCustomPlaceholderValues:v25];
+    [achievementCopy setCustomPlaceholderValues:v25];
 
     if (v26)
     {
@@ -317,16 +317,16 @@ void __57__ACHTemplateAssetRegistry__setBundleURLsForAchievement___block_invoke(
   *(v4 + 40) = v3;
 }
 
-- (void)templateSourceDidUpdateAssets:(id)a3
+- (void)templateSourceDidUpdateAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__ACHTemplateAssetRegistry_templateSourceDidUpdateAssets___block_invoke;
   v6[3] = &unk_278490898;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = assetsCopy;
+  v5 = assetsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -338,16 +338,16 @@ void __58__ACHTemplateAssetRegistry_templateSourceDidUpdateAssets___block_invoke
   [v4 templateAssetRegistry:v2 didUpdateResourcesForTemplatesWithSourceName:v3];
 }
 
-- (void)templateAssetSourceDidUpdateAssets:(id)a3
+- (void)templateAssetSourceDidUpdateAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__ACHTemplateAssetRegistry_templateAssetSourceDidUpdateAssets___block_invoke;
   v6[3] = &unk_278490898;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = assetsCopy;
+  v5 = assetsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

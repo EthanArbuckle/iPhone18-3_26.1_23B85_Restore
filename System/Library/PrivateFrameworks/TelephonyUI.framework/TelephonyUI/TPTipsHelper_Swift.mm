@@ -3,7 +3,7 @@
 + (void)donateEventSearchedCallHistory;
 - (TPTipsHelper_Swift)init;
 - (UIViewController)popoverController;
-- (void)setPopoverController:(id)a3;
+- (void)setPopoverController:(id)controller;
 @end
 
 @implementation TPTipsHelper_Swift
@@ -15,13 +15,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPopoverController:(id)a3
+- (void)setPopoverController:(id)controller
 {
   v5 = OBJC_IVAR___TPTipsHelper_Swift_popoverController;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = controller;
+  controllerCopy = controller;
 }
 
 + (void)donateEventSearchedCallHistory

@@ -1,6 +1,6 @@
 @interface CarFocusOrderSequence
 + (id)defaultSequence;
-+ (id)sequenceWithItems:(id)a3 options:(unint64_t)a4;
++ (id)sequenceWithItems:(id)items options:(unint64_t)options;
 - (BOOL)flipForRHD;
 - (NSArray)items;
 @end
@@ -9,10 +9,10 @@
 
 - (NSArray)items
 {
-  v3 = [(CarFocusOrderSequence *)self options];
-  if (v3)
+  options = [(CarFocusOrderSequence *)self options];
+  if (options)
   {
-    v4 = v3;
+    v4 = options;
   }
 
   else
@@ -21,16 +21,16 @@
   }
 
   v5 = +[MapsExternalDevice sharedInstance];
-  v6 = [v5 rightHandDrive];
+  rightHandDrive = [v5 rightHandDrive];
 
-  if (v6)
+  if (rightHandDrive)
   {
     if ((v4 & 2) == 0)
     {
       if ((v4 & 4) != 0)
       {
-        v7 = [(NSArray *)self->_items reverseObjectEnumerator];
-        v8 = [v7 allObjects];
+        reverseObjectEnumerator = [(NSArray *)self->_items reverseObjectEnumerator];
+        allObjects = [reverseObjectEnumerator allObjects];
 
         goto LABEL_11;
       }
@@ -42,14 +42,14 @@
   else if ((v4 & 1) == 0)
   {
 LABEL_9:
-    v8 = &__NSArray0__struct;
+    allObjects = &__NSArray0__struct;
     goto LABEL_11;
   }
 
-  v8 = self->_items;
+  allObjects = self->_items;
 LABEL_11:
 
-  return v8;
+  return allObjects;
 }
 
 - (BOOL)flipForRHD
@@ -60,9 +60,9 @@ LABEL_11:
   }
 
   v3 = +[MapsExternalDevice sharedInstance];
-  v4 = [v3 rightHandDrive];
+  rightHandDrive = [v3 rightHandDrive];
 
-  return v4;
+  return rightHandDrive;
 }
 
 + (id)defaultSequence
@@ -78,13 +78,13 @@ LABEL_11:
   return v6;
 }
 
-+ (id)sequenceWithItems:(id)a3 options:(unint64_t)a4
++ (id)sequenceWithItems:(id)items options:(unint64_t)options
 {
-  v5 = a3;
+  itemsCopy = items;
   v6 = objc_alloc_init(CarFocusOrderSequence);
-  [(CarFocusOrderSequence *)v6 setItems:v5];
+  [(CarFocusOrderSequence *)v6 setItems:itemsCopy];
 
-  [(CarFocusOrderSequence *)v6 setOptions:a4];
+  [(CarFocusOrderSequence *)v6 setOptions:options];
 
   return v6;
 }

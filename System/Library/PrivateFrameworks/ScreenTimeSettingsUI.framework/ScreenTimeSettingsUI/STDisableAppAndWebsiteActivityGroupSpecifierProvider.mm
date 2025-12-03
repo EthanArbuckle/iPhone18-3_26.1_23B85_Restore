@@ -1,32 +1,32 @@
 @interface STDisableAppAndWebsiteActivityGroupSpecifierProvider
-+ (id)providerWithCoordinator:(id)a3 isRootView:(BOOL)a4;
++ (id)providerWithCoordinator:(id)coordinator isRootView:(BOOL)view;
 - (STDisableAppAndWebsiteActivityGroupSpecifierProvider)init;
 - (id)disableAppAndWebsiteActivityConfirmationPrompt;
-- (id)passcodeGatedDeleteButtonSpecifierWithName:(id)a3 action:(SEL)a4;
+- (id)passcodeGatedDeleteButtonSpecifierWithName:(id)name action:(SEL)action;
 - (void)_updateHiddenState;
-- (void)confirmDisableAppAndWebsiteActivity:(id)a3;
-- (void)disableAppAndWebsiteActivity:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
+- (void)confirmDisableAppAndWebsiteActivity:(id)activity;
+- (void)disableAppAndWebsiteActivity:(id)activity;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
 - (void)updateDisableAppAndWebsiteActivitySpecifier;
 @end
 
 @implementation STDisableAppAndWebsiteActivityGroupSpecifierProvider
 
-+ (id)providerWithCoordinator:(id)a3 isRootView:(BOOL)a4
++ (id)providerWithCoordinator:(id)coordinator isRootView:(BOOL)view
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___STDisableAppAndWebsiteActivityGroupSpecifierProvider;
-  v5 = objc_msgSendSuper2(&v7, sel_providerWithCoordinator_, a3);
-  v5[48] = a4;
+  v5 = objc_msgSendSuper2(&v7, sel_providerWithCoordinator_, coordinator);
+  v5[48] = view;
   [v5 _updateHiddenState];
 
   return v5;
 }
 
-- (id)passcodeGatedDeleteButtonSpecifierWithName:(id)a3 action:(SEL)a4
+- (id)passcodeGatedDeleteButtonSpecifierWithName:(id)name action:(SEL)action
 {
-  v4 = [MEMORY[0x277D3FAD8] deleteButtonSpecifierWithName:a3 target:self action:a4];
+  v4 = [MEMORY[0x277D3FAD8] deleteButtonSpecifierWithName:name target:self action:action];
   [v4 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
   [v4 setEditPaneClass:{+[STDevicePINFactory devicePINPaneForPlatform](STDevicePINFactory, "devicePINPaneForPlatform")}];
   v5 = objc_opt_class();
@@ -55,46 +55,46 @@
     [(STGroupSpecifierProvider *)v2 setIsHidden:1];
     v4 = +[STScreenTimeSettingsUIBundle bundle];
     v5 = [v4 localizedStringForKey:@"DisableAppAndWebsiteActivityFooterText" value:&stru_28766E5A8 table:0];
-    v6 = [(STGroupSpecifierProvider *)v3 groupSpecifier];
-    [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    groupSpecifier = [(STGroupSpecifierProvider *)v3 groupSpecifier];
+    [groupSpecifier setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
     v7 = [v4 localizedStringForKey:@"DisableAppAndWebsiteActivityButtonName" value:&stru_28766E5A8 table:0];
     v8 = [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)v3 passcodeGatedDeleteButtonSpecifierWithName:v7 action:sel_confirmDisableAppAndWebsiteActivity_];
     [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)v3 setDisableAppAndWebsiteActivitySpecifier:v8];
 
-    v9 = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
-    v10 = [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)v3 disableAppAndWebsiteActivitySpecifier];
-    [v9 addObject:v10];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
+    disableAppAndWebsiteActivitySpecifier = [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)v3 disableAppAndWebsiteActivitySpecifier];
+    [mutableSpecifiers addObject:disableAppAndWebsiteActivitySpecifier];
   }
 
   return v3;
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v6 = v5;
-  if (v5 != v4)
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  v6 = coordinator;
+  if (coordinator != coordinatorCopy)
   {
-    [v5 removeObserver:self forKeyPath:@"viewModel.canStopScreenTime" context:"STDisableAppAndWebsiteActivityGroupSpecifierProviderObservationContext"];
+    [coordinator removeObserver:self forKeyPath:@"viewModel.canStopScreenTime" context:"STDisableAppAndWebsiteActivityGroupSpecifierProviderObservationContext"];
     [v6 removeObserver:self forKeyPath:@"viewModel.canStopScreenTimeWithoutPasscode" context:"STDisableAppAndWebsiteActivityGroupSpecifierProviderObservationContext"];
     v7.receiver = self;
     v7.super_class = STDisableAppAndWebsiteActivityGroupSpecifierProvider;
-    [(STRootGroupSpecifierProvider *)&v7 setCoordinator:v4];
-    [v4 addObserver:self forKeyPath:@"viewModel.canStopScreenTime" options:4 context:"STDisableAppAndWebsiteActivityGroupSpecifierProviderObservationContext"];
-    [v4 addObserver:self forKeyPath:@"viewModel.canStopScreenTimeWithoutPasscode" options:4 context:"STDisableAppAndWebsiteActivityGroupSpecifierProviderObservationContext"];
+    [(STRootGroupSpecifierProvider *)&v7 setCoordinator:coordinatorCopy];
+    [coordinatorCopy addObserver:self forKeyPath:@"viewModel.canStopScreenTime" options:4 context:"STDisableAppAndWebsiteActivityGroupSpecifierProviderObservationContext"];
+    [coordinatorCopy addObserver:self forKeyPath:@"viewModel.canStopScreenTimeWithoutPasscode" options:4 context:"STDisableAppAndWebsiteActivityGroupSpecifierProviderObservationContext"];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (a6 == "STDisableAppAndWebsiteActivityGroupSpecifierProviderObservationContext")
+  pathCopy = path;
+  if (context == "STDisableAppAndWebsiteActivityGroupSpecifierProviderObservationContext")
   {
     [(STRootGroupSpecifierProvider *)self coordinator];
 
-    if ([v10 isEqualToString:@"viewModel.canStopScreenTime"])
+    if ([pathCopy isEqualToString:@"viewModel.canStopScreenTime"])
     {
       [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)self _updateHiddenState];
     }
@@ -103,7 +103,7 @@
     {
       [(STRootGroupSpecifierProvider *)self coordinator];
 
-      if ([v10 isEqualToString:@"viewModel.canStopScreenTimeWithoutPasscode"])
+      if ([pathCopy isEqualToString:@"viewModel.canStopScreenTimeWithoutPasscode"])
       {
         [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)self updateDisableAppAndWebsiteActivitySpecifier];
       }
@@ -114,30 +114,30 @@
   {
     v11.receiver = self;
     v11.super_class = STDisableAppAndWebsiteActivityGroupSpecifierProvider;
-    [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)&v11 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)&v11 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 }
 
 - (void)_updateHiddenState
 {
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v8 = [v3 viewModel];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
 
-  v4 = [v8 canStopScreenTime];
-  if (_os_feature_enabled_impl() && ([v8 me], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isRemoteUser"), v5, v6) && -[STDisableAppAndWebsiteActivityGroupSpecifierProvider isRootView](self, "isRootView"))
+  canStopScreenTime = [viewModel canStopScreenTime];
+  if (_os_feature_enabled_impl() && ([viewModel me], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isRemoteUser"), v5, v6) && -[STDisableAppAndWebsiteActivityGroupSpecifierProvider isRootView](self, "isRootView"))
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v4 ^ 1u;
+    v7 = canStopScreenTime ^ 1u;
   }
 
   [(STGroupSpecifierProvider *)self setIsHidden:v7];
 }
 
-- (void)confirmDisableAppAndWebsiteActivity:(id)a3
+- (void)confirmDisableAppAndWebsiteActivity:(id)activity
 {
   v12[4] = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -146,8 +146,8 @@
   v6 = [v5 localizedStringForKey:@"DisableAppAndWebsiteActivityButtonName" value:&stru_28766E5A8 table:0];
   v12[0] = v6;
   v11[1] = *MEMORY[0x277D3FE90];
-  v7 = [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)self disableAppAndWebsiteActivityConfirmationPrompt];
-  v12[1] = v7;
+  disableAppAndWebsiteActivityConfirmationPrompt = [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)self disableAppAndWebsiteActivityConfirmationPrompt];
+  v12[1] = disableAppAndWebsiteActivityConfirmationPrompt;
   v11[2] = *MEMORY[0x277D3FE88];
   v8 = [v5 localizedStringForKey:@"DisableAppAndWebsiteActivityButtonName" value:&stru_28766E5A8 table:0];
   v12[2] = v8;
@@ -165,16 +165,16 @@
 
 - (void)updateDisableAppAndWebsiteActivitySpecifier
 {
-  v3 = [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)self disableAppAndWebsiteActivitySpecifier];
-  v4 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v5 = [v4 viewModel];
-  v6 = [v5 canStopScreenTimeWithoutPasscode];
+  disableAppAndWebsiteActivitySpecifier = [(STDisableAppAndWebsiteActivityGroupSpecifierProvider *)self disableAppAndWebsiteActivitySpecifier];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  canStopScreenTimeWithoutPasscode = [viewModel canStopScreenTimeWithoutPasscode];
 
-  if (v6)
+  if (canStopScreenTimeWithoutPasscode)
   {
-    [v3 removePropertyForKey:*MEMORY[0x277D400B8]];
-    [v3 removePropertyForKey:*MEMORY[0x277D401C0]];
-    [v3 removePropertyForKey:0x287675A28];
+    [disableAppAndWebsiteActivitySpecifier removePropertyForKey:*MEMORY[0x277D400B8]];
+    [disableAppAndWebsiteActivitySpecifier removePropertyForKey:*MEMORY[0x277D401C0]];
+    [disableAppAndWebsiteActivitySpecifier removePropertyForKey:0x287675A28];
     v7 = +[STUILog persistence];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -187,36 +187,36 @@
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x277D400B8]];
+    [disableAppAndWebsiteActivitySpecifier setObject:v9 forKeyedSubscript:*MEMORY[0x277D400B8]];
 
-    [v3 setObject:&unk_28769D088 forKeyedSubscript:*MEMORY[0x277D401C0]];
-    [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A28];
+    [disableAppAndWebsiteActivitySpecifier setObject:&unk_28769D088 forKeyedSubscript:*MEMORY[0x277D401C0]];
+    [disableAppAndWebsiteActivitySpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A28];
   }
 }
 
 - (id)disableAppAndWebsiteActivityConfirmationPrompt
 {
-  v2 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v3 = [v2 viewModel];
-  v4 = [v3 me];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v4 = [viewModel me];
 
   v5 = +[STScreenTimeSettingsUIBundle bundle];
   if ([v4 isRemoteUser])
   {
-    v6 = [v4 name];
+    name = [v4 name];
 
-    if (v6)
+    if (name)
     {
       v7 = objc_opt_new();
-      v8 = [v4 name];
-      v9 = [v7 personNameComponentsFromString:v8];
+      name2 = [v4 name];
+      v9 = [v7 personNameComponentsFromString:name2];
 
-      v10 = [v9 givenName];
-      if ([v10 length])
+      givenName = [v9 givenName];
+      if ([givenName length])
       {
         v11 = MEMORY[0x277CCACA8];
         v12 = [v5 localizedStringForKey:@"DisableAppAndWebsiteActivityRemoteConfirmPrompt" value:&stru_28766E5A8 table:0];
-        v13 = [v11 localizedStringWithFormat:v12, v10];
+        v13 = [v11 localizedStringWithFormat:v12, givenName];
 
         goto LABEL_9;
       }
@@ -236,10 +236,10 @@ LABEL_9:
   return v13;
 }
 
-- (void)disableAppAndWebsiteActivity:(id)a3
+- (void)disableAppAndWebsiteActivity:(id)activity
 {
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v3 setScreenTimeEnabled:0 completionHandler:&__block_literal_global_4];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator setScreenTimeEnabled:0 completionHandler:&__block_literal_global_4];
 }
 
 void __85__STDisableAppAndWebsiteActivityGroupSpecifierProvider_disableAppAndWebsiteActivity___block_invoke(uint64_t a1, void *a2)

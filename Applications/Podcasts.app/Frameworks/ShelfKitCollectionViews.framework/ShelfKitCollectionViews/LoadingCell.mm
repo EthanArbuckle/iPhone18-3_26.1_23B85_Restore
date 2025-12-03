@@ -1,15 +1,15 @@
 @interface LoadingCell
-- (_TtC23ShelfKitCollectionViews11LoadingCell)initWithCoder:(id)a3;
+- (_TtC23ShelfKitCollectionViews11LoadingCell)initWithCoder:(id)coder;
 - (void)prepareForReuse;
 @end
 
 @implementation LoadingCell
 
-- (_TtC23ShelfKitCollectionViews11LoadingCell)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews11LoadingCell)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC23ShelfKitCollectionViews11LoadingCell_spinner;
   v6 = objc_allocWithZone(UIActivityIndicatorView);
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.super.super.super.isa + v5) = [v6 initWithActivityIndicatorStyle:100];
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews11LoadingCell_objectGraph) = 0;
   result = sub_30D648();

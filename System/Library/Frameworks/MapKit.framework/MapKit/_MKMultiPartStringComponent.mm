@@ -1,5 +1,5 @@
 @interface _MKMultiPartStringComponent
-- (_MKMultiPartStringComponent)initWithAttributedString:(id)a3 range:(_NSRange)a4;
+- (_MKMultiPartStringComponent)initWithAttributedString:(id)string range:(_NSRange)range;
 - (_NSRange)originalRange;
 - (_NSRange)range;
 - (id)description;
@@ -37,11 +37,11 @@
   return v8;
 }
 
-- (_MKMultiPartStringComponent)initWithAttributedString:(id)a3 range:(_NSRange)a4
+- (_MKMultiPartStringComponent)initWithAttributedString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = _MKMultiPartStringComponent;
   v8 = [(_MKMultiPartStringComponent *)&v13 init];
@@ -51,7 +51,7 @@
     v8->_originalRange.location = location;
     v8->_originalRange.length = length;
     v8->_range = v8->_originalRange;
-    v10 = [v7 copy];
+    v10 = [stringCopy copy];
     attributedString = v9->_attributedString;
     v9->_attributedString = v10;
   }

@@ -1,29 +1,29 @@
 @interface UIPopoverBackgroundView
 + (UIEdgeInsets)contentViewInsets;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CGRect)_backgroundContentViewFrame;
 - (CGRect)_contentViewFrame;
 - (CGSize)_shadowOffset;
 - (UIEdgeInsets)_contentViewInsets;
 - (UIEdgeInsets)_shadowInsets;
-- (UIPopoverBackgroundView)initWithFrame:(CGRect)a3;
+- (UIPopoverBackgroundView)initWithFrame:(CGRect)frame;
 - (UIPopoverPresentationController)_presentationController;
 - (id)_shadowPath;
-- (id)_shadowPathForRect:(CGRect)a3 arrowDirection:(unint64_t)a4;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)_setBackgroundBlurEffectStyle:(int64_t)a3;
-- (void)_setChromeHidden:(BOOL)a3;
+- (id)_shadowPathForRect:(CGRect)rect arrowDirection:(unint64_t)direction;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)_setBackgroundBlurEffectStyle:(int64_t)style;
+- (void)_setChromeHidden:(BOOL)hidden;
 - (void)_updateShadow;
 - (void)layoutSubviews;
 @end
 
 @implementation UIPopoverBackgroundView
 
-- (UIPopoverBackgroundView)initWithFrame:(CGRect)a3
+- (UIPopoverBackgroundView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIPopoverBackgroundView;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UICornerRadius containerConcentricRadius];
@@ -60,41 +60,41 @@
   return result;
 }
 
-- (void)_setChromeHidden:(BOOL)a3
+- (void)_setChromeHidden:(BOOL)hidden
 {
-  if (self->__chromeHidden != a3)
+  if (self->__chromeHidden != hidden)
   {
-    self->__chromeHidden = a3;
+    self->__chromeHidden = hidden;
     [(UIPopoverBackgroundView *)self _updateChrome];
   }
 }
 
-- (void)_setBackgroundBlurEffectStyle:(int64_t)a3
+- (void)_setBackgroundBlurEffectStyle:(int64_t)style
 {
-  if (self->__backgroundBlurEffectStyle != a3)
+  if (self->__backgroundBlurEffectStyle != style)
   {
-    self->__backgroundBlurEffectStyle = a3;
+    self->__backgroundBlurEffectStyle = style;
     [(UIPopoverBackgroundView *)self _updateChrome];
   }
 }
 
-- (id)_shadowPathForRect:(CGRect)a3 arrowDirection:(unint64_t)a4
+- (id)_shadowPathForRect:(CGRect)rect arrowDirection:(unint64_t)direction
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = 6.0;
   v10 = 0.0;
-  if (a4 <= 3)
+  if (direction <= 3)
   {
-    if (a4 == 1)
+    if (direction == 1)
     {
       [objc_opt_class() arrowHeight];
       v9 = v13 + 6.0;
     }
 
-    else if (a4 == 2)
+    else if (direction == 2)
     {
       [objc_opt_class() arrowHeight];
       v10 = v11;
@@ -103,9 +103,9 @@
     goto LABEL_9;
   }
 
-  if (a4 != 4)
+  if (direction != 4)
   {
-    if (a4 == 8)
+    if (direction == 8)
     {
       [objc_opt_class() arrowHeight];
 LABEL_10:
@@ -158,40 +158,40 @@ LABEL_11:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIPopoverBackgroundView *)self arrowDirection];
+  arrowDirection = [(UIPopoverBackgroundView *)self arrowDirection];
 
-  return [(UIPopoverBackgroundView *)self _shadowPathForRect:v11 arrowDirection:v4, v6, v8, v10];
+  return [(UIPopoverBackgroundView *)self _shadowPathForRect:arrowDirection arrowDirection:v4, v6, v8, v10];
 }
 
 - (void)_updateShadow
 {
-  v3 = [(UIPopoverBackgroundView *)self _shadowPath];
-  v4 = [v3 CGPath];
+  _shadowPath = [(UIPopoverBackgroundView *)self _shadowPath];
+  cGPath = [_shadowPath CGPath];
 
-  if (v4)
+  if (cGPath)
   {
-    v5 = [(UIView *)self layer];
-    [v5 setShadowPath:v4];
+    layer = [(UIView *)self layer];
+    [layer setShadowPath:cGPath];
 
-    v6 = [(UIView *)self layer];
+    layer2 = [(UIView *)self layer];
     [(UIPopoverBackgroundView *)self _shadowOpacity];
     *&v7 = v7;
-    [v6 setShadowOpacity:v7];
+    [layer2 setShadowOpacity:v7];
 
-    v8 = [(UIView *)self layer];
+    layer3 = [(UIView *)self layer];
     [(UIPopoverBackgroundView *)self _shadowRadius];
-    [v8 setShadowRadius:?];
+    [layer3 setShadowRadius:?];
 
-    v9 = [(UIView *)self layer];
+    layer4 = [(UIView *)self layer];
     [(UIPopoverBackgroundView *)self _shadowOffset];
-    [v9 setShadowOffset:?];
+    [layer4 setShadowOffset:?];
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"shadowPath"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"shadowPath"])
   {
     v5 = 1;
   }
@@ -200,26 +200,26 @@ LABEL_11:
   {
     v7.receiver = self;
     v7.super_class = UIPopoverBackgroundView;
-    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v22.receiver = self;
   v22.super_class = UIPopoverBackgroundView;
-  v7 = a3;
-  v8 = [(UIView *)&v22 actionForLayer:v7 forKey:v6];
-  v9 = [v7 hasBeenCommitted];
+  layerCopy = layer;
+  v8 = [(UIView *)&v22 actionForLayer:layerCopy forKey:keyCopy];
+  hasBeenCommitted = [layerCopy hasBeenCommitted];
 
-  if (v9 && [v6 isEqual:@"shadowPath"] && (objc_opt_respondsToSelector() & 1) != 0)
+  if (hasBeenCommitted && [keyCopy isEqual:@"shadowPath"] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v10 = [(UIView *)self layer];
-    v11 = [v10 presentationLayer];
-    [v11 bounds];
+    layer = [(UIView *)self layer];
+    presentationLayer = [layer presentationLayer];
+    [presentationLayer bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -260,7 +260,7 @@ LABEL_11:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIPopoverBackgroundView *)self arrowDirection];
+  arrowDirection = [(UIPopoverBackgroundView *)self arrowDirection];
   v12 = 0.0;
   if (v10 > 44.0)
   {
@@ -272,9 +272,9 @@ LABEL_11:
     v13 = 6.0;
   }
 
-  if (v11 > 3)
+  if (arrowDirection > 3)
   {
-    if (v11 == 4)
+    if (arrowDirection == 4)
     {
       [objc_opt_class() arrowHeight];
       v16 = v13 + v19;
@@ -282,7 +282,7 @@ LABEL_11:
       goto LABEL_15;
     }
 
-    if (v11 == 8)
+    if (arrowDirection == 8)
     {
       [objc_opt_class() arrowHeight];
       v15 = v13 + v17;
@@ -296,14 +296,14 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  if (v11 == 1)
+  if (arrowDirection == 1)
   {
     [objc_opt_class() arrowHeight];
     v12 = v18;
     goto LABEL_12;
   }
 
-  if (v11 != 2)
+  if (arrowDirection != 2)
   {
 LABEL_12:
     v15 = 0.0;

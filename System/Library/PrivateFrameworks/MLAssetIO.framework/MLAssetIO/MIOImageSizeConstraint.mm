@@ -1,10 +1,10 @@
 @interface MIOImageSizeConstraint
-- (BOOL)allowsImageSize:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)allowsImageSize:(id)size;
+- (BOOL)isEqual:(id)equal;
 - (MIOImageSizeConstraint)init;
-- (MIOImageSizeConstraint)initWithEnumeratedImageSizes:(id)a3;
-- (MIOImageSizeConstraint)initWithPixelsWideRange:(_MIORange)a3 pixelsHighRange:(_MIORange)a4;
-- (MIOImageSizeConstraint)initWithSpecification:(const void *)a3;
+- (MIOImageSizeConstraint)initWithEnumeratedImageSizes:(id)sizes;
+- (MIOImageSizeConstraint)initWithPixelsWideRange:(_MIORange)range pixelsHighRange:(_MIORange)highRange;
+- (MIOImageSizeConstraint)initWithSpecification:(const void *)specification;
 - (_MIORange)pixelsHighRange;
 - (_MIORange)pixelsWideRange;
 - (id)description;
@@ -33,12 +33,12 @@
   return v3;
 }
 
-- (MIOImageSizeConstraint)initWithPixelsWideRange:(_MIORange)a3 pixelsHighRange:(_MIORange)a4
+- (MIOImageSizeConstraint)initWithPixelsWideRange:(_MIORange)range pixelsHighRange:(_MIORange)highRange
 {
-  upperBound = a4.upperBound;
-  lowerBound = a4.lowerBound;
-  v6 = a3.upperBound;
-  v7 = a3.lowerBound;
+  upperBound = highRange.upperBound;
+  lowerBound = highRange.lowerBound;
+  v6 = range.upperBound;
+  v7 = range.lowerBound;
   result = [(MIOImageSizeConstraint *)self init];
   if (result)
   {
@@ -52,26 +52,26 @@
   return result;
 }
 
-- (MIOImageSizeConstraint)initWithEnumeratedImageSizes:(id)a3
+- (MIOImageSizeConstraint)initWithEnumeratedImageSizes:(id)sizes
 {
   v31 = *MEMORY[0x1E69E9840];
-  v24 = a3;
+  sizesCopy = sizes;
   v25 = [(MIOImageSizeConstraint *)self init];
-  if ([v24 count])
+  if ([sizesCopy count])
   {
-    if ([v24 count] == 1)
+    if ([sizesCopy count] == 1)
     {
-      v4 = [v24 objectAtIndexedSubscript:0];
+      v4 = [sizesCopy objectAtIndexedSubscript:0];
       if ([v4 pixelsWide])
       {
       }
 
       else
       {
-        v5 = [v24 objectAtIndexedSubscript:0];
-        v6 = [v5 pixelsHigh];
+        v5 = [sizesCopy objectAtIndexedSubscript:0];
+        pixelsHigh = [v5 pixelsHigh];
 
-        if (!v6)
+        if (!pixelsHigh)
         {
           goto LABEL_25;
         }
@@ -81,7 +81,7 @@
     if (v25)
     {
       v25->_type = 2;
-      v7 = [v24 sortedArrayUsingSelector:sel_compare_];
+      v7 = [sizesCopy sortedArrayUsingSelector:sel_compare_];
       enumeratedImageSizes = v25->_enumeratedImageSizes;
       v25->_enumeratedImageSizes = v7;
 
@@ -89,7 +89,7 @@
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v9 = v24;
+      v9 = sizesCopy;
       v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v10)
       {
@@ -108,26 +108,26 @@
             }
 
             v17 = *(*(&v26 + 1) + 8 * i);
-            v18 = [v17 pixelsHigh];
-            v19 = [v17 pixelsWide];
-            if (v19 < v15)
+            pixelsHigh2 = [v17 pixelsHigh];
+            pixelsWide = [v17 pixelsWide];
+            if (pixelsWide < v15)
             {
-              v15 = v19;
+              v15 = pixelsWide;
             }
 
-            if (v14 <= v19)
+            if (v14 <= pixelsWide)
             {
-              v14 = v19;
+              v14 = pixelsWide;
             }
 
-            if (v18 < v12)
+            if (pixelsHigh2 < v12)
             {
-              v12 = v18;
+              v12 = pixelsHigh2;
             }
 
-            if (v13 <= v18)
+            if (v13 <= pixelsHigh2)
             {
-              v13 = v18;
+              v13 = pixelsHigh2;
             }
           }
 
@@ -159,11 +159,11 @@ LABEL_25:
   return v25;
 }
 
-- (MIOImageSizeConstraint)initWithSpecification:(const void *)a3
+- (MIOImageSizeConstraint)initWithSpecification:(const void *)specification
 {
   v35[1] = *MEMORY[0x1E69E9840];
   CoreML::Specification::ImageFeatureType_ImageSize::ImageFeatureType_ImageSize(v33, 0, 0);
-  v34 = *(a3 + 1);
+  v34 = *(specification + 1);
   v5 = [[MIOImageSize alloc] initWithSpecification:v33];
   if ([(MIOImageSize *)v5 pixelsWide])
   {
@@ -175,7 +175,7 @@ LABEL_25:
     v6 = 0;
   }
 
-  v7 = *(a3 + 13);
+  v7 = *(specification + 13);
   switch(v7)
   {
     case 0:
@@ -188,14 +188,14 @@ LABEL_41:
       }
 
       v35[0] = v5;
-      v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
-      v30 = [(MIOImageSizeConstraint *)self initWithEnumeratedImageSizes:v23];
+      array = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
+      v30 = [(MIOImageSizeConstraint *)self initWithEnumeratedImageSizes:array];
       goto LABEL_39;
     case 21:
-      v23 = [MEMORY[0x1E695DF70] array];
-      if (*(a3 + 13) == 21)
+      array = [MEMORY[0x1E695DF70] array];
+      if (*(specification + 13) == 21)
       {
-        v24 = *(a3 + 5);
+        v24 = *(specification + 5);
       }
 
       else
@@ -221,7 +221,7 @@ LABEL_41:
         do
         {
           v29 = [[MIOImageSize alloc] initWithSpecification:*v26];
-          [v23 addObject:v29];
+          [array addObject:v29];
 
           ++v26;
           v28 -= 8;
@@ -230,7 +230,7 @@ LABEL_41:
         while (v28);
       }
 
-      if (![v23 count])
+      if (![array count])
       {
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -242,16 +242,16 @@ LABEL_41:
           [MIOImageSizeConstraint initWithSpecification:];
         }
 
-        [v23 addObject:v5];
+        [array addObject:v5];
       }
 
-      v30 = [(MIOImageSizeConstraint *)self initWithEnumeratedImageSizes:v23];
+      v30 = [(MIOImageSizeConstraint *)self initWithEnumeratedImageSizes:array];
 LABEL_39:
       self = v30;
 
       break;
     case 31:
-      v8 = *(*(a3 + 5) + 16);
+      v8 = *(*(specification + 5) + 16);
       if (!v8)
       {
         v8 = &CoreML::Specification::_SizeRange_default_instance_;
@@ -271,9 +271,9 @@ LABEL_39:
 
       v12 = MIOMakeRange(v9, v11);
       v14 = v13;
-      if (*(a3 + 13) == 31)
+      if (*(specification + 13) == 31)
       {
-        v15 = *(a3 + 5);
+        v15 = *(specification + 5);
       }
 
       else
@@ -309,10 +309,10 @@ LABEL_39:
   return self;
 }
 
-- (BOOL)allowsImageSize:(id)a3
+- (BOOL)allowsImageSize:(id)size
 {
-  v4 = a3;
-  v5 = v4;
+  sizeCopy = size;
+  v5 = sizeCopy;
   type = self->_type;
   if (!type)
   {
@@ -322,11 +322,11 @@ LABEL_39:
 
   if (type == 2)
   {
-    v7 = [(NSArray *)self->_enumeratedImageSizes containsObject:v4];
+    v7 = [(NSArray *)self->_enumeratedImageSizes containsObject:sizeCopy];
     goto LABEL_8;
   }
 
-  if (type == 3 && MIOLocationInRange([v4 pixelsWide], self->_pixelsWideRange.lowerBound, self->_pixelsWideRange.upperBound))
+  if (type == 3 && MIOLocationInRange([sizeCopy pixelsWide], self->_pixelsWideRange.lowerBound, self->_pixelsWideRange.upperBound))
   {
     v7 = MIOLocationInRange([v5 pixelsHigh], self->_pixelsHighRange.lowerBound, self->_pixelsHighRange.upperBound);
 LABEL_8:
@@ -343,14 +343,14 @@ LABEL_10:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
-  v4 = [(MIOImageSizeConstraint *)self type];
+  type = [(MIOImageSizeConstraint *)self type];
   v5 = @"unspecified";
-  if (v4 == 3)
+  if (type == 3)
   {
     v5 = @"ranges";
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = @"enumerated";
   }
@@ -358,8 +358,8 @@ LABEL_10:
   v6 = [v3 initWithFormat:@"MIOImageSizeConstraint (%@) ", v5];
   if ([(MIOImageSizeConstraint *)self type]== 2)
   {
-    v7 = [(MIOImageSizeConstraint *)self enumeratedImageSizes];
-    v8 = [v7 componentsJoinedByString:{@", "}];
+    enumeratedImageSizes = [(MIOImageSizeConstraint *)self enumeratedImageSizes];
+    v8 = [enumeratedImageSizes componentsJoinedByString:{@", "}];
     [v6 appendFormat:@"[%@]", v8];
   }
 
@@ -370,11 +370,11 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v9 = [(MIOImageSizeConstraint *)self pixelsWideRange];
-    v7 = NSStringFromMIORange(v9, v10);
-    v11 = [(MIOImageSizeConstraint *)self pixelsHighRange];
-    v8 = NSStringFromMIORange(v11, v12);
-    [v6 appendFormat:@"Wide: %@ High: %@", v7, v8];
+    pixelsWideRange = [(MIOImageSizeConstraint *)self pixelsWideRange];
+    enumeratedImageSizes = NSStringFromMIORange(pixelsWideRange, v10);
+    pixelsHighRange = [(MIOImageSizeConstraint *)self pixelsHighRange];
+    v8 = NSStringFromMIORange(pixelsHighRange, v12);
+    [v6 appendFormat:@"Wide: %@ High: %@", enumeratedImageSizes, v8];
   }
 
 LABEL_10:
@@ -382,10 +382,10 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -395,15 +395,15 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIOImageSizeConstraint *)self type];
-      if (v6 == [(MIOImageSizeConstraint *)v5 type])
+      v5 = equalCopy;
+      type = [(MIOImageSizeConstraint *)self type];
+      if (type == [(MIOImageSizeConstraint *)v5 type])
       {
         if ([(MIOImageSizeConstraint *)self type]== 2)
         {
-          v7 = [(MIOImageSizeConstraint *)self enumeratedImageSizes];
-          v8 = [(MIOImageSizeConstraint *)v5 enumeratedImageSizes];
-          v9 = [v7 isEqual:v8];
+          enumeratedImageSizes = [(MIOImageSizeConstraint *)self enumeratedImageSizes];
+          enumeratedImageSizes2 = [(MIOImageSizeConstraint *)v5 enumeratedImageSizes];
+          v9 = [enumeratedImageSizes isEqual:enumeratedImageSizes2];
 
 LABEL_12:
           goto LABEL_13;
@@ -415,15 +415,15 @@ LABEL_12:
           goto LABEL_12;
         }
 
-        v10 = [(MIOImageSizeConstraint *)self pixelsWideRange];
+        pixelsWideRange = [(MIOImageSizeConstraint *)self pixelsWideRange];
         v12 = v11;
-        v13 = [(MIOImageSizeConstraint *)v5 pixelsWideRange];
-        if (MIOEqualRanges(v10, v12, v13, v14))
+        pixelsWideRange2 = [(MIOImageSizeConstraint *)v5 pixelsWideRange];
+        if (MIOEqualRanges(pixelsWideRange, v12, pixelsWideRange2, v14))
         {
-          v15 = [(MIOImageSizeConstraint *)self pixelsHighRange];
+          pixelsHighRange = [(MIOImageSizeConstraint *)self pixelsHighRange];
           v17 = v16;
-          v18 = [(MIOImageSizeConstraint *)v5 pixelsHighRange];
-          v9 = MIOEqualRanges(v15, v17, v18, v19);
+          pixelsHighRange2 = [(MIOImageSizeConstraint *)v5 pixelsHighRange];
+          v9 = MIOEqualRanges(pixelsHighRange, v17, pixelsHighRange2, v19);
           goto LABEL_12;
         }
       }
@@ -442,17 +442,17 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v3 = [(MIOImageSizeConstraint *)self type];
-  v4 = [(MIOImageSizeConstraint *)self enumeratedImageSizes];
-  v5 = [v4 hash];
-  v6 = [(MIOImageSizeConstraint *)self pixelsWideRange];
-  v8 = NSStringFromMIORange(v6, v7);
+  type = [(MIOImageSizeConstraint *)self type];
+  enumeratedImageSizes = [(MIOImageSizeConstraint *)self enumeratedImageSizes];
+  v5 = [enumeratedImageSizes hash];
+  pixelsWideRange = [(MIOImageSizeConstraint *)self pixelsWideRange];
+  v8 = NSStringFromMIORange(pixelsWideRange, v7);
   v9 = [v8 hash];
-  v10 = [(MIOImageSizeConstraint *)self pixelsHighRange];
-  v12 = NSStringFromMIORange(v10, v11);
+  pixelsHighRange = [(MIOImageSizeConstraint *)self pixelsHighRange];
+  v12 = NSStringFromMIORange(pixelsHighRange, v11);
   v13 = [v12 hash];
 
-  return v5 ^ v3 ^ v9 ^ v13;
+  return v5 ^ type ^ v9 ^ v13;
 }
 
 - (_MIORange)pixelsWideRange

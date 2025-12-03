@@ -1,10 +1,10 @@
 @interface MADVUWGalleryManager
-+ (id)sharedGalleryForPhotoLibrary:(id)a3;
++ (id)sharedGalleryForPhotoLibrary:(id)library;
 + (id)sharedGalleryManager;
-+ (void)releaseSharedGalleryForPhotoLibrary:(id)a3;
++ (void)releaseSharedGalleryForPhotoLibrary:(id)library;
 - (MADVUWGalleryManager)init;
-- (id)sharedGalleryForPhotoLibrary:(id)a3;
-- (void)releaseSharedGalleryForPhotoLibrary:(id)a3;
+- (id)sharedGalleryForPhotoLibrary:(id)library;
+- (void)releaseSharedGalleryForPhotoLibrary:(id)library;
 @end
 
 @implementation MADVUWGalleryManager
@@ -20,9 +20,9 @@
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     galleries = v2->_galleries;
-    v2->_galleries = v5;
+    v2->_galleries = dictionary;
   }
 
   return v2;
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __44__MADVUWGalleryManager_sharedGalleryManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedGalleryManager_once != -1)
   {
     dispatch_once(&sharedGalleryManager_once, block);
@@ -52,18 +52,18 @@ void __44__MADVUWGalleryManager_sharedGalleryManager__block_invoke()
   sharedGalleryManager_instance = v0;
 }
 
-- (id)sharedGalleryForPhotoLibrary:(id)a3
+- (id)sharedGalleryForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__3;
   v19 = __Block_byref_object_dispose__3;
   v20 = 0;
-  v5 = [v4 photoLibraryURL];
-  v6 = v5;
-  if (v5)
+  photoLibraryURL = [libraryCopy photoLibraryURL];
+  v6 = photoLibraryURL;
+  if (photoLibraryURL)
   {
     queue = self->_queue;
     v10[0] = MEMORY[0x1E69E9820];
@@ -72,8 +72,8 @@ void __44__MADVUWGalleryManager_sharedGalleryManager__block_invoke()
     v10[3] = &unk_1E834C3A8;
     v13 = &v15;
     v10[4] = self;
-    v11 = v5;
-    v12 = v4;
+    v11 = photoLibraryURL;
+    v12 = libraryCopy;
     dispatch_sync(queue, v10);
     v8 = v16[5];
   }
@@ -160,26 +160,26 @@ void __53__MADVUWGalleryManager_sharedGalleryForPhotoLibrary___block_invoke(uint
   }
 }
 
-+ (id)sharedGalleryForPhotoLibrary:(id)a3
++ (id)sharedGalleryForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_opt_class() sharedGalleryManager];
-  v5 = [v4 sharedGalleryForPhotoLibrary:v3];
+  libraryCopy = library;
+  sharedGalleryManager = [objc_opt_class() sharedGalleryManager];
+  v5 = [sharedGalleryManager sharedGalleryForPhotoLibrary:libraryCopy];
 
   return v5;
 }
 
-- (void)releaseSharedGalleryForPhotoLibrary:(id)a3
+- (void)releaseSharedGalleryForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__MADVUWGalleryManager_releaseSharedGalleryForPhotoLibrary___block_invoke;
   v7[3] = &unk_1E834C3D0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = libraryCopy;
+  selfCopy = self;
+  v6 = libraryCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -211,11 +211,11 @@ void __60__MADVUWGalleryManager_releaseSharedGalleryForPhotoLibrary___block_invo
   }
 }
 
-+ (void)releaseSharedGalleryForPhotoLibrary:(id)a3
++ (void)releaseSharedGalleryForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_opt_class() sharedGalleryManager];
-  [v4 releaseSharedGalleryForPhotoLibrary:v3];
+  libraryCopy = library;
+  sharedGalleryManager = [objc_opt_class() sharedGalleryManager];
+  [sharedGalleryManager releaseSharedGalleryForPhotoLibrary:libraryCopy];
 }
 
 @end

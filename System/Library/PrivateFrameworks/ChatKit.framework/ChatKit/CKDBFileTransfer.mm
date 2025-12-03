@@ -5,9 +5,9 @@
 - (BOOL)isFileDataReady;
 - (BOOL)isFileURLFinalized;
 - (BOOL)isReset;
-- (CKDBFileTransfer)initWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 adaptiveImageGlyphContentIdentifier:(id)a6 adaptiveImageGlyphContentDescription:(id)a7 hideAttachment:(BOOL)a8 isScreenshot:(BOOL)a9;
-- (CKDBFileTransfer)initWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 hideAttachment:(BOOL)a6;
-- (CKDBFileTransfer)initWithTransferGUID:(id)a3 imMessage:(id)a4;
+- (CKDBFileTransfer)initWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description hideAttachment:(BOOL)attachment isScreenshot:(BOOL)screenshot;
+- (CKDBFileTransfer)initWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo hideAttachment:(BOOL)attachment;
+- (CKDBFileTransfer)initWithTransferGUID:(id)d imMessage:(id)message;
 - (NSError)error;
 - (NSString)description;
 - (NSString)filename;
@@ -22,67 +22,67 @@
   v11.receiver = self;
   v11.super_class = CKDBFileTransfer;
   v4 = [(CKDBFileTransfer *)&v11 description];
-  v5 = [(CKDBFileTransfer *)self guid];
-  v6 = [(CKDBFileTransfer *)self fileURL];
-  v7 = [(CKDBFileTransfer *)self transcoderUserInfo];
-  v8 = [(CKDBFileTransfer *)self filename];
-  v9 = [v3 stringWithFormat:@"[%@ transferGUID:%@ fileURL:%@ transcoderUserInfo:%@ filename:%@]", v4, v5, v6, v7, v8];
+  guid = [(CKDBFileTransfer *)self guid];
+  fileURL = [(CKDBFileTransfer *)self fileURL];
+  transcoderUserInfo = [(CKDBFileTransfer *)self transcoderUserInfo];
+  filename = [(CKDBFileTransfer *)self filename];
+  v9 = [v3 stringWithFormat:@"[%@ transferGUID:%@ fileURL:%@ transcoderUserInfo:%@ filename:%@]", v4, guid, fileURL, transcoderUserInfo, filename];
 
   return v9;
 }
 
-- (CKDBFileTransfer)initWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 adaptiveImageGlyphContentIdentifier:(id)a6 adaptiveImageGlyphContentDescription:(id)a7 hideAttachment:(BOOL)a8 isScreenshot:(BOOL)a9
+- (CKDBFileTransfer)initWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description hideAttachment:(BOOL)attachment isScreenshot:(BOOL)screenshot
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  lCopy = l;
+  infoCopy = info;
+  attributionInfoCopy = attributionInfo;
+  identifierCopy = identifier;
+  descriptionCopy = description;
   v35.receiver = self;
   v35.super_class = CKDBFileTransfer;
   v20 = [(CKDBFileTransfer *)&v35 init];
   if (v20)
   {
-    v21 = [MEMORY[0x1E696AEC0] stringGUID];
-    v22 = [v21 copy];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    v22 = [stringGUID copy];
     guid = v20->_guid;
     v20->_guid = v22;
 
-    v24 = [v15 copy];
+    v24 = [lCopy copy];
     fileURL = v20->_fileURL;
     v20->_fileURL = v24;
 
-    v26 = [v16 copy];
+    v26 = [infoCopy copy];
     transcoderUserInfo = v20->_transcoderUserInfo;
     v20->_transcoderUserInfo = v26;
 
-    v28 = [v17 copy];
+    v28 = [attributionInfoCopy copy];
     attributionInfo = v20->_attributionInfo;
     v20->_attributionInfo = v28;
 
     v20->_isSticker = 0;
-    v30 = [v18 copy];
+    v30 = [identifierCopy copy];
     adaptiveImageGlyphContentIdentifier = v20->_adaptiveImageGlyphContentIdentifier;
     v20->_adaptiveImageGlyphContentIdentifier = v30;
 
-    v32 = [v19 copy];
+    v32 = [descriptionCopy copy];
     adaptiveImageGlyphContentDescription = v20->_adaptiveImageGlyphContentDescription;
     v20->_adaptiveImageGlyphContentDescription = v32;
 
     v20->_isScreenshot = 0;
     v20->_commSafetySensitive = 0;
-    v20->_hideAttachment = a8;
+    v20->_hideAttachment = attachment;
   }
 
   return v20;
 }
 
-- (CKDBFileTransfer)initWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 hideAttachment:(BOOL)a6
+- (CKDBFileTransfer)initWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo hideAttachment:(BOOL)attachment
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  attachmentCopy = attachment;
+  lCopy = l;
+  infoCopy = info;
+  attributionInfoCopy = attributionInfo;
   v13 = IMIsScreenshotURL();
   if (v13)
   {
@@ -90,17 +90,17 @@
   }
 
   LOBYTE(v16) = v13;
-  v14 = [(CKDBFileTransfer *)self initWithFileURL:v10 transcoderUserInfo:v11 attributionInfo:v12 adaptiveImageGlyphContentIdentifier:0 adaptiveImageGlyphContentDescription:0 hideAttachment:v6 isScreenshot:v16];
+  v14 = [(CKDBFileTransfer *)self initWithFileURL:lCopy transcoderUserInfo:infoCopy attributionInfo:attributionInfoCopy adaptiveImageGlyphContentIdentifier:0 adaptiveImageGlyphContentDescription:0 hideAttachment:attachmentCopy isScreenshot:v16];
 
   return v14;
 }
 
-- (CKDBFileTransfer)initWithTransferGUID:(id)a3 imMessage:(id)a4
+- (CKDBFileTransfer)initWithTransferGUID:(id)d imMessage:(id)message
 {
   v6 = MEMORY[0x1E696AAA8];
-  v7 = a3;
-  v8 = [v6 currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"CKDBFileTransfer.m" lineNumber:77 description:{@"-initWithTransferGUID (%@) should not be called for CKDBFileTransfer", v7}];
+  dCopy = d;
+  currentHandler = [v6 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CKDBFileTransfer.m" lineNumber:77 description:{@"-initWithTransferGUID (%@) should not be called for CKDBFileTransfer", dCopy}];
 
   return 0;
 }
@@ -123,28 +123,28 @@
 
 - (NSString)filename
 {
-  v3 = [(CKDBFileTransfer *)self fileURL];
-  v4 = [v3 lastPathComponent];
+  fileURL = [(CKDBFileTransfer *)self fileURL];
+  lastPathComponent = [fileURL lastPathComponent];
 
-  if (!v4)
+  if (!lastPathComponent)
   {
-    v4 = self->_filename;
+    lastPathComponent = self->_filename;
   }
 
-  return v4;
+  return lastPathComponent;
 }
 
 - (NSString)originalFilename
 {
-  v3 = [(CKDBFileTransfer *)self fileURL];
-  v4 = [v3 lastPathComponent];
+  fileURL = [(CKDBFileTransfer *)self fileURL];
+  lastPathComponent = [fileURL lastPathComponent];
 
-  if (!v4)
+  if (!lastPathComponent)
   {
-    v4 = self->_originalFilename;
+    lastPathComponent = self->_originalFilename;
   }
 
-  return v4;
+  return lastPathComponent;
 }
 
 - (NSError)error
@@ -164,50 +164,50 @@
 
 - (BOOL)isFileURLFinalized
 {
-  v2 = [(CKDBFileTransfer *)self transferState];
+  transferState = [(CKDBFileTransfer *)self transferState];
 
-  return CKFileTransferIsFileURLFinalized(v2);
+  return CKFileTransferIsFileURLFinalized(transferState);
 }
 
 - (BOOL)isFileDataReady
 {
-  v3 = [(CKDBFileTransfer *)self isFileURLFinalized];
-  if (v3)
+  isFileURLFinalized = [(CKDBFileTransfer *)self isFileURLFinalized];
+  if (isFileURLFinalized)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [(CKDBFileTransfer *)self fileURL];
-    v6 = [v5 path];
-    v7 = [v4 fileExistsAtPath:v6];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    fileURL = [(CKDBFileTransfer *)self fileURL];
+    path = [fileURL path];
+    v7 = [defaultManager fileExistsAtPath:path];
 
-    LOBYTE(v3) = v7;
+    LOBYTE(isFileURLFinalized) = v7;
   }
 
-  return v3;
+  return isFileURLFinalized;
 }
 
 - (BOOL)isDownloadable
 {
-  v3 = [(CKDBFileTransfer *)self isFileDataReady];
-  v4 = [(CKDBFileTransfer *)self transferState];
+  isFileDataReady = [(CKDBFileTransfer *)self isFileDataReady];
+  transferState = [(CKDBFileTransfer *)self transferState];
 
-  return CKFileTransferIsDownloadable(v3, v4);
+  return CKFileTransferIsDownloadable(isFileDataReady, transferState);
 }
 
 - (BOOL)isDownloading
 {
-  v3 = [(CKDBFileTransfer *)self isFileDataReady];
-  v4 = [(CKDBFileTransfer *)self transferState];
-  v5 = [(CKDBFileTransfer *)self guid];
-  IsDownloading = CKFileTransferIsDownloading(v3, v4, v5);
+  isFileDataReady = [(CKDBFileTransfer *)self isFileDataReady];
+  transferState = [(CKDBFileTransfer *)self transferState];
+  guid = [(CKDBFileTransfer *)self guid];
+  IsDownloading = CKFileTransferIsDownloading(isFileDataReady, transferState, guid);
 
   return IsDownloading;
 }
 
 - (BOOL)isReset
 {
-  v2 = [(CKDBFileTransfer *)self transferState];
+  transferState = [(CKDBFileTransfer *)self transferState];
 
-  return CKFileTransferIsReset(v2);
+  return CKFileTransferIsReset(transferState);
 }
 
 @end

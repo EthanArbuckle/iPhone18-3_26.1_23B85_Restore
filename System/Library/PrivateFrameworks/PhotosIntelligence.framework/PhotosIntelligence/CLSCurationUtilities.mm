@@ -1,46 +1,46 @@
 @interface CLSCurationUtilities
-+ (BOOL)isBlocklistedImportedByBundleIdentifier:(id)a3 withExternalAppBlocklistType:(unint64_t)a4;
-+ (BOOL)isRiskyFileFormatWithAsset:(id)a3;
++ (BOOL)isBlocklistedImportedByBundleIdentifier:(id)identifier withExternalAppBlocklistType:(unint64_t)type;
++ (BOOL)isRiskyFileFormatWithAsset:(id)asset;
 + (id)blockedExternalAppBundleIdentifiers;
 + (id)blockedSocialMediaAppBundleIdentifiers;
 @end
 
 @implementation CLSCurationUtilities
 
-+ (BOOL)isRiskyFileFormatWithAsset:(id)a3
++ (BOOL)isRiskyFileFormatWithAsset:(id)asset
 {
-  v3 = a3;
-  if ([v3 isAnimatedGIF] & 1) != 0 || (objc_msgSend(v3, "isPDF") & 1) != 0 || (objc_msgSend(v3, "isPNG") & 1) != 0 || (objc_msgSend(v3, "isPSD"))
+  assetCopy = asset;
+  if ([assetCopy isAnimatedGIF] & 1) != 0 || (objc_msgSend(assetCopy, "isPDF") & 1) != 0 || (objc_msgSend(assetCopy, "isPNG") & 1) != 0 || (objc_msgSend(assetCopy, "isPSD"))
   {
-    v4 = 1;
+    isHEICSequence = 1;
   }
 
   else
   {
-    v4 = [v3 isHEICSequence];
+    isHEICSequence = [assetCopy isHEICSequence];
   }
 
-  return v4;
+  return isHEICSequence;
 }
 
-+ (BOOL)isBlocklistedImportedByBundleIdentifier:(id)a3 withExternalAppBlocklistType:(unint64_t)a4
++ (BOOL)isBlocklistedImportedByBundleIdentifier:(id)identifier withExternalAppBlocklistType:(unint64_t)type
 {
-  v6 = a3;
-  if ([v6 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      v7 = [a1 blockedSocialMediaAppBundleIdentifiers];
+      blockedSocialMediaAppBundleIdentifiers = [self blockedSocialMediaAppBundleIdentifiers];
       goto LABEL_7;
     }
 
-    if (!a4)
+    if (!type)
     {
-      v7 = [a1 blockedExternalAppBundleIdentifiers];
+      blockedSocialMediaAppBundleIdentifiers = [self blockedExternalAppBundleIdentifiers];
 LABEL_7:
-      v9 = v7;
-      v10 = [v6 lowercaseString];
-      v8 = [v9 containsObject:v10];
+      v9 = blockedSocialMediaAppBundleIdentifiers;
+      lowercaseString = [identifierCopy lowercaseString];
+      v8 = [v9 containsObject:lowercaseString];
 
       goto LABEL_8;
     }

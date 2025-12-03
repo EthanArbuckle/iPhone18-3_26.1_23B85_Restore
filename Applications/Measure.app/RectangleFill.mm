@@ -1,23 +1,23 @@
 @interface RectangleFill
 - (_TtC7Measure13RectangleFill)init;
-- (_TtC7Measure13RectangleFill)initWithCoder:(id)a3;
-- (void)setState:(int64_t)a3;
+- (_TtC7Measure13RectangleFill)initWithCoder:(id)coder;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation RectangleFill
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC7Measure13RectangleFill_state);
-  *(&self->super.super.isa + OBJC_IVAR____TtC7Measure13RectangleFill_state) = a3;
-  if (v4 != a3)
+  *(&self->super.super.isa + OBJC_IVAR____TtC7Measure13RectangleFill_state) = state;
+  if (v4 != state)
   {
-    v6 = self;
-    sub_100165ABC(a3);
+    selfCopy = self;
+    sub_100165ABC(state);
   }
 }
 
-- (_TtC7Measure13RectangleFill)initWithCoder:(id)a3
+- (_TtC7Measure13RectangleFill)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC7Measure13RectangleFill_state) = 1;
   *(&self->super.super.isa + OBJC_IVAR____TtC7Measure13RectangleFill_currentPoints) = 0;

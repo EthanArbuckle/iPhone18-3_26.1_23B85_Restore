@@ -7,7 +7,7 @@
 - (uint64_t)im_jsonSerializableValue
 {
   v1 = MEMORY[0x1E696AD98];
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
 
   return [v1 numberWithDouble:?];
 }

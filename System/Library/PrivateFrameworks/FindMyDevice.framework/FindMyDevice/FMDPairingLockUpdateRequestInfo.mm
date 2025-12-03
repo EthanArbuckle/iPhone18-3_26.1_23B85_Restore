@@ -1,50 +1,50 @@
 @interface FMDPairingLockUpdateRequestInfo
-- (FMDPairingLockUpdateRequestInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FMDPairingLockUpdateRequestInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDPairingLockUpdateRequestInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDPairingLockUpdateRequestInfo *)self pairingCheckToken];
-  [v4 encodeObject:v5 forKey:@"pairingCheckToken"];
+  coderCopy = coder;
+  pairingCheckToken = [(FMDPairingLockUpdateRequestInfo *)self pairingCheckToken];
+  [coderCopy encodeObject:pairingCheckToken forKey:@"pairingCheckToken"];
 
-  v6 = [(FMDPairingLockUpdateRequestInfo *)self lostModePubKey];
-  [v4 encodeObject:v6 forKey:@"lostModePubKey"];
+  lostModePubKey = [(FMDPairingLockUpdateRequestInfo *)self lostModePubKey];
+  [coderCopy encodeObject:lostModePubKey forKey:@"lostModePubKey"];
 
-  v7 = [(FMDPairingLockUpdateRequestInfo *)self userPrivateKey];
-  [v4 encodeObject:v7 forKey:@"userPrivateKey"];
+  userPrivateKey = [(FMDPairingLockUpdateRequestInfo *)self userPrivateKey];
+  [coderCopy encodeObject:userPrivateKey forKey:@"userPrivateKey"];
 
-  v8 = [(FMDPairingLockUpdateRequestInfo *)self serialNumber];
-  [v4 encodeObject:v8 forKey:@"serialNumber"];
+  serialNumber = [(FMDPairingLockUpdateRequestInfo *)self serialNumber];
+  [coderCopy encodeObject:serialNumber forKey:@"serialNumber"];
 
-  v9 = [(FMDPairingLockUpdateRequestInfo *)self timeStamp];
-  [v4 encodeObject:v9 forKey:@"timeStamp"];
+  timeStamp = [(FMDPairingLockUpdateRequestInfo *)self timeStamp];
+  [coderCopy encodeObject:timeStamp forKey:@"timeStamp"];
 }
 
-- (FMDPairingLockUpdateRequestInfo)initWithCoder:(id)a3
+- (FMDPairingLockUpdateRequestInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = FMDPairingLockUpdateRequestInfo;
   v5 = [(FMDPairingLockUpdateRequestInfo *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairingCheckToken"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairingCheckToken"];
     [(FMDPairingLockUpdateRequestInfo *)v5 setPairingCheckToken:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lostModePubKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lostModePubKey"];
     [(FMDPairingLockUpdateRequestInfo *)v5 setLostModePubKey:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userPrivateKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userPrivateKey"];
     [(FMDPairingLockUpdateRequestInfo *)v5 setUserPrivateKey:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     [(FMDPairingLockUpdateRequestInfo *)v5 setSerialNumber:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeStamp"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeStamp"];
     [(FMDPairingLockUpdateRequestInfo *)v5 setTimeStamp:v10];
   }
 

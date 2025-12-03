@@ -1,22 +1,22 @@
 @interface AVTUsageAnalysisService
-+ (id)_stringFromXPCActivityState:(int64_t)a3;
-- (AVTUsageAnalysisService)initWithLogger:(id)a3;
++ (id)_stringFromXPCActivityState:(int64_t)state;
+- (AVTUsageAnalysisService)initWithLogger:(id)logger;
 - (void)performUsageAnalysis;
 - (void)startListening;
 @end
 
 @implementation AVTUsageAnalysisService
 
-- (AVTUsageAnalysisService)initWithLogger:(id)a3
+- (AVTUsageAnalysisService)initWithLogger:(id)logger
 {
-  v5 = a3;
+  loggerCopy = logger;
   v9.receiver = self;
   v9.super_class = AVTUsageAnalysisService;
   v6 = [(AVTUsageAnalysisService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logger, a3);
+    objc_storeStrong(&v6->_logger, logger);
   }
 
   return v7;
@@ -38,16 +38,16 @@
   [AVTUsageTracker trackCountOfMemojiInStore:v2];
 }
 
-+ (id)_stringFromXPCActivityState:(int64_t)a3
++ (id)_stringFromXPCActivityState:(int64_t)state
 {
-  if (a3 > 5)
+  if (state > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_100004218 + a3);
+    return *(&off_100004218 + state);
   }
 }
 

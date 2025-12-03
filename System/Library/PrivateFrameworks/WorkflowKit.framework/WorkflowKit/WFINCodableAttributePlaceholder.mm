@@ -1,31 +1,31 @@
 @interface WFINCodableAttributePlaceholder
-- (WFINCodableAttributePlaceholder)initWithMetadata:(id)a3;
-- (id)localizedStringWithContext:(id)a3 pluralizationNumber:(id)a4;
+- (WFINCodableAttributePlaceholder)initWithMetadata:(id)metadata;
+- (id)localizedStringWithContext:(id)context pluralizationNumber:(id)number;
 @end
 
 @implementation WFINCodableAttributePlaceholder
 
-- (id)localizedStringWithContext:(id)a3 pluralizationNumber:(id)a4
+- (id)localizedStringWithContext:(id)context pluralizationNumber:(id)number
 {
-  v5 = a3;
-  v6 = [(WFINCodableAttributePlaceholder *)self metadata];
-  v7 = [v5 stringLocalizer];
+  contextCopy = context;
+  metadata = [(WFINCodableAttributePlaceholder *)self metadata];
+  stringLocalizer = [contextCopy stringLocalizer];
 
-  v8 = [v6 localizedPlaceholderWithLocalizer:v7];
+  v8 = [metadata localizedPlaceholderWithLocalizer:stringLocalizer];
 
   return v8;
 }
 
-- (WFINCodableAttributePlaceholder)initWithMetadata:(id)a3
+- (WFINCodableAttributePlaceholder)initWithMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v10.receiver = self;
   v10.super_class = WFINCodableAttributePlaceholder;
   v6 = [(WFINCodableAttributePlaceholder *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metadata, a3);
+    objc_storeStrong(&v6->_metadata, metadata);
     v8 = v7;
   }
 

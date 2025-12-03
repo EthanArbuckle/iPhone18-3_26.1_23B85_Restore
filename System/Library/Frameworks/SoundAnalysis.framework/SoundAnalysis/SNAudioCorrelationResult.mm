@@ -1,11 +1,11 @@
 @interface SNAudioCorrelationResult
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)peakTime;
 - ($E36B78CDAC119E0352F6B513F3BB0FF8)timeRange;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTimeRange:(id *)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation SNAudioCorrelationResult
@@ -25,13 +25,13 @@
   return result;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  var3 = a3->var1.var3;
-  v4[0] = a3->var0.var0;
-  v4[1] = *&a3->var0.var1;
-  v5 = *&a3->var0.var3;
-  v6 = *&a3->var1.var1;
+  var3 = range->var1.var3;
+  v4[0] = range->var0.var0;
+  v4[1] = *&range->var0.var1;
+  v5 = *&range->var0.var3;
+  v6 = *&range->var1.var1;
   v7 = var3;
   SNAudioCorrelationResult.timeRange.setter(v4);
 }
@@ -46,9 +46,9 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   SNAudioCorrelationResult.copy(with:)(v6);
 
   sub_1C97A5A8C(v6, v6[3]);
@@ -57,11 +57,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -70,7 +70,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SNAudioCorrelationResult.isEqual(_:)(v8);
@@ -79,16 +79,16 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SNAudioCorrelationResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SNAudioCorrelationResult.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SNAudioCorrelationResult.description.getter();
 
   v3 = sub_1C9A92478();

@@ -2,7 +2,7 @@
 - (BOOL)setupALSClient;
 - (BOOL)setupHIDClient;
 - (BOOL)startMonitoring;
-- (DiagExtALSDataMonitor)initWithDelegate:(id)a3;
+- (DiagExtALSDataMonitor)initWithDelegate:(id)delegate;
 - (DiagExtALSDataMonitorDelegate)delegate;
 - (id)averageSampleQueue;
 - (void)dealloc;
@@ -13,13 +13,13 @@
 
 @implementation DiagExtALSDataMonitor
 
-- (DiagExtALSDataMonitor)initWithDelegate:(id)a3
+- (DiagExtALSDataMonitor)initWithDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = DiagExtALSDataMonitor;
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = [(DiagExtALSDataMonitor *)&v7 init];
-  [(DiagExtALSDataMonitor *)v4 setDelegate:v3, v7.receiver, v7.super_class];
+  [(DiagExtALSDataMonitor *)v4 setDelegate:delegateCopy, v7.receiver, v7.super_class];
 
   v5 = objc_alloc_init(NSMutableArray);
   [(DiagExtALSDataMonitor *)v4 setValueQueue:v5];
@@ -235,8 +235,8 @@ LABEL_28:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(DiagExtALSDataMonitor *)self valueQueue];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  valueQueue = [(DiagExtALSDataMonitor *)self valueQueue];
+  v4 = [valueQueue countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -249,7 +249,7 @@ LABEL_28:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(valueQueue);
         }
 
         v6 += [*(*(&v12 + 1) + 8 * v8) intValue];
@@ -257,7 +257,7 @@ LABEL_28:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [valueQueue countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -268,8 +268,8 @@ LABEL_28:
     v6 = 0;
   }
 
-  v9 = [(DiagExtALSDataMonitor *)self valueQueue];
-  [v9 removeAllObjects];
+  valueQueue2 = [(DiagExtALSDataMonitor *)self valueQueue];
+  [valueQueue2 removeAllObjects];
 
   v10 = [NSNumber numberWithInt:(v6 / [(DiagExtALSDataMonitor *)self fALSEnclosedSampleCount])];
 
@@ -278,20 +278,20 @@ LABEL_28:
 
 - (void)determineEnclosureState
 {
-  v3 = [(DiagExtALSDataMonitor *)self valueQueue];
-  v4 = [v3 count];
-  v5 = [(DiagExtALSDataMonitor *)self fALSEnclosedSampleCount];
+  valueQueue = [(DiagExtALSDataMonitor *)self valueQueue];
+  v4 = [valueQueue count];
+  fALSEnclosedSampleCount = [(DiagExtALSDataMonitor *)self fALSEnclosedSampleCount];
 
-  if (v5 <= v4)
+  if (fALSEnclosedSampleCount <= v4)
   {
-    v6 = [(DiagExtALSDataMonitor *)self averageSampleQueue];
-    v7 = [v6 intValue];
+    averageSampleQueue = [(DiagExtALSDataMonitor *)self averageSampleQueue];
+    intValue = [averageSampleQueue intValue];
 
-    v8 = [(DiagExtALSDataMonitor *)self fALSEnclosedLimit];
+    fALSEnclosedLimit = [(DiagExtALSDataMonitor *)self fALSEnclosedLimit];
     v9 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      if (v7 <= v8)
+      if (intValue <= fALSEnclosedLimit)
       {
         v12 = "Closed";
       }
@@ -304,12 +304,12 @@ LABEL_28:
       v14 = 136315650;
       v15 = v12;
       v16 = 1024;
-      v17 = v7;
+      v17 = intValue;
       v18 = 1024;
-      v19 = [(DiagExtALSDataMonitor *)self fALSEnclosedLimit];
+      fALSEnclosedLimit2 = [(DiagExtALSDataMonitor *)self fALSEnclosedLimit];
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "ALSDataMonitor: Detect %s - average value= %d, ALS limit = %d", &v14, 0x18u);
-      v10 = [(DiagExtALSDataMonitor *)self fEnclosedStateFlag];
-      if (v7 > v8)
+      fEnclosedStateFlag = [(DiagExtALSDataMonitor *)self fEnclosedStateFlag];
+      if (intValue > fALSEnclosedLimit)
       {
         goto LABEL_4;
       }
@@ -317,11 +317,11 @@ LABEL_28:
 
     else
     {
-      v10 = [(DiagExtALSDataMonitor *)self fEnclosedStateFlag];
-      if (v7 > v8)
+      fEnclosedStateFlag = [(DiagExtALSDataMonitor *)self fEnclosedStateFlag];
+      if (intValue > fALSEnclosedLimit)
       {
 LABEL_4:
-        if (v10 == 2)
+        if (fEnclosedStateFlag == 2)
         {
           return;
         }
@@ -329,14 +329,14 @@ LABEL_4:
         v11 = 2;
 LABEL_12:
         [(DiagExtALSDataMonitor *)self setFEnclosedStateFlag:v11];
-        v13 = [(DiagExtALSDataMonitor *)self delegate];
-        [v13 handleALSEnclosedEvent:v11];
+        delegate = [(DiagExtALSDataMonitor *)self delegate];
+        [delegate handleALSEnclosedEvent:v11];
 
         return;
       }
     }
 
-    if (v10 == 1)
+    if (fEnclosedStateFlag == 1)
     {
       return;
     }
@@ -348,10 +348,10 @@ LABEL_12:
 
 - (BOOL)startMonitoring
 {
-  v3 = [(DiagExtALSDataMonitor *)self fIsMonitoring];
+  fIsMonitoring = [(DiagExtALSDataMonitor *)self fIsMonitoring];
   v4 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (fIsMonitoring)
   {
     if (v5)
     {
@@ -385,8 +385,8 @@ LABEL_12:
   }
 
   [(DiagExtALSDataMonitor *)self setFIsMonitoring:0];
-  v4 = [(DiagExtALSDataMonitor *)self valueQueue];
-  [v4 removeAllObjects];
+  valueQueue = [(DiagExtALSDataMonitor *)self valueQueue];
+  [valueQueue removeAllObjects];
 }
 
 - (DiagExtALSDataMonitorDelegate)delegate

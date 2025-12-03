@@ -1,61 +1,61 @@
 @interface TIInputContextHistory
 + (BOOL)isMail;
-+ (BOOL)nameComponentsAreEmpty:(id)a3;
++ (BOOL)nameComponentsAreEmpty:(id)empty;
 + (unint64_t)maxEntryLength;
 - (BOOL)allParticipantsKnown;
 - (BOOL)hasPendingEntries;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)mostRecentTextEntryIsByMe;
 - (BOOL)validateForSmartReplyGeneration;
 - (NSString)aggregateText;
 - (NSString)mostRecentNonSenderTextEntry;
 - (NSString)mostRecentTextEntryLogString;
-- (TIInputContextHistory)initWithCoder:(id)a3;
-- (TIInputContextHistory)initWithRecipientIdentifiers:(id)a3 senderIdentifier:(id)a4;
-- (TIInputContextHistory)initWithThreadID:(unint64_t)a3 participantsIDtoNamesMap:(id)a4 firstPersonIDs:(id)a5 primaryRecipients:(id)a6 secondaryRecipients:(id)a7;
-- (TIInputContextHistory)initWithThreadIdentifier:(id)a3 participantsIDtoNamesMap:(id)a4 firstPersonIDs:(id)a5 primaryRecipients:(id)a6 secondaryRecipients:(id)a7 infoDict:(id)a8;
+- (TIInputContextHistory)initWithCoder:(id)coder;
+- (TIInputContextHistory)initWithRecipientIdentifiers:(id)identifiers senderIdentifier:(id)identifier;
+- (TIInputContextHistory)initWithThreadID:(unint64_t)d participantsIDtoNamesMap:(id)map firstPersonIDs:(id)ds primaryRecipients:(id)recipients secondaryRecipients:(id)secondaryRecipients;
+- (TIInputContextHistory)initWithThreadIdentifier:(id)identifier participantsIDtoNamesMap:(id)map firstPersonIDs:(id)ds primaryRecipients:(id)recipients secondaryRecipients:(id)secondaryRecipients infoDict:(id)dict;
 - (id).cxx_construct;
-- (id)_addEntry:(id)a3;
-- (id)_addTextEntry:(id)a3 timestamp:(id)a4 senderIdentifier:(id)a5 entryIdentifier:(id)a6 primaryRecipientIdentifiers:(id)a7 secondaryRecipientIdentifiers:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_addEntry:(id)entry;
+- (id)_addTextEntry:(id)entry timestamp:(id)timestamp senderIdentifier:(id)identifier entryIdentifier:(id)entryIdentifier primaryRecipientIdentifiers:(id)identifiers secondaryRecipientIdentifiers:(id)recipientIdentifiers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)invalidReasonsForSmartReplyGeneration;
-- (id)mostRecentTextEntries:(unint64_t)a3;
+- (id)mostRecentTextEntries:(unint64_t)entries;
 - (id)mostRecentTextEntry;
-- (void)_enumerateAllEntriesAsInputContextEntries:(id)a3;
-- (void)_withLockPerformBlock:(id)a3;
-- (void)_withLocksOnSelfAnd:(id)a3 performBlock:(id)a4;
-- (void)addNewParticipantWithIdentifier:(id)a3 name:(id)a4;
-- (void)appendPendingEntriesFromInputContextHistory:(id)a3;
+- (void)_enumerateAllEntriesAsInputContextEntries:(id)entries;
+- (void)_withLockPerformBlock:(id)block;
+- (void)_withLocksOnSelfAnd:(id)and performBlock:(id)block;
+- (void)addNewParticipantWithIdentifier:(id)identifier name:(id)name;
+- (void)appendPendingEntriesFromInputContextHistory:(id)history;
 - (void)assertCheckpointForCoding;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAllContextEntries:(id)a3;
-- (void)enumerateAllContextEntriesWithEntryId:(id)a3;
-- (void)enumerateAllContextEntryObjects:(id)a3;
-- (void)enumerateAllEntries:(id)a3;
-- (void)enumeratePendingEntries:(id)a3;
-- (void)updateRecipientNames:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAllContextEntries:(id)entries;
+- (void)enumerateAllContextEntriesWithEntryId:(id)id;
+- (void)enumerateAllContextEntryObjects:(id)objects;
+- (void)enumerateAllEntries:(id)entries;
+- (void)enumeratePendingEntries:(id)entries;
+- (void)updateRecipientNames:(id)names;
 @end
 
 @implementation TIInputContextHistory
 
 - (id)debugDescription
 {
-  v3 = [(TIInputContextHistory *)self mostRecentTextEntry];
-  v4 = [v3 text];
-  v5 = [v4 length];
+  mostRecentTextEntry = [(TIInputContextHistory *)self mostRecentTextEntry];
+  text = [mostRecentTextEntry text];
+  v5 = [text length];
 
   if ([(TIInputContextHistory *)self validateForSmartReplyGeneration])
   {
-    v19 = @"Valid";
+    invalidReasonsForSmartReplyGeneration = @"Valid";
     v20 = 0;
   }
 
   else
   {
-    v19 = [(TIInputContextHistory *)self invalidReasonsForSmartReplyGeneration];
-    v20 = v19;
+    invalidReasonsForSmartReplyGeneration = [(TIInputContextHistory *)self invalidReasonsForSmartReplyGeneration];
+    v20 = invalidReasonsForSmartReplyGeneration;
   }
 
   v26 = 0;
@@ -79,7 +79,7 @@
   v7 = NSStringFromClass(v6);
   v17 = v27[3];
   v8 = v23[3];
-  v9 = [(TIInputContextHistory *)self threadIdentifier];
+  threadIdentifier = [(TIInputContextHistory *)self threadIdentifier];
   if (v5)
   {
     v10 = @"Valid";
@@ -90,8 +90,8 @@
     v10 = @"Invalid";
   }
 
-  v11 = [(TIInputContextHistory *)self mostRecentTextEntry];
-  v12 = [v11 entryIdentifier];
+  mostRecentTextEntry2 = [(TIInputContextHistory *)self mostRecentTextEntry];
+  entryIdentifier = [mostRecentTextEntry2 entryIdentifier];
   if ([(TIInputContextHistory *)self mostRecentTextEntryIsByMe])
   {
     v13 = @"Y";
@@ -112,7 +112,7 @@
     v14 = @"N";
   }
 
-  v15 = [v18 stringWithFormat:@"<%@ %p (%@) entries: %lu (pending: %lu), threadIdentifier: %@, lastEntry (%@) entryId: %@, byMe: %@, known: %@>", v7, self, v19, v17, v8, v9, v10, v12, v13, v14];
+  v15 = [v18 stringWithFormat:@"<%@ %p (%@) entries: %lu (pending: %lu), threadIdentifier: %@, lastEntry (%@) entryId: %@, byMe: %@, known: %@>", v7, self, invalidReasonsForSmartReplyGeneration, v17, v8, threadIdentifier, v10, entryIdentifier, v13, v14];
 
   _Block_object_dispose(&v22, 8);
   _Block_object_dispose(&v26, 8);
@@ -145,40 +145,40 @@
 - (id)invalidReasonsForSmartReplyGeneration
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(TIInputContextHistory *)self threadIdentifier];
-  v5 = [v4 length];
+  threadIdentifier = [(TIInputContextHistory *)self threadIdentifier];
+  v5 = [threadIdentifier length];
 
   if (!v5)
   {
     [v3 addObject:@"Invalid thread identifier"];
   }
 
-  v6 = [(TIInputContextHistory *)self recipientIdentifiers];
-  v7 = [v6 count];
+  recipientIdentifiers = [(TIInputContextHistory *)self recipientIdentifiers];
+  v7 = [recipientIdentifiers count];
 
   if (!v7)
   {
     [v3 addObject:@"Invalid recipient identifiers"];
   }
 
-  v8 = [(TIInputContextHistory *)self primaryRecipientIdentifiers];
-  v9 = [v8 count];
+  primaryRecipientIdentifiers = [(TIInputContextHistory *)self primaryRecipientIdentifiers];
+  v9 = [primaryRecipientIdentifiers count];
 
   if (!v9)
   {
     [v3 addObject:@"Invalid primary recipient identifiers"];
   }
 
-  v10 = [(TIInputContextHistory *)self firstPersonIdentifiers];
-  v11 = [v10 count];
+  firstPersonIdentifiers = [(TIInputContextHistory *)self firstPersonIdentifiers];
+  v11 = [firstPersonIdentifiers count];
 
   if (!v11)
   {
     [v3 addObject:@"Invalid first person identifiers"];
   }
 
-  v12 = [(TIInputContextHistory *)self participantsIDtoNamesMap];
-  v13 = [v12 count];
+  participantsIDtoNamesMap = [(TIInputContextHistory *)self participantsIDtoNamesMap];
+  v13 = [participantsIDtoNamesMap count];
 
   if (!v13)
   {
@@ -203,9 +203,9 @@
   [(TIInputContextHistory *)self _withLockPerformBlock:v19];
   if (v25[3] || v21[3])
   {
-    v14 = [(TIInputContextHistory *)self mostRecentTextEntry];
-    v15 = [v14 text];
-    v16 = [v15 length];
+    mostRecentTextEntry = [(TIInputContextHistory *)self mostRecentTextEntry];
+    text = [mostRecentTextEntry text];
+    v16 = [text length];
 
     if (v16)
     {
@@ -230,44 +230,44 @@ LABEL_17:
 
 - (BOOL)mostRecentTextEntryIsByMe
 {
-  v3 = [(TIInputContextHistory *)self mostRecentTextEntry];
-  v4 = [(TIInputContextHistory *)self firstPersonIdentifiers];
-  v5 = [v3 senderIdentifier];
-  if ([v4 containsObject:v5])
+  mostRecentTextEntry = [(TIInputContextHistory *)self mostRecentTextEntry];
+  firstPersonIdentifiers = [(TIInputContextHistory *)self firstPersonIdentifiers];
+  senderIdentifier = [mostRecentTextEntry senderIdentifier];
+  if ([firstPersonIdentifiers containsObject:senderIdentifier])
   {
-    v6 = 1;
+    isFromMe = 1;
   }
 
   else
   {
-    v6 = [v3 isFromMe];
+    isFromMe = [mostRecentTextEntry isFromMe];
   }
 
-  return v6;
+  return isFromMe;
 }
 
 - (BOOL)allParticipantsKnown
 {
-  v2 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 1;
-  v3 = [(TIInputContextHistory *)self primaryRecipientIdentifiers];
-  v4 = [(TIInputContextHistory *)v2 secondaryRecipientIdentifiers];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  primaryRecipientIdentifiers = [(TIInputContextHistory *)self primaryRecipientIdentifiers];
+  secondaryRecipientIdentifiers = [(TIInputContextHistory *)selfCopy secondaryRecipientIdentifiers];
+  v5 = [primaryRecipientIdentifiers setByAddingObjectsFromSet:secondaryRecipientIdentifiers];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__TIInputContextHistory_allParticipantsKnown__block_invoke;
   v7[3] = &unk_1E6F4CF68;
-  v7[4] = v2;
+  v7[4] = selfCopy;
   v7[5] = &v8;
   [v5 enumerateObjectsUsingBlock:v7];
-  LOBYTE(v2) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
 
   _Block_object_dispose(&v8, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __45__TIInputContextHistory_allParticipantsKnown__block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -300,10 +300,10 @@ void __45__TIInputContextHistory_allParticipantsKnown__block_invoke(uint64_t a1,
   v4[4] = self;
   v4[5] = &v5;
   [(TIInputContextHistory *)self _withLockPerformBlock:v4];
-  v2 = [v6[6] text];
+  text = [v6[6] text];
   _Block_object_dispose(&v5, 8);
 
-  return v2;
+  return text;
 }
 
 + (unint64_t)maxEntryLength
@@ -334,24 +334,24 @@ void __45__TIInputContextHistory_allParticipantsKnown__block_invoke(uint64_t a1,
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
-  v3 = [(TIInputContextHistory *)self threadIdentifier];
-  if ([v3 length])
+  threadIdentifier = [(TIInputContextHistory *)self threadIdentifier];
+  if ([threadIdentifier length])
   {
-    v4 = [(TIInputContextHistory *)self recipientIdentifiers];
-    if ([v4 count])
+    recipientIdentifiers = [(TIInputContextHistory *)self recipientIdentifiers];
+    if ([recipientIdentifiers count])
     {
-      v5 = [(TIInputContextHistory *)self primaryRecipientIdentifiers];
-      if ([v5 count])
+      primaryRecipientIdentifiers = [(TIInputContextHistory *)self primaryRecipientIdentifiers];
+      if ([primaryRecipientIdentifiers count])
       {
-        v6 = [(TIInputContextHistory *)self firstPersonIdentifiers];
-        if ([v6 count])
+        firstPersonIdentifiers = [(TIInputContextHistory *)self firstPersonIdentifiers];
+        if ([firstPersonIdentifiers count])
         {
-          v7 = [(TIInputContextHistory *)self participantsIDtoNamesMap];
-          if ([v7 count])
+          participantsIDtoNamesMap = [(TIInputContextHistory *)self participantsIDtoNamesMap];
+          if ([participantsIDtoNamesMap count])
           {
-            v8 = [(TIInputContextHistory *)self mostRecentTextEntry];
-            v9 = [v8 text];
-            v10 = [v9 length] != 0;
+            mostRecentTextEntry = [(TIInputContextHistory *)self mostRecentTextEntry];
+            text = [mostRecentTextEntry text];
+            v10 = [text length] != 0;
           }
 
           else
@@ -435,15 +435,15 @@ void __45__TIInputContextHistory_allParticipantsKnown__block_invoke(uint64_t a1,
   return v2;
 }
 
-- (void)enumerateAllContextEntriesWithEntryId:(id)a3
+- (void)enumerateAllContextEntriesWithEntryId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__TIInputContextHistory_enumerateAllContextEntriesWithEntryId___block_invoke;
   v6[3] = &unk_1E6F4CEF0;
-  v7 = v4;
-  v5 = v4;
+  v7 = idCopy;
+  v5 = idCopy;
   [(TIInputContextHistory *)self _enumerateAllEntriesAsInputContextEntries:v6];
 }
 
@@ -460,15 +460,15 @@ void __63__TIInputContextHistory_enumerateAllContextEntriesWithEntryId___block_i
   (*(v4 + 16))(v4, v10, v6, v7, v8, v9, a3);
 }
 
-- (void)enumerateAllContextEntries:(id)a3
+- (void)enumerateAllContextEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__TIInputContextHistory_enumerateAllContextEntries___block_invoke;
   v6[3] = &unk_1E6F4CEF0;
-  v7 = v4;
-  v5 = v4;
+  v7 = entriesCopy;
+  v5 = entriesCopy;
   [(TIInputContextHistory *)self _enumerateAllEntriesAsInputContextEntries:v6];
 }
 
@@ -484,15 +484,15 @@ void __52__TIInputContextHistory_enumerateAllContextEntries___block_invoke(uint6
   (*(v4 + 16))(v4, v9, v6, v7, v8, a3);
 }
 
-- (void)enumerateAllEntries:(id)a3
+- (void)enumerateAllEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__TIInputContextHistory_enumerateAllEntries___block_invoke;
   v6[3] = &unk_1E6F4CEF0;
-  v7 = v4;
-  v5 = v4;
+  v7 = entriesCopy;
+  v5 = entriesCopy;
   [(TIInputContextHistory *)self _enumerateAllEntriesAsInputContextEntries:v6];
 }
 
@@ -579,31 +579,31 @@ void __36__TIInputContextHistory_description__block_invoke(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-- (void)addNewParticipantWithIdentifier:(id)a3 name:(id)a4
+- (void)addNewParticipantWithIdentifier:(id)identifier name:(id)name
 {
-  if (a4)
+  if (name)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(TIInputContextHistory *)self participantsIDtoNamesMap];
-    [v8 setObject:v6 forKeyedSubscript:v7];
+    nameCopy = name;
+    identifierCopy = identifier;
+    participantsIDtoNamesMap = [(TIInputContextHistory *)self participantsIDtoNamesMap];
+    [participantsIDtoNamesMap setObject:nameCopy forKeyedSubscript:identifierCopy];
   }
 }
 
-- (id)mostRecentTextEntries:(unint64_t)a3
+- (id)mostRecentTextEntries:(unint64_t)entries
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__72;
   v12 = __Block_byref_object_dispose__73;
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__TIInputContextHistory_mostRecentTextEntries___block_invoke;
   v7[3] = &unk_1E6F4CF40;
   v7[5] = &v8;
-  v7[6] = a3;
+  v7[6] = entries;
   v7[4] = self;
   [(TIInputContextHistory *)self _withLockPerformBlock:v7];
   v5 = v9[5];
@@ -719,14 +719,14 @@ LABEL_17:
 - (NSString)mostRecentTextEntryLogString
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(TIInputContextHistory *)self mostRecentTextEntry];
-  v4 = [(TIInputContextHistory *)self firstPersonIdentifiers];
-  v5 = [v3 senderIdentifier];
-  v22 = [v4 containsObject:v5];
+  mostRecentTextEntry = [(TIInputContextHistory *)self mostRecentTextEntry];
+  firstPersonIdentifiers = [(TIInputContextHistory *)self firstPersonIdentifiers];
+  senderIdentifier = [mostRecentTextEntry senderIdentifier];
+  v22 = [firstPersonIdentifiers containsObject:senderIdentifier];
 
-  v6 = [v3 text];
-  v7 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v8 = [v6 componentsSeparatedByCharactersInSet:v7];
+  text = [mostRecentTextEntry text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v8 = [text componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v25 = 0u;
   v26 = 0u;
@@ -1044,33 +1044,33 @@ LABEL_26:
 
 - (NSString)aggregateText
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__TIInputContextHistory_aggregateText__block_invoke;
   v6[3] = &unk_1E6F4CF18;
-  v4 = v3;
+  v4 = string;
   v7 = v4;
   [(TIInputContextHistory *)self enumerateAllEntries:v6];
 
   return v4;
 }
 
-- (void)appendPendingEntriesFromInputContextHistory:(id)a3
+- (void)appendPendingEntriesFromInputContextHistory:(id)history
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self != v4)
+  historyCopy = history;
+  v5 = historyCopy;
+  if (historyCopy && self != historyCopy)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __69__TIInputContextHistory_appendPendingEntriesFromInputContextHistory___block_invoke;
     v17[3] = &unk_1E6F4D3A8;
     v18 = v5;
-    v19 = self;
-    v7 = v6;
+    selfCopy = self;
+    v7 = array;
     v20 = v7;
     [(TIInputContextHistory *)self _withLocksOnSelfAnd:v18 performBlock:v17];
     v15 = 0u;
@@ -1162,10 +1162,10 @@ void __69__TIInputContextHistory_appendPendingEntriesFromInputContextHistory___b
   }
 }
 
-- (void)enumeratePendingEntries:(id)a3
+- (void)enumeratePendingEntries:(id)entries
 {
-  v4 = a3;
-  if (v4)
+  entriesCopy = entries;
+  if (entriesCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -1190,10 +1190,10 @@ void __69__TIInputContextHistory_appendPendingEntriesFromInputContextHistory___b
     {
       do
       {
-        v7 = [v5[4] text];
-        v8 = [v5[4] timestamp];
-        v9 = [v5[4] senderIdentifier];
-        v4[2](v4, v7, v8, v9, self->_recipientIdentifiers, &v13);
+        text = [v5[4] text];
+        timestamp = [v5[4] timestamp];
+        senderIdentifier = [v5[4] senderIdentifier];
+        entriesCopy[2](entriesCopy, text, timestamp, senderIdentifier, self->_recipientIdentifiers, &v13);
 
         if (v13)
         {
@@ -1245,11 +1245,11 @@ void __49__TIInputContextHistory_enumeratePendingEntries___block_invoke(uint64_t
   }
 }
 
-- (void)_enumerateAllEntriesAsInputContextEntries:(id)a3
+- (void)_enumerateAllEntriesAsInputContextEntries:(id)entries
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  entriesCopy = entries;
+  if (entriesCopy)
   {
     v22 = 0;
     v23 = &v22;
@@ -1306,7 +1306,7 @@ LABEL_11:
 
     while (1)
     {
-      v4[2](v4, v7[4], &v12);
+      entriesCopy[2](entriesCopy, v7[4], &v12);
       if (v12)
       {
         break;
@@ -1375,46 +1375,46 @@ void __67__TIInputContextHistory__enumerateAllEntriesAsInputContextEntries___blo
   }
 }
 
-- (void)enumerateAllContextEntryObjects:(id)a3
+- (void)enumerateAllContextEntryObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__TIInputContextHistory_enumerateAllContextEntryObjects___block_invoke;
   v6[3] = &unk_1E6F4CEF0;
-  v7 = v4;
-  v5 = v4;
+  v7 = objectsCopy;
+  v5 = objectsCopy;
   [(TIInputContextHistory *)self _enumerateAllEntriesAsInputContextEntries:v6];
 }
 
-- (id)_addEntry:(id)a3
+- (id)_addEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(TIInputContextHistory *)self participantsIDtoNamesMap];
-  if (![v5 count])
+  entryCopy = entry;
+  participantsIDtoNamesMap = [(TIInputContextHistory *)self participantsIDtoNamesMap];
+  if (![participantsIDtoNamesMap count])
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 senderIdentifier];
+  senderIdentifier = [entryCopy senderIdentifier];
 
-  if (v6)
+  if (senderIdentifier)
   {
-    v7 = [(TIInputContextHistory *)self participantsIDtoNamesMap];
-    v8 = [v4 senderIdentifier];
-    v5 = [v7 objectForKey:v8];
+    participantsIDtoNamesMap2 = [(TIInputContextHistory *)self participantsIDtoNamesMap];
+    senderIdentifier2 = [entryCopy senderIdentifier];
+    participantsIDtoNamesMap = [participantsIDtoNamesMap2 objectForKey:senderIdentifier2];
 
-    [v4 setSenderName:v5];
+    [entryCopy setSenderName:participantsIDtoNamesMap];
 LABEL_4:
   }
 
-  [v4 enforceMaxContextLength:{-[TIInputContextHistory maxContextLength](self, "maxContextLength")}];
+  [entryCopy enforceMaxContextLength:{-[TIInputContextHistory maxContextLength](self, "maxContextLength")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __35__TIInputContextHistory__addEntry___block_invoke;
   v13[3] = &unk_1E6F4D8D8;
   v13[4] = self;
-  v9 = v4;
+  v9 = entryCopy;
   v14 = v9;
   [(TIInputContextHistory *)self _withLockPerformBlock:v13];
   v10 = v14;
@@ -1808,44 +1808,44 @@ LABEL_93:
   while ((v4 + v3[6]) > 0xF);
 }
 
-- (id)_addTextEntry:(id)a3 timestamp:(id)a4 senderIdentifier:(id)a5 entryIdentifier:(id)a6 primaryRecipientIdentifiers:(id)a7 secondaryRecipientIdentifiers:(id)a8
+- (id)_addTextEntry:(id)entry timestamp:(id)timestamp senderIdentifier:(id)identifier entryIdentifier:(id)entryIdentifier primaryRecipientIdentifiers:(id)identifiers secondaryRecipientIdentifiers:(id)recipientIdentifiers
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  recipientIdentifiersCopy = recipientIdentifiers;
+  identifiersCopy = identifiers;
+  entryIdentifierCopy = entryIdentifier;
+  identifierCopy = identifier;
+  timestampCopy = timestamp;
+  entryCopy = entry;
   v20 = objc_alloc_init(TIMutableInputContextEntry);
-  [(TIInputContextEntry *)v20 setText:v19];
+  [(TIInputContextEntry *)v20 setText:entryCopy];
 
-  [(TIInputContextEntry *)v20 setSenderIdentifier:v17];
-  [(TIInputContextEntry *)v20 setEntryIdentifier:v16];
+  [(TIInputContextEntry *)v20 setSenderIdentifier:identifierCopy];
+  [(TIInputContextEntry *)v20 setEntryIdentifier:entryIdentifierCopy];
 
-  [(TIInputContextEntry *)v20 setTimestamp:v18];
-  [(TIInputContextEntry *)v20 setPrimaryRecipientIdentifiers:v15];
+  [(TIInputContextEntry *)v20 setTimestamp:timestampCopy];
+  [(TIInputContextEntry *)v20 setPrimaryRecipientIdentifiers:identifiersCopy];
 
-  [(TIInputContextEntry *)v20 setSecondaryRecipientIdentifiers:v14];
+  [(TIInputContextEntry *)v20 setSecondaryRecipientIdentifiers:recipientIdentifiersCopy];
   v21 = [(TIInputContextHistory *)self _addEntry:v20];
 
   return v20;
 }
 
-- (void)updateRecipientNames:(id)a3
+- (void)updateRecipientNames:(id)names
 {
-  v4 = [a3 copy];
+  v4 = [names copy];
   recipientNames = self->_recipientNames;
   self->_recipientNames = v4;
 
   MEMORY[0x1EEE66BB8](v4, recipientNames);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = 1;
     if (self == v5)
     {
@@ -1858,21 +1858,21 @@ LABEL_26:
     v42 = &v41;
     v43 = 0x2020000000;
     v44 = 1;
-    v7 = [(TIInputContextHistory *)self recipientIdentifiers];
-    v8 = [(TIInputContextHistory *)v5 recipientIdentifiers];
-    if (v7 == v8)
+    recipientIdentifiers = [(TIInputContextHistory *)self recipientIdentifiers];
+    recipientIdentifiers2 = [(TIInputContextHistory *)v5 recipientIdentifiers];
+    if (recipientIdentifiers == recipientIdentifiers2)
     {
       *(v42 + 24) = 1;
     }
 
     else
     {
-      v9 = [(TIInputContextHistory *)v5 recipientIdentifiers];
-      if (v9)
+      recipientIdentifiers3 = [(TIInputContextHistory *)v5 recipientIdentifiers];
+      if (recipientIdentifiers3)
       {
-        v10 = [(TIInputContextHistory *)self recipientIdentifiers];
-        v11 = [(TIInputContextHistory *)v5 recipientIdentifiers];
-        v12 = [v10 isEqualToSet:v11];
+        recipientIdentifiers4 = [(TIInputContextHistory *)self recipientIdentifiers];
+        recipientIdentifiers5 = [(TIInputContextHistory *)v5 recipientIdentifiers];
+        v12 = [recipientIdentifiers4 isEqualToSet:recipientIdentifiers5];
         *(v42 + 24) = v12;
       }
 
@@ -1885,21 +1885,21 @@ LABEL_26:
     v13 = v42;
     if (*(v42 + 24) == 1)
     {
-      v14 = [(TIInputContextHistory *)self firstPersonIdentifiers];
-      v15 = [(TIInputContextHistory *)v5 firstPersonIdentifiers];
-      if (v14 == v15)
+      firstPersonIdentifiers = [(TIInputContextHistory *)self firstPersonIdentifiers];
+      firstPersonIdentifiers2 = [(TIInputContextHistory *)v5 firstPersonIdentifiers];
+      if (firstPersonIdentifiers == firstPersonIdentifiers2)
       {
         *(v42 + 24) = 1;
       }
 
       else
       {
-        v16 = [(TIInputContextHistory *)v5 firstPersonIdentifiers];
-        if (v16)
+        firstPersonIdentifiers3 = [(TIInputContextHistory *)v5 firstPersonIdentifiers];
+        if (firstPersonIdentifiers3)
         {
-          v17 = [(TIInputContextHistory *)self firstPersonIdentifiers];
-          v18 = [(TIInputContextHistory *)v5 firstPersonIdentifiers];
-          v19 = [v17 isEqualToSet:v18];
+          firstPersonIdentifiers4 = [(TIInputContextHistory *)self firstPersonIdentifiers];
+          firstPersonIdentifiers5 = [(TIInputContextHistory *)v5 firstPersonIdentifiers];
+          v19 = [firstPersonIdentifiers4 isEqualToSet:firstPersonIdentifiers5];
           *(v42 + 24) = v19;
         }
 
@@ -1912,21 +1912,21 @@ LABEL_26:
       v13 = v42;
       if (v42[3])
       {
-        v20 = [(TIInputContextHistory *)self recipientNames];
-        v21 = [(TIInputContextHistory *)v5 recipientNames];
-        if (v20 == v21)
+        recipientNames = [(TIInputContextHistory *)self recipientNames];
+        recipientNames2 = [(TIInputContextHistory *)v5 recipientNames];
+        if (recipientNames == recipientNames2)
         {
           *(v42 + 24) = 1;
         }
 
         else
         {
-          v22 = [(TIInputContextHistory *)v5 recipientNames];
-          if (v22)
+          recipientNames3 = [(TIInputContextHistory *)v5 recipientNames];
+          if (recipientNames3)
           {
-            v23 = [(TIInputContextHistory *)self recipientNames];
-            v24 = [(TIInputContextHistory *)v5 recipientNames];
-            v25 = [v23 isEqualToSet:v24];
+            recipientNames4 = [(TIInputContextHistory *)self recipientNames];
+            recipientNames5 = [(TIInputContextHistory *)v5 recipientNames];
+            v25 = [recipientNames4 isEqualToSet:recipientNames5];
             *(v42 + 24) = v25;
           }
 
@@ -1964,8 +1964,8 @@ LABEL_38:
 
               else
               {
-                v35 = [(TIInputContextHistory *)v5 secondaryRecipientIdentifiers];
-                v36 = [(NSSet *)secondaryRecipientIdentifiers isEqualToSet:v35];
+                secondaryRecipientIdentifiers = [(TIInputContextHistory *)v5 secondaryRecipientIdentifiers];
+                v36 = [(NSSet *)secondaryRecipientIdentifiers isEqualToSet:secondaryRecipientIdentifiers];
                 *(v42 + 24) = v36;
 
                 v13 = v42;
@@ -2286,9 +2286,9 @@ uint64_t __33__TIInputContextHistory_isEqual___block_invoke(uint64_t result)
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(NSSet *)self->_recipientIdentifiers copy];
   v6 = [v4 initWithRecipientIdentifiers:v5 senderIdentifiers:self->_firstPersonIdentifiers];
 
@@ -2300,7 +2300,7 @@ uint64_t __33__TIInputContextHistory_isEqual___block_invoke(uint64_t result)
     v14 = &unk_1E6F4D8D8;
     v7 = v6;
     v15 = v7;
-    v16 = self;
+    selfCopy = self;
     [(TIInputContextHistory *)self _withLockPerformBlock:&v11];
     v8 = [(NSSet *)self->_recipientNames copy:v11];
     v9 = v7[9];
@@ -2338,9 +2338,9 @@ void __38__TIInputContextHistory_copyWithZone___block_invoke(uint64_t a1)
   }
 }
 
-- (TIInputContextHistory)initWithCoder:(id)a3
+- (TIInputContextHistory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v50.receiver = self;
   v50.super_class = TIInputContextHistory;
   v5 = [(TIInputContextHistory *)&v50 init];
@@ -2356,12 +2356,12 @@ void __38__TIInputContextHistory_copyWithZone___block_invoke(uint64_t a1)
     v13 = objc_opt_class();
     v14 = [v9 setWithObjects:{v10, v11, v12, v13, objc_opt_class(), 0}];
     v5->_entriesLock._os_unfair_lock_opaque = 0;
-    v5->_threadID = [v4 decodeIntegerForKey:@"threadID"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
+    v5->_threadID = [coderCopy decodeIntegerForKey:@"threadID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
     threadIdentifier = v5->_threadIdentifier;
     v5->_threadIdentifier = v15;
 
-    v17 = [v4 decodeIntegerForKey:@"maxContextLength"];
+    v17 = [coderCopy decodeIntegerForKey:@"maxContextLength"];
     v5->_maxContextLength = v17;
     if (!v17)
     {
@@ -2374,7 +2374,7 @@ void __38__TIInputContextHistory_copyWithZone___block_invoke(uint64_t a1)
     v46[3] = &unk_1E6F4D3A8;
     v18 = v5;
     v47 = v18;
-    v19 = v4;
+    v19 = coderCopy;
     v48 = v19;
     v45 = v14;
     v49 = v45;
@@ -2488,18 +2488,18 @@ void __39__TIInputContextHistory_initWithCoder___block_invoke(uint64_t a1)
   std::__tree<NSHolder<TIInputContextEntry>>::destroy(v12);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_threadID forKey:@"threadID"];
-  [v4 encodeObject:self->_threadIdentifier forKey:@"threadIdentifier"];
-  [v4 encodeInteger:self->_maxContextLength forKey:@"maxContextLength"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_threadID forKey:@"threadID"];
+  [coderCopy encodeObject:self->_threadIdentifier forKey:@"threadIdentifier"];
+  [coderCopy encodeInteger:self->_maxContextLength forKey:@"maxContextLength"];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __41__TIInputContextHistory_encodeWithCoder___block_invoke;
   v23 = &unk_1E6F4D8D8;
-  v24 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = coderCopy;
   v25 = v5;
   [(TIInputContextHistory *)self _withLockPerformBlock:&v20];
   if ([(NSSet *)self->_firstPersonIdentifiers count:v20])
@@ -2634,14 +2634,14 @@ void __50__TIInputContextHistory_assertCheckpointForCoding__block_invoke(uint64_
   *(v7 - 1) = v7;
 }
 
-- (TIInputContextHistory)initWithThreadIdentifier:(id)a3 participantsIDtoNamesMap:(id)a4 firstPersonIDs:(id)a5 primaryRecipients:(id)a6 secondaryRecipients:(id)a7 infoDict:(id)a8
+- (TIInputContextHistory)initWithThreadIdentifier:(id)identifier participantsIDtoNamesMap:(id)map firstPersonIDs:(id)ds primaryRecipients:(id)recipients secondaryRecipients:(id)secondaryRecipients infoDict:(id)dict
 {
-  v15 = a3;
-  v16 = a4;
-  v29 = a5;
-  v28 = a6;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  mapCopy = map;
+  dsCopy = ds;
+  recipientsCopy = recipients;
+  secondaryRecipientsCopy = secondaryRecipients;
+  dictCopy = dict;
   v30.receiver = self;
   v30.super_class = TIInputContextHistory;
   v19 = [(TIInputContextHistory *)&v30 init];
@@ -2649,34 +2649,34 @@ void __50__TIInputContextHistory_assertCheckpointForCoding__block_invoke(uint64_
   if (v19)
   {
     v19->_entriesLock._os_unfair_lock_opaque = 0;
-    v19->_threadID = [v15 integerValue];
-    objc_storeStrong(&v20->_threadIdentifier, a3);
-    v21 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v16];
+    v19->_threadID = [identifierCopy integerValue];
+    objc_storeStrong(&v20->_threadIdentifier, identifier);
+    v21 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:mapCopy];
     participantsIDtoNamesMap = v20->_participantsIDtoNamesMap;
     v20->_participantsIDtoNamesMap = v21;
 
-    objc_storeStrong(&v20->_primaryRecipientIdentifiers, a6);
-    objc_storeStrong(&v20->_secondaryRecipientIdentifiers, a7);
-    v23 = [(TIInputContextHistory *)v20 primaryRecipientIdentifiers];
-    v24 = [(TIInputContextHistory *)v20 secondaryRecipientIdentifiers];
-    v25 = [v23 setByAddingObjectsFromSet:v24];
+    objc_storeStrong(&v20->_primaryRecipientIdentifiers, recipients);
+    objc_storeStrong(&v20->_secondaryRecipientIdentifiers, secondaryRecipients);
+    primaryRecipientIdentifiers = [(TIInputContextHistory *)v20 primaryRecipientIdentifiers];
+    secondaryRecipientIdentifiers = [(TIInputContextHistory *)v20 secondaryRecipientIdentifiers];
+    v25 = [primaryRecipientIdentifiers setByAddingObjectsFromSet:secondaryRecipientIdentifiers];
     recipientIdentifiers = v20->_recipientIdentifiers;
     v20->_recipientIdentifiers = v25;
 
     v20->_maxContextLength = +[TIInputContextHistory maxEntryLength];
-    objc_storeStrong(&v20->_firstPersonIdentifiers, a5);
-    objc_storeStrong(&v20->_infoDict, a8);
+    objc_storeStrong(&v20->_firstPersonIdentifiers, ds);
+    objc_storeStrong(&v20->_infoDict, dict);
   }
 
   return v20;
 }
 
-- (TIInputContextHistory)initWithThreadID:(unint64_t)a3 participantsIDtoNamesMap:(id)a4 firstPersonIDs:(id)a5 primaryRecipients:(id)a6 secondaryRecipients:(id)a7
+- (TIInputContextHistory)initWithThreadID:(unint64_t)d participantsIDtoNamesMap:(id)map firstPersonIDs:(id)ds primaryRecipients:(id)recipients secondaryRecipients:(id)secondaryRecipients
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  mapCopy = map;
+  dsCopy = ds;
+  recipientsCopy = recipients;
+  secondaryRecipientsCopy = secondaryRecipients;
   v27.receiver = self;
   v27.super_class = TIInputContextHistory;
   v16 = [(TIInputContextHistory *)&v27 init];
@@ -2684,47 +2684,47 @@ void __50__TIInputContextHistory_assertCheckpointForCoding__block_invoke(uint64_
   if (v16)
   {
     v16->_entriesLock._os_unfair_lock_opaque = 0;
-    v16->_threadID = a3;
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", a3];
+    v16->_threadID = d;
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", d];
     threadIdentifier = v17->_threadIdentifier;
     v17->_threadIdentifier = v18;
 
-    v20 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v12];
+    v20 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:mapCopy];
     participantsIDtoNamesMap = v17->_participantsIDtoNamesMap;
     v17->_participantsIDtoNamesMap = v20;
 
-    objc_storeStrong(&v17->_primaryRecipientIdentifiers, a6);
-    objc_storeStrong(&v17->_secondaryRecipientIdentifiers, a7);
-    v22 = [(TIInputContextHistory *)v17 primaryRecipientIdentifiers];
-    v23 = [(TIInputContextHistory *)v17 secondaryRecipientIdentifiers];
-    v24 = [v22 setByAddingObjectsFromSet:v23];
+    objc_storeStrong(&v17->_primaryRecipientIdentifiers, recipients);
+    objc_storeStrong(&v17->_secondaryRecipientIdentifiers, secondaryRecipients);
+    primaryRecipientIdentifiers = [(TIInputContextHistory *)v17 primaryRecipientIdentifiers];
+    secondaryRecipientIdentifiers = [(TIInputContextHistory *)v17 secondaryRecipientIdentifiers];
+    v24 = [primaryRecipientIdentifiers setByAddingObjectsFromSet:secondaryRecipientIdentifiers];
     recipientIdentifiers = v17->_recipientIdentifiers;
     v17->_recipientIdentifiers = v24;
 
     v17->_maxContextLength = +[TIInputContextHistory maxEntryLength];
-    objc_storeStrong(&v17->_firstPersonIdentifiers, a5);
+    objc_storeStrong(&v17->_firstPersonIdentifiers, ds);
   }
 
   return v17;
 }
 
-- (TIInputContextHistory)initWithRecipientIdentifiers:(id)a3 senderIdentifier:(id)a4
+- (TIInputContextHistory)initWithRecipientIdentifiers:(id)identifiers senderIdentifier:(id)identifier
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a3;
-  v8 = [v6 setWithObject:a4];
-  v9 = [(TIInputContextHistory *)self initWithRecipientIdentifiers:v7 senderIdentifiers:v8];
+  identifiersCopy = identifiers;
+  v8 = [v6 setWithObject:identifier];
+  v9 = [(TIInputContextHistory *)self initWithRecipientIdentifiers:identifiersCopy senderIdentifiers:v8];
 
   return v9;
 }
 
-- (void)_withLocksOnSelfAnd:(id)a3 performBlock:(id)a4
+- (void)_withLocksOnSelfAnd:(id)and performBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v10 = v6;
-  if (v8 <= v10)
+  andCopy = and;
+  blockCopy = block;
+  selfCopy = self;
+  v10 = andCopy;
+  if (selfCopy <= v10)
   {
     v9 = v10;
   }
@@ -2732,22 +2732,22 @@ void __50__TIInputContextHistory_assertCheckpointForCoding__block_invoke(uint64_
   else
   {
 
-    v9 = v8;
-    v8 = v10;
+    v9 = selfCopy;
+    selfCopy = v10;
   }
 
-  os_unfair_lock_lock(&v8->_entriesLock);
+  os_unfair_lock_lock(&selfCopy->_entriesLock);
   os_unfair_lock_lock(v9 + 14);
-  v7[2](v7);
+  blockCopy[2](blockCopy);
   os_unfair_lock_unlock(v9 + 14);
-  os_unfair_lock_unlock(&v8->_entriesLock);
+  os_unfair_lock_unlock(&selfCopy->_entriesLock);
 }
 
-- (void)_withLockPerformBlock:(id)a3
+- (void)_withLockPerformBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_entriesLock);
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   os_unfair_lock_unlock(&self->_entriesLock);
 }
@@ -2759,22 +2759,22 @@ void __31__TIInputContextHistory_isMail__block_invoke()
   +[TIInputContextHistory isMail]::isMail = [v0 isEqualToString:@"com.apple.mobilemail"];
 }
 
-+ (BOOL)nameComponentsAreEmpty:(id)a3
++ (BOOL)nameComponentsAreEmpty:(id)empty
 {
-  v4 = a3;
-  v5 = [v4 givenName];
-  if (v5 && (v6 = v5, [v4 givenName], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", &stru_1EF56D550), v7, v6, !v8) || (objc_msgSend(v4, "middleName"), (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, objc_msgSend(v4, "middleName"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", &stru_1EF56D550), v11, v10, !v12) || (objc_msgSend(v4, "familyName"), (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, objc_msgSend(v4, "familyName"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", &stru_1EF56D550), v15, v14, !v16) || (objc_msgSend(v4, "nameSuffix"), (v17 = objc_claimAutoreleasedReturnValue()) != 0) && (v18 = v17, objc_msgSend(v4, "nameSuffix"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", &stru_1EF56D550), v19, v18, !v20) || (objc_msgSend(v4, "nickname"), (v21 = objc_claimAutoreleasedReturnValue()) != 0) && (v22 = v21, objc_msgSend(v4, "nickname"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToString:", &stru_1EF56D550), v23, v22, !v24))
+  emptyCopy = empty;
+  givenName = [emptyCopy givenName];
+  if (givenName && (v6 = givenName, [emptyCopy givenName], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", &stru_1EF56D550), v7, v6, !v8) || (objc_msgSend(emptyCopy, "middleName"), (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, objc_msgSend(emptyCopy, "middleName"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", &stru_1EF56D550), v11, v10, !v12) || (objc_msgSend(emptyCopy, "familyName"), (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, objc_msgSend(emptyCopy, "familyName"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", &stru_1EF56D550), v15, v14, !v16) || (objc_msgSend(emptyCopy, "nameSuffix"), (v17 = objc_claimAutoreleasedReturnValue()) != 0) && (v18 = v17, objc_msgSend(emptyCopy, "nameSuffix"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", &stru_1EF56D550), v19, v18, !v20) || (objc_msgSend(emptyCopy, "nickname"), (v21 = objc_claimAutoreleasedReturnValue()) != 0) && (v22 = v21, objc_msgSend(emptyCopy, "nickname"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToString:", &stru_1EF56D550), v23, v22, !v24))
   {
     v27 = 0;
   }
 
   else
   {
-    v25 = [v4 phoneticRepresentation];
-    if (v25)
+    phoneticRepresentation = [emptyCopy phoneticRepresentation];
+    if (phoneticRepresentation)
     {
-      v26 = [v4 phoneticRepresentation];
-      v27 = [a1 nameComponentsAreEmpty:v26];
+      phoneticRepresentation2 = [emptyCopy phoneticRepresentation];
+      v27 = [self nameComponentsAreEmpty:phoneticRepresentation2];
     }
 
     else

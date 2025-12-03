@@ -1,17 +1,17 @@
 @interface CMIColourConstancyRegistrationV1
-- (CMIColourConstancyRegistrationV1)initWithMetalContext:(id)a3;
+- (CMIColourConstancyRegistrationV1)initWithMetalContext:(id)context;
 - (__n128)homography;
-- (int)prepareToProcess:(int)a3;
+- (int)prepareToProcess:(int)process;
 - (int)purgeResources;
-- (int)registerImage:(id)a3 referenceLumaTexture:(id)a4;
-- (int)warpImage:(id)a3 outputWarpedTexture:(id)a4;
+- (int)registerImage:(id)image referenceLumaTexture:(id)texture;
+- (int)warpImage:(id)image outputWarpedTexture:(id)texture;
 @end
 
 @implementation CMIColourConstancyRegistrationV1
 
-- (CMIColourConstancyRegistrationV1)initWithMetalContext:(id)a3
+- (CMIColourConstancyRegistrationV1)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = CMIColourConstancyRegistrationV1;
   v6 = [(CMIColourConstancyRegistrationV1 *)&v11 init];
@@ -24,13 +24,13 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v5)
+  if (!contextCopy)
   {
     sub_13B04();
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   v7[2].i32[0] = 0;
   v8 = matrix_identity_float3x3.columns[1];
   v7[3] = matrix_identity_float3x3.columns[0];
@@ -53,10 +53,10 @@ LABEL_4:
   return 0;
 }
 
-- (int)prepareToProcess:(int)a3
+- (int)prepareToProcess:(int)process
 {
-  self->_registrationProcessingType = a3;
-  if (a3)
+  self->_registrationProcessingType = process;
+  if (process)
   {
     sub_13C4C();
     return 0;
@@ -68,26 +68,26 @@ LABEL_4:
   BYTE12(v17) = 0;
   DWORD1(v17) = 20;
   v4 = [FigRegWarpPPGPU alloc];
-  v5 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v6 = [v4 initWithOptionalCommandQueue:v5 config:v16];
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+  v6 = [v4 initWithOptionalCommandQueue:commandQueue config:v16];
   regWarpGPU = self->_regWarpGPU;
   self->_regWarpGPU = v6;
 
   if (self->_regWarpGPU)
   {
-    v8 = [(FigMetalContext *)self->_metalContext allocator];
+    allocator = [(FigMetalContext *)self->_metalContext allocator];
 
-    if (v8)
+    if (allocator)
     {
-      v9 = [(FigMetalContext *)self->_metalContext allocator];
-      [(FigRegWarpPPGPU *)self->_regWarpGPU setAllocator:v9];
+      allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+      [(FigRegWarpPPGPU *)self->_regWarpGPU setAllocator:allocator2];
 
       if (!FigGetCFPreferenceNumberWithDefault())
       {
         v10 = [CMIWarpStage alloc];
-        v11 = [(FigMetalContext *)self->_metalContext commandQueue];
-        v12 = [(FigMetalContext *)self->_metalContext allocator];
-        v13 = [v10 initWithOptionalCommandQueue:v11 allocator:v12];
+        commandQueue2 = [(FigMetalContext *)self->_metalContext commandQueue];
+        allocator3 = [(FigMetalContext *)self->_metalContext allocator];
+        v13 = [v10 initWithOptionalCommandQueue:commandQueue2 allocator:allocator3];
         warpStage = self->_warpStage;
         self->_warpStage = v13;
 
@@ -111,18 +111,18 @@ LABEL_4:
   return v18;
 }
 
-- (int)registerImage:(id)a3 referenceLumaTexture:(id)a4
+- (int)registerImage:(id)image referenceLumaTexture:(id)texture
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  imageCopy = image;
+  textureCopy = texture;
+  v8 = textureCopy;
   v9 = 0;
   v17 = 0;
   memset(v16, 0, sizeof(v16));
   v15 = 0;
   if (!self->_registrationProcessingType)
   {
-    if (-[FigRegWarpPPGPU allocateResources:imageHeight:imageFormat:externalMemory:externalMemorySize:](self->_regWarpGPU, "allocateResources:imageHeight:imageFormat:externalMemory:externalMemorySize:", [v7 width], objc_msgSend(v7, "height"), objc_msgSend(v7, "pixelFormat"), 0, 0))
+    if (-[FigRegWarpPPGPU allocateResources:imageHeight:imageFormat:externalMemory:externalMemorySize:](self->_regWarpGPU, "allocateResources:imageHeight:imageFormat:externalMemory:externalMemorySize:", [textureCopy width], objc_msgSend(textureCopy, "height"), objc_msgSend(textureCopy, "pixelFormat"), 0, 0))
     {
       sub_13E94();
     }
@@ -134,7 +134,7 @@ LABEL_4:
 
     else
     {
-      v10 = [(FigRegWarpPPGPU *)self->_regWarpGPU processNonReferenceTexture:v6 outputTransform:v16];
+      v10 = [(FigRegWarpPPGPU *)self->_regWarpGPU processNonReferenceTexture:imageCopy outputTransform:v16];
       if (v10 == -6 || !v10)
       {
         HIDWORD(v11) = HIDWORD(v16[0]);
@@ -164,9 +164,9 @@ LABEL_9:
   return v9;
 }
 
-- (int)warpImage:(id)a3 outputWarpedTexture:(id)a4
+- (int)warpImage:(id)image outputWarpedTexture:(id)texture
 {
-  v4 = [(CMIWarpStage *)self->_warpStage runWarpUsingTransform:a3 inputTex:a4 outputTex:*&self[1].super.isa, *&self[1]._regWarpGPU, *&self[1]._registrationProcessingType];
+  v4 = [(CMIWarpStage *)self->_warpStage runWarpUsingTransform:image inputTex:texture outputTex:*&self[1].super.isa, *&self[1]._regWarpGPU, *&self[1]._registrationProcessingType];
   if (v4)
   {
     sub_14054();
@@ -177,9 +177,9 @@ LABEL_9:
 
 - (__n128)homography
 {
-  result = *(a1 + 48);
-  v2 = *(a1 + 64);
-  v3 = *(a1 + 80);
+  result = *(self + 48);
+  v2 = *(self + 64);
+  v3 = *(self + 80);
   return result;
 }
 

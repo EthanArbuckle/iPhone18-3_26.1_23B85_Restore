@@ -1,8 +1,8 @@
 @interface WFTTSSpokenVariant
-+ (id)parseAnnotationString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)parseAnnotationString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (WFTTSSpokenVariant)initWithDisplayString:(id)a3 spokenString:(id)a4;
+- (WFTTSSpokenVariant)initWithDisplayString:(id)string spokenString:(id)spokenString;
 @end
 
 @implementation WFTTSSpokenVariant
@@ -12,26 +12,26 @@
   v8.receiver = self;
   v8.super_class = WFTTSSpokenVariant;
   v3 = [(WFTTSSpokenVariant *)&v8 description];
-  v4 = [(WFTTSSpokenVariant *)self displayString];
-  v5 = [(WFTTSSpokenVariant *)self spokenString];
-  v6 = [v3 stringByAppendingFormat:@": show %@, say %@", v4, v5];
+  displayString = [(WFTTSSpokenVariant *)self displayString];
+  spokenString = [(WFTTSSpokenVariant *)self spokenString];
+  v6 = [v3 stringByAppendingFormat:@": show %@, say %@", displayString, spokenString];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WFTTSSpokenVariant *)self displayString];
-    v6 = [v4 displayString];
-    if ([v5 isEqualToString:v6])
+    displayString = [(WFTTSSpokenVariant *)self displayString];
+    displayString2 = [equalCopy displayString];
+    if ([displayString isEqualToString:displayString2])
     {
-      v7 = [(WFTTSSpokenVariant *)self spokenString];
-      v8 = [v4 spokenString];
-      v9 = [v7 isEqualToString:v8];
+      spokenString = [(WFTTSSpokenVariant *)self spokenString];
+      spokenString2 = [equalCopy spokenString];
+      v9 = [spokenString isEqualToString:spokenString2];
     }
 
     else
@@ -48,14 +48,14 @@
   return v9;
 }
 
-- (WFTTSSpokenVariant)initWithDisplayString:(id)a3 spokenString:(id)a4
+- (WFTTSSpokenVariant)initWithDisplayString:(id)string spokenString:(id)spokenString
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  stringCopy = string;
+  spokenStringCopy = spokenString;
+  v9 = spokenStringCopy;
+  if (stringCopy)
   {
-    if (v8)
+    if (spokenStringCopy)
     {
       goto LABEL_3;
     }
@@ -63,8 +63,8 @@
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFTTSString.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"displayString"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTTSString.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"displayString"}];
 
     if (v9)
     {
@@ -72,8 +72,8 @@
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"WFTTSString.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"spokenString"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTTSString.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"spokenString"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -81,7 +81,7 @@ LABEL_3:
   v10 = [(WFTTSSpokenVariant *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [stringCopy copy];
     displayString = v10->_displayString;
     v10->_displayString = v11;
 
@@ -95,11 +95,11 @@ LABEL_3:
   return v10;
 }
 
-+ (id)parseAnnotationString:(id)a3
++ (id)parseAnnotationString:(id)string
 {
   v4 = MEMORY[0x1E696AE88];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithString:v5];
+  stringCopy = string;
+  v6 = [[v4 alloc] initWithString:stringCopy];
 
   if (![v6 scanString:@"show:" intoString:0])
   {
@@ -122,7 +122,7 @@ LABEL_9:
   v10 = v13;
   if (v9 && [v6 scanString:@" intoString:0] && objc_msgSend(v6, "isAtEnd""))
   {
-    v11 = [[a1 alloc] initWithDisplayString:v8 spokenString:v10];
+    v11 = [[self alloc] initWithDisplayString:v8 spokenString:v10];
     goto LABEL_11;
   }
 

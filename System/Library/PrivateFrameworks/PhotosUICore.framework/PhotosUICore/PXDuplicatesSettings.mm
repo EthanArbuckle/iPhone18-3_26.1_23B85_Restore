@@ -27,10 +27,10 @@
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v8 = [v2 sectionWithRows:v7];
 
-  v9 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v10 = MEMORY[0x1E69C6638];
   v14[0] = v8;
-  v14[1] = v9;
+  v14[1] = px_restoreDefaultsSection;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   v12 = [v10 moduleWithTitle:@"Duplicates" contents:v11];
 

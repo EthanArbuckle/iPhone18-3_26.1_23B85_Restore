@@ -1,12 +1,12 @@
 @interface DraggableLabel.LongPressGestureRecognizer
-- (_TtCV10StickerKit14DraggableLabel26LongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtCV10StickerKit14DraggableLabel26LongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation DraggableLabel.LongPressGestureRecognizer
 
-- (_TtCV10StickerKit14DraggableLabel26LongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtCV10StickerKit14DraggableLabel26LongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_19A7ABB44();
@@ -18,7 +18,7 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return sub_19A63A440(v6, a4);
+  return sub_19A63A440(v6, action);
 }
 
 @end

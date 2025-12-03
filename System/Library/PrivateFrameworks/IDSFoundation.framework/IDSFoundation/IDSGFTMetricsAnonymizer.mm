@@ -1,6 +1,6 @@
 @interface IDSGFTMetricsAnonymizer
 - (IDSGFTMetricsAnonymizer)init;
-- (id)anonymizeID:(id)a3;
+- (id)anonymizeID:(id)d;
 @end
 
 @implementation IDSGFTMetricsAnonymizer
@@ -26,19 +26,19 @@
   return v3;
 }
 
-- (id)anonymizeID:(id)a3
+- (id)anonymizeID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (@"IDSGFTMetricsWildcard" == v4)
+  dCopy = d;
+  null = dCopy;
+  if (@"IDSGFTMetricsWildcard" == dCopy)
   {
-    v8 = v4;
-    v5 = v8;
+    v8 = dCopy;
+    null = v8;
   }
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->_assignedIDs objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_assignedIDs objectForKeyedSubscript:dCopy];
     if (v6)
     {
       v7 = v6;
@@ -46,13 +46,13 @@
 
     else
     {
-      if (!v5)
+      if (!null)
       {
-        v5 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
       v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_nextAnonymizedID];
-      [(NSMutableDictionary *)self->_assignedIDs setObject:v7 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)self->_assignedIDs setObject:v7 forKeyedSubscript:null];
       ++self->_nextAnonymizedID;
     }
 

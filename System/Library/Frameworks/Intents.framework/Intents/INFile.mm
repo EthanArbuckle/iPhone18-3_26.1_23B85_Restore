@@ -1,36 +1,36 @@
 @interface INFile
 + (INFile)fileWithData:(NSData *)data filename:(NSString *)filename typeIdentifier:(NSString *)typeIdentifier;
 + (INFile)fileWithFileURL:(NSURL *)fileURL filename:(NSString *)filename typeIdentifier:(NSString *)typeIdentifier;
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
 + (void)initialize;
-- (BOOL)_associatedAuditTokenIsEqualToAuditToken:(id *)a3;
-- (BOOL)_intents_enumerateObjectsOfClass:(Class)a3 withBlock:(id)a4;
+- (BOOL)_associatedAuditTokenIsEqualToAuditToken:(id *)token;
+- (BOOL)_intents_enumerateObjectsOfClass:(Class)class withBlock:(id)block;
 - (BOOL)_isMarkedForDeletionOnDeallocation;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)removedOnCompletion;
-- (INFile)initWithCoder:(id)a3;
+- (INFile)initWithCoder:(id)coder;
 - (NSData)data;
 - (NSItemProvider)_itemProvider;
 - (NSString)filename;
 - (NSURL)fileURL;
 - (id)_dictionaryRepresentation;
-- (id)_initWithBookmarkData:(id)a3 filename:(id)a4 typeIdentifier:(id)a5 removedOnCompletion:(id)a6;
-- (id)_initWithData:(id)a3 filename:(id)a4 fileURL:(id)a5 typeIdentifier:(id)a6 removedOnCompletion:(id)a7;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
+- (id)_initWithBookmarkData:(id)data filename:(id)filename typeIdentifier:(id)identifier removedOnCompletion:(id)completion;
+- (id)_initWithData:(id)data filename:(id)filename fileURL:(id)l typeIdentifier:(id)identifier removedOnCompletion:(id)completion;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
 - (id)itemProvider;
 - (unint64_t)hash;
-- (void)_setAssociatedAuditToken:(id *)a3;
+- (void)_setAssociatedAuditToken:(id *)token;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadDataRepresentationWithType:(id)a3 completion:(id)a4;
-- (void)loadFileRepresentationWithType:(id)a3 completion:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadDataRepresentationWithType:(id)type completion:(id)completion;
+- (void)loadFileRepresentationWithType:(id)type completion:(id)completion;
 @end
 
 @implementation INFile
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);
@@ -42,11 +42,11 @@
   v19 = *MEMORY[0x1E69E9840];
   if (self->_fileURL && [(INFile *)self _isMarkedForDeletionOnDeallocation]&& [(INFile *)self _hasAssociatedAuditToken])
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    v4 = v3;
-    if (v3)
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    v4 = processInfo;
+    if (processInfo)
     {
-      [v3 if_auditToken];
+      [processInfo if_auditToken];
     }
 
     else
@@ -63,18 +63,18 @@
       {
         fileURL = self->_fileURL;
         v13 = v6;
-        v14 = [(NSURL *)fileURL absoluteString];
+        absoluteString = [(NSURL *)fileURL absoluteString];
         *buf = 136315394;
         *&buf[4] = "[INFile dealloc]";
         *&buf[12] = 2112;
-        *&buf[14] = v14;
+        *&buf[14] = absoluteString;
         _os_log_debug_impl(&dword_18E991000, v13, OS_LOG_TYPE_DEBUG, "%s Deleting file on deallocation: %@", buf, 0x16u);
       }
 
-      v7 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v8 = self->_fileURL;
       v17 = 0;
-      [v7 removeItemAtURL:v8 error:&v17];
+      [defaultManager removeItemAtURL:v8 error:&v17];
       v9 = v17;
 
       if (v9)
@@ -101,11 +101,11 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_intents_enumerateObjectsOfClass:(Class)a3 withBlock:(id)a4
+- (BOOL)_intents_enumerateObjectsOfClass:(Class)class withBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(INFile *)self fileURL];
-  v8 = [v7 _intents_enumerateObjectsOfClass:a3 withBlock:v6];
+  blockCopy = block;
+  fileURL = [(INFile *)self fileURL];
+  v8 = [fileURL _intents_enumerateObjectsOfClass:class withBlock:blockCopy];
 
   if (v8)
   {
@@ -116,86 +116,86 @@
   {
     v11.receiver = self;
     v11.super_class = INFile;
-    v9 = [&v11 _intents_enumerateObjectsOfClass:a3 withBlock:v6];
+    v9 = [&v11 _intents_enumerateObjectsOfClass:class withBlock:blockCopy];
   }
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  encoderCopy = encoder;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(INFile *)self _isFileURLBased])
   {
-    v7 = [(INFile *)self fileURL];
+    fileURL = [(INFile *)self fileURL];
     v8 = @"fileURL";
   }
 
   else
   {
-    v9 = [(INFile *)self _bookmarkData];
+    _bookmarkData = [(INFile *)self _bookmarkData];
 
-    if (v9)
+    if (_bookmarkData)
     {
-      v7 = [(INFile *)self _bookmarkData];
+      fileURL = [(INFile *)self _bookmarkData];
       v8 = @"_bookmarkData";
     }
 
     else
     {
-      v7 = [(INFile *)self data];
+      fileURL = [(INFile *)self data];
       v8 = @"data";
     }
   }
 
-  v10 = [v5 encodeObject:v7];
-  [v6 if_setObjectIfNonNil:v10 forKey:v8];
+  v10 = [encoderCopy encodeObject:fileURL];
+  [dictionary if_setObjectIfNonNil:v10 forKey:v8];
 
-  v11 = [(INFile *)self filename];
-  v12 = [v5 encodeObject:v11];
-  [v6 if_setObjectIfNonNil:v12 forKey:@"filename"];
+  filename = [(INFile *)self filename];
+  v12 = [encoderCopy encodeObject:filename];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"filename"];
 
-  v13 = [(INFile *)self typeIdentifier];
-  v14 = [v5 encodeObject:v13];
-  [v6 if_setObjectIfNonNil:v14 forKey:@"typeIdentifier"];
+  typeIdentifier = [(INFile *)self typeIdentifier];
+  v14 = [encoderCopy encodeObject:typeIdentifier];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"typeIdentifier"];
 
-  v15 = [(INFile *)self _removedOnCompletionValue];
-  v16 = [v5 encodeObject:v15];
-  [v6 if_setObjectIfNonNil:v16 forKey:@"removedOnCompletion"];
+  _removedOnCompletionValue = [(INFile *)self _removedOnCompletionValue];
+  v16 = [encoderCopy encodeObject:_removedOnCompletionValue];
+  [dictionary if_setObjectIfNonNil:v16 forKey:@"removedOnCompletion"];
 
-  return v6;
+  return dictionary;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  decoderCopy = decoder;
+  descriptionCopy = description;
+  fromCopy = from;
+  if (fromCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v10 = objc_opt_class();
-      v11 = [v9 objectForKeyedSubscript:@"filename"];
-      v12 = [v7 decodeObjectOfClass:v10 from:v11];
+      v11 = [fromCopy objectForKeyedSubscript:@"filename"];
+      v12 = [decoderCopy decodeObjectOfClass:v10 from:v11];
 
       v13 = objc_opt_class();
-      v14 = [v9 objectForKeyedSubscript:@"typeIdentifier"];
-      v15 = [v7 decodeObjectOfClass:v13 from:v14];
+      v14 = [fromCopy objectForKeyedSubscript:@"typeIdentifier"];
+      v15 = [decoderCopy decodeObjectOfClass:v13 from:v14];
 
       v16 = objc_opt_class();
-      v17 = [v9 objectForKeyedSubscript:@"removedOnCompletion"];
-      v18 = [v7 decodeObjectOfClass:v16 from:v17];
+      v17 = [fromCopy objectForKeyedSubscript:@"removedOnCompletion"];
+      v18 = [decoderCopy decodeObjectOfClass:v16 from:v17];
 
-      v19 = [v9 objectForKeyedSubscript:@"fileURL"];
+      v19 = [fromCopy objectForKeyedSubscript:@"fileURL"];
 
       if (v19)
       {
         v20 = objc_opt_class();
-        v21 = [v9 objectForKeyedSubscript:@"fileURL"];
-        v22 = [v7 decodeObjectOfClass:v20 from:v21];
+        v21 = [fromCopy objectForKeyedSubscript:@"fileURL"];
+        v22 = [decoderCopy decodeObjectOfClass:v20 from:v21];
 
         v23 = [INFile alloc];
         v24 = 0;
@@ -205,10 +205,10 @@
 
       else
       {
-        v30 = [v9 objectForKeyedSubscript:@"data"];
-        if (!v30 || (v31 = v30, [v9 objectForKeyedSubscript:@"filename"], v32 = objc_claimAutoreleasedReturnValue(), v32, v31, !v32))
+        v30 = [fromCopy objectForKeyedSubscript:@"data"];
+        if (!v30 || (v31 = v30, [fromCopy objectForKeyedSubscript:@"filename"], v32 = objc_claimAutoreleasedReturnValue(), v32, v31, !v32))
         {
-          v35 = [v9 objectForKeyedSubscript:@"_bookmarkData"];
+          v35 = [fromCopy objectForKeyedSubscript:@"_bookmarkData"];
 
           if (!v35)
           {
@@ -217,8 +217,8 @@
           }
 
           v36 = objc_opt_class();
-          v37 = [v9 objectForKeyedSubscript:@"_bookmarkData"];
-          v22 = [v7 decodeObjectOfClass:v36 from:v37];
+          v37 = [fromCopy objectForKeyedSubscript:@"_bookmarkData"];
+          v22 = [decoderCopy decodeObjectOfClass:v36 from:v37];
 
           v27 = [[INFile alloc] _initWithBookmarkData:v22 filename:v12 typeIdentifier:v15 removedOnCompletion:v18];
 LABEL_6:
@@ -229,8 +229,8 @@ LABEL_7:
         }
 
         v33 = objc_opt_class();
-        v34 = [v9 objectForKeyedSubscript:@"data"];
-        v22 = [v7 decodeObjectOfClass:v33 from:v34];
+        v34 = [fromCopy objectForKeyedSubscript:@"data"];
+        v22 = [decoderCopy decodeObjectOfClass:v33 from:v34];
 
         v23 = [INFile alloc];
         v24 = v22;
@@ -253,11 +253,11 @@ LABEL_9:
 {
   v40 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v4 = [(INFile *)self _itemProviderRequestMetadata];
-  v5 = [v4 supportedContentTypes];
+  _itemProviderRequestMetadata = [(INFile *)self _itemProviderRequestMetadata];
+  supportedContentTypes = [_itemProviderRequestMetadata supportedContentTypes];
 
   objc_initWeak(&location, self);
-  if ([v5 count])
+  if ([supportedContentTypes count])
   {
     v6 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_DEBUG))
@@ -265,7 +265,7 @@ LABEL_9:
       *buf = 136315394;
       v37 = "[INFile itemProvider]";
       v38 = 2112;
-      v39 = v5;
+      v39 = supportedContentTypes;
       _os_log_debug_impl(&dword_18E991000, v6, OS_LOG_TYPE_DEBUG, "%s Registering type identifiers: %@ for item provider with itemProviderRequestMetadata", buf, 0x16u);
     }
 
@@ -273,7 +273,7 @@ LABEL_9:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = v5;
+    v7 = supportedContentTypes;
     v8 = [v7 countByEnumeratingWithState:&v26 objects:v35 count:16];
     if (v8)
     {
@@ -315,8 +315,8 @@ LABEL_9:
 
   else
   {
-    v12 = [(INFile *)self typeIdentifier];
-    v13 = v12 == 0;
+    typeIdentifier = [(INFile *)self typeIdentifier];
+    v13 = typeIdentifier == 0;
 
     v14 = INSiriLogContextIntents;
     if (v13)
@@ -334,18 +334,18 @@ LABEL_9:
       v15 = INSiriLogContextIntents;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v21 = [(INFile *)self typeIdentifier];
+        typeIdentifier2 = [(INFile *)self typeIdentifier];
         *buf = 136315394;
         v37 = "[INFile itemProvider]";
         v38 = 2112;
-        v39 = v21;
+        v39 = typeIdentifier2;
         _os_log_debug_impl(&dword_18E991000, v15, OS_LOG_TYPE_DEBUG, "%s Using natural type: %@ because no item provider metadata was found", buf, 0x16u);
       }
 
-      v16 = [(INFile *)self fileURL];
+      fileURL = [(INFile *)self fileURL];
 
-      v17 = [(INFile *)self typeIdentifier];
-      if (v16)
+      typeIdentifier3 = [(INFile *)self typeIdentifier];
+      if (fileURL)
       {
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
@@ -353,7 +353,7 @@ LABEL_9:
         v32[3] = &unk_1E72872B0;
         v18 = &v33;
         objc_copyWeak(&v33, &location);
-        [v3 registerFileRepresentationForTypeIdentifier:v17 fileOptions:1 visibility:0 loadHandler:v32];
+        [v3 registerFileRepresentationForTypeIdentifier:typeIdentifier3 fileOptions:1 visibility:0 loadHandler:v32];
       }
 
       else
@@ -364,7 +364,7 @@ LABEL_9:
         v30[3] = &unk_1E72872D8;
         v18 = &v31;
         objc_copyWeak(&v31, &location);
-        [v3 registerDataRepresentationForTypeIdentifier:v17 visibility:0 loadHandler:v30];
+        [v3 registerDataRepresentationForTypeIdentifier:typeIdentifier3 visibility:0 loadHandler:v30];
       }
 
       objc_destroyWeak(v18);
@@ -448,9 +448,9 @@ void __22__INFile_itemProvider__block_invoke_3(uint64_t a1, uint64_t a2)
   itemProvider = self->_itemProvider;
   if (!itemProvider)
   {
-    v4 = [(INFile *)self itemProvider];
+    itemProvider = [(INFile *)self itemProvider];
     v5 = self->_itemProvider;
-    self->_itemProvider = v4;
+    self->_itemProvider = itemProvider;
 
     itemProvider = self->_itemProvider;
   }
@@ -458,24 +458,24 @@ void __22__INFile_itemProvider__block_invoke_3(uint64_t a1, uint64_t a2)
   return itemProvider;
 }
 
-- (void)loadDataRepresentationWithType:(id)a3 completion:(id)a4
+- (void)loadDataRepresentationWithType:(id)type completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  completionCopy = completion;
   v8 = _INVCVoiceShortcutClient();
   if (v8)
   {
-    v9 = [(INFile *)self _itemProviderRequestMetadata];
-    v10 = [v9 metadata];
-    v11 = _INItemProviderMetadataFromData(v10);
+    _itemProviderRequestMetadata = [(INFile *)self _itemProviderRequestMetadata];
+    metadata = [_itemProviderRequestMetadata metadata];
+    v11 = _INItemProviderMetadataFromData(metadata);
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __52__INFile_loadDataRepresentationWithType_completion___block_invoke;
     v14[3] = &unk_1E7287288;
-    v15 = v7;
-    [v8 loadDataWithItemProviderRequestMetadata:v11 type:v6 completion:v14];
+    v15 = completionCopy;
+    [v8 loadDataWithItemProviderRequestMetadata:v11 type:typeCopy completion:v14];
   }
 
   else
@@ -515,24 +515,24 @@ void __52__INFile_loadDataRepresentationWithType_completion___block_invoke(uint6
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadFileRepresentationWithType:(id)a3 completion:(id)a4
+- (void)loadFileRepresentationWithType:(id)type completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  completionCopy = completion;
   v8 = _INVCVoiceShortcutClient();
   if (v8)
   {
-    v9 = [(INFile *)self _itemProviderRequestMetadata];
-    v10 = [v9 metadata];
-    v11 = _INItemProviderMetadataFromData(v10);
+    _itemProviderRequestMetadata = [(INFile *)self _itemProviderRequestMetadata];
+    metadata = [_itemProviderRequestMetadata metadata];
+    v11 = _INItemProviderMetadataFromData(metadata);
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __52__INFile_loadFileRepresentationWithType_completion___block_invoke;
     v14[3] = &unk_1E7287260;
-    v15 = v7;
-    [v8 loadFileURLWithItemProviderRequestMetadata:v11 type:v6 openInPlace:1 completion:v14];
+    v15 = completionCopy;
+    [v8 loadFileURLWithItemProviderRequestMetadata:v11 type:typeCopy openInPlace:1 completion:v14];
   }
 
   else
@@ -584,19 +584,19 @@ void __52__INFile_loadFileRepresentationWithType_completion___block_invoke(uint6
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setAssociatedAuditToken:(id *)a3
+- (void)_setAssociatedAuditToken:(id *)token
 {
   fileURL = self->_fileURL;
-  v4 = *&a3->var0[4];
-  v5[0] = *a3->var0;
+  v4 = *&token->var0[4];
+  v5[0] = *token->var0;
   v5[1] = v4;
   INFileURLSetAssociatedAuditToken(fileURL, v5);
 }
 
-- (BOOL)_associatedAuditTokenIsEqualToAuditToken:(id *)a3
+- (BOOL)_associatedAuditTokenIsEqualToAuditToken:(id *)token
 {
   fileURL = self->_fileURL;
-  v8 = *a3;
+  v8 = *token;
   v9 = 0u;
   v10 = 0u;
   INFileURLGetAssociatedAuditToken(fileURL, &v9);
@@ -605,8 +605,8 @@ void __52__INFile_loadFileRepresentationWithType_completion___block_invoke(uint6
 
 - (BOOL)_isMarkedForDeletionOnDeallocation
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  LOBYTE(self) = [v3 if_BOOLForExtendedAttributeName:@"INFileURLIsMarkedForDeletionOnDeallocation" ofItemAtURL:self->_fileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LOBYTE(self) = [defaultManager if_BOOLForExtendedAttributeName:@"INFileURLIsMarkedForDeletionOnDeallocation" ofItemAtURL:self->_fileURL];
 
   return self;
 }
@@ -627,41 +627,41 @@ void __52__INFile_loadFileRepresentationWithType_completion___block_invoke(uint6
   v22[0] = data;
   v21[1] = @"bookmarkData";
   bookmarkData = self->_bookmarkData;
-  v6 = bookmarkData;
+  null = bookmarkData;
   if (!bookmarkData)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17 = v6;
-  v22[1] = v6;
+  v17 = null;
+  v22[1] = null;
   v21[2] = @"filename";
   filename = self->_filename;
-  v8 = filename;
+  null2 = filename;
   if (!filename)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[2] = v8;
+  v22[2] = null2;
   v21[3] = @"fileURL";
   fileURL = self->_fileURL;
-  v10 = fileURL;
+  null3 = fileURL;
   if (!fileURL)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[3] = v10;
+  v22[3] = null3;
   v21[4] = @"typeIdentifier";
   typeIdentifier = self->_typeIdentifier;
-  v12 = typeIdentifier;
+  null4 = typeIdentifier;
   if (!typeIdentifier)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[4] = v12;
+  v22[4] = null4;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:{5, v17}];
   v14 = [v3 dictionaryWithDictionary:v13];
 
@@ -719,39 +719,39 @@ LABEL_15:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_data forKey:@"data"];
-  [v5 encodeObject:self->_bookmarkData forKey:@"_bookmarkData"];
-  [v5 encodeObject:self->_filename forKey:@"filename"];
-  [v5 encodeObject:self->_fileURL forKey:@"fileURL"];
-  [v5 encodeObject:self->_typeIdentifier forKey:@"typeIdentifier"];
-  [v5 encodeObject:self->_removedOnCompletionValue forKey:@"removedOnCompletion"];
-  [v5 encodeObject:self->_itemProviderRequestMetadata forKey:@"_itemProviderRequestMetadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_data forKey:@"data"];
+  [coderCopy encodeObject:self->_bookmarkData forKey:@"_bookmarkData"];
+  [coderCopy encodeObject:self->_filename forKey:@"filename"];
+  [coderCopy encodeObject:self->_fileURL forKey:@"fileURL"];
+  [coderCopy encodeObject:self->_typeIdentifier forKey:@"typeIdentifier"];
+  [coderCopy encodeObject:self->_removedOnCompletionValue forKey:@"removedOnCompletion"];
+  [coderCopy encodeObject:self->_itemProviderRequestMetadata forKey:@"_itemProviderRequestMetadata"];
   if (self->_fileURL)
   {
     v4 = MEMORY[0x193AD70C0]();
-    [v5 encodeObject:v4 forKey:@"securityScope"];
+    [coderCopy encodeObject:v4 forKey:@"securityScope"];
   }
 }
 
-- (INFile)initWithCoder:(id)a3
+- (INFile)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bookmarkData"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"filename"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"securityScope"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_itemProviderRequestMetadata"];
+  coderCopy = coder;
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bookmarkData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"filename"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"securityScope"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_itemProviderRequestMetadata"];
   if (v7 && v8)
   {
     MEMORY[0x193AD70B0](v7, v8);
   }
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"typeIdentifier"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"removedOnCompletion"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"typeIdentifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"removedOnCompletion"];
   if (v5)
   {
     v12 = [objc_alloc(objc_opt_class()) _initWithBookmarkData:v5 filename:v6 typeIdentifier:v10 removedOnCompletion:v11];
@@ -775,13 +775,13 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     data = self->_data;
     v11 = 0;
     if (data == v5[2] || [(NSData *)data isEqual:?])
@@ -823,61 +823,61 @@ LABEL_9:
   return v6 ^ [(NSString *)self->_typeIdentifier hash];
 }
 
-- (id)_initWithBookmarkData:(id)a3 filename:(id)a4 typeIdentifier:(id)a5 removedOnCompletion:(id)a6
+- (id)_initWithBookmarkData:(id)data filename:(id)filename typeIdentifier:(id)identifier removedOnCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  filenameCopy = filename;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v22.receiver = self;
   v22.super_class = INFile;
   v14 = [(INFile *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dataCopy copy];
     bookmarkData = v14->_bookmarkData;
     v14->_bookmarkData = v15;
 
-    v17 = [v11 copy];
+    v17 = [filenameCopy copy];
     filename = v14->_filename;
     v14->_filename = v17;
 
-    v19 = [v12 copy];
+    v19 = [identifierCopy copy];
     typeIdentifier = v14->_typeIdentifier;
     v14->_typeIdentifier = v19;
 
-    objc_storeStrong(&v14->_removedOnCompletionValue, a6);
+    objc_storeStrong(&v14->_removedOnCompletionValue, completion);
   }
 
   return v14;
 }
 
-- (id)_initWithData:(id)a3 filename:(id)a4 fileURL:(id)a5 typeIdentifier:(id)a6 removedOnCompletion:(id)a7
+- (id)_initWithData:(id)data filename:(id)filename fileURL:(id)l typeIdentifier:(id)identifier removedOnCompletion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dataCopy = data;
+  filenameCopy = filename;
+  lCopy = l;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v25.receiver = self;
   v25.super_class = INFile;
   v17 = [(INFile *)&v25 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [dataCopy copy];
     data = v17->_data;
     v17->_data = v18;
 
-    v20 = [v13 copy];
+    v20 = [filenameCopy copy];
     filename = v17->_filename;
     v17->_filename = v20;
 
-    objc_storeStrong(&v17->_fileURL, a5);
-    v22 = [v15 copy];
+    objc_storeStrong(&v17->_fileURL, l);
+    v22 = [identifierCopy copy];
     typeIdentifier = v17->_typeIdentifier;
     v17->_typeIdentifier = v22;
 
-    objc_storeStrong(&v17->_removedOnCompletionValue, a7);
+    objc_storeStrong(&v17->_removedOnCompletionValue, completion);
   }
 
   return v17;
@@ -885,10 +885,10 @@ LABEL_9:
 
 - (BOOL)removedOnCompletion
 {
-  v2 = [(INFile *)self _removedOnCompletionValue];
-  v3 = [v2 BOOLValue];
+  _removedOnCompletionValue = [(INFile *)self _removedOnCompletionValue];
+  bOOLValue = [_removedOnCompletionValue BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSURL)fileURL
@@ -934,15 +934,15 @@ LABEL_9:
   filename = self->_filename;
   if (filename)
   {
-    v3 = filename;
+    lastPathComponent = filename;
   }
 
   else
   {
-    v3 = [(NSURL *)self->_fileURL lastPathComponent];
+    lastPathComponent = [(NSURL *)self->_fileURL lastPathComponent];
   }
 
-  return v3;
+  return lastPathComponent;
 }
 
 - (NSData)data

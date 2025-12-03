@@ -1,92 +1,92 @@
 @interface CRImage
-+ (BOOL)convertVImage:(const vImage_Buffer *)a3 inColorSpace:(int)a4 toVImage:(vImage_Buffer *)a5 toColorSpace:(int)a6;
-+ (id)nameForColorSpace:(int)a3;
-+ (unint64_t)bytesPerPixelForColorSpace:(int)a3;
-+ (unint64_t)channelsForColorSpace:(int)a3;
-+ (vImage_Buffer)allocateVImageBufferWithWidth:(SEL)a3 height:(unint64_t)a4 bytesPerPixel:(unint64_t)a5;
-+ (vImage_Buffer)allocateVImageBufferWithWidth:(SEL)a3 height:(unint64_t)a4 colorSpace:(unint64_t)a5;
-+ (vImage_Buffer)applyEXIFTransformsOnImage:(SEL)a3 inColorSpace:(const vImage_Buffer *)a4 properties:(int)a5;
-+ (void)cgOrientation:(unsigned int)a3 toVImageRotationMode:(char *)a4 andReflection:(int *)a5;
-+ (void)drawVerticalLineAtXOffset:(double)a3 image:(id)a4;
++ (BOOL)convertVImage:(const vImage_Buffer *)image inColorSpace:(int)space toVImage:(vImage_Buffer *)vImage toColorSpace:(int)colorSpace;
++ (id)nameForColorSpace:(int)space;
++ (unint64_t)bytesPerPixelForColorSpace:(int)space;
++ (unint64_t)channelsForColorSpace:(int)space;
++ (vImage_Buffer)allocateVImageBufferWithWidth:(SEL)width height:(unint64_t)height bytesPerPixel:(unint64_t)pixel;
++ (vImage_Buffer)allocateVImageBufferWithWidth:(SEL)width height:(unint64_t)height colorSpace:(unint64_t)space;
++ (vImage_Buffer)applyEXIFTransformsOnImage:(SEL)image inColorSpace:(const vImage_Buffer *)space properties:(int)properties;
++ (void)cgOrientation:(unsigned int)orientation toVImageRotationMode:(char *)mode andReflection:(int *)reflection;
++ (void)drawVerticalLineAtXOffset:(double)offset image:(id)image;
 - (CGImage)cgImage;
-- (CGRect)rotatedRoiByCroppingRectangle:(CGRect)a3 textFeaturePoints:(id)a4 radians:(float)a5;
+- (CGRect)rotatedRoiByCroppingRectangle:(CGRect)rectangle textFeaturePoints:(id)points radians:(float)radians;
 - (CGSize)size;
 - (CIImage)ciImage;
 - (CRImage)init;
-- (CRImage)initWithCGImage:(CGImage *)a3 properties:(id)a4 toColorSpace:(int)a5;
-- (CRImage)initWithCIImage:(id)a3 toColorSpace:(int)a4;
-- (CRImage)initWithCVPixelBuffer:(__CVBuffer *)a3 toColorSpace:(int)a4 forceDataCopy:(BOOL)a5;
-- (CRImage)initWithContentsOfURL:(id)a3 toColorSpace:(int)a4;
-- (CRImage)initWithFloatBuffer:(float *)a3 width:(unint64_t)a4 height:(unint64_t)a5;
-- (CRImage)initWithMTLTexture:(id)a3 toColorSpace:(int)a4;
-- (CRImage)initWithVImageBuffer:(vImage_Buffer *)a3 inColorSpace:(int)a4;
-- (CRImage)initWithVImageBuffer:(vImage_Buffer *)a3 inColorSpace:(int)a4 toColorSpace:(int)a5;
-- (CRImage)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 colorSpace:(int)a5;
+- (CRImage)initWithCGImage:(CGImage *)image properties:(id)properties toColorSpace:(int)space;
+- (CRImage)initWithCIImage:(id)image toColorSpace:(int)space;
+- (CRImage)initWithCVPixelBuffer:(__CVBuffer *)buffer toColorSpace:(int)space forceDataCopy:(BOOL)copy;
+- (CRImage)initWithContentsOfURL:(id)l toColorSpace:(int)space;
+- (CRImage)initWithFloatBuffer:(float *)buffer width:(unint64_t)width height:(unint64_t)height;
+- (CRImage)initWithMTLTexture:(id)texture toColorSpace:(int)space;
+- (CRImage)initWithVImageBuffer:(vImage_Buffer *)buffer inColorSpace:(int)space;
+- (CRImage)initWithVImageBuffer:(vImage_Buffer *)buffer inColorSpace:(int)space toColorSpace:(int)colorSpace;
+- (CRImage)initWithWidth:(unint64_t)width height:(unint64_t)height colorSpace:(int)space;
 - (__CVBuffer)pixelBuffer;
-- (__CVBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5 paddingMode:(unint64_t)a6;
+- (__CVBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size adjustedToSize:(CGSize *)toSize paddingMode:(unint64_t)mode;
 - (id)description;
-- (id)imageByAdjustingBrightnessAlpha:(double)a3 beta:(double)a4;
-- (id)imageByApplyingBinaryMask:(id)a3;
+- (id)imageByAdjustingBrightnessAlpha:(double)alpha beta:(double)beta;
+- (id)imageByApplyingBinaryMask:(id)mask;
 - (id)imageByApplyingHistogramCorrection;
-- (id)imageByConvertingToColorSpace:(int)a3;
-- (id)imageByCorrectingFromOrientation:(unsigned int)a3;
-- (id)imageByCroppingRectangle:(CGRect)a3;
-- (id)imageByCroppingRectangle:(CGRect)a3 textFeaturePoints:(id)a4 radians:(float)a5 rotatedRoi:(CGRect *)a6;
-- (id)imageByCroppingRectangle:(CGRect)a3 toHeight:(unint64_t)a4 andWidth:(unint64_t)a5 withRotationAngle:(float)a6;
+- (id)imageByConvertingToColorSpace:(int)space;
+- (id)imageByCorrectingFromOrientation:(unsigned int)orientation;
+- (id)imageByCroppingRectangle:(CGRect)rectangle;
+- (id)imageByCroppingRectangle:(CGRect)rectangle textFeaturePoints:(id)points radians:(float)radians rotatedRoi:(CGRect *)roi;
+- (id)imageByCroppingRectangle:(CGRect)rectangle toHeight:(unint64_t)height andWidth:(unint64_t)width withRotationAngle:(float)angle;
 - (id)imageByDilating;
 - (id)imageByInvertingIntensity;
-- (id)imageByOverlayingRects:(CGRect *)a3 count:(int64_t)a4 strings:(id)a5 lineWidth:(double)a6 red:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10;
-- (id)imageByOverlayingRegions:(id)a3 strings:(id)a4 lineWidth:(double)a5 red:(double)a6 green:(double)a7 blue:(double)a8 alpha:(double)a9;
-- (id)imageByPaddingToRatioAndScalingToWidth:(unint64_t)a3 height:(unint64_t)a4 paddingMode:(unint64_t)a5 alignCenter:(BOOL)a6;
-- (id)imageByRectifyingRegion:(id)a3 toColorSpace:(int)a4 homography:(id *)a5;
+- (id)imageByOverlayingRects:(CGRect *)rects count:(int64_t)count strings:(id)strings lineWidth:(double)width red:(double)red green:(double)green blue:(double)blue alpha:(double)self0;
+- (id)imageByOverlayingRegions:(id)regions strings:(id)strings lineWidth:(double)width red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (id)imageByPaddingToRatioAndScalingToWidth:(unint64_t)width height:(unint64_t)height paddingMode:(unint64_t)mode alignCenter:(BOOL)center;
+- (id)imageByRectifyingRegion:(id)region toColorSpace:(int)space homography:(id *)homography;
 - (id)imageByRotating180;
 - (id)imageByRotating90CW;
-- (id)imageByScaling:(double)a3 paddingToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5 paddingMode:(unint64_t)a6;
-- (id)imageByScalingToWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (id)initARGB8888WithCVPixelBuffer:(__CVBuffer *)a3;
-- (id)initAYUV8888WithCVPixelBuffer:(__CVBuffer *)a3;
-- (id)initY8WithCVPixelBuffer:(__CVBuffer *)a3 forceDataCopy:(BOOL)a4;
-- (id)initYUV888WithCVPixelBuffer:(__CVBuffer *)a3;
+- (id)imageByScaling:(double)scaling paddingToSize:(CGSize)size adjustedToSize:(CGSize *)toSize paddingMode:(unint64_t)mode;
+- (id)imageByScalingToWidth:(unint64_t)width height:(unint64_t)height;
+- (id)initARGB8888WithCVPixelBuffer:(__CVBuffer *)buffer;
+- (id)initAYUV8888WithCVPixelBuffer:(__CVBuffer *)buffer;
+- (id)initY8WithCVPixelBuffer:(__CVBuffer *)buffer forceDataCopy:(BOOL)copy;
+- (id)initYUV888WithCVPixelBuffer:(__CVBuffer *)buffer;
 - (unint64_t)bufferHash;
 - (unint64_t)bytesPerPixel;
 - (unint64_t)numChannels;
 - (vImage_Buffer)createFloatBuffer;
 - (vImage_Buffer)vImage;
 - (void)dealloc;
-- (void)runBlockWithARGB8888Image:(id)a3 blockOwnsMemory:(BOOL)a4;
-- (void)setVImage:(vImage_Buffer *)a3;
-- (void)writeToFile:(id)a3;
-- (void)writeToURL:(id)a3;
+- (void)runBlockWithARGB8888Image:(id)image blockOwnsMemory:(BOOL)memory;
+- (void)setVImage:(vImage_Buffer *)image;
+- (void)writeToFile:(id)file;
+- (void)writeToURL:(id)l;
 @end
 
 @implementation CRImage
 
 - (CGSize)size
 {
-  v3 = [(CRImage *)self width];
-  v4 = [(CRImage *)self height];
-  v5 = v3;
-  result.height = v4;
+  width = [(CRImage *)self width];
+  height = [(CRImage *)self height];
+  v5 = width;
+  result.height = height;
   result.width = v5;
   return result;
 }
 
 - (unint64_t)bufferHash
 {
-  v2 = [(CRImage *)self pixelBuffer];
-  CVPixelBufferLockBaseAddress(v2, 0);
-  if (CVPixelBufferIsPlanar(v2))
+  pixelBuffer = [(CRImage *)self pixelBuffer];
+  CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+  if (CVPixelBufferIsPlanar(pixelBuffer))
   {
-    PlaneCount = CVPixelBufferGetPlaneCount(v2);
+    PlaneCount = CVPixelBufferGetPlaneCount(pixelBuffer);
     v3 = 0;
     if (PlaneCount)
     {
       for (i = 0; i != PlaneCount; ++i)
       {
-        WidthOfPlane = CVPixelBufferGetWidthOfPlane(v2, i);
-        HeightOfPlane = CVPixelBufferGetHeightOfPlane(v2, i);
-        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(v2, i);
-        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(v2, i);
+        WidthOfPlane = CVPixelBufferGetWidthOfPlane(pixelBuffer, i);
+        HeightOfPlane = CVPixelBufferGetHeightOfPlane(pixelBuffer, i);
+        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, i);
+        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, i);
         v9 = [MEMORY[0x1E695DEF0] dataWithBytes:BaseAddressOfPlane length:BytesPerRowOfPlane];
         v3 ^= [v9 hash];
         if (HeightOfPlane)
@@ -136,10 +136,10 @@ LABEL_14:
 
   else
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(v2);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(v2);
-    Width = CVPixelBufferGetWidth(v2);
-    Height = CVPixelBufferGetHeight(v2);
+    BaseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
+    Width = CVPixelBufferGetWidth(pixelBuffer);
+    Height = CVPixelBufferGetHeight(pixelBuffer);
     v3 = Height ^ Width;
     if (Height)
     {
@@ -174,22 +174,22 @@ LABEL_26:
     }
   }
 
-  CVPixelBufferUnlockBaseAddress(v2, 0);
+  CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
   return v3;
 }
 
-+ (vImage_Buffer)allocateVImageBufferWithWidth:(SEL)a3 height:(unint64_t)a4 bytesPerPixel:(unint64_t)a5
++ (vImage_Buffer)allocateVImageBufferWithWidth:(SEL)width height:(unint64_t)height bytesPerPixel:(unint64_t)pixel
 {
-  retstr->height = a5;
-  retstr->width = a4;
-  v7 = a6 * a4;
+  retstr->height = pixel;
+  retstr->width = height;
+  v7 = a6 * height;
   retstr->rowBytes = v7;
-  result = malloc_type_calloc(v7 * a5, 1uLL, 0x221917C1uLL);
+  result = malloc_type_calloc(v7 * pixel, 1uLL, 0x221917C1uLL);
   retstr->data = result;
   return result;
 }
 
-+ (vImage_Buffer)allocateVImageBufferWithWidth:(SEL)a3 height:(unint64_t)a4 colorSpace:(unint64_t)a5
++ (vImage_Buffer)allocateVImageBufferWithWidth:(SEL)width height:(unint64_t)height colorSpace:(unint64_t)space
 {
   v6 = *&a6;
   v10 = objc_opt_class();
@@ -197,7 +197,7 @@ LABEL_26:
   if (v10)
   {
 
-    return [v10 allocateVImageBufferWithWidth:a4 height:a5 bytesPerPixel:result];
+    return [v10 allocateVImageBufferWithWidth:height height:space bytesPerPixel:result];
   }
 
   else
@@ -221,13 +221,13 @@ LABEL_26:
   return v2;
 }
 
-- (id)initY8WithCVPixelBuffer:(__CVBuffer *)a3 forceDataCopy:(BOOL)a4
+- (id)initY8WithCVPixelBuffer:(__CVBuffer *)buffer forceDataCopy:(BOOL)copy
 {
-  v4 = a4;
+  copyCopy = copy;
   v49 = *MEMORY[0x1E69E9840];
   v6 = [(CRImage *)self init];
-  v6->_pixelBuffer = CVPixelBufferRetain(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  v6->_pixelBuffer = CVPixelBufferRetain(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v8 = PixelFormatType;
   if (PixelFormatType == 846624121 || PixelFormatType == 875704422 || PixelFormatType == 1278226488)
   {
@@ -236,8 +236,8 @@ LABEL_26:
     if (v8 == 846624121)
     {
       v9 = objc_opt_class();
-      Width = CVPixelBufferGetWidth(a3);
-      Height = CVPixelBufferGetHeight(a3);
+      Width = CVPixelBufferGetWidth(buffer);
+      Height = CVPixelBufferGetHeight(buffer);
       if (v9)
       {
         [v9 allocateVImageBufferWithWidth:Width height:Height colorSpace:0];
@@ -254,9 +254,9 @@ LABEL_26:
       *&v6->_vImage.width = v20;
       v22 = v6->_vImage.height;
       v21 = v6->_vImage.width;
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
       rowBytes = v6->_vImage.rowBytes;
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(buffer);
       if (v22)
       {
         v26 = 0;
@@ -282,11 +282,11 @@ LABEL_26:
 
     else
     {
-      if (v4 && v8 == 1278226488)
+      if (copyCopy && v8 == 1278226488)
       {
         v12 = objc_opt_class();
-        v13 = CVPixelBufferGetWidth(a3);
-        v14 = CVPixelBufferGetHeight(a3);
+        v13 = CVPixelBufferGetWidth(buffer);
+        v14 = CVPixelBufferGetHeight(buffer);
         if (v12)
         {
           [v12 allocateVImageBufferWithWidth:v13 height:v14 colorSpace:0];
@@ -301,22 +301,22 @@ LABEL_26:
         v33 = v48;
         *&v6->_vImage.data = v47;
         *&v6->_vImage.width = v33;
-        v34 = CVPixelBufferGetBaseAddress(a3);
-        v35 = CVPixelBufferGetHeight(a3);
-        CVPixelBufferGetWidth(a3);
-        v36 = CVPixelBufferGetBytesPerRow(a3);
+        v34 = CVPixelBufferGetBaseAddress(buffer);
+        v35 = CVPixelBufferGetHeight(buffer);
+        CVPixelBufferGetWidth(buffer);
+        v36 = CVPixelBufferGetBytesPerRow(buffer);
         memcpy(v6->_vImage.data, v34, v36 * v35);
         CVPixelBufferUnlockBaseAddress(v6->_pixelBuffer, 0);
         CVPixelBufferRelease(v6->_pixelBuffer);
         goto LABEL_37;
       }
 
-      if (!v4)
+      if (!copyCopy)
       {
-        v6->_vImage.width = CVPixelBufferGetWidthOfPlane(a3, 0);
-        v6->_vImage.height = CVPixelBufferGetHeightOfPlane(a3, 0);
-        v6->_vImage.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
+        v6->_vImage.width = CVPixelBufferGetWidthOfPlane(buffer, 0);
+        v6->_vImage.height = CVPixelBufferGetHeightOfPlane(buffer, 0);
+        v6->_vImage.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
         v32 = 0;
         v6->_vImage.data = BaseAddressOfPlane;
 LABEL_38:
@@ -325,8 +325,8 @@ LABEL_38:
         goto LABEL_39;
       }
 
-      v17 = CVPixelBufferGetWidth(a3);
-      v18 = CVPixelBufferGetHeight(a3);
+      v17 = CVPixelBufferGetWidth(buffer);
+      v18 = CVPixelBufferGetHeight(buffer);
       v19 = objc_opt_class();
       if (v19)
       {
@@ -342,9 +342,9 @@ LABEL_38:
       v37 = v48;
       *&v6->_vImage.data = v47;
       *&v6->_vImage.width = v37;
-      v38 = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
+      v38 = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
       v39 = v6->_vImage.data;
-      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
       if (v18 >= 2)
       {
         v41 = 0;
@@ -408,12 +408,12 @@ LABEL_39:
   return v16;
 }
 
-- (id)initARGB8888WithCVPixelBuffer:(__CVBuffer *)a3
+- (id)initARGB8888WithCVPixelBuffer:(__CVBuffer *)buffer
 {
   v28 = *MEMORY[0x1E69E9840];
   v4 = [(CRImage *)self init];
-  v4->_pixelBuffer = CVPixelBufferRetain(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  v4->_pixelBuffer = CVPixelBufferRetain(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v6 = PixelFormatType;
   if (PixelFormatType <= 875704421)
   {
@@ -452,8 +452,8 @@ LABEL_8:
     v4->_isFullRange = 1;
     CVPixelBufferLockBaseAddress(v4->_pixelBuffer, 0);
     v8 = objc_opt_class();
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     if (v8)
     {
       [v8 allocateVImageBufferWithWidth:Width height:Height colorSpace:1];
@@ -471,10 +471,10 @@ LABEL_8:
     switch(v6)
     {
       case 1278226488:
-        *outInfo.opaque = CVPixelBufferGetBaseAddress(a3);
-        *&outInfo.opaque[8] = CVPixelBufferGetHeight(a3);
-        *&outInfo.opaque[16] = CVPixelBufferGetWidth(a3);
-        *&outInfo.opaque[24] = CVPixelBufferGetBytesPerRow(a3);
+        *outInfo.opaque = CVPixelBufferGetBaseAddress(buffer);
+        *&outInfo.opaque[8] = CVPixelBufferGetHeight(buffer);
+        *&outInfo.opaque[16] = CVPixelBufferGetWidth(buffer);
+        *&outInfo.opaque[24] = CVPixelBufferGetBytesPerRow(buffer);
         v15 = vImageConvert_Planar8ToXRGB8888(0xFFu, &outInfo, &outInfo, &outInfo, &v4->_vImage, 0);
         v14 = v15 != 0;
         if (v15)
@@ -489,14 +489,14 @@ LABEL_8:
 
         goto LABEL_31;
       case 875704422:
-        src.data = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-        src.height = CVPixelBufferGetHeightOfPlane(a3, 0);
-        src.width = CVPixelBufferGetWidthOfPlane(a3, 0);
-        src.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-        buf.data = CVPixelBufferGetBaseAddressOfPlane(a3, 1uLL);
-        buf.height = CVPixelBufferGetHeightOfPlane(a3, 1uLL);
-        buf.width = CVPixelBufferGetWidthOfPlane(a3, 1uLL);
-        buf.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(a3, 1uLL);
+        src.data = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+        src.height = CVPixelBufferGetHeightOfPlane(buffer, 0);
+        src.width = CVPixelBufferGetWidthOfPlane(buffer, 0);
+        src.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+        buf.data = CVPixelBufferGetBaseAddressOfPlane(buffer, 1uLL);
+        buf.height = CVPixelBufferGetHeightOfPlane(buffer, 1uLL);
+        buf.width = CVPixelBufferGetWidthOfPlane(buffer, 1uLL);
+        buf.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(buffer, 1uLL);
         if (vImageConvert_YpCbCrToARGB_GenerateConversion(*MEMORY[0x1E6958848], &fullYpCbCrPixelRange, &outInfo, kvImage420Yp8_CbCr8, kvImageARGB8888, 0) || vImageConvert_420Yp8_CbCr8ToARGB8888(&src, &buf, &v4->_vImage, &outInfo, 0, 0xFFu, 0))
         {
           v13 = CROSLogForCategory(0);
@@ -511,10 +511,10 @@ LABEL_8:
 
         break;
       case 846624121:
-        src.data = CVPixelBufferGetBaseAddress(a3);
-        src.height = CVPixelBufferGetHeight(a3);
-        src.width = CVPixelBufferGetWidth(a3);
-        src.rowBytes = CVPixelBufferGetBytesPerRow(a3);
+        src.data = CVPixelBufferGetBaseAddress(buffer);
+        src.height = CVPixelBufferGetHeight(buffer);
+        src.width = CVPixelBufferGetWidth(buffer);
+        src.rowBytes = CVPixelBufferGetBytesPerRow(buffer);
         if (vImageConvert_YpCbCrToARGB_GenerateConversion(*MEMORY[0x1E6958848], &videoYpCbCrPixelRange, &outInfo, kvImage422CbYpCrYp8, kvImageARGB8888, 0) || vImageConvert_422CbYpCrYp8ToARGB8888(&src, &v4->_vImage, &outInfo, 0, 0xFFu, 0))
         {
           v12 = CROSLogForCategory(0);
@@ -531,10 +531,10 @@ LABEL_24:
 
         break;
       default:
-        BaseAddress = CVPixelBufferGetBaseAddress(a3);
-        v18 = CVPixelBufferGetHeight(a3);
-        CVPixelBufferGetWidth(a3);
-        BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+        BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+        v18 = CVPixelBufferGetHeight(buffer);
+        CVPixelBufferGetWidth(buffer);
+        BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
         memcpy(v4->_vImage.data, BaseAddress, BytesPerRow * v18);
         break;
     }
@@ -569,20 +569,20 @@ LABEL_38:
   return v20;
 }
 
-- (id)initYUV888WithCVPixelBuffer:(__CVBuffer *)a3
+- (id)initYUV888WithCVPixelBuffer:(__CVBuffer *)buffer
 {
   v43 = *MEMORY[0x1E69E9840];
   v4 = [(CRImage *)self init];
-  v4->_pixelBuffer = CVPixelBufferRetain(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  v4->_pixelBuffer = CVPixelBufferRetain(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v6 = PixelFormatType;
   if (PixelFormatType == 846624121 || PixelFormatType == 875704422)
   {
     v4->_isFullRange = PixelFormatType == 875704422;
     CVPixelBufferLockBaseAddress(v4->_pixelBuffer, 0);
     v7 = objc_opt_class();
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     if (v7)
     {
       [v7 allocateVImageBufferWithWidth:Width height:Height colorSpace:4];
@@ -600,8 +600,8 @@ LABEL_38:
     v4->_vImageDataIsCopy = 1;
     if (v6 == 846624121)
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
       v15 = v4->_vImage.height;
       if (v15)
       {
@@ -641,10 +641,10 @@ LABEL_38:
 
     else
     {
-      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-      v22 = CVPixelBufferGetBaseAddressOfPlane(a3, 1uLL);
-      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-      v24 = CVPixelBufferGetBytesPerRowOfPlane(a3, 1uLL);
+      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+      v22 = CVPixelBufferGetBaseAddressOfPlane(buffer, 1uLL);
+      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+      v24 = CVPixelBufferGetBytesPerRowOfPlane(buffer, 1uLL);
       if (v4->_vImage.height >= 2)
       {
         v25 = 0;
@@ -733,20 +733,20 @@ LABEL_38:
   return v11;
 }
 
-- (id)initAYUV8888WithCVPixelBuffer:(__CVBuffer *)a3
+- (id)initAYUV8888WithCVPixelBuffer:(__CVBuffer *)buffer
 {
   v47 = *MEMORY[0x1E69E9840];
   v4 = [(CRImage *)self init];
-  v4->_pixelBuffer = CVPixelBufferRetain(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  v4->_pixelBuffer = CVPixelBufferRetain(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v6 = PixelFormatType;
   if (PixelFormatType == 846624121 || PixelFormatType == 875704422)
   {
     v4->_isFullRange = PixelFormatType == 875704422;
     CVPixelBufferLockBaseAddress(v4->_pixelBuffer, 0);
     v7 = objc_opt_class();
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     if (v7)
     {
       [v7 allocateVImageBufferWithWidth:Width height:Height colorSpace:3];
@@ -764,8 +764,8 @@ LABEL_38:
     v4->_vImageDataIsCopy = 1;
     if (v6 == 846624121)
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
       v15 = v4->_vImage.height;
       if (v15)
       {
@@ -802,10 +802,10 @@ LABEL_38:
 
     else
     {
-      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-      v24 = CVPixelBufferGetBaseAddressOfPlane(a3, 1uLL);
-      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-      v26 = CVPixelBufferGetBytesPerRowOfPlane(a3, 1uLL);
+      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+      v24 = CVPixelBufferGetBaseAddressOfPlane(buffer, 1uLL);
+      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+      v26 = CVPixelBufferGetBytesPerRowOfPlane(buffer, 1uLL);
       v27 = v4->_vImage.height;
       if (v27 >= 2)
       {
@@ -883,16 +883,16 @@ LABEL_38:
   return v11;
 }
 
-- (CRImage)initWithCVPixelBuffer:(__CVBuffer *)a3 toColorSpace:(int)a4 forceDataCopy:(BOOL)a5
+- (CRImage)initWithCVPixelBuffer:(__CVBuffer *)buffer toColorSpace:(int)space forceDataCopy:(BOOL)copy
 {
-  v6 = 0;
-  if (a4 > 1)
+  selfCopy = 0;
+  if (space > 1)
   {
-    if (a4 != 2)
+    if (space != 2)
     {
-      if (a4 == 3)
+      if (space == 3)
       {
-        self = [(CRImage *)self initAYUV8888WithCVPixelBuffer:a3, *&a4, a5];
+        self = [(CRImage *)self initAYUV8888WithCVPixelBuffer:buffer, *&space, copy];
         if (!self)
         {
           goto LABEL_15;
@@ -901,9 +901,9 @@ LABEL_38:
         goto LABEL_14;
       }
 
-      if (a4 == 4)
+      if (space == 4)
       {
-        self = [(CRImage *)self initYUV888WithCVPixelBuffer:a3];
+        self = [(CRImage *)self initYUV888WithCVPixelBuffer:buffer];
         if (!self)
         {
           goto LABEL_15;
@@ -917,23 +917,23 @@ LABEL_13:
       {
 LABEL_15:
         self = self;
-        v6 = self;
+        selfCopy = self;
         goto LABEL_16;
       }
 
 LABEL_14:
-      self->_colorSpace = a4;
+      self->_colorSpace = space;
       goto LABEL_15;
     }
   }
 
-  else if (a4 != -1)
+  else if (space != -1)
   {
-    if (a4)
+    if (space)
     {
-      if (a4 == 1)
+      if (space == 1)
       {
-        self = [(CRImage *)self initARGB8888WithCVPixelBuffer:a3];
+        self = [(CRImage *)self initARGB8888WithCVPixelBuffer:buffer];
         if (!self)
         {
           goto LABEL_15;
@@ -945,7 +945,7 @@ LABEL_14:
 
     else
     {
-      self = [(CRImage *)self initY8WithCVPixelBuffer:a3 forceDataCopy:a5];
+      self = [(CRImage *)self initY8WithCVPixelBuffer:buffer forceDataCopy:copy];
     }
 
     goto LABEL_13;
@@ -953,22 +953,22 @@ LABEL_14:
 
 LABEL_16:
 
-  return v6;
+  return selfCopy;
 }
 
-- (CRImage)initWithCIImage:(id)a3 toColorSpace:(int)a4
+- (CRImage)initWithCIImage:(id)image toColorSpace:(int)space
 {
-  v4 = *&a4;
+  v4 = *&space;
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  imageCopy = image;
+  if (imageCopy)
   {
     v7 = [(CRImage *)self init];
     self = v7;
     if (v7)
     {
-      [(CRImage *)v7 setCiImage:v6];
-      [v6 extent];
+      [(CRImage *)v7 setCiImage:imageCopy];
+      [imageCopy extent];
       v9 = v8;
       v11 = v10;
       v13 = v12;
@@ -1016,7 +1016,7 @@ LABEL_16:
         v40 = MEMORY[0x1E695E110];
         v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
         v32 = [v30 contextWithOptions:v31];
-        [v32 render:v6 toBitmap:p_vImage->data rowBytes:p_vImage->rowBytes bounds:*MEMORY[0x1E695F8A0] format:DeviceRGB colorSpace:{v9, v11, v13, v15}];
+        [v32 render:imageCopy toBitmap:p_vImage->data rowBytes:p_vImage->rowBytes bounds:*MEMORY[0x1E695F8A0] format:DeviceRGB colorSpace:{v9, v11, v13, v15}];
 
         CGColorSpaceRelease(DeviceRGB);
         if (v4 != 1)
@@ -1025,12 +1025,12 @@ LABEL_16:
           free(p_vImage->data);
         }
 
-        v33 = self;
+        selfCopy2 = self;
         goto LABEL_29;
       }
 
       DeviceGray = CGColorSpaceCreateDeviceGray();
-      if ([v6 colorSpace] == DeviceGray)
+      if ([imageCopy colorSpace] == DeviceGray)
       {
         v25 = MEMORY[0x1E695F620];
         v26 = *MEMORY[0x1E695F7F0];
@@ -1039,9 +1039,9 @@ LABEL_16:
         v42[0] = DeviceGray;
         v42[1] = MEMORY[0x1E695E110];
         v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:2];
-        v23 = [v25 contextWithOptions:v27];
+        outputImage = [v25 contextWithOptions:v27];
 
-        [v23 render:v6 toBitmap:self->_vImage.data rowBytes:self->_vImage.rowBytes bounds:*MEMORY[0x1E695F8B0] format:DeviceGray colorSpace:{v9, v11, v13, v15}];
+        [outputImage render:imageCopy toBitmap:self->_vImage.data rowBytes:self->_vImage.rowBytes bounds:*MEMORY[0x1E695F8B0] format:DeviceGray colorSpace:{v9, v11, v13, v15}];
         v28 = 0;
       }
 
@@ -1052,8 +1052,8 @@ LABEL_16:
           dispatch_once(&qword_1ED960310, &__block_literal_global_34);
         }
 
-        v22 = [MEMORY[0x1E695F648] filterWithName:@"CIColorControls" keysAndValues:{*MEMORY[0x1E695FAB0], v6, *MEMORY[0x1E695FA68], &unk_1F2BF86E0, *MEMORY[0x1E695FB18], &unk_1F2BF86E0, *MEMORY[0x1E695FA88], &unk_1F2BF86F8, 0}];
-        v23 = [v22 outputImage];
+        v22 = [MEMORY[0x1E695F648] filterWithName:@"CIColorControls" keysAndValues:{*MEMORY[0x1E695FAB0], imageCopy, *MEMORY[0x1E695FA68], &unk_1F2BF86E0, *MEMORY[0x1E695FB18], &unk_1F2BF86E0, *MEMORY[0x1E695FA88], &unk_1F2BF86F8, 0}];
+        outputImage = [v22 outputImage];
 
         memset(&src, 0, sizeof(src));
         v24 = objc_opt_class();
@@ -1068,14 +1068,14 @@ LABEL_16:
         }
 
         v34 = CGColorSpaceCreateDeviceRGB();
-        [_MergedGlobals_39 render:v23 toBitmap:src.data rowBytes:src.rowBytes bounds:*MEMORY[0x1E695F8A0] format:v34 colorSpace:{v9, v11, v13, v15}];
+        [_MergedGlobals_39 render:outputImage toBitmap:src.data rowBytes:src.rowBytes bounds:*MEMORY[0x1E695F8A0] format:v34 colorSpace:{v9, v11, v13, v15}];
         CGColorSpaceRelease(v34);
         v28 = vImageExtractChannel_ARGB8888(&src, &self->_vImage, 1, 0) != 0;
         free(src.data);
       }
 
       CGColorSpaceRelease(DeviceGray);
-      v33 = self;
+      selfCopy2 = self;
       if (!v28)
       {
         goto LABEL_29;
@@ -1091,9 +1091,9 @@ LABEL_16:
       }
     }
 
-    v33 = 0;
+    selfCopy2 = 0;
 LABEL_29:
-    v17 = v33;
+    v17 = selfCopy2;
     goto LABEL_30;
   }
 
@@ -1115,12 +1115,12 @@ void __40__CRImage_initWithCIImage_toColorSpace___block_invoke()
   _MergedGlobals_39 = v2;
 }
 
-- (CRImage)initWithMTLTexture:(id)a3 toColorSpace:(int)a4
+- (CRImage)initWithMTLTexture:(id)texture toColorSpace:(int)space
 {
-  v4 = *&a4;
+  v4 = *&space;
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  textureCopy = texture;
+  if (textureCopy)
   {
     v7 = [(CRImage *)self init];
     self = v7;
@@ -1131,11 +1131,11 @@ void __40__CRImage_initWithCIImage_toColorSpace___block_invoke()
         v7->_colorSpace = v4;
         v7->_isFullRange = 1;
         v8 = objc_opt_class();
-        v9 = [v6 width];
-        v10 = [v6 height];
+        width = [textureCopy width];
+        height = [textureCopy height];
         if (v8)
         {
-          [v8 allocateVImageBufferWithWidth:v9 height:v10 colorSpace:v4];
+          [v8 allocateVImageBufferWithWidth:width height:height colorSpace:v4];
         }
 
         else
@@ -1148,21 +1148,21 @@ void __40__CRImage_initWithCIImage_toColorSpace___block_invoke()
         *&self->_vImage.data = v21;
         *&self->_vImage.width = v12;
         self->_vImageDataIsCopy = 1;
-        if ([v6 pixelFormat] == 10 || objc_msgSend(v6, "pixelFormat") == 13 || objc_msgSend(v6, "pixelFormat") == 70 || objc_msgSend(v6, "pixelFormat") == 73)
+        if ([textureCopy pixelFormat] == 10 || objc_msgSend(textureCopy, "pixelFormat") == 13 || objc_msgSend(textureCopy, "pixelFormat") == 70 || objc_msgSend(textureCopy, "pixelFormat") == 73)
         {
-          v13 = [v6 width];
-          v14 = [v6 height];
+          width2 = [textureCopy width];
+          height2 = [textureCopy height];
           data = self->_vImage.data;
           rowBytes = self->_vImage.rowBytes;
           v21 = 0uLL;
           *&v22 = 0;
-          *(&v22 + 1) = v13;
-          v23 = v14;
+          *(&v22 + 1) = width2;
+          v23 = height2;
           v24 = 1;
-          [v6 getBytes:data bytesPerRow:rowBytes fromRegion:&v21 mipmapLevel:0];
-          v17 = self;
+          [textureCopy getBytes:data bytesPerRow:rowBytes fromRegion:&v21 mipmapLevel:0];
+          selfCopy = self;
 LABEL_17:
-          v11 = v17;
+          v11 = selfCopy;
           goto LABEL_18;
         }
       }
@@ -1177,7 +1177,7 @@ LABEL_17:
       }
     }
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
@@ -1187,10 +1187,10 @@ LABEL_18:
   return v11;
 }
 
-- (void)runBlockWithARGB8888Image:(id)a3 blockOwnsMemory:(BOOL)a4
+- (void)runBlockWithARGB8888Image:(id)image blockOwnsMemory:(BOOL)memory
 {
-  v4 = a4;
-  v6 = a3;
+  memoryCopy = memory;
+  imageCopy = image;
   p_vImage = &self->_vImage;
   if (self->_colorSpace == 1)
   {
@@ -1223,9 +1223,9 @@ LABEL_18:
     p_vImage = v12;
   }
 
-  v6[2](v6, p_vImage, v8 & v4);
+  imageCopy[2](imageCopy, p_vImage, v8 & memoryCopy);
 LABEL_10:
-  if (self->_colorSpace != 1 && !v4)
+  if (self->_colorSpace != 1 && !memoryCopy)
   {
     free(p_vImage->data);
   }
@@ -1271,12 +1271,12 @@ void __18__CRImage_ciImage__block_invoke(uint64_t a1, void *a2, uint64_t a3)
   CGColorSpaceRelease(DeviceRGB);
 }
 
-- (__CVBuffer)pixelBufferWithScale:(double)a3 paddedToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5 paddingMode:(unint64_t)a6
+- (__CVBuffer)pixelBufferWithScale:(double)scale paddedToSize:(CGSize)size adjustedToSize:(CGSize *)toSize paddingMode:(unint64_t)mode
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = [(CRImage *)self width];
-  v13 = [(CRImage *)self height];
+  height = size.height;
+  width = size.width;
+  width = [(CRImage *)self width];
+  height = [(CRImage *)self height];
   v14 = width;
   v15 = height;
   pixelBufferOut = 0;
@@ -1284,7 +1284,7 @@ void __18__CRImage_ciImage__block_invoke(uint64_t a1, void *a2, uint64_t a3)
   result = 0;
   if (!v16)
   {
-    v18 = v12 * a3;
+    v18 = width * scale;
     if (v18 >= v14)
     {
       v19 = width;
@@ -1295,26 +1295,26 @@ void __18__CRImage_ciImage__block_invoke(uint64_t a1, void *a2, uint64_t a3)
       v19 = v18;
     }
 
-    if ((v13 * a3) >= v15)
+    if ((height * scale) >= v15)
     {
       v20 = height;
     }
 
     else
     {
-      v20 = (v13 * a3);
+      v20 = (height * scale);
     }
 
-    if (a5)
+    if (toSize)
     {
-      a5->width = v19;
-      a5->height = v20;
+      toSize->width = v19;
+      toSize->height = v20;
     }
 
     v21 = 0.0;
-    if (a6 <= 3)
+    if (mode <= 3)
     {
-      v21 = dbl_1B42B00B8[a6];
+      v21 = dbl_1B42B00B8[mode];
     }
 
     CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
@@ -1334,12 +1334,12 @@ void __18__CRImage_ciImage__block_invoke(uint64_t a1, void *a2, uint64_t a3)
     v30.origin.x = 0.0;
     v30.origin.y = 0.0;
     CGContextFillRect(v25, v30);
-    v27 = [(CRImage *)self cgImage];
+    cgImage = [(CRImage *)self cgImage];
     v31.origin.y = (v15 - v20);
     v31.size.width = v19;
     v31.size.height = v20;
     v31.origin.x = 0.0;
-    CGContextDrawImage(v25, v31, v27);
+    CGContextDrawImage(v25, v31, cgImage);
     CGColorSpaceRelease(DeviceRGB);
     CGContextRelease(v25);
     CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);
@@ -1349,9 +1349,9 @@ void __18__CRImage_ciImage__block_invoke(uint64_t a1, void *a2, uint64_t a3)
   return result;
 }
 
-- (id)imageByScaling:(double)a3 paddingToSize:(CGSize)a4 adjustedToSize:(CGSize *)a5 paddingMode:(unint64_t)a6
+- (id)imageByScaling:(double)scaling paddingToSize:(CGSize)size adjustedToSize:(CGSize *)toSize paddingMode:(unint64_t)mode
 {
-  v6 = [(CRImage *)self pixelBufferWithScale:a5 paddedToSize:a6 adjustedToSize:a3 paddingMode:a4.width, a4.height];
+  v6 = [(CRImage *)self pixelBufferWithScale:toSize paddedToSize:mode adjustedToSize:scaling paddingMode:size.width, size.height];
   v7 = [[CRImage_PixelBuffer alloc] initWithCVPixelBuffer:v6];
   CVPixelBufferRelease(v6);
 
@@ -1365,29 +1365,29 @@ void __18__CRImage_ciImage__block_invoke(uint64_t a1, void *a2, uint64_t a3)
   if (!result)
   {
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{MEMORY[0x1E695E118], *MEMORY[0x1E6966030], 0}];
-    v6 = [(CRImage *)self width];
-    v7 = [(CRImage *)self height];
-    CVPixelBufferCreate(*MEMORY[0x1E695E480], v6, v7, 0x20u, v5, p_pixelBuffer);
+    width = [(CRImage *)self width];
+    height = [(CRImage *)self height];
+    CVPixelBufferCreate(*MEMORY[0x1E695E480], width, height, 0x20u, v5, p_pixelBuffer);
     CVPixelBufferLockBaseAddress(*p_pixelBuffer, 0);
     BaseAddress = CVPixelBufferGetBaseAddress(*p_pixelBuffer);
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
-    v10 = [(CRImage *)self width];
-    v11 = [(CRImage *)self height];
+    width2 = [(CRImage *)self width];
+    height2 = [(CRImage *)self height];
     BytesPerRow = CVPixelBufferGetBytesPerRow(*p_pixelBuffer);
-    v13 = CGBitmapContextCreate(BaseAddress, v10, v11, 8uLL, BytesPerRow, DeviceRGB, 6u);
-    v14 = [(CRImage *)self cgImage];
+    v13 = CGBitmapContextCreate(BaseAddress, width2, height2, 8uLL, BytesPerRow, DeviceRGB, 6u);
+    cgImage = [(CRImage *)self cgImage];
     v15 = *(MEMORY[0x1E695EFD0] + 16);
     *&transform.a = *MEMORY[0x1E695EFD0];
     *&transform.c = v15;
     *&transform.tx = *(MEMORY[0x1E695EFD0] + 32);
     CGContextConcatCTM(v13, &transform);
-    v16 = [(CRImage *)self width];
-    v17 = [(CRImage *)self height];
-    v19.size.width = v16;
-    v19.size.height = v17;
+    width3 = [(CRImage *)self width];
+    height3 = [(CRImage *)self height];
+    v19.size.width = width3;
+    v19.size.height = height3;
     v19.origin.x = 0.0;
     v19.origin.y = 0.0;
-    CGContextDrawImage(v13, v19, v14);
+    CGContextDrawImage(v13, v19, cgImage);
     CGColorSpaceRelease(DeviceRGB);
     CGContextRelease(v13);
     CVPixelBufferUnlockBaseAddress(*p_pixelBuffer, 0);
@@ -1481,8 +1481,8 @@ void __18__CRImage_cgImage__block_invoke(uint64_t a1, void **a2, int a3)
 {
   v22[128] = *MEMORY[0x1E69E9840];
   v3 = [[CRImage alloc] initWithWidth:[(CRImage *)self width] height:[(CRImage *)self height] colorSpace:0];
-  v4 = [(CRImage *)self width];
-  v5 = [(CRImage *)self height];
+  width = [(CRImage *)self width];
+  height = [(CRImage *)self height];
   [(CRImage *)self vImage];
   v6 = v22[0];
   if (v3)
@@ -1496,7 +1496,7 @@ void __18__CRImage_cgImage__block_invoke(uint64_t a1, void **a2, int a3)
     v7 = 0;
   }
 
-  v8 = v5 * v4;
+  v8 = height * width;
   bzero(v22, 0x400uLL);
   if (v8 >= 1)
   {
@@ -1548,11 +1548,11 @@ void __18__CRImage_cgImage__block_invoke(uint64_t a1, void **a2, int a3)
   return v3;
 }
 
-- (id)imageByAdjustingBrightnessAlpha:(double)a3 beta:(double)a4
+- (id)imageByAdjustingBrightnessAlpha:(double)alpha beta:(double)beta
 {
   v7 = [[CRImage alloc] initWithWidth:[(CRImage *)self width] height:[(CRImage *)self height] colorSpace:0];
-  v8 = [(CRImage *)self width];
-  v9 = [(CRImage *)self height];
+  width = [(CRImage *)self width];
+  height = [(CRImage *)self height];
   [(CRImage *)self vImage];
   v10 = v15;
   if (v7)
@@ -1566,13 +1566,13 @@ void __18__CRImage_cgImage__block_invoke(uint64_t a1, void **a2, int a3)
     v11 = 0;
   }
 
-  if (v9 * v8 >= 1)
+  if (height * width >= 1)
   {
-    v12 = (v9 * v8) & 0x7FFFFFFF;
+    v12 = (height * width) & 0x7FFFFFFF;
     do
     {
       v13 = *v10++;
-      *v11++ = fmin(a4 + v13 * a3, 255.0);
+      *v11++ = fmin(beta + v13 * alpha, 255.0);
       --v12;
     }
 
@@ -1588,9 +1588,9 @@ void __18__CRImage_cgImage__block_invoke(uint64_t a1, void **a2, int a3)
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
-  v3 = [(CRImage *)self bytesPerPixel];
+  bytesPerPixel = [(CRImage *)self bytesPerPixel];
   v4 = [[CRImage alloc] initWithWidth:[(CRImage *)self height] height:[(CRImage *)self width] colorSpace:self->_colorSpace];
-  if (v3 == 1)
+  if (bytesPerPixel == 1)
   {
     v5 = vImageRotate90_Planar8(&self->_vImage, &v4->_vImage, 3u, 0, 0) == 0;
     *(v19 + 24) = v5;
@@ -1601,11 +1601,11 @@ void __18__CRImage_cgImage__block_invoke(uint64_t a1, void **a2, int a3)
     *v16 = 0u;
     v17 = 0u;
     v6 = objc_opt_class();
-    v7 = [(CRImage *)v4 width];
-    v8 = [(CRImage *)v4 height];
+    width = [(CRImage *)v4 width];
+    height = [(CRImage *)v4 height];
     if (v6)
     {
-      [v6 allocateVImageBufferWithWidth:v7 height:v8 colorSpace:1];
+      [v6 allocateVImageBufferWithWidth:width height:height colorSpace:1];
     }
 
     else
@@ -1662,9 +1662,9 @@ vImage_Error __30__CRImage_imageByRotating90CW__block_invoke(uint64_t a1, vImage
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
-  v3 = [(CRImage *)self bytesPerPixel];
+  bytesPerPixel = [(CRImage *)self bytesPerPixel];
   v4 = [[CRImage alloc] initWithWidth:[(CRImage *)self width] height:[(CRImage *)self height] colorSpace:self->_colorSpace];
-  if (v3 == 1)
+  if (bytesPerPixel == 1)
   {
     v5 = vImageRotate90_Planar8(&self->_vImage, &v4->_vImage, 2u, 0, 0) == 0;
     *(v19 + 24) = v5;
@@ -1675,11 +1675,11 @@ vImage_Error __30__CRImage_imageByRotating90CW__block_invoke(uint64_t a1, vImage
     *v16 = 0u;
     v17 = 0u;
     v6 = objc_opt_class();
-    v7 = [(CRImage *)v4 width];
-    v8 = [(CRImage *)v4 height];
+    width = [(CRImage *)v4 width];
+    height = [(CRImage *)v4 height];
     if (v6)
     {
-      [v6 allocateVImageBufferWithWidth:v7 height:v8 colorSpace:1];
+      [v6 allocateVImageBufferWithWidth:width height:height colorSpace:1];
     }
 
     else
@@ -1730,13 +1730,13 @@ vImage_Error __29__CRImage_imageByRotating180__block_invoke(uint64_t a1, vImage_
   return result;
 }
 
-- (id)imageByCorrectingFromOrientation:(unsigned int)a3
+- (id)imageByCorrectingFromOrientation:(unsigned int)orientation
 {
-  v3 = *&a3;
+  v3 = *&orientation;
   v20[1] = *MEMORY[0x1E69E9840];
   v18 = 0;
   v17 = 0;
-  [objc_opt_class() cgOrientation:*&a3 toVImageRotationMode:&v18 andReflection:&v17];
+  [objc_opt_class() cgOrientation:*&orientation toVImageRotationMode:&v18 andReflection:&v17];
   if (v18)
   {
     v5 = 0;
@@ -1749,7 +1749,7 @@ vImage_Error __29__CRImage_imageByRotating180__block_invoke(uint64_t a1, vImage_
 
   if (v5)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else if (self->_vImage.data)
@@ -1758,7 +1758,7 @@ vImage_Error __29__CRImage_imageByRotating180__block_invoke(uint64_t a1, vImage_
     v7 = *&self->_vImage.width;
     v15 = *&self->_vImage.data;
     v16 = v7;
-    v8 = [(CRImage *)v6 initWithVImageBuffer:&v15 inColorSpace:self->_colorSpace];
+    selfCopy = [(CRImage *)v6 initWithVImageBuffer:&v15 inColorSpace:self->_colorSpace];
     v9 = objc_opt_class();
     colorSpace = self->_colorSpace;
     v19 = *MEMORY[0x1E696DE78];
@@ -1767,7 +1767,7 @@ vImage_Error __29__CRImage_imageByRotating180__block_invoke(uint64_t a1, vImage_
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     if (v9)
     {
-      [v9 applyEXIFTransformsOnImage:&v8->_vImage inColorSpace:colorSpace properties:v12];
+      [v9 applyEXIFTransformsOnImage:&selfCopy->_vImage inColorSpace:colorSpace properties:v12];
     }
 
     else
@@ -1777,27 +1777,27 @@ vImage_Error __29__CRImage_imageByRotating180__block_invoke(uint64_t a1, vImage_
     }
 
     v13 = v16;
-    *&v8->_vImage.data = v15;
-    *&v8->_vImage.width = v13;
+    *&selfCopy->_vImage.data = v15;
+    *&selfCopy->_vImage.width = v13;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)imageByScalingToWidth:(unint64_t)a3 height:(unint64_t)a4
+- (id)imageByScalingToWidth:(unint64_t)width height:(unint64_t)height
 {
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 1;
-  v7 = [(CRImage *)self bytesPerPixel];
-  v8 = [[CRImage alloc] initWithWidth:a3 height:a4 colorSpace:self->_colorSpace];
-  if (v7 == 1)
+  bytesPerPixel = [(CRImage *)self bytesPerPixel];
+  v8 = [[CRImage alloc] initWithWidth:width height:height colorSpace:self->_colorSpace];
+  if (bytesPerPixel == 1)
   {
     v9 = vImageScale_Planar8(&self->_vImage, &v8->_vImage, 0, 0) == 0;
     *(v21 + 24) = v9;
@@ -1810,7 +1810,7 @@ vImage_Error __29__CRImage_imageByRotating180__block_invoke(uint64_t a1, vImage_
     v10 = objc_opt_class();
     if (v10)
     {
-      [v10 allocateVImageBufferWithWidth:a3 height:a4 colorSpace:1];
+      [v10 allocateVImageBufferWithWidth:width height:height colorSpace:1];
     }
 
     else
@@ -1861,25 +1861,25 @@ vImage_Error __40__CRImage_imageByScalingToWidth_height___block_invoke(uint64_t 
   return result;
 }
 
-- (id)imageByPaddingToRatioAndScalingToWidth:(unint64_t)a3 height:(unint64_t)a4 paddingMode:(unint64_t)a5 alignCenter:(BOOL)a6
+- (id)imageByPaddingToRatioAndScalingToWidth:(unint64_t)width height:(unint64_t)height paddingMode:(unint64_t)mode alignCenter:(BOOL)center
 {
-  v6 = a6;
-  v11 = [[CRImage alloc] initWithWidth:a3 height:a4 colorSpace:0];
-  v12 = (([(CRImage *)self height]* a3) / a4);
-  if ([(CRImage *)self width]> v12)
+  centerCopy = center;
+  v11 = [[CRImage alloc] initWithWidth:width height:height colorSpace:0];
+  width = (([(CRImage *)self height]* width) / height);
+  if ([(CRImage *)self width]> width)
   {
-    v12 = [(CRImage *)self width];
+    width = [(CRImage *)self width];
   }
 
-  v13 = (([(CRImage *)self width]* a4) / a3);
-  if ([(CRImage *)self height]> v13)
+  height = (([(CRImage *)self width]* height) / width);
+  if ([(CRImage *)self height]> height)
   {
-    v13 = [(CRImage *)self height];
+    height = [(CRImage *)self height];
   }
 
-  if (v6)
+  if (centerCopy)
   {
-    v14 = (v12 - [(CRImage *)self width]) >> 1;
+    v14 = (width - [(CRImage *)self width]) >> 1;
   }
 
   else
@@ -1887,14 +1887,14 @@ vImage_Error __40__CRImage_imageByScalingToWidth_height___block_invoke(uint64_t 
     v14 = 0;
   }
 
-  v15 = [(CRImage *)self height];
-  v16 = [[CRImage alloc] initWithWidth:v12 height:v13 colorSpace:0];
-  v17 = CRImagePaddingValueForMode(a5, self->_vImage.data, self->_vImage.width, self->_vImage.height, self->_vImage.rowBytes);
+  height2 = [(CRImage *)self height];
+  v16 = [[CRImage alloc] initWithWidth:width height:height colorSpace:0];
+  v17 = CRImagePaddingValueForMode(mode, self->_vImage.data, self->_vImage.width, self->_vImage.height, self->_vImage.rowBytes);
   memset(v16->_vImage.data, v17, v16->_vImage.height * v16->_vImage.rowBytes);
   if (self->_vImage.height)
   {
     v18 = 0;
-    v19 = (v13 - v15) >> 1;
+    v19 = (height - height2) >> 1;
     do
     {
       memcpy(v16->_vImage.data + v16->_vImage.rowBytes * (v19 + v18) + v14, self->_vImage.data + self->_vImage.rowBytes * v18, self->_vImage.width);
@@ -1981,9 +1981,9 @@ _BYTE *__26__CRImage_imageByDilating__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)imageByApplyingBinaryMask:(id)a3
+- (id)imageByApplyingBinaryMask:(id)mask
 {
-  v4 = a3;
+  maskCopy = mask;
   v5 = [[CRImage alloc] initWithWidth:[(CRImage *)self width] height:[(CRImage *)self height] colorSpace:0];
   v6 = v5;
   height = self->_vImage.height;
@@ -1997,7 +1997,7 @@ _BYTE *__26__CRImage_imageByDilating__block_invoke(uint64_t a1)
       {
         for (i = 0; i < width; ++i)
         {
-          if (!*(v4[2] + v8 * v4[5] + i))
+          if (!*(maskCopy[2] + v8 * maskCopy[5] + i))
           {
             operator new();
           }
@@ -2024,7 +2024,7 @@ _BYTE *__26__CRImage_imageByDilating__block_invoke(uint64_t a1)
           for (j = 0; j < v12; ++j)
           {
             v14 = 0;
-            if (*(v4[2] + v11 * v4[5] + j))
+            if (*(maskCopy[2] + v11 * maskCopy[5] + j))
             {
               v14 = *(self->_vImage.data + v11 * self->_vImage.rowBytes + j);
             }
@@ -2046,29 +2046,29 @@ _BYTE *__26__CRImage_imageByDilating__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (unint64_t)bytesPerPixelForColorSpace:(int)a3
++ (unint64_t)bytesPerPixelForColorSpace:(int)space
 {
-  if (a3 > 4)
+  if (space > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_1B42B00D8[a3];
+    return qword_1B42B00D8[space];
   }
 }
 
-+ (unint64_t)channelsForColorSpace:(int)a3
++ (unint64_t)channelsForColorSpace:(int)space
 {
-  if (a3 > 4)
+  if (space > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_1B42B00D8[a3];
+    return qword_1B42B00D8[space];
   }
 }
 
@@ -2088,16 +2088,16 @@ _BYTE *__26__CRImage_imageByDilating__block_invoke(uint64_t a1)
   return [v3 channelsForColorSpace:colorSpace];
 }
 
-+ (id)nameForColorSpace:(int)a3
++ (id)nameForColorSpace:(int)space
 {
-  if (a3 > 4)
+  if (space > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7BC3788[a3];
+    return off_1E7BC3788[space];
   }
 }
 
@@ -2137,9 +2137,9 @@ _BYTE *__26__CRImage_imageByDilating__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (CRImage)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 colorSpace:(int)a5
+- (CRImage)initWithWidth:(unint64_t)width height:(unint64_t)height colorSpace:(int)space
 {
-  v5 = *&a5;
+  v5 = *&space;
   v8 = [(CRImage *)self init];
   v9 = v8;
   if (v8)
@@ -2149,7 +2149,7 @@ _BYTE *__26__CRImage_imageByDilating__block_invoke(uint64_t a1)
     v10 = objc_opt_class();
     if (v10)
     {
-      [v10 allocateVImageBufferWithWidth:a3 height:a4 colorSpace:v5];
+      [v10 allocateVImageBufferWithWidth:width height:height colorSpace:v5];
     }
 
     else
@@ -2166,10 +2166,10 @@ _BYTE *__26__CRImage_imageByDilating__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (CRImage)initWithVImageBuffer:(vImage_Buffer *)a3 inColorSpace:(int)a4 toColorSpace:(int)a5
+- (CRImage)initWithVImageBuffer:(vImage_Buffer *)buffer inColorSpace:(int)space toColorSpace:(int)colorSpace
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&colorSpace;
+  v6 = *&space;
   v8 = [(CRImage *)self init];
   v9 = v8;
   if (v8)
@@ -2180,7 +2180,7 @@ _BYTE *__26__CRImage_imageByDilating__block_invoke(uint64_t a1)
     v11 = objc_opt_class();
     if (v11)
     {
-      [v11 allocateVImageBufferWithWidth:a3->width height:a3->height bytesPerPixel:v10];
+      [v11 allocateVImageBufferWithWidth:buffer->width height:buffer->height bytesPerPixel:v10];
     }
 
     else
@@ -2194,10 +2194,10 @@ _BYTE *__26__CRImage_imageByDilating__block_invoke(uint64_t a1)
     v9->_vImageDataIsCopy = 1;
     if (v6 == v5)
     {
-      vImageCopyBuffer(a3, &v9->_vImage, v10, 0);
+      vImageCopyBuffer(buffer, &v9->_vImage, v10, 0);
     }
 
-    else if (([objc_opt_class() convertVImage:a3 inColorSpace:v6 toVImage:&v9->_vImage toColorSpace:v5] & 1) == 0)
+    else if (([objc_opt_class() convertVImage:buffer inColorSpace:v6 toVImage:&v9->_vImage toColorSpace:v5] & 1) == 0)
     {
       free(v9->_vImage.data);
       v12 = 0;
@@ -2213,15 +2213,15 @@ LABEL_9:
   return v12;
 }
 
-- (CRImage)initWithVImageBuffer:(vImage_Buffer *)a3 inColorSpace:(int)a4
+- (CRImage)initWithVImageBuffer:(vImage_Buffer *)buffer inColorSpace:(int)space
 {
-  v4 = *&a3->width;
-  v6[0] = *&a3->data;
+  v4 = *&buffer->width;
+  v6[0] = *&buffer->data;
   v6[1] = v4;
-  return [(CRImage *)self initWithVImageBuffer:v6 inColorSpace:*&a4 toColorSpace:*&a4];
+  return [(CRImage *)self initWithVImageBuffer:v6 inColorSpace:*&space toColorSpace:*&space];
 }
 
-- (CRImage)initWithFloatBuffer:(float *)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (CRImage)initWithFloatBuffer:(float *)buffer width:(unint64_t)width height:(unint64_t)height
 {
   v23 = *MEMORY[0x1E69E9840];
   v8 = [(CRImage *)self init];
@@ -2237,7 +2237,7 @@ LABEL_9:
   v11 = objc_opt_class();
   if (v11)
   {
-    [v11 allocateVImageBufferWithWidth:a4 height:a5 bytesPerPixel:v10];
+    [v11 allocateVImageBufferWithWidth:width height:height bytesPerPixel:v10];
   }
 
   else
@@ -2252,7 +2252,7 @@ LABEL_9:
   v9->_vImageDataIsCopy = 1;
   data = v9->_vImage.data;
   v20 = 0;
-  CRConvertFloat32BufferToUInt8Buffer(a3, data, a5 * a4, &v20);
+  CRConvertFloat32BufferToUInt8Buffer(buffer, data, height * width, &v20);
   v14 = v20;
   if (v14)
   {
@@ -2260,9 +2260,9 @@ LABEL_9:
     v16 = CROSLogForCategory(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v15 localizedDescription];
+      localizedDescription = [v15 localizedDescription];
       *buf = 138412290;
-      *&buf[4] = v17;
+      *&buf[4] = localizedDescription;
       _os_log_impl(&dword_1B40D2000, v16, OS_LOG_TYPE_ERROR, "Failed to create image with float buffer: %@", buf, 0xCu);
     }
 
@@ -2278,13 +2278,13 @@ LABEL_9:
   return v18;
 }
 
-- (id)imageByCroppingRectangle:(CGRect)a3
+- (id)imageByCroppingRectangle:(CGRect)rectangle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CRImage *)self width];
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  width = [(CRImage *)self width];
   v24.size.height = [(CRImage *)self height];
   v24.origin.x = 0.0;
   v24.origin.y = 0.0;
@@ -2292,7 +2292,7 @@ LABEL_9:
   v22.origin.y = y;
   v22.size.width = width;
   v22.size.height = height;
-  v24.size.width = v8;
+  v24.size.width = width;
   v23 = CGRectIntersection(v22, v24);
   v9 = v23.origin.x;
   v10 = v23.origin.y;
@@ -2312,18 +2312,18 @@ LABEL_9:
   return v16;
 }
 
-- (id)imageByCroppingRectangle:(CGRect)a3 textFeaturePoints:(id)a4 radians:(float)a5 rotatedRoi:(CGRect *)a6
+- (id)imageByCroppingRectangle:(CGRect)rectangle textFeaturePoints:(id)points radians:(float)radians rotatedRoi:(CGRect *)roi
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   v84 = *MEMORY[0x1E69E9840];
-  v73 = a4;
-  v13 = [(CRImage *)self width];
-  v14 = [(CRImage *)self height];
-  v88.size.width = v13;
-  v88.size.height = v14;
+  pointsCopy = points;
+  width = [(CRImage *)self width];
+  height = [(CRImage *)self height];
+  v88.size.width = width;
+  v88.size.height = height;
   v88.origin.x = 0.0;
   v88.origin.y = 0.0;
   v86.origin.x = x;
@@ -2335,15 +2335,15 @@ LABEL_9:
   v69 = v87.origin.x;
   v70 = v87.size.width;
   v71 = v87.size.height;
-  angleInRadians = a5;
-  v15 = __sincosf_stret(a5);
-  v16 = malloc_type_calloc([v73 count], 0x10uLL, 0x1000040451B5BE8uLL);
-  v66 = a6;
+  angleInRadians = radians;
+  v15 = __sincosf_stret(radians);
+  v16 = malloc_type_calloc([pointsCopy count], 0x10uLL, 0x1000040451B5BE8uLL);
+  roiCopy = roi;
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v17 = v73;
+  v17 = pointsCopy;
   v18 = [v17 countByEnumeratingWithState:&v79 objects:v83 count:16];
   if (v18)
   {
@@ -2367,10 +2367,10 @@ LABEL_9:
         [*(*(&v79 + 1) + 8 * v25) pointValue];
         v28 = v27;
         v30 = v29;
-        v31 = [(CRImage *)self width];
-        v32 = [(CRImage *)self height];
-        v33 = v28 * v31 - x - v20;
-        v34 = v30 * v32 - y - v21;
+        width2 = [(CRImage *)self width];
+        height2 = [(CRImage *)self height];
+        v33 = v28 * width2 - x - v20;
+        v34 = v30 * height2 - y - v21;
         v35 = v33 * cosval - v34 * v24;
         *&v33 = v34 * cosval + v33 * v24;
         ++v19;
@@ -2497,12 +2497,12 @@ LABEL_9:
     CVPixelBufferUnlockBaseAddress(self->_pixelBuffer, 1uLL);
   }
 
-  if (v66)
+  if (roiCopy)
   {
     v61 = vcvtq_f64_f32(v38);
     v62 = vcvtq_f64_u64(v72);
-    *v66 = vextq_s8(v61, v61, 8uLL);
-    v66[1] = vextq_s8(v62, v62, 8uLL);
+    *roiCopy = vextq_s8(v61, v61, 8uLL);
+    roiCopy[1] = vextq_s8(v62, v62, 8uLL);
   }
 
   data = dest.data;
@@ -2516,21 +2516,21 @@ LABEL_9:
   return v64;
 }
 
-- (CGRect)rotatedRoiByCroppingRectangle:(CGRect)a3 textFeaturePoints:(id)a4 radians:(float)a5
+- (CGRect)rotatedRoiByCroppingRectangle:(CGRect)rectangle textFeaturePoints:(id)points radians:(float)radians
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   v48 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = __sincosf_stret(a5);
-  v13 = malloc_type_calloc([v11 count], 0x10uLL, 0x1000040451B5BE8uLL);
+  pointsCopy = points;
+  v12 = __sincosf_stret(radians);
+  v13 = malloc_type_calloc([pointsCopy count], 0x10uLL, 0x1000040451B5BE8uLL);
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v14 = v11;
+  v14 = pointsCopy;
   v15 = [v14 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v15)
   {
@@ -2554,10 +2554,10 @@ LABEL_9:
         [*(*(&v43 + 1) + 8 * v22) pointValue];
         v25 = v24;
         v27 = v26;
-        v28 = [(CRImage *)self width];
-        v29 = [(CRImage *)self height];
-        v30 = v25 * v28 - x - v17;
-        v31 = v27 * v29 - y - v18;
+        width = [(CRImage *)self width];
+        height = [(CRImage *)self height];
+        v30 = v25 * width - x - v17;
+        v31 = v27 * height - y - v18;
         v32 = v30 * cosval - v31 * v21;
         *&v30 = v31 * cosval + v30 * v21;
         ++v16;
@@ -2601,13 +2601,13 @@ LABEL_9:
   return result;
 }
 
-- (id)imageByCroppingRectangle:(CGRect)a3 toHeight:(unint64_t)a4 andWidth:(unint64_t)a5 withRotationAngle:(float)a6
+- (id)imageByCroppingRectangle:(CGRect)rectangle toHeight:(unint64_t)height andWidth:(unint64_t)width withRotationAngle:(float)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = [(CRImage *)self width];
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  width = [(CRImage *)self width];
   v30.size.height = [(CRImage *)self height];
   v30.origin.x = 0.0;
   v30.origin.y = 0.0;
@@ -2615,7 +2615,7 @@ LABEL_9:
   v28.origin.y = y;
   v28.size.width = width;
   v28.size.height = height;
-  v30.size.width = v14;
+  v30.size.width = width;
   v29 = CGRectIntersection(v28, v30);
   v15 = v29.origin.x;
   v16 = v29.size.width;
@@ -2625,7 +2625,7 @@ LABEL_9:
   src.data = ([(CRImage *)self bytesPerPixel]* v15);
   src.height = v17;
   src.width = v16;
-  if (src.height <= a4)
+  if (src.height <= height)
   {
     v20 = [CRImage alloc];
     dest = src;
@@ -2636,10 +2636,10 @@ LABEL_9:
   {
     memset(&dest, 0, sizeof(dest));
     v18 = objc_opt_class();
-    v19 = [(CRImage *)self bytesPerPixel];
+    bytesPerPixel = [(CRImage *)self bytesPerPixel];
     if (v18)
     {
-      [v18 allocateVImageBufferWithWidth:a5 height:a4 bytesPerPixel:v19];
+      [v18 allocateVImageBufferWithWidth:width height:height bytesPerPixel:bytesPerPixel];
     }
 
     else
@@ -2647,7 +2647,7 @@ LABEL_9:
       memset(&dest, 0, sizeof(dest));
     }
 
-    vImageRotate_Planar8(&src, &dest, 0, a6, 0, 0);
+    vImageRotate_Planar8(&src, &dest, 0, angle, 0, 0);
     v22 = [CRImage alloc];
     v21 = [(CRImage *)v22 initWithVImageBuffer:&v24 inColorSpace:[(CRImage *)self colorSpace:dest.data]];
     if (dest.data)
@@ -2659,35 +2659,35 @@ LABEL_9:
   return v21;
 }
 
-- (id)imageByRectifyingRegion:(id)a3 toColorSpace:(int)a4 homography:(id *)a5
+- (id)imageByRectifyingRegion:(id)region toColorSpace:(int)space homography:(id *)homography
 {
-  v6 = *&a4;
+  v6 = *&space;
   v67[4] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  regionCopy = region;
   v9 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:{-[CRImage pixelBuffer](self, "pixelBuffer")}];
   v66[0] = @"inputTopLeft";
-  [v8 topLeft];
+  [regionCopy topLeft];
   v11 = v10;
   v13 = v12;
   [(CRImage *)self size];
   v16 = CIImageCoordinateFromCGPoint(v11, v13, v14, v15);
   v67[0] = v16;
   v66[1] = @"inputTopRight";
-  [v8 topRight];
+  [regionCopy topRight];
   v18 = v17;
   v20 = v19;
   [(CRImage *)self size];
   v23 = CIImageCoordinateFromCGPoint(v18, v20, v21, v22);
   v67[1] = v23;
   v66[2] = @"inputBottomRight";
-  [v8 bottomRight];
+  [regionCopy bottomRight];
   v25 = v24;
   v27 = v26;
   [(CRImage *)self size];
   v30 = CIImageCoordinateFromCGPoint(v25, v27, v28, v29);
   v67[2] = v30;
   v66[3] = @"inputBottomLeft";
-  [v8 bottomLeft];
+  [regionCopy bottomLeft];
   v32 = v31;
   v34 = v33;
   [(CRImage *)self size];
@@ -2697,7 +2697,7 @@ LABEL_9:
   v39 = [v9 imageByApplyingFilter:@"CIPerspectiveCorrection" withInputParameters:v38];
 
   v40 = [[CRImage alloc] initWithCIImage:v39 toColorSpace:v6];
-  if (a5)
+  if (homography)
   {
     v62[0] = 0;
     v62[1] = 0;
@@ -2706,39 +2706,39 @@ LABEL_9:
     v63 = xmmword_1B42AF250;
     v64 = _Q1;
     v65 = xmmword_1B42AF260;
-    [v8 topLeft];
-    [v8 topRight];
+    [regionCopy topLeft];
+    [regionCopy topRight];
     v61[2] = v48;
     v61[3] = v49;
-    [v8 bottomRight];
+    [regionCopy bottomRight];
     v61[4] = v50;
     v61[5] = v51;
-    [v8 bottomLeft];
+    [regionCopy bottomLeft];
     v61[6] = v52;
     v61[7] = v53;
     v54 = computeHomographyMatrix(v61, v62);
-    *(a5 + 2) = v55;
-    *(a5 + 6) = v56;
-    *a5 = v54;
-    *(a5 + 2) = v57;
-    *(a5 + 10) = v58;
-    *(a5 + 4) = v59;
+    *(homography + 2) = v55;
+    *(homography + 6) = v56;
+    *homography = v54;
+    *(homography + 2) = v57;
+    *(homography + 10) = v58;
+    *(homography + 4) = v59;
   }
 
   return v40;
 }
 
-- (void)writeToURL:(id)a3
+- (void)writeToURL:(id)l
 {
-  v5 = [a3 absoluteString];
-  v4 = [v5 stringByReplacingOccurrencesOfString:@"file://" withString:&stru_1F2BB4348];
+  absoluteString = [l absoluteString];
+  v4 = [absoluteString stringByReplacingOccurrencesOfString:@"file://" withString:&stru_1F2BB4348];
   [(CRImage *)self writeToFile:v4];
 }
 
-- (void)writeToFile:(id)a3
+- (void)writeToFile:(id)file
 {
-  v4 = a3;
-  writeCGImageWithMetadata([(CRImage *)self cgImage], v4, 0);
+  fileCopy = file;
+  writeCGImageWithMetadata([(CRImage *)self cgImage], fileCopy, 0);
 }
 
 - (void)dealloc
@@ -2805,10 +2805,10 @@ LABEL_9:
   return v5;
 }
 
-+ (void)cgOrientation:(unsigned int)a3 toVImageRotationMode:(char *)a4 andReflection:(int *)a5
++ (void)cgOrientation:(unsigned int)orientation toVImageRotationMode:(char *)mode andReflection:(int *)reflection
 {
-  v5 = a3 - 2;
-  if (a3 - 2 > 6)
+  v5 = orientation - 2;
+  if (orientation - 2 > 6)
   {
     LOBYTE(v6) = 0;
     v7 = 0;
@@ -2820,16 +2820,16 @@ LABEL_9:
     v7 = dword_1B42B0100[v5];
   }
 
-  *a4 = v6;
-  *a5 = v7;
+  *mode = v6;
+  *reflection = v7;
 }
 
-+ (vImage_Buffer)applyEXIFTransformsOnImage:(SEL)a3 inColorSpace:(const vImage_Buffer *)a4 properties:(int)a5
++ (vImage_Buffer)applyEXIFTransformsOnImage:(SEL)image inColorSpace:(const vImage_Buffer *)space properties:(int)properties
 {
-  v6 = *&a5;
+  v6 = *&properties;
   v27 = *MEMORY[0x1E69E9840];
-  v8 = *&a4->width;
-  *&retstr->data = *&a4->data;
+  v8 = *&space->width;
+  *&retstr->data = *&space->data;
   *&retstr->width = v8;
   v9 = [a6 objectForKey:*MEMORY[0x1E696DE78]];
   v10 = v9;
@@ -2972,10 +2972,10 @@ LABEL_34:
   return result;
 }
 
-- (CRImage)initWithCGImage:(CGImage *)a3 properties:(id)a4 toColorSpace:(int)a5
+- (CRImage)initWithCGImage:(CGImage *)image properties:(id)properties toColorSpace:(int)space
 {
-  v5 = *&a5;
-  v8 = a4;
+  v5 = *&space;
+  propertiesCopy = properties;
   v9 = [(CRImage *)self init];
   if (!v9)
   {
@@ -2984,8 +2984,8 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   v33 = 0u;
   v34 = 0u;
   v12 = objc_opt_class();
@@ -3007,7 +3007,7 @@ LABEL_27:
   v29 = 4;
   v30 = 0;
   v31 = 0;
-  v14 = MEMORY[0x1B8C752A0](&v33, v28, 0, a3, 512);
+  v14 = MEMORY[0x1B8C752A0](&v33, v28, 0, image, 512);
   CGColorSpaceRelease(DeviceRGB);
   if (v14)
   {
@@ -3021,7 +3021,7 @@ LABEL_27:
     v18 = objc_opt_class();
     if (v18)
     {
-      [v18 applyEXIFTransformsOnImage:&v33 inColorSpace:1 properties:v8];
+      [v18 applyEXIFTransformsOnImage:&v33 inColorSpace:1 properties:propertiesCopy];
     }
 
     else
@@ -3044,7 +3044,7 @@ LABEL_19:
       v21 = objc_opt_class();
       if (v21)
       {
-        [v21 applyEXIFTransformsOnImage:v26 inColorSpace:v5 properties:v8];
+        [v21 applyEXIFTransformsOnImage:v26 inColorSpace:v5 properties:propertiesCopy];
       }
 
       else
@@ -3094,58 +3094,58 @@ LABEL_28:
   return v15;
 }
 
-- (CRImage)initWithContentsOfURL:(id)a3 toColorSpace:(int)a4
+- (CRImage)initWithContentsOfURL:(id)l toColorSpace:(int)space
 {
-  v4 = *&a4;
-  v6 = CGImageSourceCreateWithURL(a3, 0);
-  v7 = v6;
+  v4 = *&space;
+  v6 = CGImageSourceCreateWithURL(l, 0);
+  selfCopy = v6;
   if (v6)
   {
     ImageAtIndex = CGImageSourceCreateImageAtIndex(v6, 0, 0);
     if (ImageAtIndex)
     {
-      v9 = CGImageSourceCopyPropertiesAtIndex(v7, 0, 0);
+      v9 = CGImageSourceCopyPropertiesAtIndex(selfCopy, 0, 0);
       v10 = [(CRImage *)self initWithCGImage:ImageAtIndex properties:v9 toColorSpace:v4];
 
       CGImageRelease(ImageAtIndex);
-      CFRelease(v7);
+      CFRelease(selfCopy);
       self = v10;
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      CFRelease(v7);
-      v7 = 0;
+      CFRelease(selfCopy);
+      selfCopy = 0;
     }
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (BOOL)convertVImage:(const vImage_Buffer *)a3 inColorSpace:(int)a4 toVImage:(vImage_Buffer *)a5 toColorSpace:(int)a6
++ (BOOL)convertVImage:(const vImage_Buffer *)image inColorSpace:(int)space toVImage:(vImage_Buffer *)vImage toColorSpace:(int)colorSpace
 {
-  v6 = *&a6;
-  v8 = *&a4;
+  v6 = *&colorSpace;
+  v8 = *&space;
   v32 = *MEMORY[0x1E69E9840];
-  if (a4 == a6)
+  if (space == colorSpace)
   {
-    v10 = [objc_opt_class() bytesPerPixelForColorSpace:*&a4];
-    v11 = vImageCopyBuffer(a3, a5, v10, 0);
+    v10 = [objc_opt_class() bytesPerPixelForColorSpace:*&space];
+    v11 = vImageCopyBuffer(image, vImage, v10, 0);
     goto LABEL_3;
   }
 
   v15 = 1;
-  if (a4 > 1)
+  if (space > 1)
   {
-    if (a4 != 2)
+    if (space != 2)
     {
-      if (a4 == 3)
+      if (space == 3)
       {
-        if (!a6)
+        if (!colorSpace)
         {
           v15 = 1;
-          if (!vImageExtractChannel_ARGB8888(a3, a5, 1, 0))
+          if (!vImageExtractChannel_ARGB8888(image, vImage, 1, 0))
           {
             return v15;
           }
@@ -3153,35 +3153,35 @@ LABEL_28:
           goto LABEL_4;
         }
 
-        if (a6 == 4)
+        if (colorSpace == 4)
         {
-          vImageConvert_ARGB8888toRGB888(a3, a5, 0);
+          vImageConvert_ARGB8888toRGB888(image, vImage, 0);
           return 1;
         }
 
-        if (a6 != 1 || vImageConvert_YpCbCrToARGB_GenerateConversion(*MEMORY[0x1E6958848], &fullYpCbCrPixelRange, &buf, kvImage444AYpCbCr8, kvImageARGB8888, 0))
+        if (colorSpace != 1 || vImageConvert_YpCbCrToARGB_GenerateConversion(*MEMORY[0x1E6958848], &fullYpCbCrPixelRange, &buf, kvImage444AYpCbCr8, kvImageARGB8888, 0))
         {
           goto LABEL_4;
         }
 
-        v11 = vImageConvert_444AYpCbCr8ToARGB8888(a3, a5, &buf, 0, 0);
+        v11 = vImageConvert_444AYpCbCr8ToARGB8888(image, vImage, &buf, 0, 0);
         goto LABEL_3;
       }
 
-      if (a4 != 4)
+      if (space != 4)
       {
         return v15;
       }
 
-      if (a6)
+      if (colorSpace)
       {
-        if (a6 == 3)
+        if (colorSpace == 3)
         {
-          v11 = vImageConvert_RGB888toARGB8888(a3, 0, 0xFFu, a5, 0, 0);
+          v11 = vImageConvert_RGB888toARGB8888(image, 0, 0xFFu, vImage, 0, 0);
           goto LABEL_3;
         }
 
-        if (a6 != 1)
+        if (colorSpace != 1)
         {
           goto LABEL_4;
         }
@@ -3190,7 +3190,7 @@ LABEL_28:
         v16 = objc_opt_class();
         if (v16)
         {
-          [v16 allocateVImageBufferWithWidth:a3->width height:a3->height colorSpace:4];
+          [v16 allocateVImageBufferWithWidth:image->width height:image->height colorSpace:4];
         }
 
         else
@@ -3200,13 +3200,13 @@ LABEL_28:
 
         v29 = 1;
         *v28 = 2;
-        if (vImagePermuteChannels_RGB888(a3, &permuteMap, v28, 0) || vImageConvert_YpCbCrToARGB_GenerateConversion(*MEMORY[0x1E6958848], &fullYpCbCrPixelRange, &buf, kvImage444CrYpCb8, kvImageARGB8888, 0))
+        if (vImagePermuteChannels_RGB888(image, &permuteMap, v28, 0) || vImageConvert_YpCbCrToARGB_GenerateConversion(*MEMORY[0x1E6958848], &fullYpCbCrPixelRange, &buf, kvImage444CrYpCb8, kvImageARGB8888, 0))
         {
           free(permuteMap.data);
           goto LABEL_4;
         }
 
-        v24 = vImageConvert_444CrYpCb8ToARGB8888(&permuteMap, a5, &buf, 0, 0xFFu, 0);
+        v24 = vImageConvert_444CrYpCb8ToARGB8888(&permuteMap, vImage, &buf, 0, 0xFFu, 0);
       }
 
       else
@@ -3215,7 +3215,7 @@ LABEL_28:
         v23 = objc_opt_class();
         if (v23)
         {
-          [v23 allocateVImageBufferWithWidth:a3->width height:a3->height bytesPerPixel:1];
+          [v23 allocateVImageBufferWithWidth:image->width height:image->height bytesPerPixel:1];
         }
 
         else
@@ -3227,7 +3227,7 @@ LABEL_28:
         v26 = objc_opt_class();
         if (v26)
         {
-          [v26 allocateVImageBufferWithWidth:a3->width height:a3->height bytesPerPixel:1];
+          [v26 allocateVImageBufferWithWidth:image->width height:image->height bytesPerPixel:1];
         }
 
         else
@@ -3235,7 +3235,7 @@ LABEL_28:
           memset(&permuteMap, 0, sizeof(permuteMap));
         }
 
-        v24 = vImageConvert_RGB888toPlanar8(a3, a5, &buf, &permuteMap, 0);
+        v24 = vImageConvert_RGB888toPlanar8(image, vImage, &buf, &permuteMap, 0);
         free(*buf.opaque);
       }
 
@@ -3258,46 +3258,46 @@ LABEL_28:
 
   else
   {
-    if (a4 != -1)
+    if (space != -1)
     {
-      if (a4)
+      if (space)
       {
-        if (a4 != 1)
+        if (space != 1)
         {
           return v15;
         }
 
-        if (a6 == 4)
+        if (colorSpace == 4)
         {
-          if (vImageConvert_ARGBToYpCbCr_GenerateConversion(*MEMORY[0x1E6958838], &fullYpCbCrPixelRange, &buf, kvImageARGB8888, kvImage444CrYpCb8, 0) || vImageConvert_ARGB8888To444CrYpCb8(a3, a5, &buf, 0, 0))
+          if (vImageConvert_ARGBToYpCbCr_GenerateConversion(*MEMORY[0x1E6958838], &fullYpCbCrPixelRange, &buf, kvImageARGB8888, kvImage444CrYpCb8, 0) || vImageConvert_ARGB8888To444CrYpCb8(image, vImage, &buf, 0, 0))
           {
             goto LABEL_4;
           }
 
           BYTE2(permuteMap.data) = 0;
           LOWORD(permuteMap.data) = 513;
-          v11 = vImagePermuteChannels_RGB888(a5, a5, &permuteMap, 0);
+          v11 = vImagePermuteChannels_RGB888(vImage, vImage, &permuteMap, 0);
         }
 
-        else if (a6 == 3)
+        else if (colorSpace == 3)
         {
           if (vImageConvert_ARGBToYpCbCr_GenerateConversion(*MEMORY[0x1E6958838], &fullYpCbCrPixelRange, &buf, kvImageARGB8888, kvImage444AYpCbCr8, 0))
           {
             goto LABEL_4;
           }
 
-          v11 = vImageConvert_ARGB8888To444AYpCbCr8(a3, a5, &buf, 0, 0);
+          v11 = vImageConvert_ARGB8888To444AYpCbCr8(image, vImage, &buf, 0, 0);
         }
 
         else
         {
-          if (a6)
+          if (colorSpace)
           {
             goto LABEL_4;
           }
 
           *buf.opaque = 0x93B5B921B330000;
-          v11 = vImageMatrixMultiply_ARGB8888ToPlanar8(a3, a5, &buf, 0x7FFF, 0, 0x3FFF, 0);
+          v11 = vImageMatrixMultiply_ARGB8888ToPlanar8(image, vImage, &buf, 0x7FFF, 0, 0x3FFF, 0);
         }
 
 LABEL_3:
@@ -3309,20 +3309,20 @@ LABEL_3:
         return 1;
       }
 
-      if (a6 == 1)
+      if (colorSpace == 1)
       {
-        v11 = vImageConvert_Planar8ToXRGB8888(0xFFu, a3, a3, a3, a5, 0);
+        v11 = vImageConvert_Planar8ToXRGB8888(0xFFu, image, image, image, vImage, 0);
         goto LABEL_3;
       }
 
-      if (a6 != 4)
+      if (colorSpace != 4)
       {
-        if (a6 != 3 || vImageOverwriteChannelsWithPixel_ARGB8888(black_AYpCbCr, a5, a5, 0xFu, 0))
+        if (colorSpace != 3 || vImageOverwriteChannelsWithPixel_ARGB8888(black_AYpCbCr, vImage, vImage, 0xFu, 0))
         {
           goto LABEL_4;
         }
 
-        v11 = vImageOverwriteChannels_ARGB8888(a3, a5, a5, 4u, 0);
+        v11 = vImageOverwriteChannels_ARGB8888(image, vImage, vImage, 4u, 0);
         goto LABEL_3;
       }
 
@@ -3330,7 +3330,7 @@ LABEL_3:
       v22 = objc_opt_class();
       if (v22)
       {
-        [v22 allocateVImageBufferWithWidth:a3->width height:a3->height colorSpace:1];
+        [v22 allocateVImageBufferWithWidth:image->width height:image->height colorSpace:1];
       }
 
       else
@@ -3338,7 +3338,7 @@ LABEL_3:
         memset(&buf, 0, 32);
       }
 
-      if (vImageOverwriteChannelsWithPixel_ARGB8888(black_AYpCbCr, &buf, &buf, 0xFu, 0) || vImageOverwriteChannels_ARGB8888(a3, &buf, &buf, 4u, 0))
+      if (vImageOverwriteChannelsWithPixel_ARGB8888(black_AYpCbCr, &buf, &buf, 0xFu, 0) || vImageOverwriteChannels_ARGB8888(image, &buf, &buf, 4u, 0))
       {
 LABEL_4:
         v12 = CROSLogForCategory(0);
@@ -3356,7 +3356,7 @@ LABEL_4:
         return 0;
       }
 
-      v24 = vImageConvert_ARGB8888toRGB888(&buf, a5, 0);
+      v24 = vImageConvert_ARGB8888toRGB888(&buf, vImage, 0);
       data = *buf.opaque;
 LABEL_68:
       free(data);
@@ -3384,77 +3384,77 @@ LABEL_68:
   return 0;
 }
 
-- (id)imageByConvertingToColorSpace:(int)a3
+- (id)imageByConvertingToColorSpace:(int)space
 {
-  if (self->_colorSpace == a3)
+  if (self->_colorSpace == space)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = *&a3;
-    v6 = [[CRImage alloc] initWithWidth:[(CRImage *)self width] height:[(CRImage *)self height] colorSpace:*&a3];
+    v5 = *&space;
+    v6 = [[CRImage alloc] initWithWidth:[(CRImage *)self width] height:[(CRImage *)self height] colorSpace:*&space];
     if ([objc_opt_class() convertVImage:&self->_vImage inColorSpace:self->_colorSpace toVImage:&v6->_vImage toColorSpace:v5])
     {
-      v4 = v6;
+      selfCopy = v6;
     }
 
     else
     {
-      v4 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)imageByOverlayingRects:(CGRect *)a3 count:(int64_t)a4 strings:(id)a5 lineWidth:(double)a6 red:(double)a7 green:(double)a8 blue:(double)a9 alpha:(double)a10
+- (id)imageByOverlayingRects:(CGRect *)rects count:(int64_t)count strings:(id)strings lineWidth:(double)width red:(double)red green:(double)green blue:(double)blue alpha:(double)self0
 {
-  v18 = a5;
-  v19 = [(CRImage *)self cgImage];
-  v20 = [(CRImage *)self width];
-  v21 = [(CRImage *)self height];
+  stringsCopy = strings;
+  cgImage = [(CRImage *)self cgImage];
+  width = [(CRImage *)self width];
+  height = [(CRImage *)self height];
   v22 = makeCFPointer<CGColorSpace *>;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   (v22)(DeviceRGB, &space);
   v24 = makeCFPointer<CGContext *>[0];
-  v25 = CGBitmapContextCreate(0, v20, v21, 8uLL, 4 * v20, space, 6u);
+  v25 = CGBitmapContextCreate(0, width, height, 8uLL, 4 * width, space, 6u);
   (v24)(v25, &c);
   v26 = *(MEMORY[0x1E695EFD0] + 16);
   *&transform.a = *MEMORY[0x1E695EFD0];
   *&transform.c = v26;
   *&transform.tx = *(MEMORY[0x1E695EFD0] + 32);
   CGContextConcatCTM(c, &transform);
-  v52.size.width = v20;
-  v52.size.height = v21;
+  v52.size.width = width;
+  v52.size.height = height;
   v52.origin.x = 0.0;
   v52.origin.y = 0.0;
-  CGContextDrawImage(c, v52, v19);
-  CGContextSetRGBStrokeColor(c, a7, a8, a9, a10);
-  CGContextSetRGBFillColor(c, a7, a8, a9, a10);
-  if (a4 >= 1 && v18)
+  CGContextDrawImage(c, v52, cgImage);
+  CGContextSetRGBStrokeColor(c, red, green, blue, alpha);
+  CGContextSetRGBFillColor(c, red, green, blue, alpha);
+  if (count >= 1 && stringsCopy)
   {
     CGContextSetTextDrawingMode(c, kCGTextFill);
     v27 = makeCFPointer<CGColor *>[0];
-    GenericRGB = CGColorCreateGenericRGB(a7, a8, a9, a10);
+    GenericRGB = CGColorCreateGenericRGB(red, green, blue, alpha);
     (v27)(GenericRGB, &transform);
     v29 = 0;
-    v30 = a3;
+    rectsCopy = rects;
     do
     {
-      CGContextSetTextPosition(c, v30->origin.x, v30->origin.y);
+      CGContextSetTextPosition(c, rectsCopy->origin.x, rectsCopy->origin.y);
       v31 = makeCFPointer<CGPath *>[0];
       Mutable = CGPathCreateMutable();
       (v31)(Mutable, &path);
-      v53.origin.x = v30->origin.x;
-      v53.size.width = v30->size.width;
-      height = v30->size.height;
-      v53.origin.y = v30->origin.y - height;
+      v53.origin.x = rectsCopy->origin.x;
+      v53.size.width = rectsCopy->size.width;
+      height = rectsCopy->size.height;
+      v53.origin.y = rectsCopy->origin.y - height;
       v53.size.height = height + height;
       CGPathAddRect(path, 0, v53);
       v34 = makeCFPointer<__CTFramesetter const*>[0];
-      v35 = [v18 objectAtIndexedSubscript:v29];
+      v35 = [stringsCopy objectAtIndexedSubscript:v29];
       v36 = CTFramesetterCreateWithAttributedString(v35);
       (v34)(v36, &cf);
 
@@ -3480,18 +3480,18 @@ LABEL_68:
       }
 
       ++v29;
-      ++v30;
+      ++rectsCopy;
     }
 
-    while (a4 != v29);
+    while (count != v29);
     if (*&transform.a)
     {
       CFRelease(*&transform.a);
     }
   }
 
-  CGContextSetLineWidth(c, a6);
-  CGContextAddRects(c, a3, a4);
+  CGContextSetLineWidth(c, width);
+  CGContextAddRects(c, rects, count);
   CGContextStrokePath(c);
   v39 = makeCFPointer<CGImage *>[0];
   Image = CGBitmapContextCreateImage(c);
@@ -3516,15 +3516,15 @@ LABEL_68:
   return v42;
 }
 
-- (id)imageByOverlayingRegions:(id)a3 strings:(id)a4 lineWidth:(double)a5 red:(double)a6 green:(double)a7 blue:(double)a8 alpha:(double)a9
+- (id)imageByOverlayingRegions:(id)regions strings:(id)strings lineWidth:(double)width red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v43 = a9;
-  v15 = a3;
-  v16 = a4;
+  alphaCopy = alpha;
+  regionsCopy = regions;
+  stringsCopy = strings;
   __p = 0;
   v45 = 0;
   v46 = 0;
-  v17 = [v15 count];
+  v17 = [regionsCopy count];
   if (v17)
   {
     if (!(v17 >> 59))
@@ -3535,12 +3535,12 @@ LABEL_68:
     std::vector<unsigned long>::__throw_length_error[abi:ne200100]();
   }
 
-  for (i = 0; i < [v15 count]; ++i)
+  for (i = 0; i < [regionsCopy count]; ++i)
   {
-    v19 = [v15 objectAtIndexedSubscript:i];
-    v20 = [v19 boundingQuad];
-    v21 = [v20 denormalizedQuad];
-    [v21 boundingBox];
+    v19 = [regionsCopy objectAtIndexedSubscript:i];
+    boundingQuad = [v19 boundingQuad];
+    denormalizedQuad = [boundingQuad denormalizedQuad];
+    [denormalizedQuad boundingBox];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -3607,24 +3607,24 @@ LABEL_68:
 
   if (__p == v45)
   {
-    v41 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v41 = [(CRImage *)self imageByOverlayingRects:__p count:(v45 - __p) >> 5 strings:v16 lineWidth:a5 red:a6 green:a7 blue:a8 alpha:v43];
+    selfCopy = [(CRImage *)self imageByOverlayingRects:__p count:(v45 - __p) >> 5 strings:stringsCopy lineWidth:width red:red green:green blue:blue alpha:alphaCopy];
   }
 
-  return v41;
+  return selfCopy;
 }
 
-+ (void)drawVerticalLineAtXOffset:(double)a3 image:(id)a4
++ (void)drawVerticalLineAtXOffset:(double)offset image:(id)image
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  imageCopy = image;
+  v6 = imageCopy;
+  if (imageCopy)
   {
-    [v5 vImage];
+    [imageCopy vImage];
     v7 = v11;
   }
 
@@ -3634,7 +3634,7 @@ LABEL_68:
   }
 
   v8 = 0;
-  v9 = llround(a3);
+  v9 = llround(offset);
   v10 = v7 + (v9 & ~(v9 >> 31));
   while ([v6 height] > v8)
   {
@@ -3650,10 +3650,10 @@ LABEL_68:
   return self;
 }
 
-- (void)setVImage:(vImage_Buffer *)a3
+- (void)setVImage:(vImage_Buffer *)image
 {
-  v3 = *&a3->width;
-  *&self->_vImage.data = *&a3->data;
+  v3 = *&image->width;
+  *&self->_vImage.data = *&image->data;
   *&self->_vImage.width = v3;
 }
 

@@ -1,102 +1,102 @@
 @interface THChapterBrowserController
-- ($F79AFF246B753071D4AF2E33424639CF)shadowPropertiesForFreeTransformController:(SEL)a3 defaults:(id)a4;
-- (BOOL)chapterViewController:(id)a3 followLink:(id)a4;
-- (BOOL)followAnchor:(id)a3 pulse:(BOOL)a4;
-- (BOOL)followLink:(id)a3 animated:(BOOL)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- ($F79AFF246B753071D4AF2E33424639CF)shadowPropertiesForFreeTransformController:(SEL)controller defaults:(id)defaults;
+- (BOOL)chapterViewController:(id)controller followLink:(id)link;
+- (BOOL)followAnchor:(id)anchor pulse:(BOOL)pulse;
+- (BOOL)followLink:(id)link animated:(BOOL)animated;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)introMediaControllerIsActive;
 - (BOOL)p_isTOCLandscape;
 - (BOOL)p_showingIntroMedia;
 - (BOOL)p_verticalSpaceLimited;
-- (BOOL)passthroughView:(id)a3 shouldAcceptHitAtPoint:(CGPoint)a4 onView:(id)a5 withEvent:(id)a6;
+- (BOOL)passthroughView:(id)view shouldAcceptHitAtPoint:(CGPoint)point onView:(id)onView withEvent:(id)event;
 - (BOOL)prefersHomeIndicatorAutoHidden;
-- (BOOL)thumbnailWasTapped:(id)a3 atPoint:(CGPoint)a4 forLong:(BOOL)a5;
-- (CGPoint)p_offsetForThumbnailAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4;
-- (CGRect)frameForChapterViewController:(id)a3;
-- (CGRect)frameForChapterViewController:(id)a3 withSize:(CGSize)a4;
-- (CGRect)frameForPageThumbAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4;
-- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)a3;
+- (BOOL)thumbnailWasTapped:(id)tapped atPoint:(CGPoint)point forLong:(BOOL)long;
+- (CGPoint)p_offsetForThumbnailAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex;
+- (CGRect)frameForChapterViewController:(id)controller;
+- (CGRect)frameForChapterViewController:(id)controller withSize:(CGSize)size;
+- (CGRect)frameForPageThumbAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex;
+- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)animation;
 - (CGRect)originalCanvasScrollViewFrame;
-- (CGRect)p_beginTransitionFromPageThumbnail:(id)a3 transformView:(id)a4 freeTransform:(BOOL)a5 firstThumbNailToTransition:(BOOL)a6;
-- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4 inLayer:(id)a5;
-- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)a3 inLayer:(id)a4;
+- (CGRect)p_beginTransitionFromPageThumbnail:(id)thumbnail transformView:(id)view freeTransform:(BOOL)transform firstThumbNailToTransition:(BOOL)transition;
+- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex inLayer:(id)layer;
+- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)index inLayer:(id)layer;
 - (CGSize)cachedFrameSize;
-- (CGSize)curtainSizeForFreeTransformController:(id)a3;
+- (CGSize)curtainSizeForFreeTransformController:(id)controller;
 - (CGSize)firstThumbOverlap;
 - (CGSize)firstThumbSize;
 - (CGSize)thumbSize;
 - (NSArray)thumbnailSubviews;
-- (THChapterBrowserController)initWithNibName:(id)a3 bundle:(id)a4 bookPropertiesDelegate:(id)a5 delegate:(id)a6;
+- (THChapterBrowserController)initWithNibName:(id)name bundle:(id)bundle bookPropertiesDelegate:(id)delegate delegate:(id)a6;
 - (UIView)originalCanvasScrollViewSuperview;
-- (_NSRange)p_chapterRelativePageIndexesCurrentlyVisibleInRect:(CGRect)a3 forChapterFrame:(CGRect)a4 chapterPageCount:(unint64_t)a5;
+- (_NSRange)p_chapterRelativePageIndexesCurrentlyVisibleInRect:(CGRect)rect forChapterFrame:(CGRect)frame chapterPageCount:(unint64_t)count;
 - (double)p_pagesScrollViewNextChapterThreshhold;
 - (double)p_updateChapterWidths;
 - (id).cxx_construct;
-- (id)backgroundColorForNavigationBar:(id)a3;
-- (id)chapterViewController:(id)a3 actionForHyperlink:(id)a4 inRep:(id)a5 gesture:(id)a6;
+- (id)backgroundColorForNavigationBar:(id)bar;
+- (id)chapterViewController:(id)controller actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture;
 - (id)childViewControllerForHomeIndicatorAutoHidden;
-- (id)documentRootForChapterViewController:(id)a3;
-- (id)foregroundTintColorForNavigationBar:(id)a3;
-- (id)p_pageThumbnailViewForModelLink:(id)a3;
-- (id)p_pageThumbnailViewForPageIndex:(unint64_t)a3;
-- (id)p_thumbShownForChapter:(unint64_t)a3 index:(unint64_t)a4;
-- (id)presentingViewControllerForChapterViewController:(id)a3;
-- (id)thumbnailImageForPageAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4 tinyThumb:(BOOL)a5;
-- (id)titleColorForNavigationBar:(id)a3;
+- (id)documentRootForChapterViewController:(id)controller;
+- (id)foregroundTintColorForNavigationBar:(id)bar;
+- (id)p_pageThumbnailViewForModelLink:(id)link;
+- (id)p_pageThumbnailViewForPageIndex:(unint64_t)index;
+- (id)p_thumbShownForChapter:(unint64_t)chapter index:(unint64_t)index;
+- (id)presentingViewControllerForChapterViewController:(id)controller;
+- (id)thumbnailImageForPageAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex tinyThumb:(BOOL)thumb;
+- (id)titleColorForNavigationBar:(id)bar;
 - (id)transitionContentView;
-- (id)unmovingParentViewForFreeTransformController:(id)a3;
+- (id)unmovingParentViewForFreeTransformController:(id)controller;
 - (id)visibleThumbnailIndexes;
 - (int)p_chapterIndexForCurrentScrollPosition;
 - (unint64_t)p_firstVisibleThumbnailPageIndexInCurrentChapter;
 - (void)_configurePagesScrollView;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateContentOffsets;
-- (void)chapterViewController:(id)a3 displayPageForModelLink:(id)a4;
-- (void)chapterViewControllerWasTapped:(id)a3;
+- (void)chapterViewController:(id)controller displayPageForModelLink:(id)link;
+- (void)chapterViewControllerWasTapped:(id)tapped;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)didRotateFromFlowInPortraitLockedBook;
 - (void)didTransitionFromCanvas;
-- (void)draggingStartedFromPageControl:(id)a3;
+- (void)draggingStartedFromPageControl:(id)control;
 - (void)flushThumbnails;
-- (void)freeTransformControllerDidBegin:(id)a3;
-- (void)freeTransformControllerDidContinue:(id)a3 withScale:(double)a4;
-- (void)freeTransformControllerDidEnd:(id)a3 passedThreshold:(BOOL)a4;
-- (void)freeTransformControllerWillBeginCompletionAnimation:(id)a3 passedThreshold:(BOOL)a4;
-- (void)freeTransformControllerWillEnd:(id)a3 passedThreshold:(BOOL)a4;
+- (void)freeTransformControllerDidBegin:(id)begin;
+- (void)freeTransformControllerDidContinue:(id)continue withScale:(double)scale;
+- (void)freeTransformControllerDidEnd:(id)end passedThreshold:(BOOL)threshold;
+- (void)freeTransformControllerWillBeginCompletionAnimation:(id)animation passedThreshold:(BOOL)threshold;
+- (void)freeTransformControllerWillEnd:(id)end passedThreshold:(BOOL)threshold;
 - (void)hideBackground;
-- (void)hidePageThumbnailAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4 scrollIfNecessary:(BOOL)a5;
+- (void)hidePageThumbnailAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex scrollIfNecessary:(BOOL)necessary;
 - (void)introMediaControllerMoviePlayerWillHideControls;
-- (void)introMediaControllerShouldAdvancePast:(id)a3;
+- (void)introMediaControllerShouldAdvancePast:(id)past;
 - (void)p_addIntroMediaView;
-- (void)p_adjustViewsForSize:(CGSize)a3;
-- (void)p_animationDidStopForThumbnailView:(id)a3;
+- (void)p_adjustViewsForSize:(CGSize)size;
+- (void)p_animationDidStopForThumbnailView:(id)view;
 - (void)p_backgroundScrollingDidEnd;
 - (void)p_cancelAllContentNodeLoading;
-- (void)p_cleanupAfterTransitionFromPageThumbnail:(id)a3;
-- (void)p_clearChapterViewAtIndex:(unint64_t)a3;
+- (void)p_cleanupAfterTransitionFromPageThumbnail:(id)thumbnail;
+- (void)p_clearChapterViewAtIndex:(unint64_t)index;
 - (void)p_configureThumbCaps;
-- (void)p_configureThumbCapsForSize:(CGSize)a3 updateImmediately:(BOOL)a4;
-- (void)p_configureThumbsAndUpdateLayout:(BOOL)a3;
+- (void)p_configureThumbCapsForSize:(CGSize)size updateImmediately:(BOOL)immediately;
+- (void)p_configureThumbsAndUpdateLayout:(BOOL)layout;
 - (void)p_fixupChapterViewFrames;
-- (void)p_highlightThumbTargetsIfShouldInThumb:(id)a3 atPoint:(CGPoint)a4 coverFullThumb:(BOOL)a5;
+- (void)p_highlightThumbTargetsIfShouldInThumb:(id)thumb atPoint:(CGPoint)point coverFullThumb:(BOOL)fullThumb;
 - (void)p_pageThumbScrollingDidEnd;
 - (void)p_preloadContentNodesForVisibleThumbnails;
 - (void)p_recoverFromFastScrollingDesynchronization;
 - (void)p_releaseOutlets;
 - (void)p_removeAdjacentChapterViews;
 - (void)p_removeIntroMediaView;
-- (void)p_resetPagesScrollViewAndCapThumbCount:(BOOL)a3 firstVisibleRelativePage:(unint64_t)a4 resetContentOffset:(BOOL)a5;
-- (void)p_scrollPageScrollViewToOffset:(CGPoint)a3;
-- (void)p_scrollToThumbnailAtIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)p_setChapterIndex:(unint64_t)a3 forScrub:(BOOL)a4 stillScrolling:(BOOL)a5;
-- (void)p_setupChapterViewControllerAtIndex:(unint64_t)a3 withChapterIndex:(unint64_t)a4 allowThumbnail:(BOOL)a5;
+- (void)p_resetPagesScrollViewAndCapThumbCount:(BOOL)count firstVisibleRelativePage:(unint64_t)page resetContentOffset:(BOOL)offset;
+- (void)p_scrollPageScrollViewToOffset:(CGPoint)offset;
+- (void)p_scrollToThumbnailAtIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)p_setChapterIndex:(unint64_t)index forScrub:(BOOL)scrub stillScrolling:(BOOL)scrolling;
+- (void)p_setupChapterViewControllerAtIndex:(unint64_t)index withChapterIndex:(unint64_t)chapterIndex allowThumbnail:(BOOL)thumbnail;
 - (void)p_setupNextChapterView;
 - (void)p_setupPreviousChapterView;
 - (void)p_startIntroMediaIfNecessary;
-- (void)p_thumbnailAnimationDidStopWithContext:(id)a3;
-- (void)p_transitionFromPageThumbnail:(id)a3 destinationRect:(CGRect)a4 shouldShroud:(BOOL)a5;
-- (void)p_transitionThumbnailToDVC:(id)a3;
+- (void)p_thumbnailAnimationDidStopWithContext:(id)context;
+- (void)p_transitionFromPageThumbnail:(id)thumbnail destinationRect:(CGRect)rect shouldShroud:(BOOL)shroud;
+- (void)p_transitionThumbnailToDVC:(id)c;
 - (void)p_updateAdjacentChapterViews;
 - (void)p_updateBottomWrapperFrame;
 - (void)p_updateChapterBackgroundsView;
@@ -104,49 +104,49 @@
 - (void)p_updatePageControl;
 - (void)p_updatePageScrubberControlForSizeClassChange;
 - (void)p_updatePageScrubberFrame;
-- (void)p_updatePageThumbnails:(BOOL)a3;
+- (void)p_updatePageThumbnails:(BOOL)thumbnails;
 - (void)p_updatePagesScrollView;
 - (void)p_updateThumbLayout;
-- (void)prepareToScrollToThumbnailAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4;
+- (void)prepareToScrollToThumbnailAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex;
 - (void)relinquishIntroMediaViewController;
-- (void)scrollToContentOffset:(CGPoint)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setChapterIndex:(unint64_t)a3;
-- (void)setIntroMediaViewController:(id)a3;
-- (void)setIntroMediaViewController:(id)a3 showIt:(BOOL)a4;
+- (void)scrollToContentOffset:(CGPoint)offset;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setChapterIndex:(unint64_t)index;
+- (void)setIntroMediaViewController:(id)controller;
+- (void)setIntroMediaViewController:(id)controller showIt:(BOOL)it;
 - (void)showBackground;
-- (void)showPageThumbnailAtIndex:(unint64_t)a3;
-- (void)takeChapterIndexFrom:(id)a3;
-- (void)takeDragInsideFromPageControl:(id)a3;
-- (void)takeTouchUpFromPageControl:(id)a3;
-- (void)tapToShowToolbarGesture:(id)a3;
-- (void)thumbnailWasPressed:(id)a3 atPoint:(CGPoint)a4 forLong:(BOOL)a5;
-- (void)transitionPageToDVC:(unint64_t)a3 chapterIndex:(unint64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)showPageThumbnailAtIndex:(unint64_t)index;
+- (void)takeChapterIndexFrom:(id)from;
+- (void)takeDragInsideFromPageControl:(id)control;
+- (void)takeTouchUpFromPageControl:(id)control;
+- (void)tapToShowToolbarGesture:(id)gesture;
+- (void)thumbnailWasPressed:(id)pressed atPoint:(CGPoint)point forLong:(BOOL)long;
+- (void)transitionPageToDVC:(unint64_t)c chapterIndex:(unint64_t)index;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionFromChapterIndex:(unint64_t)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionFromChapterIndex:(unint64_t)index;
 @end
 
 @implementation THChapterBrowserController
 
-- (THChapterBrowserController)initWithNibName:(id)a3 bundle:(id)a4 bookPropertiesDelegate:(id)a5 delegate:(id)a6
+- (THChapterBrowserController)initWithNibName:(id)name bundle:(id)bundle bookPropertiesDelegate:(id)delegate delegate:(id)a6
 {
-  v8 = a5;
+  delegateCopy = delegate;
   v9 = a6;
   v10 = THBundle();
   v19.receiver = self;
   v19.super_class = THChapterBrowserController;
-  v11 = [(THTOCViewController *)&v19 initWithNibName:@"THChapterBrowserController" bundle:v10 bookPropertiesDelegate:v8 delegate:v9];
+  v11 = [(THTOCViewController *)&v19 initWithNibName:@"THChapterBrowserController" bundle:v10 bookPropertiesDelegate:delegateCopy delegate:v9];
 
   if (v11)
   {
@@ -163,8 +163,8 @@
     v11->mCBCIsOnscreen = 0;
     v11->mDeferPagesScrollViewScrolls = 0;
     v11->mDeferBackgroundScrollViewScrolls = 0;
-    v14 = [(THChapterBrowserController *)v11 bottomWrapperView];
-    [v14 setAcceptsHits:0];
+    bottomWrapperView = [(THChapterBrowserController *)v11 bottomWrapperView];
+    [bottomWrapperView setAcceptsHits:0];
 
     v11->mDidPurgeIntroMediaController = 0;
     v11->mDidAutoHideToolbar = 0;
@@ -185,11 +185,11 @@
   thumbnailTrackBackgroundView = self->_thumbnailTrackBackgroundView;
   self->_thumbnailTrackBackgroundView = 0;
 
-  v4 = [(THChapterBrowserController *)self pagesScrollView];
-  [v4 setDelegate:0];
+  pagesScrollView = [(THChapterBrowserController *)self pagesScrollView];
+  [pagesScrollView setDelegate:0];
 
-  v5 = [(THChapterBrowserController *)self backgroundScrollView];
-  [v5 setDelegate:0];
+  backgroundScrollView = [(THChapterBrowserController *)self backgroundScrollView];
+  [backgroundScrollView setDelegate:0];
 
   mWrapperView = self->mWrapperView;
   self->mWrapperView = 0;
@@ -197,11 +197,11 @@
   mBackgroundScrollView = self->mBackgroundScrollView;
   self->mBackgroundScrollView = 0;
 
-  v8 = [(THChapterBrowserController *)self thumbnailSubviews];
-  [v8 makeObjectsPerformSelector:"teardown"];
+  thumbnailSubviews = [(THChapterBrowserController *)self thumbnailSubviews];
+  [thumbnailSubviews makeObjectsPerformSelector:"teardown"];
 
-  v9 = [(THChapterBrowserController *)self introMediaViewController];
-  [v9 setDelegate:0];
+  introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+  [introMediaViewController setDelegate:0];
 
   mIntroMediaContainerView = self->mIntroMediaContainerView;
   self->mIntroMediaContainerView = 0;
@@ -262,30 +262,30 @@
 
 - (void)p_updateThumbLayout
 {
-  v3 = [(THChapterBrowserController *)self p_firstVisibleThumbnailPageIndexInCurrentChapter];
+  p_firstVisibleThumbnailPageIndexInCurrentChapter = [(THChapterBrowserController *)self p_firstVisibleThumbnailPageIndexInCurrentChapter];
   [(THChapterBrowserController *)self flushThumbnails];
   [(THChapterBrowserController *)self p_updateChapterWidths];
   [(THChapterBrowserController *)self p_configureThumbCaps];
   mChapterIndex = self->mChapterIndex;
   self->mChapterIndex = 0x7FFFFFFFFFFFFFFFLL;
   [(THChapterBrowserController *)self setChapterIndex:mChapterIndex];
-  [(THChapterBrowserController *)self p_offsetForThumbnailAtIndex:v3 chapterIndex:self->mChapterIndex];
+  [(THChapterBrowserController *)self p_offsetForThumbnailAtIndex:p_firstVisibleThumbnailPageIndexInCurrentChapter chapterIndex:self->mChapterIndex];
 
   [(THChapterBrowserController *)self p_scrollPageScrollViewToOffset:?];
 }
 
-- (void)p_configureThumbsAndUpdateLayout:(BOOL)a3
+- (void)p_configureThumbsAndUpdateLayout:(BOOL)layout
 {
-  v5 = [(THTOCViewController *)self delegate];
-  if ([v5 isCompactWidthForChapterBrowserController:self])
+  delegate = [(THTOCViewController *)self delegate];
+  if ([delegate isCompactWidthForChapterBrowserController:self])
   {
     v14 = 0.85;
   }
 
   else
   {
-    v6 = [(THTOCViewController *)self delegate];
-    v7 = [v6 isCompactHeightForChapterBrowserController:self];
+    delegate2 = [(THTOCViewController *)self delegate];
+    v7 = [delegate2 isCompactHeightForChapterBrowserController:self];
     v8 = 0.85;
     if ((v7 & 1) == 0)
     {
@@ -307,7 +307,7 @@
     v13 = vrndaq_f64(vmulq_n_f64(vbslq_s8(v12, xmmword_34A330, xmmword_34A320), v14));
     self->_firstThumbSize = v13;
     self->_firstThumbOverlap = vsubq_f64(v13, self->_thumbSize);
-    if (a3)
+    if (layout)
     {
 
       [(THChapterBrowserController *)self p_updateThumbLayout];
@@ -317,33 +317,33 @@
 
 - (void)p_configureThumbCaps
 {
-  v5 = [(THChapterBrowserController *)self view];
-  [v5 frame];
+  view = [(THChapterBrowserController *)self view];
+  [view frame];
   [(THChapterBrowserController *)self p_configureThumbCapsForSize:0 updateImmediately:v3, v4];
 }
 
-- (void)p_configureThumbCapsForSize:(CGSize)a3 updateImmediately:(BOOL)a4
+- (void)p_configureThumbCapsForSize:(CGSize)size updateImmediately:(BOOL)immediately
 {
-  v4 = a4;
-  width = a3.width;
-  [(THChapterBrowserController *)self thumbSize:a3.width];
+  immediatelyCopy = immediately;
+  width = size.width;
+  [(THChapterBrowserController *)self thumbSize:size.width];
   *&v7 = width / v7;
   v8 = (ceilf(*&v7) + 3.0);
   [(THChapterBrowserController *)self setMaximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag:v8];
   [(THChapterBrowserController *)self setMaximumNumberOfThumbsToLeftOfLeftmostDuringBackgroundDrag:v8];
 
-  [(THChapterBrowserController *)self p_updatePageThumbnails:v4];
+  [(THChapterBrowserController *)self p_updatePageThumbnails:immediatelyCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = THChapterBrowserController;
-  [(THChapterBrowserController *)&v11 viewWillAppear:a3];
+  [(THChapterBrowserController *)&v11 viewWillAppear:appear];
   if ([(THChapterBrowserController *)self isViewLoaded]&& self->mChapterIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(THTOCViewController *)self dataSource];
-    v5 = [v4 toc:self numberOfTilesInDivision:0];
+    dataSource = [(THTOCViewController *)self dataSource];
+    v5 = [dataSource toc:self numberOfTilesInDivision:0];
 
     [(THChapterBrowserController *)self chapterWidth];
     v7 = v6 * v5;
@@ -362,15 +362,15 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v25.receiver = self;
   v25.super_class = THChapterBrowserController;
-  [(THChapterBrowserController *)&v25 viewDidAppear:a3];
+  [(THChapterBrowserController *)&v25 viewDidAppear:appear];
   [(THChapterBrowserController *)self p_updatePageScrubberControlForSizeClassChange];
   [(THChapterBrowserController *)self _configurePagesScrollView];
-  v4 = [(THTOCViewController *)self delegate];
-  [v4 setupDVCForTOCController:self];
+  delegate = [(THTOCViewController *)self delegate];
+  [delegate setupDVCForTOCController:self];
 
   +[CATransaction begin];
   self->mDeferPagesScrollViewScrolls = 1;
@@ -385,12 +385,12 @@
       [(THChapterBrowserController *)self p_updatePageControl];
       if (self->mDidPurgeIntroMediaController)
       {
-        v6 = [(THChapterBrowserController *)self introMediaViewController];
+        introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
 
-        if (!v6)
+        if (!introMediaViewController)
         {
-          v7 = [(THTOCViewController *)self delegate];
-          v8 = [v7 introMediaViewControllerForChapterBrowserController:self];
+          delegate2 = [(THTOCViewController *)self delegate];
+          v8 = [delegate2 introMediaViewControllerForChapterBrowserController:self];
           [(THChapterBrowserController *)self setIntroMediaViewController:v8 showIt:0];
 
           self->mDidPurgeIntroMediaController = 0;
@@ -424,8 +424,8 @@
     [(THChapterBrowserController *)self p_updateAdjacentChapterViews];
   }
 
-  v15 = [(THChapterBrowserController *)self thumbnailSubviews];
-  [v15 makeObjectsPerformSelector:"updateFreeTransformUnmovingParentView"];
+  thumbnailSubviews = [(THChapterBrowserController *)self thumbnailSubviews];
+  [thumbnailSubviews makeObjectsPerformSelector:"updateFreeTransformUnmovingParentView"];
 
   self->mDeferPagesScrollViewScrolls = 0;
   [(THScrollView *)self->mBackgroundScrollView contentOffset];
@@ -445,8 +445,8 @@
 
   if (!self->mIsPinchingDownFromCanvas)
   {
-    v21 = [(THTOCViewController *)self delegate];
-    [v21 chapterBrowserController:self updateTitleForChapterIndex:self->mChapterIndex];
+    delegate3 = [(THTOCViewController *)self delegate];
+    [delegate3 chapterBrowserController:self updateTitleForChapterIndex:self->mChapterIndex];
   }
 
   [(THScrollViewWithPassthrough *)self->mPagesScrollView contentOffset];
@@ -465,17 +465,17 @@
   self->mBackgroundSwipeDidInitiateScroll = 0;
   self->mBackgroundSwipeBeginningChapter = 0;
   +[CATransaction commit];
-  v24 = [(THTOCViewController *)self delegate];
-  [v24 tocIsReadyToPresent:self];
+  delegate4 = [(THTOCViewController *)self delegate];
+  [delegate4 tocIsReadyToPresent:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = THChapterBrowserController;
-  [(THChapterBrowserController *)&v5 viewWillDisappear:a3];
-  v4 = [(THChapterBrowserController *)self introMediaViewController];
-  [v4 stop];
+  [(THChapterBrowserController *)&v5 viewWillDisappear:disappear];
+  introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+  [introMediaViewController stop];
 
   self->mDeferPagesScrollViewScrolls = 1;
 }
@@ -488,17 +488,17 @@
   if (!self->mCBCIsOnscreen)
   {
     [(THChapterViewController *)self->mChapterViewControllers[1] viewWillDisappear:0];
-    v3 = [(THChapterViewController *)self->mChapterViewControllers[1] view];
-    [v3 removeFromSuperview];
+    view = [(THChapterViewController *)self->mChapterViewControllers[1] view];
+    [view removeFromSuperview];
 
     [(THChapterViewController *)self->mChapterViewControllers[1] viewDidDisappear:0];
     [(THChapterViewController *)self->mChapterViewControllers[1] teardown];
     v4 = self->mChapterViewControllers[1];
     self->mChapterViewControllers[1] = 0;
 
-    v5 = [(THChapterBrowserController *)self thumbnailSubviews];
-    [v5 makeObjectsPerformSelector:"teardown"];
-    [v5 makeObjectsPerformSelector:"removeFromSuperview"];
+    thumbnailSubviews = [(THChapterBrowserController *)self thumbnailSubviews];
+    [thumbnailSubviews makeObjectsPerformSelector:"teardown"];
+    [thumbnailSubviews makeObjectsPerformSelector:"removeFromSuperview"];
   }
 
   v6.receiver = self;
@@ -506,11 +506,11 @@
   [(THChapterBrowserController *)&v6 didReceiveMemoryWarning];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = THChapterBrowserController;
-  [(THChapterBrowserController *)&v4 viewDidDisappear:a3];
+  [(THChapterBrowserController *)&v4 viewDidDisappear:disappear];
   self->mCBCIsOnscreen = 0;
   self->mIsPinchingDownFromCanvas = 0;
   [(THChapterBrowserController *)self p_removeAdjacentChapterViews];
@@ -518,12 +518,12 @@
 
 - (void)p_updateBottomWrapperFrame
 {
-  v3 = [(THChapterBrowserController *)self p_hasPageScrubberControl];
+  p_hasPageScrubberControl = [(THChapterBrowserController *)self p_hasPageScrubberControl];
   [(TSWPassThroughView *)self->mBottomWrapperView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  if (v3)
+  if (p_hasPageScrubberControl)
   {
     [(UIView *)self->mChapterPageControlWrapper frame];
     v10 = CGRectGetMinY(v15) - v9;
@@ -531,8 +531,8 @@
 
   else
   {
-    v11 = [(THChapterBrowserController *)self view];
-    [v11 bounds];
+    view = [(THChapterBrowserController *)self view];
+    [view bounds];
     v10 = v12 - v9;
   }
 
@@ -543,12 +543,12 @@
 
 - (void)p_updatePageAreaBackgroundFrame
 {
-  v3 = [(THChapterBrowserController *)self p_hasPageScrubberControl];
+  p_hasPageScrubberControl = [(THChapterBrowserController *)self p_hasPageScrubberControl];
   [(UIView *)self->mPageAreaBackground frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  if (v3)
+  if (p_hasPageScrubberControl)
   {
     [(UIView *)self->mChapterPageControlWrapper frame];
     MinY = CGRectGetMinY(v15);
@@ -556,8 +556,8 @@
 
   else
   {
-    v11 = [(THChapterBrowserController *)self view];
-    [v11 bounds];
+    view = [(THChapterBrowserController *)self view];
+    [view bounds];
     MinY = v12;
   }
 
@@ -568,27 +568,27 @@
 
 - (void)p_updatePageScrubberFrame
 {
-  v3 = [(THChapterBrowserController *)self im_isCompactWidth];
-  v4 = [(THChapterBrowserController *)self view];
-  [v4 bounds];
+  im_isCompactWidth = [(THChapterBrowserController *)self im_isCompactWidth];
+  view = [(THChapterBrowserController *)self view];
+  [view bounds];
   v6 = v5;
-  v7 = [(THChapterBrowserController *)self view];
-  [v7 safeAreaInsets];
+  view2 = [(THChapterBrowserController *)self view];
+  [view2 safeAreaInsets];
   v9 = v8;
 
-  v10 = [(THChapterBrowserController *)self view];
-  [v10 bounds];
+  view3 = [(THChapterBrowserController *)self view];
+  [view3 bounds];
   v12 = v11;
 
-  v13 = [(THChapterBrowserController *)self view];
-  [v13 safeAreaInsets];
+  view4 = [(THChapterBrowserController *)self view];
+  [view4 safeAreaInsets];
   v14 = v6 + -48.0 - v9;
   v16 = v15 + 48.0;
 
   [(UIView *)self->mChapterPageControlWrapper setFrame:0.0, v14, v12, v16];
-  v17 = [(THChapterBrowserController *)self view];
-  [v17 frame];
-  if (v3)
+  view5 = [(THChapterBrowserController *)self view];
+  [view5 frame];
+  if (im_isCompactWidth)
   {
     v19 = 32.0;
   }
@@ -611,9 +611,9 @@
   {
     [(THChapterBrowserController *)self p_updatePageScrubberFrame];
     [(THChapterBrowserController *)self p_updatePageControl];
-    v3 = [(UIView *)self->mChapterPageControlWrapper superview];
+    superview = [(UIView *)self->mChapterPageControlWrapper superview];
 
-    if (!v3)
+    if (!superview)
     {
       [(UIView *)self->mWrapperView addSubview:self->mChapterPageControlWrapper];
     }
@@ -621,9 +621,9 @@
 
   else
   {
-    v4 = [(UIView *)self->mChapterPageControlWrapper superview];
+    superview2 = [(UIView *)self->mChapterPageControlWrapper superview];
 
-    if (v4)
+    if (superview2)
     {
       [(UIView *)self->mChapterPageControlWrapper removeFromSuperview];
     }
@@ -634,7 +634,7 @@
   [(THChapterBrowserController *)self p_updatePageAreaBackgroundFrame];
 }
 
-- (void)tapToShowToolbarGesture:(id)a3
+- (void)tapToShowToolbarGesture:(id)gesture
 {
   if (![(THChapterBrowserController *)self introMediaControllerIsActive])
   {
@@ -653,29 +653,29 @@
       v4 = v3;
       v6 = v5;
       v8 = v7;
-      v38 = [(THChapterBrowserController *)self view];
-      [v38 frame];
+      view = [(THChapterBrowserController *)self view];
+      [view frame];
       MaxY = CGRectGetMaxY(v46);
       [(TSWPassThroughView *)self->mBottomWrapperView frame];
       Height = CGRectGetHeight(v47);
-      v11 = [(THChapterBrowserController *)self view];
-      [v11 safeAreaInsets];
+      view2 = [(THChapterBrowserController *)self view];
+      [view2 safeAreaInsets];
       v13 = MaxY - Height + -8.0 - v12;
 
       [(TSWPassThroughView *)self->mBottomWrapperView setFrame:v4, v13, v6, v8];
-      v39 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
-      [v39 frame];
+      thumbnailTrackBackgroundView = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
+      [thumbnailTrackBackgroundView frame];
       v15 = v14;
       v17 = v16;
       v19 = v18;
 
       v20 = self->_firstThumbSize.height;
-      v40 = [(THChapterBrowserController *)self view];
-      [v40 safeAreaInsets];
+      view3 = [(THChapterBrowserController *)self view];
+      [view3 safeAreaInsets];
       v22 = v21;
 
-      v41 = [(THChapterBrowserController *)self view];
-      [v41 bounds];
+      view4 = [(THChapterBrowserController *)self view];
+      [view4 bounds];
       v23 = CGRectGetMaxY(v48);
       v24 = v20 + 16.0 + v22;
       v49.origin.x = v15;
@@ -684,20 +684,20 @@
       v49.size.height = v24;
       v25 = v23 - CGRectGetHeight(v49);
 
-      v42 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
-      [v42 setFrame:{v15, v25, v19, v24}];
+      thumbnailTrackBackgroundView2 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
+      [thumbnailTrackBackgroundView2 setFrame:{v15, v25, v19, v24}];
 
-      v43 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
-      v26 = [v43 layer];
+      thumbnailTrackBackgroundView3 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
+      layer = [thumbnailTrackBackgroundView3 layer];
       LODWORD(v27) = 1.0;
-      [v26 setOpacity:v27];
+      [layer setOpacity:v27];
     }
 
     else
     {
-      v44 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
-      v28 = [v44 layer];
-      [v28 setOpacity:0.0];
+      thumbnailTrackBackgroundView4 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
+      layer2 = [thumbnailTrackBackgroundView4 layer];
+      [layer2 setOpacity:0.0];
 
       [(TSWPassThroughView *)self->mBottomWrapperView frame];
       v30 = v29;
@@ -719,7 +719,7 @@
   v48.receiver = self;
   v48.super_class = THChapterBrowserController;
   [(THChapterBrowserController *)&v48 viewDidLoad];
-  v5 = [(THChapterBrowserController *)self view];
+  view = [(THChapterBrowserController *)self view];
   [(THChapterBrowserController *)self setShowToolbarRecognizer:0];
   v6 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"tapToShowToolbarGesture:"];
   showToolbarRecognizer = self->_showToolbarRecognizer;
@@ -727,9 +727,9 @@
 
   [(UITapGestureRecognizer *)self->_showToolbarRecognizer setCancelsTouchesInView:1];
   [(UITapGestureRecognizer *)self->_showToolbarRecognizer setDelegate:self];
-  [v5 addGestureRecognizer:self->_showToolbarRecognizer];
-  [v5 setAutoresizingMask:18];
-  [v5 bounds];
+  [view addGestureRecognizer:self->_showToolbarRecognizer];
+  [view setAutoresizingMask:18];
+  [view bounds];
   x = v49.origin.x;
   y = v49.origin.y;
   width = v49.size.width;
@@ -758,8 +758,8 @@
   v15 = +[UIColor clearColor];
   [(THScrollViewWithPassthrough *)self->mPagesScrollView setBackgroundColor:v15];
 
-  v16 = [(THChapterBrowserController *)self pageAreaBackgroundColor];
-  [(UIView *)self->mPageAreaBackground setBackgroundColor:v16];
+  pageAreaBackgroundColor = [(THChapterBrowserController *)self pageAreaBackgroundColor];
+  [(UIView *)self->mPageAreaBackground setBackgroundColor:pageAreaBackgroundColor];
 
   [(THScrollViewWithPassthrough *)self->mPagesScrollView setContentInsetAdjustmentBehavior:1];
   [(THScrollView *)self->mBackgroundScrollView setPreventBounceAnimation:1];
@@ -792,30 +792,30 @@
   [(THChapterBrowserScrubbablePageControl *)self->mChapterPageControl addTarget:self action:"takeTouchUpFromPageControl:" forControlEvents:128];
   [(THChapterBrowserScrubbablePageControl *)self->mChapterPageControl addTarget:self action:"takeChapterIndexFrom:" forControlEvents:4096];
   [(THChapterBrowserScrubbablePageControl *)self->mChapterPageControl setExclusiveTouch:1];
-  v26 = [(THTOCViewController *)self delegate];
-  v27 = [v26 introMediaViewControllerForChapterBrowserController:self];
+  delegate = [(THTOCViewController *)self delegate];
+  v27 = [delegate introMediaViewControllerForChapterBrowserController:self];
   if (v27)
   {
-    v2 = [(THTOCViewController *)self delegate];
-    v3 = [v2 introMediaViewControllerForChapterBrowserController:self];
-    v28 = [v3 isMovie];
+    delegate2 = [(THTOCViewController *)self delegate];
+    v3 = [delegate2 introMediaViewControllerForChapterBrowserController:self];
+    isMovie = [v3 isMovie];
   }
 
   else
   {
-    v28 = 0;
+    isMovie = 0;
   }
 
-  [(THChapterBrowserScrubbablePageControl *)self->mChapterPageControl setFirstDotSpecialRendering:v28];
+  [(THChapterBrowserScrubbablePageControl *)self->mChapterPageControl setFirstDotSpecialRendering:isMovie];
   if (v27)
   {
   }
 
   [(THChapterBrowserScrubbablePageControl *)self->mChapterPageControl frame];
   v30 = v29;
-  [v5 safeAreaInsets];
+  [view safeAreaInsets];
   v32 = v31;
-  [v5 safeAreaInsets];
+  [view safeAreaInsets];
   v34 = [[UIView alloc] initWithFrame:{0.0, v12 + -48.0 - v32, v13, v30 + v33}];
   mChapterPageControlWrapper = self->mChapterPageControlWrapper;
   self->mChapterPageControlWrapper = v34;
@@ -830,22 +830,22 @@
     thumbnailTrackBackgroundView = self->_thumbnailTrackBackgroundView;
     self->_thumbnailTrackBackgroundView = v37;
 
-    v39 = [(THTOCViewController *)self delegate];
-    v40 = [v39 TOCViewControllerToolbarBackgroundColor:self];
-    v41 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
-    [v41 setBackgroundColor:v40];
+    delegate3 = [(THTOCViewController *)self delegate];
+    v40 = [delegate3 TOCViewControllerToolbarBackgroundColor:self];
+    thumbnailTrackBackgroundView = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
+    [thumbnailTrackBackgroundView setBackgroundColor:v40];
 
-    v42 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
-    [v42 setAutoresizingMask:10];
+    thumbnailTrackBackgroundView2 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
+    [thumbnailTrackBackgroundView2 setAutoresizingMask:10];
 
-    v43 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
-    v44 = [v43 layer];
+    thumbnailTrackBackgroundView3 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
+    layer = [thumbnailTrackBackgroundView3 layer];
     LODWORD(v45) = 1.0;
-    [v44 setOpacity:v45];
+    [layer setOpacity:v45];
 
     mBackgroundScrollView = self->mBackgroundScrollView;
-    v47 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
-    [(THScrollView *)mBackgroundScrollView addSubview:v47];
+    thumbnailTrackBackgroundView4 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
+    [(THScrollView *)mBackgroundScrollView addSubview:thumbnailTrackBackgroundView4];
   }
 }
 
@@ -853,23 +853,23 @@
 {
   if ([(THChapterBrowserController *)self p_showingIntroMedia])
   {
-    v3 = [(THChapterBrowserController *)self introMediaViewController];
+    introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
   }
 
   else
   {
-    v3 = 0;
+    introMediaViewController = 0;
   }
 
-  return v3;
+  return introMediaViewController;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-  v2 = [(THTOCViewController *)self delegate];
-  v3 = [v2 isToolbarHidden];
+  delegate = [(THTOCViewController *)self delegate];
+  isToolbarHidden = [delegate isToolbarHidden];
 
-  return v3;
+  return isToolbarHidden;
 }
 
 - (void)relinquishIntroMediaViewController
@@ -884,30 +884,30 @@
   self->mDeferBackgroundScrollViewScrolls = 0;
 }
 
-- (void)setIntroMediaViewController:(id)a3
+- (void)setIntroMediaViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   mIntroMediaViewController = self->mIntroMediaViewController;
-  v8 = v5;
-  if (mIntroMediaViewController != v5)
+  v8 = controllerCopy;
+  if (mIntroMediaViewController != controllerCopy)
   {
-    v7 = [(THiOSIntroMediaViewController *)mIntroMediaViewController delegate];
+    delegate = [(THiOSIntroMediaViewController *)mIntroMediaViewController delegate];
 
-    if (v7 == self)
+    if (delegate == self)
     {
       [(THiOSIntroMediaViewController *)self->mIntroMediaViewController setDelegate:0];
     }
 
-    objc_storeStrong(&self->mIntroMediaViewController, a3);
+    objc_storeStrong(&self->mIntroMediaViewController, controller);
     [(THiOSIntroMediaViewController *)self->mIntroMediaViewController setDelegate:self];
   }
 }
 
-- (void)setIntroMediaViewController:(id)a3 showIt:(BOOL)a4
+- (void)setIntroMediaViewController:(id)controller showIt:(BOOL)it
 {
-  v4 = a4;
-  v29 = a3;
-  if (!v29)
+  itCopy = it;
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v6 = +[TSUAssertionHandler currentHandler];
     v7 = [NSString stringWithUTF8String:"[THChapterBrowserController setIntroMediaViewController:showIt:]"];
@@ -917,7 +917,7 @@
 
   [(THChapterBrowserController *)self loadViewIfNeeded];
   [(THScrollView *)self->mBackgroundScrollView addSubview:self->mIntroMediaContainerView];
-  [(THChapterBrowserController *)self setIntroMediaViewController:v29];
+  [(THChapterBrowserController *)self setIntroMediaViewController:controllerCopy];
   self->mDeferBackgroundScrollViewScrolls = 1;
   [(THScrollView *)self->mBackgroundScrollView contentOffset];
   v10 = v9;
@@ -927,26 +927,26 @@
   [(THScrollView *)self->mBackgroundScrollView setContentOffset:v10, v12];
   self->mDeferBackgroundScrollViewScrolls = 0;
   [(THChapterBrowserController *)self setHasIntroPage:1];
-  if (v4 || [(THChapterBrowserController *)self chapterIndex]<= 1)
+  if (itCopy || [(THChapterBrowserController *)self chapterIndex]<= 1)
   {
     [(UIView *)self->mIntroMediaContainerView bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(THChapterBrowserController *)self introMediaViewController];
-    v23 = [v22 view];
-    [v23 setFrame:{v15, v17, v19, v21}];
+    introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+    view = [introMediaViewController view];
+    [view setFrame:{v15, v17, v19, v21}];
 
-    v24 = [(THChapterBrowserController *)self introMediaViewController];
-    [(THChapterBrowserController *)self addChildViewController:v24];
+    introMediaViewController2 = [(THChapterBrowserController *)self introMediaViewController];
+    [(THChapterBrowserController *)self addChildViewController:introMediaViewController2];
 
     mIntroMediaContainerView = self->mIntroMediaContainerView;
-    v26 = [(THChapterBrowserController *)self introMediaViewController];
-    v27 = [v26 view];
-    [(UIView *)mIntroMediaContainerView addSubview:v27];
+    introMediaViewController3 = [(THChapterBrowserController *)self introMediaViewController];
+    view2 = [introMediaViewController3 view];
+    [(UIView *)mIntroMediaContainerView addSubview:view2];
 
-    if (v4)
+    if (itCopy)
     {
       [(THChapterBrowserController *)self chapterWidth];
       [(THScrollView *)self->mBackgroundScrollView setContentOffset:-v28, 0.0];
@@ -955,19 +955,19 @@
   }
 }
 
-- (void)willTransitionFromChapterIndex:(unint64_t)a3
+- (void)willTransitionFromChapterIndex:(unint64_t)index
 {
   self->mIsPinchingDownFromCanvas = 1;
   self->mDeferExtendedLayout = 1;
-  if (self->mChapterIndex != a3)
+  if (self->mChapterIndex != index)
   {
-    [(THChapterBrowserController *)self setChapterIndex:a3];
-    [(THChapterBrowserController *)self p_setupChapterViewControllerAtIndex:1 withChapterIndex:a3 allowThumbnail:1];
+    [(THChapterBrowserController *)self setChapterIndex:index];
+    [(THChapterBrowserController *)self p_setupChapterViewControllerAtIndex:1 withChapterIndex:index allowThumbnail:1];
     [(THChapterBrowserController *)self p_resetPagesScrollViewAndCapThumbCount:0 firstVisibleRelativePage:0 resetContentOffset:1];
   }
 
   [(THChapterBrowserController *)self chapterWidth];
-  v6 = v5 * a3;
+  v6 = v5 * index;
   mBackgroundScrollView = self->mBackgroundScrollView;
 
   [(THScrollView *)mBackgroundScrollView setContentOffset:v6, 0.0];
@@ -982,13 +982,13 @@
   block[4] = self;
   dispatch_async(&_dispatch_main_q, block);
   self->mIsPinchingDownFromCanvas = 0;
-  v3 = [(THTOCViewController *)self delegate];
-  [v3 chapterBrowserController:self updateTitleForChapterIndex:self->mChapterIndex];
+  delegate = [(THTOCViewController *)self delegate];
+  [delegate chapterBrowserController:self updateTitleForChapterIndex:self->mChapterIndex];
 }
 
-- (id)thumbnailImageForPageAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4 tinyThumb:(BOOL)a5
+- (id)thumbnailImageForPageAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex tinyThumb:(BOOL)thumb
 {
-  if (a5)
+  if (thumb)
   {
     TSUScreenScale();
     v9 = v8 <= 1.0;
@@ -999,14 +999,14 @@
     v9 = 0;
   }
 
-  if (self->mChapterIndex != a4)
+  if (self->mChapterIndex != chapterIndex)
   {
     v12 = 0;
     goto LABEL_16;
   }
 
-  v10 = [(THTOCViewController *)self delegate];
-  v11 = [v10 chapterBrowserController:self tocTileModelAtIndex:a4];
+  delegate = [(THTOCViewController *)self delegate];
+  v11 = [delegate chapterBrowserController:self tocTileModelAtIndex:chapterIndex];
 
   if (v9)
   {
@@ -1018,7 +1018,7 @@
     [v11 largerThumbs];
   }
   v13 = ;
-  if ([v13 count] <= a3)
+  if ([v13 count] <= index)
   {
     v14 = 0;
 LABEL_14:
@@ -1026,7 +1026,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v14 = [v13 objectAtIndex:a3];
+  v14 = [v13 objectAtIndex:index];
   if (!v14)
   {
     goto LABEL_14;
@@ -1047,17 +1047,17 @@ LABEL_16:
   return v12;
 }
 
-- (CGPoint)p_offsetForThumbnailAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4
+- (CGPoint)p_offsetForThumbnailAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex
 {
-  if (self->mChapterIndex != a4)
+  if (self->mChapterIndex != chapterIndex)
   {
     v7 = +[TSUAssertionHandler currentHandler];
     v8 = [NSString stringWithUTF8String:"[THChapterBrowserController p_offsetForThumbnailAtIndex:chapterIndex:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THChapterBrowserController.mm"];
-    [v7 handleFailureInFunction:v8 file:v9 lineNumber:816 description:{@"Current chapter index %lu doesn't match page chapter index:%lu", self->mChapterIndex, a4}];
+    [v7 handleFailureInFunction:v8 file:v9 lineNumber:816 description:{@"Current chapter index %lu doesn't match page chapter index:%lu", self->mChapterIndex, chapterIndex}];
   }
 
-  [(THChapterBrowserController *)self frameForPageThumbAtIndex:a3 chapterIndex:a4];
+  [(THChapterBrowserController *)self frameForPageThumbAtIndex:index chapterIndex:chapterIndex];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1081,15 +1081,15 @@ LABEL_16:
   if (v28 < v27)
   {
 LABEL_4:
-    [(THChapterBrowserController *)self frameForPageThumbAtIndex:0 chapterIndex:a4];
+    [(THChapterBrowserController *)self frameForPageThumbAtIndex:0 chapterIndex:chapterIndex];
     MinX = CGRectGetMinX(v45);
 LABEL_16:
     v33 = 0.0;
     goto LABEL_17;
   }
 
-  v30 = v15 * (v25 - a3);
-  v31 = v22 + a3 * v15;
+  v30 = v15 * (v25 - index);
+  v31 = v22 + index * v15;
   v32 = v31;
   if (!v18)
   {
@@ -1162,55 +1162,55 @@ LABEL_17:
   return result;
 }
 
-- (void)prepareToScrollToThumbnailAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4
+- (void)prepareToScrollToThumbnailAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex
 {
-  [(THChapterBrowserController *)self p_offsetForThumbnailAtIndex:a3 chapterIndex:a4];
+  [(THChapterBrowserController *)self p_offsetForThumbnailAtIndex:index chapterIndex:chapterIndex];
   self->mPreservedThumbnailOffset.x = v5;
   self->mPreservedThumbnailOffset.y = v6;
 }
 
-- (void)hidePageThumbnailAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4 scrollIfNecessary:(BOOL)a5
+- (void)hidePageThumbnailAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex scrollIfNecessary:(BOOL)necessary
 {
-  v5 = a5;
-  if (self->mChapterIndex != a4)
+  necessaryCopy = necessary;
+  if (self->mChapterIndex != chapterIndex)
   {
     v14 = +[TSUAssertionHandler currentHandler];
     v9 = [NSString stringWithUTF8String:"[THChapterBrowserController hidePageThumbnailAtIndex:chapterIndex:scrollIfNecessary:]"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THChapterBrowserController.mm"];
-    [v14 handleFailureInFunction:v9 file:v10 lineNumber:922 description:{@"Current chapter index %lu doesn't match page chapter index:%lu", self->mChapterIndex, a4}];
+    [v14 handleFailureInFunction:v9 file:v10 lineNumber:922 description:{@"Current chapter index %lu doesn't match page chapter index:%lu", self->mChapterIndex, chapterIndex}];
   }
 
-  if (v5)
+  if (necessaryCopy)
   {
-    [(THChapterBrowserController *)self prepareToScrollToThumbnailAtIndex:a3 chapterIndex:a4];
+    [(THChapterBrowserController *)self prepareToScrollToThumbnailAtIndex:index chapterIndex:chapterIndex];
   }
 
-  v15 = [(THChapterBrowserController *)self thumbnailsHiddenForPinch];
-  v11 = [NSNumber numberWithUnsignedInteger:a3];
-  [v15 addObject:v11];
+  thumbnailsHiddenForPinch = [(THChapterBrowserController *)self thumbnailsHiddenForPinch];
+  v11 = [NSNumber numberWithUnsignedInteger:index];
+  [thumbnailsHiddenForPinch addObject:v11];
 
-  v16 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:a3];
+  v16 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:index];
   if (v16)
   {
     [v16 setHidden:1];
   }
 
-  if (a3 >= 2)
+  if (index >= 2)
   {
-    v12 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:a3 - 1];
+    v12 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:index - 1];
     [v12 setHasRightBorder:1];
   }
 
-  v13 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:a3 + 1];
+  v13 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:index + 1];
   [v13 setHasLeftBorder:1];
 }
 
-- (void)showPageThumbnailAtIndex:(unint64_t)a3
+- (void)showPageThumbnailAtIndex:(unint64_t)index
 {
-  v5 = [(THChapterBrowserController *)self thumbnailsHiddenForPinch];
-  [v5 removeAllObjects];
+  thumbnailsHiddenForPinch = [(THChapterBrowserController *)self thumbnailsHiddenForPinch];
+  [thumbnailsHiddenForPinch removeAllObjects];
 
-  v6 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:a3];
+  v6 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:index];
   [v6 setHidden:0];
   [v6 setBorderVisible:0];
   v10[0] = _NSConcreteStackBlock;
@@ -1220,39 +1220,39 @@ LABEL_17:
   v7 = v6;
   v11 = v7;
   [UIView animateWithDuration:v10 animations:0.15];
-  if (a3 >= 2)
+  if (index >= 2)
   {
-    v8 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:a3 - 1];
+    v8 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:index - 1];
     [v8 setHasRightBorder:0];
   }
 
-  v9 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:a3 + 1];
+  v9 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:index + 1];
   [v9 setHasLeftBorder:0];
 }
 
-- (void)p_scrollToThumbnailAtIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)p_scrollToThumbnailAtIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  [(THChapterBrowserController *)self p_offsetForThumbnailAtIndex:a3 chapterIndex:self->mChapterIndex];
-  [(THScrollViewWithPassthrough *)self->mPagesScrollView setContentOffset:v4 animated:?];
-  if (!v4)
+  animatedCopy = animated;
+  [(THChapterBrowserController *)self p_offsetForThumbnailAtIndex:index chapterIndex:self->mChapterIndex];
+  [(THScrollViewWithPassthrough *)self->mPagesScrollView setContentOffset:animatedCopy animated:?];
+  if (!animatedCopy)
   {
 
     [(THChapterBrowserController *)self p_updatePageThumbnails:1];
   }
 }
 
-- (void)p_scrollPageScrollViewToOffset:(CGPoint)a3
+- (void)p_scrollPageScrollViewToOffset:(CGPoint)offset
 {
-  if (a3.x > 0.0)
+  if (offset.x > 0.0)
   {
     [(THScrollViewWithPassthrough *)self->mPagesScrollView setContentOffset:0 animated:?];
   }
 }
 
-- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)a3 inLayer:(id)a4
+- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)index inLayer:(id)layer
 {
-  [(THChapterBrowserController *)self rectForPageThumbnailAtIndex:a3 chapterIndex:self->mChapterIndex inLayer:a4];
+  [(THChapterBrowserController *)self rectForPageThumbnailAtIndex:index chapterIndex:self->mChapterIndex inLayer:layer];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1260,27 +1260,27 @@ LABEL_17:
   return result;
 }
 
-- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4 inLayer:(id)a5
+- (CGRect)rectForPageThumbnailAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex inLayer:(id)layer
 {
-  v7 = a5;
+  layerCopy = layer;
   [(THChapterBrowserController *)self p_updatePageScrubberControlForSizeClassChange];
-  v8 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:a3];
+  v8 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:index];
   if (v8)
   {
-    v9 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:a3];
+    v9 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:index];
     [v9 frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(THScrollViewWithPassthrough *)self->mPagesScrollView layer];
-    [v7 convertRect:v18 fromLayer:{v11, v13, v15, v17}];
+    layer = [(THScrollViewWithPassthrough *)self->mPagesScrollView layer];
+    [layerCopy convertRect:layer fromLayer:{v11, v13, v15, v17}];
     v20 = v19;
     y = v21;
     width = v23;
     height = v25;
 
-    [v7 bounds];
+    [layerCopy bounds];
     v36.origin.x = v20;
     v36.origin.y = y;
     v36.size.width = width;
@@ -1322,8 +1322,8 @@ LABEL_17:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(THChapterBrowserController *)self thumbnailSubviews];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  thumbnailSubviews = [(THChapterBrowserController *)self thumbnailSubviews];
+  v4 = [thumbnailSubviews countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
     v5 = *v23;
@@ -1333,7 +1333,7 @@ LABEL_17:
       {
         if (*v23 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(thumbnailSubviews);
         }
 
         v7 = *(*(&v22 + 1) + 8 * i);
@@ -1355,13 +1355,13 @@ LABEL_17:
           v27.size.height = v15;
           if (CGRectIntersectsRect(v27, v28))
           {
-            v20 = [v7 pageIndex];
+            pageIndex = [v7 pageIndex];
             goto LABEL_12;
           }
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v4 = [thumbnailSubviews countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v4)
       {
         continue;
@@ -1371,10 +1371,10 @@ LABEL_17:
     }
   }
 
-  v20 = 0;
+  pageIndex = 0;
 LABEL_12:
 
-  return v20;
+  return pageIndex;
 }
 
 - (id)visibleThumbnailIndexes
@@ -1384,8 +1384,8 @@ LABEL_12:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(THChapterBrowserController *)self thumbnailSubviews];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  thumbnailSubviews = [(THChapterBrowserController *)self thumbnailSubviews];
+  v5 = [thumbnailSubviews countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
     v6 = *v23;
@@ -1395,7 +1395,7 @@ LABEL_12:
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(thumbnailSubviews);
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
@@ -1419,7 +1419,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v5 = [thumbnailSubviews countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v5);
@@ -1428,58 +1428,58 @@ LABEL_12:
   return v3;
 }
 
-- (void)takeChapterIndexFrom:(id)a3
+- (void)takeChapterIndexFrom:(id)from
 {
-  v14 = a3;
-  if (self->mChapterPageControl == v14)
+  fromCopy = from;
+  if (self->mChapterPageControl == fromCopy)
   {
-    v4 = [(THTOCViewController *)self delegate];
-    [v4 cancelPreloadOfContentNodesForChapterBrowserController:self];
+    delegate = [(THTOCViewController *)self delegate];
+    [delegate cancelPreloadOfContentNodesForChapterBrowserController:self];
 
     [(THChapterBrowserController *)self p_cancelAllContentNodeLoading];
     [(THChapterBrowserController *)self setPreviousChapterIndex:self->mChapterIndex];
     self->mChapterIndex = 0x7FFFFFFFFFFFFFFFLL;
     if ([(THChapterBrowserController *)self hasIntroPage])
     {
-      if ([(THChapterBrowserScrubbablePageControl *)v14 currentPage])
+      if ([(THChapterBrowserScrubbablePageControl *)fromCopy currentPage])
       {
-        v5 = [(THChapterBrowserScrubbablePageControl *)v14 currentPage];
+        currentPage = [(THChapterBrowserScrubbablePageControl *)fromCopy currentPage];
       }
 
       else
       {
-        v5 = (&dword_0 + 1);
+        currentPage = (&dword_0 + 1);
       }
 
-      v6 = v5 - 1;
+      currentPage2 = currentPage - 1;
     }
 
     else
     {
-      v6 = [(THChapterBrowserScrubbablePageControl *)v14 currentPage];
+      currentPage2 = [(THChapterBrowserScrubbablePageControl *)fromCopy currentPage];
     }
 
     +[CATransaction begin];
-    [(THChapterBrowserController *)self p_setChapterIndex:v6 forScrub:1 stillScrolling:0];
-    v7 = [(THChapterBrowserScrubbablePageControl *)v14 currentPage];
+    [(THChapterBrowserController *)self p_setChapterIndex:currentPage2 forScrub:1 stillScrolling:0];
+    currentPage3 = [(THChapterBrowserScrubbablePageControl *)fromCopy currentPage];
     [(THChapterBrowserController *)self chapterWidth];
     v9 = v8;
-    v10 = [(THChapterBrowserController *)self hasIntroPage];
+    hasIntroPage = [(THChapterBrowserController *)self hasIntroPage];
     v11 = 0.0;
-    if (v10)
+    if (hasIntroPage)
     {
       [(THChapterBrowserController *)self chapterWidth];
     }
 
-    [(THScrollView *)self->mBackgroundScrollView setContentOffset:-(v11 - v7 * v9), 0.0];
+    [(THScrollView *)self->mBackgroundScrollView setContentOffset:-(v11 - currentPage3 * v9), 0.0];
     +[CATransaction commit];
     if (self->mDraggingInScrubber)
     {
       [(THScrollView *)self->mBackgroundScrollView contentOffset];
       if (v12 < 0.0)
       {
-        v13 = [(THChapterBrowserController *)self introMediaViewController];
-        [v13 ensureReadyToPlay];
+        introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+        [introMediaViewController ensureReadyToPlay];
       }
     }
 
@@ -1490,7 +1490,7 @@ LABEL_12:
   }
 }
 
-- (void)takeTouchUpFromPageControl:(id)a3
+- (void)takeTouchUpFromPageControl:(id)control
 {
   objc_storeStrong(&self->mUpdatingScrollView, self->mBackgroundScrollView);
   self->mDraggingInScrubber = 0;
@@ -1512,12 +1512,12 @@ LABEL_12:
   if (v6 == -v7)
   {
     [(THChapterBrowserController *)self p_startIntroMediaIfNecessary];
-    v8 = [(THTOCViewController *)self delegate];
-    v9 = [v8 introMediaViewControllerForChapterBrowserController:self];
-    v10 = [v9 isMovie];
+    delegate = [(THTOCViewController *)self delegate];
+    v9 = [delegate introMediaViewControllerForChapterBrowserController:self];
+    isMovie = [v9 isMovie];
 
     mChapterPageControlWrapper = self->mChapterPageControlWrapper;
-    if (v10)
+    if (isMovie)
     {
       [(UIView *)mChapterPageControlWrapper setAlpha:0.0];
     }
@@ -1536,8 +1536,8 @@ LABEL_12:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(THChapterBrowserController *)self contentNodesAskedToLoad];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  contentNodesAskedToLoad = [(THChapterBrowserController *)self contentNodesAskedToLoad];
+  v4 = [contentNodesAskedToLoad countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -1548,7 +1548,7 @@ LABEL_12:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(contentNodesAskedToLoad);
         }
 
         [*(*(&v8 + 1) + 8 * v6) cancelLoading];
@@ -1556,27 +1556,27 @@ LABEL_12:
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [contentNodesAskedToLoad countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 
-  v7 = [(THChapterBrowserController *)self contentNodesAskedToLoad];
-  [v7 removeAllObjects];
+  contentNodesAskedToLoad2 = [(THChapterBrowserController *)self contentNodesAskedToLoad];
+  [contentNodesAskedToLoad2 removeAllObjects];
 }
 
-- (void)draggingStartedFromPageControl:(id)a3
+- (void)draggingStartedFromPageControl:(id)control
 {
   self->mDraggingInScrubber = 1;
-  v3 = [(THChapterBrowserController *)self introMediaViewController];
-  [v3 prepareControlsForTOC];
+  introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+  [introMediaViewController prepareControlsForTOC];
 }
 
-- (void)takeDragInsideFromPageControl:(id)a3
+- (void)takeDragInsideFromPageControl:(id)control
 {
-  v4 = [(THTOCViewController *)self delegate];
-  [v4 cancelPreloadOfContentNodesForChapterBrowserController:self];
+  delegate = [(THTOCViewController *)self delegate];
+  [delegate cancelPreloadOfContentNodesForChapterBrowserController:self];
 
   [(THScrollViewWithPassthrough *)self->mPagesScrollView alpha];
   if (v5 == 1.0)
@@ -1593,15 +1593,15 @@ LABEL_12:
 - (void)hideBackground
 {
   v4 = +[UIColor clearColor];
-  v3 = [(THChapterBrowserController *)self view];
-  [v3 setBackgroundColor:v4];
+  view = [(THChapterBrowserController *)self view];
+  [view setBackgroundColor:v4];
 }
 
 - (void)showBackground
 {
   v4 = +[UIColor blackColor];
-  v3 = [(THChapterBrowserController *)self view];
-  [v3 setBackgroundColor:v4];
+  view = [(THChapterBrowserController *)self view];
+  [view setBackgroundColor:v4];
 }
 
 - (void)_updateContentOffsets
@@ -1638,36 +1638,36 @@ LABEL_12:
 
 - (void)p_addIntroMediaView
 {
-  v3 = [(THChapterBrowserController *)self introMediaViewController];
+  introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
 
-  if (v3)
+  if (introMediaViewController)
   {
     [(UIView *)self->mIntroMediaContainerView bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v15 = [(THChapterBrowserController *)self introMediaViewController];
-    v12 = [v15 view];
-    [v12 setFrame:{v5, v7, v9, v11}];
+    introMediaViewController2 = [(THChapterBrowserController *)self introMediaViewController];
+    view = [introMediaViewController2 view];
+    [view setFrame:{v5, v7, v9, v11}];
 
     mIntroMediaContainerView = self->mIntroMediaContainerView;
-    v16 = [(THChapterBrowserController *)self introMediaViewController];
-    v14 = [v16 view];
-    [(UIView *)mIntroMediaContainerView addSubview:v14];
+    introMediaViewController3 = [(THChapterBrowserController *)self introMediaViewController];
+    view2 = [introMediaViewController3 view];
+    [(UIView *)mIntroMediaContainerView addSubview:view2];
   }
 }
 
 - (void)p_removeIntroMediaView
 {
-  v5 = [(THChapterBrowserController *)self introMediaViewController];
-  v3 = [v5 isViewLoaded];
+  introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+  isViewLoaded = [introMediaViewController isViewLoaded];
 
-  if (v3)
+  if (isViewLoaded)
   {
-    v6 = [(THChapterBrowserController *)self introMediaViewController];
-    v4 = [v6 view];
-    [v4 removeFromSuperview];
+    introMediaViewController2 = [(THChapterBrowserController *)self introMediaViewController];
+    view = [introMediaViewController2 view];
+    [view removeFromSuperview];
   }
 }
 
@@ -1696,16 +1696,16 @@ LABEL_12:
   }
 }
 
-- (void)introMediaControllerShouldAdvancePast:(id)a3
+- (void)introMediaControllerShouldAdvancePast:(id)past
 {
-  v4 = [(THChapterBrowserController *)self backgroundScrollView];
-  [v4 contentOffset];
+  backgroundScrollView = [(THChapterBrowserController *)self backgroundScrollView];
+  [backgroundScrollView contentOffset];
   v6 = v5;
 
   if (v6 < 0.0)
   {
-    v7 = [(THChapterBrowserController *)self introMediaViewController];
-    [v7 pause];
+    introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+    [introMediaViewController pause];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -1719,8 +1719,8 @@ LABEL_12:
 
 - (BOOL)introMediaControllerIsActive
 {
-  v3 = [(THChapterBrowserController *)self introMediaViewController];
-  if (v3)
+  introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+  if (introMediaViewController)
   {
     [(THScrollView *)self->mBackgroundScrollView contentOffset];
     v5 = v4;
@@ -1741,24 +1741,24 @@ LABEL_12:
   [(THScrollView *)self->mBackgroundScrollView contentOffset];
   if (v3 >= 0.0)
   {
-    v13 = [(THTOCViewController *)self delegate];
-    [v13 TOCViewControllerDidShowChapter:self];
+    delegate = [(THTOCViewController *)self delegate];
+    [delegate TOCViewControllerDidShowChapter:self];
 
-    v14 = [(THChapterBrowserController *)self introMediaViewController];
-    v7 = [v14 isPlaying];
+    introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+    isPlaying = [introMediaViewController isPlaying];
 
-    if (v7)
+    if (isPlaying)
     {
-      v15 = [(THChapterBrowserController *)self introMediaViewController];
-      [v15 pause];
+      introMediaViewController2 = [(THChapterBrowserController *)self introMediaViewController];
+      [introMediaViewController2 pause];
     }
 
-    v16 = [(THChapterBrowserController *)self introMediaViewController];
-    [v16 prepareMovieForTOC];
+    introMediaViewController3 = [(THChapterBrowserController *)self introMediaViewController];
+    [introMediaViewController3 prepareMovieForTOC];
 
-    v12 = [(THChapterBrowserController *)self bc_windowForViewController];
-    v8 = [v12 windowScene];
-    self->mCurrentSyntheticInterfaceOrientation = [v8 interfaceOrientation];
+    bc_windowForViewController = [(THChapterBrowserController *)self bc_windowForViewController];
+    windowScene = [bc_windowForViewController windowScene];
+    self->mCurrentSyntheticInterfaceOrientation = [windowScene interfaceOrientation];
   }
 
   else
@@ -1767,9 +1767,9 @@ LABEL_12:
     [(THScrollViewWithPassthrough *)self->mPagesScrollView setContentOffset:0.0];
     self->mPageThumbScrollerStartContentOffset = 0.0;
     self->mPageThumbScrollerStartContentOffsetBeforeBackgroundDrag = 0.0;
-    v4 = [(THChapterBrowserController *)self introMediaViewController];
+    introMediaViewController4 = [(THChapterBrowserController *)self introMediaViewController];
 
-    if (!v4)
+    if (!introMediaViewController4)
     {
       v9 = +[TSUAssertionHandler currentHandler];
       v5 = [NSString stringWithUTF8String:"[THChapterBrowserController p_startIntroMediaIfNecessary]"];
@@ -1777,21 +1777,21 @@ LABEL_12:
       [v9 handleFailureInFunction:v5 file:v6 lineNumber:1265 description:{@"invalid nil value for '%s'", "self.introMediaViewController"}];
     }
 
-    v10 = [(THTOCViewController *)self delegate];
-    [v10 TOCViewControllerDidShowIntroMedia:self];
+    delegate2 = [(THTOCViewController *)self delegate];
+    [delegate2 TOCViewControllerDidShowIntroMedia:self];
 
     [(THChapterBrowserController *)self p_addIntroMediaView];
-    v11 = [(THChapterBrowserController *)self introMediaViewController];
-    [v11 ensureReadyToPlay];
+    introMediaViewController5 = [(THChapterBrowserController *)self introMediaViewController];
+    [introMediaViewController5 ensureReadyToPlay];
 
-    v12 = [(THChapterBrowserController *)self introMediaViewController];
-    [v12 playForIntroMediaBecomesVisible];
+    bc_windowForViewController = [(THChapterBrowserController *)self introMediaViewController];
+    [bc_windowForViewController playForIntroMediaBecomesVisible];
   }
 }
 
-- (void)freeTransformControllerDidBegin:(id)a3
+- (void)freeTransformControllerDidBegin:(id)begin
 {
-  v17 = a3;
+  beginCopy = begin;
   if (self->mDoingFreeTransform)
   {
     v4 = +[TSUAssertionHandler currentHandler];
@@ -1802,8 +1802,8 @@ LABEL_12:
 
   self->mDoingFreeTransform = 1;
   objc_opt_class();
-  v7 = [v17 targetLayer];
-  v8 = [v7 delegate];
+  targetLayer = [beginCopy targetLayer];
+  delegate = [targetLayer delegate];
   v9 = TSUDynamicCast();
 
   if (!v9)
@@ -1817,26 +1817,26 @@ LABEL_12:
   TSUScreenScale();
   self->mUsingTinyThumb = v13 <= 1.0;
   objc_opt_class();
-  v14 = [v17 freeTransformLayer];
-  v15 = [v14 delegate];
+  freeTransformLayer = [beginCopy freeTransformLayer];
+  delegate2 = [freeTransformLayer delegate];
   v16 = TSUDynamicCast();
 
   [(THChapterBrowserController *)self p_beginTransitionFromPageThumbnail:v9 transformView:v16 freeTransform:1 firstThumbNailToTransition:1];
   [v9 setShowCanvas:0 animated:0];
 }
 
-- (void)freeTransformControllerDidContinue:(id)a3 withScale:(double)a4
+- (void)freeTransformControllerDidContinue:(id)continue withScale:(double)scale
 {
-  v16 = a3;
+  continueCopy = continue;
   objc_opt_class();
-  v6 = [v16 targetLayer];
-  v7 = [v6 delegate];
+  targetLayer = [continueCopy targetLayer];
+  delegate = [targetLayer delegate];
   v8 = TSUDynamicCast();
 
-  [v8 setShowCanvas:a4 >= 3.0 animated:1];
-  if (a4 < 3.0)
+  [v8 setShowCanvas:scale >= 3.0 animated:1];
+  if (scale < 3.0)
   {
-    if (a4 >= 1.20000005)
+    if (scale >= 1.20000005)
     {
       v10 = 0;
     }
@@ -1849,8 +1849,8 @@ LABEL_12:
 
     if (self->mUsingTinyThumb != v10)
     {
-      v11 = [(THTOCViewController *)self dataSource];
-      v12 = [v11 toc:self tileModelForChapterIndex:{objc_msgSend(v8, "chapterIndex")}];
+      dataSource = [(THTOCViewController *)self dataSource];
+      v12 = [dataSource toc:self tileModelForChapterIndex:{objc_msgSend(v8, "chapterIndex")}];
 
       if (v10)
       {
@@ -1862,8 +1862,8 @@ LABEL_12:
         [v12 largerThumbs];
       }
       v13 = ;
-      v14 = [v8 pageIndex];
-      if (v14 >= [v13 count])
+      pageIndex = [v8 pageIndex];
+      if (pageIndex >= [v13 count])
       {
         v15 = 0;
       }
@@ -1882,18 +1882,18 @@ LABEL_12:
   }
 }
 
-- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)a3
+- (CGRect)freeTransformControllerRectForCompletionAnimation:(id)animation
 {
-  v4 = [a3 freeTransformLayer];
-  v5 = [v4 superlayer];
+  freeTransformLayer = [animation freeTransformLayer];
+  superlayer = [freeTransformLayer superlayer];
   [(THChapterBrowserController *)self originalCanvasScrollViewFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(THChapterBrowserController *)self originalCanvasScrollViewSuperview];
-  v15 = [v14 layer];
-  [v5 convertRect:v15 fromLayer:{v7, v9, v11, v13}];
+  originalCanvasScrollViewSuperview = [(THChapterBrowserController *)self originalCanvasScrollViewSuperview];
+  layer = [originalCanvasScrollViewSuperview layer];
+  [superlayer convertRect:layer fromLayer:{v7, v9, v11, v13}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -1910,13 +1910,13 @@ LABEL_12:
   return result;
 }
 
-- (void)freeTransformControllerWillBeginCompletionAnimation:(id)a3 passedThreshold:(BOOL)a4
+- (void)freeTransformControllerWillBeginCompletionAnimation:(id)animation passedThreshold:(BOOL)threshold
 {
-  v4 = a4;
-  v6 = a3;
+  thresholdCopy = threshold;
+  animationCopy = animation;
   objc_opt_class();
-  v7 = [v6 targetLayer];
-  v8 = [v7 delegate];
+  targetLayer = [animationCopy targetLayer];
+  delegate = [targetLayer delegate];
   v9 = TSUDynamicCast();
 
   if (!v9)
@@ -1927,8 +1927,8 @@ LABEL_12:
     [v10 handleFailureInFunction:v11 file:v12 lineNumber:1355 description:{@"invalid nil value for '%s'", "thumbnailView"}];
   }
 
-  [v9 setShowCanvas:v4 animated:1];
-  if (v4)
+  [v9 setShowCanvas:thresholdCopy animated:1];
+  if (thresholdCopy)
   {
     [(THTOCViewController *)self setShrouded:1 animated:1 duration:0.25];
   }
@@ -1944,12 +1944,12 @@ LABEL_12:
   }
 }
 
-- (void)freeTransformControllerWillEnd:(id)a3 passedThreshold:(BOOL)a4
+- (void)freeTransformControllerWillEnd:(id)end passedThreshold:(BOOL)threshold
 {
-  v13 = a3;
+  endCopy = end;
   objc_opt_class();
-  v6 = [v13 targetLayer];
-  v7 = [v6 delegate];
+  targetLayer = [endCopy targetLayer];
+  delegate = [targetLayer delegate];
   v8 = TSUDynamicCast();
 
   if (!v8)
@@ -1959,7 +1959,7 @@ LABEL_12:
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THChapterBrowserController.mm"];
     [v9 handleFailureInFunction:v10 file:v11 lineNumber:1374 description:{@"invalid nil value for '%s'", "thumbnailView"}];
 
-    if (a4)
+    if (threshold)
     {
       goto LABEL_6;
     }
@@ -1967,23 +1967,23 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!threshold)
   {
 LABEL_5:
-    v12 = [(THTOCViewController *)self delegate];
-    [v12 chapterBrowserController:self cancelledTransitionToPageIndex:objc_msgSend(v8 chapterIndex:{"pageIndex"), objc_msgSend(v8, "chapterIndex")}];
+    delegate2 = [(THTOCViewController *)self delegate];
+    [delegate2 chapterBrowserController:self cancelledTransitionToPageIndex:objc_msgSend(v8 chapterIndex:{"pageIndex"), objc_msgSend(v8, "chapterIndex")}];
   }
 
 LABEL_6:
 }
 
-- (void)freeTransformControllerDidEnd:(id)a3 passedThreshold:(BOOL)a4
+- (void)freeTransformControllerDidEnd:(id)end passedThreshold:(BOOL)threshold
 {
-  v4 = a4;
-  v12 = a3;
+  thresholdCopy = threshold;
+  endCopy = end;
   objc_opt_class();
-  v6 = [v12 targetLayer];
-  v7 = [v6 delegate];
+  targetLayer = [endCopy targetLayer];
+  delegate = [targetLayer delegate];
   v8 = TSUDynamicCast();
 
   if (!v8)
@@ -1995,7 +1995,7 @@ LABEL_6:
   }
 
   +[CATransaction begin];
-  if (v4)
+  if (thresholdCopy)
   {
     [(THChapterBrowserController *)self p_animationDidStopForThumbnailView:v8];
   }
@@ -2005,15 +2005,15 @@ LABEL_6:
   self->mDoingFreeTransform = 0;
 }
 
-- (id)unmovingParentViewForFreeTransformController:(id)a3
+- (id)unmovingParentViewForFreeTransformController:(id)controller
 {
-  v3 = [(THChapterBrowserController *)self view];
-  v4 = [v3 superview];
+  view = [(THChapterBrowserController *)self view];
+  superview = [view superview];
 
-  return v4;
+  return superview;
 }
 
-- (CGSize)curtainSizeForFreeTransformController:(id)a3
+- (CGSize)curtainSizeForFreeTransformController:(id)controller
 {
   width = CGSizeZero.width;
   height = CGSizeZero.height;
@@ -2022,12 +2022,12 @@ LABEL_6:
   return result;
 }
 
-- ($F79AFF246B753071D4AF2E33424639CF)shadowPropertiesForFreeTransformController:(SEL)a3 defaults:(id)a4
+- ($F79AFF246B753071D4AF2E33424639CF)shadowPropertiesForFreeTransformController:(SEL)controller defaults:(id)defaults
 {
-  v5 = a4;
+  defaultsCopy = defaults;
   objc_opt_class();
-  v6 = [v5 targetLayer];
-  v7 = [v6 delegate];
+  targetLayer = [defaultsCopy targetLayer];
+  delegate = [targetLayer delegate];
   v8 = TSUDynamicCast();
 
   if (!v8)
@@ -2049,17 +2049,17 @@ LABEL_6:
   return result;
 }
 
-- (id)documentRootForChapterViewController:(id)a3
+- (id)documentRootForChapterViewController:(id)controller
 {
-  v4 = [(THTOCViewController *)self delegate];
-  v5 = [v4 documentRootForChapterBrowserController:self];
+  delegate = [(THTOCViewController *)self delegate];
+  v5 = [delegate documentRootForChapterBrowserController:self];
 
   return v5;
 }
 
-- (void)chapterViewController:(id)a3 displayPageForModelLink:(id)a4
+- (void)chapterViewController:(id)controller displayPageForModelLink:(id)link
 {
-  v5 = [(THChapterBrowserController *)self p_pageThumbnailViewForModelLink:a4];
+  v5 = [(THChapterBrowserController *)self p_pageThumbnailViewForModelLink:link];
   v9 = v5;
   if (v5)
   {
@@ -2076,11 +2076,11 @@ LABEL_6:
   }
 }
 
-- (CGRect)frameForChapterViewController:(id)a3 withSize:(CGSize)a4
+- (CGRect)frameForChapterViewController:(id)controller withSize:(CGSize)size
 {
   for (i = 0; i != 3; ++i)
   {
-    if (self->mChapterViewControllers[i] == a3)
+    if (self->mChapterViewControllers[i] == controller)
     {
       break;
     }
@@ -2098,12 +2098,12 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)frameForChapterViewController:(id)a3
+- (CGRect)frameForChapterViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(THChapterBrowserController *)self view];
-  [v5 bounds];
-  [(THChapterBrowserController *)self frameForChapterViewController:v4 withSize:v6, v7];
+  controllerCopy = controller;
+  view = [(THChapterBrowserController *)self view];
+  [view bounds];
+  [(THChapterBrowserController *)self frameForChapterViewController:controllerCopy withSize:v6, v7];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -2120,47 +2120,47 @@ LABEL_6:
   return result;
 }
 
-- (void)chapterViewControllerWasTapped:(id)a3
+- (void)chapterViewControllerWasTapped:(id)tapped
 {
-  v4 = [(THTOCViewController *)self delegate];
-  v5 = [v4 isToolbarHidden];
+  delegate = [(THTOCViewController *)self delegate];
+  isToolbarHidden = [delegate isToolbarHidden];
 
-  v6 = [(THTOCViewController *)self delegate];
-  v7 = v6;
-  if (v5)
+  delegate2 = [(THTOCViewController *)self delegate];
+  v7 = delegate2;
+  if (isToolbarHidden)
   {
-    [v6 TOCShowToolbarAnimated:1];
+    [delegate2 TOCShowToolbarAnimated:1];
   }
 
   else
   {
-    [v6 TOCHideToolbarAnimated:1];
+    [delegate2 TOCHideToolbarAnimated:1];
   }
 
   [(THChapterBrowserController *)self refreshStatusBarAppearance];
 }
 
-- (id)chapterViewController:(id)a3 actionForHyperlink:(id)a4 inRep:(id)a5 gesture:(id)a6
+- (id)chapterViewController:(id)controller actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  hyperlinkCopy = hyperlink;
+  repCopy = rep;
+  gestureCopy = gesture;
   v12 = [THModelLink alloc];
-  v13 = [v9 url];
-  v14 = [v13 absoluteString];
-  v15 = [(THModelLink *)v12 initWithTarget:v14 context:0];
+  v13 = [hyperlinkCopy url];
+  absoluteString = [v13 absoluteString];
+  v15 = [(THModelLink *)v12 initWithTarget:absoluteString context:0];
 
-  v16 = [v11 gestureKind];
-  v17 = v16;
+  gestureKind = [gestureCopy gestureKind];
+  v17 = gestureKind;
   v18 = TSWPLongPress;
-  if (v16 == TSWPImmediateSingleTap || v16 == TSWPLongPress)
+  if (gestureKind == TSWPImmediateSingleTap || gestureKind == TSWPLongPress)
   {
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_A656C;
     v32[3] = &unk_45CCF8;
-    v33 = v10;
-    v34 = v9;
+    v33 = repCopy;
+    v34 = hyperlinkCopy;
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_A6578;
@@ -2171,7 +2171,7 @@ LABEL_6:
     v25 = sub_A6584;
     v26 = &unk_45CD20;
     v27 = v31;
-    v28 = self;
+    selfCopy = self;
     v29 = v15;
     v21 = [TSWPTwoPartAction actionWithStartAction:v32 cancelAction:v30 finishAction:&v23];
     if (v17 == v18)
@@ -2195,38 +2195,38 @@ LABEL_6:
   return v21;
 }
 
-- (BOOL)chapterViewController:(id)a3 followLink:(id)a4
+- (BOOL)chapterViewController:(id)controller followLink:(id)link
 {
-  v5 = a4;
-  v6 = [(THTOCViewController *)self delegate];
-  v7 = [v6 chapterBrowserController:self relativePageIndexForLink:v5];
+  linkCopy = link;
+  delegate = [(THTOCViewController *)self delegate];
+  v7 = [delegate chapterBrowserController:self relativePageIndexForLink:linkCopy];
 
-  v8 = [(THTOCViewController *)self delegate];
-  [v8 chapterBrowserController:self willTransitionToPageIndex:v7 chapterIndex:self->mChapterIndex freeTransform:0];
+  delegate2 = [(THTOCViewController *)self delegate];
+  [delegate2 chapterBrowserController:self willTransitionToPageIndex:v7 chapterIndex:self->mChapterIndex freeTransform:0];
 
-  v9 = [(THTOCViewController *)self delegate];
-  [v9 chapterBrowserController:self didTransitionToPageIndex:v7 chapterIndex:self->mChapterIndex relativeTargetRect:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+  delegate3 = [(THTOCViewController *)self delegate];
+  [delegate3 chapterBrowserController:self didTransitionToPageIndex:v7 chapterIndex:self->mChapterIndex relativeTargetRect:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
 
   [(THTOCViewController *)self setShrouded:1 animated:0 duration:0.0];
   return 1;
 }
 
-- (id)presentingViewControllerForChapterViewController:(id)a3
+- (id)presentingViewControllerForChapterViewController:(id)controller
 {
-  v4 = [(THTOCViewController *)self delegate];
-  v5 = [v4 presentingViewControllerForChapterBrowserController:self];
+  delegate = [(THTOCViewController *)self delegate];
+  v5 = [delegate presentingViewControllerForChapterBrowserController:self];
 
   return v5;
 }
 
-- (void)p_highlightThumbTargetsIfShouldInThumb:(id)a3 atPoint:(CGPoint)a4 coverFullThumb:(BOOL)a5
+- (void)p_highlightThumbTargetsIfShouldInThumb:(id)thumb atPoint:(CGPoint)point coverFullThumb:(BOOL)fullThumb
 {
-  y = a4.y;
-  x = a4.x;
-  v22 = a3;
+  y = point.y;
+  x = point.x;
+  thumbCopy = thumb;
   if ([(THChapterBrowserController *)self p_shouldHighlightThumbTargets])
   {
-    if (a5)
+    if (fullThumb)
     {
       v9 = 1.0;
       v10 = 0.0;
@@ -2236,42 +2236,42 @@ LABEL_6:
 
     else
     {
-      [v22 frame];
+      [thumbCopy frame];
       v14 = v13;
-      [v22 frame];
+      [thumbCopy frame];
       v16 = v15;
-      v17 = [(THTOCViewController *)self delegate];
-      [v17 chapterBrowserController:self targetRelativeRectForRelativePoint:objc_msgSend(v22 atPageIndex:"pageIndex") chapterIndex:{objc_msgSend(v22, "chapterIndex"), x / v14, y / v16}];
+      delegate = [(THTOCViewController *)self delegate];
+      [delegate chapterBrowserController:self targetRelativeRectForRelativePoint:objc_msgSend(thumbCopy atPageIndex:"pageIndex") chapterIndex:{objc_msgSend(thumbCopy, "chapterIndex"), x / v14, y / v16}];
       v10 = v18;
       v11 = v19;
       v9 = v20;
       v12 = v21;
     }
 
-    [v22 setHighlightRelativeRect:{v10, v11, v9, v12}];
+    [thumbCopy setHighlightRelativeRect:{v10, v11, v9, v12}];
   }
 }
 
-- (void)thumbnailWasPressed:(id)a3 atPoint:(CGPoint)a4 forLong:(BOOL)a5
+- (void)thumbnailWasPressed:(id)pressed atPoint:(CGPoint)point forLong:(BOOL)long
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  longCopy = long;
+  y = point.y;
+  x = point.x;
+  pressedCopy = pressed;
   if (!self->mIgnoringThumbnailTaps && !self->mDoingFreeTransform)
   {
-    [(THChapterBrowserController *)self p_highlightThumbTargetsIfShouldInThumb:v9 atPoint:!v5 coverFullThumb:x, y];
+    [(THChapterBrowserController *)self p_highlightThumbTargetsIfShouldInThumb:pressedCopy atPoint:!longCopy coverFullThumb:x, y];
   }
 }
 
-- (void)p_transitionThumbnailToDVC:(id)a3
+- (void)p_transitionThumbnailToDVC:(id)c
 {
-  v4 = a3;
-  if (v4)
+  cCopy = c;
+  if (cCopy)
   {
-    v30 = v4;
-    v5 = [(THTOCViewController *)self delegate];
-    v6 = [v5 isTwoUpForChapterBrowserController:self];
+    v30 = cCopy;
+    delegate = [(THTOCViewController *)self delegate];
+    v6 = [delegate isTwoUpForChapterBrowserController:self];
 
     if (v6 && (-[THTOCViewController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isLastPageInChapterForChapterBrowserController:self pageIndex:objc_msgSend(v30 chapterIndex:{"pageIndex"), objc_msgSend(v30, "chapterIndex")}], v7, -[THTOCViewController delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isSinglePageInChapterForChapterBrowserController:chapterIndex:", self, objc_msgSend(v30, "chapterIndex")), v9, !v10))
     {
@@ -2313,24 +2313,24 @@ LABEL_6:
         [(THChapterBrowserController *)self p_transitionFromPageThumbnail:v20 destinationRect:0 shouldShroud:v23 + v27, v25, v27, v29];
       }
 
-      v4 = v30;
+      cCopy = v30;
     }
 
     else
     {
       [(THChapterBrowserController *)self p_beginTransitionFromPageThumbnail:v30 transformView:v30 freeTransform:0 firstThumbNailToTransition:1];
       [(THChapterBrowserController *)self p_transitionFromPageThumbnail:v30 destinationRect:1 shouldShroud:?];
-      v4 = v30;
+      cCopy = v30;
     }
   }
 }
 
-- (BOOL)thumbnailWasTapped:(id)a3 atPoint:(CGPoint)a4 forLong:(BOOL)a5
+- (BOOL)thumbnailWasTapped:(id)tapped atPoint:(CGPoint)point forLong:(BOOL)long
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  longCopy = long;
+  y = point.y;
+  x = point.x;
+  tappedCopy = tapped;
   if (self->mIgnoringThumbnailTaps || self->mDoingFreeTransform)
   {
     v10 = 0;
@@ -2339,21 +2339,21 @@ LABEL_6:
   else
   {
     self->mIgnoringThumbnailTaps = 1;
-    [(THChapterBrowserController *)self p_highlightThumbTargetsIfShouldInThumb:v9 atPoint:!v5 coverFullThumb:x, y];
-    [(THChapterBrowserController *)self p_transitionThumbnailToDVC:v9];
+    [(THChapterBrowserController *)self p_highlightThumbTargetsIfShouldInThumb:tappedCopy atPoint:!longCopy coverFullThumb:x, y];
+    [(THChapterBrowserController *)self p_transitionThumbnailToDVC:tappedCopy];
     v10 = 1;
   }
 
   return v10;
 }
 
-- (void)transitionPageToDVC:(unint64_t)a3 chapterIndex:(unint64_t)a4
+- (void)transitionPageToDVC:(unint64_t)c chapterIndex:(unint64_t)index
 {
   self->mIgnoringThumbnailTaps = 1;
-  v9 = [(THChapterBrowserController *)self visibleThumbnailIndexes];
-  if ([v9 containsIndex:a3])
+  visibleThumbnailIndexes = [(THChapterBrowserController *)self visibleThumbnailIndexes];
+  if ([visibleThumbnailIndexes containsIndex:c])
   {
-    v7 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:a3];
+    v7 = [(THChapterBrowserController *)self p_pageThumbnailViewForPageIndex:c];
     [(THChapterBrowserController *)self p_transitionThumbnailToDVC:v7];
   }
 
@@ -2363,9 +2363,9 @@ LABEL_6:
     [v8 beginIgnoringInteractionEvents];
 
     [(THChapterBrowserController *)self setTransitioningPageToDVC:1];
-    [(THChapterBrowserController *)self setTransitioningThumbnailIndex:a3];
-    [(THChapterBrowserController *)self prepareToScrollToThumbnailAtIndex:a3 chapterIndex:a4];
-    [(THChapterBrowserController *)self p_scrollToThumbnailAtIndex:a3 animated:1];
+    [(THChapterBrowserController *)self setTransitioningThumbnailIndex:c];
+    [(THChapterBrowserController *)self prepareToScrollToThumbnailAtIndex:c chapterIndex:index];
+    [(THChapterBrowserController *)self p_scrollToThumbnailAtIndex:c animated:1];
   }
 }
 
@@ -2384,46 +2384,46 @@ LABEL_6:
   [(UIView *)mBackgroundsView setFrame:v13, v6, v8, v10];
 }
 
-- (void)p_setupChapterViewControllerAtIndex:(unint64_t)a3 withChapterIndex:(unint64_t)a4 allowThumbnail:(BOOL)a5
+- (void)p_setupChapterViewControllerAtIndex:(unint64_t)index withChapterIndex:(unint64_t)chapterIndex allowThumbnail:(BOOL)thumbnail
 {
-  v5 = a5;
+  thumbnailCopy = thumbnail;
   mChapterViewControllers = self->mChapterViewControllers;
-  v10 = self->mChapterViewControllers[a3];
+  v10 = self->mChapterViewControllers[index];
   if (!v10)
   {
     v11 = [THChapterViewController alloc];
-    v22 = [(THTOCViewController *)self delegate];
-    v12 = [v22 presentationTypeForChapterBrowserController:self];
+    delegate = [(THTOCViewController *)self delegate];
+    v12 = [delegate presentationTypeForChapterBrowserController:self];
     v13 = [(THChapterViewController *)v11 initWithDelegate:self pageControlHeight:v12 presentationType:48.0];
-    v14 = mChapterViewControllers[a3];
-    mChapterViewControllers[a3] = v13;
+    v14 = mChapterViewControllers[index];
+    mChapterViewControllers[index] = v13;
 
     mBackgroundsView = self->mBackgroundsView;
-    v23 = [(THChapterViewController *)mChapterViewControllers[a3] view];
+    view = [(THChapterViewController *)mChapterViewControllers[index] view];
     [(UIView *)mBackgroundsView addSubview:?];
 
-    [(THChapterBrowserController *)self addChildViewController:mChapterViewControllers[a3]];
-    v24 = [(THChapterViewController *)mChapterViewControllers[a3] interactiveCanvasController];
-    v16 = [v24 gestureRecognizerWithKind:TSWPImmediatePress];
-    v17 = [v24 gestureDispatcher];
-    v18 = [(THScrollView *)self->mBackgroundScrollView panGestureRecognizer];
-    [v17 allowSimultaneousRecognitionByRecognizers:{v16, v18, 0}];
+    [(THChapterBrowserController *)self addChildViewController:mChapterViewControllers[index]];
+    interactiveCanvasController = [(THChapterViewController *)mChapterViewControllers[index] interactiveCanvasController];
+    v16 = [interactiveCanvasController gestureRecognizerWithKind:TSWPImmediatePress];
+    gestureDispatcher = [interactiveCanvasController gestureDispatcher];
+    panGestureRecognizer = [(THScrollView *)self->mBackgroundScrollView panGestureRecognizer];
+    [gestureDispatcher allowSimultaneousRecognitionByRecognizers:{v16, panGestureRecognizer, 0}];
 
-    v10 = mChapterViewControllers[a3];
+    v10 = mChapterViewControllers[index];
   }
 
-  if ([(THChapterViewController *)v10 chapterIndex]!= a4)
+  if ([(THChapterViewController *)v10 chapterIndex]!= chapterIndex)
   {
-    v19 = [(THTOCViewController *)self delegate];
-    v25 = [v19 chapterBrowserController:self tocTileModelAtIndex:a4];
+    delegate2 = [(THTOCViewController *)self delegate];
+    v25 = [delegate2 chapterBrowserController:self tocTileModelAtIndex:chapterIndex];
 
-    [(THChapterViewController *)mChapterViewControllers[a3] setTileModel:v25];
-    [(THChapterViewController *)mChapterViewControllers[a3] setChapterIndex:a4];
-    v20 = [(THChapterViewController *)mChapterViewControllers[a3] reloadViewsAndShowThumbnail:v5];
+    [(THChapterViewController *)mChapterViewControllers[index] setTileModel:v25];
+    [(THChapterViewController *)mChapterViewControllers[index] setChapterIndex:chapterIndex];
+    v20 = [(THChapterViewController *)mChapterViewControllers[index] reloadViewsAndShowThumbnail:thumbnailCopy];
     if (v20)
     {
-      v21 = [(THChapterBrowserController *)self contentNodesAskedToLoad];
-      [v21 addObject:v20];
+      contentNodesAskedToLoad = [(THChapterBrowserController *)self contentNodesAskedToLoad];
+      [contentNodesAskedToLoad addObject:v20];
     }
   }
 }
@@ -2442,8 +2442,8 @@ LABEL_6:
       v9 = v8;
       v11 = v10;
       v13 = v12;
-      v14 = [(THChapterViewController *)v5 view];
-      [v14 frame];
+      view = [(THChapterViewController *)v5 view];
+      [view frame];
       v22.origin.x = v15;
       v22.origin.y = v16;
       v22.size.width = v17;
@@ -2456,8 +2456,8 @@ LABEL_6:
 
       if (!v19)
       {
-        v20 = [(THChapterViewController *)v5 view];
-        [v20 setFrame:{v7, v9, v11, v13}];
+        view2 = [(THChapterViewController *)v5 view];
+        [view2 setFrame:{v7, v9, v11, v13}];
       }
     }
 
@@ -2488,8 +2488,8 @@ LABEL_6:
 - (void)p_setupNextChapterView
 {
   mChapterIndex = self->mChapterIndex;
-  v4 = [(THTOCViewController *)self dataSource];
-  v5 = [v4 toc:self numberOfTilesInDivision:0];
+  dataSource = [(THTOCViewController *)self dataSource];
+  v5 = [dataSource toc:self numberOfTilesInDivision:0];
 
   if (mChapterIndex + 1 >= v5)
   {
@@ -2516,41 +2516,41 @@ LABEL_6:
   [(THChapterBrowserController *)self p_fixupChapterViewFrames];
 }
 
-- (void)p_clearChapterViewAtIndex:(unint64_t)a3
+- (void)p_clearChapterViewAtIndex:(unint64_t)index
 {
   mChapterViewControllers = self->mChapterViewControllers;
-  v4 = self->mChapterViewControllers[a3];
+  v4 = self->mChapterViewControllers[index];
   if (v4)
   {
     [(THChapterViewController *)v4 setTileModel:0];
-    [(THChapterViewController *)mChapterViewControllers[a3] setChapterIndex:0x7FFFFFFFFFFFFFFFLL];
-    v6 = [(THChapterViewController *)mChapterViewControllers[a3] reloadViewsAndShowThumbnail:1];
+    [(THChapterViewController *)mChapterViewControllers[index] setChapterIndex:0x7FFFFFFFFFFFFFFFLL];
+    v6 = [(THChapterViewController *)mChapterViewControllers[index] reloadViewsAndShowThumbnail:1];
   }
 }
 
-- (void)p_setChapterIndex:(unint64_t)a3 forScrub:(BOOL)a4 stillScrolling:(BOOL)a5
+- (void)p_setChapterIndex:(unint64_t)index forScrub:(BOOL)scrub stillScrolling:(BOOL)scrolling
 {
-  v5 = a5;
-  v6 = a4;
+  scrollingCopy = scrolling;
+  scrubCopy = scrub;
   +[CATransaction begin];
   mChapterIndex = self->mChapterIndex;
-  if (mChapterIndex != a3)
+  if (mChapterIndex != index)
   {
     if (mChapterIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(THChapterBrowserController *)self setPreviousChapterIndex:self->mChapterIndex];
     }
 
-    self->mChapterIndex = a3;
-    if (v6)
+    self->mChapterIndex = index;
+    if (scrubCopy)
     {
-      [(THChapterBrowserController *)self p_setupChapterViewControllerAtIndex:1 withChapterIndex:a3 allowThumbnail:1];
+      [(THChapterBrowserController *)self p_setupChapterViewControllerAtIndex:1 withChapterIndex:index allowThumbnail:1];
       [(THChapterBrowserController *)self p_updateChapterBackgroundsView];
       goto LABEL_15;
     }
 
     [(THChapterBrowserController *)self p_updatePageControl];
-    if (mChapterIndex - 1 == a3)
+    if (mChapterIndex - 1 == index)
     {
       v10 = self->mChapterViewControllers[2];
       v11 = v10;
@@ -2563,10 +2563,10 @@ LABEL_6:
 
     else
     {
-      if (mChapterIndex + 1 != a3)
+      if (mChapterIndex + 1 != index)
       {
         [(THChapterBrowserController *)self p_setupChapterViewControllerAtIndex:1 withChapterIndex:self->mChapterIndex allowThumbnail:1];
-        if (v5)
+        if (scrollingCopy)
         {
           [(THChapterBrowserController *)self p_updateAdjacentChapterViews];
         }
@@ -2587,7 +2587,7 @@ LABEL_11:
     [(THChapterBrowserController *)self p_updateChapterBackgroundsView];
   }
 
-  if (!v6 && !v5)
+  if (!scrubCopy && !scrollingCopy)
   {
     [(THChapterBrowserController *)self p_preloadContentNodesForVisibleThumbnails];
   }
@@ -2605,8 +2605,8 @@ LABEL_15:
     if (v3 != 2)
     {
       [(THChapterViewController *)self->mChapterViewControllers[0] removeFromParentViewController];
-      v4 = [(THChapterViewController *)self->mChapterViewControllers[0] view];
-      [v4 removeFromSuperview];
+      view = [(THChapterViewController *)self->mChapterViewControllers[0] view];
+      [view removeFromSuperview];
 
       [(THChapterViewController *)self->mChapterViewControllers[0] teardown];
       v5 = self->mChapterViewControllers[0];
@@ -2620,22 +2620,22 @@ LABEL_15:
   while (v3);
 }
 
-- (void)setChapterIndex:(unint64_t)a3
+- (void)setChapterIndex:(unint64_t)index
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && self->mChapterIndex != a3)
+  if (index != 0x7FFFFFFFFFFFFFFFLL && self->mChapterIndex != index)
   {
-    v5 = [(THChapterBrowserController *)self view];
+    view = [(THChapterBrowserController *)self view];
 
-    if (v5)
+    if (view)
     {
-      [(THChapterBrowserController *)self p_setChapterIndex:a3 forScrub:0 stillScrolling:0];
+      [(THChapterBrowserController *)self p_setChapterIndex:index forScrub:0 stillScrolling:0];
       self->mPreservedThumbnailOffset.x = 0.0;
       [(THChapterBrowserController *)self p_resetPagesScrollViewAndCapThumbCount:0 firstVisibleRelativePage:0 resetContentOffset:1];
       [(THScrollView *)self->mBackgroundScrollView contentOffset];
       if (v6 >= 0.0)
       {
         [(THChapterBrowserController *)self chapterWidth];
-        v8 = v7 * a3;
+        v8 = v7 * index;
         mBackgroundScrollView = self->mBackgroundScrollView;
 
         [(THScrollView *)mBackgroundScrollView setContentOffset:v8, 0.0];
@@ -2644,9 +2644,9 @@ LABEL_15:
   }
 }
 
-- (void)p_resetPagesScrollViewAndCapThumbCount:(BOOL)a3 firstVisibleRelativePage:(unint64_t)a4 resetContentOffset:(BOOL)a5
+- (void)p_resetPagesScrollViewAndCapThumbCount:(BOOL)count firstVisibleRelativePage:(unint64_t)page resetContentOffset:(BOOL)offset
 {
-  v56 = a3;
+  countCopy = count;
   v6 = 0;
   v7 = 0;
   v8 = 0.0;
@@ -2672,8 +2672,8 @@ LABEL_5:
       goto LABEL_19;
     }
 
-    v12 = [(THTOCViewController *)self dataSource];
-    v13 = [v12 toc:self numberOfTilesInDivision:0];
+    dataSource = [(THTOCViewController *)self dataSource];
+    v13 = [dataSource toc:self numberOfTilesInDivision:0];
 
     v11 = v9[304];
     if (v7 + mChapterIndex > v13)
@@ -2685,41 +2685,41 @@ LABEL_5:
     v19 = v7 + self->mChapterIndex - 1;
     v20 = v6 + v11;
     *&self->super.IMViewController_opaque[v20] = v19;
-    v21 = [(THTOCViewController *)self dataSource];
-    v22 = [v21 toc:self tileModelForChapterIndex:v19];
+    dataSource2 = [(THTOCViewController *)self dataSource];
+    v22 = [dataSource2 toc:self tileModelForChapterIndex:v19];
 
     objc_storeStrong((&self->super.mBookPropertiesDelegate + v20), v22);
-    v23 = [v22 tinyThumbs];
-    v24 = [v23 count];
+    tinyThumbs = [v22 tinyThumbs];
+    v24 = [tinyThumbs count];
 
-    if (v56)
+    if (countCopy)
     {
       if (v6 == 64)
       {
-        v25 = a4;
-        if ([(THChapterBrowserController *)self maximumNumberOfThumbsToLeftOfLeftmostDuringBackgroundDrag]<= a4)
+        pageCopy = page;
+        if ([(THChapterBrowserController *)self maximumNumberOfThumbsToLeftOfLeftmostDuringBackgroundDrag]<= page)
         {
-          v25 = [(THChapterBrowserController *)self maximumNumberOfThumbsToLeftOfLeftmostDuringBackgroundDrag];
+          pageCopy = [(THChapterBrowserController *)self maximumNumberOfThumbsToLeftOfLeftmostDuringBackgroundDrag];
         }
 
-        *(&self->mBottomWrapperView + v11) = (a4 - v25);
-        v26 = [(THChapterBrowserController *)self maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag];
-        v27 = &v24[-a4];
-        if (v26 < &v24[-a4])
+        *(&self->mBottomWrapperView + v11) = (page - pageCopy);
+        maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag = [(THChapterBrowserController *)self maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag];
+        maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag2 = &v24[-page];
+        if (maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag < &v24[-page])
         {
-          v27 = [(THChapterBrowserController *)self maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag];
+          maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag2 = [(THChapterBrowserController *)self maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag];
         }
       }
 
       else
       {
-        v27 = [(THChapterBrowserController *)self maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag];
-        v25 = 0;
+        maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag2 = [(THChapterBrowserController *)self maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag];
+        pageCopy = 0;
       }
 
-      if (v25 + v27 < v24)
+      if (pageCopy + maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag2 < v24)
       {
-        v24 = (v25 + v27);
+        v24 = (pageCopy + maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag2);
       }
     }
 
@@ -2764,7 +2764,7 @@ LABEL_19:
   v39 = -CGRectGetMinX(*(v38 + 80));
   [(THScrollViewWithPassthrough *)self->mPagesScrollView setContentInset:0.0, v39, 0.0, -CGRectGetWidth(*(v38 + 144))];
   [(THScrollViewWithPassthrough *)self->mPagesScrollView bounds];
-  if (a5 || (v44 = *(v38 + 12), v45 = *(v38 + 10), v46 = *(v38 + 11), v47 = v40, v48 = v41, v49 = v42, v50 = v43, v55 = *(v38 + 13), MinX = CGRectGetMinX(*&v40), v60.origin.x = v45, v60.origin.y = v46, v60.size.width = v44, v60.size.height = v55, MinX < CGRectGetMinX(v60)) || (v61.origin.x = v47, v61.origin.y = v48, v61.size.width = v49, v61.size.height = v50, MaxX = CGRectGetMaxX(v61), v62.origin.x = v45, v62.origin.y = v46, v62.size.width = v44, v62.size.height = v55, MaxX > CGRectGetMaxX(v62)))
+  if (offset || (v44 = *(v38 + 12), v45 = *(v38 + 10), v46 = *(v38 + 11), v47 = v40, v48 = v41, v49 = v42, v50 = v43, v55 = *(v38 + 13), MinX = CGRectGetMinX(*&v40), v60.origin.x = v45, v60.origin.y = v46, v60.size.width = v44, v60.size.height = v55, MinX < CGRectGetMinX(v60)) || (v61.origin.x = v47, v61.origin.y = v48, v61.size.width = v49, v61.size.height = v50, MaxX = CGRectGetMaxX(v61), v62.origin.x = v45, v62.origin.y = v46, v62.size.width = v44, v62.size.height = v55, MaxX > CGRectGetMaxX(v62)))
   {
     [(THScrollViewWithPassthrough *)self->mPagesScrollView setContentOffset:CGRectGetWidth(*(v38 + 16)), 0.0];
   }
@@ -2791,16 +2791,16 @@ LABEL_19:
     {
       v13 = v4 + self->mChapterIndex - 1;
       self->mChapterInfo[v3].chapterNumber = v13;
-      v14 = [(THTOCViewController *)self dataSource];
-      v15 = [v14 toc:self tileModelForChapterIndex:v13];
+      dataSource = [(THTOCViewController *)self dataSource];
+      v15 = [dataSource toc:self tileModelForChapterIndex:v13];
 
       objc_storeStrong(&self->mChapterInfo[v3].tileModel, v15);
-      v16 = [v15 tinyThumbs];
-      v17 = [v16 count];
+      tinyThumbs = [v15 tinyThumbs];
+      maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag = [tinyThumbs count];
 
-      if (self->mBackgroundSwipeDidInitiateScroll && v17 >= [(THChapterBrowserController *)self maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag])
+      if (self->mBackgroundSwipeDidInitiateScroll && maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag >= [(THChapterBrowserController *)self maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag])
       {
-        v17 = [(THChapterBrowserController *)self maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag];
+        maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag = [(THChapterBrowserController *)self maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag];
       }
 
       [(THChapterBrowserController *)self thumbSize];
@@ -2809,10 +2809,10 @@ LABEL_19:
       v21 = v20;
       [(THChapterBrowserController *)self thumbSize];
       v23 = v22;
-      self->mChapterInfo[v3].numberOfPages = v17;
+      self->mChapterInfo[v3].numberOfPages = maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag;
       [(THChapterBrowserController *)self chapterWidth];
       v25 = v24;
-      v26 = v21 + v17 * v19;
+      v26 = v21 + maximumNumberOfThumbsToRightOfLeftmostDuringBackgroundDrag * v19;
       if (v25 > v26)
       {
         [(THChapterBrowserController *)self chapterWidth];
@@ -2893,8 +2893,8 @@ LABEL_19:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v15 = [(THChapterBrowserController *)self thumbnailSubviews];
-      v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      thumbnailSubviews = [(THChapterBrowserController *)self thumbnailSubviews];
+      v16 = [thumbnailSubviews countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v16)
       {
         v17 = *v23;
@@ -2904,7 +2904,7 @@ LABEL_19:
           {
             if (*v23 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(thumbnailSubviews);
             }
 
             v19 = *(*(&v22 + 1) + 8 * i);
@@ -2912,7 +2912,7 @@ LABEL_19:
             [v19 setFrame:MinX + v20];
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          v16 = [thumbnailSubviews countByEnumeratingWithState:&v22 objects:v26 count:16];
         }
 
         while (v16);
@@ -2925,14 +2925,14 @@ LABEL_19:
   }
 }
 
-- (id)p_thumbShownForChapter:(unint64_t)a3 index:(unint64_t)a4
+- (id)p_thumbShownForChapter:(unint64_t)chapter index:(unint64_t)index
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(THChapterBrowserController *)self thumbnailSubviews];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  thumbnailSubviews = [(THChapterBrowserController *)self thumbnailSubviews];
+  v7 = [thumbnailSubviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -2942,18 +2942,18 @@ LABEL_19:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(thumbnailSubviews);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 chapterIndex] == a3 && objc_msgSend(v10, "pageIndex") == a4)
+        if ([v10 chapterIndex] == chapter && objc_msgSend(v10, "pageIndex") == index)
         {
           v11 = v10;
           goto LABEL_12;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [thumbnailSubviews countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -2969,21 +2969,21 @@ LABEL_12:
   return v11;
 }
 
-- (CGRect)frameForPageThumbAtIndex:(unint64_t)a3 chapterIndex:(unint64_t)a4
+- (CGRect)frameForPageThumbAtIndex:(unint64_t)index chapterIndex:(unint64_t)chapterIndex
 {
-  if (self->mChapterIndex != a4)
+  if (self->mChapterIndex != chapterIndex)
   {
     v7 = +[TSUAssertionHandler currentHandler];
     v8 = [NSString stringWithUTF8String:"[THChapterBrowserController frameForPageThumbAtIndex:chapterIndex:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THChapterBrowserController.mm"];
-    [v7 handleFailureInFunction:v8 file:v9 lineNumber:2130 description:{@"chapter %lu index should match the current mChapterIndex: %lu.", a4, self->mChapterIndex}];
+    [v7 handleFailureInFunction:v8 file:v9 lineNumber:2130 description:{@"chapter %lu index should match the current mChapterIndex: %lu.", chapterIndex, self->mChapterIndex}];
   }
 
   x = self->mChapterInfo[1].frame.origin.x;
   y = self->mChapterInfo[1].frame.origin.y;
   width = self->mChapterInfo[1].frame.size.width;
   height = self->mChapterInfo[1].frame.size.height;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(THChapterBrowserController *)self thumbSize];
     v15 = v14;
@@ -2995,8 +2995,8 @@ LABEL_12:
     v25.origin.y = y;
     v25.size.width = width;
     v25.size.height = height;
-    v20 = CGRectGetMinX(v25) + a3 * v15;
-    if (a3)
+    v20 = CGRectGetMinX(v25) + index * v15;
+    if (index)
     {
       x = v17 + v20;
     }
@@ -3022,9 +3022,9 @@ LABEL_12:
   return result;
 }
 
-- (void)p_updatePageThumbnails:(BOOL)a3
+- (void)p_updatePageThumbnails:(BOOL)thumbnails
 {
-  v101 = a3;
+  thumbnailsCopy = thumbnails;
   if (self->mSuspendThumbViewUpdates || self->mDraggingInScrubber)
   {
     return;
@@ -3044,19 +3044,19 @@ LABEL_12:
   Width = CGRectGetWidth(v131);
   [(THScrollViewWithPassthrough *)self->mPagesScrollView frame];
   v12 = CGRectGetWidth(v132);
-  v107 = self;
-  v13 = [(THChapterBrowserController *)self view];
-  [v13 safeAreaInsets];
+  selfCopy = self;
+  view = [(THChapterBrowserController *)self view];
+  [view safeAreaInsets];
   v15 = v14;
-  v16 = [(THChapterBrowserController *)v107 view];
-  [v16 safeAreaInsets];
+  view2 = [(THChapterBrowserController *)selfCopy view];
+  [view2 safeAreaInsets];
   v18 = v15 - (v12 - v5 * ceil((Width + 2.0) / v5)) + v17;
 
-  [(THScrollViewWithPassthrough *)v107->mPagesScrollView contentOffset];
+  [(THScrollViewWithPassthrough *)selfCopy->mPagesScrollView contentOffset];
   v20 = v19 + v18 * -0.5;
-  [(THScrollViewWithPassthrough *)v107->mPagesScrollView frame];
+  [(THScrollViewWithPassthrough *)selfCopy->mPagesScrollView frame];
   v21 = v18 + CGRectGetWidth(v133);
-  [(THScrollViewWithPassthrough *)v107->mPagesScrollView contentSize];
+  [(THScrollViewWithPassthrough *)selfCopy->mPagesScrollView contentSize];
   v143.size.width = v22;
   v134.origin.y = 0.0;
   v143.origin.x = 0.0;
@@ -3076,8 +3076,8 @@ LABEL_12:
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v25 = [(THChapterBrowserController *)v107 thumbnailSubviews];
-  v26 = [v25 countByEnumeratingWithState:&v123 objects:v130 count:16];
+  thumbnailSubviews = [(THChapterBrowserController *)selfCopy thumbnailSubviews];
+  v26 = [thumbnailSubviews countByEnumeratingWithState:&v123 objects:v130 count:16];
   if (v26)
   {
     v27 = *v124;
@@ -3087,7 +3087,7 @@ LABEL_12:
       {
         if (*v124 != v27)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(thumbnailSubviews);
         }
 
         v29 = *(*(&v123 + 1) + 8 * i);
@@ -3104,7 +3104,7 @@ LABEL_12:
         [v30 addObject:v29];
       }
 
-      v26 = [v25 countByEnumeratingWithState:&v123 objects:v130 count:16];
+      v26 = [thumbnailSubviews countByEnumeratingWithState:&v123 objects:v130 count:16];
     }
 
     while (v26);
@@ -3114,8 +3114,8 @@ LABEL_12:
   v122 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v31 = [(THScrollViewWithPassthrough *)v107->mPagesScrollView subviews];
-  v32 = [v31 countByEnumeratingWithState:&v119 objects:v129 count:16];
+  subviews = [(THScrollViewWithPassthrough *)selfCopy->mPagesScrollView subviews];
+  v32 = [subviews countByEnumeratingWithState:&v119 objects:v129 count:16];
   if (v32)
   {
     v33 = *v120;
@@ -3125,7 +3125,7 @@ LABEL_12:
       {
         if (*v120 != v33)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(subviews);
         }
 
         v35 = *(*(&v119 + 1) + 8 * j);
@@ -3137,7 +3137,7 @@ LABEL_12:
         }
       }
 
-      v32 = [v31 countByEnumeratingWithState:&v119 objects:v129 count:16];
+      v32 = [subviews countByEnumeratingWithState:&v119 objects:v129 count:16];
       if (v32)
       {
         continue;
@@ -3153,7 +3153,7 @@ LABEL_23:
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   v36 = 0;
-  mChapterInfo = v107->mChapterInfo;
+  mChapterInfo = selfCopy->mChapterInfo;
   do
   {
     v37 = &mChapterInfo[v36];
@@ -3212,7 +3212,7 @@ LABEL_23:
             v46 = v41;
           }
 
-          v47 = [(THChapterBrowserController *)v107 p_thumbShownForChapter:v37->chapterNumber index:v46];
+          v47 = [(THChapterBrowserController *)selfCopy p_thumbShownForChapter:v37->chapterNumber index:v46];
           if (v47)
           {
             [v109 removeObjectIdenticalTo:v47];
@@ -3297,8 +3297,8 @@ LABEL_23:
           }
 
           v60 = CGRectGetMinX(v49->frame);
-          v61 = [(THChapterBrowserController *)v107 view];
-          [v61 safeAreaInsets];
+          view3 = [(THChapterBrowserController *)selfCopy view];
+          [view3 safeAreaInsets];
           v63 = v62;
           v64 = 0.0;
           if (v53 != v58)
@@ -3307,20 +3307,20 @@ LABEL_23:
           }
 
           v65 = v53 == v58 ? v60 + v63 + v64 * v5 : v10 + v60 + v63 + v64 * v5;
-          v66 = [(THChapterBrowserController *)v107 p_thumbShownForChapter:v49->chapterNumber index:v59];
-          if (!v66)
+          lastObject2 = [(THChapterBrowserController *)selfCopy p_thumbShownForChapter:v49->chapterNumber index:v59];
+          if (!lastObject2)
           {
             break;
           }
 
 LABEL_89:
-          v87 = [(THTOCViewController *)v107 delegate];
-          -[THPageThumbnailView setIsCurrentPage:](v66, "setIsCurrentPage:", [v87 chapterBrowserController:v107 isCurrentlyDisplayedPageForRelativePageIndex:v59 andChapterIndex:v49->chapterNumber]);
+          delegate = [(THTOCViewController *)selfCopy delegate];
+          -[THPageThumbnailView setIsCurrentPage:](lastObject2, "setIsCurrentPage:", [delegate chapterBrowserController:selfCopy isCurrentlyDisplayedPageForRelativePageIndex:v59 andChapterIndex:v49->chapterNumber]);
 
-          [(THPageThumbnailView *)v66 frame];
+          [(THPageThumbnailView *)lastObject2 frame];
           if (v88 != v65)
           {
-            [(THPageThumbnailView *)v66 setFrame:v65];
+            [(THPageThumbnailView *)lastObject2 setFrame:v65];
           }
 
           if (!v59)
@@ -3335,12 +3335,12 @@ LABEL_89:
 
         if (v53 == v58)
         {
-          v67 = [v109 lastObject];
+          lastObject = [v109 lastObject];
           v68 = v102;
           v69 = v99;
-          if (v67)
+          if (lastObject)
           {
-            v66 = v67;
+            lastObject2 = lastObject;
             [v109 removeLastObject];
             goto LABEL_71;
           }
@@ -3348,91 +3348,91 @@ LABEL_89:
 
         else
         {
-          v66 = [v108 lastObject];
+          lastObject2 = [v108 lastObject];
           v68 = v5;
           v69 = r1;
-          if (v66)
+          if (lastObject2)
           {
             [v108 removeLastObject];
             goto LABEL_71;
           }
         }
 
-        [(THScrollViewWithPassthrough *)v107->mPagesScrollView bounds];
-        v66 = [[THPageThumbnailView alloc] initWithFrame:v53 == v58 isFirstThumbnail:v107 delegate:v65, CGRectGetHeight(v142) - v69, v68, v69];
-        mPagesScrollView = v107->mPagesScrollView;
+        [(THScrollViewWithPassthrough *)selfCopy->mPagesScrollView bounds];
+        lastObject2 = [[THPageThumbnailView alloc] initWithFrame:v53 == v58 isFirstThumbnail:selfCopy delegate:v65, CGRectGetHeight(v142) - v69, v68, v69];
+        mPagesScrollView = selfCopy->mPagesScrollView;
         if (v98)
         {
-          [(THScrollViewWithPassthrough *)mPagesScrollView insertSubview:v66 belowSubview:?];
+          [(THScrollViewWithPassthrough *)mPagesScrollView insertSubview:lastObject2 belowSubview:?];
         }
 
         else
         {
-          [(THScrollViewWithPassthrough *)mPagesScrollView addSubview:v66];
+          [(THScrollViewWithPassthrough *)mPagesScrollView addSubview:lastObject2];
         }
 
-        v71 = [(THTOCViewController *)v107 delegate];
-        v72 = [v71 isTwoUpForChapterBrowserController:v107];
+        delegate2 = [(THTOCViewController *)selfCopy delegate];
+        v72 = [delegate2 isTwoUpForChapterBrowserController:selfCopy];
 
         if ((v72 & 1) == 0)
         {
-          [(THPageThumbnailView *)v66 setupFreeTransformWithDelegate:v107];
+          [(THPageThumbnailView *)lastObject2 setupFreeTransformWithDelegate:selfCopy];
         }
 
 LABEL_71:
-        [(THPageThumbnailView *)v66 setPageIndex:v59];
-        v73 = [(THChapterBrowserController *)v107 thumbnailsHiddenForPinch];
+        [(THPageThumbnailView *)lastObject2 setPageIndex:v59];
+        thumbnailsHiddenForPinch = [(THChapterBrowserController *)selfCopy thumbnailsHiddenForPinch];
         v118[0] = _NSConcreteStackBlock;
         v118[1] = 3221225472;
         v118[2] = sub_A9204;
         v118[3] = &unk_45CD40;
         v118[4] = v59;
-        v74 = [v73 objectsPassingTest:v118];
+        v74 = [thumbnailsHiddenForPinch objectsPassingTest:v118];
         v75 = [v74 count] != 0;
 
-        [(THPageThumbnailView *)v66 setHidden:(v104 == 1) & v75];
-        [(THPageThumbnailView *)v66 setChapterIndex:v49->chapterNumber];
+        [(THPageThumbnailView *)lastObject2 setHidden:(v104 == 1) & v75];
+        [(THPageThumbnailView *)lastObject2 setChapterIndex:v49->chapterNumber];
         v76 = v49->tileModel;
         v77 = [(THTOCTileModel *)v76 displayPageNumberForPageIndex:[(THTOCTileModel *)v76 pageIndex]+ v59];
         if (!v77)
         {
-          v78 = [(THTOCViewController *)v107 delegate];
-          v77 = [v78 chapterBrowserController:v107 pageNumberStringForRelativePageIndex:v59 andChapterIndex:v49->chapterNumber];
+          delegate3 = [(THTOCViewController *)selfCopy delegate];
+          v77 = [delegate3 chapterBrowserController:selfCopy pageNumberStringForRelativePageIndex:v59 andChapterIndex:v49->chapterNumber];
         }
 
-        [(THPageThumbnailView *)v66 setPageNumberText:v77];
+        [(THPageThumbnailView *)lastObject2 setPageNumberText:v77];
         TSUScreenScale();
         tileModel = v49->tileModel;
         if (v80 <= 1.0)
         {
-          v81 = [(THTOCTileModel *)tileModel tinyThumbs];
-          if (v59 < [v81 count])
+          tinyThumbs = [(THTOCTileModel *)tileModel tinyThumbs];
+          if (v59 < [tinyThumbs count])
           {
-            v82 = [(THTOCTileModel *)v49->tileModel tinyThumbs];
-            v83 = [v82 objectAtIndex:v59];
+            tinyThumbs2 = [(THTOCTileModel *)v49->tileModel tinyThumbs];
+            v83 = [tinyThumbs2 objectAtIndex:v59];
             goto LABEL_78;
           }
         }
 
         else
         {
-          v81 = [(THTOCTileModel *)tileModel largerThumbs];
-          if (v59 < [v81 count])
+          tinyThumbs = [(THTOCTileModel *)tileModel largerThumbs];
+          if (v59 < [tinyThumbs count])
           {
-            v82 = [(THTOCTileModel *)v49->tileModel largerThumbs];
-            v83 = [v82 objectAtIndex:v59];
+            tinyThumbs2 = [(THTOCTileModel *)v49->tileModel largerThumbs];
+            v83 = [tinyThumbs2 objectAtIndex:v59];
 LABEL_78:
             v84 = v83;
 
 LABEL_80:
             if (v84)
             {
-              v85 = v53 == v58 || v101;
-              [(THPageThumbnailView *)v66 setImageData:v84 immediate:v85];
+              v85 = v53 == v58 || thumbnailsCopy;
+              [(THPageThumbnailView *)lastObject2 setImageData:v84 immediate:v85];
             }
 
             v86 = v59 >= 1 && v59 == v49->numberOfPages + v49->firstRelativePageToShowDuringBackgroundScroll - 1;
-            [(THPageThumbnailView *)v66 setHasRightBorder:v86];
+            [(THPageThumbnailView *)lastObject2 setHasRightBorder:v86];
 
             goto LABEL_89;
           }
@@ -3505,9 +3505,9 @@ LABEL_94:
   +[CATransaction commit];
   if (v98)
   {
-    [(THScrollViewWithPassthrough *)v107->mPagesScrollView bringSubviewToFront:v98];
-    v97 = [v98 layer];
-    [v97 setZPosition:2.0];
+    [(THScrollViewWithPassthrough *)selfCopy->mPagesScrollView bringSubviewToFront:v98];
+    layer = [v98 layer];
+    [layer setZPosition:2.0];
   }
 
   [v93 makeObjectsPerformSelector:"teardown"];
@@ -3516,10 +3516,10 @@ LABEL_94:
 
 - (BOOL)p_isTOCLandscape
 {
-  v2 = [(THTOCViewController *)self bookPropertiesDelegate];
-  v3 = [v2 bookIsPaginatedForLandscape];
+  bookPropertiesDelegate = [(THTOCViewController *)self bookPropertiesDelegate];
+  bookIsPaginatedForLandscape = [bookPropertiesDelegate bookIsPaginatedForLandscape];
 
-  return v3;
+  return bookIsPaginatedForLandscape;
 }
 
 - (int)p_chapterIndexForCurrentScrollPosition
@@ -3542,9 +3542,9 @@ LABEL_94:
 - (void)p_backgroundScrollingDidEnd
 {
   self->mBackgroundSwipeDidInitiateScroll = 0;
-  v3 = [(THChapterBrowserController *)self p_chapterIndexForCurrentScrollPosition];
+  p_chapterIndexForCurrentScrollPosition = [(THChapterBrowserController *)self p_chapterIndexForCurrentScrollPosition];
   mBackgroundSwipeBeginningChapter = self->mBackgroundSwipeBeginningChapter;
-  [(THChapterBrowserController *)self p_setChapterIndex:v3 forScrub:0 stillScrolling:0];
+  [(THChapterBrowserController *)self p_setChapterIndex:p_chapterIndexForCurrentScrollPosition forScrub:0 stillScrolling:0];
   [(THChapterBrowserController *)self p_recoverFromFastScrollingDesynchronization];
   objc_storeStrong(&self->mUpdatingScrollView, self->mBackgroundScrollView);
   if (self->mPullThroughInProgress)
@@ -3555,7 +3555,7 @@ LABEL_94:
   else
   {
     [(THChapterBrowserController *)self p_resetPagesScrollViewAndCapThumbCount:0 firstVisibleRelativePage:0 resetContentOffset:1];
-    if (mBackgroundSwipeBeginningChapter == v3 && (v5 = self->mPageThumbScrollerStartContentOffsetBeforeBackgroundDrag, v5 > 0.0))
+    if (mBackgroundSwipeBeginningChapter == p_chapterIndexForCurrentScrollPosition && (v5 = self->mPageThumbScrollerStartContentOffsetBeforeBackgroundDrag, v5 > 0.0))
     {
       [(THScrollViewWithPassthrough *)self->mPagesScrollView contentOffset];
       [(THScrollViewWithPassthrough *)self->mPagesScrollView setContentOffset:v5];
@@ -3578,7 +3578,7 @@ LABEL_94:
   if (!self->mDraggingInScrubber)
   {
     [(THChapterBrowserController *)self p_startIntroMediaIfNecessary];
-    if (!v3)
+    if (!p_chapterIndexForCurrentScrollPosition)
     {
       [(THChapterBrowserController *)self p_updatePageControl];
     }
@@ -3594,9 +3594,9 @@ LABEL_94:
 {
   [(THChapterBrowserController *)self thumbSize];
   v4 = v3;
-  v5 = [(THChapterBrowserController *)self im_isCompactWidth];
+  im_isCompactWidth = [(THChapterBrowserController *)self im_isCompactWidth];
   result = v4 * 0.5;
-  if (!v5)
+  if (!im_isCompactWidth)
   {
     return v4;
   }
@@ -3629,8 +3629,8 @@ LABEL_94:
     [(THChapterBrowserController *)self chapterWidth];
     if (v5 + v13 >= MaxX + v9)
     {
-      v14 = [(THTOCViewController *)self dataSource];
-      v15 = [v14 toc:self numberOfTilesInDivision:0];
+      dataSource = [(THTOCViewController *)self dataSource];
+      v15 = [dataSource toc:self numberOfTilesInDivision:0];
 
       if (mChapterIndex < (v15 - 1))
       {
@@ -3656,8 +3656,8 @@ LABEL_94:
 
 - (void)p_updatePageControl
 {
-  v3 = [(THTOCViewController *)self dataSource];
-  v4 = [v3 toc:self numberOfTilesInDivision:0];
+  dataSource = [(THTOCViewController *)self dataSource];
+  v4 = [dataSource toc:self numberOfTilesInDivision:0];
   v5 = &v4[[(THChapterBrowserController *)self hasIntroPage]];
 
   [(THChapterBrowserScrubbablePageControl *)self->mChapterPageControl setNumberOfPages:v5];
@@ -3668,19 +3668,19 @@ LABEL_94:
   [(THChapterBrowserScrubbablePageControl *)mChapterPageControl centerHorizontallyInSuperview];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v19 = a3;
-  if (self->mBackgroundScrollView == v19)
+  draggingCopy = dragging;
+  if (self->mBackgroundScrollView == draggingCopy)
   {
-    v4 = [(THTOCViewController *)self delegate];
-    [v4 cancelPreloadOfContentNodesForChapterBrowserController:self];
+    delegate = [(THTOCViewController *)self delegate];
+    [delegate cancelPreloadOfContentNodesForChapterBrowserController:self];
 
     self->mBackgroundSwipeDidInitiateScroll = 1;
     mPagesScrollView = self->mPagesScrollView;
     [(THScrollViewWithPassthrough *)mPagesScrollView contentOffset];
     [(THScrollViewWithPassthrough *)mPagesScrollView setContentOffset:0 animated:?];
-    if (([(THScrollView *)v19 isDecelerating]& 1) == 0)
+    if (([(THScrollView *)draggingCopy isDecelerating]& 1) == 0)
     {
       self->mBackgroundSwipeBeginningChapter = self->mChapterIndex;
       [(THScrollViewWithPassthrough *)self->mPagesScrollView contentOffset];
@@ -3728,13 +3728,13 @@ LABEL_94:
   [(THChapterBrowserScrubbablePageControl *)self->mChapterPageControl setUserInteractionEnabled:0];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v63 = v4;
-  if (self->mBackgroundScrollView != v4 || self->mDeferBackgroundScrollViewScrolls)
+  scrollCopy = scroll;
+  v63 = scrollCopy;
+  if (self->mBackgroundScrollView != scrollCopy || self->mDeferBackgroundScrollViewScrolls)
   {
-    if (self->mPagesScrollView == v4 && !self->mDeferPagesScrollViewScrolls)
+    if (self->mPagesScrollView == scrollCopy && !self->mDeferPagesScrollViewScrolls)
     {
       [(THChapterBrowserController *)self p_updatePageThumbnails:1];
       if (self->mPullThroughInProgress && self->mUpdatingScrollView != self->mBackgroundScrollView)
@@ -3754,7 +3754,7 @@ LABEL_75:
     goto LABEL_76;
   }
 
-  [(THScrollViewWithPassthrough *)v4 contentOffset];
+  [(THScrollViewWithPassthrough *)scrollCopy contentOffset];
   v9 = v8;
   v10 = self->mChapterIndex;
   if (v10)
@@ -3775,8 +3775,8 @@ LABEL_14:
     v12 = 1;
   }
 
-  v13 = [(THTOCViewController *)self dataSource];
-  if (v12 >= [v13 toc:self numberOfTilesInDivision:0])
+  dataSource = [(THTOCViewController *)self dataSource];
+  if (v12 >= [dataSource toc:self numberOfTilesInDivision:0])
   {
 
     goto LABEL_16;
@@ -3854,8 +3854,8 @@ LABEL_16:
 
   [(THChapterBrowserController *)self p_resetPagesScrollViewAndCapThumbCount:mBackgroundSwipeDidInitiateScroll firstVisibleRelativePage:0 resetContentOffset:1];
 LABEL_39:
-  v27 = [(THTOCViewController *)self dataSource];
-  v28 = [v27 toc:self numberOfTilesInDivision:0];
+  dataSource2 = [(THTOCViewController *)self dataSource];
+  v28 = [dataSource2 toc:self numberOfTilesInDivision:0];
 
   v29 = self->mChapterInfo[1].chapterNumber;
   v62 = v28;
@@ -3866,20 +3866,20 @@ LABEL_39:
 
   else
   {
-    v31 = [(THChapterBrowserController *)self introMediaViewController];
-    v30 = v31 != 0;
+    introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+    v30 = introMediaViewController != 0;
   }
 
   v32 = self->mChapterViewControllers[1];
   if (v32)
   {
     mBackgroundsView = self->mBackgroundsView;
-    v34 = [(THChapterViewController *)v32 view];
-    [v34 frame];
+    view = [(THChapterViewController *)v32 view];
+    [view frame];
     v36 = v35;
     v38 = v37;
-    v39 = [(THChapterBrowserController *)self view];
-    [(UIView *)mBackgroundsView convertPoint:v39 toView:v36, v38];
+    view2 = [(THChapterBrowserController *)self view];
+    [(UIView *)mBackgroundsView convertPoint:view2 toView:v36, v38];
     v41 = v40;
 
     [(THChapterBrowserController *)self chapterWidth];
@@ -3918,8 +3918,8 @@ LABEL_60:
   [(THChapterBrowserController *)self chapterWidth];
   if (vabdd_f64(-v49, v52) >= 0.00999999978)
   {
-    v57 = [(THChapterBrowserController *)self introMediaViewController];
-    [v57 prepareControlsForTOC];
+    introMediaViewController2 = [(THChapterBrowserController *)self introMediaViewController];
+    [introMediaViewController2 prepareControlsForTOC];
 
     [(UIView *)self->mChapterPageControlWrapper setAlpha:1.0];
     [(THChapterBrowserController *)self chapterWidth];
@@ -3930,8 +3930,8 @@ LABEL_60:
 
     else if (!self->mDidAutoHideToolbar && !self->_flags.transitioning)
     {
-      v59 = [(THTOCViewController *)self delegate];
-      [v59 TOCHideToolbarAnimated:1];
+      delegate = [(THTOCViewController *)self delegate];
+      [delegate TOCHideToolbarAnimated:1];
 
       self->mDidAutoHideToolbar = 1;
     }
@@ -3939,19 +3939,19 @@ LABEL_60:
 
   else
   {
-    v53 = [(THTOCViewController *)self delegate];
-    v54 = [v53 introMediaViewControllerForChapterBrowserController:self];
-    v55 = [v54 isMovie];
+    delegate2 = [(THTOCViewController *)self delegate];
+    v54 = [delegate2 introMediaViewControllerForChapterBrowserController:self];
+    isMovie = [v54 isMovie];
 
-    if (v55 && !self->mDraggingInScrubber)
+    if (isMovie && !self->mDraggingInScrubber)
     {
       [(UIView *)self->mChapterPageControlWrapper setAlpha:0.0];
     }
 
     if (!self->mDidAutoHideToolbar)
     {
-      v56 = [(THTOCViewController *)self delegate];
-      [v56 TOCHideToolbarAnimated:0];
+      delegate3 = [(THTOCViewController *)self delegate];
+      [delegate3 TOCHideToolbarAnimated:0];
 
       self->mDidAutoHideToolbar = 1;
     }
@@ -3969,17 +3969,17 @@ LABEL_60:
 LABEL_76:
 }
 
-- (_NSRange)p_chapterRelativePageIndexesCurrentlyVisibleInRect:(CGRect)a3 forChapterFrame:(CGRect)a4 chapterPageCount:(unint64_t)a5
+- (_NSRange)p_chapterRelativePageIndexesCurrentlyVisibleInRect:(CGRect)rect forChapterFrame:(CGRect)frame chapterPageCount:(unint64_t)count
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  if (!CGRectIntersectsRect(a3, a4) || ((v29.origin.x = v13, v29.origin.y = v12, v29.size.width = v11, v29.size.height = v10, rect = height, MinX = CGRectGetMinX(v29), v30.origin.x = v13, v30.origin.y = v12, v30.size.width = v11, v30.size.height = v10, MaxX = CGRectGetMaxX(v30), v31.origin.x = x, v31.origin.y = y, v31.size.width = width, v31.size.height = rect, v17 = CGRectGetMinX(v31), [(THChapterBrowserController *)self thumbSize], v19 = v18, [(THChapterBrowserController *)self firstThumbOverlap], v21 = v17 + v20, v21 < MaxX) ? (v22 = a5 == 0) : (v22 = 1), v22))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
+  if (!CGRectIntersectsRect(rect, frame) || ((v29.origin.x = v13, v29.origin.y = v12, v29.size.width = v11, v29.size.height = v10, rect = height, MinX = CGRectGetMinX(v29), v30.origin.x = v13, v30.origin.y = v12, v30.size.width = v11, v30.size.height = v10, MaxX = CGRectGetMaxX(v30), v31.origin.x = x, v31.origin.y = y, v31.size.width = width, v31.size.height = rect, v17 = CGRectGetMinX(v31), [(THChapterBrowserController *)self thumbSize], v19 = v18, [(THChapterBrowserController *)self firstThumbOverlap], v21 = v17 + v20, v21 < MaxX) ? (v22 = count == 0) : (v22 = 1), v22))
   {
     v23 = 0;
     v25 = 0x7FFFFFFFFFFFFFFFLL;
@@ -4005,7 +4005,7 @@ LABEL_76:
       v21 = v19 + v21;
     }
 
-    while (v21 < MaxX && v24++ < a5);
+    while (v21 < MaxX && v24++ < count);
   }
 
   result.length = v23;
@@ -4049,8 +4049,8 @@ LABEL_76:
       {
         v20 = v18;
         v21 = v19;
-        v22 = [(THTOCViewController *)self delegate];
-        [v22 chapterBrowserController:self preloadContentNodesForPageRange:v20 chapterIndex:{v21, v17}];
+        delegate = [(THTOCViewController *)self delegate];
+        [delegate chapterBrowserController:self preloadContentNodesForPageRange:v20 chapterIndex:{v21, v17}];
       }
     }
 
@@ -4064,14 +4064,14 @@ LABEL_76:
   self->mPreservedThumbnailOffset.y = v24;
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v6 = a3;
-  v18 = v6;
-  if (self->mBackgroundScrollView == v6)
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
+  v18 = draggingCopy;
+  if (self->mBackgroundScrollView == draggingCopy)
   {
-    if (!v4)
+    if (!decelerateCopy)
     {
       [(THChapterBrowserController *)self p_backgroundScrollingDidEnd];
     }
@@ -4079,11 +4079,11 @@ LABEL_76:
 
   else
   {
-    v7 = v6;
+    v7 = draggingCopy;
     mPagesScrollView = self->mPagesScrollView;
     if (mPagesScrollView == v7)
     {
-      if (v4)
+      if (decelerateCopy)
       {
         [(THScrollViewWithPassthrough *)mPagesScrollView contentOffset];
         v10 = v9;
@@ -4117,29 +4117,29 @@ LABEL_76:
   }
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v5 = a3;
-  if (self->mPullThroughInProgress && self->mPagesScrollView == v5)
+  deceleratingCopy = decelerating;
+  if (self->mPullThroughInProgress && self->mPagesScrollView == deceleratingCopy)
   {
-    [(THScrollViewWithPassthrough *)v5 contentOffset];
-    [(THScrollViewWithPassthrough *)v5 setContentOffset:0 animated:?];
+    [(THScrollViewWithPassthrough *)deceleratingCopy contentOffset];
+    [(THScrollViewWithPassthrough *)deceleratingCopy setContentOffset:0 animated:?];
     [(THScrollViewWithPassthrough *)self->mPagesScrollView contentOffset];
     self->mPageThumbScrollerStartContentOffset = v4;
     [(THChapterBrowserController *)self p_pageThumbScrollingDidEnd];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->mBackgroundScrollView == v4)
+  deceleratingCopy = decelerating;
+  v5 = deceleratingCopy;
+  if (self->mBackgroundScrollView == deceleratingCopy)
   {
     [(THChapterBrowserController *)self p_backgroundScrollingDidEnd];
   }
 
-  else if (self->mPagesScrollView == v4)
+  else if (self->mPagesScrollView == deceleratingCopy)
   {
     if (!self->mBackgroundSwipeDidInitiateScroll)
     {
@@ -4150,19 +4150,19 @@ LABEL_76:
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_AA724;
   v5[3] = &unk_45CCF8;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  animationCopy = animation;
+  selfCopy = self;
+  v4 = animationCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (id)p_pageThumbnailViewForPageIndex:(unint64_t)a3
+- (id)p_pageThumbnailViewForPageIndex:(unint64_t)index
 {
   v13 = 0u;
   v14 = 0u;
@@ -4186,7 +4186,7 @@ LABEL_3:
       v10 = v9;
       if (v9)
       {
-        if ([v9 chapterIndex] == self->mChapterIndex && objc_msgSend(v10, "pageIndex") == a3)
+        if ([v9 chapterIndex] == self->mChapterIndex && objc_msgSend(v10, "pageIndex") == index)
         {
           break;
         }
@@ -4214,11 +4214,11 @@ LABEL_11:
   return v10;
 }
 
-- (id)p_pageThumbnailViewForModelLink:(id)a3
+- (id)p_pageThumbnailViewForModelLink:(id)link
 {
-  v4 = a3;
-  v5 = [(THTOCViewController *)self delegate];
-  v6 = [v5 chapterBrowserController:self relativePageIndexForLink:v4];
+  linkCopy = link;
+  delegate = [(THTOCViewController *)self delegate];
+  v6 = [delegate chapterBrowserController:self relativePageIndexForLink:linkCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4233,69 +4233,69 @@ LABEL_11:
   return v7;
 }
 
-- (CGRect)p_beginTransitionFromPageThumbnail:(id)a3 transformView:(id)a4 freeTransform:(BOOL)a5 firstThumbNailToTransition:(BOOL)a6
+- (CGRect)p_beginTransitionFromPageThumbnail:(id)thumbnail transformView:(id)view freeTransform:(BOOL)transform firstThumbNailToTransition:(BOOL)transition
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  if (v6)
+  transitionCopy = transition;
+  transformCopy = transform;
+  thumbnailCopy = thumbnail;
+  viewCopy = view;
+  if (transitionCopy)
   {
     [(NSMutableArray *)self->_thumbnailViewsInTransition removeAllObjects];
     v12 = +[TSKLowPriorityThreadDispatcher sharedLowPriorityDispatcher];
     [v12 suspend];
 
-    v13 = [(THChapterBrowserController *)self introMediaViewController];
-    [v13 stop];
+    introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+    [introMediaViewController stop];
 
-    v14 = [(THTOCViewController *)self delegate];
-    [v14 chapterBrowserController:self willTransitionToPageIndex:objc_msgSend(v10 chapterIndex:"pageIndex") freeTransform:{objc_msgSend(v10, "chapterIndex"), v7}];
+    delegate = [(THTOCViewController *)self delegate];
+    [delegate chapterBrowserController:self willTransitionToPageIndex:objc_msgSend(thumbnailCopy chapterIndex:"pageIndex") freeTransform:{objc_msgSend(thumbnailCopy, "chapterIndex"), transformCopy}];
   }
 
-  v15 = [(THTOCViewController *)self delegate];
-  [v15 chapterBrowserController:self rectForRelativePageIndex:objc_msgSend(v10 chapterIndex:{"pageIndex"), objc_msgSend(v10, "chapterIndex")}];
+  delegate2 = [(THTOCViewController *)self delegate];
+  [delegate2 chapterBrowserController:self rectForRelativePageIndex:objc_msgSend(thumbnailCopy chapterIndex:{"pageIndex"), objc_msgSend(thumbnailCopy, "chapterIndex")}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = [(THTOCViewController *)self dataSource];
-  v60 = v7;
-  v25 = [v24 toc:self tileModelForChapterIndex:{objc_msgSend(v10, "chapterIndex")}];
+  dataSource = [(THTOCViewController *)self dataSource];
+  v60 = transformCopy;
+  v25 = [dataSource toc:self tileModelForChapterIndex:{objc_msgSend(thumbnailCopy, "chapterIndex")}];
 
-  v26 = [(THTOCViewController *)self delegate];
-  v27 = [v26 canvasScrollViewForChapterBrowserController:self];
+  delegate3 = [(THTOCViewController *)self delegate];
+  v27 = [delegate3 canvasScrollViewForChapterBrowserController:self];
 
-  if (v6)
+  if (transitionCopy)
   {
-    v28 = [v27 superview];
-    [(THChapterBrowserController *)self setOriginalCanvasScrollViewSuperview:v28];
+    superview = [v27 superview];
+    [(THChapterBrowserController *)self setOriginalCanvasScrollViewSuperview:superview];
 
     [v27 frame];
     [(THChapterBrowserController *)self setOriginalCanvasScrollViewFrame:?];
   }
 
   v29 = objc_alloc_init(THPageThumbnailViewInTransition);
-  [(THPageThumbnailViewInTransition *)v29 setThumbnailView:v10];
-  [v10 frame];
+  [(THPageThumbnailViewInTransition *)v29 setThumbnailView:thumbnailCopy];
+  [thumbnailCopy frame];
   [(THPageThumbnailViewInTransition *)v29 setOriginalThumbnailFrame:?];
   [(NSMutableArray *)self->_thumbnailViewsInTransition addObject:v29];
-  v30 = [(THChapterBrowserController *)self view];
-  v31 = [v30 superview];
-  [v11 center];
+  view = [(THChapterBrowserController *)self view];
+  superview2 = [view superview];
+  [viewCopy center];
   v33 = v32;
   v35 = v34;
-  v36 = [v11 superview];
-  [v31 convertPoint:v36 fromView:{v33, v35}];
-  [v11 setCenter:?];
+  superview3 = [viewCopy superview];
+  [superview2 convertPoint:superview3 fromView:{v33, v35}];
+  [viewCopy setCenter:?];
 
-  v37 = [(THChapterBrowserController *)self view];
-  v38 = [v37 superview];
-  [v38 addSubview:v11];
+  view2 = [(THChapterBrowserController *)self view];
+  superview4 = [view2 superview];
+  [superview4 addSubview:viewCopy];
 
-  v39 = [v10 pageIndex];
-  v40 = [v25 largerThumbs];
-  if (v39 >= [v40 count])
+  pageIndex = [thumbnailCopy pageIndex];
+  largerThumbs = [v25 largerThumbs];
+  if (pageIndex >= [largerThumbs count])
   {
 
     v42 = 0;
@@ -4303,23 +4303,23 @@ LABEL_11:
 
   else
   {
-    v41 = [v25 largerThumbs];
-    v42 = [v41 objectAtIndex:{objc_msgSend(v10, "pageIndex")}];
+    largerThumbs2 = [v25 largerThumbs];
+    v42 = [largerThumbs2 objectAtIndex:{objc_msgSend(thumbnailCopy, "pageIndex")}];
 
     if (v42)
     {
-      [v10 setImage:{+[TSDBitmapImageProvider CGImageForImageData:](TSDBitmapImageProvider, "CGImageForImageData:", v42)}];
+      [thumbnailCopy setImage:{+[TSDBitmapImageProvider CGImageForImageData:](TSDBitmapImageProvider, "CGImageForImageData:", v42)}];
     }
   }
 
-  [v10 bounds];
+  [thumbnailCopy bounds];
   TSDCenterOfRect();
   [v27 setCenter:?];
-  v43 = [(THTOCViewController *)self delegate];
-  if ([v43 isTwoUpForChapterBrowserController:self])
+  delegate4 = [(THTOCViewController *)self delegate];
+  if ([delegate4 isTwoUpForChapterBrowserController:self])
   {
-    v44 = [(THTOCViewController *)self delegate];
-    v45 = [v44 isSinglePageInChapterForChapterBrowserController:self chapterIndex:{objc_msgSend(v10, "chapterIndex")}];
+    delegate5 = [(THTOCViewController *)self delegate];
+    v45 = [delegate5 isSinglePageInChapterForChapterBrowserController:self chapterIndex:{objc_msgSend(thumbnailCopy, "chapterIndex")}];
 
     if (v45)
     {
@@ -4338,25 +4338,25 @@ LABEL_11:
     v46 = 1.0;
   }
 
-  [v10 bounds];
+  [thumbnailCopy bounds];
   v48 = v47;
   [v27 bounds];
   v50 = v49;
-  [v10 bounds];
+  [thumbnailCopy bounds];
   v52 = v51;
   [v27 bounds];
   CGAffineTransformMakeScale(&v62, v46 * v52 / v53, v48 / v50);
   v61 = v62;
   [v27 setTransform:&v61];
-  [v10 setBorderVisible:0];
-  [v10 setCanvasScrollView:v27 rasterize:v60];
-  if ([v10 pageIndex] >= 2)
+  [thumbnailCopy setBorderVisible:0];
+  [thumbnailCopy setCanvasScrollView:v27 rasterize:v60];
+  if ([thumbnailCopy pageIndex] >= 2)
   {
-    v54 = -[THChapterBrowserController p_pageThumbnailViewForPageIndex:](self, "p_pageThumbnailViewForPageIndex:", [v10 pageIndex] - 1);
+    v54 = -[THChapterBrowserController p_pageThumbnailViewForPageIndex:](self, "p_pageThumbnailViewForPageIndex:", [thumbnailCopy pageIndex] - 1);
     [v54 setHasRightBorder:1];
   }
 
-  v55 = -[THChapterBrowserController p_pageThumbnailViewForPageIndex:](self, "p_pageThumbnailViewForPageIndex:", [v10 pageIndex] + 1);
+  v55 = -[THChapterBrowserController p_pageThumbnailViewForPageIndex:](self, "p_pageThumbnailViewForPageIndex:", [thumbnailCopy pageIndex] + 1);
   [v55 setHasLeftBorder:1];
 
   v56 = v17;
@@ -4370,14 +4370,14 @@ LABEL_11:
   return result;
 }
 
-- (void)p_cleanupAfterTransitionFromPageThumbnail:(id)a3
+- (void)p_cleanupAfterTransitionFromPageThumbnail:(id)thumbnail
 {
-  v4 = a3;
+  thumbnailCopy = thumbnail;
   v5 = [(NSMutableArray *)self->_thumbnailViewsInTransition count];
-  v6 = [(THTOCViewController *)self delegate];
-  v35 = [v6 canvasScrollViewForChapterBrowserController:self];
+  delegate = [(THTOCViewController *)self delegate];
+  v35 = [delegate canvasScrollViewForChapterBrowserController:self];
 
-  [v4 clearHighlightRect];
+  [thumbnailCopy clearHighlightRect];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
@@ -4397,8 +4397,8 @@ LABEL_3:
       }
 
       v11 = *(*(&v37 + 1) + 8 * v10);
-      v12 = [v11 thumbnailView];
-      v13 = v12 == v4;
+      thumbnailView = [v11 thumbnailView];
+      v13 = thumbnailView == thumbnailCopy;
 
       if (v13)
       {
@@ -4440,8 +4440,8 @@ LABEL_9:
 LABEL_12:
   if (v5 == &dword_0 + 1)
   {
-    v19 = [(THChapterBrowserController *)self originalCanvasScrollViewSuperview];
-    [v19 addSubview:v35];
+    originalCanvasScrollViewSuperview = [(THChapterBrowserController *)self originalCanvasScrollViewSuperview];
+    [originalCanvasScrollViewSuperview addSubview:v35];
 
     v20 = *&CGAffineTransformIdentity.c;
     v36[0] = *&CGAffineTransformIdentity.a;
@@ -4454,46 +4454,46 @@ LABEL_12:
     [(THChapterBrowserController *)self setOriginalCanvasScrollViewSuperview:0];
   }
 
-  v21 = -[THChapterBrowserController p_pageThumbnailViewForPageIndex:](self, "p_pageThumbnailViewForPageIndex:", [v4 pageIndex]);
+  v21 = -[THChapterBrowserController p_pageThumbnailViewForPageIndex:](self, "p_pageThumbnailViewForPageIndex:", [thumbnailCopy pageIndex]);
   v22 = v21;
-  if (v21 && v21 != v4)
+  if (v21 && v21 != thumbnailCopy)
   {
     [v21 teardown];
     [v22 removeFromSuperview];
   }
 
-  [(THScrollViewWithPassthrough *)self->mPagesScrollView addSubview:v4];
+  [(THScrollViewWithPassthrough *)self->mPagesScrollView addSubview:thumbnailCopy];
   [v15 originalThumbnailFrame];
   if (!CGRectIsNull(v42))
   {
     [v15 originalThumbnailFrame];
-    [v4 setFrame:?];
+    [thumbnailCopy setFrame:?];
   }
 
-  v23 = [(THTOCViewController *)self dataSource];
-  v24 = [v23 toc:self tileModelForChapterIndex:{objc_msgSend(v4, "chapterIndex")}];
+  dataSource = [(THTOCViewController *)self dataSource];
+  v24 = [dataSource toc:self tileModelForChapterIndex:{objc_msgSend(thumbnailCopy, "chapterIndex")}];
 
   TSUScreenScale();
   if (v25 <= 1.0)
   {
-    v30 = [v4 pageIndex];
-    v27 = [v24 tinyThumbs];
-    if (v30 < [v27 count])
+    pageIndex = [thumbnailCopy pageIndex];
+    tinyThumbs = [v24 tinyThumbs];
+    if (pageIndex < [tinyThumbs count])
     {
-      v28 = [v24 tinyThumbs];
-      v29 = [v28 objectAtIndex:{objc_msgSend(v4, "pageIndex")}];
+      tinyThumbs2 = [v24 tinyThumbs];
+      v29 = [tinyThumbs2 objectAtIndex:{objc_msgSend(thumbnailCopy, "pageIndex")}];
       goto LABEL_24;
     }
   }
 
   else
   {
-    v26 = [v4 pageIndex];
-    v27 = [v24 largerThumbs];
-    if (v26 < [v27 count])
+    pageIndex2 = [thumbnailCopy pageIndex];
+    tinyThumbs = [v24 largerThumbs];
+    if (pageIndex2 < [tinyThumbs count])
     {
-      v28 = [v24 largerThumbs];
-      v29 = [v28 objectAtIndex:{objc_msgSend(v4, "pageIndex")}];
+      tinyThumbs2 = [v24 largerThumbs];
+      v29 = [tinyThumbs2 objectAtIndex:{objc_msgSend(thumbnailCopy, "pageIndex")}];
 LABEL_24:
       v31 = v29;
 
@@ -4506,17 +4506,17 @@ LABEL_26:
 
   if (v31)
   {
-    [v4 setImage:{+[TSDBitmapImageProvider CGImageForImageData:](TSDBitmapImageProvider, "CGImageForImageData:", v31)}];
+    [thumbnailCopy setImage:{+[TSDBitmapImageProvider CGImageForImageData:](TSDBitmapImageProvider, "CGImageForImageData:", v31)}];
   }
 
-  [v4 setBorderVisible:1];
-  if ([v4 pageIndex] >= 2)
+  [thumbnailCopy setBorderVisible:1];
+  if ([thumbnailCopy pageIndex] >= 2)
   {
-    v32 = -[THChapterBrowserController p_pageThumbnailViewForPageIndex:](self, "p_pageThumbnailViewForPageIndex:", [v4 pageIndex] - 1);
+    v32 = -[THChapterBrowserController p_pageThumbnailViewForPageIndex:](self, "p_pageThumbnailViewForPageIndex:", [thumbnailCopy pageIndex] - 1);
     [v32 setHasRightBorder:0];
   }
 
-  v33 = -[THChapterBrowserController p_pageThumbnailViewForPageIndex:](self, "p_pageThumbnailViewForPageIndex:", [v4 pageIndex] + 1);
+  v33 = -[THChapterBrowserController p_pageThumbnailViewForPageIndex:](self, "p_pageThumbnailViewForPageIndex:", [thumbnailCopy pageIndex] + 1);
   [v33 setHasLeftBorder:0];
   [(NSMutableArray *)self->_thumbnailViewsInTransition removeObject:v15];
   if (v5 == &dword_0 + 1)
@@ -4528,16 +4528,16 @@ LABEL_26:
   }
 }
 
-- (void)p_animationDidStopForThumbnailView:(id)a3
+- (void)p_animationDidStopForThumbnailView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
   if ([(THChapterBrowserController *)self p_shouldHighlightThumbTargets])
   {
-    [v4 highlightedRelativeRect];
+    [viewCopy highlightedRelativeRect];
     x = v9;
     y = v10;
     width = v11;
@@ -4546,20 +4546,20 @@ LABEL_26:
 
   if ([(NSMutableArray *)self->_thumbnailViewsInTransition count]== &dword_0 + 1)
   {
-    v13 = [(THTOCViewController *)self delegate];
-    [v13 chapterBrowserController:self didTransitionToPageIndex:objc_msgSend(v4 chapterIndex:"pageIndex") relativeTargetRect:{objc_msgSend(v4, "chapterIndex"), x, y, width, height}];
+    delegate = [(THTOCViewController *)self delegate];
+    [delegate chapterBrowserController:self didTransitionToPageIndex:objc_msgSend(viewCopy chapterIndex:"pageIndex") relativeTargetRect:{objc_msgSend(viewCopy, "chapterIndex"), x, y, width, height}];
   }
 
   v14 = *&CGAffineTransformIdentity.c;
   v15[0] = *&CGAffineTransformIdentity.a;
   v15[1] = v14;
   v15[2] = *&CGAffineTransformIdentity.tx;
-  [v4 setTransform:v15];
+  [viewCopy setTransform:v15];
 }
 
-- (void)p_thumbnailAnimationDidStopWithContext:(id)a3
+- (void)p_thumbnailAnimationDidStopWithContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   objc_opt_class();
   v4 = TSUDynamicCast();
   [(THChapterBrowserController *)self p_animationDidStopForThumbnailView:v4];
@@ -4568,13 +4568,13 @@ LABEL_26:
   [v5 endIgnoringInteractionEvents];
 }
 
-- (void)p_transitionFromPageThumbnail:(id)a3 destinationRect:(CGRect)a4 shouldShroud:(BOOL)a5
+- (void)p_transitionFromPageThumbnail:(id)thumbnail destinationRect:(CGRect)rect shouldShroud:(BOOL)shroud
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  thumbnailCopy = thumbnail;
   v12 = +[UIApplication sharedApplication];
   [v12 beginIgnoringInteractionEvents];
 
@@ -4586,9 +4586,9 @@ LABEL_26:
   v20 = y;
   v21 = width;
   v22 = height;
-  v24 = a5;
-  v17 = v11;
-  v18 = self;
+  shroudCopy = shroud;
+  v17 = thumbnailCopy;
+  selfCopy = self;
   v23 = 0x3FD3333333333333;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -4600,16 +4600,16 @@ LABEL_26:
   [UIView animateWithDuration:v16 animations:v14 completion:0.3];
 }
 
-- (void)scrollToContentOffset:(CGPoint)a3
+- (void)scrollToContentOffset:(CGPoint)offset
 {
-  [(THScrollViewWithPassthrough *)self->mPagesScrollView setContentOffset:0 animated:a3.x, a3.y];
+  [(THScrollViewWithPassthrough *)self->mPagesScrollView setContentOffset:0 animated:offset.x, offset.y];
   v17 = self->mChapterInfo[1].tileModel;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(THChapterBrowserController *)self thumbnailSubviews];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  thumbnailSubviews = [(THChapterBrowserController *)self thumbnailSubviews];
+  v5 = [thumbnailSubviews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = *v19;
@@ -4620,7 +4620,7 @@ LABEL_26:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(thumbnailSubviews);
         }
 
         objc_opt_class();
@@ -4631,27 +4631,27 @@ LABEL_26:
           TSUScreenScale();
           if (v10 <= 1.0)
           {
-            v15 = [v9 pageIndex];
-            v12 = [(THTOCTileModel *)v17 tinyThumbs];
-            if (v15 >= [v12 count])
+            pageIndex = [v9 pageIndex];
+            tinyThumbs = [(THTOCTileModel *)v17 tinyThumbs];
+            if (pageIndex >= [tinyThumbs count])
             {
               goto LABEL_14;
             }
 
-            v13 = [(THTOCTileModel *)v17 tinyThumbs];
-            v14 = [v13 objectAtIndex:{objc_msgSend(v9, "pageIndex")}];
+            tinyThumbs2 = [(THTOCTileModel *)v17 tinyThumbs];
+            v14 = [tinyThumbs2 objectAtIndex:{objc_msgSend(v9, "pageIndex")}];
 LABEL_13:
             v16 = v14;
           }
 
           else
           {
-            v11 = [v9 pageIndex];
-            v12 = [(THTOCTileModel *)v17 largerThumbs];
-            if (v11 < [v12 count])
+            pageIndex2 = [v9 pageIndex];
+            tinyThumbs = [(THTOCTileModel *)v17 largerThumbs];
+            if (pageIndex2 < [tinyThumbs count])
             {
-              v13 = [(THTOCTileModel *)v17 largerThumbs];
-              v14 = [v13 objectAtIndex:{objc_msgSend(v9, "pageIndex")}];
+              tinyThumbs2 = [(THTOCTileModel *)v17 largerThumbs];
+              v14 = [tinyThumbs2 objectAtIndex:{objc_msgSend(v9, "pageIndex")}];
               goto LABEL_13;
             }
 
@@ -4669,7 +4669,7 @@ LABEL_14:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [thumbnailSubviews countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -4682,8 +4682,8 @@ LABEL_14:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(THChapterBrowserController *)self thumbnailSubviews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  thumbnailSubviews = [(THChapterBrowserController *)self thumbnailSubviews];
+  v3 = [thumbnailSubviews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -4693,7 +4693,7 @@ LABEL_14:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(thumbnailSubviews);
         }
 
         v6 = *(*(&v7 + 1) + 8 * i);
@@ -4701,28 +4701,28 @@ LABEL_14:
         [v6 removeFromSuperview];
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [thumbnailSubviews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v3);
   }
 }
 
-- (BOOL)followAnchor:(id)a3 pulse:(BOOL)a4
+- (BOOL)followAnchor:(id)anchor pulse:(BOOL)pulse
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(THTOCViewController *)self delegate];
-  LOBYTE(v4) = [v7 followAnchor:v6 pulse:v4];
+  pulseCopy = pulse;
+  anchorCopy = anchor;
+  delegate = [(THTOCViewController *)self delegate];
+  LOBYTE(pulseCopy) = [delegate followAnchor:anchorCopy pulse:pulseCopy];
 
-  return v4;
+  return pulseCopy;
 }
 
-- (BOOL)followLink:(id)a3 animated:(BOOL)a4
+- (BOOL)followLink:(id)link animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = [(THTOCViewController *)self delegate];
-  LOBYTE(self) = [v6 chapterBrowserController:self navigateToLinkInDVC:v5];
+  linkCopy = link;
+  delegate = [(THTOCViewController *)self delegate];
+  LOBYTE(self) = [delegate chapterBrowserController:self navigateToLinkInDVC:linkCopy];
 
   return self;
 }
@@ -4734,8 +4734,8 @@ LABEL_14:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(THScrollViewWithPassthrough *)self->mPagesScrollView subviews];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subviews = [(THScrollViewWithPassthrough *)self->mPagesScrollView subviews];
+  v5 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -4745,7 +4745,7 @@ LABEL_14:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -4756,7 +4756,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -4767,8 +4767,8 @@ LABEL_14:
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(THChapterBrowserController *)self view];
-  [v3 bounds];
+  view = [(THChapterBrowserController *)self view];
+  [view bounds];
   [(THChapterBrowserController *)self p_adjustViewsForSize:v4, v5];
 
   [(THChapterBrowserController *)self p_updateChapterWidths];
@@ -4777,16 +4777,16 @@ LABEL_14:
   [(THChapterBrowserController *)self refreshStatusBarAppearance];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   self->_flags.transitioning = 1;
   self->mDeferBackgroundScrollViewScrolls = 1;
   v10.receiver = self;
   v10.super_class = THChapterBrowserController;
-  [(THChapterBrowserController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(THChapterBrowserController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[4] = self;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -4797,21 +4797,21 @@ LABEL_14:
   v8[1] = 3221225472;
   v8[2] = sub_AC318;
   v8[3] = &unk_45CDB8;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
 }
 
-- (void)p_adjustViewsForSize:(CGSize)a3
+- (void)p_adjustViewsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(THChapterBrowserController *)self cachedFrameSize];
   if (v7 != width || v6 != height)
   {
     [(THChapterBrowserController *)self setCachedFrameSize:width, height];
     [(THChapterBrowserController *)self setChapterIndex:self->mChapterIndex];
-    v9 = [(THChapterBrowserController *)self introMediaControllerIsActive];
-    v10 = [(THTOCViewController *)self dataSource];
-    v11 = [v10 toc:self numberOfTilesInDivision:0];
+    introMediaControllerIsActive = [(THChapterBrowserController *)self introMediaControllerIsActive];
+    dataSource = [(THTOCViewController *)self dataSource];
+    v11 = [dataSource toc:self numberOfTilesInDivision:0];
 
     [(THChapterBrowserController *)self setChapterWidth:width];
     self->mDeferBackgroundScrollViewScrolls = 1;
@@ -4820,13 +4820,13 @@ LABEL_14:
     v45[1] = v12;
     v45[2] = *&CGAffineTransformIdentity.tx;
     [(THScrollView *)self->mBackgroundScrollView setTransform:v45];
-    v13 = [(THChapterBrowserController *)self view];
-    [v13 bounds];
+    view = [(THChapterBrowserController *)self view];
+    [view bounds];
     [(THScrollView *)self->mBackgroundScrollView setFrame:?];
 
-    v14 = [(THChapterBrowserController *)self introMediaViewController];
+    introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
 
-    if (v14)
+    if (introMediaViewController)
     {
       [(THChapterBrowserController *)self chapterWidth];
       [(THScrollView *)self->mBackgroundScrollView setContentInset:0.0, v15, 0.0, 0.0];
@@ -4834,7 +4834,7 @@ LABEL_14:
 
     [(THChapterBrowserController *)self chapterWidth];
     [(THScrollView *)self->mBackgroundScrollView setContentSize:v16 * v11, height];
-    if (v9)
+    if (introMediaControllerIsActive)
     {
       [(THChapterBrowserController *)self chapterWidth];
       v18 = -v17;
@@ -4848,19 +4848,19 @@ LABEL_14:
     }
 
     [(THScrollView *)self->mBackgroundScrollView setContentOffset:v18, 0.0];
-    v21 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
+    thumbnailTrackBackgroundView = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
 
-    if (v21)
+    if (thumbnailTrackBackgroundView)
     {
-      v22 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
-      [v22 frame];
+      thumbnailTrackBackgroundView2 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
+      [thumbnailTrackBackgroundView2 frame];
       v24 = v23;
       v26 = v25;
 
       [(THScrollView *)self->mBackgroundScrollView contentSize];
       v28 = v27;
-      v29 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
-      [v29 setFrame:{0.0, v24, v28, v26}];
+      thumbnailTrackBackgroundView3 = [(THChapterBrowserController *)self thumbnailTrackBackgroundView];
+      [thumbnailTrackBackgroundView3 setFrame:{0.0, v24, v28, v26}];
     }
 
     self->mDeferBackgroundScrollViewScrolls = 0;
@@ -4877,8 +4877,8 @@ LABEL_14:
         v36 = v35;
         v38 = v37;
         v40 = v39;
-        v41 = [(THChapterViewController *)v32 view];
-        [v41 setFrame:{v34, v36, v38, v40}];
+        view2 = [(THChapterViewController *)v32 view];
+        [view2 setFrame:{v34, v36, v38, v40}];
       }
     }
 
@@ -4895,25 +4895,25 @@ LABEL_14:
 
 - (BOOL)p_verticalSpaceLimited
 {
-  v2 = self;
-  v3 = [(THTOCViewController *)self delegate];
-  LOBYTE(v2) = [v3 isCompactHeightForChapterBrowserController:v2];
+  selfCopy = self;
+  delegate = [(THTOCViewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate isCompactHeightForChapterBrowserController:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(THChapterBrowserController *)self showToolbarRecognizer];
-  v6 = v5;
-  if (v5 == v4)
+  beginCopy = begin;
+  showToolbarRecognizer = [(THChapterBrowserController *)self showToolbarRecognizer];
+  v6 = showToolbarRecognizer;
+  if (showToolbarRecognizer == beginCopy)
   {
-    v8 = [(THChapterBrowserScrubbablePageControl *)self->mChapterPageControl superview];
+    superview = [(THChapterBrowserScrubbablePageControl *)self->mChapterPageControl superview];
 
-    if (v8)
+    if (superview)
     {
-      [v4 locationInView:self->mChapterPageControl];
+      [beginCopy locationInView:self->mChapterPageControl];
       v10 = v9;
       v12 = v11;
       [(THChapterBrowserScrubbablePageControl *)self->mChapterPageControl bounds];
@@ -4934,19 +4934,19 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)passthroughView:(id)a3 shouldAcceptHitAtPoint:(CGPoint)a4 onView:(id)a5 withEvent:(id)a6
+- (BOOL)passthroughView:(id)view shouldAcceptHitAtPoint:(CGPoint)point onView:(id)onView withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a5;
-  v12 = a6;
-  if (self->mBottomWrapperView == a3)
+  y = point.y;
+  x = point.x;
+  onViewCopy = onView;
+  eventCopy = event;
+  if (self->mBottomWrapperView == view)
   {
     [(THScrollViewWithPassthrough *)self->mPagesScrollView convertPoint:x fromView:y];
-    v14 = [(THScrollViewWithPassthrough *)self->mPagesScrollView hitTest:v12 withEvent:?];
+    v14 = [(THScrollViewWithPassthrough *)self->mPagesScrollView hitTest:eventCopy withEvent:?];
     [(THScrollView *)self->mBackgroundScrollView convertPoint:self->mBottomWrapperView fromView:x, y];
-    v15 = [(THScrollView *)self->mBackgroundScrollView hitTest:v12 withEvent:?];
-    if (v15 && (v14 != v11 || self->mPagesScrollView == v11))
+    v15 = [(THScrollView *)self->mBackgroundScrollView hitTest:eventCopy withEvent:?];
+    if (v15 && (v14 != onViewCopy || self->mPagesScrollView == onViewCopy))
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -4973,30 +4973,30 @@ LABEL_6:
   [(THChapterBrowserController *)self p_updatePageControl];
 }
 
-- (id)foregroundTintColorForNavigationBar:(id)a3
+- (id)foregroundTintColorForNavigationBar:(id)bar
 {
-  v3 = [(THChapterBrowserController *)self p_tintAndTitleColor];
+  p_tintAndTitleColor = [(THChapterBrowserController *)self p_tintAndTitleColor];
+
+  return p_tintAndTitleColor;
+}
+
+- (id)backgroundColorForNavigationBar:(id)bar
+{
+  v3 = [UIColor colorWithRed:bar green:0.121568627 blue:0.125490196 alpha:0.129411765, 1.0];
 
   return v3;
 }
 
-- (id)backgroundColorForNavigationBar:(id)a3
+- (id)titleColorForNavigationBar:(id)bar
 {
-  v3 = [UIColor colorWithRed:a3 green:0.121568627 blue:0.125490196 alpha:0.129411765, 1.0];
+  p_tintAndTitleColor = [(THChapterBrowserController *)self p_tintAndTitleColor];
 
-  return v3;
+  return p_tintAndTitleColor;
 }
 
-- (id)titleColorForNavigationBar:(id)a3
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v3 = [(THChapterBrowserController *)self p_tintAndTitleColor];
-
-  return v3;
-}
-
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
-{
-  [(THChapterBrowserController *)self p_configureThumbsAndUpdateLayout:1, a4];
+  [(THChapterBrowserController *)self p_configureThumbsAndUpdateLayout:1, collection];
   [(THChapterBrowserController *)self p_updatePageScrubberControlForSizeClassChange];
   [(THChapterBrowserController *)self _configurePagesScrollView];
   [(THChapterBrowserController *)self setNeedsStatusBarAppearanceUpdate];
@@ -5008,14 +5008,14 @@ LABEL_6:
 {
   if ([(THChapterBrowserController *)self introMediaControllerIsActive])
   {
-    v3 = [(THChapterBrowserController *)self introMediaViewController];
-    [v3 view];
+    introMediaViewController = [(THChapterBrowserController *)self introMediaViewController];
+    [introMediaViewController view];
   }
 
   else
   {
-    v3 = [(THChapterBrowserController *)self chapterViewController];
-    [v3 transitionContentView];
+    introMediaViewController = [(THChapterBrowserController *)self chapterViewController];
+    [introMediaViewController transitionContentView];
   }
   v4 = ;
 

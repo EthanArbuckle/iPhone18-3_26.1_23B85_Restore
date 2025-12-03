@@ -1,24 +1,24 @@
 @interface FCCKAESSIVRecordNameCipher
-- (id)_derivedKeyFromKey:(id)a3;
+- (id)_derivedKeyFromKey:(id)key;
 - (id)_encryptionSalt;
-- (id)decryptRecordName:(id)a3 withKey:(id)a4;
-- (id)encryptRecordName:(id)a3 withKey:(id)a4;
+- (id)decryptRecordName:(id)name withKey:(id)key;
+- (id)encryptRecordName:(id)name withKey:(id)key;
 @end
 
 @implementation FCCKAESSIVRecordNameCipher
 
-- (id)encryptRecordName:(id)a3 withKey:(id)a4
+- (id)encryptRecordName:(id)name withKey:(id)key
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = 0;
-  if (v6 && a4)
+  if (nameCopy && key)
   {
-    v8 = [(FCCKAESSIVRecordNameCipher *)self _derivedKeyFromKey:a4];
+    v8 = [(FCCKAESSIVRecordNameCipher *)self _derivedKeyFromKey:key];
     if (v8)
     {
-      v9 = [(FCCKAESSIVRecordNameCipher *)self _encryptionSalt];
-      v10 = [v6 dataUsingEncoding:4];
-      v11 = [v10 fc_encryptAESSIVWithKey:v8 additionalData:v9];
+      _encryptionSalt = [(FCCKAESSIVRecordNameCipher *)self _encryptionSalt];
+      v10 = [nameCopy dataUsingEncoding:4];
+      v11 = [v10 fc_encryptAESSIVWithKey:v8 additionalData:_encryptionSalt];
       v12 = v11;
       if (v11)
       {
@@ -40,18 +40,18 @@
   return v7;
 }
 
-- (id)decryptRecordName:(id)a3 withKey:(id)a4
+- (id)decryptRecordName:(id)name withKey:(id)key
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = 0;
-  if (v6 && a4)
+  if (nameCopy && key)
   {
-    v8 = [(FCCKAESSIVRecordNameCipher *)self _derivedKeyFromKey:a4];
+    v8 = [(FCCKAESSIVRecordNameCipher *)self _derivedKeyFromKey:key];
     if (v8)
     {
-      v9 = [(FCCKAESSIVRecordNameCipher *)self _encryptionSalt];
-      v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v6 options:0];
-      v11 = [v10 fc_decryptAESSIVWithKey:v8 additionalData:v9];
+      _encryptionSalt = [(FCCKAESSIVRecordNameCipher *)self _encryptionSalt];
+      v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:nameCopy options:0];
+      v11 = [v10 fc_decryptAESSIVWithKey:v8 additionalData:_encryptionSalt];
       if (v11)
       {
         v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v11 encoding:4];
@@ -72,15 +72,15 @@
   return v7;
 }
 
-- (id)_derivedKeyFromKey:(id)a3
+- (id)_derivedKeyFromKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF88];
-  v4 = a3;
+  keyCopy = key;
   v5 = [v3 dataWithLength:64];
   ccsha512_di();
-  [v4 length];
-  [v4 bytes];
+  [keyCopy length];
+  [keyCopy bytes];
 
   [v5 length];
   [v5 mutableBytes];

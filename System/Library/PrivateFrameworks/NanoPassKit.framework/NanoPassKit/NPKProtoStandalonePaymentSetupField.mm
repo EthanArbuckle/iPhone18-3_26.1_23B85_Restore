@@ -1,46 +1,46 @@
 @interface NPKProtoStandalonePaymentSetupField
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFieldType:(id)a3;
+- (int)StringAsFieldType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentSetupField
 
-- (int)StringAsFieldType:(id)a3
+- (int)StringAsFieldType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"Text"])
+  else if ([typeCopy isEqualToString:@"Text"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"Date"])
+  else if ([typeCopy isEqualToString:@"Date"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"Label"])
+  else if ([typeCopy isEqualToString:@"Label"])
   {
     v4 = 130;
   }
 
-  else if ([v3 isEqualToString:@"Footer"])
+  else if ([typeCopy isEqualToString:@"Footer"])
   {
     v4 = 140;
   }
 
-  else if ([v3 isEqualToString:@"Picker"])
+  else if ([typeCopy isEqualToString:@"Picker"])
   {
     v4 = 150;
   }
@@ -59,20 +59,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentSetupField;
   v4 = [(NPKProtoStandalonePaymentSetupField *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentSetupField *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentSetupField *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   fieldType = self->_fieldType;
@@ -134,9 +134,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (!self->_identifier)
   {
     [NPKProtoStandalonePaymentSetupField writeTo:];
@@ -151,41 +151,41 @@ LABEL_17:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setIdentifier:self->_identifier];
-  v4 = v5;
-  v5[4] = self->_fieldType;
+  toCopy = to;
+  [toCopy setIdentifier:self->_identifier];
+  v4 = toCopy;
+  toCopy[4] = self->_fieldType;
   if (self->_currentValue)
   {
-    [v5 setCurrentValue:?];
-    v4 = v5;
+    [toCopy setCurrentValue:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
   *(v5 + 16) = self->_fieldType;
-  v8 = [(NSString *)self->_currentValue copyWithZone:a3];
+  v8 = [(NSString *)self->_currentValue copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | v4[3])) || -[NSString isEqual:](identifier, "isEqual:")) && self->_fieldType == *(v4 + 4))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | equalCopy[3])) || -[NSString isEqual:](identifier, "isEqual:")) && self->_fieldType == *(equalCopy + 4))
   {
     currentValue = self->_currentValue;
-    if (currentValue | v4[1])
+    if (currentValue | equalCopy[1])
     {
       v7 = [(NSString *)currentValue isEqual:?];
     }
@@ -211,21 +211,21 @@ LABEL_17:
   return v4 ^ v3 ^ [(NSString *)self->_currentValue hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(NPKProtoStandalonePaymentSetupField *)self setIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_fieldType = v4[4];
-  if (*(v4 + 1))
+  self->_fieldType = fromCopy[4];
+  if (*(fromCopy + 1))
   {
     [(NPKProtoStandalonePaymentSetupField *)self setCurrentValue:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

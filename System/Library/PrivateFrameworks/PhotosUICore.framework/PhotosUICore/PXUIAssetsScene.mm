@@ -1,23 +1,23 @@
 @interface PXUIAssetsScene
 - (BOOL)needsUpdate;
 - (CGSize)maximumImageSize;
-- (PXUIAssetsScene)initWithTilingController:(id)a3 mediaProvider:(id)a4 dataSourceManager:(id)a5 selectionManager:(id)a6 delegate:(id)a7;
+- (PXUIAssetsScene)initWithTilingController:(id)controller mediaProvider:(id)provider dataSourceManager:(id)manager selectionManager:(id)selectionManager delegate:(id)delegate;
 - (PXUIScrollViewController)scrollViewController;
-- (id)_assetsBySizeWithTileIdentifiers:(const PXTileIdentifier *)a3 withGeometries:(const PXTileGeometry *)a4 count:(unint64_t)a5;
-- (id)_imageRequesterForAssetReference:(id)a3;
-- (id)_imageRequesterForIndexPath:(PXSimpleIndexPath *)a3 inDataSource:(id)a4;
+- (id)_assetsBySizeWithTileIdentifiers:(const PXTileIdentifier *)identifiers withGeometries:(const PXTileGeometry *)geometries count:(unint64_t)count;
+- (id)_imageRequesterForAssetReference:(id)reference;
+- (id)_imageRequesterForIndexPath:(PXSimpleIndexPath *)path inDataSource:(id)source;
 - (void)_registerDefaultTiles;
-- (void)_transitionImageRequestersToDataSource:(id)a3;
+- (void)_transitionImageRequestersToDataSource:(id)source;
 - (void)_updatePreheatingIfNeeded;
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4;
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)reusableObjectPool:(id)a3 didCreateReusableObject:(id)a4;
-- (void)reusableObjectPool:(id)a3 didEvictReusableObject:(id)a4;
-- (void)startPreheatingTilesForIdentifiers:(const PXTileIdentifier *)a3 withGeometries:(const PXTileGeometry *)a4 count:(unint64_t)a5 context:(void *)a6;
-- (void)stopPreheatingTilesForIdentifiers:(const PXTileIdentifier *)a3 withGeometries:(const PXTileGeometry *)a4 count:(unint64_t)a5 context:(void *)a6;
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier;
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)reusableObjectPool:(id)pool didCreateReusableObject:(id)object;
+- (void)reusableObjectPool:(id)pool didEvictReusableObject:(id)object;
+- (void)startPreheatingTilesForIdentifiers:(const PXTileIdentifier *)identifiers withGeometries:(const PXTileGeometry *)geometries count:(unint64_t)count context:(void *)context;
+- (void)stopPreheatingTilesForIdentifiers:(const PXTileIdentifier *)identifiers withGeometries:(const PXTileGeometry *)geometries count:(unint64_t)count context:(void *)context;
 - (void)updateIfNeeded;
-- (void)willTransitionToDataSource:(id)a3;
+- (void)willTransitionToDataSource:(id)source;
 @end
 
 @implementation PXUIAssetsScene
@@ -31,30 +31,30 @@
   return result;
 }
 
-- (id)_assetsBySizeWithTileIdentifiers:(const PXTileIdentifier *)a3 withGeometries:(const PXTileGeometry *)a4 count:(unint64_t)a5
+- (id)_assetsBySizeWithTileIdentifiers:(const PXTileIdentifier *)identifiers withGeometries:(const PXTileGeometry *)geometries count:(unint64_t)count
 {
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = [(PXAssetsScene *)self dataSourceManager];
-  v11 = [v10 dataSource];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dataSourceManager = [(PXAssetsScene *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  v12 = [v11 identifier];
+  identifier = [dataSource identifier];
   v13 = *MEMORY[0x1E695F060];
   v14 = *(MEMORY[0x1E695F060] + 8);
   v15 = [MEMORY[0x1E696B098] valueWithCGSize:{*MEMORY[0x1E695F060], v14}];
-  if (a5)
+  if (count)
   {
-    v16 = &a3->index[2];
-    p_height = &a4->contentSize.height;
+    v16 = &identifiers->index[2];
+    p_height = &geometries->contentSize.height;
     do
     {
-      if (*(v16 - 3) == 5 && (*(v16 - 2) == 6432423 ? (v18 = *(v16 - 1) == v12) : (v18 = 0), v18))
+      if (*(v16 - 3) == 5 && (*(v16 - 2) == 6432423 ? (v18 = *(v16 - 1) == identifier) : (v18 = 0), v18))
       {
         v21 = *v16;
         v22 = v16[2];
-        v29 = v12;
+        v29 = identifier;
         v30 = v21;
         v31 = v22;
-        v23 = [v11 assetAtItemIndexPath:&v29];
+        v23 = [dataSource assetAtItemIndexPath:&v29];
         v20 = *(p_height - 1);
         v19 = *p_height;
         if (v20 == v13 && v19 == v14)
@@ -70,7 +70,7 @@
           v15 = v25;
         }
 
-        v26 = [v9 objectForKeyedSubscript:v15];
+        v26 = [dictionary objectForKeyedSubscript:v15];
         if (v26)
         {
           v27 = v26;
@@ -80,7 +80,7 @@
         else
         {
           v27 = [MEMORY[0x1E695DF70] arrayWithObject:v23];
-          [v9 setObject:v27 forKeyedSubscript:v15];
+          [dictionary setObject:v27 forKeyedSubscript:v15];
         }
       }
 
@@ -94,22 +94,22 @@
       p_height += 24;
       v13 = v20;
       v14 = v19;
-      --a5;
+      --count;
     }
 
-    while (a5);
+    while (count);
   }
 
-  return v9;
+  return dictionary;
 }
 
-- (void)stopPreheatingTilesForIdentifiers:(const PXTileIdentifier *)a3 withGeometries:(const PXTileGeometry *)a4 count:(unint64_t)a5 context:(void *)a6
+- (void)stopPreheatingTilesForIdentifiers:(const PXTileIdentifier *)identifiers withGeometries:(const PXTileGeometry *)geometries count:(unint64_t)count context:(void *)context
 {
-  if (PXImagePreheatContext == a6)
+  if (PXImagePreheatContext == context)
   {
     v10[7] = v6;
     v10[8] = v7;
-    v9 = [(PXUIAssetsScene *)self _assetsBySizeWithTileIdentifiers:a3 withGeometries:a4 count:a5];
+    v9 = [(PXUIAssetsScene *)self _assetsBySizeWithTileIdentifiers:identifiers withGeometries:geometries count:count];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __82__PXUIAssetsScene_stopPreheatingTilesForIdentifiers_withGeometries_count_context___block_invoke;
@@ -128,13 +128,13 @@ void __82__PXUIAssetsScene_stopPreheatingTilesForIdentifiers_withGeometries_coun
   PXSizeScale();
 }
 
-- (void)startPreheatingTilesForIdentifiers:(const PXTileIdentifier *)a3 withGeometries:(const PXTileGeometry *)a4 count:(unint64_t)a5 context:(void *)a6
+- (void)startPreheatingTilesForIdentifiers:(const PXTileIdentifier *)identifiers withGeometries:(const PXTileGeometry *)geometries count:(unint64_t)count context:(void *)context
 {
-  if (PXImagePreheatContext == a6)
+  if (PXImagePreheatContext == context)
   {
     v10[7] = v6;
     v10[8] = v7;
-    v9 = [(PXUIAssetsScene *)self _assetsBySizeWithTileIdentifiers:a3 withGeometries:a4 count:a5];
+    v9 = [(PXUIAssetsScene *)self _assetsBySizeWithTileIdentifiers:identifiers withGeometries:geometries count:count];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __83__PXUIAssetsScene_startPreheatingTilesForIdentifiers_withGeometries_count_context___block_invoke;
@@ -153,51 +153,51 @@ void __83__PXUIAssetsScene_startPreheatingTilesForIdentifiers_withGeometries_cou
   PXSizeScale();
 }
 
-- (void)reusableObjectPool:(id)a3 didEvictReusableObject:(id)a4
+- (void)reusableObjectPool:(id)pool didEvictReusableObject:(id)object
 {
-  v4 = [a4 view];
-  [v4 removeFromSuperview];
+  view = [object view];
+  [view removeFromSuperview];
 }
 
-- (void)reusableObjectPool:(id)a3 didCreateReusableObject:(id)a4
+- (void)reusableObjectPool:(id)pool didCreateReusableObject:(id)object
 {
-  v6 = [a4 view];
-  v5 = [(PXUIAssetsScene *)self scrollViewController];
-  [v5 addSubview:v6];
+  view = [object view];
+  scrollViewController = [(PXUIAssetsScene *)self scrollViewController];
+  [scrollViewController addSubview:view];
 }
 
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier
 {
-  v6 = [(PXAssetsScene *)self viewTileReusePool:a3];
-  [v6 checkInReusableObject:a3];
+  v6 = [(PXAssetsScene *)self viewTileReusePool:tile];
+  [v6 checkInReusableObject:tile];
 
   tilesInUse = self->_tilesInUse;
 
-  [(NSMutableSet *)tilesInUse removeObject:a3];
+  [(NSMutableSet *)tilesInUse removeObject:tile];
 }
 
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout
 {
-  v7 = a4;
-  v8 = a3->index[0];
-  if (a3->length == 5 && v8 == 6432423)
+  layoutCopy = layout;
+  v8 = identifier->index[0];
+  if (identifier->length == 5 && v8 == 6432423)
   {
-    v12 = [(PXAssetsScene *)self viewTileReusePool];
-    v11 = [v12 checkOutReusableObjectWithReuseIdentifier:333123];
+    viewTileReusePool = [(PXAssetsScene *)self viewTileReusePool];
+    v11 = [viewTileReusePool checkOutReusableObjectWithReuseIdentifier:333123];
 
-    v13 = [MEMORY[0x1E69DC938] currentDevice];
-    v14 = [v13 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v14 != 2)
+    if (userInterfaceIdiom != 2)
     {
       goto LABEL_16;
     }
 
-    v15 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-    v16 = [v15 traitCollection];
-    v17 = [v16 userInterfaceStyle];
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    traitCollection = [px_mainScreen traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v17 == 1)
+    if (userInterfaceStyle == 1)
     {
       v18 = @"PreloadAsset-iCloud";
     }
@@ -207,8 +207,8 @@ void __83__PXUIAssetsScene_startPreheatingTilesForIdentifiers_withGeometries_cou
       v18 = @"PreloadAsset-iCloud-Dark";
     }
 
-    v10 = [MEMORY[0x1E69DCAB8] px_imageNamed:v18];
-    [v11 setPlaceholderImage:v10];
+    viewTileReusePool5 = [MEMORY[0x1E69DCAB8] px_imageNamed:v18];
+    [v11 setPlaceholderImage:viewTileReusePool5];
     goto LABEL_15;
   }
 
@@ -218,18 +218,18 @@ void __83__PXUIAssetsScene_startPreheatingTilesForIdentifiers_withGeometries_cou
     {
       if (v8 == 6332435)
       {
-        v23 = [(PXAssetsScene *)self viewTileReusePool];
-        v19 = [v23 checkOutReusableObjectWithReuseIdentifier:333163];
+        viewTileReusePool2 = [(PXAssetsScene *)self viewTileReusePool];
+        v19 = [viewTileReusePool2 checkOutReusableObjectWithReuseIdentifier:333163];
 
-        v24 = [(PXAssetsScene *)self badgeManager];
-        [v19 setBadgeManager:v24];
+        badgeManager = [(PXAssetsScene *)self badgeManager];
+        [v19 setBadgeManager:badgeManager];
 
-        v42 = *&a3->index[3];
-        v45 = *&a3->index[1];
-        v25 = [v7 dataSource];
+        v42 = *&identifier->index[3];
+        v45 = *&identifier->index[1];
+        dataSource = [layoutCopy dataSource];
         v47 = v45;
         v48 = v42;
-        v26 = [(PXUIAssetsScene *)self _imageRequesterForIndexPath:&v47 inDataSource:v25];
+        v26 = [(PXUIAssetsScene *)self _imageRequesterForIndexPath:&v47 inDataSource:dataSource];
 
         [v19 setImageRequester:v26];
         goto LABEL_26;
@@ -238,8 +238,8 @@ void __83__PXUIAssetsScene_startPreheatingTilesForIdentifiers_withGeometries_cou
       goto LABEL_28;
     }
 
-    v27 = [(PXAssetsScene *)self viewTileReusePool];
-    v28 = v27;
+    viewTileReusePool3 = [(PXAssetsScene *)self viewTileReusePool];
+    v28 = viewTileReusePool3;
     v29 = 333133;
     goto LABEL_24;
   }
@@ -247,22 +247,22 @@ void __83__PXUIAssetsScene_startPreheatingTilesForIdentifiers_withGeometries_cou
   switch(v8)
   {
     case 6332436:
-      v27 = [(PXAssetsScene *)self viewTileReusePool];
-      v28 = v27;
+      viewTileReusePool3 = [(PXAssetsScene *)self viewTileReusePool];
+      v28 = viewTileReusePool3;
       v29 = 333153;
 LABEL_24:
-      v19 = [v27 checkOutReusableObjectWithReuseIdentifier:v29];
+      v19 = [viewTileReusePool3 checkOutReusableObjectWithReuseIdentifier:v29];
       goto LABEL_25;
     case 6332437:
-      v30 = [(PXAssetsScene *)self viewTileReusePool];
-      v19 = [v30 checkOutReusableObjectWithReuseIdentifier:333173];
+      viewTileReusePool4 = [(PXAssetsScene *)self viewTileReusePool];
+      v19 = [viewTileReusePool4 checkOutReusableObjectWithReuseIdentifier:333173];
 
-      v43 = *&a3->index[3];
-      v46 = *&a3->index[1];
-      v31 = [v7 dataSource];
+      v43 = *&identifier->index[3];
+      v46 = *&identifier->index[1];
+      dataSource2 = [layoutCopy dataSource];
       v47 = v46;
       v48 = v43;
-      v32 = [(PXUIAssetsScene *)self _imageRequesterForIndexPath:&v47 inDataSource:v31];
+      v32 = [(PXUIAssetsScene *)self _imageRequesterForIndexPath:&v47 inDataSource:dataSource2];
 
       v53[0] = MEMORY[0x1E69E9820];
       v53[1] = 3221225472;
@@ -275,8 +275,8 @@ LABEL_24:
 LABEL_25:
       goto LABEL_26;
     case 6332441:
-      v10 = [(PXAssetsScene *)self viewTileReusePool];
-      v11 = [v10 checkOutReusableObjectWithReuseIdentifier:333203];
+      viewTileReusePool5 = [(PXAssetsScene *)self viewTileReusePool];
+      v11 = [viewTileReusePool5 checkOutReusableObjectWithReuseIdentifier:333203];
 LABEL_15:
 
       goto LABEL_16;
@@ -287,34 +287,34 @@ LABEL_28:
   {
     if (v8 != 6332438)
     {
-      v37 = [MEMORY[0x1E696AAA8] currentHandler];
-      v38 = *&a3->index[5];
-      v49 = *&a3->index[3];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v38 = *&identifier->index[5];
+      v49 = *&identifier->index[3];
       v50 = v38;
-      v51 = *&a3->index[7];
-      v52 = a3->index[9];
-      v39 = *&a3->index[1];
-      v47 = *&a3->length;
+      v51 = *&identifier->index[7];
+      v52 = identifier->index[9];
+      v39 = *&identifier->index[1];
+      v47 = *&identifier->length;
       v48 = v39;
       v40 = PXTileIdentifierDescription(&v47);
-      [v37 handleFailureInMethod:a2 object:self file:@"PXUIAssetsScene.m" lineNumber:345 description:{@"%@ got asked to produce a tile for an unknown identifier:%@. If you're adding custom tile kinds, those have to be returned by your own tile source and not bubble up to the assets scene.", self, v40}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIAssetsScene.m" lineNumber:345 description:{@"%@ got asked to produce a tile for an unknown identifier:%@. If you're adding custom tile kinds, those have to be returned by your own tile source and not bubble up to the assets scene.", self, v40}];
 
       abort();
     }
 
-    v34 = [(PXAssetsScene *)self viewTileReusePool];
-    v35 = v34;
+    viewTileReusePool6 = [(PXAssetsScene *)self viewTileReusePool];
+    v35 = viewTileReusePool6;
     v36 = 333183;
   }
 
   else
   {
-    v34 = [(PXAssetsScene *)self viewTileReusePool];
-    v35 = v34;
+    viewTileReusePool6 = [(PXAssetsScene *)self viewTileReusePool];
+    v35 = viewTileReusePool6;
     v36 = 333193;
   }
 
-  v11 = [v34 checkOutReusableObjectWithReuseIdentifier:v36];
+  v11 = [viewTileReusePool6 checkOutReusableObjectWithReuseIdentifier:v36];
 
   [v11 setDesiredPlayState:{-[PXAssetsScene autoplayTilesWaitForInput](self, "autoplayTilesWaitForInput") ^ 1}];
 LABEL_16:
@@ -326,12 +326,12 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v41 = *&a3->index[3];
-  v44 = *&a3->index[1];
-  v20 = [v7 dataSource];
+  v41 = *&identifier->index[3];
+  v44 = *&identifier->index[1];
+  dataSource3 = [layoutCopy dataSource];
   v47 = v44;
   v48 = v41;
-  v21 = [(PXUIAssetsScene *)self _imageRequesterForIndexPath:&v47 inDataSource:v20];
+  v21 = [(PXUIAssetsScene *)self _imageRequesterForIndexPath:&v47 inDataSource:dataSource3];
 
   [v19 setImageRequester:v21];
   [(PXUIAssetsScene *)self contentTileCornerRadius];
@@ -344,10 +344,10 @@ LABEL_27:
   return v19;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if ((a4 & 6) != 0 && PXAssetsSceneSpeedometerObserverContext == a5)
+  observableCopy = observable;
+  if ((change & 6) != 0 && PXAssetsSceneSpeedometerObserverContext == context)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -359,16 +359,16 @@ LABEL_27:
 
   v9.receiver = self;
   v9.super_class = PXUIAssetsScene;
-  [(PXAssetsScene *)&v9 observable:v8 didChange:a4 context:a5];
+  [(PXAssetsScene *)&v9 observable:observableCopy didChange:change context:context];
 }
 
-- (void)willTransitionToDataSource:(id)a3
+- (void)willTransitionToDataSource:(id)source
 {
   v5.receiver = self;
   v5.super_class = PXUIAssetsScene;
-  v4 = a3;
-  [(PXAssetsScene *)&v5 willTransitionToDataSource:v4];
-  [(PXUIAssetsScene *)self _transitionImageRequestersToDataSource:v4, v5.receiver, v5.super_class];
+  sourceCopy = source;
+  [(PXAssetsScene *)&v5 willTransitionToDataSource:sourceCopy];
+  [(PXUIAssetsScene *)self _transitionImageRequestersToDataSource:sourceCopy, v5.receiver, v5.super_class];
 }
 
 - (void)_updatePreheatingIfNeeded
@@ -376,26 +376,26 @@ LABEL_27:
   if (self->_needsUpdateFlags.preheating)
   {
     self->_needsUpdateFlags.preheating = 0;
-    v6 = [(PXAssetsScene *)self scrollSpeedometer];
-    v3 = [v6 regime];
-    if (v3 > 1)
+    scrollSpeedometer = [(PXAssetsScene *)self scrollSpeedometer];
+    regime = [scrollSpeedometer regime];
+    if (regime > 1)
     {
       goto LABEL_7;
     }
 
-    if (v3 != -1)
+    if (regime != -1)
     {
-      if (v3 == 1)
+      if (regime == 1)
       {
-        [v6 previousRegime];
+        [scrollSpeedometer previousRegime];
       }
 
 LABEL_7:
-      v4 = [v6 scrollViewController];
-      v5 = [v4 scrollView];
+      scrollViewController = [scrollSpeedometer scrollViewController];
+      scrollView = [scrollViewController scrollView];
 
-      [v5 contentSize];
-      [v5 contentInset];
+      [scrollView contentSize];
+      [scrollView contentInset];
       sub_1A524D1F4();
     }
   }
@@ -419,19 +419,19 @@ LABEL_7:
   return [(PXAssetsScene *)&v5 needsUpdate]|| self->_needsUpdateFlags.preheating;
 }
 
-- (void)_transitionImageRequestersToDataSource:(id)a3
+- (void)_transitionImageRequestersToDataSource:(id)source
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   if ([(NSMapTable *)self->_imageRequesterByAssetReference count])
   {
-    v14 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [(NSMapTable *)self->_imageRequesterByAssetReference keyEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    keyEnumerator = [(NSMapTable *)self->_imageRequesterByAssetReference keyEnumerator];
+    v6 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -442,17 +442,17 @@ LABEL_7:
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
           v11 = [(NSMapTable *)self->_imageRequesterByAssetReference objectForKey:v10];
           if (v11)
           {
-            v12 = [v4 assetReferenceForAssetReference:v10];
+            v12 = [sourceCopy assetReferenceForAssetReference:v10];
             if (v12)
             {
-              [(NSMapTable *)v14 setObject:v11 forKey:v12];
+              [(NSMapTable *)strongToWeakObjectsMapTable setObject:v11 forKey:v12];
               v15[0] = MEMORY[0x1E69E9820];
               v15[1] = 3221225472;
               v15[2] = __58__PXUIAssetsScene__transitionImageRequestersToDataSource___block_invoke;
@@ -463,14 +463,14 @@ LABEL_7:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v7);
     }
 
     imageRequesterByAssetReference = self->_imageRequesterByAssetReference;
-    self->_imageRequesterByAssetReference = v14;
+    self->_imageRequesterByAssetReference = strongToWeakObjectsMapTable;
   }
 }
 
@@ -482,16 +482,16 @@ void __58__PXUIAssetsScene__transitionImageRequestersToDataSource___block_invoke
   [v3 setAsset:v4];
 }
 
-- (id)_imageRequesterForAssetReference:(id)a3
+- (id)_imageRequesterForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_imageRequesterByAssetReference objectForKey:v4];
+  referenceCopy = reference;
+  v5 = [(NSMapTable *)self->_imageRequesterByAssetReference objectForKey:referenceCopy];
   if (!v5)
   {
     v6 = [PXImageRequester alloc];
-    v7 = [(PXAssetsScene *)self mediaProvider];
-    v8 = [v4 asset];
-    v5 = [(PXImageRequester *)v6 initWithMediaProvider:v7 asset:v8];
+    mediaProvider = [(PXAssetsScene *)self mediaProvider];
+    asset = [referenceCopy asset];
+    v5 = [(PXImageRequester *)v6 initWithMediaProvider:mediaProvider asset:asset];
 
     [(PXUIAssetsScene *)self maximumImageSize];
     if (*MEMORY[0x1E695F060] != v10 || *(MEMORY[0x1E695F060] + 8) != v9)
@@ -504,7 +504,7 @@ void __58__PXUIAssetsScene__transitionImageRequestersToDataSource___block_invoke
       [(PXImageRequester *)v5 performChanges:v13];
     }
 
-    [(NSMapTable *)self->_imageRequesterByAssetReference setObject:v5 forKey:v4];
+    [(NSMapTable *)self->_imageRequesterByAssetReference setObject:v5 forKey:referenceCopy];
   }
 
   return v5;
@@ -518,12 +518,12 @@ void __52__PXUIAssetsScene__imageRequesterForAssetReference___block_invoke(uint6
   [v3 setMaximumRequestSize:?];
 }
 
-- (id)_imageRequesterForIndexPath:(PXSimpleIndexPath *)a3 inDataSource:(id)a4
+- (id)_imageRequesterForIndexPath:(PXSimpleIndexPath *)path inDataSource:(id)source
 {
-  v5 = *&a3->item;
-  v9[0] = *&a3->dataSourceIdentifier;
+  v5 = *&path->item;
+  v9[0] = *&path->dataSourceIdentifier;
   v9[1] = v5;
-  v6 = [a4 assetReferenceAtItemIndexPath:v9];
+  v6 = [source assetReferenceAtItemIndexPath:v9];
   v7 = [(PXUIAssetsScene *)self _imageRequesterForAssetReference:v6];
 
   return v7;
@@ -531,15 +531,15 @@ void __52__PXUIAssetsScene__imageRequesterForAssetReference___block_invoke(uint6
 
 - (void)_registerDefaultTiles
 {
-  v2 = [(PXAssetsScene *)self viewTileReusePool];
-  [v2 registerReusableObjectForReuseIdentifier:333123 creationHandler:&__block_literal_global_73050];
-  [v2 registerReusableObjectForReuseIdentifier:333183 creationHandler:&__block_literal_global_7];
-  [v2 registerReusableObjectForReuseIdentifier:333193 creationHandler:&__block_literal_global_10_73051];
-  [v2 registerReusableObjectForReuseIdentifier:333203 creationHandler:&__block_literal_global_13];
-  [v2 registerReusableObjectForReuseIdentifier:333133 creationHandler:&__block_literal_global_16];
-  [v2 registerReusableObjectForReuseIdentifier:333153 creationHandler:&__block_literal_global_19_73052];
-  [v2 registerReusableObjectForReuseIdentifier:333163 creationHandler:&__block_literal_global_22];
-  [v2 registerReusableObjectForReuseIdentifier:333173 creationHandler:&__block_literal_global_24_73053];
+  viewTileReusePool = [(PXAssetsScene *)self viewTileReusePool];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:333123 creationHandler:&__block_literal_global_73050];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:333183 creationHandler:&__block_literal_global_7];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:333193 creationHandler:&__block_literal_global_10_73051];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:333203 creationHandler:&__block_literal_global_13];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:333133 creationHandler:&__block_literal_global_16];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:333153 creationHandler:&__block_literal_global_19_73052];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:333163 creationHandler:&__block_literal_global_22];
+  [viewTileReusePool registerReusableObjectForReuseIdentifier:333173 creationHandler:&__block_literal_global_24_73053];
 }
 
 PXUIPlayButtonTile *__40__PXUIAssetsScene__registerDefaultTiles__block_invoke_8()
@@ -619,31 +619,31 @@ PXAssetUIImageViewTile *__40__PXUIAssetsScene__registerDefaultTiles__block_invok
 
 - (PXUIScrollViewController)scrollViewController
 {
-  v2 = [(PXAssetsScene *)self tilingController];
-  v3 = [v2 scrollController];
+  tilingController = [(PXAssetsScene *)self tilingController];
+  scrollController = [tilingController scrollController];
 
-  return v3;
+  return scrollController;
 }
 
-- (PXUIAssetsScene)initWithTilingController:(id)a3 mediaProvider:(id)a4 dataSourceManager:(id)a5 selectionManager:(id)a6 delegate:(id)a7
+- (PXUIAssetsScene)initWithTilingController:(id)controller mediaProvider:(id)provider dataSourceManager:(id)manager selectionManager:(id)selectionManager delegate:(id)delegate
 {
-  v12 = a3;
+  controllerCopy = controller;
   v21.receiver = self;
   v21.super_class = PXUIAssetsScene;
-  v13 = [(PXAssetsScene *)&v21 initWithTilingController:v12 mediaProvider:a4 dataSourceManager:a5 selectionManager:a6 delegate:a7];
+  v13 = [(PXAssetsScene *)&v21 initWithTilingController:controllerCopy mediaProvider:provider dataSourceManager:manager selectionManager:selectionManager delegate:delegate];
   if (v13)
   {
     v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     tilesInUse = v13->_tilesInUse;
     v13->_tilesInUse = v14;
 
-    v16 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     imageRequesterByAssetReference = v13->_imageRequesterByAssetReference;
-    v13->_imageRequesterByAssetReference = v16;
+    v13->_imageRequesterByAssetReference = strongToWeakObjectsMapTable;
 
-    v18 = [v12 scrollController];
-    v19 = [v18 scrollView];
-    [v19 _setAutomaticContentOffsetAdjustmentEnabled:0];
+    scrollController = [controllerCopy scrollController];
+    scrollView = [scrollController scrollView];
+    [scrollView _setAutomaticContentOffsetAdjustmentEnabled:0];
 
     [(PXUIAssetsScene *)v13 _registerDefaultTiles];
     [(PXUIAssetsScene *)v13 _invalidatePreheating];

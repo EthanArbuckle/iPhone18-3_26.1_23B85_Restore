@@ -1,54 +1,54 @@
 @interface PBContextMenuPasteButtonDrawing
-+ (id)drawingWithStyle:(id)a3 tag:(id)a4 size:(int64_t)a5;
++ (id)drawingWithStyle:(id)style tag:(id)tag size:(int64_t)size;
 - (CGSize)drawingSize;
-- (PBContextMenuPasteButtonDrawing)initWithTitleDrawing:(id)a3 titleOffset:(CGPoint)a4 glyph:(id)a5 glyphOffset:(CGPoint)a6 size:(CGSize)a7;
+- (PBContextMenuPasteButtonDrawing)initWithTitleDrawing:(id)drawing titleOffset:(CGPoint)offset glyph:(id)glyph glyphOffset:(CGPoint)glyphOffset size:(CGSize)size;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation PBContextMenuPasteButtonDrawing
 
-+ (id)drawingWithStyle:(id)a3 tag:(id)a4 size:(int64_t)a5
++ (id)drawingWithStyle:(id)style tag:(id)tag size:(int64_t)size
 {
-  v7 = a3;
-  v8 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v9 = &off_1000306D0;
   v10 = off_1000306C8;
-  if (a5 != 1)
+  if (size != 1)
   {
     v10 = off_1000306C0;
   }
 
-  if (a5)
+  if (size)
   {
     v9 = v10;
   }
 
-  v11 = [objc_alloc(*v9) initWithStyle:v7 tag:v8];
+  v11 = [objc_alloc(*v9) initWithStyle:styleCopy tag:tagCopy];
 
   return v11;
 }
 
-- (PBContextMenuPasteButtonDrawing)initWithTitleDrawing:(id)a3 titleOffset:(CGPoint)a4 glyph:(id)a5 glyphOffset:(CGPoint)a6 size:(CGSize)a7
+- (PBContextMenuPasteButtonDrawing)initWithTitleDrawing:(id)drawing titleOffset:(CGPoint)offset glyph:(id)glyph glyphOffset:(CGPoint)glyphOffset size:(CGSize)size
 {
-  height = a7.height;
-  width = a7.width;
-  y = a6.y;
-  x = a6.x;
-  v12 = a4.y;
-  v13 = a4.x;
-  v16 = a3;
-  v17 = a5;
+  height = size.height;
+  width = size.width;
+  y = glyphOffset.y;
+  x = glyphOffset.x;
+  v12 = offset.y;
+  v13 = offset.x;
+  drawingCopy = drawing;
+  glyphCopy = glyph;
   v21.receiver = self;
   v21.super_class = PBContextMenuPasteButtonDrawing;
   v18 = [(PBContextMenuPasteButtonDrawing *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_titleDrawing, a3);
+    objc_storeStrong(&v18->_titleDrawing, drawing);
     v19->_titleOffset.x = v13;
     v19->_titleOffset.y = v12;
-    objc_storeStrong(&v19->_glyph, a5);
+    objc_storeStrong(&v19->_glyph, glyph);
     v19->_glyphOffset.x = x;
     v19->_glyphOffset.y = y;
     v19->_size.width = width;
@@ -80,17 +80,17 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  CGContextSaveGState(a3);
-  [(UISTextParagraphDrawing *)self->_titleDrawing drawInContext:a3 atPoint:x + self->_titleOffset.x, y + self->_titleOffset.y];
-  CGContextRestoreGState(a3);
-  CGContextSaveGState(a3);
-  [(UISVectorGlyphDrawing *)self->_glyph drawInContext:a3 atPoint:x + self->_glyphOffset.x, y + self->_glyphOffset.y];
+  y = point.y;
+  x = point.x;
+  CGContextSaveGState(context);
+  [(UISTextParagraphDrawing *)self->_titleDrawing drawInContext:context atPoint:x + self->_titleOffset.x, y + self->_titleOffset.y];
+  CGContextRestoreGState(context);
+  CGContextSaveGState(context);
+  [(UISVectorGlyphDrawing *)self->_glyph drawInContext:context atPoint:x + self->_glyphOffset.x, y + self->_glyphOffset.y];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 @end

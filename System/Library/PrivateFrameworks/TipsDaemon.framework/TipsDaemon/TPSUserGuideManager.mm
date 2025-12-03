@@ -1,8 +1,8 @@
 @interface TPSUserGuideManager
 + (id)allUserGuideMap;
-+ (id)cloudDeviceDataSourceWithDevices:(id)a3;
++ (id)cloudDeviceDataSourceWithDevices:(id)devices;
 + (id)mainUserGuide;
-+ (id)userGuideWithIdentifier:(id)a3 title:(id)a4 dataSource:(id)a5;
++ (id)userGuideWithIdentifier:(id)identifier title:(id)title dataSource:(id)source;
 - (TPSUserGuideManager)init;
 @end
 
@@ -15,14 +15,14 @@
   return v2;
 }
 
-+ (id)userGuideWithIdentifier:(id)a3 title:(id)a4 dataSource:(id)a5
++ (id)userGuideWithIdentifier:(id)identifier title:(id)title dataSource:(id)source
 {
   v7 = sub_232E014D0();
   v9 = v8;
-  if (a4)
+  if (title)
   {
     v10 = sub_232E014D0();
-    a4 = v11;
+    title = v11;
   }
 
   else
@@ -31,15 +31,15 @@
   }
 
   swift_unknownObjectRetain();
-  v12 = _s10TipsDaemon16UserGuideManagerC04userD014withIdentifier5title10dataSource0A4Core0cD0CSgSS_SSSgSo018TPSCloudDeviceDataK0_pSgtFZ_0(v7, v9, v10, a4, a5);
+  v12 = _s10TipsDaemon16UserGuideManagerC04userD014withIdentifier5title10dataSource0A4Core0cD0CSgSS_SSSgSo018TPSCloudDeviceDataK0_pSgtFZ_0(v7, v9, v10, title, source);
   swift_unknownObjectRelease();
 
   return v12;
 }
 
-+ (id)cloudDeviceDataSourceWithDevices:(id)a3
++ (id)cloudDeviceDataSourceWithDevices:(id)devices
 {
-  if (a3)
+  if (devices)
   {
     sub_232DA8CC4();
     v3 = sub_232E015D0();

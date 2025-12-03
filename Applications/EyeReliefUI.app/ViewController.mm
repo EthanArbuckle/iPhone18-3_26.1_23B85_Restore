@@ -1,25 +1,25 @@
 @interface ViewController
 - (BOOL)prefersStatusBarHidden;
-- (_TtC11EyeReliefUI14ViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11EyeReliefUI14ViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)preferredStatusBarStyle;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation ViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_10000516C();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000054E4();
 }
 
@@ -30,39 +30,39 @@
   [(ViewController *)&v2 viewDidLoad];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_1000058BC;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_1000036E4(a3, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1000036E4(context, v6);
   sub_10000536C(v6);
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_1000053B4;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_100003C14(a3, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_100003C14(context, v6);
   sub_10000536C(v6);
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100003EB4();
 
   return v3 & 1;
@@ -70,11 +70,11 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = self;
-  v3 = [(ViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  selfCopy = self;
+  traitCollection = [(ViewController *)selfCopy traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     return 1;
   }
@@ -85,9 +85,9 @@
   }
 }
 
-- (_TtC11EyeReliefUI14ViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11EyeReliefUI14ViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -99,8 +99,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100004024(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100004024(v5, v7, bundle);
 }
 
 @end

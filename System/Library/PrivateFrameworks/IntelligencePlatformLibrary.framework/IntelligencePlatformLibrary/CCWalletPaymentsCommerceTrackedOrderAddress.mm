@@ -1,7 +1,7 @@
 @interface CCWalletPaymentsCommerceTrackedOrderAddress
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCWalletPaymentsCommerceTrackedOrderAddress)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCWalletPaymentsCommerceTrackedOrderAddress)initWithStreet:(id)a3 city:(id)a4 state:(id)a5 postalCode:(id)a6 country:(id)a7 rawAddress:(id)a8 error:(id *)a9;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCWalletPaymentsCommerceTrackedOrderAddress)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCWalletPaymentsCommerceTrackedOrderAddress)initWithStreet:(id)street city:(id)city state:(id)state postalCode:(id)code country:(id)country rawAddress:(id)address error:(id *)error;
 - (NSString)city;
 - (NSString)country;
 - (NSString)postalCode;
@@ -9,26 +9,26 @@
 - (NSString)state;
 - (NSString)street;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletPaymentsCommerceTrackedOrderAddress
 
-- (CCWalletPaymentsCommerceTrackedOrderAddress)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletPaymentsCommerceTrackedOrderAddress)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"street"];
-    v10 = [v6 objectForKeyedSubscript:@"city"];
-    v11 = [v6 objectForKeyedSubscript:@"state"];
-    v12 = [v6 objectForKeyedSubscript:@"postalCode"];
-    v13 = [v6 objectForKeyedSubscript:@"country"];
-    v14 = [v6 objectForKeyedSubscript:@"rawAddress"];
-    v15 = [[CCWalletPaymentsCommerceTrackedOrderAddress alloc] initWithStreet:v9 city:v10 state:v11 postalCode:v12 country:v13 rawAddress:v14 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"street"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"city"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"state"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"postalCode"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"country"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"rawAddress"];
+    v15 = [[CCWalletPaymentsCommerceTrackedOrderAddress alloc] initWithStreet:v9 city:v10 state:v11 postalCode:v12 country:v13 rawAddress:v14 error:error];
   }
 
   else
@@ -45,38 +45,38 @@
   v3 = objc_opt_new();
   if (self->_street)
   {
-    v4 = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self street];
-    [v3 setObject:v4 forKeyedSubscript:@"street"];
+    street = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self street];
+    [v3 setObject:street forKeyedSubscript:@"street"];
   }
 
   if (self->_city)
   {
-    v5 = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self city];
-    [v3 setObject:v5 forKeyedSubscript:@"city"];
+    city = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self city];
+    [v3 setObject:city forKeyedSubscript:@"city"];
   }
 
   if (self->_state)
   {
-    v6 = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self state];
-    [v3 setObject:v6 forKeyedSubscript:@"state"];
+    state = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self state];
+    [v3 setObject:state forKeyedSubscript:@"state"];
   }
 
   if (self->_postalCode)
   {
-    v7 = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self postalCode];
-    [v3 setObject:v7 forKeyedSubscript:@"postalCode"];
+    postalCode = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self postalCode];
+    [v3 setObject:postalCode forKeyedSubscript:@"postalCode"];
   }
 
   if (self->_country)
   {
-    v8 = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self country];
-    [v3 setObject:v8 forKeyedSubscript:@"country"];
+    country = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self country];
+    [v3 setObject:country forKeyedSubscript:@"country"];
   }
 
   if (self->_rawAddress)
   {
-    v9 = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self rawAddress];
-    [v3 setObject:v9 forKeyedSubscript:@"rawAddress"];
+    rawAddress = [(CCWalletPaymentsCommerceTrackedOrderAddress *)self rawAddress];
+    [v3 setObject:rawAddress forKeyedSubscript:@"rawAddress"];
   }
 
   v10 = [v3 copy];
@@ -84,20 +84,20 @@
   return v10;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v4 = a4;
-  v18 = a3;
+  typeCopy = type;
+  blockCopy = block;
   if (self->_street)
   {
-    if (v4 == 7990)
+    if (typeCopy == 7990)
     {
       v6 = 7991;
     }
 
     else
     {
-      if (v4 != 8000)
+      if (typeCopy != 8000)
       {
         goto LABEL_7;
       }
@@ -106,7 +106,7 @@
     }
 
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_street];
-    v18[2](v18, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
 LABEL_7:
@@ -115,14 +115,14 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  if (v4 == 7990)
+  if (typeCopy == 7990)
   {
     v8 = 7992;
   }
 
   else
   {
-    if (v4 != 8000)
+    if (typeCopy != 8000)
     {
       goto LABEL_13;
     }
@@ -131,7 +131,7 @@ LABEL_7:
   }
 
   v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v8 stringValue:self->_city];
-  v18[2](v18, v9);
+  blockCopy[2](blockCopy, v9);
 
 LABEL_13:
   if (!self->_state)
@@ -139,14 +139,14 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  if (v4 == 7990)
+  if (typeCopy == 7990)
   {
     v10 = 7993;
   }
 
   else
   {
-    if (v4 != 8000)
+    if (typeCopy != 8000)
     {
       goto LABEL_19;
     }
@@ -155,7 +155,7 @@ LABEL_13:
   }
 
   v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v10 stringValue:self->_state];
-  v18[2](v18, v11);
+  blockCopy[2](blockCopy, v11);
 
 LABEL_19:
   if (!self->_postalCode)
@@ -163,14 +163,14 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  if (v4 == 7990)
+  if (typeCopy == 7990)
   {
     v12 = 7994;
   }
 
   else
   {
-    if (v4 != 8000)
+    if (typeCopy != 8000)
     {
       goto LABEL_25;
     }
@@ -179,7 +179,7 @@ LABEL_19:
   }
 
   v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v12 stringValue:self->_postalCode];
-  v18[2](v18, v13);
+  blockCopy[2](blockCopy, v13);
 
 LABEL_25:
   if (!self->_country)
@@ -187,14 +187,14 @@ LABEL_25:
     goto LABEL_31;
   }
 
-  if (v4 == 7990)
+  if (typeCopy == 7990)
   {
     v14 = 7995;
   }
 
   else
   {
-    if (v4 != 8000)
+    if (typeCopy != 8000)
     {
       goto LABEL_31;
     }
@@ -203,7 +203,7 @@ LABEL_25:
   }
 
   v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v14 stringValue:self->_country];
-  v18[2](v18, v15);
+  blockCopy[2](blockCopy, v15);
 
 LABEL_31:
   if (!self->_rawAddress)
@@ -211,14 +211,14 @@ LABEL_31:
     goto LABEL_37;
   }
 
-  if (v4 == 7990)
+  if (typeCopy == 7990)
   {
     v16 = 8032;
   }
 
   else
   {
-    if (v4 != 8000)
+    if (typeCopy != 8000)
     {
       goto LABEL_37;
     }
@@ -227,7 +227,7 @@ LABEL_31:
   }
 
   v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v16 stringValue:self->_rawAddress];
-  v18[2](v18, v17);
+  blockCopy[2](blockCopy, v17);
 
 LABEL_37:
 }
@@ -274,10 +274,10 @@ LABEL_37:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -452,22 +452,22 @@ LABEL_47:
   return v32;
 }
 
-- (CCWalletPaymentsCommerceTrackedOrderAddress)initWithStreet:(id)a3 city:(id)a4 state:(id)a5 postalCode:(id)a6 country:(id)a7 rawAddress:(id)a8 error:(id *)a9
+- (CCWalletPaymentsCommerceTrackedOrderAddress)initWithStreet:(id)street city:(id)city state:(id)state postalCode:(id)code country:(id)country rawAddress:(id)address error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v40 = a8;
+  streetCopy = street;
+  cityCopy = city;
+  stateCopy = state;
+  codeCopy = code;
+  countryCopy = country;
+  addressCopy = address;
   v20 = objc_opt_new();
   v21 = 0x1E696A000uLL;
-  if (!v15)
+  if (!streetCopy)
   {
     v23 = 0;
 LABEL_5:
-    v38 = self;
-    if (v16)
+    selfCopy = self;
+    if (cityCopy)
     {
       v24 = *(v21 + 3776);
       objc_opt_class();
@@ -481,11 +481,11 @@ LABEL_5:
 
       CCPBDataWriterWriteStringField();
       v21 = 0x1E696A000uLL;
-      if (!v17)
+      if (!stateCopy)
       {
 LABEL_8:
         v23 = v26;
-        if (v18)
+        if (codeCopy)
         {
           goto LABEL_9;
         }
@@ -497,7 +497,7 @@ LABEL_8:
     else
     {
       v26 = v23;
-      if (!v17)
+      if (!stateCopy)
       {
         goto LABEL_8;
       }
@@ -515,7 +515,7 @@ LABEL_8:
 
     CCPBDataWriterWriteStringField();
     v21 = 0x1E696A000uLL;
-    if (v18)
+    if (codeCopy)
     {
 LABEL_9:
       v27 = *(v21 + 3776);
@@ -527,16 +527,16 @@ LABEL_9:
       {
         CCPBDataWriterWriteStringField();
         v21 = 0x1E696A000;
-        if (!v19)
+        if (!countryCopy)
         {
 LABEL_11:
           v23 = v26;
 LABEL_19:
-          if (!v40)
+          if (!addressCopy)
           {
 LABEL_22:
-            v36 = [v20 immutableData];
-            v29 = [v39 initWithData:v36 error:a9];
+            immutableData = [v20 immutableData];
+            v29 = [v39 initWithData:immutableData error:error];
 
             self = v29;
             goto LABEL_26;
@@ -565,13 +565,13 @@ LABEL_23:
       v29 = 0;
       v23 = v26;
 LABEL_25:
-      self = v38;
+      self = selfCopy;
       goto LABEL_26;
     }
 
 LABEL_16:
     v26 = v23;
-    if (!v19)
+    if (!countryCopy)
     {
       goto LABEL_11;
     }

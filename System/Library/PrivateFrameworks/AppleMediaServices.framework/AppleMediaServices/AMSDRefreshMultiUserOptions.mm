@@ -1,15 +1,15 @@
 @interface AMSDRefreshMultiUserOptions
-- (AMSDRefreshMultiUserOptions)initWithReason:(id)a3;
+- (AMSDRefreshMultiUserOptions)initWithReason:(id)reason;
 - (NSString)hashedDescription;
-- (id)_stringForRefreshType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_stringForRefreshType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AMSDRefreshMultiUserOptions
 
-- (AMSDRefreshMultiUserOptions)initWithReason:(id)a3
+- (AMSDRefreshMultiUserOptions)initWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v10.receiver = self;
   v10.super_class = AMSDRefreshMultiUserOptions;
   v5 = [(AMSDRefreshMultiUserOptions *)&v10 init];
@@ -17,7 +17,7 @@
   if (v5)
   {
     v5->_ignoreThrottling = 0;
-    v7 = [v4 copy];
+    v7 = [reasonCopy copy];
     reasonDescription = v6->_reasonDescription;
     v6->_reasonDescription = v7;
 
@@ -47,12 +47,12 @@
   }
 
   [v5 appendFormat:@"\n  ignoreThrottling = %@", v6];
-  v7 = [(AMSDRefreshMultiUserOptions *)self reasonDescription];
-  v8 = v7;
+  reasonDescription = [(AMSDRefreshMultiUserOptions *)self reasonDescription];
+  v8 = reasonDescription;
   v9 = @"(null)";
-  if (v7)
+  if (reasonDescription)
   {
-    v9 = v7;
+    v9 = reasonDescription;
   }
 
   [v5 appendFormat:@"\n  reason = %@", v9];
@@ -80,12 +80,12 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setIgnoreThrottling:{-[AMSDRefreshMultiUserOptions ignoreThrottling](self, "ignoreThrottling")}];
-  v6 = [(AMSDRefreshMultiUserOptions *)self reasonDescription];
-  v7 = [v6 copyWithZone:a3];
+  reasonDescription = [(AMSDRefreshMultiUserOptions *)self reasonDescription];
+  v7 = [reasonDescription copyWithZone:zone];
   [v5 setReasonDescription:v7];
 
   [v5 setReasonType:{-[AMSDRefreshMultiUserOptions reasonType](self, "reasonType")}];
@@ -97,16 +97,16 @@
   return v5;
 }
 
-- (id)_stringForRefreshType:(unint64_t)a3
+- (id)_stringForRefreshType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"Reason unknown";
   }
 
   else
   {
-    return off_1002B2208[a3];
+    return off_1002B2208[type];
   }
 }
 

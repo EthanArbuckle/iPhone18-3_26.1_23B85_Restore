@@ -1,37 +1,37 @@
 @interface ISIconResourceLocator
 + (id)genericIconrResourceLocator;
-+ (id)resourceLocatorWithLSIconResourceLocator:(id)a3;
-+ (id)resourceLocatorWithType:(id)a3;
++ (id)resourceLocatorWithLSIconResourceLocator:(id)locator;
++ (id)resourceLocatorWithType:(id)type;
 - (BOOL)allowLocalizedIcon;
-- (ISIconResourceLocator)initWithCoder:(id)a3;
+- (ISIconResourceLocator)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISIconResourceLocator
 
-+ (id)resourceLocatorWithLSIconResourceLocator:(id)a3
++ (id)resourceLocatorWithLSIconResourceLocator:(id)locator
 {
-  v3 = a3;
+  locatorCopy = locator;
   v4 = objc_alloc_init(ISIconResourceLocator);
-  v5 = [v3 applicationIdentifier];
-  [(ISIconResourceLocator *)v4 setBundleIdentifier:v5];
+  applicationIdentifier = [locatorCopy applicationIdentifier];
+  [(ISIconResourceLocator *)v4 setBundleIdentifier:applicationIdentifier];
 
-  v6 = [v3 bundleIconsDictionary];
-  [(ISIconResourceLocator *)v4 setIconsDictionary:v6];
+  bundleIconsDictionary = [locatorCopy bundleIconsDictionary];
+  [(ISIconResourceLocator *)v4 setIconsDictionary:bundleIconsDictionary];
 
   [(ISIconResourceLocator *)v4 setPreferedResourceName:0];
-  v7 = [v3 resourcesDirectoryURL];
+  resourcesDirectoryURL = [locatorCopy resourcesDirectoryURL];
 
-  [(ISIconResourceLocator *)v4 setResourceDirectoryURL:v7];
+  [(ISIconResourceLocator *)v4 setResourceDirectoryURL:resourcesDirectoryURL];
 
   return v4;
 }
 
-+ (id)resourceLocatorWithType:(id)a3
++ (id)resourceLocatorWithType:(id)type
 {
-  v3 = a3;
-  v4 = [[ISIconTypeResourceLocator alloc] initWithType:v3];
+  typeCopy = type;
+  v4 = [[ISIconTypeResourceLocator alloc] initWithType:typeCopy];
 
   return v4;
 }
@@ -61,30 +61,30 @@ uint64_t __52__ISIconResourceLocator_genericIconrResourceLocator__block_invoke()
   return [v2 setPreferedResourceName:0];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   resourceDirectoryURL = self->_resourceDirectoryURL;
-  v5 = a3;
-  [v5 encodeObject:resourceDirectoryURL forKey:@"_resourceDirectoryURL"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"_bundleIdentifier"];
-  [v5 encodeObject:self->_iconsDictionary forKey:@"_iconsDictionary"];
-  [v5 encodeObject:self->_preferedResourceName forKey:@"_preferedResourceName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:resourceDirectoryURL forKey:@"_resourceDirectoryURL"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"_bundleIdentifier"];
+  [coderCopy encodeObject:self->_iconsDictionary forKey:@"_iconsDictionary"];
+  [coderCopy encodeObject:self->_preferedResourceName forKey:@"_preferedResourceName"];
 }
 
-- (ISIconResourceLocator)initWithCoder:(id)a3
+- (ISIconResourceLocator)initWithCoder:(id)coder
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ISIconResourceLocator;
   v5 = [(ISIconResourceLocator *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_resourceDirectoryURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_resourceDirectoryURL"];
     resourceDirectoryURL = v5->_resourceDirectoryURL;
     v5->_resourceDirectoryURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
@@ -96,11 +96,11 @@ uint64_t __52__ISIconResourceLocator_genericIconrResourceLocator__block_invoke()
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
     v12 = [v10 setWithArray:v11];
 
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"_iconsDictionary"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"_iconsDictionary"];
     iconsDictionary = v5->_iconsDictionary;
     v5->_iconsDictionary = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_preferedResourceName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preferedResourceName"];
     preferedResourceName = v5->_preferedResourceName;
     v5->_preferedResourceName = v15;
   }
@@ -122,8 +122,8 @@ uint64_t __52__ISIconResourceLocator_genericIconrResourceLocator__block_invoke()
 
 - (BOOL)allowLocalizedIcon
 {
-  v2 = [(ISIconResourceLocator *)self bundleIdentifier];
-  v3 = [v2 hasPrefix:@"com.apple."];
+  bundleIdentifier = [(ISIconResourceLocator *)self bundleIdentifier];
+  v3 = [bundleIdentifier hasPrefix:@"com.apple."];
 
   return v3;
 }

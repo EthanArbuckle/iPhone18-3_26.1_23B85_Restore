@@ -1,8 +1,8 @@
 @interface AccessoryDataStreamAdapter
 - (_TtC14dockaccessoryd26AccessoryDataStreamAdapter)init;
-- (void)accessory:(id)a3 didReceiveBulkSessionCandidate:(id)a4;
-- (void)accessoryDidCloseDataStream:(id)a3;
-- (void)accessoryDidStartListening:(id)a3;
+- (void)accessory:(id)accessory didReceiveBulkSessionCandidate:(id)candidate;
+- (void)accessoryDidCloseDataStream:(id)stream;
+- (void)accessoryDidStartListening:(id)listening;
 @end
 
 @implementation AccessoryDataStreamAdapter
@@ -14,21 +14,21 @@
   return result;
 }
 
-- (void)accessory:(id)a3 didReceiveBulkSessionCandidate:(id)a4
+- (void)accessory:(id)accessory didReceiveBulkSessionCandidate:(id)candidate
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  [a4 rejectBulkSendSessionWithStatus:1];
+  [candidate rejectBulkSendSessionWithStatus:1];
   swift_unknownObjectRelease();
   sub_100095808(v5);
 }
 
-- (void)accessoryDidStartListening:(id)a3
+- (void)accessoryDidStartListening:(id)listening
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_1000FDA14(v5);
@@ -36,7 +36,7 @@
   sub_100095808(v5);
 }
 
-- (void)accessoryDidCloseDataStream:(id)a3
+- (void)accessoryDidCloseDataStream:(id)stream
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

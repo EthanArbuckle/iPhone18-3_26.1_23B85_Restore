@@ -1,21 +1,21 @@
 @interface MRMediaControlsVideoPickerFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRMediaControlsVideoPickerFooterView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRMediaControlsVideoPickerFooterView)initWithFrame:(CGRect)frame;
 - (id)titleLabelText;
 - (void)_updateStyle;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setVisualStylingProvider:(id)provider;
 @end
 
 @implementation MRMediaControlsVideoPickerFooterView
 
-- (MRMediaControlsVideoPickerFooterView)initWithFrame:(CGRect)a3
+- (MRMediaControlsVideoPickerFooterView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v16.receiver = self;
   v16.super_class = MRMediaControlsVideoPickerFooterView;
   v7 = [(MPButton *)&v16 initWithFrame:?];
@@ -25,18 +25,18 @@
     customTitleLabel = v7->_customTitleLabel;
     v7->_customTitleLabel = v8;
 
-    v10 = [(MRMediaControlsVideoPickerFooterView *)v7 customTitleLabel];
-    [v10 setTextAlignment:1];
+    customTitleLabel = [(MRMediaControlsVideoPickerFooterView *)v7 customTitleLabel];
+    [customTitleLabel setTextAlignment:1];
 
-    v11 = [(MRMediaControlsVideoPickerFooterView *)v7 customTitleLabel];
-    [v11 setNumberOfLines:1];
+    customTitleLabel2 = [(MRMediaControlsVideoPickerFooterView *)v7 customTitleLabel];
+    [customTitleLabel2 setNumberOfLines:1];
 
-    v12 = [(MRMediaControlsVideoPickerFooterView *)v7 titleLabelText];
-    v13 = [(MRMediaControlsVideoPickerFooterView *)v7 customTitleLabel];
-    [v13 setText:v12];
+    titleLabelText = [(MRMediaControlsVideoPickerFooterView *)v7 titleLabelText];
+    customTitleLabel3 = [(MRMediaControlsVideoPickerFooterView *)v7 customTitleLabel];
+    [customTitleLabel3 setText:titleLabelText];
 
-    v14 = [(MRMediaControlsVideoPickerFooterView *)v7 customTitleLabel];
-    [(MRMediaControlsVideoPickerFooterView *)v7 addSubview:v14];
+    customTitleLabel4 = [(MRMediaControlsVideoPickerFooterView *)v7 customTitleLabel];
+    [(MRMediaControlsVideoPickerFooterView *)v7 addSubview:customTitleLabel4];
   }
 
   return v7;
@@ -50,24 +50,24 @@
   [(MRMediaControlsVideoPickerFooterView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
-  [v7 sizeThatFits:{v4, v6}];
+  customTitleLabel = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
+  [customTitleLabel sizeThatFits:{v4, v6}];
 
   UIRectCenteredIntegralRect();
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  customTitleLabel2 = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
+  [customTitleLabel2 setFrame:{v9, v11, v13, v15}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(MRMediaControlsVideoPickerFooterView *)self traitCollection];
-  [v5 displayScale];
+  height = fits.height;
+  width = fits.width;
+  traitCollection = [(MRMediaControlsVideoPickerFooterView *)self traitCollection];
+  [traitCollection displayScale];
 
   UIRoundToScale();
   if (v6 >= height)
@@ -89,8 +89,8 @@
 - (id)titleLabelText
 {
   v2 = MGGetSInt32Answer();
-  v3 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-  v4 = v3;
+  mediaControlsBundle = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+  v4 = mediaControlsBundle;
   v5 = @"AIRPLAY_VIDEO_PICKER_BUTTON_TITLE_IPHONE";
   if (v2 == 3)
   {
@@ -107,18 +107,18 @@
     v6 = v5;
   }
 
-  v7 = [v3 localizedStringForKey:v6 value:&stru_1F1445548 table:@"MediaControls"];
+  v7 = [mediaControlsBundle localizedStringForKey:v6 value:&stru_1F1445548 table:@"MediaControls"];
 
   return v7;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v11.receiver = self;
   v11.super_class = MRMediaControlsVideoPickerFooterView;
   [(MRMediaControlsVideoPickerFooterView *)&v11 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = 0.0;
   }
@@ -137,7 +137,7 @@
   v9[2] = __55__MRMediaControlsVideoPickerFooterView_setHighlighted___block_invoke;
   v9[3] = &unk_1E7665790;
   v9[4] = self;
-  v10 = v3;
+  v10 = highlightedCopy;
   v9[5] = v8;
   [MEMORY[0x1E69DD250] animateWithDuration:327684 delay:v9 options:0 animations:v5 completion:0.0];
 }
@@ -158,22 +158,22 @@ void __55__MRMediaControlsVideoPickerFooterView_setHighlighted___block_invoke(ui
   [v2 setAlpha:v1];
 }
 
-- (void)setVisualStylingProvider:(id)a3
+- (void)setVisualStylingProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   visualStylingProvider = self->_visualStylingProvider;
-  if (visualStylingProvider != v5)
+  if (visualStylingProvider != providerCopy)
   {
-    v10 = v5;
-    v7 = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
-    [(MTVisualStylingProvider *)visualStylingProvider stopAutomaticallyUpdatingView:v7];
+    v10 = providerCopy;
+    customTitleLabel = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
+    [(MTVisualStylingProvider *)visualStylingProvider stopAutomaticallyUpdatingView:customTitleLabel];
 
-    objc_storeStrong(&self->_visualStylingProvider, a3);
+    objc_storeStrong(&self->_visualStylingProvider, provider);
     v8 = self->_visualStylingProvider;
-    v9 = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
-    [(MTVisualStylingProvider *)v8 automaticallyUpdateView:v9 withStyle:0];
+    customTitleLabel2 = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
+    [(MTVisualStylingProvider *)v8 automaticallyUpdateView:customTitleLabel2 withStyle:0];
 
-    v5 = v10;
+    providerCopy = v10;
   }
 }
 
@@ -181,17 +181,17 @@ void __55__MRMediaControlsVideoPickerFooterView_setHighlighted___block_invoke(ui
 {
   v3 = MEMORY[0x1E69DB880];
   v4 = *MEMORY[0x1E69DDCF8];
-  v5 = [(MRMediaControlsVideoPickerFooterView *)self traitCollection];
-  v6 = [v3 preferredFontDescriptorWithTextStyle:v4 compatibleWithTraitCollection:v5];
+  traitCollection = [(MRMediaControlsVideoPickerFooterView *)self traitCollection];
+  v6 = [v3 preferredFontDescriptorWithTextStyle:v4 compatibleWithTraitCollection:traitCollection];
   v11 = [v6 fontDescriptorWithSymbolicTraits:2];
 
   v7 = [MEMORY[0x1E69DB878] fontWithDescriptor:v11 size:0.0];
-  v8 = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
-  [v8 setFont:v7];
+  customTitleLabel = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
+  [customTitleLabel setFont:v7];
 
-  v9 = [MEMORY[0x1E69DC888] whiteColor];
-  v10 = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
-  [v10 setTintColor:v9];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  customTitleLabel2 = [(MRMediaControlsVideoPickerFooterView *)self customTitleLabel];
+  [customTitleLabel2 setTintColor:whiteColor];
 
   [(MRMediaControlsVideoPickerFooterView *)self setNeedsLayout];
 }

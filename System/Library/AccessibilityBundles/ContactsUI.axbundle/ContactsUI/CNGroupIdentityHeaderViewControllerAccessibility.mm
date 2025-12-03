@@ -1,16 +1,16 @@
 @interface CNGroupIdentityHeaderViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)updateActionButton;
 @end
 
 @implementation CNGroupIdentityHeaderViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNGroupIdentityHeaderViewController" hasInstanceMethod:@"actionButtonTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNGroupIdentityHeaderViewController" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNGroupIdentityHeaderViewController" hasInstanceMethod:@"updateActionButton" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNGroupIdentityHeaderViewController" hasInstanceMethod:@"actionButtonTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNGroupIdentityHeaderViewController" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNGroupIdentityHeaderViewController" hasInstanceMethod:@"updateActionButton" withFullSignature:{"v", 0}];
 }
 
 - (void)updateActionButton

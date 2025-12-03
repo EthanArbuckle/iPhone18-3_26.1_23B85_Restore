@@ -1,24 +1,24 @@
 @interface CKContactKeyVerificationRecipientsHelper
-+ (BOOL)shouldShowVerifiedIconForRecipient:(id)a3 inChat:(id)a4;
-+ (id)recipientsToUpdateForUpdatedCKVHandles:(id)a3 recipients:(id)a4 inConversation:(id)a5;
++ (BOOL)shouldShowVerifiedIconForRecipient:(id)recipient inChat:(id)chat;
++ (id)recipientsToUpdateForUpdatedCKVHandles:(id)handles recipients:(id)recipients inConversation:(id)conversation;
 @end
 
 @implementation CKContactKeyVerificationRecipientsHelper
 
-+ (id)recipientsToUpdateForUpdatedCKVHandles:(id)a3 recipients:(id)a4 inConversation:(id)a5
++ (id)recipientsToUpdateForUpdatedCKVHandles:(id)handles recipients:(id)recipients inConversation:(id)conversation
 {
   v56 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v30 = a4;
-  v29 = a5;
-  v8 = [v29 lastAddressedHandle];
-  v31 = [v8 _stripFZIDPrefix];
+  handlesCopy = handles;
+  recipientsCopy = recipients;
+  conversationCopy = conversation;
+  lastAddressedHandle = [conversationCopy lastAddressedHandle];
+  _stripFZIDPrefix = [lastAddressedHandle _stripFZIDPrefix];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v7;
+  obj = handlesCopy;
   v9 = [obj countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v9)
   {
@@ -32,8 +32,8 @@
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v47 + 1) + 8 * i) _stripFZIDPrefix];
-        v13 = [v12 isEqualToString:v31];
+        _stripFZIDPrefix2 = [*(*(&v47 + 1) + 8 * i) _stripFZIDPrefix];
+        v13 = [_stripFZIDPrefix2 isEqualToString:_stripFZIDPrefix];
 
         if (v13)
         {
@@ -47,7 +47,7 @@
             }
           }
 
-          v34 = v30;
+          v34 = recipientsCopy;
 
           goto LABEL_40;
         }
@@ -68,7 +68,7 @@
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v32 = v30;
+  v32 = recipientsCopy;
   v36 = [v32 countByEnumeratingWithState:&v43 objects:v54 count:16];
   if (v36)
   {
@@ -112,10 +112,10 @@
                   objc_enumerationMutation(v38);
                 }
 
-                v20 = [*(*(&v39 + 1) + 8 * j) _stripFZIDPrefix];
-                v21 = [v16 normalizedAddress];
-                v22 = [v21 _stripFZIDPrefix];
-                if ([v22 isEqualToString:v20])
+                _stripFZIDPrefix3 = [*(*(&v39 + 1) + 8 * j) _stripFZIDPrefix];
+                normalizedAddress = [v16 normalizedAddress];
+                _stripFZIDPrefix4 = [normalizedAddress _stripFZIDPrefix];
+                if ([_stripFZIDPrefix4 isEqualToString:_stripFZIDPrefix3])
                 {
 
 LABEL_27:
@@ -124,9 +124,9 @@ LABEL_27:
                   goto LABEL_28;
                 }
 
-                v23 = [v16 address];
-                v24 = [v23 _stripFZIDPrefix];
-                v25 = [v24 isEqualToString:v20];
+                address = [v16 address];
+                _stripFZIDPrefix5 = [address _stripFZIDPrefix];
+                v25 = [_stripFZIDPrefix5 isEqualToString:_stripFZIDPrefix3];
 
                 if (v25)
                 {
@@ -173,33 +173,33 @@ LABEL_40:
   return v34;
 }
 
-+ (BOOL)shouldShowVerifiedIconForRecipient:(id)a3 inChat:(id)a4
++ (BOOL)shouldShowVerifiedIconForRecipient:(id)recipient inChat:(id)chat
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69A5BB0] sharedController];
-  v8 = [v7 selfOptedIn];
+  recipientCopy = recipient;
+  chatCopy = chat;
+  mEMORY[0x1E69A5BB0] = [MEMORY[0x1E69A5BB0] sharedController];
+  selfOptedIn = [mEMORY[0x1E69A5BB0] selfOptedIn];
 
-  if (!v8)
+  if (!selfOptedIn)
   {
     goto LABEL_5;
   }
 
-  if (![v5 isGroup])
+  if (![recipientCopy isGroup])
   {
-    v10 = [v5 address];
+    address = [recipientCopy address];
 
-    if (!v10)
+    if (!address)
     {
       goto LABEL_15;
     }
 
-    v11 = [v5 normalizedAddress];
+    normalizedAddress = [recipientCopy normalizedAddress];
     v12 = IMStripFormattingFromAddress();
 
-    v13 = [MEMORY[0x1E69A5BB0] sharedController];
-    v9 = [v13 contactKeyVerificationStatusForHandleID:v12 inChat:v6];
+    mEMORY[0x1E69A5BB0]2 = [MEMORY[0x1E69A5BB0] sharedController];
+    v9 = [mEMORY[0x1E69A5BB0]2 contactKeyVerificationStatusForHandleID:v12 inChat:chatCopy];
 
     if (IMOSLoggingEnabled())
     {
@@ -211,7 +211,7 @@ LABEL_40:
         v18 = 2112;
         v19 = v12;
         v20 = 2112;
-        v21 = v6;
+        v21 = chatCopy;
         _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Setting kt status %lu to set atom state for address: %@ in chat: %@", &v16, 0x20u);
       }
     }
@@ -223,25 +223,25 @@ LABEL_40:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_5:
-    LOBYTE(v10) = 0;
+    LOBYTE(address) = 0;
     goto LABEL_15;
   }
 
-  v9 = [v6 keyTransparencyStatusForAffectedHandles:0];
+  v9 = [chatCopy keyTransparencyStatusForAffectedHandles:0];
 LABEL_12:
   if (v9 <= 0x13)
   {
-    LOBYTE(v10) = 0x40110u >> v9;
+    LOBYTE(address) = 0x40110u >> v9;
   }
 
   else
   {
-    LOBYTE(v10) = 0;
+    LOBYTE(address) = 0;
   }
 
 LABEL_15:
 
-  return v10 & 1;
+  return address & 1;
 }
 
 @end

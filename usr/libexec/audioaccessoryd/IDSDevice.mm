@@ -7,12 +7,12 @@
 
 - (id)cpDescription
 {
-  v3 = [(IDSDevice *)self name];
-  v4 = [(IDSDevice *)self uniqueID];
-  v5 = v4;
-  if (v4)
+  name = [(IDSDevice *)self name];
+  uniqueID = [(IDSDevice *)self uniqueID];
+  v5 = uniqueID;
+  if (uniqueID)
   {
-    v6 = v4;
+    v6 = uniqueID;
   }
 
   else
@@ -20,23 +20,23 @@
     v6 = @"unknown ID";
   }
 
-  v7 = [(IDSDevice *)self nsuuid];
-  v8 = [NSString stringWithFormat:@"%@ (%@), BT: (%@)", v3, v6, v7];
+  nsuuid = [(IDSDevice *)self nsuuid];
+  v8 = [NSString stringWithFormat:@"%@ (%@), BT: (%@)", name, v6, nsuuid];
 
   return v8;
 }
 
 - (id)deviceTypeToString
 {
-  v2 = [(IDSDevice *)self deviceType];
-  if (v2 > 8)
+  deviceType = [(IDSDevice *)self deviceType];
+  if (deviceType > 8)
   {
     return @"NotDefined";
   }
 
   else
   {
-    return *(&off_1002BB390 + v2);
+    return *(&off_1002BB390 + deviceType);
   }
 }
 

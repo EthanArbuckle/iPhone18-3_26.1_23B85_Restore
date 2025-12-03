@@ -1,6 +1,6 @@
 @interface CRLDataclassOwner
 + (id)dataclasses;
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6;
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass;
 - (_TtC22FreeformDataclassOwner17CRLDataclassOwner)init;
 @end
 
@@ -27,18 +27,18 @@
   return v5.super.isa;
 }
 
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass
 {
-  if (a5)
+  if (children)
   {
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  v14 = specialized CRLDataclassOwner.perform(_:for:withChildren:forDataclass:)(a3, a4);
+  actionCopy = action;
+  accountCopy = account;
+  dataclassCopy = dataclass;
+  selfCopy = self;
+  v14 = specialized CRLDataclassOwner.perform(_:for:withChildren:forDataclass:)(action, account);
 
   return v14 & 1;
 }

@@ -1,40 +1,40 @@
 @interface CHSMutableRemoteDevice
-- (void)setDeviceID:(id)a3;
-- (void)setLastConnectionDate:(id)a3;
-- (void)setName:(id)a3;
-- (void)setRelationshipID:(id)a3;
+- (void)setDeviceID:(id)d;
+- (void)setLastConnectionDate:(id)date;
+- (void)setName:(id)name;
+- (void)setRelationshipID:(id)d;
 @end
 
 @implementation CHSMutableRemoteDevice
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  nameCopy = name;
+  v4 = [nameCopy copy];
   name = self->super._name;
   self->super._name = v4;
 }
 
-- (void)setRelationshipID:(id)a3
+- (void)setRelationshipID:(id)d
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  dCopy = d;
+  v4 = [dCopy copy];
   relationshipID = self->super._relationshipID;
   self->super._relationshipID = v4;
 }
 
-- (void)setDeviceID:(id)a3
+- (void)setDeviceID:(id)d
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  dCopy = d;
+  v4 = [dCopy copy];
   deviceID = self->super._deviceID;
   self->super._deviceID = v4;
 }
 
-- (void)setLastConnectionDate:(id)a3
+- (void)setLastConnectionDate:(id)date
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  dateCopy = date;
+  v4 = [dateCopy copy];
   lastConnectionDate = self->super._lastConnectionDate;
   self->super._lastConnectionDate = v4;
 }

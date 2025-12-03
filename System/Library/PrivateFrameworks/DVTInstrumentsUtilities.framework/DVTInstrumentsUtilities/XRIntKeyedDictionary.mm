@@ -1,56 +1,56 @@
 @interface XRIntKeyedDictionary
-- (XRIntKeyedDictionary)initWithCoder:(id)a3;
-- (XRIntKeyedDictionary)initWithIntKeyedDictionary:(id)a3 copyObjects:(BOOL)a4;
+- (XRIntKeyedDictionary)initWithCoder:(id)coder;
+- (XRIntKeyedDictionary)initWithIntKeyedDictionary:(id)dictionary copyObjects:(BOOL)objects;
 - (id).cxx_construct;
 - (id)allKeys;
 - (id)allObjects;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectForIntegerKey:(unint64_t)a3 options:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateObjectsAndIntegerKeys:(id)a3;
-- (void)setObject:(id)a3 forIntegerKey:(unint64_t)a4;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectForIntegerKey:(unint64_t)key options:(unint64_t)options;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateObjectsAndIntegerKeys:(id)keys;
+- (void)setObject:(id)object forIntegerKey:(unint64_t)key;
 @end
 
 @implementation XRIntKeyedDictionary
 
-- (XRIntKeyedDictionary)initWithIntKeyedDictionary:(id)a3 copyObjects:(BOOL)a4
+- (XRIntKeyedDictionary)initWithIntKeyedDictionary:(id)dictionary copyObjects:(BOOL)objects
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = XRIntKeyedDictionary;
   v7 = [(XRIntKeyedDictionary *)&v16 init];
   v8 = v7;
-  if (v6 && v7)
+  if (dictionaryCopy && v7)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = sub_2480A28B4;
     v13[3] = &unk_278EFC2B0;
-    v15 = a4;
+    objectsCopy = objects;
     v14 = v7;
-    objc_msgSend_enumerateObjectsAndIntegerKeys_(v6, v9, v13, v10, v11);
+    objc_msgSend_enumerateObjectsAndIntegerKeys_(dictionaryCopy, v9, v13, v10, v11);
   }
 
   return v8;
 }
 
-- (XRIntKeyedDictionary)initWithCoder:(id)a3
+- (XRIntKeyedDictionary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10 = objc_msgSend_init(self, v5, v6, v7, v8);
   if (v10)
   {
     v30 = 0;
-    objc_msgSend_decodeValueOfObjCType_at_size_(v4, v9, "I", &v30, 4);
+    objc_msgSend_decodeValueOfObjCType_at_size_(coderCopy, v9, "I", &v30, 4);
     if (v30)
     {
       for (i = 0; i < v30; ++i)
       {
         v29 = 0;
-        v16 = objc_msgSend_decodeObject(v4, v11, v12, v13, v14);
+        v16 = objc_msgSend_decodeObject(coderCopy, v11, v12, v13, v14);
         v29 = objc_msgSend_unsignedLongLongValue(v16, v17, v18, v19, v20);
 
-        v25 = objc_msgSend_decodeObject(v4, v21, v22, v23, v24);
+        v25 = objc_msgSend_decodeObject(coderCopy, v21, v22, v23, v24);
         v31 = &v29;
         v26 = sub_2480A3094(&v10->_hash_map.__table_.__bucket_list_.__ptr_, &v29);
         v27 = v26[3];
@@ -62,12 +62,12 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   size = self->_hash_map.__table_.__size_;
-  objc_msgSend_encodeValueOfObjCType_at_(v4, v5, "I", &size, v6);
-  for (i = &self->_hash_map.__table_.__first_node_; ; objc_msgSend_encodeObject_(v4, v15, i[3].__next_, v16, v17))
+  objc_msgSend_encodeValueOfObjCType_at_(coderCopy, v5, "I", &size, v6);
+  for (i = &self->_hash_map.__table_.__first_node_; ; objc_msgSend_encodeObject_(coderCopy, v15, i[3].__next_, v16, v17))
   {
     i = i->__next_;
     if (!i)
@@ -76,21 +76,21 @@
     }
 
     v11 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v7, i[2].__next_, v8, v9);
-    objc_msgSend_encodeObject_(v4, v12, v11, v13, v14);
+    objc_msgSend_encodeObject_(coderCopy, v12, v11, v13, v14);
   }
 }
 
-- (id)objectForIntegerKey:(unint64_t)a3 options:(unint64_t)a4
+- (id)objectForIntegerKey:(unint64_t)key options:(unint64_t)options
 {
-  v4 = a4;
-  v13[0] = a3;
+  optionsCopy = options;
+  v13[0] = key;
   v6 = sub_2480A35C4(&self->_hash_map.__table_.__bucket_list_.__ptr_, v13);
   if (v6)
   {
     v10 = v6[3];
   }
 
-  else if (v4)
+  else if (optionsCopy)
   {
     v10 = objc_msgSend_mutableCopyWithZone_(self->_prototype, v7, 0, v8, v9);
     v13[2] = v13;
@@ -106,17 +106,17 @@
   return v10;
 }
 
-- (void)setObject:(id)a3 forIntegerKey:(unint64_t)a4
+- (void)setObject:(id)object forIntegerKey:(unint64_t)key
 {
-  v10 = a4;
-  v6 = a3;
-  v11 = v6;
-  v7 = sub_2480A3678(&self->_hash_map.__table_.__bucket_list_.__ptr_, &v10);
+  keyCopy = key;
+  objectCopy = object;
+  v11 = objectCopy;
+  v7 = sub_2480A3678(&self->_hash_map.__table_.__bucket_list_.__ptr_, &keyCopy);
   v9 = v8;
 
   if (!v9)
   {
-    objc_storeStrong(v7 + 3, a3);
+    objc_storeStrong(v7 + 3, object);
   }
 }
 
@@ -148,7 +148,7 @@
   return v6;
 }
 
-- (void)enumerateObjectsAndIntegerKeys:(id)a3
+- (void)enumerateObjectsAndIntegerKeys:(id)keys
 {
   v5 = 0;
   next = self->_hash_map.__table_.__first_node_.__next_;
@@ -156,7 +156,7 @@
   {
     do
     {
-      (*(a3 + 2))(a3, next[3], next[2], &v5);
+      (*(keys + 2))(keys, next[3], next[2], &v5);
       next = *next;
     }
 
@@ -164,7 +164,7 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = v4;

@@ -1,42 +1,42 @@
 @interface IILanguageDetection
-+ (id)_dominantLanguageTagFromTextWithMaxLength:(void *)a3 maxLength:(uint64_t)a4 minimumProbability:;
-+ (id)_dominantLanguageTagFromTextWithMaxLength:(void *)a3 maxLength:(uint64_t)a4 minimumProbability:hints:hintsCount:;
-+ (id)_userLanguagesWithKeyboardDefaults:(uint64_t)a1;
++ (id)_dominantLanguageTagFromTextWithMaxLength:(void *)length maxLength:(uint64_t)maxLength minimumProbability:;
++ (id)_dominantLanguageTagFromTextWithMaxLength:(void *)length maxLength:(uint64_t)maxLength minimumProbability:hints:hintsCount:;
++ (id)_userLanguagesWithKeyboardDefaults:(uint64_t)defaults;
 + (id)defaultLanguage;
-+ (id)detectLanguageFromLanguageTags:(id)a3;
-+ (id)detectLanguageFromText:(id)a3;
-+ (id)detectLanguageFromTextHeuristically:(id)a3;
-+ (id)detectLanguageFromTextHeuristicallyWithLanguages:(id)a3 languages:(id)a4 defaultLanguage:(id)a5;
-+ (id)detectLanguageFromTextIfMultilingual:(id)a3;
-+ (id)detectLanguageFromTextWithMaxLength:(id)a3 maxLength:(unint64_t)a4 minimumProbability:(double)a5;
-+ (id)dominantLanguageTagFromLanguageTags:(id)a3;
-+ (id)languageForLocaleIdentifier:(id)a3;
++ (id)detectLanguageFromLanguageTags:(id)tags;
++ (id)detectLanguageFromText:(id)text;
++ (id)detectLanguageFromTextHeuristically:(id)heuristically;
++ (id)detectLanguageFromTextHeuristicallyWithLanguages:(id)languages languages:(id)a4 defaultLanguage:(id)language;
++ (id)detectLanguageFromTextIfMultilingual:(id)multilingual;
++ (id)detectLanguageFromTextWithMaxLength:(id)length maxLength:(unint64_t)maxLength minimumProbability:(double)probability;
++ (id)dominantLanguageTagFromLanguageTags:(id)tags;
++ (id)languageForLocaleIdentifier:(id)identifier;
 + (id)userLanguages;
 + (id)userLanguagesWithoutCanonicalSuffixes;
-+ (int)languageIdForLanguageString:(id)a3;
++ (int)languageIdForLanguageString:(id)string;
 @end
 
 @implementation IILanguageDetection
 
-+ (id)dominantLanguageTagFromLanguageTags:(id)a3
++ (id)dominantLanguageTagFromLanguageTags:(id)tags
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  tagsCopy = tags;
   objc_opt_self();
-  [v3 count];
-  if ([v3 count])
+  [tagsCopy count];
+  if ([tagsCopy count])
   {
-    if ([v3 count] == 1)
+    if ([tagsCopy count] == 1)
     {
-      v4 = [v3 firstObject];
+      firstObject = [tagsCopy firstObject];
     }
 
     else
     {
-      v5 = [objc_alloc(MEMORY[0x277CCA940]) initWithArray:v3];
+      v5 = [objc_alloc(MEMORY[0x277CCA940]) initWithArray:tagsCopy];
       if ([v5 count] == 1)
       {
-        v4 = [v3 firstObject];
+        firstObject = [tagsCopy firstObject];
       }
 
       else if ([v5 count] <= 2)
@@ -87,55 +87,55 @@
           v17 = 0.0;
         }
 
-        if (v17 / [v3 count] >= 0.6)
+        if (v17 / [tagsCopy count] >= 0.6)
         {
-          v4 = v9;
+          firstObject = v9;
         }
 
         else
         {
-          v4 = 0;
+          firstObject = 0;
         }
       }
 
       else
       {
-        v4 = 0;
+        firstObject = 0;
       }
     }
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)_dominantLanguageTagFromTextWithMaxLength:(void *)a3 maxLength:(uint64_t)a4 minimumProbability:
++ (id)_dominantLanguageTagFromTextWithMaxLength:(void *)length maxLength:(uint64_t)maxLength minimumProbability:
 {
-  v6 = a3;
+  lengthCopy = length;
   objc_opt_self();
-  v7 = [IILanguageDetection _dominantLanguageTagFromTextWithMaxLength:a1 maxLength:IILanguageDetection minimumProbability:v6 hints:a4 hintsCount:?];
+  v7 = [IILanguageDetection _dominantLanguageTagFromTextWithMaxLength:self maxLength:IILanguageDetection minimumProbability:lengthCopy hints:maxLength hintsCount:?];
 
   return v7;
 }
 
-+ (id)_dominantLanguageTagFromTextWithMaxLength:(void *)a3 maxLength:(uint64_t)a4 minimumProbability:hints:hintsCount:
++ (id)_dominantLanguageTagFromTextWithMaxLength:(void *)length maxLength:(uint64_t)maxLength minimumProbability:hints:hintsCount:
 {
-  v6 = a3;
+  lengthCopy = length;
   objc_opt_self();
-  if ([v6 length])
+  if ([lengthCopy length])
   {
     if (_dominantLanguageTagFromTextWithMaxLength_maxLength_minimumProbability_hints_hintsCount___pasOnceToken3 != -1)
     {
       dispatch_once(&_dominantLanguageTagFromTextWithMaxLength_maxLength_minimumProbability_hints_hintsCount___pasOnceToken3, &__block_literal_global_442);
     }
 
-    v7 = [_dominantLanguageTagFromTextWithMaxLength_maxLength_minimumProbability_hints_hintsCount___pasExprOnceResult result];
+    result = [_dominantLanguageTagFromTextWithMaxLength_maxLength_minimumProbability_hints_hintsCount___pasExprOnceResult result];
     v15 = 0;
     v16 = &v15;
     v17 = 0x3032000000;
@@ -147,10 +147,10 @@
     v10[2] = __111__IILanguageDetection__dominantLanguageTagFromTextWithMaxLength_maxLength_minimumProbability_hints_hintsCount___block_invoke_449;
     v10[3] = &unk_2789458F8;
     v12 = &v15;
-    v13 = a4;
-    v11 = v6;
-    v14 = a1;
-    [v7 runWithLockAcquired:v10];
+    maxLengthCopy = maxLength;
+    v11 = lengthCopy;
+    selfCopy = self;
+    [result runWithLockAcquired:v10];
     v8 = v16[5];
 
     _Block_object_dispose(&v15, 8);
@@ -247,9 +247,9 @@ id __111__IILanguageDetection__dominantLanguageTagFromTextWithMaxLength_maxLengt
   return v1;
 }
 
-+ (id)detectLanguageFromLanguageTags:(id)a3
++ (id)detectLanguageFromLanguageTags:(id)tags
 {
-  v3 = [a1 dominantLanguageTagFromLanguageTags:a3];
+  v3 = [self dominantLanguageTagFromLanguageTags:tags];
   v4 = v3;
   if (v3)
   {
@@ -266,12 +266,12 @@ id __111__IILanguageDetection__dominantLanguageTagFromTextWithMaxLength_maxLengt
   return v6;
 }
 
-+ (id)detectLanguageFromTextIfMultilingual:(id)a3
++ (id)detectLanguageFromTextIfMultilingual:(id)multilingual
 {
-  v3 = a3;
+  multilingualCopy = multilingual;
   objc_opt_self();
-  v4 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v5 = [v4 count];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v5 = [preferredLanguages count];
 
   if (v5 < 2)
   {
@@ -280,16 +280,16 @@ id __111__IILanguageDetection__dominantLanguageTagFromTextWithMaxLength_maxLengt
 
   else
   {
-    [IILanguageDetection detectLanguageFromText:v3];
+    [IILanguageDetection detectLanguageFromText:multilingualCopy];
   }
   v6 = ;
 
   return v6;
 }
 
-+ (id)detectLanguageFromTextWithMaxLength:(id)a3 maxLength:(unint64_t)a4 minimumProbability:(double)a5
++ (id)detectLanguageFromTextWithMaxLength:(id)length maxLength:(unint64_t)maxLength minimumProbability:(double)probability
 {
-  v5 = [(IILanguageDetection *)a5 _dominantLanguageTagFromTextWithMaxLength:a3 maxLength:a4 minimumProbability:?];
+  v5 = [(IILanguageDetection *)probability _dominantLanguageTagFromTextWithMaxLength:length maxLength:maxLength minimumProbability:?];
   v6 = v5;
   if (v5)
   {
@@ -306,12 +306,12 @@ id __111__IILanguageDetection__dominantLanguageTagFromTextWithMaxLength_maxLengt
   return v8;
 }
 
-+ (id)detectLanguageFromTextHeuristicallyWithLanguages:(id)a3 languages:(id)a4 defaultLanguage:(id)a5
++ (id)detectLanguageFromTextHeuristicallyWithLanguages:(id)languages languages:(id)a4 defaultLanguage:(id)language
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 allObjects];
-  v10 = [v9 _pas_mappedArrayWithTransform:&__block_literal_global_25];
+  languagesCopy = languages;
+  languageCopy = language;
+  allObjects = [a4 allObjects];
+  v10 = [allObjects _pas_mappedArrayWithTransform:&__block_literal_global_25];
 
   v11 = v10;
   objc_opt_self();
@@ -336,7 +336,7 @@ id __111__IILanguageDetection__dominantLanguageTagFromTextWithMaxLength_maxLengt
   }
 
   [v11 count];
-  v18 = [IILanguageDetection _dominantLanguageTagFromTextWithMaxLength:IILanguageDetection maxLength:v7 minimumProbability:30 hints:? hintsCount:?];
+  v18 = [IILanguageDetection _dominantLanguageTagFromTextWithMaxLength:IILanguageDetection maxLength:languagesCopy minimumProbability:30 hints:? hintsCount:?];
   v19 = v18;
   if (v18)
   {
@@ -345,7 +345,7 @@ id __111__IILanguageDetection__dominantLanguageTagFromTextWithMaxLength_maxLengt
 
   else
   {
-    v20 = v8;
+    v20 = languageCopy;
   }
 
   v21 = v20;
@@ -353,7 +353,7 @@ id __111__IILanguageDetection__dominantLanguageTagFromTextWithMaxLength_maxLengt
   if (![v21 length])
   {
     [v11 count];
-    v22 = [IILanguageDetection _dominantLanguageTagFromTextWithMaxLength:IILanguageDetection maxLength:v7 minimumProbability:500 hints:? hintsCount:?];
+    v22 = [IILanguageDetection _dominantLanguageTagFromTextWithMaxLength:IILanguageDetection maxLength:languagesCopy minimumProbability:500 hints:? hintsCount:?];
     v23 = v22;
     if (v22)
     {
@@ -362,7 +362,7 @@ id __111__IILanguageDetection__dominantLanguageTagFromTextWithMaxLength_maxLengt
 
     else
     {
-      v24 = v8;
+      v24 = languageCopy;
     }
 
     v25 = v24;
@@ -383,18 +383,18 @@ uint64_t __98__IILanguageDetection_detectLanguageFromTextHeuristicallyWithLangua
   return [v2 numberWithInt:v3];
 }
 
-+ (id)detectLanguageFromTextHeuristically:(id)a3
++ (id)detectLanguageFromTextHeuristically:(id)heuristically
 {
-  v3 = a3;
+  heuristicallyCopy = heuristically;
   v4 = +[IILanguageDetection userLanguages];
-  v5 = [IILanguageDetection detectLanguageFromTextHeuristicallyWithLanguages:v3 languages:v4 defaultLanguage:0];
+  v5 = [IILanguageDetection detectLanguageFromTextHeuristicallyWithLanguages:heuristicallyCopy languages:v4 defaultLanguage:0];
 
   return v5;
 }
 
-+ (id)detectLanguageFromText:(id)a3
++ (id)detectLanguageFromText:(id)text
 {
-  v3 = [IILanguageDetection dominantLanguageTagFromText:a3];
+  v3 = [IILanguageDetection dominantLanguageTagFromText:text];
   v4 = v3;
   if (v3)
   {
@@ -419,8 +419,8 @@ uint64_t __98__IILanguageDetection_detectLanguageFromTextHeuristicallyWithLangua
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 stringArrayForKey:@"AppleKeyboards"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults stringArrayForKey:@"AppleKeyboards"];
   v5 = [IILanguageDetection _userLanguagesWithKeyboardDefaults:v4];
 
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -455,7 +455,7 @@ uint64_t __98__IILanguageDetection_detectLanguageFromTextHeuristicallyWithLangua
   return v2;
 }
 
-+ (id)_userLanguagesWithKeyboardDefaults:(uint64_t)a1
++ (id)_userLanguagesWithKeyboardDefaults:(uint64_t)defaults
 {
   v29 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -503,8 +503,8 @@ uint64_t __98__IILanguageDetection_detectLanguageFromTextHeuristicallyWithLangua
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    v12 = [preferredLanguages countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -515,14 +515,14 @@ uint64_t __98__IILanguageDetection_detectLanguageFromTextHeuristicallyWithLangua
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(preferredLanguages);
           }
 
           v16 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:*(*(&v19 + 1) + 8 * j)];
           [v3 addObject:v16];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v13 = [preferredLanguages countByEnumeratingWithState:&v19 objects:v27 count:16];
       }
 
       while (v13);
@@ -536,8 +536,8 @@ uint64_t __98__IILanguageDetection_detectLanguageFromTextHeuristicallyWithLangua
 
 + (id)userLanguages
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 stringArrayForKey:@"AppleKeyboards"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults stringArrayForKey:@"AppleKeyboards"];
   v4 = [IILanguageDetection _userLanguagesWithKeyboardDefaults:v3];
 
   return v4;
@@ -545,16 +545,16 @@ uint64_t __98__IILanguageDetection_detectLanguageFromTextHeuristicallyWithLangua
 
 + (id)defaultLanguage
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 localeIdentifier];
-  v4 = [IILanguageDetection languageForLocaleIdentifier:v3];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v4 = [IILanguageDetection languageForLocaleIdentifier:localeIdentifier];
 
   return v4;
 }
 
-+ (int)languageIdForLanguageString:(id)a3
++ (int)languageIdForLanguageString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = off_278945AD8;
   v5 = 59;
   while (1)
@@ -577,7 +577,7 @@ LABEL_5:
 
   objc_opt_self();
   v7 = *v4;
-  if (([v3 hasPrefix:v7] & 1) == 0)
+  if (([stringCopy hasPrefix:v7] & 1) == 0)
   {
 
     goto LABEL_5;
@@ -587,27 +587,27 @@ LABEL_8:
   return v6;
 }
 
-+ (id)languageForLocaleIdentifier:(id)a3
++ (id)languageForLocaleIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_autoreleasePoolPush();
-  if (!v5)
+  if (!identifierCopy)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:a1 file:@"IILanguageDetection.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"localeIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"IILanguageDetection.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"localeIdentifier != nil"}];
   }
 
-  if ([v5 length] > 1)
+  if ([identifierCopy length] > 1)
   {
-    v8 = [v5 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v8 = [identifierCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
     v9 = [v8 componentsSeparatedByString:@"-"];
-    v10 = [v9 firstObject];
-    v11 = [v10 lowercaseString];
+    firstObject = [v9 firstObject];
+    lowercaseString = [firstObject lowercaseString];
 
-    v12 = [v9 lastObject];
+    lastObject = [v9 lastObject];
     v13 = [v9 count];
-    v14 = [v11 isEqualToString:@"zh"];
+    v14 = [lowercaseString isEqualToString:@"zh"];
     if (v13 == 1)
     {
       if (v14)
@@ -632,7 +632,7 @@ LABEL_36:
           v17 = [v9 objectAtIndexedSubscript:1];
           v18 = [v17 isEqualToString:@"Hant"];
 
-          if (v18 & 1) != 0 || ([v12 isEqualToString:@"HK"])
+          if (v18 & 1) != 0 || ([lastObject isEqualToString:@"HK"])
           {
             v7 = @"zh-Hant";
           }
@@ -640,7 +640,7 @@ LABEL_36:
           else
           {
             v7 = @"zh-Hant";
-            if (([v12 isEqualToString:@"MO"] & 1) == 0 && !objc_msgSend(v12, "isEqualToString:", @"TW"))
+            if (([lastObject isEqualToString:@"MO"] & 1) == 0 && !objc_msgSend(lastObject, "isEqualToString:", @"TW"))
             {
               v7 = @"zh-Hans";
             }
@@ -650,7 +650,7 @@ LABEL_36:
         goto LABEL_36;
       }
 
-      if ([v11 isEqualToString:@"uz"])
+      if ([lowercaseString isEqualToString:@"uz"])
       {
         v19 = [v9 objectAtIndexedSubscript:1];
         v20 = [v19 isEqualToString:@"Cyrl"];
@@ -672,13 +672,13 @@ LABEL_36:
         v23 = [v9 objectAtIndexedSubscript:1];
         v24 = [v23 isEqualToString:@"Latn"];
 
-        if (v24 & 1) != 0 || ([v12 isEqualToString:@"UZ"] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"AZ"))
+        if (v24 & 1) != 0 || ([lastObject isEqualToString:@"UZ"] & 1) != 0 || (objc_msgSend(lastObject, "isEqualToString:", @"AZ"))
         {
           v7 = @"uz-Latn";
           goto LABEL_36;
         }
 
-        if ([v12 isEqualToString:@"AF"])
+        if ([lastObject isEqualToString:@"AF"])
         {
 LABEL_19:
           v7 = @"uz-Arab";
@@ -686,7 +686,7 @@ LABEL_19:
         }
       }
 
-      if ([v11 isEqualToString:@"sr"])
+      if ([lowercaseString isEqualToString:@"sr"])
       {
         v25 = [v9 objectAtIndexedSubscript:1];
         v26 = [v25 isEqualToString:@"Latn"];
@@ -698,7 +698,7 @@ LABEL_19:
         }
       }
 
-      if ([v11 isEqualToString:@"hi"])
+      if ([lowercaseString isEqualToString:@"hi"])
       {
         v27 = [v9 objectAtIndexedSubscript:1];
         v28 = [v27 isEqualToString:@"Latn"];
@@ -711,18 +711,18 @@ LABEL_19:
       }
     }
 
-    v7 = v11;
+    v7 = lowercaseString;
     goto LABEL_36;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
-    v33 = v5;
+    v33 = identifierCopy;
     _os_log_fault_impl(&dword_231C94000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "Provided locale identifier (%@) is not a valid identifier", buf, 0xCu);
   }
 
-  v7 = v5;
+  v7 = identifierCopy;
 LABEL_37:
   objc_autoreleasePoolPop(v6);
 

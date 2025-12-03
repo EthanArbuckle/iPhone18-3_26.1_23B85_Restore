@@ -1,20 +1,20 @@
 @interface SBFocusActivityManager
-- (BOOL)setFocusWithModeIdentifier:(uint64_t)a1 active:(void *)a2 withReason:(int)a3;
-- (BOOL)shouldPreviewSystemAction:(id)a3;
-- (id)createPersistentFocusElementForActivityDescription:(id)a3 enabled:(BOOL)a4;
-- (id)createPersistentFocusPickerElementForActivityDescription:(id)a3 enabled:(BOOL)a4;
-- (id)initWithBannerPoster:(void *)a3 systemApertureElementRegistrar:;
-- (id)previewFocusWithModeIdentifier:(void *)a3 withReason:;
+- (BOOL)setFocusWithModeIdentifier:(uint64_t)identifier active:(void *)active withReason:(int)reason;
+- (BOOL)shouldPreviewSystemAction:(id)action;
+- (id)createPersistentFocusElementForActivityDescription:(id)description enabled:(BOOL)enabled;
+- (id)createPersistentFocusPickerElementForActivityDescription:(id)description enabled:(BOOL)enabled;
+- (id)initWithBannerPoster:(void *)poster systemApertureElementRegistrar:;
+- (id)previewFocusWithModeIdentifier:(void *)identifier withReason:;
 - (uint64_t)toggleActivityPickerPresentation;
-- (uint64_t)toggleFocusWithModeIdentifier:(void *)a3 withReason:;
+- (uint64_t)toggleFocusWithModeIdentifier:(void *)identifier withReason:;
 - (void)_availableModesFetchQueue_fetchAvailableModes;
-- (void)_handleFocusElementEvent:(uint64_t)a1;
-- (void)_updateFocusElementWithReason:(uint64_t)a1;
-- (void)bannerManager:(id)a3 willDismissPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6;
-- (void)bannerManager:(id)a3 willPresentPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6;
-- (void)focusActivityPickerTransientOverlayViewController:(id)a3 didDismiss:(BOOL)a4;
-- (void)modeSelectionService:(id)a3 didReceiveAvailableModesUpdate:(id)a4;
-- (void)modeSelectionService:(id)a3 didReceiveUpdatedActiveModeAssertion:(id)a4 stateUpdate:(id)a5;
+- (void)_handleFocusElementEvent:(uint64_t)event;
+- (void)_updateFocusElementWithReason:(uint64_t)reason;
+- (void)bannerManager:(id)manager willDismissPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info;
+- (void)bannerManager:(id)manager willPresentPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info;
+- (void)focusActivityPickerTransientOverlayViewController:(id)controller didDismiss:(BOOL)dismiss;
+- (void)modeSelectionService:(id)service didReceiveAvailableModesUpdate:(id)update;
+- (void)modeSelectionService:(id)service didReceiveUpdatedActiveModeAssertion:(id)assertion stateUpdate:(id)update;
 @end
 
 @implementation SBFocusActivityManager
@@ -26,67 +26,67 @@ void __58__SBFocusActivityManager_toggleActivityPickerPresentation__block_invoke
   *(v1 + 40) = 0;
 }
 
-- (void)focusActivityPickerTransientOverlayViewController:(id)a3 didDismiss:(BOOL)a4
+- (void)focusActivityPickerTransientOverlayViewController:(id)controller didDismiss:(BOOL)dismiss
 {
   transientOverlay = self->_transientOverlay;
   self->_transientOverlay = 0;
 }
 
-- (id)previewFocusWithModeIdentifier:(void *)a3 withReason:
+- (id)previewFocusWithModeIdentifier:(void *)identifier withReason:
 {
   v6 = a2;
-  v7 = a3;
-  v8 = v7;
-  if (a1)
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (self)
   {
-    if (!v7)
+    if (!identifierCopy)
     {
-      [SBFocusActivityManager previewFocusWithModeIdentifier:a1 withReason:?];
+      [SBFocusActivityManager previewFocusWithModeIdentifier:self withReason:?];
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 72));
+    WeakRetained = objc_loadWeakRetained((self + 72));
     v10 = v6;
     v11 = *MEMORY[0x277D66970];
-    v12 = v10;
+    activityIdentifier = v10;
     if ([v10 isEqualToString:*MEMORY[0x277D66970]])
     {
-      v12 = v10;
-      if ([v10 isEqualToString:*(a1 + 88)])
+      activityIdentifier = v10;
+      if ([v10 isEqualToString:*(self + 88)])
       {
-        os_unfair_lock_lock((a1 + 24));
-        v13 = *(a1 + 96);
-        os_unfair_lock_unlock((a1 + 24));
+        os_unfair_lock_lock((self + 24));
+        v13 = *(self + 96);
+        os_unfair_lock_unlock((self + 24));
         if (v13)
         {
-          v12 = v13;
-          v14 = v10;
+          activityIdentifier = v13;
+          activityDescription = v10;
         }
 
         else if ([WeakRetained isActivityEnabled])
         {
-          v14 = [WeakRetained activityDescription];
-          v12 = [v14 activityIdentifier];
+          activityDescription = [WeakRetained activityDescription];
+          activityIdentifier = [activityDescription activityIdentifier];
         }
 
         else
         {
-          v14 = [MEMORY[0x277D0A9E8] sharedActivityManager];
-          v24 = [v14 defaultActivity];
-          v12 = [v24 activityIdentifier];
+          activityDescription = [MEMORY[0x277D0A9E8] sharedActivityManager];
+          defaultActivity = [activityDescription defaultActivity];
+          activityIdentifier = [defaultActivity activityIdentifier];
         }
       }
     }
 
-    v15 = [*(a1 + 88) isEqualToString:v11];
-    if (v15 != [v10 isEqualToString:v11] || WeakRetained && (objc_msgSend(WeakRetained, "activityDescription"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "activityIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqualToString:", v12), v17, v16, (v18 & 1) == 0))
+    v15 = [*(self + 88) isEqualToString:v11];
+    if (v15 != [v10 isEqualToString:v11] || WeakRetained && (objc_msgSend(WeakRetained, "activityDescription"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "activityIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqualToString:", activityIdentifier), v17, v16, (v18 & 1) == 0))
     {
-      [*(a1 + 64) invalidateWithReason:@"Previewing activity changed"];
-      objc_storeWeak((a1 + 72), 0);
+      [*(self + 64) invalidateWithReason:@"Previewing activity changed"];
+      objc_storeWeak((self + 72), 0);
     }
 
-    objc_storeStrong((a1 + 88), a2);
-    objc_initWeak(&location, a1);
-    v19 = *(a1 + 56);
+    objc_storeStrong((self + 88), a2);
+    objc_initWeak(&location, self);
+    v19 = *(self + 56);
     if (!v19)
     {
       v20 = [SBSystemActionCompoundPreviewAssertion alloc];
@@ -101,19 +101,19 @@ void __58__SBFocusActivityManager_toggleActivityPickerPresentation__block_invoke
       v25[3] = &unk_2783AFD70;
       objc_copyWeak(&v26, &location);
       v21 = [(SBSystemActionCompoundPreviewAssertion *)v20 initWithIdentifier:v27 stateDidChangeBlock:v25 eventHandlingBlock:?];
-      v22 = *(a1 + 56);
-      *(a1 + 56) = v21;
+      v22 = *(self + 56);
+      *(self + 56) = v21;
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(&v28);
-      v19 = *(a1 + 56);
+      v19 = *(self + 56);
     }
 
-    a1 = [(SBSystemActionCompoundPreviewAssertion *)v19 acquireForReason:v8];
+    self = [(SBSystemActionCompoundPreviewAssertion *)v19 acquireForReason:v8];
     objc_destroyWeak(&location);
   }
 
-  return a1;
+  return self;
 }
 
 void __68__SBFocusActivityManager_previewFocusWithModeIdentifier_withReason___block_invoke(uint64_t a1)
@@ -122,13 +122,13 @@ void __68__SBFocusActivityManager_previewFocusWithModeIdentifier_withReason___bl
   [(SBFocusActivityManager *)WeakRetained _updateFocusElementWithReason:?];
 }
 
-- (void)_updateFocusElementWithReason:(uint64_t)a1
+- (void)_updateFocusElementWithReason:(uint64_t)reason
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (reason)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 72));
+    WeakRetained = objc_loadWeakRetained((reason + 72));
     if (WeakRetained)
     {
     }
@@ -142,53 +142,53 @@ void __68__SBFocusActivityManager_previewFocusWithModeIdentifier_withReason___bl
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v23 = a1;
+      reasonCopy = reason;
       v24 = 2114;
       v25 = v3;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "(%{public}@) Updating focus element for reason: '%{public}@'", buf, 0x16u);
     }
 
-    v6 = [(SBSystemActionCompoundPreviewAssertion *)*(a1 + 56) state];
-    v7 = *(a1 + 64);
-    v8 = [v7 isValid];
-    v9 = objc_loadWeakRetained((a1 + 80));
+    state = [(SBSystemActionCompoundPreviewAssertion *)*(reason + 56) state];
+    v7 = *(reason + 64);
+    isValid = [v7 isValid];
+    v9 = objc_loadWeakRetained((reason + 80));
     v10 = v9;
-    if (v8)
+    if (isValid)
     {
-      if ((v6 & 0x100) != 0)
+      if ((state & 0x100) != 0)
       {
-        v11 = [v9 view];
-        [v11 sb_setInflated];
+        view = [v9 view];
+        [view sb_setInflated];
       }
 
-      if ((v6 & 1) == 0)
+      if ((state & 1) == 0)
       {
-        v12 = [v10 view];
-        [v12 sb_setDeflated];
+        view2 = [v10 view];
+        [view2 sb_setDeflated];
 
         [v7 invalidateWithReason:v3];
       }
     }
 
-    else if (v6)
+    else if (state)
     {
-      v13 = [*(a1 + 88) isEqualToString:*MEMORY[0x277D66970]];
-      v14 = *(a1 + 48);
+      v13 = [*(reason + 88) isEqualToString:*MEMORY[0x277D66970]];
+      v14 = *(reason + 48);
       if (v13)
       {
-        [v14 postPersistentActivityPickerWithSystemApertureElementProvider:a1];
+        [v14 postPersistentActivityPickerWithSystemApertureElementProvider:reason];
       }
 
       else
       {
-        [v14 postPersistentActivityWithModeIdentifier:*(a1 + 88) systemApertureElementProvider:a1];
+        [v14 postPersistentActivityWithModeIdentifier:*(reason + 88) systemApertureElementProvider:reason];
       }
       v15 = ;
-      v16 = *(a1 + 64);
-      *(a1 + 64) = v15;
+      v16 = *(reason + 64);
+      *(reason + 64) = v15;
 
-      objc_initWeak(buf, a1);
-      v17 = *(a1 + 64);
+      objc_initWeak(buf, reason);
+      v17 = *(reason + 64);
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __56__SBFocusActivityManager__updateFocusElementWithReason___block_invoke;
@@ -199,14 +199,14 @@ void __68__SBFocusActivityManager_previewFocusWithModeIdentifier_withReason___bl
       objc_destroyWeak(buf);
     }
 
-    v18 = objc_loadWeakRetained((a1 + 72));
+    v18 = objc_loadWeakRetained((reason + 72));
     v19 = v18;
     if (v18)
     {
-      [v18 setPreviewing:v6 & 1];
-      [v19 setUrgent:HIBYTE(v6) & 1];
-      [v19 setExpanding:(v6 >> 8) & 1];
-      [v19 setProminent:HIWORD(v6) & 1];
+      [v18 setPreviewing:state & 1];
+      [v19 setUrgent:HIBYTE(state) & 1];
+      [v19 setExpanding:(state >> 8) & 1];
+      [v19 setProminent:HIWORD(state) & 1];
     }
   }
 
@@ -219,18 +219,18 @@ void __68__SBFocusActivityManager_previewFocusWithModeIdentifier_withReason___bl
   [(SBFocusActivityManager *)WeakRetained _handleFocusElementEvent:a3];
 }
 
-- (BOOL)shouldPreviewSystemAction:(id)a3
+- (BOOL)shouldPreviewSystemAction:(id)action
 {
-  v4 = [a3 configuredAction];
-  v5 = [v4 identifier];
-  v6 = [v5 hasSuffix:*MEMORY[0x277D66958]];
+  configuredAction = [action configuredAction];
+  identifier = [configuredAction identifier];
+  v6 = [identifier hasSuffix:*MEMORY[0x277D66958]];
 
   if (v6)
   {
-    v7 = [v4 sb_configuredIntentAction];
-    v8 = [(WFConfiguredStaccatoIntentAction *)v7 sb_focusModeIdentifier];
+    sb_configuredIntentAction = [configuredAction sb_configuredIntentAction];
+    sb_focusModeIdentifier = [(WFConfiguredStaccatoIntentAction *)sb_configuredIntentAction sb_focusModeIdentifier];
 
-    if ([v8 isEqualToString:*MEMORY[0x277D66970]])
+    if ([sb_focusModeIdentifier isEqualToString:*MEMORY[0x277D66970]])
     {
       v9 = 1;
     }
@@ -246,7 +246,7 @@ void __68__SBFocusActivityManager_previewFocusWithModeIdentifier_withReason___bl
         v13[1] = 3221225472;
         v13[2] = __52__SBFocusActivityManager_shouldPreviewSystemAction___block_invoke;
         v13[3] = &unk_2783BFA70;
-        v14 = v8;
+        v14 = sb_focusModeIdentifier;
         v11 = [(NSSet *)v10 bs_firstObjectPassingTest:v13];
         v9 = v11 != 0;
       }
@@ -274,33 +274,33 @@ uint64_t __52__SBFocusActivityManager_shouldPreviewSystemAction___block_invoke(u
   return v4;
 }
 
-- (id)createPersistentFocusElementForActivityDescription:(id)a3 enabled:(BOOL)a4
+- (id)createPersistentFocusElementForActivityDescription:(id)description enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[SBFocusEnablementIndicatorSystemApertureActivityElement alloc] initWithActivityDescription:v6 enabled:v4];
+  enabledCopy = enabled;
+  descriptionCopy = description;
+  v7 = [[SBFocusEnablementIndicatorSystemApertureActivityElement alloc] initWithActivityDescription:descriptionCopy enabled:enabledCopy];
 
   objc_storeWeak(&self->_focusElement, v7);
 
   return v7;
 }
 
-- (id)createPersistentFocusPickerElementForActivityDescription:(id)a3 enabled:(BOOL)a4
+- (id)createPersistentFocusPickerElementForActivityDescription:(id)description enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)[SBFocusEnablementIndicatorSystemApertureActivityElement alloc] initForPickerWithActivityDescription:v6 enabled:v4];
+  enabledCopy = enabled;
+  descriptionCopy = description;
+  v7 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)[SBFocusEnablementIndicatorSystemApertureActivityElement alloc] initForPickerWithActivityDescription:descriptionCopy enabled:enabledCopy];
 
   objc_storeWeak(&self->_focusElement, v7);
 
   return v7;
 }
 
-- (void)modeSelectionService:(id)a3 didReceiveAvailableModesUpdate:(id)a4
+- (void)modeSelectionService:(id)service didReceiveAvailableModesUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   os_unfair_lock_lock(&self->_modesLock);
-  v6 = [MEMORY[0x277CBEB98] setWithArray:v5];
+  v6 = [MEMORY[0x277CBEB98] setWithArray:updateCopy];
 
   availableModes = self->_availableModes;
   self->_availableModes = v6;
@@ -308,24 +308,24 @@ uint64_t __52__SBFocusActivityManager_shouldPreviewSystemAction___block_invoke(u
   os_unfair_lock_unlock(&self->_modesLock);
 }
 
-- (void)modeSelectionService:(id)a3 didReceiveUpdatedActiveModeAssertion:(id)a4 stateUpdate:(id)a5
+- (void)modeSelectionService:(id)service didReceiveUpdatedActiveModeAssertion:(id)assertion stateUpdate:(id)update
 {
-  v12 = a4;
-  v7 = a5;
+  assertionCopy = assertion;
+  updateCopy = update;
   os_unfair_lock_lock(&self->_modesLock);
-  v8 = [v7 state];
+  state = [updateCopy state];
 
-  if ([v8 isActive])
+  if ([state isActive])
   {
-    v9 = [v12 details];
-    v10 = [v9 modeIdentifier];
+    details = [assertionCopy details];
+    modeIdentifier = [details modeIdentifier];
     activeModeIdentifier = self->_activeModeIdentifier;
-    self->_activeModeIdentifier = v10;
+    self->_activeModeIdentifier = modeIdentifier;
   }
 
   else
   {
-    v9 = self->_activeModeIdentifier;
+    details = self->_activeModeIdentifier;
     self->_activeModeIdentifier = 0;
   }
 
@@ -347,12 +347,12 @@ void __56__SBFocusActivityManager__updateFocusElementWithReason___block_invoke(u
   }
 }
 
-- (void)bannerManager:(id)a3 willPresentPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6
+- (void)bannerManager:(id)manager willPresentPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info
 {
-  v11 = a4;
-  v7 = [v11 requesterIdentifier];
+  presentableCopy = presentable;
+  requesterIdentifier = [presentableCopy requesterIdentifier];
   v8 = +[SBFocusActivityBannerAuthority requesterIdentifier];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [requesterIdentifier isEqualToString:v8];
 
   if (v9)
   {
@@ -361,15 +361,15 @@ void __56__SBFocusActivityManager__updateFocusElementWithReason___block_invoke(u
   }
 }
 
-- (void)bannerManager:(id)a3 willDismissPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6
+- (void)bannerManager:(id)manager willDismissPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info
 {
-  v11 = a4;
-  v7 = [v11 requesterIdentifier];
+  presentableCopy = presentable;
+  requesterIdentifier = [presentableCopy requesterIdentifier];
   v8 = +[SBFocusActivityBannerAuthority requesterIdentifier];
-  if ([v7 isEqualToString:v8])
+  if ([requesterIdentifier isEqualToString:v8])
   {
     WeakRetained = objc_loadWeakRetained(&self->_focusPresentable);
-    v10 = [WeakRetained isEqual:v11];
+    v10 = [WeakRetained isEqual:presentableCopy];
 
     if (v10)
     {
@@ -382,88 +382,88 @@ void __56__SBFocusActivityManager__updateFocusElementWithReason___block_invoke(u
   }
 }
 
-- (id)initWithBannerPoster:(void *)a3 systemApertureElementRegistrar:
+- (id)initWithBannerPoster:(void *)poster systemApertureElementRegistrar:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  posterCopy = poster;
+  if (self)
   {
-    v26.receiver = a1;
+    v26.receiver = self;
     v26.super_class = SBFocusActivityManager;
-    a1 = objc_msgSendSuper2(&v26, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v26, sel_init);
+    if (self)
     {
-      v7 = [MEMORY[0x277D0AA10] managerWithBannerPoster:v5 systemApertureElementRegistrar:v6];
-      v8 = *(a1 + 6);
-      *(a1 + 6) = v7;
+      v7 = [MEMORY[0x277D0AA10] managerWithBannerPoster:v5 systemApertureElementRegistrar:posterCopy];
+      v8 = *(self + 6);
+      *(self + 6) = v7;
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v9 = objc_alloc_init(SBFocusActivityBannerAuthority);
-        v10 = *(a1 + 13);
-        *(a1 + 13) = v9;
+        v10 = *(self + 13);
+        *(self + 13) = v9;
 
-        v11 = *(a1 + 13);
+        v11 = *(self + 13);
         v12 = v5;
         v13 = +[SBFocusActivityBannerAuthority requesterIdentifier];
         [v12 registerAuthority:v11 forRequesterIdentifier:v13];
 
-        [v12 addTransitionObserver:a1];
+        [v12 addTransitionObserver:self];
       }
 
-      *(a1 + 6) = 0;
+      *(self + 6) = 0;
       v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v15 = dispatch_queue_create("com.apple.springboard.focus-activity-manager.fetch", v14);
-      v16 = *(a1 + 4);
-      *(a1 + 4) = v15;
+      v16 = *(self + 4);
+      *(self + 4) = v15;
 
       v17 = [MEMORY[0x277D059F0] serviceForClientIdentifier:@"com.apple.private.SpringBoard.focus.intents"];
-      v18 = *(a1 + 1);
-      *(a1 + 1) = v17;
+      v18 = *(self + 1);
+      *(self + 1) = v17;
 
-      [*(a1 + 1) addListener:a1 withCompletionHandler:0];
-      v19 = *(a1 + 4);
+      [*(self + 1) addListener:self withCompletionHandler:0];
+      v19 = *(self + 4);
       OUTLINED_FUNCTION_1_4();
       v22 = 3221225472;
       v23 = __78__SBFocusActivityManager_initWithBannerPoster_systemApertureElementRegistrar___block_invoke;
       v24 = &unk_2783A8C18;
-      a1 = a1;
-      v25 = a1;
+      self = self;
+      selfCopy = self;
       dispatch_async(v19, block);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_availableModesFetchQueue_fetchAvailableModes
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 32));
-    v2 = [*(a1 + 8) availableModesWithError:0];
-    os_unfair_lock_lock((a1 + 24));
-    v3 = *(a1 + 16);
-    *(a1 + 16) = v2;
+    dispatch_assert_queue_V2(*(self + 32));
+    v2 = [*(self + 8) availableModesWithError:0];
+    os_unfair_lock_lock((self + 24));
+    v3 = *(self + 16);
+    *(self + 16) = v2;
 
-    os_unfair_lock_unlock((a1 + 24));
+    os_unfair_lock_unlock((self + 24));
   }
 }
 
-- (BOOL)setFocusWithModeIdentifier:(uint64_t)a1 active:(void *)a2 withReason:(int)a3
+- (BOOL)setFocusWithModeIdentifier:(uint64_t)identifier active:(void *)active withReason:(int)reason
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a2;
-  if (a1)
+  activeCopy = active;
+  if (identifier)
   {
-    v6 = [*(a1 + 8) activeModeAssertionWithError:0];
+    v6 = [*(identifier + 8) activeModeAssertionWithError:0];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 details];
-      v9 = [v8 modeIdentifier];
-      v10 = [v9 isEqualToString:v5];
+      details = [v6 details];
+      modeIdentifier = [details modeIdentifier];
+      v10 = [modeIdentifier isEqualToString:activeCopy];
     }
 
     else
@@ -472,11 +472,11 @@ void __56__SBFocusActivityManager__updateFocusElementWithReason___block_invoke(u
     }
 
     v11 = 0;
-    if ((v10 & 1) == 0 && ((a3 ^ 1) & 1) == 0)
+    if ((v10 & 1) == 0 && ((reason ^ 1) & 1) == 0)
     {
       v11 = objc_alloc_init(MEMORY[0x277D05A40]);
       [v11 setIdentifier:@"com.apple.private.SpringBoard.focus.intents"];
-      [v11 setModeIdentifier:v5];
+      [v11 setModeIdentifier:activeCopy];
       [v11 setReason:1];
       v12 = [MEMORY[0x277D05970] lifetimeUntilEndOfScheduleWithIdentifier:*MEMORY[0x277D05838]];
       if (v12)
@@ -487,7 +487,7 @@ void __56__SBFocusActivityManager__updateFocusElementWithReason___block_invoke(u
 
     if (v11)
     {
-      v13 = a3 ^ 1;
+      v13 = reason ^ 1;
     }
 
     else
@@ -495,7 +495,7 @@ void __56__SBFocusActivityManager__updateFocusElementWithReason___block_invoke(u
       v13 = 1;
     }
 
-    if (v10 ^ 1 | a3) == 1 && (v13)
+    if (v10 ^ 1 | reason) == 1 && (v13)
     {
       v14 = 0;
 LABEL_22:
@@ -503,7 +503,7 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v15 = *(a1 + 8);
+    v15 = *(identifier + 8);
     v21 = 0;
     v16 = [v15 activateModeWithDetails:v11 error:&v21];
     v14 = v21;
@@ -514,7 +514,7 @@ LABEL_22:
 
     v17 = SBLogFocusModes();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
-    if (a3)
+    if (reason)
     {
       if (v18)
       {
@@ -537,23 +537,23 @@ LABEL_25:
 
 LABEL_23:
 
-  return a1 != 0;
+  return identifier != 0;
 }
 
-- (uint64_t)toggleFocusWithModeIdentifier:(void *)a3 withReason:
+- (uint64_t)toggleFocusWithModeIdentifier:(void *)identifier withReason:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
-    v7 = [*(a1 + 8) activeModeAssertionWithError:0];
+    v7 = [*(self + 8) activeModeAssertionWithError:0];
     v8 = v7;
     v12 = 1;
     if (v7)
     {
-      v9 = [v7 details];
-      v10 = [v9 modeIdentifier];
-      v11 = [v10 isEqualToString:v5];
+      details = [v7 details];
+      modeIdentifier = [details modeIdentifier];
+      v11 = [modeIdentifier isEqualToString:v5];
 
       if (v11)
       {
@@ -561,69 +561,69 @@ LABEL_23:
       }
     }
 
-    a1 = [SBFocusActivityManager setFocusWithModeIdentifier:a1 active:v5 withReason:v12];
+    self = [SBFocusActivityManager setFocusWithModeIdentifier:self active:v5 withReason:v12];
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)toggleActivityPickerPresentation
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (*(a1 + 40))
+    if (*(self + 40))
     {
       v2 = +[SBWorkspace mainWorkspace];
       OUTLINED_FUNCTION_1_4();
       v8 = 3221225472;
       v9 = __58__SBFocusActivityManager_toggleActivityPickerPresentation__block_invoke;
       v10 = &unk_2783A8C18;
-      v11 = v1;
+      v11 = selfCopy;
       v4 = [v3 dismissTransientOverlayViewController:? animated:? completion:?];
     }
 
     else
     {
       v5 = objc_alloc_init(SBFocusActivityPickerTransientOverlayViewController);
-      v6 = *(v1 + 40);
-      *(v1 + 40) = v5;
+      v6 = *(selfCopy + 40);
+      *(selfCopy + 40) = v5;
 
-      [*(v1 + 40) setDelegate:v1];
+      [*(selfCopy + 40) setDelegate:selfCopy];
       v2 = +[SBWorkspace mainWorkspace];
-      v4 = [v2 presentTransientOverlayViewController:*(v1 + 40) animated:1 completion:0];
+      v4 = [v2 presentTransientOverlayViewController:*(selfCopy + 40) animated:1 completion:0];
     }
 
-    v1 = v4;
+    selfCopy = v4;
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_handleFocusElementEvent:(uint64_t)a1
+- (void)_handleFocusElementEvent:(uint64_t)event
 {
-  if (!a1)
+  if (!event)
   {
     return;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 80));
+  WeakRetained = objc_loadWeakRetained((event + 80));
   if (a2 == 1)
   {
     v7 = WeakRetained;
-    v6 = [WeakRetained view];
-    [v6 sb_setDeflated];
+    view = [WeakRetained view];
+    [view sb_setDeflated];
     goto LABEL_6;
   }
 
   if (!a2)
   {
     v7 = WeakRetained;
-    v5 = objc_loadWeakRetained((a1 + 72));
+    v5 = objc_loadWeakRetained((event + 72));
     [v5 pop];
 
-    v6 = [v7 view];
-    [v6 sb_stopInflating];
+    view = [v7 view];
+    [view sb_stopInflating];
 LABEL_6:
 
     WeakRetained = v7;

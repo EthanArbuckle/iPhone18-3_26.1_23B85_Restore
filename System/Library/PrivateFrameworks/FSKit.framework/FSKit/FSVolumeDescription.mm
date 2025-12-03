@@ -1,61 +1,61 @@
 @interface FSVolumeDescription
-+ (id)volumeDescriptionWithID:(id)a3 name:(id)a4 state:(int64_t)a5;
-- (FSVolumeDescription)initWithCoder:(id)a3;
-- (FSVolumeDescription)initWithID:(id)a3 name:(id)a4 state:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)volumeDescriptionWithID:(id)d name:(id)name state:(int64_t)state;
+- (FSVolumeDescription)initWithCoder:(id)coder;
+- (FSVolumeDescription)initWithID:(id)d name:(id)name state:(int64_t)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FSVolumeDescription
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   volumeID = self->_volumeID;
-  v5 = a3;
-  [v5 encodeObject:volumeID forKey:@"FSVolumeDescription.volumeID"];
-  [v5 encodeObject:self->_volumeName forKey:@"FSVolumeDescription.volumeName"];
-  [v5 encodeInteger:self->_volumeState forKey:@"FSVolumeDescription.volumeState"];
+  coderCopy = coder;
+  [coderCopy encodeObject:volumeID forKey:@"FSVolumeDescription.volumeID"];
+  [coderCopy encodeObject:self->_volumeName forKey:@"FSVolumeDescription.volumeName"];
+  [coderCopy encodeInteger:self->_volumeState forKey:@"FSVolumeDescription.volumeState"];
 }
 
-- (FSVolumeDescription)initWithCoder:(id)a3
+- (FSVolumeDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FSVolumeDescription;
   v5 = [(FSVolumeDescription *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSVolumeDescription.volumeID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSVolumeDescription.volumeID"];
     volumeID = v5->_volumeID;
     v5->_volumeID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSVolumeDescription.volumeName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSVolumeDescription.volumeName"];
     volumeName = v5->_volumeName;
     v5->_volumeName = v8;
 
-    v5->_volumeState = [v4 decodeIntegerForKey:@"FSVolumeDescription.volumeState"];
+    v5->_volumeState = [coderCopy decodeIntegerForKey:@"FSVolumeDescription.volumeState"];
   }
 
   return v5;
 }
 
-- (FSVolumeDescription)initWithID:(id)a3 name:(id)a4 state:(int64_t)a5
+- (FSVolumeDescription)initWithID:(id)d name:(id)name state:(int64_t)state
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = FSVolumeDescription;
   v10 = [(FSVolumeDescription *)&v18 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     volumeID = v10->_volumeID;
     v10->_volumeID = v11;
 
-    if (v9 && ([v9 string], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", &stru_285DEFA28), v13, !v14))
+    if (nameCopy && ([nameCopy string], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", &stru_285DEFA28), v13, !v14))
     {
-      v15 = [v9 copy];
+      v15 = [nameCopy copy];
     }
 
     else
@@ -66,17 +66,17 @@
     volumeName = v10->_volumeName;
     v10->_volumeName = v15;
 
-    v10->_volumeState = a5;
+    v10->_volumeState = state;
   }
 
   return v10;
 }
 
-+ (id)volumeDescriptionWithID:(id)a3 name:(id)a4 state:(int64_t)a5
++ (id)volumeDescriptionWithID:(id)d name:(id)name state:(int64_t)state
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithID:v9 name:v8 state:a5];
+  nameCopy = name;
+  dCopy = d;
+  v10 = [[self alloc] initWithID:dCopy name:nameCopy state:state];
 
   return v10;
 }
@@ -86,12 +86,12 @@
   volumeID = self->_volumeID;
   if (volumeID)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@" ID (%@)", volumeID];
+    volumeID = [MEMORY[0x277CCACA8] stringWithFormat:@" ID (%@)", volumeID];
   }
 
   else
   {
-    v4 = &stru_285DEFA28;
+    volumeID = &stru_285DEFA28;
   }
 
   if (self->_volumeName)
@@ -114,14 +114,14 @@
     v6 = &stru_285DEFA28;
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"FSVolumeDescription%@%@%@", v4, v5, v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"FSVolumeDescription%@%@%@", volumeID, v5, v6];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   volumeID = self->_volumeID;
   volumeName = self->_volumeName;
   volumeState = self->_volumeState;

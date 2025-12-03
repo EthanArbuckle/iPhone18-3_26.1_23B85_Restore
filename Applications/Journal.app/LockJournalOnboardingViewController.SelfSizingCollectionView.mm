@@ -1,9 +1,9 @@
 @interface LockJournalOnboardingViewController.SelfSizingCollectionView
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (_TtCC7Journal35LockJournalOnboardingViewControllerP33_84EF73A7B3D4C51E4A38E0FC91E57CFF24SelfSizingCollectionView)initWithCoder:(id)a3;
-- (_TtCC7Journal35LockJournalOnboardingViewControllerP33_84EF73A7B3D4C51E4A38E0FC91E57CFF24SelfSizingCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (void)setContentSize:(CGSize)a3;
+- (_TtCC7Journal35LockJournalOnboardingViewControllerP33_84EF73A7B3D4C51E4A38E0FC91E57CFF24SelfSizingCollectionView)initWithCoder:(id)coder;
+- (_TtCC7Journal35LockJournalOnboardingViewControllerP33_84EF73A7B3D4C51E4A38E0FC91E57CFF24SelfSizingCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation LockJournalOnboardingViewController.SelfSizingCollectionView
@@ -32,44 +32,44 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = type metadata accessor for LockJournalOnboardingViewController.SelfSizingCollectionView();
   v16.receiver = self;
   v16.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(LockJournalOnboardingViewController.SelfSizingCollectionView *)&v16 contentSize];
   v9 = v8;
   v11 = v10;
-  v15.receiver = v7;
+  v15.receiver = selfCopy;
   v15.super_class = v6;
   [(LockJournalOnboardingViewController.SelfSizingCollectionView *)&v15 setContentSize:width, height];
-  [(LockJournalOnboardingViewController.SelfSizingCollectionView *)v7 contentSize];
+  [(LockJournalOnboardingViewController.SelfSizingCollectionView *)selfCopy contentSize];
   if (v13 != v9 || v12 != v11)
   {
-    [(LockJournalOnboardingViewController.SelfSizingCollectionView *)v7 invalidateIntrinsicContentSize];
+    [(LockJournalOnboardingViewController.SelfSizingCollectionView *)selfCopy invalidateIntrinsicContentSize];
   }
 }
 
-- (_TtCC7Journal35LockJournalOnboardingViewControllerP33_84EF73A7B3D4C51E4A38E0FC91E57CFF24SelfSizingCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtCC7Journal35LockJournalOnboardingViewControllerP33_84EF73A7B3D4C51E4A38E0FC91E57CFF24SelfSizingCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for LockJournalOnboardingViewController.SelfSizingCollectionView();
-  return [(LockJournalOnboardingViewController.SelfSizingCollectionView *)&v10 initWithFrame:a4 collectionViewLayout:x, y, width, height];
+  return [(LockJournalOnboardingViewController.SelfSizingCollectionView *)&v10 initWithFrame:layout collectionViewLayout:x, y, width, height];
 }
 
-- (_TtCC7Journal35LockJournalOnboardingViewControllerP33_84EF73A7B3D4C51E4A38E0FC91E57CFF24SelfSizingCollectionView)initWithCoder:(id)a3
+- (_TtCC7Journal35LockJournalOnboardingViewControllerP33_84EF73A7B3D4C51E4A38E0FC91E57CFF24SelfSizingCollectionView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for LockJournalOnboardingViewController.SelfSizingCollectionView();
-  v4 = a3;
-  v5 = [(LockJournalOnboardingViewController.SelfSizingCollectionView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(LockJournalOnboardingViewController.SelfSizingCollectionView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

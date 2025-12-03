@@ -8,11 +8,11 @@
 {
   v6.receiver = self;
   v6.super_class = GTReplayRequestUnknown;
-  v2 = [(GTReplayRequest *)&v6 initNoRequestID];
-  v3 = v2;
-  if (v2)
+  initNoRequestID = [(GTReplayRequest *)&v6 initNoRequestID];
+  v3 = initNoRequestID;
+  if (initNoRequestID)
   {
-    v4 = v2;
+    v4 = initNoRequestID;
   }
 
   return v3;

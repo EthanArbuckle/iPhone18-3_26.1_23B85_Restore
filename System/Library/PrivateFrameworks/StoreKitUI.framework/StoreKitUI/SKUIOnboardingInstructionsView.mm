@@ -1,26 +1,26 @@
 @interface SKUIOnboardingInstructionsView
-+ (id)explanationAttributedStringWithString:(id)a3;
-+ (id)titleAttributedStringWithString:(id)a3;
-- (SKUIOnboardingInstructionsView)initWithFrame:(CGRect)a3;
++ (id)explanationAttributedStringWithString:(id)string;
++ (id)titleAttributedStringWithString:(id)string;
+- (SKUIOnboardingInstructionsView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (id)_newExplanationLabel;
 - (id)_newTitleLabel;
 - (void)layoutSubviews;
 - (void)popLabelState;
 - (void)pushLabelState;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentPosition:(int64_t)a3 animated:(BOOL)a4 completionBlock:(id)a5;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentPosition:(int64_t)position animated:(BOOL)animated completionBlock:(id)block;
 @end
 
 @implementation SKUIOnboardingInstructionsView
 
-- (SKUIOnboardingInstructionsView)initWithFrame:(CGRect)a3
+- (SKUIOnboardingInstructionsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIOnboardingInstructionsView initWithFrame:];
@@ -28,18 +28,18 @@
 
   v15.receiver = self;
   v15.super_class = SKUIOnboardingInstructionsView;
-  v8 = [(SKUIOnboardingInstructionsView *)&v15 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUIOnboardingInstructionsView *)&v15 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v10 = [(SKUIOnboardingInstructionsView *)v8 _newExplanationLabel];
+    _newExplanationLabel = [(SKUIOnboardingInstructionsView *)height _newExplanationLabel];
     explanationLabel = v9->_explanationLabel;
-    v9->_explanationLabel = v10;
+    v9->_explanationLabel = _newExplanationLabel;
 
     [(SKUIOnboardingInstructionsView *)v9 addSubview:v9->_explanationLabel];
-    v12 = [(SKUIOnboardingInstructionsView *)v9 _newTitleLabel];
+    _newTitleLabel = [(SKUIOnboardingInstructionsView *)v9 _newTitleLabel];
     titleLabel = v9->_titleLabel;
-    v9->_titleLabel = v12;
+    v9->_titleLabel = _newTitleLabel;
 
     [(SKUIOnboardingInstructionsView *)v9 addSubview:v9->_titleLabel];
   }
@@ -47,34 +47,34 @@
   return v9;
 }
 
-+ (id)explanationAttributedStringWithString:(id)a3
++ (id)explanationAttributedStringWithString:(id)string
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
   v6 = [MEMORY[0x277D74300] systemFontOfSize:13.0];
   [v5 setObject:v6 forKey:*MEMORY[0x277D740A8]];
 
-  v7 = [MEMORY[0x277D75348] grayColor];
-  [v5 setObject:v7 forKey:*MEMORY[0x277D740C0]];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  [v5 setObject:grayColor forKey:*MEMORY[0x277D740C0]];
 
-  v8 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v4 attributes:v5];
+  v8 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:stringCopy attributes:v5];
 
   return v8;
 }
 
-+ (id)titleAttributedStringWithString:(id)a3
++ (id)titleAttributedStringWithString:(id)string
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
   v6 = [MEMORY[0x277D74300] _ultraLightSystemFontOfSize:28.0];
   [v5 setObject:v6 forKey:*MEMORY[0x277D740A8]];
 
-  v7 = [MEMORY[0x277D75348] blackColor];
-  [v5 setObject:v7 forKey:*MEMORY[0x277D740C0]];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v5 setObject:blackColor forKey:*MEMORY[0x277D740C0]];
 
-  v8 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v4 attributes:v5];
+  v8 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:stringCopy attributes:v5];
 
   return v8;
 }
@@ -85,23 +85,23 @@
   {
     [(UILabel *)self->_explanationLabel removeFromSuperview];
     [(UILabel *)self->_titleLabel removeFromSuperview];
-    v3 = [(NSMutableArray *)self->_labelsStack lastObject];
+    lastObject = [(NSMutableArray *)self->_labelsStack lastObject];
     titleLabel = self->_titleLabel;
-    self->_titleLabel = v3;
+    self->_titleLabel = lastObject;
 
     v5 = self->_titleLabel;
-    v6 = [(SKUIOnboardingInstructionsView *)self backgroundColor];
-    [(UILabel *)v5 setBackgroundColor:v6];
+    backgroundColor = [(SKUIOnboardingInstructionsView *)self backgroundColor];
+    [(UILabel *)v5 setBackgroundColor:backgroundColor];
 
     [(NSMutableArray *)self->_labelsStack removeLastObject];
     [(SKUIOnboardingInstructionsView *)self addSubview:self->_titleLabel];
-    v7 = [(NSMutableArray *)self->_labelsStack lastObject];
+    lastObject2 = [(NSMutableArray *)self->_labelsStack lastObject];
     explanationLabel = self->_explanationLabel;
-    self->_explanationLabel = v7;
+    self->_explanationLabel = lastObject2;
 
     v9 = self->_explanationLabel;
-    v10 = [(SKUIOnboardingInstructionsView *)self backgroundColor];
-    [(UILabel *)v9 setBackgroundColor:v10];
+    backgroundColor2 = [(SKUIOnboardingInstructionsView *)self backgroundColor];
+    [(UILabel *)v9 setBackgroundColor:backgroundColor2];
 
     [(NSMutableArray *)self->_labelsStack removeLastObject];
     [(SKUIOnboardingInstructionsView *)self addSubview:self->_explanationLabel];
@@ -126,57 +126,57 @@
   [(NSMutableArray *)self->_labelsStack addObject:self->_titleLabel];
   [(UILabel *)self->_explanationLabel removeFromSuperview];
   [(UILabel *)self->_titleLabel removeFromSuperview];
-  v6 = [(SKUIOnboardingInstructionsView *)self _newExplanationLabel];
+  _newExplanationLabel = [(SKUIOnboardingInstructionsView *)self _newExplanationLabel];
   explanationLabel = self->_explanationLabel;
-  self->_explanationLabel = v6;
+  self->_explanationLabel = _newExplanationLabel;
 
   v8 = self->_explanationLabel;
-  v9 = [(SKUIOnboardingInstructionsView *)self backgroundColor];
-  [(UILabel *)v8 setBackgroundColor:v9];
+  backgroundColor = [(SKUIOnboardingInstructionsView *)self backgroundColor];
+  [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
   [(SKUIOnboardingInstructionsView *)self addSubview:self->_explanationLabel];
-  v10 = [(SKUIOnboardingInstructionsView *)self _newTitleLabel];
+  _newTitleLabel = [(SKUIOnboardingInstructionsView *)self _newTitleLabel];
   titleLabel = self->_titleLabel;
-  self->_titleLabel = v10;
+  self->_titleLabel = _newTitleLabel;
 
   v12 = self->_titleLabel;
-  v13 = [(SKUIOnboardingInstructionsView *)self backgroundColor];
-  [(UILabel *)v12 setBackgroundColor:v13];
+  backgroundColor2 = [(SKUIOnboardingInstructionsView *)self backgroundColor];
+  [(UILabel *)v12 setBackgroundColor:backgroundColor2];
 
   [(SKUIOnboardingInstructionsView *)self addSubview:self->_titleLabel];
 
   [(SKUIOnboardingInstructionsView *)self setNeedsLayout];
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInset.top), vceqq_f64(v4, *&self->_contentInset.bottom)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIOnboardingInstructionsView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentPosition:(int64_t)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)setContentPosition:(int64_t)position animated:(BOOL)animated completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = v8;
-  if (self->_contentPosition == a3)
+  blockCopy = block;
+  v9 = blockCopy;
+  if (self->_contentPosition == position)
   {
-    if (v8)
+    if (blockCopy)
     {
-      (*(v8 + 2))(v8, 1);
+      (*(blockCopy + 2))(blockCopy, 1);
     }
   }
 
   else
   {
-    self->_contentPosition = a3;
-    if (a4)
+    self->_contentPosition = position;
+    if (animated)
     {
       [(UILabel *)self->_explanationLabel frame];
       v11 = v10;
@@ -231,9 +231,9 @@
 
     else
     {
-      if (v8)
+      if (blockCopy)
       {
-        (*(v8 + 2))(v8, 1);
+        (*(blockCopy + 2))(blockCopy, 1);
       }
 
       [(SKUIOnboardingInstructionsView *)self setNeedsLayout];
@@ -302,22 +302,22 @@ uint64_t __78__SKUIOnboardingInstructionsView_setContentPosition_animated_comple
   [(UILabel *)explanationLabel setFrame:v22, v23, v16, v13];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   explanationLabel = self->_explanationLabel;
-  v5 = a3;
-  [(UILabel *)explanationLabel setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)explanationLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIOnboardingInstructionsView;
-  [(SKUIOnboardingInstructionsView *)&v6 setBackgroundColor:v5];
+  [(SKUIOnboardingInstructionsView *)&v6 setBackgroundColor:colorCopy];
 }
 
 - (id)_newExplanationLabel
 {
   v2 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [v2 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v2 setBackgroundColor:clearColor];
 
   [v2 setNumberOfLines:0];
   [v2 setTextAlignment:1];
@@ -327,8 +327,8 @@ uint64_t __78__SKUIOnboardingInstructionsView_setContentPosition_animated_comple
 - (id)_newTitleLabel
 {
   v2 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [v2 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v2 setBackgroundColor:clearColor];
 
   [v2 setNumberOfLines:0];
   [v2 setTextAlignment:1];

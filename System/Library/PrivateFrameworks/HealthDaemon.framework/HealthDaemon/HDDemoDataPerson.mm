@@ -1,30 +1,30 @@
 @interface HDDemoDataPerson
-+ (id)defaultPersonWithBiologicalSex:(int64_t)a3;
-- (HDDemoDataPerson)initWithFirstName:(id)a3 lastName:(id)a4 description:(id)a5 birthDateComponents:(id)a6 biologicalSex:(int64_t)a7;
++ (id)defaultPersonWithBiologicalSex:(int64_t)sex;
+- (HDDemoDataPerson)initWithFirstName:(id)name lastName:(id)lastName description:(id)description birthDateComponents:(id)components biologicalSex:(int64_t)sex;
 - (id)fullName;
-- (void)applyProfileType:(int64_t)a3;
+- (void)applyProfileType:(int64_t)type;
 - (void)updateMedicalIDData;
 @end
 
 @implementation HDDemoDataPerson
 
-- (HDDemoDataPerson)initWithFirstName:(id)a3 lastName:(id)a4 description:(id)a5 birthDateComponents:(id)a6 biologicalSex:(int64_t)a7
+- (HDDemoDataPerson)initWithFirstName:(id)name lastName:(id)lastName description:(id)description birthDateComponents:(id)components biologicalSex:(int64_t)sex
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  descriptionCopy = description;
+  componentsCopy = components;
   v22.receiver = self;
   v22.super_class = HDDemoDataPerson;
   v17 = [(HDDemoDataPerson *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_firstName, a3);
-    objc_storeStrong(&v18->_lastName, a4);
-    objc_storeStrong(&v18->_personDescription, a5);
-    objc_storeStrong(&v18->_birthDateComponents, a6);
-    v18->_biologicalSex = a7;
+    objc_storeStrong(&v17->_firstName, name);
+    objc_storeStrong(&v18->_lastName, lastName);
+    objc_storeStrong(&v18->_personDescription, description);
+    objc_storeStrong(&v18->_birthDateComponents, components);
+    v18->_biologicalSex = sex;
     v19 = objc_alloc_init(MEMORY[0x277CCDDF0]);
     medicalIDData = v18->_medicalIDData;
     v18->_medicalIDData = v19;
@@ -33,11 +33,11 @@
   return v18;
 }
 
-+ (id)defaultPersonWithBiologicalSex:(int64_t)a3
++ (id)defaultPersonWithBiologicalSex:(int64_t)sex
 {
   v94[7] = *MEMORY[0x277D85DE8];
-  v4 = a3 == 2;
-  if (a3 == 2)
+  v4 = sex == 2;
+  if (sex == 2)
   {
     v5 = @"Dave";
   }
@@ -48,13 +48,13 @@
   }
 
   v6 = @"Knox";
-  if (a3 != 2)
+  if (sex != 2)
   {
     v6 = @"Martinez";
   }
 
   v7 = MEMORY[0x277CBEAB8];
-  if (a3 == 2)
+  if (sex == 2)
   {
     v8 = 1971;
   }
@@ -64,7 +64,7 @@
     v8 = 1985;
   }
 
-  if (a3 == 2)
+  if (sex == 2)
   {
     v9 = 73;
   }
@@ -74,7 +74,7 @@
     v9 = 65;
   }
 
-  if (a3 == 2)
+  if (sex == 2)
   {
     v10 = 180;
   }
@@ -84,7 +84,7 @@
     v10 = 140;
   }
 
-  if (a3 == 2)
+  if (sex == 2)
   {
     v11 = 74;
   }
@@ -95,20 +95,20 @@
   }
 
   v12 = 150.0;
-  if (a3 == 2)
+  if (sex == 2)
   {
     v12 = 200.0;
   }
 
   v64 = v12;
   v13 = 250.0;
-  if (a3 != 2)
+  if (sex != 2)
   {
     v13 = 200.0;
   }
 
   v66 = v13;
-  if (a3 == 2)
+  if (sex == 2)
   {
     v14 = 80.0;
   }
@@ -119,7 +119,7 @@
   }
 
   v15 = 5.0;
-  if (a3 == 2)
+  if (sex == 2)
   {
     v15 = 7.0;
   }
@@ -127,13 +127,13 @@
   v68 = v14;
   v70 = v15;
   v16 = 6.0;
-  if (a3 == 2)
+  if (sex == 2)
   {
     v16 = 4.0;
   }
 
   v72 = v16;
-  if (a3 == 2)
+  if (sex == 2)
   {
     v17 = 3.3;
   }
@@ -144,14 +144,14 @@
   }
 
   v18 = 1.0;
-  if (a3 == 2)
+  if (sex == 2)
   {
     v18 = 2.5;
   }
 
   v74 = v17;
   v76 = v18;
-  if (a3 == 2)
+  if (sex == 2)
   {
     v19 = 31;
   }
@@ -168,11 +168,11 @@
   [v22 setDay:10];
   [v22 setYear:v8];
   [v22 setEra:1];
-  v23 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
+  hk_gregorianCalendarWithUTCTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
   v78 = v22;
-  [v22 setCalendar:v23];
+  [v22 setCalendar:hk_gregorianCalendarWithUTCTimeZone];
 
-  v24 = [[HDDemoDataPerson alloc] initWithFirstName:v21 lastName:v20 description:@"Default Person" birthDateComponents:v22 biologicalSex:a3];
+  v24 = [[HDDemoDataPerson alloc] initWithFirstName:v21 lastName:v20 description:@"Default Person" birthDateComponents:v22 biologicalSex:sex];
   [(HDDemoDataPerson *)v24 setBloodType:arc4random_uniform(7u) + 1];
   [(HDDemoDataPerson *)v24 setFitzpatrickSkinType:3];
   [(HDDemoDataPerson *)v24 setTimeIncrement:0.0208333333];
@@ -478,32 +478,32 @@
 - (id)fullName
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAC00]);
-  v4 = [(HDDemoDataPerson *)self firstName];
-  [v3 setGivenName:v4];
+  firstName = [(HDDemoDataPerson *)self firstName];
+  [v3 setGivenName:firstName];
 
-  v5 = [(HDDemoDataPerson *)self lastName];
-  [v3 setFamilyName:v5];
+  lastName = [(HDDemoDataPerson *)self lastName];
+  [v3 setFamilyName:lastName];
 
   v6 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v3 style:2 options:0];
 
   return v6;
 }
 
-- (void)applyProfileType:(int64_t)a3
+- (void)applyProfileType:(int64_t)type
 {
   [(HDDemoDataPerson *)self setProfileType:?];
-  switch(a3)
+  switch(type)
   {
     case 4:
-      v14 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
+      hk_gregorianCalendarWithUTCTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
       v12 = objc_alloc_init(MEMORY[0x277CBEAB8]);
       [v12 setMonth:2];
       [v12 setDay:10];
       [v12 setYear:1962];
       [v12 setEra:1];
-      [v12 setCalendar:v14];
+      [v12 setCalendar:hk_gregorianCalendarWithUTCTimeZone];
       [(HDDemoDataPerson *)self setBirthDateComponents:v12];
-      v13 = [v14 dateFromComponents:v12];
+      v13 = [hk_gregorianCalendarWithUTCTimeZone dateFromComponents:v12];
       [(HDDemoDataPerson *)self setBirthDate:v13];
 
       break;
@@ -555,8 +555,8 @@
 
   v11 = [v9 URLForResource:v10 withExtension:@"png"];
   v12 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:v11];
-  v13 = [(HDDemoDataPerson *)self medicalIDData];
-  [v13 setPictureData:v12];
+  medicalIDData = [(HDDemoDataPerson *)self medicalIDData];
+  [medicalIDData setPictureData:v12];
 
   v14 = objc_alloc_init(MEMORY[0x277CCDDA0]);
   if ([(HDDemoDataPerson *)self biologicalSex]== 2)
@@ -574,35 +574,35 @@
   [v14 setRelationship:@"spouse"];
   v32[0] = v14;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-  v17 = [(HDDemoDataPerson *)self medicalIDData];
-  [v17 setEmergencyContacts:v16];
+  medicalIDData2 = [(HDDemoDataPerson *)self medicalIDData];
+  [medicalIDData2 setEmergencyContacts:v16];
 
-  v18 = [(HDDemoDataPerson *)self fullName];
-  v19 = [(HDDemoDataPerson *)self medicalIDData];
-  [v19 setName:v18];
+  fullName = [(HDDemoDataPerson *)self fullName];
+  medicalIDData3 = [(HDDemoDataPerson *)self medicalIDData];
+  [medicalIDData3 setName:fullName];
 
-  v20 = [(HDDemoDataPerson *)self birthDateComponents];
-  v21 = [(HDDemoDataPerson *)self medicalIDData];
-  [v21 setGregorianBirthday:v20];
+  birthDateComponents = [(HDDemoDataPerson *)self birthDateComponents];
+  medicalIDData4 = [(HDDemoDataPerson *)self medicalIDData];
+  [medicalIDData4 setGregorianBirthday:birthDateComponents];
 
-  v22 = [(HDDemoDataPerson *)self bloodType];
-  v23 = [(HDDemoDataPerson *)self medicalIDData];
-  [v23 setBloodType:v22];
+  bloodType = [(HDDemoDataPerson *)self bloodType];
+  medicalIDData5 = [(HDDemoDataPerson *)self medicalIDData];
+  [medicalIDData5 setBloodType:bloodType];
 
-  v24 = [(HDDemoDataPerson *)self medicalIDData];
-  [v24 setMedicalConditions:@"Hypertension"];
+  medicalIDData6 = [(HDDemoDataPerson *)self medicalIDData];
+  [medicalIDData6 setMedicalConditions:@"Hypertension"];
 
-  v25 = [(HDDemoDataPerson *)self medicalIDData];
-  [v25 setAllergyInfo:@"Peanuts"];
+  medicalIDData7 = [(HDDemoDataPerson *)self medicalIDData];
+  [medicalIDData7 setAllergyInfo:@"Peanuts"];
 
-  v26 = [(HDDemoDataPerson *)self medicalIDData];
-  [v26 setMedicationInfo:@"Lisinopril (10mg by mouth once a day)"];
+  medicalIDData8 = [(HDDemoDataPerson *)self medicalIDData];
+  [medicalIDData8 setMedicationInfo:@"Lisinopril (10mg by mouth once a day)"];
 
-  v27 = [(HDDemoDataPerson *)self medicalIDData];
-  [v27 setHeight:v5];
+  medicalIDData9 = [(HDDemoDataPerson *)self medicalIDData];
+  [medicalIDData9 setHeight:v5];
 
-  v28 = [(HDDemoDataPerson *)self medicalIDData];
-  [v28 setWeight:v8];
+  medicalIDData10 = [(HDDemoDataPerson *)self medicalIDData];
+  [medicalIDData10 setWeight:v8];
 
   if ([(HDDemoDataPerson *)self biologicalSex]== 2)
   {
@@ -614,8 +614,8 @@
     v29 = @"es";
   }
 
-  v30 = [(HDDemoDataPerson *)self medicalIDData];
-  [v30 setPrimaryLanguageCode:v29];
+  medicalIDData11 = [(HDDemoDataPerson *)self medicalIDData];
+  [medicalIDData11 setPrimaryLanguageCode:v29];
 
   v31 = *MEMORY[0x277D85DE8];
 }

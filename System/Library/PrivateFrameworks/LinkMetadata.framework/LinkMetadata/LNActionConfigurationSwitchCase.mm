@@ -1,25 +1,25 @@
 @interface LNActionConfigurationSwitchCase
-- (BOOL)isEqual:(id)a3;
-- (LNActionConfigurationSwitchCase)initWithCoder:(id)a3;
-- (LNActionConfigurationSwitchCase)initWithDefaultConfiguration:(id)a3;
-- (LNActionConfigurationSwitchCase)initWithOrigin:(id)a3 configuration:(id)a4;
-- (LNActionConfigurationSwitchCase)initWithValue:(id)a3 configuration:(id)a4;
-- (LNActionConfigurationSwitchCase)initWithWidgetFamilies:(id)a3 configuration:(id)a4;
-- (LNActionConfigurationSwitchCase)initWithWidgetFamily:(id)a3 configuration:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNActionConfigurationSwitchCase)initWithCoder:(id)coder;
+- (LNActionConfigurationSwitchCase)initWithDefaultConfiguration:(id)configuration;
+- (LNActionConfigurationSwitchCase)initWithOrigin:(id)origin configuration:(id)configuration;
+- (LNActionConfigurationSwitchCase)initWithValue:(id)value configuration:(id)configuration;
+- (LNActionConfigurationSwitchCase)initWithWidgetFamilies:(id)families configuration:(id)configuration;
+- (LNActionConfigurationSwitchCase)initWithWidgetFamily:(id)family configuration:(id)configuration;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionConfigurationSwitchCase
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -28,10 +28,10 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v7 = [(LNActionConfigurationSwitchCase *)self value];
-    v8 = [(LNActionConfigurationSwitchCase *)v6 value];
-    v9 = v7;
-    v10 = v8;
+    value = [(LNActionConfigurationSwitchCase *)self value];
+    value2 = [(LNActionConfigurationSwitchCase *)v6 value];
+    v9 = value;
+    v10 = value2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -58,10 +58,10 @@ LABEL_21:
       }
     }
 
-    v16 = [(LNActionConfigurationSwitchCase *)self configuration];
-    v17 = [(LNActionConfigurationSwitchCase *)v6 configuration];
-    v14 = v16;
-    v18 = v17;
+    configuration = [(LNActionConfigurationSwitchCase *)self configuration];
+    configuration2 = [(LNActionConfigurationSwitchCase *)v6 configuration];
+    v14 = configuration;
+    v18 = configuration2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -84,8 +84,8 @@ LABEL_21:
       }
     }
 
-    v19 = [(LNActionConfigurationSwitchCase *)self isDefaultCase];
-    v12 = v19 ^ [(LNActionConfigurationSwitchCase *)v6 isDefaultCase]^ 1;
+    isDefaultCase = [(LNActionConfigurationSwitchCase *)self isDefaultCase];
+    v12 = isDefaultCase ^ [(LNActionConfigurationSwitchCase *)v6 isDefaultCase]^ 1;
 LABEL_20:
 
     goto LABEL_21;
@@ -99,52 +99,52 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [(LNActionConfigurationSwitchCase *)self value];
-  v4 = [v3 hash];
-  v5 = [(LNActionConfigurationSwitchCase *)self configuration];
-  v6 = [v5 hash];
+  value = [(LNActionConfigurationSwitchCase *)self value];
+  v4 = [value hash];
+  configuration = [(LNActionConfigurationSwitchCase *)self configuration];
+  v6 = [configuration hash];
 
   return v6 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(LNActionConfigurationSwitchCase *)self value];
-  [v6 encodeObject:v4 forKey:@"value"];
+  coderCopy = coder;
+  value = [(LNActionConfigurationSwitchCase *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 
-  v5 = [(LNActionConfigurationSwitchCase *)self configuration];
-  [v6 encodeObject:v5 forKey:@"configuration"];
+  configuration = [(LNActionConfigurationSwitchCase *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"configuration"];
 
-  [v6 encodeBool:-[LNActionConfigurationSwitchCase isDefaultCase](self forKey:{"isDefaultCase"), @"defaultCase"}];
+  [coderCopy encodeBool:-[LNActionConfigurationSwitchCase isDefaultCase](self forKey:{"isDefaultCase"), @"defaultCase"}];
 }
 
-- (LNActionConfigurationSwitchCase)initWithCoder:(id)a3
+- (LNActionConfigurationSwitchCase)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
   if (v5)
   {
-    if ([v4 decodeBoolForKey:@"defaultCase"])
+    if ([coderCopy decodeBoolForKey:@"defaultCase"])
     {
       self = [(LNActionConfigurationSwitchCase *)self initWithDefaultConfiguration:v5];
     }
 
     else
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
       self = [(LNActionConfigurationSwitchCase *)self initWithValue:v7 configuration:v5];
     }
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)description
@@ -152,27 +152,27 @@ LABEL_23:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNActionConfigurationSwitchCase *)self value];
-  v7 = [(LNActionConfigurationSwitchCase *)self configuration];
-  v8 = [(LNActionConfigurationSwitchCase *)self isDefaultCase];
+  value = [(LNActionConfigurationSwitchCase *)self value];
+  configuration = [(LNActionConfigurationSwitchCase *)self configuration];
+  isDefaultCase = [(LNActionConfigurationSwitchCase *)self isDefaultCase];
   v9 = @"NO";
-  if (v8)
+  if (isDefaultCase)
   {
     v9 = @"YES";
   }
 
-  v10 = [v3 stringWithFormat:@"<%@: %p, value: %@, configuration: %@, default: %@>", v5, self, v6, v7, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p, value: %@, configuration: %@, default: %@>", v5, self, value, configuration, v9];
 
   return v10;
 }
 
-- (LNActionConfigurationSwitchCase)initWithDefaultConfiguration:(id)a3
+- (LNActionConfigurationSwitchCase)initWithDefaultConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"LNActionConfigurationSwitchCase.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionConfigurationSwitchCase.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
   }
 
   v14.receiver = self;
@@ -185,7 +185,7 @@ LABEL_23:
     v6->_value = 0;
 
     v7->_defaultCase = 1;
-    v9 = [v5 copy];
+    v9 = [configurationCopy copy];
     configuration = v7->_configuration;
     v7->_configuration = v9;
 
@@ -195,26 +195,26 @@ LABEL_23:
   return v7;
 }
 
-- (LNActionConfigurationSwitchCase)initWithOrigin:(id)a3 configuration:(id)a4
+- (LNActionConfigurationSwitchCase)initWithOrigin:(id)origin configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
+  configurationCopy = configuration;
+  originCopy = origin;
   v8 = [LNValue alloc];
   v9 = +[LNPrimitiveValueType stringValueType];
-  v10 = [(LNValue *)v8 initWithValue:v7 valueType:v9];
+  v10 = [(LNValue *)v8 initWithValue:originCopy valueType:v9];
 
-  v11 = [(LNActionConfigurationSwitchCase *)self initWithValue:v10 configuration:v6];
+  v11 = [(LNActionConfigurationSwitchCase *)self initWithValue:v10 configuration:configurationCopy];
   return v11;
 }
 
-- (LNActionConfigurationSwitchCase)initWithWidgetFamilies:(id)a3 configuration:(id)a4
+- (LNActionConfigurationSwitchCase)initWithWidgetFamilies:(id)families configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = [a3 if_map:&__block_literal_global_6057];
+  configurationCopy = configuration;
+  v7 = [families if_map:&__block_literal_global_6057];
   v8 = [LNValue alloc];
   v9 = +[LNPrimitiveValueType stringValueType];
   v10 = [(LNValue *)v8 initWithValues:v7 memberValueType:v9];
-  v11 = [(LNActionConfigurationSwitchCase *)self initWithValue:v10 configuration:v6];
+  v11 = [(LNActionConfigurationSwitchCase *)self initWithValue:v10 configuration:configurationCopy];
 
   return v11;
 }
@@ -229,26 +229,26 @@ LNValue *__72__LNActionConfigurationSwitchCase_initWithWidgetFamilies_configurat
   return v5;
 }
 
-- (LNActionConfigurationSwitchCase)initWithWidgetFamily:(id)a3 configuration:(id)a4
+- (LNActionConfigurationSwitchCase)initWithWidgetFamily:(id)family configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
+  configurationCopy = configuration;
+  familyCopy = family;
   v8 = [LNValue alloc];
   v9 = +[LNPrimitiveValueType stringValueType];
-  v10 = [(LNValue *)v8 initWithValue:v7 valueType:v9];
+  v10 = [(LNValue *)v8 initWithValue:familyCopy valueType:v9];
 
-  v11 = [(LNActionConfigurationSwitchCase *)self initWithValue:v10 configuration:v6];
+  v11 = [(LNActionConfigurationSwitchCase *)self initWithValue:v10 configuration:configurationCopy];
   return v11;
 }
 
-- (LNActionConfigurationSwitchCase)initWithValue:(id)a3 configuration:(id)a4
+- (LNActionConfigurationSwitchCase)initWithValue:(id)value configuration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  valueCopy = value;
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LNActionConfigurationSwitchCase.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionConfigurationSwitchCase.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
   }
 
   v17.receiver = self;
@@ -257,9 +257,9 @@ LNValue *__72__LNActionConfigurationSwitchCase_initWithWidgetFamilies_configurat
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_value, a3);
+    objc_storeStrong(&v10->_value, value);
     v11->_defaultCase = 0;
-    v12 = [v9 copy];
+    v12 = [configurationCopy copy];
     configuration = v11->_configuration;
     v11->_configuration = v12;
 

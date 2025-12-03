@@ -1,24 +1,24 @@
 @interface PXStoryAssetCollectionStyleProducer
-- (PXStoryAssetCollectionStyleProducer)initWithAssetCollection:(id)a3;
-- (id)requestStylesWithOptions:(unint64_t)a3 resultHandler:(id)a4;
+- (PXStoryAssetCollectionStyleProducer)initWithAssetCollection:(id)collection;
+- (id)requestStylesWithOptions:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryAssetCollectionStyleProducer
 
-- (id)requestStylesWithOptions:(unint64_t)a3 resultHandler:(id)a4
+- (id)requestStylesWithOptions:(unint64_t)options resultHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__PXStoryAssetCollectionStyleProducer_requestStylesWithOptions_resultHandler___block_invoke;
   aBlock[3] = &unk_1E774C2F0;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = handlerCopy;
   v18 = v7;
   v8 = _Block_copy(aBlock);
   v9 = v8;
-  if (v4)
+  if (optionsCopy)
   {
     (*(v8 + 2))(v8);
     v12 = 0;
@@ -27,7 +27,7 @@
   else
   {
     v10 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:0];
-    v11 = [(PXStoryAssetCollectionStyleProducer *)self workQueue];
+    workQueue = [(PXStoryAssetCollectionStyleProducer *)self workQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __78__PXStoryAssetCollectionStyleProducer_requestStylesWithOptions_resultHandler___block_invoke_52;
@@ -35,7 +35,7 @@
     v12 = v10;
     v15 = v12;
     v16 = v9;
-    dispatch_async(v11, v14);
+    dispatch_async(workQueue, v14);
   }
 
   return v12;
@@ -104,22 +104,22 @@ uint64_t __78__PXStoryAssetCollectionStyleProducer_requestStylesWithOptions_resu
   return result;
 }
 
-- (PXStoryAssetCollectionStyleProducer)initWithAssetCollection:(id)a3
+- (PXStoryAssetCollectionStyleProducer)initWithAssetCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = PXStoryAssetCollectionStyleProducer;
   v6 = [(PXStoryAssetCollectionStyleProducer *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetCollection, a3);
+    objc_storeStrong(&v6->_assetCollection, collection);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_USER_INITIATED, 0);
-    v13 = dispatch_queue_create(v10, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     workQueue = v7->_workQueue;
     v7->_workQueue = v13;
   }

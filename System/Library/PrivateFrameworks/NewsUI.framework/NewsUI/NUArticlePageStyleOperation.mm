@@ -1,25 +1,25 @@
 @interface NUArticlePageStyleOperation
 - (BOOL)validateOperation;
-- (NUArticlePageStyleOperation)initWithArticle:(id)a3 pageNextAction:(unint64_t)a4 completion:(id)a5;
-- (void)operationDidFinishWithError:(id)a3;
+- (NUArticlePageStyleOperation)initWithArticle:(id)article pageNextAction:(unint64_t)action completion:(id)completion;
+- (void)operationDidFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation NUArticlePageStyleOperation
 
-- (NUArticlePageStyleOperation)initWithArticle:(id)a3 pageNextAction:(unint64_t)a4 completion:(id)a5
+- (NUArticlePageStyleOperation)initWithArticle:(id)article pageNextAction:(unint64_t)action completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  articleCopy = article;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = NUArticlePageStyleOperation;
   v11 = [(FCOperation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_article, a3);
-    v12->_pageNextAction = a4;
-    v13 = MEMORY[0x25F883F30](v10);
+    objc_storeStrong(&v11->_article, article);
+    v12->_pageNextAction = action;
+    v13 = MEMORY[0x25F883F30](completionCopy);
     completion = v12->_completion;
     v12->_completion = v13;
   }
@@ -29,21 +29,21 @@
 
 - (BOOL)validateOperation
 {
-  v2 = [(NUArticlePageStyleOperation *)self article];
-  v3 = v2 != 0;
+  article = [(NUArticlePageStyleOperation *)self article];
+  v3 = article != 0;
 
   return v3;
 }
 
 - (void)performOperation
 {
-  v3 = [(NUArticlePageStyleOperation *)self article];
+  article = [(NUArticlePageStyleOperation *)self article];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__NUArticlePageStyleOperation_performOperation__block_invoke;
   v4[3] = &unk_2799A4980;
   v4[4] = self;
-  [v3 performBlockWhenFullyLoaded:v4];
+  [article performBlockWhenFullyLoaded:v4];
 }
 
 void __47__NUArticlePageStyleOperation_performOperation__block_invoke(uint64_t a1, void *a2)
@@ -117,12 +117,12 @@ void __47__NUArticlePageStyleOperation_performOperation__block_invoke_2(id *a1)
   [v13 operationDidFinishWithError:v14];
 }
 
-- (void)operationDidFinishWithError:(id)a3
+- (void)operationDidFinishWithError:(id)error
 {
-  v4 = a3;
-  v6 = [(NUArticlePageStyleOperation *)self completion];
-  v5 = [(NUArticlePageStyleOperation *)self pageStyle];
-  v6[2](v6, v5, v4);
+  errorCopy = error;
+  completion = [(NUArticlePageStyleOperation *)self completion];
+  pageStyle = [(NUArticlePageStyleOperation *)self pageStyle];
+  completion[2](completion, pageStyle, errorCopy);
 }
 
 @end

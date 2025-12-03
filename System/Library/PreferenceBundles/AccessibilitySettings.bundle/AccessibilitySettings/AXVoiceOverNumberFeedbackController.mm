@@ -2,24 +2,24 @@
 - (id)getValueSelectedBlock;
 - (id)setValueSelectedBlock;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXVoiceOverNumberFeedbackController
 
 - (id)getValueSelectedBlock
 {
-  v2 = [(AXVoiceOverNumberFeedbackController *)self specifier];
-  v3 = [v2 propertyForKey:@"getValueSelectedBlock"];
+  specifier = [(AXVoiceOverNumberFeedbackController *)self specifier];
+  v3 = [specifier propertyForKey:@"getValueSelectedBlock"];
 
   return v3;
 }
 
 - (id)setValueSelectedBlock
 {
-  v2 = [(AXVoiceOverNumberFeedbackController *)self specifier];
-  v3 = [v2 propertyForKey:@"setValueSelectedBlock"];
+  specifier = [(AXVoiceOverNumberFeedbackController *)self specifier];
+  v3 = [specifier propertyForKey:@"setValueSelectedBlock"];
 
   return v3;
 }
@@ -35,11 +35,11 @@
     *&self->AXUISettingsBaseListController_opaque[v3] = v5;
 
     v7 = +[NSMutableArray array];
-    v8 = [(AXVoiceOverNumberFeedbackController *)self specifier];
-    v9 = [v8 propertyForKey:@"showDefault"];
-    v10 = [v9 BOOLValue];
+    specifier = [(AXVoiceOverNumberFeedbackController *)self specifier];
+    v9 = [specifier propertyForKey:@"showDefault"];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
       v11 = settingsLocString(@"DEFAULT", @"VoiceOverSettings");
       v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:3 edit:0];
@@ -67,53 +67,53 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v6 = [(AXVoiceOverNumberFeedbackController *)self getValueSelectedBlock];
-  if (v6)
+  cellCopy = cell;
+  getValueSelectedBlock = [(AXVoiceOverNumberFeedbackController *)self getValueSelectedBlock];
+  if (getValueSelectedBlock)
   {
-    v7 = [(AXVoiceOverNumberFeedbackController *)self getValueSelectedBlock];
-    v8 = v7[2]();
-    v9 = [v8 integerValue];
+    getValueSelectedBlock2 = [(AXVoiceOverNumberFeedbackController *)self getValueSelectedBlock];
+    v8 = getValueSelectedBlock2[2]();
+    integerValue = [v8 integerValue];
   }
 
   else
   {
-    v7 = +[AXSettings sharedInstance];
-    v9 = [v7 voiceOverNumberFeedback];
+    getValueSelectedBlock2 = +[AXSettings sharedInstance];
+    integerValue = [getValueSelectedBlock2 voiceOverNumberFeedback];
   }
 
-  v10 = [v13 specifier];
-  v11 = [v10 propertyForKey:@"AXSVoiceOverNumberFeedback"];
-  v12 = [v11 integerValue] == v9;
+  specifier = [cellCopy specifier];
+  v11 = [specifier propertyForKey:@"AXSVoiceOverNumberFeedback"];
+  v12 = [v11 integerValue] == integerValue;
 
-  [v13 setChecked:v12];
+  [cellCopy setChecked:v12];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = AXVoiceOverNumberFeedbackController;
-  v6 = a4;
-  [(AXVoiceOverNumberFeedbackController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXVoiceOverNumberFeedbackController *)self specifierForIndexPath:v6, v12.receiver, v12.super_class];
+  pathCopy = path;
+  [(AXVoiceOverNumberFeedbackController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXVoiceOverNumberFeedbackController *)self specifierForIndexPath:pathCopy, v12.receiver, v12.super_class];
 
   v8 = [v7 propertyForKey:@"AXSVoiceOverNumberFeedback"];
 
-  v9 = [(AXVoiceOverNumberFeedbackController *)self setValueSelectedBlock];
+  setValueSelectedBlock = [(AXVoiceOverNumberFeedbackController *)self setValueSelectedBlock];
 
-  if (v9)
+  if (setValueSelectedBlock)
   {
-    v10 = [(AXVoiceOverNumberFeedbackController *)self setValueSelectedBlock];
-    (v10)[2](v10, v8);
+    setValueSelectedBlock2 = [(AXVoiceOverNumberFeedbackController *)self setValueSelectedBlock];
+    (setValueSelectedBlock2)[2](setValueSelectedBlock2, v8);
   }
 
   else
   {
-    v11 = [v8 integerValue];
-    v10 = +[AXSettings sharedInstance];
-    [v10 setVoiceOverNumberFeedback:v11];
+    integerValue = [v8 integerValue];
+    setValueSelectedBlock2 = +[AXSettings sharedInstance];
+    [setValueSelectedBlock2 setVoiceOverNumberFeedback:integerValue];
   }
 
   [(AXVoiceOverNumberFeedbackController *)self beginUpdates];

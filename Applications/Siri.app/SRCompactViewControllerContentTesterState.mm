@@ -1,38 +1,38 @@
 @interface SRCompactViewControllerContentTesterState
-- (SRCompactViewControllerContentTesterState)initWithDeviceIsPad:(BOOL)a3 navigationStackIsPopping:(BOOL)a4 navigationStackSize:(int64_t)a5 navigationBarHasContent:(BOOL)a6 multiLevelViewHasContent:(BOOL)a7 editableUtteranceViewHasContent:(BOOL)a8 compactViewHasContent:(BOOL)a9 siriViewControllerIsEditing:(BOOL)a10 keyboardHasContent:(BOOL)a11 contextMenuIsPresented:(BOOL)a12;
-- (id)_debugDescriptionForProperty:(id)a3 BOOLValue:(BOOL)a4;
-- (id)_debugDescriptionForProperty:(id)a3 integerValue:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SRCompactViewControllerContentTesterState)initWithDeviceIsPad:(BOOL)pad navigationStackIsPopping:(BOOL)popping navigationStackSize:(int64_t)size navigationBarHasContent:(BOOL)content multiLevelViewHasContent:(BOOL)hasContent editableUtteranceViewHasContent:(BOOL)viewHasContent compactViewHasContent:(BOOL)compactViewHasContent siriViewControllerIsEditing:(BOOL)self0 keyboardHasContent:(BOOL)self1 contextMenuIsPresented:(BOOL)self2;
+- (id)_debugDescriptionForProperty:(id)property BOOLValue:(BOOL)value;
+- (id)_debugDescriptionForProperty:(id)property integerValue:(int64_t)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 @end
 
 @implementation SRCompactViewControllerContentTesterState
 
-- (SRCompactViewControllerContentTesterState)initWithDeviceIsPad:(BOOL)a3 navigationStackIsPopping:(BOOL)a4 navigationStackSize:(int64_t)a5 navigationBarHasContent:(BOOL)a6 multiLevelViewHasContent:(BOOL)a7 editableUtteranceViewHasContent:(BOOL)a8 compactViewHasContent:(BOOL)a9 siriViewControllerIsEditing:(BOOL)a10 keyboardHasContent:(BOOL)a11 contextMenuIsPresented:(BOOL)a12
+- (SRCompactViewControllerContentTesterState)initWithDeviceIsPad:(BOOL)pad navigationStackIsPopping:(BOOL)popping navigationStackSize:(int64_t)size navigationBarHasContent:(BOOL)content multiLevelViewHasContent:(BOOL)hasContent editableUtteranceViewHasContent:(BOOL)viewHasContent compactViewHasContent:(BOOL)compactViewHasContent siriViewControllerIsEditing:(BOOL)self0 keyboardHasContent:(BOOL)self1 contextMenuIsPresented:(BOOL)self2
 {
   v19.receiver = self;
   v19.super_class = SRCompactViewControllerContentTesterState;
   result = [(SRCompactViewControllerContentTesterState *)&v19 init];
   if (result)
   {
-    result->_deviceIsPad = a3;
-    result->_navigationStackIsPopping = a4;
-    result->_navigationStackSize = a5;
-    result->_navigationBarHasContent = a6;
-    result->_multiLevelViewHasContent = a7;
-    result->_editableUtteranceViewHasContent = a8;
-    result->_compactViewHasContent = a9;
-    result->_siriViewControllerIsEditing = a10;
-    result->_keyboardHasContent = a11;
-    result->_contextMenuIsPresented = a12;
+    result->_deviceIsPad = pad;
+    result->_navigationStackIsPopping = popping;
+    result->_navigationStackSize = size;
+    result->_navigationBarHasContent = content;
+    result->_multiLevelViewHasContent = hasContent;
+    result->_editableUtteranceViewHasContent = viewHasContent;
+    result->_compactViewHasContent = compactViewHasContent;
+    result->_siriViewControllerIsEditing = editing;
+    result->_keyboardHasContent = keyboardHasContent;
+    result->_contextMenuIsPresented = presented;
   }
 
   return result;
 }
 
-- (id)_debugDescriptionForProperty:(id)a3 BOOLValue:(BOOL)a4
+- (id)_debugDescriptionForProperty:(id)property BOOLValue:(BOOL)value
 {
-  if (a4)
+  if (value)
   {
     v4 = @"YES";
   }
@@ -42,14 +42,14 @@
     v4 = @"NO";
   }
 
-  return [(SRCompactViewControllerContentTesterState *)self _debugDescriptionForProperty:a3 formattedValue:v4];
+  return [(SRCompactViewControllerContentTesterState *)self _debugDescriptionForProperty:property formattedValue:v4];
 }
 
-- (id)_debugDescriptionForProperty:(id)a3 integerValue:(int64_t)a4
+- (id)_debugDescriptionForProperty:(id)property integerValue:(int64_t)value
 {
-  v6 = a3;
-  v7 = [NSString stringWithFormat:@"%zd", a4];
-  v8 = [(SRCompactViewControllerContentTesterState *)self _debugDescriptionForProperty:v6 formattedValue:v7];
+  propertyCopy = property;
+  value = [NSString stringWithFormat:@"%zd", value];
+  v8 = [(SRCompactViewControllerContentTesterState *)self _debugDescriptionForProperty:propertyCopy formattedValue:value];
 
   return v8;
 }
@@ -118,23 +118,23 @@
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15 = [SRCompactViewControllerContentTesterState alloc];
-  v4 = [(SRCompactViewControllerContentTesterState *)self deviceIsPad];
-  v5 = [(SRCompactViewControllerContentTesterState *)self navigationStackIsPopping];
-  v6 = [(SRCompactViewControllerContentTesterState *)self navigationStackSize];
-  v7 = [(SRCompactViewControllerContentTesterState *)self navigationBarHasContent];
-  v8 = [(SRCompactViewControllerContentTesterState *)self multiLevelViewHasContent];
-  v9 = [(SRCompactViewControllerContentTesterState *)self editableUtteranceViewHasContent];
-  v10 = [(SRCompactViewControllerContentTesterState *)self compactViewHasContent];
-  v11 = [(SRCompactViewControllerContentTesterState *)self siriViewControllerIsEditing];
-  v12 = [(SRCompactViewControllerContentTesterState *)self keyboardHasContent];
+  deviceIsPad = [(SRCompactViewControllerContentTesterState *)self deviceIsPad];
+  navigationStackIsPopping = [(SRCompactViewControllerContentTesterState *)self navigationStackIsPopping];
+  navigationStackSize = [(SRCompactViewControllerContentTesterState *)self navigationStackSize];
+  navigationBarHasContent = [(SRCompactViewControllerContentTesterState *)self navigationBarHasContent];
+  multiLevelViewHasContent = [(SRCompactViewControllerContentTesterState *)self multiLevelViewHasContent];
+  editableUtteranceViewHasContent = [(SRCompactViewControllerContentTesterState *)self editableUtteranceViewHasContent];
+  compactViewHasContent = [(SRCompactViewControllerContentTesterState *)self compactViewHasContent];
+  siriViewControllerIsEditing = [(SRCompactViewControllerContentTesterState *)self siriViewControllerIsEditing];
+  keyboardHasContent = [(SRCompactViewControllerContentTesterState *)self keyboardHasContent];
   BYTE3(v14) = [(SRCompactViewControllerContentTesterState *)self contextMenuIsPresented];
-  BYTE2(v14) = v12;
-  BYTE1(v14) = v11;
-  LOBYTE(v14) = v10;
-  return [SRCompactViewControllerContentTesterState initWithDeviceIsPad:v15 navigationStackIsPopping:"initWithDeviceIsPad:navigationStackIsPopping:navigationStackSize:navigationBarHasContent:multiLevelViewHasContent:editableUtteranceViewHasContent:compactViewHasContent:siriViewControllerIsEditing:keyboardHasContent:contextMenuIsPresented:" navigationStackSize:v4 navigationBarHasContent:v5 multiLevelViewHasContent:v6 editableUtteranceViewHasContent:v7 compactViewHasContent:v8 siriViewControllerIsEditing:v9 keyboardHasContent:v14 contextMenuIsPresented:?];
+  BYTE2(v14) = keyboardHasContent;
+  BYTE1(v14) = siriViewControllerIsEditing;
+  LOBYTE(v14) = compactViewHasContent;
+  return [SRCompactViewControllerContentTesterState initWithDeviceIsPad:v15 navigationStackIsPopping:"initWithDeviceIsPad:navigationStackIsPopping:navigationStackSize:navigationBarHasContent:multiLevelViewHasContent:editableUtteranceViewHasContent:compactViewHasContent:siriViewControllerIsEditing:keyboardHasContent:contextMenuIsPresented:" navigationStackSize:deviceIsPad navigationBarHasContent:navigationStackIsPopping multiLevelViewHasContent:navigationStackSize editableUtteranceViewHasContent:navigationBarHasContent compactViewHasContent:multiLevelViewHasContent siriViewControllerIsEditing:editableUtteranceViewHasContent keyboardHasContent:v14 contextMenuIsPresented:?];
 }
 
 @end

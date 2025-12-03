@@ -1,7 +1,7 @@
 @interface PXCTFramesetter
 - (PXCTFramesetter)init;
-- (PXCTFramesetter)initWithAttributedString:(id)a3 context:(CGContext *)a4;
-- (id)frameWithRect:(CGRect)a3 maximumLineCount:(unint64_t)a4 allowTruncation:(BOOL)a5;
+- (PXCTFramesetter)initWithAttributedString:(id)string context:(CGContext *)context;
+- (id)frameWithRect:(CGRect)rect maximumLineCount:(unint64_t)count allowTruncation:(BOOL)truncation;
 - (void)dealloc;
 - (void)prepare;
 @end
@@ -13,16 +13,16 @@
   if (!self->_prepared)
   {
     self->_prepared = 1;
-    v3 = [(PXCTFramesetter *)self attributedString];
-    self->_framesetter = CTFramesetterCreateWithAttributedString(v3);
-    if ([(__CFAttributedString *)v3 length])
+    attributedString = [(PXCTFramesetter *)self attributedString];
+    self->_framesetter = CTFramesetterCreateWithAttributedString(attributedString);
+    if ([(__CFAttributedString *)attributedString length])
     {
       v9 = 0;
       v10 = 0;
-      v4 = [(__CFAttributedString *)v3 attribute:*MEMORY[0x1E69DB6A8] atIndex:0 effectiveRange:&v9];
+      v4 = [(__CFAttributedString *)attributedString attribute:*MEMORY[0x1E69DB6A8] atIndex:0 effectiveRange:&v9];
       if (v4)
       {
-        if (v9 || (v5 = v10, v5 != [(__CFAttributedString *)v3 length]))
+        if (v9 || (v5 = v10, v5 != [(__CFAttributedString *)attributedString length]))
         {
           v6 = PFUIGetLog();
           if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -41,16 +41,16 @@
   }
 }
 
-- (id)frameWithRect:(CGRect)a3 maximumLineCount:(unint64_t)a4 allowTruncation:(BOOL)a5
+- (id)frameWithRect:(CGRect)rect maximumLineCount:(unint64_t)count allowTruncation:(BOOL)truncation
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  truncationCopy = truncation;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v30[1] = *MEMORY[0x1E69E9840];
   [(PXCTFramesetter *)self prepare];
-  v12 = [(PXCTFramesetter *)self framesetter];
+  framesetter = [(PXCTFramesetter *)self framesetter];
   v36.origin.x = x;
   v36.origin.y = y;
   v36.size.width = width;
@@ -58,7 +58,7 @@
   v13 = CGPathCreateWithRect(v36, 0);
   v32.location = 0;
   v32.length = 0;
-  Frame = CTFramesetterCreateFrame(v12, v32, v13, 0);
+  Frame = CTFramesetterCreateFrame(framesetter, v32, v13, 0);
   CFRelease(v13);
   if (Frame)
   {
@@ -67,7 +67,7 @@
     {
 
 LABEL_11:
-      v23 = [[PXCTFrame alloc] initWithFrame:Frame maximumLineCount:a4 allowTruncation:v5 framesetter:self];
+      v23 = [[PXCTFrame alloc] initWithFrame:Frame maximumLineCount:count allowTruncation:truncationCopy framesetter:self];
       CFRelease(Frame);
       [(PXCTFrame *)v23 prepare];
       goto LABEL_13;
@@ -75,7 +75,7 @@ LABEL_11:
 
     CFRelease(Frame);
     v29 = *MEMORY[0x1E69659F0];
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
     v30[0] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
 
@@ -83,7 +83,7 @@ LABEL_11:
     v33.location = 0;
     v33.length = 0;
     v35.width = width;
-    v18 = CTFramesetterSuggestFrameSizeWithConstraints(v12, v33, v17, v35, 0).height;
+    v18 = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, v33, v17, v35, 0).height;
     v37.origin.x = x;
     v37.origin.y = y;
     v37.size.width = width;
@@ -101,7 +101,7 @@ LABEL_11:
 
     v34.location = 0;
     v34.length = 0;
-    Frame = CTFramesetterCreateFrame(v12, v34, v19, 0);
+    Frame = CTFramesetterCreateFrame(framesetter, v34, v19, 0);
     CFRelease(v19);
     v21 = CTFrameGetLines(Frame);
     if (![v21 count])
@@ -139,19 +139,19 @@ LABEL_13:
   [(PXCTFramesetter *)&v4 dealloc];
 }
 
-- (PXCTFramesetter)initWithAttributedString:(id)a3 context:(CGContext *)a4
+- (PXCTFramesetter)initWithAttributedString:(id)string context:(CGContext *)context
 {
-  v6 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = PXCTFramesetter;
   v7 = [(PXCTFramesetter *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [stringCopy copy];
     attributedString = v7->_attributedString;
     v7->_attributedString = v8;
 
-    v7->_context = a4;
+    v7->_context = context;
   }
 
   return v7;
@@ -159,8 +159,8 @@ LABEL_13:
 
 - (PXCTFramesetter)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CoreText+PhotosUIFoundation.m" lineNumber:25 description:{@"%s is not available as initializer", "-[PXCTFramesetter init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CoreText+PhotosUIFoundation.m" lineNumber:25 description:{@"%s is not available as initializer", "-[PXCTFramesetter init]"}];
 
   abort();
 }

@@ -1,21 +1,21 @@
 @interface TraceControlView
 - (BOOL)_isSpanningTwoLines;
 - (NSDateComponentsFormatter)timePositionFormatter;
-- (TraceControlView)initWithFrame:(CGRect)a3;
+- (TraceControlView)initWithFrame:(CGRect)frame;
 - (TraceControlViewDelegate)delegate;
 - (unint64_t)_currentPlaySpeedIndex;
-- (void)_bookmarksButtonPressed:(id)a3;
-- (void)_ffButtonPressed:(id)a3;
-- (void)_frButtonPressed:(id)a3;
-- (void)_jumpBackButtonPressed:(id)a3;
-- (void)_playButtonPressed:(id)a3;
-- (void)_saveCameraSnapshotButtonPressed:(id)a3;
-- (void)_testLoggingButtonPressed:(id)a3;
-- (void)_viewCameraSnapshotsButtonPressed:(id)a3;
+- (void)_bookmarksButtonPressed:(id)pressed;
+- (void)_ffButtonPressed:(id)pressed;
+- (void)_frButtonPressed:(id)pressed;
+- (void)_jumpBackButtonPressed:(id)pressed;
+- (void)_playButtonPressed:(id)pressed;
+- (void)_saveCameraSnapshotButtonPressed:(id)pressed;
+- (void)_testLoggingButtonPressed:(id)pressed;
+- (void)_viewCameraSnapshotsButtonPressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)setIsPlaying:(BOOL)a3;
-- (void)setPlaySpeed:(double)a3;
-- (void)setPosition:(double)a3;
+- (void)setIsPlaying:(BOOL)playing;
+- (void)setPlaySpeed:(double)speed;
+- (void)setPosition:(double)position;
 @end
 
 @implementation TraceControlView
@@ -27,13 +27,13 @@
   return WeakRetained;
 }
 
-- (void)_testLoggingButtonPressed:(id)a3
+- (void)_testLoggingButtonPressed:(id)pressed
 {
   [(TraceControlView *)self setIsLogging:!self->_isLogging];
-  v4 = [(TraceControlView *)self isLogging];
+  isLogging = [(TraceControlView *)self isLogging];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
-  if (v4)
+  if (isLogging)
   {
     [WeakRetained traceControlViewPressedStartLoggingButton:self];
   }
@@ -61,7 +61,7 @@
   return timePositionFormatter;
 }
 
-- (void)setPosition:(double)a3
+- (void)setPosition:(double)position
 {
   if (self->_useDistanceAsPosition)
   {
@@ -78,7 +78,7 @@
       distancePositionFormatter = self->_distancePositionFormatter;
     }
 
-    v13 = [NSNumber numberWithDouble:a3];
+    timePositionFormatter2 = [NSNumber numberWithDouble:position];
     v8 = [(NSNumberFormatter *)distancePositionFormatter stringFromNumber:?];
     v9 = [NSString stringWithFormat:@"%@m", v8];
     [(UILabel *)self->_positionLabel setText:v9];
@@ -86,7 +86,7 @@
 
   else
   {
-    v10 = floor(a3);
+    v10 = floor(position);
     if (v10 == self->_lastPositionInLabel)
     {
       return;
@@ -103,33 +103,33 @@
       v11 = 192;
     }
 
-    v12 = [(TraceControlView *)self timePositionFormatter];
-    [v12 setAllowedUnits:v11];
+    timePositionFormatter = [(TraceControlView *)self timePositionFormatter];
+    [timePositionFormatter setAllowedUnits:v11];
 
-    v13 = [(TraceControlView *)self timePositionFormatter];
-    v8 = [v13 stringFromTimeInterval:v10];
+    timePositionFormatter2 = [(TraceControlView *)self timePositionFormatter];
+    v8 = [timePositionFormatter2 stringFromTimeInterval:v10];
     [(UILabel *)self->_positionLabel setText:v8];
   }
 }
 
-- (void)setPlaySpeed:(double)a3
+- (void)setPlaySpeed:(double)speed
 {
-  self->_playSpeed = a3;
-  if (a3 == 1.0)
+  self->_playSpeed = speed;
+  if (speed == 1.0)
   {
     v4 = @"     ";
   }
 
   else
   {
-    if (vabdd_f64(a3, (a3 + 0.05)) >= 0.1)
+    if (vabdd_f64(speed, (speed + 0.05)) >= 0.1)
     {
-      [NSString stringWithFormat:@"%.1fx", *&a3];
+      [NSString stringWithFormat:@"%.1fx", *&speed];
     }
 
     else
     {
-      [NSString stringWithFormat:@"%dx", (a3 + 0.05)];
+      [NSString stringWithFormat:@"%dx", (speed + 0.05)];
     }
     v4 = ;
   }
@@ -138,31 +138,31 @@
   [(UIButton *)self->_ffButton setTitle:v4 forState:0];
 }
 
-- (void)_viewCameraSnapshotsButtonPressed:(id)a3
+- (void)_viewCameraSnapshotsButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained traceControlViewPressedViewCameraSnapshotsButton:self];
 }
 
-- (void)_saveCameraSnapshotButtonPressed:(id)a3
+- (void)_saveCameraSnapshotButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained traceControlViewPressedSaveCameraSnapshotButton:self];
 }
 
-- (void)_bookmarksButtonPressed:(id)a3
+- (void)_bookmarksButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained traceControlViewPressedBookmarksButton:self];
 }
 
-- (void)_ffButtonPressed:(id)a3
+- (void)_ffButtonPressed:(id)pressed
 {
-  v4 = [(TraceControlView *)self _currentPlaySpeedIndex];
+  _currentPlaySpeedIndex = [(TraceControlView *)self _currentPlaySpeedIndex];
   v5 = 10;
-  if (v4 + 1 < 0xA)
+  if (_currentPlaySpeedIndex + 1 < 0xA)
   {
-    v5 = v4 + 1;
+    v5 = _currentPlaySpeedIndex + 1;
   }
 
   v6 = dbl_101213348[v5];
@@ -174,11 +174,11 @@
   }
 }
 
-- (void)_frButtonPressed:(id)a3
+- (void)_frButtonPressed:(id)pressed
 {
-  v4 = [(TraceControlView *)self _currentPlaySpeedIndex];
-  v5 = v4 - 1;
-  if (!v4)
+  _currentPlaySpeedIndex = [(TraceControlView *)self _currentPlaySpeedIndex];
+  v5 = _currentPlaySpeedIndex - 1;
+  if (!_currentPlaySpeedIndex)
   {
     v5 = 0;
   }
@@ -213,10 +213,10 @@
   }
 }
 
-- (void)setIsPlaying:(BOOL)a3
+- (void)setIsPlaying:(BOOL)playing
 {
-  self->_isPlaying = a3;
-  if (a3)
+  self->_isPlaying = playing;
+  if (playing)
   {
     v4 = @"MN-pause.png";
   }
@@ -230,14 +230,14 @@
   [(UIButton *)self->_playButton setImage:v5 forState:0];
 }
 
-- (void)_playButtonPressed:(id)a3
+- (void)_playButtonPressed:(id)pressed
 {
   [(TraceControlView *)self setIsPlaying:!self->_isPlaying];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained traceControlView:self setPlaying:self->_isPlaying];
 }
 
-- (void)_jumpBackButtonPressed:(id)a3
+- (void)_jumpBackButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained traceControlViewJumpedBack:self];
@@ -245,8 +245,8 @@
 
 - (BOOL)_isSpanningTwoLines
 {
-  v3 = [(UIStackView *)self->_secondLineStack superview];
-  if (v3)
+  superview = [(UIStackView *)self->_secondLineStack superview];
+  if (superview)
   {
     v4 = [(UIStackView *)self->_secondLineStack isHidden]^ 1;
   }
@@ -264,14 +264,14 @@
   v47.receiver = self;
   v47.super_class = TraceControlView;
   [(TraceControlView *)&v47 layoutSubviews];
-  v3 = [(TraceControlView *)self _shouldSpanTwoLines];
-  if (v3 != [(TraceControlView *)self _isSpanningTwoLines])
+  _shouldSpanTwoLines = [(TraceControlView *)self _shouldSpanTwoLines];
+  if (_shouldSpanTwoLines != [(TraceControlView *)self _isSpanningTwoLines])
   {
-    if (v3)
+    if (_shouldSpanTwoLines)
     {
-      v4 = [(UIStackView *)self->_secondLineStack superview];
+      superview = [(UIStackView *)self->_secondLineStack superview];
 
-      if (!v4)
+      if (!superview)
       {
         v5 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
         secondLineStack = self->_secondLineStack;
@@ -285,25 +285,25 @@
         [(UIStackView *)self->_secondLineStack setHidden:1];
         [(TraceControlView *)self addSubview:self->_secondLineStack];
         v7 = objc_alloc_init(NSMutableArray);
-        v8 = [(UIStackView *)self->_secondLineStack leadingAnchor];
-        v9 = [(UIStackView *)self->_firstLineStack leadingAnchor];
-        v10 = [v8 constraintEqualToAnchor:v9];
+        leadingAnchor = [(UIStackView *)self->_secondLineStack leadingAnchor];
+        leadingAnchor2 = [(UIStackView *)self->_firstLineStack leadingAnchor];
+        v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         [v7 addObject:v10];
 
-        v11 = [(UIStackView *)self->_secondLineStack trailingAnchor];
-        v12 = [(UIStackView *)self->_firstLineStack trailingAnchor];
-        v13 = [v11 constraintEqualToAnchor:v12];
+        trailingAnchor = [(UIStackView *)self->_secondLineStack trailingAnchor];
+        trailingAnchor2 = [(UIStackView *)self->_firstLineStack trailingAnchor];
+        v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         [v7 addObject:v13];
 
-        v14 = [(UIStackView *)self->_secondLineStack topAnchor];
-        v15 = [(UIStackView *)self->_firstLineStack bottomAnchor];
-        v16 = [v14 constraintEqualToAnchor:v15 constant:8.0];
+        topAnchor = [(UIStackView *)self->_secondLineStack topAnchor];
+        bottomAnchor = [(UIStackView *)self->_firstLineStack bottomAnchor];
+        v16 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:8.0];
         [v7 addObject:v16];
 
         [NSLayoutConstraint activateConstraints:v7];
-        v17 = [(UIStackView *)self->_secondLineStack bottomAnchor];
-        v18 = [(TraceControlView *)self bottomAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18];
+        bottomAnchor2 = [(UIStackView *)self->_secondLineStack bottomAnchor];
+        bottomAnchor3 = [(TraceControlView *)self bottomAnchor];
+        v19 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
         secondLineBottomToBottomConstraint = self->_secondLineBottomToBottomConstraint;
         self->_secondLineBottomToBottomConstraint = v19;
       }
@@ -448,18 +448,18 @@
       [(NSLayoutConstraint *)self->_firstLineBottomToBottomConstraint setActive:1];
     }
 
-    [(UIStackView *)self->_secondLineStack setHidden:v3 ^ 1];
+    [(UIStackView *)self->_secondLineStack setHidden:_shouldSpanTwoLines ^ 1];
     v37.receiver = self;
     v37.super_class = TraceControlView;
     [(TraceControlView *)&v37 layoutSubviews];
   }
 }
 
-- (TraceControlView)initWithFrame:(CGRect)a3
+- (TraceControlView)initWithFrame:(CGRect)frame
 {
   v83.receiver = self;
   v83.super_class = TraceControlView;
-  v3 = [(TraceControlView *)&v83 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TraceControlView *)&v83 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -532,16 +532,16 @@
     v82 = +[UIImage imageWithCGImage:scale:orientation:](UIImage, "imageWithCGImage:scale:orientation:", [v28 CGImage], 4, 1.0);
 
     [(UIButton *)v3->_frButton setImage:v82 forState:0];
-    v29 = [(UIButton *)v3->_frButton titleLabel];
-    [v29 setTextAlignment:4];
+    titleLabel = [(UIButton *)v3->_frButton titleLabel];
+    [titleLabel setTextAlignment:4];
 
     v30 = [UIFont boldSystemFontOfSize:10.0];
-    v31 = [(UIButton *)v3->_frButton titleLabel];
-    [v31 setFont:v30];
+    titleLabel2 = [(UIButton *)v3->_frButton titleLabel];
+    [titleLabel2 setFont:v30];
 
     v32 = +[UIColor whiteColor];
-    v33 = [(UIButton *)v3->_frButton titleLabel];
-    [v33 setTextColor:v32];
+    titleLabel3 = [(UIButton *)v3->_frButton titleLabel];
+    [titleLabel3 setTextColor:v32];
 
     [(UIButton *)v3->_frButton addTarget:v3 action:"_frButtonPressed:" forControlEvents:64];
     LODWORD(v34) = 1135509504;
@@ -571,12 +571,12 @@
 
     [(UIButton *)v3->_ffButton setTitle:@" " forState:0];
     v44 = [UIFont boldSystemFontOfSize:10.0];
-    v45 = [(UIButton *)v3->_ffButton titleLabel];
-    [v45 setFont:v44];
+    titleLabel4 = [(UIButton *)v3->_ffButton titleLabel];
+    [titleLabel4 setFont:v44];
 
     v46 = +[UIColor whiteColor];
-    v47 = [(UIButton *)v3->_ffButton titleLabel];
-    [v47 setTextColor:v46];
+    titleLabel5 = [(UIButton *)v3->_ffButton titleLabel];
+    [titleLabel5 setTextColor:v46];
 
     [(UIButton *)v3->_ffButton addTarget:v3 action:"_ffButtonPressed:" forControlEvents:64];
     LODWORD(v48) = 1135575040;
@@ -611,41 +611,41 @@
     LODWORD(v58) = 1132593152;
     [(UIButton *)v3->_bookmarksButton setContentCompressionResistancePriority:0 forAxis:v58];
     [(UIStackView *)v3->_firstLineStack addArrangedSubview:v3->_bookmarksButton];
-    v59 = [(UIStackView *)v3->_firstLineStack arrangedSubviews];
-    v3->_numberOfControls = [v59 count];
+    arrangedSubviews = [(UIStackView *)v3->_firstLineStack arrangedSubviews];
+    v3->_numberOfControls = [arrangedSubviews count];
 
     v60 = objc_alloc_init(NSMutableArray);
-    v61 = [(UIStackView *)v3->_firstLineStack centerXAnchor];
-    v62 = [(TraceControlView *)v3 centerXAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62];
+    centerXAnchor = [(UIStackView *)v3->_firstLineStack centerXAnchor];
+    centerXAnchor2 = [(TraceControlView *)v3 centerXAnchor];
+    v63 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v60 addObject:v63];
 
-    v64 = [(UIStackView *)v3->_firstLineStack widthAnchor];
-    v65 = [v64 constraintLessThanOrEqualToConstant:v3->_numberOfControls * 88.0];
+    widthAnchor = [(UIStackView *)v3->_firstLineStack widthAnchor];
+    v65 = [widthAnchor constraintLessThanOrEqualToConstant:v3->_numberOfControls * 88.0];
     [v60 addObject:v65];
 
-    v66 = [(UIStackView *)v3->_firstLineStack leadingAnchor];
-    v67 = [(TraceControlView *)v3 leadingAnchor];
-    v68 = [v66 constraintEqualToAnchor:v67 constant:12.0];
+    leadingAnchor = [(UIStackView *)v3->_firstLineStack leadingAnchor];
+    leadingAnchor2 = [(TraceControlView *)v3 leadingAnchor];
+    v68 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
 
     LODWORD(v69) = 1148829696;
     [v68 setPriority:v69];
     [v60 addObject:v68];
-    v70 = [(TraceControlView *)v3 trailingAnchor];
-    v71 = [(UIStackView *)v3->_firstLineStack trailingAnchor];
-    v72 = [v70 constraintEqualToAnchor:v71 constant:12.0];
+    trailingAnchor = [(TraceControlView *)v3 trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)v3->_firstLineStack trailingAnchor];
+    v72 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:12.0];
 
     LODWORD(v73) = 1148829696;
     [v72 setPriority:v73];
     [v60 addObject:v72];
-    v74 = [(UIStackView *)v3->_firstLineStack topAnchor];
-    v75 = [(TraceControlView *)v3 topAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75];
+    topAnchor = [(UIStackView *)v3->_firstLineStack topAnchor];
+    topAnchor2 = [(TraceControlView *)v3 topAnchor];
+    v76 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v60 addObject:v76];
 
-    v77 = [(UIStackView *)v3->_firstLineStack bottomAnchor];
-    v78 = [(TraceControlView *)v3 bottomAnchor];
-    v79 = [v77 constraintEqualToAnchor:v78];
+    bottomAnchor = [(UIStackView *)v3->_firstLineStack bottomAnchor];
+    bottomAnchor2 = [(TraceControlView *)v3 bottomAnchor];
+    v79 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     firstLineBottomToBottomConstraint = v3->_firstLineBottomToBottomConstraint;
     v3->_firstLineBottomToBottomConstraint = v79;
 

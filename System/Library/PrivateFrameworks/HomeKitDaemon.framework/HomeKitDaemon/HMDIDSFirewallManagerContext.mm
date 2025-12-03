@@ -2,16 +2,16 @@
 + (id)logCategory;
 - (HMDHomeManager)homeManager;
 - (HMDIDSFirewallManager)firewallManager;
-- (HMDIDSFirewallManagerContext)initWithHomeManager:(id)a3 IDSFirewall:(id)a4 notificationCenter:(id)a5 workQueue:(id)a6;
-- (void)addFirewallEntries:(id)a3;
-- (void)addFirewallEntries:(id)a3 completion:(id)a4;
+- (HMDIDSFirewallManagerContext)initWithHomeManager:(id)manager IDSFirewall:(id)firewall notificationCenter:(id)center workQueue:(id)queue;
+- (void)addFirewallEntries:(id)entries;
+- (void)addFirewallEntries:(id)entries completion:(id)completion;
 - (void)configure;
-- (void)handleHomeAddedNotification:(id)a3;
-- (void)handleHomeRemovedNotification:(id)a3;
-- (void)handleHomeUserAddedNotification:(id)a3;
-- (void)handleHomeUserRemovedNotification:(id)a3;
+- (void)handleHomeAddedNotification:(id)notification;
+- (void)handleHomeRemovedNotification:(id)notification;
+- (void)handleHomeUserAddedNotification:(id)notification;
+- (void)handleHomeUserRemovedNotification:(id)notification;
 - (void)registerForHomeUserNotifications;
-- (void)replaceFireWallEntries:(id)a3;
+- (void)replaceFireWallEntries:(id)entries;
 @end
 
 @implementation HMDIDSFirewallManagerContext
@@ -30,26 +30,26 @@
   return WeakRetained;
 }
 
-- (void)addFirewallEntries:(id)a3 completion:(id)a4
+- (void)addFirewallEntries:(id)entries completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDIDSFirewallManagerContext *)self firewall];
-  [v8 donateEntries:v7 withCompletion:v6];
+  completionCopy = completion;
+  entriesCopy = entries;
+  firewall = [(HMDIDSFirewallManagerContext *)self firewall];
+  [firewall donateEntries:entriesCopy withCompletion:completionCopy];
 }
 
-- (void)addFirewallEntries:(id)a3
+- (void)addFirewallEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(HMDIDSFirewallManagerContext *)self firewall];
+  entriesCopy = entries;
+  firewall = [(HMDIDSFirewallManagerContext *)self firewall];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__HMDIDSFirewallManagerContext_addFirewallEntries___block_invoke;
   v7[3] = &unk_27868A1D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 donateEntries:v6 withCompletion:v7];
+  v8 = entriesCopy;
+  v6 = entriesCopy;
+  [firewall donateEntries:v6 withCompletion:v7];
 }
 
 void __51__HMDIDSFirewallManagerContext_addFirewallEntries___block_invoke(uint64_t a1, void *a2)
@@ -80,18 +80,18 @@ void __51__HMDIDSFirewallManagerContext_addFirewallEntries___block_invoke(uint64
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)replaceFireWallEntries:(id)a3
+- (void)replaceFireWallEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(HMDIDSFirewallManagerContext *)self firewall];
+  entriesCopy = entries;
+  firewall = [(HMDIDSFirewallManagerContext *)self firewall];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__HMDIDSFirewallManagerContext_replaceFireWallEntries___block_invoke;
   v7[3] = &unk_27868A1D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 replaceDonatedEntriesWithEntries:v6 withCompletion:v7];
+  v8 = entriesCopy;
+  v6 = entriesCopy;
+  [firewall replaceDonatedEntriesWithEntries:v6 withCompletion:v7];
 }
 
 void __55__HMDIDSFirewallManagerContext_replaceFireWallEntries___block_invoke(uint64_t a1, void *a2)
@@ -122,18 +122,18 @@ void __55__HMDIDSFirewallManagerContext_replaceFireWallEntries___block_invoke(ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeUserRemovedNotification:(id)a3
+- (void)handleHomeUserRemovedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDIDSFirewallManagerContext *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDIDSFirewallManagerContext *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__HMDIDSFirewallManagerContext_handleHomeUserRemovedNotification___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __66__HMDIDSFirewallManagerContext_handleHomeUserRemovedNotification___block_invoke(uint64_t a1)
@@ -175,18 +175,18 @@ void __66__HMDIDSFirewallManagerContext_handleHomeUserRemovedNotification___bloc
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeUserAddedNotification:(id)a3
+- (void)handleHomeUserAddedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDIDSFirewallManagerContext *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDIDSFirewallManagerContext *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HMDIDSFirewallManagerContext_handleHomeUserAddedNotification___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __64__HMDIDSFirewallManagerContext_handleHomeUserAddedNotification___block_invoke(uint64_t a1)
@@ -250,18 +250,18 @@ void __64__HMDIDSFirewallManagerContext_handleHomeUserAddedNotification___block_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeRemovedNotification:(id)a3
+- (void)handleHomeRemovedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDIDSFirewallManagerContext *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDIDSFirewallManagerContext *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__HMDIDSFirewallManagerContext_handleHomeRemovedNotification___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __62__HMDIDSFirewallManagerContext_handleHomeRemovedNotification___block_invoke(uint64_t a1)
@@ -303,15 +303,15 @@ void __62__HMDIDSFirewallManagerContext_handleHomeRemovedNotification___block_in
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeAddedNotification:(id)a3
+- (void)handleHomeAddedNotification:(id)notification
 {
-  v4 = [(HMDIDSFirewallManagerContext *)self workQueue];
+  workQueue = [(HMDIDSFirewallManagerContext *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__HMDIDSFirewallManagerContext_handleHomeAddedNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __60__HMDIDSFirewallManagerContext_handleHomeAddedNotification___block_invoke(uint64_t a1)
@@ -323,23 +323,23 @@ void __60__HMDIDSFirewallManagerContext_handleHomeAddedNotification___block_invo
 - (void)registerForHomeUserNotifications
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDIDSFirewallManagerContext *)self homeManager];
-  v4 = v3;
-  if (v3)
+  homeManager = [(HMDIDSFirewallManagerContext *)self homeManager];
+  v4 = homeManager;
+  if (homeManager)
   {
-    v5 = [v3 homes];
+    homes = [homeManager homes];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __64__HMDIDSFirewallManagerContext_registerForHomeUserNotifications__block_invoke;
     v11[3] = &unk_278682980;
     v11[4] = self;
-    [v5 na_each:v11];
+    [homes na_each:v11];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -369,14 +369,14 @@ void __64__HMDIDSFirewallManagerContext_registerForHomeUserNotifications__block_
 - (void)configure
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDIDSFirewallManagerContext *)self homeManager];
-  if (v3)
+  homeManager = [(HMDIDSFirewallManagerContext *)self homeManager];
+  if (homeManager)
   {
-    v4 = [(HMDIDSFirewallManagerContext *)self notificationCenter];
-    [v4 addObserver:self selector:sel_handleHomeAddedNotification_ name:@"HMDHomeAddedNotification" object:v3];
+    notificationCenter = [(HMDIDSFirewallManagerContext *)self notificationCenter];
+    [notificationCenter addObserver:self selector:sel_handleHomeAddedNotification_ name:@"HMDHomeAddedNotification" object:homeManager];
 
-    v5 = [(HMDIDSFirewallManagerContext *)self notificationCenter];
-    [v5 addObserver:self selector:sel_handleHomeRemovedNotification_ name:@"HMDHomeRemovedNotification" object:v3];
+    notificationCenter2 = [(HMDIDSFirewallManagerContext *)self notificationCenter];
+    [notificationCenter2 addObserver:self selector:sel_handleHomeRemovedNotification_ name:@"HMDHomeRemovedNotification" object:homeManager];
 
     [(HMDIDSFirewallManagerContext *)self registerForHomeUserNotifications];
   }
@@ -384,7 +384,7 @@ void __64__HMDIDSFirewallManagerContext_registerForHomeUserNotifications__block_
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -400,22 +400,22 @@ void __64__HMDIDSFirewallManagerContext_registerForHomeUserNotifications__block_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDIDSFirewallManagerContext)initWithHomeManager:(id)a3 IDSFirewall:(id)a4 notificationCenter:(id)a5 workQueue:(id)a6
+- (HMDIDSFirewallManagerContext)initWithHomeManager:(id)manager IDSFirewall:(id)firewall notificationCenter:(id)center workQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  firewallCopy = firewall;
+  centerCopy = center;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = HMDIDSFirewallManagerContext;
   v14 = [(HMDIDSFirewallManagerContext *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_homeManager, v10);
-    objc_storeStrong(&v15->_firewall, a4);
-    objc_storeStrong(&v15->_notificationCenter, a5);
-    objc_storeStrong(&v15->_workQueue, a6);
+    objc_storeWeak(&v14->_homeManager, managerCopy);
+    objc_storeStrong(&v15->_firewall, firewall);
+    objc_storeStrong(&v15->_notificationCenter, center);
+    objc_storeStrong(&v15->_workQueue, queue);
   }
 
   return v15;

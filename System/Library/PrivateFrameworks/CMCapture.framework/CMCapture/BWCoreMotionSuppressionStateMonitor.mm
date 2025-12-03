@@ -1,5 +1,5 @@
 @interface BWCoreMotionSuppressionStateMonitor
-- (BWCoreMotionSuppressionStateMonitor)initWithSuppressionStateChangeHandler:(id)a3;
+- (BWCoreMotionSuppressionStateMonitor)initWithSuppressionStateChangeHandler:(id)handler;
 - (void)_doStop;
 - (void)dealloc;
 - (void)start;
@@ -7,7 +7,7 @@
 
 @implementation BWCoreMotionSuppressionStateMonitor
 
-- (BWCoreMotionSuppressionStateMonitor)initWithSuppressionStateChangeHandler:(id)a3
+- (BWCoreMotionSuppressionStateMonitor)initWithSuppressionStateChangeHandler:(id)handler
 {
   v9.receiver = self;
   v9.super_class = BWCoreMotionSuppressionStateMonitor;
@@ -37,7 +37,7 @@
           v4->_eventQueue = v7;
           [(NSOperationQueue *)v7 setMaxConcurrentOperationCount:1];
           [(NSOperationQueue *)v4->_eventQueue setName:@"CoreMotionSuppressionStateMonitor"];
-          v4->_handler = [a3 copy];
+          v4->_handler = [handler copy];
           return v4;
         }
 
@@ -138,18 +138,18 @@ uint64_t __44__BWCoreMotionSuppressionStateMonitor_start__block_invoke(uint64_t 
 
 - (void)_doStop
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 40));
-    if (*(a1 + 44) == 1)
+    os_unfair_lock_lock((self + 40));
+    if (*(self + 44) == 1)
     {
-      *(a1 + 44) = 0;
-      [*(a1 + 8) stopSuppressionUpdates];
-      [*(a1 + 24) cancelAllOperations];
-      [*(a1 + 24) waitUntilAllOperationsAreFinished];
+      *(self + 44) = 0;
+      [*(self + 8) stopSuppressionUpdates];
+      [*(self + 24) cancelAllOperations];
+      [*(self + 24) waitUntilAllOperationsAreFinished];
     }
 
-    os_unfair_lock_unlock((a1 + 40));
+    os_unfair_lock_unlock((self + 40));
   }
 }
 

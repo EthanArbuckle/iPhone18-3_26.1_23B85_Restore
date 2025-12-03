@@ -1,24 +1,24 @@
 @interface ICSharedListeningConnectionReport
 - (ICSharedListeningConnectionReport)init;
 - (NSString)formattedReport;
-- (void)_addEvents:(id)a3 toReportString:(id)a4 eventLevel:(int64_t)a5;
-- (void)endEvent:(id)a3 withError:(id)a4;
-- (void)startEvent:(id)a3 withParentEvent:(id)a4;
+- (void)_addEvents:(id)events toReportString:(id)string eventLevel:(int64_t)level;
+- (void)endEvent:(id)event withError:(id)error;
+- (void)startEvent:(id)event withParentEvent:(id)parentEvent;
 @end
 
 @implementation ICSharedListeningConnectionReport
 
-- (void)_addEvents:(id)a3 toReportString:(id)a4 eventLevel:(int64_t)a5
+- (void)_addEvents:(id)events toReportString:(id)string eventLevel:(int64_t)level
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  eventsCopy = events;
+  stringCopy = string;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v7;
-  v9 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  obj = eventsCopy;
+  v9 = [eventsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -33,29 +33,29 @@
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [&stru_1F2C4A680 stringByPaddingToLength:4 * a5 withString:@" " startingAtIndex:0];
-        [v8 appendString:v14];
+        v14 = [&stru_1F2C4A680 stringByPaddingToLength:4 * level withString:@" " startingAtIndex:0];
+        [stringCopy appendString:v14];
 
-        v15 = [v13 name];
+        name = [v13 name];
         [v13 duration];
-        [v8 appendFormat:@"%@: %.3fs.", v15, v16];
+        [stringCopy appendFormat:@"%@: %.3fs.", name, v16];
 
-        v17 = [v13 error];
+        error = [v13 error];
 
-        if (v17)
+        if (error)
         {
-          v18 = [v13 error];
-          [v8 appendFormat:@" Error: %@.", v18];
+          error2 = [v13 error];
+          [stringCopy appendFormat:@" Error: %@.", error2];
         }
 
-        [v8 appendString:@"\n"];
-        v19 = [v13 subEvents];
-        v20 = [v19 count];
+        [stringCopy appendString:@"\n"];
+        subEvents = [v13 subEvents];
+        v20 = [subEvents count];
 
         if (v20)
         {
-          v21 = [v13 subEvents];
-          [(ICSharedListeningConnectionReport *)self _addEvents:v21 toReportString:v8 eventLevel:a5 + 1];
+          subEvents2 = [v13 subEvents];
+          [(ICSharedListeningConnectionReport *)self _addEvents:subEvents2 toReportString:stringCopy eventLevel:level + 1];
         }
       }
 
@@ -79,21 +79,21 @@
   [v3 appendString:v5];
 
   [v3 appendString:@"\n"];
-  v6 = [(ICSharedListeningConnectionReport *)self sharedListeningSessionIdentifier];
-  [v3 appendFormat:@"Shared listening session ID: %@\n", v6];
+  sharedListeningSessionIdentifier = [(ICSharedListeningConnectionReport *)self sharedListeningSessionIdentifier];
+  [v3 appendFormat:@"Shared listening session ID: %@\n", sharedListeningSessionIdentifier];
 
-  v7 = [(ICSharedListeningConnectionReport *)self groupSessionIdentifier];
-  [v3 appendFormat:@"Group session ID: %@\n\n", v7];
+  groupSessionIdentifier = [(ICSharedListeningConnectionReport *)self groupSessionIdentifier];
+  [v3 appendFormat:@"Group session ID: %@\n\n", groupSessionIdentifier];
 
-  v8 = [(ICSharedListeningConnectionReport *)self topLevelEvents];
-  [(ICSharedListeningConnectionReport *)self _addEvents:v8 toReportString:v3 eventLevel:0];
+  topLevelEvents = [(ICSharedListeningConnectionReport *)self topLevelEvents];
+  [(ICSharedListeningConnectionReport *)self _addEvents:topLevelEvents toReportString:v3 eventLevel:0];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(ICSharedListeningConnectionReport *)self topLevelEvents];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  topLevelEvents2 = [(ICSharedListeningConnectionReport *)self topLevelEvents];
+  v10 = [topLevelEvents2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -105,14 +105,14 @@
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(topLevelEvents2);
         }
 
         [*(*(&v18 + 1) + 8 * i) duration];
         v13 = v13 + v15;
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [topLevelEvents2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -132,39 +132,39 @@
   return v3;
 }
 
-- (void)endEvent:(id)a3 withError:(id)a4
+- (void)endEvent:(id)event withError:(id)error
 {
   v6 = MEMORY[0x1E695DF00];
-  v7 = a4;
-  v8 = a3;
-  v11 = [v6 date];
-  v9 = [(ICSharedListeningConnectionReport *)self allEvents];
-  v10 = [v9 objectForKey:v8];
+  errorCopy = error;
+  eventCopy = event;
+  date = [v6 date];
+  allEvents = [(ICSharedListeningConnectionReport *)self allEvents];
+  v10 = [allEvents objectForKey:eventCopy];
 
-  [v10 setEndDate:v11];
-  [v10 setError:v7];
+  [v10 setEndDate:date];
+  [v10 setError:errorCopy];
 }
 
-- (void)startEvent:(id)a3 withParentEvent:(id)a4
+- (void)startEvent:(id)event withParentEvent:(id)parentEvent
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [[ICSharedListeningConnectionReportEvent alloc] initWithName:v11];
-  if (v6)
+  eventCopy = event;
+  parentEventCopy = parentEvent;
+  v7 = [[ICSharedListeningConnectionReportEvent alloc] initWithName:eventCopy];
+  if (parentEventCopy)
   {
-    v8 = [(ICSharedListeningConnectionReport *)self allEvents];
-    v9 = [v8 objectForKey:v6];
+    allEvents = [(ICSharedListeningConnectionReport *)self allEvents];
+    v9 = [allEvents objectForKey:parentEventCopy];
     [v9 addSubEvent:v7];
   }
 
   else
   {
-    v8 = [(ICSharedListeningConnectionReport *)self topLevelEvents];
-    [v8 addObject:v7];
+    allEvents = [(ICSharedListeningConnectionReport *)self topLevelEvents];
+    [allEvents addObject:v7];
   }
 
-  v10 = [(ICSharedListeningConnectionReport *)self allEvents];
-  [v10 setObject:v7 forKey:v11];
+  allEvents2 = [(ICSharedListeningConnectionReport *)self allEvents];
+  [allEvents2 setObject:v7 forKey:eventCopy];
 }
 
 - (ICSharedListeningConnectionReport)init
@@ -174,9 +174,9 @@
   v2 = [(ICSharedListeningConnectionReport *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     allEvents = v2->_allEvents;
-    v2->_allEvents = v3;
+    v2->_allEvents = weakToWeakObjectsMapTable;
 
     v5 = objc_opt_new();
     topLevelEvents = v2->_topLevelEvents;

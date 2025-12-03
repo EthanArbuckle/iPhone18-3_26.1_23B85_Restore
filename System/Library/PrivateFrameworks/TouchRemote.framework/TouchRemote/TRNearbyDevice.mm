@@ -1,7 +1,7 @@
 @interface TRNearbyDevice
 - (NSUUID)identifier;
 - (TRNearbyDevice)init;
-- (TRNearbyDevice)initWithRepresentedDevice:(id)a3 supportedService:(unint64_t)a4;
+- (TRNearbyDevice)initWithRepresentedDevice:(id)device supportedService:(unint64_t)service;
 - (id)description;
 @end
 
@@ -18,17 +18,17 @@
   objc_exception_throw(v6);
 }
 
-- (TRNearbyDevice)initWithRepresentedDevice:(id)a3 supportedService:(unint64_t)a4
+- (TRNearbyDevice)initWithRepresentedDevice:(id)device supportedService:(unint64_t)service
 {
-  v7 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = TRNearbyDevice;
   v8 = [(TRNearbyDevice *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_representedDevice, a3);
-    v9->_supportedService = a4;
+    objc_storeStrong(&v8->_representedDevice, device);
+    v9->_supportedService = service;
   }
 
   return v9;
@@ -36,18 +36,18 @@
 
 - (NSUUID)identifier
 {
-  v2 = [(TRNearbyDevice *)self representedDevice];
-  v3 = [v2 identifier];
+  representedDevice = [(TRNearbyDevice *)self representedDevice];
+  identifier = [representedDevice identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(TRNearbyDevice *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@:%p> Identifier: (%@)", v4, self, v5];
+  identifier = [(TRNearbyDevice *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@:%p> Identifier: (%@)", v4, self, identifier];
 
   return v6;
 }

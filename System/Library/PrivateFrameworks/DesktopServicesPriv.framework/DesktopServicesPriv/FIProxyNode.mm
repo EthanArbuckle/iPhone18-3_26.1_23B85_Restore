@@ -1,19 +1,19 @@
 @interface FIProxyNode
-- (FIProxyNode)initWithSubject:(id)a3;
+- (FIProxyNode)initWithSubject:(id)subject;
 - (id)nodesToObserve;
-- (void)dispatchEvent:(id)a3 forObserver:(id)a4;
+- (void)dispatchEvent:(id)event forObserver:(id)observer;
 @end
 
 @implementation FIProxyNode
 
-- (FIProxyNode)initWithSubject:(id)a3
+- (FIProxyNode)initWithSubject:(id)subject
 {
-  v4 = a3;
+  subjectCopy = subject;
   v8.receiver = self;
   v8.super_class = FIProxyNode;
   v5 = [(FICustomNode *)&v8 init];
   subjectNode = v5->_subjectNode;
-  v5->_subjectNode = v4;
+  v5->_subjectNode = subjectCopy;
 
   return v5;
 }
@@ -28,10 +28,10 @@
   return v2;
 }
 
-- (void)dispatchEvent:(id)a3 forObserver:(id)a4
+- (void)dispatchEvent:(id)event forObserver:(id)observer
 {
-  v6 = a4;
-  NodeEventFromNodeEventRef(a3, &v14);
+  observerCopy = observer;
+  NodeEventFromNodeEventRef(event, &v14);
   obj = self;
   v13 = v14;
   v7 = *TNodeEventPtr::operator->(&v14);

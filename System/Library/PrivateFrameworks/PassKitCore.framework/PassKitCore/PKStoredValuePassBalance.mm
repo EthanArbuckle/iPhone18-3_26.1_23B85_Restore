@@ -1,79 +1,79 @@
 @interface PKStoredValuePassBalance
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEqualToBalance:(PKStoredValuePassBalance *)balance;
 - (BOOL)isExpired;
-- (PKStoredValuePassBalance)initWithCoder:(id)a3;
-- (PKStoredValuePassBalance)initWithCurrencyAmount:(id)a3;
-- (PKStoredValuePassBalance)initWithIdentifier:(id)a3 amount:(id)a4 balanceType:(id)a5 expiryDate:(id)a6;
-- (PKStoredValuePassBalance)initWithIdentifier:(id)a3 cashAmount:(id)a4 currencyCode:(id)a5 expiryDate:(id)a6;
-- (PKStoredValuePassBalance)initWithTransitAppletBalance:(id)a3 balanceField:(id)a4;
+- (PKStoredValuePassBalance)initWithCoder:(id)coder;
+- (PKStoredValuePassBalance)initWithCurrencyAmount:(id)amount;
+- (PKStoredValuePassBalance)initWithIdentifier:(id)identifier amount:(id)amount balanceType:(id)type expiryDate:(id)date;
+- (PKStoredValuePassBalance)initWithIdentifier:(id)identifier cashAmount:(id)amount currencyCode:(id)code expiryDate:(id)date;
+- (PKStoredValuePassBalance)initWithTransitAppletBalance:(id)balance balanceField:(id)field;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKStoredValuePassBalance
 
-- (PKStoredValuePassBalance)initWithCurrencyAmount:(id)a3
+- (PKStoredValuePassBalance)initWithCurrencyAmount:(id)amount
 {
-  v4 = a3;
-  v5 = [v4 amount];
-  v6 = [v4 currency];
+  amountCopy = amount;
+  amount = [amountCopy amount];
+  currency = [amountCopy currency];
 
-  v7 = 0;
-  if (v5 && v6)
+  selfCopy = 0;
+  if (amount && currency)
   {
-    self = [(PKStoredValuePassBalance *)self initWithIdentifier:0 cashAmount:v5 currencyCode:v6 expiryDate:0];
-    v7 = self;
+    self = [(PKStoredValuePassBalance *)self initWithIdentifier:0 cashAmount:amount currencyCode:currency expiryDate:0];
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (PKStoredValuePassBalance)initWithIdentifier:(id)a3 cashAmount:(id)a4 currencyCode:(id)a5 expiryDate:(id)a6
+- (PKStoredValuePassBalance)initWithIdentifier:(id)identifier cashAmount:(id)amount currencyCode:(id)code expiryDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  amountCopy = amount;
+  codeCopy = code;
+  dateCopy = date;
   v21.receiver = self;
   v21.super_class = PKStoredValuePassBalance;
   v14 = [(PKStoredValuePassBalance *)&v21 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    objc_storeStrong(&v14->_amount, a4);
-    v17 = [v12 copy];
+    objc_storeStrong(&v14->_amount, amount);
+    v17 = [codeCopy copy];
     currencyCode = v14->_currencyCode;
     v14->_currencyCode = v17;
 
     balanceType = v14->_balanceType;
     v14->_balanceType = @"com.apple.wallet.storedvaluepassbalancetype.cash";
 
-    objc_storeStrong(&v14->_expiryDate, a6);
+    objc_storeStrong(&v14->_expiryDate, date);
   }
 
   return v14;
 }
 
-- (PKStoredValuePassBalance)initWithTransitAppletBalance:(id)a3 balanceField:(id)a4
+- (PKStoredValuePassBalance)initWithTransitAppletBalance:(id)balance balanceField:(id)field
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 currency];
-  v9 = [v6 balance];
-  v10 = v9;
-  v11 = 0;
-  if (v8 && v9)
+  balanceCopy = balance;
+  fieldCopy = field;
+  currency = [balanceCopy currency];
+  balance = [balanceCopy balance];
+  v10 = balance;
+  selfCopy = 0;
+  if (currency && balance)
   {
-    v12 = [v6 currency];
-    v13 = [v12 isEqualToString:@"XXX"];
+    currency2 = [balanceCopy currency];
+    v13 = [currency2 isEqualToString:@"XXX"];
 
     if (v13)
     {
-      if (([v7 unitType] + 1) >= 4)
+      if (([fieldCopy unitType] + 1) >= 4)
       {
         v14 = @"com.apple.wallet.storedvaluepassbalancetype.loyaltypoints";
       }
@@ -84,83 +84,83 @@
       }
 
       v15 = v14;
-      v16 = [v6 identifier];
-      v17 = [v6 balance];
-      v18 = [v6 expirationDate];
-      v19 = [(PKStoredValuePassBalance *)self initWithIdentifier:v16 amount:v17 balanceType:v15 expiryDate:v18];
+      identifier = [balanceCopy identifier];
+      balance2 = [balanceCopy balance];
+      expirationDate = [balanceCopy expirationDate];
+      v19 = [(PKStoredValuePassBalance *)self initWithIdentifier:identifier amount:balance2 balanceType:v15 expiryDate:expirationDate];
 
       self = v19;
     }
 
     else
     {
-      v16 = [v6 identifier];
-      v17 = [v6 balance];
-      v18 = [v6 currency];
-      v20 = [v6 expirationDate];
-      self = [(PKStoredValuePassBalance *)self initWithIdentifier:v16 cashAmount:v17 currencyCode:v18 expiryDate:v20];
+      identifier = [balanceCopy identifier];
+      balance2 = [balanceCopy balance];
+      expirationDate = [balanceCopy currency];
+      expirationDate2 = [balanceCopy expirationDate];
+      self = [(PKStoredValuePassBalance *)self initWithIdentifier:identifier cashAmount:balance2 currencyCode:expirationDate expiryDate:expirationDate2];
     }
 
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (PKStoredValuePassBalance)initWithIdentifier:(id)a3 amount:(id)a4 balanceType:(id)a5 expiryDate:(id)a6
+- (PKStoredValuePassBalance)initWithIdentifier:(id)identifier amount:(id)amount balanceType:(id)type expiryDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  amountCopy = amount;
+  typeCopy = type;
+  dateCopy = date;
   v21.receiver = self;
   v21.super_class = PKStoredValuePassBalance;
   v14 = [(PKStoredValuePassBalance *)&v21 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    objc_storeStrong(&v14->_amount, a4);
+    objc_storeStrong(&v14->_amount, amount);
     currencyCode = v14->_currencyCode;
     v14->_currencyCode = 0;
 
-    v18 = [v12 copy];
+    v18 = [typeCopy copy];
     balanceType = v14->_balanceType;
     v14->_balanceType = v18;
 
-    objc_storeStrong(&v14->_expiryDate, a6);
+    objc_storeStrong(&v14->_expiryDate, date);
   }
 
   return v14;
 }
 
-- (PKStoredValuePassBalance)initWithCoder:(id)a3
+- (PKStoredValuePassBalance)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKStoredValuePassBalance;
   v5 = [(PKStoredValuePassBalance *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balanceType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balanceType"];
     balanceType = v5->_balanceType;
     v5->_balanceType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
     expiryDate = v5->_expiryDate;
     v5->_expiryDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v14;
   }
@@ -168,18 +168,18 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKStoredValuePassBalance *)self isEqualToBalance:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKStoredValuePassBalance *)self isEqualToBalance:v5];
   }
 
   return v6;
@@ -295,26 +295,26 @@ LABEL_27:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_amount];
-  [v3 safelyAddObject:self->_currencyCode];
-  [v3 safelyAddObject:self->_balanceType];
-  [v3 safelyAddObject:self->_expiryDate];
-  [v3 safelyAddObject:self->_identifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_amount];
+  [array safelyAddObject:self->_currencyCode];
+  [array safelyAddObject:self->_balanceType];
+  [array safelyAddObject:self->_expiryDate];
+  [array safelyAddObject:self->_identifier];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"amount"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeObject:self->_balanceType forKey:@"balanceType"];
-  [v5 encodeObject:self->_expiryDate forKey:@"expiryDate"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_balanceType forKey:@"balanceType"];
+  [coderCopy encodeObject:self->_expiryDate forKey:@"expiryDate"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
 - (BOOL)isExpired
@@ -324,8 +324,8 @@ LABEL_27:
     return 0;
   }
 
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v3 compare:self->_expiryDate] != -1;
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [date compare:self->_expiryDate] != -1;
 
   return v4;
 }

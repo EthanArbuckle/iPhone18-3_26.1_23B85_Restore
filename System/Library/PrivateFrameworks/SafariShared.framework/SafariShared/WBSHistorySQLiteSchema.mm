@@ -1,10 +1,10 @@
 @interface WBSHistorySQLiteSchema
 + (id)legacyHistoryPropertyListURL;
-- (BOOL)migrateLegacyDatabaseCreatingRedirectChains:(id)a3 urlsToItemAndLastVisitID:(id)a4 visitsToUseForRedirectChains:(id)a5;
+- (BOOL)migrateLegacyDatabaseCreatingRedirectChains:(id)chains urlsToItemAndLastVisitID:(id)d visitsToUseForRedirectChains:(id)redirectChains;
 - (NSDictionary)legacyDatabase;
-- (WBSHistorySQLiteSchema)initWithDatabase:(id)a3 crypto:(id)a4 migrateVisitsAfterDate:(id)a5;
-- (id)_migrateLegacyDatabaseCreatingItemsAndVisits:(id)a3 outVisitsToUseForRedirectChains:(id)a4;
-- (int)_migrateToSchemaVersion:(int)a3;
+- (WBSHistorySQLiteSchema)initWithDatabase:(id)database crypto:(id)crypto migrateVisitsAfterDate:(id)date;
+- (id)_migrateLegacyDatabaseCreatingItemsAndVisits:(id)visits outVisitsToUseForRedirectChains:(id)chains;
+- (int)_migrateToSchemaVersion:(int)version;
 - (int)_migrateToSchemaVersion_10;
 - (int)_migrateToSchemaVersion_11;
 - (int)_migrateToSchemaVersion_12;
@@ -20,10 +20,10 @@
 - (int)_migrateToSchemaVersion_7;
 - (int)_migrateToSchemaVersion_8;
 - (int)_migrateToSchemaVersion_9;
-- (int)_setDatabaseSchemaVersion:(int)a3;
+- (int)_setDatabaseSchemaVersion:(int)version;
 - (int)migrateToCurrentSchemaVersionIfNeeded;
-- (int64_t)_migrateLegacyItem:(id)a3 dailyVisitCounts:(void *)a4 weeklyVisitCounts:(void *)a5;
-- (int64_t)_migrateLegacyVisitWithItemID:(int64_t)a3 visitTime:(double)a4 title:(id)a5 score:(unint64_t)a6 loadSuccessful:(BOOL)a7 httpNonGet:(BOOL)a8 synthesized:(BOOL)a9;
+- (int64_t)_migrateLegacyItem:(id)item dailyVisitCounts:(void *)counts weeklyVisitCounts:(void *)visitCounts;
+- (int64_t)_migrateLegacyVisitWithItemID:(int64_t)d visitTime:(double)time title:(id)title score:(unint64_t)score loadSuccessful:(BOOL)successful httpNonGet:(BOOL)get synthesized:(BOOL)synthesized;
 - (void)_migrateLegacyDatabase;
 - (void)_migrateToSchemaVersion_10;
 - (void)_migrateToSchemaVersion_11;
@@ -45,20 +45,20 @@
 
 @implementation WBSHistorySQLiteSchema
 
-- (WBSHistorySQLiteSchema)initWithDatabase:(id)a3 crypto:(id)a4 migrateVisitsAfterDate:(id)a5
+- (WBSHistorySQLiteSchema)initWithDatabase:(id)database crypto:(id)crypto migrateVisitsAfterDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  cryptoCopy = crypto;
+  dateCopy = date;
   v16.receiver = self;
   v16.super_class = WBSHistorySQLiteSchema;
   v12 = [(WBSHistorySQLiteSchema *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_database, a3);
-    objc_storeStrong(&v13->_crypto, a4);
-    objc_storeStrong(&v13->_migrateVisitsAfterDate, a5);
+    objc_storeStrong(&v12->_database, database);
+    objc_storeStrong(&v13->_crypto, crypto);
+    objc_storeStrong(&v13->_migrateVisitsAfterDate, date);
     v14 = v13;
   }
 
@@ -69,11 +69,11 @@
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = SafariShared::WBSSQLiteDatabaseFetch<>(self->_database, @"PRAGMA user_version");
-  v4 = [v3 nextObject];
-  v5 = [v4 intAtIndex:0];
+  nextObject = [v3 nextObject];
+  v5 = [nextObject intAtIndex:0];
 
-  v6 = [v3 statement];
-  [v6 invalidate];
+  statement = [v3 statement];
+  [statement invalidate];
 
   if (v5 > 15)
   {
@@ -311,11 +311,11 @@ LABEL_68:
   return v5;
 }
 
-- (int)_setDatabaseSchemaVersion:(int)a3
+- (int)_setDatabaseSchemaVersion:(int)version
 {
   v17 = *MEMORY[0x1E69E9840];
   database = self->_database;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA user_version = %d", *&a3];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA user_version = %d", *&version];
   v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database, 0, v6);
 
   if (v7 != 101)
@@ -323,11 +323,11 @@ LABEL_68:
     v8 = WBS_LOG_CHANNEL_PREFIXHistory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
+      lastErrorMessage = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
       *buf = 67109634;
-      v12 = a3;
+      versionCopy = version;
       v13 = 2114;
-      v14 = v10;
+      v14 = lastErrorMessage;
       v15 = 1024;
       v16 = v7;
       _os_log_error_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_ERROR, "Failed to set the database schema version to %d: %{public}@ (%d)", buf, 0x18u);
@@ -337,11 +337,11 @@ LABEL_68:
   return v7;
 }
 
-- (int)_migrateToSchemaVersion:(int)a3
+- (int)_migrateToSchemaVersion:(int)version
 {
-  v3 = *&a3;
+  v3 = *&version;
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_migrateToSchemaVersion_%d", *&a3];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_migrateToSchemaVersion_%d", *&version];
   v6 = NSSelectorFromString(v5);
 
   v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(self->_database, 0, @"BEGIN TRANSACTION");
@@ -667,8 +667,8 @@ LABEL_7:
         v19 = *(*(&v27 + 1) + 8 * j);
         v26 = [v15 objectForKeyedSubscript:v19];
         database = self->_database;
-        v25 = [v19 integerValue];
-        v3 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSData * {__strong}&,long>(database, 0, @"UPDATE history_tombstones SET url = ? WHERE id = ?", &v26, &v25);
+        integerValue = [v19 integerValue];
+        v3 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSData * {__strong}&,long>(database, 0, @"UPDATE history_tombstones SET url = ? WHERE id = ?", &v26, &integerValue);
       }
 
       v16 = [v15 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -1003,8 +1003,8 @@ LABEL_5:
 {
   v18[6] = *MEMORY[0x1E69E9840];
   v3 = SafariShared::WBSSQLiteDatabaseFetch<NSString * const {__strong}&>(self->_database, @"SELECT value FROM metadata WHERE key = ?", WBSHistorySQLiteStoreSyncsWithManateeContainerKey);
-  v4 = [v3 nextObject];
-  v5 = [v4 int64AtIndex:0];
+  nextObject = [v3 nextObject];
+  v5 = [nextObject int64AtIndex:0];
 
   if (v5 < 1)
   {
@@ -1013,18 +1013,18 @@ LABEL_5:
 
   v6 = SafariShared::WBSSQLiteDatabaseFetch<>(self->_database, @"SELECT MAX(generation) FROM history_visits");
 
-  v7 = [v6 nextObject];
-  v8 = [v7 int64AtIndex:0];
+  nextObject2 = [v6 nextObject];
+  v8 = [nextObject2 int64AtIndex:0];
 
   v9 = SafariShared::WBSSQLiteDatabaseFetch<>(self->_database, @"SELECT MAX(generation) FROM history_tombstones");
 
-  v10 = [v9 nextObject];
-  v11 = [v10 int64AtIndex:0];
+  nextObject3 = [v9 nextObject];
+  v11 = [nextObject3 int64AtIndex:0];
 
   v3 = SafariShared::WBSSQLiteDatabaseFetch<NSString * const {__strong}&>(self->_database, @"SELECT value FROM metadata WHERE key = ?", WBSHistorySQLiteStoreLastSyncedGenerationKey);
 
-  v12 = [v3 nextObject];
-  v13 = [v12 int64AtIndex:0];
+  nextObject4 = [v3 nextObject];
+  v13 = [nextObject4 int64AtIndex:0];
 
   if (v8 <= v11)
   {
@@ -1104,9 +1104,9 @@ LABEL_13:
 + (id)legacyHistoryPropertyListURL
 {
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [v4 safari_settingsDirectoryURL];
-    +[WBSHistorySQLiteSchema legacyHistoryPropertyListURL]::historyURL = [v5 URLByAppendingPathComponent:@"History.plist" isDirectory:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
+    +[WBSHistorySQLiteSchema legacyHistoryPropertyListURL]::historyURL = [safari_settingsDirectoryURL URLByAppendingPathComponent:@"History.plist" isDirectory:0];
   }
 
   v2 = +[WBSHistorySQLiteSchema legacyHistoryPropertyListURL]::historyURL;
@@ -1117,32 +1117,32 @@ LABEL_13:
 - (NSDictionary)legacyDatabase
 {
   v2 = MEMORY[0x1E695DF20];
-  v3 = [objc_opt_class() legacyHistoryPropertyListURL];
-  v4 = [v2 dictionaryWithContentsOfURL:v3];
+  legacyHistoryPropertyListURL = [objc_opt_class() legacyHistoryPropertyListURL];
+  v4 = [v2 dictionaryWithContentsOfURL:legacyHistoryPropertyListURL];
 
   return v4;
 }
 
-- (int64_t)_migrateLegacyItem:(id)a3 dailyVisitCounts:(void *)a4 weeklyVisitCounts:(void *)a5
+- (int64_t)_migrateLegacyItem:(id)item dailyVisitCounts:(void *)counts weeklyVisitCounts:(void *)visitCounts
 {
   v70 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v65 = [v8 safari_stringForKey:&stru_1F3A5E418];
-  v47 = [v8 safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"D"];
-  v9 = [v8 safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"W"];
-  v10 = [v8 safari_numberForKey:@"visitCount"];
-  v11 = [v10 intValue];
+  itemCopy = item;
+  v65 = [itemCopy safari_stringForKey:&stru_1F3A5E418];
+  v47 = [itemCopy safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"D"];
+  v9 = [itemCopy safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"W"];
+  v10 = [itemCopy safari_numberForKey:@"visitCount"];
+  intValue = [v10 intValue];
 
-  v64 = v11;
-  v12 = [v8 safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"autocomplete"];
+  v64 = intValue;
+  v12 = [itemCopy safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"autocomplete"];
   v62 = 0;
-  v63 = 0;
+  data = 0;
   v13 = 0x1E695D000;
   v61 = 0;
   if (!(v47 | v9))
   {
 LABEL_47:
-    v63 = [*(v13 + 3824) data];
+    data = [*(v13 + 3824) data];
     goto LABEL_48;
   }
 
@@ -1178,7 +1178,7 @@ LABEL_57:
   LODWORD(v60) = v15;
   v59 = WTF::fastMalloc((4 * v15));
 LABEL_8:
-  v46 = self;
+  selfCopy = self;
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
@@ -1197,10 +1197,10 @@ LABEL_8:
           objc_enumerationMutation(v16);
         }
 
-        v20 = [*(*(&v55 + 1) + 8 * i) intValue];
-        if (v20 <= 0x12C)
+        intValue2 = [*(*(&v55 + 1) + 8 * i) intValue];
+        if (intValue2 <= 0x12C)
         {
-          v21 = v20;
+          v21 = intValue2;
         }
 
         else
@@ -1209,18 +1209,18 @@ LABEL_8:
         }
 
         v54 = v21;
-        v22 = *(a4 + 3);
-        if (v22 == *(a4 + 2))
+        v22 = *(counts + 3);
+        if (v22 == *(counts + 2))
         {
-          *(*a4 + 4 * *(a4 + 3)) = *WTF::Vector<SafariShared::FieldLabelPatternMatcher::DFA::State,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::expandCapacity<(WTF::FailureAction)0>(a4, v22 + 1, &v54);
+          *(*counts + 4 * *(counts + 3)) = *WTF::Vector<SafariShared::FieldLabelPatternMatcher::DFA::State,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::expandCapacity<(WTF::FailureAction)0>(counts, v22 + 1, &v54);
         }
 
         else
         {
-          *(*a4 + 4 * v22) = v21;
+          *(*counts + 4 * v22) = v21;
         }
 
-        ++*(a4 + 3);
+        ++*(counts + 3);
         v23 = WBSHistoryVisitScoreForWeightedVisitCount(v54);
         v53 = v23;
         if (HIDWORD(v67) == v67)
@@ -1261,10 +1261,10 @@ LABEL_8:
           objc_enumerationMutation(v25);
         }
 
-        v29 = [*(*(&v49 + 1) + 8 * j) intValue];
-        if (v29 <= 0x834)
+        intValue3 = [*(*(&v49 + 1) + 8 * j) intValue];
+        if (intValue3 <= 0x834)
         {
-          v30 = v29;
+          v30 = intValue3;
         }
 
         else
@@ -1273,18 +1273,18 @@ LABEL_8:
         }
 
         v54 = v30;
-        v31 = *(a5 + 3);
-        if (v31 == *(a5 + 2))
+        v31 = *(visitCounts + 3);
+        if (v31 == *(visitCounts + 2))
         {
-          *(*a5 + 4 * *(a5 + 3)) = *WTF::Vector<SafariShared::FieldLabelPatternMatcher::DFA::State,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::expandCapacity<(WTF::FailureAction)0>(a5, v31 + 1, &v54);
+          *(*visitCounts + 4 * *(visitCounts + 3)) = *WTF::Vector<SafariShared::FieldLabelPatternMatcher::DFA::State,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::expandCapacity<(WTF::FailureAction)0>(visitCounts, v31 + 1, &v54);
         }
 
         else
         {
-          *(*a5 + 4 * v31) = v30;
+          *(*visitCounts + 4 * v31) = v30;
         }
 
-        ++*(a5 + 3);
+        ++*(visitCounts + 3);
         v32 = WBSHistoryVisitScoreForWeightedVisitCount(v54);
         v53 = v32;
         if (HIDWORD(v60) == v60)
@@ -1308,11 +1308,11 @@ LABEL_8:
   }
 
   WBSHistoryCollapseDailyVisitsToWeekly(&v66, &v59);
-  self = v46;
+  self = selfCopy;
   v13 = 0x1E695D000uLL;
   v35 = [MEMORY[0x1E695DEF0] dataWithBytes:v66 length:4 * HIDWORD(v67)];
-  v63 = v35;
-  if (*(a5 + 3))
+  data = v35;
+  if (*(visitCounts + 3))
   {
     v62 = [MEMORY[0x1E695DEF0] dataWithBytes:v59 length:4 * HIDWORD(v60)];
   }
@@ -1346,8 +1346,8 @@ LABEL_48:
 
   database = self->_database;
   v48 = 0;
-  LODWORD(v66) = WBSHistoryVisitScoreForWeightedVisitCount(v11);
-  v39 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,int &,int,NSData * {__strong}&,NSData * {__strong}&,NSData * {__strong}&>(database, &v48, @"INSERT INTO history_items (url, visit_count, visit_count_score, daily_visit_counts, weekly_visit_counts, autocomplete_triggers, domain_expansion, should_recompute_derived_visit_counts) VALUES (?,?,?,?,?,?,safari_domainexpansion(?1),0)", &v65, &v64, &v66, &v63, &v62, &v61);
+  LODWORD(v66) = WBSHistoryVisitScoreForWeightedVisitCount(intValue);
+  v39 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,int &,int,NSData * {__strong}&,NSData * {__strong}&,NSData * {__strong}&>(database, &v48, @"INSERT INTO history_items (url, visit_count, visit_count_score, daily_visit_counts, weekly_visit_counts, autocomplete_triggers, domain_expansion, should_recompute_derived_visit_counts) VALUES (?,?,?,?,?,?,safari_domainexpansion(?1),0)", &v65, &v64, &v66, &data, &v62, &v61);
   v40 = v48;
   if (v39 && v39 != 101)
   {
@@ -1355,34 +1355,34 @@ LABEL_48:
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
       v43 = v65;
-      v44 = [v40 safari_privacyPreservingDescription];
-      [WBSHistorySQLiteSchema _migrateLegacyItem:v43 dailyVisitCounts:v44 weeklyVisitCounts:&v66];
+      safari_privacyPreservingDescription = [v40 safari_privacyPreservingDescription];
+      [WBSHistorySQLiteSchema _migrateLegacyItem:v43 dailyVisitCounts:safari_privacyPreservingDescription weeklyVisitCounts:&v66];
     }
 
-    v41 = 0;
+    lastInsertRowID = 0;
   }
 
   else
   {
-    v41 = [(WBSSQLiteDatabase *)self->_database lastInsertRowID];
+    lastInsertRowID = [(WBSSQLiteDatabase *)self->_database lastInsertRowID];
   }
 
-  return v41;
+  return lastInsertRowID;
 }
 
-- (int64_t)_migrateLegacyVisitWithItemID:(int64_t)a3 visitTime:(double)a4 title:(id)a5 score:(unint64_t)a6 loadSuccessful:(BOOL)a7 httpNonGet:(BOOL)a8 synthesized:(BOOL)a9
+- (int64_t)_migrateLegacyVisitWithItemID:(int64_t)d visitTime:(double)time title:(id)title score:(unint64_t)score loadSuccessful:(BOOL)successful httpNonGet:(BOOL)get synthesized:(BOOL)synthesized
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  v26[0] = a3;
-  v25 = a4;
-  v23 = a6;
-  v24 = a5;
-  v22 = a7;
-  v21 = a8;
-  v20 = a9;
+  v26[0] = d;
+  timeCopy = time;
+  scoreCopy = score;
+  titleCopy = title;
+  successfulCopy = successful;
+  getCopy = get;
+  synthesizedCopy = synthesized;
   database = self->_database;
   v19 = 0;
-  v14 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<long long &,double &,NSString * {__strong}&,unsigned long &,BOOL &,BOOL &,BOOL &>(database, &v19, @"INSERT INTO history_visits (history_item, visit_time, title, score, load_successful, http_non_get, synthesized) VALUES (?,?,?,?,?,?,?)", v26, &v25, &v24, &v23, &v22, &v21, &v20);
+  v14 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<long long &,double &,NSString * {__strong}&,unsigned long &,BOOL &,BOOL &,BOOL &>(database, &v19, @"INSERT INTO history_visits (history_item, visit_time, title, score, load_successful, http_non_get, synthesized) VALUES (?,?,?,?,?,?,?)", v26, &timeCopy, &titleCopy, &scoreCopy, &successfulCopy, &getCopy, &synthesizedCopy);
   v15 = v19;
   if (v14 && v14 != 101)
   {
@@ -1394,29 +1394,29 @@ LABEL_48:
       [WBSHistorySQLiteSchema _migrateLegacyVisitWithItemID:visitTime:title:score:loadSuccessful:httpNonGet:synthesized:];
     }
 
-    v16 = 0;
+    lastInsertRowID = 0;
   }
 
   else
   {
-    v16 = [(WBSSQLiteDatabase *)self->_database lastInsertRowID];
+    lastInsertRowID = [(WBSSQLiteDatabase *)self->_database lastInsertRowID];
   }
 
-  return v16;
+  return lastInsertRowID;
 }
 
-- (id)_migrateLegacyDatabaseCreatingItemsAndVisits:(id)a3 outVisitsToUseForRedirectChains:(id)a4
+- (id)_migrateLegacyDatabaseCreatingItemsAndVisits:(id)visits outVisitsToUseForRedirectChains:(id)chains
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v47 = a4;
-  v48 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  visitsCopy = visits;
+  chainsCopy = chains;
+  v48 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(visitsCopy, "count")}];
   v7 = WBSHistoryVisitScoreForWeightedVisitCount(1.0);
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v6;
+  obj = visitsCopy;
   v8 = [obj countByEnumeratingWithState:&v63 objects:v67 count:16];
   if (v8)
   {
@@ -1446,9 +1446,9 @@ LABEL_48:
 
           v17 = [v11 safari_stringForKey:@"title"];
           v18 = [v11 safari_numberForKey:@"lastVisitWasFailure"];
-          v19 = [v18 intValue];
+          intValue = [v18 intValue];
           v20 = [v11 safari_numberForKey:@"lastVisitWasHTTPNonGet"];
-          v21 = -[WBSHistorySQLiteSchema _migrateLegacyVisitWithItemID:visitTime:title:score:loadSuccessful:httpNonGet:synthesized:](self, "_migrateLegacyVisitWithItemID:visitTime:title:score:loadSuccessful:httpNonGet:synthesized:", v13, v17, v9, v19 == 0, [v20 intValue] != 0, 0, v16);
+          v21 = -[WBSHistorySQLiteSchema _migrateLegacyVisitWithItemID:visitTime:title:score:loadSuccessful:httpNonGet:synthesized:](self, "_migrateLegacyVisitWithItemID:visitTime:title:score:loadSuccessful:httpNonGet:synthesized:", v13, v17, v9, intValue == 0, [v20 intValue] != 0, 0, v16);
 
           if (v21)
           {
@@ -1538,7 +1538,7 @@ LABEL_48:
             if (!v17)
             {
               v42 = [MEMORY[0x1E696AD98] numberWithLongLong:v21];
-              [v47 addObject:v42];
+              [chainsCopy addObject:v42];
 
               v17 = 0;
             }
@@ -1579,19 +1579,19 @@ LABEL_48:
   return v48;
 }
 
-- (BOOL)migrateLegacyDatabaseCreatingRedirectChains:(id)a3 urlsToItemAndLastVisitID:(id)a4 visitsToUseForRedirectChains:(id)a5
+- (BOOL)migrateLegacyDatabaseCreatingRedirectChains:(id)chains urlsToItemAndLastVisitID:(id)d visitsToUseForRedirectChains:(id)redirectChains
 {
   v80 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v56 = a4;
-  v55 = a5;
+  chainsCopy = chains;
+  dCopy = d;
+  redirectChainsCopy = redirectChains;
   v74 = WBSHistoryVisitScoreForWeightedVisitCount(1.0);
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v8;
-  v52 = [obj countByEnumeratingWithState:&v70 objects:v79 count:{16, v8}];
+  obj = chainsCopy;
+  v52 = [obj countByEnumeratingWithState:&v70 objects:v79 count:{16, chainsCopy}];
   if (v52)
   {
     v51 = *v71;
@@ -1611,11 +1611,11 @@ LABEL_48:
 
         v13 = [v9 safari_stringForKey:&stru_1F3A5E418];
         v53 = [v9 safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"redirectURLs"];
-        v14 = [v56 objectForKeyedSubscript:v13];
-        v15 = [v14 first];
-        v16 = [v15 longValue];
+        v14 = [dCopy objectForKeyedSubscript:v13];
+        first = [v14 first];
+        longValue = [first longValue];
 
-        v69 = v16;
+        v69 = longValue;
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
@@ -1637,25 +1637,25 @@ LABEL_48:
               v20 = *(*(&v65 + 1) + 8 * j);
               if (([v20 isEqualToString:v13] & 1) == 0)
               {
-                v21 = [v56 objectForKeyedSubscript:v20];
+                v21 = [dCopy objectForKeyedSubscript:v20];
                 v22 = v21;
                 if (v21)
                 {
-                  v23 = [v21 first];
-                  v24 = [v23 longValue];
+                  first2 = [v21 first];
+                  longValue2 = [first2 longValue];
 
-                  v64 = v24;
-                  v25 = [v22 second];
-                  v26 = [v25 longValue];
+                  v64 = longValue2;
+                  second = [v22 second];
+                  longValue3 = [second longValue];
 
-                  v63 = v26;
-                  v27 = [MEMORY[0x1E696AD98] numberWithLongLong:v26];
-                  LOBYTE(v26) = [v55 containsObject:v27];
+                  v63 = longValue3;
+                  v27 = [MEMORY[0x1E696AD98] numberWithLongLong:longValue3];
+                  LOBYTE(longValue3) = [redirectChainsCopy containsObject:v27];
 
-                  if (v26)
+                  if (longValue3)
                   {
                     v28 = [MEMORY[0x1E696AD98] numberWithLongLong:v63];
-                    [v55 removeObject:v28];
+                    [redirectChainsCopy removeObject:v28];
 
                     v29 = 0;
                     goto LABEL_15;
@@ -1664,9 +1664,9 @@ LABEL_48:
                   v63 = [(WBSHistorySQLiteSchema *)self _migrateLegacyVisitWithItemID:v64 visitTime:0 title:v74 score:1 loadSuccessful:0 httpNonGet:1 synthesized:v12];
                   if (v63)
                   {
-                    v40 = [(WBSSQLiteDatabase *)self->_database lastInsertRowID];
+                    lastInsertRowID = [(WBSSQLiteDatabase *)self->_database lastInsertRowID];
                     v62 = 0;
-                    v63 = v40;
+                    v63 = lastInsertRowID;
                     v41 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<unsigned long const&,long long &>(self->_database, &v62, @"UPDATE history_items SET visit_count = visit_count + 1, visit_count_score = visit_count_score + ? WHERE id = ?", &v74, &v64);
                     v29 = v62;
                     if (v41 && v41 != 101)
@@ -1674,11 +1674,11 @@ LABEL_48:
                       v42 = WBS_LOG_CHANNEL_PREFIXHistory();
                       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
                       {
-                        v47 = [v29 safari_privacyPreservingDescription];
+                        safari_privacyPreservingDescription = [v29 safari_privacyPreservingDescription];
                         *buf = 138478083;
                         *&buf[4] = v20;
                         v76 = 2114;
-                        v77 = v47;
+                        v77 = safari_privacyPreservingDescription;
                         _os_log_error_impl(&dword_1BB6F3000, v42, OS_LOG_TYPE_ERROR, "Failed to update score of %{private}@: %{public}@", buf, 0x16u);
                       }
 
@@ -1707,11 +1707,11 @@ LABEL_16:
                         v43 = WBS_LOG_CHANNEL_PREFIXHistory();
                         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
                         {
-                          v46 = [v35 safari_privacyPreservingDescription];
+                          safari_privacyPreservingDescription2 = [v35 safari_privacyPreservingDescription];
                           *buf = 138478083;
                           *&buf[4] = v13;
                           v76 = 2114;
-                          v77 = v46;
+                          v77 = safari_privacyPreservingDescription2;
                           _os_log_error_impl(&dword_1BB6F3000, v43, OS_LOG_TYPE_ERROR, "Failed to set redirect source for %{private}@: %{public}@", buf, 0x16u);
                         }
                       }
@@ -1734,11 +1734,11 @@ LABEL_44:
                         v43 = WBS_LOG_CHANNEL_PREFIXHistory();
                         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
                         {
-                          v48 = [v38 safari_privacyPreservingDescription];
+                          safari_privacyPreservingDescription3 = [v38 safari_privacyPreservingDescription];
                           *buf = 138478083;
                           *&buf[4] = v13;
                           v76 = 2114;
-                          v77 = v48;
+                          v77 = safari_privacyPreservingDescription3;
                           _os_log_error_impl(&dword_1BB6F3000, v43, OS_LOG_TYPE_ERROR, "Failed to set redirect source for %{private}@: %{public}@", buf, 0x16u);
                         }
 
@@ -1757,11 +1757,11 @@ LABEL_44:
                       v43 = WBS_LOG_CHANNEL_PREFIXHistory();
                       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
                       {
-                        v44 = [v32 safari_privacyPreservingDescription];
+                        safari_privacyPreservingDescription4 = [v32 safari_privacyPreservingDescription];
                         *buf = 138478083;
                         *&buf[4] = v20;
                         v76 = 2114;
-                        v77 = v44;
+                        v77 = safari_privacyPreservingDescription4;
                         _os_log_error_impl(&dword_1BB6F3000, v43, OS_LOG_TYPE_ERROR, "Failed to update visit count scores for %{private}@: %{public}@", buf, 0x16u);
                       }
                     }
@@ -1771,11 +1771,11 @@ LABEL_44:
                       v43 = WBS_LOG_CHANNEL_PREFIXHistory();
                       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
                       {
-                        v45 = [v32 safari_privacyPreservingDescription];
+                        safari_privacyPreservingDescription5 = [v32 safari_privacyPreservingDescription];
                         *buf = 138478083;
                         *&buf[4] = v13;
                         v76 = 2114;
-                        v77 = v45;
+                        v77 = safari_privacyPreservingDescription5;
                         _os_log_error_impl(&dword_1BB6F3000, v43, OS_LOG_TYPE_ERROR, "Failed to set redirect source for %{private}@: %{public}@", buf, 0x16u);
                       }
                     }
@@ -1864,7 +1864,7 @@ uint64_t __48__WBSHistorySQLiteSchema__migrateLegacyDatabase__block_invoke_274(u
 - (void)_removeLegacyHistoryDatabaseIfNeeded
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1BB6F3000, log, OS_LOG_TYPE_ERROR, "Failed to remove history plist with error %{public}@", buf, 0xCu);
 }
 

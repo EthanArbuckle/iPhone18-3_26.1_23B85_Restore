@@ -1,6 +1,6 @@
 @interface FCFeedItemsWithIDLookupResult
 - (FCFeedItemsWithIDLookupResult)init;
-- (FCFeedItemsWithIDLookupResult)initWithSectionIDByFeedID:(id)a3 feedItems:(id)a4;
+- (FCFeedItemsWithIDLookupResult)initWithSectionIDByFeedID:(id)d feedItems:(id)items;
 @end
 
 @implementation FCFeedItemsWithIDLookupResult
@@ -31,20 +31,20 @@
   objc_exception_throw(v6);
 }
 
-- (FCFeedItemsWithIDLookupResult)initWithSectionIDByFeedID:(id)a3 feedItems:(id)a4
+- (FCFeedItemsWithIDLookupResult)initWithSectionIDByFeedID:(id)d feedItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  itemsCopy = items;
   v14.receiver = self;
   v14.super_class = FCFeedItemsWithIDLookupResult;
   v8 = [(FCFeedItemsWithIDLookupResult *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     sectionIDsByFeedID = v8->_sectionIDsByFeedID;
     v8->_sectionIDsByFeedID = v9;
 
-    v11 = [v7 copy];
+    v11 = [itemsCopy copy];
     feedItems = v8->_feedItems;
     v8->_feedItems = v11;
   }

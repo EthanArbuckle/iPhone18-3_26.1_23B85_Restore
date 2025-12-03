@@ -1,12 +1,12 @@
 @interface UARPTLVPersonalizationManifestSuffixBackDeploy
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPersonalizationManifestSuffixBackDeploy)init;
 - (id)description;
 - (id)generateTLV;
 - (id)tlvValue;
-- (void)setManifestSuffix:(id)a3;
+- (void)setManifestSuffix:(id)suffix;
 @end
 
 @implementation UARPTLVPersonalizationManifestSuffixBackDeploy
@@ -18,16 +18,16 @@
   return [(UARPMetaDataTLVStringBackDeploy *)&v3 init];
 }
 
-- (void)setManifestSuffix:(id)a3
+- (void)setManifestSuffix:(id)suffix
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 copy];
-  v7 = *(&v5->super.super._tlvLength + 1);
-  *(&v5->super.super._tlvLength + 1) = v6;
+  suffixCopy = suffix;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [suffixCopy copy];
+  v7 = *(&selfCopy->super.super._tlvLength + 1);
+  *(&selfCopy->super.super._tlvLength + 1) = v6;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)description
@@ -72,14 +72,14 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_new();
-    [v4 setManifestSuffix:v3];
+    [v4 setManifestSuffix:valueCopy];
   }
 
   else
@@ -90,10 +90,10 @@
   return v4;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
   v6 = objc_opt_new();
-  v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+  v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
   [v6 setManifestSuffix:v7];
 
   return v6;

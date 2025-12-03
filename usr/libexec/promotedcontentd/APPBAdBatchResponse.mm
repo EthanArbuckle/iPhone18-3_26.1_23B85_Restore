@@ -1,27 +1,27 @@
 @interface APPBAdBatchResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)errorAsString:(int)a3;
-- (int)StringAsError:(id)a3;
+- (id)errorAsString:(int)string;
+- (int)StringAsError:(id)error;
 - (int)error;
 - (unint64_t)hash;
-- (void)addAd:(id)a3;
-- (void)addAdUpdates:(id)a3;
-- (void)addAdsToEvict:(id)a3;
-- (void)addTagTransformations:(id)a3;
-- (void)addURLsToEvict:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClearCache:(BOOL)a3;
-- (void)setHasError:(BOOL)a3;
-- (void)setHasErrorDetails:(BOOL)a3;
-- (void)setHasLocationGridSpacing:(BOOL)a3;
-- (void)setHasPrefetchInterval:(BOOL)a3;
-- (void)setHasPrefetchThreshold:(BOOL)a3;
-- (void)setHasSupplyMetrics:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAd:(id)ad;
+- (void)addAdUpdates:(id)updates;
+- (void)addAdsToEvict:(id)evict;
+- (void)addTagTransformations:(id)transformations;
+- (void)addURLsToEvict:(id)evict;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasClearCache:(BOOL)cache;
+- (void)setHasError:(BOOL)error;
+- (void)setHasErrorDetails:(BOOL)details;
+- (void)setHasLocationGridSpacing:(BOOL)spacing;
+- (void)setHasPrefetchInterval:(BOOL)interval;
+- (void)setHasPrefetchThreshold:(BOOL)threshold;
+- (void)setHasSupplyMetrics:(BOOL)metrics;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdBatchResponse
@@ -39,9 +39,9 @@
   }
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4;
   }
@@ -54,33 +54,33 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)errorAsString:(int)a3
+- (id)errorAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"NO_QUALIFIED";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"CONFIGURATION_ERROR";
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsError:(id)a3
+- (int)StringAsError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = 1;
-  if (([v3 isEqualToString:@"NO_QUALIFIED"] & 1) == 0)
+  if (([errorCopy isEqualToString:@"NO_QUALIFIED"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"CONFIGURATION_ERROR"])
+    if ([errorCopy isEqualToString:@"CONFIGURATION_ERROR"])
     {
       v4 = 2;
     }
@@ -94,27 +94,27 @@
   return v4;
 }
 
-- (void)addAd:(id)a3
+- (void)addAd:(id)ad
 {
-  v4 = a3;
+  adCopy = ad;
   ads = self->_ads;
-  v8 = v4;
+  v8 = adCopy;
   if (!ads)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_ads;
     self->_ads = v6;
 
-    v4 = v8;
+    adCopy = v8;
     ads = self->_ads;
   }
 
-  [(NSMutableArray *)ads addObject:v4];
+  [(NSMutableArray *)ads addObject:adCopy];
 }
 
-- (void)setHasSupplyMetrics:(BOOL)a3
+- (void)setHasSupplyMetrics:(BOOL)metrics
 {
-  if (a3)
+  if (metrics)
   {
     v3 = 0x80;
   }
@@ -127,9 +127,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasLocationGridSpacing:(BOOL)a3
+- (void)setHasLocationGridSpacing:(BOOL)spacing
 {
-  if (a3)
+  if (spacing)
   {
     v3 = 16;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasErrorDetails:(BOOL)a3
+- (void)setHasErrorDetails:(BOOL)details
 {
-  if (a3)
+  if (details)
   {
     v3 = 8;
   }
@@ -157,81 +157,81 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addAdsToEvict:(id)a3
+- (void)addAdsToEvict:(id)evict
 {
-  v4 = a3;
+  evictCopy = evict;
   adsToEvicts = self->_adsToEvicts;
-  v8 = v4;
+  v8 = evictCopy;
   if (!adsToEvicts)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_adsToEvicts;
     self->_adsToEvicts = v6;
 
-    v4 = v8;
+    evictCopy = v8;
     adsToEvicts = self->_adsToEvicts;
   }
 
-  [(NSMutableArray *)adsToEvicts addObject:v4];
+  [(NSMutableArray *)adsToEvicts addObject:evictCopy];
 }
 
-- (void)addURLsToEvict:(id)a3
+- (void)addURLsToEvict:(id)evict
 {
-  v4 = a3;
+  evictCopy = evict;
   uRLsToEvicts = self->_uRLsToEvicts;
-  v8 = v4;
+  v8 = evictCopy;
   if (!uRLsToEvicts)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_uRLsToEvicts;
     self->_uRLsToEvicts = v6;
 
-    v4 = v8;
+    evictCopy = v8;
     uRLsToEvicts = self->_uRLsToEvicts;
   }
 
-  [(NSMutableArray *)uRLsToEvicts addObject:v4];
+  [(NSMutableArray *)uRLsToEvicts addObject:evictCopy];
 }
 
-- (void)addAdUpdates:(id)a3
+- (void)addAdUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   adUpdates = self->_adUpdates;
-  v8 = v4;
+  v8 = updatesCopy;
   if (!adUpdates)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_adUpdates;
     self->_adUpdates = v6;
 
-    v4 = v8;
+    updatesCopy = v8;
     adUpdates = self->_adUpdates;
   }
 
-  [(NSMutableArray *)adUpdates addObject:v4];
+  [(NSMutableArray *)adUpdates addObject:updatesCopy];
 }
 
-- (void)addTagTransformations:(id)a3
+- (void)addTagTransformations:(id)transformations
 {
-  v4 = a3;
+  transformationsCopy = transformations;
   tagTransformations = self->_tagTransformations;
-  v8 = v4;
+  v8 = transformationsCopy;
   if (!tagTransformations)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_tagTransformations;
     self->_tagTransformations = v6;
 
-    v4 = v8;
+    transformationsCopy = v8;
     tagTransformations = self->_tagTransformations;
   }
 
-  [(NSMutableArray *)tagTransformations addObject:v4];
+  [(NSMutableArray *)tagTransformations addObject:transformationsCopy];
 }
 
-- (void)setHasPrefetchInterval:(BOOL)a3
+- (void)setHasPrefetchInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 2;
   }
@@ -244,9 +244,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPrefetchThreshold:(BOOL)a3
+- (void)setHasPrefetchThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 32;
   }
@@ -259,9 +259,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasClearCache:(BOOL)a3
+- (void)setHasClearCache:(BOOL)cache
 {
-  if (a3)
+  if (cache)
   {
     v3 = 64;
   }
@@ -279,8 +279,8 @@
   v7.receiver = self;
   v7.super_class = APPBAdBatchResponse;
   v3 = [(APPBAdBatchResponse *)&v7 description];
-  v4 = [(APPBAdBatchResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdBatchResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -337,8 +337,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v52 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v52 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v52 objects:v58 count:16];
@@ -431,8 +431,8 @@ LABEL_25:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v48 + 1) + 8 * j) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation2 = [*(*(&v48 + 1) + 8 * j) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation2];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v48 objects:v57 count:16];
@@ -466,8 +466,8 @@ LABEL_25:
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v44 + 1) + 8 * k) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation3 = [*(*(&v44 + 1) + 8 * k) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation3];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v44 objects:v56 count:16];
@@ -503,8 +503,8 @@ LABEL_25:
   specification = self->_specification;
   if (specification)
   {
-    v39 = [(APPBAdSpecification *)specification dictionaryRepresentation];
-    [v3 setObject:v39 forKey:@"specification"];
+    dictionaryRepresentation4 = [(APPBAdSpecification *)specification dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"specification"];
   }
 
   if ((*&self->_has & 0x40) != 0)
@@ -516,9 +516,9 @@ LABEL_25:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
@@ -736,28 +736,28 @@ LABEL_18:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[16] = self->_error;
-    *(v4 + 108) |= 4u;
+    toCopy[16] = self->_error;
+    *(toCopy + 108) |= 4u;
   }
 
-  v29 = v4;
+  v29 = toCopy;
   if (self->_batchId)
   {
-    [v4 setBatchId:?];
+    [toCopy setBatchId:?];
   }
 
   if ([(APPBAdBatchResponse *)self adsCount])
   {
     [v29 clearAds];
-    v5 = [(APPBAdBatchResponse *)self adsCount];
-    if (v5)
+    adsCount = [(APPBAdBatchResponse *)self adsCount];
+    if (adsCount)
     {
-      v6 = v5;
+      v6 = adsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(APPBAdBatchResponse *)self adAtIndex:i];
@@ -814,10 +814,10 @@ LABEL_15:
   if ([(APPBAdBatchResponse *)self adsToEvictsCount])
   {
     [v29 clearAdsToEvicts];
-    v11 = [(APPBAdBatchResponse *)self adsToEvictsCount];
-    if (v11)
+    adsToEvictsCount = [(APPBAdBatchResponse *)self adsToEvictsCount];
+    if (adsToEvictsCount)
     {
-      v12 = v11;
+      v12 = adsToEvictsCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(APPBAdBatchResponse *)self adsToEvictAtIndex:j];
@@ -829,10 +829,10 @@ LABEL_15:
   if ([(APPBAdBatchResponse *)self uRLsToEvictsCount])
   {
     [v29 clearURLsToEvicts];
-    v15 = [(APPBAdBatchResponse *)self uRLsToEvictsCount];
-    if (v15)
+    uRLsToEvictsCount = [(APPBAdBatchResponse *)self uRLsToEvictsCount];
+    if (uRLsToEvictsCount)
     {
-      v16 = v15;
+      v16 = uRLsToEvictsCount;
       for (k = 0; k != v16; ++k)
       {
         v18 = [(APPBAdBatchResponse *)self uRLsToEvictAtIndex:k];
@@ -844,10 +844,10 @@ LABEL_15:
   if ([(APPBAdBatchResponse *)self adUpdatesCount])
   {
     [v29 clearAdUpdates];
-    v19 = [(APPBAdBatchResponse *)self adUpdatesCount];
-    if (v19)
+    adUpdatesCount = [(APPBAdBatchResponse *)self adUpdatesCount];
+    if (adUpdatesCount)
     {
-      v20 = v19;
+      v20 = adUpdatesCount;
       for (m = 0; m != v20; ++m)
       {
         v22 = [(APPBAdBatchResponse *)self adUpdatesAtIndex:m];
@@ -859,10 +859,10 @@ LABEL_15:
   if ([(APPBAdBatchResponse *)self tagTransformationsCount])
   {
     [v29 clearTagTransformations];
-    v23 = [(APPBAdBatchResponse *)self tagTransformationsCount];
-    if (v23)
+    tagTransformationsCount = [(APPBAdBatchResponse *)self tagTransformationsCount];
+    if (tagTransformationsCount)
     {
-      v24 = v23;
+      v24 = tagTransformationsCount;
       for (n = 0; n != v24; ++n)
       {
         v26 = [(APPBAdBatchResponse *)self tagTransformationsAtIndex:n];
@@ -905,9 +905,9 @@ LABEL_15:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -915,7 +915,7 @@ LABEL_15:
     *(v5 + 108) |= 4u;
   }
 
-  v7 = [(NSString *)self->_batchId copyWithZone:a3];
+  v7 = [(NSString *)self->_batchId copyWithZone:zone];
   v8 = v6[6];
   v6[6] = v7;
 
@@ -938,7 +938,7 @@ LABEL_15:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v62 + 1) + 8 * i) copyWithZone:a3];
+        v14 = [*(*(&v62 + 1) + 8 * i) copyWithZone:zone];
         [v6 addAd:v14];
       }
 
@@ -1010,7 +1010,7 @@ LABEL_16:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v58 + 1) + 8 * j) copyWithZone:a3];
+        v21 = [*(*(&v58 + 1) + 8 * j) copyWithZone:zone];
         [v6 addAdsToEvict:v21];
       }
 
@@ -1039,7 +1039,7 @@ LABEL_16:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v54 + 1) + 8 * k) copyWithZone:a3];
+        v27 = [*(*(&v54 + 1) + 8 * k) copyWithZone:zone];
         [v6 addURLsToEvict:v27];
       }
 
@@ -1068,7 +1068,7 @@ LABEL_16:
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v50 + 1) + 8 * m) copyWithZone:a3];
+        v33 = [*(*(&v50 + 1) + 8 * m) copyWithZone:zone];
         [v6 addAdUpdates:v33];
       }
 
@@ -1097,7 +1097,7 @@ LABEL_16:
           objc_enumerationMutation(v34);
         }
 
-        v39 = [*(*(&v46 + 1) + 8 * n) copyWithZone:{a3, v46}];
+        v39 = [*(*(&v46 + 1) + 8 * n) copyWithZone:{zone, v46}];
         [v6 addTagTransformations:v39];
       }
 
@@ -1121,11 +1121,11 @@ LABEL_16:
     *(v6 + 108) |= 0x20u;
   }
 
-  v41 = [(NSString *)self->_configVersion copyWithZone:a3, v46];
+  v41 = [(NSString *)self->_configVersion copyWithZone:zone, v46];
   v42 = v6[7];
   v6[7] = v41;
 
-  v43 = [(APPBAdSpecification *)self->_specification copyWithZone:a3];
+  v43 = [(APPBAdSpecification *)self->_specification copyWithZone:zone];
   v44 = v6[10];
   v6[10] = v43;
 
@@ -1138,35 +1138,35 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_59;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 108) & 4) == 0 || self->_error != *(v4 + 16))
+    if ((*(equalCopy + 108) & 4) == 0 || self->_error != *(equalCopy + 16))
     {
       goto LABEL_59;
     }
   }
 
-  else if ((*(v4 + 108) & 4) != 0)
+  else if ((*(equalCopy + 108) & 4) != 0)
   {
     goto LABEL_59;
   }
 
   batchId = self->_batchId;
-  if (batchId | *(v4 + 6) && ![(NSString *)batchId isEqual:?])
+  if (batchId | *(equalCopy + 6) && ![(NSString *)batchId isEqual:?])
   {
     goto LABEL_59;
   }
 
   ads = self->_ads;
-  if (ads | *(v4 + 4))
+  if (ads | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)ads isEqual:?])
     {
@@ -1177,77 +1177,77 @@ LABEL_16:
   has = self->_has;
   if ((*&has & 0x80000000) != 0)
   {
-    if ((*(v4 + 108) & 0x80) == 0)
+    if ((*(equalCopy + 108) & 0x80) == 0)
     {
       goto LABEL_59;
     }
 
     if (self->_supplyMetrics)
     {
-      if ((*(v4 + 105) & 1) == 0)
+      if ((*(equalCopy + 105) & 1) == 0)
       {
         goto LABEL_59;
       }
     }
 
-    else if (*(v4 + 105))
+    else if (*(equalCopy + 105))
     {
       goto LABEL_59;
     }
   }
 
-  else if ((*(v4 + 108) & 0x80) != 0)
+  else if ((*(equalCopy + 108) & 0x80) != 0)
   {
     goto LABEL_59;
   }
 
   if ((*&has & 0x10) != 0)
   {
-    if ((*(v4 + 108) & 0x10) == 0 || self->_locationGridSpacing != *(v4 + 18))
+    if ((*(equalCopy + 108) & 0x10) == 0 || self->_locationGridSpacing != *(equalCopy + 18))
     {
       goto LABEL_59;
     }
   }
 
-  else if ((*(v4 + 108) & 0x10) != 0)
+  else if ((*(equalCopy + 108) & 0x10) != 0)
   {
     goto LABEL_59;
   }
 
   if ((*&has & 8) != 0)
   {
-    if ((*(v4 + 108) & 8) == 0 || self->_errorDetails != *(v4 + 17))
+    if ((*(equalCopy + 108) & 8) == 0 || self->_errorDetails != *(equalCopy + 17))
     {
       goto LABEL_59;
     }
   }
 
-  else if ((*(v4 + 108) & 8) != 0)
+  else if ((*(equalCopy + 108) & 8) != 0)
   {
     goto LABEL_59;
   }
 
   if (*&has)
   {
-    if ((*(v4 + 108) & 1) == 0 || self->_minimumIntervalBeforeNextRequest != *(v4 + 1))
+    if ((*(equalCopy + 108) & 1) == 0 || self->_minimumIntervalBeforeNextRequest != *(equalCopy + 1))
     {
       goto LABEL_59;
     }
   }
 
-  else if (*(v4 + 108))
+  else if (*(equalCopy + 108))
   {
     goto LABEL_59;
   }
 
   adsToEvicts = self->_adsToEvicts;
-  if (adsToEvicts | *(v4 + 5) && ![(NSMutableArray *)adsToEvicts isEqual:?])
+  if (adsToEvicts | *(equalCopy + 5) && ![(NSMutableArray *)adsToEvicts isEqual:?])
   {
     goto LABEL_59;
   }
 
   uRLsToEvicts = self->_uRLsToEvicts;
-  if (uRLsToEvicts | *(v4 + 12))
+  if (uRLsToEvicts | *(equalCopy + 12))
   {
     if (![(NSMutableArray *)uRLsToEvicts isEqual:?])
     {
@@ -1256,7 +1256,7 @@ LABEL_16:
   }
 
   adUpdates = self->_adUpdates;
-  if (adUpdates | *(v4 + 3))
+  if (adUpdates | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)adUpdates isEqual:?])
     {
@@ -1265,7 +1265,7 @@ LABEL_16:
   }
 
   tagTransformations = self->_tagTransformations;
-  if (tagTransformations | *(v4 + 11))
+  if (tagTransformations | *(equalCopy + 11))
   {
     if (![(NSMutableArray *)tagTransformations isEqual:?])
     {
@@ -1275,38 +1275,38 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 108) & 2) == 0 || self->_prefetchInterval != *(v4 + 2))
+    if ((*(equalCopy + 108) & 2) == 0 || self->_prefetchInterval != *(equalCopy + 2))
     {
       goto LABEL_59;
     }
   }
 
-  else if ((*(v4 + 108) & 2) != 0)
+  else if ((*(equalCopy + 108) & 2) != 0)
   {
     goto LABEL_59;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 108) & 0x20) == 0 || self->_prefetchThreshold != *(v4 + 19))
+    if ((*(equalCopy + 108) & 0x20) == 0 || self->_prefetchThreshold != *(equalCopy + 19))
     {
       goto LABEL_59;
     }
   }
 
-  else if ((*(v4 + 108) & 0x20) != 0)
+  else if ((*(equalCopy + 108) & 0x20) != 0)
   {
     goto LABEL_59;
   }
 
   configVersion = self->_configVersion;
-  if (configVersion | *(v4 + 7) && ![(NSString *)configVersion isEqual:?])
+  if (configVersion | *(equalCopy + 7) && ![(NSString *)configVersion isEqual:?])
   {
     goto LABEL_59;
   }
 
   specification = self->_specification;
-  if (specification | *(v4 + 10))
+  if (specification | *(equalCopy + 10))
   {
     if (![(APPBAdSpecification *)specification isEqual:?])
     {
@@ -1316,17 +1316,17 @@ LABEL_16:
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 108) & 0x40) != 0)
+    if ((*(equalCopy + 108) & 0x40) != 0)
     {
       if (self->_clearCache)
       {
-        if ((*(v4 + 104) & 1) == 0)
+        if ((*(equalCopy + 104) & 1) == 0)
         {
           goto LABEL_59;
         }
       }
 
-      else if (*(v4 + 104))
+      else if (*(equalCopy + 104))
       {
         goto LABEL_59;
       }
@@ -1340,7 +1340,7 @@ LABEL_59:
     goto LABEL_60;
   }
 
-  v14 = (*(v4 + 108) & 0x40) == 0;
+  v14 = (*(equalCopy + 108) & 0x40) == 0;
 LABEL_60:
 
   return v14;
@@ -1513,17 +1513,17 @@ LABEL_14:
   return v32 ^ v33 ^ v31 ^ v30 ^ v29 ^ v28 ^ v9 ^ v27 ^ v13 ^ v14 ^ v15 ^ v18 ^ v22 ^ v23 ^ v24 ^ v25;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[108] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[108] & 4) != 0)
   {
-    self->_error = *(v4 + 16);
+    self->_error = *(fromCopy + 16);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(APPBAdBatchResponse *)self setBatchId:?];
   }

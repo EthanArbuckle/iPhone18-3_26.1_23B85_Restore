@@ -1,15 +1,15 @@
 @interface _DKPRChangeSet
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addDeleteEventID:(uint64_t)a1;
-- (uint64_t)addEvents:(uint64_t)a1;
+- (uint64_t)addDeleteEventID:(uint64_t)d;
+- (uint64_t)addEvents:(uint64_t)events;
 - (uint64_t)deleteEventIDs;
 - (uint64_t)events;
-- (void)setDeleteEventIDs:(uint64_t)a1;
-- (void)setEvents:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setDeleteEventIDs:(uint64_t)ds;
+- (void)setEvents:(uint64_t)events;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _DKPRChangeSet
@@ -20,8 +20,8 @@
   v8.receiver = self;
   v8.super_class = _DKPRChangeSet;
   v4 = [(_DKPRChangeSet *)&v8 description];
-  v5 = [(_DKPRChangeSet *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_DKPRChangeSet *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -29,7 +29,7 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_events count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_events, "count")}];
@@ -52,8 +52,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -62,24 +62,24 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"events"];
+    [dictionary setObject:v4 forKey:@"events"];
   }
 
   deleteEventIDs = self->_deleteEventIDs;
   if (deleteEventIDs)
   {
-    [v3 setObject:deleteEventIDs forKey:@"deleteEventID"];
+    [dictionary setObject:deleteEventIDs forKey:@"deleteEventID"];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -147,10 +147,10 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -171,7 +171,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [(_DKPRChangeSet *)v5 addEvents:v11];
 
         ++v10;
@@ -204,7 +204,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [(_DKPRChangeSet *)v5 addDeleteEventID:v17];
 
         ++v16;
@@ -221,13 +221,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((events = self->_events, !(events | v4[2])) || -[NSMutableArray isEqual:](events, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((events = self->_events, !(events | equalCopy[2])) || -[NSMutableArray isEqual:](events, "isEqual:")))
   {
     deleteEventIDs = self->_deleteEventIDs;
-    if (deleteEventIDs | v4[1])
+    if (deleteEventIDs | equalCopy[1])
     {
       v7 = [(NSMutableArray *)deleteEventIDs isEqual:?];
     }
@@ -246,21 +246,21 @@
   return v7;
 }
 
-- (uint64_t)addEvents:(uint64_t)a1
+- (uint64_t)addEvents:(uint64_t)events
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (events)
   {
-    v5 = *(a1 + 16);
+    v5 = *(events + 16);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 16);
-      *(a1 + 16) = v6;
+      v7 = *(events + 16);
+      *(events + 16) = v6;
 
-      v5 = *(a1 + 16);
+      v5 = *(events + 16);
     }
 
     v3 = [v5 addObject:v9];
@@ -270,21 +270,21 @@
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (uint64_t)addDeleteEventID:(uint64_t)a1
+- (uint64_t)addDeleteEventID:(uint64_t)d
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (d)
   {
-    v5 = *(a1 + 8);
+    v5 = *(d + 8);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      v7 = *(d + 8);
+      *(d + 8) = v6;
 
-      v5 = *(a1 + 8);
+      v5 = *(d + 8);
     }
 
     v3 = [v5 addObject:v9];
@@ -304,11 +304,11 @@
   return result;
 }
 
-- (void)setEvents:(uint64_t)a1
+- (void)setEvents:(uint64_t)events
 {
-  if (a1)
+  if (events)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 16);
+    OUTLINED_FUNCTION_0_8(events, a2, 16);
   }
 }
 
@@ -322,11 +322,11 @@
   return result;
 }
 
-- (void)setDeleteEventIDs:(uint64_t)a1
+- (void)setDeleteEventIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 8);
+    OUTLINED_FUNCTION_0_8(ds, a2, 8);
   }
 }
 

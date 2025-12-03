@@ -1,17 +1,17 @@
 @interface MessageToMailboxUidCache
 - (MessageToMailboxUidCache)init;
-- (MessageToMailboxUidCache)initWithLibrary:(id)a3;
-- (id)_mailboxWithMailboxLibraryID:(int64_t)a3;
+- (MessageToMailboxUidCache)initWithLibrary:(id)library;
+- (id)_mailboxWithMailboxLibraryID:(int64_t)d;
 - (id)debugDescription;
-- (id)mailboxForMessage:(id)a3;
+- (id)mailboxForMessage:(id)message;
 @end
 
 @implementation MessageToMailboxUidCache
 
-- (MessageToMailboxUidCache)initWithLibrary:(id)a3
+- (MessageToMailboxUidCache)initWithLibrary:(id)library
 {
-  v6 = a3;
-  if (!v6)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"MessageToMailboxUidCache.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"library"}];
@@ -26,7 +26,7 @@
     mailboxCache = v7->_mailboxCache;
     v7->_mailboxCache = v8;
 
-    objc_storeStrong(&v7->_library, a3);
+    objc_storeStrong(&v7->_library, library);
   }
 
   return v7;
@@ -40,9 +40,9 @@
   return v4;
 }
 
-- (id)mailboxForMessage:(id)a3
+- (id)mailboxForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (!qword_1006DD388)
   {
     qword_1006DD388 = objc_opt_class();
@@ -50,34 +50,34 @@
 
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 mailboxID];
+    mailboxID = [messageCopy mailboxID];
     mailboxCache = self->_mailboxCache;
-    v7 = [NSNumber numberWithLongLong:v5];
-    v8 = [(NSMapTable *)mailboxCache objectForKey:v7];
+    v7 = [NSNumber numberWithLongLong:mailboxID];
+    mailbox = [(NSMapTable *)mailboxCache objectForKey:v7];
 
-    if (!v8)
+    if (!mailbox)
     {
-      v8 = [v4 mailbox];
-      if (v8)
+      mailbox = [messageCopy mailbox];
+      if (mailbox)
       {
         v9 = self->_mailboxCache;
-        v10 = [NSNumber numberWithLongLong:v5];
-        [(NSMapTable *)v9 setObject:v8 forKey:v10];
+        v10 = [NSNumber numberWithLongLong:mailboxID];
+        [(NSMapTable *)v9 setObject:mailbox forKey:v10];
       }
     }
   }
 
   else
   {
-    v8 = [v4 mailbox];
+    mailbox = [messageCopy mailbox];
   }
 
-  return v8;
+  return mailbox;
 }
 
-- (id)_mailboxWithMailboxLibraryID:(int64_t)a3
+- (id)_mailboxWithMailboxLibraryID:(int64_t)d
 {
-  v3 = [(MFMailMessageLibrary *)self->_library urlForMailboxID:a3];
+  v3 = [(MFMailMessageLibrary *)self->_library urlForMailboxID:d];
   v4 = [MailAccount mailboxUidFromActiveAccountsForURL:v3];
 
   return v4;
@@ -109,8 +109,8 @@
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [(NSMapTable *)self->_mailboxCache objectForKey:v10];
-        v12 = [v10 unsignedLongValue];
-        [v5 appendFormat:@"\t%ld\t: %@\n", v12, v11, v14];
+        unsignedLongValue = [v10 unsignedLongValue];
+        [v5 appendFormat:@"\t%ld\t: %@\n", unsignedLongValue, v11, v14];
       }
 
       v7 = [(NSMapTable *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];

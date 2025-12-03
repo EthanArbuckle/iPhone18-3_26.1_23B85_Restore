@@ -1,35 +1,35 @@
 @interface _SFPBProductInventoryResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBProductInventoryResult)initWithDictionary:(id)a3;
-- (_SFPBProductInventoryResult)initWithFacade:(id)a3;
-- (_SFPBProductInventoryResult)initWithJSON:(id)a3;
+- (_SFPBProductInventoryResult)initWithDictionary:(id)dictionary;
+- (_SFPBProductInventoryResult)initWithFacade:(id)facade;
+- (_SFPBProductInventoryResult)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addAvailability:(id)a3;
-- (void)setAvailability:(id)a3;
-- (void)setProductIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAvailability:(id)availability;
+- (void)setAvailability:(id)availability;
+- (void)setProductIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBProductInventoryResult
 
-- (_SFPBProductInventoryResult)initWithFacade:(id)a3
+- (_SFPBProductInventoryResult)initWithFacade:(id)facade
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBProductInventoryResult *)self init];
   if (v5)
   {
-    v6 = [v4 productIdentifier];
+    productIdentifier = [facadeCopy productIdentifier];
 
-    if (v6)
+    if (productIdentifier)
     {
-      v7 = [v4 productIdentifier];
-      [(_SFPBProductInventoryResult *)v5 setProductIdentifier:v7];
+      productIdentifier2 = [facadeCopy productIdentifier];
+      [(_SFPBProductInventoryResult *)v5 setProductIdentifier:productIdentifier2];
     }
 
-    v8 = [v4 availability];
-    if (v8)
+    availability = [facadeCopy availability];
+    if (availability)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -43,8 +43,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v4 availability];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    availability2 = [facadeCopy availability];
+    v11 = [availability2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -55,7 +55,7 @@
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(availability2);
           }
 
           v15 = [[_SFPBProductInventory alloc] initWithFacade:*(*(&v19 + 1) + 8 * i)];
@@ -65,7 +65,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v12 = [availability2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v12);
@@ -79,16 +79,16 @@
   return v5;
 }
 
-- (_SFPBProductInventoryResult)initWithDictionary:(id)a3
+- (_SFPBProductInventoryResult)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = _SFPBProductInventoryResult;
   v5 = [(_SFPBProductInventoryResult *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"productIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"productIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
       [(_SFPBProductInventoryResult *)v5 setProductIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"availability"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"availability"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,30 +149,30 @@
   return v5;
 }
 
-- (_SFPBProductInventoryResult)initWithJSON:(id)a3
+- (_SFPBProductInventoryResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBProductInventoryResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBProductInventoryResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBProductInventoryResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -186,10 +186,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_availabilitys count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -209,16 +209,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -228,43 +228,43 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"availability"];
+    [dictionary setObject:array forKeyedSubscript:@"availability"];
   }
 
   if (self->_productIdentifier)
   {
-    v12 = [(_SFPBProductInventoryResult *)self productIdentifier];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"productIdentifier"];
+    productIdentifier = [(_SFPBProductInventoryResult *)self productIdentifier];
+    v13 = [productIdentifier copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"productIdentifier"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBProductInventoryResult *)self productIdentifier];
-  v6 = [v4 productIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  productIdentifier = [(_SFPBProductInventoryResult *)self productIdentifier];
+  productIdentifier2 = [equalCopy productIdentifier];
+  if ((productIdentifier != 0) == (productIdentifier2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBProductInventoryResult *)self productIdentifier];
-  if (v7)
+  productIdentifier3 = [(_SFPBProductInventoryResult *)self productIdentifier];
+  if (productIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBProductInventoryResult *)self productIdentifier];
-    v10 = [v4 productIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = productIdentifier3;
+    productIdentifier4 = [(_SFPBProductInventoryResult *)self productIdentifier];
+    productIdentifier5 = [equalCopy productIdentifier];
+    v11 = [productIdentifier4 isEqual:productIdentifier5];
 
     if (!v11)
     {
@@ -276,12 +276,12 @@
   {
   }
 
-  v5 = [(_SFPBProductInventoryResult *)self availabilitys];
-  v6 = [v4 availabilitys];
-  if ((v5 != 0) != (v6 == 0))
+  productIdentifier = [(_SFPBProductInventoryResult *)self availabilitys];
+  productIdentifier2 = [equalCopy availabilitys];
+  if ((productIdentifier != 0) != (productIdentifier2 == 0))
   {
-    v12 = [(_SFPBProductInventoryResult *)self availabilitys];
-    if (!v12)
+    availabilitys = [(_SFPBProductInventoryResult *)self availabilitys];
+    if (!availabilitys)
     {
 
 LABEL_15:
@@ -289,10 +289,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBProductInventoryResult *)self availabilitys];
-    v15 = [v4 availabilitys];
-    v16 = [v14 isEqual:v15];
+    v13 = availabilitys;
+    availabilitys2 = [(_SFPBProductInventoryResult *)self availabilitys];
+    availabilitys3 = [equalCopy availabilitys];
+    v16 = [availabilitys2 isEqual:availabilitys3];
 
     if (v16)
     {
@@ -312,22 +312,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBProductInventoryResult *)self productIdentifier];
-  if (v5)
+  toCopy = to;
+  productIdentifier = [(_SFPBProductInventoryResult *)self productIdentifier];
+  if (productIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBProductInventoryResult *)self availabilitys];
+  availabilitys = [(_SFPBProductInventoryResult *)self availabilitys];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [availabilitys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -339,7 +339,7 @@ LABEL_13:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(availabilitys);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -348,7 +348,7 @@ LABEL_13:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [availabilitys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -357,36 +357,36 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addAvailability:(id)a3
+- (void)addAvailability:(id)availability
 {
-  v4 = a3;
+  availabilityCopy = availability;
   availabilitys = self->_availabilitys;
-  v8 = v4;
+  v8 = availabilityCopy;
   if (!availabilitys)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_availabilitys;
-    self->_availabilitys = v6;
+    self->_availabilitys = array;
 
-    v4 = v8;
+    availabilityCopy = v8;
     availabilitys = self->_availabilitys;
   }
 
-  [(NSArray *)availabilitys addObject:v4];
+  [(NSArray *)availabilitys addObject:availabilityCopy];
 }
 
-- (void)setAvailability:(id)a3
+- (void)setAvailability:(id)availability
 {
-  v4 = [a3 copy];
+  v4 = [availability copy];
   availabilitys = self->_availabilitys;
   self->_availabilitys = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setProductIdentifier:(id)a3
+- (void)setProductIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   productIdentifier = self->_productIdentifier;
   self->_productIdentifier = v4;
 

@@ -1,7 +1,7 @@
 @interface FCMultiSourceHeadlinesOperation
 - (BOOL)validateOperation;
 - (FCMultiSourceHeadlinesOperation)init;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -37,9 +37,9 @@
 - (BOOL)validateOperation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(FCMultiSourceHeadlinesOperation *)self configuration];
+  configuration = [(FCMultiSourceHeadlinesOperation *)self configuration];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!configuration && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"multi-source headlines operation needs a configuration"];
     v12 = 136315906;
@@ -53,9 +53,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v12, 0x26u);
   }
 
-  v4 = [(FCMultiSourceHeadlinesOperation *)self context];
+  context = [(FCMultiSourceHeadlinesOperation *)self context];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"multi-source headlines operation needs a context"];
     v12 = 136315906;
@@ -69,11 +69,11 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v12, 0x26u);
   }
 
-  v5 = [(FCMultiSourceHeadlinesOperation *)self configuration];
-  if (v5)
+  configuration2 = [(FCMultiSourceHeadlinesOperation *)self configuration];
+  if (configuration2)
   {
-    v6 = [(FCMultiSourceHeadlinesOperation *)self context];
-    v7 = v6 != 0;
+    context2 = [(FCMultiSourceHeadlinesOperation *)self context];
+    v7 = context2 != 0;
   }
 
   else
@@ -92,24 +92,24 @@
   if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(FCOperation *)self shortOperationDescription];
-    v6 = [(FCMultiSourceHeadlinesOperation *)self articleIDs];
-    v7 = [v6 count];
-    v8 = [(FCMultiSourceHeadlinesOperation *)self articleListIDs];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
+    articleIDs = [(FCMultiSourceHeadlinesOperation *)self articleIDs];
+    v7 = [articleIDs count];
+    articleListIDs = [(FCMultiSourceHeadlinesOperation *)self articleListIDs];
     *buf = 138543874;
-    v43 = v5;
+    v43 = shortOperationDescription;
     v44 = 2048;
     v45 = v7;
     v46 = 2048;
-    v47 = [v8 count];
+    v47 = [articleListIDs count];
     _os_log_impl(&dword_1B63EF000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ will fetch headlines for articleIDs:%lu articleListIDs:%lu", buf, 0x20u);
   }
 
-  v9 = [(FCMultiSourceHeadlinesOperation *)self articleIDs];
-  v10 = [(FCMultiSourceHeadlinesOperation *)self articleListIDs];
-  v28 = [(FCMultiSourceHeadlinesOperation *)self heldRecordsByType];
-  v27 = [(FCMultiSourceHeadlinesOperation *)self shouldBypassRecordSourcePersistence];
-  v11 = [(FCMultiSourceHeadlinesOperation *)self context];
+  articleIDs2 = [(FCMultiSourceHeadlinesOperation *)self articleIDs];
+  articleListIDs2 = [(FCMultiSourceHeadlinesOperation *)self articleListIDs];
+  heldRecordsByType = [(FCMultiSourceHeadlinesOperation *)self heldRecordsByType];
+  shouldBypassRecordSourcePersistence = [(FCMultiSourceHeadlinesOperation *)self shouldBypassRecordSourcePersistence];
+  context = [(FCMultiSourceHeadlinesOperation *)self context];
   v12 = MEMORY[0x1E695DF90];
   v40[0] = @"Article";
   v39[0] = @"sourceChannelTagID";
@@ -123,7 +123,7 @@
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:3];
   v15 = [v12 dictionaryWithDictionary:v14];
 
-  if ([v10 count])
+  if ([articleListIDs2 count])
   {
     v38 = @"articleIDs";
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
@@ -131,32 +131,32 @@
   }
 
   v17 = objc_alloc_init(FCRecordChainFetchOperation);
-  [(FCRecordChainFetchOperation *)v17 setContext:v11];
-  v18 = [(FCMultiSourceHeadlinesOperation *)self edgeCacheHint];
-  [(FCRecordChainFetchOperation *)v17 setEdgeCacheHint:v18];
+  [(FCRecordChainFetchOperation *)v17 setContext:context];
+  edgeCacheHint = [(FCMultiSourceHeadlinesOperation *)self edgeCacheHint];
+  [(FCRecordChainFetchOperation *)v17 setEdgeCacheHint:edgeCacheHint];
 
-  v19 = [MEMORY[0x1E695DEC8] fc_arrayByAddingObjectsFromArray:v9 toArray:v10];
+  v19 = [MEMORY[0x1E695DEC8] fc_arrayByAddingObjectsFromArray:articleIDs2 toArray:articleListIDs2];
   [(FCRecordChainFetchOperation *)v17 setTopLevelRecordIDs:v19];
 
   [(FCRecordChainFetchOperation *)v17 setLinkKeysByRecordType:v15];
   v36[0] = @"Article";
-  v20 = [(FCMultiSourceHeadlinesOperation *)self cachePolicyForArticles];
+  cachePolicyForArticles = [(FCMultiSourceHeadlinesOperation *)self cachePolicyForArticles];
   v36[1] = @"ArticleList";
-  v37[0] = v20;
-  v21 = [(FCMultiSourceHeadlinesOperation *)self cachePolicyForArticleLists];
-  v37[1] = v21;
+  v37[0] = cachePolicyForArticles;
+  cachePolicyForArticleLists = [(FCMultiSourceHeadlinesOperation *)self cachePolicyForArticleLists];
+  v37[1] = cachePolicyForArticleLists;
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
   [(FCRecordChainFetchOperation *)v17 setCachePoliciesByRecordType:v22];
 
   [(FCRecordChainFetchOperation *)v17 setShouldReturnErrorWhenSomeRecordsMissing:1];
-  [(FCRecordChainFetchOperation *)v17 setShouldBypassRecordSourcePersistence:v27];
-  if (v28)
+  [(FCRecordChainFetchOperation *)v17 setShouldBypassRecordSourcePersistence:shouldBypassRecordSourcePersistence];
+  if (heldRecordsByType)
   {
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __51__FCMultiSourceHeadlinesOperation_performOperation__block_invoke;
     v34[3] = &unk_1E7C42508;
-    v35 = v28;
+    v35 = heldRecordsByType;
     [(FCRecordChainFetchOperation *)v17 setCachedRecordsLookupBlock:v34];
   }
 
@@ -166,11 +166,11 @@
   v29[2] = __51__FCMultiSourceHeadlinesOperation_performOperation__block_invoke_2;
   v29[3] = &unk_1E7C42570;
   v29[4] = self;
-  v23 = v10;
+  v23 = articleListIDs2;
   v30 = v23;
-  v24 = v9;
+  v24 = articleIDs2;
   v31 = v24;
-  v25 = v11;
+  v25 = context;
   v32 = v25;
   objc_copyWeak(&v33, buf);
   [(FCRecordChainFetchOperation *)v17 setRecordChainCompletionHandler:v29];
@@ -310,27 +310,27 @@ FCArticleList *__51__FCMultiSourceHeadlinesOperation_performOperation__block_inv
   return v6;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v12 = a3;
-  v4 = [(FCMultiSourceHeadlinesOperation *)self headlinesCompletionHandler];
+  errorCopy = error;
+  headlinesCompletionHandler = [(FCMultiSourceHeadlinesOperation *)self headlinesCompletionHandler];
 
-  if (v4)
+  if (headlinesCompletionHandler)
   {
-    v5 = [(FCMultiSourceHeadlinesOperation *)self headlinesCompletionHandler];
-    v6 = [(FCMultiSourceHeadlinesOperation *)self resultArticleListHeadlinesByArticleListID];
-    v7 = [(FCMultiSourceHeadlinesOperation *)self resultArticleListsByID];
-    v8 = [(FCMultiSourceHeadlinesOperation *)self resultArticleIDHeadlinesByArticleID];
-    (v5)[2](v5, v6, v7, v8, v12);
+    headlinesCompletionHandler2 = [(FCMultiSourceHeadlinesOperation *)self headlinesCompletionHandler];
+    resultArticleListHeadlinesByArticleListID = [(FCMultiSourceHeadlinesOperation *)self resultArticleListHeadlinesByArticleListID];
+    resultArticleListsByID = [(FCMultiSourceHeadlinesOperation *)self resultArticleListsByID];
+    resultArticleIDHeadlinesByArticleID = [(FCMultiSourceHeadlinesOperation *)self resultArticleIDHeadlinesByArticleID];
+    (headlinesCompletionHandler2)[2](headlinesCompletionHandler2, resultArticleListHeadlinesByArticleListID, resultArticleListsByID, resultArticleIDHeadlinesByArticleID, errorCopy);
   }
 
-  v9 = [(FCMultiSourceHeadlinesOperation *)self heldRecordsCompletionHandler];
+  heldRecordsCompletionHandler = [(FCMultiSourceHeadlinesOperation *)self heldRecordsCompletionHandler];
 
-  if (v9)
+  if (heldRecordsCompletionHandler)
   {
-    v10 = [(FCMultiSourceHeadlinesOperation *)self heldRecordsCompletionHandler];
-    v11 = [(FCMultiSourceHeadlinesOperation *)self resultHeldRecordsByType];
-    (v10)[2](v10, v11, v12);
+    heldRecordsCompletionHandler2 = [(FCMultiSourceHeadlinesOperation *)self heldRecordsCompletionHandler];
+    resultHeldRecordsByType = [(FCMultiSourceHeadlinesOperation *)self resultHeldRecordsByType];
+    (heldRecordsCompletionHandler2)[2](heldRecordsCompletionHandler2, resultHeldRecordsByType, errorCopy);
   }
 }
 

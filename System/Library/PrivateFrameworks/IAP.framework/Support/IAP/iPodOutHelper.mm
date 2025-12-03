@@ -1,6 +1,6 @@
 @interface iPodOutHelper
 - (iPodOutHelper)init;
-- (void)applicationStateChanged:(id)a3;
+- (void)applicationStateChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -29,11 +29,11 @@
   [(iPodOutHelper *)&v3 dealloc];
 }
 
-- (void)applicationStateChanged:(id)a3
+- (void)applicationStateChanged:(id)changed
 {
-  if (![objc_msgSend(a3 objectForKey:{BKSApplicationStateDisplayIDKey), "caseInsensitiveCompare:", @"com.apple.iphoneos.iPodOut"}])
+  if (![objc_msgSend(changed objectForKey:{BKSApplicationStateDisplayIDKey), "caseInsensitiveCompare:", @"com.apple.iphoneos.iPodOut"}])
   {
-    v4 = [objc_msgSend(a3 objectForKey:{BKSApplicationStateKey), "unsignedIntValue"}];
+    v4 = [objc_msgSend(changed objectForKey:{BKSApplicationStateKey), "unsignedIntValue"}];
     if (v4 != dword_10012C5E0)
     {
       dword_10012C5E0 = v4;

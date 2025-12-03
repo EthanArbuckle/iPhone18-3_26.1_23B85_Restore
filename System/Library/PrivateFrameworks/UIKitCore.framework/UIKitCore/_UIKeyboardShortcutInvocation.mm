@@ -1,7 +1,7 @@
 @interface _UIKeyboardShortcutInvocation
 - (BOOL)canInvokeKeyboardShortcut;
 - (UIResponder)originatingResponder;
-- (_UIKeyboardShortcutInvocation)initWithKeyboardShortcutLeaf:(id)a3 validatedKeyboardShortcutLeaf:(id)a4 triggeringEvent:(id)a5 originatingResponder:(id)a6 target:(id)a7;
+- (_UIKeyboardShortcutInvocation)initWithKeyboardShortcutLeaf:(id)leaf validatedKeyboardShortcutLeaf:(id)shortcutLeaf triggeringEvent:(id)event originatingResponder:(id)responder target:(id)target;
 - (_UIMenuLeaf)keyboardShortcutLeafToInvoke;
 - (id)target;
 - (void)performKeyDownAction;
@@ -10,24 +10,24 @@
 
 @implementation _UIKeyboardShortcutInvocation
 
-- (_UIKeyboardShortcutInvocation)initWithKeyboardShortcutLeaf:(id)a3 validatedKeyboardShortcutLeaf:(id)a4 triggeringEvent:(id)a5 originatingResponder:(id)a6 target:(id)a7
+- (_UIKeyboardShortcutInvocation)initWithKeyboardShortcutLeaf:(id)leaf validatedKeyboardShortcutLeaf:(id)shortcutLeaf triggeringEvent:(id)event originatingResponder:(id)responder target:(id)target
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  leafCopy = leaf;
+  shortcutLeafCopy = shortcutLeaf;
+  eventCopy = event;
+  responderCopy = responder;
+  targetCopy = target;
   v21.receiver = self;
   v21.super_class = _UIKeyboardShortcutInvocation;
   v18 = [(_UIKeyboardShortcutInvocation *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_keyboardShortcutLeaf, a3);
-    objc_storeStrong(&v19->_validatedKeyboardShortcutLeaf, a4);
-    objc_storeStrong(&v19->_triggeringEvent, a5);
-    objc_storeWeak(&v19->_originatingResponder, v16);
-    objc_storeWeak(&v19->_target, v17);
+    objc_storeStrong(&v18->_keyboardShortcutLeaf, leaf);
+    objc_storeStrong(&v19->_validatedKeyboardShortcutLeaf, shortcutLeaf);
+    objc_storeStrong(&v19->_triggeringEvent, event);
+    objc_storeWeak(&v19->_originatingResponder, responderCopy);
+    objc_storeWeak(&v19->_target, targetCopy);
   }
 
   return v19;
@@ -49,13 +49,13 @@
 
 - (BOOL)canInvokeKeyboardShortcut
 {
-  v3 = [(_UIKeyboardShortcutInvocation *)self keyboardShortcutLeafToInvoke];
+  keyboardShortcutLeafToInvoke = [(_UIKeyboardShortcutInvocation *)self keyboardShortcutLeafToInvoke];
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = v3;
+    v6 = keyboardShortcutLeafToInvoke;
     WeakRetained = objc_loadWeakRetained(&self->_target);
     CanPerformAction = _UIResponderCanPerformAction(WeakRetained, [v6 action], v6);
   }
@@ -81,13 +81,13 @@
   }
 
   v4 = triggeringEvent;
-  v9 = [(_UIKeyboardShortcutInvocation *)self keyboardShortcutLeafToInvoke];
+  keyboardShortcutLeafToInvoke = [(_UIKeyboardShortcutInvocation *)self keyboardShortcutLeafToInvoke];
   v5 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = v9;
+    v7 = keyboardShortcutLeafToInvoke;
     WeakRetained = objc_loadWeakRetained(&self->_target);
     [v7 _performDownActionWithSender:v4 target:WeakRetained];
   }
@@ -95,24 +95,24 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_target);
-    [v9 performWithSender:v4 target:WeakRetained];
+    [keyboardShortcutLeafToInvoke performWithSender:v4 target:WeakRetained];
   }
 }
 
 - (void)performKeyUpAction
 {
-  v8 = [(_UIKeyboardShortcutInvocation *)self keyboardShortcutLeafToInvoke];
+  keyboardShortcutLeafToInvoke = [(_UIKeyboardShortcutInvocation *)self keyboardShortcutLeafToInvoke];
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIKeyboardShortcutInvocation.m" lineNumber:93 description:@"Key up actions are only supported on UIKeyCommand."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKeyboardShortcutInvocation.m" lineNumber:93 description:@"Key up actions are only supported on UIKeyCommand."];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  [v8 _performUpActionWithSender:0 target:WeakRetained];
+  [keyboardShortcutLeafToInvoke _performUpActionWithSender:0 target:WeakRetained];
 }
 
 - (UIResponder)originatingResponder

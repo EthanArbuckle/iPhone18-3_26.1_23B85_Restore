@@ -8,7 +8,7 @@
 {
   v2 = objc_autoreleasePoolPush();
   v3 = objc_alloc_init(CKImageTransparencyTrimmer);
-  v4 = [(CKImageTransparencyTrimmer *)v3 trimTransparencyFromImage:a1];
+  v4 = [(CKImageTransparencyTrimmer *)v3 trimTransparencyFromImage:self];
 
   objc_autoreleasePoolPop(v2);
 

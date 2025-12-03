@@ -1,14 +1,14 @@
 @interface HUGridPlaceholderServiceCellLayoutOptions
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3;
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass;
 @end
 
 @implementation HUGridPlaceholderServiceCellLayoutOptions
 
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___HUGridPlaceholderServiceCellLayoutOptions;
-  v3 = objc_msgSendSuper2(&v8, sel_defaultOptionsForCellSizeSubclass_, a3);
+  v3 = objc_msgSendSuper2(&v8, sel_defaultOptionsForCellSizeSubclass_, subclass);
   [v3 setShowDescription:0];
   v4 = MEMORY[0x277D75D00];
   v5 = [MEMORY[0x277D75210] effectWithStyle:16];

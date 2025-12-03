@@ -11,13 +11,13 @@
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
     [v4 configureWithDefaultBackground];
-    v2 = [MEMORY[0x1E69DC888] _barHairlineShadowColor];
-    [v4 setShadowColor:v2];
+    _barHairlineShadowColor = [MEMORY[0x1E69DC888] _barHairlineShadowColor];
+    [v4 setShadowColor:_barHairlineShadowColor];
 
-    [a1 setStandardAppearance:v4];
+    [self setStandardAppearance:v4];
     v3 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
     [v3 configureWithTransparentBackground];
-    [a1 setScrollEdgeAppearance:v3];
+    [self setScrollEdgeAppearance:v3];
   }
 }
 
@@ -26,9 +26,9 @@
   result = _UISolariumEnabled();
   if ((result & 1) == 0)
   {
-    [a1 _setManualScrollEdgeAppearanceProgress:a2];
+    [self _setManualScrollEdgeAppearanceProgress:a2];
 
-    return [a1 _setManualScrollEdgeAppearanceEnabled:1];
+    return [self _setManualScrollEdgeAppearanceEnabled:1];
   }
 
   return result;

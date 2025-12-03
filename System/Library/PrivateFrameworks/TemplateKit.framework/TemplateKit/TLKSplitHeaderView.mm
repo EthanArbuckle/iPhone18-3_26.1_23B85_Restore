@@ -1,6 +1,6 @@
 @interface TLKSplitHeaderView
 - (BOOL)secondRowIsHidden;
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5;
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
 - (TLKSplitHeaderViewDelegate)delegate;
 - (id)centerLeadingTitleLabel;
 - (id)centerTrailingTitleLabel;
@@ -13,24 +13,24 @@
 - (id)thirdRowOfViews;
 - (id)titleLabel;
 - (id)trailingImageInView;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
 - (void)observedPropertiesChanged;
 - (void)performLeadingButtonSelector;
 - (void)performTrailingButtonSelector;
-- (void)setCenterLeadingTitle:(id)a3;
-- (void)setCenterTrailingTitle:(id)a3;
-- (void)setIsLeadingButtonEnabled:(BOOL)a3;
-- (void)setIsTrailingButtonEnabled:(BOOL)a3;
-- (void)setLeadingImage:(id)a3;
-- (void)setLeadingSubtitle:(id)a3;
-- (void)setLeadingTitle:(id)a3;
-- (void)setShouldBadgeSubtitle:(BOOL)a3;
-- (void)setSubtitle1:(id)a3;
-- (void)setSubtitle2:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTrailingImage:(id)a3;
-- (void)setTrailingTitle:(id)a3;
-- (void)setUseLargeTitle:(BOOL)a3;
+- (void)setCenterLeadingTitle:(id)title;
+- (void)setCenterTrailingTitle:(id)title;
+- (void)setIsLeadingButtonEnabled:(BOOL)enabled;
+- (void)setIsTrailingButtonEnabled:(BOOL)enabled;
+- (void)setLeadingImage:(id)image;
+- (void)setLeadingSubtitle:(id)subtitle;
+- (void)setLeadingTitle:(id)title;
+- (void)setShouldBadgeSubtitle:(BOOL)subtitle;
+- (void)setSubtitle1:(id)subtitle1;
+- (void)setSubtitle2:(id)subtitle2;
+- (void)setTitle:(id)title;
+- (void)setTrailingImage:(id)image;
+- (void)setTrailingTitle:(id)title;
+- (void)setUseLargeTitle:(BOOL)title;
 @end
 
 @implementation TLKSplitHeaderView
@@ -38,8 +38,8 @@
 - (id)setupContentView
 {
   v3 = objc_alloc(MEMORY[0x1E698B728]);
-  v4 = [(TLKSplitHeaderView *)self grid];
-  v5 = [v3 initWithArrangedSubviewRows:v4];
+  grid = [(TLKSplitHeaderView *)self grid];
+  v5 = [v3 initWithArrangedSubviewRows:grid];
 
   [v5 setHorizontalAlignment:3];
   v6 = [v5 rowAtIndex:0];
@@ -57,152 +57,152 @@
   +[TLKView defaultLayoutMargins];
   v11 = v10;
   v13 = v12;
-  v14 = [(TLKSplitHeaderView *)self leadingSubtitleLabel];
-  [v14 effectiveBaselineOffsetFromBottom];
+  leadingSubtitleLabel = [(TLKSplitHeaderView *)self leadingSubtitleLabel];
+  [leadingSubtitleLabel effectiveBaselineOffsetFromBottom];
   v16 = v13 - ceil(v15);
 
   [v5 setLayoutMargins:{v11, 16.0, v16, 16.0}];
   [v5 setRowSpacing:0.0];
   [v5 setColumnSpacing:8.0];
   [v5 setDelegate:self];
-  v17 = [(TLKSplitHeaderView *)self titleContainerView];
-  [v5 setAlignment:0 forView:v17 inAxis:1];
+  titleContainerView = [(TLKSplitHeaderView *)self titleContainerView];
+  [v5 setAlignment:0 forView:titleContainerView inAxis:1];
 
   return v5;
 }
 
-- (void)setIsLeadingButtonEnabled:(BOOL)a3
+- (void)setIsLeadingButtonEnabled:(BOOL)enabled
 {
-  if (self->_isLeadingButtonEnabled != a3)
+  if (self->_isLeadingButtonEnabled != enabled)
   {
-    self->_isLeadingButtonEnabled = a3;
-    v4 = [(TLKView *)self observer];
-    if (v4)
+    self->_isLeadingButtonEnabled = enabled;
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKView *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKView *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setLeadingImage:(id)a3
+- (void)setLeadingImage:(id)image
 {
-  v10 = a3;
-  if (self->_leadingImage != v10)
+  imageCopy = image;
+  if (self->_leadingImage != imageCopy)
   {
-    objc_storeStrong(&self->_leadingImage, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_leadingImage, image);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setIsTrailingButtonEnabled:(BOOL)a3
+- (void)setIsTrailingButtonEnabled:(BOOL)enabled
 {
-  if (self->_isTrailingButtonEnabled != a3)
+  if (self->_isTrailingButtonEnabled != enabled)
   {
-    self->_isTrailingButtonEnabled = a3;
-    v4 = [(TLKView *)self observer];
-    if (v4)
+    self->_isTrailingButtonEnabled = enabled;
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKView *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKView *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setTrailingImage:(id)a3
+- (void)setTrailingImage:(id)image
 {
-  v10 = a3;
-  if (self->_trailingImage != v10)
+  imageCopy = image;
+  if (self->_trailingImage != imageCopy)
   {
-    objc_storeStrong(&self->_trailingImage, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_trailingImage, image);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setShouldBadgeSubtitle:(BOOL)a3
+- (void)setShouldBadgeSubtitle:(BOOL)subtitle
 {
-  if (self->_shouldBadgeSubtitle != a3)
+  if (self->_shouldBadgeSubtitle != subtitle)
   {
-    self->_shouldBadgeSubtitle = a3;
-    v4 = [(TLKView *)self observer];
-    if (v4)
+    self->_shouldBadgeSubtitle = subtitle;
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKView *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKView *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setUseLargeTitle:(BOOL)a3
+- (void)setUseLargeTitle:(BOOL)title
 {
-  if (self->_useLargeTitle != a3)
+  if (self->_useLargeTitle != title)
   {
-    self->_useLargeTitle = a3;
-    v4 = [(TLKView *)self observer];
-    if (v4)
+    self->_useLargeTitle = title;
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKView *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKView *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setLeadingTitle:(id)a3
+- (void)setLeadingTitle:(id)title
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  titleCopy = title;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_leadingTitle setObserver:0];
@@ -213,7 +213,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = titleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -246,11 +246,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      titleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_leadingTitle, a3);
+  objc_storeStrong(&self->_leadingTitle, title);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_leadingTitle setObserver:self];
@@ -295,25 +295,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setTrailingTitle:(id)a3
+- (void)setTrailingTitle:(id)title
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  titleCopy = title;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_trailingTitle setObserver:0];
@@ -324,7 +324,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = titleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -357,11 +357,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      titleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_trailingTitle, a3);
+  objc_storeStrong(&self->_trailingTitle, title);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_trailingTitle setObserver:self];
@@ -406,25 +406,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setLeadingSubtitle:(id)a3
+- (void)setLeadingSubtitle:(id)subtitle
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  subtitleCopy = subtitle;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_leadingSubtitle setObserver:0];
@@ -435,7 +435,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = subtitleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -468,11 +468,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      subtitleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_leadingSubtitle, a3);
+  objc_storeStrong(&self->_leadingSubtitle, subtitle);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_leadingSubtitle setObserver:self];
@@ -517,25 +517,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  titleCopy = title;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_title setObserver:0];
@@ -546,7 +546,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = titleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -579,11 +579,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      titleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_title, a3);
+  objc_storeStrong(&self->_title, title);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_title setObserver:self];
@@ -628,25 +628,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setCenterLeadingTitle:(id)a3
+- (void)setCenterLeadingTitle:(id)title
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  titleCopy = title;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_centerLeadingTitle setObserver:0];
@@ -657,7 +657,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = titleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -690,11 +690,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      titleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_centerLeadingTitle, a3);
+  objc_storeStrong(&self->_centerLeadingTitle, title);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_centerLeadingTitle setObserver:self];
@@ -739,25 +739,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setCenterTrailingTitle:(id)a3
+- (void)setCenterTrailingTitle:(id)title
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  titleCopy = title;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_centerTrailingTitle setObserver:0];
@@ -768,7 +768,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = titleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -801,11 +801,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      titleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_centerTrailingTitle, a3);
+  objc_storeStrong(&self->_centerTrailingTitle, title);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_centerTrailingTitle setObserver:self];
@@ -850,25 +850,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setSubtitle1:(id)a3
+- (void)setSubtitle1:(id)subtitle1
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  subtitle1Copy = subtitle1;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_subtitle1 setObserver:0];
@@ -879,7 +879,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = subtitle1Copy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -912,11 +912,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      subtitle1Copy = v23;
     }
   }
 
-  objc_storeStrong(&self->_subtitle1, a3);
+  objc_storeStrong(&self->_subtitle1, subtitle1);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_subtitle1 setObserver:self];
@@ -961,25 +961,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setSubtitle2:(id)a3
+- (void)setSubtitle2:(id)subtitle2
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  subtitle2Copy = subtitle2;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_subtitle2 setObserver:0];
@@ -990,7 +990,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = subtitle2Copy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -1023,11 +1023,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      subtitle2Copy = v23;
     }
   }
 
-  objc_storeStrong(&self->_subtitle2, a3);
+  objc_storeStrong(&self->_subtitle2, subtitle2);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_subtitle2 setObserver:self];
@@ -1072,17 +1072,17 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
@@ -1090,12 +1090,12 @@
 - (id)grid
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v3 = [(TLKSplitHeaderView *)self firstRowOfViews];
-  v4 = [(TLKSplitHeaderView *)self secondRowOfViews];
-  v5 = [(TLKSplitHeaderView *)self thirdRowOfViews];
-  v8[0] = v3;
-  v8[1] = v4;
-  v8[2] = v5;
+  firstRowOfViews = [(TLKSplitHeaderView *)self firstRowOfViews];
+  secondRowOfViews = [(TLKSplitHeaderView *)self secondRowOfViews];
+  thirdRowOfViews = [(TLKSplitHeaderView *)self thirdRowOfViews];
+  v8[0] = firstRowOfViews;
+  v8[1] = secondRowOfViews;
+  v8[2] = thirdRowOfViews;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
 
   return v6;
@@ -1117,8 +1117,8 @@
   [v5 setCustomAlignmentRectInsets:{0.0, -17.0, 0.0, -17.0}];
   [v5 addTarget:self action:sel_performTrailingButtonSelector];
   [(TLKSplitHeaderView *)self setTrailingButton:v5];
-  v6 = [(TLKSplitHeaderView *)self titleContainerView];
-  v9[1] = v6;
+  titleContainerView = [(TLKSplitHeaderView *)self titleContainerView];
+  v9[1] = titleContainerView;
   v9[2] = v5;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
 
@@ -1129,21 +1129,21 @@
 {
   v15[2] = *MEMORY[0x1E69E9840];
   v3 = [TLKFontUtilities cachedFontForTextStyle:*MEMORY[0x1E69DDD80] isShort:0 isBold:1];
-  v4 = [(TLKSplitHeaderView *)self subtitleLabel];
-  [v4 setFont:v3];
-  [(TLKSplitHeaderView *)self setLeadingTitleLabel:v4];
-  v5 = [(TLKSplitHeaderView *)self subtitleLabel];
-  [v5 setFont:v3];
-  [(TLKSplitHeaderView *)self setTrailingTitleLabel:v5];
-  v6 = [(TLKSplitHeaderView *)self subtitleLabel];
-  [v6 setProminence:1];
+  subtitleLabel = [(TLKSplitHeaderView *)self subtitleLabel];
+  [subtitleLabel setFont:v3];
+  [(TLKSplitHeaderView *)self setLeadingTitleLabel:subtitleLabel];
+  subtitleLabel2 = [(TLKSplitHeaderView *)self subtitleLabel];
+  [subtitleLabel2 setFont:v3];
+  [(TLKSplitHeaderView *)self setTrailingTitleLabel:subtitleLabel2];
+  subtitleLabel3 = [(TLKSplitHeaderView *)self subtitleLabel];
+  [subtitleLabel3 setProminence:1];
   LODWORD(v7) = 1132068864;
-  [v6 setContentHuggingPriority:0 forAxis:v7];
-  [(TLKSplitHeaderView *)self setSubtitle1Label:v6];
+  [subtitleLabel3 setContentHuggingPriority:0 forAxis:v7];
+  [(TLKSplitHeaderView *)self setSubtitle1Label:subtitleLabel3];
   v8 = objc_opt_new();
   [(TLKSplitHeaderView *)self setSubtitle2Label:v8];
   v9 = objc_alloc(MEMORY[0x1E698B730]);
-  v15[0] = v6;
+  v15[0] = subtitleLabel3;
   v15[1] = v8;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v11 = [v9 initWithArrangedSubviews:v10];
@@ -1152,9 +1152,9 @@
   [v11 setAlignment:3];
   [v11 setAxis:1];
   [(TLKSplitHeaderView *)self setSubtitleStackView:v11];
-  v14[0] = v4;
+  v14[0] = subtitleLabel;
   v14[1] = v11;
-  v14[2] = v5;
+  v14[2] = subtitleLabel2;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
 
   return v12;
@@ -1163,15 +1163,15 @@
 - (id)thirdRowOfViews
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v3 = [(TLKSplitHeaderView *)self subtitleLabel];
-  [v3 setProminence:1];
-  [(TLKSplitHeaderView *)self setLeadingSubtitleLabel:v3];
-  v4 = [(TLKSplitHeaderView *)self subtitleLabel];
-  [v4 setProminence:1];
-  [(TLKSplitHeaderView *)self setTrailingSubtitleLabel:v4];
-  v5 = [(TLKSplitHeaderView *)self subtitleStackView];
-  v8[1] = v5;
-  v8[2] = v4;
+  subtitleLabel = [(TLKSplitHeaderView *)self subtitleLabel];
+  [subtitleLabel setProminence:1];
+  [(TLKSplitHeaderView *)self setLeadingSubtitleLabel:subtitleLabel];
+  subtitleLabel2 = [(TLKSplitHeaderView *)self subtitleLabel];
+  [subtitleLabel2 setProminence:1];
+  [(TLKSplitHeaderView *)self setTrailingSubtitleLabel:subtitleLabel2];
+  subtitleStackView = [(TLKSplitHeaderView *)self subtitleStackView];
+  v8[1] = subtitleStackView;
+  v8[2] = subtitleLabel2;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
 
   return v6;
@@ -1194,81 +1194,81 @@
 
 - (id)centerLeadingTitleLabel
 {
-  v2 = [(TLKSplitHeaderView *)self titleContainerView];
-  v3 = [v2 centerLeadingTitleLabel];
+  titleContainerView = [(TLKSplitHeaderView *)self titleContainerView];
+  centerLeadingTitleLabel = [titleContainerView centerLeadingTitleLabel];
 
-  return v3;
+  return centerLeadingTitleLabel;
 }
 
 - (id)centerTrailingTitleLabel
 {
-  v2 = [(TLKSplitHeaderView *)self titleContainerView];
-  v3 = [v2 centerTrailingTitleLabel];
+  titleContainerView = [(TLKSplitHeaderView *)self titleContainerView];
+  centerTrailingTitleLabel = [titleContainerView centerTrailingTitleLabel];
 
-  return v3;
+  return centerTrailingTitleLabel;
 }
 
 - (id)titleLabel
 {
-  v2 = [(TLKSplitHeaderView *)self titleContainerView];
-  v3 = [v2 titleLabel];
+  titleContainerView = [(TLKSplitHeaderView *)self titleContainerView];
+  titleLabel = [titleContainerView titleLabel];
 
-  return v3;
+  return titleLabel;
 }
 
 - (void)observedPropertiesChanged
 {
-  v3 = [(TLKSplitHeaderView *)self useLargeTitle];
-  v4 = [(TLKSplitHeaderView *)self titleContainerView];
-  [v4 setUseLargeTitle:v3];
+  useLargeTitle = [(TLKSplitHeaderView *)self useLargeTitle];
+  titleContainerView = [(TLKSplitHeaderView *)self titleContainerView];
+  [titleContainerView setUseLargeTitle:useLargeTitle];
 
-  v5 = [(TLKSplitHeaderView *)self titleContainerView];
-  v6 = [v5 titleFont];
+  titleContainerView2 = [(TLKSplitHeaderView *)self titleContainerView];
+  titleFont = [titleContainerView2 titleFont];
 
-  v7 = [(TLKSplitHeaderView *)self centerLeadingTitle];
-  v8 = [(TLKSplitHeaderView *)self centerLeadingTitleLabel];
-  [v8 setHidden:v7 == 0];
+  centerLeadingTitle = [(TLKSplitHeaderView *)self centerLeadingTitle];
+  centerLeadingTitleLabel = [(TLKSplitHeaderView *)self centerLeadingTitleLabel];
+  [centerLeadingTitleLabel setHidden:centerLeadingTitle == 0];
 
-  v9 = [(TLKSplitHeaderView *)self centerLeadingTitleLabel];
-  [v9 setFont:v6];
+  centerLeadingTitleLabel2 = [(TLKSplitHeaderView *)self centerLeadingTitleLabel];
+  [centerLeadingTitleLabel2 setFont:titleFont];
 
-  v10 = [(TLKSplitHeaderView *)self centerLeadingTitle];
-  v11 = [(TLKSplitHeaderView *)self centerLeadingTitleLabel];
-  [v11 setMultilineText:v10];
+  centerLeadingTitle2 = [(TLKSplitHeaderView *)self centerLeadingTitle];
+  centerLeadingTitleLabel3 = [(TLKSplitHeaderView *)self centerLeadingTitleLabel];
+  [centerLeadingTitleLabel3 setMultilineText:centerLeadingTitle2];
 
-  v12 = [(TLKSplitHeaderView *)self centerTrailingTitle];
-  v13 = [(TLKSplitHeaderView *)self centerTrailingTitleLabel];
-  [v13 setHidden:v12 == 0];
+  centerTrailingTitle = [(TLKSplitHeaderView *)self centerTrailingTitle];
+  centerTrailingTitleLabel = [(TLKSplitHeaderView *)self centerTrailingTitleLabel];
+  [centerTrailingTitleLabel setHidden:centerTrailingTitle == 0];
 
-  v14 = [(TLKSplitHeaderView *)self centerTrailingTitleLabel];
-  [v14 setFont:v6];
+  centerTrailingTitleLabel2 = [(TLKSplitHeaderView *)self centerTrailingTitleLabel];
+  [centerTrailingTitleLabel2 setFont:titleFont];
 
-  v15 = [(TLKSplitHeaderView *)self centerTrailingTitle];
-  v16 = [(TLKSplitHeaderView *)self centerTrailingTitleLabel];
-  [v16 setMultilineText:v15];
+  centerTrailingTitle2 = [(TLKSplitHeaderView *)self centerTrailingTitle];
+  centerTrailingTitleLabel3 = [(TLKSplitHeaderView *)self centerTrailingTitleLabel];
+  [centerTrailingTitleLabel3 setMultilineText:centerTrailingTitle2];
 
-  v17 = [(TLKSplitHeaderView *)self centerLeadingTitle];
-  v18 = [v17 text];
-  v19 = [v18 length];
-  v20 = [(TLKSplitHeaderView *)self centerTrailingTitle];
-  v21 = [v20 text];
-  v22 = [v21 length] + v19;
+  centerLeadingTitle3 = [(TLKSplitHeaderView *)self centerLeadingTitle];
+  text = [centerLeadingTitle3 text];
+  v19 = [text length];
+  centerTrailingTitle3 = [(TLKSplitHeaderView *)self centerTrailingTitle];
+  text2 = [centerTrailingTitle3 text];
+  v22 = [text2 length] + v19;
 
-  v23 = [(TLKSplitHeaderView *)self titleLabel];
+  titleLabel = [(TLKSplitHeaderView *)self titleLabel];
   v80[0] = MEMORY[0x1E69E9820];
   v80[1] = 3221225472;
   v80[2] = __47__TLKSplitHeaderView_observedPropertiesChanged__block_invoke;
   v80[3] = &unk_1E7FD8C98;
   v80[4] = self;
-  v24 = v6;
+  v24 = titleFont;
   v81 = v24;
   v82 = v22;
-  [v23 performBatchUpdates:v80];
+  [titleLabel performBatchUpdates:v80];
 
-  v25 = [(TLKSplitHeaderView *)self title];
-  v26 = [(TLKSplitHeaderView *)self titleContainerView];
-  v27 = [v26 titleStackView];
-  [v27 setHidden:(v25 | v22) == 0];
+  title = [(TLKSplitHeaderView *)self title];
+  titleContainerView3 = [(TLKSplitHeaderView *)self titleContainerView];
+  titleStackView = [titleContainerView3 titleStackView];
+  [titleStackView setHidden:(title | v22) == 0];
 
   if (v22 <= 4)
   {
@@ -1280,12 +1280,12 @@
     v28 = 0.0;
   }
 
-  v29 = [(TLKSplitHeaderView *)self titleContainerView];
-  v30 = [v29 titleStackView];
-  [v30 setSpacing:v28];
+  titleContainerView4 = [(TLKSplitHeaderView *)self titleContainerView];
+  titleStackView2 = [titleContainerView4 titleStackView];
+  [titleStackView2 setSpacing:v28];
 
-  v31 = [(TLKSplitHeaderView *)self leadingTitle];
-  if (v31)
+  leadingTitle = [(TLKSplitHeaderView *)self leadingTitle];
+  if (leadingTitle)
   {
     v32 = 0;
     v33 = 0;
@@ -1293,8 +1293,8 @@
 
   else
   {
-    v30 = [(TLKSplitHeaderView *)self trailingTitle];
-    if (v30)
+    titleStackView2 = [(TLKSplitHeaderView *)self trailingTitle];
+    if (titleStackView2)
     {
       v32 = 0;
       v33 = 0;
@@ -1302,26 +1302,26 @@
 
     else
     {
-      v26 = [(TLKSplitHeaderView *)self subtitle1];
-      v33 = v26 == 0;
+      titleContainerView3 = [(TLKSplitHeaderView *)self subtitle1];
+      v33 = titleContainerView3 == 0;
       v32 = 1;
     }
   }
 
-  v34 = [(TLKView *)self contentView];
-  v35 = [v34 rowAtIndex:1];
+  contentView = [(TLKView *)self contentView];
+  v35 = [contentView rowAtIndex:1];
   [v35 setHidden:v33];
 
   if (v32)
   {
   }
 
-  if (!v31)
+  if (!leadingTitle)
   {
   }
 
-  v36 = [(TLKSplitHeaderView *)self leadingSubtitle];
-  if (v36)
+  leadingSubtitle = [(TLKSplitHeaderView *)self leadingSubtitle];
+  if (leadingSubtitle)
   {
     v37 = 0;
     v38 = 0;
@@ -1329,8 +1329,8 @@
 
   else
   {
-    v30 = [(TLKSplitHeaderView *)self trailingSubtitle];
-    if (v30)
+    titleStackView2 = [(TLKSplitHeaderView *)self trailingSubtitle];
+    if (titleStackView2)
     {
       v37 = 0;
       v38 = 0;
@@ -1338,44 +1338,44 @@
 
     else
     {
-      v26 = [(TLKSplitHeaderView *)self subtitle2];
-      v38 = v26 == 0;
+      titleContainerView3 = [(TLKSplitHeaderView *)self subtitle2];
+      v38 = titleContainerView3 == 0;
       v37 = 1;
     }
   }
 
-  v39 = [(TLKView *)self contentView];
-  v40 = [v39 rowAtIndex:2];
+  contentView2 = [(TLKView *)self contentView];
+  v40 = [contentView2 rowAtIndex:2];
   [v40 setHidden:v38];
 
   if (v37)
   {
   }
 
-  if (!v36)
+  if (!leadingSubtitle)
   {
   }
 
-  v41 = [(TLKSplitHeaderView *)self subtitle1];
-  v42 = [(TLKSplitHeaderView *)self subtitle1Label];
-  [v42 setHidden:v41 == 0];
+  subtitle1 = [(TLKSplitHeaderView *)self subtitle1];
+  subtitle1Label = [(TLKSplitHeaderView *)self subtitle1Label];
+  [subtitle1Label setHidden:subtitle1 == 0];
 
-  v43 = [(TLKSplitHeaderView *)self subtitle1];
-  v44 = [(TLKSplitHeaderView *)self subtitle1Label];
-  [v44 setMultilineText:v43];
+  subtitle12 = [(TLKSplitHeaderView *)self subtitle1];
+  subtitle1Label2 = [(TLKSplitHeaderView *)self subtitle1Label];
+  [subtitle1Label2 setMultilineText:subtitle12];
 
-  v45 = [(TLKSplitHeaderView *)self subtitle2Label];
-  v46 = [(TLKSplitHeaderView *)self subtitle2];
-  v47 = [(TLKSplitHeaderView *)self shouldBadgeSubtitle];
+  subtitle2Label = [(TLKSplitHeaderView *)self subtitle2Label];
+  subtitle2 = [(TLKSplitHeaderView *)self subtitle2];
+  shouldBadgeSubtitle = [(TLKSplitHeaderView *)self shouldBadgeSubtitle];
   v48 = MEMORY[0x1E69DDD28];
-  if (v47)
+  if (shouldBadgeSubtitle)
   {
     v48 = MEMORY[0x1E69DDD10];
   }
 
   v49 = [TLKFontUtilities cachedFontForTextStyle:*v48 isShort:0 isBold:?];
-  v50 = [(TLKSplitHeaderView *)self shouldBadgeSubtitle];
-  if (v50)
+  shouldBadgeSubtitle2 = [(TLKSplitHeaderView *)self shouldBadgeSubtitle];
+  if (shouldBadgeSubtitle2)
   {
     v51 = 2.25;
   }
@@ -1385,7 +1385,7 @@
     v51 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  if (v50)
+  if (shouldBadgeSubtitle2)
   {
     v52 = 7.0;
   }
@@ -1395,62 +1395,62 @@
     v52 = *MEMORY[0x1E695F060];
   }
 
-  [v45 setText:v46 font:v49 customInsetSize:-[TLKSplitHeaderView shouldBadgeSubtitle](self badge:{"shouldBadgeSubtitle", *MEMORY[0x1E695F060]), v52, v51}];
+  [subtitle2Label setText:subtitle2 font:v49 customInsetSize:-[TLKSplitHeaderView shouldBadgeSubtitle](self badge:{"shouldBadgeSubtitle", *MEMORY[0x1E695F060]), v52, v51}];
 
-  v53 = [(TLKSplitHeaderView *)self subtitle2];
-  v54 = [(TLKSplitHeaderView *)self subtitle2Label];
-  [v54 setHidden:v53 == 0];
+  subtitle22 = [(TLKSplitHeaderView *)self subtitle2];
+  subtitle2Label2 = [(TLKSplitHeaderView *)self subtitle2Label];
+  [subtitle2Label2 setHidden:subtitle22 == 0];
 
-  v55 = [(TLKSplitHeaderView *)self leadingImage];
-  v56 = [(TLKSplitHeaderView *)self leadingButton];
-  [v56 setTlkImage:v55];
+  leadingImage = [(TLKSplitHeaderView *)self leadingImage];
+  leadingButton = [(TLKSplitHeaderView *)self leadingButton];
+  [leadingButton setTlkImage:leadingImage];
 
-  v57 = [(TLKSplitHeaderView *)self isLeadingButtonEnabled];
-  v58 = [(TLKSplitHeaderView *)self leadingButton];
-  [v58 setEnabled:v57];
+  isLeadingButtonEnabled = [(TLKSplitHeaderView *)self isLeadingButtonEnabled];
+  leadingButton2 = [(TLKSplitHeaderView *)self leadingButton];
+  [leadingButton2 setEnabled:isLeadingButtonEnabled];
 
-  v59 = [(TLKSplitHeaderView *)self leadingTitle];
-  v60 = [(TLKSplitHeaderView *)self leadingTitleLabel];
-  [v60 setHidden:v59 == 0];
+  leadingTitle2 = [(TLKSplitHeaderView *)self leadingTitle];
+  leadingTitleLabel = [(TLKSplitHeaderView *)self leadingTitleLabel];
+  [leadingTitleLabel setHidden:leadingTitle2 == 0];
 
-  v61 = [(TLKSplitHeaderView *)self leadingTitle];
-  v62 = [(TLKSplitHeaderView *)self leadingTitleLabel];
-  [v62 setMultilineText:v61];
+  leadingTitle3 = [(TLKSplitHeaderView *)self leadingTitle];
+  leadingTitleLabel2 = [(TLKSplitHeaderView *)self leadingTitleLabel];
+  [leadingTitleLabel2 setMultilineText:leadingTitle3];
 
-  v63 = [(TLKSplitHeaderView *)self leadingSubtitle];
-  v64 = [(TLKSplitHeaderView *)self leadingSubtitleLabel];
-  [v64 setHidden:v63 == 0];
+  leadingSubtitle2 = [(TLKSplitHeaderView *)self leadingSubtitle];
+  leadingSubtitleLabel = [(TLKSplitHeaderView *)self leadingSubtitleLabel];
+  [leadingSubtitleLabel setHidden:leadingSubtitle2 == 0];
 
-  v65 = [(TLKSplitHeaderView *)self leadingSubtitle];
-  v66 = [(TLKSplitHeaderView *)self leadingSubtitleLabel];
-  [v66 setMultilineText:v65];
+  leadingSubtitle3 = [(TLKSplitHeaderView *)self leadingSubtitle];
+  leadingSubtitleLabel2 = [(TLKSplitHeaderView *)self leadingSubtitleLabel];
+  [leadingSubtitleLabel2 setMultilineText:leadingSubtitle3];
 
-  v67 = [(TLKSplitHeaderView *)self trailingImage];
-  v68 = [(TLKSplitHeaderView *)self trailingButton];
-  [v68 setTlkImage:v67];
+  trailingImage = [(TLKSplitHeaderView *)self trailingImage];
+  trailingButton = [(TLKSplitHeaderView *)self trailingButton];
+  [trailingButton setTlkImage:trailingImage];
 
-  v69 = [(TLKSplitHeaderView *)self isTrailingButtonEnabled];
-  v70 = [(TLKSplitHeaderView *)self trailingButton];
-  [v70 setEnabled:v69];
+  isTrailingButtonEnabled = [(TLKSplitHeaderView *)self isTrailingButtonEnabled];
+  trailingButton2 = [(TLKSplitHeaderView *)self trailingButton];
+  [trailingButton2 setEnabled:isTrailingButtonEnabled];
 
-  v71 = [(TLKSplitHeaderView *)self trailingTitle];
-  v72 = [(TLKSplitHeaderView *)self trailingTitleLabel];
-  [v72 setHidden:v71 == 0];
+  trailingTitle = [(TLKSplitHeaderView *)self trailingTitle];
+  trailingTitleLabel = [(TLKSplitHeaderView *)self trailingTitleLabel];
+  [trailingTitleLabel setHidden:trailingTitle == 0];
 
-  v73 = [(TLKSplitHeaderView *)self trailingTitle];
-  v74 = [(TLKSplitHeaderView *)self trailingTitleLabel];
-  [v74 setMultilineText:v73];
+  trailingTitle2 = [(TLKSplitHeaderView *)self trailingTitle];
+  trailingTitleLabel2 = [(TLKSplitHeaderView *)self trailingTitleLabel];
+  [trailingTitleLabel2 setMultilineText:trailingTitle2];
 
-  v75 = [(TLKSplitHeaderView *)self trailingSubtitle];
-  v76 = [(TLKSplitHeaderView *)self trailingSubtitleLabel];
-  [v76 setHidden:v75 == 0];
+  trailingSubtitle = [(TLKSplitHeaderView *)self trailingSubtitle];
+  trailingSubtitleLabel = [(TLKSplitHeaderView *)self trailingSubtitleLabel];
+  [trailingSubtitleLabel setHidden:trailingSubtitle == 0];
 
-  v77 = [(TLKSplitHeaderView *)self trailingSubtitle];
-  v78 = [(TLKSplitHeaderView *)self trailingSubtitleLabel];
-  [v78 setMultilineText:v77];
+  trailingSubtitle2 = [(TLKSplitHeaderView *)self trailingSubtitle];
+  trailingSubtitleLabel2 = [(TLKSplitHeaderView *)self trailingSubtitleLabel];
+  [trailingSubtitleLabel2 setMultilineText:trailingSubtitle2];
 
-  v79 = [(TLKSplitHeaderView *)self titleContainerView];
-  [v79 setNeedsLayout];
+  titleContainerView5 = [(TLKSplitHeaderView *)self titleContainerView];
+  [titleContainerView5 setNeedsLayout];
 }
 
 void __47__TLKSplitHeaderView_observedPropertiesChanged__block_invoke(uint64_t a1)
@@ -1496,80 +1496,80 @@ void __47__TLKSplitHeaderView_observedPropertiesChanged__block_invoke(uint64_t a
 
 - (void)performLeadingButtonSelector
 {
-  v3 = [(TLKSplitHeaderView *)self delegate];
+  delegate = [(TLKSplitHeaderView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(TLKSplitHeaderView *)self delegate];
-    [v5 didPressLeadingButtonForSplitHeader:self];
+    delegate2 = [(TLKSplitHeaderView *)self delegate];
+    [delegate2 didPressLeadingButtonForSplitHeader:self];
   }
 }
 
 - (void)performTrailingButtonSelector
 {
-  v3 = [(TLKSplitHeaderView *)self delegate];
+  delegate = [(TLKSplitHeaderView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(TLKSplitHeaderView *)self delegate];
-    [v5 didPressTrailingButtonForSplitHeader:self];
+    delegate2 = [(TLKSplitHeaderView *)self delegate];
+    [delegate2 didPressTrailingButtonForSplitHeader:self];
   }
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
-  v6 = [(TLKSplitHeaderView *)self leadingButton:a3];
-  v7 = [v6 tlkImageView];
-  [TLKLayoutUtilities applyRowBoundedSizingToImageView:v7 isCompactWidth:[(TLKSplitHeaderView *)self useCompactWidth]];
+  v6 = [(TLKSplitHeaderView *)self leadingButton:view];
+  tlkImageView = [v6 tlkImageView];
+  [TLKLayoutUtilities applyRowBoundedSizingToImageView:tlkImageView isCompactWidth:[(TLKSplitHeaderView *)self useCompactWidth]];
 
-  v9 = [(TLKSplitHeaderView *)self trailingButton];
-  v8 = [v9 tlkImageView];
-  [TLKLayoutUtilities applyRowBoundedSizingToImageView:v8 isCompactWidth:[(TLKSplitHeaderView *)self useCompactWidth]];
+  trailingButton = [(TLKSplitHeaderView *)self trailingButton];
+  tlkImageView2 = [trailingButton tlkImageView];
+  [TLKLayoutUtilities applyRowBoundedSizingToImageView:tlkImageView2 isCompactWidth:[(TLKSplitHeaderView *)self useCompactWidth]];
 }
 
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a5;
-  v9 = [(TLKSplitHeaderView *)self leadingTitleLabel];
-  v10 = v9;
-  if (v9 == v8)
+  height = size.height;
+  width = size.width;
+  subviewCopy = subview;
+  leadingTitleLabel = [(TLKSplitHeaderView *)self leadingTitleLabel];
+  v10 = leadingTitleLabel;
+  if (leadingTitleLabel == subviewCopy)
   {
 
     goto LABEL_6;
   }
 
-  v11 = [(TLKSplitHeaderView *)self trailingTitleLabel];
+  trailingTitleLabel = [(TLKSplitHeaderView *)self trailingTitleLabel];
 
-  if (v11 == v8)
+  if (trailingTitleLabel == subviewCopy)
   {
 LABEL_6:
-    v15 = [(TLKSplitHeaderView *)self leadingImage];
-    [v15 size];
+    leadingImage = [(TLKSplitHeaderView *)self leadingImage];
+    [leadingImage size];
     v17 = v16;
 
-    v18 = [(TLKSplitHeaderView *)self leadingButton];
-    [v18 customAlignmentRectInsets];
+    leadingButton = [(TLKSplitHeaderView *)self leadingButton];
+    [leadingButton customAlignmentRectInsets];
     v20 = v17 - v19;
-    v21 = [(TLKSplitHeaderView *)self leadingButton];
-    [v21 customAlignmentRectInsets];
+    leadingButton2 = [(TLKSplitHeaderView *)self leadingButton];
+    [leadingButton2 customAlignmentRectInsets];
     v14 = v20 - v22;
 
-    [v8 systemLayoutSizeFittingSize:{v14, height}];
+    [subviewCopy systemLayoutSizeFittingSize:{v14, height}];
     v13 = v23;
     goto LABEL_7;
   }
 
-  v12 = [(TLKSplitHeaderView *)self titleContainerView];
+  titleContainerView = [(TLKSplitHeaderView *)self titleContainerView];
 
-  if (v12 == v8)
+  if (titleContainerView == subviewCopy)
   {
-    v26 = [(TLKSplitHeaderView *)self titleContainerView];
+    titleContainerView2 = [(TLKSplitHeaderView *)self titleContainerView];
     v14 = 1000.0;
-    [v26 effectiveLayoutSizeFittingSize:{width, 1000.0}];
+    [titleContainerView2 effectiveLayoutSizeFittingSize:{width, 1000.0}];
     v13 = v27;
   }
 
@@ -1590,29 +1590,29 @@ LABEL_7:
 
 - (BOOL)secondRowIsHidden
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 rowAtIndex:1];
-  v4 = [v3 isHidden];
+  contentView = [(TLKView *)self contentView];
+  v3 = [contentView rowAtIndex:1];
+  isHidden = [v3 isHidden];
 
-  return v4;
+  return isHidden;
 }
 
 - (id)leadingImageInView
 {
-  v2 = [(TLKSplitHeaderView *)self leadingButton];
-  v3 = [v2 tlkImage];
-  v4 = [v3 uiImage];
+  leadingButton = [(TLKSplitHeaderView *)self leadingButton];
+  tlkImage = [leadingButton tlkImage];
+  uiImage = [tlkImage uiImage];
 
-  return v4;
+  return uiImage;
 }
 
 - (id)trailingImageInView
 {
-  v2 = [(TLKSplitHeaderView *)self trailingButton];
-  v3 = [v2 tlkImage];
-  v4 = [v3 uiImage];
+  trailingButton = [(TLKSplitHeaderView *)self trailingButton];
+  tlkImage = [trailingButton tlkImage];
+  uiImage = [tlkImage uiImage];
 
-  return v4;
+  return uiImage;
 }
 
 - (TLKSplitHeaderViewDelegate)delegate

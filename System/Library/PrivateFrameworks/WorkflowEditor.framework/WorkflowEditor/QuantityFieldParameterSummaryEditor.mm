@@ -1,34 +1,34 @@
 @interface QuantityFieldParameterSummaryEditor
-- (BOOL)textEntryShouldChangeText:(id)a3;
-- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)a3;
+- (BOOL)textEntryShouldChangeText:(id)text;
+- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)identifier;
 - (WFVariableProvider)variableProvider;
-- (id)clearButtonMenuItemForSlotWithIdentifier:(id)a3;
-- (id)customMenuElementsForSlotWithIdentifier:(id)a3 style:(unint64_t)a4;
-- (id)stateByReplacingVariableFromCurrentState:(id)a3 withVariable:(id)a4;
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4;
-- (void)cancelEditingWithCompletionHandler:(id)a3;
-- (void)setVariableProvider:(id)a3;
-- (void)stageState:(id)a3;
+- (id)clearButtonMenuItemForSlotWithIdentifier:(id)identifier;
+- (id)customMenuElementsForSlotWithIdentifier:(id)identifier style:(unint64_t)style;
+- (id)stateByReplacingVariableFromCurrentState:(id)state withVariable:(id)variable;
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor;
+- (void)cancelEditingWithCompletionHandler:(id)handler;
+- (void)setVariableProvider:(id)provider;
+- (void)stageState:(id)state;
 - (void)textEntryDidFinish;
-- (void)textEntryTextDidChange:(id)a3;
-- (void)textEntryWillBegin:(id)a3 allowMultipleLines:(BOOL *)a4;
+- (void)textEntryTextDidChange:(id)change;
+- (void)textEntryWillBegin:(id)begin allowMultipleLines:(BOOL *)lines;
 @end
 
 @implementation QuantityFieldParameterSummaryEditor
 
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2744A2BC4(v6);
+  identifierCopy = identifier;
+  anchorCopy = anchor;
+  selfCopy = self;
+  sub_2744A2BC4(identifierCopy);
 }
 
-- (id)customMenuElementsForSlotWithIdentifier:(id)a3 style:(unint64_t)a4
+- (id)customMenuElementsForSlotWithIdentifier:(id)identifier style:(unint64_t)style
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_2744A2D3C(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  v7 = sub_2744A2D3C(identifierCopy);
 
   if (v7)
   {
@@ -44,96 +44,96 @@
   return v8;
 }
 
-- (void)cancelEditingWithCompletionHandler:(id)a3
+- (void)cancelEditingWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_2745EA34C(&unk_274650780, v5);
 }
 
 - (WFVariableProvider)variableProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2744A3640();
 
   return v3;
 }
 
-- (void)setVariableProvider:(id)a3
+- (void)setVariableProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_2744A36E8(a3);
+  selfCopy = self;
+  sub_2744A36E8(provider);
 }
 
-- (id)stateByReplacingVariableFromCurrentState:(id)a3 withVariable:(id)a4
+- (id)stateByReplacingVariableFromCurrentState:(id)state withVariable:(id)variable
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_2744A37C0(v8, a4);
+  stateCopy = state;
+  variableCopy = variable;
+  selfCopy = self;
+  v9 = sub_2744A37C0(selfCopy, variable);
 
   return v9;
 }
 
-- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)a3
+- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2744A38FC(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  v6 = sub_2744A38FC(identifierCopy);
 
   return v6 & 1;
 }
 
-- (id)clearButtonMenuItemForSlotWithIdentifier:(id)a3
+- (id)clearButtonMenuItemForSlotWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2744A3A14(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  v6 = sub_2744A3A14(identifierCopy);
 
   return v6;
 }
 
-- (void)textEntryWillBegin:(id)a3 allowMultipleLines:(BOOL *)a4
+- (void)textEntryWillBegin:(id)begin allowMultipleLines:(BOOL *)lines
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_2744A3B88(a3, a4);
+  selfCopy = self;
+  sub_2744A3B88(begin, lines);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)textEntryShouldChangeText:(id)a3
+- (BOOL)textEntryShouldChangeText:(id)text
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_2744A3EA4(v3);
+  textCopy = text;
+  textCopy2 = text;
+  selfCopy = self;
+  LOBYTE(textCopy) = sub_2744A3EA4(textCopy);
 
-  return v3 & 1;
+  return textCopy & 1;
 }
 
-- (void)textEntryTextDidChange:(id)a3
+- (void)textEntryTextDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_2744A3F90(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2744A3F90(change);
 }
 
 - (void)textEntryDidFinish
 {
-  v2 = self;
+  selfCopy = self;
   sub_2744A4320();
 }
 
-- (void)stageState:(id)a3
+- (void)stageState:(id)state
 {
-  v5 = a3;
-  v6 = self;
-  sub_2744A4418(a3);
+  stateCopy = state;
+  selfCopy = self;
+  sub_2744A4418(state);
 }
 
 @end

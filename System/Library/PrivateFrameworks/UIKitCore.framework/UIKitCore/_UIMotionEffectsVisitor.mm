@@ -1,34 +1,34 @@
 @interface _UIMotionEffectsVisitor
-- (BOOL)_prepareToVisitView:(id)a3 changedSubview:(id)a4 previousWindow:(id)a5 previousSuperview:(id)a6;
-- (BOOL)_visitView:(id)a3;
+- (BOOL)_prepareToVisitView:(id)view changedSubview:(id)subview previousWindow:(id)window previousSuperview:(id)superview;
+- (BOOL)_visitView:(id)view;
 @end
 
 @implementation _UIMotionEffectsVisitor
 
-- (BOOL)_visitView:(id)a3
+- (BOOL)_visitView:(id)view
 {
   subviewAddedToHierarchy = self->_subviewAddedToHierarchy;
-  v6 = [a3 _countOfMotionEffectsInSubtree];
+  _countOfMotionEffectsInSubtree = [view _countOfMotionEffectsInSubtree];
   countOfMotionEffectsInSubview = self->_countOfMotionEffectsInSubview;
   if (!subviewAddedToHierarchy)
   {
     countOfMotionEffectsInSubview = -countOfMotionEffectsInSubview;
   }
 
-  [a3 _setCountOfMotionEffectsInSubtree:countOfMotionEffectsInSubview + v6];
+  [view _setCountOfMotionEffectsInSubtree:countOfMotionEffectsInSubview + _countOfMotionEffectsInSubtree];
   return 1;
 }
 
-- (BOOL)_prepareToVisitView:(id)a3 changedSubview:(id)a4 previousWindow:(id)a5 previousSuperview:(id)a6
+- (BOOL)_prepareToVisitView:(id)view changedSubview:(id)subview previousWindow:(id)window previousSuperview:(id)superview
 {
-  v9 = [a4 _countOfMotionEffectsInSubtree];
-  if (v9)
+  _countOfMotionEffectsInSubtree = [subview _countOfMotionEffectsInSubtree];
+  if (_countOfMotionEffectsInSubtree)
   {
-    self->_subviewAddedToHierarchy = [a4 superview] == a3;
-    self->_countOfMotionEffectsInSubview = [a4 _countOfMotionEffectsInSubtree];
+    self->_subviewAddedToHierarchy = [subview superview] == view;
+    self->_countOfMotionEffectsInSubview = [subview _countOfMotionEffectsInSubtree];
   }
 
-  return v9 != 0;
+  return _countOfMotionEffectsInSubtree != 0;
 }
 
 @end

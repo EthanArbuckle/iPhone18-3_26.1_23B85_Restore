@@ -29,9 +29,9 @@
   {
     [v12 setApplicationBundleIdentifierOverrideForPushTopicGeneration:v9];
     [v12 setApplicationBundleIdentifierOverrideForContainerAccess:v9];
-    v13 = [MEMORY[0x1E696AAE8] safari_safariApplicationPlatformBundleIdentifier];
-    [v12 setApplicationBundleIdentifierOverrideForTCC:v13];
-    [v12 setApplicationBundleIdentifierOverrideForNetworkAttribution:v13];
+    safari_safariApplicationPlatformBundleIdentifier = [MEMORY[0x1E696AAE8] safari_safariApplicationPlatformBundleIdentifier];
+    [v12 setApplicationBundleIdentifierOverrideForTCC:safari_safariApplicationPlatformBundleIdentifier];
+    [v12 setApplicationBundleIdentifierOverrideForNetworkAttribution:safari_safariApplicationPlatformBundleIdentifier];
     [v12 setPrefersHiddenAllowedSharingOptionsUI:1];
   }
 
@@ -46,7 +46,7 @@
   block[1] = 3221225472;
   block[2] = __77__CKContainer_CloudBookmarkCKContainerExtras__safari_cloudBookmarksContainer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (safari_cloudBookmarksContainer_onceToken != -1)
   {
     dispatch_once(&safari_cloudBookmarksContainer_onceToken, block);
@@ -63,7 +63,7 @@
   block[1] = 3221225472;
   block[2] = __70__CKContainer_CloudBookmarkCKContainerExtras__safari_historyContainer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (safari_historyContainer_onceToken != -1)
   {
     dispatch_once(&safari_historyContainer_onceToken, block);
@@ -80,7 +80,7 @@
   block[1] = 3221225472;
   block[2] = __77__CKContainer_CloudBookmarkCKContainerExtras__safari_historyManateeContainer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (safari_historyManateeContainer_onceToken != -1)
   {
     dispatch_once(&safari_historyManateeContainer_onceToken, block);
@@ -97,7 +97,7 @@
   block[1] = 3221225472;
   block[2] = __72__CKContainer_CloudBookmarkCKContainerExtras__safari_cloudTabsContainer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (safari_cloudTabsContainer_onceToken != -1)
   {
     dispatch_once(&safari_cloudTabsContainer_onceToken, block);
@@ -114,7 +114,7 @@
   block[1] = 3221225472;
   block[2] = __76__CKContainer_CloudBookmarkCKContainerExtras__safari_cloudSettingsContainer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (safari_cloudSettingsContainer_onceToken != -1)
   {
     dispatch_once(&safari_cloudSettingsContainer_onceToken, block);
@@ -131,7 +131,7 @@
   block[1] = 3221225472;
   block[2] = __79__CKContainer_CloudBookmarkCKContainerExtras__safari_scribbleFeedbackContainer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (safari_scribbleFeedbackContainer_onceToken != -1)
   {
     dispatch_once(&safari_scribbleFeedbackContainer_onceToken, block);
@@ -148,7 +148,7 @@
   block[1] = 3221225472;
   block[2] = __87__CKContainer_CloudBookmarkCKContainerExtras__safari_webCompatibilityFeedbackContainer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (safari_webCompatibilityFeedbackContainer_onceToken != -1)
   {
     dispatch_once(&safari_webCompatibilityFeedbackContainer_onceToken, block);
@@ -165,7 +165,7 @@
   block[1] = 3221225472;
   block[2] = __78__CKContainer_CloudBookmarkCKContainerExtras__safari_cloudExtensionsContainer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (safari_cloudExtensionsContainer_onceToken != -1)
   {
     dispatch_once(&safari_cloudExtensionsContainer_onceToken, block);

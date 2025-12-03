@@ -1,9 +1,9 @@
 @interface SDUnlockTransport
 - (SDUnlockTransport)init;
 - (id)activeDevice;
-- (id)dataFromUUID:(id)a3;
-- (id)idsDeviceForUniqueID:(id)a3;
-- (id)transferDataFromPayload:(id)a3 sessionID:(id)a4;
+- (id)dataFromUUID:(id)d;
+- (id)idsDeviceForUniqueID:(id)d;
+- (id)transferDataFromPayload:(id)payload sessionID:(id)d;
 @end
 
 @implementation SDUnlockTransport
@@ -24,30 +24,30 @@
   return v2;
 }
 
-- (id)dataFromUUID:(id)a3
+- (id)dataFromUUID:(id)d
 {
   v5[0] = 0;
   v5[1] = 0;
-  [a3 getUUIDBytes:v5];
+  [d getUUIDBytes:v5];
   v3 = [NSData dataWithBytes:v5 length:16];
 
   return v3;
 }
 
-- (id)transferDataFromPayload:(id)a3 sessionID:(id)a4
+- (id)transferDataFromPayload:(id)payload sessionID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  payloadCopy = payload;
   v8 = objc_opt_new();
   [v8 setVersion:1];
-  v9 = [(SDUnlockTransport *)self dataFromUUID:v6];
+  v9 = [(SDUnlockTransport *)self dataFromUUID:dCopy];
 
   [v8 setSessionID:v9];
-  [v8 setPayload:v7];
+  [v8 setPayload:payloadCopy];
 
-  v10 = [v8 data];
+  data = [v8 data];
 
-  return v10;
+  return data;
 }
 
 - (id)activeDevice
@@ -56,10 +56,10 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(SDUnlockTransport *)self autoUnlockService];
-  v3 = [v2 devices];
+  autoUnlockService = [(SDUnlockTransport *)self autoUnlockService];
+  devices = [autoUnlockService devices];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -69,7 +69,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -80,7 +80,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -95,17 +95,17 @@ LABEL_11:
   return v4;
 }
 
-- (id)idsDeviceForUniqueID:(id)a3
+- (id)idsDeviceForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SDUnlockTransport *)self autoUnlockService];
-  v6 = [v5 devices];
+  autoUnlockService = [(SDUnlockTransport *)self autoUnlockService];
+  devices = [autoUnlockService devices];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [devices countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -115,12 +115,12 @@ LABEL_11:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devices);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 uniqueIDOverride];
-        v12 = [v11 isEqualToString:v4];
+        uniqueIDOverride = [v10 uniqueIDOverride];
+        v12 = [uniqueIDOverride isEqualToString:dCopy];
 
         if (v12)
         {
@@ -129,7 +129,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [devices countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;

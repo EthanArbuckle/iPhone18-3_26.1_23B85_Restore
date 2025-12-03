@@ -1,12 +1,12 @@
 @interface INDateComponentsRange
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (EKRecurrenceRule)EKRecurrenceRule;
-- (INDateComponentsRange)initWithCoder:(id)a3;
-- (INDateComponentsRange)initWithDateInterval:(id)a3 onCalendar:(id)a4 inTimeZone:(id)a5;
+- (INDateComponentsRange)initWithCoder:(id)coder;
+- (INDateComponentsRange)initWithDateInterval:(id)interval onCalendar:(id)calendar inTimeZone:(id)zone;
 - (INDateComponentsRange)initWithEKRecurrenceRule:(EKRecurrenceRule *)recurrenceRule;
-- (INDateComponentsRange)initWithStartDate:(id)a3 endDate:(id)a4 onCalendar:(id)a5 inTimeZone:(id)a6;
+- (INDateComponentsRange)initWithStartDate:(id)date endDate:(id)endDate onCalendar:(id)calendar inTimeZone:(id)zone;
 - (INDateComponentsRange)initWithStartDateComponents:(NSDateComponents *)startDateComponents endDateComponents:(NSDateComponents *)endDateComponents recurrenceRule:(INRecurrenceRule *)recurrenceRule;
-- (INDateComponentsRange)initWithStartDateComponents:(id)a3 endDateComponents:(id)a4 recurrenceRule:(id)a5 userInput:(id)a6 allDay:(id)a7;
+- (INDateComponentsRange)initWithStartDateComponents:(id)components endDateComponents:(id)dateComponents recurrenceRule:(id)rule userInput:(id)input allDay:(id)day;
 - (INRecurrenceRule)recurrenceRule;
 - (NSDate)endDate;
 - (NSDate)startDate;
@@ -14,11 +14,11 @@
 - (NSDateComponents)startDateComponents;
 - (NSDateInterval)dateInterval;
 - (id)_dictionaryRepresentation;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
 - (id)_userInput;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INDateComponentsRange
@@ -49,31 +49,31 @@
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"startDateComponents";
   startDateComponents = self->_startDateComponents;
-  v4 = startDateComponents;
+  null = startDateComponents;
   if (!startDateComponents)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"endDateComponents";
   endDateComponents = self->_endDateComponents;
-  v6 = endDateComponents;
+  null2 = endDateComponents;
   if (!endDateComponents)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"recurrenceRule";
   recurrenceRule = self->_recurrenceRule;
-  v8 = recurrenceRule;
+  null3 = recurrenceRule;
   if (!recurrenceRule)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (recurrenceRule)
   {
@@ -111,17 +111,17 @@ LABEL_10:
   return v9;
 }
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 locale];
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v10 = [(INDateComponentsRange *)self startDateComponents];
-  if (v10)
+  localizerCopy = localizer;
+  metadataCopy = metadata;
+  locale = [localizerCopy locale];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  startDateComponents = [(INDateComponentsRange *)self startDateComponents];
+  if (startDateComponents)
   {
-    v11 = [(INDateComponentsRange *)self startDateComponents];
-    v12 = [v9 dateFromComponents:v11];
+    startDateComponents2 = [(INDateComponentsRange *)self startDateComponents];
+    v12 = [currentCalendar dateFromComponents:startDateComponents2];
   }
 
   else
@@ -129,8 +129,8 @@ LABEL_10:
     v12 = 0;
   }
 
-  v13 = [(INDateComponentsRange *)self endDateComponents];
-  if (!v13)
+  endDateComponents = [(INDateComponentsRange *)self endDateComponents];
+  if (!endDateComponents)
   {
     v18 = 0;
     v16 = 0;
@@ -138,9 +138,9 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v14 = v13;
-  v15 = [(INDateComponentsRange *)self endDateComponents];
-  v16 = [v9 dateFromComponents:v15];
+  v14 = endDateComponents;
+  endDateComponents2 = [(INDateComponentsRange *)self endDateComponents];
+  v16 = [currentCalendar dateFromComponents:endDateComponents2];
 
   v17 = v12 != 0;
   v18 = v16 != 0;
@@ -159,7 +159,7 @@ LABEL_9:
         v21 = v16;
       }
 
-      v20 = [v21 _intents_readableTitleWithLocalizer:v6 metadata:v7];
+      v20 = [v21 _intents_readableTitleWithLocalizer:localizerCopy metadata:metadataCopy];
     }
 
     else
@@ -171,7 +171,7 @@ LABEL_9:
   }
 
   v19 = objc_alloc_init(MEMORY[0x1E696AB88]);
-  [v19 setLocale:v8];
+  [v19 setLocale:locale];
   v20 = [v19 stringFromDate:v12 toDate:v16];
 
 LABEL_16:
@@ -179,50 +179,50 @@ LABEL_16:
   return v20;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INDateComponentsRange;
   v6 = [(INDateComponentsRange *)&v11 description];
-  v7 = [(INDateComponentsRange *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INDateComponentsRange *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (INDateComponentsRange)initWithCoder:(id)a3
+- (INDateComponentsRange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDateComponents"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDateComponents"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recurrenceRule"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userInput"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allDay"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDateComponents"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDateComponents"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recurrenceRule"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userInput"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allDay"];
 
   v10 = [(INDateComponentsRange *)self initWithStartDateComponents:v5 endDateComponents:v6 recurrenceRule:v7 userInput:v8 allDay:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDateComponents = self->_startDateComponents;
-  v5 = a3;
-  [v5 encodeObject:startDateComponents forKey:@"startDateComponents"];
-  [v5 encodeObject:self->_endDateComponents forKey:@"endDateComponents"];
-  [v5 encodeObject:self->_recurrenceRule forKey:@"recurrenceRule"];
-  [v5 encodeObject:self->_userInput forKey:@"userInput"];
-  [v5 encodeObject:self->_allDay forKey:@"allDay"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDateComponents forKey:@"startDateComponents"];
+  [coderCopy encodeObject:self->_endDateComponents forKey:@"endDateComponents"];
+  [coderCopy encodeObject:self->_recurrenceRule forKey:@"recurrenceRule"];
+  [coderCopy encodeObject:self->_userInput forKey:@"userInput"];
+  [coderCopy encodeObject:self->_allDay forKey:@"allDay"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     startDateComponents = self->_startDateComponents;
     v9 = 0;
     if (startDateComponents == v5[1] || [(NSDateComponents *)startDateComponents isEqual:?])
@@ -265,15 +265,15 @@ LABEL_16:
 
   else
   {
-    v4 = [(INRecurrenceRule *)self->_recurrenceRule frequency];
-    if ((v4 - 4) >= 3)
+    frequency = [(INRecurrenceRule *)self->_recurrenceRule frequency];
+    if ((frequency - 4) >= 3)
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = v4 - 3;
+      v5 = frequency - 3;
     }
 
     v6 = 0;
@@ -298,18 +298,18 @@ LABEL_16:
       v8 = v7;
       _Block_object_dispose(&v25, 8);
       v9 = [v7 alloc];
-      v10 = [(NSDateComponents *)self->_startDateComponents weekday];
+      weekday = [(NSDateComponents *)self->_startDateComponents weekday];
       if ([(NSDateComponents *)self->_startDateComponents weekdayOrdinal]== 0x7FFFFFFFFFFFFFFFLL)
       {
-        v11 = 0;
+        weekdayOrdinal = 0;
       }
 
       else
       {
-        v11 = [(NSDateComponents *)self->_startDateComponents weekdayOrdinal];
+        weekdayOrdinal = [(NSDateComponents *)self->_startDateComponents weekdayOrdinal];
       }
 
-      v6 = [v9 initWithDayOfTheWeek:v10 weekNumber:v11];
+      v6 = [v9 initWithDayOfTheWeek:weekday weekNumber:weekdayOrdinal];
     }
 
     v25 = 0;
@@ -331,17 +331,17 @@ LABEL_16:
     v16 = v15;
     _Block_object_dispose(&v25, 8);
     v17 = [v15 alloc];
-    v18 = [(INRecurrenceRule *)self->_recurrenceRule interval];
+    interval = [(INRecurrenceRule *)self->_recurrenceRule interval];
     if (v6)
     {
       v29[0] = v6;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-      v12 = [v17 initRecurrenceWithFrequency:v5 interval:v18 daysOfTheWeek:v19 daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:0];
+      v12 = [v17 initRecurrenceWithFrequency:v5 interval:interval daysOfTheWeek:v19 daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:0];
     }
 
     else
     {
-      v12 = [v17 initRecurrenceWithFrequency:v5 interval:v18 daysOfTheWeek:0 daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:0];
+      v12 = [v17 initRecurrenceWithFrequency:v5 interval:interval daysOfTheWeek:0 daysOfTheMonth:0 monthsOfTheYear:0 weeksOfTheYear:0 daysOfTheYear:0 setPositions:0 end:0];
     }
   }
 
@@ -354,30 +354,30 @@ LABEL_16:
 {
   v4 = recurrenceRule;
   v5 = [INRecurrenceRule alloc];
-  v6 = [(EKRecurrenceRule *)v4 interval];
-  v7 = [(EKRecurrenceRule *)v4 frequency];
-  if ((v7 - 1) >= 3)
+  interval = [(EKRecurrenceRule *)v4 interval];
+  frequency = [(EKRecurrenceRule *)v4 frequency];
+  if ((frequency - 1) >= 3)
   {
     v8 = 3;
   }
 
   else
   {
-    v8 = v7 + 3;
+    v8 = frequency + 3;
   }
 
-  v9 = [(INRecurrenceRule *)v5 initWithInterval:v6 frequency:v8];
-  v10 = [(EKRecurrenceRule *)v4 daysOfTheWeek];
-  v11 = [v10 count];
+  v9 = [(INRecurrenceRule *)v5 initWithInterval:interval frequency:v8];
+  daysOfTheWeek = [(EKRecurrenceRule *)v4 daysOfTheWeek];
+  v11 = [daysOfTheWeek count];
 
   if (v11)
   {
-    v12 = [(EKRecurrenceRule *)v4 daysOfTheWeek];
-    v13 = [v12 firstObject];
+    daysOfTheWeek2 = [(EKRecurrenceRule *)v4 daysOfTheWeek];
+    firstObject = [daysOfTheWeek2 firstObject];
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF10]);
-    [v14 setWeekday:{objc_msgSend(v13, "dayOfTheWeek")}];
-    [v14 setWeekdayOrdinal:{objc_msgSend(v13, "weekNumber")}];
+    [v14 setWeekday:{objc_msgSend(firstObject, "dayOfTheWeek")}];
+    [v14 setWeekdayOrdinal:{objc_msgSend(firstObject, "weekNumber")}];
   }
 
   else
@@ -395,20 +395,20 @@ LABEL_16:
   endDateComponents = self->_endDateComponents;
   if (endDateComponents)
   {
-    v4 = [(NSDateComponents *)endDateComponents date];
-    if (!v4)
+    date = [(NSDateComponents *)endDateComponents date];
+    if (!date)
     {
-      v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v4 = [v5 dateFromComponents:self->_endDateComponents];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      date = [currentCalendar dateFromComponents:self->_endDateComponents];
     }
   }
 
   else
   {
-    v4 = 0;
+    date = 0;
   }
 
-  return v4;
+  return date;
 }
 
 - (NSDate)startDate
@@ -416,31 +416,31 @@ LABEL_16:
   startDateComponents = self->_startDateComponents;
   if (startDateComponents)
   {
-    v4 = [(NSDateComponents *)startDateComponents date];
-    if (!v4)
+    date = [(NSDateComponents *)startDateComponents date];
+    if (!date)
     {
-      v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v4 = [v5 dateFromComponents:self->_startDateComponents];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      date = [currentCalendar dateFromComponents:self->_startDateComponents];
     }
   }
 
   else
   {
-    v4 = 0;
+    date = 0;
   }
 
-  return v4;
+  return date;
 }
 
 - (NSDateInterval)dateInterval
 {
-  v3 = [(INDateComponentsRange *)self startDate];
-  v4 = [(INDateComponentsRange *)self endDate];
-  v5 = v4;
+  startDate = [(INDateComponentsRange *)self startDate];
+  endDate = [(INDateComponentsRange *)self endDate];
+  v5 = endDate;
   v6 = 0;
-  if (v3 && v4)
+  if (startDate && endDate)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v3 endDate:v4];
+    v6 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:startDate endDate:endDate];
   }
 
   return v6;
@@ -453,35 +453,35 @@ LABEL_16:
   return v2;
 }
 
-- (INDateComponentsRange)initWithStartDateComponents:(id)a3 endDateComponents:(id)a4 recurrenceRule:(id)a5 userInput:(id)a6 allDay:(id)a7
+- (INDateComponentsRange)initWithStartDateComponents:(id)components endDateComponents:(id)dateComponents recurrenceRule:(id)rule userInput:(id)input allDay:(id)day
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  componentsCopy = components;
+  dateComponentsCopy = dateComponents;
+  ruleCopy = rule;
+  inputCopy = input;
+  dayCopy = day;
   v29.receiver = self;
   v29.super_class = INDateComponentsRange;
   v17 = [(INDateComponentsRange *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [componentsCopy copy];
     startDateComponents = v17->_startDateComponents;
     v17->_startDateComponents = v18;
 
-    v20 = [v13 copy];
+    v20 = [dateComponentsCopy copy];
     endDateComponents = v17->_endDateComponents;
     v17->_endDateComponents = v20;
 
-    v22 = [v14 copy];
+    v22 = [ruleCopy copy];
     recurrenceRule = v17->_recurrenceRule;
     v17->_recurrenceRule = v22;
 
-    v24 = [v15 copy];
+    v24 = [inputCopy copy];
     userInput = v17->_userInput;
     v17->_userInput = v24;
 
-    v26 = [v16 copy];
+    v26 = [dayCopy copy];
     allDay = v17->_allDay;
     v17->_allDay = v26;
   }
@@ -489,50 +489,50 @@ LABEL_16:
   return v17;
 }
 
-- (INDateComponentsRange)initWithDateInterval:(id)a3 onCalendar:(id)a4 inTimeZone:(id)a5
+- (INDateComponentsRange)initWithDateInterval:(id)interval onCalendar:(id)calendar inTimeZone:(id)zone
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 startDate];
-  v12 = [v10 endDate];
+  zoneCopy = zone;
+  calendarCopy = calendar;
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
-  v13 = [(INDateComponentsRange *)self initWithStartDate:v11 endDate:v12 onCalendar:v9 inTimeZone:v8];
+  v13 = [(INDateComponentsRange *)self initWithStartDate:startDate endDate:endDate onCalendar:calendarCopy inTimeZone:zoneCopy];
   return v13;
 }
 
-- (INDateComponentsRange)initWithStartDate:(id)a3 endDate:(id)a4 onCalendar:(id)a5 inTimeZone:(id)a6
+- (INDateComponentsRange)initWithStartDate:(id)date endDate:(id)endDate onCalendar:(id)calendar inTimeZone:(id)zone
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10 | v11)
+  dateCopy = date;
+  endDateCopy = endDate;
+  calendarCopy = calendar;
+  zoneCopy = zone;
+  if (dateCopy | endDateCopy)
   {
-    v15 = v12;
-    if (!v15)
+    currentCalendar = calendarCopy;
+    if (!currentCalendar)
     {
-      v15 = [MEMORY[0x1E695DEE8] currentCalendar];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     }
 
-    v16 = v13;
-    if (!v16)
+    timeZone = zoneCopy;
+    if (!timeZone)
     {
-      v16 = [v15 timeZone];
-      if (!v16)
+      timeZone = [currentCalendar timeZone];
+      if (!timeZone)
       {
-        v16 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+        timeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
       }
     }
 
-    v17 = v16;
-    if (v10)
+    v17 = timeZone;
+    if (dateCopy)
     {
-      v18 = [v15 componentsInTimeZone:v16 fromDate:v10];
-      if (v11)
+      v18 = [currentCalendar componentsInTimeZone:timeZone fromDate:dateCopy];
+      if (endDateCopy)
       {
 LABEL_10:
-        v19 = [v15 componentsInTimeZone:v17 fromDate:v11];
+        v19 = [currentCalendar componentsInTimeZone:v17 fromDate:endDateCopy];
 LABEL_13:
         v14 = [(INDateComponentsRange *)self initWithStartDateComponents:v18 endDateComponents:v19];
 
@@ -543,7 +543,7 @@ LABEL_13:
     else
     {
       v18 = 0;
-      if (v11)
+      if (endDateCopy)
       {
         goto LABEL_10;
       }

@@ -1,10 +1,10 @@
 @interface StreamingDownloadTask
 - (_TtC28ManagedAppDistributionDaemon21StreamingDownloadTask)init;
-- (void)URLSession:(NSURLSession *)a3 dataTask:(NSURLSessionDataTask *)a4 _didReceiveData:(NSData *)a5 completionHandler:(id)a6;
-- (void)URLSession:(NSURLSession *)a3 dataTask:(NSURLSessionDataTask *)a4 didReceiveResponse:(NSURLResponse *)a5 completionHandler:(id)a6;
-- (void)URLSession:(NSURLSession *)a3 task:(NSURLSessionTask *)a4 _willSendRequestForEstablishedConnection:(NSURLRequest *)a5 completionHandler:(id)a6;
-- (void)URLSession:(NSURLSession *)a3 task:(NSURLSessionTask *)a4 willPerformHTTPRedirection:(NSHTTPURLResponse *)a5 newRequest:(NSURLRequest *)a6 completionHandler:(id)a7;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)task _didReceiveData:(NSData *)data completionHandler:(id)handler;
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)task didReceiveResponse:(NSURLResponse *)response completionHandler:(id)handler;
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task _willSendRequestForEstablishedConnection:(NSURLRequest *)connection completionHandler:(id)handler;
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)redirection newRequest:(NSURLRequest *)request completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 @end
 
 @implementation StreamingDownloadTask
@@ -17,17 +17,17 @@
   return result;
 }
 
-- (void)URLSession:(NSURLSession *)a3 task:(NSURLSessionTask *)a4 willPerformHTTPRedirection:(NSHTTPURLResponse *)a5 newRequest:(NSURLRequest *)a6 completionHandler:(id)a7
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)redirection newRequest:(NSURLRequest *)request completionHandler:(id)handler
 {
   v13 = sub_1001F0C48(&unk_100780380);
   __chkstk_darwin(v13 - 8);
   v15 = &v25 - v14;
-  v16 = _Block_copy(a7);
+  v16 = _Block_copy(handler);
   v17 = swift_allocObject();
-  v17[2] = a3;
-  v17[3] = a4;
-  v17[4] = a5;
-  v17[5] = a6;
+  v17[2] = session;
+  v17[3] = task;
+  v17[4] = redirection;
+  v17[5] = request;
   v17[6] = v16;
   v17[7] = self;
   v18 = type metadata accessor for TaskPriority();
@@ -42,15 +42,15 @@
   v20[3] = 0;
   v20[4] = &unk_1006A1790;
   v20[5] = v19;
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
 
   sub_100521E40(0, 0, v15, &unk_1006A1798, v20);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v9 = sub_1001F0C48(&unk_100780380);
   __chkstk_darwin(v9 - 8);
@@ -61,26 +61,26 @@
   v13[2] = 0;
   v13[3] = 0;
   v13[4] = self;
-  v13[5] = a3;
-  v13[6] = a4;
-  v13[7] = a5;
-  v14 = a3;
-  v15 = a4;
+  v13[5] = session;
+  v13[6] = task;
+  v13[7] = error;
+  sessionCopy = session;
+  taskCopy = task;
 
-  v16 = a5;
+  errorCopy = error;
   sub_1004A673C(0, 0, v11, &unk_1006A1748, v13);
 }
 
-- (void)URLSession:(NSURLSession *)a3 task:(NSURLSessionTask *)a4 _willSendRequestForEstablishedConnection:(NSURLRequest *)a5 completionHandler:(id)a6
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task _willSendRequestForEstablishedConnection:(NSURLRequest *)connection completionHandler:(id)handler
 {
   v11 = sub_1001F0C48(&unk_100780380);
   __chkstk_darwin(v11 - 8);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  v15[2] = a3;
-  v15[3] = a4;
-  v15[4] = a5;
+  v15[2] = session;
+  v15[3] = task;
+  v15[4] = connection;
   v15[5] = v14;
   v15[6] = self;
   v16 = type metadata accessor for TaskPriority();
@@ -95,23 +95,23 @@
   v18[3] = 0;
   v18[4] = &unk_1006A1718;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  connectionCopy = connection;
 
   sub_100521E40(0, 0, v13, &unk_1006A1720, v18);
 }
 
-- (void)URLSession:(NSURLSession *)a3 dataTask:(NSURLSessionDataTask *)a4 didReceiveResponse:(NSURLResponse *)a5 completionHandler:(id)a6
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)task didReceiveResponse:(NSURLResponse *)response completionHandler:(id)handler
 {
   v11 = sub_1001F0C48(&unk_100780380);
   __chkstk_darwin(v11 - 8);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  v15[2] = a3;
-  v15[3] = a4;
-  v15[4] = a5;
+  v15[2] = session;
+  v15[3] = task;
+  v15[4] = response;
   v15[5] = v14;
   v15[6] = self;
   v16 = type metadata accessor for TaskPriority();
@@ -126,23 +126,23 @@
   v18[3] = 0;
   v18[4] = &unk_1006A16E0;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  responseCopy = response;
 
   sub_100521E40(0, 0, v13, &unk_1006A16E8, v18);
 }
 
-- (void)URLSession:(NSURLSession *)a3 dataTask:(NSURLSessionDataTask *)a4 _didReceiveData:(NSData *)a5 completionHandler:(id)a6
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)task _didReceiveData:(NSData *)data completionHandler:(id)handler
 {
   v11 = sub_1001F0C48(&unk_100780380);
   __chkstk_darwin(v11 - 8);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  v15[2] = a3;
-  v15[3] = a4;
-  v15[4] = a5;
+  v15[2] = session;
+  v15[3] = task;
+  v15[4] = data;
   v15[5] = v14;
   v15[6] = self;
   v16 = type metadata accessor for TaskPriority();
@@ -157,9 +157,9 @@
   v18[3] = 0;
   v18[4] = &unk_1006A16A8;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
 
   sub_100521E40(0, 0, v13, &unk_1006A16B0, v18);
 }

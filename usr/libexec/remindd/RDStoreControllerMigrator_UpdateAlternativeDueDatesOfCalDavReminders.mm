@@ -1,6 +1,6 @@
 @interface RDStoreControllerMigrator_UpdateAlternativeDueDatesOfCalDavReminders
 - (_TtC7remindd68RDStoreControllerMigrator_UpdateAlternativeDueDatesOfCalDavReminders)init;
-- (void)migrateStoreIfNeeded:(id)a3 metadata:(id)a4;
+- (void)migrateStoreIfNeeded:(id)needed metadata:(id)metadata;
 @end
 
 @implementation RDStoreControllerMigrator_UpdateAlternativeDueDatesOfCalDavReminders
@@ -36,12 +36,12 @@
   return v12;
 }
 
-- (void)migrateStoreIfNeeded:(id)a3 metadata:(id)a4
+- (void)migrateStoreIfNeeded:(id)needed metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  RDStoreControllerMigrator_UpdateAlternativeDueDatesOfCalDavReminders.migrateStoreIfNeeded(_:metadata:)(v6, v7);
+  neededCopy = needed;
+  metadataCopy = metadata;
+  selfCopy = self;
+  RDStoreControllerMigrator_UpdateAlternativeDueDatesOfCalDavReminders.migrateStoreIfNeeded(_:metadata:)(neededCopy, metadataCopy);
 }
 
 @end

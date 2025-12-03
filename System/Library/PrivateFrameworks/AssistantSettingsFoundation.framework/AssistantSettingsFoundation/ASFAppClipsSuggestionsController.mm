@@ -1,7 +1,7 @@
 @interface ASFAppClipsSuggestionsController
 + (id)sharedController;
 - (ASFAppClipsSuggestionsController)init;
-- (ASFAppClipsSuggestionsController)initWithDisabledSpotlightBundles:(id)a3 disabledSpotlightApps:(id)a4;
+- (ASFAppClipsSuggestionsController)initWithDisabledSpotlightBundles:(id)bundles disabledSpotlightApps:(id)apps;
 - (BOOL)learnFromAppClipsEnabled;
 - (BOOL)suggestAppClipsEnabled;
 - (void)_synchronizeDisabledSpotlightApps;
@@ -68,9 +68,9 @@ uint64_t __52__ASFAppClipsSuggestionsController_sharedController__block_invoke()
   if (!v6)
   {
 LABEL_9:
-    v11 = [ASFAvailableSuggestionAppsController _allVisibleAppBundleIds];
+    _allVisibleAppBundleIds = [ASFAvailableSuggestionAppsController _allVisibleAppBundleIds];
     _Block_object_dispose(&v12, 8);
-    _Unwind_Resume(v11);
+    _Unwind_Resume(_allVisibleAppBundleIds);
   }
 
   v8 = v6(1);
@@ -79,18 +79,18 @@ LABEL_9:
   return v9;
 }
 
-- (ASFAppClipsSuggestionsController)initWithDisabledSpotlightBundles:(id)a3 disabledSpotlightApps:(id)a4
+- (ASFAppClipsSuggestionsController)initWithDisabledSpotlightBundles:(id)bundles disabledSpotlightApps:(id)apps
 {
-  v7 = a3;
-  v8 = a4;
+  bundlesCopy = bundles;
+  appsCopy = apps;
   v12.receiver = self;
   v12.super_class = ASFAppClipsSuggestionsController;
   v9 = [(ASFAppClipsSuggestionsController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_disabledSpotlightBundles, a3);
-    objc_storeStrong(&v10->_disabledSpotlightApps, a4);
+    objc_storeStrong(&v9->_disabledSpotlightBundles, bundles);
+    objc_storeStrong(&v10->_disabledSpotlightApps, apps);
   }
 
   return v10;
@@ -102,15 +102,15 @@ LABEL_9:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)_synchronizeDisabledSpotlightApps
@@ -129,15 +129,15 @@ LABEL_9:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

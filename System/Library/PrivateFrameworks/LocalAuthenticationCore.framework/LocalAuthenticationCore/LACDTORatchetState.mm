@@ -1,28 +1,28 @@
 @interface LACDTORatchetState
 + (id)nullInstance;
-- (BOOL)isEqual:(id)a3;
-- (LACDTORatchetState)initWithCoder:(id)a3;
-- (LACDTORatchetState)initWithRawValue:(int64_t)a3 duration:(double)a4 resetDuration:(double)a5 uuid:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (LACDTORatchetState)initWithCoder:(id)coder;
+- (LACDTORatchetState)initWithRawValue:(int64_t)value duration:(double)duration resetDuration:(double)resetDuration uuid:(id)uuid;
 - (double)effectiveDuration;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LACDTORatchetState
 
-- (LACDTORatchetState)initWithRawValue:(int64_t)a3 duration:(double)a4 resetDuration:(double)a5 uuid:(id)a6
+- (LACDTORatchetState)initWithRawValue:(int64_t)value duration:(double)duration resetDuration:(double)resetDuration uuid:(id)uuid
 {
-  v11 = a6;
+  uuidCopy = uuid;
   v15.receiver = self;
   v15.super_class = LACDTORatchetState;
   v12 = [(LACDTORatchetState *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_rawValue = a3;
-    v12->_duration = a4;
-    v12->_resetDuration = a5;
-    objc_storeStrong(&v12->_uuid, a6);
+    v12->_rawValue = value;
+    v12->_duration = duration;
+    v12->_resetDuration = resetDuration;
+    objc_storeStrong(&v12->_uuid, uuid);
   }
 
   return v13;
@@ -52,43 +52,43 @@
   return fmax(v3, 1.0);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rawValue = self->_rawValue;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_rawValue);
-  [v5 encodeInteger:rawValue forKey:v6];
+  [coderCopy encodeInteger:rawValue forKey:v6];
 
   duration = self->_duration;
   v8 = NSStringFromSelector(sel_duration);
-  [v5 encodeDouble:v8 forKey:duration];
+  [coderCopy encodeDouble:v8 forKey:duration];
 
   resetDuration = self->_resetDuration;
   v10 = NSStringFromSelector(sel_resetDuration);
-  [v5 encodeDouble:v10 forKey:resetDuration];
+  [coderCopy encodeDouble:v10 forKey:resetDuration];
 
   uuid = self->_uuid;
   v12 = NSStringFromSelector(sel_uuid);
-  [v5 encodeObject:uuid forKey:v12];
+  [coderCopy encodeObject:uuid forKey:v12];
 }
 
-- (LACDTORatchetState)initWithCoder:(id)a3
+- (LACDTORatchetState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_rawValue);
-  v6 = [v4 decodeIntegerForKey:v5];
+  v6 = [coderCopy decodeIntegerForKey:v5];
 
   v7 = NSStringFromSelector(sel_duration);
-  [v4 decodeDoubleForKey:v7];
+  [coderCopy decodeDoubleForKey:v7];
   v9 = v8;
 
   v10 = NSStringFromSelector(sel_resetDuration);
-  [v4 decodeDoubleForKey:v10];
+  [coderCopy decodeDoubleForKey:v10];
   v12 = v11;
 
   v13 = objc_opt_class();
   v14 = NSStringFromSelector(sel_uuid);
-  v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+  v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
 
   v16 = [(LACDTORatchetState *)self initWithRawValue:v6 duration:v15 resetDuration:v9 uuid:v12];
   return v16;
@@ -125,8 +125,8 @@
   v15 = [v13 stringWithFormat:@"effectiveDuration: %.2f", v14];
   v25[3] = v15;
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [(LACDTORatchetState *)self uuid];
-  v18 = [v16 stringWithFormat:@"uuid: %@", v17];
+  uuid = [(LACDTORatchetState *)self uuid];
+  v18 = [v16 stringWithFormat:@"uuid: %@", uuid];
   v25[4] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:5];
   v20 = [v19 componentsJoinedByString:@" "];;
@@ -137,15 +137,15 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(LACDTORatchetState *)self rawValue];
-    if (v6 != [v5 rawValue])
+    v5 = equalCopy;
+    rawValue = [(LACDTORatchetState *)self rawValue];
+    if (rawValue != [v5 rawValue])
     {
       goto LABEL_6;
     }
@@ -163,18 +163,18 @@
     [v5 resetDuration];
     if (v11 == v12 && (-[LACDTORatchetState effectiveDuration](self, "effectiveDuration"), v14 = v13, [v5 effectiveDuration], v14 == v15))
     {
-      v18 = [(LACDTORatchetState *)self uuid];
-      v19 = [v5 uuid];
-      if (v18 == v19)
+      uuid = [(LACDTORatchetState *)self uuid];
+      uuid2 = [v5 uuid];
+      if (uuid == uuid2)
       {
         v16 = 1;
       }
 
       else
       {
-        v20 = [(LACDTORatchetState *)self uuid];
-        v21 = [v5 uuid];
-        v16 = [v20 isEqualToString:v21];
+        uuid3 = [(LACDTORatchetState *)self uuid];
+        uuid4 = [v5 uuid];
+        v16 = [uuid3 isEqualToString:uuid4];
       }
     }
 

@@ -1,40 +1,40 @@
 @interface SBAppExposeToAppWindowingModifier
-- (BOOL)shouldInterruptForActivity:(id)a3;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)perspectiveAngleForItem:(id)a3;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBAppExposeToAppWindowingModifier)initWithSwitcherTransitionModifier:(id)a3 fromAppExposeModifier:(id)a4 toFullScreenContinuousExposeModifier:(id)a5;
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3;
-- (SBWindowingItemFrame)frameForItem:(SEL)a3;
-- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)a3;
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withAnimationAttributes:(id)a5;
+- (BOOL)shouldInterruptForActivity:(id)activity;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)angle forAppLayout:(id)layout;
+- (CGPoint)perspectiveAngleForItem:(id)item;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBAppExposeToAppWindowingModifier)initWithSwitcherTransitionModifier:(id)modifier fromAppExposeModifier:(id)exposeModifier toFullScreenContinuousExposeModifier:(id)continuousExposeModifier;
+- (SBWindowingItemCorners)cornersForItem:(SEL)item;
+- (SBWindowingItemFrame)frameForItem:(SEL)item;
+- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)item;
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout withAnimationAttributes:(id)attributes;
 - (id)visibleItems;
-- (void)stripDidChange:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (void)stripDidChange:(id)change;
+- (void)transitionWillBegin:(id)begin;
 - (void)willBegin;
 @end
 
 @implementation SBAppExposeToAppWindowingModifier
 
-- (SBAppExposeToAppWindowingModifier)initWithSwitcherTransitionModifier:(id)a3 fromAppExposeModifier:(id)a4 toFullScreenContinuousExposeModifier:(id)a5
+- (SBAppExposeToAppWindowingModifier)initWithSwitcherTransitionModifier:(id)modifier fromAppExposeModifier:(id)exposeModifier toFullScreenContinuousExposeModifier:(id)continuousExposeModifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  modifierCopy = modifier;
+  exposeModifierCopy = exposeModifier;
+  continuousExposeModifierCopy = continuousExposeModifier;
   v17.receiver = self;
   v17.super_class = SBAppExposeToAppWindowingModifier;
   v13 = [(SBWindowingModifier *)&v17 init];
   if (v13)
   {
-    if (v10)
+    if (modifierCopy)
     {
-      if (v11)
+      if (exposeModifierCopy)
       {
         goto LABEL_4;
       }
@@ -43,18 +43,18 @@
     else
     {
       [SBAppExposeToAppWindowingModifier initWithSwitcherTransitionModifier:a2 fromAppExposeModifier:v13 toFullScreenContinuousExposeModifier:?];
-      if (v11)
+      if (exposeModifierCopy)
       {
 LABEL_4:
-        if (v12)
+        if (continuousExposeModifierCopy)
         {
 LABEL_5:
-          objc_storeStrong(&v13->_fromAppExposeModifier, a4);
-          objc_storeStrong(&v13->_toFullScreenContinuousExposeModifier, a5);
-          objc_storeStrong(&v13->_transitionSwitcherModifier, a3);
-          v14 = [(SBFullScreenContinuousExposeSwitcherModifier *)v13->_toFullScreenContinuousExposeModifier fullScreenAppLayout];
+          objc_storeStrong(&v13->_fromAppExposeModifier, exposeModifier);
+          objc_storeStrong(&v13->_toFullScreenContinuousExposeModifier, continuousExposeModifier);
+          objc_storeStrong(&v13->_transitionSwitcherModifier, modifier);
+          fullScreenAppLayout = [(SBFullScreenContinuousExposeSwitcherModifier *)v13->_toFullScreenContinuousExposeModifier fullScreenAppLayout];
           toAppLayout = v13->_toAppLayout;
-          v13->_toAppLayout = v14;
+          v13->_toAppLayout = fullScreenAppLayout;
 
           [(SBChainableModifier *)v13 addChildModifier:v13->_transitionSwitcherModifier];
           goto LABEL_6;
@@ -67,7 +67,7 @@ LABEL_9:
     }
 
     [SBAppExposeToAppWindowingModifier initWithSwitcherTransitionModifier:a2 fromAppExposeModifier:v13 toFullScreenContinuousExposeModifier:?];
-    if (v12)
+    if (continuousExposeModifierCopy)
     {
       goto LABEL_5;
     }
@@ -80,30 +80,30 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)shouldInterruptForActivity:(id)a3
+- (BOOL)shouldInterruptForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_transitionID && [v4 isTransitionEvent])
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_transitionID && [activityCopy isTransitionEvent])
   {
-    v6 = [v5 transitionID];
+    transitionID = [v5 transitionID];
     if (BSEqualObjects())
     {
-      v7 = [v5 isGestureEvent];
+      isGestureEvent = [v5 isGestureEvent];
     }
 
     else
     {
-      v7 = 1;
+      isGestureEvent = 1;
     }
   }
 
   else
   {
-    v7 = [v5 isGestureEvent];
+    isGestureEvent = [v5 isGestureEvent];
   }
 
-  return v7;
+  return isGestureEvent;
 }
 
 - (void)willBegin
@@ -116,10 +116,10 @@ LABEL_6:
   v10[4] = self;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fromAppExposeModifier usingBlock:v10];
   v4 = [(NSArray *)self->_adjustedAppLayoutsBeforeTransition bs_map:&__block_literal_global_171];
-  v5 = [v4 bs_flatten];
-  v6 = [v5 bs_set];
+  bs_flatten = [v4 bs_flatten];
+  bs_set = [bs_flatten bs_set];
   visibleItemsInAppExpose = self->_visibleItemsInAppExpose;
-  self->_visibleItemsInAppExpose = v6;
+  self->_visibleItemsInAppExpose = bs_set;
 
   toFullScreenContinuousExposeModifier = self->_toFullScreenContinuousExposeModifier;
   v9[0] = MEMORY[0x277D85DD0];
@@ -153,16 +153,16 @@ void __46__SBAppExposeToAppWindowingModifier_willBegin__block_invoke_3(uint64_t 
   }
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v4 = [a3 transitionID];
+  transitionID = [begin transitionID];
   transitionID = self->_transitionID;
-  self->_transitionID = v4;
+  self->_transitionID = transitionID;
 
-  v6 = [(SBAppExposeToAppWindowingModifier *)self windowManagementContext];
-  v7 = [v6 isAutomaticStageCreationEnabled];
+  windowManagementContext = [(SBAppExposeToAppWindowingModifier *)self windowManagementContext];
+  isAutomaticStageCreationEnabled = [windowManagementContext isAutomaticStageCreationEnabled];
 
-  if (v7)
+  if (isAutomaticStageCreationEnabled)
   {
     v8 = 6;
   }
@@ -176,7 +176,7 @@ void __46__SBAppExposeToAppWindowingModifier_willBegin__block_invoke_3(uint64_t 
   [(SBWindowingModifier *)self appendResponse:v9];
 }
 
-- (void)stripDidChange:(id)a3
+- (void)stripDidChange:(id)change
 {
   toFullScreenContinuousExposeModifier = self->_toFullScreenContinuousExposeModifier;
   v4[0] = MEMORY[0x277D85DD0];
@@ -243,21 +243,21 @@ void __49__SBAppExposeToAppWindowingModifier_visibleItems__block_invoke_2(uint64
   [v1 unionSet:v2];
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v16.receiver = self;
   v16.super_class = SBAppExposeToAppWindowingModifier;
-  v4 = [(SBAppExposeToAppWindowingModifier *)&v16 adjustedAppLayoutsForAppLayouts:a3];
+  v4 = [(SBAppExposeToAppWindowingModifier *)&v16 adjustedAppLayoutsForAppLayouts:layouts];
   if (self->_adjustedAppLayoutsBeforeTransition && -[SBWindowingModifier transitionPhase](self, "transitionPhase") == 2 && [v4 count])
   {
     v5 = MEMORY[0x277CBEB18];
-    v6 = [v4 firstObject];
-    v7 = [v5 arrayWithObject:v6];
+    firstObject = [v4 firstObject];
+    v7 = [v5 arrayWithObject:firstObject];
 
-    v8 = [(SBAppExposeToAppWindowingModifier *)self windowManagementContext];
-    v9 = [v8 isAutomaticStageCreationEnabled];
+    windowManagementContext = [(SBAppExposeToAppWindowingModifier *)self windowManagementContext];
+    isAutomaticStageCreationEnabled = [windowManagementContext isAutomaticStageCreationEnabled];
 
-    if (v9)
+    if (isAutomaticStageCreationEnabled)
     {
       v10 = [v4 mutableCopy];
     }
@@ -306,21 +306,21 @@ void __69__SBAppExposeToAppWindowingModifier_adjustedAppLayoutsForAppLayouts___b
   }
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  if (-[SBWindowingModifier transitionPhase](self, "transitionPhase") != 1 || (visibleItemsInAppExpose = self->_visibleItemsInAppExpose, [v8 itemForLayoutRole:a3], v10 = objc_claimAutoreleasedReturnValue(), LODWORD(visibleItemsInAppExpose) = -[NSSet containsObject:](visibleItemsInAppExpose, "containsObject:", v10), v10, v11 = 0.0, visibleItemsInAppExpose))
+  layoutCopy = layout;
+  if (-[SBWindowingModifier transitionPhase](self, "transitionPhase") != 1 || (visibleItemsInAppExpose = self->_visibleItemsInAppExpose, [layoutCopy itemForLayoutRole:role], v10 = objc_claimAutoreleasedReturnValue(), LODWORD(visibleItemsInAppExpose) = -[NSSet containsObject:](visibleItemsInAppExpose, "containsObject:", v10), v10, v11 = 0.0, visibleItemsInAppExpose))
   {
     v14.receiver = self;
     v14.super_class = SBAppExposeToAppWindowingModifier;
-    [(SBWindowingModifier *)&v14 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBWindowingModifier *)&v14 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v11 = v12;
   }
 
   return v11;
 }
 
-- (SBWindowingItemFrame)frameForItem:(SEL)a3
+- (SBWindowingItemFrame)frameForItem:(SEL)item
 {
   v6 = a4;
   v27 = 0;
@@ -394,9 +394,9 @@ double __50__SBAppExposeToAppWindowingModifier_frameForItem___block_invoke(void 
   return result;
 }
 
-- (CGPoint)perspectiveAngleForItem:(id)a3
+- (CGPoint)perspectiveAngleForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3010000000;
@@ -412,7 +412,7 @@ double __50__SBAppExposeToAppWindowingModifier_frameForItem___block_invoke(void 
     v14[3] = &unk_2783AB258;
     v16 = &v17;
     v14[4] = self;
-    v15 = v4;
+    v15 = itemCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:toFullScreenContinuousExposeModifier usingBlock:v14];
 
     v6 = v18[4];
@@ -423,7 +423,7 @@ double __50__SBAppExposeToAppWindowingModifier_frameForItem___block_invoke(void 
   {
     v13.receiver = self;
     v13.super_class = SBAppExposeToAppWindowingModifier;
-    [(SBWindowingModifier *)&v13 perspectiveAngleForItem:v4];
+    [(SBWindowingModifier *)&v13 perspectiveAngleForItem:itemCopy];
     v6 = v8;
     v7 = v9;
     v10 = v18;
@@ -449,13 +449,13 @@ uint64_t __61__SBAppExposeToAppWindowingModifier_perspectiveAngleForItem___block
   return result;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
   v32 = 0;
   v33 = &v32;
   v34 = 0x4010000000;
@@ -475,7 +475,7 @@ uint64_t __61__SBAppExposeToAppWindowingModifier_perspectiveAngleForItem___block
     v29 = y;
     v30 = width;
     v31 = height;
-    v26 = v9;
+    v26 = layoutCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:toFullScreenContinuousExposeModifier usingBlock:v25];
 
     v11 = v33[4];
@@ -488,7 +488,7 @@ uint64_t __61__SBAppExposeToAppWindowingModifier_perspectiveAngleForItem___block
   {
     v24.receiver = self;
     v24.super_class = SBAppExposeToAppWindowingModifier;
-    [(SBWindowingModifier *)&v24 adjustedSpaceAccessoryViewFrame:v9 forAppLayout:x, y, width, height];
+    [(SBWindowingModifier *)&v24 adjustedSpaceAccessoryViewFrame:layoutCopy forAppLayout:x, y, width, height];
     v11 = v15;
     v12 = v16;
     v13 = v17;
@@ -524,9 +524,9 @@ uint64_t __82__SBAppExposeToAppWindowingModifier_adjustedSpaceAccessoryViewFrame
   return result;
 }
 
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -540,8 +540,8 @@ uint64_t __82__SBAppExposeToAppWindowingModifier_adjustedSpaceAccessoryViewFrame
     v12[3] = &unk_2783AA668;
     v14 = &v16;
     v12[4] = self;
-    v15 = a3;
-    v13 = v6;
+    scaleCopy = scale;
+    v13 = layoutCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:toFullScreenContinuousExposeModifier usingBlock:v12];
 
     v8 = v17[3];
@@ -551,7 +551,7 @@ uint64_t __82__SBAppExposeToAppWindowingModifier_adjustedSpaceAccessoryViewFrame
   {
     v11.receiver = self;
     v11.super_class = SBAppExposeToAppWindowingModifier;
-    [(SBWindowingModifier *)&v11 adjustedSpaceAccessoryViewScale:v6 forAppLayout:a3];
+    [(SBWindowingModifier *)&v11 adjustedSpaceAccessoryViewScale:layoutCopy forAppLayout:scale];
     v8 = v9;
     v17[3] = v9;
   }
@@ -568,11 +568,11 @@ uint64_t __82__SBAppExposeToAppWindowingModifier_adjustedSpaceAccessoryViewScale
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3010000000;
@@ -590,7 +590,7 @@ uint64_t __82__SBAppExposeToAppWindowingModifier_adjustedSpaceAccessoryViewScale
     v17[4] = self;
     v20 = x;
     v21 = y;
-    v18 = v7;
+    v18 = layoutCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:toFullScreenContinuousExposeModifier usingBlock:v17];
 
     v9 = v23[4];
@@ -601,7 +601,7 @@ uint64_t __82__SBAppExposeToAppWindowingModifier_adjustedSpaceAccessoryViewScale
   {
     v16.receiver = self;
     v16.super_class = SBAppExposeToAppWindowingModifier;
-    [(SBWindowingModifier *)&v16 adjustedSpaceAccessoryViewAnchorPoint:v7 forAppLayout:x, y];
+    [(SBWindowingModifier *)&v16 adjustedSpaceAccessoryViewAnchorPoint:layoutCopy forAppLayout:x, y];
     v9 = v11;
     v10 = v12;
     v13 = v23;
@@ -627,11 +627,11 @@ uint64_t __88__SBAppExposeToAppWindowingModifier_adjustedSpaceAccessoryViewAncho
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)angle forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = angle.y;
+  x = angle.x;
+  layoutCopy = layout;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3010000000;
@@ -649,7 +649,7 @@ uint64_t __88__SBAppExposeToAppWindowingModifier_adjustedSpaceAccessoryViewAncho
     v17[4] = self;
     v20 = x;
     v21 = y;
-    v18 = v7;
+    v18 = layoutCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:toFullScreenContinuousExposeModifier usingBlock:v17];
 
     v9 = v23[4];
@@ -660,7 +660,7 @@ uint64_t __88__SBAppExposeToAppWindowingModifier_adjustedSpaceAccessoryViewAncho
   {
     v16.receiver = self;
     v16.super_class = SBAppExposeToAppWindowingModifier;
-    [(SBWindowingModifier *)&v16 adjustedSpaceAccessoryViewPerspectiveAngle:v7 forAppLayout:x, y];
+    [(SBWindowingModifier *)&v16 adjustedSpaceAccessoryViewPerspectiveAngle:layoutCopy forAppLayout:x, y];
     v9 = v11;
     v10 = v12;
     v13 = v23;
@@ -686,7 +686,7 @@ uint64_t __93__SBAppExposeToAppWindowingModifier_adjustedSpaceAccessoryViewPersp
   return result;
 }
 
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3
+- (SBWindowingItemCorners)cornersForItem:(SEL)item
 {
   v6 = a4;
   v20 = 0;
@@ -744,7 +744,7 @@ double __52__SBAppExposeToAppWindowingModifier_cornersForItem___block_invoke(voi
   return result;
 }
 
-- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)a3
+- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)item
 {
   v6 = a4;
   v20 = 0;
@@ -802,13 +802,13 @@ double __55__SBAppExposeToAppWindowingModifier_titleStyleForItem___block_invoke(
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   v35 = 0;
   v36 = &v35;
   v37 = 0x4010000000;
@@ -823,9 +823,9 @@ double __55__SBAppExposeToAppWindowingModifier_titleStyleForItem___block_invoke(
     v27[2] = __79__SBAppExposeToAppWindowingModifier_frameForLayoutRole_inAppLayout_withBounds___block_invoke;
     v27[3] = &unk_2783AA640;
     v29 = &v35;
-    v30 = a3;
+    roleCopy = role;
     v27[4] = self;
-    v28 = v11;
+    v28 = layoutCopy;
     v31 = x;
     v32 = y;
     v33 = width;
@@ -842,7 +842,7 @@ double __55__SBAppExposeToAppWindowingModifier_titleStyleForItem___block_invoke(
   {
     v26.receiver = self;
     v26.super_class = SBAppExposeToAppWindowingModifier;
-    [(SBAppExposeToAppWindowingModifier *)&v26 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBAppExposeToAppWindowingModifier *)&v26 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v13 = v17;
     v14 = v18;
     v15 = v19;
@@ -878,9 +878,9 @@ uint64_t __79__SBAppExposeToAppWindowingModifier_frameForLayoutRole_inAppLayout_
   return result;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -893,9 +893,9 @@ uint64_t __79__SBAppExposeToAppWindowingModifier_frameForLayoutRole_inAppLayout_
     v12[2] = __68__SBAppExposeToAppWindowingModifier_scaleForLayoutRole_inAppLayout___block_invoke;
     v12[3] = &unk_2783AA668;
     v14 = &v16;
-    v15 = a3;
+    roleCopy = role;
     v12[4] = self;
-    v13 = v6;
+    v13 = layoutCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:toFullScreenContinuousExposeModifier usingBlock:v12];
 
     v8 = v17[3];
@@ -905,7 +905,7 @@ uint64_t __79__SBAppExposeToAppWindowingModifier_frameForLayoutRole_inAppLayout_
   {
     v11.receiver = self;
     v11.super_class = SBAppExposeToAppWindowingModifier;
-    [(SBAppExposeToAppWindowingModifier *)&v11 scaleForLayoutRole:a3 inAppLayout:v6];
+    [(SBAppExposeToAppWindowingModifier *)&v11 scaleForLayoutRole:role inAppLayout:layoutCopy];
     v8 = v9;
     v17[3] = v9;
   }
@@ -922,11 +922,11 @@ uint64_t __68__SBAppExposeToAppWindowingModifier_scaleForLayoutRole_inAppLayout_
   return result;
 }
 
-- (id)animationAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withAnimationAttributes:(id)a5
+- (id)animationAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout withAnimationAttributes:(id)attributes
 {
-  v8 = a4;
-  v9 = [a5 mutableCopy];
-  v10 = [v8 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v9 = [attributes mutableCopy];
+  v10 = [layoutCopy itemForLayoutRole:role];
 
   if ([(NSSet *)self->_visibleItemsInAppExpose containsObject:v10])
   {

@@ -1,6 +1,6 @@
 @interface VSVerificationStateResetOperation
 - (VSVerificationStateResetOperation)init;
-- (void)_resetVerificationStateWithURL:(id)a3;
+- (void)_resetVerificationStateWithURL:(id)l;
 - (void)cancel;
 - (void)executionDidBegin;
 @end
@@ -29,28 +29,28 @@
   return v2;
 }
 
-- (void)_resetVerificationStateWithURL:(id)a3
+- (void)_resetVerificationStateWithURL:(id)l
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = lCopy;
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Resetting verification state with URL %@", buf, 0xCu);
   }
 
   v6 = MEMORY[0x277CCAD38];
-  v7 = [(VSVerificationStateResetOperation *)self auditToken];
-  v8 = [v6 vs_defaultSessionConfigurationForSourceAppWithAuditToken:v7];
+  auditToken = [(VSVerificationStateResetOperation *)self auditToken];
+  v8 = [v6 vs_defaultSessionConfigurationForSourceAppWithAuditToken:auditToken];
 
   v9 = objc_alloc_init(MEMORY[0x277CF0188]);
   [v8 set_appleIDContext:v9];
 
   [v8 setTimeoutIntervalForRequest:30.0];
   v10 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v8 delegate:0 delegateQueue:0];
-  v11 = [objc_alloc(MEMORY[0x277CCAD20]) initWithURL:v4];
+  v11 = [objc_alloc(MEMORY[0x277CCAD20]) initWithURL:lCopy];
   objc_initWeak(buf, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -133,8 +133,8 @@ LABEL_11:
   v5 = v3;
   v8 = v5;
   [(VSAMSBagLoadOperation *)v4 setCompletionBlock:v7];
-  v6 = [(VSVerificationStateResetOperation *)self privateQueue];
-  [v6 addOperation:v4];
+  privateQueue = [(VSVerificationStateResetOperation *)self privateQueue];
+  [privateQueue addOperation:v4];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v9);
@@ -243,8 +243,8 @@ LABEL_20:
   v4.receiver = self;
   v4.super_class = VSVerificationStateResetOperation;
   [(VSAsyncOperation *)&v4 cancel];
-  v3 = [(VSVerificationStateResetOperation *)self resetStateTask];
-  [v3 cancel];
+  resetStateTask = [(VSVerificationStateResetOperation *)self resetStateTask];
+  [resetStateTask cancel];
 }
 
 @end

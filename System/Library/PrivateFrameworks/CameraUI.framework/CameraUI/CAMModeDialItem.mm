@@ -1,19 +1,19 @@
 @interface CAMModeDialItem
-- (CAMModeDialItem)initWithCoder:(id)a3;
-- (CAMModeDialItem)initWithFrame:(CGRect)a3;
+- (CAMModeDialItem)initWithCoder:(id)coder;
+- (CAMModeDialItem)initWithFrame:(CGRect)frame;
 - (CGColor)_textColor;
-- (CGPath)_pathForAttributedString:(__CFAttributedString *)a3;
+- (CGPath)_pathForAttributedString:(__CFAttributedString *)string;
 - (CGSize)_textFrameSize;
 - (__CFAttributedString)_attributedTitle;
 - (void)_commonCAMModeDialItemInitialization;
 - (void)_invalidateScalableTextPathFromAttributedTitle;
 - (void)_updateScalableTextPathFromAttributedTitle;
-- (void)configure:(id)a3;
+- (void)configure:(id)configure;
 - (void)layoutSubviews;
-- (void)setFont:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShouldShadowTitleText:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setFont:(id)font;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setShouldShadowTitleText:(BOOL)text;
+- (void)setTitle:(id)title;
 - (void)tintColorDidChange;
 @end
 
@@ -25,12 +25,12 @@
   font = self->_font;
   self->_font = v3;
 
-  v5 = [MEMORY[0x1E69794A0] layer];
+  layer = [MEMORY[0x1E69794A0] layer];
   scalableTextLayer = self->__scalableTextLayer;
-  self->__scalableTextLayer = v5;
+  self->__scalableTextLayer = layer;
 
-  v7 = [(CAMModeDialItem *)self layer];
-  [v7 addSublayer:self->__scalableTextLayer];
+  layer2 = [(CAMModeDialItem *)self layer];
+  [layer2 addSublayer:self->__scalableTextLayer];
   [(CAMModeDialItem *)self _invalidateScalableTextPathFromAttributedTitle];
 }
 
@@ -40,21 +40,21 @@
   {
     [(CAMModeDialItem *)self setNeedsUpdateScalableTextPath:0];
     v3 = [(CAMModeDialItem *)self _pathForAttributedString:[(CAMModeDialItem *)self _attributedTitle]];
-    v7 = [(CAMModeDialItem *)self _scalableTextLayer];
-    v4 = [(CAMModeDialItem *)self shouldShadowTitleText];
+    _scalableTextLayer = [(CAMModeDialItem *)self _scalableTextLayer];
+    shouldShadowTitleText = [(CAMModeDialItem *)self shouldShadowTitleText];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    [v7 setPath:v3];
-    if (v4)
+    [_scalableTextLayer setPath:v3];
+    if (shouldShadowTitleText)
     {
-      [v7 setShadowPath:v3];
-      v5 = [MEMORY[0x1E69DC888] blackColor];
-      [v7 setShadowColor:{objc_msgSend(v5, "CGColor")}];
+      [_scalableTextLayer setShadowPath:v3];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [_scalableTextLayer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
       LODWORD(v6) = 1051931443;
-      [v7 setShadowOpacity:v6];
-      [v7 setShadowOffset:{0.0, 0.0}];
-      [v7 setShadowRadius:2.0];
+      [_scalableTextLayer setShadowOpacity:v6];
+      [_scalableTextLayer setShadowOffset:{0.0, 0.0}];
+      [_scalableTextLayer setShadowRadius:2.0];
     }
 
     [MEMORY[0x1E6979518] commit];
@@ -64,10 +64,10 @@
 - (__CFAttributedString)_attributedTitle
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMModeDialItem *)self font];
-  v4 = [CAMFont cameraKerningForFont:v3];
+  font = [(CAMModeDialItem *)self font];
+  v4 = [CAMFont cameraKerningForFont:font];
   v14 = 2;
-  [v3 leading];
+  [font leading];
   v13 = v5;
   settings.spec = kCTParagraphStyleSpecifierAlignment;
   settings.valueSize = 1;
@@ -83,7 +83,7 @@
   keys[0] = *MEMORY[0x1E6965658];
   keys[1] = v7;
   keys[2] = *MEMORY[0x1E6965A30];
-  values[0] = v3;
+  values[0] = font;
   values[1] = v4;
   values[2] = v6;
   v8 = *MEMORY[0x1E695E480];
@@ -100,9 +100,9 @@
 {
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v3 = [(CAMModeDialItem *)self _textColor];
-  v4 = [(CAMModeDialItem *)self _scalableTextLayer];
-  [v4 setFillColor:v3];
+  _textColor = [(CAMModeDialItem *)self _textColor];
+  _scalableTextLayer = [(CAMModeDialItem *)self _scalableTextLayer];
+  [_scalableTextLayer setFillColor:_textColor];
 
   v5 = MEMORY[0x1E6979518];
 
@@ -121,11 +121,11 @@
     [MEMORY[0x1E69DC888] whiteColor];
   }
   v3 = ;
-  v4 = [(CAMModeDialItem *)self traitCollection];
-  v5 = [v3 resolvedColorWithTraitCollection:v4];
+  traitCollection = [(CAMModeDialItem *)self traitCollection];
+  v5 = [v3 resolvedColorWithTraitCollection:traitCollection];
 
-  v6 = [v5 CGColor];
-  return v6;
+  cGColor = [v5 CGColor];
+  return cGColor;
 }
 
 - (CGSize)_textFrameSize
@@ -146,11 +146,11 @@
   [(CAShapeLayer *)self->__scalableTextLayer setFrame:?];
 }
 
-- (CAMModeDialItem)initWithFrame:(CGRect)a3
+- (CAMModeDialItem)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMModeDialItem;
-  v3 = [(CAMModeDialItem *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMModeDialItem *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -161,11 +161,11 @@
   return v4;
 }
 
-- (CAMModeDialItem)initWithCoder:(id)a3
+- (CAMModeDialItem)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CAMModeDialItem;
-  v3 = [(CAMModeDialItem *)&v7 initWithCoder:a3];
+  v3 = [(CAMModeDialItem *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -176,9 +176,9 @@
   return v4;
 }
 
-- (void)configure:(id)a3
+- (void)configure:(id)configure
 {
-  (*(a3 + 2))(a3, self);
+  (*(configure + 2))(configure, self);
   if ([(CAMModeDialItem *)self needsUpdateScalableTextPath])
   {
 
@@ -186,58 +186,58 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     [(CAMModeDialItem *)self _invalidateScalableTextPathFromAttributedTitle];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  if (self->_font != v5)
+  fontCopy = font;
+  if (self->_font != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_font, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_font, font);
     [(CAMModeDialItem *)self _invalidateScalableTextPathFromAttributedTitle];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setShouldShadowTitleText:(BOOL)a3
+- (void)setShouldShadowTitleText:(BOOL)text
 {
-  if (self->_shouldShadowTitleText != a3)
+  if (self->_shouldShadowTitleText != text)
   {
-    self->_shouldShadowTitleText = a3;
+    self->_shouldShadowTitleText = text;
     [(CAMModeDialItem *)self _invalidateScalableTextPathFromAttributedTitle];
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    v5 = a4;
-    self->_selected = a3;
-    v12 = [(CAMModeDialItem *)self _scalableTextLayer];
-    v7 = [(CAMModeDialItem *)self _textColor];
-    v8 = [v12 fillColor];
-    [v12 setFillColor:v7];
-    if (v5)
+    animatedCopy = animated;
+    self->_selected = selected;
+    _scalableTextLayer = [(CAMModeDialItem *)self _scalableTextLayer];
+    _textColor = [(CAMModeDialItem *)self _textColor];
+    fillColor = [_scalableTextLayer fillColor];
+    [_scalableTextLayer setFillColor:_textColor];
+    if (animatedCopy)
     {
       v9 = [MEMORY[0x1E6979318] animationWithKeyPath:@"fillColor"];
-      [v9 setFromValue:v8];
+      [v9 setFromValue:fillColor];
       UIAnimationDragCoefficient();
       [v9 setDuration:v10 * 0.3331];
       v11 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
       [v9 setTimingFunction:v11];
 
       [v9 setFillMode:*MEMORY[0x1E69797E0]];
-      [v12 addAnimation:v9 forKey:@"colorAnimation"];
+      [_scalableTextLayer addAnimation:v9 forKey:@"colorAnimation"];
     }
   }
 }
@@ -252,13 +252,13 @@
   }
 }
 
-- (CGPath)_pathForAttributedString:(__CFAttributedString *)a3
+- (CGPath)_pathForAttributedString:(__CFAttributedString *)string
 {
   path1 = CGPathCreateMutable();
-  v5 = CTFramesetterCreateWithAttributedString(a3);
+  v5 = CTFramesetterCreateWithAttributedString(string);
   fitRange.location = 0;
   fitRange.length = 0;
-  v49.length = CFAttributedStringGetLength(a3);
+  v49.length = CFAttributedStringGetLength(string);
   v53.width = 1.79769313e308;
   v49.location = 0;
   v53.height = 1.79769313e308;
@@ -267,7 +267,7 @@
   v7 = v6;
   UICeilToViewScale();
   v9 = v8;
-  v42 = self;
+  selfCopy = self;
   [(CAMModeDialItem *)self _setTextFrameSize:v7, v8];
   v54.origin.x = 0.0;
   v54.origin.y = 0.0;
@@ -332,16 +332,16 @@
                   v27 = CTFontCreatePathForGlyph(Value, buffer, &matrix);
                   *&v44.a = vaddq_f64(v13[v14], *&v44.a);
                   v28 = [CAMCaptureCapabilities capabilities:v34];
-                  v29 = [v28 sfCameraFontSupported];
+                  sfCameraFontSupported = [v28 sfCameraFontSupported];
 
-                  if (v29)
+                  if (sfCameraFontSupported)
                   {
                     b = v44.b;
                   }
 
                   else
                   {
-                    v31 = CAMPixelWidthForView(v42);
+                    v31 = CAMPixelWidthForView(selfCopy);
                     b = v31 + v44.b;
                     v44.b = v31 + v44.b;
                   }

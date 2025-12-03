@@ -1,24 +1,24 @@
 @interface VCPProtoMovieTorsoResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieTorsoResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v14, 0, sizeof(v14));
-  CMTimeRangeMakeFromDictionary(&v14, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"attributes"];
+  CMTimeRangeMakeFromDictionary(&v14, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"attributes"];
   v5 = [v4 objectForKeyedSubscript:@"humanBounds"];
   v6 = [v4 objectForKeyedSubscript:@"faceId"];
   if (v6 || ([v4 objectForKeyedSubscript:@"faceIdentifier"], v11 = objc_claimAutoreleasedReturnValue(), v12 = v11 == 0, v11, v12))
@@ -91,20 +91,20 @@ void __73__VCPProtoMovieTorsoResult_LegacyConversion__resultFromLegacyDictionary
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(VCPProtoMovieTorsoResult *)self bounds];
-  [v4 rectValue];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  bounds = [(VCPProtoMovieTorsoResult *)self bounds];
+  [bounds rectValue];
   v5 = NSStringFromRect(v15);
-  [v3 setObject:v5 forKeyedSubscript:@"humanBounds"];
+  [dictionary setObject:v5 forKeyedSubscript:@"humanBounds"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCPProtoMovieTorsoResult faceId](self, "faceId")}];
-  [v3 setObject:v6 forKeyedSubscript:@"faceId"];
+  [dictionary setObject:v6 forKeyedSubscript:@"faceId"];
 
-  v7 = [(VCPProtoMovieTorsoResult *)self timeRange];
-  v8 = v7;
-  if (v7)
+  timeRange = [(VCPProtoMovieTorsoResult *)self timeRange];
+  v8 = timeRange;
+  if (timeRange)
   {
-    [v7 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -116,7 +116,7 @@ void __73__VCPProtoMovieTorsoResult_LegacyConversion__resultFromLegacyDictionary
   v9 = CMTimeRangeCopyAsDictionary(&range, 0);
   v10 = [(__CFDictionary *)v9 mutableCopy];
 
-  [v10 setObject:v3 forKeyedSubscript:@"attributes"];
+  [v10 setObject:dictionary forKeyedSubscript:@"attributes"];
 
   return v10;
 }
@@ -127,60 +127,60 @@ void __73__VCPProtoMovieTorsoResult_LegacyConversion__resultFromLegacyDictionary
   v8.receiver = self;
   v8.super_class = VCPProtoMovieTorsoResult;
   v4 = [(VCPProtoMovieTorsoResult *)&v8 description];
-  v5 = [(VCPProtoMovieTorsoResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieTorsoResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   bounds = self->_bounds;
   if (bounds)
   {
-    v7 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"bounds"];
+    dictionaryRepresentation2 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"bounds"];
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_faceId];
-  [v3 setObject:v8 forKey:@"faceId"];
+  [dictionary setObject:v8 forKey:@"faceId"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   timeRange = self->_timeRange;
-  v5 = a3;
-  [v5 setTimeRange:timeRange];
-  [v5 setBounds:self->_bounds];
-  v5[4] = self->_faceId;
+  toCopy = to;
+  [toCopy setTimeRange:timeRange];
+  [toCopy setBounds:self->_bounds];
+  toCopy[4] = self->_faceId;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(VCPProtoBounds *)self->_bounds copyWithZone:a3];
+  v8 = [(VCPProtoBounds *)self->_bounds copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -188,20 +188,20 @@ void __73__VCPProtoMovieTorsoResult_LegacyConversion__resultFromLegacyDictionary
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v7 = [v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(v4 + 3))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && ((bounds = self->_bounds, !(bounds | *(v4 + 1))) || -[VCPProtoBounds isEqual:](bounds, "isEqual:")) && self->_faceId == *(v4 + 4);
+  equalCopy = equal;
+  v7 = [equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(equalCopy + 3))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && ((bounds = self->_bounds, !(bounds | *(equalCopy + 1))) || -[VCPProtoBounds isEqual:](bounds, "isEqual:")) && self->_faceId == *(equalCopy + 4);
 
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (timeRange)
   {
     if (!v6)
@@ -222,10 +222,10 @@ void __73__VCPProtoMovieTorsoResult_LegacyConversion__resultFromLegacyDictionary
     [(VCPProtoMovieTorsoResult *)self setTimeRange:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   bounds = self->_bounds;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (bounds)
   {
     if (!v8)
@@ -246,9 +246,9 @@ LABEL_7:
     [(VCPProtoMovieTorsoResult *)self setBounds:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  self->_faceId = *(v4 + 4);
+  self->_faceId = *(fromCopy + 4);
 }
 
 @end

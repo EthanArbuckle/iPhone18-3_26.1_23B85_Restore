@@ -10,20 +10,20 @@
 - (RAPPlaceCorrectableString)correctableName;
 - (UIImage)image;
 - (unint64_t)coordinatePickingMapType;
-- (void)_fillSubmissionParameters:(id)a3;
-- (void)setCorrectedName:(id)a3;
-- (void)setLabelMarker:(id)a3;
-- (void)setLabelMarkerPickingMapContext:(id)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
+- (void)setCorrectedName:(id)name;
+- (void)setLabelMarker:(id)marker;
+- (void)setLabelMarkerPickingMapContext:(id)context;
 @end
 
 @implementation RAPLabelCorrectionsQuestion
 
 - (unint64_t)coordinatePickingMapType
 {
-  v2 = [(RAPQuestion *)self _context];
-  v3 = [v2 mapType];
+  _context = [(RAPQuestion *)self _context];
+  mapType = [_context mapType];
 
-  return v3;
+  return mapType;
 }
 
 - (RAPCommentQuestion)commentQuestion
@@ -32,11 +32,11 @@
   if (!commentQuestion)
   {
     v4 = [RAPCommentQuestion alloc];
-    v5 = [(RAPQuestion *)self report];
+    report = [(RAPQuestion *)self report];
     v6 = +[RAPCommentQuestion _localizedOptionalInformationTitle];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Add more information about the incorrect label" value:@"localized string not found" table:0];
-    v9 = [(RAPCommentQuestion *)v4 initWithReport:v5 parentQuestion:self title:v6 placeholderText:v8 emphasis:0];
+    v9 = [(RAPCommentQuestion *)v4 initWithReport:report parentQuestion:self title:v6 placeholderText:v8 emphasis:0];
     v10 = self->_commentQuestion;
     self->_commentQuestion = v9;
 
@@ -46,70 +46,70 @@
   return commentQuestion;
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v24 = a3;
-  v4 = [v24 commonContext];
+  parametersCopy = parameters;
+  commonContext = [parametersCopy commonContext];
 
-  if (!v4)
+  if (!commonContext)
   {
     v5 = objc_opt_new();
-    [v24 setCommonContext:v5];
+    [parametersCopy setCommonContext:v5];
   }
 
-  v6 = [v24 commonContext];
-  [v6 addUserPath:6];
+  commonContext2 = [parametersCopy commonContext];
+  [commonContext2 addUserPath:6];
 
-  v7 = [v24 commonContext];
-  [v7 addUserPath:4];
+  commonContext3 = [parametersCopy commonContext];
+  [commonContext3 addUserPath:4];
 
-  v8 = [v24 details];
+  details = [parametersCopy details];
 
-  if (!v8)
+  if (!details)
   {
     v9 = objc_opt_new();
-    [v24 setDetails:v9];
+    [parametersCopy setDetails:v9];
   }
 
-  [v24 setType:5];
-  v10 = [v24 details];
-  v11 = [v10 tileFeedback];
+  [parametersCopy setType:5];
+  details2 = [parametersCopy details];
+  tileFeedback = [details2 tileFeedback];
 
-  if (!v11)
+  if (!tileFeedback)
   {
-    v11 = objc_opt_new();
-    v12 = [v24 details];
-    [v12 setTileFeedback:v11];
+    tileFeedback = objc_opt_new();
+    details3 = [parametersCopy details];
+    [details3 setTileFeedback:tileFeedback];
   }
 
-  v13 = [v11 label];
-  if (!v13)
+  label = [tileFeedback label];
+  if (!label)
   {
-    v13 = objc_alloc_init(GEORPCorrectedLabel);
-    [v11 setLabel:v13];
+    label = objc_alloc_init(GEORPCorrectedLabel);
+    [tileFeedback setLabel:label];
   }
 
-  v14 = [(RAPLabelCorrectionsQuestion *)self labelMarker];
-  [v13 populateWithLabelMarker:v14];
+  labelMarker = [(RAPLabelCorrectionsQuestion *)self labelMarker];
+  [label populateWithLabelMarker:labelMarker];
 
-  v15 = [(RAPLabelCorrectionsQuestion *)self correctableName];
-  v16 = [v15 originalValue];
-  [v13 setOriginalValue:v16];
+  correctableName = [(RAPLabelCorrectionsQuestion *)self correctableName];
+  originalValue = [correctableName originalValue];
+  [label setOriginalValue:originalValue];
 
-  v17 = [(RAPLabelCorrectionsQuestion *)self correctableName];
-  LODWORD(v16) = [v17 isEdited];
+  correctableName2 = [(RAPLabelCorrectionsQuestion *)self correctableName];
+  LODWORD(originalValue) = [correctableName2 isEdited];
 
-  if (v16)
+  if (originalValue)
   {
-    v18 = [(RAPLabelCorrectionsQuestion *)self correctableName];
-    v19 = [v18 value];
-    [v13 setCorrectedValue:v19];
+    correctableName3 = [(RAPLabelCorrectionsQuestion *)self correctableName];
+    value = [correctableName3 value];
+    [label setCorrectedValue:value];
   }
 
-  v20 = [(RAPLabelCorrectionsQuestion *)self removeLabelCorrectableFlag];
-  v21 = [v20 value];
+  removeLabelCorrectableFlag = [(RAPLabelCorrectionsQuestion *)self removeLabelCorrectableFlag];
+  value2 = [removeLabelCorrectableFlag value];
 
-  if (v21)
+  if (value2)
   {
     v22 = 2;
   }
@@ -119,33 +119,33 @@
     v22 = 1;
   }
 
-  [v11 setType:v22];
-  v23 = [(RAPLabelCorrectionsQuestion *)self commentQuestion];
-  [v23 _fillSubmissionParameters:v24];
+  [tileFeedback setType:v22];
+  commentQuestion = [(RAPLabelCorrectionsQuestion *)self commentQuestion];
+  [commentQuestion _fillSubmissionParameters:parametersCopy];
 }
 
 - (BOOL)isComplete
 {
-  v3 = [(RAPLabelCorrectionsQuestion *)self labelMarker];
-  if (v3 && (v4 = v3, [(RAPLabelCorrectionsQuestion *)self labelMarkerPickingMapContext], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  labelMarker = [(RAPLabelCorrectionsQuestion *)self labelMarker];
+  if (labelMarker && (v4 = labelMarker, [(RAPLabelCorrectionsQuestion *)self labelMarkerPickingMapContext], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(RAPLabelCorrectionsQuestion *)self correctableName];
-    v7 = [v6 value];
+    correctableName = [(RAPLabelCorrectionsQuestion *)self correctableName];
+    value = [correctableName value];
     v8 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-    v9 = [v7 stringByTrimmingCharactersInSet:v8];
+    v9 = [value stringByTrimmingCharactersInSet:v8];
     v10 = [v9 length];
     v11 = v10 != 0;
 
-    v12 = [(RAPLabelCorrectionsQuestion *)self removeLabelCorrectableFlag];
-    LOBYTE(v7) = [v12 value];
+    removeLabelCorrectableFlag = [(RAPLabelCorrectionsQuestion *)self removeLabelCorrectableFlag];
+    LOBYTE(value) = [removeLabelCorrectableFlag value];
 
-    if ((v7 & 1) == 0)
+    if ((value & 1) == 0)
     {
-      v13 = [(RAPLabelCorrectionsQuestion *)self correctableName];
-      v14 = [v13 isEdited];
+      correctableName2 = [(RAPLabelCorrectionsQuestion *)self correctableName];
+      isEdited = [correctableName2 isEdited];
       if (v10)
       {
-        v15 = v14;
+        v15 = isEdited;
       }
 
       else
@@ -153,10 +153,10 @@
         v15 = 0;
       }
 
-      v16 = [(RAPLabelCorrectionsQuestion *)self commentQuestion];
-      v17 = [v16 comment];
+      commentQuestion = [(RAPLabelCorrectionsQuestion *)self commentQuestion];
+      comment = [commentQuestion comment];
       v18 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-      v19 = [v17 stringByTrimmingCharactersInSet:v18];
+      v19 = [comment stringByTrimmingCharactersInSet:v18];
       if ([v19 length])
       {
         v20 = 1;
@@ -164,9 +164,9 @@
 
       else
       {
-        v21 = [(RAPLabelCorrectionsQuestion *)self commentQuestion];
-        v22 = [v21 photos];
-        v20 = [v22 count] != 0;
+        commentQuestion2 = [(RAPLabelCorrectionsQuestion *)self commentQuestion];
+        photos = [commentQuestion2 photos];
+        v20 = [photos count] != 0;
       }
 
       v11 = v15 | v20;
@@ -181,29 +181,29 @@
   return v11 & 1;
 }
 
-- (void)setLabelMarkerPickingMapContext:(id)a3
+- (void)setLabelMarkerPickingMapContext:(id)context
 {
-  v5 = a3;
-  if (self->_labelMarkerPickingMapContext != v5)
+  contextCopy = context;
+  if (self->_labelMarkerPickingMapContext != contextCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_labelMarkerPickingMapContext, a3);
-    v5 = v6;
+    v6 = contextCopy;
+    objc_storeStrong(&self->_labelMarkerPickingMapContext, context);
+    contextCopy = v6;
   }
 }
 
-- (void)setLabelMarker:(id)a3
+- (void)setLabelMarker:(id)marker
 {
-  v5 = a3;
-  if (self->_labelMarker != v5)
+  markerCopy = marker;
+  if (self->_labelMarker != markerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_labelMarker, a3);
+    v7 = markerCopy;
+    objc_storeStrong(&self->_labelMarker, marker);
     correctableName = self->_correctableName;
     self->_correctableName = 0;
 
     [(RAPQuestion *)self _didChange];
-    v5 = v7;
+    markerCopy = v7;
   }
 }
 
@@ -228,19 +228,19 @@
   correctableName = self->_correctableName;
   if (!correctableName)
   {
-    v4 = [(RAPLabelCorrectionsQuestion *)self labelMarker];
-    if (v4)
+    labelMarker = [(RAPLabelCorrectionsQuestion *)self labelMarker];
+    if (labelMarker)
     {
-      v5 = [(RAPLabelCorrectionsQuestion *)self labelMarker];
-      v6 = [v5 text];
+      labelMarker2 = [(RAPLabelCorrectionsQuestion *)self labelMarker];
+      text = [labelMarker2 text];
     }
 
     else
     {
-      v6 = 0;
+      text = 0;
     }
 
-    v7 = [[RAPPlaceCorrectableString alloc] initWithKind:0 originalValue:v6];
+    v7 = [[RAPPlaceCorrectableString alloc] initWithKind:0 originalValue:text];
     v8 = self->_correctableName;
     self->_correctableName = v7;
 
@@ -251,25 +251,25 @@
   return correctableName;
 }
 
-- (void)setCorrectedName:(id)a3
+- (void)setCorrectedName:(id)name
 {
-  v4 = a3;
-  v5 = [(RAPLabelCorrectionsQuestion *)self correctableName];
-  [v5 setValue:v4];
+  nameCopy = name;
+  correctableName = [(RAPLabelCorrectionsQuestion *)self correctableName];
+  [correctableName setValue:nameCopy];
 }
 
 - (NSString)originalName
 {
-  v2 = [(RAPLabelCorrectionsQuestion *)self labelMarker];
-  v3 = [v2 text];
+  labelMarker = [(RAPLabelCorrectionsQuestion *)self labelMarker];
+  text = [labelMarker text];
 
-  return v3;
+  return text;
 }
 
 - ($873BFAB23BBB6E2F0B0288ED2F935688)initialLabelMarkerPickingMapRect
 {
-  v2 = [(RAPQuestion *)self _context];
-  v3 = sub_1007A39B4(v2);
+  _context = [(RAPQuestion *)self _context];
+  v3 = sub_1007A39B4(_context);
   v5 = v4;
   v7 = v6;
   v9 = v8;

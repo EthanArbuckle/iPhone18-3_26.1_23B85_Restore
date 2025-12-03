@@ -1,24 +1,24 @@
 @interface HSStage
-- (BOOL)decodeStateFromData:(id)a3;
-- (BOOL)handleHSEncode:(void *)a3;
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
+- (BOOL)decodeStateFromData:(id)data;
+- (BOOL)handleHSEncode:(void *)encode;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (HSStage)init;
 - (id).cxx_construct;
-- (id)HSStageProxy_decodeStateFromData:(id)a3;
+- (id)HSStageProxy_decodeStateFromData:(id)data;
 - (id)consumers;
 - (id)encodeStateToData;
 - (id)name;
 - (id)stateObject;
 - (void)_pruneObservers;
-- (void)addStageObserver:(id)a3;
-- (void)consume:(id)a3;
+- (void)addStageObserver:(id)observer;
+- (void)consume:(id)consume;
 - (void)dealloc;
-- (void)handleConsume:(id)a3;
-- (void)postNotification:(id)a3;
-- (void)removeStageObserver:(id)a3;
-- (void)setConsumers:(id)a3;
-- (void)setStateObject:(id)a3;
+- (void)handleConsume:(id)consume;
+- (void)postNotification:(id)notification;
+- (void)removeStageObserver:(id)observer;
+- (void)setConsumers:(id)consumers;
+- (void)setStateObject:(id)object;
 @end
 
 @implementation HSStage
@@ -101,44 +101,44 @@ LABEL_6:
   return v3;
 }
 
-- (void)setConsumers:(id)a3
+- (void)setConsumers:(id)consumers
 {
-  v4 = a3;
+  consumersCopy = consumers;
   HSUtil::ObjectLock::ObjectLock(v7, self);
-  v5 = [v4 copy];
+  v5 = [consumersCopy copy];
   consumers = self->_state.consumers;
   self->_state.consumers = v5;
 
   HSUtil::ObjectLock::~ObjectLock(v7);
 }
 
-- (void)consume:(id)a3
+- (void)consume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   HSUtil::ObjectLock::ObjectLock(v5, self);
-  [(HSStage *)self handleConsume:v4];
+  [(HSStage *)self handleConsume:consumeCopy];
   HSUtil::ObjectLock::~ObjectLock(v5);
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
   HSUtil::ObjectLock::ObjectLock(v6, self);
-  LOBYTE(a3) = [(HSStage *)self handleHSEncode:a3];
+  LOBYTE(encode) = [(HSStage *)self handleHSEncode:encode];
   HSUtil::ObjectLock::~ObjectLock(v6);
-  return a3;
+  return encode;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
   HSUtil::ObjectLock::ObjectLock(v6, self);
-  LOBYTE(a3) = [(HSStage *)self handleHSDecode:a3];
+  LOBYTE(decode) = [(HSStage *)self handleHSDecode:decode];
   HSUtil::ObjectLock::~ObjectLock(v6);
-  return a3;
+  return decode;
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -159,7 +159,7 @@ LABEL_6:
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
-        [v9 consume:{v4, v10}];
+        [v9 consume:{consumeCopy, v10}];
 
         v8 = v8 + 1;
       }
@@ -172,54 +172,54 @@ LABEL_6:
   }
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
     __src = -116;
-    HSUtil::Encoder::_write(a3, a3 + 17, &__src, 1uLL);
+    HSUtil::Encoder::_write(encode, encode + 17, &__src, 1uLL);
   }
 
   return 1;
 }
 
-- (void)addStageObserver:(id)a3
+- (void)addStageObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"HSStage.mm" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
   }
 
   HSUtil::ObjectLock::ObjectLock(v8, self);
-  objc_initWeak(&location, v5);
+  objc_initWeak(&location, observerCopy);
   std::__hash_table<objc_object  {objcproto15HSStageObserver}* {__weak},HSUtil::ObjectHasher,std::equal_to<objc_object  {objcproto15HSStageObserver}*>,std::allocator<objc_object  {objcproto15HSStageObserver}*>>::__emplace_unique_key_args<objc_object  {objcproto15HSStageObserver}*,objc_object  {objcproto15HSStageObserver} const {__weak}&>(&self->_state.observers.__table_.__bucket_list_.__ptr_, &location);
   objc_destroyWeak(&location);
   [(HSStage *)self _pruneObservers];
   HSUtil::ObjectLock::~ObjectLock(v8);
 }
 
-- (void)removeStageObserver:(id)a3
+- (void)removeStageObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"HSStage.mm" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
   }
 
   HSUtil::ObjectLock::ObjectLock(v8, self);
-  objc_initWeak(&location, v5);
+  objc_initWeak(&location, observerCopy);
   std::__hash_table<objc_object  {objcproto15HSStageObserver}* {__weak},HSUtil::ObjectHasher,std::equal_to<objc_object  {objcproto15HSStageObserver}*>,std::allocator<objc_object  {objcproto15HSStageObserver}*>>::__erase_unique<objc_object  {objcproto15HSStageObserver}*>(&self->_state.observers.__table_.__bucket_list_.__ptr_, &location);
   objc_destroyWeak(&location);
   [(HSStage *)self _pruneObservers];
   HSUtil::ObjectLock::~ObjectLock(v8);
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   HSUtil::ObjectLock::ObjectLock(v9, self);
   std::unordered_set<objc_object  {objcproto15HSStageObserver}* {__weak},HSUtil::ObjectHasher,std::equal_to<objc_object  {objcproto15HSStageObserver}*>,std::allocator<objc_object  {objcproto15HSStageObserver}*>>::unordered_set(v7, &self->_state.observers);
   [v9[1] unlock];
@@ -227,7 +227,7 @@ LABEL_6:
   for (i = v8; i; i = *i)
   {
     WeakRetained = objc_loadWeakRetained(i + 2);
-    [WeakRetained stage:self postedNotification:v4];
+    [WeakRetained stage:self postedNotification:notificationCopy];
   }
 
   std::__hash_table<objc_object  {objcproto15HSStageObserver}* {__weak},HSUtil::ObjectHasher,std::equal_to<objc_object  {objcproto15HSStageObserver}*>,std::allocator<objc_object  {objcproto15HSStageObserver}*>>::~__hash_table(v7);
@@ -316,9 +316,9 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)decodeStateFromData:(id)a3
+- (BOOL)decodeStateFromData:(id)data
 {
-  HSUtil::Buffer::Buffer(v12, a3);
+  HSUtil::Buffer::Buffer(v12, data);
   HSUtil::DecoderBuf::DecoderBuf(v8, v12);
   HSUtil::Buffer::~Buffer(v12);
   HSUtil::Decoder::decodeHSCodable(v8, self);
@@ -351,10 +351,10 @@ LABEL_6:
 
 - (id)stateObject
 {
-  v2 = [(HSStage *)self encodeStateToData];
-  if (v2)
+  encodeStateToData = [(HSStage *)self encodeStateToData];
+  if (encodeStateToData)
   {
-    HSUtil::Buffer::Buffer(v12, v2);
+    HSUtil::Buffer::Buffer(v12, encodeStateToData);
     HSUtil::DecoderBuf::DecoderBuf(v8, v12);
     HSUtil::Buffer::~Buffer(v12);
     v3 = HSUtil::Decoder::decodeObject(v8);
@@ -404,11 +404,11 @@ LABEL_6:
   return v5;
 }
 
-- (void)setStateObject:(id)a3
+- (void)setStateObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = HSUtil::EncoderBuf::EncoderBuf(v10);
-  HSUtil::Encoder::encodeObject(v5, v4);
+  HSUtil::Encoder::encodeObject(v5, objectCopy);
   v6 = HSUtil::EncoderBuf::buffer(v10);
   if (*(v6 + 5))
   {
@@ -450,9 +450,9 @@ LABEL_6:
   std::__function::__value_func<BOOL ()(HSUtil::Encoder &,objc_object *)>::~__value_func[abi:ne200100](&v11);
 }
 
-- (id)HSStageProxy_decodeStateFromData:(id)a3
+- (id)HSStageProxy_decodeStateFromData:(id)data
 {
-  v3 = HSProxySynth::HSStageProxy_decodeStateFromData_call1<BOOL>(self, a3);
+  v3 = HSProxySynth::HSStageProxy_decodeStateFromData_call1<BOOL>(self, data);
 
   return v3;
 }

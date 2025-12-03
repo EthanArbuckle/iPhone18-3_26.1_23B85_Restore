@@ -1,51 +1,51 @@
 @interface CKDPDistributedTimestamps
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addSiteIdentifiers:(id)a3;
-- (void)addSiteVersionVectors:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSiteIdentifiers:(id)identifiers;
+- (void)addSiteVersionVectors:(id)vectors;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPDistributedTimestamps
 
-- (void)addSiteIdentifiers:(id)a3
+- (void)addSiteIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   siteIdentifiers = self->_siteIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!siteIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_siteIdentifiers;
     self->_siteIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     siteIdentifiers = self->_siteIdentifiers;
   }
 
-  objc_msgSend_addObject_(siteIdentifiers, v4, v4);
+  objc_msgSend_addObject_(siteIdentifiers, identifiersCopy, identifiersCopy);
 }
 
-- (void)addSiteVersionVectors:(id)a3
+- (void)addSiteVersionVectors:(id)vectors
 {
-  v4 = a3;
+  vectorsCopy = vectors;
   siteVersionVectors = self->_siteVersionVectors;
-  v8 = v4;
+  v8 = vectorsCopy;
   if (!siteVersionVectors)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_siteVersionVectors;
     self->_siteVersionVectors = v6;
 
-    v4 = v8;
+    vectorsCopy = v8;
     siteVersionVectors = self->_siteVersionVectors;
   }
 
-  objc_msgSend_addObject_(siteVersionVectors, v4, v4);
+  objc_msgSend_addObject_(siteVersionVectors, vectorsCopy, vectorsCopy);
 }
 
 - (id)description
@@ -143,10 +143,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -214,12 +214,12 @@
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v25 = a3;
+  toCopy = to;
   if (objc_msgSend_siteIdentifiersCount(self, v4, v5))
   {
-    objc_msgSend_clearSiteIdentifiers(v25, v6, v7);
+    objc_msgSend_clearSiteIdentifiers(toCopy, v6, v7);
     v10 = objc_msgSend_siteIdentifiersCount(self, v8, v9);
     if (v10)
     {
@@ -227,14 +227,14 @@
       for (i = 0; i != v11; ++i)
       {
         v13 = objc_msgSend_siteIdentifiersAtIndex_(self, v6, i);
-        objc_msgSend_addSiteIdentifiers_(v25, v14, v13);
+        objc_msgSend_addSiteIdentifiers_(toCopy, v14, v13);
       }
     }
   }
 
   if (objc_msgSend_siteVersionVectorsCount(self, v6, v7))
   {
-    objc_msgSend_clearSiteVersionVectors(v25, v15, v16);
+    objc_msgSend_clearSiteVersionVectors(toCopy, v15, v16);
     v19 = objc_msgSend_siteVersionVectorsCount(self, v17, v18);
     if (v19)
     {
@@ -242,17 +242,17 @@
       for (j = 0; j != v21; ++j)
       {
         v23 = objc_msgSend_siteVersionVectorsAtIndex_(self, v20, j);
-        objc_msgSend_addSiteVersionVectors_(v25, v24, v23);
+        objc_msgSend_addSiteVersionVectors_(toCopy, v24, v23);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v41 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v35 = 0u;
   v36 = 0u;
@@ -274,7 +274,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v35 + 1) + 8 * v17), v14, a3);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v35 + 1) + 8 * v17), v14, zone);
         objc_msgSend_addSiteIdentifiers_(v10, v19, v18);
 
         ++v17;
@@ -307,7 +307,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v27 = objc_msgSend_copyWithZone_(*(*(&v31 + 1) + 8 * v26), v23, a3, v31);
+        v27 = objc_msgSend_copyWithZone_(*(*(&v31 + 1) + 8 * v26), v23, zone, v31);
         objc_msgSend_addSiteVersionVectors_(v10, v28, v27);
 
         ++v26;
@@ -324,14 +324,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((siteIdentifiers = self->_siteIdentifiers, v9 = v4[1], !(siteIdentifiers | v9)) || objc_msgSend_isEqual_(siteIdentifiers, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((siteIdentifiers = self->_siteIdentifiers, v9 = equalCopy[1], !(siteIdentifiers | v9)) || objc_msgSend_isEqual_(siteIdentifiers, v7, v9)))
   {
     siteVersionVectors = self->_siteVersionVectors;
-    v11 = v4[2];
+    v11 = equalCopy[2];
     if (siteVersionVectors | v11)
     {
       isEqual = objc_msgSend_isEqual_(siteVersionVectors, v7, v11);
@@ -351,15 +351,15 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v24, v29, 16);
   if (v7)
   {
@@ -389,7 +389,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = v4[2];
+  v12 = fromCopy[2];
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v20, v28, 16);
   if (v14)
   {

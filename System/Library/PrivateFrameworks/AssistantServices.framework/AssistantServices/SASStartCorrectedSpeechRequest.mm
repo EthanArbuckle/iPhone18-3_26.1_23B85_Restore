@@ -1,21 +1,21 @@
 @interface SASStartCorrectedSpeechRequest
-- (void)ad_setAFCorrectionContext:(id)a3;
+- (void)ad_setAFCorrectionContext:(id)context;
 @end
 
 @implementation SASStartCorrectedSpeechRequest
 
-- (void)ad_setAFCorrectionContext:(id)a3
+- (void)ad_setAFCorrectionContext:(id)context
 {
-  v6 = a3;
-  if (v6)
+  contextCopy = context;
+  if (contextCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v6 objectForKey:AFCorrectionContextInteractionIdKey];
+      v4 = [contextCopy objectForKey:AFCorrectionContextInteractionIdKey];
       [(SASStartCorrectedSpeechRequest *)self setInteractionId:v4];
 
-      v5 = [v6 objectForKey:AFCorrectionContextSessionIdKey];
+      v5 = [contextCopy objectForKey:AFCorrectionContextSessionIdKey];
       [(SASStartCorrectedSpeechRequest *)self setSessionId:v5];
     }
   }

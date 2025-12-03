@@ -1,30 +1,30 @@
 @interface FIUIWorkoutCompletionPercentageRingViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation FIUIWorkoutCompletionPercentageRingViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FIUIWorkoutCompletionPercentageRingViewCell" hasInstanceMethod:@"ringsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FIUIWorkoutCompletionPercentageRingViewCell" hasInstanceMethod:@"typeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FIUIWorkoutCompletionPercentageRingViewCell" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FIUIWorkoutCompletionPercentageRingViewCell" hasInstanceMethod:@"ringsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FIUIWorkoutCompletionPercentageRingViewCell" hasInstanceMethod:@"typeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FIUIWorkoutCompletionPercentageRingViewCell" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(FIUIWorkoutCompletionPercentageRingViewCellAccessibility *)self safeValueForKey:@"typeLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(FIUIWorkoutCompletionPercentageRingViewCellAccessibility *)self safeValueForKey:@"ringsView"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = [(FIUIWorkoutCompletionPercentageRingViewCellAccessibility *)self safeValueForKey:@"secondaryLabel"];
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel3 = [v7 accessibilityLabel];
 
-  [v8 length];
+  [accessibilityLabel3 length];
   v9 = __UIAXStringForVariables();
 
   return v9;

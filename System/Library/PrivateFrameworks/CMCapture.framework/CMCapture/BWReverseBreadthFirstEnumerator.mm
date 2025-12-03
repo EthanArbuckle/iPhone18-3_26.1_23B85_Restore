@@ -1,5 +1,5 @@
 @interface BWReverseBreadthFirstEnumerator
-- (BWReverseBreadthFirstEnumerator)initWithGraph:(id)a3;
+- (BWReverseBreadthFirstEnumerator)initWithGraph:(id)graph;
 - (id)nextObject;
 - (uint64_t)nextObject;
 - (void)dealloc;
@@ -7,7 +7,7 @@
 
 @implementation BWReverseBreadthFirstEnumerator
 
-- (BWReverseBreadthFirstEnumerator)initWithGraph:(id)a3
+- (BWReverseBreadthFirstEnumerator)initWithGraph:(id)graph
 {
   v17.receiver = self;
   v17.super_class = BWReverseBreadthFirstEnumerator;
@@ -19,8 +19,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [a3 _sinkNodes];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v12 count:16];
+    _sinkNodes = [graph _sinkNodes];
+    v6 = [_sinkNodes countByEnumeratingWithState:&v13 objects:v12 count:16];
     if (v6)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_sinkNodes);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
@@ -39,7 +39,7 @@
           [(BWNodeEnumerator *)v4 _updateVisitedCount:v10];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v7 = [_sinkNodes countByEnumeratingWithState:&v13 objects:v12 count:16];
       }
 
       while (v7);
@@ -63,14 +63,14 @@
     return 0;
   }
 
-  v3 = [(NSMutableArray *)self->_queue firstObject];
+  firstObject = [(NSMutableArray *)self->_queue firstObject];
   [(NSMutableArray *)self->_queue removeObjectAtIndex:0];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 inputs];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  inputs = [firstObject inputs];
+  v5 = [inputs countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v5)
   {
     v6 = v5;
@@ -81,7 +81,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inputs);
         }
 
         v9 = [objc_msgSend(objc_msgSend(*(*(&v12 + 1) + 8 * i) "connection")];
@@ -91,18 +91,18 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v6 = [inputs countByEnumeratingWithState:&v12 objects:v11 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (uint64_t)nextObject
 {
-  result = [(BWNodeEnumerator *)a1 _updateVisitedCount:a2];
+  result = [(BWNodeEnumerator *)self _updateVisitedCount:a2];
   if (!result)
   {
     return [*a3 addObject:a2];

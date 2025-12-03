@@ -1,25 +1,25 @@
 @interface VCPEditAnalysisTask
-+ (id)taskWithPhotoLibrary:(id)a3;
-- (BOOL)isAutoplayable:(id)a3;
-- (VCPEditAnalysisTask)initWithPhotoLibrary:(id)a3;
-- (int)duplicateAsset:(id)a3;
++ (id)taskWithPhotoLibrary:(id)library;
+- (BOOL)isAutoplayable:(id)autoplayable;
+- (VCPEditAnalysisTask)initWithPhotoLibrary:(id)library;
+- (int)duplicateAsset:(id)asset;
 - (int)mainInternal;
-- (int)processAsset:(id)a3 withTypes:(unint64_t)a4;
+- (int)processAsset:(id)asset withTypes:(unint64_t)types;
 - (int)processPendingBatch;
 - (void)resetPendingBatch;
 @end
 
 @implementation VCPEditAnalysisTask
 
-- (VCPEditAnalysisTask)initWithPhotoLibrary:(id)a3
+- (VCPEditAnalysisTask)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = VCPEditAnalysisTask;
-  v5 = [(VCPTask *)&v9 initWithPhotoLibrary:v4];
+  v5 = [(VCPTask *)&v9 initWithPhotoLibrary:libraryCopy];
   if (v5)
   {
-    v6 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v4];
+    v6 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
     database = v5->_database;
     v5->_database = v6;
   }
@@ -27,41 +27,41 @@
   return v5;
 }
 
-+ (id)taskWithPhotoLibrary:(id)a3
++ (id)taskWithPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v3];
+  libraryCopy = library;
+  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy];
 
   return v4;
 }
 
 - (void)resetPendingBatch
 {
-  v5 = [(VCPTask *)self photoLibrary];
+  photoLibrary = [(VCPTask *)self photoLibrary];
   v3 = [VCPBatchAnalysisTask taskWithPhotoLibrary:?];
   pendingBatch = self->_pendingBatch;
   self->_pendingBatch = v3;
 
-  v6 = [(VCPTask *)self cancel];
+  cancel = [(VCPTask *)self cancel];
   [(VCPTask *)self->_pendingBatch setCancel:?];
 }
 
 - (int)processPendingBatch
 {
   [(VCPBatchAnalysisTask *)self->_pendingBatch start];
-  v3 = [(VCPTask *)self->_pendingBatch error];
-  if (!v3)
+  error = [(VCPTask *)self->_pendingBatch error];
+  if (!error)
   {
     [(VCPEditAnalysisTask *)self resetPendingBatch];
   }
 
-  return v3;
+  return error;
 }
 
-- (int)processAsset:(id)a3 withTypes:(unint64_t)a4
+- (int)processAsset:(id)asset withTypes:(unint64_t)types
 {
-  v6 = a3;
-  [(VCPBatchAnalysisTask *)self->_pendingBatch addAnalysis:a4 withExistingAnalysis:0 forAsset:v6];
+  assetCopy = asset;
+  [(VCPBatchAnalysisTask *)self->_pendingBatch addAnalysis:types withExistingAnalysis:0 forAsset:assetCopy];
   [(VCPBatchAnalysisTask *)self->_pendingBatch cost];
   if (v7 < 100.0 || (v8 = [(VCPEditAnalysisTask *)self processPendingBatch]) == 0)
   {
@@ -71,31 +71,31 @@
   return v8;
 }
 
-- (BOOL)isAutoplayable:(id)a3
+- (BOOL)isAutoplayable:(id)autoplayable
 {
-  v4 = a3;
+  autoplayableCopy = autoplayable;
   if (+[MADManagedPhotosAsset isMACDReadEnabled])
   {
-    v5 = [v4 photoLibrary];
-    v6 = [v5 mad_fetchRequest];
+    photoLibrary = [autoplayableCopy photoLibrary];
+    mad_fetchRequest = [photoLibrary mad_fetchRequest];
 
-    v7 = [v4 localIdentifier];
-    v8 = [v6 fetchAnalysisWithLocalIdentifier:v7 predicate:0];
+    localIdentifier = [autoplayableCopy localIdentifier];
+    v8 = [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0];
   }
 
   else
   {
     database = self->_database;
-    v6 = [v4 localIdentifier];
+    mad_fetchRequest = [autoplayableCopy localIdentifier];
     v16 = 0;
-    [(VCPDatabaseWriter *)database analysisForAsset:v6 analysis:&v16];
+    [(VCPDatabaseWriter *)database analysisForAsset:mad_fetchRequest analysis:&v16];
     v8 = v16;
   }
 
   v10 = MediaAnalysisStripOutdatedAnalysis();
 
-  v11 = [v10 vcp_results];
-  v12 = [v11 objectForKeyedSubscript:MediaAnalysisMovieSummaryResultsKey];
+  vcp_results = [v10 vcp_results];
+  v12 = [vcp_results objectForKeyedSubscript:MediaAnalysisMovieSummaryResultsKey];
 
   if ([v12 count])
   {
@@ -111,14 +111,14 @@
   return v14;
 }
 
-- (int)duplicateAsset:(id)a3
+- (int)duplicateAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = objc_alloc_init(PHAssetCreationOptions);
   [v5 setCopyAsAlternateAsset:1];
   v6 = NSTemporaryDirectory();
-  v7 = [v4 localIdentifier];
-  v8 = [v7 componentsSeparatedByString:@"/"];
+  localIdentifier = [assetCopy localIdentifier];
+  v8 = [localIdentifier componentsSeparatedByString:@"/"];
   v9 = [v8 objectAtIndexedSubscript:0];
   v10 = [NSString stringWithFormat:@"%@frc-tmp-%@.MOV", v6, v9];
 
@@ -126,16 +126,16 @@
   v12 = +[NSFileManager defaultManager];
   if ([v12 fileExistsAtPath:v10])
   {
-    v13 = [(VCPTask *)self photoLibrary];
+    photoLibrary = [(VCPTask *)self photoLibrary];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10009D7BC;
     v21[3] = &unk_1002832A0;
-    v22 = v4;
+    v22 = assetCopy;
     v23 = v5;
     v24 = v11;
     v20 = 0;
-    v14 = [v13 performChangesAndWait:v21 error:&v20];
+    v14 = [photoLibrary performChangesAndWait:v21 error:&v20];
     v15 = v20;
 
     if (v14)
@@ -195,8 +195,8 @@
     }
   }
 
-  v4 = [(VCPTask *)self photoLibrary];
-  v56 = [PHAsset vcp_fetchOptionsForLibrary:v4 forTaskID:1];
+  photoLibrary = [(VCPTask *)self photoLibrary];
+  v56 = [PHAsset vcp_fetchOptionsForLibrary:photoLibrary forTaskID:1];
 
   v5 = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:0];
   v62 = v5;
@@ -230,19 +230,19 @@
         {
           if (+[MADManagedPhotosAsset isMACDReadEnabled])
           {
-            v15 = [(VCPTask *)self photoLibrary];
-            v16 = [v15 mad_fetchRequest];
+            photoLibrary2 = [(VCPTask *)self photoLibrary];
+            mad_fetchRequest = [photoLibrary2 mad_fetchRequest];
 
-            v17 = [v10 localIdentifier];
-            v18 = [v16 fetchAnalysisWithLocalIdentifier:v17 predicate:0];
+            localIdentifier = [v10 localIdentifier];
+            v18 = [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0];
           }
 
           else
           {
             database = self->_database;
-            v16 = [v10 localIdentifier];
+            mad_fetchRequest = [v10 localIdentifier];
             v60 = 0;
-            [(VCPDatabaseWriter *)database analysisForAsset:v16 analysis:&v60];
+            [(VCPDatabaseWriter *)database analysisForAsset:mad_fetchRequest analysis:&v60];
             v18 = v60;
           }
 
@@ -255,8 +255,8 @@
 
           else
           {
-            v21 = [v20 vcp_results];
-            v22 = [v21 objectForKeyedSubscript:v55];
+            vcp_results = [v20 vcp_results];
+            v22 = [vcp_results objectForKeyedSubscript:v55];
 
             if ([v22 count] && (objc_msgSend(v22, "objectAtIndexedSubscript:", 0), v23 = objc_claimAutoreleasedReturnValue(), v24 = (objc_msgSend(v23, "vcp_flags") & 0x80000) == 0, v23, !v24))
             {
@@ -265,8 +265,8 @@
 
             else
             {
-              v25 = [(VCPEditAnalysisTask *)self processAsset:v10 withTypes:v14 & 0x20000000];
-              if (v25)
+              0x20000000 = [(VCPEditAnalysisTask *)self processAsset:v10 withTypes:v14 & 0x20000000];
+              if (0x20000000)
               {
                 v11 = 11;
               }
@@ -277,9 +277,9 @@
               }
 
               v26 = v57;
-              if (v25)
+              if (0x20000000)
               {
-                v26 = v25;
+                v26 = 0x20000000;
               }
 
               v57 = v26;
@@ -311,8 +311,8 @@
   [(VCPBatchAnalysisTask *)self->_pendingBatch cost];
   if (v27 != 0.0)
   {
-    v28 = [(VCPEditAnalysisTask *)self processPendingBatch];
-    if (v28)
+    processPendingBatch = [(VCPEditAnalysisTask *)self processPendingBatch];
+    if (processPendingBatch)
     {
       goto LABEL_85;
     }
@@ -351,19 +351,19 @@
         {
           if (+[MADManagedPhotosAsset isMACDReadEnabled])
           {
-            v37 = [(VCPTask *)self photoLibrary];
-            v38 = [v37 mad_fetchRequest];
+            photoLibrary3 = [(VCPTask *)self photoLibrary];
+            mad_fetchRequest2 = [photoLibrary3 mad_fetchRequest];
 
-            v39 = [v32 localIdentifier];
-            v40 = [v38 fetchAnalysisWithLocalIdentifier:v39 predicate:0];
+            localIdentifier2 = [v32 localIdentifier];
+            v40 = [mad_fetchRequest2 fetchAnalysisWithLocalIdentifier:localIdentifier2 predicate:0];
           }
 
           else
           {
             v41 = self->_database;
-            v38 = [v32 localIdentifier];
+            mad_fetchRequest2 = [v32 localIdentifier];
             v59 = 0;
-            [(VCPDatabaseWriter *)v41 analysisForAsset:v38 analysis:&v59];
+            [(VCPDatabaseWriter *)v41 analysisForAsset:mad_fetchRequest2 analysis:&v59];
             v40 = v59;
           }
 
@@ -376,18 +376,18 @@
 
           else
           {
-            v43 = [v42 vcp_results];
-            v44 = [v43 objectForKeyedSubscript:v55];
+            vcp_results2 = [v42 vcp_results];
+            v44 = [vcp_results2 objectForKeyedSubscript:v55];
 
             if ([v44 count] && (objc_msgSend(v44, "objectAtIndexedSubscript:", 0), v45 = objc_claimAutoreleasedReturnValue(), v46 = (objc_msgSend(v45, "vcp_flags") & 0x80000) == 0, v45, !v46))
             {
               v47 = [VCPAssetAnalysisTask taskWithAnalysisTypes:v36 & 0x20000000 forAsset:v32 withExistingAnalysis:v42];
-              v48 = [(VCPTask *)self cancel];
-              [v47 setCancel:v48];
+              cancel = [(VCPTask *)self cancel];
+              [v47 setCancel:cancel];
 
               [v47 start];
-              v49 = [v47 error];
-              if (v49)
+              error = [v47 error];
+              if (error)
               {
                 v33 = 11;
               }
@@ -396,10 +396,10 @@
               {
                 v50 = [(VCPEditAnalysisTask *)self duplicateAsset:v32];
                 v33 = v50 ? 11 : 0;
-                v49 = v50 ? v50 : v57;
+                error = v50 ? v50 : v57;
               }
 
-              v57 = v49;
+              v57 = error;
             }
 
             else
@@ -437,31 +437,31 @@ LABEL_71:
     goto LABEL_84;
   }
 
-  v51 = [(VCPDatabaseWriter *)self->_database commit];
-  if (v51 == -108)
+  commit = [(VCPDatabaseWriter *)self->_database commit];
+  if (commit == -108)
   {
-    v28 = -108;
+    processPendingBatch = -108;
   }
 
   else
   {
-    v52 = v51 == -36 || v51 == -23;
-    v28 = v51;
+    v52 = commit == -36 || commit == -23;
+    processPendingBatch = commit;
     if (!v52)
     {
-      v28 = 0;
+      processPendingBatch = 0;
     }
   }
 
-  if (v51 != -108 && v51 != -36 && v51 != -23)
+  if (commit != -108 && commit != -36 && commit != -23)
   {
 LABEL_84:
-    v28 = v57;
+    processPendingBatch = v57;
   }
 
 LABEL_85:
 
-  return v28;
+  return processPendingBatch;
 }
 
 @end

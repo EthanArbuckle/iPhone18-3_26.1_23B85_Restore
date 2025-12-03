@@ -38,10 +38,10 @@
   v12 = v10;
   v24 = v12;
   [v7 enumerateObjectsUsingBlock:v22];
-  v13 = [v11 firstObject];
-  v14 = [v11 lastObject];
-  v15 = [MEMORY[0x277CCAAD0] constraintWithItem:v8 attribute:3 relatedBy:0 toItem:v13 attribute:3 multiplier:1.0 constant:0.0];
-  v16 = [MEMORY[0x277CCAAD0] constraintWithItem:v8 attribute:4 relatedBy:0 toItem:v14 attribute:4 multiplier:1.0 constant:0.0];
+  firstObject = [v11 firstObject];
+  lastObject = [v11 lastObject];
+  v15 = [MEMORY[0x277CCAAD0] constraintWithItem:v8 attribute:3 relatedBy:0 toItem:firstObject attribute:3 multiplier:1.0 constant:0.0];
+  v16 = [MEMORY[0x277CCAAD0] constraintWithItem:v8 attribute:4 relatedBy:0 toItem:lastObject attribute:4 multiplier:1.0 constant:0.0];
   [v12 addObject:v15];
   [v12 addObject:v16];
   if ((a5 & 2) != 0)

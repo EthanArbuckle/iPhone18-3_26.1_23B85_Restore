@@ -38,7 +38,7 @@
     *&buf[8] = 3221225472;
     *&buf[16] = sub_10027FCC4;
     v25 = &unk_10051F9C8;
-    v26 = self;
+    selfCopy = self;
     v27 = v10;
     [v11 accessUsingBlock:buf];
   }

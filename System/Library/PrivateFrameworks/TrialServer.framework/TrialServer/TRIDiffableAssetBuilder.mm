@@ -1,29 +1,29 @@
 @interface TRIDiffableAssetBuilder
-+ (id)buildAndSaveDiffableAssetsWithAssetIds:(id)a3 metadataForAssetId:(id)a4 artifactProvider:(id)a5 options:(id)a6 paths:(id)a7 assetsDownloadSize:(unint64_t *)a8 perAssetIdCompletionBlockOnSuccess:(id)a9 perAssetIdCompletionBlockOnError:(id)a10 retryAfter:(id *)a11 error:(id *)a12;
++ (id)buildAndSaveDiffableAssetsWithAssetIds:(id)ids metadataForAssetId:(id)id artifactProvider:(id)provider options:(id)options paths:(id)paths assetsDownloadSize:(unint64_t *)size perAssetIdCompletionBlockOnSuccess:(id)success perAssetIdCompletionBlockOnError:(id)self0 retryAfter:(id *)self1 error:(id *)self2;
 @end
 
 @implementation TRIDiffableAssetBuilder
 
-+ (id)buildAndSaveDiffableAssetsWithAssetIds:(id)a3 metadataForAssetId:(id)a4 artifactProvider:(id)a5 options:(id)a6 paths:(id)a7 assetsDownloadSize:(unint64_t *)a8 perAssetIdCompletionBlockOnSuccess:(id)a9 perAssetIdCompletionBlockOnError:(id)a10 retryAfter:(id *)a11 error:(id *)a12
++ (id)buildAndSaveDiffableAssetsWithAssetIds:(id)ids metadataForAssetId:(id)id artifactProvider:(id)provider options:(id)options paths:(id)paths assetsDownloadSize:(unint64_t *)size perAssetIdCompletionBlockOnSuccess:(id)success perAssetIdCompletionBlockOnError:(id)self0 retryAfter:(id *)self1 error:(id *)self2
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v51 = a9;
-  v53 = a10;
-  v56 = v18;
-  if (!v18)
+  idsCopy = ids;
+  idCopy = id;
+  providerCopy = provider;
+  optionsCopy = options;
+  pathsCopy = paths;
+  successCopy = success;
+  errorCopy = error;
+  v56 = idsCopy;
+  if (!idsCopy)
   {
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:a1 file:@"TRIDiffableAssetBuilder.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"assetIds"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDiffableAssetBuilder.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"assetIds"}];
   }
 
-  v23 = v19;
-  if (v19)
+  v23 = idCopy;
+  if (idCopy)
   {
-    if (v20)
+    if (providerCopy)
     {
       goto LABEL_5;
     }
@@ -31,22 +31,22 @@
 
   else
   {
-    v43 = [MEMORY[0x277CCA890] currentHandler];
-    [v43 handleFailureInMethod:a2 object:a1 file:@"TRIDiffableAssetBuilder.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"metadataForAssetId"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIDiffableAssetBuilder.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"metadataForAssetId"}];
 
-    if (v20)
+    if (providerCopy)
     {
 LABEL_5:
-      if (a8)
+      if (size)
       {
         goto LABEL_6;
       }
 
 LABEL_14:
-      v45 = [MEMORY[0x277CCA890] currentHandler];
-      [v45 handleFailureInMethod:a2 object:a1 file:@"TRIDiffableAssetBuilder.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"assetsDownloadSize"}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIDiffableAssetBuilder.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"assetsDownloadSize"}];
 
-      if (v21)
+      if (optionsCopy)
       {
         goto LABEL_7;
       }
@@ -55,39 +55,39 @@ LABEL_14:
     }
   }
 
-  v44 = [MEMORY[0x277CCA890] currentHandler];
-  [v44 handleFailureInMethod:a2 object:a1 file:@"TRIDiffableAssetBuilder.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"artifactProvider"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIDiffableAssetBuilder.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"artifactProvider"}];
 
-  if (!a8)
+  if (!size)
   {
     goto LABEL_14;
   }
 
 LABEL_6:
-  if (v21)
+  if (optionsCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_15:
-  v46 = [MEMORY[0x277CCA890] currentHandler];
-  [v46 handleFailureInMethod:a2 object:a1 file:@"TRIDiffableAssetBuilder.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+  currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"TRIDiffableAssetBuilder.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"options"}];
 
 LABEL_7:
-  v24 = v20;
-  v25 = v22;
-  if (!v22)
+  v24 = providerCopy;
+  v25 = pathsCopy;
+  if (!pathsCopy)
   {
-    v47 = [MEMORY[0x277CCA890] currentHandler];
-    [v47 handleFailureInMethod:a2 object:a1 file:@"TRIDiffableAssetBuilder.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"TRIDiffableAssetBuilder.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
   }
 
-  *a8 = 0;
+  *size = 0;
   v26 = [TRIAssetStore alloc];
-  v27 = [v21 downloadOptions];
-  v28 = [v27 activity];
+  downloadOptions = [optionsCopy downloadOptions];
+  activity = [downloadOptions activity];
   v49 = v25;
-  v29 = [(TRIAssetStore *)v26 initWithPaths:v25 monitoredActivity:v28];
+  v29 = [(TRIAssetStore *)v26 initWithPaths:v25 monitoredActivity:activity];
 
   v82[0] = MEMORY[0x277D85DD0];
   v82[1] = 3221225472;
@@ -109,20 +109,20 @@ LABEL_7:
   v62[3] = &unk_279DE29C8;
   v32 = v24;
   v63 = v32;
-  v33 = v21;
+  v33 = optionsCopy;
   v64 = v33;
-  v52 = v51;
+  v52 = successCopy;
   v68 = v52;
-  v48 = v53;
+  v48 = errorCopy;
   v69 = v48;
-  v71 = a11;
+  afterCopy = after;
   v72 = a12;
   v54 = v23;
   v65 = v54;
   v73 = a2;
-  v74 = a1;
+  selfCopy = self;
   v34 = v30;
-  v75 = a8;
+  sizeCopy = size;
   v66 = v34;
   v70 = &v76;
   v35 = v31;
@@ -132,7 +132,7 @@ LABEL_7:
   v57[1] = 3221225472;
   v57[2] = __220__TRIDiffableAssetBuilder_buildAndSaveDiffableAssetsWithAssetIds_metadataForAssetId_artifactProvider_options_paths_assetsDownloadSize_perAssetIdCompletionBlockOnSuccess_perAssetIdCompletionBlockOnError_retryAfter_error___block_invoke_58;
   v57[3] = &unk_279DE29F0;
-  v60 = a11;
+  afterCopy2 = after;
   v61 = a12;
   v37 = v35;
   v58 = v37;

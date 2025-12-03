@@ -6,36 +6,36 @@
 - (id)imageNameForAXHUD;
 - (id)imageNameForCurrentState;
 - (id)imageSymbolColorConfiguration;
-- (void)setFlashActive:(BOOL)a3;
-- (void)setFlashMode:(int64_t)a3 animated:(BOOL)a4;
-- (void)setFlashUnavailable:(BOOL)a3;
+- (void)setFlashActive:(BOOL)active;
+- (void)setFlashMode:(int64_t)mode animated:(BOOL)animated;
+- (void)setFlashUnavailable:(BOOL)unavailable;
 @end
 
 @implementation CAMFlashStatusIndicator
 
-- (void)setFlashMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setFlashMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_flashMode != a3)
+  if (self->_flashMode != mode)
   {
-    self->_flashMode = a3;
-    [(CAMControlStatusIndicator *)self updateImageAnimated:a4];
+    self->_flashMode = mode;
+    [(CAMControlStatusIndicator *)self updateImageAnimated:animated];
   }
 }
 
-- (void)setFlashActive:(BOOL)a3
+- (void)setFlashActive:(BOOL)active
 {
-  if (self->_flashActive != a3)
+  if (self->_flashActive != active)
   {
-    self->_flashActive = a3;
+    self->_flashActive = active;
     [(CAMControlStatusIndicator *)self updateImage];
   }
 }
 
-- (void)setFlashUnavailable:(BOOL)a3
+- (void)setFlashUnavailable:(BOOL)unavailable
 {
-  if (self->_flashUnavailable != a3)
+  if (self->_flashUnavailable != unavailable)
   {
-    self->_flashUnavailable = a3;
+    self->_flashUnavailable = unavailable;
     [(CAMControlStatusIndicator *)self updateImage];
   }
 }
@@ -57,9 +57,9 @@
 
 - (CGVector)imageOffset
 {
-  v3 = [(CAMFlashStatusIndicator *)self isFlashUnavailable];
+  isFlashUnavailable = [(CAMFlashStatusIndicator *)self isFlashUnavailable];
   v4 = 0.0;
-  if (v3)
+  if (isFlashUnavailable)
   {
     v4 = -CAMPixelWidthForView(self);
   }
@@ -77,10 +77,10 @@
     return 0;
   }
 
-  v4 = [(CAMFlashStatusIndicator *)self flashMode];
-  if (v4 != 2)
+  flashMode = [(CAMFlashStatusIndicator *)self flashMode];
+  if (flashMode != 2)
   {
-    return v4 == 1;
+    return flashMode == 1;
   }
 
   return [(CAMFlashStatusIndicator *)self isFlashActive];
@@ -92,8 +92,8 @@
   if ([(CAMFlashStatusIndicator *)self isFlashUnavailable])
   {
     v2 = MEMORY[0x1E69DCAD8];
-    v3 = [MEMORY[0x1E69DC888] systemYellowColor];
-    v8[0] = v3;
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    v8[0] = systemYellowColor;
     v4 = [MEMORY[0x1E69DC888] colorWithWhite:0.5 alpha:1.0];
     v8[1] = v4;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
@@ -110,22 +110,22 @@
 
 - (BOOL)shouldFillOutlineForCurrentState
 {
-  v3 = [(CAMFlashStatusIndicator *)self flashMode];
-  if (v3)
+  flashMode = [(CAMFlashStatusIndicator *)self flashMode];
+  if (flashMode)
   {
-    if (v3 == 2)
+    if (flashMode == 2)
     {
 
-      LOBYTE(v3) = [(CAMFlashStatusIndicator *)self isFlashActive];
+      LOBYTE(flashMode) = [(CAMFlashStatusIndicator *)self isFlashActive];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(flashMode) = 1;
     }
   }
 
-  return v3;
+  return flashMode;
 }
 
 - (BOOL)shouldShowSlashForCurrentState
@@ -145,15 +145,15 @@
 {
   if ([(CAMFlashStatusIndicator *)self shouldShowSlashForCurrentState])
   {
-    v3 = @"bolt.slash.fill";
+    imageNameForCurrentState = @"bolt.slash.fill";
   }
 
   else
   {
-    v3 = [(CAMFlashStatusIndicator *)self imageNameForCurrentState];
+    imageNameForCurrentState = [(CAMFlashStatusIndicator *)self imageNameForCurrentState];
   }
 
-  return v3;
+  return imageNameForCurrentState;
 }
 
 @end

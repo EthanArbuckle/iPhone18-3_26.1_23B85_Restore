@@ -7,7 +7,7 @@
 - (id)hintedShadowBlur;
 - (id)hintedShadowOffset;
 - (id)hintedTextRect;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISClippingRecipe
@@ -222,19 +222,19 @@ uint64_t __38__ISClippingRecipe_hintedShadowOffset__block_invoke()
   return [v2 addHintedSize:0.0 forSize:{-10.0, 512.0, 512.0}];
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(ISClippingRecipe *)self hintedBadgeRect];
-  [v8 hintedRectForSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  hintedBadgeRect = [(ISClippingRecipe *)self hintedBadgeRect];
+  [hintedBadgeRect hintedRectForSize:{width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(ISClippingRecipe *)self hintedTextRect];
-  [v17 hintedRectForSize:{width, height}];
+  hintedTextRect = [(ISClippingRecipe *)self hintedTextRect];
+  [hintedTextRect hintedRectForSize:{width, height}];
 
   v18 = objc_alloc_init(ISLayer);
   [(ISLayer *)v18 setSize:width, height];
@@ -248,8 +248,8 @@ uint64_t __38__ISClippingRecipe_hintedShadowOffset__block_invoke()
   [(ISContentLayer *)v19 setContent:v20];
 
   v21 = objc_alloc_init(ISContentLayer);
-  v22 = [(ISClippingRecipe *)self hintedPaperRect];
-  [v22 hintedRectForSize:{width, height}];
+  hintedPaperRect = [(ISClippingRecipe *)self hintedPaperRect];
+  [hintedPaperRect hintedRectForSize:{width, height}];
   [(ISLayer *)v21 setFrame:?];
 
   [(ISLayer *)v21 setName:@"mask shape layer"];
@@ -260,13 +260,13 @@ uint64_t __38__ISClippingRecipe_hintedShadowOffset__block_invoke()
   [(ISLayer *)v24 setCoordinateSystem:0];
   [(ISLayer *)v24 setBlendMode:19];
   [(ISLayer *)v24 setName:@"bottomLeft"];
-  v25 = [(ISClippingRecipe *)self hintedCornerSize];
-  [v25 hintedSizeForSize:{width, height}];
+  hintedCornerSize = [(ISClippingRecipe *)self hintedCornerSize];
+  [hintedCornerSize hintedSizeForSize:{width, height}];
   [(ISLayer *)v24 setSize:?];
 
-  v26 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v27 = [v26 assetCatalogURL];
-  v28 = [ISAssetCatalogResource assetCatalogResourceWithURL:v27 imageName:@"document/bottom-right-mask" error:0];
+  iconFoundationFrameworkBundle = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL = [iconFoundationFrameworkBundle assetCatalogURL];
+  v28 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL imageName:@"document/bottom-right-mask" error:0];
   [(ISContentLayer *)v24 setContent:v28];
 
   [(ISLayer *)v21 addSublayer:v24];
@@ -274,13 +274,13 @@ uint64_t __38__ISClippingRecipe_hintedShadowOffset__block_invoke()
   [(ISLayer *)v29 setCoordinateSystem:3];
   [(ISLayer *)v29 setBlendMode:19];
   [(ISLayer *)v29 setName:@"topRight"];
-  v30 = [(ISClippingRecipe *)self hintedPageCurlSize];
-  [v30 hintedSizeForSize:{width, height}];
+  hintedPageCurlSize = [(ISClippingRecipe *)self hintedPageCurlSize];
+  [hintedPageCurlSize hintedSizeForSize:{width, height}];
   [(ISLayer *)v29 setSize:?];
 
-  v31 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v32 = [v31 assetCatalogURL];
-  v33 = [ISAssetCatalogResource assetCatalogResourceWithURL:v32 imageName:@"document/top-right-mask" error:0];
+  iconFoundationFrameworkBundle2 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL2 = [iconFoundationFrameworkBundle2 assetCatalogURL];
+  v33 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL2 imageName:@"document/top-right-mask" error:0];
   [(ISContentLayer *)v29 setContent:v33];
 
   [(ISLayer *)v21 addSublayer:v29];
@@ -289,13 +289,13 @@ uint64_t __38__ISClippingRecipe_hintedShadowOffset__block_invoke()
   [(ISLayer *)v34 setFlipped:2];
   [(ISLayer *)v34 setBlendMode:19];
   [(ISLayer *)v34 setName:@"bottomRight"];
-  v35 = [(ISClippingRecipe *)self hintedCornerSize];
-  [v35 hintedSizeForSize:{width, height}];
+  hintedCornerSize2 = [(ISClippingRecipe *)self hintedCornerSize];
+  [hintedCornerSize2 hintedSizeForSize:{width, height}];
   [(ISLayer *)v34 setSize:?];
 
-  v36 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v37 = [v36 assetCatalogURL];
-  v38 = [ISAssetCatalogResource assetCatalogResourceWithURL:v37 imageName:@"document/bottom-right-mask" error:0];
+  iconFoundationFrameworkBundle3 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL3 = [iconFoundationFrameworkBundle3 assetCatalogURL];
+  v38 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL3 imageName:@"document/bottom-right-mask" error:0];
   [(ISContentLayer *)v34 setContent:v38];
 
   [(ISLayer *)v21 addSublayer:v34];
@@ -304,13 +304,13 @@ uint64_t __38__ISClippingRecipe_hintedShadowOffset__block_invoke()
   [(ISLayer *)v39 setFlipped:1];
   [(ISLayer *)v39 setBlendMode:19];
   [(ISLayer *)v39 setName:@"topLeft"];
-  v40 = [(ISClippingRecipe *)self hintedCornerSize];
-  [v40 hintedSizeForSize:{width, height}];
+  hintedCornerSize3 = [(ISClippingRecipe *)self hintedCornerSize];
+  [hintedCornerSize3 hintedSizeForSize:{width, height}];
   [(ISLayer *)v39 setSize:?];
 
-  v41 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v42 = [v41 assetCatalogURL];
-  v43 = [ISAssetCatalogResource assetCatalogResourceWithURL:v42 imageName:@"document/bottom-right-mask" error:0];
+  iconFoundationFrameworkBundle4 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL4 = [iconFoundationFrameworkBundle4 assetCatalogURL];
+  v43 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL4 imageName:@"document/bottom-right-mask" error:0];
   [(ISContentLayer *)v39 setContent:v43];
 
   [(ISLayer *)v21 addSublayer:v39];
@@ -335,31 +335,31 @@ uint64_t __38__ISClippingRecipe_hintedShadowOffset__block_invoke()
   v48 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v48 setName:@"gradient layer"];
   [(ISLayer *)v48 setSize:width, height];
-  v49 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v50 = [v49 assetCatalogURL];
-  v51 = [ISAssetCatalogResource assetCatalogResourceWithURL:v50 imageName:@"document/gradient" error:0];
+  iconFoundationFrameworkBundle5 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL5 = [iconFoundationFrameworkBundle5 assetCatalogURL];
+  v51 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL5 imageName:@"document/gradient" error:0];
   [(ISContentLayer *)v48 setContent:v51];
 
   [(ISLayer *)v69 addSublayer:v48];
   v52 = objc_alloc_init(ISContentLayer);
-  v53 = [(ISClippingRecipe *)self hintedPaperRect];
-  [v53 hintedRectForSize:{width, height}];
+  hintedPaperRect2 = [(ISClippingRecipe *)self hintedPaperRect];
+  [hintedPaperRect2 hintedRectForSize:{width, height}];
   [(ISLayer *)v52 setFrame:?];
 
   [(ISLayer *)v69 addSublayer:v52];
   v54 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v54 setName:@"badge layer"];
   [(ISContentLayer *)v54 setContent:@"kISBadgeResourceKey"];
-  v55 = [(ISClippingRecipe *)self badgeTintColor];
+  badgeTintColor = [(ISClippingRecipe *)self badgeTintColor];
 
-  if (v55)
+  if (badgeTintColor)
   {
     [(ISLayer *)v54 setSize:v14, v16];
     v56 = objc_alloc_init(ISContentLayer);
     [(ISLayer *)v56 setName:@"Tint layer"];
     [(ISLayer *)v56 setFrame:v10, v12, v14, v16];
-    v57 = [(ISClippingRecipe *)self badgeTintColor];
-    [(ISContentLayer *)v56 setContent:v57];
+    badgeTintColor2 = [(ISClippingRecipe *)self badgeTintColor];
+    [(ISContentLayer *)v56 setContent:badgeTintColor2];
 
     [(ISLayer *)v56 setMask:v54];
     [(ISLayer *)v56 setCoordinateSystem:1];
@@ -376,14 +376,14 @@ uint64_t __38__ISClippingRecipe_hintedShadowOffset__block_invoke()
   v58 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v58 setName:@"Forground layer"];
   [(ISLayer *)v58 setCoordinateSystem:3];
-  v59 = [(ISClippingRecipe *)self hintedPageCurlSize];
-  [v59 hintedSizeForSize:{width, height}];
+  hintedPageCurlSize2 = [(ISClippingRecipe *)self hintedPageCurlSize];
+  [hintedPageCurlSize2 hintedSizeForSize:{width, height}];
   [(ISLayer *)v58 setSize:?];
 
   [(ISLayer *)v58 setPosition:0.0, 0.0];
-  v60 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v61 = [v60 assetCatalogURL];
-  v62 = [ISAssetCatalogResource assetCatalogResourceWithURL:v61 imageName:@"document/page-fold" error:0];
+  iconFoundationFrameworkBundle6 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL6 = [iconFoundationFrameworkBundle6 assetCatalogURL];
+  v62 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL6 imageName:@"document/page-fold" error:0];
   [(ISContentLayer *)v58 setContent:v62];
 
   [(ISLayer *)v52 addSublayer:v58];
@@ -391,18 +391,18 @@ uint64_t __38__ISClippingRecipe_hintedShadowOffset__block_invoke()
   [(ISLayer *)v63 setName:@"shadow background layer"];
   [(ISLayer *)v63 setSize:width, height];
   v64 = objc_opt_new();
-  v65 = [(ISClippingRecipe *)self hintedShadowBlur];
-  [v65 hintedFloatForSize:{width, height}];
+  hintedShadowBlur = [(ISClippingRecipe *)self hintedShadowBlur];
+  [hintedShadowBlur hintedFloatForSize:{width, height}];
   [v64 setBlur:?];
 
-  v66 = [(ISClippingRecipe *)self hintedShadowOffset];
-  [v66 hintedSizeForSize:{width, height}];
+  hintedShadowOffset = [(ISClippingRecipe *)self hintedShadowOffset];
+  [hintedShadowOffset hintedSizeForSize:{width, height}];
   [v64 setOffset:?];
 
   v67 = [objc_alloc(MEMORY[0x1E69A8968]) initWithWhite:0.0 alpha:0.28];
   [v64 setColor:v67];
 
-  [v64 setScale:a4];
+  [v64 setScale:scale];
   [(ISLayer *)v63 setEffect:v64];
   [(ISLayer *)v70 addSublayer:v63];
   [(ISLayer *)v63 addSublayer:v69];

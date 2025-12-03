@@ -1,14 +1,14 @@
 @interface EKUIReadonlyEventViewController
-- (EKUIReadonlyEventViewController)initWithEvent:(id)a3;
+- (EKUIReadonlyEventViewController)initWithEvent:(id)event;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)willCommitPreview;
 @end
 
 @implementation EKUIReadonlyEventViewController
 
-- (EKUIReadonlyEventViewController)initWithEvent:(id)a3
+- (EKUIReadonlyEventViewController)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8.receiver = self;
   v8.super_class = EKUIReadonlyEventViewController;
   v5 = [(EKUIReadonlyEventViewController *)&v8 init];
@@ -16,7 +16,7 @@
   if (v5)
   {
     [(EKEventViewController *)v5 setNoninteractivePlatterMode:1];
-    [(EKEventViewController *)v6 setEvent:v4];
+    [(EKEventViewController *)v6 setEvent:eventCopy];
   }
 
   return v6;
@@ -34,12 +34,12 @@
 {
   if ([(EKEventViewController *)self noninteractivePlatterMode])
   {
-    v3 = [(EKUIReadonlyEventViewController *)self view];
-    v4 = [v3 window];
-    v5 = [v4 windowScene];
-    v6 = [v5 interfaceOrientation];
+    view = [(EKUIReadonlyEventViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
-    return 1 << v6;
+    return 1 << interfaceOrientation;
   }
 
   else

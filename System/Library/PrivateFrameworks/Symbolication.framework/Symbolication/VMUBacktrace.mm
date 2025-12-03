@@ -1,12 +1,12 @@
 @interface VMUBacktrace
-- (VMUBacktrace)initWithCoder:(id)a3;
-- (VMUBacktrace)initWithSamplingContext:(sampling_context_t *)a3 thread:(unsigned int)a4;
+- (VMUBacktrace)initWithCoder:(id)coder;
+- (VMUBacktrace)initWithSamplingContext:(sampling_context_t *)context thread:(unsigned int)thread;
 - (_CSTypeRef)_symbolicator;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)fixupStackWithSamplingContext:(sampling_context_t *)a3 symbolicator:(_CSTypeRef)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)fixupStackWithSamplingContext:(sampling_context_t *)context symbolicator:(_CSTypeRef)symbolicator;
 @end
 
 @implementation VMUBacktrace
@@ -36,9 +36,9 @@
   [(VMUBacktrace *)&v6 dealloc];
 }
 
-- (VMUBacktrace)initWithCoder:(id)a3
+- (VMUBacktrace)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v56.receiver = self;
   v56.super_class = VMUBacktrace;
   v5 = [(VMUBacktrace *)&v56 init];
@@ -47,14 +47,14 @@
     goto LABEL_15;
   }
 
-  v5->_callstack.context.pid = [v4 decodeInt32ForKey:@"pid"];
-  v5->_callstack.context.run_state = [v4 decodeIntForKey:@"run_state"];
-  v5->_callstack.context.dispatch_queue_serial_num = [v4 decodeInt64ForKey:@"dispatch_queue_serial_num"];
-  v5->_callstack.context.thread = [v4 decodeIntForKey:@"thread"];
-  v5->_callstack.length = [v4 decodeInt32ForKey:@"length"];
-  v5->_asyncCallstack.length = [v4 decodeInt32ForKey:@"asyncLength"];
+  v5->_callstack.context.pid = [coderCopy decodeInt32ForKey:@"pid"];
+  v5->_callstack.context.run_state = [coderCopy decodeIntForKey:@"run_state"];
+  v5->_callstack.context.dispatch_queue_serial_num = [coderCopy decodeInt64ForKey:@"dispatch_queue_serial_num"];
+  v5->_callstack.context.thread = [coderCopy decodeIntForKey:@"thread"];
+  v5->_callstack.length = [coderCopy decodeInt32ForKey:@"length"];
+  v5->_asyncCallstack.length = [coderCopy decodeInt32ForKey:@"asyncLength"];
   __n = 0;
-  v6 = [v4 decodeBytesForKey:@"frames" returnedLength:&__n];
+  v6 = [coderCopy decodeBytesForKey:@"frames" returnedLength:&__n];
   length = v5->_callstack.length;
   if (__n != 8 * length)
   {
@@ -73,7 +73,7 @@
   v5->_callstack.frames = v10;
   memcpy(v10, v8, __n);
   __n = 0;
-  v11 = [v4 decodeBytesForKey:@"framePtrs" returnedLength:&__n];
+  v11 = [coderCopy decodeBytesForKey:@"framePtrs" returnedLength:&__n];
   if (__n == v9 || !__n)
   {
     if (__n)
@@ -85,7 +85,7 @@
 
     else
     {
-      v35 = [v4 decodeBytesForKey:@"framePtr" returnedLength:&__n];
+      v35 = [coderCopy decodeBytesForKey:@"framePtr" returnedLength:&__n];
       if ((__n & 0xFFFFFFFFFFFFFFF7) != 0)
       {
         v36 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
@@ -109,7 +109,7 @@
     if (v5->_asyncCallstack.length)
     {
       v54 = 0;
-      v30 = [v4 decodeBytesForKey:@"asyncFrames" returnedLength:&v54];
+      v30 = [coderCopy decodeBytesForKey:@"asyncFrames" returnedLength:&v54];
       v31 = v5->_asyncCallstack.length;
       if (v54 != 8 * v31)
       {
@@ -146,28 +146,28 @@ LABEL_16:
   return v28;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInt32:self->_callstack.context.pid forKey:@"pid"];
-  [v7 encodeInt:self->_callstack.context.run_state forKey:@"run_state"];
-  [v7 encodeInt64:self->_callstack.context.dispatch_queue_serial_num forKey:@"dispatch_queue_serial_num"];
-  [v7 encodeInt:self->_callstack.context.thread forKey:@"thread"];
-  [v7 encodeInt32:self->_callstack.length forKey:@"length"];
-  [v7 encodeInt32:self->_asyncCallstack.length forKey:@"asyncLength"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_callstack.context.pid forKey:@"pid"];
+  [coderCopy encodeInt:self->_callstack.context.run_state forKey:@"run_state"];
+  [coderCopy encodeInt64:self->_callstack.context.dispatch_queue_serial_num forKey:@"dispatch_queue_serial_num"];
+  [coderCopy encodeInt:self->_callstack.context.thread forKey:@"thread"];
+  [coderCopy encodeInt32:self->_callstack.length forKey:@"length"];
+  [coderCopy encodeInt32:self->_asyncCallstack.length forKey:@"asyncLength"];
   v4 = 8 * self->_callstack.length;
-  [v7 encodeBytes:self->_callstack.frames length:v4 forKey:@"frames"];
+  [coderCopy encodeBytes:self->_callstack.frames length:v4 forKey:@"frames"];
   framePtrs = self->_callstack.framePtrs;
   if (framePtrs)
   {
-    [v7 encodeBytes:framePtrs length:v4 forKey:@"framePtrs"];
-    [v7 encodeBytes:self->_callstack.framePtrs length:8 forKey:@"framePtr"];
+    [coderCopy encodeBytes:framePtrs length:v4 forKey:@"framePtrs"];
+    [coderCopy encodeBytes:self->_callstack.framePtrs length:8 forKey:@"framePtr"];
   }
 
   length = self->_asyncCallstack.length;
   if (length)
   {
-    [v7 encodeBytes:self->_asyncCallstack.frames length:8 * length forKey:@"asyncFrames"];
+    [coderCopy encodeBytes:self->_asyncCallstack.frames length:8 * length forKey:@"asyncFrames"];
   }
 }
 
@@ -201,7 +201,7 @@ LABEL_16:
   return result;
 }
 
-- (VMUBacktrace)initWithSamplingContext:(sampling_context_t *)a3 thread:(unsigned int)a4
+- (VMUBacktrace)initWithSamplingContext:(sampling_context_t *)context thread:(unsigned int)thread
 {
   v21.receiver = self;
   v21.super_class = VMUBacktrace;
@@ -225,13 +225,13 @@ LABEL_23:
   v15 = 0u;
   *v13 = 0u;
   LODWORD(v14) = 512;
-  if (a3)
+  if (context)
   {
     if (!sample_remote_thread_with_dispatch_queue_regular_and_swift_async())
     {
       if (DWORD1(v18) && DWORD1(v14))
       {
-        copySamplingResultToCallstack(&v7->_callstack, a4, v17);
+        copySamplingResultToCallstack(&v7->_callstack, thread, v17);
         v8 = v13;
         v9 = 80;
       }
@@ -251,7 +251,7 @@ LABEL_23:
         v9 = 24;
       }
 
-      copySamplingResultToCallstack(v7 + v9, a4, v8);
+      copySamplingResultToCallstack(v7 + v9, thread, v8);
       v11 = HIDWORD(v18);
       if (!HIDWORD(v18))
       {
@@ -295,7 +295,7 @@ LABEL_24:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VMUBacktrace allocWithZone:?]];
   v5 = v4;
@@ -389,7 +389,7 @@ LABEL_11:
   return v7;
 }
 
-- (void)fixupStackWithSamplingContext:(sampling_context_t *)a3 symbolicator:(_CSTypeRef)a4
+- (void)fixupStackWithSamplingContext:(sampling_context_t *)context symbolicator:(_CSTypeRef)symbolicator
 {
   flavor = self->_flavor;
   if (flavor > 63)
@@ -403,7 +403,7 @@ LABEL_11:
   else if (flavor != 32 && flavor != 33)
   {
 LABEL_4:
-    NSLog(&cfstr_UnsupportedFla.isa, a2, a3, a4._opaque_1, a4._opaque_2, &self->_flavor, self->_flavor);
+    NSLog(&cfstr_UnsupportedFla.isa, a2, context, symbolicator._opaque_1, symbolicator._opaque_2, &self->_flavor, self->_flavor);
     return;
   }
 

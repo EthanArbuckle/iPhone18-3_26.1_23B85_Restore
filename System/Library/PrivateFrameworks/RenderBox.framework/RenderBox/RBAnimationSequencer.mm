@@ -4,11 +4,11 @@
 - (RBAnimationSequencerEffects)added;
 - (RBAnimationSequencerEffects)mixed;
 - (RBAnimationSequencerEffects)removed;
-- (__n128)setRBSequencer:(uint64_t)a1;
+- (__n128)setRBSequencer:(uint64_t)sequencer;
 - (id).cxx_construct;
-- (void)setAdded:(id)a3;
-- (void)setMixed:(id)a3;
-- (void)setRemoved:(id)a3;
+- (void)setAdded:(id)added;
+- (void)setMixed:(id)mixed;
+- (void)setRemoved:(id)removed;
 @end
 
 @implementation RBAnimationSequencer
@@ -31,11 +31,11 @@
   return result;
 }
 
-- (void)setAdded:(id)a3
+- (void)setAdded:(id)added
 {
-  if (a3)
+  if (added)
   {
-    v3 = *(a3 + 1);
+    v3 = *(added + 1);
   }
 
   else
@@ -46,11 +46,11 @@
   self[2].super.isa = v3;
 }
 
-- (void)setMixed:(id)a3
+- (void)setMixed:(id)mixed
 {
-  if (a3)
+  if (mixed)
   {
-    v3 = *(a3 + 1);
+    v3 = *(mixed + 1);
   }
 
   else
@@ -61,11 +61,11 @@
   self[2]._seq = v3;
 }
 
-- (void)setRemoved:(id)a3
+- (void)setRemoved:(id)removed
 {
-  if (a3)
+  if (removed)
   {
-    v3 = *(a3 + 1);
+    v3 = *(removed + 1);
   }
 
   else
@@ -85,15 +85,15 @@
   return self;
 }
 
-- (__n128)setRBSequencer:(uint64_t)a1
+- (__n128)setRBSequencer:(uint64_t)sequencer
 {
-  if (a1)
+  if (sequencer)
   {
     result = *a2;
     v3 = *(a2 + 16);
-    *(a1 + 40) = *(a2 + 32);
-    *(a1 + 24) = v3;
-    *(a1 + 8) = result;
+    *(sequencer + 40) = *(a2 + 32);
+    *(sequencer + 24) = v3;
+    *(sequencer + 8) = result;
   }
 
   return result;

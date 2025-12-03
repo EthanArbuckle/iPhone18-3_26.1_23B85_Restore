@@ -1,17 +1,17 @@
 @interface PKPassPreferencesManager
 + (id)sharedInstance;
 - (BOOL)hasDoneExpressUpgrade;
-- (double)_doubleForKey:(id)a3 passUniqueID:(id)a4;
-- (id)_decimalNumberForKey:(id)a3 passUniqueID:(id)a4;
-- (id)_stringForKey:(id)a3 passUniqueID:(id)a4;
-- (void)_removeValueForKey:(id)a3 passUniqueID:(id)a4;
-- (void)_setDecimalNumber:(id)a3 forKey:(id)a4 passUniqueID:(id)a5;
-- (void)_setDouble:(double)a3 forKey:(id)a4 passUniqueID:(id)a5;
-- (void)_setString:(id)a3 forKey:(id)a4 passUniqueID:(id)a5;
+- (double)_doubleForKey:(id)key passUniqueID:(id)d;
+- (id)_decimalNumberForKey:(id)key passUniqueID:(id)d;
+- (id)_stringForKey:(id)key passUniqueID:(id)d;
+- (void)_removeValueForKey:(id)key passUniqueID:(id)d;
+- (void)_setDecimalNumber:(id)number forKey:(id)key passUniqueID:(id)d;
+- (void)_setDouble:(double)double forKey:(id)key passUniqueID:(id)d;
+- (void)_setString:(id)string forKey:(id)key passUniqueID:(id)d;
 - (void)_synchronize;
 - (void)removeAllPreferences;
-- (void)removeAllPreferencesForPassWithUniqueID:(id)a3;
-- (void)setHasDoneExpressUpgrade:(BOOL)a3;
+- (void)removeAllPreferencesForPassWithUniqueID:(id)d;
+- (void)setHasDoneExpressUpgrade:(BOOL)upgrade;
 @end
 
 @implementation PKPassPreferencesManager
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __42__PKPassPreferencesManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_232 != -1)
   {
     dispatch_once(&_MergedGlobals_232, block);
@@ -40,12 +40,12 @@ void __42__PKPassPreferencesManager_sharedInstance__block_invoke(uint64_t a1)
   qword_1ED6D1B60 = v1;
 }
 
-- (void)removeAllPreferencesForPassWithUniqueID:(id)a3
+- (void)removeAllPreferencesForPassWithUniqueID:(id)d
 {
-  v4 = a3;
-  [(PKPassPreferencesManager *)self _removeValueForKey:@"LowBalanceReminderAmount" passUniqueID:v4];
-  [(PKPassPreferencesManager *)self _removeValueForKey:@"LowBalanceReminderCurrency" passUniqueID:v4];
-  [(PKPassPreferencesManager *)self _removeValueForKey:@"CommutePlanRenewalReminderInterval" passUniqueID:v4];
+  dCopy = d;
+  [(PKPassPreferencesManager *)self _removeValueForKey:@"LowBalanceReminderAmount" passUniqueID:dCopy];
+  [(PKPassPreferencesManager *)self _removeValueForKey:@"LowBalanceReminderCurrency" passUniqueID:dCopy];
+  [(PKPassPreferencesManager *)self _removeValueForKey:@"CommutePlanRenewalReminderInterval" passUniqueID:dCopy];
 
   [(PKPassPreferencesManager *)self _synchronize];
 }
@@ -89,9 +89,9 @@ void __42__PKPassPreferencesManager_sharedInstance__block_invoke(uint64_t a1)
   [(PKPassPreferencesManager *)self _synchronize];
 }
 
-- (void)setHasDoneExpressUpgrade:(BOOL)a3
+- (void)setHasDoneExpressUpgrade:(BOOL)upgrade
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:upgrade];
   v4 = *MEMORY[0x1E695E8B8];
   v5 = *MEMORY[0x1E695E898];
 
@@ -101,9 +101,9 @@ void __42__PKPassPreferencesManager_sharedInstance__block_invoke(uint64_t a1)
 - (BOOL)hasDoneExpressUpgrade
 {
   v2 = CFPreferencesCopyValue(@"PassExpressUpgrade", @"com.apple.PassKit.passes", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)_synchronize
@@ -121,19 +121,19 @@ void __42__PKPassPreferencesManager_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setDouble:(double)a3 forKey:(id)a4 passUniqueID:(id)a5
+- (void)_setDouble:(double)double forKey:(id)key passUniqueID:(id)d
 {
-  v6 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:a4 passUniqueID:a5];
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:key passUniqueID:d];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:double];
   v8 = *MEMORY[0x1E695E8B8];
   v9 = *MEMORY[0x1E695E898];
 
   CFPreferencesSetValue(v6, v7, @"com.apple.PassKit.passes", v8, v9);
 }
 
-- (double)_doubleForKey:(id)a3 passUniqueID:(id)a4
+- (double)_doubleForKey:(id)key passUniqueID:(id)d
 {
-  v4 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:a3 passUniqueID:a4];
+  v4 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:key passUniqueID:d];
   v5 = CFPreferencesCopyValue(v4, @"com.apple.PassKit.passes", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
   [v5 doubleValue];
   v7 = v6;
@@ -141,44 +141,44 @@ void __42__PKPassPreferencesManager_sharedInstance__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)_setDecimalNumber:(id)a3 forKey:(id)a4 passUniqueID:(id)a5
+- (void)_setDecimalNumber:(id)number forKey:(id)key passUniqueID:(id)d
 {
-  v8 = a3;
-  v9 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:a4 passUniqueID:a5];
+  numberCopy = number;
+  v9 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:key passUniqueID:d];
   v10 = MEMORY[0x1E696AD98];
-  v11 = PKCurrencyDecimalToLegacyStorageInteger(v8, 0);
+  v11 = PKCurrencyDecimalToLegacyStorageInteger(numberCopy, 0);
 
   v12 = [v10 numberWithLongLong:v11];
   CFPreferencesSetValue(v9, v12, @"com.apple.PassKit.passes", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
 }
 
-- (id)_decimalNumberForKey:(id)a3 passUniqueID:(id)a4
+- (id)_decimalNumberForKey:(id)key passUniqueID:(id)d
 {
-  v4 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:a3 passUniqueID:a4];
+  v4 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:key passUniqueID:d];
   v5 = CFPreferencesCopyValue(v4, @"com.apple.PassKit.passes", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
   v6 = PKLegacyCurrencyStorageIntegerToDecimal([v5 unsignedLongLongValue], 0);
 
   return v6;
 }
 
-- (void)_setString:(id)a3 forKey:(id)a4 passUniqueID:(id)a5
+- (void)_setString:(id)string forKey:(id)key passUniqueID:(id)d
 {
-  value = a3;
-  v8 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:a4 passUniqueID:a5];
+  value = string;
+  v8 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:key passUniqueID:d];
   CFPreferencesSetValue(v8, value, @"com.apple.PassKit.passes", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
 }
 
-- (id)_stringForKey:(id)a3 passUniqueID:(id)a4
+- (id)_stringForKey:(id)key passUniqueID:(id)d
 {
-  v4 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:a3 passUniqueID:a4];
+  v4 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:key passUniqueID:d];
   v5 = CFPreferencesCopyValue(v4, @"com.apple.PassKit.passes", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
 
   return v5;
 }
 
-- (void)_removeValueForKey:(id)a3 passUniqueID:(id)a4
+- (void)_removeValueForKey:(id)key passUniqueID:(id)d
 {
-  v4 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:a3 passUniqueID:a4];
+  v4 = [(PKPassPreferencesManager *)self _cfPreferencesKeyForConstant:key passUniqueID:d];
   v5 = *MEMORY[0x1E695E8B8];
   v6 = *MEMORY[0x1E695E898];
 

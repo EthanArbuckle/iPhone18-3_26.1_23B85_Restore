@@ -1,26 +1,26 @@
 @interface FCPuzzleFullArchiveMenuOptionsConfiguration
-- (FCPuzzleFullArchiveMenuOptionsConfiguration)initWithConfigDictionary:(id)a3;
+- (FCPuzzleFullArchiveMenuOptionsConfiguration)initWithConfigDictionary:(id)dictionary;
 @end
 
 @implementation FCPuzzleFullArchiveMenuOptionsConfiguration
 
-- (FCPuzzleFullArchiveMenuOptionsConfiguration)initWithConfigDictionary:(id)a3
+- (FCPuzzleFullArchiveMenuOptionsConfiguration)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = FCPuzzleFullArchiveMenuOptionsConfiguration;
   v5 = [(FCPuzzleFullArchiveMenuOptionsConfiguration *)&v20 init];
   if (v5)
   {
-    v6 = FCAppConfigurationStringValue(v4, @"title", &stru_1F2DC7DC0);
+    v6 = FCAppConfigurationStringValue(dictionaryCopy, @"title", &stru_1F2DC7DC0);
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = FCAppConfigurationStringValue(v4, @"icon", &stru_1F2DC7DC0);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"icon", &stru_1F2DC7DC0);
     icon = v5->_icon;
     v5->_icon = v8;
 
-    v10 = FCAppConfigurationStringValue(v4, @"type", &stru_1F2DC7DC0);
+    v10 = FCAppConfigurationStringValue(dictionaryCopy, @"type", &stru_1F2DC7DC0);
     if ([v10 isEqualToString:@"progress"])
     {
       v11 = 2;
@@ -37,13 +37,13 @@
     }
 
     v5->_type = v11;
-    v12 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"items", 0);
-    v13 = [MEMORY[0x1E695DF70] array];
+    v12 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"items", 0);
+    array = [MEMORY[0x1E695DF70] array];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __72__FCPuzzleFullArchiveMenuOptionsConfiguration_initWithConfigDictionary___block_invoke;
     v18[3] = &unk_1E7C393D0;
-    v14 = v13;
+    v14 = array;
     v19 = v14;
     [v12 enumerateObjectsUsingBlock:v18];
     items = v5->_items;

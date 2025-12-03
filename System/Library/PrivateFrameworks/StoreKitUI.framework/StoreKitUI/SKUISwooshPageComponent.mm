@@ -1,35 +1,35 @@
 @interface SKUISwooshPageComponent
-- (BOOL)_isBrickAvailable:(id)a3 withPageContext:(id)a4;
-- (SKUILockupStyle)_lockupStyleWithLockups:(SEL)a3;
-- (SKUISwooshPageComponent)initWithCustomPageContext:(id)a3;
-- (SKUISwooshPageComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4;
-- (SKUISwooshPageComponent)initWithItemList:(id)a3;
-- (SKUISwooshPageComponent)initWithLockups:(id)a3 swooshType:(int64_t)a4 title:(id)a5;
-- (SKUISwooshPageComponent)initWithRelatedContentContext:(id)a3;
-- (SKUISwooshPageComponent)initWithRoomContext:(id)a3;
-- (id)_brickItemsWithChildren:(id)a3 customPageContext:(id)a4;
-- (id)_brickItemsWithChildren:(id)a3 featuredPageContext:(id)a4;
-- (id)_lockupWithItemIdentifier:(id)a3 context:(id)a4;
-- (id)_lockupsWithChildren:(id)a3 context:(id)a4;
-- (id)_lockupsWithChildren:(id)a3 featuredPageContext:(id)a4;
-- (id)_mediaComponentsWithChildren:(id)a3 context:(id)a4;
-- (id)_newLockupComponentWithItem:(id)a3 defaultStyle:(SKUILockupStyle *)a4;
-- (id)_updateLockupItemsWithItems:(id)a3;
-- (id)valueForMetricsField:(id)a3;
-- (unint64_t)_defaultVisibleFieldsForItemKind:(int64_t)a3;
+- (BOOL)_isBrickAvailable:(id)available withPageContext:(id)context;
+- (SKUILockupStyle)_lockupStyleWithLockups:(SEL)lockups;
+- (SKUISwooshPageComponent)initWithCustomPageContext:(id)context;
+- (SKUISwooshPageComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind;
+- (SKUISwooshPageComponent)initWithItemList:(id)list;
+- (SKUISwooshPageComponent)initWithLockups:(id)lockups swooshType:(int64_t)type title:(id)title;
+- (SKUISwooshPageComponent)initWithRelatedContentContext:(id)context;
+- (SKUISwooshPageComponent)initWithRoomContext:(id)context;
+- (id)_brickItemsWithChildren:(id)children customPageContext:(id)context;
+- (id)_brickItemsWithChildren:(id)children featuredPageContext:(id)context;
+- (id)_lockupWithItemIdentifier:(id)identifier context:(id)context;
+- (id)_lockupsWithChildren:(id)children context:(id)context;
+- (id)_lockupsWithChildren:(id)children featuredPageContext:(id)context;
+- (id)_mediaComponentsWithChildren:(id)children context:(id)context;
+- (id)_newLockupComponentWithItem:(id)item defaultStyle:(SKUILockupStyle *)style;
+- (id)_updateLockupItemsWithItems:(id)items;
+- (id)valueForMetricsField:(id)field;
+- (unint64_t)_defaultVisibleFieldsForItemKind:(int64_t)kind;
 - (void)_reloadMissingDataCount;
-- (void)_setSeeAllValuesWithLinkInfo:(id)a3;
-- (void)_updateBricksWithItems:(id)a3;
-- (void)_updateLockup:(id)a3 withItem:(id)a4;
-- (void)_updateLockupItemsWithLookupResponse:(id)a3;
-- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)a3 usingBlock:(id)a4;
+- (void)_setSeeAllValuesWithLinkInfo:(id)info;
+- (void)_updateBricksWithItems:(id)items;
+- (void)_updateLockup:(id)lockup withItem:(id)item;
+- (void)_updateLockupItemsWithLookupResponse:(id)response;
+- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)index usingBlock:(id)block;
 @end
 
 @implementation SKUISwooshPageComponent
 
-- (SKUISwooshPageComponent)initWithCustomPageContext:(id)a3
+- (SKUISwooshPageComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -44,11 +44,11 @@
 
   v35.receiver = self;
   v35.super_class = SKUISwooshPageComponent;
-  v13 = [(SKUIPageComponent *)&v35 initWithCustomPageContext:v4];
+  v13 = [(SKUIPageComponent *)&v35 initWithCustomPageContext:contextCopy];
   if (v13)
   {
-    v14 = [v4 componentDictionary];
-    v15 = [v14 objectForKey:@"childType"];
+    componentDictionary = [contextCopy componentDictionary];
+    v15 = [componentDictionary objectForKey:@"childType"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -72,7 +72,7 @@
 
     v13->_swooshType = v16;
 LABEL_12:
-    v17 = [v14 objectForKey:@"showBrickTitles"];
+    v17 = [componentDictionary objectForKey:@"showBrickTitles"];
 
     if (objc_opt_respondsToSelector())
     {
@@ -81,7 +81,7 @@ LABEL_12:
 
     else
     {
-      v18 = [v14 objectForKey:@"showItemTitles"];
+      v18 = [componentDictionary objectForKey:@"showItemTitles"];
 
       v17 = v18;
       if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -92,12 +92,12 @@ LABEL_12:
 
     v13->_showsItemTitles = [v17 BOOLValue];
 LABEL_16:
-    v19 = [v14 objectForKey:@"lockupStyle"];
+    v19 = [componentDictionary objectForKey:@"lockupStyle"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      SKUILockupStyleForDictionary(v19, v4, &v33);
+      SKUILockupStyleForDictionary(v19, contextCopy, &v33);
     }
 
     else
@@ -108,7 +108,7 @@ LABEL_16:
     v20 = v33;
     v13->_lockupStyle.visibleFields = v34;
     *&v13->_lockupStyle.artworkSize = v20;
-    v21 = [v14 objectForKey:@"title"];
+    v21 = [componentDictionary objectForKey:@"title"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -118,21 +118,21 @@ LABEL_16:
       v13->_title = v22;
     }
 
-    v24 = [v14 objectForKey:@"titleIsLink"];
+    v24 = [componentDictionary objectForKey:@"titleIsLink"];
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v24 BOOLValue])
     {
       v13->_seeAllStyle = 1;
     }
 
-    v25 = [v14 objectForKey:@"link"];
+    v25 = [componentDictionary objectForKey:@"link"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(SKUISwooshPageComponent *)v13 _setSeeAllValuesWithLinkInfo:v25];
     }
 
-    v26 = [v14 objectForKey:@"children"];
+    v26 = [componentDictionary objectForKey:@"children"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -144,7 +144,7 @@ LABEL_16:
     {
       if (swooshType == 2)
       {
-        v28 = [(SKUISwooshPageComponent *)v13 _mediaComponentsWithChildren:v26 context:v4];
+        v28 = [(SKUISwooshPageComponent *)v13 _mediaComponentsWithChildren:v26 context:contextCopy];
         v29 = &OBJC_IVAR___SKUISwooshPageComponent__mediaComponents;
       }
 
@@ -158,14 +158,14 @@ LABEL_34:
           goto LABEL_35;
         }
 
-        v28 = [(SKUISwooshPageComponent *)v13 _brickItemsWithChildren:v26 customPageContext:v4];
+        v28 = [(SKUISwooshPageComponent *)v13 _brickItemsWithChildren:v26 customPageContext:contextCopy];
         v29 = &OBJC_IVAR___SKUISwooshPageComponent__bricks;
       }
     }
 
     else
     {
-      v28 = [(SKUISwooshPageComponent *)v13 _lockupsWithChildren:v26 context:v4];
+      v28 = [(SKUISwooshPageComponent *)v13 _lockupsWithChildren:v26 context:contextCopy];
       v29 = &OBJC_IVAR___SKUISwooshPageComponent__lockups;
     }
 
@@ -181,9 +181,9 @@ LABEL_35:
   return v13;
 }
 
-- (SKUISwooshPageComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4
+- (SKUISwooshPageComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind
 {
-  v6 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -198,23 +198,23 @@ LABEL_35:
 
   v41.receiver = self;
   v41.super_class = SKUISwooshPageComponent;
-  v15 = [(SKUIPageComponent *)&v41 initWithFeaturedContentContext:v6 kind:a4];
+  v15 = [(SKUIPageComponent *)&v41 initWithFeaturedContentContext:contextCopy kind:kind];
   if (v15)
   {
-    v16 = [v6 componentDictionary];
-    if (a4 == 261)
+    componentDictionary = [contextCopy componentDictionary];
+    if (kind == 261)
     {
       v15->_swooshType = 1;
     }
 
-    v15->_fcKind = a4;
+    v15->_fcKind = kind;
     SKUILockupStyleDefault(&v39);
     v17 = v39;
     v15->_lockupStyle.visibleFields = v40;
     *&v15->_lockupStyle.artworkSize = v17;
-    v18 = [v6 platformKeyProfileOverrides];
+    platformKeyProfileOverrides = [contextCopy platformKeyProfileOverrides];
     v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v15->_fcKind];
-    v20 = [v18 objectForKey:v19];
+    v20 = [platformKeyProfileOverrides objectForKey:v19];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -224,10 +224,10 @@ LABEL_35:
       v15->_platformKeyProfile = v21;
     }
 
-    v23 = [v16 objectForKey:@"name"];
+    v23 = [componentDictionary objectForKey:@"name"];
     if (!v23)
     {
-      v23 = [v16 objectForKey:@"title"];
+      v23 = [componentDictionary objectForKey:@"title"];
     }
 
     objc_opt_class();
@@ -238,14 +238,14 @@ LABEL_35:
       v15->_title = v24;
     }
 
-    v26 = [v16 objectForKey:@"titleIsLink"];
+    v26 = [componentDictionary objectForKey:@"titleIsLink"];
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v26 BOOLValue])
     {
       v15->_seeAllStyle = 1;
     }
 
-    v27 = [v16 objectForKey:@"seeAllUrl"];
+    v27 = [componentDictionary objectForKey:@"seeAllUrl"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -255,20 +255,20 @@ LABEL_35:
       v15->_seeAllURL = v28;
     }
 
-    v30 = [v16 objectForKey:@"showBrickTitles"];
+    v30 = [componentDictionary objectForKey:@"showBrickTitles"];
 
     if (objc_opt_respondsToSelector())
     {
       v15->_showsItemTitles = [v30 BOOLValue];
     }
 
-    v31 = [v16 objectForKey:@"children"];
+    v31 = [componentDictionary objectForKey:@"children"];
     if (!v31)
     {
-      v31 = [v16 objectForKey:@"adamIds"];
+      v31 = [componentDictionary objectForKey:@"adamIds"];
       if (!v31)
       {
-        v31 = [v16 objectForKey:@"content"];
+        v31 = [componentDictionary objectForKey:@"content"];
       }
     }
 
@@ -290,13 +290,13 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v34 = [(SKUISwooshPageComponent *)v15 _brickItemsWithChildren:v32 featuredPageContext:v6];
+      v34 = [(SKUISwooshPageComponent *)v15 _brickItemsWithChildren:v32 featuredPageContext:contextCopy];
       v35 = &OBJC_IVAR___SKUISwooshPageComponent__bricks;
     }
 
     else
     {
-      v34 = [(SKUISwooshPageComponent *)v15 _lockupsWithChildren:v32 featuredPageContext:v6];
+      v34 = [(SKUISwooshPageComponent *)v15 _lockupsWithChildren:v32 featuredPageContext:contextCopy];
       v35 = &OBJC_IVAR___SKUISwooshPageComponent__lockups;
     }
 
@@ -312,10 +312,10 @@ LABEL_31:
   return v15;
 }
 
-- (SKUISwooshPageComponent)initWithItemList:(id)a3
+- (SKUISwooshPageComponent)initWithItemList:(id)list
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -340,21 +340,21 @@ LABEL_31:
     v16 = v40;
     v14->_lockupStyle.visibleFields = visibleFields;
     *&p_lockupStyle->artworkSize = v16;
-    v17 = [v4 seeAllTitle];
+    seeAllTitle = [listCopy seeAllTitle];
     seeAllTitle = v14->_seeAllTitle;
-    v14->_seeAllTitle = v17;
+    v14->_seeAllTitle = seeAllTitle;
 
-    v19 = [v4 title];
+    title = [listCopy title];
     title = v14->_title;
-    v14->_title = v19;
+    v14->_title = title;
 
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v22 = [v4 items];
+    items = [listCopy items];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v23 = [v22 countByEnumeratingWithState:&v36 objects:v43 count:16];
+    v23 = [items countByEnumeratingWithState:&v36 objects:v43 count:16];
     if (v23)
     {
       v24 = v23;
@@ -366,7 +366,7 @@ LABEL_31:
         {
           if (*v37 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(items);
           }
 
           v27 = *(*(&v36 + 1) + 8 * v26);
@@ -380,7 +380,7 @@ LABEL_31:
         }
 
         while (v24 != v26);
-        v24 = [v22 countByEnumeratingWithState:&v36 objects:v43 count:16];
+        v24 = [items countByEnumeratingWithState:&v36 objects:v43 count:16];
       }
 
       while (v24);
@@ -390,10 +390,10 @@ LABEL_31:
     lockups = v14->_lockups;
     v14->_lockups = v30;
 
-    v32 = [v4 seeAllURLString];
-    if (v32)
+    seeAllURLString = [listCopy seeAllURLString];
+    if (seeAllURLString)
     {
-      v33 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v32];
+      v33 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:seeAllURLString];
       seeAllURL = v14->_seeAllURL;
       v14->_seeAllURL = v33;
     }
@@ -404,10 +404,10 @@ LABEL_31:
   return v14;
 }
 
-- (SKUISwooshPageComponent)initWithLockups:(id)a3 swooshType:(int64_t)a4 title:(id)a5
+- (SKUISwooshPageComponent)initWithLockups:(id)lockups swooshType:(int64_t)type title:(id)title
 {
-  v8 = a3;
-  v9 = a5;
+  lockupsCopy = lockups;
+  titleCopy = title;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -425,15 +425,15 @@ LABEL_31:
   v18 = [(SKUISwooshPageComponent *)&v26 init];
   if (v18)
   {
-    v19 = [v8 copy];
+    v19 = [lockupsCopy copy];
     lockups = v18->_lockups;
     v18->_lockups = v19;
 
-    v18->_swooshType = a4;
+    v18->_swooshType = type;
     [(SKUISwooshPageComponent *)v18 _lockupStyleWithLockups:v18->_lockups];
     v18->_lockupStyle.visibleFields = v25;
     *&v18->_lockupStyle.artworkSize = v24;
-    v21 = [v9 copy];
+    v21 = [titleCopy copy];
     title = v18->_title;
     v18->_title = v21;
 
@@ -443,9 +443,9 @@ LABEL_31:
   return v18;
 }
 
-- (SKUISwooshPageComponent)initWithRelatedContentContext:(id)a3
+- (SKUISwooshPageComponent)initWithRelatedContentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -463,13 +463,13 @@ LABEL_31:
   v13 = [(SKUISwooshPageComponent *)&v27 init];
   if (v13)
   {
-    v14 = [v4 componentDictionary];
+    componentDictionary = [contextCopy componentDictionary];
     v13->_swooshType = 0;
     SKUILockupStyleDefault(&v25);
     v15 = v25;
     v13->_lockupStyle.visibleFields = v26;
     *&v13->_lockupStyle.artworkSize = v15;
-    v16 = [v14 objectForKey:@"title"];
+    v16 = [componentDictionary objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -478,25 +478,25 @@ LABEL_31:
       v13->_title = v17;
     }
 
-    v19 = [v14 objectForKey:@"titleIsLink"];
+    v19 = [componentDictionary objectForKey:@"titleIsLink"];
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v19 BOOLValue])
     {
       v13->_seeAllStyle = 1;
     }
 
-    v20 = [v14 objectForKey:@"link"];
+    v20 = [componentDictionary objectForKey:@"link"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(SKUISwooshPageComponent *)v13 _setSeeAllValuesWithLinkInfo:v20];
     }
 
-    v21 = [v14 objectForKey:@"childrenIds"];
+    v21 = [componentDictionary objectForKey:@"childrenIds"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v21 count])
     {
-      v22 = [(SKUISwooshPageComponent *)v13 _lockupsWithChildren:v21 context:v4];
+      v22 = [(SKUISwooshPageComponent *)v13 _lockupsWithChildren:v21 context:contextCopy];
       lockups = v13->_lockups;
       v13->_lockups = v22;
     }
@@ -507,9 +507,9 @@ LABEL_31:
   return v13;
 }
 
-- (SKUISwooshPageComponent)initWithRoomContext:(id)a3
+- (SKUISwooshPageComponent)initWithRoomContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -524,16 +524,16 @@ LABEL_31:
 
   v27.receiver = self;
   v27.super_class = SKUISwooshPageComponent;
-  v13 = [(SKUIPageComponent *)&v27 initWithFeaturedContentContext:v4 kind:260];
+  v13 = [(SKUIPageComponent *)&v27 initWithFeaturedContentContext:contextCopy kind:260];
   if (v13)
   {
-    v14 = [v4 componentDictionary];
+    componentDictionary = [contextCopy componentDictionary];
     v13->_swooshType = 0;
     SKUILockupStyleDefault(&v25);
     v15 = v25;
     v13->_lockupStyle.visibleFields = v26;
     *&v13->_lockupStyle.artworkSize = v15;
-    v16 = [v14 objectForKey:@"title"];
+    v16 = [componentDictionary objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -542,25 +542,25 @@ LABEL_31:
       v13->_title = v17;
     }
 
-    v19 = [v14 objectForKey:@"titleIsLink"];
+    v19 = [componentDictionary objectForKey:@"titleIsLink"];
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v19 BOOLValue])
     {
       v13->_seeAllStyle = 1;
     }
 
-    v20 = [v14 objectForKey:@"seeAllUrl"];
+    v20 = [componentDictionary objectForKey:@"seeAllUrl"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(SKUISwooshPageComponent *)v13 _setSeeAllValuesWithLinkInfo:v20];
     }
 
-    v21 = [v14 objectForKey:@"adamIds"];
+    v21 = [componentDictionary objectForKey:@"adamIds"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v21 count])
     {
-      v22 = [(SKUISwooshPageComponent *)v13 _lockupsWithChildren:v21 context:v4];
+      v22 = [(SKUISwooshPageComponent *)v13 _lockupsWithChildren:v21 context:contextCopy];
       lockups = v13->_lockups;
       v13->_lockups = v22;
     }
@@ -571,15 +571,15 @@ LABEL_31:
   return v13;
 }
 
-- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)index usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = v6;
+  blockCopy = block;
+  v7 = blockCopy;
   lockups = self->_lockups;
   if (lockups)
   {
-    v10 = v6;
-    v6 = [(SKUIPageComponent *)self _enumerateMissingItemIdentifiersFromLockups:lockups startIndex:a3 usingBlock:v6];
+    v10 = blockCopy;
+    blockCopy = [(SKUIPageComponent *)self _enumerateMissingItemIdentifiersFromLockups:lockups startIndex:index usingBlock:blockCopy];
   }
 
   else
@@ -590,31 +590,31 @@ LABEL_31:
       goto LABEL_6;
     }
 
-    v10 = v6;
-    v6 = [(SKUIPageComponent *)self _enumerateMissingItemIdentifiersFromBricks:bricks startIndex:a3 usingBlock:v6];
+    v10 = blockCopy;
+    blockCopy = [(SKUIPageComponent *)self _enumerateMissingItemIdentifiersFromBricks:bricks startIndex:index usingBlock:blockCopy];
   }
 
   v7 = v10;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](blockCopy, v7);
 }
 
-- (id)valueForMetricsField:(id)a3
+- (id)valueForMetricsField:(id)field
 {
-  v4 = a3;
-  if (([v4 isEqualToString:*MEMORY[0x277D6A4A0]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D6A4A8]))
+  fieldCopy = field;
+  if (([fieldCopy isEqualToString:*MEMORY[0x277D6A4A0]] & 1) != 0 || objc_msgSend(fieldCopy, "isEqualToString:", *MEMORY[0x277D6A4A8]))
   {
-    v5 = [(SKUISwooshPageComponent *)self title];
+    title = [(SKUISwooshPageComponent *)self title];
     goto LABEL_4;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277D6A498]])
+  if ([fieldCopy isEqualToString:*MEMORY[0x277D6A498]])
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_fcKind];
+    title = [MEMORY[0x277CCABB0] numberWithInteger:self->_fcKind];
 LABEL_4:
-    v6 = v5;
-    if (v5)
+    v6 = title;
+    if (title)
     {
       goto LABEL_9;
     }
@@ -622,16 +622,16 @@ LABEL_4:
 
   v8.receiver = self;
   v8.super_class = SKUISwooshPageComponent;
-  v6 = [(SKUIPageComponent *)&v8 valueForMetricsField:v4];
+  v6 = [(SKUIPageComponent *)&v8 valueForMetricsField:fieldCopy];
 LABEL_9:
 
   return v6;
 }
 
-- (void)_updateBricksWithItems:(id)a3
+- (void)_updateBricksWithItems:(id)items
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -652,13 +652,13 @@ LABEL_9:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 link];
-        if (([v11 isActionable] & 1) == 0)
+        link = [v10 link];
+        if (([link isActionable] & 1) == 0)
         {
-          v12 = [v11 itemIdentifier];
-          if (v12)
+          itemIdentifier = [link itemIdentifier];
+          if (itemIdentifier)
           {
-            v13 = [v4 objectForKey:v12];
+            v13 = [itemsCopy objectForKey:itemIdentifier];
             if (v13)
             {
               v14 = v13;
@@ -676,10 +676,10 @@ LABEL_9:
   }
 }
 
-- (id)_updateLockupItemsWithItems:(id)a3
+- (id)_updateLockupItemsWithItems:(id)items
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v14 = [MEMORY[0x277CBEB58] set];
   v15 = 0u;
   v16 = 0u;
@@ -704,7 +704,7 @@ LABEL_9:
         if ([v10 _needsItemData])
         {
           v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:{objc_msgSend(v10, "itemIdentifier")}];
-          v12 = [v4 objectForKey:v11];
+          v12 = [itemsCopy objectForKey:v11];
           if (v12)
           {
             [(SKUISwooshPageComponent *)self _updateLockup:v10 withItem:v12];
@@ -723,10 +723,10 @@ LABEL_9:
   return v14;
 }
 
-- (void)_updateLockupItemsWithLookupResponse:(id)a3
+- (void)_updateLockupItemsWithLookupResponse:(id)response
 {
   v21 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  responseCopy = response;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -750,12 +750,12 @@ LABEL_9:
         if ([v9 _needsItemData])
         {
           v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%lld", objc_msgSend(v9, "itemIdentifier")];
-          v11 = [v15 itemForKey:v10];
+          v11 = [responseCopy itemForKey:v10];
           if (v11)
           {
             v12 = [SKUIItem alloc];
-            v13 = [v11 lookupDictionary];
-            v14 = [(SKUIItem *)v12 initWithLookupDictionary:v13];
+            lookupDictionary = [v11 lookupDictionary];
+            v14 = [(SKUIItem *)v12 initWithLookupDictionary:lookupDictionary];
 
             [(SKUISwooshPageComponent *)self _updateLockup:v9 withItem:v14];
             --self->_missingDataCount;
@@ -770,18 +770,18 @@ LABEL_9:
   }
 }
 
-- (id)_brickItemsWithChildren:(id)a3 customPageContext:(id)a4
+- (id)_brickItemsWithChildren:(id)children customPageContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v17 = [MEMORY[0x277CBEB18] array];
-  v8 = [v7 copy];
+  childrenCopy = children;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
+  v8 = [contextCopy copy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = childrenCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -802,9 +802,9 @@ LABEL_9:
         {
           [v8 setComponentDictionary:v14];
           v15 = [[SKUIBrickItem alloc] initWithCustomPageContext:v8];
-          if (v15 && [(SKUISwooshPageComponent *)self _isBrickAvailable:v15 withPageContext:v7])
+          if (v15 && [(SKUISwooshPageComponent *)self _isBrickAvailable:v15 withPageContext:contextCopy])
           {
-            [v17 addObject:v15];
+            [array addObject:v15];
           }
         }
       }
@@ -815,21 +815,21 @@ LABEL_9:
     while (v11);
   }
 
-  return v17;
+  return array;
 }
 
-- (id)_brickItemsWithChildren:(id)a3 featuredPageContext:(id)a4
+- (id)_brickItemsWithChildren:(id)children featuredPageContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v17 = [MEMORY[0x277CBEB18] array];
-  v8 = [v7 copy];
+  childrenCopy = children;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
+  v8 = [contextCopy copy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = childrenCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -850,9 +850,9 @@ LABEL_9:
         {
           [v8 setComponentDictionary:v14];
           v15 = [[SKUIBrickItem alloc] initWithComponentContext:v8];
-          if (v15 && [(SKUISwooshPageComponent *)self _isBrickAvailable:v15 withPageContext:v7])
+          if (v15 && [(SKUISwooshPageComponent *)self _isBrickAvailable:v15 withPageContext:contextCopy])
           {
-            [v17 addObject:v15];
+            [array addObject:v15];
           }
         }
       }
@@ -863,16 +863,16 @@ LABEL_9:
     while (v11);
   }
 
-  return v17;
+  return array;
 }
 
-- (unint64_t)_defaultVisibleFieldsForItemKind:(int64_t)a3
+- (unint64_t)_defaultVisibleFieldsForItemKind:(int64_t)kind
 {
-  if (a3 <= 5)
+  if (kind <= 5)
   {
-    if ((a3 - 1) >= 3)
+    if ((kind - 1) >= 3)
     {
-      if ((a3 - 4) >= 2 && a3)
+      if ((kind - 4) >= 2 && kind)
       {
         return 0;
       }
@@ -883,13 +883,13 @@ LABEL_9:
     return 19;
   }
 
-  if (a3 <= 0x12)
+  if (kind <= 0x12)
   {
-    if (((1 << a3) & 0x10B80) == 0)
+    if (((1 << kind) & 0x10B80) == 0)
     {
-      if (((1 << a3) & 0x63400) == 0)
+      if (((1 << kind) & 0x63400) == 0)
       {
-        if (((1 << a3) & 0xC000) != 0)
+        if (((1 << kind) & 0xC000) != 0)
         {
           return 530;
         }
@@ -908,7 +908,7 @@ LABEL_10:
   }
 
 LABEL_12:
-  if (a3 == 6)
+  if (kind == 6)
   {
     return 18;
   }
@@ -919,24 +919,24 @@ LABEL_12:
   }
 }
 
-- (BOOL)_isBrickAvailable:(id)a3 withPageContext:(id)a4
+- (BOOL)_isBrickAvailable:(id)available withPageContext:(id)context
 {
-  v5 = a4;
-  v6 = [a3 link];
-  v7 = v6;
-  if (v6)
+  contextCopy = context;
+  link = [available link];
+  v7 = link;
+  if (link)
   {
-    if ([v6 isActionable])
+    if ([link isActionable])
     {
       LOBYTE(v8) = 1;
     }
 
     else
     {
-      v9 = [v7 itemIdentifier];
-      if (v9)
+      itemIdentifier = [v7 itemIdentifier];
+      if (itemIdentifier)
       {
-        v8 = [v5 isUnavailableItemIdentifier:v9] ^ 1;
+        v8 = [contextCopy isUnavailableItemIdentifier:itemIdentifier] ^ 1;
       }
 
       else
@@ -954,7 +954,7 @@ LABEL_12:
   return v8;
 }
 
-- (SKUILockupStyle)_lockupStyleWithLockups:(SEL)a3
+- (SKUILockupStyle)_lockupStyleWithLockups:(SEL)lockups
 {
   v21 = *MEMORY[0x277D85DE8];
   v6 = a4;
@@ -983,11 +983,11 @@ LABEL_12:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) item];
-        v14 = v13;
-        if (v13)
+        item = [*(*(&v16 + 1) + 8 * v12) item];
+        v14 = item;
+        if (item)
         {
-          [v7 addIndex:{-[SKUISwooshPageComponent _defaultVisibleFieldsForItemKind:](self, "_defaultVisibleFieldsForItemKind:", objc_msgSend(v13, "itemKind"))}];
+          [v7 addIndex:{-[SKUISwooshPageComponent _defaultVisibleFieldsForItemKind:](self, "_defaultVisibleFieldsForItemKind:", objc_msgSend(item, "itemKind"))}];
         }
 
         ++v12;
@@ -1008,17 +1008,17 @@ LABEL_12:
   return result;
 }
 
-- (id)_lockupsWithChildren:(id)a3 context:(id)a4
+- (id)_lockupsWithChildren:(id)children context:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  childrenCopy = children;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = childrenCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -1037,10 +1037,10 @@ LABEL_12:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [(SKUISwooshPageComponent *)self _lockupWithItemIdentifier:v14 context:v7, v17];
+          v15 = [(SKUISwooshPageComponent *)self _lockupWithItemIdentifier:v14 context:contextCopy, v17];
           if (v15)
           {
-            [v8 addObject:v15];
+            [array addObject:v15];
           }
         }
       }
@@ -1051,20 +1051,20 @@ LABEL_12:
     while (v11);
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_lockupsWithChildren:(id)a3 featuredPageContext:(id)a4
+- (id)_lockupsWithChildren:(id)children featuredPageContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v17 = [MEMORY[0x277CBEB18] array];
+  childrenCopy = children;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = childrenCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -1101,10 +1101,10 @@ LABEL_12:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [(SKUISwooshPageComponent *)self _lockupWithItemIdentifier:v14 context:v6];
+          v15 = [(SKUISwooshPageComponent *)self _lockupWithItemIdentifier:v14 context:contextCopy];
           if (v15)
           {
-            [v17 addObject:v15];
+            [array addObject:v15];
           }
         }
       }
@@ -1115,14 +1115,14 @@ LABEL_12:
     while (v9);
   }
 
-  return v17;
+  return array;
 }
 
-- (id)_lockupWithItemIdentifier:(id)a3 context:(id)a4
+- (id)_lockupWithItemIdentifier:(id)identifier context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 itemForItemIdentifier:v6];
+  identifierCopy = identifier;
+  contextCopy = context;
+  v8 = [contextCopy itemForItemIdentifier:identifierCopy];
   if (v8)
   {
     v14 = *&self->_lockupStyle.artworkSize;
@@ -1132,17 +1132,17 @@ LABEL_12:
 
   else
   {
-    if ([v7 isUnavailableItemIdentifier:v6])
+    if ([contextCopy isUnavailableItemIdentifier:identifierCopy])
     {
       v10 = 0;
       goto LABEL_7;
     }
 
     v11 = [SKUILockupComponent alloc];
-    v12 = [v6 longLongValue];
+    longLongValue = [identifierCopy longLongValue];
     v14 = *&self->_lockupStyle.artworkSize;
     visibleFields = self->_lockupStyle.visibleFields;
-    v9 = [(SKUILockupComponent *)v11 initWithItemIdentifier:v12 style:&v14];
+    v9 = [(SKUILockupComponent *)v11 initWithItemIdentifier:longLongValue style:&v14];
   }
 
   v10 = v9;
@@ -1151,28 +1151,28 @@ LABEL_7:
   return v10;
 }
 
-- (id)_mediaComponentsWithChildren:(id)a3 context:(id)a4
+- (id)_mediaComponentsWithChildren:(id)children context:(id)context
 {
-  v4 = a4;
-  v5 = [[SKUIGalleryPageComponent alloc] initWithCustomPageContext:v4];
+  contextCopy = context;
+  v5 = [[SKUIGalleryPageComponent alloc] initWithCustomPageContext:contextCopy];
 
-  v6 = [(SKUIGalleryPageComponent *)v5 childComponents];
+  childComponents = [(SKUIGalleryPageComponent *)v5 childComponents];
 
-  return v6;
+  return childComponents;
 }
 
-- (id)_newLockupComponentWithItem:(id)a3 defaultStyle:(SKUILockupStyle *)a4
+- (id)_newLockupComponentWithItem:(id)item defaultStyle:(SKUILockupStyle *)style
 {
-  v5 = a3;
-  if ([v5 itemKind] == 17)
+  itemCopy = item;
+  if ([itemCopy itemKind] == 17)
   {
-    a4->visibleFields = 150;
+    style->visibleFields = 150;
   }
 
   v6 = [SKUILockupComponent alloc];
-  v9 = *&a4->artworkSize;
-  visibleFields = a4->visibleFields;
-  v7 = [(SKUILockupComponent *)v6 initWithItem:v5 style:&v9];
+  v9 = *&style->artworkSize;
+  visibleFields = style->visibleFields;
+  v7 = [(SKUILockupComponent *)v6 initWithItem:itemCopy style:&v9];
 
   return v7;
 }
@@ -1201,12 +1201,12 @@ LABEL_7:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v19 + 1) + 8 * v7) link];
-        if (([v8 isActionable] & 1) == 0)
+        link = [*(*(&v19 + 1) + 8 * v7) link];
+        if (([link isActionable] & 1) == 0)
         {
-          v9 = [v8 itemIdentifier];
+          itemIdentifier = [link itemIdentifier];
 
-          if (v9)
+          if (itemIdentifier)
           {
             ++self->_missingDataCount;
           }
@@ -1258,10 +1258,10 @@ LABEL_7:
   }
 }
 
-- (void)_setSeeAllValuesWithLinkInfo:(id)a3
+- (void)_setSeeAllValuesWithLinkInfo:(id)info
 {
-  v10 = a3;
-  v4 = [v10 objectForKey:@"label"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:@"label"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1270,7 +1270,7 @@ LABEL_7:
     self->_seeAllTitle = v5;
   }
 
-  v7 = [v10 objectForKey:@"url"];
+  v7 = [infoCopy objectForKey:@"url"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1281,18 +1281,18 @@ LABEL_7:
   }
 }
 
-- (void)_updateLockup:(id)a3 withItem:(id)a4
+- (void)_updateLockup:(id)lockup withItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
+  lockupCopy = lockup;
+  itemCopy = item;
   v11 = 0uLL;
   v12 = 0;
-  if (v5)
+  if (lockupCopy)
   {
-    [v5 lockupStyle];
+    [lockupCopy lockupStyle];
   }
 
-  if ([v6 itemKind] == 17)
+  if ([itemCopy itemKind] == 17)
   {
     SKUILockupStyleDefault(&v9);
     v7 = v11;
@@ -1302,11 +1302,11 @@ LABEL_7:
       v12 = 150;
       v9 = v11;
       v10 = 150;
-      [v5 _setLockupStyle:&v9];
+      [lockupCopy _setLockupStyle:&v9];
     }
   }
 
-  [v5 _setItem:v6];
+  [lockupCopy _setItem:itemCopy];
 }
 
 @end

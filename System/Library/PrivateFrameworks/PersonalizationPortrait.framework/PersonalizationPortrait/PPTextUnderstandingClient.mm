@@ -1,7 +1,7 @@
 @interface PPTextUnderstandingClient
 + (id)sharedInstance;
 - (PPTextUnderstandingClient)init;
-- (id)spotlightAttributesForBundleId:(id)a3 spotlightIdentifier:(id)a4 extractions:(id)a5 error:(id *)a6;
+- (id)spotlightAttributesForBundleId:(id)id spotlightIdentifier:(id)identifier extractions:(id)extractions error:(id *)error;
 @end
 
 @implementation PPTextUnderstandingClient
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __43__PPTextUnderstandingClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken4 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken4, block);
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (id)spotlightAttributesForBundleId:(id)a3 spotlightIdentifier:(id)a4 extractions:(id)a5 error:(id *)a6
+- (id)spotlightAttributesForBundleId:(id)id spotlightIdentifier:(id)identifier extractions:(id)extractions error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  idCopy = id;
+  identifierCopy = identifier;
+  extractionsCopy = extractions;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -52,12 +52,12 @@
   v17[3] = &unk_1E77F5EF0;
   v17[4] = &v25;
   v17[5] = &v19;
-  [v13 spotlightAttributesForBundleId:v10 spotlightIdentifier:v11 extractions:v12 completion:v17];
+  [v13 spotlightAttributesForBundleId:idCopy spotlightIdentifier:identifierCopy extractions:extractionsCopy completion:v17];
 
   v14 = v26;
-  if (a6 && !v26[5])
+  if (error && !v26[5])
   {
-    *a6 = v20[5];
+    *error = v20[5];
     v14 = v26;
   }
 

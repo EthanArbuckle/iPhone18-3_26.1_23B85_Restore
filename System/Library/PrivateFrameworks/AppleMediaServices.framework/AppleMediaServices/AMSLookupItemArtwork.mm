@@ -1,34 +1,34 @@
 @interface AMSLookupItemArtwork
-- (AMSLookupItemArtwork)initWithArtworkDictionary:(id)a3;
+- (AMSLookupItemArtwork)initWithArtworkDictionary:(id)dictionary;
 - (NSString)URLString;
 - (double)height;
 - (double)width;
-- (id)URLWithHeight:(int64_t)a3 width:(int64_t)a4 cropStyle:(id)a5 format:(id)a6;
-- (id)colorWithKind:(id)a3;
+- (id)URLWithHeight:(int64_t)height width:(int64_t)width cropStyle:(id)style format:(id)format;
+- (id)colorWithKind:(id)kind;
 @end
 
 @implementation AMSLookupItemArtwork
 
-- (AMSLookupItemArtwork)initWithArtworkDictionary:(id)a3
+- (AMSLookupItemArtwork)initWithArtworkDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = AMSLookupItemArtwork;
   v6 = [(AMSLookupItemArtwork *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_artworkDictionary, a3);
+    objc_storeStrong(&v6->_artworkDictionary, dictionary);
   }
 
   return v7;
 }
 
-- (id)colorWithKind:(id)a3
+- (id)colorWithKind:(id)kind
 {
-  v4 = a3;
-  v5 = [(AMSLookupItemArtwork *)self artworkDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  kindCopy = kind;
+  artworkDictionary = [(AMSLookupItemArtwork *)self artworkDictionary];
+  v6 = [artworkDictionary objectForKeyedSubscript:kindCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -61,8 +61,8 @@ LABEL_6:
 
 - (double)width
 {
-  v2 = [(AMSLookupItemArtwork *)self artworkDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"width"];
+  artworkDictionary = [(AMSLookupItemArtwork *)self artworkDictionary];
+  v3 = [artworkDictionary objectForKeyedSubscript:@"width"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -83,8 +83,8 @@ LABEL_6:
 
 - (double)height
 {
-  v2 = [(AMSLookupItemArtwork *)self artworkDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"height"];
+  artworkDictionary = [(AMSLookupItemArtwork *)self artworkDictionary];
+  v3 = [artworkDictionary objectForKeyedSubscript:@"height"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -105,8 +105,8 @@ LABEL_6:
 
 - (NSString)URLString
 {
-  v2 = [(AMSLookupItemArtwork *)self artworkDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"url"];
+  artworkDictionary = [(AMSLookupItemArtwork *)self artworkDictionary];
+  v3 = [artworkDictionary objectForKeyedSubscript:@"url"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -122,14 +122,14 @@ LABEL_6:
   return v4;
 }
 
-- (id)URLWithHeight:(int64_t)a3 width:(int64_t)a4 cropStyle:(id)a5 format:(id)a6
+- (id)URLWithHeight:(int64_t)height width:(int64_t)width cropStyle:(id)style format:(id)format
 {
   v32[12] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  if (v10)
+  styleCopy = style;
+  formatCopy = format;
+  if (styleCopy)
   {
-    v12 = v10;
+    v12 = styleCopy;
   }
 
   else
@@ -137,9 +137,9 @@ LABEL_6:
     v12 = @"bb";
   }
 
-  if (v11)
+  if (formatCopy)
   {
-    v13 = v11;
+    v13 = formatCopy;
   }
 
   else
@@ -147,17 +147,17 @@ LABEL_6:
     v13 = @"jpg";
   }
 
-  v14 = [(AMSLookupItemArtwork *)self URLString];
-  v15 = v14;
-  if (v14)
+  uRLString = [(AMSLookupItemArtwork *)self URLString];
+  v15 = uRLString;
+  if (uRLString)
   {
-    v29 = v14;
-    v16 = v14;
+    v29 = uRLString;
+    v16 = uRLString;
     v32[0] = @"{h}";
-    v32[1] = a3;
+    v32[1] = height;
     v32[2] = 0;
     v32[3] = @"{w}";
-    v32[4] = a4;
+    v32[4] = width;
     v32[5] = 0;
     v32[6] = @"{f}";
     v32[7] = 0;
@@ -202,8 +202,8 @@ LABEL_6:
     if (!v18 || ([MEMORY[0x1E695DFF8] URLWithString:v18], (v24 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v25 = MEMORY[0x1E695DFF8];
-      v26 = [(AMSLookupItemArtwork *)self URLString];
-      v24 = [v25 URLWithString:v26];
+      uRLString2 = [(AMSLookupItemArtwork *)self URLString];
+      v24 = [v25 URLWithString:uRLString2];
     }
 
     for (i = 0; i != -12; i -= 3)

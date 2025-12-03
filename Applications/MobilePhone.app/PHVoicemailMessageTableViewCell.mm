@@ -1,7 +1,7 @@
 @interface PHVoicemailMessageTableViewCell
-+ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3;
++ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category;
 - (BOOL)isAccessiblityConstraintsEnabled;
-- (BOOL)messageToolbarShouldShowRTTButton:(id)a3;
+- (BOOL)messageToolbarShouldShowRTTButton:(id)button;
 - (BOOL)shouldShowRestrictedAlertView;
 - (BOOL)shouldShowTranscriptView;
 - (PHVoicemailMessageTableViewCellDelegate)delegate;
@@ -13,50 +13,50 @@
 - (double)unreadIndicatorImageViewWidthLayoutConstraintConstant;
 - (id)dimmedColor;
 - (void)commonInit;
-- (void)configureWithVoicemailMessageViewModel:(id)a3 expanded:(BOOL)a4 shouldGrayForeground:(BOOL)a5;
-- (void)handleCollapseCellTapGesture:(id)a3;
+- (void)configureWithVoicemailMessageViewModel:(id)model expanded:(BOOL)expanded shouldGrayForeground:(BOOL)foreground;
+- (void)handleCollapseCellTapGesture:(id)gesture;
 - (void)hideUnreadIndicator;
 - (void)loadConstraints;
 - (void)loadContentView;
 - (void)loadExpandedViewsIfNecessary;
-- (void)messageMetadataView:(id)a3 didTapButtonType:(unint64_t)a4;
-- (void)messageToolbar:(id)a3 handleActionForButtonType:(unint64_t)a4;
-- (void)messageToolbarDidSelectRTTButton:(id)a3;
-- (void)messageTranscriptView:(id)a3 didReceiveTapGesture:(id)a4;
-- (void)messageTranscriptView:(id)a3 didReportFeedback:(unint64_t)a4;
-- (void)messageTranscriptView:(id)a3 suggestionsDidReceiveTapGesture:(id)a4;
-- (void)playbackControls:(id)a3 didRequestState:(int64_t)a4;
-- (void)playerTimelineSlider:(id)a3 didChangeElapsedTime:(double)a4;
-- (void)playerTimelineSliderScrubbingDidBegin:(id)a3;
-- (void)playerTimelineSliderScrubbingDidCancel:(id)a3;
-- (void)playerTimelineSliderScrubbingDidEnd:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setForegroundColor:(id)a3;
-- (void)setItem:(id)a3;
-- (void)setMaximumAllowedHeight:(double)a3;
-- (void)setRead:(BOOL)a3;
+- (void)messageMetadataView:(id)view didTapButtonType:(unint64_t)type;
+- (void)messageToolbar:(id)toolbar handleActionForButtonType:(unint64_t)type;
+- (void)messageToolbarDidSelectRTTButton:(id)button;
+- (void)messageTranscriptView:(id)view didReceiveTapGesture:(id)gesture;
+- (void)messageTranscriptView:(id)view didReportFeedback:(unint64_t)feedback;
+- (void)messageTranscriptView:(id)view suggestionsDidReceiveTapGesture:(id)gesture;
+- (void)playbackControls:(id)controls didRequestState:(int64_t)state;
+- (void)playerTimelineSlider:(id)slider didChangeElapsedTime:(double)time;
+- (void)playerTimelineSliderScrubbingDidBegin:(id)begin;
+- (void)playerTimelineSliderScrubbingDidCancel:(id)cancel;
+- (void)playerTimelineSliderScrubbingDidEnd:(id)end;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setForegroundColor:(id)color;
+- (void)setItem:(id)item;
+- (void)setMaximumAllowedHeight:(double)height;
+- (void)setRead:(BOOL)read;
 - (void)setupCollapsedView;
 - (void)setupExpandedView;
 - (void)tipKitStartObservation;
 - (void)tipKitStopObservation;
 - (void)unloadConstraints;
 - (void)updateConstraintsConstants;
-- (void)updateConstraintsForExpandedState:(BOOL)a3;
-- (void)updateExpandedViewsWithViewModel:(id)a3;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)updateConstraintsForExpandedState:(BOOL)state;
+- (void)updateExpandedViewsWithViewModel:(id)model;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation PHVoicemailMessageTableViewCell
 
-+ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3
++ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category
 {
-  v4 = a3;
-  [a1 unreadIndicatorImageViewLeadingLayoutConstraintConstantForContentSizeCategory:v4];
+  categoryCopy = category;
+  [self unreadIndicatorImageViewLeadingLayoutConstraintConstantForContentSizeCategory:categoryCopy];
   v6 = v5;
-  [a1 unreadIndicatorImageViewWidthLayoutConstraintConstantForContentSizeCategory:v4];
+  [self unreadIndicatorImageViewWidthLayoutConstraintConstantForContentSizeCategory:categoryCopy];
   v8 = v6 + v7;
-  [a1 metadataViewLeadingLayoutConstraintConstantForContentSizeCategory:v4];
+  [self metadataViewLeadingLayoutConstraintConstantForContentSizeCategory:categoryCopy];
   v10 = v9;
 
   v11 = v8 + v10;
@@ -70,31 +70,31 @@
   return result;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(PHVoicemailMessageTableViewCell *)self isEditing]!= a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if ([(PHVoicemailMessageTableViewCell *)self isEditing]!= editing)
   {
     v8.receiver = self;
     v8.super_class = PHVoicemailMessageTableViewCell;
-    [(PHVoicemailMessageTableViewCell *)&v8 setEditing:v5 animated:v4];
-    v7 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    [v7 setEditing:v5];
+    [(PHVoicemailMessageTableViewCell *)&v8 setEditing:editingCopy animated:animatedCopy];
+    metadataView = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    [metadataView setEditing:editingCopy];
 
-    if (v5)
+    if (editingCopy)
     {
       [(PHVoicemailMessageTableViewCell *)self setSelectionStyle:3];
-      [(PHVoicemailMessageTableViewCell *)self setExpanded:0 animated:v4];
+      [(PHVoicemailMessageTableViewCell *)self setExpanded:0 animated:animatedCopy];
     }
   }
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
   v3.receiver = self;
   v3.super_class = PHVoicemailMessageTableViewCell;
-  [(PHVoicemailMessageTableViewCell *)&v3 willTransitionToState:a3];
+  [(PHVoicemailMessageTableViewCell *)&v3 willTransitionToState:state];
 }
 
 - (void)commonInit
@@ -110,20 +110,20 @@
   v21.receiver = self;
   v21.super_class = PHVoicemailMessageTableViewCell;
   [(PHVoicemailMessageTableViewCell *)&v21 loadContentView];
-  v3 = [(PHVoicemailMessageTableViewCell *)self contentView];
-  [v3 setClipsToBounds:1];
+  contentView = [(PHVoicemailMessageTableViewCell *)self contentView];
+  [contentView setClipsToBounds:1];
 
-  v4 = [(PHVoicemailMessageTableViewCell *)self contentView];
+  contentView2 = [(PHVoicemailMessageTableViewCell *)self contentView];
   v5 = [PHVoicemailMessageTableViewCellScrollView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v9 = [(PHVoicemailMessageTableViewCellScrollView *)v5 initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [(PHVoicemailMessageTableViewCellScrollView *)v5 initWithFrame:CGRectZero.origin.x, y, width, height];
   contentScrollView = self->_contentScrollView;
-  self->_contentScrollView = v9;
+  self->_contentScrollView = height;
 
   [(PHVoicemailMessageTableViewCellScrollView *)self->_contentScrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v4 addSubview:self->_contentScrollView];
+  [contentView2 addSubview:self->_contentScrollView];
   v11 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   unreadIndicatorImageView = self->_unreadIndicatorImageView;
   self->_unreadIndicatorImageView = v11;
@@ -166,43 +166,43 @@
   if (self->_voicemailTipView)
   {
     [(PHVoicemailMessageTableViewCellScrollView *)self->_contentScrollView addSubview:?];
-    v4 = [(UIView *)self->_voicemailTipView leadingAnchor];
-    v5 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v6 = [v5 contentLayoutGuide];
-    v7 = [v6 leadingAnchor];
+    leadingAnchor = [(UIView *)self->_voicemailTipView leadingAnchor];
+    contentScrollView = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide = [contentScrollView contentLayoutGuide];
+    leadingAnchor2 = [contentLayoutGuide leadingAnchor];
     [(PHVoicemailMessageTableViewCell *)self metadataViewTrailingLayoutConstraintConstant];
-    v8 = [v4 constraintEqualToAnchor:v7 constant:?];
+    metadataViewTopConstraint4 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
 
-    v9 = [(UIView *)self->_voicemailTipView trailingAnchor];
-    v10 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v11 = [v10 contentLayoutGuide];
-    v12 = [v11 trailingAnchor];
+    trailingAnchor = [(UIView *)self->_voicemailTipView trailingAnchor];
+    contentScrollView2 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide2 = [contentScrollView2 contentLayoutGuide];
+    trailingAnchor2 = [contentLayoutGuide2 trailingAnchor];
     [(PHVoicemailMessageTableViewCell *)self metadataViewTrailingLayoutConstraintConstant];
-    v14 = [v9 constraintEqualToAnchor:v12 constant:-v13];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v13];
 
-    v15 = [(UIView *)self->_voicemailTipView topAnchor];
-    v16 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v17 = [v16 contentLayoutGuide];
-    v18 = [v17 topAnchor];
-    v19 = [v15 constraintEqualToAnchor:v18];
+    topAnchor = [(UIView *)self->_voicemailTipView topAnchor];
+    contentScrollView3 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide3 = [contentScrollView3 contentLayoutGuide];
+    topAnchor2 = [contentLayoutGuide3 topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-    v20 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v21 = [v20 topAnchor];
-    v22 = [(UIView *)self->_voicemailTipView bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    metadataView = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    topAnchor3 = [metadataView topAnchor];
+    bottomAnchor = [(UIView *)self->_voicemailTipView bottomAnchor];
+    v23 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
 
-    v24 = [(PHVoicemailMessageTableViewCell *)self metadataViewTopConstraint];
+    metadataViewTopConstraint = [(PHVoicemailMessageTableViewCell *)self metadataViewTopConstraint];
 
-    if (v24)
+    if (metadataViewTopConstraint)
     {
-      v25 = [(PHVoicemailMessageTableViewCell *)self metadataViewTopConstraint];
-      v45 = v25;
+      metadataViewTopConstraint2 = [(PHVoicemailMessageTableViewCell *)self metadataViewTopConstraint];
+      v45 = metadataViewTopConstraint2;
       v26 = [NSArray arrayWithObjects:&v45 count:1];
       [NSLayoutConstraint deactivateConstraints:v26];
     }
 
     v44[0] = v19;
-    v44[1] = v8;
+    v44[1] = metadataViewTopConstraint4;
     v44[2] = v14;
     v44[3] = v23;
     v27 = [NSArray arrayWithObjects:v44 count:4];
@@ -212,12 +212,12 @@
     goto LABEL_8;
   }
 
-  v28 = [(PHVoicemailMessageTableViewCell *)self metadataViewTopConstraint];
+  metadataViewTopConstraint3 = [(PHVoicemailMessageTableViewCell *)self metadataViewTopConstraint];
 
-  if (v28)
+  if (metadataViewTopConstraint3)
   {
-    v8 = [(PHVoicemailMessageTableViewCell *)self metadataViewTopConstraint];
-    v43 = v8;
+    metadataViewTopConstraint4 = [(PHVoicemailMessageTableViewCell *)self metadataViewTopConstraint];
+    v43 = metadataViewTopConstraint4;
     v14 = [NSArray arrayWithObjects:&v43 count:1];
     [NSLayoutConstraint activateConstraints:v14];
 LABEL_8:
@@ -230,16 +230,16 @@ LABEL_8:
     self->_playerControlsView = v29;
 
     [(VMPlayerControlsView *)self->_playerControlsView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v31 = [(PHVoicemailMessageTableViewCell *)self item];
-    -[VMPlayerControlsView setEnabled:](self->_playerControlsView, "setEnabled:", [v31 showsPlayerControls]);
+    item = [(PHVoicemailMessageTableViewCell *)self item];
+    -[VMPlayerControlsView setEnabled:](self->_playerControlsView, "setEnabled:", [item showsPlayerControls]);
 
-    v32 = [(PHVoicemailMessageTableViewCell *)self item];
-    [v32 duration];
+    item2 = [(PHVoicemailMessageTableViewCell *)self item];
+    [item2 duration];
     [(VMPlayerControlsView *)self->_playerControlsView setDuration:?];
 
     [(VMPlayerControlsView *)self->_playerControlsView setDelegate:self];
-    v33 = [(VMPlayerControlsView *)self->_playerControlsView timelineSlider];
-    [v33 setDelegate:self];
+    timelineSlider = [(VMPlayerControlsView *)self->_playerControlsView timelineSlider];
+    [timelineSlider setDelegate:self];
 
     [*&self->TPTableViewCell_opaque[*(v3 + 553)] addSubview:self->_playerControlsView];
   }
@@ -263,9 +263,9 @@ LABEL_8:
     self->_transcriptView = v36;
 
     [(VMMessageTranscriptView *)self->_transcriptView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v38 = [(PHVoicemailMessageTableViewCell *)self item];
-    v39 = [v38 transcriptViewModel];
-    [(VMMessageTranscriptView *)self->_transcriptView setViewModel:v39];
+    item3 = [(PHVoicemailMessageTableViewCell *)self item];
+    transcriptViewModel = [item3 transcriptViewModel];
+    [(VMMessageTranscriptView *)self->_transcriptView setViewModel:transcriptViewModel];
 
     [(VMMessageTranscriptView *)self->_transcriptView setDelegate:self];
     LODWORD(v40) = 1148846080;
@@ -289,271 +289,271 @@ LABEL_8:
   v188.receiver = self;
   v188.super_class = PHVoicemailMessageTableViewCell;
   [(PHVoicemailMessageTableViewCell *)&v188 loadConstraints];
-  v3 = [(PHVoicemailMessageTableViewCell *)self initialConstraints];
+  initialConstraints = [(PHVoicemailMessageTableViewCell *)self initialConstraints];
 
-  if (!v3)
+  if (!initialConstraints)
   {
-    v4 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v5 = [v4 bottomAnchor];
-    v6 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v7 = [v6 contentLayoutGuide];
-    v8 = [v7 bottomAnchor];
-    v9 = [v5 constraintEqualToAnchor:v8];
+    metadataView = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    bottomAnchor = [metadataView bottomAnchor];
+    contentScrollView = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide = [contentScrollView contentLayoutGuide];
+    bottomAnchor2 = [contentLayoutGuide bottomAnchor];
+    v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(PHVoicemailMessageTableViewCell *)self setCollapsedBottomConstraint:v9];
 
-    v10 = [(PHVoicemailMessageTableViewCell *)self contentView];
-    v11 = [v10 heightAnchor];
+    contentView = [(PHVoicemailMessageTableViewCell *)self contentView];
+    heightAnchor = [contentView heightAnchor];
     [(PHVoicemailMessageTableViewCell *)self maximumAllowedHeight];
-    v12 = [v11 constraintLessThanOrEqualToConstant:?];
+    v12 = [heightAnchor constraintLessThanOrEqualToConstant:?];
     LODWORD(v13) = 1148829696;
     v14 = [v12 withPriority:v13];
     [(PHVoicemailMessageTableViewCell *)self setMaximumHeightConstraint:v14];
 
-    v15 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v16 = [v15 leadingAnchor];
-    v17 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
-    v18 = [v17 trailingAnchor];
+    metadataView2 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    leadingAnchor = [metadataView2 leadingAnchor];
+    unreadIndicatorImageView = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
+    trailingAnchor = [unreadIndicatorImageView trailingAnchor];
     [(PHVoicemailMessageTableViewCell *)self metadataViewLeadingLayoutConstraintConstant];
-    v19 = [v16 constraintEqualToAnchor:v18 constant:?];
+    v19 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:?];
     [(PHVoicemailMessageTableViewCell *)self setMetadataViewLeadingConstraint:v19];
 
-    v20 = [(PHVoicemailMessageTableViewCell *)self voicemailTipView];
+    voicemailTipView = [(PHVoicemailMessageTableViewCell *)self voicemailTipView];
 
-    v21 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v22 = [v21 topAnchor];
-    if (v20)
+    metadataView3 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    topAnchor = [metadataView3 topAnchor];
+    if (voicemailTipView)
     {
-      v23 = [(PHVoicemailMessageTableViewCell *)self voicemailTipView];
-      v24 = [v23 bottomAnchor];
-      v25 = [v22 constraintEqualToAnchor:v24];
-      [(PHVoicemailMessageTableViewCell *)self setMetadataViewTopConstraint:v25];
+      voicemailTipView2 = [(PHVoicemailMessageTableViewCell *)self voicemailTipView];
+      bottomAnchor3 = [voicemailTipView2 bottomAnchor];
+      topAnchor2 = [topAnchor constraintEqualToAnchor:bottomAnchor3];
+      [(PHVoicemailMessageTableViewCell *)self setMetadataViewTopConstraint:topAnchor2];
     }
 
     else
     {
-      v23 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-      v24 = [v23 contentLayoutGuide];
-      v25 = [v24 topAnchor];
-      v26 = [v22 constraintEqualToAnchor:v25];
+      voicemailTipView2 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+      bottomAnchor3 = [voicemailTipView2 contentLayoutGuide];
+      topAnchor2 = [bottomAnchor3 topAnchor];
+      v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [(PHVoicemailMessageTableViewCell *)self setMetadataViewTopConstraint:v26];
     }
 
-    v186 = [(PHVoicemailMessageTableViewCell *)self contentView];
-    v182 = [v186 heightAnchor];
-    v184 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v180 = [v184 contentLayoutGuide];
-    v178 = [v180 heightAnchor];
-    v176 = [v182 constraintEqualToAnchor:v178];
+    contentView2 = [(PHVoicemailMessageTableViewCell *)self contentView];
+    heightAnchor2 = [contentView2 heightAnchor];
+    contentScrollView2 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide2 = [contentScrollView2 contentLayoutGuide];
+    heightAnchor3 = [contentLayoutGuide2 heightAnchor];
+    v176 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
     LODWORD(v27) = 1132068864;
     v174 = [v176 withPriority:v27];
     v190[0] = v174;
-    v172 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v168 = [v172 leadingAnchor];
-    v170 = [(PHVoicemailMessageTableViewCell *)self contentView];
-    v166 = [v170 leadingAnchor];
-    v164 = [v168 constraintEqualToAnchor:v166];
+    contentScrollView3 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    leadingAnchor2 = [contentScrollView3 leadingAnchor];
+    contentView3 = [(PHVoicemailMessageTableViewCell *)self contentView];
+    leadingAnchor3 = [contentView3 leadingAnchor];
+    v164 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v190[1] = v164;
-    v162 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v158 = [v162 trailingAnchor];
-    v160 = [(PHVoicemailMessageTableViewCell *)self contentView];
-    v156 = [v160 trailingAnchor];
-    v154 = [v158 constraintEqualToAnchor:v156];
+    contentScrollView4 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    trailingAnchor2 = [contentScrollView4 trailingAnchor];
+    contentView4 = [(PHVoicemailMessageTableViewCell *)self contentView];
+    trailingAnchor3 = [contentView4 trailingAnchor];
+    v154 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v190[2] = v154;
-    v152 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v148 = [v152 topAnchor];
-    v150 = [(PHVoicemailMessageTableViewCell *)self contentView];
-    v146 = [v150 topAnchor];
-    v144 = [v148 constraintEqualToAnchor:v146];
+    contentScrollView5 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    topAnchor3 = [contentScrollView5 topAnchor];
+    contentView5 = [(PHVoicemailMessageTableViewCell *)self contentView];
+    topAnchor4 = [contentView5 topAnchor];
+    v144 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v190[3] = v144;
-    v142 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v138 = [v142 bottomAnchor];
-    v140 = [(PHVoicemailMessageTableViewCell *)self contentView];
-    v136 = [v140 bottomAnchor];
-    v134 = [v138 constraintEqualToAnchor:v136];
+    contentScrollView6 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    bottomAnchor4 = [contentScrollView6 bottomAnchor];
+    contentView6 = [(PHVoicemailMessageTableViewCell *)self contentView];
+    bottomAnchor5 = [contentView6 bottomAnchor];
+    v134 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v190[4] = v134;
-    v132 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v130 = [v132 contentLayoutGuide];
-    v126 = [v130 widthAnchor];
-    v128 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v124 = [v128 frameLayoutGuide];
-    v122 = [v124 widthAnchor];
-    v120 = [v126 constraintEqualToAnchor:v122];
+    contentScrollView7 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide3 = [contentScrollView7 contentLayoutGuide];
+    widthAnchor = [contentLayoutGuide3 widthAnchor];
+    contentScrollView8 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    frameLayoutGuide = [contentScrollView8 frameLayoutGuide];
+    widthAnchor2 = [frameLayoutGuide widthAnchor];
+    v120 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v190[5] = v120;
-    v118 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
-    v112 = [v118 leadingAnchor];
-    v116 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v114 = [v116 contentLayoutGuide];
-    v110 = [v114 leadingAnchor];
+    unreadIndicatorImageView2 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
+    leadingAnchor4 = [unreadIndicatorImageView2 leadingAnchor];
+    contentScrollView9 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide4 = [contentScrollView9 contentLayoutGuide];
+    leadingAnchor5 = [contentLayoutGuide4 leadingAnchor];
     [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageViewLeadingLayoutConstraintConstant];
-    v108 = [v112 constraintEqualToAnchor:v110 constant:?];
+    v108 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:?];
     v190[6] = v108;
-    v106 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
-    v104 = [v106 widthAnchor];
+    unreadIndicatorImageView3 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
+    widthAnchor3 = [unreadIndicatorImageView3 widthAnchor];
     [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageViewWidthLayoutConstraintConstant];
-    v102 = [v104 constraintEqualToConstant:?];
+    v102 = [widthAnchor3 constraintEqualToConstant:?];
     v190[7] = v102;
-    v100 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
-    v94 = [v100 topAnchor];
-    v98 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v96 = [v98 titleLabel];
-    v92 = [v96 firstBaselineAnchor];
+    unreadIndicatorImageView4 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
+    topAnchor5 = [unreadIndicatorImageView4 topAnchor];
+    metadataView4 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    titleLabel = [metadataView4 titleLabel];
+    firstBaselineAnchor = [titleLabel firstBaselineAnchor];
     [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageViewTopLayoutConstraintConstant];
-    v90 = [v94 constraintEqualToAnchor:v92 constant:-v28];
+    v90 = [topAnchor5 constraintEqualToAnchor:firstBaselineAnchor constant:-v28];
     v190[8] = v90;
-    v88 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
-    v84 = [v88 heightAnchor];
-    v86 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
-    v82 = [v86 widthAnchor];
-    v80 = [v84 constraintEqualToAnchor:v82];
+    unreadIndicatorImageView5 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
+    heightAnchor4 = [unreadIndicatorImageView5 heightAnchor];
+    unreadIndicatorImageView6 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
+    widthAnchor4 = [unreadIndicatorImageView6 widthAnchor];
+    v80 = [heightAnchor4 constraintEqualToAnchor:widthAnchor4];
     v190[9] = v80;
-    v78 = [(PHVoicemailMessageTableViewCell *)self metadataViewLeadingConstraint];
-    v190[10] = v78;
-    v76 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v29 = [v76 trailingAnchor];
-    v30 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v31 = [v30 contentLayoutGuide];
-    v32 = [v31 trailingAnchor];
+    metadataViewLeadingConstraint = [(PHVoicemailMessageTableViewCell *)self metadataViewLeadingConstraint];
+    v190[10] = metadataViewLeadingConstraint;
+    metadataView5 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    trailingAnchor4 = [metadataView5 trailingAnchor];
+    contentScrollView10 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide5 = [contentScrollView10 contentLayoutGuide];
+    trailingAnchor5 = [contentLayoutGuide5 trailingAnchor];
     [(PHVoicemailMessageTableViewCell *)self metadataViewTrailingLayoutConstraintConstant];
-    v34 = [v29 constraintEqualToAnchor:v32 constant:-v33];
+    v34 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-v33];
     v190[11] = v34;
-    v35 = [(PHVoicemailMessageTableViewCell *)self metadataViewTopConstraint];
-    v190[12] = v35;
-    v36 = [(PHVoicemailMessageTableViewCell *)self collapsedBottomConstraint];
-    v190[13] = v36;
-    v37 = [(PHVoicemailMessageTableViewCell *)self maximumHeightConstraint];
-    v190[14] = v37;
+    metadataViewTopConstraint = [(PHVoicemailMessageTableViewCell *)self metadataViewTopConstraint];
+    v190[12] = metadataViewTopConstraint;
+    collapsedBottomConstraint = [(PHVoicemailMessageTableViewCell *)self collapsedBottomConstraint];
+    v190[13] = collapsedBottomConstraint;
+    maximumHeightConstraint = [(PHVoicemailMessageTableViewCell *)self maximumHeightConstraint];
+    v190[14] = maximumHeightConstraint;
     v38 = [NSArray arrayWithObjects:v190 count:15];
     [(PHVoicemailMessageTableViewCell *)self setInitialConstraints:v38];
 
-    v39 = [(PHVoicemailMessageTableViewCell *)self initialConstraints];
-    [NSLayoutConstraint activateConstraints:v39];
+    initialConstraints2 = [(PHVoicemailMessageTableViewCell *)self initialConstraints];
+    [NSLayoutConstraint activateConstraints:initialConstraints2];
   }
 
-  v40 = [(PHVoicemailMessageTableViewCell *)self expandedConstraints];
-  if (v40)
+  expandedConstraints = [(PHVoicemailMessageTableViewCell *)self expandedConstraints];
+  if (expandedConstraints)
   {
     goto LABEL_9;
   }
 
-  v41 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
+  playerControlsView = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
 
-  if (v41)
+  if (playerControlsView)
   {
-    v42 = [(PHVoicemailMessageTableViewCell *)self toolbar];
-    v43 = [v42 bottomAnchor];
-    v44 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v45 = [v44 contentLayoutGuide];
-    v46 = [v45 bottomAnchor];
-    v47 = [v43 constraintEqualToAnchor:v46];
+    toolbar = [(PHVoicemailMessageTableViewCell *)self toolbar];
+    bottomAnchor6 = [toolbar bottomAnchor];
+    contentScrollView11 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide6 = [contentScrollView11 contentLayoutGuide];
+    bottomAnchor7 = [contentLayoutGuide6 bottomAnchor];
+    v47 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     LODWORD(v48) = 1132068864;
     v49 = [v47 withPriority:v48];
     [(PHVoicemailMessageTableViewCell *)self setToolbarBottomConstraint:v49];
 
-    v50 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
-    v51 = [v50 bottomAnchor];
-    v52 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v53 = [v52 contentLayoutGuide];
-    v54 = [v53 bottomAnchor];
-    v55 = [v51 constraintEqualToAnchor:v54];
+    transcriptView = [(PHVoicemailMessageTableViewCell *)self transcriptView];
+    bottomAnchor8 = [transcriptView bottomAnchor];
+    contentScrollView12 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide7 = [contentScrollView12 contentLayoutGuide];
+    bottomAnchor9 = [contentLayoutGuide7 bottomAnchor];
+    v55 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
     LODWORD(v56) = 1132068864;
     v57 = [v55 withPriority:v56];
     [(PHVoicemailMessageTableViewCell *)self setTranscriptBottomConstraint:v57];
 
-    v58 = [(PHVoicemailMessageTableViewCell *)self restrictedView];
-    v59 = [v58 bottomAnchor];
-    v60 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v61 = [v60 contentLayoutGuide];
-    v62 = [v61 bottomAnchor];
-    v63 = [v59 constraintEqualToAnchor:v62];
+    restrictedView = [(PHVoicemailMessageTableViewCell *)self restrictedView];
+    bottomAnchor10 = [restrictedView bottomAnchor];
+    contentScrollView13 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide8 = [contentScrollView13 contentLayoutGuide];
+    bottomAnchor11 = [contentLayoutGuide8 bottomAnchor];
+    v63 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11];
     LODWORD(v64) = 1132068864;
     v65 = [v63 withPriority:v64];
     [(PHVoicemailMessageTableViewCell *)self setRestrictedViewBottomConstraint:v65];
 
-    v187 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
-    v183 = [v187 leftAnchor];
-    v185 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v181 = [v185 leftAnchor];
-    v179 = [v183 constraintEqualToAnchor:v181];
+    playerControlsView2 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
+    leftAnchor = [playerControlsView2 leftAnchor];
+    metadataView6 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    leftAnchor2 = [metadataView6 leftAnchor];
+    v179 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v189[0] = v179;
-    v177 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
-    v171 = [v177 rightAnchor];
-    v175 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v173 = [v175 contentLayoutGuide];
-    v169 = [v173 rightAnchor];
+    playerControlsView3 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
+    rightAnchor = [playerControlsView3 rightAnchor];
+    contentScrollView14 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide9 = [contentScrollView14 contentLayoutGuide];
+    rightAnchor2 = [contentLayoutGuide9 rightAnchor];
     [(PHVoicemailMessageTableViewCell *)self playerControlsViewRightLayoutConstraintConstant];
-    v167 = [v171 constraintEqualToAnchor:v169 constant:-v66];
+    v167 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-v66];
     v189[1] = v167;
-    v165 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
-    v161 = [v165 topAnchor];
-    v163 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v159 = [v163 bottomAnchor];
-    v157 = [v161 constraintEqualToAnchor:v159];
+    playerControlsView4 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
+    topAnchor6 = [playerControlsView4 topAnchor];
+    metadataView7 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    bottomAnchor12 = [metadataView7 bottomAnchor];
+    v157 = [topAnchor6 constraintEqualToAnchor:bottomAnchor12];
     v189[2] = v157;
-    v155 = [(PHVoicemailMessageTableViewCell *)self toolbar];
-    v151 = [v155 leadingAnchor];
-    v153 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v149 = [v153 leadingAnchor];
-    v147 = [v151 constraintEqualToAnchor:v149];
+    toolbar2 = [(PHVoicemailMessageTableViewCell *)self toolbar];
+    leadingAnchor6 = [toolbar2 leadingAnchor];
+    metadataView8 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    leadingAnchor7 = [metadataView8 leadingAnchor];
+    v147 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v189[3] = v147;
-    v145 = [(PHVoicemailMessageTableViewCell *)self toolbar];
-    v141 = [v145 trailingAnchor];
-    v143 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v139 = [v143 trailingAnchor];
-    v137 = [v141 constraintEqualToAnchor:v139];
+    toolbar3 = [(PHVoicemailMessageTableViewCell *)self toolbar];
+    trailingAnchor6 = [toolbar3 trailingAnchor];
+    metadataView9 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    trailingAnchor7 = [metadataView9 trailingAnchor];
+    v137 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     v189[4] = v137;
-    v135 = [(PHVoicemailMessageTableViewCell *)self toolbar];
-    v131 = [v135 topAnchor];
-    v133 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
-    v129 = [v133 bottomAnchor];
-    v127 = [v131 constraintEqualToAnchor:v129];
+    toolbar4 = [(PHVoicemailMessageTableViewCell *)self toolbar];
+    topAnchor7 = [toolbar4 topAnchor];
+    playerControlsView5 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
+    bottomAnchor13 = [playerControlsView5 bottomAnchor];
+    v127 = [topAnchor7 constraintEqualToAnchor:bottomAnchor13];
     v189[5] = v127;
-    v125 = [(PHVoicemailMessageTableViewCell *)self toolbarBottomConstraint];
-    v189[6] = v125;
-    v123 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
-    v119 = [v123 leadingAnchor];
-    v121 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v117 = [v121 leadingAnchor];
-    v115 = [v119 constraintEqualToAnchor:v117];
+    toolbarBottomConstraint = [(PHVoicemailMessageTableViewCell *)self toolbarBottomConstraint];
+    v189[6] = toolbarBottomConstraint;
+    transcriptView2 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
+    leadingAnchor8 = [transcriptView2 leadingAnchor];
+    metadataView10 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    leadingAnchor9 = [metadataView10 leadingAnchor];
+    v115 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     v189[7] = v115;
-    v113 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
-    v109 = [v113 trailingAnchor];
-    v111 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v107 = [v111 trailingAnchor];
-    v105 = [v109 constraintEqualToAnchor:v107];
+    transcriptView3 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
+    trailingAnchor8 = [transcriptView3 trailingAnchor];
+    metadataView11 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    trailingAnchor9 = [metadataView11 trailingAnchor];
+    v105 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
     v189[8] = v105;
-    v103 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
-    v99 = [v103 topAnchor];
-    v101 = [(PHVoicemailMessageTableViewCell *)self toolbar];
-    v97 = [v101 bottomAnchor];
-    v95 = [v99 constraintEqualToAnchor:v97];
+    transcriptView4 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
+    topAnchor8 = [transcriptView4 topAnchor];
+    toolbar5 = [(PHVoicemailMessageTableViewCell *)self toolbar];
+    bottomAnchor14 = [toolbar5 bottomAnchor];
+    v95 = [topAnchor8 constraintEqualToAnchor:bottomAnchor14];
     v189[9] = v95;
-    v93 = [(PHVoicemailMessageTableViewCell *)self transcriptBottomConstraint];
-    v189[10] = v93;
-    v91 = [(PHVoicemailMessageTableViewCell *)self restrictedView];
-    v87 = [v91 leadingAnchor];
-    v89 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v85 = [v89 leadingAnchor];
-    v83 = [v87 constraintEqualToAnchor:v85];
+    transcriptBottomConstraint = [(PHVoicemailMessageTableViewCell *)self transcriptBottomConstraint];
+    v189[10] = transcriptBottomConstraint;
+    restrictedView2 = [(PHVoicemailMessageTableViewCell *)self restrictedView];
+    leadingAnchor10 = [restrictedView2 leadingAnchor];
+    metadataView12 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    leadingAnchor11 = [metadataView12 leadingAnchor];
+    v83 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
     v189[11] = v83;
-    v81 = [(PHVoicemailMessageTableViewCell *)self restrictedView];
-    v77 = [v81 trailingAnchor];
-    v79 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v67 = [v79 trailingAnchor];
-    v68 = [v77 constraintEqualToAnchor:v67];
+    restrictedView3 = [(PHVoicemailMessageTableViewCell *)self restrictedView];
+    trailingAnchor10 = [restrictedView3 trailingAnchor];
+    metadataView13 = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    trailingAnchor11 = [metadataView13 trailingAnchor];
+    v68 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
     v189[12] = v68;
-    v69 = [(PHVoicemailMessageTableViewCell *)self restrictedView];
-    v70 = [v69 topAnchor];
-    v71 = [(PHVoicemailMessageTableViewCell *)self toolbar];
-    v72 = [v71 bottomAnchor];
-    v73 = [v70 constraintEqualToAnchor:v72];
+    restrictedView4 = [(PHVoicemailMessageTableViewCell *)self restrictedView];
+    topAnchor9 = [restrictedView4 topAnchor];
+    toolbar6 = [(PHVoicemailMessageTableViewCell *)self toolbar];
+    bottomAnchor15 = [toolbar6 bottomAnchor];
+    v73 = [topAnchor9 constraintEqualToAnchor:bottomAnchor15];
     v189[13] = v73;
-    v74 = [(PHVoicemailMessageTableViewCell *)self restrictedViewBottomConstraint];
-    v189[14] = v74;
+    restrictedViewBottomConstraint = [(PHVoicemailMessageTableViewCell *)self restrictedViewBottomConstraint];
+    v189[14] = restrictedViewBottomConstraint;
     v75 = [NSArray arrayWithObjects:v189 count:15];
     [(PHVoicemailMessageTableViewCell *)self setExpandedConstraints:v75];
 
-    v40 = [(PHVoicemailMessageTableViewCell *)self expandedConstraints];
-    [NSLayoutConstraint activateConstraints:v40];
+    expandedConstraints = [(PHVoicemailMessageTableViewCell *)self expandedConstraints];
+    [NSLayoutConstraint activateConstraints:expandedConstraints];
 LABEL_9:
   }
 
@@ -562,58 +562,58 @@ LABEL_9:
 
 - (void)hideUnreadIndicator
 {
-  v3 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
-  [v3 setHidden:1];
+  unreadIndicatorImageView = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
+  [unreadIndicatorImageView setHidden:1];
 
-  v4 = [(PHVoicemailMessageTableViewCell *)self metadataViewLeadingConstraint];
-  v16 = v4;
+  metadataViewLeadingConstraint = [(PHVoicemailMessageTableViewCell *)self metadataViewLeadingConstraint];
+  v16 = metadataViewLeadingConstraint;
   v5 = [NSArray arrayWithObjects:&v16 count:1];
   [NSLayoutConstraint deactivateConstraints:v5];
 
-  v6 = [(PHVoicemailMessageTableViewCell *)self hideUnreadIndicatorMetadataViewLeadingConstraint];
+  hideUnreadIndicatorMetadataViewLeadingConstraint = [(PHVoicemailMessageTableViewCell *)self hideUnreadIndicatorMetadataViewLeadingConstraint];
 
-  if (!v6)
+  if (!hideUnreadIndicatorMetadataViewLeadingConstraint)
   {
-    v7 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    v8 = [v7 leadingAnchor];
-    v9 = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
-    v10 = [v9 contentLayoutGuide];
-    v11 = [v10 leadingAnchor];
+    metadataView = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    leadingAnchor = [metadataView leadingAnchor];
+    contentScrollView = [(PHVoicemailMessageTableViewCell *)self contentScrollView];
+    contentLayoutGuide = [contentScrollView contentLayoutGuide];
+    leadingAnchor2 = [contentLayoutGuide leadingAnchor];
     [(PHVoicemailMessageTableViewCell *)self metadataViewWithoutUnreadIndicatorImageViewLeadingLayoutConstraintConstant];
-    v12 = [v8 constraintEqualToAnchor:v11 constant:?];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v15 = v12;
     v13 = [NSArray arrayWithObjects:&v15 count:1];
     [(PHVoicemailMessageTableViewCell *)self setHideUnreadIndicatorMetadataViewLeadingConstraint:v13];
 
-    v14 = [(PHVoicemailMessageTableViewCell *)self hideUnreadIndicatorMetadataViewLeadingConstraint];
-    [NSLayoutConstraint activateConstraints:v14];
+    hideUnreadIndicatorMetadataViewLeadingConstraint2 = [(PHVoicemailMessageTableViewCell *)self hideUnreadIndicatorMetadataViewLeadingConstraint];
+    [NSLayoutConstraint activateConstraints:hideUnreadIndicatorMetadataViewLeadingConstraint2];
   }
 }
 
-- (void)updateConstraintsForExpandedState:(BOOL)a3
+- (void)updateConstraintsForExpandedState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(PHVoicemailMessageTableViewCell *)self toolbarBottomConstraint];
+  stateCopy = state;
+  toolbarBottomConstraint = [(PHVoicemailMessageTableViewCell *)self toolbarBottomConstraint];
   LODWORD(v6) = 1132068864;
-  [v5 setPriority:v6];
+  [toolbarBottomConstraint setPriority:v6];
 
-  v7 = [(PHVoicemailMessageTableViewCell *)self transcriptBottomConstraint];
+  transcriptBottomConstraint = [(PHVoicemailMessageTableViewCell *)self transcriptBottomConstraint];
   LODWORD(v8) = 1132068864;
-  [v7 setPriority:v8];
+  [transcriptBottomConstraint setPriority:v8];
 
-  v9 = [(PHVoicemailMessageTableViewCell *)self restrictedViewBottomConstraint];
+  restrictedViewBottomConstraint = [(PHVoicemailMessageTableViewCell *)self restrictedViewBottomConstraint];
   LODWORD(v10) = 1132068864;
-  [v9 setPriority:v10];
+  [restrictedViewBottomConstraint setPriority:v10];
 
-  v11 = [(PHVoicemailMessageTableViewCell *)self collapsedBottomConstraint];
+  collapsedBottomConstraint = [(PHVoicemailMessageTableViewCell *)self collapsedBottomConstraint];
   LODWORD(v12) = 1132068864;
-  [v11 setPriority:v12];
+  [collapsedBottomConstraint setPriority:v12];
 
-  if (v3)
+  if (stateCopy)
   {
     if ([(PHVoicemailMessageTableViewCell *)self shouldShowRestrictedAlertView])
     {
-      v13 = [(PHVoicemailMessageTableViewCell *)self restrictedViewBottomConstraint];
+      restrictedViewBottomConstraint2 = [(PHVoicemailMessageTableViewCell *)self restrictedViewBottomConstraint];
     }
 
     else
@@ -627,18 +627,18 @@ LABEL_9:
       {
         [(PHVoicemailMessageTableViewCell *)self toolbarBottomConstraint];
       }
-      v13 = ;
+      restrictedViewBottomConstraint2 = ;
     }
   }
 
   else
   {
-    v13 = [(PHVoicemailMessageTableViewCell *)self collapsedBottomConstraint];
+    restrictedViewBottomConstraint2 = [(PHVoicemailMessageTableViewCell *)self collapsedBottomConstraint];
   }
 
   LODWORD(v14) = 1148846080;
-  v15 = v13;
-  [v13 setPriority:v14];
+  v15 = restrictedViewBottomConstraint2;
+  [restrictedViewBottomConstraint2 setPriority:v14];
 }
 
 - (void)unloadConstraints
@@ -646,32 +646,32 @@ LABEL_9:
   v9.receiver = self;
   v9.super_class = PHVoicemailMessageTableViewCell;
   [(PHVoicemailMessageTableViewCell *)&v9 unloadConstraints];
-  v3 = [(PHVoicemailMessageTableViewCell *)self initialConstraints];
+  initialConstraints = [(PHVoicemailMessageTableViewCell *)self initialConstraints];
 
-  if (v3)
+  if (initialConstraints)
   {
-    v4 = [(PHVoicemailMessageTableViewCell *)self initialConstraints];
-    [NSLayoutConstraint deactivateConstraints:v4];
+    initialConstraints2 = [(PHVoicemailMessageTableViewCell *)self initialConstraints];
+    [NSLayoutConstraint deactivateConstraints:initialConstraints2];
 
     [(PHVoicemailMessageTableViewCell *)self setInitialConstraints:0];
   }
 
-  v5 = [(PHVoicemailMessageTableViewCell *)self expandedConstraints];
+  expandedConstraints = [(PHVoicemailMessageTableViewCell *)self expandedConstraints];
 
-  if (v5)
+  if (expandedConstraints)
   {
-    v6 = [(PHVoicemailMessageTableViewCell *)self expandedConstraints];
-    [NSLayoutConstraint deactivateConstraints:v6];
+    expandedConstraints2 = [(PHVoicemailMessageTableViewCell *)self expandedConstraints];
+    [NSLayoutConstraint deactivateConstraints:expandedConstraints2];
 
     [(PHVoicemailMessageTableViewCell *)self setExpandedConstraints:0];
   }
 
-  v7 = [(PHVoicemailMessageTableViewCell *)self hideUnreadIndicatorMetadataViewLeadingConstraint];
+  hideUnreadIndicatorMetadataViewLeadingConstraint = [(PHVoicemailMessageTableViewCell *)self hideUnreadIndicatorMetadataViewLeadingConstraint];
 
-  if (v7)
+  if (hideUnreadIndicatorMetadataViewLeadingConstraint)
   {
-    v8 = [(PHVoicemailMessageTableViewCell *)self hideUnreadIndicatorMetadataViewLeadingConstraint];
-    [NSLayoutConstraint deactivateConstraints:v8];
+    hideUnreadIndicatorMetadataViewLeadingConstraint2 = [(PHVoicemailMessageTableViewCell *)self hideUnreadIndicatorMetadataViewLeadingConstraint];
+    [NSLayoutConstraint deactivateConstraints:hideUnreadIndicatorMetadataViewLeadingConstraint2];
 
     [(PHVoicemailMessageTableViewCell *)self setHideUnreadIndicatorMetadataViewLeadingConstraint:0];
   }
@@ -682,66 +682,66 @@ LABEL_9:
   v5.receiver = self;
   v5.super_class = PHVoicemailMessageTableViewCell;
   [(PHVoicemailMessageTableViewCell *)&v5 updateConstraintsConstants];
-  v3 = [(PHVoicemailMessageTableViewCell *)self isAccessiblityConstraintsEnabled];
-  v4 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-  [v4 setLayoutIsAccessible:v3];
+  isAccessiblityConstraintsEnabled = [(PHVoicemailMessageTableViewCell *)self isAccessiblityConstraintsEnabled];
+  metadataView = [(PHVoicemailMessageTableViewCell *)self metadataView];
+  [metadataView setLayoutIsAccessible:isAccessiblityConstraintsEnabled];
 }
 
 - (void)setupCollapsedView
 {
   [(PHVoicemailMessageTableViewCell *)self updateConstraintsForExpandedState:0];
-  v3 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
-  [v3 setHidden:1];
+  playerControlsView = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
+  [playerControlsView setHidden:1];
 }
 
 - (void)setupExpandedView
 {
-  v3 = [(PHVoicemailMessageTableViewCell *)self shouldShowTranscriptView];
-  v4 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
-  [v4 setHidden:v3 ^ 1];
+  shouldShowTranscriptView = [(PHVoicemailMessageTableViewCell *)self shouldShowTranscriptView];
+  transcriptView = [(PHVoicemailMessageTableViewCell *)self transcriptView];
+  [transcriptView setHidden:shouldShowTranscriptView ^ 1];
 
-  v5 = [(PHVoicemailMessageTableViewCell *)self shouldShowRestrictedAlertView];
-  v6 = [(PHVoicemailMessageTableViewCell *)self restrictedView];
-  [v6 setHidden:v5 ^ 1];
+  shouldShowRestrictedAlertView = [(PHVoicemailMessageTableViewCell *)self shouldShowRestrictedAlertView];
+  restrictedView = [(PHVoicemailMessageTableViewCell *)self restrictedView];
+  [restrictedView setHidden:shouldShowRestrictedAlertView ^ 1];
 
-  v7 = [(PHVoicemailMessageTableViewCell *)self shouldShowRestrictedAlertView];
-  v8 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
-  [v8 setEnabled:v7 ^ 1];
+  shouldShowRestrictedAlertView2 = [(PHVoicemailMessageTableViewCell *)self shouldShowRestrictedAlertView];
+  playerControlsView = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
+  [playerControlsView setEnabled:shouldShowRestrictedAlertView2 ^ 1];
 
-  v9 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
-  [v9 setHidden:0];
+  playerControlsView2 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
+  [playerControlsView2 setHidden:0];
 
   [(PHVoicemailMessageTableViewCell *)self updateConstraintsForExpandedState:1];
 }
 
 - (BOOL)shouldShowRestrictedAlertView
 {
-  v2 = [(PHVoicemailMessageTableViewCell *)self item];
-  v3 = [v2 showsRestrictedAlertView];
+  item = [(PHVoicemailMessageTableViewCell *)self item];
+  showsRestrictedAlertView = [item showsRestrictedAlertView];
 
-  return v3;
+  return showsRestrictedAlertView;
 }
 
 - (BOOL)shouldShowTranscriptView
 {
-  v3 = [(PHVoicemailMessageTableViewCell *)self item];
+  item = [(PHVoicemailMessageTableViewCell *)self item];
 
-  if (v3)
+  if (item)
   {
-    v4 = [(PHVoicemailMessageTableViewCell *)self item];
-    if ([v4 showsTranscriptionView])
+    item2 = [(PHVoicemailMessageTableViewCell *)self item];
+    if ([item2 showsTranscriptionView])
     {
-      v5 = [(PHVoicemailMessageTableViewCell *)self item];
-      if ([v5 showsRestrictedAlertView])
+      item3 = [(PHVoicemailMessageTableViewCell *)self item];
+      if ([item3 showsRestrictedAlertView])
       {
         v6 = 0;
       }
 
       else
       {
-        v9 = [(PHVoicemailMessageTableViewCell *)self item];
-        v10 = [v9 transcriptViewModel];
-        v6 = [v10 confidence] != 0;
+        item4 = [(PHVoicemailMessageTableViewCell *)self item];
+        transcriptViewModel = [item4 transcriptViewModel];
+        v6 = [transcriptViewModel confidence] != 0;
       }
     }
 
@@ -763,15 +763,15 @@ LABEL_9:
       return 1;
     }
 
-    v13 = [(PHVoicemailMessageTableViewCell *)self item];
-    v14 = [v13 showsTranscriptionView];
+    item5 = [(PHVoicemailMessageTableViewCell *)self item];
+    showsTranscriptionView = [item5 showsTranscriptionView];
 
-    if (v14)
+    if (showsTranscriptionView)
     {
-      v15 = [(PHVoicemailMessageTableViewCell *)self item];
-      v16 = [v15 showsRestrictedAlertView];
+      item6 = [(PHVoicemailMessageTableViewCell *)self item];
+      showsRestrictedAlertView = [item6 showsRestrictedAlertView];
 
-      if (v16)
+      if (showsRestrictedAlertView)
       {
         v7 = PHDefaultLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -784,11 +784,11 @@ LABEL_9:
 
       else
       {
-        v17 = [(PHVoicemailMessageTableViewCell *)self item];
-        v18 = [v17 transcriptViewModel];
-        v19 = [v18 confidence];
+        item7 = [(PHVoicemailMessageTableViewCell *)self item];
+        transcriptViewModel2 = [item7 transcriptViewModel];
+        confidence = [transcriptViewModel2 confidence];
 
-        if (v19)
+        if (confidence)
         {
           return 0;
         }
@@ -828,15 +828,15 @@ LABEL_20:
   return 0;
 }
 
-- (void)configureWithVoicemailMessageViewModel:(id)a3 expanded:(BOOL)a4 shouldGrayForeground:(BOOL)a5
+- (void)configureWithVoicemailMessageViewModel:(id)model expanded:(BOOL)expanded shouldGrayForeground:(BOOL)foreground
 {
-  v6 = a4;
-  [(PHVoicemailMessageTableViewCell *)self setItem:a3];
-  [(PHVoicemailMessageTableViewCell *)self setExpanded:v6];
-  if (a5)
+  expandedCopy = expanded;
+  [(PHVoicemailMessageTableViewCell *)self setItem:model];
+  [(PHVoicemailMessageTableViewCell *)self setExpanded:expandedCopy];
+  if (foreground)
   {
-    v8 = [(PHVoicemailMessageTableViewCell *)self dimmedColor];
-    [(PHVoicemailMessageTableViewCell *)self setForegroundColor:v8];
+    dimmedColor = [(PHVoicemailMessageTableViewCell *)self dimmedColor];
+    [(PHVoicemailMessageTableViewCell *)self setForegroundColor:dimmedColor];
   }
 
   else
@@ -844,27 +844,27 @@ LABEL_20:
     [(PHVoicemailMessageTableViewCell *)self setForegroundColor:0];
   }
 
-  v9 = [(PHVoicemailMessageTableViewCell *)self item];
-  -[PHVoicemailMessageTableViewCell setRead:](self, "setRead:", [v9 isRead]);
+  item = [(PHVoicemailMessageTableViewCell *)self item];
+  -[PHVoicemailMessageTableViewCell setRead:](self, "setRead:", [item isRead]);
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = PHVoicemailMessageTableViewCell;
   [(PHVoicemailMessageTableViewCell *)&v7 setForegroundColor:?];
-  if (a3)
+  if (color)
   {
-    v5 = [(PHVoicemailMessageTableViewCell *)self foregroundView];
-    v6 = [(PHVoicemailMessageTableViewCell *)self foregroundViewTapGestureRecognizer];
-    [v5 addGestureRecognizer:v6];
+    foregroundView = [(PHVoicemailMessageTableViewCell *)self foregroundView];
+    foregroundViewTapGestureRecognizer = [(PHVoicemailMessageTableViewCell *)self foregroundViewTapGestureRecognizer];
+    [foregroundView addGestureRecognizer:foregroundViewTapGestureRecognizer];
   }
 }
 
 - (id)dimmedColor
 {
-  v2 = [(PHVoicemailMessageTableViewCell *)self traitCollection];
-  if ([v2 userInterfaceStyle] == 2)
+  traitCollection = [(PHVoicemailMessageTableViewCell *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     +[UIColor blackColor];
   }
@@ -879,12 +879,12 @@ LABEL_20:
   return v4;
 }
 
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  self->_expanded = a3;
-  if (a3)
+  animatedCopy = animated;
+  expandedCopy = expanded;
+  self->_expanded = expanded;
+  if (expanded)
   {
     [(PHVoicemailMessageTableViewCell *)self tipKitStartObservation];
   }
@@ -895,39 +895,39 @@ LABEL_20:
   }
 
   [(PHVoicemailMessageTableViewCell *)self loadExpandedViewsIfNecessary];
-  v7 = [(PHVoicemailMessageTableViewCell *)self item];
-  [(PHVoicemailMessageTableViewCell *)self updateExpandedViewsWithViewModel:v7];
+  item = [(PHVoicemailMessageTableViewCell *)self item];
+  [(PHVoicemailMessageTableViewCell *)self updateExpandedViewsWithViewModel:item];
 
   [(PHVoicemailMessageTableViewCell *)self loadConstraints];
   if ([(PHVoicemailMessageTableViewCell *)self shouldShowRestrictedAlertView]&& ([(PHVoicemailMessageTableViewCell *)self restrictedView], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [(PHVoicemailMessageTableViewCell *)self item];
-    v10 = [v9 localizedAttributedRestrictedAlertTitle];
-    v11 = [(PHVoicemailMessageTableViewCell *)self restrictedView];
-    [v11 setLocalizedAttributedRestrictedAlertTitle:v10];
+    item2 = [(PHVoicemailMessageTableViewCell *)self item];
+    localizedAttributedRestrictedAlertTitle = [item2 localizedAttributedRestrictedAlertTitle];
+    restrictedView = [(PHVoicemailMessageTableViewCell *)self restrictedView];
+    [restrictedView setLocalizedAttributedRestrictedAlertTitle:localizedAttributedRestrictedAlertTitle];
 
     v12 = 1;
   }
 
   else
   {
-    v9 = [(PHVoicemailMessageTableViewCell *)self restrictedView];
-    [v9 setLocalizedAttributedRestrictedAlertTitle:0];
+    item2 = [(PHVoicemailMessageTableViewCell *)self restrictedView];
+    [item2 setLocalizedAttributedRestrictedAlertTitle:0];
     v12 = 0;
   }
 
-  v13 = [(PHVoicemailMessageTableViewCell *)self toolbar];
-  [v13 setRestricted:v12];
+  toolbar = [(PHVoicemailMessageTableViewCell *)self toolbar];
+  [toolbar setRestricted:v12];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = __56__PHVoicemailMessageTableViewCell_setExpanded_animated___block_invoke;
   v20[3] = &unk_100285120;
   v20[4] = self;
-  v21 = v5;
+  v21 = expandedCopy;
   v14 = objc_retainBlock(v20);
   v15 = v14;
-  if (v4)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v14 animations:0.300000012];
   }
@@ -937,7 +937,7 @@ LABEL_20:
     (v14[2])(v14);
   }
 
-  if (v5)
+  if (expandedCopy)
   {
     [(PHVoicemailMessageTableViewCell *)self setupExpandedView];
     [(PHVoicemailMessageTableViewCell *)self setSelectionStyle:0];
@@ -947,9 +947,9 @@ LABEL_20:
   {
     [(PHVoicemailMessageTableViewCell *)self setupCollapsedView];
     [(PHVoicemailMessageTableViewCell *)self setSelectionStyle:3];
-    v16 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
+    transcriptView = [(PHVoicemailMessageTableViewCell *)self transcriptView];
 
-    if (v16)
+    if (transcriptView)
     {
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
@@ -958,7 +958,7 @@ LABEL_20:
       v19[4] = self;
       v17 = objc_retainBlock(v19);
       v18 = v17;
-      if (v4)
+      if (animatedCopy)
       {
         [UIView animateWithDuration:v17 animations:0.300000012];
       }
@@ -996,64 +996,64 @@ id __56__PHVoicemailMessageTableViewCell_setExpanded_animated___block_invoke_2(u
   return [v4 layoutIfNeeded];
 }
 
-- (void)setRead:(BOOL)a3
+- (void)setRead:(BOOL)read
 {
-  v3 = a3;
-  self->_read = a3;
-  v4 = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
-  v6 = v4;
+  readCopy = read;
+  self->_read = read;
+  unreadIndicatorImageView = [(PHVoicemailMessageTableViewCell *)self unreadIndicatorImageView];
+  v6 = unreadIndicatorImageView;
   v5 = 1.0;
-  if (v3)
+  if (readCopy)
   {
     v5 = 0.0;
   }
 
-  [v4 setAlpha:v5];
+  [unreadIndicatorImageView setAlpha:v5];
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v5 = a3;
-  if (self->_item != v5)
+  itemCopy = item;
+  if (self->_item != itemCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_item, a3);
-    v6 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-    [v6 configureWithViewModel:v7];
+    v7 = itemCopy;
+    objc_storeStrong(&self->_item, item);
+    metadataView = [(PHVoicemailMessageTableViewCell *)self metadataView];
+    [metadataView configureWithViewModel:v7];
 
-    v5 = [(PHVoicemailMessageTableViewCell *)self updateExpandedViewsWithViewModel:v7];
+    itemCopy = [(PHVoicemailMessageTableViewCell *)self updateExpandedViewsWithViewModel:v7];
   }
 
-  _objc_release_x2(v5);
+  _objc_release_x2(itemCopy);
 }
 
-- (void)updateExpandedViewsWithViewModel:(id)a3
+- (void)updateExpandedViewsWithViewModel:(id)model
 {
-  v16 = a3;
-  v4 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
+  modelCopy = model;
+  transcriptView = [(PHVoicemailMessageTableViewCell *)self transcriptView];
 
-  if (v4)
+  if (transcriptView)
   {
-    v5 = [v16 transcriptViewModel];
-    v6 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
-    [v6 setViewModel:v5];
+    transcriptViewModel = [modelCopy transcriptViewModel];
+    transcriptView2 = [(PHVoicemailMessageTableViewCell *)self transcriptView];
+    [transcriptView2 setViewModel:transcriptViewModel];
   }
 
-  v7 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
+  playerControlsView = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
 
-  if (v7)
+  if (playerControlsView)
   {
-    [v16 duration];
+    [modelCopy duration];
     v9 = v8;
-    v10 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
-    [v10 setDuration:v9];
+    playerControlsView2 = [(PHVoicemailMessageTableViewCell *)self playerControlsView];
+    [playerControlsView2 setDuration:v9];
   }
 
-  v11 = [v16 isDeleted];
-  v12 = [(PHVoicemailMessageTableViewCell *)self toolbar];
-  v13 = [v12 trashButton];
-  v14 = v13;
-  if (v11)
+  isDeleted = [modelCopy isDeleted];
+  toolbar = [(PHVoicemailMessageTableViewCell *)self toolbar];
+  trashButton = [toolbar trashButton];
+  v14 = trashButton;
+  if (isDeleted)
   {
     v15 = 4;
   }
@@ -1063,30 +1063,30 @@ id __56__PHVoicemailMessageTableViewCell_setExpanded_animated___block_invoke_2(u
     v15 = 3;
   }
 
-  [v13 setButtonType:v15 enabled:1];
+  [trashButton setButtonType:v15 enabled:1];
 }
 
-- (void)setMaximumAllowedHeight:(double)a3
+- (void)setMaximumAllowedHeight:(double)height
 {
-  self->_maximumAllowedHeight = a3;
-  v4 = [(PHVoicemailMessageTableViewCell *)self maximumHeightConstraint];
-  [v4 setConstant:a3];
+  self->_maximumAllowedHeight = height;
+  maximumHeightConstraint = [(PHVoicemailMessageTableViewCell *)self maximumHeightConstraint];
+  [maximumHeightConstraint setConstant:height];
 }
 
 - (BOOL)isAccessiblityConstraintsEnabled
 {
-  v2 = [(PHVoicemailMessageTableViewCell *)self traitCollection];
-  v3 = [v2 isPreferredContentSizeCategoryAccessible];
+  traitCollection = [(PHVoicemailMessageTableViewCell *)self traitCollection];
+  isPreferredContentSizeCategoryAccessible = [traitCollection isPreferredContentSizeCategoryAccessible];
 
-  return v3;
+  return isPreferredContentSizeCategoryAccessible;
 }
 
 - (double)metadataViewLeadingLayoutConstraintConstant
 {
   v3 = objc_opt_class();
-  v4 = [(PHVoicemailMessageTableViewCell *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  [v3 metadataViewLeadingLayoutConstraintConstantForContentSizeCategory:v5];
+  traitCollection = [(PHVoicemailMessageTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [v3 metadataViewLeadingLayoutConstraintConstantForContentSizeCategory:preferredContentSizeCategory];
   v7 = v6;
 
   return v7;
@@ -1095,8 +1095,8 @@ id __56__PHVoicemailMessageTableViewCell_setExpanded_animated___block_invoke_2(u
 - (double)playerControlsViewTimelineSliderTopLayoutConstraintConstant
 {
   v2 = +[UIFont telephonyUIBodyShortFont];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 objectForKey:UIFontDescriptorTextStyleAttribute];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v4)
   {
@@ -1116,9 +1116,9 @@ id __56__PHVoicemailMessageTableViewCell_setExpanded_animated___block_invoke_2(u
 - (double)metadataViewWithoutUnreadIndicatorImageViewLeadingLayoutConstraintConstant
 {
   v3 = objc_opt_class();
-  v4 = [(PHVoicemailMessageTableViewCell *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  [v3 metadataViewWithoutUnreadIndicatorImageViewLeadingLayoutConstraintConstant:v5];
+  traitCollection = [(PHVoicemailMessageTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [v3 metadataViewWithoutUnreadIndicatorImageViewLeadingLayoutConstraintConstant:preferredContentSizeCategory];
   v7 = v6;
 
   return v7;
@@ -1127,9 +1127,9 @@ id __56__PHVoicemailMessageTableViewCell_setExpanded_animated___block_invoke_2(u
 - (double)unreadIndicatorImageViewLeadingLayoutConstraintConstant
 {
   v3 = objc_opt_class();
-  v4 = [(PHVoicemailMessageTableViewCell *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  [v3 unreadIndicatorImageViewLeadingLayoutConstraintConstantForContentSizeCategory:v5];
+  traitCollection = [(PHVoicemailMessageTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [v3 unreadIndicatorImageViewLeadingLayoutConstraintConstantForContentSizeCategory:preferredContentSizeCategory];
   v7 = v6;
 
   return v7;
@@ -1137,10 +1137,10 @@ id __56__PHVoicemailMessageTableViewCell_setExpanded_animated___block_invoke_2(u
 
 - (double)unreadIndicatorImageViewTopLayoutConstraintConstant
 {
-  v2 = [(PHVoicemailMessageTableViewCell *)self metadataView];
-  v3 = [v2 titleLabel];
-  v4 = [v3 font];
-  [v4 capHeight];
+  metadataView = [(PHVoicemailMessageTableViewCell *)self metadataView];
+  titleLabel = [metadataView titleLabel];
+  font = [titleLabel font];
+  [font capHeight];
   v6 = v5;
 
   return v6;
@@ -1149,149 +1149,149 @@ id __56__PHVoicemailMessageTableViewCell_setExpanded_animated___block_invoke_2(u
 - (double)unreadIndicatorImageViewWidthLayoutConstraintConstant
 {
   v3 = objc_opt_class();
-  v4 = [(PHVoicemailMessageTableViewCell *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  [v3 unreadIndicatorImageViewWidthLayoutConstraintConstantForContentSizeCategory:v5];
+  traitCollection = [(PHVoicemailMessageTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [v3 unreadIndicatorImageViewWidthLayoutConstraintConstantForContentSizeCategory:preferredContentSizeCategory];
   v7 = v6;
 
   return v7;
 }
 
-- (void)handleCollapseCellTapGesture:(id)a3
+- (void)handleCollapseCellTapGesture:(id)gesture
 {
-  v9 = a3;
-  v4 = [(PHVoicemailMessageTableViewCell *)self metadataViewTapGestureRecognizer];
-  if (v4 == v9)
+  gestureCopy = gesture;
+  metadataViewTapGestureRecognizer = [(PHVoicemailMessageTableViewCell *)self metadataViewTapGestureRecognizer];
+  if (metadataViewTapGestureRecognizer == gestureCopy)
   {
   }
 
   else
   {
-    v5 = [(PHVoicemailMessageTableViewCell *)self foregroundViewTapGestureRecognizer];
+    foregroundViewTapGestureRecognizer = [(PHVoicemailMessageTableViewCell *)self foregroundViewTapGestureRecognizer];
 
-    if (v5 != v9)
+    if (foregroundViewTapGestureRecognizer != gestureCopy)
     {
       goto LABEL_7;
     }
   }
 
-  v6 = [(PHVoicemailMessageTableViewCell *)self delegate];
+  delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PHVoicemailMessageTableViewCell *)self delegate];
-    [v8 voicemailMessageCellDidTapToCollapse:self];
+    delegate2 = [(PHVoicemailMessageTableViewCell *)self delegate];
+    [delegate2 voicemailMessageCellDidTapToCollapse:self];
   }
 
 LABEL_7:
 }
 
-- (void)messageMetadataView:(id)a3 didTapButtonType:(unint64_t)a4
+- (void)messageMetadataView:(id)view didTapButtonType:(unint64_t)type
 {
-  v13 = [(PHVoicemailMessageTableViewCell *)self _tableView];
-  v6 = [v13 indexPathForCell:self];
+  _tableView = [(PHVoicemailMessageTableViewCell *)self _tableView];
+  v6 = [_tableView indexPathForCell:self];
   v7 = v6;
-  if (a4 == 1)
+  if (type == 1)
   {
     if (v6)
     {
-      v11 = [(PHVoicemailMessageTableViewCell *)self delegate];
+      delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
       {
-        v10 = [(PHVoicemailMessageTableViewCell *)self delegate];
-        [v10 voicemailMessageTableViewCell:self actionButtonTappedForRowWithIndexPath:v7];
+        delegate2 = [(PHVoicemailMessageTableViewCell *)self delegate];
+        [delegate2 voicemailMessageTableViewCell:self actionButtonTappedForRowWithIndexPath:v7];
         goto LABEL_9;
       }
     }
   }
 
-  else if (a4 == 2)
+  else if (type == 2)
   {
     if (v6)
     {
-      v8 = [v13 delegate];
+      delegate3 = [_tableView delegate];
       v9 = objc_opt_respondsToSelector();
 
       if (v9)
       {
-        v10 = [v13 delegate];
-        [v10 tableView:v13 accessoryButtonTappedForRowWithIndexPath:v7];
+        delegate2 = [_tableView delegate];
+        [delegate2 tableView:_tableView accessoryButtonTappedForRowWithIndexPath:v7];
 LABEL_9:
       }
     }
   }
 }
 
-- (void)playbackControls:(id)a3 didRequestState:(int64_t)a4
+- (void)playbackControls:(id)controls didRequestState:(int64_t)state
 {
-  v6 = [(PHVoicemailMessageTableViewCell *)self delegate];
-  [v6 voicemailMessageTableViewCell:self didRequestPlayState:a4];
+  delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
+  [delegate voicemailMessageTableViewCell:self didRequestPlayState:state];
 }
 
-- (void)playerTimelineSliderScrubbingDidBegin:(id)a3
+- (void)playerTimelineSliderScrubbingDidBegin:(id)begin
 {
-  v4 = [(PHVoicemailMessageTableViewCell *)self delegate];
-  [v4 voicemailMessageTableViewCellDidBeginScrubbing:self];
+  delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
+  [delegate voicemailMessageTableViewCellDidBeginScrubbing:self];
 }
 
-- (void)playerTimelineSliderScrubbingDidEnd:(id)a3
+- (void)playerTimelineSliderScrubbingDidEnd:(id)end
 {
-  v4 = [(PHVoicemailMessageTableViewCell *)self delegate];
-  [v4 voicemailMessageTableViewCellDidEndScrubbing:self];
+  delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
+  [delegate voicemailMessageTableViewCellDidEndScrubbing:self];
 }
 
-- (void)playerTimelineSliderScrubbingDidCancel:(id)a3
+- (void)playerTimelineSliderScrubbingDidCancel:(id)cancel
 {
-  v4 = [(PHVoicemailMessageTableViewCell *)self delegate];
-  [v4 voicemailMessageTableViewCellDidCancelScrubbing:self];
+  delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
+  [delegate voicemailMessageTableViewCellDidCancelScrubbing:self];
 }
 
-- (void)playerTimelineSlider:(id)a3 didChangeElapsedTime:(double)a4
+- (void)playerTimelineSlider:(id)slider didChangeElapsedTime:(double)time
 {
-  v6 = [(PHVoicemailMessageTableViewCell *)self delegate];
-  [v6 voicemailMessageTableViewCell:self didChangeElapsedTime:a4];
+  delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
+  [delegate voicemailMessageTableViewCell:self didChangeElapsedTime:time];
 }
 
-- (void)messageTranscriptView:(id)a3 didReceiveTapGesture:(id)a4
+- (void)messageTranscriptView:(id)view didReceiveTapGesture:(id)gesture
 {
-  v5 = a4;
-  v6 = [(PHVoicemailMessageTableViewCell *)self delegate];
-  [v6 voicemailMessageTableViewCell:self didReceiveTranscriptTapGesture:v5];
+  gestureCopy = gesture;
+  delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
+  [delegate voicemailMessageTableViewCell:self didReceiveTranscriptTapGesture:gestureCopy];
 }
 
-- (void)messageTranscriptView:(id)a3 didReportFeedback:(unint64_t)a4
+- (void)messageTranscriptView:(id)view didReportFeedback:(unint64_t)feedback
 {
-  v6 = [(PHVoicemailMessageTableViewCell *)self delegate];
-  [v6 voicemailMessageTableViewCell:self didReceiveTranscriptFeedback:a4];
+  delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
+  [delegate voicemailMessageTableViewCell:self didReceiveTranscriptFeedback:feedback];
 }
 
-- (void)messageTranscriptView:(id)a3 suggestionsDidReceiveTapGesture:(id)a4
+- (void)messageTranscriptView:(id)view suggestionsDidReceiveTapGesture:(id)gesture
 {
-  v5 = a4;
-  v6 = [(PHVoicemailMessageTableViewCell *)self delegate];
-  [v6 voicemailMessageTableViewCell:self suggestionsDidReceiveTapGesture:v5];
+  gestureCopy = gesture;
+  delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
+  [delegate voicemailMessageTableViewCell:self suggestionsDidReceiveTapGesture:gestureCopy];
 }
 
-- (void)messageToolbar:(id)a3 handleActionForButtonType:(unint64_t)a4
+- (void)messageToolbar:(id)toolbar handleActionForButtonType:(unint64_t)type
 {
-  v15 = [(PHVoicemailMessageTableViewCell *)self _tableView];
-  v6 = [v15 indexPathForCell:self];
+  _tableView = [(PHVoicemailMessageTableViewCell *)self _tableView];
+  v6 = [_tableView indexPathForCell:self];
   v7 = v6;
-  switch(a4)
+  switch(type)
   {
     case 3uLL:
       if (v6)
       {
-        v13 = [(PHVoicemailMessageTableViewCell *)self delegate];
+        delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
         v14 = objc_opt_respondsToSelector();
 
         if (v14)
         {
-          v10 = [(PHVoicemailMessageTableViewCell *)self delegate];
-          [v10 voicemailMessageTableViewCell:self moveButtonTappedForRowWithIndexPath:v7];
+          delegate2 = [(PHVoicemailMessageTableViewCell *)self delegate];
+          [delegate2 voicemailMessageTableViewCell:self moveButtonTappedForRowWithIndexPath:v7];
           goto LABEL_13;
         }
       }
@@ -1300,13 +1300,13 @@ LABEL_9:
     case 2uLL:
       if (v6)
       {
-        v11 = [(PHVoicemailMessageTableViewCell *)self delegate];
+        delegate3 = [(PHVoicemailMessageTableViewCell *)self delegate];
         v12 = objc_opt_respondsToSelector();
 
         if (v12)
         {
-          v10 = [(PHVoicemailMessageTableViewCell *)self delegate];
-          [v10 voicemailMessageTableViewCell:self dialRequestButtonTappedForRowWithIndexPath:v7];
+          delegate2 = [(PHVoicemailMessageTableViewCell *)self delegate];
+          [delegate2 voicemailMessageTableViewCell:self dialRequestButtonTappedForRowWithIndexPath:v7];
           goto LABEL_13;
         }
       }
@@ -1315,13 +1315,13 @@ LABEL_9:
     case 1uLL:
       if (v6)
       {
-        v8 = [(PHVoicemailMessageTableViewCell *)self delegate];
+        delegate4 = [(PHVoicemailMessageTableViewCell *)self delegate];
         v9 = objc_opt_respondsToSelector();
 
         if (v9)
         {
-          v10 = [(PHVoicemailMessageTableViewCell *)self delegate];
-          [v10 voicemailMessageTableViewCell:self audioRouteButtonTappedForRowWithIndexPath:v7];
+          delegate2 = [(PHVoicemailMessageTableViewCell *)self delegate];
+          [delegate2 voicemailMessageTableViewCell:self audioRouteButtonTappedForRowWithIndexPath:v7];
 LABEL_13:
         }
       }
@@ -1330,19 +1330,19 @@ LABEL_13:
   }
 }
 
-- (BOOL)messageToolbarShouldShowRTTButton:(id)a3
+- (BOOL)messageToolbarShouldShowRTTButton:(id)button
 {
   if (!TUCallScreeningRTTEnabled())
   {
     return 0;
   }
 
-  v4 = [(PHVoicemailMessageTableViewCell *)self _tableView];
-  v5 = [v4 indexPathForCell:self];
+  _tableView = [(PHVoicemailMessageTableViewCell *)self _tableView];
+  v5 = [_tableView indexPathForCell:self];
   if (v5 && ([(PHVoicemailMessageTableViewCell *)self delegate], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, (v7 & 1) != 0))
   {
-    v8 = [(PHVoicemailMessageTableViewCell *)self delegate];
-    v9 = [v8 voicemailMessageTableViewCell:self shouldShowRTTButtonForRowWithIndexPath:v5];
+    delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
+    v9 = [delegate voicemailMessageTableViewCell:self shouldShowRTTButtonForRowWithIndexPath:v5];
   }
 
   else
@@ -1353,19 +1353,19 @@ LABEL_13:
   return v9;
 }
 
-- (void)messageToolbarDidSelectRTTButton:(id)a3
+- (void)messageToolbarDidSelectRTTButton:(id)button
 {
-  v8 = [(PHVoicemailMessageTableViewCell *)self _tableView];
-  v4 = [v8 indexPathForCell:self];
+  _tableView = [(PHVoicemailMessageTableViewCell *)self _tableView];
+  v4 = [_tableView indexPathForCell:self];
   if (v4)
   {
-    v5 = [(PHVoicemailMessageTableViewCell *)self delegate];
+    delegate = [(PHVoicemailMessageTableViewCell *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(PHVoicemailMessageTableViewCell *)self delegate];
-      [v7 voicemailMessageTableViewCell:self rttButtonTappedForRowWithIndexPath:v4];
+      delegate2 = [(PHVoicemailMessageTableViewCell *)self delegate];
+      [delegate2 voicemailMessageTableViewCell:self rttButtonTappedForRowWithIndexPath:v4];
     }
   }
 }
@@ -1379,13 +1379,13 @@ LABEL_13:
 
 - (void)tipKitStartObservation
 {
-  v2 = self;
+  selfCopy = self;
   PHVoicemailMessageTableViewCell.tipKitStartObservation()();
 }
 
 - (void)tipKitStopObservation
 {
-  v2 = self;
+  selfCopy = self;
   PHVoicemailMessageTableViewCell.tipKitStopObservation()();
 }
 

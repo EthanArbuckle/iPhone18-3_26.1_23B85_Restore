@@ -1,23 +1,23 @@
 @interface AKDoodleAnnotationRenderer
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
 @end
 
 @implementation AKDoodleAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  v3 = a3;
-  [v3 rectangle];
+  annotationCopy = annotation;
+  [annotationCopy rectangle];
   x = v4;
   y = v6;
   width = v8;
   height = v10;
-  if (([v3 pathIsPrestroked] & 1) == 0)
+  if (([annotationCopy pathIsPrestroked] & 1) == 0)
   {
-    [v3 strokeWidth];
+    [annotationCopy strokeWidth];
     v13 = -v12;
     v35.origin.x = x;
     v35.origin.y = y;
@@ -30,15 +30,15 @@
     height = v36.size.height;
   }
 
-  [v3 rotationAngle];
+  [annotationCopy rotationAngle];
   [AKGeometryHelper boundsOfRotatedRectangle:x angle:y, width, height, v14];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  if ([v3 hasShadow])
+  if ([annotationCopy hasShadow])
   {
-    [AKAnnotationRendererUtilities outsetRectForShadow:v3 onAnnotation:v16, v18, v20, v22];
+    [AKAnnotationRendererUtilities outsetRectForShadow:annotationCopy onAnnotation:v16, v18, v20, v22];
     v16 = v23;
     v18 = v24;
     v20 = v25;
@@ -66,7 +66,7 @@
   return result;
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -75,46 +75,46 @@
   return result;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  CGContextSaveGState(a4);
-  [v11 allowHDR];
-  [a1 _transformContextToModelCoordinates:a4 forAnnotation:v10 forDisplay:objc_msgSend(v11 pageControllerOrNil:{"forDisplay"), v12}];
+  annotationCopy = annotation;
+  optionsCopy = options;
+  nilCopy = nil;
+  CGContextSaveGState(context);
+  [optionsCopy allowHDR];
+  [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:objc_msgSend(optionsCopy pageControllerOrNil:{"forDisplay"), nilCopy}];
 
-  v13 = [v10 hasShadow];
-  if (v13)
+  hasShadow = [annotationCopy hasShadow];
+  if (hasShadow)
   {
-    [AKAnnotationRendererUtilities beginShadowInContext:a4 forAnnotation:v10];
+    [AKAnnotationRendererUtilities beginShadowInContext:context forAnnotation:annotationCopy];
   }
 
-  CGContextSaveGState(a4);
+  CGContextSaveGState(context);
   memset(&v47[1], 0, sizeof(CGAffineTransform));
-  [AKGeometryHelper rotationTransformForRectangularAnnotation:v10 hasRotation:0];
+  [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:0];
   v47[0] = v47[1];
-  CGContextConcatCTM(a4, v47);
-  [v10 rectangle];
-  CGContextTranslateCTM(a4, v14, v15);
-  v16 = [v10 path];
+  CGContextConcatCTM(context, v47);
+  [annotationCopy rectangle];
+  CGContextTranslateCTM(context, v14, v15);
+  path = [annotationCopy path];
 
-  if (v16)
+  if (path)
   {
-    v17 = [v10 path];
-    v18 = [v17 newCGPathForPlatformBezierPath];
+    path2 = [annotationCopy path];
+    newCGPathForPlatformBezierPath = [path2 newCGPathForPlatformBezierPath];
 
-    if (v18)
+    if (newCGPathForPlatformBezierPath)
     {
-      v19 = [v10 strokeColor];
+      strokeColor = [annotationCopy strokeColor];
 
-      if (v19)
+      if (strokeColor)
       {
-        v20 = [v10 originalExifOrientation];
-        if (v20 != 1)
+        originalExifOrientation = [annotationCopy originalExifOrientation];
+        if (originalExifOrientation != 1)
         {
-          v21 = [AKGeometryHelper inverseExifOrientation:v20];
-          BoundingBox = CGPathGetBoundingBox(v18);
+          v21 = [AKGeometryHelper inverseExifOrientation:originalExifOrientation];
+          BoundingBox = CGPathGetBoundingBox(newCGPathForPlatformBezierPath);
           x = BoundingBox.origin.x;
           y = BoundingBox.origin.y;
           width = BoundingBox.size.width;
@@ -124,19 +124,19 @@
           v49.origin.y = y;
           v49.size.width = width;
           v49.size.height = height;
-          v27 = [AKGeometryHelper newPathWithPath:v18 applyingExifOrientation:v21 aboutCenter:MidX, CGRectGetMidY(v49)];
-          CGPathRelease(v18);
-          v18 = v27;
+          v27 = [AKGeometryHelper newPathWithPath:newCGPathForPlatformBezierPath applyingExifOrientation:v21 aboutCenter:MidX, CGRectGetMidY(v49)];
+          CGPathRelease(newCGPathForPlatformBezierPath);
+          newCGPathForPlatformBezierPath = v27;
         }
 
-        v50 = CGPathGetBoundingBox(v18);
+        v50 = CGPathGetBoundingBox(newCGPathForPlatformBezierPath);
         v28 = v50.origin.x;
         v29 = v50.origin.y;
         v30 = v50.size.width;
         v31 = v50.size.height;
-        [v10 rectangle];
+        [annotationCopy rectangle];
         v33 = v32 / fmax(v30, 0.0005);
-        [v10 rectangle];
+        [annotationCopy rectangle];
         v35 = v34 / fmax(v31, 0.0005);
         if (v33 >= v35)
         {
@@ -157,89 +157,89 @@
           }
         }
 
-        [v10 strokeWidth];
+        [annotationCopy strokeWidth];
         v38 = v37 / v36;
-        v39 = [v10 pathIsPrestroked];
-        v40 = [v10 strokeColorForOptions:v11];
-        v41 = [v40 CGColor];
-        if (v39)
+        pathIsPrestroked = [annotationCopy pathIsPrestroked];
+        v40 = [annotationCopy strokeColorForOptions:optionsCopy];
+        cGColor = [v40 CGColor];
+        if (pathIsPrestroked)
         {
-          CGContextSetFillColorWithColor(a4, v41);
+          CGContextSetFillColorWithColor(context, cGColor);
         }
 
         else
         {
-          CGContextSetStrokeColorWithColor(a4, v41);
+          CGContextSetStrokeColorWithColor(context, cGColor);
 
-          [AKAnnotationRendererUtilities setStandardLineStateInContext:a4 forLineWidth:v38];
-          if ([v10 isDashed])
+          [AKAnnotationRendererUtilities setStandardLineStateInContext:context forLineWidth:v38];
+          if ([annotationCopy isDashed])
           {
-            [AKAnnotationRendererUtilities setStandardLineDashInContext:a4 forLineWidth:v38];
+            [AKAnnotationRendererUtilities setStandardLineDashInContext:context forLineWidth:v38];
           }
         }
 
-        CGContextScaleCTM(a4, v36, v36);
-        CGContextTranslateCTM(a4, -v28, -v29);
-        if (([v10 pathIsPrestroked] & 1) != 0 || !objc_msgSend(v10, "brushStyle"))
+        CGContextScaleCTM(context, v36, v36);
+        CGContextTranslateCTM(context, -v28, -v29);
+        if (([annotationCopy pathIsPrestroked] & 1) != 0 || !objc_msgSend(annotationCopy, "brushStyle"))
         {
-          CGContextAddPath(a4, v18);
-          if ([v10 pathIsPrestroked])
+          CGContextAddPath(context, newCGPathForPlatformBezierPath);
+          if ([annotationCopy pathIsPrestroked])
           {
-            CGContextFillPath(a4);
+            CGContextFillPath(context);
           }
 
           else
           {
-            CGContextStrokePath(a4);
+            CGContextStrokePath(context);
           }
         }
 
         else
         {
-          v42 = [v10 brushStyle];
-          v43 = [v10 strokeColor];
-          v44 = [AKTSDBrushStroke strokeWithType:v42 color:v43 width:v38];
+          brushStyle = [annotationCopy brushStyle];
+          strokeColor2 = [annotationCopy strokeColor];
+          v44 = [AKTSDBrushStroke strokeWithType:brushStyle color:strokeColor2 width:v38];
 
-          v45 = [AKTSDBezierPath bezierPathWithCGPath:v18];
+          v45 = [AKTSDBezierPath bezierPathWithCGPath:newCGPathForPlatformBezierPath];
           v46 = objc_alloc_init(AKTSDShape);
           [(AKTSDShape *)v46 setStroke:v44];
           [(AKTSDShape *)v46 setPath:v45];
-          [(AKTSDShape *)v46 drawInContext:a4];
+          [(AKTSDShape *)v46 drawInContext:context];
         }
       }
     }
 
-    CGPathRelease(v18);
+    CGPathRelease(newCGPathForPlatformBezierPath);
   }
 
-  CGContextRestoreGState(a4);
-  if (v13)
+  CGContextRestoreGState(context);
+  if (hasShadow)
   {
-    [AKAnnotationRendererUtilities endShadowInContext:a4];
+    [AKAnnotationRendererUtilities endShadowInContext:context];
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = [v8 path];
+  y = border.y;
+  x = border.x;
+  annotationCopy = annotation;
+  path = [annotationCopy path];
 
-  if (v9)
+  if (path)
   {
-    v10 = [v8 path];
-    v11 = [v10 newCGPathForPlatformBezierPath];
+    path2 = [annotationCopy path];
+    newCGPathForPlatformBezierPath = [path2 newCGPathForPlatformBezierPath];
 
-    v12 = [v8 originalExifOrientation];
+    originalExifOrientation = [annotationCopy originalExifOrientation];
     point = x;
     v13 = y;
-    if (v12 != 1)
+    if (originalExifOrientation != 1)
     {
-      v15 = [AKGeometryHelper inverseExifOrientation:v12];
-      BoundingBox = CGPathGetBoundingBox(v11);
+      v15 = [AKGeometryHelper inverseExifOrientation:originalExifOrientation];
+      BoundingBox = CGPathGetBoundingBox(newCGPathForPlatformBezierPath);
       v16 = BoundingBox.origin.x;
       v17 = BoundingBox.origin.y;
       width = BoundingBox.size.width;
@@ -249,19 +249,19 @@
       v58.origin.y = v17;
       v58.size.width = width;
       v58.size.height = height;
-      v21 = [AKGeometryHelper newPathWithPath:v11 applyingExifOrientation:v15 aboutCenter:MidX, CGRectGetMidY(v58)];
-      CGPathRelease(v11);
-      v11 = v21;
+      v21 = [AKGeometryHelper newPathWithPath:newCGPathForPlatformBezierPath applyingExifOrientation:v15 aboutCenter:MidX, CGRectGetMidY(v58)];
+      CGPathRelease(newCGPathForPlatformBezierPath);
+      newCGPathForPlatformBezierPath = v21;
     }
 
-    v59 = CGPathGetBoundingBox(v11);
+    v59 = CGPathGetBoundingBox(newCGPathForPlatformBezierPath);
     v22 = v59.origin.x;
     v23 = v59.origin.y;
     v24 = v59.size.width;
     v25 = v59.size.height;
-    [v8 rectangle];
+    [annotationCopy rectangle];
     v27 = v26 / fmax(v24, 0.0005);
-    [v8 rectangle];
+    [annotationCopy rectangle];
     v29 = v28 / fmax(v25, 0.0005);
     if (v27 >= v29)
     {
@@ -297,38 +297,38 @@
     v52 = v55;
     CGAffineTransformConcat(&t2, &v52, &t1);
     v55 = t2;
-    [v8 rectangle];
+    [annotationCopy rectangle];
     CGAffineTransformMakeTranslation(&t1, v31, v32);
     v52 = v55;
     CGAffineTransformConcat(&t2, &v52, &t1);
     v55 = t2;
-    v33 = MEMORY[0x245CAE590](v11, &v55);
+    v33 = MEMORY[0x245CAE590](newCGPathForPlatformBezierPath, &v55);
     if (!v33)
     {
       v14 = 0;
 LABEL_34:
-      CGPathRelease(v11);
+      CGPathRelease(newCGPathForPlatformBezierPath);
       goto LABEL_35;
     }
 
     v34 = v33;
     memset(&t2, 0, sizeof(t2));
-    [AKGeometryHelper rotationTransformForRectangularAnnotation:v8 hasRotation:0];
+    [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:0];
     v52 = t2;
     CGAffineTransformInvert(&t1, &v52);
     t2 = t1;
-    [v8 strokeWidth];
-    if (v35 <= a5)
+    [annotationCopy strokeWidth];
+    if (v35 <= thickness)
     {
-      v36 = a5;
+      thicknessCopy = thickness;
     }
 
     else
     {
-      v36 = v35;
+      thicknessCopy = v35;
     }
 
-    if ([v8 pathIsPrestroked])
+    if ([annotationCopy pathIsPrestroked])
     {
       v56.x = point;
       v56.y = v13;
@@ -340,7 +340,7 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      if ([v8 pathIsDot])
+      if ([annotationCopy pathIsDot])
       {
         v60 = CGPathGetBoundingBox(v34);
         v40 = v60.origin.x;
@@ -348,9 +348,9 @@ LABEL_33:
         v42 = v60.size.width;
         v43 = v60.size.height;
         v44 = CGRectGetWidth(v60);
-        if (v44 > a5)
+        if (v44 > thickness)
         {
-          a5 = v44;
+          thickness = v44;
         }
 
         v61.origin.x = v40;
@@ -362,12 +362,12 @@ LABEL_33:
         v62.origin.y = v41;
         v62.size.width = v42;
         v62.size.height = v43;
-        [AKGeometryHelper rectWithSize:a5 centeredAtPoint:a5, v45, CGRectGetMidY(v62)];
+        [AKGeometryHelper rectWithSize:thickness centeredAtPoint:thickness, v45, CGRectGetMidY(v62)];
         v37 = CGPathCreateWithEllipseInRect(v63, 0);
         goto LABEL_30;
       }
 
-      v37 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v34 withStrokeWidth:v36 * 0.5];
+      v37 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v34 withStrokeWidth:thicknessCopy * 0.5];
       if (v37)
       {
 LABEL_30:
@@ -379,7 +379,7 @@ LABEL_30:
 
     else
     {
-      v37 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v34 withStrokeWidth:v36];
+      v37 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v34 withStrokeWidth:thicknessCopy];
       v38 = point;
       if (v37)
       {

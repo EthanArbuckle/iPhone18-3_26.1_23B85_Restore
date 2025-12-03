@@ -2,8 +2,8 @@
 + (id)_allowedItemPayloadClasses;
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)enableUserInteraction:(BOOL)a3;
-- (void)prepareViewControllerWithContext:(id)a3 completionHandler:(id)a4;
+- (void)enableUserInteraction:(BOOL)interaction;
+- (void)prepareViewControllerWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation DDRemoteActionViewServiceContext
@@ -54,19 +54,19 @@ uint64_t __67__DDRemoteActionViewServiceContext__extensionAuxiliaryHostProtocol_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)prepareViewControllerWithContext:(id)a3 completionHandler:(id)a4
+- (void)prepareViewControllerWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__DDRemoteActionViewServiceContext_prepareViewControllerWithContext_completionHandler___block_invoke;
   block[3] = &unk_278290CA8;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = contextCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = contextCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -76,14 +76,14 @@ void __87__DDRemoteActionViewServiceContext_prepareViewControllerWithContext_com
   [v2 prepareViewControllerWithContext:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)enableUserInteraction:(BOOL)a3
+- (void)enableUserInteraction:(BOOL)interaction
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __58__DDRemoteActionViewServiceContext_enableUserInteraction___block_invoke;
   v3[3] = &unk_278290CD0;
   v3[4] = self;
-  v4 = a3;
+  interactionCopy = interaction;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 

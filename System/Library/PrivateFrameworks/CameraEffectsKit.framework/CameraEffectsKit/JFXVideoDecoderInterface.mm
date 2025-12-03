@@ -1,7 +1,7 @@
 @interface JFXVideoDecoderInterface
 - (JFXVideoDecoderInterface)init;
-- (JFXVideoDecoderInterface)initWithFormatDescription:(opaqueCMFormatDescription *)a3;
-- (__CVBuffer)decodeFrame:(opaqueCMSampleBuffer *)a3;
+- (JFXVideoDecoderInterface)initWithFormatDescription:(opaqueCMFormatDescription *)description;
+- (__CVBuffer)decodeFrame:(opaqueCMSampleBuffer *)frame;
 - (void)dealloc;
 @end
 
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (JFXVideoDecoderInterface)initWithFormatDescription:(opaqueCMFormatDescription *)a3
+- (JFXVideoDecoderInterface)initWithFormatDescription:(opaqueCMFormatDescription *)description
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v10.receiver = self;
@@ -40,7 +40,7 @@
     v12[0] = MEMORY[0x277CBEC38];
     v12[1] = MEMORY[0x277CBEC28];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
-    if (!VTDecompressionSessionCreate(*MEMORY[0x277CBECE8], a3, v6, 0, &outputCallback, &v5->_session))
+    if (!VTDecompressionSessionCreate(*MEMORY[0x277CBECE8], description, v6, 0, &outputCallback, &v5->_session))
     {
       v7 = JFXLog_DebugDepthCodec();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -53,13 +53,13 @@
   return v5;
 }
 
-- (__CVBuffer)decodeFrame:(opaqueCMSampleBuffer *)a3
+- (__CVBuffer)decodeFrame:(opaqueCMSampleBuffer *)frame
 {
   infoFlagsOut = 0;
   v5 = dispatch_semaphore_create(0);
   [(JFXVideoDecoderInterface *)self setFrameSemaphore:v5];
 
-  v6 = VTDecompressionSessionDecodeFrame(self->_session, a3, 0, self, &infoFlagsOut);
+  v6 = VTDecompressionSessionDecodeFrame(self->_session, frame, 0, self, &infoFlagsOut);
   v7 = JFXLog_DebugDepthCodec();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
   if (v6)
@@ -75,8 +75,8 @@
     [JFXVideoDecoderInterface decodeFrame:];
   }
 
-  v9 = [(JFXVideoDecoderInterface *)self frameSemaphore];
-  dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
+  frameSemaphore = [(JFXVideoDecoderInterface *)self frameSemaphore];
+  dispatch_semaphore_wait(frameSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   return [(JFXVideoDecoderInterface *)self imageBuffer];
 }

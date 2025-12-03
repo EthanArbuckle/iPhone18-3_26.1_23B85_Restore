@@ -1,15 +1,15 @@
 @interface CalibrationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)viewDidLoad;
 @end
 
 @implementation CalibrationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CalibrationViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CalibrationViewController" hasInstanceVariable:@"_instructionLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CalibrationViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CalibrationViewController" hasInstanceVariable:@"_instructionLabel" withType:"UILabel"];
 }
 
 - (void)viewDidLoad

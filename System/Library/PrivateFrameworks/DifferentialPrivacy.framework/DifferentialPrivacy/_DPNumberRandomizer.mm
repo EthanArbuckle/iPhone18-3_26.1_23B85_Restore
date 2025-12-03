@@ -1,18 +1,18 @@
 @interface _DPNumberRandomizer
-+ (id)numberRandomizerWithRange:(unint64_t)a3 epsilon:(double)a4;
++ (id)numberRandomizerWithRange:(unint64_t)range epsilon:(double)epsilon;
 - (NSString)description;
-- (_DPNumberRandomizer)initWithRange:(unint64_t)a3 epsilon:(double)a4;
-- (id)randomize:(id)a3;
-- (id)randomizeNumbers:(id)a3 forKey:(id)a4;
+- (_DPNumberRandomizer)initWithRange:(unint64_t)range epsilon:(double)epsilon;
+- (id)randomize:(id)randomize;
+- (id)randomizeNumbers:(id)numbers forKey:(id)key;
 @end
 
 @implementation _DPNumberRandomizer
 
-- (_DPNumberRandomizer)initWithRange:(unint64_t)a3 epsilon:(double)a4
+- (_DPNumberRandomizer)initWithRange:(unint64_t)range epsilon:(double)epsilon
 {
-  if (isInvalidEpsilon(a4))
+  if (isInvalidEpsilon(epsilon))
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -23,35 +23,35 @@
     v9 = v8;
     if (v8)
     {
-      v8->_range = a3;
-      v8->_epsilon = a4;
-      v10 = [_DPLaplaceNoiseGenerator zeroMeanLaplaceNoiseGenerator:a3 / a4];
+      v8->_range = range;
+      v8->_epsilon = epsilon;
+      epsilon = [_DPLaplaceNoiseGenerator zeroMeanLaplaceNoiseGenerator:range / epsilon];
       generator = v9->_generator;
-      v9->_generator = v10;
+      v9->_generator = epsilon;
     }
 
     self = v9;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (id)numberRandomizerWithRange:(unint64_t)a3 epsilon:(double)a4
++ (id)numberRandomizerWithRange:(unint64_t)range epsilon:(double)epsilon
 {
-  v4 = [[a1 alloc] initWithRange:a3 epsilon:a4];
+  v4 = [[self alloc] initWithRange:range epsilon:epsilon];
 
   return v4;
 }
 
-- (id)randomize:(id)a3
+- (id)randomize:(id)randomize
 {
   generator = self->_generator;
-  v4 = a3;
+  randomizeCopy = randomize;
   [(_DPLaplaceNoiseGenerator *)generator sample];
   v6 = v5;
   v7 = MEMORY[0x277CCABB0];
-  [v4 doubleValue];
+  [randomizeCopy doubleValue];
   v9 = v8;
 
   return [v7 numberWithDouble:v6 + v9];
@@ -67,11 +67,11 @@
   return v6;
 }
 
-- (id)randomizeNumbers:(id)a3 forKey:(id)a4
+- (id)randomizeNumbers:(id)numbers forKey:(id)key
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  numbersCopy = numbers;
+  keyCopy = key;
   v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
   [v8 timeIntervalSinceReferenceDate];
   v10 = v9;
@@ -81,7 +81,7 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = v6;
+  v11 = numbersCopy;
   v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v12)
   {
@@ -102,7 +102,7 @@
         [v16 doubleValue];
         v20 = v19;
         [v17 doubleValue];
-        v22 = [(_DPNumericDataRecord *)v18 initWithKey:v7 clearNumber:0 privateNumber:0 creationDate:v20 submitted:v21 objectId:v10];
+        v22 = [(_DPNumericDataRecord *)v18 initWithKey:keyCopy clearNumber:0 privateNumber:0 creationDate:v20 submitted:v21 objectId:v10];
         if (v22)
         {
           [v25 addObject:v22];

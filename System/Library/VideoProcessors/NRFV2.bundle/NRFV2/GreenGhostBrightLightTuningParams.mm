@@ -1,9 +1,9 @@
 @interface GreenGhostBrightLightTuningParams
 - (BrightLightTuning)tuningParams;
 - (GreenGhostBrightLightTuningParams)init;
-- (int)readPlist:(id)a3;
+- (int)readPlist:(id)plist;
 - (void)setDefaultTuningParams;
-- (void)setTuningParams:(BrightLightTuning)a3;
+- (void)setTuningParams:(BrightLightTuning)params;
 @end
 
 @implementation GreenGhostBrightLightTuningParams
@@ -49,10 +49,10 @@
   return v2;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"faceBoundaryPaddingRatio", v6);
+  plistCopy = plist;
+  v7 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v5, @"faceBoundaryPaddingRatio", v6);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || objc_msgSend_count(v7, v8, v9, v10) != 2)
   {
@@ -70,7 +70,7 @@ LABEL_74:
   objc_msgSend_floatValue(v20, v21, v22, v23);
   HIDWORD(self[1].super.isa) = v24;
 
-  v27 = objc_msgSend_objectForKeyedSubscript_(v4, v25, @"enabled", v26);
+  v27 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v25, @"enabled", v26);
 
   if (!v27)
   {
@@ -78,10 +78,10 @@ LABEL_74:
     goto LABEL_74;
   }
 
-  v30 = objc_msgSend_objectForKeyedSubscript_(v4, v28, @"enabled", v29);
+  v30 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v28, @"enabled", v29);
   self->_tuningParams.enabled = objc_msgSend_BOOLValue(v30, v31, v32, v33);
 
-  v36 = objc_msgSend_objectForKeyedSubscript_(v4, v34, @"eitThreshold", v35);
+  v36 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v34, @"eitThreshold", v35);
 
   if (!v36)
   {
@@ -89,11 +89,11 @@ LABEL_74:
     goto LABEL_74;
   }
 
-  v39 = objc_msgSend_objectForKeyedSubscript_(v4, v37, @"eitThreshold", v38);
+  v39 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v37, @"eitThreshold", v38);
   objc_msgSend_floatValue(v39, v40, v41, v42);
   self->_tuningParams.eitThreshold = v43;
 
-  v46 = objc_msgSend_objectForKeyedSubscript_(v4, v44, @"useClippingData", v45);
+  v46 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v44, @"useClippingData", v45);
 
   if (!v46)
   {
@@ -101,10 +101,10 @@ LABEL_74:
     goto LABEL_74;
   }
 
-  v49 = objc_msgSend_objectForKeyedSubscript_(v4, v47, @"useClippingData", v48);
+  v49 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v47, @"useClippingData", v48);
   self->_tuningParams.useClippingData = objc_msgSend_BOOLValue(v49, v50, v51, v52);
 
-  v55 = objc_msgSend_objectForKeyedSubscript_(v4, v53, @"clipping", v54);
+  v55 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v53, @"clipping", v54);
   if (!v55)
   {
     sub_2958CCF64();
@@ -160,7 +160,7 @@ LABEL_74:
   objc_msgSend_floatValue(v92, v93, v94, v95);
   HIDWORD(self[2].super.isa) = v96;
 
-  v99 = objc_msgSend_objectForKeyedSubscript_(v4, v97, @"detection", v98);
+  v99 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v97, @"detection", v98);
   if (!v99)
   {
     sub_2958CCD34(v58);
@@ -388,7 +388,7 @@ LABEL_73:
   objc_msgSend_floatValue(v308, v309, v310, v311);
   HIDWORD(self[8].super.isa) = v312;
 
-  v315 = objc_msgSend_objectForKeyedSubscript_(v4, v313, @"repair", v314);
+  v315 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v313, @"repair", v314);
   if (!v315)
   {
     sub_2958CC894(v102, v58);
@@ -531,24 +531,24 @@ LABEL_45:
   return self;
 }
 
-- (void)setTuningParams:(BrightLightTuning)a3
+- (void)setTuningParams:(BrightLightTuning)params
 {
-  v3 = **&a3;
-  v4 = *(*&a3 + 16);
-  *(self + 40) = *(*&a3 + 32);
+  v3 = **&params;
+  v4 = *(*&params + 16);
+  *(self + 40) = *(*&params + 32);
   *&self[1]._tuningParams.enabled = v4;
   *&self->_tuningParams.enabled = v3;
-  v5 = *(*&a3 + 48);
-  v6 = *(*&a3 + 64);
-  v7 = *(*&a3 + 80);
-  *(self + 104) = *(*&a3 + 96);
+  v5 = *(*&params + 48);
+  v6 = *(*&params + 64);
+  v7 = *(*&params + 80);
+  *(self + 104) = *(*&params + 96);
   *&self[5]._tuningParams.enabled = v7;
   *&self[4]._tuningParams.enabled = v6;
   *&self[3]._tuningParams.enabled = v5;
-  v8 = *(*&a3 + 112);
-  v9 = *(*&a3 + 128);
-  v10 = *(*&a3 + 144);
-  self[10]._tuningParams = *(*&a3 + 160);
+  v8 = *(*&params + 112);
+  v9 = *(*&params + 128);
+  v10 = *(*&params + 144);
+  self[10]._tuningParams = *(*&params + 160);
   *&self[9]._tuningParams.enabled = v10;
   *&self[8]._tuningParams.enabled = v9;
   *&self[7]._tuningParams.enabled = v8;

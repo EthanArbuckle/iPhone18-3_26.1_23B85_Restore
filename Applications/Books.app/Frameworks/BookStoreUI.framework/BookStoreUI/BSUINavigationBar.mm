@@ -1,29 +1,29 @@
 @interface BSUINavigationBar
 - (id)accessibilityElements;
-- (void)pushNavigationItem:(id)a3 animated:(BOOL)a4;
+- (void)pushNavigationItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation BSUINavigationBar
 
-- (void)pushNavigationItem:(id)a3 animated:(BOOL)a4
+- (void)pushNavigationItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   if (_UISolariumEnabled())
   {
     v12.receiver = self;
     v12.super_class = BSUINavigationBar;
-    [(BSUINavigationBar *)&v12 pushNavigationItem:v6 animated:v4];
+    [(BSUINavigationBar *)&v12 pushNavigationItem:itemCopy animated:animatedCopy];
   }
 
   else
   {
-    v7 = [(BSUINavigationBar *)self delegate];
+    delegate = [(BSUINavigationBar *)self delegate];
     v8 = BUProtocolCast();
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v8 shouldHideNavigationItemBackgroundDuringTransition:v6] ^ 1;
+      v9 = [v8 shouldHideNavigationItemBackgroundDuringTransition:itemCopy] ^ 1;
     }
 
     else
@@ -31,21 +31,21 @@
       v9 = 0;
     }
 
-    v10 = [v6 _backgroundHidden];
-    if (v9 & 1) != 0 || (v10)
+    _backgroundHidden = [itemCopy _backgroundHidden];
+    if (v9 & 1) != 0 || (_backgroundHidden)
     {
       v11.receiver = self;
       v11.super_class = BSUINavigationBar;
-      [(BSUINavigationBar *)&v11 pushNavigationItem:v6 animated:v4];
+      [(BSUINavigationBar *)&v11 pushNavigationItem:itemCopy animated:animatedCopy];
     }
 
     else
     {
-      [v6 _setBackgroundHidden:1];
+      [itemCopy _setBackgroundHidden:1];
       v11.receiver = self;
       v11.super_class = BSUINavigationBar;
-      [(BSUINavigationBar *)&v11 pushNavigationItem:v6 animated:v4];
-      [v6 _setBackgroundHidden:0];
+      [(BSUINavigationBar *)&v11 pushNavigationItem:itemCopy animated:animatedCopy];
+      [itemCopy _setBackgroundHidden:0];
     }
   }
 }
@@ -54,8 +54,8 @@
 {
   v17.receiver = self;
   v17.super_class = BSUINavigationBar;
-  v2 = [(BSUINavigationBar *)&v17 accessibilityElements];
-  v3 = [v2 mutableCopy];
+  accessibilityElements = [(BSUINavigationBar *)&v17 accessibilityElements];
+  v3 = [accessibilityElements mutableCopy];
 
   v15 = 0u;
   v16 = 0u;
@@ -77,8 +77,8 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 accessibilityIdentifier];
-        v11 = [v10 isEqualToString:@"ToggleSidebar"];
+        accessibilityIdentifier = [v9 accessibilityIdentifier];
+        v11 = [accessibilityIdentifier isEqualToString:@"ToggleSidebar"];
 
         if (v11)
         {

@@ -1,49 +1,49 @@
 @interface VTAggregator
 + (id)sharedAggregator;
 - (VTAggregator)init;
-- (id)_makeKeyWithLanguageAndAssetString:(id)a3;
-- (id)_makeKeyWithLanguageCode:(id)a3;
-- (void)_addValueForScalarKey:(id)a3 withValue:(int64_t)a4;
+- (id)_makeKeyWithLanguageAndAssetString:(id)string;
+- (id)_makeKeyWithLanguageCode:(id)code;
+- (void)_addValueForScalarKey:(id)key withValue:(int64_t)value;
 - (void)_logUptime;
-- (void)_pushValueForDistributionKey:(id)a3 withValue:(double)a4;
-- (void)cumulativeUptime:(id *)a3 cumulativeDowntime:(id *)a4 reset:(BOOL)a5;
+- (void)_pushValueForDistributionKey:(id)key withValue:(double)value;
+- (void)cumulativeUptime:(id *)uptime cumulativeDowntime:(id *)downtime reset:(BOOL)reset;
 - (void)logActivation;
-- (void)logFalseWakeUp:(BOOL)a3;
-- (void)logProfileUpdateNumDeletedUttsStrategy:(int)a3;
-- (void)logProfileUpdateNumDiscardedUttsPHS:(int)a3;
-- (void)logProfileUpdateNumPrunedUttsPHS:(int)a3;
-- (void)logProfileUpdateNumRetainedUttsPHS:(int)a3;
-- (void)logProfileUpdateScoreMSE:(double)a3;
-- (void)logProfileUpdateUtt:(id)a3 withScore:(double)a4;
+- (void)logFalseWakeUp:(BOOL)up;
+- (void)logProfileUpdateNumDeletedUttsStrategy:(int)strategy;
+- (void)logProfileUpdateNumDiscardedUttsPHS:(int)s;
+- (void)logProfileUpdateNumPrunedUttsPHS:(int)s;
+- (void)logProfileUpdateNumRetainedUttsPHS:(int)s;
+- (void)logProfileUpdateScoreMSE:(double)e;
+- (void)logProfileUpdateUtt:(id)utt withScore:(double)score;
 - (void)logRecognizerTimedOut;
-- (void)logSecondPassResult:(BOOL)a3;
-- (void)logTdPsrExtraAudioSamplesProcessed:(unint64_t)a3;
+- (void)logSecondPassResult:(BOOL)result;
+- (void)logTdPsrExtraAudioSamplesProcessed:(unint64_t)processed;
 - (void)logTdPsrFailedDuringSATDetection;
 - (void)logTdPsrFailedDuringSATRetraining;
 - (void)logTdPsrSATDetectionTimedOut;
-- (void)logTdPsrSATDetectionWaitTimeMs:(double)a3;
+- (void)logTdPsrSATDetectionWaitTimeMs:(double)ms;
 - (void)logTdPsrSATRetrainingTimedOut;
-- (void)logTdPsrSATRetrainingWaitTimeMs:(double)a3;
-- (void)logTimeVoiceTriggerTransitionsToState:(unint64_t)a3;
-- (void)logVoiceProfilePruningFailureWithReasonCode:(unint64_t)a3;
-- (void)logZeroRunAudio:(int)a3;
-- (void)setAssetString:(id)a3;
-- (void)setLanguageCode:(id)a3;
+- (void)logTdPsrSATRetrainingWaitTimeMs:(double)ms;
+- (void)logTimeVoiceTriggerTransitionsToState:(unint64_t)state;
+- (void)logVoiceProfilePruningFailureWithReasonCode:(unint64_t)code;
+- (void)logZeroRunAudio:(int)audio;
+- (void)setAssetString:(id)string;
+- (void)setLanguageCode:(id)code;
 @end
 
 @implementation VTAggregator
 
-- (void)_pushValueForDistributionKey:(id)a3 withValue:(double)a4
+- (void)_pushValueForDistributionKey:(id)key withValue:(double)value
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  keyCopy = key;
   v6 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = v5;
+    v12 = keyCopy;
     v13 = 2050;
-    v14 = a4;
+    valueCopy = value;
     _os_log_impl(&dword_223A31000, v6, OS_LOG_TYPE_DEFAULT, "Pushing value for distribution key %{public}@ : %{public}lf", buf, 0x16u);
   }
 
@@ -51,9 +51,9 @@
   v8[1] = 3221225472;
   v8[2] = __55__VTAggregator__pushValueForDistributionKey_withValue___block_invoke;
   v8[3] = &unk_2784ECCD0;
-  v9 = v5;
-  v10 = a4;
-  v7 = v5;
+  v9 = keyCopy;
+  valueCopy2 = value;
+  v7 = keyCopy;
   softLink_AnalyticsSendEventLazy(v8);
 }
 
@@ -68,17 +68,17 @@ id __55__VTAggregator__pushValueForDistributionKey_withValue___block_invoke(uint
   return v2;
 }
 
-- (void)_addValueForScalarKey:(id)a3 withValue:(int64_t)a4
+- (void)_addValueForScalarKey:(id)key withValue:(int64_t)value
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  keyCopy = key;
   v6 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = v5;
+    v12 = keyCopy;
     v13 = 2050;
-    v14 = a4;
+    valueCopy = value;
     _os_log_impl(&dword_223A31000, v6, OS_LOG_TYPE_DEFAULT, "Adding value for scalar key %{public}@ : %{public}lld", buf, 0x16u);
   }
 
@@ -86,9 +86,9 @@ id __55__VTAggregator__pushValueForDistributionKey_withValue___block_invoke(uint
   v8[1] = 3221225472;
   v8[2] = __48__VTAggregator__addValueForScalarKey_withValue___block_invoke;
   v8[3] = &unk_2784ECCD0;
-  v9 = v5;
-  v10 = a4;
-  v7 = v5;
+  v9 = keyCopy;
+  valueCopy2 = value;
+  v7 = keyCopy;
   softLink_AnalyticsSendEventLazy(v8);
 }
 
@@ -104,34 +104,34 @@ id __48__VTAggregator__addValueForScalarKey_withValue___block_invoke(uint64_t a1
   return v3;
 }
 
-- (id)_makeKeyWithLanguageAndAssetString:(id)a3
+- (id)_makeKeyWithLanguageAndAssetString:(id)string
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(VTAggregator *)self _makeKey:a3];
+  v5 = [(VTAggregator *)self _makeKey:string];
   v6 = [v4 stringWithFormat:@"%@.%@.%@", v5, self->_languageCode, self->_assetString];
 
   return v6;
 }
 
-- (id)_makeKeyWithLanguageCode:(id)a3
+- (id)_makeKeyWithLanguageCode:(id)code
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(VTAggregator *)self _makeKey:a3];
+  v5 = [(VTAggregator *)self _makeKey:code];
   v6 = [v4 stringWithFormat:@"%@.%@", v5, self->_languageCode];
 
   return v6;
 }
 
-- (void)logVoiceProfilePruningFailureWithReasonCode:(unint64_t)a3
+- (void)logVoiceProfilePruningFailureWithReasonCode:(unint64_t)code
 {
   v5 = [(VTAggregator *)self _makeKeyWithLanguageAndAssetString:@"profileUpdateFailCode"];
-  [(VTAggregator *)self _addValueForScalarKey:v5 withValue:a3];
+  [(VTAggregator *)self _addValueForScalarKey:v5 withValue:code];
 }
 
-- (void)logTdPsrExtraAudioSamplesProcessed:(unint64_t)a3
+- (void)logTdPsrExtraAudioSamplesProcessed:(unint64_t)processed
 {
   v5 = [(VTAggregator *)self _makeKeyWithLanguageAndAssetString:@"TdPsrExtraAudioSamplesProcessed"];
-  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:a3];
+  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:processed];
 }
 
 - (void)logTdPsrSATRetrainingTimedOut
@@ -146,10 +146,10 @@ id __48__VTAggregator__addValueForScalarKey_withValue___block_invoke(uint64_t a1
   [(VTAggregator *)self _addValueForScalarKey:v3 withValue:1];
 }
 
-- (void)logTdPsrSATRetrainingWaitTimeMs:(double)a3
+- (void)logTdPsrSATRetrainingWaitTimeMs:(double)ms
 {
   v5 = [(VTAggregator *)self _makeKeyWithLanguageAndAssetString:@"TdPsrSATRetrainingWaitTimeMs"];
-  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:a3];
+  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:ms];
 }
 
 - (void)logTdPsrSATDetectionTimedOut
@@ -164,46 +164,46 @@ id __48__VTAggregator__addValueForScalarKey_withValue___block_invoke(uint64_t a1
   [(VTAggregator *)self _addValueForScalarKey:v3 withValue:1];
 }
 
-- (void)logTdPsrSATDetectionWaitTimeMs:(double)a3
+- (void)logTdPsrSATDetectionWaitTimeMs:(double)ms
 {
   v5 = [(VTAggregator *)self _makeKeyWithLanguageAndAssetString:@"TdPsrSATDetectionTimeMs"];
-  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:a3];
+  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:ms];
 }
 
-- (void)logProfileUpdateScoreMSE:(double)a3
+- (void)logProfileUpdateScoreMSE:(double)e
 {
   v5 = [(VTAggregator *)self _makeKeyWithLanguageAndAssetString:@"profileUpdateScoreMSE"];
-  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:a3];
+  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:e];
 }
 
-- (void)logProfileUpdateNumRetainedUttsPHS:(int)a3
+- (void)logProfileUpdateNumRetainedUttsPHS:(int)s
 {
   v5 = [(VTAggregator *)self _makeKeyWithLanguageAndAssetString:@"profileUpdateNumRetainedUttsPHS"];
-  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:a3];
+  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:s];
 }
 
-- (void)logProfileUpdateNumDiscardedUttsPHS:(int)a3
+- (void)logProfileUpdateNumDiscardedUttsPHS:(int)s
 {
   v5 = [(VTAggregator *)self _makeKeyWithLanguageAndAssetString:@"profileUpdateNumDiscardedUttsPHS"];
-  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:a3];
+  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:s];
 }
 
-- (void)logProfileUpdateNumPrunedUttsPHS:(int)a3
+- (void)logProfileUpdateNumPrunedUttsPHS:(int)s
 {
   v5 = [(VTAggregator *)self _makeKeyWithLanguageAndAssetString:@"profileUpdateNumPrunedUttsPHS"];
-  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:a3];
+  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:s];
 }
 
-- (void)logProfileUpdateNumDeletedUttsStrategy:(int)a3
+- (void)logProfileUpdateNumDeletedUttsStrategy:(int)strategy
 {
   v5 = [(VTAggregator *)self _makeKeyWithLanguageAndAssetString:@"profileUpdateNumDeletedUttsStrategy"];
-  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:a3];
+  [(VTAggregator *)self _pushValueForDistributionKey:v5 withValue:strategy];
 }
 
-- (void)logProfileUpdateUtt:(id)a3 withScore:(double)a4
+- (void)logProfileUpdateUtt:(id)utt withScore:(double)score
 {
-  v6 = [(VTAggregator *)self _makeKeyWithLanguageAndAssetString:a3];
-  [(VTAggregator *)self _pushValueForDistributionKey:v6 withValue:a4];
+  v6 = [(VTAggregator *)self _makeKeyWithLanguageAndAssetString:utt];
+  [(VTAggregator *)self _pushValueForDistributionKey:v6 withValue:score];
 }
 
 - (void)logRecognizerTimedOut
@@ -219,7 +219,7 @@ id __48__VTAggregator__addValueForScalarKey_withValue___block_invoke(uint64_t a1
   [(VTAggregator *)self _addValueForScalarKey:v4 withValue:1];
 }
 
-- (void)logZeroRunAudio:(int)a3
+- (void)logZeroRunAudio:(int)audio
 {
   v4 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -232,7 +232,7 @@ id __48__VTAggregator__addValueForScalarKey_withValue___block_invoke(uint64_t a1
   [(VTAggregator *)self _addValueForScalarKey:v5 withValue:1];
 }
 
-- (void)logTimeVoiceTriggerTransitionsToState:(unint64_t)a3
+- (void)logTimeVoiceTriggerTransitionsToState:(unint64_t)state
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -240,7 +240,7 @@ id __48__VTAggregator__addValueForScalarKey_withValue___block_invoke(uint64_t a1
   v6[1] = 3221225472;
   v6[2] = __54__VTAggregator_logTimeVoiceTriggerTransitionsToState___block_invoke;
   v6[3] = &unk_2784ECCA8;
-  v7[1] = a3;
+  v7[1] = state;
   v6[4] = self;
   objc_copyWeak(v7, &location);
   dispatch_async(queue, v6);
@@ -322,10 +322,10 @@ LABEL_7:
   self->_lastAggTime = v4;
 }
 
-- (void)logFalseWakeUp:(BOOL)a3
+- (void)logFalseWakeUp:(BOOL)up
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (up)
   {
     v4 = self->_numFalseWakeUp + 1;
     self->_numFalseWakeUp = v4;
@@ -395,12 +395,12 @@ LABEL_7:
   }
 }
 
-- (void)logSecondPassResult:(BOOL)a3
+- (void)logSecondPassResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v5 = VTLogContextFacilityVoiceTrigger;
   v6 = os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (resultCopy)
   {
     if (v6)
     {
@@ -439,31 +439,31 @@ LABEL_7:
   [(VTAggregator *)self _addValueForScalarKey:v4 withValue:1];
 }
 
-- (void)setAssetString:(id)a3
+- (void)setAssetString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   assetString = self->_assetString;
   p_assetString = &self->_assetString;
-  v8 = v5;
+  v8 = stringCopy;
   if (![(NSString *)assetString isEqualToString:?])
   {
-    objc_storeStrong(p_assetString, a3);
+    objc_storeStrong(p_assetString, string);
   }
 }
 
-- (void)setLanguageCode:(id)a3
+- (void)setLanguageCode:(id)code
 {
-  v5 = a3;
+  codeCopy = code;
   languageCode = self->_languageCode;
   p_languageCode = &self->_languageCode;
-  v8 = v5;
+  v8 = codeCopy;
   if (![(NSString *)languageCode isEqualToString:?])
   {
-    objc_storeStrong(p_languageCode, a3);
+    objc_storeStrong(p_languageCode, code);
   }
 }
 
-- (void)cumulativeUptime:(id *)a3 cumulativeDowntime:(id *)a4 reset:(BOOL)a5
+- (void)cumulativeUptime:(id *)uptime cumulativeDowntime:(id *)downtime reset:(BOOL)reset
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -471,9 +471,9 @@ LABEL_7:
   v6[2] = __58__VTAggregator_cumulativeUptime_cumulativeDowntime_reset___block_invoke;
   v6[3] = &unk_2784ECC80;
   v6[4] = self;
-  v6[5] = a4;
-  v6[6] = a3;
-  v7 = a5;
+  v6[5] = downtime;
+  v6[6] = uptime;
+  resetCopy = reset;
   dispatch_sync(queue, v6);
 }
 

@@ -1,34 +1,34 @@
 @interface HAPDataStreamTransportSetupResponse
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPDataStreamTransportSetupResponse)init;
-- (HAPDataStreamTransportSetupResponse)initWithStatus:(id)a3 parameters:(id)a4 accessoryKeySalt:(id)a5;
+- (HAPDataStreamTransportSetupResponse)initWithStatus:(id)status parameters:(id)parameters accessoryKeySalt:(id)salt;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPDataStreamTransportSetupResponse
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPDataStreamTransportSetupResponse);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPDataStreamTransportSetupResponse *)v6 parseFromData:v5 error:&v11];
+    [(HAPDataStreamTransportSetupResponse *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,37 +48,37 @@
   return [(HAPDataStreamTransportSetupResponse *)&v3 init];
 }
 
-- (HAPDataStreamTransportSetupResponse)initWithStatus:(id)a3 parameters:(id)a4 accessoryKeySalt:(id)a5
+- (HAPDataStreamTransportSetupResponse)initWithStatus:(id)status parameters:(id)parameters accessoryKeySalt:(id)salt
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  statusCopy = status;
+  parametersCopy = parameters;
+  saltCopy = salt;
   v15.receiver = self;
   v15.super_class = HAPDataStreamTransportSetupResponse;
   v12 = [(HAPDataStreamTransportSetupResponse *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_status, a3);
-    objc_storeStrong(&v13->_parameters, a4);
-    objc_storeStrong(&v13->_accessoryKeySalt, a5);
+    objc_storeStrong(&v12->_status, status);
+    objc_storeStrong(&v13->_parameters, parameters);
+    objc_storeStrong(&v13->_accessoryKeySalt, salt);
   }
 
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v10 = 0;
     v11 = 0;
     v12 = 0;
 LABEL_20:
-    [(HAPDataStreamTransportSetupResponse *)self setStatus:v12, v26];
+    [(HAPDataStreamTransportSetupResponse *)self setStatus:v12, errorCopy];
     [(HAPDataStreamTransportSetupResponse *)self setParameters:v11];
     [(HAPDataStreamTransportSetupResponse *)self setAccessoryKeySalt:v10];
     v9 = 0;
@@ -86,12 +86,12 @@ LABEL_20:
     goto LABEL_27;
   }
 
-  v26 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v34 = 0;
@@ -101,10 +101,10 @@ LABEL_20:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (v26)
+      if (errorCopy)
       {
         sub_100041618(Next);
-        *v26 = v22 = 0;
+        *errorCopy = v22 = 0;
         goto LABEL_27;
       }
 
@@ -120,7 +120,7 @@ LABEL_20:
     {
       case 3:
         v28 = v9;
-        v15 = sub_100021B74(3, v7, v13, v32, &v28);
+        v15 = sub_100021B74(3, bytes, v13, v32, &v28);
         v19 = v28;
 
         if (v19)
@@ -139,7 +139,7 @@ LABEL_15:
         break;
       case 2:
         v30 = v9;
-        v15 = sub_100021B74(2, v7, v13, v32, &v30);
+        v15 = sub_100021B74(2, bytes, v13, v32, &v30);
         v19 = v30;
 
         if (!v19)
@@ -167,7 +167,7 @@ LABEL_12:
         goto LABEL_14;
     }
 
-    v7 = v32[0];
+    bytes = v32[0];
     if (v32[0] >= v13)
     {
       if (!v9)
@@ -188,11 +188,11 @@ LABEL_12:
   }
 
 LABEL_24:
-  if (v26)
+  if (errorCopy)
   {
     v24 = v9;
     v22 = 0;
-    *v26 = v9;
+    *errorCopy = v9;
     goto LABEL_27;
   }
 
@@ -203,7 +203,7 @@ LABEL_27:
   return v22;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v50 = 0u;
   v51 = 0u;
@@ -227,13 +227,13 @@ LABEL_27:
   v33 = 0u;
   v31 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPDataStreamTransportSetupResponse *)self status];
+  status = [(HAPDataStreamTransportSetupResponse *)self status];
 
-  if (v5)
+  if (status)
   {
-    v6 = [(HAPDataStreamTransportSetupResponse *)self status];
+    status2 = [(HAPDataStreamTransportSetupResponse *)self status];
     v30 = 0;
-    v7 = [v6 serializeWithError:&v30];
+    v7 = [status2 serializeWithError:&v30];
     v8 = v30;
 
     if (v8)
@@ -255,11 +255,11 @@ LABEL_31:
       if (v8)
       {
 LABEL_32:
-        if (a3)
+        if (error)
         {
           v25 = v8;
           v26 = 0;
-          *a3 = v8;
+          *error = v8;
           goto LABEL_41;
         }
 
@@ -268,7 +268,7 @@ LABEL_32:
 
       if (v9)
       {
-        if (a3)
+        if (error)
         {
           goto LABEL_36;
         }
@@ -283,21 +283,21 @@ LABEL_37:
     }
   }
 
-  v11 = [(HAPDataStreamTransportSetupResponse *)self parameters];
+  parameters = [(HAPDataStreamTransportSetupResponse *)self parameters];
 
-  if (!v11)
+  if (!parameters)
   {
 LABEL_16:
-    v18 = [(HAPDataStreamTransportSetupResponse *)self accessoryKeySalt];
+    accessoryKeySalt = [(HAPDataStreamTransportSetupResponse *)self accessoryKeySalt];
 
-    if (!v18)
+    if (!accessoryKeySalt)
     {
       goto LABEL_37;
     }
 
-    v19 = [(HAPDataStreamTransportSetupResponse *)self accessoryKeySalt];
+    accessoryKeySalt2 = [(HAPDataStreamTransportSetupResponse *)self accessoryKeySalt];
     v28 = 0;
-    v7 = [v19 serializeWithError:&v28];
+    v7 = [accessoryKeySalt2 serializeWithError:&v28];
     v8 = v28;
 
     if (v8)
@@ -305,18 +305,18 @@ LABEL_16:
       goto LABEL_3;
     }
 
-    v20 = [v7 bytes];
-    v21 = [v7 length] + v20;
+    bytes = [v7 bytes];
+    v21 = [v7 length] + bytes;
     do
     {
-      if (v21 - v20 >= 255)
+      if (v21 - bytes >= 255)
       {
         v22 = 255;
       }
 
       else
       {
-        v22 = v21 - v20;
+        v22 = v21 - bytes;
       }
 
       v10 = TLV8BufferAppend();
@@ -330,7 +330,7 @@ LABEL_16:
         v23 = v22;
       }
 
-      v20 += v23;
+      bytes += v23;
       if (v10)
       {
         v24 = 1;
@@ -338,7 +338,7 @@ LABEL_16:
 
       else
       {
-        v24 = v20 >= v21;
+        v24 = bytes >= v21;
       }
     }
 
@@ -346,9 +346,9 @@ LABEL_16:
     goto LABEL_30;
   }
 
-  v12 = [(HAPDataStreamTransportSetupResponse *)self parameters];
+  parameters2 = [(HAPDataStreamTransportSetupResponse *)self parameters];
   v29 = 0;
-  v13 = [v12 serializeWithError:&v29];
+  v13 = [parameters2 serializeWithError:&v29];
   v8 = v29;
 
   if (v8)
@@ -357,19 +357,19 @@ LABEL_16:
     goto LABEL_32;
   }
 
-  v14 = [v13 bytes];
-  v15 = [v13 length] + v14;
+  bytes2 = [v13 bytes];
+  v15 = [v13 length] + bytes2;
   while (1)
   {
-    v16 = v15 - v14 >= 255 ? 255 : v15 - v14;
+    v16 = v15 - bytes2 >= 255 ? 255 : v15 - bytes2;
     v17 = TLV8BufferAppend();
     if (v17)
     {
       break;
     }
 
-    v14 += v16;
-    if (v14 >= v15)
+    bytes2 += v16;
+    if (bytes2 >= v15)
     {
 
       goto LABEL_16;
@@ -378,12 +378,12 @@ LABEL_16:
 
   v9 = v17;
 
-  if (a3)
+  if (error)
   {
 LABEL_36:
     sub_100041618(v9);
     v8 = 0;
-    *a3 = v26 = 0;
+    *error = v26 = 0;
     goto LABEL_41;
   }
 
@@ -397,21 +397,21 @@ LABEL_41:
   return v26;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPDataStreamTransportSetupResponse allocWithZone:a3];
-  v5 = [(HAPDataStreamTransportSetupResponse *)self status];
-  v6 = [(HAPDataStreamTransportSetupResponse *)self parameters];
-  v7 = [(HAPDataStreamTransportSetupResponse *)self accessoryKeySalt];
-  v8 = [(HAPDataStreamTransportSetupResponse *)v4 initWithStatus:v5 parameters:v6 accessoryKeySalt:v7];
+  v4 = [HAPDataStreamTransportSetupResponse allocWithZone:zone];
+  status = [(HAPDataStreamTransportSetupResponse *)self status];
+  parameters = [(HAPDataStreamTransportSetupResponse *)self parameters];
+  accessoryKeySalt = [(HAPDataStreamTransportSetupResponse *)self accessoryKeySalt];
+  v8 = [(HAPDataStreamTransportSetupResponse *)v4 initWithStatus:status parameters:parameters accessoryKeySalt:accessoryKeySalt];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -421,46 +421,46 @@ LABEL_41:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HAPDataStreamTransportSetupResponse *)self status];
-      v9 = [(HAPDataStreamTransportSetupResponse *)v7 status];
-      if (v8 != v9)
+      v7 = equalCopy;
+      status = [(HAPDataStreamTransportSetupResponse *)self status];
+      status2 = [(HAPDataStreamTransportSetupResponse *)v7 status];
+      if (status != status2)
       {
-        v3 = [(HAPDataStreamTransportSetupResponse *)self status];
-        v4 = [(HAPDataStreamTransportSetupResponse *)v7 status];
-        if (![v3 isEqual:v4])
+        status3 = [(HAPDataStreamTransportSetupResponse *)self status];
+        status4 = [(HAPDataStreamTransportSetupResponse *)v7 status];
+        if (![status3 isEqual:status4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HAPDataStreamTransportSetupResponse *)self parameters];
-      v12 = [(HAPDataStreamTransportSetupResponse *)v7 parameters];
-      v13 = v12;
-      if (v11 == v12)
+      parameters = [(HAPDataStreamTransportSetupResponse *)self parameters];
+      parameters2 = [(HAPDataStreamTransportSetupResponse *)v7 parameters];
+      v13 = parameters2;
+      if (parameters == parameters2)
       {
-        v28 = v12;
+        v28 = parameters2;
       }
 
       else
       {
-        v14 = [(HAPDataStreamTransportSetupResponse *)self parameters];
-        v27 = [(HAPDataStreamTransportSetupResponse *)v7 parameters];
-        if (![v14 isEqual:?])
+        parameters3 = [(HAPDataStreamTransportSetupResponse *)self parameters];
+        parameters4 = [(HAPDataStreamTransportSetupResponse *)v7 parameters];
+        if (![parameters3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = parameters3;
         v28 = v13;
       }
 
-      v15 = [(HAPDataStreamTransportSetupResponse *)self accessoryKeySalt];
-      v16 = [(HAPDataStreamTransportSetupResponse *)v7 accessoryKeySalt];
-      v17 = v16;
-      if (v15 == v16)
+      accessoryKeySalt = [(HAPDataStreamTransportSetupResponse *)self accessoryKeySalt];
+      accessoryKeySalt2 = [(HAPDataStreamTransportSetupResponse *)v7 accessoryKeySalt];
+      v17 = accessoryKeySalt2;
+      if (accessoryKeySalt == accessoryKeySalt2)
       {
 
         v10 = 1;
@@ -469,29 +469,29 @@ LABEL_41:
       else
       {
         [(HAPDataStreamTransportSetupResponse *)self accessoryKeySalt];
-        v18 = v25 = v3;
+        v18 = v25 = status3;
         [(HAPDataStreamTransportSetupResponse *)v7 accessoryKeySalt];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = parameters;
+        v19 = status4;
+        v20 = status2;
+        v22 = v21 = status;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        status = v21;
+        status2 = v20;
+        status4 = v19;
+        parameters = v24;
 
-        v3 = v25;
+        status3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      parameters3 = v26;
+      if (parameters == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (status == status2)
         {
 LABEL_20:
 
@@ -518,10 +518,10 @@ LABEL_21:
 
 - (NSString)description
 {
-  v3 = [(HAPDataStreamTransportSetupResponse *)self status];
-  v4 = [(HAPDataStreamTransportSetupResponse *)self parameters];
-  v5 = [(HAPDataStreamTransportSetupResponse *)self accessoryKeySalt];
-  v6 = [NSString stringWithFormat:@"<HAPDataStreamTransportSetupResponse status=%@, parameters=%@, accessoryKeySalt=%@>", v3, v4, v5];
+  status = [(HAPDataStreamTransportSetupResponse *)self status];
+  parameters = [(HAPDataStreamTransportSetupResponse *)self parameters];
+  accessoryKeySalt = [(HAPDataStreamTransportSetupResponse *)self accessoryKeySalt];
+  v6 = [NSString stringWithFormat:@"<HAPDataStreamTransportSetupResponse status=%@, parameters=%@, accessoryKeySalt=%@>", status, parameters, accessoryKeySalt];
 
   return v6;
 }

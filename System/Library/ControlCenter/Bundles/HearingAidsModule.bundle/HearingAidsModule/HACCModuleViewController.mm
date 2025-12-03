@@ -1,23 +1,23 @@
 @interface HACCModuleViewController
 - (BOOL)canDismissPresentedContent;
 - (HACCModuleViewController)init;
-- (id)_symbolForState:(id)a3 withExposure:(float)a4;
+- (id)_symbolForState:(id)state withExposure:(float)exposure;
 - (id)containerViewsForPlatterTreatment;
 - (void)_updateAlphas;
 - (void)_updateSelectedStatus;
 - (void)haccIconButtonTapped;
 - (void)pauseSoundRecognitionIfNecessary;
 - (void)restartSoundRecognitionIfNecessary;
-- (void)setPlatterContentAlpha:(double)a3;
-- (void)shortcutDidChangeSize:(id)a3;
+- (void)setPlatterContentAlpha:(double)alpha;
+- (void)shortcutDidChangeSize:(id)size;
 - (void)startListening;
 - (void)stopListening;
-- (void)updateViewWithAudioSample:(id)a3;
-- (void)updateViewWithExposure:(float)a3;
-- (void)updateViewWithState:(id)a3;
+- (void)updateViewWithAudioSample:(id)sample;
+- (void)updateViewWithExposure:(float)exposure;
+- (void)updateViewWithState:(id)state;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)willTransitionToExpandedContentMode:(BOOL)a3;
+- (void)willTransitionToExpandedContentMode:(BOOL)mode;
 @end
 
 @implementation HACCModuleViewController
@@ -101,13 +101,13 @@
   objc_msgSend__updateAlphas(self, v3, v4, v5);
 }
 
-- (void)willTransitionToExpandedContentMode:(BOOL)a3
+- (void)willTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v15.receiver = self;
   v15.super_class = HACCModuleViewController;
   [(CCUIButtonModuleViewController *)&v15 willTransitionToExpandedContentMode:?];
-  if (v3)
+  if (modeCopy)
   {
     objc_msgSend_pauseSoundRecognitionIfNecessary(self, v5, v6, v7);
   }
@@ -132,9 +132,9 @@
   return v5;
 }
 
-- (void)shortcutDidChangeSize:(id)a3
+- (void)shortcutDidChangeSize:(id)size
 {
-  v5 = objc_msgSend_view(self, a2, a3, v3);
+  v5 = objc_msgSend_view(self, a2, size, v3);
   objc_msgSend_bounds(v5, v6, v7, v8);
   v10 = v9;
   objc_msgSend_preferredExpandedContentHeight(self, v11, v12, v13);
@@ -247,20 +247,20 @@
   objc_msgSend_updateViewWithState_(self, v8, v10, v9);
 }
 
-- (void)updateViewWithAudioSample:(id)a3
+- (void)updateViewWithAudioSample:(id)sample
 {
   v4 = *MEMORY[0x29EDC50C0];
-  v5 = a3;
-  v8 = objc_msgSend_objectForKey_(v5, v6, v4, v7);
+  sampleCopy = sample;
+  v8 = objc_msgSend_objectForKey_(sampleCopy, v6, v4, v7);
   objc_msgSend_floatValue(v8, v9, v10, v11);
 
-  v14 = objc_msgSend_objectForKey_(v5, v12, *MEMORY[0x29EDC50C8], v13);
+  v14 = objc_msgSend_objectForKey_(sampleCopy, v12, *MEMORY[0x29EDC50C8], v13);
   v18 = objc_msgSend_unsignedIntegerValue(v14, v15, v16, v17);
 
-  v21 = objc_msgSend_objectForKey_(v5, v19, *MEMORY[0x29EDC50B8], v20);
+  v21 = objc_msgSend_objectForKey_(sampleCopy, v19, *MEMORY[0x29EDC50B8], v20);
 
-  LODWORD(v5) = objc_msgSend_BOOLValue(v21, v22, v23, v24);
-  if (v5)
+  LODWORD(sampleCopy) = objc_msgSend_BOOLValue(v21, v22, v23, v24);
+  if (sampleCopy)
   {
     if (v18)
     {
@@ -289,39 +289,39 @@ LABEL_11:
   objc_msgSend_updateViewWithState_(self, v25, v29, v27);
 }
 
-- (void)updateViewWithState:(id)a3
+- (void)updateViewWithState:(id)state
 {
-  v25 = a3;
+  stateCopy = state;
   v8 = objc_msgSend_assetState(self, v5, v6, v7);
-  if (!v8 || (v12 = v8, objc_msgSend_assetState(self, v9, v10, v11), v13 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v13, v14, v25, v15), v13, v12, (isEqualToString & 1) == 0))
+  if (!v8 || (v12 = v8, objc_msgSend_assetState(self, v9, v10, v11), v13 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v13, v14, stateCopy, v15), v13, v12, (isEqualToString & 1) == 0))
   {
-    objc_storeStrong(&self->_assetState, a3);
+    objc_storeStrong(&self->_assetState, state);
     objc_msgSend_exposure(self, v17, v18, v19);
-    v22 = objc_msgSend__symbolForState_withExposure_(self, v20, v25, v21);
+    v22 = objc_msgSend__symbolForState_withExposure_(self, v20, stateCopy, v21);
     objc_msgSend_setGlyphImage_(self, v23, v22, v24);
   }
 }
 
-- (void)updateViewWithExposure:(float)a3
+- (void)updateViewWithExposure:(float)exposure
 {
   objc_msgSend_exposure(self, a2, v3, v4);
-  if (v10 != a3)
+  if (v10 != exposure)
   {
-    self->_exposure = a3;
+    self->_exposure = exposure;
     v17 = objc_msgSend_assetState(self, v7, v8, v9);
-    *&v11 = a3;
+    *&v11 = exposure;
     v14 = objc_msgSend__symbolForState_withExposure_(self, v12, v17, v13, v11);
     objc_msgSend_setGlyphImage_(self, v15, v14, v16);
   }
 }
 
-- (id)_symbolForState:(id)a3 withExposure:(float)a4
+- (id)_symbolForState:(id)state withExposure:(float)exposure
 {
-  v5 = a3;
+  stateCopy = state;
   v11 = objc_msgSend_configurationPreferringMulticolor(MEMORY[0x29EDC7AD0], v6, v7, v8);
-  if (((a4 + -20.0) / 90.0) >= 0.0)
+  if (((exposure + -20.0) / 90.0) >= 0.0)
   {
-    v12 = (a4 + -20.0) / 90.0;
+    v12 = (exposure + -20.0) / 90.0;
   }
 
   else
@@ -329,7 +329,7 @@ LABEL_11:
     v12 = 0.0;
   }
 
-  if (objc_msgSend_isEqualToString_(v5, v9, HACCIconAssetStateOff, v10))
+  if (objc_msgSend_isEqualToString_(stateCopy, v9, HACCIconAssetStateOff, v10))
   {
     v15 = objc_msgSend_systemImageNamed_(MEMORY[0x29EDC7AC8], v13, @"ear", v14);
     v19 = objc_msgSend_whiteColor(MEMORY[0x29EDC7A00], v16, v17, v18);
@@ -340,7 +340,7 @@ LABEL_11:
   }
 
   v23 = fminf(v12, 1.0);
-  if (objc_msgSend_isEqualToString_(v5, v13, HACCIconAssetStateSafe, v14))
+  if (objc_msgSend_isEqualToString_(stateCopy, v13, HACCIconAssetStateSafe, v14))
   {
     v26 = MEMORY[0x29EDC7AC8];
     v27 = MEMORY[0x29EDB9F48];
@@ -351,7 +351,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (objc_msgSend_isEqualToString_(v5, v24, HACCIconAssetStateWarning, v25))
+  if (objc_msgSend_isEqualToString_(stateCopy, v24, HACCIconAssetStateWarning, v25))
   {
     v32 = MEMORY[0x29EDC7AC8];
     v33 = MEMORY[0x29EDB9F48];
@@ -410,11 +410,11 @@ LABEL_12:
   return v9;
 }
 
-- (void)setPlatterContentAlpha:(double)a3
+- (void)setPlatterContentAlpha:(double)alpha
 {
-  if (self->_platterContentAlpha != a3)
+  if (self->_platterContentAlpha != alpha)
   {
-    self->_platterContentAlpha = a3;
+    self->_platterContentAlpha = alpha;
     objc_msgSend__updateAlphas(self, a2, v3, v4);
   }
 }

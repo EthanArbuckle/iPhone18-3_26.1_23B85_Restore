@@ -1,5 +1,5 @@
 @interface AVAudioUnitEQFilterParameters
-- (AVAudioUnitEQFilterParameters)initWithImpl:(AVAudioUnitEQFilterParametersImpl *)a3;
+- (AVAudioUnitEQFilterParameters)initWithImpl:(AVAudioUnitEQFilterParametersImpl *)impl;
 - (AVAudioUnitEQFilterType)filterType;
 - (BOOL)bypass;
 - (float)bandwidth;
@@ -181,14 +181,14 @@
   [(AVAudioUnitEQFilterParameters *)&v4 dealloc];
 }
 
-- (AVAudioUnitEQFilterParameters)initWithImpl:(AVAudioUnitEQFilterParametersImpl *)a3
+- (AVAudioUnitEQFilterParameters)initWithImpl:(AVAudioUnitEQFilterParametersImpl *)impl
 {
   v5.receiver = self;
   v5.super_class = AVAudioUnitEQFilterParameters;
   result = [(AVAudioUnitEQFilterParameters *)&v5 init];
   if (result)
   {
-    result->_impl = a3;
+    result->_impl = impl;
   }
 
   return result;

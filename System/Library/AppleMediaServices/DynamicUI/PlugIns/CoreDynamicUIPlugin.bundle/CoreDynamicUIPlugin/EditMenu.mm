@@ -1,18 +1,18 @@
 @interface EditMenu
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (void)didLongPress:(id)a3;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (void)didLongPress:(id)press;
 @end
 
 @implementation EditMenu
 
-- (void)didLongPress:(id)a3
+- (void)didLongPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
-  sub_3AD00(v4);
+  pressCopy = press;
+  selfCopy = self;
+  sub_3AD00(pressCopy);
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
   sub_CE5C(0, &qword_C4F68);
   sub_8F6C4();

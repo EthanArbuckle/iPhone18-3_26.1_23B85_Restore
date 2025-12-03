@@ -7,10 +7,10 @@
 - (id)outputImage
 {
   v58[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PIPortraitVideoFilter *)self inputGlobalRenderingMetadata];
-  v4 = [v3 renderingVersion];
+  inputGlobalRenderingMetadata = [(PIPortraitVideoFilter *)self inputGlobalRenderingMetadata];
+  renderingVersion = [inputGlobalRenderingMetadata renderingVersion];
 
-  if (v4 == 1)
+  if (renderingVersion == 1)
   {
     v5 = objc_opt_class();
 LABEL_6:
@@ -20,10 +20,10 @@ LABEL_6:
   }
 
   v6 = +[PIGlobalSettings globalSettings];
-  v7 = [v6 cinematicAllowRGB10Packed];
+  cinematicAllowRGB10Packed = [v6 cinematicAllowRGB10Packed];
 
   v5 = objc_opt_class();
-  if (!v7)
+  if (!cinematicAllowRGB10Packed)
   {
     goto LABEL_6;
   }
@@ -45,7 +45,7 @@ LABEL_6:
   }
 
 LABEL_10:
-  v9 = [(PIPortraitVideoFilter *)self inputImage];
+  inputImage = [(PIPortraitVideoFilter *)self inputImage];
   [MEMORY[0x1E69B3AB0] HLGOpticalScale];
   v11 = v10;
   v49 = v8;
@@ -63,12 +63,12 @@ LABEL_10:
       v14 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:0.0 Z:4.92610837 / v11 W:0.0];
       v58[2] = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:v57 count:3];
-      v16 = [v9 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v15];
+      v16 = [inputImage imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v15];
 
-      v17 = [v8 linearized];
-      v18 = [v17 extended];
+      linearized = [v8 linearized];
+      extended = [linearized extended];
 
-      v19 = [v16 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v18, "CGColorSpace")}];
+      v19 = [v16 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(extended, "CGColorSpace")}];
 
       v55[0] = @"inputMinComponents";
       v20 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:0.0 Z:0.0 W:0.0];
@@ -80,26 +80,26 @@ LABEL_10:
       v23 = [v19 imageByApplyingFilter:@"CIColorClamp" withInputParameters:v22];
 
       v8 = v49;
-      v9 = [v23 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(v18, "CGColorSpace")}];
+      inputImage = [v23 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(extended, "CGColorSpace")}];
     }
 
-    v24 = [v9 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v8, "CGColorSpace")}];
+    v24 = [inputImage imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v8, "CGColorSpace")}];
 
-    v9 = v24;
+    inputImage = v24;
   }
 
-  v47 = [(PIPortraitVideoFilter *)self inputDisparityImage];
-  v25 = [(PIPortraitVideoFilter *)self inputColorPixelBuffer];
-  v26 = [(PIPortraitVideoFilter *)self inputDisparityPixelBuffer];
-  v27 = [(PIPortraitVideoFilter *)self inputGlobalRenderingMetadata];
-  v46 = [(PIPortraitVideoFilter *)self inputTimedRenderingMetadata];
-  v28 = [(PIPortraitVideoFilter *)self inputAperture];
-  v29 = [(PIPortraitVideoFilter *)self inputFocusedDisparity];
-  v30 = [(PIPortraitVideoFilter *)self inputRenderQuality];
-  v31 = [(PIPortraitVideoFilter *)self inputRenderDebugMode];
+  inputDisparityImage = [(PIPortraitVideoFilter *)self inputDisparityImage];
+  inputColorPixelBuffer = [(PIPortraitVideoFilter *)self inputColorPixelBuffer];
+  inputDisparityPixelBuffer = [(PIPortraitVideoFilter *)self inputDisparityPixelBuffer];
+  inputGlobalRenderingMetadata2 = [(PIPortraitVideoFilter *)self inputGlobalRenderingMetadata];
+  inputTimedRenderingMetadata = [(PIPortraitVideoFilter *)self inputTimedRenderingMetadata];
+  inputAperture = [(PIPortraitVideoFilter *)self inputAperture];
+  inputFocusedDisparity = [(PIPortraitVideoFilter *)self inputFocusedDisparity];
+  inputRenderQuality = [(PIPortraitVideoFilter *)self inputRenderQuality];
+  inputRenderDebugMode = [(PIPortraitVideoFilter *)self inputRenderDebugMode];
   v50 = 0;
   LOBYTE(v45) = [(PIPortraitVideoFilter *)self inputIsHDR];
-  v32 = [v48 applyWithInputImage:v9 disparityImage:v47 inputPixelBuffer:v25 disparityPixelBuffer:v26 globalMetadata:v27 timedMetadata:v46 aperture:v28 focusedDisparity:v29 quality:v30 debugMode:v31 isHDR:v45 error:&v50];
+  v32 = [v48 applyWithInputImage:inputImage disparityImage:inputDisparityImage inputPixelBuffer:inputColorPixelBuffer disparityPixelBuffer:inputDisparityPixelBuffer globalMetadata:inputGlobalRenderingMetadata2 timedMetadata:inputTimedRenderingMetadata aperture:inputAperture focusedDisparity:inputFocusedDisparity quality:inputRenderQuality debugMode:inputRenderDebugMode isHDR:v45 error:&v50];
   v33 = v50;
 
   v34 = v49;
@@ -139,8 +139,8 @@ LABEL_10:
       v42 = [v36 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v41];
 
       v34 = v49;
-      v43 = [MEMORY[0x1E69B3A10] workingColorSpace];
-      v32 = [v42 imageByTaggingWithColorSpace:{objc_msgSend(v43, "CGColorSpace")}];
+      workingColorSpace = [MEMORY[0x1E69B3A10] workingColorSpace];
+      v32 = [v42 imageByTaggingWithColorSpace:{objc_msgSend(workingColorSpace, "CGColorSpace")}];
     }
 
     else

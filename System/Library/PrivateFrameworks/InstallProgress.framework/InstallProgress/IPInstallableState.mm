@@ -1,20 +1,20 @@
 @interface IPInstallableState
-- (IPInstallableState)initWithStateSource:(id)a3 isInstalling:(BOOL)a4;
+- (IPInstallableState)initWithStateSource:(id)source isInstalling:(BOOL)installing;
 @end
 
 @implementation IPInstallableState
 
-- (IPInstallableState)initWithStateSource:(id)a3 isInstalling:(BOOL)a4
+- (IPInstallableState)initWithStateSource:(id)source isInstalling:(BOOL)installing
 {
-  v7 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = IPInstallableState;
   v8 = [(IPInstallableState *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_source, a3);
-    v9->_isInstalling = a4;
+    objc_storeStrong(&v8->_source, source);
+    v9->_isInstalling = installing;
   }
 
   return v9;

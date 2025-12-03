@@ -1,36 +1,36 @@
 @interface CALocationDelegateProxy
-- (CALocationDelegateProxy)initWithDelegate:(LocationDelegate *)a3 withAccuracy:(int)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (CALocationDelegateProxy)initWithDelegate:(LocationDelegate *)delegate withAccuracy:(int)accuracy;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation CALocationDelegateProxy
 
-- (CALocationDelegateProxy)initWithDelegate:(LocationDelegate *)a3 withAccuracy:(int)a4
+- (CALocationDelegateProxy)initWithDelegate:(LocationDelegate *)delegate withAccuracy:(int)accuracy
 {
   v7.receiver = self;
   v7.super_class = CALocationDelegateProxy;
   result = [(CALocationDelegateProxy *)&v7 init];
   if (result)
   {
-    result->locationDelegate_ = a3;
-    result->accuracy_ = a4;
+    result->locationDelegate_ = delegate;
+    result->accuracy_ = accuracy;
   }
 
   return result;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   if (self->locationDelegate_)
   {
-    v8 = [v6 location];
-    [v8 coordinate];
+    location = [managerCopy location];
+    [location coordinate];
     v10 = v9;
-    [v8 coordinate];
+    [location coordinate];
     v11 = round(v10 * 100.0) / 100.0;
     v13 = qword_100192D98;
     v14 = round(v12 * 100.0) / 100.0;
@@ -52,12 +52,12 @@
     }
 
     locationDelegate = self->locationDelegate_;
-    v16 = [v8 signalEnvironmentType];
+    signalEnvironmentType = [location signalEnvironmentType];
     accuracy = self->accuracy_;
     buf[0] = 1;
     *&v22[4] = v11;
     *&v22[12] = v14;
-    LOBYTE(v23) = v16;
+    LOBYTE(v23) = signalEnvironmentType;
     HIDWORD(v23) = accuracy;
     (*(locationDelegate->var0 + 3))(&v20, locationDelegate, buf);
     v18 = v20;
@@ -65,10 +65,10 @@
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   if (self->locationDelegate_)
   {
     v8 = qword_100192D98;
@@ -84,11 +84,11 @@
         v12 = kCLLocationAccuracyAggressivePrecisionReduction;
       }
 
-      v13 = [v7 localizedDescription];
+      localizedDescription = [errorCopy localizedDescription];
       *buf = 134218242;
       v16 = v12;
       v17 = 2080;
-      v18 = [v13 UTF8String];
+      uTF8String = [localizedDescription UTF8String];
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[LocationRelay] Encountered error while querying location for accuracy %f: %s", buf, 0x16u);
     }
 
@@ -102,16 +102,16 @@
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   if (self->locationDelegate_)
   {
     v5 = qword_100192D98;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       accuracy = self->accuracy_;
-      v7 = [v4 authorizationStatus];
+      authorizationStatus = [authorizationCopy authorizationStatus];
       if (accuracy)
       {
         v8 = 0xBFF0000000000000;
@@ -122,14 +122,14 @@
         v8 = kCLLocationAccuracyAggressivePrecisionReduction;
       }
 
-      if (v7 > 4)
+      if (authorizationStatus > 4)
       {
         v9 = "AuthorizedUnknown";
       }
 
       else
       {
-        v9 = off_100188568[v7];
+        v9 = off_100188568[authorizationStatus];
       }
 
       sub_10000459C(v13, v9);

@@ -1,28 +1,28 @@
 @interface WBSAppLink
-- (BOOL)_isApplicationProxyAppleNews:(id)a3;
+- (BOOL)_isApplicationProxyAppleNews:(id)news;
 - (BOOL)isAppleNewsLink;
 - (LSApplicationProxy)synchronousTargetApplicationProxy;
-- (WBSAppLink)initWithURL:(id)a3;
-- (id)_synchronouslyFetchAppLinkWithError:(id *)a3;
-- (int64_t)_openStrategyForAppLink:(id)a3;
+- (WBSAppLink)initWithURL:(id)l;
+- (id)_synchronouslyFetchAppLinkWithError:(id *)error;
+- (int64_t)_openStrategyForAppLink:(id)link;
 - (int64_t)synchronouslyDecideOpenStrategy;
-- (void)_appLink:(id)a3 getAppLinkLabel:(id *)a4 name:(id *)a5 bundleIdentifier:(id *)a6 icon:(id *)a7;
-- (void)_getAppLinkForBanner:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)decideOpenStrategyWithCompletionHandler:(id)a3;
+- (void)_appLink:(id)link getAppLinkLabel:(id *)label name:(id *)name bundleIdentifier:(id *)identifier icon:(id *)icon;
+- (void)_getAppLinkForBanner:(BOOL)banner withCompletionHandler:(id)handler;
+- (void)decideOpenStrategyWithCompletionHandler:(id)handler;
 - (void)disableTemporarily;
-- (void)disableWithCompletionHandler:(id)a3;
-- (void)getAppLinkAttributesWithCompletionHandler:(id)a3;
-- (void)getAppLinkLabel:(id *)a3 name:(id *)a4 bundleIdentifier:(id *)a5 icon:(id *)a6;
-- (void)getAppLinkTargetApplicationBundleIdentifierWithCompletionHandler:(id)a3;
-- (void)openExternallyWithWebBrowserState:(id)a3 referrerURL:(id)a4 completionHandler:(id)a5;
-- (void)updateURL:(id)a3;
+- (void)disableWithCompletionHandler:(id)handler;
+- (void)getAppLinkAttributesWithCompletionHandler:(id)handler;
+- (void)getAppLinkLabel:(id *)label name:(id *)name bundleIdentifier:(id *)identifier icon:(id *)icon;
+- (void)getAppLinkTargetApplicationBundleIdentifierWithCompletionHandler:(id)handler;
+- (void)openExternallyWithWebBrowserState:(id)state referrerURL:(id)l completionHandler:(id)handler;
+- (void)updateURL:(id)l;
 @end
 
 @implementation WBSAppLink
 
-- (WBSAppLink)initWithURL:(id)a3
+- (WBSAppLink)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = WBSAppLink;
   v6 = [(WBSAppLink *)&v10 init];
@@ -30,7 +30,7 @@
   if (v6)
   {
     v6->_ivarLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v8 = v7;
   }
 
@@ -40,31 +40,31 @@
 - (LSApplicationProxy)synchronousTargetApplicationProxy
 {
   v2 = [(WBSAppLink *)self _synchronouslyFetchAppLinkWithError:0];
-  v3 = [v2 targetApplicationProxy];
+  targetApplicationProxy = [v2 targetApplicationProxy];
 
-  return v3;
+  return targetApplicationProxy;
 }
 
 - (BOOL)isAppleNewsLink
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(WBSAppLink *)self _synchronouslyFetchAppLinkWithError:0];
-  v4 = [v3 targetApplicationProxy];
-  LOBYTE(v2) = [(WBSAppLink *)v2 _isApplicationProxyAppleNews:v4];
+  targetApplicationProxy = [v3 targetApplicationProxy];
+  LOBYTE(selfCopy) = [(WBSAppLink *)selfCopy _isApplicationProxyAppleNews:targetApplicationProxy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)decideOpenStrategyWithCompletionHandler:(id)a3
+- (void)decideOpenStrategyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__WBSAppLink_decideOpenStrategyWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E8283260;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(WBSAppLink *)self _getAppLinkForBanner:0 withCompletionHandler:v6];
 }
 
@@ -77,15 +77,15 @@ uint64_t __54__WBSAppLink_decideOpenStrategyWithCompletionHandler___block_invoke
   return v4(v2, v3);
 }
 
-- (void)getAppLinkTargetApplicationBundleIdentifierWithCompletionHandler:(id)a3
+- (void)getAppLinkTargetApplicationBundleIdentifierWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __79__WBSAppLink_getAppLinkTargetApplicationBundleIdentifierWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E8283288;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(WBSAppLink *)self _getAppLinkForBanner:0 withCompletionHandler:v6];
 }
 
@@ -105,16 +105,16 @@ void __79__WBSAppLink_getAppLinkTargetApplicationBundleIdentifierWithCompletionH
   return v4;
 }
 
-- (void)getAppLinkAttributesWithCompletionHandler:(id)a3
+- (void)getAppLinkAttributesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__WBSAppLink_getAppLinkAttributesWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E82832B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(WBSAppLink *)self _getAppLinkForBanner:0 withCompletionHandler:v6];
 }
 
@@ -133,37 +133,37 @@ void __56__WBSAppLink_getAppLinkAttributesWithCompletionHandler___block_invoke(u
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getAppLinkLabel:(id *)a3 name:(id *)a4 bundleIdentifier:(id *)a5 icon:(id *)a6
+- (void)getAppLinkLabel:(id *)label name:(id *)name bundleIdentifier:(id *)identifier icon:(id *)icon
 {
   v11 = [(WBSAppLink *)self _synchronouslyFetchAppLinkWithError:0];
-  [(WBSAppLink *)self _appLink:v11 getAppLinkLabel:a3 name:a4 bundleIdentifier:a5 icon:a6];
+  [(WBSAppLink *)self _appLink:v11 getAppLinkLabel:label name:name bundleIdentifier:identifier icon:icon];
 }
 
-- (void)openExternallyWithWebBrowserState:(id)a3 referrerURL:(id)a4 completionHandler:(id)a5
+- (void)openExternallyWithWebBrowserState:(id)state referrerURL:(id)l completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  stateCopy = state;
+  lCopy = l;
+  if (handler)
   {
-    v10 = a5;
+    handlerCopy = handler;
   }
 
   else
   {
-    v10 = &__block_literal_global_2;
+    handlerCopy = &__block_literal_global_2;
   }
 
-  v11 = _Block_copy(v10);
+  v11 = _Block_copy(handlerCopy);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __78__WBSAppLink_openExternallyWithWebBrowserState_referrerURL_completionHandler___block_invoke_2;
   v15[3] = &unk_1E8283320;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
+  v16 = stateCopy;
+  v17 = lCopy;
   v18 = v11;
-  v12 = v9;
-  v13 = v8;
+  v12 = lCopy;
+  v13 = stateCopy;
   v14 = v11;
   [(WBSAppLink *)self _getAppLinkForBanner:0 withCompletionHandler:v15];
 }
@@ -252,16 +252,16 @@ void __78__WBSAppLink_openExternallyWithWebBrowserState_referrerURL_completionHa
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)disableWithCompletionHandler:(id)a3
+- (void)disableWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__WBSAppLink_disableWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E82832B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(WBSAppLink *)self _getAppLinkForBanner:0 withCompletionHandler:v6];
 }
 
@@ -297,16 +297,16 @@ void __43__WBSAppLink_disableWithCompletionHandler___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_getAppLinkForBanner:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)_getAppLinkForBanner:(BOOL)banner withCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_ivarLock);
   v6 = self->_cachedAppLink;
   didResolveAppLink = self->_didResolveAppLink;
   os_unfair_lock_unlock(&self->_ivarLock);
   if (didResolveAppLink)
   {
-    v5[2](v5, v6, 0);
+    handlerCopy[2](handlerCopy, v6, 0);
   }
 
   else
@@ -320,14 +320,14 @@ void __43__WBSAppLink_disableWithCompletionHandler___block_invoke(uint64_t a1, v
       v11[2] = __57__WBSAppLink__getAppLinkForBanner_withCompletionHandler___block_invoke;
       v11[3] = &unk_1E82832B0;
       v11[4] = self;
-      v12 = v5;
+      v12 = handlerCopy;
       [v9 getAppLinkWithURL:url completionHandler:v11];
     }
 
     else
     {
       v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A978] code:-1002 userInfo:0];
-      (v5)[2](v5, 0, v10);
+      (handlerCopy)[2](handlerCopy, 0, v10);
     }
   }
 }
@@ -364,7 +364,7 @@ void __57__WBSAppLink__getAppLinkForBanner_withCompletionHandler___block_invoke(
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_synchronouslyFetchAppLinkWithError:(id *)a3
+- (id)_synchronouslyFetchAppLinkWithError:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_ivarLock);
@@ -373,52 +373,52 @@ void __57__WBSAppLink__getAppLinkForBanner_withCompletionHandler___block_invoke(
   os_unfair_lock_unlock(&self->_ivarLock);
   if (didResolveAppLink)
   {
-    v7 = v5;
+    firstObject = v5;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69635C0] appLinksWithURL:self->_url limit:1 error:a3];
-    v7 = [v8 firstObject];
+    v8 = [MEMORY[0x1E69635C0] appLinksWithURL:self->_url limit:1 error:error];
+    firstObject = [v8 firstObject];
 
-    if (!v7)
+    if (!firstObject)
     {
       v9 = WBS_LOG_CHANNEL_PREFIXUniversalLinks();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         url = self->_url;
         v11 = v9;
-        v12 = [0 safari_privacyPreservingDescription];
+        safari_privacyPreservingDescription = [0 safari_privacyPreservingDescription];
         v14 = 138740227;
         v15 = url;
         v16 = 2114;
-        v17 = v12;
+        v17 = safari_privacyPreservingDescription;
         _os_log_impl(&dword_1C6968000, v11, OS_LOG_TYPE_INFO, "Failed to synchronously resolve App Link for URL %{sensitive}@ with error %{public}@", &v14, 0x16u);
       }
     }
 
     os_unfair_lock_lock(&self->_ivarLock);
     self->_didResolveAppLink = 1;
-    objc_storeStrong(&self->_cachedAppLink, v7);
+    objc_storeStrong(&self->_cachedAppLink, firstObject);
     os_unfair_lock_unlock(&self->_ivarLock);
-    if (a3)
+    if (error)
     {
-      *a3 = 0;
+      *error = 0;
     }
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (int64_t)_openStrategyForAppLink:(id)a3
+- (int64_t)_openStrategyForAppLink:(id)link
 {
-  if (!a3)
+  if (!link)
   {
     return 0;
   }
 
-  v3 = a3;
-  if ([v3 isEnabled])
+  linkCopy = link;
+  if ([linkCopy isEnabled])
   {
     v4 = 3;
   }
@@ -429,7 +429,7 @@ void __57__WBSAppLink__getAppLinkForBanner_withCompletionHandler___block_invoke(
   }
 
   v5 = +[WBSAppLinkEphemeralDisabler defaultDisabler];
-  v6 = [v5 shouldDisableAppLink:v3];
+  v6 = [v5 shouldDisableAppLink:linkCopy];
 
   if (v6)
   {
@@ -442,24 +442,24 @@ void __57__WBSAppLink__getAppLinkForBanner_withCompletionHandler___block_invoke(
   }
 }
 
-- (void)_appLink:(id)a3 getAppLinkLabel:(id *)a4 name:(id *)a5 bundleIdentifier:(id *)a6 icon:(id *)a7
+- (void)_appLink:(id)link getAppLinkLabel:(id *)label name:(id *)name bundleIdentifier:(id *)identifier icon:(id *)icon
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v12 = [a3 targetApplicationProxy];
-  v13 = [v12 bundleIdentifier];
-  if ([MEMORY[0x1E696AAE8] safari_isICloudAppWithBundleIdentifier:v13])
+  targetApplicationProxy = [link targetApplicationProxy];
+  bundleIdentifier = [targetApplicationProxy bundleIdentifier];
+  if ([MEMORY[0x1E696AAE8] safari_isICloudAppWithBundleIdentifier:bundleIdentifier])
   {
     v14 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:*MEMORY[0x1E69C8DA0]];
 
-    v12 = v14;
+    targetApplicationProxy = v14;
   }
 
-  if (!(a4 | a5))
+  if (!(label | name))
   {
-    v15 = 0;
+    localizedName = 0;
     v16 = 0;
 LABEL_11:
-    if (!a7)
+    if (!icon)
     {
       goto LABEL_13;
     }
@@ -467,11 +467,11 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v15 = [v12 localizedName];
-  if (v15)
+  localizedName = [targetApplicationProxy localizedName];
+  if (localizedName)
   {
-    v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v15];
-    if (!a5)
+    v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:localizedName];
+    if (!name)
     {
       goto LABEL_7;
     }
@@ -480,46 +480,46 @@ LABEL_11:
   }
 
   v16 = 0;
-  if (a5)
+  if (name)
   {
 LABEL_6:
-    v17 = v15;
-    *a5 = v15;
+    v17 = localizedName;
+    *name = localizedName;
   }
 
 LABEL_7:
-  if (!a4)
+  if (!label)
   {
     goto LABEL_11;
   }
 
-  v18 = [v12 itemName];
-  if (v18)
+  itemName = [targetApplicationProxy itemName];
+  if (itemName)
   {
-    v19 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v18];
-    *a4 = v19;
+    v19 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:itemName];
+    *label = v19;
   }
 
   else
   {
     v35 = v16;
-    *a4 = v16;
+    *label = v16;
   }
 
-  if (a7)
+  if (icon)
   {
 LABEL_12:
-    *a7 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:v12 format:0];
+    *icon = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:targetApplicationProxy format:0];
   }
 
 LABEL_13:
-  if (a6)
+  if (identifier)
   {
-    v20 = v13;
-    *a6 = v13;
+    v20 = bundleIdentifier;
+    *identifier = bundleIdentifier;
   }
 
-  if (a4 && [(WBSAppLink *)self _isApplicationProxyAppleNews:v12])
+  if (label && [(WBSAppLink *)self _isApplicationProxyAppleNews:targetApplicationProxy])
   {
     if (shouldShowAlternateNewsUniversalLinksFormatting_onceToken != -1)
     {
@@ -562,25 +562,25 @@ LABEL_13:
       [v36 replaceCharactersInRange:v32 withAttributedString:{v33, v29}];
 
       v34 = v36;
-      *a4 = v36;
+      *label = v36;
     }
   }
 }
 
-- (BOOL)_isApplicationProxyAppleNews:(id)a3
+- (BOOL)_isApplicationProxyAppleNews:(id)news
 {
-  v3 = [a3 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.news"];
+  bundleIdentifier = [news bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.news"];
 
   return v4;
 }
 
-- (void)updateURL:(id)a3
+- (void)updateURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_ivarLock);
   url = self->_url;
-  self->_url = v4;
+  self->_url = lCopy;
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }

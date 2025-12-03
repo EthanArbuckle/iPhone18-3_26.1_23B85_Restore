@@ -1,25 +1,25 @@
 @interface GKCDContactInfoList
-+ (id)_gkPrimaryListWithContext:(id)a3;
++ (id)_gkPrimaryListWithContext:(id)context;
 @end
 
 @implementation GKCDContactInfoList
 
-+ (id)_gkPrimaryListWithContext:(id)a3
++ (id)_gkPrimaryListWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [GKCDContactInfoList _gkObjectsMatchingPredicate:0 withContext:v4];
-  v6 = [v5 firstObject];
+  contextCopy = context;
+  v5 = [GKCDContactInfoList _gkObjectsMatchingPredicate:0 withContext:contextCopy];
+  firstObject = [v5 firstObject];
 
-  if (!v6)
+  if (!firstObject)
   {
     v7 = [GKCDContactInfoList alloc];
-    v8 = [a1 entity];
-    v6 = [(GKCDContactInfoList *)v7 initWithEntity:v8 insertIntoManagedObjectContext:v4];
+    entity = [self entity];
+    firstObject = [(GKCDContactInfoList *)v7 initWithEntity:entity insertIntoManagedObjectContext:contextCopy];
 
-    [(GKCDContactInfoList *)v6 setVersion:&off_100382808];
+    [(GKCDContactInfoList *)firstObject setVersion:&off_100382808];
   }
 
-  return v6;
+  return firstObject;
 }
 
 @end

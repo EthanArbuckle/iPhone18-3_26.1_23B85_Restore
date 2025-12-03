@@ -10,7 +10,7 @@
   v4[1] = 3221225472;
   v4[2] = __64__NSMutableDictionary_ML3ArtworkAdditions__mergeWithDictionary___block_invoke;
   v4[3] = &unk_278762E48;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 enumerateKeysAndObjectsUsingBlock:v4];
 }
 

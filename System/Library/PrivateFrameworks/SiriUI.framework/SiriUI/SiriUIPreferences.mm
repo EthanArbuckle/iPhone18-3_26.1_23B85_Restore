@@ -5,7 +5,7 @@
 - (id)previousSiriRequestErrorTimestamp;
 - (int64_t)numberOfTimesCarDNDSiriCardShown;
 - (int64_t)siriRequestErrorCount;
-- (void)setPreviousSiriRequestErrorTimestamp:(id)a3;
+- (void)setPreviousSiriRequestErrorTimestamp:(id)timestamp;
 @end
 
 @implementation SiriUIPreferences
@@ -61,11 +61,11 @@ uint64_t __38__SiriUIPreferences_sharedPreferences__block_invoke()
   return previousSiriRequestErrorTimestamp;
 }
 
-- (void)setPreviousSiriRequestErrorTimestamp:(id)a3
+- (void)setPreviousSiriRequestErrorTimestamp:(id)timestamp
 {
-  objc_storeStrong(&self->_previousSiriRequestErrorTimestamp, a3);
-  v5 = a3;
-  [(NSUserDefaults *)self->_userDefaults setObject:v5 forKey:@"previousSiriRequestErrorTimestamp"];
+  objc_storeStrong(&self->_previousSiriRequestErrorTimestamp, timestamp);
+  timestampCopy = timestamp;
+  [(NSUserDefaults *)self->_userDefaults setObject:timestampCopy forKey:@"previousSiriRequestErrorTimestamp"];
 }
 
 - (int64_t)siriRequestErrorCount

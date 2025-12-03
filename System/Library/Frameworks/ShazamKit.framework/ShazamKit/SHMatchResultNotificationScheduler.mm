@@ -1,27 +1,27 @@
 @interface SHMatchResultNotificationScheduler
-- (BOOL)canSendNotificationForMatch:(id)a3;
-- (BOOL)canSendNotificationForNoMatchSignatureID:(id)a3;
-- (SHMatchResultNotificationScheduler)initWithAttribution:(id)a3;
-- (void)sendAnalyticsEventForMatch:(id)a3;
-- (void)sendMatchNotification:(id)a3 completionHandler:(id)a4;
-- (void)sendNotificationForMatch:(id)a3 completionHandler:(id)a4;
-- (void)sendNotificationForNoMatchWithCompletionHandler:(id)a3;
-- (void)sendNotificationForResponse:(id)a3 completionHandler:(id)a4;
+- (BOOL)canSendNotificationForMatch:(id)match;
+- (BOOL)canSendNotificationForNoMatchSignatureID:(id)d;
+- (SHMatchResultNotificationScheduler)initWithAttribution:(id)attribution;
+- (void)sendAnalyticsEventForMatch:(id)match;
+- (void)sendMatchNotification:(id)notification completionHandler:(id)handler;
+- (void)sendNotificationForMatch:(id)match completionHandler:(id)handler;
+- (void)sendNotificationForNoMatchWithCompletionHandler:(id)handler;
+- (void)sendNotificationForResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation SHMatchResultNotificationScheduler
 
-- (SHMatchResultNotificationScheduler)initWithAttribution:(id)a3
+- (SHMatchResultNotificationScheduler)initWithAttribution:(id)attribution
 {
-  v5 = a3;
+  attributionCopy = attribution;
   v12.receiver = self;
   v12.super_class = SHMatchResultNotificationScheduler;
   v6 = [(SHMatchResultNotificationScheduler *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attribution, a3);
-    v8 = [[SHMatchResultUserNotificationContentProvider alloc] initWithAttribution:v5];
+    objc_storeStrong(&v6->_attribution, attribution);
+    v8 = [[SHMatchResultUserNotificationContentProvider alloc] initWithAttribution:attributionCopy];
     v9 = [[SHMatchResultUserNotificationContentDeliverer alloc] initWithContentProvider:v8];
     contentDeliverer = v7->_contentDeliverer;
     v7->_contentDeliverer = v9;
@@ -30,18 +30,18 @@
   return v7;
 }
 
-- (BOOL)canSendNotificationForMatch:(id)a3
+- (BOOL)canSendNotificationForMatch:(id)match
 {
-  v4 = a3;
-  if (v4)
+  matchCopy = match;
+  if (matchCopy)
   {
-    v5 = [(SHMatchResultNotificationScheduler *)self currentMediaItem];
-    if ([v4 containsMediaItemWithFuzzyTolerance:v5])
+    currentMediaItem = [(SHMatchResultNotificationScheduler *)self currentMediaItem];
+    if ([matchCopy containsMediaItemWithFuzzyTolerance:currentMediaItem])
     {
-      v6 = [(SHMatchResultNotificationScheduler *)self currentSignatureID];
-      v7 = [v4 querySignature];
-      v8 = [v7 _ID];
-      v9 = [v6 isEqual:v8] ^ 1;
+      currentSignatureID = [(SHMatchResultNotificationScheduler *)self currentSignatureID];
+      querySignature = [matchCopy querySignature];
+      v8 = [querySignature _ID];
+      v9 = [currentSignatureID isEqual:v8] ^ 1;
     }
 
     else
@@ -58,35 +58,35 @@
   return v9;
 }
 
-- (void)sendNotificationForMatch:(id)a3 completionHandler:(id)a4
+- (void)sendNotificationForMatch:(id)match completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 mediaItems];
-  v9 = [v8 firstObject];
-  [(SHMatchResultNotificationScheduler *)self setCurrentMediaItem:v9];
+  handlerCopy = handler;
+  matchCopy = match;
+  mediaItems = [matchCopy mediaItems];
+  firstObject = [mediaItems firstObject];
+  [(SHMatchResultNotificationScheduler *)self setCurrentMediaItem:firstObject];
 
-  v10 = [v7 querySignature];
-  v11 = [v10 _ID];
+  querySignature = [matchCopy querySignature];
+  v11 = [querySignature _ID];
   [(SHMatchResultNotificationScheduler *)self setCurrentSignatureID:v11];
 
-  [(SHMatchResultNotificationScheduler *)self sendAnalyticsEventForMatch:v7];
-  v12 = [(SHMatchResultNotificationScheduler *)self currentMediaItem];
-  [(SHMatchResultNotificationScheduler *)self sendMatchNotification:v12 completionHandler:v6];
+  [(SHMatchResultNotificationScheduler *)self sendAnalyticsEventForMatch:matchCopy];
+  currentMediaItem = [(SHMatchResultNotificationScheduler *)self currentMediaItem];
+  [(SHMatchResultNotificationScheduler *)self sendMatchNotification:currentMediaItem completionHandler:handlerCopy];
 }
 
-- (BOOL)canSendNotificationForNoMatchSignatureID:(id)a3
+- (BOOL)canSendNotificationForNoMatchSignatureID:(id)d
 {
-  v4 = a3;
-  v5 = [(SHMatchResultNotificationScheduler *)self currentSignatureID];
-  v6 = [v5 isEqual:v4];
+  dCopy = d;
+  currentSignatureID = [(SHMatchResultNotificationScheduler *)self currentSignatureID];
+  v6 = [currentSignatureID isEqual:dCopy];
 
   return v6 ^ 1;
 }
 
-- (void)sendNotificationForNoMatchWithCompletionHandler:(id)a3
+- (void)sendNotificationForNoMatchWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sh_log_object();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -95,18 +95,18 @@
   }
 
   [(SHMatchResultNotificationScheduler *)self sendAnalyticsEventForMatch:0];
-  v6 = [(SHMatchResultNotificationScheduler *)self contentDeliverer];
-  [v6 deliverContentForNoMatchWithCompletion:v4];
+  contentDeliverer = [(SHMatchResultNotificationScheduler *)self contentDeliverer];
+  [contentDeliverer deliverContentForNoMatchWithCompletion:handlerCopy];
 }
 
-- (void)sendAnalyticsEventForMatch:(id)a3
+- (void)sendAnalyticsEventForMatch:(id)match
 {
   v10 = +[NSMutableDictionary dictionary];
-  v5 = [(SHMatchResultNotificationScheduler *)self attribution];
-  v6 = [v5 bundleIdentifier];
-  [v10 setValue:v6 forKey:SHAnalyticsPayloadSourceKey];
+  attribution = [(SHMatchResultNotificationScheduler *)self attribution];
+  bundleIdentifier = [attribution bundleIdentifier];
+  [v10 setValue:bundleIdentifier forKey:SHAnalyticsPayloadSourceKey];
 
-  v7 = [NSNumber numberWithBool:a3 != 0];
+  v7 = [NSNumber numberWithBool:match != 0];
   [v10 setObject:v7 forKey:SHAnalyticsPayloadMatchKey];
 
   v8 = SHAnalyticsEventMusicRecognitionResult;
@@ -114,20 +114,20 @@
   [SHAnalytics sendEvent:v8 withPayload:v9];
 }
 
-- (void)sendNotificationForResponse:(id)a3 completionHandler:(id)a4
+- (void)sendNotificationForResponse:(id)response completionHandler:(id)handler
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v14 result];
-  if (v7 == 1)
+  responseCopy = response;
+  handlerCopy = handler;
+  result = [responseCopy result];
+  if (result == 1)
   {
-    v11 = [v14 match];
-    v12 = [(SHMatchResultNotificationScheduler *)self canSendNotificationForMatch:v11];
+    match = [responseCopy match];
+    v12 = [(SHMatchResultNotificationScheduler *)self canSendNotificationForMatch:match];
 
     if (v12)
     {
-      v13 = [v14 match];
-      [(SHMatchResultNotificationScheduler *)self sendNotificationForMatch:v13 completionHandler:v6];
+      match2 = [responseCopy match];
+      [(SHMatchResultNotificationScheduler *)self sendNotificationForMatch:match2 completionHandler:handlerCopy];
 
       goto LABEL_9;
     }
@@ -135,29 +135,29 @@
     goto LABEL_8;
   }
 
-  if (v7 == 2 || v7 == 3)
+  if (result == 2 || result == 3)
   {
-    v8 = [v14 signature];
-    v9 = [v8 _ID];
+    signature = [responseCopy signature];
+    v9 = [signature _ID];
     v10 = [(SHMatchResultNotificationScheduler *)self canSendNotificationForNoMatchSignatureID:v9];
 
     if (v10)
     {
-      [(SHMatchResultNotificationScheduler *)self sendNotificationForNoMatchWithCompletionHandler:v6];
+      [(SHMatchResultNotificationScheduler *)self sendNotificationForNoMatchWithCompletionHandler:handlerCopy];
       goto LABEL_9;
     }
 
 LABEL_8:
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_9:
 }
 
-- (void)sendMatchNotification:(id)a3 completionHandler:(id)a4
+- (void)sendMatchNotification:(id)notification completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  notificationCopy = notification;
   v8 = sh_log_object();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -165,8 +165,8 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Sending match notification", v10, 2u);
   }
 
-  v9 = [(SHMatchResultNotificationScheduler *)self contentDeliverer];
-  [v9 deliverContentForMatchedMediaItem:v7 completion:v6];
+  contentDeliverer = [(SHMatchResultNotificationScheduler *)self contentDeliverer];
+  [contentDeliverer deliverContentForMatchedMediaItem:notificationCopy completion:handlerCopy];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface PKPeerPaymentAddAssociatedAccountIdentityVerificationExplanationViewController
-- (PKPeerPaymentAddAssociatedAccountIdentityVerificationExplanationViewController)initWithPeerPaymentSetupFlowController:(id)a3;
-- (void)explanationViewControllerDidSelectCancel:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (PKPeerPaymentAddAssociatedAccountIdentityVerificationExplanationViewController)initWithPeerPaymentSetupFlowController:(id)controller;
+- (void)explanationViewControllerDidSelectCancel:(id)cancel;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPeerPaymentAddAssociatedAccountIdentityVerificationExplanationViewController
 
-- (PKPeerPaymentAddAssociatedAccountIdentityVerificationExplanationViewController)initWithPeerPaymentSetupFlowController:(id)a3
+- (PKPeerPaymentAddAssociatedAccountIdentityVerificationExplanationViewController)initWithPeerPaymentSetupFlowController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = PKPeerPaymentAddAssociatedAccountIdentityVerificationExplanationViewController;
-  v6 = -[PKExplanationViewController initWithContext:](&v13, sel_initWithContext_, [v5 context]);
+  v6 = -[PKExplanationViewController initWithContext:](&v13, sel_initWithContext_, [controllerCopy context]);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
-    v8 = [(PKExplanationViewController *)v7 explanationView];
-    v9 = [(PKPeerPaymentSetupFlowController *)v7->_controller passSnapShot];
-    [v8 setImage:v9];
+    objc_storeStrong(&v6->_controller, controller);
+    explanationView = [(PKExplanationViewController *)v7 explanationView];
+    passSnapShot = [(PKPeerPaymentSetupFlowController *)v7->_controller passSnapShot];
+    [explanationView setImage:passSnapShot];
 
-    v10 = [v8 imageView];
-    [v10 setAccessibilityIgnoresInvertColors:1];
+    imageView = [explanationView imageView];
+    [imageView setAccessibilityIgnoresInvertColors:1];
 
     v11 = [MEMORY[0x1E69B7D50] pk_privacyLinkForContext:2];
     [(PKExplanationViewController *)v7 setPrivacyLinkController:v11];
@@ -40,37 +40,37 @@
   v13.receiver = self;
   v13.super_class = PKPeerPaymentAddAssociatedAccountIdentityVerificationExplanationViewController;
   [(PKExplanationViewController *)&v13 viewDidLoad];
-  v3 = [(PKPeerPaymentSetupFlowController *)self->_controller configuration];
-  v4 = [v3 peerPaymentSetupConfigurationType];
+  configuration = [(PKPeerPaymentSetupFlowController *)self->_controller configuration];
+  peerPaymentSetupConfigurationType = [configuration peerPaymentSetupConfigurationType];
 
-  if (v4 == 1)
+  if (peerPaymentSetupConfigurationType == 1)
   {
-    v5 = [(PKPeerPaymentSetupFlowController *)self->_controller configuration];
+    configuration2 = [(PKPeerPaymentSetupFlowController *)self->_controller configuration];
   }
 
   else
   {
-    v5 = 0;
+    configuration2 = 0;
   }
 
-  v6 = [v5 familyMember];
-  v7 = [(PKExplanationViewController *)self explanationView];
+  familyMember = [configuration2 familyMember];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v8 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_9.isa);
-  [v7 setTitleText:v8];
+  [explanationView setTitleText:v8];
 
-  v9 = [v6 firstName];
-  v10 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_10.isa, &stru_1F3BD5BF0.isa, v9);
-  [v7 setBodyText:v10];
+  firstName = [familyMember firstName];
+  v10 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_10.isa, &stru_1F3BD5BF0.isa, firstName);
+  [explanationView setBodyText:v10];
 
-  [v7 setShowPrivacyView:1];
-  [v7 setTopMargin:12.0];
-  [v7 setBodyDataDetectorTypes:0];
-  v11 = [v7 dockView];
-  v12 = [v11 footerView];
-  [v12 setSetUpLaterButton:0];
+  [explanationView setShowPrivacyView:1];
+  [explanationView setTopMargin:12.0];
+  [explanationView setBodyDataDetectorTypes:0];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
+  [footerView setSetUpLaterButton:0];
 }
 
-- (void)explanationViewControllerDidSelectCancel:(id)a3
+- (void)explanationViewControllerDidSelectCancel:(id)cancel
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -91,7 +91,7 @@ uint64_t __123__PKPeerPaymentAddAssociatedAccountIdentityVerificationExplanation
   return result;
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   continueHandler = self->_continueHandler;
   if (continueHandler)

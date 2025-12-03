@@ -1,30 +1,30 @@
 @interface GAXSBMainWorkspaceOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_handleUserActionRequest:(id)a3 options:(id)a4 activationSettings:(id)a5 origin:(id)a6 withResult:(id)a7;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_handleUserActionRequest:(id)request options:(id)options activationSettings:(id)settings origin:(id)origin withResult:(id)result;
 - (void)presentPowerDownTransientOverlay;
-- (void)systemService:(id)a3 handleOpenApplicationRequest:(id)a4 withCompletion:(id)a5;
+- (void)systemService:(id)service handleOpenApplicationRequest:(id)request withCompletion:(id)completion;
 @end
 
 @implementation GAXSBMainWorkspaceOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBMainWorkspace" hasInstanceMethod:@"systemService: handleOpenApplicationRequest: withCompletion:" withFullSignature:{"v", "@", "@", "@?", 0}];
-  [v3 validateClass:@"SBMainWorkspace" hasInstanceMethod:@"_handleUserActionRequest: options: activationSettings: origin: withResult:" withFullSignature:{"v", "@", "@", "@", "@", "@?", 0}];
-  [v3 validateClass:@"SBMainWorkspace" hasInstanceMethod:@"_canExecuteTransitionRequest:forExecution:" withFullSignature:{"@", "B", 0}];
-  [v3 validateClass:@"SBMainWorkspace" hasInstanceMethod:@"presentPowerDownTransientOverlay" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBMainWorkspaceTransitionRequest" hasInstanceMethod:@"source" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBWorkspaceTransitionRequest" hasInstanceMethod:@"transientOverlayContext" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBWorkspaceTransientOverlayTransitionContext" hasInstanceMethod:@"transientOverlay" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBWorkspaceTransientOverlay" hasInstanceMethod:@"viewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBMainWorkspace" hasInstanceMethod:@"systemService: handleOpenApplicationRequest: withCompletion:" withFullSignature:{"v", "@", "@", "@?", 0}];
+  [validationsCopy validateClass:@"SBMainWorkspace" hasInstanceMethod:@"_handleUserActionRequest: options: activationSettings: origin: withResult:" withFullSignature:{"v", "@", "@", "@", "@", "@?", 0}];
+  [validationsCopy validateClass:@"SBMainWorkspace" hasInstanceMethod:@"_canExecuteTransitionRequest:forExecution:" withFullSignature:{"@", "B", 0}];
+  [validationsCopy validateClass:@"SBMainWorkspace" hasInstanceMethod:@"presentPowerDownTransientOverlay" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBMainWorkspaceTransitionRequest" hasInstanceMethod:@"source" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBWorkspaceTransitionRequest" hasInstanceMethod:@"transientOverlayContext" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBWorkspaceTransientOverlayTransitionContext" hasInstanceMethod:@"transientOverlay" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBWorkspaceTransientOverlay" hasInstanceMethod:@"viewController" withFullSignature:{"@", 0}];
 }
 
-- (void)systemService:(id)a3 handleOpenApplicationRequest:(id)a4 withCompletion:(id)a5
+- (void)systemService:(id)service handleOpenApplicationRequest:(id)request withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  requestCopy = request;
+  completionCopy = completion;
   v11 = +[GAXSpringboard sharedInstance];
   if (![v11 isActive])
   {
@@ -32,28 +32,28 @@
   }
 
   v12 = GAXAllowedRemoteUIProcesses();
-  v13 = [v9 bundleIdentifier];
-  v14 = [v12 containsObject:v13];
+  bundleIdentifier = [requestCopy bundleIdentifier];
+  v14 = [v12 containsObject:bundleIdentifier];
 
   if (v14)
   {
     goto LABEL_6;
   }
 
-  v15 = [v11 frontmostAppIdentifier];
-  v16 = [v9 bundleIdentifier];
-  if ([v15 isEqualToString:v16])
+  frontmostAppIdentifier = [v11 frontmostAppIdentifier];
+  bundleIdentifier2 = [requestCopy bundleIdentifier];
+  if ([frontmostAppIdentifier isEqualToString:bundleIdentifier2])
   {
 
 LABEL_6:
     v24.receiver = self;
     v24.super_class = GAXSBMainWorkspaceOverride;
-    [(GAXSBMainWorkspaceOverride *)&v24 systemService:v8 handleOpenApplicationRequest:v9 withCompletion:v10];
+    [(GAXSBMainWorkspaceOverride *)&v24 systemService:serviceCopy handleOpenApplicationRequest:requestCopy withCompletion:completionCopy];
     goto LABEL_7;
   }
 
-  v17 = [v9 bundleIdentifier];
-  v18 = [v11 isBundleIDAllowedApp:v17];
+  bundleIdentifier3 = [requestCopy bundleIdentifier];
+  v18 = [v11 isBundleIDAllowedApp:bundleIdentifier3];
 
   if (v18)
   {
@@ -63,13 +63,13 @@ LABEL_6:
   v19 = GAXLogCommon();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v9 bundleIdentifier];
+    bundleIdentifier4 = [requestCopy bundleIdentifier];
     *buf = 138543362;
-    v28 = v20;
+    v28 = bundleIdentifier4;
     _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "Guided Access blocking workspace open app request: %{public}@", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v21 = FBSOpenApplicationErrorDomain;
     v25 = NSLocalizedDescriptionKey;
@@ -77,23 +77,23 @@ LABEL_6:
     v22 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v23 = [NSError errorWithDomain:v21 code:1 userInfo:v22];
 
-    v10[2](v10, v23);
+    completionCopy[2](completionCopy, v23);
   }
 
 LABEL_7:
 }
 
-- (void)_handleUserActionRequest:(id)a3 options:(id)a4 activationSettings:(id)a5 origin:(id)a6 withResult:(id)a7
+- (void)_handleUserActionRequest:(id)request options:(id)options activationSettings:(id)settings origin:(id)origin withResult:(id)result
 {
-  v12 = a3;
-  v13 = a4;
-  v29 = a5;
-  v14 = a6;
-  v15 = a7;
+  requestCopy = request;
+  optionsCopy = options;
+  settingsCopy = settings;
+  originCopy = origin;
+  resultCopy = result;
   v16 = +[GAXSpringboard sharedInstance];
   buf[0] = 0;
   objc_opt_class();
-  v17 = [v13 objectForKey:FBSOpenApplicationOptionKeyPayloadURL];
+  frontmostAppIdentifier = [optionsCopy objectForKey:FBSOpenApplicationOptionKeyPayloadURL];
   v18 = __UIAccessibilityCastAsClass();
 
   if (![v16 isActive])
@@ -105,15 +105,15 @@ LABEL_7:
   v20 = v19;
   if (v19)
   {
-    v17 = [v16 frontmostAppIdentifier];
-    if (GAXAppIsMobilePhoneOrFacetime(v17))
+    frontmostAppIdentifier = [v16 frontmostAppIdentifier];
+    if (GAXAppIsMobilePhoneOrFacetime(frontmostAppIdentifier))
     {
       goto LABEL_6;
     }
   }
 
-  v21 = [v16 frontmostAppIdentifier];
-  if ([v21 isEqualToString:v12])
+  frontmostAppIdentifier2 = [v16 frontmostAppIdentifier];
+  if ([frontmostAppIdentifier2 isEqualToString:requestCopy])
   {
 
     if ((v20 & 1) == 0)
@@ -121,8 +121,8 @@ LABEL_7:
 LABEL_10:
       v30.receiver = self;
       v30.super_class = GAXSBMainWorkspaceOverride;
-      v23 = v29;
-      [(GAXSBMainWorkspaceOverride *)&v30 _handleUserActionRequest:v12 options:v13 activationSettings:v29 origin:v14 withResult:v15];
+      v23 = settingsCopy;
+      [(GAXSBMainWorkspaceOverride *)&v30 _handleUserActionRequest:requestCopy options:optionsCopy activationSettings:settingsCopy origin:originCopy withResult:resultCopy];
       goto LABEL_11;
     }
 
@@ -131,8 +131,8 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v28 = v17;
-  v22 = [v16 isBundleIDAllowedApp:v12];
+  v28 = frontmostAppIdentifier;
+  v22 = [v16 isBundleIDAllowedApp:requestCopy];
 
   if (v20)
   {
@@ -149,12 +149,12 @@ LABEL_6:
     *buf = 138543618;
     v34 = v18;
     v35 = 2114;
-    v36 = v12;
+    v36 = requestCopy;
     _os_log_impl(&dword_0, v24, OS_LOG_TYPE_DEFAULT, "Guided Access blocking workspace open URL request: %{public}@ app: %{public}@", buf, 0x16u);
   }
 
-  v23 = v29;
-  if (v15)
+  v23 = settingsCopy;
+  if (resultCopy)
   {
     v25 = FBSOpenApplicationErrorDomain;
     v31 = NSLocalizedDescriptionKey;
@@ -162,7 +162,7 @@ LABEL_6:
     v26 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v27 = [NSError errorWithDomain:v25 code:1 userInfo:v26];
 
-    v15[2](v15, v27);
+    resultCopy[2](resultCopy, v27);
   }
 
 LABEL_11:

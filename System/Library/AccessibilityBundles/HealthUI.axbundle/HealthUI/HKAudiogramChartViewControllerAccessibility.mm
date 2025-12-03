@@ -1,14 +1,14 @@
 @interface HKAudiogramChartViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation HKAudiogramChartViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HKAudiogramChartViewController" hasInstanceMethod:@"_resetCurrentGraph" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HKAudiogramChartViewController" hasInstanceMethod:@"_updateHeaderState" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HKAudiogramChartViewController" hasInstanceMethod:@"_resetCurrentGraph" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HKAudiogramChartViewController" hasInstanceMethod:@"_updateHeaderState" withFullSignature:{"v", 0}];
 }
 
 @end

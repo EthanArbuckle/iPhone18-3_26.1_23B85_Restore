@@ -1,36 +1,36 @@
 @interface PKRewardsTierTableViewCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKRewardsTierTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKRewardsTierTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (PKRewardsTierTableViewCellDelegate)delegate;
 - (void)layoutSubviews;
 - (void)linkAction;
-- (void)setLink:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setLink:(id)link;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PKRewardsTierTableViewCell
 
-- (PKRewardsTierTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKRewardsTierTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v30.receiver = self;
   v30.super_class = PKRewardsTierTableViewCell;
-  v4 = [(PKRewardsTierTableViewCell *)&v30 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PKRewardsTierTableViewCell *)&v30 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PKRewardsTierTableViewCell *)v4 contentView];
+    contentView = [(PKRewardsTierTableViewCell *)v4 contentView];
     v7 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     tierIcon = v5->_tierIcon;
     v5->_tierIcon = v7;
 
     [(UIImageView *)v5->_tierIcon setContentMode:1];
-    v9 = [(UIImageView *)v5->_tierIcon layer];
-    [v9 setCornerCurve:*MEMORY[0x1E69796E8]];
-    [v9 setCornerRadius:6.0];
-    [v9 setMasksToBounds:1];
-    [v6 addSubview:v5->_tierIcon];
+    layer = [(UIImageView *)v5->_tierIcon layer];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer setCornerRadius:6.0];
+    [layer setMasksToBounds:1];
+    [contentView addSubview:v5->_tierIcon];
     v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     titleLabel = v5->_titleLabel;
     v5->_titleLabel = v10;
@@ -42,7 +42,7 @@
     [(UILabel *)v12 setFont:v15];
 
     [(UILabel *)v5->_titleLabel setNumberOfLines:0];
-    [v6 addSubview:v5->_titleLabel];
+    [contentView addSubview:v5->_titleLabel];
     v16 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     subtitleLabel = v5->_subtitleLabel;
     v5->_subtitleLabel = v16;
@@ -53,28 +53,28 @@
 
     [(UILabel *)v5->_subtitleLabel setNumberOfLines:0];
     v20 = v5->_subtitleLabel;
-    v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v20 setTextColor:v21];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v20 setTextColor:secondaryLabelColor];
 
-    [v6 addSubview:v5->_subtitleLabel];
+    [contentView addSubview:v5->_subtitleLabel];
     v22 = objc_alloc_init(MEMORY[0x1E69DC738]);
     linkButton = v5->_linkButton;
     v5->_linkButton = v22;
 
-    v24 = [(UIButton *)v5->_linkButton titleLabel];
-    [v24 setNumberOfLines:0];
+    titleLabel = [(UIButton *)v5->_linkButton titleLabel];
+    [titleLabel setNumberOfLines:0];
 
     [(UIButton *)v5->_linkButton setContentHorizontalAlignment:1];
-    v25 = [(UIButton *)v5->_linkButton titleLabel];
+    titleLabel2 = [(UIButton *)v5->_linkButton titleLabel];
     v26 = PKFontForDefaultDesign(v13, v14);
-    [v25 setFont:v26];
+    [titleLabel2 setFont:v26];
 
     v27 = v5->_linkButton;
-    v28 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(UIButton *)v27 setTitleColor:v28 forState:0];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(UIButton *)v27 setTitleColor:systemBlueColor forState:0];
 
     [(UIButton *)v5->_linkButton addTarget:v5 action:sel_linkAction forControlEvents:64];
-    [v6 addSubview:v5->_linkButton];
+    [contentView addSubview:v5->_linkButton];
   }
 
   return v5;
@@ -86,25 +86,25 @@
   [WeakRetained didPressLinkInCell:self];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   title = self->_title;
-  v10 = v4;
-  v6 = title;
-  if (v6 == v10)
+  v10 = titleCopy;
+  titleCopy2 = title;
+  if (titleCopy2 == v10)
   {
 
     goto LABEL_9;
   }
 
-  if (!v10 || !v6)
+  if (!v10 || !titleCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(NSString *)v10 isEqualToString:v6];
+  v7 = [(NSString *)v10 isEqualToString:titleCopy2];
 
   if (!v7)
   {
@@ -120,25 +120,25 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   subtitle = self->_subtitle;
-  v10 = v4;
-  v6 = subtitle;
-  if (v6 == v10)
+  v10 = subtitleCopy;
+  subtitleCopy2 = subtitle;
+  if (subtitleCopy2 == v10)
   {
 
     goto LABEL_9;
   }
 
-  if (!v10 || !v6)
+  if (!v10 || !subtitleCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(NSString *)v10 isEqualToString:v6];
+  v7 = [(NSString *)v10 isEqualToString:subtitleCopy2];
 
   if (!v7)
   {
@@ -154,25 +154,25 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setLink:(id)a3
+- (void)setLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   link = self->_link;
-  v10 = v4;
-  v6 = link;
-  if (v6 == v10)
+  v10 = linkCopy;
+  linkCopy2 = link;
+  if (linkCopy2 == v10)
   {
 
     goto LABEL_9;
   }
 
-  if (!v10 || !v6)
+  if (!v10 || !linkCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(NSString *)v10 isEqualToString:v6];
+  v7 = [(NSString *)v10 isEqualToString:linkCopy2];
 
   if (!v7)
   {
@@ -197,22 +197,22 @@ LABEL_9:
   [(PKRewardsTierTableViewCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKRewardsTierTableViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKRewardsTierTableViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(PKRewardsTierTableViewCell *)self _shouldReverseLayoutDirection])
   {
     v8 = CGRectMaxXEdge;
@@ -263,9 +263,9 @@ LABEL_9:
   }
 
   v15 = v12 + v14;
-  v16 = [(UIButton *)self->_linkButton titleLabel];
-  v17 = [v16 text];
-  v18 = [v17 length];
+  titleLabel = [(UIButton *)self->_linkButton titleLabel];
+  text = [titleLabel text];
+  v18 = [text length];
 
   if (v18)
   {

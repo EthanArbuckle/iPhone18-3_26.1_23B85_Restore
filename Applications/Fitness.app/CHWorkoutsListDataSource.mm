@@ -1,58 +1,58 @@
 @interface CHWorkoutsListDataSource
-- (BOOL)workout:(id)a3 wasOnSameDayAsWorkout:(id)a4;
-- (CHWorkoutsListDataSource)initWithTableView:(id)a3 dataProvider:(id)a4 fitnessAppContext:(id)a5 formattingManager:(id)a6 badgeImageFactory:(id)a7 awardsDataProvider:(id)a8;
+- (BOOL)workout:(id)workout wasOnSameDayAsWorkout:(id)asWorkout;
+- (CHWorkoutsListDataSource)initWithTableView:(id)view dataProvider:(id)provider fitnessAppContext:(id)context formattingManager:(id)manager badgeImageFactory:(id)factory awardsDataProvider:(id)dataProvider;
 - (CHWorkoutsListDataSourceDelegate)delegate;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_indexPathsToInsertForSection:(unint64_t)a3 deletedIndexPaths:(id)a4;
-- (id)_indexPathsToInsertWithSectionSet:(id)a3 deletedIndexPaths:(id)a4;
-- (id)_indexPathsToRemoveForSection:(unint64_t)a3;
-- (id)_indexPathsToRemoveWithSectionSet:(id)a3;
-- (id)_workoutForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)workoutForIndexPath:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_indexPathsToInsertForSection:(unint64_t)section deletedIndexPaths:(id)paths;
+- (id)_indexPathsToInsertWithSectionSet:(id)set deletedIndexPaths:(id)paths;
+- (id)_indexPathsToRemoveForSection:(unint64_t)section;
+- (id)_indexPathsToRemoveWithSectionSet:(id)set;
+- (id)_workoutForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)workoutForIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_calculateSectionContentOffsets;
 - (void)_checkCurrentMonth;
-- (void)_deleteWorkoutAtIndexPath:(id)a3;
-- (void)_reloadDataForVisibleCells:(id)a3;
+- (void)_deleteWorkoutAtIndexPath:(id)path;
+- (void)_reloadDataForVisibleCells:(id)cells;
 - (void)_reloadDataFromProvider;
-- (void)_reloadHeaderForSection:(unint64_t)a3;
+- (void)_reloadHeaderForSection:(unint64_t)section;
 - (void)_try_reloadDataForFilter;
 - (void)dealloc;
-- (void)setCurrentSection:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)setCurrentSection:(int64_t)section;
+- (void)setDelegate:(id)delegate;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation CHWorkoutsListDataSource
 
-- (CHWorkoutsListDataSource)initWithTableView:(id)a3 dataProvider:(id)a4 fitnessAppContext:(id)a5 formattingManager:(id)a6 badgeImageFactory:(id)a7 awardsDataProvider:(id)a8
+- (CHWorkoutsListDataSource)initWithTableView:(id)view dataProvider:(id)provider fitnessAppContext:(id)context formattingManager:(id)manager badgeImageFactory:(id)factory awardsDataProvider:(id)dataProvider
 {
-  v14 = a3;
-  v32 = a4;
-  v31 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  viewCopy = view;
+  providerCopy = provider;
+  contextCopy = context;
+  managerCopy = manager;
+  factoryCopy = factory;
+  dataProviderCopy = dataProvider;
   v38.receiver = self;
   v38.super_class = CHWorkoutsListDataSource;
   v18 = [(CHWorkoutsListDataSource *)&v38 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_tableView, v14);
-    objc_storeStrong(&v19->_dataProvider, a4);
-    objc_storeStrong(&v19->_fitnessAppContext, a5);
-    objc_storeStrong(&v19->_formattingManager, a6);
-    objc_storeStrong(&v19->_badgeImageFactory, a7);
-    objc_storeStrong(&v19->_awardsDataProvider, a8);
+    objc_storeWeak(&v18->_tableView, viewCopy);
+    objc_storeStrong(&v19->_dataProvider, provider);
+    objc_storeStrong(&v19->_fitnessAppContext, context);
+    objc_storeStrong(&v19->_formattingManager, manager);
+    objc_storeStrong(&v19->_badgeImageFactory, factory);
+    objc_storeStrong(&v19->_awardsDataProvider, dataProvider);
     v20 = +[NSCalendar currentCalendar];
     currentCalendar = v19->_currentCalendar;
     v19->_currentCalendar = v20;
@@ -113,26 +113,26 @@
   [(CHWorkoutsListDataSource *)&v4 dealloc];
 }
 
-- (id)workoutForIndexPath:(id)a3
+- (id)workoutForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (v5 >= -[NSArray count](self->_sectionArray, "count") || (v6 = [v4 row], WeakRetained = objc_loadWeakRetained(&self->_tableView), v8 = -[CHWorkoutsListDataSource tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", WeakRetained, objc_msgSend(v4, "section")), WeakRetained, v6 >= v8))
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= -[NSArray count](self->_sectionArray, "count") || (v6 = [pathCopy row], WeakRetained = objc_loadWeakRetained(&self->_tableView), v8 = -[CHWorkoutsListDataSource tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", WeakRetained, objc_msgSend(pathCopy, "section")), WeakRetained, v6 >= v8))
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [(CHWorkoutsListDataSource *)self _workoutForIndexPath:v4];
+    v9 = [(CHWorkoutsListDataSource *)self _workoutForIndexPath:pathCopy];
   }
 
   return v9;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   if ([(NSArray *)self->_sectionArray count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -144,22 +144,22 @@
 - (void)_reloadDataFromProvider
 {
   self->_offsetsStale = 1;
-  v3 = [(CHWorkoutDataProvider *)self->_dataProvider workoutsByMonthAndYear];
+  workoutsByMonthAndYear = [(CHWorkoutDataProvider *)self->_dataProvider workoutsByMonthAndYear];
   rowDictionary = self->_rowDictionary;
-  self->_rowDictionary = v3;
+  self->_rowDictionary = workoutsByMonthAndYear;
 
-  v5 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
+  sortedDateComponentKeys = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
   sectionArray = self->_sectionArray;
-  self->_sectionArray = v5;
+  self->_sectionArray = sortedDateComponentKeys;
 
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
   [WeakRetained reloadData];
 
   if ([(NSArray *)self->_sectionArray count])
   {
-    v9 = [(CHWorkoutsListDataSource *)self delegate];
+    delegate = [(CHWorkoutsListDataSource *)self delegate];
     v8 = [(NSArray *)self->_sectionArray objectAtIndexedSubscript:self->_currentSection];
-    [v9 workoutsListDataSource:self didScrollToSectionWithDateComponents:v8];
+    [delegate workoutsListDataSource:self didScrollToSectionWithDateComponents:v8];
   }
 }
 
@@ -176,8 +176,8 @@
   v121 = 0u;
   v122 = 0u;
   v123 = 0u;
-  v7 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
-  v8 = [v7 countByEnumeratingWithState:&v120 objects:v128 count:16];
+  sortedDateComponentKeys = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
+  v8 = [sortedDateComponentKeys countByEnumeratingWithState:&v120 objects:v128 count:16];
   if (v8)
   {
     v9 = v8;
@@ -188,21 +188,21 @@
       {
         if (*v121 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(sortedDateComponentKeys);
         }
 
         v12 = *(*(&v120 + 1) + 8 * i);
         if (![(NSArray *)self->_sectionArray containsObject:v12])
         {
-          v13 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
-          v14 = [v13 indexOfObject:v12];
+          sortedDateComponentKeys2 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
+          v14 = [sortedDateComponentKeys2 indexOfObject:v12];
 
           v15 = [NSNumber numberWithInteger:v14];
           [v6 addObject:v15];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v120 objects:v128 count:16];
+      v9 = [sortedDateComponentKeys countByEnumeratingWithState:&v120 objects:v128 count:16];
     }
 
     while (v9);
@@ -235,9 +235,9 @@
     v22 = 0;
     do
     {
-      v23 = [(CHWorkoutDataProvider *)self->_dataProvider workoutsByMonthAndYear];
+      workoutsByMonthAndYear = [(CHWorkoutDataProvider *)self->_dataProvider workoutsByMonthAndYear];
       v24 = [(NSArray *)self->_sectionArray objectAtIndexedSubscript:v22];
-      v25 = [v23 objectForKeyedSubscript:v24];
+      v25 = [workoutsByMonthAndYear objectForKeyedSubscript:v24];
       v26 = [v25 count];
 
       if (!v26)
@@ -323,8 +323,8 @@
 
   v41 = objc_alloc_init(NSMutableSet);
   v42 = objc_alloc_init(NSMutableSet);
-  v43 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
-  v44 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [v43 count]);
+  sortedDateComponentKeys3 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
+  v44 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [sortedDateComponentKeys3 count]);
 
   v45 = [(NSArray *)self->_sectionArray copy];
   v109[0] = _NSConcreteStackBlock;
@@ -381,8 +381,8 @@
   v56 = objc_loadWeakRetained(&self->_tableView);
   [v56 deleteRowsAtIndexPaths:v89 withRowAnimation:5];
 
-  v57 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
-  v58 = [v57 copy];
+  sortedDateComponentKeys4 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
+  v58 = [sortedDateComponentKeys4 copy];
 
   v102[0] = _NSConcreteStackBlock;
   v102[1] = 3221225472;
@@ -411,8 +411,8 @@
   v64 = [v62 hk_map:&stru_10083BAE0];
   v65 = objc_loadWeakRetained(&self->_tableView);
   v80 = v64;
-  v66 = [v64 allObjects];
-  [v65 reloadRowsAtIndexPaths:v66 withRowAnimation:5];
+  allObjects = [v64 allObjects];
+  [v65 reloadRowsAtIndexPaths:allObjects withRowAnimation:5];
 
   v98 = 0u;
   v99 = 0u;
@@ -445,13 +445,13 @@
     while (v69);
   }
 
-  v75 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
+  sortedDateComponentKeys5 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
   sectionArray = self->_sectionArray;
-  self->_sectionArray = v75;
+  self->_sectionArray = sortedDateComponentKeys5;
 
-  v77 = [(CHWorkoutDataProvider *)self->_dataProvider workoutsByMonthAndYear];
+  workoutsByMonthAndYear2 = [(CHWorkoutDataProvider *)self->_dataProvider workoutsByMonthAndYear];
   v78 = self->_rowDictionary;
-  self->_rowDictionary = v77;
+  self->_rowDictionary = workoutsByMonthAndYear2;
 
   if (![v60 count])
   {
@@ -460,7 +460,7 @@
     v93[2] = sub_1000E20C8;
     v93[3] = &unk_10083BB08;
     v94 = v67;
-    v95 = self;
+    selfCopy = self;
     [v88 enumerateIndexesUsingBlock:v93];
   }
 
@@ -474,57 +474,57 @@
     v90[2] = sub_1000E2150;
     v90[3] = &unk_10083BB08;
     v91 = v67;
-    v92 = self;
+    selfCopy2 = self;
     [v88 enumerateIndexesUsingBlock:v90];
   }
 
   [(CHWorkoutsListDataSource *)self _checkCurrentMonth];
 }
 
-- (void)_reloadHeaderForSection:(unint64_t)a3
+- (void)_reloadHeaderForSection:(unint64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
-  v11 = [WeakRetained headerViewForSection:a3];
+  v11 = [WeakRetained headerViewForSection:section];
 
-  v6 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  sortedDateComponentKeys = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
+  v7 = [sortedDateComponentKeys objectAtIndexedSubscript:section];
 
-  v8 = [(CHWorkoutDataProvider *)self->_dataProvider workoutStatisticsForMonthAndYear];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  workoutStatisticsForMonthAndYear = [(CHWorkoutDataProvider *)self->_dataProvider workoutStatisticsForMonthAndYear];
+  v9 = [workoutStatisticsForMonthAndYear objectForKeyedSubscript:v7];
 
-  v10 = [v9 startOfMonth];
-  [v11 setDate:v10];
+  startOfMonth = [v9 startOfMonth];
+  [v11 setDate:startOfMonth];
 }
 
-- (id)_indexPathsToRemoveWithSectionSet:(id)a3
+- (id)_indexPathsToRemoveWithSectionSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E2370;
   v8[3] = &unk_10083BB08;
   v5 = objc_alloc_init(NSMutableArray);
   v9 = v5;
-  v10 = self;
-  [v4 enumerateIndexesUsingBlock:v8];
+  selfCopy = self;
+  [setCopy enumerateIndexesUsingBlock:v8];
 
   v6 = v5;
   return v5;
 }
 
-- (id)_indexPathsToRemoveForSection:(unint64_t)a3
+- (id)_indexPathsToRemoveForSection:(unint64_t)section
 {
-  if ([(NSArray *)self->_sectionArray count]<= a3)
+  if ([(NSArray *)self->_sectionArray count]<= section)
   {
     v9 = &__NSArray0__struct;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_sectionArray objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_sectionArray objectAtIndexedSubscript:section];
     v6 = [(NSDictionary *)self->_rowDictionary objectForKeyedSubscript:v5];
-    v7 = [(CHWorkoutDataProvider *)self->_dataProvider workoutsByMonthAndYear];
-    v8 = [v7 objectForKeyedSubscript:v5];
+    workoutsByMonthAndYear = [(CHWorkoutDataProvider *)self->_dataProvider workoutsByMonthAndYear];
+    v8 = [workoutsByMonthAndYear objectForKeyedSubscript:v5];
 
     if ([v8 count])
     {
@@ -552,7 +552,7 @@
             v15 = *(*(&v19 + 1) + 8 * i);
             if (([v8 containsObject:v15] & 1) == 0)
             {
-              v16 = -[CHWorkoutsListDataSource _indexPathAdjustedForSummaryCellForRow:inSection:](self, "_indexPathAdjustedForSummaryCellForRow:inSection:", [v10 indexOfObject:v15], a3);
+              v16 = -[CHWorkoutsListDataSource _indexPathAdjustedForSummaryCellForRow:inSection:](self, "_indexPathAdjustedForSummaryCellForRow:inSection:", [v10 indexOfObject:v15], section);
               [v9 addObject:v16];
             }
           }
@@ -575,36 +575,36 @@
   return v9;
 }
 
-- (id)_indexPathsToInsertWithSectionSet:(id)a3 deletedIndexPaths:(id)a4
+- (id)_indexPathsToInsertWithSectionSet:(id)set deletedIndexPaths:(id)paths
 {
-  v6 = a4;
-  v7 = a3;
+  pathsCopy = paths;
+  setCopy = set;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000E26A4;
   v12[3] = &unk_10083BB30;
-  v13 = v6;
+  v13 = pathsCopy;
   v8 = objc_alloc_init(NSMutableArray);
   v14 = v8;
-  v15 = self;
-  v9 = v6;
-  [v7 enumerateIndexesUsingBlock:v12];
+  selfCopy = self;
+  v9 = pathsCopy;
+  [setCopy enumerateIndexesUsingBlock:v12];
 
   v10 = v8;
   return v8;
 }
 
-- (id)_indexPathsToInsertForSection:(unint64_t)a3 deletedIndexPaths:(id)a4
+- (id)_indexPathsToInsertForSection:(unint64_t)section deletedIndexPaths:(id)paths
 {
-  v30 = a4;
-  if ([(NSArray *)self->_sectionArray count]<= a3)
+  pathsCopy = paths;
+  if ([(NSArray *)self->_sectionArray count]<= section)
   {
     v18 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NSArray *)self->_sectionArray objectAtIndexedSubscript:a3];
+    v6 = [(NSArray *)self->_sectionArray objectAtIndexedSubscript:section];
     v7 = [(NSDictionary *)self->_rowDictionary objectForKeyedSubscript:v6];
     v8 = [v7 mutableCopy];
 
@@ -634,8 +634,8 @@
             v15 = [(NSDictionary *)self->_rowDictionary objectForKeyedSubscript:v6];
             v16 = [v15 indexOfObject:v13];
 
-            v17 = [(CHWorkoutsListDataSource *)self _indexPathAdjustedForSummaryCellForRow:v16 inSection:a3];
-            if ([v30 containsObject:v17])
+            v17 = [(CHWorkoutsListDataSource *)self _indexPathAdjustedForSummaryCellForRow:v16 inSection:section];
+            if ([pathsCopy containsObject:v17])
             {
               [v8 removeObject:v13];
             }
@@ -650,8 +650,8 @@
       }
 
       v18 = objc_alloc_init(NSMutableArray);
-      v19 = [(CHWorkoutDataProvider *)self->_dataProvider workoutsByMonthAndYear];
-      v20 = [v19 objectForKeyedSubscript:v6];
+      workoutsByMonthAndYear = [(CHWorkoutDataProvider *)self->_dataProvider workoutsByMonthAndYear];
+      v20 = [workoutsByMonthAndYear objectForKeyedSubscript:v6];
 
       v33 = 0u;
       v34 = 0u;
@@ -675,7 +675,7 @@
             v26 = *(*(&v31 + 1) + 8 * j);
             if (([v8 containsObject:v26] & 1) == 0)
             {
-              v27 = -[CHWorkoutsListDataSource _indexPathAdjustedForSummaryCellForRow:inSection:](self, "_indexPathAdjustedForSummaryCellForRow:inSection:", [v21 indexOfObject:v26], a3);
+              v27 = -[CHWorkoutsListDataSource _indexPathAdjustedForSummaryCellForRow:inSection:](self, "_indexPathAdjustedForSummaryCellForRow:inSection:", [v21 indexOfObject:v26], section);
               [v18 addObject:v27];
             }
           }
@@ -760,37 +760,37 @@
   self->_contentOffsetsForTopOfSection = v28;
 }
 
-- (void)setCurrentSection:(int64_t)a3
+- (void)setCurrentSection:(int64_t)section
 {
-  if (self->_currentSection != a3)
+  if (self->_currentSection != section)
   {
-    self->_currentSection = a3;
+    self->_currentSection = section;
     v5 = [(NSArray *)self->_sectionArray count];
     currentSection = self->_currentSection;
-    v8 = [(CHWorkoutsListDataSource *)self delegate];
+    delegate = [(CHWorkoutsListDataSource *)self delegate];
     if (v5 <= currentSection)
     {
-      [v8 workoutsListDataSource:self didScrollToSectionWithDateComponents:0];
+      [delegate workoutsListDataSource:self didScrollToSectionWithDateComponents:0];
     }
 
     else
     {
       v7 = [(NSArray *)self->_sectionArray objectAtIndexedSubscript:self->_currentSection];
-      [v8 workoutsListDataSource:self didScrollToSectionWithDateComponents:v7];
+      [delegate workoutsListDataSource:self didScrollToSectionWithDateComponents:v7];
     }
   }
 }
 
-- (void)_reloadDataForVisibleCells:(id)a3
+- (void)_reloadDataForVisibleCells:(id)cells
 {
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
-  v5 = [WeakRetained indexPathsForVisibleRows];
+  indexPathsForVisibleRows = [WeakRetained indexPathsForVisibleRows];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v5;
+  v6 = indexPathsForVisibleRows;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -816,9 +816,9 @@
           if (AAUIShouldUseNewTrophyCase())
           {
             awardsDataProvider = self->_awardsDataProvider;
-            v17 = [v14 UUID];
-            v18 = [v17 UUIDString];
-            v15 = [(CHAwardsDataProvider *)awardsDataProvider achievementsForWorkoutIdentifier:v18];
+            uUID = [v14 UUID];
+            uUIDString = [uUID UUIDString];
+            v15 = [(CHAwardsDataProvider *)awardsDataProvider achievementsForWorkoutIdentifier:uUIDString];
           }
 
           [v13 setWorkout:v14 fitnessAppContext:self->_fitnessAppContext formattingManager:self->_formattingManager achievementCount:{objc_msgSend(v15, "count")}];
@@ -832,14 +832,14 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (![(NSArray *)self->_sectionArray count])
   {
     return 0;
   }
 
-  v6 = [(NSArray *)self->_sectionArray objectAtIndexedSubscript:a4];
+  v6 = [(NSArray *)self->_sectionArray objectAtIndexedSubscript:section];
   v7 = [(NSDictionary *)self->_rowDictionary objectForKeyedSubscript:v6];
   v8 = [v7 count];
 
@@ -856,19 +856,19 @@
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 row])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy row])
   {
-    v8 = [(CHWorkoutsListDataSource *)self _workoutForIndexPath:v7];
+    v8 = [(CHWorkoutsListDataSource *)self _workoutForIndexPath:pathCopy];
     if (AAUIShouldUseNewTrophyCase())
     {
       awardsDataProvider = self->_awardsDataProvider;
-      v10 = [v8 UUID];
-      v11 = [v10 UUIDString];
-      v12 = [(CHAwardsDataProvider *)awardsDataProvider achievementsForWorkoutIdentifier:v11];
+      uUID = [v8 UUID];
+      uUIDString = [uUID UUIDString];
+      v12 = [(CHAwardsDataProvider *)awardsDataProvider achievementsForWorkoutIdentifier:uUIDString];
     }
 
     else
@@ -876,25 +876,25 @@
       v12 = &__NSArray0__struct;
     }
 
-    v13 = [v6 dequeueReusableCellWithIdentifier:@"WorkoutsListTableViewCellReuseIdentifier"];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:@"WorkoutsListTableViewCellReuseIdentifier"];
     [v13 setWorkout:v8 fitnessAppContext:self->_fitnessAppContext formattingManager:self->_formattingManager achievementCount:{objc_msgSend(v12, "count")}];
   }
 
   else
   {
-    v13 = [v6 dequeueReusableCellWithIdentifier:@"WorkoutsListSummaryTableViewCellReuseIdentifier" forIndexPath:v7];
-    v14 = [v13 contentView];
-    [v14 setClipsToBounds:1];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:@"WorkoutsListSummaryTableViewCellReuseIdentifier" forIndexPath:pathCopy];
+    contentView = [v13 contentView];
+    [contentView setClipsToBounds:1];
 
-    v15 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
-    v8 = [v15 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+    sortedDateComponentKeys = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
+    v8 = [sortedDateComponentKeys objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v16 = [(CHWorkoutDataProvider *)self->_dataProvider workoutStatisticsForMonthAndYear];
-    v12 = [v16 objectForKeyedSubscript:v8];
+    workoutStatisticsForMonthAndYear = [(CHWorkoutDataProvider *)self->_dataProvider workoutStatisticsForMonthAndYear];
+    v12 = [workoutStatisticsForMonthAndYear objectForKeyedSubscript:v8];
 
-    v17 = [(CHWorkoutDataProvider *)self->_dataProvider currentFilteredTypeIdentifier];
-    v18 = [(CHWorkoutFormattingManager *)self->_formattingManager fitnessUIFormattingManager];
-    [v13 setWorkoutStatistics:v12 activityTypeKey:v17 formattingManager:v18];
+    currentFilteredTypeIdentifier = [(CHWorkoutDataProvider *)self->_dataProvider currentFilteredTypeIdentifier];
+    fitnessUIFormattingManager = [(CHWorkoutFormattingManager *)self->_formattingManager fitnessUIFormattingManager];
+    [v13 setWorkoutStatistics:v12 activityTypeKey:currentFilteredTypeIdentifier formattingManager:fitnessUIFormattingManager];
   }
 
   [v13 setSelectionStyle:0];
@@ -902,20 +902,20 @@
   return v13;
 }
 
-- (BOOL)workout:(id)a3 wasOnSameDayAsWorkout:(id)a4
+- (BOOL)workout:(id)workout wasOnSameDayAsWorkout:(id)asWorkout
 {
   currentCalendar = self->_currentCalendar;
-  v6 = a4;
-  v7 = [a3 startDate];
-  v8 = [v6 startDate];
+  asWorkoutCopy = asWorkout;
+  startDate = [workout startDate];
+  startDate2 = [asWorkoutCopy startDate];
 
-  LOBYTE(currentCalendar) = [(NSCalendar *)currentCalendar isDate:v7 inSameDayAsDate:v8];
+  LOBYTE(currentCalendar) = [(NSCalendar *)currentCalendar isDate:startDate inSameDayAsDate:startDate2];
   return currentCalendar;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if ([(CHWorkoutsListDataSource *)self tableView:a3 numberOfRowsInSection:a4]< 1)
+  if ([(CHWorkoutsListDataSource *)self tableView:view numberOfRowsInSection:section]< 1)
   {
     return 0.0;
   }
@@ -924,20 +924,20 @@
   return result;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(CHWorkoutsListDataSource *)self tableView:v6 numberOfRowsInSection:a4])
+  viewCopy = view;
+  if ([(CHWorkoutsListDataSource *)self tableView:viewCopy numberOfRowsInSection:section])
   {
-    v7 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
-    v8 = [v7 objectAtIndexedSubscript:a4];
+    sortedDateComponentKeys = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
+    v8 = [sortedDateComponentKeys objectAtIndexedSubscript:section];
 
-    v9 = [(CHWorkoutDataProvider *)self->_dataProvider workoutStatisticsForMonthAndYear];
-    v10 = [v9 objectForKeyedSubscript:v8];
+    workoutStatisticsForMonthAndYear = [(CHWorkoutDataProvider *)self->_dataProvider workoutStatisticsForMonthAndYear];
+    v10 = [workoutStatisticsForMonthAndYear objectForKeyedSubscript:v8];
 
-    v11 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"WorkoutsListTableHeaderViewReuseIdentifier"];
-    v12 = [v10 startOfMonth];
-    [v11 setDate:v12];
+    v11 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"WorkoutsListTableHeaderViewReuseIdentifier"];
+    startOfMonth = [v10 startOfMonth];
+    [v11 setDate:startOfMonth];
   }
 
   else
@@ -948,39 +948,39 @@
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 row])
+  pathCopy = path;
+  if ([pathCopy row])
   {
-    v6 = [(CHWorkoutsListDataSource *)self _workoutForIndexPath:v5];
+    v6 = [(CHWorkoutsListDataSource *)self _workoutForIndexPath:pathCopy];
     [CHWorkoutsListTableViewCell preferredHeightForWorkout:v6 formattingManager:self->_formattingManager];
     v8 = v7;
   }
 
   else
   {
-    v9 = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
-    v6 = [v9 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+    sortedDateComponentKeys = [(CHWorkoutDataProvider *)self->_dataProvider sortedDateComponentKeys];
+    v6 = [sortedDateComponentKeys objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v10 = [(CHWorkoutDataProvider *)self->_dataProvider workoutStatisticsForMonthAndYear];
-    v11 = [v10 objectForKeyedSubscript:v6];
+    workoutStatisticsForMonthAndYear = [(CHWorkoutDataProvider *)self->_dataProvider workoutStatisticsForMonthAndYear];
+    v11 = [workoutStatisticsForMonthAndYear objectForKeyedSubscript:v6];
 
-    v12 = [(CHWorkoutDataProvider *)self->_dataProvider currentFilteredTypeIdentifier];
-    [CHListSummaryTableViewCell heightForWorkoutActivityTypeKey:v12 statistics:v11];
+    currentFilteredTypeIdentifier = [(CHWorkoutDataProvider *)self->_dataProvider currentFilteredTypeIdentifier];
+    [CHListSummaryTableViewCell heightForWorkoutActivityTypeKey:currentFilteredTypeIdentifier statistics:v11];
     v8 = v13;
   }
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = 0.0;
-  if ([(NSArray *)self->_sectionArray count]- 1 != a4)
+  if ([(NSArray *)self->_sectionArray count]- 1 != section)
   {
-    if ([(CHWorkoutsListDataSource *)self tableView:v6 numberOfRowsInSection:a4])
+    if ([(CHWorkoutsListDataSource *)self tableView:viewCopy numberOfRowsInSection:section])
     {
       v7 = 11.0;
     }
@@ -994,30 +994,30 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  [a3 deselectRowAtIndexPath:v8 animated:1];
-  if ([v8 row])
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  if ([pathCopy row])
   {
-    v6 = [(CHWorkoutsListDataSource *)self _workoutForIndexPath:v8];
-    v7 = [(CHWorkoutsListDataSource *)self delegate];
-    [v7 workoutsListDataSource:self didSelectWorkout:v6 atIndexPath:v8];
+    v6 = [(CHWorkoutsListDataSource *)self _workoutForIndexPath:pathCopy];
+    delegate = [(CHWorkoutsListDataSource *)self delegate];
+    [delegate workoutsListDataSource:self didSelectWorkout:v6 atIndexPath:pathCopy];
   }
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 row])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy row])
   {
     objc_initWeak(&location, self);
     v8 = +[NSBundle mainBundle];
@@ -1027,7 +1027,7 @@
     v15[2] = sub_1000E381C;
     v15[3] = &unk_10083BB58;
     objc_copyWeak(&v17, &location);
-    v16 = v7;
+    v16 = pathCopy;
     v10 = [UIContextualAction contextualActionWithStyle:0 title:v9 handler:v15];
 
     v11 = +[UIColor redColor];
@@ -1049,13 +1049,13 @@
   return v13;
 }
 
-- (void)_deleteWorkoutAtIndexPath:(id)a3
+- (void)_deleteWorkoutAtIndexPath:(id)path
 {
-  v4 = [(CHWorkoutsListDataSource *)self _workoutForIndexPath:a3];
+  v4 = [(CHWorkoutsListDataSource *)self _workoutForIndexPath:path];
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
   [WeakRetained setEditing:0 animated:1];
 
-  v6 = [(CHWorkoutsListDataSource *)self delegate];
+  delegate = [(CHWorkoutsListDataSource *)self delegate];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E3968;
@@ -1063,15 +1063,15 @@
   v8[4] = self;
   v9 = v4;
   v7 = v4;
-  [v6 workoutsListDataSource:self requestsDeleteConfirmationForWorkout:v7 completion:v8];
+  [delegate workoutsListDataSource:self requestsDeleteConfirmationForWorkout:v7 completion:v8];
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v6 = a4;
-  if ([v6 row])
+  pathCopy = path;
+  if ([pathCopy row])
   {
-    v7 = [(CHWorkoutsListDataSource *)self workoutForIndexPath:v6];
+    v7 = [(CHWorkoutsListDataSource *)self workoutForIndexPath:pathCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v9 = [WeakRetained detailViewControllerForWorkout:v7];
 
@@ -1086,7 +1086,7 @@
     v13[3] = &unk_10083BBF8;
     v14 = v16;
     v10 = v16;
-    v11 = [UIContextMenuConfiguration configurationWithIdentifier:v6 previewProvider:v15 actionProvider:v13];
+    v11 = [UIContextMenuConfiguration configurationWithIdentifier:pathCopy previewProvider:v15 actionProvider:v13];
   }
 
   else
@@ -1097,20 +1097,20 @@
   return v11;
 }
 
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a5;
-  v8 = [a4 identifier];
-  [(CHWorkoutsListDataSource *)self workoutForIndexPath:v8];
+  animatorCopy = animator;
+  identifier = [configuration identifier];
+  [(CHWorkoutsListDataSource *)self workoutForIndexPath:identifier];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000E3EA4;
   v11[3] = &unk_10083BC20;
   v12 = v11[4] = self;
-  v13 = v8;
-  v9 = v8;
+  v13 = identifier;
+  v9 = identifier;
   v10 = v12;
-  [v7 addCompletion:v11];
+  [animatorCopy addCompletion:v11];
 }
 
 - (void)_checkCurrentMonth
@@ -1125,13 +1125,13 @@
   [WeakRetained contentOffset];
   v5 = v4;
 
-  v16 = [(NSArray *)self->_contentOffsetsForTopOfSection firstObject];
+  firstObject = [(NSArray *)self->_contentOffsetsForTopOfSection firstObject];
   if ([(NSArray *)self->_contentOffsetsForTopOfSection count])
   {
     v6 = 0;
     v7 = 0;
     v8 = -1;
-    v9 = v16;
+    v9 = firstObject;
     while (1)
     {
       v10 = v8 + 1;
@@ -1162,7 +1162,7 @@
   else
   {
     v10 = 0;
-    v15 = v16;
+    v15 = firstObject;
   }
 
 LABEL_12:
@@ -1170,13 +1170,13 @@ LABEL_12:
   [(CHWorkoutsListDataSource *)self setCurrentSection:v10];
 }
 
-- (id)_workoutForIndexPath:(id)a3
+- (id)_workoutForIndexPath:(id)path
 {
   sectionArray = self->_sectionArray;
-  v5 = a3;
-  v6 = -[NSArray objectAtIndexedSubscript:](sectionArray, "objectAtIndexedSubscript:", [v5 section]);
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndexedSubscript:](sectionArray, "objectAtIndexedSubscript:", [pathCopy section]);
   v7 = [(NSDictionary *)self->_rowDictionary objectForKeyedSubscript:v6];
-  v8 = [v5 row];
+  v8 = [pathCopy row];
 
   v9 = [v7 objectAtIndexedSubscript:v8 - 1];
 

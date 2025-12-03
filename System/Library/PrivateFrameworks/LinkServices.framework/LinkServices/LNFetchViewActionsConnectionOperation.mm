@@ -1,32 +1,32 @@
 @interface LNFetchViewActionsConnectionOperation
-- (LNFetchViewActionsConnectionOperation)initWithConnectionInterface:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)finishWithError:(id)a3;
+- (LNFetchViewActionsConnectionOperation)initWithConnectionInterface:(id)interface queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNFetchViewActionsConnectionOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNFetchViewActionsConnectionOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNFetchViewActionsConnectionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNFetchViewActionsConnectionOperation *)self result];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    result = [(LNFetchViewActionsConnectionOperation *)self result];
+    v7 = [(LNConnectionOperation *)self validatingResult:result error:errorCopy];
 
-    v8 = [(LNFetchViewActionsConnectionOperation *)self completionHandler];
-    v9 = [(LNFetchViewActionsConnectionOperation *)self result];
-    (v8)[2](v8, v9, v7);
+    completionHandler2 = [(LNFetchViewActionsConnectionOperation *)self completionHandler];
+    result2 = [(LNFetchViewActionsConnectionOperation *)self result];
+    (completionHandler2)[2](completionHandler2, result2, v7);
 
     [(LNFetchViewActionsConnectionOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v10.receiver = self;
   v10.super_class = LNFetchViewActionsConnectionOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v4];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -41,13 +41,13 @@
     _os_log_impl(&dword_19763D000, v3, OS_LOG_TYPE_INFO, "Fetching app view Actions", buf, 2u);
   }
 
-  v4 = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __46__LNFetchViewActionsConnectionOperation_start__block_invoke;
   v5[3] = &unk_1E74B1F78;
   v5[4] = self;
-  [v4 fetchViewActionsWithCompletionHandler:v5];
+  [connectionInterface fetchViewActionsWithCompletionHandler:v5];
 }
 
 void __46__LNFetchViewActionsConnectionOperation_start__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -62,15 +62,15 @@ void __46__LNFetchViewActionsConnectionOperation_start__block_invoke(uint64_t a1
   os_activity_scope_leave(&v8);
 }
 
-- (LNFetchViewActionsConnectionOperation)initWithConnectionInterface:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (LNFetchViewActionsConnectionOperation)initWithConnectionInterface:(id)interface queue:(id)queue completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  interfaceCopy = interface;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (interfaceCopy)
   {
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -78,8 +78,8 @@ void __46__LNFetchViewActionsConnectionOperation_start__block_invoke(uint64_t a1
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"LNFetchViewActionsConnectionOperation.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFetchViewActionsConnectionOperation.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
 
     if (v12)
     {
@@ -87,14 +87,14 @@ void __46__LNFetchViewActionsConnectionOperation_start__block_invoke(uint64_t a1
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"LNFetchViewActionsConnectionOperation.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFetchViewActionsConnectionOperation.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v13 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v21.receiver = self;
   v21.super_class = LNFetchViewActionsConnectionOperation;
-  v14 = [(LNInterfaceConnectionOperation *)&v21 initWithIdentifier:v13 connectionInterface:v9 priority:1 queue:v10 activity:&__block_literal_global_3570];
+  v14 = [(LNInterfaceConnectionOperation *)&v21 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:1 queue:queueCopy activity:&__block_literal_global_3570];
 
   if (v14)
   {

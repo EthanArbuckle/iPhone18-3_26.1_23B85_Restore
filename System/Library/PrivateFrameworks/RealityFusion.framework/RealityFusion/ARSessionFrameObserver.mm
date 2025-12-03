@@ -1,15 +1,15 @@
 @interface ARSessionFrameObserver
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
+- (void)session:(id)session didUpdateFrame:(id)frame;
 @end
 
 @implementation ARSessionFrameObserver
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 camera];
-  [v8 transform];
+  sessionCopy = session;
+  frameCopy = frame;
+  camera = [frameCopy camera];
+  [camera transform];
   v14[0] = v9;
   v14[1] = v10;
   v14[2] = v11;

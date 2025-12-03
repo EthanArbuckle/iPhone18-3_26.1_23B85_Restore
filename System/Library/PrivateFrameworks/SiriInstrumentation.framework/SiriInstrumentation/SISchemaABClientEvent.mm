@@ -1,14 +1,14 @@
 @interface SISchemaABClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaABClientEvent)initWithDictionary:(id)a3;
-- (SISchemaABClientEvent)initWithJSON:(id)a3;
+- (SISchemaABClientEvent)initWithDictionary:(id)dictionary;
+- (SISchemaABClientEvent)initWithJSON:(id)n;
 - (SISchemaABExperimentAllocationChanged)allocationChanged;
 - (SISchemaABExperimentAssetRetrievalStatusChanged)assetRetrievalStatusChanged;
 - (SISchemaABExperimentClientFeatureTriggered)clientFeatureTriggered;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
@@ -16,23 +16,23 @@
 - (void)deleteAllocationChanged;
 - (void)deleteAssetRetrievalStatusChanged;
 - (void)deleteClientFeatureTriggered;
-- (void)setAllocationChanged:(id)a3;
-- (void)setAssetRetrievalStatusChanged:(id)a3;
-- (void)setClientFeatureTriggered:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAllocationChanged:(id)changed;
+- (void)setAssetRetrievalStatusChanged:(id)changed;
+- (void)setClientFeatureTriggered:(id)triggered;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaABClientEvent
 
-- (SISchemaABClientEvent)initWithDictionary:(id)a3
+- (SISchemaABClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = SISchemaABClientEvent;
   v5 = [(SISchemaABClientEvent *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(SISchemaABClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"allocationChanged"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"allocationChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(SISchemaABClientEvent *)v5 setAllocationChanged:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"assetRetrievalStatusChanged"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"assetRetrievalStatusChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(SISchemaABClientEvent *)v5 setAssetRetrievalStatusChanged:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"clientFeatureTriggered"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"clientFeatureTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (SISchemaABClientEvent)initWithJSON:(id)a3
+- (SISchemaABClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaABClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaABClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaABClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,74 +106,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_allocationChanged)
   {
-    v4 = [(SISchemaABClientEvent *)self allocationChanged];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    allocationChanged = [(SISchemaABClientEvent *)self allocationChanged];
+    dictionaryRepresentation = [allocationChanged dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"allocationChanged"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"allocationChanged"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"allocationChanged"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"allocationChanged"];
     }
   }
 
   if (self->_assetRetrievalStatusChanged)
   {
-    v7 = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    assetRetrievalStatusChanged = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
+    dictionaryRepresentation2 = [assetRetrievalStatusChanged dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"assetRetrievalStatusChanged"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"assetRetrievalStatusChanged"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"assetRetrievalStatusChanged"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"assetRetrievalStatusChanged"];
     }
   }
 
   if (self->_clientFeatureTriggered)
   {
-    v10 = [(SISchemaABClientEvent *)self clientFeatureTriggered];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    clientFeatureTriggered = [(SISchemaABClientEvent *)self clientFeatureTriggered];
+    dictionaryRepresentation3 = [clientFeatureTriggered dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"clientFeatureTriggered"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"clientFeatureTriggered"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"clientFeatureTriggered"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"clientFeatureTriggered"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v13 = [(SISchemaABClientEvent *)self eventMetadata];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    eventMetadata = [(SISchemaABClientEvent *)self eventMetadata];
+    dictionaryRepresentation4 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"eventMetadata"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -184,34 +184,34 @@
   return v4 ^ v5 ^ [(SISchemaABExperimentClientFeatureTriggered *)self->_clientFeatureTriggered hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_23;
   }
 
-  v6 = [(SISchemaABClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaABClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_22;
   }
 
-  v8 = [(SISchemaABClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(SISchemaABClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(SISchemaABClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(SISchemaABClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -223,20 +223,20 @@
   {
   }
 
-  v6 = [(SISchemaABClientEvent *)self allocationChanged];
-  v7 = [v4 allocationChanged];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaABClientEvent *)self allocationChanged];
+  eventMetadata2 = [equalCopy allocationChanged];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(SISchemaABClientEvent *)self allocationChanged];
-  if (v13)
+  allocationChanged = [(SISchemaABClientEvent *)self allocationChanged];
+  if (allocationChanged)
   {
-    v14 = v13;
-    v15 = [(SISchemaABClientEvent *)self allocationChanged];
-    v16 = [v4 allocationChanged];
-    v17 = [v15 isEqual:v16];
+    v14 = allocationChanged;
+    allocationChanged2 = [(SISchemaABClientEvent *)self allocationChanged];
+    allocationChanged3 = [equalCopy allocationChanged];
+    v17 = [allocationChanged2 isEqual:allocationChanged3];
 
     if (!v17)
     {
@@ -248,20 +248,20 @@
   {
   }
 
-  v6 = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
-  v7 = [v4 assetRetrievalStatusChanged];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
+  eventMetadata2 = [equalCopy assetRetrievalStatusChanged];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_22;
   }
 
-  v18 = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
-  if (v18)
+  assetRetrievalStatusChanged = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
+  if (assetRetrievalStatusChanged)
   {
-    v19 = v18;
-    v20 = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
-    v21 = [v4 assetRetrievalStatusChanged];
-    v22 = [v20 isEqual:v21];
+    v19 = assetRetrievalStatusChanged;
+    assetRetrievalStatusChanged2 = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
+    assetRetrievalStatusChanged3 = [equalCopy assetRetrievalStatusChanged];
+    v22 = [assetRetrievalStatusChanged2 isEqual:assetRetrievalStatusChanged3];
 
     if (!v22)
     {
@@ -273,12 +273,12 @@
   {
   }
 
-  v6 = [(SISchemaABClientEvent *)self clientFeatureTriggered];
-  v7 = [v4 clientFeatureTriggered];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(SISchemaABClientEvent *)self clientFeatureTriggered];
+  eventMetadata2 = [equalCopy clientFeatureTriggered];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v23 = [(SISchemaABClientEvent *)self clientFeatureTriggered];
-    if (!v23)
+    clientFeatureTriggered = [(SISchemaABClientEvent *)self clientFeatureTriggered];
+    if (!clientFeatureTriggered)
     {
 
 LABEL_26:
@@ -286,10 +286,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v24 = v23;
-    v25 = [(SISchemaABClientEvent *)self clientFeatureTriggered];
-    v26 = [v4 clientFeatureTriggered];
-    v27 = [v25 isEqual:v26];
+    v24 = clientFeatureTriggered;
+    clientFeatureTriggered2 = [(SISchemaABClientEvent *)self clientFeatureTriggered];
+    clientFeatureTriggered3 = [equalCopy clientFeatureTriggered];
+    v27 = [clientFeatureTriggered2 isEqual:clientFeatureTriggered3];
 
     if (v27)
     {
@@ -309,42 +309,42 @@ LABEL_24:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(SISchemaABClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(SISchemaABClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(SISchemaABClientEvent *)self eventMetadata];
+    eventMetadata2 = [(SISchemaABClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SISchemaABClientEvent *)self allocationChanged];
+  allocationChanged = [(SISchemaABClientEvent *)self allocationChanged];
 
-  if (v6)
+  if (allocationChanged)
   {
-    v7 = [(SISchemaABClientEvent *)self allocationChanged];
+    allocationChanged2 = [(SISchemaABClientEvent *)self allocationChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
+  assetRetrievalStatusChanged = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
 
-  if (v8)
+  if (assetRetrievalStatusChanged)
   {
-    v9 = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
+    assetRetrievalStatusChanged2 = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(SISchemaABClientEvent *)self clientFeatureTriggered];
+  clientFeatureTriggered = [(SISchemaABClientEvent *)self clientFeatureTriggered];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (clientFeatureTriggered)
   {
-    v12 = [(SISchemaABClientEvent *)self clientFeatureTriggered];
+    clientFeatureTriggered2 = [(SISchemaABClientEvent *)self clientFeatureTriggered];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
@@ -373,9 +373,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setClientFeatureTriggered:(id)a3
+- (void)setClientFeatureTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   allocationChanged = self->_allocationChanged;
   self->_allocationChanged = 0;
 
@@ -383,14 +383,14 @@ LABEL_24:
   self->_assetRetrievalStatusChanged = 0;
 
   v7 = 103;
-  if (!v4)
+  if (!triggeredCopy)
   {
     v7 = 0;
   }
 
   self->_whichEvent_Type = v7;
   clientFeatureTriggered = self->_clientFeatureTriggered;
-  self->_clientFeatureTriggered = v4;
+  self->_clientFeatureTriggered = triggeredCopy;
 }
 
 - (void)deleteAssetRetrievalStatusChanged
@@ -418,9 +418,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setAssetRetrievalStatusChanged:(id)a3
+- (void)setAssetRetrievalStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   allocationChanged = self->_allocationChanged;
   self->_allocationChanged = 0;
 
@@ -428,14 +428,14 @@ LABEL_24:
   self->_clientFeatureTriggered = 0;
 
   v7 = 102;
-  if (!v4)
+  if (!changedCopy)
   {
     v7 = 0;
   }
 
   self->_whichEvent_Type = v7;
   assetRetrievalStatusChanged = self->_assetRetrievalStatusChanged;
-  self->_assetRetrievalStatusChanged = v4;
+  self->_assetRetrievalStatusChanged = changedCopy;
 }
 
 - (void)deleteAllocationChanged
@@ -463,9 +463,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setAllocationChanged:(id)a3
+- (void)setAllocationChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   assetRetrievalStatusChanged = self->_assetRetrievalStatusChanged;
   self->_assetRetrievalStatusChanged = 0;
 
@@ -473,68 +473,68 @@ LABEL_24:
   self->_clientFeatureTriggered = 0;
 
   v7 = 101;
-  if (!v4)
+  if (!changedCopy)
   {
     v7 = 0;
   }
 
   self->_whichEvent_Type = v7;
   allocationChanged = self->_allocationChanged;
-  self->_allocationChanged = v4;
+  self->_allocationChanged = changedCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(SISchemaABClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 2)
+  whichEvent_Type = [(SISchemaABClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 2)
   {
     return @"com.apple.aiml.siri.abe.ABClientEvent";
   }
 
   else
   {
-    return off_1E78E2E10[v2 - 101];
+    return off_1E78E2E10[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = SISchemaABClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaABClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(SISchemaABClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaABClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(SISchemaABClientEvent *)self allocationChanged];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  allocationChanged = [(SISchemaABClientEvent *)self allocationChanged];
+  v10 = [allocationChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaABClientEvent *)self deleteAllocationChanged];
   }
 
-  v12 = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  assetRetrievalStatusChanged = [(SISchemaABClientEvent *)self assetRetrievalStatusChanged];
+  v13 = [assetRetrievalStatusChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SISchemaABClientEvent *)self deleteAssetRetrievalStatusChanged];
   }
 
-  v15 = [(SISchemaABClientEvent *)self clientFeatureTriggered];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  clientFeatureTriggered = [(SISchemaABClientEvent *)self clientFeatureTriggered];
+  v16 = [clientFeatureTriggered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(SISchemaABClientEvent *)self deleteClientFeatureTriggered];
   }
@@ -552,30 +552,30 @@ LABEL_24:
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(SISchemaABClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 2)
+  whichEvent_Type = [(SISchemaABClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E8CA0[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E8CA0[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 2)
+  if (tag - 101 > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E8CB8[a3 - 101];
+    return off_1E78E8CB8[tag - 101];
   }
 }
 

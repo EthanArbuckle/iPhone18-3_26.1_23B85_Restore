@@ -1,29 +1,29 @@
 @interface AMSSecureCodableError
-- (BOOL)_secureCodingSupportedByObject:(id)a3;
+- (BOOL)_secureCodingSupportedByObject:(id)object;
 - (id)_secureCodableUserInfoDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSSecureCodableError
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696ABC0];
-  v5 = a3;
-  v6 = [(AMSSecureCodableError *)self domain];
-  v7 = [(AMSSecureCodableError *)self code];
-  v8 = [(AMSSecureCodableError *)self _secureCodableUserInfoDictionary];
-  v9 = [v4 errorWithDomain:v6 code:v7 userInfo:v8];
+  coderCopy = coder;
+  domain = [(AMSSecureCodableError *)self domain];
+  code = [(AMSSecureCodableError *)self code];
+  _secureCodableUserInfoDictionary = [(AMSSecureCodableError *)self _secureCodableUserInfoDictionary];
+  v9 = [v4 errorWithDomain:domain code:code userInfo:_secureCodableUserInfoDictionary];
 
-  [v9 encodeWithCoder:v5];
+  [v9 encodeWithCoder:coderCopy];
 }
 
 - (id)_secureCodableUserInfoDictionary
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v3 = [(AMSSecureCodableError *)self userInfo];
+  userInfo = [(AMSSecureCodableError *)self userInfo];
 
-  if (v3)
+  if (userInfo)
   {
     v4 = MEMORY[0x1E695DFD8];
     v18[0] = @"NSErrorPeerCertificateChainKey";
@@ -35,7 +35,7 @@
     v7 = [v4 setWithArray:v6];
 
     v8 = objc_opt_new();
-    v9 = [(AMSSecureCodableError *)self userInfo];
+    userInfo2 = [(AMSSecureCodableError *)self userInfo];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __57__AMSSecureCodableError__secureCodableUserInfoDictionary__block_invoke;
@@ -43,9 +43,9 @@
     v15 = v7;
     v10 = v8;
     v16 = v10;
-    v17 = self;
+    selfCopy = self;
     v11 = v7;
-    [v9 enumerateKeysAndObjectsUsingBlock:v14];
+    [userInfo2 enumerateKeysAndObjectsUsingBlock:v14];
 
     v12 = v10;
   }
@@ -150,13 +150,13 @@ LABEL_17:
 LABEL_19:
 }
 
-- (BOOL)_secureCodingSupportedByObject:(id)a3
+- (BOOL)_secureCodingSupportedByObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_opt_class() supportsSecureCoding])
   {
-    v4 = [v3 conformsToProtocol:&unk_1F077B6E8];
+    v4 = [objectCopy conformsToProtocol:&unk_1F077B6E8];
   }
 
   else

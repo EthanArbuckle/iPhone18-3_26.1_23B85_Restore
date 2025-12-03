@@ -1,32 +1,32 @@
 @interface Te_tjejjxf8q3Output
-- (Te_tjejjxf8q3Output)initWithRHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (Te_tjejjxf8q3Output)initWithRHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd:(id)add;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation Te_tjejjxf8q3Output
 
-- (Te_tjejjxf8q3Output)initWithRHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd:(id)a3
+- (Te_tjejjxf8q3Output)initWithRHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd:(id)add
 {
-  v5 = a3;
+  addCopy = add;
   v9.receiver = self;
   v9.super_class = Te_tjejjxf8q3Output;
   v6 = [(Te_tjejjxf8q3Output *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_RHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd, a3);
+    objc_storeStrong(&v6->_RHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd, add);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"RHYTHM_TYPE_HEAD/FC_1/fully_connected/BiasAdd"])
+  if ([name isEqualToString:@"RHYTHM_TYPE_HEAD/FC_1/fully_connected/BiasAdd"])
   {
     v4 = MEMORY[0x277CBFEF8];
-    v5 = [(Te_tjejjxf8q3Output *)self RHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd];
-    v6 = [v4 featureValueWithMultiArray:v5];
+    rHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd = [(Te_tjejjxf8q3Output *)self RHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd];
+    v6 = [v4 featureValueWithMultiArray:rHYTHM_TYPE_HEAD_FC_1_fully_connected_BiasAdd];
   }
 
   else

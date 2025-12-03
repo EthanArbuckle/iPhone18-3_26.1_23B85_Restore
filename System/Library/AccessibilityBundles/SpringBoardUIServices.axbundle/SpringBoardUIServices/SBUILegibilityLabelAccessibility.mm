@@ -1,9 +1,9 @@
 @interface SBUILegibilityLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityOverridesInvisibility;
 - (BOOL)_accessibilityViewIsVisible;
 - (BOOL)accessibilityRespondsToUserInteraction;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityParentView;
@@ -13,46 +13,46 @@
 
 @implementation SBUILegibilityLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFLockScreenDateView"];
-  [v3 validateClass:@"SBUILegibilityLabel" hasInstanceVariable:@"_lookasideLabel" withType:"UILabel"];
-  [v3 validateClass:@"SBFLockScreenDateView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFLockScreenDateView"];
+  [validationsCopy validateClass:@"SBUILegibilityLabel" hasInstanceVariable:@"_lookasideLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SBFLockScreenDateView" isKindOfClass:@"UIView"];
   if (NSClassFromString(&cfstr_Sbflockscreend_0.isa))
   {
-    [v3 validateClass:@"SBFLockScreenDateViewAccessibility" hasInstanceMethod:@"_axTimeLabelFrame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+    [validationsCopy validateClass:@"SBFLockScreenDateViewAccessibility" hasInstanceMethod:@"_axTimeLabelFrame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
   }
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-  v4 = [v3 containsString:@"LockScreenTimeLabel"];
+  accessibilityIdentification = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification containsString:@"LockScreenTimeLabel"];
 
   if (v4)
   {
     v5 = MEMORY[0x29EDBD7E8];
-    v6 = [MEMORY[0x29EDB8DB0] date];
+    date = [MEMORY[0x29EDB8DB0] date];
     v7 = AXDateStringForFormat();
-    v8 = [v5 axAttributedStringWithString:v7];
+    accessibilityLabel2 = [v5 axAttributedStringWithString:v7];
 
     v9 = *MEMORY[0x29EDB8F00];
     v10 = MEMORY[0x29EDBD888];
 LABEL_5:
-    [v8 setAttribute:v9 forKey:*v10];
+    [accessibilityLabel2 setAttribute:v9 forKey:*v10];
     goto LABEL_7;
   }
 
-  v11 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-  v12 = [v11 containsString:@"LockScreenDateLabel"];
+  accessibilityIdentification2 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+  v12 = [accessibilityIdentification2 containsString:@"LockScreenDateLabel"];
 
   if (v12)
   {
     v13 = MEMORY[0x29EDBD7E8];
     v14 = [(SBUILegibilityLabelAccessibility *)self safeValueForKey:@"_lookasideLabel"];
-    v15 = [v14 accessibilityLabel];
-    v8 = [v13 axAttributedStringWithString:v15];
+    accessibilityLabel = [v14 accessibilityLabel];
+    accessibilityLabel2 = [v13 axAttributedStringWithString:accessibilityLabel];
 
     v9 = *MEMORY[0x29EDB8F00];
     v10 = MEMORY[0x29EDBD898];
@@ -60,32 +60,32 @@ LABEL_5:
   }
 
   v16 = [(SBUILegibilityLabelAccessibility *)self safeValueForKey:@"_lookasideLabel"];
-  v8 = [v16 accessibilityLabel];
+  accessibilityLabel2 = [v16 accessibilityLabel];
 
 LABEL_7:
 
-  return v8;
+  return accessibilityLabel2;
 }
 
 - (BOOL)_accessibilityOverridesInvisibility
 {
-  v3 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"HomeAffordanceLabel"];
+  accessibilityIdentification = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"HomeAffordanceLabel"];
 
   if (v4)
   {
     return 1;
   }
 
-  v5 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-  if ([v5 isEqualToString:@"LockScreenTimeLabel"])
+  accessibilityIdentification2 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification2 isEqualToString:@"LockScreenTimeLabel"])
   {
   }
 
   else
   {
-    v6 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-    v7 = [v6 isEqualToString:@"LockScreenDateLabel"];
+    accessibilityIdentification3 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+    v7 = [accessibilityIdentification3 isEqualToString:@"LockScreenDateLabel"];
 
     if (!v7)
     {
@@ -105,12 +105,12 @@ LABEL_7:
   return [(SBUILegibilityLabelAccessibility *)&v10 _accessibilityOverridesInvisibility];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v5 = [(SBUILegibilityLabelAccessibility *)self _accessibilityWindow];
+  _accessibilityWindow = [(SBUILegibilityLabelAccessibility *)self _accessibilityWindow];
   NSClassFromString(&cfstr_Sbcoversheetwi.isa);
   isKindOfClass = objc_opt_isKindOfClass();
-  if (a3 == 1 && (isKindOfClass & 1) != 0)
+  if (scroll == 1 && (isKindOfClass & 1) != 0)
   {
     v7 = accessibilitySBLocalizedString(@"did.show.today.view.announcement");
     UIAccessibilitySpeakAndDoNotBeInterrupted();
@@ -118,30 +118,30 @@ LABEL_7:
 
   v10.receiver = self;
   v10.super_class = SBUILegibilityLabelAccessibility;
-  v8 = [(SBUILegibilityLabelAccessibility *)&v10 accessibilityScroll:a3];
+  v8 = [(SBUILegibilityLabelAccessibility *)&v10 accessibilityScroll:scroll];
 
   return v8;
 }
 
 - (BOOL)_accessibilityViewIsVisible
 {
-  v3 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"HomeAffordanceLabel"];
+  accessibilityIdentification = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"HomeAffordanceLabel"];
 
   if (v4)
   {
     return 1;
   }
 
-  v5 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-  if ([v5 isEqualToString:@"LockScreenTimeLabel"])
+  accessibilityIdentification2 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification2 isEqualToString:@"LockScreenTimeLabel"])
   {
   }
 
   else
   {
-    v6 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-    v7 = [v6 isEqualToString:@"LockScreenDateLabel"];
+    accessibilityIdentification3 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+    v7 = [accessibilityIdentification3 isEqualToString:@"LockScreenDateLabel"];
 
     if (!v7)
     {
@@ -163,23 +163,23 @@ LABEL_7:
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"HomeAffordanceLabel"];
+  accessibilityIdentification = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"HomeAffordanceLabel"];
 
   if (v4)
   {
     return 1;
   }
 
-  v5 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-  if ([v5 isEqualToString:@"LockScreenTimeLabel"])
+  accessibilityIdentification2 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification2 isEqualToString:@"LockScreenTimeLabel"])
   {
   }
 
   else
   {
-    v6 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-    v7 = [v6 isEqualToString:@"LockScreenDateLabel"];
+    accessibilityIdentification3 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+    v7 = [accessibilityIdentification3 isEqualToString:@"LockScreenDateLabel"];
 
     if (!v7)
     {
@@ -195,7 +195,7 @@ LABEL_7:
 - (unint64_t)accessibilityTraits
 {
   v2 = *MEMORY[0x29EDC7FD0];
-  v3 = [(SBUILegibilityLabelAccessibility *)self accessibilityContainer];
+  accessibilityContainer = [(SBUILegibilityLabelAccessibility *)self accessibilityContainer];
   NSClassFromString(&cfstr_Ncnotification.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -210,16 +210,16 @@ LABEL_7:
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"LockScreenTimeLabel"];
+  accessibilityIdentification = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"LockScreenTimeLabel"];
 
   if (v4)
   {
-    v5 = [(SBUILegibilityLabelAccessibility *)self _accessibilityParentView];
+    _accessibilityParentView = [(SBUILegibilityLabelAccessibility *)self _accessibilityParentView];
     NSClassFromString(&cfstr_Sbflockscreend.isa);
     if (objc_opt_isKindOfClass())
     {
-      [v5 safeCGRectForKey:@"_axTimeLabelFrame"];
+      [_accessibilityParentView safeCGRectForKey:@"_axTimeLabelFrame"];
       x = v19.origin.x;
       y = v19.origin.y;
       width = v19.size.width;
@@ -253,8 +253,8 @@ LABEL_6:
 
 - (BOOL)accessibilityRespondsToUserInteraction
 {
-  v3 = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"LockScreenTimeLabel"];
+  accessibilityIdentification = [(SBUILegibilityLabelAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"LockScreenTimeLabel"];
 
   if (v4)
   {
@@ -268,20 +268,20 @@ LABEL_6:
 
 - (id)_accessibilityParentView
 {
-  v3 = [(SBUILegibilityLabelAccessibility *)self accessibilityContainer];
-  if (v3 && (NSClassFromString(&cfstr_Sbflockscreend.isa), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  accessibilityContainer = [(SBUILegibilityLabelAccessibility *)self accessibilityContainer];
+  if (accessibilityContainer && (NSClassFromString(&cfstr_Sbflockscreend.isa), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = v3;
+    _accessibilityParentView = accessibilityContainer;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SBUILegibilityLabelAccessibility;
-    v4 = [(SBUILegibilityLabelAccessibility *)&v7 _accessibilityParentView];
+    _accessibilityParentView = [(SBUILegibilityLabelAccessibility *)&v7 _accessibilityParentView];
   }
 
-  v5 = v4;
+  v5 = _accessibilityParentView;
 
   return v5;
 }

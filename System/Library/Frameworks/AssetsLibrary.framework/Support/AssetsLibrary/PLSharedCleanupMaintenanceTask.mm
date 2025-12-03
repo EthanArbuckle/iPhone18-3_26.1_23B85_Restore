@@ -1,34 +1,34 @@
 @interface PLSharedCleanupMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLSharedCleanupMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(PLMaintenanceTask *)self photoLibrary];
+  transactionCopy = transaction;
+  photoLibrary = [(PLMaintenanceTask *)self photoLibrary];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100004F24;
   v18 = &unk_10002D9D8;
-  v19 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = transactionCopy;
   v20 = v6;
-  [v5 performTransaction:&v15 withPriority:0];
+  [photoLibrary performTransaction:&v15 withPriority:0];
 
   v7 = [(PLMaintenanceTask *)self libraryServicesManager:v15];
-  v8 = [v7 isSystemPhotoLibrary];
+  isSystemPhotoLibrary = [v7 isSystemPhotoLibrary];
 
-  if (v8)
+  if (isSystemPhotoLibrary)
   {
-    v9 = [(PLMaintenanceTask *)self photoLibrary];
-    [PLPhotoSharingHelper pruneCloudSharingContentIfNecessaryInLibrary:v9];
+    photoLibrary2 = [(PLMaintenanceTask *)self photoLibrary];
+    [PLPhotoSharingHelper pruneCloudSharingContentIfNecessaryInLibrary:photoLibrary2];
 
-    v10 = [(PLMaintenanceTask *)self photoLibrary];
-    v11 = [v10 pathManager];
-    v12 = [v11 libraryURL];
-    v13 = [PLPhotoSharingHelper sharedStreamsEnabledForPhotoLibraryURL:v12];
+    photoLibrary3 = [(PLMaintenanceTask *)self photoLibrary];
+    pathManager = [photoLibrary3 pathManager];
+    libraryURL = [pathManager libraryURL];
+    v13 = [PLPhotoSharingHelper sharedStreamsEnabledForPhotoLibraryURL:libraryURL];
 
     if (v13)
     {

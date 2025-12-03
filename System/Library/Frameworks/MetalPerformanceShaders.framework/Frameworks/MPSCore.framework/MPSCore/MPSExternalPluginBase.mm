@@ -1,6 +1,6 @@
 @interface MPSExternalPluginBase
 - (MPSExternalPluginBase)init;
-- (MPSExternalPluginBase)initWithDevice:(id)a3;
+- (MPSExternalPluginBase)initWithDevice:(id)device;
 - (NSString)debugDescription;
 @end
 
@@ -13,7 +13,7 @@
   return 0;
 }
 
-- (MPSExternalPluginBase)initWithDevice:(id)a3
+- (MPSExternalPluginBase)initWithDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSExternalPluginBase;
@@ -21,7 +21,7 @@
   if (result)
   {
     result->_self = result;
-    result->_device = a3;
+    result->_device = device;
   }
 
   return result;

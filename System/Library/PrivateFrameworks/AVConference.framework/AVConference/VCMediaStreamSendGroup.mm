@@ -1,36 +1,36 @@
 @interface VCMediaStreamSendGroup
-- (BOOL)dispatchedEnableRedundancy:(BOOL)a3;
-- (BOOL)enableRedundancy:(BOOL)a3;
+- (BOOL)dispatchedEnableRedundancy:(BOOL)redundancy;
+- (BOOL)enableRedundancy:(BOOL)redundancy;
 - (BOOL)isSourceTimestampInfoAvailable;
-- (BOOL)setStreamGroupMode:(unsigned int)a3;
-- (BOOL)setupStreamGroupWithConfig:(id)a3;
-- (BOOL)updateConfig:(id)a3 forMode:(unsigned int)a4;
-- (BOOL)updatePeerSubscribedStreams:(id)a3 containsRepairStreams:(BOOL)a4;
+- (BOOL)setStreamGroupMode:(unsigned int)mode;
+- (BOOL)setupStreamGroupWithConfig:(id)config;
+- (BOOL)updateConfig:(id)config forMode:(unsigned int)mode;
+- (BOOL)updatePeerSubscribedStreams:(id)streams containsRepairStreams:(BOOL)repairStreams;
 - (BOOL)v2PayloadsAllowed;
-- (VCMediaStreamSendGroup)initWithConfig:(id)a3;
-- (id)dispatchedMediaStreamInfosForEndToEndConnection:(BOOL)a3;
-- (id)streamGroupConfigForMode:(unsigned int)a3;
-- (unsigned)calculateUplinkTotalBitrateForMediaStreams:(id)a3;
+- (VCMediaStreamSendGroup)initWithConfig:(id)config;
+- (id)dispatchedMediaStreamInfosForEndToEndConnection:(BOOL)connection;
+- (id)streamGroupConfigForMode:(unsigned int)mode;
+- (unsigned)calculateUplinkTotalBitrateForMediaStreams:(id)streams;
 - (unsigned)streamGroupMode;
 - (void)dealloc;
-- (void)didPause:(BOOL)a3;
-- (void)didReceiveRTCPPackets:(_RTCPPacketList *)a3;
+- (void)didPause:(BOOL)pause;
+- (void)didReceiveRTCPPackets:(_RTCPPacketList *)packets;
 - (void)didStart;
 - (void)didStop;
-- (void)dispatchedUpdateStreamsWithActiveConnection:(id)a3;
-- (void)setActiveConnection:(id)a3 uplinkBitrateCap:(unsigned int)a4 activeMediaStreamIDs:(id)a5 mediaBitrates:(id)a6 rateChangeCounter:(unsigned int)a7;
-- (void)setCurrentUplinkTargetBitrate:(unsigned int)a3;
-- (void)setRetransmissionEnabled:(BOOL)a3;
-- (void)setStatisticsCollector:(id)a3;
-- (void)updateActiveMediaStreamIDs:(id)a3 withTargetBitrate:(unsigned int)a4 mediaBitrates:(id)a5 rateChangeCounter:(unsigned int)a6;
-- (void)updateActiveStreamsCount:(unsigned int)a3;
-- (void)updateEncryptionInformationWithConfig:(id)a3;
-- (void)updateStreamIDCompoundingWithBlock:(id)a3 activeStreamIds:(id)a4;
+- (void)dispatchedUpdateStreamsWithActiveConnection:(id)connection;
+- (void)setActiveConnection:(id)connection uplinkBitrateCap:(unsigned int)cap activeMediaStreamIDs:(id)ds mediaBitrates:(id)bitrates rateChangeCounter:(unsigned int)counter;
+- (void)setCurrentUplinkTargetBitrate:(unsigned int)bitrate;
+- (void)setRetransmissionEnabled:(BOOL)enabled;
+- (void)setStatisticsCollector:(id)collector;
+- (void)updateActiveMediaStreamIDs:(id)ds withTargetBitrate:(unsigned int)bitrate mediaBitrates:(id)bitrates rateChangeCounter:(unsigned int)counter;
+- (void)updateActiveStreamsCount:(unsigned int)count;
+- (void)updateEncryptionInformationWithConfig:(id)config;
+- (void)updateStreamIDCompoundingWithBlock:(id)block activeStreamIds:(id)ids;
 @end
 
 @implementation VCMediaStreamSendGroup
 
-- (VCMediaStreamSendGroup)initWithConfig:(id)a3
+- (VCMediaStreamSendGroup)initWithConfig:(id)config
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -44,7 +44,7 @@
     v5->_peerSubscribedStreams = v6;
     if (v6)
     {
-      v5->_shouldSynchronizeWithSourceRTPTimestamps = [a3 shouldSynchronizeWithSourceRTPTimestamps];
+      v5->_shouldSynchronizeWithSourceRTPTimestamps = [config shouldSynchronizeWithSourceRTPTimestamps];
       pthread_rwlock_init(&v5->_sourceTimestampRWLock, 0);
       v5->_lastSentSourceHostTime = NAN;
       if ([(VCMediaStreamGroup *)v5 streamGroupID]== 1937339233)
@@ -56,9 +56,9 @@
       v5->_sendGroupConfigForMode = v7;
       if (v7)
       {
-        v5->_streamGroupMode = [a3 streamGroupMode];
-        -[NSMutableDictionary setObject:forKeyedSubscript:](v5->_sendGroupConfigForMode, "setObject:forKeyedSubscript:", a3, [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "streamGroupMode")}]);
-        [a3 setDelegate:0];
+        v5->_streamGroupMode = [config streamGroupMode];
+        -[NSMutableDictionary setObject:forKeyedSubscript:](v5->_sendGroupConfigForMode, "setObject:forKeyedSubscript:", config, [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(config, "streamGroupMode")}]);
+        [config setDelegate:0];
         return v5;
       }
 
@@ -86,7 +86,7 @@
   [(VCMediaStreamGroup *)&v3 dealloc];
 }
 
-- (id)streamGroupConfigForMode:(unsigned int)a3
+- (id)streamGroupConfigForMode:(unsigned int)mode
 {
   v14 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -102,7 +102,7 @@
   v6[3] = &unk_1E85F61A8;
   v6[4] = self;
   v6[5] = &v8;
-  v7 = a3;
+  modeCopy = mode;
   dispatch_sync(stateQueue, v6);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -116,7 +116,7 @@ id __51__VCMediaStreamSendGroup_streamGroupConfigForMode___block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)setStreamGroupMode:(unsigned int)a3
+- (BOOL)setStreamGroupMode:(unsigned int)mode
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -128,7 +128,7 @@ id __51__VCMediaStreamSendGroup_streamGroupConfigForMode___block_invoke(uint64_t
   v6[1] = 3221225472;
   v6[2] = __45__VCMediaStreamSendGroup_setStreamGroupMode___block_invoke;
   v6[3] = &unk_1E85F64A0;
-  v7 = a3;
+  modeCopy = mode;
   v6[4] = self;
   v6[5] = &v8;
   dispatch_sync(stateQueue, v6);
@@ -454,7 +454,7 @@ LABEL_31:
   }
 }
 
-- (void)setCurrentUplinkTargetBitrate:(unsigned int)a3
+- (void)setCurrentUplinkTargetBitrate:(unsigned int)bitrate
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->super._stateQueue;
@@ -463,7 +463,7 @@ LABEL_31:
   block[2] = __56__VCMediaStreamSendGroup_setCurrentUplinkTargetBitrate___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  bitrateCopy = bitrate;
   dispatch_sync(stateQueue, block);
 }
 
@@ -487,14 +487,14 @@ LABEL_31:
   return v3;
 }
 
-- (void)updateEncryptionInformationWithConfig:(id)a3
+- (void)updateEncryptionInformationWithConfig:(id)config
 {
   v18 = *MEMORY[0x1E69E9840];
   v12 = 0;
   VCSecurityKeyHolder_CopyKeyMaterialForKeyIndex([(VCMediaStreamGroup *)self securityKeyHolder], 0, &v12);
-  v4 = [v12 firstObject];
-  v5 = [objc_msgSend(v4 objectForKeyedSubscript:{@"SecurityLocallyGenerated", "BOOLValue"}];
-  if (v4)
+  firstObject = [v12 firstObject];
+  v5 = [objc_msgSend(firstObject objectForKeyedSubscript:{@"SecurityLocallyGenerated", "BOOLValue"}];
+  if (firstObject)
   {
     v6 = v5 == 0;
   }
@@ -510,8 +510,8 @@ LABEL_31:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [a3 mediaStreamInfoArray];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v13 count:16];
+    mediaStreamInfoArray = [config mediaStreamInfoArray];
+    v8 = [mediaStreamInfoArray countByEnumeratingWithState:&v14 objects:v13 count:16];
     if (v8)
     {
       v9 = v8;
@@ -523,14 +523,14 @@ LABEL_31:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(mediaStreamInfoArray);
           }
 
           [objc_msgSend(*(*(&v14 + 1) + 8 * v11++) "stream")];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v13 count:16];
+        v9 = [mediaStreamInfoArray countByEnumeratingWithState:&v14 objects:v13 count:16];
       }
 
       while (v9);
@@ -538,19 +538,19 @@ LABEL_31:
   }
 }
 
-- (BOOL)setupStreamGroupWithConfig:(id)a3
+- (BOOL)setupStreamGroupWithConfig:(id)config
 {
   v8 = *MEMORY[0x1E69E9840];
   [(VCMediaStreamGroup *)self unregisterMediaStreamNotificationDelegate];
   v6.receiver = self;
   v6.super_class = VCMediaStreamSendGroup;
-  if (![(VCMediaStreamGroup *)&v6 setupStreamsWithConfig:a3])
+  if (![(VCMediaStreamGroup *)&v6 setupStreamsWithConfig:config])
   {
     [(VCMediaStreamSendGroup *)self setupStreamGroupWithConfig:?];
     return v7;
   }
 
-  -[VCMediaStreamSendGroup setRedundancyController:](self, "setRedundancyController:", [a3 redundancyController]);
+  -[VCMediaStreamSendGroup setRedundancyController:](self, "setRedundancyController:", [config redundancyController]);
   [(VCMediaStreamGroup *)self registerMediaStreamNotificationDelegate];
   if (![(VCMediaStreamGroup *)self configureStreams])
   {
@@ -558,11 +558,11 @@ LABEL_31:
     return v7;
   }
 
-  [(VCMediaStreamSendGroup *)self updateEncryptionInformationWithConfig:a3];
+  [(VCMediaStreamSendGroup *)self updateEncryptionInformationWithConfig:config];
   return 1;
 }
 
-- (BOOL)updateConfig:(id)a3 forMode:(unsigned int)a4
+- (BOOL)updateConfig:(id)config forMode:(unsigned int)mode
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -575,8 +575,8 @@ LABEL_31:
   block[2] = __47__VCMediaStreamSendGroup_updateConfig_forMode___block_invoke;
   block[3] = &unk_1E85F6180;
   block[4] = self;
-  block[5] = a3;
-  v8 = a4;
+  block[5] = config;
+  modeCopy = mode;
   block[6] = &v9;
   dispatch_sync(stateQueue, block);
   v5 = *(v10 + 24);
@@ -757,7 +757,7 @@ LABEL_15:
   }
 }
 
-- (void)updateStreamIDCompoundingWithBlock:(id)a3 activeStreamIds:(id)a4
+- (void)updateStreamIDCompoundingWithBlock:(id)block activeStreamIds:(id)ids
 {
   v37 = *MEMORY[0x1E69E9840];
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->super._mediaStreamInfoArray, "count")}];
@@ -770,10 +770,10 @@ LABEL_15:
   v21 = [(NSArray *)obj countByEnumeratingWithState:&v33 objects:v32 count:16];
   if (v21)
   {
-    v25 = 0;
+    stream = 0;
     v26 = v8;
     v20 = *v34;
-    v23 = a3;
+    blockCopy = block;
     do
     {
       v9 = 0;
@@ -791,8 +791,8 @@ LABEL_15:
         v30 = 0u;
         v31 = 0u;
         v24 = v10;
-        v11 = [v10 streamConfigs];
-        v12 = [v11 countByEnumeratingWithState:&v28 objects:v27 count:16];
+        streamConfigs = [v10 streamConfigs];
+        v12 = [streamConfigs countByEnumeratingWithState:&v28 objects:v27 count:16];
         if (v12)
         {
           v13 = v12;
@@ -803,35 +803,35 @@ LABEL_15:
             {
               if (*v29 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(streamConfigs);
               }
 
               v16 = *(*(&v28 + 1) + 8 * i);
-              v17 = [v16 multiwayConfig];
-              v18 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v17, "idsStreamID")}];
-              if (![(VCMediaStreamSendGroup *)self shouldCompoundListIgnoreStream:v18 streamConfig:v16 activeStreamIds:a4])
+              multiwayConfig = [v16 multiwayConfig];
+              v18 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(multiwayConfig, "idsStreamID")}];
+              if (![(VCMediaStreamSendGroup *)self shouldCompoundListIgnoreStream:v18 streamConfig:v16 activeStreamIds:ids])
               {
-                if ([a4 containsObject:v18])
+                if ([ids containsObject:v18])
                 {
-                  if (v25)
+                  if (stream)
                   {
-                    v23[2](v23, v25, v7, v26, 0);
+                    blockCopy[2](blockCopy, stream, v7, v26, 0);
                   }
 
                   [v7 removeAllObjects];
                   [v26 removeAllObjects];
-                  v25 = [v24 stream];
+                  stream = [v24 stream];
                 }
 
                 [v7 addObject:v18];
-                if ([v17 hasRepairedStreamID])
+                if ([multiwayConfig hasRepairedStreamID])
                 {
-                  [v26 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", objc_msgSend(v17, "repairedStreamID"))}];
+                  [v26 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", objc_msgSend(multiwayConfig, "repairedStreamID"))}];
                 }
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v28 objects:v27 count:16];
+            v13 = [streamConfigs countByEnumeratingWithState:&v28 objects:v27 count:16];
           }
 
           while (v13);
@@ -846,14 +846,14 @@ LABEL_15:
 
     while (v21);
     v8 = v26;
-    if (v25)
+    if (stream)
     {
-      (v23[2])();
+      (blockCopy[2])();
     }
   }
 }
 
-- (void)updateActiveMediaStreamIDs:(id)a3 withTargetBitrate:(unsigned int)a4 mediaBitrates:(id)a5 rateChangeCounter:(unsigned int)a6
+- (void)updateActiveMediaStreamIDs:(id)ds withTargetBitrate:(unsigned int)bitrate mediaBitrates:(id)bitrates rateChangeCounter:(unsigned int)counter
 {
   v10 = *MEMORY[0x1E69E9840];
   stateQueue = self->super._stateQueue;
@@ -862,10 +862,10 @@ LABEL_15:
   block[2] = __103__VCMediaStreamSendGroup_updateActiveMediaStreamIDs_withTargetBitrate_mediaBitrates_rateChangeCounter___block_invoke;
   block[3] = &unk_1E85F4AB8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a5;
-  v8 = a4;
-  v9 = a6;
+  block[5] = ds;
+  block[6] = bitrates;
+  bitrateCopy = bitrate;
+  counterCopy = counter;
   dispatch_async(stateQueue, block);
 }
 
@@ -877,7 +877,7 @@ LABEL_15:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v17 = self;
+  selfCopy = self;
   obj = self->super._mediaStreamInfoArray;
   v4 = [(NSArray *)obj countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v4)
@@ -898,8 +898,8 @@ LABEL_15:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v9 = [v8 streamConfigs];
-        v10 = [v9 countByEnumeratingWithState:&v20 objects:v19 count:16];
+        streamConfigs = [v8 streamConfigs];
+        v10 = [streamConfigs countByEnumeratingWithState:&v20 objects:v19 count:16];
         if (v10)
         {
           v11 = v10;
@@ -910,14 +910,14 @@ LABEL_15:
             {
               if (*v21 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(streamConfigs);
               }
 
-              v14 = [*(*(&v20 + 1) + 8 * j) multiwayConfig];
-              [v3 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", objc_msgSend(v14, "idsStreamID"))}];
+              multiwayConfig = [*(*(&v20 + 1) + 8 * j) multiwayConfig];
+              [v3 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", objc_msgSend(multiwayConfig, "idsStreamID"))}];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v20 objects:v19 count:16];
+            v11 = [streamConfigs countByEnumeratingWithState:&v20 objects:v19 count:16];
           }
 
           while (v11);
@@ -930,26 +930,26 @@ LABEL_15:
     while (v5);
   }
 
-  [v3 intersectSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", v17->_peerSubscribedStreams)}];
+  [v3 intersectSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", selfCopy->_peerSubscribedStreams)}];
   v15 = [v3 count] == 0;
 
   return v15;
 }
 
-- (BOOL)dispatchedEnableRedundancy:(BOOL)a3
+- (BOOL)dispatchedEnableRedundancy:(BOOL)redundancy
 {
-  v3 = a3;
+  redundancyCopy = redundancy;
   dispatch_assert_queue_V2(self->super._stateQueue);
   isRedundancyEnabled = self->_isRedundancyEnabled;
-  if (isRedundancyEnabled != v3)
+  if (isRedundancyEnabled != redundancyCopy)
   {
-    self->_isRedundancyEnabled = v3;
+    self->_isRedundancyEnabled = redundancyCopy;
   }
 
-  return isRedundancyEnabled != v3;
+  return isRedundancyEnabled != redundancyCopy;
 }
 
-- (BOOL)enableRedundancy:(BOOL)a3
+- (BOOL)enableRedundancy:(BOOL)redundancy
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -963,7 +963,7 @@ LABEL_15:
   v6[3] = &unk_1E85F7890;
   v6[4] = self;
   v6[5] = &v8;
-  v7 = a3;
+  redundancyCopy = redundancy;
   dispatch_sync(stateQueue, v6);
   v4 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -977,7 +977,7 @@ uint64_t __43__VCMediaStreamSendGroup_enableRedundancy___block_invoke(uint64_t a
   return result;
 }
 
-- (void)setRetransmissionEnabled:(BOOL)a3
+- (void)setRetransmissionEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->super._stateQueue;
@@ -986,7 +986,7 @@ uint64_t __43__VCMediaStreamSendGroup_enableRedundancy___block_invoke(uint64_t a
   block[2] = __51__VCMediaStreamSendGroup_setRetransmissionEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(stateQueue, block);
 }
 
@@ -1028,7 +1028,7 @@ uint64_t __51__VCMediaStreamSendGroup_setRetransmissionEnabled___block_invoke(ui
   return result;
 }
 
-- (BOOL)updatePeerSubscribedStreams:(id)a3 containsRepairStreams:(BOOL)a4
+- (BOOL)updatePeerSubscribedStreams:(id)streams containsRepairStreams:(BOOL)repairStreams
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -1041,9 +1041,9 @@ uint64_t __51__VCMediaStreamSendGroup_setRetransmissionEnabled___block_invoke(ui
   block[2] = __76__VCMediaStreamSendGroup_updatePeerSubscribedStreams_containsRepairStreams___block_invoke;
   block[3] = &unk_1E85F6820;
   block[4] = self;
-  block[5] = a3;
+  block[5] = streams;
   block[6] = &v9;
-  v8 = a4;
+  repairStreamsCopy = repairStreams;
   dispatch_sync(stateQueue, block);
   v5 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -1072,19 +1072,19 @@ uint64_t __76__VCMediaStreamSendGroup_updatePeerSubscribedStreams_containsRepair
   return result;
 }
 
-- (id)dispatchedMediaStreamInfosForEndToEndConnection:(BOOL)a3
+- (id)dispatchedMediaStreamInfosForEndToEndConnection:(BOOL)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->super._stateQueue);
-  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_sendGroupConfigForMode, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3]);
+  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_sendGroupConfigForMode, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:connectionCopy]);
 
   return [v5 mediaStreamInfoArray];
 }
 
-- (void)dispatchedUpdateStreamsWithActiveConnection:(id)a3
+- (void)dispatchedUpdateStreamsWithActiveConnection:(id)connection
 {
   v39 = *MEMORY[0x1E69E9840];
-  IsEndToEndLink = VCConnection_IsEndToEndLink(a3);
+  IsEndToEndLink = VCConnection_IsEndToEndLink(connection);
   v6 = [(VCMediaStreamSendGroup *)self dispatchedMediaStreamInfosForEndToEndConnection:IsEndToEndLink];
   if (objc_opt_class() == self)
   {
@@ -1142,7 +1142,7 @@ LABEL_11:
         v32 = 2112;
         *v33 = v7;
         *&v33[8] = 2048;
-        v34 = self;
+        selfCopy = self;
         v35 = 1024;
         v36 = IsEndToEndLink;
         v37 = 1024;
@@ -1183,7 +1183,7 @@ LABEL_11:
   }
 }
 
-- (void)setActiveConnection:(id)a3 uplinkBitrateCap:(unsigned int)a4 activeMediaStreamIDs:(id)a5 mediaBitrates:(id)a6 rateChangeCounter:(unsigned int)a7
+- (void)setActiveConnection:(id)connection uplinkBitrateCap:(unsigned int)cap activeMediaStreamIDs:(id)ds mediaBitrates:(id)bitrates rateChangeCounter:(unsigned int)counter
 {
   v11 = *MEMORY[0x1E69E9840];
   stateQueue = self->super._stateQueue;
@@ -1192,11 +1192,11 @@ LABEL_11:
   v8[2] = __116__VCMediaStreamSendGroup_setActiveConnection_uplinkBitrateCap_activeMediaStreamIDs_mediaBitrates_rateChangeCounter___block_invoke;
   v8[3] = &unk_1E85F3B28;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a5;
-  v8[7] = a6;
-  v9 = a4;
-  v10 = a7;
+  v8[5] = connection;
+  v8[6] = ds;
+  v8[7] = bitrates;
+  capCopy = cap;
+  counterCopy = counter;
   dispatch_async(stateQueue, v8);
 }
 
@@ -1285,14 +1285,14 @@ uint64_t __116__VCMediaStreamSendGroup_setActiveConnection_uplinkBitrateCap_acti
   return result;
 }
 
-- (unsigned)calculateUplinkTotalBitrateForMediaStreams:(id)a3
+- (unsigned)calculateUplinkTotalBitrateForMediaStreams:(id)streams
 {
   v18 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  v5 = [streams countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1304,7 +1304,7 @@ uint64_t __116__VCMediaStreamSendGroup_setActiveConnection_uplinkBitrateCap_acti
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(streams);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -1321,7 +1321,7 @@ uint64_t __116__VCMediaStreamSendGroup_setActiveConnection_uplinkBitrateCap_acti
         v7 += v11;
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v6 = [streams countByEnumeratingWithState:&v14 objects:v13 count:16];
     }
 
     while (v6);
@@ -1336,7 +1336,7 @@ uint64_t __116__VCMediaStreamSendGroup_setActiveConnection_uplinkBitrateCap_acti
   return v7;
 }
 
-- (void)updateActiveStreamsCount:(unsigned int)a3
+- (void)updateActiveStreamsCount:(unsigned int)count
 {
   v47 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super._stateQueue);
@@ -1356,7 +1356,7 @@ uint64_t __116__VCMediaStreamSendGroup_setActiveConnection_uplinkBitrateCap_acti
         v38 = 1024;
         v39 = 413;
         v40 = 1024;
-        *v41 = a3;
+        *v41 = count;
         *&v41[4] = 1024;
         *&v41[6] = areStreamsSuspended;
         v9 = " [%s] %s:%d Active stream count %d, streams currently suspended: %d";
@@ -1396,9 +1396,9 @@ LABEL_11:
         v40 = 2112;
         *v41 = v5;
         *&v41[8] = 2048;
-        v42 = self;
+        selfCopy3 = self;
         v43 = 1024;
-        v44 = a3;
+        countCopy = count;
         v45 = 1024;
         v46 = v14;
         v9 = " [%s] %s:%d %@(%p) Active stream count %d, streams currently suspended: %d";
@@ -1409,7 +1409,7 @@ LABEL_11:
     }
   }
 
-  if (!a3)
+  if (!count)
   {
     if (self->super._areStreamsSuspended)
     {
@@ -1479,7 +1479,7 @@ LABEL_11:
       v40 = 2112;
       *v41 = v16;
       *&v41[8] = 2048;
-      v42 = self;
+      selfCopy3 = self;
       v27 = " [%s] %s:%d %@(%p) Active stream count has dropped to zero. Will signal delegate that streams have suspended.";
       v28 = v31;
       v29 = 48;
@@ -1567,7 +1567,7 @@ LABEL_42:
     v40 = 2112;
     *v41 = v15;
     *&v41[8] = 2048;
-    v42 = self;
+    selfCopy3 = self;
     v19 = " [%s] %s:%d %@(%p) Active stream count is no longer zero. Will signal delegate that streams will be resumed.";
     v20 = v23;
     v21 = 48;
@@ -1611,17 +1611,17 @@ LABEL_43:
   [(VCMediaStreamGroup *)&v3 didStop];
 }
 
-- (void)didPause:(BOOL)a3
+- (void)didPause:(BOOL)pause
 {
-  v3 = a3;
+  pauseCopy = pause;
   v6 = *MEMORY[0x1E69E9840];
   [(VCMediaStreamSendGroup *)self updateEnabledState];
   v5.receiver = self;
   v5.super_class = VCMediaStreamSendGroup;
-  [(VCMediaStreamGroup *)&v5 didPause:v3];
+  [(VCMediaStreamGroup *)&v5 didPause:pauseCopy];
 }
 
-- (void)setStatisticsCollector:(id)a3
+- (void)setStatisticsCollector:(id)collector
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super._stateQueue;
@@ -1630,7 +1630,7 @@ LABEL_43:
   block[2] = __49__VCMediaStreamSendGroup_setStatisticsCollector___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = collector;
   dispatch_async(stateQueue, block);
 }
 
@@ -1653,7 +1653,7 @@ void *__49__VCMediaStreamSendGroup_setStatisticsCollector___block_invoke(void *r
   return result;
 }
 
-- (void)didReceiveRTCPPackets:(_RTCPPacketList *)a3
+- (void)didReceiveRTCPPackets:(_RTCPPacketList *)packets
 {
   v9 = *MEMORY[0x1E69E9840];
   v7[0] = 0;
@@ -1661,7 +1661,7 @@ void *__49__VCMediaStreamSendGroup_setStatisticsCollector___block_invoke(void *r
   v7[2] = 0x68810000000;
   v7[3] = &unk_1DBF04739;
   memset(v8, 170, sizeof(v8));
-  RTCPShallowCopyPacketList(a3, v8);
+  RTCPShallowCopyPacketList(packets, v8);
   stateQueue = self->super._stateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1669,7 +1669,7 @@ void *__49__VCMediaStreamSendGroup_setStatisticsCollector___block_invoke(void *r
   block[3] = &unk_1E85F6D88;
   block[4] = self;
   block[5] = v7;
-  block[6] = a3;
+  block[6] = packets;
   dispatch_async(stateQueue, block);
   _Block_object_dispose(v7, 8);
 }

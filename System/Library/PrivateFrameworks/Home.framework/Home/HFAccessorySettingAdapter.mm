@@ -1,50 +1,50 @@
 @interface HFAccessorySettingAdapter
-+ (id)createDefaultHomeSettingAdapterCollectionForProfile:(id)a3;
-+ (id)createDefaultHomeSettingAdapterCollectionWithoutMobileTimerAdapterForProfile:(id)a3;
++ (id)createDefaultHomeSettingAdapterCollectionForProfile:(id)profile;
++ (id)createDefaultHomeSettingAdapterCollectionWithoutMobileTimerAdapterForProfile:(id)profile;
 - (BOOL)_setupKeyPaths;
 - (BOOL)_updateRootAccessorySettings;
 - (BOOL)_updateRootAccessorySettingsIfNeeded;
 - (HFAccessorySettingAdapter)init;
-- (HFAccessorySettingAdapter)initWithHomeKitSettingsVendor:(id)a3 keyPaths:(id)a4 mode:(unint64_t)a5 updateHandler:(id)a6;
+- (HFAccessorySettingAdapter)initWithHomeKitSettingsVendor:(id)vendor keyPaths:(id)paths mode:(unint64_t)mode updateHandler:(id)handler;
 - (HFHomeKitSettingsValueManager)valueManager;
 - (HMHome)home;
 - (id)_missingKeyPaths;
-- (id)settingForKeyPath:(id)a3;
-- (id)settingWatchFutureForKeyPath:(id)a3;
-- (id)updateSetting:(id)a3 value:(id)a4;
-- (id)updateSettingWithKeyPath:(id)a3 value:(id)a4;
-- (void)_reportUpdatedValueForSetting:(id)a3;
+- (id)settingForKeyPath:(id)path;
+- (id)settingWatchFutureForKeyPath:(id)path;
+- (id)updateSetting:(id)setting value:(id)value;
+- (id)updateSettingWithKeyPath:(id)path value:(id)value;
+- (void)_reportUpdatedValueForSetting:(id)setting;
 - (void)_setupMissingKeyPaths;
 - (void)_tearDownKeyPaths;
-- (void)_teardownSetting:(id)a3;
-- (void)_watchSetting:(id)a3;
-- (void)mediaObject:(id)a3 didUpdateSettings:(id)a4;
-- (void)settings:(id)a3 didUpdateForIdentifier:(id)a4 keyPath:(id)a5;
-- (void)settings:(id)a3 didWriteValueForSettings:(id)a4 failedSettings:(id)a5 homeKitObjectIdentifiers:(id)a6;
-- (void)settings:(id)a3 willWriteValueForSettings:(id)a4;
-- (void)settingsDidUpdate:(id)a3;
+- (void)_teardownSetting:(id)setting;
+- (void)_watchSetting:(id)setting;
+- (void)mediaObject:(id)object didUpdateSettings:(id)settings;
+- (void)settings:(id)settings didUpdateForIdentifier:(id)identifier keyPath:(id)path;
+- (void)settings:(id)settings didWriteValueForSettings:(id)forSettings failedSettings:(id)failedSettings homeKitObjectIdentifiers:(id)identifiers;
+- (void)settings:(id)settings willWriteValueForSettings:(id)forSettings;
+- (void)settingsDidUpdate:(id)update;
 @end
 
 @implementation HFAccessorySettingAdapter
 
 - (HFAccessorySettingAdapter)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHomeKitSettingsVendor_keyPaths_mode_updateHandler_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:93 description:{@"%s is unavailable; use %@ instead", "-[HFAccessorySettingAdapter init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:93 description:{@"%s is unavailable; use %@ instead", "-[HFAccessorySettingAdapter init]", v5}];
 
   return 0;
 }
 
-- (HFAccessorySettingAdapter)initWithHomeKitSettingsVendor:(id)a3 keyPaths:(id)a4 mode:(unint64_t)a5 updateHandler:(id)a6
+- (HFAccessorySettingAdapter)initWithHomeKitSettingsVendor:(id)vendor keyPaths:(id)paths mode:(unint64_t)mode updateHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (v12)
+  vendorCopy = vendor;
+  pathsCopy = paths;
+  handlerCopy = handler;
+  if (vendorCopy)
   {
-    if (v13)
+    if (pathsCopy)
     {
       goto LABEL_3;
     }
@@ -52,17 +52,17 @@
 
   else
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
 
-    if (v13)
+    if (pathsCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v31 = [MEMORY[0x277CCA890] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"keyPaths"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"keyPaths"}];
 
 LABEL_3:
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
@@ -72,17 +72,17 @@ LABEL_3:
   v16 = v15;
   if (v15)
   {
-    v15->_mode = a5;
-    v17 = [v14 copy];
+    v15->_mode = mode;
+    v17 = [handlerCopy copy];
     updateHandler = v16->_updateHandler;
     v16->_updateHandler = v17;
 
-    objc_storeStrong(&v16->_homeKitSettingsVendor, a3);
-    v19 = [v12 hf_settingsValueManager];
+    objc_storeStrong(&v16->_homeKitSettingsVendor, vendor);
+    hf_settingsValueManager = [vendorCopy hf_settingsValueManager];
     valueManager = v16->_valueManager;
-    v16->_valueManager = v19;
+    v16->_valueManager = hf_settingsValueManager;
 
-    v21 = [v13 copy];
+    v21 = [pathsCopy copy];
     keyPaths = v16->_keyPaths;
     v16->_keyPaths = v21;
 
@@ -101,7 +101,7 @@ LABEL_3:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v34 = v13;
+      v34 = pathsCopy;
       _os_log_impl(&dword_20D9BF000, v27, OS_LOG_TYPE_DEFAULT, "init HFAccessorySettingAdapter with keyPaths: %@", buf, 0xCu);
     }
   }
@@ -110,35 +110,35 @@ LABEL_3:
   return v16;
 }
 
-- (id)updateSettingWithKeyPath:(id)a3 value:(id)a4
+- (id)updateSettingWithKeyPath:(id)path value:(id)value
 {
-  v6 = a4;
-  v7 = [(HFAccessorySettingAdapter *)self settingWatchFutureForKeyPath:a3];
+  valueCopy = value;
+  v7 = [(HFAccessorySettingAdapter *)self settingWatchFutureForKeyPath:path];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__HFAccessorySettingAdapter_updateSettingWithKeyPath_value___block_invoke;
   v11[3] = &unk_277DF5740;
   v11[4] = self;
-  v12 = v6;
-  v8 = v6;
+  v12 = valueCopy;
+  v8 = valueCopy;
   v9 = [v7 flatMap:v11];
 
   return v9;
 }
 
-- (id)settingWatchFutureForKeyPath:(id)a3
+- (id)settingWatchFutureForKeyPath:(id)path
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"keyPath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"keyPath"}];
   }
 
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v6 = [(HFAccessorySettingAdapter *)self keyPaths];
-  v7 = [v6 containsObject:v5];
+  keyPaths = [(HFAccessorySettingAdapter *)self keyPaths];
+  v7 = [keyPaths containsObject:pathCopy];
 
   v8 = HFLogForCategory(0x3EuLL);
   v9 = v8;
@@ -154,14 +154,14 @@ LABEL_3:
       v39 = 2112;
       v40 = v24;
       v41 = 2112;
-      v42 = v5;
+      v42 = pathCopy;
       _os_log_debug_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEBUG, "(%@/%@) Checking to see if we already have setting for keyPath '%@'...", buf, 0x20u);
     }
 
-    v10 = [(HFAccessorySettingAdapter *)self watchedSettings];
-    v11 = [v10 objectForKey:v5];
+    watchedSettings = [(HFAccessorySettingAdapter *)self watchedSettings];
+    pathCopy = [watchedSettings objectForKey:pathCopy];
 
-    if (v11 && ([v11 setting], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+    if (pathCopy && ([pathCopy setting], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
       v13 = HFLogForCategory(0x3EuLL);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -169,21 +169,21 @@ LABEL_3:
         v32 = objc_opt_class();
         v33 = NSStringFromClass(v32);
         v34 = NSStringFromSelector(a2);
-        v35 = [v11 setting];
+        setting = [pathCopy setting];
         *buf = 138413058;
         v38 = v33;
         v39 = 2112;
         v40 = v34;
         v41 = 2112;
-        v42 = v5;
+        v42 = pathCopy;
         v43 = 2112;
-        v44 = v35;
+        v44 = setting;
         _os_log_debug_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_DEBUG, "(%@/%@) Setting '%@' is something we're watching for already! Returning: '%@'", buf, 0x2Au);
       }
 
       v14 = MEMORY[0x277D2C900];
-      v15 = [v11 setting];
-      v16 = [v14 futureWithResult:v15];
+      setting2 = [pathCopy setting];
+      v16 = [v14 futureWithResult:setting2];
     }
 
     else
@@ -199,12 +199,12 @@ LABEL_3:
         v39 = 2112;
         v40 = v31;
         v41 = 2112;
-        v42 = v5;
+        v42 = pathCopy;
         _os_log_debug_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_DEBUG, "(%@/%@) Setting '%@' is something we're watching for, but don't have a setting yet.  Returning a future.", buf, 0x20u);
       }
 
-      v15 = [(HFAccessorySettingAdapter *)self keyPathStringToFuture];
-      v16 = [v15 na_objectForKey:v5 withDefaultValue:&__block_literal_global_123];
+      setting2 = [(HFAccessorySettingAdapter *)self keyPathStringToFuture];
+      v16 = [setting2 na_objectForKey:pathCopy withDefaultValue:&__block_literal_global_123];
     }
 
     v18 = v16;
@@ -217,21 +217,21 @@ LABEL_3:
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
       v27 = NSStringFromSelector(a2);
-      v28 = [(HFAccessorySettingAdapter *)self keyPaths];
+      keyPaths2 = [(HFAccessorySettingAdapter *)self keyPaths];
       *buf = 138413058;
       v38 = v26;
       v39 = 2112;
       v40 = v27;
       v41 = 2112;
-      v42 = v5;
+      v42 = pathCopy;
       v43 = 2112;
-      v44 = v28;
+      v44 = keyPaths2;
       _os_log_error_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_ERROR, "(%@/%@) Error; '%@' isn't part of watched keyPaths '%@'", buf, 0x2Au);
     }
 
     v17 = MEMORY[0x277D2C900];
-    v11 = [MEMORY[0x277CCA9B8] hf_errorWithCode:7 descriptionFormat:@"Could not find accessory setting for keyPath: %@", v5];
-    v18 = [v17 futureWithError:v11];
+    pathCopy = [MEMORY[0x277CCA9B8] hf_errorWithCode:7 descriptionFormat:@"Could not find accessory setting for keyPath: %@", pathCopy];
+    v18 = [v17 futureWithError:pathCopy];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -248,10 +248,10 @@ id __58__HFAccessorySettingAdapter_settingWatchFutureForKeyPath___block_invoke()
 
 - (HMHome)home
 {
-  v2 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
-  v3 = [v2 hf_home];
+  homeKitSettingsVendor = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
+  hf_home = [homeKitSettingsVendor hf_home];
 
-  return v3;
+  return hf_home;
 }
 
 - (HFHomeKitSettingsValueManager)valueManager
@@ -259,10 +259,10 @@ id __58__HFAccessorySettingAdapter_settingWatchFutureForKeyPath___block_invoke()
   valueManager = self->_valueManager;
   if (!valueManager)
   {
-    v4 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
-    v5 = [v4 hf_settingsValueManager];
+    homeKitSettingsVendor = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
+    hf_settingsValueManager = [homeKitSettingsVendor hf_settingsValueManager];
     v6 = self->_valueManager;
-    self->_valueManager = v5;
+    self->_valueManager = hf_settingsValueManager;
 
     valueManager = self->_valueManager;
   }
@@ -272,22 +272,22 @@ id __58__HFAccessorySettingAdapter_settingWatchFutureForKeyPath___block_invoke()
   return v7;
 }
 
-- (id)updateSetting:(id)a3 value:(id)a4
+- (id)updateSetting:(id)setting value:(id)value
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFAccessorySettingAdapter *)self valueManager];
-  v9 = v8;
-  if (v8)
+  settingCopy = setting;
+  valueCopy = value;
+  valueManager = [(HFAccessorySettingAdapter *)self valueManager];
+  v9 = valueManager;
+  if (valueManager)
   {
-    v10 = [v8 changeValueForSetting:v6 toValue:v7];
+    v10 = [valueManager changeValueForSetting:settingCopy toValue:valueCopy];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __49__HFAccessorySettingAdapter_updateSetting_value___block_invoke;
     v23[3] = &unk_277DF5788;
-    v24 = v6;
-    v25 = v7;
+    v24 = settingCopy;
+    v25 = valueCopy;
     v11 = [v10 addCompletionBlock:v23];
 
     v12 = v24;
@@ -297,9 +297,9 @@ id __58__HFAccessorySettingAdapter_settingWatchFutureForKeyPath___block_invoke()
   {
     v13 = MEMORY[0x277D2C900];
     v14 = MEMORY[0x277CCA9B8];
-    if (v6)
+    if (settingCopy)
     {
-      v15 = v6;
+      v15 = settingCopy;
     }
 
     else
@@ -309,9 +309,9 @@ id __58__HFAccessorySettingAdapter_settingWatchFutureForKeyPath___block_invoke()
 
     v26[0] = @"setting";
     v26[1] = @"value";
-    if (v7)
+    if (valueCopy)
     {
-      v16 = v7;
+      v16 = valueCopy;
     }
 
     else
@@ -322,11 +322,11 @@ id __58__HFAccessorySettingAdapter_settingWatchFutureForKeyPath___block_invoke()
     v27[0] = v15;
     v27[1] = v16;
     v26[2] = @"settings";
-    v17 = [(HFAccessorySettingAdapter *)self settings];
-    v12 = v17;
-    if (v17)
+    settings = [(HFAccessorySettingAdapter *)self settings];
+    v12 = settings;
+    if (settings)
     {
-      v18 = v17;
+      v18 = settings;
     }
 
     else
@@ -381,48 +381,48 @@ void __49__HFAccessorySettingAdapter_updateSetting_value___block_invoke(uint64_t
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)settingForKeyPath:(id)a3
+- (id)settingForKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   [(HFAccessorySettingAdapter *)self _updateRootAccessorySettingsIfNeeded];
-  v5 = [(HFAccessorySettingAdapter *)self watchedSettings];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  watchedSettings = [(HFAccessorySettingAdapter *)self watchedSettings];
+  v6 = [watchedSettings objectForKeyedSubscript:pathCopy];
 
-  v7 = [v6 setting];
+  setting = [v6 setting];
 
-  return v7;
+  return setting;
 }
 
-- (void)settings:(id)a3 willWriteValueForSettings:(id)a4
+- (void)settings:(id)settings willWriteValueForSettings:(id)forSettings
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  forSettingsCopy = forSettings;
   v9 = HFLogForCategory(0x3EuLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v14 = NSStringFromSelector(a2);
     *buf = 138413058;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v14;
     v22 = 2112;
-    v23 = v7;
+    v23 = settingsCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = forSettingsCopy;
     _os_log_debug_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEBUG, "%@:%@ settings %@, settingsSet %@", buf, 0x2Au);
   }
 
   [(HFAccessorySettingAdapter *)self _updateRootAccessorySettingsIfNeeded];
-  v10 = [(HFAccessorySettingAdapter *)self keyPaths];
+  keyPaths = [(HFAccessorySettingAdapter *)self keyPaths];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __64__HFAccessorySettingAdapter_settings_willWriteValueForSettings___block_invoke;
   v16[3] = &unk_277DF57B0;
-  v17 = v10;
-  v11 = v10;
-  v12 = [v8 na_filter:v16];
+  v17 = keyPaths;
+  v11 = keyPaths;
+  v12 = [forSettingsCopy na_filter:v16];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -443,38 +443,38 @@ uint64_t __64__HFAccessorySettingAdapter_settings_willWriteValueForSettings___bl
   return v4;
 }
 
-- (void)settings:(id)a3 didWriteValueForSettings:(id)a4 failedSettings:(id)a5 homeKitObjectIdentifiers:(id)a6
+- (void)settings:(id)settings didWriteValueForSettings:(id)forSettings failedSettings:(id)failedSettings homeKitObjectIdentifiers:(id)identifiers
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  settingsCopy = settings;
+  forSettingsCopy = forSettings;
+  failedSettingsCopy = failedSettings;
   v13 = HFLogForCategory(0x3EuLL);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v18 = NSStringFromSelector(a2);
     *buf = 138413314;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v18;
     v26 = 2112;
-    v27 = v10;
+    v27 = settingsCopy;
     v28 = 2112;
-    v29 = v11;
+    v29 = forSettingsCopy;
     v30 = 2112;
-    v31 = v12;
+    v31 = failedSettingsCopy;
     _os_log_debug_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_DEBUG, "%@:%@ settings %@, didWrite %@, failedWrite %@", buf, 0x34u);
   }
 
   [(HFAccessorySettingAdapter *)self _updateRootAccessorySettingsIfNeeded];
-  v14 = [(HFAccessorySettingAdapter *)self keyPaths];
+  keyPaths = [(HFAccessorySettingAdapter *)self keyPaths];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __103__HFAccessorySettingAdapter_settings_didWriteValueForSettings_failedSettings_homeKitObjectIdentifiers___block_invoke;
   v20[3] = &unk_277DF57B0;
-  v21 = v14;
-  v15 = v14;
-  v16 = [v12 na_filter:v20];
+  v21 = keyPaths;
+  v15 = keyPaths;
+  v16 = [failedSettingsCopy na_filter:v20];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -495,19 +495,19 @@ uint64_t __103__HFAccessorySettingAdapter_settings_didWriteValueForSettings_fail
   return v4;
 }
 
-- (void)settings:(id)a3 didUpdateForIdentifier:(id)a4 keyPath:(id)a5
+- (void)settings:(id)settings didUpdateForIdentifier:(id)identifier keyPath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  pathCopy = path;
   v7 = HFLogForCategory(0x3EuLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = pathCopy;
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Got settings:didUpdateForIdentifier:keyPath: callback for keyPath '%@'", &v12, 0xCu);
   }
 
-  v8 = [(HFAccessorySettingAdapter *)self settingForKeyPath:v6];
+  v8 = [(HFAccessorySettingAdapter *)self settingForKeyPath:pathCopy];
   v9 = HFLogForCategory(0x3EuLL);
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (v8)
@@ -517,7 +517,7 @@ uint64_t __103__HFAccessorySettingAdapter_settings_didWriteValueForSettings_fail
       v12 = 138412546;
       v13 = v8;
       v14 = 2112;
-      v15 = v6;
+      v15 = pathCopy;
       _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "Found changed setting:%@ for keyPath: %@", &v12, 0x16u);
     }
 
@@ -529,7 +529,7 @@ uint64_t __103__HFAccessorySettingAdapter_settings_didWriteValueForSettings_fail
     if (v10)
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = pathCopy;
       _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "Cannot find changed setting for keyPath: %@", &v12, 0xCu);
     }
   }
@@ -537,18 +537,18 @@ uint64_t __103__HFAccessorySettingAdapter_settings_didWriteValueForSettings_fail
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settingsDidUpdate:(id)a3
+- (void)settingsDidUpdate:(id)update
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
-  v6 = [v5 settings];
+  updateCopy = update;
+  homeKitSettingsVendor = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
+  settings = [homeKitSettingsVendor settings];
 
-  if (v6 == v4)
+  if (settings == updateCopy)
   {
-    v7 = [(HFAccessorySettingAdapter *)self settings];
+    settings2 = [(HFAccessorySettingAdapter *)self settings];
 
-    if (v7 != v4)
+    if (settings2 != updateCopy)
     {
       [(HFAccessorySettingAdapter *)self _updateRootAccessorySettings];
       goto LABEL_31;
@@ -585,13 +585,13 @@ LABEL_6:
       if (v14)
       {
         v15 = v14;
-        v16 = [v4 hf_accessorySettingAtKeyPath:v13];
+        v16 = [updateCopy hf_accessorySettingAtKeyPath:v13];
 
         v17 = HFLogForCategory(0x3EuLL);
         v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
         if (v16)
         {
-          v19 = v4;
+          v19 = updateCopy;
           if (v18)
           {
             *buf = v33;
@@ -601,12 +601,12 @@ LABEL_6:
             _os_log_debug_impl(&dword_20D9BF000, v17, OS_LOG_TYPE_DEBUG, "Found watched setting '%@' @ keyPath '%@'", buf, 0x16u);
           }
 
-          v20 = [(HFAccessorySettingAdapter *)self settings];
-          v21 = [_HFObservedAccessorySettingState stateWithSettings:v20 forSetting:v15];
+          settings3 = [(HFAccessorySettingAdapter *)self settings];
+          v21 = [_HFObservedAccessorySettingState stateWithSettings:settings3 forSetting:v15];
 
-          v22 = [(HFAccessorySettingAdapter *)self watchedSettings];
-          v23 = [v15 keyPath];
-          v24 = [v22 objectForKeyedSubscript:v23];
+          watchedSettings = [(HFAccessorySettingAdapter *)self watchedSettings];
+          keyPath = [v15 keyPath];
+          v24 = [watchedSettings objectForKeyedSubscript:keyPath];
           v25 = [v21 isEqual:v24];
 
           if ((v25 & 1) == 0)
@@ -621,14 +621,14 @@ LABEL_6:
               _os_log_impl(&dword_20D9BF000, v26, OS_LOG_TYPE_DEFAULT, "Found metadata for setting '%@' @ keyPath '%@' has changed; notifying delegate", buf, 0x16u);
             }
 
-            v27 = [(HFAccessorySettingAdapter *)self watchedSettings];
-            v28 = [v15 keyPath];
-            [v27 setObject:v21 forKey:v28];
+            watchedSettings2 = [(HFAccessorySettingAdapter *)self watchedSettings];
+            keyPath2 = [v15 keyPath];
+            [watchedSettings2 setObject:v21 forKey:keyPath2];
 
             [(HFAccessorySettingAdapter *)self _reportUpdatedValueForSetting:v15];
           }
 
-          v4 = v19;
+          updateCopy = v19;
           v11 = v34;
           v10 = v35;
         }
@@ -660,8 +660,8 @@ LABEL_6:
           _os_log_debug_impl(&dword_20D9BF000, v29, OS_LOG_TYPE_DEBUG, "Unable to find watched setting '%@' @ keyPath '%@'", buf, 0x16u);
         }
 
-        v30 = [(HFAccessorySettingAdapter *)self settings];
-        v15 = [v30 hf_accessorySettingAtKeyPath:v13];
+        settings4 = [(HFAccessorySettingAdapter *)self settings];
+        v15 = [settings4 hf_accessorySettingAtKeyPath:v13];
 
         if (!v15)
         {
@@ -703,11 +703,11 @@ LABEL_31:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mediaObject:(id)a3 didUpdateSettings:(id)a4
+- (void)mediaObject:(id)object didUpdateSettings:(id)settings
 {
-  v5 = a3;
-  v6 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
-  v7 = [v6 isEqual:v5];
+  objectCopy = object;
+  homeKitSettingsVendor = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
+  v7 = [homeKitSettingsVendor isEqual:objectCopy];
 
   if (v7)
   {
@@ -718,34 +718,34 @@ LABEL_31:
 
 - (BOOL)_updateRootAccessorySettingsIfNeeded
 {
-  v2 = self;
-  v3 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
-  v4 = [v3 settings];
+  selfCopy = self;
+  homeKitSettingsVendor = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
+  settings = [homeKitSettingsVendor settings];
 
-  if (v4)
+  if (settings)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(HFAccessorySettingAdapter *)v2 settings];
-    v7 = [v6 isEqual:v4];
+    settings2 = [(HFAccessorySettingAdapter *)selfCopy settings];
+    v7 = [settings2 isEqual:settings];
 
     if (v7)
     {
-      v8 = [(HFAccessorySettingAdapter *)v2 _missingKeyPaths];
-      v9 = [v8 count];
+      _missingKeyPaths = [(HFAccessorySettingAdapter *)selfCopy _missingKeyPaths];
+      v9 = [_missingKeyPaths count];
 
       if (v9)
       {
-        [(HFAccessorySettingAdapter *)v2 _setupMissingKeyPaths];
+        [(HFAccessorySettingAdapter *)selfCopy _setupMissingKeyPaths];
       }
     }
 
     else
     {
-      LOBYTE(v2) = [(HFAccessorySettingAdapter *)v2 _updateRootAccessorySettings];
+      LOBYTE(selfCopy) = [(HFAccessorySettingAdapter *)selfCopy _updateRootAccessorySettings];
     }
 
     objc_autoreleasePoolPop(v5);
-    v11 = (v7 ^ 1) & v2;
+    v11 = (v7 ^ 1) & selfCopy;
   }
 
   else
@@ -766,31 +766,31 @@ LABEL_31:
 - (BOOL)_updateRootAccessorySettings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
-  v4 = [v3 settings];
+  homeKitSettingsVendor = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
+  settings = [homeKitSettingsVendor settings];
 
   v5 = HFLogForCategory(0x3EuLL);
   v6 = v5;
-  if (v4)
+  if (settings)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
-      v8 = [(HFAccessorySettingAdapter *)self settings];
+      homeKitSettingsVendor2 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
+      settings2 = [(HFAccessorySettingAdapter *)self settings];
       v12 = 138413058;
-      v13 = v7;
+      v13 = homeKitSettingsVendor2;
       v14 = 2112;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
-      v17 = v4;
+      v17 = settings;
       v18 = 2112;
-      v19 = v8;
+      v19 = settings2;
       _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Cycling settings object for homeKitSettingsVendor %@ / adapter %@ to settings '%@' from settings '%@'", &v12, 0x2Au);
     }
 
     [(HFAccessorySettingAdapter *)self _tearDownKeyPaths];
-    objc_storeStrong(&self->_settings, v4);
-    v9 = [(HFAccessorySettingAdapter *)self _setupKeyPaths];
+    objc_storeStrong(&self->_settings, settings);
+    _setupKeyPaths = [(HFAccessorySettingAdapter *)self _setupKeyPaths];
   }
 
   else
@@ -801,19 +801,19 @@ LABEL_31:
       _os_log_error_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_ERROR, "Settings aren't setup yet; aborting cycling settings...", &v12, 2u);
     }
 
-    v9 = 0;
+    _setupKeyPaths = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v9;
+  return _setupKeyPaths;
 }
 
 - (BOOL)_setupKeyPaths
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(HFAccessorySettingAdapter *)self settings];
+  settings = [(HFAccessorySettingAdapter *)self settings];
 
-  if (v3)
+  if (settings)
   {
     v4 = objc_opt_new();
     [(HFAccessorySettingAdapter *)self setWatchedSettings:v4];
@@ -821,11 +821,11 @@ LABEL_31:
     v5 = HFLogForCategory(0x3EuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(HFAccessorySettingAdapter *)self keyPaths];
+      keyPaths = [(HFAccessorySettingAdapter *)self keyPaths];
       *buf = 138412546;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2112;
-      v27 = v18;
+      v27 = keyPaths;
       _os_log_debug_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEBUG, "Setting up adapter '%@' to watch keypaths '%@'", buf, 0x16u);
     }
 
@@ -833,8 +833,8 @@ LABEL_31:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(HFAccessorySettingAdapter *)self keyPaths];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    keyPaths2 = [(HFAccessorySettingAdapter *)self keyPaths];
+    v7 = [keyPaths2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
@@ -846,12 +846,12 @@ LABEL_31:
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(keyPaths2);
           }
 
           v11 = *(*(&v19 + 1) + 8 * v10);
-          v12 = [(HFAccessorySettingAdapter *)self settings];
-          v13 = [v12 hf_accessorySettingAtKeyPath:v11];
+          settings2 = [(HFAccessorySettingAdapter *)self settings];
+          v13 = [settings2 hf_accessorySettingAtKeyPath:v11];
 
           if (v13)
           {
@@ -862,7 +862,7 @@ LABEL_31:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [keyPaths2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v8);
@@ -871,11 +871,11 @@ LABEL_31:
     v14 = HFLogForCategory(0x3EuLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [(HFAccessorySettingAdapter *)self watchedSettings];
+      watchedSettings = [(HFAccessorySettingAdapter *)self watchedSettings];
       *buf = 138412546;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2112;
-      v27 = v15;
+      v27 = watchedSettings;
       _os_log_debug_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEBUG, "Adapter '%@' setup with settings '%@'", buf, 0x16u);
     }
   }
@@ -891,18 +891,18 @@ LABEL_31:
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v3 != 0;
+  return settings != 0;
 }
 
 - (id)_missingKeyPaths
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HFAccessorySettingAdapter *)self watchedSettings];
-  v5 = [v4 allKeys];
-  v6 = [v3 setWithArray:v5];
+  watchedSettings = [(HFAccessorySettingAdapter *)self watchedSettings];
+  allKeys = [watchedSettings allKeys];
+  v6 = [v3 setWithArray:allKeys];
 
-  v7 = [(HFAccessorySettingAdapter *)self keyPaths];
-  v8 = [v7 na_setByRemovingObjectsFromSet:v6];
+  keyPaths = [(HFAccessorySettingAdapter *)self keyPaths];
+  v8 = [keyPaths na_setByRemovingObjectsFromSet:v6];
 
   return v8;
 }
@@ -911,12 +911,12 @@ LABEL_31:
 {
   v48 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(HFAccessorySettingAdapter *)self settings];
+  settings = [(HFAccessorySettingAdapter *)self settings];
 
-  if (!v4)
+  if (!settings)
   {
-    v8 = HFLogForCategory(0x3EuLL);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    _missingKeyPaths = HFLogForCategory(0x3EuLL);
+    if (!os_log_type_enabled(_missingKeyPaths, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_37;
     }
@@ -926,23 +926,23 @@ LABEL_31:
     goto LABEL_6;
   }
 
-  v5 = [(HFAccessorySettingAdapter *)self settings];
-  v6 = [v5 rootGroup];
-  v7 = [v6 groups];
-  if (![v7 count])
+  settings2 = [(HFAccessorySettingAdapter *)self settings];
+  rootGroup = [settings2 rootGroup];
+  groups = [rootGroup groups];
+  if (![groups count])
   {
-    v10 = [(HFAccessorySettingAdapter *)self settings];
-    v11 = [v10 rootGroup];
-    v12 = [v11 settings];
-    v13 = [v12 count];
+    settings3 = [(HFAccessorySettingAdapter *)self settings];
+    rootGroup2 = [settings3 rootGroup];
+    settings4 = [rootGroup2 settings];
+    v13 = [settings4 count];
 
     if (v13)
     {
       goto LABEL_8;
     }
 
-    v8 = HFLogForCategory(0x3EuLL);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    _missingKeyPaths = HFLogForCategory(0x3EuLL);
+    if (!os_log_type_enabled(_missingKeyPaths, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_37;
     }
@@ -950,13 +950,13 @@ LABEL_31:
     *buf = 0;
     v9 = "Cannot setup missing keypaths; Accessory Settings haven't finished populating yet!";
 LABEL_6:
-    _os_log_error_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_ERROR, v9, buf, 2u);
+    _os_log_error_impl(&dword_20D9BF000, _missingKeyPaths, OS_LOG_TYPE_ERROR, v9, buf, 2u);
     goto LABEL_37;
   }
 
 LABEL_8:
-  v8 = [(HFAccessorySettingAdapter *)self _missingKeyPaths];
-  v14 = [v8 count];
+  _missingKeyPaths = [(HFAccessorySettingAdapter *)self _missingKeyPaths];
+  v14 = [_missingKeyPaths count];
   v15 = HFLogForCategory(0x3EuLL);
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
   if (v14)
@@ -965,9 +965,9 @@ LABEL_8:
     if (v16)
     {
       *buf = 138412546;
-      v42 = self;
+      selfCopy6 = self;
       v43 = 2112;
-      v44 = v8;
+      v44 = _missingKeyPaths;
       _os_log_debug_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEBUG, "Setting up adapter '%@' to watch any missing keypaths: '%@'", buf, 0x16u);
     }
 
@@ -975,8 +975,8 @@ LABEL_8:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v35 = v8;
-    v17 = v8;
+    v35 = _missingKeyPaths;
+    v17 = _missingKeyPaths;
     v18 = [v17 countByEnumeratingWithState:&v37 objects:v47 count:16];
     if (v18)
     {
@@ -994,14 +994,14 @@ LABEL_8:
 
           v22 = *(*(&v37 + 1) + 8 * v21);
           v23 = objc_autoreleasePoolPush();
-          v24 = [(HFAccessorySettingAdapter *)self settings];
-          v25 = [v24 hf_accessorySettingAtKeyPath:v22];
+          settings5 = [(HFAccessorySettingAdapter *)self settings];
+          v25 = [settings5 hf_accessorySettingAtKeyPath:v22];
 
           if (v25)
           {
-            v26 = [(HFAccessorySettingAdapter *)self watchedSettings];
-            v27 = [v25 keyPath];
-            v28 = [v26 objectForKey:v27];
+            watchedSettings = [(HFAccessorySettingAdapter *)self watchedSettings];
+            keyPath = [v25 keyPath];
+            v28 = [watchedSettings objectForKey:keyPath];
 
             v29 = HFLogForCategory(0x3EuLL);
             v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG);
@@ -1010,7 +1010,7 @@ LABEL_8:
               if (v30)
               {
                 *buf = 138412546;
-                v42 = self;
+                selfCopy6 = self;
                 v43 = 2112;
                 v44 = v25;
                 _os_log_debug_impl(&dword_20D9BF000, v29, OS_LOG_TYPE_DEBUG, "Adapter '%@' is already watching '%@'", buf, 0x16u);
@@ -1022,7 +1022,7 @@ LABEL_8:
               if (v30)
               {
                 *buf = 138412546;
-                v42 = self;
+                selfCopy6 = self;
                 v43 = 2112;
                 v44 = v25;
                 _os_log_debug_impl(&dword_20D9BF000, v29, OS_LOG_TYPE_DEBUG, "Adapter '%@' is setting up missed setting '%@'", buf, 0x16u);
@@ -1033,7 +1033,7 @@ LABEL_8:
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412546;
-                v42 = self;
+                selfCopy6 = self;
                 v43 = 2112;
                 v44 = v25;
                 _os_log_debug_impl(&dword_20D9BF000, v32, OS_LOG_TYPE_DEBUG, "Adapter '%@' is setting up missed setting '%@'", buf, 0x16u);
@@ -1049,7 +1049,7 @@ LABEL_8:
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412546;
-              v42 = self;
+              selfCopy6 = self;
               v43 = 2112;
               v44 = v22;
               _os_log_debug_impl(&dword_20D9BF000, v31, OS_LOG_TYPE_DEBUG, "Adapter '%@' cannot watch keypath '%@' -- doesn't exist in HomeKit?  Please file a radar if you're seeing this a lot.", buf, 0x16u);
@@ -1070,17 +1070,17 @@ LABEL_8:
     v15 = HFLogForCategory(0x3EuLL);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [(HFAccessorySettingAdapter *)self watchedSettings];
+      watchedSettings2 = [(HFAccessorySettingAdapter *)self watchedSettings];
       *buf = 138412802;
-      v42 = self;
+      selfCopy6 = self;
       v43 = 2112;
       v44 = v17;
       v45 = 2112;
-      v46 = v34;
+      v46 = watchedSettings2;
       _os_log_debug_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEBUG, "Adapter '%@' setup missed keypaths '%@' with settings '%@'", buf, 0x20u);
     }
 
-    v8 = v35;
+    _missingKeyPaths = v35;
     v3 = v36;
   }
 
@@ -1097,8 +1097,8 @@ LABEL_37:
 
 - (void)_tearDownKeyPaths
 {
-  v3 = [(HFAccessorySettingAdapter *)self watchedSettings];
-  v4 = [v3 copy];
+  watchedSettings = [(HFAccessorySettingAdapter *)self watchedSettings];
+  v4 = [watchedSettings copy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__HFAccessorySettingAdapter__tearDownKeyPaths__block_invoke;
@@ -1106,16 +1106,16 @@ LABEL_37:
   v8[4] = self;
   [v4 enumerateKeysAndObjectsUsingBlock:v8];
 
-  v5 = [(HFAccessorySettingAdapter *)self watchedSettings];
-  v6 = [v5 count];
+  watchedSettings2 = [(HFAccessorySettingAdapter *)self watchedSettings];
+  v6 = [watchedSettings2 count];
 
   if (v6)
   {
     NSLog(&cfstr_AfterTeardownT.isa);
   }
 
-  v7 = [(HFAccessorySettingAdapter *)self watchedSettings];
-  [v7 removeAllObjects];
+  watchedSettings3 = [(HFAccessorySettingAdapter *)self watchedSettings];
+  [watchedSettings3 removeAllObjects];
 }
 
 void __46__HFAccessorySettingAdapter__tearDownKeyPaths__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1125,54 +1125,54 @@ void __46__HFAccessorySettingAdapter__tearDownKeyPaths__block_invoke(uint64_t a1
   [v3 _teardownSetting:v4];
 }
 
-- (void)_watchSetting:(id)a3
+- (void)_watchSetting:(id)setting
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  settingCopy = setting;
+  if (settingCopy)
   {
     v5 = HFLogForCategory(0x3EuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
-      v26 = v4;
+      v26 = settingCopy;
       _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Adapter '%@' started watching for '%@'", buf, 0x16u);
     }
 
-    v6 = [(HFAccessorySettingAdapter *)self keyPathStringToFuture];
-    v7 = [v4 keyPath];
-    v8 = [v6 objectForKey:v7];
+    keyPathStringToFuture = [(HFAccessorySettingAdapter *)self keyPathStringToFuture];
+    keyPath = [settingCopy keyPath];
+    v8 = [keyPathStringToFuture objectForKey:keyPath];
 
-    v9 = [(HFAccessorySettingAdapter *)self settings];
-    v10 = [_HFObservedAccessorySettingState stateWithSettings:v9 forSetting:v4];
+    settings = [(HFAccessorySettingAdapter *)self settings];
+    v10 = [_HFObservedAccessorySettingState stateWithSettings:settings forSetting:settingCopy];
 
-    v11 = [(HFAccessorySettingAdapter *)self watchedSettings];
-    v12 = [v4 keyPath];
-    [v11 na_safeSetObject:v10 forKey:v12];
+    watchedSettings = [(HFAccessorySettingAdapter *)self watchedSettings];
+    keyPath2 = [settingCopy keyPath];
+    [watchedSettings na_safeSetObject:v10 forKey:keyPath2];
 
-    v13 = [(HFAccessorySettingAdapter *)self keyPathStringToFuture];
-    v14 = [v4 keyPath];
-    [v13 removeObjectForKey:v14];
+    keyPathStringToFuture2 = [(HFAccessorySettingAdapter *)self keyPathStringToFuture];
+    keyPath3 = [settingCopy keyPath];
+    [keyPathStringToFuture2 removeObjectForKey:keyPath3];
 
     v15 = HFLogForCategory(0x3EuLL);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
-      v26 = v4;
+      v26 = settingCopy;
       _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "Adapter '%@' is setting up '%@' for first use...", buf, 0x16u);
     }
 
-    v16 = [(HFAccessorySettingAdapter *)self _beginMonitoringSettingsKeyPath:v4];
+    v16 = [(HFAccessorySettingAdapter *)self _beginMonitoringSettingsKeyPath:settingCopy];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __43__HFAccessorySettingAdapter__watchSetting___block_invoke;
     v20[3] = &unk_277DF3180;
     v20[4] = self;
-    v21 = v4;
+    v21 = settingCopy;
     v22 = v8;
     v17 = v8;
     v18 = [v16 addCompletionBlock:v20];
@@ -1239,74 +1239,74 @@ void __43__HFAccessorySettingAdapter__watchSetting___block_invoke(uint64_t a1, v
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_teardownSetting:(id)a3
+- (void)_teardownSetting:(id)setting
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  settingCopy = setting;
+  if (settingCopy)
   {
-    v5 = [(HFAccessorySettingAdapter *)self watchedSettings];
-    v6 = [v4 keyPath];
-    [v5 removeObjectForKey:v6];
+    watchedSettings = [(HFAccessorySettingAdapter *)self watchedSettings];
+    keyPath = [settingCopy keyPath];
+    [watchedSettings removeObjectForKey:keyPath];
 
-    v7 = [(HFAccessorySettingAdapter *)self keyPathStringToFuture];
-    v8 = [v4 keyPath];
-    [v7 removeObjectForKey:v8];
+    keyPathStringToFuture = [(HFAccessorySettingAdapter *)self keyPathStringToFuture];
+    keyPath2 = [settingCopy keyPath];
+    [keyPathStringToFuture removeObjectForKey:keyPath2];
 
     v9 = HFLogForCategory(0x3EuLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v4;
+      v15 = settingCopy;
       _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "Adapter '%@' stopped watching for '%@'", &v12, 0x16u);
     }
 
-    v10 = [(HFAccessorySettingAdapter *)self _endMonitoringSettingsKeyPath:v4];
+    v10 = [(HFAccessorySettingAdapter *)self _endMonitoringSettingsKeyPath:settingCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportUpdatedValueForSetting:(id)a3
+- (void)_reportUpdatedValueForSetting:(id)setting
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 keyPath];
-  v6 = [(HFAccessorySettingAdapter *)self keyPaths];
-  if ([v6 containsObject:v5])
+  settingCopy = setting;
+  keyPath = [settingCopy keyPath];
+  keyPaths = [(HFAccessorySettingAdapter *)self keyPaths];
+  if ([keyPaths containsObject:keyPath])
   {
-    v7 = [(HFAccessorySettingAdapter *)self watchedSettings];
-    v8 = [v7 objectForKeyedSubscript:v5];
-    v9 = [v8 setting];
-    v10 = [v9 isEqual:v4];
+    watchedSettings = [(HFAccessorySettingAdapter *)self watchedSettings];
+    v8 = [watchedSettings objectForKeyedSubscript:keyPath];
+    setting = [v8 setting];
+    v10 = [setting isEqual:settingCopy];
 
     if (v10)
     {
-      v11 = [(HFAccessorySettingAdapter *)self valueManager];
-      v12 = [v11 valueForSetting:v4];
+      valueManager = [(HFAccessorySettingAdapter *)self valueManager];
+      v12 = [valueManager valueForSetting:settingCopy];
 
       v13 = HFLogForCategory(0x3EuLL);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v18 = 138412802;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 2112;
-        v21 = v4;
+        v21 = settingCopy;
         v22 = 2112;
         v23 = v12;
         _os_log_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_INFO, "Adapter '%@' received update to setting '%@': %@", &v18, 0x20u);
       }
 
-      [(HFAccessorySettingAdapter *)self homeKitSettingWasUpdated:v4 value:v12];
-      v14 = [(HFAccessorySettingAdapter *)self updateHandler];
+      [(HFAccessorySettingAdapter *)self homeKitSettingWasUpdated:settingCopy value:v12];
+      updateHandler = [(HFAccessorySettingAdapter *)self updateHandler];
 
-      if (v14)
+      if (updateHandler)
       {
-        v15 = [(HFAccessorySettingAdapter *)self updateHandler];
-        v16 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
-        (v15[2].isa)(v15, v16, v4, v12);
+        updateHandler2 = [(HFAccessorySettingAdapter *)self updateHandler];
+        homeKitSettingsVendor = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
+        (updateHandler2[2].isa)(updateHandler2, homeKitSettingsVendor, settingCopy, v12);
 
 LABEL_10:
         goto LABEL_11;
@@ -1323,13 +1323,13 @@ LABEL_10:
   v12 = HFLogForCategory(0x3EuLL);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v15 = [(HFAccessorySettingAdapter *)self keyPaths];
+    updateHandler2 = [(HFAccessorySettingAdapter *)self keyPaths];
     v18 = 138412802;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
-    v21 = v5;
+    v21 = keyPath;
     v22 = 2112;
-    v23 = v15;
+    v23 = updateHandler2;
     _os_log_error_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_ERROR, "Adapter %@ does not watch for keyPath '%@'; this is a bug!  This adapter watches keypaths: %@", &v18, 0x20u);
     goto LABEL_10;
   }
@@ -1339,11 +1339,11 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createDefaultHomeSettingAdapterCollectionForProfile:(id)a3
++ (id)createDefaultHomeSettingAdapterCollectionForProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = &unk_282584A38;
-  v5 = v3;
+  v5 = profileCopy;
   v6 = v5;
   if (!v5)
   {
@@ -1363,27 +1363,27 @@ LABEL_11:
   v8 = v6;
   if (!v7)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
     v11 = NSStringFromProtocol(v4);
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v11}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v11}];
 
 LABEL_7:
     v8 = 0;
   }
 
-  v12 = [v6 accessory];
-  v13 = [v12 isCurrentAccessory];
+  accessory = [v6 accessory];
+  isCurrentAccessory = [accessory isCurrentAccessory];
 
-  if ((v13 & 1) == 0)
+  if ((isCurrentAccessory & 1) == 0)
   {
     NSLog(&cfstr_Hfaccessoryset_24.isa);
   }
 
-  v14 = [v6 accessory];
-  v15 = [v14 category];
-  v16 = [v15 categoryType];
-  v17 = [v16 isEqual:*MEMORY[0x277CCE8B0]];
+  accessory2 = [v6 accessory];
+  category = [accessory2 category];
+  categoryType = [category categoryType];
+  v17 = [categoryType isEqual:*MEMORY[0x277CCE8B0]];
 
   if ((v17 & 1) == 0)
   {
@@ -1400,11 +1400,11 @@ LABEL_7:
   return v18;
 }
 
-+ (id)createDefaultHomeSettingAdapterCollectionWithoutMobileTimerAdapterForProfile:(id)a3
++ (id)createDefaultHomeSettingAdapterCollectionWithoutMobileTimerAdapterForProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = &unk_282584A38;
-  v5 = v3;
+  v5 = profileCopy;
   v6 = v5;
   if (!v5)
   {
@@ -1424,27 +1424,27 @@ LABEL_7:
   v8 = v6;
   if (!v7)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
     v11 = NSStringFromProtocol(v4);
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v11}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v11}];
 
 LABEL_7:
     v8 = 0;
   }
 
-  v12 = [v6 accessory];
-  v13 = [v12 isCurrentAccessory];
+  accessory = [v6 accessory];
+  isCurrentAccessory = [accessory isCurrentAccessory];
 
-  if ((v13 & 1) == 0)
+  if ((isCurrentAccessory & 1) == 0)
   {
     NSLog(&cfstr_SHfaccessoryse.isa, "+[HFAccessorySettingAdapter(SoundBoardAdditions) createDefaultHomeSettingAdapterCollectionWithoutMobileTimerAdapterForProfile:]");
   }
 
-  v14 = [v6 accessory];
-  v15 = [v14 category];
-  v16 = [v15 categoryType];
-  v17 = [v16 isEqual:*MEMORY[0x277CCE8B0]];
+  accessory2 = [v6 accessory];
+  category = [accessory2 category];
+  categoryType = [category categoryType];
+  v17 = [categoryType isEqual:*MEMORY[0x277CCE8B0]];
 
   if ((v17 & 1) == 0)
   {

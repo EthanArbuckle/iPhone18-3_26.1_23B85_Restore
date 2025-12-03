@@ -1,6 +1,6 @@
 @interface SFUGZipFileInputStream
-- (SFUGZipFileInputStream)initWithPath:(id)a3;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (SFUGZipFileInputStream)initWithPath:(id)path;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)close;
 - (void)dealloc;
 - (void)disableSystemCaching;
@@ -9,19 +9,19 @@
 
 @implementation SFUGZipFileInputStream
 
-- (SFUGZipFileInputStream)initWithPath:(id)a3
+- (SFUGZipFileInputStream)initWithPath:(id)path
 {
   self->_fd = -1;
   v4 = [(SFUGZipFileInputStream *)self init];
   if (v4)
   {
-    v5 = sub_27709E424(a3, 0, 0);
+    v5 = sub_27709E424(path, 0, 0);
     v6 = gzdopen(v5, "r");
     v4->_file = v6;
     if (!v6)
     {
       close(v5);
-      [MEMORY[0x277CBEAD8] sfu_errnoRaise:@"SFUFileOpenError" format:{@"Could not gzdopen %@", a3}];
+      [MEMORY[0x277CBEAD8] sfu_errnoRaise:@"SFUFileOpenError" format:{@"Could not gzdopen %@", path}];
     }
 
     v4->_fd = v5;
@@ -38,7 +38,7 @@
   [(SFUGZipFileInputStream *)&v3 dealloc];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
   file = self->_file;
   if (!file)
@@ -54,17 +54,17 @@
     }
   }
 
-  if (a4 >= 0xFFFFFFFF)
+  if (size >= 0xFFFFFFFF)
   {
-    v9 = -1;
+    sizeCopy = -1;
   }
 
   else
   {
-    v9 = a4;
+    sizeCopy = size;
   }
 
-  v10 = gzread(file, a3, v9);
+  v10 = gzread(file, buffer, sizeCopy);
   if (v10 < 0)
   {
     [MEMORY[0x277CBEAD8] sfu_errnoRaise:@"SFUGZReadError" format:@"Could not gzread"];

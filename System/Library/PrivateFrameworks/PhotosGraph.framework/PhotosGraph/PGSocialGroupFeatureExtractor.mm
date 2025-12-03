@@ -1,10 +1,10 @@
 @interface PGSocialGroupFeatureExtractor
-- (PGSocialGroupFeatureExtractor)initWithError:(id *)a3;
+- (PGSocialGroupFeatureExtractor)initWithError:(id *)error;
 @end
 
 @implementation PGSocialGroupFeatureExtractor
 
-- (PGSocialGroupFeatureExtractor)initWithError:(id *)a3
+- (PGSocialGroupFeatureExtractor)initWithError:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v14[0] = @"SocialGroup";

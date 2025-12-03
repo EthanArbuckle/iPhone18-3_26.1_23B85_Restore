@@ -1,13 +1,13 @@
 @interface EventMonitor
 + (id)sharedEventMonitor;
 - (EventMonitor)init;
-- (id)monitorEvent:(id)a3;
+- (id)monitorEvent:(id)event;
 - (void)_cancelPollTimer;
 - (void)_fireEventsAfterPollTimer;
 - (void)_reloadPollTimer;
-- (void)_willRemoveEvent:(id)a3;
+- (void)_willRemoveEvent:(id)event;
 - (void)dealloc;
-- (void)removeEvent:(id)a3;
+- (void)removeEvent:(id)event;
 @end
 
 @implementation EventMonitor
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = sub_10019F70C;
   block[3] = &unk_100327378;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100384000 != -1)
   {
     dispatch_once(&qword_100384000, block);
@@ -50,9 +50,9 @@
   return qword_100383FF8;
 }
 
-- (id)monitorEvent:(id)a3
+- (id)monitorEvent:(id)event
 {
-  v4 = [a3 copy];
+  v4 = [event copy];
   [v4 _setLastOccurrenceCheckTime:CFAbsoluteTimeGetCurrent()];
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -65,7 +65,7 @@
   return v4;
 }
 
-- (void)removeEvent:(id)a3
+- (void)removeEvent:(id)event
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -73,7 +73,7 @@
   v4[2] = sub_10019F8CC;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = event;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -156,7 +156,7 @@
     {
       v5 = v4;
       v6 = *v34;
-      v7 = 1.79769313e308;
+      pollInterval = 1.79769313e308;
       do
       {
         for (i = 0; i != v5; i = i + 1)
@@ -167,9 +167,9 @@
           }
 
           v9 = *(*(&v33 + 1) + 8 * i);
-          if (v7 >= [v9 pollInterval])
+          if (pollInterval >= [v9 pollInterval])
           {
-            v7 = [v9 pollInterval];
+            pollInterval = [v9 pollInterval];
           }
         }
 
@@ -181,10 +181,10 @@
 
     else
     {
-      v7 = 1.79769313e308;
+      pollInterval = 1.79769313e308;
     }
 
-    v10 = fmax(v7, 10.0);
+    v10 = fmax(pollInterval, 10.0);
     if (self->_pollTimer)
     {
       v11 = v10 + self->_lastPollTime;
@@ -196,15 +196,15 @@
       }
 
       v14 = v11 - Current;
-      v15 = [v13 shouldLog];
+      shouldLog = [v13 shouldLog];
       if ([v13 shouldLogToDisk])
       {
-        v16 = v15 | 2;
+        v16 = shouldLog | 2;
       }
 
       else
       {
-        v16 = v15;
+        v16 = shouldLog;
       }
 
       if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -243,15 +243,15 @@
         v22 = +[SSLogConfig sharedConfig];
       }
 
-      v23 = [v22 shouldLog];
+      shouldLog2 = [v22 shouldLog];
       if ([v22 shouldLogToDisk])
       {
-        v24 = v23 | 2;
+        v24 = shouldLog2 | 2;
       }
 
       else
       {
-        v24 = v23;
+        v24 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v22 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -300,9 +300,9 @@
   }
 }
 
-- (void)_willRemoveEvent:(id)a3
+- (void)_willRemoveEvent:(id)event
 {
-  if ([a3 shouldKeepDaemonAlive])
+  if ([event shouldKeepDaemonAlive])
   {
     v3 = +[Daemon daemon];
 

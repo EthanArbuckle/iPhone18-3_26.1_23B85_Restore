@@ -1,22 +1,22 @@
 @interface AMSUIWebFetchAttestationVersionAction
-- (AMSUIWebFetchAttestationVersionAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebFetchAttestationVersionAction)initWithJSObject:(id)object context:(id)context;
 - (id)minimumVersions;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebFetchAttestationVersionAction
 
-- (AMSUIWebFetchAttestationVersionAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebFetchAttestationVersionAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = AMSUIWebFetchAttestationVersionAction;
-  v8 = [(AMSUIWebAction *)&v13 initWithJSObject:v6 context:v7];
+  v8 = [(AMSUIWebAction *)&v13 initWithJSObject:objectCopy context:contextCopy];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"account"];
-    v10 = [v7 iTunesAccountFromJSAccount:v9];
+    v9 = [objectCopy objectForKeyedSubscript:@"account"];
+    v10 = [contextCopy iTunesAccountFromJSAccount:v9];
     account = v8->_account;
     v8->_account = v10;
   }
@@ -29,15 +29,15 @@
   v37 = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = AMSUIWebFetchAttestationVersionAction;
-  v3 = [(AMSUIWebAction *)&v28 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v28 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -45,28 +45,28 @@
     v32 = v6;
     v33 = 2114;
     v34 = v7;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching current attestation version.", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching current attestation version.", buf, 0x16u);
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E698C948]);
   [v8 setPurpose:0];
   [v8 setStyle:{objc_msgSend(MEMORY[0x1E698C948], "preferredAttestationStyle")}];
   v9 = MEMORY[0x1E698C7F8];
-  v10 = [(AMSUIWebFetchAttestationVersionAction *)self account];
+  account = [(AMSUIWebFetchAttestationVersionAction *)self account];
   v27 = 0;
-  v11 = [v9 ACLVersionForAccount:v10 options:v8 error:&v27];
+  v11 = [v9 ACLVersionForAccount:account options:v8 error:&v27];
   v12 = v27;
 
   if (v11)
   {
-    v13 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v13)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v13 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v15 = objc_opt_class();
       v16 = AMSLogKey();
@@ -76,15 +76,15 @@
       v34 = v16;
       v35 = 2114;
       v36 = v11;
-      _os_log_impl(&dword_1BB036000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully fetched current attestation version. %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully fetched current attestation version. %{public}@", buf, 0x20u);
     }
 
     v17 = MEMORY[0x1E698CAD0];
     v29[0] = @"currentVersion";
     v29[1] = @"minimumVersions";
     v30[0] = v11;
-    v18 = [(AMSUIWebFetchAttestationVersionAction *)self minimumVersions];
-    v30[1] = v18;
+    minimumVersions = [(AMSUIWebFetchAttestationVersionAction *)self minimumVersions];
+    v30[1] = minimumVersions;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
     v20 = [v17 promiseWithResult:v19];
   }
@@ -96,14 +96,14 @@
       v12 = AMSError();
     }
 
-    v21 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v21)
+    mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]3)
     {
-      v21 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v22 = [v21 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [mEMORY[0x1E698C968]3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v23 = objc_opt_class();
       v24 = AMSLogKey();
@@ -113,7 +113,7 @@
       v34 = v24;
       v35 = 2114;
       v36 = v12;
-      _os_log_impl(&dword_1BB036000, v22, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch current attestation version. %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch current attestation version. %{public}@", buf, 0x20u);
     }
 
     v20 = [MEMORY[0x1E698CAD0] promiseWithError:v12];

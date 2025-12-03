@@ -1,44 +1,44 @@
 @interface PKSpendingSummaryFetcher
-+ (id)_sortedTransactions:(id)a3 ascending:(BOOL)a4;
-+ (id)_spendingCategoriesFromTransactions:(id)a3 currencyCode:(id)a4;
-+ (id)_spendingMerchantsFromTransaction:(id)a3 currencyCode:(id)a4;
-+ (id)_summaryWithTransactions:(id)a3 transactionSourceCollection:(id)a4 currency:(id)a5 type:(unint64_t)a6 startDate:(id)a7 endDate:(id)a8 lastSummary:(id)a9 altDSID:(id)a10;
-+ (id)nextStartOfWeekFromDate:(id)a3;
-+ (id)previousStartOfWeekFromDate:(id)a3;
-+ (id)summaryWithTransactions:(id)a3 transactionSourceCollection:(id)a4 accountUser:(id)a5 currency:(id)a6 type:(unint64_t)a7 startDate:(id)a8 endDate:(id)a9 lastSummary:(id)a10;
-+ (void)enumerateSummaryUnitsWithinSummaryPeriod:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 block:(id)a6;
-- (PKSpendingSummaryFetcher)initWithTransactionSourceCollection:(id)a3 account:(id)a4 accountUser:(id)a5;
-- (id)_cacheForType:(unint64_t)a3;
-- (id)_cachedSpendingSummaryStartingWithDate:(id)a3 type:(unint64_t)a4 withLastPeriodChange:(BOOL)a5;
-- (id)_endDateForStartDate:(id)a3 ofSummaryType:(unint64_t)a4;
-- (id)_summaryForComparisonForPeriodStartingWithDate:(id)a3 endDate:(id)a4 type:(unint64_t)a5;
-- (id)categoryTotalSpendingSummaryStartingWithDate:(id)a3 type:(unint64_t)a4;
-- (void)_accessObserversWithHandler:(id)a3;
-- (void)_addInsightsToSummary:(id)a3 previousSummary:(id)a4 completion:(id)a5;
-- (void)_addInterestToSummaryIfNecessary:(id)a3 withLastPeriodChange:(BOOL)a4 completion:(id)a5;
-- (void)_fetchStatementsIfNecessaryWithCompletion:(id)a3;
++ (id)_sortedTransactions:(id)transactions ascending:(BOOL)ascending;
++ (id)_spendingCategoriesFromTransactions:(id)transactions currencyCode:(id)code;
++ (id)_spendingMerchantsFromTransaction:(id)transaction currencyCode:(id)code;
++ (id)_summaryWithTransactions:(id)transactions transactionSourceCollection:(id)collection currency:(id)currency type:(unint64_t)type startDate:(id)date endDate:(id)endDate lastSummary:(id)summary altDSID:(id)self0;
++ (id)nextStartOfWeekFromDate:(id)date;
++ (id)previousStartOfWeekFromDate:(id)date;
++ (id)summaryWithTransactions:(id)transactions transactionSourceCollection:(id)collection accountUser:(id)user currency:(id)currency type:(unint64_t)type startDate:(id)date endDate:(id)endDate lastSummary:(id)self0;
++ (void)enumerateSummaryUnitsWithinSummaryPeriod:(unint64_t)period startDate:(id)date endDate:(id)endDate block:(id)block;
+- (PKSpendingSummaryFetcher)initWithTransactionSourceCollection:(id)collection account:(id)account accountUser:(id)user;
+- (id)_cacheForType:(unint64_t)type;
+- (id)_cachedSpendingSummaryStartingWithDate:(id)date type:(unint64_t)type withLastPeriodChange:(BOOL)change;
+- (id)_endDateForStartDate:(id)date ofSummaryType:(unint64_t)type;
+- (id)_summaryForComparisonForPeriodStartingWithDate:(id)date endDate:(id)endDate type:(unint64_t)type;
+- (id)categoryTotalSpendingSummaryStartingWithDate:(id)date type:(unint64_t)type;
+- (void)_accessObserversWithHandler:(id)handler;
+- (void)_addInsightsToSummary:(id)summary previousSummary:(id)previousSummary completion:(id)completion;
+- (void)_addInterestToSummaryIfNecessary:(id)necessary withLastPeriodChange:(BOOL)change completion:(id)completion;
+- (void)_fetchStatementsIfNecessaryWithCompletion:(id)completion;
 - (void)_processNextRequest;
 - (void)_resetCurrentCalendar;
-- (void)_spendingSummaryStartingWithDate:(id)a3 endDate:(id)a4 type:(unint64_t)a5 withLastPeriodChange:(BOOL)a6 completion:(id)a7;
-- (void)_timeZoneChanged:(id)a3;
-- (void)availableSummaries:(id)a3;
+- (void)_spendingSummaryStartingWithDate:(id)date endDate:(id)endDate type:(unint64_t)type withLastPeriodChange:(BOOL)change completion:(id)completion;
+- (void)_timeZoneChanged:(id)changed;
+- (void)availableSummaries:(id)summaries;
 - (void)dealloc;
-- (void)prioritizeSpendingSummaryStartingWithDate:(id)a3 type:(unint64_t)a4;
-- (void)registerObserver:(id)a3;
-- (void)spendingSummaryStartingWithDate:(id)a3 type:(unint64_t)a4 includingLastPeriodChange:(BOOL)a5 completion:(id)a6;
-- (void)statementsChangedForAccountIdentifier:(id)a3;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)prioritizeSpendingSummaryStartingWithDate:(id)date type:(unint64_t)type;
+- (void)registerObserver:(id)observer;
+- (void)spendingSummaryStartingWithDate:(id)date type:(unint64_t)type includingLastPeriodChange:(BOOL)change completion:(id)completion;
+- (void)statementsChangedForAccountIdentifier:(id)identifier;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation PKSpendingSummaryFetcher
 
-- (PKSpendingSummaryFetcher)initWithTransactionSourceCollection:(id)a3 account:(id)a4 accountUser:(id)a5
+- (PKSpendingSummaryFetcher)initWithTransactionSourceCollection:(id)collection account:(id)account accountUser:(id)user
 {
   v65 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  accountCopy = account;
+  userCopy = user;
   v63.receiver = self;
   v63.super_class = PKSpendingSummaryFetcher;
   v11 = [(PKSpendingSummaryFetcher *)&v63 init];
@@ -46,25 +46,25 @@
   if (v11)
   {
     v11->_lockTransactions._os_unfair_lock_opaque = 0;
-    if (v10)
+    if (userCopy)
     {
-      obj = a5;
-      v57 = v9;
+      obj = user;
+      v57 = accountCopy;
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      if ([v10 isCurrentUser])
+      if ([userCopy isCurrentUser])
       {
-        v14 = [v8 transactionSourcesForType:{0, a5}];
-        v15 = [v14 anyObject];
-        [(PKTransactionSourceCollection *)v13 addObject:v15];
+        v14 = [collectionCopy transactionSourcesForType:{0, user}];
+        anyObject = [v14 anyObject];
+        [(PKTransactionSourceCollection *)v13 addObject:anyObject];
       }
 
-      v56 = a4;
+      accountCopy2 = account;
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v58 = v8;
-      v16 = [v8 transactionSourcesForType:{2, obj}];
+      v58 = collectionCopy;
+      v16 = [collectionCopy transactionSourcesForType:{2, obj}];
       v17 = [v16 countByEnumeratingWithState:&v59 objects:v64 count:16];
       if (v17)
       {
@@ -80,11 +80,11 @@
             }
 
             v21 = *(*(&v59 + 1) + 8 * i);
-            v22 = [v21 accountUser];
-            if (v22)
+            accountUser = [v21 accountUser];
+            if (accountUser)
             {
-              v23 = v22;
-              v24 = [v10 isEqual:v22];
+              v23 = accountUser;
+              v24 = [userCopy isEqual:accountUser];
 
               if (v24)
               {
@@ -113,19 +113,19 @@ LABEL_17:
       v12->_transactionSourceCollection = v28;
 
       objc_storeStrong(&v12->_accountUser, obja);
-      v9 = v57;
-      v8 = v58;
-      a4 = v56;
+      accountCopy = v57;
+      collectionCopy = v58;
+      account = accountCopy2;
     }
 
     else
     {
-      v25 = v8;
+      v25 = collectionCopy;
       v13 = v12->_transactionSourceCollection;
       v12->_transactionSourceCollection = v25;
     }
 
-    objc_storeStrong(&v12->_account, a4);
+    objc_storeStrong(&v12->_account, account);
     v30 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v31 = dispatch_queue_create("com.apple.passkitui.spending.work", v30);
     workQueue = v12->_workQueue;
@@ -163,15 +163,15 @@ LABEL_17:
 
     v12->_requestsLock._os_unfair_lock_opaque = 0;
     v12->_observersLock._os_unfair_lock_opaque = 0;
-    v47 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v12->_observers;
-    v12->_observers = v47;
+    v12->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v49 = +[PKAccountService sharedInstance];
     [v49 registerObserver:v12];
 
-    v50 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v50 addObserver:v12 selector:sel__timeZoneChanged_ name:*MEMORY[0x1E695DA68] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__timeZoneChanged_ name:*MEMORY[0x1E695DA68] object:0];
 
     v51 = objc_alloc_init(PKSpendingInsightsFetcher);
     insightsFetcher = v12->_insightsFetcher;
@@ -185,8 +185,8 @@ LABEL_17:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PKPaymentDefaultDataProvider *)self->_paymentDataProvider removeDelegate:self];
   v4.receiver = self;
@@ -196,76 +196,76 @@ LABEL_17:
 
 - (void)_resetCurrentCalendar
 {
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   currentCalendar = self->_currentCalendar;
-  self->_currentCalendar = v3;
+  self->_currentCalendar = currentCalendar;
 
   v5 = self->_currentCalendar;
 
   [(NSCalendar *)v5 setFirstWeekday:2];
 }
 
-- (void)availableSummaries:(id)a3
+- (void)availableSummaries:(id)summaries
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
+  summariesCopy = summaries;
+  transactionSourceIdentifiers = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
   v6 = objc_alloc_init(PKPaymentTransactionRequest);
-  v38 = v5;
-  [(PKPaymentTransactionRequest *)v6 setTransactionSourceIdentifiers:v5];
+  v38 = transactionSourceIdentifiers;
+  [(PKPaymentTransactionRequest *)v6 setTransactionSourceIdentifiers:transactionSourceIdentifiers];
   [(PKPaymentTransactionRequest *)v6 setDateOrder:-1];
   [(PKPaymentTransactionRequest *)v6 setLimit:1];
   v36 = [(PKPaymentDefaultDataProvider *)self->_paymentDataProvider transactionsForRequest:v6];
-  v7 = [v36 firstObject];
-  v8 = [v7 transactionDate];
+  firstObject = [v36 firstObject];
+  transactionDate = [firstObject transactionDate];
 
   [(PKPaymentTransactionRequest *)v6 setDateOrder:1];
   v37 = v6;
   v34 = [(PKPaymentDefaultDataProvider *)self->_paymentDataProvider transactionsForRequest:v6];
-  v9 = [v34 firstObject];
-  v10 = [v9 transactionDate];
+  firstObject2 = [v34 firstObject];
+  transactionDate2 = [firstObject2 transactionDate];
 
-  v11 = [MEMORY[0x1E695DF00] date];
-  if (!v10 || [v10 compare:v11] == -1)
+  date = [MEMORY[0x1E695DF00] date];
+  if (!transactionDate2 || [transactionDate2 compare:date] == -1)
   {
-    v12 = v11;
+    v12 = date;
 
-    v10 = v12;
+    transactionDate2 = v12;
   }
 
-  v13 = [(PKAccount *)self->_account creditDetails];
-  v14 = [v13 createdDate];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  createdDate = [creditDetails createdDate];
 
-  if (!v8 && v14)
+  if (!transactionDate && createdDate)
   {
-    v15 = v14;
+    v15 = createdDate;
 LABEL_7:
-    v8 = v15;
+    transactionDate = v15;
     goto LABEL_13;
   }
 
-  if (v8 && v14)
+  if (transactionDate && createdDate)
   {
-    if ([v8 compare:v14] == 1)
+    if ([transactionDate compare:createdDate] == 1)
     {
-      v16 = v14;
+      v16 = createdDate;
 
-      v8 = v16;
+      transactionDate = v16;
     }
   }
 
-  else if (!v8)
+  else if (!transactionDate)
   {
-    v15 = v11;
+    v15 = date;
     goto LABEL_7;
   }
 
 LABEL_13:
-  v32 = v14;
-  v33 = v11;
+  v32 = createdDate;
+  v33 = date;
   os_unfair_lock_lock(&self->_lockTransactions);
-  objc_storeStrong(&self->_oldestTransactionDate, v8);
-  objc_storeStrong(&self->_newestTransactionDate, v10);
+  objc_storeStrong(&self->_oldestTransactionDate, transactionDate);
+  objc_storeStrong(&self->_newestTransactionDate, transactionDate2);
   v17 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -282,8 +282,8 @@ LABEL_13:
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v23 = [objc_opt_class() previousStartOfWeekFromDate:v8];
-  if ([v23 compare:v10] == -1)
+  v23 = [objc_opt_class() previousStartOfWeekFromDate:transactionDate];
+  if ([v23 compare:transactionDate2] == -1)
   {
     do
     {
@@ -293,7 +293,7 @@ LABEL_13:
       v23 = v24;
     }
 
-    while ([v24 compare:v10] == -1);
+    while ([v24 compare:transactionDate2] == -1);
   }
 
   else
@@ -301,8 +301,8 @@ LABEL_13:
     v24 = v23;
   }
 
-  v25 = PKStartOfMonth(v8);
-  if ([v25 compare:v10] == -1)
+  v25 = PKStartOfMonth(transactionDate);
+  if ([v25 compare:transactionDate2] == -1)
   {
     do
     {
@@ -312,7 +312,7 @@ LABEL_13:
       v25 = v26;
     }
 
-    while ([v26 compare:v10] == -1);
+    while ([v26 compare:transactionDate2] == -1);
   }
 
   else
@@ -320,9 +320,9 @@ LABEL_13:
     v26 = v25;
   }
 
-  v35 = v8;
-  v27 = PKStartOfYear(v8);
-  if ([v27 compare:v10] == -1)
+  v35 = transactionDate;
+  v27 = PKStartOfYear(transactionDate);
+  if ([v27 compare:transactionDate2] == -1)
   {
     do
     {
@@ -332,7 +332,7 @@ LABEL_13:
       v27 = v28;
     }
 
-    while ([v28 compare:v10] == -1);
+    while ([v28 compare:transactionDate2] == -1);
   }
 
   else
@@ -340,25 +340,25 @@ LABEL_13:
     v28 = v27;
   }
 
-  if (v4)
+  if (summariesCopy)
   {
     v31 = [v20 copy];
     v29 = [v21 copy];
     v30 = [v22 copy];
-    v4[2](v4, v31, v29, v30);
+    summariesCopy[2](summariesCopy, v31, v29, v30);
   }
 }
 
-- (void)prioritizeSpendingSummaryStartingWithDate:(id)a3 type:(unint64_t)a4
+- (void)prioritizeSpendingSummaryStartingWithDate:(id)date type:(unint64_t)type
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_requestsLock);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v17 = self;
+  selfCopy = self;
   v7 = self->_pendingRequests;
   v8 = [(NSMutableOrderedSet *)v7 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v8)
@@ -375,17 +375,17 @@ LABEL_13:
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 startDate];
-        v14 = v13;
-        if (v6 && v13)
+        startDate = [v12 startDate];
+        v14 = startDate;
+        if (dateCopy && startDate)
         {
-          if (([v6 isEqual:v13] & 1) == 0)
+          if (([dateCopy isEqual:startDate] & 1) == 0)
           {
             goto LABEL_13;
           }
         }
 
-        else if (v13 != v6)
+        else if (startDate != dateCopy)
         {
 LABEL_13:
           v16 = 0;
@@ -394,9 +394,9 @@ LABEL_14:
           goto LABEL_16;
         }
 
-        v15 = [v12 type];
+        type = [v12 type];
 
-        if (v15 == a4)
+        if (type == type)
         {
           v14 = PKLogFacilityTypeGetObject(0xFuLL);
           v16 = 1;
@@ -421,51 +421,51 @@ LABEL_16:
     while (v9);
   }
 
-  os_unfair_lock_unlock(&v17->_requestsLock);
+  os_unfair_lock_unlock(&selfCopy->_requestsLock);
 }
 
-- (id)_cachedSpendingSummaryStartingWithDate:(id)a3 type:(unint64_t)a4 withLastPeriodChange:(BOOL)a5
+- (id)_cachedSpendingSummaryStartingWithDate:(id)date type:(unint64_t)type withLastPeriodChange:(BOOL)change
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(PKSpendingSummaryFetcher *)self _cacheForType:a4];
-  v10 = [v9 objectForKey:v8];
+  changeCopy = change;
+  dateCopy = date;
+  v9 = [(PKSpendingSummaryFetcher *)self _cacheForType:type];
+  v10 = [v9 objectForKey:dateCopy];
 
-  if (!v10 || !v5)
+  if (!v10 || !changeCopy)
   {
     if (!v10)
     {
-      v11 = 0;
+      previousTotalSpending = 0;
       goto LABEL_8;
     }
 
 LABEL_6:
-    v11 = v10;
+    previousTotalSpending = v10;
     goto LABEL_8;
   }
 
-  v11 = [v10 previousTotalSpending];
+  previousTotalSpending = [v10 previousTotalSpending];
 
-  if (v11)
+  if (previousTotalSpending)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
 
-  return v11;
+  return previousTotalSpending;
 }
 
-- (id)_summaryForComparisonForPeriodStartingWithDate:(id)a3 endDate:(id)a4 type:(unint64_t)a5
+- (id)_summaryForComparisonForPeriodStartingWithDate:(id)date endDate:(id)endDate type:(unint64_t)type
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   os_unfair_lock_lock(&self->_lockTransactions);
   v10 = self->_oldestTransactionDate;
   v11 = self->_newestTransactionDate;
   os_unfair_lock_unlock(&self->_lockTransactions);
-  if (v10 && [(NSDate *)v10 compare:v9]== NSOrderedDescending || v11 && [(NSDate *)v11 compare:v8]== NSOrderedAscending)
+  if (v10 && [(NSDate *)v10 compare:endDateCopy]== NSOrderedDescending || v11 && [(NSDate *)v11 compare:dateCopy]== NSOrderedAscending)
   {
     v15 = 0;
   }
@@ -473,20 +473,20 @@ LABEL_8:
   else
   {
     v29 = v11;
-    v12 = [(PKAccount *)self->_account creditDetails];
-    v13 = [v12 currencyCode];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    currencyCode = [creditDetails currencyCode];
 
-    v14 = TransactionRequestForCategoryPurchaseSummary(self->_transactionSourceCollection, v13, v8, v9);
+    v14 = TransactionRequestForCategoryPurchaseSummary(self->_transactionSourceCollection, currencyCode, dateCopy, endDateCopy);
     v15 = objc_alloc_init(PKSpendingSummary);
-    v30 = v8;
-    [(PKSpendingSummary *)v15 setStartDate:v8];
-    [(PKSpendingSummary *)v15 setEndDate:v9];
-    [(PKSpendingSummary *)v15 setSummaryType:a5];
+    v30 = dateCopy;
+    [(PKSpendingSummary *)v15 setStartDate:dateCopy];
+    [(PKSpendingSummary *)v15 setEndDate:endDateCopy];
+    [(PKSpendingSummary *)v15 setSummaryType:type];
     v27 = v14;
     v16 = [(PKPaymentDefaultDataProvider *)self->_paymentDataProvider spendingCategoryTransactionGroupsForRequest:v14 gregorianCalendarUnit:0];
     v17 = [objc_alloc(MEMORY[0x1E696AB90]) initWithDouble:0.0];
-    v28 = v13;
-    v18 = PKCurrencyAmountCreate(v17, v13, 0);
+    v28 = currencyCode;
+    v18 = PKCurrencyAmountCreate(v17, currencyCode, 0);
 
     v33 = 0u;
     v34 = 0u;
@@ -509,8 +509,8 @@ LABEL_8:
             objc_enumerationMutation(v19);
           }
 
-          v25 = [*(*(&v31 + 1) + 8 * v23) totalAmount];
-          v18 = [v24 currencyAmountByAddingCurrencyAmount:v25];
+          totalAmount = [*(*(&v31 + 1) + 8 * v23) totalAmount];
+          v18 = [v24 currencyAmountByAddingCurrencyAmount:totalAmount];
 
           ++v23;
           v24 = v18;
@@ -527,46 +527,46 @@ LABEL_8:
     [(PKSpendingSummary *)v15 setTotalSpending:v18];
 
     v11 = v29;
-    v8 = v30;
+    dateCopy = v30;
   }
 
   return v15;
 }
 
-- (id)categoryTotalSpendingSummaryStartingWithDate:(id)a3 type:(unint64_t)a4
+- (id)categoryTotalSpendingSummaryStartingWithDate:(id)date type:(unint64_t)type
 {
-  v6 = a3;
+  dateCopy = date;
   v7 = objc_alloc_init(PKSpendingSummary);
-  [(PKSpendingSummary *)v7 setStartDate:v6];
-  [(PKSpendingSummary *)v7 setSummaryType:a4];
-  v8 = [(PKSpendingSummaryFetcher *)self _endDateForStartDate:v6 ofSummaryType:a4];
+  [(PKSpendingSummary *)v7 setStartDate:dateCopy];
+  [(PKSpendingSummary *)v7 setSummaryType:type];
+  v8 = [(PKSpendingSummaryFetcher *)self _endDateForStartDate:dateCopy ofSummaryType:type];
   [(PKSpendingSummary *)v7 setEndDate:v8];
-  v24 = [(PKAccountUser *)self->_accountUser altDSID];
+  altDSID = [(PKAccountUser *)self->_accountUser altDSID];
   [(PKSpendingSummary *)v7 setAltDSID:?];
-  if (a4 > 2)
+  if (type > 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = qword_1ADB9A7B0[a4];
+    v9 = qword_1ADB9A7B0[type];
   }
 
-  v23 = [MEMORY[0x1E695DEE8] currentCalendar];
-  -[PKSpendingSummary setSummaryUnit:](v7, "setSummaryUnit:", [v23 component:v9 fromDate:v6]);
-  v10 = [(PKAccount *)self->_account creditDetails];
-  v11 = [v10 currencyCode];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  -[PKSpendingSummary setSummaryUnit:](v7, "setSummaryUnit:", [currentCalendar component:v9 fromDate:dateCopy]);
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails currencyCode];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v22 = TransactionRequestForCategoryPurchaseSummary(self->_transactionSourceCollection, v11, v6, v8);
+  v22 = TransactionRequestForCategoryPurchaseSummary(self->_transactionSourceCollection, currencyCode, dateCopy, v8);
   v13 = [PKPaymentDefaultDataProvider spendingCategoryTransactionGroupsForRequest:"spendingCategoryTransactionGroupsForRequest:gregorianCalendarUnit:" gregorianCalendarUnit:?];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__36;
   v34 = __Block_byref_object_dispose__36;
-  v35 = [MEMORY[0x1E696AB90] zero];
+  zero = [MEMORY[0x1E696AB90] zero];
   v14 = objc_opt_class();
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -575,17 +575,17 @@ LABEL_8:
   v15 = v13;
   v26 = v15;
   v29 = &v30;
-  v16 = v11;
+  v16 = currencyCode;
   v27 = v16;
   v17 = v12;
   v28 = v17;
-  [v14 enumerateSummaryUnitsWithinSummaryPeriod:a4 startDate:v6 endDate:v8 block:v25];
+  [v14 enumerateSummaryUnitsWithinSummaryPeriod:type startDate:dateCopy endDate:v8 block:v25];
   v18 = objc_alloc_init(PKPaymentTransactionGroup);
   [(PKPaymentTransactionGroup *)v18 setType:4];
   v19 = PKCurrencyAmountCreate(v31[5], v16, 0);
   [(PKPaymentTransactionGroup *)v18 setTotalAmount:v19];
 
-  [(PKPaymentTransactionGroup *)v18 setStartDate:v6];
+  [(PKPaymentTransactionGroup *)v18 setStartDate:dateCopy];
   [(PKPaymentTransactionGroup *)v18 setEndDate:v8];
   [(PKSpendingSummary *)v7 setRewards:v18];
   v20 = [v17 copy];
@@ -797,17 +797,17 @@ uint64_t __78__PKSpendingSummaryFetcher_categoryTotalSpendingSummaryStartingWith
   return v9;
 }
 
-- (void)spendingSummaryStartingWithDate:(id)a3 type:(unint64_t)a4 includingLastPeriodChange:(BOOL)a5 completion:(id)a6
+- (void)spendingSummaryStartingWithDate:(id)date type:(unint64_t)type includingLastPeriodChange:(BOOL)change completion:(id)completion
 {
-  v6 = a5;
+  changeCopy = change;
   v18 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = a3;
+  completionCopy = completion;
+  dateCopy = date;
   v12 = objc_alloc_init(PKSpendingSummaryFetcherRequest);
-  [(PKSpendingSummaryFetcherRequest *)v12 setStartDate:v11];
+  [(PKSpendingSummaryFetcherRequest *)v12 setStartDate:dateCopy];
 
-  [(PKSpendingSummaryFetcherRequest *)v12 setWithLastChange:v6];
-  [(PKSpendingSummaryFetcherRequest *)v12 setType:a4];
+  [(PKSpendingSummaryFetcherRequest *)v12 setWithLastChange:changeCopy];
+  [(PKSpendingSummaryFetcherRequest *)v12 setType:type];
   v13 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -825,9 +825,9 @@ uint64_t __78__PKSpendingSummaryFetcher_categoryTotalSpendingSummaryStartingWith
     [(NSMutableDictionary *)self->_blockPendingRequests setObject:v14 forKey:v12];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v15 = [v10 copy];
+    v15 = [completionCopy copy];
     [v14 addObject:v15];
   }
 
@@ -835,22 +835,22 @@ uint64_t __78__PKSpendingSummaryFetcher_categoryTotalSpendingSummaryStartingWith
   [(PKSpendingSummaryFetcher *)self _processNextRequest];
 }
 
-- (id)_endDateForStartDate:(id)a3 ofSummaryType:(unint64_t)a4
+- (id)_endDateForStartDate:(id)date ofSummaryType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  switch(a4)
+  dateCopy = date;
+  v7 = dateCopy;
+  switch(type)
   {
     case 2uLL:
-      v9 = PKEndOfYear(v6);
+      v9 = PKEndOfYear(dateCopy);
       goto LABEL_7;
     case 1uLL:
-      v9 = PKEndOfMonth(v6);
+      v9 = PKEndOfMonth(dateCopy);
 LABEL_7:
       v4 = v9;
       break;
     case 0uLL:
-      v8 = [objc_opt_class() nextStartOfWeekFromDate:v6];
+      v8 = [objc_opt_class() nextStartOfWeekFromDate:dateCopy];
       v4 = [v8 dateByAddingTimeInterval:-1.0];
 
       break;
@@ -1024,17 +1024,17 @@ void __47__PKSpendingSummaryFetcher__processNextRequest__block_invoke_99(uint64_
   [*(a1 + 40) _processNextRequest];
 }
 
-- (void)_spendingSummaryStartingWithDate:(id)a3 endDate:(id)a4 type:(unint64_t)a5 withLastPeriodChange:(BOOL)a6 completion:(id)a7
+- (void)_spendingSummaryStartingWithDate:(id)date endDate:(id)endDate type:(unint64_t)type withLastPeriodChange:(BOOL)change completion:(id)completion
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  changeCopy = change;
+  dateCopy = date;
+  endDateCopy = endDate;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lockTransactions);
   v15 = self->_oldestTransactionDate;
   v16 = self->_newestTransactionDate;
   os_unfair_lock_unlock(&self->_lockTransactions);
-  if ((!v15 || [(NSDate *)v15 compare:v13]!= NSOrderedDescending) && (!v16 || [(NSDate *)v16 compare:v12]!= NSOrderedAscending))
+  if ((!v15 || [(NSDate *)v15 compare:endDateCopy]!= NSOrderedDescending) && (!v16 || [(NSDate *)v16 compare:dateCopy]!= NSOrderedAscending))
   {
     v86 = 0;
     v87 = &v86;
@@ -1042,13 +1042,13 @@ void __47__PKSpendingSummaryFetcher__processNextRequest__block_invoke_99(uint64_
     v89 = __Block_byref_object_copy__36;
     v90 = __Block_byref_object_dispose__36;
     v91 = 0;
-    v17 = [(PKSpendingSummaryFetcher *)self _cachedSpendingSummaryStartingWithDate:v12 type:a5 withLastPeriodChange:v8];
+    v17 = [(PKSpendingSummaryFetcher *)self _cachedSpendingSummaryStartingWithDate:dateCopy type:type withLastPeriodChange:changeCopy];
     v18 = v87[5];
     v87[5] = v17;
 
     if (v87[5])
     {
-      if (!v14)
+      if (!completionCopy)
       {
 LABEL_14:
         _Block_object_dispose(&v86, 8);
@@ -1061,7 +1061,7 @@ LABEL_14:
       block[1] = 3221225472;
       block[2] = __106__PKSpendingSummaryFetcher__spendingSummaryStartingWithDate_endDate_type_withLastPeriodChange_completion___block_invoke_2;
       block[3] = &unk_1E79CF400;
-      v84 = v14;
+      v84 = completionCopy;
       v85 = &v86;
       dispatch_async(replyQueue, block);
       v20 = v84;
@@ -1069,10 +1069,10 @@ LABEL_14:
 
     else
     {
-      v23 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
-      v38 = [(PKSpendingSummaryFetcher *)self _cacheForType:a5];
-      v39 = v23;
-      v41 = v13;
+      transactionSourceIdentifiers = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
+      v38 = [(PKSpendingSummaryFetcher *)self _cacheForType:type];
+      v39 = transactionSourceIdentifiers;
+      v41 = endDateCopy;
       v24 = objc_alloc_init(PKAsyncUnaryOperationComposer);
       v25 = v24;
       v81[0] = 0;
@@ -1095,13 +1095,13 @@ LABEL_14:
       v73[1] = 3221225472;
       v73[2] = __106__PKSpendingSummaryFetcher__spendingSummaryStartingWithDate_endDate_type_withLastPeriodChange_completion___block_invoke_7;
       v73[3] = &unk_1E79D5E20;
-      v79 = v8;
-      v37 = v12;
-      v26 = v12;
-      v78 = a5;
+      v79 = changeCopy;
+      v37 = dateCopy;
+      v26 = dateCopy;
+      typeCopy = type;
       v74 = v26;
-      v75 = self;
-      v27 = v13;
+      selfCopy = self;
+      v27 = endDateCopy;
       v76 = v27;
       v77 = v81;
       v42 = v25;
@@ -1113,10 +1113,10 @@ LABEL_14:
       v69 = &v86;
       v67[4] = self;
       v28 = v26;
-      v72 = v8;
+      v72 = changeCopy;
       v68 = v28;
       v70 = v81;
-      v71 = a5;
+      typeCopy2 = type;
       [(PKAsyncUnaryOperationComposer *)v25 addOperation:v67];
       v59[0] = MEMORY[0x1E69E9820];
       v59[1] = 3221225472;
@@ -1131,8 +1131,8 @@ LABEL_14:
       v62 = v31;
       v63 = &v86;
       v64 = v81;
-      v65 = a5;
-      v66 = v8;
+      typeCopy3 = type;
+      v66 = changeCopy;
       [(PKAsyncUnaryOperationComposer *)v42 addOperation:v59];
       v54[0] = MEMORY[0x1E69E9820];
       v54[1] = 3221225472;
@@ -1151,12 +1151,12 @@ LABEL_14:
       v52[1] = 3221225472;
       v52[2] = __106__PKSpendingSummaryFetcher__spendingSummaryStartingWithDate_endDate_type_withLastPeriodChange_completion___block_invoke_17;
       v52[3] = &unk_1E79CD8D8;
-      v53 = v8;
+      v53 = changeCopy;
       v52[4] = self;
       v52[5] = &v86;
       v52[6] = v81;
       [(PKAsyncUnaryOperationComposer *)v42 addOperation:v52];
-      v34 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __106__PKSpendingSummaryFetcher__spendingSummaryStartingWithDate_endDate_type_withLastPeriodChange_completion___block_invoke_19;
@@ -1166,29 +1166,29 @@ LABEL_14:
       v49 = &v86;
       v45 = v32;
       v46 = v33;
-      v50 = a5;
-      v51 = v8;
-      v47 = self;
-      v48 = v14;
-      v36 = [(PKAsyncUnaryOperationComposer *)v42 evaluateWithInput:v34 completion:v43];
+      typeCopy4 = type;
+      v51 = changeCopy;
+      selfCopy2 = self;
+      v48 = completionCopy;
+      v36 = [(PKAsyncUnaryOperationComposer *)v42 evaluateWithInput:null completion:v43];
 
       _Block_object_dispose(v81, 8);
-      v12 = v37;
+      dateCopy = v37;
       v20 = v40;
-      v13 = v41;
+      endDateCopy = v41;
     }
 
     goto LABEL_14;
   }
 
-  if (v14)
+  if (completionCopy)
   {
     v21 = self->_replyQueue;
     v92[0] = MEMORY[0x1E69E9820];
     v92[1] = 3221225472;
     v92[2] = __106__PKSpendingSummaryFetcher__spendingSummaryStartingWithDate_endDate_type_withLastPeriodChange_completion___block_invoke;
     v92[3] = &unk_1E79C4428;
-    v93 = v14;
+    v93 = completionCopy;
     dispatch_async(v21, v92);
     v22 = v93;
 LABEL_15:
@@ -1784,29 +1784,29 @@ void __106__PKSpendingSummaryFetcher__spendingSummaryStartingWithDate_endDate_ty
   }
 }
 
-- (void)_addInterestToSummaryIfNecessary:(id)a3 withLastPeriodChange:(BOOL)a4 completion:(id)a5
+- (void)_addInterestToSummaryIfNecessary:(id)necessary withLastPeriodChange:(BOOL)change completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6 && [v8 summaryType] == 1)
+  changeCopy = change;
+  necessaryCopy = necessary;
+  completionCopy = completion;
+  if (changeCopy && [necessaryCopy summaryType] == 1)
   {
-    v10 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
+    transactionSourceIdentifiers = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __93__PKSpendingSummaryFetcher__addInterestToSummaryIfNecessary_withLastPeriodChange_completion___block_invoke;
     v12[3] = &unk_1E79C4EF0;
     v12[4] = self;
-    v13 = v8;
-    v14 = v10;
-    v15 = v9;
-    v11 = v10;
+    v13 = necessaryCopy;
+    v14 = transactionSourceIdentifiers;
+    v15 = completionCopy;
+    v11 = transactionSourceIdentifiers;
     [(PKSpendingSummaryFetcher *)self _fetchStatementsIfNecessaryWithCompletion:v12];
   }
 
   else
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -2023,26 +2023,26 @@ void __93__PKSpendingSummaryFetcher__addInterestToSummaryIfNecessary_withLastPer
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_fetchStatementsIfNecessaryWithCompletion:(id)a3
+- (void)_fetchStatementsIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_statements)
   {
-    (*(v4 + 2))(v4);
+    (*(completionCopy + 2))(completionCopy);
   }
 
   else
   {
     v6 = +[PKAccountService sharedInstance];
-    v7 = [(PKAccount *)self->_account accountIdentifier];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __70__PKSpendingSummaryFetcher__fetchStatementsIfNecessaryWithCompletion___block_invoke;
     v8[3] = &unk_1E79D6028;
     v8[4] = self;
     v9 = v5;
-    [v6 creditStatementsForAccountIdentifier:v7 completion:v8];
+    [v6 creditStatementsForAccountIdentifier:accountIdentifier completion:v8];
   }
 }
 
@@ -2058,32 +2058,32 @@ uint64_t __70__PKSpendingSummaryFetcher__fetchStatementsIfNecessaryWithCompletio
   return v6();
 }
 
-- (void)_addInsightsToSummary:(id)a3 previousSummary:(id)a4 completion:(id)a5
+- (void)_addInsightsToSummary:(id)summary previousSummary:(id)previousSummary completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  summaryCopy = summary;
+  previousSummaryCopy = previousSummary;
+  completionCopy = completion;
   if (PKFinHealthInsightsEnabled())
   {
-    v11 = [v8 altDSID];
-    if ([v11 length])
+    altDSID = [summaryCopy altDSID];
+    if ([altDSID length])
     {
     }
 
     else
     {
-      v12 = [(PKAccount *)self->_account hideSpendingInsights];
+      hideSpendingInsights = [(PKAccount *)self->_account hideSpendingInsights];
 
-      if (!v12)
+      if (!hideSpendingInsights)
       {
         insightsFetcher = self->_insightsFetcher;
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __77__PKSpendingSummaryFetcher__addInsightsToSummary_previousSummary_completion___block_invoke;
         v15[3] = &unk_1E79D6050;
-        v16 = v8;
-        v17 = v10;
-        [(PKSpendingInsightsFetcher *)insightsFetcher fetchInsightTrendsForSummary:v16 previousSummary:v9 completion:v15];
+        v16 = summaryCopy;
+        v17 = completionCopy;
+        [(PKSpendingInsightsFetcher *)insightsFetcher fetchInsightTrendsForSummary:v16 previousSummary:previousSummaryCopy completion:v15];
 
         goto LABEL_11;
       }
@@ -2100,9 +2100,9 @@ uint64_t __70__PKSpendingSummaryFetcher__fetchStatementsIfNecessaryWithCompletio
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_11:
@@ -2164,61 +2164,61 @@ void __77__PKSpendingSummaryFetcher__addInsightsToSummary_previousSummary_comple
   }
 }
 
-- (id)_cacheForType:(unint64_t)a3
+- (id)_cacheForType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = (&self->_weeklySummaryItemsPerStartDate)[a3];
+    v4 = (&self->_weeklySummaryItemsPerStartDate)[type];
   }
 
   return v4;
 }
 
-+ (id)summaryWithTransactions:(id)a3 transactionSourceCollection:(id)a4 accountUser:(id)a5 currency:(id)a6 type:(unint64_t)a7 startDate:(id)a8 endDate:(id)a9 lastSummary:(id)a10
++ (id)summaryWithTransactions:(id)transactions transactionSourceCollection:(id)collection accountUser:(id)user currency:(id)currency type:(unint64_t)type startDate:(id)date endDate:(id)endDate lastSummary:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a6;
-  v21 = a4;
-  v22 = a3;
-  v23 = [a5 altDSID];
-  v24 = [a1 _summaryWithTransactions:v22 transactionSourceCollection:v21 currency:v20 type:a7 startDate:v19 endDate:v18 lastSummary:v17 altDSID:v23];
+  summaryCopy = summary;
+  endDateCopy = endDate;
+  dateCopy = date;
+  currencyCopy = currency;
+  collectionCopy = collection;
+  transactionsCopy = transactions;
+  altDSID = [user altDSID];
+  v24 = [self _summaryWithTransactions:transactionsCopy transactionSourceCollection:collectionCopy currency:currencyCopy type:type startDate:dateCopy endDate:endDateCopy lastSummary:summaryCopy altDSID:altDSID];
 
   return v24;
 }
 
-+ (id)_summaryWithTransactions:(id)a3 transactionSourceCollection:(id)a4 currency:(id)a5 type:(unint64_t)a6 startDate:(id)a7 endDate:(id)a8 lastSummary:(id)a9 altDSID:(id)a10
++ (id)_summaryWithTransactions:(id)transactions transactionSourceCollection:(id)collection currency:(id)currency type:(unint64_t)type startDate:(id)date endDate:(id)endDate lastSummary:(id)summary altDSID:(id)self0
 {
   v218 = *MEMORY[0x1E69E9840];
-  v153 = a3;
-  v150 = a4;
-  v164 = a5;
-  v16 = a7;
-  v154 = a8;
-  v152 = a9;
-  v165 = a10;
+  transactionsCopy = transactions;
+  collectionCopy = collection;
+  currencyCopy = currency;
+  dateCopy = date;
+  endDateCopy = endDate;
+  summaryCopy = summary;
+  dCopy = d;
   v17 = objc_alloc_init(PKSpendingSummary);
-  [(PKSpendingSummary *)v17 setStartDate:v16];
-  [(PKSpendingSummary *)v17 setEndDate:v154];
-  [(PKSpendingSummary *)v17 setSummaryType:a6];
-  [(PKSpendingSummary *)v17 setAltDSID:v165];
+  [(PKSpendingSummary *)v17 setStartDate:dateCopy];
+  [(PKSpendingSummary *)v17 setEndDate:endDateCopy];
+  [(PKSpendingSummary *)v17 setSummaryType:type];
+  [(PKSpendingSummary *)v17 setAltDSID:dCopy];
   context = objc_autoreleasePoolPush();
-  v157 = [MEMORY[0x1E696AB90] zero];
-  v18 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v19 = v18;
+  zero = [MEMORY[0x1E696AB90] zero];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v19 = currentCalendar;
   v20 = 0x2000;
-  if (a6 == 1)
+  if (type == 1)
   {
     v20 = 8;
   }
 
-  if (a6 == 2)
+  if (type == 2)
   {
     v21 = 4;
   }
@@ -2229,19 +2229,19 @@ void __77__PKSpendingSummaryFetcher__addInsightsToSummary_previousSummary_comple
   }
 
   v156 = v17;
-  -[PKSpendingSummary setSummaryUnit:](v17, "setSummaryUnit:", [v18 component:v21 fromDate:v16]);
+  -[PKSpendingSummary setSummaryUnit:](v17, "setSummaryUnit:", [currentCalendar component:v21 fromDate:dateCopy]);
   v161 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v173 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v176 = [MEMORY[0x1E696AB90] zero];
+  zero2 = [MEMORY[0x1E696AB90] zero];
   v175 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v160 = [MEMORY[0x1E696AB90] zero];
+  zero3 = [MEMORY[0x1E696AB90] zero];
   v159 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v170 = [MEMORY[0x1E696AB90] zero];
-  v25 = [a1 _sortedTransactions:v153 ascending:0];
-  v151 = a1;
+  zero4 = [MEMORY[0x1E696AB90] zero];
+  v25 = [self _sortedTransactions:transactionsCopy ascending:0];
+  selfCopy = self;
   v26 = objc_opt_class();
   v207[0] = MEMORY[0x1E69E9820];
   v207[1] = 3221225472;
@@ -2253,20 +2253,20 @@ void __77__PKSpendingSummaryFetcher__addInsightsToSummary_previousSummary_comple
   v209 = v174;
   v158 = v24;
   v210 = v158;
-  v167 = a6;
-  [v26 enumerateSummaryUnitsWithinSummaryPeriod:a6 startDate:v16 endDate:v154 block:v207];
-  v169 = [MEMORY[0x1E696AB90] zero];
+  typeCopy = type;
+  [v26 enumerateSummaryUnitsWithinSummaryPeriod:type startDate:dateCopy endDate:endDateCopy block:v207];
+  zero5 = [MEMORY[0x1E696AB90] zero];
   v177 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v155 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v166 = v19;
-  v149 = v16;
-  if (!v165)
+  v149 = dateCopy;
+  if (!dCopy)
   {
     v205 = 0u;
     v206 = 0u;
     v203 = 0u;
     v204 = 0u;
-    v27 = [v150 transactionSourcesForType:2];
+    v27 = [collectionCopy transactionSourcesForType:2];
     v28 = [v27 countByEnumeratingWithState:&v203 objects:v217 count:16];
     if (v28)
     {
@@ -2282,10 +2282,10 @@ void __77__PKSpendingSummaryFetcher__addInsightsToSummary_previousSummary_comple
           }
 
           v32 = *(*(&v203 + 1) + 8 * i);
-          v33 = [MEMORY[0x1E696AB90] zero];
-          v34 = [v32 accountUser];
-          v35 = [v34 altDSID];
-          [v177 setObject:v33 forKey:v35];
+          zero6 = [MEMORY[0x1E696AB90] zero];
+          accountUser = [v32 accountUser];
+          altDSID = [accountUser altDSID];
+          [v177 setObject:zero6 forKey:altDSID];
         }
 
         v29 = [v27 countByEnumeratingWithState:&v203 objects:v217 count:16];
@@ -2298,7 +2298,7 @@ void __77__PKSpendingSummaryFetcher__addInsightsToSummary_previousSummary_comple
     v202 = 0u;
     v199 = 0u;
     v200 = 0u;
-    v36 = [v150 transactionSourcesForType:0];
+    v36 = [collectionCopy transactionSourcesForType:0];
     v37 = [v36 countByEnumeratingWithState:&v199 objects:v216 count:16];
     if (v37)
     {
@@ -2313,8 +2313,8 @@ void __77__PKSpendingSummaryFetcher__addInsightsToSummary_previousSummary_comple
             objc_enumerationMutation(v36);
           }
 
-          v41 = [*(*(&v199 + 1) + 8 * j) transactionSourceIdentifiers];
-          [v155 unionSet:v41];
+          transactionSourceIdentifiers = [*(*(&v199 + 1) + 8 * j) transactionSourceIdentifiers];
+          [v155 unionSet:transactionSourceIdentifiers];
         }
 
         v38 = [v36 countByEnumeratingWithState:&v199 objects:v216 count:16];
@@ -2324,7 +2324,7 @@ void __77__PKSpendingSummaryFetcher__addInsightsToSummary_previousSummary_comple
     }
   }
 
-  v162 = [MEMORY[0x1E696AB90] zero];
+  zero7 = [MEMORY[0x1E696AB90] zero];
   [v19 setFirstWeekday:2];
   v197 = 0u;
   v198 = 0u;
@@ -2334,17 +2334,17 @@ void __77__PKSpendingSummaryFetcher__addInsightsToSummary_previousSummary_comple
   v42 = [obj countByEnumeratingWithState:&v195 objects:v215 count:16];
   if (!v42)
   {
-    v45 = v164;
-    v47 = v170;
+    v45 = currencyCopy;
+    v47 = zero4;
     v48 = v177;
     goto LABEL_76;
   }
 
   v43 = v42;
   v44 = *v196;
-  v45 = v164;
+  v45 = currencyCopy;
   v46 = v175;
-  v47 = v170;
+  v47 = zero4;
   v48 = v177;
   do
   {
@@ -2358,21 +2358,21 @@ void __77__PKSpendingSummaryFetcher__addInsightsToSummary_previousSummary_comple
       v50 = *(*(&v195 + 1) + 8 * k);
       if (TransactionIsValidForSummary(v50))
       {
-        v51 = [v50 transactionType];
+        transactionType = [v50 transactionType];
         if ([v50 transactionType] == 1)
         {
-          v52 = [v50 amount];
-          if (v52)
+          amount = [v50 amount];
+          if (amount)
           {
             v53 = v47;
-            v54 = [MEMORY[0x1E696AB90] notANumber];
-            v55 = [v52 compare:v54];
+            notANumber = [MEMORY[0x1E696AB90] notANumber];
+            v55 = [amount compare:notANumber];
 
             if (v55)
             {
               [v173 addObject:v50];
-              v56 = v176;
-              v176 = [(NSDecimalNumber *)v176 decimalNumberByAdding:v52];
+              amount2 = zero2;
+              zero2 = [(NSDecimalNumber *)zero2 decimalNumberByAdding:amount];
               goto LABEL_32;
             }
 
@@ -2386,17 +2386,17 @@ LABEL_71:
           continue;
         }
 
-        if (v51 == 7)
+        if (transactionType == 7)
         {
-          v52 = [v50 amount];
-          if (!v52)
+          amount = [v50 amount];
+          if (!amount)
           {
             goto LABEL_71;
           }
 
           v53 = v47;
-          v59 = [MEMORY[0x1E696AB90] notANumber];
-          v60 = [v52 compare:v59];
+          notANumber2 = [MEMORY[0x1E696AB90] notANumber];
+          v60 = [amount compare:notANumber2];
 
           if (!v60)
           {
@@ -2404,15 +2404,15 @@ LABEL_71:
           }
 
           [v159 addObject:v50];
-          v56 = v53;
-          v47 = [v53 decimalNumberByAdding:v52];
+          amount2 = v53;
+          v47 = [v53 decimalNumberByAdding:amount];
 LABEL_70:
 
           v46 = v175;
           goto LABEL_71;
         }
 
-        if (v51 == 10)
+        if (transactionType == 10)
         {
           [v46 addObject:v50];
           if ([v50 transactionStatus] > 1)
@@ -2420,45 +2420,45 @@ LABEL_70:
             continue;
           }
 
-          v52 = [v50 amount];
-          if (!v52)
+          amount = [v50 amount];
+          if (!amount)
           {
             goto LABEL_71;
           }
 
           v53 = v47;
-          v57 = [MEMORY[0x1E696AB90] notANumber];
-          v58 = [v52 compare:v57];
+          notANumber3 = [MEMORY[0x1E696AB90] notANumber];
+          v58 = [amount compare:notANumber3];
 
           if (!v58)
           {
             goto LABEL_42;
           }
 
-          v56 = v160;
-          v160 = [(NSDecimalNumber *)v160 decimalNumberByAdding:v52];
+          amount2 = zero3;
+          zero3 = [(NSDecimalNumber *)zero3 decimalNumberByAdding:amount];
 LABEL_32:
           v47 = v53;
           goto LABEL_70;
         }
 
-        v52 = [v50 transactionDate];
-        if (v167)
+        amount = [v50 transactionDate];
+        if (typeCopy)
         {
-          if (v167 == 1)
+          if (typeCopy == 1)
           {
-            v61 = [v166 rangeOfUnit:4096 inUnit:8 forDate:v52];
+            v61 = [v166 rangeOfUnit:4096 inUnit:8 forDate:amount];
             v62 = v166;
             v63 = 4096;
 LABEL_48:
-            v64 = [v62 component:v63 fromDate:v52] - v61;
+            v64 = [v62 component:v63 fromDate:amount] - v61;
           }
 
           else
           {
-            if (v167 == 2)
+            if (typeCopy == 2)
             {
-              v61 = [v166 rangeOfUnit:8 inUnit:4 forDate:v52];
+              v61 = [v166 rangeOfUnit:8 inUnit:4 forDate:amount];
               v62 = v166;
               v63 = 8;
               goto LABEL_48;
@@ -2470,7 +2470,7 @@ LABEL_48:
 
         else
         {
-          v64 = ([v166 component:512 fromDate:v52] + 5) % 7;
+          v64 = ([v166 component:512 fromDate:amount] + 5) % 7;
         }
 
         v65 = [v174 count];
@@ -2483,29 +2483,29 @@ LABEL_48:
         v66 = [v174 objectAtIndex:v64];
         [v66 addObject:v50];
 
-        v56 = [v50 amount];
-        if (v56)
+        amount2 = [v50 amount];
+        if (amount2)
         {
           v67 = [v158 objectAtIndex:v64];
-          v68 = [v67 decimalNumberByAdding:v56];
+          v68 = [v67 decimalNumberByAdding:amount2];
           [v158 replaceObjectAtIndex:v64 withObject:v68];
         }
 
-        v69 = [v50 rewardsTotalAmount];
-        v70 = v69;
-        if (v69 && [v69 compare:v157])
+        rewardsTotalAmount = [v50 rewardsTotalAmount];
+        v70 = rewardsTotalAmount;
+        if (rewardsTotalAmount && [rewardsTotalAmount compare:zero])
         {
           [v161 addObject:v50];
-          v71 = [(NSDecimalNumber *)v162 decimalNumberByAdding:v70];
+          v71 = [(NSDecimalNumber *)zero7 decimalNumberByAdding:v70];
 
-          v162 = v71;
+          zero7 = v71;
         }
 
         else
         {
-          v72 = [v50 rewards];
-          v73 = [v72 rewardsItems];
-          v74 = [v73 count];
+          rewards = [v50 rewards];
+          rewardsItems = [rewards rewardsItems];
+          v74 = [rewardsItems count];
 
           if (v74)
           {
@@ -2513,32 +2513,32 @@ LABEL_48:
           }
         }
 
-        v75 = [(NSDecimalNumber *)v169 decimalNumberByAdding:v56];
+        v75 = [(NSDecimalNumber *)zero5 decimalNumberByAdding:amount2];
 
-        if (!v165)
+        if (!dCopy)
         {
-          v76 = [v50 altDSID];
-          if (v76 || ([v50 transactionSourceIdentifier], v81 = objc_claimAutoreleasedReturnValue(), v82 = objc_msgSend(v155, "containsObject:", v81), v81, v82) && (PKCurrentUserAltDSID(), (v76 = objc_claimAutoreleasedReturnValue()) != 0))
+          altDSID2 = [v50 altDSID];
+          if (altDSID2 || ([v50 transactionSourceIdentifier], v81 = objc_claimAutoreleasedReturnValue(), v82 = objc_msgSend(v155, "containsObject:", v81), v81, v82) && (PKCurrentUserAltDSID(), (altDSID2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v77 = v76;
-            v78 = [v177 objectForKey:v76];
+            v77 = altDSID2;
+            v78 = [v177 objectForKey:altDSID2];
             if (v78)
             {
               v79 = v78;
-              v80 = [v78 decimalNumberByAdding:v56];
+              v80 = [v78 decimalNumberByAdding:amount2];
             }
 
             else
             {
-              v80 = v56;
+              v80 = amount2;
             }
 
             [v177 setObject:v80 forKey:v77];
           }
         }
 
-        v169 = v75;
-        v45 = v164;
+        zero5 = v75;
+        v45 = currencyCopy;
         v47 = v171;
         goto LABEL_70;
       }
@@ -2551,7 +2551,7 @@ LABEL_48:
 LABEL_76:
   v172 = v47;
 
-  v83 = PKCurrencyAmountCreate(v169, v45, 0);
+  v83 = PKCurrencyAmountCreate(zero5, v45, 0);
   [(PKSpendingSummary *)v156 setTotalSpending:v83];
 
   v84 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v48, "count")}];
@@ -2559,8 +2559,8 @@ LABEL_76:
   v192 = 0u;
   v193 = 0u;
   v194 = 0u;
-  v85 = [v48 allKeys];
-  v86 = [v85 countByEnumeratingWithState:&v191 objects:v214 count:16];
+  allKeys = [v48 allKeys];
+  v86 = [allKeys countByEnumeratingWithState:&v191 objects:v214 count:16];
   if (v86)
   {
     v87 = v86;
@@ -2571,7 +2571,7 @@ LABEL_76:
       {
         if (*v192 != v88)
         {
-          objc_enumerationMutation(v85);
+          objc_enumerationMutation(allKeys);
         }
 
         v90 = *(*(&v191 + 1) + 8 * m);
@@ -2580,7 +2580,7 @@ LABEL_76:
         [v84 setObject:v92 forKey:v90];
       }
 
-      v87 = [v85 countByEnumeratingWithState:&v191 objects:v214 count:16];
+      v87 = [allKeys countByEnumeratingWithState:&v191 objects:v214 count:16];
     }
 
     while (v87);
@@ -2590,7 +2590,7 @@ LABEL_76:
   v93 = [v163 copy];
   [(PKSpendingSummary *)v156 setSpendingsPerCalendarUnit:v93];
 
-  v94 = [v151 _spendingCategoriesFromTransactions:obj currencyCode:v45];
+  v94 = [selfCopy _spendingCategoriesFromTransactions:obj currencyCode:v45];
   v187 = 0u;
   v188 = 0u;
   v189 = 0u;
@@ -2612,7 +2612,7 @@ LABEL_76:
 
         v100 = *(*(&v187 + 1) + 8 * n);
         [v100 setStartDate:v149];
-        [v100 setEndDate:v154];
+        [v100 setEndDate:endDateCopy];
       }
 
       v97 = [v94 countByEnumeratingWithState:&v187 objects:v213 count:16];
@@ -2622,7 +2622,7 @@ LABEL_76:
   }
 
   [(PKSpendingSummary *)v156 setOrderedSpendingCategories:v94];
-  v101 = [v151 _spendingMerchantsFromTransaction:obj currencyCode:v45];
+  v101 = [selfCopy _spendingMerchantsFromTransaction:obj currencyCode:v45];
   v183 = 0u;
   v184 = 0u;
   v185 = 0u;
@@ -2643,7 +2643,7 @@ LABEL_76:
 
         v106 = *(*(&v183 + 1) + 8 * ii);
         [v106 setStartDate:v149];
-        [v106 setEndDate:v154];
+        [v106 setEndDate:endDateCopy];
       }
 
       v103 = [v101 countByEnumeratingWithState:&v183 objects:v212 count:16];
@@ -2666,10 +2666,10 @@ LABEL_76:
     {
       v112 = [v107 objectAtIndex:v111];
       v113 = [v109 objectAtIndex:v111];
-      v114 = [v151 _spendingCategoriesFromTransactions:v113 currencyCode:v108];
+      v114 = [selfCopy _spendingCategoriesFromTransactions:v113 currencyCode:v108];
       [v112 setOrderedSpendingCategories:v114];
 
-      v115 = [v151 _spendingMerchantsFromTransaction:v113 currencyCode:v108];
+      v115 = [selfCopy _spendingMerchantsFromTransaction:v113 currencyCode:v108];
       [v112 setOrderedSpendingPerMerchants:v115];
 
       v116 = [v110 objectAtIndex:v111];
@@ -2692,11 +2692,11 @@ LABEL_76:
 
   v121 = objc_alloc_init(PKPaymentTransactionGroup);
   [(PKPaymentTransactionGroup *)v121 setType:4];
-  v122 = PKCurrencyAmountCreate(v162, v108, 0);
+  v122 = PKCurrencyAmountCreate(zero7, v108, 0);
   [(PKPaymentTransactionGroup *)v121 setTotalAmount:v122];
 
   [(PKPaymentTransactionGroup *)v121 setStartDate:v149];
-  [(PKPaymentTransactionGroup *)v121 setEndDate:v154];
+  [(PKPaymentTransactionGroup *)v121 setEndDate:endDateCopy];
   v123 = [v161 copy];
   [(PKPaymentTransactionGroup *)v121 setTransactions:v123];
 
@@ -2704,17 +2704,17 @@ LABEL_76:
   v168 = v121;
   [(PKSpendingSummary *)v156 setRewards:v121];
   v124 = v108;
-  if (v152)
+  if (summaryCopy)
   {
-    v125 = [v152 totalSpending];
-    [(PKSpendingSummary *)v156 setPreviousTotalSpending:v125];
+    totalSpending = [summaryCopy totalSpending];
+    [(PKSpendingSummary *)v156 setPreviousTotalSpending:totalSpending];
 
     v181 = 0u;
     v182 = 0u;
     v179 = 0u;
     v180 = 0u;
-    v126 = [v152 spendingsPerCalendarUnit];
-    v127 = [(NSDecimalNumber *)v126 countByEnumeratingWithState:&v179 objects:v211 count:16];
+    spendingsPerCalendarUnit = [summaryCopy spendingsPerCalendarUnit];
+    v127 = [(NSDecimalNumber *)spendingsPerCalendarUnit countByEnumeratingWithState:&v179 objects:v211 count:16];
     if (v127)
     {
       v128 = v127;
@@ -2726,30 +2726,30 @@ LABEL_76:
         {
           if (*v180 != v130)
           {
-            objc_enumerationMutation(v126);
+            objc_enumerationMutation(spendingsPerCalendarUnit);
           }
 
-          v132 = [*(*(&v179 + 1) + 8 * jj) totalSpending];
-          v133 = [v132 amount];
+          totalSpending2 = [*(*(&v179 + 1) + 8 * jj) totalSpending];
+          amount3 = [totalSpending2 amount];
 
-          if (!v129 || [v133 compare:v129] == 1)
+          if (!v129 || [amount3 compare:v129] == 1)
           {
-            v134 = v133;
+            v134 = amount3;
 
             v129 = v134;
           }
         }
 
-        v128 = [(NSDecimalNumber *)v126 countByEnumeratingWithState:&v179 objects:v211 count:16];
+        v128 = [(NSDecimalNumber *)spendingsPerCalendarUnit countByEnumeratingWithState:&v179 objects:v211 count:16];
       }
 
       while (v128);
 
-      v124 = v164;
+      v124 = currencyCopy;
       v96 = v149;
       if (v129)
       {
-        v135 = PKCurrencyAmountCreate(v129, v164, 0);
+        v135 = PKCurrencyAmountCreate(v129, currencyCopy, 0);
         [(PKSpendingSummary *)v156 setPreviousMaxAmount:v135];
 
         goto LABEL_114;
@@ -2758,8 +2758,8 @@ LABEL_76:
 
     else
     {
-      v129 = v126;
-      v124 = v164;
+      v129 = spendingsPerCalendarUnit;
+      v124 = currencyCopy;
 LABEL_114:
     }
   }
@@ -2768,11 +2768,11 @@ LABEL_114:
   {
     v136 = objc_alloc_init(PKPaymentTransactionGroup);
     [(PKPaymentTransactionGroup *)v136 setType:10];
-    v137 = PKCurrencyAmountCreate(v176, v124, 0);
+    v137 = PKCurrencyAmountCreate(zero2, v124, 0);
     [(PKPaymentTransactionGroup *)v136 setTotalAmount:v137];
 
     [(PKPaymentTransactionGroup *)v136 setStartDate:v96];
-    [(PKPaymentTransactionGroup *)v136 setEndDate:v154];
+    [(PKPaymentTransactionGroup *)v136 setEndDate:endDateCopy];
     v138 = [v173 copy];
     [(PKPaymentTransactionGroup *)v136 setTransactions:v138];
 
@@ -2784,11 +2784,11 @@ LABEL_114:
   {
     v139 = objc_alloc_init(PKPaymentTransactionGroup);
     [(PKPaymentTransactionGroup *)v139 setType:9];
-    v140 = PKCurrencyAmountCreate(v160, v124, 0);
+    v140 = PKCurrencyAmountCreate(zero3, v124, 0);
     [(PKPaymentTransactionGroup *)v139 setTotalAmount:v140];
 
     [(PKPaymentTransactionGroup *)v139 setStartDate:v96];
-    [(PKPaymentTransactionGroup *)v139 setEndDate:v154];
+    [(PKPaymentTransactionGroup *)v139 setEndDate:endDateCopy];
     v141 = [v175 copy];
     [(PKPaymentTransactionGroup *)v139 setTransactions:v141];
 
@@ -2804,7 +2804,7 @@ LABEL_114:
     [(PKPaymentTransactionGroup *)v142 setTotalAmount:v143];
 
     [(PKPaymentTransactionGroup *)v142 setStartDate:v96];
-    [(PKPaymentTransactionGroup *)v142 setEndDate:v154];
+    [(PKPaymentTransactionGroup *)v142 setEndDate:endDateCopy];
     v144 = [v159 copy];
     [(PKPaymentTransactionGroup *)v142 setTransactions:v144];
 
@@ -2835,12 +2835,12 @@ void __133__PKSpendingSummaryFetcher__summaryWithTransactions_transactionSourceC
   [v9 addObject:v10];
 }
 
-+ (id)_spendingMerchantsFromTransaction:(id)a3 currencyCode:(id)a4
++ (id)_spendingMerchantsFromTransaction:(id)transaction currencyCode:(id)code
 {
   v64 = *MEMORY[0x1E69E9840];
-  v48 = a4;
+  codeCopy = code;
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
+  transactionCopy = transaction;
   v7 = objc_alloc_init(v5);
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -2853,7 +2853,7 @@ void __133__PKSpendingSummaryFetcher__summaryWithTransactions_transactionSourceC
   v47 = v8;
   v61 = v47;
   v10 = _Block_copy(aBlock);
-  v11 = [v6 pk_objectsPassingTest:&__block_literal_global_120_0];
+  v11 = [transactionCopy pk_objectsPassingTest:&__block_literal_global_120_0];
 
   v12 = v10;
   v57 = 0u;
@@ -2879,13 +2879,13 @@ void __133__PKSpendingSummaryFetcher__summaryWithTransactions_transactionSourceC
         }
 
         v18 = *(*(&v55 + 1) + 8 * i);
-        v19 = [v18 merchant];
-        v20 = [v19 uniqueIdentifier];
-        v21 = [v7 objectForKey:v20];
+        merchant = [v18 merchant];
+        uniqueIdentifier = [merchant uniqueIdentifier];
+        v21 = [v7 objectForKey:uniqueIdentifier];
 
         if (v21)
         {
-          (*(v12 + 2))(v12, v20, v18);
+          (*(v12 + 2))(v12, uniqueIdentifier, v18);
         }
 
         else
@@ -2896,33 +2896,33 @@ void __133__PKSpendingSummaryFetcher__summaryWithTransactions_transactionSourceC
           v53[1] = 3221225472;
           v53[2] = __75__PKSpendingSummaryFetcher__spendingMerchantsFromTransaction_currencyCode___block_invoke_3;
           v53[3] = &unk_1E79D60E8;
-          v24 = v19;
+          v24 = merchant;
           v54 = v24;
           v25 = [v22 keysOfEntriesPassingTest:v53];
           if ([v25 count])
           {
-            v26 = [v25 anyObject];
-            v27 = [v22 objectForKey:v26];
+            anyObject = [v25 anyObject];
+            v27 = [v22 objectForKey:anyObject];
 
-            v28 = [v27 uniqueIdentifier];
+            uniqueIdentifier2 = [v27 uniqueIdentifier];
 
             if ([v24 hasBetterVisualPropertiesThanMerchant:v27])
             {
-              [v46 setObject:v24 forKey:v28];
+              [v46 setObject:v24 forKey:uniqueIdentifier2];
             }
 
             v12 = v45;
-            (v45)[2](v45, v28, v18);
+            (v45)[2](v45, uniqueIdentifier2, v18);
 
-            v20 = v28;
+            uniqueIdentifier = uniqueIdentifier2;
             v13 = v44;
           }
 
           else
           {
-            [v22 setObject:v24 forKey:v20];
+            [v22 setObject:v24 forKey:uniqueIdentifier];
             v12 = v45;
-            (v45)[2](v45, v20, v18);
+            (v45)[2](v45, uniqueIdentifier, v18);
           }
 
           v15 = v23;
@@ -2959,7 +2959,7 @@ void __133__PKSpendingSummaryFetcher__summaryWithTransactions_transactionSourceC
         v35 = *(*(&v49 + 1) + 8 * j);
         v36 = objc_alloc_init(PKPaymentTransactionGroup);
         v37 = [v47 objectForKey:v35];
-        v38 = PKCurrencyAmountCreate(v37, v48, 0);
+        v38 = PKCurrencyAmountCreate(v37, codeCopy, 0);
         [(PKPaymentTransactionGroup *)v36 setTotalAmount:v38];
 
         v39 = [v30 objectForKey:v35];
@@ -3067,11 +3067,11 @@ uint64_t __75__PKSpendingSummaryFetcher__spendingMerchantsFromTransaction_curren
   return v9;
 }
 
-+ (id)_spendingCategoriesFromTransactions:(id)a3 currencyCode:(id)a4
++ (id)_spendingCategoriesFromTransactions:(id)transactions currencyCode:(id)code
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v40 = a4;
+  transactionsCopy = transactions;
+  codeCopy = code;
   context = objc_autoreleasePoolPush();
   v39 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v41 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -3079,7 +3079,7 @@ uint64_t __75__PKSpendingSummaryFetcher__spendingMerchantsFromTransaction_curren
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v6 = v5;
+  v6 = transactionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v46 objects:v51 count:16];
   v38 = v6;
   if (v7)
@@ -3099,13 +3099,13 @@ uint64_t __75__PKSpendingSummaryFetcher__spendingMerchantsFromTransaction_curren
         v11 = *(*(&v46 + 1) + 8 * v10);
         if (TransactionIsValidForSummary(v11))
         {
-          v12 = [v11 merchant];
-          if (v12)
+          merchant = [v11 merchant];
+          if (merchant)
           {
-            v13 = v12;
-            v14 = [v11 transactionType];
+            v13 = merchant;
+            transactionType = [v11 transactionType];
 
-            if (v14 != 1)
+            if (transactionType != 1)
             {
               v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v11, "effectiveTransactionCategory")}];
               v16 = [v39 objectForKey:v15];
@@ -3117,8 +3117,8 @@ uint64_t __75__PKSpendingSummaryFetcher__spendingMerchantsFromTransaction_curren
                 {
 LABEL_11:
                   v19 = objc_alloc(MEMORY[0x1E696AB90]);
-                  v20 = [v11 amount];
-                  [v20 floatValue];
+                  amount = [v11 amount];
+                  [amount floatValue];
                   v21 = [v19 initWithFloat:?];
                   v22 = [v18 decimalNumberByAdding:v21];
 
@@ -3181,7 +3181,7 @@ LABEL_12:
         v30 = *(*(&v42 + 1) + 8 * i);
         v31 = objc_alloc_init(PKPaymentTransactionGroup);
         v32 = [v41 objectForKey:v30];
-        v33 = PKCurrencyAmountCreate(v32, v40, 0);
+        v33 = PKCurrencyAmountCreate(v32, codeCopy, 0);
         [(PKPaymentTransactionGroup *)v31 setTotalAmount:v33];
 
         v34 = [v25 objectForKey:v30];
@@ -3219,28 +3219,28 @@ uint64_t __77__PKSpendingSummaryFetcher__spendingCategoriesFromTransactions_curr
   return v9;
 }
 
-+ (id)_sortedTransactions:(id)a3 ascending:(BOOL)a4
++ (id)_sortedTransactions:(id)transactions ascending:(BOOL)ascending
 {
-  v4 = a4;
+  ascendingCopy = ascending;
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AEB0];
-  v6 = a3;
-  v7 = [v5 sortDescriptorWithKey:@"transactionDate" ascending:v4];
+  transactionsCopy = transactions;
+  v7 = [v5 sortDescriptorWithKey:@"transactionDate" ascending:ascendingCopy];
   v11[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v9 = [v6 sortedArrayUsingDescriptors:v8];
+  v9 = [transactionsCopy sortedArrayUsingDescriptors:v8];
 
   return v9;
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  transactionCopy = transaction;
+  if (identifierCopy)
   {
-    v8 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
-    v9 = [v8 containsObject:v6];
+    transactionSourceIdentifiers = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
+    v9 = [transactionSourceIdentifiers containsObject:identifierCopy];
 
     if (v9)
     {
@@ -3250,7 +3250,7 @@ uint64_t __77__PKSpendingSummaryFetcher__spendingCategoriesFromTransactions_curr
       v11[2] = __78__PKSpendingSummaryFetcher_transactionSourceIdentifier_didReceiveTransaction___block_invoke;
       v11[3] = &unk_1E79C4DD8;
       v11[4] = self;
-      v12 = v7;
+      v12 = transactionCopy;
       dispatch_async(workQueue, v11);
     }
   }
@@ -3428,48 +3428,48 @@ void __78__PKSpendingSummaryFetcher_transactionSourceIdentifier_didReceiveTransa
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_observersLock);
     [(NSHashTable *)self->_observers addObject:v5];
     os_unfair_lock_unlock(&self->_observersLock);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_observersLock);
     [(NSHashTable *)self->_observers removeObject:v5];
     os_unfair_lock_unlock(&self->_observersLock);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)_accessObserversWithHandler:(id)a3
+- (void)_accessObserversWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     os_unfair_lock_lock(&self->_observersLock);
-    v5 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_observersLock);
     replyQueue = self->_replyQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __56__PKSpendingSummaryFetcher__accessObserversWithHandler___block_invoke;
     v8[3] = &unk_1E79C4A40;
-    v9 = v5;
-    v10 = v4;
-    v7 = v5;
+    v9 = allObjects;
+    v10 = handlerCopy;
+    v7 = allObjects;
     dispatch_async(replyQueue, v8);
   }
 }
@@ -3509,58 +3509,58 @@ void __56__PKSpendingSummaryFetcher__accessObserversWithHandler___block_invoke(u
   }
 }
 
-+ (id)previousStartOfWeekFromDate:(id)a3
++ (id)previousStartOfWeekFromDate:(id)date
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  if ([v5 component:512 fromDate:v4] != 2)
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  if ([currentCalendar component:512 fromDate:dateCopy] != 2)
   {
-    v6 = [v5 nextDateAfterDate:v4 matchingUnit:512 value:2 options:260];
+    v6 = [currentCalendar nextDateAfterDate:dateCopy matchingUnit:512 value:2 options:260];
 
-    v4 = v6;
+    dateCopy = v6;
   }
 
-  v7 = [v5 components:28702 fromDate:v4];
+  v7 = [currentCalendar components:28702 fromDate:dateCopy];
 
-  v8 = [v5 dateFromComponents:v7];
+  v8 = [currentCalendar dateFromComponents:v7];
 
   return v8;
 }
 
-+ (id)nextStartOfWeekFromDate:(id)a3
++ (id)nextStartOfWeekFromDate:(id)date
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 nextDateAfterDate:v4 matchingUnit:512 value:2 options:256];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar nextDateAfterDate:dateCopy matchingUnit:512 value:2 options:256];
 
   return v6;
 }
 
-+ (void)enumerateSummaryUnitsWithinSummaryPeriod:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 block:(id)a6
++ (void)enumerateSummaryUnitsWithinSummaryPeriod:(unint64_t)period startDate:(id)date endDate:(id)endDate block:(id)block
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v29 = v9;
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v29 = dateCopy;
   v13 = v29;
   do
   {
     v14 = v13;
     v15 = v14;
-    if (a3)
+    if (period)
     {
-      if (a3 == 2)
+      if (period == 2)
       {
         v19 = PKEndOfMonth(v14);
 
         v17 = PKStartOfNextMonth(v15);
-        v20 = [v12 component:4 fromDate:v19];
-        v21 = [v12 component:2 fromDate:v19];
-        v22 = [v12 component:4 fromDate:v17];
-        v23 = [v12 component:2 fromDate:v17];
+        v20 = [currentCalendar component:4 fromDate:v19];
+        v21 = [currentCalendar component:2 fromDate:v19];
+        v22 = [currentCalendar component:4 fromDate:v17];
+        v23 = [currentCalendar component:2 fromDate:v17];
         v24 = v20 == v22 && v21 == v23;
         v18 = !v24;
         if (v24)
@@ -3575,27 +3575,27 @@ void __56__PKSpendingSummaryFetcher__accessObserversWithHandler___block_invoke(u
 
         v13 = v25;
 
-        v10 = v19;
+        endDateCopy = v19;
       }
 
       else
       {
-        if (a3 != 1)
+        if (period != 1)
         {
           v18 = 0;
           v13 = v14;
           goto LABEL_28;
         }
 
-        v16 = [v12 nextDateAfterDate:v14 matchingUnit:512 value:2 options:512];
+        v16 = [currentCalendar nextDateAfterDate:v14 matchingUnit:512 value:2 options:512];
         if (!v16)
         {
-          v16 = v10;
+          v16 = endDateCopy;
         }
 
         v17 = v16;
 
-        if ([v10 compare:v17] == 1)
+        if ([endDateCopy compare:v17] == 1)
         {
           v18 = 0;
           v13 = v17;
@@ -3603,23 +3603,23 @@ void __56__PKSpendingSummaryFetcher__accessObserversWithHandler___block_invoke(u
 
         else
         {
-          v13 = v10;
+          v13 = endDateCopy;
 
           v18 = 1;
-          v10 = v13;
+          endDateCopy = v13;
         }
       }
     }
 
     else
     {
-      v26 = [v12 component:512 fromDate:v14];
+      v26 = [currentCalendar component:512 fromDate:v14];
       if (v26 == 1)
       {
-        v13 = v10;
+        v13 = endDateCopy;
         v18 = 1;
         v17 = v15;
-        v10 = v13;
+        endDateCopy = v13;
       }
 
       else
@@ -3634,7 +3634,7 @@ void __56__PKSpendingSummaryFetcher__accessObserversWithHandler___block_invoke(u
           v27 = v26 + 1;
         }
 
-        v13 = [v12 nextDateAfterDate:v15 matchingUnit:512 value:v27 options:512];
+        v13 = [currentCalendar nextDateAfterDate:v15 matchingUnit:512 value:v27 options:512];
         v18 = 0;
         v17 = v15;
       }
@@ -3642,18 +3642,18 @@ void __56__PKSpendingSummaryFetcher__accessObserversWithHandler___block_invoke(u
 
 LABEL_28:
     v28 = [v13 dateByAddingTimeInterval:-1.0];
-    v11[2](v11, v15, v28);
+    blockCopy[2](blockCopy, v15, v28);
   }
 
   while (!v18);
 }
 
-- (void)statementsChangedForAccountIdentifier:(id)a3
+- (void)statementsChangedForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKAccount *)self->_account accountIdentifier];
-  v6 = v4;
-  v7 = v5;
+  identifierCopy = identifier;
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  v6 = identifierCopy;
+  v7 = accountIdentifier;
   v8 = v7;
   if (v7 == v6)
   {
@@ -3709,7 +3709,7 @@ void __66__PKSpendingSummaryFetcher_statementsChangedForAccountIdentifier___bloc
   }
 }
 
-- (void)_timeZoneChanged:(id)a3
+- (void)_timeZoneChanged:(id)changed
 {
   v4 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

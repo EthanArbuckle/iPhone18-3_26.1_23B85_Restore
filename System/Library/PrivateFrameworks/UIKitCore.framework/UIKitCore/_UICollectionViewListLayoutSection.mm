@@ -1,55 +1,55 @@
 @interface _UICollectionViewListLayoutSection
-- (BOOL)__isLastItemInSection:(id)a3;
-- (BOOL)_adjustsLayoutToDrawTopSeparatorInSection:(int64_t)a3 interactionState:(id)a4;
-- (BOOL)_hasHeaderFooterBelowLastItemInSection:(int64_t)a3 interactionState:(id)a4;
+- (BOOL)__isLastItemInSection:(id)section;
+- (BOOL)_adjustsLayoutToDrawTopSeparatorInSection:(int64_t)section interactionState:(id)state;
+- (BOOL)_hasHeaderFooterBelowLastItemInSection:(int64_t)section interactionState:(id)state;
 - (BOOL)_isRTL;
-- (BOOL)_shouldDrawSeparatorAtBottom:(BOOL)a3 ofSection:(int64_t)a4 interactionState:(id)a5;
-- (BOOL)_shouldHideBottomSeparatorAtIndexPath:(id)a3 forGrouping:(unint64_t)a4 considerNextCellGrouping:(BOOL)a5 interactionState:(id)a6;
-- (BOOL)_shouldHideTopSeparatorAtIndexPath:(id)a3 interactionState:(id)a4;
+- (BOOL)_shouldDrawSeparatorAtBottom:(BOOL)bottom ofSection:(int64_t)section interactionState:(id)state;
+- (BOOL)_shouldHideBottomSeparatorAtIndexPath:(id)path forGrouping:(unint64_t)grouping considerNextCellGrouping:(BOOL)cellGrouping interactionState:(id)state;
+- (BOOL)_shouldHideTopSeparatorAtIndexPath:(id)path interactionState:(id)state;
 - (BOOL)_useRoundedSwipeActions;
 - (NSDirectionalEdgeInsets)_defaultDirectionalLayoutMargins;
 - (NSDirectionalEdgeInsets)_defaultSectionContentInsets;
-- (NSDirectionalEdgeInsets)_defaultSectionContentInsetsForSectionMetrics:(_UIListMetricsSectionMetrics *)a3;
+- (NSDirectionalEdgeInsets)_defaultSectionContentInsetsForSectionMetrics:(_UIListMetricsSectionMetrics *)metrics;
 - (NSDirectionalEdgeInsets)_defaultSeparatorInsets;
 - (NSDirectionalEdgeInsets)_effectiveBoundarySeparatorInsets:(NSDirectionalEdgeInsets)result;
 - (NSDirectionalEdgeInsets)_effectiveSectionHorizontalInsets;
 - (NSDirectionalEdgeInsets)_effectiveSectionSupplementaryHorizontalInsets;
-- (NSDirectionalEdgeInsets)_sectionPreferredBottomSeparatorInsetsForIndexPath:(id)a3;
-- (NSDirectionalEdgeInsets)_sectionPreferredTopSeparatorInsetsWithBottomInsets:(NSDirectionalEdgeInsets)a3 hasCustomInsets:(BOOL *)a4;
+- (NSDirectionalEdgeInsets)_sectionPreferredBottomSeparatorInsetsForIndexPath:(id)path;
+- (NSDirectionalEdgeInsets)_sectionPreferredTopSeparatorInsetsWithBottomInsets:(NSDirectionalEdgeInsets)insets hasCustomInsets:(BOOL *)customInsets;
 - (NSDirectionalEdgeInsets)contentInsets;
-- (UIEdgeInsets)_defaultLayoutMarginsForHeaderFooterViewWithLayoutAttributes:(id)a3;
+- (UIEdgeInsets)_defaultLayoutMarginsForHeaderFooterViewWithLayoutAttributes:(id)attributes;
 - (UIEdgeInsets)_defaultLayoutMarginsInsideSection;
 - (_UICollectionLayoutContainer)_layoutContainer;
-- (_UICollectionViewListLayoutSection)initWithConfiguration:(id)a3 layoutEnvironment:(id)a4;
-- (double)_alignedContentMarginGivenMargin:(double)a3;
+- (_UICollectionViewListLayoutSection)initWithConfiguration:(id)configuration layoutEnvironment:(id)environment;
+- (double)_alignedContentMarginGivenMargin:(double)margin;
 - (double)_effectiveCornerRadius;
 - (id)_constants;
 - (id)_descriptionProperties;
-- (id)_generateListSectionDataForLayoutAttributes:(id)a3 interactionState:(id)a4;
-- (id)_invalidationContextForCellBackgroundOrBottomSeparatorChangeAtIndexPath:(id)a3 interactionState:(id)a4 separatorOnly:(BOOL)a5;
-- (id)_leadingSwipeActionsConfigurationForIndexPath:(id)a3;
-- (id)_separatorConfigurationForItemAtIndexPath:(id)a3 withSelectionGrouping:(unint64_t)a4 considerNextCellGrouping:(BOOL)a5 interactionState:(id)a6;
-- (id)_trailingSwipeActionsConfigurationForIndexPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)_separatorInsetBehaviorAtBottom:(BOOL)a3 indexPath:(id)a4 interactionState:(id)a5;
+- (id)_generateListSectionDataForLayoutAttributes:(id)attributes interactionState:(id)state;
+- (id)_invalidationContextForCellBackgroundOrBottomSeparatorChangeAtIndexPath:(id)path interactionState:(id)state separatorOnly:(BOOL)only;
+- (id)_leadingSwipeActionsConfigurationForIndexPath:(id)path;
+- (id)_separatorConfigurationForItemAtIndexPath:(id)path withSelectionGrouping:(unint64_t)grouping considerNextCellGrouping:(BOOL)cellGrouping interactionState:(id)state;
+- (id)_trailingSwipeActionsConfigurationForIndexPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)_separatorInsetBehaviorAtBottom:(BOOL)bottom indexPath:(id)path interactionState:(id)state;
 - (unint64_t)_extensionBehavior;
-- (unint64_t)_maskedCornersForBackgroundOfItemWithSelectionGrouping:(unint64_t)a3;
-- (void)_configureLayoutAttributes:(id)a3 forSeparatorAtBottom:(BOOL)a4 preferredConfiguration:(id)a5 interactionState:(id)a6;
-- (void)_configureLayoutAttributesForBackgroundDecoration:(id)a3;
-- (void)_configureLayoutAttributesForPlainCell:(id)a3;
-- (void)_configureLayoutAttributesForPlainSupplementaryView:(id)a3;
-- (void)_configureLayoutAttributesForSidebarPlainCell:(id)a3;
-- (void)_configureLayoutAttributesForSwipeActionMasking:(id)a3 interactionState:(id)a4;
-- (void)_configureLayoutAttributesWithDefaultMasking:(id)a3;
-- (void)_configureLayoutAttributesWithInsetGroupedMasking:(id)a3 stylesFirstItemAsHeader:(BOOL)a4;
+- (unint64_t)_maskedCornersForBackgroundOfItemWithSelectionGrouping:(unint64_t)grouping;
+- (void)_configureLayoutAttributes:(id)attributes forSeparatorAtBottom:(BOOL)bottom preferredConfiguration:(id)configuration interactionState:(id)state;
+- (void)_configureLayoutAttributesForBackgroundDecoration:(id)decoration;
+- (void)_configureLayoutAttributesForPlainCell:(id)cell;
+- (void)_configureLayoutAttributesForPlainSupplementaryView:(id)view;
+- (void)_configureLayoutAttributesForSidebarPlainCell:(id)cell;
+- (void)_configureLayoutAttributesForSwipeActionMasking:(id)masking interactionState:(id)state;
+- (void)_configureLayoutAttributesWithDefaultMasking:(id)masking;
+- (void)_configureLayoutAttributesWithInsetGroupedMasking:(id)masking stylesFirstItemAsHeader:(BOOL)header;
 - (void)_didEndSwiping;
-- (void)_enrichLayoutAttributes:(id)a3 interactionState:(id)a4;
-- (void)_transformFittingLayoutAttributes:(id)a3 interactionState:(id)a4;
-- (void)_transformPreferredLayoutAttributes:(id)a3 interactionState:(id)a4;
-- (void)_updateMaxWidthForLayoutAttributes:(id)a3;
-- (void)_updateStyleForSwipeActionsConfiguration:(id)a3;
+- (void)_enrichLayoutAttributes:(id)attributes interactionState:(id)state;
+- (void)_transformFittingLayoutAttributes:(id)attributes interactionState:(id)state;
+- (void)_transformPreferredLayoutAttributes:(id)attributes interactionState:(id)state;
+- (void)_updateMaxWidthForLayoutAttributes:(id)attributes;
+- (void)_updateStyleForSwipeActionsConfiguration:(id)configuration;
 - (void)_willBeginSwiping;
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3;
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets;
 @end
 
 @implementation _UICollectionViewListLayoutSection
@@ -57,20 +57,20 @@
 - (_UICollectionLayoutContainer)_layoutContainer
 {
   v4 = self->_layoutEnvironment;
-  v5 = [(NSCollectionLayoutEnvironment_Private *)v4 container];
-  if (!v5)
+  container = [(NSCollectionLayoutEnvironment_Private *)v4 container];
+  if (!container)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1050 description:{@"UICollectionView internal inconsistency: invalid environment layout container. Environment: %@", v4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1050 description:{@"UICollectionView internal inconsistency: invalid environment layout container. Environment: %@", v4}];
   }
 
-  return v5;
+  return container;
 }
 
 - (BOOL)_isRTL
 {
-  v2 = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment traitCollection];
-  v3 = [v2 layoutDirection] == 1;
+  traitCollection = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment traitCollection];
+  v3 = [traitCollection layoutDirection] == 1;
 
   return v3;
 }
@@ -93,11 +93,11 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(_UICollectionViewListLayoutSection *)self _layoutContainer];
-    v12 = v11;
-    if (v11)
+    _layoutContainer = [(_UICollectionViewListLayoutSection *)self _layoutContainer];
+    v12 = _layoutContainer;
+    if (_layoutContainer)
     {
-      v13 = *(v11 + 8);
+      v13 = *(_layoutContainer + 8);
     }
 
     else
@@ -145,11 +145,11 @@
 
 - (NSDirectionalEdgeInsets)_effectiveSectionHorizontalInsets
 {
-  v3 = [(_UICollectionViewListLayoutSection *)self _layoutContainer];
-  v4 = v3;
-  if (v3)
+  _layoutContainer = [(_UICollectionViewListLayoutSection *)self _layoutContainer];
+  v4 = _layoutContainer;
+  if (_layoutContainer)
   {
-    v5 = *(v3 + 8);
+    v5 = *(_layoutContainer + 8);
   }
 
   else
@@ -178,20 +178,20 @@
 {
   if ([(NSCollectionLayoutSection *)self supplementaryContentInsetsReference])
   {
-    v3 = [(NSCollectionLayoutSection *)self supplementaryContentInsetsReference];
+    supplementaryContentInsetsReference = [(NSCollectionLayoutSection *)self supplementaryContentInsetsReference];
   }
 
   else
   {
-    v3 = [(NSCollectionLayoutSection *)self contentInsetsReference];
+    supplementaryContentInsetsReference = [(NSCollectionLayoutSection *)self contentInsetsReference];
   }
 
-  v4 = v3;
-  v5 = [(_UICollectionViewListLayoutSection *)self _layoutContainer];
-  v6 = v5;
-  if (v5)
+  v4 = supplementaryContentInsetsReference;
+  _layoutContainer = [(_UICollectionViewListLayoutSection *)self _layoutContainer];
+  v6 = _layoutContainer;
+  if (_layoutContainer)
   {
-    v7 = *(v5 + 8);
+    v7 = *(_layoutContainer + 8);
   }
 
   else
@@ -231,11 +231,11 @@
 - (UIEdgeInsets)_defaultLayoutMarginsInsideSection
 {
   p_defaultDirectionalLayoutMargins = &self->_defaultDirectionalLayoutMargins;
-  v3 = [(_UICollectionViewListLayoutSection *)self _isRTL];
+  _isRTL = [(_UICollectionViewListLayoutSection *)self _isRTL];
   top = p_defaultDirectionalLayoutMargins->top;
   leading = p_defaultDirectionalLayoutMargins->leading;
   bottom = p_defaultDirectionalLayoutMargins->bottom;
-  if (v3)
+  if (_isRTL)
   {
     trailing = p_defaultDirectionalLayoutMargins->trailing;
   }
@@ -245,7 +245,7 @@
     trailing = p_defaultDirectionalLayoutMargins->leading;
   }
 
-  if (!v3)
+  if (!_isRTL)
   {
     leading = p_defaultDirectionalLayoutMargins->trailing;
   }
@@ -263,14 +263,14 @@
   v4 = v3;
   if (v3 == 1.79769313e308)
   {
-    v5 = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment traitCollection];
-    v6 = [v5 userInterfaceIdiom];
-    if (v6 == 6)
+    traitCollection = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+    if (userInterfaceIdiom == 6)
     {
       v4 = 16.0;
     }
 
-    else if (v6 == 3)
+    else if (userInterfaceIdiom == 3)
     {
       v4 = 10.0;
     }
@@ -289,50 +289,50 @@
   return v4;
 }
 
-- (_UICollectionViewListLayoutSection)initWithConfiguration:(id)a3 layoutEnvironment:(id)a4
+- (_UICollectionViewListLayoutSection)initWithConfiguration:(id)configuration layoutEnvironment:(id)environment
 {
-  v8 = a4 != 0;
-  v9 = [a3 _collectionView];
-  v10 = v9 == 0;
+  v8 = environment != 0;
+  _collectionView = [configuration _collectionView];
+  v10 = _collectionView == 0;
 
   if (v8 != v10)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:706 description:{@"SPI inconsistency detected. Old and new SPI is being mixed. Please initialize your configuration with -init and then initialize the section with -initWithConfiguration:layoutEnvironment:, passing in the layout environment you receive from the section provider of your compositional layout."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:706 description:{@"SPI inconsistency detected. Old and new SPI is being mixed. Please initialize your configuration with -init and then initialize the section with -initWithConfiguration:layoutEnvironment:, passing in the layout environment you receive from the section provider of your compositional layout."}];
 
-    if (a4)
+    if (environment)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
     v13 = [_UICollectionViewEnvironmentAdapter alloc];
-    v14 = [a3 _collectionView];
-    v15 = [(_UICollectionViewEnvironmentAdapter *)v13 initWithCollectionView:v14];
-    v11 = [(_UICollectionViewEnvironmentAdapter *)v15 createEnvironment];
+    _collectionView2 = [configuration _collectionView];
+    v15 = [(_UICollectionViewEnvironmentAdapter *)v13 initWithCollectionView:_collectionView2];
+    environmentCopy = [(_UICollectionViewEnvironmentAdapter *)v15 createEnvironment];
 
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!environment)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v11 = a4;
+  environmentCopy = environment;
 LABEL_6:
   if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:709 description:@"Incompatible layout environment. Make sure to pass the layout environment received from the compositional layout's section provider as is."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:709 description:@"Incompatible layout environment. Make sure to pass the layout environment received from the compositional layout's section provider as is."];
   }
 
-  v16 = v11;
-  v17 = [a3 copy];
-  v18 = [v17 appearanceStyle];
-  v19 = [v16 traitCollection];
-  [v17 setAppearanceStyle:v18];
+  v16 = environmentCopy;
+  v17 = [configuration copy];
+  appearanceStyle = [v17 appearanceStyle];
+  traitCollection = [v16 traitCollection];
+  [v17 setAppearanceStyle:appearanceStyle];
 
   v20 = [v17 _generateLayoutGroup:v16];
   v73.receiver = self;
@@ -341,23 +341,23 @@ LABEL_6:
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_layoutEnvironment, v11);
+    objc_storeStrong(&v21->_layoutEnvironment, environmentCopy);
     objc_storeStrong(&v22->_configuration, v17);
-    v23 = [v17 _traitCollection];
-    v24 = [v17 appearanceStyle];
-    if ((v24 - 1) >= 4)
+    _traitCollection = [v17 _traitCollection];
+    appearanceStyle2 = [v17 appearanceStyle];
+    if ((appearanceStyle2 - 1) >= 4)
     {
       v25 = 0;
     }
 
     else
     {
-      v25 = v24;
+      v25 = appearanceStyle2;
     }
 
-    v50 = [v17 _sectionPosition];
-    v49 = [v17 _hasHeaderOrFirstItemStyledAsHeader];
-    v26 = [v17 _hasFooter];
+    _sectionPosition = [v17 _sectionPosition];
+    _hasHeaderOrFirstItemStyledAsHeader = [v17 _hasHeaderOrFirstItemStyledAsHeader];
+    _hasFooter = [v17 _hasFooter];
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
@@ -372,9 +372,9 @@ LABEL_6:
       [v17 _listGeometry];
     }
 
-    v27 = [v17 _sectionSpacingStyle];
+    _sectionSpacingStyle = [v17 _sectionSpacingStyle];
     v28 = +[_UIListMetrics sharedMetrics];
-    [v28 behaviorsForListWithStyle:v25 traitCollection:v23];
+    [v28 behaviorsForListWithStyle:v25 traitCollection:_traitCollection];
     v30 = v29;
 
     memset(v63, 0, 72);
@@ -394,7 +394,7 @@ LABEL_6:
       v56 = v69;
       v51 = v64;
       v52 = v65;
-      [v31 metricsForSectionWithPosition:v50 hasHeader:v49 hasFooter:v26 listGeometry:&v51 listStyle:v25 spacingStyle:v27 traitCollection:v23];
+      [v31 metricsForSectionWithPosition:_sectionPosition hasHeader:_hasHeaderOrFirstItemStyledAsHeader hasFooter:_hasFooter listGeometry:&v51 listStyle:v25 spacingStyle:_sectionSpacingStyle traitCollection:_traitCollection];
     }
 
     else
@@ -437,9 +437,9 @@ LABEL_6:
     v40 = *(&v60 + 1);
     if (*(&v60 + 1) >= 4uLL)
     {
-      v42 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"UIContentInsetsReference _UIContentInsetReferenceForListContentInsetsReference(_UIListContentInsetsReference)"];
-      [v42 handleFailureInFunction:v43 file:@"_UICollectionViewListLayoutSection_Internal.h" lineNumber:61 description:{@"UIKit internal inconsistency: unknown content insets reference (%ld)", v40}];
+      [currentHandler3 handleFailureInFunction:v43 file:@"_UICollectionViewListLayoutSection_Internal.h" lineNumber:61 description:{@"UIKit internal inconsistency: unknown content insets reference (%ld)", v40}];
 
       v41 = 1;
     }
@@ -457,7 +457,7 @@ LABEL_6:
       [v17 headerTopPadding];
       if (v45 == 1.79769313e308)
       {
-        if (![v16 _wantsCollapsedTopSpacing] || (v50 & 2) == 0)
+        if (![v16 _wantsCollapsedTopSpacing] || (_sectionPosition & 2) == 0)
         {
           v44 = *&v61;
         }
@@ -478,11 +478,11 @@ LABEL_6:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = _UICollectionViewListLayoutSection;
-  v4 = [(NSCollectionLayoutSection *)&v11 copyWithZone:a3];
+  v4 = [(NSCollectionLayoutSection *)&v11 copyWithZone:zone];
   if (v4)
   {
     v5 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration copy];
@@ -509,8 +509,8 @@ LABEL_6:
 
 - (id)_constants
 {
-  v2 = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment traitCollection];
-  v3 = _UITableConstantsForTraitCollection(v2);
+  traitCollection = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment traitCollection];
+  v3 = _UITableConstantsForTraitCollection(traitCollection);
 
   return v3;
 }
@@ -528,22 +528,22 @@ LABEL_6:
   }
 }
 
-- (double)_alignedContentMarginGivenMargin:(double)a3
+- (double)_alignedContentMarginGivenMargin:(double)margin
 {
   if ((_UISolariumEnabled() & 1) == 0 && ([(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle]- 3) <= 1 && [(_UICollectionViewListLayoutSection *)self _hasHorizontalInsets])
   {
-    return self->_defaultDirectionalLayoutMargins.leading + a3;
+    return self->_defaultDirectionalLayoutMargins.leading + margin;
   }
 
-  return a3;
+  return margin;
 }
 
-- (NSDirectionalEdgeInsets)_defaultSectionContentInsetsForSectionMetrics:(_UIListMetricsSectionMetrics *)a3
+- (NSDirectionalEdgeInsets)_defaultSectionContentInsetsForSectionMetrics:(_UIListMetricsSectionMetrics *)metrics
 {
-  top = a3->var2.top;
-  leading = a3->var2.leading;
-  bottom = a3->var2.bottom;
-  trailing = a3->var2.trailing;
+  top = metrics->var2.top;
+  leading = metrics->var2.leading;
+  bottom = metrics->var2.bottom;
+  trailing = metrics->var2.trailing;
   v8 = self->_configuration;
   v9 = self->_layoutEnvironment;
   v10 = 0.0;
@@ -590,26 +590,26 @@ LABEL_6:
   return result;
 }
 
-- (UIEdgeInsets)_defaultLayoutMarginsForHeaderFooterViewWithLayoutAttributes:(id)a3
+- (UIEdgeInsets)_defaultLayoutMarginsForHeaderFooterViewWithLayoutAttributes:(id)attributes
 {
   [(_UICollectionViewListLayoutSection *)self _defaultLayoutMarginsInsideSection];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(_UILabelConfiguration *)a3 _content];
-  v14 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _headerElementKind];
-  v15 = [v13 isEqualToString:v14];
+  _content = [(_UILabelConfiguration *)attributes _content];
+  _headerElementKind = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _headerElementKind];
+  v15 = [_content isEqualToString:_headerElementKind];
 
   if (v15)
   {
-    v16 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _layoutEnvironment];
-    v17 = [v16 traitCollection];
-    if ([v17 userInterfaceIdiom] == 6)
+    _layoutEnvironment = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _layoutEnvironment];
+    traitCollection = [_layoutEnvironment traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 6)
     {
-      v18 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
+      appearanceStyle = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
 
-      if (!v18)
+      if (!appearanceStyle)
       {
         v19 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle]- 1;
         if (v19 > 2)
@@ -623,8 +623,8 @@ LABEL_6:
         }
 
         v60 = ([(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _sectionPosition]>> 1) & 1;
-        v53 = [(_UICollectionViewListLayoutSection *)self _constants];
-        [v53 defaultHeaderFooterLayoutMarginsForTableViewStyle:v20 isHeader:1 isFirstSection:v60];
+        _constants = [(_UICollectionViewListLayoutSection *)self _constants];
+        [_constants defaultHeaderFooterLayoutMarginsForTableViewStyle:v20 isHeader:1 isFirstSection:v60];
         v6 = v61;
         v8 = v62;
         v10 = v63;
@@ -646,8 +646,8 @@ LABEL_45:
     [(_UICollectionViewListLayoutSection *)self _effectiveSectionHorizontalInsets];
     v22 = v21;
     v24 = v23;
-    v25 = [(_UICollectionViewListLayoutSection *)self _isRTL];
-    if (v25)
+    _isRTL = [(_UICollectionViewListLayoutSection *)self _isRTL];
+    if (_isRTL)
     {
       v26 = v24;
     }
@@ -657,7 +657,7 @@ LABEL_45:
       v26 = v22;
     }
 
-    if (v25)
+    if (_isRTL)
     {
       v27 = v22;
     }
@@ -670,8 +670,8 @@ LABEL_45:
     [(_UICollectionViewListLayoutSection *)self _effectiveSectionSupplementaryHorizontalInsets];
     v29 = v28;
     v31 = v30;
-    v32 = [(_UICollectionViewListLayoutSection *)self _isRTL];
-    if (v32)
+    _isRTL2 = [(_UICollectionViewListLayoutSection *)self _isRTL];
+    if (_isRTL2)
     {
       v33 = v31;
     }
@@ -681,18 +681,18 @@ LABEL_45:
       v33 = v29;
     }
 
-    if (!v32)
+    if (!_isRTL2)
     {
       v29 = v31;
     }
 
-    v34 = [(_UICollectionViewListLayoutSection *)self _layoutContainer];
-    v35 = v34;
+    _layoutContainer = [(_UICollectionViewListLayoutSection *)self _layoutContainer];
+    v35 = _layoutContainer;
     v67 = v12;
     v65 = v10;
-    if (v34)
+    if (_layoutContainer)
     {
-      v36 = *(v34 + 8);
+      v36 = *(_layoutContainer + 8);
       v37 = v36;
       if (v36)
       {
@@ -700,8 +700,8 @@ LABEL_45:
         v39 = v36[3];
         v40 = v36[5];
 LABEL_22:
-        v41 = [(_UICollectionViewListLayoutSection *)self _isRTL];
-        if (v41)
+        _isRTL3 = [(_UICollectionViewListLayoutSection *)self _isRTL];
+        if (_isRTL3)
         {
           v42 = v40;
         }
@@ -711,7 +711,7 @@ LABEL_22:
           v42 = v39;
         }
 
-        if (!v41)
+        if (!_isRTL3)
         {
           v39 = v40;
         }
@@ -792,13 +792,13 @@ LABEL_40:
       v48 = qword_18A683338[v47];
     }
 
-    v49 = [(_UILabelConfiguration *)a3 _content];
-    v50 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _headerElementKind];
-    v51 = [v49 isEqualToString:v50];
+    _content2 = [(_UILabelConfiguration *)attributes _content];
+    _headerElementKind2 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _headerElementKind];
+    v51 = [_content2 isEqualToString:_headerElementKind2];
 
     v52 = ([(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _sectionPosition]>> 1) & 1;
-    v53 = [(_UICollectionViewListLayoutSection *)self _constants];
-    [v53 defaultHeaderFooterLayoutMarginsForTableViewStyle:v48 isHeader:v51 isFirstSection:v52];
+    _constants = [(_UICollectionViewListLayoutSection *)self _constants];
+    [_constants defaultHeaderFooterLayoutMarginsForTableViewStyle:v48 isHeader:v51 isFirstSection:v52];
     v6 = v54;
     v10 = v55;
     goto LABEL_45;
@@ -816,12 +816,12 @@ LABEL_46:
   return result;
 }
 
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets
 {
   *&self->_sectionFlags |= 1u;
   v3.receiver = self;
   v3.super_class = _UICollectionViewListLayoutSection;
-  [(NSCollectionLayoutSection *)&v3 setContentInsets:a3.top, a3.leading, a3.bottom, a3.trailing];
+  [(NSCollectionLayoutSection *)&v3 setContentInsets:insets.top, insets.leading, insets.bottom, insets.trailing];
 }
 
 - (BOOL)_useRoundedSwipeActions
@@ -834,36 +834,36 @@ LABEL_46:
   return [(_UICollectionViewListLayoutSection *)self _hasHorizontalInsets];
 }
 
-- (void)_updateStyleForSwipeActionsConfiguration:(id)a3
+- (void)_updateStyleForSwipeActionsConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
-    if (![a3 _swipeActionsStyle] && -[_UICollectionViewListLayoutSection _useRoundedSwipeActions](self, "_useRoundedSwipeActions"))
+    if (![configuration _swipeActionsStyle] && -[_UICollectionViewListLayoutSection _useRoundedSwipeActions](self, "_useRoundedSwipeActions"))
     {
-      [a3 _setSwipeActionsStyle:2];
+      [configuration _setSwipeActionsStyle:2];
     }
 
-    if ([a3 _swipeActionsStyle] == 2)
+    if ([configuration _swipeActionsStyle] == 2)
     {
-      [a3 _roundedStyleCornerRadius];
+      [configuration _roundedStyleCornerRadius];
       if (v5 == 0.0)
       {
         [(_UICollectionViewListLayoutSection *)self _effectiveCornerRadius];
 
-        [a3 _setRoundedStyleCornerRadius:?];
+        [configuration _setRoundedStyleCornerRadius:?];
       }
     }
   }
 }
 
-- (id)_leadingSwipeActionsConfigurationForIndexPath:(id)a3
+- (id)_leadingSwipeActionsConfigurationForIndexPath:(id)path
 {
-  v5 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration leadingSwipeActionsConfigurationProvider];
+  leadingSwipeActionsConfigurationProvider = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration leadingSwipeActionsConfigurationProvider];
 
-  if (v5)
+  if (leadingSwipeActionsConfigurationProvider)
   {
-    v6 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration leadingSwipeActionsConfigurationProvider];
-    v7 = (v6)[2](v6, a3);
+    leadingSwipeActionsConfigurationProvider2 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration leadingSwipeActionsConfigurationProvider];
+    v7 = (leadingSwipeActionsConfigurationProvider2)[2](leadingSwipeActionsConfigurationProvider2, path);
   }
 
   else
@@ -874,14 +874,14 @@ LABEL_46:
   return v7;
 }
 
-- (id)_trailingSwipeActionsConfigurationForIndexPath:(id)a3
+- (id)_trailingSwipeActionsConfigurationForIndexPath:(id)path
 {
-  v5 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration trailingSwipeActionsConfigurationProvider];
+  trailingSwipeActionsConfigurationProvider = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration trailingSwipeActionsConfigurationProvider];
 
-  if (v5)
+  if (trailingSwipeActionsConfigurationProvider)
   {
-    v6 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration trailingSwipeActionsConfigurationProvider];
-    v7 = (v6)[2](v6, a3);
+    trailingSwipeActionsConfigurationProvider2 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration trailingSwipeActionsConfigurationProvider];
+    v7 = (trailingSwipeActionsConfigurationProvider2)[2](trailingSwipeActionsConfigurationProvider2, path);
   }
 
   else
@@ -894,37 +894,37 @@ LABEL_46:
 
 - (void)_willBeginSwiping
 {
-  v3 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration willBeginSwipingHandler];
+  willBeginSwipingHandler = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration willBeginSwipingHandler];
 
-  if (v3)
+  if (willBeginSwipingHandler)
   {
-    v4 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration willBeginSwipingHandler];
-    v4[2]();
+    willBeginSwipingHandler2 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration willBeginSwipingHandler];
+    willBeginSwipingHandler2[2]();
   }
 }
 
 - (void)_didEndSwiping
 {
-  v3 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration didEndSwipingHandler];
+  didEndSwipingHandler = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration didEndSwipingHandler];
 
-  if (v3)
+  if (didEndSwipingHandler)
   {
-    v4 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration didEndSwipingHandler];
-    v4[2]();
+    didEndSwipingHandler2 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration didEndSwipingHandler];
+    didEndSwipingHandler2[2]();
   }
 }
 
-- (BOOL)_adjustsLayoutToDrawTopSeparatorInSection:(int64_t)a3 interactionState:(id)a4
+- (BOOL)_adjustsLayoutToDrawTopSeparatorInSection:(int64_t)section interactionState:(id)state
 {
   if ([(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle]|| [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _hasHeaderOrFirstItemStyledAsHeader])
   {
     return 0;
   }
 
-  return [(_UICollectionViewLayoutInteractionStateModule *)a4 _shouldAdjustLayoutToDrawTopSeparatorInSection:a3];
+  return [(_UICollectionViewLayoutInteractionStateModule *)state _shouldAdjustLayoutToDrawTopSeparatorInSection:section];
 }
 
-- (BOOL)_hasHeaderFooterBelowLastItemInSection:(int64_t)a3 interactionState:(id)a4
+- (BOOL)_hasHeaderFooterBelowLastItemInSection:(int64_t)section interactionState:(id)state
 {
   [(_UICollectionViewListLayoutSection *)self contentInsets];
   if (v8 <= 0.0)
@@ -947,7 +947,7 @@ LABEL_46:
       v11[5] = &v12;
       v11[6] = a2;
       v11[4] = self;
-      [(_UICollectionViewLayoutInteractionStateModule *)a4 enumerateSectionsAfterSectionIndex:a3 enumerator:v11];
+      [(_UICollectionViewLayoutInteractionStateModule *)state enumerateSectionsAfterSectionIndex:section enumerator:v11];
       v9 = *(v13 + 24);
       _Block_object_dispose(&v12, 8);
     }
@@ -961,22 +961,22 @@ LABEL_46:
   return v9 & 1;
 }
 
-- (BOOL)_shouldDrawSeparatorAtBottom:(BOOL)a3 ofSection:(int64_t)a4 interactionState:(id)a5
+- (BOOL)_shouldDrawSeparatorAtBottom:(BOOL)bottom ofSection:(int64_t)section interactionState:(id)state
 {
-  v9 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
-  if ((v9 - 2) < 2)
+  appearanceStyle = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
+  if ((appearanceStyle - 2) < 2)
   {
     goto LABEL_19;
   }
 
-  if (v9 != 4 && v9 != 0)
+  if (appearanceStyle != 4 && appearanceStyle != 0)
   {
     goto LABEL_14;
   }
 
-  if (!a3)
+  if (!bottom)
   {
-    if ([(_UICollectionViewListLayoutSection *)self _adjustsLayoutToDrawTopSeparatorInSection:a4 interactionState:a5]|| [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _hasHeaderOrFirstItemStyledAsHeader]&& [(_UICollectionViewListLayoutSection *)self _headerFooterPinningBehavior]== 1 && (([(_UICollectionViewListLayoutSection *)self contentInsets], v13 == 0.0) || [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader]))
+    if ([(_UICollectionViewListLayoutSection *)self _adjustsLayoutToDrawTopSeparatorInSection:section interactionState:state]|| [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _hasHeaderOrFirstItemStyledAsHeader]&& [(_UICollectionViewListLayoutSection *)self _headerFooterPinningBehavior]== 1 && (([(_UICollectionViewListLayoutSection *)self contentInsets], v13 == 0.0) || [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader]))
     {
 LABEL_14:
       LOBYTE(v12) = 1;
@@ -988,7 +988,7 @@ LABEL_19:
     return v12;
   }
 
-  v11 = [(_UICollectionViewListLayoutSection *)self _hasHeaderFooterBelowLastItemInSection:a4 interactionState:a5];
+  v11 = [(_UICollectionViewListLayoutSection *)self _hasHeaderFooterBelowLastItemInSection:section interactionState:state];
   if (!v11 || (v12 = [(_UICollectionViewListLayoutSection *)self _headerFooterPinningBehavior], v12 != 1))
   {
     LOBYTE(v12) = [(_UICollectionViewListLayoutSection *)self _headerFooterPinningBehavior]!= 2 && !v11;
@@ -997,13 +997,13 @@ LABEL_19:
   return v12;
 }
 
-- (int64_t)_separatorInsetBehaviorAtBottom:(BOOL)a3 indexPath:(id)a4 interactionState:(id)a5
+- (int64_t)_separatorInsetBehaviorAtBottom:(BOOL)bottom indexPath:(id)path interactionState:(id)state
 {
-  v9 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
-  v10 = v9;
-  if (a3)
+  appearanceStyle = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
+  v10 = appearanceStyle;
+  if (bottom)
   {
-    if ((v9 | 4) != 4 || -[_UICollectionViewListLayoutSection _hasHeaderFooterBelowLastItemInSection:interactionState:](self, "_hasHeaderFooterBelowLastItemInSection:interactionState:", [a4 section], a5) && (-[_UICollectionViewListLayoutSection _headerFooterPinningBehavior](self, "_headerFooterPinningBehavior") - 1) >= 2)
+    if ((appearanceStyle | 4) != 4 || -[_UICollectionViewListLayoutSection _hasHeaderFooterBelowLastItemInSection:interactionState:](self, "_hasHeaderFooterBelowLastItemInSection:interactionState:", [path section], state) && (-[_UICollectionViewListLayoutSection _headerFooterPinningBehavior](self, "_headerFooterPinningBehavior") - 1) >= 2)
     {
       return 2;
     }
@@ -1011,7 +1011,7 @@ LABEL_19:
     return 0;
   }
 
-  if (-[_UICollectionViewListLayoutSection _adjustsLayoutToDrawTopSeparatorInSection:interactionState:](self, "_adjustsLayoutToDrawTopSeparatorInSection:interactionState:", [a4 section], a5))
+  if (-[_UICollectionViewListLayoutSection _adjustsLayoutToDrawTopSeparatorInSection:interactionState:](self, "_adjustsLayoutToDrawTopSeparatorInSection:interactionState:", [path section], state))
   {
     return 0;
   }
@@ -1027,28 +1027,28 @@ LABEL_19:
   }
 }
 
-- (BOOL)__isLastItemInSection:(id)a3
+- (BOOL)__isLastItemInSection:(id)section
 {
-  v3 = a3;
-  v5 = [a3 item];
-  v6 = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment _dataSourceSnapshot];
-  LOBYTE(v3) = v5 == [v6 numberOfItemsInSection:{objc_msgSend(v3, "section")}] - 1;
+  sectionCopy = section;
+  item = [section item];
+  _dataSourceSnapshot = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment _dataSourceSnapshot];
+  LOBYTE(sectionCopy) = item == [_dataSourceSnapshot numberOfItemsInSection:{objc_msgSend(sectionCopy, "section")}] - 1;
 
-  return v3;
+  return sectionCopy;
 }
 
-- (NSDirectionalEdgeInsets)_sectionPreferredBottomSeparatorInsetsForIndexPath:(id)a3
+- (NSDirectionalEdgeInsets)_sectionPreferredBottomSeparatorInsetsForIndexPath:(id)path
 {
-  v5 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _separatorConfigurationNoCopy];
-  [v5 bottomSeparatorInsets];
+  _separatorConfigurationNoCopy = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _separatorConfigurationNoCopy];
+  [_separatorConfigurationNoCopy bottomSeparatorInsets];
   leading = v6;
   trailing = v8;
 
-  v10 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration separatorInsetProvider];
-  v11 = v10;
-  if (v10)
+  separatorInsetProvider = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration separatorInsetProvider];
+  v11 = separatorInsetProvider;
+  if (separatorInsetProvider)
   {
-    (*(v10 + 16))(v10, a3);
+    (*(separatorInsetProvider + 16))(separatorInsetProvider, path);
     leading = v12;
     trailing = v13;
   }
@@ -1076,17 +1076,17 @@ LABEL_19:
   return result;
 }
 
-- (NSDirectionalEdgeInsets)_sectionPreferredTopSeparatorInsetsWithBottomInsets:(NSDirectionalEdgeInsets)a3 hasCustomInsets:(BOOL *)a4
+- (NSDirectionalEdgeInsets)_sectionPreferredTopSeparatorInsetsWithBottomInsets:(NSDirectionalEdgeInsets)insets hasCustomInsets:(BOOL *)customInsets
 {
-  trailing = a3.trailing;
-  leading = a3.leading;
-  if (!a4)
+  trailing = insets.trailing;
+  leading = insets.leading;
+  if (!customInsets)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1338 description:{@"Invalid parameter not satisfying: %@", @"hasCustomInsets != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1338 description:{@"Invalid parameter not satisfying: %@", @"hasCustomInsets != nil"}];
   }
 
-  v8 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _separatorConfigurationNoCopy:a3.top];
+  v8 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _separatorConfigurationNoCopy:insets.top];
   [v8 topSeparatorInsets];
   v10 = v9;
   v12 = v11;
@@ -1117,7 +1117,7 @@ LABEL_19:
   }
 
   v20 = v18;
-  *a4 = v16 | v20;
+  *customInsets = v16 | v20;
   v21 = 0.0;
   v22 = 0.0;
   result.trailing = v19;
@@ -1127,11 +1127,11 @@ LABEL_19:
   return result;
 }
 
-- (id)_invalidationContextForCellBackgroundOrBottomSeparatorChangeAtIndexPath:(id)a3 interactionState:(id)a4 separatorOnly:(BOOL)a5
+- (id)_invalidationContextForCellBackgroundOrBottomSeparatorChangeAtIndexPath:(id)path interactionState:(id)state separatorOnly:(BOOL)only
 {
-  if (a4)
+  if (state)
   {
-    v7 = *(a4 + 2);
+    v7 = *(state + 2);
   }
 
   else
@@ -1141,46 +1141,46 @@ LABEL_19:
 
   v8 = objc_alloc_init(v7);
   [v8 _setIntent:10];
-  if (a5 || [a3 item] < 1)
+  if (only || [path item] < 1)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(a3 inSection:{"item") - 1, objc_msgSend(a3, "section")}];
+    v9 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(path inSection:{"item") - 1, objc_msgSend(path, "section")}];
   }
 
-  v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:{a3, v9, 0}];
+  v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:{path, v9, 0}];
   [v8 invalidateDecorationElementsOfKind:@"UICollectionViewListLayoutElementKindBottomSeparator" atIndexPaths:v10];
   [v8 invalidateItemsAtIndexPaths:v10];
 
   return v8;
 }
 
-- (void)_transformFittingLayoutAttributes:(id)a3 interactionState:(id)a4
+- (void)_transformFittingLayoutAttributes:(id)attributes interactionState:(id)state
 {
-  if (a3 && (*(a3 + 288) & 1) != 0)
+  if (attributes && (*(attributes + 288) & 1) != 0)
   {
-    v6 = [(_UICollectionViewListLayoutSection *)self _generateListSectionDataForLayoutAttributes:a3 interactionState:a4];
-    v7 = [(UICollectionViewLayoutAttributes *)a3 _listAttributesCreatingIfNecessary];
-    [(UIContentUnavailableImageProperties *)v7 _setTintColor:v6];
+    v6 = [(_UICollectionViewListLayoutSection *)self _generateListSectionDataForLayoutAttributes:attributes interactionState:state];
+    _listAttributesCreatingIfNecessary = [(UICollectionViewLayoutAttributes *)attributes _listAttributesCreatingIfNecessary];
+    [(UIContentUnavailableImageProperties *)_listAttributesCreatingIfNecessary _setTintColor:v6];
   }
 
-  [(_UICollectionViewListLayoutSection *)self _updateMaxWidthForLayoutAttributes:a3, a4];
+  [(_UICollectionViewListLayoutSection *)self _updateMaxWidthForLayoutAttributes:attributes, state];
 }
 
-- (void)_transformPreferredLayoutAttributes:(id)a3 interactionState:(id)a4
+- (void)_transformPreferredLayoutAttributes:(id)attributes interactionState:(id)state
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3 || (*(a3 + 288) & 1) == 0)
+  if (!attributes || (*(attributes + 288) & 1) == 0)
   {
     return;
   }
 
-  v8 = [(UICollectionViewLayoutAttributes *)a3 _existingListAttributes];
-  v9 = v8;
-  if (v8 && (v10 = *(v8 + 32)) != 0)
+  _existingListAttributes = [(UICollectionViewLayoutAttributes *)attributes _existingListAttributes];
+  v9 = _existingListAttributes;
+  if (_existingListAttributes && (v10 = *(_existingListAttributes + 32)) != 0)
   {
     v11 = v10;
   }
@@ -1193,7 +1193,7 @@ LABEL_19:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v24 = a3;
+        attributesCopy2 = attributes;
         _os_log_fault_impl(&dword_188A29000, v22, OS_LOG_TYPE_FAULT, "No list section data present in the preferred attributes from the cell. Attrs: %@", buf, 0xCu);
       }
     }
@@ -1204,12 +1204,12 @@ LABEL_19:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v24 = a3;
+        attributesCopy2 = attributes;
         _os_log_impl(&dword_188A29000, v21, OS_LOG_TYPE_ERROR, "No list section data present in the preferred attributes from the cell. Attrs: %@", buf, 0xCu);
       }
     }
 
-    v11 = [(_UICollectionViewListLayoutSection *)self _generateListSectionDataForLayoutAttributes:a3 interactionState:a4];
+    v11 = [(_UICollectionViewListLayoutSection *)self _generateListSectionDataForLayoutAttributes:attributes interactionState:state];
     if (!v11)
     {
       v12 = 0;
@@ -1222,88 +1222,88 @@ LABEL_7:
   v13 = v12;
   if (![v13 topSeparatorVisibility])
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1405 description:{@"Separator configuration from preferred attributes of cell has unresolved top separator visibility. %@", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1405 description:{@"Separator configuration from preferred attributes of cell has unresolved top separator visibility. %@", attributes}];
   }
 
   if (![v13 bottomSeparatorVisibility])
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1406 description:{@"Separator configuration from preferred attributes of cell has unresolved bottom separator visibility. %@", a3}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1406 description:{@"Separator configuration from preferred attributes of cell has unresolved bottom separator visibility. %@", attributes}];
   }
 
-  v14 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _itemSeparatorHandler];
-  if (v14)
+  _itemSeparatorHandler = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _itemSeparatorHandler];
+  if (_itemSeparatorHandler)
   {
-    v15 = [a3 indexPath];
+    indexPath = [attributes indexPath];
     v16 = [v13 copy];
-    v17 = (v14)[2](v14, v15, v16);
+    v17 = (_itemSeparatorHandler)[2](_itemSeparatorHandler, indexPath, v16);
     v18 = [v17 copy];
 
     [v18 _replaceAutomaticValuesWithValuesFromConfiguration:v13];
     [(UIViewAnimationContext *)v11 setViewAnimations:v18];
   }
 
-  [(UICollectionViewLayoutAttributes *)a3 _setPreferredSizingData:v11];
+  [(UICollectionViewLayoutAttributes *)attributes _setPreferredSizingData:v11];
   [(UIContentUnavailableImageProperties *)v9 _setTintColor:?];
 }
 
-- (void)_enrichLayoutAttributes:(id)a3 interactionState:(id)a4
+- (void)_enrichLayoutAttributes:(id)attributes interactionState:(id)state
 {
-  v59 = [(UICollectionViewLayoutAttributes *)a3 _listAttributesCreatingIfNecessary];
-  v7 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
-  if (v59)
+  _listAttributesCreatingIfNecessary = [(UICollectionViewLayoutAttributes *)attributes _listAttributesCreatingIfNecessary];
+  appearanceStyle = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
+  if (_listAttributesCreatingIfNecessary)
   {
-    v59[2] = v7;
-    v8 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader];
-    *(v59 + 8) = v59[1] & 0xFE | v8;
+    _listAttributesCreatingIfNecessary[2] = appearanceStyle;
+    stylesFirstItemAsHeader = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader];
+    *(_listAttributesCreatingIfNecessary + 8) = _listAttributesCreatingIfNecessary[1] & 0xFE | stylesFirstItemAsHeader;
   }
 
   else
   {
-    v8 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader];
+    stylesFirstItemAsHeader = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader];
   }
 
-  v9 = [(UICollectionViewLayoutAttributes *)a3 _preferredSizingData];
-  v10 = v9;
-  if (v9)
+  _preferredSizingData = [(UICollectionViewLayoutAttributes *)attributes _preferredSizingData];
+  v10 = _preferredSizingData;
+  if (_preferredSizingData)
   {
-    if (!a3)
+    if (!attributes)
     {
       goto LABEL_54;
     }
 
-    *(a3 + 38) = *(v9 + 16);
+    *(attributes + 38) = *(_preferredSizingData + 16);
   }
 
-  else if (!a3)
+  else if (!attributes)
   {
     goto LABEL_54;
   }
 
-  v11 = *(a3 + 72);
+  v11 = *(attributes + 72);
   if (v11)
   {
-    if (v7 != 2 && *(a3 + 38) != 0)
+    if (appearanceStyle != 2 && *(attributes + 38) != 0)
     {
       v21 = [(_UICollectionViewListLayoutSection *)self _maskedCornersForBackgroundOfItemWithSelectionGrouping:?];
-      if (v59)
+      if (_listAttributesCreatingIfNecessary)
       {
-        v59[3] = v21;
-        *(v59 + 8) |= 2u;
+        _listAttributesCreatingIfNecessary[3] = v21;
+        *(_listAttributesCreatingIfNecessary + 8) |= 2u;
       }
     }
 
-    [a3 setZIndex:10];
-    if (v7 <= 1)
+    [attributes setZIndex:10];
+    if (appearanceStyle <= 1)
     {
-      if (!v7)
+      if (!appearanceStyle)
       {
-        [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesForPlainCell:a3];
+        [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesForPlainCell:attributes];
         goto LABEL_54;
       }
 
-      if (v7 != 1)
+      if (appearanceStyle != 1)
       {
         goto LABEL_54;
       }
@@ -1311,23 +1311,23 @@ LABEL_7:
 
     else
     {
-      if (v7 == 2)
+      if (appearanceStyle == 2)
       {
         [(_UICollectionViewListLayoutSection *)self _defaultLayoutMarginsInsideSection];
-        *(a3 + 72) |= 0x200u;
-        *(a3 + 40) = v47;
-        *(a3 + 41) = v48;
-        *(a3 + 42) = v49;
-        *(a3 + 43) = v50;
-        [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesWithInsetGroupedMasking:a3 stylesFirstItemAsHeader:v8];
+        *(attributes + 72) |= 0x200u;
+        *(attributes + 40) = v47;
+        *(attributes + 41) = v48;
+        *(attributes + 42) = v49;
+        *(attributes + 43) = v50;
+        [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesWithInsetGroupedMasking:attributes stylesFirstItemAsHeader:stylesFirstItemAsHeader];
         goto LABEL_54;
       }
 
-      if (v7 != 3)
+      if (appearanceStyle != 3)
       {
-        if (v7 == 4)
+        if (appearanceStyle == 4)
         {
-          [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesForSidebarPlainCell:a3];
+          [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesForSidebarPlainCell:attributes];
         }
 
         goto LABEL_54;
@@ -1335,12 +1335,12 @@ LABEL_7:
     }
 
     [(_UICollectionViewListLayoutSection *)self _defaultLayoutMarginsInsideSection];
-    *(a3 + 72) |= 0x200u;
-    *(a3 + 40) = v29;
-    *(a3 + 41) = v30;
-    *(a3 + 42) = v31;
-    *(a3 + 43) = v32;
-    [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesWithDefaultMasking:a3];
+    *(attributes + 72) |= 0x200u;
+    *(attributes + 40) = v29;
+    *(attributes + 41) = v30;
+    *(attributes + 42) = v31;
+    *(attributes + 43) = v32;
+    [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesWithDefaultMasking:attributes];
     goto LABEL_54;
   }
 
@@ -1348,7 +1348,7 @@ LABEL_7:
   {
     if (dyld_program_sdk_at_least())
     {
-      [(_UICollectionViewListLayoutSection *)self _defaultLayoutMarginsForHeaderFooterViewWithLayoutAttributes:a3];
+      [(_UICollectionViewListLayoutSection *)self _defaultLayoutMarginsForHeaderFooterViewWithLayoutAttributes:attributes];
       v13 = v12;
       v15 = v14;
       v17 = v16;
@@ -1367,8 +1367,8 @@ LABEL_7:
         [(_UICollectionViewListLayoutSection *)self _effectiveSectionHorizontalInsets];
         v38 = v37;
         v40 = v39;
-        v41 = [(_UICollectionViewListLayoutSection *)self _isRTL];
-        if (v41)
+        _isRTL = [(_UICollectionViewListLayoutSection *)self _isRTL];
+        if (_isRTL)
         {
           v42 = v40;
         }
@@ -1378,7 +1378,7 @@ LABEL_7:
           v42 = v38;
         }
 
-        if (v41)
+        if (_isRTL)
         {
           v43 = v38;
         }
@@ -1393,21 +1393,21 @@ LABEL_7:
       }
     }
 
-    *(a3 + 72) |= 0x200u;
-    *(a3 + 40) = v13;
-    *(a3 + 41) = v15;
-    *(a3 + 42) = v17;
-    *(a3 + 43) = v19;
-    if (!v7)
+    *(attributes + 72) |= 0x200u;
+    *(attributes + 40) = v13;
+    *(attributes + 41) = v15;
+    *(attributes + 42) = v17;
+    *(attributes + 43) = v19;
+    if (!appearanceStyle)
     {
-      [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesForPlainSupplementaryView:a3];
+      [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesForPlainSupplementaryView:attributes];
     }
 
     goto LABEL_54;
   }
 
-  v22 = [(_UILabelConfiguration *)a3 _content];
-  v23 = [v22 isEqualToString:@"UICollectionViewListLayoutElementKindBottomSeparator"];
+  _content = [(_UILabelConfiguration *)attributes _content];
+  v23 = [_content isEqualToString:@"UICollectionViewListLayoutElementKindBottomSeparator"];
 
   if (v23)
   {
@@ -1422,17 +1422,17 @@ LABEL_7:
     }
 
     v25 = v24;
-    v26 = self;
-    v27 = a3;
+    selfCopy2 = self;
+    attributesCopy2 = attributes;
     v28 = 1;
 LABEL_43:
-    [(_UICollectionViewListLayoutSection *)v26 _configureLayoutAttributes:v27 forSeparatorAtBottom:v28 preferredConfiguration:v25 interactionState:a4];
+    [(_UICollectionViewListLayoutSection *)selfCopy2 _configureLayoutAttributes:attributesCopy2 forSeparatorAtBottom:v28 preferredConfiguration:v25 interactionState:state];
 
     goto LABEL_54;
   }
 
-  v44 = [(_UILabelConfiguration *)a3 _content];
-  v45 = [v44 isEqualToString:@"UICollectionViewListLayoutElementKindTopSeparator"];
+  _content2 = [(_UILabelConfiguration *)attributes _content];
+  v45 = [_content2 isEqualToString:@"UICollectionViewListLayoutElementKindTopSeparator"];
 
   if (v45)
   {
@@ -1447,76 +1447,76 @@ LABEL_43:
     }
 
     v25 = v46;
-    v26 = self;
-    v27 = a3;
+    selfCopy2 = self;
+    attributesCopy2 = attributes;
     v28 = 0;
     goto LABEL_43;
   }
 
-  v51 = [(_UILabelConfiguration *)a3 _content];
-  v52 = [v51 isEqualToString:0x1EFB7AFF0];
+  _content3 = [(_UILabelConfiguration *)attributes _content];
+  v52 = [_content3 isEqualToString:0x1EFB7AFF0];
 
   if (v52)
   {
-    [a3 setHidden:1];
-    if (v7 <= 4)
+    [attributes setHidden:1];
+    if (appearanceStyle <= 4)
     {
-      if (v7 == 2)
+      if (appearanceStyle == 2)
       {
-        [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesWithInsetGroupedMasking:a3 stylesFirstItemAsHeader:v8];
+        [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesWithInsetGroupedMasking:attributes stylesFirstItemAsHeader:stylesFirstItemAsHeader];
       }
 
       else
       {
-        [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesForSwipeActionMasking:a3 interactionState:a4];
+        [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesForSwipeActionMasking:attributes interactionState:state];
       }
     }
 
     [(_UICollectionViewListLayoutSection *)self _defaultLayoutMarginsInsideSection];
-    *(a3 + 72) |= 0x200u;
-    *(a3 + 40) = v55;
-    *(a3 + 41) = v56;
-    *(a3 + 42) = v57;
-    *(a3 + 43) = v58;
+    *(attributes + 72) |= 0x200u;
+    *(attributes + 40) = v55;
+    *(attributes + 41) = v56;
+    *(attributes + 42) = v57;
+    *(attributes + 43) = v58;
   }
 
   else
   {
-    v53 = [(_UILabelConfiguration *)a3 _content];
-    v54 = [v53 isEqualToString:@"_UICollectionViewListLayoutSectionBackgroundColorDecorationElementKind"];
+    _content4 = [(_UILabelConfiguration *)attributes _content];
+    v54 = [_content4 isEqualToString:@"_UICollectionViewListLayoutSectionBackgroundColorDecorationElementKind"];
 
     if (v54)
     {
-      [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesForBackgroundDecoration:a3];
+      [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesForBackgroundDecoration:attributes];
     }
   }
 
 LABEL_54:
 }
 
-- (id)_generateListSectionDataForLayoutAttributes:(id)a3 interactionState:(id)a4
+- (id)_generateListSectionDataForLayoutAttributes:(id)attributes interactionState:(id)state
 {
-  v7 = [a3 indexPath];
+  indexPath = [attributes indexPath];
   v8 = objc_alloc_init(_UICollectionLayoutListSectionData);
-  v9 = [(_UICollectionViewLayoutInteractionStateModule *)a4 selectionGroupingForItemAtIndexPath:v7];
+  v9 = [(_UICollectionViewLayoutInteractionStateModule *)state selectionGroupingForItemAtIndexPath:indexPath];
   v10 = v9;
   if (v8)
   {
     v8->_selectionGrouping = v9;
   }
 
-  v11 = [a3 indexPath];
-  v12 = [(_UICollectionViewListLayoutSection *)self __isLastItemInSection:v11];
+  indexPath2 = [attributes indexPath];
+  v12 = [(_UICollectionViewListLayoutSection *)self __isLastItemInSection:indexPath2];
 
-  v13 = [(_UICollectionViewListLayoutSection *)self _separatorConfigurationForItemAtIndexPath:v7 withSelectionGrouping:v10 considerNextCellGrouping:!v12 interactionState:a4];
+  v13 = [(_UICollectionViewListLayoutSection *)self _separatorConfigurationForItemAtIndexPath:indexPath withSelectionGrouping:v10 considerNextCellGrouping:!v12 interactionState:state];
   [(UIViewAnimationContext *)v8 setViewAnimations:v13];
 
   return v8;
 }
 
-- (void)_updateMaxWidthForLayoutAttributes:(id)a3
+- (void)_updateMaxWidthForLayoutAttributes:(id)attributes
 {
-  if (!a3 || (*(a3 + 288) & 3) != 0 || [(NSCollectionLayoutSection *)self supplementariesFollowContentInsets])
+  if (!attributes || (*(attributes + 288) & 3) != 0 || [(NSCollectionLayoutSection *)self supplementariesFollowContentInsets])
   {
     [(_UICollectionViewListLayoutSection *)self _effectiveSectionHorizontalInsets];
   }
@@ -1528,14 +1528,14 @@ LABEL_54:
 
   v7 = v5;
   v8 = v6;
-  v9 = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment container];
-  [v9 contentSize];
+  container = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment container];
+  [container contentSize];
   v11 = v10;
 
-  v12 = [(UICollectionViewLayoutAttributes *)a3 _listAttributesCreatingIfNecessary];
-  if (v12)
+  _listAttributesCreatingIfNecessary = [(UICollectionViewLayoutAttributes *)attributes _listAttributesCreatingIfNecessary];
+  if (_listAttributesCreatingIfNecessary)
   {
-    v12[8] = fmax(v11 - v7 - v8, 0.0);
+    _listAttributesCreatingIfNecessary[8] = fmax(v11 - v7 - v8, 0.0);
   }
 }
 
@@ -1560,13 +1560,13 @@ LABEL_54:
   return result;
 }
 
-- (id)_separatorConfigurationForItemAtIndexPath:(id)a3 withSelectionGrouping:(unint64_t)a4 considerNextCellGrouping:(BOOL)a5 interactionState:(id)a6
+- (id)_separatorConfigurationForItemAtIndexPath:(id)path withSelectionGrouping:(unint64_t)grouping considerNextCellGrouping:(BOOL)cellGrouping interactionState:(id)state
 {
-  v7 = a5;
+  cellGroupingCopy = cellGrouping;
   v53 = *MEMORY[0x1E69E9840];
-  v11 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _separatorConfiguration];
-  v12 = [(_UICollectionViewLayoutInteractionStateModule *)a6 itemAtIndexPathIsBeingReordered:a3];
-  [(_UICollectionViewListLayoutSection *)self _sectionPreferredBottomSeparatorInsetsForIndexPath:a3];
+  _separatorConfiguration = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _separatorConfiguration];
+  v12 = [(_UICollectionViewLayoutInteractionStateModule *)state itemAtIndexPathIsBeingReordered:path];
+  [(_UICollectionViewListLayoutSection *)self _sectionPreferredBottomSeparatorInsetsForIndexPath:path];
   v17 = v13;
   v18 = v14;
   v19 = v15;
@@ -1579,21 +1579,21 @@ LABEL_54:
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    [v11 setBottomSeparatorInsets:{v17, v18, v19, v20}];
-    [v11 setTopSeparatorInsets:{v22, v24, v26, v28}];
-    [v11 setBottomSeparatorVisibility:2];
-    [v11 setTopSeparatorVisibility:2];
+    [_separatorConfiguration setBottomSeparatorInsets:{v17, v18, v19, v20}];
+    [_separatorConfiguration setTopSeparatorInsets:{v22, v24, v26, v28}];
+    [_separatorConfiguration setBottomSeparatorVisibility:2];
+    [_separatorConfiguration setTopSeparatorVisibility:2];
     goto LABEL_53;
   }
 
   if (v14 == -1000.0 && v16 == -1000.0)
   {
-    [v11 setBottomSeparatorVisibility:2];
+    [_separatorConfiguration setBottomSeparatorVisibility:2];
   }
 
-  if (![v11 bottomSeparatorVisibility])
+  if (![_separatorConfiguration bottomSeparatorVisibility])
   {
-    if ([(_UICollectionViewListLayoutSection *)self _shouldHideBottomSeparatorAtIndexPath:a3 forGrouping:a4 considerNextCellGrouping:v7 interactionState:a6])
+    if ([(_UICollectionViewListLayoutSection *)self _shouldHideBottomSeparatorAtIndexPath:path forGrouping:grouping considerNextCellGrouping:cellGroupingCopy interactionState:state])
     {
       v29 = 2;
     }
@@ -1603,18 +1603,18 @@ LABEL_54:
       v29 = 1;
     }
 
-    [v11 setBottomSeparatorVisibility:v29];
+    [_separatorConfiguration setBottomSeparatorVisibility:v29];
   }
 
-  if (![v11 topSeparatorVisibility])
+  if (![_separatorConfiguration topSeparatorVisibility])
   {
-    v30 = [v11 bottomSeparatorVisibility];
-    if (a4 && v30 == 2)
+    bottomSeparatorVisibility = [_separatorConfiguration bottomSeparatorVisibility];
+    if (grouping && bottomSeparatorVisibility == 2)
     {
       v31 = 2;
     }
 
-    else if ([(_UICollectionViewListLayoutSection *)self _shouldHideTopSeparatorAtIndexPath:a3 interactionState:a6])
+    else if ([(_UICollectionViewListLayoutSection *)self _shouldHideTopSeparatorAtIndexPath:path interactionState:state])
     {
       v31 = 2;
     }
@@ -1624,16 +1624,16 @@ LABEL_54:
       v31 = 1;
     }
 
-    [v11 setTopSeparatorVisibility:v31];
+    [_separatorConfiguration setTopSeparatorVisibility:v31];
   }
 
-  v32 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader];
-  v33 = v32 && [a3 item] == 0;
+  stylesFirstItemAsHeader = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader];
+  v33 = stylesFirstItemAsHeader && [path item] == 0;
   [(NSCollectionLayoutSection *)self interGroupSpacing];
   v35 = v34 > 0.0 && [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle]== 1;
-  if ([(_UICollectionViewListLayoutSection *)self __isLastItemInSection:a3])
+  if ([(_UICollectionViewListLayoutSection *)self __isLastItemInSection:path])
   {
-    v36 = [(_UICollectionViewListLayoutSection *)self _separatorInsetBehaviorAtBottom:1 indexPath:a3 interactionState:a6];
+    v36 = [(_UICollectionViewListLayoutSection *)self _separatorInsetBehaviorAtBottom:1 indexPath:path interactionState:state];
   }
 
   else
@@ -1657,16 +1657,16 @@ LABEL_54:
   if (!v36)
   {
 LABEL_34:
-    [v11 setBottomSeparatorInsets:{v17, v18, v19, v20}];
+    [_separatorConfiguration setBottomSeparatorInsets:{v17, v18, v19, v20}];
     goto LABEL_35;
   }
 
   if (v36 == 2)
   {
-    [v11 _insetsForBoundarySeparators];
+    [_separatorConfiguration _insetsForBoundarySeparators];
     [(_UICollectionViewListLayoutSection *)self _effectiveBoundarySeparatorInsets:?];
-    [v11 setBottomSeparatorInsets:?];
-    [v11 _setIgnoreBottomSeparatorInsetsFromCell:1];
+    [_separatorConfiguration setBottomSeparatorInsets:?];
+    [_separatorConfiguration _setIgnoreBottomSeparatorInsetsFromCell:1];
   }
 
   else if (os_variant_has_internal_diagnostics())
@@ -1692,10 +1692,10 @@ LABEL_34:
   }
 
 LABEL_35:
-  v37 = [a3 item];
-  if (v32)
+  item = [path item];
+  if (stylesFirstItemAsHeader)
   {
-    if (v37 == 1)
+    if (item == 1)
     {
       goto LABEL_37;
     }
@@ -1708,23 +1708,23 @@ LABEL_44:
 
 LABEL_46:
     v52[0] = 0;
-    [v11 bottomSeparatorInsets];
+    [_separatorConfiguration bottomSeparatorInsets];
     [(_UICollectionViewListLayoutSection *)self _sectionPreferredTopSeparatorInsetsWithBottomInsets:v52 hasCustomInsets:?];
-    [v11 setTopSeparatorInsets:?];
+    [_separatorConfiguration setTopSeparatorInsets:?];
     v46 = v52[0];
-    v47 = v11;
+    v47 = _separatorConfiguration;
 LABEL_52:
     [v47 _setIgnoreTopSeparatorInsetsFromCell:v46];
     goto LABEL_53;
   }
 
-  if (v37)
+  if (item)
   {
     goto LABEL_44;
   }
 
 LABEL_37:
-  v38 = [(_UICollectionViewListLayoutSection *)self _separatorInsetBehaviorAtBottom:0 indexPath:a3 interactionState:a6];
+  v38 = [(_UICollectionViewListLayoutSection *)self _separatorInsetBehaviorAtBottom:0 indexPath:path interactionState:state];
   if (!v38)
   {
     goto LABEL_46;
@@ -1736,7 +1736,7 @@ LABEL_37:
     v42 = 1.79769313e308;
     v41 = 0.0;
     v43 = 0.0;
-    v45 = self;
+    selfCopy2 = self;
     v44 = 1.79769313e308;
     goto LABEL_51;
   }
@@ -1744,12 +1744,12 @@ LABEL_37:
   if (v38 == 2)
   {
 LABEL_45:
-    [v11 _insetsForBoundarySeparators];
-    v45 = self;
+    [_separatorConfiguration _insetsForBoundarySeparators];
+    selfCopy2 = self;
 LABEL_51:
-    [(_UICollectionViewListLayoutSection *)v45 _effectiveBoundarySeparatorInsets:v41, v42, v43, v44];
-    [v11 setTopSeparatorInsets:?];
-    v47 = v11;
+    [(_UICollectionViewListLayoutSection *)selfCopy2 _effectiveBoundarySeparatorInsets:v41, v42, v43, v44];
+    [_separatorConfiguration setTopSeparatorInsets:?];
+    v47 = _separatorConfiguration;
     v46 = 1;
     goto LABEL_52;
   }
@@ -1778,80 +1778,80 @@ LABEL_51:
 
 LABEL_53:
 
-  return v11;
+  return _separatorConfiguration;
 }
 
-- (BOOL)_shouldHideTopSeparatorAtIndexPath:(id)a3 interactionState:(id)a4
+- (BOOL)_shouldHideTopSeparatorAtIndexPath:(id)path interactionState:(id)state
 {
-  v7 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _separatorConfigurationNoCopy];
-  v8 = [v7 topSeparatorVisibility];
+  _separatorConfigurationNoCopy = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _separatorConfigurationNoCopy];
+  topSeparatorVisibility = [_separatorConfigurationNoCopy topSeparatorVisibility];
 
-  if (v8 == 1)
+  if (topSeparatorVisibility == 1)
   {
     return 0;
   }
 
-  if (v8 == 2)
+  if (topSeparatorVisibility == 2)
   {
     return 1;
   }
 
-  v9 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
-  v10 = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment traitCollection];
-  v11 = [v10 userInterfaceIdiom];
+  appearanceStyle = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
+  traitCollection = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v11 == 6 || [(_UICollectionViewLayoutInteractionStateModule *)a4 selectionGroupingForItemAtIndexPath:a3])
+  if (userInterfaceIdiom == 6 || [(_UICollectionViewLayoutInteractionStateModule *)state selectionGroupingForItemAtIndexPath:path])
   {
     return 1;
   }
 
-  v13 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader];
-  v14 = [a3 item];
-  v15 = v14;
-  if (v13)
+  stylesFirstItemAsHeader = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader];
+  item = [path item];
+  v15 = item;
+  if (stylesFirstItemAsHeader)
   {
-    if (![a3 item] || v15 == 1)
+    if (![path item] || v15 == 1)
     {
       if (v15 != 1)
       {
         return 1;
       }
 
-      return !-[_UICollectionViewListLayoutSection _shouldDrawSeparatorAtBottom:ofSection:interactionState:](self, "_shouldDrawSeparatorAtBottom:ofSection:interactionState:", 0, [a3 section], a4);
+      return !-[_UICollectionViewListLayoutSection _shouldDrawSeparatorAtBottom:ofSection:interactionState:](self, "_shouldDrawSeparatorAtBottom:ofSection:interactionState:", 0, [path section], state);
     }
   }
 
-  else if (!v14)
+  else if (!item)
   {
-    return !-[_UICollectionViewListLayoutSection _shouldDrawSeparatorAtBottom:ofSection:interactionState:](self, "_shouldDrawSeparatorAtBottom:ofSection:interactionState:", 0, [a3 section], a4);
+    return !-[_UICollectionViewListLayoutSection _shouldDrawSeparatorAtBottom:ofSection:interactionState:](self, "_shouldDrawSeparatorAtBottom:ofSection:interactionState:", 0, [path section], state);
   }
 
   [(NSCollectionLayoutSection *)self interGroupSpacing];
-  return v16 <= 0.0 || v9 != 1;
+  return v16 <= 0.0 || appearanceStyle != 1;
 }
 
-- (BOOL)_shouldHideBottomSeparatorAtIndexPath:(id)a3 forGrouping:(unint64_t)a4 considerNextCellGrouping:(BOOL)a5 interactionState:(id)a6
+- (BOOL)_shouldHideBottomSeparatorAtIndexPath:(id)path forGrouping:(unint64_t)grouping considerNextCellGrouping:(BOOL)cellGrouping interactionState:(id)state
 {
-  v7 = a5;
-  v12 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _separatorConfigurationNoCopy];
-  v13 = [v12 _hidingBehavior];
-  switch(v13)
+  cellGroupingCopy = cellGrouping;
+  _separatorConfigurationNoCopy = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _separatorConfigurationNoCopy];
+  _hidingBehavior = [_separatorConfigurationNoCopy _hidingBehavior];
+  switch(_hidingBehavior)
   {
     case 2:
       goto LABEL_35;
     case 1:
       goto LABEL_10;
     case 0:
-      v14 = [v12 bottomSeparatorVisibility];
-      if (v14 != 1)
+      bottomSeparatorVisibility = [_separatorConfigurationNoCopy bottomSeparatorVisibility];
+      if (bottomSeparatorVisibility != 1)
       {
-        if (v14 != 2)
+        if (bottomSeparatorVisibility != 2)
         {
-          v15 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
-          if ([a3 item])
+          appearanceStyle = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
+          if ([path item])
           {
-            v16 = [(_UICollectionViewListLayoutSection *)self __isLastItemInSection:a3];
-            if (v15 != 3)
+            v16 = [(_UICollectionViewListLayoutSection *)self __isLastItemInSection:path];
+            if (appearanceStyle != 3)
             {
               if (!v16)
               {
@@ -1860,13 +1860,13 @@ LABEL_53:
 
 LABEL_32:
               v17 = 1;
-              if (!-[_UICollectionViewListLayoutSection _shouldDrawSeparatorAtBottom:ofSection:interactionState:](self, "_shouldDrawSeparatorAtBottom:ofSection:interactionState:", 1, [a3 section], a6))
+              if (!-[_UICollectionViewListLayoutSection _shouldDrawSeparatorAtBottom:ofSection:interactionState:](self, "_shouldDrawSeparatorAtBottom:ofSection:interactionState:", 1, [path section], state))
               {
                 goto LABEL_36;
               }
 
 LABEL_33:
-              if (v15 == 2)
+              if (appearanceStyle == 2)
               {
                 [(NSCollectionLayoutSection *)self interGroupSpacing];
                 if (v27 > 0.0)
@@ -1875,10 +1875,10 @@ LABEL_33:
                 }
               }
 
-              v29 = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment traitCollection];
+              traitCollection = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment traitCollection];
               v18 = 0;
               v17 = 1;
-              if ([v29 userInterfaceIdiom] == 6 && !v15)
+              if ([traitCollection userInterfaceIdiom] == 6 && !appearanceStyle)
               {
                 [(NSCollectionLayoutSection *)self interGroupSpacing];
                 v31 = v30;
@@ -1901,12 +1901,12 @@ LABEL_42:
 
           else
           {
-            v25 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader];
-            v26 = [(_UICollectionViewListLayoutSection *)self __isLastItemInSection:a3];
-            if (v15 == 3)
+            stylesFirstItemAsHeader = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader];
+            v26 = [(_UICollectionViewListLayoutSection *)self __isLastItemInSection:path];
+            if (appearanceStyle == 3)
             {
               v17 = 1;
-              if (!v25 || !v26)
+              if (!stylesFirstItemAsHeader || !v26)
               {
                 goto LABEL_36;
               }
@@ -1914,7 +1914,7 @@ LABEL_42:
               goto LABEL_40;
             }
 
-            if (!v25)
+            if (!stylesFirstItemAsHeader)
             {
               if (!v26)
               {
@@ -1936,19 +1936,19 @@ LABEL_10:
       goto LABEL_36;
   }
 
-  v17 = v13 == 3;
-  v18 = v13 == 4;
-  if ((v13 - 5) <= 0xFFFFFFFFFFFFFFFDLL)
+  v17 = _hidingBehavior == 3;
+  v18 = _hidingBehavior == 4;
+  if ((_hidingBehavior - 5) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1806 description:@"Hiding behavior resolved to unsupported type"];
+    traitCollection = [MEMORY[0x1E696AAA8] currentHandler];
+    [traitCollection handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1806 description:@"Hiding behavior resolved to unsupported type"];
     goto LABEL_42;
   }
 
 LABEL_12:
   [(NSCollectionLayoutSection *)self interGroupSpacing];
   v20 = v19 > 0.0 || v18;
-  if (v7 && v19 <= 0.0 && ([MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(a3 inSection:{"item") + 1, objc_msgSend(a3, "section")}], v21 = objc_claimAutoreleasedReturnValue(), v22 = -[_UICollectionViewLayoutInteractionStateModule selectionGroupingForItemAtIndexPath:](a6, v21) - 1, v21, v22 <= 1))
+  if (cellGroupingCopy && v19 <= 0.0 && ([MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(path inSection:{"item") + 1, objc_msgSend(path, "section")}], v21 = objc_claimAutoreleasedReturnValue(), v22 = -[_UICollectionViewLayoutInteractionStateModule selectionGroupingForItemAtIndexPath:](state, v21) - 1, v21, v22 <= 1))
   {
     v17 |= v20;
   }
@@ -1956,7 +1956,7 @@ LABEL_12:
   else
   {
     v23 = v17 | v20;
-    if (a4 == 1)
+    if (grouping == 1)
     {
       v24 = v17;
     }
@@ -1966,12 +1966,12 @@ LABEL_12:
       v24 = 0;
     }
 
-    if (a4 != 4)
+    if (grouping != 4)
     {
       v23 = v24;
     }
 
-    if (a4 - 2 >= 2)
+    if (grouping - 2 >= 2)
     {
       v17 = v23;
     }
@@ -1987,13 +1987,13 @@ LABEL_36:
   return v17 & 1;
 }
 
-- (void)_configureLayoutAttributes:(id)a3 forSeparatorAtBottom:(BOOL)a4 preferredConfiguration:(id)a5 interactionState:(id)a6
+- (void)_configureLayoutAttributes:(id)attributes forSeparatorAtBottom:(BOOL)bottom preferredConfiguration:(id)configuration interactionState:(id)state
 {
-  v8 = a4;
-  v51 = [a3 indexPath];
-  if (a3)
+  bottomCopy = bottom;
+  indexPath = [attributes indexPath];
+  if (attributes)
   {
-    v12 = *(a3 + 38);
+    v12 = *(attributes + 38);
   }
 
   else
@@ -2001,44 +2001,44 @@ LABEL_36:
     v12 = 0;
   }
 
-  v13 = a5;
-  if (!v13)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v13 = [(_UICollectionViewListLayoutSection *)self _separatorConfigurationForItemAtIndexPath:v51 withSelectionGrouping:0 considerNextCellGrouping:0 interactionState:a6];
+    configurationCopy = [(_UICollectionViewListLayoutSection *)self _separatorConfigurationForItemAtIndexPath:indexPath withSelectionGrouping:0 considerNextCellGrouping:0 interactionState:state];
   }
 
-  if (![v13 topSeparatorVisibility])
+  if (![configurationCopy topSeparatorVisibility])
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    v48 = [a3 indexPath];
-    [v47 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1859 description:{@"topSeparatorVisibility for %@ is unresolved in the list section data, which is unsupported. This is a UIKit bug.", v48}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    indexPath2 = [attributes indexPath];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1859 description:{@"topSeparatorVisibility for %@ is unresolved in the list section data, which is unsupported. This is a UIKit bug.", indexPath2}];
   }
 
-  if (![v13 bottomSeparatorVisibility])
+  if (![configurationCopy bottomSeparatorVisibility])
   {
-    v49 = [MEMORY[0x1E696AAA8] currentHandler];
-    v50 = [a3 indexPath];
-    [v49 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1860 description:{@"bottomSeparatorVisibility for %@ is unresolved in the list section data, which is unsupported. This is a UIKit bug.", v50}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    indexPath3 = [attributes indexPath];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:1860 description:{@"bottomSeparatorVisibility for %@ is unresolved in the list section data, which is unsupported. This is a UIKit bug.", indexPath3}];
   }
 
-  v14 = [(_UICollectionViewLayoutInteractionStateModule *)a6 itemAtIndexPathIsSelected:v51];
-  v15 = [(UICollectionViewLayoutAttributes *)a3 _listAttributesCreatingIfNecessary];
-  v16 = [v13 color];
-  [(_UICollectionLayoutItemSolver *)v15 setSolveResult:v16];
+  v14 = [(_UICollectionViewLayoutInteractionStateModule *)state itemAtIndexPathIsSelected:indexPath];
+  _listAttributesCreatingIfNecessary = [(UICollectionViewLayoutAttributes *)attributes _listAttributesCreatingIfNecessary];
+  color = [configurationCopy color];
+  [(_UICollectionLayoutItemSolver *)_listAttributesCreatingIfNecessary setSolveResult:color];
 
-  v17 = [v13 visualEffect];
-  [(_UICollectionLayoutListAttributes *)v15 setSeparatorVisualEffect:v17];
+  visualEffect = [configurationCopy visualEffect];
+  [(_UICollectionLayoutListAttributes *)_listAttributesCreatingIfNecessary setSeparatorVisualEffect:visualEffect];
 
-  if (v8)
+  if (bottomCopy)
   {
-    [a3 setHidden:{objc_msgSend(v13, "bottomSeparatorVisibility") == 2}];
-    [v13 bottomSeparatorInsets];
+    [attributes setHidden:{objc_msgSend(configurationCopy, "bottomSeparatorVisibility") == 2}];
+    [configurationCopy bottomSeparatorInsets];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    [a3 frame];
-    [a3 setFrame:{v21 + v26, v19 + v27, v28 - (v21 + v25), v29 - (v19 + v23)}];
+    [attributes frame];
+    [attributes setFrame:{v21 + v26, v19 + v27, v28 - (v21 + v25), v29 - (v19 + v23)}];
     if ((v12 & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       v30 = v14;
@@ -2055,20 +2055,20 @@ LABEL_36:
     }
 
 LABEL_19:
-    v44 = [v13 multipleSelectionColor];
-    [(_UICollectionLayoutItemSolver *)v15 setSolveResult:v44];
+    multipleSelectionColor = [configurationCopy multipleSelectionColor];
+    [(_UICollectionLayoutItemSolver *)_listAttributesCreatingIfNecessary setSolveResult:multipleSelectionColor];
 
     goto LABEL_20;
   }
 
-  [a3 setHidden:{objc_msgSend(v13, "topSeparatorVisibility") == 2}];
-  [v13 topSeparatorInsets];
+  [attributes setHidden:{objc_msgSend(configurationCopy, "topSeparatorVisibility") == 2}];
+  [configurationCopy topSeparatorInsets];
   v32 = v31;
   v34 = v33;
   v36 = v35;
   v38 = v37;
-  [a3 frame];
-  [a3 setFrame:{v34 + v39, v32 + v40, v41 - (v34 + v38), v42 - (v32 + v36)}];
+  [attributes frame];
+  [attributes setFrame:{v34 + v39, v32 + v40, v41 - (v34 + v38), v42 - (v32 + v36)}];
   if ((v12 - 3) < 2)
   {
     v43 = v14;
@@ -2085,29 +2085,29 @@ LABEL_19:
   }
 
 LABEL_20:
-  v45 = [a3 isHidden];
+  isHidden = [attributes isHidden];
   v46 = 1.0;
-  if (v45)
+  if (isHidden)
   {
     v46 = 0.0;
   }
 
-  [a3 setAlpha:v46];
+  [attributes setAlpha:v46];
 }
 
-- (void)_configureLayoutAttributesForSidebarPlainCell:(id)a3
+- (void)_configureLayoutAttributesForSidebarPlainCell:(id)cell
 {
   [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesForPlainCell:?];
   if (([(_UICollectionViewListLayoutSection *)self _headerFooterPinningBehavior]- 1) >= 2)
   {
     if ([(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader])
     {
-      v5 = [a3 indexPath];
-      v6 = [v5 item];
+      indexPath = [cell indexPath];
+      item = [indexPath item];
 
-      if (!v6)
+      if (!item)
       {
-        [a3 center];
+        [cell center];
         v8 = v7;
         v10 = v9;
         [(_UICollectionViewListLayoutSection *)self contentInsets];
@@ -2116,13 +2116,13 @@ LABEL_20:
           v11 = 8.0;
         }
 
-        [a3 setCenter:{v8, v10 - v11}];
+        [cell setCenter:{v8, v10 - v11}];
       }
     }
   }
 }
 
-- (void)_configureLayoutAttributesForPlainCell:(id)a3
+- (void)_configureLayoutAttributesForPlainCell:(id)cell
 {
   [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesWithDefaultMasking:?];
   [(_UICollectionViewListLayoutSection *)self _defaultLayoutMarginsInsideSection];
@@ -2132,18 +2132,18 @@ LABEL_20:
   v12 = v11;
   if ([(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration stylesFirstItemAsHeader])
   {
-    v13 = [a3 indexPath];
-    v14 = [v13 item];
+    indexPath = [cell indexPath];
+    item = [indexPath item];
 
-    if (!v14)
+    if (!item)
     {
       if (![(NSCollectionLayoutSection *)self supplementariesFollowContentInsets])
       {
         [(_UICollectionViewListLayoutSection *)self _effectiveSectionHorizontalInsets];
         v16 = v15;
         v18 = v17;
-        v19 = [(_UICollectionViewListLayoutSection *)self _isRTL];
-        if (v19)
+        _isRTL = [(_UICollectionViewListLayoutSection *)self _isRTL];
+        if (_isRTL)
         {
           v20 = v18;
         }
@@ -2153,7 +2153,7 @@ LABEL_20:
           v20 = v16;
         }
 
-        if (v19)
+        if (_isRTL)
         {
           v21 = v16;
         }
@@ -2164,13 +2164,13 @@ LABEL_20:
         }
 
         v22 = v21 * 0.5 - v20 * 0.5;
-        [a3 bounds];
-        [a3 setBounds:?];
-        [a3 center];
-        [a3 setCenter:v22 + v23];
+        [cell bounds];
+        [cell setBounds:?];
+        [cell center];
+        [cell setCenter:v22 + v23];
       }
 
-      [(_UICollectionViewListLayoutSection *)self _defaultLayoutMarginsForHeaderFooterViewWithLayoutAttributes:a3];
+      [(_UICollectionViewListLayoutSection *)self _defaultLayoutMarginsForHeaderFooterViewWithLayoutAttributes:cell];
       v6 = v24;
       v8 = v25;
       v10 = v26;
@@ -2178,47 +2178,47 @@ LABEL_20:
     }
   }
 
-  if (a3)
+  if (cell)
   {
-    *(a3 + 72) |= 0x200u;
-    *(a3 + 40) = v6;
-    *(a3 + 41) = v8;
-    *(a3 + 42) = v10;
-    *(a3 + 43) = v12;
+    *(cell + 72) |= 0x200u;
+    *(cell + 40) = v6;
+    *(cell + 41) = v8;
+    *(cell + 42) = v10;
+    *(cell + 43) = v12;
   }
 }
 
-- (void)_configureLayoutAttributesForPlainSupplementaryView:(id)a3
+- (void)_configureLayoutAttributesForPlainSupplementaryView:(id)view
 {
-  v5 = [(_UILabelConfiguration *)a3 _content];
-  v6 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _headerElementKind];
-  v7 = [v5 isEqualToString:v6];
+  _content = [(_UILabelConfiguration *)view _content];
+  _headerElementKind = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _headerElementKind];
+  v7 = [_content isEqualToString:_headerElementKind];
 
   if (v7)
   {
     if ([(_UICollectionViewListLayoutSection *)self _headerFooterPinningBehavior]== 2)
     {
-      v8 = [a3 indexPath];
-      v9 = [v8 section];
+      indexPath = [view indexPath];
+      section = [indexPath section];
 
-      if (a3)
+      if (view)
       {
-        if (!v9)
+        if (!section)
         {
-          *(a3 + 72) |= 0x8000u;
+          *(view + 72) |= 0x8000u;
         }
       }
     }
   }
 }
 
-- (void)_configureLayoutAttributesWithDefaultMasking:(id)a3
+- (void)_configureLayoutAttributesWithDefaultMasking:(id)masking
 {
-  if (a3)
+  if (masking)
   {
-    *(a3 + 72) &= ~0x10u;
-    [(UICollectionViewLayoutAttributes *)a3 _setMaskedCorners:?];
-    *(a3 + 39) = 0;
+    *(masking + 72) &= ~0x10u;
+    [(UICollectionViewLayoutAttributes *)masking _setMaskedCorners:?];
+    *(masking + 39) = 0;
   }
 
   else
@@ -2228,23 +2228,23 @@ LABEL_20:
   }
 }
 
-- (void)_configureLayoutAttributesWithInsetGroupedMasking:(id)a3 stylesFirstItemAsHeader:(BOOL)a4
+- (void)_configureLayoutAttributesWithInsetGroupedMasking:(id)masking stylesFirstItemAsHeader:(BOOL)header
 {
-  v4 = a4;
-  v17 = [a3 indexPath];
-  v7 = [v17 item];
+  headerCopy = header;
+  indexPath = [masking indexPath];
+  item = [indexPath item];
   [(NSCollectionLayoutSection *)self interGroupSpacing];
   if (v8 <= 0.0)
   {
-    if (v4)
+    if (headerCopy)
     {
       v10 = 15;
-      if (v7)
+      if (item)
       {
         v10 = 0;
       }
 
-      if (v7 == 1)
+      if (item == 1)
       {
         v9 = 3;
       }
@@ -2254,12 +2254,12 @@ LABEL_20:
         v9 = v10;
       }
 
-      if (v7)
+      if (item)
       {
-        v11 = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment _dataSourceSnapshot];
-        v12 = [v11 numberOfItemsInSection:{objc_msgSend(v17, "section")}] - 1;
+        _dataSourceSnapshot = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment _dataSourceSnapshot];
+        v12 = [_dataSourceSnapshot numberOfItemsInSection:{objc_msgSend(indexPath, "section")}] - 1;
 
-        if (v7 == v12)
+        if (item == v12)
         {
           v9 |= 0xCuLL;
         }
@@ -2268,7 +2268,7 @@ LABEL_20:
 
     else
     {
-      if (v7)
+      if (item)
       {
         v13 = 0;
       }
@@ -2278,10 +2278,10 @@ LABEL_20:
         v13 = 3;
       }
 
-      v14 = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment _dataSourceSnapshot];
-      v15 = [v14 numberOfItemsInSection:{objc_msgSend(v17, "section")}] - 1;
+      _dataSourceSnapshot2 = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment _dataSourceSnapshot];
+      v15 = [_dataSourceSnapshot2 numberOfItemsInSection:{objc_msgSend(indexPath, "section")}] - 1;
 
-      if (v7 == v15)
+      if (item == v15)
       {
         v9 = v13 | 0xC;
       }
@@ -2293,7 +2293,7 @@ LABEL_20:
     }
   }
 
-  else if (v4 && v7 == 0)
+  else if (headerCopy && item == 0)
   {
     v9 = 0;
   }
@@ -2303,50 +2303,50 @@ LABEL_20:
     v9 = 15;
   }
 
-  if (a3)
+  if (masking)
   {
-    *(a3 + 72) |= 0x10u;
+    *(masking + 72) |= 0x10u;
   }
 
-  [(UICollectionViewLayoutAttributes *)a3 _setMaskedCorners:v9];
+  [(UICollectionViewLayoutAttributes *)masking _setMaskedCorners:v9];
   [(_UICollectionViewListLayoutSection *)self _effectiveCornerRadius];
-  if (a3)
+  if (masking)
   {
-    *(a3 + 39) = v16;
+    *(masking + 39) = v16;
   }
 }
 
-- (void)_configureLayoutAttributesForSwipeActionMasking:(id)a3 interactionState:(id)a4
+- (void)_configureLayoutAttributesForSwipeActionMasking:(id)masking interactionState:(id)state
 {
-  v7 = [a3 indexPath];
-  v8 = [(_UICollectionViewLayoutInteractionStateModule *)a4 swipeActionsStyleForSwipedItemAtIndexPath:v7];
+  indexPath = [masking indexPath];
+  v8 = [(_UICollectionViewLayoutInteractionStateModule *)state swipeActionsStyleForSwipedItemAtIndexPath:indexPath];
 
   if (v8 == 2)
   {
-    if (a3)
+    if (masking)
     {
-      *(a3 + 72) |= 0x10u;
+      *(masking + 72) |= 0x10u;
     }
 
-    [(UICollectionViewLayoutAttributes *)a3 _setMaskedCorners:?];
+    [(UICollectionViewLayoutAttributes *)masking _setMaskedCorners:?];
     [(_UICollectionViewListLayoutSection *)self _effectiveCornerRadius];
-    if (a3)
+    if (masking)
     {
-      *(a3 + 39) = v9;
+      *(masking + 39) = v9;
     }
   }
 
   else
   {
 
-    [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesWithDefaultMasking:a3];
+    [(_UICollectionViewListLayoutSection *)self _configureLayoutAttributesWithDefaultMasking:masking];
   }
 }
 
-- (unint64_t)_maskedCornersForBackgroundOfItemWithSelectionGrouping:(unint64_t)a3
+- (unint64_t)_maskedCornersForBackgroundOfItemWithSelectionGrouping:(unint64_t)grouping
 {
   [(NSCollectionLayoutSection *)self interGroupSpacing];
-  v4 = a3 - 2;
+  v4 = grouping - 2;
   if (v5 > 0.0)
   {
     v4 = -1;
@@ -2363,17 +2363,17 @@ LABEL_20:
   }
 }
 
-- (void)_configureLayoutAttributesForBackgroundDecoration:(id)a3
+- (void)_configureLayoutAttributesForBackgroundDecoration:(id)decoration
 {
-  v5 = [(_UICollectionViewListLayoutSection *)self _preferredContainerBackgroundColor];
-  v6 = [(UICollectionViewLayoutAttributes *)a3 _listAttributesCreatingIfNecessary];
-  [(UIBackgroundConfiguration *)v6 _setBackgroundColor:v5];
+  _preferredContainerBackgroundColor = [(_UICollectionViewListLayoutSection *)self _preferredContainerBackgroundColor];
+  _listAttributesCreatingIfNecessary = [(UICollectionViewLayoutAttributes *)decoration _listAttributesCreatingIfNecessary];
+  [(UIBackgroundConfiguration *)_listAttributesCreatingIfNecessary _setBackgroundColor:_preferredContainerBackgroundColor];
 
   [(_UICollectionViewListLayoutSection *)self _effectiveSectionHorizontalInsets];
   v8 = v7;
   v10 = v9;
-  v11 = [(_UICollectionViewListLayoutSection *)self _isRTL];
-  if (v11)
+  _isRTL = [(_UICollectionViewListLayoutSection *)self _isRTL];
+  if (_isRTL)
   {
     v12 = v10;
   }
@@ -2383,7 +2383,7 @@ LABEL_20:
     v12 = v8;
   }
 
-  if (v11)
+  if (_isRTL)
   {
     v13 = v8;
   }
@@ -2393,17 +2393,17 @@ LABEL_20:
     v13 = v10;
   }
 
-  v21 = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment container];
-  [v21 contentSize];
+  container = [(NSCollectionLayoutEnvironment_Private *)self->_layoutEnvironment container];
+  [container contentSize];
   v15 = v14 + v14;
-  v16 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _sectionPosition];
+  _sectionPosition = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _sectionPosition];
   v17 = 0.0 - v15 * 0.5;
-  if ((v16 & 2) == 0)
+  if ((_sectionPosition & 2) == 0)
   {
     v17 = 0.0;
   }
 
-  if ((v16 & 8) != 0)
+  if ((_sectionPosition & 8) != 0)
   {
     v18 = v15 * 0.5 + v17;
   }
@@ -2413,36 +2413,36 @@ LABEL_20:
     v18 = v17;
   }
 
-  [a3 bounds];
-  [a3 setBounds:?];
-  [a3 center];
-  [a3 setCenter:{v13 * 0.5 - v12 * 0.5 + v19, v20 + v18}];
+  [decoration bounds];
+  [decoration setBounds:?];
+  [decoration center];
+  [decoration setCenter:{v13 * 0.5 - v12 * 0.5 + v19, v20 + v18}];
 }
 
 - (id)_descriptionProperties
 {
   v25.receiver = self;
   v25.super_class = _UICollectionViewListLayoutSection;
-  v3 = [(NSCollectionLayoutSection *)&v25 _descriptionProperties];
+  _descriptionProperties = [(NSCollectionLayoutSection *)&v25 _descriptionProperties];
   if (![(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _isAPIVersion])
   {
-    [v3 addObject:@"SPI List Section Configuration"];
+    [_descriptionProperties addObject:@"SPI List Section Configuration"];
   }
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
-  if (v5 >= 5)
+  appearanceStyle = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration appearanceStyle];
+  if (appearanceStyle >= 5)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown value: %ld)", v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown value: %ld)", appearanceStyle];
   }
 
   else
   {
-    v6 = off_1E7128898[v5];
+    v6 = off_1E7128898[appearanceStyle];
   }
 
   v7 = [v4 stringWithFormat:@"appearance = %@", v6];
-  [v3 addObject:v7];
+  [_descriptionProperties addObject:v7];
 
   [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration sectionHeaderHeight];
   if (v8 == -1000.0)
@@ -2460,12 +2460,12 @@ LABEL_20:
     v9 = @"headerMode = .supplementary";
   }
 
-  [v3 addObject:v9];
+  [_descriptionProperties addObject:v9];
 LABEL_11:
   [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration sectionFooterHeight];
   if (v10 != -1000.0)
   {
-    [v3 addObject:@"footerMode = .supplementary"];
+    [_descriptionProperties addObject:@"footerMode = .supplementary"];
   }
 
   [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration headerTopPadding];
@@ -2474,44 +2474,44 @@ LABEL_11:
     v12 = MEMORY[0x1E696AEC0];
     [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration headerTopPadding];
     v14 = [v12 stringWithFormat:@"headerTopPadding = %g", v13];
-    [v3 addObject:v14];
+    [_descriptionProperties addObject:v14];
   }
 
   if ([(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration separatorStyle]!= 1)
   {
-    [v3 addObject:@"showsSeparators = NO"];
+    [_descriptionProperties addObject:@"showsSeparators = NO"];
   }
 
-  v15 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _itemSeparatorHandler];
+  _itemSeparatorHandler = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _itemSeparatorHandler];
 
-  if (v15)
+  if (_itemSeparatorHandler)
   {
-    [v3 addObject:@"Has Item Separator Handler"];
+    [_descriptionProperties addObject:@"Has Item Separator Handler"];
   }
 
-  v16 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _backgroundColor];
+  _backgroundColor = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _backgroundColor];
 
-  if (v16)
+  if (_backgroundColor)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _backgroundColor];
-    v19 = [v17 stringWithFormat:@"backgroundColor = %@", v18];
-    [v3 addObject:v19];
+    _backgroundColor2 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration _backgroundColor];
+    v19 = [v17 stringWithFormat:@"backgroundColor = %@", _backgroundColor2];
+    [_descriptionProperties addObject:v19];
   }
 
-  v20 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration leadingSwipeActionsConfigurationProvider];
+  leadingSwipeActionsConfigurationProvider = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration leadingSwipeActionsConfigurationProvider];
 
-  v21 = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration trailingSwipeActionsConfigurationProvider];
+  trailingSwipeActionsConfigurationProvider = [(_UICollectionViewListLayoutSectionConfiguration *)self->_configuration trailingSwipeActionsConfigurationProvider];
 
-  if (v20 | v21)
+  if (leadingSwipeActionsConfigurationProvider | trailingSwipeActionsConfigurationProvider)
   {
     v22 = @"Has Leading & Trailing Swipe Actions Providers";
-    if (!v21)
+    if (!trailingSwipeActionsConfigurationProvider)
     {
       v22 = @"Has Leading Swipe Actions Provider";
     }
 
-    if (v20)
+    if (leadingSwipeActionsConfigurationProvider)
     {
       v23 = v22;
     }
@@ -2521,10 +2521,10 @@ LABEL_11:
       v23 = @"Has Trailing Swipe Actions Provider";
     }
 
-    [v3 addObject:v23];
+    [_descriptionProperties addObject:v23];
   }
 
-  return v3;
+  return _descriptionProperties;
 }
 
 - (NSDirectionalEdgeInsets)_defaultDirectionalLayoutMargins

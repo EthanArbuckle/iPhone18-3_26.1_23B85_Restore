@@ -1,22 +1,22 @@
 @interface KCellularServingCellRfBandHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPcellBandDuration:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDurationMs:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPcellBandDuration:(id)duration;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDurationMs:(BOOL)ms;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularServingCellRfBandHist
 
-- (void)setHasDurationMs:(BOOL)a3
+- (void)setHasDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -29,27 +29,27 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addPcellBandDuration:(id)a3
+- (void)addPcellBandDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   pcellBandDurations = self->_pcellBandDurations;
-  v8 = v4;
+  v8 = durationCopy;
   if (!pcellBandDurations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_pcellBandDurations;
     self->_pcellBandDurations = v6;
 
-    v4 = v8;
+    durationCopy = v8;
     pcellBandDurations = self->_pcellBandDurations;
   }
 
-  [(NSMutableArray *)pcellBandDurations addObject:v4];
+  [(NSMutableArray *)pcellBandDurations addObject:durationCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -68,8 +68,8 @@
   v8.receiver = self;
   v8.super_class = KCellularServingCellRfBandHist;
   v4 = [(KCellularServingCellRfBandHist *)&v8 description];
-  v5 = [(KCellularServingCellRfBandHist *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularServingCellRfBandHist *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -77,12 +77,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
   }
@@ -90,7 +90,7 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_durationMs];
-    [v3 setObject:v6 forKey:@"duration_ms"];
+    [dictionary setObject:v6 forKey:@"duration_ms"];
   }
 
   if ([(NSMutableArray *)self->_pcellBandDurations count])
@@ -115,8 +115,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -125,24 +125,24 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"pcell_band_duration"];
+    [dictionary setObject:v7 forKey:@"pcell_band_duration"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v14 forKey:@"subs_id"];
+    [dictionary setObject:v14 forKey:@"subs_id"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -195,31 +195,31 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_durationMs;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 4) = self->_durationMs;
+    *(toCopy + 36) |= 2u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(KCellularServingCellRfBandHist *)self pcellBandDurationsCount])
   {
     [v10 clearPcellBandDurations];
-    v6 = [(KCellularServingCellRfBandHist *)self pcellBandDurationsCount];
-    if (v6)
+    pcellBandDurationsCount = [(KCellularServingCellRfBandHist *)self pcellBandDurationsCount];
+    if (pcellBandDurationsCount)
     {
-      v7 = v6;
+      v7 = pcellBandDurationsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(KCellularServingCellRfBandHist *)self pcellBandDurationAtIndex:i];
@@ -235,10 +235,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -273,7 +273,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v6 addPcellBandDuration:v13];
       }
 
@@ -293,44 +293,44 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_durationMs != *(v4 + 4))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_durationMs != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   pcellBandDurations = self->_pcellBandDurations;
-  if (pcellBandDurations | *(v4 + 3))
+  if (pcellBandDurations | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)pcellBandDurations isEqual:?])
     {
@@ -340,13 +340,13 @@ LABEL_19:
     }
 
     has = self->_has;
-    v6 = *(v4 + 36);
+    v6 = *(equalCopy + 36);
   }
 
   v8 = (v6 & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_subsId != *(v4 + 8))
+    if ((v6 & 4) == 0 || self->_subsId != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
@@ -397,22 +397,22 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 36);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 36);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 36);
+    v6 = *(fromCopy + 36);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_durationMs = *(v4 + 4);
+    self->_durationMs = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
@@ -420,7 +420,7 @@ LABEL_6:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

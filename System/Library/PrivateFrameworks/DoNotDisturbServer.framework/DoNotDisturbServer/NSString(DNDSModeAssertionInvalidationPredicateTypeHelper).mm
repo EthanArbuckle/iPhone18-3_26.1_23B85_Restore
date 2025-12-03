@@ -20,22 +20,22 @@
 
 - (uint64_t)dnds_predicateTypeValue
 {
-  if ([a1 isEqualToString:@"any"])
+  if ([self isEqualToString:@"any"])
   {
     return 0;
   }
 
-  if ([a1 isEqualToString:@"date"])
+  if ([self isEqualToString:@"date"])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:@"client-identifier"])
+  if ([self isEqualToString:@"client-identifier"])
   {
     return 2;
   }
 
-  if ([a1 isEqualToString:@"uuid"])
+  if ([self isEqualToString:@"uuid"])
   {
     return 3;
   }

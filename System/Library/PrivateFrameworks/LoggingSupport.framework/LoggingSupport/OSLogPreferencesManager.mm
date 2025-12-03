@@ -8,16 +8,16 @@
 - (void)resetAll;
 - (void)resetAllProcesses;
 - (void)resetAllSubsystems;
-- (void)setEnabledLevel:(int64_t)a3;
-- (void)setPersistedLevel:(int64_t)a3;
+- (void)setEnabledLevel:(int64_t)level;
+- (void)setPersistedLevel:(int64_t)level;
 @end
 
 @implementation OSLogPreferencesManager
 
 - (void)resetAllSubsystems
 {
-  v2 = [(OSLogPreferencesManager *)self subsystems];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_40];
+  subsystems = [(OSLogPreferencesManager *)self subsystems];
+  [subsystems enumerateObjectsUsingBlock:&__block_literal_global_40];
 }
 
 void __45__OSLogPreferencesManager_resetAllSubsystems__block_invoke(uint64_t a1, void *a2)
@@ -30,8 +30,8 @@ void __45__OSLogPreferencesManager_resetAllSubsystems__block_invoke(uint64_t a1,
 
 - (void)resetAllProcesses
 {
-  v2 = [(OSLogPreferencesManager *)self processes];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_37];
+  processes = [(OSLogPreferencesManager *)self processes];
+  [processes enumerateObjectsUsingBlock:&__block_literal_global_37];
 }
 
 void __44__OSLogPreferencesManager_resetAllProcesses__block_invoke(uint64_t a1, void *a2)
@@ -60,31 +60,31 @@ void __44__OSLogPreferencesManager_resetAllProcesses__block_invoke(uint64_t a1, 
   _OSLogRemovePreferences(1u, name);
 }
 
-- (void)setPersistedLevel:(int64_t)a3
+- (void)setPersistedLevel:(int64_t)level
 {
-  v5 = [(OSLogPreferencesManager *)self _levelPrefs];
-  if (a3 > 4)
+  _levelPrefs = [(OSLogPreferencesManager *)self _levelPrefs];
+  if (level > 4)
   {
     v6 = @"inherit";
   }
 
   else
   {
-    v6 = off_2787AEBC8[a3];
+    v6 = off_2787AEBC8[level];
   }
 
-  v8 = v5;
-  [v5 setObject:v6 forKey:@"Persist"];
-  if (_LevelForKey(v8, @"Enable") < a3)
+  v8 = _levelPrefs;
+  [_levelPrefs setObject:v6 forKey:@"Persist"];
+  if (_LevelForKey(v8, @"Enable") < level)
   {
-    if (a3 > 4)
+    if (level > 4)
     {
       v7 = @"inherit";
     }
 
     else
     {
-      v7 = off_2787AEBC8[a3];
+      v7 = off_2787AEBC8[level];
     }
 
     [v8 setObject:v7 forKey:@"Enable"];
@@ -93,31 +93,31 @@ void __44__OSLogPreferencesManager_resetAllProcesses__block_invoke(uint64_t a1, 
   _OSLogInstallPreferences(1u, self->_name, self->_prefs);
 }
 
-- (void)setEnabledLevel:(int64_t)a3
+- (void)setEnabledLevel:(int64_t)level
 {
-  v5 = [(OSLogPreferencesManager *)self _levelPrefs];
-  if (a3 > 4)
+  _levelPrefs = [(OSLogPreferencesManager *)self _levelPrefs];
+  if (level > 4)
   {
     v6 = @"inherit";
   }
 
   else
   {
-    v6 = off_2787AEBC8[a3];
+    v6 = off_2787AEBC8[level];
   }
 
-  v8 = v5;
-  [v5 setObject:v6 forKey:@"Enable"];
-  if (_LevelForKey(v8, @"Persist") > a3)
+  v8 = _levelPrefs;
+  [_levelPrefs setObject:v6 forKey:@"Enable"];
+  if (_LevelForKey(v8, @"Persist") > level)
   {
-    if (a3 > 4)
+    if (level > 4)
     {
       v7 = @"inherit";
     }
 
     else
     {
-      v7 = off_2787AEBC8[a3];
+      v7 = off_2787AEBC8[level];
     }
 
     [v8 setObject:v7 forKey:@"Persist"];
@@ -131,21 +131,21 @@ void __44__OSLogPreferencesManager_resetAllProcesses__block_invoke(uint64_t a1, 
   prefs = self->_prefs;
   if (!prefs)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_prefs;
-    self->_prefs = v4;
+    self->_prefs = dictionary;
 
     prefs = self->_prefs;
   }
 
-  v6 = [(NSMutableDictionary *)prefs objectForKey:@"Level"];
-  if (!v6)
+  dictionary2 = [(NSMutableDictionary *)prefs objectForKey:@"Level"];
+  if (!dictionary2)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    [(NSMutableDictionary *)self->_prefs setObject:v6 forKey:@"Level"];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(NSMutableDictionary *)self->_prefs setObject:dictionary2 forKey:@"Level"];
   }
 
-  return v6;
+  return dictionary2;
 }
 
 - (int64_t)persistedLevel

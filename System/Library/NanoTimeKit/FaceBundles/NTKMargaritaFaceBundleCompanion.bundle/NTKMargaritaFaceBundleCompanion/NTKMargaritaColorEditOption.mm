@@ -1,5 +1,5 @@
 @interface NTKMargaritaColorEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 - (id)pigmentEditOption;
@@ -7,25 +7,25 @@
 
 @implementation NTKMargaritaColorEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 0x29)
+  if (value > 0x29)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_14808 + a3);
+    return *(&off_14808 + value);
   }
 }
 
 - (id)localizedName
 {
-  v2 = [(NTKMargaritaColorEditOption *)self pigmentEditOption];
-  v3 = [v2 localizedName];
+  pigmentEditOption = [(NTKMargaritaColorEditOption *)self pigmentEditOption];
+  localizedName = [pigmentEditOption localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (id)_valueToFaceBundleStringDict
@@ -42,15 +42,15 @@
 
 - (id)pigmentEditOption
 {
-  v2 = [(NTKMargaritaColorEditOption *)self color];
-  if (v2 > 0x2A)
+  color = [(NTKMargaritaColorEditOption *)self color];
+  if (color > 0x2A)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = *(&off_14958 + v2);
+    v3 = *(&off_14958 + color);
   }
 
   v4 = [[NTKPigmentEditOption alloc] initWithOptionName:v3 collectionName:@"margarita"];

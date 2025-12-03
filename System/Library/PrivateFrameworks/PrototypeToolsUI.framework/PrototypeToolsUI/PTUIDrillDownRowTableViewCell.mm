@@ -1,14 +1,14 @@
 @interface PTUIDrillDownRowTableViewCell
-- (PTUIDrillDownRowTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PTUIDrillDownRowTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation PTUIDrillDownRowTableViewCell
 
-- (PTUIDrillDownRowTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PTUIDrillDownRowTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = PTUIDrillDownRowTableViewCell;
-  v4 = [(PTUIDrillDownRowTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PTUIDrillDownRowTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

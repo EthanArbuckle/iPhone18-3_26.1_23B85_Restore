@@ -25,9 +25,9 @@
   v6 = [MEMORY[0x277D1B1C8] imageDescriptorNamed:*MEMORY[0x277D1B240]];
   v7 = [v5 prepareImageForDescriptor:v6];
   v8 = MEMORY[0x277D755B8];
-  v9 = [v7 CGImage];
+  cGImage = [v7 CGImage];
   [v7 scale];
-  v10 = [v8 imageWithCGImage:v9 scale:0 orientation:?];
+  v10 = [v8 imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v10;
 }
@@ -39,15 +39,15 @@
   v7 = [[v5 alloc] initWithType:v6];
 
   v8 = objc_alloc(MEMORY[0x277D1B1C8]);
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
-  v11 = [v8 initWithSize:a1 scale:{a1, v10 * 3.0}];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  v11 = [v8 initWithSize:self scale:{self, v10 * 3.0}];
 
   v12 = [v7 prepareImageForDescriptor:v11];
   v13 = MEMORY[0x277D755B8];
-  v14 = [v12 CGImage];
+  cGImage = [v12 CGImage];
   [v12 scale];
-  v15 = [v13 imageWithCGImage:v14 scale:0 orientation:?];
+  v15 = [v13 imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v15;
 }

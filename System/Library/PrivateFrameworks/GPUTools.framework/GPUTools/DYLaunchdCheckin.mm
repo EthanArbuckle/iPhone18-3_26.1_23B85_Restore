@@ -1,15 +1,15 @@
 @interface DYLaunchdCheckin
-- (DYLaunchdCheckin)checkinWithBlock:(id)a3;
-- (DYLaunchdCheckin)initWithSocketPath:(id)a3;
-- (id)_connectToSocketDescriptor:(int)a3;
+- (DYLaunchdCheckin)checkinWithBlock:(id)block;
+- (DYLaunchdCheckin)initWithSocketPath:(id)path;
+- (id)_connectToSocketDescriptor:(int)descriptor;
 - (int)_unixListenSocketDescriptor;
 @end
 
 @implementation DYLaunchdCheckin
 
-- (DYLaunchdCheckin)initWithSocketPath:(id)a3
+- (DYLaunchdCheckin)initWithSocketPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = DYLaunchdCheckin;
   v5 = [(DYLaunchdCheckin *)&v14 init];
@@ -20,18 +20,18 @@
   queue = v5->_queue;
   v5->_queue = v9;
 
-  v11 = [v4 copy];
+  v11 = [pathCopy copy];
   socketPath = v5->_socketPath;
   v5->_socketPath = v11;
 
   return v5;
 }
 
-- (id)_connectToSocketDescriptor:(int)a3
+- (id)_connectToSocketDescriptor:(int)descriptor
 {
   v5 = objc_opt_new();
-  fcntl(a3, 4, 4);
-  v6 = dispatch_source_create(MEMORY[0x277D85D28], a3, 0, self->_queue);
+  fcntl(descriptor, 4, 4);
+  v6 = dispatch_source_create(MEMORY[0x277D85D28], descriptor, 0, self->_queue);
   connSource = self->_connSource;
   self->_connSource = v6;
 
@@ -40,7 +40,7 @@
   handler[1] = 3221225472;
   handler[2] = __47__DYLaunchdCheckin__connectToSocketDescriptor___block_invoke;
   handler[3] = &unk_2793097C8;
-  v18 = a3;
+  descriptorCopy = descriptor;
   handler[4] = self;
   dispatch_source_set_cancel_handler(v8, handler);
   v9 = self->_connSource;
@@ -49,7 +49,7 @@
   v14[2] = __47__DYLaunchdCheckin__connectToSocketDescriptor___block_invoke_2;
   v14[3] = &unk_2793097F0;
   v14[4] = self;
-  v16 = a3;
+  descriptorCopy2 = descriptor;
   v10 = v5;
   v15 = v10;
   dispatch_source_set_event_handler(v9, v14);
@@ -100,9 +100,9 @@ void __47__DYLaunchdCheckin__connectToSocketDescriptor___block_invoke_2(uint64_t
   v3 = socket(1, 1, 0);
   bzero(&v7, 0x6AuLL);
   v7.sa_family = 1;
-  v4 = [(NSString *)self->_socketPath fileSystemRepresentation];
-  v7.sa_len = strlen(v4);
-  strncpy(v7.sa_data, v4, 0x67uLL);
+  fileSystemRepresentation = [(NSString *)self->_socketPath fileSystemRepresentation];
+  v7.sa_len = strlen(fileSystemRepresentation);
+  strncpy(v7.sa_data, fileSystemRepresentation, 0x67uLL);
   if (bind(v3, &v7, 0x6Au))
   {
     result = -1;
@@ -122,17 +122,17 @@ void __47__DYLaunchdCheckin__connectToSocketDescriptor___block_invoke_2(uint64_t
   return result;
 }
 
-- (DYLaunchdCheckin)checkinWithBlock:(id)a3
+- (DYLaunchdCheckin)checkinWithBlock:(id)block
 {
-  v9 = a3;
-  v4 = [v9 copy];
+  blockCopy = block;
+  v4 = [blockCopy copy];
   block = self->_block;
   self->_block = v4;
 
-  v6 = [(DYLaunchdCheckin *)self _unixListenSocketDescriptor];
-  if (v6 != -1)
+  _unixListenSocketDescriptor = [(DYLaunchdCheckin *)self _unixListenSocketDescriptor];
+  if (_unixListenSocketDescriptor != -1)
   {
-    v7 = [(DYLaunchdCheckin *)self _connectToSocketDescriptor:v6];
+    v7 = [(DYLaunchdCheckin *)self _connectToSocketDescriptor:_unixListenSocketDescriptor];
   }
 
   return result;

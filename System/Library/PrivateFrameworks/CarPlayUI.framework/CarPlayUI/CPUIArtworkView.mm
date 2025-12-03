@@ -3,10 +3,10 @@
 - (UIImage)placeholderImage;
 - (id)showVideoHandler;
 - (int64_t)videoPlaybackState;
-- (void)setImage:(id)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setShowVideoHandler:(id)a3;
-- (void)setVideoPlaybackState:(int64_t)a3;
+- (void)setImage:(id)image;
+- (void)setPlaceholderImage:(id)image;
+- (void)setShowVideoHandler:(id)handler;
+- (void)setVideoPlaybackState:(int64_t)state;
 @end
 
 @implementation CPUIArtworkView
@@ -18,14 +18,14 @@
   return *(self + v3);
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v5 = OBJC_IVAR____TtC9CarPlayUI15CPUIArtworkView_image;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = image;
+  imageCopy = image;
+  selfCopy = self;
 
   CPUIArtworkView.image.didset();
 }
@@ -37,11 +37,11 @@
   return *(self + v3);
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  v5 = a3;
-  v6 = self;
-  CPUIArtworkView.placeholderImage.setter(a3);
+  imageCopy = image;
+  selfCopy = self;
+  CPUIArtworkView.placeholderImage.setter(image);
 }
 
 - (int64_t)videoPlaybackState
@@ -51,12 +51,12 @@
   return *(self + v3);
 }
 
-- (void)setVideoPlaybackState:(int64_t)a3
+- (void)setVideoPlaybackState:(int64_t)state
 {
   v5 = OBJC_IVAR____TtC9CarPlayUI15CPUIArtworkView_videoPlaybackState;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
+  *(self + v5) = state;
+  selfCopy = self;
   CPUIArtworkView.updateWrappedView()();
 }
 
@@ -84,9 +84,9 @@
   return v4;
 }
 
-- (void)setShowVideoHandler:(id)a3
+- (void)setShowVideoHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -104,7 +104,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v7);
 }
 

@@ -1,20 +1,20 @@
 @interface CPLPrequeliteIDMapping
-- (BOOL)addAddEventForRecordWithLocalScopedIdentifier:(id)a3 direction:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addDeleteEventForRecordWithLocalScopedIdentifier:(id)a3 direction:(unint64_t)a4 error:(id *)a5;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
+- (BOOL)addAddEventForRecordWithLocalScopedIdentifier:(id)identifier direction:(unint64_t)direction error:(id *)error;
+- (BOOL)addDeleteEventForRecordWithLocalScopedIdentifier:(id)identifier direction:(unint64_t)direction error:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
 - (BOOL)hasPendingIdentifiers;
 - (BOOL)initializeStorage;
-- (BOOL)markAllPendingIdentifiersForScopeWithIdentifier:(id)a3 asFinalWithError:(id *)a4;
-- (BOOL)removeMappingForCloudScopedIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)removeMappingForLocalScopedIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)resetAllFinalCloudIdentifiersForScopeWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)setFinalCloudScopedIdentifier:(id)a3 forPendingCloudScopedIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)upgradeStorageToVersion:(int64_t)a3;
-- (CPLPrequeliteIDMapping)initWithAbstractObject:(id)a3;
-- (id)cloudScopedIdentifierForLocalScopedIdentifier:(id)a3 isFinal:(BOOL *)a4;
-- (id)localScopedIdentifierForCloudScopedIdentifier:(id)a3 isFinal:(BOOL *)a4;
+- (BOOL)markAllPendingIdentifiersForScopeWithIdentifier:(id)identifier asFinalWithError:(id *)error;
+- (BOOL)removeMappingForCloudScopedIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeMappingForLocalScopedIdentifier:(id)identifier error:(id *)error;
+- (BOOL)resetAllFinalCloudIdentifiersForScopeWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setFinalCloudScopedIdentifier:(id)identifier forPendingCloudScopedIdentifier:(id)scopedIdentifier error:(id *)error;
+- (BOOL)upgradeStorageToVersion:(int64_t)version;
+- (CPLPrequeliteIDMapping)initWithAbstractObject:(id)object;
+- (id)cloudScopedIdentifierForLocalScopedIdentifier:(id)identifier isFinal:(BOOL *)final;
+- (id)localScopedIdentifierForCloudScopedIdentifier:(id)identifier isFinal:(BOOL *)final;
 - (id)status;
-- (void)_cacheLocalScopedIdentifier:(id)a3 cloudScopedIdentifier:(id)a4 isFinal:(BOOL)a5;
+- (void)_cacheLocalScopedIdentifier:(id)identifier cloudScopedIdentifier:(id)scopedIdentifier isFinal:(BOOL)final;
 - (void)_clearScopedIdentifiersCache;
 - (void)transactionDidFinish;
 @end
@@ -38,11 +38,11 @@
   [v3 removeAllObjects];
 }
 
-- (CPLPrequeliteIDMapping)initWithAbstractObject:(id)a3
+- (CPLPrequeliteIDMapping)initWithAbstractObject:(id)object
 {
   v11.receiver = self;
   v11.super_class = CPLPrequeliteIDMapping;
-  v3 = [(CPLPrequeliteStorage *)&v11 initWithAbstractObject:a3];
+  v3 = [(CPLPrequeliteStorage *)&v11 initWithAbstractObject:object];
   if (v3)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
@@ -61,24 +61,24 @@
   return v3;
 }
 
-- (void)_cacheLocalScopedIdentifier:(id)a3 cloudScopedIdentifier:(id)a4 isFinal:(BOOL)a5
+- (void)_cacheLocalScopedIdentifier:(id)identifier cloudScopedIdentifier:(id)scopedIdentifier isFinal:(BOOL)final
 {
-  v5 = a5;
+  finalCopy = final;
   v8 = *(&self->super._shouldUpgradeSchema + 1);
-  v9 = a4;
-  v11 = a3;
-  [v8 setObject:v9 forKeyedSubscript:v11];
-  [*(&self->_localToCloudScopedIdentifiersCache + 4) setObject:v11 forKeyedSubscript:v9];
+  scopedIdentifierCopy = scopedIdentifier;
+  identifierCopy = identifier;
+  [v8 setObject:scopedIdentifierCopy forKeyedSubscript:identifierCopy];
+  [*(&self->_localToCloudScopedIdentifiersCache + 4) setObject:identifierCopy forKeyedSubscript:scopedIdentifierCopy];
 
   v10 = *(&self->_cloudToLocalScopedIdentifiersCache + 4);
-  if (v5)
+  if (finalCopy)
   {
-    [v10 removeObject:v11];
+    [v10 removeObject:identifierCopy];
   }
 
   else
   {
-    [v10 addObject:v11];
+    [v10 addObject:identifierCopy];
   }
 }
 
@@ -86,28 +86,28 @@
 {
   v5.receiver = self;
   v5.super_class = CPLPrequeliteIDMapping;
-  v3 = [(CPLPrequeliteStorage *)&v5 initializeStorage];
-  if (v3)
+  initializeStorage = [(CPLPrequeliteStorage *)&v5 initializeStorage];
+  if (initializeStorage)
   {
-    v3 = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"stableScopeIndex INTEGER NOT NULL error:cloudIdentifier TEXT NOT NULL, localIdentifier TEXT NOT NULL, mappingState INTEGER NOT NULL, addTimestamp TIMESTAMP NOT NULL, addDirection INTEGER NOT NULL, deleteTimestamp TIMESTAMP, deleteDirection INTEGER", 0];
-    if (v3)
+    initializeStorage = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"stableScopeIndex INTEGER NOT NULL error:cloudIdentifier TEXT NOT NULL, localIdentifier TEXT NOT NULL, mappingState INTEGER NOT NULL, addTimestamp TIMESTAMP NOT NULL, addDirection INTEGER NOT NULL, deleteTimestamp TIMESTAMP, deleteDirection INTEGER", 0];
+    if (initializeStorage)
     {
-      v3 = [(CPLPrequeliteStorage *)self createIndexWithName:@"scopedCloudIdentifier" withDefinition:@"stableScopeIndex unique:cloudIdentifier" error:1, 0];
-      if (v3)
+      initializeStorage = [(CPLPrequeliteStorage *)self createIndexWithName:@"scopedCloudIdentifier" withDefinition:@"stableScopeIndex unique:cloudIdentifier" error:1, 0];
+      if (initializeStorage)
       {
-        v3 = [(CPLPrequeliteStorage *)self createIndexWithName:@"scopedLocalIdentifier" withDefinition:@"stableScopeIndex unique:localIdentifier" error:1, 0];
-        if (v3)
+        initializeStorage = [(CPLPrequeliteStorage *)self createIndexWithName:@"scopedLocalIdentifier" withDefinition:@"stableScopeIndex unique:localIdentifier" error:1, 0];
+        if (initializeStorage)
         {
-          LOBYTE(v3) = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"mappingState" error:0];
+          LOBYTE(initializeStorage) = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"mappingState" error:0];
         }
       }
     }
   }
 
-  return v3;
+  return initializeStorage;
 }
 
-- (BOOL)upgradeStorageToVersion:(int64_t)a3
+- (BOOL)upgradeStorageToVersion:(int64_t)version
 {
   v18.receiver = self;
   v18.super_class = CPLPrequeliteIDMapping;
@@ -116,19 +116,19 @@
     return 0;
   }
 
-  if (a3 == 45)
+  if (version == 45)
   {
     if (![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
     {
       return 1;
     }
 
-    v16 = self;
+    selfCopy2 = self;
     v15 = @"stableScopeIndex, cloudIdentifier, localIdentifier, mappingState, addTimestamp, addDirection, deleteTimestamp, deleteDirection";
-    return [(CPLPrequeliteStorage *)v16 recreateMainTableWithCopyInstructions:@"stableScopeIndex oldFields:cloudIdentifier error:localIdentifier, mappingState, addTimestamp, addDirection, deleteTimestamp, deleteDirection", v15, 0];
+    return [(CPLPrequeliteStorage *)selfCopy2 recreateMainTableWithCopyInstructions:@"stableScopeIndex oldFields:cloudIdentifier error:localIdentifier, mappingState, addTimestamp, addDirection, deleteTimestamp, deleteDirection", v15, 0];
   }
 
-  if (a3 == 39)
+  if (version == 39)
   {
     if (![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
     {
@@ -136,41 +136,41 @@
     }
 
     v15 = @"3, cloudIdentifier, localIdentifier, mappingState, addTimestamp, addDirection, deleteTimestamp, deleteDirection";
-    v16 = self;
-    return [(CPLPrequeliteStorage *)v16 recreateMainTableWithCopyInstructions:@"stableScopeIndex oldFields:cloudIdentifier error:localIdentifier, mappingState, addTimestamp, addDirection, deleteTimestamp, deleteDirection", v15, 0];
+    selfCopy2 = self;
+    return [(CPLPrequeliteStorage *)selfCopy2 recreateMainTableWithCopyInstructions:@"stableScopeIndex oldFields:cloudIdentifier error:localIdentifier, mappingState, addTimestamp, addDirection, deleteTimestamp, deleteDirection", v15, 0];
   }
 
-  if (a3 != 37)
+  if (version != 37)
   {
     return 1;
   }
 
-  v5 = [(CPLPrequeliteStorage *)self pqStore];
-  v6 = [v5 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v7 = [(CPLPrequeliteStorage *)self mainTable];
-  v8 = [v6 cplExecute:{@"ALTER TABLE %@ ADD COLUMN addTimestamp TIMESTAMP NOT NULL DEFAULT -2147483648", v7}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v8 = [pqlConnection cplExecute:{@"ALTER TABLE %@ ADD COLUMN addTimestamp TIMESTAMP NOT NULL DEFAULT -2147483648", mainTable}];
 
   if (!v8)
   {
     goto LABEL_16;
   }
 
-  v9 = [(CPLPrequeliteStorage *)self mainTable];
-  v10 = [v6 cplExecute:{@"ALTER TABLE %@ ADD COLUMN addDirection INTEGER NOT NULL DEFAULT 0", v9}];
+  mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
+  v10 = [pqlConnection cplExecute:{@"ALTER TABLE %@ ADD COLUMN addDirection INTEGER NOT NULL DEFAULT 0", mainTable2}];
 
   if (!v10)
   {
     goto LABEL_16;
   }
 
-  v11 = [(CPLPrequeliteStorage *)self mainTable];
-  v12 = [v6 cplExecute:{@"ALTER TABLE %@ ADD COLUMN deleteTimestamp TIMESTAMP DEFAULT NULL", v11}];
+  mainTable3 = [(CPLPrequeliteStorage *)self mainTable];
+  v12 = [pqlConnection cplExecute:{@"ALTER TABLE %@ ADD COLUMN deleteTimestamp TIMESTAMP DEFAULT NULL", mainTable3}];
 
   if (v12)
   {
-    v13 = [(CPLPrequeliteStorage *)self mainTable];
-    v14 = [v6 cplExecute:{@"ALTER TABLE %@ ADD COLUMN deleteDirection INTEGER DEFAULT NULL", v13}];
+    mainTable4 = [(CPLPrequeliteStorage *)self mainTable];
+    v14 = [pqlConnection cplExecute:{@"ALTER TABLE %@ ADD COLUMN deleteDirection INTEGER DEFAULT NULL", mainTable4}];
   }
 
   else
@@ -182,21 +182,21 @@ LABEL_16:
   return v14;
 }
 
-- (id)cloudScopedIdentifierForLocalScopedIdentifier:(id)a3 isFinal:(BOOL *)a4
+- (id)cloudScopedIdentifierForLocalScopedIdentifier:(id)identifier isFinal:(BOOL *)final
 {
-  v6 = a3;
-  v7 = [*(&self->super._shouldUpgradeSchema + 1) objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  v7 = [*(&self->super._shouldUpgradeSchema + 1) objectForKeyedSubscript:identifierCopy];
   if (v7)
   {
     v8 = v7;
-    *a4 = [*(&self->_cloudToLocalScopedIdentifiersCache + 4) containsObject:v6] ^ 1;
+    *final = [*(&self->_cloudToLocalScopedIdentifiersCache + 4) containsObject:identifierCopy] ^ 1;
   }
 
   else
   {
-    *a4 = 0;
-    v9 = [v6 scopeIdentifier];
-    v10 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v9];
+    *final = 0;
+    scopeIdentifier = [identifierCopy scopeIdentifier];
+    v10 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:scopeIdentifier];
 
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -205,23 +205,23 @@ LABEL_16:
 
     else
     {
-      v11 = [(CPLPrequeliteStorage *)self pqStore];
-      v12 = [v11 pqlConnection];
+      pqStore = [(CPLPrequeliteStorage *)self pqStore];
+      pqlConnection = [pqStore pqlConnection];
 
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_100162EB8;
       v18[3] = &unk_10027B9D8;
-      v20 = a4;
-      v13 = v6;
+      finalCopy = final;
+      v13 = identifierCopy;
       v19 = v13;
-      v14 = [(CPLPrequeliteStorage *)self mainTable];
-      v15 = [v13 identifier];
-      v16 = [v12 cplFetchObject:v18 sql:{@"SELECT cloudIdentifier, mappingState FROM %@ WHERE stableScopeIndex = %ld AND localIdentifier = %@", v14, v10, v15}];
+      mainTable = [(CPLPrequeliteStorage *)self mainTable];
+      identifier = [v13 identifier];
+      v16 = [pqlConnection cplFetchObject:v18 sql:{@"SELECT cloudIdentifier, mappingState FROM %@ WHERE stableScopeIndex = %ld AND localIdentifier = %@", mainTable, v10, identifier}];
 
       if (v16)
       {
-        [(CPLPrequeliteIDMapping *)self _cacheLocalScopedIdentifier:v13 cloudScopedIdentifier:v16 isFinal:*a4];
+        [(CPLPrequeliteIDMapping *)self _cacheLocalScopedIdentifier:v13 cloudScopedIdentifier:v16 isFinal:*final];
       }
 
       v8 = v16;
@@ -231,20 +231,20 @@ LABEL_16:
   return v8;
 }
 
-- (id)localScopedIdentifierForCloudScopedIdentifier:(id)a3 isFinal:(BOOL *)a4
+- (id)localScopedIdentifierForCloudScopedIdentifier:(id)identifier isFinal:(BOOL *)final
 {
-  v6 = a3;
-  v7 = [*(&self->_localToCloudScopedIdentifiersCache + 4) objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  v7 = [*(&self->_localToCloudScopedIdentifiersCache + 4) objectForKeyedSubscript:identifierCopy];
   if (v7)
   {
     v8 = v7;
-    *a4 = [*(&self->_cloudToLocalScopedIdentifiersCache + 4) containsObject:v7] ^ 1;
+    *final = [*(&self->_cloudToLocalScopedIdentifiersCache + 4) containsObject:v7] ^ 1;
   }
 
   else
   {
-    v9 = [v6 scopeIdentifier];
-    v10 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v9];
+    scopeIdentifier = [identifierCopy scopeIdentifier];
+    v10 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:scopeIdentifier];
 
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -253,24 +253,24 @@ LABEL_16:
 
     else
     {
-      *a4 = 0;
-      v11 = [(CPLPrequeliteStorage *)self pqStore];
-      v12 = [v11 pqlConnection];
+      *final = 0;
+      pqStore = [(CPLPrequeliteStorage *)self pqStore];
+      pqlConnection = [pqStore pqlConnection];
 
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_100163138;
       v18[3] = &unk_10027B9D8;
-      v20 = a4;
-      v13 = v6;
+      finalCopy = final;
+      v13 = identifierCopy;
       v19 = v13;
-      v14 = [(CPLPrequeliteStorage *)self mainTable];
-      v15 = [v13 identifier];
-      v16 = [v12 cplFetchObject:v18 sql:{@"SELECT localIdentifier, mappingState FROM %@ WHERE stableScopeIndex = %ld AND cloudIdentifier = %@", v14, v10, v15}];
+      mainTable = [(CPLPrequeliteStorage *)self mainTable];
+      identifier = [v13 identifier];
+      v16 = [pqlConnection cplFetchObject:v18 sql:{@"SELECT localIdentifier, mappingState FROM %@ WHERE stableScopeIndex = %ld AND cloudIdentifier = %@", mainTable, v10, identifier}];
 
       if (v16)
       {
-        [(CPLPrequeliteIDMapping *)self _cacheLocalScopedIdentifier:v16 cloudScopedIdentifier:v13 isFinal:*a4];
+        [(CPLPrequeliteIDMapping *)self _cacheLocalScopedIdentifier:v16 cloudScopedIdentifier:v13 isFinal:*final];
       }
 
       v8 = v16;
@@ -280,52 +280,52 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)setFinalCloudScopedIdentifier:(id)a3 forPendingCloudScopedIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setFinalCloudScopedIdentifier:(id)identifier forPendingCloudScopedIdentifier:(id)scopedIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 scopeIdentifier];
-  v11 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v10];
+  identifierCopy = identifier;
+  scopedIdentifierCopy = scopedIdentifier;
+  scopeIdentifier = [scopedIdentifierCopy scopeIdentifier];
+  v11 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (!a5)
+    if (!error)
     {
       v14 = 0;
       goto LABEL_12;
     }
 
-    v12 = [v9 scopeIdentifier];
-    v13 = [CPLErrors invalidScopeErrorWithScopeIdentifier:v12];
+    scopeIdentifier2 = [scopedIdentifierCopy scopeIdentifier];
+    lastCPLError = [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier2];
     v14 = 0;
     goto LABEL_10;
   }
 
-  v15 = [(CPLPrequeliteStorage *)self pqStore];
-  v12 = [v15 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  scopeIdentifier2 = [pqStore pqlConnection];
 
-  v16 = [(CPLPrequeliteStorage *)self mainTable];
-  v17 = [v8 identifier];
-  v18 = [v9 identifier];
-  v14 = [v12 cplExecute:{@"UPDATE %@ SET cloudIdentifier = %@, mappingState = %i WHERE stableScopeIndex = %ld AND cloudIdentifier = %@", v16, v17, 1, v11, v18}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  identifier = [identifierCopy identifier];
+  identifier2 = [scopedIdentifierCopy identifier];
+  v14 = [scopeIdentifier2 cplExecute:{@"UPDATE %@ SET cloudIdentifier = %@, mappingState = %i WHERE stableScopeIndex = %ld AND cloudIdentifier = %@", mainTable, identifier, 1, v11, identifier2}];
 
   if (v14)
   {
-    v19 = [*(&self->_localToCloudScopedIdentifiersCache + 4) objectForKeyedSubscript:v9];
+    v19 = [*(&self->_localToCloudScopedIdentifiersCache + 4) objectForKeyedSubscript:scopedIdentifierCopy];
     if (v19)
     {
-      [*(&self->_localToCloudScopedIdentifiersCache + 4) removeObjectForKey:v9];
-      [(CPLPrequeliteIDMapping *)self _cacheLocalScopedIdentifier:v19 cloudScopedIdentifier:v8 isFinal:1];
+      [*(&self->_localToCloudScopedIdentifiersCache + 4) removeObjectForKey:scopedIdentifierCopy];
+      [(CPLPrequeliteIDMapping *)self _cacheLocalScopedIdentifier:v19 cloudScopedIdentifier:identifierCopy isFinal:1];
     }
 
     goto LABEL_11;
   }
 
-  if (a5)
+  if (error)
   {
-    v13 = [v12 lastCPLError];
+    lastCPLError = [scopeIdentifier2 lastCPLError];
 LABEL_10:
-    *a5 = v13;
+    *error = lastCPLError;
   }
 
 LABEL_11:
@@ -334,16 +334,16 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)markAllPendingIdentifiersForScopeWithIdentifier:(id)a3 asFinalWithError:(id *)a4
+- (BOOL)markAllPendingIdentifiersForScopeWithIdentifier:(id)identifier asFinalWithError:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:identifierCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a4)
+    if (error)
     {
-      [CPLErrors invalidScopeErrorWithScopeIdentifier:v6];
-      *a4 = v8 = 0;
+      [CPLErrors invalidScopeErrorWithScopeIdentifier:identifierCopy];
+      *error = v8 = 0;
     }
 
     else
@@ -355,20 +355,20 @@ LABEL_12:
   else
   {
     v9 = v7;
-    v10 = [(CPLPrequeliteStorage *)self pqStore];
-    v11 = [v10 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v12 = [(CPLPrequeliteStorage *)self mainTable];
-    v8 = [v11 cplExecute:{@"UPDATE OR FAIL %@ SET mappingState = %i WHERE stableScopeIndex = %ld AND mappingState = %i", v12, 1, v9, 0}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    v8 = [pqlConnection cplExecute:{@"UPDATE OR FAIL %@ SET mappingState = %i WHERE stableScopeIndex = %ld AND mappingState = %i", mainTable, 1, v9, 0}];
 
     if (v8)
     {
       [*(&self->_cloudToLocalScopedIdentifiersCache + 4) removeAllObjects];
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [v11 lastCPLError];
+      *error = [pqlConnection lastCPLError];
     }
   }
 
@@ -382,47 +382,47 @@ LABEL_12:
     return 1;
   }
 
-  v4 = [(CPLPrequeliteStorage *)self pqStore];
-  v5 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v6 = [PQLFormatInjection formatInjection:@"mappingState = %i", 0];
-  v7 = [v4 table:v5 hasRecordsMatchingQuery:v6];
+  v7 = [pqStore table:mainTable hasRecordsMatchingQuery:v6];
 
   return v7;
 }
 
-- (BOOL)removeMappingForCloudScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeMappingForCloudScopedIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 scopeIdentifier];
-  v8 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v7];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v8 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (!a4)
+    if (!error)
     {
       v11 = 0;
       goto LABEL_12;
     }
 
-    v9 = [v6 scopeIdentifier];
-    v10 = [CPLErrors invalidScopeErrorWithScopeIdentifier:v9];
+    scopeIdentifier2 = [identifierCopy scopeIdentifier];
+    lastCPLError = [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier2];
     v11 = 0;
     goto LABEL_10;
   }
 
-  v12 = [(CPLPrequeliteStorage *)self pqStore];
-  v9 = [v12 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  scopeIdentifier2 = [pqStore pqlConnection];
 
-  v13 = [(CPLPrequeliteStorage *)self mainTable];
-  v14 = [v6 identifier];
-  v11 = [v9 cplExecute:{@"DELETE FROM %@ WHERE stableScopeIndex = %ld AND cloudIdentifier = %@", v13, v8, v14}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  identifier = [identifierCopy identifier];
+  v11 = [scopeIdentifier2 cplExecute:{@"DELETE FROM %@ WHERE stableScopeIndex = %ld AND cloudIdentifier = %@", mainTable, v8, identifier}];
 
   if (v11)
   {
-    v15 = [*(&self->_localToCloudScopedIdentifiersCache + 4) objectForKeyedSubscript:v6];
+    v15 = [*(&self->_localToCloudScopedIdentifiersCache + 4) objectForKeyedSubscript:identifierCopy];
     if (v15)
     {
-      [*(&self->_localToCloudScopedIdentifiersCache + 4) removeObjectForKey:v6];
+      [*(&self->_localToCloudScopedIdentifiersCache + 4) removeObjectForKey:identifierCopy];
       [*(&self->super._shouldUpgradeSchema + 1) removeObjectForKey:v15];
       [*(&self->_cloudToLocalScopedIdentifiersCache + 4) removeObject:v15];
     }
@@ -430,11 +430,11 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (a4)
+  if (error)
   {
-    v10 = [v9 lastCPLError];
+    lastCPLError = [scopeIdentifier2 lastCPLError];
 LABEL_10:
-    *a4 = v10;
+    *error = lastCPLError;
   }
 
 LABEL_11:
@@ -443,63 +443,63 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)addDeleteEventForRecordWithLocalScopedIdentifier:(id)a3 direction:(unint64_t)a4 error:(id *)a5
+- (BOOL)addDeleteEventForRecordWithLocalScopedIdentifier:(id)identifier direction:(unint64_t)direction error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 scopeIdentifier];
-  v10 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v9];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v10 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (!a5)
+    if (!error)
     {
       v13 = 0;
       goto LABEL_9;
     }
 
-    v11 = [v8 scopeIdentifier];
-    v12 = [CPLErrors invalidScopeErrorWithScopeIdentifier:v11];
+    scopeIdentifier2 = [identifierCopy scopeIdentifier];
+    lastCPLError = [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier2];
     v13 = 0;
   }
 
   else
   {
-    v14 = [(CPLPrequeliteStorage *)self pqStore];
-    v11 = [v14 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    scopeIdentifier2 = [pqStore pqlConnection];
 
     +[NSDate timeIntervalSinceReferenceDate];
     v16 = v15;
-    v17 = [(CPLPrequeliteStorage *)self mainTable];
-    v18 = [v8 identifier];
-    v13 = [v11 cplExecute:{@"UPDATE OR IGNORE %@ SET deleteTimestamp = %ld, deleteDirection = %ld WHERE stableScopeIndex = %ld AND localIdentifier = %@ AND (deleteTimestamp IS NULL OR (deleteTimestamp <= addTimestamp))", v17, v16, a4, v10, v18}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v13 = [scopeIdentifier2 cplExecute:{@"UPDATE OR IGNORE %@ SET deleteTimestamp = %ld, deleteDirection = %ld WHERE stableScopeIndex = %ld AND localIdentifier = %@ AND (deleteTimestamp IS NULL OR (deleteTimestamp <= addTimestamp))", mainTable, v16, direction, v10, identifier}];
 
-    if (!a5 || (v13 & 1) != 0)
+    if (!error || (v13 & 1) != 0)
     {
       goto LABEL_8;
     }
 
-    v12 = [v11 lastCPLError];
+    lastCPLError = [scopeIdentifier2 lastCPLError];
   }
 
-  *a5 = v12;
+  *error = lastCPLError;
 LABEL_8:
 
 LABEL_9:
   return v13;
 }
 
-- (BOOL)addAddEventForRecordWithLocalScopedIdentifier:(id)a3 direction:(unint64_t)a4 error:(id *)a5
+- (BOOL)addAddEventForRecordWithLocalScopedIdentifier:(id)identifier direction:(unint64_t)direction error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 scopeIdentifier];
-  v10 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v9];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v10 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a5)
+    if (error)
     {
-      v11 = [v8 scopeIdentifier];
-      *a5 = [CPLErrors invalidScopeErrorWithScopeIdentifier:v11];
+      scopeIdentifier2 = [identifierCopy scopeIdentifier];
+      *error = [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier2];
     }
 
     v12 = 0;
@@ -507,77 +507,77 @@ LABEL_9:
 
   else
   {
-    v13 = [(CPLPrequeliteStorage *)self pqStore];
-    v14 = [v13 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
     +[NSDate timeIntervalSinceReferenceDate];
     v16 = v15;
-    v17 = [(CPLPrequeliteStorage *)self mainTable];
-    v18 = [v8 identifier];
-    v12 = [v14 cplExecute:{@"UPDATE OR IGNORE %@ SET addTimestamp = %ld, addDirection = %ld WHERE stableScopeIndex = %ld AND localIdentifier = %@ AND (addTimestamp <= deleteTimestamp)", v17, v16, a4, v10, v18}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v12 = [pqlConnection cplExecute:{@"UPDATE OR IGNORE %@ SET addTimestamp = %ld, addDirection = %ld WHERE stableScopeIndex = %ld AND localIdentifier = %@ AND (addTimestamp <= deleteTimestamp)", mainTable, v16, direction, v10, identifier}];
 
     if (v12)
     {
-      if ([v14 changes])
+      if ([pqlConnection changes])
       {
-        sub_1001BFBA0(v8, a4);
+        sub_1001BFBA0(identifierCopy, direction);
       }
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = [v14 lastCPLError];
+      *error = [pqlConnection lastCPLError];
     }
   }
 
   return v12;
 }
 
-- (BOOL)removeMappingForLocalScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeMappingForLocalScopedIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 scopeIdentifier];
-  v8 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v7];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v8 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (!a4)
+    if (!error)
     {
       v11 = 0;
       goto LABEL_12;
     }
 
-    v9 = [v6 scopeIdentifier];
-    v10 = [CPLErrors invalidScopeErrorWithScopeIdentifier:v9];
+    scopeIdentifier2 = [identifierCopy scopeIdentifier];
+    lastCPLError = [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier2];
     v11 = 0;
     goto LABEL_10;
   }
 
-  v12 = [(CPLPrequeliteStorage *)self pqStore];
-  v9 = [v12 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  scopeIdentifier2 = [pqStore pqlConnection];
 
-  v13 = [(CPLPrequeliteStorage *)self mainTable];
-  v14 = [v6 identifier];
-  v11 = [v9 cplExecute:{@"DELETE FROM %@ WHERE stableScopeIndex = %ld AND localIdentifier = %@", v13, v8, v14}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  identifier = [identifierCopy identifier];
+  v11 = [scopeIdentifier2 cplExecute:{@"DELETE FROM %@ WHERE stableScopeIndex = %ld AND localIdentifier = %@", mainTable, v8, identifier}];
 
   if (v11)
   {
-    v15 = [*(&self->_localToCloudScopedIdentifiersCache + 4) objectForKeyedSubscript:v6];
-    if (v6)
+    v15 = [*(&self->_localToCloudScopedIdentifiersCache + 4) objectForKeyedSubscript:identifierCopy];
+    if (identifierCopy)
     {
       [*(&self->_localToCloudScopedIdentifiersCache + 4) removeObjectForKey:v15];
-      [*(&self->super._shouldUpgradeSchema + 1) removeObjectForKey:v6];
-      [*(&self->_cloudToLocalScopedIdentifiersCache + 4) removeObject:v6];
+      [*(&self->super._shouldUpgradeSchema + 1) removeObjectForKey:identifierCopy];
+      [*(&self->_cloudToLocalScopedIdentifiersCache + 4) removeObject:identifierCopy];
     }
 
     goto LABEL_11;
   }
 
-  if (a4)
+  if (error)
   {
-    v10 = [v9 lastCPLError];
+    lastCPLError = [scopeIdentifier2 lastCPLError];
 LABEL_10:
-    *a4 = v10;
+    *error = lastCPLError;
   }
 
 LABEL_11:
@@ -586,16 +586,16 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)resetAllFinalCloudIdentifiersForScopeWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)resetAllFinalCloudIdentifiersForScopeWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(CPLPrequeliteStorage *)self stableScopeIndexForScopeIdentifier:identifierCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a4)
+    if (error)
     {
-      [CPLErrors invalidScopeErrorWithScopeIdentifier:v6];
-      *a4 = v8 = 0;
+      [CPLErrors invalidScopeErrorWithScopeIdentifier:identifierCopy];
+      *error = v8 = 0;
     }
 
     else
@@ -607,20 +607,20 @@ LABEL_12:
   else
   {
     v9 = v7;
-    v10 = [(CPLPrequeliteStorage *)self pqStore];
-    v11 = [v10 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v12 = [(CPLPrequeliteStorage *)self mainTable];
-    v8 = [v11 cplExecute:{@"UPDATE OR FAIL %@ SET mappingState = %i WHERE stableScopeIndex = %ld AND mappingState = %i", v12, 0, v9, 1}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    v8 = [pqlConnection cplExecute:{@"UPDATE OR FAIL %@ SET mappingState = %i WHERE stableScopeIndex = %ld AND mappingState = %i", mainTable, 0, v9, 1}];
 
     if (v8)
     {
       [(CPLPrequeliteIDMapping *)self _clearScopedIdentifiersCache];
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [v11 lastCPLError];
+      *error = [pqlConnection lastCPLError];
     }
   }
 
@@ -629,46 +629,46 @@ LABEL_12:
 
 - (id)status
 {
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v5 = [PQLFormatInjection formatInjection:@"mappingState = %i", 0];
-  v6 = [v3 table:v4 countOfRecordsMatchingQuery:v5];
+  v6 = [pqStore table:mainTable countOfRecordsMatchingQuery:v5];
 
   if (v6)
   {
     v11.receiver = self;
     v11.super_class = CPLPrequeliteIDMapping;
-    v7 = [(CPLPrequeliteStorage *)&v11 status];
-    v8 = [NSString stringWithFormat:@"%@ (%lu pending)", v7, v6];
+    status = [(CPLPrequeliteStorage *)&v11 status];
+    status2 = [NSString stringWithFormat:@"%@ (%lu pending)", status, v6];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = CPLPrequeliteIDMapping;
-    v8 = [(CPLPrequeliteStorage *)&v10 status];
+    status2 = [(CPLPrequeliteStorage *)&v10 status];
   }
 
-  return v8;
+  return status2;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v11 = [(CPLPrequeliteStorage *)self pqStore];
-  v12 = [v11 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v13 = [(CPLPrequeliteStorage *)self mainTable];
-  v14 = [v12 cplExecute:{@"DELETE FROM %@ WHERE stableScopeIndex = %ld LIMIT %ld", v13, a3, a4}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v14 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE stableScopeIndex = %ld LIMIT %ld", mainTable, index, count}];
 
   if (v14)
   {
-    *a5 = [v12 changes];
+    *deletedCount = [pqlConnection changes];
     [(CPLPrequeliteIDMapping *)self _clearScopedIdentifiersCache];
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = [v12 lastError];
+    *error = [pqlConnection lastError];
   }
 
   return v14;

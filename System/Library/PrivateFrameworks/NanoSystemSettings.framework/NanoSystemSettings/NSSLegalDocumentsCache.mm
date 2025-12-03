@@ -1,26 +1,26 @@
 @interface NSSLegalDocumentsCache
-+ (id)cachedReplyForPreferredLanguages:(id)a3;
-+ (void)cacheReply:(id)a3 forPreferredLanguages:(id)a4 gizmoBuildVersion:(id)a5;
++ (id)cachedReplyForPreferredLanguages:(id)languages;
++ (void)cacheReply:(id)reply forPreferredLanguages:(id)languages gizmoBuildVersion:(id)version;
 + (void)handleMemoryPressureEvent;
-- (BOOL)isValidForPreferredLanguages:(id)a3 gizmoBuildVersion:(id)a4;
-- (NSSLegalDocumentsCache)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isValidForPreferredLanguages:(id)languages gizmoBuildVersion:(id)version;
+- (NSSLegalDocumentsCache)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSLegalDocumentsCache
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reply = self->_reply;
-  v5 = a3;
-  [v5 encodeObject:reply forKey:@"reply"];
-  [v5 encodeObject:self->_preferredLanguages forKey:@"preferredLanguages"];
-  [v5 encodeObject:self->_gizmoBuildVersion forKey:@"gizmoBuildVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:reply forKey:@"reply"];
+  [coderCopy encodeObject:self->_preferredLanguages forKey:@"preferredLanguages"];
+  [coderCopy encodeObject:self->_gizmoBuildVersion forKey:@"gizmoBuildVersion"];
 }
 
-- (NSSLegalDocumentsCache)initWithCoder:(id)a3
+- (NSSLegalDocumentsCache)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = NSSLegalDocumentsCache;
   v5 = [(NSSLegalDocumentsCache *)&v16 init];
@@ -29,15 +29,15 @@
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = [NSSet setWithObjects:v6, v7, objc_opt_class(), 0];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"reply"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"reply"];
     reply = v5->_reply;
     v5->_reply = v9;
 
-    v11 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"preferredLanguages"];
+    v11 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"preferredLanguages"];
     preferredLanguages = v5->_preferredLanguages;
     v5->_preferredLanguages = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gizmoBuildVersion"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gizmoBuildVersion"];
     gizmoBuildVersion = v5->_gizmoBuildVersion;
     v5->_gizmoBuildVersion = v13;
   }
@@ -45,28 +45,28 @@
   return v5;
 }
 
-+ (void)cacheReply:(id)a3 forPreferredLanguages:(id)a4 gizmoBuildVersion:(id)a5
++ (void)cacheReply:(id)reply forPreferredLanguages:(id)languages gizmoBuildVersion:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 cachedReplyForPreferredLanguages:v9];
+  replyCopy = reply;
+  languagesCopy = languages;
+  versionCopy = version;
+  v11 = [self cachedReplyForPreferredLanguages:languagesCopy];
   if (!v11)
   {
     v12 = +[NRPairedDeviceRegistry sharedInstance];
     v13 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v14 = [v12 getAllDevicesWithArchivedAltAccountDevicesMatching:v13];
-    v15 = [v14 firstObject];
+    firstObject = [v14 firstObject];
 
-    v16 = [v15 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+    v16 = [firstObject valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
     v17 = v16;
-    if (!v10 || !v16)
+    if (!versionCopy || !v16)
     {
       v21 = NSSLogForType();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v34 = v15;
+        v34 = firstObject;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Device properties are unexectedly nil! Paired device: (%@)", buf, 0xCu);
       }
 
@@ -78,16 +78,16 @@
     v20 = qword_10003DD78;
     qword_10003DD78 = v19;
 
-    [qword_10003DD78 setReply:v8];
-    [qword_10003DD78 setPreferredLanguages:v9];
-    [qword_10003DD78 setGizmoBuildVersion:v10];
+    [qword_10003DD78 setReply:replyCopy];
+    [qword_10003DD78 setPreferredLanguages:languagesCopy];
+    [qword_10003DD78 setGizmoBuildVersion:versionCopy];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001CDA4;
     block[3] = &unk_100034B48;
     v21 = v18;
     v32 = v21;
-    v29 = v15;
+    v29 = firstObject;
     if (qword_10003DD80 != -1)
     {
       dispatch_once(&qword_10003DD80, block);
@@ -121,7 +121,7 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v15 = v29;
+    firstObject = v29;
 LABEL_17:
 
     goto LABEL_18;
@@ -137,16 +137,16 @@ LABEL_17:
 LABEL_18:
 }
 
-+ (id)cachedReplyForPreferredLanguages:(id)a3
++ (id)cachedReplyForPreferredLanguages:(id)languages
 {
-  v3 = a3;
+  languagesCopy = languages;
   v4 = +[NRPairedDeviceRegistry sharedInstance];
   v5 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v6 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  v8 = [v7 valueForProperty:NRDevicePropertySystemBuildVersion];
-  v9 = [v7 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+  v8 = [firstObject valueForProperty:NRDevicePropertySystemBuildVersion];
+  v9 = [firstObject valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
   v10 = v9;
   if (v8)
   {
@@ -164,16 +164,16 @@ LABEL_18:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412290;
-      v23 = v7;
+      v23 = firstObject;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Pairing data store is unexpectedly nil! Paired device: (%@)", &v22, 0xCu);
     }
 
-    v13 = 0;
+    reply = 0;
   }
 
   else
   {
-    v14 = [qword_10003DD78 isValidForPreferredLanguages:v3 gizmoBuildVersion:v8];
+    v14 = [qword_10003DD78 isValidForPreferredLanguages:languagesCopy gizmoBuildVersion:v8];
     if ((v14 & 1) == 0)
     {
       v15 = [v10 stringByAppendingPathComponent:@"NanoSystemSettings/Caches/legal"];
@@ -182,7 +182,7 @@ LABEL_18:
       v18 = qword_10003DD78;
       qword_10003DD78 = v17;
 
-      if (([qword_10003DD78 isValidForPreferredLanguages:v3 gizmoBuildVersion:v8] & 1) == 0)
+      if (([qword_10003DD78 isValidForPreferredLanguages:languagesCopy gizmoBuildVersion:v8] & 1) == 0)
       {
         v19 = qword_10003DD78;
         qword_10003DD78 = 0;
@@ -192,10 +192,10 @@ LABEL_18:
       }
     }
 
-    v13 = [qword_10003DD78 reply];
+    reply = [qword_10003DD78 reply];
   }
 
-  return v13;
+  return reply;
 }
 
 + (void)handleMemoryPressureEvent
@@ -204,12 +204,12 @@ LABEL_18:
   qword_10003DD78 = 0;
 }
 
-- (BOOL)isValidForPreferredLanguages:(id)a3 gizmoBuildVersion:(id)a4
+- (BOOL)isValidForPreferredLanguages:(id)languages gizmoBuildVersion:(id)version
 {
-  v6 = a4;
-  if ([(NSArray *)self->_preferredLanguages isEqualToArray:a3])
+  versionCopy = version;
+  if ([(NSArray *)self->_preferredLanguages isEqualToArray:languages])
   {
-    v7 = [(NSString *)self->_gizmoBuildVersion isEqualToString:v6];
+    v7 = [(NSString *)self->_gizmoBuildVersion isEqualToString:versionCopy];
   }
 
   else

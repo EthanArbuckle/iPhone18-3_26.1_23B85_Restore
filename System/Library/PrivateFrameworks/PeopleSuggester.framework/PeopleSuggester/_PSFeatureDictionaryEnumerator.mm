@@ -2,34 +2,34 @@
 - (id)_allKeys;
 - (id)_nextKey;
 - (uint64_t)_loadNextKeyEnumerator;
-- (uint64_t)initWithCollection:(uint64_t)a1;
+- (uint64_t)initWithCollection:(uint64_t)collection;
 @end
 
 @implementation _PSFeatureDictionaryEnumerator
 
-- (uint64_t)initWithCollection:(uint64_t)a1
+- (uint64_t)initWithCollection:(uint64_t)collection
 {
   v3 = a2;
-  if (a1)
+  if (collection)
   {
-    v8.receiver = a1;
+    v8.receiver = collection;
     v8.super_class = _PSFeatureDictionaryEnumerator;
     v4 = objc_msgSendSuper2(&v8, sel_init);
-    a1 = v4;
+    collection = v4;
     if (v4)
     {
       objc_storeStrong(v4 + 2, v3[1]);
-      objc_storeStrong((a1 + 24), v3[2]);
-      v6 = [*(a1 + 16) allKeys];
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      objc_storeStrong((collection + 24), v3[2]);
+      allKeys = [*(collection + 16) allKeys];
+      v7 = *(collection + 8);
+      *(collection + 8) = allKeys;
 
-      *(a1 + 32) = [*(a1 + 16) count];
-      [(_PSFeatureDictionaryEnumerator *)a1 _loadNextKeyEnumerator];
+      *(collection + 32) = [*(collection + 16) count];
+      [(_PSFeatureDictionaryEnumerator *)collection _loadNextKeyEnumerator];
     }
   }
 
-  return a1;
+  return collection;
 }
 
 - (uint64_t)_loadNextKeyEnumerator
@@ -43,8 +43,8 @@
       v3 = *(result + 16);
       v4 = [*(result + 8) objectAtIndexedSubscript:v2 - 1];
       v5 = [v3 objectForKeyedSubscript:v4];
-      v6 = [v5 keyEnumerator];
-      OUTLINED_FUNCTION_0_5(v6, 40);
+      keyEnumerator = [v5 keyEnumerator];
+      OUTLINED_FUNCTION_0_5(keyEnumerator, 40);
 
       --*(v1 + 32);
       return 1;
@@ -62,8 +62,8 @@
 
         else
         {
-          v7 = [result keyEnumerator];
-          OUTLINED_FUNCTION_0_5(v7, 40);
+          keyEnumerator2 = [result keyEnumerator];
+          OUTLINED_FUNCTION_0_5(keyEnumerator2, 40);
           result = 1;
           *(v1 + 48) = 1;
         }
@@ -76,49 +76,49 @@
 
 - (id)_nextKey
 {
-  if (a1)
+  if (self)
   {
     do
     {
-      v2 = [*(a1 + 40) nextObject];
+      nextObject = [*(self + 40) nextObject];
     }
 
-    while (!v2 && ([(_PSFeatureDictionaryEnumerator *)a1 _loadNextKeyEnumerator]& 1) != 0);
+    while (!nextObject && ([(_PSFeatureDictionaryEnumerator *)self _loadNextKeyEnumerator]& 1) != 0);
   }
 
   else
   {
-    v2 = 0;
+    nextObject = 0;
   }
 
-  return v2;
+  return nextObject;
 }
 
 - (id)_allKeys
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = objc_opt_new();
-    v3 = [*(a1 + 40) nextObject];
-    if (v3)
+    nextObject = [*(self + 40) nextObject];
+    if (nextObject)
     {
-      v4 = v3;
+      v4 = nextObject;
       do
       {
         [v2 addObject:v4];
-        v5 = [*(a1 + 40) nextObject];
+        nextObject2 = [*(self + 40) nextObject];
 
-        v4 = v5;
+        v4 = nextObject2;
       }
 
-      while (v5);
+      while (nextObject2);
     }
 
-    for (i = *(a1 + 32); i; i = *(a1 + 32))
+    for (i = *(self + 32); i; i = *(self + 32))
     {
-      v7 = *(a1 + 16);
-      v8 = [*(a1 + 8) objectAtIndexedSubscript:i - 1];
+      v7 = *(self + 16);
+      v8 = [*(self + 8) objectAtIndexedSubscript:i - 1];
       v9 = [v7 objectForKeyedSubscript:v8];
 
       v33 = 0u;
@@ -157,11 +157,11 @@
         while (v12);
       }
 
-      --*(a1 + 32);
+      --*(self + 32);
     }
 
-    v17 = *(a1 + 24);
-    if (v17 && (*(a1 + 48) & 1) == 0)
+    v17 = *(self + 24);
+    if (v17 && (*(self + 48) & 1) == 0)
     {
       v29 = 0u;
       v30 = 0u;
@@ -199,7 +199,7 @@
         while (v20);
       }
 
-      *(a1 + 48) = 1;
+      *(self + 48) = 1;
     }
   }
 

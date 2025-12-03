@@ -1,27 +1,27 @@
 @interface UICollectionViewAccessibility__Memories__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityCollectionViewBehavesLikeUIViewAccessibility;
 - (BOOL)isAccessibilityOpaqueElementProvider;
 - (double)_accessibilityScrollWidthDistance;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
+- (id)accessibilityElementAtIndex:(int64_t)index;
 - (id)accessibilityElements;
 - (int64_t)accessibilityElementCount;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
+- (int64_t)indexOfAccessibilityElement:(id)element;
 @end
 
 @implementation UICollectionViewAccessibility__Memories__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MiroEditorFlowLayout"];
-  [v3 validateClass:@"MiroEditorFlowLayout" hasInstanceMethod:@"_sizeForItemAtIndexPath:" withFullSignature:{"{CGSize=dd}", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MiroEditorFlowLayout"];
+  [validationsCopy validateClass:@"MiroEditorFlowLayout" hasInstanceMethod:@"_sizeForItemAtIndexPath:" withFullSignature:{"{CGSize=dd}", "@", 0}];
 }
 
 - (BOOL)accessibilityCollectionViewBehavesLikeUIViewAccessibility
 {
-  v3 = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AccessibilityMiroUICollectionView"];
+  accessibilityIdentification = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AccessibilityMiroUICollectionView"];
 
   if (v4)
   {
@@ -35,8 +35,8 @@
 
 - (BOOL)isAccessibilityOpaqueElementProvider
 {
-  v3 = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AccessibilityMiroUICollectionView"];
+  accessibilityIdentification = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AccessibilityMiroUICollectionView"];
 
   if (v4)
   {
@@ -50,17 +50,17 @@
 
 - (double)_accessibilityScrollWidthDistance
 {
-  v3 = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AccessibilityMiroUICollectionView"];
+  accessibilityIdentification = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AccessibilityMiroUICollectionView"];
 
   if (v4)
   {
-    v5 = self;
-    v6 = [(UICollectionViewAccessibility__Memories__UIKit *)v5 collectionViewLayout];
+    selfCopy = self;
+    collectionViewLayout = [(UICollectionViewAccessibility__Memories__UIKit *)selfCopy collectionViewLayout];
     MEMORY[0x29C2DE4B0](@"MiroEditorFlowLayout");
     if (objc_opt_isKindOfClass())
     {
-      [(UICollectionViewAccessibility__Memories__UIKit *)v5 contentSize];
+      [(UICollectionViewAccessibility__Memories__UIKit *)selfCopy contentSize];
       v8 = v7;
       v10 = v9;
       v34 = 0;
@@ -78,9 +78,9 @@
       v22 = __83__UICollectionViewAccessibility__Memories__UIKit__accessibilityScrollWidthDistance__block_invoke;
       v23 = &unk_29F2D0BC8;
       v26 = &v34;
-      v12 = v6;
+      v12 = collectionViewLayout;
       v24 = v12;
-      v13 = v5;
+      v13 = selfCopy;
       v25 = v13;
       v27 = &v30;
       v28 = v8;
@@ -123,8 +123,8 @@ LABEL_6:
 
 - (int64_t)accessibilityElementCount
 {
-  v3 = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AccessibilityMiroUICollectionView"];
+  accessibilityIdentification = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AccessibilityMiroUICollectionView"];
 
   if (v4)
   {
@@ -138,24 +138,24 @@ LABEL_6:
 
 - (id)accessibilityElements
 {
-  v3 = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AccessibilityMiroUICollectionView"];
+  accessibilityIdentification = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AccessibilityMiroUICollectionView"];
 
   if (v4)
   {
-    v5 = self;
-    v6 = [(UICollectionViewAccessibility__Memories__UIKit *)v5 collectionViewLayout];
+    selfCopy = self;
+    collectionViewLayout = [(UICollectionViewAccessibility__Memories__UIKit *)selfCopy collectionViewLayout];
     MEMORY[0x29C2DE4B0](@"MiroEditorFlowLayout");
     if (objc_opt_isKindOfClass())
     {
       v14 = 0;
       objc_opt_class();
-      v7 = [v6 safeValueForKey:@"snappedIndexPath"];
+      v7 = [collectionViewLayout safeValueForKey:@"snappedIndexPath"];
       v8 = __UIAccessibilityCastAsClass();
 
       v9 = MEMORY[0x29EDB8D80];
-      v10 = [(UICollectionViewAccessibility__Memories__UIKit *)v5 cellForItemAtIndexPath:v8];
-      v11 = [v9 axArrayByIgnoringNilElementsWithCount:{1, v10}];
+      v10 = [(UICollectionViewAccessibility__Memories__UIKit *)selfCopy cellForItemAtIndexPath:v8];
+      accessibilityElements = [v9 axArrayByIgnoringNilElementsWithCount:{1, v10}];
 
       goto LABEL_6;
     }
@@ -163,30 +163,30 @@ LABEL_6:
 
   v13.receiver = self;
   v13.super_class = UICollectionViewAccessibility__Memories__UIKit;
-  v11 = [(UICollectionViewAccessibility__Memories__UIKit *)&v13 accessibilityElements];
+  accessibilityElements = [(UICollectionViewAccessibility__Memories__UIKit *)&v13 accessibilityElements];
 LABEL_6:
 
-  return v11;
+  return accessibilityElements;
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
-  v5 = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
-  v6 = [v5 isEqualToString:@"AccessibilityMiroUICollectionView"];
+  accessibilityIdentification = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
+  v6 = [accessibilityIdentification isEqualToString:@"AccessibilityMiroUICollectionView"];
 
   if (v6)
   {
-    v7 = self;
-    v8 = [(UICollectionViewAccessibility__Memories__UIKit *)v7 collectionViewLayout];
+    selfCopy = self;
+    collectionViewLayout = [(UICollectionViewAccessibility__Memories__UIKit *)selfCopy collectionViewLayout];
     MEMORY[0x29C2DE4B0](@"MiroEditorFlowLayout");
     if (objc_opt_isKindOfClass())
     {
       v14 = 0;
       objc_opt_class();
-      v9 = [v8 safeValueForKey:@"snappedIndexPath"];
+      v9 = [collectionViewLayout safeValueForKey:@"snappedIndexPath"];
       v10 = __UIAccessibilityCastAsClass();
 
-      v11 = [(UICollectionViewAccessibility__Memories__UIKit *)v7 cellForItemAtIndexPath:v10];
+      v11 = [(UICollectionViewAccessibility__Memories__UIKit *)selfCopy cellForItemAtIndexPath:v10];
 
       goto LABEL_6;
     }
@@ -194,17 +194,17 @@ LABEL_6:
 
   v13.receiver = self;
   v13.super_class = UICollectionViewAccessibility__Memories__UIKit;
-  v11 = [(UICollectionViewAccessibility__Memories__UIKit *)&v13 accessibilityElementAtIndex:a3];
+  v11 = [(UICollectionViewAccessibility__Memories__UIKit *)&v13 accessibilityElementAtIndex:index];
 LABEL_6:
 
   return v11;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
-  v4 = a3;
-  v5 = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
-  v6 = [v5 isEqualToString:@"AccessibilityMiroUICollectionView"];
+  elementCopy = element;
+  accessibilityIdentification = [(UICollectionViewAccessibility__Memories__UIKit *)self accessibilityIdentification];
+  v6 = [accessibilityIdentification isEqualToString:@"AccessibilityMiroUICollectionView"];
 
   if (v6)
   {
@@ -215,7 +215,7 @@ LABEL_6:
   {
     v9.receiver = self;
     v9.super_class = UICollectionViewAccessibility__Memories__UIKit;
-    v7 = [(UICollectionViewAccessibility__Memories__UIKit *)&v9 indexOfAccessibilityElement:v4];
+    v7 = [(UICollectionViewAccessibility__Memories__UIKit *)&v9 indexOfAccessibilityElement:elementCopy];
   }
 
   return v7;

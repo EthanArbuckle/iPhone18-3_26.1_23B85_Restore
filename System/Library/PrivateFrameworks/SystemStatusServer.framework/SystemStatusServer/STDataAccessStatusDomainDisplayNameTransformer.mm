@@ -1,38 +1,38 @@
 @interface STDataAccessStatusDomainDisplayNameTransformer
-- (STDataAccessStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)a3;
-- (id)transformedDataForData:(id)a3 domain:(unint64_t)a4;
+- (STDataAccessStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)resolver;
+- (id)transformedDataForData:(id)data domain:(unint64_t)domain;
 @end
 
 @implementation STDataAccessStatusDomainDisplayNameTransformer
 
-- (STDataAccessStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)a3
+- (STDataAccessStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)resolver
 {
-  v5 = a3;
+  resolverCopy = resolver;
   v9.receiver = self;
   v9.super_class = STDataAccessStatusDomainDisplayNameTransformer;
   v6 = [(STDataAccessStatusDomainDisplayNameTransformer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entityResolver, a3);
+    objc_storeStrong(&v6->_entityResolver, resolver);
   }
 
   return v7;
 }
 
-- (id)transformedDataForData:(id)a3 domain:(unint64_t)a4
+- (id)transformedDataForData:(id)data domain:(unint64_t)domain
 {
-  v5 = a3;
+  dataCopy = data;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v5;
+  v7 = dataCopy;
   v8 = v7;
   if (isKindOfClass)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
-    v10 = [v7 dataAccessAttributions];
-    v11 = [v10 bs_map:&__block_literal_global_8];
-    [v9 addObjectsFromArray:v11];
+    array = [MEMORY[0x277CBEB18] array];
+    dataAccessAttributions = [v7 dataAccessAttributions];
+    v11 = [dataAccessAttributions bs_map:&__block_literal_global_8];
+    [array addObjectsFromArray:v11];
 
     if (self)
     {
@@ -45,14 +45,14 @@
     }
 
     v13 = entityResolver;
-    [(STAttributedEntityBatchResolving *)v13 resolveEntities:v9];
+    [(STAttributedEntityBatchResolving *)v13 resolveEntities:array];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __80__STDataAccessStatusDomainDisplayNameTransformer_transformedDataForData_domain___block_invoke_2;
     v17[3] = &unk_279D35718;
     v18 = v13;
     v14 = v13;
-    v15 = [v10 bs_map:v17];
+    v15 = [dataAccessAttributions bs_map:v17];
     v8 = objc_alloc_init(MEMORY[0x277D6BA08]);
     [v8 setDataAccessAttributions:v15];
   }

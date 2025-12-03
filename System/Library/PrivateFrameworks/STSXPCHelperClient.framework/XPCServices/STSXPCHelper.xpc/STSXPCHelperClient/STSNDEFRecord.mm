@@ -1,10 +1,10 @@
 @interface STSNDEFRecord
-+ (BOOL)_parseNDEFData:(id)a3 outRecords:(id)a4;
-+ (id)ndefRecordsWithData:(id)a3;
++ (BOOL)_parseNDEFData:(id)data outRecords:(id)records;
++ (id)ndefRecordsWithData:(id)data;
 - (BOOL)isAlternativeCarrierRecord;
 - (BOOL)isBluetoothLEConfigurationRecord;
 - (BOOL)isCollisionResolutionRecord;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHandoverRequestRecord;
 - (BOOL)isHandoverSelectErrorRecord;
 - (BOOL)isHandoverSelectRecord;
@@ -12,26 +12,26 @@
 - (BOOL)isISO18013ReaderEngagementRecord;
 - (BOOL)isNfcConfigurationRecord;
 - (BOOL)isWiFiAwareConfigurationRecord;
-- (STSNDEFRecord)initWithCoder:(id)a3;
+- (STSNDEFRecord)initWithCoder:(id)coder;
 - (id)description;
 - (id)getAuxiliaryDataReferencesFromAlternativeCarrierRecord;
 - (id)getCarrierDataReferenceFromAlternativeCarrierRecord;
 - (unint64_t)getCarrierPowerStateFromAlternativeCarrierRecord;
-- (void)_setIdLengthPresent:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setChunked:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setMessageBegin:(BOOL)a3;
-- (void)setMessageEnd:(BOOL)a3;
-- (void)setPayload:(id)a3;
-- (void)setShortRecord:(BOOL)a3;
+- (void)_setIdLengthPresent:(BOOL)present;
+- (void)encodeWithCoder:(id)coder;
+- (void)setChunked:(BOOL)chunked;
+- (void)setIdentifier:(id)identifier;
+- (void)setMessageBegin:(BOOL)begin;
+- (void)setMessageEnd:(BOOL)end;
+- (void)setPayload:(id)payload;
+- (void)setShortRecord:(BOOL)record;
 @end
 
 @implementation STSNDEFRecord
 
-- (void)setMessageBegin:(BOOL)a3
+- (void)setMessageBegin:(BOOL)begin
 {
-  if (a3)
+  if (begin)
   {
     v3 = 0x80;
   }
@@ -44,9 +44,9 @@
   self->_firstOctet = v3 & 0x80 | self->_firstOctet & 0x7F;
 }
 
-- (void)setMessageEnd:(BOOL)a3
+- (void)setMessageEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 64;
   }
@@ -59,9 +59,9 @@
   self->_firstOctet = self->_firstOctet & 0xBF | v3;
 }
 
-- (void)setChunked:(BOOL)a3
+- (void)setChunked:(BOOL)chunked
 {
-  if (a3)
+  if (chunked)
   {
     v3 = 32;
   }
@@ -74,9 +74,9 @@
   self->_firstOctet = self->_firstOctet & 0xDF | v3;
 }
 
-- (void)setShortRecord:(BOOL)a3
+- (void)setShortRecord:(BOOL)record
 {
-  if (a3)
+  if (record)
   {
     v3 = 16;
   }
@@ -89,9 +89,9 @@
   self->_firstOctet = self->_firstOctet & 0xEF | v3;
 }
 
-- (void)_setIdLengthPresent:(BOOL)a3
+- (void)_setIdLengthPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 8;
   }
@@ -104,13 +104,13 @@
   self->_firstOctet = self->_firstOctet & 0xF7 | v3;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     [(STSNDEFRecord *)self _setIdLengthPresent:1];
-    v4 = v6;
+    v4 = identifierCopy;
   }
 
   else
@@ -119,28 +119,28 @@
   }
 
   identifier = self->_identifier;
-  self->_identifier = v6;
+  self->_identifier = identifierCopy;
 }
 
-- (void)setPayload:(id)a3
+- (void)setPayload:(id)payload
 {
-  objc_storeStrong(&self->_payload, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_payload, payload);
+  payloadCopy = payload;
   v6 = [(NSData *)self->_payload length];
 
   [(STSNDEFRecord *)self setShortRecord:v6 < 0x100];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v13 = 0;
@@ -212,59 +212,59 @@
     v4 = 0;
   }
 
-  v11 = [(STSNDEFRecord *)self messageBegin];
-  v5 = [(STSNDEFRecord *)self messageEnd];
-  v6 = [(STSNDEFRecord *)self chunked];
-  v7 = [(STSNDEFRecord *)self shortRecord];
-  v8 = [(STSNDEFRecord *)self identifier];
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"{MB=%d,ME=%d,CF=%d,SR=%d,IL=%ld,TNF=%d,TypeLength=%ld,Type=%@,ID=%@,PayloadLength=%ld,Payload=%@}", v11, v5, v6, v7, [v8 length], -[STSNDEFRecord typeNameFormat](self, "typeNameFormat"), -[NSData length](self->_type, "length"), v3, v4, -[NSData length](self->_payload, "length"), self->_payload);
+  messageBegin = [(STSNDEFRecord *)self messageBegin];
+  messageEnd = [(STSNDEFRecord *)self messageEnd];
+  chunked = [(STSNDEFRecord *)self chunked];
+  shortRecord = [(STSNDEFRecord *)self shortRecord];
+  identifier = [(STSNDEFRecord *)self identifier];
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"{MB=%d,ME=%d,CF=%d,SR=%d,IL=%ld,TNF=%d,TypeLength=%ld,Type=%@,ID=%@,PayloadLength=%ld,Payload=%@}", messageBegin, messageEnd, chunked, shortRecord, [identifier length], -[STSNDEFRecord typeNameFormat](self, "typeNameFormat"), -[NSData length](self->_type, "length"), v3, v4, -[NSData length](self->_payload, "length"), self->_payload);
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeInteger:self->_firstOctet forKey:@"firstOctet"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_firstOctet forKey:@"firstOctet"];
   type = self->_type;
   if (type)
   {
-    [v8 encodeObject:type forKey:@"type"];
+    [coderCopy encodeObject:type forKey:@"type"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v8 encodeObject:identifier forKey:@"identifier"];
+    [coderCopy encodeObject:identifier forKey:@"identifier"];
   }
 
   payload = self->_payload;
-  v7 = v8;
+  v7 = coderCopy;
   if (payload)
   {
-    [v8 encodeObject:payload forKey:@"payload"];
-    v7 = v8;
+    [coderCopy encodeObject:payload forKey:@"payload"];
+    v7 = coderCopy;
   }
 }
 
-- (STSNDEFRecord)initWithCoder:(id)a3
+- (STSNDEFRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = STSNDEFRecord;
   v5 = [(STSNDEFRecord *)&v13 init];
   if (v5)
   {
-    v5->_firstOctet = [v4 decodeIntegerForKey:@"firstOctet"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v5->_firstOctet = [coderCopy decodeIntegerForKey:@"firstOctet"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
     payload = v5->_payload;
     v5->_payload = v10;
   }
@@ -272,28 +272,28 @@
   return v5;
 }
 
-+ (id)ndefRecordsWithData:(id)a3
++ (id)ndefRecordsWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  if ([STSNDEFRecord _parseNDEFData:v3 outRecords:v4])
+  if ([STSNDEFRecord _parseNDEFData:dataCopy outRecords:v4])
   {
     v8 = [v4 copy];
   }
 
   else
   {
-    sub_100024938(OS_LOG_TYPE_INFO, 0, "+[STSNDEFRecord ndefRecordsWithData:]", 290, @"Invalid NDEF data: %@", v5, v6, v7, v3);
+    sub_100024938(OS_LOG_TYPE_INFO, 0, "+[STSNDEFRecord ndefRecordsWithData:]", 290, @"Invalid NDEF data: %@", v5, v6, v7, dataCopy);
     v8 = 0;
   }
 
   return v8;
 }
 
-+ (BOOL)_parseNDEFData:(id)a3 outRecords:(id)a4
++ (BOOL)_parseNDEFData:(id)data outRecords:(id)records
 {
-  v5 = a4;
-  v6 = [NSInputStream inputStreamWithData:a3];
+  recordsCopy = records;
+  v6 = [NSInputStream inputStreamWithData:data];
   [v6 open];
   if ([v6 hasBytesAvailable])
   {
@@ -343,8 +343,8 @@
       if (v27)
       {
         v9 = [NSMutableData dataWithLength:?];
-        v10 = [v9 mutableBytes];
-        v11 = [v6 read:v10 maxLength:v27];
+        mutableBytes = [v9 mutableBytes];
+        v11 = [v6 read:mutableBytes maxLength:v27];
         if (v11 != v27)
         {
           goto LABEL_27;
@@ -359,8 +359,8 @@
       if (v29)
       {
         v12 = [NSMutableData dataWithLength:?];
-        v13 = [v12 mutableBytes];
-        v14 = [v6 read:v13 maxLength:v29];
+        mutableBytes2 = [v12 mutableBytes];
+        v14 = [v6 read:mutableBytes2 maxLength:v29];
         if (v14 != v29)
         {
           goto LABEL_28;
@@ -375,8 +375,8 @@
       if (v28)
       {
         v15 = [NSMutableData dataWithLength:?];
-        v16 = [v15 mutableBytes];
-        v17 = [v6 read:v16 maxLength:v28];
+        mutableBytes3 = [v15 mutableBytes];
+        v17 = [v6 read:mutableBytes3 maxLength:v28];
         if ((v17 & 0x8000000000000000) != 0 || v17 != v28)
         {
           goto LABEL_29;
@@ -401,7 +401,7 @@
       v23 = *(v18 + 32);
       *(v18 + 32) = v15;
 
-      [v5 addObject:v18];
+      [recordsCopy addObject:v18];
       if (([v6 hasBytesAvailable] & 1) == 0)
       {
         goto LABEL_25;
@@ -434,8 +434,8 @@ LABEL_25:
   v3 = [NSData dataWithBytes:"application/vnd.wfa.nanapplication/vnd.bluetooth.le.oob" length:23];
   if ([(STSNDEFRecord *)self typeNameFormat]== 2)
   {
-    v4 = [(STSNDEFRecord *)self type];
-    v5 = [v4 isEqualToData:v3];
+    type = [(STSNDEFRecord *)self type];
+    v5 = [type isEqualToData:v3];
   }
 
   else
@@ -451,8 +451,8 @@ LABEL_25:
   v3 = [NSData dataWithBytes:"application/vnd.bluetooth.le.oob" length:32];
   if ([(STSNDEFRecord *)self typeNameFormat]== 2)
   {
-    v4 = [(STSNDEFRecord *)self type];
-    v5 = [v4 isEqualToData:v3];
+    type = [(STSNDEFRecord *)self type];
+    v5 = [type isEqualToData:v3];
   }
 
   else
@@ -469,11 +469,11 @@ LABEL_25:
   v4 = [@"nfc" dataUsingEncoding:4];
   if ([(STSNDEFRecord *)self typeNameFormat]== 4)
   {
-    v5 = [(STSNDEFRecord *)self type];
-    if ([v5 isEqualToData:v3])
+    type = [(STSNDEFRecord *)self type];
+    if ([type isEqualToData:v3])
     {
-      v6 = [(STSNDEFRecord *)self identifier];
-      v7 = [v6 isEqualToData:v4];
+      identifier = [(STSNDEFRecord *)self identifier];
+      v7 = [identifier isEqualToData:v4];
     }
 
     else
@@ -495,8 +495,8 @@ LABEL_25:
   v3 = [NSData dataWithBytes:"Hr" length:2];
   if ([(STSNDEFRecord *)self typeNameFormat]== 1)
   {
-    v4 = [(STSNDEFRecord *)self type];
-    v5 = [v4 isEqualToData:v3];
+    type = [(STSNDEFRecord *)self type];
+    v5 = [type isEqualToData:v3];
   }
 
   else
@@ -512,8 +512,8 @@ LABEL_25:
   v3 = [NSData dataWithBytes:"Hs" length:2];
   if ([(STSNDEFRecord *)self typeNameFormat]== 1)
   {
-    v4 = [(STSNDEFRecord *)self type];
-    v5 = [v4 isEqualToData:v3];
+    type = [(STSNDEFRecord *)self type];
+    v5 = [type isEqualToData:v3];
   }
 
   else
@@ -529,8 +529,8 @@ LABEL_25:
   v3 = [NSData dataWithBytes:"cr" length:2];
   if ([(STSNDEFRecord *)self typeNameFormat]== 1)
   {
-    v4 = [(STSNDEFRecord *)self type];
-    v5 = [v4 isEqualToData:v3];
+    type = [(STSNDEFRecord *)self type];
+    v5 = [type isEqualToData:v3];
   }
 
   else
@@ -546,8 +546,8 @@ LABEL_25:
   v3 = [NSData dataWithBytes:"ac" length:2];
   if ([(STSNDEFRecord *)self typeNameFormat]== 1)
   {
-    v4 = [(STSNDEFRecord *)self type];
-    v5 = [v4 isEqualToData:v3];
+    type = [(STSNDEFRecord *)self type];
+    v5 = [type isEqualToData:v3];
   }
 
   else
@@ -563,8 +563,8 @@ LABEL_25:
   v3 = [NSData dataWithBytes:"err" length:3];
   if ([(STSNDEFRecord *)self typeNameFormat]== 1)
   {
-    v4 = [(STSNDEFRecord *)self type];
-    v5 = [v4 isEqualToData:v3];
+    type = [(STSNDEFRecord *)self type];
+    v5 = [type isEqualToData:v3];
   }
 
   else
@@ -581,11 +581,11 @@ LABEL_25:
   v4 = [NSData dataWithBytes:"iso.org:18013:deviceengagement" length:30];
   if ([(STSNDEFRecord *)self typeNameFormat]== 4)
   {
-    v5 = [(STSNDEFRecord *)self type];
-    if ([v5 isEqualToData:v4])
+    type = [(STSNDEFRecord *)self type];
+    if ([type isEqualToData:v4])
     {
-      v6 = [(STSNDEFRecord *)self identifier];
-      v7 = [v6 isEqualToData:v3];
+      identifier = [(STSNDEFRecord *)self identifier];
+      v7 = [identifier isEqualToData:v3];
     }
 
     else
@@ -608,11 +608,11 @@ LABEL_25:
   v4 = [NSData dataWithBytes:"iso.org:18013:readerengagement" length:30];
   if ([(STSNDEFRecord *)self typeNameFormat]== 4)
   {
-    v5 = [(STSNDEFRecord *)self type];
-    if ([v5 isEqualToData:v4])
+    type = [(STSNDEFRecord *)self type];
+    if ([type isEqualToData:v4])
     {
-      v6 = [(STSNDEFRecord *)self identifier];
-      v7 = [v6 isEqualToData:v3];
+      identifier = [(STSNDEFRecord *)self identifier];
+      v7 = [identifier isEqualToData:v3];
     }
 
     else
@@ -636,18 +636,18 @@ LABEL_25:
     return 3;
   }
 
-  v3 = [(STSNDEFRecord *)self payload];
-  v4 = [v3 length];
+  payload = [(STSNDEFRecord *)self payload];
+  v4 = [payload length];
 
   if (!v4)
   {
     return 3;
   }
 
-  v5 = [(STSNDEFRecord *)self payload];
-  v6 = [v5 bytes];
+  payload2 = [(STSNDEFRecord *)self payload];
+  bytes = [payload2 bytes];
 
-  return *v6 & 3;
+  return *bytes & 3;
 }
 
 - (id)getCarrierDataReferenceFromAlternativeCarrierRecord
@@ -657,20 +657,20 @@ LABEL_25:
     goto LABEL_5;
   }
 
-  v3 = [(STSNDEFRecord *)self payload];
-  v4 = [v3 length];
+  payload = [(STSNDEFRecord *)self payload];
+  v4 = [payload length];
 
   if (v4 < 2)
   {
     goto LABEL_5;
   }
 
-  v5 = [(STSNDEFRecord *)self payload];
-  v6 = [v5 bytes];
+  payload2 = [(STSNDEFRecord *)self payload];
+  bytes = [payload2 bytes];
 
-  v7 = v6[1];
-  v8 = [(STSNDEFRecord *)self payload];
-  v9 = [v8 length];
+  v7 = bytes[1];
+  payload3 = [(STSNDEFRecord *)self payload];
+  v9 = [payload3 length];
 
   if (v9 < v7)
   {
@@ -680,7 +680,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v12 = [NSData dataWithBytes:v6 + 2 length:v7];
+  v12 = [NSData dataWithBytes:bytes + 2 length:v7];
 LABEL_6:
 
   return v12;
@@ -695,11 +695,11 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v4 = [(STSNDEFRecord *)self payload];
-  v5 = [v4 length];
+  payload = [(STSNDEFRecord *)self payload];
+  v5 = [payload length];
 
-  v6 = [(STSNDEFRecord *)self payload];
-  v7 = [v6 bytes];
+  payload2 = [(STSNDEFRecord *)self payload];
+  bytes = [payload2 bytes];
 
   if (v5 == 1)
   {
@@ -708,8 +708,8 @@ LABEL_6:
 
   else
   {
-    v12 = v7[1];
-    v11 = (v7 + 1);
+    v12 = bytes[1];
+    v11 = (bytes + 1);
     v10 = v12;
     v13 = v12 + 1;
     if (v5 - 1 != v13)

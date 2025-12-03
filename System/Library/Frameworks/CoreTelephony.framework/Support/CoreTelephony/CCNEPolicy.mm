@@ -1,36 +1,36 @@
 @interface CCNEPolicy
-- (CCNEPolicy)initWithOrder:(unsigned int)a3 result:(id)a4 conditions:(id)a5;
+- (CCNEPolicy)initWithOrder:(unsigned int)order result:(id)result conditions:(id)conditions;
 @end
 
 @implementation CCNEPolicy
 
-- (CCNEPolicy)initWithOrder:(unsigned int)a3 result:(id)a4 conditions:(id)a5
+- (CCNEPolicy)initWithOrder:(unsigned int)order result:(id)result conditions:(id)conditions
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = a5;
+  v6 = *&order;
+  resultCopy = result;
+  conditionsCopy = conditions;
   v18.receiver = self;
   v18.super_class = CCNEPolicy;
   v10 = [(CCNEPolicy *)&v18 init];
   if (v10)
   {
     v11 = objc_alloc_init(NSMutableArray);
-    v12 = [v9 objectEnumerator];
+    objectEnumerator = [conditionsCopy objectEnumerator];
     v13 = 0;
     while (1)
     {
-      v14 = [v12 nextObject];
+      nextObject = [objectEnumerator nextObject];
 
-      if (!v14)
+      if (!nextObject)
       {
         break;
       }
 
-      v13 = v14;
-      [v11 addObject:*(v14 + 8)];
+      v13 = nextObject;
+      [v11 addObject:*(nextObject + 8)];
     }
 
-    v15 = [[NEPolicy alloc] initWithOrder:v6 result:v8[1] conditions:v11];
+    v15 = [[NEPolicy alloc] initWithOrder:v6 result:resultCopy[1] conditions:v11];
     policy = v10->policy;
     v10->policy = v15;
   }

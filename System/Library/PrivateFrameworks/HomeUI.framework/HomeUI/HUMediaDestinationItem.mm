@@ -1,24 +1,24 @@
 @interface HUMediaDestinationItem
 - (HUMediaDestinationItem)init;
-- (HUMediaDestinationItem)initWithDestination:(id)a3 withModule:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)iconForAudioDestination:(id)a3;
+- (HUMediaDestinationItem)initWithDestination:(id)destination withModule:(id)module;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)iconForAudioDestination:(id)destination;
 @end
 
 @implementation HUMediaDestinationItem
 
-- (HUMediaDestinationItem)initWithDestination:(id)a3 withModule:(id)a4
+- (HUMediaDestinationItem)initWithDestination:(id)destination withModule:(id)module
 {
-  v7 = a3;
-  v8 = a4;
+  destinationCopy = destination;
+  moduleCopy = module;
   v12.receiver = self;
   v12.super_class = HUMediaDestinationItem;
   v9 = [(HUMediaDestinationItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_homeTheaterAudioItemModule, a4);
-    objc_storeStrong(&v10->_thisDestination, a3);
+    objc_storeStrong(&v9->_homeTheaterAudioItemModule, module);
+    objc_storeStrong(&v10->_thisDestination, destination);
   }
 
   return v10;
@@ -26,16 +26,16 @@
 
 - (HUMediaDestinationItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithDestination_withModule_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUMediaDestinationItem.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HUMediaDestinationItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUMediaDestinationItem.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HUMediaDestinationItem init]", v5}];
 
   return 0;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D2C900];
   v9[0] = MEMORY[0x277D85DD0];
@@ -216,11 +216,11 @@ void __54__HUMediaDestinationItem__subclass_updateWithOptions___block_invoke(uin
   [v3 finishWithResult:v5];
 }
 
-- (id)iconForAudioDestination:(id)a3
+- (id)iconForAudioDestination:(id)destination
 {
-  v3 = a3;
+  destinationCopy = destination;
   objc_opt_class();
-  v4 = v3;
+  v4 = destinationCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -249,12 +249,12 @@ void __54__HUMediaDestinationItem__subclass_updateWithOptions___block_invoke(uin
 
   if (v9)
   {
-    v10 = [v9 components];
-    v11 = [v10 firstObject];
-    v12 = [v11 mediaProfile];
-    v13 = [v12 accessory];
+    components = [v9 components];
+    firstObject = [components firstObject];
+    mediaProfile = [firstObject mediaProfile];
+    accessory = [mediaProfile accessory];
 
-    v6 = v13;
+    v6 = accessory;
   }
 
   if ([v7 audioDestinationType] == 1)
@@ -264,8 +264,8 @@ void __54__HUMediaDestinationItem__subclass_updateWithOptions___block_invoke(uin
       v14 = @"homepodmini.fill";
 LABEL_21:
       v15 = objc_alloc(MEMORY[0x277D14728]);
-      v16 = [MEMORY[0x277D755B8] hu_standardSymbolConfiguration];
-      v17 = [v15 initWithSystemImageNamed:v14 configuration:v16];
+      hu_standardSymbolConfiguration = [MEMORY[0x277D755B8] hu_standardSymbolConfiguration];
+      v17 = [v15 initWithSystemImageNamed:v14 configuration:hu_standardSymbolConfiguration];
 
       goto LABEL_23;
     }

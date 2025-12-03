@@ -1,7 +1,7 @@
 @interface BWBoundingBoxInferenceConfiguration
 - (BWSmartCameraScene)confidenceFilterSettings;
 - (void)dealloc;
-- (void)setConfidenceFilterSettings:(BWSmartCameraScene *)a3;
+- (void)setConfidenceFilterSettings:(BWSmartCameraScene *)settings;
 @end
 
 @implementation BWBoundingBoxInferenceConfiguration
@@ -22,11 +22,11 @@
   [(BWInferenceConfiguration *)&v3 dealloc];
 }
 
-- (void)setConfidenceFilterSettings:(BWSmartCameraScene *)a3
+- (void)setConfidenceFilterSettings:(BWSmartCameraScene *)settings
 {
-  name = a3->name;
-  v4 = *&a3->confidenceHysteresisValueLag;
-  *&self->_confidenceFilterSettings.enabled = *&a3->enabled;
+  name = settings->name;
+  v4 = *&settings->confidenceHysteresisValueLag;
+  *&self->_confidenceFilterSettings.enabled = *&settings->enabled;
   *&self->_confidenceFilterSettings.confidenceHysteresisValueLag = v4;
   self->_confidenceFilterSettings.name = name;
 }

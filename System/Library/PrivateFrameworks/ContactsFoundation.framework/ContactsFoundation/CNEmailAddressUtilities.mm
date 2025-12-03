@@ -1,18 +1,18 @@
 @interface CNEmailAddressUtilities
-+ (BOOL)isStringEmailAddress:(id)a3;
-+ (id)expandAliasedDomainsInAddress:(id)a3;
++ (BOOL)isStringEmailAddress:(id)address;
++ (id)expandAliasedDomainsInAddress:(id)address;
 + (id)makeEmailRegex;
-+ (id)safeUserVisibleEmailAddress:(id)a3;
++ (id)safeUserVisibleEmailAddress:(id)address;
 + (void)makeEmailRegex;
 @end
 
 @implementation CNEmailAddressUtilities
 
-+ (id)expandAliasedDomainsInAddress:(id)a3
++ (id)expandAliasedDomainsInAddress:(id)address
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (off_1EF440708(&__block_literal_global_120, v3))
+  addressCopy = address;
+  if (off_1EF440708(&__block_literal_global_120, addressCopy))
   {
     v4 = MEMORY[0x1E695E0F0];
   }
@@ -43,7 +43,7 @@
           v20[1] = 3221225472;
           v20[2] = __57__CNEmailAddressUtilities_expandAliasedDomainsInAddress___block_invoke;
           v20[3] = &unk_1E6ED80E0;
-          v10 = v3;
+          v10 = addressCopy;
           v21 = v10;
           v11 = [v9 _cn_firstObjectPassingTest:v20];
           if (v11)
@@ -72,7 +72,7 @@
       }
     }
 
-    v26 = v3;
+    v26 = addressCopy;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
   }
 
@@ -83,43 +83,43 @@ LABEL_13:
   return v4;
 }
 
-+ (id)safeUserVisibleEmailAddress:(id)a3
++ (id)safeUserVisibleEmailAddress:(id)address
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"@"];
+  addressCopy = address;
+  v4 = [addressCopy rangeOfString:@"@"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3;
+    v5 = addressCopy;
   }
 
   else
   {
     v6 = v4;
-    v7 = [v3 substringFromIndex:v4 + 1];
-    v8 = [v7 _lp_userVisibleHost];
-    if ([v7 isEqualToString:v8])
+    v7 = [addressCopy substringFromIndex:v4 + 1];
+    _lp_userVisibleHost = [v7 _lp_userVisibleHost];
+    if ([v7 isEqualToString:_lp_userVisibleHost])
     {
-      v5 = v3;
+      v5 = addressCopy;
     }
 
     else
     {
-      v9 = [v3 substringToIndex:v6 + 1];
-      v5 = [v9 stringByAppendingString:v8];
+      v9 = [addressCopy substringToIndex:v6 + 1];
+      v5 = [v9 stringByAppendingString:_lp_userVisibleHost];
     }
   }
 
   return v5;
 }
 
-+ (BOOL)isStringEmailAddress:(id)a3
++ (BOOL)isStringEmailAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__CNEmailAddressUtilities_isStringEmailAddress___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isStringEmailAddress__cn_once_token_1 != -1)
   {
     dispatch_once(&isStringEmailAddress__cn_once_token_1, block);
@@ -128,7 +128,7 @@ LABEL_13:
   if (isStringEmailAddress__cn_once_object_1)
   {
     v5 = isStringEmailAddress__cn_once_object_1;
-    v6 = [v5 numberOfMatchesInString:v4 options:4 range:{0, objc_msgSend(v4, "length")}];
+    v6 = [v5 numberOfMatchesInString:addressCopy options:4 range:{0, objc_msgSend(addressCopy, "length")}];
 
     v7 = v6 == 1;
   }
@@ -171,7 +171,7 @@ uint64_t __48__CNEmailAddressUtilities_isStringEmailAddress___block_invoke(uint6
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1859F0000, a2, OS_LOG_TYPE_ERROR, "Error creating email address regex: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

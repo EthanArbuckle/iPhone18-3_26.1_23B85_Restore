@@ -1,13 +1,13 @@
 @interface AXSDRingBuffer
-- (AXSDRingBuffer)initWithCount:(unint64_t)a3;
+- (AXSDRingBuffer)initWithCount:(unint64_t)count;
 - (id)content;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)reset;
 @end
 
 @implementation AXSDRingBuffer
 
-- (AXSDRingBuffer)initWithCount:(unint64_t)a3
+- (AXSDRingBuffer)initWithCount:(unint64_t)count
 {
   v9.receiver = self;
   v9.super_class = AXSDRingBuffer;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_size = a3;
+    v4->_size = count;
     v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v4->_size];
     bufferArray = v5->_bufferArray;
     v5->_bufferArray = v6;
@@ -26,21 +26,21 @@
   return v5;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   head = self->_head;
   bufferArray = self->_bufferArray;
-  v6 = a3;
+  objectCopy = object;
   v7 = [(NSMutableArray *)bufferArray count];
   v8 = self->_bufferArray;
   if (head >= v7)
   {
-    [(NSMutableArray *)v8 addObject:v6];
+    [(NSMutableArray *)v8 addObject:objectCopy];
   }
 
   else
   {
-    [(NSMutableArray *)v8 replaceObjectAtIndex:self->_head withObject:v6];
+    [(NSMutableArray *)v8 replaceObjectAtIndex:self->_head withObject:objectCopy];
   }
 
   self->_head = (self->_head + 1) % self->_size;

@@ -1,7 +1,7 @@
 @interface AriCoexUnitTest
 - (AriCoexUnitTest)init;
 - (id)createXpcMsg_AntBitmap;
-- (id)createXpcMsg_AntennaTunerConfig:(unint64_t)a3 State:(unint64_t)a4 UseCase:(unint64_t)a5;
+- (id)createXpcMsg_AntennaTunerConfig:(unint64_t)config State:(unint64_t)state UseCase:(unint64_t)case;
 - (id)createXpcMsg_CamAntBlockingConfig;
 - (id)createXpcMsg_CameraStateConfig;
 - (id)createXpcMsg_LAAConfig;
@@ -16,9 +16,9 @@
 - (id)createXpcMsg_TxActivityConfig;
 - (id)createXpcMsg_UwbAntBlockingConfig;
 - (id)createXpcMsg_WiFiAntBlockingConfig;
-- (id)sendMessage:(unint64_t)a3 withArgs:(id)a4 withExtraKey:(const char *)a5 andExtraValue:(id)a6;
+- (id)sendMessage:(unint64_t)message withArgs:(id)args withExtraKey:(const char *)key andExtraValue:(id)value;
 - (void)reloadAriDriverSettingsFromPreferences;
-- (void)setAriDriverSettingsToPreferences:(BOOL)a3;
+- (void)setAriDriverSettingsToPreferences:(BOOL)preferences;
 @end
 
 @implementation AriCoexUnitTest
@@ -94,10 +94,10 @@ LABEL_19:
   [WCM_Logging logLevel:3 message:@"ARI Driver current preference setting: UnitTest=%d, DisableCoexARI=%d", v8, v10];
 }
 
-- (void)setAriDriverSettingsToPreferences:(BOOL)a3
+- (void)setAriDriverSettingsToPreferences:(BOOL)preferences
 {
   v3 = "FALSE";
-  if (a3)
+  if (preferences)
   {
     v3 = "TRUE";
   }
@@ -129,16 +129,16 @@ LABEL_19:
   return v2;
 }
 
-- (id)sendMessage:(unint64_t)a3 withArgs:(id)a4 withExtraKey:(const char *)a5 andExtraValue:(id)a6
+- (id)sendMessage:(unint64_t)message withArgs:(id)args withExtraKey:(const char *)key andExtraValue:(id)value
 {
   keys[0] = "kMessageId";
   keys[1] = "kMessageArgs";
-  keys[2] = a5;
-  values[0] = xpc_uint64_create(a3);
-  values[1] = a4;
-  values[2] = a6;
+  keys[2] = key;
+  values[0] = xpc_uint64_create(message);
+  values[1] = args;
+  values[2] = value;
   v9 = xpc_dictionary_create(keys, values, 3uLL);
-  [WCM_Logging logLevel:3 message:@"ARI Driver UnitTest: Create messageId(%lld): %@", a3, v9];
+  [WCM_Logging logLevel:3 message:@"ARI Driver UnitTest: Create messageId(%lld): %@", message, v9];
   return v9;
 }
 
@@ -441,16 +441,16 @@ LABEL_19:
   return [(AriCoexUnitTest *)self sendMessage:1234 withArgs:v3 withExtraKey:"kSubId" andExtraValue:v4];
 }
 
-- (id)createXpcMsg_AntennaTunerConfig:(unint64_t)a3 State:(unint64_t)a4 UseCase:(unint64_t)a5
+- (id)createXpcMsg_AntennaTunerConfig:(unint64_t)config State:(unint64_t)state UseCase:(unint64_t)case
 {
-  v8 = xpc_uint64_create(a4);
-  v9 = xpc_uint64_create(a5);
+  v8 = xpc_uint64_create(state);
+  v9 = xpc_uint64_create(case);
   v10 = xpc_array_create(0, 0);
   xpc_array_append_value(v10, v8);
   xpc_array_append_value(v10, v9);
   v11 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_value(v11, "kWCMCellularTransparentMessage_ByteList", v10);
-  xpc_dictionary_set_uint64(v11, "kWCMCellularTransparentMessage_Type", a3);
+  xpc_dictionary_set_uint64(v11, "kWCMCellularTransparentMessage_Type", config);
   v12 = xpc_array_create(0, 0);
   xpc_array_append_value(v12, v11);
   v13 = xpc_dictionary_create(0, 0, 0);

@@ -1,72 +1,72 @@
 @interface NTKDCollectionStore
 + (id)_sharedCollectionStoreObserverQueue;
 + (id)_sharedCollectionStoreQueue;
-+ (void)cleanupOrphanedStoresWithCurrentDeviceUUIDs:(id)a3;
-+ (void)enumerateStoreIdentifiersWithBlock:(id)a3;
-- (BOOL)_queue_addFace:(id)a3 forUUID:(id)a4;
-- (BOOL)_queue_isEmptyExceptForUUID:(id)a3;
-- (BOOL)_queue_setOrderedUUIDs:(id)a3;
-- (BOOL)_queue_setSelectedUUID:(id)a3;
++ (void)cleanupOrphanedStoresWithCurrentDeviceUUIDs:(id)ds;
++ (void)enumerateStoreIdentifiersWithBlock:(id)block;
+- (BOOL)_queue_addFace:(id)face forUUID:(id)d;
+- (BOOL)_queue_isEmptyExceptForUUID:(id)d;
+- (BOOL)_queue_setOrderedUUIDs:(id)ds;
+- (BOOL)_queue_setSelectedUUID:(id)d;
 - (BOOL)isBuildVersionOutdated;
 - (BOOL)isEmpty;
 - (BOOL)isInitialSetupComplete;
 - (BOOL)isStoreVersionPreGrace;
 - (BOOL)refusesToDeleteLastFace;
-- (NTKDCollectionStore)initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4;
+- (NTKDCollectionStore)initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d;
 - (float)version;
 - (id)_deviceBuildVersion;
 - (id)_queue_computeValidationHash;
 - (id)_queue_copyAllFacesByUUID;
-- (id)_queue_faceForUUID:(id)a3;
+- (id)_queue_faceForUUID:(id)d;
 - (id)_storeBuildVersion;
 - (id)description;
-- (id)faceForMigrationForUUID:(id)a3;
-- (id)faceForUUID:(id)a3;
+- (id)faceForMigrationForUUID:(id)d;
+- (id)faceForUUID:(id)d;
 - (id)orderedUUIDs;
 - (id)selectedUUID;
-- (int64_t)faceStyleForUUID:(id)a3;
-- (void)_addFace:(id)a3 forUUID:(id)a4 skipSyncObserver:(BOOL)a5;
-- (void)_onObserverQueue_async:(id)a3;
-- (void)_onQueue_async:(id)a3;
-- (void)_queue_clearRemovalsThroughSeqId:(id)a3;
+- (int64_t)faceStyleForUUID:(id)d;
+- (void)_addFace:(id)face forUUID:(id)d skipSyncObserver:(BOOL)observer;
+- (void)_onObserverQueue_async:(id)queue_async;
+- (void)_onQueue_async:(id)queue_async;
+- (void)_queue_clearRemovalsThroughSeqId:(id)id;
 - (void)_queue_incrementSeqId;
-- (void)_queue_loadFullCollectionForObserver:(id)a3 completion:(id)a4;
-- (void)_queue_notifyDidAddFace:(id)a3 forUUID:(id)a4 skipSyncObserver:(BOOL)a5;
-- (void)_queue_notifyDidRemoveFaceOfStyle:(int64_t)a3 forUUID:(id)a4 skipSyncObserver:(BOOL)a5 completion:(id)a6;
-- (void)_queue_notifyDidUpdateFaceForUUID:(id)a3 withConfiguration:(id)a4 skipSyncObserver:(BOOL)a5;
-- (void)_queue_notifyDidUpdateFaceForUUID:(id)a3 withResourceDirectory:(id)a4 skipSyncObserver:(BOOL)a5 completion:(id)a6;
-- (void)_queue_notifyDidUpdateOrderedUUIDs:(id)a3 skipSyncObserver:(BOOL)a4;
-- (void)_queue_notifyDidUpdateSelectedUUID:(id)a3 skipSyncObserver:(BOOL)a4 suppressingCallbackToObserver:(id)a5;
-- (void)_queue_notifyDidUpgradeFace:(id)a3 forUUID:(id)a4 skipSyncObserver:(BOOL)a5;
-- (void)_queue_playbackChangesForObserver:(id)a3 fromSeqId:(id)a4;
-- (void)_queue_reloadFullCollectionForObserver:(id)a3 completion:(id)a4;
-- (void)_removeFaceForUUID:(id)a3 skipSyncObserver:(BOOL)a4;
-- (void)_resetWithFaces:(id)a3 orderedUUIDs:(id)a4 selectedUUID:(id)a5;
-- (void)_setOrderedUUIDs:(id)a3 skipSyncObserver:(BOOL)a4;
-- (void)_setSelectedUUID:(id)a3 skipSyncObserver:(BOOL)a4 suppressingCallbackToObserver:(id)a5;
-- (void)_updateFaceForUUID:(id)a3 withConfiguration:(id)a4 skipSyncObserver:(BOOL)a5;
-- (void)_updateFaceForUUID:(id)a3 withResourceDirectory:(id)a4 skipSyncObserver:(BOOL)a5;
-- (void)_upgradeFace:(id)a3 forUUID:(id)a4 skipSyncObserver:(BOOL)a5;
-- (void)addObserver:(id)a3;
-- (void)addObserver:(id)a3 withSeqId:(id)a4;
+- (void)_queue_loadFullCollectionForObserver:(id)observer completion:(id)completion;
+- (void)_queue_notifyDidAddFace:(id)face forUUID:(id)d skipSyncObserver:(BOOL)observer;
+- (void)_queue_notifyDidRemoveFaceOfStyle:(int64_t)style forUUID:(id)d skipSyncObserver:(BOOL)observer completion:(id)completion;
+- (void)_queue_notifyDidUpdateFaceForUUID:(id)d withConfiguration:(id)configuration skipSyncObserver:(BOOL)observer;
+- (void)_queue_notifyDidUpdateFaceForUUID:(id)d withResourceDirectory:(id)directory skipSyncObserver:(BOOL)observer completion:(id)completion;
+- (void)_queue_notifyDidUpdateOrderedUUIDs:(id)ds skipSyncObserver:(BOOL)observer;
+- (void)_queue_notifyDidUpdateSelectedUUID:(id)d skipSyncObserver:(BOOL)observer suppressingCallbackToObserver:(id)toObserver;
+- (void)_queue_notifyDidUpgradeFace:(id)face forUUID:(id)d skipSyncObserver:(BOOL)observer;
+- (void)_queue_playbackChangesForObserver:(id)observer fromSeqId:(id)id;
+- (void)_queue_reloadFullCollectionForObserver:(id)observer completion:(id)completion;
+- (void)_removeFaceForUUID:(id)d skipSyncObserver:(BOOL)observer;
+- (void)_resetWithFaces:(id)faces orderedUUIDs:(id)ds selectedUUID:(id)d;
+- (void)_setOrderedUUIDs:(id)ds skipSyncObserver:(BOOL)observer;
+- (void)_setSelectedUUID:(id)d skipSyncObserver:(BOOL)observer suppressingCallbackToObserver:(id)toObserver;
+- (void)_updateFaceForUUID:(id)d withConfiguration:(id)configuration skipSyncObserver:(BOOL)observer;
+- (void)_updateFaceForUUID:(id)d withResourceDirectory:(id)directory skipSyncObserver:(BOOL)observer;
+- (void)_upgradeFace:(id)face forUUID:(id)d skipSyncObserver:(BOOL)observer;
+- (void)addObserver:(id)observer;
+- (void)addObserver:(id)observer withSeqId:(id)id;
 - (void)clearSyncObserver;
-- (void)flushAndComputeValidationHashWithObserverCallback:(id)a3;
-- (void)flushWithObserverCallback:(id)a3;
+- (void)flushAndComputeValidationHashWithObserverCallback:(id)callback;
+- (void)flushWithObserverCallback:(id)callback;
 - (void)markInitialSetupComplete;
 - (void)persistCurrentBuildVersion;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)removeUnusedResourceDirectories;
-- (void)setRefusesToDeleteLastFace:(BOOL)a3;
-- (void)setSyncObserver:(id)a3 withSeqId:(id)a4;
-- (void)setVersion:(float)a3;
-- (void)swapInTheseFaces:(id)a3;
+- (void)setRefusesToDeleteLastFace:(BOOL)face;
+- (void)setSyncObserver:(id)observer withSeqId:(id)id;
+- (void)setVersion:(float)version;
+- (void)swapInTheseFaces:(id)faces;
 @end
 
 @implementation NTKDCollectionStore
 
-+ (void)enumerateStoreIdentifiersWithBlock:(id)a3
++ (void)enumerateStoreIdentifiersWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -100,7 +100,7 @@
           objc_enumerationMutation(v5);
         }
 
-        (*(v3 + 2))(v3, *(*(&v42 + 1) + 8 * v8), 0);
+        (*(blockCopy + 2))(blockCopy, *(*(&v42 + 1) + 8 * v8), 0);
         v8 = v8 + 1;
       }
 
@@ -179,7 +179,7 @@
                 objc_enumerationMutation(v14);
               }
 
-              (*(v3 + 2))(v3, *(*(&v20 + 1) + 8 * v17), v12);
+              (*(blockCopy + 2))(blockCopy, *(*(&v20 + 1) + 8 * v17), v12);
               v17 = v17 + 1;
             }
 
@@ -205,16 +205,16 @@
   _Block_object_dispose(&v47, 8);
 }
 
-+ (void)cleanupOrphanedStoresWithCurrentDeviceUUIDs:(id)a3
++ (void)cleanupOrphanedStoresWithCurrentDeviceUUIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = sub_100015E24();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016250;
   block[3] = &unk_10005CA70;
-  v7 = v3;
-  v5 = v3;
+  v7 = dsCopy;
+  v5 = dsCopy;
   dispatch_sync(v4, block);
 }
 
@@ -242,10 +242,10 @@
   return v3;
 }
 
-- (NTKDCollectionStore)initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4
+- (NTKDCollectionStore)initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d
 {
-  v61 = a3;
-  v60 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v67.receiver = self;
   v67.super_class = NTKDCollectionStore;
   v64 = [(NTKDCollectionStore *)&v67 init];
@@ -254,11 +254,11 @@
     goto LABEL_30;
   }
 
-  v6 = [v61 copy];
+  v6 = [identifierCopy copy];
   collectionIdentifier = v64->_collectionIdentifier;
   v64->_collectionIdentifier = v6;
 
-  objc_storeStrong(&v64->_deviceUUID, a4);
+  objc_storeStrong(&v64->_deviceUUID, d);
   v8 = +[NTKDCollectionStore _sharedCollectionStoreQueue];
   queue = v64->_queue;
   v64->_queue = v8;
@@ -442,60 +442,60 @@ LABEL_30:
   return v64;
 }
 
-- (void)addObserver:(id)a3 withSeqId:(id)a4
+- (void)addObserver:(id)observer withSeqId:(id)id
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100017104;
   v7[3] = &unk_10005CC38;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(NTKDCollectionStore *)v8 _onQueue_async:v7];
+  selfCopy = self;
+  observerCopy = observer;
+  idCopy = id;
+  v5 = idCopy;
+  v6 = observerCopy;
+  [(NTKDCollectionStore *)selfCopy _onQueue_async:v7];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000172FC;
   v4[3] = &unk_10005CA98;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(NTKDCollectionStore *)v5 _onQueue_async:v4];
+  selfCopy = self;
+  observerCopy = observer;
+  v3 = observerCopy;
+  [(NTKDCollectionStore *)selfCopy _onQueue_async:v4];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000173A0;
   v7[3] = &unk_10005CA98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)setSyncObserver:(id)a3 withSeqId:(id)a4
+- (void)setSyncObserver:(id)observer withSeqId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100017470;
   block[3] = &unk_10005CC38;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = observerCopy;
   dispatch_sync(queue, block);
 }
 
@@ -529,14 +529,14 @@ LABEL_30:
   return v3;
 }
 
-- (void)setVersion:(float)a3
+- (void)setVersion:(float)version
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10001771C;
   v3[3] = &unk_10005D730;
   v3[4] = self;
-  v4 = a3;
+  versionCopy = version;
   [(NTKDCollectionStore *)self _onQueue_async:v3];
 }
 
@@ -565,8 +565,8 @@ LABEL_30:
 - (id)_deviceBuildVersion
 {
   v3 = NTKBuildVersion();
-  v4 = [(NTKDCollectionStore *)self deviceUUID];
-  v5 = [CLKDevice pdrDeviceForPairingID:v4];
+  deviceUUID = [(NTKDCollectionStore *)self deviceUUID];
+  v5 = [CLKDevice pdrDeviceForPairingID:deviceUUID];
 
   v6 = [v5 valueForProperty:PDRDevicePropertyKeySystemBuildVersion];
   v7 = [NSString stringWithFormat:@"%@-%@", v3, v6];
@@ -588,18 +588,18 @@ LABEL_30:
 
 - (BOOL)isBuildVersionOutdated
 {
-  v3 = [(NTKDCollectionStore *)self _storeBuildVersion];
-  v4 = [(NTKDCollectionStore *)self _deviceBuildVersion];
-  v5 = [v4 isEqualToString:v3];
+  _storeBuildVersion = [(NTKDCollectionStore *)self _storeBuildVersion];
+  _deviceBuildVersion = [(NTKDCollectionStore *)self _deviceBuildVersion];
+  v5 = [_deviceBuildVersion isEqualToString:_storeBuildVersion];
 
   return v5 ^ 1;
 }
 
 - (BOOL)isStoreVersionPreGrace
 {
-  v2 = [(NTKDCollectionStore *)self _storeBuildVersion];
-  v3 = v2;
-  v4 = !v2 || ([v2 isEqualToString:&stru_10005E800] & 1) != 0 || objc_msgSend(v3, "compare:options:", @"17", 64) == -1;
+  _storeBuildVersion = [(NTKDCollectionStore *)self _storeBuildVersion];
+  v3 = _storeBuildVersion;
+  v4 = !_storeBuildVersion || ([_storeBuildVersion isEqualToString:&stru_10005E800] & 1) != 0 || objc_msgSend(v3, "compare:options:", @"17", 64) == -1;
 
   return v4;
 }
@@ -623,14 +623,14 @@ LABEL_30:
   return v3;
 }
 
-- (void)setRefusesToDeleteLastFace:(BOOL)a3
+- (void)setRefusesToDeleteLastFace:(BOOL)face
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100017E6C;
   v3[3] = &unk_10005D758;
   v3[4] = self;
-  v4 = a3;
+  faceCopy = face;
   [(NTKDCollectionStore *)self _onQueue_async:v3];
 }
 
@@ -726,9 +726,9 @@ LABEL_30:
   return v3;
 }
 
-- (int64_t)faceStyleForUUID:(id)a3
+- (int64_t)faceStyleForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -738,10 +738,10 @@ LABEL_30:
   block[1] = 3221225472;
   block[2] = sub_1000184F0;
   block[3] = &unk_10005D780;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -749,9 +749,9 @@ LABEL_30:
   return v7;
 }
 
-- (id)faceForUUID:(id)a3
+- (id)faceForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -763,10 +763,10 @@ LABEL_30:
   block[1] = 3221225472;
   block[2] = sub_100018638;
   block[3] = &unk_10005D780;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -775,11 +775,11 @@ LABEL_30:
   return v7;
 }
 
-- (id)faceForMigrationForUUID:(id)a3
+- (id)faceForMigrationForUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -794,7 +794,7 @@ LABEL_30:
     block[3] = &unk_10005D780;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = dCopy;
     dispatch_sync(queue, block);
     v7 = v13[5];
 
@@ -809,16 +809,16 @@ LABEL_30:
   return v7;
 }
 
-- (void)swapInTheseFaces:(id)a3
+- (void)swapInTheseFaces:(id)faces
 {
-  v4 = a3;
+  facesCopy = faces;
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = objc_alloc_init(NSMutableArray);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = facesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v8)
   {
@@ -855,12 +855,12 @@ LABEL_30:
     *buf = 138412546;
     v21 = v5;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Swapping in faces (%@) for collection (%@)", buf, 0x16u);
   }
 
-  v15 = [v6 firstObject];
-  [(NTKDCollectionStore *)self _resetWithFaces:v5 orderedUUIDs:v6 selectedUUID:v15];
+  firstObject = [v6 firstObject];
+  [(NTKDCollectionStore *)self _resetWithFaces:v5 orderedUUIDs:v6 selectedUUID:firstObject];
 }
 
 - (void)removeUnusedResourceDirectories
@@ -879,8 +879,8 @@ LABEL_30:
   deviceUUID = self->_deviceUUID;
   if (deviceUUID)
   {
-    v4 = [(NSUUID *)deviceUUID UUIDString];
-    v5 = [NSString stringWithFormat:@"%@:%@", collectionIdentifier, v4];
+    uUIDString = [(NSUUID *)deviceUUID UUIDString];
+    v5 = [NSString stringWithFormat:@"%@:%@", collectionIdentifier, uUIDString];
   }
 
   else
@@ -891,193 +891,193 @@ LABEL_30:
   return v5;
 }
 
-- (void)_setOrderedUUIDs:(id)a3 skipSyncObserver:(BOOL)a4
+- (void)_setOrderedUUIDs:(id)ds skipSyncObserver:(BOOL)observer
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100019378;
   v6[3] = &unk_10005CFE8;
-  v7 = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v8;
-  [(NTKDCollectionStore *)v7 _onQueue_async:v6];
+  selfCopy = self;
+  dsCopy = ds;
+  observerCopy = observer;
+  v5 = dsCopy;
+  [(NTKDCollectionStore *)selfCopy _onQueue_async:v6];
 }
 
-- (void)_setSelectedUUID:(id)a3 skipSyncObserver:(BOOL)a4 suppressingCallbackToObserver:(id)a5
+- (void)_setSelectedUUID:(id)d skipSyncObserver:(BOOL)observer suppressingCallbackToObserver:(id)toObserver
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000194E0;
   v9[3] = &unk_10005D7D0;
-  v10 = self;
-  v11 = a3;
-  v13 = a4;
-  v12 = a5;
-  v7 = v12;
-  v8 = v11;
-  [(NTKDCollectionStore *)v10 _onQueue_async:v9];
+  selfCopy = self;
+  dCopy = d;
+  observerCopy = observer;
+  toObserverCopy = toObserver;
+  v7 = toObserverCopy;
+  v8 = dCopy;
+  [(NTKDCollectionStore *)selfCopy _onQueue_async:v9];
 }
 
-- (void)_addFace:(id)a3 forUUID:(id)a4 skipSyncObserver:(BOOL)a5
+- (void)_addFace:(id)face forUUID:(id)d skipSyncObserver:(BOOL)observer
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100019604;
   v9[3] = &unk_10005D7D0;
-  v10 = self;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v7 = v12;
-  v8 = v11;
-  [(NTKDCollectionStore *)v10 _onQueue_async:v9];
+  selfCopy = self;
+  faceCopy = face;
+  dCopy = d;
+  observerCopy = observer;
+  v7 = dCopy;
+  v8 = faceCopy;
+  [(NTKDCollectionStore *)selfCopy _onQueue_async:v9];
 }
 
-- (void)_updateFaceForUUID:(id)a3 withConfiguration:(id)a4 skipSyncObserver:(BOOL)a5
+- (void)_updateFaceForUUID:(id)d withConfiguration:(id)configuration skipSyncObserver:(BOOL)observer
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100019748;
   v9[3] = &unk_10005D7D0;
-  v10 = self;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v7 = v12;
-  v8 = v11;
-  [(NTKDCollectionStore *)v10 _onQueue_async:v9];
+  selfCopy = self;
+  dCopy = d;
+  configurationCopy = configuration;
+  observerCopy = observer;
+  v7 = configurationCopy;
+  v8 = dCopy;
+  [(NTKDCollectionStore *)selfCopy _onQueue_async:v9];
 }
 
-- (void)_updateFaceForUUID:(id)a3 withResourceDirectory:(id)a4 skipSyncObserver:(BOOL)a5
+- (void)_updateFaceForUUID:(id)d withResourceDirectory:(id)directory skipSyncObserver:(BOOL)observer
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100019B2C;
   v9[3] = &unk_10005D7D0;
-  v10 = self;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v7 = v12;
-  v8 = v11;
-  [(NTKDCollectionStore *)v10 _onQueue_async:v9];
+  selfCopy = self;
+  dCopy = d;
+  directoryCopy = directory;
+  observerCopy = observer;
+  v7 = directoryCopy;
+  v8 = dCopy;
+  [(NTKDCollectionStore *)selfCopy _onQueue_async:v9];
 }
 
-- (void)_upgradeFace:(id)a3 forUUID:(id)a4 skipSyncObserver:(BOOL)a5
+- (void)_upgradeFace:(id)face forUUID:(id)d skipSyncObserver:(BOOL)observer
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001A044;
   v10[3] = &unk_10005D7D0;
-  v11 = a3;
-  v12 = self;
-  v13 = a4;
-  v14 = a5;
-  v8 = v13;
-  v9 = v11;
+  faceCopy = face;
+  selfCopy = self;
+  dCopy = d;
+  observerCopy = observer;
+  v8 = dCopy;
+  v9 = faceCopy;
   [(NTKDCollectionStore *)self _onQueue_async:v10];
 }
 
-- (void)_removeFaceForUUID:(id)a3 skipSyncObserver:(BOOL)a4
+- (void)_removeFaceForUUID:(id)d skipSyncObserver:(BOOL)observer
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001A264;
   v6[3] = &unk_10005CFE8;
-  v7 = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v8;
-  [(NTKDCollectionStore *)v7 _onQueue_async:v6];
+  selfCopy = self;
+  dCopy = d;
+  observerCopy = observer;
+  v5 = dCopy;
+  [(NTKDCollectionStore *)selfCopy _onQueue_async:v6];
 }
 
-- (void)_resetWithFaces:(id)a3 orderedUUIDs:(id)a4 selectedUUID:(id)a5
+- (void)_resetWithFaces:(id)faces orderedUUIDs:(id)ds selectedUUID:(id)d
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001A8E0;
   v10[3] = &unk_10005CFC0;
-  v11 = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v7 = v14;
-  v8 = v13;
-  v9 = v12;
-  [(NTKDCollectionStore *)v11 _onQueue_async:v10];
+  selfCopy = self;
+  facesCopy = faces;
+  dsCopy = ds;
+  dCopy = d;
+  v7 = dCopy;
+  v8 = dsCopy;
+  v9 = facesCopy;
+  [(NTKDCollectionStore *)selfCopy _onQueue_async:v10];
 }
 
-- (void)flushWithObserverCallback:(id)a3
+- (void)flushWithObserverCallback:(id)callback
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001B04C;
   v4[3] = &unk_10005CAC0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(NTKDCollectionStore *)v5 _onQueue_async:v4];
+  selfCopy = self;
+  callbackCopy = callback;
+  v3 = callbackCopy;
+  [(NTKDCollectionStore *)selfCopy _onQueue_async:v4];
 }
 
-- (void)flushAndComputeValidationHashWithObserverCallback:(id)a3
+- (void)flushAndComputeValidationHashWithObserverCallback:(id)callback
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001B178;
   v4[3] = &unk_10005CAC0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(NTKDCollectionStore *)v5 _onQueue_async:v4];
+  selfCopy = self;
+  callbackCopy = callback;
+  v3 = callbackCopy;
+  [(NTKDCollectionStore *)selfCopy _onQueue_async:v4];
 }
 
-- (void)_onQueue_async:(id)a3
+- (void)_onQueue_async:(id)queue_async
 {
-  v4 = a3;
+  queue_asyncCopy = queue_async;
   sub_100007294(@"com.apple.ntkd.collectionstore.asyncwork");
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001B2EC;
   block[3] = &unk_10005CB10;
-  v8 = v4;
-  v6 = v4;
+  v8 = queue_asyncCopy;
+  v6 = queue_asyncCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_onObserverQueue_async:(id)a3
+- (void)_onObserverQueue_async:(id)queue_async
 {
-  v4 = a3;
+  queue_asyncCopy = queue_async;
   sub_100007294(@"com.apple.ntkd.collectionstore.asyncobservercallback");
   observerCallbackQueue = self->_observerCallbackQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001B3D0;
   block[3] = &unk_10005CB10;
-  v8 = v4;
-  v6 = v4;
+  v8 = queue_asyncCopy;
+  v6 = queue_asyncCopy;
   dispatch_async(observerCallbackQueue, block);
 }
 
-- (id)_queue_faceForUUID:(id)a3
+- (id)_queue_faceForUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_facesByUUID objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_facesByUUID objectForKey:dCopy];
     if (v5)
     {
       goto LABEL_9;
     }
 
     storeDirectory = self->_storeDirectory;
-    v7 = [(NTKDCollectionStore *)self deviceUUID];
-    v5 = sub_100018850(storeDirectory, v4, v7, 0);
+    deviceUUID = [(NTKDCollectionStore *)self deviceUUID];
+    v5 = sub_100018850(storeDirectory, dCopy, deviceUUID, 0);
 
     if (v5)
     {
-      [(NSMutableDictionary *)self->_facesByUUID setObject:v5 forKey:v4];
+      [(NSMutableDictionary *)self->_facesByUUID setObject:v5 forKey:dCopy];
       goto LABEL_9;
     }
 
@@ -1094,15 +1094,15 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)_queue_isEmptyExceptForUUID:(id)a3
+- (BOOL)_queue_isEmptyExceptForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(_NTKDCollectionManifest *)self->_manifest orderedUUIDs];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  orderedUUIDs = [(_NTKDCollectionManifest *)self->_manifest orderedUUIDs];
+  v6 = [orderedUUIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1113,7 +1113,7 @@ LABEL_9:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(orderedUUIDs);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -1129,7 +1129,7 @@ LABEL_9:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [orderedUUIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -1145,11 +1145,11 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)_queue_addFace:(id)a3 forUUID:(id)a4
+- (BOOL)_queue_addFace:(id)face forUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  faceCopy = face;
+  dCopy = d;
+  if (!faceCopy)
   {
     v12 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1161,7 +1161,7 @@ LABEL_12:
       v30 = 2112;
       v31 = deviceUUID;
       v32 = 2112;
-      v33 = v7;
+      v33 = dCopy;
       v24 = "<%@,%@> ignoring attempt to add nil face for UUID: %@";
 LABEL_10:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v24, &v28, 0x20u);
@@ -1172,7 +1172,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!-[_NTKDCollectionManifest addUUID:withFaceStyle:](self->_manifest, "addUUID:withFaceStyle:", v7, [v6 faceStyle]))
+  if (!-[_NTKDCollectionManifest addUUID:withFaceStyle:](self->_manifest, "addUUID:withFaceStyle:", dCopy, [faceCopy faceStyle]))
   {
     v12 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1184,7 +1184,7 @@ LABEL_11:
       v30 = 2112;
       v31 = v26;
       v32 = 2112;
-      v33 = v7;
+      v33 = dCopy;
       v24 = "<%@,%@> did not add face (because face already present) for UUID: %@";
       goto LABEL_10;
     }
@@ -1192,24 +1192,24 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v8 = sub_10002045C(self->_storeDirectory, v7);
+  v8 = sub_10002045C(self->_storeDirectory, dCopy);
   v9 = +[NSFileManager defaultManager];
   [v9 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
 
-  sub_1000198CC(self->_storeDirectory, v7, v6);
+  sub_1000198CC(self->_storeDirectory, dCopy, faceCopy);
   sub_10001A5D8(self->_storeDirectory, self->_manifest);
   storeDirectory = self->_storeDirectory;
-  v11 = [v6 resourceDirectory];
-  v12 = sub_100019D58(storeDirectory, v7, v11);
+  resourceDirectory = [faceCopy resourceDirectory];
+  v12 = sub_100019D58(storeDirectory, dCopy, resourceDirectory);
 
-  [v6 setResourceDirectory:v12];
+  [faceCopy setResourceDirectory:v12];
   facesByUUID = self->_facesByUUID;
-  v14 = [v6 copy];
-  [(NSMutableDictionary *)facesByUUID setObject:v14 forKey:v7];
+  v14 = [faceCopy copy];
+  [(NSMutableDictionary *)facesByUUID setObject:v14 forKey:dCopy];
 
   [(NTKDCollectionStore *)self _queue_incrementSeqId];
   seqId = self->_seqId;
-  v16 = sub_10001B93C(self->_storeDirectory, v7);
+  v16 = sub_10001B93C(self->_storeDirectory, dCopy);
   sub_100019988(seqId, v16);
 
   v17 = _NTKLoggingObjectForDomain();
@@ -1225,9 +1225,9 @@ LABEL_11:
     v32 = 2112;
     v33 = v20;
     v34 = 2112;
-    v35 = v7;
+    v35 = dCopy;
     v36 = 2112;
-    v37 = v6;
+    v37 = faceCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "<%@,%@,%@> add face for UUID %@: %@", &v28, 0x34u);
   }
 
@@ -1237,9 +1237,9 @@ LABEL_12:
   return v21;
 }
 
-- (BOOL)_queue_setSelectedUUID:(id)a3
+- (BOOL)_queue_setSelectedUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   selectedUUID = self->_selectedUUID;
   v7 = NTKEqualObjects();
   if (v7)
@@ -1254,7 +1254,7 @@ LABEL_12:
       v26 = 2112;
       v27 = deviceUUID;
       v28 = 2112;
-      v29 = v5;
+      v29 = dCopy;
       v11 = "<%@,%@> ignoring attempt to select already-selected UUID %@";
       v12 = v8;
       v13 = 32;
@@ -1265,23 +1265,23 @@ LABEL_9:
 
   else
   {
-    objc_storeStrong(&self->_selectedUUID, a3);
+    objc_storeStrong(&self->_selectedUUID, d);
     v14 = self->_selectedUUID;
     v15 = self->_storeDirectory;
     if (v14)
     {
-      v16 = [(NSUUID *)v14 UUIDString];
+      uUIDString = [(NSUUID *)v14 UUIDString];
       v17 = [(NSString *)v15 stringByAppendingPathComponent:@"selected-uuid.string"];
 
-      [v16 writeToFile:v17 atomically:1 encoding:4 error:0];
+      [uUIDString writeToFile:v17 atomically:1 encoding:4 error:0];
     }
 
     else
     {
-      v16 = +[NSFileManager defaultManager];
+      uUIDString = +[NSFileManager defaultManager];
       v17 = [(NSString *)v15 stringByAppendingPathComponent:@"selected-uuid.string"];
 
-      [v16 removeItemAtPath:v17 error:0];
+      [uUIDString removeItemAtPath:v17 error:0];
     }
 
     [(NTKDCollectionStore *)self _queue_incrementSeqId];
@@ -1302,7 +1302,7 @@ LABEL_9:
       v28 = 2112;
       v29 = v22;
       v30 = 2112;
-      v31 = v5;
+      v31 = dCopy;
       v11 = "<%@,%@,%@> set selected UUID: %@";
       v12 = v8;
       v13 = 42;
@@ -1313,10 +1313,10 @@ LABEL_9:
   return v7 ^ 1;
 }
 
-- (BOOL)_queue_setOrderedUUIDs:(id)a3
+- (BOOL)_queue_setOrderedUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(_NTKDCollectionManifest *)self->_manifest updateOrderWithUUIDs:v4];
+  dsCopy = ds;
+  v5 = [(_NTKDCollectionManifest *)self->_manifest updateOrderWithUUIDs:dsCopy];
   if (v5)
   {
     sub_10001A5D8(self->_storeDirectory, self->_manifest);
@@ -1331,7 +1331,7 @@ LABEL_9:
       collectionIdentifier = self->_collectionIdentifier;
       deviceUUID = self->_deviceUUID;
       v11 = self->_seqId;
-      v12 = [v4 firstObject];
+      firstObject = [dsCopy firstObject];
       v16 = 138413058;
       v17 = collectionIdentifier;
       v18 = 2112;
@@ -1339,7 +1339,7 @@ LABEL_9:
       v20 = 2112;
       v21 = v11;
       v22 = 2112;
-      v23 = v12;
+      v23 = firstObject;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "<%@,%@,%@> set ordered UUIDs (first uuid = %@)", &v16, 0x2Au);
     }
   }
@@ -1380,8 +1380,8 @@ LABEL_9:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(_NTKDCollectionManifest *)self->_manifest orderedUUIDs];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  orderedUUIDs = [(_NTKDCollectionManifest *)self->_manifest orderedUUIDs];
+  v5 = [orderedUUIDs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1392,7 +1392,7 @@ LABEL_9:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(orderedUUIDs);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -1405,7 +1405,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [orderedUUIDs countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1414,16 +1414,16 @@ LABEL_9:
   return v3;
 }
 
-- (void)_queue_clearRemovalsThroughSeqId:(id)a3
+- (void)_queue_clearRemovalsThroughSeqId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = +[NSMutableArray array];
   removals = self->_removals;
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_10001C0A8;
   v12 = &unk_10005D890;
-  v7 = v4;
+  v7 = idCopy;
   v13 = v7;
   v8 = v5;
   v14 = v8;
@@ -1458,8 +1458,8 @@ LABEL_9:
         }
 
         v7 = [(NTKDCollectionStore *)self _queue_faceForUUID:*(*(&v36 + 1) + 8 * i)];
-        v8 = [v7 configuration];
-        v9 = [v8 copy];
+        configuration = [v7 configuration];
+        v9 = [configuration copy];
 
         [v9 setResourceDirectoryExists:0];
         v34[0] = _NSConcreteStackBlock;
@@ -1551,9 +1551,9 @@ LABEL_9:
     }
   }
 
-  v26 = [v33 UTF8String];
-  v27 = strlen(v26);
-  CC_MD5(v26, v27, buf);
+  uTF8String = [v33 UTF8String];
+  v27 = strlen(uTF8String);
+  CC_MD5(uTF8String, v27, buf);
   v28 = [NSMutableString stringWithCapacity:32];
   for (j = 0; j != 16; ++j)
   {
@@ -1571,10 +1571,10 @@ LABEL_9:
   return v28;
 }
 
-- (void)_queue_playbackChangesForObserver:(id)a3 fromSeqId:(id)a4
+- (void)_queue_playbackChangesForObserver:(id)observer fromSeqId:(id)id
 {
-  v47 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  idCopy = id;
   v7 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1585,7 +1585,7 @@ LABEL_9:
     v85 = 2112;
     v86 = deviceUUID;
     v87 = 2112;
-    v88 = v6;
+    v88 = idCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "store<%@,%@> playback changes since seqId %@", buf, 0x20u);
   }
 
@@ -1599,7 +1599,7 @@ LABEL_9:
   v12 = [(NSString *)self->_storeDirectory stringByAppendingPathComponent:@"selected-uuid-sequence-id.string"];
   v13 = sub_100016FD0(v12);
 
-  if (v13 && sub_1000171F8(v6, v13))
+  if (v13 && sub_1000171F8(idCopy, v13))
   {
     v76[0] = _NSConcreteStackBlock;
     v76[1] = 3221225472;
@@ -1607,7 +1607,7 @@ LABEL_9:
     v76[3] = &unk_10005CC38;
     v76[4] = self;
     v77 = v13;
-    v78 = v47;
+    v78 = observerCopy;
     (v11[2])(v11, v77, v76);
   }
 
@@ -1615,7 +1615,7 @@ LABEL_9:
   v14 = [(NSString *)self->_storeDirectory stringByAppendingPathComponent:@"manifest-sequence-id.string"];
   v15 = sub_100016FD0(v14);
 
-  if (v15 && sub_1000171F8(v6, v15))
+  if (v15 && sub_1000171F8(idCopy, v15))
   {
     v73[0] = _NSConcreteStackBlock;
     v73[1] = 3221225472;
@@ -1623,7 +1623,7 @@ LABEL_9:
     v73[3] = &unk_10005CC38;
     v73[4] = self;
     v74 = v15;
-    v75 = v47;
+    v75 = observerCopy;
     (v11[2])(v11, v74, v73);
   }
 
@@ -1650,7 +1650,7 @@ LABEL_9:
         v18 = sub_10001B93C(self->_storeDirectory, v17);
         v19 = sub_100016FD0(v18);
 
-        if (v19 && sub_1000171F8(v6, v19))
+        if (v19 && sub_1000171F8(idCopy, v19))
         {
           v66[0] = _NSConcreteStackBlock;
           v66[1] = 3221225472;
@@ -1660,14 +1660,14 @@ LABEL_9:
           v66[5] = v17;
           v20 = v19;
           v67 = v20;
-          v68 = v47;
+          v68 = observerCopy;
           (v11[2])(v11, v20, v66);
         }
 
         v21 = sub_10001A174(self->_storeDirectory, v17);
         v22 = sub_100016FD0(v21);
 
-        if (v22 && sub_1000171F8(v6, v22))
+        if (v22 && sub_1000171F8(idCopy, v22))
         {
           v63[0] = _NSConcreteStackBlock;
           v63[1] = 3221225472;
@@ -1676,14 +1676,14 @@ LABEL_9:
           v63[4] = self;
           v63[5] = v17;
           v64 = v19;
-          v65 = v47;
+          v65 = observerCopy;
           (v11[2])(v11, v22, v63);
         }
 
         v23 = sub_100019A10(self->_storeDirectory, v17);
         v24 = sub_100016FD0(v23);
 
-        if (v24 && sub_1000171F8(v6, v24))
+        if (v24 && sub_1000171F8(idCopy, v24))
         {
           v60[0] = _NSConcreteStackBlock;
           v60[1] = 3221225472;
@@ -1693,14 +1693,14 @@ LABEL_9:
           v60[5] = v17;
           v25 = v24;
           v61 = v25;
-          v62 = v47;
+          v62 = observerCopy;
           (v11[2])(v11, v25, v60);
         }
 
         v26 = sub_100019ECC(self->_storeDirectory, v17);
         v27 = sub_100016FD0(v26);
 
-        if (v27 && sub_1000171F8(v6, v27))
+        if (v27 && sub_1000171F8(idCopy, v27))
         {
           v57[0] = _NSConcreteStackBlock;
           v57[1] = 3221225472;
@@ -1710,7 +1710,7 @@ LABEL_9:
           v57[5] = v17;
           v28 = v27;
           v58 = v28;
-          v59 = v47;
+          v59 = observerCopy;
           (v11[2])(v11, v28, v57);
         }
       }
@@ -1726,16 +1726,16 @@ LABEL_9:
   v52[1] = 3221225472;
   v52[2] = sub_10001DA34;
   v52[3] = &unk_10005D948;
-  v30 = v6;
+  v30 = idCopy;
   v53 = v30;
   v31 = v11;
   v56 = v31;
-  v54 = self;
-  v32 = v47;
+  selfCopy = self;
+  v32 = observerCopy;
   v55 = v32;
   [(NSMutableDictionary *)removals enumerateKeysAndObjectsUsingBlock:v52];
-  v33 = [v43 allKeys];
-  v34 = [v33 sortedArrayUsingComparator:&stru_10005D988];
+  allKeys = [v43 allKeys];
+  v34 = [allKeys sortedArrayUsingComparator:&stru_10005D988];
 
   v50 = 0u;
   v51 = 0u;
@@ -1767,49 +1767,49 @@ LABEL_9:
   }
 }
 
-- (void)_queue_loadFullCollectionForObserver:(id)a3 completion:(id)a4
+- (void)_queue_loadFullCollectionForObserver:(id)observer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_NTKDCollectionManifest *)self->_manifest orderedUUIDs];
-  v9 = [v8 copy];
+  observerCopy = observer;
+  completionCopy = completion;
+  orderedUUIDs = [(_NTKDCollectionManifest *)self->_manifest orderedUUIDs];
+  v9 = [orderedUUIDs copy];
 
   v10 = self->_selectedUUID;
-  v11 = [(NTKDCollectionStore *)self _queue_copyAllFacesByUUID];
+  _queue_copyAllFacesByUUID = [(NTKDCollectionStore *)self _queue_copyAllFacesByUUID];
   v12 = self->_seqId;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10001DE48;
   v19[3] = &unk_10005D9B0;
-  v20 = v6;
-  v21 = self;
+  v20 = observerCopy;
+  selfCopy = self;
   v22 = v9;
   v23 = v10;
-  v24 = v11;
+  v24 = _queue_copyAllFacesByUUID;
   v25 = v12;
-  v26 = v7;
-  v13 = v7;
+  v26 = completionCopy;
+  v13 = completionCopy;
   v14 = v12;
-  v15 = v11;
+  v15 = _queue_copyAllFacesByUUID;
   v16 = v10;
   v17 = v9;
-  v18 = v6;
+  v18 = observerCopy;
   [(NTKDCollectionStore *)self _onObserverQueue_async:v19];
 }
 
-- (void)_queue_reloadFullCollectionForObserver:(id)a3 completion:(id)a4
+- (void)_queue_reloadFullCollectionForObserver:(id)observer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_10001E03C;
   v14 = &unk_10005D9D8;
   objc_copyWeak(&v17, &location);
-  v8 = v6;
+  v8 = observerCopy;
   v15 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v16 = v9;
   v10 = objc_retainBlock(&v11);
   [(NTKDCollectionStore *)self _queue_loadFullCollectionForObserver:v8 completion:v10, v11, v12, v13, v14];
@@ -1818,23 +1818,23 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)_queue_notifyDidUpdateSelectedUUID:(id)a3 skipSyncObserver:(BOOL)a4 suppressingCallbackToObserver:(id)a5
+- (void)_queue_notifyDidUpdateSelectedUUID:(id)d skipSyncObserver:(BOOL)observer suppressingCallbackToObserver:(id)toObserver
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  toObserverCopy = toObserver;
   v10 = self->_seqId;
   v11 = self->_syncObserver;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10001E3E4;
   v28[3] = &unk_10005DA00;
-  v33 = a4;
+  observerCopy = observer;
   v20 = v11;
   v29 = v20;
-  v30 = self;
+  selfCopy = self;
   v12 = v10;
   v31 = v12;
-  v13 = v8;
+  v13 = dCopy;
   v32 = v13;
   [(NTKDCollectionStore *)self _onObserverQueue_async:v28];
   v26 = 0u;
@@ -1858,7 +1858,7 @@ LABEL_9:
         }
 
         v19 = *(*(&v24 + 1) + 8 * v18);
-        if (v19 != v9)
+        if (v19 != toObserverCopy)
         {
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
@@ -1882,22 +1882,22 @@ LABEL_9:
   }
 }
 
-- (void)_queue_notifyDidUpdateOrderedUUIDs:(id)a3 skipSyncObserver:(BOOL)a4
+- (void)_queue_notifyDidUpdateOrderedUUIDs:(id)ds skipSyncObserver:(BOOL)observer
 {
-  v6 = a3;
+  dsCopy = ds;
   v7 = self->_seqId;
   v8 = self->_syncObserver;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10001E64C;
   v25[3] = &unk_10005DA00;
-  v30 = a4;
+  observerCopy = observer;
   v17 = v8;
   v26 = v17;
-  v27 = self;
+  selfCopy = self;
   v9 = v7;
   v28 = v9;
-  v10 = v6;
+  v10 = dsCopy;
   v29 = v10;
   [(NTKDCollectionStore *)self _onObserverQueue_async:v25];
   v23 = 0u;
@@ -1942,25 +1942,25 @@ LABEL_9:
   }
 }
 
-- (void)_queue_notifyDidUpdateFaceForUUID:(id)a3 withConfiguration:(id)a4 skipSyncObserver:(BOOL)a5
+- (void)_queue_notifyDidUpdateFaceForUUID:(id)d withConfiguration:(id)configuration skipSyncObserver:(BOOL)observer
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  configurationCopy = configuration;
   v10 = self->_seqId;
   v11 = self->_syncObserver;
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10001E8EC;
   v30[3] = &unk_10005DA28;
-  v36 = a5;
+  observerCopy = observer;
   v20 = v11;
   v31 = v20;
-  v32 = self;
+  selfCopy = self;
   v12 = v10;
   v33 = v12;
-  v13 = v8;
+  v13 = dCopy;
   v34 = v13;
-  v14 = v9;
+  v14 = configurationCopy;
   v35 = v14;
   [(NTKDCollectionStore *)self _onObserverQueue_async:v30];
   v28 = 0u;
@@ -2006,25 +2006,25 @@ LABEL_9:
   }
 }
 
-- (void)_queue_notifyDidUpgradeFace:(id)a3 forUUID:(id)a4 skipSyncObserver:(BOOL)a5
+- (void)_queue_notifyDidUpgradeFace:(id)face forUUID:(id)d skipSyncObserver:(BOOL)observer
 {
-  v8 = a3;
-  v9 = a4;
+  faceCopy = face;
+  dCopy = d;
   v10 = self->_seqId;
   v11 = self->_syncObserver;
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10001EB94;
   v30[3] = &unk_10005DA28;
-  v36 = a5;
+  observerCopy = observer;
   v20 = v11;
   v31 = v20;
-  v32 = self;
+  selfCopy = self;
   v12 = v10;
   v33 = v12;
-  v13 = v8;
+  v13 = faceCopy;
   v34 = v13;
-  v14 = v9;
+  v14 = dCopy;
   v35 = v14;
   [(NTKDCollectionStore *)self _onObserverQueue_async:v30];
   v28 = 0u;
@@ -2070,17 +2070,17 @@ LABEL_9:
   }
 }
 
-- (void)_queue_notifyDidUpdateFaceForUUID:(id)a3 withResourceDirectory:(id)a4 skipSyncObserver:(BOOL)a5 completion:(id)a6
+- (void)_queue_notifyDidUpdateFaceForUUID:(id)d withResourceDirectory:(id)directory skipSyncObserver:(BOOL)observer completion:(id)completion
 {
-  v7 = a5;
-  v25 = a3;
-  v24 = a4;
-  block = a6;
+  observerCopy = observer;
+  dCopy = d;
+  directoryCopy = directory;
+  block = completion;
   v10 = self->_seqId;
   v11 = dispatch_group_create();
   v12 = self->_syncObserver;
   v13 = v12;
-  if (v7)
+  if (observerCopy)
   {
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
@@ -2110,8 +2110,8 @@ LABEL_9:
     v36[0] = v13;
     v36[1] = self;
     v15 = &v37;
-    v37 = v25;
-    v38 = v24;
+    v37 = dCopy;
+    v38 = directoryCopy;
     v39 = v10;
     v40 = v11;
     [(NTKDCollectionStore *)self _onObserverQueue_async:v35];
@@ -2146,8 +2146,8 @@ LABEL_6:
         v26[3] = &unk_10005DA50;
         v26[4] = v21;
         v26[5] = self;
-        v27 = v25;
-        v28 = v24;
+        v27 = dCopy;
+        v28 = directoryCopy;
         v10 = v20;
         v29 = v20;
         v30 = v11;
@@ -2163,25 +2163,25 @@ LABEL_6:
   dispatch_group_notify(v11, self->_queue, block);
 }
 
-- (void)_queue_notifyDidAddFace:(id)a3 forUUID:(id)a4 skipSyncObserver:(BOOL)a5
+- (void)_queue_notifyDidAddFace:(id)face forUUID:(id)d skipSyncObserver:(BOOL)observer
 {
-  v8 = a3;
-  v9 = a4;
+  faceCopy = face;
+  dCopy = d;
   v10 = self->_seqId;
   v11 = self->_syncObserver;
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10001F31C;
   v30[3] = &unk_10005DA28;
-  v36 = a5;
+  observerCopy = observer;
   v20 = v11;
   v31 = v20;
-  v32 = self;
+  selfCopy = self;
   v12 = v10;
   v33 = v12;
-  v13 = v8;
+  v13 = faceCopy;
   v34 = v13;
-  v14 = v9;
+  v14 = dCopy;
   v35 = v14;
   [(NTKDCollectionStore *)self _onObserverQueue_async:v30];
   v28 = 0u;
@@ -2227,16 +2227,16 @@ LABEL_6:
   }
 }
 
-- (void)_queue_notifyDidRemoveFaceOfStyle:(int64_t)a3 forUUID:(id)a4 skipSyncObserver:(BOOL)a5 completion:(id)a6
+- (void)_queue_notifyDidRemoveFaceOfStyle:(int64_t)style forUUID:(id)d skipSyncObserver:(BOOL)observer completion:(id)completion
 {
-  v7 = a5;
-  v25 = a4;
-  block = a6;
+  observerCopy = observer;
+  dCopy = d;
+  block = completion;
   v9 = self->_seqId;
   v10 = dispatch_group_create();
   v11 = self->_syncObserver;
   v12 = v11;
-  if (v7)
+  if (observerCopy)
   {
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
@@ -2265,9 +2265,9 @@ LABEL_6:
     v13 = v36;
     v36[0] = v12;
     v36[1] = self;
-    v40 = a3;
+    styleCopy = style;
     v14 = &v37;
-    v37 = v25;
+    v37 = dCopy;
     v38 = v9;
     v39 = v10;
     [(NTKDCollectionStore *)self _onObserverQueue_async:v35];
@@ -2304,8 +2304,8 @@ LABEL_6:
         v26[3] = &unk_10005DA78;
         v26[4] = v20;
         v26[5] = self;
-        v30 = a3;
-        v27 = v25;
+        styleCopy2 = style;
+        v27 = dCopy;
         v9 = v19;
         v28 = v19;
         v29 = v10;

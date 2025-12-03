@@ -1,27 +1,27 @@
 @interface PXExitSharedLibraryActionPerformer
 - (PXExitSharedLibraryActionPerformer)init;
-- (void)_beginExitWithExitAssistantViewController:(id)a3 dismissalHandler:(id)a4;
-- (void)_performExitWithExitAssistantViewController:(id)a3 dismissalHandler:(id)a4;
-- (void)_presentFailureAlertForSharedLibraryOrPreview:(id)a3 error:(id)a4 dismissalHandler:(id)a5;
-- (void)cancelExitAssistantViewController:(id)a3;
-- (void)completeExitAssistantViewController:(id)a3 withExitRetentionPolicy:(int64_t)a4;
-- (void)performActionWithSharedLibraryOrPreview:(id)a3 shouldConfirmExit:(BOOL)a4 exitRetentionPolicy:(int64_t)a5 presentationEnvironment:(id)a6 completionHandler:(id)a7;
+- (void)_beginExitWithExitAssistantViewController:(id)controller dismissalHandler:(id)handler;
+- (void)_performExitWithExitAssistantViewController:(id)controller dismissalHandler:(id)handler;
+- (void)_presentFailureAlertForSharedLibraryOrPreview:(id)preview error:(id)error dismissalHandler:(id)handler;
+- (void)cancelExitAssistantViewController:(id)controller;
+- (void)completeExitAssistantViewController:(id)controller withExitRetentionPolicy:(int64_t)policy;
+- (void)performActionWithSharedLibraryOrPreview:(id)preview shouldConfirmExit:(BOOL)exit exitRetentionPolicy:(int64_t)policy presentationEnvironment:(id)environment completionHandler:(id)handler;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXExitSharedLibraryActionPerformer
 
-- (void)completeExitAssistantViewController:(id)a3 withExitRetentionPolicy:(int64_t)a4
+- (void)completeExitAssistantViewController:(id)controller withExitRetentionPolicy:(int64_t)policy
 {
-  v6 = a3;
-  [(PXExitSharedLibraryActionPerformer *)self setExitRetentionPolicy:a4];
+  controllerCopy = controller;
+  [(PXExitSharedLibraryActionPerformer *)self setExitRetentionPolicy:policy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __98__PXExitSharedLibraryActionPerformer_completeExitAssistantViewController_withExitRetentionPolicy___block_invoke;
   v8[3] = &unk_1E774B730;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = controllerCopy;
+  v7 = controllerCopy;
   [(PXExitSharedLibraryActionPerformer *)self _beginExitWithExitAssistantViewController:v7 dismissalHandler:v8];
 }
 
@@ -41,9 +41,9 @@ void __98__PXExitSharedLibraryActionPerformer_completeExitAssistantViewControlle
   [v7 dismissViewController:v6 completionHandler:v9];
 }
 
-- (void)cancelExitAssistantViewController:(id)a3
+- (void)cancelExitAssistantViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = PLSharedLibraryGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -56,7 +56,7 @@ void __98__PXExitSharedLibraryActionPerformer_completeExitAssistantViewControlle
   v6[2] = __72__PXExitSharedLibraryActionPerformer_cancelExitAssistantViewController___block_invoke;
   v6[3] = &unk_1E774C648;
   v6[4] = self;
-  [(PXActionPerformer *)self dismissViewController:v4 completionHandler:v6];
+  [(PXActionPerformer *)self dismissViewController:controllerCopy completionHandler:v6];
 }
 
 void __72__PXExitSharedLibraryActionPerformer_cancelExitAssistantViewController___block_invoke(uint64_t a1)
@@ -65,11 +65,11 @@ void __72__PXExitSharedLibraryActionPerformer_cancelExitAssistantViewController_
   [*(a1 + 32) completeUserInteractionTaskWithSuccess:0 error:v2];
 }
 
-- (void)_performExitWithExitAssistantViewController:(id)a3 dismissalHandler:(id)a4
+- (void)_performExitWithExitAssistantViewController:(id)controller dismissalHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v8 = PLSharedLibraryGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -77,24 +77,24 @@ void __72__PXExitSharedLibraryActionPerformer_cancelExitAssistantViewController_
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "Exit assistant confirmation alert confirmed by the user", buf, 2u);
   }
 
-  v9 = [(PXExitSharedLibraryActionPerformer *)self sharedLibraryOrPreview];
-  v10 = [v9 isInPreview];
-  [v6 setDisableControlsWithBusyIndicator:1];
+  sharedLibraryOrPreview = [(PXExitSharedLibraryActionPerformer *)self sharedLibraryOrPreview];
+  isInPreview = [sharedLibraryOrPreview isInPreview];
+  [controllerCopy setDisableControlsWithBusyIndicator:1];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __99__PXExitSharedLibraryActionPerformer__performExitWithExitAssistantViewController_dismissalHandler___block_invoke;
   aBlock[3] = &unk_1E773EE98;
-  v11 = v6;
+  v11 = controllerCopy;
   v22 = v11;
-  v26 = v10;
-  v12 = v9;
+  v26 = isInPreview;
+  v12 = sharedLibraryOrPreview;
   v23 = v12;
-  v13 = v7;
-  v24 = self;
+  v13 = handlerCopy;
+  selfCopy = self;
   v25 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [(PXActionPerformer *)self presentationEnvironment];
-  if (v10)
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  if (isInPreview)
   {
     v16 = PLSharedLibraryGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -104,16 +104,16 @@ void __72__PXExitSharedLibraryActionPerformer_cancelExitAssistantViewController_
       _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_DEFAULT, "Exit assistant will exit shared library preview: %@", buf, 0xCu);
     }
 
-    [v12 exitPreviewWithPresentationEnvironment:v15 completion:v14];
+    [v12 exitPreviewWithPresentationEnvironment:presentationEnvironment completion:v14];
   }
 
   else
   {
-    v17 = [(PXExitSharedLibraryActionPerformer *)self exitRetentionPolicy];
+    exitRetentionPolicy = [(PXExitSharedLibraryActionPerformer *)self exitRetentionPolicy];
     v18 = PLSharedLibraryGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = PXSharedLibraryExitRetentionPolicyDescription(v17);
+      v19 = PXSharedLibraryExitRetentionPolicyDescription(exitRetentionPolicy);
       *buf = 138412546;
       v28 = v12;
       v29 = 2114;
@@ -122,7 +122,7 @@ void __72__PXExitSharedLibraryActionPerformer_cancelExitAssistantViewController_
     }
 
     v20 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-    [v12 exitWithRetentionPolicy:v17 presentationEnvironment:v15 progress:v20 completion:v14];
+    [v12 exitWithRetentionPolicy:exitRetentionPolicy presentationEnvironment:presentationEnvironment progress:v20 completion:v14];
   }
 }
 
@@ -203,11 +203,11 @@ LABEL_14:
 LABEL_18:
 }
 
-- (void)_beginExitWithExitAssistantViewController:(id)a3 dismissalHandler:(id)a4
+- (void)_beginExitWithExitAssistantViewController:(id)controller dismissalHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v8 = PLSharedLibraryGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -219,22 +219,22 @@ LABEL_18:
 
   if (!self->_shouldConfirmExit)
   {
-    [(PXExitSharedLibraryActionPerformer *)self _performExitWithExitAssistantViewController:v6 dismissalHandler:v7];
+    [(PXExitSharedLibraryActionPerformer *)self _performExitWithExitAssistantViewController:controllerCopy dismissalHandler:handlerCopy];
     goto LABEL_28;
   }
 
-  v10 = [(PXExitSharedLibraryActionPerformer *)self sharedLibraryOrPreview];
-  if (![v10 isInPreview])
+  sharedLibraryOrPreview = [(PXExitSharedLibraryActionPerformer *)self sharedLibraryOrPreview];
+  if (![sharedLibraryOrPreview isInPreview])
   {
     v35 = 0;
     *buf = 0;
-    v14 = [v10 sourceLibraryInfo];
-    [v14 fetchEstimatedAssetsCountsForExit:-[PXExitSharedLibraryActionPerformer exitRetentionPolicy](self imageCount:"exitRetentionPolicy") == 1 videoCount:buf audioCount:&v35 itemCount:{0, 0}];
+    sourceLibraryInfo = [sharedLibraryOrPreview sourceLibraryInfo];
+    [sourceLibraryInfo fetchEstimatedAssetsCountsForExit:-[PXExitSharedLibraryActionPerformer exitRetentionPolicy](self imageCount:"exitRetentionPolicy") == 1 videoCount:buf audioCount:&v35 itemCount:{0, 0}];
 
-    v15 = [v10 owner];
-    v16 = [v15 isCurrentUser];
+    owner = [sharedLibraryOrPreview owner];
+    isCurrentUser = [owner isCurrentUser];
 
-    if (v16)
+    if (isCurrentUser)
     {
       v17 = @"PXSharedLibraryExit_Confirmation_Owner_Title";
     }
@@ -262,7 +262,7 @@ LABEL_18:
       if (!v35)
       {
         v11 = 0;
-        if (v16)
+        if (isCurrentUser)
         {
           v18 = @"PXSharedLibraryExit_Confirmation_Owner_Button_Title";
         }
@@ -294,11 +294,11 @@ LABEL_22:
   v27[3] = &unk_1E773EE70;
   v28 = v13;
   v29 = v11;
-  v30 = v6;
+  v30 = controllerCopy;
   v31 = v19;
   v32 = v12;
-  v33 = self;
-  v20 = v7;
+  selfCopy = self;
+  v20 = handlerCopy;
   v34 = v20;
   v21 = v12;
   v22 = v19;
@@ -356,15 +356,15 @@ void __97__PXExitSharedLibraryActionPerformer__beginExitWithExitAssistantViewCon
   }
 }
 
-- (void)_presentFailureAlertForSharedLibraryOrPreview:(id)a3 error:(id)a4 dismissalHandler:(id)a5
+- (void)_presentFailureAlertForSharedLibraryOrPreview:(id)preview error:(id)error dismissalHandler:(id)handler
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  previewCopy = preview;
+  errorCopy = error;
+  handlerCopy = handler;
   v11 = PXLocalizedSharedLibraryString(@"PXSharedLibraryGenericFailureAlertMessage");
   v12 = "MacSyncedAssetsNotificationListManager" + 32;
-  if ([v8 isInPreview])
+  if ([previewCopy isInPreview])
   {
     v13 = PXLocalizedSharedLibraryString(@"PXSharedLibraryExit_Error_Preview_Title");
     v14 = 0;
@@ -372,10 +372,10 @@ void __97__PXExitSharedLibraryActionPerformer__beginExitWithExitAssistantViewCon
 
   else
   {
-    v15 = [v8 owner];
-    v16 = [v15 isCurrentUser];
+    owner = [previewCopy owner];
+    isCurrentUser = [owner isCurrentUser];
 
-    if (v16)
+    if (isCurrentUser)
     {
       v17 = @"PXSharedLibraryExit_Error_Owner_Title";
     }
@@ -386,10 +386,10 @@ void __97__PXExitSharedLibraryActionPerformer__beginExitWithExitAssistantViewCon
     }
 
     v13 = PXLocalizedSharedLibraryString(v17);
-    v18 = [v8 sourceLibraryInfo];
+    sourceLibraryInfo = [previewCopy sourceLibraryInfo];
     v35 = 0;
     v34 = 0;
-    v19 = [v18 presentServerGeneratedMessageForError:v9 customMessage:&v35 learnMoreURL:&v34];
+    v19 = [sourceLibraryInfo presentServerGeneratedMessageForError:errorCopy customMessage:&v35 learnMoreURL:&v34];
     v20 = v35;
     v21 = v34;
     if (v19)
@@ -426,16 +426,16 @@ void __97__PXExitSharedLibraryActionPerformer__beginExitWithExitAssistantViewCon
     v12 = "anager";
   }
 
-  v24 = [(PXActionPerformer *)self presentationEnvironment];
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = *(v12 + 63);
   v29[2] = __107__PXExitSharedLibraryActionPerformer__presentFailureAlertForSharedLibraryOrPreview_error_dismissalHandler___block_invoke_2;
   v29[3] = &unk_1E774C2F0;
-  v30 = v9;
-  v31 = v10;
-  v25 = v10;
-  v26 = v9;
-  PXPresentFailureWithLocalizedTitle(v13, v11, v14, v26, v24, v29);
+  v30 = errorCopy;
+  v31 = handlerCopy;
+  v25 = handlerCopy;
+  v26 = errorCopy;
+  PXPresentFailureWithLocalizedTitle(v13, v11, v14, v26, presentationEnvironment, v29);
 }
 
 void __107__PXExitSharedLibraryActionPerformer__presentFailureAlertForSharedLibraryOrPreview_error_dismissalHandler___block_invoke_2(uint64_t a1)
@@ -457,9 +457,9 @@ void __107__PXExitSharedLibraryActionPerformer__presentFailureAlertForSharedLibr
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXExitSharedLibraryActionPerformer *)self sharedLibraryOrPreview];
-  v4 = [(PXExitSharedLibraryActionPerformer *)self exitRetentionPolicy];
-  if (([v3 isInPreview] & 1) != 0 || v4)
+  sharedLibraryOrPreview = [(PXExitSharedLibraryActionPerformer *)self sharedLibraryOrPreview];
+  exitRetentionPolicy = [(PXExitSharedLibraryActionPerformer *)self exitRetentionPolicy];
+  if (([sharedLibraryOrPreview isInPreview] & 1) != 0 || exitRetentionPolicy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -478,18 +478,18 @@ void __107__PXExitSharedLibraryActionPerformer__presentFailureAlertForSharedLibr
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "Present exit assistant", buf, 2u);
     }
 
-    v6 = [v3 sourceLibraryInfo];
+    sourceLibraryInfo = [sharedLibraryOrPreview sourceLibraryInfo];
     v15 = 0;
     *buf = 0;
     v13 = 0;
     v14 = 0;
-    [v6 fetchEstimatedAssetsCountsForExit:0 imageCount:buf videoCount:&v15 audioCount:&v14 itemCount:&v13];
+    [sourceLibraryInfo fetchEstimatedAssetsCountsForExit:0 imageCount:buf videoCount:&v15 audioCount:&v14 itemCount:&v13];
     v7 = PLLocalizedCountDescription();
-    [v6 fetchEstimatedAssetsCountsForExit:1 imageCount:buf videoCount:&v15 audioCount:&v14 itemCount:&v13];
+    [sourceLibraryInfo fetchEstimatedAssetsCountsForExit:1 imageCount:buf videoCount:&v15 audioCount:&v14 itemCount:&v13];
     v8 = PLLocalizedCountDescription();
     v9 = [PXSharedLibraryExitAssistantViewController alloc];
-    v10 = [v3 owner];
-    v11 = -[PXSharedLibraryExitAssistantViewController initWithOwnerAsCurrentUser:keepAllCountsString:contributedOnlyCountsString:](v9, "initWithOwnerAsCurrentUser:keepAllCountsString:contributedOnlyCountsString:", [v10 isCurrentUser], v7, v8);
+    owner = [sharedLibraryOrPreview owner];
+    v11 = -[PXSharedLibraryExitAssistantViewController initWithOwnerAsCurrentUser:keepAllCountsString:contributedOnlyCountsString:](v9, "initWithOwnerAsCurrentUser:keepAllCountsString:contributedOnlyCountsString:", [owner isCurrentUser], v7, v8);
 
     [(PXSharedLibraryExitAssistantViewController *)v11 setDelegate:self];
     if (![(PXActionPerformer *)self presentViewController:v11])
@@ -499,42 +499,42 @@ void __107__PXExitSharedLibraryActionPerformer__presentFailureAlertForSharedLibr
   }
 }
 
-- (void)performActionWithSharedLibraryOrPreview:(id)a3 shouldConfirmExit:(BOOL)a4 exitRetentionPolicy:(int64_t)a5 presentationEnvironment:(id)a6 completionHandler:(id)a7
+- (void)performActionWithSharedLibraryOrPreview:(id)preview shouldConfirmExit:(BOOL)exit exitRetentionPolicy:(int64_t)policy presentationEnvironment:(id)environment completionHandler:(id)handler
 {
-  v10 = a4;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  if (!v13)
+  exitCopy = exit;
+  previewCopy = preview;
+  environmentCopy = environment;
+  handlerCopy = handler;
+  if (!previewCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXExitSharedLibraryActionPerformer.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"sharedLibraryOrPreview"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExitSharedLibraryActionPerformer.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"sharedLibraryOrPreview"}];
 
-    if (v14)
+    if (environmentCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXExitSharedLibraryActionPerformer.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXExitSharedLibraryActionPerformer.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
 
     goto LABEL_3;
   }
 
-  if (!v14)
+  if (!environmentCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [(PXExitSharedLibraryActionPerformer *)self setSharedLibraryOrPreview:v13];
-  [(PXExitSharedLibraryActionPerformer *)self setShouldConfirmExit:v10];
-  [(PXExitSharedLibraryActionPerformer *)self setExitRetentionPolicy:a5];
-  [(PXActionPerformer *)self setPresentationEnvironment:v14];
+  [(PXExitSharedLibraryActionPerformer *)self setSharedLibraryOrPreview:previewCopy];
+  [(PXExitSharedLibraryActionPerformer *)self setShouldConfirmExit:exitCopy];
+  [(PXExitSharedLibraryActionPerformer *)self setExitRetentionPolicy:policy];
+  [(PXActionPerformer *)self setPresentationEnvironment:environmentCopy];
   v18.receiver = self;
   v18.super_class = PXExitSharedLibraryActionPerformer;
-  [(PXActionPerformer *)&v18 performActionWithCompletionHandler:v15];
+  [(PXActionPerformer *)&v18 performActionWithCompletionHandler:handlerCopy];
 }
 
 - (PXExitSharedLibraryActionPerformer)init

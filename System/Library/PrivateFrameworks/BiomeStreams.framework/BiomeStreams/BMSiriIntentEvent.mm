@@ -1,9 +1,9 @@
 @interface BMSiriIntentEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMSiriIntentEvent)initWithIntentId:(id)a3 eventType:(id)a4 eventData:(id)a5;
-- (BMSiriIntentEvent)initWithProto:(id)a3;
-- (BMSiriIntentEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMSiriIntentEvent)initWithIntentId:(id)id eventType:(id)type eventData:(id)data;
+- (BMSiriIntentEvent)initWithProto:(id)proto;
+- (BMSiriIntentEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,20 +12,20 @@
 
 @implementation BMSiriIntentEvent
 
-- (BMSiriIntentEvent)initWithIntentId:(id)a3 eventType:(id)a4 eventData:(id)a5
+- (BMSiriIntentEvent)initWithIntentId:(id)id eventType:(id)type eventData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  typeCopy = type;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = BMSiriIntentEvent;
   v12 = [(BMEventBase *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_intentId, a3);
-    objc_storeStrong(&v13->_eventType, a4);
-    objc_storeStrong(&v13->_eventData, a5);
+    objc_storeStrong(&v12->_intentId, id);
+    objc_storeStrong(&v13->_eventType, type);
+    objc_storeStrong(&v13->_eventData, data);
   }
 
   return v13;
@@ -40,29 +40,29 @@
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSiriIntentEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSiriIntentEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSiriIntentEvent)initWithProto:(id)a3
+- (BMSiriIntentEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -78,48 +78,48 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 intentId];
-  v7 = [v5 eventType];
-  v8 = [v5 eventData];
+  v5 = protoCopy;
+  intentId = [v5 intentId];
+  eventType = [v5 eventType];
+  eventData = [v5 eventData];
 
-  self = [(BMSiriIntentEvent *)self initWithIntentId:v6 eventType:v7 eventData:v8];
-  v9 = self;
+  self = [(BMSiriIntentEvent *)self initWithIntentId:intentId eventType:eventType eventData:eventData];
+  selfCopy = self;
 LABEL_8:
 
-  return v9;
+  return selfCopy;
 }
 
-- (BMSiriIntentEvent)initWithProtoData:(id)a3
+- (BMSiriIntentEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSiriIntentEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSiriIntentEvent alloc] initWithData:dataCopy];
 
     self = [(BMSiriIntentEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMSiriIntentEvent *)self intentId];
-  [v3 setIntentId:v4];
+  intentId = [(BMSiriIntentEvent *)self intentId];
+  [v3 setIntentId:intentId];
 
-  v5 = [(BMSiriIntentEvent *)self eventType];
-  [v3 setEventType:v5];
+  eventType = [(BMSiriIntentEvent *)self eventType];
+  [v3 setEventType:eventType];
 
-  v6 = [(BMSiriIntentEvent *)self eventData];
-  [v3 setEventData:v6];
+  eventData = [(BMSiriIntentEvent *)self eventData];
+  [v3 setEventData:eventData];
 
   return v3;
 }
@@ -131,24 +131,24 @@ LABEL_8:
   return v4 ^ [(NSString *)self->_intentId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     eventType = self->_eventType;
-    v7 = [v5 eventType];
-    if ([(NSString *)eventType isEqualToString:v7])
+    eventType = [v5 eventType];
+    if ([(NSString *)eventType isEqualToString:eventType])
     {
       intentId = self->_intentId;
-      v9 = [v5 intentId];
-      if ([(NSString *)intentId isEqualToString:v9])
+      intentId = [v5 intentId];
+      if ([(NSString *)intentId isEqualToString:intentId])
       {
         eventData = self->_eventData;
-        v11 = [v5 eventData];
-        v12 = [(NSData *)eventData isEqualToData:v11];
+        eventData = [v5 eventData];
+        v12 = [(NSData *)eventData isEqualToData:eventData];
       }
 
       else

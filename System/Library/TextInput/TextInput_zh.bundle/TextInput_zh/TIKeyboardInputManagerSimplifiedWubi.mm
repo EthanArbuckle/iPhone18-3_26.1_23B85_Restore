@@ -23,10 +23,10 @@
 
   else
   {
-    v4 = [(TIKeyboardInputManagerChinese *)self hasIdeographicCandidates];
+    hasIdeographicCandidates = [(TIKeyboardInputManagerChinese *)self hasIdeographicCandidates];
     v5 = MEMORY[0x29EDB8D80];
     v6 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:1];
-    if (v4)
+    if (hasIdeographicCandidates)
     {
       v7 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:4];
       v3 = [v5 arrayWithObjects:{v6, v7, 0}];

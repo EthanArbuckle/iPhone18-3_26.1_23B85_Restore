@@ -1,90 +1,90 @@
 @interface VMUObjectIdentifier
-- (BOOL)_isUnrealizedObjCClass:(unint64_t)a3 recursionDepth:(unsigned int)a4;
-- (BOOL)_isValidInstanceLength:(unint64_t)a3 expectedLength:(unint64_t)a4;
-- (BOOL)_isaPointerRefersToVTable:(unint64_t)a3 remoteAddress:(unint64_t)a4 symbol:(_CSTypeRef)a5 symbolNameOut:(const char *)a6;
-- (BOOL)_remoteAddressIsOKtoRead:(unint64_t)a3;
-- (BOOL)isValidPointer:(uint64_t)a1;
+- (BOOL)_isUnrealizedObjCClass:(unint64_t)class recursionDepth:(unsigned int)depth;
+- (BOOL)_isValidInstanceLength:(unint64_t)length expectedLength:(unint64_t)expectedLength;
+- (BOOL)_isaPointerRefersToVTable:(unint64_t)table remoteAddress:(unint64_t)address symbol:(_CSTypeRef)symbol symbolNameOut:(const char *)out;
+- (BOOL)_remoteAddressIsOKtoRead:(unint64_t)read;
+- (BOOL)isValidPointer:(uint64_t)pointer;
 - (VMUAutoreleasePoolPageLayout)createAutoreleasePoolPageLayout;
-- (VMUObjectIdentifier)initWithVMUTask:(id)a3 symbolicator:(_CSTypeRef)a4 scanner:(id)a5;
+- (VMUObjectIdentifier)initWithVMUTask:(id)task symbolicator:(_CSTypeRef)symbolicator scanner:(id)scanner;
 - (VMUTaskMemoryScanner)scanner;
 - (_CSTypeRef)_symbolicator;
 - (_CSTypeRef)libobjcSymbolOwner;
-- (_CSTypeRef)symbolForAddress:(unint64_t)a3;
+- (_CSTypeRef)symbolForAddress:(unint64_t)address;
 - (_CSTypeRef)symbolicator;
 - (_VMURange)validVMRange;
-- (id)_classInfoForMemory:(void *)a3 length:(unint64_t)a4 atOffset:(unint64_t)a5 remoteAddress:(unint64_t)a6;
+- (id)_classInfoForMemory:(void *)memory length:(unint64_t)length atOffset:(unint64_t)offset remoteAddress:(unint64_t)address;
 - (id)_scanner;
-- (id)classInfoForCFTypeInstance:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)classInfoForMemory:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)classInfoForNonobjectMemory:(void *)a3 length:(unint64_t)a4;
-- (id)classInfoForObjectWithRange:(_VMURange)a3;
-- (id)classInfoWithNonobjectType:(id)a3 binaryPath:(id)a4 returnedClassInfoIndex:(unsigned int *)a5;
-- (id)classNameForTaggedPointer:(void *)a3;
-- (id)formattedDateLabel:(id)a3;
-- (id)labelForCFBundle:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForCStructureWithMemory:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5 classInfo:(id)a6;
-- (id)labelForClassDataExtRW:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForClassDataRO:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForClassDataRW:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForClassStructure:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForCoreMediaFigObject:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForItemCount:(int64_t)a3;
-- (id)labelForMallocBlock:(_VMURange)a3;
-- (id)labelForMallocBlock:(_VMURange)a3 usingHandlerBlock:(id)a4;
-- (id)labelForMemory:(unint64_t)a3 length:(uint64_t)a4 remoteAddress:(void *)a5 classInfo:(void *)a6 usingHandlerBlock:;
-- (id)labelForNSArray:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSBundle:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSCFData:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSCFDictionary:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSCFSet:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSConcreteData:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSConcreteHashTable:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSDate:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSDictionary:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSInlineData:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSNumber:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSPathStore2:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSSet:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSTaggedPointerStringCStringContainer:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSURL:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSXPCConnection:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForNSXPCInterface:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForOSDispatchMach:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForOSDispatchQueue:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForOSLog:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForOSTransaction:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForOSXPCActivity:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForOSXPCConnection:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForOSXPCDictionary:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForOSXPCDictionaryStorageNode:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForOSXPCObject:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForOSXPCString:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForObjectOfClass:(id)a3 atOffset:(unsigned int)a4 ofObject:(void *)a5 withLength:(unint64_t)a6;
-- (id)labelForProtocol:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForSwiftContiguousArrayStorage:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForSwiftDictionaryStorage:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForSwiftSetStorage:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForSwiftStringStorage:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForTaggedPointer:(void *)a3;
-- (id)labelFor_RBSAssertionDescriptor:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelFor__NSMallocBlock__:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)noLabelForOSXPCObject:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)symbolForRemoteAddress:(unint64_t)a3;
-- (id)uniquifyStringLabel:(id)a3 stringType:(int)a4 printDetail:(BOOL)a5;
-- (int)_populateSwiftReflectionInfo:(_DummyVMUSwiftReflectionContext *)a3;
+- (id)classInfoForCFTypeInstance:(void *)instance length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)classInfoForMemory:(void *)memory length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)classInfoForNonobjectMemory:(void *)memory length:(unint64_t)length;
+- (id)classInfoForObjectWithRange:(_VMURange)range;
+- (id)classInfoWithNonobjectType:(id)type binaryPath:(id)path returnedClassInfoIndex:(unsigned int *)index;
+- (id)classNameForTaggedPointer:(void *)pointer;
+- (id)formattedDateLabel:(id)label;
+- (id)labelForCFBundle:(void *)bundle length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForCStructureWithMemory:(void *)memory length:(unint64_t)length remoteAddress:(unint64_t)address classInfo:(id)info;
+- (id)labelForClassDataExtRW:(void *)w length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForClassDataRO:(void *)o length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForClassDataRW:(void *)w length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForClassStructure:(void *)structure length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForCoreMediaFigObject:(void *)object length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForItemCount:(int64_t)count;
+- (id)labelForMallocBlock:(_VMURange)block;
+- (id)labelForMallocBlock:(_VMURange)block usingHandlerBlock:(id)handlerBlock;
+- (id)labelForMemory:(unint64_t)memory length:(uint64_t)length remoteAddress:(void *)address classInfo:(void *)info usingHandlerBlock:;
+- (id)labelForNSArray:(void *)array length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSBundle:(void *)bundle length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSCFData:(void *)data length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSCFDictionary:(void *)dictionary length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSCFSet:(void *)set length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSConcreteData:(void *)data length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSConcreteHashTable:(void *)table length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSDate:(void *)date length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSDictionary:(void *)dictionary length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSInlineData:(void *)data length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSNumber:(void *)number length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSPathStore2:(void *)store2 length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSSet:(void *)set length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSTaggedPointerStringCStringContainer:(void *)container length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSURL:(void *)l length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSXPCConnection:(void *)connection length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForNSXPCInterface:(void *)interface length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForOSDispatchMach:(void *)mach length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForOSDispatchQueue:(void *)queue length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForOSLog:(void *)log length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForOSTransaction:(void *)transaction length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForOSXPCActivity:(void *)activity length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForOSXPCConnection:(void *)connection length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForOSXPCDictionary:(void *)dictionary length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForOSXPCDictionaryStorageNode:(void *)node length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForOSXPCObject:(void *)object length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForOSXPCString:(void *)string length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForObjectOfClass:(id)class atOffset:(unsigned int)offset ofObject:(void *)object withLength:(unint64_t)length;
+- (id)labelForProtocol:(void *)protocol length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForSwiftContiguousArrayStorage:(void *)storage length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForSwiftDictionaryStorage:(void *)storage length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForSwiftSetStorage:(void *)storage length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForSwiftStringStorage:(void *)storage length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForTaggedPointer:(void *)pointer;
+- (id)labelFor_RBSAssertionDescriptor:(void *)descriptor length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelFor__NSMallocBlock__:(void *)block__ length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)noLabelForOSXPCObject:(void *)object length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)symbolForRemoteAddress:(unint64_t)address;
+- (id)uniquifyStringLabel:(id)label stringType:(int)type printDetail:(BOOL)detail;
+- (int)_populateSwiftReflectionInfo:(_DummyVMUSwiftReflectionContext *)info;
 - (uint64_t)setNeedToValidateRemoteMirrorReadAddressRange:(uint64_t)result;
-- (unint64_t)addressOfSymbol:(const char *)a3 inLibrary:(const char *)a4;
-- (unint64_t)countFromPointerInAutoreleasePool:(void *)a3;
-- (void)_findObjCAndSwiftClassesFromClass:(unint64_t)a3 recursionDepth:(unsigned int)a4;
-- (void)_findOffsetsInOSXPCConnection:(void *)a3 length:(unint64_t)a4;
+- (unint64_t)addressOfSymbol:(const char *)symbol inLibrary:(const char *)library;
+- (unint64_t)countFromPointerInAutoreleasePool:(void *)pool;
+- (void)_findObjCAndSwiftClassesFromClass:(unint64_t)class recursionDepth:(unsigned int)depth;
+- (void)_findOffsetsInOSXPCConnection:(void *)connection length:(unint64_t)length;
 - (void)_generateClassInfosForObjCClassStructurePointerTypes;
 - (void)_loadSwiftAsyncTaskAndSlabRecognitionInfo;
 - (void)_populateSwiftABIVariables;
 - (void)buildIsaToObjectLabelHandlerMap;
 - (void)dealloc;
 - (void)destroy_libSwiftRemoteMirror;
-- (void)enumerateAllClassInfosWithBlock:(id)a3;
-- (void)enumerateRealizedClassInfosWithBlock:(id)a3;
+- (void)enumerateAllClassInfosWithBlock:(id)block;
+- (void)enumerateRealizedClassInfosWithBlock:(id)block;
 - (void)findCFTypes;
 - (void)findCFTypes_version1;
 - (void)findCFTypes_version2;
@@ -92,18 +92,18 @@
 - (void)findObjCAndSwiftClasses;
 - (void)flushRemoteMirrorMemoryCache;
 - (void)loadSwiftReflectionLibraries;
-- (void)objectLabelHandlerForRemoteIsa:(void *)a1;
+- (void)objectLabelHandlerForRemoteIsa:(void *)isa;
 - (void)setupIsaTranslator;
 @end
 
 @implementation VMUObjectIdentifier
 
-- (BOOL)_isaPointerRefersToVTable:(unint64_t)a3 remoteAddress:(unint64_t)a4 symbol:(_CSTypeRef)a5 symbolNameOut:(const char *)a6
+- (BOOL)_isaPointerRefersToVTable:(unint64_t)table remoteAddress:(unint64_t)address symbol:(_CSTypeRef)symbol symbolNameOut:(const char *)out
 {
   Name = CSSymbolGetName();
-  if (a6)
+  if (out)
   {
-    *a6 = Name;
+    *out = Name;
   }
 
   if (Name)
@@ -113,7 +113,7 @@
       goto LABEL_9;
     }
 
-    v10 = a3 - CSSymbolGetRange();
+    v10 = table - CSSymbolGetRange();
     if (v10 >= v11 || v10 < 0x10)
     {
       goto LABEL_9;
@@ -177,25 +177,25 @@ LABEL_9:
   return Name;
 }
 
-- (VMUObjectIdentifier)initWithVMUTask:(id)a3 symbolicator:(_CSTypeRef)a4 scanner:(id)a5
+- (VMUObjectIdentifier)initWithVMUTask:(id)task symbolicator:(_CSTypeRef)symbolicator scanner:(id)scanner
 {
-  v8 = a3;
-  v9 = a5;
+  taskCopy = task;
+  scannerCopy = scanner;
   v85.receiver = self;
   v85.super_class = VMUObjectIdentifier;
   v10 = [(VMUObjectIdentifier *)&v85 init];
   if (v10)
   {
     v11 = +[VMUDebugTimer sharedTimerIfCreated];
-    objc_storeStrong(&v10->_task, a3);
-    v12 = [(VMUTask *)v10->_task memoryCache];
-    v10->_taskIsDriverKit = [v12 isDriverKit];
+    objc_storeStrong(&v10->_task, task);
+    memoryCache = [(VMUTask *)v10->_task memoryCache];
+    v10->_taskIsDriverKit = [memoryCache isDriverKit];
 
-    objc_storeWeak(&v10->_scanner, v9);
+    objc_storeWeak(&v10->_scanner, scannerCopy);
     if (CSIsNull())
     {
       FlagsForNListOnlyData = CSSymbolicatorGetFlagsForNListOnlyData();
-      if ([v8 isExclave])
+      if ([taskCopy isExclave])
       {
         v14 = 0;
       }
@@ -215,10 +215,10 @@ LABEL_9:
 
     v10->_symbolicator._opaque_1 = v15;
     v10->_symbolicator._opaque_2 = v16;
-    v17 = [v8 isExclaveCore];
+    isExclaveCore = [taskCopy isExclaveCore];
     opaque_1 = v10->_symbolicator._opaque_1;
     opaque_2 = v10->_symbolicator._opaque_2;
-    if (v17)
+    if (isExclaveCore)
     {
       SymbolOwner = CSSymbolicatorGetSymbolOwner();
     }
@@ -269,26 +269,26 @@ LABEL_9:
     stringUniquingSet = v10->_stringUniquingSet;
     v10->_stringUniquingSet = v39;
 
-    v41 = [v9 memoryCache];
-    if (v41 || ([(VMUTask *)v10->_task memoryCache], (v41 = objc_claimAutoreleasedReturnValue()) != 0))
+    memoryCache2 = [scannerCopy memoryCache];
+    if (memoryCache2 || ([(VMUTask *)v10->_task memoryCache], (memoryCache2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __60__VMUObjectIdentifier_initWithVMUTask_symbolicator_scanner___block_invoke;
       aBlock[3] = &unk_1E8277698;
-      v42 = v41;
+      v42 = memoryCache2;
       v84 = v42;
       v43 = _Block_copy(aBlock);
       memoryReader = v10->_memoryReader;
       v10->_memoryReader = v43;
 
       v10->_targetProcessContainsMallocStackLoggingLiteZone = 0;
-      if ([v9 zoneCount])
+      if ([scannerCopy zoneCount])
       {
         v45 = 0;
         do
         {
-          v46 = [v9 zoneNameForIndex:v45];
+          v46 = [scannerCopy zoneNameForIndex:v45];
           if ([v46 hasPrefix:@"MallocStackLoggingLiteZone"])
           {
             v47 = [v46 hasPrefix:@"MallocStackLoggingLiteZone_Wrapper"];
@@ -307,7 +307,7 @@ LABEL_9:
           v45 = (v45 + 1);
         }
 
-        while (v45 < [v9 zoneCount]);
+        while (v45 < [scannerCopy zoneCount]);
       }
 
       v10->_autoreleasePoolPageLayout = [(VMUObjectIdentifier *)v10 createAutoreleasePoolPageLayout];
@@ -346,30 +346,30 @@ LABEL_9:
       {
         if ([v11 signpostID])
         {
-          v55 = [v11 logHandle];
-          v56 = [v11 signpostID];
-          if ((v56 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+          logHandle = [v11 logHandle];
+          signpostID = [v11 signpostID];
+          if ((signpostID - 1) <= 0xFFFFFFFFFFFFFFFDLL)
           {
-            v57 = v56;
-            if (os_signpost_enabled(v55))
+            v57 = signpostID;
+            if (os_signpost_enabled(logHandle))
             {
               v82 = 0;
-              _os_signpost_emit_with_name_impl(&dword_1C679D000, v55, OS_SIGNPOST_INTERVAL_END, v57, "initObjectIdentifier", "", &v82, 2u);
+              _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle, OS_SIGNPOST_INTERVAL_END, v57, "initObjectIdentifier", "", &v82, 2u);
             }
           }
         }
 
         [v11 endEvent:"initObjectIdentifier"];
         [v11 startWithCategory:"initObjectIdentifier" message:"loadSwiftReflectionLibraries"];
-        v58 = [v11 logHandle];
-        v59 = [v11 signpostID];
-        if ((v59 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+        logHandle2 = [v11 logHandle];
+        signpostID2 = [v11 signpostID];
+        if ((signpostID2 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v60 = v59;
-          if (os_signpost_enabled(v58))
+          v60 = signpostID2;
+          if (os_signpost_enabled(logHandle2))
           {
             v82 = 0;
-            _os_signpost_emit_with_name_impl(&dword_1C679D000, v58, OS_SIGNPOST_INTERVAL_BEGIN, v60, "initObjectIdentifier", "loadSwiftReflectionLibraries", &v82, 2u);
+            _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle2, OS_SIGNPOST_INTERVAL_BEGIN, v60, "initObjectIdentifier", "loadSwiftReflectionLibraries", &v82, 2u);
           }
         }
       }
@@ -388,30 +388,30 @@ LABEL_9:
       {
         if ([v11 signpostID])
         {
-          v62 = [v11 logHandle];
-          v63 = [v11 signpostID];
-          if ((v63 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+          logHandle3 = [v11 logHandle];
+          signpostID3 = [v11 signpostID];
+          if ((signpostID3 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
           {
-            v64 = v63;
-            if (os_signpost_enabled(v62))
+            v64 = signpostID3;
+            if (os_signpost_enabled(logHandle3))
             {
               v82 = 0;
-              _os_signpost_emit_with_name_impl(&dword_1C679D000, v62, OS_SIGNPOST_INTERVAL_END, v64, "initObjectIdentifier", "", &v82, 2u);
+              _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle3, OS_SIGNPOST_INTERVAL_END, v64, "initObjectIdentifier", "", &v82, 2u);
             }
           }
         }
 
         [v11 endEvent:"initObjectIdentifier"];
         [v11 startWithCategory:"initObjectIdentifier" message:"findCFTypes"];
-        v65 = [v11 logHandle];
-        v66 = [v11 signpostID];
-        if ((v66 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+        logHandle4 = [v11 logHandle];
+        signpostID4 = [v11 signpostID];
+        if ((signpostID4 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v67 = v66;
-          if (os_signpost_enabled(v65))
+          v67 = signpostID4;
+          if (os_signpost_enabled(logHandle4))
           {
             v82 = 0;
-            _os_signpost_emit_with_name_impl(&dword_1C679D000, v65, OS_SIGNPOST_INTERVAL_BEGIN, v67, "initObjectIdentifier", "findCFTypes", &v82, 2u);
+            _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle4, OS_SIGNPOST_INTERVAL_BEGIN, v67, "initObjectIdentifier", "findCFTypes", &v82, 2u);
           }
         }
       }
@@ -428,30 +428,30 @@ LABEL_9:
       {
         if ([v11 signpostID])
         {
-          v68 = [v11 logHandle];
-          v69 = [v11 signpostID];
-          if ((v69 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+          logHandle5 = [v11 logHandle];
+          signpostID5 = [v11 signpostID];
+          if ((signpostID5 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
           {
-            v70 = v69;
-            if (os_signpost_enabled(v68))
+            v70 = signpostID5;
+            if (os_signpost_enabled(logHandle5))
             {
               v82 = 0;
-              _os_signpost_emit_with_name_impl(&dword_1C679D000, v68, OS_SIGNPOST_INTERVAL_END, v70, "initObjectIdentifier", "", &v82, 2u);
+              _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle5, OS_SIGNPOST_INTERVAL_END, v70, "initObjectIdentifier", "", &v82, 2u);
             }
           }
         }
 
         [v11 endEvent:"initObjectIdentifier"];
         [v11 startWithCategory:"initObjectIdentifier" message:"findObjCAndSwiftClasses"];
-        v71 = [v11 logHandle];
-        v72 = [v11 signpostID];
-        if ((v72 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+        logHandle6 = [v11 logHandle];
+        signpostID6 = [v11 signpostID];
+        if ((signpostID6 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v73 = v72;
-          if (os_signpost_enabled(v71))
+          v73 = signpostID6;
+          if (os_signpost_enabled(logHandle6))
           {
             v82 = 0;
-            _os_signpost_emit_with_name_impl(&dword_1C679D000, v71, OS_SIGNPOST_INTERVAL_BEGIN, v73, "initObjectIdentifier", "findObjCAndSwiftClasses", &v82, 2u);
+            _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle6, OS_SIGNPOST_INTERVAL_BEGIN, v73, "initObjectIdentifier", "findObjCAndSwiftClasses", &v82, 2u);
           }
         }
       }
@@ -482,15 +482,15 @@ LABEL_9:
       v10->_objectContentLevel = 1;
       if (v11 && [v11 signpostID])
       {
-        v78 = [v11 logHandle];
-        v79 = [v11 signpostID];
-        if ((v79 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+        logHandle7 = [v11 logHandle];
+        signpostID7 = [v11 signpostID];
+        if ((signpostID7 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v80 = v79;
-          if (os_signpost_enabled(v78))
+          v80 = signpostID7;
+          if (os_signpost_enabled(logHandle7))
           {
             v82 = 0;
-            _os_signpost_emit_with_name_impl(&dword_1C679D000, v78, OS_SIGNPOST_INTERVAL_END, v80, "initObjectIdentifier", "", &v82, 2u);
+            _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle7, OS_SIGNPOST_INTERVAL_END, v80, "initObjectIdentifier", "", &v82, 2u);
           }
         }
       }
@@ -609,25 +609,25 @@ uint64_t __60__VMUObjectIdentifier_initWithVMUTask_symbolicator_scanner___block_
   }
 }
 
-- (void)enumerateRealizedClassInfosWithBlock:(id)a3
+- (void)enumerateRealizedClassInfosWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     realizedIsaToClassInfo = self->_realizedIsaToClassInfo;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __60__VMUObjectIdentifier_enumerateRealizedClassInfosWithBlock___block_invoke;
     v7[3] = &unk_1E82792F8;
-    v8 = v4;
+    v8 = blockCopy;
     [(VMUClassInfoMap *)realizedIsaToClassInfo enumerateInfosWithBlock:v7];
   }
 }
 
-- (void)enumerateAllClassInfosWithBlock:(id)a3
+- (void)enumerateAllClassInfosWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (!self->_unrealizedClassInfos)
   {
     v5 = objc_alloc_init(VMUClassInfoMap);
@@ -637,58 +637,58 @@ uint64_t __60__VMUObjectIdentifier_initWithVMUTask_symbolicator_scanner___block_
     [(VMUObjectIdentifier *)self findObjCAndSwiftClasses];
   }
 
-  [(VMUObjectIdentifier *)self enumerateRealizedClassInfosWithBlock:v4];
-  if (v4)
+  [(VMUObjectIdentifier *)self enumerateRealizedClassInfosWithBlock:blockCopy];
+  if (blockCopy)
   {
     v7 = self->_unrealizedClassInfos;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __55__VMUObjectIdentifier_enumerateAllClassInfosWithBlock___block_invoke;
     v8[3] = &unk_1E82792F8;
-    v9 = v4;
+    v9 = blockCopy;
     [(VMUClassInfoMap *)v7 enumerateInfosWithBlock:v8];
   }
 }
 
-- (id)classInfoForObjectWithRange:(_VMURange)a3
+- (id)classInfoForObjectWithRange:(_VMURange)range
 {
-  v4 = 0;
-  if (HIDWORD(a3.location))
+  location = 0;
+  if (HIDWORD(range.location))
   {
-    location = a3.location;
-    if ((a3.location & 7) == 0)
+    location = range.location;
+    if ((range.location & 7) == 0)
     {
-      if (a3.length >= 0x10)
+      if (range.length >= 0x10)
       {
-        a3.location = 16;
+        range.location = 16;
       }
 
       else
       {
-        a3.location = a3.length;
+        range.location = range.length;
       }
 
-      v4 = [(VMUObjectIdentifier *)self classInfoForMemory:(*(self->_memoryReader + 2))(self->_memoryReader length:location remoteAddress:a3.location), a3.length, location];
+      location = [(VMUObjectIdentifier *)self classInfoForMemory:(*(self->_memoryReader + 2))(self->_memoryReader length:location remoteAddress:range.location), range.length, location];
     }
   }
 
-  return v4;
+  return location;
 }
 
-- (BOOL)_isValidInstanceLength:(unint64_t)a3 expectedLength:(unint64_t)a4
+- (BOOL)_isValidInstanceLength:(unint64_t)length expectedLength:(unint64_t)expectedLength
 {
-  if (((a4 + 15) & 0xFFFFFFFFFFFFFFF0) == a3)
+  if (((expectedLength + 15) & 0xFFFFFFFFFFFFFFF0) == length)
   {
     return 1;
   }
 
-  return self->_targetProcessContainsMallocStackLoggingLiteZone && ((a4 + 23) & 0xFFFFFFFFFFFFFFF0) == a3;
+  return self->_targetProcessContainsMallocStackLoggingLiteZone && ((expectedLength + 23) & 0xFFFFFFFFFFFFFFF0) == length;
 }
 
-- (id)classInfoWithNonobjectType:(id)a3 binaryPath:(id)a4 returnedClassInfoIndex:(unsigned int *)a5
+- (id)classInfoWithNonobjectType:(id)type binaryPath:(id)path returnedClassInfoIndex:(unsigned int *)index
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  pathCopy = path;
   nonobjectClassInfosDict = self->_nonobjectClassInfosDict;
   if (!nonobjectClassInfosDict)
   {
@@ -699,15 +699,15 @@ uint64_t __60__VMUObjectIdentifier_initWithVMUTask_symbolicator_scanner___block_
     nonobjectClassInfosDict = self->_nonobjectClassInfosDict;
   }
 
-  v13 = [(NSMutableDictionary *)nonobjectClassInfosDict objectForKeyedSubscript:v8];
+  v13 = [(NSMutableDictionary *)nonobjectClassInfosDict objectForKeyedSubscript:typeCopy];
   if (!v13)
   {
-    v13 = [VMUClassInfo classInfoWithClassName:v8 binaryPath:v9 type:16];
-    [(NSMutableDictionary *)self->_nonobjectClassInfosDict setObject:v13 forKeyedSubscript:v8];
+    v13 = [VMUClassInfo classInfoWithClassName:typeCopy binaryPath:pathCopy type:16];
+    [(NSMutableDictionary *)self->_nonobjectClassInfosDict setObject:v13 forKeyedSubscript:typeCopy];
     v14 = [(VMUClassInfoMap *)self->_realizedIsaToClassInfo addClassInfo:v13 forAddress:0];
-    if (a5)
+    if (index)
     {
-      *a5 = v14;
+      *index = v14;
     }
   }
 
@@ -753,10 +753,10 @@ uint64_t __60__VMUObjectIdentifier_initWithVMUTask_symbolicator_scanner___block_
   while (v3 != 13);
 }
 
-- (id)classInfoForNonobjectMemory:(void *)a3 length:(unint64_t)a4
+- (id)classInfoForNonobjectMemory:(void *)memory length:(unint64_t)length
 {
-  v6 = *a3;
-  if (a4 >= 0x100 && (v6 == -1583242847 && !strncmp(a3 + 4, "AUTORELEASE!", 0xCuLL) || a4 == 10240 && *(a3 + 512) == -1583242847 && !strncmp(a3 + 2052, "AUTORELEASE!", 0xCuLL)))
+  v6 = *memory;
+  if (length >= 0x100 && (v6 == -1583242847 && !strncmp(memory + 4, "AUTORELEASE!", 0xCuLL) || length == 10240 && *(memory + 512) == -1583242847 && !strncmp(memory + 2052, "AUTORELEASE!", 0xCuLL)))
   {
     v8 = [(VMUObjectIdentifier *)self classInfoWithNonobjectType:@"@autoreleasepool content" binaryPath:@"/usr/lib/libobjc.A.dylib"];
     goto LABEL_44;
@@ -770,7 +770,7 @@ uint64_t __60__VMUObjectIdentifier_initWithVMUTask_symbolicator_scanner___block_
       switch(v6)
       {
         case 1414022209:
-          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:a4 expectedLength:64])
+          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:length expectedLength:64])
           {
             v9 = @"pthread_attr_t";
             goto LABEL_42;
@@ -778,7 +778,7 @@ uint64_t __60__VMUObjectIdentifier_initWithVMUTask_symbolicator_scanner___block_
 
           break;
         case 1414025796:
-          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:a4 expectedLength:8])
+          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:length expectedLength:8])
           {
             v9 = @"pthread_t";
             goto LABEL_42;
@@ -786,7 +786,7 @@ uint64_t __60__VMUObjectIdentifier_initWithVMUTask_symbolicator_scanner___block_
 
           break;
         case 1870030194:
-          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:a4 expectedLength:40])
+          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:length expectedLength:40])
           {
             v9 = @"pthread_override_s";
             goto LABEL_42;
@@ -803,7 +803,7 @@ uint64_t __60__VMUObjectIdentifier_initWithVMUTask_symbolicator_scanner___block_
       switch(v6)
       {
         case 1330529093:
-          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:a4 expectedLength:16])
+          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:length expectedLength:16])
           {
             v9 = @"pthread_once_t";
             goto LABEL_42;
@@ -811,7 +811,7 @@ uint64_t __60__VMUObjectIdentifier_initWithVMUTask_symbolicator_scanner___block_
 
           break;
         case 1381452865:
-          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:a4 expectedLength:24])
+          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:length expectedLength:24])
           {
             v9 = @"pthread_rwlockattr_t";
             goto LABEL_42;
@@ -819,7 +819,7 @@ uint64_t __60__VMUObjectIdentifier_initWithVMUTask_symbolicator_scanner___block_
 
           break;
         case 1381452875:
-          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:a4 expectedLength:200])
+          if ([(VMUObjectIdentifier *)self _isValidInstanceLength:length expectedLength:200])
           {
             v9 = @"pthread_rwlock_t";
 LABEL_42:
@@ -840,7 +840,7 @@ LABEL_42:
   {
     if (v6 == 1129202753)
     {
-      if ([(VMUObjectIdentifier *)self _isValidInstanceLength:a4 expectedLength:16])
+      if ([(VMUObjectIdentifier *)self _isValidInstanceLength:length expectedLength:16])
       {
         v9 = @"pthread_condattr_t";
         goto LABEL_42;
@@ -854,7 +854,7 @@ LABEL_42:
         goto LABEL_44;
       }
 
-      if ([(VMUObjectIdentifier *)self _isValidInstanceLength:a4 expectedLength:48])
+      if ([(VMUObjectIdentifier *)self _isValidInstanceLength:length expectedLength:48])
       {
         v9 = @"pthread_cond_t";
         goto LABEL_42;
@@ -866,7 +866,7 @@ LABEL_42:
 
   if (v6 == 1297373249)
   {
-    if ([(VMUObjectIdentifier *)self _isValidInstanceLength:a4 expectedLength:16])
+    if ([(VMUObjectIdentifier *)self _isValidInstanceLength:length expectedLength:16])
     {
       v9 = @"pthread_mutexattr_t";
       goto LABEL_42;
@@ -879,7 +879,7 @@ LABEL_43:
 
   if (v6 == 1297437784 || v6 == 1297437786)
   {
-    if ([(VMUObjectIdentifier *)self _isValidInstanceLength:a4 expectedLength:64])
+    if ([(VMUObjectIdentifier *)self _isValidInstanceLength:length expectedLength:64])
     {
       v9 = @"pthread_mutex_t";
       goto LABEL_42;
@@ -893,9 +893,9 @@ LABEL_44:
   return v8;
 }
 
-- (id)classInfoForCFTypeInstance:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)classInfoForCFTypeInstance:(void *)instance length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  if (a4 >= 0x10)
+  if (length >= 0x10)
   {
     v8 = [(VMUClassInfoMap *)self->_cfTypeIDToClassInfo classInfoForAddress:__CFGenericTypeID()];
     v5 = v8;
@@ -903,7 +903,7 @@ LABEL_44:
     {
       if ([v8 isCoreMediaFigObject])
       {
-        v9 = *(a3 + 3);
+        v9 = *(instance + 3);
         v10 = [VMUTask ptrauthStripDataPointer:?];
         if (v10)
         {
@@ -918,8 +918,8 @@ LABEL_44:
           else
           {
             v44 = 0;
-            v15 = [(VMUTask *)self->_task memoryCache];
-            v16 = [v15 peekAtAddress:v11 size:16 returnsBuf:&v44];
+            memoryCache = [(VMUTask *)self->_task memoryCache];
+            v16 = [memoryCache peekAtAddress:v11 size:16 returnsBuf:&v44];
 
             if (!v16)
             {
@@ -963,32 +963,32 @@ LABEL_44:
                         v25 = v26;
                       }
 
-                      v27 = [v5 className];
-                      v28 = [v27 isEqualToString:v25];
+                      className = [v5 className];
+                      v28 = [className isEqualToString:v25];
 
-                      v29 = [v5 className];
-                      v30 = v29;
+                      className2 = [v5 className];
+                      v30 = className2;
                       if (v28)
                       {
-                        printFigSubclassInfo(v29, &stru_1F461F9C8, v43);
+                        printFigSubclassInfo(className2, &stru_1F461F9C8, v43);
 
                         [(VMUClassInfoMap *)self->_coreMediaFigBaseClassToClassInfo addClassInfo:v5 forAddress:v11];
                       }
 
                       else
                       {
-                        v31 = [v25 hasPrefix:v29];
+                        v31 = [v25 hasPrefix:className2];
 
                         if (v31)
                         {
-                          v32 = [v5 className];
-                          v33 = [v25 substringFromIndex:{objc_msgSend(v32, "length")}];
+                          className3 = [v5 className];
+                          v33 = [v25 substringFromIndex:{objc_msgSend(className3, "length")}];
 
                           v25 = v33;
                         }
 
-                        v34 = [v5 className];
-                        v35 = [v34 stringByAppendingFormat:@" (%@)", v25];
+                        className4 = [v5 className];
+                        v35 = [className4 stringByAppendingFormat:@" (%@)", v25];
 
                         CSSymbolGetSymbolOwner();
                         Path = CSSymbolOwnerGetPath();
@@ -1006,8 +1006,8 @@ LABEL_44:
                         v39 = [(VMUClassInfo *)VMUMutableClassInfo classInfoWithClassName:v35 binaryPath:v38 type:4];
 
                         [v39 setIsCoreMediaFigObject:1];
-                        v40 = [v5 className];
-                        printFigSubclassInfo(v40, v35, v43);
+                        className5 = [v5 className];
+                        printFigSubclassInfo(className5, v35, v43);
 
                         [(VMUClassInfoMap *)self->_coreMediaFigBaseClassToClassInfo addClassInfo:v39 forAddress:v11];
                         v25 = v35;
@@ -1039,10 +1039,10 @@ LABEL_44:
   return v5;
 }
 
-- (BOOL)_isUnrealizedObjCClass:(unint64_t)a3 recursionDepth:(unsigned int)a4
+- (BOOL)_isUnrealizedObjCClass:(unint64_t)class recursionDepth:(unsigned int)depth
 {
   WeakRetained = objc_loadWeakRetained(&self->_scanner);
-  v8 = [WeakRetained _rangeOfClassStructureForPossibleUnrealizedSwiftClassWithIsa:a3];
+  v8 = [WeakRetained _rangeOfClassStructureForPossibleUnrealizedSwiftClassWithIsa:class];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1079,12 +1079,12 @@ LABEL_4:
 
         else
         {
-          if (!a4)
+          if (!depth)
           {
             goto LABEL_4;
           }
 
-          LOBYTE(v9) = [(VMUObjectIdentifier *)self _isUnrealizedObjCClass:v14 recursionDepth:a4 - 1];
+          LOBYTE(v9) = [(VMUObjectIdentifier *)self _isUnrealizedObjCClass:v14 recursionDepth:depth - 1];
         }
       }
     }
@@ -1093,16 +1093,16 @@ LABEL_4:
   return v9;
 }
 
-- (id)_classInfoForMemory:(void *)a3 length:(unint64_t)a4 atOffset:(unint64_t)a5 remoteAddress:(unint64_t)a6
+- (id)_classInfoForMemory:(void *)memory length:(unint64_t)length atOffset:(unint64_t)offset remoteAddress:(unint64_t)address
 {
-  v11 = *(a3 + a5);
+  v11 = *(memory + offset);
   v12 = (*(self->_isaTranslator + 2))();
-  v13 = [(VMUAttributeGraphTypeIdentifier *)self->_attributeGraphTypeIdentifier metadataPointerForAllocation:a6];
+  v13 = [(VMUAttributeGraphTypeIdentifier *)self->_attributeGraphTypeIdentifier metadataPointerForAllocation:address];
   if (!v13)
   {
-    if (!a5 && v12 == self->_coreFoundationCFTypeIsa)
+    if (!offset && v12 == self->_coreFoundationCFTypeIsa)
     {
-      v14 = [(VMUObjectIdentifier *)self classInfoForCFTypeInstance:a3 length:a4 remoteAddress:a6];
+      v14 = [(VMUObjectIdentifier *)self classInfoForCFTypeInstance:memory length:length remoteAddress:address];
       goto LABEL_6;
     }
 
@@ -1123,21 +1123,21 @@ LABEL_4:
 LABEL_23:
       if (![(VMUClassInfo *)p_super ivarCount])
       {
-        v18 = [(VMUClassInfo *)p_super className];
-        if ([v18 isEqualToString:@"__SwiftValue"])
+        className = [(VMUClassInfo *)p_super className];
+        if ([className isEqualToString:@"__SwiftValue"])
         {
 
 LABEL_31:
           v23 = [VMUClassInfo alloc];
-          v24 = [(VMUClassInfo *)p_super className];
-          v25 = [(VMUClassInfo *)v23 initSwiftClassWithName:v24 classInfoType:64 size:a4];
+          className2 = [(VMUClassInfo *)p_super className];
+          v25 = [(VMUClassInfo *)v23 initSwiftClassWithName:className2 classInfoType:64 size:length];
 
           p_super = v25;
           goto LABEL_68;
         }
 
-        v21 = [(VMUClassInfo *)p_super className];
-        v22 = [v21 isEqualToString:@"_SwiftValue"];
+        className3 = [(VMUClassInfo *)p_super className];
+        v22 = [className3 isEqualToString:@"_SwiftValue"];
 
         if (v22)
         {
@@ -1192,7 +1192,7 @@ LABEL_67:
     {
       if (self->_taskIsDriverKit)
       {
-        p_super = [(VMUObjectIdentifierDriverKitSupport *)self->_driverKitSupport classInfoForDriverKitMemory:a3 length:a4 atOffset:a5 translatedIsa:v12 symbol:SymbolWithAddress remoteAddress:v32, a6];
+        p_super = [(VMUObjectIdentifierDriverKitSupport *)self->_driverKitSupport classInfoForDriverKitMemory:memory length:length atOffset:offset translatedIsa:v12 symbol:SymbolWithAddress remoteAddress:v32, address];
         if ([(VMUClassInfo *)p_super infoType]== 128)
         {
           [(VMUClassInfoMap *)self->_realizedIsaToClassInfo addClassInfo:p_super forAddress:v12];
@@ -1202,7 +1202,7 @@ LABEL_67:
       else
       {
         *&v51 = 0;
-        v44 = [(VMUObjectIdentifier *)self _isaPointerRefersToVTable:v12 remoteAddress:a6 symbol:SymbolWithAddress symbolNameOut:v32, &v51];
+        v44 = [(VMUObjectIdentifier *)self _isaPointerRefersToVTable:v12 remoteAddress:address symbol:SymbolWithAddress symbolNameOut:v32, &v51];
         p_super = 0;
         if (v44)
         {
@@ -1235,7 +1235,7 @@ LABEL_67:
       p_super = 0;
     }
 
-    if (a5 || p_super)
+    if (offset || p_super)
     {
       goto LABEL_65;
     }
@@ -1244,7 +1244,7 @@ LABEL_67:
     {
       if (![(VMUObjectIdentifier *)self hasSwiftReflection])
       {
-        p_super = [[VMUClassInfo alloc] initSwiftClassWithName:0 classInfoType:64 size:a4];
+        p_super = [[VMUClassInfo alloc] initSwiftClassWithName:0 classInfoType:64 size:length];
         goto LABEL_65;
       }
 
@@ -1254,8 +1254,8 @@ LABEL_67:
       if (v34)
       {
         v53 = 0;
-        v35 = [(VMUTask *)self->_task memoryCache];
-        [v35 readPointerAt:v12 value:&v53];
+        memoryCache = [(VMUTask *)self->_task memoryCache];
+        [memoryCache readPointerAt:v12 value:&v53];
 
         p_super = 0;
         if (v53 == 1024)
@@ -1263,7 +1263,7 @@ LABEL_67:
           self->_swiftMirrorReaderContext.needToValidateAddressRange = 1;
           v51 = 0uLL;
           v52 = 0;
-          vmu_swift_reflection_infoForInstance(self->_swiftMirror->var0, a6, &v51);
+          vmu_swift_reflection_infoForInstance(self->_swiftMirror->var0, address, &v51);
           p_super = 0;
           if (v51 == 18)
           {
@@ -1273,10 +1273,10 @@ LABEL_67:
             }
 
             v36 = objc_loadWeakRetained(&self->_scanner);
-            v37 = [v36 memoryCache];
-            HaveGenericCaptures = closureContextMayHaveGenericCaptures(v12, v37);
+            memoryCache2 = [v36 memoryCache];
+            HaveGenericCaptures = closureContextMayHaveGenericCaptures(v12, memoryCache2);
 
-            if ((HaveGenericCaptures & 1) != 0 || (v39 = [VMUMutableClassInfo alloc], realizedIsaToClassInfo = self->_realizedIsaToClassInfo, swiftMirror = self->_swiftMirror, v49 = v51, v50 = v52, (v42 = [(VMUClassInfo *)v39 initWithClosureContext:a6 typeInfo:&v49 infoMap:realizedIsaToClassInfo swiftFieldMetadataContext:swiftMirror]) == 0))
+            if ((HaveGenericCaptures & 1) != 0 || (v39 = [VMUMutableClassInfo alloc], realizedIsaToClassInfo = self->_realizedIsaToClassInfo, swiftMirror = self->_swiftMirror, v49 = v51, v50 = v52, (v42 = [(VMUClassInfo *)v39 initWithClosureContext:address typeInfo:&v49 infoMap:realizedIsaToClassInfo swiftFieldMetadataContext:swiftMirror]) == 0))
             {
               p_super = _classInfoForMemory_length_atOffset_remoteAddress__closureContextWithUnknownLayoutClassInfo;
             }
@@ -1311,12 +1311,12 @@ LABEL_65:
 LABEL_6:
   p_super = v14;
 LABEL_7:
-  if (!a5 && !p_super)
+  if (!offset && !p_super)
   {
-    p_super = [(VMUObjectIdentifier *)self classInfoForNonobjectMemory:a3 length:a4];
+    p_super = [(VMUObjectIdentifier *)self classInfoForNonobjectMemory:memory length:length];
   }
 
-  if (p_super && [(VMUClassInfo *)p_super instanceSize]> a4)
+  if (p_super && [(VMUClassInfo *)p_super instanceSize]> length)
   {
 
     p_super = 0;
@@ -1332,19 +1332,19 @@ void __73__VMUObjectIdentifier__classInfoForMemory_length_atOffset_remoteAddress
   _classInfoForMemory_length_atOffset_remoteAddress__closureContextWithUnknownLayoutClassInfo = v0;
 }
 
-- (id)classInfoForMemory:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)classInfoForMemory:(void *)memory length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  if (a3 >> 32)
+  if (memory >> 32)
   {
     v8 = 0;
-    if (a4 >= 8 && (a3 & 7) == 0)
+    if (length >= 8 && (memory & 7) == 0)
     {
-      v8 = [(VMUObjectIdentifier *)self _classInfoForMemory:a3 length:a4 atOffset:0 remoteAddress:a5];
+      v8 = [(VMUObjectIdentifier *)self _classInfoForMemory:memory length:length atOffset:0 remoteAddress:address];
       if (!v8)
       {
         if (self->_taskIsDriverKit)
         {
-          v8 = [(VMUObjectIdentifierDriverKitSupport *)self->_driverKitSupport driverKitClassInfoForMemory:a3 length:a4 remoteAddress:a5];
+          v8 = [(VMUObjectIdentifierDriverKitSupport *)self->_driverKitSupport driverKitClassInfoForMemory:memory length:length remoteAddress:address];
         }
 
         else
@@ -1365,10 +1365,10 @@ void __73__VMUObjectIdentifier__classInfoForMemory_length_atOffset_remoteAddress
 
 - (void)findCFTypes_version1
 {
-  v3 = [(VMUTask *)self->_task isExclaveCore];
+  isExclaveCore = [(VMUTask *)self->_task isExclaveCore];
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
-  if (v3)
+  if (isExclaveCore)
   {
     SymbolOwner = CSSymbolicatorGetSymbolOwner();
   }
@@ -1528,11 +1528,11 @@ void *__34__VMUObjectIdentifier_findCFTypes__block_invoke()
   return result;
 }
 
-- (void)_findObjCAndSwiftClassesFromClass:(unint64_t)a3 recursionDepth:(unsigned int)a4
+- (void)_findObjCAndSwiftClassesFromClass:(unint64_t)class recursionDepth:(unsigned int)depth
 {
-  if (a3)
+  if (class)
   {
-    SiblingOfClass = a3;
+    SiblingOfClass = class;
     do
     {
       if ((VMUIsMetaclass(self->_task, self->_memoryReader, self->_objcABI, SiblingOfClass) & 1) == 0)
@@ -1548,7 +1548,7 @@ void *__34__VMUObjectIdentifier_findCFTypes__block_invoke()
         SubclassOfClass = VMUGetFirstSubclassOfClass(self->_task, self->_memoryReader, self->_objcABI, SiblingOfClass);
         if (SubclassOfClass)
         {
-          [(VMUObjectIdentifier *)self _findObjCAndSwiftClassesFromClass:SubclassOfClass recursionDepth:a4 + 1];
+          [(VMUObjectIdentifier *)self _findObjCAndSwiftClassesFromClass:SubclassOfClass recursionDepth:depth + 1];
         }
       }
 
@@ -1977,12 +1977,12 @@ uint64_t __41__VMUObjectIdentifier_setupIsaTranslator__block_invoke_3(uint64_t a
   }
 }
 
-- (unint64_t)addressOfSymbol:(const char *)a3 inLibrary:(const char *)a4
+- (unint64_t)addressOfSymbol:(const char *)symbol inLibrary:(const char *)library
 {
-  v6 = [(VMUTask *)self->_task isExclaveCore];
+  isExclaveCore = [(VMUTask *)self->_task isExclaveCore];
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
-  if (v6)
+  if (isExclaveCore)
   {
     CSSymbolicatorGetSymbolOwner();
   }
@@ -1992,7 +1992,7 @@ uint64_t __41__VMUObjectIdentifier_setupIsaTranslator__block_invoke_3(uint64_t a
     CSSymbolicatorGetSymbolOwnerWithNameAtTime();
   }
 
-  if (*a3 != 95 || (CSSymbolOwnerGetSymbolWithMangledName(), CSIsNull()))
+  if (*symbol != 95 || (CSSymbolOwnerGetSymbolWithMangledName(), CSIsNull()))
   {
     CSSymbolOwnerGetSymbolWithName();
   }
@@ -2000,7 +2000,7 @@ uint64_t __41__VMUObjectIdentifier_setupIsaTranslator__block_invoke_3(uint64_t a
   return CSSymbolGetRange();
 }
 
-- (_CSTypeRef)symbolForAddress:(unint64_t)a3
+- (_CSTypeRef)symbolForAddress:(unint64_t)address
 {
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
@@ -2018,8 +2018,8 @@ uint64_t __41__VMUObjectIdentifier_setupIsaTranslator__block_invoke_3(uint64_t a
   self->_isaToObjectLabelHandlerMap = v4;
 
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.Symbolication"];
-  v7 = [(VMUObjectIdentifier *)self osMajorMinorVersionString];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"VMUObjectLabelHandlers", v7];
+  osMajorMinorVersionString = [(VMUObjectIdentifier *)self osMajorMinorVersionString];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"VMUObjectLabelHandlers", osMajorMinorVersionString];
   v9 = [v6 pathForResource:v8 ofType:@"plist"];
   if (v9 || ([v6 pathForResource:@"VMUObjectLabelHandlers" ofType:@"plist"], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -2048,7 +2048,7 @@ uint64_t __41__VMUObjectIdentifier_setupIsaTranslator__block_invoke_3(uint64_t a
       v23 = v14;
       v24 = v16;
       v25 = v15;
-      v26 = self;
+      selfCopy = self;
       v18 = v15;
       v19 = v16;
       v20 = v14;
@@ -2182,7 +2182,7 @@ LABEL_11:
 LABEL_12:
 }
 
-- (BOOL)_remoteAddressIsOKtoRead:(unint64_t)a3
+- (BOOL)_remoteAddressIsOKtoRead:(unint64_t)read
 {
   objectContentLevel = self->_objectContentLevel;
   if (objectContentLevel == 3)
@@ -2192,13 +2192,13 @@ LABEL_12:
 
   if (objectContentLevel == 2)
   {
-    return [(VMURangeArray *)self->_readonlyRegionRanges containsLocation:a3];
+    return [(VMURangeArray *)self->_readonlyRegionRanges containsLocation:read];
   }
 
   return 0;
 }
 
-- (id)labelForTaggedPointer:(void *)a3
+- (id)labelForTaggedPointer:(void *)pointer
 {
   if (self->_objectContentLevel == 3)
   {
@@ -2206,12 +2206,12 @@ LABEL_12:
     {
       v6 = 0;
       taggedPointerObfuscator = self->_taggedPointerObfuscator;
-      if ((~a3 & 0xC000000000000007) == 0)
+      if ((~pointer & 0xC000000000000007) == 0)
       {
         taggedPointerObfuscator = 0;
       }
 
-      v8 = taggedPointerObfuscator ^ a3;
+      v8 = taggedPointerObfuscator ^ pointer;
       do
       {
         if ((v8 & 7) == self->_taggedPointerPermutations[v6])
@@ -2260,16 +2260,16 @@ LABEL_17:
   return v11;
 }
 
-- (id)classNameForTaggedPointer:(void *)a3
+- (id)classNameForTaggedPointer:(void *)pointer
 {
   v3 = 0;
   v4 = *MEMORY[0x1E69E5910];
-  if ((~a3 & 0xC000000000000007) == 0)
+  if ((~pointer & 0xC000000000000007) == 0)
   {
     v4 = 0;
   }
 
-  v5 = v4 ^ a3;
+  v5 = v4 ^ pointer;
   do
   {
     if ((v5 & 7) == *(MEMORY[0x1E69E5900] + v3))
@@ -2300,7 +2300,7 @@ LABEL_17:
   }
 }
 
-- (unint64_t)countFromPointerInAutoreleasePool:(void *)a3
+- (unint64_t)countFromPointerInAutoreleasePool:(void *)pool
 {
   var3 = self->_autoreleasePoolPageLayout->var3;
   if (!var3)
@@ -2310,43 +2310,43 @@ LABEL_17:
 
   if ((var3 & 0xF00000000000000) != 0)
   {
-    return (a3 >> 44) & 0xFF0 | (a3 >> 60);
+    return (pool >> 44) & 0xFF0 | (pool >> 60);
   }
 
-  return a3 >> 48;
+  return pool >> 48;
 }
 
-- (id)uniquifyStringLabel:(id)a3 stringType:(int)a4 printDetail:(BOOL)a5
+- (id)uniquifyStringLabel:(id)label stringType:(int)type printDetail:(BOOL)detail
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4 & 0x40;
-  if (v5)
+  detailCopy = detail;
+  labelCopy = label;
+  v9 = type & 0x40;
+  if (detailCopy)
   {
-    v10 = a4;
+    typeCopy = type;
   }
 
   else
   {
-    v10 = 0;
+    typeCopy = 0;
   }
 
-  if (v5)
+  if (detailCopy)
   {
-    v11 = a4;
+    typeCopy2 = type;
   }
 
   else
   {
-    v11 = a4 & 0x40;
+    typeCopy2 = type & 0x40;
   }
 
-  v12 = self->_labelStringUniquingMaps[v10];
-  v13 = self->_stringTypeDescriptions[v10];
+  v12 = self->_labelStringUniquingMaps[typeCopy];
+  v13 = self->_stringTypeDescriptions[typeCopy];
   if (!v12)
   {
-    v14 = v10;
-    if (!v10)
+    v14 = typeCopy;
+    if (!typeCopy)
     {
       v20 = objc_opt_new();
       labelStringUniquingMaps = self->_labelStringUniquingMaps;
@@ -2360,7 +2360,7 @@ LABEL_34:
 
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = v15;
-    v17 = v11 & 7;
+    v17 = typeCopy2 & 7;
     if (v17 == 2)
     {
       v22 = @"has-length-byte";
@@ -2371,12 +2371,12 @@ LABEL_29:
 
     if (v17 == 4)
     {
-      if ((v11 & 0x80) != 0)
+      if ((typeCopy2 & 0x80) != 0)
       {
         [v15 addObject:@"immortal"];
       }
 
-      if ((v11 & 0x100) == 0)
+      if ((typeCopy2 & 0x100) == 0)
       {
         goto LABEL_30;
       }
@@ -2415,10 +2415,10 @@ LABEL_30:
 
     else
     {
-      if ((v11 & 0x28) == 0 || ((v11 & 8) != 0 ? (v18 = @"mutable") : (v18 = @"immutable"), [v15 addObject:v18], (v11 & 0x20) == 0))
+      if ((typeCopy2 & 0x28) == 0 || ((typeCopy2 & 8) != 0 ? (v18 = @"mutable") : (v18 = @"immutable"), [v15 addObject:v18], (typeCopy2 & 0x20) == 0))
       {
 LABEL_27:
-        if ((v11 & 0x10) != 0)
+        if ((typeCopy2 & 0x10) != 0)
         {
           v22 = @"Unicode";
           goto LABEL_29;
@@ -2435,50 +2435,50 @@ LABEL_27:
   }
 
 LABEL_35:
-  v24 = [v12 objectForKeyedSubscript:v8];
+  v24 = [v12 objectForKeyedSubscript:labelCopy];
   if (!v24)
   {
-    v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v8];
-    if (v5)
+    v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:labelCopy];
+    if (detailCopy)
     {
       if (v9)
       {
-        v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@:  %@", @"constant", v8, v31];
+        labelCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@:  %@", @"constant", labelCopy, v31];
       }
 
       else
       {
-        v26 = [v8 length];
+        v26 = [labelCopy length];
         v27 = objc_alloc(MEMORY[0x1E696AEC0]);
         if (v13)
         {
-          v28 = [v27 initWithFormat:@"length: %lu  %@:  %@", v26, v13, v8];
+          labelCopy = [v27 initWithFormat:@"length: %lu  %@:  %@", v26, v13, labelCopy];
         }
 
         else
         {
-          v28 = [v27 initWithFormat:@"length: %lu  %@", v26, v8, v31];
+          labelCopy = [v27 initWithFormat:@"length: %lu  %@", v26, labelCopy, v31];
         }
       }
     }
 
     else
     {
-      v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@", v8, v30, v31];
+      labelCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@", labelCopy, v30, v31];
     }
 
-    v24 = v28;
-    [v12 setObject:v28 forKeyedSubscript:v25];
+    v24 = labelCopy;
+    [v12 setObject:labelCopy forKeyedSubscript:v25];
   }
 
   return v24;
 }
 
-- (id)labelForNSTaggedPointerStringCStringContainer:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSTaggedPointerStringCStringContainer:(void *)container length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (self->_objectContentLevel == 3)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{a3 + 8, a4, a5}];
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{container + 8, length, address}];
     if (v6)
     {
       v7 = [(VMUObjectIdentifier *)self uniquifyStringLabel:v6 stringType:1 printDetail:0];
@@ -2498,16 +2498,16 @@ LABEL_35:
   return v7;
 }
 
-- (id)labelForSwiftStringStorage:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForSwiftStringStorage:(void *)storage length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v8 = [(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:a5];
+  v8 = [(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:address];
   v9 = 0;
-  if (a4 >= 0x20 && v8)
+  if (length >= 0x20 && v8)
   {
-    v10 = memchr(a3 + 32, 0, a4 - 32);
+    v10 = memchr(storage + 32, 0, length - 32);
     if (v10)
     {
-      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:a3 + 32 length:v10 - (a3 + 32) encoding:4 freeWhenDone:0];
+      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:storage + 32 length:v10 - (storage + 32) encoding:4 freeWhenDone:0];
       v9 = [(VMUObjectIdentifier *)self uniquifyStringLabel:v11 stringType:4 printDetail:1];
     }
 
@@ -2520,45 +2520,45 @@ LABEL_35:
   return v9;
 }
 
-- (id)labelForSwiftContiguousArrayStorage:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForSwiftContiguousArrayStorage:(void *)storage length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v8 = [(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:a5];
+  v8 = [(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:address];
   v9 = 0;
-  if (a4 >= 0x20 && v8)
+  if (length >= 0x20 && v8)
   {
-    v9 = [(VMUObjectIdentifier *)self labelForItemCount:*(a3 + 2)];
+    v9 = [(VMUObjectIdentifier *)self labelForItemCount:*(storage + 2)];
   }
 
   return v9;
 }
 
-- (id)labelForSwiftDictionaryStorage:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForSwiftDictionaryStorage:(void *)storage length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v8 = [(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:a5];
+  v8 = [(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:address];
   v9 = 0;
-  if (a4 >= 0x18 && v8)
+  if (length >= 0x18 && v8)
   {
-    v9 = [(VMUObjectIdentifier *)self labelForItemCount:*(a3 + 2)];
+    v9 = [(VMUObjectIdentifier *)self labelForItemCount:*(storage + 2)];
   }
 
   return v9;
 }
 
-- (id)labelForSwiftSetStorage:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForSwiftSetStorage:(void *)storage length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v8 = [(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:a5];
+  v8 = [(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:address];
   v9 = 0;
-  if (a4 >= 0x18 && v8)
+  if (length >= 0x18 && v8)
   {
-    v9 = [(VMUObjectIdentifier *)self labelForItemCount:*(a3 + 2)];
+    v9 = [(VMUObjectIdentifier *)self labelForItemCount:*(storage + 2)];
   }
 
   return v9;
 }
 
-- (id)labelForNSURL:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSURL:(void *)l length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v7 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"NSURL" atOffset:32 ofObject:a3 withLength:a4];
+  v7 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"NSURL" atOffset:32 ofObject:l withLength:length];
   if (v7)
   {
     v8 = v7;
@@ -2570,7 +2570,7 @@ LABEL_35:
     v9 = &stru_1F461F9C8;
   }
 
-  v10 = [(VMUObjectIdentifier *)self labelForNSCFStringAtRemoteAddress:*(a3 + 3) printDetail:0];
+  v10 = [(VMUObjectIdentifier *)self labelForNSCFStringAtRemoteAddress:*(l + 3) printDetail:0];
   if (v10)
   {
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v9, v10];
@@ -2584,11 +2584,11 @@ LABEL_35:
   return v11;
 }
 
-- (id)labelForNSPathStore2:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSPathStore2:(void *)store2 length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  if ([(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:a5, a4])
+  if ([(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:address, length])
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithString:a3];
+    v7 = [MEMORY[0x1E696AEC0] stringWithString:store2];
     v8 = [(VMUObjectIdentifier *)self uniquifyStringLabel:v7 stringType:1 printDetail:1];
   }
 
@@ -2600,9 +2600,9 @@ LABEL_35:
   return v8;
 }
 
-- (id)labelForCFBundle:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForCFBundle:(void *)bundle length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v5 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"NSURL" atOffset:16 ofObject:a3 withLength:a4];
+  v5 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"NSURL" atOffset:16 ofObject:bundle withLength:length];
   if ([v5 hasPrefix:@"file://"])
   {
     v6 = MEMORY[0x1E696AEC0];
@@ -2615,12 +2615,12 @@ LABEL_35:
   return v5;
 }
 
-- (id)labelForNSBundle:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSBundle:(void *)bundle length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v8 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"CFBundle" atOffset:16 ofObject:a3 withLength:a4];
+  v8 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"CFBundle" atOffset:16 ofObject:bundle withLength:length];
   if (!v8)
   {
-    v9 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"NSPathStore2" atOffset:48 ofObject:a3 withLength:a4];
+    v9 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"NSPathStore2" atOffset:48 ofObject:bundle withLength:length];
     if (v9)
     {
       v10 = v9;
@@ -2636,13 +2636,13 @@ LABEL_35:
   return v8;
 }
 
-- (id)labelForNSNumber:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSNumber:(void *)number length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  if (self->_objectContentLevel == 3 && (Type = CFNumberGetType(a3), (Type - 1) <= 5))
+  if (self->_objectContentLevel == 3 && (Type = CFNumberGetType(number), (Type - 1) <= 5))
   {
     v8 = MEMORY[0x1E696AEC0];
     v9 = labelForNSNumber_length_remoteAddress__kNSNumberTypeStrings[Type];
-    v10 = [a3 description];
+    v10 = [number description];
     v11 = [v8 stringWithFormat:@"type %s  value: %@", v9, v10];
 
     v12 = [(NSMutableSet *)self->_stringUniquingSet member:v11];
@@ -2661,7 +2661,7 @@ LABEL_35:
   return v12;
 }
 
-- (id)formattedDateLabel:(id)a3
+- (id)formattedDateLabel:(id)label
 {
   v4 = formattedDateLabel__dateFormatter;
   if (!formattedDateLabel__dateFormatter)
@@ -2674,14 +2674,14 @@ LABEL_35:
     v4 = formattedDateLabel__dateFormatter;
   }
 
-  return [v4 stringFromDate:a3];
+  return [v4 stringFromDate:label];
 }
 
-- (id)labelForNSDate:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSDate:(void *)date length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (self->_objectContentLevel == 3)
   {
-    v7 = [(VMUObjectIdentifier *)self formattedDateLabel:a3, a4, a5, v5];
+    v7 = [(VMUObjectIdentifier *)self formattedDateLabel:date, length, address, v5];
   }
 
   else
@@ -2692,15 +2692,15 @@ LABEL_35:
   return v7;
 }
 
-- (id)labelForItemCount:(int64_t)a3
+- (id)labelForItemCount:(int64_t)count
 {
   if (self->_objectContentLevel == 3)
   {
     v5 = [(NSMapTable *)self->_itemCountToLabelStringUniquingMap objectForKey:?];
     if (!v5)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"item count: %ld", a3];
-      [(NSMapTable *)self->_itemCountToLabelStringUniquingMap setObject:v5 forKey:a3];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"item count: %ld", count];
+      [(NSMapTable *)self->_itemCountToLabelStringUniquingMap setObject:v5 forKey:count];
     }
   }
 
@@ -2712,100 +2712,100 @@ LABEL_35:
   return v5;
 }
 
-- (id)labelForNSArray:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSArray:(void *)array length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  Count = CFArrayGetCount(a3);
+  Count = CFArrayGetCount(array);
 
   return [(VMUObjectIdentifier *)self labelForItemCount:Count];
 }
 
-- (id)labelForNSDictionary:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSDictionary:(void *)dictionary length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v6 = [a3 count];
+  v6 = [dictionary count];
 
   return [(VMUObjectIdentifier *)self labelForItemCount:v6];
 }
 
-- (id)labelForNSCFDictionary:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSCFDictionary:(void *)dictionary length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  if (objectIsDeallocatingOrDeallocated(a3))
+  if (objectIsDeallocatingOrDeallocated(dictionary))
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [(VMUObjectIdentifier *)self labelForNSDictionary:a3 length:a4 remoteAddress:a5];
+    v9 = [(VMUObjectIdentifier *)self labelForNSDictionary:dictionary length:length remoteAddress:address];
   }
 
   return v9;
 }
 
-- (id)labelForNSConcreteHashTable:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSConcreteHashTable:(void *)table length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v6 = [a3 count];
+  v6 = [table count];
 
   return [(VMUObjectIdentifier *)self labelForItemCount:v6];
 }
 
-- (id)labelForNSSet:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSSet:(void *)set length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v6 = [a3 count];
+  v6 = [set count];
 
   return [(VMUObjectIdentifier *)self labelForItemCount:v6];
 }
 
-- (id)labelForNSCFSet:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSCFSet:(void *)set length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  if (objectIsDeallocatingOrDeallocated(a3))
+  if (objectIsDeallocatingOrDeallocated(set))
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [(VMUObjectIdentifier *)self labelForNSSet:a3 length:a4 remoteAddress:a5];
+    v9 = [(VMUObjectIdentifier *)self labelForNSSet:set length:length remoteAddress:address];
   }
 
   return v9;
 }
 
-- (id)labelForNSCFData:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSCFData:(void *)data length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   task = self->_task;
   readonlyRegionRanges = self->_readonlyRegionRanges;
   WeakRetained = objc_loadWeakRetained(&self->_scanner);
   symbolicator = self->_symbolicator;
-  v12 = stringFromMappedNSCFData(task, a3, a5, a4, readonlyRegionRanges, 2, WeakRetained);
+  v12 = stringFromMappedNSCFData(task, data, address, length, readonlyRegionRanges, 2, WeakRetained);
 
   return v12;
 }
 
-- (id)labelForNSConcreteData:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSConcreteData:(void *)data length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   task = self->_task;
   readonlyRegionRanges = self->_readonlyRegionRanges;
   WeakRetained = objc_loadWeakRetained(&self->_scanner);
   symbolicator = self->_symbolicator;
-  v12 = stringFromMappedNSCFData(task, a3, a5, a4, readonlyRegionRanges, 1, WeakRetained);
+  v12 = stringFromMappedNSCFData(task, data, address, length, readonlyRegionRanges, 1, WeakRetained);
 
   return v12;
 }
 
-- (id)labelForNSInlineData:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSInlineData:(void *)data length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   task = self->_task;
   readonlyRegionRanges = self->_readonlyRegionRanges;
   WeakRetained = objc_loadWeakRetained(&self->_scanner);
   symbolicator = self->_symbolicator;
-  v12 = stringFromMappedNSCFData(task, a3, a5, a4, readonlyRegionRanges, 0, WeakRetained);
+  v12 = stringFromMappedNSCFData(task, data, address, length, readonlyRegionRanges, 0, WeakRetained);
 
   return v12;
 }
 
-- (id)labelForCoreMediaFigObject:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForCoreMediaFigObject:(void *)object length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v8 = *(a3 + 3);
+  v8 = *(object + 3);
   v9 = [VMUTask ptrauthStripDataPointer:?];
   if (HIDWORD(v9))
   {
@@ -2824,8 +2824,8 @@ LABEL_35:
 
   v11 = v9;
   v30 = 0;
-  v12 = [(VMUTask *)self->_task memoryCache];
-  LODWORD(v11) = [v12 peekAtAddress:v11 size:16 returnsBuf:&v30];
+  memoryCache = [(VMUTask *)self->_task memoryCache];
+  LODWORD(v11) = [memoryCache peekAtAddress:v11 size:16 returnsBuf:&v30];
 
   if (v11 || v30 == 0)
   {
@@ -2841,8 +2841,8 @@ LABEL_35:
 
   v17 = v15;
   v29 = 0;
-  v18 = [(VMUTask *)self->_task memoryCache];
-  v19 = [v18 peekAtAddress:v17 size:8 returnsBuf:&v29];
+  memoryCache2 = [(VMUTask *)self->_task memoryCache];
+  v19 = [memoryCache2 peekAtAddress:v17 size:8 returnsBuf:&v29];
 
   v20 = v19 || v29 == 0;
   if (v20 || (*v29 - 1025) < 0xFFFFFFFFFFFFFC03)
@@ -2850,8 +2850,8 @@ LABEL_35:
     goto LABEL_20;
   }
 
-  v23 = [(VMUTask *)self->_task memoryCache];
-  v24 = [v23 peekAtAddress:v17 size:88 returnsBuf:&v29];
+  memoryCache3 = [(VMUTask *)self->_task memoryCache];
+  v24 = [memoryCache3 peekAtAddress:v17 size:88 returnsBuf:&v29];
 
   v21 = 0;
   if (!v24 && v29)
@@ -2865,12 +2865,12 @@ LABEL_35:
     v21 = 0;
     v26 = __CFADD__(v25, 32);
     v27 = v25 + 32;
-    if (v26 || a4 <= v27)
+    if (v26 || length <= v27)
     {
       goto LABEL_21;
     }
 
-    v28 = a3 + v27;
+    v28 = object + v27;
     if (!v28)
     {
 LABEL_20:
@@ -2878,7 +2878,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v21 = strnlen(v28, a4 - v27);
+    v21 = strnlen(v28, length - v27);
     if (v21)
     {
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"label: %.*s", v21, v28];
@@ -2890,9 +2890,9 @@ LABEL_21:
   return v21;
 }
 
-- (id)labelForOSDispatchMach:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForOSDispatchMach:(void *)mach length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  label = dispatch_queue_get_label(a3);
+  label = dispatch_queue_get_label(mach);
   if (label)
   {
     if (![(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:label])
@@ -2901,8 +2901,8 @@ LABEL_21:
       goto LABEL_23;
     }
 
-    v7 = [(VMUTask *)self->_task memoryCache];
-    v8 = [v7 peekStringAtAddress:label];
+    memoryCache = [(VMUTask *)self->_task memoryCache];
+    v8 = [memoryCache peekStringAtAddress:label];
   }
 
   else
@@ -2967,13 +2967,13 @@ LABEL_23:
   return v9;
 }
 
-- (id)labelForOSDispatchQueue:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForOSDispatchQueue:(void *)queue length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v6 = [(VMUObjectIdentifier *)self labelForOSDispatchMach:a3 length:a4 remoteAddress:a5];
+  v6 = [(VMUObjectIdentifier *)self labelForOSDispatchMach:queue length:length remoteAddress:address];
   if (v6)
   {
     relative_priority_ptr = 0;
-    HIDWORD(v8) = dispatch_queue_get_qos_class(a3, &relative_priority_ptr) - 9;
+    HIDWORD(v8) = dispatch_queue_get_qos_class(queue, &relative_priority_ptr) - 9;
     LODWORD(v8) = HIDWORD(v8);
     v7 = v8 >> 2;
     if (v7 <= 6 && ((0x5Du >> v7) & 1) != 0)
@@ -2997,7 +2997,7 @@ LABEL_23:
   return v10;
 }
 
-- (id)labelForOSLog:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForOSLog:(void *)log length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (self->_objectContentLevel == 3)
   {
@@ -3013,17 +3013,17 @@ LABEL_23:
       dispatch_once(&labelForOSLog_length_remoteAddress__onceToken, block);
     }
 
-    if (labelForOSLog_length_remoteAddress__libtraceVersion > 0x41A || (v9 = *(a3 + 5), !(v9 >> 28)))
+    if (labelForOSLog_length_remoteAddress__libtraceVersion > 0x41A || (v9 = *(log + 5), !(v9 >> 28)))
     {
-      v9 = *(a3 + 3);
+      v9 = *(log + 3);
       if (!(v9 >> 28))
       {
         goto LABEL_13;
       }
     }
 
-    v10 = [(VMUTask *)self->_task memoryCache];
-    v11 = [v10 peekStringAtAddress:v9 + 4];
+    memoryCache = [(VMUTask *)self->_task memoryCache];
+    v11 = [memoryCache peekStringAtAddress:v9 + 4];
 
     if (!v11)
     {
@@ -3031,8 +3031,8 @@ LABEL_23:
     }
 
     v12 = strlen(v11);
-    v13 = [(VMUTask *)self->_task memoryCache];
-    v14 = [v13 peekStringAtAddress:v9 + v12 + 5];
+    memoryCache2 = [(VMUTask *)self->_task memoryCache];
+    v14 = [memoryCache2 peekStringAtAddress:v9 + v12 + 5];
 
     if (v14)
     {
@@ -3080,7 +3080,7 @@ uint64_t __58__VMUObjectIdentifier_labelForOSLog_length_remoteAddress___block_in
   return result;
 }
 
-- (id)noLabelForOSXPCObject:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)noLabelForOSXPCObject:(void *)object length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (noLabelForOSXPCObject_length_remoteAddress__onceToken != -1)
   {
@@ -3089,7 +3089,7 @@ uint64_t __58__VMUObjectIdentifier_labelForOSLog_length_remoteAddress___block_in
 
   if (noLabelForOSXPCObject_length_remoteAddress__shouldGetLabelForAllOSXPCObjects == 1)
   {
-    v9 = [(VMUObjectIdentifier *)self labelForOSXPCObject:a3 length:a4 remoteAddress:a5];
+    v9 = [(VMUObjectIdentifier *)self labelForOSXPCObject:object length:length remoteAddress:address];
   }
 
   else
@@ -3115,7 +3115,7 @@ const char *__66__VMUObjectIdentifier_noLabelForOSXPCObject_length_remoteAddress
   return result;
 }
 
-- (id)labelForOSXPCObject:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForOSXPCObject:(void *)object length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (self->_objectContentLevel == 3 && (v5 = xpc_inspect_copy_description()) != 0)
   {
@@ -3144,10 +3144,10 @@ uint64_t __64__VMUObjectIdentifier_labelForOSXPCObject_length_remoteAddress___bl
   return 0;
 }
 
-- (id)labelForOSXPCString:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForOSXPCString:(void *)string length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v5 = *(a3 + 3);
-  if (v5 && *(a3 + 4) && [(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:*(a3 + 4), a4, a5]&& (v7 = (*(self->_memoryReader + 2))()) != 0 && !*(v7 + v5))
+  v5 = *(string + 3);
+  if (v5 && *(string + 4) && [(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:*(string + 4), length, address]&& (v7 = (*(self->_memoryReader + 2))()) != 0 && !*(v7 + v5))
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v7];
     v8 = [(VMUObjectIdentifier *)self uniquifyStringLabel:v10 stringType:1 printDetail:0];
@@ -3161,16 +3161,16 @@ uint64_t __64__VMUObjectIdentifier_labelForOSXPCObject_length_remoteAddress___bl
   return v8;
 }
 
-- (id)labelForOSXPCDictionary:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForOSXPCDictionary:(void *)dictionary length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (labelForOSXPCDictionary_length_remoteAddress__onceToken != -1)
   {
     [VMUObjectIdentifier labelForOSXPCDictionary:length:remoteAddress:];
   }
 
-  v8 = *(a3 + 7) & 3;
-  v9 = (*(a3 + 7) & 3) == 1 && global_xpc_received_dictionary_size > a4;
-  if (v9 || ((*(a3 + 7) & 3) == 2 ? (v10 = global_xpc_reply_dictionary_size > a4) : (v10 = 0), v10))
+  v8 = *(dictionary + 7) & 3;
+  v9 = (*(dictionary + 7) & 3) == 1 && global_xpc_received_dictionary_size > length;
+  if (v9 || ((*(dictionary + 7) & 3) == 2 ? (v10 = global_xpc_reply_dictionary_size > length) : (v10 = 0), v10))
   {
     v15 = 0;
     goto LABEL_31;
@@ -3196,7 +3196,7 @@ uint64_t __64__VMUObjectIdentifier_labelForOSXPCObject_length_remoteAddress___bl
     goto LABEL_30;
   }
 
-  if (labelForOSXPCDictionary_length_remoteAddress___xpc_dictionary_get_transaction && labelForOSXPCDictionary_length_remoteAddress___xpc_dictionary_get_transaction(a3))
+  if (labelForOSXPCDictionary_length_remoteAddress___xpc_dictionary_get_transaction && labelForOSXPCDictionary_length_remoteAddress___xpc_dictionary_get_transaction(dictionary))
   {
     [v13 appendString:@" for ACTIVE TRANSACTION with"];
     v16 = 1;
@@ -3207,7 +3207,7 @@ uint64_t __64__VMUObjectIdentifier_labelForOSXPCObject_length_remoteAddress___bl
     v16 = 0;
   }
 
-  remote_connection = xpc_dictionary_get_remote_connection(a3);
+  remote_connection = xpc_dictionary_get_remote_connection(dictionary);
   if (remote_connection)
   {
     v18 = remote_connection;
@@ -3258,9 +3258,9 @@ void *__68__VMUObjectIdentifier_labelForOSXPCDictionary_length_remoteAddress___b
   return result;
 }
 
-- (id)labelForOSXPCDictionaryStorageNode:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForOSXPCDictionaryStorageNode:(void *)node length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  if (self->_objectContentLevel == 3 && !*(a3 + 6) && (v9 = 0, stringFromBytes(a3 + 32, a4 - 32, &v9), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (self->_objectContentLevel == 3 && !*(node + 6) && (v9 = 0, stringFromBytes(node + 32, length - 32, &v9), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"key: %@", v7];
@@ -3274,7 +3274,7 @@ void *__68__VMUObjectIdentifier_labelForOSXPCDictionary_length_remoteAddress___b
   return v5;
 }
 
-- (id)labelForOSTransaction:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForOSTransaction:(void *)transaction length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (self->_objectContentLevel == 1)
   {
@@ -3289,7 +3289,7 @@ void *__68__VMUObjectIdentifier_labelForOSXPCDictionary_length_remoteAddress___b
 
   if (labelForOSTransaction_length_remoteAddress___vmu_os_transaction_get_return_address)
   {
-    return_address = labelForOSTransaction_length_remoteAddress___vmu_os_transaction_get_return_address(a3);
+    return_address = labelForOSTransaction_length_remoteAddress___vmu_os_transaction_get_return_address(transaction);
   }
 
   else
@@ -3312,14 +3312,14 @@ void *__68__VMUObjectIdentifier_labelForOSXPCDictionary_length_remoteAddress___b
   if (!v10)
   {
     WeakRetained = objc_loadWeakRetained(&self->_scanner);
-    v14 = [WeakRetained suspendTimeContinuous];
-    if (!v14)
+    suspendTimeContinuous = [WeakRetained suspendTimeContinuous];
+    if (!suspendTimeContinuous)
     {
-      v14 = mach_continuous_approximate_time();
+      suspendTimeContinuous = mach_continuous_approximate_time();
     }
 
-    v15 = v14 * labelForOSTransaction_length_remoteAddress__info / dword_1EC1D0C1C;
-    v12 = (v15 - labelForOSTransaction_length_remoteAddress___vmu_os_transaction_get_timestamp(a3)) / 1000000000.0;
+    v15 = suspendTimeContinuous * labelForOSTransaction_length_remoteAddress__info / dword_1EC1D0C1C;
+    v12 = (v15 - labelForOSTransaction_length_remoteAddress___vmu_os_transaction_get_timestamp(transaction)) / 1000000000.0;
   }
 
   if (!labelForOSTransaction_length_remoteAddress___vmu_os_transaction_get_description)
@@ -3334,14 +3334,14 @@ void *__68__VMUObjectIdentifier_labelForOSXPCDictionary_length_remoteAddress___b
     goto LABEL_32;
   }
 
-  description = labelForOSTransaction_length_remoteAddress___vmu_os_transaction_get_description(a3);
+  description = labelForOSTransaction_length_remoteAddress___vmu_os_transaction_get_description(transaction);
   v17 = description;
-  if (description < a3 || a3 + a4 <= description || (v18 = malloc_type_malloc(a4, 0x27449588uLL), memcpy(v18, a3, a4), v19 = labelForOSTransaction_length_remoteAddress___vmu_os_transaction_get_description(v18), free(v18), v17 == v19))
+  if (description < transaction || transaction + length <= description || (v18 = malloc_type_malloc(length, 0x27449588uLL), memcpy(v18, transaction, length), v19 = labelForOSTransaction_length_remoteAddress___vmu_os_transaction_get_description(v18), free(v18), v17 == v19))
   {
     if (v17 && [(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:v17])
     {
-      v22 = [(VMUTask *)self->_task memoryCache];
-      v21 = [v22 peekStringAtAddress:v17];
+      memoryCache = [(VMUTask *)self->_task memoryCache];
+      v21 = [memoryCache peekStringAtAddress:v17];
 
 LABEL_33:
       v20 = 0;
@@ -3355,7 +3355,7 @@ LABEL_32:
 
   v20 = 0;
   v21 = 0;
-  if (v18 <= v19 && v18 + a4 > v19)
+  if (v18 <= v19 && v18 + length > v19)
   {
     v20 = 0;
     if (self->_objectContentLevel == 3)
@@ -3468,22 +3468,22 @@ void *__66__VMUObjectIdentifier_labelForOSTransaction_length_remoteAddress___blo
   return result;
 }
 
-- (id)labelFor_RBSAssertionDescriptor:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelFor_RBSAssertionDescriptor:(void *)descriptor length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  if (a4 < 0x20)
+  if (length < 0x20)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(VMUObjectIdentifier *)self labelForNSCFStringAtRemoteAddress:*(a3 + 3) printDetail:0, a5, v5];
+    v7 = [(VMUObjectIdentifier *)self labelForNSCFStringAtRemoteAddress:*(descriptor + 3) printDetail:0, address, v5];
   }
 
   return v7;
 }
 
-- (void)_findOffsetsInOSXPCConnection:(void *)a3 length:(unint64_t)a4
+- (void)_findOffsetsInOSXPCConnection:(void *)connection length:(unint64_t)length
 {
   if (self->_osDispatchMachOffsetInOSXPCConnection)
   {
@@ -3492,14 +3492,14 @@ void *__66__VMUObjectIdentifier_labelForOSTransaction_length_remoteAddress___blo
 
   else
   {
-    v4 = a4 >= 0x10;
+    v4 = length >= 0x10;
   }
 
   if (v4)
   {
     for (i = 24; ; i += 8)
     {
-      v9 = *(a3 + i - 16);
+      v9 = *(connection + i - 16);
       v10 = [VMUTask stripExtraPointerBits:?];
       if (HIDWORD(v10) && (v10 & 7) == 0)
       {
@@ -3516,8 +3516,8 @@ void *__66__VMUObjectIdentifier_labelForOSTransaction_length_remoteAddress___blo
             [v15 nodeDetails:v14];
           }
 
-          v17 = [0 className];
-          v18 = [v17 isEqualToString:@"OS_dispatch_mach"];
+          className = [0 className];
+          v18 = [className isEqualToString:@"OS_dispatch_mach"];
 
           if (v18)
           {
@@ -3527,7 +3527,7 @@ void *__66__VMUObjectIdentifier_labelForOSTransaction_length_remoteAddress___blo
       }
 
       v19 = i;
-      if (v19 > a4)
+      if (v19 > length)
       {
         return;
       }
@@ -3537,15 +3537,15 @@ void *__66__VMUObjectIdentifier_labelForOSTransaction_length_remoteAddress___blo
   }
 }
 
-- (id)labelForOSXPCConnection:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForOSXPCConnection:(void *)connection length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   osDispatchMachOffsetInOSXPCConnection = self->_osDispatchMachOffsetInOSXPCConnection;
-  if (!osDispatchMachOffsetInOSXPCConnection && ([(VMUObjectIdentifier *)self _findOffsetsInOSXPCConnection:a3 length:a4, a5], osDispatchMachOffsetInOSXPCConnection = self->_osDispatchMachOffsetInOSXPCConnection, !osDispatchMachOffsetInOSXPCConnection) || ([(VMUObjectIdentifier *)self labelForObjectOfClass:@"OS_dispatch_mach" atOffset:osDispatchMachOffsetInOSXPCConnection ofObject:a3 withLength:a4], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!osDispatchMachOffsetInOSXPCConnection && ([(VMUObjectIdentifier *)self _findOffsetsInOSXPCConnection:connection length:length, address], osDispatchMachOffsetInOSXPCConnection = self->_osDispatchMachOffsetInOSXPCConnection, !osDispatchMachOffsetInOSXPCConnection) || ([(VMUObjectIdentifier *)self labelForObjectOfClass:@"OS_dispatch_mach" atOffset:osDispatchMachOffsetInOSXPCConnection ofObject:connection withLength:length], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9 = @"<couldn't read name>";
   }
 
-  pid = xpc_connection_get_pid(a3);
+  pid = xpc_connection_get_pid(connection);
   if (pid)
   {
     v11 = pid;
@@ -3556,12 +3556,12 @@ void *__66__VMUObjectIdentifier_labelForOSTransaction_length_remoteAddress___blo
     if (!v14)
     {
       v15 = [[VMUProcInfo alloc] initWithPid:v11];
-      v16 = [(VMUProcInfo *)v15 name];
-      v17 = v16;
+      name = [(VMUProcInfo *)v15 name];
+      v17 = name;
       v18 = @"<unknown>";
-      if (v16)
+      if (name)
       {
-        v18 = v16;
+        v18 = name;
       }
 
       v14 = v18;
@@ -3582,10 +3582,10 @@ void *__66__VMUObjectIdentifier_labelForOSTransaction_length_remoteAddress___blo
   return v21;
 }
 
-- (id)labelForOSXPCActivity:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForOSXPCActivity:(void *)activity length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v5 = *(a3 + 3);
-  if (v5 && -[VMUObjectIdentifier _remoteAddressIsOKtoRead:](self, "_remoteAddressIsOKtoRead:", *(a3 + 3), a4, a5) && (-[VMUTask memoryCache](self->_task, "memoryCache"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 peekStringAtAddress:v5], v7, v8))
+  v5 = *(activity + 3);
+  if (v5 && -[VMUObjectIdentifier _remoteAddressIsOKtoRead:](self, "_remoteAddressIsOKtoRead:", *(activity + 3), length, address) && (-[VMUTask memoryCache](self->_task, "memoryCache"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 peekStringAtAddress:v5], v7, v8))
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v8];
   }
@@ -3598,15 +3598,15 @@ void *__66__VMUObjectIdentifier_labelForOSTransaction_length_remoteAddress___blo
   return v9;
 }
 
-- (id)labelForProtocol:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForProtocol:(void *)protocol length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v7 = *(a3 + 10);
+  v7 = *(protocol + 10);
   if (v7)
   {
-    if ([(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:*(a3 + 10), a4, a5])
+    if ([(VMUObjectIdentifier *)self _remoteAddressIsOKtoRead:*(protocol + 10), length, address])
     {
-      v8 = [(VMUTask *)self->_task memoryCache];
-      v9 = [v8 peekStringAtAddress:v7];
+      memoryCache = [(VMUTask *)self->_task memoryCache];
+      v9 = [memoryCache peekStringAtAddress:v7];
 
       if (v9)
       {
@@ -3615,8 +3615,8 @@ void *__66__VMUObjectIdentifier_labelForOSTransaction_length_remoteAddress___blo
     }
   }
 
-  v10 = *(a3 + 1);
-  if (v10 && -[VMUObjectIdentifier _remoteAddressIsOKtoRead:](self, "_remoteAddressIsOKtoRead:", v10, a4, a5) && (-[VMUTask memoryCache](self->_task, "memoryCache"), v11 = objc_claimAutoreleasedReturnValue(), v9 = [v11 peekStringAtAddress:v10], v11, v9))
+  v10 = *(protocol + 1);
+  if (v10 && -[VMUObjectIdentifier _remoteAddressIsOKtoRead:](self, "_remoteAddressIsOKtoRead:", v10, length, address) && (-[VMUTask memoryCache](self->_task, "memoryCache"), v11 = objc_claimAutoreleasedReturnValue(), v9 = [v11 peekStringAtAddress:v10], v11, v9))
   {
 LABEL_7:
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
@@ -3630,14 +3630,14 @@ LABEL_7:
   return v12;
 }
 
-- (id)labelForNSXPCInterface:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSXPCInterface:(void *)interface length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (labelForNSXPCInterface_length_remoteAddress__onceToken != -1)
   {
     [VMUObjectIdentifier labelForNSXPCInterface:length:remoteAddress:];
   }
 
-  v8 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"Protocol" atOffset:labelForNSXPCInterface_length_remoteAddress__offsetOfProtocol ofObject:a3 withLength:a4];
+  v8 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"Protocol" atOffset:labelForNSXPCInterface_length_remoteAddress__offsetOfProtocol ofObject:interface withLength:length];
   if (v8)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Protocol: %@", v8];
@@ -3660,15 +3660,15 @@ ptrdiff_t __67__VMUObjectIdentifier_labelForNSXPCInterface_length_remoteAddress_
   return result;
 }
 
-- (id)labelForNSXPCConnection:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForNSXPCConnection:(void *)connection length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (labelForNSXPCConnection_length_remoteAddress__onceToken != -1)
   {
     [VMUObjectIdentifier labelForNSXPCConnection:length:remoteAddress:];
   }
 
-  v8 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"NSXPCInterface" atOffset:labelForNSXPCConnection_length_remoteAddress__offsetOfRemoteObjectInterface ofObject:a3 withLength:a4];
-  v9 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"OS_xpc_connection" atOffset:labelForNSXPCConnection_length_remoteAddress__offsetOfConnection ofObject:a3 withLength:a4];
+  v8 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"NSXPCInterface" atOffset:labelForNSXPCConnection_length_remoteAddress__offsetOfRemoteObjectInterface ofObject:connection withLength:length];
+  v9 = [(VMUObjectIdentifier *)self labelForObjectOfClass:@"OS_xpc_connection" atOffset:labelForNSXPCConnection_length_remoteAddress__offsetOfConnection ofObject:connection withLength:length];
   if (v8 | v9)
   {
     if (v8)
@@ -3713,15 +3713,15 @@ ptrdiff_t __68__VMUObjectIdentifier_labelForNSXPCConnection_length_remoteAddress
   return result;
 }
 
-- (id)labelFor__NSMallocBlock__:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelFor__NSMallocBlock__:(void *)block__ length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  v6 = *(a3 + 2);
+  v6 = *(block__ + 2);
   v7 = [VMUTask ptrauthStripFunctionPointer:?];
 
   return [(VMUObjectIdentifier *)self symbolForRemoteAddress:v7];
 }
 
-- (id)symbolForRemoteAddress:(unint64_t)a3
+- (id)symbolForRemoteAddress:(unint64_t)address
 {
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
@@ -3745,17 +3745,17 @@ ptrdiff_t __68__VMUObjectIdentifier_labelForNSXPCConnection_length_remoteAddress
     }
 
     CSSymbolOwnerGetSymbolWithAddress();
-    if ((CSIsNull() & 1) != 0 || (v9 = CSSymbolGetName()) == 0 || ([MEMORY[0x1E696AEC0] stringWithUTF8String:v9], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ((CSIsNull() & 1) != 0 || (v9 = CSSymbolGetName()) == 0 || ([MEMORY[0x1E696AEC0] stringWithUTF8String:v9], (baseAddress = objc_claimAutoreleasedReturnValue()) == 0))
     {
       BaseAddress = CSSymbolOwnerGetBaseAddress();
       if (BaseAddress)
       {
-        v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unknown-symbol> %#qx + %qu", BaseAddress, a3 - BaseAddress];
+        baseAddress = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unknown-symbol> %#qx + %qu", BaseAddress, address - BaseAddress];
       }
 
       else
       {
-        v10 = @"???";
+        baseAddress = @"???";
       }
     }
 
@@ -3771,17 +3771,17 @@ ptrdiff_t __68__VMUObjectIdentifier_labelForNSXPCConnection_length_remoteAddress
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"  %s:%u", Path, CSSourceInfoGetLineNumber()];
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  %@  %#qx%@", v8, v10, a3, v12];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  %@  %#qx%@", v8, baseAddress, address, v12];
   }
 
   return v6;
 }
 
-- (id)labelForClassDataRO:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForClassDataRO:(void *)o length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (self->_objectContentLevel == 3)
   {
-    v6 = VMUGetClassNameFromClassDataRO(self->_task, self->_memoryReader, a5);
+    v6 = VMUGetClassNameFromClassDataRO(self->_task, self->_memoryReader, address);
   }
 
   else
@@ -3792,11 +3792,11 @@ ptrdiff_t __68__VMUObjectIdentifier_labelForNSXPCConnection_length_remoteAddress
   return v6;
 }
 
-- (id)labelForClassDataRW:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForClassDataRW:(void *)w length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (self->_objectContentLevel == 3)
   {
-    v6 = VMUGetClassNameFromClassDataRW(self->_task, self->_memoryReader, self->_objcABI, a5);
+    v6 = VMUGetClassNameFromClassDataRW(self->_task, self->_memoryReader, self->_objcABI, address);
   }
 
   else
@@ -3807,11 +3807,11 @@ ptrdiff_t __68__VMUObjectIdentifier_labelForNSXPCConnection_length_remoteAddress
   return v6;
 }
 
-- (id)labelForClassDataExtRW:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForClassDataExtRW:(void *)w length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (self->_objectContentLevel == 3)
   {
-    v6 = VMUGetClassNameFromClassDataExtRW(self->_task, self->_memoryReader, self->_objcABI, a5);
+    v6 = VMUGetClassNameFromClassDataExtRW(self->_task, self->_memoryReader, self->_objcABI, address);
   }
 
   else
@@ -3822,14 +3822,14 @@ ptrdiff_t __68__VMUObjectIdentifier_labelForNSXPCConnection_length_remoteAddress
   return v6;
 }
 
-- (id)labelForClassStructure:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)labelForClassStructure:(void *)structure length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (self->_objectContentLevel == 3)
   {
-    v8 = VMUGetClassNameFromClassStructure(self->_task, self->_memoryReader, self->_objcABI, a5);
+    v8 = VMUGetClassNameFromClassStructure(self->_task, self->_memoryReader, self->_objcABI, address);
     if (!v8)
     {
-      v8 = VMUGetClassNameFromClassStructure(self->_task, self->_memoryReader, self->_objcABI, a5 + 16);
+      v8 = VMUGetClassNameFromClassStructure(self->_task, self->_memoryReader, self->_objcABI, address + 16);
     }
   }
 
@@ -3841,39 +3841,39 @@ ptrdiff_t __68__VMUObjectIdentifier_labelForNSXPCConnection_length_remoteAddress
   return v8;
 }
 
-- (id)labelForCStructureWithMemory:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5 classInfo:(id)a6
+- (id)labelForCStructureWithMemory:(void *)memory length:(unint64_t)length remoteAddress:(unint64_t)address classInfo:(id)info
 {
-  v10 = a6;
-  v11 = [v10 className];
-  v12 = [global_xpcDictionaryStorageClassInfo className];
-  v13 = [v11 isEqualToString:v12];
+  infoCopy = info;
+  className = [infoCopy className];
+  className2 = [global_xpcDictionaryStorageClassInfo className];
+  v13 = [className isEqualToString:className2];
 
   if (!v13)
   {
     objCClassStructureClassInfos = self->_objCClassStructureClassInfos;
     if (objCClassStructureClassInfos)
     {
-      if (*objCClassStructureClassInfos == v10 || objCClassStructureClassInfos[1] == v10)
+      if (*objCClassStructureClassInfos == infoCopy || objCClassStructureClassInfos[1] == infoCopy)
       {
-        v14 = [(VMUObjectIdentifier *)self labelForClassStructure:a3 length:a4 remoteAddress:a5];
+        v14 = [(VMUObjectIdentifier *)self labelForClassStructure:memory length:length remoteAddress:address];
         goto LABEL_11;
       }
 
-      if (objCClassStructureClassInfos[2] == v10)
+      if (objCClassStructureClassInfos[2] == infoCopy)
       {
-        v14 = [(VMUObjectIdentifier *)self labelForClassDataRW:a3 length:a4 remoteAddress:a5];
+        v14 = [(VMUObjectIdentifier *)self labelForClassDataRW:memory length:length remoteAddress:address];
         goto LABEL_11;
       }
 
-      if (objCClassStructureClassInfos[3] == v10)
+      if (objCClassStructureClassInfos[3] == infoCopy)
       {
-        v14 = [(VMUObjectIdentifier *)self labelForClassDataExtRW:a3 length:a4 remoteAddress:a5];
+        v14 = [(VMUObjectIdentifier *)self labelForClassDataExtRW:memory length:length remoteAddress:address];
         goto LABEL_11;
       }
 
-      if (objCClassStructureClassInfos[5] == v10)
+      if (objCClassStructureClassInfos[5] == infoCopy)
       {
-        v14 = [(VMUObjectIdentifier *)self labelForClassDataRO:a3 length:a4 remoteAddress:a5];
+        v14 = [(VMUObjectIdentifier *)self labelForClassDataRO:memory length:length remoteAddress:address];
         goto LABEL_11;
       }
     }
@@ -3882,7 +3882,7 @@ ptrdiff_t __68__VMUObjectIdentifier_labelForNSXPCConnection_length_remoteAddress
     goto LABEL_12;
   }
 
-  v14 = [(VMUObjectIdentifier *)self labelForOSXPCDictionaryStorageNode:a3 length:a4 remoteAddress:a5];
+  v14 = [(VMUObjectIdentifier *)self labelForOSXPCDictionaryStorageNode:memory length:length remoteAddress:address];
 LABEL_11:
   v16 = v14;
 LABEL_12:
@@ -3890,9 +3890,9 @@ LABEL_12:
   return v16;
 }
 
-- (id)labelForMallocBlock:(_VMURange)a3
+- (id)labelForMallocBlock:(_VMURange)block
 {
-  if (a3.location == self->_cfBooleanTrueAddress)
+  if (block.location == self->_cfBooleanTrueAddress)
   {
     objectContentLevel = self->_objectContentLevel;
     v4 = @"YES";
@@ -3911,65 +3911,65 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  if (a3.location == self->_cfBooleanFalseAddress)
+  if (block.location == self->_cfBooleanFalseAddress)
   {
     objectContentLevel = self->_objectContentLevel;
     v4 = @"NO";
     goto LABEL_5;
   }
 
-  v6 = [(VMUObjectIdentifier *)self labelForMallocBlock:a3.location usingHandlerBlock:a3.length, 0];
+  v6 = [(VMUObjectIdentifier *)self labelForMallocBlock:block.location usingHandlerBlock:block.length, 0];
 LABEL_10:
 
   return v6;
 }
 
-- (id)labelForMallocBlock:(_VMURange)a3 usingHandlerBlock:(id)a4
+- (id)labelForMallocBlock:(_VMURange)block usingHandlerBlock:(id)handlerBlock
 {
-  length = a3.length;
-  location = a3.location;
+  length = block.length;
+  location = block.location;
   memoryReader = self->_memoryReader;
   v8 = memoryReader[2];
-  v9 = a4;
+  handlerBlockCopy = handlerBlock;
   v10 = v8(memoryReader, location, length);
-  v11 = [(VMUObjectIdentifier *)self labelForMemory:v10 length:length remoteAddress:location classInfo:0 usingHandlerBlock:v9];
+  v11 = [(VMUObjectIdentifier *)self labelForMemory:v10 length:length remoteAddress:location classInfo:0 usingHandlerBlock:handlerBlockCopy];
 
   return v11;
 }
 
-- (id)labelForMemory:(unint64_t)a3 length:(uint64_t)a4 remoteAddress:(void *)a5 classInfo:(void *)a6 usingHandlerBlock:
+- (id)labelForMemory:(unint64_t)memory length:(uint64_t)length remoteAddress:(void *)address classInfo:(void *)info usingHandlerBlock:
 {
-  v11 = a5;
-  v12 = a6;
+  addressCopy = address;
+  infoCopy = info;
   v13 = 0;
-  if (a1 && a2)
+  if (self && a2)
   {
-    if ((*(a1 + 180) & 0xFFFFFFFE) != 2)
+    if ((*(self + 180) & 0xFFFFFFFE) != 2)
     {
       v13 = 0;
       goto LABEL_54;
     }
 
     v14 = objc_autoreleasePoolPush();
-    if (!*(a1 + 336))
+    if (!*(self + 336))
     {
-      [a1 buildIsaToObjectLabelHandlerMap];
+      [self buildIsaToObjectLabelHandlerMap];
     }
 
-    if ([v11 remoteIsa])
+    if ([addressCopy remoteIsa])
     {
-      v15 = v11;
+      v15 = addressCopy;
     }
 
     else
     {
-      v15 = [a1 classInfoForMemory:a2 length:a3 remoteAddress:a4];
+      v15 = [self classInfoForMemory:a2 length:memory remoteAddress:length];
     }
 
     v16 = v15;
     if (v15)
     {
-      if ([v15 instanceSize] > a3)
+      if ([v15 instanceSize] > memory)
       {
 LABEL_12:
         v13 = 0;
@@ -3980,7 +3980,7 @@ LABEL_53:
         goto LABEL_54;
       }
 
-      if (!v11)
+      if (!addressCopy)
       {
         goto LABEL_31;
       }
@@ -3988,12 +3988,12 @@ LABEL_53:
 
     else
     {
-      if (!v11)
+      if (!addressCopy)
       {
         goto LABEL_24;
       }
 
-      v13 = [a1 labelForCStructureWithMemory:a2 length:a3 remoteAddress:a4 classInfo:v11];
+      v13 = [self labelForCStructureWithMemory:a2 length:memory remoteAddress:length classInfo:addressCopy];
       if (v13)
       {
         goto LABEL_46;
@@ -4001,45 +4001,45 @@ LABEL_53:
     }
 
     v36 = v14;
-    if (v16 != v11)
+    if (v16 != addressCopy)
     {
-      v17 = [v11 className];
-      v18 = v17;
-      if (v17 && (([v17 hasSuffix:@" (malloc)"] & 1) != 0 || (objc_msgSend(v18, "hasSuffix:", @" (char[])") & 1) != 0 || (objc_msgSend(v11, "isDerivedFromStackBacktrace") & 1) != 0))
+      className = [addressCopy className];
+      v18 = className;
+      if (className && (([className hasSuffix:@" (malloc)"] & 1) != 0 || (objc_msgSend(v18, "hasSuffix:", @" (char[])") & 1) != 0 || (objc_msgSend(addressCopy, "isDerivedFromStackBacktrace") & 1) != 0))
       {
 
         if (v16)
         {
-          v11 = 0;
+          addressCopy = 0;
           goto LABEL_31;
         }
 
 LABEL_24:
-        if (![a1 _remoteAddressIsOKtoRead:a4])
+        if (![self _remoteAddressIsOKtoRead:length])
         {
           v21 = 0;
           v13 = 0;
 LABEL_51:
-          v11 = 0;
+          addressCopy = 0;
           goto LABEL_52;
         }
 
         v37 = 0;
-        v19 = stringFromBytes(a2, a3, &v37);
+        v19 = stringFromBytes(a2, memory, &v37);
         if (v19)
         {
-          v20 = [a1 uniquifyStringLabel:v19 stringType:v37 printDetail:1];
+          v20 = [self uniquifyStringLabel:v19 stringType:v37 printDetail:1];
         }
 
         else
         {
-          if (![a1 isTaggedPointer:a2])
+          if (![self isTaggedPointer:a2])
           {
             v13 = 0;
             goto LABEL_50;
           }
 
-          v20 = [a1 labelForTaggedPointer:a2];
+          v20 = [self labelForTaggedPointer:a2];
         }
 
         v13 = v20;
@@ -4049,8 +4049,8 @@ LABEL_50:
         goto LABEL_51;
       }
 
-      v22 = [v16 className];
-      v23 = [v18 isEqualToString:v22];
+      className2 = [v16 className];
+      v23 = [v18 isEqualToString:className2];
 
       if (!v23)
       {
@@ -4072,7 +4072,7 @@ LABEL_50:
 LABEL_31:
     if ([v16 isCoreMediaFigObject])
     {
-      v24 = [a1 labelForCoreMediaFigObject:a2 length:a3 remoteAddress:a4];
+      v24 = [self labelForCoreMediaFigObject:a2 length:memory remoteAddress:length];
 LABEL_35:
       v13 = v24;
       v21 = 0;
@@ -4081,20 +4081,20 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    if (*(a1 + 68) == 1)
+    if (*(self + 68) == 1)
     {
-      v24 = [*(a1 + 472) labelForDriverKitMemory:a2 length:a3 remoteAddress:a4 class:v16];
+      v24 = [*(self + 472) labelForDriverKitMemory:a2 length:memory remoteAddress:length class:v16];
       goto LABEL_35;
     }
 
-    v25 = -[VMUObjectIdentifier objectLabelHandlerForRemoteIsa:](a1, [v16 remoteIsa]);
+    v25 = -[VMUObjectIdentifier objectLabelHandlerForRemoteIsa:](self, [v16 remoteIsa]);
     v26 = v25;
     if (v25)
     {
       v27 = *(v25 + 16);
       if (v27)
       {
-        if (a3 < class_getInstanceSize(*(v25 + 16)))
+        if (memory < class_getInstanceSize(*(v25 + 16)))
         {
           goto LABEL_43;
         }
@@ -4106,12 +4106,12 @@ LABEL_52:
 
         Instance = labelForMemory_length_remoteAddress_classInfo_usingHandlerBlock__located_class_createInstance(v27);
         v29 = Instance;
-        if (!Instance || malloc_size(Instance) < a3)
+        if (!Instance || malloc_size(Instance) < memory)
         {
           goto LABEL_43;
         }
 
-        memcpy(v29 + 8, a2 + 8, a3 - 8);
+        memcpy(v29 + 8, a2 + 8, memory - 8);
         v35 = v29;
         a2 = v29;
       }
@@ -4123,9 +4123,9 @@ LABEL_52:
 
       v31 = v26;
       v21 = v31;
-      if (v12)
+      if (infoCopy)
       {
-        v32 = v12[2](v12, v31, a2, a3, a4);
+        v32 = infoCopy[2](infoCopy, v31, a2, memory, length);
       }
 
       else
@@ -4134,12 +4134,12 @@ LABEL_52:
         if (v33)
         {
           v34 = v31[3];
-          [a1 v33];
+          [self v33];
         }
 
         else
         {
-          [a1 0];
+          [self 0];
         }
         v32 = ;
       }
@@ -4163,12 +4163,12 @@ LABEL_54:
   return v13;
 }
 
-- (id)labelForObjectOfClass:(id)a3 atOffset:(unsigned int)a4 ofObject:(void *)a5 withLength:(unint64_t)a6
+- (id)labelForObjectOfClass:(id)class atOffset:(unsigned int)offset ofObject:(void *)object withLength:(unint64_t)length
 {
-  v10 = a3;
-  if (a4 + 8 <= a6)
+  classCopy = class;
+  if (offset + 8 <= length)
   {
-    if (*(a5 + a4))
+    if (*(object + offset))
     {
       v11 = [VMUTask stripExtraPointerBits:?];
       WeakRetained = objc_loadWeakRetained(&self->_scanner);
@@ -4245,7 +4245,7 @@ uint64_t (*__87__VMUObjectIdentifier_labelForMemory_length_remoteAddress_classIn
   return WeakRetained;
 }
 
-- (int)_populateSwiftReflectionInfo:(_DummyVMUSwiftReflectionContext *)a3
+- (int)_populateSwiftReflectionInfo:(_DummyVMUSwiftReflectionContext *)info
 {
   v5 = 0;
   v6 = &v5;
@@ -4282,10 +4282,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = [(VMUTask *)self->_task isExclaveCore];
+  isExclaveCore = [(VMUTask *)self->_task isExclaveCore];
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
-  if (v5)
+  if (isExclaveCore)
   {
     SymbolOwner = CSSymbolicatorGetSymbolOwner();
   }
@@ -4347,7 +4347,7 @@ LABEL_9:
     v21 = createRemoteAddressToLocalAddressAndSizeMap();
     v22 = createRemoteStringToLengthMap();
     v23 = 0;
-    v24 = [(VMUTask *)self->_task isExclaveCore];
+    isExclaveCore = [(VMUTask *)self->_task isExclaveCore];
     v26 = 0;
     v25 = v6;
     objc_initWeak(&v27, self);
@@ -4367,10 +4367,10 @@ LABEL_9:
     aBlock[3] = &unk_1E8278938;
     aBlock[4] = self;
     v8 = _Block_copy(aBlock);
-    v9 = [(VMUTask *)self->_task isExclaveCore];
+    isExclaveCore2 = [(VMUTask *)self->_task isExclaveCore];
     opaque_1 = self->_symbolicator._opaque_1;
     opaque_2 = self->_symbolicator._opaque_2;
-    if (v9)
+    if (isExclaveCore2)
     {
       SymbolOwner = CSSymbolicatorGetSymbolOwner();
     }
@@ -4480,10 +4480,10 @@ LABEL_15:
   v3 = getenv("DT_SKIP_PRECISE_SCANNING_SWIFT_ASYNC_ALLOCATIONS");
   if (!v3 || (v4 = v3, strcmp(v3, "YES")) && (*v4 != 49 || v4[1]))
   {
-    v5 = [(VMUTask *)self->_task isExclaveCore];
+    isExclaveCore = [(VMUTask *)self->_task isExclaveCore];
     opaque_1 = self->_symbolicator._opaque_1;
     opaque_2 = self->_symbolicator._opaque_2;
-    if (v5)
+    if (isExclaveCore)
     {
       SymbolOwner = CSSymbolicatorGetSymbolOwner();
     }
@@ -4648,9 +4648,9 @@ LABEL_19:
   return result;
 }
 
-- (BOOL)isValidPointer:(uint64_t)a1
+- (BOOL)isValidPointer:(uint64_t)pointer
 {
-  if (!a1)
+  if (!pointer)
   {
     return 0;
   }
@@ -4658,10 +4658,10 @@ LABEL_19:
   v3 = 0;
   if (HIDWORD(a2) && (a2 & 7) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    WeakRetained = objc_loadWeakRetained((pointer + 56));
     if (WeakRetained)
     {
-      v3 = a2 - *(a1 + 192) < *(a1 + 200);
+      v3 = a2 - *(pointer + 192) < *(pointer + 200);
     }
 
     else
@@ -4673,23 +4673,23 @@ LABEL_19:
   return v3;
 }
 
-- (void)objectLabelHandlerForRemoteIsa:(void *)a1
+- (void)objectLabelHandlerForRemoteIsa:(void *)isa
 {
-  if (a1)
+  if (isa)
   {
-    v4 = a1;
-    v5 = a1[42];
+    isaCopy = isa;
+    v5 = isa[42];
     if (!v5)
     {
-      [v4 buildIsaToObjectLabelHandlerMap];
-      v5 = v4[42];
+      [isaCopy buildIsaToObjectLabelHandlerMap];
+      v5 = isaCopy[42];
     }
 
-    a1 = [v5 objectForKey:a2];
+    isa = [v5 objectForKey:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return isa;
 }
 
 @end

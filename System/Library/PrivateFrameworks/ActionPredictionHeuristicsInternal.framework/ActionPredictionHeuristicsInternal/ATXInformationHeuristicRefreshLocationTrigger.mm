@@ -1,27 +1,27 @@
 @interface ATXInformationHeuristicRefreshLocationTrigger
-+ (BOOL)_locationIsStaleOrNotAccurateEnough:(id)a3 now:(id)a4;
-- (ATXInformationHeuristicRefreshLocationTrigger)initWithCoder:(id)a3;
-- (ATXInformationHeuristicRefreshLocationTrigger)initWithLocationManager:(id)a3 regionToMonitor:(id)a4;
++ (BOOL)_locationIsStaleOrNotAccurateEnough:(id)enough now:(id)now;
+- (ATXInformationHeuristicRefreshLocationTrigger)initWithCoder:(id)coder;
+- (ATXInformationHeuristicRefreshLocationTrigger)initWithLocationManager:(id)manager regionToMonitor:(id)monitor;
 - (void)_run;
 - (void)_start;
 - (void)_stop;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXInformationHeuristicRefreshLocationTrigger
 
-- (ATXInformationHeuristicRefreshLocationTrigger)initWithLocationManager:(id)a3 regionToMonitor:(id)a4
+- (ATXInformationHeuristicRefreshLocationTrigger)initWithLocationManager:(id)manager regionToMonitor:(id)monitor
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  monitorCopy = monitor;
   v12.receiver = self;
   v12.super_class = ATXInformationHeuristicRefreshLocationTrigger;
   v9 = [(ATXInformationHeuristicRefreshTrigger *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locationManager, a3);
-    objc_storeStrong(&v10->_regionToMonitor, a4);
+    objc_storeStrong(&v9->_locationManager, manager);
+    objc_storeStrong(&v10->_regionToMonitor, monitor);
   }
 
   return v10;
@@ -30,14 +30,14 @@
 - (void)_run
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXLocationManagerProtocol *)self->_locationManager getCurrentLocation];
+  getCurrentLocation = [(ATXLocationManagerProtocol *)self->_locationManager getCurrentLocation];
   v4 = __atxlog_handle_gi();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (getCurrentLocation)
   {
     if (v5)
     {
-      v6 = [v3 description];
+      v6 = [getCurrentLocation description];
       v15 = 138412290;
       v16 = v6;
       _os_log_impl(&dword_23E3EA000, v4, OS_LOG_TYPE_DEFAULT, "[Location] Received %@", &v15, 0xCu);
@@ -45,12 +45,12 @@
 
     v7 = objc_opt_class();
     v8 = [MEMORY[0x277CBEAA8] now];
-    LOBYTE(v7) = [v7 _locationIsStaleOrNotAccurateEnough:v3 now:v8];
+    LOBYTE(v7) = [v7 _locationIsStaleOrNotAccurateEnough:getCurrentLocation now:v8];
 
     if ((v7 & 1) == 0)
     {
       regionToMonitor = self->_regionToMonitor;
-      [v3 coordinate];
+      [getCurrentLocation coordinate];
       v10 = [(CLCircularRegion *)regionToMonitor containsCoordinate:?];
       if ([(CLCircularRegion *)self->_regionToMonitor notifyOnEntry]&& self->_previouslyOutsideRegion && v10)
       {
@@ -77,9 +77,9 @@
         }
       }
 
-      v12 = [(ATXInformationHeuristicRefreshTrigger *)self delegate];
-      v13 = [(ATXInformationHeuristicRefreshTrigger *)self registeredHeuristics];
-      [v12 informationHeuristicRefreshTrigger:self didTriggerRefreshForHeuristics:v13];
+      delegate = [(ATXInformationHeuristicRefreshTrigger *)self delegate];
+      registeredHeuristics = [(ATXInformationHeuristicRefreshTrigger *)self registeredHeuristics];
+      [delegate informationHeuristicRefreshTrigger:self didTriggerRefreshForHeuristics:registeredHeuristics];
 
 LABEL_20:
       self->_previouslyInsideRegion = v10;
@@ -140,18 +140,18 @@ void __55__ATXInformationHeuristicRefreshLocationTrigger__start__block_invoke(ui
   }
 }
 
-+ (BOOL)_locationIsStaleOrNotAccurateEnough:(id)a3 now:(id)a4
++ (BOOL)_locationIsStaleOrNotAccurateEnough:(id)enough now:(id)now
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 timestamp];
-  [v6 timeIntervalSinceDate:v7];
+  enoughCopy = enough;
+  nowCopy = now;
+  timestamp = [enoughCopy timestamp];
+  [nowCopy timeIntervalSinceDate:timestamp];
   v9 = v8;
 
   if (v9 <= 900.0)
   {
-    [v5 horizontalAccuracy];
+    [enoughCopy horizontalAccuracy];
     if (v12 <= 200.0)
     {
       v14 = 0;
@@ -161,7 +161,7 @@ void __55__ATXInformationHeuristicRefreshLocationTrigger__start__block_invoke(ui
     v10 = __atxlog_handle_gi();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      [v5 horizontalAccuracy];
+      [enoughCopy horizontalAccuracy];
       v17 = 134217984;
       v18 = v13;
       v11 = "[Location] Uncertainty too large, horizontalAccuracy, %f. Ignoring trigger.";
@@ -197,31 +197,31 @@ LABEL_10:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ATXInformationHeuristicRefreshLocationTrigger;
-  v4 = a3;
-  [(ATXInformationHeuristicRefreshTrigger *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_regionToMonitor forKey:{@"regionToMonitor", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(ATXInformationHeuristicRefreshTrigger *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_regionToMonitor forKey:{@"regionToMonitor", v5.receiver, v5.super_class}];
 }
 
-- (ATXInformationHeuristicRefreshLocationTrigger)initWithCoder:(id)a3
+- (ATXInformationHeuristicRefreshLocationTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"regionToMonitor"];
-  v6 = [v4 error];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"regionToMonitor"];
+  error = [coderCopy error];
 
-  v7 = 0;
-  if (!v6 && v5)
+  selfCopy = 0;
+  if (!error && v5)
   {
-    v8 = [MEMORY[0x277D41BF8] sharedInstance];
-    self = [(ATXInformationHeuristicRefreshLocationTrigger *)self initWithLocationManager:v8 regionToMonitor:v5];
+    mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
+    self = [(ATXInformationHeuristicRefreshLocationTrigger *)self initWithLocationManager:mEMORY[0x277D41BF8] regionToMonitor:v5];
 
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

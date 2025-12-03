@@ -1,47 +1,47 @@
 @interface CDPEscrowRecordReport
-- (BOOL)isEqual:(id)a3;
-- (CDPEscrowRecordReport)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CDPEscrowRecordReport)initWithCoder:(id)coder;
 - (CDPEscrowRecordReport)initWithDefaultValues;
-- (CDPEscrowRecordReport)initWithDeviceStatus:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)updatedReportWithRecord:(id)a3;
+- (CDPEscrowRecordReport)initWithDeviceStatus:(id)status;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)updatedReportWithRecord:(id)record;
 @end
 
 @implementation CDPEscrowRecordReport
 
 - (CDPEscrowRecordReport)initWithDefaultValues
 {
-  v3 = [[CDPEscrowRecordViability alloc] initWithDefaultValues];
-  v4 = [(CDPEscrowRecordReport *)self initWithDeviceStatus:v3];
+  initWithDefaultValues = [[CDPEscrowRecordViability alloc] initWithDefaultValues];
+  v4 = [(CDPEscrowRecordReport *)self initWithDeviceStatus:initWithDefaultValues];
 
   return v4;
 }
 
-- (CDPEscrowRecordReport)initWithDeviceStatus:(id)a3
+- (CDPEscrowRecordReport)initWithDeviceStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   v10.receiver = self;
   v10.super_class = CDPEscrowRecordReport;
   v6 = [(CDPEscrowRecordReport *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deviceViability, a3);
+    objc_storeStrong(&v6->_deviceViability, status);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (CDPEscrowRecordReport)initWithCoder:(id)a3
+- (CDPEscrowRecordReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CDPEscrowRecordReport;
   v5 = [(CDPEscrowRecordReport *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceViability"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceViability"];
     v7 = objc_opt_self();
 
     deviceViability = v5->_deviceViability;
@@ -53,15 +53,15 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CDPEscrowRecordReport *)self deviceViability];
-    v6 = [v4 deviceViability];
-    if ([v5 isEqual:v6])
+    deviceViability = [(CDPEscrowRecordReport *)self deviceViability];
+    deviceViability2 = [equalCopy deviceViability];
+    if ([deviceViability isEqual:deviceViability2])
     {
 
       v7 = 1;
@@ -69,9 +69,9 @@
 
     else
     {
-      v8 = [(CDPEscrowRecordReport *)self deviceViability];
-      v9 = [v4 deviceViability];
-      v7 = v8 == v9;
+      deviceViability3 = [(CDPEscrowRecordReport *)self deviceViability];
+      deviceViability4 = [equalCopy deviceViability];
+      v7 = deviceViability3 == deviceViability4;
     }
   }
 
@@ -83,22 +83,22 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CDPEscrowRecordReport alloc];
-  v6 = [(CDPEscrowRecordReport *)self deviceViability];
-  v7 = [v6 copyWithZone:a3];
+  deviceViability = [(CDPEscrowRecordReport *)self deviceViability];
+  v7 = [deviceViability copyWithZone:zone];
   v8 = [(CDPEscrowRecordReport *)v5 initWithDeviceStatus:v7];
 
   return v8;
 }
 
-- (id)updatedReportWithRecord:(id)a3
+- (id)updatedReportWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = [CDPEscrowRecordReport alloc];
-  v6 = [(CDPEscrowRecordReport *)self deviceViability];
-  v7 = [(CDPEscrowRecordViability *)v6 updatedViabiltyWithRecord:v4];
+  deviceViability = [(CDPEscrowRecordReport *)self deviceViability];
+  v7 = [(CDPEscrowRecordViability *)deviceViability updatedViabiltyWithRecord:recordCopy];
 
   v8 = [(CDPEscrowRecordReport *)v5 initWithDeviceStatus:v7];
 

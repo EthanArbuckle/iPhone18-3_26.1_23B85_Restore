@@ -1,51 +1,51 @@
 @interface _PGButton
-+ (id)buttonWithType:(int64_t)a3 wantsGlassBackground:(BOOL)a4;
++ (id)buttonWithType:(int64_t)type wantsGlassBackground:(BOOL)background;
 - (CGRect)hitRect;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 - (PGButtonView)buttonView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
-- (void)setTitle:(id)a3 forState:(unint64_t)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setImage:(id)image forState:(unint64_t)state;
+- (void)setTitle:(id)title forState:(unint64_t)state;
 - (void)tintColorDidChange;
 @end
 
 @implementation _PGButton
 
-+ (id)buttonWithType:(int64_t)a3 wantsGlassBackground:(BOOL)a4
++ (id)buttonWithType:(int64_t)type wantsGlassBackground:(BOOL)background
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS____PGButton;
-  v5 = objc_msgSendSuper2(&v7, sel_buttonWithType_, a3);
-  v5[744] = a4;
+  v5 = objc_msgSendSuper2(&v7, sel_buttonWithType_, type);
+  v5[744] = background;
 
   return v5;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v9.receiver = self;
   v9.super_class = _PGButton;
-  v7 = [(_PGButton *)&v9 hitTest:a4 withEvent:?];
-  if (!v7)
+  selfCopy = [(_PGButton *)&v9 hitTest:event withEvent:?];
+  if (!selfCopy)
   {
     [(_PGButton *)self hitRect];
     v11.x = x;
     v11.y = y;
     if (CGRectContainsPoint(v12, v11))
     {
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (CGRect)hitRect
@@ -120,34 +120,34 @@
   }
 }
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4
+- (void)setTitle:(id)title forState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = _PGButton;
-  [(_PGButton *)&v5 setTitle:a3 forState:a4];
+  [(_PGButton *)&v5 setTitle:title forState:state];
   if (!self->_wantsGlassBackground)
   {
     [(UIButton *)self PG_updateVibrancyEffectForTintColor];
   }
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = _PGButton;
-  [(_PGButton *)&v5 setImage:a3 forState:a4];
+  [(_PGButton *)&v5 setImage:image forState:state];
   if (!self->_wantsGlassBackground)
   {
     [(UIButton *)self PG_updateVibrancyEffectForTintColor];
   }
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v26.receiver = self;
   v26.super_class = _PGButton;
   [(_PGButton *)&v26 imageRectForContentRect:?];
@@ -155,11 +155,11 @@
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(_PGButton *)self buttonView];
-  v17 = [v16 delegate];
+  buttonView = [(_PGButton *)self buttonView];
+  delegate = [buttonView delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v17 buttonView:v16 imageRectForContentRect:x proposedRect:{y, width, height, v9, v11, v13, v15}];
+    [delegate buttonView:buttonView imageRectForContentRect:x proposedRect:{y, width, height, v9, v11, v13, v15}];
     v9 = v18;
     v11 = v19;
     v13 = v20;
@@ -177,12 +177,12 @@
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v26.receiver = self;
   v26.super_class = _PGButton;
   [(_PGButton *)&v26 titleRectForContentRect:?];
@@ -190,11 +190,11 @@
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(_PGButton *)self buttonView];
-  v17 = [v16 delegate];
+  buttonView = [(_PGButton *)self buttonView];
+  delegate = [buttonView delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v17 buttonView:v16 titleRectForContentRect:x proposedRect:{y, width, height, v9, v11, v13, v15}];
+    [delegate buttonView:buttonView titleRectForContentRect:x proposedRect:{y, width, height, v9, v11, v13, v15}];
     v9 = v18;
     v11 = v19;
     v13 = v20;

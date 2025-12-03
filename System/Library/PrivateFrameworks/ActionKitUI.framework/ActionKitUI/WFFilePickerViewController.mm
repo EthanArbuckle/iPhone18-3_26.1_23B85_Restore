@@ -1,23 +1,23 @@
 @interface WFFilePickerViewController
-- (BOOL)caseInsensitiveArray:(id)a3 isEqualToArray:(id)a4;
-- (BOOL)fileListView:(id)a3 shouldDisplayCheckmarkForFile:(id)a4;
-- (WFFilePickerViewController)initWithPath:(id)a3 selectedFiles:(id)a4 service:(id)a5 mode:(int64_t)a6 allowsMultipleSelection:(BOOL)a7 pickCompletionHandler:(id)a8 saveCompletionHandler:(id)a9;
+- (BOOL)caseInsensitiveArray:(id)array isEqualToArray:(id)toArray;
+- (BOOL)fileListView:(id)view shouldDisplayCheckmarkForFile:(id)file;
+- (WFFilePickerViewController)initWithPath:(id)path selectedFiles:(id)files service:(id)service mode:(int64_t)mode allowsMultipleSelection:(BOOL)selection pickCompletionHandler:(id)handler saveCompletionHandler:(id)completionHandler;
 - (WFRemoteFileListView)fileListView;
 - (WFRemoteFileStatusView)statusView;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)cancel;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)didDismissSearchController:(id)a3;
-- (void)didPresentSearchController:(id)a3;
-- (void)fileListView:(id)a3 didSelectFile:(id)a4;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)didDismissSearchController:(id)controller;
+- (void)didPresentSearchController:(id)controller;
+- (void)fileListView:(id)view didSelectFile:(id)file;
 - (void)finish;
 - (void)loadFiles;
 - (void)loadView;
-- (void)navigateToSubdirectoryAtPath:(id)a3;
-- (void)setHideSearchBar:(BOOL)a3;
+- (void)navigateToSubdirectoryAtPath:(id)path;
+- (void)setHideSearchBar:(BOOL)bar;
 - (void)setStatusViewToEmpty;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)updateStatusViewAnimated:(BOOL)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)updateStatusViewAnimated:(BOOL)animated;
 - (void)updateToolbar;
 - (void)viewWillLayoutSubviews;
 @end
@@ -38,47 +38,47 @@
   return WeakRetained;
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  [v4 setText:0];
+  searchBar = [controller searchBar];
+  [searchBar setText:0];
 
-  v5 = [(WFFilePickerViewController *)self view];
-  [v5 setNeedsLayout];
+  view = [(WFFilePickerViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
-  v3 = [(WFFilePickerViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(WFFilePickerViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 searchBar];
-  v6 = [v5 text];
-  v7 = [v4 searchResultsController];
+  controllerCopy = controller;
+  searchBar = [controllerCopy searchBar];
+  text = [searchBar text];
+  searchResultsController = [controllerCopy searchResultsController];
 
-  if ([v6 length])
+  if ([text length])
   {
-    v8 = [(WFFilePickerViewController *)self service];
-    v9 = [(WFFilePickerViewController *)self path];
+    service = [(WFFilePickerViewController *)self service];
+    path = [(WFFilePickerViewController *)self path];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __69__WFFilePickerViewController_updateSearchResultsForSearchController___block_invoke;
     v11[3] = &unk_278C36848;
-    v12 = v8;
-    v13 = v5;
-    v14 = v6;
-    v15 = v7;
-    v10 = v8;
-    [v10 searchFiles:v14 inPath:v9 completionHandler:v11];
+    v12 = service;
+    v13 = searchBar;
+    v14 = text;
+    v15 = searchResultsController;
+    v10 = service;
+    [v10 searchFiles:v14 inPath:path completionHandler:v11];
   }
 
   else
   {
-    [v7 setFiles:0];
+    [searchResultsController setFiles:0];
   }
 }
 
@@ -145,45 +145,45 @@ void __69__WFFilePickerViewController_updateSearchResultsForSearchController___b
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [a4 identifier];
-  if (v6)
+  identifier = [configuration identifier];
+  if (identifier)
   {
-    v17 = v6;
-    if ([v6 conformsToProtocol:&unk_2850EAAD0])
+    v17 = identifier;
+    if ([identifier conformsToProtocol:&unk_2850EAAD0])
     {
       v7 = [WFFilePickerViewController alloc];
-      v8 = [v17 wfPath];
-      v9 = [(WFFilePickerViewController *)self selectedFiles];
-      v10 = [(WFFilePickerViewController *)self service];
-      v11 = [(WFFilePickerViewController *)self mode];
-      v12 = [(WFFilePickerViewController *)self allowsMultipleSelection];
-      v13 = [(WFFilePickerViewController *)self pickCompletionHandler];
-      v14 = [(WFFilePickerViewController *)self saveCompletionHandler];
-      v15 = [(WFFilePickerViewController *)v7 initWithPath:v8 selectedFiles:v9 service:v10 mode:v11 allowsMultipleSelection:v12 pickCompletionHandler:v13 saveCompletionHandler:v14];
+      wfPath = [v17 wfPath];
+      selectedFiles = [(WFFilePickerViewController *)self selectedFiles];
+      service = [(WFFilePickerViewController *)self service];
+      mode = [(WFFilePickerViewController *)self mode];
+      allowsMultipleSelection = [(WFFilePickerViewController *)self allowsMultipleSelection];
+      pickCompletionHandler = [(WFFilePickerViewController *)self pickCompletionHandler];
+      saveCompletionHandler = [(WFFilePickerViewController *)self saveCompletionHandler];
+      v15 = [(WFFilePickerViewController *)v7 initWithPath:wfPath selectedFiles:selectedFiles service:service mode:mode allowsMultipleSelection:allowsMultipleSelection pickCompletionHandler:pickCompletionHandler saveCompletionHandler:saveCompletionHandler];
 
-      v16 = [(WFFilePickerViewController *)self navigationController];
-      [v16 pushViewController:v15 animated:0];
+      navigationController = [(WFFilePickerViewController *)self navigationController];
+      [navigationController pushViewController:v15 animated:0];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(WFFilePickerViewController *)self fileListView];
-  v8 = [v7 fileAtPoint:{x, y}];
+  y = location.y;
+  x = location.x;
+  fileListView = [(WFFilePickerViewController *)self fileListView];
+  v8 = [fileListView fileAtPoint:{x, y}];
   v9 = MEMORY[0x277D753B0];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __84__WFFilePickerViewController_contextMenuInteraction_configurationForMenuAtLocation___block_invoke;
   v13[3] = &unk_278C367B0;
   v14 = v8;
-  v15 = self;
+  selfCopy = self;
   v10 = v8;
   v11 = [v9 configurationWithIdentifier:v10 previewProvider:v13 actionProvider:&__block_literal_global_237];
 
@@ -215,16 +215,16 @@ WFFilePickerViewController *__84__WFFilePickerViewController_contextMenuInteract
   return v10;
 }
 
-- (BOOL)fileListView:(id)a3 shouldDisplayCheckmarkForFile:(id)a4
+- (BOOL)fileListView:(id)view shouldDisplayCheckmarkForFile:(id)file
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  fileCopy = file;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(WFFilePickerViewController *)self selectedFiles];
-  v7 = [v6 copy];
+  selectedFiles = [(WFFilePickerViewController *)self selectedFiles];
+  v7 = [selectedFiles copy];
 
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
@@ -239,7 +239,7 @@ WFFilePickerViewController *__84__WFFilePickerViewController_contextMenuInteract
           objc_enumerationMutation(v7);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) wfIsEqualToFile:v5])
+        if ([*(*(&v13 + 1) + 8 * i) wfIsEqualToFile:fileCopy])
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;
@@ -262,18 +262,18 @@ LABEL_11:
   return v8;
 }
 
-- (void)fileListView:(id)a3 didSelectFile:(id)a4
+- (void)fileListView:(id)view didSelectFile:(id)file
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 wfIsDirectory])
+  viewCopy = view;
+  fileCopy = file;
+  if ([fileCopy wfIsDirectory])
   {
-    v8 = [(WFFilePickerViewController *)self searchController];
-    [v8 setActive:0];
+    searchController = [(WFFilePickerViewController *)self searchController];
+    [searchController setActive:0];
 
-    v9 = [v7 wfPath];
-    [(WFFilePickerViewController *)self navigateToSubdirectoryAtPath:v9];
+    wfPath = [fileCopy wfPath];
+    [(WFFilePickerViewController *)self navigateToSubdirectoryAtPath:wfPath];
   }
 
   else if ([(WFFilePickerViewController *)self mode]!= 1)
@@ -284,10 +284,10 @@ LABEL_11:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = [(WFFilePickerViewController *)self selectedFiles];
-      v11 = [v10 copy];
+      selectedFiles = [(WFFilePickerViewController *)self selectedFiles];
+      selectedFiles3 = [selectedFiles copy];
 
-      v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [selectedFiles3 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
         v13 = v12;
@@ -298,20 +298,20 @@ LABEL_11:
           {
             if (*v21 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(selectedFiles3);
             }
 
             v16 = *(*(&v20 + 1) + 8 * i);
-            if ([v16 wfIsEqualToFile:v7])
+            if ([v16 wfIsEqualToFile:fileCopy])
             {
-              v18 = [(WFFilePickerViewController *)self selectedFiles];
-              [v18 removeObject:v16];
+              selectedFiles2 = [(WFFilePickerViewController *)self selectedFiles];
+              [selectedFiles2 removeObject:v16];
 
               goto LABEL_16;
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v13 = [selectedFiles3 countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v13)
           {
             continue;
@@ -321,18 +321,18 @@ LABEL_11:
         }
       }
 
-      v11 = [(WFFilePickerViewController *)self selectedFiles];
-      [v11 addObject:v7];
+      selectedFiles3 = [(WFFilePickerViewController *)self selectedFiles];
+      [selectedFiles3 addObject:fileCopy];
 LABEL_16:
 
-      [v6 updateCheckmarkForFile:v7];
+      [viewCopy updateCheckmarkForFile:fileCopy];
       [(WFFilePickerViewController *)self updateToolbar];
     }
 
     else
     {
-      v17 = [(WFFilePickerViewController *)self selectedFiles];
-      [v17 addObject:v7];
+      selectedFiles4 = [(WFFilePickerViewController *)self selectedFiles];
+      [selectedFiles4 addObject:fileCopy];
 
       [(WFFilePickerViewController *)self finish];
     }
@@ -341,103 +341,103 @@ LABEL_16:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)navigateToSubdirectoryAtPath:(id)a3
+- (void)navigateToSubdirectoryAtPath:(id)path
 {
-  v35 = a3;
-  v5 = [(WFFilePickerViewController *)self navigationController];
-  v6 = [v5 topViewController];
-  if (!v5)
+  pathCopy = path;
+  navigationController = [(WFFilePickerViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
+  if (!navigationController)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"WFFilePickerViewController.m" lineNumber:308 description:@"View controller must be part of a navigation stack"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFilePickerViewController.m" lineNumber:308 description:@"View controller must be part of a navigation stack"];
   }
 
-  v7 = [v6 path];
-  v8 = [v7 pathComponents];
-  v9 = [v35 stringByStandardizingPath];
-  v10 = [v9 pathComponents];
+  path = [topViewController path];
+  pathComponents = [path pathComponents];
+  stringByStandardizingPath = [pathCopy stringByStandardizingPath];
+  pathComponents2 = [stringByStandardizingPath pathComponents];
 
-  v11 = [v8 count];
-  if (v11 <= [v10 count])
+  v11 = [pathComponents count];
+  if (v11 <= [pathComponents2 count])
   {
-    v12 = [v10 subarrayWithRange:{0, objc_msgSend(v8, "count")}];
-    v13 = [(WFFilePickerViewController *)self caseInsensitiveArray:v12 isEqualToArray:v8];
+    v12 = [pathComponents2 subarrayWithRange:{0, objc_msgSend(pathComponents, "count")}];
+    v13 = [(WFFilePickerViewController *)self caseInsensitiveArray:v12 isEqualToArray:pathComponents];
 
     if (v13)
     {
-      v32 = v7;
-      v33 = v6;
-      v34 = v5;
+      v32 = path;
+      v33 = topViewController;
+      v34 = navigationController;
       v14 = objc_opt_new();
-      v31 = v8;
-      v15 = [v8 count];
-      if (v15 < [v10 count])
+      v31 = pathComponents;
+      v15 = [pathComponents count];
+      if (v15 < [pathComponents2 count])
       {
         v36 = v14;
         do
         {
           v16 = MEMORY[0x277CCACA8];
-          v17 = [v10 subarrayWithRange:{0, ++v15}];
+          v17 = [pathComponents2 subarrayWithRange:{0, ++v15}];
           v37 = [v16 pathWithComponents:v17];
 
           v18 = [WFFilePickerViewController alloc];
-          v19 = [(WFFilePickerViewController *)self selectedFiles];
-          v20 = [(WFFilePickerViewController *)self service];
-          v21 = [(WFFilePickerViewController *)self mode];
-          v22 = [(WFFilePickerViewController *)self allowsMultipleSelection];
-          v23 = [(WFFilePickerViewController *)self pickCompletionHandler];
+          selectedFiles = [(WFFilePickerViewController *)self selectedFiles];
+          service = [(WFFilePickerViewController *)self service];
+          mode = [(WFFilePickerViewController *)self mode];
+          allowsMultipleSelection = [(WFFilePickerViewController *)self allowsMultipleSelection];
+          pickCompletionHandler = [(WFFilePickerViewController *)self pickCompletionHandler];
           [(WFFilePickerViewController *)self saveCompletionHandler];
-          v24 = self;
-          v26 = v25 = v10;
-          v27 = [(WFFilePickerViewController *)v18 initWithPath:v37 selectedFiles:v19 service:v20 mode:v21 allowsMultipleSelection:v22 pickCompletionHandler:v23 saveCompletionHandler:v26];
+          selfCopy = self;
+          v26 = v25 = pathComponents2;
+          v27 = [(WFFilePickerViewController *)v18 initWithPath:v37 selectedFiles:selectedFiles service:service mode:mode allowsMultipleSelection:allowsMultipleSelection pickCompletionHandler:pickCompletionHandler saveCompletionHandler:v26];
 
-          v10 = v25;
-          self = v24;
+          pathComponents2 = v25;
+          self = selfCopy;
 
           v14 = v36;
           [v36 addObject:v27];
         }
 
-        while (v15 < [v10 count]);
+        while (v15 < [pathComponents2 count]);
       }
 
       if ([v14 count] == 1)
       {
-        v28 = [v14 firstObject];
-        v5 = v34;
-        [v34 pushViewController:v28 animated:1];
+        firstObject = [v14 firstObject];
+        navigationController = v34;
+        [v34 pushViewController:firstObject animated:1];
       }
 
       else
       {
-        v5 = v34;
-        v28 = [v34 viewControllers];
-        v29 = [v28 arrayByAddingObjectsFromArray:v14];
+        navigationController = v34;
+        firstObject = [v34 viewControllers];
+        v29 = [firstObject arrayByAddingObjectsFromArray:v14];
         [v34 setViewControllers:v29 animated:0];
       }
 
-      v7 = v32;
-      v6 = v33;
+      path = v32;
+      topViewController = v33;
 
-      v8 = v31;
+      pathComponents = v31;
     }
   }
 }
 
-- (BOOL)caseInsensitiveArray:(id)a3 isEqualToArray:(id)a4
+- (BOOL)caseInsensitiveArray:(id)array isEqualToArray:(id)toArray
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  arrayCopy = array;
+  toArrayCopy = toArray;
+  v7 = [arrayCopy count];
+  if (v7 == [toArrayCopy count])
   {
-    if ([v5 count])
+    if ([arrayCopy count])
     {
       v8 = 0;
       while (1)
       {
-        v9 = [v5 objectAtIndex:v8];
-        v10 = [v6 objectAtIndex:v8];
+        v9 = [arrayCopy objectAtIndex:v8];
+        v10 = [toArrayCopy objectAtIndex:v8];
         v11 = [v9 localizedStandardCompare:v10];
         v12 = v11 == 0;
 
@@ -446,7 +446,7 @@ LABEL_16:
           break;
         }
 
-        if (++v8 >= [v5 count])
+        if (++v8 >= [arrayCopy count])
         {
           goto LABEL_6;
         }
@@ -471,16 +471,16 @@ LABEL_6:
 - (void)updateToolbar
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v3 = [(WFFilePickerViewController *)self mode];
-  if (v3 || [(WFFilePickerViewController *)self allowsMultipleSelection])
+  mode = [(WFFilePickerViewController *)self mode];
+  if (mode || [(WFFilePickerViewController *)self allowsMultipleSelection])
   {
-    v4 = [(WFFilePickerViewController *)self navigationController];
-    v5 = [v4 isToolbarHidden];
+    navigationController = [(WFFilePickerViewController *)self navigationController];
+    isToolbarHidden = [navigationController isToolbarHidden];
 
-    if (v5)
+    if (isToolbarHidden)
     {
-      v6 = [(WFFilePickerViewController *)self navigationController];
-      [v6 setToolbarHidden:0 animated:0];
+      navigationController2 = [(WFFilePickerViewController *)self navigationController];
+      [navigationController2 setToolbarHidden:0 animated:0];
     }
 
     v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:5 target:self action:0];
@@ -488,15 +488,15 @@ LABEL_6:
     v9 = [MEMORY[0x277D75348] colorWithRed:0.063 green:0.478 blue:0.969 alpha:1.0];
     [v8 setTintColor:v9];
 
-    if (v3)
+    if (mode)
     {
       v10 = @"Save Here";
     }
 
     else
     {
-      v11 = [(WFFilePickerViewController *)self selectedFiles];
-      v12 = [v11 count];
+      selectedFiles = [(WFFilePickerViewController *)self selectedFiles];
+      v12 = [selectedFiles count];
 
       [v8 setEnabled:v12 != 0];
       if (v12 != 1)
@@ -529,36 +529,36 @@ LABEL_10:
 - (void)setStatusViewToEmpty
 {
   v3 = [(WFFilePickerViewController *)self mode]== 0;
-  v4 = [(WFFilePickerViewController *)self statusView];
-  [v4 setEmptyWithLabel:v3];
+  statusView = [(WFFilePickerViewController *)self statusView];
+  [statusView setEmptyWithLabel:v3];
 }
 
-- (void)updateStatusViewAnimated:(BOOL)a3
+- (void)updateStatusViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(WFFilePickerViewController *)self error];
-  v6 = [(WFFilePickerViewController *)self files];
-  v7 = [(WFFilePickerViewController *)self statusView];
-  v8 = [(WFFilePickerViewController *)self fileListView];
-  v9 = [v6 count];
+  animatedCopy = animated;
+  error = [(WFFilePickerViewController *)self error];
+  files = [(WFFilePickerViewController *)self files];
+  statusView = [(WFFilePickerViewController *)self statusView];
+  fileListView = [(WFFilePickerViewController *)self fileListView];
+  v9 = [files count];
   v10 = v9 == 0;
-  v11 = [v7 isHidden];
+  isHidden = [statusView isHidden];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__WFFilePickerViewController_updateStatusViewAnimated___block_invoke;
   aBlock[3] = &unk_278C37690;
-  v12 = v5;
+  v12 = error;
   v28 = v12;
-  v13 = v7;
+  v13 = statusView;
   v29 = v13;
-  v30 = self;
-  v14 = v6;
+  selfCopy = self;
+  v14 = files;
   v31 = v14;
   v15 = _Block_copy(aBlock);
   v16 = v15;
-  if (((v9 != 0) ^ v11))
+  if (((v9 != 0) ^ isHidden))
   {
-    if (v3)
+    if (animatedCopy)
     {
       v17 = MEMORY[0x277D75D18];
       v24[0] = MEMORY[0x277D85DD0];
@@ -566,7 +566,7 @@ LABEL_10:
       v24[2] = __55__WFFilePickerViewController_updateStatusViewAnimated___block_invoke_2;
       v24[3] = &unk_278C375A0;
       v25 = v13;
-      v26 = v8;
+      v26 = fileListView;
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __55__WFFilePickerViewController_updateStatusViewAnimated___block_invoke_3;
@@ -588,9 +588,9 @@ LABEL_10:
         v18 = 1.0;
       }
 
-      [v8 setAlpha:v18];
+      [fileListView setAlpha:v18];
       [v13 setHidden:v9 != 0];
-      [v8 setHidden:v10];
+      [fileListView setHidden:v10];
     }
   }
 
@@ -668,23 +668,23 @@ uint64_t __55__WFFilePickerViewController_updateStatusViewAnimated___block_invok
 {
   if (![(WFFilePickerViewController *)self loading])
   {
-    v3 = [(WFFilePickerViewController *)self files];
+    files = [(WFFilePickerViewController *)self files];
 
-    if (!v3)
+    if (!files)
     {
       [(WFFilePickerViewController *)self setLoading:1];
       [(WFFilePickerViewController *)self setError:0];
       [(WFFilePickerViewController *)self updateStatusViewAnimated:0];
-      v4 = [(WFFilePickerViewController *)self service];
-      v5 = [(WFFilePickerViewController *)self path];
+      service = [(WFFilePickerViewController *)self service];
+      path = [(WFFilePickerViewController *)self path];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __39__WFFilePickerViewController_loadFiles__block_invoke;
       v7[3] = &unk_278C37008;
-      v8 = v4;
-      v9 = self;
-      v6 = v4;
-      [v6 retrieveFilesAtPath:v5 options:1 progress:0 completionHandler:v7];
+      v8 = service;
+      selfCopy = self;
+      v6 = service;
+      [v6 retrieveFilesAtPath:path options:1 progress:0 completionHandler:v7];
     }
   }
 }
@@ -781,27 +781,27 @@ uint64_t __39__WFFilePickerViewController_loadFiles__block_invoke_6(uint64_t a1)
 {
   if ([(WFFilePickerViewController *)self mode])
   {
-    v3 = [(WFFilePickerViewController *)self saveCompletionHandler];
-    if (!v3)
+    saveCompletionHandler = [(WFFilePickerViewController *)self saveCompletionHandler];
+    if (!saveCompletionHandler)
     {
       goto LABEL_7;
     }
 
-    v4 = [(WFFilePickerViewController *)self path];
-    (v3)[2](v3, v4);
+    path = [(WFFilePickerViewController *)self path];
+    (saveCompletionHandler)[2](saveCompletionHandler, path);
   }
 
   else
   {
-    v3 = [(WFFilePickerViewController *)self pickCompletionHandler];
-    if (!v3)
+    saveCompletionHandler = [(WFFilePickerViewController *)self pickCompletionHandler];
+    if (!saveCompletionHandler)
     {
       goto LABEL_7;
     }
 
-    v4 = [(WFFilePickerViewController *)self selectedFiles];
-    v5 = [v4 array];
-    (v3)[2](v3, v5);
+    path = [(WFFilePickerViewController *)self selectedFiles];
+    array = [path array];
+    (saveCompletionHandler)[2](saveCompletionHandler, array);
   }
 
 LABEL_7:
@@ -830,14 +830,14 @@ LABEL_7:
   [(WFFilePickerViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)setHideSearchBar:(BOOL)a3
+- (void)setHideSearchBar:(BOOL)bar
 {
   hideSearchBar = self->_hideSearchBar;
-  self->_hideSearchBar = a3;
-  if (hideSearchBar != a3 && [(WFFilePickerViewController *)self isViewLoaded])
+  self->_hideSearchBar = bar;
+  if (hideSearchBar != bar && [(WFFilePickerViewController *)self isViewLoaded])
   {
-    v5 = [(WFFilePickerViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(WFFilePickerViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
@@ -846,22 +846,22 @@ LABEL_7:
   v27.receiver = self;
   v27.super_class = WFFilePickerViewController;
   [(WFFilePickerViewController *)&v27 viewWillLayoutSubviews];
-  v3 = [(WFFilePickerViewController *)self hideSearchBar];
-  v4 = [(WFFilePickerViewController *)self view];
-  [v4 safeAreaInsets];
+  hideSearchBar = [(WFFilePickerViewController *)self hideSearchBar];
+  view = [(WFFilePickerViewController *)self view];
+  [view safeAreaInsets];
   v6 = v5;
 
-  v7 = [(WFFilePickerViewController *)self searchController];
-  v8 = [v7 searchBar];
-  [v8 setHidden:v3];
-  [v8 frame];
+  searchController = [(WFFilePickerViewController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar setHidden:hideSearchBar];
+  [searchBar frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v8 superview];
-  v16 = [(WFFilePickerViewController *)self view];
+  superview = [searchBar superview];
+  view2 = [(WFFilePickerViewController *)self view];
   Height = 0.0;
-  if (![v15 isEqual:v16])
+  if (![superview isEqual:view2])
   {
     v6 = 0.0;
   }
@@ -871,14 +871,14 @@ LABEL_7:
   v21[1] = 3221225472;
   v21[2] = __52__WFFilePickerViewController_viewWillLayoutSubviews__block_invoke;
   v21[3] = &unk_278C366F0;
-  v22 = v8;
+  v22 = searchBar;
   v23 = v10;
   v24 = v6;
   v25 = v12;
   v26 = v14;
-  v19 = v8;
+  v19 = searchBar;
   [v18 performWithoutAnimation:v21];
-  if (!v3)
+  if (!hideSearchBar)
   {
     v28.origin.x = v10;
     v28.origin.y = v6;
@@ -887,9 +887,9 @@ LABEL_7:
     Height = CGRectGetHeight(v28);
   }
 
-  v20 = [(WFFilePickerViewController *)self fileListView];
-  [v20 setContentInset:{Height, 0.0, 0.0, 0.0}];
-  [v20 setVerticalScrollIndicatorInsets:{Height, 0.0, 0.0, 0.0}];
+  fileListView = [(WFFilePickerViewController *)self fileListView];
+  [fileListView setContentInset:{Height, 0.0, 0.0, 0.0}];
+  [fileListView setVerticalScrollIndicatorInsets:{Height, 0.0, 0.0, 0.0}];
 }
 
 - (void)loadView
@@ -897,59 +897,59 @@ LABEL_7:
   v21.receiver = self;
   v21.super_class = WFFilePickerViewController;
   [(WFFilePickerViewController *)&v21 loadView];
-  v3 = [(WFFilePickerViewController *)self view];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(WFFilePickerViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  [v3 bounds];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(WFFilePickerViewController *)self files];
+  files = [(WFFilePickerViewController *)self files];
   v14 = [WFRemoteFileListView alloc];
-  v15 = [MEMORY[0x277D75700] currentCollation];
-  v16 = [(WFRemoteFileListView *)v14 initWithFrame:v15 collation:v6, v8, v10, v12];
+  currentCollation = [MEMORY[0x277D75700] currentCollation];
+  v16 = [(WFRemoteFileListView *)v14 initWithFrame:currentCollation collation:v6, v8, v10, v12];
 
   [(WFRemoteFileListView *)v16 setAutoresizingMask:18];
   [(WFRemoteFileListView *)v16 setDelegate:self];
   [(WFRemoteFileListView *)v16 setHidden:1];
-  [(WFRemoteFileListView *)v16 setFiles:v13];
-  [v3 addSubview:v16];
+  [(WFRemoteFileListView *)v16 setFiles:files];
+  [view addSubview:v16];
   objc_storeWeak(&self->_fileListView, v16);
   v17 = [objc_alloc(MEMORY[0x277D753B8]) initWithDelegate:self];
   [(WFRemoteFileListView *)v16 addInteraction:v17];
   v18 = [[WFRemoteFileStatusView alloc] initWithFrame:v6, v8, v10, v12];
   [(WFRemoteFileStatusView *)v18 setDelegate:self];
   [(WFRemoteFileStatusView *)v18 setAutoresizingMask:18];
-  [v3 addSubview:v18];
+  [view addSubview:v18];
   objc_storeWeak(&self->_statusView, v18);
-  v19 = [(WFFilePickerViewController *)self searchController];
-  v20 = [v19 searchBar];
+  searchController = [(WFFilePickerViewController *)self searchController];
+  searchBar = [searchController searchBar];
 
   v22.origin.x = v6;
   v22.origin.y = v8;
   v22.size.width = v10;
   v22.size.height = v12;
-  [v20 setFrame:{0.0, 0.0, CGRectGetWidth(v22), 56.0}];
-  [v20 setAutoresizingMask:2];
-  [v3 addSubview:v20];
+  [searchBar setFrame:{0.0, 0.0, CGRectGetWidth(v22), 56.0}];
+  [searchBar setAutoresizingMask:2];
+  [view addSubview:searchBar];
   [(WFFilePickerViewController *)self loadFiles];
   [(WFFilePickerViewController *)self updateStatusViewAnimated:0];
   [(WFFilePickerViewController *)self updateToolbar];
 }
 
-- (WFFilePickerViewController)initWithPath:(id)a3 selectedFiles:(id)a4 service:(id)a5 mode:(int64_t)a6 allowsMultipleSelection:(BOOL)a7 pickCompletionHandler:(id)a8 saveCompletionHandler:(id)a9
+- (WFFilePickerViewController)initWithPath:(id)path selectedFiles:(id)files service:(id)service mode:(int64_t)mode allowsMultipleSelection:(BOOL)selection pickCompletionHandler:(id)handler saveCompletionHandler:(id)completionHandler
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  v20 = a9;
-  if (!v18)
+  pathCopy = path;
+  filesCopy = files;
+  serviceCopy = service;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (!serviceCopy)
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"WFFilePickerViewController.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"service"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFilePickerViewController.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"service"}];
   }
 
   v38.receiver = self;
@@ -958,9 +958,9 @@ LABEL_7:
   v22 = v21;
   if (v21)
   {
-    if (v16)
+    if (pathCopy)
     {
-      v23 = v16;
+      v23 = pathCopy;
     }
 
     else
@@ -969,25 +969,25 @@ LABEL_7:
     }
 
     objc_storeStrong(&v21->_path, v23);
-    objc_storeStrong(&v22->_service, a5);
-    v22->_mode = a6;
-    v22->_allowsMultipleSelection = a7;
-    v24 = v17;
-    if (!v17)
+    objc_storeStrong(&v22->_service, service);
+    v22->_mode = mode;
+    v22->_allowsMultipleSelection = selection;
+    v24 = filesCopy;
+    if (!filesCopy)
     {
       v24 = objc_opt_new();
     }
 
     objc_storeStrong(&v22->_selectedFiles, v24);
-    if (!v17)
+    if (!filesCopy)
     {
     }
 
-    v25 = _Block_copy(v19);
+    v25 = _Block_copy(handlerCopy);
     pickCompletionHandler = v22->_pickCompletionHandler;
     v22->_pickCompletionHandler = v25;
 
-    v27 = _Block_copy(v20);
+    v27 = _Block_copy(completionHandlerCopy);
     saveCompletionHandler = v22->_saveCompletionHandler;
     v22->_saveCompletionHandler = v27;
 
@@ -997,21 +997,21 @@ LABEL_7:
     objc_storeStrong(&v22->_searchController, v30);
     if ([(NSString *)v22->_path isEqualToString:@"/"])
     {
-      v31 = [(WFFilePickerViewController *)v22 service];
+      service = [(WFFilePickerViewController *)v22 service];
       [objc_opt_class() serviceName];
     }
 
     else
     {
-      v31 = [(WFFilePickerViewController *)v22 path];
-      [v31 lastPathComponent];
+      service = [(WFFilePickerViewController *)v22 path];
+      [service lastPathComponent];
     }
     v32 = ;
     [(WFFilePickerViewController *)v22 setTitle:v32];
 
     v33 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v22 action:sel_cancel];
-    v34 = [(WFFilePickerViewController *)v22 navigationItem];
-    [v34 setRightBarButtonItem:v33];
+    navigationItem = [(WFFilePickerViewController *)v22 navigationItem];
+    [navigationItem setRightBarButtonItem:v33];
 
     v35 = v22;
   }

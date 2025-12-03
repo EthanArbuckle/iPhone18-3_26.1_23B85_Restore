@@ -1,11 +1,11 @@
 @interface ContinuityCaptureShieldUIBaseViewController
 + (BOOL)_refreshConnectionType;
 + (BOOL)_refreshUIState;
-- (ContinuityCaptureShieldUIBaseViewController)initWithSceneSessionRole:(id)a3;
+- (ContinuityCaptureShieldUIBaseViewController)initWithSceneSessionRole:(id)role;
 - (void)_tearDownShield;
 - (void)dealloc;
 - (void)disconnectSession;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)tearDownShield;
 - (void)viewDidLoad;
 @end
@@ -15,21 +15,21 @@
 + (BOOL)_refreshUIState
 {
   v3 = +[CMContinuityCaptureUIStateTracker sharedInstance];
-  v4 = [v3 activeConfiguration];
+  activeConfiguration = [v3 activeConfiguration];
 
-  if (!v4)
+  if (!activeConfiguration)
   {
     v13 = 0;
     goto LABEL_18;
   }
 
-  v5 = [v4 compositeState];
+  compositeState = [activeConfiguration compositeState];
   v6 = +[CMContinuityCaptureUIStateTracker sharedInstance];
-  v7 = [v6 uiState];
+  uiState = [v6 uiState];
 
-  v8 = [v4 placementStepSkipped];
-  v9 = v8;
-  if (v8 && ([v8 BOOLValue] & 1) == 0)
+  placementStepSkipped = [activeConfiguration placementStepSkipped];
+  v9 = placementStepSkipped;
+  if (placementStepSkipped && ([placementStepSkipped BOOLValue] & 1) == 0)
   {
     v10 = +[CMContinuityCaptureUIStateTracker sharedInstance];
     v11 = v10;
@@ -37,7 +37,7 @@
     goto LABEL_15;
   }
 
-  if (v5)
+  if (compositeState)
   {
     v10 = +[CMContinuityCaptureUIStateTracker sharedInstance];
     v11 = v10;
@@ -45,7 +45,7 @@
     goto LABEL_15;
   }
 
-  if ((v5 & 8) != 0)
+  if ((compositeState & 8) != 0)
   {
     v10 = +[CMContinuityCaptureUIStateTracker sharedInstance];
     v11 = v10;
@@ -53,7 +53,7 @@
     goto LABEL_15;
   }
 
-  if ((v5 & 0x10) != 0)
+  if ((compositeState & 0x10) != 0)
   {
     v10 = +[CMContinuityCaptureUIStateTracker sharedInstance];
     v11 = v10;
@@ -62,7 +62,7 @@
 
   v10 = +[CMContinuityCaptureUIStateTracker sharedInstance];
   v11 = v10;
-  if (!v5)
+  if (!compositeState)
   {
 LABEL_14:
     v12 = 4;
@@ -74,22 +74,22 @@ LABEL_15:
   [v10 setUiState:v12];
 
   v14 = +[CMContinuityCaptureUIStateTracker sharedInstance];
-  v15 = [v14 uiState];
-  v13 = v7 != v15;
+  uiState2 = [v14 uiState];
+  v13 = uiState != uiState2;
 
   v16 = sub_100006DC0();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = v7 != v15;
+    v17 = uiState != uiState2;
     v18 = +[CMContinuityCaptureUIStateTracker sharedInstance];
     v20 = 136316162;
     v21 = "+[ContinuityCaptureShieldUIBaseViewController _refreshUIState]";
     v22 = 2112;
-    v23 = a1;
+    selfCopy = self;
     v24 = 1024;
-    v25 = v7;
+    v25 = uiState;
     v26 = 1024;
-    v27 = [v18 uiState];
+    uiState3 = [v18 uiState];
     v28 = 1024;
     v29 = v17;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s: %@ updated uiState (%d -> %d) refresh %d", &v20, 0x28u);
@@ -102,15 +102,15 @@ LABEL_18:
 + (BOOL)_refreshConnectionType
 {
   v3 = +[CMContinuityCaptureUIStateTracker sharedInstance];
-  v4 = [v3 activeConfiguration];
+  activeConfiguration = [v3 activeConfiguration];
 
-  if (v4)
+  if (activeConfiguration)
   {
-    v5 = [v4 compositeState];
+    compositeState = [activeConfiguration compositeState];
     v6 = +[CMContinuityCaptureUIStateTracker sharedInstance];
-    v7 = [v6 connectionType];
+    connectionType = [v6 connectionType];
 
-    if ((v5 & 6) == 2)
+    if ((compositeState & 6) == 2)
     {
       v8 = +[CMContinuityCaptureUIStateTracker sharedInstance];
       v9 = v8;
@@ -121,7 +121,7 @@ LABEL_18:
     {
       v8 = +[CMContinuityCaptureUIStateTracker sharedInstance];
       v9 = v8;
-      if ((v5 & 4) != 0)
+      if ((compositeState & 4) != 0)
       {
         v10 = 2;
       }
@@ -135,22 +135,22 @@ LABEL_18:
     [v8 setConnectionType:v10];
 
     v12 = +[CMContinuityCaptureUIStateTracker sharedInstance];
-    v13 = [v12 connectionType];
-    v11 = v7 != v13;
+    connectionType2 = [v12 connectionType];
+    v11 = connectionType != connectionType2;
 
     v14 = sub_100006DC0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = v7 != v13;
+      v15 = connectionType != connectionType2;
       v16 = +[CMContinuityCaptureUIStateTracker sharedInstance];
       v18 = 136316162;
       v19 = "+[ContinuityCaptureShieldUIBaseViewController _refreshConnectionType]";
       v20 = 2112;
-      v21 = a1;
+      selfCopy = self;
       v22 = 1024;
-      v23 = v7;
+      v23 = connectionType;
       v24 = 1024;
-      v25 = [v16 connectionType];
+      connectionType3 = [v16 connectionType];
       v26 = 1024;
       v27 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: %@ updated connectionType (%d -> %d) refresh %d", &v18, 0x28u);
@@ -165,9 +165,9 @@ LABEL_18:
   return v11;
 }
 
-- (ContinuityCaptureShieldUIBaseViewController)initWithSceneSessionRole:(id)a3
+- (ContinuityCaptureShieldUIBaseViewController)initWithSceneSessionRole:(id)role
 {
-  v5 = a3;
+  roleCopy = role;
   v16.receiver = self;
   v16.super_class = ContinuityCaptureShieldUIBaseViewController;
   v6 = [(ContinuityCaptureShieldUIBaseViewController *)&v16 initWithNibName:0 bundle:0];
@@ -183,7 +183,7 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s: <%p> Called", &v12, 0x16u);
     }
 
-    objc_storeStrong(&v6->_sessionRole, a3);
+    objc_storeStrong(&v6->_sessionRole, role);
     v8 = +[CMContinuityCaptureUIStateTracker sharedInstance];
     [v8 addObserver:v6 forKeyPath:CMContinuityCaptureUIStateTrackerActiveKVOKey options:3 context:0];
 
@@ -207,7 +207,7 @@ LABEL_18:
     *buf = 136315650;
     v10 = "[ContinuityCaptureShieldUIBaseViewController dealloc]";
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = "[ContinuityCaptureShieldUIBaseViewController dealloc]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s: <%p> %s", buf, 0x20u);
@@ -241,24 +241,24 @@ LABEL_18:
   [(ContinuityCaptureShieldUIBaseViewController *)self updateUI];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:CMContinuityCaptureUIStateTrackerActiveKVOKey])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:CMContinuityCaptureUIStateTrackerActiveKVOKey])
   {
-    v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     if ([v13 BOOLValue])
     {
     }
 
     else
     {
-      v15 = [v12 objectForKeyedSubscript:NSKeyValueChangeOldKey];
-      v16 = [v15 BOOLValue];
+      v15 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeOldKey];
+      bOOLValue = [v15 BOOLValue];
 
-      if (v16)
+      if (bOOLValue)
       {
         [(ContinuityCaptureShieldUIBaseViewController *)self tearDownShield];
       }
@@ -267,7 +267,7 @@ LABEL_18:
 
   else
   {
-    if ([v10 isEqualToString:CMContinuityCaptureUIStateTrackerActiveConfigurationKVOKey])
+    if ([pathCopy isEqualToString:CMContinuityCaptureUIStateTrackerActiveConfigurationKVOKey])
     {
       +[ContinuityCaptureShieldUIBaseViewController _refreshUIState];
       +[ContinuityCaptureShieldUIBaseViewController _refreshConnectionType];
@@ -281,11 +281,11 @@ LABEL_18:
 
     else
     {
-      if (![v10 isEqualToString:CMContinuityCaptureUIStateTrackerActiveFaceTimeContinuitySessionKVOKey])
+      if (![pathCopy isEqualToString:CMContinuityCaptureUIStateTrackerActiveFaceTimeContinuitySessionKVOKey])
       {
         v17.receiver = self;
         v17.super_class = ContinuityCaptureShieldUIBaseViewController;
-        [(ContinuityCaptureShieldUIBaseViewController *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+        [(ContinuityCaptureShieldUIBaseViewController *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
         goto LABEL_12;
       }
 
@@ -317,8 +317,8 @@ LABEL_12:
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
   terminated = self->_terminated;
-  v4 = sub_100006DC0();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
+  _FBSScene = sub_100006DC0();
+  v5 = os_log_type_enabled(_FBSScene, OS_LOG_TYPE_DEFAULT);
   if (terminated)
   {
     if (v5)
@@ -326,8 +326,8 @@ LABEL_12:
       *buf = 136315394;
       v23 = "[ContinuityCaptureShieldUIBaseViewController tearDownShield]";
       v24 = 2112;
-      v25 = self;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: %@ termination in progress", buf, 0x16u);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, _FBSScene, OS_LOG_TYPE_DEFAULT, "%s: %@ termination in progress", buf, 0x16u);
     }
   }
 
@@ -338,8 +338,8 @@ LABEL_12:
       *buf = 136315394;
       v23 = "[ContinuityCaptureShieldUIBaseViewController tearDownShield]";
       v24 = 2112;
-      v25 = self;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: %@ Tearing down shieldUI", buf, 0x16u);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, _FBSScene, OS_LOG_TYPE_DEFAULT, "%s: %@ Tearing down shieldUI", buf, 0x16u);
     }
 
     self->_terminated = 1;
@@ -361,10 +361,10 @@ LABEL_12:
     v10 = +[ContinuityCaptureShieldUIBackgroundActivityManager sharedInstance];
     [v10 updateState:16];
 
-    v11 = [(ContinuityCaptureShieldUIBaseViewController *)self view];
-    v12 = [v11 window];
-    v13 = [v12 windowScene];
-    v4 = [v13 _FBSScene];
+    view = [(ContinuityCaptureShieldUIBaseViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    _FBSScene = [windowScene _FBSScene];
 
     v14 = [[UIDestroySceneAction alloc] initWithPersistedIdentifiers:0 preferredAnimationType:1 forDestroyingSession:1 userOriginatedRequest:0 callbackQueue:&_dispatch_main_q completion:&stru_100018580];
     if ([(ContinuityCaptureShieldUIBaseViewController *)self isOnLockScreen])
@@ -381,7 +381,7 @@ LABEL_12:
       v19[1] = 3221225472;
       v19[2] = sub_1000033A8;
       v19[3] = &unk_1000185A8;
-      v20 = v4;
+      v20 = _FBSScene;
       v21 = v14;
       dispatch_after(v16, &_dispatch_main_q, v19);
 
@@ -396,12 +396,12 @@ LABEL_12:
         *buf = 136315394;
         v23 = "[ContinuityCaptureShieldUIBaseViewController tearDownShield]";
         v24 = 2112;
-        v25 = v4;
+        selfCopy2 = _FBSScene;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s: destroy scene: %@ in unlock mode", buf, 0x16u);
       }
 
       v17 = [NSSet setWithObject:v14];
-      [v4 sendActions:v17];
+      [_FBSScene sendActions:v17];
     }
   }
 }
@@ -414,7 +414,7 @@ LABEL_12:
     *buf = 136315650;
     v9 = "[ContinuityCaptureShieldUIBaseViewController disconnectSession]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[ContinuityCaptureShieldUIBaseViewController disconnectSession]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s:  %@ %s", buf, 0x20u);

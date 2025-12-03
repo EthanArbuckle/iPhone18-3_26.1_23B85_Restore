@@ -1,15 +1,15 @@
 @interface _GCConfigurationMobileAssetManager
-- (_GCConfigurationMobileAssetManager)initWithProvider:(id)a3;
+- (_GCConfigurationMobileAssetManager)initWithProvider:(id)provider;
 - (id)assets;
-- (id)checkForNewAssets:(BOOL)a3 forceCatalogRefresh:(BOOL)a4 completion:(id)a5;
-- (id)configurationBundleURLsForType:(id)a3;
-- (id)currentAsset:(BOOL)a3;
+- (id)checkForNewAssets:(BOOL)assets forceCatalogRefresh:(BOOL)refresh completion:(id)completion;
+- (id)configurationBundleURLsForType:(id)type;
+- (id)currentAsset:(BOOL)asset;
 - (id)lastUpdateDate;
 @end
 
 @implementation _GCConfigurationMobileAssetManager
 
-- (_GCConfigurationMobileAssetManager)initWithProvider:(id)a3
+- (_GCConfigurationMobileAssetManager)initWithProvider:(id)provider
 {
   v12.receiver = self;
   v12.super_class = _GCConfigurationMobileAssetManager;
@@ -28,35 +28,35 @@
   return v3;
 }
 
-- (id)configurationBundleURLsForType:(id)a3
+- (id)configurationBundleURLsForType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  currentDBAsset = v5->_currentDBAsset;
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentDBAsset = selfCopy->_currentDBAsset;
   if (currentDBAsset)
   {
-    v7 = [(MAAsset *)currentDBAsset configurationBundleURLsForType:v4];
-    objc_sync_exit(v5);
+    v7 = [(MAAsset *)currentDBAsset configurationBundleURLsForType:typeCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    locatorQueue = v5->_locatorQueue;
+    locatorQueue = selfCopy->_locatorQueue;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000013F0;
     v12[3] = &unk_1000103F8;
-    v12[4] = v5;
-    v5 = [GCFuture futureOnQueue:locatorQueue withBlock:v12];
+    v12[4] = selfCopy;
+    selfCopy = [GCFuture futureOnQueue:locatorQueue withBlock:v12];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100001A2C;
     v10[3] = &unk_100010420;
-    v11 = v4;
-    v7 = [(_GCConfigurationMobileAssetManager *)v5 thenWithResult:v10];
+    v11 = typeCopy;
+    v7 = [(_GCConfigurationMobileAssetManager *)selfCopy thenWithResult:v10];
   }
 
   return v7;
@@ -70,9 +70,9 @@
   return v3;
 }
 
-- (id)currentAsset:(BOOL)a3
+- (id)currentAsset:(BOOL)asset
 {
-  if (a3)
+  if (asset)
   {
     locatorQueue = self->_locatorQueue;
     v8[0] = _NSConcreteStackBlock;
@@ -108,48 +108,48 @@ LABEL_6:
   return v3;
 }
 
-- (id)checkForNewAssets:(BOOL)a3 forceCatalogRefresh:(BOOL)a4 completion:(id)a5
+- (id)checkForNewAssets:(BOOL)assets forceCatalogRefresh:(BOOL)refresh completion:(id)completion
 {
-  v5 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  if (v10->_updateProgress || !a3)
+  refreshCopy = refresh;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_updateProgress || !assets)
   {
-    (*(v9 + 2))(v9, 0, 0);
-    objc_sync_exit(v10);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
+    objc_sync_exit(selfCopy);
 
     v25 = 0;
   }
 
   else
   {
-    if (v10->_updateCallbacks)
+    if (selfCopy->_updateCallbacks)
     {
       v27 = +[NSAssertionHandler currentHandler];
-      [v27 handleFailureInMethod:a2 object:v10 file:@"_GCConfigurationMobileAssetManager.m" lineNumber:217 description:@"Assertion failed: _updateProgress == ((void *)0) && _updateCallbacks == ((void *)0)"];
+      [v27 handleFailureInMethod:a2 object:selfCopy file:@"_GCConfigurationMobileAssetManager.m" lineNumber:217 description:@"Assertion failed: _updateProgress == ((void *)0) && _updateCallbacks == ((void *)0)"];
     }
 
     v11 = objc_opt_new();
-    updateCallbacks = v10->_updateCallbacks;
-    v10->_updateCallbacks = v11;
+    updateCallbacks = selfCopy->_updateCallbacks;
+    selfCopy->_updateCallbacks = v11;
 
     v13 = objc_opt_new();
-    updateProgress = v10->_updateProgress;
-    v10->_updateProgress = v13;
+    updateProgress = selfCopy->_updateProgress;
+    selfCopy->_updateProgress = v13;
 
-    v15 = v10->_updateCallbacks;
-    v16 = objc_retainBlock(v9);
+    v15 = selfCopy->_updateCallbacks;
+    v16 = objc_retainBlock(completionCopy);
     [(NSMutableArray *)v15 addObject:v16];
 
-    v17 = v10->_updateProgress;
-    objc_sync_exit(v10);
+    v17 = selfCopy->_updateProgress;
+    objc_sync_exit(selfCopy);
 
     v18 = _os_activity_create(&_mh_execute_header, "[Configuration Mobile Asset Manager] Check For Updates", &_os_activity_current, OS_ACTIVITY_FLAG_DETACHED);
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v18, &state);
-    v19 = v10->_privateQueue;
+    v19 = selfCopy->_privateQueue;
     v37[0] = 0;
     v37[1] = v37;
     v37[2] = 0x3032000000;
@@ -159,7 +159,7 @@ LABEL_6:
     [(NSProgress *)v17 setPausable:0];
     [(NSProgress *)v17 setCancellable:1];
     [(NSProgress *)v17 setLocalizedDescription:@"Checking for updates"];
-    if (v5)
+    if (refreshCopy)
     {
       v20 = 3;
     }
@@ -182,15 +182,15 @@ LABEL_6:
     v33[1] = 3221225472;
     v33[2] = sub_1000025C0;
     v33[3] = &unk_100010580;
-    v33[4] = v10;
+    v33[4] = selfCopy;
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_100002A18;
     v28[3] = &unk_100010780;
     v30 = objc_retainBlock(v33);
     v31 = v37;
-    v28[4] = v10;
-    v32 = v5;
+    v28[4] = selfCopy;
+    v32 = refreshCopy;
     v22 = v17;
     v29 = v22;
     v23 = v30;

@@ -1,31 +1,31 @@
 @interface GEOAPDB
 + (id)sharedInstance;
-- (BOOL)_setup:(id)a3;
-- (BOOL)selectDailyCountsWithVisitorBlock:(id)a3 completionBlock:(id)a4;
-- (BOOL)selectDailySettingsWithVisitorBlock:(id)a3 completionBlock:(id)a4;
-- (BOOL)selectLogMsgsForBatchUploadWithBatchId:(unint64_t)a3 visitorBlock:(id)a4 completionBlock:(id)a5;
+- (BOOL)_setup:(id)_setup;
+- (BOOL)selectDailyCountsWithVisitorBlock:(id)block completionBlock:(id)completionBlock;
+- (BOOL)selectDailySettingsWithVisitorBlock:(id)block completionBlock:(id)completionBlock;
+- (BOOL)selectLogMsgsForBatchUploadWithBatchId:(unint64_t)id visitorBlock:(id)block completionBlock:(id)completionBlock;
 - (GEOAPDB)init;
-- (GEOAPDB)initWithDBFilePath:(id)a3;
+- (GEOAPDB)initWithDBFilePath:(id)path;
 - (double)batchReadyInSeconds;
 - (double)timeNow;
 - (id)dateNow;
 - (id)pendingBatchesReadyForUpload;
-- (id)usageBoolNumber:(id)a3;
-- (id)usageBoolString:(id)a3;
+- (id)usageBoolNumber:(id)number;
+- (id)usageBoolString:(id)string;
 - (unint64_t)_analyticsCount;
-- (unint64_t)_sessionHolddownDurationForSessionType:(int)a3;
+- (unint64_t)_sessionHolddownDurationForSessionType:(int)type;
 - (unint64_t)analyticsCount;
 - (void)_configureDatabase;
-- (void)_writeDailyCountElem:(id)a3;
-- (void)_writeDailySettingsElem:(id)a3;
-- (void)_writeLogMsgQueueElem:(id)a3;
-- (void)clearExpiredLogMsgsWithResultBlock:(id)a3;
+- (void)_writeDailyCountElem:(id)elem;
+- (void)_writeDailySettingsElem:(id)elem;
+- (void)_writeLogMsgQueueElem:(id)elem;
+- (void)clearExpiredLogMsgsWithResultBlock:(id)block;
 - (void)dealloc;
 - (void)flushEvalData;
 - (void)processMapsAppDeletion;
-- (void)setEvalMode:(BOOL)a3;
-- (void)showEvalDataWithVisitorBlock:(id)a3;
-- (void)storeLogMsgElems:(id)a3;
+- (void)setEvalMode:(BOOL)mode;
+- (void)showEvalDataWithVisitorBlock:(id)block;
+- (void)storeLogMsgElems:(id)elems;
 - (void)tearDown;
 @end
 
@@ -46,8 +46,8 @@
 - (unint64_t)_analyticsCount
 {
   p_db = &self->_db;
-  v3 = [(GEOSQLiteDB *)self->_db isolationQueue];
-  dispatch_assert_queue_V2(v3);
+  isolationQueue = [(GEOSQLiteDB *)self->_db isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
   v4 = *p_db;
   v16 = 0;
@@ -100,17 +100,17 @@
 - (id)pendingBatchesReadyForUpload
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(GEOAPDB *)self dateNow];
+  dateNow = [(GEOAPDB *)self dateNow];
   db = self->_db;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100001958;
   v11[3] = &unk_10003D188;
   v11[4] = self;
-  v12 = v4;
+  v12 = dateNow;
   v6 = v3;
   v13 = v6;
-  v7 = v4;
+  v7 = dateNow;
   [(GEOSQLiteDB *)db executeSync:v11];
   v8 = v13;
   v9 = v6;
@@ -134,10 +134,10 @@
   return v4;
 }
 
-- (BOOL)selectDailySettingsWithVisitorBlock:(id)a3 completionBlock:(id)a4
+- (BOOL)selectDailySettingsWithVisitorBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -149,32 +149,32 @@
   v12[3] = &unk_10003CC20;
   v15 = &v16;
   v12[4] = self;
-  v9 = v6;
+  v9 = blockCopy;
   v13 = v9;
-  v10 = v7;
+  v10 = completionBlockCopy;
   v14 = v10;
   [(GEOSQLiteDB *)db executeSync:v12];
-  LOBYTE(v6) = *(v17 + 24);
+  LOBYTE(blockCopy) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return blockCopy;
 }
 
-- (void)_writeDailySettingsElem:(id)a3
+- (void)_writeDailySettingsElem:(id)elem
 {
-  v4 = a3;
-  v5 = [(GEOSQLiteDB *)self->_db isolationQueue];
-  dispatch_assert_queue_V2(v5);
+  elemCopy = elem;
+  isolationQueue = [(GEOSQLiteDB *)self->_db isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
-  v6 = [v4 createTime];
-  [v6 timeIntervalSinceReferenceDate];
+  createTime = [elemCopy createTime];
+  [createTime timeIntervalSinceReferenceDate];
   v8 = v7;
 
   db = self->_db;
-  v10 = [v4 settings];
-  v11 = [v10 data];
+  settings = [elemCopy settings];
+  data = [settings data];
   v12 = db;
-  v13 = v11;
+  v13 = data;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -213,10 +213,10 @@
   }
 }
 
-- (BOOL)selectDailyCountsWithVisitorBlock:(id)a3 completionBlock:(id)a4
+- (BOOL)selectDailyCountsWithVisitorBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -228,37 +228,37 @@
   v12[3] = &unk_10003CC20;
   v15 = &v16;
   v12[4] = self;
-  v9 = v6;
+  v9 = blockCopy;
   v13 = v9;
-  v10 = v7;
+  v10 = completionBlockCopy;
   v14 = v10;
   [(GEOSQLiteDB *)db executeSync:v12];
-  LOBYTE(v6) = *(v17 + 24);
+  LOBYTE(blockCopy) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return blockCopy;
 }
 
-- (void)_writeDailyCountElem:(id)a3
+- (void)_writeDailyCountElem:(id)elem
 {
-  v4 = a3;
-  v5 = [(GEOSQLiteDB *)self->_db isolationQueue];
-  dispatch_assert_queue_V2(v5);
+  elemCopy = elem;
+  isolationQueue = [(GEOSQLiteDB *)self->_db isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
-  v6 = [v4 createTime];
-  [v6 timeIntervalSinceReferenceDate];
+  createTime = [elemCopy createTime];
+  [createTime timeIntervalSinceReferenceDate];
   v8 = v7;
 
-  v9 = [v4 usageBool];
-  v10 = [(GEOAPDB *)self usageBoolString:v9];
+  usageBool = [elemCopy usageBool];
+  v10 = [(GEOAPDB *)self usageBoolString:usageBool];
 
   db = self->_db;
-  LODWORD(self) = [v4 countType];
-  v12 = [v4 appId];
-  v13 = [v4 usageString];
+  LODWORD(self) = [elemCopy countType];
+  appId = [elemCopy appId];
+  usageString = [elemCopy usageString];
   v14 = db;
-  v15 = v12;
-  v16 = v13;
+  v15 = appId;
+  v16 = usageString;
   v17 = v10;
   v27 = 0;
   v28 = &v27;
@@ -271,7 +271,7 @@
   v34 = sub_10000FE50;
   v35 = &unk_10003CE10;
   v18 = v14;
-  v42 = self;
+  selfCopy = self;
   v36 = v18;
   v40 = &v27;
   v41 = v8;
@@ -303,11 +303,11 @@
   }
 }
 
-- (id)usageBoolNumber:(id)a3
+- (id)usageBoolNumber:(id)number
 {
-  if (a3)
+  if (number)
   {
-    v4 = [a3 isEqualToString:@"Y"];
+    v4 = [number isEqualToString:@"Y"];
     v5 = &__kCFBooleanFalse;
     if (v4)
     {
@@ -325,13 +325,13 @@
   return v6;
 }
 
-- (id)usageBoolString:(id)a3
+- (id)usageBoolString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [a3 BOOLValue];
+    bOOLValue = [string BOOLValue];
     v5 = @"N";
-    if (v4)
+    if (bOOLValue)
     {
       v5 = @"Y";
     }
@@ -366,10 +366,10 @@
   return v3;
 }
 
-- (BOOL)selectLogMsgsForBatchUploadWithBatchId:(unint64_t)a3 visitorBlock:(id)a4 completionBlock:(id)a5
+- (BOOL)selectLogMsgsForBatchUploadWithBatchId:(unint64_t)id visitorBlock:(id)block completionBlock:(id)completionBlock
 {
-  v8 = a4;
-  v9 = a5;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -380,11 +380,11 @@
   v14[2] = sub_1000102B0;
   v14[3] = &unk_10003CBA8;
   v17 = &v19;
-  v18 = a3;
+  idCopy = id;
   v14[4] = self;
-  v11 = v8;
+  v11 = blockCopy;
   v15 = v11;
-  v12 = v9;
+  v12 = completionBlockCopy;
   v16 = v12;
   [(GEOSQLiteDB *)db executeSync:v14];
   LOBYTE(self) = *(v20 + 24);
@@ -412,25 +412,25 @@
   return v3;
 }
 
-- (void)_writeLogMsgQueueElem:(id)a3
+- (void)_writeLogMsgQueueElem:(id)elem
 {
-  v4 = a3;
-  v5 = [(GEOSQLiteDB *)self->_db isolationQueue];
-  dispatch_assert_queue_V2(v5);
+  elemCopy = elem;
+  isolationQueue = [(GEOSQLiteDB *)self->_db isolationQueue];
+  dispatch_assert_queue_V2(isolationQueue);
 
-  v6 = [v4 createTime];
-  [v6 timeIntervalSinceReferenceDate];
+  createTime = [elemCopy createTime];
+  [createTime timeIntervalSinceReferenceDate];
   v8 = v7;
 
-  v9 = [v4 expireTime];
-  [v9 timeIntervalSinceReferenceDate];
+  expireTime = [elemCopy expireTime];
+  [expireTime timeIntervalSinceReferenceDate];
   v11 = v10;
 
   db = self->_db;
-  v13 = [v4 uploadBatchId];
-  v14 = [v4 logMsg];
+  uploadBatchId = [elemCopy uploadBatchId];
+  logMsg = [elemCopy logMsg];
   v15 = db;
-  v16 = v14;
+  v16 = logMsg;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -446,7 +446,7 @@
   v47 = &v36;
   v48 = v11;
   v49 = v8;
-  v50 = v13;
+  v50 = uploadBatchId;
   v18 = v16;
   v46 = v18;
   v19 = [(GEOSQLiteDB *)v17 executeStatement:@"InsertAnalytic" statementBlock:&buf];
@@ -473,10 +473,10 @@
   if (self->_shadowEnabled)
   {
     v24 = self->_db;
-    v25 = [v4 uploadBatchId];
-    v26 = [v4 logMsg];
+    uploadBatchId2 = [elemCopy uploadBatchId];
+    logMsg2 = [elemCopy logMsg];
     v27 = v24;
-    v28 = v26;
+    v28 = logMsg2;
     v36 = 0;
     v37 = &v36;
     v38 = 0x3032000000;
@@ -492,7 +492,7 @@
     v45 = v29;
     v47 = &v36;
     v49 = 1;
-    v50 = v25;
+    v50 = uploadBatchId2;
     v30 = v28;
     v46 = v30;
     v31 = [(GEOSQLiteDB *)v29 executeStatement:@"InsertShadowAnalytic" statementBlock:&buf];
@@ -539,7 +539,7 @@
   _GEOConfigRemoveValueSync();
 }
 
-- (void)clearExpiredLogMsgsWithResultBlock:(id)a3
+- (void)clearExpiredLogMsgsWithResultBlock:(id)block
 {
   db = self->_db;
   v4[0] = _NSConcreteStackBlock;
@@ -550,10 +550,10 @@
   [(GEOSQLiteDB *)db executeSync:v4];
 }
 
-- (void)storeLogMsgElems:(id)a3
+- (void)storeLogMsgElems:(id)elems
 {
-  v4 = a3;
-  if ([v4 count])
+  elemsCopy = elems;
+  if ([elemsCopy count])
   {
     v5 = GeoAnalyticsConfig_AnalyticsPipelineMaxPersist[1];
     Integer = GEOConfigGetInteger();
@@ -564,7 +564,7 @@
     v8[3] = &unk_10003CAE0;
     v8[4] = self;
     v10 = Integer;
-    v9 = v4;
+    v9 = elemsCopy;
     [(GEOSQLiteDB *)db executeSync:v8];
   }
 }
@@ -588,17 +588,17 @@
   [(GEOAPDB *)&v3 dealloc];
 }
 
-- (BOOL)_setup:(id)a3
+- (BOOL)_setup:(id)_setup
 {
-  v3 = a3;
-  if ([v3 user_version] != 11)
+  _setupCopy = _setup;
+  if ([_setupCopy user_version] != 11)
   {
-    [v3 dropAllTables];
+    [_setupCopy dropAllTables];
   }
 
-  [v3 setUser_version:11];
+  [_setupCopy setUser_version:11];
   v4 = sub_1000014A0();
-  v5 = v3;
+  v5 = _setupCopy;
   if ([v5 createTable:"CREATE TABLE IF NOT EXISTS Analytics(   rowid INTEGER PRIMARY KEY NOT NULL withDrop:{expiretime INT NOT NULL, createtime INT NOT NULL, batchid INT NOT NULL, analytic BLOB NOT NULL   );", 0}] && objc_msgSend(v5, "createTable:withDrop:", "CREATE TABLE IF NOT EXISTS Shadow(   createtime REAL NOT NULL,    type INT NOT NULL,    batchid INT NOT NULL,    analytic BLOB NOT NULL   );", 0) && objc_msgSend(v5, "createTable:withDrop:", "CREATE TABLE IF NOT EXISTS DailyCounts(   rowid INTEGER PRIMARY KEY NOT NULL,    type INT NOT NULL,    createtime INT NOT NULL,    appid TEXT,    usagestring TEXT,    usageBOOL TEXT   );", 0) && objc_msgSend(v5, "createTable:withDrop:", "CREATE TABLE IF NOT EXISTS DailySettings(   rowid INTEGER PRIMARY KEY NOT NULL,    settings BLOB NOT NULL,    createtime INT NOT NULL   );", 0) && objc_msgSend(v5, "prepareStatement:forKey:", "INSERT OR REPLACE INTO Analytics    (expiretime, createtime, batchid, analytic)    VALUES (@expiretime, @createtime, @batchid, @analytic);", @"InsertAnalytic") && objc_msgSend(v5, "prepareStatement:forKey:", "SELECT batchid,    MIN(createtime) AS minCreateTime    FROM Analytics    GROUP BY batchid;", @"SelectAnalyticBatchIdsForUpload") && objc_msgSend(v5, "prepareStatement:forKey:", "SELECT rowid, expiretime, createtime, batchid, analytic    FROM Analytics    WHERE batchid = @batchid;", @"SelectAnalyticWithBatchId") && objc_msgSend(v5, "prepareStatement:forKey:", "DELETE FROM Analytics    WHERE expiretime <= @expiretime;", @"DeleteAllExpiredAnalytics") && objc_msgSend(v5, "prepareStatement:forKey:", "DELETE FROM Analytics    WHERE rowid = @rowid;", @"DeleteOneAnalytic") && objc_msgSend(v5, "prepareStatement:forKey:", "SELECT COUNT(*)    FROM Analytics;", @"CountAnalytics") && objc_msgSend(v5, "prepareStatement:forKey:", "INSERT OR REPLACE INTO Shadow    (createtime, type, batchid, analytic)    VALUES (@createtime, @type, @batchid, @analytic);", @"InsertShadowAnalytic") && objc_msgSend(v5, "prepareStatement:forKey:", "SELECT createtime, type, batchid, analytic    FROM Shadow    ORDER BY createtime ASC;", @"SelectAllShadowAnalytics") && objc_msgSend(v5, "prepareStatement:forKey:", "DELETE FROM Shadow;", @"DeleteShadowAnalytics") && objc_msgSend(v5, "prepareStatement:forKey:", "INSERT OR REPLACE INTO DailyCounts    (type, createtime, appid, usagestring, usageBOOL)    VALUES (@type, @createtime, @appid, @usagestring, @usageBOOL);", @"InsertDailyCount") && objc_msgSend(v5, "prepareStatement:forKey:", "SELECT rowid, type, appid, usagestring, usageBOOL, createtime    FROM DailyCounts    ORDER BY createtime ASC;", @"SelectDailyCounts") && objc_msgSend(v5, "prepareStatement:forKey:", "DELETE FROM DailyCounts    WHERE rowid = @rowid;", @"DeleteOneDailyCount") && objc_msgSend(v5, "prepareStatement:forKey:", "DELETE FROM DailyCounts;", @"DeleteAllDailyCount") && objc_msgSend(v5, "prepareStatement:forKey:", "INSERT OR REPLACE INTO DailySettings    (settings, createtime)    VALUES (@settings, @createtime);", @"InsertDailySetting") && objc_msgSend(v5, "prepareStatement:forKey:", "SELECT rowid, settings, createtime    FROM DailySettings    ORDER BY createtime ASC;", @"SelectDailySettings") && objc_msgSend(v5, "prepareStatement:forKey:", "DELETE FROM DailySettings    WHERE rowid = @rowid;", @"DeleteOneDailySettings"))
   {
     v6 = [v5 prepareStatement:"DELETE FROM DailySettings;" forKey:@"DeleteAllDailySettings"];
@@ -647,9 +647,9 @@
   objc_destroyWeak(&location);
 }
 
-- (GEOAPDB)initWithDBFilePath:(id)a3
+- (GEOAPDB)initWithDBFilePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = GEOAPDB;
   v6 = [(GEOAPDB *)&v9 init];
@@ -657,7 +657,7 @@
   {
     v7 = GeoAnalyticsConfig_AnalyticsPipelineEvalModeEnabled[1];
     v6->_shadowEnabled = GEOConfigGetBOOL();
-    objc_storeStrong(&v6->_dbFilePath, a3);
+    objc_storeStrong(&v6->_dbFilePath, path);
     [(GEOAPDB *)v6 _configureDatabase];
   }
 
@@ -673,17 +673,17 @@
   return v5;
 }
 
-- (void)showEvalDataWithVisitorBlock:(id)a3
+- (void)showEvalDataWithVisitorBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   db = self->_db;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100012018;
   v7[3] = &unk_10003CCC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(GEOSQLiteDB *)db executeSync:v7];
 }
 
@@ -698,7 +698,7 @@
   [(GEOSQLiteDB *)db executeSync:v3];
 }
 
-- (void)setEvalMode:(BOOL)a3
+- (void)setEvalMode:(BOOL)mode
 {
   db = self->_db;
   v4[0] = _NSConcreteStackBlock;
@@ -706,14 +706,14 @@
   v4[2] = sub_100012468;
   v4[3] = &unk_10003CC70;
   v4[4] = self;
-  v5 = a3;
+  modeCopy = mode;
   [(GEOSQLiteDB *)db executeSync:v4];
 }
 
-- (unint64_t)_sessionHolddownDurationForSessionType:(int)a3
+- (unint64_t)_sessionHolddownDurationForSessionType:(int)type
 {
-  v3 = a3 - 2;
-  if ((a3 - 2) > 0x12 || ((0x6EFFFu >> v3) & 1) == 0)
+  v3 = type - 2;
+  if ((type - 2) > 0x12 || ((0x6EFFFu >> v3) & 1) == 0)
   {
     return 0;
   }

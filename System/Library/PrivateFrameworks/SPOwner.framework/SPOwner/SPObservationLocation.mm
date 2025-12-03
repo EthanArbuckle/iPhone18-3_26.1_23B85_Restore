@@ -1,17 +1,17 @@
 @interface SPObservationLocation
-- (SPObservationLocation)initWithCoder:(id)a3;
-- (SPObservationLocation)initWithTimestamp:(id)a3 latitude:(double)a4 longitude:(double)a5 horizontalAccuracy:(double)a6 altitude:(double)a7 verticalAccuracy:(double)a8 speed:(double)a9 speedAccuracy:(double)a10 course:(double)a11 courseAccuracy:(double)a12 floorLevel:(id)a13;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SPObservationLocation)initWithCoder:(id)coder;
+- (SPObservationLocation)initWithTimestamp:(id)timestamp latitude:(double)latitude longitude:(double)longitude horizontalAccuracy:(double)accuracy altitude:(double)altitude verticalAccuracy:(double)verticalAccuracy speed:(double)speed speedAccuracy:(double)self0 course:(double)self1 courseAccuracy:(double)self2 floorLevel:(id)self3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPObservationLocation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPObservationLocation alloc];
-  v5 = [(SPObservationLocation *)self timestamp];
+  timestamp = [(SPObservationLocation *)self timestamp];
   [(SPObservationLocation *)self latitude];
   v26 = v6;
   [(SPObservationLocation *)self longitude];
@@ -30,81 +30,81 @@
   v20 = v19;
   [(SPObservationLocation *)self courseAccuracy];
   v22 = v21;
-  v23 = [(SPObservationLocation *)self floorLevel];
-  v24 = [(SPObservationLocation *)v4 initWithTimestamp:v5 latitude:v23 longitude:v26 horizontalAccuracy:v8 altitude:v10 verticalAccuracy:v12 speed:v14 speedAccuracy:v16 course:v18 courseAccuracy:v20 floorLevel:v22];
+  floorLevel = [(SPObservationLocation *)self floorLevel];
+  v24 = [(SPObservationLocation *)v4 initWithTimestamp:timestamp latitude:floorLevel longitude:v26 horizontalAccuracy:v8 altitude:v10 verticalAccuracy:v12 speed:v14 speedAccuracy:v16 course:v18 courseAccuracy:v20 floorLevel:v22];
 
   return v24;
 }
 
-- (SPObservationLocation)initWithTimestamp:(id)a3 latitude:(double)a4 longitude:(double)a5 horizontalAccuracy:(double)a6 altitude:(double)a7 verticalAccuracy:(double)a8 speed:(double)a9 speedAccuracy:(double)a10 course:(double)a11 courseAccuracy:(double)a12 floorLevel:(id)a13
+- (SPObservationLocation)initWithTimestamp:(id)timestamp latitude:(double)latitude longitude:(double)longitude horizontalAccuracy:(double)accuracy altitude:(double)altitude verticalAccuracy:(double)verticalAccuracy speed:(double)speed speedAccuracy:(double)self0 course:(double)self1 courseAccuracy:(double)self2 floorLevel:(id)self3
 {
-  v24 = a3;
-  v25 = a13;
+  timestampCopy = timestamp;
+  levelCopy = level;
   v29.receiver = self;
   v29.super_class = SPObservationLocation;
   v26 = [(SPObservationLocation *)&v29 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_timestamp, a3);
-    v27->_latitude = a4;
-    v27->_longitude = a5;
-    v27->_horizontalAccuracy = a6;
-    v27->_altitude = a7;
-    v27->_verticalAccuracy = a8;
-    v27->_speed = a9;
-    v27->_speedAccuracy = a10;
-    v27->_course = a11;
-    v27->_courseAccuracy = a12;
-    objc_storeStrong(&v27->_floorLevel, a13);
+    objc_storeStrong(&v26->_timestamp, timestamp);
+    v27->_latitude = latitude;
+    v27->_longitude = longitude;
+    v27->_horizontalAccuracy = accuracy;
+    v27->_altitude = altitude;
+    v27->_verticalAccuracy = verticalAccuracy;
+    v27->_speed = speed;
+    v27->_speedAccuracy = speedAccuracy;
+    v27->_course = course;
+    v27->_courseAccuracy = courseAccuracy;
+    objc_storeStrong(&v27->_floorLevel, level);
   }
 
   return v27;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeObject:timestamp forKey:@"timestamp"];
-  [v5 encodeDouble:@"latitude" forKey:self->_latitude];
-  [v5 encodeDouble:@"longitude" forKey:self->_longitude];
-  [v5 encodeDouble:@"horizontalAccuracy" forKey:self->_horizontalAccuracy];
-  [v5 encodeDouble:@"altitude" forKey:self->_altitude];
-  [v5 encodeDouble:@"verticalAccuracy" forKey:self->_verticalAccuracy];
-  [v5 encodeDouble:@"speed" forKey:self->_speed];
-  [v5 encodeDouble:@"speedAccuracy" forKey:self->_speedAccuracy];
-  [v5 encodeDouble:@"course" forKey:self->_course];
-  [v5 encodeDouble:@"courseAccuracy" forKey:self->_courseAccuracy];
-  [v5 encodeObject:self->_floorLevel forKey:@"floorLevel"];
+  coderCopy = coder;
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
+  [coderCopy encodeDouble:@"latitude" forKey:self->_latitude];
+  [coderCopy encodeDouble:@"longitude" forKey:self->_longitude];
+  [coderCopy encodeDouble:@"horizontalAccuracy" forKey:self->_horizontalAccuracy];
+  [coderCopy encodeDouble:@"altitude" forKey:self->_altitude];
+  [coderCopy encodeDouble:@"verticalAccuracy" forKey:self->_verticalAccuracy];
+  [coderCopy encodeDouble:@"speed" forKey:self->_speed];
+  [coderCopy encodeDouble:@"speedAccuracy" forKey:self->_speedAccuracy];
+  [coderCopy encodeDouble:@"course" forKey:self->_course];
+  [coderCopy encodeDouble:@"courseAccuracy" forKey:self->_courseAccuracy];
+  [coderCopy encodeObject:self->_floorLevel forKey:@"floorLevel"];
 }
 
-- (SPObservationLocation)initWithCoder:(id)a3
+- (SPObservationLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
   timestamp = self->_timestamp;
   self->_timestamp = v5;
 
-  [v4 decodeDoubleForKey:@"latitude"];
+  [coderCopy decodeDoubleForKey:@"latitude"];
   self->_latitude = v7;
-  [v4 decodeDoubleForKey:@"longitude"];
+  [coderCopy decodeDoubleForKey:@"longitude"];
   self->_longitude = v8;
-  [v4 decodeDoubleForKey:@"horizontalAccuracy"];
+  [coderCopy decodeDoubleForKey:@"horizontalAccuracy"];
   self->_horizontalAccuracy = v9;
-  [v4 decodeDoubleForKey:@"altitude"];
+  [coderCopy decodeDoubleForKey:@"altitude"];
   self->_altitude = v10;
-  [v4 decodeDoubleForKey:@"verticalAccuracy"];
+  [coderCopy decodeDoubleForKey:@"verticalAccuracy"];
   self->_verticalAccuracy = v11;
-  [v4 decodeDoubleForKey:@"speed"];
+  [coderCopy decodeDoubleForKey:@"speed"];
   self->_speed = v12;
-  [v4 decodeDoubleForKey:@"speedAccuracy"];
+  [coderCopy decodeDoubleForKey:@"speedAccuracy"];
   self->_speedAccuracy = v13;
-  [v4 decodeDoubleForKey:@"course"];
+  [coderCopy decodeDoubleForKey:@"course"];
   self->_course = v14;
-  [v4 decodeDoubleForKey:@"courseAccuracy"];
+  [coderCopy decodeDoubleForKey:@"courseAccuracy"];
   self->_courseAccuracy = v15;
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"floorLevel"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"floorLevel"];
 
   floorLevel = self->_floorLevel;
   self->_floorLevel = v16;
@@ -133,9 +133,9 @@
   v18 = v17;
   [(SPObservationLocation *)self courseAccuracy];
   v20 = v19;
-  v21 = [(SPObservationLocation *)self floorLevel];
-  v22 = [(SPObservationLocation *)self timestamp];
-  v23 = [v3 stringWithFormat:@"SPObservationLocation Latitude: %f Longitude: %f hAcc: %f alt: %f(acc:%f) speed: %f(acc:%f) course: %f(acc:%f) floor: %@ %@", v25, v6, v8, v10, v12, v14, v16, v18, v20, v21, v22];
+  floorLevel = [(SPObservationLocation *)self floorLevel];
+  timestamp = [(SPObservationLocation *)self timestamp];
+  v23 = [v3 stringWithFormat:@"SPObservationLocation Latitude: %f Longitude: %f hAcc: %f alt: %f(acc:%f) speed: %f(acc:%f) course: %f(acc:%f) floor: %@ %@", v25, v6, v8, v10, v12, v14, v16, v18, v20, floorLevel, timestamp];
 
   return v23;
 }

@@ -1,26 +1,26 @@
 @interface PKPeerPaymentRecurringPaymentMemoCell
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPeerPaymentRecurringPaymentMemoCell)initWithFrame:(CGRect)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPeerPaymentRecurringPaymentMemoCell)initWithFrame:(CGRect)frame;
 - (PKPeerPaymentRecurringPaymentMemoCellDelegate)delegate;
 - (void)layoutSubviews;
-- (void)setItem:(id)a3;
+- (void)setItem:(id)item;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentMemoCell
 
-- (PKPeerPaymentRecurringPaymentMemoCell)initWithFrame:(CGRect)a3
+- (PKPeerPaymentRecurringPaymentMemoCell)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = PKPeerPaymentRecurringPaymentMemoCell;
-  v3 = [(PKPeerPaymentRecurringPaymentMemoCell *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPeerPaymentRecurringPaymentMemoCell *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
     v4 = MEMORY[0x1E69DC738];
-    v5 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
     v6 = MEMORY[0x1E69DC628];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
@@ -28,12 +28,12 @@
     v20 = &unk_1E8010A60;
     objc_copyWeak(&v21, &location);
     v7 = [v6 actionWithHandler:&v17];
-    v8 = [v4 buttonWithConfiguration:v5 primaryAction:{v7, v17, v18, v19, v20}];
+    v8 = [v4 buttonWithConfiguration:plainButtonConfiguration primaryAction:{v7, v17, v18, v19, v20}];
     iconButton = v3->_iconButton;
     v3->_iconButton = v8;
 
-    v10 = [(PKPeerPaymentRecurringPaymentMemoCell *)v3 contentView];
-    [v10 addSubview:v3->_iconButton];
+    contentView = [(PKPeerPaymentRecurringPaymentMemoCell *)v3 contentView];
+    [contentView addSubview:v3->_iconButton];
 
     v11 = objc_alloc_init(MEMORY[0x1E69DD0B0]);
     textField = v3->_textField;
@@ -47,8 +47,8 @@
     [(UITextField *)v13 setFont:v14];
 
     [(UITextField *)v3->_textField setAccessibilityIdentifier:*MEMORY[0x1E69B9938]];
-    v15 = [(PKPeerPaymentRecurringPaymentMemoCell *)v3 contentView];
-    [v15 addSubview:v3->_textField];
+    contentView2 = [(PKPeerPaymentRecurringPaymentMemoCell *)v3 contentView];
+    [contentView2 addSubview:v3->_textField];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -76,8 +76,8 @@ void __55__PKPeerPaymentRecurringPaymentMemoCell_initWithFrame___block_invoke(ui
   v12.receiver = self;
   v12.super_class = PKPeerPaymentRecurringPaymentMemoCell;
   [(PKPeerPaymentRecurringPaymentMemoCell *)&v12 layoutSubviews];
-  v3 = [(PKPeerPaymentRecurringPaymentMemoCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKPeerPaymentRecurringPaymentMemoCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -86,12 +86,12 @@ void __55__PKPeerPaymentRecurringPaymentMemoCell_initWithFrame___block_invoke(ui
   [(PKPeerPaymentRecurringPaymentMemoCell *)self _layoutWithBounds:v5, v7, v9, v11];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (_UISolariumFeatureFlagEnabled())
   {
     v8 = 38.0;
@@ -190,21 +190,21 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPeerPaymentRecurringPaymentMemoCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKPeerPaymentRecurringPaymentMemoCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v35 = a3;
-  objc_storeStrong(&self->_item, a3);
-  v5 = [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item memo];
-  v6 = [(UIButton *)self->_iconButton configuration];
-  v7 = [v6 background];
+  itemCopy = item;
+  objc_storeStrong(&self->_item, item);
+  memo = [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item memo];
+  configuration = [(UIButton *)self->_iconButton configuration];
+  background = [configuration background];
   if (_UISolariumFeatureFlagEnabled())
   {
     v8 = 10.0;
@@ -225,12 +225,12 @@ LABEL_8:
     v9 = 45.0;
   }
 
-  [v7 setCornerRadius:v8];
+  [background setCornerRadius:v8];
   if ([(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item hasIcon])
   {
-    [v7 setImage:0];
-    v10 = PKPeerPaymentMessageColorFromSemanticColor([v5 color]);
-    [v7 setBackgroundColor:v10];
+    [background setImage:0];
+    v10 = PKPeerPaymentMessageColorFromSemanticColor([memo color]);
+    [background setBackgroundColor:v10];
 
     if (!self->_emojiLabel)
     {
@@ -251,29 +251,29 @@ LABEL_8:
   {
     v15 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:v9 * 0.6];
     v16 = MEMORY[0x1E69DCAD8];
-    v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v18 = [v16 configurationWithHierarchicalColor:v17];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v18 = [v16 configurationWithHierarchicalColor:secondaryLabelColor];
     v19 = [v15 configurationByApplyingConfiguration:v18];
 
     v20 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"plus" withConfiguration:v19];
-    [v7 setImage:v20];
-    [v7 setImageContentMode:4];
-    v21 = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
-    [v7 setBackgroundColor:v21];
+    [background setImage:v20];
+    [background setImageContentMode:4];
+    tertiarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
+    [background setBackgroundColor:tertiarySystemGroupedBackgroundColor];
   }
 
-  [(UIButton *)self->_iconButton setConfiguration:v6];
+  [(UIButton *)self->_iconButton setConfiguration:configuration];
   v22 = self->_emojiLabel;
-  v23 = [v5 emoji];
-  [(UILabel *)v22 setText:v23];
+  emoji = [memo emoji];
+  [(UILabel *)v22 setText:emoji];
 
-  v24 = [v5 text];
-  v25 = [v24 length];
+  text = [memo text];
+  v25 = [text length];
 
   textField = self->_textField;
   if (v25)
   {
-    [v5 text];
+    [memo text];
   }
 
   else
@@ -283,10 +283,10 @@ LABEL_8:
   v27 = ;
   [(UITextField *)textField setText:v27];
 
-  v28 = [(PKPeerPaymentRecurringPaymentDetailRowItem *)self->_item isEditable];
-  [(UIButton *)self->_iconButton setUserInteractionEnabled:v28];
-  [(UITextField *)self->_textField setUserInteractionEnabled:v28];
-  if (v28)
+  isEditable = [(PKPeerPaymentRecurringPaymentDetailRowItem *)self->_item isEditable];
+  [(UIButton *)self->_iconButton setUserInteractionEnabled:isEditable];
+  [(UITextField *)self->_textField setUserInteractionEnabled:isEditable];
+  if (isEditable)
   {
     v29 = @"DETAILS_MEMO_TEXT_PLACEHOLDER_EDITING";
   }
@@ -300,7 +300,7 @@ LABEL_8:
   v31 = PKLocalizedPeerPaymentRecurringString(&v29->isa);
   [(UITextField *)v30 setPlaceholder:v31];
 
-  if ([v35 overrideUserInterfaceStyle] == 2)
+  if ([itemCopy overrideUserInterfaceStyle] == 2)
   {
     v32 = +[PKPeerPaymentTheme primaryTextColor];
   }
@@ -312,17 +312,17 @@ LABEL_8:
 
   [(UITextField *)self->_textField setTintColor:v32];
   v33 = self->_textField;
-  v34 = [v35 titleColor];
-  [(UITextField *)v33 setTextColor:v34];
+  titleColor = [itemCopy titleColor];
+  [(UITextField *)v33 setTextColor:titleColor];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = [a3 text];
-  v11 = [v10 stringByReplacingCharactersInRange:location withString:{length, v9}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  text = [field text];
+  v11 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   v12 = [v11 length];
   if (v12 <= 0x24)
@@ -334,7 +334,7 @@ LABEL_8:
   return v12 < 0x25;
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained memoTextWasUpdated:0];

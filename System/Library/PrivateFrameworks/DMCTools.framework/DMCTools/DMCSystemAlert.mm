@@ -1,18 +1,18 @@
 @interface DMCSystemAlert
 - (NSString)description;
 - (id)completionBlock;
-- (id)notificationParametersOutFlags:(unint64_t *)a3;
-- (void)setCompletionBlock:(id)a3;
-- (void)setNotification:(__CFUserNotification *)a3;
+- (id)notificationParametersOutFlags:(unint64_t *)flags;
+- (void)setCompletionBlock:(id)block;
+- (void)setNotification:(__CFUserNotification *)notification;
 @end
 
 @implementation DMCSystemAlert
 
-- (void)setNotification:(__CFUserNotification *)a3
+- (void)setNotification:(__CFUserNotification *)notification
 {
   v4 = *(self + OBJC_IVAR___DMCSystemAlert_notification);
-  *(self + OBJC_IVAR___DMCSystemAlert_notification) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___DMCSystemAlert_notification) = notification;
+  notificationCopy = notification;
 }
 
 - (id)completionBlock
@@ -37,9 +37,9 @@
   return v3;
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = v4;
@@ -58,13 +58,13 @@
   v9 = *(self + OBJC_IVAR___DMCSystemAlert_completionBlock + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_247F081EC(v8);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   DMCSystemAlert.description.getter();
 
   v3 = sub_247F23EFC();
@@ -72,10 +72,10 @@
   return v3;
 }
 
-- (id)notificationParametersOutFlags:(unint64_t *)a3
+- (id)notificationParametersOutFlags:(unint64_t *)flags
 {
-  v4 = self;
-  DMCSystemAlert.notificationParametersOutFlags(_:)(a3);
+  selfCopy = self;
+  DMCSystemAlert.notificationParametersOutFlags(_:)(flags);
 
   v5 = sub_247F23E9C();
 

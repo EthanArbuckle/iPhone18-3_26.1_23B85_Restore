@@ -1,32 +1,32 @@
 @interface PXRoundedCornerOverlayView
 - (PXFocusInfo)focusInfo;
-- (PXRoundedCornerOverlayView)initWithFrame:(CGRect)a3;
+- (PXRoundedCornerOverlayView)initWithFrame:(CGRect)frame;
 - (void)_setNeedsUpdate;
 - (void)_updateIfNeeded;
 - (void)_updateImageIfNeeded;
-- (void)performChanges:(id)a3;
-- (void)setContinuousCorners:(BOOL)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setCornersToRound:(unint64_t)a3;
-- (void)setDisplayScale:(double)a3;
-- (void)setOverlayColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setContinuousCorners:(BOOL)corners;
+- (void)setCornerRadius:(double)radius;
+- (void)setCornersToRound:(unint64_t)round;
+- (void)setDisplayScale:(double)scale;
+- (void)setOverlayColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXRoundedCornerOverlayView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = PXRoundedCornerOverlayView;
-  [(PXRoundedCornerOverlayView *)&v10 traitCollectionDidChange:v4];
-  v5 = [(PXRoundedCornerOverlayView *)self image];
-  if (v5)
+  [(PXRoundedCornerOverlayView *)&v10 traitCollectionDidChange:changeCopy];
+  image = [(PXRoundedCornerOverlayView *)self image];
+  if (image)
   {
-    v6 = v5;
-    v7 = [(PXRoundedCornerOverlayView *)self traitCollection];
-    v8 = [v7 hasDifferentColorAppearanceComparedToTraitCollection:v4];
+    v6 = image;
+    traitCollection = [(PXRoundedCornerOverlayView *)self traitCollection];
+    v8 = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
     if (v8)
     {
@@ -53,25 +53,25 @@
     v8 = v7;
     [(PXRoundedCornerOverlayView *)self cornerRadius];
     v10 = v9;
-    v11 = [(PXRoundedCornerOverlayView *)self continuousCorners];
-    v12 = [(PXRoundedCornerOverlayView *)self overlayColor];
-    v13 = [(PXRoundedCornerOverlayView *)self cornersToRound];
+    continuousCorners = [(PXRoundedCornerOverlayView *)self continuousCorners];
+    overlayColor = [(PXRoundedCornerOverlayView *)self overlayColor];
+    cornersToRound = [(PXRoundedCornerOverlayView *)self cornersToRound];
     v14 = MEMORY[0x1E696AEC0];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = [v14 stringWithFormat:@"%@-%.2f-%.2f-%@-%lu", v16, v8, v10, objc_msgSend(v12, "CGColor"), v13];
+    v17 = [v14 stringWithFormat:@"%@-%.2f-%.2f-%@-%lu", v16, v8, v10, objc_msgSend(overlayColor, "CGColor"), cornersToRound];
 
     v18 = MEMORY[0x1E69DCAB8];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __50__PXRoundedCornerOverlayView__updateImageIfNeeded__block_invoke;
     v21[3] = &unk_1E7730B98;
-    v26 = v11;
+    v26 = continuousCorners;
     v23 = v10;
     v24 = v8;
-    v22 = v12;
-    v25 = v13;
-    v19 = v12;
+    v22 = overlayColor;
+    v25 = cornersToRound;
+    v19 = overlayColor;
     v20 = [v18 _cachedImageForKey:v17 fromBlock:v21];
     [(PXRoundedCornerOverlayView *)self setImage:v20];
   }
@@ -81,8 +81,8 @@
 {
   if (!self->_isPerformingChanges && !self->_isPerformingUpdates)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXRoundedCornerOverlayView.m" lineNumber:132 description:@"not inside -performChanges: or _updateIfNeeded"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXRoundedCornerOverlayView.m" lineNumber:132 description:@"not inside -performChanges: or _updateIfNeeded"];
   }
 }
 
@@ -96,22 +96,22 @@
     self->_isPerformingUpdates = isPerformingUpdates;
     if ([(PXRoundedCornerOverlayView *)self _needsUpdate])
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"PXRoundedCornerOverlayView.m" lineNumber:122 description:@"update still needed after update pass"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXRoundedCornerOverlayView.m" lineNumber:122 description:@"update still needed after update pass"];
     }
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
-  v7 = v4;
-  if (v4)
+  v7 = changesCopy;
+  if (changesCopy)
   {
-    v6 = [(PXRoundedCornerOverlayView *)self mutableChangeObject];
-    v7[2](v7, v6);
+    mutableChangeObject = [(PXRoundedCornerOverlayView *)self mutableChangeObject];
+    v7[2](v7, mutableChangeObject);
   }
 
   self->_isPerformingChanges = isPerformingChanges;
@@ -140,59 +140,59 @@
   return v5;
 }
 
-- (void)setDisplayScale:(double)a3
+- (void)setDisplayScale:(double)scale
 {
-  if (self->_displayScale != a3)
+  if (self->_displayScale != scale)
   {
-    self->_displayScale = a3;
+    self->_displayScale = scale;
     [(PXRoundedCornerOverlayView *)self _invalidateImage];
   }
 }
 
-- (void)setOverlayColor:(id)a3
+- (void)setOverlayColor:(id)color
 {
-  v5 = a3;
-  if (self->_overlayColor != v5)
+  colorCopy = color;
+  if (self->_overlayColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_overlayColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_overlayColor, color);
     [(PXRoundedCornerOverlayView *)self _invalidateImage];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setContinuousCorners:(BOOL)a3
+- (void)setContinuousCorners:(BOOL)corners
 {
-  if (self->_continuousCorners != a3)
+  if (self->_continuousCorners != corners)
   {
-    self->_continuousCorners = a3;
-    [(PXRoundedCornerOverlayView *)self _invalidateImage];
-  }
-}
-
-- (void)setCornersToRound:(unint64_t)a3
-{
-  if (self->_cornersToRound != a3)
-  {
-    self->_cornersToRound = a3;
+    self->_continuousCorners = corners;
     [(PXRoundedCornerOverlayView *)self _invalidateImage];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornersToRound:(unint64_t)round
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornersToRound != round)
   {
-    self->_cornerRadius = a3;
+    self->_cornersToRound = round;
     [(PXRoundedCornerOverlayView *)self _invalidateImage];
   }
 }
 
-- (PXRoundedCornerOverlayView)initWithFrame:(CGRect)a3
+- (void)setCornerRadius:(double)radius
+{
+  if (self->_cornerRadius != radius)
+  {
+    self->_cornerRadius = radius;
+    [(PXRoundedCornerOverlayView *)self _invalidateImage];
+  }
+}
+
+- (PXRoundedCornerOverlayView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PXRoundedCornerOverlayView;
-  result = [(PXRoundedCornerOverlayView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(PXRoundedCornerOverlayView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_cornersToRound = -1;

@@ -3,9 +3,9 @@
 + (id)_rfc1123DateFormatter;
 - (ResourceLoader)init;
 - (double)_simulatedLatency;
-- (void)asynchronousDataFromURL:(id)a3 completionBlock:(id)a4;
+- (void)asynchronousDataFromURL:(id)l completionBlock:(id)block;
 - (void)flushCache;
-- (void)refreshCacheForRequest:(id)a3 usingCachedResponse:(id)a4 completionBlock:(id)a5;
+- (void)refreshCacheForRequest:(id)request usingCachedResponse:(id)response completionBlock:(id)block;
 @end
 
 @implementation ResourceLoader
@@ -42,8 +42,8 @@ void __39__ResourceLoader__rfc1123DateFormatter__block_invoke()
     v4 = _localDateFormatter_formatter;
     _localDateFormatter_formatter = v3;
 
-    v5 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [_localDateFormatter_formatter setTimeZone:v5];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [_localDateFormatter_formatter setTimeZone:systemTimeZone];
 
     [_localDateFormatter_formatter setDateStyle:1];
     [_localDateFormatter_formatter setTimeStyle:2];
@@ -60,7 +60,7 @@ void __39__ResourceLoader__rfc1123DateFormatter__block_invoke()
   v2 = [(ResourceLoader *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
     v4 = [&stru_285B72378 stringByAppendingPathComponent:@"DeviceImages"];
     v5 = [objc_alloc(MEMORY[0x277CCACD8]) initWithMemoryCapacity:0x400000 diskCapacity:52428800 diskPath:v4];
     [(ResourceLoader *)v2 setUrlCache:v5];
@@ -68,43 +68,43 @@ void __39__ResourceLoader__rfc1123DateFormatter__block_invoke()
     v6 = objc_alloc_init(MEMORY[0x277CCABD8]);
     [(ResourceLoader *)v2 setQueue:v6];
 
-    v7 = [(ResourceLoader *)v2 queue];
-    [v7 setQualityOfService:25];
+    queue = [(ResourceLoader *)v2 queue];
+    [queue setQualityOfService:25];
 
-    v8 = [(ResourceLoader *)v2 urlCache];
-    [v3 setURLCache:v8];
+    urlCache = [(ResourceLoader *)v2 urlCache];
+    [defaultSessionConfiguration setURLCache:urlCache];
 
     v9 = MEMORY[0x277CCAD30];
-    v10 = [(ResourceLoader *)v2 queue];
-    v11 = [v9 sessionWithConfiguration:v3 delegate:v2 delegateQueue:v10];
+    queue2 = [(ResourceLoader *)v2 queue];
+    v11 = [v9 sessionWithConfiguration:defaultSessionConfiguration delegate:v2 delegateQueue:queue2];
     [(ResourceLoader *)v2 setSession:v11];
   }
 
   return v2;
 }
 
-- (void)refreshCacheForRequest:(id)a3 usingCachedResponse:(id)a4 completionBlock:(id)a5
+- (void)refreshCacheForRequest:(id)request usingCachedResponse:(id)response completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  blockCopy = block;
   v10 = MEMORY[0x277CBEBD0];
-  v11 = a4;
-  v12 = [v10 standardUserDefaults];
-  v13 = [v12 BOOLForKey:@"verboseNetworking"];
+  responseCopy = response;
+  standardUserDefaults = [v10 standardUserDefaults];
+  v13 = [standardUserDefaults BOOLForKey:@"verboseNetworking"];
 
-  v14 = [v11 response];
+  response = [responseCopy response];
 
-  v15 = [v14 allHeaderFields];
+  allHeaderFields = [response allHeaderFields];
 
   v16 = MEMORY[0x277CCAB70];
-  v17 = [v8 URL];
-  [v8 timeoutInterval];
+  v17 = [requestCopy URL];
+  [requestCopy timeoutInterval];
   v18 = [v16 requestWithURL:v17 cachePolicy:0 timeoutInterval:?];
 
-  v19 = [v15 objectForKeyedSubscript:@"Last-Modified"];
-  v20 = [v15 objectForKeyedSubscript:@"Etag"];
+  v19 = [allHeaderFields objectForKeyedSubscript:@"Last-Modified"];
+  v20 = [allHeaderFields objectForKeyedSubscript:@"Etag"];
   v21 = v20;
-  if (v11 && v19 && v20)
+  if (responseCopy && v19 && v20)
   {
     [v18 setValue:v19 forHTTPHeaderField:@"If-Modified-Since"];
     [v18 setValue:v21 forHTTPHeaderField:@"If-None-Match"];
@@ -116,27 +116,27 @@ void __39__ResourceLoader__rfc1123DateFormatter__block_invoke()
     v23 = [v18 URL];
     v24 = [v22 stringWithFormat:@"%@ GET %@\n", self, v23];
 
-    v25 = [v8 allHTTPHeaderFields];
+    allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
 
-    if (v25)
+    if (allHTTPHeaderFields)
     {
-      v26 = [v8 allHTTPHeaderFields];
-      v27 = [v26 description];
+      allHTTPHeaderFields2 = [requestCopy allHTTPHeaderFields];
+      v27 = [allHTTPHeaderFields2 description];
       [v24 appendString:v27];
     }
   }
 
-  v28 = [(ResourceLoader *)self session];
+  session = [(ResourceLoader *)self session];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __77__ResourceLoader_refreshCacheForRequest_usingCachedResponse_completionBlock___block_invoke;
   v32[3] = &unk_278F66CC0;
   v32[4] = self;
   v33 = v18;
-  v34 = v9;
-  v29 = v9;
+  v34 = blockCopy;
+  v29 = blockCopy;
   v30 = v18;
-  v31 = [v28 dataTaskWithRequest:v30 completionHandler:v32];
+  v31 = [session dataTaskWithRequest:v30 completionHandler:v32];
 
   [v31 resume];
 }
@@ -207,19 +207,19 @@ void __77__ResourceLoader_refreshCacheForRequest_usingCachedResponse_completionB
   }
 }
 
-- (void)asynchronousDataFromURL:(id)a3 completionBlock:(id)a4
+- (void)asynchronousDataFromURL:(id)l completionBlock:(id)block
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 isFileURL])
+  lCopy = l;
+  blockCopy = block;
+  if (![lCopy isFileURL])
   {
-    v10 = [(ResourceLoader *)self urlCache];
-    v11 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v6 cachePolicy:0 timeoutInterval:120.0];
-    v12 = [v10 cachedResponseForRequest:v11];
-    v34 = [v12 response];
-    v13 = [v34 allHeaderFields];
-    v14 = [v13 objectForKeyedSubscript:@"Expires"];
+    urlCache = [(ResourceLoader *)self urlCache];
+    v11 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:lCopy cachePolicy:0 timeoutInterval:120.0];
+    v12 = [urlCache cachedResponseForRequest:v11];
+    response = [v12 response];
+    allHeaderFields = [response allHeaderFields];
+    v14 = [allHeaderFields objectForKeyedSubscript:@"Expires"];
     if ([v14 length])
     {
       v15 = +[ResourceLoader _rfc1123DateFormatter];
@@ -232,7 +232,7 @@ void __77__ResourceLoader_refreshCacheForRequest_usingCachedResponse_completionB
         v19 = v18;
         [v16 timeIntervalSinceReferenceDate];
         v21 = v19 > v20;
-        if (!v7)
+        if (!blockCopy)
         {
           goto LABEL_13;
         }
@@ -247,7 +247,7 @@ void __77__ResourceLoader_refreshCacheForRequest_usingCachedResponse_completionB
     }
 
     v21 = 1;
-    if (!v7)
+    if (!blockCopy)
     {
 LABEL_13:
 
@@ -256,34 +256,34 @@ LABEL_13:
 
 LABEL_9:
     v33 = v17;
-    v22 = [v12 data];
+    data = [v12 data];
 
-    if (v22)
+    if (data)
     {
       v39 = ResourceLoaderPayloadDataKey;
-      v23 = [v12 data];
-      v40 = v23;
+      data2 = [v12 data];
+      v40 = data2;
       [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-      v32 = v10;
+      v32 = urlCache;
       v24 = v12;
-      v25 = v13;
+      v25 = allHeaderFields;
       v26 = v14;
-      v27 = self;
+      selfCopy = self;
       v29 = v28 = v21;
 
-      v7[2](v7, v29, 1);
+      blockCopy[2](blockCopy, v29, 1);
       v21 = v28;
-      self = v27;
+      self = selfCopy;
       v14 = v26;
-      v13 = v25;
+      allHeaderFields = v25;
       v12 = v24;
-      v10 = v32;
+      urlCache = v32;
     }
 
     v17 = v33;
     if (v21)
     {
-      v30 = [(ResourceLoader *)self queue];
+      queue = [(ResourceLoader *)self queue];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __58__ResourceLoader_asynchronousDataFromURL_completionBlock___block_invoke;
@@ -291,8 +291,8 @@ LABEL_9:
       v35[4] = self;
       v36 = v11;
       v37 = v12;
-      v38 = v7;
-      [v30 addOperationWithBlock:v35];
+      v38 = blockCopy;
+      [queue addOperationWithBlock:v35];
 
       v17 = v33;
     }
@@ -301,13 +301,13 @@ LABEL_9:
   }
 
   v8 = MEMORY[0x277CBEA90];
-  v9 = [v6 path];
-  v10 = [v8 dataWithContentsOfFile:v9];
+  path = [lCopy path];
+  urlCache = [v8 dataWithContentsOfFile:path];
 
   v41 = ResourceLoaderPayloadDataKey;
-  v42[0] = v10;
+  v42[0] = urlCache;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:&v41 count:1];
-  v7[2](v7, v11, 1);
+  blockCopy[2](blockCopy, v11, 1);
 LABEL_14:
 
   v31 = *MEMORY[0x277D85DE8];
@@ -328,8 +328,8 @@ void __58__ResourceLoader_asynchronousDataFromURL_completionBlock___block_invoke
 
 - (void)flushCache
 {
-  v2 = [(ResourceLoader *)self urlCache];
-  [v2 removeAllCachedResponses];
+  urlCache = [(ResourceLoader *)self urlCache];
+  [urlCache removeAllCachedResponses];
 }
 
 - (double)_simulatedLatency

@@ -1,28 +1,28 @@
 @interface SystemListener
-+ (id)defaultListenerWithForceLoading:(BOOL)a3;
++ (id)defaultListenerWithForceLoading:(BOOL)loading;
 - (BOOL)hasUpdatedFirstWeekDay;
 - (BOOL)hasUpdatedLocale;
 - (BOOL)hasUpdatedResources;
 - (BOOL)semanticSearchEnabled;
-- (SystemListener)initWithForceLoading:(BOOL)a3;
+- (SystemListener)initWithForceLoading:(BOOL)loading;
 - (id)currentLocale;
 - (id)currentPreferredLanguages;
 - (id)currentRegion;
-- (id)pathsForContentType:(id)a3 locale:(id)a4;
+- (id)pathsForContentType:(id)type locale:(id)locale;
 - (id)supportedSemanticLanguages;
-- (int64_t)longValueTrialFactorForKey:(id)a3;
+- (int64_t)longValueTrialFactorForKey:(id)key;
 - (unint64_t)currentFirstWeekDay;
 - (void)dealloc;
-- (void)logTriggerForCodepathID:(id)a3 queryID:(int64_t)a4;
-- (void)setAutoUpdatingLocale:(BOOL)a3;
+- (void)logTriggerForCodepathID:(id)d queryID:(int64_t)iD;
+- (void)setAutoUpdatingLocale:(BOOL)locale;
 - (void)updateLocale;
-- (void)updateLocaleWithLocale:(id)a3 preferredLanguages:(id)a4 force:(BOOL)a5;
+- (void)updateLocaleWithLocale:(id)locale preferredLanguages:(id)languages force:(BOOL)force;
 - (void)updateResources;
 @end
 
 @implementation SystemListener
 
-- (SystemListener)initWithForceLoading:(BOOL)a3
+- (SystemListener)initWithForceLoading:(BOOL)loading
 {
   v24.receiver = self;
   v24.super_class = SystemListener;
@@ -30,7 +30,7 @@
   if (v4)
   {
     v5 = copyCurrentPreferredLanguages();
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (v5)
     {
       Count = CFArrayGetCount(v5);
@@ -40,7 +40,7 @@
         {
           v9 = CFArrayGetValueAtIndex(v5, i);
           v10 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:v9];
-          [v6 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -51,15 +51,15 @@
     v19 = 3221225472;
     v20 = __39__SystemListener_initWithForceLoading___block_invoke;
     v21 = &unk_1E8267E40;
-    v11 = v6;
+    v11 = array;
     v22 = v11;
-    v23 = a3;
+    loadingCopy = loading;
     if ([SystemListener initWithForceLoading:]::onceToken != -1)
     {
       dispatch_once(&[SystemListener initWithForceLoading:]::onceToken, &v18);
     }
 
-    v4->_force = a3;
+    v4->_force = loading;
     v4->_autoUpdatingLocale = 0;
     *&v4->_locked_hasUpdatedLocale = 0;
     v4->_locked_semanticSearchEnabled = 0;
@@ -112,11 +112,11 @@ void __39__SystemListener_initWithForceLoading___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAutoUpdatingLocale:(BOOL)a3
+- (void)setAutoUpdatingLocale:(BOOL)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   LocalCenter = CFNotificationCenterGetLocalCenter();
-  if (v3)
+  if (localeCopy)
   {
     if (!self->_autoUpdatingLocale)
     {
@@ -129,7 +129,7 @@ void __39__SystemListener_initWithForceLoading___block_invoke(uint64_t a1)
     CFNotificationCenterRemoveObserver(LocalCenter, self, *MEMORY[0x1E695E6E0], 0);
   }
 
-  self->_autoUpdatingLocale = v3;
+  self->_autoUpdatingLocale = localeCopy;
 }
 
 - (BOOL)hasUpdatedLocale
@@ -186,7 +186,7 @@ uint64_t __40__SystemListener_hasUpdatedFirstWeekDay__block_invoke(uint64_t resu
 
 - (BOOL)hasUpdatedResources
 {
-  v3 = [(SystemListener *)self currentLocale];
+  currentLocale = [(SystemListener *)self currentLocale];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -196,10 +196,10 @@ uint64_t __40__SystemListener_hasUpdatedFirstWeekDay__block_invoke(uint64_t resu
   block[1] = 3221225472;
   block[2] = __37__SystemListener_hasUpdatedResources__block_invoke;
   block[3] = &unk_1E8267E68;
-  v8 = v3;
-  v9 = self;
+  v8 = currentLocale;
+  selfCopy = self;
   v10 = &v11;
-  v5 = v3;
+  v5 = currentLocale;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -385,9 +385,9 @@ void __44__SystemListener_supportedSemanticLanguages__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (int64_t)longValueTrialFactorForKey:(id)a3
+- (int64_t)longValueTrialFactorForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -397,10 +397,10 @@ void __44__SystemListener_supportedSemanticLanguages__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__SystemListener_longValueTrialFactorForKey___block_invoke;
   block[3] = &unk_1E8267E90;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -425,18 +425,18 @@ void __45__SystemListener_longValueTrialFactorForKey___block_invoke(void *a1)
   *(*(a1[6] + 8) + 24) = [v3 longForKey:a1[5]];
 }
 
-- (void)logTriggerForCodepathID:(id)a3 queryID:(int64_t)a4
+- (void)logTriggerForCodepathID:(id)d queryID:(int64_t)iD
 {
-  v6 = a3;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__SystemListener_logTriggerForCodepathID_queryID___block_invoke;
   block[3] = &unk_1E8267EB8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = dCopy;
+  iDCopy = iD;
+  v8 = dCopy;
   dispatch_sync(queue, block);
 }
 
@@ -458,22 +458,22 @@ void __50__SystemListener_logTriggerForCodepathID_queryID___block_invoke(void *a
   [v3 logForTrigger:v4 queryID:a1[6]];
 }
 
-- (id)pathsForContentType:(id)a3 locale:(id)a4
+- (id)pathsForContentType:(id)type locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  typeCopy = type;
+  localeCopy = locale;
+  v8 = localeCopy;
+  if (localeCopy)
   {
-    v9 = v7;
+    currentLocale = localeCopy;
   }
 
   else
   {
-    v9 = [(SystemListener *)self currentLocale];
+    currentLocale = [(SystemListener *)self currentLocale];
   }
 
-  v10 = v9;
+  v10 = currentLocale;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -485,11 +485,11 @@ void __50__SystemListener_logTriggerForCodepathID_queryID___block_invoke(void *a
   v16[1] = 3221225472;
   v16[2] = __45__SystemListener_pathsForContentType_locale___block_invoke;
   v16[3] = &unk_1E8267EE0;
-  v17 = v9;
-  v18 = self;
-  v19 = v6;
+  v17 = currentLocale;
+  selfCopy = self;
+  v19 = typeCopy;
   v20 = &v21;
-  v12 = v6;
+  v12 = typeCopy;
   v13 = v10;
   dispatch_sync(queue, v16);
   v14 = v22[5];
@@ -520,28 +520,28 @@ void __45__SystemListener_pathsForContentType_locale___block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateLocaleWithLocale:(id)a3 preferredLanguages:(id)a4 force:(BOOL)a5
+- (void)updateLocaleWithLocale:(id)locale preferredLanguages:(id)languages force:(BOOL)force
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  forceCopy = force;
+  localeCopy = locale;
+  languagesCopy = languages;
+  if (localeCopy)
   {
-    v10 = [(SystemListener *)self force];
-    v11 = [(SystemListener *)self force];
-    if (v10 || v5)
+    force = [(SystemListener *)self force];
+    force2 = [(SystemListener *)self force];
+    if (force || forceCopy)
     {
       v12 = 1;
     }
 
     else
     {
-      v13 = [(SystemListener *)self currentLocale];
-      if (v13)
+      currentLocale = [(SystemListener *)self currentLocale];
+      if (currentLocale)
       {
-        v14 = [v8 localeIdentifier];
-        v15 = [v13 localeIdentifier];
-        v12 = [v14 isEqualToString:v15] ^ 1;
+        localeIdentifier = [localeCopy localeIdentifier];
+        localeIdentifier2 = [currentLocale localeIdentifier];
+        v12 = [localeIdentifier isEqualToString:localeIdentifier2] ^ 1;
       }
 
       else
@@ -550,16 +550,16 @@ void __45__SystemListener_pathsForContentType_locale___block_invoke(uint64_t a1)
       }
     }
 
-    if (v11 || v5)
+    if (force2 || forceCopy)
     {
       v16 = 1;
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-      v18 = [(SystemListener *)self currentFirstWeekDay];
-      v16 = !v18 || v17 && v18 != [v17 firstWeekday];
+      autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+      currentFirstWeekDay = [(SystemListener *)self currentFirstWeekDay];
+      v16 = !currentFirstWeekDay || autoupdatingCurrentCalendar && currentFirstWeekDay != [autoupdatingCurrentCalendar firstWeekday];
     }
 
     if (v12)
@@ -569,9 +569,9 @@ void __45__SystemListener_pathsForContentType_locale___block_invoke(uint64_t a1)
       block[1] = 3221225472;
       block[2] = __66__SystemListener_updateLocaleWithLocale_preferredLanguages_force___block_invoke;
       block[3] = &unk_1E8267F08;
-      v23 = v8;
-      v24 = v9;
-      v25 = self;
+      v23 = localeCopy;
+      v24 = languagesCopy;
+      selfCopy = self;
       dispatch_sync(queue, block);
     }
 
@@ -1006,13 +1006,13 @@ LABEL_33:
   [(SystemListener *)&v4 dealloc];
 }
 
-+ (id)defaultListenerWithForceLoading:(BOOL)a3
++ (id)defaultListenerWithForceLoading:(BOOL)loading
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__SystemListener_defaultListenerWithForceLoading___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v6 = a3;
+  loadingCopy = loading;
   if (+[SystemListener defaultListenerWithForceLoading:]::defaultOnceToken != -1)
   {
     dispatch_once(&+[SystemListener defaultListenerWithForceLoading:]::defaultOnceToken, block);

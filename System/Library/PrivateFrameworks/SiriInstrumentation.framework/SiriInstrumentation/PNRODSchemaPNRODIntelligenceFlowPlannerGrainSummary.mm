@@ -1,35 +1,35 @@
 @interface PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasNumActionResolverRequests:(BOOL)a3;
-- (void)setHasNumClientActionsCreated:(BOOL)a3;
-- (void)setHasNumPlansCreated:(BOOL)a3;
-- (void)setHasNumQueriesCreated:(BOOL)a3;
-- (void)setHasNumQueriesExecuted:(BOOL)a3;
-- (void)setHasNumStatementsEvaluated:(BOOL)a3;
-- (void)setHasNumStatementsEvaluatedFromPlanner:(BOOL)a3;
-- (void)setHasNumSystemPromptsResolved:(BOOL)a3;
-- (void)setHasPlannerGrainStage:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasNumActionResolverRequests:(BOOL)requests;
+- (void)setHasNumClientActionsCreated:(BOOL)created;
+- (void)setHasNumPlansCreated:(BOOL)created;
+- (void)setHasNumQueriesCreated:(BOOL)created;
+- (void)setHasNumQueriesExecuted:(BOOL)executed;
+- (void)setHasNumStatementsEvaluated:(BOOL)evaluated;
+- (void)setHasNumStatementsEvaluatedFromPlanner:(BOOL)planner;
+- (void)setHasNumSystemPromptsResolved:(BOOL)resolved;
+- (void)setHasPlannerGrainStage:(BOOL)stage;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary
 
-- (PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary)initWithDictionary:(id)a3
+- (PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v76.receiver = self;
   v76.super_class = PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary;
   v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)&v76 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"planId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"planId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setPlanId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"clientRequestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"clientRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setClientRequestId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"rawQueryEventId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"rawQueryEventId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setRawQueryEventId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"status"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
     }
 
     v62 = v12;
-    v13 = [v4 objectForKeyedSubscript:@"plannerGrainStage"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"plannerGrainStage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,14 +69,14 @@
     }
 
     v14 = v6;
-    v15 = [v4 objectForKeyedSubscript:@"numPlansCreated"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"numPlansCreated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary setNumPlansCreated:](v5, "setNumPlansCreated:", [v15 unsignedIntValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"numQueriesCreated"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"numQueriesCreated"];
     objc_opt_class();
     v75 = v16;
     if (objc_opt_isKindOfClass())
@@ -84,7 +84,7 @@
       -[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary setNumQueriesCreated:](v5, "setNumQueriesCreated:", [v16 unsignedIntValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"numQueriesExecuted"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"numQueriesExecuted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
     }
 
     v59 = v17;
-    v18 = [v4 objectForKeyedSubscript:@"numClientActionsCreated"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"numClientActionsCreated"];
     objc_opt_class();
     v74 = v18;
     v65 = v14;
@@ -101,14 +101,14 @@
       -[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary setNumClientActionsCreated:](v5, "setNumClientActionsCreated:", [v18 unsignedIntValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"numActionResolverRequests"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"numActionResolverRequests"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary setNumActionResolverRequests:](v5, "setNumActionResolverRequests:", [v19 unsignedIntValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"numStatementsEvaluated"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"numStatementsEvaluated"];
     objc_opt_class();
     v73 = v20;
     if (objc_opt_isKindOfClass())
@@ -116,7 +116,7 @@
       -[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary setNumStatementsEvaluated:](v5, "setNumStatementsEvaluated:", [v20 unsignedIntValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"numStatementsEvaluatedFromPlanner"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"numStatementsEvaluatedFromPlanner"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,7 +124,7 @@
     }
 
     v64 = v8;
-    v22 = [v4 objectForKeyedSubscript:@"numSystemPromptsResolved"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"numSystemPromptsResolved"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
     }
 
     v56 = v22;
-    v23 = [v4 objectForKeyedSubscript:@"plannerResponseTime"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"plannerResponseTime"];
     objc_opt_class();
     v72 = v23;
     if (objc_opt_isKindOfClass())
@@ -141,7 +141,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setPlannerResponseTime:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"startToLastResolverEventTime"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"startToLastResolverEventTime"];
     objc_opt_class();
     v71 = v25;
     if (objc_opt_isKindOfClass())
@@ -150,7 +150,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setStartToLastResolverEventTime:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"startToActionResolverRequestTime"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"startToActionResolverRequestTime"];
     objc_opt_class();
     v70 = v27;
     if (objc_opt_isKindOfClass())
@@ -159,7 +159,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setStartToActionResolverRequestTime:v28];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"startToPlanCreatedTime"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"startToPlanCreatedTime"];
     objc_opt_class();
     v69 = v29;
     if (objc_opt_isKindOfClass())
@@ -168,7 +168,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setStartToPlanCreatedTime:v30];
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"startToLastQueryDecorationEventTime"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"startToLastQueryDecorationEventTime"];
     objc_opt_class();
     v68 = v31;
     if (objc_opt_isKindOfClass())
@@ -177,7 +177,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setStartToLastQueryDecorationEventTime:v32];
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"lastResolverEventToResponseGeneratedTime"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"lastResolverEventToResponseGeneratedTime"];
     objc_opt_class();
     v67 = v33;
     if (objc_opt_isKindOfClass())
@@ -186,7 +186,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setLastResolverEventToResponseGeneratedTime:v34];
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"actionResolverRequestToLastResolverEventTime"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"actionResolverRequestToLastResolverEventTime"];
     objc_opt_class();
     v66 = v35;
     if (objc_opt_isKindOfClass())
@@ -196,7 +196,7 @@
     }
 
     v63 = v10;
-    v37 = [v4 objectForKeyedSubscript:@"planCreatedToLastResolverEventTime"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"planCreatedToLastResolverEventTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -205,7 +205,7 @@
     }
 
     v61 = v13;
-    v39 = [v4 objectForKeyedSubscript:{@"planCreatedToActionResolverRequestTime", v37}];
+    v39 = [dictionaryCopy objectForKeyedSubscript:{@"planCreatedToActionResolverRequestTime", v37}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -214,7 +214,7 @@
     }
 
     v60 = v15;
-    v41 = [v4 objectForKeyedSubscript:@"lastQueryDecorationEventToPlanCreatedTime"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"lastQueryDecorationEventToPlanCreatedTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -223,7 +223,7 @@
     }
 
     v58 = v19;
-    v43 = [v4 objectForKeyedSubscript:@"startToContextRetrievedTime"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"startToContextRetrievedTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -232,7 +232,7 @@
     }
 
     v57 = v21;
-    v45 = [v4 objectForKeyedSubscript:@"startToToolsRetrievedTime"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"startToToolsRetrievedTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -240,7 +240,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setStartToToolsRetrievedTime:v46];
     }
 
-    v47 = [v4 objectForKeyedSubscript:@"startToEntitySpanMatchedTime"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"startToEntitySpanMatchedTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -248,7 +248,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setStartToEntitySpanMatchedTime:v48];
     }
 
-    v49 = [v4 objectForKeyedSubscript:@"resolverTotalQueryTime"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"resolverTotalQueryTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -256,7 +256,7 @@
       [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)v5 setResolverTotalQueryTime:v50];
     }
 
-    v51 = [v4 objectForKeyedSubscript:@"failureInfo"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"failureInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -270,30 +270,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary)initWithJSON:(id)a3
+- (PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -306,84 +306,84 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionResolverRequestToLastResolverEventTime)
   {
-    v4 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    actionResolverRequestToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
+    dictionaryRepresentation = [actionResolverRequestToLastResolverEventTime dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"actionResolverRequestToLastResolverEventTime"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionResolverRequestToLastResolverEventTime"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"actionResolverRequestToLastResolverEventTime"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionResolverRequestToLastResolverEventTime"];
     }
   }
 
   if (self->_clientRequestId)
   {
-    v7 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
+    dictionaryRepresentation2 = [clientRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"clientRequestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"clientRequestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"clientRequestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"clientRequestId"];
     }
   }
 
   if (self->_failureInfo)
   {
-    v10 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    failureInfo = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
+    dictionaryRepresentation3 = [failureInfo dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"failureInfo"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"failureInfo"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"failureInfo"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"failureInfo"];
     }
   }
 
   if (self->_lastQueryDecorationEventToPlanCreatedTime)
   {
-    v13 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    lastQueryDecorationEventToPlanCreatedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
+    dictionaryRepresentation4 = [lastQueryDecorationEventToPlanCreatedTime dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"lastQueryDecorationEventToPlanCreatedTime"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"lastQueryDecorationEventToPlanCreatedTime"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"lastQueryDecorationEventToPlanCreatedTime"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"lastQueryDecorationEventToPlanCreatedTime"];
     }
   }
 
   if (self->_lastResolverEventToResponseGeneratedTime)
   {
-    v16 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    lastResolverEventToResponseGeneratedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
+    dictionaryRepresentation5 = [lastResolverEventToResponseGeneratedTime dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"lastResolverEventToResponseGeneratedTime"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"lastResolverEventToResponseGeneratedTime"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"lastResolverEventToResponseGeneratedTime"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"lastResolverEventToResponseGeneratedTime"];
     }
   }
 
@@ -391,7 +391,7 @@
   if ((has & 0x40) != 0)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary numActionResolverRequests](self, "numActionResolverRequests")}];
-    [v3 setObject:v23 forKeyedSubscript:@"numActionResolverRequests"];
+    [dictionary setObject:v23 forKeyedSubscript:@"numActionResolverRequests"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -412,7 +412,7 @@ LABEL_28:
   }
 
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary numClientActionsCreated](self, "numClientActionsCreated")}];
-  [v3 setObject:v24 forKeyedSubscript:@"numClientActionsCreated"];
+  [dictionary setObject:v24 forKeyedSubscript:@"numClientActionsCreated"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -428,7 +428,7 @@ LABEL_29:
 
 LABEL_40:
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary numPlansCreated](self, "numPlansCreated")}];
-  [v3 setObject:v25 forKeyedSubscript:@"numPlansCreated"];
+  [dictionary setObject:v25 forKeyedSubscript:@"numPlansCreated"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -444,7 +444,7 @@ LABEL_30:
 
 LABEL_41:
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary numQueriesCreated](self, "numQueriesCreated")}];
-  [v3 setObject:v26 forKeyedSubscript:@"numQueriesCreated"];
+  [dictionary setObject:v26 forKeyedSubscript:@"numQueriesCreated"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -460,7 +460,7 @@ LABEL_31:
 
 LABEL_42:
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary numQueriesExecuted](self, "numQueriesExecuted")}];
-  [v3 setObject:v27 forKeyedSubscript:@"numQueriesExecuted"];
+  [dictionary setObject:v27 forKeyedSubscript:@"numQueriesExecuted"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -476,7 +476,7 @@ LABEL_32:
 
 LABEL_43:
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary numStatementsEvaluated](self, "numStatementsEvaluated")}];
-  [v3 setObject:v28 forKeyedSubscript:@"numStatementsEvaluated"];
+  [dictionary setObject:v28 forKeyedSubscript:@"numStatementsEvaluated"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -492,240 +492,240 @@ LABEL_33:
 
 LABEL_44:
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary numStatementsEvaluatedFromPlanner](self, "numStatementsEvaluatedFromPlanner")}];
-  [v3 setObject:v29 forKeyedSubscript:@"numStatementsEvaluatedFromPlanner"];
+  [dictionary setObject:v29 forKeyedSubscript:@"numStatementsEvaluatedFromPlanner"];
 
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_34:
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary numSystemPromptsResolved](self, "numSystemPromptsResolved")}];
-    [v3 setObject:v20 forKeyedSubscript:@"numSystemPromptsResolved"];
+    [dictionary setObject:v20 forKeyedSubscript:@"numSystemPromptsResolved"];
   }
 
 LABEL_35:
   if (self->_planCreatedToActionResolverRequestTime)
   {
-    v21 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
-    v22 = [v21 dictionaryRepresentation];
-    if (v22)
+    planCreatedToActionResolverRequestTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
+    dictionaryRepresentation6 = [planCreatedToActionResolverRequestTime dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v22 forKeyedSubscript:@"planCreatedToActionResolverRequestTime"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"planCreatedToActionResolverRequestTime"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"planCreatedToActionResolverRequestTime"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"planCreatedToActionResolverRequestTime"];
     }
   }
 
   if (self->_planCreatedToLastResolverEventTime)
   {
-    v31 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    planCreatedToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
+    dictionaryRepresentation7 = [planCreatedToLastResolverEventTime dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"planCreatedToLastResolverEventTime"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"planCreatedToLastResolverEventTime"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"planCreatedToLastResolverEventTime"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"planCreatedToLastResolverEventTime"];
     }
   }
 
   if (self->_planId)
   {
-    v34 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
+    dictionaryRepresentation8 = [planId dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"planId"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"planId"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"planId"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"planId"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v37 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary plannerGrainStage](self, "plannerGrainStage")}];
-    [v3 setObject:v37 forKeyedSubscript:@"plannerGrainStage"];
+    [dictionary setObject:v37 forKeyedSubscript:@"plannerGrainStage"];
   }
 
   if (self->_plannerResponseTime)
   {
-    v38 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
-    v39 = [v38 dictionaryRepresentation];
-    if (v39)
+    plannerResponseTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
+    dictionaryRepresentation9 = [plannerResponseTime dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v39 forKeyedSubscript:@"plannerResponseTime"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"plannerResponseTime"];
     }
 
     else
     {
-      v40 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v40 forKeyedSubscript:@"plannerResponseTime"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"plannerResponseTime"];
     }
   }
 
   if (self->_rawQueryEventId)
   {
-    v41 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
-    v42 = [v41 dictionaryRepresentation];
-    if (v42)
+    rawQueryEventId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
+    dictionaryRepresentation10 = [rawQueryEventId dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v42 forKeyedSubscript:@"rawQueryEventId"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"rawQueryEventId"];
     }
 
     else
     {
-      v43 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v43 forKeyedSubscript:@"rawQueryEventId"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"rawQueryEventId"];
     }
   }
 
   if (self->_resolverTotalQueryTime)
   {
-    v44 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
-    v45 = [v44 dictionaryRepresentation];
-    if (v45)
+    resolverTotalQueryTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
+    dictionaryRepresentation11 = [resolverTotalQueryTime dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v45 forKeyedSubscript:@"resolverTotalQueryTime"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"resolverTotalQueryTime"];
     }
 
     else
     {
-      v46 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v46 forKeyedSubscript:@"resolverTotalQueryTime"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"resolverTotalQueryTime"];
     }
   }
 
   if (self->_startToActionResolverRequestTime)
   {
-    v47 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
-    v48 = [v47 dictionaryRepresentation];
-    if (v48)
+    startToActionResolverRequestTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
+    dictionaryRepresentation12 = [startToActionResolverRequestTime dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v48 forKeyedSubscript:@"startToActionResolverRequestTime"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"startToActionResolverRequestTime"];
     }
 
     else
     {
-      v49 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v49 forKeyedSubscript:@"startToActionResolverRequestTime"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"startToActionResolverRequestTime"];
     }
   }
 
   if (self->_startToContextRetrievedTime)
   {
-    v50 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
-    v51 = [v50 dictionaryRepresentation];
-    if (v51)
+    startToContextRetrievedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
+    dictionaryRepresentation13 = [startToContextRetrievedTime dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v51 forKeyedSubscript:@"startToContextRetrievedTime"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"startToContextRetrievedTime"];
     }
 
     else
     {
-      v52 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v52 forKeyedSubscript:@"startToContextRetrievedTime"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"startToContextRetrievedTime"];
     }
   }
 
   if (self->_startToEntitySpanMatchedTime)
   {
-    v53 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
-    v54 = [v53 dictionaryRepresentation];
-    if (v54)
+    startToEntitySpanMatchedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
+    dictionaryRepresentation14 = [startToEntitySpanMatchedTime dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v54 forKeyedSubscript:@"startToEntitySpanMatchedTime"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"startToEntitySpanMatchedTime"];
     }
 
     else
     {
-      v55 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v55 forKeyedSubscript:@"startToEntitySpanMatchedTime"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"startToEntitySpanMatchedTime"];
     }
   }
 
   if (self->_startToLastQueryDecorationEventTime)
   {
-    v56 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
-    v57 = [v56 dictionaryRepresentation];
-    if (v57)
+    startToLastQueryDecorationEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
+    dictionaryRepresentation15 = [startToLastQueryDecorationEventTime dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v57 forKeyedSubscript:@"startToLastQueryDecorationEventTime"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"startToLastQueryDecorationEventTime"];
     }
 
     else
     {
-      v58 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v58 forKeyedSubscript:@"startToLastQueryDecorationEventTime"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"startToLastQueryDecorationEventTime"];
     }
   }
 
   if (self->_startToLastResolverEventTime)
   {
-    v59 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
-    v60 = [v59 dictionaryRepresentation];
-    if (v60)
+    startToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
+    dictionaryRepresentation16 = [startToLastResolverEventTime dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v60 forKeyedSubscript:@"startToLastResolverEventTime"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"startToLastResolverEventTime"];
     }
 
     else
     {
-      v61 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v61 forKeyedSubscript:@"startToLastResolverEventTime"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"startToLastResolverEventTime"];
     }
   }
 
   if (self->_startToPlanCreatedTime)
   {
-    v62 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
-    v63 = [v62 dictionaryRepresentation];
-    if (v63)
+    startToPlanCreatedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
+    dictionaryRepresentation17 = [startToPlanCreatedTime dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v63 forKeyedSubscript:@"startToPlanCreatedTime"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"startToPlanCreatedTime"];
     }
 
     else
     {
-      v64 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v64 forKeyedSubscript:@"startToPlanCreatedTime"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"startToPlanCreatedTime"];
     }
   }
 
   if (self->_startToToolsRetrievedTime)
   {
-    v65 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
-    v66 = [v65 dictionaryRepresentation];
-    if (v66)
+    startToToolsRetrievedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
+    dictionaryRepresentation18 = [startToToolsRetrievedTime dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v66 forKeyedSubscript:@"startToToolsRetrievedTime"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"startToToolsRetrievedTime"];
     }
 
     else
     {
-      v67 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v67 forKeyedSubscript:@"startToToolsRetrievedTime"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"startToToolsRetrievedTime"];
     }
   }
 
   if (*&self->_has)
   {
     v68 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary status](self, "status")}];
-    [v3 setObject:v68 forKeyedSubscript:@"status"];
+    [dictionary setObject:v68 forKeyedSubscript:@"status"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v69 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v69 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -886,28 +886,28 @@ LABEL_22:
   return v28 ^ v31 ^ [(PNRODSchemaPNRODFailureInfo *)self->_failureInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_131;
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
-  v6 = [v4 planId];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
+  planId2 = [equalCopy planId];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v7 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
-  if (v7)
+  planId3 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
+  if (planId3)
   {
-    v8 = v7;
-    v9 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
-    v10 = [v4 planId];
-    v11 = [v9 isEqual:v10];
+    v8 = planId3;
+    planId4 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
+    planId5 = [equalCopy planId];
+    v11 = [planId4 isEqual:planId5];
 
     if (!v11)
     {
@@ -919,20 +919,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
-  v6 = [v4 clientRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
+  planId2 = [equalCopy clientRequestId];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v12 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
-  if (v12)
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
+  if (clientRequestId)
   {
-    v13 = v12;
-    v14 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
-    v15 = [v4 clientRequestId];
-    v16 = [v14 isEqual:v15];
+    v13 = clientRequestId;
+    clientRequestId2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
+    clientRequestId3 = [equalCopy clientRequestId];
+    v16 = [clientRequestId2 isEqual:clientRequestId3];
 
     if (!v16)
     {
@@ -944,20 +944,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
-  v6 = [v4 rawQueryEventId];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
+  planId2 = [equalCopy rawQueryEventId];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v17 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
-  if (v17)
+  rawQueryEventId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
+  if (rawQueryEventId)
   {
-    v18 = v17;
-    v19 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
-    v20 = [v4 rawQueryEventId];
-    v21 = [v19 isEqual:v20];
+    v18 = rawQueryEventId;
+    rawQueryEventId2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
+    rawQueryEventId3 = [equalCopy rawQueryEventId];
+    v21 = [rawQueryEventId2 isEqual:rawQueryEventId3];
 
     if (!v21)
     {
@@ -970,7 +970,7 @@ LABEL_22:
   }
 
   has = self->_has;
-  v23 = v4[100];
+  v23 = equalCopy[100];
   if ((*&has & 1) != (v23 & 1))
   {
     goto LABEL_131;
@@ -979,13 +979,13 @@ LABEL_22:
   if (*&has)
   {
     status = self->_status;
-    if (status != [v4 status])
+    if (status != [equalCopy status])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v23 = v4[100];
+    v23 = equalCopy[100];
   }
 
   v25 = (*&has >> 1) & 1;
@@ -997,13 +997,13 @@ LABEL_22:
   if (v25)
   {
     plannerGrainStage = self->_plannerGrainStage;
-    if (plannerGrainStage != [v4 plannerGrainStage])
+    if (plannerGrainStage != [equalCopy plannerGrainStage])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v23 = v4[100];
+    v23 = equalCopy[100];
   }
 
   v27 = (*&has >> 2) & 1;
@@ -1015,13 +1015,13 @@ LABEL_22:
   if (v27)
   {
     numPlansCreated = self->_numPlansCreated;
-    if (numPlansCreated != [v4 numPlansCreated])
+    if (numPlansCreated != [equalCopy numPlansCreated])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v23 = v4[100];
+    v23 = equalCopy[100];
   }
 
   v29 = (*&has >> 3) & 1;
@@ -1033,13 +1033,13 @@ LABEL_22:
   if (v29)
   {
     numQueriesCreated = self->_numQueriesCreated;
-    if (numQueriesCreated != [v4 numQueriesCreated])
+    if (numQueriesCreated != [equalCopy numQueriesCreated])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v23 = v4[100];
+    v23 = equalCopy[100];
   }
 
   v31 = (*&has >> 4) & 1;
@@ -1051,13 +1051,13 @@ LABEL_22:
   if (v31)
   {
     numQueriesExecuted = self->_numQueriesExecuted;
-    if (numQueriesExecuted != [v4 numQueriesExecuted])
+    if (numQueriesExecuted != [equalCopy numQueriesExecuted])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v23 = v4[100];
+    v23 = equalCopy[100];
   }
 
   v33 = (*&has >> 5) & 1;
@@ -1069,13 +1069,13 @@ LABEL_22:
   if (v33)
   {
     numClientActionsCreated = self->_numClientActionsCreated;
-    if (numClientActionsCreated != [v4 numClientActionsCreated])
+    if (numClientActionsCreated != [equalCopy numClientActionsCreated])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v23 = v4[100];
+    v23 = equalCopy[100];
   }
 
   v35 = (*&has >> 6) & 1;
@@ -1087,13 +1087,13 @@ LABEL_22:
   if (v35)
   {
     numActionResolverRequests = self->_numActionResolverRequests;
-    if (numActionResolverRequests != [v4 numActionResolverRequests])
+    if (numActionResolverRequests != [equalCopy numActionResolverRequests])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v23 = v4[100];
+    v23 = equalCopy[100];
   }
 
   v37 = (*&has >> 7) & 1;
@@ -1105,13 +1105,13 @@ LABEL_22:
   if (v37)
   {
     numStatementsEvaluated = self->_numStatementsEvaluated;
-    if (numStatementsEvaluated != [v4 numStatementsEvaluated])
+    if (numStatementsEvaluated != [equalCopy numStatementsEvaluated])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v23 = v4[100];
+    v23 = equalCopy[100];
   }
 
   v39 = (*&has >> 8) & 1;
@@ -1123,13 +1123,13 @@ LABEL_22:
   if (v39)
   {
     numStatementsEvaluatedFromPlanner = self->_numStatementsEvaluatedFromPlanner;
-    if (numStatementsEvaluatedFromPlanner != [v4 numStatementsEvaluatedFromPlanner])
+    if (numStatementsEvaluatedFromPlanner != [equalCopy numStatementsEvaluatedFromPlanner])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v23 = v4[100];
+    v23 = equalCopy[100];
   }
 
   v41 = (*&has >> 9) & 1;
@@ -1141,26 +1141,26 @@ LABEL_22:
   if (v41)
   {
     numSystemPromptsResolved = self->_numSystemPromptsResolved;
-    if (numSystemPromptsResolved != [v4 numSystemPromptsResolved])
+    if (numSystemPromptsResolved != [equalCopy numSystemPromptsResolved])
     {
       goto LABEL_131;
     }
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
-  v6 = [v4 plannerResponseTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
+  planId2 = [equalCopy plannerResponseTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v43 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
-  if (v43)
+  plannerResponseTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
+  if (plannerResponseTime)
   {
-    v44 = v43;
-    v45 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
-    v46 = [v4 plannerResponseTime];
-    v47 = [v45 isEqual:v46];
+    v44 = plannerResponseTime;
+    plannerResponseTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
+    plannerResponseTime3 = [equalCopy plannerResponseTime];
+    v47 = [plannerResponseTime2 isEqual:plannerResponseTime3];
 
     if (!v47)
     {
@@ -1172,20 +1172,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
-  v6 = [v4 startToLastResolverEventTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
+  planId2 = [equalCopy startToLastResolverEventTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v48 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
-  if (v48)
+  startToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
+  if (startToLastResolverEventTime)
   {
-    v49 = v48;
-    v50 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
-    v51 = [v4 startToLastResolverEventTime];
-    v52 = [v50 isEqual:v51];
+    v49 = startToLastResolverEventTime;
+    startToLastResolverEventTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
+    startToLastResolverEventTime3 = [equalCopy startToLastResolverEventTime];
+    v52 = [startToLastResolverEventTime2 isEqual:startToLastResolverEventTime3];
 
     if (!v52)
     {
@@ -1197,20 +1197,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
-  v6 = [v4 startToActionResolverRequestTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
+  planId2 = [equalCopy startToActionResolverRequestTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v53 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
-  if (v53)
+  startToActionResolverRequestTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
+  if (startToActionResolverRequestTime)
   {
-    v54 = v53;
-    v55 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
-    v56 = [v4 startToActionResolverRequestTime];
-    v57 = [v55 isEqual:v56];
+    v54 = startToActionResolverRequestTime;
+    startToActionResolverRequestTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
+    startToActionResolverRequestTime3 = [equalCopy startToActionResolverRequestTime];
+    v57 = [startToActionResolverRequestTime2 isEqual:startToActionResolverRequestTime3];
 
     if (!v57)
     {
@@ -1222,20 +1222,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
-  v6 = [v4 startToPlanCreatedTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
+  planId2 = [equalCopy startToPlanCreatedTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v58 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
-  if (v58)
+  startToPlanCreatedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
+  if (startToPlanCreatedTime)
   {
-    v59 = v58;
-    v60 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
-    v61 = [v4 startToPlanCreatedTime];
-    v62 = [v60 isEqual:v61];
+    v59 = startToPlanCreatedTime;
+    startToPlanCreatedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
+    startToPlanCreatedTime3 = [equalCopy startToPlanCreatedTime];
+    v62 = [startToPlanCreatedTime2 isEqual:startToPlanCreatedTime3];
 
     if (!v62)
     {
@@ -1247,20 +1247,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
-  v6 = [v4 startToLastQueryDecorationEventTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
+  planId2 = [equalCopy startToLastQueryDecorationEventTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v63 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
-  if (v63)
+  startToLastQueryDecorationEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
+  if (startToLastQueryDecorationEventTime)
   {
-    v64 = v63;
-    v65 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
-    v66 = [v4 startToLastQueryDecorationEventTime];
-    v67 = [v65 isEqual:v66];
+    v64 = startToLastQueryDecorationEventTime;
+    startToLastQueryDecorationEventTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
+    startToLastQueryDecorationEventTime3 = [equalCopy startToLastQueryDecorationEventTime];
+    v67 = [startToLastQueryDecorationEventTime2 isEqual:startToLastQueryDecorationEventTime3];
 
     if (!v67)
     {
@@ -1272,20 +1272,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
-  v6 = [v4 lastResolverEventToResponseGeneratedTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
+  planId2 = [equalCopy lastResolverEventToResponseGeneratedTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v68 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
-  if (v68)
+  lastResolverEventToResponseGeneratedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
+  if (lastResolverEventToResponseGeneratedTime)
   {
-    v69 = v68;
-    v70 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
-    v71 = [v4 lastResolverEventToResponseGeneratedTime];
-    v72 = [v70 isEqual:v71];
+    v69 = lastResolverEventToResponseGeneratedTime;
+    lastResolverEventToResponseGeneratedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
+    lastResolverEventToResponseGeneratedTime3 = [equalCopy lastResolverEventToResponseGeneratedTime];
+    v72 = [lastResolverEventToResponseGeneratedTime2 isEqual:lastResolverEventToResponseGeneratedTime3];
 
     if (!v72)
     {
@@ -1297,20 +1297,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
-  v6 = [v4 actionResolverRequestToLastResolverEventTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
+  planId2 = [equalCopy actionResolverRequestToLastResolverEventTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v73 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
-  if (v73)
+  actionResolverRequestToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
+  if (actionResolverRequestToLastResolverEventTime)
   {
-    v74 = v73;
-    v75 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
-    v76 = [v4 actionResolverRequestToLastResolverEventTime];
-    v77 = [v75 isEqual:v76];
+    v74 = actionResolverRequestToLastResolverEventTime;
+    actionResolverRequestToLastResolverEventTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
+    actionResolverRequestToLastResolverEventTime3 = [equalCopy actionResolverRequestToLastResolverEventTime];
+    v77 = [actionResolverRequestToLastResolverEventTime2 isEqual:actionResolverRequestToLastResolverEventTime3];
 
     if (!v77)
     {
@@ -1322,20 +1322,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
-  v6 = [v4 planCreatedToLastResolverEventTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
+  planId2 = [equalCopy planCreatedToLastResolverEventTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v78 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
-  if (v78)
+  planCreatedToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
+  if (planCreatedToLastResolverEventTime)
   {
-    v79 = v78;
-    v80 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
-    v81 = [v4 planCreatedToLastResolverEventTime];
-    v82 = [v80 isEqual:v81];
+    v79 = planCreatedToLastResolverEventTime;
+    planCreatedToLastResolverEventTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
+    planCreatedToLastResolverEventTime3 = [equalCopy planCreatedToLastResolverEventTime];
+    v82 = [planCreatedToLastResolverEventTime2 isEqual:planCreatedToLastResolverEventTime3];
 
     if (!v82)
     {
@@ -1347,20 +1347,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
-  v6 = [v4 planCreatedToActionResolverRequestTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
+  planId2 = [equalCopy planCreatedToActionResolverRequestTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v83 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
-  if (v83)
+  planCreatedToActionResolverRequestTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
+  if (planCreatedToActionResolverRequestTime)
   {
-    v84 = v83;
-    v85 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
-    v86 = [v4 planCreatedToActionResolverRequestTime];
-    v87 = [v85 isEqual:v86];
+    v84 = planCreatedToActionResolverRequestTime;
+    planCreatedToActionResolverRequestTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
+    planCreatedToActionResolverRequestTime3 = [equalCopy planCreatedToActionResolverRequestTime];
+    v87 = [planCreatedToActionResolverRequestTime2 isEqual:planCreatedToActionResolverRequestTime3];
 
     if (!v87)
     {
@@ -1372,20 +1372,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
-  v6 = [v4 lastQueryDecorationEventToPlanCreatedTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
+  planId2 = [equalCopy lastQueryDecorationEventToPlanCreatedTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v88 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
-  if (v88)
+  lastQueryDecorationEventToPlanCreatedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
+  if (lastQueryDecorationEventToPlanCreatedTime)
   {
-    v89 = v88;
-    v90 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
-    v91 = [v4 lastQueryDecorationEventToPlanCreatedTime];
-    v92 = [v90 isEqual:v91];
+    v89 = lastQueryDecorationEventToPlanCreatedTime;
+    lastQueryDecorationEventToPlanCreatedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
+    lastQueryDecorationEventToPlanCreatedTime3 = [equalCopy lastQueryDecorationEventToPlanCreatedTime];
+    v92 = [lastQueryDecorationEventToPlanCreatedTime2 isEqual:lastQueryDecorationEventToPlanCreatedTime3];
 
     if (!v92)
     {
@@ -1397,20 +1397,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
-  v6 = [v4 startToContextRetrievedTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
+  planId2 = [equalCopy startToContextRetrievedTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v93 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
-  if (v93)
+  startToContextRetrievedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
+  if (startToContextRetrievedTime)
   {
-    v94 = v93;
-    v95 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
-    v96 = [v4 startToContextRetrievedTime];
-    v97 = [v95 isEqual:v96];
+    v94 = startToContextRetrievedTime;
+    startToContextRetrievedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
+    startToContextRetrievedTime3 = [equalCopy startToContextRetrievedTime];
+    v97 = [startToContextRetrievedTime2 isEqual:startToContextRetrievedTime3];
 
     if (!v97)
     {
@@ -1422,20 +1422,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
-  v6 = [v4 startToToolsRetrievedTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
+  planId2 = [equalCopy startToToolsRetrievedTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v98 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
-  if (v98)
+  startToToolsRetrievedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
+  if (startToToolsRetrievedTime)
   {
-    v99 = v98;
-    v100 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
-    v101 = [v4 startToToolsRetrievedTime];
-    v102 = [v100 isEqual:v101];
+    v99 = startToToolsRetrievedTime;
+    startToToolsRetrievedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
+    startToToolsRetrievedTime3 = [equalCopy startToToolsRetrievedTime];
+    v102 = [startToToolsRetrievedTime2 isEqual:startToToolsRetrievedTime3];
 
     if (!v102)
     {
@@ -1447,20 +1447,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
-  v6 = [v4 startToEntitySpanMatchedTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
+  planId2 = [equalCopy startToEntitySpanMatchedTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v103 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
-  if (v103)
+  startToEntitySpanMatchedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
+  if (startToEntitySpanMatchedTime)
   {
-    v104 = v103;
-    v105 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
-    v106 = [v4 startToEntitySpanMatchedTime];
-    v107 = [v105 isEqual:v106];
+    v104 = startToEntitySpanMatchedTime;
+    startToEntitySpanMatchedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
+    startToEntitySpanMatchedTime3 = [equalCopy startToEntitySpanMatchedTime];
+    v107 = [startToEntitySpanMatchedTime2 isEqual:startToEntitySpanMatchedTime3];
 
     if (!v107)
     {
@@ -1472,20 +1472,20 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
-  v6 = [v4 resolverTotalQueryTime];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
+  planId2 = [equalCopy resolverTotalQueryTime];
+  if ((planId != 0) == (planId2 == 0))
   {
     goto LABEL_130;
   }
 
-  v108 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
-  if (v108)
+  resolverTotalQueryTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
+  if (resolverTotalQueryTime)
   {
-    v109 = v108;
-    v110 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
-    v111 = [v4 resolverTotalQueryTime];
-    v112 = [v110 isEqual:v111];
+    v109 = resolverTotalQueryTime;
+    resolverTotalQueryTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
+    resolverTotalQueryTime3 = [equalCopy resolverTotalQueryTime];
+    v112 = [resolverTotalQueryTime2 isEqual:resolverTotalQueryTime3];
 
     if (!v112)
     {
@@ -1497,17 +1497,17 @@ LABEL_22:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
-  v6 = [v4 failureInfo];
-  if ((v5 != 0) == (v6 == 0))
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
+  planId2 = [equalCopy failureInfo];
+  if ((planId != 0) == (planId2 == 0))
   {
 LABEL_130:
 
     goto LABEL_131;
   }
 
-  v113 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
-  if (!v113)
+  failureInfo = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
+  if (!failureInfo)
   {
 
 LABEL_134:
@@ -1515,10 +1515,10 @@ LABEL_134:
     goto LABEL_132;
   }
 
-  v114 = v113;
-  v115 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
-  v116 = [v4 failureInfo];
-  v117 = [v115 isEqual:v116];
+  v114 = failureInfo;
+  failureInfo2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
+  failureInfo3 = [equalCopy failureInfo];
+  v117 = [failureInfo2 isEqual:failureInfo3];
 
   if (v117)
   {
@@ -1532,30 +1532,30 @@ LABEL_132:
   return v118;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v42 = a3;
-  v4 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
+  toCopy = to;
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
 
-  if (v4)
+  if (planId)
   {
-    v5 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
+    planId2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
 
-  if (v6)
+  if (clientRequestId)
   {
-    v7 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
+    clientRequestId2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
+  rawQueryEventId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
 
-  if (v8)
+  if (rawQueryEventId)
   {
-    v9 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
+    rawQueryEventId2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1687,133 +1687,133 @@ LABEL_17:
   }
 
 LABEL_18:
-  v11 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
+  plannerResponseTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
 
-  if (v11)
+  if (plannerResponseTime)
   {
-    v12 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
+    plannerResponseTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
+  startToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
 
-  if (v13)
+  if (startToLastResolverEventTime)
   {
-    v14 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
+    startToLastResolverEventTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
+  startToActionResolverRequestTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
 
-  if (v15)
+  if (startToActionResolverRequestTime)
   {
-    v16 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
+    startToActionResolverRequestTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
+  startToPlanCreatedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
 
-  if (v17)
+  if (startToPlanCreatedTime)
   {
-    v18 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
+    startToPlanCreatedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
+  startToLastQueryDecorationEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
 
-  if (v19)
+  if (startToLastQueryDecorationEventTime)
   {
-    v20 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
+    startToLastQueryDecorationEventTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
+  lastResolverEventToResponseGeneratedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
 
-  if (v21)
+  if (lastResolverEventToResponseGeneratedTime)
   {
-    v22 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
+    lastResolverEventToResponseGeneratedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v23 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
+  actionResolverRequestToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
 
-  if (v23)
+  if (actionResolverRequestToLastResolverEventTime)
   {
-    v24 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
+    actionResolverRequestToLastResolverEventTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v25 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
+  planCreatedToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
 
-  if (v25)
+  if (planCreatedToLastResolverEventTime)
   {
-    v26 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
+    planCreatedToLastResolverEventTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v27 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
+  planCreatedToActionResolverRequestTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
 
-  if (v27)
+  if (planCreatedToActionResolverRequestTime)
   {
-    v28 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
+    planCreatedToActionResolverRequestTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v29 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
+  lastQueryDecorationEventToPlanCreatedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
 
-  if (v29)
+  if (lastQueryDecorationEventToPlanCreatedTime)
   {
-    v30 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
+    lastQueryDecorationEventToPlanCreatedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v31 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
+  startToContextRetrievedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
 
-  if (v31)
+  if (startToContextRetrievedTime)
   {
-    v32 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
+    startToContextRetrievedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v33 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
+  startToToolsRetrievedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
 
-  if (v33)
+  if (startToToolsRetrievedTime)
   {
-    v34 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
+    startToToolsRetrievedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v35 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
+  startToEntitySpanMatchedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
 
-  if (v35)
+  if (startToEntitySpanMatchedTime)
   {
-    v36 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
+    startToEntitySpanMatchedTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v37 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
+  resolverTotalQueryTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
 
-  if (v37)
+  if (resolverTotalQueryTime)
   {
-    v38 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
+    resolverTotalQueryTime2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v39 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
+  failureInfo = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
 
-  v40 = v42;
-  if (v39)
+  v40 = toCopy;
+  if (failureInfo)
   {
-    v41 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
+    failureInfo2 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
     PBDataWriterWriteSubmessage();
 
-    v40 = v42;
+    v40 = toCopy;
   }
 }
 
-- (void)setHasNumSystemPromptsResolved:(BOOL)a3
+- (void)setHasNumSystemPromptsResolved:(BOOL)resolved
 {
-  if (a3)
+  if (resolved)
   {
     v3 = 512;
   }
@@ -1826,9 +1826,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasNumStatementsEvaluatedFromPlanner:(BOOL)a3
+- (void)setHasNumStatementsEvaluatedFromPlanner:(BOOL)planner
 {
-  if (a3)
+  if (planner)
   {
     v3 = 256;
   }
@@ -1841,9 +1841,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumStatementsEvaluated:(BOOL)a3
+- (void)setHasNumStatementsEvaluated:(BOOL)evaluated
 {
-  if (a3)
+  if (evaluated)
   {
     v3 = 128;
   }
@@ -1856,9 +1856,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumActionResolverRequests:(BOOL)a3
+- (void)setHasNumActionResolverRequests:(BOOL)requests
 {
-  if (a3)
+  if (requests)
   {
     v3 = 64;
   }
@@ -1871,9 +1871,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNumClientActionsCreated:(BOOL)a3
+- (void)setHasNumClientActionsCreated:(BOOL)created
 {
-  if (a3)
+  if (created)
   {
     v3 = 32;
   }
@@ -1886,9 +1886,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNumQueriesExecuted:(BOOL)a3
+- (void)setHasNumQueriesExecuted:(BOOL)executed
 {
-  if (a3)
+  if (executed)
   {
     v3 = 16;
   }
@@ -1901,9 +1901,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumQueriesCreated:(BOOL)a3
+- (void)setHasNumQueriesCreated:(BOOL)created
 {
-  if (a3)
+  if (created)
   {
     v3 = 8;
   }
@@ -1916,9 +1916,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumPlansCreated:(BOOL)a3
+- (void)setHasNumPlansCreated:(BOOL)created
 {
-  if (a3)
+  if (created)
   {
     v3 = 4;
   }
@@ -1931,9 +1931,9 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasPlannerGrainStage:(BOOL)a3
+- (void)setHasPlannerGrainStage:(BOOL)stage
 {
-  if (a3)
+  if (stage)
   {
     v3 = 2;
   }
@@ -1946,170 +1946,170 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v61.receiver = self;
   v61.super_class = PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary;
-  v5 = [(SISchemaInstrumentationMessage *)&v61 applySensitiveConditionsPolicy:v4];
-  v6 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v61 applySensitiveConditionsPolicy:policyCopy];
+  planId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planId];
+  v7 = [planId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deletePlanId];
   }
 
-  v9 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  clientRequestId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self clientRequestId];
+  v10 = [clientRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteClientRequestId];
   }
 
-  v12 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  rawQueryEventId = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self rawQueryEventId];
+  v13 = [rawQueryEventId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteRawQueryEventId];
   }
 
-  v15 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  plannerResponseTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self plannerResponseTime];
+  v16 = [plannerResponseTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deletePlannerResponseTime];
   }
 
-  v18 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  startToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastResolverEventTime];
+  v19 = [startToLastResolverEventTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteStartToLastResolverEventTime];
   }
 
-  v21 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  startToActionResolverRequestTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToActionResolverRequestTime];
+  v22 = [startToActionResolverRequestTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteStartToActionResolverRequestTime];
   }
 
-  v24 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  startToPlanCreatedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToPlanCreatedTime];
+  v25 = [startToPlanCreatedTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteStartToPlanCreatedTime];
   }
 
-  v27 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  startToLastQueryDecorationEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToLastQueryDecorationEventTime];
+  v28 = [startToLastQueryDecorationEventTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteStartToLastQueryDecorationEventTime];
   }
 
-  v30 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  lastResolverEventToResponseGeneratedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastResolverEventToResponseGeneratedTime];
+  v31 = [lastResolverEventToResponseGeneratedTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteLastResolverEventToResponseGeneratedTime];
   }
 
-  v33 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  actionResolverRequestToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self actionResolverRequestToLastResolverEventTime];
+  v34 = [actionResolverRequestToLastResolverEventTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteActionResolverRequestToLastResolverEventTime];
   }
 
-  v36 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  planCreatedToLastResolverEventTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToLastResolverEventTime];
+  v37 = [planCreatedToLastResolverEventTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deletePlanCreatedToLastResolverEventTime];
   }
 
-  v39 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  planCreatedToActionResolverRequestTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self planCreatedToActionResolverRequestTime];
+  v40 = [planCreatedToActionResolverRequestTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deletePlanCreatedToActionResolverRequestTime];
   }
 
-  v42 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  lastQueryDecorationEventToPlanCreatedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self lastQueryDecorationEventToPlanCreatedTime];
+  v43 = [lastQueryDecorationEventToPlanCreatedTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteLastQueryDecorationEventToPlanCreatedTime];
   }
 
-  v45 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  startToContextRetrievedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToContextRetrievedTime];
+  v46 = [startToContextRetrievedTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteStartToContextRetrievedTime];
   }
 
-  v48 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  startToToolsRetrievedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToToolsRetrievedTime];
+  v49 = [startToToolsRetrievedTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteStartToToolsRetrievedTime];
   }
 
-  v51 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  startToEntitySpanMatchedTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self startToEntitySpanMatchedTime];
+  v52 = [startToEntitySpanMatchedTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteStartToEntitySpanMatchedTime];
   }
 
-  v54 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  resolverTotalQueryTime = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self resolverTotalQueryTime];
+  v55 = [resolverTotalQueryTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteResolverTotalQueryTime];
   }
 
-  v57 = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  failureInfo = [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self failureInfo];
+  v58 = [failureInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(PNRODSchemaPNRODIntelligenceFlowPlannerGrainSummary *)self deleteFailureInfo];
   }

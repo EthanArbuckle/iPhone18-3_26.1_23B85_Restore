@@ -1,25 +1,25 @@
 @interface STShowWeatherConditionsRequest
-- (STShowWeatherConditionsRequest)initWithCoder:(id)a3;
-- (id)_initWithAttributes:(id)a3 city:(id)a4;
+- (STShowWeatherConditionsRequest)initWithCoder:(id)coder;
+- (id)_initWithAttributes:(id)attributes city:(id)city;
 - (id)createResponse;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STShowWeatherConditionsRequest
 
-- (STShowWeatherConditionsRequest)initWithCoder:(id)a3
+- (STShowWeatherConditionsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = STShowWeatherConditionsRequest;
-  v5 = [(AFSiriRequest *)&v11 initWithCoder:v4];
+  v5 = [(AFSiriRequest *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_attributes"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_attributes"];
     attributes = v5->_attributes;
     v5->_attributes = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_city"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_city"];
     city = v5->_city;
     v5->_city = v8;
   }
@@ -27,14 +27,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STShowWeatherConditionsRequest;
-  v4 = a3;
-  [(AFSiriRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_attributes forKey:{@"_attributes", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_city forKey:@"_city"];
+  coderCopy = coder;
+  [(AFSiriRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_attributes forKey:{@"_attributes", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_city forKey:@"_city"];
 }
 
 - (id)createResponse
@@ -44,18 +44,18 @@
   return v2;
 }
 
-- (id)_initWithAttributes:(id)a3 city:(id)a4
+- (id)_initWithAttributes:(id)attributes city:(id)city
 {
-  v7 = a3;
-  v8 = a4;
+  attributesCopy = attributes;
+  cityCopy = city;
   v12.receiver = self;
   v12.super_class = STShowWeatherConditionsRequest;
   v9 = [(AFSiriRequest *)&v12 init];
   p_isa = &v9->super.super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_attributes, a3);
-    objc_storeStrong(p_isa + 6, a4);
+    objc_storeStrong(&v9->_attributes, attributes);
+    objc_storeStrong(p_isa + 6, city);
   }
 
   return p_isa;

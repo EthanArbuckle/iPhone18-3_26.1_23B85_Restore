@@ -1,6 +1,6 @@
 @interface ATXNotificationEntityFeatures
 - (ATXNotificationEntityFeatures)init;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 @end
 
@@ -21,15 +21,15 @@
   return v2;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v9.receiver = self;
   v9.super_class = ATXNotificationEntityFeatures;
   v5 = [(ATXNotificationEntityFeatures *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"secondsToEngagement"];
+    v6 = [nCopy objectForKeyedSubscript:@"secondsToEngagement"];
     secondsToEngagement = v5->_secondsToEngagement;
     v5->_secondsToEngagement = v6;
   }

@@ -1,34 +1,34 @@
 @interface ASNotificationStep
-- (id)objectsTransformedFromRecords:(id)a3 cloudKitManager:(id)a4;
+- (id)objectsTransformedFromRecords:(id)records cloudKitManager:(id)manager;
 @end
 
 @implementation ASNotificationStep
 
-- (id)objectsTransformedFromRecords:(id)a3 cloudKitManager:(id)a4
+- (id)objectsTransformedFromRecords:(id)records cloudKitManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASNotificationStep *)self objectsTransformationBlock];
+  recordsCopy = records;
+  managerCopy = manager;
+  objectsTransformationBlock = [(ASNotificationStep *)self objectsTransformationBlock];
 
-  if (v8)
+  if (objectsTransformationBlock)
   {
-    v9 = [(ASNotificationStep *)self objectsTransformationBlock];
-    v10 = (v9)[2](v9, v7, v6);
+    objectsTransformationBlock2 = [(ASNotificationStep *)self objectsTransformationBlock];
+    v10 = (objectsTransformationBlock2)[2](objectsTransformationBlock2, managerCopy, recordsCopy);
   }
 
   else
   {
-    v11 = [(ASNotificationStep *)self objectTransformationBlock];
+    objectTransformationBlock = [(ASNotificationStep *)self objectTransformationBlock];
 
-    if (v11)
+    if (objectTransformationBlock)
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __68__ASNotificationStep_objectsTransformedFromRecords_cloudKitManager___block_invoke;
       v13[3] = &unk_278C4C618;
       v13[4] = self;
-      v14 = v7;
-      v10 = [v6 hk_map:v13];
+      v14 = managerCopy;
+      v10 = [recordsCopy hk_map:v13];
     }
 
     else

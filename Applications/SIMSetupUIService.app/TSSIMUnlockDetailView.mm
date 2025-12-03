@@ -1,21 +1,21 @@
 @interface TSSIMUnlockDetailView
-- (TSSIMUnlockDetailView)initWithActionType:(int64_t)a3 actionSubtype:(int64_t)a4;
-- (TSSIMUnlockDetailView)initWithActionType:(int64_t)a3 actionSubtype:(int64_t)a4 lockedSIMName:(id)a5;
+- (TSSIMUnlockDetailView)initWithActionType:(int64_t)type actionSubtype:(int64_t)subtype;
+- (TSSIMUnlockDetailView)initWithActionType:(int64_t)type actionSubtype:(int64_t)subtype lockedSIMName:(id)name;
 - (void)_configureDescriptionLabelText;
 - (void)_configureTitleLabelText;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_keyboardWillShow:(id)show;
 - (void)dealloc;
 @end
 
 @implementation TSSIMUnlockDetailView
 
-- (TSSIMUnlockDetailView)initWithActionType:(int64_t)a3 actionSubtype:(int64_t)a4 lockedSIMName:(id)a5
+- (TSSIMUnlockDetailView)initWithActionType:(int64_t)type actionSubtype:(int64_t)subtype lockedSIMName:(id)name
 {
-  v8 = a5;
-  v9 = [(TSSIMUnlockDetailView *)self initWithActionType:a3 actionSubtype:a4];
+  nameCopy = name;
+  v9 = [(TSSIMUnlockDetailView *)self initWithActionType:type actionSubtype:subtype];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [nameCopy copy];
     lockedSIMName = v9->_lockedSIMName;
     v9->_lockedSIMName = v10;
 
@@ -25,7 +25,7 @@
   return v9;
 }
 
-- (TSSIMUnlockDetailView)initWithActionType:(int64_t)a3 actionSubtype:(int64_t)a4
+- (TSSIMUnlockDetailView)initWithActionType:(int64_t)type actionSubtype:(int64_t)subtype
 {
   v12.receiver = self;
   v12.super_class = TSSIMUnlockDetailView;
@@ -33,8 +33,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_actionType = a3;
-    v6->_actionSubtype = a4;
+    v6->_actionType = type;
+    v6->_actionSubtype = subtype;
     [(TSSIMUnlockDetailView *)v6 _configureTitleLabelText];
     [(TSSIMUnlockDetailView *)v7 _configureDescriptionLabelText];
     if ((v7->_actionType & 0xFFFFFFFFFFFFFFFELL) == 2)
@@ -61,16 +61,16 @@
   [(TSSIMUnlockDetailView *)&v4 dealloc];
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v9 = [a3 userInfo];
+  userInfo = [show userInfo];
   [(TSSIMUnlockEntryView *)self->_entryView frame];
   if (!CGRectIsEmpty(v11))
   {
-    v4 = [v9 objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
+    v4 = [userInfo objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
     v5 = [v4 unsignedIntegerValue] << 16;
 
-    v6 = [v9 objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    v6 = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     [v6 doubleValue];
     v8 = v7;
 

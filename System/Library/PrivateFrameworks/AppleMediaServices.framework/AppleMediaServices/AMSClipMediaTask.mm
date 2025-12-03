@@ -1,7 +1,7 @@
 @interface AMSClipMediaTask
 + (AMSBagKeySet)bagKeySet;
-- (AMSClipMediaTask)initWithClientID:(id)a3 bundleID:(id)a4 URL:(id)a5 bag:(id)a6;
-- (AMSClipMediaTask)initWithClientID:(id)a3 bundleID:(id)a4 bag:(id)a5;
+- (AMSClipMediaTask)initWithClientID:(id)d bundleID:(id)iD URL:(id)l bag:(id)bag;
+- (AMSClipMediaTask)initWithClientID:(id)d bundleID:(id)iD bag:(id)bag;
 - (id)_componentsPromise;
 - (id)_performJourneysLookup;
 - (id)_performNetworkLookup;
@@ -10,20 +10,20 @@
 
 @implementation AMSClipMediaTask
 
-- (AMSClipMediaTask)initWithClientID:(id)a3 bundleID:(id)a4 bag:(id)a5
+- (AMSClipMediaTask)initWithClientID:(id)d bundleID:(id)iD bag:(id)bag
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  bagCopy = bag;
   v19.receiver = self;
   v19.super_class = AMSClipMediaTask;
   v12 = [(AMSTask *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bag, a5);
-    objc_storeStrong(&v13->_bundleID, a4);
-    objc_storeStrong(&v13->_clientID, a3);
+    objc_storeStrong(&v12->_bag, bag);
+    objc_storeStrong(&v13->_bundleID, iD);
+    objc_storeStrong(&v13->_clientID, d);
     v14 = +[AMSProcessInfo currentProcess];
     clientInfo = v13->_clientInfo;
     v13->_clientInfo = v14;
@@ -36,33 +36,33 @@
   return v13;
 }
 
-- (AMSClipMediaTask)initWithClientID:(id)a3 bundleID:(id)a4 URL:(id)a5 bag:(id)a6
+- (AMSClipMediaTask)initWithClientID:(id)d bundleID:(id)iD URL:(id)l bag:(id)bag
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
+  bagCopy = bag;
   v21.receiver = self;
   v21.super_class = AMSClipMediaTask;
   v15 = [(AMSTask *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_bag, a6);
-    objc_storeStrong(&v16->_bundleID, a4);
-    objc_storeStrong(&v16->_clientID, a3);
+    objc_storeStrong(&v15->_bag, bag);
+    objc_storeStrong(&v16->_bundleID, iD);
+    objc_storeStrong(&v16->_clientID, d);
     v17 = +[AMSProcessInfo currentProcess];
     clientInfo = v16->_clientInfo;
     v16->_clientInfo = v17;
 
-    v19 = v13;
-    if (!v13)
+    v19 = lCopy;
+    if (!lCopy)
     {
       v19 = [MEMORY[0x1E695DFF8] URLWithString:@"https://"];
     }
 
     objc_storeStrong(&v16->_URL, v19);
-    if (!v13)
+    if (!lCopy)
     {
     }
   }
@@ -203,8 +203,8 @@ LABEL_10:
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -212,18 +212,18 @@ LABEL_10:
     v33 = v5;
     v34 = 2114;
     v35 = v6;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing journeys lookup", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing journeys lookup", buf, 0x16u);
   }
 
   v31[0] = @"AMSClipMediaTask";
   v30[0] = @"source";
   v30[1] = @"url";
   v7 = [(AMSClipMediaTask *)self URL];
-  v8 = [v7 absoluteString];
-  v9 = v8;
-  if (v8)
+  absoluteString = [v7 absoluteString];
+  v9 = absoluteString;
+  if (absoluteString)
   {
-    v10 = v8;
+    v10 = absoluteString;
   }
 
   else
@@ -233,11 +233,11 @@ LABEL_10:
 
   v31[1] = v10;
   v30[2] = @"clientId";
-  v11 = [(AMSClipMediaTask *)self clientID];
-  v12 = v11;
-  if (v11)
+  clientID = [(AMSClipMediaTask *)self clientID];
+  v12 = clientID;
+  if (clientID)
   {
-    v13 = v11;
+    v13 = clientID;
   }
 
   else
@@ -247,11 +247,11 @@ LABEL_10:
 
   v31[2] = v13;
   v30[3] = @"bundleId";
-  v14 = [(AMSClipMediaTask *)self bundleID];
-  v15 = v14;
-  if (v14)
+  bundleID = [(AMSClipMediaTask *)self bundleID];
+  v15 = bundleID;
+  if (bundleID)
   {
-    v16 = v14;
+    v16 = bundleID;
   }
 
   else
@@ -262,12 +262,12 @@ LABEL_10:
   v31[3] = v16;
   v30[4] = @"clientInfo";
   v28 = @"bundleId";
-  v17 = [(AMSClipMediaTask *)self clientInfo];
-  v18 = [v17 bundleIdentifier];
-  v19 = v18;
-  if (v18)
+  clientInfo = [(AMSClipMediaTask *)self clientInfo];
+  bundleIdentifier = [clientInfo bundleIdentifier];
+  v19 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v20 = v18;
+    v20 = bundleIdentifier;
   }
 
   else
@@ -357,8 +357,8 @@ id __42__AMSClipMediaTask__performJourneysLookup__block_invoke(uint64_t a1, void
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -366,13 +366,13 @@ id __42__AMSClipMediaTask__performJourneysLookup__block_invoke(uint64_t a1, void
     v25 = v5;
     v26 = 2114;
     v27 = v6;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing network lookup", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing network lookup", buf, 0x16u);
   }
 
   v7 = [[AMSMediaTokenService alloc] initWithClientIdentifier:self->_clientID bag:self->_bag];
   v8 = [AMSURLSession alloc];
-  v9 = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
-  v10 = [(AMSURLSession *)v8 initWithConfiguration:v9];
+  defaultSessionConfiguration = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
+  v10 = [(AMSURLSession *)v8 initWithConfiguration:defaultSessionConfiguration];
 
   v11 = [[AMSMediaProtocolHandler alloc] initWithTokenService:v7];
   [(AMSURLSession *)v10 setProtocolHandler:v11];
@@ -381,15 +381,15 @@ id __42__AMSClipMediaTask__performJourneysLookup__block_invoke(uint64_t a1, void
   [(AMSURLSession *)v10 setResponseDecoder:v12];
 
   [(AMSMediaTokenService *)v7 setSession:v10];
-  v13 = [(AMSClipMediaTask *)self _componentsPromise];
+  _componentsPromise = [(AMSClipMediaTask *)self _componentsPromise];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __41__AMSClipMediaTask__performNetworkLookup__block_invoke;
   v21 = &unk_1E73B5EF0;
   v22 = v7;
-  v23 = self;
+  selfCopy = self;
   v14 = v7;
-  v15 = [v13 thenWithBlock:&v18];
+  v15 = [_componentsPromise thenWithBlock:&v18];
   v16 = [(AMSURLSession *)v10 dataTaskPromiseWithRequestPromise:v15, v18, v19, v20, v21];
 
   return v16;
@@ -418,13 +418,13 @@ id __41__AMSClipMediaTask__performNetworkLookup__block_invoke(uint64_t a1, void 
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = [AMSClipMediaURLBuilder alloc];
-  v4 = [(AMSClipMediaTask *)self bundleID];
+  bundleID = [(AMSClipMediaTask *)self bundleID];
   v5 = [(AMSClipMediaTask *)self bag];
-  v6 = [(AMSClipMediaURLBuilder *)v3 initWithBundleID:v4 bag:v5];
+  v6 = [(AMSClipMediaURLBuilder *)v3 initWithBundleID:bundleID bag:v5];
 
-  v7 = [(AMSClipMediaTask *)self externalVersionID];
+  externalVersionID = [(AMSClipMediaTask *)self externalVersionID];
 
-  if (v7)
+  if (externalVersionID)
   {
     v8 = +[AMSLogConfig sharedConfig];
     if (!v8)
@@ -432,28 +432,28 @@ id __41__AMSClipMediaTask__performNetworkLookup__block_invoke(uint64_t a1, void 
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
-      v12 = [(AMSClipMediaTask *)self externalVersionID];
+      externalVersionID2 = [(AMSClipMediaTask *)self externalVersionID];
       v16 = 138543874;
       v17 = v10;
       v18 = 2114;
       v19 = v11;
       v20 = 2114;
-      v21 = v12;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Requesting specific version (unsupported in production) %{public}@", &v16, 0x20u);
+      v21 = externalVersionID2;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Requesting specific version (unsupported in production) %{public}@", &v16, 0x20u);
     }
 
-    v13 = [(AMSClipMediaTask *)self externalVersionID];
-    [(AMSClipMediaURLBuilder *)v6 setExternalVersionID:v13];
+    externalVersionID3 = [(AMSClipMediaTask *)self externalVersionID];
+    [(AMSClipMediaURLBuilder *)v6 setExternalVersionID:externalVersionID3];
   }
 
-  v14 = [(AMSClipMediaURLBuilder *)v6 build];
+  build = [(AMSClipMediaURLBuilder *)v6 build];
 
-  return v14;
+  return build;
 }
 
 + (AMSBagKeySet)bagKeySet

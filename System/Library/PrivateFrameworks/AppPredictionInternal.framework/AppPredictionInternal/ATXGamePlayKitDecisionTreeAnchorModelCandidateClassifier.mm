@@ -1,76 +1,76 @@
 @interface ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier
-- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)a3 candidateType:(id)a4 anchor:(id)a5;
-- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)a3 candidateType:(id)a4 anchor:(id)a5 hyperParameters:(id)a6;
-- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)a3 candidateType:(id)a4 anchor:(id)a5 tree:(id)a6 hyperParameters:(id)a7 dataStoreWrapper:(id)a8;
-- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCoder:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
+- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)id candidateType:(id)type anchor:(id)anchor;
+- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)id candidateType:(id)type anchor:(id)anchor hyperParameters:(id)parameters;
+- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)id candidateType:(id)type anchor:(id)anchor tree:(id)tree hyperParameters:(id)parameters dataStoreWrapper:(id)wrapper;
+- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCoder:(id)coder;
+- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)l key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
 - (BOOL)shouldComputeLaunchHistoryCounts;
 - (NSString)description;
 - (NSString)treeDescription;
-- (id)anchorFeaturesWithAnchorOccurrence:(id)a3;
-- (id)candidateFeaturesForActionCandidateOnAnchorOccurrenceDate:(id)a3 cachedLaunchHistory:(id)a4;
-- (id)candidateFeaturesForAppCandidateOnAnchorOccurrenceDate:(id)a3 cachedLaunchHistory:(id)a4;
-- (id)candidateFeaturesForLinkActionCandidateOnAnchorOccurrenceDate:(id)a3 cachedLaunchHistory:(id)a4;
-- (id)candidateFeaturesForModeCandidateOnAnchorOccurrenceDate:(id)a3 cachedLaunchHistory:(id)a4;
-- (id)candidateFeaturesWithAnchorOccurrence:(id)a3 trainingResult:(id)a4;
-- (id)classifyCandidateForAnchorOccurrence:(id)a3 trainingResult:(id)a4;
-- (id)featureVectorFromFeatureDictionary:(id)a3;
-- (id)indicesToKeepInTrainingAfterRemovingDuplicateFeatureVectorsWithConflictingLabels:(id)a3 labels:(id)a4;
-- (id)inferenceFeatureDictForAnchorOccurrence:(id)a3 trainingResult:(id)a4;
+- (id)anchorFeaturesWithAnchorOccurrence:(id)occurrence;
+- (id)candidateFeaturesForActionCandidateOnAnchorOccurrenceDate:(id)date cachedLaunchHistory:(id)history;
+- (id)candidateFeaturesForAppCandidateOnAnchorOccurrenceDate:(id)date cachedLaunchHistory:(id)history;
+- (id)candidateFeaturesForLinkActionCandidateOnAnchorOccurrenceDate:(id)date cachedLaunchHistory:(id)history;
+- (id)candidateFeaturesForModeCandidateOnAnchorOccurrenceDate:(id)date cachedLaunchHistory:(id)history;
+- (id)candidateFeaturesWithAnchorOccurrence:(id)occurrence trainingResult:(id)result;
+- (id)classifyCandidateForAnchorOccurrence:(id)occurrence trainingResult:(id)result;
+- (id)featureVectorFromFeatureDictionary:(id)dictionary;
+- (id)indicesToKeepInTrainingAfterRemovingDuplicateFeatureVectorsWithConflictingLabels:(id)labels labels:(id)a4;
+- (id)inferenceFeatureDictForAnchorOccurrence:(id)occurrence trainingResult:(id)result;
 - (id)predictWhenNoTreeInitialized;
 - (id)stringFeaturesToReplaceWithUnk;
 - (id)trainDecisionTree;
 - (id)trainingData;
-- (id)trainingFeatureVectorsFromTrainingData:(id)a3;
-- (id)trainingLabelsFromTrainingData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)trainingFeatureVectorsFromTrainingData:(id)data;
+- (id)trainingLabelsFromTrainingData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 - (void)predictWhenNoTreeInitialized;
-- (void)setRecentAppLaunchCountsFromAppInfoManager:(id)a3 anchorOccurrenceDate:(id)a4;
+- (void)setRecentAppLaunchCountsFromAppInfoManager:(id)manager anchorOccurrenceDate:(id)date;
 - (void)train;
 - (void)trainDecisionTree;
 @end
 
 @implementation ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier
 
-- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)a3 candidateType:(id)a4 anchor:(id)a5
+- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)id candidateType:(id)type anchor:(id)anchor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  anchorCopy = anchor;
+  typeCopy = type;
+  idCopy = id;
   v11 = +[ATXAnchorModelHyperParameters sharedInstance];
   v12 = objc_opt_new();
-  v13 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self initWithCandidateId:v10 candidateType:v9 anchor:v8 hyperParameters:v11 dataStoreWrapper:v12];
+  v13 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self initWithCandidateId:idCopy candidateType:typeCopy anchor:anchorCopy hyperParameters:v11 dataStoreWrapper:v12];
 
   return v13;
 }
 
-- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)a3 candidateType:(id)a4 anchor:(id)a5 hyperParameters:(id)a6
+- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)id candidateType:(id)type anchor:(id)anchor hyperParameters:(id)parameters
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  parametersCopy = parameters;
+  anchorCopy = anchor;
+  typeCopy = type;
+  idCopy = id;
   v14 = objc_opt_new();
-  v15 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self initWithCandidateId:v13 candidateType:v12 anchor:v11 hyperParameters:v10 dataStoreWrapper:v14];
+  v15 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self initWithCandidateId:idCopy candidateType:typeCopy anchor:anchorCopy hyperParameters:parametersCopy dataStoreWrapper:v14];
 
   return v15;
 }
 
-- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)a3 candidateType:(id)a4 anchor:(id)a5 tree:(id)a6 hyperParameters:(id)a7 dataStoreWrapper:(id)a8
+- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCandidateId:(id)id candidateType:(id)type anchor:(id)anchor tree:(id)tree hyperParameters:(id)parameters dataStoreWrapper:(id)wrapper
 {
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  treeCopy = tree;
+  parametersCopy = parameters;
+  wrapperCopy = wrapper;
   v21.receiver = self;
   v21.super_class = ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier;
-  v18 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)&v21 initWithCandidateId:a3 candidateType:a4 anchor:a5];
+  v18 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)&v21 initWithCandidateId:id candidateType:type anchor:anchor];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_tree, a6);
-    objc_storeStrong(&v19->_storeWrapper, a8);
-    objc_storeStrong(&v19->_hyperParameters, a7);
+    objc_storeStrong(&v18->_tree, tree);
+    objc_storeStrong(&v19->_storeWrapper, wrapper);
+    objc_storeStrong(&v19->_hyperParameters, parameters);
   }
 
   return v19;
@@ -88,9 +88,9 @@
       tree = @"EmptyTree";
     }
 
-    v6 = [v4 initWithFormat:@"%@", tree];
+    tree = [v4 initWithFormat:@"%@", tree];
     v7 = self->_treeDescription;
-    self->_treeDescription = v6;
+    self->_treeDescription = tree;
 
     treeDescription = self->_treeDescription;
   }
@@ -102,15 +102,15 @@
 {
   if ([(ATXNaivePositiveAnchorModelCandidateClassifier *)self isTrained])
   {
-    v3 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self treeDescription];
+    treeDescription = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self treeDescription];
   }
 
   else
   {
-    v3 = @"GamePlayKit Decision Tree Anchor Model candidate classifier.";
+    treeDescription = @"GamePlayKit Decision Tree Anchor Model candidate classifier.";
   }
 
-  return v3;
+  return treeDescription;
 }
 
 - (BOOL)shouldComputeLaunchHistoryCounts
@@ -201,9 +201,9 @@ LABEL_11:
 
 - (void)train
 {
-  v3 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainDecisionTree];
+  trainDecisionTree = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainDecisionTree];
   tree = self->_tree;
-  self->_tree = v3;
+  self->_tree = trainDecisionTree;
 
   [(ATXNaivePositiveAnchorModelCandidateClassifier *)self setIsTrained:1];
 }
@@ -212,10 +212,10 @@ LABEL_11:
 {
   v29 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
-  v3 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingData];
-  v4 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingFeatureVectorsFromTrainingData:v3];
-  v5 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingLabelsFromTrainingData:v3];
-  v6 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self featureNames];
+  trainingData = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingData];
+  v4 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingFeatureVectorsFromTrainingData:trainingData];
+  v5 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingLabelsFromTrainingData:trainingData];
+  featureNames = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self featureNames];
   v7 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self indicesToKeepInTrainingAfterRemovingDuplicateFeatureVectorsWithConflictingLabels:v4 labels:v5];
   v8 = [v4 objectsAtIndexes:v7];
 
@@ -240,12 +240,12 @@ LABEL_11:
     v14 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-      v16 = [v12 anyObject];
+      candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+      anyObject = [v12 anyObject];
       *buf = 138412546;
-      v26 = v15;
+      v26 = candidateId;
       v27 = 2112;
-      v28 = v16;
+      v28 = anyObject;
       _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_INFO, "Skipping training decision tree for candidate %@ since there's only one known label: %@.:", buf, 0x16u);
     }
 
@@ -256,13 +256,13 @@ LABEL_11:
   {
     v18 = [ATXGamePlayKitDecisionTree alloc];
     [(ATXAnchorModelHyperParameters *)self->_hyperParameters ratioForLeafNodeDecision];
-    v17 = [(ATXGamePlayKitDecisionTree *)v18 initWithExamples:v8 actions:v9 attributes:v6 maxDepth:3 minSamplesSplit:3 ratioForLeafNodeDecision:?];
+    v17 = [(ATXGamePlayKitDecisionTree *)v18 initWithExamples:v8 actions:v9 attributes:featureNames maxDepth:3 minSamplesSplit:3 ratioForLeafNodeDecision:?];
     v19 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+      candidateId2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
       *buf = 138412290;
-      v26 = v20;
+      v26 = candidateId2;
       _os_log_impl(&dword_2263AA000, v19, OS_LOG_TYPE_INFO, "Finished training decision tree for candidate %@. Tree:", buf, 0xCu);
     }
 
@@ -291,20 +291,20 @@ LABEL_11:
   return v21;
 }
 
-- (id)indicesToKeepInTrainingAfterRemovingDuplicateFeatureVectorsWithConflictingLabels:(id)a3 labels:(id)a4
+- (id)indicesToKeepInTrainingAfterRemovingDuplicateFeatureVectorsWithConflictingLabels:(id)labels labels:(id)a4
 {
-  v5 = a3;
+  labelsCopy = labels;
   v6 = a4;
   v7 = objc_opt_new();
-  if ([v5 count])
+  if ([labelsCopy count])
   {
     v8 = 0;
     do
     {
-      v9 = [v5 objectAtIndexedSubscript:v8];
-      for (i = v8; i < [v5 count]; ++i)
+      v9 = [labelsCopy objectAtIndexedSubscript:v8];
+      for (i = v8; i < [labelsCopy count]; ++i)
       {
-        v11 = [v5 objectAtIndexedSubscript:i];
+        v11 = [labelsCopy objectAtIndexedSubscript:i];
         if ([v9 isEqual:v11])
         {
           v12 = [v6 objectAtIndexedSubscript:v8];
@@ -337,10 +337,10 @@ LABEL_11:
       ++v8;
     }
 
-    while (v8 < [v5 count]);
+    while (v8 < [labelsCopy count]);
   }
 
-  v17 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(v5, "count")}];
+  v17 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(labelsCopy, "count")}];
   [v17 removeIndexes:v7];
 
   return v17;
@@ -349,21 +349,21 @@ LABEL_11:
 - (id)trainingData
 {
   storeWrapper = self->_storeWrapper;
-  v4 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-  v5 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
-  v6 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper trainingDataForCandidate:v4 anchor:v5 replacementStringForNilStringValues:@"unk"];
+  candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+  anchor = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
+  v6 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper trainingDataForCandidate:candidateId anchor:anchor replacementStringForNilStringValues:@"unk"];
 
   return v6;
 }
 
-- (id)trainingLabelsFromTrainingData:(id)a3
+- (id)trainingLabelsFromTrainingData:(id)data
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabelsFromTrainingData___block_invoke;
   v6[3] = &unk_27859E288;
   v6[4] = self;
-  v3 = [a3 _pas_mappedArrayWithTransform:v6];
+  v3 = [data _pas_mappedArrayWithTransform:v6];
   v4 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -383,17 +383,17 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
   return v5;
 }
 
-- (id)featureVectorFromFeatureDictionary:(id)a3
+- (id)featureVectorFromFeatureDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self featureNames];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  featureNames = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self featureNames];
+  v7 = [featureNames countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -404,15 +404,15 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(featureNames);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v4 objectForKeyedSubscript:v11];
+        v12 = [dictionaryCopy objectForKeyedSubscript:v11];
         if (!v12)
         {
-          v13 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self stringFeaturesToReplaceWithUnk];
-          v14 = [v13 containsObject:v11];
+          stringFeaturesToReplaceWithUnk = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self stringFeaturesToReplaceWithUnk];
+          v14 = [stringFeaturesToReplaceWithUnk containsObject:v11];
 
           v12 = @"unk";
           if (!v14)
@@ -424,7 +424,7 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
         [v5 addObject:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [featureNames countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -441,27 +441,27 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
   return v5;
 }
 
-- (id)trainingFeatureVectorsFromTrainingData:(id)a3
+- (id)trainingFeatureVectorsFromTrainingData:(id)data
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __99__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingFeatureVectorsFromTrainingData___block_invoke;
   v5[3] = &unk_27859E288;
   v5[4] = self;
-  v3 = [a3 _pas_mappedArrayWithTransform:v5];
+  v3 = [data _pas_mappedArrayWithTransform:v5];
 
   return v3;
 }
 
-- (id)classifyCandidateForAnchorOccurrence:(id)a3 trainingResult:(id)a4
+- (id)classifyCandidateForAnchorOccurrence:(id)occurrence trainingResult:(id)result
 {
   *&v26[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  occurrenceCopy = occurrence;
+  resultCopy = result;
   v8 = objc_autoreleasePoolPush();
   if (self->_tree)
   {
-    v9 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self inferenceFeatureDictForAnchorOccurrence:v6 trainingResult:v7];
+    v9 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self inferenceFeatureDictForAnchorOccurrence:occurrenceCopy trainingResult:resultCopy];
     v10 = [v9 count];
     v11 = __atxlog_handle_anchor();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -478,21 +478,21 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
         v15 = __atxlog_handle_anchor();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+          candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
           v25 = 67109378;
-          v26[0] = v14;
+          v26[0] = bOOLValue;
           LOWORD(v26[1]) = 2112;
-          *(&v26[1] + 2) = v16;
+          *(&v26[1] + 2) = candidateId;
           _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "GamePlayKit Decision Tree predicted %{BOOL}d for candidate %@", &v25, 0x12u);
         }
 
         v17 = [ATXAnchorModelClassificationResult alloc];
         v18 = 0.5;
-        v19 = v14;
+        v19 = bOOLValue;
       }
 
       else
@@ -508,41 +508,41 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
         v19 = 0;
       }
 
-      v20 = [(ATXAnchorModelClassificationResult *)v17 initWithShouldPredictCandidate:v19 score:v18];
+      predictWhenNoTreeInitialized = [(ATXAnchorModelClassificationResult *)v17 initWithShouldPredictCandidate:v19 score:v18];
     }
 
     else
     {
       if (v12)
       {
-        v21 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+        candidateId2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
         v25 = 138412290;
-        *v26 = v21;
+        *v26 = candidateId2;
         _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "GKDecisionTree Predicting NO because inference feature dict was an empty dictionary, likely due to an error. CandidateId: %@", &v25, 0xCu);
       }
 
-      v20 = [[ATXAnchorModelClassificationResult alloc] initWithShouldPredictCandidate:0 score:0.0];
+      predictWhenNoTreeInitialized = [[ATXAnchorModelClassificationResult alloc] initWithShouldPredictCandidate:0 score:0.0];
     }
   }
 
   else
   {
-    v20 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self predictWhenNoTreeInitialized];
+    predictWhenNoTreeInitialized = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self predictWhenNoTreeInitialized];
   }
 
   objc_autoreleasePoolPop(v8);
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return predictWhenNoTreeInitialized;
 }
 
 - (id)predictWhenNoTreeInitialized
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingData];
-  v4 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingFeatureVectorsFromTrainingData:v3];
-  v5 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingLabelsFromTrainingData:v3];
+  trainingData = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingData];
+  v4 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingFeatureVectorsFromTrainingData:trainingData];
+  v5 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self trainingLabelsFromTrainingData:trainingData];
   v6 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self indicesToKeepInTrainingAfterRemovingDuplicateFeatureVectorsWithConflictingLabels:v4 labels:v5];
   v7 = [v5 objectsAtIndexes:v6];
 
@@ -554,15 +554,15 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v12 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+      candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
       v18 = 138412290;
-      v19 = v12;
+      v19 = candidateId;
       _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_INFO, "Tree not initialized but asked to make a prediction. Since this was a pure candidate, we're predicting the only label we have. %@", &v18, 0xCu);
     }
 
     v13 = [ATXAnchorModelClassificationResult alloc];
-    v14 = [v8 anyObject];
-    v15 = -[ATXAnchorModelClassificationResult initWithShouldPredictCandidate:score:](v13, "initWithShouldPredictCandidate:score:", [v14 BOOLValue], 1.0);
+    anyObject = [v8 anyObject];
+    v15 = -[ATXAnchorModelClassificationResult initWithShouldPredictCandidate:score:](v13, "initWithShouldPredictCandidate:score:", [anyObject BOOLValue], 1.0);
   }
 
   else
@@ -580,18 +580,18 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
   return v15;
 }
 
-- (id)inferenceFeatureDictForAnchorOccurrence:(id)a3 trainingResult:(id)a4
+- (id)inferenceFeatureDictForAnchorOccurrence:(id)occurrence trainingResult:(id)result
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  occurrenceCopy = occurrence;
+  resultCopy = result;
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier inferenceFeatureDictForAnchorOccurrence:? trainingResult:?];
   }
 
-  v9 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self candidateFeaturesWithAnchorOccurrence:v6 trainingResult:v7];
+  v9 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self candidateFeaturesWithAnchorOccurrence:occurrenceCopy trainingResult:resultCopy];
 
   v10 = [v9 count];
   v11 = __atxlog_handle_anchor();
@@ -603,7 +603,7 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
       [ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier inferenceFeatureDictForAnchorOccurrence:trainingResult:];
     }
 
-    v12 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self anchorFeaturesWithAnchorOccurrence:v6];
+    v12 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self anchorFeaturesWithAnchorOccurrence:occurrenceCopy];
     v13 = [v12 count];
     v14 = __atxlog_handle_anchor();
     v15 = v14;
@@ -627,12 +627,12 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-        v20 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
+        candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+        anchor = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
         v23 = 138412546;
-        v24 = v19;
+        v24 = candidateId;
         v25 = 2112;
-        v26 = v20;
+        v26 = anchor;
         _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "Anchor features were empty for candidateId: %@, anchor: %@", &v23, 0x16u);
       }
 
@@ -644,12 +644,12 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-      v18 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
+      candidateId2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+      anchor2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
       v23 = 138412546;
-      v24 = v17;
+      v24 = candidateId2;
       v25 = 2112;
-      v26 = v18;
+      v26 = anchor2;
       _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_DEFAULT, "Candidate features were empty for candidateId: %@, anchor: %@", &v23, 0x16u);
     }
 
@@ -661,57 +661,57 @@ id __91__ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier_trainingLabels
   return v16;
 }
 
-- (id)candidateFeaturesWithAnchorOccurrence:(id)a3 trainingResult:(id)a4
+- (id)candidateFeaturesWithAnchorOccurrence:(id)occurrence trainingResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
-  v9 = [objc_opt_class() anchorOccurenceDateFromDuetEvent:v7];
+  resultCopy = result;
+  occurrenceCopy = occurrence;
+  anchor = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
+  v9 = [objc_opt_class() anchorOccurenceDateFromDuetEvent:occurrenceCopy];
 
-  v10 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateType];
-  LODWORD(v8) = [v10 isEqualToString:@"action"];
+  candidateType = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateType];
+  LODWORD(anchor) = [candidateType isEqualToString:@"action"];
 
-  if (v8)
+  if (anchor)
   {
-    v11 = [v6 phase1TrainingResult];
-    v12 = [v11 launchHistory];
-    v13 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self candidateFeaturesForActionCandidateOnAnchorOccurrenceDate:v9 cachedLaunchHistory:v12];
+    phase1TrainingResult = [resultCopy phase1TrainingResult];
+    launchHistory = [phase1TrainingResult launchHistory];
+    v13 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self candidateFeaturesForActionCandidateOnAnchorOccurrenceDate:v9 cachedLaunchHistory:launchHistory];
 LABEL_9:
     v20 = v13;
 
     goto LABEL_10;
   }
 
-  v14 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateType];
-  v15 = [v14 isEqualToString:@"app"];
+  candidateType2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateType];
+  v15 = [candidateType2 isEqualToString:@"app"];
 
   if (v15)
   {
-    v11 = [v6 phase1TrainingResult];
-    v12 = [v11 launchHistory];
-    v13 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self candidateFeaturesForAppCandidateOnAnchorOccurrenceDate:v9 cachedLaunchHistory:v12];
+    phase1TrainingResult = [resultCopy phase1TrainingResult];
+    launchHistory = [phase1TrainingResult launchHistory];
+    v13 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self candidateFeaturesForAppCandidateOnAnchorOccurrenceDate:v9 cachedLaunchHistory:launchHistory];
     goto LABEL_9;
   }
 
-  v16 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateType];
-  v17 = [v16 isEqualToString:@"mode"];
+  candidateType3 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateType];
+  v17 = [candidateType3 isEqualToString:@"mode"];
 
   if (v17)
   {
-    v11 = [v6 phase1TrainingResult];
-    v12 = [v11 launchHistory];
-    v13 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self candidateFeaturesForModeCandidateOnAnchorOccurrenceDate:v9 cachedLaunchHistory:v12];
+    phase1TrainingResult = [resultCopy phase1TrainingResult];
+    launchHistory = [phase1TrainingResult launchHistory];
+    v13 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self candidateFeaturesForModeCandidateOnAnchorOccurrenceDate:v9 cachedLaunchHistory:launchHistory];
     goto LABEL_9;
   }
 
-  v18 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateType];
-  v19 = [v18 isEqualToString:@"linkaction"];
+  candidateType4 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateType];
+  v19 = [candidateType4 isEqualToString:@"linkaction"];
 
   if (v19)
   {
-    v11 = [v6 phase1TrainingResult];
-    v12 = [v11 launchHistory];
-    v13 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self candidateFeaturesForLinkActionCandidateOnAnchorOccurrenceDate:v9 cachedLaunchHistory:v12];
+    phase1TrainingResult = [resultCopy phase1TrainingResult];
+    launchHistory = [phase1TrainingResult launchHistory];
+    v13 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self candidateFeaturesForLinkActionCandidateOnAnchorOccurrenceDate:v9 cachedLaunchHistory:launchHistory];
     goto LABEL_9;
   }
 
@@ -721,48 +721,48 @@ LABEL_10:
   return v20;
 }
 
-- (id)candidateFeaturesForActionCandidateOnAnchorOccurrenceDate:(id)a3 cachedLaunchHistory:(id)a4
+- (id)candidateFeaturesForActionCandidateOnAnchorOccurrenceDate:(id)date cachedLaunchHistory:(id)history
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  historyCopy = history;
   storeWrapper = self->_storeWrapper;
-  v9 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-  v10 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper appIntentDuetEventFromCandidateId:v9 date:v6];
+  candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+  v10 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper appIntentDuetEventFromCandidateId:candidateId date:dateCopy];
 
   if (v10)
   {
     v11 = objc_opt_new();
     [v11 setShouldComputeLaunchHistoryForAppLaunches:0];
     [v11 setShouldComputeLaunchHistoryForActionKeyLaunches:0];
-    v12 = 0;
-    if (!v7)
+    shouldComputeLaunchHistoryCounts = 0;
+    if (!historyCopy)
     {
-      v12 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self shouldComputeLaunchHistoryCounts];
+      shouldComputeLaunchHistoryCounts = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self shouldComputeLaunchHistoryCounts];
     }
 
-    [v11 setShouldComputeLaunchHistoryForActionUUIDLaunches:v12];
-    v13 = [v11 featurizeActionEvent:v10 anchorOccurrenceDate:v6];
-    if (v7)
+    [v11 setShouldComputeLaunchHistoryForActionUUIDLaunches:shouldComputeLaunchHistoryCounts];
+    v13 = [v11 featurizeActionEvent:v10 anchorOccurrenceDate:dateCopy];
+    if (historyCopy)
     {
       v14 = __atxlog_handle_anchor();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+        candidateId2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
         *buf = 138412290;
-        v27 = v15;
+        v27 = candidateId2;
         _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_DEFAULT, "Featurizing %@, already have cachedLaunchHistory. Filling in the recent history.", buf, 0xCu);
       }
 
-      v16 = [v13 actionUUIDMetadatas];
-      v17 = [v16 objectAtIndexedSubscript:0];
-      [v17 setActionUUIDLaunchHistory:v7];
+      actionUUIDMetadatas = [v13 actionUUIDMetadatas];
+      v17 = [actionUUIDMetadatas objectAtIndexedSubscript:0];
+      [v17 setActionUUIDLaunchHistory:historyCopy];
 
-      v18 = [v11 recentHistoryForActionUUIDWithAppIntentDuetEvent:v10 anchorOccurrenceDate:v6];
-      v19 = [v13 actionUUIDMetadatas];
-      v20 = [v19 objectAtIndexedSubscript:0];
-      v21 = [v20 actionUUIDLaunchHistory];
-      [v21 mergeFrom:v18];
+      v18 = [v11 recentHistoryForActionUUIDWithAppIntentDuetEvent:v10 anchorOccurrenceDate:dateCopy];
+      actionUUIDMetadatas2 = [v13 actionUUIDMetadatas];
+      v20 = [actionUUIDMetadatas2 objectAtIndexedSubscript:0];
+      actionUUIDLaunchHistory = [v20 actionUUIDLaunchHistory];
+      [actionUUIDLaunchHistory mergeFrom:v18];
     }
 
     v22 = self->_storeWrapper;
@@ -779,45 +779,45 @@ LABEL_10:
   return v23;
 }
 
-- (id)candidateFeaturesForAppCandidateOnAnchorOccurrenceDate:(id)a3 cachedLaunchHistory:(id)a4
+- (id)candidateFeaturesForAppCandidateOnAnchorOccurrenceDate:(id)date cachedLaunchHistory:(id)history
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  historyCopy = history;
   storeWrapper = self->_storeWrapper;
-  v9 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-  v10 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper appLaunchDuetEventFromCandidateId:v9 date:v6];
+  candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+  v10 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper appLaunchDuetEventFromCandidateId:candidateId date:dateCopy];
 
   v11 = objc_opt_new();
-  if (v7)
+  if (historyCopy)
   {
-    v12 = 0;
+    shouldComputeLaunchHistoryCounts = 0;
   }
 
   else
   {
-    v12 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self shouldComputeLaunchHistoryCounts];
+    shouldComputeLaunchHistoryCounts = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self shouldComputeLaunchHistoryCounts];
   }
 
-  [v11 setShouldComputeLaunchHistoryForAppLaunches:v12];
+  [v11 setShouldComputeLaunchHistoryForAppLaunches:shouldComputeLaunchHistoryCounts];
   v22[0] = v10;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  v14 = [v11 featurizeAppLaunchEvents:v13 anchorOccurrenceDate:v6];
+  v14 = [v11 featurizeAppLaunchEvents:v13 anchorOccurrenceDate:dateCopy];
   v15 = [v14 objectAtIndexedSubscript:0];
 
-  if (v7)
+  if (historyCopy)
   {
-    [v15 setAppLaunchHistory:v7];
+    [v15 setAppLaunchHistory:historyCopy];
     if ([(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self shouldComputeLaunchHistoryCounts])
     {
-      v16 = [v11 recentHistoryForAppLaunchDuetEvent:v10 anchorOccurrenceDate:v6];
-      v17 = [v15 appLaunchHistory];
-      [v17 mergeFrom:v16];
+      v16 = [v11 recentHistoryForAppLaunchDuetEvent:v10 anchorOccurrenceDate:dateCopy];
+      appLaunchHistory = [v15 appLaunchHistory];
+      [appLaunchHistory mergeFrom:v16];
     }
 
     else
     {
-      [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self setRecentAppLaunchCountsFromAppInfoManager:v15 anchorOccurrenceDate:v6];
+      [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self setRecentAppLaunchCountsFromAppInfoManager:v15 anchorOccurrenceDate:dateCopy];
     }
   }
 
@@ -829,27 +829,27 @@ LABEL_10:
   return v19;
 }
 
-- (id)candidateFeaturesForModeCandidateOnAnchorOccurrenceDate:(id)a3 cachedLaunchHistory:(id)a4
+- (id)candidateFeaturesForModeCandidateOnAnchorOccurrenceDate:(id)date cachedLaunchHistory:(id)history
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  historyCopy = history;
   storeWrapper = self->_storeWrapper;
-  v9 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-  v10 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper modeBiomeEventFromCandidateId:v9 date:v6];
+  candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+  v10 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper modeBiomeEventFromCandidateId:candidateId date:dateCopy];
 
   if (v10)
   {
     v11 = objc_opt_new();
-    v12 = [v11 featurizeModeEvent:v10 anchorOccurrenceDate:v6];
+    v12 = [v11 featurizeModeEvent:v10 anchorOccurrenceDate:dateCopy];
     v13 = v12;
-    if (v7)
+    if (historyCopy)
     {
-      [v12 setModeHistory:v7];
+      [v12 setModeHistory:historyCopy];
       if ([(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self shouldComputeLaunchHistoryCounts])
       {
-        v14 = [v11 recentHistoryForModeWithModeEvent:v10 anchorOccurrenceDate:v6];
-        v15 = [v13 modeHistory];
-        [v15 mergeFrom:v14];
+        v14 = [v11 recentHistoryForModeWithModeEvent:v10 anchorOccurrenceDate:dateCopy];
+        modeHistory = [v13 modeHistory];
+        [modeHistory mergeFrom:v14];
       }
     }
 
@@ -865,34 +865,34 @@ LABEL_10:
   return v17;
 }
 
-- (id)candidateFeaturesForLinkActionCandidateOnAnchorOccurrenceDate:(id)a3 cachedLaunchHistory:(id)a4
+- (id)candidateFeaturesForLinkActionCandidateOnAnchorOccurrenceDate:(id)date cachedLaunchHistory:(id)history
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  historyCopy = history;
   storeWrapper = self->_storeWrapper;
-  v9 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-  v10 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper linkActionBiomeEventFromCandidateId:v9 date:v6];
+  candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+  v10 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper linkActionBiomeEventFromCandidateId:candidateId date:dateCopy];
 
   if (v10)
   {
     v11 = objc_opt_new();
-    v12 = [v11 featurizeLinkActionEvent:v10 anchorOccurrenceDate:v6];
-    if (v7)
+    v12 = [v11 featurizeLinkActionEvent:v10 anchorOccurrenceDate:dateCopy];
+    if (historyCopy)
     {
       v13 = __atxlog_handle_anchor();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+        candidateId2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
         v21 = 138412290;
-        v22 = v14;
+        v22 = candidateId2;
         _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEFAULT, "Featurizing %@, already have cachedLaunchHistory. Filling in the recent history.", &v21, 0xCu);
       }
 
-      [v12 setActionHistory:v7];
-      v15 = [v11 historyForLinkActionChangeEvent:v10 anchorOccurrenceDate:v6];
-      v16 = [v12 actionHistory];
-      [v16 mergeFrom:v15];
+      [v12 setActionHistory:historyCopy];
+      v15 = [v11 historyForLinkActionChangeEvent:v10 anchorOccurrenceDate:dateCopy];
+      actionHistory = [v12 actionHistory];
+      [actionHistory mergeFrom:v15];
     }
 
     v17 = self->_storeWrapper;
@@ -909,88 +909,88 @@ LABEL_10:
   return v18;
 }
 
-- (void)setRecentAppLaunchCountsFromAppInfoManager:(id)a3 anchorOccurrenceDate:(id)a4
+- (void)setRecentAppLaunchCountsFromAppInfoManager:(id)manager anchorOccurrenceDate:(id)date
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  dateCopy = date;
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+    candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
     v20 = 138412290;
-    v21 = v9;
+    v21 = candidateId;
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "Featurizing %@, already have cachedLaunchHistory and we don't need to compute the launch history counts. Accessing the last app launch date from ATXAppInfoManager.", &v20, 0xCu);
   }
 
   v10 = +[_ATXAppInfoManager sharedInstance];
-  v11 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-  v12 = [v10 lastLaunchDateForBundleId:v11];
+  candidateId2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+  v12 = [v10 lastLaunchDateForBundleId:candidateId2];
 
-  v13 = [v7 dateByAddingTimeInterval:-86400.0];
-  v14 = [v7 dateByAddingTimeInterval:-43200.0];
+  v13 = [dateCopy dateByAddingTimeInterval:-86400.0];
+  v14 = [dateCopy dateByAddingTimeInterval:-43200.0];
 
   v15 = [v12 earlierDate:v13];
 
   if (v15 == v13)
   {
-    v16 = [v6 appLaunchHistory];
-    [v16 setLaunchesInLast24Hours:1];
+    appLaunchHistory = [managerCopy appLaunchHistory];
+    [appLaunchHistory setLaunchesInLast24Hours:1];
   }
 
   v17 = [v12 earlierDate:v14];
 
   if (v17 == v14)
   {
-    v18 = [v6 appLaunchHistory];
-    [v18 setLaunchesInLast12Hours:1];
+    appLaunchHistory2 = [managerCopy appLaunchHistory];
+    [appLaunchHistory2 setLaunchesInLast12Hours:1];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)anchorFeaturesWithAnchorOccurrence:(id)a3
+- (id)anchorFeaturesWithAnchorOccurrence:(id)occurrence
 {
-  v4 = a3;
+  occurrenceCopy = occurrence;
   v5 = objc_opt_new();
-  v6 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
-  v7 = [v5 featurizeAnchorEvent:v4 anchor:v6];
+  anchor = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
+  v7 = [v5 featurizeAnchorEvent:occurrenceCopy anchor:anchor];
 
   storeWrapper = self->_storeWrapper;
   v9 = objc_opt_class();
-  v10 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
-  v11 = [v9 anchorFeaturesForAnchorOccurrence:v4 anchor:v10 anchorMetadata:v7];
+  anchor2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
+  v11 = [v9 anchorFeaturesForAnchorOccurrence:occurrenceCopy anchor:anchor2 anchorMetadata:v7];
 
   return v11;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -1002,33 +1002,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)l key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!l)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -1040,48 +1040,48 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-  [v10 encodeObject:v4 forKey:@"codingKeyForCandidateId"];
+  coderCopy = coder;
+  candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+  [coderCopy encodeObject:candidateId forKey:@"codingKeyForCandidateId"];
 
-  v5 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateType];
-  [v10 encodeObject:v5 forKey:@"codingKeyForCandidateType"];
+  candidateType = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateType];
+  [coderCopy encodeObject:candidateType forKey:@"codingKeyForCandidateType"];
 
-  v6 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
-  [v10 encodeObject:v6 forKey:@"codingKeyForAnchorInstance"];
+  anchor = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
+  [coderCopy encodeObject:anchor forKey:@"codingKeyForAnchorInstance"];
 
-  v7 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self treeDescription];
-  v8 = [v7 isEqualToString:@"EmptyTree"];
+  treeDescription = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self treeDescription];
+  v8 = [treeDescription isEqualToString:@"EmptyTree"];
 
   if ((v8 & 1) == 0)
   {
-    [v10 encodeObject:self->_tree forKey:@"codingKeyForGKDecisionTree"];
+    [coderCopy encodeObject:self->_tree forKey:@"codingKeyForGKDecisionTree"];
   }
 
-  [v10 encodeBool:-[ATXNaivePositiveAnchorModelCandidateClassifier isTrained](self forKey:{"isTrained"), @"codingKeyForDecisionTreeIsTrained"}];
-  v9 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self treeDescription];
-  [v10 encodeObject:v9 forKey:@"codingKeyForDecisionTreeDescription"];
+  [coderCopy encodeBool:-[ATXNaivePositiveAnchorModelCandidateClassifier isTrained](self forKey:{"isTrained"), @"codingKeyForDecisionTreeIsTrained"}];
+  treeDescription2 = [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self treeDescription];
+  [coderCopy encodeObject:treeDescription2 forKey:@"codingKeyForDecisionTreeDescription"];
 }
 
-- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCoder:(id)a3
+- (ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForCandidateId"];
-  if (![(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v5 key:@"codingKeyForCandidateId" coder:v4 errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForCandidateId"];
+  if (![(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v5 key:@"codingKeyForCandidateId" coder:coderCopy errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForCandidateType"];
-    if ([(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v7 key:@"codingKeyForCandidateType" coder:v4 errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForCandidateType"];
+    if ([(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v7 key:@"codingKeyForCandidateType" coder:coderCopy errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
     {
-      v6 = 0;
+      selfCopy = 0;
 LABEL_40:
 
       goto LABEL_41;
     }
 
     v8 = +[ATXAnchor allAnchorClasses];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"codingKeyForAnchorInstance"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"codingKeyForAnchorInstance"];
 
     if (v9)
     {
@@ -1094,20 +1094,20 @@ LABEL_40:
       [ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier initWithCoder:v11];
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForAnchor"];
-    if ([(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v12 key:@"codingKeyForAnchor" coder:v4 errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForAnchor"];
+    if ([(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v12 key:@"codingKeyForAnchor" coder:coderCopy errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
     {
       v9 = 0;
 LABEL_13:
-      v6 = 0;
+      selfCopy = 0;
 LABEL_38:
 
       goto LABEL_39;
     }
 
     v13 = +[ATXAnchorModelHyperParameters sharedInstance];
-    v14 = [v13 enabledAnchors];
-    v15 = [v14 containsObject:v12];
+    enabledAnchors = [v13 enabledAnchors];
+    v15 = [enabledAnchors containsObject:v12];
 
     if (v15)
     {
@@ -1120,17 +1120,17 @@ LABEL_38:
 
           v9 = v16;
 LABEL_6:
-          v10 = [v4 decodeBoolForKey:@"codingKeyForDecisionTreeIsTrained"];
-          if ([(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForBOOL:v10 key:@"codingKeyForDecisionTreeIsTrained" coder:v4 errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
+          v10 = [coderCopy decodeBoolForKey:@"codingKeyForDecisionTreeIsTrained"];
+          if ([(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForBOOL:v10 key:@"codingKeyForDecisionTreeIsTrained" coder:coderCopy errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
           {
-            v6 = 0;
+            selfCopy = 0;
 LABEL_39:
 
             goto LABEL_40;
           }
 
-          v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForDecisionTreeDescription"];
-          if ([(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v12 key:@"codingKeyForDecisionTreeDescription" coder:v4 errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
+          v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForDecisionTreeDescription"];
+          if ([(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v12 key:@"codingKeyForDecisionTreeDescription" coder:coderCopy errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
           {
             goto LABEL_13;
           }
@@ -1142,9 +1142,9 @@ LABEL_24:
             v17 = objc_opt_class();
             v18 = NSStringFromClass(v17);
             v19 = +[ATXAnchorModelHyperParameters sharedInstance];
-            v20 = [v19 enabledAnchors];
+            enabledAnchors2 = [v19 enabledAnchors];
             v27 = v18;
-            LOBYTE(v18) = [v20 containsObject:v18];
+            LOBYTE(v18) = [enabledAnchors2 containsObject:v18];
 
             if (v18)
             {
@@ -1155,7 +1155,7 @@ LABEL_24:
 
               [(ATXNaivePositiveAnchorModelCandidateClassifier *)self setIsTrained:v10];
               [(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self setTreeDescription:v12];
-              v6 = self;
+              selfCopy = self;
               v23 = v27;
             }
 
@@ -1169,21 +1169,21 @@ LABEL_24:
                 [ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier initWithCoder:];
               }
 
-              v6 = 0;
+              selfCopy = 0;
             }
 
             goto LABEL_37;
           }
 
-          v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForGKDecisionTree"];
-          if (![(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v16 key:@"codingKeyForGKDecisionTree" coder:v4 errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
+          v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForGKDecisionTree"];
+          if (![(ATXGamePlayKitDecisionTreeAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v16 key:@"codingKeyForGKDecisionTree" coder:coderCopy errorDomain:@"com.apple.proactive.GamePlayKitDecisionTreeAnchorModelCandidateClassifier" errorCode:-1])
           {
             v28 = v16;
             goto LABEL_24;
           }
 
 LABEL_36:
-          v6 = 0;
+          selfCopy = 0;
 LABEL_37:
 
           goto LABEL_38;
@@ -1219,10 +1219,10 @@ LABEL_37:
     goto LABEL_36;
   }
 
-  v6 = 0;
+  selfCopy = 0;
 LABEL_41:
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)trainDecisionTree
@@ -1255,7 +1255,7 @@ LABEL_41:
 - (void)predictWhenNoTreeInitialized
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = [a1 candidateId];
+  candidateId = [self candidateId];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v2, v3, OS_LOG_TYPE_ERROR, v4, v5, 0xCu);

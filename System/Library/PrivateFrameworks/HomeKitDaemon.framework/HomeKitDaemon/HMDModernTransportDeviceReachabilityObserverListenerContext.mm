@@ -1,22 +1,22 @@
 @interface HMDModernTransportDeviceReachabilityObserverListenerContext
-- (HMDModernTransportDeviceReachabilityObserverListenerContext)initWithAddress:(id)a3;
+- (HMDModernTransportDeviceReachabilityObserverListenerContext)initWithAddress:(id)address;
 @end
 
 @implementation HMDModernTransportDeviceReachabilityObserverListenerContext
 
-- (HMDModernTransportDeviceReachabilityObserverListenerContext)initWithAddress:(id)a3
+- (HMDModernTransportDeviceReachabilityObserverListenerContext)initWithAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   v10.receiver = self;
   v10.super_class = HMDModernTransportDeviceReachabilityObserverListenerContext;
   v6 = [(HMDModernTransportDeviceReachabilityObserverListenerContext *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     listeners = v6->_listeners;
-    v6->_listeners = v7;
+    v6->_listeners = weakObjectsHashTable;
 
-    objc_storeStrong(&v6->_address, a3);
+    objc_storeStrong(&v6->_address, address);
   }
 
   return v6;

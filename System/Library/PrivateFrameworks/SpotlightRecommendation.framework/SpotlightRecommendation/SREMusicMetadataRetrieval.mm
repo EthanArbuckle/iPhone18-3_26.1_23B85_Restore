@@ -1,33 +1,33 @@
 @interface SREMusicMetadataRetrieval
-- (id)parseAnswer:(id)a3 withAllAnswers:(id)a4;
-- (id)retrieveMusicMetadata:(id)a3 error:(id *)a4;
-- (void)extractAlbumMetadataFromFact:(id)a3 withAllAnswers:(id)a4 toCandidate:(id)a5;
-- (void)extractArtistMetadataFromFact:(id)a3 withAllAnswers:(id)a4 toCandidate:(id)a5;
-- (void)extractGenreMetadataFromFact:(id)a3 withAllAnswers:(id)a4 toCandidate:(id)a5;
+- (id)parseAnswer:(id)answer withAllAnswers:(id)answers;
+- (id)retrieveMusicMetadata:(id)metadata error:(id *)error;
+- (void)extractAlbumMetadataFromFact:(id)fact withAllAnswers:(id)answers toCandidate:(id)candidate;
+- (void)extractArtistMetadataFromFact:(id)fact withAllAnswers:(id)answers toCandidate:(id)candidate;
+- (void)extractGenreMetadataFromFact:(id)fact withAllAnswers:(id)answers toCandidate:(id)candidate;
 @end
 
 @implementation SREMusicMetadataRetrieval
 
-- (id)retrieveMusicMetadata:(id)a3 error:(id *)a4
+- (id)retrieveMusicMetadata:(id)metadata error:(id *)error
 {
   v92[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  metadataCopy = metadata;
   v68 = objc_opt_new();
-  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(metadataCopy, "count")}];
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(metadataCopy, "count")}];
   v69 = v6;
-  v70 = v5;
-  if ([v5 count])
+  v70 = metadataCopy;
+  if ([metadataCopy count])
   {
     v8 = 0;
     do
     {
       v9 = objc_alloc(MEMORY[0x277D1F428]);
-      v10 = [v5 objectAtIndexedSubscript:v8];
-      v11 = [v10 stringValue];
+      v10 = [metadataCopy objectAtIndexedSubscript:v8];
+      stringValue = [v10 stringValue];
       [MEMORY[0x277CCACA8] stringWithFormat:@"adamId_%lu", v8 + 1];
       v13 = v12 = v7;
-      v14 = [v9 initWithValue:v11 arg:v13];
+      v14 = [v9 initWithValue:stringValue arg:v13];
 
       v6 = v69;
       [v69 addObject:v14];
@@ -38,7 +38,7 @@
       v7 = v12;
       [v12 addObject:v17];
 
-      v5 = v70;
+      metadataCopy = v70;
       ++v8;
     }
 
@@ -49,7 +49,7 @@
   v19 = objc_alloc(MEMORY[0x277D1F440]);
   v92[0] = v18;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v92 count:1];
-  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{10 * objc_msgSend(v5, "count")}];
+  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{10 * objc_msgSend(metadataCopy, "count")}];
   v22 = [v19 initWithIntents:v20 query:&stru_287C42A38 limit:v21 offset:&unk_287C44DF0];
 
   v23 = [v7 componentsJoinedByString:@" "];
@@ -61,7 +61,7 @@
     _os_log_impl(&dword_26B806000, v24, OS_LOG_TYPE_DEFAULT, "Starting knosis service call: %@", buf, 0xCu);
   }
 
-  v25 = [v68 executeIntent:v22 error:a4];
+  v25 = [v68 executeIntent:v22 error:error];
   v26 = logForCSLogCategoryRecs();
   v27 = v26;
   if (v25)
@@ -72,27 +72,27 @@
     v65 = v7;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v25 status];
-      v29 = [v25 answers];
-      v30 = [v29 count];
+      status = [v25 status];
+      answers = [v25 answers];
+      v30 = [answers count];
       *buf = 134218240;
-      v89 = v28;
+      v89 = status;
       v90 = 2048;
       v91 = v30;
       _os_log_impl(&dword_26B806000, v27, OS_LOG_TYPE_DEFAULT, "Parsing Knosis response. status=%ld answers.count = %ld", buf, 0x16u);
     }
 
     v31 = MEMORY[0x277CBEB38];
-    v32 = [v25 answers];
-    v27 = [v31 dictionaryWithCapacity:{objc_msgSend(v32, "count")}];
+    answers2 = [v25 answers];
+    v27 = [v31 dictionaryWithCapacity:{objc_msgSend(answers2, "count")}];
 
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
     v67 = v25;
-    v33 = [v25 answers];
-    v34 = [v33 countByEnumeratingWithState:&v79 objects:v87 count:16];
+    answers3 = [v25 answers];
+    v34 = [answers3 countByEnumeratingWithState:&v79 objects:v87 count:16];
     if (v34)
     {
       v35 = v34;
@@ -103,15 +103,15 @@
         {
           if (*v80 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(answers3);
           }
 
           v38 = *(*(&v79 + 1) + 8 * i);
-          v39 = [v38 answerId];
-          [v27 setObject:v38 forKey:v39];
+          answerId = [v38 answerId];
+          [v27 setObject:v38 forKey:answerId];
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v79 objects:v87 count:16];
+        v35 = [answers3 countByEnumeratingWithState:&v79 objects:v87 count:16];
       }
 
       while (v35);
@@ -122,8 +122,8 @@
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v41 = [v67 answers];
-    v42 = [v41 countByEnumeratingWithState:&v75 objects:v86 count:16];
+    answers4 = [v67 answers];
+    v42 = [answers4 countByEnumeratingWithState:&v75 objects:v86 count:16];
     if (v42)
     {
       v43 = v42;
@@ -134,7 +134,7 @@
         {
           if (*v76 != v44)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(answers4);
           }
 
           v46 = [(SREMusicMetadataRetrieval *)self parseAnswer:*(*(&v75 + 1) + 8 * j) withAllAnswers:v27];
@@ -152,7 +152,7 @@
           }
         }
 
-        v43 = [v41 countByEnumeratingWithState:&v75 objects:v86 count:16];
+        v43 = [answers4 countByEnumeratingWithState:&v75 objects:v86 count:16];
       }
 
       while (v43);
@@ -204,7 +204,7 @@
       _os_log_impl(&dword_26B806000, v57, OS_LOG_TYPE_DEFAULT, "End Knosis response parse. Got %ld/%ld music candidates with metadata.", buf, 0x16u);
     }
 
-    v5 = v70;
+    metadataCopy = v70;
     v18 = v64;
     v7 = v65;
     v23 = v62;
@@ -215,7 +215,7 @@
   {
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      [SREMusicMetadataRetrieval retrieveMusicMetadata:a4 error:v27];
+      [SREMusicMetadataRetrieval retrieveMusicMetadata:error error:v27];
     }
 
     v50 = 0;
@@ -226,18 +226,18 @@
   return v50;
 }
 
-- (id)parseAnswer:(id)a3 withAllAnswers:(id)a4
+- (id)parseAnswer:(id)answer withAllAnswers:(id)answers
 {
   v107 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v69 = a4;
+  answerCopy = answer;
+  answersCopy = answers;
   v6 = objc_alloc_init(SREMusicCandidate);
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v67 = v5;
-  obj = [v5 parents];
+  v67 = answerCopy;
+  obj = [answerCopy parents];
   v72 = [obj countByEnumeratingWithState:&v96 objects:v106 count:16];
   if (v72)
   {
@@ -258,8 +258,8 @@
         v93 = 0u;
         v94 = 0u;
         v95 = 0u;
-        v77 = [v8 facts];
-        v9 = [v77 countByEnumeratingWithState:&v92 objects:v105 count:16];
+        facts = [v8 facts];
+        v9 = [facts countByEnumeratingWithState:&v92 objects:v105 count:16];
         if (v9)
         {
           v10 = v9;
@@ -273,12 +273,12 @@
             {
               if (*v93 != v11)
               {
-                objc_enumerationMutation(v77);
+                objc_enumerationMutation(facts);
               }
 
               v13 = *(*(&v92 + 1) + 8 * v12);
-              v14 = [v13 predicateId];
-              v15 = [v14 isEqualToString:@"PS72"];
+              predicateId = [v13 predicateId];
+              v15 = [predicateId isEqualToString:@"PS72"];
 
               if (v15)
               {
@@ -286,8 +286,8 @@
                 v91 = 0u;
                 v88 = 0u;
                 v89 = 0u;
-                v16 = [v13 qualifiers];
-                v17 = [v16 countByEnumeratingWithState:&v88 objects:v104 count:16];
+                qualifiers = [v13 qualifiers];
+                v17 = [qualifiers countByEnumeratingWithState:&v88 objects:v104 count:16];
                 if (v17)
                 {
                   v18 = v17;
@@ -298,17 +298,17 @@
                     {
                       if (*v89 != v19)
                       {
-                        objc_enumerationMutation(v16);
+                        objc_enumerationMutation(qualifiers);
                       }
 
                       v21 = *(*(&v88 + 1) + 8 * i);
-                      v22 = [v21 predicateId];
-                      v23 = [v22 isEqualToString:@"PS69"];
+                      predicateId2 = [v21 predicateId];
+                      v23 = [predicateId2 isEqualToString:@"PS69"];
 
                       if (v23)
                       {
-                        v24 = [v21 objectID];
-                        -[SREMusicCandidate setTrackId:](v6, "setTrackId:", [v24 integerValue]);
+                        objectID = [v21 objectID];
+                        -[SREMusicCandidate setTrackId:](v6, "setTrackId:", [objectID integerValue]);
 
                         if ([(SREMusicCandidate *)v6 trackId]> 0)
                         {
@@ -318,15 +318,15 @@
                         v25 = logForCSLogCategoryRecs();
                         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
                         {
-                          v26 = [v21 objectID];
+                          objectID2 = [v21 objectID];
                           *buf = 138412290;
-                          v103 = v26;
+                          v103 = objectID2;
                           _os_log_impl(&dword_26B806000, v25, OS_LOG_TYPE_DEFAULT, "*warn* Failed to convert adam ID to a positive integer:%@", buf, 0xCu);
                         }
                       }
                     }
 
-                    v18 = [v16 countByEnumeratingWithState:&v88 objects:v104 count:16];
+                    v18 = [qualifiers countByEnumeratingWithState:&v88 objects:v104 count:16];
                   }
 
                   while (v18);
@@ -342,7 +342,7 @@ LABEL_24:
             }
 
             while (v12 != v10);
-            v10 = [v77 countByEnumeratingWithState:&v92 objects:v105 count:16];
+            v10 = [facts countByEnumeratingWithState:&v92 objects:v105 count:16];
           }
 
           while (v10);
@@ -362,10 +362,10 @@ LABEL_24:
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v27 = [v67 facts];
-  v28 = [v27 countByEnumeratingWithState:&v84 objects:v101 count:16];
-  v29 = self;
-  v30 = v69;
+  facts2 = [v67 facts];
+  v28 = [facts2 countByEnumeratingWithState:&v84 objects:v101 count:16];
+  selfCopy2 = self;
+  v30 = answersCopy;
   if (!v28)
   {
 LABEL_69:
@@ -376,7 +376,7 @@ LABEL_69:
   v31 = v28;
   v32 = 0;
   v79 = *v85;
-  v76 = v27;
+  v76 = facts2;
   do
   {
     v33 = 0;
@@ -384,17 +384,17 @@ LABEL_69:
     {
       if (*v85 != v79)
       {
-        objc_enumerationMutation(v27);
+        objc_enumerationMutation(facts2);
       }
 
       v34 = *(*(&v84 + 1) + 8 * v33);
-      v35 = [v34 predicateId];
-      v36 = [v35 isEqualToString:@"PS1"];
+      predicateId3 = [v34 predicateId];
+      v36 = [predicateId3 isEqualToString:@"PS1"];
 
       if (v36)
       {
-        v37 = [v34 objectID];
-        v38 = [v37 isEqualToString:@"SB44"];
+        objectID3 = [v34 objectID];
+        v38 = [objectID3 isEqualToString:@"SB44"];
 
         if ((v38 & 1) == 0)
         {
@@ -406,40 +406,40 @@ LABEL_69:
 
       else
       {
-        v39 = [v34 predicateId];
-        v40 = [v39 isEqualToString:@"PS33"];
+        predicateId4 = [v34 predicateId];
+        v40 = [predicateId4 isEqualToString:@"PS33"];
 
         if (v40)
         {
-          v41 = [v34 objectID];
-          [(SREMusicCandidate *)v6 setTrackName:v41];
+          objectID4 = [v34 objectID];
+          [(SREMusicCandidate *)v6 setTrackName:objectID4];
 LABEL_39:
 
           goto LABEL_59;
         }
 
-        v42 = [v34 predicateId];
-        v43 = [v42 isEqualToString:@"PS137"];
+        predicateId5 = [v34 predicateId];
+        v43 = [predicateId5 isEqualToString:@"PS137"];
 
         if (v43)
         {
-          [(SREMusicMetadataRetrieval *)v29 extractArtistMetadataFromFact:v34 withAllAnswers:v30 toCandidate:v6];
+          [(SREMusicMetadataRetrieval *)selfCopy2 extractArtistMetadataFromFact:v34 withAllAnswers:v30 toCandidate:v6];
           goto LABEL_59;
         }
 
-        v44 = [v34 predicateId];
-        v45 = [v44 isEqualToString:@"PS486"];
+        predicateId6 = [v34 predicateId];
+        v45 = [predicateId6 isEqualToString:@"PS486"];
 
         if (v45)
         {
-          v41 = [v34 objectID];
-          [(SREMusicCandidate *)v6 setArtworkURL:v41];
+          objectID4 = [v34 objectID];
+          [(SREMusicCandidate *)v6 setArtworkURL:objectID4];
           goto LABEL_39;
         }
 
         v78 = v32;
-        v46 = [v34 predicateId];
-        v47 = [v46 isEqualToString:@"PS106"];
+        predicateId7 = [v34 predicateId];
+        v47 = [predicateId7 isEqualToString:@"PS106"];
 
         if (v47)
         {
@@ -447,8 +447,8 @@ LABEL_39:
           v83 = 0u;
           v80 = 0u;
           v81 = 0u;
-          v48 = [v34 qualifiers];
-          v49 = [v48 countByEnumeratingWithState:&v80 objects:v100 count:16];
+          qualifiers2 = [v34 qualifiers];
+          v49 = [qualifiers2 countByEnumeratingWithState:&v80 objects:v100 count:16];
           if (v49)
           {
             v50 = v49;
@@ -459,23 +459,23 @@ LABEL_39:
               {
                 if (*v81 != v51)
                 {
-                  objc_enumerationMutation(v48);
+                  objc_enumerationMutation(qualifiers2);
                 }
 
                 v53 = *(*(&v80 + 1) + 8 * j);
-                v54 = [v53 predicateId];
-                v55 = [v54 isEqualToString:@"PS3"];
+                predicateId8 = [v53 predicateId];
+                v55 = [predicateId8 isEqualToString:@"PS3"];
 
                 if (v55)
                 {
-                  v58 = [v53 objectID];
-                  -[SREMusicCandidate setTrackTimeMillis:](v6, "setTrackTimeMillis:", [v58 integerValue]);
+                  objectID5 = [v53 objectID];
+                  -[SREMusicCandidate setTrackTimeMillis:](v6, "setTrackTimeMillis:", [objectID5 integerValue]);
 
                   goto LABEL_57;
                 }
               }
 
-              v50 = [v48 countByEnumeratingWithState:&v80 objects:v100 count:16];
+              v50 = [qualifiers2 countByEnumeratingWithState:&v80 objects:v100 count:16];
               if (v50)
               {
                 continue;
@@ -487,25 +487,25 @@ LABEL_39:
 
 LABEL_57:
 
-          v29 = self;
-          v30 = v69;
-          v27 = v76;
+          selfCopy2 = self;
+          v30 = answersCopy;
+          facts2 = v76;
         }
 
         else
         {
-          v56 = [v34 predicateId];
-          v57 = [v56 isEqualToString:@"PS123"];
+          predicateId9 = [v34 predicateId];
+          v57 = [predicateId9 isEqualToString:@"PS123"];
 
           if (v57)
           {
-            [(SREMusicMetadataRetrieval *)v29 extractAlbumMetadataFromFact:v34 withAllAnswers:v30 toCandidate:v6];
+            [(SREMusicMetadataRetrieval *)selfCopy2 extractAlbumMetadataFromFact:v34 withAllAnswers:v30 toCandidate:v6];
           }
 
           else
           {
-            v59 = [v34 predicateId];
-            v60 = [v59 isEqualToString:@"PS358"];
+            predicateId10 = [v34 predicateId];
+            v60 = [predicateId10 isEqualToString:@"PS358"];
 
             if (v60)
             {
@@ -514,12 +514,12 @@ LABEL_57:
 
             else
             {
-              v61 = [v34 predicateId];
-              v62 = [v61 isEqualToString:@"PS10"];
+              predicateId11 = [v34 predicateId];
+              v62 = [predicateId11 isEqualToString:@"PS10"];
 
               if (v62)
               {
-                [(SREMusicMetadataRetrieval *)v29 extractGenreMetadataFromFact:v34 withAllAnswers:v30 toCandidate:v6];
+                [(SREMusicMetadataRetrieval *)selfCopy2 extractGenreMetadataFromFact:v34 withAllAnswers:v30 toCandidate:v6];
               }
             }
           }
@@ -533,7 +533,7 @@ LABEL_59:
     }
 
     while (v33 != v31);
-    v63 = [v27 countByEnumeratingWithState:&v84 objects:v101 count:16];
+    v63 = [facts2 countByEnumeratingWithState:&v84 objects:v101 count:16];
     v31 = v63;
   }
 
@@ -554,18 +554,18 @@ LABEL_71:
   return v64;
 }
 
-- (void)extractArtistMetadataFromFact:(id)a3 withAllAnswers:(id)a4 toCandidate:(id)a5
+- (void)extractArtistMetadataFromFact:(id)fact withAllAnswers:(id)answers toCandidate:(id)candidate
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v33 = a4;
-  v8 = a5;
+  factCopy = fact;
+  answersCopy = answers;
+  candidateCopy = candidate;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v9 = [v7 qualifiers];
-  v10 = [v9 countByEnumeratingWithState:&v38 objects:v45 count:16];
+  qualifiers = [factCopy qualifiers];
+  v10 = [qualifiers countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v10)
   {
     v11 = v10;
@@ -576,12 +576,12 @@ LABEL_3:
     {
       if (*v39 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(qualifiers);
       }
 
       v14 = *(*(&v38 + 1) + 8 * v13);
-      v15 = [v14 predicateId];
-      v16 = [v15 isEqualToString:@"PS16"];
+      predicateId = [v14 predicateId];
+      v16 = [predicateId isEqualToString:@"PS16"];
 
       if (v16)
       {
@@ -590,7 +590,7 @@ LABEL_3:
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v38 objects:v45 count:16];
+        v11 = [qualifiers countByEnumeratingWithState:&v38 objects:v45 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -600,25 +600,25 @@ LABEL_3:
       }
     }
 
-    v17 = [v14 objectID];
+    objectID = [v14 objectID];
 
-    if (!v17)
+    if (!objectID)
     {
       goto LABEL_22;
     }
 
-    v18 = [v33 objectForKey:v17];
+    v18 = [answersCopy objectForKey:objectID];
     v19 = v18;
     if (v18)
     {
       v31 = v18;
-      v32 = v8;
+      v32 = candidateCopy;
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v20 = [v18 facts];
-      v21 = [v20 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      facts = [v18 facts];
+      v21 = [facts countByEnumeratingWithState:&v34 objects:v42 count:16];
       if (v21)
       {
         v22 = v21;
@@ -629,24 +629,24 @@ LABEL_3:
           {
             if (*v35 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(facts);
             }
 
             v25 = *(*(&v34 + 1) + 8 * i);
-            v26 = [v25 predicateId];
-            v27 = [v26 isEqualToString:@"PS33"];
+            predicateId2 = [v25 predicateId];
+            v27 = [predicateId2 isEqualToString:@"PS33"];
 
             if (v27)
             {
-              v29 = [v25 objectID];
-              v8 = v32;
-              [v32 setArtistName:v29];
+              objectID2 = [v25 objectID];
+              candidateCopy = v32;
+              [v32 setArtistName:objectID2];
 
               goto LABEL_25;
             }
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v34 objects:v42 count:16];
+          v22 = [facts countByEnumeratingWithState:&v34 objects:v42 count:16];
           if (v22)
           {
             continue;
@@ -656,13 +656,13 @@ LABEL_3:
         }
       }
 
-      v20 = logForCSLogCategoryRecs();
-      v8 = v32;
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      facts = logForCSLogCategoryRecs();
+      candidateCopy = v32;
+      if (os_log_type_enabled(facts, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v44 = v17;
-        _os_log_impl(&dword_26B806000, v20, OS_LOG_TYPE_DEFAULT, "*warn* Performer name not found. Performer md=%@", buf, 0xCu);
+        v44 = objectID;
+        _os_log_impl(&dword_26B806000, facts, OS_LOG_TYPE_DEFAULT, "*warn* Performer name not found. Performer md=%@", buf, 0xCu);
       }
 
 LABEL_25:
@@ -671,12 +671,12 @@ LABEL_25:
 
     else
     {
-      v20 = logForCSLogCategoryRecs();
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      facts = logForCSLogCategoryRecs();
+      if (os_log_type_enabled(facts, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v44 = v17;
-        _os_log_impl(&dword_26B806000, v20, OS_LOG_TYPE_DEFAULT, "*warn* Performer answer not found. Performer md=%@", buf, 0xCu);
+        v44 = objectID;
+        _os_log_impl(&dword_26B806000, facts, OS_LOG_TYPE_DEFAULT, "*warn* Performer answer not found. Performer md=%@", buf, 0xCu);
       }
     }
   }
@@ -686,32 +686,32 @@ LABEL_25:
 LABEL_9:
 
 LABEL_22:
-    v17 = logForCSLogCategoryRecs();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    objectID = logForCSLogCategoryRecs();
+    if (os_log_type_enabled(objectID, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v7 objectID];
+      objectID3 = [factCopy objectID];
       *buf = 138412290;
-      v44 = v28;
-      _os_log_impl(&dword_26B806000, v17, OS_LOG_TYPE_DEFAULT, "*warn* Performer MD not found. Performer fact=%@", buf, 0xCu);
+      v44 = objectID3;
+      _os_log_impl(&dword_26B806000, objectID, OS_LOG_TYPE_DEFAULT, "*warn* Performer MD not found. Performer fact=%@", buf, 0xCu);
     }
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extractAlbumMetadataFromFact:(id)a3 withAllAnswers:(id)a4 toCandidate:(id)a5
+- (void)extractAlbumMetadataFromFact:(id)fact withAllAnswers:(id)answers toCandidate:(id)candidate
 {
   v90 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v55 = a4;
-  v8 = a5;
+  factCopy = fact;
+  answersCopy = answers;
+  candidateCopy = candidate;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v54 = v7;
-  v9 = [v7 qualifiers];
-  v10 = [v9 countByEnumeratingWithState:&v79 objects:v89 count:16];
+  v54 = factCopy;
+  qualifiers = [factCopy qualifiers];
+  v10 = [qualifiers countByEnumeratingWithState:&v79 objects:v89 count:16];
   if (v10)
   {
     v11 = v10;
@@ -722,12 +722,12 @@ LABEL_3:
     {
       if (*v80 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(qualifiers);
       }
 
       v14 = *(*(&v79 + 1) + 8 * v13);
-      v15 = [v14 predicateId];
-      v16 = [v15 isEqualToString:@"PS53"];
+      predicateId = [v14 predicateId];
+      v16 = [predicateId isEqualToString:@"PS53"];
 
       if (v16)
       {
@@ -736,7 +736,7 @@ LABEL_3:
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v79 objects:v89 count:16];
+        v11 = [qualifiers countByEnumeratingWithState:&v79 objects:v89 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -746,25 +746,25 @@ LABEL_3:
       }
     }
 
-    v17 = [v14 objectID];
+    objectID = [v14 objectID];
 
-    if (!v17)
+    if (!objectID)
     {
       goto LABEL_50;
     }
 
-    v18 = [v55 objectForKey:v17];
-    v19 = v18;
+    v18 = [answersCopy objectForKey:objectID];
+    objectID5 = v18;
     if (v18)
     {
-      v52 = v17;
+      v52 = objectID;
       v53 = v18;
       v77 = 0u;
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v20 = [v18 facts];
-      v21 = [v20 countByEnumeratingWithState:&v75 objects:v86 count:16];
+      facts = [v18 facts];
+      v21 = [facts countByEnumeratingWithState:&v75 objects:v86 count:16];
       if (v21)
       {
         v22 = v21;
@@ -775,21 +775,21 @@ LABEL_3:
           {
             if (*v76 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(facts);
             }
 
             v25 = *(*(&v75 + 1) + 8 * i);
-            v26 = [v25 predicateId];
-            v27 = [v26 isEqualToString:@"PS33"];
+            predicateId2 = [v25 predicateId];
+            v27 = [predicateId2 isEqualToString:@"PS33"];
 
             if (v27)
             {
-              v28 = [v25 objectID];
-              [v8 setCollectionName:v28];
+              objectID2 = [v25 objectID];
+              [candidateCopy setCollectionName:objectID2];
             }
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v75 objects:v86 count:16];
+          v22 = [facts countByEnumeratingWithState:&v75 objects:v86 count:16];
         }
 
         while (v22);
@@ -799,12 +799,12 @@ LABEL_3:
       v74 = 0u;
       v71 = 0u;
       v72 = 0u;
-      v19 = v53;
-      v29 = [v53 parents];
-      v58 = [v29 countByEnumeratingWithState:&v71 objects:v85 count:16];
+      objectID5 = v53;
+      parents = [v53 parents];
+      v58 = [parents countByEnumeratingWithState:&v71 objects:v85 count:16];
       if (v58)
       {
-        obj = v29;
+        obj = parents;
         v57 = *v72;
         do
         {
@@ -822,8 +822,8 @@ LABEL_3:
             v68 = 0u;
             v69 = 0u;
             v70 = 0u;
-            v62 = [v31 facts];
-            v32 = [v62 countByEnumeratingWithState:&v67 objects:v84 count:16];
+            facts2 = [v31 facts];
+            v32 = [facts2 countByEnumeratingWithState:&v67 objects:v84 count:16];
             if (v32)
             {
               v33 = v32;
@@ -837,12 +837,12 @@ LABEL_3:
                 {
                   if (*v68 != v34)
                   {
-                    objc_enumerationMutation(v62);
+                    objc_enumerationMutation(facts2);
                   }
 
                   v36 = *(*(&v67 + 1) + 8 * v35);
-                  v37 = [v36 predicateId];
-                  v38 = [v37 isEqualToString:@"PS72"];
+                  predicateId3 = [v36 predicateId];
+                  v38 = [predicateId3 isEqualToString:@"PS72"];
 
                   if (v38)
                   {
@@ -850,8 +850,8 @@ LABEL_3:
                     v66 = 0u;
                     v63 = 0u;
                     v64 = 0u;
-                    v39 = [v36 qualifiers];
-                    v40 = [v39 countByEnumeratingWithState:&v63 objects:v83 count:16];
+                    qualifiers2 = [v36 qualifiers];
+                    v40 = [qualifiers2 countByEnumeratingWithState:&v63 objects:v83 count:16];
                     if (v40)
                     {
                       v41 = v40;
@@ -862,19 +862,19 @@ LABEL_3:
                         {
                           if (*v64 != v42)
                           {
-                            objc_enumerationMutation(v39);
+                            objc_enumerationMutation(qualifiers2);
                           }
 
                           v44 = *(*(&v63 + 1) + 8 * j);
-                          v45 = [v44 predicateId];
-                          v46 = [v45 isEqualToString:@"PS69"];
+                          predicateId4 = [v44 predicateId];
+                          v46 = [predicateId4 isEqualToString:@"PS69"];
 
                           if (v46)
                           {
-                            v47 = [v44 objectID];
-                            [v8 setCollectionId:{objc_msgSend(v47, "integerValue")}];
+                            objectID3 = [v44 objectID];
+                            [candidateCopy setCollectionId:{objc_msgSend(objectID3, "integerValue")}];
 
-                            if ([v8 collectionId] > 0)
+                            if ([candidateCopy collectionId] > 0)
                             {
                               goto LABEL_44;
                             }
@@ -882,15 +882,15 @@ LABEL_3:
                             v48 = logForCSLogCategoryRecs();
                             if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
                             {
-                              v49 = [v44 objectID];
+                              objectID4 = [v44 objectID];
                               *buf = 138412290;
-                              v88 = v49;
+                              v88 = objectID4;
                               _os_log_impl(&dword_26B806000, v48, OS_LOG_TYPE_DEFAULT, "*warn* Failed to convert adam ID to integer:%@", buf, 0xCu);
                             }
                           }
                         }
 
-                        v41 = [v39 countByEnumeratingWithState:&v63 objects:v83 count:16];
+                        v41 = [qualifiers2 countByEnumeratingWithState:&v63 objects:v83 count:16];
                       }
 
                       while (v41);
@@ -906,7 +906,7 @@ LABEL_44:
                 }
 
                 while (v35 != v33);
-                v33 = [v62 countByEnumeratingWithState:&v67 objects:v84 count:16];
+                v33 = [facts2 countByEnumeratingWithState:&v67 objects:v84 count:16];
               }
 
               while (v33);
@@ -920,27 +920,27 @@ LABEL_44:
         }
 
         while (v58);
-        v19 = v53;
+        objectID5 = v53;
         v50 = v54;
-        v17 = v52;
-        v29 = obj;
+        objectID = v52;
+        parents = obj;
       }
 
       else
       {
         v50 = v54;
-        v17 = v52;
+        objectID = v52;
       }
     }
 
     else
     {
-      v29 = logForCSLogCategoryRecs();
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      parents = logForCSLogCategoryRecs();
+      if (os_log_type_enabled(parents, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v88 = v17;
-        _os_log_impl(&dword_26B806000, v29, OS_LOG_TYPE_DEFAULT, "*warn* Album answer not found. Album md=%@", buf, 0xCu);
+        v88 = objectID;
+        _os_log_impl(&dword_26B806000, parents, OS_LOG_TYPE_DEFAULT, "*warn* Album answer not found. Album md=%@", buf, 0xCu);
       }
 
       v50 = v54;
@@ -952,42 +952,42 @@ LABEL_44:
 LABEL_9:
 
 LABEL_50:
-  v17 = logForCSLogCategoryRecs();
+  objectID = logForCSLogCategoryRecs();
   v50 = v54;
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(objectID, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v54 objectID];
+    objectID5 = [v54 objectID];
     *buf = 138412290;
-    v88 = v19;
-    _os_log_impl(&dword_26B806000, v17, OS_LOG_TYPE_DEFAULT, "*warn* Album MD not found. Album fact=%@", buf, 0xCu);
+    v88 = objectID5;
+    _os_log_impl(&dword_26B806000, objectID, OS_LOG_TYPE_DEFAULT, "*warn* Album MD not found. Album fact=%@", buf, 0xCu);
 LABEL_57:
   }
 
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extractGenreMetadataFromFact:(id)a3 withAllAnswers:(id)a4 toCandidate:(id)a5
+- (void)extractGenreMetadataFromFact:(id)fact withAllAnswers:(id)answers toCandidate:(id)candidate
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectID];
-  if (v10)
+  factCopy = fact;
+  answersCopy = answers;
+  candidateCopy = candidate;
+  objectID = [factCopy objectID];
+  if (objectID)
   {
-    v11 = [v8 objectForKey:v10];
+    v11 = [answersCopy objectForKey:objectID];
     v12 = v11;
     if (v11)
     {
-      v28 = v9;
-      v29 = v8;
-      v30 = v7;
+      v28 = candidateCopy;
+      v29 = answersCopy;
+      v30 = factCopy;
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v13 = [v11 facts];
-      v14 = [v13 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      facts = [v11 facts];
+      v14 = [facts countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (v14)
       {
         v15 = v14;
@@ -998,42 +998,42 @@ LABEL_57:
           {
             if (*v32 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(facts);
             }
 
             v18 = *(*(&v31 + 1) + 8 * i);
-            v19 = [v18 predicateId];
-            v20 = [v19 isEqualToString:@"PS33"];
+            predicateId = [v18 predicateId];
+            v20 = [predicateId isEqualToString:@"PS33"];
 
             if (v20)
             {
-              v9 = v28;
-              v23 = [v28 genreIDs];
+              candidateCopy = v28;
+              genreIDs = [v28 genreIDs];
 
-              if (v23)
+              if (genreIDs)
               {
-                v24 = [v28 genreIDs];
-                v25 = [v18 objectID];
-                v26 = [v24 arrayByAddingObject:v25];
+                genreIDs2 = [v28 genreIDs];
+                objectID2 = [v18 objectID];
+                v26 = [genreIDs2 arrayByAddingObject:objectID2];
                 [v28 setGenreIDs:v26];
               }
 
               else
               {
-                v24 = [v18 objectID];
-                v35 = v24;
-                v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
-                [v28 setGenreIDs:v25];
+                genreIDs2 = [v18 objectID];
+                v35 = genreIDs2;
+                objectID2 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
+                [v28 setGenreIDs:objectID2];
               }
 
-              v8 = v29;
-              v7 = v30;
+              answersCopy = v29;
+              factCopy = v30;
 
               goto LABEL_23;
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v31 objects:v36 count:16];
+          v15 = [facts countByEnumeratingWithState:&v31 objects:v36 count:16];
           if (v15)
           {
             continue;
@@ -1043,22 +1043,22 @@ LABEL_57:
         }
       }
 
-      v13 = logForCSLogCategoryRecs();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      facts = logForCSLogCategoryRecs();
+      if (os_log_type_enabled(facts, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v38 = v10;
-        _os_log_impl(&dword_26B806000, v13, OS_LOG_TYPE_DEFAULT, "*warn* Genre name not found. Genre md=%@", buf, 0xCu);
+        v38 = objectID;
+        _os_log_impl(&dword_26B806000, facts, OS_LOG_TYPE_DEFAULT, "*warn* Genre name not found. Genre md=%@", buf, 0xCu);
       }
 
-      v8 = v29;
-      v7 = v30;
-      v9 = v28;
+      answersCopy = v29;
+      factCopy = v30;
+      candidateCopy = v28;
       goto LABEL_23;
     }
 
-    v13 = logForCSLogCategoryRecs();
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    facts = logForCSLogCategoryRecs();
+    if (!os_log_type_enabled(facts, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_23:
 
@@ -1066,9 +1066,9 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v38 = v10;
+    v38 = objectID;
     v21 = "*warn* Genre answer not found. Genre md=%@";
-    v22 = v13;
+    v22 = facts;
 LABEL_20:
     _os_log_impl(&dword_26B806000, v22, OS_LOG_TYPE_DEFAULT, v21, buf, 0xCu);
     goto LABEL_23;
@@ -1077,9 +1077,9 @@ LABEL_20:
   v12 = logForCSLogCategoryRecs();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v7 objectID];
+    facts = [factCopy objectID];
     *buf = 138412290;
-    v38 = v13;
+    v38 = facts;
     v21 = "*warn* Genre MD not found. Genre fact=%@";
     v22 = v12;
     goto LABEL_20;

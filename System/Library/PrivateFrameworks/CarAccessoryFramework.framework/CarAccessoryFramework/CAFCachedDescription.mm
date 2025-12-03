@@ -1,6 +1,6 @@
 @interface CAFCachedDescription
 - (CAFCacheableDescription)cacheable;
-- (CAFCachedDescription)initWithCacheable:(id)a3 lazyRefreshDescription:(BOOL)a4;
+- (CAFCachedDescription)initWithCacheable:(id)cacheable lazyRefreshDescription:(BOOL)description;
 - (id)description;
 - (void)_lock_refreshDescriptionIfNeeded;
 - (void)setNeedsRefreshDescription;
@@ -8,10 +8,10 @@
 
 @implementation CAFCachedDescription
 
-- (CAFCachedDescription)initWithCacheable:(id)a3 lazyRefreshDescription:(BOOL)a4
+- (CAFCachedDescription)initWithCacheable:(id)cacheable lazyRefreshDescription:(BOOL)description
 {
-  v4 = a4;
-  v6 = a3;
+  descriptionCopy = description;
+  cacheableCopy = cacheable;
   v11.receiver = self;
   v11.super_class = CAFCachedDescription;
   v7 = [(CAFCachedDescription *)&v11 init];
@@ -19,8 +19,8 @@
   if (v7)
   {
     v7->_cacheLock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v7->_cacheable, v6);
-    if (v4)
+    objc_storeWeak(&v7->_cacheable, cacheableCopy);
+    if (descriptionCopy)
     {
       v8->_lazyRefreshDescription = 1;
     }
@@ -53,18 +53,18 @@
 {
   os_unfair_lock_lock(&self->_cacheLock);
   [(CAFCachedDescription *)self _lock_refreshDescriptionIfNeeded];
-  v3 = [(CAFCachedDescription *)self cachedDescription];
+  cachedDescription = [(CAFCachedDescription *)self cachedDescription];
   os_unfair_lock_unlock(&self->_cacheLock);
 
-  return v3;
+  return cachedDescription;
 }
 
 - (void)_lock_refreshDescriptionIfNeeded
 {
   if ([(CAFCachedDescription *)self needsRefresh])
   {
-    v3 = [(CAFCachedDescription *)self cacheable];
-    v4 = [v3 currentDescriptionForCache:self];
+    cacheable = [(CAFCachedDescription *)self cacheable];
+    v4 = [cacheable currentDescriptionForCache:self];
     v5 = [v4 copy];
     [(CAFCachedDescription *)self setCachedDescription:v5];
   }

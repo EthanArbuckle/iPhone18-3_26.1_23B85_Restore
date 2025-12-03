@@ -1,42 +1,42 @@
 @interface PKPeerPaymentRegistrationRemoteAlertViewController
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismiss;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPeerPaymentRegistrationRemoteAlertViewController
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = PKPeerPaymentRegistrationRemoteAlertViewController;
-  [(PKPeerPaymentRegistrationRemoteAlertViewController *)&v8 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  if (v6)
+  [(PKPeerPaymentRegistrationRemoteAlertViewController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
-    [v6 bounds];
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    [windowCopy bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     PKSetDisplayProperties();
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PKPeerPaymentRegistrationRemoteAlertViewController;
-  [(PKPeerPaymentRegistrationRemoteAlertViewController *)&v3 viewDidAppear:a3];
+  [(PKPeerPaymentRegistrationRemoteAlertViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentRegistrationRemoteAlertViewController;
-  [(PKPeerPaymentRegistrationRemoteAlertViewController *)&v4 viewWillDisappear:a3];
+  [(PKPeerPaymentRegistrationRemoteAlertViewController *)&v4 viewWillDisappear:disappear];
   [(PKPeerPaymentRegistrationRemoteAlertViewController *)self _dismiss];
 }
 
@@ -53,32 +53,32 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
-  v9 = [(PKPeerPaymentRegistrationRemoteAlertViewController *)self _remoteViewControllerProxy];
-  [v9 setAllowsAlertItems:1];
-  [v9 setAllowsSiri:0];
-  [v9 setAllowsBanners:1];
-  [v9 setDesiredHardwareButtonEvents:16];
-  [v9 setSwipeDismissalStyle:0];
-  [v9 setDismissalAnimationStyle:1];
-  [v9 setWallpaperStyle:0 withDuration:0.0];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69BBFF8]];
+  contextCopy = context;
+  completionCopy = completion;
+  userInfo = [contextCopy userInfo];
+  _remoteViewControllerProxy = [(PKPeerPaymentRegistrationRemoteAlertViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setAllowsBanners:1];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:0];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:1];
+  [_remoteViewControllerProxy setWallpaperStyle:0 withDuration:0.0];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BBFF8]];
   v11 = v10;
   if (v10)
   {
-    [v9 setLaunchingInterfaceOrientation:{objc_msgSend(v10, "integerValue")}];
+    [_remoteViewControllerProxy setLaunchingInterfaceOrientation:{objc_msgSend(v10, "integerValue")}];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
-  v12 = [[PKPeerPaymentRegistrationFlowController alloc] initWithUserInfo:v8 setupDelegate:self];
+  v12 = [[PKPeerPaymentRegistrationFlowController alloc] initWithUserInfo:userInfo setupDelegate:self];
   flowController = self->_flowController;
   self->_flowController = v12;
 

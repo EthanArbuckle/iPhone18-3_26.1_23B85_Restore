@@ -1,6 +1,6 @@
 @interface RegionSelectionHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC28HealthExposureNotificationUI25RegionSelectionHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC28HealthExposureNotificationUI25RegionSelectionHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,14 +8,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2516B5FF4();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_2516B61BC(width);
   v7 = v6;
 
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC28HealthExposureNotificationUI25RegionSelectionHeaderView)initWithFrame:(CGRect)a3
+- (_TtC28HealthExposureNotificationUI25RegionSelectionHeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

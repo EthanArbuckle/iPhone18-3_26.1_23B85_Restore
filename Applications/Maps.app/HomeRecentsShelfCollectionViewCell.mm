@@ -1,12 +1,12 @@
 @interface HomeRecentsShelfCollectionViewCell
-- (_TtC4Maps34HomeRecentsShelfCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC4Maps34HomeRecentsShelfCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC4Maps34HomeRecentsShelfCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC4Maps34HomeRecentsShelfCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation HomeRecentsShelfCollectionViewCell
 
-- (_TtC4Maps34HomeRecentsShelfCollectionViewCell)initWithCoder:(id)a3
+- (_TtC4Maps34HomeRecentsShelfCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps34HomeRecentsShelfCollectionViewCell_viewModel) = 0;
   v4 = OBJC_IVAR____TtC4Maps34HomeRecentsShelfCollectionViewCell_currentContainerSize;
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (_TtC4Maps34HomeRecentsShelfCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC4Maps34HomeRecentsShelfCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps34HomeRecentsShelfCollectionViewCell_viewModel) = 0;
   v8 = OBJC_IVAR____TtC4Maps34HomeRecentsShelfCollectionViewCell_currentContainerSize;
   v9 = enum case for MapsDesignConstants.ColumnViews.ContainerSize.regular(_:);
@@ -36,7 +36,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004D7CCC();
 }
 

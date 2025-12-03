@@ -10,19 +10,19 @@
 - (id)_textureAdd;
 - (id)_textureDiff;
 - (id)_whitenTeeth;
-- (id)enrichImage:(id)a3;
-- (id)eyeBlurForLandmarks:(id)a3;
-- (id)getDraftMode:(id)a3;
-- (id)getRefinedMatteMode:(id)a3;
-- (id)getRenderSpillCache:(id)a3;
-- (id)imageForLandmarks:(id)a3;
-- (id)maskForLandmarks:(id)a3 withFilterNamed:(id)a4;
+- (id)enrichImage:(id)image;
+- (id)eyeBlurForLandmarks:(id)landmarks;
+- (id)getDraftMode:(id)mode;
+- (id)getRefinedMatteMode:(id)mode;
+- (id)getRenderSpillCache:(id)cache;
+- (id)imageForLandmarks:(id)landmarks;
+- (id)maskForLandmarks:(id)landmarks withFilterNamed:(id)named;
 - (id)outputImage;
-- (id)processEyesIn:(id)a3 withEyeBlur:(id)a4 landmarks:(id)a5;
-- (id)processSkinIn:(id)a3 withFaceMask:(id)a4;
-- (id)processTeethIn:(id)a3 withFaceMask:(id)a4;
-- (id)processTeethIn:(id)a3 withTeethMask:(id)a4;
-- (id)protectEyesNose:(id)a3 withFaceMask:(id)a4 withOrientation:(int)a5;
+- (id)processEyesIn:(id)in withEyeBlur:(id)blur landmarks:(id)landmarks;
+- (id)processSkinIn:(id)in withFaceMask:(id)mask;
+- (id)processTeethIn:(id)in withFaceMask:(id)mask;
+- (id)processTeethIn:(id)in withTeethMask:(id)mask;
+- (id)protectEyesNose:(id)nose withFaceMask:(id)mask withOrientation:(int)orientation;
 - (void)setDefaults;
 @end
 
@@ -116,7 +116,7 @@
   return [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:8];
 }
 
-- (id)getDraftMode:(id)a3
+- (id)getDraftMode:(id)mode
 {
   if (qword_8CBC0 != -1)
   {
@@ -125,13 +125,13 @@
 
   if (dword_8C760 < 0)
   {
-    return a3;
+    return mode;
   }
 
   return [NSNumber numberWithInt:?];
 }
 
-- (id)getRefinedMatteMode:(id)a3
+- (id)getRefinedMatteMode:(id)mode
 {
   if (qword_8CBC8 != -1)
   {
@@ -140,13 +140,13 @@
 
   if (dword_8C764 < 0)
   {
-    return a3;
+    return mode;
   }
 
   return [NSNumber numberWithInt:?];
 }
 
-- (id)getRenderSpillCache:(id)a3
+- (id)getRenderSpillCache:(id)cache
 {
   if (qword_8CBD0 != -1)
   {
@@ -155,7 +155,7 @@
 
   if (dword_8C768 < 0)
   {
-    return a3;
+    return cache;
   }
 
   return [NSNumber numberWithInt:?];
@@ -275,14 +275,14 @@
   return qword_8CC68;
 }
 
-- (id)maskForLandmarks:(id)a3 withFilterNamed:(id)a4
+- (id)maskForLandmarks:(id)landmarks withFilterNamed:(id)named
 {
   inputImage = self->super.inputImage;
   CGAffineTransformMakeScale(&v10, 0.25, 0.25);
   v7 = [(CIImage *)inputImage imageByApplyingTransform:&v10];
   v11 = @"inputFaceLandmarks";
-  v12 = a3;
-  result = [(CIImage *)v7 imageByApplyingFilter:a4 withInputParameters:[NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1]];
+  landmarksCopy = landmarks;
+  result = [(CIImage *)v7 imageByApplyingFilter:named withInputParameters:[NSDictionary dictionaryWithObjects:&landmarksCopy forKeys:&v11 count:1]];
   if (result)
   {
     v9 = result;
@@ -293,10 +293,10 @@
   return result;
 }
 
-- (id)eyeBlurForLandmarks:(id)a3
+- (id)eyeBlurForLandmarks:(id)landmarks
 {
   [(NSNumber *)self->inputEyes floatValue];
-  if (!a3 || fabsf(v5) < 1.0e-10)
+  if (!landmarks || fabsf(v5) < 1.0e-10)
   {
     return 0;
   }
@@ -305,11 +305,11 @@
   v8 = [CIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
   v9 = [LightingFacePoints alloc];
   [(CIImage *)self->super.inputImage extent];
-  v10 = [(LightingFacePoints *)v9 initWithFaceLandmarkDictionary:a3 forImageRect:?];
+  v10 = [(LightingFacePoints *)v9 initWithFaceLandmarkDictionary:landmarks forImageRect:?];
   v11 = [CIFilter filterWithName:@"CIGaussianGradient"];
-  if ([a3 objectForKeyedSubscript:@"faceJunkinessIndex"])
+  if ([landmarks objectForKeyedSubscript:@"faceJunkinessIndex"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"faceJunkinessIndex", "floatValue"}];
+    [objc_msgSend(landmarks objectForKeyedSubscript:{@"faceJunkinessIndex", "floatValue"}];
     v13 = v12 < -0.2;
   }
 
@@ -318,9 +318,9 @@
     v13 = 0;
   }
 
-  if ([a3 objectForKeyedSubscript:@"faceBoundingBox"])
+  if ([landmarks objectForKeyedSubscript:@"faceBoundingBox"])
   {
-    [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{@"faceBoundingBox", "objectForKeyedSubscript:", @"w", "floatValue"}];
+    [objc_msgSend(objc_msgSend(landmarks objectForKeyedSubscript:{@"faceBoundingBox", "objectForKeyedSubscript:", @"w", "floatValue"}];
     v15 = v14 > 0.15;
   }
 
@@ -329,9 +329,9 @@
     v15 = 0;
   }
 
-  if ([a3 objectForKeyedSubscript:@"roll"])
+  if ([landmarks objectForKeyedSubscript:@"roll"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"roll", "floatValue"}];
+    [objc_msgSend(landmarks objectForKeyedSubscript:{@"roll", "floatValue"}];
     v17 = fabsf(v16) < 1.05;
   }
 
@@ -357,16 +357,16 @@
     [(CIFilter *)v11 setValue:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v27], @"inputRadius"];
     [(CIFilter *)v11 setValue:v8 forKey:@"inputColor0"];
     [(CIFilter *)v11 setValue:v7 forKey:@"inputColor1"];
-    v28 = [(CIFilter *)v11 outputImage];
+    outputImage = [(CIFilter *)v11 outputImage];
     [(LightingFacePoints *)v10 rightEye];
     [(CIFilter *)v11 setValue:[CIVector vectorWithCGPoint:?], @"inputCenter"];
     v131 = @"inputBackgroundImage";
-    v132 = [(CIFilter *)v11 outputImage];
-    v18 = [(CIImage *)v28 imageByApplyingFilter:@"CIAdditionCompositing" withInputParameters:[NSDictionary dictionaryWithObjects:&v132 forKeys:&v131 count:1]];
+    outputImage2 = [(CIFilter *)v11 outputImage];
+    v18 = [(CIImage *)outputImage imageByApplyingFilter:@"CIAdditionCompositing" withInputParameters:[NSDictionary dictionaryWithObjects:&outputImage2 forKeys:&v131 count:1]];
     v29 = [CIImage imageWithColor:[CIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0]];
     [(CIImage *)self->super.inputImage extent];
     v30 = [(CIImage *)v29 imageByCroppingToRect:?];
-    v31 = [objc_msgSend(a3 objectForKeyedSubscript:{@"orientation", "intValue"}];
+    v31 = [objc_msgSend(landmarks objectForKeyedSubscript:{@"orientation", "intValue"}];
     v32 = *[(LightingFacePoints *)v10 leftEyeOutline];
     v33 = *([(LightingFacePoints *)v10 leftEyeOutline]+ 4);
     v34 = *([(LightingFacePoints *)v10 leftEyeOutline]+ 3);
@@ -504,7 +504,7 @@
     v122 = (v114 * 0.45);
     v123 = sin(v119 + v119);
     v124 = [CIVector vectorWithX:(v121.__cosval * v121.__cosval) / ((v122 + v122) * v122) + (v121.__sinval * v121.__sinval) / ((v108 + v108) * v108) Y:(v123 / (v108 * 4.0 * v108) - v123 / (v122 * 4.0 * v122)) Z:(v121.__sinval * v121.__sinval) / ((v122 + v122) * v122) + (v121.__cosval * v121.__cosval) / ((v108 + v108) * v108) W:1.0];
-    v125 = [(CIPortraitEffectLightV2 *)self _eyeBlurV2];
+    _eyeBlurV2 = [(CIPortraitEffectLightV2 *)self _eyeBlurV2];
     [(CIImage *)self->super.inputImage extent];
     v130[0] = v30;
     v130[1] = v82;
@@ -512,30 +512,30 @@
     v130[3] = v74;
     v130[4] = v103;
     v130[5] = v124;
-    v20 = [v125 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v130, 6), v126, v127, v128, v129}];
+    v20 = [_eyeBlurV2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v130, 6), v126, v127, v128, v129}];
   }
 
   [(CIImage *)v18 extent];
   return [v20 imageByCroppingToRect:?];
 }
 
-- (id)protectEyesNose:(id)a3 withFaceMask:(id)a4 withOrientation:(int)a5
+- (id)protectEyesNose:(id)nose withFaceMask:(id)mask withOrientation:(int)orientation
 {
-  if (!a3)
+  if (!nose)
   {
     return 0;
   }
 
-  v9 = *[a3 leftEyeOutline];
-  v10 = *([a3 leftEyeOutline] + 4);
-  v11 = *([a3 leftEyeOutline] + 3);
-  v12 = v11 - *([a3 leftEyeOutline] + 7);
+  v9 = *[nose leftEyeOutline];
+  v10 = *([nose leftEyeOutline] + 4);
+  v11 = *([nose leftEyeOutline] + 3);
+  v12 = v11 - *([nose leftEyeOutline] + 7);
   v13 = fabsf(v12) * 1.3;
-  v14 = *[a3 leftEyeOutline];
-  v15 = v14 - *([a3 leftEyeOutline] + 4);
+  v14 = *[nose leftEyeOutline];
+  v15 = v14 - *([nose leftEyeOutline] + 4);
   *&v16 = atan2f(v13, v15);
-  v17 = a5 - 5;
-  if ((a5 - 5) > 3)
+  v17 = orientation - 5;
+  if ((orientation - 5) > 3)
   {
     v27 = v9 - v10;
     v20 = fabsf(v27);
@@ -544,14 +544,14 @@
 
   else
   {
-    v18 = *([a3 leftEyeOutline] + 1);
-    v19 = v18 - *([a3 leftEyeOutline] + 5);
+    v18 = *([nose leftEyeOutline] + 1);
+    v19 = v18 - *([nose leftEyeOutline] + 5);
     v20 = fabsf(v19);
-    v21 = *([a3 leftEyeOutline] + 2);
-    v22 = v21 - *([a3 leftEyeOutline] + 6);
+    v21 = *([nose leftEyeOutline] + 2);
+    v22 = v21 - *([nose leftEyeOutline] + 6);
     v13 = fabsf(v22) * 1.3;
-    v23 = *([a3 leftEyeOutline] + 1);
-    v24 = v23 - *([a3 leftEyeOutline] + 5);
+    v23 = *([nose leftEyeOutline] + 1);
+    v24 = v23 - *([nose leftEyeOutline] + 5);
     v25 = atan2f(v13, -v24);
   }
 
@@ -559,13 +559,13 @@
   v29 = (v20 * 0.3);
   v30 = sin(v25 + v25);
   v31 = [CIVector vectorWithX:(v28.__sinval * v28.__sinval) / ((v13 + v13) * v13) + (v28.__cosval * v28.__cosval) / ((v29 + v29) * v29) Y:(v30 / (v13 * 4.0 * v13) - v30 / (v29 * 4.0 * v29)) Z:(v28.__cosval * v28.__cosval) / ((v13 + v13) * v13) + (v28.__sinval * v28.__sinval) / ((v29 + v29) * v29) W:1.0];
-  v32 = *[a3 rightEyeOutline];
-  v33 = *([a3 rightEyeOutline] + 4);
-  v34 = *([a3 rightEyeOutline] + 3);
-  v35 = v34 - *([a3 rightEyeOutline] + 7);
+  v32 = *[nose rightEyeOutline];
+  v33 = *([nose rightEyeOutline] + 4);
+  v34 = *([nose rightEyeOutline] + 3);
+  v35 = v34 - *([nose rightEyeOutline] + 7);
   v36 = fabsf(v35) * 1.3;
-  v37 = *[a3 rightEyeOutline];
-  v38 = v37 - *([a3 rightEyeOutline] + 4);
+  v37 = *[nose rightEyeOutline];
+  v38 = v37 - *([nose rightEyeOutline] + 4);
   *&v39 = atan2f(v36, -v38);
   if (v17 > 3)
   {
@@ -576,14 +576,14 @@
 
   else
   {
-    v40 = *([a3 rightEyeOutline] + 1);
-    v41 = v40 - *([a3 rightEyeOutline] + 5);
+    v40 = *([nose rightEyeOutline] + 1);
+    v41 = v40 - *([nose rightEyeOutline] + 5);
     v42 = fabsf(v41);
-    v43 = *([a3 rightEyeOutline] + 2);
-    v44 = v43 - *([a3 rightEyeOutline] + 6);
+    v43 = *([nose rightEyeOutline] + 2);
+    v44 = v43 - *([nose rightEyeOutline] + 6);
     v36 = fabsf(v44) * 1.3;
-    v45 = *([a3 rightEyeOutline] + 1);
-    v46 = v45 - *([a3 rightEyeOutline] + 5);
+    v45 = *([nose rightEyeOutline] + 1);
+    v46 = v45 - *([nose rightEyeOutline] + 5);
     v47 = atan2f(v36, v46);
   }
 
@@ -593,30 +593,30 @@
   v51 = (v49.__sinval * v49.__sinval);
   v52 = sin(v47 + v47);
   v53 = [CIVector vectorWithX:v51 / ((v36 + v36) * v36) + v50 / ((v105 + v105) * v105) Y:v52 / (v36 * 4.0 * v36) - v52 / (v105 * 4.0 * v105) Z:v50 / ((v36 + v36) * v36) + v51 / ((v105 + v105) * v105) W:1.0];
-  [a3 leftEye];
+  [nose leftEye];
   v55 = v54;
-  [a3 leftEye];
+  [nose leftEye];
   v57 = v56;
-  [a3 rightEye];
+  [nose rightEye];
   v59 = v58;
-  [a3 rightEye];
+  [nose rightEye];
   v61 = [CIVector vectorWithX:v55 Y:v57 Z:v59 W:v60];
   v62 = ((v42 * 0.3) * 1.25);
   v63 = (v36 * 1.25);
   v64 = [CIVector vectorWithX:v51 / ((v63 + v63) * v63) + v50 / ((v62 + v62) * v62) Y:v52 / (v63 * 4.0 * v63) - v52 / (v62 * 4.0 * v62) Z:v50 / ((v63 + v63) * v63) + v51 / ((v62 + v62) * v62) W:1.0];
-  [a3 noseTip];
+  [nose noseTip];
   v66 = v65;
-  [a3 noseTip];
+  [nose noseTip];
   v67 = [CIVector vectorWithX:v66 Y:?];
-  v68 = [(CIPortraitEffectLightV2 *)self _protectEyesNose];
-  [a4 extent];
-  v109[0] = a4;
+  _protectEyesNose = [(CIPortraitEffectLightV2 *)self _protectEyesNose];
+  [mask extent];
+  v109[0] = mask;
   v109[1] = v61;
   v109[2] = v31;
   v109[3] = v53;
   v109[4] = v67;
   v109[5] = v64;
-  v73 = [v68 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v109, 6), v69, v70, v71, v72}];
+  v73 = [_protectEyesNose applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v109, 6), v69, v70, v71, v72}];
   v74 = [CIImage imageWithColor:[CIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
   [v73 extent];
   v75 = [(CIImage *)v74 imageByCroppingToRect:?];
@@ -648,7 +648,7 @@
   }
 
   v95 = v94 * 0.055;
-  v96 = [(CIPortraitEffectLightV2 *)self _featherEdge];
+  _featherEdge = [(CIPortraitEffectLightV2 *)self _featherEdge];
   [v73 extent];
   v98 = v97;
   v100 = v99;
@@ -660,10 +660,10 @@
   v108[2] = [NSNumber numberWithFloat:v97];
   v106 = @"inputBackgroundImage";
   v107 = v73;
-  return [objc_msgSend(v96 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v108, 3), v98, v100, v102, v104), "imageByApplyingFilter:withInputParameters:", @"CIMultiplyBlendMode", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v107, &v106, 1)}];
+  return [objc_msgSend(_featherEdge applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v108, 3), v98, v100, v102, v104), "imageByApplyingFilter:withInputParameters:", @"CIMultiplyBlendMode", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v107, &v106, 1)}];
 }
 
-- (id)processSkinIn:(id)a3 withFaceMask:(id)a4
+- (id)processSkinIn:(id)in withFaceMask:(id)mask
 {
   [(NSNumber *)self->inputSmooth floatValue];
   v8 = v7;
@@ -672,7 +672,7 @@
   if (v10 >= 1.0e-10 || fabsf(v9) >= 1.0e-10)
   {
     v55 = v8;
-    [a3 extent];
+    [in extent];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -680,13 +680,13 @@
     [(NSNumber *)self->super.inputScale floatValue];
     v20 = v19;
     v21 = (v19 * 1.5);
-    v22 = [objc_msgSend(a3 "imageByClampingToExtent")];
-    v67[0] = a3;
+    v22 = [objc_msgSend(in "imageByClampingToExtent")];
+    v67[0] = in;
     v67[1] = v22;
     v67[2] = &off_7A1B0;
     v23 = [-[CIPortraitEffectLightV2 _textureDiff](self "_textureDiff")];
     v24 = [v22 imageByApplyingGaussianBlurWithSigma:v21 * 3.0];
-    v66[0] = a3;
+    v66[0] = in;
     v66[1] = v24;
     v66[2] = &off_7A1C0;
     v25 = [-[CIPortraitEffectLightV2 _textureDiff](self "_textureDiff")];
@@ -697,11 +697,11 @@
     {
       CGAffineTransformMakeScale(&v56, 0.25, 0.25);
       v29 = [v26 imageByApplyingTransform:&v56];
-      [a4 extent];
+      [mask extent];
       v31 = v30;
       [(CIImage *)self->super.inputImage extent];
       v33 = v31 / v32;
-      [a4 extent];
+      [mask extent];
       v35 = v34;
       [(CIImage *)self->super.inputImage extent];
       v37 = v35 / v36;
@@ -726,10 +726,10 @@
       v42 = [objc_msgSend(v29 "imageByClampingToExtent")];
       CGAffineTransformMakeScale(&v56, 4.0, 4.0);
       v43 = [objc_msgSend(v42 imageByApplyingTransform:{&v56), "imageByCroppingToRect:", v12, v14, v16, v18}];
-      v44 = [(CIPortraitEffectLightV2 *)self _cheapEdgePreserve];
-      v65[0] = a3;
+      _cheapEdgePreserve = [(CIPortraitEffectLightV2 *)self _cheapEdgePreserve];
+      v65[0] = in;
       v65[1] = v43;
-      v26 = [v44 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v65, 2), v12, v14, v16, v18}];
+      v26 = [_cheapEdgePreserve applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v65, 2), v12, v14, v16, v18}];
     }
 
     v63[0] = @"inputAmount";
@@ -738,20 +738,20 @@
     v64[0] = v45;
     v64[1] = &off_7A8A8;
     v46 = [v26 imageByApplyingFilter:@"CIPhotoGrain" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v64, v63, 2)}];
-    v47 = [(CIPortraitEffectLightV2 *)self _textureAdd];
+    _textureAdd = [(CIPortraitEffectLightV2 *)self _textureAdd];
     v62[0] = v46;
     v62[1] = v28;
     v62[2] = &off_79E50;
-    v48 = [v47 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v62, 3), v12, v14, v16, v18}];
-    v49 = [(CIPortraitEffectLightV2 *)self _textureAdd];
+    v48 = [_textureAdd applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v62, 3), v12, v14, v16, v18}];
+    _textureAdd2 = [(CIPortraitEffectLightV2 *)self _textureAdd];
     v61[0] = v48;
     v61[1] = v27;
     v61[2] = &off_7A1D0;
-    v50 = [v49 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v61, 3), v12, v14, v16, v18}];
+    v50 = [_textureAdd2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v61, 3), v12, v14, v16, v18}];
     v59[0] = kCIInputBackgroundImageKey;
     v59[1] = kCIInputMaskImageKey;
-    v60[0] = a3;
-    v60[1] = a4;
+    v60[0] = in;
+    v60[1] = mask;
     v51 = [v50 imageByApplyingFilter:@"CIBlendWithBlueMask" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v60, v59, 2)}];
     v52 = v51;
     *&v53 = v55;
@@ -764,105 +764,105 @@
     {
       v57[0] = @"inputBackgroundImage";
       v57[1] = @"inputAmount";
-      v58[0] = a3;
+      v58[0] = in;
       v58[1] = [NSNumber numberWithFloat:v53];
       return [v52 imageByApplyingFilter:@"CIMix" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v58, v57, 2)}];
     }
   }
 
-  return a3;
+  return in;
 }
 
-- (id)processTeethIn:(id)a3 withFaceMask:(id)a4
+- (id)processTeethIn:(id)in withFaceMask:(id)mask
 {
   [(NSNumber *)self->inputTeeth floatValue];
   v8 = v7;
-  [a3 extent];
+  [in extent];
   v12 = v11;
   v14 = v13;
   if (fabsf(v8) >= 1.0e-10)
   {
     v15 = v9;
     v16 = v10;
-    v17 = [(CIPortraitEffectLightV2 *)self _whitenTeeth];
-    v19[0] = a3;
-    v19[1] = a4;
+    _whitenTeeth = [(CIPortraitEffectLightV2 *)self _whitenTeeth];
+    v19[0] = in;
+    v19[1] = mask;
     v19[2] = self->inputTeeth;
-    return [v17 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v19, 3), v12, v14, v15, v16}];
+    return [_whitenTeeth applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v19, 3), v12, v14, v15, v16}];
   }
 
-  return a3;
+  return in;
 }
 
-- (id)processTeethIn:(id)a3 withTeethMask:(id)a4
+- (id)processTeethIn:(id)in withTeethMask:(id)mask
 {
   [(NSNumber *)self->inputTeeth floatValue];
   v8 = v7;
-  [a4 extent];
+  [mask extent];
   v10 = v9;
   [(CIImage *)self->super.inputImage extent];
   if (v10 != v11)
   {
     [(CIImage *)self->super.inputImage extent];
     v13 = v12;
-    [a4 extent];
+    [mask extent];
     v15 = v14;
     v16 = v13 / v15;
     [(CIImage *)self->super.inputImage extent];
     v18 = v17;
-    [a4 extent];
+    [mask extent];
     v20 = v19;
     CGAffineTransformMakeScale(&v34, v16, (v18 / v20));
-    a4 = [a4 imageByApplyingTransform:&v34];
+    mask = [mask imageByApplyingTransform:&v34];
   }
 
-  [a3 extent];
+  [in extent];
   v24 = v23;
   v26 = v25;
   if (fabsf(v8) >= 1.0e-10)
   {
     v27 = v21;
     v28 = v22;
-    v29 = [(CIPortraitEffectLightV2 *)self _whitenTeeth];
+    _whitenTeeth = [(CIPortraitEffectLightV2 *)self _whitenTeeth];
     y = CGRectInfinite.origin.y;
     width = CGRectInfinite.size.width;
     height = CGRectInfinite.size.height;
-    v35[0] = a3;
-    v35[1] = a4;
+    v35[0] = in;
+    v35[1] = mask;
     v35[2] = self->inputTeeth;
-    return [objc_msgSend(objc_msgSend(v29 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v35, 3), CGRectInfinite.origin.x, y, width, height), "imageByCroppingToRect:", v24, v26, v27, v28), "imageByInsertingIntermediate:", 0}];
+    return [objc_msgSend(objc_msgSend(_whitenTeeth applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v35, 3), CGRectInfinite.origin.x, y, width, height), "imageByCroppingToRect:", v24, v26, v27, v28), "imageByInsertingIntermediate:", 0}];
   }
 
-  return a3;
+  return in;
 }
 
-- (id)processEyesIn:(id)a3 withEyeBlur:(id)a4 landmarks:(id)a5
+- (id)processEyesIn:(id)in withEyeBlur:(id)blur landmarks:(id)landmarks
 {
-  if (!a4)
+  if (!blur)
   {
     sub_4A7B0();
   }
 
   [(NSNumber *)self->inputEyes floatValue];
   v10 = v9;
-  [a4 extent];
+  [blur extent];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [objc_msgSend(a3 "imageByCroppingToRect:"_imageByRenderingToIntermediate"")];
-  v20 = [(CIPortraitEffectLightV2 *)self _eyeBrightenV2];
+  v19 = [objc_msgSend(in "imageByCroppingToRect:"_imageByRenderingToIntermediate"")];
+  _eyeBrightenV2 = [(CIPortraitEffectLightV2 *)self _eyeBrightenV2];
   v38[0] = v19;
-  v38[1] = a4;
+  v38[1] = blur;
   v38[2] = self->inputEyes;
-  v21 = [v20 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v38, 3), v12, v14, v16, v18}];
-  v22 = [(CIPortraitEffectLightV2 *)self _eyeBrightenSoftlight];
+  v21 = [_eyeBrightenV2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v38, 3), v12, v14, v16, v18}];
+  _eyeBrightenSoftlight = [(CIPortraitEffectLightV2 *)self _eyeBrightenSoftlight];
   v37[0] = v21;
-  v37[1] = a4;
+  v37[1] = blur;
   [(NSNumber *)self->inputEyes floatValue];
   v37[2] = [NSNumber numberWithDouble:v23 * 0.6];
-  v24 = [v22 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v37, 3), v12, v14, v16, v18}];
-  v25 = [(CIPortraitEffectLightV2 *)self eyeBlurForLandmarks:a5];
+  v24 = [_eyeBrightenSoftlight applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v37, 3), v12, v14, v16, v18}];
+  v25 = [(CIPortraitEffectLightV2 *)self eyeBlurForLandmarks:landmarks];
   v35[0] = kCIInputBackgroundImageKey;
   v35[1] = kCIInputMaskImageKey;
   v36[0] = v19;
@@ -880,10 +880,10 @@
   v31[1] = kCIInputMaskImageKey;
   v32[0] = v26;
   v32[1] = v25;
-  return [objc_msgSend(objc_msgSend(v26 imageByApplyingFilter:@"CISharpenLuminance" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v34, v33, 2)), "imageByApplyingFilter:withInputParameters:", @"CIBlendWithBlueMask", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v32, v31, 2)), "imageByCompositingOverImage:", a3}];
+  return [objc_msgSend(objc_msgSend(v26 imageByApplyingFilter:@"CISharpenLuminance" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v34, v33, 2)), "imageByApplyingFilter:withInputParameters:", @"CIBlendWithBlueMask", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v32, v31, 2)), "imageByCompositingOverImage:", in}];
 }
 
-- (id)imageForLandmarks:(id)a3
+- (id)imageForLandmarks:(id)landmarks
 {
   if (!self->super.inputImage)
   {
@@ -914,13 +914,13 @@
     v78 = height;
     v15 = [LightingFacePoints alloc];
     [(CIImage *)self->super.inputImage extent];
-    v16 = [(LightingFacePoints *)v15 initWithFaceLandmarkDictionary:a3 forImageRect:?];
+    v16 = [(LightingFacePoints *)v15 initWithFaceLandmarkDictionary:landmarks forImageRect:?];
     [(LightingFacePoints *)v16 faceRect];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [objc_msgSend(a3 objectForKeyedSubscript:{@"orientation", "intValue"}];
+    v25 = [objc_msgSend(landmarks objectForKeyedSubscript:{@"orientation", "intValue"}];
     memset(&v81, 0, sizeof(v81));
     [(CIImage *)self->super.inputFaceMask extent];
     sub_1C2E4(v25, &v81, v26, v27, v28);
@@ -1014,7 +1014,7 @@
     return 0;
   }
 
-  v66 = [(CIPortraitEffectLightV2 *)self faceMaskForLandmarks:a3];
+  v66 = [(CIPortraitEffectLightV2 *)self faceMaskForLandmarks:landmarks];
   if (!v66)
   {
     return 0;
@@ -1048,7 +1048,7 @@ LABEL_13:
   {
     if (v6)
     {
-      v67 = [(CIPortraitEffectLightV2 *)self processEyesIn:v67 withEyeBlur:v6 landmarks:a3];
+      v67 = [(CIPortraitEffectLightV2 *)self processEyesIn:v67 withEyeBlur:v6 landmarks:landmarks];
     }
 
     [(NSNumber *)self->super.inputStrength floatValue];
@@ -1066,22 +1066,22 @@ LABEL_13:
   return v67;
 }
 
-- (id)enrichImage:(id)a3
+- (id)enrichImage:(id)image
 {
   [(NSNumber *)self->inputEnrich floatValue];
   if (fabsf(v5) >= 1.0e-10)
   {
-    v6 = [(CIPortraitEffectLightV2 *)self _enrichV2];
+    _enrichV2 = [(CIPortraitEffectLightV2 *)self _enrichV2];
     v7 = [CIVector vectorWithX:0.0799999982 Y:0.400249988 Z:0.0 W:0.548565447];
-    [a3 extent];
+    [image extent];
     inputEnrich = self->inputEnrich;
-    v14[0] = a3;
+    v14[0] = image;
     v14[1] = inputEnrich;
     v14[2] = v7;
-    return [v6 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v14, 3), v9, v10, v11, v12}];
+    return [_enrichV2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v14, 3), v9, v10, v11, v12}];
   }
 
-  return a3;
+  return image;
 }
 
 - (id)outputImage

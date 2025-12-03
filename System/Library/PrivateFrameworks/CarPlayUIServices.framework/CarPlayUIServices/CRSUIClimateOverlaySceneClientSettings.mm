@@ -2,12 +2,12 @@
 - (BOOL)isOverlayHidden;
 - (NSArray)presentedPopoverFrames;
 - (UIEdgeInsets)stepperInsets;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CRSUIClimateOverlaySceneClientSettings
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CRSUIMutableClimateOverlaySceneClientSettings alloc];
 
@@ -16,8 +16,8 @@
 
 - (UIEdgeInsets)stepperInsets
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2075632724];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2075632724];
 
   [v3 UIEdgeInsetsValue];
   v5 = v4;
@@ -38,19 +38,19 @@
 
 - (NSArray)presentedPopoverFrames
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2075632725];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2075632725];
 
   return v3;
 }
 
 - (BOOL)isOverlayHidden
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2075632726];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2075632726];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

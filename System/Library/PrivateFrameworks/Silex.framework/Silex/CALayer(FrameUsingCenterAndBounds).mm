@@ -7,18 +7,18 @@
 
 - (double)frameUsingCenterAndBounds
 {
-  [a1 anchorPoint];
+  [self anchorPoint];
   v3 = v2;
   v5 = v4;
-  [a1 setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
-  [a1 bounds];
-  [a1 position];
+  [self setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
+  [self bounds];
+  [self position];
   v7 = v6;
-  [a1 bounds];
+  [self bounds];
   v9 = v7 - v8 * 0.5;
-  [a1 position];
-  [a1 bounds];
-  [a1 setAnchorPointWithoutChangingPosition:{v3, v5}];
+  [self position];
+  [self bounds];
+  [self setAnchorPointWithoutChangingPosition:{v3, v5}];
   return v9;
 }
 
@@ -32,8 +32,8 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  [a1 transform];
-  [a1 anchorPoint];
+  [self transform];
+  [self anchorPoint];
   v11 = v10;
   v13 = v12;
   v14 = *(MEMORY[0x1E69792E8] + 80);
@@ -48,14 +48,14 @@
   v17 = *(MEMORY[0x1E69792E8] + 48);
   v23 = *(MEMORY[0x1E69792E8] + 32);
   v24 = v17;
-  [a1 setTransform:&v21];
-  [a1 setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
-  [a1 bounds];
+  [self setTransform:&v21];
+  [self setAnchorPointWithoutChangingPosition:{0.5, 0.5}];
+  [self bounds];
   v19 = v18;
-  [a1 bounds];
-  [a1 setBounds:v19];
-  [a1 setPosition:{a2 + a4 * 0.5, a3 + a5 * 0.5}];
-  [a1 setAnchorPointWithoutChangingPosition:{v11, v13}];
+  [self bounds];
+  [self setBounds:v19];
+  [self setPosition:{a2 + a4 * 0.5, a3 + a5 * 0.5}];
+  [self setAnchorPointWithoutChangingPosition:{v11, v13}];
   v25 = v33;
   v26 = v34;
   v27 = v35;
@@ -64,7 +64,7 @@
   v22 = v30;
   v23 = v31;
   v24 = v32;
-  return [a1 setTransform:&v21];
+  return [self setTransform:&v21];
 }
 
 @end

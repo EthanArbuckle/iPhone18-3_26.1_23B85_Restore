@@ -1,20 +1,20 @@
 @interface GDMicroLocationVisitEvent
-- (BOOL)isEqual:(id)a3;
-- (GDMicroLocationVisitEvent)initWithDate:(id)a3 microLocationIdentifier:(id)a4 probability:(double)a5 isEnter:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (GDMicroLocationVisitEvent)initWithDate:(id)date microLocationIdentifier:(id)identifier probability:(double)probability isEnter:(BOOL)enter;
 @end
 
 @implementation GDMicroLocationVisitEvent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     isEqualToString = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     isEnter = self->_isEnter;
@@ -49,20 +49,20 @@
   return isEqualToString;
 }
 
-- (GDMicroLocationVisitEvent)initWithDate:(id)a3 microLocationIdentifier:(id)a4 probability:(double)a5 isEnter:(BOOL)a6
+- (GDMicroLocationVisitEvent)initWithDate:(id)date microLocationIdentifier:(id)identifier probability:(double)probability isEnter:(BOOL)enter
 {
-  v11 = a3;
-  v12 = a4;
+  dateCopy = date;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = GDMicroLocationVisitEvent;
   v13 = [(GDMicroLocationVisitEvent *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_date, a3);
-    objc_storeStrong(&v14->_microLocationIdentifier, a4);
-    v14->_probability = a5;
-    v14->_isEnter = a6;
+    objc_storeStrong(&v13->_date, date);
+    objc_storeStrong(&v14->_microLocationIdentifier, identifier);
+    v14->_probability = probability;
+    v14->_isEnter = enter;
   }
 
   return v14;

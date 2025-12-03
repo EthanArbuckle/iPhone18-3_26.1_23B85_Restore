@@ -2,9 +2,9 @@
 - (MPSCNNSpatialNormalization)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNSpatialNormalization)initWithDevice:(id)device;
 - (MPSCNNSpatialNormalization)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNSpatialNormalization
@@ -64,18 +64,18 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v26.receiver = self;
   v26.super_class = MPSCNNSpatialNormalization;
   [(MPSCNNKernel *)&v26 encodeWithCoder:?];
   *&v5 = self->_alpha;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSCNNSpatialNormalization.alpha", v7, v8, v9, v10, v11, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSCNNSpatialNormalization.alpha", v7, v8, v9, v10, v11, v5);
   *&v12 = self->_beta;
-  objc_msgSend_encodeFloat_forKey_(a3, v13, @"MPSCNNSpatialNormalization.beta", v14, v15, v16, v17, v18, v12);
+  objc_msgSend_encodeFloat_forKey_(coder, v13, @"MPSCNNSpatialNormalization.beta", v14, v15, v16, v17, v18, v12);
   *&v19 = self->_delta;
-  objc_msgSend_encodeFloat_forKey_(a3, v20, @"MPSCNNSpatialNormalization.delta", v21, v22, v23, v24, v25, v19);
+  objc_msgSend_encodeFloat_forKey_(coder, v20, @"MPSCNNSpatialNormalization.delta", v21, v22, v23, v24, v25, v19);
 }
 
 - (MPSCNNSpatialNormalization)initWithDevice:(id)device
@@ -90,11 +90,11 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSCNNSpatialNormalization;
-  result = [(MPSCNNKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSCNNKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 82) = LODWORD(self->_alpha);

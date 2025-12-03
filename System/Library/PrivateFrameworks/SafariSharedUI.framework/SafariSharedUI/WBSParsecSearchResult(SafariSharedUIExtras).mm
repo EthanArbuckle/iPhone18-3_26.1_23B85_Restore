@@ -10,12 +10,12 @@
 
 - (WBSParsecImageRepresentation)icon
 {
-  v1 = [a1 sfSearchResult];
-  v2 = [v1 icon];
+  sfSearchResult = [self sfSearchResult];
+  icon = [sfSearchResult icon];
 
-  if (v2)
+  if (icon)
   {
-    v3 = [[WBSParsecImageRepresentation alloc] initWithSFImage:v2];
+    v3 = [[WBSParsecImageRepresentation alloc] initWithSFImage:icon];
   }
 
   else
@@ -28,12 +28,12 @@
 
 - (WBSParsecImageRepresentation)completionIcon
 {
-  v1 = [a1 sfSearchResult];
-  v2 = [v1 completionImage];
+  sfSearchResult = [self sfSearchResult];
+  completionImage = [sfSearchResult completionImage];
 
-  if (v2)
+  if (completionImage)
   {
-    v3 = [[WBSParsecImageRepresentation alloc] initWithSFImage:v2];
+    v3 = [[WBSParsecImageRepresentation alloc] initWithSFImage:completionImage];
   }
 
   else
@@ -47,8 +47,8 @@
 - (id)iconWithSession:()SafariSharedUIExtras
 {
   v4 = a3;
-  v5 = [a1 icon];
-  v6 = [v5 imageWithSession:v4];
+  icon = [self icon];
+  v6 = [icon imageWithSession:v4];
 
   return v6;
 }
@@ -56,8 +56,8 @@
 - (id)completionIconWithSession:()SafariSharedUIExtras
 {
   v4 = a3;
-  v5 = [a1 completionIcon];
-  v6 = [v5 imageWithSession:v4];
+  completionIcon = [self completionIcon];
+  v6 = [completionIcon imageWithSession:v4];
 
   return v6;
 }
@@ -65,13 +65,13 @@
 - (uint64_t)shouldAutocompleteQuery:()SafariSharedUIExtras
 {
   v4 = a3;
-  if ([a1 isPredictionFromServerMatchingUserTypedQuery:v4])
+  if ([self isPredictionFromServerMatchingUserTypedQuery:v4])
   {
     v5 = MEMORY[0x1E69C9038];
-    v6 = [a1 urlString];
-    v7 = [v4 queryString];
-    v8 = [a1 query];
-    v9 = [v5 shouldAutocompleteToURL:v6 fromUserTypedString:v7 withPredictedQueryString:v8];
+    urlString = [self urlString];
+    queryString = [v4 queryString];
+    query = [self query];
+    v9 = [v5 shouldAutocompleteToURL:urlString fromUserTypedString:queryString withPredictedQueryString:query];
   }
 
   else

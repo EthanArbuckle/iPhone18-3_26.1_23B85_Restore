@@ -1,14 +1,14 @@
 @interface MapGestureCardDismissalHelper
-- (MapGestureCardDismissalHelper)initWithMapView:(id)a3;
+- (MapGestureCardDismissalHelper)initWithMapView:(id)view;
 - (MapGestureCardDismissalHelperDelegate)delegate;
-- (double)insidenessForGesture:(id)a3;
-- (void)continuousGestureDidBegin:(id)a3;
-- (void)continuousGestureDidChange:(id)a3;
-- (void)continuousGestureDidEnd:(id)a3;
+- (double)insidenessForGesture:(id)gesture;
+- (void)continuousGestureDidBegin:(id)begin;
+- (void)continuousGestureDidChange:(id)change;
+- (void)continuousGestureDidEnd:(id)end;
 - (void)dealloc;
 - (void)dismissCard;
-- (void)handleMapViewContinuousGesture:(id)a3;
-- (void)handleMapViewDiscreteGesture:(id)a3;
+- (void)handleMapViewContinuousGesture:(id)gesture;
+- (void)handleMapViewDiscreteGesture:(id)gesture;
 @end
 
 @implementation MapGestureCardDismissalHelper
@@ -20,10 +20,10 @@
   return WeakRetained;
 }
 
-- (void)handleMapViewDiscreteGesture:(id)a3
+- (void)handleMapViewDiscreteGesture:(id)gesture
 {
-  v4 = [(MapGestureCardDismissalHelper *)self delegate];
-  v5 = [v4 cardDismissalHelperShouldObserveGestures:self];
+  delegate = [(MapGestureCardDismissalHelper *)self delegate];
+  v5 = [delegate cardDismissalHelperShouldObserveGestures:self];
 
   if (v5)
   {
@@ -32,44 +32,44 @@
   }
 }
 
-- (void)handleMapViewContinuousGesture:(id)a3
+- (void)handleMapViewContinuousGesture:(id)gesture
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if ((v4 - 3) < 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ((state - 3) < 2)
   {
-    [(MapGestureCardDismissalHelper *)self continuousGestureDidEnd:v7];
+    [(MapGestureCardDismissalHelper *)self continuousGestureDidEnd:gestureCopy];
     goto LABEL_8;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    [(MapGestureCardDismissalHelper *)self continuousGestureDidChange:v7];
+    [(MapGestureCardDismissalHelper *)self continuousGestureDidChange:gestureCopy];
     goto LABEL_8;
   }
 
-  v5 = v4 == 1;
-  v6 = v7;
+  v5 = state == 1;
+  v6 = gestureCopy;
   if (v5)
   {
-    [(MapGestureCardDismissalHelper *)self continuousGestureDidBegin:v7];
+    [(MapGestureCardDismissalHelper *)self continuousGestureDidBegin:gestureCopy];
 LABEL_8:
-    v6 = v7;
+    v6 = gestureCopy;
   }
 }
 
-- (double)insidenessForGesture:(id)a3
+- (double)insidenessForGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 numberOfTouches];
-  if (v5)
+  gestureCopy = gesture;
+  numberOfTouches = [gestureCopy numberOfTouches];
+  if (numberOfTouches)
   {
-    v6 = v5;
+    v6 = numberOfTouches;
     v7 = 0;
     v8 = 0.0;
     do
     {
-      [v4 locationOfTouch:v7 inView:self->_mapView];
+      [gestureCopy locationOfTouch:v7 inView:self->_mapView];
       dismissalRectTopEdge = self->_dismissalRectTopEdge;
       v11 = fmax(v8, v10 - dismissalRectTopEdge);
       if (v10 > dismissalRectTopEdge)
@@ -103,30 +103,30 @@ LABEL_8:
     self->_didDismiss = 1;
   }
 
-  v3 = [(MapGestureCardDismissalHelper *)self delegate];
-  [v3 requestDismissalWithCardDismissalHelper:self];
+  delegate = [(MapGestureCardDismissalHelper *)self delegate];
+  [delegate requestDismissalWithCardDismissalHelper:self];
 }
 
-- (void)continuousGestureDidChange:(id)a3
+- (void)continuousGestureDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (self->_shouldIgnoreGestures)
   {
     goto LABEL_13;
   }
 
-  v16 = v4;
-  v5 = [(MKMapView *)self->_mapView _rotationGestureRecognizer];
+  v16 = changeCopy;
+  _rotationGestureRecognizer = [(MKMapView *)self->_mapView _rotationGestureRecognizer];
 
-  if (v5 == v16)
+  if (_rotationGestureRecognizer == v16)
   {
 LABEL_9:
     [(MapGestureCardDismissalHelper *)self dismissCard];
     goto LABEL_10;
   }
 
-  v6 = [(MKMapView *)self->_mapView _oneHandedZoomGestureRecognizer];
-  if (v6 == v16)
+  _oneHandedZoomGestureRecognizer = [(MKMapView *)self->_mapView _oneHandedZoomGestureRecognizer];
+  if (_oneHandedZoomGestureRecognizer == v16)
   {
 
 LABEL_7:
@@ -139,9 +139,9 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v7 = [(MKMapView *)self->_mapView _pinchGestureRecognizer];
+  _pinchGestureRecognizer = [(MKMapView *)self->_mapView _pinchGestureRecognizer];
 
-  if (v7 == v16)
+  if (_pinchGestureRecognizer == v16)
   {
     goto LABEL_7;
   }
@@ -162,21 +162,21 @@ LABEL_10:
     [(MapGestureCardDismissalHelper *)self dismissCard];
   }
 
-  v4 = v16;
+  changeCopy = v16;
 LABEL_13:
 }
 
-- (void)continuousGestureDidEnd:(id)a3
+- (void)continuousGestureDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   if (!self->_shouldIgnoreGestures)
   {
     insidenessByGesture = self->_insidenessByGesture;
-    v8 = v4;
-    v6 = [NSValue valueWithNonretainedObject:v4];
+    v8 = endCopy;
+    v6 = [NSValue valueWithNonretainedObject:endCopy];
     [(NSMutableDictionary *)insidenessByGesture removeObjectForKey:v6];
 
-    v4 = v8;
+    endCopy = v8;
   }
 
   v7 = self->_activeGestureCount - 1;
@@ -188,91 +188,91 @@ LABEL_13:
   }
 }
 
-- (void)continuousGestureDidBegin:(id)a3
+- (void)continuousGestureDidBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   activeGestureCount = self->_activeGestureCount;
   self->_activeGestureCount = activeGestureCount + 1;
   if (!activeGestureCount)
   {
-    v11 = v4;
-    v6 = [(MapGestureCardDismissalHelper *)self delegate];
-    self->_shouldIgnoreGestures = [v6 cardDismissalHelperShouldObserveGestures:self] ^ 1;
-    [v6 dismissalRectTopEdgeForCardDismissalHelper:self coordinateSpace:self->_mapView];
+    v11 = beginCopy;
+    delegate = [(MapGestureCardDismissalHelper *)self delegate];
+    self->_shouldIgnoreGestures = [delegate cardDismissalHelperShouldObserveGestures:self] ^ 1;
+    [delegate dismissalRectTopEdgeForCardDismissalHelper:self coordinateSpace:self->_mapView];
     self->_dismissalRectTopEdge = v7 + -80.0;
 
-    v4 = v11;
+    beginCopy = v11;
   }
 
   if (!self->_shouldIgnoreGestures)
   {
-    v12 = v4;
-    [(MapGestureCardDismissalHelper *)self insidenessForGesture:v4];
+    v12 = beginCopy;
+    [(MapGestureCardDismissalHelper *)self insidenessForGesture:beginCopy];
     v8 = [NSNumber numberWithDouble:?];
     insidenessByGesture = self->_insidenessByGesture;
     v10 = [NSValue valueWithNonretainedObject:v12];
     [(NSMutableDictionary *)insidenessByGesture setObject:v8 forKeyedSubscript:v10];
 
-    v4 = v12;
+    beginCopy = v12;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(MKMapView *)self->_mapView _panningGestureRecognizer];
-  [v3 removeTarget:self action:"handleMapViewContinuousGesture:"];
+  _panningGestureRecognizer = [(MKMapView *)self->_mapView _panningGestureRecognizer];
+  [_panningGestureRecognizer removeTarget:self action:"handleMapViewContinuousGesture:"];
 
-  v4 = [(MKMapView *)self->_mapView _pinchGestureRecognizer];
-  [v4 removeTarget:self action:"handleMapViewContinuousGesture:"];
+  _pinchGestureRecognizer = [(MKMapView *)self->_mapView _pinchGestureRecognizer];
+  [_pinchGestureRecognizer removeTarget:self action:"handleMapViewContinuousGesture:"];
 
-  v5 = [(MKMapView *)self->_mapView _oneHandedZoomGestureRecognizer];
-  [v5 removeTarget:self action:"handleMapViewContinuousGesture:"];
+  _oneHandedZoomGestureRecognizer = [(MKMapView *)self->_mapView _oneHandedZoomGestureRecognizer];
+  [_oneHandedZoomGestureRecognizer removeTarget:self action:"handleMapViewContinuousGesture:"];
 
-  v6 = [(MKMapView *)self->_mapView _rotationGestureRecognizer];
-  [v6 removeTarget:self action:"handleMapViewContinuousGesture:"];
+  _rotationGestureRecognizer = [(MKMapView *)self->_mapView _rotationGestureRecognizer];
+  [_rotationGestureRecognizer removeTarget:self action:"handleMapViewContinuousGesture:"];
 
-  v7 = [(MKMapView *)self->_mapView _doubleTapGestureRecognizer];
-  [v7 removeTarget:self action:"handleMapViewDiscreteGesture:"];
+  _doubleTapGestureRecognizer = [(MKMapView *)self->_mapView _doubleTapGestureRecognizer];
+  [_doubleTapGestureRecognizer removeTarget:self action:"handleMapViewDiscreteGesture:"];
 
-  v8 = [(MKMapView *)self->_mapView _twoFingerTapGestureRecognizer];
-  [v8 removeTarget:self action:"handleMapViewDiscreteGesture:"];
+  _twoFingerTapGestureRecognizer = [(MKMapView *)self->_mapView _twoFingerTapGestureRecognizer];
+  [_twoFingerTapGestureRecognizer removeTarget:self action:"handleMapViewDiscreteGesture:"];
 
   v9.receiver = self;
   v9.super_class = MapGestureCardDismissalHelper;
   [(MapGestureCardDismissalHelper *)&v9 dealloc];
 }
 
-- (MapGestureCardDismissalHelper)initWithMapView:(id)a3
+- (MapGestureCardDismissalHelper)initWithMapView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = MapGestureCardDismissalHelper;
   v6 = [(MapGestureCardDismissalHelper *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapView, a3);
+    objc_storeStrong(&v6->_mapView, view);
     v8 = +[NSMutableDictionary dictionary];
     insidenessByGesture = v7->_insidenessByGesture;
     v7->_insidenessByGesture = v8;
 
-    v10 = [(MKMapView *)v7->_mapView _panningGestureRecognizer];
-    [v10 addTarget:v7 action:"handleMapViewContinuousGesture:"];
+    _panningGestureRecognizer = [(MKMapView *)v7->_mapView _panningGestureRecognizer];
+    [_panningGestureRecognizer addTarget:v7 action:"handleMapViewContinuousGesture:"];
 
-    v11 = [(MKMapView *)v7->_mapView _pinchGestureRecognizer];
-    [v11 addTarget:v7 action:"handleMapViewContinuousGesture:"];
+    _pinchGestureRecognizer = [(MKMapView *)v7->_mapView _pinchGestureRecognizer];
+    [_pinchGestureRecognizer addTarget:v7 action:"handleMapViewContinuousGesture:"];
 
-    v12 = [(MKMapView *)v7->_mapView _oneHandedZoomGestureRecognizer];
-    [v12 addTarget:v7 action:"handleMapViewContinuousGesture:"];
+    _oneHandedZoomGestureRecognizer = [(MKMapView *)v7->_mapView _oneHandedZoomGestureRecognizer];
+    [_oneHandedZoomGestureRecognizer addTarget:v7 action:"handleMapViewContinuousGesture:"];
 
-    v13 = [(MKMapView *)v7->_mapView _rotationGestureRecognizer];
-    [v13 addTarget:v7 action:"handleMapViewContinuousGesture:"];
+    _rotationGestureRecognizer = [(MKMapView *)v7->_mapView _rotationGestureRecognizer];
+    [_rotationGestureRecognizer addTarget:v7 action:"handleMapViewContinuousGesture:"];
 
-    v14 = [(MKMapView *)v7->_mapView _doubleTapGestureRecognizer];
-    [v14 addTarget:v7 action:"handleMapViewDiscreteGesture:"];
+    _doubleTapGestureRecognizer = [(MKMapView *)v7->_mapView _doubleTapGestureRecognizer];
+    [_doubleTapGestureRecognizer addTarget:v7 action:"handleMapViewDiscreteGesture:"];
 
-    v15 = [(MKMapView *)v7->_mapView _twoFingerTapGestureRecognizer];
-    [v15 addTarget:v7 action:"handleMapViewDiscreteGesture:"];
+    _twoFingerTapGestureRecognizer = [(MKMapView *)v7->_mapView _twoFingerTapGestureRecognizer];
+    [_twoFingerTapGestureRecognizer addTarget:v7 action:"handleMapViewDiscreteGesture:"];
 
     v16 = v7;
   }

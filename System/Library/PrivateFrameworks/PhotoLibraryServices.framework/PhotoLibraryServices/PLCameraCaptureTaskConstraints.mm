@@ -3,8 +3,8 @@
 - (PLCameraCaptureTaskConstraints)init;
 - (id)stateCaptureDictionary;
 - (id)taskConstraintStatus;
-- (void)startConstrainingTasksWithCoordinator:(id)a3;
-- (void)stopConstrainingTasksWithCoordinator:(id)a3;
+- (void)startConstrainingTasksWithCoordinator:(id)coordinator;
+- (void)stopConstrainingTasksWithCoordinator:(id)coordinator;
 @end
 
 @implementation PLCameraCaptureTaskConstraints
@@ -17,14 +17,14 @@
   v8 = 0x2020000000;
   v5 = v9 = 0;
   PLSafeRunWithUnfairLock();
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  [v2 setObject:v5 forKeyedSubscript:@"coordinators"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v5 forKeyedSubscript:@"coordinators"];
   v3 = [MEMORY[0x1E696AD98] numberWithBool:*(v7 + 24)];
-  [v2 setObject:v3 forKeyedSubscript:@"photoStreamsPaused"];
+  [dictionary setObject:v3 forKeyedSubscript:@"photoStreamsPaused"];
 
   _Block_object_dispose(&v6, 8);
 
-  return v2;
+  return dictionary;
 }
 
 void __56__PLCameraCaptureTaskConstraints_stateCaptureDictionary__block_invoke(void *a1)
@@ -145,13 +145,13 @@ void __54__PLCameraCaptureTaskConstraints_taskConstraintStatus__block_invoke(uin
   }
 }
 
-- (void)stopConstrainingTasksWithCoordinator:(id)a3
+- (void)stopConstrainingTasksWithCoordinator:(id)coordinator
 {
-  v3 = a3;
+  coordinatorCopy = coordinator;
   +[PLPhotoLibrary cameraPhotoLibrary];
-  v7 = v6 = v3;
+  v7 = v6 = coordinatorCopy;
   v4 = v7;
-  v5 = v3;
+  v5 = coordinatorCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -183,13 +183,13 @@ void __71__PLCameraCaptureTaskConstraints_stopConstrainingTasksWithCoordinator__
   }
 }
 
-- (void)startConstrainingTasksWithCoordinator:(id)a3
+- (void)startConstrainingTasksWithCoordinator:(id)coordinator
 {
-  v3 = a3;
+  coordinatorCopy = coordinator;
   +[PLPhotoLibrary cameraPhotoLibrary];
-  v7 = v6 = v3;
+  v7 = v6 = coordinatorCopy;
   v4 = v7;
-  v5 = v3;
+  v5 = coordinatorCopy;
   PLSafeRunWithUnfairLock();
 }
 

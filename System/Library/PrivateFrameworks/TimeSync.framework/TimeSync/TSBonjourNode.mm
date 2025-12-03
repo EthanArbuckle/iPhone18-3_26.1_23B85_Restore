@@ -1,7 +1,7 @@
 @interface TSBonjourNode
 - (TSBonjourNode)init;
-- (TSBonjourNode)initWithServiceName:(id)a3 type:(id)a4 andDomain:(id)a5;
-- (void)removedFromInterface:(unsigned int)a3 named:(id)a4;
+- (TSBonjourNode)initWithServiceName:(id)name type:(id)type andDomain:(id)domain;
+- (void)removedFromInterface:(unsigned int)interface named:(id)named;
 @end
 
 @implementation TSBonjourNode
@@ -16,56 +16,56 @@
   return 0;
 }
 
-- (TSBonjourNode)initWithServiceName:(id)a3 type:(id)a4 andDomain:(id)a5
+- (TSBonjourNode)initWithServiceName:(id)name type:(id)type andDomain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  typeCopy = type;
+  domainCopy = domain;
   v21.receiver = self;
   v21.super_class = TSBonjourNode;
   v11 = [(TSBonjourNode *)&v21 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v14 = [v9 copy];
+    v14 = [typeCopy copy];
     type = v11->_type;
     v11->_type = v14;
 
-    v16 = [v10 copy];
+    v16 = [domainCopy copy];
     domain = v11->_domain;
     v11->_domain = v16;
 
-    v18 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     interfaces = v11->_interfaces;
-    v11->_interfaces = v18;
+    v11->_interfaces = dictionary;
   }
 
   return v11;
 }
 
-- (void)removedFromInterface:(unsigned int)a3 named:(id)a4
+- (void)removedFromInterface:(unsigned int)interface named:(id)named
 {
-  v5 = a4;
-  v6 = [(TSBonjourNode *)self interfaces];
+  namedCopy = named;
+  interfaces = [(TSBonjourNode *)self interfaces];
 
   v7 = MEMORY[0x277CBEB38];
-  if (v6)
+  if (interfaces)
   {
-    v8 = [(TSBonjourNode *)self interfaces];
-    v9 = [v7 dictionaryWithDictionary:v8];
+    interfaces2 = [(TSBonjourNode *)self interfaces];
+    dictionary = [v7 dictionaryWithDictionary:interfaces2];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  [v9 removeObjectForKey:v5];
+  [dictionary removeObjectForKey:namedCopy];
 
-  [(TSBonjourNode *)self setInterfaces:v9];
+  [(TSBonjourNode *)self setInterfaces:dictionary];
 }
 
 @end

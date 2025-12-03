@@ -1,6 +1,6 @@
 @interface TSULogHelper
 + (id)sharedInstance;
-- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)a3;
+- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)max;
 @end
 
 @implementation TSULogHelper
@@ -17,24 +17,24 @@
   return v3;
 }
 
-- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)a3
+- (BOOL)incrementThrottleCountAndCheckThottleMax:(unint64_t)max
 {
-  v5 = [(TSULogHelper *)self throttleCount];
+  throttleCount = [(TSULogHelper *)self throttleCount];
   [(TSULogHelper *)self setThrottleCount:[(TSULogHelper *)self throttleCount]+ 1];
-  v6 = [(TSULogHelper *)self lastThrottleCheck];
-  if (v5 == a3 && TSUPerformanceCat_init_token != -1)
+  lastThrottleCheck = [(TSULogHelper *)self lastThrottleCheck];
+  if (throttleCount == max && TSUPerformanceCat_init_token != -1)
   {
     sub_277115738();
   }
 
-  if (v5 < a3 || !v6)
+  if (throttleCount < max || !lastThrottleCheck)
   {
     goto LABEL_12;
   }
 
-  [v6 timeIntervalSinceNow];
+  [lastThrottleCheck timeIntervalSinceNow];
   v8 = v7;
-  [v6 timeIntervalSinceNow];
+  [lastThrottleCheck timeIntervalSinceNow];
   if (v9 < -300.0)
   {
     if (TSUPerformanceCat_init_token != -1)
@@ -53,8 +53,8 @@
   else
   {
 LABEL_12:
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [(TSULogHelper *)self setLastThrottleCheck:v11];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(TSULogHelper *)self setLastThrottleCheck:date];
 
     v10 = 0;
   }

@@ -1,18 +1,18 @@
 @interface _SFSettingsAlertCustomViewContainer
 - (SFSettingsAlertItemViewDelegate)delegate;
-- (_SFSettingsAlertCustomViewContainer)initWithContentView:(id)a3;
+- (_SFSettingsAlertCustomViewContainer)initWithContentView:(id)view;
 - (_SFSettingsAlertItem)item;
-- (void)setDefaultBackgroundMode:(int64_t)a3;
-- (void)setHidesSeparator:(BOOL)a3;
+- (void)setDefaultBackgroundMode:(int64_t)mode;
+- (void)setHidesSeparator:(BOOL)separator;
 @end
 
 @implementation _SFSettingsAlertCustomViewContainer
 
-- (_SFSettingsAlertCustomViewContainer)initWithContentView:(id)a3
+- (_SFSettingsAlertCustomViewContainer)initWithContentView:(id)view
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v25.receiver = self;
   v25.super_class = _SFSettingsAlertCustomViewContainer;
   v5 = [(_SFSettingsAlertCustomViewContainer *)&v25 initWithFrame:?];
@@ -26,23 +26,23 @@
 
     [(_SFSettingsAlertItemBackgroundView *)v5->_backgroundView setAutoresizingMask:18];
     [(_SFSettingsAlertCustomViewContainer *)v5 addSubview:v5->_backgroundView];
-    [(_SFSettingsAlertCustomViewContainer *)v5 addSubview:v4];
+    [(_SFSettingsAlertCustomViewContainer *)v5 addSubview:viewCopy];
     v19 = MEMORY[0x1E696ACD8];
-    v24 = [v4 topAnchor];
-    v23 = [(_SFSettingsAlertCustomViewContainer *)v5 topAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23];
+    topAnchor = [viewCopy topAnchor];
+    topAnchor2 = [(_SFSettingsAlertCustomViewContainer *)v5 topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v26[0] = v22;
-    v21 = [v4 leadingAnchor];
-    v20 = [(_SFSettingsAlertCustomViewContainer *)v5 leadingAnchor];
-    v9 = [v21 constraintEqualToAnchor:v20];
+    leadingAnchor = [viewCopy leadingAnchor];
+    leadingAnchor2 = [(_SFSettingsAlertCustomViewContainer *)v5 leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v26[1] = v9;
-    v10 = [v4 bottomAnchor];
-    v11 = [(_SFSettingsAlertCustomViewContainer *)v5 bottomAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    bottomAnchor = [viewCopy bottomAnchor];
+    bottomAnchor2 = [(_SFSettingsAlertCustomViewContainer *)v5 bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v26[2] = v12;
-    v13 = [v4 trailingAnchor];
-    v14 = [(_SFSettingsAlertCustomViewContainer *)v5 trailingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    trailingAnchor = [viewCopy trailingAnchor];
+    trailingAnchor2 = [(_SFSettingsAlertCustomViewContainer *)v5 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[3] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
     [v19 activateConstraints:v16];
@@ -53,12 +53,12 @@
   return v5;
 }
 
-- (void)setHidesSeparator:(BOOL)a3
+- (void)setHidesSeparator:(BOOL)separator
 {
-  if (self->_hidesSeparator != a3)
+  if (self->_hidesSeparator != separator)
   {
-    self->_hidesSeparator = a3;
-    if (a3)
+    self->_hidesSeparator = separator;
+    if (separator)
     {
       defaultBackgroundMode = 0;
     }
@@ -72,17 +72,17 @@
   }
 }
 
-- (void)setDefaultBackgroundMode:(int64_t)a3
+- (void)setDefaultBackgroundMode:(int64_t)mode
 {
-  if (self->_defaultBackgroundMode != a3)
+  if (self->_defaultBackgroundMode != mode)
   {
-    self->_defaultBackgroundMode = a3;
+    self->_defaultBackgroundMode = mode;
     if (self->_hidesSeparator)
     {
-      a3 = 0;
+      mode = 0;
     }
 
-    [(_SFSettingsAlertItemBackgroundView *)self->_backgroundView setMode:a3];
+    [(_SFSettingsAlertItemBackgroundView *)self->_backgroundView setMode:mode];
   }
 }
 

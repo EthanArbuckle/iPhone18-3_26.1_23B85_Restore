@@ -1,5 +1,5 @@
 @interface MediaOverlayGradientBlurView
-- (_TtC18ASMessagesProvider28MediaOverlayGradientBlurView)initWithFrame:(CGRect)a3;
+- (_TtC18ASMessagesProvider28MediaOverlayGradientBlurView)initWithFrame:(CGRect)frame;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)layoutSubviews;
 @end
@@ -8,7 +8,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_4AA2A4();
 }
 
@@ -25,7 +25,7 @@
   sub_4AA084();
 }
 
-- (_TtC18ASMessagesProvider28MediaOverlayGradientBlurView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider28MediaOverlayGradientBlurView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

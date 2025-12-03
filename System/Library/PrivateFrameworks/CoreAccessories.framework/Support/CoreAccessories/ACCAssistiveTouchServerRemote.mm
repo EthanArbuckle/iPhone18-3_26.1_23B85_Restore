@@ -1,14 +1,14 @@
 @interface ACCAssistiveTouchServerRemote
-- (ACCAssistiveTouchServerRemote)initWithXPCConnection:(id)a3;
-- (void)initConnection:(id)a3;
-- (void)notifyEnabledState:(BOOL)a3 provider:(id)a4;
+- (ACCAssistiveTouchServerRemote)initWithXPCConnection:(id)connection;
+- (void)initConnection:(id)connection;
+- (void)notifyEnabledState:(BOOL)state provider:(id)provider;
 @end
 
 @implementation ACCAssistiveTouchServerRemote
 
-- (ACCAssistiveTouchServerRemote)initWithXPCConnection:(id)a3
+- (ACCAssistiveTouchServerRemote)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v6 = gNumLogObjects < 5;
@@ -38,7 +38,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = [v5 hash];
+    v14 = [connectionCopy hash];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "assistiveTouch initWithXPCConnection: XPCConnection=%lu", buf, 0xCu);
   }
 
@@ -48,9 +48,9 @@
   v10 = v9;
   if (v9)
   {
-    if (v5)
+    if (connectionCopy)
     {
-      objc_storeStrong(&v9->_XPCConnection, a3);
+      objc_storeStrong(&v9->_XPCConnection, connection);
     }
 
     else
@@ -63,14 +63,14 @@
   return v10;
 }
 
-- (void)initConnection:(id)a3
+- (void)initConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[ACCAssistiveTouchServer sharedServer];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(ACCAssistiveTouchServerRemote *)self XPCConnection];
-    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:v6] != 0;
+    xPCConnection = [(ACCAssistiveTouchServerRemote *)self XPCConnection];
+    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:xPCConnection] != 0;
   }
 
   else
@@ -139,13 +139,13 @@
     [v13 sendUpdatedSubscriberList];
   }
 
-  v4[2](v4, v7);
+  connectionCopy[2](connectionCopy, v7);
 }
 
-- (void)notifyEnabledState:(BOOL)a3 provider:(id)a4
+- (void)notifyEnabledState:(BOOL)state provider:(id)provider
 {
-  v4 = a3;
-  v5 = a4;
+  stateCopy = state;
+  providerCopy = provider;
   if (gLogObjects)
   {
     v6 = gNumLogObjects < 5;
@@ -175,9 +175,9 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = v5;
+    v13 = providerCopy;
     v14 = 1024;
-    v15 = v4;
+    v15 = stateCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "assistiveTouch Received notifyEnabledState %@ enabled=%d", buf, 0x12u);
   }
 
@@ -186,7 +186,7 @@
   v10[1] = 3221225472;
   v10[2] = __61__ACCAssistiveTouchServerRemote_notifyEnabledState_provider___block_invoke;
   v10[3] = &__block_descriptor_33_e22_v24__0__NSString_8_B16l;
-  v11 = v4;
+  v11 = stateCopy;
   [v9 iterateAttachedConnectionsSync:v10];
 }
 

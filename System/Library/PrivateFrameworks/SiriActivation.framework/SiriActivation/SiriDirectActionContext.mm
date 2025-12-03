@@ -1,27 +1,27 @@
 @interface SiriDirectActionContext
-+ (id)appLaunchDirectActionWithAppBundleId:(id)a3;
-+ (id)mapSearchDirectActionWithAppBundleId:(id)a3;
-+ (id)mapShareEtaDirectActionWithAppBundleId:(id)a3;
-+ (id)messageAmbiguousDirectActionWithAppBundleId:(id)a3;
-+ (id)messageComposeDirectActionWithAppBundleId:(id)a3;
-+ (id)messageComposeNewThreadDirectActionWithAppBundleId:(id)a3 fullName:(id)a4 phoneOrEmailAddress:(id)a5;
-+ (id)messageReadDirectActionWithAppBundleId:(id)a3 conversationGUID:(id)a4;
-+ (id)messageReplyDirectActionWithAppBundleId:(id)a3 conversationGUID:(id)a4;
-+ (id)musicSearchDirectActionWithAppBundleId:(id)a3;
-+ (id)phoneAmbiguousDirectActionWithAppBundleId:(id)a3;
-+ (id)phoneCallDirectActionWithAppBundleId:(id)a3;
-- (SiriDirectActionContext)initWithBBBulletin:(id)a3;
-- (SiriDirectActionContext)initWithCoder:(id)a3;
-- (SiriDirectActionContext)initWithPayload:(id)a3;
-- (SiriDirectActionContext)initWithUNNotification:(id)a3;
-- (id)_initWithDirectActionEvent:(int64_t)a3 appBundleId:(id)a4 conversationGUID:(id)a5 fullName:(id)a6 phoneOrEmailAddress:(id)a7;
-- (id)_intentIdentifiersFromBulletin:(id)a3 notification:(id)a4;
++ (id)appLaunchDirectActionWithAppBundleId:(id)id;
++ (id)mapSearchDirectActionWithAppBundleId:(id)id;
++ (id)mapShareEtaDirectActionWithAppBundleId:(id)id;
++ (id)messageAmbiguousDirectActionWithAppBundleId:(id)id;
++ (id)messageComposeDirectActionWithAppBundleId:(id)id;
++ (id)messageComposeNewThreadDirectActionWithAppBundleId:(id)id fullName:(id)name phoneOrEmailAddress:(id)address;
++ (id)messageReadDirectActionWithAppBundleId:(id)id conversationGUID:(id)d;
++ (id)messageReplyDirectActionWithAppBundleId:(id)id conversationGUID:(id)d;
++ (id)musicSearchDirectActionWithAppBundleId:(id)id;
++ (id)phoneAmbiguousDirectActionWithAppBundleId:(id)id;
++ (id)phoneCallDirectActionWithAppBundleId:(id)id;
+- (SiriDirectActionContext)initWithBBBulletin:(id)bulletin;
+- (SiriDirectActionContext)initWithCoder:(id)coder;
+- (SiriDirectActionContext)initWithPayload:(id)payload;
+- (SiriDirectActionContext)initWithUNNotification:(id)notification;
+- (id)_initWithDirectActionEvent:(int64_t)event appBundleId:(id)id conversationGUID:(id)d fullName:(id)name phoneOrEmailAddress:(id)address;
+- (id)_intentIdentifiersFromBulletin:(id)bulletin notification:(id)notification;
 - (id)bundleId;
 - (id)description;
-- (int64_t)_directActionEventFromAppIdsAndIntentIdentifiersOfBulletin:(id)a3 notification:(id)a4;
-- (int64_t)_directActionEventFromContentTypesOfBulletin:(id)a3 notification:(id)a4;
+- (int64_t)_directActionEventFromAppIdsAndIntentIdentifiersOfBulletin:(id)bulletin notification:(id)notification;
+- (int64_t)_directActionEventFromContentTypesOfBulletin:(id)bulletin notification:(id)notification;
 - (int64_t)directActionEvent;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriDirectActionContext
@@ -29,157 +29,157 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SiriContext *)self contextOverride];
-  v5 = [(SiriDirectActionContext *)self payload];
-  v6 = [(SiriDirectActionContext *)self bulletin];
-  v7 = [(SiriDirectActionContext *)self notification];
+  contextOverride = [(SiriContext *)self contextOverride];
+  payload = [(SiriDirectActionContext *)self payload];
+  bulletin = [(SiriDirectActionContext *)self bulletin];
+  notification = [(SiriDirectActionContext *)self notification];
   [(SiriDirectActionContext *)self directActionEvent];
   v8 = AFDirectActionEventGetName();
-  v9 = [(SiriDirectActionContext *)self bundleId];
-  v10 = [v3 stringWithFormat:@"<SiriDirectActionContext contextOverride:%@, payload:%@, bulletin:%@, notification:%@, directActionEvent:%@, bundleId:%@>", v4, v5, v6, v7, v8, v9];
+  bundleId = [(SiriDirectActionContext *)self bundleId];
+  v10 = [v3 stringWithFormat:@"<SiriDirectActionContext contextOverride:%@, payload:%@, bulletin:%@, notification:%@, directActionEvent:%@, bundleId:%@>", contextOverride, payload, bulletin, notification, v8, bundleId];
 
   return v10;
 }
 
 - (int64_t)directActionEvent
 {
-  v3 = [(SiriDirectActionContext *)self payload];
+  payload = [(SiriDirectActionContext *)self payload];
 
-  if (v3)
+  if (payload)
   {
-    v4 = [(SiriDirectActionContext *)self payload];
-    v5 = [v4 objectForKey:*MEMORY[0x1E698D2A0]];
-    v6 = [v5 integerValue];
+    payload2 = [(SiriDirectActionContext *)self payload];
+    notification2 = [payload2 objectForKey:*MEMORY[0x1E698D2A0]];
+    integerValue = [notification2 integerValue];
   }
 
   else
   {
-    v8 = [(SiriDirectActionContext *)self bulletin];
-    v9 = [(SiriDirectActionContext *)self notification];
-    v7 = [(SiriDirectActionContext *)self _directActionEventFromContentTypesOfBulletin:v8 notification:v9];
+    bulletin = [(SiriDirectActionContext *)self bulletin];
+    notification = [(SiriDirectActionContext *)self notification];
+    v7 = [(SiriDirectActionContext *)self _directActionEventFromContentTypesOfBulletin:bulletin notification:notification];
 
     if (v7)
     {
       return v7;
     }
 
-    v4 = [(SiriDirectActionContext *)self bulletin];
-    v5 = [(SiriDirectActionContext *)self notification];
-    v6 = [(SiriDirectActionContext *)self _directActionEventFromAppIdsAndIntentIdentifiersOfBulletin:v4 notification:v5];
+    payload2 = [(SiriDirectActionContext *)self bulletin];
+    notification2 = [(SiriDirectActionContext *)self notification];
+    integerValue = [(SiriDirectActionContext *)self _directActionEventFromAppIdsAndIntentIdentifiersOfBulletin:payload2 notification:notification2];
   }
 
-  v7 = v6;
+  v7 = integerValue;
 
   return v7;
 }
 
 - (id)bundleId
 {
-  v3 = [(SiriDirectActionContext *)self payload];
+  payload = [(SiriDirectActionContext *)self payload];
 
-  if (v3)
+  if (payload)
   {
-    v4 = [(SiriDirectActionContext *)self payload];
-    v5 = [v4 valueForKey:@"SBSAssistantActivationContextBundleID"];
+    payload2 = [(SiriDirectActionContext *)self payload];
+    sectionID = [payload2 valueForKey:@"SBSAssistantActivationContextBundleID"];
   }
 
   else
   {
-    v6 = [(SiriDirectActionContext *)self bulletin];
+    bulletin = [(SiriDirectActionContext *)self bulletin];
 
-    if (v6)
+    if (bulletin)
     {
-      v4 = [(SiriDirectActionContext *)self bulletin];
-      v5 = [v4 sectionID];
+      payload2 = [(SiriDirectActionContext *)self bulletin];
+      sectionID = [payload2 sectionID];
     }
 
     else
     {
-      v7 = [(SiriDirectActionContext *)self notification];
+      notification = [(SiriDirectActionContext *)self notification];
 
-      if (!v7)
+      if (!notification)
       {
         goto LABEL_8;
       }
 
-      v4 = [(SiriDirectActionContext *)self notification];
-      v5 = [v4 sourceIdentifier];
+      payload2 = [(SiriDirectActionContext *)self notification];
+      sectionID = [payload2 sourceIdentifier];
     }
   }
 
-  v7 = v5;
+  notification = sectionID;
 
 LABEL_8:
 
-  return v7;
+  return notification;
 }
 
-- (SiriDirectActionContext)initWithPayload:(id)a3
+- (SiriDirectActionContext)initWithPayload:(id)payload
 {
-  v5 = a3;
+  payloadCopy = payload;
   v9.receiver = self;
   v9.super_class = SiriDirectActionContext;
   v6 = [(SiriDirectActionContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_payload, a3);
+    objc_storeStrong(&v6->_payload, payload);
   }
 
   return v7;
 }
 
-- (SiriDirectActionContext)initWithBBBulletin:(id)a3
+- (SiriDirectActionContext)initWithBBBulletin:(id)bulletin
 {
-  v5 = a3;
+  bulletinCopy = bulletin;
   v9.receiver = self;
   v9.super_class = SiriDirectActionContext;
   v6 = [(SiriDirectActionContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bulletin, a3);
+    objc_storeStrong(&v6->_bulletin, bulletin);
   }
 
   return v7;
 }
 
-- (SiriDirectActionContext)initWithUNNotification:(id)a3
+- (SiriDirectActionContext)initWithUNNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   v9.receiver = self;
   v9.super_class = SiriDirectActionContext;
   v6 = [(SiriDirectActionContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notification, a3);
+    objc_storeStrong(&v6->_notification, notification);
   }
 
   return v7;
 }
 
-- (SiriDirectActionContext)initWithCoder:(id)a3
+- (SiriDirectActionContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SiriDirectActionContext;
-  v5 = [(SiriContext *)&v17 initWithCoder:v4];
+  v5 = [(SiriContext *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"payload"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"payload"];
     payload = v5->_payload;
     v5->_payload = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bulletin"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bulletin"];
     bulletin = v5->_bulletin;
     v5->_bulletin = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notification"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notification"];
     notification = v5->_notification;
     v5->_notification = v14;
   }
@@ -187,42 +187,42 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = SiriDirectActionContext;
-  v4 = a3;
-  [(SiriContext *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(SiriContext *)&v8 encodeWithCoder:coderCopy];
   v5 = [(SiriDirectActionContext *)self payload:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"payload"];
+  [coderCopy encodeObject:v5 forKey:@"payload"];
 
-  v6 = [(SiriDirectActionContext *)self bulletin];
-  [v4 encodeObject:v6 forKey:@"bulletin"];
+  bulletin = [(SiriDirectActionContext *)self bulletin];
+  [coderCopy encodeObject:bulletin forKey:@"bulletin"];
 
-  v7 = [(SiriDirectActionContext *)self notification];
-  [v4 encodeObject:v7 forKey:@"notification"];
+  notification = [(SiriDirectActionContext *)self notification];
+  [coderCopy encodeObject:notification forKey:@"notification"];
 }
 
-- (id)_intentIdentifiersFromBulletin:(id)a3 notification:(id)a4
+- (id)_intentIdentifiersFromBulletin:(id)bulletin notification:(id)notification
 {
-  if (a3)
+  if (bulletin)
   {
-    [a3 intentIDs];
+    [bulletin intentIDs];
   }
 
   else
   {
-    [a4 intentIdentifiers];
+    [notification intentIdentifiers];
   }
   v4 = ;
 
   return v4;
 }
 
-- (int64_t)_directActionEventFromContentTypesOfBulletin:(id)a3 notification:(id)a4
+- (int64_t)_directActionEventFromContentTypesOfBulletin:(id)bulletin notification:(id)notification
 {
   v30[6] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  notificationCopy = notification;
   v6 = *MEMORY[0x1E698F668];
   v29[0] = *MEMORY[0x1E698F660];
   v29[1] = v6;
@@ -239,15 +239,15 @@ LABEL_8:
   v30[4] = &unk_1F47D1770;
   v30[5] = &unk_1F47D1788;
   v9 = MEMORY[0x1E695DF20];
-  v10 = a3;
+  bulletinCopy = bulletin;
   v11 = [v9 dictionaryWithObjects:v30 forKeys:v29 count:6];
-  v12 = [v10 contentType];
+  contentType = [bulletinCopy contentType];
 
-  v13 = [v11 objectForKeyedSubscript:v12];
+  v13 = [v11 objectForKeyedSubscript:contentType];
   if (v13)
   {
     v14 = v13;
-    v15 = [v13 integerValue];
+    integerValue = [v13 integerValue];
   }
 
   else
@@ -268,40 +268,40 @@ LABEL_8:
     v28[4] = &unk_1F47D1770;
     v28[5] = &unk_1F47D1788;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:6];
-    v20 = [v5 request];
-    v21 = [v20 content];
-    v22 = [v21 contentType];
+    request = [notificationCopy request];
+    content = [request content];
+    contentType2 = [content contentType];
 
-    v23 = [v19 objectForKeyedSubscript:v22];
+    v23 = [v19 objectForKeyedSubscript:contentType2];
     v14 = v23;
     if (v23)
     {
-      v15 = [v23 integerValue];
+      integerValue = [v23 integerValue];
     }
 
     else
     {
-      if ([v12 length] || objc_msgSend(v22, "length"))
+      if ([contentType length] || objc_msgSend(contentType2, "length"))
       {
         v24 = *MEMORY[0x1E698D0A0];
         if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_ERROR))
         {
-          [(SiriDirectActionContext *)v12 _directActionEventFromContentTypesOfBulletin:v22 notification:v24];
+          [(SiriDirectActionContext *)contentType _directActionEventFromContentTypesOfBulletin:contentType2 notification:v24];
         }
       }
 
-      v15 = 0;
+      integerValue = 0;
     }
   }
 
   v25 = *MEMORY[0x1E69E9840];
-  return v15;
+  return integerValue;
 }
 
-- (int64_t)_directActionEventFromAppIdsAndIntentIdentifiersOfBulletin:(id)a3 notification:(id)a4
+- (int64_t)_directActionEventFromAppIdsAndIntentIdentifiersOfBulletin:(id)bulletin notification:(id)notification
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [(SiriDirectActionContext *)self bundleId:a3];
+  v5 = [(SiriDirectActionContext *)self bundleId:bulletin];
   if (v5 && (v6 = v5, -[SiriDirectActionContext bundleId](self, "bundleId"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 caseInsensitiveCompare:@"com.apple.MobileSMS"], v7, v6, !v8))
   {
 LABEL_18:
@@ -310,15 +310,15 @@ LABEL_18:
 
   else
   {
-    v9 = [(SiriDirectActionContext *)self bundleId];
-    if (v9 && (v10 = v9, -[SiriDirectActionContext bundleId](self, "bundleId"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 caseInsensitiveCompare:@"com.apple.Home"], v11, v10, !v12))
+    bundleId = [(SiriDirectActionContext *)self bundleId];
+    if (bundleId && (v10 = bundleId, -[SiriDirectActionContext bundleId](self, "bundleId"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 caseInsensitiveCompare:@"com.apple.Home"], v11, v10, !v12))
     {
-      v29 = [(SiriDirectActionContext *)self bulletin];
-      v30 = [(SiriDirectActionContext *)self notification];
-      v31 = [(SiriDirectActionContext *)self _intentIdentifiersFromBulletin:v29 notification:v30];
+      bulletin = [(SiriDirectActionContext *)self bulletin];
+      notification = [(SiriDirectActionContext *)self notification];
+      v31 = [(SiriDirectActionContext *)self _intentIdentifiersFromBulletin:bulletin notification:notification];
 
-      LOBYTE(v29) = [v31 containsObject:*MEMORY[0x1E696E688]];
-      if (v29)
+      LOBYTE(bulletin) = [v31 containsObject:*MEMORY[0x1E696E688]];
+      if (bulletin)
       {
         result = 16;
         goto LABEL_25;
@@ -327,12 +327,12 @@ LABEL_18:
 
     else
     {
-      v13 = [(SiriDirectActionContext *)self bundleId];
-      if (v13)
+      bundleId2 = [(SiriDirectActionContext *)self bundleId];
+      if (bundleId2)
       {
-        v14 = v13;
-        v15 = [(SiriDirectActionContext *)self bundleId];
-        v16 = [v15 caseInsensitiveCompare:@"com.apple.shortcuts"];
+        v14 = bundleId2;
+        bundleId3 = [(SiriDirectActionContext *)self bundleId];
+        v16 = [bundleId3 caseInsensitiveCompare:@"com.apple.shortcuts"];
 
         if (!v16)
         {
@@ -341,9 +341,9 @@ LABEL_18:
         }
       }
 
-      v17 = [(SiriDirectActionContext *)self bulletin];
-      v18 = [(SiriDirectActionContext *)self notification];
-      v19 = [(SiriDirectActionContext *)self _intentIdentifiersFromBulletin:v17 notification:v18];
+      bulletin2 = [(SiriDirectActionContext *)self bulletin];
+      notification2 = [(SiriDirectActionContext *)self notification];
+      v19 = [(SiriDirectActionContext *)self _intentIdentifiersFromBulletin:bulletin2 notification:notification2];
 
       v36 = 0u;
       v37 = 0u;
@@ -399,128 +399,128 @@ LABEL_25:
   return result;
 }
 
-+ (id)messageAmbiguousDirectActionWithAppBundleId:(id)a3
++ (id)messageAmbiguousDirectActionWithAppBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:1 appBundleId:v3 conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
+  idCopy = id;
+  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:1 appBundleId:idCopy conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
 
   return v4;
 }
 
-+ (id)messageComposeDirectActionWithAppBundleId:(id)a3
++ (id)messageComposeDirectActionWithAppBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:2 appBundleId:v3 conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
+  idCopy = id;
+  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:2 appBundleId:idCopy conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
 
   return v4;
 }
 
-+ (id)messageComposeNewThreadDirectActionWithAppBundleId:(id)a3 fullName:(id)a4 phoneOrEmailAddress:(id)a5
++ (id)messageComposeNewThreadDirectActionWithAppBundleId:(id)id fullName:(id)name phoneOrEmailAddress:(id)address
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:3 appBundleId:v9 conversationGUID:0 fullName:v8 phoneOrEmailAddress:v7];
+  addressCopy = address;
+  nameCopy = name;
+  idCopy = id;
+  v10 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:3 appBundleId:idCopy conversationGUID:0 fullName:nameCopy phoneOrEmailAddress:addressCopy];
 
   return v10;
 }
 
-+ (id)messageReadDirectActionWithAppBundleId:(id)a3 conversationGUID:(id)a4
++ (id)messageReadDirectActionWithAppBundleId:(id)id conversationGUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:4 appBundleId:v6 conversationGUID:v5 fullName:0 phoneOrEmailAddress:0];
+  dCopy = d;
+  idCopy = id;
+  v7 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:4 appBundleId:idCopy conversationGUID:dCopy fullName:0 phoneOrEmailAddress:0];
 
   return v7;
 }
 
-+ (id)messageReplyDirectActionWithAppBundleId:(id)a3 conversationGUID:(id)a4
++ (id)messageReplyDirectActionWithAppBundleId:(id)id conversationGUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:5 appBundleId:v6 conversationGUID:v5 fullName:0 phoneOrEmailAddress:0];
+  dCopy = d;
+  idCopy = id;
+  v7 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:5 appBundleId:idCopy conversationGUID:dCopy fullName:0 phoneOrEmailAddress:0];
 
   return v7;
 }
 
-+ (id)mapSearchDirectActionWithAppBundleId:(id)a3
++ (id)mapSearchDirectActionWithAppBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:6 appBundleId:v3 conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
+  idCopy = id;
+  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:6 appBundleId:idCopy conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
 
   return v4;
 }
 
-+ (id)mapShareEtaDirectActionWithAppBundleId:(id)a3
++ (id)mapShareEtaDirectActionWithAppBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:18 appBundleId:v3 conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
+  idCopy = id;
+  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:18 appBundleId:idCopy conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
 
   return v4;
 }
 
-+ (id)musicSearchDirectActionWithAppBundleId:(id)a3
++ (id)musicSearchDirectActionWithAppBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:7 appBundleId:v3 conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
+  idCopy = id;
+  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:7 appBundleId:idCopy conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
 
   return v4;
 }
 
-+ (id)phoneAmbiguousDirectActionWithAppBundleId:(id)a3
++ (id)phoneAmbiguousDirectActionWithAppBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:12 appBundleId:v3 conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
+  idCopy = id;
+  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:12 appBundleId:idCopy conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
 
   return v4;
 }
 
-+ (id)phoneCallDirectActionWithAppBundleId:(id)a3
++ (id)phoneCallDirectActionWithAppBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:13 appBundleId:v3 conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
+  idCopy = id;
+  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:13 appBundleId:idCopy conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
 
   return v4;
 }
 
-+ (id)appLaunchDirectActionWithAppBundleId:(id)a3
++ (id)appLaunchDirectActionWithAppBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:15 appBundleId:v3 conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
+  idCopy = id;
+  v4 = [objc_alloc(objc_opt_class()) _initWithDirectActionEvent:15 appBundleId:idCopy conversationGUID:0 fullName:0 phoneOrEmailAddress:0];
 
   return v4;
 }
 
-- (id)_initWithDirectActionEvent:(int64_t)a3 appBundleId:(id)a4 conversationGUID:(id)a5 fullName:(id)a6 phoneOrEmailAddress:(id)a7
+- (id)_initWithDirectActionEvent:(int64_t)event appBundleId:(id)id conversationGUID:(id)d fullName:(id)name phoneOrEmailAddress:(id)address
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  nameCopy = name;
+  addressCopy = address;
   v15 = MEMORY[0x1E695DF90];
   v24[0] = *MEMORY[0x1E698D2A0];
   v16 = MEMORY[0x1E696AD98];
-  v17 = a4;
-  v18 = [v16 numberWithInteger:a3];
+  idCopy = id;
+  v18 = [v16 numberWithInteger:event];
   v24[1] = @"SBSAssistantActivationContextBundleID";
   v25[0] = v18;
-  v25[1] = v17;
+  v25[1] = idCopy;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
   v20 = [v15 dictionaryWithDictionary:v19];
 
-  if ([v12 length])
+  if ([dCopy length])
   {
-    [v20 setObject:v12 forKeyedSubscript:*MEMORY[0x1E698D2A8]];
+    [v20 setObject:dCopy forKeyedSubscript:*MEMORY[0x1E698D2A8]];
   }
 
-  if ([v13 length])
+  if ([nameCopy length])
   {
-    [v20 setObject:v13 forKeyedSubscript:*MEMORY[0x1E698D2B0]];
+    [v20 setObject:nameCopy forKeyedSubscript:*MEMORY[0x1E698D2B0]];
   }
 
-  if ([v14 length])
+  if ([addressCopy length])
   {
-    [v20 setObject:v14 forKeyedSubscript:*MEMORY[0x1E698D2B8]];
+    [v20 setObject:addressCopy forKeyedSubscript:*MEMORY[0x1E698D2B8]];
   }
 
   v21 = [(SiriDirectActionContext *)self initWithPayload:v20];

@@ -1,13 +1,13 @@
 @interface AddressBookObserver
 - ($5E5F304956FB491AF6F034FDF0808287)getDatabaseIdentifier;
-- ($5E5F304956FB491AF6F034FDF0808287)getPrimaryFolderVersionForAddressBook:(int)a3;
-- ($5E5F304956FB491AF6F034FDF0808287)getSecondaryFolderVersionForAddressBook:(int)a3;
+- ($5E5F304956FB491AF6F034FDF0808287)getPrimaryFolderVersionForAddressBook:(int)book;
+- ($5E5F304956FB491AF6F034FDF0808287)getSecondaryFolderVersionForAddressBook:(int)book;
 - (AddressBookObserver)init;
-- (BOOL)_incrementOI_UINT128:(id *)a3;
-- (id)_addressBookToString:(int)a3;
-- (void)_handleCNContactStoreDidChangeNotification:(id)a3;
-- (void)_incrementPrimaryFolderVersionForAddressBook:(int)a3;
-- (void)_incrementSecondaryFolderVersionForAddressBook:(int)a3;
+- (BOOL)_incrementOI_UINT128:(id *)t128;
+- (id)_addressBookToString:(int)string;
+- (void)_handleCNContactStoreDidChangeNotification:(id)notification;
+- (void)_incrementPrimaryFolderVersionForAddressBook:(int)book;
+- (void)_incrementSecondaryFolderVersionForAddressBook:(int)book;
 - (void)_initializeDatabaseIdentifer;
 - (void)_initializePrimaryFolderVersions;
 - (void)_initializeSecondaryFolderVersions;
@@ -36,12 +36,12 @@
   return v2;
 }
 
-- ($5E5F304956FB491AF6F034FDF0808287)getPrimaryFolderVersionForAddressBook:(int)a3
+- ($5E5F304956FB491AF6F034FDF0808287)getPrimaryFolderVersionForAddressBook:(int)book
 {
-  v3 = *&a3;
-  v5 = [(AddressBookObserver *)self primaryFolderVersions];
+  v3 = *&book;
+  primaryFolderVersions = [(AddressBookObserver *)self primaryFolderVersions];
   v6 = [NSNumber numberWithUnsignedInt:v3];
-  v7 = [v5 objectForKey:v6];
+  v7 = [primaryFolderVersions objectForKey:v6];
 
   v16 = 0;
   v17 = 0;
@@ -76,12 +76,12 @@
   return result;
 }
 
-- ($5E5F304956FB491AF6F034FDF0808287)getSecondaryFolderVersionForAddressBook:(int)a3
+- ($5E5F304956FB491AF6F034FDF0808287)getSecondaryFolderVersionForAddressBook:(int)book
 {
-  v3 = *&a3;
-  v5 = [(AddressBookObserver *)self secondaryFolderVersions];
+  v3 = *&book;
+  secondaryFolderVersions = [(AddressBookObserver *)self secondaryFolderVersions];
   v6 = [NSNumber numberWithUnsignedInt:v3];
-  v7 = [v5 objectForKey:v6];
+  v7 = [secondaryFolderVersions objectForKey:v6];
 
   v16 = 0;
   v17 = 0;
@@ -120,8 +120,8 @@
 {
   v17[0] = 0;
   v17[1] = 0;
-  v2 = [(AddressBookObserver *)self databaseIdentifier];
-  [v2 getUUIDBytes:v17];
+  databaseIdentifier = [(AddressBookObserver *)self databaseIdentifier];
+  [databaseIdentifier getUUIDBytes:v17];
 
   v3 = [NSData dataWithBytes:v17 length:16];
   v7 = 0;
@@ -160,9 +160,9 @@
   [(AddressBookObserver *)self _incrementSecondaryFolderVersionForAddressBook:2];
 }
 
-- (void)_incrementPrimaryFolderVersionForAddressBook:(int)a3
+- (void)_incrementPrimaryFolderVersionForAddressBook:(int)book
 {
-  v3 = *&a3;
+  v3 = *&book;
   v5 = qword_100BCE978;
   if (os_log_type_enabled(qword_100BCE978, OS_LOG_TYPE_DEFAULT))
   {
@@ -180,14 +180,14 @@
   }
 
   v8 = [NSValue value:&v11 withObjCType:"{?=IIII}"];
-  v9 = [(AddressBookObserver *)self primaryFolderVersions];
+  primaryFolderVersions = [(AddressBookObserver *)self primaryFolderVersions];
   v10 = [NSNumber numberWithUnsignedInt:v3];
-  [v9 setObject:v8 forKey:v10];
+  [primaryFolderVersions setObject:v8 forKey:v10];
 }
 
-- (void)_incrementSecondaryFolderVersionForAddressBook:(int)a3
+- (void)_incrementSecondaryFolderVersionForAddressBook:(int)book
 {
-  v3 = *&a3;
+  v3 = *&book;
   v5 = qword_100BCE978;
   if (os_log_type_enabled(qword_100BCE978, OS_LOG_TYPE_DEFAULT))
   {
@@ -205,22 +205,22 @@
   }
 
   v8 = [NSValue value:&v11 withObjCType:"{?=IIII}"];
-  v9 = [(AddressBookObserver *)self secondaryFolderVersions];
+  secondaryFolderVersions = [(AddressBookObserver *)self secondaryFolderVersions];
   v10 = [NSNumber numberWithUnsignedInt:v3];
-  [v9 setObject:v8 forKey:v10];
+  [secondaryFolderVersions setObject:v8 forKey:v10];
 }
 
-- (BOOL)_incrementOI_UINT128:(id *)a3
+- (BOOL)_incrementOI_UINT128:(id *)t128
 {
-  var3 = a3->var3;
+  var3 = t128->var3;
   if (var3 == -1)
   {
-    var2 = a3->var2;
+    var2 = t128->var2;
     if (var2 == -1)
     {
-      var1 = a3->var1;
-      result = var1 == -1 && a3->var0++ == -1;
-      a3->var1 = var1 + 1;
+      var1 = t128->var1;
+      result = var1 == -1 && t128->var0++ == -1;
+      t128->var1 = var1 + 1;
     }
 
     else
@@ -228,7 +228,7 @@
       result = 0;
     }
 
-    a3->var2 = var2 + 1;
+    t128->var2 = var2 + 1;
   }
 
   else
@@ -236,7 +236,7 @@
     result = 0;
   }
 
-  a3->var3 = var3 + 1;
+  t128->var3 = var3 + 1;
   return result;
 }
 
@@ -267,8 +267,8 @@
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(AddressBookObserver *)self primaryFolderVersions];
-        [v9 setObject:v4 forKey:v8];
+        primaryFolderVersions = [(AddressBookObserver *)self primaryFolderVersions];
+        [primaryFolderVersions setObject:v4 forKey:v8];
 
         v7 = v7 + 1;
       }
@@ -308,8 +308,8 @@
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(AddressBookObserver *)self secondaryFolderVersions];
-        [v9 setObject:v4 forKey:v8];
+        secondaryFolderVersions = [(AddressBookObserver *)self secondaryFolderVersions];
+        [secondaryFolderVersions setObject:v4 forKey:v8];
 
         v7 = v7 + 1;
       }
@@ -328,22 +328,22 @@
   [(AddressBookObserver *)self setDatabaseIdentifier:?];
 }
 
-- (id)_addressBookToString:(int)a3
+- (id)_addressBookToString:(int)string
 {
-  if ((a3 - 2) > 6)
+  if ((string - 2) > 6)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_100B0EB10[a3 - 2];
+    return off_100B0EB10[string - 2];
   }
 }
 
-- (void)_handleCNContactStoreDidChangeNotification:(id)a3
+- (void)_handleCNContactStoreDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = qword_100BCE978;
   if (os_log_type_enabled(qword_100BCE978, OS_LOG_TYPE_DEFAULT))
   {

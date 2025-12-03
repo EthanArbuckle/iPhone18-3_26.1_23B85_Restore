@@ -1,28 +1,28 @@
 @interface DOMPersonality
-- (DOMPersonality)initWithPersonality:(id)a3 personalityName:(id)a4 serviceName:(id)a5;
-- (id)makeCommandType:(unint64_t)a3 withIORegEntryID:(unint64_t)a4 context:(void *)a5;
+- (DOMPersonality)initWithPersonality:(id)personality personalityName:(id)name serviceName:(id)serviceName;
+- (id)makeCommandType:(unint64_t)type withIORegEntryID:(unint64_t)d context:(void *)context;
 - (id)makeXPCConnection;
-- (id)probeXPCServiceWithIORegEntryID:(unint64_t)a3;
-- (void)probeIORegEntryID:(unint64_t)a3 forDomDevice:(id)a4;
-- (void)startWithDomDevice:(id)a3;
+- (id)probeXPCServiceWithIORegEntryID:(unint64_t)d;
+- (void)probeIORegEntryID:(unint64_t)d forDomDevice:(id)device;
+- (void)startWithDomDevice:(id)device;
 @end
 
 @implementation DOMPersonality
 
-- (DOMPersonality)initWithPersonality:(id)a3 personalityName:(id)a4 serviceName:(id)a5
+- (DOMPersonality)initWithPersonality:(id)personality personalityName:(id)name serviceName:(id)serviceName
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  personalityCopy = personality;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
   v26.receiver = self;
   v26.super_class = DOMPersonality;
   v11 = [(DOMPersonality *)&v26 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_personalityName, a4);
-    objc_storeStrong(&v12->_xpcName, a5);
-    v13 = [v8 mutableCopy];
+    objc_storeStrong(&v11->_personalityName, name);
+    objc_storeStrong(&v12->_xpcName, serviceName);
+    v13 = [personalityCopy mutableCopy];
     personalityDict = v12->_personalityDict;
     v12->_personalityDict = v13;
 
@@ -70,9 +70,9 @@
     if (v22)
     {
       v23 = [(NSMutableDictionary *)v12->_personalityDict objectForKeyedSubscript:@"DOMRequire9Pin"];
-      v24 = [v23 BOOLValue];
+      bOOLValue = [v23 BOOLValue];
 
-      if (v24)
+      if (bOOLValue)
       {
         v12->_require9Pin = 1;
       }
@@ -84,9 +84,9 @@
   return v12;
 }
 
-- (id)makeCommandType:(unint64_t)a3 withIORegEntryID:(unint64_t)a4 context:(void *)a5
+- (id)makeCommandType:(unint64_t)type withIORegEntryID:(unint64_t)d context:(void *)context
 {
-  v8 = [(DOMPersonality *)self personalityDict];
+  personalityDict = [(DOMPersonality *)self personalityDict];
   v9 = _CFXPCCreateXPCObjectFromCFObject();
 
   if (v9)
@@ -95,19 +95,19 @@
     v11 = v10;
     if (v10)
     {
-      xpc_dictionary_set_uint64(v10, "_LB_TYPE", a3);
-      if (a3 == 1)
+      xpc_dictionary_set_uint64(v10, "_LB_TYPE", type);
+      if (type == 1)
       {
-        xpc_dictionary_set_int64(v11, "_LB_PROBE_SCORE", a5);
+        xpc_dictionary_set_int64(v11, "_LB_PROBE_SCORE", context);
       }
 
-      else if (a3 == 2 && a5)
+      else if (type == 2 && context)
       {
         v12 = _CFXPCCreateXPCObjectFromCFObject();
         xpc_dictionary_set_value(v11, "_LB_CLAIMED", v12);
       }
 
-      xpc_dictionary_set_uint64(v11, "_LB_SERVICE_ID", a4);
+      xpc_dictionary_set_uint64(v11, "_LB_SERVICE_ID", d);
       xpc_dictionary_set_value(v11, "_LB_PERSONALITY", v9);
     }
 
@@ -128,13 +128,13 @@
 
 - (id)makeXPCConnection
 {
-  v2 = [(DOMPersonality *)self xpcName];
-  v3 = [v2 UTF8String];
+  xpcName = [(DOMPersonality *)self xpcName];
+  uTF8String = [xpcName UTF8String];
 
-  if (v3)
+  if (uTF8String)
   {
     v4 = dispatch_get_global_queue(0, 0);
-    mach_service = xpc_connection_create_mach_service(v3, v4, 0);
+    mach_service = xpc_connection_create_mach_service(uTF8String, v4, 0);
 
     if (mach_service)
     {
@@ -144,7 +144,7 @@
 
     else
     {
-      sub_100007D14(v3, &v7);
+      sub_100007D14(uTF8String, &v7);
       mach_service = v7;
     }
   }
@@ -162,13 +162,13 @@
   return mach_service;
 }
 
-- (id)probeXPCServiceWithIORegEntryID:(unint64_t)a3
+- (id)probeXPCServiceWithIORegEntryID:(unint64_t)d
 {
-  v4 = [(DOMPersonality *)self makeCommandType:1 withIORegEntryID:a3 context:0];
+  v4 = [(DOMPersonality *)self makeCommandType:1 withIORegEntryID:d context:0];
   if (v4)
   {
-    v5 = [(DOMPersonality *)self makeXPCConnection];
-    if (v5)
+    makeXPCConnection = [(DOMPersonality *)self makeXPCConnection];
+    if (makeXPCConnection)
     {
       v6 = dispatch_semaphore_create(0);
       v20 = 0;
@@ -180,12 +180,12 @@
       v7 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(DOMPersonality *)self personalityName];
-        v9 = [(DOMPersonality *)self xpcName];
+        personalityName = [(DOMPersonality *)self personalityName];
+        xpcName = [(DOMPersonality *)self xpcName];
         *buf = 138412546;
-        v27 = v8;
+        v27 = personalityName;
         v28 = 2112;
-        v29 = v9;
+        v29 = xpcName;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "probing personality: %@ by messaging xpcService: %@", buf, 0x16u);
       }
 
@@ -198,16 +198,16 @@
       v19 = &v20;
       v11 = v6;
       v18 = v11;
-      xpc_connection_send_message_with_reply(v5, v4, v10, handler);
+      xpc_connection_send_message_with_reply(makeXPCConnection, v4, v10, handler);
 
       dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
       v12 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(DOMPersonality *)self personalityName];
+        personalityName2 = [(DOMPersonality *)self personalityName];
         v14 = v21[5];
         *buf = 138412546;
-        v27 = v13;
+        v27 = personalityName2;
         v28 = 2112;
         v29 = v14;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ returning %@", buf, 0x16u);
@@ -231,68 +231,68 @@
   return v15;
 }
 
-- (void)probeIORegEntryID:(unint64_t)a3 forDomDevice:(id)a4
+- (void)probeIORegEntryID:(unint64_t)d forDomDevice:(id)device
 {
-  v6 = a4;
-  v7 = [(DOMPersonality *)self xpcName];
+  deviceCopy = device;
+  xpcName = [(DOMPersonality *)self xpcName];
 
-  if (v7)
+  if (xpcName)
   {
-    v8 = [(DOMPersonality *)self probeXPCServiceWithIORegEntryID:a3];
+    staticProbeScore2 = [(DOMPersonality *)self probeXPCServiceWithIORegEntryID:d];
   }
 
   else
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(DOMPersonality *)self personalityName];
-      v10 = [(DOMPersonality *)self staticProbeScore];
+      personalityName = [(DOMPersonality *)self personalityName];
+      staticProbeScore = [(DOMPersonality *)self staticProbeScore];
       v12 = 138412546;
-      v13 = v9;
+      v13 = personalityName;
       v14 = 2112;
-      v15 = v10;
+      v15 = staticProbeScore;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "no XPC service for %@, using static probe score: %@", &v12, 0x16u);
     }
 
-    v8 = [(DOMPersonality *)self staticProbeScore];
+    staticProbeScore2 = [(DOMPersonality *)self staticProbeScore];
   }
 
-  v11 = v8;
-  [v6 evaluateScore:v8 fromDomPersonality:self withIORegEntryID:a3];
+  v11 = staticProbeScore2;
+  [deviceCopy evaluateScore:staticProbeScore2 fromDomPersonality:self withIORegEntryID:d];
 }
 
-- (void)startWithDomDevice:(id)a3
+- (void)startWithDomDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(DOMPersonality *)self notificationName];
+  deviceCopy = device;
+  notificationName = [(DOMPersonality *)self notificationName];
 
-  if (v5)
+  if (notificationName)
   {
-    v6 = [(DOMPersonality *)self notificationName];
-    notify_post([v6 UTF8String]);
+    notificationName2 = [(DOMPersonality *)self notificationName];
+    notify_post([notificationName2 UTF8String]);
   }
 
-  v7 = [(DOMPersonality *)self xpcName];
+  xpcName = [(DOMPersonality *)self xpcName];
 
-  if (v7)
+  if (xpcName)
   {
-    v8 = -[DOMPersonality makeCommandType:withIORegEntryID:context:](self, "makeCommandType:withIORegEntryID:context:", 2, [v4 winningIORegEntryID], 0);
+    v8 = -[DOMPersonality makeCommandType:withIORegEntryID:context:](self, "makeCommandType:withIORegEntryID:context:", 2, [deviceCopy winningIORegEntryID], 0);
     if (v8)
     {
-      v9 = [(DOMPersonality *)self makeXPCConnection];
-      v10 = v9;
-      if (v9)
+      makeXPCConnection = [(DOMPersonality *)self makeXPCConnection];
+      v10 = makeXPCConnection;
+      if (makeXPCConnection)
       {
-        sub_100008034(v9, v8, self);
+        sub_100008034(makeXPCConnection, v8, self);
       }
     }
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(DOMPersonality *)self personalityName];
+    personalityName = [(DOMPersonality *)self personalityName];
     v12 = 138412290;
-    v13 = v11;
+    v13 = personalityName;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "No xpc service for %@", &v12, 0xCu);
   }
 }

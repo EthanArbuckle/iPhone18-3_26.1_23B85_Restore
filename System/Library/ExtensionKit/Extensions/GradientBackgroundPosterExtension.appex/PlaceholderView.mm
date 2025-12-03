@@ -1,6 +1,6 @@
 @interface PlaceholderView
-- (_TtC33GradientBackgroundPosterExtension15PlaceholderView)initWithCoder:(id)a3;
-- (_TtC33GradientBackgroundPosterExtension15PlaceholderView)initWithFrame:(CGRect)a3;
+- (_TtC33GradientBackgroundPosterExtension15PlaceholderView)initWithCoder:(id)coder;
+- (_TtC33GradientBackgroundPosterExtension15PlaceholderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -15,7 +15,7 @@
   sub_100003CD4();
 }
 
-- (_TtC33GradientBackgroundPosterExtension15PlaceholderView)initWithFrame:(CGRect)a3
+- (_TtC33GradientBackgroundPosterExtension15PlaceholderView)initWithFrame:(CGRect)frame
 {
   v4 = OBJC_IVAR____TtC33GradientBackgroundPosterExtension15PlaceholderView_label;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (_TtC33GradientBackgroundPosterExtension15PlaceholderView)initWithCoder:(id)a3
+- (_TtC33GradientBackgroundPosterExtension15PlaceholderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC33GradientBackgroundPosterExtension15PlaceholderView_label;
   v5 = [objc_allocWithZone(UILabel) init];

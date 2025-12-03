@@ -1,14 +1,14 @@
 @interface MTInstagramShareUtil
-+ (id)createSocialPostUIImageWithShareModel:(id)a3;
++ (id)createSocialPostUIImageWithShareModel:(id)model;
 - (MTInstagramShareUtil)init;
 @end
 
 @implementation MTInstagramShareUtil
 
-+ (id)createSocialPostUIImageWithShareModel:(id)a3
++ (id)createSocialPostUIImageWithShareModel:(id)model
 {
-  v3 = a3;
-  v4 = sub_10034B2B8(v3);
+  modelCopy = model;
+  v4 = sub_10034B2B8(modelCopy);
 
   return v4;
 }

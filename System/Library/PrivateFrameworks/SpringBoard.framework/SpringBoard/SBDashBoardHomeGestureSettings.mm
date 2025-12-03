@@ -11,10 +11,10 @@
   v5.super_class = SBDashBoardHomeGestureSettings;
   [(SBHomeGestureSettings *)&v5 setDefaultValues];
   [(SBHomeGestureSettings *)self setHomeGestureXOffsetFactor:1.0];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [(SBHomeGestureSettings *)self setHomeGestureCenterZoomDownCenterYOffsetFactor:dbl_21F8A7470[(v4 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
+  [(SBHomeGestureSettings *)self setHomeGestureCenterZoomDownCenterYOffsetFactor:dbl_21F8A7470[(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1]];
   [(SBHomeGestureSettings *)self setHomeGestureMinimumCardScale:0.55];
   [(SBHomeGestureSettings *)self setHomeGestureMinimumCardScaleRubberBandingRange:0.4];
 }
@@ -46,7 +46,7 @@
 
   v16 = [MEMORY[0x277D43210] sectionWithRows:v15 title:@"Dashboard Gesture Zoom Down"];
   v17 = MEMORY[0x277D43210];
-  v26.receiver = a1;
+  v26.receiver = self;
   v26.super_class = &OBJC_METACLASS___SBDashBoardHomeGestureSettings;
   v27[0] = v16;
   v18 = objc_msgSendSuper2(&v26, sel_settingsControllerModule);

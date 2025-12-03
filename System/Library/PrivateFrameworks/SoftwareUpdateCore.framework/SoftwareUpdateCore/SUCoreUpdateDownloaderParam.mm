@@ -1,55 +1,55 @@
 @interface SUCoreUpdateDownloaderParam
 - (SUCoreUpdateDownloaderParam)init;
-- (SUCoreUpdateDownloaderParam)initWithError:(id)a3;
-- (SUCoreUpdateDownloaderParam)initWithNote:(id)a3;
-- (SUCoreUpdateDownloaderParam)initWithProgress:(id)a3;
+- (SUCoreUpdateDownloaderParam)initWithError:(id)error;
+- (SUCoreUpdateDownloaderParam)initWithNote:(id)note;
+- (SUCoreUpdateDownloaderParam)initWithProgress:(id)progress;
 - (id)description;
 @end
 
 @implementation SUCoreUpdateDownloaderParam
 
-- (SUCoreUpdateDownloaderParam)initWithProgress:(id)a3
+- (SUCoreUpdateDownloaderParam)initWithProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   v9.receiver = self;
   v9.super_class = SUCoreUpdateDownloaderParam;
   v6 = [(SUCoreUpdateDownloaderParam *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_progress, a3);
+    objc_storeStrong(&v6->_progress, progress);
     v7->_type = 1;
   }
 
   return v7;
 }
 
-- (SUCoreUpdateDownloaderParam)initWithError:(id)a3
+- (SUCoreUpdateDownloaderParam)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = SUCoreUpdateDownloaderParam;
   v6 = [(SUCoreUpdateDownloaderParam *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
     v7->_type = 2;
   }
 
   return v7;
 }
 
-- (SUCoreUpdateDownloaderParam)initWithNote:(id)a3
+- (SUCoreUpdateDownloaderParam)initWithNote:(id)note
 {
-  v5 = a3;
+  noteCopy = note;
   v9.receiver = self;
   v9.super_class = SUCoreUpdateDownloaderParam;
   v6 = [(SUCoreUpdateDownloaderParam *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_note, a3);
+    objc_storeStrong(&v6->_note, note);
     v7->_type = 3;
   }
 
@@ -76,18 +76,18 @@
   switch(type)
   {
     case 3:
-      v4 = [(SUCoreUpdateDownloaderParam *)self note];
-      [v3 stringWithFormat:@"\n[>>>\n    note: %@\n<<<]", v4];
+      note = [(SUCoreUpdateDownloaderParam *)self note];
+      [v3 stringWithFormat:@"\n[>>>\n    note: %@\n<<<]", note];
       goto LABEL_7;
     case 2:
-      v4 = [(SUCoreUpdateDownloaderParam *)self error];
-      [v3 stringWithFormat:@"\n[>>>\n    error: %@\n<<<]", v4];
+      note = [(SUCoreUpdateDownloaderParam *)self error];
+      [v3 stringWithFormat:@"\n[>>>\n    error: %@\n<<<]", note];
       v6 = LABEL_7:;
       goto LABEL_8;
     case 1:
-      v4 = [(SUCoreUpdateDownloaderParam *)self progress];
-      v5 = [v4 summary];
-      v6 = [v3 stringWithFormat:@"\n[>>>\n    progress: %@\n<<<]", v5];
+      note = [(SUCoreUpdateDownloaderParam *)self progress];
+      summary = [note summary];
+      v6 = [v3 stringWithFormat:@"\n[>>>\n    progress: %@\n<<<]", summary];
 
 LABEL_8:
       goto LABEL_10;

@@ -1,15 +1,15 @@
 @interface AXMVisionEngineNode
 + (BOOL)isSupported;
 + (NSString)title;
-- (AXMVisionEngineNode)initWithCoder:(id)a3;
-- (AXMVisionEngineNode)initWithIdentifier:(id)a3;
+- (AXMVisionEngineNode)initWithCoder:(id)coder;
+- (AXMVisionEngineNode)initWithIdentifier:(id)identifier;
 - (AXMVisionEngineNodeConnectionDelegate)delegate;
 - (BOOL)areDiagnosticsEnabled;
 - (id)axmDescription;
-- (void)axmAppendRecursiveDescription:(id)a3 withIndentation:(int64_t)a4;
-- (void)connect:(id)a3;
+- (void)axmAppendRecursiveDescription:(id)description withIndentation:(int64_t)indentation;
+- (void)connect:(id)connect;
 - (void)disconnect;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMVisionEngineNode
@@ -36,15 +36,15 @@
   return @"Unknown";
 }
 
-- (AXMVisionEngineNode)initWithIdentifier:(id)a3
+- (AXMVisionEngineNode)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = AXMVisionEngineNode;
   v5 = [(AXMVisionEngineNode *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -60,35 +60,35 @@
   return v5;
 }
 
-- (AXMVisionEngineNode)initWithCoder:(id)a3
+- (AXMVisionEngineNode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMNodeCodingKeyIdentifier];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMNodeCodingKeyIdentifier];
   v6 = [(AXMVisionEngineNode *)self initWithIdentifier:v5];
   if (v6)
   {
-    v6->_enabled = [v4 decodeBoolForKey:AXMNodeCodingKeyEnabled];
+    v6->_enabled = [coderCopy decodeBoolForKey:AXMNodeCodingKeyEnabled];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(AXMVisionEngineNode *)self identifier];
-  [v6 encodeObject:v4 forKey:AXMNodeCodingKeyIdentifier];
+  coderCopy = coder;
+  identifier = [(AXMVisionEngineNode *)self identifier];
+  [coderCopy encodeObject:identifier forKey:AXMNodeCodingKeyIdentifier];
 
-  v5 = [(AXMVisionEngineNode *)self isEnabled];
-  [v6 encodeBool:v5 forKey:AXMNodeCodingKeyEnabled];
+  isEnabled = [(AXMVisionEngineNode *)self isEnabled];
+  [coderCopy encodeBool:isEnabled forKey:AXMNodeCodingKeyEnabled];
 }
 
-- (void)connect:(id)a3
+- (void)connect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   if (![(AXMVisionEngineNode *)self isConnected])
   {
-    [(AXMVisionEngineNode *)self setDelegate:v4];
+    [(AXMVisionEngineNode *)self setDelegate:connectCopy];
     [(AXMVisionEngineNode *)self setConnected:1];
   }
 }
@@ -102,11 +102,11 @@
 
 - (BOOL)areDiagnosticsEnabled
 {
-  v2 = self;
-  v3 = [(AXMVisionEngineNode *)self delegate];
-  LOBYTE(v2) = [v3 diagnosticsEnabled:v2];
+  selfCopy = self;
+  delegate = [(AXMVisionEngineNode *)self delegate];
+  LOBYTE(selfCopy) = [delegate diagnosticsEnabled:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)axmDescription
@@ -114,8 +114,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AXMVisionEngineNode *)self identifier];
-  v7 = [objc_opt_class() title];
+  identifier = [(AXMVisionEngineNode *)self identifier];
+  title = [objc_opt_class() title];
   if ([objc_opt_class() isSupported])
   {
     v8 = @"Y";
@@ -156,18 +156,18 @@
     v11 = @"N";
   }
 
-  v12 = [v3 stringWithFormat:@"%@<%p>: ID:'%@' title:'%@' supported:%@ needsVisionKit:%@ enabled:%@ connected:%@", v5, self, v6, v7, v8, v9, v10, v11];
+  v12 = [v3 stringWithFormat:@"%@<%p>: ID:'%@' title:'%@' supported:%@ needsVisionKit:%@ enabled:%@ connected:%@", v5, self, identifier, title, v8, v9, v10, v11];
 
   return v12;
 }
 
-- (void)axmAppendRecursiveDescription:(id)a3 withIndentation:(int64_t)a4
+- (void)axmAppendRecursiveDescription:(id)description withIndentation:(int64_t)indentation
 {
   v6 = MEMORY[0x1E696AD60];
-  v7 = a3;
-  v9 = [v6 axmIndentationString:a4];
-  v8 = [(AXMVisionEngineNode *)self axmDescription];
-  [v7 appendFormat:@"%@%@\n", v9, v8];
+  descriptionCopy = description;
+  v9 = [v6 axmIndentationString:indentation];
+  axmDescription = [(AXMVisionEngineNode *)self axmDescription];
+  [descriptionCopy appendFormat:@"%@%@\n", v9, axmDescription];
 }
 
 - (AXMVisionEngineNodeConnectionDelegate)delegate

@@ -1,34 +1,34 @@
 @interface ASVSchemaASVOutputVolumeQueried
-- (ASVSchemaASVOutputVolumeQueried)initWithDictionary:(id)a3;
-- (ASVSchemaASVOutputVolumeQueried)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASVSchemaASVOutputVolumeQueried)initWithDictionary:(id)dictionary;
+- (ASVSchemaASVOutputVolumeQueried)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasBackgroundNoiseActivityLevel:(BOOL)a3;
-- (void)setHasBackgroundNoiseLevel:(BOOL)a3;
-- (void)setHasInvocationType:(BOOL)a3;
-- (void)setHasIsMediaPlaybackOn:(BOOL)a3;
-- (void)setHasIsPermanentOffsetEnabled:(BOOL)a3;
-- (void)setHasMusicLoudnessLevel:(BOOL)a3;
-- (void)setHasPermanentOffsetFactor:(BOOL)a3;
-- (void)setHasSpeakerDistance:(BOOL)a3;
-- (void)setHasSpeakerSpeechLevel:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBackgroundNoiseActivityLevel:(BOOL)level;
+- (void)setHasBackgroundNoiseLevel:(BOOL)level;
+- (void)setHasInvocationType:(BOOL)type;
+- (void)setHasIsMediaPlaybackOn:(BOOL)on;
+- (void)setHasIsPermanentOffsetEnabled:(BOOL)enabled;
+- (void)setHasMusicLoudnessLevel:(BOOL)level;
+- (void)setHasPermanentOffsetFactor:(BOOL)factor;
+- (void)setHasSpeakerDistance:(BOOL)distance;
+- (void)setHasSpeakerSpeechLevel:(BOOL)level;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASVSchemaASVOutputVolumeQueried
 
-- (ASVSchemaASVOutputVolumeQueried)initWithDictionary:(id)a3
+- (ASVSchemaASVOutputVolumeQueried)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = ASVSchemaASVOutputVolumeQueried;
   v5 = [(ASVSchemaASVOutputVolumeQueried *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"outputVolume"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"outputVolume"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,14 +36,14 @@
       [(ASVSchemaASVOutputVolumeQueried *)v5 setOutputVolume:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"speakerDistance"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"speakerDistance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASVSchemaASVOutputVolumeQueried setSpeakerDistance:](v5, "setSpeakerDistance:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"speakerSpeechLevel"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"speakerSpeechLevel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(ASVSchemaASVOutputVolumeQueried *)v5 setSpeakerSpeechLevel:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"musicLoudnessLevel"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"musicLoudnessLevel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
     }
 
     v19 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"backgroundNoiseLevel"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"backgroundNoiseLevel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,14 +68,14 @@
       [(ASVSchemaASVOutputVolumeQueried *)v5 setBackgroundNoiseLevel:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"backgroundNoiseActivityLevel"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"backgroundNoiseActivityLevel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASVSchemaASVOutputVolumeQueried setBackgroundNoiseActivityLevel:](v5, "setBackgroundNoiseActivityLevel:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isMediaPlaybackOn"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isMediaPlaybackOn"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@
 
     v20 = v8;
     v21 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"invocationType"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"invocationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,14 +92,14 @@
     }
 
     v14 = v7;
-    v15 = [v4 objectForKeyedSubscript:@"isPermanentOffsetEnabled"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isPermanentOffsetEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASVSchemaASVOutputVolumeQueried setIsPermanentOffsetEnabled:](v5, "setIsPermanentOffsetEnabled:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"permanentOffsetFactor"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"permanentOffsetFactor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,30 +113,30 @@
   return v5;
 }
 
-- (ASVSchemaASVOutputVolumeQueried)initWithJSON:(id)a3
+- (ASVSchemaASVOutputVolumeQueried)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASVSchemaASVOutputVolumeQueried *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASVSchemaASVOutputVolumeQueried *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASVSchemaASVOutputVolumeQueried *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -149,18 +149,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    v5 = [(ASVSchemaASVOutputVolumeQueried *)self backgroundNoiseActivityLevel];
+    backgroundNoiseActivityLevel = [(ASVSchemaASVOutputVolumeQueried *)self backgroundNoiseActivityLevel];
     v6 = @"ASVBACKGROUNDNOISEACTIVITYLEVEL_UNKNOWN";
-    if (v5 == 1)
+    if (backgroundNoiseActivityLevel == 1)
     {
       v6 = @"ASVBACKGROUNDNOISEACTIVITYLEVEL_LOW";
     }
 
-    if (v5 == 2)
+    if (backgroundNoiseActivityLevel == 2)
     {
       v7 = @"ASVBACKGROUNDNOISEACTIVITYLEVEL_HIGH";
     }
@@ -170,7 +170,7 @@
       v7 = v6;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"backgroundNoiseActivityLevel"];
+    [dictionary setObject:v7 forKeyedSubscript:@"backgroundNoiseActivityLevel"];
     has = self->_has;
   }
 
@@ -179,7 +179,7 @@
     v11 = MEMORY[0x1E696AD98];
     [(ASVSchemaASVOutputVolumeQueried *)self backgroundNoiseLevel];
     v12 = [v11 numberWithFloat:?];
-    [v3 setObject:v12 forKeyedSubscript:@"backgroundNoiseLevel"];
+    [dictionary setObject:v12 forKeyedSubscript:@"backgroundNoiseLevel"];
 
     has = self->_has;
     if ((has & 0x80) == 0)
@@ -199,14 +199,14 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v13 = [(ASVSchemaASVOutputVolumeQueried *)self invocationType];
+  invocationType = [(ASVSchemaASVOutputVolumeQueried *)self invocationType];
   v14 = @"ASVINVOCATIONTYPE_UNKNOWN";
-  if (v13 == 1)
+  if (invocationType == 1)
   {
     v14 = @"ASVINVOCATIONTYPE_BUTTON_PRESS";
   }
 
-  if (v13 == 2)
+  if (invocationType == 2)
   {
     v15 = @"ASVINVOCATIONTYPE_VOICE_TRIGGER";
   }
@@ -216,7 +216,7 @@ LABEL_10:
     v15 = v14;
   }
 
-  [v3 setObject:v15 forKeyedSubscript:@"invocationType"];
+  [dictionary setObject:v15 forKeyedSubscript:@"invocationType"];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -231,7 +231,7 @@ LABEL_11:
 
 LABEL_28:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASVSchemaASVOutputVolumeQueried isMediaPlaybackOn](self, "isMediaPlaybackOn")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isMediaPlaybackOn"];
+  [dictionary setObject:v16 forKeyedSubscript:@"isMediaPlaybackOn"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -247,7 +247,7 @@ LABEL_12:
 
 LABEL_29:
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASVSchemaASVOutputVolumeQueried isPermanentOffsetEnabled](self, "isPermanentOffsetEnabled")}];
-  [v3 setObject:v17 forKeyedSubscript:@"isPermanentOffsetEnabled"];
+  [dictionary setObject:v17 forKeyedSubscript:@"isPermanentOffsetEnabled"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -265,7 +265,7 @@ LABEL_30:
   v18 = MEMORY[0x1E696AD98];
   [(ASVSchemaASVOutputVolumeQueried *)self musicLoudnessLevel];
   v19 = [v18 numberWithFloat:?];
-  [v3 setObject:v19 forKeyedSubscript:@"musicLoudnessLevel"];
+  [dictionary setObject:v19 forKeyedSubscript:@"musicLoudnessLevel"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -283,7 +283,7 @@ LABEL_31:
   v20 = MEMORY[0x1E696AD98];
   [(ASVSchemaASVOutputVolumeQueried *)self outputVolume];
   v21 = [v20 numberWithFloat:?];
-  [v3 setObject:v21 forKeyedSubscript:@"outputVolume"];
+  [dictionary setObject:v21 forKeyedSubscript:@"outputVolume"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -301,7 +301,7 @@ LABEL_32:
   v22 = MEMORY[0x1E696AD98];
   [(ASVSchemaASVOutputVolumeQueried *)self permanentOffsetFactor];
   v23 = [v22 numberWithFloat:?];
-  [v3 setObject:v23 forKeyedSubscript:@"permanentOffsetFactor"];
+  [dictionary setObject:v23 forKeyedSubscript:@"permanentOffsetFactor"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -327,7 +327,7 @@ LABEL_33:
     v25 = off_1E78D2248[v24];
   }
 
-  [v3 setObject:v25 forKeyedSubscript:@"speakerDistance"];
+  [dictionary setObject:v25 forKeyedSubscript:@"speakerDistance"];
   if ((*&self->_has & 4) == 0)
   {
     goto LABEL_18;
@@ -337,12 +337,12 @@ LABEL_17:
   v8 = MEMORY[0x1E696AD98];
   [(ASVSchemaASVOutputVolumeQueried *)self speakerSpeechLevel];
   v9 = [v8 numberWithFloat:?];
-  [v3 setObject:v9 forKeyedSubscript:@"speakerSpeechLevel"];
+  [dictionary setObject:v9 forKeyedSubscript:@"speakerSpeechLevel"];
 
 LABEL_18:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -612,16 +612,16 @@ LABEL_44:
   return v10 ^ v5 ^ v15 ^ v16 ^ v21 ^ v26 ^ v27 ^ v28 ^ v29 ^ v34;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_41;
@@ -630,14 +630,14 @@ LABEL_44:
   if (*&has)
   {
     outputVolume = self->_outputVolume;
-    [v4 outputVolume];
+    [equalCopy outputVolume];
     if (outputVolume != v8)
     {
       goto LABEL_41;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -646,13 +646,13 @@ LABEL_44:
     if (v9)
     {
       speakerDistance = self->_speakerDistance;
-      if (speakerDistance != [v4 speakerDistance])
+      if (speakerDistance != [equalCopy speakerDistance])
       {
         goto LABEL_41;
       }
 
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -661,14 +661,14 @@ LABEL_44:
       if (v11)
       {
         speakerSpeechLevel = self->_speakerSpeechLevel;
-        [v4 speakerSpeechLevel];
+        [equalCopy speakerSpeechLevel];
         if (speakerSpeechLevel != v13)
         {
           goto LABEL_41;
         }
 
         has = self->_has;
-        v6 = v4[24];
+        v6 = equalCopy[24];
       }
 
       v14 = (*&has >> 3) & 1;
@@ -677,14 +677,14 @@ LABEL_44:
         if (v14)
         {
           musicLoudnessLevel = self->_musicLoudnessLevel;
-          [v4 musicLoudnessLevel];
+          [equalCopy musicLoudnessLevel];
           if (musicLoudnessLevel != v16)
           {
             goto LABEL_41;
           }
 
           has = self->_has;
-          v6 = v4[24];
+          v6 = equalCopy[24];
         }
 
         v17 = (*&has >> 4) & 1;
@@ -693,14 +693,14 @@ LABEL_44:
           if (v17)
           {
             backgroundNoiseLevel = self->_backgroundNoiseLevel;
-            [v4 backgroundNoiseLevel];
+            [equalCopy backgroundNoiseLevel];
             if (backgroundNoiseLevel != v19)
             {
               goto LABEL_41;
             }
 
             has = self->_has;
-            v6 = v4[24];
+            v6 = equalCopy[24];
           }
 
           v20 = (*&has >> 5) & 1;
@@ -709,13 +709,13 @@ LABEL_44:
             if (v20)
             {
               backgroundNoiseActivityLevel = self->_backgroundNoiseActivityLevel;
-              if (backgroundNoiseActivityLevel != [v4 backgroundNoiseActivityLevel])
+              if (backgroundNoiseActivityLevel != [equalCopy backgroundNoiseActivityLevel])
               {
                 goto LABEL_41;
               }
 
               has = self->_has;
-              v6 = v4[24];
+              v6 = equalCopy[24];
             }
 
             v22 = (*&has >> 6) & 1;
@@ -724,13 +724,13 @@ LABEL_44:
               if (v22)
               {
                 isMediaPlaybackOn = self->_isMediaPlaybackOn;
-                if (isMediaPlaybackOn != [v4 isMediaPlaybackOn])
+                if (isMediaPlaybackOn != [equalCopy isMediaPlaybackOn])
                 {
                   goto LABEL_41;
                 }
 
                 has = self->_has;
-                v6 = v4[24];
+                v6 = equalCopy[24];
               }
 
               v24 = (*&has >> 7) & 1;
@@ -739,13 +739,13 @@ LABEL_44:
                 if (v24)
                 {
                   invocationType = self->_invocationType;
-                  if (invocationType != [v4 invocationType])
+                  if (invocationType != [equalCopy invocationType])
                   {
                     goto LABEL_41;
                   }
 
                   has = self->_has;
-                  v6 = v4[24];
+                  v6 = equalCopy[24];
                 }
 
                 v26 = (*&has >> 8) & 1;
@@ -754,19 +754,19 @@ LABEL_44:
                   if (v26)
                   {
                     isPermanentOffsetEnabled = self->_isPermanentOffsetEnabled;
-                    if (isPermanentOffsetEnabled != [v4 isPermanentOffsetEnabled])
+                    if (isPermanentOffsetEnabled != [equalCopy isPermanentOffsetEnabled])
                     {
                       goto LABEL_41;
                     }
 
                     has = self->_has;
-                    v6 = v4[24];
+                    v6 = equalCopy[24];
                   }
 
                   v28 = (*&has >> 9) & 1;
                   if (v28 == ((v6 >> 9) & 1))
                   {
-                    if (!v28 || (permanentOffsetFactor = self->_permanentOffsetFactor, [v4 permanentOffsetFactor], permanentOffsetFactor == v30))
+                    if (!v28 || (permanentOffsetFactor = self->_permanentOffsetFactor, [equalCopy permanentOffsetFactor], permanentOffsetFactor == v30))
                     {
                       v31 = 1;
                       goto LABEL_42;
@@ -788,9 +788,9 @@ LABEL_42:
   return v31;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -921,9 +921,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)setHasPermanentOffsetFactor:(BOOL)a3
+- (void)setHasPermanentOffsetFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 512;
   }
@@ -936,9 +936,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasIsPermanentOffsetEnabled:(BOOL)a3
+- (void)setHasIsPermanentOffsetEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 256;
   }
@@ -951,9 +951,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasInvocationType:(BOOL)a3
+- (void)setHasInvocationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -966,9 +966,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsMediaPlaybackOn:(BOOL)a3
+- (void)setHasIsMediaPlaybackOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 64;
   }
@@ -981,9 +981,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasBackgroundNoiseActivityLevel:(BOOL)a3
+- (void)setHasBackgroundNoiseActivityLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 32;
   }
@@ -996,9 +996,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasBackgroundNoiseLevel:(BOOL)a3
+- (void)setHasBackgroundNoiseLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 16;
   }
@@ -1011,9 +1011,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasMusicLoudnessLevel:(BOOL)a3
+- (void)setHasMusicLoudnessLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 8;
   }
@@ -1026,9 +1026,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSpeakerSpeechLevel:(BOOL)a3
+- (void)setHasSpeakerSpeechLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 4;
   }
@@ -1041,9 +1041,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasSpeakerDistance:(BOOL)a3
+- (void)setHasSpeakerDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 2;
   }

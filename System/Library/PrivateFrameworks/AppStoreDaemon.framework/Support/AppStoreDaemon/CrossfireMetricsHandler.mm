@@ -1,13 +1,13 @@
 @interface CrossfireMetricsHandler
-- (BOOL)isCandidateAppMetadata:(id)a3;
-- (BOOL)isCandidateAppProxy:(id)a3 isMetadataLookup:(BOOL)a4;
+- (BOOL)isCandidateAppMetadata:(id)metadata;
+- (BOOL)isCandidateAppProxy:(id)proxy isMetadataLookup:(BOOL)lookup;
 - (BOOL)shouldCollectMetrics;
 - (CrossfireMetricsHandler)init;
 - (id)logKey;
-- (void)_handleAppDeletion:(id)a3;
-- (void)_removeAppUsageSessionForBundleID:(id)a3;
-- (void)recordDeletedBundleIDs:(id)a3;
-- (void)recordInstallEventsForBundleIDs:(id)a3 installType:(unsigned __int8)a4;
+- (void)_handleAppDeletion:(id)deletion;
+- (void)_removeAppUsageSessionForBundleID:(id)d;
+- (void)recordDeletedBundleIDs:(id)ds;
+- (void)recordInstallEventsForBundleIDs:(id)ds installType:(unsigned __int8)type;
 @end
 
 @implementation CrossfireMetricsHandler
@@ -25,20 +25,20 @@
   return v2;
 }
 
-- (BOOL)isCandidateAppMetadata:(id)a3
+- (BOOL)isCandidateAppMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = [(MetricsHandler *)self shouldEnableSystemAppsForAppUsageType:1];
-  if (((sub_1003827A0(v4) & 1) != 0 || self->_collectingMetrics) && v5 & 1 | ((sub_1003827E8(v4) & 1) == 0))
+  if (((sub_1003827A0(metadataCopy) & 1) != 0 || self->_collectingMetrics) && v5 & 1 | ((sub_1003827E8(metadataCopy) & 1) == 0))
   {
     v6 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(CrossfireMetricsHandler *)self logKey];
-      v10 = sub_100382084(v4);
-      v11 = sub_100382830(v4);
+      logKey = [(CrossfireMetricsHandler *)self logKey];
+      v10 = sub_100382084(metadataCopy);
+      v11 = sub_100382830(metadataCopy);
       v12 = 138412802;
-      v13 = v9;
+      v13 = logKey;
       v14 = 2114;
       v15 = v10;
       v16 = 2114;
@@ -57,16 +57,16 @@
   return v7;
 }
 
-- (BOOL)isCandidateAppProxy:(id)a3 isMetadataLookup:(BOOL)a4
+- (BOOL)isCandidateAppProxy:(id)proxy isMetadataLookup:(BOOL)lookup
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  proxyCopy = proxy;
+  v7 = proxyCopy;
+  if (lookup)
   {
     goto LABEL_11;
   }
 
-  if ((!v6 || ([v6[15] isBeta] & 1) == 0) && !self->_collectingMetrics)
+  if ((!proxyCopy || ([proxyCopy[15] isBeta] & 1) == 0) && !self->_collectingMetrics)
   {
     goto LABEL_22;
   }
@@ -76,10 +76,10 @@
     v12 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [(CrossfireMetricsHandler *)self logKey];
+      logKey = [(CrossfireMetricsHandler *)self logKey];
       v21 = sub_1003D0F60(v7);
       v22 = 138412546;
-      v23 = v20;
+      v23 = logKey;
       v24 = 2114;
       v25 = v21;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "[%@] [%{public}@] We have an eligible system app ", &v22, 0x16u);
@@ -113,11 +113,11 @@ LABEL_22:
   v15 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [(CrossfireMetricsHandler *)self logKey];
+    logKey2 = [(CrossfireMetricsHandler *)self logKey];
     v18 = sub_1003D0F60(v7);
     v19 = sub_1003D26A0(v7);
     v22 = 138412802;
-    v23 = v17;
+    v23 = logKey2;
     v24 = 2114;
     v25 = v18;
     v26 = 2114;
@@ -147,26 +147,26 @@ LABEL_23:
   return logKey;
 }
 
-- (void)recordDeletedBundleIDs:(id)a3
+- (void)recordDeletedBundleIDs:(id)ds
 {
-  v4 = a3;
-  [(MetricsHandler *)self recordAppEventsForBundleIDs:v4 eventType:3 installType:0];
+  dsCopy = ds;
+  [(MetricsHandler *)self recordAppEventsForBundleIDs:dsCopy eventType:3 installType:0];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10025B388;
   v5[3] = &unk_10051EF30;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [dsCopy enumerateObjectsUsingBlock:v5];
 }
 
-- (void)recordInstallEventsForBundleIDs:(id)a3 installType:(unsigned __int8)a4
+- (void)recordInstallEventsForBundleIDs:(id)ds installType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  dsCopy = ds;
   objc_opt_self();
-  if (v4 <= 0x13 && ((1 << v4) & 0xF17FE) != 0)
+  if (typeCopy <= 0x13 && ((1 << typeCopy) & 0xF17FE) != 0)
   {
-    [(MetricsHandler *)self recordAppEventsForBundleIDs:v6 eventType:1 installType:v4];
+    [(MetricsHandler *)self recordAppEventsForBundleIDs:dsCopy eventType:1 installType:typeCopy];
   }
 
   else
@@ -174,10 +174,10 @@ LABEL_23:
     v7 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CrossfireMetricsHandler *)self logKey];
-      v9 = [v6 componentsJoinedByString:{@", "}];
+      logKey = [(CrossfireMetricsHandler *)self logKey];
+      v9 = [dsCopy componentsJoinedByString:{@", "}];
       v10 = 138412546;
-      v11 = v8;
+      v11 = logKey;
       v12 = 2114;
       v13 = v9;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%@] Skipping unsupported installType apps: [%{public}@]", &v10, 0x16u);
@@ -188,15 +188,15 @@ LABEL_23:
 - (BOOL)shouldCollectMetrics
 {
   v2 = sub_1003BBF50();
-  v3 = [v2 isHRNMode];
+  isHRNMode = [v2 isHRNMode];
 
-  return v3 ^ 1;
+  return isHRNMode ^ 1;
 }
 
-- (void)_handleAppDeletion:(id)a3
+- (void)_handleAppDeletion:(id)deletion
 {
-  v4 = a3;
-  [(CrossfireMetricsHandler *)self _removeAppUsageSessionForBundleID:v4];
+  deletionCopy = deletion;
+  [(CrossfireMetricsHandler *)self _removeAppUsageSessionForBundleID:deletionCopy];
   if (self)
   {
     currentApps = self->super._currentApps;
@@ -208,7 +208,7 @@ LABEL_23:
   }
 
   v6 = currentApps;
-  v7 = [(NSDictionary *)v6 objectForKeyedSubscript:v4];
+  v7 = [(NSDictionary *)v6 objectForKeyedSubscript:deletionCopy];
 
   if (v7 && sub_100382710(v7))
   {
@@ -236,9 +236,9 @@ LABEL_23:
       v21 = 3221225472;
       v22 = sub_10025C84C;
       v23 = &unk_10051EFD0;
-      v14 = v4;
+      v14 = deletionCopy;
       v24 = v14;
-      v25 = self;
+      selfCopy = self;
       v15 = v8;
       v26 = v15;
       v27 = &v28;
@@ -269,17 +269,17 @@ LABEL_23:
   }
 }
 
-- (void)_removeAppUsageSessionForBundleID:(id)a3
+- (void)_removeAppUsageSessionForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_10036C90C();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10025CC8C;
   v7[3] = &unk_10051C838;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   [v5 modifyUsingTransaction:v7];
 }
 

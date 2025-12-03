@@ -6,16 +6,16 @@
 - (NSString)description;
 - (PXScrollSpeedometer)init;
 - (void)_handleScrubbingTimeout;
-- (void)_handleTimeoutTimer:(id)a3;
+- (void)_handleTimeoutTimer:(id)timer;
 - (void)_rescheduleTimeout;
 - (void)_scheduleScrubbingTimeout;
-- (void)_setPreviousRegime:(int64_t)a3;
-- (void)_setRegime:(int64_t)a3;
+- (void)_setPreviousRegime:(int64_t)regime;
+- (void)_setRegime:(int64_t)regime;
 - (void)_updateScrollRegime;
 - (void)didPerformChanges;
-- (void)handleScrollEventVisibleRect:(CGRect)a3 didEnd:(BOOL)a4;
-- (void)setLastScrollDirection:(CGPoint)a3;
-- (void)setScrollVelocity:(CGPoint)a3;
+- (void)handleScrollEventVisibleRect:(CGRect)rect didEnd:(BOOL)end;
+- (void)setLastScrollDirection:(CGPoint)direction;
+- (void)setScrollVelocity:(CGPoint)velocity;
 @end
 
 @implementation PXScrollSpeedometer
@@ -68,21 +68,21 @@
   v12 = hypot(v5, v7);
   if (v12 == 0.0 && ![(PXScrollSpeedometer *)self isScrubbing])
   {
-    v13 = 0;
+    regime = 0;
     goto LABEL_57;
   }
 
-  v13 = [(PXScrollSpeedometer *)self regime];
-  v14 = [(PXScrollSpeedometer *)self isAnimatingScroll];
+  regime = [(PXScrollSpeedometer *)self regime];
+  isAnimatingScroll = [(PXScrollSpeedometer *)self isAnimatingScroll];
   v15 = 0.0;
-  if (v13 <= 1)
+  if (regime <= 1)
   {
-    if (v13 >= 2)
+    if (regime >= 2)
     {
-      if (v13 == -1)
+      if (regime == -1)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"PXScrollSpeedometer.m" lineNumber:89 description:@"undefined regime"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXScrollSpeedometer.m" lineNumber:89 description:@"undefined regime"];
       }
 
       v17 = 0.0;
@@ -93,7 +93,7 @@
     goto LABEL_14;
   }
 
-  if (v13 == 2)
+  if (regime == 2)
   {
     [(PXScrollSpeedometer *)self mediumLowerThreshold];
 LABEL_14:
@@ -103,7 +103,7 @@ LABEL_14:
   }
 
   v17 = 0.0;
-  if (v13 == 3)
+  if (regime == 3)
   {
     [(PXScrollSpeedometer *)self mediumLowerThreshold];
     v17 = v18;
@@ -182,7 +182,7 @@ LABEL_16:
   }
 
   v27 = v24 || v26;
-  if (v14 && (v24 || v26) && ![(PXScrollSpeedometer *)self hasRampedUpForCurrentAnimatedScroll])
+  if (isAnimatingScroll && (v24 || v26) && ![(PXScrollSpeedometer *)self hasRampedUpForCurrentAnimatedScroll])
   {
     [(PXScrollSpeedometer *)self setHasRampedUpForCurrentAnimatedScroll:1];
     v15 = 0.0;
@@ -204,15 +204,15 @@ LABEL_16:
     v29 = 3;
   }
 
-  if (v13)
+  if (regime)
   {
     if (v29 == [(PXScrollSpeedometer *)self _nextRegime])
     {
-      v30 = [(PXScrollSpeedometer *)self _nextRegimeCount];
-      v31 = v30 + 1;
-      if (v30 >= 2)
+      _nextRegimeCount = [(PXScrollSpeedometer *)self _nextRegimeCount];
+      v31 = _nextRegimeCount + 1;
+      if (_nextRegimeCount >= 2)
       {
-        v13 = v29;
+        regime = v29;
       }
     }
 
@@ -225,24 +225,24 @@ LABEL_16:
   else
   {
     v31 = 0;
-    v13 = v29;
+    regime = v29;
   }
 
-  if (v12 > v15 && v14 && v27)
+  if (v12 > v15 && isAnimatingScroll && v27)
   {
-    v13 = 3;
+    regime = 3;
   }
 
   [(PXScrollSpeedometer *)self _setNextRegime:v29];
   [(PXScrollSpeedometer *)self _setNextRegimeCount:v31];
   [(PXScrollSpeedometer *)self setLastScrollDirection:(v5 / v12), (v7 / v12), 0.0];
 LABEL_57:
-  v32 = [(PXScrollSpeedometer *)self scrollView];
+  scrollView = [(PXScrollSpeedometer *)self scrollView];
   [(PXScrollSpeedometer *)self _lastVisibleRect];
   kdebug_trace();
   kdebug_trace();
 
-  [(PXScrollSpeedometer *)self _setRegime:v13];
+  [(PXScrollSpeedometer *)self _setRegime:regime];
 }
 
 - (CGPoint)scrollVelocity
@@ -277,18 +277,18 @@ LABEL_57:
 
 - (void)_rescheduleTimeout
 {
-  v3 = [(PXScrollSpeedometer *)self _timeoutTimer];
-  if (v3)
+  _timeoutTimer = [(PXScrollSpeedometer *)self _timeoutTimer];
+  if (_timeoutTimer)
   {
-    v7 = v3;
-    v4 = [v3 fireDate];
-    [v4 timeIntervalSinceNow];
+    v7 = _timeoutTimer;
+    fireDate = [_timeoutTimer fireDate];
+    [fireDate timeIntervalSinceNow];
     if (v5 < 0.5)
     {
       v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:1.5];
 
       [v7 setFireDate:v6];
-      v4 = v6;
+      fireDate = v6;
     }
   }
 
@@ -299,7 +299,7 @@ LABEL_57:
   }
 }
 
-- (void)_handleTimeoutTimer:(id)a3
+- (void)_handleTimeoutTimer:(id)timer
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -331,50 +331,50 @@ uint64_t __43__PXScrollSpeedometer__handleTimeoutTimer___block_invoke(uint64_t a
   }
 }
 
-- (void)setLastScrollDirection:(CGPoint)a3
+- (void)setLastScrollDirection:(CGPoint)direction
 {
-  if (a3.x != self->_lastScrollDirection.x || a3.y != self->_lastScrollDirection.y)
+  if (direction.x != self->_lastScrollDirection.x || direction.y != self->_lastScrollDirection.y)
   {
-    self->_lastScrollDirection = a3;
+    self->_lastScrollDirection = direction;
     [(PXObservable *)self signalChange:8];
   }
 }
 
-- (void)_setPreviousRegime:(int64_t)a3
+- (void)_setPreviousRegime:(int64_t)regime
 {
-  if (self->_previousRegime != a3)
+  if (self->_previousRegime != regime)
   {
-    self->_previousRegime = a3;
+    self->_previousRegime = regime;
     [(PXObservable *)self signalChange:4];
   }
 }
 
-- (void)_setRegime:(int64_t)a3
+- (void)_setRegime:(int64_t)regime
 {
-  if (self->_regime != a3)
+  if (self->_regime != regime)
   {
     [(PXScrollSpeedometer *)self _setPreviousRegime:?];
-    self->_regime = a3;
+    self->_regime = regime;
 
     [(PXObservable *)self signalChange:2];
   }
 }
 
-- (void)setScrollVelocity:(CGPoint)a3
+- (void)setScrollVelocity:(CGPoint)velocity
 {
-  if (a3.x != self->_scrollVelocity.x || a3.y != self->_scrollVelocity.y)
+  if (velocity.x != self->_scrollVelocity.x || velocity.y != self->_scrollVelocity.y)
   {
-    self->_scrollVelocity = a3;
+    self->_scrollVelocity = velocity;
     [(PXObservable *)self signalChange:1];
   }
 }
 
-- (void)handleScrollEventVisibleRect:(CGRect)a3 didEnd:(BOOL)a4
+- (void)handleScrollEventVisibleRect:(CGRect)rect didEnd:(BOOL)end
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (![(PXScrollSpeedometer *)self isManuallyChanging])
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
@@ -394,7 +394,7 @@ uint64_t __43__PXScrollSpeedometer__handleTimeoutTimer___block_invoke(uint64_t a
     else
     {
       v18 = v11 - v13;
-      if (!a4)
+      if (!end)
       {
         [(PXScrollSpeedometer *)self _lastVisibleRect];
         v36.origin.x = v29;
@@ -459,15 +459,15 @@ uint64_t __59__PXScrollSpeedometer_handleScrollEventVisibleRect_didEnd___block_i
   v4 = [(PXScrollSpeedometer *)&v10 description];
   [(PXScrollSpeedometer *)self scrollVelocity];
   v5 = NSStringFromCGPoint(v12);
-  v6 = [(PXScrollSpeedometer *)self regime];
-  if ((v6 + 1) > 4)
+  regime = [(PXScrollSpeedometer *)self regime];
+  if ((regime + 1) > 4)
   {
     v7 = @"???";
   }
 
   else
   {
-    v7 = off_1E7BB5650[v6 + 1];
+    v7 = off_1E7BB5650[regime + 1];
   }
 
   v8 = [v3 stringWithFormat:@"<%@ scrollVelocity:%@ regime:%@>", v4, v5, v7];

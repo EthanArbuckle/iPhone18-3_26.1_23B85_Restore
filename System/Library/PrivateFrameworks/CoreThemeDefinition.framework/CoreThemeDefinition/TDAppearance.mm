@@ -1,8 +1,8 @@
 @interface TDAppearance
 - (NSString)name;
 - (unsigned)identifier;
-- (void)setIdentifier:(unsigned __int16)a3;
-- (void)setName:(id)a3;
+- (void)setIdentifier:(unsigned __int16)identifier;
+- (void)setName:(id)name;
 @end
 
 @implementation TDAppearance
@@ -15,11 +15,11 @@
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   [(TDAppearance *)self willChangeValueForKey:@"name"];
 
-  self->_name = [a3 copy];
+  self->_name = [name copy];
 
   [(TDAppearance *)self didChangeValueForKey:@"name"];
 }
@@ -32,10 +32,10 @@
   return identifier;
 }
 
-- (void)setIdentifier:(unsigned __int16)a3
+- (void)setIdentifier:(unsigned __int16)identifier
 {
   [(TDAppearance *)self willChangeValueForKey:@"identifier"];
-  self->_identifier = a3;
+  self->_identifier = identifier;
 
   [(TDAppearance *)self didChangeValueForKey:@"identifier"];
 }

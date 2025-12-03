@@ -1,13 +1,13 @@
 @interface WFSystemShortcutPickerModuleSummaryCoordinator
-+ (id)singleButtonSlotForParameter:(id)a3 state:(id)a4;
-- (WFSystemShortcutPickerModuleSummaryCoordinator)initWithAction:(id)a3;
++ (id)singleButtonSlotForParameter:(id)parameter state:(id)state;
+- (WFSystemShortcutPickerModuleSummaryCoordinator)initWithAction:(id)action;
 - (WFSystemShortcutPickerModuleSummaryCoordinatorDelegate)delegate;
 - (id)createViewController;
-- (id)initialStateForSummaryEditor:(id)a3;
-- (void)populateConfiguredAppIntentWithCompletion:(id)a3;
-- (void)summaryEditor:(id)a3 didCommitParameterState:(id)a4;
-- (void)summaryEditor:(id)a3 didRequestEditingSlotWithIdentifier:(id)a4;
-- (void)summaryEditorDidRequestTextEntry:(id)a3;
+- (id)initialStateForSummaryEditor:(id)editor;
+- (void)populateConfiguredAppIntentWithCompletion:(id)completion;
+- (void)summaryEditor:(id)editor didCommitParameterState:(id)state;
+- (void)summaryEditor:(id)editor didRequestEditingSlotWithIdentifier:(id)identifier;
+- (void)summaryEditorDidRequestTextEntry:(id)entry;
 @end
 
 @implementation WFSystemShortcutPickerModuleSummaryCoordinator
@@ -19,7 +19,7 @@
   return WeakRetained;
 }
 
-- (void)summaryEditor:(id)a3 didRequestEditingSlotWithIdentifier:(id)a4
+- (void)summaryEditor:(id)editor didRequestEditingSlotWithIdentifier:(id)identifier
 {
   v4 = getWFDialogLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -30,7 +30,7 @@
   }
 }
 
-- (void)summaryEditorDidRequestTextEntry:(id)a3
+- (void)summaryEditorDidRequestTextEntry:(id)entry
 {
   v3 = getWFDialogLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -41,16 +41,16 @@
   }
 }
 
-- (void)populateConfiguredAppIntentWithCompletion:(id)a3
+- (void)populateConfiguredAppIntentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
-  if (v5)
+  completionCopy = completion;
+  action = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
+  if (action)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = action;
     }
 
     else
@@ -67,128 +67,128 @@
   v7 = v6;
 
   v8 = [INAppIntent alloc];
-  v9 = [v7 fullyQualifiedLinkActionIdentifier];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v7 fullyQualifiedLinkActionIdentifier];
-  v12 = [v11 actionIdentifier];
-  v13 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
-  v14 = [v13 serializedParameters];
-  v20 = [v8 initWithAppBundleIdentifier:v10 appIntentIdentifier:v12 serializedParameters:v14];
+  fullyQualifiedLinkActionIdentifier = [v7 fullyQualifiedLinkActionIdentifier];
+  bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+  fullyQualifiedLinkActionIdentifier2 = [v7 fullyQualifiedLinkActionIdentifier];
+  actionIdentifier = [fullyQualifiedLinkActionIdentifier2 actionIdentifier];
+  action2 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
+  serializedParameters = [action2 serializedParameters];
+  v20 = [v8 initWithAppBundleIdentifier:bundleIdentifier appIntentIdentifier:actionIdentifier serializedParameters:serializedParameters];
 
-  v15 = [v7 metadata];
+  metadata = [v7 metadata];
 
-  v16 = [v15 effectiveBundleIdentifiers];
-  v17 = [v16 array];
-  v18 = [v17 if_firstObjectPassingTest:&stru_10002D6A0];
-  v19 = [v18 bundleIdentifier];
-  [v20 _setExtensionBundleId:v19];
+  effectiveBundleIdentifiers = [metadata effectiveBundleIdentifiers];
+  array = [effectiveBundleIdentifiers array];
+  v18 = [array if_firstObjectPassingTest:&stru_10002D6A0];
+  bundleIdentifier2 = [v18 bundleIdentifier];
+  [v20 _setExtensionBundleId:bundleIdentifier2];
 
-  v4[2](v4, v20, 0);
+  completionCopy[2](completionCopy, v20, 0);
 }
 
-- (void)summaryEditor:(id)a3 didCommitParameterState:(id)a4
+- (void)summaryEditor:(id)editor didCommitParameterState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
-  v9 = [v7 parameter];
+  stateCopy = state;
+  editorCopy = editor;
+  action = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
+  parameter = [editorCopy parameter];
 
-  v10 = [v9 key];
-  [v8 setParameterState:v6 forKey:v10];
+  v10 = [parameter key];
+  [action setParameterState:stateCopy forKey:v10];
 
-  v11 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self delegate];
-  [v11 systemShortcutPickerModuleSummaryCoordinatorDidFinish:self];
+  delegate = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self delegate];
+  [delegate systemShortcutPickerModuleSummaryCoordinatorDidFinish:self];
 }
 
-- (id)initialStateForSummaryEditor:(id)a3
+- (id)initialStateForSummaryEditor:(id)editor
 {
-  v4 = a3;
-  v5 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
-  v6 = [v4 parameter];
+  editorCopy = editor;
+  action = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
+  parameter = [editorCopy parameter];
 
-  v7 = [v6 key];
-  v8 = [v5 parameterStateForKey:v7];
+  v7 = [parameter key];
+  v8 = [action parameterStateForKey:v7];
 
   return v8;
 }
 
 - (id)createViewController
 {
-  v3 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
-  v4 = [v3 parameterForKey:@"shortcut"];
+  action = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
+  v4 = [action parameterForKey:@"shortcut"];
 
   v5 = v4;
   objc_opt_class();
   v6 = WFModuleSummaryEditorClassForParameterClass();
   v7 = objc_opt_class();
-  v8 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
+  action2 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
   v9 = [v5 key];
-  v10 = [v8 parameterStateForKey:v9];
+  v10 = [action2 parameterStateForKey:v9];
   v11 = [v7 singleButtonSlotForParameter:v5 state:v10];
 
   [(WFSystemShortcutPickerModuleSummaryCoordinator *)self setSummarySlot:v11];
-  v12 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self summarySlot];
-  v13 = v12;
+  summarySlot = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self summarySlot];
+  v13 = summarySlot;
   v14 = 0;
-  if (v6 && v12)
+  if (v6 && summarySlot)
   {
     v15 = [[v6 alloc] initWithParameter:v5 arrayIndex:0x7FFFFFFFFFFFFFFFLL processing:1];
     [v15 setDelegate:self];
-    v16 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
-    [v15 setVariableProvider:v16];
+    action3 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)self action];
+    [v15 setVariableProvider:action3];
 
     summaryEditor = self->_summaryEditor;
     self->_summaryEditor = v15;
     v18 = v15;
 
-    v19 = [v13 identifier];
-    v14 = [v18 viewControllerForEditingWithIdentifier:v19];
+    identifier = [v13 identifier];
+    v14 = [v18 viewControllerForEditingWithIdentifier:identifier];
   }
 
   return v14;
 }
 
-- (WFSystemShortcutPickerModuleSummaryCoordinator)initWithAction:(id)a3
+- (WFSystemShortcutPickerModuleSummaryCoordinator)initWithAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v10.receiver = self;
   v10.super_class = WFSystemShortcutPickerModuleSummaryCoordinator;
   v6 = [(WFSystemShortcutPickerModuleSummaryCoordinator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_action, a3);
+    objc_storeStrong(&v6->_action, action);
     v8 = v7;
   }
 
   return v7;
 }
 
-+ (id)singleButtonSlotForParameter:(id)a3 state:(id)a4
++ (id)singleButtonSlotForParameter:(id)parameter state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
+  parameterCopy = parameter;
+  stateCopy = state;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 moduleSummarySlotForState:v6];
+    firstObject = [parameterCopy moduleSummarySlotForState:stateCopy];
     goto LABEL_8;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v5 moduleSummarySlotsForState:v6];
+    v8 = [parameterCopy moduleSummarySlotsForState:stateCopy];
     if ([v8 count] == 1)
     {
-      v7 = [v8 firstObject];
+      firstObject = [v8 firstObject];
 
       goto LABEL_8;
     }
   }
 
-  v7 = 0;
+  firstObject = 0;
 LABEL_8:
 
-  return v7;
+  return firstObject;
 }
 
 @end

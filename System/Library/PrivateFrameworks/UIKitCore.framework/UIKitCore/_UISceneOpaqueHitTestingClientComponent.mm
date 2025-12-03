@@ -1,39 +1,39 @@
 @interface _UISceneOpaqueHitTestingClientComponent
 - (id)_windowScene;
 - (uint64_t)_setupWindowWithWindowScene:(uint64_t)result;
-- (void)_handleSceneWillConnect:(id)a3;
+- (void)_handleSceneWillConnect:(id)connect;
 - (void)invalidate;
-- (void)setScene:(id)a3;
+- (void)setScene:(id)scene;
 @end
 
 @implementation _UISceneOpaqueHitTestingClientComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v6.receiver = self;
   v6.super_class = _UISceneOpaqueHitTestingClientComponent;
-  [(FBSSceneComponent *)&v6 setScene:a3];
-  v4 = [(_UISceneOpaqueHitTestingClientComponent *)self _windowScene];
-  if (v4)
+  [(FBSSceneComponent *)&v6 setScene:scene];
+  _windowScene = [(_UISceneOpaqueHitTestingClientComponent *)self _windowScene];
+  if (_windowScene)
   {
-    [(_UISceneOpaqueHitTestingClientComponent *)self _setupWindowWithWindowScene:v4];
+    [(_UISceneOpaqueHitTestingClientComponent *)self _setupWindowWithWindowScene:_windowScene];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__handleSceneWillConnect_ name:@"UISceneWillConnectNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleSceneWillConnect_ name:@"UISceneWillConnectNotification" object:0];
   }
 }
 
 - (id)_windowScene
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 clientScene];
-    if (v1)
+    clientScene = [self clientScene];
+    if (clientScene)
     {
-      v2 = [(UIScene *)UIWindowScene _sceneForFBSScene:v1];
+      v2 = [(UIScene *)UIWindowScene _sceneForFBSScene:clientScene];
     }
 
     else
@@ -71,8 +71,8 @@
 
 - (void)invalidate
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UISceneWillConnectNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UISceneWillConnectNotification" object:0];
 
   [(UIWindow *)self->_backgroundHitTestWindow setHidden:1];
   backgroundHitTestWindow = self->_backgroundHitTestWindow;
@@ -83,17 +83,17 @@
   [(FBSSceneComponent *)&v5 invalidate];
 }
 
-- (void)_handleSceneWillConnect:(id)a3
+- (void)_handleSceneWillConnect:(id)connect
 {
-  v4 = [(_UISceneOpaqueHitTestingClientComponent *)self _windowScene];
-  if (v4)
+  _windowScene = [(_UISceneOpaqueHitTestingClientComponent *)self _windowScene];
+  if (_windowScene)
   {
-    v6 = v4;
-    [(_UISceneOpaqueHitTestingClientComponent *)self _setupWindowWithWindowScene:v4];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:@"UISceneWillConnectNotification" object:0];
+    v6 = _windowScene;
+    [(_UISceneOpaqueHitTestingClientComponent *)self _setupWindowWithWindowScene:_windowScene];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UISceneWillConnectNotification" object:0];
 
-    v4 = v6;
+    _windowScene = v6;
   }
 }
 

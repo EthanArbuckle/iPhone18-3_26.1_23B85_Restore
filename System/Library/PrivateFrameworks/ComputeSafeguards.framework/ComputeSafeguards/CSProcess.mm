@@ -1,14 +1,14 @@
 @interface CSProcess
-- (BOOL)checkKnownViolationStartTime:(double)a3 endTime:(double)a4;
-- (CSProcess)initWithIdentifier:(id)a3;
-- (double)computeEnergyDiff:(id)a3;
-- (id)getPidsForCoalitionID:(unint64_t)a3;
+- (BOOL)checkKnownViolationStartTime:(double)time endTime:(double)endTime;
+- (CSProcess)initWithIdentifier:(id)identifier;
+- (double)computeEnergyDiff:(id)diff;
+- (id)getPidsForCoalitionID:(unint64_t)d;
 - (int)lastPid;
 - (unint64_t)lastCoalitionID;
-- (void)addPenaltyBoxCoalitionID:(unint64_t)a3;
+- (void)addPenaltyBoxCoalitionID:(unint64_t)d;
 - (void)dealloc;
-- (void)incrementCPUViolationCounter:(BOOL)a3;
-- (void)monitorForExitWithPID:(int)a3;
+- (void)incrementCPUViolationCounter:(BOOL)counter;
+- (void)monitorForExitWithPID:(int)d;
 - (void)snapshotCPUEnergy;
 @end
 
@@ -17,30 +17,30 @@
 - (void)snapshotCPUEnergy
 {
   v4 = [CPUEnergySnapshot snapshotCPUEnergy:[(CSProcess *)self lastCoalitionID]];
-  v3 = [(CSProcess *)self energySnapshotNew];
-  [(CSProcess *)self setEnergySnapshot:v3];
+  energySnapshotNew = [(CSProcess *)self energySnapshotNew];
+  [(CSProcess *)self setEnergySnapshot:energySnapshotNew];
 
   [(CSProcess *)self setEnergySnapshotNew:v4];
 }
 
-- (CSProcess)initWithIdentifier:(id)a3
+- (CSProcess)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = CSProcess;
   v6 = [(CSProcess *)&v26 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     processName = v7->_processName;
     v7->_processName = 0;
 
     v7->_policyBitMask = 0;
     *&v7->_rootDaemon = 0;
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     exitMonitors = v7->_exitMonitors;
-    v7->_exitMonitors = v9;
+    v7->_exitMonitors = dictionary;
 
     *&v7->_cpuFatalCnt = 0;
     *&v7->_cpuNonFatalCnt = 0;
@@ -63,25 +63,25 @@
     v7->_violationDetectorString = 0;
 
     *&v7->_penaltyBoxDurationMins = xmmword_243DF73E0;
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     penaltyBoxCoalitionIDs = v7->_penaltyBoxCoalitionIDs;
-    v7->_penaltyBoxCoalitionIDs = v15;
+    v7->_penaltyBoxCoalitionIDs = dictionary2;
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     previousPIDs = v7->_previousPIDs;
-    v7->_previousPIDs = v17;
+    v7->_previousPIDs = dictionary3;
 
-    v19 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     previousPIDkeys = v7->_previousPIDkeys;
-    v7->_previousPIDkeys = v19;
+    v7->_previousPIDkeys = array;
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     trackedPIDs = v7->_trackedPIDs;
-    v7->_trackedPIDs = v21;
+    v7->_trackedPIDs = dictionary4;
 
-    v23 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     trackedPIDkeys = v7->_trackedPIDkeys;
-    v7->_trackedPIDkeys = v23;
+    v7->_trackedPIDkeys = array2;
   }
 
   return v7;
@@ -145,9 +145,9 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)incrementCPUViolationCounter:(BOOL)a3
+- (void)incrementCPUViolationCounter:(BOOL)counter
 {
-  if (a3)
+  if (counter)
   {
     ++self->_cpuFatalCnt;
   }
@@ -158,7 +158,7 @@
   }
 }
 
-- (void)monitorForExitWithPID:(int)a3
+- (void)monitorForExitWithPID:(int)d
 {
   v5 = [MEMORY[0x277CCABB0] numberWithInt:?];
   v6 = [(NSMutableDictionary *)self->_exitMonitors objectForKey:v5];
@@ -175,11 +175,11 @@
   else
   {
     v9 = getMainQueue();
-    v10 = dispatch_source_create(MEMORY[0x277D85D20], a3, 0x80000000uLL, v9);
+    v10 = dispatch_source_create(MEMORY[0x277D85D20], d, 0x80000000uLL, v9);
 
     if (v10)
     {
-      dispatch_set_context(v10, a3);
+      dispatch_set_context(v10, d);
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __35__CSProcess_monitorForExitWithPID___block_invoke;
@@ -221,11 +221,11 @@ void __35__CSProcess_monitorForExitWithPID___block_invoke_2(uint64_t a1)
   [v2 recordTerminationForPID:context];
 }
 
-- (double)computeEnergyDiff:(id)a3
+- (double)computeEnergyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   v5 = [CPUEnergySnapshot snapshotCPUEnergy:[(CSProcess *)self lastCoalitionID]];
-  [v5 computeEnergyDiff:v4];
+  [v5 computeEnergyDiff:diffCopy];
   v7 = v6;
 
   return v7;
@@ -233,8 +233,8 @@ void __35__CSProcess_monitorForExitWithPID___block_invoke_2(uint64_t a1)
 
 - (int)lastPid
 {
-  v3 = [(NSMutableDictionary *)self->_trackedPIDs allKeys];
-  v4 = [v3 count];
+  allKeys = [(NSMutableDictionary *)self->_trackedPIDs allKeys];
+  v4 = [allKeys count];
 
   if (v4)
   {
@@ -243,8 +243,8 @@ void __35__CSProcess_monitorForExitWithPID___block_invoke_2(uint64_t a1)
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->_previousPIDs allKeys];
-    v7 = [v6 count];
+    allKeys2 = [(NSMutableDictionary *)self->_previousPIDs allKeys];
+    v7 = [allKeys2 count];
 
     if (!v7)
     {
@@ -254,21 +254,21 @@ void __35__CSProcess_monitorForExitWithPID___block_invoke_2(uint64_t a1)
     v5 = 72;
   }
 
-  v8 = [*(&self->super.isa + v5) lastObject];
-  if (v8)
+  lastObject = [*(&self->super.isa + v5) lastObject];
+  if (lastObject)
   {
-    v9 = v8;
-    v10 = [v8 intValue];
+    v9 = lastObject;
+    intValue = [lastObject intValue];
 
-    return v10;
+    return intValue;
   }
 
   return 0;
 }
 
-- (id)getPidsForCoalitionID:(unint64_t)a3
+- (id)getPidsForCoalitionID:(unint64_t)d
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   v5 = [(NSMutableDictionary *)self->_trackedPIDs allKeysForObject:v4];
   v6 = v5;
   if (v5 && [v5 count])
@@ -287,8 +287,8 @@ void __35__CSProcess_monitorForExitWithPID___block_invoke_2(uint64_t a1)
 - (unint64_t)lastCoalitionID
 {
   p_trackedPIDs = &self->_trackedPIDs;
-  v4 = [(NSMutableDictionary *)self->_trackedPIDs allKeys];
-  v5 = [v4 count];
+  allKeys = [(NSMutableDictionary *)self->_trackedPIDs allKeys];
+  v5 = [allKeys count];
 
   if (v5)
   {
@@ -298,42 +298,42 @@ void __35__CSProcess_monitorForExitWithPID___block_invoke_2(uint64_t a1)
   else
   {
     p_trackedPIDs = &self->_previousPIDs;
-    v7 = [(NSMutableDictionary *)self->_previousPIDs allKeys];
-    v8 = [v7 count];
+    allKeys2 = [(NSMutableDictionary *)self->_previousPIDs allKeys];
+    v8 = [allKeys2 count];
 
     if (!v8)
     {
-      v9 = 0;
+      lastObject = 0;
       goto LABEL_8;
     }
 
     v6 = 72;
   }
 
-  v9 = [*(&self->super.isa + v6) lastObject];
-  v10 = [(NSMutableDictionary *)*p_trackedPIDs objectForKey:v9];
+  lastObject = [*(&self->super.isa + v6) lastObject];
+  v10 = [(NSMutableDictionary *)*p_trackedPIDs objectForKey:lastObject];
   if (!v10)
   {
 LABEL_8:
-    v12 = 0;
+    longLongValue = 0;
     goto LABEL_9;
   }
 
   v11 = v10;
-  v12 = [v10 longLongValue];
+  longLongValue = [v10 longLongValue];
 
 LABEL_9:
-  return v12;
+  return longLongValue;
 }
 
-- (void)addPenaltyBoxCoalitionID:(unint64_t)a3
+- (void)addPenaltyBoxCoalitionID:(unint64_t)d
 {
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:getCurrentTime()];
-  v5 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   [(NSMutableDictionary *)self->_penaltyBoxCoalitionIDs setObject:v6 forKey:v5];
 }
 
-- (BOOL)checkKnownViolationStartTime:(double)a3 endTime:(double)a4
+- (BOOL)checkKnownViolationStartTime:(double)time endTime:(double)endTime
 {
   v31 = *MEMORY[0x277D85DE8];
   eventHistory = self->_eventHistory;
@@ -371,9 +371,9 @@ LABEL_9:
             [v17 doubleValue];
             v19 = v18;
 
-            v20 = v16 >= a3 ? v16 : a3;
-            v21 = v19 >= a4 ? a4 : v19;
-            if (v20 < v21 && v19 + 1200.0 > a4)
+            v20 = v16 >= time ? v16 : time;
+            v21 = v19 >= endTime ? endTime : v19;
+            if (v20 < v21 && v19 + 1200.0 > endTime)
             {
               v23 = 1;
               goto LABEL_23;

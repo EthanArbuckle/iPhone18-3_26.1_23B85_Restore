@@ -1,91 +1,91 @@
 @interface PXSurveyQuestionsMultipleAnswerSelectionTableViewController
-- (PXSurveyQuestionsMultipleAnswerSelectionTableViewController)initWithTitle:(id)a3 message:(id)a4 reasons:(id)a5 currentlySelectedReasons:(id)a6 completion:(id)a7;
+- (PXSurveyQuestionsMultipleAnswerSelectionTableViewController)initWithTitle:(id)title message:(id)message reasons:(id)reasons currentlySelectedReasons:(id)selectedReasons completion:(id)completion;
 - (UIBarButtonItem)cancelButton;
 - (UIBarButtonItem)doneButton;
 - (void)_handleCancel;
 - (void)_handleDone;
-- (void)_setupNavigationBar:(id)a3 message:(id)a4;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_setupNavigationBar:(id)bar message:(id)message;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PXSurveyQuestionsMultipleAnswerSelectionTableViewController
 
 - (void)_handleDone
 {
-  v3 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self dataSource];
-  v6 = [v3 selectedReasons];
+  dataSource = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self dataSource];
+  selectedReasons = [dataSource selectedReasons];
 
-  v4 = [v6 componentsJoinedByString:{@", "}];
-  v5 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self completionBlock];
-  (v5)[2](v5, v4, 1);
+  v4 = [selectedReasons componentsJoinedByString:{@", "}];
+  completionBlock = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self completionBlock];
+  (completionBlock)[2](completionBlock, v4, 1);
 
   [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_handleCancel
 {
-  v3 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self completionBlock];
-  v3[2](v3, 0, 0);
+  completionBlock = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self completionBlock];
+  completionBlock[2](completionBlock, 0, 0);
 
   [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = [v13 cellForRowAtIndexPath:a4];
+  viewCopy = view;
+  v6 = [viewCopy cellForRowAtIndexPath:path];
   [v6 setAccessoryType:0];
-  v7 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self dataSource];
-  v8 = [v6 textLabel];
-  v9 = [v8 text];
-  [v7 deselect:v9];
+  dataSource = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self dataSource];
+  textLabel = [v6 textLabel];
+  text = [textLabel text];
+  [dataSource deselect:text];
 
-  v10 = [v13 indexPathsForSelectedRows];
-  v11 = [v10 count];
+  indexPathsForSelectedRows = [viewCopy indexPathsForSelectedRows];
+  v11 = [indexPathsForSelectedRows count];
 
   if (!v11)
   {
-    v12 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self doneButton];
-    [v12 setEnabled:0];
+    doneButton = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self doneButton];
+    [doneButton setEnabled:0];
   }
 
-  [v13 reloadData];
+  [viewCopy reloadData];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v16 = a4;
-  v6 = a3;
-  v7 = [v6 cellForRowAtIndexPath:v16];
+  pathCopy = path;
+  viewCopy = view;
+  v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
   if ([v7 accessoryType] == 3)
   {
-    v8 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self tableView];
-    [v8 deselectRowAtIndexPath:v16 animated:1];
+    tableView = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self tableView];
+    [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
-    v9 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self tableView];
-    [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self tableView:v9 didDeselectRowAtIndexPath:v16];
+    tableView2 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self tableView];
+    [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self tableView:tableView2 didDeselectRowAtIndexPath:pathCopy];
 
-    v10 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self dataSource];
-    v11 = [v7 textLabel];
-    v12 = [v11 text];
-    [v10 deselect:v12];
+    dataSource = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self dataSource];
+    textLabel = [v7 textLabel];
+    text = [textLabel text];
+    [dataSource deselect:text];
   }
 
   else
   {
     [v7 setAccessoryType:3];
-    v13 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self dataSource];
-    v14 = [v7 textLabel];
-    v15 = [v14 text];
-    [v13 select:v15];
+    dataSource2 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self dataSource];
+    textLabel2 = [v7 textLabel];
+    text2 = [textLabel2 text];
+    [dataSource2 select:text2];
 
-    v10 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self doneButton];
-    [v10 setEnabled:1];
+    dataSource = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self doneButton];
+    [dataSource setEnabled:1];
   }
 
-  [v6 reloadData];
+  [viewCopy reloadData];
 }
 
 - (UIBarButtonItem)doneButton
@@ -118,69 +118,69 @@
   return cancelButton;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PXSurveyQuestionsMultipleAnswerSelectionTableViewController;
-  [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)&v5 viewDidDisappear:a3];
+  [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)&v5 viewDidDisappear:disappear];
   dataSource = self->_dataSource;
   self->_dataSource = 0;
 }
 
-- (void)_setupNavigationBar:(id)a3 message:(id)a4
+- (void)_setupNavigationBar:(id)bar message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self navigationItem];
-  [v8 setTitle:v7];
+  messageCopy = message;
+  barCopy = bar;
+  navigationItem = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self navigationItem];
+  [navigationItem setTitle:barCopy];
 
-  v9 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self navigationItem];
-  [v9 setPrompt:v6];
+  navigationItem2 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self navigationItem];
+  [navigationItem2 setPrompt:messageCopy];
 
-  v10 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self cancelButton];
-  v11 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self navigationItem];
-  [v11 setLeftBarButtonItem:v10];
+  cancelButton = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self cancelButton];
+  navigationItem3 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self navigationItem];
+  [navigationItem3 setLeftBarButtonItem:cancelButton];
 
-  v13 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self doneButton];
-  v12 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self navigationItem];
-  [v12 setRightBarButtonItem:v13];
+  doneButton = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self doneButton];
+  navigationItem4 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)self navigationItem];
+  [navigationItem4 setRightBarButtonItem:doneButton];
 }
 
-- (PXSurveyQuestionsMultipleAnswerSelectionTableViewController)initWithTitle:(id)a3 message:(id)a4 reasons:(id)a5 currentlySelectedReasons:(id)a6 completion:(id)a7
+- (PXSurveyQuestionsMultipleAnswerSelectionTableViewController)initWithTitle:(id)title message:(id)message reasons:(id)reasons currentlySelectedReasons:(id)selectedReasons completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  reasonsCopy = reasons;
+  selectedReasonsCopy = selectedReasons;
+  completionCopy = completion;
   v32.receiver = self;
   v32.super_class = PXSurveyQuestionsMultipleAnswerSelectionTableViewController;
   v17 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)&v32 initWithStyle:0];
   if (v17)
   {
-    v18 = _Block_copy(v16);
+    v18 = _Block_copy(completionCopy);
     completionBlock = v17->_completionBlock;
     v17->_completionBlock = v18;
 
-    v20 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)v17 tableView];
-    [v20 setAllowsMultipleSelection:1];
+    tableView = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)v17 tableView];
+    [tableView setAllowsMultipleSelection:1];
 
     v21 = [PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource alloc];
     v22 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v23 = [v15 componentsSeparatedByString:{@", "}];
+    v23 = [selectedReasonsCopy componentsSeparatedByString:{@", "}];
     v24 = [v22 initWithArray:v23];
-    v25 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)v21 initWithReasons:v14 currentlySelected:v24];
+    v25 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)v21 initWithReasons:reasonsCopy currentlySelected:v24];
     dataSource = v17->_dataSource;
     v17->_dataSource = v25;
 
     v27 = v17->_dataSource;
-    v28 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)v17 tableView];
-    [v28 setDataSource:v27];
+    tableView2 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)v17 tableView];
+    [tableView2 setDataSource:v27];
 
-    [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)v17 _setupNavigationBar:v12 message:v13];
-    v29 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)v17 doneButton];
-    v30 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)v17 dataSource];
-    [v29 setEnabled:{objc_msgSend(v30, "selectedReasonsCount") != 0}];
+    [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)v17 _setupNavigationBar:titleCopy message:messageCopy];
+    doneButton = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)v17 doneButton];
+    dataSource = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewController *)v17 dataSource];
+    [doneButton setEnabled:{objc_msgSend(dataSource, "selectedReasonsCount") != 0}];
   }
 
   return v17;

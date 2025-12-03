@@ -18,7 +18,7 @@
 - (uint64_t)numOffsets
 {
   v2 = 0;
-  [a1 getBytes:&v2 length:4];
+  [self getBytes:&v2 length:4];
   return v2;
 }
 
@@ -26,7 +26,7 @@
 {
   v9 = 0;
   v2 = 0;
-  if ([a1 validate:&v9])
+  if ([self validate:&v9])
   {
     v2 = [NSMutableArray arrayWithCapacity:v9];
     v3 = objc_alloc_init(NSData);
@@ -34,7 +34,7 @@
     {
       for (i = 0; i < v9; ++i)
       {
-        v5 = [a1 _rawKeyframesAtIndex:i validatedOffsetCount:?];
+        v5 = [self _rawKeyframesAtIndex:i validatedOffsetCount:?];
         if (v5)
         {
           v6 = v5;
@@ -88,9 +88,9 @@
           [objc_msgSend(v5 objectAtIndexedSubscript:{i + 1), "floatValue"}];
           v33 = v11;
           [objc_msgSend(v5 objectAtIndexedSubscript:{i + 2), "floatValue"}];
-          v32 = v12 + a1;
+          v32 = v12 + self;
           [objc_msgSend(v5 objectAtIndexedSubscript:{i + 3), "floatValue"}];
-          v31 = v13 + a1;
+          v31 = v13 + self;
           [(NSMutableData *)v9 appendBytes:&v34 length:4];
           [(NSMutableData *)v9 appendBytes:&v33 length:4];
           [(NSMutableData *)v9 appendBytes:&v32 length:4];
@@ -161,9 +161,9 @@
     [objc_msgSend(v5 objectAtIndexedSubscript:{v19 + 1), "floatValue"}];
     v34 = v24;
     [objc_msgSend(v5 objectAtIndexedSubscript:{v19 + 2), "floatValue"}];
-    v33 = v25 + a1;
+    v33 = v25 + self;
     [objc_msgSend(v5 objectAtIndexedSubscript:{v19 + 3), "floatValue"}];
-    v32 = v26 + a1;
+    v32 = v26 + self;
     [(NSMutableData *)v9 appendBytes:&v35 length:4];
     [(NSMutableData *)v9 appendBytes:&v34 length:4];
     [(NSMutableData *)v9 appendBytes:&v33 length:4];
@@ -177,14 +177,14 @@
 - (void)clipStrokeKeyframeString
 {
   v15 = 0;
-  if (![a1 validate:&v15])
+  if (![self validate:&v15])
   {
     return 0;
   }
 
   v2 = 4 * v15;
   v3 = 4 * v15 + 4;
-  if ((([a1 length] - v3) & 0xF) != 0)
+  if ((([self length] - v3) & 0xF) != 0)
   {
     return 0;
   }
@@ -206,7 +206,7 @@
       do
       {
         HIDWORD(v14) = 0;
-        [a1 getBytes:&v14 + 4 range:{v8, 4}];
+        [self getBytes:&v14 + 4 range:{v8, 4}];
         if (!HIDWORD(v14) || (v14 & 0x300000000) != 0)
         {
           return 0;
@@ -221,19 +221,19 @@
     }
   }
 
-  if (v3 < [a1 length])
+  if (v3 < [self length])
   {
     v10 = v2 + 16;
     do
     {
       v13 = 0;
       v14 = 0;
-      [a1 getBytes:&v14 + 4 range:{v10 - 12, 4}];
-      [a1 getBytes:&v14 range:{v10 - 8, 4}];
-      [a1 getBytes:&v13 + 4 range:{v10 - 4, 4}];
-      [a1 getBytes:&v13 range:{v10, 4}];
+      [self getBytes:&v14 + 4 range:{v10 - 12, 4}];
+      [self getBytes:&v14 range:{v10 - 8, 4}];
+      [self getBytes:&v13 + 4 range:{v10 - 4, 4}];
+      [self getBytes:&v13 range:{v10, 4}];
       [v4 appendString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @" %u %f %f %f", HIDWORD(v14), *&v14, *(&v13 + 1), *&v13)}];
-      v11 = [a1 length];
+      v11 = [self length];
       v12 = v10 + 4;
       v10 += 16;
     }
@@ -246,9 +246,9 @@
 
 - (uint64_t)validate:()ClipStrokeKeyframes
 {
-  if ([a1 length] >= 4)
+  if ([self length] >= 4)
   {
-    result = [a1 numOffsets];
+    result = [self numOffsets];
     if (!result)
     {
       return result;
@@ -256,7 +256,7 @@
 
     v6 = result;
     v7 = result + 1;
-    if ([a1 length] >= 4 * (result + 1) && ((objc_msgSend(a1, "length") - 4 * v7) & 0xF) == 0)
+    if ([self length] >= 4 * (result + 1) && ((objc_msgSend(self, "length") - 4 * v7) & 0xF) == 0)
     {
       *a3 = v6;
       return 1;
@@ -269,11 +269,11 @@
 - (id)rawKeyframesAtIndex:()ClipStrokeKeyframes
 {
   v7 = 0;
-  v5 = [a1 validate:&v7];
+  v5 = [self validate:&v7];
   result = 0;
   if (v5)
   {
-    return [a1 _rawKeyframesAtIndex:a3 validatedOffsetCount:v7];
+    return [self _rawKeyframesAtIndex:a3 validatedOffsetCount:v7];
   }
 
   return result;
@@ -282,9 +282,9 @@
 - (id)rawKeyframeData
 {
   v4 = 0;
-  if ([a1 validate:&v4] && (v2 = 4 * v4 + 4, ((objc_msgSend(a1, "length") - v2) & 0xF) == 0))
+  if ([self validate:&v4] && (v2 = 4 * v4 + 4, ((objc_msgSend(self, "length") - v2) & 0xF) == 0))
   {
-    return [a1 subdataWithRange:v2];
+    return [self subdataWithRange:v2];
   }
 
   else
@@ -297,7 +297,7 @@
 {
   v2 = +[NSMutableDictionary dictionary];
   v18 = 0;
-  if ([a1 validate:&v18])
+  if ([self validate:&v18])
   {
     v17 = v18;
     v16[0] = 0;
@@ -314,17 +314,17 @@
         v4 = v3 + 1;
         v5 = 4 * (v3 + 1);
         v15 = 0;
-        [a1 getBytes:&v15 range:{v5, 4}];
+        [self getBytes:&v15 range:{v5, 4}];
         v14 = 0;
         if (v3 + 1 == v18)
         {
-          v6 = [a1 length];
+          v6 = [self length];
           v14 = v6;
         }
 
         else
         {
-          [a1 getBytes:&v14 range:{4 * v3 + 8, 4}];
+          [self getBytes:&v14 range:{4 * v3 + 8, 4}];
           v6 = v14;
         }
 
@@ -337,8 +337,8 @@
             do
             {
               v13 = 0;
-              [a1 getBytes:&v13 + 4 range:{v7 + 8, 4}];
-              [a1 getBytes:&v13 range:{v7 + 12, 4}];
+              [self getBytes:&v13 + 4 range:{v7 + 8, 4}];
+              [self getBytes:&v13 range:{v7 + 12, 4}];
               v9 = floorf(*(&v13 + 1));
               if (v9 == floorf(*&v13))
               {
@@ -350,9 +350,9 @@
                   [(NSMutableData *)v10 replaceBytesInRange:0 withBytes:4, &v17];
                 }
 
-                -[NSMutableData appendBytes:length:](v10, "appendBytes:length:", [a1 bytes] + v7, 8);
-                [a1 getBytes:&v13 + 4 range:{v7 + 8, 4}];
-                [a1 getBytes:&v13 range:{v7 + 12, 4}];
+                -[NSMutableData appendBytes:length:](v10, "appendBytes:length:", [self bytes] + v7, 8);
+                [self getBytes:&v13 + 4 range:{v7 + 8, 4}];
+                [self getBytes:&v13 range:{v7 + 12, 4}];
                 *&v13 = *&v13 - v9;
                 *(&v13 + 1) = *(&v13 + 1) - v9;
                 [(NSMutableData *)v10 appendBytes:&v13 + 4 length:4];
@@ -388,15 +388,15 @@
 - (id)encodedKeyframesReferencedSubpaths
 {
   v2 = +[NSMutableSet set];
-  v3 = [a1 rawKeyframeData];
-  if ([v3 length])
+  rawKeyframeData = [self rawKeyframeData];
+  if ([rawKeyframeData length])
   {
     v4 = 0;
     do
     {
       v14 = 0;
-      [a1 getBytes:&v14 + 4 range:{v4 + 8, 4}];
-      [a1 getBytes:&v14 range:{v4 + 12, 4}];
+      [self getBytes:&v14 + 4 range:{v4 + 8, 4}];
+      [self getBytes:&v14 range:{v4 + 12, 4}];
       v5 = floorf(*(&v14 + 1));
       v6 = floorf(*&v14);
       v7 = [NSNumber alloc];
@@ -410,7 +410,7 @@
       v4 += 16;
     }
 
-    while (v4 < [v3 length]);
+    while (v4 < [rawKeyframeData length]);
   }
 
   return v2;
@@ -418,7 +418,7 @@
 
 - (BOOL)containsCompoundKeyframesAtIndex:()ClipStrokeKeyframes
 {
-  v2 = [a1 rawKeyframesAtIndex:?];
+  v2 = [self rawKeyframesAtIndex:?];
   if (![v2 length])
   {
     return 0;
@@ -428,8 +428,8 @@
   do
   {
     v8 = 0;
-    [a1 getBytes:&v8 + 4 range:{v3 + 8, 4}];
-    [a1 getBytes:&v8 range:{v3 + 12, 4}];
+    [self getBytes:&v8 + 4 range:{v3 + 8, 4}];
+    [self getBytes:&v8 range:{v3 + 12, 4}];
     v4 = floorf(*(&v8 + 1));
     v5 = floorf(*&v8);
     v6 = v4 != v5;
@@ -448,21 +448,21 @@
 - (id)_rawKeyframesAtIndex:()ClipStrokeKeyframes validatedOffsetCount:
 {
   v10 = 0;
-  [a1 getBytes:&v10 range:{4 * a3 + 4, 4}];
+  [self getBytes:&v10 range:{4 * a3 + 4, 4}];
   v9 = 0;
   if (a3 + 2 >= a4)
   {
-    v7 = [a1 length];
+    v7 = [self length];
     v9 = v7;
   }
 
   else
   {
-    [a1 getBytes:&v9 range:{4 * (a3 + 2), 4}];
+    [self getBytes:&v9 range:{4 * (a3 + 2), 4}];
     v7 = v9;
   }
 
-  if (v10 >= v7 || [a1 length] < v7)
+  if (v10 >= v7 || [self length] < v7)
   {
     return 0;
   }
@@ -470,7 +470,7 @@
   result = 0;
   if (v9 != v10 && ((v9 - v10) & 0xF) == 0)
   {
-    return [a1 subdataWithRange:?];
+    return [self subdataWithRange:?];
   }
 
   return result;
@@ -480,8 +480,8 @@
 {
   v4 = [a3 count];
   v11 = v4;
-  v5 = [NSMutableData dataWithLength:(4 * v4 + 4) & 0x3FFFFFFFCLL];
-  [(NSMutableData *)v5 replaceBytesInRange:0 withBytes:4, &v11];
+  0x3FFFFFFFCLL = [NSMutableData dataWithLength:(4 * v4 + 4) & 0x3FFFFFFFCLL];
+  [(NSMutableData *)0x3FFFFFFFCLL replaceBytesInRange:0 withBytes:4, &v11];
   if (v11)
   {
     v6 = 0;
@@ -489,17 +489,17 @@
     do
     {
       v8 = [a3 objectAtIndex:v6];
-      v10 = [(NSMutableData *)v5 length];
+      v10 = [(NSMutableData *)0x3FFFFFFFCLL length];
       ++v6;
-      [(NSMutableData *)v5 replaceBytesInRange:v7 withBytes:4, &v10];
-      [(NSMutableData *)v5 appendData:v8];
+      [(NSMutableData *)0x3FFFFFFFCLL replaceBytesInRange:v7 withBytes:4, &v10];
+      [(NSMutableData *)0x3FFFFFFFCLL appendData:v8];
       v7 += 4;
     }
 
     while (v6 < v11);
   }
 
-  return v5;
+  return 0x3FFFFFFFCLL;
 }
 
 @end

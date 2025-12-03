@@ -1,60 +1,60 @@
 @interface BCSChatSuggestMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCallToActions:(id)a3;
-- (void)addChatOpenHours:(id)a3;
-- (void)addPhoneOpenHours:(id)a3;
-- (void)addVisibilities:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsVerified:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCallToActions:(id)actions;
+- (void)addChatOpenHours:(id)hours;
+- (void)addPhoneOpenHours:(id)hours;
+- (void)addVisibilities:(id)visibilities;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsVerified:(BOOL)verified;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCSChatSuggestMessage
 
-- (void)addChatOpenHours:(id)a3
+- (void)addChatOpenHours:(id)hours
 {
-  v4 = a3;
+  hoursCopy = hours;
   chatOpenHours = self->_chatOpenHours;
-  v8 = v4;
+  v8 = hoursCopy;
   if (!chatOpenHours)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_chatOpenHours;
     self->_chatOpenHours = v6;
 
-    v4 = v8;
+    hoursCopy = v8;
     chatOpenHours = self->_chatOpenHours;
   }
 
-  [(NSMutableArray *)chatOpenHours addObject:v4];
+  [(NSMutableArray *)chatOpenHours addObject:hoursCopy];
 }
 
-- (void)addPhoneOpenHours:(id)a3
+- (void)addPhoneOpenHours:(id)hours
 {
-  v4 = a3;
+  hoursCopy = hours;
   phoneOpenHours = self->_phoneOpenHours;
-  v8 = v4;
+  v8 = hoursCopy;
   if (!phoneOpenHours)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_phoneOpenHours;
     self->_phoneOpenHours = v6;
 
-    v4 = v8;
+    hoursCopy = v8;
     phoneOpenHours = self->_phoneOpenHours;
   }
 
-  [(NSMutableArray *)phoneOpenHours addObject:v4];
+  [(NSMutableArray *)phoneOpenHours addObject:hoursCopy];
 }
 
-- (void)setHasIsVerified:(BOOL)a3
+- (void)setHasIsVerified:(BOOL)verified
 {
-  if (a3)
+  if (verified)
   {
     v3 = 2;
   }
@@ -67,40 +67,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addCallToActions:(id)a3
+- (void)addCallToActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   callToActions = self->_callToActions;
-  v8 = v4;
+  v8 = actionsCopy;
   if (!callToActions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_callToActions;
     self->_callToActions = v6;
 
-    v4 = v8;
+    actionsCopy = v8;
     callToActions = self->_callToActions;
   }
 
-  [(NSMutableArray *)callToActions addObject:v4];
+  [(NSMutableArray *)callToActions addObject:actionsCopy];
 }
 
-- (void)addVisibilities:(id)a3
+- (void)addVisibilities:(id)visibilities
 {
-  v4 = a3;
+  visibilitiesCopy = visibilities;
   visibilities = self->_visibilities;
-  v8 = v4;
+  v8 = visibilitiesCopy;
   if (!visibilities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_visibilities;
     self->_visibilities = v6;
 
-    v4 = v8;
+    visibilitiesCopy = v8;
     visibilities = self->_visibilities;
   }
 
-  [(NSMutableArray *)visibilities addObject:v4];
+  [(NSMutableArray *)visibilities addObject:visibilitiesCopy];
 }
 
 - (id)description
@@ -109,8 +109,8 @@
   v8.receiver = self;
   v8.super_class = BCSChatSuggestMessage;
   v4 = [(BCSChatSuggestMessage *)&v8 description];
-  v5 = [(BCSChatSuggestMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCSChatSuggestMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -118,23 +118,23 @@
 - (id)dictionaryRepresentation
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_phoneHash];
-    [v3 setObject:v4 forKey:@"phone_hash"];
+    [dictionary setObject:v4 forKey:@"phone_hash"];
   }
 
   bizId = self->_bizId;
   if (bizId)
   {
-    [v3 setObject:bizId forKey:@"biz_id"];
+    [dictionary setObject:bizId forKey:@"biz_id"];
   }
 
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   if ([(NSMutableArray *)self->_chatOpenHours count])
@@ -159,8 +159,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v57 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v57 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v57 objects:v64 count:16];
@@ -169,7 +169,7 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"chat_open_hours"];
+    [dictionary setObject:v7 forKey:@"chat_open_hours"];
   }
 
   if ([(NSMutableArray *)self->_phoneOpenHours count])
@@ -194,8 +194,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v53 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v53 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v53 objects:v63 count:16];
@@ -204,43 +204,43 @@
       while (v17);
     }
 
-    [v3 setObject:v14 forKey:@"phone_open_hours"];
+    [dictionary setObject:v14 forKey:@"phone_open_hours"];
   }
 
   timeZone = self->_timeZone;
   if (timeZone)
   {
-    [v3 setObject:timeZone forKey:@"time_zone"];
+    [dictionary setObject:timeZone forKey:@"time_zone"];
   }
 
   squareLogoUrl = self->_squareLogoUrl;
   if (squareLogoUrl)
   {
-    [v3 setObject:squareLogoUrl forKey:@"square_logo_url"];
+    [dictionary setObject:squareLogoUrl forKey:@"square_logo_url"];
   }
 
   wideLogoUrl = self->_wideLogoUrl;
   if (wideLogoUrl)
   {
-    [v3 setObject:wideLogoUrl forKey:@"wide_logo_url"];
+    [dictionary setObject:wideLogoUrl forKey:@"wide_logo_url"];
   }
 
   backgroundColor = self->_backgroundColor;
   if (backgroundColor)
   {
-    [v3 setObject:backgroundColor forKey:@"background_color"];
+    [dictionary setObject:backgroundColor forKey:@"background_color"];
   }
 
   tintColor = self->_tintColor;
   if (tintColor)
   {
-    [v3 setObject:tintColor forKey:@"tint_color"];
+    [dictionary setObject:tintColor forKey:@"tint_color"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v26 = [MEMORY[0x277CCABB0] numberWithBool:self->_isVerified];
-    [v3 setObject:v26 forKey:@"is_verified"];
+    [dictionary setObject:v26 forKey:@"is_verified"];
   }
 
   if ([(NSMutableArray *)self->_callToActions count])
@@ -265,8 +265,8 @@
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v49 + 1) + 8 * k) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation3 = [*(*(&v49 + 1) + 8 * k) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation3];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v49 objects:v62 count:16];
@@ -275,7 +275,7 @@
       while (v30);
     }
 
-    [v3 setObject:v27 forKey:@"call_to_actions"];
+    [dictionary setObject:v27 forKey:@"call_to_actions"];
   }
 
   if ([(NSMutableArray *)self->_visibilities count])
@@ -300,8 +300,8 @@
             objc_enumerationMutation(v35);
           }
 
-          v40 = [*(*(&v45 + 1) + 8 * m) dictionaryRepresentation];
-          [v34 addObject:v40];
+          dictionaryRepresentation4 = [*(*(&v45 + 1) + 8 * m) dictionaryRepresentation];
+          [v34 addObject:dictionaryRepresentation4];
         }
 
         v37 = [(NSMutableArray *)v35 countByEnumeratingWithState:&v45 objects:v61 count:16];
@@ -310,30 +310,30 @@
       while (v37);
     }
 
-    [v3 setObject:v34 forKey:@"visibilities"];
+    [dictionary setObject:v34 forKey:@"visibilities"];
   }
 
   intentId = self->_intentId;
   if (intentId)
   {
-    [v3 setObject:intentId forKey:@"intent_id"];
+    [dictionary setObject:intentId forKey:@"intent_id"];
   }
 
   group = self->_group;
   if (group)
   {
-    [v3 setObject:group forKey:@"group"];
+    [dictionary setObject:group forKey:@"group"];
   }
 
   v43 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     phoneHash = self->_phoneHash;
@@ -522,19 +522,19 @@
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_phoneHash;
-    *(v4 + 124) |= 1u;
+    toCopy[1] = self->_phoneHash;
+    *(toCopy + 124) |= 1u;
   }
 
-  v22 = v4;
+  v22 = toCopy;
   if (self->_bizId)
   {
-    [v4 setBizId:?];
+    [toCopy setBizId:?];
   }
 
   if (self->_name)
@@ -545,10 +545,10 @@
   if ([(BCSChatSuggestMessage *)self chatOpenHoursCount])
   {
     [v22 clearChatOpenHours];
-    v5 = [(BCSChatSuggestMessage *)self chatOpenHoursCount];
-    if (v5)
+    chatOpenHoursCount = [(BCSChatSuggestMessage *)self chatOpenHoursCount];
+    if (chatOpenHoursCount)
     {
-      v6 = v5;
+      v6 = chatOpenHoursCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BCSChatSuggestMessage *)self chatOpenHoursAtIndex:i];
@@ -560,10 +560,10 @@
   if ([(BCSChatSuggestMessage *)self phoneOpenHoursCount])
   {
     [v22 clearPhoneOpenHours];
-    v9 = [(BCSChatSuggestMessage *)self phoneOpenHoursCount];
-    if (v9)
+    phoneOpenHoursCount = [(BCSChatSuggestMessage *)self phoneOpenHoursCount];
+    if (phoneOpenHoursCount)
     {
-      v10 = v9;
+      v10 = phoneOpenHoursCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(BCSChatSuggestMessage *)self phoneOpenHoursAtIndex:j];
@@ -606,10 +606,10 @@
   if ([(BCSChatSuggestMessage *)self callToActionsCount])
   {
     [v22 clearCallToActions];
-    v13 = [(BCSChatSuggestMessage *)self callToActionsCount];
-    if (v13)
+    callToActionsCount = [(BCSChatSuggestMessage *)self callToActionsCount];
+    if (callToActionsCount)
     {
-      v14 = v13;
+      v14 = callToActionsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(BCSChatSuggestMessage *)self callToActionsAtIndex:k];
@@ -621,10 +621,10 @@
   if ([(BCSChatSuggestMessage *)self visibilitiesCount])
   {
     [v22 clearVisibilities];
-    v17 = [(BCSChatSuggestMessage *)self visibilitiesCount];
-    if (v17)
+    visibilitiesCount = [(BCSChatSuggestMessage *)self visibilitiesCount];
+    if (visibilitiesCount)
     {
-      v18 = v17;
+      v18 = visibilitiesCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(BCSChatSuggestMessage *)self visibilitiesAtIndex:m];
@@ -646,10 +646,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -657,11 +657,11 @@
     *(v5 + 124) |= 1u;
   }
 
-  v7 = [(NSString *)self->_bizId copyWithZone:a3];
+  v7 = [(NSString *)self->_bizId copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
-  v9 = [(NSString *)self->_name copyWithZone:a3];
+  v9 = [(NSString *)self->_name copyWithZone:zone];
   v10 = *(v6 + 64);
   *(v6 + 64) = v9;
 
@@ -684,7 +684,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v63 + 1) + 8 * i) copyWithZone:a3];
+        v16 = [*(*(&v63 + 1) + 8 * i) copyWithZone:zone];
         [v6 addChatOpenHours:v16];
       }
 
@@ -713,7 +713,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v59 + 1) + 8 * j) copyWithZone:a3];
+        v22 = [*(*(&v59 + 1) + 8 * j) copyWithZone:zone];
         [v6 addPhoneOpenHours:v22];
       }
 
@@ -723,23 +723,23 @@
     while (v19);
   }
 
-  v23 = [(NSString *)self->_timeZone copyWithZone:a3];
+  v23 = [(NSString *)self->_timeZone copyWithZone:zone];
   v24 = *(v6 + 88);
   *(v6 + 88) = v23;
 
-  v25 = [(NSString *)self->_squareLogoUrl copyWithZone:a3];
+  v25 = [(NSString *)self->_squareLogoUrl copyWithZone:zone];
   v26 = *(v6 + 80);
   *(v6 + 80) = v25;
 
-  v27 = [(NSString *)self->_wideLogoUrl copyWithZone:a3];
+  v27 = [(NSString *)self->_wideLogoUrl copyWithZone:zone];
   v28 = *(v6 + 112);
   *(v6 + 112) = v27;
 
-  v29 = [(NSString *)self->_backgroundColor copyWithZone:a3];
+  v29 = [(NSString *)self->_backgroundColor copyWithZone:zone];
   v30 = *(v6 + 16);
   *(v6 + 16) = v29;
 
-  v31 = [(NSString *)self->_tintColor copyWithZone:a3];
+  v31 = [(NSString *)self->_tintColor copyWithZone:zone];
   v32 = *(v6 + 96);
   *(v6 + 96) = v31;
 
@@ -768,7 +768,7 @@
           objc_enumerationMutation(v33);
         }
 
-        v38 = [*(*(&v55 + 1) + 8 * k) copyWithZone:a3];
+        v38 = [*(*(&v55 + 1) + 8 * k) copyWithZone:zone];
         [v6 addCallToActions:v38];
       }
 
@@ -797,7 +797,7 @@
           objc_enumerationMutation(v39);
         }
 
-        v44 = [*(*(&v51 + 1) + 8 * m) copyWithZone:{a3, v51}];
+        v44 = [*(*(&v51 + 1) + 8 * m) copyWithZone:{zone, v51}];
         [v6 addVisibilities:v44];
       }
 
@@ -807,11 +807,11 @@
     while (v41);
   }
 
-  v45 = [(NSString *)self->_intentId copyWithZone:a3];
+  v45 = [(NSString *)self->_intentId copyWithZone:zone];
   v46 = *(v6 + 56);
   *(v6 + 56) = v45;
 
-  v47 = [(NSString *)self->_group copyWithZone:a3];
+  v47 = [(NSString *)self->_group copyWithZone:zone];
   v48 = *(v6 + 48);
   *(v6 + 48) = v47;
 
@@ -819,36 +819,36 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
-  v5 = *(v4 + 124);
+  v5 = *(equalCopy + 124);
   if (*&self->_has)
   {
-    if ((*(v4 + 124) & 1) == 0 || self->_phoneHash != *(v4 + 1))
+    if ((*(equalCopy + 124) & 1) == 0 || self->_phoneHash != *(equalCopy + 1))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 124))
+  else if (*(equalCopy + 124))
   {
     goto LABEL_36;
   }
 
   bizId = self->_bizId;
-  if (bizId | *(v4 + 3) && ![(NSString *)bizId isEqual:?])
+  if (bizId | *(equalCopy + 3) && ![(NSString *)bizId isEqual:?])
   {
     goto LABEL_36;
   }
 
   name = self->_name;
-  if (name | *(v4 + 8))
+  if (name | *(equalCopy + 8))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -857,7 +857,7 @@
   }
 
   chatOpenHours = self->_chatOpenHours;
-  if (chatOpenHours | *(v4 + 5))
+  if (chatOpenHours | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)chatOpenHours isEqual:?])
     {
@@ -866,7 +866,7 @@
   }
 
   phoneOpenHours = self->_phoneOpenHours;
-  if (phoneOpenHours | *(v4 + 9))
+  if (phoneOpenHours | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)phoneOpenHours isEqual:?])
     {
@@ -875,7 +875,7 @@
   }
 
   timeZone = self->_timeZone;
-  if (timeZone | *(v4 + 11))
+  if (timeZone | *(equalCopy + 11))
   {
     if (![(NSString *)timeZone isEqual:?])
     {
@@ -884,7 +884,7 @@
   }
 
   squareLogoUrl = self->_squareLogoUrl;
-  if (squareLogoUrl | *(v4 + 10))
+  if (squareLogoUrl | *(equalCopy + 10))
   {
     if (![(NSString *)squareLogoUrl isEqual:?])
     {
@@ -893,7 +893,7 @@
   }
 
   wideLogoUrl = self->_wideLogoUrl;
-  if (wideLogoUrl | *(v4 + 14))
+  if (wideLogoUrl | *(equalCopy + 14))
   {
     if (![(NSString *)wideLogoUrl isEqual:?])
     {
@@ -902,7 +902,7 @@
   }
 
   backgroundColor = self->_backgroundColor;
-  if (backgroundColor | *(v4 + 2))
+  if (backgroundColor | *(equalCopy + 2))
   {
     if (![(NSString *)backgroundColor isEqual:?])
     {
@@ -911,7 +911,7 @@
   }
 
   tintColor = self->_tintColor;
-  if (tintColor | *(v4 + 12))
+  if (tintColor | *(equalCopy + 12))
   {
     if (![(NSString *)tintColor isEqual:?])
     {
@@ -919,10 +919,10 @@
     }
   }
 
-  v15 = *(v4 + 124);
+  v15 = *(equalCopy + 124);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 124) & 2) == 0)
+    if ((*(equalCopy + 124) & 2) == 0)
     {
       goto LABEL_27;
     }
@@ -932,34 +932,34 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if ((*(v4 + 124) & 2) == 0)
+  if ((*(equalCopy + 124) & 2) == 0)
   {
     goto LABEL_36;
   }
 
-  v22 = *(v4 + 120);
+  v22 = *(equalCopy + 120);
   if (self->_isVerified)
   {
-    if ((*(v4 + 120) & 1) == 0)
+    if ((*(equalCopy + 120) & 1) == 0)
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 120))
+  else if (*(equalCopy + 120))
   {
     goto LABEL_36;
   }
 
 LABEL_27:
   callToActions = self->_callToActions;
-  if (callToActions | *(v4 + 4) && ![(NSMutableArray *)callToActions isEqual:?])
+  if (callToActions | *(equalCopy + 4) && ![(NSMutableArray *)callToActions isEqual:?])
   {
     goto LABEL_36;
   }
 
   visibilities = self->_visibilities;
-  if (visibilities | *(v4 + 13))
+  if (visibilities | *(equalCopy + 13))
   {
     if (![(NSMutableArray *)visibilities isEqual:?])
     {
@@ -968,7 +968,7 @@ LABEL_27:
   }
 
   intentId = self->_intentId;
-  if (intentId | *(v4 + 7))
+  if (intentId | *(equalCopy + 7))
   {
     if (![(NSString *)intentId isEqual:?])
     {
@@ -977,7 +977,7 @@ LABEL_27:
   }
 
   group = self->_group;
-  if (group | *(v4 + 6))
+  if (group | *(equalCopy + 6))
   {
     v20 = [(NSString *)group isEqual:?];
   }
@@ -1030,18 +1030,18 @@ LABEL_37:
   return v12 ^ v15 ^ [(NSString *)self->_group hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 124))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 124))
   {
-    self->_phoneHash = v4[1];
+    self->_phoneHash = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(BCSChatSuggestMessage *)self setBizId:?];
   }

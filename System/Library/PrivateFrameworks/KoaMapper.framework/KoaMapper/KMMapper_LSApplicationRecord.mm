@@ -1,42 +1,42 @@
 @interface KMMapper_LSApplicationRecord
-- (BOOL)addAlternativeNamesFor:(id)a3 forLanguage:(id)a4 error:(id *)a5;
+- (BOOL)addAlternativeNamesFor:(id)for forLanguage:(id)language error:(id *)error;
 - (KMMapper_LSApplicationRecord)init;
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5;
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error;
 @end
 
 @implementation KMMapper_LSApplicationRecord
 
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [a4 objectForKey:self->_languageCodeKey];
+  objectCopy = object;
+  v9 = [fields objectForKey:self->_languageCodeKey];
   v10 = v9;
   if (v9)
   {
     v45 = v9;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
-    v12 = [v8 localizedNameWithPreferredLocalizations:v11];
+    4294967291 = [objectCopy localizedNameWithPreferredLocalizations:v11];
 
     builder = self->_builder;
-    v14 = [v8 bundleIdentifier];
+    bundleIdentifier = [objectCopy bundleIdentifier];
     v43 = 0;
-    v15 = [(KVItemBuilder *)builder setItemType:3 itemId:v14 error:&v43];
+    v15 = [(KVItemBuilder *)builder setItemType:3 itemId:bundleIdentifier error:&v43];
     v16 = v43;
     if (v15)
     {
-      v37 = a5;
+      errorCopy = error;
       v17 = self->_builder;
-      [v8 bundleIdentifier];
+      [objectCopy bundleIdentifier];
       v38 = v42[2] = v16;
       v18 = [KVItemBuilder addFieldWithType:v17 value:"addFieldWithType:value:error:" error:100];
       v19 = v16;
 
-      v39 = v12;
+      v39 = 4294967291;
       if (v18)
       {
         v20 = self->_builder;
-        [v8 bundleVersion];
+        [objectCopy bundleVersion];
         v36 = v42[1] = v19;
         v21 = [KVItemBuilder addFieldWithType:v20 value:"addFieldWithType:value:error:" error:103];
         v22 = v19;
@@ -45,7 +45,7 @@
         {
           v23 = self->_builder;
           v42[0] = v22;
-          v24 = [(KVItemBuilder *)v23 addFieldWithType:102 value:v12 error:v42];
+          v24 = [(KVItemBuilder *)v23 addFieldWithType:102 value:4294967291 error:v42];
           v35 = v42[0];
 
           v25 = v24 == 0;
@@ -68,7 +68,7 @@
       if (!v25)
       {
         v41 = v19;
-        v31 = [(KMMapper_LSApplicationRecord *)self addAlternativeNamesFor:v8 forLanguage:v10 error:&v41];
+        v31 = [(KMMapper_LSApplicationRecord *)self addAlternativeNamesFor:objectCopy forLanguage:v10 error:&v41];
         v32 = v41;
 
         if (v31)
@@ -78,7 +78,7 @@
           v34 = [(KVItemBuilder *)v33 buildItemWithError:&v40];
           v16 = v40;
 
-          v12 = v39;
+          4294967291 = v39;
           if (v34)
           {
             v44 = v34;
@@ -87,40 +87,40 @@
 
           else
           {
-            KMMapperSetBuilderError(v37, v16);
+            KMMapperSetBuilderError(errorCopy, v16);
             v28 = 0;
           }
         }
 
         else
         {
-          KMMapperSetBuilderError(v37, v32);
+          KMMapperSetBuilderError(errorCopy, v32);
           v28 = 0;
           v16 = v32;
-          v12 = v39;
+          4294967291 = v39;
         }
 
         goto LABEL_15;
       }
 
       v16 = v19;
-      v12 = v39;
-      a5 = v37;
+      4294967291 = v39;
+      error = errorCopy;
     }
 
     else
     {
     }
 
-    KMMapperSetBuilderError(a5, v16);
+    KMMapperSetBuilderError(error, v16);
   }
 
   else
   {
     v26 = MEMORY[0x277CCA9B8];
     v46 = *MEMORY[0x277CCA068];
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected additional field with type: %i", 4294967291];
-    v47[0] = v12;
+    4294967291 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected additional field with type: %i", 4294967291];
+    v47[0] = 4294967291;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:&v46 count:1];
     v27 = [v26 errorWithDomain:@"com.apple.siri.koa.mapper" code:7 userInfo:v16];
     KVSetError();
@@ -134,10 +134,10 @@ LABEL_15:
   return v28;
 }
 
-- (BOOL)addAlternativeNamesFor:(id)a3 forLanguage:(id)a4 error:(id *)a5
+- (BOOL)addAlternativeNamesFor:(id)for forLanguage:(id)language error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  forCopy = for;
+  languageCopy = language;
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x3032000000;
@@ -150,26 +150,26 @@ LABEL_15:
   v26 = __Block_byref_object_copy__1917;
   v27 = __Block_byref_object_dispose__1918;
   v28 = 0;
-  v10 = [v8 infoDictionary];
-  v11 = [v10 objectForKey:@"INAlternativeAppNames" ofClass:objc_opt_class()];
+  infoDictionary = [forCopy infoDictionary];
+  v11 = [infoDictionary objectForKey:@"INAlternativeAppNames" ofClass:objc_opt_class()];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__KMMapper_LSApplicationRecord_addAlternativeNamesFor_forLanguage_error___block_invoke;
   v17[3] = &unk_279805CD0;
   v21 = v29;
-  v12 = v8;
+  v12 = forCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = languageCopy;
   v19 = v13;
-  v20 = self;
+  selfCopy = self;
   v22 = &v23;
   [v11 enumerateObjectsUsingBlock:v17];
   v14 = v24[5];
-  if (a5 && v14)
+  if (error && v14)
   {
     v14 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   v15 = v14 == 0;

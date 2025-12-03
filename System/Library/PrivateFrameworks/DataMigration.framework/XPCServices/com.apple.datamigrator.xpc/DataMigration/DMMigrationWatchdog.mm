@@ -1,5 +1,5 @@
 @interface DMMigrationWatchdog
-- (DMMigrationWatchdog)initWithMigrationPluginDescription:(id)a3 userDataDisposition:(id)a4 migrationStartTime:(double)a5;
+- (DMMigrationWatchdog)initWithMigrationPluginDescription:(id)description userDataDisposition:(id)disposition migrationStartTime:(double)time;
 - (void)_takeStackshot;
 - (void)cancel;
 - (void)resume;
@@ -7,21 +7,21 @@
 
 @implementation DMMigrationWatchdog
 
-- (DMMigrationWatchdog)initWithMigrationPluginDescription:(id)a3 userDataDisposition:(id)a4 migrationStartTime:(double)a5
+- (DMMigrationWatchdog)initWithMigrationPluginDescription:(id)description userDataDisposition:(id)disposition migrationStartTime:(double)time
 {
-  v8 = a3;
-  v9 = a4;
+  descriptionCopy = description;
+  dispositionCopy = disposition;
   v14.receiver = self;
   v14.super_class = DMMigrationWatchdog;
   v10 = [(DMMigrationWatchdog *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [descriptionCopy copy];
     migrationPluginDescription = v10->_migrationPluginDescription;
     v10->_migrationPluginDescription = v11;
 
-    objc_storeStrong(&v10->_userDataDisposition, a4);
-    v10->_migrationStartTime = a5;
+    objc_storeStrong(&v10->_userDataDisposition, disposition);
+    v10->_migrationStartTime = time;
     [(DMMigrationWatchdog *)v10 setSecondsBeforeNextStackshot:300];
     v10->_minutesSinceStarting = 0;
     [(DMMigrationWatchdog *)v10 setNextSecondsBeforeNextStackshotAdditionForUnitTesting:0];
@@ -47,14 +47,14 @@
   v3 = [[DMTimer alloc] initWithSecondsBeforeFirstFire:-[DMMigrationWatchdog secondsBeforeNextStackshot](self secondsOfLeeway:"secondsBeforeNextStackshot") fireBlock:{-[DMMigrationWatchdog stackshotTimerLeewaySeconds](self, "stackshotTimerLeewaySeconds"), v5}];
   [(DMMigrationWatchdog *)self setTimer:v3];
 
-  v4 = [(DMMigrationWatchdog *)self timer];
-  [v4 resume];
+  timer = [(DMMigrationWatchdog *)self timer];
+  [timer resume];
 }
 
 - (void)cancel
 {
-  v2 = [(DMMigrationWatchdog *)self timer];
-  [v2 cancel];
+  timer = [(DMMigrationWatchdog *)self timer];
+  [timer cancel];
 }
 
 - (void)_takeStackshot

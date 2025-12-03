@@ -96,40 +96,40 @@
 - (void)readAttributeActiveTextWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23922F444;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeActiveTextWithValue:(NSString *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23922F598;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActiveTextWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23922F6DC;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActiveTextWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -147,40 +147,40 @@
 - (void)readAttributeDescriptionWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23922F944;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeDescriptionWithValue:(NSString *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23922FA98;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDescriptionWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23922FBDC;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDescriptionWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -198,40 +198,40 @@
 - (void)readAttributeInactiveTextWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23922FE44;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeInactiveTextWithValue:(NSString *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23922FF98;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeInactiveTextWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392300DC;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeInactiveTextWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -249,40 +249,40 @@
 - (void)readAttributeOutOfServiceWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239230344;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeOutOfServiceWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239230498;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeOutOfServiceWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392305DC;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeOutOfServiceWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -300,27 +300,27 @@
 - (void)readAttributePolarityWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239230844;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributePolarityWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923098C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributePolarityWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -338,40 +338,40 @@
 - (void)readAttributePresentValueWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239230BF4;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributePresentValueWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239230D48;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributePresentValueWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239230E8C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributePresentValueWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -389,40 +389,40 @@
 - (void)readAttributeReliabilityWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392310F4;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeReliabilityWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239231248;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeReliabilityWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923138C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeReliabilityWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -440,27 +440,27 @@
 - (void)readAttributeStatusFlagsWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392315F4;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeStatusFlagsWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923173C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeStatusFlagsWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -478,27 +478,27 @@
 - (void)readAttributeApplicationTypeWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392319A4;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeApplicationTypeWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239231AEC;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeApplicationTypeWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -516,27 +516,27 @@
 - (void)readAttributeGeneratedCommandListWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239231D54;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeGeneratedCommandListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239231E9C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeGeneratedCommandListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -554,27 +554,27 @@
 - (void)readAttributeAcceptedCommandListWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239232104;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcceptedCommandListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23923224C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcceptedCommandListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -592,27 +592,27 @@
 - (void)readAttributeAttributeListWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392324B4;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAttributeListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392325FC;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAttributeListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -630,27 +630,27 @@
 - (void)readAttributeFeatureMapWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239232864;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeFeatureMapWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392329AC;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeFeatureMapWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -668,27 +668,27 @@
 - (void)readAttributeClusterRevisionWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239232C14;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeClusterRevisionWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239232D5C;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeClusterRevisionWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -748,14 +748,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923326C;
   v15[3] = &unk_278A73258;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActiveTextWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActiveTextWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDescriptionWithCompletionHandler:(void *)completionHandler
@@ -803,14 +803,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392335E0;
   v15[3] = &unk_278A73258;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDescriptionWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDescriptionWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeInactiveTextWithCompletionHandler:(void *)completionHandler
@@ -858,14 +858,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239233954;
   v15[3] = &unk_278A73258;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeInactiveTextWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeInactiveTextWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeOutOfServiceWithCompletionHandler:(void *)completionHandler
@@ -913,14 +913,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239233CC8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeOutOfServiceWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeOutOfServiceWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePolarityWithCompletionHandler:(void *)completionHandler
@@ -968,14 +968,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23923402C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePolarityWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePolarityWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePresentValueWithCompletionHandler:(void *)completionHandler
@@ -1023,14 +1023,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392343A0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePresentValueWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePresentValueWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeReliabilityWithCompletionHandler:(void *)completionHandler
@@ -1078,14 +1078,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239234714;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeReliabilityWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeReliabilityWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeStatusFlagsWithCompletionHandler:(void *)completionHandler
@@ -1133,14 +1133,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239234A78;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeStatusFlagsWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeStatusFlagsWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeApplicationTypeWithCompletionHandler:(void *)completionHandler
@@ -1188,14 +1188,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239234DDC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeApplicationTypeWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeApplicationTypeWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeGeneratedCommandListWithCompletionHandler:(void *)completionHandler
@@ -1243,14 +1243,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239235140;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeGeneratedCommandListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeGeneratedCommandListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcceptedCommandListWithCompletionHandler:(void *)completionHandler
@@ -1298,14 +1298,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392354A4;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcceptedCommandListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcceptedCommandListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAttributeListWithCompletionHandler:(void *)completionHandler
@@ -1353,14 +1353,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239235808;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAttributeListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAttributeListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeFeatureMapWithCompletionHandler:(void *)completionHandler
@@ -1408,14 +1408,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239235B6C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeFeatureMapWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeFeatureMapWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeClusterRevisionWithCompletionHandler:(void *)completionHandler
@@ -1463,14 +1463,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239235ED0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeClusterRevisionWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeClusterRevisionWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 @end

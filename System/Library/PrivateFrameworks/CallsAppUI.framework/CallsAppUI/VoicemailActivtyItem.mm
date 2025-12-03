@@ -1,13 +1,13 @@
 @interface VoicemailActivtyItem
 - (_TtC10CallsAppUI20VoicemailActivtyItem)init;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation VoicemailActivtyItem
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v4 = sub_1CFC9BF28();
   v5 = *(*(v4 - 8) + 64);
@@ -18,7 +18,7 @@
   return v8;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
   v5 = sub_1CFC9BF28();
   v6 = *(*(v5 - 8) + 64);
@@ -29,10 +29,10 @@
   return v9;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v6 = sub_1CFBE5E9C();
 
   return v6;

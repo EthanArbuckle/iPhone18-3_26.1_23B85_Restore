@@ -1,44 +1,44 @@
 @interface AnalyticsStoreFileWriter
-+ (BOOL)writeData:(id)a3 toFile:(id)a4;
++ (BOOL)writeData:(id)data toFile:(id)file;
 + (id)analyticsStoreFileWriterDirectory;
-+ (id)writeObj:(id)a3 toJSONFile:(id)a4;
-- (AnalyticsStoreFileWriter)initWithPersistentContainer:(id)a3;
++ (id)writeObj:(id)obj toJSONFile:(id)file;
+- (AnalyticsStoreFileWriter)initWithPersistentContainer:(id)container;
 - (id)analyticsStoreFileWriterFilePath;
-- (id)batchedWriteAnalyticsStoreToCSVFilesWithBatchSize:(unint64_t)a3 maxAge:(unint64_t)a4;
-- (id)batchedWriteAnalyticsStoreToFile:(unint64_t)a3 maxAge:(unint64_t)a4;
-- (id)batchedWriteAnalyticsStoreToFileWithBatchSize:(unint64_t)a3 maxAge:(unint64_t)a4;
-- (id)exportEntityToCSV:(id)a3 batchSize:(unint64_t)a4 maxAge:(unint64_t)a5 toURL:(id)a6 fileDate:(id)a7;
+- (id)batchedWriteAnalyticsStoreToCSVFilesWithBatchSize:(unint64_t)size maxAge:(unint64_t)age;
+- (id)batchedWriteAnalyticsStoreToFile:(unint64_t)file maxAge:(unint64_t)age;
+- (id)batchedWriteAnalyticsStoreToFileWithBatchSize:(unint64_t)size maxAge:(unint64_t)age;
+- (id)exportEntityToCSV:(id)v batchSize:(unint64_t)size maxAge:(unint64_t)age toURL:(id)l fileDate:(id)date;
 - (id)moc;
-- (id)relationshipKeyPathsForPrefetching:(id)a3;
-- (id)stringifyObjectWithPadding:(id)a3 padding:(id)a4 padToLength:(unint64_t)a5;
-- (id)stringifyRelationship:(id)a3 name:(id *)a4 onMoc:(id)a5;
-- (id)stringifyValueArray:(id)a3;
+- (id)relationshipKeyPathsForPrefetching:(id)prefetching;
+- (id)stringifyObjectWithPadding:(id)padding padding:(id)a4 padToLength:(unint64_t)length;
+- (id)stringifyRelationship:(id)relationship name:(id *)name onMoc:(id)moc;
+- (id)stringifyValueArray:(id)array;
 - (id)writeAnalyticsStoreToFile;
-- (id)writeArrayToJSONFile:(id)a3;
+- (id)writeArrayToJSONFile:(id)file;
 - (id)writeDeploymentGraphToFile;
-- (id)writeDictionaryToJSONFile:(id)a3 network:(id)a4;
+- (id)writeDictionaryToJSONFile:(id)file network:(id)network;
 - (void)initDateFormatter;
-- (void)stringifyManagedObjectsArray:(id)a3 titleString:(id *)a4 dataStringsArray:(id *)a5 onMoc:(id)a6;
-- (void)writeAttributes:(id)a3 fromObject:(id)a4 ofEntity:(id)a5 withWriter:(id)a6;
-- (void)writeRelationships:(id)a3 fromObject:(id)a4 ofEntity:(id)a5 with:(id)a6;
-- (void)writeRelationshipsHeaders:(id)a3 ofEntity:(id)a4 with:(id)a5;
+- (void)stringifyManagedObjectsArray:(id)array titleString:(id *)string dataStringsArray:(id *)stringsArray onMoc:(id)moc;
+- (void)writeAttributes:(id)attributes fromObject:(id)object ofEntity:(id)entity withWriter:(id)writer;
+- (void)writeRelationships:(id)relationships fromObject:(id)object ofEntity:(id)entity with:(id)with;
+- (void)writeRelationshipsHeaders:(id)headers ofEntity:(id)entity with:(id)with;
 @end
 
 @implementation AnalyticsStoreFileWriter
 
-- (AnalyticsStoreFileWriter)initWithPersistentContainer:(id)a3
+- (AnalyticsStoreFileWriter)initWithPersistentContainer:(id)container
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  containerCopy = container;
   v11.receiver = self;
   v11.super_class = AnalyticsStoreFileWriter;
   v6 = [(AnalyticsStoreFileWriter *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (containerCopy)
     {
-      objc_storeStrong(&v6->_persistentContainer, a3);
+      objc_storeStrong(&v6->_persistentContainer, container);
       [(AnalyticsStoreFileWriter *)v7 initDateFormatter];
     }
 
@@ -75,10 +75,10 @@
 
 - (id)moc
 {
-  v2 = [(AnalyticsStoreFileWriter *)self persistentContainer];
-  v3 = [v2 viewContext];
+  persistentContainer = [(AnalyticsStoreFileWriter *)self persistentContainer];
+  viewContext = [persistentContainer viewContext];
 
-  return v3;
+  return viewContext;
 }
 
 + (id)analyticsStoreFileWriterDirectory
@@ -123,15 +123,15 @@ LABEL_18:
   }
 
   v5 = v4;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v5 path];
+  v8 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v16 = 0;
-    [v9 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v16];
+    [defaultManager2 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v16];
     v10 = v16;
 
     if (v10)
@@ -176,12 +176,12 @@ LABEL_7:
 {
   v37 = *MEMORY[0x1E69E9840];
   dateFormatter = self->_dateFormatter;
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(NSDateFormatter *)dateFormatter stringFromDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [(NSDateFormatter *)dateFormatter stringFromDate:date];
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AnalyticsStoreDump_%@.txt", v4];
-  v6 = [objc_opt_class() analyticsStoreFileWriterDirectory];
-  v7 = [v6 URLByAppendingPathComponent:v5 isDirectory:0];
+  analyticsStoreFileWriterDirectory = [objc_opt_class() analyticsStoreFileWriterDirectory];
+  v7 = [analyticsStoreFileWriterDirectory URLByAppendingPathComponent:v5 isDirectory:0];
 
   v8 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -195,8 +195,8 @@ LABEL_7:
     _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_ERROR, "%{public}s::%d:fileURL: %@", buf, 0x1Cu);
   }
 
-  v9 = [v7 path];
-  if (!v9)
+  path = [v7 path];
+  if (!path)
   {
     v13 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -218,14 +218,14 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v10 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = [defaultManager fileExistsAtPath:path];
 
   if (v11)
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v26 = 0;
-    [v12 removeItemAtPath:v9 error:&v26];
+    [defaultManager2 removeItemAtPath:path error:&v26];
     v13 = v26;
 
     if (v13)
@@ -233,18 +233,18 @@ LABEL_21:
       v23 = WALogCategoryDeviceStoreHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v13 localizedDescription];
-        v25 = [v13 userInfo];
+        localizedDescription = [v13 localizedDescription];
+        userInfo = [v13 userInfo];
         *buf = 136447234;
         v28 = "[AnalyticsStoreFileWriter analyticsStoreFileWriterFilePath]";
         v29 = 1024;
         v30 = 139;
         v31 = 2112;
-        v32 = v9;
+        v32 = path;
         v33 = 2112;
-        v34 = v24;
+        v34 = localizedDescription;
         v35 = 2112;
-        v36 = v25;
+        v36 = userInfo;
         _os_log_impl(&dword_1C8460000, v23, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error deleting %@ %@ %@", buf, 0x30u);
       }
 
@@ -252,8 +252,8 @@ LABEL_21:
     }
   }
 
-  v14 = [MEMORY[0x1E696AC08] defaultManager];
-  v15 = [v14 createFileAtPath:v9 contents:0 attributes:0];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  v15 = [defaultManager3 createFileAtPath:path contents:0 attributes:0];
 
   v13 = WALogCategoryDeviceStoreHandle();
   v16 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
@@ -266,7 +266,7 @@ LABEL_21:
       v29 = 1024;
       v30 = 145;
       v31 = 2112;
-      v32 = v9;
+      v32 = path;
       v20 = "%{public}s::%d:Error creating %@";
       v21 = v13;
       v22 = 28;
@@ -283,7 +283,7 @@ LABEL_21:
     v29 = 1024;
     v30 = 148;
     v31 = 2112;
-    v32 = v9;
+    v32 = path;
     _os_log_impl(&dword_1C8460000, v13, OS_LOG_TYPE_ERROR, "%{public}s::%d:Will write to file: %@", buf, 0x1Cu);
   }
 
@@ -295,29 +295,29 @@ LABEL_10:
   return v17;
 }
 
-+ (BOOL)writeData:(id)a3 toFile:(id)a4
++ (BOOL)writeData:(id)data toFile:(id)file
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  fileCopy = file;
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithData:v7 encoding:4];
+  dataCopy = data;
+  v8 = [[v6 alloc] initWithData:dataCopy encoding:4];
 
   v14 = 0;
-  [v8 writeToURL:v5 atomically:1 encoding:4 error:&v14];
+  [v8 writeToURL:fileCopy atomically:1 encoding:4 error:&v14];
   v9 = v14;
   if (v9)
   {
     v12 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v5 path];
+      path = [fileCopy path];
       *buf = 136446978;
       v16 = "+[AnalyticsStoreFileWriter writeData:toFile:]";
       v17 = 1024;
       v18 = 160;
       v19 = 2112;
-      v20 = v13;
+      v20 = path;
       v21 = 2112;
       v22 = v9;
       _os_log_impl(&dword_1C8460000, v12, OS_LOG_TYPE_ERROR, "%{public}s::%d:failed to write to file %@ error %@", buf, 0x26u);
@@ -326,23 +326,23 @@ LABEL_10:
 
   else
   {
-    [WAUtil setFutureApfsPurgeableDeadline:604800 forURL:v5];
+    [WAUtil setFutureApfsPurgeableDeadline:604800 forURL:fileCopy];
   }
 
   v10 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-+ (id)writeObj:(id)a3 toJSONFile:(id)a4
++ (id)writeObj:(id)obj toJSONFile:(id)file
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 analyticsStoreFileWriterDirectory];
-  v9 = [v8 URLByAppendingPathComponent:v6 isDirectory:0];
+  fileCopy = file;
+  objCopy = obj;
+  analyticsStoreFileWriterDirectory = [self analyticsStoreFileWriterDirectory];
+  v9 = [analyticsStoreFileWriterDirectory URLByAppendingPathComponent:fileCopy isDirectory:0];
 
   v17 = 0;
-  v10 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v7 options:3 error:&v17];
+  v10 = [MEMORY[0x1E696ACB0] dataWithJSONObject:objCopy options:3 error:&v17];
 
   v11 = v17;
   if (v11)
@@ -362,7 +362,7 @@ LABEL_10:
     v12 = 0;
   }
 
-  else if ([a1 writeData:v10 toFile:v9])
+  else if ([self writeData:v10 toFile:v9])
   {
     v12 = v9;
   }
@@ -378,20 +378,20 @@ LABEL_10:
   return v12;
 }
 
-- (id)writeDictionaryToJSONFile:(id)a3 network:(id)a4
+- (id)writeDictionaryToJSONFile:(id)file network:(id)network
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v6])
+  fileCopy = file;
+  networkCopy = network;
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:fileCopy])
   {
     dateFormatter = self->_dateFormatter;
-    v9 = [MEMORY[0x1E695DF00] date];
-    v10 = [(NSDateFormatter *)dateFormatter stringFromDate:v9];
+    date = [MEMORY[0x1E695DF00] date];
+    v10 = [(NSDateFormatter *)dateFormatter stringFromDate:date];
 
     v11 = objc_opt_class();
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DeploymentGraph_%@_%@.json", v7, v10];
-    v13 = [v11 writeObj:v6 toJSONFile:v12];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DeploymentGraph_%@_%@.json", networkCopy, v10];
+    v13 = [v11 writeObj:fileCopy toJSONFile:v12];
   }
 
   else
@@ -417,19 +417,19 @@ LABEL_10:
   return v13;
 }
 
-- (id)writeArrayToJSONFile:(id)a3
+- (id)writeArrayToJSONFile:(id)file
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v4])
+  fileCopy = file;
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:fileCopy])
   {
     dateFormatter = self->_dateFormatter;
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [(NSDateFormatter *)dateFormatter stringFromDate:v6];
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = [(NSDateFormatter *)dateFormatter stringFromDate:date];
 
     v8 = objc_opt_class();
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DeploymentGraph_%@.json", v7];
-    v10 = [v8 writeObj:v4 toJSONFile:v9];
+    v10 = [v8 writeObj:fileCopy toJSONFile:v9];
   }
 
   else
@@ -697,7 +697,7 @@ void __54__AnalyticsStoreFileWriter_writeDeploymentGraphToFile__block_invoke_3(u
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)batchedWriteAnalyticsStoreToFileWithBatchSize:(unint64_t)a3 maxAge:(unint64_t)a4
+- (id)batchedWriteAnalyticsStoreToFileWithBatchSize:(unint64_t)size maxAge:(unint64_t)age
 {
   v11 = 0;
   v12 = &v11;
@@ -710,8 +710,8 @@ void __54__AnalyticsStoreFileWriter_writeDeploymentGraphToFile__block_invoke_3(u
   v10[1] = 3221225472;
   v10[2] = __81__AnalyticsStoreFileWriter_batchedWriteAnalyticsStoreToFileWithBatchSize_maxAge___block_invoke;
   v10[3] = &unk_1E830F580;
-  v10[6] = a3;
-  v10[7] = a4;
+  v10[6] = size;
+  v10[7] = age;
   v10[4] = self;
   v10[5] = &v11;
   [v7 performBlockAndWait:v10];
@@ -1134,21 +1134,21 @@ LABEL_55:
   v73 = *MEMORY[0x1E69E9840];
 }
 
-- (id)batchedWriteAnalyticsStoreToCSVFilesWithBatchSize:(unint64_t)a3 maxAge:(unint64_t)a4
+- (id)batchedWriteAnalyticsStoreToCSVFilesWithBatchSize:(unint64_t)size maxAge:(unint64_t)age
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__9;
   v15 = __Block_byref_object_dispose__9;
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7 = [(AnalyticsStoreFileWriter *)self moc];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__AnalyticsStoreFileWriter_batchedWriteAnalyticsStoreToCSVFilesWithBatchSize_maxAge___block_invoke;
   v10[3] = &unk_1E830F580;
-  v10[6] = a3;
-  v10[7] = a4;
+  v10[6] = size;
+  v10[7] = age;
   v10[4] = self;
   v10[5] = &v11;
   [v7 performBlockAndWait:v10];
@@ -1350,7 +1350,7 @@ LABEL_32:
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (id)batchedWriteAnalyticsStoreToFile:(unint64_t)a3 maxAge:(unint64_t)a4
+- (id)batchedWriteAnalyticsStoreToFile:(unint64_t)file maxAge:(unint64_t)age
 {
   v11 = 0;
   v12 = &v11;
@@ -1363,8 +1363,8 @@ LABEL_32:
   v10[1] = 3221225472;
   v10[2] = __68__AnalyticsStoreFileWriter_batchedWriteAnalyticsStoreToFile_maxAge___block_invoke;
   v10[3] = &unk_1E830F580;
-  v10[6] = a3;
-  v10[7] = a4;
+  v10[6] = file;
+  v10[7] = age;
   v10[4] = self;
   v10[5] = &v11;
   [v7 performBlockAndWait:v10];
@@ -2379,26 +2379,26 @@ LABEL_43:
   v59 = *MEMORY[0x1E69E9840];
 }
 
-- (id)relationshipKeyPathsForPrefetching:(id)a3
+- (id)relationshipKeyPathsForPrefetching:(id)prefetching
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  prefetchingCopy = prefetching;
+  array = [MEMORY[0x1E695DF70] array];
   v5 = +[NetworkMO entity];
-  v6 = [v5 name];
-  v7 = [v3 isEqualToString:v6];
+  name = [v5 name];
+  v7 = [prefetchingCopy isEqualToString:name];
 
   if (v7)
   {
     v8 = @"bss";
 LABEL_9:
-    [v4 addObject:v8];
-    v19 = v4;
+    [array addObject:v8];
+    v19 = array;
     goto LABEL_10;
   }
 
   v9 = +[BSSMO entity];
-  v10 = [v9 name];
-  v11 = [v3 isEqualToString:v10];
+  name2 = [v9 name];
+  v11 = [prefetchingCopy isEqualToString:name2];
 
   if (v11)
   {
@@ -2407,25 +2407,25 @@ LABEL_9:
   }
 
   v12 = +[WADeviceAnalyticsLeaveRecord entity];
-  v13 = [v12 name];
-  v14 = [v3 isEqualToString:v13];
+  name3 = [v12 name];
+  v14 = [prefetchingCopy isEqualToString:name3];
 
-  if (v14 & 1) != 0 || (+[WADeviceAnalyticsJoinRecord entity](WADeviceAnalyticsJoinRecord, "entity"), v15 = objc_claimAutoreleasedReturnValue(), [v15 name], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v3, "isEqualToString:", v16), v16, v15, (v17))
+  if (v14 & 1) != 0 || (+[WADeviceAnalyticsJoinRecord entity](WADeviceAnalyticsJoinRecord, "entity"), v15 = objc_claimAutoreleasedReturnValue(), [v15 name], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(prefetchingCopy, "isEqualToString:", v16), v16, v15, (v17))
   {
     v8 = @"bss.network";
     v18 = @"bss";
 LABEL_8:
-    [v4 addObject:v18];
+    [array addObject:v18];
     goto LABEL_9;
   }
 
   v21 = +[RoamMO entity];
-  v22 = [v21 name];
-  v23 = [v3 isEqualToString:v22];
+  name4 = [v21 name];
+  v23 = [prefetchingCopy isEqualToString:name4];
 
   if (v23)
   {
-    [v4 addObject:@"source"];
+    [array addObject:@"source"];
     v8 = @"target";
     v18 = @"source.network";
     goto LABEL_8;
@@ -2437,23 +2437,23 @@ LABEL_10:
   return v19;
 }
 
-- (id)stringifyRelationship:(id)a3 name:(id *)a4 onMoc:(id)a5
+- (id)stringifyRelationship:(id)relationship name:(id *)name onMoc:(id)moc
 {
   v61[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  relationshipCopy = relationship;
+  mocCopy = moc;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 ssid];
-    v10 = [BSSMO allBssidsForSsid:v9 moc:v8];
+    ssid = [relationshipCopy ssid];
+    v10 = [BSSMO allBssidsForSsid:ssid moc:mocCopy];
 
     if (v10)
     {
       v11 = @"bssids";
 LABEL_7:
-      *a4 = v11;
-      a4 = [v10 componentsJoinedByString:{@", "}];
+      *name = v11;
+      name = [v10 componentsJoinedByString:{@", "}];
 LABEL_8:
 
       goto LABEL_25;
@@ -2463,8 +2463,8 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v7 bssid];
-    v10 = [BSSMO allSsidsForBssid:v12 moc:v8];
+    bssid = [relationshipCopy bssid];
+    v10 = [BSSMO allSsidsForBssid:bssid moc:mocCopy];
 
     if (v10)
     {
@@ -2479,58 +2479,58 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v7;
+      v13 = relationshipCopy;
       v14 = [v13 bss];
       v15 = [v13 bss];
 
-      v16 = [v15 network];
+      network = [v15 network];
     }
 
     else
     {
-      v16 = 0;
+      network = 0;
       v14 = 0;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v7;
+      v17 = relationshipCopy;
       v18 = [v17 bss];
 
       v19 = [v17 bss];
 
-      v20 = [v19 network];
+      network2 = [v19 network];
 
-      v16 = v20;
+      network = network2;
       v14 = v18;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = v7;
+      v21 = relationshipCopy;
       v22 = [v21 bss];
 
       v23 = [v21 bss];
 
-      v24 = [v23 network];
+      network3 = [v23 network];
 
-      v16 = v24;
+      network = network3;
       v14 = v22;
     }
 
-    v25 = [v16 ssid];
-    v26 = [v14 bssid];
-    *a4 = @"ssid-bssid";
-    if (!v25)
+    ssid2 = [network ssid];
+    bssid2 = [v14 bssid];
+    *name = @"ssid-bssid";
+    if (!ssid2)
     {
-      v25 = @"(nil)";
+      ssid2 = @"(nil)";
     }
 
-    if (v26)
+    if (bssid2)
     {
-      v27 = v26;
+      v27 = bssid2;
     }
 
     else
@@ -2538,7 +2538,7 @@ LABEL_8:
       v27 = @"(nil)";
     }
 
-    a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v25, v27];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", ssid2, v27];
   }
 
   else
@@ -2546,28 +2546,28 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v7;
-      v30 = [v10 source];
-      v31 = [v10 target];
-      v32 = [v10 source];
-      v33 = [v32 network];
+      v10 = relationshipCopy;
+      source = [v10 source];
+      target = [v10 target];
+      source2 = [v10 source];
+      network4 = [source2 network];
 
-      v34 = [v33 ssid];
-      v35 = [v30 bssid];
-      v36 = [v31 bssid];
-      if (!v34)
+      ssid3 = [network4 ssid];
+      bssid3 = [source bssid];
+      bssid4 = [target bssid];
+      if (!ssid3)
       {
-        v34 = @"(nil)";
+        ssid3 = @"(nil)";
       }
 
-      if (!v35)
+      if (!bssid3)
       {
-        v35 = @"(nil)";
+        bssid3 = @"(nil)";
       }
 
-      if (v36)
+      if (bssid4)
       {
-        v37 = v36;
+        v37 = bssid4;
       }
 
       else
@@ -2575,8 +2575,8 @@ LABEL_8:
         v37 = @"(nil)";
       }
 
-      *a4 = @"ssid:bssidSource->bssidTarget";
-      a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@->%@", v34, v35, v37];
+      *name = @"ssid:bssidSource->bssidTarget";
+      name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@->%@", ssid3, bssid3, v37];
 
       goto LABEL_8;
     }
@@ -2584,15 +2584,15 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v60 = v7;
-      v38 = [v60 origin];
-      v39 = [v60 result];
-      v59 = v38;
-      v40 = [v38 bssid];
-      v41 = [v39 bssid];
-      if (v40)
+      v60 = relationshipCopy;
+      origin = [v60 origin];
+      result = [v60 result];
+      v59 = origin;
+      bssid5 = [origin bssid];
+      bssid6 = [result bssid];
+      if (bssid5)
       {
-        v42 = v40;
+        v42 = bssid5;
       }
 
       else
@@ -2600,9 +2600,9 @@ LABEL_8:
         v42 = @"(nil)";
       }
 
-      if (v41)
+      if (bssid6)
       {
-        v43 = v41;
+        v43 = bssid6;
       }
 
       else
@@ -2610,13 +2610,13 @@ LABEL_8:
         v43 = @"(nil)";
       }
 
-      *a4 = @"(origin)ssid:bssid (result)ssid:bssid";
+      *name = @"(origin)ssid:bssid (result)ssid:bssid";
       v44 = MEMORY[0x1E696AEC0];
-      v45 = [v38 network];
-      v46 = [v45 ssid];
-      v47 = [v39 network];
-      v48 = [v47 ssid];
-      a4 = [v44 stringWithFormat:@"%@:%@ %@:%@", v46, v42, v48, v43];
+      network5 = [origin network];
+      ssid4 = [network5 ssid];
+      network6 = [result network];
+      ssid5 = [network6 ssid];
+      name = [v44 stringWithFormat:@"%@:%@ %@:%@", ssid4, v42, ssid5, v43];
     }
 
     else
@@ -2627,18 +2627,18 @@ LABEL_8:
         goto LABEL_54;
       }
 
-      v49 = v7;
+      v49 = relationshipCopy;
       v50 = [v49 bss];
-      v51 = [v50 bssid];
+      bssid7 = [v50 bssid];
 
       v52 = [v49 bss];
-      v53 = [v52 network];
-      v54 = [v53 ssid];
+      network7 = [v52 network];
+      ssid6 = [network7 ssid];
 
       v55 = @"(nil)";
-      if (v54)
+      if (ssid6)
       {
-        v56 = v54;
+        v56 = ssid6;
       }
 
       else
@@ -2646,9 +2646,9 @@ LABEL_8:
         v56 = @"(nil)";
       }
 
-      if (v51)
+      if (bssid7)
       {
-        v55 = v51;
+        v55 = bssid7;
       }
 
       v61[0] = v56;
@@ -2657,14 +2657,14 @@ LABEL_8:
       v58 = v57;
       if (v57)
       {
-        *a4 = @"ssid,bssid";
-        a4 = [v57 componentsJoinedByString:@": "];
+        *name = @"ssid,bssid";
+        name = [v57 componentsJoinedByString:@": "];
       }
 
       if (!v58)
       {
 LABEL_54:
-        a4 = 0;
+        name = 0;
       }
     }
   }
@@ -2673,20 +2673,20 @@ LABEL_25:
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return name;
 }
 
-- (void)stringifyManagedObjectsArray:(id)a3 titleString:(id *)a4 dataStringsArray:(id *)a5 onMoc:(id)a6
+- (void)stringifyManagedObjectsArray:(id)array titleString:(id *)string dataStringsArray:(id *)stringsArray onMoc:(id)moc
 {
   v148 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v103 = a6;
-  v11 = [MEMORY[0x1E695DF70] array];
+  arrayCopy = array;
+  mocCopy = moc;
+  array = [MEMORY[0x1E695DF70] array];
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v12 = v10;
+  v12 = arrayCopy;
   v99 = [v12 countByEnumeratingWithState:&v117 objects:v147 count:16];
   if (!v99)
   {
@@ -2695,13 +2695,13 @@ LABEL_25:
     goto LABEL_81;
   }
 
-  v86 = a4;
-  v87 = a5;
+  stringCopy = string;
+  stringsArrayCopy = stringsArray;
   v13 = 0;
   obj = v12;
   v97 = *v118;
   v14 = 0x1E696A000uLL;
-  v98 = v11;
+  v98 = array;
   do
   {
     v15 = 0;
@@ -2715,7 +2715,7 @@ LABEL_25:
 
       v101 = v15;
       v16 = *(*(&v117 + 1) + 8 * v15);
-      v104 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       outCount = 0;
       v17 = objc_opt_class();
       v18 = class_copyPropertyList(v17, &outCount);
@@ -2743,8 +2743,8 @@ LABEL_27:
         }
 
         v24 = [*(v14 + 3776) stringWithUTF8String:Name];
-        v25 = [*(v20 + 184) analyticsStoreEntityRelationshipNames];
-        v26 = [v25 containsObject:v24];
+        analyticsStoreEntityRelationshipNames = [*(v20 + 184) analyticsStoreEntityRelationshipNames];
+        v26 = [analyticsStoreEntityRelationshipNames containsObject:v24];
 
         if (v26)
         {
@@ -2752,7 +2752,7 @@ LABEL_27:
           v27 = v22;
           v28 = v20;
           v115 = 0;
-          v29 = [(AnalyticsStoreFileWriter *)self stringifyRelationship:v16 name:&v115 onMoc:v103];
+          v29 = [(AnalyticsStoreFileWriter *)self stringifyRelationship:v16 name:&v115 onMoc:mocCopy];
           v30 = v115;
           v31 = v30;
           if (v29)
@@ -2766,9 +2766,9 @@ LABEL_27:
             v124[2] = v32;
             v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v124 forKeys:v123 count:3];
 
-            if (([v104 containsObject:v33] & 1) == 0)
+            if (([array2 containsObject:v33] & 1) == 0)
             {
-              [v104 addObject:v33];
+              [array2 addObject:v33];
             }
 
             v19 = v102;
@@ -2817,8 +2817,8 @@ LABEL_26:
           v145[1] = @"value";
           v35 = *(v14 + 3776);
           v92 = [v16 valueForKey:v24];
-          v90 = [v35 stringWithFormat:@"%@", v92];
-          [v90 redactedForWiFi];
+          defaultTimeZone = [v35 stringWithFormat:@"%@", v92];
+          [defaultTimeZone redactedForWiFi];
           v36 = v22;
           v38 = v37 = v20;
           v146[1] = v38;
@@ -2834,9 +2834,9 @@ LABEL_26:
         if (([v24 containsString:@"date"] & 1) != 0 || (objc_msgSend(v24, "containsString:", @"lastSeen") & 1) != 0 || objc_msgSend(v24, "containsString:", @"end"))
         {
           v44 = [v16 valueForKey:v24];
-          v90 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+          defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
           v92 = v44;
-          v45 = [v90 secondsFromGMTForDate:v44];
+          v45 = [defaultTimeZone secondsFromGMTForDate:v44];
           v144[0] = v24;
           v143[0] = @"name";
           v143[1] = @"value";
@@ -2857,7 +2857,7 @@ LABEL_33:
           v20 = v37;
           v22 = v36;
           v24 = v106;
-          v46 = v90;
+          v46 = defaultTimeZone;
 LABEL_34:
 
           goto LABEL_24;
@@ -2918,12 +2918,12 @@ LABEL_34:
             else if (([v24 containsString:@"ipv4Addr"] & 1) != 0 || objc_msgSend(v24, "containsString:", @"ipv4routerAddr"))
             {
               v57 = [v16 valueForKey:v24];
-              v58 = [v57 intValue];
+              intValue = [v57 intValue];
 
               v134[0] = v24;
               v133[0] = @"name";
               v133[1] = @"value";
-              v59.s_addr = v58;
+              v59.s_addr = intValue;
               v94 = [*(v14 + 3776) stringWithFormat:@"%s", inet_ntoa(v59)];
               v134[1] = v94;
               v133[2] = @"length";
@@ -2944,8 +2944,8 @@ LABEL_34:
                 v60 = *(v14 + 3776);
                 v61 = [v16 valueForKey:v24];
                 v95 = [v60 stringWithFormat:@"%@", v61];
-                v62 = [v95 redactedForWiFi];
-                v132[1] = v62;
+                redactedForWiFi = [v95 redactedForWiFi];
+                v132[1] = redactedForWiFi;
                 v131[2] = @"length";
                 v63 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:20];
                 v132[2] = v63;
@@ -2994,7 +2994,7 @@ LABEL_34:
             v43 = v94;
 LABEL_24:
 
-            [v104 addObject:v33];
+            [array2 addObject:v33];
             goto LABEL_25;
           }
 
@@ -3003,8 +3003,8 @@ LABEL_24:
           v139[1] = @"value";
           v93 = [v16 valueForKey:v24];
           v89 = [RoamPolicyStore neighborChannelsOf:v93];
-          v88 = [v89 allObjects];
-          v50 = [(AnalyticsStoreFileWriter *)self stringifyValueArray:v88];
+          allObjects = [v89 allObjects];
+          v50 = [(AnalyticsStoreFileWriter *)self stringifyValueArray:allObjects];
           v140[1] = v50;
           v139[2] = @"length";
           [MEMORY[0x1E696AD98] numberWithUnsignedLong:20];
@@ -3022,16 +3022,16 @@ LABEL_24:
 
 LABEL_58:
       free(v19);
-      v64 = v100;
-      v65 = v104;
+      string = v100;
+      v65 = array2;
       if (!v100)
       {
-        v64 = [MEMORY[0x1E696AD60] string];
+        string = [MEMORY[0x1E696AD60] string];
         v111 = 0u;
         v112 = 0u;
         v113 = 0u;
         v114 = 0u;
-        v66 = v104;
+        v66 = array2;
         v67 = [v66 countByEnumeratingWithState:&v111 objects:v122 count:16];
         if (v67)
         {
@@ -3050,7 +3050,7 @@ LABEL_58:
               v72 = [v71 valueForKey:@"name"];
               v73 = [v71 valueForKey:@"length"];
               v74 = -[AnalyticsStoreFileWriter stringifyObjectWithPadding:padding:padToLength:](self, "stringifyObjectWithPadding:padding:padToLength:", v72, @" ", [v73 unsignedLongValue]);
-              [v64 appendFormat:@"%@|", v74];
+              [string appendFormat:@"%@|", v74];
             }
 
             v68 = [v66 countByEnumeratingWithState:&v111 objects:v122 count:16];
@@ -3059,10 +3059,10 @@ LABEL_58:
           while (v68);
         }
 
-        v65 = v104;
+        v65 = array2;
       }
 
-      v75 = [MEMORY[0x1E696AD60] string];
+      string2 = [MEMORY[0x1E696AD60] string];
       v107 = 0u;
       v108 = 0u;
       v109 = 0u;
@@ -3086,7 +3086,7 @@ LABEL_58:
             v82 = [v81 valueForKey:@"value"];
             v83 = [v81 valueForKey:@"length"];
             v84 = -[AnalyticsStoreFileWriter stringifyObjectWithPadding:padding:padToLength:](self, "stringifyObjectWithPadding:padding:padToLength:", v82, @" ", [v83 unsignedLongValue]);
-            [v75 appendFormat:@"%@|", v84];
+            [string2 appendFormat:@"%@|", v84];
           }
 
           v78 = [v76 countByEnumeratingWithState:&v107 objects:v121 count:16];
@@ -3095,11 +3095,11 @@ LABEL_58:
         while (v78);
       }
 
-      v11 = v98;
-      [v98 addObject:v75];
+      array = v98;
+      [v98 addObject:string2];
 
       v15 = v101 + 1;
-      v13 = v64;
+      v13 = string;
       v14 = 0x1E696A000uLL;
     }
 
@@ -3110,10 +3110,10 @@ LABEL_58:
   while (v99);
   v12 = obj;
 
-  if (!v86)
+  if (!stringCopy)
   {
-    a5 = v87;
-    if (!v87)
+    stringsArray = stringsArrayCopy;
+    if (!stringsArrayCopy)
     {
       goto LABEL_84;
     }
@@ -3121,11 +3121,11 @@ LABEL_58:
     goto LABEL_82;
   }
 
-  a5 = v87;
+  stringsArray = stringsArrayCopy;
   if (!v13)
   {
 LABEL_81:
-    if (a5)
+    if (stringsArray)
     {
       goto LABEL_82;
     }
@@ -3133,16 +3133,16 @@ LABEL_81:
     goto LABEL_84;
   }
 
-  *v86 = [MEMORY[0x1E696AEC0] stringWithString:v13];
-  if (!v87)
+  *stringCopy = [MEMORY[0x1E696AEC0] stringWithString:v13];
+  if (!stringsArrayCopy)
   {
     goto LABEL_84;
   }
 
 LABEL_82:
-  if (v11)
+  if (array)
   {
-    *a5 = [MEMORY[0x1E695DEC8] arrayWithArray:v11];
+    *stringsArray = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   }
 
 LABEL_84:
@@ -3150,26 +3150,26 @@ LABEL_84:
   v85 = *MEMORY[0x1E69E9840];
 }
 
-- (id)stringifyObjectWithPadding:(id)a3 padding:(id)a4 padToLength:(unint64_t)a5
+- (id)stringifyObjectWithPadding:(id)padding padding:(id)a4 padToLength:(unint64_t)length
 {
   v7 = MEMORY[0x1E696AD60];
   v8 = a4;
-  v9 = a3;
-  v10 = [v7 string];
-  [v10 appendFormat:@"%@", v9];
+  paddingCopy = padding;
+  string = [v7 string];
+  [string appendFormat:@"%@", paddingCopy];
 
-  v11 = [v10 stringByPaddingToLength:a5 withString:v8 startingAtIndex:0];
+  v11 = [string stringByPaddingToLength:length withString:v8 startingAtIndex:0];
 
   v12 = [MEMORY[0x1E696AEC0] stringWithString:v11];
 
   return v12;
 }
 
-- (id)stringifyValueArray:(id)a3
+- (id)stringifyValueArray:(id)array
 {
-  if (a3)
+  if (array)
   {
-    v3 = [a3 valueForKey:@"description"];
+    v3 = [array valueForKey:@"description"];
     v4 = [v3 componentsJoinedByString:{@", "}];
   }
 
@@ -3181,25 +3181,25 @@ LABEL_84:
   return v4;
 }
 
-- (void)writeAttributes:(id)a3 fromObject:(id)a4 ofEntity:(id)a5 withWriter:(id)a6
+- (void)writeAttributes:(id)attributes fromObject:(id)object ofEntity:(id)entity withWriter:(id)writer
 {
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  v13 = v11;
-  v14 = a5;
-  v15 = a6;
-  v16 = v14;
-  v37 = v15;
+  attributesCopy = attributes;
+  objectCopy = object;
+  selfCopy = self;
+  v13 = objectCopy;
+  entityCopy = entity;
+  writerCopy = writer;
+  v16 = entityCopy;
+  v37 = writerCopy;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v38 = [v10 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  v38 = [attributesCopy countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v38)
   {
-    v35 = v14;
+    v35 = entityCopy;
     v36 = *v40;
     do
     {
@@ -3208,40 +3208,40 @@ LABEL_84:
       {
         if (*v40 != v36)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v18 = *(*(&v39 + 1) + 8 * v17);
         v19 = [v13 valueForKey:v18];
-        v20 = [v16 attributesByName];
-        v21 = [v20 objectForKeyedSubscript:v18];
-        v22 = [v21 attributeValueClassName];
+        attributesByName = [v16 attributesByName];
+        v21 = [attributesByName objectForKeyedSubscript:v18];
+        attributeValueClassName = [v21 attributeValueClassName];
 
-        if ([v22 isEqualToString:@"NSDate"])
+        if ([attributeValueClassName isEqualToString:@"NSDate"])
         {
-          v23 = [(NSDateFormatter *)v12->_dateFormatter stringFromDate:v19];
+          v23 = [(NSDateFormatter *)selfCopy->_dateFormatter stringFromDate:v19];
 LABEL_21:
           v26 = v23;
           goto LABEL_22;
         }
 
-        if ([v18 containsString:@"subband"] && objc_msgSend(v22, "isEqualToString:", @"NSNumber"))
+        if ([v18 containsString:@"subband"] && objc_msgSend(attributeValueClassName, "isEqualToString:", @"NSNumber"))
         {
           v23 = +[WADeviceAnalyticsClient subBandAsString:](WADeviceAnalyticsClient, "subBandAsString:", [v19 shortValue]);
           goto LABEL_21;
         }
 
-        if ((([v18 containsString:@"Band"] & 1) != 0 || objc_msgSend(v18, "containsString:", @"band")) && objc_msgSend(v22, "isEqualToString:", @"NSNumber"))
+        if ((([v18 containsString:@"Band"] & 1) != 0 || objc_msgSend(v18, "containsString:", @"band")) && objc_msgSend(attributeValueClassName, "isEqualToString:", @"NSNumber"))
         {
           v23 = +[WADeviceAnalyticsClient bandAsString:](WADeviceAnalyticsClient, "bandAsString:", [v19 shortValue]);
           goto LABEL_21;
         }
 
-        if ((([v18 hasPrefix:@"is"] & 1) != 0 || objc_msgSend(v18, "hasPrefix:", @"has")) && objc_msgSend(v22, "isEqualToString:", @"NSNumber"))
+        if ((([v18 hasPrefix:@"is"] & 1) != 0 || objc_msgSend(v18, "hasPrefix:", @"has")) && objc_msgSend(attributeValueClassName, "isEqualToString:", @"NSNumber"))
         {
-          v24 = [v19 BOOLValue];
+          bOOLValue = [v19 BOOLValue];
           v25 = @"NO";
-          if (v24)
+          if (bOOLValue)
           {
             v25 = @"YES";
           }
@@ -3260,12 +3260,12 @@ LABEL_21:
         v28 = MEMORY[0x1E696AEC0];
         [v27 redactedForWiFi];
         v29 = v13;
-        v30 = v12;
-        v32 = v31 = v10;
+        v30 = selfCopy;
+        v32 = v31 = attributesCopy;
         v26 = [v28 stringWithFormat:@"%@", v32];
 
-        v10 = v31;
-        v12 = v30;
+        attributesCopy = v31;
+        selfCopy = v30;
         v13 = v29;
         v16 = v35;
 
@@ -3277,7 +3277,7 @@ LABEL_22:
       }
 
       while (v38 != v17);
-      v33 = [v10 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v33 = [attributesCopy countByEnumeratingWithState:&v39 objects:v43 count:16];
       v38 = v33;
     }
 
@@ -3287,19 +3287,19 @@ LABEL_22:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeRelationships:(id)a3 fromObject:(id)a4 ofEntity:(id)a5 with:(id)a6
+- (void)writeRelationships:(id)relationships fromObject:(id)object ofEntity:(id)entity with:(id)with
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  relationshipsCopy = relationships;
+  objectCopy = object;
+  entityCopy = entity;
+  withCopy = with;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v9;
-  v13 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  obj = relationshipsCopy;
+  v13 = [relationshipsCopy countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v13)
   {
     v14 = v13;
@@ -3315,14 +3315,14 @@ LABEL_22:
         }
 
         v17 = *(*(&v29 + 1) + 8 * v16);
-        v18 = [v11 relationshipsByName];
-        v19 = [v18 objectForKeyedSubscript:v17];
-        v20 = [v19 isToMany];
+        relationshipsByName = [entityCopy relationshipsByName];
+        v19 = [relationshipsByName objectForKeyedSubscript:v17];
+        isToMany = [v19 isToMany];
 
         v21 = MEMORY[0x1E696AEC0];
-        v22 = [v10 valueForKey:v17];
+        v22 = [objectCopy valueForKey:v17];
         v23 = v22;
-        if (v20)
+        if (isToMany)
         {
           v24 = [v21 stringWithFormat:@"%lu", objc_msgSend(v22, "count")];
         }
@@ -3330,12 +3330,12 @@ LABEL_22:
         else
         {
           v25 = [v22 description];
-          v26 = [v25 redactedForWiFi];
-          v24 = [v21 stringWithFormat:@"%@", v26];
+          redactedForWiFi = [v25 redactedForWiFi];
+          v24 = [v21 stringWithFormat:@"%@", redactedForWiFi];
         }
 
-        [v12 writeField:v24];
-        [v12 writeComma];
+        [withCopy writeField:v24];
+        [withCopy writeComma];
 
         ++v16;
       }
@@ -3350,17 +3350,17 @@ LABEL_22:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeRelationshipsHeaders:(id)a3 ofEntity:(id)a4 with:(id)a5
+- (void)writeRelationshipsHeaders:(id)headers ofEntity:(id)entity with:(id)with
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  headersCopy = headers;
+  entityCopy = entity;
+  withCopy = with;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v10 = [headersCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3371,15 +3371,15 @@ LABEL_22:
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(headersCopy);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v8 relationshipsByName];
-        v16 = [v15 objectForKeyedSubscript:v14];
-        v17 = [v16 isToMany];
+        relationshipsByName = [entityCopy relationshipsByName];
+        v16 = [relationshipsByName objectForKeyedSubscript:v14];
+        isToMany = [v16 isToMany];
 
-        if (v17)
+        if (isToMany)
         {
           v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ count", v14];
         }
@@ -3391,12 +3391,12 @@ LABEL_22:
 
         v19 = v18;
         v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v18];
-        [v9 writeField:v20];
+        [withCopy writeField:v20];
 
-        [v9 writeComma];
+        [withCopy writeComma];
       }
 
-      v11 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [headersCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v11);
@@ -3405,17 +3405,17 @@ LABEL_22:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)exportEntityToCSV:(id)a3 batchSize:(unint64_t)a4 maxAge:(unint64_t)a5 toURL:(id)a6 fileDate:(id)a7
+- (id)exportEntityToCSV:(id)v batchSize:(unint64_t)size maxAge:(unint64_t)age toURL:(id)l fileDate:(id)date
 {
   v74[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v59 = a6;
-  v58 = a7;
-  v14 = [(AnalyticsStoreFileWriter *)self persistentContainer];
-  v15 = [v14 datePropertyForEntity:v13];
+  vCopy = v;
+  lCopy = l;
+  dateCopy = date;
+  persistentContainer = [(AnalyticsStoreFileWriter *)self persistentContainer];
+  v15 = [persistentContainer datePropertyForEntity:vCopy];
 
-  v16 = [(AnalyticsStoreFileWriter *)self persistentContainer];
-  if (a5)
+  persistentContainer2 = [(AnalyticsStoreFileWriter *)self persistentContainer];
+  if (age)
   {
     v17 = v15 == 0;
   }
@@ -3428,11 +3428,11 @@ LABEL_22:
   v18 = !v17;
   if (!v17)
   {
-    v7 = [(AnalyticsStoreFileWriter *)self persistentContainer];
-    v19 = [v7 predicateForEntity:v13 newerThan:0 withError:(86400 * a5)];
+    persistentContainer3 = [(AnalyticsStoreFileWriter *)self persistentContainer];
+    v19 = [persistentContainer3 predicateForEntity:vCopy newerThan:0 withError:(86400 * age)];
 LABEL_10:
-    a5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:v15 ascending:0];
-    v74[0] = a5;
+    age = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:v15 ascending:0];
+    v74[0] = age;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:1];
     v20 = v19;
     goto LABEL_11;
@@ -3448,7 +3448,7 @@ LABEL_10:
 
 LABEL_11:
   v64 = 0;
-  v57 = [v16 fetchObjects:v13 withPredicate:v20 withSorting:v21 withPrefetchedProperties:0 withLimit:a4 withError:&v64];
+  v57 = [persistentContainer2 fetchObjects:vCopy withPredicate:v20 withSorting:v21 withPrefetchedProperties:0 withLimit:size withError:&v64];
   v22 = v64;
   if (v15)
   {
@@ -3463,7 +3463,7 @@ LABEL_11:
     v23 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [v13 name];
+      [vCopy name];
       v25 = v24 = v22;
       *buf = 136446978;
       v67 = "[AnalyticsStoreFileWriter exportEntityToCSV:batchSize:maxAge:toURL:fileDate:]";
@@ -3479,14 +3479,14 @@ LABEL_11:
     }
 
     v26 = 0;
-    v27 = v59;
+    v27 = lCopy;
   }
 
   else
   {
-    [v13 attributesByName];
+    [vCopy attributesByName];
     v28 = v56 = v15;
-    v29 = [v28 allKeys];
+    allKeys = [v28 allKeys];
 
     if (v15)
     {
@@ -3499,20 +3499,20 @@ LABEL_11:
     }
 
     v31 = v30;
-    v55 = v29;
-    v54 = [v29 sortedArrayUsingSelector:sel_compare_];
+    v55 = allKeys;
+    v54 = [allKeys sortedArrayUsingSelector:sel_compare_];
     [v31 addObjectsFromArray:?];
-    v32 = [v13 relationshipsByName];
-    v33 = [v32 allKeys];
-    v34 = [v33 sortedArrayUsingSelector:sel_compare_];
+    relationshipsByName = [vCopy relationshipsByName];
+    allKeys2 = [relationshipsByName allKeys];
+    v34 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
     v35 = MEMORY[0x1E696AEC0];
-    v36 = [v13 name];
-    v37 = [v35 stringWithFormat:@"Entity_%@_%@.csv", v58, v36];
+    name = [vCopy name];
+    v37 = [v35 stringWithFormat:@"Entity_%@_%@.csv", dateCopy, name];
 
-    v38 = [v59 path];
+    path = [lCopy path];
     v52 = v37;
-    v39 = [v38 stringByAppendingPathComponent:v37];
+    v39 = [path stringByAppendingPathComponent:v37];
 
     v53 = v39;
     v40 = [MEMORY[0x1E695DFC0] outputStreamToFileAtPath:v39 append:0];
@@ -3520,7 +3520,7 @@ LABEL_11:
     v51 = v40;
     v41 = [[AnalyticsCSVWriter alloc] initWithOutputStream:v40];
     [(AnalyticsCSVWriter *)v41 writeFields:v31];
-    [(AnalyticsStoreFileWriter *)self writeRelationshipsHeaders:v34 ofEntity:v13 with:v41];
+    [(AnalyticsStoreFileWriter *)self writeRelationshipsHeaders:v34 ofEntity:vCopy with:v41];
     [(AnalyticsCSVWriter *)v41 finishLine];
     v62 = 0u;
     v63 = 0u;
@@ -3542,8 +3542,8 @@ LABEL_11:
           }
 
           v47 = *(*(&v60 + 1) + 8 * i);
-          [(AnalyticsStoreFileWriter *)self writeAttributes:v31 fromObject:v47 ofEntity:v13 withWriter:v41];
-          [(AnalyticsStoreFileWriter *)self writeRelationships:v34 fromObject:v47 ofEntity:v13 with:v41];
+          [(AnalyticsStoreFileWriter *)self writeAttributes:v31 fromObject:v47 ofEntity:vCopy withWriter:v41];
+          [(AnalyticsStoreFileWriter *)self writeRelationships:v34 fromObject:v47 ofEntity:vCopy with:v41];
           [(AnalyticsCSVWriter *)v41 finishLine];
         }
 
@@ -3558,7 +3558,7 @@ LABEL_11:
     v48 = [MEMORY[0x1E695DFF8] URLWithString:v53];
     [WAUtil setFutureApfsPurgeableDeadline:604800 forURL:v48];
 
-    v27 = v59;
+    v27 = lCopy;
     v22 = 0;
     v15 = v56;
     v23 = v55;

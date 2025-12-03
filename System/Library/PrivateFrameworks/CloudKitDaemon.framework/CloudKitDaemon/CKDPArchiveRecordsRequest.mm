@@ -1,13 +1,13 @@
 @interface CKDPArchiveRecordsRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addIdsToArchive:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIdsToArchive:(id)archive;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPArchiveRecordsRequest
@@ -24,22 +24,22 @@
   return v3;
 }
 
-- (void)addIdsToArchive:(id)a3
+- (void)addIdsToArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   idsToArchives = self->_idsToArchives;
-  v8 = v4;
+  v8 = archiveCopy;
   if (!idsToArchives)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_idsToArchives;
     self->_idsToArchives = v6;
 
-    v4 = v8;
+    archiveCopy = v8;
     idsToArchives = self->_idsToArchives;
   }
 
-  objc_msgSend_addObject_(idsToArchives, v4, v4);
+  objc_msgSend_addObject_(idsToArchives, archiveCopy, archiveCopy);
 }
 
 - (id)description
@@ -100,10 +100,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -139,12 +139,12 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (objc_msgSend_idsToArchivesCount(self, v4, v5))
   {
-    objc_msgSend_clearIdsToArchives(v16, v6, v7);
+    objc_msgSend_clearIdsToArchives(toCopy, v6, v7);
     v10 = objc_msgSend_idsToArchivesCount(self, v8, v9);
     if (v10)
     {
@@ -152,17 +152,17 @@
       for (i = 0; i != v12; ++i)
       {
         v14 = objc_msgSend_idsToArchiveAtIndex_(self, v11, i);
-        objc_msgSend_addIdsToArchive_(v16, v15, v14);
+        objc_msgSend_addIdsToArchive_(toCopy, v15, v14);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v22 = 0u;
   v23 = 0u;
@@ -184,7 +184,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v22 + 1) + 8 * v17), v14, a3, v22);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v22 + 1) + 8 * v17), v14, zone, v22);
         objc_msgSend_addIdsToArchive_(v10, v19, v18);
 
         ++v17;
@@ -201,14 +201,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     idsToArchives = self->_idsToArchives;
-    v9 = v4[1];
+    v9 = equalCopy[1];
     if (idsToArchives | v9)
     {
       isEqual = objc_msgSend_isEqual_(idsToArchives, v7, v9);
@@ -228,14 +228,14 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v12, v16, 16);
   if (v6)
   {

@@ -1,43 +1,43 @@
 @interface PXPhotosBarButtonItemsController
 - (PXPhotosBarButtonItemsController)init;
-- (PXPhotosBarButtonItemsController)initWithExtendedTraitCollection:(id)a3 viewModel:(id)a4;
-- (id)_createBarButtonItemWithTitle:(id)a3 orSystemItem:(int64_t)a4 orSystemIconName:(id)a5 target:(id)a6 action:(SEL)a7 menuAction:(SEL)a8 accessibilityIdentifier:(id)a9;
+- (PXPhotosBarButtonItemsController)initWithExtendedTraitCollection:(id)collection viewModel:(id)model;
+- (id)_createBarButtonItemWithTitle:(id)title orSystemItem:(int64_t)item orSystemIconName:(id)name target:(id)target action:(SEL)action menuAction:(SEL)menuAction accessibilityIdentifier:(id)identifier;
 @end
 
 @implementation PXPhotosBarButtonItemsController
 
-- (id)_createBarButtonItemWithTitle:(id)a3 orSystemItem:(int64_t)a4 orSystemIconName:(id)a5 target:(id)a6 action:(SEL)a7 menuAction:(SEL)a8 accessibilityIdentifier:(id)a9
+- (id)_createBarButtonItemWithTitle:(id)title orSystemItem:(int64_t)item orSystemIconName:(id)name target:(id)target action:(SEL)action menuAction:(SEL)menuAction accessibilityIdentifier:(id)identifier
 {
-  v16 = a9;
-  v17 = a6;
-  v18 = a5;
-  v19 = a3;
+  identifierCopy = identifier;
+  targetCopy = target;
+  nameCopy = name;
+  titleCopy = title;
   v20 = [_PXPhotosBarButtonView alloc];
-  v21 = [(PXPhotosBarButtonItemsController *)self specManager];
-  v22 = [(PXPhotosBarButtonItemsController *)self viewModel];
-  v23 = [(_PXPhotosBarButtonView *)v20 initWithTitle:v19 orSystemItem:a4 orSystemIconName:v18 target:v17 action:a7 menuAction:a8 specManager:v21 viewModel:v22];
+  specManager = [(PXPhotosBarButtonItemsController *)self specManager];
+  viewModel = [(PXPhotosBarButtonItemsController *)self viewModel];
+  v23 = [(_PXPhotosBarButtonView *)v20 initWithTitle:titleCopy orSystemItem:item orSystemIconName:nameCopy target:targetCopy action:action menuAction:menuAction specManager:specManager viewModel:viewModel];
 
-  [(_PXPhotosBarButtonView *)v23 setAccessibilityIdentifier:v16];
+  [(_PXPhotosBarButtonView *)v23 setAccessibilityIdentifier:identifierCopy];
   v24 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v23];
   [(_PXPhotosBarButtonView *)v23 setBarButtonItem:v24];
 
   return v24;
 }
 
-- (PXPhotosBarButtonItemsController)initWithExtendedTraitCollection:(id)a3 viewModel:(id)a4
+- (PXPhotosBarButtonItemsController)initWithExtendedTraitCollection:(id)collection viewModel:(id)model
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = PXPhotosBarButtonItemsController;
   v8 = [(PXPhotosBarButtonItemsController *)&v12 init];
   if (v8)
   {
-    v9 = [(PXFeatureSpecManager *)[_PXPhotosBarButtonSpecManager alloc] initWithExtendedTraitCollection:v6];
+    v9 = [(PXFeatureSpecManager *)[_PXPhotosBarButtonSpecManager alloc] initWithExtendedTraitCollection:collectionCopy];
     specManager = v8->_specManager;
     v8->_specManager = v9;
 
-    objc_storeStrong(&v8->_viewModel, a4);
+    objc_storeStrong(&v8->_viewModel, model);
   }
 
   return v8;
@@ -45,8 +45,8 @@
 
 - (PXPhotosBarButtonItemsController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosBarButtonItemsController.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXPhotosBarButtonItemsController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosBarButtonItemsController.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXPhotosBarButtonItemsController init]"}];
 
   abort();
 }

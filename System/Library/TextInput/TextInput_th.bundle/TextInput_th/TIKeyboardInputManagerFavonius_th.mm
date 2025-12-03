@@ -1,13 +1,13 @@
 @interface TIKeyboardInputManagerFavonius_th
 - (id)keyboardBehaviors;
 - (id)trimmedInputStem;
-- (id)trimmedInputStemForStem:(id)a3;
-- (void)addInput:(id)a3 withContext:(id)a4;
-- (void)candidateRejected:(id)a3;
+- (id)trimmedInputStemForStem:(id)stem;
+- (void)addInput:(id)input withContext:(id)context;
+- (void)candidateRejected:(id)rejected;
 - (void)initImplementation;
 - (void)loadDictionaries;
-- (void)registerLearning:(id)a3 fullCandidate:(id)a4 keyboardState:(id)a5 mode:(id)a6;
-- (void)registerLearningForCompletion:(id)a3 fullCompletion:(id)a4 context:(id)a5 prefix:(id)a6 mode:(id)a7;
+- (void)registerLearning:(id)learning fullCandidate:(id)candidate keyboardState:(id)state mode:(id)mode;
+- (void)registerLearningForCompletion:(id)completion fullCompletion:(id)fullCompletion context:(id)context prefix:(id)prefix mode:(id)mode;
 - (void)setWordBoundary;
 @end
 
@@ -44,22 +44,22 @@
 
 - (id)trimmedInputStem
 {
-  v3 = [(TIKeyboardInputManagerFavonius_th *)self inputStem];
-  v4 = [(TIKeyboardInputManagerFavonius_th *)self trimmedInputStemForStem:v3];
+  inputStem = [(TIKeyboardInputManagerFavonius_th *)self inputStem];
+  v4 = [(TIKeyboardInputManagerFavonius_th *)self trimmedInputStemForStem:inputStem];
 
   return v4;
 }
 
-- (id)trimmedInputStemForStem:(id)a3
+- (id)trimmedInputStemForStem:(id)stem
 {
-  v4 = a3;
-  v5 = v4;
+  stemCopy = stem;
+  v5 = stemCopy;
   if (*(&self->super.super.super.isa + *MEMORY[0x29EDC7290]))
   {
-    v6 = [v4 _lastLongCharacter];
-    if (v6)
+    _lastLongCharacter = [stemCopy _lastLongCharacter];
+    if (_lastLongCharacter)
     {
-      v7 = [MEMORY[0x29EDBA0F8] _stringWithUnichar:v6];
+      v7 = [MEMORY[0x29EDBA0F8] _stringWithUnichar:_lastLongCharacter];
     }
 
     else
@@ -72,7 +72,7 @@
     v9 = [(TIKeyboardInputManagerFavonius_th *)&v16 countOfWordsIninputStem:v5];
     v15.receiver = self;
     v15.super_class = TIKeyboardInputManagerFavonius_th;
-    v10 = [(TIKeyboardInputManagerFavonius_th *)&v15 maxPriorWordTokensAfterTrimming];
+    maxPriorWordTokensAfterTrimming = [(TIKeyboardInputManagerFavonius_th *)&v15 maxPriorWordTokensAfterTrimming];
     if (v9)
     {
       v11 = ([v5 length] / v9) > 2.5;
@@ -90,19 +90,19 @@
 
     else
     {
-      if ([v5 length] > 0xC || v9 > v10 + 1 && v11)
+      if ([v5 length] > 0xC || v9 > maxPriorWordTokensAfterTrimming + 1 && v11)
       {
         v14.receiver = self;
         v14.super_class = TIKeyboardInputManagerFavonius_th;
-        v12 = [(TIKeyboardInputManagerFavonius_th *)&v14 trimmedInputStem];
+        trimmedInputStem = [(TIKeyboardInputManagerFavonius_th *)&v14 trimmedInputStem];
       }
 
       else
       {
-        v12 = v5;
+        trimmedInputStem = v5;
       }
 
-      v8 = v12;
+      v8 = trimmedInputStem;
     }
   }
 
@@ -126,62 +126,62 @@
   }
 }
 
-- (void)candidateRejected:(id)a3
+- (void)candidateRejected:(id)rejected
 {
   v4.receiver = self;
   v4.super_class = TIKeyboardInputManagerFavonius_th;
-  [(TIKeyboardInputManagerBase *)&v4 candidateRejected:a3];
+  [(TIKeyboardInputManagerBase *)&v4 candidateRejected:rejected];
   [(TIKeyboardInputManagerFavonius_th *)self setWordBoundary];
 }
 
-- (void)registerLearning:(id)a3 fullCandidate:(id)a4 keyboardState:(id)a5 mode:(id)a6
+- (void)registerLearning:(id)learning fullCandidate:(id)candidate keyboardState:(id)state mode:(id)mode
 {
   v7.receiver = self;
   v7.super_class = TIKeyboardInputManagerFavonius_th;
-  [(TIKeyboardInputManagerBase *)&v7 registerLearning:a3 fullCandidate:a4 keyboardState:a5 mode:a6];
+  [(TIKeyboardInputManagerBase *)&v7 registerLearning:learning fullCandidate:candidate keyboardState:state mode:mode];
   [(TIKeyboardInputManagerFavonius_th *)self setWordBoundary];
 }
 
-- (void)registerLearningForCompletion:(id)a3 fullCompletion:(id)a4 context:(id)a5 prefix:(id)a6 mode:(id)a7
+- (void)registerLearningForCompletion:(id)completion fullCompletion:(id)fullCompletion context:(id)context prefix:(id)prefix mode:(id)mode
 {
   v8.receiver = self;
   v8.super_class = TIKeyboardInputManagerFavonius_th;
-  [(TIKeyboardInputManagerBase *)&v8 registerLearningForCompletion:a3 fullCompletion:a4 context:a5 prefix:a6 mode:a7];
+  [(TIKeyboardInputManagerBase *)&v8 registerLearningForCompletion:completion fullCompletion:fullCompletion context:context prefix:prefix mode:mode];
   [(TIKeyboardInputManagerFavonius_th *)self setWordBoundary];
 }
 
-- (void)addInput:(id)a3 withContext:(id)a4
+- (void)addInput:(id)input withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TIKeyboardInputManagerFavonius_th *)self inputStem];
-  v9 = [v6 string];
-  v10 = [v8 stringByAppendingString:v9];
+  inputCopy = input;
+  contextCopy = context;
+  inputStem = [(TIKeyboardInputManagerFavonius_th *)self inputStem];
+  string = [inputCopy string];
+  v10 = [inputStem stringByAppendingString:string];
 
   v11 = [(TIKeyboardInputManagerFavonius_th *)self trimmedInputStemForStem:v10];
-  v12 = [(TIKeyboardInputManagerFavonius_th *)self lastAutocorrectionList];
-  v13 = [v12 corrections];
-  v14 = [v13 autocorrection];
+  lastAutocorrectionList = [(TIKeyboardInputManagerFavonius_th *)self lastAutocorrectionList];
+  corrections = [lastAutocorrectionList corrections];
+  autocorrection = [corrections autocorrection];
 
-  v15 = [v14 input];
-  v16 = [v14 candidate];
-  v17 = [v15 isEqualToString:v16];
+  input = [autocorrection input];
+  candidate = [autocorrection candidate];
+  v17 = [input isEqualToString:candidate];
 
   v18 = [v11 length];
-  if (v18 < [v8 length] && !(v17 & 1 | ((objc_msgSend(v8, "hasSuffix:", v11) & 1) == 0)))
+  if (v18 < [inputStem length] && !(v17 & 1 | ((objc_msgSend(inputStem, "hasSuffix:", v11) & 1) == 0)))
   {
-    [(TIKeyboardInputManagerFavonius_th *)self textAccepted:v14 fromPredictiveInputBar:0 withInput:0];
-    [v7 deleteTextBackward:v8];
-    v19 = [v14 candidate];
-    [v7 insertText:v19];
+    [(TIKeyboardInputManagerFavonius_th *)self textAccepted:autocorrection fromPredictiveInputBar:0 withInput:0];
+    [contextCopy deleteTextBackward:inputStem];
+    candidate2 = [autocorrection candidate];
+    [contextCopy insertText:candidate2];
 
-    v20 = [(TIKeyboardInputManagerFavonius_th *)self previousTouchEvent];
-    [(TIKeyboardInputManagerFavonius_th *)self addTouch:v20 shouldHitTest:1];
+    previousTouchEvent = [(TIKeyboardInputManagerFavonius_th *)self previousTouchEvent];
+    [(TIKeyboardInputManagerFavonius_th *)self addTouch:previousTouchEvent shouldHitTest:1];
   }
 
   v21.receiver = self;
   v21.super_class = TIKeyboardInputManagerFavonius_th;
-  [(TIKeyboardInputManagerFavonius_th *)&v21 addInput:v6 withContext:v7];
+  [(TIKeyboardInputManagerFavonius_th *)&v21 addInput:inputCopy withContext:contextCopy];
 }
 
 @end

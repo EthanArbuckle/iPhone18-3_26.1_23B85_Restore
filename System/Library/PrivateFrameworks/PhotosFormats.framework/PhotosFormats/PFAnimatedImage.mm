@@ -1,8 +1,8 @@
 @interface PFAnimatedImage
 - (CGSize)pixelSize;
-- (PFAnimatedImage)initWithData:(id)a3 cachingStrategy:(int64_t)a4;
-- (PFAnimatedImage)initWithImageSource:(CGImageSource *)a3 cachingStrategy:(int64_t)a4 useGlobalDecodeQueue:(BOOL)a5;
-- (PFAnimatedImage)initWithURL:(id)a3 cachingStrategy:(int64_t)a4 useGlobalDecodeQueue:(BOOL)a5;
+- (PFAnimatedImage)initWithData:(id)data cachingStrategy:(int64_t)strategy;
+- (PFAnimatedImage)initWithImageSource:(CGImageSource *)source cachingStrategy:(int64_t)strategy useGlobalDecodeQueue:(BOOL)queue;
+- (PFAnimatedImage)initWithURL:(id)l cachingStrategy:(int64_t)strategy useGlobalDecodeQueue:(BOOL)queue;
 - (void)_loadLoopCountAndFrameDelayTimes;
 - (void)_preloadDelayTimes;
 - (void)dealloc;
@@ -40,7 +40,7 @@
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
   }
 
   else
@@ -51,10 +51,10 @@
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "PFAnimatedImage: no loop count found, will default to 0 (infinite)", v11, 2u);
     }
 
-    v10 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  self->_loopCount = v10;
+  self->_loopCount = unsignedIntegerValue;
   self->_frameDelayTimes = malloc_type_calloc(self->_frameCount, 8uLL, 0x100004000313F17uLL);
 }
 
@@ -170,27 +170,27 @@ LABEL_19:
   [(PFAnimatedImage *)&v5 dealloc];
 }
 
-- (PFAnimatedImage)initWithImageSource:(CGImageSource *)a3 cachingStrategy:(int64_t)a4 useGlobalDecodeQueue:(BOOL)a5
+- (PFAnimatedImage)initWithImageSource:(CGImageSource *)source cachingStrategy:(int64_t)strategy useGlobalDecodeQueue:(BOOL)queue
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (source)
   {
-    v5 = a5;
+    queueCopy = queue;
     v17.receiver = self;
     v17.super_class = PFAnimatedImage;
     v8 = [(PFAnimatedImage *)&v17 init];
     if (v8)
     {
-      v8->_imageSource = CFRetain(a3);
-      v9 = [[PFFrameCache alloc] initWithImageSource:a3 cachingStrategy:a4 useGlobalDecodeQueue:v5];
+      v8->_imageSource = CFRetain(source);
+      v9 = [[PFFrameCache alloc] initWithImageSource:source cachingStrategy:strategy useGlobalDecodeQueue:queueCopy];
       frameCache = v8->_frameCache;
       v8->_frameCache = v9;
 
-      v8->_frameCount = CGImageSourceGetCount(a3);
+      v8->_frameCount = CGImageSourceGetCount(source);
       v18 = *MEMORY[0x1E696E0A8];
       v19[0] = MEMORY[0x1E695E110];
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, 0, v11);
+      ImageAtIndex = CGImageSourceCreateImageAtIndex(source, 0, v11);
       Width = CGImageGetWidth(ImageAtIndex);
       Height = CGImageGetHeight(ImageAtIndex);
       v8->_pixelSize.width = Width;
@@ -201,25 +201,25 @@ LABEL_19:
     }
 
     self = v8;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (PFAnimatedImage)initWithData:(id)a3 cachingStrategy:(int64_t)a4
+- (PFAnimatedImage)initWithData:(id)data cachingStrategy:(int64_t)strategy
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && (v8 = CGImageSourceCreateWithData(v6, 0)) != 0)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (dataCopy && (v8 = CGImageSourceCreateWithData(dataCopy, 0)) != 0)
   {
     v9 = v8;
-    v10 = [(PFAnimatedImage *)self initWithImageSource:v8 cachingStrategy:a4];
+    v10 = [(PFAnimatedImage *)self initWithImageSource:v8 cachingStrategy:strategy];
     CFRelease(v9);
   }
 
@@ -231,22 +231,22 @@ LABEL_19:
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "PFAnimatedImage: unable to load animated image from data", v12, 2u);
     }
 
-    v10 = [(PFAnimatedImage *)self initWithImageSource:0 cachingStrategy:a4];
+    v10 = [(PFAnimatedImage *)self initWithImageSource:0 cachingStrategy:strategy];
   }
 
   return v10;
 }
 
-- (PFAnimatedImage)initWithURL:(id)a3 cachingStrategy:(int64_t)a4 useGlobalDecodeQueue:(BOOL)a5
+- (PFAnimatedImage)initWithURL:(id)l cachingStrategy:(int64_t)strategy useGlobalDecodeQueue:(BOOL)queue
 {
-  v5 = a5;
+  queueCopy = queue;
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (v8 && (v10 = CGImageSourceCreateWithURL(v8, 0)) != 0)
+  lCopy = l;
+  v9 = lCopy;
+  if (lCopy && (v10 = CGImageSourceCreateWithURL(lCopy, 0)) != 0)
   {
     v11 = v10;
-    v12 = [(PFAnimatedImage *)self initWithImageSource:v10 cachingStrategy:a4 useGlobalDecodeQueue:v5];
+    v12 = [(PFAnimatedImage *)self initWithImageSource:v10 cachingStrategy:strategy useGlobalDecodeQueue:queueCopy];
     CFRelease(v11);
   }
 
@@ -259,7 +259,7 @@ LABEL_19:
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "PFAnimatedImage: unable to load animated image at URL: %@", &v14, 0xCu);
     }
 
-    v12 = [(PFAnimatedImage *)self initWithImageSource:0 cachingStrategy:a4 useGlobalDecodeQueue:v5];
+    v12 = [(PFAnimatedImage *)self initWithImageSource:0 cachingStrategy:strategy useGlobalDecodeQueue:queueCopy];
   }
 
   return v12;

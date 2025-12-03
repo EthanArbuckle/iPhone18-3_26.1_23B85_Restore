@@ -9,13 +9,13 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(AEHighlightedTextLabelAccessibility *)self thaxAnnotation];
-  v4 = [v3 imaxAnnotationStyleDescription];
+  thaxAnnotation = [(AEHighlightedTextLabelAccessibility *)self thaxAnnotation];
+  imaxAnnotationStyleDescription = [thaxAnnotation imaxAnnotationStyleDescription];
 
-  v5 = [(AEHighlightedTextLabelAccessibility *)self thaxAnnotation];
-  v6 = [v5 imaxAnnotationSelectedText];
+  thaxAnnotation2 = [(AEHighlightedTextLabelAccessibility *)self thaxAnnotation];
+  imaxAnnotationSelectedText = [thaxAnnotation2 imaxAnnotationSelectedText];
 
-  v14 = __IMAccessibilityStringForVariables(v4, v7, v8, v9, v10, v11, v12, v13, v6);
+  v14 = __IMAccessibilityStringForVariables(imaxAnnotationStyleDescription, v7, v8, v9, v10, v11, v12, v13, imaxAnnotationSelectedText);
 
   return v14;
 }
@@ -29,8 +29,8 @@
     return 0;
   }
 
-  v5 = [(AEHighlightedTextLabelAccessibility *)self accessibilityLabel];
-  v4 = [v5 length] != 0;
+  accessibilityLabel = [(AEHighlightedTextLabelAccessibility *)self accessibilityLabel];
+  v4 = [accessibilityLabel length] != 0;
 
   return v4;
 }
@@ -46,9 +46,9 @@
   }
 
   v5 = v4;
-  v6 = [v4 isUserInteractionEnabled];
+  isUserInteractionEnabled = [v4 isUserInteractionEnabled];
 
-  return v6;
+  return isUserInteractionEnabled;
 }
 
 - (id)thaxAnnotation

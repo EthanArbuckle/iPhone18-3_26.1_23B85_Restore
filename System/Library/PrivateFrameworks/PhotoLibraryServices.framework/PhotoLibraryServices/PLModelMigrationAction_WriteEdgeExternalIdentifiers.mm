@@ -1,32 +1,32 @@
 @interface PLModelMigrationAction_WriteEdgeExternalIdentifiers
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_WriteEdgeExternalIdentifiers
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLModelMigrationActionCore *)self progress];
-  v8 = [v7 totalUnitCount] / 2;
+  contextCopy = context;
+  progress = [(PLModelMigrationActionCore *)self progress];
+  v8 = [progress totalUnitCount] / 2;
 
-  v9 = [v6 pl_graphCache];
-  [v9 resetNextAvailableEdgeExternalIdentifier];
+  pl_graphCache = [contextCopy pl_graphCache];
+  [pl_graphCache resetNextAvailableEdgeExternalIdentifier];
   v10 = +[PLGraphEdge fetchRequest];
   v36 = 0;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __99__PLModelMigrationAction_WriteEdgeExternalIdentifiers_performActionWithManagedObjectContext_error___block_invoke;
   v33[3] = &unk_1E7567E88;
-  v11 = v6;
+  v11 = contextCopy;
   v34 = v11;
   v35 = @"externalIdentifier";
   v12 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v11 fetchRequest:v10 pendingParentUnitCount:v8 error:&v36 processingBlock:v33];
   v13 = v36;
   if (v12 == 1)
   {
-    v30 = a4;
+    errorCopy = error;
     v14 = MEMORY[0x1E695D5E0];
     v15 = +[PLGraphLabel entityName];
     v16 = [v14 fetchRequestWithEntityName:v15];
@@ -42,9 +42,9 @@
 
       if (v19)
       {
-        v20 = [(PLModelMigrationActionCore *)self logger];
+        logger = [(PLModelMigrationActionCore *)self logger];
 
-        if (v20)
+        if (logger)
         {
           v67 = 0u;
           v68 = 0u;
@@ -106,16 +106,16 @@
     }
 
     v13 = v17;
-    a4 = v30;
+    error = errorCopy;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v25 = v13;
   v26 = v25;
-  if (v12 != 1 && a4)
+  if (v12 != 1 && error)
   {
     v27 = v25;
-    *a4 = v26;
+    *error = v26;
   }
 
   return v12;

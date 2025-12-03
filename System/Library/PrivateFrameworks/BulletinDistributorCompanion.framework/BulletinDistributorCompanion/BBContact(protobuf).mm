@@ -9,18 +9,18 @@
 {
   v16 = MEMORY[0x277CF3528];
   v3 = a3;
-  v4 = [v3 handle];
-  v5 = [v3 handleType];
-  v6 = [v3 serviceName];
-  v7 = [v3 displayName];
-  v8 = [v3 displayNameSuggested];
-  v9 = [v3 customIdentifier];
-  v10 = [v3 cnContactIdentifier];
-  v11 = [v3 cnContactFullname];
-  v12 = [v3 cnContactIdentifierSuggested];
+  handle = [v3 handle];
+  handleType = [v3 handleType];
+  serviceName = [v3 serviceName];
+  displayName = [v3 displayName];
+  displayNameSuggested = [v3 displayNameSuggested];
+  customIdentifier = [v3 customIdentifier];
+  cnContactIdentifier = [v3 cnContactIdentifier];
+  cnContactFullname = [v3 cnContactFullname];
+  cnContactIdentifierSuggested = [v3 cnContactIdentifierSuggested];
 
-  LOBYTE(v15) = v12;
-  v13 = [v16 contactWithHandle:v4 handleType:v5 serviceName:v6 displayName:v7 displayNameSuggested:v8 customIdentifier:v9 cnContactIdentifier:v10 cnContactFullname:v11 cnContactIdentifierSuggested:v15];
+  LOBYTE(v15) = cnContactIdentifierSuggested;
+  v13 = [v16 contactWithHandle:handle handleType:handleType serviceName:serviceName displayName:displayName displayNameSuggested:displayNameSuggested customIdentifier:customIdentifier cnContactIdentifier:cnContactIdentifier cnContactFullname:cnContactFullname cnContactIdentifierSuggested:v15];
 
   return v13;
 }
@@ -28,26 +28,26 @@
 - (id)blt_protobuf
 {
   v2 = objc_opt_new();
-  v3 = [a1 handle];
-  [v2 setHandle:v3];
+  handle = [self handle];
+  [v2 setHandle:handle];
 
-  [v2 setHandleType:{objc_msgSend(a1, "handleType")}];
-  v4 = [a1 serviceName];
-  [v2 setServiceName:v4];
+  [v2 setHandleType:{objc_msgSend(self, "handleType")}];
+  serviceName = [self serviceName];
+  [v2 setServiceName:serviceName];
 
-  v5 = [a1 displayName];
-  [v2 setDisplayName:v5];
+  displayName = [self displayName];
+  [v2 setDisplayName:displayName];
 
-  v6 = [a1 cnContactIdentifier];
-  [v2 setCnContactIdentifier:v6];
+  cnContactIdentifier = [self cnContactIdentifier];
+  [v2 setCnContactIdentifier:cnContactIdentifier];
 
-  v7 = [a1 cnContactFullname];
-  [v2 setCnContactFullname:v7];
+  cnContactFullname = [self cnContactFullname];
+  [v2 setCnContactFullname:cnContactFullname];
 
-  [v2 setCnContactIdentifierSuggested:{objc_msgSend(a1, "isCNContactIdentifierSuggested")}];
-  [v2 setDisplayNameSuggested:{objc_msgSend(a1, "isDisplayNameSuggested")}];
-  v8 = [a1 customIdentifier];
-  [v2 setCustomIdentifier:v8];
+  [v2 setCnContactIdentifierSuggested:{objc_msgSend(self, "isCNContactIdentifierSuggested")}];
+  [v2 setDisplayNameSuggested:{objc_msgSend(self, "isDisplayNameSuggested")}];
+  customIdentifier = [self customIdentifier];
+  [v2 setCustomIdentifier:customIdentifier];
 
   return v2;
 }

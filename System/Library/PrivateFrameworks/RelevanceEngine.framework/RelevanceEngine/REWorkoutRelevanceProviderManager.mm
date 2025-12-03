@@ -1,20 +1,20 @@
 @interface REWorkoutRelevanceProviderManager
 + (id)_features;
-- (REWorkoutRelevanceProviderManager)initWithQueue:(id)a3;
-- (id)_valueForProvider:(id)a3 feature:(id)a4;
+- (REWorkoutRelevanceProviderManager)initWithQueue:(id)queue;
+- (id)_valueForProvider:(id)provider feature:(id)feature;
 - (void)_prepareForUpdate;
 - (void)pause;
-- (void)predictorDidUpdate:(id)a3;
+- (void)predictorDidUpdate:(id)update;
 - (void)resume;
 @end
 
 @implementation REWorkoutRelevanceProviderManager
 
-- (REWorkoutRelevanceProviderManager)initWithQueue:(id)a3
+- (REWorkoutRelevanceProviderManager)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = REWorkoutRelevanceProviderManager;
-  result = [(RERelevanceProviderManager *)&v4 initWithQueue:a3];
+  result = [(RERelevanceProviderManager *)&v4 initWithQueue:queue];
   if (result)
   {
     result->_state = 0;
@@ -35,9 +35,9 @@
   return v3;
 }
 
-- (id)_valueForProvider:(id)a3 feature:(id)a4
+- (id)_valueForProvider:(id)provider feature:(id)feature
 {
-  v5 = [a3 state] == self->_state;
+  v5 = [provider state] == self->_state;
   v6 = [(NSDate *)self->_lastWorkoutDate dateByAddingTimeInterval:*&kLastWorkoutWorkoutSuggestionDelay];
   v7 = v6;
   if (v6)
@@ -77,20 +77,20 @@
   self->_state = [v3 isActiveWorkout];
 
   v6 = +[(RESingleton *)REActiveWorkoutPredictor];
-  v4 = [v6 lastWorkoutDate];
+  lastWorkoutDate = [v6 lastWorkoutDate];
   lastWorkoutDate = self->_lastWorkoutDate;
-  self->_lastWorkoutDate = v4;
+  self->_lastWorkoutDate = lastWorkoutDate;
 }
 
-- (void)predictorDidUpdate:(id)a3
+- (void)predictorDidUpdate:(id)update
 {
   v4 = +[RERelevanceProviderManagerUpdate immediateUpdateForAllProviders];
   [(RERelevanceProviderManager *)self _scheduleUpdate:v4];
 
   v5 = +[(RESingleton *)REActiveWorkoutPredictor];
-  v6 = [v5 lastWorkoutDate];
+  lastWorkoutDate = [v5 lastWorkoutDate];
 
-  v10 = [v6 dateByAddingTimeInterval:*&kLastWorkoutWorkoutSuggestionDelay];
+  v10 = [lastWorkoutDate dateByAddingTimeInterval:*&kLastWorkoutWorkoutSuggestionDelay];
 
   v7 = v10;
   if (v10)

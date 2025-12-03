@@ -1,25 +1,25 @@
 @interface PKPaletteSelectingToolView
 - (PKInk)ink;
-- (PKPaletteSelectingToolView)initWithToolIdentifier:(id)a3 itemIdentifier:(id)a4 variant:(id)a5 configuration:(id)a6;
-- (void)setInkAzimuth:(double)a3;
-- (void)setInkColor:(id)a3;
-- (void)setInkWeight:(double)a3;
-- (void)setSelected:(BOOL)a3;
+- (PKPaletteSelectingToolView)initWithToolIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier variant:(id)variant configuration:(id)configuration;
+- (void)setInkAzimuth:(double)azimuth;
+- (void)setInkColor:(id)color;
+- (void)setInkWeight:(double)weight;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PKPaletteSelectingToolView
 
-- (PKPaletteSelectingToolView)initWithToolIdentifier:(id)a3 itemIdentifier:(id)a4 variant:(id)a5 configuration:(id)a6
+- (PKPaletteSelectingToolView)initWithToolIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier variant:(id)variant configuration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = PKPaletteSelectingToolView;
-  v12 = [(PKPaletteToolView *)&v16 initWithToolIdentifier:v9 itemIdentifier:v10 variant:0 configuration:v11];
+  v12 = [(PKPaletteToolView *)&v16 initWithToolIdentifier:identifierCopy itemIdentifier:itemIdentifierCopy variant:0 configuration:configurationCopy];
   if (v12)
   {
-    v13 = [[PKPaletteInkingToolView alloc] initWithToolIdentifier:v9 itemIdentifier:v10 variant:0 configuration:v11];
+    v13 = [[PKPaletteInkingToolView alloc] initWithToolIdentifier:identifierCopy itemIdentifier:itemIdentifierCopy variant:0 configuration:configurationCopy];
     inkTool = v12->_inkTool;
     v12->_inkTool = v13;
   }
@@ -27,40 +27,40 @@
   return v12;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v5.receiver = self;
   v5.super_class = PKPaletteSelectingToolView;
-  [(PKPaletteToolView *)&v5 setSelected:a3];
-  v4 = [MEMORY[0x1E69DC888] blackColor];
-  [(PKPaletteSelectingToolView *)self setInkColor:v4];
+  [(PKPaletteToolView *)&v5 setSelected:selected];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(PKPaletteSelectingToolView *)self setInkColor:blackColor];
 }
 
 - (PKInk)ink
 {
-  v2 = [(PKPaletteSelectingToolView *)self inkTool];
-  v3 = [v2 ink];
+  inkTool = [(PKPaletteSelectingToolView *)self inkTool];
+  v3 = [inkTool ink];
 
   return v3;
 }
 
-- (void)setInkColor:(id)a3
+- (void)setInkColor:(id)color
 {
-  v4 = a3;
-  v5 = [(PKPaletteSelectingToolView *)self inkTool];
-  [v5 setInkColor:v4];
+  colorCopy = color;
+  inkTool = [(PKPaletteSelectingToolView *)self inkTool];
+  [inkTool setInkColor:colorCopy];
 }
 
-- (void)setInkWeight:(double)a3
+- (void)setInkWeight:(double)weight
 {
-  v4 = [(PKPaletteSelectingToolView *)self inkTool];
-  [v4 setInkWeight:a3];
+  inkTool = [(PKPaletteSelectingToolView *)self inkTool];
+  [inkTool setInkWeight:weight];
 }
 
-- (void)setInkAzimuth:(double)a3
+- (void)setInkAzimuth:(double)azimuth
 {
-  v4 = [(PKPaletteSelectingToolView *)self inkTool];
-  [v4 setInkAzimuth:a3];
+  inkTool = [(PKPaletteSelectingToolView *)self inkTool];
+  [inkTool setInkAzimuth:azimuth];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface ProgressBar
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 @end
 
 @implementation ProgressBar
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  sub_220F7E800(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  sub_220F7E800(layerCopy);
 }
 
 @end

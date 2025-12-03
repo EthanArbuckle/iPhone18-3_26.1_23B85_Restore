@@ -1,80 +1,80 @@
 @interface MTLRenderPipelineDescriptorInternal
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateWithDevice:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateWithDevice:(id)device error:(id *)error;
 - (MTLRenderPipelineDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (id)fragmentLinkedFunctions;
 - (id)meshLinkedFunctions;
-- (id)newSerializedMeshDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)newSerializedObjectDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)newSerializedVertexDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5;
+- (id)newSerializedMeshDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error;
+- (id)newSerializedObjectDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error;
+- (id)newSerializedVertexDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error;
 - (id)objectLinkedFunctions;
 - (id)vertexDescriptor;
 - (id)vertexLinkedFunctions;
-- (uint64_t)fastBlendDescriptorAtIndex:(uint64_t)a3;
+- (uint64_t)fastBlendDescriptorAtIndex:(uint64_t)index;
 - (uint64_t)internalPipeline;
 - (uint64_t)setInternalPipeline:(uint64_t)result;
 - (uint64_t)setTextureWriteFPRoundingMode:(uint64_t)result;
 - (uint64_t)textureWriteFPRoundingMode;
 - (unint64_t)hash;
-- (void)attachVertexDescriptor:(id)a3;
+- (void)attachVertexDescriptor:(id)descriptor;
 - (void)dealloc;
 - (void)reset;
-- (void)setAlphaTestEnabled:(BOOL)a3;
-- (void)setAlphaToOneEnabled:(BOOL)a3;
-- (void)setBinaryArchives:(id)a3;
-- (void)setDepthStencilWriteDisabled:(BOOL)a3;
-- (void)setDriverCompilerOptions:(id)a3;
-- (void)setForceResourceIndex:(BOOL)a3;
-- (void)setForceSoftwareVertexFetch:(BOOL)a3;
-- (void)setFragmentFunction:(id)a3;
-- (void)setFragmentLinkedFunctions:(id)a3;
-- (void)setFragmentPreloadedLibraries:(id)a3;
-- (void)setGpuCompilerSPIOptions:(id)a3;
-- (void)setInputPrimitiveTopology:(unint64_t)a3;
-- (void)setInsertFragmentLibraries:(id)a3;
-- (void)setInsertMeshLibraries:(id)a3;
-- (void)setInsertObjectLibraries:(id)a3;
-- (void)setInsertVertexLibraries:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setLogicOperationEnabled:(BOOL)a3;
-- (void)setMaxPipelineChildren:(id *)a3;
-- (void)setMaxTessellationFactor:(unint64_t)a3;
-- (void)setMeshFunction:(id)a3;
-- (void)setMeshLinkedFunctions:(id)a3;
-- (void)setMeshPreloadedLibraries:(id)a3;
-- (void)setMeshThreadgroupSizeIsMultipleOfThreadExecutionWidth:(BOOL)a3;
-- (void)setMeshThreadsPerThreadgroup:(id *)a3;
-- (void)setName:(id)a3;
-- (void)setObjectFunction:(id)a3;
-- (void)setObjectLinkedFunctions:(id)a3;
-- (void)setObjectPreloadedLibraries:(id)a3;
-- (void)setObjectThreadgroupSizeIsMultipleOfThreadExecutionWidth:(BOOL)a3;
-- (void)setObjectThreadsPerThreadgroup:(id *)a3;
-- (void)setOpenGLModeEnabled:(BOOL)a3;
-- (void)setPipelineLibrary:(id)a3;
-- (void)setPluginData:(id)a3;
-- (void)setPointCoordLowerLeft:(BOOL)a3;
-- (void)setPointSizeOutputVS:(BOOL)a3;
-- (void)setPointSmoothEnabled:(BOOL)a3;
-- (void)setProfileControl:(id)a3;
-- (void)setRasterizationEnabled:(BOOL)a3;
-- (void)setRequiredThreadsPerMeshThreadgroup:(id *)a3;
-- (void)setRequiredThreadsPerObjectThreadgroup:(id *)a3;
-- (void)setSampleCoverageInvert:(BOOL)a3;
-- (void)setTessellationControlPointIndexType:(unint64_t)a3;
-- (void)setTessellationFactorFormat:(unint64_t)a3;
-- (void)setTessellationFactorStepFunction:(unint64_t)a3;
-- (void)setTessellationOutputWindingOrder:(unint64_t)a3;
-- (void)setTessellationPartitionMode:(unint64_t)a3;
-- (void)setTwoSideEnabled:(BOOL)a3;
-- (void)setVertexAmplificationMode:(unint64_t)a3;
-- (void)setVertexDescriptor:(id)a3;
-- (void)setVertexFunction:(id)a3;
-- (void)setVertexLinkedFunctions:(id)a3;
-- (void)setVertexPreloadedLibraries:(id)a3;
-- (void)validateWithDevice:(id)a3;
+- (void)setAlphaTestEnabled:(BOOL)enabled;
+- (void)setAlphaToOneEnabled:(BOOL)enabled;
+- (void)setBinaryArchives:(id)archives;
+- (void)setDepthStencilWriteDisabled:(BOOL)disabled;
+- (void)setDriverCompilerOptions:(id)options;
+- (void)setForceResourceIndex:(BOOL)index;
+- (void)setForceSoftwareVertexFetch:(BOOL)fetch;
+- (void)setFragmentFunction:(id)function;
+- (void)setFragmentLinkedFunctions:(id)functions;
+- (void)setFragmentPreloadedLibraries:(id)libraries;
+- (void)setGpuCompilerSPIOptions:(id)options;
+- (void)setInputPrimitiveTopology:(unint64_t)topology;
+- (void)setInsertFragmentLibraries:(id)libraries;
+- (void)setInsertMeshLibraries:(id)libraries;
+- (void)setInsertObjectLibraries:(id)libraries;
+- (void)setInsertVertexLibraries:(id)libraries;
+- (void)setLabel:(id)label;
+- (void)setLogicOperationEnabled:(BOOL)enabled;
+- (void)setMaxPipelineChildren:(id *)children;
+- (void)setMaxTessellationFactor:(unint64_t)factor;
+- (void)setMeshFunction:(id)function;
+- (void)setMeshLinkedFunctions:(id)functions;
+- (void)setMeshPreloadedLibraries:(id)libraries;
+- (void)setMeshThreadgroupSizeIsMultipleOfThreadExecutionWidth:(BOOL)width;
+- (void)setMeshThreadsPerThreadgroup:(id *)threadgroup;
+- (void)setName:(id)name;
+- (void)setObjectFunction:(id)function;
+- (void)setObjectLinkedFunctions:(id)functions;
+- (void)setObjectPreloadedLibraries:(id)libraries;
+- (void)setObjectThreadgroupSizeIsMultipleOfThreadExecutionWidth:(BOOL)width;
+- (void)setObjectThreadsPerThreadgroup:(id *)threadgroup;
+- (void)setOpenGLModeEnabled:(BOOL)enabled;
+- (void)setPipelineLibrary:(id)library;
+- (void)setPluginData:(id)data;
+- (void)setPointCoordLowerLeft:(BOOL)left;
+- (void)setPointSizeOutputVS:(BOOL)s;
+- (void)setPointSmoothEnabled:(BOOL)enabled;
+- (void)setProfileControl:(id)control;
+- (void)setRasterizationEnabled:(BOOL)enabled;
+- (void)setRequiredThreadsPerMeshThreadgroup:(id *)threadgroup;
+- (void)setRequiredThreadsPerObjectThreadgroup:(id *)threadgroup;
+- (void)setSampleCoverageInvert:(BOOL)invert;
+- (void)setTessellationControlPointIndexType:(unint64_t)type;
+- (void)setTessellationFactorFormat:(unint64_t)format;
+- (void)setTessellationFactorStepFunction:(unint64_t)function;
+- (void)setTessellationOutputWindingOrder:(unint64_t)order;
+- (void)setTessellationPartitionMode:(unint64_t)mode;
+- (void)setTwoSideEnabled:(BOOL)enabled;
+- (void)setVertexAmplificationMode:(unint64_t)mode;
+- (void)setVertexDescriptor:(id)descriptor;
+- (void)setVertexFunction:(id)function;
+- (void)setVertexLinkedFunctions:(id)functions;
+- (void)setVertexPreloadedLibraries:(id)libraries;
+- (void)validateWithDevice:(id)device;
 @end
 
 @implementation MTLRenderPipelineDescriptorInternal
@@ -190,9 +190,9 @@
   [(MTLRenderPipelineDescriptorInternal *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
@@ -201,7 +201,7 @@
     v9 = (v5 + 48);
     do
     {
-      *(*v9 + 8 + v7 * 8) = [(MTLRenderPipelineColorAttachmentDescriptorInternal *)p_private->attachments->_descriptors[v7] copyWithZone:a3];
+      *(*v9 + 8 + v7 * 8) = [(MTLRenderPipelineColorAttachmentDescriptorInternal *)p_private->attachments->_descriptors[v7] copyWithZone:zone];
       ++v7;
     }
 
@@ -225,23 +225,23 @@
     *(v6 + 264) = p_private->colorSampleCount;
     *(v6 + 272) = p_private->var2.miscHash[0];
     *(v6 + 276) = p_private->var2.miscHash[1];
-    *(v6 + 296) = [(NSString *)p_private->label copyWithZone:a3];
-    *(v6 + 720) = [(NSString *)p_private->name copyWithZone:a3];
+    *(v6 + 296) = [(NSString *)p_private->label copyWithZone:zone];
+    *(v6 + 720) = [(NSString *)p_private->name copyWithZone:zone];
     *(v6 + 488) = p_private->pipelineLibrary;
-    *(v6 + 320) = [(MTLVertexDescriptorInternal *)p_private->vertexDescriptor copyWithZone:a3];
+    *(v6 + 320) = [(MTLVertexDescriptorInternal *)p_private->vertexDescriptor copyWithZone:zone];
     *(v6 + 304) = p_private->vertexFunction;
     v10 = 0;
     *(v6 + 312) = p_private->fragmentFunction;
     do
     {
-      *(*(v6 + 456) + 8 + v10 * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->vertexBuffers->_descriptors[v10] copyWithZone:a3];
+      *(*(v6 + 456) + 8 + v10 * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->vertexBuffers->_descriptors[v10] copyWithZone:zone];
       ++v10;
     }
 
     while (v10 != 31);
     for (i = 0; i != 31; ++i)
     {
-      *(*(v6 + 464) + 8 + i * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->fragmentBuffers->_descriptors[i] copyWithZone:a3];
+      *(*(v6 + 464) + 8 + i * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->fragmentBuffers->_descriptors[i] copyWithZone:zone];
     }
 
     *(v6 + 472) = [(NSDictionary *)p_private->driverCompilerOptions copy];
@@ -267,14 +267,14 @@
     *(v6 + 416) = p_private->pipelineMemoryLength;
     do
     {
-      *(*(v6 + 424) + 8 + v12 * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->objectBuffers->_descriptors[v12] copyWithZone:a3];
+      *(*(v6 + 424) + 8 + v12 * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->objectBuffers->_descriptors[v12] copyWithZone:zone];
       ++v12;
     }
 
     while (v12 != 31);
     for (j = 0; j != 31; ++j)
     {
-      *(*(v6 + 432) + 8 + j * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->meshBuffers->_descriptors[j] copyWithZone:a3];
+      *(*(v6 + 432) + 8 + j * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->meshBuffers->_descriptors[j] copyWithZone:zone];
     }
 
     *(v6 + 536) = [(MTLLinkedFunctions *)p_private->vertexLinkedFunctions copy];
@@ -306,15 +306,15 @@
   return v6;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v58[98] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  [@"\n" stringByPaddingToLength:a3 + 8 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  [@"\n" stringByPaddingToLength:description + 8 withString:@" " startingAtIndex:0];
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:128];
   v58[0] = v5;
   v58[1] = @"label =";
-  v45 = self;
+  selfCopy = self;
   p_private = &self->_private;
   label = self->_private.label;
   name = @"<none>";
@@ -432,38 +432,38 @@
   vertexFunction = p_private->vertexFunction;
   if (vertexFunction)
   {
-    v23 = [(MTLFunction *)vertexFunction formattedDescription:a3 + 8];
+    null = [(MTLFunction *)vertexFunction formattedDescription:description + 8];
   }
 
   else
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v58[56] = v23;
+  v58[56] = null;
   v58[57] = v5;
   v58[58] = @"Fragment Function =";
   fragmentFunction = p_private->fragmentFunction;
   if (fragmentFunction)
   {
-    v25 = [(MTLFunction *)fragmentFunction formattedDescription:a3 + 8];
+    null2 = [(MTLFunction *)fragmentFunction formattedDescription:description + 8];
   }
 
   else
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v58[59] = v25;
+  v58[59] = null2;
   v58[60] = v5;
   v58[61] = @"Vertex Array:";
-  v26 = MTLVertexDescriptorDescription(p_private->vertexDescriptor, a3 + 8);
-  if (!v26)
+  null3 = MTLVertexDescriptorDescription(p_private->vertexDescriptor, description + 8);
+  if (!null3)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v58[62] = v26;
+  v58[62] = null3;
   v58[63] = v5;
   v58[64] = @"Vertex Amplification Mode =";
   v27 = @"MTLVertexAmplificationModeMask";
@@ -512,7 +512,7 @@
     {
       v57[0] = v5;
       v57[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"Color Attachment %u:", i];
-      v57[2] = pipelineColorAttachmentFormattedDescription(a3 + 8, p_private->attachments->_descriptors[i]);
+      v57[2] = pipelineColorAttachmentFormattedDescription(description + 8, p_private->attachments->_descriptors[i]);
       v29 = v57;
     }
 
@@ -520,7 +520,7 @@
     {
       v56[0] = v5;
       v56[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"Color Attachment %u:", i];
-      v56[2] = pipelineColorAttachmentDefaultFormattedDescription(a3 + 8);
+      v56[2] = pipelineColorAttachmentDefaultFormattedDescription(description + 8);
       v29 = v56;
     }
 
@@ -543,12 +543,12 @@
     v32 = p_private->vertexBuffers->_descriptors[j];
     if (v32)
     {
-      v33 = pipelineBufferFormattedDescription(a3 + 8, v32);
+      v33 = pipelineBufferFormattedDescription(description + 8, v32);
     }
 
     else
     {
-      v33 = pipelineBufferDefaultFormattedDescription(a3 + 8);
+      v33 = pipelineBufferDefaultFormattedDescription(description + 8);
     }
 
     [v6 addObject:v33];
@@ -561,12 +561,12 @@
     v35 = p_private->fragmentBuffers->_descriptors[k];
     if (v35)
     {
-      v36 = pipelineBufferFormattedDescription(a3 + 8, v35);
+      v36 = pipelineBufferFormattedDescription(description + 8, v35);
     }
 
     else
     {
-      v36 = pipelineBufferDefaultFormattedDescription(a3 + 8);
+      v36 = pipelineBufferDefaultFormattedDescription(description + 8);
     }
 
     [v6 addObject:v36];
@@ -577,30 +577,30 @@
   vertexLinkedFunctions = p_private->vertexLinkedFunctions;
   if (vertexLinkedFunctions)
   {
-    v38 = [(MTLLinkedFunctions *)vertexLinkedFunctions formattedDescription:a3 + 8];
+    null4 = [(MTLLinkedFunctions *)vertexLinkedFunctions formattedDescription:description + 8];
   }
 
   else
   {
-    v38 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v54[2] = v38;
+  v54[2] = null4;
   [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v54, 3)}];
   v53[0] = v5;
   v53[1] = @"fragmentLinkedFunctions =";
   fragmentLinkedFunctions = p_private->fragmentLinkedFunctions;
   if (fragmentLinkedFunctions)
   {
-    v40 = [(MTLLinkedFunctions *)fragmentLinkedFunctions formattedDescription:a3 + 8];
+    null5 = [(MTLLinkedFunctions *)fragmentLinkedFunctions formattedDescription:description + 8];
   }
 
   else
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v53[2] = v40;
+  v53[2] = null5;
   [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v53, 3)}];
   v52[0] = v5;
   v52[1] = @"supportAddingVertexBinaryFunctions =";
@@ -646,17 +646,17 @@
   v47[1] = @"maxAccelerationStructureTraversalDepth =";
   v47[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:p_private->maxAccelerationStructureTraversalDepth];
   [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v47, 3)}];
-  v46.receiver = v45;
+  v46.receiver = selfCopy;
   v46.super_class = MTLRenderPipelineDescriptorInternal;
   result = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", -[MTLRenderPipelineDescriptorInternal description](&v46, sel_description), objc_msgSend(v6, "componentsJoinedByString:", @" "];
   v44 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)setForceSoftwareVertexFetch:(BOOL)a3
+- (void)setForceSoftwareVertexFetch:(BOOL)fetch
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!fetch)
   {
     v3 = 0;
   }
@@ -664,70 +664,70 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (void)setTessellationPartitionMode:(unint64_t)a3
+- (void)setTessellationPartitionMode:(unint64_t)mode
 {
-  if (a3 >= 4)
+  if (mode >= 4)
   {
     MTLReportFailure(0, "validateMTLTessellationPartitionMode", 2669, @"tessellationPartitionMode is not a valid MTLTessellationPartitionMode.", v3, v4, v5, v6, v9);
   }
 
-  self->_private.tessellationPartitionMode = a3;
+  self->_private.tessellationPartitionMode = mode;
 }
 
-- (void)setMaxTessellationFactor:(unint64_t)a3
+- (void)setMaxTessellationFactor:(unint64_t)factor
 {
-  if (a3 - 65 <= 0xFFFFFFFFFFFFFFBFLL)
+  if (factor - 65 <= 0xFFFFFFFFFFFFFFBFLL)
   {
-    [(MTLRenderPipelineDescriptorInternal *)self setMaxTessellationFactor:a2, a3, v3, v4, v5, v6, v7, v10];
+    [(MTLRenderPipelineDescriptorInternal *)self setMaxTessellationFactor:a2, factor, v3, v4, v5, v6, v7, v10];
   }
 
-  self->_private.maxTessellationFactor = a3;
+  self->_private.maxTessellationFactor = factor;
 }
 
-- (void)setTessellationFactorFormat:(unint64_t)a3
+- (void)setTessellationFactorFormat:(unint64_t)format
 {
-  if (a3 >= 2)
+  if (format >= 2)
   {
     MTLReportFailure(0, "validateMTLTessellationFactorFormat", 2739, @"tessellationFactorFormat is not a valid MTLTessellationFactorFormat.", v3, v4, v5, v6, v9);
   }
 
-  self->_private.tessellationFactorFormat = a3;
+  self->_private.tessellationFactorFormat = format;
 }
 
-- (void)setTessellationControlPointIndexType:(unint64_t)a3
+- (void)setTessellationControlPointIndexType:(unint64_t)type
 {
-  if (a3 >= 3)
+  if (type >= 3)
   {
     MTLReportFailure(0, "validateMTLTessellationControlPointIndexType", 2771, @"tessellationControlPointIndexType is not a valid MTLTessellationControlPointIndexType.", v3, v4, v5, v6, v9);
   }
 
-  self->_private.tessellationControlPointIndexType = a3;
+  self->_private.tessellationControlPointIndexType = type;
 }
 
-- (void)setTessellationFactorStepFunction:(unint64_t)a3
+- (void)setTessellationFactorStepFunction:(unint64_t)function
 {
-  if (a3 >= 4)
+  if (function >= 4)
   {
     MTLReportFailure(0, "validateMTLTessellationFactorStepFunction", 2802, @"tessellationFactorStepFunction is not a valid MTLTessellationFactorStepFunction.", v3, v4, v5, v6, v9);
   }
 
-  self->_private.tessellationFactorStepFunction = a3;
+  self->_private.tessellationFactorStepFunction = function;
 }
 
-- (void)setTessellationOutputWindingOrder:(unint64_t)a3
+- (void)setTessellationOutputWindingOrder:(unint64_t)order
 {
-  if (a3 >= 2)
+  if (order >= 2)
   {
     MTLReportFailure(0, "validateMTLWinding", 2832, @"tessellationOutputWindingOrder is not a valid MTLWinding.", v3, v4, v5, v6, v9);
   }
 
-  self->_private.tessellationOutputWindingOrder = a3;
+  self->_private.tessellationOutputWindingOrder = order;
 }
 
-- (void)setForceResourceIndex:(BOOL)a3
+- (void)setForceResourceIndex:(BOOL)index
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!index)
   {
     v3 = 0;
   }
@@ -735,10 +735,10 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setAlphaToOneEnabled:(BOOL)a3
+- (void)setAlphaToOneEnabled:(BOOL)enabled
 {
   v3 = 4;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -746,10 +746,10 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFFFFF3 | v3);
 }
 
-- (void)setRasterizationEnabled:(BOOL)a3
+- (void)setRasterizationEnabled:(BOOL)enabled
 {
   v3 = 16;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -757,21 +757,21 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setVertexAmplificationMode:(unint64_t)a3
+- (void)setVertexAmplificationMode:(unint64_t)mode
 {
-  v8 = a3;
-  if (a3 >= 2)
+  modeCopy = mode;
+  if (mode >= 2)
   {
-    [(MTLRenderPipelineDescriptorInternal *)a3 setVertexAmplificationMode:a2, a3, v3, v4, v5, v6, v7];
+    [(MTLRenderPipelineDescriptorInternal *)mode setVertexAmplificationMode:a2, mode, v3, v4, v5, v6, v7];
   }
 
-  self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFFEFFFLL | ((v8 & 1) << 12));
+  self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFFEFFFLL | ((modeCopy & 1) << 12));
 }
 
-- (void)setLogicOperationEnabled:(BOOL)a3
+- (void)setLogicOperationEnabled:(BOOL)enabled
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -779,10 +779,10 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setAlphaTestEnabled:(BOOL)a3
+- (void)setAlphaTestEnabled:(BOOL)enabled
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -790,10 +790,10 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setPointSmoothEnabled:(BOOL)a3
+- (void)setPointSmoothEnabled:(BOOL)enabled
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -801,10 +801,10 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setPointCoordLowerLeft:(BOOL)a3
+- (void)setPointCoordLowerLeft:(BOOL)left
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!left)
   {
     v3 = 0;
   }
@@ -812,10 +812,10 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setPointSizeOutputVS:(BOOL)a3
+- (void)setPointSizeOutputVS:(BOOL)s
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!s)
   {
     v3 = 0;
   }
@@ -823,10 +823,10 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setTwoSideEnabled:(BOOL)a3
+- (void)setTwoSideEnabled:(BOOL)enabled
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -834,21 +834,21 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setPluginData:(id)a3
+- (void)setPluginData:(id)data
 {
   p_private = &self->_private;
   pluginData = self->_private.pluginData;
-  if (pluginData != a3)
+  if (pluginData != data)
   {
 
-    p_private->pluginData = a3;
+    p_private->pluginData = data;
   }
 }
 
-- (void)setOpenGLModeEnabled:(BOOL)a3
+- (void)setOpenGLModeEnabled:(BOOL)enabled
 {
   v3 = 512;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -856,10 +856,10 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setSampleCoverageInvert:(BOOL)a3
+- (void)setSampleCoverageInvert:(BOOL)invert
 {
   v3 = 1024;
-  if (!a3)
+  if (!invert)
   {
     v3 = 0;
   }
@@ -867,10 +867,10 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setDepthStencilWriteDisabled:(BOOL)a3
+- (void)setDepthStencilWriteDisabled:(BOOL)disabled
 {
   v3 = 256;
-  if (!a3)
+  if (!disabled)
   {
     v3 = 0;
   }
@@ -878,31 +878,31 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setInputPrimitiveTopology:(unint64_t)a3
+- (void)setInputPrimitiveTopology:(unint64_t)topology
 {
-  v8 = a3;
-  if (a3 >= 4)
+  topologyCopy = topology;
+  if (topology >= 4)
   {
-    [(MTLRenderPipelineDescriptorInternal *)a3 setInputPrimitiveTopology:a2, a3, v3, v4, v5, v6, v7];
+    [(MTLRenderPipelineDescriptorInternal *)topology setInputPrimitiveTopology:a2, topology, v3, v4, v5, v6, v7];
   }
 
-  self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFFFF9FLL | (32 * (v8 & 3)));
+  self->_private.var2 = (*&self->_private.var2 & 0xFFFFFFFFFFFFFF9FLL | (32 * (topologyCopy & 3)));
 }
 
-- (void)setBinaryArchives:(id)a3
+- (void)setBinaryArchives:(id)archives
 {
   p_private = &self->_private;
   binaryArchives = self->_private.binaryArchives;
-  if (binaryArchives != a3)
+  if (binaryArchives != archives)
   {
 
-    p_private->binaryArchives = [a3 copy];
+    p_private->binaryArchives = [archives copy];
   }
 }
 
-- (void)setVertexLinkedFunctions:(id)a3
+- (void)setVertexLinkedFunctions:(id)functions
 {
-  if (a3)
+  if (functions)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -913,16 +913,16 @@
   }
 
   p_private = &self->_private;
-  if (p_private->vertexLinkedFunctions != a3)
+  if (p_private->vertexLinkedFunctions != functions)
   {
     vertexLinkedFunctions = p_private->vertexLinkedFunctions;
-    p_private->vertexLinkedFunctions = [a3 copy];
+    p_private->vertexLinkedFunctions = [functions copy];
   }
 }
 
-- (void)setFragmentLinkedFunctions:(id)a3
+- (void)setFragmentLinkedFunctions:(id)functions
 {
-  if (a3)
+  if (functions)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -933,10 +933,10 @@
   }
 
   p_private = &self->_private;
-  if (p_private->fragmentLinkedFunctions != a3)
+  if (p_private->fragmentLinkedFunctions != functions)
   {
     fragmentLinkedFunctions = p_private->fragmentLinkedFunctions;
-    p_private->fragmentLinkedFunctions = [a3 copy];
+    p_private->fragmentLinkedFunctions = [functions copy];
   }
 }
 
@@ -964,9 +964,9 @@
   return result;
 }
 
-- (void)setObjectLinkedFunctions:(id)a3
+- (void)setObjectLinkedFunctions:(id)functions
 {
-  if (a3)
+  if (functions)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -977,10 +977,10 @@
   }
 
   p_private = &self->_private;
-  if (p_private->objectLinkedFunctions != a3)
+  if (p_private->objectLinkedFunctions != functions)
   {
     objectLinkedFunctions = p_private->objectLinkedFunctions;
-    p_private->objectLinkedFunctions = [a3 copy];
+    p_private->objectLinkedFunctions = [functions copy];
   }
 }
 
@@ -1008,9 +1008,9 @@
   return result;
 }
 
-- (void)setMeshLinkedFunctions:(id)a3
+- (void)setMeshLinkedFunctions:(id)functions
 {
-  if (a3)
+  if (functions)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1021,105 +1021,105 @@
   }
 
   p_private = &self->_private;
-  if (p_private->meshLinkedFunctions != a3)
+  if (p_private->meshLinkedFunctions != functions)
   {
     meshLinkedFunctions = p_private->meshLinkedFunctions;
-    p_private->meshLinkedFunctions = [a3 copy];
+    p_private->meshLinkedFunctions = [functions copy];
   }
 }
 
-- (void)setVertexPreloadedLibraries:(id)a3
+- (void)setVertexPreloadedLibraries:(id)libraries
 {
   p_private = &self->_private;
   vertexPreloadedLibraries = self->_private.vertexPreloadedLibraries;
-  if (vertexPreloadedLibraries != a3)
+  if (vertexPreloadedLibraries != libraries)
   {
 
-    p_private->vertexPreloadedLibraries = [a3 copy];
+    p_private->vertexPreloadedLibraries = [libraries copy];
   }
 }
 
-- (void)setFragmentPreloadedLibraries:(id)a3
+- (void)setFragmentPreloadedLibraries:(id)libraries
 {
   p_private = &self->_private;
   fragmentPreloadedLibraries = self->_private.fragmentPreloadedLibraries;
-  if (fragmentPreloadedLibraries != a3)
+  if (fragmentPreloadedLibraries != libraries)
   {
 
-    p_private->fragmentPreloadedLibraries = [a3 copy];
+    p_private->fragmentPreloadedLibraries = [libraries copy];
   }
 }
 
-- (void)setObjectPreloadedLibraries:(id)a3
+- (void)setObjectPreloadedLibraries:(id)libraries
 {
   p_private = &self->_private;
   objectPreloadedLibraries = self->_private.objectPreloadedLibraries;
-  if (objectPreloadedLibraries != a3)
+  if (objectPreloadedLibraries != libraries)
   {
 
-    p_private->objectPreloadedLibraries = [a3 copy];
+    p_private->objectPreloadedLibraries = [libraries copy];
   }
 }
 
-- (void)setMeshPreloadedLibraries:(id)a3
+- (void)setMeshPreloadedLibraries:(id)libraries
 {
   p_private = &self->_private;
   meshPreloadedLibraries = self->_private.meshPreloadedLibraries;
-  if (meshPreloadedLibraries != a3)
+  if (meshPreloadedLibraries != libraries)
   {
 
-    p_private->meshPreloadedLibraries = [a3 copy];
+    p_private->meshPreloadedLibraries = [libraries copy];
   }
 }
 
-- (void)setInsertVertexLibraries:(id)a3
+- (void)setInsertVertexLibraries:(id)libraries
 {
-  if (!a3)
+  if (!libraries)
   {
-    a3 = MEMORY[0x1E695E0F0];
+    libraries = MEMORY[0x1E695E0F0];
   }
 
-  [(MTLRenderPipelineDescriptorInternal *)self setVertexPreloadedLibraries:a3];
+  [(MTLRenderPipelineDescriptorInternal *)self setVertexPreloadedLibraries:libraries];
 }
 
-- (void)setInsertFragmentLibraries:(id)a3
+- (void)setInsertFragmentLibraries:(id)libraries
 {
-  if (!a3)
+  if (!libraries)
   {
-    a3 = MEMORY[0x1E695E0F0];
+    libraries = MEMORY[0x1E695E0F0];
   }
 
-  [(MTLRenderPipelineDescriptorInternal *)self setFragmentPreloadedLibraries:a3];
+  [(MTLRenderPipelineDescriptorInternal *)self setFragmentPreloadedLibraries:libraries];
 }
 
-- (void)setInsertObjectLibraries:(id)a3
+- (void)setInsertObjectLibraries:(id)libraries
 {
-  if (!a3)
+  if (!libraries)
   {
-    a3 = MEMORY[0x1E695E0F0];
+    libraries = MEMORY[0x1E695E0F0];
   }
 
-  [(MTLRenderPipelineDescriptorInternal *)self setObjectPreloadedLibraries:a3];
+  [(MTLRenderPipelineDescriptorInternal *)self setObjectPreloadedLibraries:libraries];
 }
 
-- (void)setInsertMeshLibraries:(id)a3
+- (void)setInsertMeshLibraries:(id)libraries
 {
-  if (!a3)
+  if (!libraries)
   {
-    a3 = MEMORY[0x1E695E0F0];
+    libraries = MEMORY[0x1E695E0F0];
   }
 
-  [(MTLRenderPipelineDescriptorInternal *)self setMeshPreloadedLibraries:a3];
+  [(MTLRenderPipelineDescriptorInternal *)self setMeshPreloadedLibraries:libraries];
 }
 
-- (void)setProfileControl:(id)a3
+- (void)setProfileControl:(id)control
 {
   p_private = &self->_private;
   profileControl = self->_private.profileControl;
-  if (profileControl != a3)
+  if (profileControl != control)
   {
 
-    p_private->profileControl = [a3 copy];
+    p_private->profileControl = [control copy];
   }
 }
 
@@ -1236,9 +1236,9 @@
   p_private->colorAttachmentMappingState = 0;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1255,16 +1255,16 @@
 
   p_private = &self->_private;
   label = p_private->label;
-  if (label != a3)
+  if (label != label)
   {
 
-    p_private->label = [a3 copy];
+    p_private->label = [label copy];
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (a3)
+  if (name)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1281,133 +1281,133 @@
 
   p_private = &self->_private;
   name = p_private->name;
-  if (name != a3)
+  if (name != name)
   {
 
-    p_private->name = [a3 copy];
+    p_private->name = [name copy];
   }
 }
 
-- (void)setVertexFunction:(id)a3
+- (void)setVertexFunction:(id)function
 {
-  if (a3)
-  {
-    if (MTLFailureTypeGetEnabled(1uLL))
-    {
-      [(MTLRenderPipelineDescriptorInternal *)a3 setVertexFunction:v5, v6, v7, v8, v9, v10, v11, v22];
-    }
-
-    v12 = [a3 functionType];
-    if (v12 != 1)
-    {
-      [(MTLRenderPipelineDescriptorInternal *)v12 setVertexFunction:v13, v14, v15, v16, v17, v18, v19, v22];
-    }
-  }
-
-  v20 = a3;
-  p_private = &self->_private;
-
-  p_private->vertexFunction = a3;
-}
-
-- (void)setFragmentFunction:(id)a3
-{
-  if (a3)
+  if (function)
   {
     if (MTLFailureTypeGetEnabled(1uLL))
     {
-      [(MTLRenderPipelineDescriptorInternal *)a3 setFragmentFunction:v5, v6, v7, v8, v9, v10, v11, v22];
+      [(MTLRenderPipelineDescriptorInternal *)function setVertexFunction:v5, v6, v7, v8, v9, v10, v11, v22];
     }
 
-    v12 = [a3 functionType];
-    if (v12 != 2)
+    functionType = [function functionType];
+    if (functionType != 1)
     {
-      [(MTLRenderPipelineDescriptorInternal *)v12 setFragmentFunction:v13, v14, v15, v16, v17, v18, v19, v22];
+      [(MTLRenderPipelineDescriptorInternal *)functionType setVertexFunction:v13, v14, v15, v16, v17, v18, v19, v22];
     }
   }
 
-  v20 = a3;
+  functionCopy = function;
   p_private = &self->_private;
 
-  p_private->fragmentFunction = a3;
+  p_private->vertexFunction = function;
 }
 
-- (void)setObjectFunction:(id)a3
+- (void)setFragmentFunction:(id)function
 {
-  if (a3)
+  if (function)
   {
     if (MTLFailureTypeGetEnabled(1uLL))
     {
-      [(MTLRenderPipelineDescriptorInternal *)a3 setObjectFunction:v5, v6, v7, v8, v9, v10, v11, v22];
+      [(MTLRenderPipelineDescriptorInternal *)function setFragmentFunction:v5, v6, v7, v8, v9, v10, v11, v22];
     }
 
-    v12 = [a3 functionType];
-    if (v12 != 8)
+    functionType = [function functionType];
+    if (functionType != 2)
     {
-      [(MTLRenderPipelineDescriptorInternal *)v12 setObjectFunction:v13, v14, v15, v16, v17, v18, v19, v22];
+      [(MTLRenderPipelineDescriptorInternal *)functionType setFragmentFunction:v13, v14, v15, v16, v17, v18, v19, v22];
     }
   }
 
-  v20 = a3;
+  functionCopy = function;
   p_private = &self->_private;
 
-  p_private->objectFunction = a3;
+  p_private->fragmentFunction = function;
 }
 
-- (void)setMeshFunction:(id)a3
+- (void)setObjectFunction:(id)function
 {
-  if (a3)
+  if (function)
   {
     if (MTLFailureTypeGetEnabled(1uLL))
     {
-      [(MTLRenderPipelineDescriptorInternal *)a3 setMeshFunction:v5, v6, v7, v8, v9, v10, v11, v22];
+      [(MTLRenderPipelineDescriptorInternal *)function setObjectFunction:v5, v6, v7, v8, v9, v10, v11, v22];
     }
 
-    v12 = [a3 functionType];
-    if (v12 != 7)
+    functionType = [function functionType];
+    if (functionType != 8)
     {
-      [(MTLRenderPipelineDescriptorInternal *)v12 setMeshFunction:v13, v14, v15, v16, v17, v18, v19, v22];
+      [(MTLRenderPipelineDescriptorInternal *)functionType setObjectFunction:v13, v14, v15, v16, v17, v18, v19, v22];
     }
   }
 
-  v20 = a3;
+  functionCopy = function;
   p_private = &self->_private;
 
-  p_private->meshFunction = a3;
+  p_private->objectFunction = function;
 }
 
-- (void)setObjectThreadsPerThreadgroup:(id *)a3
+- (void)setMeshFunction:(id)function
 {
-  v3 = *&a3->var0;
-  self->_private.objectThreadsPerThreadgroup_DO_NOT_USE_WILL_BE_REMOVED.depth = a3->var2;
+  if (function)
+  {
+    if (MTLFailureTypeGetEnabled(1uLL))
+    {
+      [(MTLRenderPipelineDescriptorInternal *)function setMeshFunction:v5, v6, v7, v8, v9, v10, v11, v22];
+    }
+
+    functionType = [function functionType];
+    if (functionType != 7)
+    {
+      [(MTLRenderPipelineDescriptorInternal *)functionType setMeshFunction:v13, v14, v15, v16, v17, v18, v19, v22];
+    }
+  }
+
+  functionCopy = function;
+  p_private = &self->_private;
+
+  p_private->meshFunction = function;
+}
+
+- (void)setObjectThreadsPerThreadgroup:(id *)threadgroup
+{
+  v3 = *&threadgroup->var0;
+  self->_private.objectThreadsPerThreadgroup_DO_NOT_USE_WILL_BE_REMOVED.depth = threadgroup->var2;
   *&self->_private.objectThreadsPerThreadgroup_DO_NOT_USE_WILL_BE_REMOVED.width = v3;
 }
 
-- (void)setMeshThreadsPerThreadgroup:(id *)a3
+- (void)setMeshThreadsPerThreadgroup:(id *)threadgroup
 {
-  var2 = a3->var2;
-  *&self->_private.meshThreadsPerThreadgroup_DO_NOT_USE_WILL_BE_REMOVED.width = *&a3->var0;
+  var2 = threadgroup->var2;
+  *&self->_private.meshThreadsPerThreadgroup_DO_NOT_USE_WILL_BE_REMOVED.width = *&threadgroup->var0;
   self->_private.meshThreadsPerThreadgroup_DO_NOT_USE_WILL_BE_REMOVED.depth = var2;
 }
 
-- (void)setRequiredThreadsPerObjectThreadgroup:(id *)a3
+- (void)setRequiredThreadsPerObjectThreadgroup:(id *)threadgroup
 {
-  var2 = a3->var2;
-  *&self->_private.requiredThreadsPerObjectThreadgroup.width = *&a3->var0;
+  var2 = threadgroup->var2;
+  *&self->_private.requiredThreadsPerObjectThreadgroup.width = *&threadgroup->var0;
   self->_private.requiredThreadsPerObjectThreadgroup.depth = var2;
 }
 
-- (void)setRequiredThreadsPerMeshThreadgroup:(id *)a3
+- (void)setRequiredThreadsPerMeshThreadgroup:(id *)threadgroup
 {
-  v3 = *&a3->var0;
-  self->_private.requiredThreadsPerMeshThreadgroup.depth = a3->var2;
+  v3 = *&threadgroup->var0;
+  self->_private.requiredThreadsPerMeshThreadgroup.depth = threadgroup->var2;
   *&self->_private.requiredThreadsPerMeshThreadgroup.width = v3;
 }
 
-- (void)setObjectThreadgroupSizeIsMultipleOfThreadExecutionWidth:(BOOL)a3
+- (void)setObjectThreadgroupSizeIsMultipleOfThreadExecutionWidth:(BOOL)width
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!width)
   {
     v3 = 0;
   }
@@ -1415,10 +1415,10 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)setMeshThreadgroupSizeIsMultipleOfThreadExecutionWidth:(BOOL)a3
+- (void)setMeshThreadgroupSizeIsMultipleOfThreadExecutionWidth:(BOOL)width
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!width)
   {
     v3 = 0;
   }
@@ -1426,27 +1426,27 @@
   self->_private.var2 = (*&self->_private.var2 & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setMaxPipelineChildren:(id *)a3
+- (void)setMaxPipelineChildren:(id *)children
 {
-  v3 = *&a3->var0;
-  self->_private.maxPipelineChildren.depth = a3->var2;
+  v3 = *&children->var0;
+  self->_private.maxPipelineChildren.depth = children->var2;
   *&self->_private.maxPipelineChildren.width = v3;
 }
 
-- (void)setPipelineLibrary:(id)a3
+- (void)setPipelineLibrary:(id)library
 {
   p_private = &self->_private;
   pipelineLibrary = self->_private.pipelineLibrary;
-  if (pipelineLibrary != a3)
+  if (pipelineLibrary != library)
   {
 
-    p_private->pipelineLibrary = a3;
+    p_private->pipelineLibrary = library;
   }
 }
 
-- (void)attachVertexDescriptor:(id)a3
+- (void)attachVertexDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1458,16 +1458,16 @@
 
   p_private = &self->_private;
   vertexDescriptor = p_private->vertexDescriptor;
-  if (vertexDescriptor != a3)
+  if (vertexDescriptor != descriptor)
   {
 
-    p_private->vertexDescriptor = a3;
+    p_private->vertexDescriptor = descriptor;
   }
 }
 
-- (void)setVertexDescriptor:(id)a3
+- (void)setVertexDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1479,10 +1479,10 @@
 
   p_private = &self->_private;
   vertexDescriptor = p_private->vertexDescriptor;
-  if (vertexDescriptor != a3)
+  if (vertexDescriptor != descriptor)
   {
 
-    p_private->vertexDescriptor = [a3 copy];
+    p_private->vertexDescriptor = [descriptor copy];
   }
 }
 
@@ -1499,25 +1499,25 @@
   return result;
 }
 
-- (void)setDriverCompilerOptions:(id)a3
+- (void)setDriverCompilerOptions:(id)options
 {
   p_private = &self->_private;
   driverCompilerOptions = self->_private.driverCompilerOptions;
-  if (driverCompilerOptions != a3)
+  if (driverCompilerOptions != options)
   {
 
-    p_private->driverCompilerOptions = [a3 copy];
+    p_private->driverCompilerOptions = [options copy];
   }
 }
 
-- (void)setGpuCompilerSPIOptions:(id)a3
+- (void)setGpuCompilerSPIOptions:(id)options
 {
   p_private = &self->_private;
   gpuCompilerSPIOptions = self->_private.gpuCompilerSPIOptions;
-  if (gpuCompilerSPIOptions != a3)
+  if (gpuCompilerSPIOptions != options)
   {
 
-    p_private->gpuCompilerSPIOptions = [a3 copy];
+    p_private->gpuCompilerSPIOptions = [options copy];
   }
 }
 
@@ -1704,9 +1704,9 @@ void __43__MTLRenderPipelineDescriptorInternal_hash__block_invoke()
   [MTLRenderPipelineDescriptorInternal hash]::defaultVertexDescriptorHash = [(MTLVertexDescriptor *)v0 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -1714,11 +1714,11 @@ void __43__MTLRenderPipelineDescriptorInternal_hash__block_invoke()
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       v7 = 0;
       p_private = &self->_private;
-      v9 = a3 + 48;
+      v9 = equal + 48;
       while (1)
       {
         v10 = p_private->attachments->_descriptors[v7];
@@ -1952,51 +1952,51 @@ LABEL_3:
   return v6;
 }
 
-- (BOOL)validateWithDevice:(id)a3 error:(id *)a4
+- (BOOL)validateWithDevice:(id)device error:(id *)error
 {
   p_private = &self->_private;
-  v8 = [a3 supportsTextureSampleCount:self->_private.var0.sampleCount];
+  v8 = [device supportsTextureSampleCount:self->_private.var0.sampleCount];
   if (v8)
   {
     if ((*(&p_private->var2.var0 + 5) & 2) == 0)
     {
-      [a3 registerRenderPipelineDescriptor:self];
+      [device registerRenderPipelineDescriptor:self];
     }
 
-    validateWithDevice(a3, p_private);
+    validateWithDevice(device, p_private);
   }
 
   else
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"rasterSampleCount (%lu) is not supported by device.", p_private->var0.sampleCount];
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:v9 forKey:*MEMORY[0x1E696A578]];
-    *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PipelineError" code:1 userInfo:v10];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PipelineError" code:1 userInfo:v10];
   }
 
   return v8;
 }
 
-- (void)validateWithDevice:(id)a3
+- (void)validateWithDevice:(id)device
 {
-  [a3 registerRenderPipelineDescriptor:self];
+  [device registerRenderPipelineDescriptor:self];
 
-  validateWithDevice(a3, &self->_private);
+  validateWithDevice(device, &self->_private);
 }
 
-- (id)newSerializedVertexDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)newSerializedVertexDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error
 {
-  v5 = a3;
+  flagsCopy = flags;
   size_ptr = 0;
   buffer_ptr = 0;
   __src = 0;
   v40 = 0;
   v41 = 0;
   p_private = &self->_private;
-  v7 = (a4 >> 14) & 0x400 | (((self->_private.var2.miscHash[0] >> 9) & 1) << 19) | (self->_private.var2.miscHash[0] >> 4) & 1;
+  v7 = (options >> 14) & 0x400 | (((self->_private.var2.miscHash[0] >> 9) & 1) << 19) | (self->_private.var2.miscHash[0] >> 4) & 1;
   v8 = [(MTLFunction *)self->_private.vertexFunction patchType]== 0;
-  v9 = v7 | v5 & 0x18;
-  v10 = (v5 & 0x18) == 0 || v8;
-  if ((v8 & (v5 >> 2)) != 0)
+  v9 = v7 | flagsCopy & 0x18;
+  v10 = (flagsCopy & 0x18) == 0 || v8;
+  if ((v8 & (flagsCopy >> 2)) != 0)
   {
     v11 = 4;
   }
@@ -2082,13 +2082,13 @@ LABEL_3:
     v28 = 0;
   }
 
-  v29 = [(MTLFunction *)p_private->vertexFunction device];
-  if (!v29)
+  device = [(MTLFunction *)p_private->vertexFunction device];
+  if (!device)
   {
-    v29 = [(MTLFunction *)p_private->meshFunction device];
+    device = [(MTLFunction *)p_private->meshFunction device];
   }
 
-  v30 = MTLSerializePluginDataDictionary([v29 pluginData], 0);
+  v30 = MTLSerializePluginDataDictionary([device pluginData], 0);
   v31 = v30;
   if (v30)
   {
@@ -2128,7 +2128,7 @@ LABEL_3:
 
   if (v31)
   {
-    v35 += MTLSerializePluginDataDictionary([v29 pluginData], v35);
+    v35 += MTLSerializePluginDataDictionary([device pluginData], v35);
   }
 
   if (v33)
@@ -2146,23 +2146,23 @@ LABEL_3:
   return dispatch_data_create(v34, v25, 0, *MEMORY[0x1E69E9648]);
 }
 
-- (id)newSerializedObjectDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)newSerializedObjectDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error
 {
-  result = newMeshSerializedObjectOrMeshData(0, a3, a4, &self->_private);
-  if (a5)
+  result = newMeshSerializedObjectOrMeshData(0, flags, options, &self->_private);
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return result;
 }
 
-- (id)newSerializedMeshDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)newSerializedMeshDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error
 {
-  result = newMeshSerializedObjectOrMeshData(0, a3, a4, &self->_private);
-  if (a5)
+  result = newMeshSerializedObjectOrMeshData(0, flags, options, &self->_private);
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return result;
@@ -2214,7 +2214,7 @@ LABEL_3:
   return result;
 }
 
-- (uint64_t)fastBlendDescriptorAtIndex:(uint64_t)a3
+- (uint64_t)fastBlendDescriptorAtIndex:(uint64_t)index
 {
   if (result)
   {

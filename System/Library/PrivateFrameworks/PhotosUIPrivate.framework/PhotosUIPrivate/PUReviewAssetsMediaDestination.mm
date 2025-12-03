@@ -1,32 +1,32 @@
 @interface PUReviewAssetsMediaDestination
-- (BOOL)supportsProgressForRequestWithIdentifier:(int)a3;
-- (PUReviewAssetsMediaDestination)initWithOutputDirectory:(id)a3 mediaProvider:(id)a4;
-- (double)progressForRequestWithIdentifier:(int)a3;
-- (id)_saveEditsWithRequest:(id)a3 completionHandler:(id)a4;
-- (int)revertEditsForAsset:(id)a3 completionHandler:(id)a4;
-- (int)saveEditsForAsset:(id)a3 usingContentEditingOutput:(id)a4 livePhotoState:(unsigned __int16)a5 completionHandler:(id)a6;
-- (int)saveInternalEditsForAsset:(id)a3 usingCompositionController:(id)a4 contentEditingOutput:(id)a5 version:(int64_t)a6 livePhotoState:(unsigned __int16)a7 completionHandler:(id)a8;
-- (int64_t)_workImageVersionForContentEditingOutput:(id)a3;
-- (void)_requestDidFinish:(id)a3;
-- (void)cancelRequestWithIdentifier:(int)a3;
+- (BOOL)supportsProgressForRequestWithIdentifier:(int)identifier;
+- (PUReviewAssetsMediaDestination)initWithOutputDirectory:(id)directory mediaProvider:(id)provider;
+- (double)progressForRequestWithIdentifier:(int)identifier;
+- (id)_saveEditsWithRequest:(id)request completionHandler:(id)handler;
+- (int)revertEditsForAsset:(id)asset completionHandler:(id)handler;
+- (int)saveEditsForAsset:(id)asset usingContentEditingOutput:(id)output livePhotoState:(unsigned __int16)state completionHandler:(id)handler;
+- (int)saveInternalEditsForAsset:(id)asset usingCompositionController:(id)controller contentEditingOutput:(id)output version:(int64_t)version livePhotoState:(unsigned __int16)state completionHandler:(id)handler;
+- (int64_t)_workImageVersionForContentEditingOutput:(id)output;
+- (void)_requestDidFinish:(id)finish;
+- (void)cancelRequestWithIdentifier:(int)identifier;
 @end
 
 @implementation PUReviewAssetsMediaDestination
 
-- (PUReviewAssetsMediaDestination)initWithOutputDirectory:(id)a3 mediaProvider:(id)a4
+- (PUReviewAssetsMediaDestination)initWithOutputDirectory:(id)directory mediaProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = PUReviewAssetsMediaDestination;
   v8 = [(PUReviewAssetsMediaDestination *)&v15 init];
-  if (v8 && [v6 hasDirectoryPath])
+  if (v8 && [directoryCopy hasDirectoryPath])
   {
-    v9 = [v6 copy];
+    v9 = [directoryCopy copy];
     desiredOutputDirectory = v8->__desiredOutputDirectory;
     v8->__desiredOutputDirectory = v9;
 
-    objc_storeStrong(&v8->__mediaProvider, a4);
+    objc_storeStrong(&v8->__mediaProvider, provider);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     pendingRequestsByRequestIdentifier = v8->_pendingRequestsByRequestIdentifier;
     v8->_pendingRequestsByRequestIdentifier = v11;
@@ -42,12 +42,12 @@
   return v13;
 }
 
-- (int64_t)_workImageVersionForContentEditingOutput:(id)a3
+- (int64_t)_workImageVersionForContentEditingOutput:(id)output
 {
-  v3 = [a3 baseVersion];
-  if (v3 < 3)
+  baseVersion = [output baseVersion];
+  if (baseVersion < 3)
   {
-    return v3 + 1;
+    return baseVersion + 1;
   }
 
   else
@@ -56,57 +56,57 @@
   }
 }
 
-- (void)_requestDidFinish:(id)a3
+- (void)_requestDidFinish:(id)finish
 {
-  v5 = a3;
-  v6 = [v5 identifier];
-  v10 = [MEMORY[0x1E696AD98] numberWithInt:v6];
-  v7 = [(PUReviewAssetsMediaDestination *)self _pendingRequestsByRequestIdentifier];
-  v8 = [v7 objectForKey:v10];
+  finishCopy = finish;
+  identifier = [finishCopy identifier];
+  v10 = [MEMORY[0x1E696AD98] numberWithInt:identifier];
+  _pendingRequestsByRequestIdentifier = [(PUReviewAssetsMediaDestination *)self _pendingRequestsByRequestIdentifier];
+  v8 = [_pendingRequestsByRequestIdentifier objectForKey:v10];
 
-  if (v8 != v5)
+  if (v8 != finishCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:146 description:@"The pending request doesn't match the expected request"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:146 description:@"The pending request doesn't match the expected request"];
   }
 
-  [v7 removeObjectForKey:v10];
+  [_pendingRequestsByRequestIdentifier removeObjectForKey:v10];
 }
 
-- (id)_saveEditsWithRequest:(id)a3 completionHandler:(id)a4
+- (id)_saveEditsWithRequest:(id)request completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  requestCopy = request;
+  handlerCopy = handler;
+  if (!requestCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"saveRequest"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"saveRequest"}];
   }
 
-  v9 = [v7 identifier];
-  v10 = [MEMORY[0x1E696AD98] numberWithInt:v9];
-  v11 = [(PUReviewAssetsMediaDestination *)self _pendingRequestsByRequestIdentifier];
-  v12 = [v11 objectForKey:v10];
+  identifier = [requestCopy identifier];
+  v10 = [MEMORY[0x1E696AD98] numberWithInt:identifier];
+  _pendingRequestsByRequestIdentifier = [(PUReviewAssetsMediaDestination *)self _pendingRequestsByRequestIdentifier];
+  v12 = [_pendingRequestsByRequestIdentifier objectForKey:v10];
   if (v12)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:119 description:@"Cannot begin a new request if there is a pending one for this photo"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:119 description:@"Cannot begin a new request if there is a pending one for this photo"];
 
     v14 = 0;
   }
 
   else
   {
-    [v11 setObject:v7 forKey:v10];
+    [_pendingRequestsByRequestIdentifier setObject:requestCopy forKey:v10];
     objc_initWeak(&location, self);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __74__PUReviewAssetsMediaDestination__saveEditsWithRequest_completionHandler___block_invoke;
     v18[3] = &unk_1E7B7D6C8;
     objc_copyWeak(&v21, &location);
-    v13 = v7;
+    v13 = requestCopy;
     v19 = v13;
-    v20 = v8;
+    v20 = handlerCopy;
     [v13 beginSaveOperationWithCompletionHandler:v18];
     v14 = v13;
 
@@ -131,12 +131,12 @@ void __74__PUReviewAssetsMediaDestination__saveEditsWithRequest_completionHandle
   }
 }
 
-- (double)progressForRequestWithIdentifier:(int)a3
+- (double)progressForRequestWithIdentifier:(int)identifier
 {
-  v3 = *&a3;
-  v4 = [(PUReviewAssetsMediaDestination *)self _pendingRequestsByRequestIdentifier];
+  v3 = *&identifier;
+  _pendingRequestsByRequestIdentifier = [(PUReviewAssetsMediaDestination *)self _pendingRequestsByRequestIdentifier];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-  v6 = [v4 objectForKey:v5];
+  v6 = [_pendingRequestsByRequestIdentifier objectForKey:v5];
 
   v7 = 0.0;
   if ([v6 supportsProgress])
@@ -148,46 +148,46 @@ void __74__PUReviewAssetsMediaDestination__saveEditsWithRequest_completionHandle
   return v7;
 }
 
-- (BOOL)supportsProgressForRequestWithIdentifier:(int)a3
+- (BOOL)supportsProgressForRequestWithIdentifier:(int)identifier
 {
-  v3 = *&a3;
-  v4 = [(PUReviewAssetsMediaDestination *)self _pendingRequestsByRequestIdentifier];
+  v3 = *&identifier;
+  _pendingRequestsByRequestIdentifier = [(PUReviewAssetsMediaDestination *)self _pendingRequestsByRequestIdentifier];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-  v6 = [v4 objectForKey:v5];
+  v6 = [_pendingRequestsByRequestIdentifier objectForKey:v5];
 
   LOBYTE(v5) = [v6 supportsProgress];
   return v5;
 }
 
-- (void)cancelRequestWithIdentifier:(int)a3
+- (void)cancelRequestWithIdentifier:(int)identifier
 {
-  v3 = *&a3;
-  v6 = [(PUReviewAssetsMediaDestination *)self _pendingRequestsByRequestIdentifier];
+  v3 = *&identifier;
+  _pendingRequestsByRequestIdentifier = [(PUReviewAssetsMediaDestination *)self _pendingRequestsByRequestIdentifier];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-  v5 = [v6 objectForKey:v4];
+  v5 = [_pendingRequestsByRequestIdentifier objectForKey:v4];
 
   [v5 cancelSaveOperation];
 }
 
-- (int)revertEditsForAsset:(id)a3 completionHandler:(id)a4
+- (int)revertEditsForAsset:(id)asset completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  assetCopy = asset;
+  handlerCopy = handler;
+  if (!assetCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v9 = [(PUReviewAssetsMediaDestination *)self _mediaProvider];
-  v10 = [(PUReviewAssetsMediaDestination *)self _desiredOutputDirectory];
-  v11 = [[PUSaveReviewAssetRequest alloc] initWithAssetForRevertToOriginal:v7 mediaProvider:v9 directory:v10];
+  _mediaProvider = [(PUReviewAssetsMediaDestination *)self _mediaProvider];
+  _desiredOutputDirectory = [(PUReviewAssetsMediaDestination *)self _desiredOutputDirectory];
+  v11 = [[PUSaveReviewAssetRequest alloc] initWithAssetForRevertToOriginal:assetCopy mediaProvider:_mediaProvider directory:_desiredOutputDirectory];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __72__PUReviewAssetsMediaDestination_revertEditsForAsset_completionHandler___block_invoke;
   v16[3] = &unk_1E7B7D6A0;
-  v17 = v8;
-  v12 = v8;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
   v13 = [(PUReviewAssetsMediaDestination *)self _saveEditsWithRequest:v11 completionHandler:v16];
 
   LODWORD(v11) = [v13 identifier];
@@ -205,16 +205,16 @@ uint64_t __72__PUReviewAssetsMediaDestination_revertEditsForAsset_completionHand
   return result;
 }
 
-- (int)saveInternalEditsForAsset:(id)a3 usingCompositionController:(id)a4 contentEditingOutput:(id)a5 version:(int64_t)a6 livePhotoState:(unsigned __int16)a7 completionHandler:(id)a8
+- (int)saveInternalEditsForAsset:(id)asset usingCompositionController:(id)controller contentEditingOutput:(id)output version:(int64_t)version livePhotoState:(unsigned __int16)state completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (!v15)
+  assetCopy = asset;
+  controllerCopy = controller;
+  outputCopy = output;
+  handlerCopy = handler;
+  if (!controllerCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"compositionController"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"compositionController"}];
   }
 
   v18 = PLPhotoEditGetLog();
@@ -224,15 +224,15 @@ uint64_t __72__PUReviewAssetsMediaDestination_revertEditsForAsset_completionHand
     _os_log_impl(&dword_1B36F3000, v18, OS_LOG_TYPE_DEFAULT, "PUReviewAssetsMediaDestination save edits for asset...", buf, 2u);
   }
 
-  v19 = [(PUReviewAssetsMediaDestination *)self _mediaProvider];
-  v20 = [(PUReviewAssetsMediaDestination *)self _desiredOutputDirectory];
-  v21 = [[PUSaveReviewAssetRequest alloc] initWithAsset:v14 mediaProvider:v19 directory:v20 compositionController:v15 workImageVersion:a6];
+  _mediaProvider = [(PUReviewAssetsMediaDestination *)self _mediaProvider];
+  _desiredOutputDirectory = [(PUReviewAssetsMediaDestination *)self _desiredOutputDirectory];
+  v21 = [[PUSaveReviewAssetRequest alloc] initWithAsset:assetCopy mediaProvider:_mediaProvider directory:_desiredOutputDirectory compositionController:controllerCopy workImageVersion:version];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __149__PUReviewAssetsMediaDestination_saveInternalEditsForAsset_usingCompositionController_contentEditingOutput_version_livePhotoState_completionHandler___block_invoke;
   v26[3] = &unk_1E7B7D6A0;
-  v27 = v17;
-  v22 = v17;
+  v27 = handlerCopy;
+  v22 = handlerCopy;
   v23 = [(PUReviewAssetsMediaDestination *)self _saveEditsWithRequest:v21 completionHandler:v26];
 
   LODWORD(v21) = [v23 identifier];
@@ -250,26 +250,26 @@ uint64_t __149__PUReviewAssetsMediaDestination_saveInternalEditsForAsset_usingCo
   return result;
 }
 
-- (int)saveEditsForAsset:(id)a3 usingContentEditingOutput:(id)a4 livePhotoState:(unsigned __int16)a5 completionHandler:(id)a6
+- (int)saveEditsForAsset:(id)asset usingContentEditingOutput:(id)output livePhotoState:(unsigned __int16)state completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v11)
+  assetCopy = asset;
+  outputCopy = output;
+  handlerCopy = handler;
+  if (!outputCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"contentEditingOutput"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaDestination.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"contentEditingOutput"}];
   }
 
-  v13 = [(PUReviewAssetsMediaDestination *)self _mediaProvider];
-  v14 = [(PUReviewAssetsMediaDestination *)self _desiredOutputDirectory];
-  v15 = [[PUSaveReviewAssetRequest alloc] initWithAsset:v10 mediaProvider:v13 directory:v14 contentEditingOutput:v11 workImageVersion:[(PUReviewAssetsMediaDestination *)self _workImageVersionForContentEditingOutput:v11]];
+  _mediaProvider = [(PUReviewAssetsMediaDestination *)self _mediaProvider];
+  _desiredOutputDirectory = [(PUReviewAssetsMediaDestination *)self _desiredOutputDirectory];
+  v15 = [[PUSaveReviewAssetRequest alloc] initWithAsset:assetCopy mediaProvider:_mediaProvider directory:_desiredOutputDirectory contentEditingOutput:outputCopy workImageVersion:[(PUReviewAssetsMediaDestination *)self _workImageVersionForContentEditingOutput:outputCopy]];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __111__PUReviewAssetsMediaDestination_saveEditsForAsset_usingContentEditingOutput_livePhotoState_completionHandler___block_invoke;
   v20[3] = &unk_1E7B7D6A0;
-  v21 = v12;
-  v16 = v12;
+  v21 = handlerCopy;
+  v16 = handlerCopy;
   v17 = [(PUReviewAssetsMediaDestination *)self _saveEditsWithRequest:v15 completionHandler:v20];
 
   LODWORD(v15) = [v17 identifier];

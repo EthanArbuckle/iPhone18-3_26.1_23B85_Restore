@@ -1,11 +1,11 @@
 @interface _UIShadowProperties
-+ (id)propertiesFromView:(id)a3;
++ (id)propertiesFromView:(id)view;
 - (CGSize)offset;
 - (_UIShadowProperties)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)updatedShadowWithIntensity:(double)a3;
-- (void)applyToView:(id)a3;
-- (void)scaleBy:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)updatedShadowWithIntensity:(double)intensity;
+- (void)applyToView:(id)view;
+- (void)scaleBy:(double)by;
 @end
 
 @implementation _UIShadowProperties
@@ -38,66 +38,66 @@
   return result;
 }
 
-+ (id)propertiesFromView:(id)a3
++ (id)propertiesFromView:(id)view
 {
-  v3 = [a3 _outermostLayer];
+  _outermostLayer = [view _outermostLayer];
   v4 = objc_opt_new();
-  [v3 shadowOpacity];
+  [_outermostLayer shadowOpacity];
   [v4 setOpacity:v5];
-  v6 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v3 shadowColor]);
+  v6 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [_outermostLayer shadowColor]);
   [v4 setColor:v6];
 
-  [v3 shadowOffset];
+  [_outermostLayer shadowOffset];
   [v4 setOffset:?];
-  [v3 shadowRadius];
+  [_outermostLayer shadowRadius];
   [v4 setRadius:?];
 
   return v4;
 }
 
-- (void)applyToView:(id)a3
+- (void)applyToView:(id)view
 {
-  v6 = [a3 _outermostLayer];
-  v4 = [(_UIShadowProperties *)self color];
-  [v6 setShadowColor:{objc_msgSend(v4, "CGColor")}];
+  _outermostLayer = [view _outermostLayer];
+  color = [(_UIShadowProperties *)self color];
+  [_outermostLayer setShadowColor:{objc_msgSend(color, "CGColor")}];
 
   [(_UIShadowProperties *)self offset];
-  [v6 setShadowOffset:?];
+  [_outermostLayer setShadowOffset:?];
   [(_UIShadowProperties *)self radius];
-  [v6 setShadowRadius:?];
+  [_outermostLayer setShadowRadius:?];
   [(_UIShadowProperties *)self opacity];
   *&v5 = v5;
-  [v6 setShadowOpacity:v5];
+  [_outermostLayer setShadowOpacity:v5];
 }
 
-- (void)scaleBy:(double)a3
+- (void)scaleBy:(double)by
 {
   [(_UIShadowProperties *)self radius];
-  [(_UIShadowProperties *)self setRadius:v5 * a3];
+  [(_UIShadowProperties *)self setRadius:v5 * by];
   [(_UIShadowProperties *)self offset];
-  v7 = v6 * a3;
+  v7 = v6 * by;
   [(_UIShadowProperties *)self offset];
-  v9 = v8 * a3;
+  v9 = v8 * by;
 
   [(_UIShadowProperties *)self setOffset:v7, v9];
 }
 
-- (id)updatedShadowWithIntensity:(double)a3
+- (id)updatedShadowWithIntensity:(double)intensity
 {
   v4 = [(_UIShadowProperties *)self copy];
   [v4 opacity];
-  [v4 setOpacity:{fmax(fmin(a3, 1.0), 0.0) * v5}];
+  [v4 setOpacity:{fmax(fmin(intensity, 1.0), 0.0) * v5}];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(_UIShadowProperties *)self opacity];
   [v4 setOpacity:?];
-  v5 = [(_UIShadowProperties *)self color];
-  [v4 setColor:v5];
+  color = [(_UIShadowProperties *)self color];
+  [v4 setColor:color];
 
   [(_UIShadowProperties *)self offset];
   [v4 setOffset:?];

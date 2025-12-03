@@ -1,6 +1,6 @@
 @interface InAppPurchaseView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension17InAppPurchaseView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension17InAppPurchaseView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,13 +8,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005B87E4();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_10075E73C();
   v5 = v4;
   v7 = v6;
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC20ProductPageExtension17InAppPurchaseView)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension17InAppPurchaseView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

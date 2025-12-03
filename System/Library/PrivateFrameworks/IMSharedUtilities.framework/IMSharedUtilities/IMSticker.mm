@@ -1,15 +1,15 @@
 @interface IMSticker
-+ (IMAssociatedMessageGeometryDescriptor)geometryDescriptorFromUserInfoDictionary:(SEL)a3;
-+ (id)saveAdaptiveImageGlyphToTemporaryFile:(id)a3;
-+ (id)userInfoDictionaryWithExternalURI:(id)a3;
-+ (id)userInfoDictionaryWithLayoutIntent:(unint64_t)a3 parentPreviewWidth:(double)a4 xScalar:(double)a5 yScalar:(double)a6 scale:(double)a7 rotation:(double)a8 initialFrameIndex:(unint64_t)a9 stickerPositionVersion:(unint64_t)a10 externalURI:(id)a11;
-- (BOOL)isEqual:(id)a3;
++ (IMAssociatedMessageGeometryDescriptor)geometryDescriptorFromUserInfoDictionary:(SEL)dictionary;
++ (id)saveAdaptiveImageGlyphToTemporaryFile:(id)file;
++ (id)userInfoDictionaryWithExternalURI:(id)i;
++ (id)userInfoDictionaryWithLayoutIntent:(unint64_t)intent parentPreviewWidth:(double)width xScalar:(double)scalar yScalar:(double)yScalar scale:(double)scale rotation:(double)rotation initialFrameIndex:(unint64_t)index stickerPositionVersion:(unint64_t)self0 externalURI:(id)self1;
+- (BOOL)isEqual:(id)equal;
 - (IMSticker)init;
-- (IMSticker)initWithAdaptiveImageGlyphFromUnknownSource:(id)a3;
-- (IMSticker)initWithStickerID:(id)a3 stickerPackID:(id)a4 fileURL:(id)a5 accessibilityLabel:(id)a6 accessibilityName:(id)a7 searchText:(id)a8 sanitizedPrompt:(id)a9 moodCategory:(id)a10 stickerName:(id)a11 effectType:(int64_t)a12 textToSpeechName:(id)a13;
-- (IMSticker)initWithStickerIdentifier:(id)a3 stickerPackID:(id)a4 representations:(id)a5 effectType:(int64_t)a6 initialFrameIndex:(unint64_t)a7 externalURI:(id)a8 stickerName:(id)a9 accessibilityLabel:(id)a10 accessibilityName:(id)a11 searchText:(id)a12 sanitizedPrompt:(id)a13 metadata:(id)a14;
-- (IMSticker)initWithStickerPropertyDictionary:(id)a3 stickerPackID:(id)a4 stickerPackBundlePath:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IMSticker)initWithAdaptiveImageGlyphFromUnknownSource:(id)source;
+- (IMSticker)initWithStickerID:(id)d stickerPackID:(id)iD fileURL:(id)l accessibilityLabel:(id)label accessibilityName:(id)name searchText:(id)text sanitizedPrompt:(id)prompt moodCategory:(id)self0 stickerName:(id)self1 effectType:(int64_t)self2 textToSpeechName:(id)self3;
+- (IMSticker)initWithStickerIdentifier:(id)identifier stickerPackID:(id)d representations:(id)representations effectType:(int64_t)type initialFrameIndex:(unint64_t)index externalURI:(id)i stickerName:(id)name accessibilityLabel:(id)self0 accessibilityName:(id)self1 searchText:(id)self2 sanitizedPrompt:(id)self3 metadata:(id)self4;
+- (IMSticker)initWithStickerPropertyDictionary:(id)dictionary stickerPackID:(id)d stickerPackBundlePath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)getSafeExternalURI;
 - (unint64_t)hash;
 @end
@@ -31,89 +31,89 @@
   return 0;
 }
 
-- (IMSticker)initWithStickerID:(id)a3 stickerPackID:(id)a4 fileURL:(id)a5 accessibilityLabel:(id)a6 accessibilityName:(id)a7 searchText:(id)a8 sanitizedPrompt:(id)a9 moodCategory:(id)a10 stickerName:(id)a11 effectType:(int64_t)a12 textToSpeechName:(id)a13
+- (IMSticker)initWithStickerID:(id)d stickerPackID:(id)iD fileURL:(id)l accessibilityLabel:(id)label accessibilityName:(id)name searchText:(id)text sanitizedPrompt:(id)prompt moodCategory:(id)self0 stickerName:(id)self1 effectType:(int64_t)self2 textToSpeechName:(id)self3
 {
-  v18 = a3;
-  v69 = a4;
-  v68 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a13;
-  v67 = v18;
-  if (v18)
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
+  labelCopy = label;
+  nameCopy = name;
+  textCopy = text;
+  promptCopy = prompt;
+  categoryCopy = category;
+  stickerNameCopy = stickerName;
+  speechNameCopy = speechName;
+  v67 = dCopy;
+  if (dCopy)
   {
     v70.receiver = self;
     v70.super_class = IMSticker;
     v26 = [(IMSticker *)&v70 init];
     if (v26)
     {
-      v27 = [v18 copy];
+      v27 = [dCopy copy];
       stickerGUID = v26->_stickerGUID;
       v26->_stickerGUID = v27;
 
-      v29 = [v69 copy];
+      v29 = [iDCopy copy];
       stickerPackGUID = v26->_stickerPackGUID;
       v26->_stickerPackGUID = v29;
 
-      v31 = [v68 copy];
+      v31 = [lCopy copy];
       fileURL = v26->_fileURL;
       v26->_fileURL = v31;
 
-      v33 = [v19 copy];
+      v33 = [labelCopy copy];
       accessibilityLabel = v26->_accessibilityLabel;
       v26->_accessibilityLabel = v33;
 
-      v35 = [v20 copy];
+      v35 = [nameCopy copy];
       accessibilityName = v26->_accessibilityName;
       v26->_accessibilityName = v35;
 
-      v37 = [v21 copy];
+      v37 = [textCopy copy];
       searchText = v26->_searchText;
       v26->_searchText = v37;
 
-      v39 = [v22 copy];
+      v39 = [promptCopy copy];
       sanitizedPrompt = v26->_sanitizedPrompt;
       v26->_sanitizedPrompt = v39;
 
-      v41 = [v23 copy];
+      v41 = [categoryCopy copy];
       moodCategory = v26->_moodCategory;
       v26->_moodCategory = v41;
 
-      v43 = [v24 copy];
+      v43 = [stickerNameCopy copy];
       stickerName = v26->_stickerName;
       v26->_stickerName = v43;
 
-      v45 = [v25 copy];
+      v45 = [speechNameCopy copy];
       textToSpeechName = v26->_textToSpeechName;
       v26->_textToSpeechName = v45;
 
-      v47 = v25;
-      v48 = v22;
+      v47 = speechNameCopy;
+      v48 = promptCopy;
       v49 = MEMORY[0x1E696AEC0];
       [(IMSticker *)v26 stickerPackGUID];
-      v66 = v24;
-      v50 = v21;
-      v52 = v51 = v19;
+      v66 = stickerNameCopy;
+      v50 = textCopy;
+      v52 = v51 = labelCopy;
       [(IMSticker *)v26 stickerGUID];
-      v53 = v23;
-      v55 = v54 = v20;
+      v53 = categoryCopy;
+      v55 = v54 = nameCopy;
       v56 = v49;
-      v22 = v48;
-      v25 = v47;
+      promptCopy = v48;
+      speechNameCopy = v47;
       v57 = [v56 stringWithFormat:@"%@.%@", v52, v55];
       uniqueID = v26->_uniqueID;
       v26->_uniqueID = v57;
 
-      v20 = v54;
-      v23 = v53;
+      nameCopy = v54;
+      categoryCopy = v53;
 
-      v19 = v51;
-      v21 = v50;
-      v24 = v66;
+      labelCopy = v51;
+      textCopy = v50;
+      stickerNameCopy = v66;
       externalURI = v26->_externalURI;
       v26->_externalURI = 0;
 
@@ -123,13 +123,13 @@
       v26->_stickerEffectType = -1;
     }
 
-    v61 = v26;
-    v62 = v61;
+    selfCopy = v26;
+    v62 = selfCopy;
   }
 
   else
   {
-    v61 = self;
+    selfCopy = self;
     v63 = IMLogHandleForCategory("IMSticker");
     if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
     {
@@ -142,73 +142,73 @@
   return v62;
 }
 
-- (IMSticker)initWithStickerIdentifier:(id)a3 stickerPackID:(id)a4 representations:(id)a5 effectType:(int64_t)a6 initialFrameIndex:(unint64_t)a7 externalURI:(id)a8 stickerName:(id)a9 accessibilityLabel:(id)a10 accessibilityName:(id)a11 searchText:(id)a12 sanitizedPrompt:(id)a13 metadata:(id)a14
+- (IMSticker)initWithStickerIdentifier:(id)identifier stickerPackID:(id)d representations:(id)representations effectType:(int64_t)type initialFrameIndex:(unint64_t)index externalURI:(id)i stickerName:(id)name accessibilityLabel:(id)self0 accessibilityName:(id)self1 searchText:(id)self2 sanitizedPrompt:(id)self3 metadata:(id)self4
 {
-  v17 = a3;
-  v18 = a4;
-  obj = a5;
-  v55 = a5;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
+  identifierCopy = identifier;
+  dCopy = d;
+  obj = representations;
+  representationsCopy = representations;
+  iCopy = i;
+  nameCopy = name;
+  labelCopy = label;
+  accessibilityNameCopy = accessibilityName;
+  textCopy = text;
+  promptCopy = prompt;
+  metadataCopy = metadata;
   v56.receiver = self;
   v56.super_class = IMSticker;
   v26 = [(IMSticker *)&v56 init];
   if (v26)
   {
-    v27 = [v17 copy];
+    v27 = [identifierCopy copy];
     stickerGUID = v26->_stickerGUID;
     v26->_stickerGUID = v27;
 
-    v29 = [v18 copy];
+    v29 = [dCopy copy];
     stickerPackGUID = v26->_stickerPackGUID;
     v26->_stickerPackGUID = v29;
 
     fileURL = v26->_fileURL;
     v26->_fileURL = 0;
 
-    v32 = [v21 copy];
+    v32 = [labelCopy copy];
     accessibilityLabel = v26->_accessibilityLabel;
     v26->_accessibilityLabel = v32;
 
-    v34 = [v22 copy];
+    v34 = [accessibilityNameCopy copy];
     accessibilityName = v26->_accessibilityName;
     v26->_accessibilityName = v34;
 
-    v36 = [v23 copy];
+    v36 = [textCopy copy];
     searchText = v26->_searchText;
     v26->_searchText = v36;
 
-    v38 = [v24 copy];
+    v38 = [promptCopy copy];
     sanitizedPrompt = v26->_sanitizedPrompt;
     v26->_sanitizedPrompt = v38;
 
     moodCategory = v26->_moodCategory;
     v26->_moodCategory = 0;
 
-    v41 = [v20 copy];
+    v41 = [nameCopy copy];
     stickerName = v26->_stickerName;
     v26->_stickerName = v41;
 
     textToSpeechName = v26->_textToSpeechName;
     v26->_textToSpeechName = 0;
 
-    v44 = [(IMSticker *)v26 stickerGUID];
+    stickerGUID = [(IMSticker *)v26 stickerGUID];
     uniqueID = v26->_uniqueID;
-    v26->_uniqueID = v44;
+    v26->_uniqueID = stickerGUID;
 
-    v46 = [v19 copy];
+    v46 = [iCopy copy];
     externalURI = v26->_externalURI;
     v26->_externalURI = v46;
 
     objc_storeStrong(&v26->_representations, obj);
-    v26->_stickerEffectType = a6;
-    v26->_initialFrameIndex = a7;
-    v48 = [v25 copy];
+    v26->_stickerEffectType = type;
+    v26->_initialFrameIndex = index;
+    v48 = [metadataCopy copy];
     metadata = v26->_metadata;
     v26->_metadata = v48;
   }
@@ -216,60 +216,60 @@
   return v26;
 }
 
-- (IMSticker)initWithAdaptiveImageGlyphFromUnknownSource:(id)a3
+- (IMSticker)initWithAdaptiveImageGlyphFromUnknownSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v38.receiver = self;
   v38.super_class = IMSticker;
   v6 = [(IMSticker *)&v38 init];
   if (v6)
   {
-    v7 = [v5 contentIdentifier];
-    v8 = [v7 copy];
+    contentIdentifier = [sourceCopy contentIdentifier];
+    v8 = [contentIdentifier copy];
     stickerGUID = v6->_stickerGUID;
     v6->_stickerGUID = v8;
 
     stickerPackGUID = v6->_stickerPackGUID;
     v6->_stickerPackGUID = @"com.apple.messages.MSMessageExtensionBalloonPlugin:0000000000:com.apple.Stickers.UserGenerated.MessagesExtension";
 
-    v11 = [IMSticker saveAdaptiveImageGlyphToTemporaryFile:v5];
+    v11 = [IMSticker saveAdaptiveImageGlyphToTemporaryFile:sourceCopy];
     v12 = [v11 copy];
     fileURL = v6->_fileURL;
     v6->_fileURL = v12;
 
-    v14 = [v5 contentIdentifier];
-    v15 = [v14 copy];
+    contentIdentifier2 = [sourceCopy contentIdentifier];
+    v15 = [contentIdentifier2 copy];
     adaptiveImageGlyphContentIdentifier = v6->_adaptiveImageGlyphContentIdentifier;
     v6->_adaptiveImageGlyphContentIdentifier = v15;
 
-    v17 = [v5 contentDescription];
-    v18 = [v17 copy];
+    contentDescription = [sourceCopy contentDescription];
+    v18 = [contentDescription copy];
     adaptiveImageGlyphContentDescription = v6->_adaptiveImageGlyphContentDescription;
     v6->_adaptiveImageGlyphContentDescription = v18;
 
-    objc_storeStrong(&v6->_cachedAdaptiveImageGlyphForSkippingPreviewGenerationOnly, a3);
-    v20 = [v5 contentDescription];
-    v21 = [v20 copy];
+    objc_storeStrong(&v6->_cachedAdaptiveImageGlyphForSkippingPreviewGenerationOnly, source);
+    contentDescription2 = [sourceCopy contentDescription];
+    v21 = [contentDescription2 copy];
     accessibilityLabel = v6->_accessibilityLabel;
     v6->_accessibilityLabel = v21;
 
     moodCategory = v6->_moodCategory;
     v6->_moodCategory = 0;
 
-    v24 = [v5 contentDescription];
-    v25 = [v24 copy];
+    contentDescription3 = [sourceCopy contentDescription];
+    v25 = [contentDescription3 copy];
     stickerName = v6->_stickerName;
     v6->_stickerName = v25;
 
-    v27 = [v5 contentDescription];
-    v28 = [v27 copy];
+    contentDescription4 = [sourceCopy contentDescription];
+    v28 = [contentDescription4 copy];
     textToSpeechName = v6->_textToSpeechName;
     v6->_textToSpeechName = v28;
 
     v30 = MEMORY[0x1E696AEC0];
-    v31 = [(IMSticker *)v6 stickerPackGUID];
-    v32 = [(IMSticker *)v6 stickerGUID];
-    v33 = [v30 stringWithFormat:@"%@.%@", v31, v32];
+    stickerPackGUID = [(IMSticker *)v6 stickerPackGUID];
+    stickerGUID = [(IMSticker *)v6 stickerGUID];
+    v33 = [v30 stringWithFormat:@"%@.%@", stickerPackGUID, stickerGUID];
     uniqueID = v6->_uniqueID;
     v6->_uniqueID = v33;
 
@@ -285,27 +285,27 @@
   return v6;
 }
 
-+ (id)saveAdaptiveImageGlyphToTemporaryFile:(id)a3
++ (id)saveAdaptiveImageGlyphToTemporaryFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 contentIdentifier];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 im_temporaryFileURLForAdaptiveImageGlyphWithContentIdentifier:v4];
-  v7 = [v6 path];
-  if ([v5 fileExistsAtPath:v7])
+  fileCopy = file;
+  contentIdentifier = [fileCopy contentIdentifier];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager im_temporaryFileURLForAdaptiveImageGlyphWithContentIdentifier:contentIdentifier];
+  path = [v6 path];
+  if ([defaultManager fileExistsAtPath:path])
   {
-    v8 = IMLogHandleForCategory("IMSticker");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    stringByDeletingLastPathComponent = IMLogHandleForCategory("IMSticker");
+    if (os_log_type_enabled(stringByDeletingLastPathComponent, OS_LOG_TYPE_INFO))
     {
       *v13 = 0;
-      _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Temporary file already exists for adaptive image glyph content identifier, not re-saving image.", v13, 2u);
+      _os_log_impl(&dword_1A85E5000, stringByDeletingLastPathComponent, OS_LOG_TYPE_INFO, "Temporary file already exists for adaptive image glyph content identifier, not re-saving image.", v13, 2u);
     }
   }
 
   else
   {
-    v8 = [v7 stringByDeletingLastPathComponent];
-    if (([v5 __im_makeDirectoriesInPath:v8 mode:448] & 1) == 0)
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+    if (([defaultManager __im_makeDirectoriesInPath:stringByDeletingLastPathComponent mode:448] & 1) == 0)
     {
       v9 = IMLogHandleForCategory("IMSticker");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -314,8 +314,8 @@
       }
     }
 
-    v10 = [v3 imageContent];
-    if (([v10 writeToURL:v6 atomically:1] & 1) == 0)
+    imageContent = [fileCopy imageContent];
+    if (([imageContent writeToURL:v6 atomically:1] & 1) == 0)
     {
       v11 = IMLogHandleForCategory("IMSticker");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -328,26 +328,26 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [(IMSticker *)self stickerGUID];
-        v7 = [(IMSticker *)v5 stickerGUID];
-        v8 = v6;
-        v9 = v7;
+        stickerGUID = [(IMSticker *)self stickerGUID];
+        stickerGUID2 = [(IMSticker *)v5 stickerGUID];
+        v8 = stickerGUID;
+        v9 = stickerGUID2;
         v10 = v9;
         if (v8 == v9)
         {
@@ -374,10 +374,10 @@ LABEL_80:
           }
         }
 
-        v15 = [(IMSticker *)self stickerPackGUID];
-        v16 = [(IMSticker *)v5 stickerPackGUID];
-        v13 = v15;
-        v17 = v16;
+        stickerPackGUID = [(IMSticker *)self stickerPackGUID];
+        stickerPackGUID2 = [(IMSticker *)v5 stickerPackGUID];
+        v13 = stickerPackGUID;
+        v17 = stickerPackGUID2;
         v12 = v17;
         if (v13 == v17)
         {
@@ -404,10 +404,10 @@ LABEL_79:
           }
         }
 
-        v21 = [(IMSticker *)self stickerName];
-        v22 = [(IMSticker *)v5 stickerName];
-        v19 = v21;
-        v23 = v22;
+        stickerName = [(IMSticker *)self stickerName];
+        stickerName2 = [(IMSticker *)v5 stickerName];
+        v19 = stickerName;
+        v23 = stickerName2;
         v18 = v23;
         if (v19 == v23)
         {
@@ -434,10 +434,10 @@ LABEL_78:
           }
         }
 
-        v27 = [(IMSticker *)self textToSpeechName];
-        v28 = [(IMSticker *)v5 textToSpeechName];
-        v25 = v27;
-        v29 = v28;
+        textToSpeechName = [(IMSticker *)self textToSpeechName];
+        textToSpeechName2 = [(IMSticker *)v5 textToSpeechName];
+        v25 = textToSpeechName;
+        v29 = textToSpeechName2;
         v75 = v29;
         v74 = v18;
         if (v25 != v29)
@@ -464,10 +464,10 @@ LABEL_77:
 
 LABEL_30:
               v73 = v25;
-              v33 = [(IMSticker *)self moodCategory];
-              v34 = [(IMSticker *)v5 moodCategory];
-              v35 = v33;
-              v36 = v34;
+              moodCategory = [(IMSticker *)self moodCategory];
+              moodCategory2 = [(IMSticker *)v5 moodCategory];
+              v35 = moodCategory;
+              v36 = moodCategory2;
               v71 = v36;
               v72 = v35;
               if (v35 == v36)
@@ -506,10 +506,10 @@ LABEL_74:
                 }
               }
 
-              v39 = [(IMSticker *)self accessibilityLabel];
-              v40 = [(IMSticker *)v5 accessibilityLabel];
-              v35 = v39;
-              v41 = v40;
+              accessibilityLabel = [(IMSticker *)self accessibilityLabel];
+              accessibilityLabel2 = [(IMSticker *)v5 accessibilityLabel];
+              v35 = accessibilityLabel;
+              v41 = accessibilityLabel2;
               v69 = v35;
               v70 = v41;
               if (v35 != v41)
@@ -532,10 +532,10 @@ LABEL_74:
                     }
 
 LABEL_43:
-                    v44 = [(IMSticker *)self fileURL];
-                    v45 = [(IMSticker *)v5 fileURL];
-                    v46 = v44;
-                    v47 = v45;
+                    fileURL = [(IMSticker *)self fileURL];
+                    fileURL2 = [(IMSticker *)v5 fileURL];
+                    v46 = fileURL;
+                    v47 = fileURL2;
                     v67 = v47;
                     v68 = v46;
                     if (v46 != v47)
@@ -560,10 +560,10 @@ LABEL_71:
                           }
 
 LABEL_50:
-                          v50 = [(IMSticker *)self representations];
-                          v51 = [(IMSticker *)v5 representations];
-                          v46 = v50;
-                          v52 = v51;
+                          representations = [(IMSticker *)self representations];
+                          representations2 = [(IMSticker *)v5 representations];
+                          v46 = representations;
+                          v52 = representations2;
                           v66 = v52;
                           if (v46 == v52)
                           {
@@ -600,10 +600,10 @@ LABEL_69:
                             }
                           }
 
-                          v56 = [(IMSticker *)self externalURI];
-                          v57 = [(IMSticker *)v5 externalURI];
-                          v54 = v56;
-                          v58 = v57;
+                          externalURI = [(IMSticker *)self externalURI];
+                          externalURI2 = [(IMSticker *)v5 externalURI];
+                          v54 = externalURI;
+                          v58 = externalURI2;
                           if (v54 == v58)
                           {
                             v64 = v58;
@@ -637,8 +637,8 @@ LABEL_65:
                             }
                           }
 
-                          v60 = [(IMSticker *)self initialFrameIndex];
-                          v11 = v60 == [(IMSticker *)v5 initialFrameIndex];
+                          initialFrameIndex = [(IMSticker *)self initialFrameIndex];
+                          v11 = initialFrameIndex == [(IMSticker *)v5 initialFrameIndex];
                           goto LABEL_65;
                         }
                       }
@@ -700,52 +700,52 @@ LABEL_81:
 
 - (unint64_t)hash
 {
-  v2 = [(IMSticker *)self uniqueID];
-  v3 = [v2 hash];
+  uniqueID = [(IMSticker *)self uniqueID];
+  v3 = [uniqueID hash];
 
   return v3;
 }
 
-- (IMSticker)initWithStickerPropertyDictionary:(id)a3 stickerPackID:(id)a4 stickerPackBundlePath:(id)a5
+- (IMSticker)initWithStickerPropertyDictionary:(id)dictionary stickerPackID:(id)d stickerPackBundlePath:(id)path
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9 && ([v8 objectForKey:@"IMStickerIdentifier"], v11 = objc_claimAutoreleasedReturnValue(), v11, v10) && v11)
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  pathCopy = path;
+  if (dictionaryCopy && dCopy && ([dictionaryCopy objectForKey:@"IMStickerIdentifier"], v11 = objc_claimAutoreleasedReturnValue(), v11, pathCopy) && v11)
   {
-    v12 = [v8 objectForKey:@"IMStickerIdentifier"];
-    v13 = [v12 im_lastPathComponent];
-    if ([v13 length])
+    v12 = [dictionaryCopy objectForKey:@"IMStickerIdentifier"];
+    im_lastPathComponent = [v12 im_lastPathComponent];
+    if ([im_lastPathComponent length])
     {
       v14 = MEMORY[0x1E695DFF8];
-      v15 = [v10 stringByAppendingPathComponent:v13];
+      v15 = [pathCopy stringByAppendingPathComponent:im_lastPathComponent];
       v29 = [v14 fileURLWithPath:v15];
 
-      v16 = [v8 objectForKeyedSubscript:@"stickerEffectType"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"stickerEffectType"];
       objc_opt_class();
-      v28 = v13;
+      v28 = im_lastPathComponent;
       if (objc_opt_isKindOfClass())
       {
-        v27 = [v16 integerValue];
+        integerValue = [v16 integerValue];
       }
 
       else
       {
-        v27 = -1;
+        integerValue = -1;
       }
 
-      v25 = [v8 objectForKey:@"IMStickerIdentifier"];
-      v26 = [v8 objectForKey:@"IMStickerAccessibilityLabel"];
-      v24 = [v8 objectForKey:@"IMStickerAccessibilityName"];
-      v19 = [v8 objectForKey:@"IMStickerSearchText"];
-      v23 = [v8 objectForKey:@"IMStickerSanitizedPrompt"];
-      v20 = [v8 objectForKey:@"IMStickerMoodCategory"];
-      v21 = [v8 objectForKey:@"IMStickerName"];
-      self = [(IMSticker *)self initWithStickerID:v25 stickerPackID:v9 fileURL:v29 accessibilityLabel:v26 accessibilityName:v24 searchText:v19 sanitizedPrompt:v23 moodCategory:v20 stickerName:v21 effectType:v27];
+      v25 = [dictionaryCopy objectForKey:@"IMStickerIdentifier"];
+      v26 = [dictionaryCopy objectForKey:@"IMStickerAccessibilityLabel"];
+      v24 = [dictionaryCopy objectForKey:@"IMStickerAccessibilityName"];
+      v19 = [dictionaryCopy objectForKey:@"IMStickerSearchText"];
+      v23 = [dictionaryCopy objectForKey:@"IMStickerSanitizedPrompt"];
+      v20 = [dictionaryCopy objectForKey:@"IMStickerMoodCategory"];
+      v21 = [dictionaryCopy objectForKey:@"IMStickerName"];
+      self = [(IMSticker *)self initWithStickerID:v25 stickerPackID:dCopy fileURL:v29 accessibilityLabel:v26 accessibilityName:v24 searchText:v19 sanitizedPrompt:v23 moodCategory:v20 stickerName:v21 effectType:integerValue];
 
-      v17 = self;
-      v13 = v28;
+      selfCopy = self;
+      im_lastPathComponent = v28;
     }
 
     else
@@ -756,7 +756,7 @@ LABEL_81:
         sub_1A88C36B0(v12, v18);
       }
 
-      v17 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -766,18 +766,18 @@ LABEL_81:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v31 = v8;
+      v31 = dictionaryCopy;
       v32 = 2112;
-      v33 = v9;
+      v33 = dCopy;
       v34 = 2112;
-      v35 = v10;
+      v35 = pathCopy;
       _os_log_error_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_ERROR, "initWithStickerPropertyDictionary called with invalid parameters stickerPropertyDictionary %@ stickerPackGUID %@ stickerPackBundlePath %@", buf, 0x20u);
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (id)getSafeExternalURI
@@ -792,8 +792,8 @@ LABEL_81:
     {
       if ([v5 count] == 1)
       {
-        v8 = [v5 firstObject];
-        v7 = [(NSString *)self->_externalURI stringByReplacingOccurrencesOfString:v8 withString:&stru_1F1BB91F0];
+        firstObject = [v5 firstObject];
+        v7 = [(NSString *)self->_externalURI stringByReplacingOccurrencesOfString:firstObject withString:&stru_1F1BB91F0];
       }
 
       else
@@ -830,42 +830,42 @@ LABEL_81:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(IMSticker *)self representations];
+  representations = [(IMSticker *)self representations];
 
   v30 = objc_alloc(objc_opt_class());
-  v31 = [(IMSticker *)self stickerGUID];
-  v5 = [(IMSticker *)self stickerPackGUID];
-  if (v4)
+  stickerGUID = [(IMSticker *)self stickerGUID];
+  stickerPackGUID = [(IMSticker *)self stickerPackGUID];
+  if (representations)
   {
-    v28 = [(IMSticker *)self representations];
-    v6 = v5;
-    v26 = v5;
-    v27 = [(IMSticker *)self stickerEffectType];
-    v7 = [(IMSticker *)self initialFrameIndex];
-    v8 = [(IMSticker *)self externalURI];
-    v9 = [(IMSticker *)self stickerName];
-    v10 = [(IMSticker *)self accessibilityLabel];
-    v11 = [(IMSticker *)self accessibilityName];
-    v12 = [(IMSticker *)self searchText];
-    v13 = [(IMSticker *)self sanitizedPrompt];
-    v14 = [(IMSticker *)self metadata];
-    v15 = [v30 initWithStickerIdentifier:v31 stickerPackID:v6 representations:v28 effectType:v27 initialFrameIndex:v7 externalURI:v8 stickerName:v9 accessibilityLabel:v10 accessibilityName:v11 searchText:v12 sanitizedPrompt:v13 metadata:v14];
+    representations2 = [(IMSticker *)self representations];
+    v6 = stickerPackGUID;
+    v26 = stickerPackGUID;
+    stickerEffectType = [(IMSticker *)self stickerEffectType];
+    initialFrameIndex = [(IMSticker *)self initialFrameIndex];
+    externalURI = [(IMSticker *)self externalURI];
+    stickerName = [(IMSticker *)self stickerName];
+    accessibilityLabel = [(IMSticker *)self accessibilityLabel];
+    accessibilityName = [(IMSticker *)self accessibilityName];
+    searchText = [(IMSticker *)self searchText];
+    sanitizedPrompt = [(IMSticker *)self sanitizedPrompt];
+    metadata = [(IMSticker *)self metadata];
+    v15 = [v30 initWithStickerIdentifier:stickerGUID stickerPackID:v6 representations:representations2 effectType:stickerEffectType initialFrameIndex:initialFrameIndex externalURI:externalURI stickerName:stickerName accessibilityLabel:accessibilityLabel accessibilityName:accessibilityName searchText:searchText sanitizedPrompt:sanitizedPrompt metadata:metadata];
   }
 
   else
   {
-    v29 = [(IMSticker *)self fileURL];
-    v16 = [(IMSticker *)self accessibilityLabel];
-    v17 = [(IMSticker *)self accessibilityName];
-    v18 = [(IMSticker *)self searchText];
-    v19 = [(IMSticker *)self sanitizedPrompt];
-    v20 = [(IMSticker *)self moodCategory];
-    v21 = [(IMSticker *)self stickerName];
-    v22 = [(IMSticker *)self textToSpeechName];
-    v23 = v5;
-    v15 = [v30 initWithStickerID:v31 stickerPackID:v5 fileURL:v29 accessibilityLabel:v16 accessibilityName:v17 searchText:v18 sanitizedPrompt:v19 moodCategory:v20 stickerName:v21 textToSpeechName:v22];
+    fileURL = [(IMSticker *)self fileURL];
+    accessibilityLabel2 = [(IMSticker *)self accessibilityLabel];
+    accessibilityName2 = [(IMSticker *)self accessibilityName];
+    searchText2 = [(IMSticker *)self searchText];
+    sanitizedPrompt2 = [(IMSticker *)self sanitizedPrompt];
+    moodCategory = [(IMSticker *)self moodCategory];
+    stickerName2 = [(IMSticker *)self stickerName];
+    textToSpeechName = [(IMSticker *)self textToSpeechName];
+    v23 = stickerPackGUID;
+    v15 = [v30 initWithStickerID:stickerGUID stickerPackID:stickerPackGUID fileURL:fileURL accessibilityLabel:accessibilityLabel2 accessibilityName:accessibilityName2 searchText:searchText2 sanitizedPrompt:sanitizedPrompt2 moodCategory:moodCategory stickerName:stickerName2 textToSpeechName:textToSpeechName];
 
     [v15 setStickerEffectType:{-[IMSticker stickerEffectType](self, "stickerEffectType")}];
   }
@@ -875,23 +875,23 @@ LABEL_81:
   return v24;
 }
 
-+ (id)userInfoDictionaryWithLayoutIntent:(unint64_t)a3 parentPreviewWidth:(double)a4 xScalar:(double)a5 yScalar:(double)a6 scale:(double)a7 rotation:(double)a8 initialFrameIndex:(unint64_t)a9 stickerPositionVersion:(unint64_t)a10 externalURI:(id)a11
++ (id)userInfoDictionaryWithLayoutIntent:(unint64_t)intent parentPreviewWidth:(double)width xScalar:(double)scalar yScalar:(double)yScalar scale:(double)scale rotation:(double)rotation initialFrameIndex:(unint64_t)index stickerPositionVersion:(unint64_t)self0 externalURI:(id)self1
 {
   v33[10] = *MEMORY[0x1E69E9840];
   v18 = MEMORY[0x1E696AEC0];
-  v31 = a11;
-  v29 = [v18 stringWithFormat:@"%tu", a3];
+  iCopy = i;
+  intent = [v18 stringWithFormat:@"%tu", intent];
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%tu", 0];
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.8f", *&a4];
-  v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.8f", *&a5];
-  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.8f", *&a6];
-  v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.8f", *&a7];
-  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a9];
-  v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.8f", *&a8];
-  v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a10];
+  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.8f", *&width];
+  v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.8f", *&scalar];
+  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.8f", *&yScalar];
+  v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.8f", *&scale];
+  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.8f", *&rotation];
+  v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:version];
   v32[0] = @"sli";
   v32[1] = @"sai";
-  v33[0] = v29;
+  v33[0] = intent;
   v33[1] = v19;
   v32[2] = @"spw";
   v32[3] = @"sxs";
@@ -908,21 +908,21 @@ LABEL_81:
   v32[8] = @"spv";
   v32[9] = @"suri";
   v33[8] = v26;
-  v33[9] = v31;
+  v33[9] = iCopy;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:10];
 
   return v27;
 }
 
-+ (id)userInfoDictionaryWithExternalURI:(id)a3
++ (id)userInfoDictionaryWithExternalURI:(id)i
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  iCopy = i;
+  v4 = iCopy;
+  if (iCopy)
   {
     v8 = @"suri";
-    v9[0] = v3;
+    v9[0] = iCopy;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   }
 
@@ -940,7 +940,7 @@ LABEL_81:
   return v5;
 }
 
-+ (IMAssociatedMessageGeometryDescriptor)geometryDescriptorFromUserInfoDictionary:(SEL)a3
++ (IMAssociatedMessageGeometryDescriptor)geometryDescriptorFromUserInfoDictionary:(SEL)dictionary
 {
   v5 = a4;
   *&retstr->var0 = IMAssociatedMessageGeometryDescriptorZero;
@@ -954,15 +954,15 @@ LABEL_81:
     if (v6)
     {
       v7 = [v30 objectForKeyedSubscript:@"sli"];
-      v8 = [v7 integerValue];
+      integerValue = [v7 integerValue];
     }
 
     else
     {
-      v8 = 0;
+      integerValue = 0;
     }
 
-    retstr->var0 = v8;
+    retstr->var0 = integerValue;
 
     v9 = [v30 objectForKeyedSubscript:@"sli"];
     v10 = 0.0;

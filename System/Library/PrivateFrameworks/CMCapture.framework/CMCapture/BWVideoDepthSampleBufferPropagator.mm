@@ -1,14 +1,14 @@
 @interface BWVideoDepthSampleBufferPropagator
-- (BWVideoDepthSampleBufferPropagator)initWithVideoRequirements:(id)a3 cloneRequirements:(id)a4;
+- (BWVideoDepthSampleBufferPropagator)initWithVideoRequirements:(id)requirements cloneRequirements:(id)cloneRequirements;
 @end
 
 @implementation BWVideoDepthSampleBufferPropagator
 
-- (BWVideoDepthSampleBufferPropagator)initWithVideoRequirements:(id)a3 cloneRequirements:(id)a4
+- (BWVideoDepthSampleBufferPropagator)initWithVideoRequirements:(id)requirements cloneRequirements:(id)cloneRequirements
 {
   v5.receiver = self;
   v5.super_class = BWVideoDepthSampleBufferPropagator;
-  return [(BWInferenceSampleBufferPropagator *)&v5 initWithVideoRequirements:a3 cloneRequirements:a4 metadataRequirements:0 updateMetadataWithCropRect:0];
+  return [(BWInferenceSampleBufferPropagator *)&v5 initWithVideoRequirements:requirements cloneRequirements:cloneRequirements metadataRequirements:0 updateMetadataWithCropRect:0];
 }
 
 @end

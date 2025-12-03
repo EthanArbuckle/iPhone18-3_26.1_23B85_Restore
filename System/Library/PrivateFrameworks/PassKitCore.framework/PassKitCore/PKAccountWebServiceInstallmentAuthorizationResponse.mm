@@ -1,22 +1,22 @@
 @interface PKAccountWebServiceInstallmentAuthorizationResponse
-- (PKAccountWebServiceInstallmentAuthorizationResponse)initWithData:(id)a3;
+- (PKAccountWebServiceInstallmentAuthorizationResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceInstallmentAuthorizationResponse
 
-- (PKAccountWebServiceInstallmentAuthorizationResponse)initWithData:(id)a3
+- (PKAccountWebServiceInstallmentAuthorizationResponse)initWithData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PKAccountWebServiceInstallmentAuthorizationResponse;
-  v3 = [(PKWebServiceResponse *)&v16 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v16 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_5;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -42,7 +42,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [v5 PKStringForKey:@"authorizationToken"];
+  v6 = [jSONObject PKStringForKey:@"authorizationToken"];
   authorizationToken = v4->_authorizationToken;
   v4->_authorizationToken = v6;
 

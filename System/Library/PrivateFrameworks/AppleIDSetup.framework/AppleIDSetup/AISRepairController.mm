@@ -1,22 +1,22 @@
 @interface AISRepairController
-- (AISRepairController)initWithQueue:(id)a3;
-- (void)generateSymptomReportWithContext:(id)a3 completionHandler:(id)a4;
-- (void)repairWithContext:(id)a3 completionHandler:(id)a4;
+- (AISRepairController)initWithQueue:(id)queue;
+- (void)generateSymptomReportWithContext:(id)context completionHandler:(id)handler;
+- (void)repairWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation AISRepairController
 
-- (AISRepairController)initWithQueue:(id)a3
+- (AISRepairController)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = AISRepairController;
   v5 = [(AISRepairController *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
-      v6 = v4;
+      v6 = queueCopy;
       queue = v5->_queue;
       v5->_queue = v6;
     }
@@ -37,20 +37,20 @@
   return v5;
 }
 
-- (void)repairWithContext:(id)a3 completionHandler:(id)a4
+- (void)repairWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AISRepairController *)self implementation];
-  [v8 repairWithContext:v7 completionHandler:v6];
+  handlerCopy = handler;
+  contextCopy = context;
+  implementation = [(AISRepairController *)self implementation];
+  [implementation repairWithContext:contextCopy completionHandler:handlerCopy];
 }
 
-- (void)generateSymptomReportWithContext:(id)a3 completionHandler:(id)a4
+- (void)generateSymptomReportWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AISRepairController *)self implementation];
-  [v8 generateSymptomReportWithContext:v7 completionHandler:v6];
+  handlerCopy = handler;
+  contextCopy = context;
+  implementation = [(AISRepairController *)self implementation];
+  [implementation generateSymptomReportWithContext:contextCopy completionHandler:handlerCopy];
 }
 
 @end

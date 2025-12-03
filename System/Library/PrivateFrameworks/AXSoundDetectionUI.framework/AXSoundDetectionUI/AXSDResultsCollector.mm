@@ -1,6 +1,6 @@
 @interface AXSDResultsCollector
 - (AXSDResultsCollector)init;
-- (void)receivedObservation:(id)a3 forDetector:(id)a4;
+- (void)receivedObservation:(id)observation forDetector:(id)detector;
 @end
 
 @implementation AXSDResultsCollector
@@ -24,10 +24,10 @@
   return v2;
 }
 
-- (void)receivedObservation:(id)a3 forDetector:(id)a4
+- (void)receivedObservation:(id)observation forDetector:(id)detector
 {
-  v5 = a3;
-  v6 = [[AXSDDetectionResult alloc] initWithResult:v5];
+  observationCopy = observation;
+  v6 = [[AXSDDetectionResult alloc] initWithResult:observationCopy];
 
   [(NSMutableArray *)self->_results addObject:v6];
 }

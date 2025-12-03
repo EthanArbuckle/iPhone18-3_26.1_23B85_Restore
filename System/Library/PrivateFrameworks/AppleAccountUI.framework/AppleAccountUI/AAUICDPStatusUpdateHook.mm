@@ -1,35 +1,35 @@
 @interface AAUICDPStatusUpdateHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (unint64_t)_presentationTypeForString:(id)a3;
-- (void)_handleCompletionWithCallback:(id)a3 onModel:(id)a4 forHookAction:(id)a5 userAction:(unint64_t)a6 error:(id)a7;
-- (void)_handleUserInteractionWithCallback:(id)a3 onModel:(id)a4 forHookAction:(id)a5 userAction:(unint64_t)a6;
-- (void)_invokeJSCallback:(id)a3 onModel:(id)a4 withArguments:(id)a5;
-- (void)_processAttributes:(id)a3;
-- (void)_updateStatusWithAction:(id)a3 forObjectModel:(id)a4 completion:(id)a5;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (unint64_t)_presentationTypeForString:(id)string;
+- (void)_handleCompletionWithCallback:(id)callback onModel:(id)model forHookAction:(id)action userAction:(unint64_t)userAction error:(id)error;
+- (void)_handleUserInteractionWithCallback:(id)callback onModel:(id)model forHookAction:(id)action userAction:(unint64_t)userAction;
+- (void)_invokeJSCallback:(id)callback onModel:(id)model withArguments:(id)arguments;
+- (void)_processAttributes:(id)attributes;
+- (void)_updateStatusWithAction:(id)action forObjectModel:(id)model completion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUICDPStatusUpdateHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v4 = [a3 name];
-  v5 = [(AAUICDPStatusUpdateHook *)self changeControllerForAction:v4];
+  name = [element name];
+  v5 = [(AAUICDPStatusUpdateHook *)self changeControllerForAction:name];
   LOBYTE(self) = v5 != 0;
 
   return self;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   objc_opt_class();
-  v5 = [v4 clientInfo];
+  clientInfo = [modelCopy clientInfo];
 
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  v6 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -46,27 +46,27 @@
   return v9;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  [(AAUICDPStatusUpdateHook *)self _processAttributes:a4];
-  v13 = [v12 name];
+  completionCopy = completion;
+  modelCopy = model;
+  elementCopy = element;
+  [(AAUICDPStatusUpdateHook *)self _processAttributes:attributes];
+  name = [elementCopy name];
 
-  [(AAUICDPStatusUpdateHook *)self _updateStatusWithAction:v13 forObjectModel:v11 completion:v10];
+  [(AAUICDPStatusUpdateHook *)self _updateStatusWithAction:name forObjectModel:modelCopy completion:completionCopy];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 clientInfo];
-  [(AAUICDPStatusUpdateHook *)self _processAttributes:v7];
+  modelCopy = model;
+  completionCopy = completion;
+  clientInfo = [modelCopy clientInfo];
+  [(AAUICDPStatusUpdateHook *)self _processAttributes:clientInfo];
 
   objc_opt_class();
-  v8 = [v11 clientInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  clientInfo2 = [modelCopy clientInfo];
+  v9 = [clientInfo2 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -77,14 +77,14 @@
     v10 = 0;
   }
 
-  [(AAUICDPStatusUpdateHook *)self _updateStatusWithAction:v10 forObjectModel:v11 completion:v6];
+  [(AAUICDPStatusUpdateHook *)self _updateStatusWithAction:v10 forObjectModel:modelCopy completion:completionCopy];
 }
 
-- (void)_processAttributes:(id)a3
+- (void)_processAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C7088]];
+  v5 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69C7088]];
 
   v6 = v5;
   if (objc_opt_isKindOfClass())
@@ -105,20 +105,20 @@
   }
 }
 
-- (unint64_t)_presentationTypeForString:(id)a3
+- (unint64_t)_presentationTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69C7078]])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:*MEMORY[0x1E69C7078]])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69C7080]])
+  else if ([stringCopy isEqualToString:*MEMORY[0x1E69C7080]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69C7090]])
+  else if ([stringCopy isEqualToString:*MEMORY[0x1E69C7090]])
   {
     v4 = 2;
   }
@@ -131,17 +131,17 @@
   return v4;
 }
 
-- (void)_updateStatusWithAction:(id)a3 forObjectModel:(id)a4 completion:(id)a5
+- (void)_updateStatusWithAction:(id)action forObjectModel:(id)model completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AAUICDPStatusUpdateHook *)self changeControllerForAction:v8];
+  actionCopy = action;
+  modelCopy = model;
+  completionCopy = completion;
+  v11 = [(AAUICDPStatusUpdateHook *)self changeControllerForAction:actionCopy];
   if (v11)
   {
-    v12 = [(AAUICDPStatusUpdateHook *)self delegate];
-    v13 = [v12 presentationContextForHook:self];
+    delegate = [(AAUICDPStatusUpdateHook *)self delegate];
+    v13 = [delegate presentationContextForHook:self];
 
     v14 = objc_alloc_init(MEMORY[0x1E69C7038]);
     serverHookResponse = self->_serverHookResponse;
@@ -153,11 +153,11 @@
     v28[2] = __77__AAUICDPStatusUpdateHook__updateStatusWithAction_forObjectModel_completion___block_invoke;
     v28[3] = &unk_1E820D288;
     objc_copyWeak(&v32, &location);
-    v16 = v10;
+    v16 = completionCopy;
     v31 = v16;
-    v17 = v9;
+    v17 = modelCopy;
     v29 = v17;
-    v18 = v8;
+    v18 = actionCopy;
     v30 = v18;
     [v11 setUserActionCallback:v28];
     v23[0] = MEMORY[0x1E69E9820];
@@ -189,11 +189,11 @@
     v22 = _AAUILogSystem();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
-      [AAUICDPStatusUpdateHook _updateStatusWithAction:v8 forObjectModel:v22 completion:?];
+      [AAUICDPStatusUpdateHook _updateStatusWithAction:actionCopy forObjectModel:v22 completion:?];
     }
 
     v13 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-3];
-    (*(v10 + 2))(v10, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 
@@ -236,18 +236,18 @@ void __77__AAUICDPStatusUpdateHook__updateStatusWithAction_forObjectModel_comple
   }
 }
 
-- (void)_handleUserInteractionWithCallback:(id)a3 onModel:(id)a4 forHookAction:(id)a5 userAction:(unint64_t)a6
+- (void)_handleUserInteractionWithCallback:(id)callback onModel:(id)model forHookAction:(id)action userAction:(unint64_t)userAction
 {
   v19 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 - 1 < 2)
+  callbackCopy = callback;
+  modelCopy = model;
+  actionCopy = action;
+  if (userAction - 1 < 2)
   {
     goto LABEL_4;
   }
 
-  if (!a6)
+  if (!userAction)
   {
     v14 = _AAUILogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -255,7 +255,7 @@ void __77__AAUICDPStatusUpdateHook__updateStatusWithAction_forObjectModel_comple
       v15 = 138412546;
       v16 = objc_opt_class();
       v17 = 2112;
-      v18 = v12;
+      v18 = actionCopy;
       _os_log_impl(&dword_1C5355000, v14, OS_LOG_TYPE_DEFAULT, "%@: Status for %@ not being updated due to user decline.", &v15, 0x16u);
     }
 
@@ -263,24 +263,24 @@ void __77__AAUICDPStatusUpdateHook__updateStatusWithAction_forObjectModel_comple
     goto LABEL_8;
   }
 
-  if (a6 == 3)
+  if (userAction == 3)
   {
 LABEL_4:
     v13 = @"onUserAccept";
 LABEL_8:
-    [(AAUICDPStatusUpdateHook *)self _invokeJSCallback:v13 onModel:v11];
+    [(AAUICDPStatusUpdateHook *)self _invokeJSCallback:v13 onModel:modelCopy];
   }
 }
 
-- (void)_handleCompletionWithCallback:(id)a3 onModel:(id)a4 forHookAction:(id)a5 userAction:(unint64_t)a6 error:(id)a7
+- (void)_handleCompletionWithCallback:(id)callback onModel:(id)model forHookAction:(id)action userAction:(unint64_t)userAction error:(id)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = v15;
-  if (!a6 && !v15)
+  callbackCopy = callback;
+  modelCopy = model;
+  actionCopy = action;
+  errorCopy = error;
+  v16 = errorCopy;
+  if (!userAction && !errorCopy)
   {
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E698DB28] code:-7003 userInfo:0];
     v17 = _AAUILogSystem();
@@ -289,14 +289,14 @@ LABEL_8:
       *buf = 138412802;
       v32 = objc_opt_class();
       v33 = 2112;
-      v34 = v14;
+      v34 = actionCopy;
       v35 = 2112;
       v36 = v16;
       _os_log_debug_impl(&dword_1C5355000, v17, OS_LOG_TYPE_DEBUG, "%@: User declined status update for %@ and no error was provided. Using %@", buf, 0x20u);
     }
   }
 
-  v19 = a6 != 3 && v16 == 0;
+  v19 = userAction != 3 && v16 == 0;
   v20 = _AAUILogSystem();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -310,7 +310,7 @@ LABEL_8:
       v22 = @"YES";
     }
 
-    v34 = v14;
+    v34 = actionCopy;
     v35 = 2112;
     v36 = v22;
     v37 = 2112;
@@ -320,38 +320,38 @@ LABEL_8:
 
   if (v16)
   {
-    v23 = v16;
+    null = v16;
   }
 
   else
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v23;
+  v24 = null;
   v25 = [MEMORY[0x1E696AD98] numberWithBool:v19];
   v30[0] = v25;
   v30[1] = v24;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
-  [(AAUICDPStatusUpdateHook *)self _invokeJSCallback:@"onCompletion" onModel:v13 withArguments:v26];
+  [(AAUICDPStatusUpdateHook *)self _invokeJSCallback:@"onCompletion" onModel:modelCopy withArguments:v26];
 
-  v27 = [(AAUICDPStatusUpdateHook *)self additionalPayloadForAction:v14 error:v16];
+  v27 = [(AAUICDPStatusUpdateHook *)self additionalPayloadForAction:actionCopy error:v16];
   [(RUIServerHookResponse *)self->_serverHookResponse setAdditionalPayload:v27];
 
-  v29 = a6 == 3 || v16 == 0;
-  v12[2](v12, v29, v16);
-  [(AAUICDPStatusUpdateHook *)self postCompletionProcessingForAction:v14 error:v16];
+  v29 = userAction == 3 || v16 == 0;
+  callbackCopy[2](callbackCopy, v29, v16);
+  [(AAUICDPStatusUpdateHook *)self postCompletionProcessingForAction:actionCopy error:v16];
 }
 
-- (void)_invokeJSCallback:(id)a3 onModel:(id)a4 withArguments:(id)a5
+- (void)_invokeJSCallback:(id)callback onModel:(id)model withArguments:(id)arguments
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  callbackCopy = callback;
+  modelCopy = model;
+  argumentsCopy = arguments;
   objc_opt_class();
-  v10 = [v8 clientInfo];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  clientInfo = [modelCopy clientInfo];
+  v11 = [clientInfo objectForKeyedSubscript:callbackCopy];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -372,15 +372,15 @@ LABEL_8:
       v17 = 138413058;
       v18 = objc_opt_class();
       v19 = 2112;
-      v20 = v7;
+      v20 = callbackCopy;
       v21 = 2112;
       v22 = v12;
       v23 = 2112;
-      v24 = v9;
+      v24 = argumentsCopy;
       _os_log_impl(&dword_1C5355000, v14, OS_LOG_TYPE_DEFAULT, "%@: Calling %@ callback using %@ with arguments: %@", &v17, 0x2Au);
     }
 
-    v16 = [v8 invokeScriptFunction:v12 withArguments:v9];
+    v16 = [modelCopy invokeScriptFunction:v12 withArguments:argumentsCopy];
   }
 
   else
@@ -390,7 +390,7 @@ LABEL_8:
       v17 = 138412546;
       v18 = objc_opt_class();
       v19 = 2112;
-      v20 = v7;
+      v20 = callbackCopy;
       _os_log_impl(&dword_1C5355000, v14, OS_LOG_TYPE_DEFAULT, "%@: Skipping %@ callback, no function provided.", &v17, 0x16u);
     }
   }

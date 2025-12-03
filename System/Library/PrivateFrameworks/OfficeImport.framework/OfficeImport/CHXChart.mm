@@ -1,27 +1,27 @@
 @interface CHXChart
-+ (id)readFromXmlDocument:(_xmlDoc *)a3 chartStyleId:(int)a4 state:(id)a5;
-+ (id)readFromXmlDocument:(_xmlDoc *)a3 state:(id)a4;
-+ (int)chdDisplayBlanksAsEnumFromXmlElement:(_xmlNode *)a3;
-+ (void)readChartFromXmlNode:(_xmlNode *)a3 chart:(id)a4 state:(id)a5;
-+ (void)readDefaultTextPropertiesFromXmlNode:(_xmlNode *)a3 chart:(id)a4 state:(id)a5;
++ (id)readFromXmlDocument:(_xmlDoc *)document chartStyleId:(int)id state:(id)state;
++ (id)readFromXmlDocument:(_xmlDoc *)document state:(id)state;
++ (int)chdDisplayBlanksAsEnumFromXmlElement:(_xmlNode *)element;
++ (void)readChartFromXmlNode:(_xmlNode *)node chart:(id)chart state:(id)state;
++ (void)readDefaultTextPropertiesFromXmlNode:(_xmlNode *)node chart:(id)chart state:(id)state;
 @end
 
 @implementation CHXChart
 
-+ (id)readFromXmlDocument:(_xmlDoc *)a3 state:(id)a4
++ (id)readFromXmlDocument:(_xmlDoc *)document state:(id)state
 {
-  v6 = a4;
-  if (!a3)
+  stateCopy = state;
+  if (!document)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v7 = OCXGetRootElement(a3);
-  v8 = [v6 drawingState];
-  v9 = [v8 OAXChartNamespace];
-  v10 = OCXFindChild(v7, v9, "style");
+  v7 = OCXGetRootElement(document);
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v10 = OCXFindChild(v7, oAXChartNamespace, "style");
 
-  if (v10 || (v12 = OCXFindChild(v7, OCXMarkupCompatibilityNamespace, "AlternateContent"), (v13 = v12) != 0) && ((v14 = OCXFindChild(v12, OCXMarkupCompatibilityNamespace, "Choice")) != 0 && ([v6 drawingState], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "OAXChartNamespace"), v16 = objc_claimAutoreleasedReturnValue(), v10 = OCXFindChild(v14, v16, "style"), v16, v15, v10) || (v17 = OCXFindChild(v13, OCXMarkupCompatibilityNamespace, "Fallback")) != 0 && (objc_msgSend(v6, "drawingState"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "OAXChartNamespace"), v19 = objc_claimAutoreleasedReturnValue(), v10 = OCXFindChild(v17, v19, "style"), v19, v18, v10)))
+  if (v10 || (v12 = OCXFindChild(v7, OCXMarkupCompatibilityNamespace, "AlternateContent"), (v13 = v12) != 0) && ((v14 = OCXFindChild(v12, OCXMarkupCompatibilityNamespace, "Choice")) != 0 && ([stateCopy drawingState], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "OAXChartNamespace"), v16 = objc_claimAutoreleasedReturnValue(), v10 = OCXFindChild(v14, v16, "style"), v16, v15, v10) || (v17 = OCXFindChild(v13, OCXMarkupCompatibilityNamespace, "Fallback")) != 0 && (objc_msgSend(stateCopy, "drawingState"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "OAXChartNamespace"), v19 = objc_claimAutoreleasedReturnValue(), v10 = OCXFindChild(v17, v19, "style"), v19, v18, v10)))
   {
     v11 = CXDefaultUnsignedLongAttribute(v10, CXNoNamespace, "val", 2);
     if (v11 - 49 <= 0xFFFFFFFFFFFFFFCFLL)
@@ -35,29 +35,29 @@
     v11 = 2;
   }
 
-  v20 = [a1 readFromXmlDocument:a3 chartStyleId:v11 state:v6];
+  v20 = [self readFromXmlDocument:document chartStyleId:v11 state:stateCopy];
 
   return v20;
 }
 
-+ (id)readFromXmlDocument:(_xmlDoc *)a3 chartStyleId:(int)a4 state:(id)a5
++ (id)readFromXmlDocument:(_xmlDoc *)document chartStyleId:(int)id state:(id)state
 {
-  v5 = *&a4;
-  v8 = a5;
-  if (!a3)
+  v5 = *&id;
+  stateCopy = state;
+  if (!document)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v9 = OCXGetRootElement(a3);
+  v9 = OCXGetRootElement(document);
   v10 = objc_alloc_init(CHDChart);
   [(CHDChart *)v10 setStyleId:v5];
-  [v8 setChart:v10];
-  v11 = [v8 drawingState];
-  v12 = [v11 client];
+  [stateCopy setChart:v10];
+  drawingState = [stateCopy drawingState];
+  client = [drawingState client];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v8 autoStyling];
+    autoStyling = [stateCopy autoStyling];
     v14 = objc_opt_respondsToSelector();
 
     if ((v14 & 1) == 0)
@@ -65,18 +65,18 @@
       goto LABEL_7;
     }
 
-    v11 = [v8 autoStyling];
-    v12 = [v8 drawingState];
-    v15 = [v12 client];
-    [v11 setAutoChartFillIsHollow:{objc_msgSend(v15, "chartAutoFillIsHollow")}];
+    drawingState = [stateCopy autoStyling];
+    client = [stateCopy drawingState];
+    v12Client = [client client];
+    [drawingState setAutoChartFillIsHollow:{objc_msgSend(v12Client, "chartAutoFillIsHollow")}];
   }
 
 LABEL_7:
-  v16 = [v8 drawingState];
-  v17 = [v16 client];
+  drawingState2 = [stateCopy drawingState];
+  client2 = [drawingState2 client];
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v8 autoStyling];
+    autoStyling2 = [stateCopy autoStyling];
     v19 = objc_opt_respondsToSelector();
 
     if ((v19 & 1) == 0)
@@ -84,36 +84,36 @@ LABEL_7:
       goto LABEL_11;
     }
 
-    v16 = [v8 autoStyling];
-    v17 = [v8 drawingState];
-    v20 = [v17 client];
-    [v16 setAutoChartStrokeIsHollow:{objc_msgSend(v20, "chartAutoStrokeIsHollow")}];
+    drawingState2 = [stateCopy autoStyling];
+    client2 = [stateCopy drawingState];
+    v17Client = [client2 client];
+    [drawingState2 setAutoChartStrokeIsHollow:{objc_msgSend(v17Client, "chartAutoStrokeIsHollow")}];
   }
 
 LABEL_11:
   [(CHDChart *)v10 setLogicalBounds:0.0, 0.0, 1.0, 1.0];
-  v21 = [v8 drawingState];
-  v22 = [v21 excelState];
-  v23 = [v22 currentSheet];
-  [(CHDChart *)v10 setSheet:v23];
+  drawingState3 = [stateCopy drawingState];
+  excelState = [drawingState3 excelState];
+  currentSheet = [excelState currentSheet];
+  [(CHDChart *)v10 setSheet:currentSheet];
 
-  [a1 readDefaultTextPropertiesFromXmlNode:v9 chart:v10 state:v8];
-  v24 = [v8 drawingState];
-  v25 = [v24 OAXChartNamespace];
-  v26 = OCXFindRequiredChild(v9, v25, "chart");
+  [self readDefaultTextPropertiesFromXmlNode:v9 chart:v10 state:stateCopy];
+  drawingState4 = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState4 OAXChartNamespace];
+  v26 = OCXFindRequiredChild(v9, oAXChartNamespace, "chart");
 
-  [a1 readChartFromXmlNode:v26 chart:v10 state:v8];
-  [CHXUserShapes readFromCharSpaceNode:v9 state:v8];
-  v27 = [v8 chartPart];
-  v28 = v27;
-  if (v27)
+  [self readChartFromXmlNode:v26 chart:v10 state:stateCopy];
+  [CHXUserShapes readFromCharSpaceNode:v9 state:stateCopy];
+  chartPart = [stateCopy chartPart];
+  v28 = chartPart;
+  if (chartPart)
   {
-    v29 = [v27 firstPartWithRelationshipOfType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/themeOverride"];
+    v29 = [chartPart firstPartWithRelationshipOfType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/themeOverride"];
     if (v29)
     {
       v30 = objc_alloc_init(OADThemeOverrides);
-      v31 = [v8 drawingState];
-      [OAXThemeOverrides readFromPackagePart:v29 toThemeOverrides:v30 drawingState:v31];
+      drawingState5 = [stateCopy drawingState];
+      [OAXThemeOverrides readFromPackagePart:v29 toThemeOverrides:v30 drawingState:drawingState5];
 
       [(CHDChart *)v10 setThemeOverrides:v30];
     }
@@ -122,172 +122,172 @@ LABEL_11:
   return v10;
 }
 
-+ (void)readChartFromXmlNode:(_xmlNode *)a3 chart:(id)a4 state:(id)a5
++ (void)readChartFromXmlNode:(_xmlNode *)node chart:(id)chart state:(id)state
 {
-  v66 = a4;
-  v7 = a5;
-  parent = a3->parent;
+  chartCopy = chart;
+  stateCopy = state;
+  parent = node->parent;
   v65 = objc_alloc_init(OADGraphicProperties);
-  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v65 element:parent state:v7];
-  v9 = [v7 autoStyling];
-  [v9 resolveChartAreaGraphicProperties:v65];
+  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v65 element:parent state:stateCopy];
+  autoStyling = [stateCopy autoStyling];
+  [autoStyling resolveChartAreaGraphicProperties:v65];
 
-  [v66 setChartAreaGraphicProperties:v65];
-  v10 = [v7 drawingState];
-  v11 = [v10 OAXChartNamespace];
-  v12 = OCXFindChild(a3, v11, "floor");
+  [chartCopy setChartAreaGraphicProperties:v65];
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v12 = OCXFindChild(node, oAXChartNamespace, "floor");
 
   v13 = objc_alloc_init(OADGraphicProperties);
-  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v13 element:v12 state:v7];
-  v14 = [v7 autoStyling];
-  [v14 resolveFloorGraphicProperties:v13];
+  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v13 element:v12 state:stateCopy];
+  autoStyling2 = [stateCopy autoStyling];
+  [autoStyling2 resolveFloorGraphicProperties:v13];
 
-  [v66 setFloorGraphicProperties:v13];
-  v15 = [v7 drawingState];
-  v16 = [v15 OAXChartNamespace];
-  v17 = OCXFindChild(a3, v16, "backWall");
+  [chartCopy setFloorGraphicProperties:v13];
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v17 = OCXFindChild(node, oAXChartNamespace2, "backWall");
 
   v18 = objc_alloc_init(OADGraphicProperties);
-  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v18 element:v17 state:v7];
-  v19 = [v7 autoStyling];
-  [v19 resolveWallGraphicProperties:v18];
+  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v18 element:v17 state:stateCopy];
+  autoStyling3 = [stateCopy autoStyling];
+  [autoStyling3 resolveWallGraphicProperties:v18];
 
-  [v66 setBackWallGraphicProperties:v18];
-  v20 = [v7 drawingState];
-  v21 = [v20 OAXChartNamespace];
-  v22 = OCXFindChild(a3, v21, "sideWall");
+  [chartCopy setBackWallGraphicProperties:v18];
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v22 = OCXFindChild(node, oAXChartNamespace3, "sideWall");
 
   v23 = objc_alloc_init(OADGraphicProperties);
-  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v23 element:v22 state:v7];
-  v24 = [v7 autoStyling];
-  [v24 resolveWallGraphicProperties:v23];
+  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v23 element:v22 state:stateCopy];
+  autoStyling4 = [stateCopy autoStyling];
+  [autoStyling4 resolveWallGraphicProperties:v23];
 
-  [v66 setSideWallGraphicProperties:v23];
-  v25 = [v7 drawingState];
-  v26 = [v25 OAXChartNamespace];
-  v27 = OCXFindChild(a3, v26, "view3D");
+  [chartCopy setSideWallGraphicProperties:v23];
+  drawingState4 = [stateCopy drawingState];
+  oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+  v27 = OCXFindChild(node, oAXChartNamespace4, "view3D");
 
   if (v27)
   {
-    v28 = [CHXView3D chdView3DFromXmlView3DElement:v27 state:v7];
-    [v66 setView3D:v28];
+    v28 = [CHXView3D chdView3DFromXmlView3DElement:v27 state:stateCopy];
+    [chartCopy setView3D:v28];
   }
 
-  v29 = [v7 drawingState];
-  v30 = [v29 OAXChartNamespace];
-  v31 = OCXFindRequiredChild(a3, v30, "plotArea");
+  drawingState5 = [stateCopy drawingState];
+  oAXChartNamespace5 = [drawingState5 OAXChartNamespace];
+  v31 = OCXFindRequiredChild(node, oAXChartNamespace5, "plotArea");
 
   if (!v31)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v63 = [CHXPlotArea readFrom:v31 state:v7];
-  [v66 setPlotArea:?];
-  v32 = [v7 drawingState];
-  v33 = [v32 OAXChartNamespace];
-  v34 = OCXFindChild(a3, v33, "legend");
+  v63 = [CHXPlotArea readFrom:v31 state:stateCopy];
+  [chartCopy setPlotArea:?];
+  drawingState6 = [stateCopy drawingState];
+  oAXChartNamespace6 = [drawingState6 OAXChartNamespace];
+  v34 = OCXFindChild(node, oAXChartNamespace6, "legend");
 
   if (v34)
   {
-    v35 = [CHXLegend chdLegendFromXmlLegendElement:v34 state:v7];
-    [v66 setLegend:v35];
+    v35 = [CHXLegend chdLegendFromXmlLegendElement:v34 state:stateCopy];
+    [chartCopy setLegend:v35];
   }
 
-  v36 = [v7 drawingState];
-  v37 = [v36 OAXChartNamespace];
-  v38 = OCXFindChild(a3, v37, "title");
+  drawingState7 = [stateCopy drawingState];
+  oAXChartNamespace7 = [drawingState7 OAXChartNamespace];
+  v38 = OCXFindChild(node, oAXChartNamespace7, "title");
 
   if (v38)
   {
-    [v66 setAutoTitleDeleted:0];
-    v39 = [CHXTitle chdTitleFromXmlTitleElement:v38 isChartTitle:1 state:v7];
-    [v66 setTitle:v39];
+    [chartCopy setAutoTitleDeleted:0];
+    v39 = [CHXTitle chdTitleFromXmlTitleElement:v38 isChartTitle:1 state:stateCopy];
+    [chartCopy setTitle:v39];
 
-    v40 = [v66 title];
-    v41 = [v40 isAutoGenerated];
+    title = [chartCopy title];
+    isAutoGenerated = [title isAutoGenerated];
 
-    if (v41)
+    if (isAutoGenerated)
     {
-      v42 = [v66 mainType];
-      v43 = [v7 resources];
-      v44 = [v42 defaultTitleWithResources:v43];
+      mainType = [chartCopy mainType];
+      resources = [stateCopy resources];
+      v44 = [mainType defaultTitleWithResources:resources];
 
       if (v44)
       {
-        v45 = [v66 title];
-        [v45 setLastCachedName:v44];
+        title2 = [chartCopy title];
+        [title2 setLastCachedName:v44];
       }
     }
 
-    v46 = [v66 title];
-    v47 = [v46 lastCachedName];
+    title3 = [chartCopy title];
+    lastCachedName = [title3 lastCachedName];
 
-    if (!v47)
+    if (!lastCachedName)
     {
-      v48 = [v66 title];
+      title4 = [chartCopy title];
       v49 = +[EDString string];
-      [v48 setLastCachedName:v49];
+      [title4 setLastCachedName:v49];
     }
 
-    v50 = [v66 title];
-    v51 = [v50 lastCachedName];
-    v52 = [v51 runs];
+    title5 = [chartCopy title];
+    lastCachedName2 = [title5 lastCachedName];
+    runs = [lastCachedName2 runs];
 
-    if (!v52)
+    if (!runs)
     {
-      v53 = [v66 title];
-      v54 = [v53 lastCachedName];
-      v55 = [v66 title];
-      v56 = [CHXFont defaultEdRunCollectionForTitle:v55 titleElement:v38 state:v7];
-      [v54 setRuns:v56];
+      title6 = [chartCopy title];
+      lastCachedName3 = [title6 lastCachedName];
+      title7 = [chartCopy title];
+      v56 = [CHXFont defaultEdRunCollectionForTitle:title7 titleElement:v38 state:stateCopy];
+      [lastCachedName3 setRuns:v56];
     }
   }
 
-  v57 = [v7 drawingState];
-  v58 = [v57 OAXChartNamespace];
-  v59 = OCXFindChild(a3, v58, "plotVisOnly");
+  drawingState8 = [stateCopy drawingState];
+  oAXChartNamespace8 = [drawingState8 OAXChartNamespace];
+  v59 = OCXFindChild(node, oAXChartNamespace8, "plotVisOnly");
 
   if (v59)
   {
-    [v66 setPlotVisibleCellsOnly:{CXRequiredBoolAttribute(v59, CXNoNamespace, "val")}];
+    [chartCopy setPlotVisibleCellsOnly:{CXRequiredBoolAttribute(v59, CXNoNamespace, "val")}];
   }
 
-  v60 = [v7 drawingState];
-  v61 = [v60 OAXChartNamespace];
-  v62 = OCXFindChild(a3, v61, "dispBlanksAs");
+  drawingState9 = [stateCopy drawingState];
+  oAXChartNamespace9 = [drawingState9 OAXChartNamespace];
+  v62 = OCXFindChild(node, oAXChartNamespace9, "dispBlanksAs");
 
-  [v66 setDisplayBlankAs:{objc_msgSend(a1, "chdDisplayBlanksAsEnumFromXmlElement:", v62)}];
+  [chartCopy setDisplayBlankAs:{objc_msgSend(self, "chdDisplayBlanksAsEnumFromXmlElement:", v62)}];
 }
 
-+ (void)readDefaultTextPropertiesFromXmlNode:(_xmlNode *)a3 chart:(id)a4 state:(id)a5
++ (void)readDefaultTextPropertiesFromXmlNode:(_xmlNode *)node chart:(id)chart state:(id)state
 {
-  v29 = a4;
-  v7 = a5;
-  v8 = [v7 resources];
-  v9 = [CHDDefaultTextProperty defaultTextPropertyWithResources:v8];
+  chartCopy = chart;
+  stateCopy = state;
+  resources = [stateCopy resources];
+  v9 = [CHDDefaultTextProperty defaultTextPropertyWithResources:resources];
 
   [v9 setDefaultTextType:2];
-  v10 = [v29 defaultTextProperties];
-  [v10 addObject:v9];
+  defaultTextProperties = [chartCopy defaultTextProperties];
+  [defaultTextProperties addObject:v9];
 
-  v11 = [CHXFont readParagraphPropertiesFromXmlTextPropertiesParentElement:a3 state:v7];
-  v12 = [v7 drawingState];
-  v13 = [v12 OAXChartNamespace];
-  v14 = OCXFindChild(a3, v13, "txPr");
+  v11 = [CHXFont readParagraphPropertiesFromXmlTextPropertiesParentElement:node state:stateCopy];
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v14 = OCXFindChild(node, oAXChartNamespace, "txPr");
 
   [v11 setMergedWithParent:0];
   if (([v11 hasLatinFont] & 1) == 0)
   {
-    v15 = [v7 drawingState];
-    v16 = [v15 fontScheme];
-    v17 = [v16 minorFont];
-    v18 = [v17 latinFont];
+    drawingState2 = [stateCopy drawingState];
+    fontScheme = [drawingState2 fontScheme];
+    minorFont = [fontScheme minorFont];
+    latinFont = [minorFont latinFont];
 
-    [v11 setLatinFont:v18];
+    [v11 setLatinFont:latinFont];
   }
 
-  [v7 setDefaultTextPropertiesHaveExplicitFontSize:{objc_msgSend(v11, "hasSize")}];
+  [stateCopy setDefaultTextPropertiesHaveExplicitFontSize:{objc_msgSend(v11, "hasSize")}];
   if (([v11 hasSize] & 1) == 0)
   {
     LODWORD(v19) = 10.0;
@@ -296,41 +296,41 @@ LABEL_11:
 
   if (![v11 hasFill] || (objc_msgSend(v11, "fill"), v20 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v20, (isKindOfClass & 1) == 0))
   {
-    v22 = [v7 autoStyling];
-    v23 = [v22 autoTextFill];
+    autoStyling = [stateCopy autoStyling];
+    autoTextFill = [autoStyling autoTextFill];
 
-    [v11 setFill:v23];
+    [v11 setFill:autoTextFill];
   }
 
   [v11 setMergedWithParent:1];
-  [v7 setDefaultTextProperties:v11];
+  [stateCopy setDefaultTextProperties:v11];
   if (v14)
   {
-    [CHXFont edRunCollectionFromXmlTextPropertiesElement:v14 state:v7];
+    [CHXFont edRunCollectionFromXmlTextPropertiesElement:v14 state:stateCopy];
   }
 
   else
   {
-    [CHXFont defaultEdRunCollectionWithState:v7];
+    [CHXFont defaultEdRunCollectionWithState:stateCopy];
   }
   v24 = ;
   if (v24)
   {
-    v25 = [v29 defaultTextProperties];
-    v26 = [v25 allTextDefaultProperties];
-    [v26 setRuns:v24];
+    defaultTextProperties2 = [chartCopy defaultTextProperties];
+    allTextDefaultProperties = [defaultTextProperties2 allTextDefaultProperties];
+    [allTextDefaultProperties setRuns:v24];
 
-    v27 = [v29 defaultTextProperties];
-    v28 = [v27 allTextDefaultProperties];
-    [v28 setContentFormatId:0];
+    defaultTextProperties3 = [chartCopy defaultTextProperties];
+    allTextDefaultProperties2 = [defaultTextProperties3 allTextDefaultProperties];
+    [allTextDefaultProperties2 setContentFormatId:0];
   }
 }
 
-+ (int)chdDisplayBlanksAsEnumFromXmlElement:(_xmlNode *)a3
++ (int)chdDisplayBlanksAsEnumFromXmlElement:(_xmlNode *)element
 {
-  if (a3)
+  if (element)
   {
-    v3 = CXRequiredStringAttribute(a3, CXNoNamespace, "val");
+    v3 = CXRequiredStringAttribute(element, CXNoNamespace, "val");
     if ([v3 isEqualToString:@"span"])
     {
       v4 = 1;

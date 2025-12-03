@@ -1,7 +1,7 @@
 @interface SSCalculatorResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-+ (id)currencyConversionAttributionImageWithSize:(CGSize)a3;
-- (SSCalculatorResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
++ (id)currencyConversionAttributionImageWithSize:(CGSize)size;
+- (SSCalculatorResultBuilder)initWithResult:(id)result;
 - (id)buildBackgroundColor;
 - (id)buildButtonItems;
 - (id)buildCommand;
@@ -14,29 +14,29 @@
 
 @implementation SSCalculatorResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v8.receiver = a1;
+  resultCopy = result;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___SSCalculatorResultBuilder;
-  if (objc_msgSendSuper2(&v8, sel_supportsResult_, v4))
+  if (objc_msgSendSuper2(&v8, sel_supportsResult_, resultCopy))
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 sectionBundleIdentifier];
-    v5 = [v6 isEqual:@"com.apple.conversion"];
+    sectionBundleIdentifier = [resultCopy sectionBundleIdentifier];
+    v5 = [sectionBundleIdentifier isEqual:@"com.apple.conversion"];
   }
 
   return v5;
 }
 
-+ (id)currencyConversionAttributionImageWithSize:(CGSize)a3
++ (id)currencyConversionAttributionImageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_opt_new();
   [v5 setLocalImageType:3];
   [v5 setSize:{width, height}];
@@ -44,15 +44,15 @@
   return v5;
 }
 
-- (SSCalculatorResultBuilder)initWithResult:(id)a3
+- (SSCalculatorResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v13.receiver = self;
   v13.super_class = SSCalculatorResultBuilder;
-  v5 = [(SSResultBuilder *)&v13 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v13 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:@"SSAttributeCalculatorInput" withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:@"SSAttributeCalculatorInput" withType:objc_opt_class()];
     if (v6)
     {
       [(SSCalculatorResultBuilder *)v5 setInput:v6];
@@ -60,20 +60,20 @@
 
     else
     {
-      v7 = [v4 userInput];
-      [(SSCalculatorResultBuilder *)v5 setInput:v7];
+      userInput = [resultCopy userInput];
+      [(SSCalculatorResultBuilder *)v5 setInput:userInput];
     }
 
-    v8 = [v4 valueForAttribute:@"SSAttributeCalculatorOutput" withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:@"SSAttributeCalculatorOutput" withType:objc_opt_class()];
     [(SSCalculatorResultBuilder *)v5 setOutput:v8];
 
-    v9 = [v4 valueForAttribute:@"SSAttributeIsCurrencyConversion" withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:@"SSAttributeIsCurrencyConversion" withType:objc_opt_class()];
     -[SSCalculatorResultBuilder setIsCurrencyConversion:](v5, "setIsCurrencyConversion:", [v9 BOOLValue]);
 
-    v10 = [v4 sectionBundleIdentifier];
-    -[SSCalculatorResultBuilder setIsCalculation:](v5, "setIsCalculation:", [v10 isEqualToString:@"com.apple.conversion"] ^ 1);
+    sectionBundleIdentifier = [resultCopy sectionBundleIdentifier];
+    -[SSCalculatorResultBuilder setIsCalculation:](v5, "setIsCalculation:", [sectionBundleIdentifier isEqualToString:@"com.apple.conversion"] ^ 1);
 
-    v11 = [v4 valueForAttribute:@"SSAttributeIsCalculation" withType:objc_opt_class()];
+    v11 = [resultCopy valueForAttribute:@"SSAttributeIsCalculation" withType:objc_opt_class()];
     -[SSCalculatorResultBuilder setIsCalculation:](v5, "setIsCalculation:", [v11 BOOLValue]);
   }
 
@@ -82,16 +82,16 @@
 
 - (id)buildResult
 {
-  v3 = [(SSCalculatorResultBuilder *)self isCalculation];
+  isCalculation = [(SSCalculatorResultBuilder *)self isCalculation];
   v4 = @"com.apple.conversion";
-  if (v3)
+  if (isCalculation)
   {
     v4 = @"com.apple.calculation";
   }
 
   v9.receiver = self;
   v9.super_class = SSCalculatorResultBuilder;
-  if (v3)
+  if (isCalculation)
   {
     v5 = 6;
   }
@@ -102,15 +102,15 @@
   }
 
   v6 = v4;
-  v7 = [(SSResultBuilder *)&v9 buildResult];
-  [v7 setResultBundleId:{v6, v9.receiver, v9.super_class}];
-  [v7 setSectionBundleIdentifier:v6];
-  [v7 setApplicationBundleIdentifier:@"com.apple.calculation"];
-  [v7 setPlacement:3];
-  [v7 setType:v5];
-  [v7 setIdentifier:v6];
+  buildResult = [(SSResultBuilder *)&v9 buildResult];
+  [buildResult setResultBundleId:{v6, v9.receiver, v9.super_class}];
+  [buildResult setSectionBundleIdentifier:v6];
+  [buildResult setApplicationBundleIdentifier:@"com.apple.calculation"];
+  [buildResult setPlacement:3];
+  [buildResult setType:v5];
+  [buildResult setIdentifier:v6];
 
-  return v7;
+  return buildResult;
 }
 
 - (id)buildInlineCardSections
@@ -119,28 +119,28 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"INLINE_EQUATION_FORMAT" value:&stru_1F556FE60 table:@"SpotlightServices"];
-  v6 = [(SSCalculatorResultBuilder *)self formattedInput];
-  v7 = [v3 stringWithFormat:v5, v6];
+  formattedInput = [(SSCalculatorResultBuilder *)self formattedInput];
+  v7 = [v3 stringWithFormat:v5, formattedInput];
 
   v8 = objc_opt_new();
   [v8 setTitle:v7];
-  v9 = [(SSCalculatorResultBuilder *)self output];
-  [v8 setSubtitle:v9];
+  output = [(SSCalculatorResultBuilder *)self output];
+  [v8 setSubtitle:output];
 
   [v8 setSubtitleIsEmphasized:1];
-  v10 = [(SSCalculatorResultBuilder *)self buildCommand];
-  [v8 setCommand:v10];
+  buildCommand = [(SSCalculatorResultBuilder *)self buildCommand];
+  [v8 setCommand:buildCommand];
 
   v11 = objc_opt_new();
-  v12 = [(SSCalculatorResultBuilder *)self output];
-  [v11 setCopyableString:v12];
+  output2 = [(SSCalculatorResultBuilder *)self output];
+  [v11 setCopyableString:output2];
 
   v13 = objc_opt_new();
   [v13 setCopyableItem:v11];
   v14 = objc_opt_new();
   [v14 setCommand:v13];
-  v15 = [(SSCalculatorResultBuilder *)self buildButtonItems];
-  [v8 setButtonItems:v15];
+  buildButtonItems = [(SSCalculatorResultBuilder *)self buildButtonItems];
+  [v8 setButtonItems:buildButtonItems];
 
   if ([(SSCalculatorResultBuilder *)self isCurrencyConversion])
   {
@@ -151,13 +151,13 @@
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
     [v16 setIcons:v18];
 
-    v19 = [(SSCalculatorResultBuilder *)self buildCommand];
-    [v19 setShouldOpenCurrencyConversionProvider:1];
+    buildCommand2 = [(SSCalculatorResultBuilder *)self buildCommand];
+    [buildCommand2 setShouldOpenCurrencyConversionProvider:1];
     v20 = objc_alloc_init(MEMORY[0x1E69C9EB0]);
     [v20 setTrailingAttribution:v16];
-    [v20 setTrailingAttributionCommand:v19];
-    v21 = [v8 command];
-    [v20 setCommand:v21];
+    [v20 setTrailingAttributionCommand:buildCommand2];
+    command = [v8 command];
+    [v20 setCommand:command];
 
     v26[0] = v8;
     v26[1] = v20;
@@ -182,15 +182,15 @@
   v4 = [v3 localizedStringForKey:@"COMPACT_EQUATION_FORMAT" value:&stru_1F556FE60 table:@"SpotlightServices"];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(SSCalculatorResultBuilder *)self formattedInput];
-  v7 = [(SSCalculatorResultBuilder *)self output];
-  v8 = [v5 stringWithFormat:v4, v6, v7];
+  formattedInput = [(SSCalculatorResultBuilder *)self formattedInput];
+  output = [(SSCalculatorResultBuilder *)self output];
+  v8 = [v5 stringWithFormat:v4, formattedInput, output];
 
   v17.receiver = self;
   v17.super_class = SSCalculatorResultBuilder;
-  v9 = [(SSResultBuilder *)&v17 buildCompactCardSection];
+  buildCompactCardSection = [(SSResultBuilder *)&v17 buildCompactCardSection];
   v10 = [MEMORY[0x1E69CA3A0] textWithString:v8];
-  [v9 setTitle:v10];
+  [buildCompactCardSection setTitle:v10];
 
   if ([(SSCalculatorResultBuilder *)self isCurrencyConversion])
   {
@@ -202,22 +202,22 @@
 
     v18 = v11;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
-    [v9 setDescriptions:v14];
+    [buildCompactCardSection setDescriptions:v14];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return buildCompactCardSection;
 }
 
 - (id)buildCommand
 {
   v3 = objc_opt_new();
-  v4 = [(SSCalculatorResultBuilder *)self input];
-  [v3 setInput:v4];
+  input = [(SSCalculatorResultBuilder *)self input];
+  [v3 setInput:input];
 
-  v5 = [(SSCalculatorResultBuilder *)self output];
-  [v3 setOutput:v5];
+  output = [(SSCalculatorResultBuilder *)self output];
+  [v3 setOutput:output];
 
   return v3;
 }
@@ -228,23 +228,23 @@
   {
     v5.receiver = self;
     v5.super_class = SSCalculatorResultBuilder;
-    v3 = [(SSResultBuilder *)&v5 buildPreviewButtonItems];
+    buildPreviewButtonItems = [(SSResultBuilder *)&v5 buildPreviewButtonItems];
   }
 
   else
   {
-    v3 = [(SSCalculatorResultBuilder *)self buildButtonItems];
+    buildPreviewButtonItems = [(SSCalculatorResultBuilder *)self buildButtonItems];
   }
 
-  return v3;
+  return buildPreviewButtonItems;
 }
 
 - (id)buildButtonItems
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(SSCalculatorResultBuilder *)self output];
-  [v3 setCopyableString:v4];
+  output = [(SSCalculatorResultBuilder *)self output];
+  [v3 setCopyableString:output];
 
   v5 = objc_opt_new();
   [v5 setCopyableItem:v3];
@@ -268,14 +268,14 @@
 
 - (id)formattedInput
 {
-  v3 = [(SSCalculatorResultBuilder *)self input];
-  v4 = [v3 length];
+  input = [(SSCalculatorResultBuilder *)self input];
+  v4 = [input length];
 
   if (v4)
   {
     v11 = 0;
     v5 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"[=＝]\\s*$" options:0 error:&v11];
-    v6 = 0;
+    input4 = 0;
     if (v5)
     {
       v7 = v11 == 0;
@@ -288,18 +288,18 @@
 
     if (v7)
     {
-      v8 = [(SSCalculatorResultBuilder *)self input];
-      v9 = [(SSCalculatorResultBuilder *)self input];
-      v6 = [v5 stringByReplacingMatchesInString:v8 options:0 range:0 withTemplate:{objc_msgSend(v9, "length"), &stru_1F556FE60}];
+      input2 = [(SSCalculatorResultBuilder *)self input];
+      input3 = [(SSCalculatorResultBuilder *)self input];
+      input4 = [v5 stringByReplacingMatchesInString:input2 options:0 range:0 withTemplate:{objc_msgSend(input3, "length"), &stru_1F556FE60}];
     }
   }
 
   else
   {
-    v6 = [(SSCalculatorResultBuilder *)self input];
+    input4 = [(SSCalculatorResultBuilder *)self input];
   }
 
-  return v6;
+  return input4;
 }
 
 @end

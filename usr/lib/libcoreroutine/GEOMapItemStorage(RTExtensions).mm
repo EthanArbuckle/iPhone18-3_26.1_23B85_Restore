@@ -10,7 +10,7 @@
   v6 = MEMORY[0x277D0EBA0];
   v7 = a3;
   v8 = [[v6 alloc] initWithLOIType:a4 event:0];
-  v9 = [a1 mapItemStorageForPlace:v7 clientAttributes:v8];
+  v9 = [self mapItemStorageForPlace:v7 clientAttributes:v8];
 
   return v9;
 }
@@ -20,7 +20,7 @@
   v6 = MEMORY[0x277D0EBA0];
   v7 = a3;
   v8 = [[v6 alloc] initWithLOIType:a4 event:0];
-  v9 = [a1 mapItemStorageForGEOMapItem:v7 clientAttributes:v8];
+  v9 = [self mapItemStorageForGEOMapItem:v7 clientAttributes:v8];
 
   return v9;
 }

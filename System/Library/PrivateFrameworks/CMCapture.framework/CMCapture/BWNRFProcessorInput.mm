@@ -1,5 +1,5 @@
 @interface BWNRFProcessorInput
-- (BWNRFProcessorInput)initWithSettings:(id)a3 portType:(id)a4 resolutionFlavor:(int)a5;
+- (BWNRFProcessorInput)initWithSettings:(id)settings portType:(id)type resolutionFlavor:(int)flavor;
 - (CFTypeRef)_setErrorRecoveryFrame:(CFTypeRef)result;
 - (CFTypeRef)_setReferenceFrame:(CFTypeRef)result;
 - (id)description;
@@ -10,24 +10,24 @@
 - (opaqueCMSampleBuffer)originalImage;
 - (opaqueCMSampleBuffer)referenceFrame;
 - (void)adaptiveBracketingParameters;
-- (void)addFrame:(opaqueCMSampleBuffer *)a3;
+- (void)addFrame:(opaqueCMSampleBuffer *)frame;
 - (void)dealloc;
-- (void)setKeepFrames:(BOOL)a3;
-- (void)setProcessedRawErrorRecoveryFrame:(opaqueCMSampleBuffer *)a3 proxy:(BOOL)a4;
-- (void)stopAdaptiveBracketingWithGroup:(int)a3;
+- (void)setKeepFrames:(BOOL)frames;
+- (void)setProcessedRawErrorRecoveryFrame:(opaqueCMSampleBuffer *)frame proxy:(BOOL)proxy;
+- (void)stopAdaptiveBracketingWithGroup:(int)group;
 @end
 
 @implementation BWNRFProcessorInput
 
-- (BWNRFProcessorInput)initWithSettings:(id)a3 portType:(id)a4 resolutionFlavor:(int)a5
+- (BWNRFProcessorInput)initWithSettings:(id)settings portType:(id)type resolutionFlavor:(int)flavor
 {
   v9.receiver = self;
   v9.super_class = BWNRFProcessorInput;
-  v6 = [(BWStillImageProcessorControllerInput *)&v9 initWithSettings:a3 portType:a4];
+  v6 = [(BWStillImageProcessorControllerInput *)&v9 initWithSettings:settings portType:type];
   v7 = v6;
   if (v6)
   {
-    v6->_resolutionFlavor = a5;
+    v6->_resolutionFlavor = flavor;
     v6->_frames = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7->_keepFrames = 1;
     v7->_fusionMode = 0;
@@ -59,36 +59,36 @@
   [(BWStillImageProcessorControllerInput *)&v5 dealloc];
 }
 
-- (void)setKeepFrames:(BOOL)a3
+- (void)setKeepFrames:(BOOL)frames
 {
-  if (self->_keepFrames != a3)
+  if (self->_keepFrames != frames)
   {
-    self->_keepFrames = a3;
-    if (!a3)
+    self->_keepFrames = frames;
+    if (!frames)
     {
       [(NSMutableArray *)self->_frames removeAllObjects];
     }
   }
 }
 
-- (void)addFrame:(opaqueCMSampleBuffer *)a3
+- (void)addFrame:(opaqueCMSampleBuffer *)frame
 {
-  if (!a3)
+  if (!frame)
   {
     [BWNRFProcessorInput addFrame:];
     return;
   }
 
-  v5 = BWStillImageCaptureFrameFlagsForSampleBuffer(a3);
+  v5 = BWStillImageCaptureFrameFlagsForSampleBuffer(frame);
   ++self->_receivedFrames;
   if (self->_keepFrames)
   {
-    [(NSMutableArray *)self->_frames addObject:a3];
+    [(NSMutableArray *)self->_frames addObject:frame];
   }
 
   if ([-[BWStillImageCaptureStreamSettings adaptiveUnifiedBracketedCaptureParams](-[BWStillImageProcessorControllerInput captureStreamSettings](self "captureStreamSettings")])
   {
-    AdaptiveBracketingFrame = BWIsLastAdaptiveBracketingFrame(a3);
+    AdaptiveBracketingFrame = BWIsLastAdaptiveBracketingFrame(frame);
     p_receivedAllFrames = &self->_receivedAllFrames;
     self->_receivedAllFrames = AdaptiveBracketingFrame;
     adaptiveBracketingStopFrameCount = self->_adaptiveBracketingStopFrameCount;
@@ -111,7 +111,7 @@
 LABEL_11:
   if ([(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] captureType]== 11)
   {
-    v11 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v11 = CMGetAttachment(frame, *off_1E798A3C8, 0);
     v12 = [v11 objectForKeyedSubscript:*off_1E798B6B0];
     if (v12)
     {
@@ -170,7 +170,7 @@ LABEL_11:
 
   delegate = self->_delegate;
 
-  [(BWNRFProcessorInputDelegate *)delegate input:self addFrame:a3 isReferenceFrame:(v5 >> 4) & 1];
+  [(BWNRFProcessorInputDelegate *)delegate input:self addFrame:frame isReferenceFrame:(v5 >> 4) & 1];
 }
 
 - (int)expectedFrameCount
@@ -202,31 +202,31 @@ LABEL_11:
   else
   {
     v5 = [-[BWStillImageCaptureStreamSettings adaptiveUnifiedBracketedCaptureParams](-[BWStillImageProcessorControllerInput captureStreamSettings](self "captureStreamSettings")];
-    v6 = [(BWStillImageProcessorControllerInput *)self captureStreamSettings];
+    captureStreamSettings = [(BWStillImageProcessorControllerInput *)self captureStreamSettings];
     if (v5)
     {
 
-      return [(BWStillImageCaptureStreamSettings *)v6 currentExpectedAdaptiveBracketedFrameCount];
+      return [(BWStillImageCaptureStreamSettings *)captureStreamSettings currentExpectedAdaptiveBracketedFrameCount];
     }
 
     else
     {
 
-      return [(BWStillImageCaptureStreamSettings *)v6 expectedFrameCount];
+      return [(BWStillImageCaptureStreamSettings *)captureStreamSettings expectedFrameCount];
     }
   }
 }
 
 - (opaqueCMSampleBuffer)referenceFrame
 {
-  v3 = [(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] captureType];
+  captureType = [(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] captureType];
   referenceFrame = self->_referenceFrame;
   if (referenceFrame)
   {
     return referenceFrame;
   }
 
-  switch(v3)
+  switch(captureType)
   {
     case 1:
       if ([(BWNRFProcessorInput *)self expectedFrameCount]!= 1)
@@ -356,9 +356,9 @@ LABEL_15:
   return [(NSMutableArray *)frames firstObject];
 }
 
-- (void)stopAdaptiveBracketingWithGroup:(int)a3
+- (void)stopAdaptiveBracketingWithGroup:(int)group
 {
-  v3 = *&a3;
+  v3 = *&group;
   if ([(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] adaptiveBracketingParameters])
   {
     v5 = [(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] expectedAdaptiveBracketedFrameCaptureCountUsingGroup:v3];
@@ -386,9 +386,9 @@ LABEL_15:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] settingsID];
+  settingsID = [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] settingsID];
   v6 = BWPhotoEncoderStringFromEncodingScheme([(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] captureType]);
-  return [v3 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType:%@ portType:%@ receivedFrames:%d fusionMode:%@ keepFrames:%d processingCount:%u", v4, self, v5, v6, -[BWStillImageCaptureStreamSettings portType](-[BWStillImageProcessorControllerInput captureStreamSettings](self, "captureStreamSettings"), "portType"), self->_receivedFrames, BWPhotoEncoderStringFromEncodingScheme(self->_fusionMode), self->_keepFrames, self->_remainingProcessingCount];
+  return [v3 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType:%@ portType:%@ receivedFrames:%d fusionMode:%@ keepFrames:%d processingCount:%u", v4, self, settingsID, v6, -[BWStillImageCaptureStreamSettings portType](-[BWStillImageProcessorControllerInput captureStreamSettings](self, "captureStreamSettings"), "portType"), self->_receivedFrames, BWPhotoEncoderStringFromEncodingScheme(self->_fusionMode), self->_keepFrames, self->_remainingProcessingCount];
 }
 
 - (CFTypeRef)_setReferenceFrame:(CFTypeRef)result
@@ -451,13 +451,13 @@ LABEL_15:
   return result;
 }
 
-- (void)setProcessedRawErrorRecoveryFrame:(opaqueCMSampleBuffer *)a3 proxy:(BOOL)a4
+- (void)setProcessedRawErrorRecoveryFrame:(opaqueCMSampleBuffer *)frame proxy:(BOOL)proxy
 {
-  v4 = a4;
+  proxyCopy = proxy;
   [BWNRFProcessorInput _setErrorRecoveryFrame:?];
   delegate = self->_delegate;
 
-  [(BWNRFProcessorInputDelegate *)delegate inputReceivedProcessedRawErrorRecoveryFrame:self proxy:v4];
+  [(BWNRFProcessorInputDelegate *)delegate inputReceivedProcessedRawErrorRecoveryFrame:self proxy:proxyCopy];
 }
 
 - (opaqueCMSampleBuffer)originalImage

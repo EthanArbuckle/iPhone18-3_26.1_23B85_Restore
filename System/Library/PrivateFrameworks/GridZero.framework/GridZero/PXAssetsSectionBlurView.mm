@@ -1,8 +1,8 @@
 @interface PXAssetsSectionBlurView
 - (CGRect)clippingRect;
-- (PXAssetsSectionBlurView)initWithFrame:(CGRect)a3;
+- (PXAssetsSectionBlurView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXAssetsSectionBlurView
@@ -20,40 +20,40 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v20 = a3;
-  if (v20)
+  dataCopy = data;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      v19 = [(NSCopying *)v20 px_descriptionForAssertionMessage];
-      [v16 handleFailureInMethod:a2 object:self file:@"PXAssetsSectionBlurView.m" lineNumber:53 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"userData", v18, v19}];
+      px_descriptionForAssertionMessage = [(NSCopying *)dataCopy px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsSectionBlurView.m" lineNumber:53 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"userData", v18, px_descriptionForAssertionMessage}];
     }
   }
 
-  if (self->_userData != v20)
+  if (self->_userData != dataCopy)
   {
-    v5 = [(NSCopying *)v20 copy];
+    v5 = [(NSCopying *)dataCopy copy];
     userData = self->_userData;
     self->_userData = v5;
 
-    [(NSCopying *)v20 intensity];
+    [(NSCopying *)dataCopy intensity];
     v8 = v7;
-    [(NSCopying *)v20 maximumBlurRadius];
+    [(NSCopying *)dataCopy maximumBlurRadius];
     v10 = v8 * v9;
-    [(NSCopying *)v20 maximumDimmingFraction];
+    [(NSCopying *)dataCopy maximumDimmingFraction];
     v12 = v8 * v11;
     v13 = [MEMORY[0x277D75210] effectWithBlurRadius:v10];
-    v14 = [(PXAssetsSectionBlurView *)self blurEffectView];
-    [v14 setEffect:v13];
+    blurEffectView = [(PXAssetsSectionBlurView *)self blurEffectView];
+    [blurEffectView setEffect:v13];
 
-    v15 = [(PXAssetsSectionBlurView *)self dimmingView];
-    [v15 setAlpha:v12];
+    dimmingView = [(PXAssetsSectionBlurView *)self dimmingView];
+    [dimmingView setAlpha:v12];
   }
 }
 
@@ -64,18 +64,18 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXAssetsSectionBlurView *)self blurEffectView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  blurEffectView = [(PXAssetsSectionBlurView *)self blurEffectView];
+  [blurEffectView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(PXAssetsSectionBlurView *)self dimmingView];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  dimmingView = [(PXAssetsSectionBlurView *)self dimmingView];
+  [dimmingView setFrame:{v4, v6, v8, v10}];
 }
 
-- (PXAssetsSectionBlurView)initWithFrame:(CGRect)a3
+- (PXAssetsSectionBlurView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PXAssetsSectionBlurView;
-  v3 = [(PXAssetsSectionBlurView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXAssetsSectionBlurView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D68]);
@@ -87,8 +87,8 @@
     dimmingView = v3->_dimmingView;
     v3->_dimmingView = v6;
 
-    v8 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(UIView *)v3->_dimmingView setBackgroundColor:v8];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(UIView *)v3->_dimmingView setBackgroundColor:systemBackgroundColor];
 
     [(PXAssetsSectionBlurView *)v3 addSubview:v3->_dimmingView];
   }

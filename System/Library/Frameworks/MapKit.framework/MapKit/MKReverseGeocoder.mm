@@ -1,9 +1,9 @@
 @interface MKReverseGeocoder
 - (CLLocationCoordinate2D)coordinate;
 - (MKReverseGeocoder)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
-- (void)_notifyError:(id)a3;
+- (void)_notifyError:(id)error;
 - (void)_notifyNoResults;
-- (void)_notifyResult:(id)a3;
+- (void)_notifyResult:(id)result;
 - (void)start;
 @end
 
@@ -56,14 +56,14 @@ void __26__MKReverseGeocoder_start__block_invoke(uint64_t a1, void *a2, void *a3
   }
 }
 
-- (void)_notifyResult:(id)a3
+- (void)_notifyResult:(id)result
 {
-  v6 = a3;
+  resultCopy = result;
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_internal->delegate;
-    v5 = [v6 placemark];
-    [(MKReverseGeocoderDelegate *)delegate reverseGeocoder:self didFindPlacemark:v5];
+    placemark = [resultCopy placemark];
+    [(MKReverseGeocoderDelegate *)delegate reverseGeocoder:self didFindPlacemark:placemark];
   }
 }
 
@@ -74,12 +74,12 @@ void __26__MKReverseGeocoder_start__block_invoke(uint64_t a1, void *a2, void *a3
   [(MKReverseGeocoder *)self _notifyError:v4];
 }
 
-- (void)_notifyError:(id)a3
+- (void)_notifyError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (objc_opt_respondsToSelector())
   {
-    [(MKReverseGeocoderDelegate *)self->_internal->delegate reverseGeocoder:self didFailWithError:v4];
+    [(MKReverseGeocoderDelegate *)self->_internal->delegate reverseGeocoder:self didFailWithError:errorCopy];
   }
 }
 

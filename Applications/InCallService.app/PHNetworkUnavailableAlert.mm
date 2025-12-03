@@ -1,6 +1,6 @@
 @interface PHNetworkUnavailableAlert
-+ (id)alertWithCallProvider:(id)a3 dialType:(int64_t)a4 senderIdentityUUID:(id)a5;
-- (PHNetworkUnavailableAlert)initWithCallProvider:(id)a3 dialType:(int64_t)a4 senderIdentityUUID:(id)a5;
++ (id)alertWithCallProvider:(id)provider dialType:(int64_t)type senderIdentityUUID:(id)d;
+- (PHNetworkUnavailableAlert)initWithCallProvider:(id)provider dialType:(int64_t)type senderIdentityUUID:(id)d;
 - (id)alternateButtonTitle;
 - (id)defaultButtonTitle;
 - (id)message;
@@ -14,101 +14,101 @@
 
 @implementation PHNetworkUnavailableAlert
 
-+ (id)alertWithCallProvider:(id)a3 dialType:(int64_t)a4 senderIdentityUUID:(id)a5
++ (id)alertWithCallProvider:(id)provider dialType:(int64_t)type senderIdentityUUID:(id)d
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithCallProvider:v9 dialType:a4 senderIdentityUUID:v8];
+  dCopy = d;
+  providerCopy = provider;
+  v10 = [[self alloc] initWithCallProvider:providerCopy dialType:type senderIdentityUUID:dCopy];
 
   return v10;
 }
 
 - (id)title
 {
-  v2 = [(PHNetworkUnavailableAlert *)self alertController];
-  v3 = [v2 title];
+  alertController = [(PHNetworkUnavailableAlert *)self alertController];
+  title = [alertController title];
 
-  return v3;
+  return title;
 }
 
 - (id)message
 {
-  v2 = [(PHNetworkUnavailableAlert *)self alertController];
-  v3 = [v2 message];
+  alertController = [(PHNetworkUnavailableAlert *)self alertController];
+  message = [alertController message];
 
-  return v3;
+  return message;
 }
 
 - (id)defaultButtonTitle
 {
-  v2 = [(PHNetworkUnavailableAlert *)self alertController];
-  v3 = [v2 actions];
+  alertController = [(PHNetworkUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v3 count])
+  if ([actions count])
   {
-    v4 = [v3 lastObject];
-    v5 = [v4 title];
+    lastObject = [actions lastObject];
+    title = [lastObject title];
   }
 
   else
   {
-    v5 = 0;
+    title = 0;
   }
 
-  return v5;
+  return title;
 }
 
 - (id)alternateButtonTitle
 {
-  v2 = [(PHNetworkUnavailableAlert *)self alertController];
-  v3 = [v2 actions];
+  alertController = [(PHNetworkUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v3 count] < 2)
+  if ([actions count] < 2)
   {
-    v5 = 0;
+    title = 0;
   }
 
   else
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 title];
+    firstObject = [actions firstObject];
+    title = [firstObject title];
   }
 
-  return v5;
+  return title;
 }
 
 - (id)otherButtonTitle
 {
-  v2 = [(PHNetworkUnavailableAlert *)self alertController];
-  v3 = [v2 actions];
+  alertController = [(PHNetworkUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v3 count] < 3)
+  if ([actions count] < 3)
   {
-    v5 = 0;
+    title = 0;
   }
 
   else
   {
-    v4 = [v3 objectAtIndex:1];
-    v5 = [v4 title];
+    v4 = [actions objectAtIndex:1];
+    title = [v4 title];
   }
 
-  return v5;
+  return title;
 }
 
 - (void)defaultResponse
 {
-  v3 = [(PHNetworkUnavailableAlert *)self alertController];
-  v6 = [v3 actions];
+  alertController = [(PHNetworkUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v6 count])
+  if ([actions count])
   {
-    v4 = [v6 lastObject];
-    v5 = [v4 handler];
+    lastObject = [actions lastObject];
+    handler = [lastObject handler];
 
-    if (v5)
+    if (handler)
     {
-      v5[2](v5, 0);
+      handler[2](handler, 0);
     }
   }
 
@@ -117,17 +117,17 @@
 
 - (void)alternateResponse
 {
-  v3 = [(PHNetworkUnavailableAlert *)self alertController];
-  v6 = [v3 actions];
+  alertController = [(PHNetworkUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v6 count] >= 2)
+  if ([actions count] >= 2)
   {
-    v4 = [v6 firstObject];
-    v5 = [v4 handler];
+    firstObject = [actions firstObject];
+    handler = [firstObject handler];
 
-    if (v5)
+    if (handler)
     {
-      v5[2](v5, 0);
+      handler[2](handler, 0);
     }
   }
 
@@ -136,17 +136,17 @@
 
 - (void)otherResponse
 {
-  v3 = [(PHNetworkUnavailableAlert *)self alertController];
-  v6 = [v3 actions];
+  alertController = [(PHNetworkUnavailableAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v6 count] >= 3)
+  if ([actions count] >= 3)
   {
-    v4 = [v6 objectAtIndex:1];
-    v5 = [v4 handler];
+    v4 = [actions objectAtIndex:1];
+    handler = [v4 handler];
 
-    if (v5)
+    if (handler)
     {
-      v5[2](v5, 0);
+      handler[2](handler, 0);
     }
   }
 
@@ -159,16 +159,16 @@
   [v2 postNotificationName:@"PHNetworkUnavailableAlertDidFinishNotification" object:0];
 }
 
-- (PHNetworkUnavailableAlert)initWithCallProvider:(id)a3 dialType:(int64_t)a4 senderIdentityUUID:(id)a5
+- (PHNetworkUnavailableAlert)initWithCallProvider:(id)provider dialType:(int64_t)type senderIdentityUUID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
+  providerCopy = provider;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = PHNetworkUnavailableAlert;
   v10 = [(PHNetworkUnavailableAlert *)&v14 init];
   if (v10)
   {
-    v11 = [UIAlertController networkUnavailableAlertControllerWithCallProvider:v8 dialType:a4 senderIdentityUUID:v9];
+    v11 = [UIAlertController networkUnavailableAlertControllerWithCallProvider:providerCopy dialType:type senderIdentityUUID:dCopy];
     alertController = v10->_alertController;
     v10->_alertController = v11;
   }

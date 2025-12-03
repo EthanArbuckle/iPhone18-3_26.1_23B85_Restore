@@ -1,5 +1,5 @@
 @interface FigCaptureSessionParsedCameraSourceConfiguration
-- (id)initWithConnectionConfigurations:(char)a3 clientSetsUserInitiatedCaptureRequestTime:(int)a4 smartStyleEnabled:(FigVideoCaptureConnectionConfiguration *)a5 sceneClassifierConnectionConfigurationOut:;
+- (id)initWithConnectionConfigurations:(char)configurations clientSetsUserInitiatedCaptureRequestTime:(int)time smartStyleEnabled:(FigVideoCaptureConnectionConfiguration *)enabled sceneClassifierConnectionConfigurationOut:;
 - (void)dealloc;
 @end
 
@@ -12,14 +12,14 @@
   [(FigCaptureSessionParsedCameraSourceConfiguration *)&v3 dealloc];
 }
 
-- (id)initWithConnectionConfigurations:(char)a3 clientSetsUserInitiatedCaptureRequestTime:(int)a4 smartStyleEnabled:(FigVideoCaptureConnectionConfiguration *)a5 sceneClassifierConnectionConfigurationOut:
+- (id)initWithConnectionConfigurations:(char)configurations clientSetsUserInitiatedCaptureRequestTime:(int)time smartStyleEnabled:(FigVideoCaptureConnectionConfiguration *)enabled sceneClassifierConnectionConfigurationOut:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v113.receiver = a1;
+  v113.receiver = self;
   v113.super_class = FigCaptureSessionParsedCameraSourceConfiguration;
   v9 = objc_msgSendSuper2(&v113, sel_init);
   if (!v9)
@@ -28,23 +28,23 @@
   }
 
   v10 = v9;
-  v96 = a5;
-  v97 = a3;
-  v98 = a4;
+  enabledCopy = enabled;
+  configurationsCopy = configurations;
+  timeCopy = time;
   v112 = 0;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = [MEMORY[0x1E695DF70] array];
-  v100 = [MEMORY[0x1E695DF70] array];
-  v104 = [MEMORY[0x1E695DF70] array];
-  v99 = [MEMORY[0x1E695DF70] array];
-  v102 = [MEMORY[0x1E695DF70] array];
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  array6 = [MEMORY[0x1E695DF70] array];
+  array7 = [MEMORY[0x1E695DF70] array];
+  array8 = [MEMORY[0x1E695DF70] array];
   v10[1] = [objc_msgSend(a2 "firstObject")];
   memset(v111, 0, sizeof(v111));
   obj = a2;
   v15 = [a2 countByEnumeratingWithState:v111 objects:v110 count:16];
-  v101 = v14;
+  v101 = array8;
   if (v15)
   {
     v16 = v15;
@@ -62,8 +62,8 @@ LABEL_5:
       switch([objc_msgSend(v18 "sinkConfiguration")])
       {
         case 1u:
-          v19 = [v18 underlyingDeviceType];
-          if (v19 == [objc_msgSend(v18 "sourceConfiguration")])
+          underlyingDeviceType = [v18 underlyingDeviceType];
+          if (underlyingDeviceType == [objc_msgSend(v18 "sourceConfiguration")])
           {
             if (v10[3])
             {
@@ -92,11 +92,11 @@ LABEL_5:
             goto LABEL_58;
           }
 
-          [v12 addObject:v18];
-          v21 = v99;
+          [array2 addObject:v18];
+          v21 = array6;
           goto LABEL_57;
         case 6u:
-          [v13 addObject:v18];
+          [array3 addObject:v18];
           v20 = [v18 videoStabilizationMethod] && objc_msgSend(v18, "videoStabilizationMethod") != 4 && objc_msgSend(v18, "videoStabilizationMethod") != 6;
           if ([objc_msgSend(v18 "videoDataSinkConfiguration")] && !v20)
           {
@@ -105,7 +105,7 @@ LABEL_5:
 
           goto LABEL_56;
         case 8u:
-          v21 = v104;
+          v21 = array5;
           goto LABEL_57;
         case 0xAu:
           [v18 mediaType];
@@ -116,15 +116,15 @@ LABEL_5:
             goto LABEL_54;
           }
 
-          v28 = [v18 mediaType];
-          if (v28 == 1835365473)
+          mediaType = [v18 mediaType];
+          if (mediaType == 1835365473)
           {
             if (!FigMetadataItemConnectionConfigurationRequiresObjectDetection(v18))
             {
               goto LABEL_54;
             }
 
-            v29 = v99;
+            v29 = array6;
           }
 
           else
@@ -136,7 +136,7 @@ LABEL_5:
               goto LABEL_54;
             }
 
-            v29 = v102;
+            v29 = array7;
           }
 
           [v29 addObject:v18];
@@ -144,7 +144,7 @@ LABEL_54:
           if ([objc_msgSend(v18 "irisSinkConfiguration")] && objc_msgSend(objc_msgSend(v18, "sourceConfiguration"), "sourceDeviceType") != 10)
           {
 LABEL_56:
-            v21 = v12;
+            v21 = array2;
 LABEL_57:
             [v21 addObject:v18];
           }
@@ -174,17 +174,17 @@ LABEL_58:
           goto LABEL_58;
         case 0xCu:
 LABEL_49:
-          v21 = v11;
+          v21 = array;
           goto LABEL_57;
         case 0xDu:
-          v22 = [v18 underlyingDeviceType];
-          v23 = v22 > 9 || ((1 << v22) & 0x310) == 0;
+          underlyingDeviceType2 = [v18 underlyingDeviceType];
+          v23 = underlyingDeviceType2 > 9 || ((1 << underlyingDeviceType2) & 0x310) == 0;
           if (!v23)
           {
             goto LABEL_136;
           }
 
-          v24 = v22;
+          v24 = underlyingDeviceType2;
           v25 = [objc_msgSend(v18 "sourceConfiguration")];
           v26 = v25 > 9 || ((1 << v25) & 0x310) == 0;
           if (!v26 && v24 != 2)
@@ -192,16 +192,16 @@ LABEL_49:
             goto LABEL_136;
           }
 
-          [v100 addObject:v18];
-          [v12 addObject:v18];
-          v14 = v101;
+          [array4 addObject:v18];
+          [array2 addObject:v18];
+          array8 = v101;
           goto LABEL_58;
         case 0xFu:
 LABEL_42:
-          v21 = v102;
+          v21 = array7;
           goto LABEL_57;
         case 0x10u:
-          [v14 addObject:v18];
+          [array8 addObject:v18];
           goto LABEL_56;
         default:
           goto LABEL_58;
@@ -230,11 +230,11 @@ LABEL_136:
     v43 = [[FigCaptureInternalSinkConfiguration alloc] initWithSinkSubType:1];
     [OUTLINED_FUNCTION_7() setSinkConfiguration:?];
     FigCaptureSetOptimalVideoPreviewDataConnectionDimensions(v42);
-    v44 = [v30 lensSmudgeDetectionEnabled];
+    lensSmudgeDetectionEnabled = [v30 lensSmudgeDetectionEnabled];
     v45 = 0;
     v46 = 0;
-    v47 = v44 ? 512 : 256;
-    v48 = v44 ? 2 : 4;
+    v47 = lensSmudgeDetectionEnabled ? 512 : 256;
+    v48 = lensSmudgeDetectionEnabled ? 2 : 4;
     do
     {
       v49 = v46 < v47 || v45 < v47;
@@ -266,8 +266,8 @@ LABEL_136:
     {
       if (!v114[0])
       {
-        *v96 = v42;
-        v51 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(v104, [(FigCaptureConnectionConfiguration *)v42 underlyingDeviceType]);
+        *enabledCopy = v42;
+        v51 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(array5, [(FigCaptureConnectionConfiguration *)v42 underlyingDeviceType]);
         if ((FigCaptureMetadataObjectConfigurationRequiresSceneClassification(v51) & 1) == 0)
         {
           OUTLINED_FUNCTION_37_6();
@@ -278,7 +278,7 @@ LABEL_136:
 
   v33 = v10[1];
   [v10[7] irisSinkConfiguration];
-  v34 = [v10[7] stillImageSinkConfiguration];
+  stillImageSinkConfiguration = [v10[7] stillImageSinkConfiguration];
   v114[0] = 0;
   v35 = FigCaptureSourceGetIntAttribute([v33 source], 0x1F21A0530, v114);
   v36 = v114[0];
@@ -304,7 +304,7 @@ LABEL_94:
   if (([v33 smartCameraEnabled] & 1) == 0)
   {
     v37 = OUTLINED_FUNCTION_9_19();
-    if (!FigCaptureZeroShutterLagEnabled(v37, v38, v34, v97))
+    if (!FigCaptureZeroShutterLagEnabled(v37, v38, stillImageSinkConfiguration, configurationsCopy))
     {
       goto LABEL_94;
     }
@@ -335,16 +335,16 @@ LABEL_165:
 
 LABEL_98:
   v52 = v10[1];
-  v53 = [v10[7] irisSinkConfiguration];
-  v54 = [v10[7] stillImageSinkConfiguration];
+  irisSinkConfiguration = [v10[7] irisSinkConfiguration];
+  stillImageSinkConfiguration2 = [v10[7] stillImageSinkConfiguration];
   if (([v52 cinematicFramingEnabled] & 1) == 0)
   {
-    v55 = [v52 manualCinematicFramingEnabled];
-    if (v53 | v54)
+    manualCinematicFramingEnabled = [v52 manualCinematicFramingEnabled];
+    if (irisSinkConfiguration | stillImageSinkConfiguration2)
     {
-      if (v98)
+      if (timeCopy)
       {
-        if ((v55 & 1) == 0)
+        if ((manualCinematicFramingEnabled & 1) == 0)
         {
           v56 = objc_alloc_init(v39[315]);
           [v56 setSourceConfiguration:v52];
@@ -364,9 +364,9 @@ LABEL_98:
 
   v58 = v10[1];
   v112 = 0;
-  v59 = [v58 sensitiveContentAnalyzer];
+  sensitiveContentAnalyzer = [v58 sensitiveContentAnalyzer];
   v95 = v10;
-  if (!v59)
+  if (!sensitiveContentAnalyzer)
   {
     if (!v112)
     {
@@ -384,7 +384,7 @@ LABEL_98:
   [OUTLINED_FUNCTION_7() setSinkConfiguration:?];
   [objc_msgSend(v61 "sinkConfiguration")];
   [v58 sensitiveContentAnalyzerEnabled];
-  v59 = [OUTLINED_FUNCTION_7() setEnabled:?];
+  sensitiveContentAnalyzer = [OUTLINED_FUNCTION_7() setEnabled:?];
   if (v112)
   {
 LABEL_164:
@@ -394,7 +394,7 @@ LABEL_164:
 
   if (v61)
   {
-    v59 = OUTLINED_FUNCTION_37_6();
+    sensitiveContentAnalyzer = OUTLINED_FUNCTION_37_6();
   }
 
 LABEL_109:
@@ -402,8 +402,8 @@ LABEL_109:
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v63 = v104;
-  v64 = OUTLINED_FUNCTION_1_0(v59, v60, &v106, v105);
+  v63 = array5;
+  v64 = OUTLINED_FUNCTION_1_0(sensitiveContentAnalyzer, v60, &v106, v105);
   if (v64)
   {
     v65 = v64;
@@ -414,28 +414,28 @@ LABEL_109:
       {
         if (*v107 != v66)
         {
-          objc_enumerationMutation(v104);
+          objc_enumerationMutation(array5);
         }
 
         v68 = *(*(&v106 + 1) + 8 * i);
-        v69 = [v68 underlyingDeviceType];
-        v70 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(v11, v69);
+        underlyingDeviceType3 = [v68 underlyingDeviceType];
+        v70 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(array, underlyingDeviceType3);
         if ((FigCaptureMetadataObjectConfigurationRequiresMetadataDetectorPipeline(v68) & 1) != 0 || FigCaptureMetadataObjectConfigurationRequiresSceneClassification(v68))
         {
           if (v70)
           {
-            v71 = v11;
+            v71 = array;
           }
 
           else
           {
-            v71 = v12;
+            v71 = array2;
           }
 
           [v71 addObject:v68];
         }
 
-        v72 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(v13, v69);
+        v72 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(array3, underlyingDeviceType3);
         if (FigCaptureMetadataObjectConfigurationRequiresFaceTracking(v68))
         {
           BoolAttribute = FigCaptureSourceGetBoolAttribute([objc_msgSend(v68 "sourceConfiguration")], 0x1F219FFF0, &v112);
@@ -467,11 +467,11 @@ LABEL_109:
 
         if ((v75 & 1) == 0)
         {
-          BoolAttribute = [v12 addObject:v68];
+          BoolAttribute = [array2 addObject:v68];
         }
       }
 
-      v63 = v104;
+      v63 = array5;
       v65 = OUTLINED_FUNCTION_1_0(BoolAttribute, v73, &v106, v105);
       if (v65)
       {
@@ -489,8 +489,8 @@ LABEL_109:
     goto LABEL_143;
   }
 
-  v78 = [v77 underlyingDeviceType];
-  v79 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(v63, v78);
+  underlyingDeviceType4 = [v77 underlyingDeviceType];
+  v79 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(v63, underlyingDeviceType4);
   if (FigCaptureMetadataObjectConfigurationRequiresFaceTracking(v79))
   {
     goto LABEL_143;
@@ -503,17 +503,17 @@ LABEL_109:
 
   else
   {
-    v81 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(v11, v78);
-    v82 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(v12, v78);
+    v81 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(array, underlyingDeviceType4);
+    v82 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(array2, underlyingDeviceType4);
     v80 = v95[8];
     if (v81 || !v82)
     {
-      v83 = v11;
+      v83 = array;
       goto LABEL_142;
     }
   }
 
-  v83 = v12;
+  v83 = array2;
 LABEL_142:
   [v83 addObject:v80];
 LABEL_143:
@@ -524,31 +524,31 @@ LABEL_143:
   }
 
   v95[2] = v84;
-  v85 = [v11 count];
+  v85 = [array count];
   if (v85)
   {
-    v85 = [v11 copy];
+    v85 = [array copy];
   }
 
   v95[4] = v85;
-  v86 = [v12 count];
+  v86 = [array2 count];
   if (v86)
   {
-    v86 = [v12 copy];
+    v86 = [array2 copy];
   }
 
   v95[5] = v86;
-  v87 = [v13 count];
+  v87 = [array3 count];
   if (v87)
   {
-    v87 = [v13 copy];
+    v87 = [array3 copy];
   }
 
   v95[6] = v87;
-  v88 = [v100 count];
+  v88 = [array4 count];
   if (v88)
   {
-    v88 = [v100 copy];
+    v88 = [array4 copy];
   }
 
   v95[9] = v88;
@@ -559,17 +559,17 @@ LABEL_143:
   }
 
   v95[10] = v89;
-  v90 = [v99 count];
+  v90 = [array6 count];
   if (v90)
   {
-    v90 = [v99 copy];
+    v90 = [array6 copy];
   }
 
   v95[11] = v90;
-  v91 = [v102 count];
+  v91 = [array7 count];
   if (v91)
   {
-    v91 = [v102 copy];
+    v91 = [array7 copy];
   }
 
   v95[12] = v91;

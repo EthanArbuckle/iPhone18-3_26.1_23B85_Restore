@@ -1,15 +1,15 @@
 @interface PhoneSceneDelegateInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
-- (void)applicationDidFinishLaunching:(id)a3;
+- (void)applicationDidFinishLaunching:(id)launching;
 @end
 
 @implementation PhoneSceneDelegateInvertColorsAccessibility
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
   v4.receiver = self;
   v4.super_class = PhoneSceneDelegateInvertColorsAccessibility;
-  [(PhoneSceneDelegateInvertColorsAccessibility *)&v4 applicationDidFinishLaunching:a3];
+  [(PhoneSceneDelegateInvertColorsAccessibility *)&v4 applicationDidFinishLaunching:launching];
   [(PhoneSceneDelegateInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 

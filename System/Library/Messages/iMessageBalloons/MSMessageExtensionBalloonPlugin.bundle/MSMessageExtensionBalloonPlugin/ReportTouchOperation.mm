@@ -9,7 +9,7 @@
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC31MSMessageExtensionBalloonPluginP33_34F0067A36E85448CF72AC3F6D0A6D7420ReportTouchOperation_work);
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC31MSMessageExtensionBalloonPluginP33_34F0067A36E85448CF72AC3F6D0A6D7420ReportTouchOperation_hasTouch);
-  v4 = self;
+  selfCopy = self;
 
   v2(v3);
 }

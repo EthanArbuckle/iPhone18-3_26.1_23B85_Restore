@@ -1,45 +1,45 @@
 @interface NCNotificationDispatcher
-- (BOOL)_isRegisteredDestination:(id)a3;
+- (BOOL)_isRegisteredDestination:(id)destination;
 - (NCNotificationDispatcher)init;
-- (NCNotificationDispatcher)initWithAlertingController:(id)a3;
+- (NCNotificationDispatcher)initWithAlertingController:(id)controller;
 - (NCNotificationDispatcherDelegate)delegate;
-- (id)destination:(id)a3 notificationRequestForUUID:(id)a4;
-- (id)notificationSectionSettingsForDestination:(id)a3;
-- (id)notificationSectionSettingsForDestination:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_clearUnsafeNotification:(id)a3;
-- (void)_loadNotificationsImmediatelyIfNeededForSectionIdentifier:(id)a3;
-- (void)_notifyDidExecuteAction:(id)a3 forNotificationRequest:(id)a4;
-- (void)_performOperationForRequestDestinations:(id)a3 block:(id)a4;
-- (void)_registerAlertDestination:(id)a3;
-- (void)_registerDestination:(id)a3;
-- (void)destination:(id)a3 didDismissNotificationRequest:(id)a4;
-- (void)destination:(id)a3 didPresentNotificationRequest:(id)a4;
-- (void)destination:(id)a3 executeAction:(id)a4 forNotificationRequest:(id)a5 requestAuthentication:(BOOL)a6 withParameters:(id)a7 completion:(id)a8;
-- (void)destination:(id)a3 requestPermissionToExecuteAction:(id)a4 forNotificationRequest:(id)a5 withParameters:(id)a6 completion:(id)a7;
-- (void)destination:(id)a3 requestsClearingNotificationRequests:(id)a4;
-- (void)destination:(id)a3 requestsClearingNotificationRequests:(id)a4 fromDestinations:(id)a5;
-- (void)destination:(id)a3 requestsClearingNotificationRequestsFromDate:(id)a4 toDate:(id)a5 inSections:(id)a6;
-- (void)destination:(id)a3 requestsClearingNotificationRequestsInSections:(id)a4;
-- (void)destination:(id)a3 setAllowsCriticalAlerts:(BOOL)a4 forSectionIdentifier:(id)a5;
-- (void)destination:(id)a3 setAllowsDirectMessages:(BOOL)a4 forSectionIdentifier:(id)a5;
-- (void)destination:(id)a3 setAllowsNotifications:(BOOL)a4 forSectionIdentifier:(id)a5;
-- (void)destination:(id)a3 setAllowsTimeSensitive:(BOOL)a4 forSectionIdentifier:(id)a5;
-- (void)destination:(id)a3 setDeliverQuietly:(BOOL)a4 forSectionIdentifier:(id)a5;
-- (void)destination:(id)a3 setMuted:(BOOL)a4 untilDate:(id)a5 forSectionIdentifier:(id)a6 threadIdentifier:(id)a7;
-- (void)destination:(id)a3 setNotificationSystemSettings:(id)a4;
-- (void)destination:(id)a3 setScheduledDelivery:(BOOL)a4 forSectionIdentifier:(id)a5;
-- (void)destination:(id)a3 setSystemScheduledDeliveryEnabled:(BOOL)a4 scheduledDeliveryTimes:(id)a5;
-- (void)destination:(id)a3 willPresentNotificationRequest:(id)a4 suppressAlerts:(BOOL)a5;
-- (void)modifyNotificationWithRequest:(id)a3;
-- (void)notificationsLoadedForSectionIdentifier:(id)a3;
-- (void)postNotificationWithRequest:(id)a3;
-- (void)registerDestination:(id)a3;
-- (void)removeNotificationSectionWithIdentifier:(id)a3;
-- (void)setDestination:(id)a3 enabled:(BOOL)a4;
-- (void)unregisterDestination:(id)a3;
-- (void)updateNotificationSectionSettings:(id)a3;
-- (void)updateNotificationSystemSettings:(id)a3;
-- (void)withdrawNotificationWithRequest:(id)a3;
+- (id)destination:(id)destination notificationRequestForUUID:(id)d;
+- (id)notificationSectionSettingsForDestination:(id)destination;
+- (id)notificationSectionSettingsForDestination:(id)destination forSectionIdentifier:(id)identifier;
+- (void)_clearUnsafeNotification:(id)notification;
+- (void)_loadNotificationsImmediatelyIfNeededForSectionIdentifier:(id)identifier;
+- (void)_notifyDidExecuteAction:(id)action forNotificationRequest:(id)request;
+- (void)_performOperationForRequestDestinations:(id)destinations block:(id)block;
+- (void)_registerAlertDestination:(id)destination;
+- (void)_registerDestination:(id)destination;
+- (void)destination:(id)destination didDismissNotificationRequest:(id)request;
+- (void)destination:(id)destination didPresentNotificationRequest:(id)request;
+- (void)destination:(id)destination executeAction:(id)action forNotificationRequest:(id)request requestAuthentication:(BOOL)authentication withParameters:(id)parameters completion:(id)completion;
+- (void)destination:(id)destination requestPermissionToExecuteAction:(id)action forNotificationRequest:(id)request withParameters:(id)parameters completion:(id)completion;
+- (void)destination:(id)destination requestsClearingNotificationRequests:(id)requests;
+- (void)destination:(id)destination requestsClearingNotificationRequests:(id)requests fromDestinations:(id)destinations;
+- (void)destination:(id)destination requestsClearingNotificationRequestsFromDate:(id)date toDate:(id)toDate inSections:(id)sections;
+- (void)destination:(id)destination requestsClearingNotificationRequestsInSections:(id)sections;
+- (void)destination:(id)destination setAllowsCriticalAlerts:(BOOL)alerts forSectionIdentifier:(id)identifier;
+- (void)destination:(id)destination setAllowsDirectMessages:(BOOL)messages forSectionIdentifier:(id)identifier;
+- (void)destination:(id)destination setAllowsNotifications:(BOOL)notifications forSectionIdentifier:(id)identifier;
+- (void)destination:(id)destination setAllowsTimeSensitive:(BOOL)sensitive forSectionIdentifier:(id)identifier;
+- (void)destination:(id)destination setDeliverQuietly:(BOOL)quietly forSectionIdentifier:(id)identifier;
+- (void)destination:(id)destination setMuted:(BOOL)muted untilDate:(id)date forSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier;
+- (void)destination:(id)destination setNotificationSystemSettings:(id)settings;
+- (void)destination:(id)destination setScheduledDelivery:(BOOL)delivery forSectionIdentifier:(id)identifier;
+- (void)destination:(id)destination setSystemScheduledDeliveryEnabled:(BOOL)enabled scheduledDeliveryTimes:(id)times;
+- (void)destination:(id)destination willPresentNotificationRequest:(id)request suppressAlerts:(BOOL)alerts;
+- (void)modifyNotificationWithRequest:(id)request;
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier;
+- (void)postNotificationWithRequest:(id)request;
+- (void)registerDestination:(id)destination;
+- (void)removeNotificationSectionWithIdentifier:(id)identifier;
+- (void)setDestination:(id)destination enabled:(BOOL)enabled;
+- (void)unregisterDestination:(id)destination;
+- (void)updateNotificationSectionSettings:(id)settings;
+- (void)updateNotificationSystemSettings:(id)settings;
+- (void)withdrawNotificationWithRequest:(id)request;
 @end
 
 @implementation NCNotificationDispatcher
@@ -51,10 +51,10 @@
   return 0;
 }
 
-- (NCNotificationDispatcher)initWithAlertingController:(id)a3
+- (NCNotificationDispatcher)initWithAlertingController:(id)controller
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = NCNotificationDispatcher;
   v6 = [(NCNotificationDispatcher *)&v19 init];
@@ -77,15 +77,15 @@
     sectionSettings = v6->_sectionSettings;
     v6->_sectionSettings = v10;
 
-    v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     sourceDelegates = v6->_sourceDelegates;
-    v6->_sourceDelegates = v12;
+    v6->_sourceDelegates = weakObjectsHashTable;
 
     v14 = objc_alloc_init(NCLayoutLoopDetector);
     layoutDetector = v6->_layoutDetector;
     v6->_layoutDetector = v14;
 
-    objc_storeStrong(&v6->_alertingController, a3);
+    objc_storeStrong(&v6->_alertingController, controller);
     v16 = objc_alloc_init(NCNotificationAlertQueue);
     alertQueue = v6->_alertQueue;
     v6->_alertQueue = v16;
@@ -96,10 +96,10 @@
   return v6;
 }
 
-- (void)postNotificationWithRequest:(id)a3
+- (void)postNotificationWithRequest:(id)request
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   BSDispatchQueueAssertMain();
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -109,35 +109,35 @@
   v6 = NCUILogDispatch;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 loggingDescription];
+    loggingDescription = [requestCopy loggingDescription];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = loggingDescription;
     _os_log_impl(&dword_270A33000, v6, OS_LOG_TYPE_DEFAULT, "Posting notification %{public}@", &buf, 0xCu);
   }
 
-  v8 = [(NCNotificationDispatcher *)self destinationsRegistry];
-  v9 = [v4 requestDestinations];
-  v10 = [v8 destinationIdentifiersForRequestDestinations:v9];
+  destinationsRegistry = [(NCNotificationDispatcher *)self destinationsRegistry];
+  requestDestinations = [requestCopy requestDestinations];
+  v10 = [destinationsRegistry destinationIdentifiersForRequestDestinations:requestDestinations];
 
-  v11 = [(NCNotificationDispatcher *)self alertingController];
-  [v11 alertOnPostForNotificationRequest:v4 forRequestDestinations:v10];
+  alertingController = [(NCNotificationDispatcher *)self alertingController];
+  [alertingController alertOnPostForNotificationRequest:requestCopy forRequestDestinations:v10];
 
-  if ([(NCNotificationDispatcher *)self _shouldPostNotificationRequest:v4])
+  if ([(NCNotificationDispatcher *)self _shouldPostNotificationRequest:requestCopy])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
     v34 = 0x2020000000;
     v35 = 0;
-    [(NCNotificationDispatcher *)self _willPostNotificationRequest:v4];
-    v12 = [v4 sectionIdentifier];
-    [(NCNotificationDispatcher *)self _loadNotificationsImmediatelyIfNeededForSectionIdentifier:v12];
+    [(NCNotificationDispatcher *)self _willPostNotificationRequest:requestCopy];
+    sectionIdentifier = [requestCopy sectionIdentifier];
+    [(NCNotificationDispatcher *)self _loadNotificationsImmediatelyIfNeededForSectionIdentifier:sectionIdentifier];
 
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __56__NCNotificationDispatcher_postNotificationWithRequest___block_invoke;
     v27[3] = &unk_279E0DB38;
     v27[4] = self;
-    v13 = v4;
+    v13 = requestCopy;
     v28 = v13;
     p_buf = &buf;
     [(NCNotificationDispatcher *)self _performOperationForRequestDestinations:v13 block:v27];
@@ -147,37 +147,37 @@
       v14 = NCUILogDispatch;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v13 notificationIdentifier];
-        v16 = [v15 un_logDigest];
+        notificationIdentifier = [v13 notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
         *v31 = 138543362;
-        v32 = v16;
+        v32 = un_logDigest;
         _os_log_impl(&dword_270A33000, v14, OS_LOG_TYPE_DEFAULT, "Not rolling banner for notification %{public}@; CoverSheet is active", v31, 0xCu);
       }
     }
 
     else
     {
-      v20 = [(NCNotificationDispatcher *)self destinationsRegistry];
-      v21 = [v13 requestDestinations];
-      v14 = [v20 destinationsForRequestDestinations:v21];
+      destinationsRegistry2 = [(NCNotificationDispatcher *)self destinationsRegistry];
+      requestDestinations2 = [v13 requestDestinations];
+      v14 = [destinationsRegistry2 destinationsForRequestDestinations:requestDestinations2];
 
-      v22 = [(NCNotificationDispatcher *)self alertQueue];
-      LODWORD(v21) = [v14 containsObject:v22];
+      alertQueue = [(NCNotificationDispatcher *)self alertQueue];
+      LODWORD(requestDestinations2) = [v14 containsObject:alertQueue];
 
-      if (v21)
+      if (requestDestinations2)
       {
         v23 = NCUILogDispatch;
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [v13 notificationIdentifier];
-          v25 = [v24 un_logDigest];
+          notificationIdentifier2 = [v13 notificationIdentifier];
+          un_logDigest2 = [notificationIdentifier2 un_logDigest];
           *v31 = 138543362;
-          v32 = v25;
+          v32 = un_logDigest2;
           _os_log_impl(&dword_270A33000, v23, OS_LOG_TYPE_DEFAULT, "Rolling banner for notification %{public}@", v31, 0xCu);
         }
 
-        v26 = [(NCNotificationDispatcher *)self alertQueue];
-        [v26 postNotificationRequest:v13];
+        alertQueue2 = [(NCNotificationDispatcher *)self alertQueue];
+        [alertQueue2 postNotificationRequest:v13];
       }
     }
 
@@ -189,14 +189,14 @@
     v17 = NCUILogDispatch;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v4 notificationIdentifier];
-      v19 = [v18 un_logDigest];
+      notificationIdentifier3 = [requestCopy notificationIdentifier];
+      un_logDigest3 = [notificationIdentifier3 un_logDigest];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v19;
+      *(&buf + 4) = un_logDigest3;
       _os_log_impl(&dword_270A33000, v17, OS_LOG_TYPE_DEFAULT, "Not posting notification %{public}@ because it was marked as unsafe", &buf, 0xCu);
     }
 
-    [(NCNotificationDispatcher *)self _clearUnsafeNotification:v4];
+    [(NCNotificationDispatcher *)self _clearUnsafeNotification:requestCopy];
   }
 
   os_activity_scope_leave(&state);
@@ -247,10 +247,10 @@ void __56__NCNotificationDispatcher_postNotificationWithRequest___block_invoke(u
   }
 }
 
-- (void)modifyNotificationWithRequest:(id)a3
+- (void)modifyNotificationWithRequest:(id)request
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   BSDispatchQueueAssertMain();
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -260,20 +260,20 @@ void __56__NCNotificationDispatcher_postNotificationWithRequest___block_invoke(u
   v6 = NCUILogDispatch;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 loggingDescription];
+    loggingDescription = [requestCopy loggingDescription];
     *buf = 138543362;
-    v16 = v7;
+    v16 = loggingDescription;
     _os_log_impl(&dword_270A33000, v6, OS_LOG_TYPE_DEFAULT, "Modify notification %{public}@", buf, 0xCu);
   }
 
-  if ([(NCNotificationDispatcher *)self _shouldPostNotificationRequest:v4])
+  if ([(NCNotificationDispatcher *)self _shouldPostNotificationRequest:requestCopy])
   {
-    [(NCNotificationDispatcher *)self _willPostNotificationRequest:v4];
+    [(NCNotificationDispatcher *)self _willPostNotificationRequest:requestCopy];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __58__NCNotificationDispatcher_modifyNotificationWithRequest___block_invoke;
     v12[3] = &unk_279E0DB60;
-    v8 = v4;
+    v8 = requestCopy;
     v13 = v8;
     [(NCNotificationDispatcher *)self _performOperationForRequestDestinations:v8 block:v12];
     [(NCNotificationDispatcher *)self _didPostNotificationRequest:v8];
@@ -284,14 +284,14 @@ void __56__NCNotificationDispatcher_postNotificationWithRequest___block_invoke(u
     v9 = NCUILogDispatch;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 notificationIdentifier];
-      v11 = [v10 un_logDigest];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543362;
-      v16 = v11;
+      v16 = un_logDigest;
       _os_log_impl(&dword_270A33000, v9, OS_LOG_TYPE_DEFAULT, "Not modifying notification notification %{public}@ because it was marked as unsafe", buf, 0xCu);
     }
 
-    [(NCNotificationDispatcher *)self _clearUnsafeNotification:v4];
+    [(NCNotificationDispatcher *)self _clearUnsafeNotification:requestCopy];
   }
 
   os_activity_scope_leave(&state);
@@ -320,10 +320,10 @@ void __58__NCNotificationDispatcher_modifyNotificationWithRequest___block_invoke
   [v3 modifyNotificationRequest:*(a1 + 32)];
 }
 
-- (void)withdrawNotificationWithRequest:(id)a3
+- (void)withdrawNotificationWithRequest:(id)request
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   BSDispatchQueueAssertMain();
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -333,9 +333,9 @@ void __58__NCNotificationDispatcher_modifyNotificationWithRequest___block_invoke
   v6 = NCUILogDispatch;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 loggingDescription];
+    loggingDescription = [requestCopy loggingDescription];
     *buf = 138543362;
-    v27 = v7;
+    v27 = loggingDescription;
     _os_log_impl(&dword_270A33000, v6, OS_LOG_TYPE_DEFAULT, "Withdraw notification %{public}@", buf, 0xCu);
   }
 
@@ -344,28 +344,28 @@ void __58__NCNotificationDispatcher_modifyNotificationWithRequest___block_invoke
   v20 = 3221225472;
   v21 = __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invoke;
   v22 = &unk_279E0DB88;
-  v9 = v4;
+  v9 = requestCopy;
   v23 = v9;
   v10 = v8;
   v24 = v10;
   [(NCNotificationDispatcher *)self _performOperationForRequestDestinations:v9 block:&v19];
   v11 = [(NCNotificationDispatcher *)self destinationsRegistry:v19];
-  v12 = [v9 requestDestinations];
-  v13 = [v11 destinationsForRequestDestinations:v12];
+  requestDestinations = [v9 requestDestinations];
+  v13 = [v11 destinationsForRequestDestinations:requestDestinations];
 
   if (![v10 count])
   {
-    v15 = [v9 requestDestinations];
-    v16 = [v15 count] == 0;
+    requestDestinations2 = [v9 requestDestinations];
+    v16 = [requestDestinations2 count] == 0;
 
     if (!v16)
     {
-      v14 = NCUILogDispatch;
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      alertingController = NCUILogDispatch;
+      if (os_log_type_enabled(alertingController, OS_LOG_TYPE_ERROR))
       {
-        v17 = [v9 notificationIdentifier];
-        v18 = [v17 un_logDigest];
-        [(NCNotificationDispatcher *)v18 withdrawNotificationWithRequest:buf, v14, v17];
+        notificationIdentifier = [v9 notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
+        [(NCNotificationDispatcher *)un_logDigest withdrawNotificationWithRequest:buf, alertingController, notificationIdentifier];
       }
 
       goto LABEL_9;
@@ -374,8 +374,8 @@ void __58__NCNotificationDispatcher_modifyNotificationWithRequest___block_invoke
 
   if ([v10 isEqualToSet:v13])
   {
-    v14 = [(NCNotificationDispatcher *)self alertingController];
-    [v14 killAlertsForNotificationRequest:v9];
+    alertingController = [(NCNotificationDispatcher *)self alertingController];
+    [alertingController killAlertsForNotificationRequest:v9];
 LABEL_9:
   }
 
@@ -408,31 +408,31 @@ void __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invo
   [*(a1 + 40) addObject:v3];
 }
 
-- (void)updateNotificationSectionSettings:(id)a3
+- (void)updateNotificationSectionSettings:(id)settings
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   BSDispatchQueueAssertMain();
-  v5 = [v4 sectionIdentifier];
+  sectionIdentifier = [settingsCopy sectionIdentifier];
   if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEBUG))
   {
     [NCNotificationDispatcher updateNotificationSectionSettings:];
   }
 
-  v6 = [(NCNotificationDispatcher *)self sectionSettings];
-  v7 = [v6 objectForKey:v5];
+  sectionSettings = [(NCNotificationDispatcher *)self sectionSettings];
+  v7 = [sectionSettings objectForKey:sectionIdentifier];
 
-  v8 = [(NCNotificationDispatcher *)self sectionSettings];
-  [v8 setObject:v4 forKey:v5];
+  sectionSettings2 = [(NCNotificationDispatcher *)self sectionSettings];
+  [sectionSettings2 setObject:settingsCopy forKey:sectionIdentifier];
 
-  v9 = [(NCNotificationDispatcher *)self destinationsRegistry];
-  v10 = [v9 registeredDestinations];
+  destinationsRegistry = [(NCNotificationDispatcher *)self destinationsRegistry];
+  registeredDestinations = [destinationsRegistry registeredDestinations];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = v10;
+  v11 = registeredDestinations;
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
@@ -451,7 +451,7 @@ void __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invo
         v16 = *(*(&v17 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 updateNotificationSectionSettings:v4 previousSectionSettings:{v7, v17}];
+          [v16 updateNotificationSectionSettings:settingsCopy previousSectionSettings:{v7, v17}];
         }
 
         ++v15;
@@ -465,29 +465,29 @@ void __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invo
   }
 }
 
-- (void)updateNotificationSystemSettings:(id)a3
+- (void)updateNotificationSystemSettings:(id)settings
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   BSDispatchQueueAssertMain();
-  v5 = [(NCNotificationDispatcher *)self notificationSystemSettings];
-  [(NCNotificationDispatcher *)self setNotificationSystemSettings:v4];
+  notificationSystemSettings = [(NCNotificationDispatcher *)self notificationSystemSettings];
+  [(NCNotificationDispatcher *)self setNotificationSystemSettings:settingsCopy];
   v6 = NCUILogDispatch;
   if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = settingsCopy;
     _os_log_impl(&dword_270A33000, v6, OS_LOG_TYPE_DEFAULT, "Posting updated system settings %@", buf, 0xCu);
   }
 
-  v7 = [(NCNotificationDispatcher *)self destinationsRegistry];
-  v8 = [v7 registeredDestinations];
+  destinationsRegistry = [(NCNotificationDispatcher *)self destinationsRegistry];
+  registeredDestinations = [destinationsRegistry registeredDestinations];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = v8;
+  v9 = registeredDestinations;
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -506,7 +506,7 @@ void __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invo
         v14 = *(*(&v15 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          [v14 updateNotificationSystemSettings:v4 previousSystemSettings:{v5, v15}];
+          [v14 updateNotificationSystemSettings:settingsCopy previousSystemSettings:{notificationSystemSettings, v15}];
         }
 
         ++v13;
@@ -520,36 +520,36 @@ void __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invo
   }
 }
 
-- (void)removeNotificationSectionWithIdentifier:(id)a3
+- (void)removeNotificationSectionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   BSDispatchQueueAssertMain();
   if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEBUG))
   {
     [NCNotificationDispatcher removeNotificationSectionWithIdentifier:];
   }
 
-  v5 = [(NCNotificationDispatcher *)self sectionSettings];
-  [v5 removeObjectForKey:v4];
+  sectionSettings = [(NCNotificationDispatcher *)self sectionSettings];
+  [sectionSettings removeObjectForKey:identifierCopy];
 }
 
-- (void)notificationsLoadedForSectionIdentifier:(id)a3
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEBUG))
   {
     [NCNotificationDispatcher notificationsLoadedForSectionIdentifier:];
   }
 
-  v5 = [(NCNotificationDispatcher *)self destinationsRegistry];
-  v6 = [v5 registeredDestinations];
+  destinationsRegistry = [(NCNotificationDispatcher *)self destinationsRegistry];
+  registeredDestinations = [destinationsRegistry registeredDestinations];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v6;
+  v7 = registeredDestinations;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -568,7 +568,7 @@ void __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invo
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 notificationsLoadedForSectionIdentifier:{v4, v13}];
+          [v12 notificationsLoadedForSectionIdentifier:{identifierCopy, v13}];
         }
 
         ++v11;
@@ -582,20 +582,20 @@ void __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invo
   }
 }
 
-- (void)registerDestination:(id)a3
+- (void)registerDestination:(id)destination
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(NCNotificationDispatcher *)self _isRegisteredDestination:v4]&& (objc_opt_respondsToSelector() & 1) != 0)
+  destinationCopy = destination;
+  if (![(NCNotificationDispatcher *)self _isRegisteredDestination:destinationCopy]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(NCNotificationDispatcher *)self sectionSettings];
-    v6 = [v5 allValues];
+    sectionSettings = [(NCNotificationDispatcher *)self sectionSettings];
+    allValues = [sectionSettings allValues];
 
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -607,116 +607,116 @@ void __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invo
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
-          [v4 updateNotificationSectionSettings:*(*(&v11 + 1) + 8 * v10++) previousSectionSettings:0];
+          [destinationCopy updateNotificationSectionSettings:*(*(&v11 + 1) + 8 * v10++) previousSectionSettings:0];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
     }
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 isAlertDestination])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [destinationCopy isAlertDestination])
   {
-    [(NCNotificationDispatcher *)self _registerAlertDestination:v4];
+    [(NCNotificationDispatcher *)self _registerAlertDestination:destinationCopy];
   }
 
   else
   {
-    [(NCNotificationDispatcher *)self _registerDestination:v4];
+    [(NCNotificationDispatcher *)self _registerDestination:destinationCopy];
   }
 }
 
-- (void)unregisterDestination:(id)a3
+- (void)unregisterDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(NCNotificationDispatcher *)self alertQueue];
-  [v5 unregisterDestination:v4];
+  destinationCopy = destination;
+  alertQueue = [(NCNotificationDispatcher *)self alertQueue];
+  [alertQueue unregisterDestination:destinationCopy];
 
-  v6 = [(NCNotificationDispatcher *)self destinationsRegistry];
-  [v6 unregisterDestination:v4];
+  destinationsRegistry = [(NCNotificationDispatcher *)self destinationsRegistry];
+  [destinationsRegistry unregisterDestination:destinationCopy];
 }
 
-- (void)setDestination:(id)a3 enabled:(BOOL)a4
+- (void)setDestination:(id)destination enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v8 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 isAlertDestination])
+  enabledCopy = enabled;
+  destinationCopy = destination;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [destinationCopy isAlertDestination])
   {
-    v6 = [(NCNotificationDispatcher *)self alertQueue];
+    alertQueue = [(NCNotificationDispatcher *)self alertQueue];
   }
 
   else
   {
-    v6 = [(NCNotificationDispatcher *)self destinationsRegistry];
+    alertQueue = [(NCNotificationDispatcher *)self destinationsRegistry];
   }
 
-  v7 = v6;
-  [v6 setDestination:v8 enabled:v4];
+  v7 = alertQueue;
+  [alertQueue setDestination:destinationCopy enabled:enabledCopy];
 }
 
-- (void)_registerDestination:(id)a3
+- (void)_registerDestination:(id)destination
 {
-  v5 = a3;
-  v4 = [(NCNotificationDispatcher *)self destinationsRegistry];
-  [v4 registerDestination:v5];
+  destinationCopy = destination;
+  destinationsRegistry = [(NCNotificationDispatcher *)self destinationsRegistry];
+  [destinationsRegistry registerDestination:destinationCopy];
 
-  [v5 setDelegate:self];
+  [destinationCopy setDelegate:self];
 }
 
-- (void)_registerAlertDestination:(id)a3
+- (void)_registerAlertDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(NCNotificationDispatcher *)self alertQueue];
-  [v5 registerDestination:v4];
+  destinationCopy = destination;
+  alertQueue = [(NCNotificationDispatcher *)self alertQueue];
+  [alertQueue registerDestination:destinationCopy];
 
-  v9 = [v4 identifier];
+  identifier = [destinationCopy identifier];
 
-  v6 = [(NCNotificationDispatcher *)self destinationsRegistry];
-  v7 = [(NCNotificationDispatcher *)self alertQueue];
-  [v6 registerDestination:v7 forIdentifier:v9];
+  destinationsRegistry = [(NCNotificationDispatcher *)self destinationsRegistry];
+  alertQueue2 = [(NCNotificationDispatcher *)self alertQueue];
+  [destinationsRegistry registerDestination:alertQueue2 forIdentifier:identifier];
 
-  v8 = [(NCNotificationDispatcher *)self destinationsRegistry];
-  [v8 setDestinationWithIdentifier:v9 enabled:1];
+  destinationsRegistry2 = [(NCNotificationDispatcher *)self destinationsRegistry];
+  [destinationsRegistry2 setDestinationWithIdentifier:identifier enabled:1];
 }
 
-- (BOOL)_isRegisteredDestination:(id)a3
+- (BOOL)_isRegisteredDestination:(id)destination
 {
-  v4 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 isAlertDestination])
+  destinationCopy = destination;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [destinationCopy isAlertDestination])
   {
-    v5 = [(NCNotificationDispatcher *)self alertQueue];
+    alertQueue = [(NCNotificationDispatcher *)self alertQueue];
   }
 
   else
   {
-    v5 = [(NCNotificationDispatcher *)self destinationsRegistry];
+    alertQueue = [(NCNotificationDispatcher *)self destinationsRegistry];
   }
 
-  v6 = v5;
-  v7 = [v5 isRegisteredDestination:v4];
+  v6 = alertQueue;
+  v7 = [alertQueue isRegisteredDestination:destinationCopy];
 
   return v7;
 }
 
-- (void)destination:(id)a3 requestPermissionToExecuteAction:(id)a4 forNotificationRequest:(id)a5 withParameters:(id)a6 completion:(id)a7
+- (void)destination:(id)destination requestPermissionToExecuteAction:(id)action forNotificationRequest:(id)request withParameters:(id)parameters completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v13 isSiriAction];
-  v18 = [(NCNotificationDispatcher *)self delegate];
-  if (!v18 || (v17 & 1) != 0)
+  destinationCopy = destination;
+  actionCopy = action;
+  requestCopy = request;
+  parametersCopy = parameters;
+  completionCopy = completion;
+  isSiriAction = [actionCopy isSiriAction];
+  delegate = [(NCNotificationDispatcher *)self delegate];
+  if (!delegate || (isSiriAction & 1) != 0)
   {
-    v16[2](v16, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -725,93 +725,93 @@ void __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invo
     if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEFAULT))
     {
       log = v19;
-      v24 = [v13 identifier];
-      v20 = [v14 notificationIdentifier];
-      v21 = [v20 un_logDigest];
-      v22 = [(__CFString *)v15 count];
+      identifier = [actionCopy identifier];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
+      v22 = [(__CFString *)parametersCopy count];
       v23 = @"{}";
       *buf = 138543875;
-      v27 = v24;
+      v27 = identifier;
       if (v22)
       {
-        v23 = v15;
+        v23 = parametersCopy;
       }
 
       v28 = 2114;
-      v29 = v21;
+      v29 = un_logDigest;
       v30 = 2113;
       v31 = v23;
       _os_log_impl(&dword_270A33000, log, OS_LOG_TYPE_DEFAULT, "Dispatcher will request permission to execute action %{public}@ for notification %{public}@ with parameters %{private}@", buf, 0x20u);
     }
 
-    [v18 dispatcher:self requestPermissionToExecuteAction:v13 forDestination:v12 notificationRequest:v14 withParameters:v15 completionBlock:v16];
+    [delegate dispatcher:self requestPermissionToExecuteAction:actionCopy forDestination:destinationCopy notificationRequest:requestCopy withParameters:parametersCopy completionBlock:completionCopy];
   }
 }
 
-- (void)destination:(id)a3 executeAction:(id)a4 forNotificationRequest:(id)a5 requestAuthentication:(BOOL)a6 withParameters:(id)a7 completion:(id)a8
+- (void)destination:(id)destination executeAction:(id)action forNotificationRequest:(id)request requestAuthentication:(BOOL)authentication withParameters:(id)parameters completion:(id)completion
 {
-  v10 = a6;
+  authenticationCopy = authentication;
   v51 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = [(NCNotificationDispatcher *)self delegate];
+  destinationCopy = destination;
+  actionCopy = action;
+  requestCopy = request;
+  parametersCopy = parameters;
+  completionCopy = completion;
+  delegate = [(NCNotificationDispatcher *)self delegate];
   v19 = NCUILogDispatch;
-  v36 = v18;
-  if (v18)
+  v36 = delegate;
+  if (delegate)
   {
-    v34 = v17;
-    v35 = v15;
+    v34 = completionCopy;
+    v35 = requestCopy;
     if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v14 identifier];
-      v22 = [v15 notificationIdentifier];
-      v23 = [v22 un_logDigest];
-      v24 = [(__CFString *)v16 count];
+      identifier = [actionCopy identifier];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
+      v24 = [(__CFString *)parametersCopy count];
       v25 = @"{}";
       *buf = 138543875;
-      v46 = v21;
+      v46 = identifier;
       if (v24)
       {
-        v25 = v16;
+        v25 = parametersCopy;
       }
 
       v47 = 2114;
-      v48 = v23;
+      v48 = un_logDigest;
       v49 = 2113;
       v50 = v25;
       _os_log_impl(&dword_270A33000, v20, OS_LOG_TYPE_DEFAULT, "Dispatcher will execute action %{public}@ for notification %{public}@ with parameters %{private}@", buf, 0x20u);
     }
 
-    if ([v14 isSiriAction])
+    if ([actionCopy isSiriAction])
     {
       v26 = NCUILogDispatch;
-      v10 = 0;
+      authenticationCopy = 0;
       if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEFAULT))
       {
         v27 = v26;
-        v28 = [v14 identifier];
-        v29 = [v35 notificationIdentifier];
-        v30 = [v29 un_logDigest];
-        v31 = [(__CFString *)v16 count];
+        identifier2 = [actionCopy identifier];
+        notificationIdentifier2 = [v35 notificationIdentifier];
+        un_logDigest2 = [notificationIdentifier2 un_logDigest];
+        v31 = [(__CFString *)parametersCopy count];
         v32 = @"{}";
         *buf = 138543875;
-        v46 = v28;
+        v46 = identifier2;
         if (v31)
         {
-          v32 = v16;
+          v32 = parametersCopy;
         }
 
         v47 = 2114;
-        v48 = v30;
+        v48 = un_logDigest2;
         v49 = 2113;
         v50 = v32;
         _os_log_impl(&dword_270A33000, v27, OS_LOG_TYPE_DEFAULT, "Action can be run with Siri. Dispatcher is bypassing lockscreen authentication. Action %{public}@ for notification %{public}@ with parameters %{private}@", buf, 0x20u);
 
-        v10 = 0;
+        authenticationCopy = 0;
       }
     }
 
@@ -819,16 +819,16 @@ void __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invo
     v38[1] = 3221225472;
     v38[2] = __125__NCNotificationDispatcher_destination_executeAction_forNotificationRequest_requestAuthentication_withParameters_completion___block_invoke;
     v38[3] = &unk_279E0DC28;
-    v39 = v37;
-    v40 = v14;
-    v41 = v16;
-    v17 = v34;
+    v39 = destinationCopy;
+    v40 = actionCopy;
+    v41 = parametersCopy;
+    completionCopy = v34;
     v44 = v34;
-    v42 = self;
-    v15 = v35;
+    selfCopy = self;
+    requestCopy = v35;
     v43 = v35;
     v33 = v36;
-    [v36 dispatcher:self willExecuteAction:v40 forDestination:v39 notificationRequest:v43 requestAuthentication:v10 withParameters:v41 completionBlock:v38];
+    [v36 dispatcher:self willExecuteAction:v40 forDestination:v39 notificationRequest:v43 requestAuthentication:authenticationCopy withParameters:v41 completionBlock:v38];
   }
 
   else
@@ -836,7 +836,7 @@ void __60__NCNotificationDispatcher_withdrawNotificationWithRequest___block_invo
     v33 = 0;
     if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_ERROR))
     {
-      [NCNotificationDispatcher destination:v19 executeAction:v15 forNotificationRequest:? requestAuthentication:? withParameters:? completion:?];
+      [NCNotificationDispatcher destination:v19 executeAction:requestCopy forNotificationRequest:? requestAuthentication:? withParameters:? completion:?];
     }
   }
 }
@@ -949,30 +949,30 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (id)notificationSectionSettingsForDestination:(id)a3
+- (id)notificationSectionSettingsForDestination:(id)destination
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(NCNotificationDispatcher *)self sectionSettings];
-  v5 = [v4 allValues];
-  v6 = [v3 setWithArray:v5];
+  sectionSettings = [(NCNotificationDispatcher *)self sectionSettings];
+  allValues = [sectionSettings allValues];
+  v6 = [v3 setWithArray:allValues];
   v7 = [v6 copy];
 
   return v7;
 }
 
-- (id)notificationSectionSettingsForDestination:(id)a3 forSectionIdentifier:(id)a4
+- (id)notificationSectionSettingsForDestination:(id)destination forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(NCNotificationDispatcher *)self sectionSettings];
-  v7 = [v6 objectForKey:v5];
+  identifierCopy = identifier;
+  sectionSettings = [(NCNotificationDispatcher *)self sectionSettings];
+  v7 = [sectionSettings objectForKey:identifierCopy];
 
   return v7;
 }
 
-- (void)destination:(id)a3 requestsClearingNotificationRequests:(id)a4
+- (void)destination:(id)destination requestsClearingNotificationRequests:(id)requests
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  requestsCopy = requests;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -993,7 +993,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) dispatcher:self requestsClearingNotificationRequests:{v5, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) dispatcher:self requestsClearingNotificationRequests:{requestsCopy, v11}];
       }
 
       while (v8 != v10);
@@ -1004,11 +1004,11 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 requestsClearingNotificationRequests:(id)a4 fromDestinations:(id)a5
+- (void)destination:(id)destination requestsClearingNotificationRequests:(id)requests fromDestinations:(id)destinations
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  requestsCopy = requests;
+  destinationsCopy = destinations;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1029,7 +1029,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13++) dispatcher:self requestsClearingNotificationRequests:v7 fromDestinations:{v8, v14}];
+        [*(*(&v14 + 1) + 8 * v13++) dispatcher:self requestsClearingNotificationRequests:requestsCopy fromDestinations:{destinationsCopy, v14}];
       }
 
       while (v11 != v13);
@@ -1040,10 +1040,10 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 requestsClearingNotificationRequestsInSections:(id)a4
+- (void)destination:(id)destination requestsClearingNotificationRequestsInSections:(id)sections
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  sectionsCopy = sections;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1064,7 +1064,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) dispatcher:self requestsClearingNotificationRequestsInSections:{v5, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) dispatcher:self requestsClearingNotificationRequestsInSections:{sectionsCopy, v11}];
       }
 
       while (v8 != v10);
@@ -1075,12 +1075,12 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 requestsClearingNotificationRequestsFromDate:(id)a4 toDate:(id)a5 inSections:(id)a6
+- (void)destination:(id)destination requestsClearingNotificationRequestsFromDate:(id)date toDate:(id)toDate inSections:(id)sections
 {
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  dateCopy = date;
+  toDateCopy = toDate;
+  sectionsCopy = sections;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1101,7 +1101,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v12);
         }
 
-        [*(*(&v17 + 1) + 8 * v16++) dispatcher:self requestsClearingNotificationRequestsFromDate:v9 toDate:v10 inSections:{v11, v17}];
+        [*(*(&v17 + 1) + 8 * v16++) dispatcher:self requestsClearingNotificationRequestsFromDate:dateCopy toDate:toDateCopy inSections:{sectionsCopy, v17}];
       }
 
       while (v14 != v16);
@@ -1112,11 +1112,11 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 setAllowsNotifications:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)destination:(id)destination setAllowsNotifications:(BOOL)notifications forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  notificationsCopy = notifications;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1137,7 +1137,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setAllowsNotifications:v5 forSectionIdentifier:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setAllowsNotifications:notificationsCopy forSectionIdentifier:{identifierCopy, v13}];
       }
 
       while (v10 != v12);
@@ -1148,11 +1148,11 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 setDeliverQuietly:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)destination:(id)destination setDeliverQuietly:(BOOL)quietly forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  quietlyCopy = quietly;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1173,7 +1173,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setDeliverQuietly:v5 forSectionIdentifier:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setDeliverQuietly:quietlyCopy forSectionIdentifier:{identifierCopy, v13}];
       }
 
       while (v10 != v12);
@@ -1184,13 +1184,13 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 setMuted:(BOOL)a4 untilDate:(id)a5 forSectionIdentifier:(id)a6 threadIdentifier:(id)a7
+- (void)destination:(id)destination setMuted:(BOOL)muted untilDate:(id)date forSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier
 {
-  v9 = a4;
+  mutedCopy = muted;
   v24 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  dateCopy = date;
+  identifierCopy = identifier;
+  threadIdentifierCopy = threadIdentifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1211,7 +1211,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v14);
         }
 
-        [*(*(&v19 + 1) + 8 * v18++) dispatcher:self setMuted:v9 untilDate:v11 forSectionIdentifier:v12 threadIdentifier:{v13, v19}];
+        [*(*(&v19 + 1) + 8 * v18++) dispatcher:self setMuted:mutedCopy untilDate:dateCopy forSectionIdentifier:identifierCopy threadIdentifier:{threadIdentifierCopy, v19}];
       }
 
       while (v16 != v18);
@@ -1222,11 +1222,11 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 setAllowsCriticalAlerts:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)destination:(id)destination setAllowsCriticalAlerts:(BOOL)alerts forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  alertsCopy = alerts;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1247,7 +1247,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setAllowsCriticalAlerts:v5 forSectionIdentifier:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setAllowsCriticalAlerts:alertsCopy forSectionIdentifier:{identifierCopy, v13}];
       }
 
       while (v10 != v12);
@@ -1258,11 +1258,11 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 setAllowsTimeSensitive:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)destination:(id)destination setAllowsTimeSensitive:(BOOL)sensitive forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  sensitiveCopy = sensitive;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1283,7 +1283,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setAllowsTimeSensitive:v5 forSectionIdentifier:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setAllowsTimeSensitive:sensitiveCopy forSectionIdentifier:{identifierCopy, v13}];
       }
 
       while (v10 != v12);
@@ -1294,11 +1294,11 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 setAllowsDirectMessages:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)destination:(id)destination setAllowsDirectMessages:(BOOL)messages forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  messagesCopy = messages;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1319,7 +1319,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setAllowsDirectMessages:v5 forSectionIdentifier:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setAllowsDirectMessages:messagesCopy forSectionIdentifier:{identifierCopy, v13}];
       }
 
       while (v10 != v12);
@@ -1330,11 +1330,11 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 setScheduledDelivery:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)destination:(id)destination setScheduledDelivery:(BOOL)delivery forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  deliveryCopy = delivery;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1355,7 +1355,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setScheduledDelivery:v5 forSectionIdentifier:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setScheduledDelivery:deliveryCopy forSectionIdentifier:{identifierCopy, v13}];
       }
 
       while (v10 != v12);
@@ -1366,11 +1366,11 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 setSystemScheduledDeliveryEnabled:(BOOL)a4 scheduledDeliveryTimes:(id)a5
+- (void)destination:(id)destination setSystemScheduledDeliveryEnabled:(BOOL)enabled scheduledDeliveryTimes:(id)times
 {
-  v5 = a4;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  timesCopy = times;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1391,7 +1391,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setSystemScheduledDeliveryEnabled:v5 scheduledDeliveryTimes:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) dispatcher:self setSystemScheduledDeliveryEnabled:enabledCopy scheduledDeliveryTimes:{timesCopy, v13}];
       }
 
       while (v10 != v12);
@@ -1402,10 +1402,10 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (id)destination:(id)a3 notificationRequestForUUID:(id)a4
+- (id)destination:(id)destination notificationRequestForUUID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1428,7 +1428,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v6);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v11) dispatcher:self notificationRequestForUUID:{v5, v14}];
+        v9 = [*(*(&v14 + 1) + 8 * v11) dispatcher:self notificationRequestForUUID:{dCopy, v14}];
 
         ++v11;
         v12 = v9;
@@ -1449,10 +1449,10 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   return v9;
 }
 
-- (void)destination:(id)a3 setNotificationSystemSettings:(id)a4
+- (void)destination:(id)destination setNotificationSystemSettings:(id)settings
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  settingsCopy = settings;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1473,7 +1473,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) dispatcher:self setNotificationSystemSettings:{v5, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) dispatcher:self setNotificationSystemSettings:{settingsCopy, v11}];
       }
 
       while (v8 != v10);
@@ -1484,45 +1484,45 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
   }
 }
 
-- (void)destination:(id)a3 willPresentNotificationRequest:(id)a4 suppressAlerts:(BOOL)a5
+- (void)destination:(id)destination willPresentNotificationRequest:(id)request suppressAlerts:(BOOL)alerts
 {
-  if (!a5)
+  if (!alerts)
   {
-    v8 = a4;
-    v9 = a3;
-    v11 = [(NCNotificationDispatcher *)self alertingController];
-    v10 = [v9 identifier];
+    requestCopy = request;
+    destinationCopy = destination;
+    alertingController = [(NCNotificationDispatcher *)self alertingController];
+    identifier = [destinationCopy identifier];
 
-    [v11 alertOnPresentationForNotificationRequest:v8 presentingDestination:v10];
+    [alertingController alertOnPresentationForNotificationRequest:requestCopy presentingDestination:identifier];
   }
 }
 
-- (void)destination:(id)a3 didPresentNotificationRequest:(id)a4
+- (void)destination:(id)destination didPresentNotificationRequest:(id)request
 {
-  v5 = a4;
-  v6 = [(NCNotificationDispatcher *)self alertingController];
-  [v6 resetAutomaticLockStateForNotificationRequest:v5];
+  requestCopy = request;
+  alertingController = [(NCNotificationDispatcher *)self alertingController];
+  [alertingController resetAutomaticLockStateForNotificationRequest:requestCopy];
 }
 
-- (void)destination:(id)a3 didDismissNotificationRequest:(id)a4
+- (void)destination:(id)destination didDismissNotificationRequest:(id)request
 {
-  v5 = a4;
-  v6 = [(NCNotificationDispatcher *)self alertingController];
-  [v6 killAlertsForNotificationRequest:v5];
+  requestCopy = request;
+  alertingController = [(NCNotificationDispatcher *)self alertingController];
+  [alertingController killAlertsForNotificationRequest:requestCopy];
 
-  v7 = [(NCNotificationDispatcher *)self alertingController];
-  [v7 resetAutomaticLockStateForNotificationRequest:v5];
+  alertingController2 = [(NCNotificationDispatcher *)self alertingController];
+  [alertingController2 resetAutomaticLockStateForNotificationRequest:requestCopy];
 }
 
-- (void)_performOperationForRequestDestinations:(id)a3 block:(id)a4
+- (void)_performOperationForRequestDestinations:(id)destinations block:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  destinationsCopy = destinations;
+  blockCopy = block;
   v8 = objc_opt_new();
-  v9 = [(NCNotificationDispatcher *)self destinationsRegistry];
-  v10 = [v6 requestDestinations];
-  v11 = [v9 destinationsForRequestDestinations:v10];
+  destinationsRegistry = [(NCNotificationDispatcher *)self destinationsRegistry];
+  requestDestinations = [destinationsCopy requestDestinations];
+  v11 = [destinationsRegistry destinationsForRequestDestinations:requestDestinations];
 
   v23 = 0u;
   v24 = 0u;
@@ -1547,7 +1547,7 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
         v17 = *(*(&v21 + 1) + 8 * v16);
         if (v17 && ([v8 containsObject:{*(*(&v21 + 1) + 8 * v16), v21}] & 1) == 0)
         {
-          v7[2](v7, v17);
+          blockCopy[2](blockCopy, v17);
           [v8 addObject:v17];
         }
 
@@ -1563,24 +1563,24 @@ void __125__NCNotificationDispatcher_destination_executeAction_forNotificationRe
 
   if (![v8 count])
   {
-    v18 = [v6 requestDestinations];
-    v19 = [v18 count];
+    requestDestinations2 = [destinationsCopy requestDestinations];
+    v19 = [requestDestinations2 count];
 
     if (v19)
     {
       v20 = NCUILogDispatch;
       if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_ERROR))
       {
-        [NCNotificationDispatcher _performOperationForRequestDestinations:v20 block:v6];
+        [NCNotificationDispatcher _performOperationForRequestDestinations:v20 block:destinationsCopy];
       }
     }
   }
 }
 
-- (void)_loadNotificationsImmediatelyIfNeededForSectionIdentifier:(id)a3
+- (void)_loadNotificationsImmediatelyIfNeededForSectionIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1596,7 +1596,7 @@ LABEL_14:
       [NCNotificationDispatcher _loadNotificationsImmediatelyIfNeededForSectionIdentifier:];
     }
 
-    [(NCNotificationDispatcher *)self notificationsLoadedForSectionIdentifier:v4, v13];
+    [(NCNotificationDispatcher *)self notificationsLoadedForSectionIdentifier:identifierCopy, v13];
     goto LABEL_17;
   }
 
@@ -1621,7 +1621,7 @@ LABEL_14:
 
       else
       {
-        v8 = [v11 dispatcher:self supportSectionPreloadForSectionIdentifier:{v4, v13}];
+        v8 = [v11 dispatcher:self supportSectionPreloadForSectionIdentifier:{identifierCopy, v13}];
       }
     }
 
@@ -1638,10 +1638,10 @@ LABEL_14:
 LABEL_17:
 }
 
-- (void)_clearUnsafeNotification:(id)a3
+- (void)_clearUnsafeNotification:(id)notification
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1663,7 +1663,7 @@ LABEL_17:
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [MEMORY[0x277CBEB98] setWithObject:{v4, v12}];
+        v11 = [MEMORY[0x277CBEB98] setWithObject:{notificationCopy, v12}];
         [v10 dispatcher:self requestsClearingNotificationRequests:v11];
 
         ++v9;
@@ -1677,13 +1677,13 @@ LABEL_17:
   }
 }
 
-- (void)_notifyDidExecuteAction:(id)a3 forNotificationRequest:(id)a4
+- (void)_notifyDidExecuteAction:(id)action forNotificationRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NCNotificationDispatcher *)self delegate];
-  [v8 dispatcher:self didExecuteAction:v6 forNotificationRequest:v7];
+  actionCopy = action;
+  requestCopy = request;
+  delegate = [(NCNotificationDispatcher *)self delegate];
+  [delegate dispatcher:self didExecuteAction:actionCopy forNotificationRequest:requestCopy];
 
   v16 = 0u;
   v17 = 0u;
@@ -1705,7 +1705,7 @@ LABEL_17:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13++) dispatcher:self didExecuteAction:v6 forNotificationRequest:{v7, v14}];
+        [*(*(&v14 + 1) + 8 * v13++) dispatcher:self didExecuteAction:actionCopy forNotificationRequest:{requestCopy, v14}];
       }
 
       while (v11 != v13);

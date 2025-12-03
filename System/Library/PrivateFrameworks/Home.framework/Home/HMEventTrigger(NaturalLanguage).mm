@@ -31,7 +31,7 @@
   v6 = a3;
   v7 = [[HFTriggerNaturalLanguageOptions alloc] initWithHome:v6 nameType:a4];
 
-  v8 = [a1 hf_naturalLanguageNameWithOptions:v7];
+  v8 = [self hf_naturalLanguageNameWithOptions:v7];
 
   return v8;
 }
@@ -40,22 +40,22 @@
 {
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = [a1 events];
-  v7 = [a1 hf_effectiveRecurrences];
-  v8 = [a1 creator];
-  v9 = [v5 hf_naturalLanguageNameWithOptions:v4 events:v6 recurrences:v7 forUser:v8];
+  events = [self events];
+  hf_effectiveRecurrences = [self hf_effectiveRecurrences];
+  creator = [self creator];
+  v9 = [v5 hf_naturalLanguageNameWithOptions:v4 events:events recurrences:hf_effectiveRecurrences forUser:creator];
 
   if (v9)
   {
-    v10 = v9;
+    name = v9;
   }
 
   else
   {
-    v10 = [a1 name];
+    name = [self name];
   }
 
-  v11 = v10;
+  v11 = name;
 
   return v11;
 }
@@ -110,24 +110,24 @@
         v36 = [v17 na_map:&__block_literal_global_247];
         [v40 setWithSet:v36];
         v29 = v35 = v11;
-        v41 = [v29 na_mostCommonObject];
+        na_mostCommonObject = [v29 na_mostCommonObject];
 
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
         v43[2] = __96__HMEventTrigger_NaturalLanguage__hf_naturalLanguageNameWithOptions_events_recurrences_forUser___block_invoke_7;
         v43[3] = &unk_277DF7650;
-        v44 = v41;
-        v34 = v41;
+        v44 = na_mostCommonObject;
+        v34 = na_mostCommonObject;
         v33 = [v17 na_filter:v43];
         v30 = [v33 na_map:&__block_literal_global_250];
         v37 = MEMORY[0x277CCA940];
         v42 = v30;
         v32 = [v33 na_map:&__block_literal_global_252];
         v31 = [v37 setWithSet:v32];
-        v38 = [v31 na_mostCommonObject];
+        na_mostCommonObject2 = [v31 na_mostCommonObject];
 
         v11 = v35;
-        v22 = [objc_opt_class() hf_naturalLanguageNameWithOptions:v9 characteristics:v42 triggerValue:v38];
+        v22 = [objc_opt_class() hf_naturalLanguageNameWithOptions:v9 characteristics:v42 triggerValue:na_mostCommonObject2];
 
         if (v22)
         {
@@ -171,22 +171,22 @@ LABEL_10:
   v10 = a5;
   if (v9)
   {
-    v11 = [v9 identifier];
-    if ([v11 length])
+    identifier = [v9 identifier];
+    if ([identifier length])
     {
-      v12 = [v9 identifier];
+      identifier2 = [v9 identifier];
     }
 
     else
     {
-      v12 = 0;
+      identifier2 = 0;
     }
 
-    v15 = [v8 home];
-    v16 = [v15 currentUser];
+    home = [v8 home];
+    currentUser = [home currentUser];
 
     v17 = @"HFOtherUser_";
-    if (v16 == v10)
+    if (currentUser == v10)
     {
       v17 = @"HFCurrentUser_";
     }
@@ -207,14 +207,14 @@ LABEL_10:
       if (![v9 notifyOnExit])
       {
 LABEL_18:
-        if (v12)
+        if (identifier2)
         {
-          if ([v12 isEqualToString:@"Home"])
+          if ([identifier2 isEqualToString:@"Home"])
           {
             v21 = @"_Home";
           }
 
-          else if ([v12 isEqualToString:@"Work"])
+          else if ([identifier2 isEqualToString:@"Work"])
           {
             v21 = @"_Work";
           }
@@ -229,22 +229,22 @@ LABEL_18:
           v18 = v22;
         }
 
-        v49 = v12;
+        v49 = identifier2;
         if ([v8 nameType] == 2)
         {
           v23 = [(__CFString *)v18 stringByAppendingString:@"_fullSentence"];
 
-          v24 = [v8 actions];
-          v25 = [v24 count];
+          actions = [v8 actions];
+          v25 = [actions count];
 
           if (v25)
           {
-            v26 = [v8 actionNaturalLanguageOptions];
-            [v26 setFormattingContext:5];
+            actionNaturalLanguageOptions = [v8 actionNaturalLanguageOptions];
+            [actionNaturalLanguageOptions setFormattingContext:5];
 
-            v27 = [v8 actions];
-            v28 = [v8 actionNaturalLanguageOptions];
-            v29 = [HFActionNaturalLanguageUtilities hf_naturalLanguageDescriptionForActions:v27 withOptions:v28];
+            actions2 = [v8 actions];
+            actionNaturalLanguageOptions2 = [v8 actionNaturalLanguageOptions];
+            v29 = [HFActionNaturalLanguageUtilities hf_naturalLanguageDescriptionForActions:actions2 withOptions:actionNaturalLanguageOptions2];
 
             if ([(__CFString *)v29 length])
             {
@@ -273,62 +273,62 @@ LABEL_18:
           v29 = 0;
         }
 
-        v32 = [MEMORY[0x277CBEB18] array];
-        if (v16 != v10)
+        array = [MEMORY[0x277CBEB18] array];
+        if (currentUser != v10)
         {
-          v48 = a1;
+          selfCopy = self;
           v33 = [HFUserNameFormatter alloc];
-          v34 = [v8 home];
-          v35 = [(HFUserNameFormatter *)v33 initWithHome:v34];
+          home2 = [v8 home];
+          v35 = [(HFUserNameFormatter *)v33 initWithHome:home2];
 
           [(HFUserNameFormatter *)v35 setStyle:1];
-          v36 = [v8 home];
-          v37 = [v36 hf_handleForUser:v10];
+          home3 = [v8 home];
+          v37 = [home3 hf_handleForUser:v10];
 
           v38 = [(HFUserNameFormatter *)v35 stringForObjectValue:v37];
           if (v38)
           {
-            [v32 na_safeAddObject:v38];
+            [array na_safeAddObject:v38];
           }
 
           else
           {
-            v39 = [v10 name];
-            if (v39)
+            name = [v10 name];
+            if (name)
             {
-              [v32 na_safeAddObject:v39];
+              [array na_safeAddObject:name];
             }
 
             else
             {
-              v40 = [v10 userID];
-              v47 = v40;
-              if (v40)
+              userID = [v10 userID];
+              v47 = userID;
+              if (userID)
               {
-                [v32 na_safeAddObject:v40];
+                [array na_safeAddObject:userID];
               }
 
               else
               {
                 v46 = _HFLocalizedStringWithDefaultValue(@"HFOtherUserDefaultName", @"HFOtherUserDefaultName", 1);
-                [v32 na_safeAddObject:v46];
+                [array na_safeAddObject:v46];
               }
             }
           }
 
-          a1 = v48;
+          self = selfCopy;
         }
 
-        [v32 na_safeAddObject:v49];
-        [v32 na_safeAddObject:v29];
+        [array na_safeAddObject:v49];
+        [array na_safeAddObject:v29];
         v41 = MEMORY[0x277CCACA8];
         v42 = _HFLocalizedStringWithDefaultValue(v18, v18, 1);
-        v14 = [v41 hf_stringWithFormat:v42 arguments:v32];
+        v14 = [v41 hf_stringWithFormat:v42 arguments:array];
 
         if (![v8 nameType])
         {
-          v43 = [v8 home];
-          v44 = [a1 hf_sanitizeTriggerName:v14 home:v43];
+          home4 = [v8 home];
+          v44 = [self hf_sanitizeTriggerName:v14 home:home4];
 
           v14 = v44;
         }
@@ -364,17 +364,17 @@ LABEL_48:
   v6 = a4;
   v7 = [[HFPresenceEventFormatter alloc] initWithOptions:v5];
   [(HFPresenceEventFormatter *)v7 setStyle:0];
-  v8 = [v5 actions];
-  v9 = [v8 count];
+  actions = [v5 actions];
+  v9 = [actions count];
 
   if (v9)
   {
-    v10 = [v5 actionNaturalLanguageOptions];
-    [v10 setFormattingContext:5];
+    actionNaturalLanguageOptions = [v5 actionNaturalLanguageOptions];
+    [actionNaturalLanguageOptions setFormattingContext:5];
 
-    v11 = [v5 actions];
-    v12 = [v5 actionNaturalLanguageOptions];
-    v13 = [HFActionNaturalLanguageUtilities hf_naturalLanguageDescriptionForActions:v11 withOptions:v12];
+    actions2 = [v5 actions];
+    actionNaturalLanguageOptions2 = [v5 actionNaturalLanguageOptions];
+    v13 = [HFActionNaturalLanguageUtilities hf_naturalLanguageDescriptionForActions:actions2 withOptions:actionNaturalLanguageOptions2];
 
     if ([v13 length])
     {
@@ -393,23 +393,23 @@ LABEL_6:
 
 + (id)hf_naturalLanguageDescriptionForCharacteristic:()NaturalLanguage
 {
-  v3 = [a3 characteristicType];
-  if ([v3 isEqualToString:*MEMORY[0x277CCF770]])
+  characteristicType = [a3 characteristicType];
+  if ([characteristicType isEqualToString:*MEMORY[0x277CCF770]])
   {
     v4 = @"HFCharacteristicTriggerDescriptionTypeAirQuality";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CCF850]])
+  else if ([characteristicType isEqualToString:*MEMORY[0x277CCF850]])
   {
     v4 = @"HFCharacteristicTriggerDescriptionTypeHumidity";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CCF868]])
+  else if ([characteristicType isEqualToString:*MEMORY[0x277CCF868]])
   {
     v4 = @"HFCharacteristicTriggerDescriptionTypeTemperature";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CCF830]])
+  else if ([characteristicType isEqualToString:*MEMORY[0x277CCF830]])
   {
     v4 = @"HFCharacteristicTriggerDescriptionTypeLightLevel";
   }
@@ -440,21 +440,21 @@ LABEL_6:
 
   if ([v9 count])
   {
-    v11 = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
+    hf_sensingCharacteristicTypes = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __98__HMEventTrigger_NaturalLanguage__hf_naturalLanguageNameWithOptions_characteristics_triggerValue___block_invoke;
     v15[3] = &unk_277DF6218;
-    v16 = v11;
-    v12 = v11;
+    v16 = hf_sensingCharacteristicTypes;
+    v12 = hf_sensingCharacteristicTypes;
     if ([v9 na_any:v15])
     {
-      [a1 _hf_naturalLanguageNameWithOptions:v8 sensorCharacteristics:v9 triggerValue:v10];
+      [self _hf_naturalLanguageNameWithOptions:v8 sensorCharacteristics:v9 triggerValue:v10];
     }
 
     else
     {
-      [a1 _hf_naturalLanguageNameWithOptions:v8 nonSensorCharacteristics:v9 triggerValue:v10];
+      [self _hf_naturalLanguageNameWithOptions:v8 nonSensorCharacteristics:v9 triggerValue:v10];
     }
     v13 = ;
   }
@@ -472,26 +472,26 @@ LABEL_6:
   v7 = a3;
   v8 = a4;
   v9 = a5;
-  v10 = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
+  hf_sensingCharacteristicTypes = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __105__HMEventTrigger_NaturalLanguage___hf_naturalLanguageNameWithOptions_sensorCharacteristics_triggerValue___block_invoke;
   v55[3] = &unk_277DF7678;
   v11 = v9;
   v56 = v11;
-  v12 = v10;
+  v12 = hf_sensingCharacteristicTypes;
   v57 = v12;
   v13 = [v8 na_firstObjectPassingTest:v55];
-  v14 = [v13 characteristicType];
-  v15 = v14;
-  if (!v14)
+  characteristicType = [v13 characteristicType];
+  v15 = characteristicType;
+  if (!characteristicType)
   {
     v22 = 0;
     goto LABEL_36;
   }
 
   v53 = v12;
-  if (![v14 isEqualToString:*MEMORY[0x277CCF978]])
+  if (![characteristicType isEqualToString:*MEMORY[0x277CCF978]])
   {
     if ([v15 isEqualToString:*MEMORY[0x277CCF7A0]])
     {
@@ -526,7 +526,7 @@ LABEL_6:
 
         v18 = v45;
 
-        v19 = [v18 BOOLValue];
+        bOOLValue = [v18 BOOLValue];
         v20 = @"HFCharacteristicTriggerDescriptionSensorOccupancyNotDetected";
         v21 = @"HFCharacteristicTriggerDescriptionSensorOccupancyDetected";
         goto LABEL_7;
@@ -581,11 +581,11 @@ LABEL_6:
 
   v18 = v17;
 
-  v19 = [v18 BOOLValue];
+  bOOLValue = [v18 BOOLValue];
   v20 = @"HFCharacteristicTriggerDescriptionSensorMotionNotDetected";
   v21 = @"HFCharacteristicTriggerDescriptionSensorMotionDetected";
 LABEL_7:
-  if (v19)
+  if (bOOLValue)
   {
     v20 = v21;
   }
@@ -593,8 +593,8 @@ LABEL_7:
   v52 = v20;
 
 LABEL_18:
-  v24 = [MEMORY[0x277CD1970] hf_valueRangeCharacteristicTypes];
-  v25 = [v24 containsObject:v15];
+  hf_valueRangeCharacteristicTypes = [MEMORY[0x277CD1970] hf_valueRangeCharacteristicTypes];
+  v25 = [hf_valueRangeCharacteristicTypes containsObject:v15];
 
   if (v25)
   {
@@ -615,8 +615,8 @@ LABEL_18:
     if (v28)
     {
       v29 = [v13 hf_thresholdValueForRange:v28];
-      v51 = [a1 _hf_triggerRangeKeyComponentForRangeType:{objc_msgSend(a1, "hf_triggerRangeTypeWithCharacteristics:triggerValueRange:thresholdValue:", v8, v28, v29)}];
-      v49 = [a1 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v8 triggerValue:v29];
+      v51 = [self _hf_triggerRangeKeyComponentForRangeType:{objc_msgSend(self, "hf_triggerRangeTypeWithCharacteristics:triggerValueRange:thresholdValue:", v8, v28, v29)}];
+      v49 = [self hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v8 triggerValue:v29];
     }
 
     else
@@ -632,46 +632,46 @@ LABEL_18:
     v51 = 0;
   }
 
-  v30 = [v7 actions];
+  actions = [v7 actions];
   v50 = v13;
   v47 = v11;
-  if (![v30 count])
+  if (![actions count])
   {
-    v31 = 0;
+    actionNaturalLanguageOptions = 0;
     goto LABEL_31;
   }
 
-  v31 = [v7 actionNaturalLanguageOptions];
+  actionNaturalLanguageOptions = [v7 actionNaturalLanguageOptions];
 
-  if (v31)
+  if (actionNaturalLanguageOptions)
   {
-    v30 = [v7 actions];
-    v32 = [v7 actionNaturalLanguageOptions];
-    v31 = [HFActionNaturalLanguageUtilities hf_naturalLanguageDescriptionForActions:v30 withOptions:v32];
+    actions = [v7 actions];
+    actionNaturalLanguageOptions2 = [v7 actionNaturalLanguageOptions];
+    actionNaturalLanguageOptions = [HFActionNaturalLanguageUtilities hf_naturalLanguageDescriptionForActions:actions withOptions:actionNaturalLanguageOptions2];
 
 LABEL_31:
   }
 
   v33 = v8;
-  v34 = [v8 anyObject];
-  v35 = [v34 service];
+  anyObject = [v8 anyObject];
+  service = [anyObject service];
 
-  v36 = [v35 hf_parentRoom];
-  v37 = [v7 home];
-  v38 = [v37 roomForEntireHome];
-  v39 = [v36 isEqual:v38];
+  hf_parentRoom = [service hf_parentRoom];
+  home = [v7 home];
+  roomForEntireHome = [home roomForEntireHome];
+  v39 = [hf_parentRoom isEqual:roomForEntireHome];
 
   if (v39)
   {
-    v40 = 0;
+    name = 0;
   }
 
   else
   {
-    v40 = [v36 name];
+    name = [hf_parentRoom name];
   }
 
-  v22 = [a1 _hf_alarmNaturalLanguageNameWithNameStringKey:v52 nameType:objc_msgSend(v7 thresholdKey:"nameType") thresholdValueDescription:v51 roomName:v49 actionsDescription:{v40, v31}];
+  v22 = [self _hf_alarmNaturalLanguageNameWithNameStringKey:v52 nameType:objc_msgSend(v7 thresholdKey:"nameType") thresholdValueDescription:v51 roomName:v49 actionsDescription:{name, actionNaturalLanguageOptions}];
 
   v8 = v33;
   v11 = v48;
@@ -680,8 +680,8 @@ LABEL_31:
 LABEL_36:
   if (![v7 nameType])
   {
-    v41 = [v7 home];
-    v42 = [a1 hf_sanitizeTriggerName:v22 home:v41];
+    home2 = [v7 home];
+    v42 = [self hf_sanitizeTriggerName:v22 home:home2];
 
     v22 = v42;
   }
@@ -698,12 +698,12 @@ LABEL_36:
   v17 = a8;
   if (v13)
   {
-    v18 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (v14)
     {
       v19 = [v13 stringByAppendingFormat:@"_%@", v14];
 
-      [v18 na_safeAddObject:v15];
+      [array na_safeAddObject:v15];
       v13 = v19;
     }
 
@@ -723,7 +723,7 @@ LABEL_36:
     {
       v22 = [v21 stringByAppendingString:@"_withRoom"];
 
-      [v18 addObject:v16];
+      [array addObject:v16];
       v21 = v22;
     }
 
@@ -731,12 +731,12 @@ LABEL_36:
     {
       v23 = [v21 stringByAppendingString:@"_WithAction"];
 
-      [v18 addObject:v17];
+      [array addObject:v17];
       v21 = v23;
     }
 
     v24 = _HFLocalizedStringWithDefaultValue(v21, v21, 1);
-    v25 = [MEMORY[0x277CCACA8] hf_stringWithFormat:v24 arguments:v18];
+    v25 = [MEMORY[0x277CCACA8] hf_stringWithFormat:v24 arguments:array];
     v26 = v25;
     if (v25)
     {
@@ -783,52 +783,52 @@ LABEL_36:
 
     v14 = v13;
 
-    v15 = [a1 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v10 triggerValueRange:v14 thresholdValue:0];
+    v15 = [self hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v10 triggerValueRange:v14 thresholdValue:0];
   }
 
   else
   {
-    v15 = [a1 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v10 triggerValue:v9];
+    v15 = [self hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v10 triggerValue:v9];
   }
 
-  v16 = [v10 anyObject];
+  anyObject = [v10 anyObject];
 
-  v17 = [v16 service];
+  service = [anyObject service];
 
-  v18 = [v8 home];
-  v19 = [v18 hf_serviceGroupsForService:v17];
-  v20 = [v19 firstObject];
+  home = [v8 home];
+  v19 = [home hf_serviceGroupsForService:service];
+  firstObject = [v19 firstObject];
 
-  if (v20)
+  if (firstObject)
   {
-    v21 = v20;
+    v21 = firstObject;
   }
 
   else
   {
-    v21 = v17;
+    v21 = service;
   }
 
-  v22 = [v21 hf_displayName];
-  v23 = [v8 objectsInContext];
-  v24 = [v23 count];
+  hf_displayName = [v21 hf_displayName];
+  objectsInContext = [v8 objectsInContext];
+  v24 = [objectsInContext count];
 
   if (v24)
   {
-    v25 = [v8 objectsInContext];
+    objectsInContext2 = [v8 objectsInContext];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __108__HMEventTrigger_NaturalLanguage___hf_naturalLanguageNameWithOptions_nonSensorCharacteristics_triggerValue___block_invoke;
     v51[3] = &unk_277DF5C10;
-    v26 = v17;
+    v26 = service;
     v52 = v26;
-    v27 = [v25 na_firstObjectPassingTest:v51];
+    v27 = [objectsInContext2 na_firstObjectPassingTest:v51];
 
     if (v27)
     {
-      if (v20)
+      if (firstObject)
       {
-        v28 = v20;
+        v28 = firstObject;
       }
 
       else
@@ -836,34 +836,34 @@ LABEL_36:
         v28 = v26;
       }
 
-      v29 = [v28 hf_serviceNameComponents];
-      v30 = [v29 rawServiceName];
+      hf_serviceNameComponents = [v28 hf_serviceNameComponents];
+      rawServiceName = [hf_serviceNameComponents rawServiceName];
 
-      v22 = v30;
+      hf_displayName = rawServiceName;
     }
   }
 
-  if (v22 && v15)
+  if (hf_displayName && v15)
   {
     if ([v8 nameType] == 2)
     {
-      v31 = [v8 actions];
-      v32 = [v31 count];
+      actions = [v8 actions];
+      v32 = [actions count];
 
       v33 = @"HFCharacteristicTriggerDescriptionFormatString_fullSentence";
       if (v32)
       {
-        v34 = [v8 actionNaturalLanguageOptions];
-        [v34 setFormattingContext:5];
+        actionNaturalLanguageOptions = [v8 actionNaturalLanguageOptions];
+        [actionNaturalLanguageOptions setFormattingContext:5];
 
         [v8 actions];
-        v35 = v49 = a1;
+        v35 = v49 = self;
         [v8 actionNaturalLanguageOptions];
         v36 = v48 = v15;
         v32 = [HFActionNaturalLanguageUtilities hf_naturalLanguageDescriptionForActions:v35 withOptions:v36];
 
         v15 = v48;
-        a1 = v49;
+        self = v49;
         if ([v32 length])
         {
           v33 = @"HFCharacteristicTriggerDescriptionFormatString_fullSentence_WithAction";
@@ -879,12 +879,12 @@ LABEL_36:
 
     if ([v32 length])
     {
-      HFLocalizedStringWithFormat(v33, @"%@%@%@", v37, v38, v39, v40, v41, v42, v22);
+      HFLocalizedStringWithFormat(v33, @"%@%@%@", v37, v38, v39, v40, v41, v42, hf_displayName);
     }
 
     else
     {
-      HFLocalizedStringWithFormat(v33, @"%@%@", v37, v38, v39, v40, v41, v42, v22);
+      HFLocalizedStringWithFormat(v33, @"%@%@", v37, v38, v39, v40, v41, v42, hf_displayName);
     }
     v43 = ;
 
@@ -895,7 +895,7 @@ LABEL_36:
   {
     [v8 home];
     v45 = v44 = v15;
-    v46 = [a1 hf_sanitizeTriggerName:v11 home:v45];
+    v46 = [self hf_sanitizeTriggerName:v11 home:v45];
 
     v15 = v44;
     v11 = v46;
@@ -907,13 +907,13 @@ LABEL_36:
 + (id)hf_triggerValueNaturalLanguageDescriptionFormatterWithCharacteristics:()NaturalLanguage
 {
   v3 = a3;
-  v4 = [v3 anyObject];
-  v5 = [v4 characteristicType];
+  anyObject = [v3 anyObject];
+  characteristicType = [anyObject characteristicType];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __105__HMEventTrigger_NaturalLanguage__hf_triggerValueNaturalLanguageDescriptionFormatterWithCharacteristics___block_invoke;
   v12[3] = &unk_277DF6218;
-  v6 = v5;
+  v6 = characteristicType;
   v13 = v6;
   v7 = [v3 na_any:v12];
 
@@ -924,7 +924,7 @@ LABEL_36:
 
   if ([v6 isEqualToString:*MEMORY[0x277CCF770]])
   {
-    v8 = [MEMORY[0x277CCAA28] hf_valueFormatterForCharacteristic:v4 options:0];
+    v8 = [MEMORY[0x277CCAA28] hf_valueFormatterForCharacteristic:anyObject options:0];
   }
 
   else
@@ -932,13 +932,13 @@ LABEL_36:
     if ([v6 isEqualToString:*MEMORY[0x277CCF868]])
     {
       v9 = +[HFFormatterManager sharedInstance];
-      v10 = [v9 temperatureFormatter];
+      temperatureFormatter = [v9 temperatureFormatter];
     }
 
     else if ([v6 isEqualToString:*MEMORY[0x277CCF850]])
     {
       v9 = +[HFFormatterManager sharedInstance];
-      v10 = [v9 percentFormatter];
+      temperatureFormatter = [v9 percentFormatter];
     }
 
     else
@@ -951,10 +951,10 @@ LABEL_2:
       }
 
       v9 = +[HFFormatterManager sharedInstance];
-      v10 = [v9 luxFormatter];
+      temperatureFormatter = [v9 luxFormatter];
     }
 
-    v8 = v10;
+    v8 = temperatureFormatter;
   }
 
 LABEL_12:
@@ -967,16 +967,16 @@ LABEL_12:
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [v8 anyObject];
-  v12 = [v11 characteristicType];
+  anyObject = [v8 anyObject];
+  characteristicType = [anyObject characteristicType];
   v40 = MEMORY[0x277D85DD0];
   v41 = 3221225472;
   v42 = __130__HMEventTrigger_NaturalLanguage__hf_triggerValueNaturalLanguageDescriptionWithCharacteristics_triggerValue_visibleTriggerValues___block_invoke;
   v43 = &unk_277DF6218;
-  v13 = v12;
+  v13 = characteristicType;
   v44 = v13;
   v14 = [v8 na_any:&v40];
-  v15 = [a1 hf_triggerValueNaturalLanguageDescriptionFormatterWithCharacteristics:v8];
+  v15 = [self hf_triggerValueNaturalLanguageDescriptionFormatterWithCharacteristics:v8];
   if (v15)
   {
     objc_opt_class();
@@ -993,8 +993,8 @@ LABEL_12:
 
     v17 = v16;
 
-    v18 = [MEMORY[0x277CD1970] hf_valueRangeCharacteristicTypes];
-    v19 = [v18 containsObject:v13];
+    hf_valueRangeCharacteristicTypes = [MEMORY[0x277CD1970] hf_valueRangeCharacteristicTypes];
+    v19 = [hf_valueRangeCharacteristicTypes containsObject:v13];
 
     if (!v19 || !v17)
     {
@@ -1016,7 +1016,7 @@ LABEL_22:
 
     else
     {
-      v27 = [v11 hf_visibleTriggerValueClosestToValue:v17];
+      v27 = [anyObject hf_visibleTriggerValueClosestToValue:v17];
       v28 = v27;
       if (v27)
       {
@@ -1039,16 +1039,16 @@ LABEL_22:
 
   if (!((v9 == 0) | v14 & 1))
   {
-    v22 = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
-    v23 = [v22 containsObject:v13];
+    hf_powerStateCharacteristicTypes = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
+    v23 = [hf_powerStateCharacteristicTypes containsObject:v13];
 
     if (v23)
     {
-      v24 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
       v25 = @"HFCharacteristicTriggerDescriptionValueOff";
       v26 = @"HFCharacteristicTriggerDescriptionValueOn";
 LABEL_14:
-      if (v24)
+      if (bOOLValue)
       {
         v25 = v26;
       }
@@ -1060,7 +1060,7 @@ LABEL_30:
 
     if ([v13 isEqualToString:*MEMORY[0x277CCF838]])
     {
-      v31 = [v9 integerValue];
+      integerValue = [v9 integerValue];
       v25 = @"HFCharacteristicTriggerDescriptionValueUnlocked";
       v32 = @"HFCharacteristicTriggerDescriptionValueLocked";
     }
@@ -1073,10 +1073,10 @@ LABEL_30:
         {
           if ([v13 isEqualToString:*MEMORY[0x277CCF858]])
           {
-            v39 = [v9 integerValue];
-            if (v39 < 5)
+            integerValue2 = [v9 integerValue];
+            if (integerValue2 < 5)
             {
-              v17 = off_277DF7708[v39];
+              v17 = off_277DF7708[integerValue2];
               goto LABEL_31;
             }
 
@@ -1087,7 +1087,7 @@ LABEL_30:
           {
             if ([v13 isEqualToString:*MEMORY[0x277CCF910]])
             {
-              v17 = [a1 hf_localizationKeyForProgrammableSwitchCharacteristic:v11 value:v9];
+              v17 = [self hf_localizationKeyForProgrammableSwitchCharacteristic:anyObject value:v9];
               if (v17)
               {
                 goto LABEL_31;
@@ -1098,7 +1098,7 @@ LABEL_30:
 
             if ([v13 isEqualToString:*MEMORY[0x277CCF978]])
             {
-              v24 = [v9 BOOLValue];
+              bOOLValue = [v9 BOOLValue];
               v25 = @"HFCharacteristicTriggerDescriptionValueDetectsNoMotion";
               v26 = @"HFCharacteristicTriggerDescriptionValueDetectsMotion";
             }
@@ -1134,7 +1134,7 @@ LABEL_30:
                 goto LABEL_11;
               }
 
-              v24 = [v9 BOOLValue];
+              bOOLValue = [v9 BOOLValue];
               v25 = @"HFCharacteristicTriggerDescriptionValueDetectsNoOccupancy";
               v26 = @"HFCharacteristicTriggerDescriptionValueDetectsOccupancy";
             }
@@ -1143,10 +1143,10 @@ LABEL_30:
           }
         }
 
-        v38 = [v9 integerValue];
+        integerValue3 = [v9 integerValue];
         v25 = @"HFCharacteristicTriggerDescriptionValueOpen";
         v32 = @"HFCharacteristicTriggerDescriptionValueClosed";
-        v33 = v38 == 0;
+        v33 = integerValue3 == 0;
 LABEL_28:
         if (v33)
         {
@@ -1156,12 +1156,12 @@ LABEL_28:
         goto LABEL_30;
       }
 
-      v31 = [v9 integerValue];
+      integerValue = [v9 integerValue];
       v25 = @"HFCharacteristicTriggerDescriptionValueOpen";
       v32 = @"HFCharacteristicTriggerDescriptionValueClosed";
     }
 
-    v33 = v31 == 1;
+    v33 = integerValue == 1;
     goto LABEL_28;
   }
 
@@ -1171,7 +1171,7 @@ LABEL_31:
   if ([v8 count] >= 2)
   {
     v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_Plural", v17, v40, v41, v42, v43];
-    v35 = [a1 _hf_localizedStringOrNilIfNotFoundForKey:v34];
+    v35 = [self _hf_localizedStringOrNilIfNotFoundForKey:v34];
 
     if (v35)
     {
@@ -1203,11 +1203,11 @@ LABEL_37:
   v14 = 0;
   if (v9 && v11)
   {
-    v15 = [a1 _hf_triggerRangeKeyComponentForRangeType:{objc_msgSend(a1, "hf_triggerRangeTypeWithCharacteristics:triggerValueRange:thresholdValue:", v8, v9, v10)}];
+    v15 = [self _hf_triggerRangeKeyComponentForRangeType:{objc_msgSend(self, "hf_triggerRangeTypeWithCharacteristics:triggerValueRange:thresholdValue:", v8, v9, v10)}];
     v12 = v15;
     if (v10)
     {
-      v13 = [a1 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v8 triggerValue:v10];
+      v13 = [self hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v8 triggerValue:v10];
       if (v12)
       {
 LABEL_5:
@@ -1250,25 +1250,25 @@ LABEL_11:
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [v8 anyObject];
-  v12 = [v11 characteristicType];
+  anyObject = [v8 anyObject];
+  characteristicType = [anyObject characteristicType];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __129__HMEventTrigger_NaturalLanguage__hf_triggerValueNaturalLanguageDescriptionWithCharacteristics_triggerValueRange_thresholdValue___block_invoke;
   v22 = &unk_277DF6218;
-  v13 = v12;
+  v13 = characteristicType;
   v23 = v13;
   if ([v8 na_any:&v19])
   {
     goto LABEL_2;
   }
 
-  v15 = [MEMORY[0x277CD1970] hf_valueRangeCharacteristicTypes];
-  v16 = [v15 containsObject:v13];
+  hf_valueRangeCharacteristicTypes = [MEMORY[0x277CD1970] hf_valueRangeCharacteristicTypes];
+  v16 = [hf_valueRangeCharacteristicTypes containsObject:v13];
 
   if (v16)
   {
-    v14 = [a1 hf_triggerRangeValueNaturalLanguageDescriptionWithCharacteristics:v8 triggerValueRange:v9 thresholdValue:v10];
+    v14 = [self hf_triggerRangeValueNaturalLanguageDescriptionWithCharacteristics:v8 triggerValueRange:v9 thresholdValue:v10];
     goto LABEL_8;
   }
 
@@ -1284,8 +1284,8 @@ LABEL_2:
 
   else
   {
-    v17 = [v9 hf_representativeValue];
-    v14 = [a1 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v8 triggerValue:v17];
+    hf_representativeValue = [v9 hf_representativeValue];
+    v14 = [self hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v8 triggerValue:hf_representativeValue];
   }
 
 LABEL_8:
@@ -1300,8 +1300,8 @@ LABEL_8:
   v7 = 0;
   if (a3 && v5)
   {
-    v8 = [a3 metadata];
-    v9 = [v8 hf_isValidValue:v6];
+    metadata = [a3 metadata];
+    v9 = [metadata hf_isValidValue:v6];
 
     if (v9)
     {
@@ -1319,7 +1319,7 @@ LABEL_8:
 
 + (id)hf_localizedStringForProgrammableSwitchCharacteristic:()NaturalLanguage value:
 {
-  v1 = [a1 hf_localizationKeyForProgrammableSwitchCharacteristic:? value:?];
+  v1 = [self hf_localizationKeyForProgrammableSwitchCharacteristic:? value:?];
   v2 = v1;
   if (v1)
   {
@@ -1345,10 +1345,10 @@ LABEL_8:
   [a3 doubleValue];
   v6 = v5;
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 preferredLocalizations];
-  v10 = [v9 firstObject];
-  v11 = [v10 isEqualToString:@"en"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
+  v11 = [firstObject isEqualToString:@"en"];
 
   if (v11)
   {
@@ -1405,13 +1405,13 @@ LABEL_13:
   v7 = a3;
   v8 = a4;
   v9 = a5;
-  v10 = [v7 anyObject];
-  v11 = [v10 characteristicType];
+  anyObject = [v7 anyObject];
+  characteristicType = [anyObject characteristicType];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __107__HMEventTrigger_NaturalLanguage__hf_triggerRangeTypeWithCharacteristics_triggerValueRange_thresholdValue___block_invoke;
   v26[3] = &unk_277DF6218;
-  v12 = v11;
+  v12 = characteristicType;
   v27 = v12;
   if ([v7 na_any:v26])
   {
@@ -1424,15 +1424,15 @@ LABEL_13:
     v20 = 3221225472;
     v21 = __107__HMEventTrigger_NaturalLanguage__hf_triggerRangeTypeWithCharacteristics_triggerValueRange_thresholdValue___block_invoke_2;
     v22 = &unk_277DF76A0;
-    v23 = v10;
+    v23 = anyObject;
     v24 = v8;
     v25 = v9;
     v13 = __107__HMEventTrigger_NaturalLanguage__hf_triggerRangeTypeWithCharacteristics_triggerValueRange_thresholdValue___block_invoke_2(&v19);
   }
 
-  v14 = [v7 anyObject];
-  v15 = [v14 characteristicType];
-  v16 = [v15 isEqualToString:*MEMORY[0x277CCF770]];
+  anyObject2 = [v7 anyObject];
+  characteristicType2 = [anyObject2 characteristicType];
+  v16 = [characteristicType2 isEqualToString:*MEMORY[0x277CCF770]];
 
   if (v13 <= 1)
   {
@@ -1474,33 +1474,33 @@ LABEL_13:
 - (id)_hf_naturalLanguageDetailsSentenceElementsWithOptions:()NaturalLanguage
 {
   v4 = a3;
-  v5 = [a1 predicate];
-  v6 = [HFConditionCollection conditionCollectionForPredicate:v5];
+  predicate = [self predicate];
+  v6 = [HFConditionCollection conditionCollectionForPredicate:predicate];
 
-  v7 = [v6 conditions];
-  v8 = [v7 na_firstObjectPassingTest:&__block_literal_global_484];
+  conditions = [v6 conditions];
+  v8 = [conditions na_firstObjectPassingTest:&__block_literal_global_484];
 
   if (v8)
   {
-    v9 = [v8 predicate];
+    predicate2 = [v8 predicate];
 
-    if (!v9)
+    if (!predicate2)
     {
       [v6 removeCondition:v8];
     }
   }
 
   v10 = objc_opt_class();
-  v11 = [a1 hf_effectiveRecurrences];
-  v12 = [a1 endEvents];
-  v13 = [v10 _hf_naturalLanguageDetailsSentenceElementsWithRecurrences:v11 conditions:v6 endEvents:v12 withOptions:v4];
+  hf_effectiveRecurrences = [self hf_effectiveRecurrences];
+  endEvents = [self endEvents];
+  v13 = [v10 _hf_naturalLanguageDetailsSentenceElementsWithRecurrences:hf_effectiveRecurrences conditions:v6 endEvents:endEvents withOptions:v4];
 
   return v13;
 }
 
 + (id)hf_naturalLanguageDetailsWithRecurrences:()NaturalLanguage conditions:endEvents:withOptions:
 {
-  v1 = [a1 _hf_naturalLanguageDetailsSentenceElementsWithRecurrences:? conditions:? endEvents:? withOptions:?];
+  v1 = [self _hf_naturalLanguageDetailsSentenceElementsWithRecurrences:? conditions:? endEvents:? withOptions:?];
   v2 = [v1 mutableCopy];
 
   if ([v2 count])
@@ -1512,8 +1512,8 @@ LABEL_13:
 
     v3 = qword_280E02E58;
     [v3 setListStyle:2];
-    v4 = [v2 array];
-    v5 = [v3 stringForObjectValue:v4];
+    array = [v2 array];
+    v5 = [v3 stringForObjectValue:array];
   }
 
   else
@@ -1530,7 +1530,7 @@ LABEL_13:
   v10 = a4;
   v11 = a5;
   v12 = a6;
-  v13 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   if ([v9 count])
   {
     v14 = [MEMORY[0x277CD1EB0] hf_recurrenceNaturalLanguageStringKeyWithOptions:v12 recurrences:v9];
@@ -1540,21 +1540,21 @@ LABEL_13:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v15 = [v14 localizedStringWithArgumentBlock:0];
-        [v13 addObject:v15];
+        [orderedSet addObject:v15];
       }
     }
   }
 
   if (v10)
   {
-    v16 = [v10 conditions];
+    conditions = [v10 conditions];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __126__HMEventTrigger_NaturalLanguage___hf_naturalLanguageDetailsSentenceElementsWithRecurrences_conditions_endEvents_withOptions___block_invoke;
     v30[3] = &unk_277DF76E8;
     v31 = v12;
     v32 = xmmword_20DD973C0;
-    v17 = [v16 na_map:v30];
+    v17 = [conditions na_map:v30];
 
     if ([v17 count])
     {
@@ -1565,8 +1565,8 @@ LABEL_13:
 
       v18 = qword_280E02E68;
       v19 = [v18 stringForObjectValue:v17];
-      v20 = [v19 hf_stringByCapitalizingFirstWord];
-      [v13 addObject:v20];
+      hf_stringByCapitalizingFirstWord = [v19 hf_stringByCapitalizingFirstWord];
+      [orderedSet addObject:hf_stringByCapitalizingFirstWord];
     }
   }
 
@@ -1580,10 +1580,10 @@ LABEL_13:
     v26 = [MEMORY[0x277CCABB0] numberWithDouble:v24];
     v27 = [v25 hf_naturalLanguageTurnOffAfterDuration:v26 style:1];
 
-    [v13 addObject:v27];
+    [orderedSet addObject:v27];
   }
 
-  v28 = [v13 copy];
+  v28 = [orderedSet copy];
 
   return v28;
 }

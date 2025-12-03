@@ -1,8 +1,8 @@
 @interface ABPKCameraRegistration
 - (ABPKCameraRegistration)init;
-- (ABPKRegistrationData)estimateCameraPoseFromMatchingwithImageIntrinsics:(__n128)a3 imageResolution:(__n128)a4 joints2d:(float64_t)a5 jointsLifted3D:(float64_t)a6 jointsLifted3DCount:(uint64_t)a7;
+- (ABPKRegistrationData)estimateCameraPoseFromMatchingwithImageIntrinsics:(__n128)intrinsics imageResolution:(__n128)resolution joints2d:(float64_t)joints2d jointsLifted3D:(float64_t)d jointsLifted3DCount:(uint64_t)count;
 - (id).cxx_construct;
-- (id)runCameraRegistrationWithImageIntrinsics:(__n128)a3 imageResolution:(__n128)a4 liftingResult:(float64_t)a5;
+- (id)runCameraRegistrationWithImageIntrinsics:(__n128)intrinsics imageResolution:(__n128)resolution liftingResult:(float64_t)result;
 @end
 
 @implementation ABPKCameraRegistration
@@ -21,11 +21,11 @@
   return [(ABPKCameraRegistration *)&v5 init];
 }
 
-- (ABPKRegistrationData)estimateCameraPoseFromMatchingwithImageIntrinsics:(__n128)a3 imageResolution:(__n128)a4 joints2d:(float64_t)a5 jointsLifted3D:(float64_t)a6 jointsLifted3DCount:(uint64_t)a7
+- (ABPKRegistrationData)estimateCameraPoseFromMatchingwithImageIntrinsics:(__n128)intrinsics imageResolution:(__n128)resolution joints2d:(float64_t)joints2d jointsLifted3D:(float64_t)d jointsLifted3DCount:(uint64_t)count
 {
   v62 = a2;
-  v63 = a3;
-  v64 = a4;
+  intrinsicsCopy = intrinsics;
+  resolutionCopy = resolution;
   v14 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -77,8 +77,8 @@
 
   if (v60 != v61)
   {
-    v22.f64[0] = a5;
-    v22.f64[1] = a6;
+    v22.f64[0] = joints2d;
+    v22.f64[1] = d;
     do
     {
       v23 = a8[*(v16 + 7)];
@@ -136,8 +136,8 @@
   else
   {
     v29 = a8[16];
-    v30.f64[0] = a5;
-    v30.f64[1] = a6;
+    v30.f64[0] = joints2d;
+    v30.f64[1] = d;
     v31 = COERCE_DOUBLE(vcvt_f32_f64(vmulq_f64(v30, vcvtq_f64_f32(v29))));
     if (v29.f32[1] < 0.0)
     {
@@ -182,7 +182,7 @@
     _os_log_impl(&dword_23EDDC000, v39, OS_LOG_TYPE_DEBUG, " \t Performing registration ", buf, 2u);
   }
 
-  btr::BodyRegistration::RegisterBody(a1 + 16, v58, (v59 - v58) >> 3, a9, a10, v57, 1, &v62, buf);
+  btr::BodyRegistration::RegisterBody(self + 16, v58, (v59 - v58) >> 3, a9, a10, v57, 1, &v62, buf);
   if (buf[0])
   {
     v40 = __ABPKLogSharedInstance();
@@ -205,7 +205,7 @@
     }
 
     v43 = [ABPKRegistrationData alloc];
-    v41 = [(ABPKRegistrationData *)v43 initWithImagePoints:v62.n128_f64[0] imagePointsCount:v63.n128_f64[0] jointsLifted3D:v64.n128_f64[0] jointsLifted3DCount:a5 cameraIntrinsics:a6 imageDimensions:v49 cameraFromBodyPose:v50 registrationValid:v51, v52];
+    v41 = [(ABPKRegistrationData *)v43 initWithImagePoints:v62.n128_f64[0] imagePointsCount:intrinsicsCopy.n128_f64[0] jointsLifted3D:resolutionCopy.n128_f64[0] jointsLifted3DCount:joints2d cameraIntrinsics:d imageDimensions:v49 cameraFromBodyPose:v50 registrationValid:v51, v52];
   }
 
   if (__p)
@@ -231,14 +231,14 @@
   return v41;
 }
 
-- (id)runCameraRegistrationWithImageIntrinsics:(__n128)a3 imageResolution:(__n128)a4 liftingResult:(float64_t)a5
+- (id)runCameraRegistrationWithImageIntrinsics:(__n128)intrinsics imageResolution:(__n128)resolution liftingResult:(float64_t)result
 {
   *(&v64[6] + 4) = *MEMORY[0x277D85DE8];
   v60[0] = a2;
-  v60[1] = a3;
-  v60[2] = a4;
+  v60[1] = intrinsics;
+  v60[2] = resolution;
   v9 = a8;
-  [a1 _startRunCameraRegistrationSignpost];
+  [self _startRunCameraRegistrationSignpost];
   v10 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -247,37 +247,37 @@
   }
 
   v11 = objc_alloc_init(ABPKResultRegistration);
-  v12 = *(a1 + 352);
-  *(a1 + 352) = v11;
+  v12 = *(self + 352);
+  *(self + 352) = v11;
 
-  v13 = [v9 skeletonDetectionResult2D];
-  v14 = [v13 liftingData];
-  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE6resizeEm((a1 + 360), [v14 liftingData3DElementCount] >> 1);
+  skeletonDetectionResult2D = [v9 skeletonDetectionResult2D];
+  liftingData = [skeletonDetectionResult2D liftingData];
+  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE6resizeEm((self + 360), [liftingData liftingData3DElementCount] >> 1);
 
-  if (*(a1 + 368) != *(a1 + 360))
+  if (*(self + 368) != *(self + 360))
   {
     v15 = 0;
     v16 = 0;
-    v17.f64[0] = a5;
+    v17.f64[0] = result;
     v17.f64[1] = a6;
     v18 = vcvt_f32_s32(vmovn_s64(vcvtq_s64_f64(v17)));
     v19 = vdup_n_s32(0x447A0000u);
     do
     {
-      v20 = [v13 liftingData];
-      v50 = *([v20 unnormalizedLiftingData3D] + v15);
-      v21 = [v13 liftingData];
-      v48 = *([v21 unnormalizedLiftingData3D] + v15 + 4);
+      liftingData2 = [skeletonDetectionResult2D liftingData];
+      v50 = *([liftingData2 unnormalizedLiftingData3D] + v15);
+      liftingData3 = [skeletonDetectionResult2D liftingData];
+      v48 = *([liftingData3 unnormalizedLiftingData3D] + v15 + 4);
 
-      *(*(a1 + 360) + v15) = vdiv_f32(vmul_f32(__PAIR64__(v48, v50), v18), v19);
+      *(*(self + 360) + v15) = vdiv_f32(vmul_f32(__PAIR64__(v48, v50), v18), v19);
       ++v16;
       v15 += 8;
     }
 
-    while (v16 < (*(a1 + 368) - *(a1 + 360)) >> 3);
+    while (v16 < (*(self + 368) - *(self + 360)) >> 3);
   }
 
-  [*(a1 + 352) setJoints2d:?];
+  [*(self + 352) setJoints2d:?];
   v58.transform.m_data[15] = 0.0;
   v58.transform.m_data[14] = 0.0;
   v59 = 0;
@@ -286,9 +286,9 @@
   v51 = vdupq_n_s32(0x447A0000u);
   while ([v9 jointCount] > v22)
   {
-    v23 = [v9 joints];
-    v24 = vdivq_f32(*(v23 + 16 * v22), v51);
-    v24.f32[2] = COERCE_FLOAT(*(v23 + 16 * v22 + 8)) / 1000.0;
+    joints = [v9 joints];
+    v24 = vdivq_f32(*(joints + 16 * v22), v51);
+    v24.f32[2] = COERCE_FLOAT(*(joints + 16 * v22 + 8)) / 1000.0;
     *(*&v58.transform.m_data[14] + 16 * v22++) = v24;
   }
 
@@ -302,7 +302,7 @@
   *&v58.camera_matrix.m_data[8] = v25;
   *&v58.transform.m_data[1] = *&v58.transform.m_data[9];
   *&v58.transform.m_data[3] = v26;
-  btr::BodyRegistration::RegisterBody(a1 + 16, *(a1 + 360), (*(a1 + 368) - *(a1 + 360)) >> 3, *&v58.transform.m_data[14], (*&v58.transform.m_data[15] - *&v58.transform.m_data[14]) >> 4, &v58.transform.m_data[5], 1, v60, buf);
+  btr::BodyRegistration::RegisterBody(self + 16, *(self + 360), (*(self + 368) - *(self + 360)) >> 3, *&v58.transform.m_data[14], (*&v58.transform.m_data[15] - *&v58.transform.m_data[14]) >> 4, &v58.transform.m_data[5], 1, v60, buf);
   if (*buf)
   {
     v28 = __ABPKLogSharedInstance();
@@ -312,7 +312,7 @@
       _os_log_impl(&dword_23EDDC000, v28, OS_LOG_TYPE_DEFAULT, " \t\t Registration Failed ", v63, 2u);
     }
 
-    [*(a1 + 352) setSuccess:{0, &v58.camera_matrix.m_data[6]}];
+    [*(self + 352) setSuccess:{0, &v58.camera_matrix.m_data[6]}];
   }
 
   else
@@ -335,8 +335,8 @@
       _os_log_impl(&dword_23EDDC000, v32, OS_LOG_TYPE_DEBUG, " \t\t Bones length: %f) ", v63, 0xCu);
     }
 
-    [*(a1 + 352) setCameraFromBodyPose:{COERCE_DOUBLE(vcvt_f32_f64(v56[0])), COERCE_DOUBLE(vcvt_f32_f64(v56[2])), COERCE_DOUBLE(vcvt_f32_f64(v56[4])), COERCE_DOUBLE(vcvt_f32_f64(v57)), &v58.camera_matrix.m_data[6]}];
-    _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm((a1 + 384), 0x10uLL);
+    [*(self + 352) setCameraFromBodyPose:{COERCE_DOUBLE(vcvt_f32_f64(v56[0])), COERCE_DOUBLE(vcvt_f32_f64(v56[2])), COERCE_DOUBLE(vcvt_f32_f64(v56[4])), COERCE_DOUBLE(vcvt_f32_f64(v57)), &v58.camera_matrix.m_data[6]}];
+    _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm((self + 384), 0x10uLL);
     v33 = *&v58.camera_matrix.m_data[3];
     v34 = v58.camera_matrix.m_data[4];
     if (*&v58.camera_matrix.m_data[3] != *&v58.camera_matrix.m_data[4])
@@ -348,7 +348,7 @@
         *&v36.f64[0] = vcvt_f32_f64(*v33);
         v37 = v33[1].f64[0];
         *&v36.f64[1] = v37;
-        *(*(a1 + 384) + v35) = v36;
+        *(*(self + 384) + v35) = v36;
         v33 = (v33 + 24);
         v35 += 16;
       }
@@ -356,8 +356,8 @@
       while (v33 != *&v34);
     }
 
-    [*(a1 + 352) setJoints3dWrtBody:*(a1 + 384)];
-    _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm((a1 + 408), 0x10uLL);
+    [*(self + 352) setJoints3dWrtBody:*(self + 384)];
+    _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm((self + 408), 0x10uLL);
     v38 = *&v58.camera_matrix.m_data[3];
     v39 = v58.camera_matrix.m_data[4];
     if (*&v58.camera_matrix.m_data[3] != *&v58.camera_matrix.m_data[4])
@@ -386,19 +386,19 @@
         *&v42 = vcvt_f32_f64(v52);
         *&v43 = v53;
         *(&v42 + 1) = __PAIR64__(HIDWORD(v52.f64[1]), v43);
-        *(*(a1 + 408) + 16 * v40++) = v42;
+        *(*(self + 408) + 16 * v40++) = v42;
         v38 += 3;
       }
 
       while (v38 != *&v39);
     }
 
-    [*(a1 + 352) setJoints3dWrtCamera:*(a1 + 408)];
-    [*(a1 + 352) setSuccess:1];
+    [*(self + 352) setJoints3dWrtCamera:*(self + 408)];
+    [*(self + 352) setSuccess:1];
   }
 
-  [a1 _endRunCameraRegistrationSignpost];
-  v44 = *(a1 + 352);
+  [self _endRunCameraRegistrationSignpost];
+  v44 = *(self + 352);
   if (*&v58.camera_matrix.m_data[3])
   {
     v58.camera_matrix.m_data[4] = v58.camera_matrix.m_data[3];

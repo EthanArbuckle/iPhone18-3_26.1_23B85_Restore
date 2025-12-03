@@ -1,5 +1,5 @@
 @interface SUUIScrollingTabBarContentCollectionView
-- (void)_reuseCell:(id)a3;
+- (void)_reuseCell:(id)cell;
 - (void)layoutSubviews;
 @end
 
@@ -23,28 +23,28 @@
     self->_performingLayout = 0;
   }
 
-  v3 = [(SUUIScrollingTabBarContentCollectionView *)self delegate];
+  delegate = [(SUUIScrollingTabBarContentCollectionView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 scrollingTabBarContentCollectionViewDidLayoutSubviews:self];
+    [delegate scrollingTabBarContentCollectionViewDidLayoutSubviews:self];
   }
 }
 
-- (void)_reuseCell:(id)a3
+- (void)_reuseCell:(id)cell
 {
-  v7 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [(SUUIScrollingTabBarContentCollectionView *)a2 _reuseCell:?];
   }
 
-  [v7 removeFromSuperview];
-  v5 = [(SUUIScrollingTabBarContentCollectionView *)self delegate];
+  [cellCopy removeFromSuperview];
+  delegate = [(SUUIScrollingTabBarContentCollectionView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v7 indexPath];
-    [v5 collectionView:self didEndDisplayingCell:v7 forItemAtIndexPath:v6];
+    indexPath = [cellCopy indexPath];
+    [delegate collectionView:self didEndDisplayingCell:cellCopy forItemAtIndexPath:indexPath];
   }
 }
 

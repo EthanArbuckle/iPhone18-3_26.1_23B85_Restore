@@ -1,7 +1,7 @@
 @interface MIBUNWMessage
 + (id)sharedFramer;
-- (MIBUNWMessage)initWithContent:(id)a3 andContext:(id)a4;
-- (MIBUNWMessage)initWithType:(unsigned __int16)a3 andPayload:(id)a4;
+- (MIBUNWMessage)initWithContent:(id)content andContext:(id)context;
+- (MIBUNWMessage)initWithType:(unsigned __int16)type andPayload:(id)payload;
 - (id)createContent;
 - (id)createContentContext;
 - (void)createContent;
@@ -164,17 +164,17 @@ void __29__MIBUNWMessage_sharedFramer__block_invoke_6()
   }
 }
 
-- (MIBUNWMessage)initWithType:(unsigned __int16)a3 andPayload:(id)a4
+- (MIBUNWMessage)initWithType:(unsigned __int16)type andPayload:(id)payload
 {
-  v6 = a4;
+  payloadCopy = payload;
   v12.receiver = self;
   v12.super_class = MIBUNWMessage;
   v7 = [(MIBUNWMessage *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v6];
+    v7->_type = type;
+    v9 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:payloadCopy];
     payload = v8->_payload;
     v8->_payload = v9;
   }
@@ -182,12 +182,12 @@ void __29__MIBUNWMessage_sharedFramer__block_invoke_6()
   return v8;
 }
 
-- (MIBUNWMessage)initWithContent:(id)a3 andContext:(id)a4
+- (MIBUNWMessage)initWithContent:(id)content andContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  contextCopy = context;
   v8 = +[MIBUNWMessage sharedFramer];
-  v9 = nw_content_context_copy_protocol_metadata(v7, v8);
+  v9 = nw_content_context_copy_protocol_metadata(contextCopy, v8);
 
   v10 = nw_framer_message_copy_object_value(v9, "MIBUNWMessageType");
   if (!v10)
@@ -206,14 +206,14 @@ void __29__MIBUNWMessage_sharedFramer__block_invoke_6()
     goto LABEL_16;
   }
 
-  if (!v6)
+  if (!contentCopy)
   {
     v11 = 0;
     goto LABEL_10;
   }
 
   v25 = 0;
-  v11 = [MEMORY[0x277CCAC58] propertyListWithData:v6 options:0 format:0 error:&v25];
+  v11 = [MEMORY[0x277CCAC58] propertyListWithData:contentCopy options:0 format:0 error:&v25];
   v12 = v25;
   v13 = v12;
   if (!v11)
@@ -230,17 +230,17 @@ void __29__MIBUNWMessage_sharedFramer__block_invoke_6()
     }
 
 LABEL_16:
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
 LABEL_10:
   self = -[MIBUNWMessage initWithType:andPayload:](self, "initWithType:andPayload:", [v10 unsignedShortValue], v11);
 
-  v22 = self;
+  selfCopy = self;
 LABEL_17:
 
-  return v22;
+  return selfCopy;
 }
 
 void __44__MIBUNWMessage_initWithContent_andContext___block_invoke()
@@ -293,20 +293,20 @@ void __44__MIBUNWMessage_initWithContent_andContext___block_invoke_18()
   payload = self->_payload;
   if (!payload)
   {
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     goto LABEL_5;
   }
 
   v9 = 0;
   v3 = [MEMORY[0x277CCAC58] dataWithPropertyList:payload format:100 options:0 error:&v9];
   v4 = v9;
-  v5 = v4;
+  data = v4;
   if (v3)
   {
 
-    v5 = v3;
+    data = v3;
 LABEL_5:
-    v6 = [v5 _createDispatchData];
+    _createDispatchData = [data _createDispatchData];
     goto LABEL_11;
   }
 
@@ -318,13 +318,13 @@ LABEL_5:
   v7 = MIBUConnObj;
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_ERROR))
   {
-    [(MIBUNWMessage *)v5 createContent];
+    [(MIBUNWMessage *)data createContent];
   }
 
-  v6 = 0;
+  _createDispatchData = 0;
 LABEL_11:
 
-  return v6;
+  return _createDispatchData;
 }
 
 void __30__MIBUNWMessage_createContent__block_invoke()
@@ -370,7 +370,7 @@ void __30__MIBUNWMessage_createContent__block_invoke()
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_259B04000, a2, OS_LOG_TYPE_ERROR, "Failed to create serialized payload data: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

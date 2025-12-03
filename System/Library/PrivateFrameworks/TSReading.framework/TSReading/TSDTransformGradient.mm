@@ -1,40 +1,40 @@
 @interface TSDTransformGradient
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualIgnoringTransform:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualIgnoringTransform:(id)transform;
 - (CGPoint)endPoint;
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4;
-- (CGPoint)normalizedPointForSize:(CGSize)a3 endPoint:(BOOL)a4;
-- (CGPoint)p_scalePoint:(CGPoint)a3 fromShapeWithNaturalSize:(CGSize)a4;
-- (CGPoint)p_scalePoint:(CGPoint)a3 toShapeWithNaturalSize:(CGSize)a4;
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds;
+- (CGPoint)normalizedPointForSize:(CGSize)size endPoint:(BOOL)point;
+- (CGPoint)p_scalePoint:(CGPoint)point fromShapeWithNaturalSize:(CGSize)size;
+- (CGPoint)p_scalePoint:(CGPoint)point toShapeWithNaturalSize:(CGSize)size;
 - (CGPoint)startPoint;
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4;
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds;
 - (CGSize)baseNaturalSize;
-- (CGSize)baseNaturalSizeForBounds:(CGRect)a3;
-- (TSDTransformGradient)initWithGradient:(id)a3 inPath:(id)a4 andBounds:(CGRect)a5;
-- (TSDTransformGradient)initWithGradientStops:(id)a3 type:(unint64_t)a4;
-- (TSDTransformGradient)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5;
+- (CGSize)baseNaturalSizeForBounds:(CGRect)bounds;
+- (TSDTransformGradient)initWithGradient:(id)gradient inPath:(id)path andBounds:(CGRect)bounds;
+- (TSDTransformGradient)initWithGradientStops:(id)stops type:(unint64_t)type;
+- (TSDTransformGradient)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type;
 - (double)gradientAngleInDegrees;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)p_drawQuartzShadingInContext:(CGContext *)a3 withGradientNaturalSize:(CGSize)a4 baseNaturalSize:(CGSize)a5 start:(CGPoint)a6 end:(CGPoint)a7;
+- (void)p_drawQuartzShadingInContext:(CGContext *)context withGradientNaturalSize:(CGSize)size baseNaturalSize:(CGSize)naturalSize start:(CGPoint)start end:(CGPoint)end;
 - (void)p_setDefaultValues;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)setBaseNaturalSize:(CGSize)a3;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)setBaseNaturalSize:(CGSize)size;
 @end
 
 @implementation TSDTransformGradient
 
-- (TSDTransformGradient)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5
+- (TSDTransformGradient)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = TSDTransformGradient;
-  v5 = [(TSDGradient *)&v8 initWithStartColor:a3 endColor:a4 type:a5];
+  v5 = [(TSDGradient *)&v8 initWithStartColor:color endColor:endColor type:type];
   v6 = v5;
   if (v5)
   {
@@ -44,11 +44,11 @@
   return v6;
 }
 
-- (TSDTransformGradient)initWithGradientStops:(id)a3 type:(unint64_t)a4
+- (TSDTransformGradient)initWithGradientStops:(id)stops type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = TSDTransformGradient;
-  v4 = [(TSDGradient *)&v7 initWithGradientStops:a3 type:a4];
+  v4 = [(TSDGradient *)&v7 initWithGradientStops:stops type:type];
   v5 = v4;
   if (v4)
   {
@@ -58,15 +58,15 @@
   return v5;
 }
 
-- (TSDTransformGradient)initWithGradient:(id)a3 inPath:(id)a4 andBounds:(CGRect)a5
+- (TSDTransformGradient)initWithGradient:(id)gradient inPath:(id)path andBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v20.receiver = self;
   v20.super_class = TSDTransformGradient;
-  v11 = -[TSDGradient initWithGradientStops:type:](&v20, sel_initWithGradientStops_type_, [a3 gradientStops], objc_msgSend(a3, "gradientType"));
+  v11 = -[TSDGradient initWithGradientStops:type:](&v20, sel_initWithGradientStops_type_, [gradient gradientStops], objc_msgSend(gradient, "gradientType"));
   if (v11)
   {
     objc_opt_class();
@@ -80,10 +80,10 @@
 
     v11->mBaseNaturalSize.width = width;
     v11->mBaseNaturalSize.height = height;
-    [a3 startPointForPath:a4 andBounds:TSDRectWithSize()];
+    [gradient startPointForPath:path andBounds:TSDRectWithSize()];
     v11->mStart.x = v15;
     v11->mStart.y = v16;
-    [a3 endPointForPath:a4 andBounds:TSDRectWithSize()];
+    [gradient endPointForPath:path andBounds:TSDRectWithSize()];
     v11->mEnd.x = v17;
     v11->mEnd.y = v18;
   }
@@ -111,17 +111,17 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(TSDGradient *)self gradientType];
+  gradientType = [(TSDGradient *)self gradientType];
   [(TSDGradient *)self opacity];
   v6 = v5;
   v7 = NSStringFromCGPoint(self->mStart);
   v8 = NSStringFromCGPoint(self->mEnd);
-  return [v3 stringWithFormat:@"TSDTransformGradient<%p>: type=%lu opacity=%f start=%@ end=%@ \n\tstops=%@ \n\tbase size=%@", self, v4, v6, v7, v8, -[TSDGradient gradientStops](self, "gradientStops"), NSStringFromCGSize(self->mBaseNaturalSize)];
+  return [v3 stringWithFormat:@"TSDTransformGradient<%p>: type=%lu opacity=%f start=%@ end=%@ \n\tstops=%@ \n\tbase size=%@", self, gradientType, v6, v7, v8, -[TSDGradient gradientStops](self, "gradientStops"), NSStringFromCGSize(self->mBaseNaturalSize)];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -137,7 +137,7 @@
       v8 = v7;
       v19.receiver = self;
       v19.super_class = TSDTransformGradient;
-      LODWORD(v7) = [(TSDGradient *)&v19 isEqual:a3];
+      LODWORD(v7) = [(TSDGradient *)&v19 isEqual:equal];
       if (v7)
       {
         [v8 startPoint];
@@ -160,9 +160,9 @@
   return v7;
 }
 
-- (BOOL)isEqualIgnoringTransform:(id)a3
+- (BOOL)isEqualIgnoringTransform:(id)transform
 {
-  if (a3 == self)
+  if (transform == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -178,7 +178,7 @@
       v8 = v7;
       v13.receiver = self;
       v13.super_class = TSDTransformGradient;
-      LODWORD(v7) = [(TSDGradient *)&v13 isEqual:a3];
+      LODWORD(v7) = [(TSDGradient *)&v13 isEqual:transform];
       if (v7)
       {
         p_mBaseNaturalSize = &self->mBaseNaturalSize;
@@ -191,13 +191,13 @@
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDMutableTransformGradient allocWithZone:a3];
-  v5 = [(TSDGradient *)self gradientStops];
-  v6 = [(TSDGradient *)self gradientType];
+  v4 = [TSDMutableTransformGradient allocWithZone:zone];
+  gradientStops = [(TSDGradient *)self gradientStops];
+  gradientType = [(TSDGradient *)self gradientType];
   [(TSDGradient *)self opacity];
-  v7 = [(TSDGradient *)v4 initWithGradientStops:v5 type:v6 opacity:?];
+  v7 = [(TSDGradient *)v4 initWithGradientStops:gradientStops type:gradientType opacity:?];
   [(TSDGradient *)v7 setIsAdvancedGradient:self->super.mIsAdvancedGradient];
   [(TSDTransformGradient *)self startPoint];
   [(TSDTransformGradient *)v7 setStartPoint:?];
@@ -208,11 +208,11 @@
   return v7;
 }
 
-- (CGPoint)normalizedPointForSize:(CGSize)a3 endPoint:(BOOL)a4
+- (CGPoint)normalizedPointForSize:(CGSize)size endPoint:(BOOL)point
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  pointCopy = point;
+  height = size.height;
+  width = size.width;
   [(TSDTransformGradient *)self startPoint];
   v46 = v9;
   v47 = v8;
@@ -290,7 +290,7 @@
     v16.f64[0] = v49;
   }
 
-  if (!v4)
+  if (!pointCopy)
   {
     v20.f64[0] = v16.f64[0];
     v21 = v19;
@@ -301,34 +301,34 @@
   return result;
 }
 
-- (void)setBaseNaturalSize:(CGSize)a3
+- (void)setBaseNaturalSize:(CGSize)size
 {
-  if (a3.height <= 0.0)
+  if (size.height <= 0.0)
   {
-    a3.height = 1.0;
+    size.height = 1.0;
   }
 
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
-    a3.width = 1.0;
+    size.width = 1.0;
   }
 
-  self->mBaseNaturalSize = a3;
+  self->mBaseNaturalSize = size;
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(TSDGradient *)self shadingRef];
-  CGContextSaveGState(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  shadingRef = [(TSDGradient *)self shadingRef];
+  CGContextSaveGState(context);
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
   v16.size.height = height;
-  CGContextClipToRect(a4, v16);
+  CGContextClipToRect(context, v16);
   if ([(TSDGradient *)self gradientType])
   {
     if (self)
@@ -341,7 +341,7 @@
       memset(&v15, 0, sizeof(v15));
     }
 
-    CGContextConcatCTM(a4, &v15);
+    CGContextConcatCTM(context, &v15);
   }
 
   else
@@ -356,7 +356,7 @@
     v18.size.width = width;
     v18.size.height = height;
     MinY = CGRectGetMinY(v18);
-    CGContextTranslateCTM(a4, MidX, MinY);
+    CGContextTranslateCTM(context, MidX, MinY);
     v19.origin.x = x;
     v19.origin.y = y;
     v19.size.width = width;
@@ -367,75 +367,75 @@
     v20.size.width = width;
     v20.size.height = height;
     v14 = CGRectGetHeight(v20);
-    CGContextScaleCTM(a4, v13, v14 / 100.0);
+    CGContextScaleCTM(context, v13, v14 / 100.0);
   }
 
-  [(TSDGradient *)self p_setAlpha:a4, *&v15.a, *&v15.c, *&v15.tx];
-  CGContextSetInterpolationQuality(a4, kCGInterpolationHigh);
-  CGContextDrawShading(a4, v10);
-  CGContextRestoreGState(a4);
+  [(TSDGradient *)self p_setAlpha:context, *&v15.a, *&v15.c, *&v15.tx];
+  CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+  CGContextDrawShading(context, shadingRef);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  BoundingBox = CGPathGetBoundingBox(a3);
+  BoundingBox = CGPathGetBoundingBox(path);
 
-  [(TSDTransformGradient *)self paintPath:a3 naturalBounds:a4 inContext:0 isPDF:BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height];
+  [(TSDTransformGradient *)self paintPath:path naturalBounds:context inContext:0 isPDF:BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height];
 }
 
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  CGContextSaveGState(a5);
-  CGContextAddPath(a5, a3);
-  CGContextClip(a5);
-  CGContextTranslateCTM(a5, x, y);
-  if ((a6 || TSDCGContextIsPDFContext(a5)) && [(TSDGradient *)self hasAlpha]|| TSDCGContextIsPrintContext(a5))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  CGContextSaveGState(context);
+  CGContextAddPath(context, path);
+  CGContextClip(context);
+  CGContextTranslateCTM(context, x, y);
+  if ((f || TSDCGContextIsPDFContext(context)) && [(TSDGradient *)self hasAlpha]|| TSDCGContextIsPrintContext(context))
   {
     v14 = *(MEMORY[0x277CBF3A0] + 16);
     v16 = *MEMORY[0x277CBF3A0];
     v17 = v14;
-    v15 = [(TSDGradient *)self p_beginBitmapWrapperContextInContext:a5 returningIntegralBounds:&v16];
+    v15 = [(TSDGradient *)self p_beginBitmapWrapperContextInContext:context returningIntegralBounds:&v16];
     if (v15)
     {
       [(TSDTransformGradient *)self p_drawQuartzShadingInContext:v15 withGradientNaturalSize:width baseNaturalSize:height start:self->mBaseNaturalSize.width end:self->mBaseNaturalSize.height, self->mStart.x, self->mStart.y, self->mEnd.x, self->mEnd.y];
     }
 
-    [(TSDGradient *)self p_endBitmapWrapperContext:v15 inContext:a5 withIntegralBounds:v16, v17];
+    [(TSDGradient *)self p_endBitmapWrapperContext:v15 inContext:context withIntegralBounds:v16, v17];
   }
 
   else
   {
-    [(TSDTransformGradient *)self p_drawQuartzShadingInContext:a5 withGradientNaturalSize:width baseNaturalSize:height start:self->mBaseNaturalSize.width end:self->mBaseNaturalSize.height, self->mStart.x, self->mStart.y, self->mEnd.x, self->mEnd.y];
+    [(TSDTransformGradient *)self p_drawQuartzShadingInContext:context withGradientNaturalSize:width baseNaturalSize:height start:self->mBaseNaturalSize.width end:self->mBaseNaturalSize.height, self->mStart.x, self->mStart.y, self->mEnd.x, self->mEnd.y];
   }
 
-  CGContextRestoreGState(a5);
+  CGContextRestoreGState(context);
 }
 
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds
 {
-  [(TSDTransformGradient *)self normalizedPointForSize:0 endPoint:a4.size.width, a4.size.height];
+  [(TSDTransformGradient *)self normalizedPointForSize:0 endPoint:bounds.size.width, bounds.size.height];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds
 {
-  [(TSDTransformGradient *)self normalizedPointForSize:1 endPoint:a4.size.width, a4.size.height];
+  [(TSDTransformGradient *)self normalizedPointForSize:1 endPoint:bounds.size.width, bounds.size.height];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGSize)baseNaturalSizeForBounds:(CGRect)a3
+- (CGSize)baseNaturalSizeForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  if ([(TSDGradient *)self gradientType:a3.origin.x])
+  height = bounds.size.height;
+  width = bounds.size.width;
+  if ([(TSDGradient *)self gradientType:bounds.origin.x])
   {
     [(TSDTransformGradient *)self baseNaturalSize];
     width = v6;
@@ -457,15 +457,15 @@
   return result;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__TSDTransformGradient_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __45__TSDTransformGradient_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -507,16 +507,16 @@ uint64_t __45__TSDTransformGradient_mixingTypeWithObject___block_invoke(uint64_t
   }
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __57__TSDTransformGradient_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDMutableTransformGradient *__57__TSDTransformGradient_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)
@@ -571,33 +571,33 @@ TSDMutableTransformGradient *__57__TSDTransformGradient_mixedObjectWithFraction_
   self->mBaseNaturalSize = vdupq_n_s64(0x4059000000000000uLL);
 }
 
-- (CGPoint)p_scalePoint:(CGPoint)a3 toShapeWithNaturalSize:(CGSize)a4
+- (CGPoint)p_scalePoint:(CGPoint)point toShapeWithNaturalSize:(CGSize)size
 {
-  v4 = a3.x * a4.width / self->mBaseNaturalSize.width;
-  v5 = a3.y * a4.height / self->mBaseNaturalSize.height;
+  v4 = point.x * size.width / self->mBaseNaturalSize.width;
+  v5 = point.y * size.height / self->mBaseNaturalSize.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)p_scalePoint:(CGPoint)a3 fromShapeWithNaturalSize:(CGSize)a4
+- (CGPoint)p_scalePoint:(CGPoint)point fromShapeWithNaturalSize:(CGSize)size
 {
-  v4 = a3.x * self->mBaseNaturalSize.width / a4.width;
-  v5 = a3.y * self->mBaseNaturalSize.height / a4.height;
+  v4 = point.x * self->mBaseNaturalSize.width / size.width;
+  v5 = point.y * self->mBaseNaturalSize.height / size.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (void)p_drawQuartzShadingInContext:(CGContext *)a3 withGradientNaturalSize:(CGSize)a4 baseNaturalSize:(CGSize)a5 start:(CGPoint)a6 end:(CGPoint)a7
+- (void)p_drawQuartzShadingInContext:(CGContext *)context withGradientNaturalSize:(CGSize)size baseNaturalSize:(CGSize)naturalSize start:(CGPoint)start end:(CGPoint)end
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
+  y = end.y;
+  x = end.x;
+  v9 = start.y;
+  v10 = start.x;
   if (self)
   {
-    [(TSDTransformGradient *)self transformForSize:a4.width, a4.height, a5.width, a5.height];
+    [(TSDTransformGradient *)self transformForSize:size.width, size.height, naturalSize.width, naturalSize.height];
   }
 
   else
@@ -605,16 +605,16 @@ TSDMutableTransformGradient *__57__TSDTransformGradient_mixedObjectWithFraction_
     memset(&v17, 0, sizeof(v17));
   }
 
-  CGContextConcatCTM(a3, &v17);
-  CGContextTranslateCTM(a3, v10, v9);
+  CGContextConcatCTM(context, &v17);
+  CGContextTranslateCTM(context, v10, v9);
   v13 = TSDSubtractPoints(x, y, v10);
   v15 = TSDAngleFromDelta(v13, v14);
-  CGContextRotateCTM(a3, v15);
+  CGContextRotateCTM(context, v15);
   v16 = TSDDistance(v10, v9, x, y);
-  CGContextScaleCTM(a3, v16 / 100.0, v16 / 100.0);
-  [(TSDGradient *)self p_setAlpha:a3];
-  CGContextSetInterpolationQuality(a3, kCGInterpolationHigh);
-  CGContextDrawShading(a3, [(TSDGradient *)self shadingRef]);
+  CGContextScaleCTM(context, v16 / 100.0, v16 / 100.0);
+  [(TSDGradient *)self p_setAlpha:context];
+  CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+  CGContextDrawShading(context, [(TSDGradient *)self shadingRef]);
 }
 
 - (CGPoint)startPoint

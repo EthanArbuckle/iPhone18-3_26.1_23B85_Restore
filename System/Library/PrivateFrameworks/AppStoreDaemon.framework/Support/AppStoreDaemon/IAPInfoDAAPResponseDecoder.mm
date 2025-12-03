@@ -1,17 +1,17 @@
 @interface IAPInfoDAAPResponseDecoder
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4;
-- (void)parser:(id)a3 didFailWithError:(id)a4;
-- (void)parser:(id)a3 didFinishWithState:(int64_t)a4;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5;
-- (void)parserDidCancel:(id)a3;
-- (void)parserDidStart:(id)a3;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code;
+- (void)parser:(id)parser didFailWithError:(id)error;
+- (void)parser:(id)parser didFinishWithState:(int64_t)state;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length;
+- (void)parserDidCancel:(id)cancel;
+- (void)parserDidStart:(id)start;
 @end
 
 @implementation IAPInfoDAAPResponseDecoder
 
-- (void)parserDidStart:(id)a3
+- (void)parserDidStart:(id)start
 {
   v4 = objc_opt_new();
   items = self->_items;
@@ -26,9 +26,9 @@
   self->_currentItemsArray = v8;
 }
 
-- (void)parser:(id)a3 didFinishWithState:(int64_t)a4
+- (void)parser:(id)parser didFinishWithState:(int64_t)state
 {
-  if (a4 != 2)
+  if (state != 2)
   {
     self->_success = 0;
     v17 = objc_opt_new();
@@ -90,7 +90,7 @@ LABEL_4:
 LABEL_6:
 }
 
-- (void)parserDidCancel:(id)a3
+- (void)parserDidCancel:(id)cancel
 {
   self->_success = 0;
   v4 = objc_opt_new();
@@ -102,7 +102,7 @@ LABEL_6:
   self->_deletedItems = v6;
 }
 
-- (void)parser:(id)a3 didFailWithError:(id)a4
+- (void)parser:(id)parser didFailWithError:(id)error
 {
   self->_success = 0;
   v5 = objc_opt_new();
@@ -114,16 +114,16 @@ LABEL_6:
   self->_deletedItems = v7;
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   result = 1;
-  if (a4 > 1835625315)
+  if (code > 1835625315)
   {
-    if (a4 <= 1836213102)
+    if (code <= 1836213102)
     {
-      if (a4 > 1835819883)
+      if (code > 1835819883)
       {
-        if (a4 == 1835819884)
+        if (code == 1835819884)
         {
           return result;
         }
@@ -133,7 +133,7 @@ LABEL_6:
 
       else
       {
-        if (a4 == 1835625316)
+        if (code == 1835625316)
         {
           return result;
         }
@@ -144,9 +144,9 @@ LABEL_6:
       goto LABEL_22;
     }
 
-    if (a4 <= 1836344174)
+    if (code <= 1836344174)
     {
-      if (a4 == 1836213103)
+      if (code == 1836213103)
       {
         return result;
       }
@@ -155,7 +155,7 @@ LABEL_6:
       goto LABEL_22;
     }
 
-    if (a4 != 1836344175 && a4 != 1836413810)
+    if (code != 1836344175 && code != 1836413810)
     {
       v5 = 1836414073;
       goto LABEL_22;
@@ -164,16 +164,16 @@ LABEL_6:
 
   else
   {
-    if (a4 > 1634368096)
+    if (code > 1634368096)
     {
-      if (a4 - 1634368097 <= 0x13 && ((1 << (a4 - 97)) & 0xE4011) != 0)
+      if (code - 1634368097 <= 0x13 && ((1 << (code - 97)) & 0xE4011) != 0)
       {
         return result;
       }
 
       v5 = 1634952301;
 LABEL_22:
-      if (a4 != v5)
+      if (code != v5)
       {
         return 0;
       }
@@ -181,7 +181,7 @@ LABEL_22:
       return result;
     }
 
-    if (a4 != 1633968755 && a4 != 1634025833)
+    if (code != 1633968755 && code != 1634025833)
     {
       v5 = 1634038895;
       goto LABEL_22;
@@ -191,12 +191,12 @@ LABEL_22:
   return result;
 }
 
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length
 {
-  v7 = a3;
-  if (a4 == 1836409964)
+  parserCopy = parser;
+  if (code == 1836409964)
   {
-    v12 = v7;
+    v12 = parserCopy;
     deletedItems = self->_deletedItems;
 LABEL_7:
     v11 = deletedItems;
@@ -205,78 +205,78 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a4 != 1835821428)
+  if (code != 1835821428)
   {
-    if (a4 != 1835819884)
+    if (code != 1835819884)
     {
       goto LABEL_9;
     }
 
-    v12 = v7;
+    v12 = parserCopy;
     deletedItems = self->_items;
     goto LABEL_7;
   }
 
-  v12 = v7;
+  v12 = parserCopy;
   v9 = objc_alloc_init(ASDMutableIAPInfo);
   currentItemsArray = self->_currentItem;
   self->_currentItem = v9;
 LABEL_8:
 
-  v7 = v12;
+  parserCopy = v12;
 LABEL_9:
 }
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  v10 = a3;
-  if (a4 <= 1634368114)
+  parserCopy = parser;
+  if (code <= 1634368114)
   {
-    v17 = v10;
-    if (a4 > 1634368100)
+    v17 = parserCopy;
+    if (code > 1634368100)
     {
-      if (a4 != 1634368101)
+      if (code != 1634368101)
       {
-        if (a4 == 1634368111)
+        if (code == 1634368111)
         {
-          v14 = a5[3];
+          v14 = bytes[3];
           [(ASDMutableIAPInfo *)self->_currentItem setHasUsedFreeOffer:v14 & 1];
           [(ASDMutableIAPInfo *)self->_currentItem setHasUsedIntroPricingOffer:(v14 & 2) != 0];
         }
 
         else
         {
-          if (a4 != 1634368114)
+          if (code != 1634368114)
           {
             goto LABEL_27;
           }
 
-          [(ASDMutableIAPInfo *)self->_currentItem setAutoRenewStatus:*a5 != 0];
+          [(ASDMutableIAPInfo *)self->_currentItem setAutoRenewStatus:*bytes != 0];
         }
 
         goto LABEL_26;
       }
 
-      v12 = [NSDate dateWithTimeIntervalSince1970:bswap32(*a5)];
+      v12 = [NSDate dateWithTimeIntervalSince1970:bswap32(*bytes)];
       [(ASDMutableIAPInfo *)self->_currentItem setExpirationDate:v12];
     }
 
     else
     {
-      switch(a4)
+      switch(code)
       {
         case 0x61654169u:
           currentItem = self->_currentItem;
-          v12 = [NSNumber numberWithUnsignedLongLong:((*a5 << 56) | (a5[1] << 48) | (a5[2] << 40) | (a5[3] << 32) | (a5[4] << 24) | (a5[5] << 16) | (a5[6] << 8)) + a5[7]];
+          v12 = [NSNumber numberWithUnsignedLongLong:((*bytes << 56) | (bytes[1] << 48) | (bytes[2] << 40) | (bytes[3] << 32) | (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8)) + bytes[7]];
           [(ASDMutableIAPInfo *)currentItem setAdamId:v12];
           break;
         case 0x6165746Fu:
-          v12 = [NSDate dateWithTimeIntervalSince1970:bswap32(*a5)];
+          v12 = [NSDate dateWithTimeIntervalSince1970:bswap32(*bytes)];
           [(ASDMutableIAPInfo *)self->_currentItem setPurchaseDate:v12];
           break;
         case 0x616A7A61u:
           v11 = self->_currentItem;
-          v12 = [NSNumber numberWithUnsignedLongLong:((*a5 << 56) | (a5[1] << 48) | (a5[2] << 40) | (a5[3] << 32) | (a5[4] << 24) | (a5[5] << 16) | (a5[6] << 8)) + a5[7]];
+          v12 = [NSNumber numberWithUnsignedLongLong:((*bytes << 56) | (bytes[1] << 48) | (bytes[2] << 40) | (bytes[3] << 32) | (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8)) + bytes[7]];
           [(ASDMutableIAPInfo *)v11 setAppAdamId:v12];
           break;
         default:
@@ -287,56 +287,56 @@ LABEL_9:
     goto LABEL_25;
   }
 
-  if (a4 > 1836282995)
+  if (code > 1836282995)
   {
-    switch(a4)
+    switch(code)
     {
       case 0x6D757479u:
-        self->_update = *a5 != 0;
+        self->_update = *bytes != 0;
         break;
       case 0x6D757372u:
-        v17 = v10;
-        v15 = [NSNumber numberWithUnsignedInt:bswap32(*a5)];
+        v17 = parserCopy;
+        v15 = [NSNumber numberWithUnsignedInt:bswap32(*bytes)];
         serverRevision = self->_serverRevision;
         self->_serverRevision = v15;
 
         goto LABEL_26;
       case 0x6D737474u:
-        self->_status = bswap32(*a5);
+        self->_status = bswap32(*bytes);
         break;
     }
   }
 
   else
   {
-    if (a4 == 1634368115)
+    if (code == 1634368115)
     {
-      v17 = v10;
-      v12 = [[NSString alloc] initWithBytes:a5 length:a6 encoding:4];
+      v17 = parserCopy;
+      v12 = [[NSString alloc] initWithBytes:bytes length:length encoding:4];
       [(ASDMutableIAPInfo *)self->_currentItem setSubscriptionFamilyId:v12];
 LABEL_25:
 
 LABEL_26:
-      v10 = v17;
+      parserCopy = v17;
       goto LABEL_27;
     }
 
-    if (a4 != 1634368116)
+    if (code != 1634368116)
     {
-      if (a4 != 1634952301)
+      if (code != 1634952301)
       {
         goto LABEL_27;
       }
 
-      v17 = v10;
-      v12 = [NSDate dateWithTimeIntervalSince1970:bswap32(*a5)];
+      v17 = parserCopy;
+      v12 = [NSDate dateWithTimeIntervalSince1970:bswap32(*bytes)];
       [(ASDMutableIAPInfo *)self->_currentItem setLastModifiedDate:v12];
       goto LABEL_25;
     }
 
-    if (*a5 < 5u)
+    if (*bytes < 5u)
     {
-      v17 = v10;
+      v17 = parserCopy;
       [(ASDMutableIAPInfo *)self->_currentItem setType:?];
       goto LABEL_26;
     }
@@ -347,10 +347,10 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code
 {
-  v6 = a3;
-  if (a4 == 1835821428)
+  parserCopy = parser;
+  if (code == 1835821428)
   {
     if (self->_errorParsingItem)
     {

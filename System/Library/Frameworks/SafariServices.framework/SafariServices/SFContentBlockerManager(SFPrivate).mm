@@ -14,7 +14,7 @@
 - (void)_saveContentBlockerRecompilationInformation
 {
   *a2 = 138543362;
-  *(a2 + 4) = a1;
+  *(a2 + 4) = self;
   OUTLINED_FUNCTION_3_0(&dword_1D4644000, a2, a3, "Failed to create data to save recompilation information: %{public}@", a2);
 }
 

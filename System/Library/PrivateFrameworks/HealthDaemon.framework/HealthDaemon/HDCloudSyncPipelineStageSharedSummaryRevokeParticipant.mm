@@ -1,19 +1,19 @@
 @interface HDCloudSyncPipelineStageSharedSummaryRevokeParticipant
-- (HDCloudSyncPipelineStageSharedSummaryRevokeParticipant)initWithOutgoingSummarySharingEntry:(id)a3 configuration:(id)a4;
+- (HDCloudSyncPipelineStageSharedSummaryRevokeParticipant)initWithOutgoingSummarySharingEntry:(id)entry configuration:(id)configuration;
 - (void)main;
 @end
 
 @implementation HDCloudSyncPipelineStageSharedSummaryRevokeParticipant
 
-- (HDCloudSyncPipelineStageSharedSummaryRevokeParticipant)initWithOutgoingSummarySharingEntry:(id)a3 configuration:(id)a4
+- (HDCloudSyncPipelineStageSharedSummaryRevokeParticipant)initWithOutgoingSummarySharingEntry:(id)entry configuration:(id)configuration
 {
-  v6 = a3;
+  entryCopy = entry;
   v11.receiver = self;
   v11.super_class = HDCloudSyncPipelineStageSharedSummaryRevokeParticipant;
-  v7 = [(HDCloudSyncPipelineStage *)&v11 initWithConfiguration:a4 cloudState:0];
+  v7 = [(HDCloudSyncPipelineStage *)&v11 initWithConfiguration:configuration cloudState:0];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [entryCopy copy];
     codableEntry = v7->_codableEntry;
     v7->_codableEntry = v8;
   }
@@ -24,8 +24,8 @@
 - (void)main
 {
   v3 = [HDCloudSyncSharedSummaryRevokeParticipantOperation alloc];
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [(HDCloudSyncSharedSummaryRevokeParticipantOperation *)v3 initWithConfiguration:v4 codableEntry:self->_codableEntry];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  v5 = [(HDCloudSyncSharedSummaryRevokeParticipantOperation *)v3 initWithConfiguration:configuration codableEntry:self->_codableEntry];
 
   [(HDCloudSyncOperation *)self delegateToOperation:v5];
 }

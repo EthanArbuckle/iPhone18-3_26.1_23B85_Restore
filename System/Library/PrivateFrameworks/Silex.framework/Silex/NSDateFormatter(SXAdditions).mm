@@ -7,24 +7,24 @@
 + (id)dateFormatterWithFormat:()SXAdditions
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E696AF00] currentThread];
-  v5 = [v4 threadDictionary];
-  v6 = [v5 objectForKey:@"SilexDateFormatters"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  dictionary = [threadDictionary objectForKey:@"SilexDateFormatters"];
 
-  if (!v6)
+  if (!dictionary)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    v7 = [MEMORY[0x1E696AF00] currentThread];
-    v8 = [v7 threadDictionary];
-    [v8 setObject:v6 forKey:@"SilexDateFormatters"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary2 = [currentThread2 threadDictionary];
+    [threadDictionary2 setObject:dictionary forKey:@"SilexDateFormatters"];
   }
 
-  v9 = [v6 objectForKey:v3];
+  v9 = [dictionary objectForKey:v3];
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v9 setDateFormat:v3];
-    [v6 setObject:v9 forKey:v3];
+    [dictionary setObject:v9 forKey:v3];
   }
 
   return v9;

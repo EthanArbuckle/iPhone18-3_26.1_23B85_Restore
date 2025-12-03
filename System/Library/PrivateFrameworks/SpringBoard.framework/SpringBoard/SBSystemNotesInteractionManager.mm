@@ -1,88 +1,88 @@
 @interface SBSystemNotesInteractionManager
 - (BOOL)_gestureIsActive;
-- (BOOL)_panRecognizerOverFlickThreshold:(id)a3;
-- (BOOL)_shouldEdgeProtectGestureRecognizer:(id)a3;
-- (BOOL)canHandlePresentationRequests:(id *)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGPoint)_convertReferenceVelocity:(CGPoint)a3 toOrientation:(int64_t)a4;
-- (CGPoint)_orientedLocationForReferenceLocation:(CGPoint)a3;
-- (CGPoint)_pointForGestureCorner:(unint64_t)a3;
-- (SBSystemNotesInteractionManager)initWithWorkspace:(id)a3 systemGestureManager:(id)a4 systemPointerInteractionManager:(id)a5 dataSource:(id)a6 delegate:(id)a7;
-- (UIEdgeInsets)interactionController:(id)a3 edgeInsetsForWindowScene:(id)a4;
-- (UIEdgeInsets)interactionController:(id)a3 stashedPaddingForWindowScene:(id)a4;
-- (double)_absoluteScaleForInteractiveSystemNotesGesture:(id)a3;
-- (double)_absoluteScaleThresholdBeforeFullSizeForGestureRecognizer:(id)a3;
-- (double)_cornerDistanceBeforeScalingForDismissGestureRecognizer:(id)a3;
-- (double)_flickVelocityThresholdForGestureRecognizer:(id)a3;
-- (double)_panDistanceBeforeScalingForGestureRecognizer:(id)a3;
-- (double)_panDistancePer1xScalingForGestureRecognizer:(id)a3;
-- (double)_panInitialThumbnailScaleForGestureRecognizer:(id)a3;
-- (double)_scaleThresholdBeforeFullSizeForGestureRecognizer:(id)a3;
+- (BOOL)_panRecognizerOverFlickThreshold:(id)threshold;
+- (BOOL)_shouldEdgeProtectGestureRecognizer:(id)recognizer;
+- (BOOL)canHandlePresentationRequests:(id *)requests;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGPoint)_convertReferenceVelocity:(CGPoint)velocity toOrientation:(int64_t)orientation;
+- (CGPoint)_orientedLocationForReferenceLocation:(CGPoint)location;
+- (CGPoint)_pointForGestureCorner:(unint64_t)corner;
+- (SBSystemNotesInteractionManager)initWithWorkspace:(id)workspace systemGestureManager:(id)manager systemPointerInteractionManager:(id)interactionManager dataSource:(id)source delegate:(id)delegate;
+- (UIEdgeInsets)interactionController:(id)controller edgeInsetsForWindowScene:(id)scene;
+- (UIEdgeInsets)interactionController:(id)controller stashedPaddingForWindowScene:(id)scene;
+- (double)_absoluteScaleForInteractiveSystemNotesGesture:(id)gesture;
+- (double)_absoluteScaleThresholdBeforeFullSizeForGestureRecognizer:(id)recognizer;
+- (double)_cornerDistanceBeforeScalingForDismissGestureRecognizer:(id)recognizer;
+- (double)_flickVelocityThresholdForGestureRecognizer:(id)recognizer;
+- (double)_panDistanceBeforeScalingForGestureRecognizer:(id)recognizer;
+- (double)_panDistancePer1xScalingForGestureRecognizer:(id)recognizer;
+- (double)_panInitialThumbnailScaleForGestureRecognizer:(id)recognizer;
+- (double)_scaleThresholdBeforeFullSizeForGestureRecognizer:(id)recognizer;
 - (id)defaultPositionHyperregionComposers;
-- (id)interactionControllerConnectedWindowScenes:(id)a3;
+- (id)interactionControllerConnectedWindowScenes:(id)scenes;
 - (int64_t)_presentationModeForGestureBegin;
-- (unint64_t)_cornerForGestureRecognizer:(id)a3;
+- (unint64_t)_cornerForGestureRecognizer:(id)recognizer;
 - (unint64_t)_cornersForAllSwipes;
-- (unint64_t)_cornersForTouchType:(int64_t)a3;
-- (unint64_t)_touchTypeForGestureRecognizer:(id)a3;
+- (unint64_t)_cornersForTouchType:(int64_t)type;
+- (unint64_t)_touchTypeForGestureRecognizer:(id)recognizer;
 - (unint64_t)startingPositionForExternalPresentationRequest;
-- (void)_cancelGestureIfNecessary:(id)a3 reason:(id)a4;
-- (void)_handleInteractiveSwipeInGesture:(id)a3;
-- (void)_handleInteractiveSystemNotesGesture:(id)a3;
-- (void)_handleNonInteractiveSwipeInGesture:(id)a3;
-- (void)_interactionController:(id)a3 updateScaleInteractorForSwipeToDismiss:(id)a4 pipSize:(CGSize)a5 forPanGesture:(id)a6;
-- (void)_interactionController:(id)a3 updateScaleInteractorForSwipeToPresent:(id)a4 pipSize:(CGSize)a5 forPanGesture:(id)a6;
+- (void)_cancelGestureIfNecessary:(id)necessary reason:(id)reason;
+- (void)_handleInteractiveSwipeInGesture:(id)gesture;
+- (void)_handleInteractiveSystemNotesGesture:(id)gesture;
+- (void)_handleNonInteractiveSwipeInGesture:(id)gesture;
+- (void)_interactionController:(id)controller updateScaleInteractorForSwipeToDismiss:(id)dismiss pipSize:(CGSize)size forPanGesture:(id)gesture;
+- (void)_interactionController:(id)controller updateScaleInteractorForSwipeToPresent:(id)present pipSize:(CGSize)size forPanGesture:(id)gesture;
 - (void)_setupFingerGestureRecognizers;
 - (void)_setupForInteractiveDismissal;
 - (void)_setupPencilGestureRecognizers;
-- (void)_springBoardBootCompleted:(id)a3;
+- (void)_springBoardBootCompleted:(id)completed;
 - (void)_updateFailureRequirements;
 - (void)_updateFingerGestureEnablement;
 - (void)_updateStashPadding;
-- (void)collapseAnimated:(BOOL)a3;
-- (void)contentContainerAdapter:(id)a3 handleDestructionRequestForSceneHandle:(id)a4;
-- (void)contentContainerAdapter:(id)a3 willBeginInteractionWithGestureRecognizer:(id)a4;
-- (void)contentContainerAdapter:(id)a3 willUpdateStashState:(BOOL)a4;
-- (void)contentContainerAdapterDidEndInteraction:(id)a3 targetWindowScene:(id)a4;
-- (void)contentContainerAdapterPanGestureDidEnd:(id)a3;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
-- (void)expandAnimated:(BOOL)a3;
-- (void)interactionController:(id)a3 updateScaleInteractor:(id)a4 pipSize:(CGSize)a5 forPanGesture:(id)a6;
-- (void)peepAnimated:(BOOL)a3;
+- (void)collapseAnimated:(BOOL)animated;
+- (void)contentContainerAdapter:(id)adapter handleDestructionRequestForSceneHandle:(id)handle;
+- (void)contentContainerAdapter:(id)adapter willBeginInteractionWithGestureRecognizer:(id)recognizer;
+- (void)contentContainerAdapter:(id)adapter willUpdateStashState:(BOOL)state;
+- (void)contentContainerAdapterDidEndInteraction:(id)interaction targetWindowScene:(id)scene;
+- (void)contentContainerAdapterPanGestureDidEnd:(id)end;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)expandAnimated:(BOOL)animated;
+- (void)interactionController:(id)controller updateScaleInteractor:(id)interactor pipSize:(CGSize)size forPanGesture:(id)gesture;
+- (void)peepAnimated:(BOOL)animated;
 - (void)startingPositionForExternalPresentationRequest;
-- (void)zStackParticipantDidChange:(id)a3;
+- (void)zStackParticipantDidChange:(id)change;
 @end
 
 @implementation SBSystemNotesInteractionManager
 
-- (SBSystemNotesInteractionManager)initWithWorkspace:(id)a3 systemGestureManager:(id)a4 systemPointerInteractionManager:(id)a5 dataSource:(id)a6 delegate:(id)a7
+- (SBSystemNotesInteractionManager)initWithWorkspace:(id)workspace systemGestureManager:(id)manager systemPointerInteractionManager:(id)interactionManager dataSource:(id)source delegate:(id)delegate
 {
   v47[4] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  workspaceCopy = workspace;
+  managerCopy = manager;
+  interactionManagerCopy = interactionManager;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v46.receiver = self;
   v46.super_class = SBSystemNotesInteractionManager;
   v17 = [(SBSystemNotesInteractionManager *)&v46 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_systemGestureManager, a4);
-    objc_storeStrong(&v18->_systemPointerInteractionManager, a5);
-    objc_storeStrong(&v18->_dataSource, a6);
-    objc_storeStrong(&v18->_delegate, a7);
-    v19 = [v12 pipCoordinator];
+    objc_storeStrong(&v17->_systemGestureManager, manager);
+    objc_storeStrong(&v18->_systemPointerInteractionManager, interactionManager);
+    objc_storeStrong(&v18->_dataSource, source);
+    objc_storeStrong(&v18->_delegate, delegate);
+    pipCoordinator = [workspaceCopy pipCoordinator];
     pipCoordinator = v18->_pipCoordinator;
-    v18->_pipCoordinator = v19;
+    v18->_pipCoordinator = pipCoordinator;
 
-    v21 = [SBApp windowSceneManager];
-    v40 = [v21 embeddedDisplayWindowScene];
+    windowSceneManager = [SBApp windowSceneManager];
+    embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-    v39 = [v40 zStackResolver];
-    v22 = [v39 acquireParticipantWithIdentifier:4 delegate:v18];
+    zStackResolver = [embeddedDisplayWindowScene zStackResolver];
+    v22 = [zStackResolver acquireParticipantWithIdentifier:4 delegate:v18];
     zStackParticipant = v18->_zStackParticipant;
     v18->_zStackParticipant = v22;
 
@@ -98,19 +98,19 @@
     [(SBSystemNotesInteractionManager *)v18 _updateStashPadding];
     v26 = +[SBDefaults localDefaults];
     [v26 cornerGestureDefaults];
-    v27 = v42 = v15;
+    v27 = v42 = sourceCopy;
 
-    v43 = v12;
+    v43 = workspaceCopy;
     [MEMORY[0x277CCACA8] stringWithUTF8String:"bottomLeftCornerGestureFeature"];
-    v28 = v41 = v16;
+    v28 = v41 = delegateCopy;
     v47[0] = v28;
     v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"bottomLeftCornerGestureTouchTypes"];
     v47[1] = v29;
     v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"bottomRightCornerGestureFeature"];
     v47[2] = v30;
     [MEMORY[0x277CCACA8] stringWithUTF8String:"bottomRightCornerGestureTouchTypes"];
-    v31 = v14;
-    v33 = v32 = v13;
+    v31 = interactionManagerCopy;
+    v33 = v32 = managerCopy;
     v47[3] = v33;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:4];
     v44[0] = MEMORY[0x277D85DD0];
@@ -121,54 +121,54 @@
     v45 = v35;
     v36 = [v27 observeDefaults:v34 onQueue:MEMORY[0x277D85CD0] withBlock:v44];
 
-    v13 = v32;
-    v14 = v31;
+    managerCopy = v32;
+    interactionManagerCopy = v31;
 
-    v16 = v41;
-    v37 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v37 addObserver:v35 selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:0];
-    [v37 addObserver:v35 selector:sel__springBoardBootCompleted_ name:@"SBBootCompleteNotification" object:0];
+    delegateCopy = v41;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v35 selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:0];
+    [defaultCenter addObserver:v35 selector:sel__springBoardBootCompleted_ name:@"SBBootCompleteNotification" object:0];
 
-    v12 = v43;
-    v15 = v42;
+    workspaceCopy = v43;
+    sourceCopy = v42;
   }
 
   return v18;
 }
 
-- (void)_springBoardBootCompleted:(id)a3
+- (void)_springBoardBootCompleted:(id)completed
 {
   [(SBSystemNotesInteractionManager *)self _updateFingerGestureEnablement];
 
   [(SBSystemNotesInteractionManager *)self _updateFailureRequirements];
 }
 
-- (void)peepAnimated:(BOOL)a3
+- (void)peepAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = SBLogSystemNotes();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SBSystemNotesInteractionManager peepAnimated:];
   }
 
-  [(SBSystemNotesPositionHyperregionComposer *)self->_positionRegionsComposer setupForSwipesFromCorners:[(SBSystemNotesInteractionManager *)self _cornersForAllSwipes] animated:v3];
+  [(SBSystemNotesPositionHyperregionComposer *)self->_positionRegionsComposer setupForSwipesFromCorners:[(SBSystemNotesInteractionManager *)self _cornersForAllSwipes] animated:animatedCopy];
   [(SBSystemNotesPositionHyperregionComposer *)self->_positionRegionsComposer setupForStandardBehavior];
 }
 
-- (void)expandAnimated:(BOOL)a3
+- (void)expandAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource currentPresentationModeForInteractionManager:self];
   v6 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource presentedContainerViewControllerForInteractionManager:self];
   v7 = v6;
   if (v5 != -1 && v6 != 0)
   {
     [(SBSystemNotesInteractionManagerDelegate *)self->_delegate interactionManager:self requestsStartSuppressingKeyboardForReason:@"SBSystemNotesKeyboardSuppressionExpandNotes"];
-    v9 = [v7 interactionController];
+    interactionController = [v7 interactionController];
     v10 = [SBPIPContentViewLayoutMetrics systemNotesMetricsForPresentationMode:0];
     v11 = SBSystemNotesDefaultWindowSize();
-    if (v3)
+    if (animatedCopy)
     {
       v12 = 2;
     }
@@ -178,7 +178,7 @@
       v12 = 0;
     }
 
-    [v9 setPlatformMetrics:v10 contentSize:v12 animationBehavior:v11];
+    [interactionController setPlatformMetrics:v10 contentSize:v12 animationBehavior:v11];
 
     [(SBSystemNotesInteractionManagerDelegate *)self->_delegate interactionManager:self requestsUpdatePresentationMode:0];
     v14[0] = MEMORY[0x277D85DD0];
@@ -195,19 +195,19 @@
   }
 }
 
-- (void)collapseAnimated:(BOOL)a3
+- (void)collapseAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource currentPresentationModeForInteractionManager:self];
   v6 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource presentedContainerViewControllerForInteractionManager:self];
   v7 = v6;
   if (v5 != -1 && v6 != 0)
   {
     [(SBSystemNotesInteractionManagerDelegate *)self->_delegate interactionManager:self requestsStartSuppressingKeyboardForReason:@"SBSystemNotesKeyboardSuppressionDismiss"];
-    v9 = [v7 interactionController];
+    interactionController = [v7 interactionController];
     v10 = [SBPIPContentViewLayoutMetrics systemNotesMetricsForPresentationMode:1];
     v11 = SBSystemNotesThumbnailSize();
-    if (v3)
+    if (animatedCopy)
     {
       v12 = 2;
     }
@@ -217,7 +217,7 @@
       v12 = 0;
     }
 
-    [v9 setPlatformMetrics:v10 contentSize:v12 animationBehavior:v11];
+    [interactionController setPlatformMetrics:v10 contentSize:v12 animationBehavior:v11];
 
     [(SBSystemNotesInteractionManagerDelegate *)self->_delegate interactionManager:self requestsUpdatePresentationMode:1];
     v13[0] = MEMORY[0x277D85DD0];
@@ -229,15 +229,15 @@
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  completionCopy = completion;
   v8 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource presentedContainerViewControllerForInteractionManager:self];
   v9 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource presentedPIPContentViewControllerForInteractionManager:self];
   self->_edgeProtectState = 0;
-  if (([v8 isStashed] & 1) != 0 || !v4)
+  if (([v8 isStashed] & 1) != 0 || !animatedCopy)
   {
     v14 = SBLogSystemNotes();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -245,7 +245,7 @@
       [SBSystemNotesInteractionManager dismissAnimated:completion:];
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     self->_cornerDismissState = 0;
     [(BSInvalidatable *)self->_edgeProtectStashAssertion invalidate];
     edgeProtectStashAssertion = self->_edgeProtectStashAssertion;
@@ -291,7 +291,7 @@
     v20 = a2;
     v21 = v10;
     v18 = v8;
-    v19 = v7;
+    v19 = completionCopy;
     [v12 animateWithDuration:0 delay:v22 options:v17 animations:0.5 completion:0.0];
 
     v13 = v23;
@@ -383,17 +383,17 @@ void __62__SBSystemNotesInteractionManager_dismissAnimated_completion___block_in
   }
 }
 
-- (BOOL)canHandlePresentationRequests:(id *)a3
+- (BOOL)canHandlePresentationRequests:(id *)requests
 {
   v19[1] = *MEMORY[0x277D85DE8];
   if ([(SBSystemNotesInteractionManager *)self _isSystemNotesForegroundActive])
   {
     v4 = +[SBSetupManager sharedInstance];
-    v5 = [v4 isInSetupMode];
+    isInSetupMode = [v4 isInSetupMode];
 
-    if (v5)
+    if (isInSetupMode)
     {
-      if (a3)
+      if (requests)
       {
         v6 = MEMORY[0x277CCA9B8];
         v16 = *MEMORY[0x277CCA450];
@@ -403,21 +403,21 @@ void __62__SBSystemNotesInteractionManager_dismissAnimated_completion___block_in
         v9 = &v16;
 LABEL_7:
         v10 = [v7 dictionaryWithObjects:v8 forKeys:v9 count:1];
-        *a3 = [v6 errorWithDomain:@"SBPIPSceneContentPresentationErrorDomain" code:7 userInfo:v10];
+        *requests = [v6 errorWithDomain:@"SBPIPSceneContentPresentationErrorDomain" code:7 userInfo:v10];
       }
     }
 
     else
     {
       v12 = +[SBLockScreenManager sharedInstance];
-      v13 = [v12 isUILocked];
+      isUILocked = [v12 isUILocked];
 
-      if (!v13)
+      if (!isUILocked)
       {
         return 1;
       }
 
-      if (a3)
+      if (requests)
       {
         v6 = MEMORY[0x277CCA9B8];
         v14 = *MEMORY[0x277CCA450];
@@ -430,7 +430,7 @@ LABEL_7:
     }
   }
 
-  else if (a3)
+  else if (requests)
   {
     v6 = MEMORY[0x277CCA9B8];
     v18 = *MEMORY[0x277CCA450];
@@ -444,7 +444,7 @@ LABEL_7:
   return 0;
 }
 
-- (void)zStackParticipantDidChange:(id)a3
+- (void)zStackParticipantDidChange:(id)change
 {
   if (![(SBSystemNotesInteractionManager *)self _isSystemNotesForegroundActive])
   {
@@ -457,13 +457,13 @@ LABEL_7:
   }
 }
 
-- (void)contentContainerAdapter:(id)a3 willUpdateStashState:(BOOL)a4
+- (void)contentContainerAdapter:(id)adapter willUpdateStashState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  stateCopy = state;
+  adapterCopy = adapter;
+  if (stateCopy)
   {
-    v9 = v6;
+    v9 = adapterCopy;
     [(SBSystemNotesPositionHyperregionComposer *)self->_positionRegionsComposer setupForStandardBehavior];
   }
 
@@ -475,7 +475,7 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v9 = v6;
+    v9 = adapterCopy;
     ++self->_edgeProtectGenCount;
     if (self->_edgeProtectState == 2)
     {
@@ -489,19 +489,19 @@ LABEL_7:
     self->_edgeProtectStashAssertion = 0;
   }
 
-  v6 = v9;
+  adapterCopy = v9;
 LABEL_8:
 }
 
-- (void)contentContainerAdapterDidEndInteraction:(id)a3 targetWindowScene:(id)a4
+- (void)contentContainerAdapterDidEndInteraction:(id)interaction targetWindowScene:(id)scene
 {
   cornerDismissState = self->_cornerDismissState;
-  if ([(SBSystemNotesInteractionManagerDataSource *)self->_dataSource currentPresentationModeForInteractionManager:self, a4]== 1)
+  if ([(SBSystemNotesInteractionManagerDataSource *)self->_dataSource currentPresentationModeForInteractionManager:self, scene]== 1)
   {
     v6 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource presentedContainerViewControllerForInteractionManager:self];
-    v7 = [v6 isStashed];
+    isStashed = [v6 isStashed];
 
-    if ((v7 & 1) == 0 && cornerDismissState <= 1)
+    if ((isStashed & 1) == 0 && cornerDismissState <= 1)
     {
 LABEL_4:
       positionRegionsComposer = self->_positionRegionsComposer;
@@ -521,7 +521,7 @@ LABEL_4:
   [(SBSystemNotesInteractionManagerDelegate *)delegate interactionManager:self requestsNotesDismissalForSource:cornerDismissState > 1 animated:cornerDismissState < 2];
 }
 
-- (void)contentContainerAdapterPanGestureDidEnd:(id)a3
+- (void)contentContainerAdapterPanGestureDidEnd:(id)end
 {
   if ([(SBSystemNotesInteractionManagerDataSource *)self->_dataSource currentPresentationModeForInteractionManager:self]== 1)
   {
@@ -544,10 +544,10 @@ LABEL_4:
   }
 }
 
-- (void)contentContainerAdapter:(id)a3 willBeginInteractionWithGestureRecognizer:(id)a4
+- (void)contentContainerAdapter:(id)adapter willBeginInteractionWithGestureRecognizer:(id)recognizer
 {
-  v8 = a3;
-  v6 = a4;
+  adapterCopy = adapter;
+  recognizerCopy = recognizer;
   ++self->_edgeProtectGenCount;
   if (self->_edgeProtectState == 2)
   {
@@ -559,18 +559,18 @@ LABEL_4:
   if (objc_opt_isKindOfClass())
   {
     self->_initialInteractorPanPresentationMode = [(SBSystemNotesInteractionManager *)self _presentationModeForGestureBegin];
-    v7 = self->_leftFingerSystemCornerGestureRecognizer == v6 || self->_rightFingerSystemCornerGestureRecognizer == v6 || self->_leftPencilSystemCornerGestureRecognizer == v6 || self->_rightPencilSystemCornerGestureRecognizer == v6;
+    v7 = self->_leftFingerSystemCornerGestureRecognizer == recognizerCopy || self->_rightFingerSystemCornerGestureRecognizer == recognizerCopy || self->_leftPencilSystemCornerGestureRecognizer == recognizerCopy || self->_rightPencilSystemCornerGestureRecognizer == recognizerCopy;
     self->_panGestureIsSystemGesture = v7;
   }
 }
 
-- (void)contentContainerAdapter:(id)a3 handleDestructionRequestForSceneHandle:(id)a4
+- (void)contentContainerAdapter:(id)adapter handleDestructionRequestForSceneHandle:(id)handle
 {
   dataSource = self->_dataSource;
-  v6 = a4;
+  handleCopy = handle;
   v7 = [(SBSystemNotesInteractionManagerDataSource *)dataSource presentedContainerViewControllerForInteractionManager:self];
-  v8 = [v7 hostedAppSceneHandle];
-  v9 = [v6 isEqual:v8];
+  hostedAppSceneHandle = [v7 hostedAppSceneHandle];
+  v9 = [handleCopy isEqual:hostedAppSceneHandle];
 
   if (v9)
   {
@@ -580,14 +580,14 @@ LABEL_4:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a3;
-  v6 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 shouldReceiveTouch:v6];
+    v7 = [recognizerCopy shouldReceiveTouch:touchCopy];
   }
 
   else
@@ -598,17 +598,17 @@ LABEL_4:
   return v7;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SBSystemNotesInteractionManager *)self _cornerForGestureRecognizer:v4];
-  v6 = [(SBSystemNotesInteractionManager *)self _touchTypeForGestureRecognizer:v4];
+  beginCopy = begin;
+  v5 = [(SBSystemNotesInteractionManager *)self _cornerForGestureRecognizer:beginCopy];
+  v6 = [(SBSystemNotesInteractionManager *)self _touchTypeForGestureRecognizer:beginCopy];
 
   v7 = +[SBDefaults localDefaults];
-  v8 = [v7 cornerGestureDefaults];
+  cornerGestureDefaults = [v7 cornerGestureDefaults];
 
-  v9 = [v8 bottomLeftCornerGestureFeature] == 1 && (v6 & ~objc_msgSend(v8, "bottomLeftCornerGestureTouchTypes")) == 0;
-  v10 = [v8 bottomRightCornerGestureFeature] == 1 && (v6 & ~objc_msgSend(v8, "bottomRightCornerGestureTouchTypes")) == 0;
+  v9 = [cornerGestureDefaults bottomLeftCornerGestureFeature] == 1 && (v6 & ~objc_msgSend(cornerGestureDefaults, "bottomLeftCornerGestureTouchTypes")) == 0;
+  v10 = [cornerGestureDefaults bottomRightCornerGestureFeature] == 1 && (v6 & ~objc_msgSend(cornerGestureDefaults, "bottomRightCornerGestureTouchTypes")) == 0;
   if (v5 == 8)
   {
     if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
@@ -653,8 +653,8 @@ LABEL_19:
 
 LABEL_16:
   v12 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource launchApplicationIdentityForInteractionManager:self];
-  v13 = [SBApp privacyPreflightController];
-  v14 = [v13 requiresPreflightForApplication:v12];
+  privacyPreflightController = [SBApp privacyPreflightController];
+  v14 = [privacyPreflightController requiresPreflightForApplication:v12];
 
   v15 = (v14 & 1) == 0 && [(SBSystemNotesInteractionManager *)self canHandlePresentationRequests:0];
 LABEL_22:
@@ -669,12 +669,12 @@ LABEL_22:
   if (!v4)
   {
     v5 = +[SBDefaults localDefaults];
-    v6 = [v5 cornerGestureDefaults];
+    cornerGestureDefaults = [v5 cornerGestureDefaults];
 
-    v7 = [v6 bottomLeftCornerGestureTouchTypes];
-    if ([v6 bottomRightCornerGestureTouchTypes])
+    bottomLeftCornerGestureTouchTypes = [cornerGestureDefaults bottomLeftCornerGestureTouchTypes];
+    if ([cornerGestureDefaults bottomRightCornerGestureTouchTypes])
     {
-      v8 = v7 == 0;
+      v8 = bottomLeftCornerGestureTouchTypes == 0;
     }
 
     else
@@ -697,11 +697,11 @@ LABEL_22:
   return v4;
 }
 
-- (unint64_t)_cornersForTouchType:(int64_t)a3
+- (unint64_t)_cornersForTouchType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    v3 = 2 * (a3 == 2);
+    v3 = 2 * (type == 2);
   }
 
   else
@@ -710,9 +710,9 @@ LABEL_22:
   }
 
   v4 = +[SBDefaults localDefaults];
-  v5 = [v4 cornerGestureDefaults];
+  cornerGestureDefaults = [v4 cornerGestureDefaults];
 
-  if ([v5 bottomLeftCornerGestureFeature] != 1 || (~objc_msgSend(v5, "bottomLeftCornerGestureTouchTypes") & v3) != 0)
+  if ([cornerGestureDefaults bottomLeftCornerGestureFeature] != 1 || (~objc_msgSend(cornerGestureDefaults, "bottomLeftCornerGestureTouchTypes") & v3) != 0)
   {
     v6 = 0;
   }
@@ -727,11 +727,11 @@ LABEL_22:
     v6 = 4;
   }
 
-  if ([v5 bottomRightCornerGestureFeature] == 1 && (~objc_msgSend(v5, "bottomRightCornerGestureTouchTypes") & v3) == 0)
+  if ([cornerGestureDefaults bottomRightCornerGestureFeature] == 1 && (~objc_msgSend(cornerGestureDefaults, "bottomRightCornerGestureTouchTypes") & v3) == 0)
   {
-    v7 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v8 = 8;
-    if (v7 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v8 = 4;
     }
@@ -742,65 +742,65 @@ LABEL_22:
   return v6;
 }
 
-- (double)_panDistanceBeforeScalingForGestureRecognizer:(id)a3
+- (double)_panDistanceBeforeScalingForGestureRecognizer:(id)recognizer
 {
-  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:a3];
+  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:recognizer];
   [v3 panDistanceBeforeScaling];
   v5 = v4;
 
   return v5;
 }
 
-- (double)_cornerDistanceBeforeScalingForDismissGestureRecognizer:(id)a3
+- (double)_cornerDistanceBeforeScalingForDismissGestureRecognizer:(id)recognizer
 {
-  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:a3];
+  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:recognizer];
   [v3 cornerDistanceBeforeScalingForDismiss];
   v5 = v4;
 
   return v5;
 }
 
-- (double)_panInitialThumbnailScaleForGestureRecognizer:(id)a3
+- (double)_panInitialThumbnailScaleForGestureRecognizer:(id)recognizer
 {
-  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:a3];
+  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:recognizer];
   [v3 panInitialThumbnailScale];
   v5 = v4;
 
   return v5;
 }
 
-- (double)_panDistancePer1xScalingForGestureRecognizer:(id)a3
+- (double)_panDistancePer1xScalingForGestureRecognizer:(id)recognizer
 {
-  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:a3];
+  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:recognizer];
   [v3 panDistancePer1xScaling];
   v5 = v4;
 
   return v5;
 }
 
-- (double)_scaleThresholdBeforeFullSizeForGestureRecognizer:(id)a3
+- (double)_scaleThresholdBeforeFullSizeForGestureRecognizer:(id)recognizer
 {
-  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:a3];
+  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:recognizer];
   [v3 scaleThresholdBeforeFullSize];
   v5 = v4;
 
   return v5;
 }
 
-- (double)_absoluteScaleForInteractiveSystemNotesGesture:(id)a3
+- (double)_absoluteScaleForInteractiveSystemNotesGesture:(id)gesture
 {
   systemGestureManager = self->_systemGestureManager;
-  v5 = a3;
-  v6 = [(SBSystemGestureManager *)systemGestureManager windowForSystemGestures];
-  [v5 locationInView:v6];
+  gestureCopy = gesture;
+  windowForSystemGestures = [(SBSystemGestureManager *)systemGestureManager windowForSystemGestures];
+  [gestureCopy locationInView:windowForSystemGestures];
   v8 = v7;
   v10 = v9;
 
   [(SBSystemNotesInteractionManager *)self _orientedLocationForReferenceLocation:v8, v10];
-  [(SBSystemNotesInteractionManager *)self _pointForGestureCorner:[(SBSystemNotesInteractionManager *)self _cornerForGestureRecognizer:v5]];
+  [(SBSystemNotesInteractionManager *)self _pointForGestureCorner:[(SBSystemNotesInteractionManager *)self _cornerForGestureRecognizer:gestureCopy]];
   UIDistanceBetweenPoints();
   v12 = v11;
-  [(SBSystemNotesInteractionManager *)self _panDistanceBeforeScalingForGestureRecognizer:v5];
+  [(SBSystemNotesInteractionManager *)self _panDistanceBeforeScalingForGestureRecognizer:gestureCopy];
   v14 = v12 - v13;
   if (v14 >= 0.0)
   {
@@ -812,28 +812,28 @@ LABEL_22:
     v15 = 0.0;
   }
 
-  [(SBSystemNotesInteractionManager *)self _panDistancePer1xScalingForGestureRecognizer:v5];
+  [(SBSystemNotesInteractionManager *)self _panDistancePer1xScalingForGestureRecognizer:gestureCopy];
   v17 = v15 / v16;
-  [(SBSystemNotesInteractionManager *)self _panInitialThumbnailScaleForGestureRecognizer:v5];
+  [(SBSystemNotesInteractionManager *)self _panInitialThumbnailScaleForGestureRecognizer:gestureCopy];
   v19 = v18;
 
   return v19 + v17;
 }
 
-- (double)_absoluteScaleThresholdBeforeFullSizeForGestureRecognizer:(id)a3
+- (double)_absoluteScaleThresholdBeforeFullSizeForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   v5 = SBSystemNotesDefaultWindowSize();
   v6 = v5 / SBSystemNotesThumbnailSize();
-  [(SBSystemNotesInteractionManager *)self _scaleThresholdBeforeFullSizeForGestureRecognizer:v4];
+  [(SBSystemNotesInteractionManager *)self _scaleThresholdBeforeFullSizeForGestureRecognizer:recognizerCopy];
   v8 = v7;
 
   return v8 * v6;
 }
 
-- (double)_flickVelocityThresholdForGestureRecognizer:(id)a3
+- (double)_flickVelocityThresholdForGestureRecognizer:(id)recognizer
 {
-  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:a3];
+  v3 = [(SBSystemNotesInteractionManager *)self _gestureSettingsForRecognizer:recognizer];
   [v3 flickVelocityThreshold];
   v5 = v4;
 
@@ -842,15 +842,15 @@ LABEL_22:
 
 - (void)_setupPencilGestureRecognizers
 {
-  v7 = [(SBSystemNotesSettings *)self->_pipSettings pencilSwipeGestureTuningSettings];
-  v3 = [SBCornerPencilPanGestureRecognizer interactiveCornerPanGestureRecognizerWithSettings:v7 corner:4 target:self action:sel__handleInteractiveSystemNotesGesture_];
+  pencilSwipeGestureTuningSettings = [(SBSystemNotesSettings *)self->_pipSettings pencilSwipeGestureTuningSettings];
+  v3 = [SBCornerPencilPanGestureRecognizer interactiveCornerPanGestureRecognizerWithSettings:pencilSwipeGestureTuningSettings corner:4 target:self action:sel__handleInteractiveSystemNotesGesture_];
   leftPencilSystemCornerGestureRecognizer = self->_leftPencilSystemCornerGestureRecognizer;
   self->_leftPencilSystemCornerGestureRecognizer = v3;
 
   [(SBCornerPencilPanGestureRecognizer *)self->_leftPencilSystemCornerGestureRecognizer setDelegate:self];
   [(SBCornerPencilPanGestureRecognizer *)self->_leftPencilSystemCornerGestureRecognizer setName:@"SBSystemNotesManager.pencil.corner.left"];
   [(SBSystemGestureManager *)self->_systemGestureManager addGestureRecognizer:self->_leftPencilSystemCornerGestureRecognizer withType:120];
-  v5 = [SBCornerPencilPanGestureRecognizer interactiveCornerPanGestureRecognizerWithSettings:v7 corner:8 target:self action:sel__handleInteractiveSystemNotesGesture_];
+  v5 = [SBCornerPencilPanGestureRecognizer interactiveCornerPanGestureRecognizerWithSettings:pencilSwipeGestureTuningSettings corner:8 target:self action:sel__handleInteractiveSystemNotesGesture_];
   rightPencilSystemCornerGestureRecognizer = self->_rightPencilSystemCornerGestureRecognizer;
   self->_rightPencilSystemCornerGestureRecognizer = v5;
 
@@ -861,15 +861,15 @@ LABEL_22:
 
 - (void)_setupFingerGestureRecognizers
 {
-  v9 = [(SBSystemNotesSettings *)self->_pipSettings fingerSwipeGestureTuningSettings];
-  v3 = [[SBCornerFingerGestureClassifier alloc] initWithSettings:v9];
+  fingerSwipeGestureTuningSettings = [(SBSystemNotesSettings *)self->_pipSettings fingerSwipeGestureTuningSettings];
+  v3 = [[SBCornerFingerGestureClassifier alloc] initWithSettings:fingerSwipeGestureTuningSettings];
   v4 = [[SBCornerFingerPanGestureRecognizer alloc] initWithTarget:self action:sel__handleInteractiveSystemNotesGesture_ corner:4 classifier:v3];
   leftFingerSystemCornerGestureRecognizer = self->_leftFingerSystemCornerGestureRecognizer;
   self->_leftFingerSystemCornerGestureRecognizer = v4;
 
   [(SBCornerFingerPanGestureRecognizer *)self->_leftFingerSystemCornerGestureRecognizer setDelegate:self];
   [(SBCornerFingerPanGestureRecognizer *)self->_leftFingerSystemCornerGestureRecognizer setName:@"SBSystemNotesManager.finger.corner.left"];
-  v6 = [[SBCornerFingerGestureClassifier alloc] initWithSettings:v9];
+  v6 = [[SBCornerFingerGestureClassifier alloc] initWithSettings:fingerSwipeGestureTuningSettings];
   v7 = [[SBCornerFingerPanGestureRecognizer alloc] initWithTarget:self action:sel__handleInteractiveSystemNotesGesture_ corner:8 classifier:v6];
   rightFingerSystemCornerGestureRecognizer = self->_rightFingerSystemCornerGestureRecognizer;
   self->_rightFingerSystemCornerGestureRecognizer = v7;
@@ -880,25 +880,25 @@ LABEL_22:
 
 - (void)_updateFingerGestureEnablement
 {
-  v3 = [SBApp windowSceneManager];
-  v10 = [v3 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  v4 = [v10 switcherController];
-  v5 = [v4 windowManagementContext];
-  v6 = [v5 isChamoisOrFlexibleWindowing];
+  switcherController = [embeddedDisplayWindowScene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  v7 = [(SBCornerFingerPanGestureRecognizer *)self->_rightFingerSystemCornerGestureRecognizer view];
+  view = [(SBCornerFingerPanGestureRecognizer *)self->_rightFingerSystemCornerGestureRecognizer view];
 
-  if (v6)
+  if (isChamoisOrFlexibleWindowing)
   {
-    if (v7)
+    if (view)
     {
       [(SBSystemGestureManager *)self->_systemGestureManager removeGestureRecognizer:self->_rightFingerSystemCornerGestureRecognizer];
     }
 
-    v8 = [(SBCornerFingerPanGestureRecognizer *)self->_leftFingerSystemCornerGestureRecognizer view];
+    view2 = [(SBCornerFingerPanGestureRecognizer *)self->_leftFingerSystemCornerGestureRecognizer view];
 
-    if (v8)
+    if (view2)
     {
       [(SBSystemGestureManager *)self->_systemGestureManager removeGestureRecognizer:self->_leftFingerSystemCornerGestureRecognizer];
     }
@@ -906,14 +906,14 @@ LABEL_22:
 
   else
   {
-    if (!v7)
+    if (!view)
     {
       [(SBSystemGestureManager *)self->_systemGestureManager addGestureRecognizer:self->_rightFingerSystemCornerGestureRecognizer withType:123];
     }
 
-    v9 = [(SBCornerFingerPanGestureRecognizer *)self->_leftFingerSystemCornerGestureRecognizer view];
+    view3 = [(SBCornerFingerPanGestureRecognizer *)self->_leftFingerSystemCornerGestureRecognizer view];
 
-    if (!v9)
+    if (!view3)
     {
       [(SBSystemGestureManager *)self->_systemGestureManager addGestureRecognizer:self->_leftFingerSystemCornerGestureRecognizer withType:122];
     }
@@ -928,13 +928,13 @@ LABEL_22:
   v6 = *(MEMORY[0x277D768C8] + 8);
   v8 = *(MEMORY[0x277D768C8] + 16);
   v7 = *(MEMORY[0x277D768C8] + 24);
-  v22 = [(SBSystemNotesSettings *)self->_pipSettings fingerSwipeGestureTuningSettings];
-  [v22 maximumActiveDistance:1];
+  fingerSwipeGestureTuningSettings = [(SBSystemNotesSettings *)self->_pipSettings fingerSwipeGestureTuningSettings];
+  [fingerSwipeGestureTuningSettings maximumActiveDistance:1];
   v10 = v9;
-  [v22 maximumActiveDistance:0];
+  [fingerSwipeGestureTuningSettings maximumActiveDistance:0];
   v12 = ceil(fmax(v10, v11) * SBMainScreenPointsPerMillimeter());
-  v13 = [(SBSystemNotesSettings *)self->_pipSettings pencilSwipeGestureTuningSettings];
-  [v13 cornerVerticalEdgeLength];
+  pencilSwipeGestureTuningSettings = [(SBSystemNotesSettings *)self->_pipSettings pencilSwipeGestureTuningSettings];
+  [pencilSwipeGestureTuningSettings cornerVerticalEdgeLength];
   v15 = v14;
 
   v16 = fmax(v15, v12);
@@ -963,28 +963,28 @@ LABEL_22:
     v18 = v17;
   }
 
-  v19 = [SBApp windowSceneManager];
-  v20 = [v19 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  v21 = [v20 pictureInPictureManager];
-  [v21 applyStashedPictureInPicturePadding:1 forPIPSource:{v5, v6, v18, v7}];
+  pictureInPictureManager = [embeddedDisplayWindowScene pictureInPictureManager];
+  [pictureInPictureManager applyStashedPictureInPicturePadding:1 forPIPSource:{v5, v6, v18, v7}];
 }
 
-- (void)_cancelGestureIfNecessary:(id)a3 reason:(id)a4
+- (void)_cancelGestureIfNecessary:(id)necessary reason:(id)reason
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 state] - 1) <= 1)
+  necessaryCopy = necessary;
+  if (([necessaryCopy state] - 1) <= 1)
   {
     v5 = SBLogSystemNotes();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = v4;
+      v7 = necessaryCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &v6, 0xCu);
     }
 
-    [v4 setState:4];
+    [necessaryCopy setState:4];
   }
 }
 
@@ -1009,11 +1009,11 @@ void __61__SBSystemNotesInteractionManager__updateFailureRequirements__block_inv
   [*(*(a1 + 32) + 80) gestureRecognizerOfType:121 shouldBeRequiredToFailByGestureRecognizer:v4];
 }
 
-- (CGPoint)_orientedLocationForReferenceLocation:(CGPoint)a3
+- (CGPoint)_orientedLocationForReferenceLocation:(CGPoint)location
 {
   [SBApp activeInterfaceOrientation];
-  v4 = [(SBSystemGestureManager *)self->_systemGestureManager windowForSystemGestures];
-  [v4 bounds];
+  windowForSystemGestures = [(SBSystemGestureManager *)self->_systemGestureManager windowForSystemGestures];
+  [windowForSystemGestures bounds];
 
   _UIWindowConvertPointFromOrientationToOrientation();
   result.y = v6;
@@ -1021,15 +1021,15 @@ void __61__SBSystemNotesInteractionManager__updateFailureRequirements__block_inv
   return result;
 }
 
-- (CGPoint)_pointForGestureCorner:(unint64_t)a3
+- (CGPoint)_pointForGestureCorner:(unint64_t)corner
 {
   [SBApp activeInterfaceOrientation];
-  v5 = [(SBSystemGestureManager *)self->_systemGestureManager windowForSystemGestures];
-  [v5 bounds];
+  windowForSystemGestures = [(SBSystemGestureManager *)self->_systemGestureManager windowForSystemGestures];
+  [windowForSystemGestures bounds];
 
   _UIWindowConvertRectFromOrientationToOrientation();
   v8 = v7;
-  if (a3 == 8 || (v9 = 0.0, a3 == 2))
+  if (corner == 8 || (v9 = 0.0, corner == 2))
   {
     v9 = v6;
   }
@@ -1039,20 +1039,20 @@ void __61__SBSystemNotesInteractionManager__updateFailureRequirements__block_inv
   return result;
 }
 
-- (void)_handleInteractiveSystemNotesGesture:(id)a3
+- (void)_handleInteractiveSystemNotesGesture:(id)gesture
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 state];
-  v6 = [(SBSystemNotesInteractionManager *)self _touchTypeForGestureRecognizer:v4];
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  v6 = [(SBSystemNotesInteractionManager *)self _touchTypeForGestureRecognizer:gestureCopy];
   v7 = +[SBDefaults localDefaults];
-  v8 = [v7 cornerGestureDefaults];
+  cornerGestureDefaults = [v7 cornerGestureDefaults];
 
-  if (([v8 cornerGestureRequiresEducation] & v6) != 0)
+  if (([cornerGestureDefaults cornerGestureRequiresEducation] & v6) != 0)
   {
-    if (v5 == 1)
+    if (state == 1)
     {
-      v9 = [(SBSystemNotesInteractionManager *)self _cornerForGestureRecognizer:v4];
+      v9 = [(SBSystemNotesInteractionManager *)self _cornerForGestureRecognizer:gestureCopy];
       v10 = SBLogSystemGesture();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -1074,8 +1074,8 @@ void __61__SBSystemNotesInteractionManager__updateFailureRequirements__block_inv
         {
           v15 = 0;
 LABEL_20:
-          v16 = [SBApp productivityGestureEducationController];
-          [v16 gestureActivatedForType:v15];
+          productivityGestureEducationController = [SBApp productivityGestureEducationController];
+          [productivityGestureEducationController gestureActivatedForType:v15];
 
           goto LABEL_22;
         }
@@ -1104,25 +1104,25 @@ LABEL_20:
     edgeProtectState = self->_edgeProtectState;
     if (edgeProtectState != 3)
     {
-      if (v5 == 1)
+      if (state == 1)
       {
         self->_initialInteractorPanPresentationMode = [(SBSystemNotesInteractionManager *)self _presentationModeForGestureBegin];
         edgeProtectState = self->_edgeProtectState;
         if (!edgeProtectState)
         {
-          edgeProtectState = [(SBSystemNotesInteractionManager *)self _shouldEdgeProtectGestureRecognizer:v4];
+          edgeProtectState = [(SBSystemNotesInteractionManager *)self _shouldEdgeProtectGestureRecognizer:gestureCopy];
           self->_edgeProtectState = edgeProtectState;
         }
       }
 
       if (!self->_initialInteractorPanPresentationMode || edgeProtectState)
       {
-        [(SBSystemNotesInteractionManager *)self _handleNonInteractiveSwipeInGesture:v4];
+        [(SBSystemNotesInteractionManager *)self _handleNonInteractiveSwipeInGesture:gestureCopy];
       }
 
       else
       {
-        [(SBSystemNotesInteractionManager *)self _handleInteractiveSwipeInGesture:v4];
+        [(SBSystemNotesInteractionManager *)self _handleInteractiveSwipeInGesture:gestureCopy];
       }
     }
   }
@@ -1130,20 +1130,20 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)_handleInteractiveSwipeInGesture:(id)a3
+- (void)_handleInteractiveSwipeInGesture:(id)gesture
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   v5 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource presentedPIPContentViewControllerForInteractionManager:self];
   v6 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource presentedContainerViewControllerForInteractionManager:self];
   v7 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource currentPresentationModeForInteractionManager:self];
-  v8 = [(SBCornerFingerPanGestureRecognizer *)v4 state];
-  if (v8 == 2)
+  state = [(SBCornerFingerPanGestureRecognizer *)gestureCopy state];
+  if (state == 2)
   {
     goto LABEL_2;
   }
 
-  v10 = v8;
+  v10 = state;
   v11 = SBLogSystemNotes();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -1159,8 +1159,8 @@ LABEL_22:
   if (v10 - 4 < 2)
   {
     [(SBSystemNotesInteractionManagerDelegate *)self->_delegate interactionManager:self requestsStopSuppressingKeyboardForReason:@"SBSystemNotesKeyboardSuppressionGesture"];
-    v13 = [v6 interactionController];
-    [v13 handleExternalPanGesture:v4];
+    interactionController = [v6 interactionController];
+    [interactionController handleExternalPanGesture:gestureCopy];
 
     [(SBSystemNotesInteractionManagerDelegate *)self->_delegate interactionManager:self requestsNotesDismissalForSource:2 animated:1];
     goto LABEL_27;
@@ -1171,8 +1171,8 @@ LABEL_22:
     [(SBSystemNotesPositionHyperregionComposer *)self->_positionRegionsComposer setupForInteractiveCornerGestureEnd];
     [(SBSystemNotesInteractionManagerDelegate *)self->_delegate interactionManager:self requestsStopSuppressingKeyboardForReason:@"SBSystemNotesKeyboardSuppressionGesture"];
 LABEL_2:
-    v9 = [v6 interactionController];
-    [v9 handleExternalPanGesture:v4];
+    interactionController2 = [v6 interactionController];
+    [interactionController2 handleExternalPanGesture:gestureCopy];
 
     goto LABEL_27;
   }
@@ -1181,12 +1181,12 @@ LABEL_2:
   {
     if (v7 != 1)
     {
-      if (self->_leftFingerSystemCornerGestureRecognizer == v4)
+      if (self->_leftFingerSystemCornerGestureRecognizer == gestureCopy)
       {
         v12 = 5;
       }
 
-      else if (self->_rightFingerSystemCornerGestureRecognizer == v4)
+      else if (self->_rightFingerSystemCornerGestureRecognizer == gestureCopy)
       {
         v12 = 5;
       }
@@ -1197,12 +1197,12 @@ LABEL_2:
       }
 
       v16 = [SBSystemNotesPositionConfiguration alloc];
-      if (self->_leftFingerSystemCornerGestureRecognizer == v4)
+      if (self->_leftFingerSystemCornerGestureRecognizer == gestureCopy)
       {
         v17 = 1;
       }
 
-      else if (self->_leftPencilSystemCornerGestureRecognizer == v4)
+      else if (self->_leftPencilSystemCornerGestureRecognizer == gestureCopy)
       {
         v17 = 1;
       }
@@ -1219,7 +1219,7 @@ LABEL_2:
 
       if (![(SBSystemNotesInteractionManagerDelegate *)self->_delegate interactionManager:self requestsPresentationWithContext:v21])
       {
-        [(SBCornerFingerPanGestureRecognizer *)v4 setState:4];
+        [(SBCornerFingerPanGestureRecognizer *)gestureCopy setState:4];
 
         goto LABEL_27;
       }
@@ -1239,8 +1239,8 @@ LABEL_2:
       v5 = v24;
     }
 
-    v25 = [v6 interactionController];
-    [v25 handleExternalPanGesture:v4];
+    interactionController3 = [v6 interactionController];
+    [interactionController3 handleExternalPanGesture:gestureCopy];
 
     [(SBSystemNotesPositionHyperregionComposer *)self->_positionRegionsComposer setupForInteractiveCornerGesture];
     [(SBSystemNotesInteractionManagerDelegate *)self->_delegate interactionManager:self requestsStartSuppressingKeyboardForReason:@"SBSystemNotesKeyboardSuppressionGesture"];
@@ -1249,14 +1249,14 @@ LABEL_2:
 LABEL_27:
 }
 
-- (void)_handleNonInteractiveSwipeInGesture:(id)a3
+- (void)_handleNonInteractiveSwipeInGesture:(id)gesture
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBCornerFingerPanGestureRecognizer *)v4 state];
-  if (v5 != 2)
+  gestureCopy = gesture;
+  state = [(SBCornerFingerPanGestureRecognizer *)gestureCopy state];
+  if (state != 2)
   {
-    v6 = v5;
+    v6 = state;
     v7 = SBLogSystemNotes();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -1271,18 +1271,18 @@ LABEL_27:
 
     if (v6 == 3)
     {
-      [(SBSystemNotesInteractionManager *)self _absoluteScaleForInteractiveSystemNotesGesture:v4];
+      [(SBSystemNotesInteractionManager *)self _absoluteScaleForInteractiveSystemNotesGesture:gestureCopy];
       v9 = v8;
-      [(SBSystemNotesInteractionManager *)self _absoluteScaleThresholdBeforeFullSizeForGestureRecognizer:v4];
-      if (v9 > v10 || [(SBSystemNotesInteractionManager *)self _panRecognizerOverFlickThreshold:v4])
+      [(SBSystemNotesInteractionManager *)self _absoluteScaleThresholdBeforeFullSizeForGestureRecognizer:gestureCopy];
+      if (v9 > v10 || [(SBSystemNotesInteractionManager *)self _panRecognizerOverFlickThreshold:gestureCopy])
       {
         leftFingerSystemCornerGestureRecognizer = self->_leftFingerSystemCornerGestureRecognizer;
-        if (leftFingerSystemCornerGestureRecognizer == v4)
+        if (leftFingerSystemCornerGestureRecognizer == gestureCopy)
         {
           v12 = 5;
         }
 
-        else if (self->_rightFingerSystemCornerGestureRecognizer == v4)
+        else if (self->_rightFingerSystemCornerGestureRecognizer == gestureCopy)
         {
           v12 = 5;
         }
@@ -1294,7 +1294,7 @@ LABEL_27:
 
         if (self->_edgeProtectState)
         {
-          if (self->_rightFingerSystemCornerGestureRecognizer != v4 && self->_rightPencilSystemCornerGestureRecognizer != v4 && (leftFingerSystemCornerGestureRecognizer == v4 || self->_leftPencilSystemCornerGestureRecognizer == v4))
+          if (self->_rightFingerSystemCornerGestureRecognizer != gestureCopy && self->_rightPencilSystemCornerGestureRecognizer != gestureCopy && (leftFingerSystemCornerGestureRecognizer == gestureCopy || self->_leftPencilSystemCornerGestureRecognizer == gestureCopy))
           {
             v13 = 1;
           }
@@ -1409,17 +1409,17 @@ uint64_t __71__SBSystemNotesInteractionManager__handleNonInteractiveSwipeInGestu
   return v5;
 }
 
-- (BOOL)_shouldEdgeProtectGestureRecognizer:(id)a3
+- (BOOL)_shouldEdgeProtectGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   if ([(SBSystemNotesInteractionManagerDataSource *)self->_dataSource currentPresentationModeForInteractionManager:self]== -1)
   {
-    v6 = [SBApp windowSceneManager];
-    v7 = [v6 embeddedDisplayWindowScene];
+    windowSceneManager = [SBApp windowSceneManager];
+    embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-    v8 = [v7 switcherController];
+    switcherController = [embeddedDisplayWindowScene switcherController];
     v9 = objc_opt_class();
-    v10 = v4;
+    v10 = recognizerCopy;
     if (v9)
     {
       if (objc_opt_isKindOfClass())
@@ -1440,14 +1440,14 @@ uint64_t __71__SBSystemNotesInteractionManager__handleNonInteractiveSwipeInGestu
 
     v12 = v11;
 
-    v13 = [v8 layoutStatePrimaryElement];
-    v14 = [v13 workspaceEntity];
-    v15 = [v14 applicationSceneEntity];
-    v16 = [v15 sceneHandle];
-    v17 = [v16 screenEdgesDeferringSystemGestures];
+    layoutStatePrimaryElement = [switcherController layoutStatePrimaryElement];
+    workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+    applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+    sceneHandle = [applicationSceneEntity sceneHandle];
+    screenEdgesDeferringSystemGestures = [sceneHandle screenEdgesDeferringSystemGestures];
 
-    v18 = [v12 edges];
-    v5 = (v18 & v17) != 0;
+    edges = [v12 edges];
+    v5 = (edges & screenEdgesDeferringSystemGestures) != 0;
   }
 
   else
@@ -1515,20 +1515,20 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
   return [v2 setupForSwipesFromCorners:v3 animated:0];
 }
 
-- (void)interactionController:(id)a3 updateScaleInteractor:(id)a4 pipSize:(CGSize)a5 forPanGesture:(id)a6
+- (void)interactionController:(id)controller updateScaleInteractor:(id)interactor pipSize:(CGSize)size forPanGesture:(id)gesture
 {
   if (self->_initialInteractorPanPresentationMode == 1)
   {
-    [(SBSystemNotesInteractionManager *)self _interactionController:a3 updateScaleInteractorForSwipeToPresent:a4 pipSize:a6 forPanGesture:a5.width, a5.height];
+    [(SBSystemNotesInteractionManager *)self _interactionController:controller updateScaleInteractorForSwipeToPresent:interactor pipSize:gesture forPanGesture:size.width, size.height];
   }
 
   else
   {
-    [(SBSystemNotesInteractionManager *)self _interactionController:a3 updateScaleInteractorForSwipeToDismiss:a4 pipSize:a6 forPanGesture:a5.width, a5.height];
+    [(SBSystemNotesInteractionManager *)self _interactionController:controller updateScaleInteractorForSwipeToDismiss:interactor pipSize:gesture forPanGesture:size.width, size.height];
   }
 }
 
-- (UIEdgeInsets)interactionController:(id)a3 edgeInsetsForWindowScene:(id)a4
+- (UIEdgeInsets)interactionController:(id)controller edgeInsetsForWindowScene:(id)scene
 {
   v4 = *MEMORY[0x277D768C8];
   v5 = *(MEMORY[0x277D768C8] + 8);
@@ -1541,7 +1541,7 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
   return result;
 }
 
-- (UIEdgeInsets)interactionController:(id)a3 stashedPaddingForWindowScene:(id)a4
+- (UIEdgeInsets)interactionController:(id)controller stashedPaddingForWindowScene:(id)scene
 {
   v4 = *MEMORY[0x277D768C8];
   v5 = *(MEMORY[0x277D768C8] + 8);
@@ -1554,15 +1554,15 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
   return result;
 }
 
-- (id)interactionControllerConnectedWindowScenes:(id)a3
+- (id)interactionControllerConnectedWindowScenes:(id)scenes
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v3 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource presentedContainerViewControllerForInteractionManager:self];
-  v4 = [v3 _sbWindowScene];
-  v5 = v4;
-  if (v4)
+  _sbWindowScene = [v3 _sbWindowScene];
+  v5 = _sbWindowScene;
+  if (_sbWindowScene)
   {
-    v8[0] = v4;
+    v8[0] = _sbWindowScene;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   }
 
@@ -1574,20 +1574,20 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
   return v6;
 }
 
-- (void)_interactionController:(id)a3 updateScaleInteractorForSwipeToPresent:(id)a4 pipSize:(CGSize)a5 forPanGesture:(id)a6
+- (void)_interactionController:(id)controller updateScaleInteractorForSwipeToPresent:(id)present pipSize:(CGSize)size forPanGesture:(id)gesture
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  controllerCopy = controller;
+  presentCopy = present;
+  gestureCopy = gesture;
   v12 = [(SBSystemNotesInteractionManagerDataSource *)self->_dataSource currentPresentationModeForInteractionManager:self];
-  v13 = [v11 state];
-  if ((v13 - 3) >= 3)
+  state = [gestureCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v13 == 2)
+    if (state == 2)
     {
-      [(SBSystemNotesInteractionManager *)self _absoluteScaleThresholdBeforeFullSizeForGestureRecognizer:v11];
+      [(SBSystemNotesInteractionManager *)self _absoluteScaleThresholdBeforeFullSizeForGestureRecognizer:gestureCopy];
       v17 = v16;
-      [(SBSystemNotesInteractionManager *)self _absoluteScaleForInteractiveSystemNotesGesture:v11];
+      [(SBSystemNotesInteractionManager *)self _absoluteScaleForInteractiveSystemNotesGesture:gestureCopy];
       if (v18 <= v17)
       {
         v20 = v18;
@@ -1599,7 +1599,7 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
 
       else
       {
-        [v9 preferredScale];
+        [controllerCopy preferredScale];
         v20 = v19;
         if (v12 == 1)
         {
@@ -1609,20 +1609,20 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
 
       [(SBSystemNotesPositionHyperregionComposer *)self->_positionRegionsComposer setupForInteractiveCornerGesture];
       v21 = v20 + -1.0;
-      [v10 _copyTranslation:&v21];
+      [presentCopy _copyTranslation:&v21];
     }
   }
 
   else
   {
     v21 = 0.0;
-    [v10 _copyTranslation:&v21];
-    [v9 setPreferredNormalizedScale:1.0];
+    [presentCopy _copyTranslation:&v21];
+    [controllerCopy setPreferredNormalizedScale:1.0];
     if (v12 == 1)
     {
-      v14 = [v9 targetView];
-      [v14 bounds];
-      if (v15 > SBSystemNotesThumbnailSize() * 1.5 || [(SBSystemNotesInteractionManager *)self _panRecognizerOverFlickThreshold:v11])
+      targetView = [controllerCopy targetView];
+      [targetView bounds];
+      if (v15 > SBSystemNotesThumbnailSize() * 1.5 || [(SBSystemNotesInteractionManager *)self _panRecognizerOverFlickThreshold:gestureCopy])
       {
         [(SBSystemNotesInteractionManager *)self expandAnimated:1];
       }
@@ -1630,15 +1630,15 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
   }
 }
 
-- (CGPoint)_convertReferenceVelocity:(CGPoint)a3 toOrientation:(int64_t)a4
+- (CGPoint)_convertReferenceVelocity:(CGPoint)velocity toOrientation:(int64_t)orientation
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4 > 2)
+  y = velocity.y;
+  x = velocity.x;
+  if (orientation > 2)
   {
-    v6 = -a3.y;
+    v6 = -velocity.y;
     v7 = -x;
-    if (a4 == 3)
+    if (orientation == 3)
     {
       v8 = y;
     }
@@ -1648,12 +1648,12 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
       v8 = x;
     }
 
-    if (a4 != 3)
+    if (orientation != 3)
     {
       v7 = y;
     }
 
-    if (a4 == 4)
+    if (orientation == 4)
     {
       y = x;
     }
@@ -1665,12 +1665,12 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
     }
   }
 
-  else if (a4)
+  else if (orientation)
   {
-    v6 = -a3.x;
-    if (a4 == 2)
+    v6 = -velocity.x;
+    if (orientation == 2)
     {
-      y = -a3.y;
+      y = -velocity.y;
     }
 
     else
@@ -1681,8 +1681,8 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
 
   else
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SBSystemNotesInteractionManager.m" lineNumber:930 description:@"dealing with unknown orientation"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemNotesInteractionManager.m" lineNumber:930 description:@"dealing with unknown orientation"];
 
     v6 = x;
   }
@@ -1693,11 +1693,11 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
   return result;
 }
 
-- (unint64_t)_cornerForGestureRecognizer:(id)a3
+- (unint64_t)_cornerForGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = recognizerCopy;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -1718,8 +1718,8 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
 
   v7 = v6;
 
-  v8 = [v7 corner];
-  if (!v8)
+  corner = [v7 corner];
+  if (!corner)
   {
     v9 = objc_opt_class();
     v10 = v5;
@@ -1743,17 +1743,17 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
 
     v12 = v11;
 
-    v8 = [v12 corner];
+    corner = [v12 corner];
   }
 
-  return v8;
+  return corner;
 }
 
-- (unint64_t)_touchTypeForGestureRecognizer:(id)a3
+- (unint64_t)_touchTypeForGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = recognizerCopy;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -1795,22 +1795,22 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
   return v6;
 }
 
-- (BOOL)_panRecognizerOverFlickThreshold:(id)a3
+- (BOOL)_panRecognizerOverFlickThreshold:(id)threshold
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBSystemNotesInteractionManager *)self _cornerForGestureRecognizer:v4];
+  thresholdCopy = threshold;
+  v5 = [(SBSystemNotesInteractionManager *)self _cornerForGestureRecognizer:thresholdCopy];
   if (v5)
   {
     v6 = v5;
-    v7 = [(SBSystemGestureManager *)self->_systemGestureManager windowForSystemGestures];
-    [v4 velocityInView:v7];
+    windowForSystemGestures = [(SBSystemGestureManager *)self->_systemGestureManager windowForSystemGestures];
+    [thresholdCopy velocityInView:windowForSystemGestures];
     v9 = v8;
     v11 = v10;
 
     -[SBSystemNotesInteractionManager _convertReferenceVelocity:toOrientation:](self, "_convertReferenceVelocity:toOrientation:", [SBApp activeInterfaceOrientation], v9, v11);
     v14 = v13 * dbl_21F8A8A80[v6 == 4] * 0.5 + v12 * -1.41421356 * 0.5;
-    [(SBSystemNotesInteractionManager *)self _flickVelocityThresholdForGestureRecognizer:v4];
+    [(SBSystemNotesInteractionManager *)self _flickVelocityThresholdForGestureRecognizer:thresholdCopy];
     v16 = v14 > v15;
   }
 
@@ -1823,7 +1823,7 @@ uint64_t __70__SBSystemNotesInteractionManager_defaultPositionHyperregionCompose
       v20 = 138543618;
       v21 = v19;
       v22 = 2114;
-      v23 = v4;
+      v23 = thresholdCopy;
       _os_log_error_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_ERROR, "%{public}@ unexpected recognizer type: %{public}@", &v20, 0x16u);
     }
 
@@ -1857,31 +1857,31 @@ void __64__SBSystemNotesInteractionManager__setupForInteractiveDismissal__block_
   _setupForInteractiveDismissal___toSize_1 = v2;
 }
 
-- (void)_interactionController:(id)a3 updateScaleInteractorForSwipeToDismiss:(id)a4 pipSize:(CGSize)a5 forPanGesture:(id)a6
+- (void)_interactionController:(id)controller updateScaleInteractorForSwipeToDismiss:(id)dismiss pipSize:(CGSize)size forPanGesture:(id)gesture
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v11 state];
-  if ((v12 - 3) >= 3)
+  controllerCopy = controller;
+  dismissCopy = dismiss;
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v12 != 2 || ([v9 isStashed] & 1) != 0)
+    if (state != 2 || ([controllerCopy isStashed] & 1) != 0)
     {
       goto LABEL_42;
     }
 
-    if ([v9 isPinching])
+    if ([controllerCopy isPinching])
     {
-      v14 = 1;
+      isRotating = 1;
     }
 
     else
     {
-      v14 = [v9 isRotating];
+      isRotating = [controllerCopy isRotating];
     }
 
-    v17 = [(SBSystemGestureManager *)self->_systemGestureManager windowForSystemGestures];
-    [v11 locationInView:v17];
+    windowForSystemGestures = [(SBSystemGestureManager *)self->_systemGestureManager windowForSystemGestures];
+    [gestureCopy locationInView:windowForSystemGestures];
     v19 = v18;
     v21 = v20;
 
@@ -1892,27 +1892,27 @@ void __64__SBSystemNotesInteractionManager__setupForInteractiveDismissal__block_
     v48 = &v47;
     v49 = 0x2020000000;
     v50 = 0x47EFFFFFE0000000;
-    v26 = [(SBSystemNotesInteractionManager *)self _cornersForAllSwipes];
+    _cornersForAllSwipes = [(SBSystemNotesInteractionManager *)self _cornersForAllSwipes];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v41 = __119__SBSystemNotesInteractionManager__interactionController_updateScaleInteractorForSwipeToDismiss_pipSize_forPanGesture___block_invoke;
     v42 = &unk_2783C3F18;
     v45 = v23;
     v46 = v25;
-    v43 = self;
+    selfCopy = self;
     v44 = &v47;
     v27 = v40;
-    if (v26)
+    if (_cornersForAllSwipes)
     {
-      v37 = v14;
+      v37 = isRotating;
       v28 = 0;
       LOBYTE(v39) = 0;
-      v29 = vcnt_s8(v26);
+      v29 = vcnt_s8(_cornersForAllSwipes);
       v29.i16[0] = vaddlv_u8(v29);
       v30 = v29.i32[0];
       do
       {
-        if (((1 << v28) & *&v26) != 0)
+        if (((1 << v28) & *&_cornersForAllSwipes) != 0)
         {
           (v41)(v27);
           --v30;
@@ -1927,10 +1927,10 @@ void __64__SBSystemNotesInteractionManager__setupForInteractiveDismissal__block_
       }
 
       while (v30 > 0);
-      v14 = v37;
+      isRotating = v37;
     }
 
-    if (v14)
+    if (isRotating)
     {
       v31 = 0;
     }
@@ -1938,16 +1938,16 @@ void __64__SBSystemNotesInteractionManager__setupForInteractiveDismissal__block_
     else
     {
       v32 = v48[3];
-      [(SBSystemNotesInteractionManager *)self _cornerDistanceBeforeScalingForDismissGestureRecognizer:v11];
+      [(SBSystemNotesInteractionManager *)self _cornerDistanceBeforeScalingForDismissGestureRecognizer:gestureCopy];
       v31 = v32 < v33;
       v39 = 0.0;
       if (v32 < v33)
       {
-        [(SBSystemNotesInteractionManager *)self _cornerDistanceBeforeScalingForDismissGestureRecognizer:v11];
+        [(SBSystemNotesInteractionManager *)self _cornerDistanceBeforeScalingForDismissGestureRecognizer:gestureCopy];
         v39 = (v34 - v48[3]) / -50.0;
       }
 
-      [v10 _copyTranslation:&v39];
+      [dismissCopy _copyTranslation:&v39];
     }
 
     v35 = v48[3];
@@ -1955,7 +1955,7 @@ void __64__SBSystemNotesInteractionManager__setupForInteractiveDismissal__block_
     switch(cornerDismissState)
     {
       case 2uLL:
-        if (!v14)
+        if (!isRotating)
         {
           if (v35 >= 100.0)
           {
@@ -1969,7 +1969,7 @@ LABEL_40:
 
         break;
       case 1uLL:
-        if ((v14 & 1) == 0)
+        if ((isRotating & 1) == 0)
         {
           if (v35 < 100.0)
           {
@@ -1982,7 +1982,7 @@ LABEL_40:
 
         break;
       case 0uLL:
-        if ((v14 & 1) == 0)
+        if ((isRotating & 1) == 0)
         {
           if (!v31)
           {
@@ -2005,7 +2005,7 @@ LABEL_38:
     goto LABEL_41;
   }
 
-  if (([v9 isStashed] & 1) == 0)
+  if (([controllerCopy isStashed] & 1) == 0)
   {
     v13 = self->_cornerDismissState;
     switch(v13)
@@ -2026,7 +2026,7 @@ LABEL_38:
         break;
       case 1uLL:
         v47 = 0;
-        [v10 _copyTranslation:&v47];
+        [dismissCopy _copyTranslation:&v47];
         self->_cornerDismissState = 0;
         [(SBSystemNotesPositionHyperregionComposer *)self->_positionRegionsComposer setupForInteractiveCornerGestureEnd];
         break;
@@ -2100,21 +2100,21 @@ uint64_t __119__SBSystemNotesInteractionManager__interactionController_updateSca
 
 - (unint64_t)startingPositionForExternalPresentationRequest
 {
-  v4 = [(SBSystemNotesInteractionManager *)self _cornersForAllSwipes];
-  if (!v4)
+  _cornersForAllSwipes = [(SBSystemNotesInteractionManager *)self _cornersForAllSwipes];
+  if (!_cornersForAllSwipes)
   {
     [(SBSystemNotesInteractionManager *)a2 startingPositionForExternalPresentationRequest];
   }
 
   v5 = MEMORY[0x277D76620];
-  v6 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
   v7 = -9;
-  if (v6 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v7 = -5;
   }
 
-  if (([*v5 userInterfaceLayoutDirection] == 1) != ((v7 | v4) == -1))
+  if (([*v5 userInterfaceLayoutDirection] == 1) != ((v7 | _cornersForAllSwipes) == -1))
   {
     return 2;
   }
@@ -2209,8 +2209,8 @@ void __62__SBSystemNotesInteractionManager_dismissAnimated_completion___block_in
 
 - (void)startingPositionForExternalPresentationRequest
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSystemNotesInteractionManager.m" lineNumber:1140 description:@"_cornersForAllSwipes should never return empty result"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSystemNotesInteractionManager.m" lineNumber:1140 description:@"_cornersForAllSwipes should never return empty result"];
 }
 
 @end

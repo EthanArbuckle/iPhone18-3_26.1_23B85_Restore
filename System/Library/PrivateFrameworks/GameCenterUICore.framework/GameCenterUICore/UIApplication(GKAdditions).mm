@@ -19,12 +19,12 @@
         break;
       }
 
-      v8 = [v7 nextResponder];
+      nextResponder = [v7 nextResponder];
 
-      v7 = v8;
+      v7 = nextResponder;
     }
 
-    while (v8);
+    while (nextResponder);
   }
 
   else
@@ -39,7 +39,7 @@
 {
   v8 = a4;
   v9 = a5;
-  v10 = [a1 _gkTargetForAction:a3 viaResponder:v8];
+  v10 = [self _gkTargetForAction:a3 viaResponder:v8];
   v11 = v10;
   if (v10)
   {

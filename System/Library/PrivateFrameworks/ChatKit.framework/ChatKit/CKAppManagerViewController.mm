@@ -1,37 +1,37 @@
 @interface CKAppManagerViewController
-- (BOOL)_pluginIsHidden:(id)a3;
-- (BOOL)_pluginIsSystemApp:(id)a3;
+- (BOOL)_pluginIsHidden:(id)hidden;
+- (BOOL)_pluginIsSystemApp:(id)app;
 - (BOOL)allowEnablingDisabledApps;
 - (BOOL)hasAppStore;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (BOOL)togglePluginAtIndex:(unint64_t)a3 enabled:(BOOL)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (BOOL)togglePluginAtIndex:(unint64_t)index enabled:(BOOL)enabled;
 - (CKAppManagerViewControllerDelegate)delegate;
 - (NSArray)appContainedPlugins;
 - (NSArray)deletableIMessageApps;
 - (NSArray)plugins;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)getStickersOnAppStoreTableViewCell;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)appCell:(id)a3 wasToggledOn:(BOOL)a4;
-- (void)doneButtonTapped:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)appCell:(id)cell wasToggledOn:(BOOL)on;
+- (void)doneButtonTapped:(id)tapped;
 - (void)reloadPluginsImmediately;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)updateEditDoneButton;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CKAppManagerViewController
@@ -42,8 +42,8 @@
   v5.super_class = CKAppManagerViewController;
   [(CKAppManagerViewController *)&v5 viewDidLayoutSubviews];
   tableView = self->_tableView;
-  v4 = [(CKAppManagerViewController *)self view];
-  [v4 bounds];
+  view = [(CKAppManagerViewController *)self view];
+  [view bounds];
   [(UITableView *)tableView setFrame:?];
 }
 
@@ -56,8 +56,8 @@
   v4 = [v3 localizedStringForKey:@"MANAGE_STICKER_APPS" value:&stru_1F04268F8 table:@"ChatKit"];
   [(CKAppManagerViewController *)self setTitle:v4];
 
-  v5 = [(CKAppManagerViewController *)self view];
-  [v5 bounds];
+  view = [(CKAppManagerViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -77,7 +77,7 @@
   [(UITableView *)self->_tableView setTableFooterView:v18];
 
   [(UITableView *)self->_tableView _setAllowsReorderingWhenNotEditing:1];
-  [v5 addSubview:self->_tableView];
+  [view addSubview:self->_tableView];
   v19 = self->_tableView;
   v20 = objc_opt_class();
   v21 = +[CKAppManagerAppTableViewCell reuseIdentifier];
@@ -88,30 +88,30 @@
   [(CKAppManagerViewController *)self setDefinesPresentationContext:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CKAppManagerViewController;
-  [(CKAppManagerViewController *)&v4 viewWillAppear:a3];
+  [(CKAppManagerViewController *)&v4 viewWillAppear:appear];
   [(CKAppManagerViewController *)self updateEditDoneButton];
   [(CKAppManagerViewController *)self reloadPluginsImmediately];
   [(UITableView *)self->_tableView reloadData];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CKAppManagerViewController;
-  [(CKAppManagerViewController *)&v4 viewDidDisappear:a3];
+  [(CKAppManagerViewController *)&v4 viewDidDisappear:disappear];
   [(CKAppManagerViewController *)self setEditing:0];
   [(CKAppManagerViewController *)self reloadPluginsImmediately];
   [(UITableView *)self->_tableView reloadData];
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
-  v4 = [(CKAppManagerViewController *)self delegate];
-  [v4 appManagerViewControllerDidFinish:self];
+  delegate = [(CKAppManagerViewController *)self delegate];
+  [delegate appManagerViewControllerDidFinish:self];
 }
 
 - (void)updateEditDoneButton
@@ -126,28 +126,28 @@
     dismissButton = self->_dismissButton;
   }
 
-  v4 = [(CKAppManagerViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:dismissButton];
+  navigationItem = [(CKAppManagerViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:dismissButton];
 
-  v5 = [(CKAppManagerViewController *)self editButtonItem];
-  v6 = [(CKAppManagerViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  editButtonItem = [(CKAppManagerViewController *)self editButtonItem];
+  navigationItem2 = [(CKAppManagerViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:editButtonItem];
 
-  v7 = [(CKAppManagerViewController *)self editButtonItem];
-  [v7 setEnabled:{-[CKAppManagerViewController _hasPluginsToHideOrDelete](self, "_hasPluginsToHideOrDelete")}];
+  editButtonItem2 = [(CKAppManagerViewController *)self editButtonItem];
+  [editButtonItem2 setEnabled:{-[CKAppManagerViewController _hasPluginsToHideOrDelete](self, "_hasPluginsToHideOrDelete")}];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(CKAppManagerViewController *)self isEditing]!= a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if ([(CKAppManagerViewController *)self isEditing]!= editing)
   {
     v16.receiver = self;
     v16.super_class = CKAppManagerViewController;
-    [(CKAppManagerViewController *)&v16 setEditing:v5 animated:v4];
-    [(UITableView *)self->_tableView setEditing:v5 animated:1];
-    if (v5)
+    [(CKAppManagerViewController *)&v16 setEditing:editingCopy animated:animatedCopy];
+    [(UITableView *)self->_tableView setEditing:editingCopy animated:1];
+    if (editingCopy)
     {
       dismissButton = 0;
     }
@@ -157,13 +157,13 @@
       dismissButton = self->_dismissButton;
     }
 
-    v8 = [(CKAppManagerViewController *)self navigationItem];
-    [v8 setRightBarButtonItem:dismissButton];
+    navigationItem = [(CKAppManagerViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:dismissButton];
 
     [(UITableView *)self->_tableView beginUpdates];
-    v9 = [(CKAppManagerViewController *)self hasAppStore];
+    hasAppStore = [(CKAppManagerViewController *)self hasAppStore];
     tableView = self->_tableView;
-    if (v9)
+    if (hasAppStore)
     {
       v11 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, 2}];
       [(UITableView *)tableView reloadSections:v11 withRowAnimation:100];
@@ -176,7 +176,7 @@
 
       v13 = self->_tableView;
       v11 = [MEMORY[0x1E696AC90] indexSetWithIndex:1];
-      if (v5)
+      if (editingCopy)
       {
         [(UITableView *)v13 insertSections:v11 withRowAnimation:0];
       }
@@ -188,13 +188,13 @@
     }
 
     [(UITableView *)self->_tableView endUpdates];
-    v14 = [(UITableView *)self->_tableView indexPathsForVisibleRows];
+    indexPathsForVisibleRows = [(UITableView *)self->_tableView indexPathsForVisibleRows];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __50__CKAppManagerViewController_setEditing_animated___block_invoke;
     v15[3] = &unk_1E72F42A8;
     v15[4] = self;
-    [v14 enumerateObjectsUsingBlock:v15];
+    [indexPathsForVisibleRows enumerateObjectsUsingBlock:v15];
 
     [(UITableView *)self->_tableView _setAllowsReorderingWhenNotEditing:[(CKAppManagerViewController *)self isEditing]^ 1];
   }
@@ -222,9 +222,9 @@ void __50__CKAppManagerViewController_setEditing_animated___block_invoke(uint64_
   plugins = self->_plugins;
   if (!plugins)
   {
-    v4 = [(CKAppManagerViewController *)self balloonPluginManager];
-    v5 = [v4 orderedCombinedStickerApps];
-    v6 = [v5 mutableCopy];
+    balloonPluginManager = [(CKAppManagerViewController *)self balloonPluginManager];
+    orderedCombinedStickerApps = [balloonPluginManager orderedCombinedStickerApps];
+    v6 = [orderedCombinedStickerApps mutableCopy];
 
     [(NSArray *)v6 removeLastObject];
     v7 = self->_plugins;
@@ -241,9 +241,9 @@ void __50__CKAppManagerViewController_setEditing_animated___block_invoke(uint64_
   deletableIMessageApps = self->_deletableIMessageApps;
   if (!deletableIMessageApps)
   {
-    v4 = [(CKAppManagerViewController *)self balloonPluginManager];
-    v5 = [v4 allOrderedCombinedStickerApps];
-    v6 = [v5 mutableCopy];
+    balloonPluginManager = [(CKAppManagerViewController *)self balloonPluginManager];
+    allOrderedCombinedStickerApps = [balloonPluginManager allOrderedCombinedStickerApps];
+    v6 = [allOrderedCombinedStickerApps mutableCopy];
 
     [v6 removeLastObject];
     v10[0] = MEMORY[0x1E69E9820];
@@ -282,9 +282,9 @@ uint64_t __51__CKAppManagerViewController_deletableIMessageApps__block_invoke(ui
   appContainedPlugins = self->_appContainedPlugins;
   if (!appContainedPlugins)
   {
-    v4 = [(CKAppManagerViewController *)self balloonPluginManager];
-    v5 = [v4 allOrderedCombinedStickerApps];
-    v6 = [v5 mutableCopy];
+    balloonPluginManager = [(CKAppManagerViewController *)self balloonPluginManager];
+    allOrderedCombinedStickerApps = [balloonPluginManager allOrderedCombinedStickerApps];
+    v6 = [allOrderedCombinedStickerApps mutableCopy];
 
     [v6 removeLastObject];
     v11[0] = MEMORY[0x1E69E9820];
@@ -329,43 +329,43 @@ uint64_t __49__CKAppManagerViewController_appContainedPlugins__block_invoke_2(ui
   return v7;
 }
 
-- (BOOL)_pluginIsHidden:(id)a3
+- (BOOL)_pluginIsHidden:(id)hidden
 {
-  v4 = a3;
-  v5 = [(CKAppManagerViewController *)self balloonPluginManager];
-  v6 = [v5 isPluginHiddenFromSendMenuAndStickers:v4];
+  hiddenCopy = hidden;
+  balloonPluginManager = [(CKAppManagerViewController *)self balloonPluginManager];
+  v6 = [balloonPluginManager isPluginHiddenFromSendMenuAndStickers:hiddenCopy];
 
   return v6;
 }
 
-- (BOOL)_pluginIsSystemApp:(id)a3
+- (BOOL)_pluginIsSystemApp:(id)app
 {
-  v4 = a3;
-  v5 = [(CKAppManagerViewController *)self balloonPluginManager];
-  v6 = [v5 isPluginSystemApp:v4];
+  appCopy = app;
+  balloonPluginManager = [(CKAppManagerViewController *)self balloonPluginManager];
+  v6 = [balloonPluginManager isPluginSystemApp:appCopy];
 
   return v6;
 }
 
 - (BOOL)hasAppStore
 {
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v4 = [v3 applicationIsInstalled:@"com.apple.AppStore"];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  v4 = [defaultWorkspace applicationIsInstalled:@"com.apple.AppStore"];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(CKAppManagerViewController *)self balloonPluginManager];
-  v6 = [v5 isAppStoreEnabled];
+  balloonPluginManager = [(CKAppManagerViewController *)self balloonPluginManager];
+  isAppStoreEnabled = [balloonPluginManager isAppStoreEnabled];
 
-  v7 = [(CKAppManagerViewController *)self balloonPluginManager];
-  v8 = [v7 pluginForIdentifier:@"com.apple.appstore.MessagesProvider"];
+  balloonPluginManager2 = [(CKAppManagerViewController *)self balloonPluginManager];
+  v8 = [balloonPluginManager2 pluginForIdentifier:@"com.apple.appstore.MessagesProvider"];
 
   if (v8)
   {
-    return v6;
+    return isAppStoreEnabled;
   }
 
   else
@@ -387,64 +387,64 @@ uint64_t __49__CKAppManagerViewController_appContainedPlugins__block_invoke_2(ui
   [(CKAppManagerViewController *)self updateEditDoneButton];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 row] != 0x7FFFFFFFFFFFFFFFLL)
+  viewCopy = view;
+  pathCopy = path;
+  v7 = pathCopy;
+  if (pathCopy && [pathCopy row] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v12 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:v7 animated:1];
   }
 
   if ((-[CKAppManagerViewController isEditing](self, "isEditing") & 1) == 0 && [v7 section] == 1)
   {
     v8 = IMBalloonExtensionIDWithSuffix();
-    v9 = [(CKAppManagerViewController *)self balloonPluginManager];
-    v10 = [v9 pluginForExtensionIdentifier:v8];
+    balloonPluginManager = [(CKAppManagerViewController *)self balloonPluginManager];
+    v10 = [balloonPluginManager pluginForExtensionIdentifier:v8];
 
     if (v10)
     {
-      v11 = [(CKAppManagerViewController *)self delegate];
-      [v11 browserAppManagerDidSelectPlugin:v10];
+      delegate = [(CKAppManagerViewController *)self delegate];
+      [delegate browserAppManagerDidSelectPlugin:v10];
     }
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CKAppManagerViewController *)self isEditing];
-  v7 = [v5 section];
-  if (v6)
+  pathCopy = path;
+  isEditing = [(CKAppManagerViewController *)self isEditing];
+  section = [pathCopy section];
+  if (isEditing)
   {
-    if (!v7)
+    if (!section)
     {
-      v10 = [v5 row];
-      v11 = [(CKAppManagerViewController *)self deletableIMessageApps];
-      v12 = [v11 count];
+      v10 = [pathCopy row];
+      deletableIMessageApps = [(CKAppManagerViewController *)self deletableIMessageApps];
+      v12 = [deletableIMessageApps count];
 
       if (v10 >= v12)
       {
         goto LABEL_5;
       }
 
-      v13 = [(CKAppManagerViewController *)self deletableIMessageApps];
-      v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+      deletableIMessageApps2 = [(CKAppManagerViewController *)self deletableIMessageApps];
+      v14 = [deletableIMessageApps2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
       objc_opt_class();
-      LOBYTE(v13) = objc_opt_isKindOfClass();
+      LOBYTE(deletableIMessageApps2) = objc_opt_isKindOfClass();
 
-      if ((v13 & 1) == 0)
+      if ((deletableIMessageApps2 & 1) == 0)
       {
         goto LABEL_5;
       }
     }
 
-    v7 = [v5 section];
+    section = [pathCopy section];
   }
 
-  if (v7 != 1)
+  if (section != 1)
   {
     v8 = 1;
     goto LABEL_7;
@@ -457,10 +457,10 @@ LABEL_7:
   return v8;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if (-[CKAppManagerViewController isEditing](self, "isEditing") && ![v5 section])
+  pathCopy = path;
+  if (-[CKAppManagerViewController isEditing](self, "isEditing") && ![pathCopy section])
   {
     v6 = 0;
   }
@@ -473,32 +473,32 @@ LABEL_7:
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  pathCopy = path;
   if ([(CKAppManagerViewController *)self isEditing])
   {
-    v10 = [v9 section];
-    if (a4 == 1 && !v10)
+    section = [pathCopy section];
+    if (style == 1 && !section)
     {
-      v11 = [(CKAppManagerViewController *)self deletableIMessageApps];
-      v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v9, "row")}];
+      deletableIMessageApps = [(CKAppManagerViewController *)self deletableIMessageApps];
+      v12 = [deletableIMessageApps objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-      v13 = [v12 identifier];
+      identifier = [v12 identifier];
       objc_initWeak(&location, self);
-      v14 = [(CKAppManagerViewController *)self balloonPluginManager];
+      balloonPluginManager = [(CKAppManagerViewController *)self balloonPluginManager];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __77__CKAppManagerViewController_tableView_commitEditingStyle_forRowAtIndexPath___block_invoke;
       v16[3] = &unk_1E72F5020;
       objc_copyWeak(&v21, &location);
-      v15 = v14;
+      v15 = balloonPluginManager;
       v17 = v15;
-      v18 = v8;
-      v19 = v9;
-      v20 = self;
-      [v15 deleteAppWithIdentifier:v13 completion:v16];
+      v18 = viewCopy;
+      v19 = pathCopy;
+      selfCopy = self;
+      [v15 deleteAppWithIdentifier:identifier completion:v16];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
@@ -531,7 +531,7 @@ void __77__CKAppManagerViewController_tableView_commitEditingStyle_forRowAtIndex
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (([(CKAppManagerViewController *)self isEditing]& 1) != 0)
   {
@@ -546,16 +546,16 @@ void __77__CKAppManagerViewController_tableView_commitEditingStyle_forRowAtIndex
   return 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (![(CKAppManagerViewController *)self isEditing])
   {
-    if (a4 == 1)
+    if (section == 1)
     {
       return [(CKAppManagerViewController *)self hasAppStore];
     }
 
-    if (!a4)
+    if (!section)
     {
       v6 = 1024;
       goto LABEL_10;
@@ -564,13 +564,13 @@ void __77__CKAppManagerViewController_tableView_commitEditingStyle_forRowAtIndex
     return 0;
   }
 
-  if (a4 == 1)
+  if (section == 1)
   {
     v6 = 1040;
     goto LABEL_10;
   }
 
-  if (a4)
+  if (section)
   {
     return 0;
   }
@@ -582,17 +582,17 @@ LABEL_10:
   return [v8 count];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKAppManagerViewController *)self isEditing];
-  v9 = [v7 section];
-  if (v8)
+  viewCopy = view;
+  pathCopy = path;
+  isEditing = [(CKAppManagerViewController *)self isEditing];
+  section = [pathCopy section];
+  if (isEditing)
   {
-    if (v9)
+    if (section)
     {
-      if (v9 != 1)
+      if (section != 1)
       {
         v13 = 0;
         v12 = 0;
@@ -608,22 +608,22 @@ LABEL_10:
     }
 
     v14 = +[CKAppManagerAppTableViewCell reuseIdentifier];
-    v12 = [v6 dequeueReusableCellWithIdentifier:v14];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:v14];
 
-    v13 = [*(&self->super.super.super.isa + *v10) objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+    v13 = [*(&self->super.super.super.isa + *v10) objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     [v12 updateCellWithPluginInfo:v13];
     [v12 setDelegate:self];
 LABEL_13:
-    [v12 setToggleVisible:objc_msgSend(v7 editable:"section") == 1 isOn:{1, -[CKAppManagerViewController _pluginIsHidden:](self, "_pluginIsHidden:", v13) ^ 1}];
+    [v12 setToggleVisible:objc_msgSend(pathCopy editable:"section") == 1 isOn:{1, -[CKAppManagerViewController _pluginIsHidden:](self, "_pluginIsHidden:", v13) ^ 1}];
 LABEL_15:
-    v15 = v12;
+    getStickersOnAppStoreTableViewCell = v12;
 
     goto LABEL_16;
   }
 
-  if (v9 != 1)
+  if (section != 1)
   {
-    if (v9)
+    if (section)
     {
       v13 = 0;
       v12 = 0;
@@ -632,9 +632,9 @@ LABEL_15:
     else
     {
       v11 = +[CKAppManagerAppTableViewCell reuseIdentifier];
-      v12 = [v6 dequeueReusableCellWithIdentifier:v11];
+      v12 = [viewCopy dequeueReusableCellWithIdentifier:v11];
 
-      v13 = -[NSArray objectAtIndexedSubscript:](self->_plugins, "objectAtIndexedSubscript:", [v7 row]);
+      v13 = -[NSArray objectAtIndexedSubscript:](self->_plugins, "objectAtIndexedSubscript:", [pathCopy row]);
       [v12 updateCellWithPluginInfo:v13];
       [v12 setDelegate:self];
     }
@@ -644,22 +644,22 @@ LABEL_15:
 
   if ([(CKAppManagerViewController *)self hasAppStore])
   {
-    v15 = [(CKAppManagerViewController *)self getStickersOnAppStoreTableViewCell];
+    getStickersOnAppStoreTableViewCell = [(CKAppManagerViewController *)self getStickersOnAppStoreTableViewCell];
   }
 
   else
   {
-    v15 = 0;
+    getStickersOnAppStoreTableViewCell = 0;
   }
 
 LABEL_16:
 
-  return v15;
+  return getStickersOnAppStoreTableViewCell;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v4 = [(CKAppManagerViewController *)self tableView:a3 numberOfRowsInSection:a4];
+  v4 = [(CKAppManagerViewController *)self tableView:view numberOfRowsInSection:section];
   result = *MEMORY[0x1E69DE3D0];
   if (v4 <= 0)
   {
@@ -669,9 +669,9 @@ LABEL_16:
   return result;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v4 = [(CKAppManagerViewController *)self tableView:a3 numberOfRowsInSection:a4];
+  v4 = [(CKAppManagerViewController *)self tableView:view numberOfRowsInSection:section];
   result = *MEMORY[0x1E69DE3D0];
   if (v4 <= 0)
   {
@@ -681,18 +681,18 @@ LABEL_16:
   return result;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(CKAppManagerViewController *)self tableView:v6 numberOfRowsInSection:a4]< 1)
+  viewCopy = view;
+  if ([(CKAppManagerViewController *)self tableView:viewCopy numberOfRowsInSection:section]< 1)
   {
     goto LABEL_7;
   }
 
   if ([(CKAppManagerViewController *)self isEditing])
   {
-    v7 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"AppManagerSectionHeaderReuseIdentifier"];
-    if (a4 == 1)
+    v7 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"AppManagerSectionHeaderReuseIdentifier"];
+    if (section == 1)
     {
       v8 = CKFrameworkBundle();
       v9 = v8;
@@ -701,7 +701,7 @@ LABEL_16:
 
     else
     {
-      if (a4)
+      if (section)
       {
         goto LABEL_12;
       }
@@ -712,25 +712,25 @@ LABEL_16:
     }
 
     v11 = [v8 localizedStringForKey:v10 value:&stru_1F04268F8 table:@"ChatKit"];
-    v12 = [v11 localizedUppercaseString];
-    v13 = [v7 textLabel];
-    [v13 setText:v12];
+    localizedUppercaseString = [v11 localizedUppercaseString];
+    textLabel = [v7 textLabel];
+    [textLabel setText:localizedUppercaseString];
 
     goto LABEL_11;
   }
 
-  if (a4)
+  if (section)
   {
 LABEL_7:
     v7 = 0;
     goto LABEL_12;
   }
 
-  v7 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"AppManagerSectionHeaderReuseIdentifier"];
+  v7 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"AppManagerSectionHeaderReuseIdentifier"];
   v9 = CKFrameworkBundle();
   v11 = [v9 localizedStringForKey:@"STICKER_APPS" value:&stru_1F04268F8 table:@"ChatKit"];
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  localizedUppercaseString = [v7 textLabel];
+  [localizedUppercaseString setText:v11];
 LABEL_11:
 
 LABEL_12:
@@ -738,74 +738,74 @@ LABEL_12:
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(CKAppManagerViewController *)self isEditing];
+  viewCopy = view;
+  isEditing = [(CKAppManagerViewController *)self isEditing];
   v8 = 0;
-  if (a4 == 1 && v7)
+  if (section == 1 && isEditing)
   {
-    if ([(CKAppManagerViewController *)self tableView:v6 numberOfRowsInSection:1]< 1)
+    if ([(CKAppManagerViewController *)self tableView:viewCopy numberOfRowsInSection:1]< 1)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"AppManagerSectionFooterReuseIdentifier"];
+      v8 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"AppManagerSectionFooterReuseIdentifier"];
       v9 = CKFrameworkBundle();
       v10 = [v9 localizedStringForKey:@"APPS_WITH_STICKER_APPS_SECTION_FOOTER" value:&stru_1F04268F8 table:@"ChatKit"];
-      v11 = [v8 textLabel];
-      [v11 setText:v10];
+      textLabel = [v8 textLabel];
+      [textLabel setText:v10];
     }
   }
 
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = (-[CKAppManagerViewController isEditing](self, "isEditing") & 1) == 0 && [v5 section] == 0;
+  pathCopy = path;
+  v6 = (-[CKAppManagerViewController isEditing](self, "isEditing") & 1) == 0 && [pathCopy section] == 0;
 
   return v6;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v14 = a4;
-  v7 = a5;
-  if ((-[CKAppManagerViewController isEditing](self, "isEditing") & 1) == 0 && ![v14 section] && !objc_msgSend(v7, "section"))
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if ((-[CKAppManagerViewController isEditing](self, "isEditing") & 1) == 0 && ![pathCopy section] && !objc_msgSend(indexPathCopy, "section"))
   {
-    v8 = [v14 row];
-    v9 = [(CKAppManagerViewController *)self plugins];
-    v10 = [v9 count];
+    v8 = [pathCopy row];
+    plugins = [(CKAppManagerViewController *)self plugins];
+    v10 = [plugins count];
 
     if (v8 < v10)
     {
-      v11 = [(CKAppManagerViewController *)self plugins];
-      v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v14, "row")}];
+      plugins2 = [(CKAppManagerViewController *)self plugins];
+      v12 = [plugins2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-      v13 = [(CKAppManagerViewController *)self balloonPluginManager];
-      [v13 updateIndexPath:v7 forCombinedStickerApp:v12];
+      balloonPluginManager = [(CKAppManagerViewController *)self balloonPluginManager];
+      [balloonPluginManager updateIndexPath:indexPathCopy forCombinedStickerApp:v12];
 
       [(CKAppManagerViewController *)self reloadPluginsImmediately];
     }
   }
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v8 section])
+  viewCopy = view;
+  indexPathCopy = indexPath;
+  if ([indexPathCopy section])
   {
-    v9 = [MEMORY[0x1E696AC88] indexPathForRow:-[CKAppManagerViewController tableView:numberOfRowsInSection:](self inSection:{"tableView:numberOfRowsInSection:", v7, 0) - 1, 0}];
+    v9 = [MEMORY[0x1E696AC88] indexPathForRow:-[CKAppManagerViewController tableView:numberOfRowsInSection:](self inSection:{"tableView:numberOfRowsInSection:", viewCopy, 0) - 1, 0}];
   }
 
   else
   {
-    v9 = v8;
+    v9 = indexPathCopy;
   }
 
   v10 = v9;
@@ -816,68 +816,68 @@ LABEL_12:
 - (id)getStickersOnAppStoreTableViewCell
 {
   v2 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:0];
-  v3 = [v2 defaultContentConfiguration];
+  defaultContentConfiguration = [v2 defaultContentConfiguration];
   v4 = CKFrameworkBundle();
   v5 = [v4 localizedStringForKey:@"GET_STICKER_APPS" value:&stru_1F04268F8 table:@"ChatKit"];
-  [v3 setText:v5];
+  [defaultContentConfiguration setText:v5];
 
-  v6 = [MEMORY[0x1E69DC888] linkColor];
-  v7 = [v3 textProperties];
-  [v7 setColor:v6];
+  linkColor = [MEMORY[0x1E69DC888] linkColor];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setColor:linkColor];
 
-  [v2 setContentConfiguration:v3];
+  [v2 setContentConfiguration:defaultContentConfiguration];
 
   return v2;
 }
 
-- (void)appCell:(id)a3 wasToggledOn:(BOOL)a4
+- (void)appCell:(id)cell wasToggledOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = [(UITableView *)self->_tableView indexPathForCell:a3];
+  onCopy = on;
+  v6 = [(UITableView *)self->_tableView indexPathForCell:cell];
   if (-[CKAppManagerViewController isEditing](self, "isEditing") && [v6 section] == 1)
   {
-    -[CKAppManagerViewController togglePluginAtIndex:enabled:](self, "togglePluginAtIndex:enabled:", [v6 row], v4);
+    -[CKAppManagerViewController togglePluginAtIndex:enabled:](self, "togglePluginAtIndex:enabled:", [v6 row], onCopy);
   }
 }
 
 - (BOOL)allowEnablingDisabledApps
 {
-  v2 = [(CKAppManagerViewController *)self balloonPluginManager];
-  v3 = [v2 isAppInstallationEnabled];
+  balloonPluginManager = [(CKAppManagerViewController *)self balloonPluginManager];
+  isAppInstallationEnabled = [balloonPluginManager isAppInstallationEnabled];
 
-  return v3;
+  return isAppInstallationEnabled;
 }
 
-- (BOOL)togglePluginAtIndex:(unint64_t)a3 enabled:(BOOL)a4
+- (BOOL)togglePluginAtIndex:(unint64_t)index enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v7 = [(CKAppManagerViewController *)self appContainedPlugins];
-  v8 = [v7 count];
+  enabledCopy = enabled;
+  appContainedPlugins = [(CKAppManagerViewController *)self appContainedPlugins];
+  v8 = [appContainedPlugins count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
     v13 = IMLogHandleForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(CKAppManagerViewController *)self togglePluginAtIndex:a3 enabled:v13];
+      [(CKAppManagerViewController *)self togglePluginAtIndex:index enabled:v13];
     }
 
     return 0;
   }
 
-  if (v4 && ![(CKAppManagerViewController *)self allowEnablingDisabledApps])
+  if (enabledCopy && ![(CKAppManagerViewController *)self allowEnablingDisabledApps])
   {
     return 0;
   }
 
-  v9 = [(CKAppManagerViewController *)self appContainedPlugins];
-  v10 = [v9 objectAtIndexedSubscript:a3];
+  appContainedPlugins2 = [(CKAppManagerViewController *)self appContainedPlugins];
+  v10 = [appContainedPlugins2 objectAtIndexedSubscript:index];
 
-  v11 = [(CKAppManagerViewController *)self balloonPluginManager];
-  [v11 setPlugin:v10 hiddenInSendMenuAndStickers:v4];
+  balloonPluginManager = [(CKAppManagerViewController *)self balloonPluginManager];
+  [balloonPluginManager setPlugin:v10 hiddenInSendMenuAndStickers:enabledCopy];
   [(CKAppManagerViewController *)self reloadPluginsImmediately];
   v12 = 1;
-  [v11 saveCombinedAppsWithNotification:1];
+  [balloonPluginManager saveCombinedAppsWithNotification:1];
 
   return v12;
 }

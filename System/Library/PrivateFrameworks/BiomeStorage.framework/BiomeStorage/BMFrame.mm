@@ -1,6 +1,6 @@
 @interface BMFrame
 - ($B23AFABC6D02C76AE1BFC370CD3EE548)frameHeader;
-- (BMFrame)initWithHeader:(id *)a3 storePath:(id)a4 data:(id)a5 framePtr:(void *)a6 offset:(unint64_t)a7 nextOffset:(unint64_t)a8 timestamp:(double)a9 datastoreVersion:(unint64_t)a10 state:(unsigned int)a11;
+- (BMFrame)initWithHeader:(id *)header storePath:(id)path data:(id)data framePtr:(void *)ptr offset:(unint64_t)offset nextOffset:(unint64_t)nextOffset timestamp:(double)timestamp datastoreVersion:(unint64_t)self0 state:(unsigned int)self1;
 - (double)modifiedTimestamp;
 - (unsigned)dataVersion;
 @end
@@ -24,27 +24,27 @@
   return 0;
 }
 
-- (BMFrame)initWithHeader:(id *)a3 storePath:(id)a4 data:(id)a5 framePtr:(void *)a6 offset:(unint64_t)a7 nextOffset:(unint64_t)a8 timestamp:(double)a9 datastoreVersion:(unint64_t)a10 state:(unsigned int)a11
+- (BMFrame)initWithHeader:(id *)header storePath:(id)path data:(id)data framePtr:(void *)ptr offset:(unint64_t)offset nextOffset:(unint64_t)nextOffset timestamp:(double)timestamp datastoreVersion:(unint64_t)self0 state:(unsigned int)self1
 {
-  v19 = a4;
-  v20 = a5;
+  pathCopy = path;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = BMFrame;
   v21 = [(BMFrame *)&v25 init];
   v22 = v21;
   if (v21)
   {
-    *(v21 + 2) = a6;
-    v23 = *&a3->var0.var0.var0.var0;
-    *(v21 + 88) = *(&a3->var1 + 1);
+    *(v21 + 2) = ptr;
+    v23 = *&header->var0.var0.var0.var0;
+    *(v21 + 88) = *(&header->var1 + 1);
     *(v21 + 72) = v23;
-    objc_storeStrong(v21 + 3, a4);
-    objc_storeStrong(&v22->_data, a5);
-    v22->_offset = a7;
-    v22->_nextOffset = a8;
-    v22->_creationTimestamp = a9;
-    v22->_datastoreVersion = a10;
-    v22->_state = a11;
+    objc_storeStrong(v21 + 3, path);
+    objc_storeStrong(&v22->_data, data);
+    v22->_offset = offset;
+    v22->_nextOffset = nextOffset;
+    v22->_creationTimestamp = timestamp;
+    v22->_datastoreVersion = version;
+    v22->_state = state;
   }
 
   return v22;
@@ -52,9 +52,9 @@
 
 - (double)modifiedTimestamp
 {
-  v3 = [(BMFrame *)self datastoreVersion];
+  datastoreVersion = [(BMFrame *)self datastoreVersion];
   result = 0.0;
-  if (v3 == 9)
+  if (datastoreVersion == 9)
   {
     return self->_frameHeader.frameHeaderV1.otherInfo.modifiedTimestamp;
   }

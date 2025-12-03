@@ -1,30 +1,30 @@
 @interface NURenderPipelineFunction
-+ (id)functionWithName:(id)a3 parameters:(id)a4 evaluationBlock:(id)a5;
-+ (id)redEyeSpotsWithCorrectionInfo:(id)a3;
-+ (id)scaleMultiplyOfScalar:(double)a3;
-+ (id)scaledVector:(id)a3;
-+ (id)sharpnessWithIntensity:(double)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRenderPipelineFunction:(id)a3;
++ (id)functionWithName:(id)name parameters:(id)parameters evaluationBlock:(id)block;
++ (id)redEyeSpotsWithCorrectionInfo:(id)info;
++ (id)scaleMultiplyOfScalar:(double)scalar;
++ (id)scaledVector:(id)vector;
++ (id)sharpnessWithIntensity:(double)intensity;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRenderPipelineFunction:(id)function;
 - (NURenderPipelineFunction)init;
-- (NURenderPipelineFunction)initWithName:(id)a3 parameters:(id)a4;
-- (id)evaluate:(id)a3 error:(id *)a4;
+- (NURenderPipelineFunction)initWithName:(id)name parameters:(id)parameters;
+- (id)evaluate:(id)evaluate error:(id *)error;
 @end
 
 @implementation NURenderPipelineFunction
 
-- (BOOL)isEqualToRenderPipelineFunction:(id)a3
+- (BOOL)isEqualToRenderPipelineFunction:(id)function
 {
-  v4 = a3;
-  v5 = [(NURenderPipelineFunction *)self name];
-  v6 = [v4 name];
-  v7 = [v5 isEqualToString:v6];
+  functionCopy = function;
+  name = [(NURenderPipelineFunction *)self name];
+  name2 = [functionCopy name];
+  v7 = [name isEqualToString:name2];
 
   if (v7)
   {
-    v8 = [(NURenderPipelineFunction *)self parameters];
-    v9 = [v4 parameters];
-    v10 = [v8 isEqualToArray:v9];
+    parameters = [(NURenderPipelineFunction *)self parameters];
+    parameters2 = [functionCopy parameters];
+    v10 = [parameters isEqualToArray:parameters2];
   }
 
   else
@@ -35,10 +35,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -48,7 +48,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NURenderPipelineFunction *)v4 isEqualToRenderPipelineFunction:self];
+      v5 = [(NURenderPipelineFunction *)equalCopy isEqualToRenderPipelineFunction:self];
     }
 
     else
@@ -60,10 +60,10 @@
   return v5;
 }
 
-- (id)evaluate:(id)a3 error:(id *)a4
+- (id)evaluate:(id)evaluate error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  evaluateCopy = evaluate;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_409);
@@ -106,8 +106,8 @@ LABEL_8:
     {
       v13 = MEMORY[0x1E696AF00];
       v14 = v12;
-      v15 = [v13 callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v13 callStackSymbols];
+      v16 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v16;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -123,8 +123,8 @@ LABEL_8:
     v19 = MEMORY[0x1E696AF00];
     v20 = specific;
     v21 = v17;
-    v22 = [v19 callStackSymbols];
-    v23 = [v22 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v19 callStackSymbols];
+    v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v31 = specific;
     v32 = 2114;
@@ -138,12 +138,12 @@ LABEL_14:
   _NUAssertFailHandler("[NURenderPipelineFunction evaluate:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineState.m", 521, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v26, v27, v28, v29, v25);
 }
 
-- (NURenderPipelineFunction)initWithName:(id)a3 parameters:(id)a4
+- (NURenderPipelineFunction)initWithName:(id)name parameters:(id)parameters
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  nameCopy = name;
+  parametersCopy = parameters;
+  if (!nameCopy)
   {
     v15 = NUAssertLogger_1288();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -164,8 +164,8 @@ LABEL_14:
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v49 = v29;
         v50 = 2114;
@@ -176,8 +176,8 @@ LABEL_14:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v49 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -186,8 +186,8 @@ LABEL_14:
     _NUAssertFailHandler("[NURenderPipelineFunction initWithName:parameters:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineState.m", 411, @"Invalid parameter not satisfying: %s", v34, v35, v36, v37, "name != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = parametersCopy;
+  if (!parametersCopy)
   {
     v22 = NUAssertLogger_1288();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -208,8 +208,8 @@ LABEL_14:
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v39 callStackSymbols];
+        v42 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v49 = v38;
         v50 = 2114;
@@ -220,8 +220,8 @@ LABEL_14:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v49 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -233,7 +233,7 @@ LABEL_14:
   v47.receiver = self;
   v47.super_class = NURenderPipelineFunction;
   v9 = [(NURenderPipelineFunction *)&v47 init];
-  v10 = [v6 copy];
+  v10 = [nameCopy copy];
   name = v9->_name;
   v9->_name = v10;
 
@@ -290,8 +290,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -307,8 +307,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -355,15 +355,15 @@ id __55__NURenderPipelineFunction_grainInputSeedFromFrameTime__block_invoke(uint
   return v4;
 }
 
-+ (id)redEyeSpotsWithCorrectionInfo:(id)a3
++ (id)redEyeSpotsWithCorrectionInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__NURenderPipelineFunction_redEyeSpotsWithCorrectionInfo___block_invoke;
   v7[3] = &unk_1E81094E0;
-  v8 = v3;
-  v4 = v3;
+  v8 = infoCopy;
+  v4 = infoCopy;
   v5 = [NURenderPipelineFunction functionWithName:@"redEyeSpotsWithCorrectionInfo" parameters:v4 evaluationBlock:v7];
 
   return v5;
@@ -439,7 +439,7 @@ id __58__NURenderPipelineFunction_redEyeSpotsWithCorrectionInfo___block_invoke(u
   return v32;
 }
 
-+ (id)sharpnessWithIntensity:(double)a3
++ (id)sharpnessWithIntensity:(double)intensity
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:?];
@@ -449,7 +449,7 @@ id __58__NURenderPipelineFunction_redEyeSpotsWithCorrectionInfo___block_invoke(u
   v8[1] = 3221225472;
   v8[2] = __51__NURenderPipelineFunction_sharpnessWithIntensity___block_invoke;
   v8[3] = &__block_descriptor_40_e31__16__0__NURenderPipelineState_8l;
-  *&v8[4] = a3;
+  *&v8[4] = intensity;
   v6 = [NURenderPipelineFunction functionWithName:@"sharpnessWithIntensity" parameters:v5 evaluationBlock:v8];
 
   return v6;
@@ -475,15 +475,15 @@ uint64_t __51__NURenderPipelineFunction_sharpnessWithIntensity___block_invoke(ui
   return [v8 numberWithDouble:v7];
 }
 
-+ (id)scaledVector:(id)a3
++ (id)scaledVector:(id)vector
 {
-  v3 = a3;
+  vectorCopy = vector;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__NURenderPipelineFunction_scaledVector___block_invoke;
   v7[3] = &unk_1E81094E0;
-  v8 = v3;
-  v4 = v3;
+  v8 = vectorCopy;
+  v4 = vectorCopy;
   v5 = [NURenderPipelineFunction functionWithName:@"scaledVector" parameters:v4 evaluationBlock:v7];
 
   return v5;
@@ -544,7 +544,7 @@ id __41__NURenderPipelineFunction_scaledVector___block_invoke(uint64_t a1, void 
   return v18;
 }
 
-+ (id)scaleMultiplyOfScalar:(double)a3
++ (id)scaleMultiplyOfScalar:(double)scalar
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:?];
@@ -554,7 +554,7 @@ id __41__NURenderPipelineFunction_scaledVector___block_invoke(uint64_t a1, void 
   v8[1] = 3221225472;
   v8[2] = __50__NURenderPipelineFunction_scaleMultiplyOfScalar___block_invoke;
   v8[3] = &__block_descriptor_40_e31__16__0__NURenderPipelineState_8l;
-  *&v8[4] = a3;
+  *&v8[4] = scalar;
   v6 = [NURenderPipelineFunction functionWithName:@"scaleMultiplyOfScalar" parameters:v5 evaluationBlock:v8];
 
   return v6;
@@ -569,12 +569,12 @@ uint64_t __50__NURenderPipelineFunction_scaleMultiplyOfScalar___block_invoke(uin
   return [v3 numberWithDouble:v6];
 }
 
-+ (id)functionWithName:(id)a3 parameters:(id)a4 evaluationBlock:(id)a5
++ (id)functionWithName:(id)name parameters:(id)parameters evaluationBlock:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_NURenderPipelineBlockVariable alloc] initWithName:v9 parameters:v8 evaluationBlock:v7];
+  blockCopy = block;
+  parametersCopy = parameters;
+  nameCopy = name;
+  v10 = [[_NURenderPipelineBlockVariable alloc] initWithName:nameCopy parameters:parametersCopy evaluationBlock:blockCopy];
 
   return v10;
 }

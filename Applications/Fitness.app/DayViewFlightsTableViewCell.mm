@@ -1,14 +1,14 @@
 @interface DayViewFlightsTableViewCell
-- (_TtC10FitnessApp27DayViewFlightsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC10FitnessApp27DayViewFlightsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation DayViewFlightsTableViewCell
 
-- (_TtC10FitnessApp27DayViewFlightsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp27DayViewFlightsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -17,7 +17,7 @@
     v6 = 0;
   }
 
-  return sub_10026BD9C(a3, a4, v6);
+  return sub_10026BD9C(style, identifier, v6);
 }
 
 @end

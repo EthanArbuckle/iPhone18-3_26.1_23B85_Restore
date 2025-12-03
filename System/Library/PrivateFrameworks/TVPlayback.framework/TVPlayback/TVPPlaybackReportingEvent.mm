@@ -11,8 +11,8 @@
   {
     [(TVPPlaybackReportingEvent *)self timestamp];
     v5 = v4;
-    v6 = [(TVPPlaybackReportingEvent *)self startEvent];
-    [v6 timestamp];
+    startEvent = [(TVPPlaybackReportingEvent *)self startEvent];
+    [startEvent timestamp];
     v3 = v5 - v7;
   }
 

@@ -1,39 +1,39 @@
 @interface ImageAnalyzerImageColor
-+ (CGColor)_colorFromITColor:(ITColor)a3;
-+ (CGContext)createContextForImage:(CGImage *)a3;
++ (CGColor)_colorFromITColor:(ITColor)color;
++ (CGContext)createContextForImage:(CGImage *)image;
 + (ImageAnalyzerImageColor)defaultColors;
-+ (ImageAnalyzerImageColor)imageColorWithAnalyzedImageColors:(const AnalyzedImageColors *)a3;
-+ (ImageAnalyzerImageColor)imageColorWithImageAnalyzer:(const void *)a3;
-+ (id)analyzeImage:(CGImage *)a3 error:(id *)a4;
-+ (id)determineColors:(CGImage *)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToImageColor:(id)a3;
-- (ImageAnalyzerImageColor)initWithAnalyzedImageColors:(const AnalyzedImageColors *)a3;
-- (ImageAnalyzerImageColor)initWithImageAnalyzer:(const void *)a3;
-- (id)colorString:(CGColor *)a3;
++ (ImageAnalyzerImageColor)imageColorWithAnalyzedImageColors:(const AnalyzedImageColors *)colors;
++ (ImageAnalyzerImageColor)imageColorWithImageAnalyzer:(const void *)analyzer;
++ (id)analyzeImage:(CGImage *)image error:(id *)error;
++ (id)determineColors:(CGImage *)colors error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToImageColor:(id)color;
+- (ImageAnalyzerImageColor)initWithAnalyzedImageColors:(const AnalyzedImageColors *)colors;
+- (ImageAnalyzerImageColor)initWithImageAnalyzer:(const void *)analyzer;
+- (id)colorString:(CGColor *)string;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation ImageAnalyzerImageColor
 
-- (BOOL)isEqualToImageColor:(id)a3
+- (BOOL)isEqualToImageColor:(id)color
 {
-  v4 = a3;
-  v5 = v4 && CGColorEqualToColor(-[ImageAnalyzerImageColor backgroundColor](self, "backgroundColor"), [v4 backgroundColor]) && CGColorEqualToColor(-[ImageAnalyzerImageColor primaryTextColor](self, "primaryTextColor"), objc_msgSend(v4, "primaryTextColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor tertiaryTextColor](self, "tertiaryTextColor"), objc_msgSend(v4, "tertiaryTextColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor quaternaryTextColor](self, "quaternaryTextColor"), objc_msgSend(v4, "quaternaryTextColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor primaryDropShadowColor](self, "primaryDropShadowColor"), objc_msgSend(v4, "primaryDropShadowColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor secondaryDropShadowColor](self, "secondaryDropShadowColor"), objc_msgSend(v4, "secondaryDropShadowColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor tertiaryDropShadowColor](self, "tertiaryDropShadowColor"), objc_msgSend(v4, "tertiaryDropShadowColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor quarnaryDropShadowColor](self, "quarnaryDropShadowColor"), objc_msgSend(v4, "quarnaryDropShadowColor"));
+  colorCopy = color;
+  v5 = colorCopy && CGColorEqualToColor(-[ImageAnalyzerImageColor backgroundColor](self, "backgroundColor"), [colorCopy backgroundColor]) && CGColorEqualToColor(-[ImageAnalyzerImageColor primaryTextColor](self, "primaryTextColor"), objc_msgSend(colorCopy, "primaryTextColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor tertiaryTextColor](self, "tertiaryTextColor"), objc_msgSend(colorCopy, "tertiaryTextColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor quaternaryTextColor](self, "quaternaryTextColor"), objc_msgSend(colorCopy, "quaternaryTextColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor primaryDropShadowColor](self, "primaryDropShadowColor"), objc_msgSend(colorCopy, "primaryDropShadowColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor secondaryDropShadowColor](self, "secondaryDropShadowColor"), objc_msgSend(colorCopy, "secondaryDropShadowColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor tertiaryDropShadowColor](self, "tertiaryDropShadowColor"), objc_msgSend(colorCopy, "tertiaryDropShadowColor")) && CGColorEqualToColor(-[ImageAnalyzerImageColor quarnaryDropShadowColor](self, "quarnaryDropShadowColor"), objc_msgSend(colorCopy, "quarnaryDropShadowColor"));
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ImageAnalyzerImageColor *)self isEqualToImageColor:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ImageAnalyzerImageColor *)self isEqualToImageColor:equalCopy];
 
   return v5;
 }
 
-- (ImageAnalyzerImageColor)initWithAnalyzedImageColors:(const AnalyzedImageColors *)a3
+- (ImageAnalyzerImageColor)initWithAnalyzedImageColors:(const AnalyzedImageColors *)colors
 {
   v37 = *MEMORY[0x1E69E9840];
   v34.receiver = self;
@@ -41,72 +41,72 @@
   v4 = [(ImageAnalyzerImageColor *)&v34 init];
   if (v4)
   {
-    v5 = *&a3->var0.var2;
-    *components = *&a3->var0.var0;
+    v5 = *&colors->var0.var2;
+    *components = *&colors->var0.var0;
     v36 = v5;
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     v7 = CGColorCreate(DeviceRGB, components);
     CGColorSpaceRelease(DeviceRGB);
     v4->_backgroundColor = v7;
-    v8 = *&a3->var1.var2;
-    *components = *&a3->var1.var0;
+    v8 = *&colors->var1.var2;
+    *components = *&colors->var1.var0;
     v36 = v8;
     v9 = CGColorSpaceCreateDeviceRGB();
     v10 = CGColorCreate(v9, components);
     CGColorSpaceRelease(v9);
     v4->_primaryTextColor = v10;
-    v11 = *&a3->var2.var2;
-    *components = *&a3->var2.var0;
+    v11 = *&colors->var2.var2;
+    *components = *&colors->var2.var0;
     v36 = v11;
     v12 = CGColorSpaceCreateDeviceRGB();
     v13 = CGColorCreate(v12, components);
     CGColorSpaceRelease(v12);
     v4->_secondaryTextColor = v13;
-    v14 = *&a3->var3.var2;
-    *components = *&a3->var3.var0;
+    v14 = *&colors->var3.var2;
+    *components = *&colors->var3.var0;
     v36 = v14;
     v15 = CGColorSpaceCreateDeviceRGB();
     v16 = CGColorCreate(v15, components);
     CGColorSpaceRelease(v15);
     v4->_tertiaryTextColor = v16;
-    v17 = *&a3->var4.var2;
-    *components = *&a3->var4.var0;
+    v17 = *&colors->var4.var2;
+    *components = *&colors->var4.var0;
     v36 = v17;
     v18 = CGColorSpaceCreateDeviceRGB();
     v19 = CGColorCreate(v18, components);
     CGColorSpaceRelease(v18);
     v4->_quaternaryTextColor = v19;
-    v20 = *&a3->var5.var2;
-    *components = *&a3->var5.var0;
+    v20 = *&colors->var5.var2;
+    *components = *&colors->var5.var0;
     v36 = v20;
     v21 = CGColorSpaceCreateDeviceRGB();
     v22 = CGColorCreate(v21, components);
     CGColorSpaceRelease(v21);
     v4->_primaryDropShadowColor = v22;
-    v23 = *&a3->var7.var2;
-    *components = *&a3->var7.var0;
+    v23 = *&colors->var7.var2;
+    *components = *&colors->var7.var0;
     v36 = v23;
     v24 = CGColorSpaceCreateDeviceRGB();
     v25 = CGColorCreate(v24, components);
     CGColorSpaceRelease(v24);
     v4->_tertiaryDropShadowColor = v25;
-    v26 = *&a3->var6.var2;
-    *components = *&a3->var6.var0;
+    v26 = *&colors->var6.var2;
+    *components = *&colors->var6.var0;
     v36 = v26;
     v27 = CGColorSpaceCreateDeviceRGB();
     v28 = CGColorCreate(v27, components);
     CGColorSpaceRelease(v27);
     v4->_secondaryDropShadowColor = v28;
-    v29 = *&a3->var8.var2;
-    *components = *&a3->var8.var0;
+    v29 = *&colors->var8.var2;
+    *components = *&colors->var8.var0;
     v36 = v29;
     v30 = CGColorSpaceCreateDeviceRGB();
     v31 = CGColorCreate(v30, components);
     CGColorSpaceRelease(v30);
     v4->_quarnaryDropShadowColor = v31;
-    v4->_isBackgroundLight = a3->var11;
-    v4->_isPrimaryColorLight = a3->var12;
-    v4->_isSecondaryColorLight = a3->var13;
+    v4->_isBackgroundLight = colors->var11;
+    v4->_isPrimaryColorLight = colors->var12;
+    v4->_isSecondaryColorLight = colors->var13;
   }
 
   v32 = *MEMORY[0x1E69E9840];
@@ -129,7 +129,7 @@
   [(ImageAnalyzerImageColor *)&v3 dealloc];
 }
 
-- (ImageAnalyzerImageColor)initWithImageAnalyzer:(const void *)a3
+- (ImageAnalyzerImageColor)initWithImageAnalyzer:(const void *)analyzer
 {
   v43 = *MEMORY[0x1E69E9840];
   v40.receiver = self;
@@ -137,74 +137,74 @@
   v4 = [(ImageAnalyzerImageColor *)&v40 init];
   if (v4)
   {
-    v5 = *(a3 + 3);
-    *components = *(a3 + 2);
+    v5 = *(analyzer + 3);
+    *components = *(analyzer + 2);
     v42 = v5;
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     v7 = CGColorCreate(DeviceRGB, components);
     CGColorSpaceRelease(DeviceRGB);
     v4->_backgroundColor = v7;
-    v8 = *(a3 + 5);
-    *components = *(a3 + 4);
+    v8 = *(analyzer + 5);
+    *components = *(analyzer + 4);
     v42 = v8;
     v9 = CGColorSpaceCreateDeviceRGB();
     v10 = CGColorCreate(v9, components);
     CGColorSpaceRelease(v9);
     v4->_primaryTextColor = v10;
-    v11 = *(a3 + 7);
-    *components = *(a3 + 6);
+    v11 = *(analyzer + 7);
+    *components = *(analyzer + 6);
     v42 = v11;
     v12 = CGColorSpaceCreateDeviceRGB();
     v13 = CGColorCreate(v12, components);
     CGColorSpaceRelease(v12);
     v4->_secondaryTextColor = v13;
-    v14 = *(a3 + 9);
-    *components = *(a3 + 8);
+    v14 = *(analyzer + 9);
+    *components = *(analyzer + 8);
     v42 = v14;
     v15 = CGColorSpaceCreateDeviceRGB();
     v16 = CGColorCreate(v15, components);
     CGColorSpaceRelease(v15);
     v4->_tertiaryTextColor = v16;
-    v17 = *(a3 + 11);
-    *components = *(a3 + 10);
+    v17 = *(analyzer + 11);
+    *components = *(analyzer + 10);
     v42 = v17;
     v18 = CGColorSpaceCreateDeviceRGB();
     v19 = CGColorCreate(v18, components);
     CGColorSpaceRelease(v18);
     v4->_quaternaryTextColor = v19;
-    v20 = *(a3 + 13);
-    *components = *(a3 + 12);
+    v20 = *(analyzer + 13);
+    *components = *(analyzer + 12);
     v42 = v20;
     v21 = CGColorSpaceCreateDeviceRGB();
     v22 = CGColorCreate(v21, components);
     CGColorSpaceRelease(v21);
     v4->_primaryDropShadowColor = v22;
-    v23 = *(a3 + 15);
-    *components = *(a3 + 14);
+    v23 = *(analyzer + 15);
+    *components = *(analyzer + 14);
     v42 = v23;
     v24 = CGColorSpaceCreateDeviceRGB();
     v25 = CGColorCreate(v24, components);
     CGColorSpaceRelease(v24);
     v4->_tertiaryDropShadowColor = v25;
-    v26 = *(a3 + 17);
-    *components = *(a3 + 16);
+    v26 = *(analyzer + 17);
+    *components = *(analyzer + 16);
     v42 = v26;
     v27 = CGColorSpaceCreateDeviceRGB();
     v28 = CGColorCreate(v27, components);
     CGColorSpaceRelease(v27);
     v4->_secondaryDropShadowColor = v28;
-    v29 = *(a3 + 19);
-    *components = *(a3 + 18);
+    v29 = *(analyzer + 19);
+    *components = *(analyzer + 18);
     v42 = v29;
     v30 = CGColorSpaceCreateDeviceRGB();
     v31 = CGColorCreate(v30, components);
     CGColorSpaceRelease(v30);
     v4->_quarnaryDropShadowColor = v31;
-    ITColor::GetLuminance(v32, *(a3 + 2), *(a3 + 6));
+    ITColor::GetLuminance(v32, *(analyzer + 2), *(analyzer + 6));
     v4->_isBackgroundLight = v33 >= 0.180000007;
-    ITColor::GetLuminance(v34, *(a3 + 4), *(a3 + 10));
+    ITColor::GetLuminance(v34, *(analyzer + 4), *(analyzer + 10));
     v4->_isPrimaryColorLight = v35 >= 0.180000007;
-    ITColor::GetLuminance(v36, *(a3 + 6), *(a3 + 14));
+    ITColor::GetLuminance(v36, *(analyzer + 6), *(analyzer + 14));
     v4->_isSecondaryColorLight = v37 >= 0.180000007;
   }
 
@@ -212,10 +212,10 @@
   return v4;
 }
 
-- (id)colorString:(CGColor *)a3
+- (id)colorString:(CGColor *)string
 {
-  Components = CGColorGetComponents(a3);
-  NumberOfComponents = CGColorGetNumberOfComponents(a3);
+  Components = CGColorGetComponents(string);
+  NumberOfComponents = CGColorGetNumberOfComponents(string);
   v6 = 1.0;
   v7 = 0;
   if (NumberOfComponents > 2)
@@ -270,16 +270,16 @@ LABEL_5:
   return v9;
 }
 
-+ (CGContext)createContextForImage:(CGImage *)a3
++ (CGContext)createContextForImage:(CGImage *)image
 {
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
 
-  v3 = a3;
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(v3);
+  imageCopy = image;
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(imageCopy);
   v6 = 0;
   if (Width && Height)
   {
@@ -291,11 +291,11 @@ LABEL_5:
     v7 = CGColorSpaceGetSRGB(void)::sSpace;
     if (CGColorSpaceGetSRGB(void)::sSpace)
     {
-      CopyWithColorSpace = CGImageCreateCopyWithColorSpace(v3, CGColorSpaceGetSRGB(void)::sSpace);
+      CopyWithColorSpace = CGImageCreateCopyWithColorSpace(imageCopy, CGColorSpaceGetSRGB(void)::sSpace);
       v9 = CopyWithColorSpace;
       if (CopyWithColorSpace)
       {
-        v3 = CopyWithColorSpace;
+        imageCopy = CopyWithColorSpace;
       }
     }
 
@@ -312,7 +312,7 @@ LABEL_5:
       v12.origin.y = *(MEMORY[0x1E695EFF8] + 8);
       v12.size.width = 22.0;
       v12.size.height = 22.0;
-      CGContextDrawImage(v10, v12, v3);
+      CGContextDrawImage(v10, v12, imageCopy);
     }
 
     if (v9)
@@ -324,12 +324,12 @@ LABEL_5:
   return v6;
 }
 
-+ (CGColor)_colorFromITColor:(ITColor)a3
++ (CGColor)_colorFromITColor:(ITColor)color
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
   components[4] = *MEMORY[0x1E69E9840];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   components[0] = var0;
@@ -343,9 +343,9 @@ LABEL_5:
   return v8;
 }
 
-+ (id)analyzeImage:(CGImage *)a3 error:(id *)a4
++ (id)analyzeImage:(CGImage *)image error:(id *)error
 {
-  v4 = [a1 createContextForImage:a3];
+  v4 = [self createContextForImage:image];
   v5 = v4;
   if (!v4)
   {
@@ -380,7 +380,7 @@ LABEL_5:
   return v6;
 }
 
-+ (id)determineColors:(CGImage *)a3 error:(id *)a4
++ (id)determineColors:(CGImage *)colors error:(id *)error
 {
   v100 = 0;
   v101 = 0;
@@ -423,7 +423,7 @@ LABEL_5:
   v139 = 0u;
   v136 = 0u;
   v137 = 0u;
-  if (!a3)
+  if (!colors)
   {
     exception = __cxa_allocate_exception(0x10uLL);
     std::logic_error::logic_error(exception, "ImageAnalyzer::AnalyzeImage() - CGImageRef parameter is nil.");
@@ -431,7 +431,7 @@ LABEL_5:
     __cxa_throw(exception, off_1E7981700, MEMORY[0x1E69E5298]);
   }
 
-  AlphaInfo = CGImageGetAlphaInfo(a3);
+  AlphaInfo = CGImageGetAlphaInfo(colors);
   v6 = AlphaInfo;
   if (AlphaInfo)
   {
@@ -451,7 +451,7 @@ LABEL_5:
     v6 = 5;
   }
 
-  ColorSpace = CGImageGetColorSpace(a3);
+  ColorSpace = CGImageGetColorSpace(colors);
   v8 = ColorSpace;
   if (ColorSpace)
   {
@@ -482,7 +482,7 @@ LABEL_5:
   v149.origin.y = 0.0;
   v149.size.width = 22.0;
   v149.size.height = 22.0;
-  CGContextDrawImage(v12, v149, a3);
+  CGContextDrawImage(v12, v149, colors);
   Image = CGBitmapContextCreateImage(v13);
   v15 = Image;
   if (!Image)
@@ -688,16 +688,16 @@ LABEL_49:
   return v54;
 }
 
-+ (ImageAnalyzerImageColor)imageColorWithAnalyzedImageColors:(const AnalyzedImageColors *)a3
++ (ImageAnalyzerImageColor)imageColorWithAnalyzedImageColors:(const AnalyzedImageColors *)colors
 {
-  v3 = [[a1 alloc] initWithAnalyzedImageColors:a3];
+  v3 = [[self alloc] initWithAnalyzedImageColors:colors];
 
   return v3;
 }
 
-+ (ImageAnalyzerImageColor)imageColorWithImageAnalyzer:(const void *)a3
++ (ImageAnalyzerImageColor)imageColorWithImageAnalyzer:(const void *)analyzer
 {
-  v3 = [[a1 alloc] initWithImageAnalyzer:a3];
+  v3 = [[self alloc] initWithImageAnalyzer:analyzer];
 
   return v3;
 }

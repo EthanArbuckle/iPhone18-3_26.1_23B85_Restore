@@ -1,19 +1,19 @@
 @interface AXSwitchTableCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AXSwitchTableCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = AXSwitchTableCell;
-  v4 = a3;
-  [(AXSwitchTableCell *)&v7 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 objectForKeyedSubscript:{PSIDKey, v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(AXSwitchTableCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy objectForKeyedSubscript:{PSIDKey, v7.receiver, v7.super_class}];
 
-  v6 = [(AXSwitchTableCell *)self control];
-  [v6 setAccessibilityIdentifier:v5];
+  control = [(AXSwitchTableCell *)self control];
+  [control setAccessibilityIdentifier:v5];
 }
 
 @end

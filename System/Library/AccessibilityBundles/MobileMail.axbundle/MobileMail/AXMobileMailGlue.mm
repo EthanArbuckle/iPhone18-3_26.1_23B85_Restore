@@ -8,24 +8,24 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
     v7[0] = MEMORY[0x29EDCA5F8];
     v7[1] = 3221225472;
     v7[2] = __49__AXMobileMailGlue_accessibilityInitializeBundle__block_invoke_2;
     v7[3] = &unk_29F2D3DC8;
     v8 = @"MobileMail";
     v9 = @"MobileMail AX Bundle";
-    [v2 performValidations:&__block_literal_global withPreValidationHandler:v7 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_363];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:v7 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_363];
 
-    v3 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v3 installSafeCategories:&__block_literal_global_530 afterDelay:@"MobileMail AX Bundle" validationTargetName:@"MobileMail" overrideProcessName:1.0];
+    mEMORY[0x29EDBD6E8]2 = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8]2 installSafeCategories:&__block_literal_global_530 afterDelay:@"MobileMail AX Bundle" validationTargetName:@"MobileMail" overrideProcessName:1.0];
 
     v4 = [objc_allocWithZone(AXMobileMailGlue) init];
     v5 = _Failover;
     _Failover = v4;
 
-    v6 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v6 addHandler:&__block_literal_global_541 forFramework:@"QuickLook"];
+    mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_541 forFramework:@"QuickLook"];
   }
 }
 

@@ -7,17 +7,17 @@
 
 - (void)_performResizingTest
 {
-  v3 = [(MapsAppTest *)self canUpdateTrayLayout];
+  canUpdateTrayLayout = [(MapsAppTest *)self canUpdateTrayLayout];
   [(MapsAppTest *)self startedTest];
-  if (v3)
+  if (canUpdateTrayLayout)
   {
-    v4 = [(MapsAppTest *)self testName];
+    testName = [(MapsAppTest *)self testName];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100589EA8;
     v5[3] = &unk_101661B18;
     v5[4] = self;
-    [(MapsAppTest *)self resizingTestAndSubTestsWithPrefix:v4 completion:v5];
+    [(MapsAppTest *)self resizingTestAndSubTestsWithPrefix:testName completion:v5];
   }
 
   else

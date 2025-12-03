@@ -1,5 +1,5 @@
 @interface PXCuratedLibraryShowFiltersMenuActionPerformer
-- (BOOL)canPerformWithActivityItems:(id)a3 forActivity:(id)a4;
+- (BOOL)canPerformWithActivityItems:(id)items forActivity:(id)activity;
 - (NSMutableArray)filterInlineMenuItems;
 - (NSMutableArray)filterMenuItems;
 - (NSMutableArray)viewOptionsMenuItems;
@@ -16,26 +16,26 @@
 - (id)menuElement
 {
   v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:4];
-  v4 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v5 = [v4 viewOptionsModel];
-  v6 = [v5 sortOrderMenu];
-  v7 = [v6 children];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  viewOptionsModel = [viewModel viewOptionsModel];
+  sortOrderMenu = [viewOptionsModel sortOrderMenu];
+  children = [sortOrderMenu children];
 
-  if ([v7 count])
+  if ([children count])
   {
-    v8 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F1741150 image:0 identifier:0 options:1 children:v7];
+    v8 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F1741150 image:0 identifier:0 options:1 children:children];
     [v3 addObject:v8];
   }
 
-  v9 = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self sharedLibraryModeMenuItems];
-  if ([v9 count])
+  sharedLibraryModeMenuItems = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self sharedLibraryModeMenuItems];
+  if ([sharedLibraryModeMenuItems count])
   {
-    v10 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F1741150 image:0 identifier:0 options:1 children:v9];
+    v10 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F1741150 image:0 identifier:0 options:1 children:sharedLibraryModeMenuItems];
     [v3 addObject:v10];
   }
 
-  v11 = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self filterInlineMenuItems];
-  v12 = [v11 mutableCopy];
+  filterInlineMenuItems = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self filterInlineMenuItems];
+  v12 = [filterInlineMenuItems mutableCopy];
 
   if ([v12 count])
   {
@@ -52,23 +52,23 @@
     [v3 addObject:v13];
   }
 
-  v14 = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self viewOptionsMenuItems];
-  if ([v14 count])
+  viewOptionsMenuItems = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self viewOptionsMenuItems];
+  if ([viewOptionsMenuItems count])
   {
     v15 = MEMORY[0x1E69DCC60];
     v16 = PXLocalizedStringFromTable(@"PXContentViewOptionsMenuTitle", @"PhotosUICore");
-    v17 = [v15 menuWithTitle:v16 image:0 identifier:@"com.apple.photos.menu.contentFilterViewOptionsSubmenu" options:0 children:v14];
+    v17 = [v15 menuWithTitle:v16 image:0 identifier:@"com.apple.photos.menu.contentFilterViewOptionsSubmenu" options:0 children:viewOptionsMenuItems];
 
-    v18 = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self viewOptionsMenuSubtitle];
-    [v17 setSubtitle:v18];
+    viewOptionsMenuSubtitle = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self viewOptionsMenuSubtitle];
+    [v17 setSubtitle:viewOptionsMenuSubtitle];
 
     [v3 addObject:v17];
   }
 
   v19 = [(PXCuratedLibraryActionPerformer *)self localizedTitleForUseCase:1];
   v20 = MEMORY[0x1E69DCAB8];
-  v21 = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self activitySystemImageName];
-  v22 = [v20 systemImageNamed:v21];
+  activitySystemImageName = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self activitySystemImageName];
+  v22 = [v20 systemImageNamed:activitySystemImageName];
 
   v23 = [MEMORY[0x1E69DCC60] menuWithTitle:v19 image:v22 identifier:0 options:0 children:v3];
 
@@ -77,9 +77,9 @@
 
 - (NSString)viewOptionsMenuSubtitle
 {
-  v2 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v3 = [v2 currentContentFilterState];
-  v4 = [v3 isContentFilterActive:2];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  currentContentFilterState = [viewModel currentContentFilterState];
+  v4 = [currentContentFilterState isContentFilterActive:2];
 
   if (v4)
   {
@@ -102,8 +102,8 @@
     dispatch_once(&viewOptionsMenuItems_onceToken, &__block_literal_global_220);
   }
 
-  v3 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v4 = [v3 actionManager];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  actionManager = [viewModel actionManager];
 
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
   v6 = [v5 initWithCapacity:{objc_msgSend(viewOptionsMenuItems_viewOptionsActionTypes, "count")}];
@@ -127,8 +127,8 @@
         }
 
         v12 = *(*(&v37 + 1) + 8 * i);
-        v13 = [v4 actionPerformerForActionType:v12];
-        v14 = [v4 canPerformActionType:v12];
+        v13 = [actionManager actionPerformerForActionType:v12];
+        v14 = [actionManager canPerformActionType:v12];
         if (v13)
         {
           v15 = v14 == 0;
@@ -141,10 +141,10 @@
 
         if (!v15)
         {
-          v16 = [v13 menuElement];
-          if (v16)
+          menuElement = [v13 menuElement];
+          if (menuElement)
           {
-            [v6 addObject:v16];
+            [v6 addObject:menuElement];
           }
         }
       }
@@ -177,8 +177,8 @@
         }
 
         v24 = *(*(&v33 + 1) + 8 * j);
-        v25 = [v4 actionPerformerForActionType:{v24, v33}];
-        v26 = [v4 canPerformActionType:v24];
+        v25 = [actionManager actionPerformerForActionType:{v24, v33}];
+        v26 = [actionManager canPerformActionType:v24];
         if (v25)
         {
           v27 = v26 == 0;
@@ -191,10 +191,10 @@
 
         if (!v27)
         {
-          v28 = [v25 menuElement];
-          if (v28)
+          menuElement2 = [v25 menuElement];
+          if (menuElement2)
           {
-            [v18 addObject:v28];
+            [v18 addObject:menuElement2];
           }
         }
       }
@@ -235,16 +235,16 @@ void __70__PXCuratedLibraryShowFiltersMenuActionPerformer_viewOptionsMenuItems__
 - (NSString)filterMenuSubtitle
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self _allFilterActionTypes];
-  v4 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v5 = [v4 actionManager];
+  _allFilterActionTypes = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self _allFilterActionTypes];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  actionManager = [viewModel actionManager];
 
   v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v3;
+  v7 = _allFilterActionTypes;
   v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
@@ -263,15 +263,15 @@ void __70__PXCuratedLibraryShowFiltersMenuActionPerformer_viewOptionsMenuItems__
 
         if (*(*(&v28 + 1) + 8 * i) != v11)
         {
-          v13 = [v5 actionPerformerForActionType:?];
+          v13 = [actionManager actionPerformerForActionType:?];
           v14 = v13;
           if (v13)
           {
             v15 = [v13 localizedTitleForUseCase:0];
-            v16 = [v14 menuElementState];
+            menuElementState = [v14 menuElementState];
             if (v15)
             {
-              v17 = v16 == 1;
+              v17 = menuElementState == 1;
             }
 
             else
@@ -286,14 +286,14 @@ void __70__PXCuratedLibraryShowFiltersMenuActionPerformer_viewOptionsMenuItems__
                 PXLocalizedStringFromTable(@"PXContentFilterMenu_SubtitleFilterTitlesSeperator", @"PhotosUICore");
                 v18 = v9;
                 v19 = v11;
-                v20 = v5;
+                v20 = actionManager;
                 v21 = v7;
                 v23 = v22 = v6;
                 [v22 appendString:v23];
 
                 v6 = v22;
                 v7 = v21;
-                v5 = v20;
+                actionManager = v20;
                 v11 = v19;
                 v9 = v18;
                 v10 = v27;
@@ -345,39 +345,39 @@ LABEL_25:
 - (NSMutableArray)filterInlineMenuItems
 {
   v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  v4 = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self filterMenuItems];
-  if ([v4 count])
+  filterMenuItems = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self filterMenuItems];
+  if ([filterMenuItems count])
   {
     v5 = MEMORY[0x1E69DCC60];
     v6 = PXLocalizedStringFromTable(@"PXFilterMenuTitle", @"PhotosUICore");
-    v7 = [v5 menuWithTitle:v6 image:0 identifier:@"com.apple.photos.menu.contentFilterSubmenu" options:0 children:v4];
+    v7 = [v5 menuWithTitle:v6 image:0 identifier:@"com.apple.photos.menu.contentFilterSubmenu" options:0 children:filterMenuItems];
 
-    v8 = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self filterMenuSubtitle];
-    [v7 setSubtitle:v8];
+    filterMenuSubtitle = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self filterMenuSubtitle];
+    [v7 setSubtitle:filterMenuSubtitle];
 
     [v3 addObject:v7];
   }
 
-  v9 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v10 = [v9 currentContentFilterState];
-  v11 = [v10 isFiltering];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  currentContentFilterState = [viewModel currentContentFilterState];
+  isFiltering = [currentContentFilterState isFiltering];
 
-  if (v11)
+  if (isFiltering)
   {
-    v12 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-    v13 = [v12 actionManager];
+    viewModel2 = [(PXCuratedLibraryActionPerformer *)self viewModel];
+    actionManager = [viewModel2 actionManager];
 
-    v14 = [v13 actionPerformerForActionType:@"PXCuratedLibraryActionRemoveFilters"];
-    v15 = [(PXActionPerformer *)self sender];
-    [v14 setSender:v15];
+    v14 = [actionManager actionPerformerForActionType:@"PXCuratedLibraryActionRemoveFilters"];
+    sender = [(PXActionPerformer *)self sender];
+    [v14 setSender:sender];
 
-    v16 = [v13 canPerformActionType:@"PXCuratedLibraryActionRemoveFilters"];
+    v16 = [actionManager canPerformActionType:@"PXCuratedLibraryActionRemoveFilters"];
     if (v14 && v16)
     {
-      v17 = [v14 menuElement];
-      if (v17)
+      menuElement = [v14 menuElement];
+      if (menuElement)
       {
-        [v3 addObject:v17];
+        [v3 addObject:menuElement];
       }
     }
   }
@@ -393,14 +393,14 @@ LABEL_25:
     dispatch_once(&filterMenuItems_onceToken, &__block_literal_global_203);
   }
 
-  v3 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v4 = [v3 actionManager];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  actionManager = [viewModel actionManager];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__PXCuratedLibraryShowFiltersMenuActionPerformer_filterMenuItems__block_invoke_2;
   aBlock[3] = &unk_1E7734810;
-  aBlock[4] = v4;
+  aBlock[4] = actionManager;
   aBlock[5] = self;
   v5 = _Block_copy(aBlock);
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
@@ -517,16 +517,16 @@ void __71__PXCuratedLibraryShowFiltersMenuActionPerformer__allFilterActionTypes_
     dispatch_once(&sharedLibraryModeMenuItems_onceToken, &__block_literal_global_544);
   }
 
-  v3 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v4 = [v3 actionManager];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  actionManager = [viewModel actionManager];
 
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
   v6 = [v5 initWithCapacity:{objc_msgSend(sharedLibraryModeMenuItems_sharedLibraryModeActionTypes, "count")}];
-  v7 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v8 = [v7 configuration];
-  v9 = [v8 photoLibrary];
+  viewModel2 = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  configuration = [viewModel2 configuration];
+  photoLibrary = [configuration photoLibrary];
 
-  v10 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v9];
+  v10 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
   if ([v10 hasSharedLibraryOrPreview])
   {
     v24 = 0u;
@@ -549,8 +549,8 @@ void __71__PXCuratedLibraryShowFiltersMenuActionPerformer__allFilterActionTypes_
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
-          v17 = [v4 actionPerformerForActionType:{v16, v22}];
-          v18 = [v4 canPerformActionType:v16];
+          v17 = [actionManager actionPerformerForActionType:{v16, v22}];
+          v18 = [actionManager canPerformActionType:v16];
           if (v17)
           {
             v19 = v18 == 0;
@@ -563,10 +563,10 @@ void __71__PXCuratedLibraryShowFiltersMenuActionPerformer__allFilterActionTypes_
 
           if (!v19)
           {
-            v20 = [v17 menuElement];
-            if (v20)
+            menuElement = [v17 menuElement];
+            if (menuElement)
             {
-              [v6 addObject:v20];
+              [v6 addObject:menuElement];
             }
           }
         }
@@ -592,23 +592,23 @@ void __76__PXCuratedLibraryShowFiltersMenuActionPerformer_sharedLibraryModeMenuI
   sharedLibraryModeMenuItems_sharedLibraryModeActionTypes = v0;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3 forActivity:(id)a4
+- (BOOL)canPerformWithActivityItems:(id)items forActivity:(id)activity
 {
-  v6 = [a4 activityType];
-  v7 = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self activityType];
-  v8 = v7;
-  if (v6 == v7)
+  activityType = [activity activityType];
+  activityType2 = [(PXCuratedLibraryShowFiltersMenuActionPerformer *)self activityType];
+  v8 = activityType2;
+  if (activityType == activityType2)
   {
 
     goto LABEL_5;
   }
 
-  v9 = [v6 isEqualToString:v7];
+  v9 = [activityType isEqualToString:activityType2];
 
   if ((v9 & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryShowFiltersMenuActionPerformer.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"PXStringEqualToString(activity.activityType, self.activityType)"}];
+    activityType = [MEMORY[0x1E696AAA8] currentHandler];
+    [activityType handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryShowFiltersMenuActionPerformer.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"PXStringEqualToString(activity.activityType, self.activityType)"}];
 LABEL_5:
   }
 
@@ -617,10 +617,10 @@ LABEL_5:
 
 - (id)activitySystemImageName
 {
-  v2 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v3 = [v2 libraryFilterState];
-  v4 = [v2 currentContentFilterState];
-  v5 = PXContentFilterImageNameForFilterStatesAndCustomDefaultImageName(v3, v4, 0);
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  libraryFilterState = [viewModel libraryFilterState];
+  currentContentFilterState = [viewModel currentContentFilterState];
+  v5 = PXContentFilterImageNameForFilterStatesAndCustomDefaultImageName(libraryFilterState, currentContentFilterState, 0);
 
   return v5;
 }

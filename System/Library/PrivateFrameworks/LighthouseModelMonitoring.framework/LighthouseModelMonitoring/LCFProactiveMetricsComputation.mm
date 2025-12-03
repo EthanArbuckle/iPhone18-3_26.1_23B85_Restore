@@ -1,18 +1,18 @@
 @interface LCFProactiveMetricsComputation
-+ (id)mrr:(id)a3;
++ (id)mrr:(id)mrr;
 @end
 
 @implementation LCFProactiveMetricsComputation
 
-+ (id)mrr:(id)a3
++ (id)mrr:(id)mrr
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  mrrCopy = mrr;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [mrrCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,14 +24,14 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(mrrCopy);
         }
 
         [*(*(&v13 + 1) + 8 * i) doubleValue];
         v7 = v7 + 1.0 / v9;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [mrrCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -42,7 +42,7 @@
     v7 = 0.0;
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithDouble:{v7 / objc_msgSend(v3, "count")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithDouble:{v7 / objc_msgSend(mrrCopy, "count")}];
 
   v11 = *MEMORY[0x277D85DE8];
 

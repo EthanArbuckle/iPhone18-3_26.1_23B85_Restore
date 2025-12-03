@@ -1,12 +1,12 @@
 @interface IMDMSAMessage
-- (IMDMSAMessage)initWithMessage:(_IMDMessageRecordStruct *)a3 inChat:(_IMDChatRecordStruct *)a4;
+- (IMDMSAMessage)initWithMessage:(_IMDMessageRecordStruct *)message inChat:(_IMDChatRecordStruct *)chat;
 - (double)timeSinceSent;
 - (void)dealloc;
 @end
 
 @implementation IMDMSAMessage
 
-- (IMDMSAMessage)initWithMessage:(_IMDMessageRecordStruct *)a3 inChat:(_IMDChatRecordStruct *)a4
+- (IMDMSAMessage)initWithMessage:(_IMDMessageRecordStruct *)message inChat:(_IMDChatRecordStruct *)chat
 {
   v61.receiver = self;
   v61.super_class = IMDMSAMessage;
@@ -14,12 +14,12 @@
   v7 = v6;
   if (v6)
   {
-    if (!a3)
+    if (!message)
     {
       goto LABEL_5;
     }
 
-    if (!a4)
+    if (!chat)
     {
       goto LABEL_5;
     }
@@ -178,8 +178,8 @@
 
       v57 = 0;
       v56 = 0;
-      v23 = [(_IMDMessageRecordStruct *)a3 messageSummaryInfo];
-      v7->_encrypted = [objc_msgSend(v23 objectForKey:{IMMessageSummaryInfoEncrypted), "BOOLValue"}];
+      messageSummaryInfo = [(_IMDMessageRecordStruct *)message messageSummaryInfo];
+      v7->_encrypted = [objc_msgSend(messageSummaryInfo objectForKey:{IMMessageSummaryInfoEncrypted), "BOOLValue"}];
       _Block_object_dispose(&v51, 8);
     }
 

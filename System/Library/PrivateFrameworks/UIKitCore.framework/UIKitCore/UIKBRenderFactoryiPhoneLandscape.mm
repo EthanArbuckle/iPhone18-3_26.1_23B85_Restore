@@ -1,5 +1,5 @@
 @interface UIKBRenderFactoryiPhoneLandscape
-- ($89C9DF7554150EC42DA90319EED2ADED)customizedOffsetForString:(SEL)a3 isPrimary:(id)a4 withFrame:(BOOL)a5;
+- ($89C9DF7554150EC42DA90319EED2ADED)customizedOffsetForString:(SEL)string isPrimary:(id)primary withFrame:(BOOL)frame;
 - (BOOL)isTallPopup;
 - (CGPoint)gurmukhiEkOnkarOffset;
 - (CGPoint)more123KeyOffset;
@@ -10,7 +10,7 @@
 - (CGPoint)variantAnnotationTextOffset;
 - (CGPoint)variantSymbolTextOffset;
 - (UIEdgeInsets)dynamicInsets;
-- (UIEdgeInsets)dynamicInsetsForNumberOfRows:(unint64_t)a3;
+- (UIEdgeInsets)dynamicInsetsForNumberOfRows:(unint64_t)rows;
 - (UIEdgeInsets)variantDisplayFrameInsets;
 - (UIEdgeInsets)variantPaddedFrameInsets;
 - (UIEdgeInsets)variantSymbolFrameInsets;
@@ -30,8 +30,8 @@
 - (double)stringKeyFontSizeTamil;
 - (double)stringKeyFontSizeTelugu;
 - (double)symbolImageControlKeyFontSize;
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4;
-- (id)variantGeometriesForGeometry:(id)a3 variantCount:(unint64_t)a4 rowLimit:(int64_t)a5 annotationIndex:(unint64_t)a6;
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane;
+- (id)variantGeometriesForGeometry:(id)geometry variantCount:(unint64_t)count rowLimit:(int64_t)limit annotationIndex:(unint64_t)index;
 @end
 
 @implementation UIKBRenderFactoryiPhoneLandscape
@@ -167,10 +167,10 @@
 
 - (CGPoint)variantAnnotationTextOffset
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   v4 = 4.0;
   v5 = 4.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v6.receiver = self;
     v6.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -217,15 +217,15 @@
 
 - (BOOL)isTallPopup
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
-  if (v3)
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
-    LOBYTE(v3) = [(UIKBRenderFactoryiPhone *)&v5 isTallPopup];
+    LOBYTE(dynamicFactory) = [(UIKBRenderFactoryiPhone *)&v5 isTallPopup];
   }
 
-  return v3;
+  return dynamicFactory;
 }
 
 - (double)emojiPopupDividerKeyOffset
@@ -243,9 +243,9 @@
 
 - (double)symbolImageControlKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 18.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -295,9 +295,9 @@
 
 - (double)stringKeyFontSizeBengali
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 12.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -309,9 +309,9 @@
 
 - (double)stringKeyFontSizeDevanagari
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 14.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -323,9 +323,9 @@
 
 - (double)stringKeyFontSizeGujarati
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 14.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -337,9 +337,9 @@
 
 - (double)stringKeyFontSizeGurmukhi
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 14.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -351,9 +351,9 @@
 
 - (double)stringKeyFontSizeKannada
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 12.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -365,9 +365,9 @@
 
 - (double)stringKeyFontSizeMalayalam
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 14.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -379,9 +379,9 @@
 
 - (double)stringKeyFontSizeOriya
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 14.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -393,9 +393,9 @@
 
 - (double)stringKeyFontSizeTamil
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 14.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -407,9 +407,9 @@
 
 - (double)stringKeyFontSizeTelugu
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 12.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -481,14 +481,14 @@
   return result;
 }
 
-- (UIEdgeInsets)dynamicInsetsForNumberOfRows:(unint64_t)a3
+- (UIEdgeInsets)dynamicInsetsForNumberOfRows:(unint64_t)rows
 {
-  if (a3 > 4)
+  if (rows > 4)
   {
-    v8 = [(UIKBRenderFactory *)self dynamicFactory];
+    dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
     v3 = 0.0;
     v9 = 1.0;
-    if (v8)
+    if (dynamicFactory)
     {
       v6 = 1.0;
     }
@@ -498,12 +498,12 @@
       v6 = 0.0;
     }
 
-    if (v8)
+    if (dynamicFactory)
     {
       v9 = 2.0;
     }
 
-    if (a3 == 5)
+    if (rows == 5)
     {
       v5 = v9;
     }
@@ -513,7 +513,7 @@
       v5 = v6;
     }
 
-    if (a3 == 5)
+    if (rows == 5)
     {
       v6 = v9;
     }
@@ -535,9 +535,9 @@
 
 - (double)moreABCKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 15.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneLandscape;
@@ -587,50 +587,50 @@
   return result;
 }
 
-- (id)variantGeometriesForGeometry:(id)a3 variantCount:(unint64_t)a4 rowLimit:(int64_t)a5 annotationIndex:(unint64_t)a6
+- (id)variantGeometriesForGeometry:(id)geometry variantCount:(unint64_t)count rowLimit:(int64_t)limit annotationIndex:(unint64_t)index
 {
-  v10 = a3;
+  geometryCopy = geometry;
   if ([(UIKBRenderFactory *)self dynamicFactory])
   {
     v17.receiver = self;
     v17.super_class = UIKBRenderFactoryiPhoneLandscape;
-    v11 = [(UIKBRenderFactoryiPhone *)&v17 variantGeometriesForGeometry:v10 variantCount:a4 rowLimit:a5 annotationIndex:a6];
+    v11 = [(UIKBRenderFactoryiPhone *)&v17 variantGeometriesForGeometry:geometryCopy variantCount:count rowLimit:limit annotationIndex:index];
   }
 
   else
   {
-    v12 = [v10 copy];
+    v12 = [geometryCopy copy];
 
     [v12 paddedFrame];
     [v12 setPaddedFrame:{v13 + -0.5, v15 + 0.0, v14 + 1.0}];
-    v11 = [v12 iPhoneVariantGeometries:a4 annotationIndex:a6];
+    v11 = [v12 iPhoneVariantGeometries:count annotationIndex:index];
   }
 
   return v11;
 }
 
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  keyplaneCopy = keyplane;
   v34.receiver = self;
   v34.super_class = UIKBRenderFactoryiPhoneLandscape;
-  v8 = [(UIKBRenderFactoryiPhone *)&v34 _traitsForKey:v6 onKeyplane:v7];
+  v8 = [(UIKBRenderFactoryiPhone *)&v34 _traitsForKey:keyCopy onKeyplane:keyplaneCopy];
   if (![(UIKBRenderFactory *)self dynamicFactory])
   {
-    if (!-[UIKBRenderFactoryiPhone _popupStyleForKey:](self, "_popupStyleForKey:", v6) && ![v6 displayType])
+    if (!-[UIKBRenderFactoryiPhone _popupStyleForKey:](self, "_popupStyleForKey:", keyCopy) && ![keyCopy displayType])
     {
-      v9 = [v6 name];
-      v10 = [v9 hasPrefix:@"Burmese-"];
+      name = [keyCopy name];
+      v10 = [name hasPrefix:@"Burmese-"];
 
       if (v10)
       {
-        v11 = [v8 symbolStyle];
-        [v11 fontSize];
+        symbolStyle = [v8 symbolStyle];
+        [symbolStyle fontSize];
         v13 = round(v12 * 0.9);
-        v14 = [v8 symbolStyle];
-        [v14 setFontSize:v13];
+        symbolStyle2 = [v8 symbolStyle];
+        [symbolStyle2 setFontSize:v13];
       }
     }
 
@@ -638,13 +638,13 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v15 = [v7 subtrees];
-    v16 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    subtrees = [keyplaneCopy subtrees];
+    v16 = [subtrees countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v16)
     {
       v17 = v16;
       v28 = v8;
-      v29 = v7;
+      v29 = keyplaneCopy;
       v18 = *v31;
 LABEL_8:
       v19 = 0;
@@ -652,12 +652,12 @@ LABEL_8:
       {
         if (*v31 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(subtrees);
         }
 
         v20 = *(*(&v30 + 1) + 8 * v19);
-        v21 = [v20 name];
-        v22 = [v21 _containsSubstring:@"Assist"];
+        name2 = [v20 name];
+        v22 = [name2 _containsSubstring:@"Assist"];
 
         if (v22)
         {
@@ -666,7 +666,7 @@ LABEL_8:
 
         if (v17 == ++v19)
         {
-          v17 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
+          v17 = [subtrees countByEnumeratingWithState:&v30 objects:v35 count:16];
           if (v17)
           {
             goto LABEL_8;
@@ -674,7 +674,7 @@ LABEL_8:
 
           v23 = 0;
           v8 = v28;
-          v7 = v29;
+          keyplaneCopy = v29;
           goto LABEL_24;
         }
       }
@@ -684,37 +684,37 @@ LABEL_8:
       if (!v23)
       {
         v8 = v28;
-        v7 = v29;
+        keyplaneCopy = v29;
         goto LABEL_25;
       }
 
-      v24 = [v23 keys];
-      v25 = [v24 containsObject:v6];
+      keys = [v23 keys];
+      v25 = [keys containsObject:keyCopy];
 
       v8 = v28;
-      v7 = v29;
+      keyplaneCopy = v29;
       if (!v25)
       {
         goto LABEL_25;
       }
 
-      if (([v6 state] & 3) != 0)
+      if (([keyCopy state] & 3) != 0)
       {
-        v26 = [(UIKBRenderFactoryiPhone *)self controlKeyTraits];
+        controlKeyTraits = [(UIKBRenderFactoryiPhone *)self controlKeyTraits];
       }
 
       else
       {
-        if (([v6 state] & 4) == 0)
+        if (([keyCopy state] & 4) == 0)
         {
           goto LABEL_25;
         }
 
-        v26 = [(UIKBRenderFactoryiPhone *)self activeControlKeyTraits];
+        controlKeyTraits = [(UIKBRenderFactoryiPhone *)self activeControlKeyTraits];
       }
 
-      v15 = v26;
-      [v28 overlayWithTraits:v26];
+      subtrees = controlKeyTraits;
+      [v28 overlayWithTraits:controlKeyTraits];
     }
 
     else
@@ -730,17 +730,17 @@ LABEL_25:
   return v8;
 }
 
-- ($89C9DF7554150EC42DA90319EED2ADED)customizedOffsetForString:(SEL)a3 isPrimary:(id)a4 withFrame:(BOOL)a5
+- ($89C9DF7554150EC42DA90319EED2ADED)customizedOffsetForString:(SEL)string isPrimary:(id)primary withFrame:(BOOL)frame
 {
   height = a6.size.height;
   width = a6.size.width;
   y = a6.origin.y;
   x = a6.origin.x;
-  v10 = a5;
-  v12 = a4;
+  frameCopy = frame;
+  primaryCopy = primary;
   v14.receiver = self;
   v14.super_class = UIKBRenderFactoryiPhoneLandscape;
-  [($89C9DF7554150EC42DA90319EED2ADED *)&v14 customizedOffsetForString:v12 isPrimary:v10 isLandscape:[(UIKBRenderFactory *)self dynamicFactory]^ 1 withFrame:x, y, width, height];
+  [($89C9DF7554150EC42DA90319EED2ADED *)&v14 customizedOffsetForString:primaryCopy isPrimary:frameCopy isLandscape:[(UIKBRenderFactory *)self dynamicFactory]^ 1 withFrame:x, y, width, height];
 
   return result;
 }

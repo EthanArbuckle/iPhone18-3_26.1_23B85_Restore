@@ -1,31 +1,31 @@
 @interface VUIDebugMetricsEventListViewController
-- (VUIDebugMetricsEventListViewController)initWithEvents:(id)a3;
-- (id)_formatKeyAndValue:(id)a3 fromEvent:(id)a4;
-- (id)_imageFromPageContext:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)_buttonClicked:(id)a3;
+- (VUIDebugMetricsEventListViewController)initWithEvents:(id)events;
+- (id)_formatKeyAndValue:(id)value fromEvent:(id)event;
+- (id)_imageFromPageContext:(id)context;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)_buttonClicked:(id)clicked;
 - (void)finishValidation;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)toggleValidationMode;
 - (void)viewDidLoad;
 @end
 
 @implementation VUIDebugMetricsEventListViewController
 
-- (VUIDebugMetricsEventListViewController)initWithEvents:(id)a3
+- (VUIDebugMetricsEventListViewController)initWithEvents:(id)events
 {
-  v5 = a3;
+  eventsCopy = events;
   v10.receiver = self;
   v10.super_class = VUIDebugMetricsEventListViewController;
   v6 = [(VUIDebugMetricsEventListViewController *)&v10 initWithStyle:0];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [eventsCopy copy];
     allEvents = v6->_allEvents;
     v6->_allEvents = v7;
 
-    objc_storeStrong(&v6->_visibleEvents, a3);
+    objc_storeStrong(&v6->_visibleEvents, events);
     [(VUIDebugMetricsEventListViewController *)v6 setTitle:@"Events"];
   }
 
@@ -38,26 +38,26 @@
   v9.super_class = VUIDebugMetricsEventListViewController;
   [(VUIDebugMetricsEventListViewController *)&v9 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:@"Select" style:0 target:self action:sel_toggleValidationMode];
-  v4 = [(VUIDebugMetricsEventListViewController *)self navigationItem];
-  [v4 setLargeTitleDisplayMode:1];
+  navigationItem = [(VUIDebugMetricsEventListViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:1];
 
-  v5 = [(VUIDebugMetricsEventListViewController *)self navigationItem];
-  [v5 setRightBarButtonItem:v3];
+  navigationItem2 = [(VUIDebugMetricsEventListViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v3];
 
-  v6 = [(VUIDebugMetricsEventListViewController *)self tableView];
-  [v6 setAllowsSelectionDuringEditing:0];
+  tableView = [(VUIDebugMetricsEventListViewController *)self tableView];
+  [tableView setAllowsSelectionDuringEditing:0];
 
-  v7 = [(VUIDebugMetricsEventListViewController *)self tableView];
-  [v7 setAllowsMultipleSelectionDuringEditing:1];
+  tableView2 = [(VUIDebugMetricsEventListViewController *)self tableView];
+  [tableView2 setAllowsMultipleSelectionDuringEditing:1];
 
-  v8 = [(VUIDebugMetricsEventListViewController *)self tableView];
-  [v8 registerClass:objc_opt_class() forCellReuseIdentifier:@"EventCell"];
+  tableView3 = [(VUIDebugMetricsEventListViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"EventCell"];
 }
 
 - (void)toggleValidationMode
 {
-  v3 = [(VUIDebugMetricsEventListViewController *)self isEditing];
-  if (v3)
+  isEditing = [(VUIDebugMetricsEventListViewController *)self isEditing];
+  if (isEditing)
   {
     [(VUIDebugMetricsEventListViewController *)self finishValidation];
     v4 = @"Select";
@@ -68,27 +68,27 @@
     v4 = @"Validate";
   }
 
-  [(VUIDebugMetricsEventListViewController *)self setEditing:v3 ^ 1u animated:1];
-  v5 = [(VUIDebugMetricsEventListViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  [v6 setTitle:v4];
+  [(VUIDebugMetricsEventListViewController *)self setEditing:isEditing ^ 1u animated:1];
+  navigationItem = [(VUIDebugMetricsEventListViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setTitle:v4];
 
-  v8 = [(VUIDebugMetricsEventListViewController *)self navigationItem];
-  v7 = [v8 rightBarButtonItem];
-  [v7 setStyle:2];
+  navigationItem2 = [(VUIDebugMetricsEventListViewController *)self navigationItem];
+  rightBarButtonItem2 = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem2 setStyle:2];
 }
 
 - (void)finishValidation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIDebugMetricsEventListViewController *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
+  tableView = [(VUIDebugMetricsEventListViewController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  if ([v4 count])
+  if ([indexPathsForSelectedRows count])
   {
-    v5 = [v4 mutableCopy];
+    v5 = [indexPathsForSelectedRows mutableCopy];
     [v5 sortUsingComparator:&__block_literal_global_156];
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -110,8 +110,8 @@
           }
 
           v12 = -[NSArray objectAtIndex:](self->_visibleEvents, "objectAtIndex:", [*(*(&v20 + 1) + 8 * v11) row]);
-          v13 = [v12 rawEvent];
-          [v6 addObject:v13];
+          rawEvent = [v12 rawEvent];
+          [array addObject:rawEvent];
 
           ++v11;
         }
@@ -128,9 +128,9 @@
     v16[2] = __58__VUIDebugMetricsEventListViewController_finishValidation__block_invoke_2;
     v16[3] = &unk_1E8737188;
     v17 = v7;
-    v18 = v6;
-    v19 = self;
-    v14 = v6;
+    v18 = array;
+    selfCopy = self;
+    v14 = array;
     v15 = v7;
     [VUIDebugMetricsEventValidator validateEvents:v14 forRuleset:@"com.apple.amp.ae.validator.manifest.Video.AllRulesets" withCompletion:v16];
   }
@@ -231,19 +231,19 @@ void __58__VUIDebugMetricsEventListViewController_finishValidation__block_invoke
   [v4 setSubhead3LabelColor:v3];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"EventCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"EventCell"];
   visibleEvents = self->_visibleEvents;
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [(NSArray *)visibleEvents objectAtIndexedSubscript:v9];
-  v11 = [v10 eventType];
-  [v7 setEventTypeLabelStr:v11];
+  eventType = [v10 eventType];
+  [v7 setEventTypeLabelStr:eventType];
 
-  v12 = [v10 eventType];
-  if ([v12 isEqualToString:@"page"])
+  eventType2 = [v10 eventType];
+  if ([eventType2 isEqualToString:@"page"])
   {
     [v10 sortedPageKeys];
   }
@@ -298,8 +298,8 @@ void __58__VUIDebugMetricsEventListViewController_finishValidation__block_invoke
 
   v18 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v18 setDateFormat:@"h:mm:ss a"];
-  v19 = [v10 eventDate];
-  v20 = [v18 stringFromDate:v19];
+  eventDate = [v10 eventDate];
+  v20 = [v18 stringFromDate:eventDate];
 
   if (v20)
   {
@@ -331,8 +331,8 @@ LABEL_19:
     [v7 setSubhead3LabelStr:v21];
   }
 
-  v22 = [v10 pageContext];
-  v23 = [(VUIDebugMetricsEventListViewController *)self _imageFromPageContext:v22];
+  pageContext = [v10 pageContext];
+  v23 = [(VUIDebugMetricsEventListViewController *)self _imageFromPageContext:pageContext];
 
   [v7 setTabImage:v23];
   if (v23)
@@ -342,65 +342,65 @@ LABEL_19:
 
   else
   {
-    v24 = [v10 pageContext];
-    [v7 setTabName:v24];
+    pageContext2 = [v10 pageContext];
+    [v7 setTabName:pageContext2];
   }
 
   return v7;
 }
 
-- (id)_formatKeyAndValue:(id)a3 fromEvent:(id)a4
+- (id)_formatKeyAndValue:(id)value fromEvent:(id)event
 {
-  v5 = a4;
-  v6 = a3;
-  if ([v6 isEqualToString:@"impressions"])
+  eventCopy = event;
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"impressions"])
   {
-    v7 = [v5 rawData];
+    rawData = [eventCopy rawData];
 
-    v8 = [v7 valueForKey:v6];
+    rawData2 = [rawData valueForKey:valueCopy];
 
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %lu impressions", v6, objc_msgSend(v8, "count")];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %lu impressions", valueCopy, objc_msgSend(rawData2, "count")];
   }
 
   else
   {
     v10 = MEMORY[0x1E696AEC0];
-    v8 = [v5 rawData];
+    rawData2 = [eventCopy rawData];
 
-    v11 = [v8 objectForKeyedSubscript:v6];
-    v9 = [v10 stringWithFormat:@"%@: %@", v6, v11];
+    v11 = [rawData2 objectForKeyedSubscript:valueCopy];
+    v9 = [v10 stringWithFormat:@"%@: %@", valueCopy, v11];
 
-    v6 = v11;
+    valueCopy = v11;
   }
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  pathCopy = path;
   if (([(VUIDebugMetricsEventListViewController *)self isEditing]& 1) == 0)
   {
-    v5 = -[NSArray objectAtIndexedSubscript:](self->_visibleEvents, "objectAtIndexedSubscript:", [v8 row]);
+    v5 = -[NSArray objectAtIndexedSubscript:](self->_visibleEvents, "objectAtIndexedSubscript:", [pathCopy row]);
     v6 = [[VUIDebugMetricsEventViewController alloc] initWithEvent:v5];
-    v7 = [(VUIDebugMetricsEventListViewController *)self navigationController];
-    [v7 pushViewController:v6 animated:1];
+    navigationController = [(VUIDebugMetricsEventListViewController *)self navigationController];
+    [navigationController pushViewController:v6 animated:1];
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v63 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E695DF70] array];
-  [v5 addObject:@"all"];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [array addObject:@"all"];
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v47 = self;
-  v7 = [(VUIDebugMetricsEventListViewController *)self allEvents];
-  v8 = [v7 countByEnumeratingWithState:&v56 objects:v62 count:16];
+  selfCopy = self;
+  allEvents = [(VUIDebugMetricsEventListViewController *)self allEvents];
+  v8 = [allEvents countByEnumeratingWithState:&v56 objects:v62 count:16];
   if (v8)
   {
     v9 = v8;
@@ -411,21 +411,21 @@ LABEL_19:
       {
         if (*v57 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allEvents);
         }
 
         v12 = *(*(&v56 + 1) + 8 * i);
-        v13 = [v12 eventType];
-        v14 = [v5 containsObject:v13];
+        eventType = [v12 eventType];
+        v14 = [array containsObject:eventType];
 
         if ((v14 & 1) == 0)
         {
-          v15 = [v12 eventType];
-          [v5 addObject:v15];
+          eventType2 = [v12 eventType];
+          [array addObject:eventType2];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v56 objects:v62 count:16];
+      v9 = [allEvents countByEnumeratingWithState:&v56 objects:v62 count:16];
     }
 
     while (v9);
@@ -435,8 +435,8 @@ LABEL_19:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v16 = [(VUIDebugMetricsEventListViewController *)v47 visibleEvents];
-  v17 = [v16 countByEnumeratingWithState:&v52 objects:v61 count:16];
+  visibleEvents = [(VUIDebugMetricsEventListViewController *)selfCopy visibleEvents];
+  v17 = [visibleEvents countByEnumeratingWithState:&v52 objects:v61 count:16];
   if (v17)
   {
     v18 = v17;
@@ -447,38 +447,38 @@ LABEL_19:
       {
         if (*v53 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(visibleEvents);
         }
 
         v21 = *(*(&v52 + 1) + 8 * j);
-        v22 = [v21 eventType];
-        v23 = [v6 containsObject:v22];
+        eventType3 = [v21 eventType];
+        v23 = [array2 containsObject:eventType3];
 
         if ((v23 & 1) == 0)
         {
-          v24 = [v21 eventType];
-          [v6 addObject:v24];
+          eventType4 = [v21 eventType];
+          [array2 addObject:eventType4];
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v52 objects:v61 count:16];
+      v18 = [visibleEvents countByEnumeratingWithState:&v52 objects:v61 count:16];
     }
 
     while (v18);
   }
 
-  v25 = [v5 copy];
-  [(VUIDebugMetricsEventListViewController *)v47 setButtonsInHeader:v25];
+  v25 = [array copy];
+  [(VUIDebugMetricsEventListViewController *)selfCopy setButtonsInHeader:v25];
 
-  v26 = [v6 copy];
-  [(VUIDebugMetricsEventListViewController *)v47 setButtonsInHeaderSelected:v26];
+  v26 = [array2 copy];
+  [(VUIDebugMetricsEventListViewController *)selfCopy setButtonsInHeaderSelected:v26];
 
-  v46 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v27 = v5;
+  v27 = array;
   v28 = [v27 countByEnumeratingWithState:&v48 objects:v60 count:16];
   if (v28)
   {
@@ -498,20 +498,20 @@ LABEL_19:
 
         v35 = *(*(&v48 + 1) + 8 * k);
         v36 = 1;
-        v37 = [MEMORY[0x1E69DC738] buttonWithType:{1, v46}];
-        [v37 addTarget:v47 action:sel__buttonClicked_ forControlEvents:64];
+        v37 = [MEMORY[0x1E69DC738] buttonWithType:{1, array3}];
+        [v37 addTarget:selfCopy action:sel__buttonClicked_ forControlEvents:64];
         [v37 setTitle:v35 forState:0];
-        if (([v6 containsObject:v35] & 1) == 0)
+        if (([array2 containsObject:v35] & 1) == 0)
         {
           v38 = [v27 count] - 1;
-          v36 = v38 == [v6 count];
+          v36 = v38 == [array2 count];
         }
 
         [v37 setSelected:v36];
         [v37 sizeThatFits:{v32, v33}];
         [v37 setExclusiveTouch:1];
         [v37 setTag:v30++];
-        [v46 addObject:v37];
+        [array3 addObject:v37];
       }
 
       v29 = [v27 countByEnumeratingWithState:&v48 objects:v60 count:16];
@@ -520,11 +520,11 @@ LABEL_19:
     while (v29);
   }
 
-  v39 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v46];
+  v39 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array3];
   [v39 setAlignment:3];
   [v39 setDistribution:3];
-  v40 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v40 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v42 = v41;
 
   [v39 setFrame:{48.0, 0.0, v42 + -96.0, 35.0}];
@@ -535,17 +535,17 @@ LABEL_19:
   return v44;
 }
 
-- (void)_buttonClicked:(id)a3
+- (void)_buttonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = [(VUIDebugMetricsEventListViewController *)self buttonsInHeader];
-  v6 = [v5 objectAtIndex:{objc_msgSend(v4, "tag")}];
+  clickedCopy = clicked;
+  buttonsInHeader = [(VUIDebugMetricsEventListViewController *)self buttonsInHeader];
+  v6 = [buttonsInHeader objectAtIndex:{objc_msgSend(clickedCopy, "tag")}];
 
-  [v4 setSelected:{objc_msgSend(v4, "isSelected") ^ 1}];
-  v7 = [(VUIDebugMetricsEventListViewController *)self buttonsInHeaderSelected];
-  v8 = [v7 mutableCopy];
+  [clickedCopy setSelected:{objc_msgSend(clickedCopy, "isSelected") ^ 1}];
+  buttonsInHeaderSelected = [(VUIDebugMetricsEventListViewController *)self buttonsInHeaderSelected];
+  v8 = [buttonsInHeaderSelected mutableCopy];
 
-  if ([v4 isSelected])
+  if ([clickedCopy isSelected])
   {
     [v8 addObject:v6];
   }
@@ -558,32 +558,32 @@ LABEL_19:
   v9 = [v8 copy];
   [(VUIDebugMetricsEventListViewController *)self setButtonsInHeaderSelected:v9];
 
-  v10 = [(VUIDebugMetricsEventListViewController *)self tableView];
-  [v10 beginUpdates];
+  tableView = [(VUIDebugMetricsEventListViewController *)self tableView];
+  [tableView beginUpdates];
 
-  v11 = [v4 tag];
-  v12 = [(VUIDebugMetricsEventListViewController *)self allEvents];
+  v11 = [clickedCopy tag];
+  allEvents = [(VUIDebugMetricsEventListViewController *)self allEvents];
   if (v11)
   {
-    v13 = [(VUIDebugMetricsEventListViewController *)self allEvents];
+    allEvents2 = [(VUIDebugMetricsEventListViewController *)self allEvents];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __57__VUIDebugMetricsEventListViewController__buttonClicked___block_invoke;
     v19[3] = &unk_1E87371B0;
     v19[4] = self;
-    v14 = [v13 indexesOfObjectsPassingTest:v19];
-    v15 = [v12 objectsAtIndexes:v14];
+    v14 = [allEvents2 indexesOfObjectsPassingTest:v19];
+    v15 = [allEvents objectsAtIndexes:v14];
 
-    v12 = v15;
+    allEvents = v15;
   }
 
-  [(VUIDebugMetricsEventListViewController *)self setVisibleEvents:v12];
-  v16 = [(VUIDebugMetricsEventListViewController *)self tableView];
+  [(VUIDebugMetricsEventListViewController *)self setVisibleEvents:allEvents];
+  tableView2 = [(VUIDebugMetricsEventListViewController *)self tableView];
   v17 = [MEMORY[0x1E696AC90] indexSetWithIndex:0];
-  [v16 reloadSections:v17 withRowAnimation:5];
+  [tableView2 reloadSections:v17 withRowAnimation:5];
 
-  v18 = [(VUIDebugMetricsEventListViewController *)self tableView];
-  [v18 endUpdates];
+  tableView3 = [(VUIDebugMetricsEventListViewController *)self tableView];
+  [tableView3 endUpdates];
 }
 
 uint64_t __57__VUIDebugMetricsEventListViewController__buttonClicked___block_invoke(uint64_t a1, void *a2)
@@ -597,30 +597,30 @@ uint64_t __57__VUIDebugMetricsEventListViewController__buttonClicked___block_inv
   return v6;
 }
 
-- (id)_imageFromPageContext:(id)a3
+- (id)_imageFromPageContext:(id)context
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"watchnow"])
+  contextCopy = context;
+  if ([contextCopy isEqualToString:@"watchnow"])
   {
     v4 = @"play.circle.fill";
   }
 
-  else if ([v3 isEqualToString:@"movies"])
+  else if ([contextCopy isEqualToString:@"movies"])
   {
     v4 = @"film.fill";
   }
 
-  else if ([v3 isEqualToString:@"tv"])
+  else if ([contextCopy isEqualToString:@"tv"])
   {
     v4 = @"tv.inset.filled";
   }
 
-  else if ([v3 isEqualToString:@"library"])
+  else if ([contextCopy isEqualToString:@"library"])
   {
     v4 = @"rectangle.stack.fill";
   }
 
-  else if ([v3 isEqualToString:@"search"])
+  else if ([contextCopy isEqualToString:@"search"])
   {
     v4 = @"magnifyingglass";
   }

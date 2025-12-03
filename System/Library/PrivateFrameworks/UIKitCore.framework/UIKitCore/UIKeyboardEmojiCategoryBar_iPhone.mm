@@ -1,22 +1,22 @@
 @interface UIKeyboardEmojiCategoryBar_iPhone
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation UIKeyboardEmojiCategoryBar_iPhone
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  if ([(UIView *)self pointInside:a4 withEvent:a3.x, a3.y])
+  if ([(UIView *)self pointInside:event withEvent:test.x, test.y])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

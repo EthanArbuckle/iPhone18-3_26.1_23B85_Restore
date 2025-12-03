@@ -1,17 +1,17 @@
 @interface CPUTraceProvider
-- (BOOL)shouldInitializeWithLogger:(id)a3 machine:(ktrace_machine *)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)a3 error:(id *)a4;
-- (void)buildSymbolicationProviderSparseSymbolMap:(ktrace_file *)a3;
-- (void)configurePostprocessingWithSession:(ktrace_session *)a3;
-- (void)configureWithSession:(ktrace_session *)a3;
+- (BOOL)shouldInitializeWithLogger:(id)logger machine:(ktrace_machine *)machine options:(id)options error:(id *)error;
+- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)configuration error:(id *)error;
+- (void)buildSymbolicationProviderSparseSymbolMap:(ktrace_file *)map;
+- (void)configurePostprocessingWithSession:(ktrace_session *)session;
+- (void)configureWithSession:(ktrace_session *)session;
 - (void)dealloc;
-- (void)didStartTracingToFile:(ktrace_file *)a3;
-- (void)didStopTracingToFile:(ktrace_file *)a3;
-- (void)iterateThreadCursorsForSystem:(hwtrace_system *)a3;
-- (void)postprocessingCompleteWithFile:(ktrace_file *)a3;
+- (void)didStartTracingToFile:(ktrace_file *)file;
+- (void)didStopTracingToFile:(ktrace_file *)file;
+- (void)iterateThreadCursorsForSystem:(hwtrace_system *)system;
+- (void)postprocessingCompleteWithFile:(ktrace_file *)file;
 - (void)stopPollingTraceSize;
 - (void)willEndTracing;
-- (void)willFinishWithCatalog:(ktrace_catalog *)a3 file:(ktrace_file *)a4;
+- (void)willFinishWithCatalog:(ktrace_catalog *)catalog file:(ktrace_file *)file;
 @end
 
 @implementation CPUTraceProvider
@@ -80,20 +80,20 @@ LABEL_11:
   [(CPUTraceProvider *)&v3 dealloc];
 }
 
-- (BOOL)shouldInitializeWithLogger:(id)a3 machine:(ktrace_machine *)a4 options:(id)a5 error:(id *)a6
+- (BOOL)shouldInitializeWithLogger:(id)logger machine:(ktrace_machine *)machine options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  objc_storeStrong(&self->_logger, a3);
-  v12 = [[CPUTraceProviderConfiguration alloc] initWithOptions:v11 error:a6];
+  loggerCopy = logger;
+  optionsCopy = options;
+  objc_storeStrong(&self->_logger, logger);
+  v12 = [[CPUTraceProviderConfiguration alloc] initWithOptions:optionsCopy error:error];
   config = self->_config;
   self->_config = v12;
 
-  if (*a6)
+  if (*error)
   {
     logger = self->_logger;
-    v15 = [*a6 userInfo];
-    v16 = [NSString stringWithFormat:@"Invalid CPUTrace configuration. %@", v15];
+    userInfo = [*error userInfo];
+    v16 = [NSString stringWithFormat:@"Invalid CPUTrace configuration. %@", userInfo];
     [(KTProviderLogger *)logger failWithReason:v16];
   }
 
@@ -106,7 +106,7 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)a3 error:(id *)a4
+- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)configuration error:(id *)error
 {
   if (!self->_config)
   {
@@ -115,7 +115,7 @@ LABEL_11:
 
   if (atomic_exchange(&unk_C953, 1u))
   {
-    [(KTProviderLogger *)self->_logger failWithReason:@"Concurrent recordings are not supported.", a4];
+    [(KTProviderLogger *)self->_logger failWithReason:@"Concurrent recordings are not supported.", error];
 LABEL_4:
     LOBYTE(v5) = 0;
     return v5;
@@ -148,14 +148,14 @@ LABEL_9:
     return v5;
   }
 
-  v10 = [(CPUTraceProviderConfiguration *)self->_config sizeLimit];
-  if (v10)
+  sizeLimit = [(CPUTraceProviderConfiguration *)self->_config sizeLimit];
+  if (sizeLimit)
   {
-    v11 = v10;
-    v12 = [(CPUTraceProviderConfiguration *)self->_config sizeLimit];
-    v13 = [v12 intValue];
+    v11 = sizeLimit;
+    sizeLimit2 = [(CPUTraceProviderConfiguration *)self->_config sizeLimit];
+    intValue = [sizeLimit2 intValue];
 
-    if (v13 >= 1)
+    if (intValue >= 1)
     {
       atomic_store(1u, &unk_C950);
       [(CPUTraceProviderConfiguration *)self->_config sizeLimit];
@@ -168,14 +168,14 @@ LABEL_9:
   return v5;
 }
 
-- (void)configureWithSession:(ktrace_session *)a3
+- (void)configureWithSession:(ktrace_session *)session
 {
   ktrace_events_range();
 
-  _ktrace_add_stackshot_flags(a3, 0x10000000);
+  _ktrace_add_stackshot_flags(session, 0x10000000);
 }
 
-- (void)didStartTracingToFile:(ktrace_file *)a3
+- (void)didStartTracingToFile:(ktrace_file *)file
 {
   if (self->_state == 1)
   {
@@ -199,7 +199,7 @@ LABEL_9:
   [(KTProviderLogger *)logger failWithReason:v6];
 }
 
-- (void)didStopTracingToFile:(ktrace_file *)a3
+- (void)didStopTracingToFile:(ktrace_file *)file
 {
   if (self->_state == 3)
   {
@@ -223,7 +223,7 @@ LABEL_9:
   [(KTProviderLogger *)logger failWithReason:v6];
 }
 
-- (void)configurePostprocessingWithSession:(ktrace_session *)a3
+- (void)configurePostprocessingWithSession:(ktrace_session *)session
 {
   if (self->_state == 4)
   {
@@ -250,7 +250,7 @@ LABEL_9:
   [(KTProviderLogger *)logger failWithReason:v6];
 }
 
-- (void)postprocessingCompleteWithFile:(ktrace_file *)a3
+- (void)postprocessingCompleteWithFile:(ktrace_file *)file
 {
   if (self->_state == 4)
   {
@@ -288,12 +288,12 @@ LABEL_9:
       hwtrace_recording_save_options_set_decode_trace();
       if ([(CPUTraceProviderConfiguration *)self->_config decode])
       {
-        v10 = [(CPUTraceProviderConfiguration *)self->_config decodeCompression];
+        decodeCompression = [(CPUTraceProviderConfiguration *)self->_config decodeCompression];
 
-        if (v10)
+        if (decodeCompression)
         {
-          v11 = [(CPUTraceProviderConfiguration *)self->_config decodeCompression];
-          [v11 UTF8String];
+          decodeCompression2 = [(CPUTraceProviderConfiguration *)self->_config decodeCompression];
+          [decodeCompression2 UTF8String];
 
           hwtrace_recording_save_options_set_decode_compression();
         }
@@ -311,7 +311,7 @@ LABEL_9:
       {
         if ([(CPUTraceProviderConfiguration *)self->_config collectSymbols])
         {
-          [(CPUTraceProvider *)self buildSymbolicationProviderSparseSymbolMap:a3];
+          [(CPUTraceProvider *)self buildSymbolicationProviderSparseSymbolMap:file];
         }
       }
     }
@@ -325,7 +325,7 @@ LABEL_9:
   }
 }
 
-- (void)willFinishWithCatalog:(ktrace_catalog *)a3 file:(ktrace_file *)a4
+- (void)willFinishWithCatalog:(ktrace_catalog *)catalog file:(ktrace_file *)file
 {
   v5 = qword_C930;
   qword_C930 = 0;
@@ -336,7 +336,7 @@ LABEL_9:
   atomic_store(0, &unk_C952);
 }
 
-- (void)buildSymbolicationProviderSparseSymbolMap:(ktrace_file *)a3
+- (void)buildSymbolicationProviderSparseSymbolMap:(ktrace_file *)map
 {
   [(KTProviderLogger *)self->_logger warnWithMessage:@"Collecting symbols..."];
   if (hwtrace_recording_init_from_ktrace())
@@ -365,7 +365,7 @@ LABEL_5:
   hwtrace_recording_deinit();
 }
 
-- (void)iterateThreadCursorsForSystem:(hwtrace_system *)a3
+- (void)iterateThreadCursorsForSystem:(hwtrace_system *)system
 {
   hwtrace_system_tasks();
   v26 = 0;

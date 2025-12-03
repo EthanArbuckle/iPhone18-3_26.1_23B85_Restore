@@ -13,12 +13,12 @@
   if (v2)
   {
     v4 = [v2 _capabilityForKey:_UIScreenCapabilityInteractionModelsKey];
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
 
     v6 = [v3 _capabilityForKey:_UIScreenCapabilityTouchLevelsKey];
-    v7 = [v6 integerValue];
+    integerValue2 = [v6 integerValue];
 
-    v9 = ((v5 & 1) == 0 || v7 == 2) && (v5 & 6) != 0;
+    v9 = ((integerValue & 1) == 0 || integerValue2 == 2) && (integerValue & 6) != 0;
   }
 
   else
@@ -39,12 +39,12 @@
   if (v2)
   {
     v4 = [v2 _capabilityForKey:_UIScreenCapabilityInteractionModelsKey];
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
 
     v6 = [v3 _capabilityForKey:_UIScreenCapabilityTouchLevelsKey];
-    v7 = [v6 integerValue];
+    integerValue2 = [v6 integerValue];
 
-    v9 = (v5 & 7) == 1 && v7 != 2;
+    v9 = (integerValue & 7) == 1 && integerValue2 != 2;
   }
 
   else
@@ -65,8 +65,8 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [v3 limitedUIElements];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    limitedUIElements = [v3 limitedUIElements];
+    v5 = [limitedUIElements countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -78,7 +78,7 @@
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(limitedUIElements);
           }
 
           if ([*(*(&v12 + 1) + 8 * i) isEqualToString:v8])
@@ -88,7 +88,7 @@
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [limitedUIElements countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           continue;

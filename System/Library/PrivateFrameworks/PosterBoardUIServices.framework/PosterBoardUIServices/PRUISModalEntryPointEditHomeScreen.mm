@@ -1,19 +1,19 @@
 @interface PRUISModalEntryPointEditHomeScreen
-- (BOOL)isEqual:(id)a3;
-- (PRUISModalEntryPointEditHomeScreen)initWithBSXPCCoder:(id)a3;
-- (PRUISModalEntryPointEditHomeScreen)initWithServiceConfiguration:(id)a3 transitionOverlayRenderId:(unint64_t)a4 transitionOverlayContextId:(unsigned int)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PRUISModalEntryPointEditHomeScreen)initWithBSXPCCoder:(id)coder;
+- (PRUISModalEntryPointEditHomeScreen)initWithServiceConfiguration:(id)configuration transitionOverlayRenderId:(unint64_t)id transitionOverlayContextId:(unsigned int)contextId;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation PRUISModalEntryPointEditHomeScreen
 
-- (PRUISModalEntryPointEditHomeScreen)initWithServiceConfiguration:(id)a3 transitionOverlayRenderId:(unint64_t)a4 transitionOverlayContextId:(unsigned int)a5
+- (PRUISModalEntryPointEditHomeScreen)initWithServiceConfiguration:(id)configuration transitionOverlayRenderId:(unint64_t)id transitionOverlayContextId:(unsigned int)contextId
 {
-  v9 = a3;
+  configurationCopy = configuration;
   NSClassFromString(&cfstr_Prsposterconfi.isa);
-  if (!v9)
+  if (!configurationCopy)
   {
     [PRUISModalEntryPointEditHomeScreen initWithServiceConfiguration:a2 transitionOverlayRenderId:? transitionOverlayContextId:?];
   }
@@ -28,22 +28,22 @@
   v10 = [(PRUISModalEntryPointEditHomeScreen *)&v14 init];
   if (v10)
   {
-    v11 = [v9 _path];
+    _path = [configurationCopy _path];
     serverPosterPath = v10->_serverPosterPath;
-    v10->_serverPosterPath = v11;
+    v10->_serverPosterPath = _path;
 
-    v10->_transitionOverlayRenderId = a4;
-    v10->_transitionOverlayContextId = a5;
+    v10->_transitionOverlayRenderId = id;
+    v10->_transitionOverlayContextId = contextId;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
   serverPosterPath = self->_serverPosterPath;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -75,16 +75,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_serverPosterPath];
-  v5 = [v3 appendInt64:self->_transitionOverlayRenderId];
-  v6 = [v3 appendInt64:self->_transitionOverlayContextId];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_serverPosterPath];
+  v5 = [builder appendInt64:self->_transitionOverlayRenderId];
+  v6 = [builder appendInt64:self->_transitionOverlayContextId];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [objc_alloc(MEMORY[0x1E69C5000]) _initWithPath:self->_serverPosterPath];
@@ -93,18 +93,18 @@
   return v6;
 }
 
-- (PRUISModalEntryPointEditHomeScreen)initWithBSXPCCoder:(id)a3
+- (PRUISModalEntryPointEditHomeScreen)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_serverPosterPath"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_serverPosterPath"];
   if (v5)
   {
-    v6 = [v4 decodeUInt64ForKey:@"_transitionOverlayRenderId"];
-    v7 = [v4 decodeUInt64ForKey:@"_transitionOverlayContextId"];
+    v6 = [coderCopy decodeUInt64ForKey:@"_transitionOverlayRenderId"];
+    v7 = [coderCopy decodeUInt64ForKey:@"_transitionOverlayContextId"];
     v8 = [objc_alloc(MEMORY[0x1E69C5000]) _initWithPath:v5];
     self = [(PRUISModalEntryPointEditHomeScreen *)self initWithServiceConfiguration:v8 transitionOverlayRenderId:v6 transitionOverlayContextId:v7];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -115,17 +115,17 @@
       [PRUISModalEntryPointEditing initWithBSXPCCoder:];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   serverPosterPath = self->_serverPosterPath;
   v9 = 0;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [(PFServerPosterPath *)serverPosterPath extendContentsReadAccessToAuditToken:0 error:&v9];
   v7 = v9;
   if (!v6)
@@ -137,9 +137,9 @@
     }
   }
 
-  [v5 encodeObject:v6 forKey:@"_serverPosterPath"];
-  [v5 encodeUInt64:self->_transitionOverlayRenderId forKey:@"_transitionOverlayRenderId"];
-  [v5 encodeUInt64:self->_transitionOverlayContextId forKey:@"_transitionOverlayContextId"];
+  [coderCopy encodeObject:v6 forKey:@"_serverPosterPath"];
+  [coderCopy encodeUInt64:self->_transitionOverlayRenderId forKey:@"_transitionOverlayRenderId"];
+  [coderCopy encodeUInt64:self->_transitionOverlayContextId forKey:@"_transitionOverlayContextId"];
 }
 
 - (void)initWithServiceConfiguration:(char *)a1 transitionOverlayRenderId:transitionOverlayContextId:.cold.1(char *a1)

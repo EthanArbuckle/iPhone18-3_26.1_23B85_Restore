@@ -1,11 +1,11 @@
 @interface CMDiagramListMapper
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4;
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index;
 - (CGSize)textSize;
-- (float)setFonSizeForChildNode:(id)a3 atIndex:(unint64_t)a4 level:(int)a5;
-- (id)suggestedBoundsForHListItemWithIndex:(unint64_t)a3;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapChildrenAt:(id)a3 withState:(id)a4;
-- (void)mapListItemAt:(id)a3 index:(unint64_t)a4 withState:(id)a5;
+- (float)setFonSizeForChildNode:(id)node atIndex:(unint64_t)index level:(int)level;
+- (id)suggestedBoundsForHListItemWithIndex:(unint64_t)index;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapChildrenAt:(id)at withState:(id)state;
+- (void)mapListItemAt:(id)at index:(unint64_t)index withState:(id)state;
 - (void)setDefaultFonSize;
 @end
 
@@ -13,14 +13,14 @@
 
 - (void)setDefaultFonSize
 {
-  v9 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-  v3 = [v9 children];
+  documentPoint = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+  children = [documentPoint children];
   if (self->super.mChildCount)
   {
     v4 = 0;
     do
     {
-      v5 = [v3 objectAtIndex:v4];
+      v5 = [children objectAtIndex:v4];
       [(CMDiagramListMapper *)self setFonSizeForChildNode:v5 atIndex:v4 level:0];
 
       ++v4;
@@ -55,10 +55,10 @@
   return result;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  stateCopy = state;
   *(&self->super.mDefaultScale + 1) = 1077936128;
   [(CMDiagramListMapper *)self setDefaultFonSize];
   mDefaultFontSize = self->super.mDefaultFontSize;
@@ -77,47 +77,47 @@
   Width = CGRectGetWidth(v25);
   v13 = objc_alloc_init(CMDrawableStyle);
   v14 = [OIXMLElement elementWithType:3];
-  v15 = [OADOrientedBounds orientedBoundsWithBounds:0.0, (v11 - Height) * 0.5, Width];
+  width = [OADOrientedBounds orientedBoundsWithBounds:0.0, (v11 - Height) * 0.5, Width];
   mDiagramShapeBounds = self->super.mDiagramShapeBounds;
-  self->super.mDiagramShapeBounds = v15;
+  self->super.mDiagramShapeBounds = width;
 
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
   [(CMDrawableStyle *)v13 addPositionProperties:?];
-  [v6 addChild:v14];
+  [atCopy addChild:v14];
   v21.receiver = self;
   v21.super_class = CMDiagramListMapper;
   [(CMMapper *)&v21 addStyleUsingGlobalCacheTo:v14 style:v13];
   v17 = v14;
 
-  v18 = [MEMORY[0x277CCA878] transform];
+  transform = [MEMORY[0x277CCA878] transform];
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
   v20 = v19;
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
-  [v18 translateXBy:v20 yBy:?];
-  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:v18];
-  [(CMDiagramListMapper *)self mapChildrenAt:v17 withState:v7];
+  [transform translateXBy:v20 yBy:?];
+  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:transform];
+  [(CMDiagramListMapper *)self mapChildrenAt:v17 withState:stateCopy];
   [(CMDrawingContext *)self->super.super.mDrawingContext restoreLastTransform];
 }
 
-- (void)mapChildrenAt:(id)a3 withState:(id)a4
+- (void)mapChildrenAt:(id)at withState:(id)state
 {
-  v8 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   if (self->super.mChildCount)
   {
     v7 = 0;
     do
     {
-      [(CMDiagramListMapper *)self mapListItemAt:v8 index:v7++ withState:v6];
+      [(CMDiagramListMapper *)self mapListItemAt:atCopy index:v7++ withState:stateCopy];
     }
 
     while (self->super.mChildCount > v7);
   }
 }
 
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index
 {
-  v4 = [(CMDiagramListMapper *)self suggestedBoundsForHListItemWithIndex:a4];
+  v4 = [(CMDiagramListMapper *)self suggestedBoundsForHListItemWithIndex:index];
   [v4 bounds];
   v6 = v5;
   v8 = v7;
@@ -129,15 +129,15 @@
   return result;
 }
 
-- (float)setFonSizeForChildNode:(id)a3 atIndex:(unint64_t)a4 level:(int)a5
+- (float)setFonSizeForChildNode:(id)node atIndex:(unint64_t)index level:(int)level
 {
-  v7 = a3;
-  v8 = [[CMDiagramPointMapper alloc] initWithPoint:v7 drawingContext:self->super.super.mDrawingContext orientedBounds:self->super.super.super.mOrientedBounds parent:self];
+  nodeCopy = node;
+  v8 = [[CMDiagramPointMapper alloc] initWithPoint:nodeCopy drawingContext:self->super.super.mDrawingContext orientedBounds:self->super.super.super.mOrientedBounds parent:self];
   [(CMDiagramListMapper *)self textSize];
   v10 = v9;
   v12 = v11;
-  v13 = [(CMDiagramPointMapper *)v8 plainText];
-  [CMShapeUtils fontSizeForText:v13 insideRectangle:v10, v12];
+  plainText = [(CMDiagramPointMapper *)v8 plainText];
+  [CMShapeUtils fontSizeForText:plainText insideRectangle:v10, v12];
   v15 = v14;
 
   if (self->super.mDefaultFontSize > v15)
@@ -145,18 +145,18 @@
     self->super.mDefaultFontSize = v15;
   }
 
-  v16 = [v7 children];
-  v17 = [v16 count];
+  children = [nodeCopy children];
+  v17 = [children count];
   if (v17)
   {
     v18 = 0;
     v19 = 1.0;
     do
     {
-      v20 = [v16 objectAtIndex:v18];
-      [(CMDiagramListMapper *)self setFonSizeForChildNode:v20 atIndex:v18 level:(a5 + 1)];
+      v20 = [children objectAtIndex:v18];
+      [(CMDiagramListMapper *)self setFonSizeForChildNode:v20 atIndex:v18 level:(level + 1)];
       v22 = v19 + v21;
-      if (self->super.mMaxMappableTreeDepth <= a5)
+      if (self->super.mMaxMappableTreeDepth <= level)
       {
         v19 = v22;
       }
@@ -180,27 +180,27 @@
   return v19;
 }
 
-- (id)suggestedBoundsForHListItemWithIndex:(unint64_t)a3
+- (id)suggestedBoundsForHListItemWithIndex:(unint64_t)index
 {
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
   v5 = CGRectGetWidth(v9) / (self->super.mChildCount + ((self->super.mChildCount - 1) * 0.14));
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
   Height = CGRectGetHeight(v10);
 
-  return [OADOrientedBounds orientedBoundsWithBounds:v5 * a3 * 1.13999999, 0.0, v5, Height];
+  return [OADOrientedBounds orientedBoundsWithBounds:v5 * index * 1.13999999, 0.0, v5, Height];
 }
 
-- (void)mapListItemAt:(id)a3 index:(unint64_t)a4 withState:(id)a5
+- (void)mapListItemAt:(id)at index:(unint64_t)index withState:(id)state
 {
-  v14 = a3;
-  v8 = a5;
-  v9 = [(CMDiagramListMapper *)self suggestedBoundsForHListItemWithIndex:a4];
-  v10 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-  v11 = [v10 children];
-  v12 = [v11 objectAtIndex:a4];
+  atCopy = at;
+  stateCopy = state;
+  v9 = [(CMDiagramListMapper *)self suggestedBoundsForHListItemWithIndex:index];
+  documentPoint = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+  children = [documentPoint children];
+  v12 = [children objectAtIndex:index];
 
-  v13 = [[CMDiagramPointListItemL1Mapper alloc] initWithPoint:v12 drawingContext:self->super.super.mDrawingContext orientedBounds:v9 listIndex:a4 parent:self];
-  [(CMDiagramPointListItemL1Mapper *)v13 mapAt:v14 withState:v8];
+  v13 = [[CMDiagramPointListItemL1Mapper alloc] initWithPoint:v12 drawingContext:self->super.super.mDrawingContext orientedBounds:v9 listIndex:index parent:self];
+  [(CMDiagramPointListItemL1Mapper *)v13 mapAt:atCopy withState:stateCopy];
 }
 
 @end

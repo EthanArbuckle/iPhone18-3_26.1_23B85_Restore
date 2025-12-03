@@ -10,26 +10,26 @@
 - (id)meMentionsTextColor
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 theme];
-  v4 = [v3 nonMaterialBalloonTextColorForColorType:10];
+  theme = [v2 theme];
+  v4 = [theme nonMaterialBalloonTextColorForColorType:10];
 
   return v4;
 }
 
 - (id)time
 {
-  v2 = [(CKEditedTextMessagePartHistoricalContentChatItem *)self historicalContent];
-  v3 = [v2 dateSent];
+  historicalContent = [(CKEditedTextMessagePartHistoricalContentChatItem *)self historicalContent];
+  dateSent = [historicalContent dateSent];
 
-  return v3;
+  return dateSent;
 }
 
 - (id)historicalContent
 {
-  v2 = [(CKEditedTextMessagePartHistoricalContentChatItem *)self editedMessagePartChatItem];
-  v3 = [v2 historicalContent];
+  editedMessagePartChatItem = [(CKEditedTextMessagePartHistoricalContentChatItem *)self editedMessagePartChatItem];
+  historicalContent = [editedMessagePartChatItem historicalContent];
 
-  return v3;
+  return historicalContent;
 }
 
 - (CKBalloonDescriptor_t)balloonDescriptor
@@ -50,8 +50,8 @@
   retstr->var13 = 0;
   retstr->var6 = [(CKMessagePartChatItem *)self color];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 theme];
-  v7 = [v6 unfilledBalloonColorForColorType:{-[CKMessagePartChatItem color](self, "color")}];
+  theme = [v5 theme];
+  v7 = [theme unfilledBalloonColorForColorType:{-[CKMessagePartChatItem color](self, "color")}];
   [v7 ck_imColorComponents];
   retstr->var8.red = v8;
   retstr->var8.green = v9;

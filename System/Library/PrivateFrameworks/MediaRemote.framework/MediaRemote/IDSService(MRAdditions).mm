@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __55__IDSService_MRAdditions__mr_sharedIDSCompanionService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mr_sharedIDSCompanionService_onceToken != -1)
   {
     dispatch_once(&mr_sharedIDSCompanionService_onceToken, block);
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __46__IDSService_MRAdditions__mr_sharedIDSService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mr_sharedIDSService_onceToken != -1)
   {
     dispatch_once(&mr_sharedIDSService_onceToken, block);

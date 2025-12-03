@@ -1,6 +1,6 @@
 @interface CNLibraryFolderDiscovery
 + (NSArray)localImageFolders;
-+ (id)discoverFoldersWithPathComponents:(id)a3;
++ (id)discoverFoldersWithPathComponents:(id)components;
 @end
 
 @implementation CNLibraryFolderDiscovery
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __45__CNLibraryFolderDiscovery_localImageFolders__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (localImageFolders_cn_once_token_0 != -1)
   {
     dispatch_once(&localImageFolders_cn_once_token_0, block);
@@ -31,20 +31,20 @@ uint64_t __45__CNLibraryFolderDiscovery_localImageFolders__block_invoke(uint64_t
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)discoverFoldersWithPathComponents:(id)a3
++ (id)discoverFoldersWithPathComponents:(id)components
 {
-  v3 = a3;
+  componentsCopy = components;
   v4 = objc_autoreleasePoolPush();
   v5 = NSSearchPathForDirectoriesInDomains(NSAllLibrariesDirectory, 0xFFFFuLL, 1);
-  v6 = [v5 _cn_distinctObjects];
+  _cn_distinctObjects = [v5 _cn_distinctObjects];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__CNLibraryFolderDiscovery_discoverFoldersWithPathComponents___block_invoke;
   v11[3] = &unk_1E7417DA0;
-  v7 = v3;
+  v7 = componentsCopy;
   v12 = v7;
-  v8 = [v6 _cn_map:v11];
+  v8 = [_cn_distinctObjects _cn_map:v11];
   v9 = [v8 _cn_filter:&__block_literal_global_164];
 
   objc_autoreleasePoolPop(v4);

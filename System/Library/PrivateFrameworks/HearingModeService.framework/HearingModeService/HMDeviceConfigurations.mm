@@ -1,15 +1,15 @@
 @interface HMDeviceConfigurations
-- (BOOL)needsUpdateToAHPSConnectionManagerForDevice:(id)a3;
-- (BOOL)needsUpdateToDeviceManagerForDevice:(id)a3;
-- (BOOL)needsUpdateToPMEConfigurationForDevice:(id)a3;
-- (BOOL)restoreConfigsFromCloudRecordIfNeeded:(id)a3;
-- (BOOL)setEnableHearingAssistIfNeeded:(id)a3;
+- (BOOL)needsUpdateToAHPSConnectionManagerForDevice:(id)device;
+- (BOOL)needsUpdateToDeviceManagerForDevice:(id)device;
+- (BOOL)needsUpdateToPMEConfigurationForDevice:(id)device;
+- (BOOL)restoreConfigsFromCloudRecordIfNeeded:(id)needed;
+- (BOOL)setEnableHearingAssistIfNeeded:(id)needed;
 - (HMDeviceConfigurations)init;
-- (HMDeviceConfigurations)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setupConfigsForPPEIfNeeded:(id)a3 completion:(id)a4;
-- (void)updateVolumeIOS:(id)a3 completion:(id)a4;
+- (HMDeviceConfigurations)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
+- (void)setupConfigsForPPEIfNeeded:(id)needed completion:(id)completion;
+- (void)updateVolumeIOS:(id)s completion:(id)completion;
 @end
 
 @implementation HMDeviceConfigurations
@@ -28,9 +28,9 @@
   return v3;
 }
 
-- (HMDeviceConfigurations)initWithCoder:(id)a3
+- (HMDeviceConfigurations)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMDeviceConfigurations *)self init];
   if (v5)
   {
@@ -133,9 +133,9 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v24 = a3;
+  coderCopy = coder;
   v4 = HMEarLossArrayToData(self->_mediaLossArrayLeft);
   mediaLossDataLeft = self->_mediaLossDataLeft;
   self->_mediaLossDataLeft = v4;
@@ -154,148 +154,148 @@
 
   if (self->_allowListeningModeOff)
   {
-    [v24 encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:? forKey:?];
   }
 
   amplification = self->_amplification;
   if (amplification)
   {
-    [v24 encodeObject:amplification forKey:@"ampl"];
+    [coderCopy encodeObject:amplification forKey:@"ampl"];
   }
 
   balance = self->_balance;
-  v14 = v24;
+  v14 = coderCopy;
   if (balance)
   {
-    [v24 encodeObject:balance forKey:@"balc"];
-    v14 = v24;
+    [coderCopy encodeObject:balance forKey:@"balc"];
+    v14 = coderCopy;
   }
 
   beamFormer = self->_beamFormer;
   if (beamFormer)
   {
-    [v24 encodeObject:beamFormer forKey:@"bmFm"];
-    v14 = v24;
+    [coderCopy encodeObject:beamFormer forKey:@"bmFm"];
+    v14 = coderCopy;
   }
 
   if (self->_enableHearingAid)
   {
-    [v24 encodeInteger:? forKey:?];
-    v14 = v24;
+    [coderCopy encodeInteger:? forKey:?];
+    v14 = coderCopy;
   }
 
   if (self->_enableHearingAssist)
   {
-    [v24 encodeInteger:? forKey:?];
-    v14 = v24;
+    [coderCopy encodeInteger:? forKey:?];
+    v14 = coderCopy;
   }
 
   if (self->_enableHearingProtection)
   {
-    [v24 encodeInteger:? forKey:?];
-    v14 = v24;
+    [coderCopy encodeInteger:? forKey:?];
+    v14 = coderCopy;
   }
 
   if (self->_enableHearingProtectionPPE)
   {
-    [v24 encodeInteger:? forKey:?];
-    v14 = v24;
+    [coderCopy encodeInteger:? forKey:?];
+    v14 = coderCopy;
   }
 
   if (self->_enableMediaAssist)
   {
-    [v24 encodeInteger:? forKey:?];
-    v14 = v24;
+    [coderCopy encodeInteger:? forKey:?];
+    v14 = coderCopy;
   }
 
   if (self->_enablePMEMedia)
   {
-    [v24 encodeInteger:? forKey:?];
-    v14 = v24;
+    [coderCopy encodeInteger:? forKey:?];
+    v14 = coderCopy;
   }
 
   if (self->_enablePMEVoice)
   {
-    [v24 encodeInteger:? forKey:?];
-    v14 = v24;
+    [coderCopy encodeInteger:? forKey:?];
+    v14 = coderCopy;
   }
 
   if (self->_enableSwipeGain)
   {
-    [v24 encodeInteger:? forKey:?];
-    v14 = v24;
+    [coderCopy encodeInteger:? forKey:?];
+    v14 = coderCopy;
   }
 
   if (self->_enrollHearingAssist)
   {
-    [v24 encodeInteger:? forKey:?];
-    v14 = v24;
+    [coderCopy encodeInteger:? forKey:?];
+    v14 = coderCopy;
   }
 
   if (self->_enrollPMEVoice)
   {
-    [v24 encodeInteger:? forKey:?];
-    v14 = v24;
+    [coderCopy encodeInteger:? forKey:?];
+    v14 = coderCopy;
   }
 
   v16 = self->_mediaLossDataLeft;
   if (v16)
   {
-    [v24 encodeObject:v16 forKey:@"mLDL"];
-    v14 = v24;
+    [coderCopy encodeObject:v16 forKey:@"mLDL"];
+    v14 = coderCopy;
   }
 
   v17 = self->_mediaLossDataRight;
   if (v17)
   {
-    [v24 encodeObject:v17 forKey:@"mLDR"];
-    v14 = v24;
+    [coderCopy encodeObject:v17 forKey:@"mLDR"];
+    v14 = coderCopy;
   }
 
   noiseSuppression = self->_noiseSuppression;
   if (noiseSuppression)
   {
-    [v24 encodeObject:noiseSuppression forKey:@"nsSp"];
-    v14 = v24;
+    [coderCopy encodeObject:noiseSuppression forKey:@"nsSp"];
+    v14 = coderCopy;
   }
 
   ownVoiceLevelGain = self->_ownVoiceLevelGain;
   if (ownVoiceLevelGain)
   {
-    [v24 encodeObject:ownVoiceLevelGain forKey:@"oVLG"];
-    v14 = v24;
+    [coderCopy encodeObject:ownVoiceLevelGain forKey:@"oVLG"];
+    v14 = coderCopy;
   }
 
   selectedAudiogram = self->_selectedAudiogram;
   if (selectedAudiogram)
   {
-    [v24 encodeObject:selectedAudiogram forKey:@"Agrm"];
-    v14 = v24;
+    [coderCopy encodeObject:selectedAudiogram forKey:@"Agrm"];
+    v14 = coderCopy;
   }
 
   tone = self->_tone;
   if (tone)
   {
-    [v24 encodeObject:tone forKey:@"tone"];
-    v14 = v24;
+    [coderCopy encodeObject:tone forKey:@"tone"];
+    v14 = coderCopy;
   }
 
   v22 = self->_voiceLossDataLeft;
   if (v22)
   {
-    [v24 encodeObject:v22 forKey:@"vLDL"];
-    v14 = v24;
+    [coderCopy encodeObject:v22 forKey:@"vLDL"];
+    v14 = coderCopy;
   }
 
   v23 = self->_voiceLossDataRight;
   if (v23)
   {
-    [v24 encodeObject:v23 forKey:@"vLDR"];
-    v14 = v24;
+    [coderCopy encodeObject:v23 forKey:@"vLDR"];
+    v14 = coderCopy;
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v78 = [objc_opt_class() description];
   NSAppendPrintF_safe();
@@ -665,7 +665,7 @@
   if (mediaLossArrayLeft)
   {
     v57 = mediaLossArrayLeft;
-    v79 = [(NSArray *)v57 firstObject];
+    firstObject = [(NSArray *)v57 firstObject];
     NSAppendPrintF_safe();
     v58 = v5;
 
@@ -676,7 +676,7 @@
   if (mediaLossArrayRight)
   {
     v60 = mediaLossArrayRight;
-    v80 = [(NSArray *)v60 firstObject];
+    firstObject2 = [(NSArray *)v60 firstObject];
     NSAppendPrintF_safe();
     v61 = v5;
 
@@ -727,7 +727,7 @@
   if (voiceLossArrayLeft)
   {
     v71 = voiceLossArrayLeft;
-    v85 = [(NSArray *)v71 firstObject];
+    firstObject3 = [(NSArray *)v71 firstObject];
     NSAppendPrintF_safe();
     v72 = v5;
 
@@ -738,14 +738,14 @@
   if (voiceLossArrayRight)
   {
     v74 = voiceLossArrayRight;
-    v86 = [(NSArray *)v74 firstObject];
+    firstObject4 = [(NSArray *)v74 firstObject];
     NSAppendPrintF_safe();
     v75 = v5;
 
     v5 = v75;
   }
 
-  if (a3 < 21)
+  if (level < 21)
   {
     NSAppendPrintF_safe();
     v76 = v5;
@@ -756,9 +756,9 @@
   return v5;
 }
 
-- (BOOL)needsUpdateToAHPSConnectionManagerForDevice:(id)a3
+- (BOOL)needsUpdateToAHPSConnectionManagerForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   selectedAudiogram = self->_selectedAudiogram;
   v6 = selectedAudiogram != 0;
   if (selectedAudiogram)
@@ -787,15 +787,15 @@
   {
     [(NSNumber *)v13 floatValue];
     v15 = v14;
-    v16 = [v4 amplification];
-    [v16 floatValue];
+    amplification = [deviceCopy amplification];
+    [amplification floatValue];
     v18 = v17;
 
     if (v15 != v18)
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:deviceCopy];
       }
 
       v6 = 1;
@@ -807,15 +807,15 @@
   {
     [(NSNumber *)v19 floatValue];
     v21 = v20;
-    v22 = [v4 balance];
-    [v22 floatValue];
+    balance = [deviceCopy balance];
+    [balance floatValue];
     v24 = v23;
 
     if (v21 != v24)
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:deviceCopy];
       }
 
       v6 = 1;
@@ -827,15 +827,15 @@
   {
     [(NSNumber *)v25 floatValue];
     v27 = v26;
-    v28 = [v4 beamFormer];
-    [v28 floatValue];
+    beamFormer = [deviceCopy beamFormer];
+    [beamFormer floatValue];
     v30 = v29;
 
     if (v27 != v30)
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:deviceCopy];
       }
 
       v6 = 1;
@@ -847,15 +847,15 @@
   {
     [(NSNumber *)v31 floatValue];
     v33 = v32;
-    v34 = [v4 noiseSuppression];
-    [v34 floatValue];
+    noiseSuppression = [deviceCopy noiseSuppression];
+    [noiseSuppression floatValue];
     v36 = v35;
 
     if (v33 != v36)
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:deviceCopy];
       }
 
       v6 = 1;
@@ -867,15 +867,15 @@
   {
     [(NSNumber *)v37 floatValue];
     v39 = v38;
-    v40 = [v4 ownVoiceLevelGain];
-    [v40 floatValue];
+    ownVoiceLevelGain = [deviceCopy ownVoiceLevelGain];
+    [ownVoiceLevelGain floatValue];
     v42 = v41;
 
     if (v39 != v42)
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:deviceCopy];
       }
 
       v6 = 1;
@@ -887,15 +887,15 @@
   {
     [(NSNumber *)v43 floatValue];
     v45 = v44;
-    v46 = [v4 tone];
-    [v46 floatValue];
+    tone = [deviceCopy tone];
+    [tone floatValue];
     v48 = v47;
 
     if (v45 != v48)
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToAHPSConnectionManagerForDevice:deviceCopy];
       }
 
       v6 = 1;
@@ -905,9 +905,9 @@
   return v6;
 }
 
-- (BOOL)needsUpdateToDeviceManagerForDevice:(id)a3
+- (BOOL)needsUpdateToDeviceManagerForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (!_os_feature_enabled_impl())
   {
     goto LABEL_4;
@@ -916,7 +916,7 @@
   allowListeningModeOff = self->_allowListeningModeOff;
   if (self->_allowListeningModeOff)
   {
-    if (allowListeningModeOff == [v4 listeningModeOffAllowed])
+    if (allowListeningModeOff == [deviceCopy listeningModeOffAllowed])
     {
 LABEL_4:
       LOBYTE(allowListeningModeOff) = 0;
@@ -925,7 +925,7 @@ LABEL_4:
 
     if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
     {
-      [HMDeviceConfigurations needsUpdateToDeviceManagerForDevice:v4];
+      [HMDeviceConfigurations needsUpdateToDeviceManagerForDevice:deviceCopy];
     }
 
     LOBYTE(allowListeningModeOff) = 1;
@@ -935,11 +935,11 @@ LABEL_5:
   if (self->_enrollHearingAssist)
   {
     enrollHearingAssist = self->_enrollHearingAssist;
-    if (enrollHearingAssist != [v4 hearingAssistEnrolled])
+    if (enrollHearingAssist != [deviceCopy hearingAssistEnrolled])
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToDeviceManagerForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToDeviceManagerForDevice:deviceCopy];
       }
 
       LOBYTE(allowListeningModeOff) = 1;
@@ -949,11 +949,11 @@ LABEL_5:
   if (self->_enableHearingAid)
   {
     enableHearingAid = self->_enableHearingAid;
-    if (enableHearingAid != [v4 hearingAidEnabled])
+    if (enableHearingAid != [deviceCopy hearingAidEnabled])
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToDeviceManagerForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToDeviceManagerForDevice:deviceCopy];
       }
 
       if (self->_enableHearingAid == 2)
@@ -968,11 +968,11 @@ LABEL_5:
   if (self->_enableSwipeGain)
   {
     enableSwipeGain = self->_enableSwipeGain;
-    if (enableSwipeGain != [v4 swipeGainEnabled])
+    if (enableSwipeGain != [deviceCopy swipeGainEnabled])
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToDeviceManagerForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToDeviceManagerForDevice:deviceCopy];
       }
 
       LOBYTE(allowListeningModeOff) = 1;
@@ -983,7 +983,7 @@ LABEL_5:
   {
     if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
     {
-      [(HMDeviceConfigurations *)v4 needsUpdateToDeviceManagerForDevice:?];
+      [(HMDeviceConfigurations *)deviceCopy needsUpdateToDeviceManagerForDevice:?];
     }
 
     LOBYTE(allowListeningModeOff) = 1;
@@ -992,25 +992,25 @@ LABEL_5:
   if (_os_feature_enabled_impl())
   {
     enableHearingProtectionPPE = self->_enableHearingProtectionPPE;
-    if (enableHearingProtectionPPE != [v4 hearingProtectionPPEEnabled])
+    if (enableHearingProtectionPPE != [deviceCopy hearingProtectionPPEEnabled])
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToDeviceManagerForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToDeviceManagerForDevice:deviceCopy];
       }
 
       LOBYTE(allowListeningModeOff) = 1;
     }
   }
 
-  v10 = [(HMDeviceConfigurations *)self setEnableHearingAssistIfNeeded:v4];
+  v10 = [(HMDeviceConfigurations *)self setEnableHearingAssistIfNeeded:deviceCopy];
 
   return allowListeningModeOff | v10;
 }
 
-- (BOOL)needsUpdateToPMEConfigurationForDevice:(id)a3
+- (BOOL)needsUpdateToPMEConfigurationForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   enableMediaAssist = self->_enableMediaAssist;
   v6 = self->_enableMediaAssist != 0;
   if (self->_enableMediaAssist)
@@ -1019,7 +1019,7 @@ LABEL_5:
     {
       if (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize())
       {
-        [HMDeviceConfigurations needsUpdateToPMEConfigurationForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToPMEConfigurationForDevice:deviceCopy];
       }
 
       enableMediaAssist = self->_enableMediaAssist;
@@ -1034,11 +1034,11 @@ LABEL_5:
   if (self->_enablePMEMedia)
   {
     enablePMEMedia = self->_enablePMEMedia;
-    if (enablePMEMedia != [v4 pmeMediaEnabled])
+    if (enablePMEMedia != [deviceCopy pmeMediaEnabled])
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToPMEConfigurationForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToPMEConfigurationForDevice:deviceCopy];
       }
 
       v6 = 1;
@@ -1048,11 +1048,11 @@ LABEL_5:
   if (self->_enablePMEVoice)
   {
     enablePMEVoice = self->_enablePMEVoice;
-    if (enablePMEVoice != [v4 pmeVoiceEnabled])
+    if (enablePMEVoice != [deviceCopy pmeVoiceEnabled])
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToPMEConfigurationForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToPMEConfigurationForDevice:deviceCopy];
       }
 
       v6 = 1;
@@ -1062,11 +1062,11 @@ LABEL_5:
   if (self->_enrollPMEVoice)
   {
     enrollPMEVoice = self->_enrollPMEVoice;
-    if (enrollPMEVoice != [v4 pmeVoiceEnrolled])
+    if (enrollPMEVoice != [deviceCopy pmeVoiceEnrolled])
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations needsUpdateToPMEConfigurationForDevice:v4];
+        [HMDeviceConfigurations needsUpdateToPMEConfigurationForDevice:deviceCopy];
       }
 
       v6 = 1;
@@ -1076,9 +1076,9 @@ LABEL_5:
   mediaLossDataLeft = self->_mediaLossDataLeft;
   if (mediaLossDataLeft)
   {
-    v11 = [v4 pmeMediaLossDataLeft];
+    pmeMediaLossDataLeft = [deviceCopy pmeMediaLossDataLeft];
     v12 = mediaLossDataLeft;
-    v13 = v11;
+    v13 = pmeMediaLossDataLeft;
     v14 = v13;
     if (v12 == v13)
     {
@@ -1115,9 +1115,9 @@ LABEL_37:
     goto LABEL_48;
   }
 
-  v17 = [v4 pmeMediaLossDataRight];
+  pmeMediaLossDataRight = [deviceCopy pmeMediaLossDataRight];
   v18 = mediaLossDataRight;
-  v19 = v17;
+  v19 = pmeMediaLossDataRight;
   v20 = v19;
   if (v18 == v19)
   {
@@ -1152,9 +1152,9 @@ LABEL_48:
     goto LABEL_59;
   }
 
-  v23 = [v4 pmeVoiceLossDataLeft];
+  pmeVoiceLossDataLeft = [deviceCopy pmeVoiceLossDataLeft];
   v24 = voiceLossDataLeft;
-  v25 = v23;
+  v25 = pmeVoiceLossDataLeft;
   v26 = v25;
   if (v24 == v25)
   {
@@ -1186,9 +1186,9 @@ LABEL_59:
   voiceLossDataRight = self->_voiceLossDataRight;
   if (voiceLossDataRight)
   {
-    v29 = [v4 pmeVoiceLossDataRight];
+    pmeVoiceLossDataRight = [deviceCopy pmeVoiceLossDataRight];
     v30 = voiceLossDataRight;
-    v31 = v29;
+    v31 = pmeVoiceLossDataRight;
     v32 = v31;
     if (v30 == v31)
     {
@@ -1224,14 +1224,14 @@ LABEL_70:
   return v6;
 }
 
-- (void)setupConfigsForPPEIfNeeded:(id)a3 completion:(id)a4
+- (void)setupConfigsForPPEIfNeeded:(id)needed completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  neededCopy = needed;
+  completionCopy = completion;
   enableHearingProtectionPPE = self->_enableHearingProtectionPPE;
   if (enableHearingProtectionPPE == 2)
   {
-    [(HMDeviceConfigurations *)self updateVolumeIOS:v8 completion:v6];
+    [(HMDeviceConfigurations *)self updateVolumeIOS:neededCopy completion:completionCopy];
   }
 
   else
@@ -1240,28 +1240,28 @@ LABEL_70:
     {
       if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
       {
-        [HMDeviceConfigurations setupConfigsForPPEIfNeeded:v8 completion:?];
+        [HMDeviceConfigurations setupConfigsForPPEIfNeeded:neededCopy completion:?];
       }
 
       self->_enableHearingProtection = 1;
       self->_allowListeningModeOff = 2;
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (BOOL)restoreConfigsFromCloudRecordIfNeeded:(id)a3
+- (BOOL)restoreConfigsFromCloudRecordIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 cloudRecord];
+  neededCopy = needed;
+  cloudRecord = [neededCopy cloudRecord];
 
-  if (v5)
+  if (cloudRecord)
   {
-    if (self->_enableHearingAid == 1 && !self->_enableSwipeGain && ([v4 cloudRecord], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "swipeGainEnabled"), v10, v11))
+    if (self->_enableHearingAid == 1 && !self->_enableSwipeGain && ([neededCopy cloudRecord], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "swipeGainEnabled"), v10, v11))
     {
       p_enableMediaAssist = &self->_enableMediaAssist;
       enableMediaAssist = self->_enableMediaAssist;
@@ -1293,17 +1293,17 @@ LABEL_21:
 
     if (!self->_enablePMEMedia)
     {
-      v8 = [v4 cloudRecord];
-      v9 = [v8 pmeMediaEnabled];
+      cloudRecord2 = [neededCopy cloudRecord];
+      pmeMediaEnabled = [cloudRecord2 pmeMediaEnabled];
 
-      if (v9)
+      if (pmeMediaEnabled)
       {
-        self->_enablePMEMedia = v9;
+        self->_enablePMEMedia = pmeMediaEnabled;
         v6 = 1;
       }
     }
 
-    if (*p_enableMediaAssist == 1 && !self->_enablePMEVoice && ([v4 cloudRecord], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "pmeVoiceEnabled"), v13, v14))
+    if (*p_enableMediaAssist == 1 && !self->_enablePMEVoice && ([neededCopy cloudRecord], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "pmeVoiceEnabled"), v13, v14))
     {
       self->_enablePMEVoice = v14;
     }
@@ -1318,7 +1318,7 @@ LABEL_21:
 
   if (gLogCategory_HMDeviceConfigurations <= 90 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
   {
-    [HMDeviceConfigurations restoreConfigsFromCloudRecordIfNeeded:v4];
+    [HMDeviceConfigurations restoreConfigsFromCloudRecordIfNeeded:neededCopy];
   }
 
   LOBYTE(v6) = 0;
@@ -1327,10 +1327,10 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)setEnableHearingAssistIfNeeded:(id)a3
+- (BOOL)setEnableHearingAssistIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
+  neededCopy = needed;
+  v5 = neededCopy;
   enableMediaAssist = self->_enableMediaAssist;
   enableHearingAid = self->_enableHearingAid;
   if (self->_enableMediaAssist)
@@ -1340,7 +1340,7 @@ LABEL_25:
       LOBYTE(enableHearingAid) = 1;
       if (enableMediaAssist != 1)
       {
-        if ([v4 hearingAidEnabled] == 1)
+        if ([neededCopy hearingAidEnabled] == 1)
         {
           LOBYTE(enableHearingAid) = 1;
         }
@@ -1367,7 +1367,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v8 = [v4 mediaAssistEnabled] == 1;
+    v8 = [neededCopy mediaAssistEnabled] == 1;
 LABEL_9:
     if (v8)
     {
@@ -1401,63 +1401,63 @@ LABEL_13:
   return v10;
 }
 
-- (void)updateVolumeIOS:(id)a3 completion:(id)a4
+- (void)updateVolumeIOS:(id)s completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 aaDevice];
-  v8 = [v7 routed];
+  sCopy = s;
+  completionCopy = completion;
+  aaDevice = [sCopy aaDevice];
+  routed = [aaDevice routed];
 
-  if ((v8 & 1) == 0)
+  if ((routed & 1) == 0)
   {
-    [HMDeviceConfigurations updateVolumeIOS:v6 completion:v5];
+    [HMDeviceConfigurations updateVolumeIOS:completionCopy completion:sCopy];
     goto LABEL_14;
   }
 
   v18 = 0.0;
-  v9 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v10 = [v9 getVolume:&v18 forCategory:@"Audio/Video"];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v10 = [mEMORY[0x277D26E58] getVolume:&v18 forCategory:@"Audio/Video"];
 
   if ((v10 & 1) == 0)
   {
-    [HMDeviceConfigurations updateVolumeIOS:v6 completion:?];
+    [HMDeviceConfigurations updateVolumeIOS:completionCopy completion:?];
     goto LABEL_14;
   }
 
   *&v11 = v18;
   if (v18 <= 0.5)
   {
-    [HMDeviceConfigurations updateVolumeIOS:v6 completion:&v18];
+    [HMDeviceConfigurations updateVolumeIOS:completionCopy completion:&v18];
     goto LABEL_14;
   }
 
-  v12 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  mEMORY[0x277D26E58]2 = [MEMORY[0x277D26E58] sharedAVSystemController];
   LODWORD(v13) = 0.5;
-  v14 = [v12 setVolumeTo:@"Audio/Video" forCategory:v13];
+  v14 = [mEMORY[0x277D26E58]2 setVolumeTo:@"Audio/Video" forCategory:v13];
 
   if (!v14)
   {
     if (gLogCategory_HMDeviceConfigurations <= 90 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
     {
-      [HMDeviceConfigurations updateVolumeIOS:v5 completion:?];
-      if (!v6)
+      [HMDeviceConfigurations updateVolumeIOS:sCopy completion:?];
+      if (!completionCopy)
       {
         goto LABEL_14;
       }
     }
 
-    else if (!v6)
+    else if (!completionCopy)
     {
       goto LABEL_14;
     }
 
-    v6[2](v6);
+    completionCopy[2](completionCopy);
     goto LABEL_14;
   }
 
   if (gLogCategory_HMDeviceConfigurations <= 30 && (gLogCategory_HMDeviceConfigurations != -1 || _LogCategory_Initialize()))
   {
-    [HMDeviceConfigurations updateVolumeIOS:v5 completion:?];
+    [HMDeviceConfigurations updateVolumeIOS:sCopy completion:?];
   }
 
   v15 = dispatch_time(0, 200000000);
@@ -1465,7 +1465,7 @@ LABEL_13:
   v16[1] = 3221225472;
   v16[2] = __53__HMDeviceConfigurations_updateVolumeIOS_completion___block_invoke;
   v16[3] = &unk_2796EE6F8;
-  v17 = v6;
+  v17 = completionCopy;
   dispatch_after(v15, MEMORY[0x277D85CD0], v16);
 
 LABEL_14:

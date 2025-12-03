@@ -1,38 +1,38 @@
 @interface SBApplicationController
-+ (id)_sharedInstanceCreateIfNecessary:(BOOL)a3;
-- (BOOL)_appLayoutContainsOnlyResizableApps:(id)a3;
-- (BOOL)isApplicationAlwaysAvailableForInfo:(id)a3;
-- (BOOL)isApplicationAlwaysAvailableForProxy:(id)a3;
-- (Class)_appClassForInfo:(id)a3;
++ (id)_sharedInstanceCreateIfNecessary:(BOOL)necessary;
+- (BOOL)_appLayoutContainsOnlyResizableApps:(id)apps;
+- (BOOL)isApplicationAlwaysAvailableForInfo:(id)info;
+- (BOOL)isApplicationAlwaysAvailableForProxy:(id)proxy;
+- (Class)_appClassForInfo:(id)info;
 - (SBApplicationController)init;
-- (id)_allApplicationsFilteredBySystem:(BOOL)a3;
-- (id)_appInfosToBundleIDs:(id)a3;
-- (id)_loadApplicationFromApplicationInfo:(id)a3;
+- (id)_allApplicationsFilteredBySystem:(BOOL)system;
+- (id)_appInfosToBundleIDs:(id)ds;
+- (id)_loadApplicationFromApplicationInfo:(id)info;
 - (id)allApplications;
 - (id)allBundleIdentifiers;
 - (id)alwaysAvailableApplicationBundleIdentifiers;
-- (id)applicationForDisplayItem:(id)a3;
-- (id)applicationWithBundleIdentifier:(id)a3;
-- (id)applicationWithPid:(int)a3;
+- (id)applicationForDisplayItem:(id)item;
+- (id)applicationWithBundleIdentifier:(id)identifier;
+- (id)applicationWithPid:(int)pid;
 - (id)bundleIdentifiersWithVisibilityOverrideHidden;
 - (id)recentlyUsedBundleIDs;
 - (id)runningApplications;
 - (void)_finishDeferredMajorVersionMigrationTasks_FlushLegacySnapshots;
 - (void)_finishDeferredMajorVersionMigrationTasks_FlushSystemSnapshots;
-- (void)_loadApplications:(id)a3 remove:(id)a4;
+- (void)_loadApplications:(id)applications remove:(id)remove;
 - (void)_memoryWarningReceived;
-- (void)_removeApplicationsFromModelWithBundleIdentifier:(id)a3 forInstall:(BOOL)a4 withReason:(id)a5;
-- (void)_sendInstalledAppsDidChangeNotification:(id)a3 removed:(id)a4 replaced:(id)a5 updated:(id)a6;
+- (void)_removeApplicationsFromModelWithBundleIdentifier:(id)identifier forInstall:(BOOL)install withReason:(id)reason;
+- (void)_sendInstalledAppsDidChangeNotification:(id)notification removed:(id)removed replaced:(id)replaced updated:(id)updated;
 - (void)_updateVisibilityOverrides;
 - (void)_updateVisibilityOverridesInBackground;
-- (void)applicationsDemoted:(id)a3;
-- (void)applicationsRemoved:(id)a3;
-- (void)applicationsUpdated:(id)a3;
+- (void)applicationsDemoted:(id)demoted;
+- (void)applicationsRemoved:(id)removed;
+- (void)applicationsUpdated:(id)updated;
 - (void)dealloc;
-- (void)requestUninstallApplication:(id)a3 options:(unint64_t)a4 withCompletion:(id)a5;
-- (void)requestUninstallApplicationWithBundleIdentifier:(id)a3 options:(unint64_t)a4 withCompletion:(id)a5;
-- (void)uninstallApplication:(id)a3;
-- (void)waitForUninstallsToComplete:(double)a3;
+- (void)requestUninstallApplication:(id)application options:(unint64_t)options withCompletion:(id)completion;
+- (void)requestUninstallApplicationWithBundleIdentifier:(id)identifier options:(unint64_t)options withCompletion:(id)completion;
+- (void)uninstallApplication:(id)application;
+- (void)waitForUninstallsToComplete:(double)complete;
 @end
 
 @implementation SBApplicationController
@@ -40,13 +40,13 @@
 - (id)runningApplications
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SBApplicationController *)self allApplications];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allApplications = [(SBApplicationController *)self allApplications];
+  v5 = [allApplications countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -57,35 +57,35 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allApplications);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 processState];
-        v11 = [v10 isRunning];
+        processState = [v9 processState];
+        isRunning = [processState isRunning];
 
-        if (v11)
+        if (isRunning)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allApplications countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)allApplications
 {
   os_unfair_lock_lock(&self->_applicationsLock);
-  v3 = [(NSMutableDictionary *)self->_applicationsByBundleIdentifier allValues];
+  allValues = [(NSMutableDictionary *)self->_applicationsByBundleIdentifier allValues];
   os_unfair_lock_unlock(&self->_applicationsLock);
 
-  return v3;
+  return allValues;
 }
 
 - (void)_updateVisibilityOverridesInBackground
@@ -97,7 +97,7 @@
   v6[2] = __65__SBApplicationController__updateVisibilityOverridesInBackground__block_invoke;
   v6[3] = &unk_2783A92D8;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_async(v4, v6);
 }
@@ -157,8 +157,8 @@ void __65__SBApplicationController__updateVisibilityOverridesInBackground__block
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(SBApplicationController *)self allApplications];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allApplications = [(SBApplicationController *)self allApplications];
+  v3 = [allApplications countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -170,49 +170,49 @@ void __65__SBApplicationController__updateVisibilityOverridesInBackground__block
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allApplications);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) purgeCaches];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allApplications countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (id)applicationForDisplayItem:(id)a3
+- (id)applicationForDisplayItem:(id)item
 {
-  v4 = a3;
-  if ([v4 type] && objc_msgSend(v4, "type") != 3)
+  itemCopy = item;
+  if ([itemCopy type] && objc_msgSend(itemCopy, "type") != 3)
   {
-    if ([v4 type] == 5)
+    if ([itemCopy type] == 5)
     {
-      v6 = [(SBApplicationController *)self webApplication];
+      webApplication = [(SBApplicationController *)self webApplication];
     }
 
     else
     {
-      v6 = 0;
+      webApplication = 0;
     }
   }
 
   else
   {
-    v5 = [v4 bundleIdentifier];
-    v6 = [(SBApplicationController *)self applicationWithBundleIdentifier:v5];
+    bundleIdentifier = [itemCopy bundleIdentifier];
+    webApplication = [(SBApplicationController *)self applicationWithBundleIdentifier:bundleIdentifier];
   }
 
-  return v6;
+  return webApplication;
 }
 
-+ (id)_sharedInstanceCreateIfNecessary:(BOOL)a3
++ (id)_sharedInstanceCreateIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
-  if (a3 || _sharedInstanceCreateIfNecessary__sharedApplicationController)
+  necessaryCopy = necessary;
+  if (necessary || _sharedInstanceCreateIfNecessary__sharedApplicationController)
   {
     pthread_mutex_lock(&_sharedInstanceCreateIfNecessary__sharedApplicationControllerLock);
     if (_sharedInstanceCreateIfNecessary__sharedApplicationController)
@@ -222,7 +222,7 @@ void __65__SBApplicationController__updateVisibilityOverridesInBackground__block
 
     else
     {
-      v5 = !v3;
+      v5 = !necessaryCopy;
     }
 
     if (!v5)
@@ -316,10 +316,10 @@ void __65__SBApplicationController__updateVisibilityOverridesInBackground__block
     systemAppInfo = v15->_systemAppInfo;
     v15->_systemAppInfo = v26;
 
-    v28 = [MEMORY[0x277D0AA90] mainConfiguration];
+    mainConfiguration = [MEMORY[0x277D0AA90] mainConfiguration];
     v29 = [SBSplashBoardController alloc];
-    v30 = [[SBSplashBoardLaunchRequestProvider alloc] initWithApplicationController:v15 displayConfiguration:v28];
-    v31 = [(XBApplicationController *)v29 initWithMainDisplayConfiguration:v28 applicationProvider:v15 launchRequestProvider:v30];
+    v30 = [[SBSplashBoardLaunchRequestProvider alloc] initWithApplicationController:v15 displayConfiguration:mainConfiguration];
+    v31 = [(XBApplicationController *)v29 initWithMainDisplayConfiguration:mainConfiguration applicationProvider:v15 launchRequestProvider:v30];
     splashBoardController = v15->_splashBoardController;
     v15->_splashBoardController = v31;
 
@@ -331,12 +331,12 @@ void __65__SBApplicationController__updateVisibilityOverridesInBackground__block
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v15, _appIconVisibilityPreferencesChanged, @"com.apple.springboard.appIconVisibilityPreferencesChanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     kdebug_trace();
-    v36 = [(FBSApplicationLibrary *)v15->_appLibrary allInstalledApplications];
-    [(SBApplicationController *)v15 _loadApplications:v36 remove:0];
+    allInstalledApplications = [(FBSApplicationLibrary *)v15->_appLibrary allInstalledApplications];
+    [(SBApplicationController *)v15 _loadApplications:allInstalledApplications remove:0];
 
     kdebug_trace();
-    v37 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v37 addObserver:v15 selector:sel__memoryWarningReceived name:*MEMORY[0x277D76670] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__memoryWarningReceived name:*MEMORY[0x277D76670] object:0];
     if (__SBShouldClearSystemAppSnapshotsWhenInitialized == 1)
     {
       [(SBApplicationController *)v15 _finishDeferredMajorVersionMigrationTasks_FlushSystemSnapshots];
@@ -347,14 +347,14 @@ void __65__SBApplicationController__updateVisibilityOverridesInBackground__block
       [(SBApplicationController *)v15 _finishDeferredMajorVersionMigrationTasks_FlushLegacySnapshots];
     }
 
-    v38 = [MEMORY[0x277D65ED8] sharedInstance];
+    mEMORY[0x277D65ED8] = [MEMORY[0x277D65ED8] sharedInstance];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __31__SBApplicationController_init__block_invoke_2_54;
     v45[3] = &unk_2783A8C18;
     v39 = v15;
     v46 = v39;
-    [v38 performAfterFirstUnlockSinceBootUsingBlock:v45];
+    [mEMORY[0x277D65ED8] performAfterFirstUnlockSinceBootUsingBlock:v45];
 
     v40 = objc_alloc_init(SBAppProtectionCoordinator);
     appProtectionCoordinator = v39->_appProtectionCoordinator;
@@ -635,8 +635,8 @@ void __31__SBApplicationController_init__block_invoke_2_54(uint64_t a1)
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBApplicationController.m" lineNumber:294 description:{@"%@ does not dealloc", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationController.m" lineNumber:294 description:{@"%@ does not dealloc", objc_opt_class()}];
 
   v5.receiver = self;
   v5.super_class = SBApplicationController;
@@ -646,40 +646,40 @@ void __31__SBApplicationController_init__block_invoke_2_54(uint64_t a1)
 - (id)allBundleIdentifiers
 {
   os_unfair_lock_lock(&self->_applicationsLock);
-  v3 = [(NSMutableDictionary *)self->_applicationsByBundleIdentifier allKeys];
+  allKeys = [(NSMutableDictionary *)self->_applicationsByBundleIdentifier allKeys];
   os_unfair_lock_unlock(&self->_applicationsLock);
 
-  return v3;
+  return allKeys;
 }
 
-- (id)applicationWithBundleIdentifier:(id)a3
+- (id)applicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_applicationsLock);
-  v5 = [(SBApplicationController *)self _lock_applicationWithBundleIdentifier:v4];
+  v5 = [(SBApplicationController *)self _lock_applicationWithBundleIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_applicationsLock);
 
   return v5;
 }
 
-- (id)applicationWithPid:(int)a3
+- (id)applicationWithPid:(int)pid
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (a3 < 1)
+  if (pid < 1)
   {
     v9 = 0;
   }
 
   else
   {
-    v3 = *&a3;
+    v3 = *&pid;
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(SBApplicationController *)self runningApplications];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    runningApplications = [(SBApplicationController *)self runningApplications];
+    v7 = [runningApplications countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
@@ -692,19 +692,19 @@ void __31__SBApplicationController_init__block_invoke_2_54(uint64_t a1)
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(runningApplications);
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 processState];
-          v14 = [v13 pid];
+          processState = [v12 processState];
+          v14 = [processState pid];
 
           if (v14 == v3)
           {
             if (v9)
             {
-              v16 = [MEMORY[0x277CCA890] currentHandler];
-              [v16 handleFailureInMethod:v18 object:self file:@"SBApplicationController.m" lineNumber:341 description:{@"shouldn't ever have two apps with the same pid %d: app1=%@ app2=%@", v3, v9, v12}];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:v18 object:self file:@"SBApplicationController.m" lineNumber:341 description:{@"shouldn't ever have two apps with the same pid %d: app1=%@ app2=%@", v3, v9, v12}];
             }
 
             v15 = v12;
@@ -713,7 +713,7 @@ void __31__SBApplicationController_init__block_invoke_2_54(uint64_t a1)
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [runningApplications countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v8);
@@ -728,20 +728,20 @@ void __31__SBApplicationController_init__block_invoke_2_54(uint64_t a1)
   return v9;
 }
 
-- (void)uninstallApplication:(id)a3
+- (void)uninstallApplication:(id)application
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [a3 bundleIdentifier];
+  bundleIdentifier = [application bundleIdentifier];
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = v4;
+    v10 = bundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Uninstall application: %{public}@", buf, 0xCu);
   }
 
-  [(SBApplicationController *)self _removeApplicationsFromModelWithBundleIdentifier:v4 forInstall:0 withReason:@"User Requested"];
-  v6 = [MEMORY[0x277CBEB98] setWithObject:v4];
+  [(SBApplicationController *)self _removeApplicationsFromModelWithBundleIdentifier:bundleIdentifier forInstall:0 withReason:@"User Requested"];
+  v6 = [MEMORY[0x277CBEB98] setWithObject:bundleIdentifier];
   [(SBApplicationController *)self _sendInstalledAppsDidChangeNotification:0 removed:v6 replaced:0 updated:0];
 
   [(SBReverseCountedSemaphore *)self->_uninstallationReverseSemaphore increment];
@@ -751,28 +751,28 @@ void __31__SBApplicationController_init__block_invoke_2_54(uint64_t a1)
   v8[2] = __48__SBApplicationController_uninstallApplication___block_invoke;
   v8[3] = &unk_2783B0F28;
   v8[4] = self;
-  [(FBSApplicationLibrary *)appLibrary uninstallApplication:v4 withOptions:0 completion:v8];
+  [(FBSApplicationLibrary *)appLibrary uninstallApplication:bundleIdentifier withOptions:0 completion:v8];
 }
 
-- (void)requestUninstallApplication:(id)a3 options:(unint64_t)a4 withCompletion:(id)a5
+- (void)requestUninstallApplication:(id)application options:(unint64_t)options withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = [a3 bundleIdentifier];
-  [(SBApplicationController *)self requestUninstallApplicationWithBundleIdentifier:v9 options:a4 withCompletion:v8];
+  completionCopy = completion;
+  bundleIdentifier = [application bundleIdentifier];
+  [(SBApplicationController *)self requestUninstallApplicationWithBundleIdentifier:bundleIdentifier options:options withCompletion:completionCopy];
 }
 
-- (void)requestUninstallApplicationWithBundleIdentifier:(id)a3 options:(unint64_t)a4 withCompletion:(id)a5
+- (void)requestUninstallApplicationWithBundleIdentifier:(id)identifier options:(unint64_t)options withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  completionCopy = completion;
   appLibraryObserver = self->_appLibraryObserver;
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"requesting uninstall of %@", v8];
-  v12 = [(SBApplicationLibraryObserver *)appLibraryObserver suspendCalloutsAssertionWithReason:v11];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"requesting uninstall of %@", identifierCopy];
+  v12 = [(SBApplicationLibraryObserver *)appLibraryObserver suspendCalloutsAssertionWithReason:identifierCopy];
 
   v13 = objc_alloc_init(MEMORY[0x277D0ACC8]);
   [v13 setUserInitiated:1];
-  if (v6)
+  if (optionsCopy)
   {
     [v13 setShowsArchiveOption:1];
   }
@@ -783,10 +783,10 @@ void __31__SBApplicationController_init__block_invoke_2_54(uint64_t a1)
   v17[2] = __98__SBApplicationController_requestUninstallApplicationWithBundleIdentifier_options_withCompletion___block_invoke;
   v17[3] = &unk_2783AA0B8;
   v18 = v12;
-  v19 = v9;
+  v19 = completionCopy;
   v15 = v12;
-  v16 = v9;
-  [(FBSApplicationLibrary *)appLibrary uninstallApplication:v8 withOptions:v13 completion:v17];
+  v16 = completionCopy;
+  [(FBSApplicationLibrary *)appLibrary uninstallApplication:identifierCopy withOptions:v13 completion:v17];
 }
 
 void __98__SBApplicationController_requestUninstallApplicationWithBundleIdentifier_options_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -850,9 +850,9 @@ void __98__SBApplicationController_requestUninstallApplicationWithBundleIdentifi
   }
 }
 
-- (void)waitForUninstallsToComplete:(double)a3
+- (void)waitForUninstallsToComplete:(double)complete
 {
-  if (![(SBReverseCountedSemaphore *)self->_uninstallationReverseSemaphore waitWithTimeout:a3])
+  if (![(SBReverseCountedSemaphore *)self->_uninstallationReverseSemaphore waitWithTimeout:complete])
   {
     v3 = SBLogAppLibrary();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -870,8 +870,8 @@ void __98__SBApplicationController_requestUninstallApplicationWithBundleIdentifi
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(SBApplicationController *)self allApplications];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allApplications = [(SBApplicationController *)self allApplications];
+  v5 = [allApplications countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -882,33 +882,33 @@ void __98__SBApplicationController_requestUninstallApplicationWithBundleIdentifi
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allApplications);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         if (([v9 isInternalApplication] & 1) != 0 || objc_msgSend(v9, "isSystemApplication"))
         {
-          v10 = [v9 info];
-          if ([v10 hasHiddenTag])
+          info = [v9 info];
+          if ([info hasHiddenTag])
           {
           }
 
           else
           {
-            v11 = [v9 isSetup];
+            isSetup = [v9 isSetup];
 
-            if (!v11)
+            if (!isSetup)
             {
               continue;
             }
           }
 
-          v12 = [v9 bundleIdentifier];
-          [v3 addObject:v12];
+          bundleIdentifier = [v9 bundleIdentifier];
+          [v3 addObject:bundleIdentifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allApplications countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -917,67 +917,67 @@ void __98__SBApplicationController_requestUninstallApplicationWithBundleIdentifi
   return v3;
 }
 
-- (BOOL)isApplicationAlwaysAvailableForInfo:(id)a3
+- (BOOL)isApplicationAlwaysAvailableForInfo:(id)info
 {
-  v3 = a3;
-  if ([v3 isInternalApplication] & 1) != 0 || (objc_msgSend(v3, "isSystemApplication") & 1) != 0 || (objc_msgSend(v3, "hasHiddenTag"))
+  infoCopy = info;
+  if ([infoCopy isInternalApplication] & 1) != 0 || (objc_msgSend(infoCopy, "isSystemApplication") & 1) != 0 || (objc_msgSend(infoCopy, "hasHiddenTag"))
   {
     v4 = 1;
   }
 
   else
   {
-    v6 = [v3 bundleIdentifier];
-    v4 = [v6 isEqualToString:@"com.apple.purplebuddy"];
+    bundleIdentifier = [infoCopy bundleIdentifier];
+    v4 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
   }
 
   return v4;
 }
 
-- (BOOL)isApplicationAlwaysAvailableForProxy:(id)a3
+- (BOOL)isApplicationAlwaysAvailableForProxy:(id)proxy
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
-  v5 = [v3 applicationType];
-  if ([v5 isEqualToString:@"Internal"] & 1) != 0 || (FBSystemAppBundleID(), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "isEqualToString:", v6), v6, (v7))
+  proxyCopy = proxy;
+  bundleIdentifier = [proxyCopy bundleIdentifier];
+  applicationType = [proxyCopy applicationType];
+  if ([applicationType isEqualToString:@"Internal"] & 1) != 0 || (FBSystemAppBundleID(), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(bundleIdentifier, "isEqualToString:", v6), v6, (v7))
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v3 appTags];
-    if ([v9 containsObject:@"hidden"])
+    appTags = [proxyCopy appTags];
+    if ([appTags containsObject:@"hidden"])
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v4 isEqualToString:@"com.apple.purplebuddy"];
+      v8 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
     }
   }
 
   return v8;
 }
 
-- (id)_allApplicationsFilteredBySystem:(BOOL)a3
+- (id)_allApplicationsFilteredBySystem:(BOOL)system
 {
-  v4 = [(FBSApplicationLibrary *)self->_appLibrary allInstalledApplications];
-  if ([v4 count])
+  allInstalledApplications = [(FBSApplicationLibrary *)self->_appLibrary allInstalledApplications];
+  if ([allInstalledApplications count])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __60__SBApplicationController__allApplicationsFilteredBySystem___block_invoke;
     v8[3] = &__block_descriptor_33_e34_B32__0__SBApplicationInfo_8Q16_B24l;
-    v9 = a3;
-    v5 = [v4 indexesOfObjectsPassingTest:v8];
-    v6 = [v4 objectsAtIndexes:v5];
+    systemCopy = system;
+    v5 = [allInstalledApplications indexesOfObjectsPassingTest:v8];
+    v6 = [allInstalledApplications objectsAtIndexes:v5];
 
-    v4 = v6;
+    allInstalledApplications = v6;
   }
 
-  return v4;
+  return allInstalledApplications;
 }
 
 uint64_t __60__SBApplicationController__allApplicationsFilteredBySystem___block_invoke(uint64_t a1, void *a2)
@@ -1000,16 +1000,16 @@ uint64_t __60__SBApplicationController__allApplicationsFilteredBySystem___block_
 - (id)recentlyUsedBundleIDs
 {
   v2 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-  v3 = [v2 recentAppLayouts];
+  recentAppLayouts = [v2 recentAppLayouts];
 
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(recentAppLayouts, "count")}];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SBApplicationController_recentlyUsedBundleIDs__block_invoke;
   v7[3] = &unk_2783B1D38;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [recentAppLayouts enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -1035,9 +1035,9 @@ void __48__SBApplicationController_recentlyUsedBundleIDs__block_invoke_2(uint64_
   }
 }
 
-- (BOOL)_appLayoutContainsOnlyResizableApps:(id)a3
+- (BOOL)_appLayoutContainsOnlyResizableApps:(id)apps
 {
-  v3 = a3;
+  appsCopy = apps;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -1047,7 +1047,7 @@ void __48__SBApplicationController_recentlyUsedBundleIDs__block_invoke_2(uint64_
   v6[2] = __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_invoke;
   v6[3] = &unk_2783AFC58;
   v6[4] = &v7;
-  [v3 enumerate:v6];
+  [appsCopy enumerate:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -1090,8 +1090,8 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(SBApplicationController *)self allApplications];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  allApplications = [(SBApplicationController *)self allApplications];
+  v5 = [allApplications countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -1101,7 +1101,7 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allApplications);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -1111,7 +1111,7 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [allApplications countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);
@@ -1132,8 +1132,8 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v4 = [(SBApplicationController *)self allApplications];
-  v5 = [v4 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  allApplications = [(SBApplicationController *)self allApplications];
+  v5 = [allApplications countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v5)
   {
     v6 = *v9;
@@ -1144,14 +1144,14 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allApplications);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) flushSnapshotsForAllScenesIncludingAllLegacyImages];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [allApplications countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
@@ -1160,54 +1160,54 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
   os_activity_scope_leave(&state);
 }
 
-- (void)_sendInstalledAppsDidChangeNotification:(id)a3 removed:(id)a4 replaced:(id)a5 updated:(id)a6
+- (void)_sendInstalledAppsDidChangeNotification:(id)notification removed:(id)removed replaced:(id)replaced updated:(id)updated
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  notificationCopy = notification;
+  removedCopy = removed;
+  replacedCopy = replaced;
+  updatedCopy = updated;
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (v10 && [v10 count])
+  if (notificationCopy && [notificationCopy count])
   {
-    [v14 setObject:v10 forKey:@"SBInstalledApplicationsAddedBundleIDs"];
+    [v14 setObject:notificationCopy forKey:@"SBInstalledApplicationsAddedBundleIDs"];
   }
 
-  if (v12 && [v12 count])
+  if (replacedCopy && [replacedCopy count])
   {
-    [v14 setObject:v12 forKey:@"SBInstalledApplicationsReplacedBundleIDs"];
+    [v14 setObject:replacedCopy forKey:@"SBInstalledApplicationsReplacedBundleIDs"];
   }
 
-  if (v13 && [v13 count])
+  if (updatedCopy && [updatedCopy count])
   {
-    [v14 setObject:v13 forKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
+    [v14 setObject:updatedCopy forKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
   }
 
-  if (v11 && [v11 count])
+  if (removedCopy && [removedCopy count])
   {
-    [v14 setObject:v11 forKey:@"SBInstalledApplicationsRemovedBundleIDs"];
+    [v14 setObject:removedCopy forKey:@"SBInstalledApplicationsRemovedBundleIDs"];
   }
 
-  v15 = [v14 allKeys];
-  v16 = [v15 count];
+  allKeys = [v14 allKeys];
+  v16 = [allKeys count];
 
   if (v16)
   {
-    [(SBApplicationRestrictionController *)self->_restrictionController noteApplicationIdentifiersDidChangeWithAdded:v10 replaced:v12 removed:v11];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 postNotificationName:@"SBInstalledApplicationsDidChangeNotification" object:self userInfo:v14];
+    [(SBApplicationRestrictionController *)self->_restrictionController noteApplicationIdentifiersDidChangeWithAdded:notificationCopy replaced:replacedCopy removed:removedCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBInstalledApplicationsDidChangeNotification" object:self userInfo:v14];
 
     v18 = SBLogAppLibrary();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v20 = 138544130;
-      v21 = v10;
+      v21 = notificationCopy;
       v22 = 2114;
-      v23 = v11;
+      v23 = removedCopy;
       v24 = 2114;
-      v25 = v12;
+      v25 = replacedCopy;
       v26 = 2114;
-      v27 = v13;
+      v27 = updatedCopy;
       _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_INFO, "Installed apps did change.\nAdded: %{public}@\nRemoved: %{public}@\nReplaced: %{public}@\nUpdated: %{public}@", &v20, 0x2Au);
     }
 
@@ -1215,25 +1215,25 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138544130;
-      v21 = v10;
+      v21 = notificationCopy;
       v22 = 2114;
-      v23 = v11;
+      v23 = removedCopy;
       v24 = 2114;
-      v25 = v12;
+      v25 = replacedCopy;
       v26 = 2114;
-      v27 = v13;
+      v27 = updatedCopy;
       _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "Installed apps did change.\nAdded: %{public}@\nRemoved: %{public}@\nReplaced: %{public}@\nUpdated: %{public}@", &v20, 0x2Au);
     }
   }
 }
 
-- (Class)_appClassForInfo:(id)a3
+- (Class)_appClassForInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
-  if ([v3 type] == 1 && (objc_msgSend(v4, "isEqualToString:", @"com.apple.camera") & 1) == 0)
+  infoCopy = info;
+  bundleIdentifier = [infoCopy bundleIdentifier];
+  if ([infoCopy type] == 1 && (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.camera") & 1) == 0)
   {
-    [v3 representsWebApplication];
+    [infoCopy representsWebApplication];
   }
 
   v5 = objc_opt_class();
@@ -1241,16 +1241,16 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
   return v5;
 }
 
-- (id)_appInfosToBundleIDs:(id)a3
+- (id)_appInfosToBundleIDs:(id)ds
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1265,8 +1265,8 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
-        [v4 addObject:v10];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
+        [v4 addObject:bundleIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1278,22 +1278,22 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
   return v4;
 }
 
-- (void)_loadApplications:(id)a3 remove:(id)a4
+- (void)_loadApplications:(id)applications remove:(id)remove
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  applicationsCopy = applications;
+  removeCopy = remove;
   [(SBApplicationController *)self _preLoadApplications];
-  v49 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v6];
+  v49 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:applicationsCopy];
   [v49 removeObject:self->_systemAppInfo];
   v50 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v46 = v7;
-  v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v7];
+  v46 = removeCopy;
+  v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:removeCopy];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v9 = v6;
+  v9 = applicationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v61 objects:v71 count:16];
   if (v10)
   {
@@ -1309,8 +1309,8 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
         }
 
         v14 = *(*(&v61 + 1) + 8 * i);
-        v15 = [(SBApplicationInfo *)v14 bundleIdentifier];
-        v16 = [(SBApplicationController *)self applicationWithBundleIdentifier:v15];
+        bundleIdentifier = [(SBApplicationInfo *)v14 bundleIdentifier];
+        v16 = [(SBApplicationController *)self applicationWithBundleIdentifier:bundleIdentifier];
         if (v16)
         {
           systemAppInfo = self->_systemAppInfo;
@@ -1363,8 +1363,8 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v57 + 1) + 8 * j) bundleIdentifier];
-        [(SBApplicationController *)self _removeApplicationsFromModelWithBundleIdentifier:v24 forInstall:0 withReason:@"Removed from the system."];
+        bundleIdentifier2 = [*(*(&v57 + 1) + 8 * j) bundleIdentifier];
+        [(SBApplicationController *)self _removeApplicationsFromModelWithBundleIdentifier:bundleIdentifier2 forInstall:0 withReason:@"Removed from the system."];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v57 objects:v70 count:16];
@@ -1436,11 +1436,11 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
 
         v33 = v32;
         v34 = MEMORY[0x277D28AB8];
-        v35 = [v27 bundleIdentifier];
+        bundleIdentifier3 = [v27 bundleIdentifier];
         v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v33];
-        [v34 logStep:v31 byParty:10 phase:3 success:1 forBundleID:v35 description:v36];
+        [v34 logStep:v31 byParty:10 phase:3 success:1 forBundleID:bundleIdentifier3 description:v36];
 
-        v37 = [v27 bundleIdentifier];
+        bundleIdentifier4 = [v27 bundleIdentifier];
         if (!v30 || (*(v30 + 8) & 1) == 0)
         {
           v38 = SBLogAppLibrary();
@@ -1457,7 +1457,7 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
             }
 
             *buf = 138543618;
-            v66 = v37;
+            v66 = bundleIdentifier4;
             v67 = 2114;
             v68 = v39;
             v40 = v39;
@@ -1487,29 +1487,29 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
   [(SBApplicationController *)self _sendInstalledAppsDidChangeNotification:v42 removed:v44 replaced:v43 updated:0];
 }
 
-- (void)_removeApplicationsFromModelWithBundleIdentifier:(id)a3 forInstall:(BOOL)a4 withReason:(id)a5
+- (void)_removeApplicationsFromModelWithBundleIdentifier:(id)identifier forInstall:(BOOL)install withReason:(id)reason
 {
-  v16 = a3;
-  v8 = a5;
-  if (!a4)
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  if (!install)
   {
     v9 = MEMORY[0x277D28AB8];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Application removed for reason: %@", v8];
-    [v9 logStep:12 byParty:10 phase:3 success:1 forBundleID:v16 description:v10];
+    reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Application removed for reason: %@", reasonCopy];
+    [v9 logStep:12 byParty:10 phase:3 success:1 forBundleID:identifierCopy description:reasonCopy];
   }
 
-  v11 = [(SBApplicationController *)self applicationWithBundleIdentifier:v16];
+  v11 = [(SBApplicationController *)self applicationWithBundleIdentifier:identifierCopy];
   v12 = v11;
   if (v11)
   {
     [v11 setUninstalled:1];
-    if (!a4)
+    if (!install)
     {
       SBWorkspaceKillApplication(v12, 0, @"uninstalling app", 0);
     }
   }
 
-  v13 = [(NSMutableDictionary *)self->_systemAppsVisibilityOverrides objectForKey:v16];
+  v13 = [(NSMutableDictionary *)self->_systemAppsVisibilityOverrides objectForKey:identifierCopy];
   v14 = v13;
   if (v13)
   {
@@ -1519,12 +1519,12 @@ void __63__SBApplicationController__appLayoutContainsOnlyResizableApps___block_i
       self->_cachedSystemAppsWithVisibilityOverrideHidden = 0;
     }
 
-    [(NSMutableDictionary *)self->_systemAppsVisibilityOverrides removeObjectForKey:v16];
+    [(NSMutableDictionary *)self->_systemAppsVisibilityOverrides removeObjectForKey:identifierCopy];
     [(SBApplicationRestrictionController *)self->_restrictionController noteVisibilityOverridesDidChange];
   }
 
   os_unfair_lock_lock(&self->_applicationsLock);
-  [(NSMutableDictionary *)self->_applicationsByBundleIdentifier removeObjectForKey:v16];
+  [(NSMutableDictionary *)self->_applicationsByBundleIdentifier removeObjectForKey:identifierCopy];
   os_unfair_lock_unlock(&self->_applicationsLock);
 }
 
@@ -1585,19 +1585,19 @@ uint64_t __65__SBApplicationController__updateVisibilityOverridesInBackground__b
   return [v4 noteVisibilityOverridesDidChange];
 }
 
-- (void)applicationsUpdated:(id)a3
+- (void)applicationsUpdated:(id)updated
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   os_unfair_lock_lock(&self->_applicationsLock);
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = updatedCopy;
   v8 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v8)
   {
@@ -1613,19 +1613,19 @@ uint64_t __65__SBApplicationController__updateVisibilityOverridesInBackground__b
         }
 
         v12 = *(*(&v31 + 1) + 8 * i);
-        v13 = [v12 bundleIdentifier];
-        v14 = [(SBApplicationController *)self _lock_applicationWithBundleIdentifier:v13];
+        bundleIdentifier = [v12 bundleIdentifier];
+        v14 = [(SBApplicationController *)self _lock_applicationWithBundleIdentifier:bundleIdentifier];
 
         if (v14)
         {
-          v15 = [v12 bundleIdentifier];
-          [v5 addObject:v15];
+          bundleIdentifier2 = [v12 bundleIdentifier];
+          [v5 addObject:bundleIdentifier2];
 
-          v16 = [v12 bundleIdentifier];
-          [v6 setObject:v14 forKey:v16];
+          bundleIdentifier3 = [v12 bundleIdentifier];
+          [dictionary setObject:v14 forKey:bundleIdentifier3];
 
-          v17 = [v12 bundleIdentifier];
-          [v7 setObject:v12 forKey:v17];
+          bundleIdentifier4 = [v12 bundleIdentifier];
+          [dictionary2 setObject:v12 forKey:bundleIdentifier4];
         }
       }
 
@@ -1656,8 +1656,8 @@ uint64_t __65__SBApplicationController__updateVisibilityOverridesInBackground__b
         }
 
         v23 = *(*(&v27 + 1) + 8 * j);
-        v24 = [v6 objectForKey:v23];
-        v25 = [v7 objectForKey:v23];
+        v24 = [dictionary objectForKey:v23];
+        v25 = [dictionary2 objectForKey:v23];
         [v24 setInfo:v25];
       }
 
@@ -1670,17 +1670,17 @@ uint64_t __65__SBApplicationController__updateVisibilityOverridesInBackground__b
   [(SBApplicationController *)self _sendInstalledAppsDidChangeNotification:0 removed:0 replaced:0 updated:v18];
 }
 
-- (void)applicationsRemoved:(id)a3
+- (void)applicationsRemoved:(id)removed
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  removedCopy = removed;
+  v5 = [removedCopy mutableCopy];
   os_unfair_lock_lock(&self->_applicationsLock);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = removedCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -1696,8 +1696,8 @@ uint64_t __65__SBApplicationController__updateVisibilityOverridesInBackground__b
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 bundleIdentifier];
-        v13 = [(SBApplicationController *)self _lock_applicationWithBundleIdentifier:v12];
+        bundleIdentifier = [v11 bundleIdentifier];
+        v13 = [(SBApplicationController *)self _lock_applicationWithBundleIdentifier:bundleIdentifier];
 
         if (!v13)
         {
@@ -1718,17 +1718,17 @@ uint64_t __65__SBApplicationController__updateVisibilityOverridesInBackground__b
   }
 }
 
-- (void)applicationsDemoted:(id)a3
+- (void)applicationsDemoted:(id)demoted
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  demotedCopy = demoted;
+  v5 = [demotedCopy mutableCopy];
   os_unfair_lock_lock(&self->_applicationsLock);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = demotedCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v7)
   {
@@ -1744,8 +1744,8 @@ uint64_t __65__SBApplicationController__updateVisibilityOverridesInBackground__b
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 bundleIdentifier];
-        v13 = [(SBApplicationController *)self _lock_applicationWithBundleIdentifier:v12];
+        bundleIdentifier = [v11 bundleIdentifier];
+        v13 = [(SBApplicationController *)self _lock_applicationWithBundleIdentifier:bundleIdentifier];
 
         if (!v13)
         {
@@ -1781,8 +1781,8 @@ uint64_t __65__SBApplicationController__updateVisibilityOverridesInBackground__b
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v22 + 1) + 8 * j) bundleIdentifier];
-          [(SBApplicationController *)self _removeApplicationsFromModelWithBundleIdentifier:v19 forInstall:0 withReason:@"Demotion"];
+          bundleIdentifier2 = [*(*(&v22 + 1) + 8 * j) bundleIdentifier];
+          [(SBApplicationController *)self _removeApplicationsFromModelWithBundleIdentifier:bundleIdentifier2 forInstall:0 withReason:@"Demotion"];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -1849,65 +1849,65 @@ uint64_t __65__SBApplicationController__updateVisibilityOverridesInBackground__b
   return cachedSystemAppsWithVisibilityOverrideHidden;
 }
 
-- (id)_loadApplicationFromApplicationInfo:(id)a3
+- (id)_loadApplicationFromApplicationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc_init(_SBLoadApplicationResult);
-  v6 = [v4 bundleIdentifier];
-  v7 = [v4 bundleURL];
-  v8 = [v4 bundleURL];
-  v9 = [v8 path];
+  bundleIdentifier = [infoCopy bundleIdentifier];
+  bundleURL = [infoCopy bundleURL];
+  bundleURL2 = [infoCopy bundleURL];
+  path = [bundleURL2 path];
 
-  v10 = [v4 dataContainerURL];
-  v11 = [v10 path];
+  dataContainerURL = [infoCopy dataContainerURL];
+  path2 = [dataContainerURL path];
 
-  v12 = [(SBApplicationController *)self applicationWithBundleIdentifier:v6];
+  v12 = [(SBApplicationController *)self applicationWithBundleIdentifier:bundleIdentifier];
   v13 = v12;
   if (v5)
   {
     v5->_update = v12 != 0;
   }
 
-  if (v6)
+  if (bundleIdentifier)
   {
-    v14 = [v9 pathExtension];
-    v15 = [v14 isEqualToString:@"app"];
+    pathExtension = [path pathExtension];
+    v15 = [pathExtension isEqualToString:@"app"];
 
     if (v15)
     {
-      v16 = [objc_alloc(-[SBApplicationController _appClassForInfo:](self _appClassForInfo:{v4)), "initWithApplicationInfo:", v4}];
-      if (v16)
+      infoCopy = [objc_alloc(-[SBApplicationController _appClassForInfo:](self _appClassForInfo:{infoCopy)), "initWithApplicationInfo:", infoCopy}];
+      if (infoCopy)
       {
-        if (![v13 isSystemApplication] || objc_msgSend(v16, "isSystemApplication"))
+        if (![v13 isSystemApplication] || objc_msgSend(infoCopy, "isSystemApplication"))
         {
           if (v5)
           {
             v5->_success = 1;
           }
 
-          v24 = v11;
+          v24 = path2;
           if (v13)
           {
-            [(SBApplicationController *)self _removeApplicationsFromModelWithBundleIdentifier:v6 forInstall:1 withReason:@"Update"];
+            [(SBApplicationController *)self _removeApplicationsFromModelWithBundleIdentifier:bundleIdentifier forInstall:1 withReason:@"Update"];
           }
 
           os_unfair_lock_lock(&self->_applicationsLock);
-          [(NSMutableDictionary *)self->_applicationsByBundleIdentifier setObject:v16 forKey:v6];
+          [(NSMutableDictionary *)self->_applicationsByBundleIdentifier setObject:infoCopy forKey:bundleIdentifier];
           os_unfair_lock_unlock(&self->_applicationsLock);
-          v17 = [v16 info];
-          v18 = [v17 visibilityOverride];
+          info = [infoCopy info];
+          visibilityOverride = [info visibilityOverride];
 
-          if (!v18)
+          if (!visibilityOverride)
           {
-            v11 = v24;
+            path2 = v24;
             goto LABEL_25;
           }
 
-          v11 = v24;
-          v19 = [[SBAppVisibilityPreferences alloc] initWithDefaultVisible:v18 == 1 bundleID:v6 containerPath:v24];
+          path2 = v24;
+          v19 = [[SBAppVisibilityPreferences alloc] initWithDefaultVisible:visibilityOverride == 1 bundleID:bundleIdentifier containerPath:v24];
           if (v19)
           {
-            [(NSMutableDictionary *)self->_systemAppsVisibilityOverrides setObject:v19 forKey:v6];
+            [(NSMutableDictionary *)self->_systemAppsVisibilityOverrides setObject:v19 forKey:bundleIdentifier];
             if (![(SBAppVisibilityPreferences *)v19 isCurrentlyVisible])
             {
               cachedSystemAppsWithVisibilityOverrideHidden = self->_cachedSystemAppsWithVisibilityOverrideHidden;
@@ -1920,12 +1920,12 @@ uint64_t __65__SBApplicationController__updateVisibilityOverridesInBackground__b
           goto LABEL_24;
         }
 
-        [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Attempt to replace system application with a user application, which is disallowed.", v6];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Attempt to replace system application with a user application, which is disallowed.", bundleIdentifier];
       }
 
       else
       {
-        [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Unable to load application (id=%@) because SBApplication's initializer returned nil.", v6];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Unable to load application (id=%@) because SBApplication's initializer returned nil.", bundleIdentifier];
       }
       v19 = ;
       if (v5)
@@ -1939,10 +1939,10 @@ LABEL_24:
     }
   }
 
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Unable to load application because there is no bundle identifier (id=%@) or the bundle is not an app bundle (url=%@) for application info %@.", v6, v7, v4];
+  infoCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Unable to load application because there is no bundle identifier (id=%@) or the bundle is not an app bundle (url=%@) for application info %@.", bundleIdentifier, bundleURL, infoCopy];
   if (v5)
   {
-    objc_setProperty_nonatomic_copy(v5, v21, v16, 16);
+    objc_setProperty_nonatomic_copy(v5, v21, infoCopy, 16);
   }
 
 LABEL_25:

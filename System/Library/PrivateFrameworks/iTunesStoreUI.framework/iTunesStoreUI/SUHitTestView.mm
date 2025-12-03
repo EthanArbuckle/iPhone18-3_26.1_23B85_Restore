@@ -1,6 +1,6 @@
 @interface SUHitTestView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)addHitTestTarget:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)addHitTestTarget:(id)target;
 - (void)dealloc;
 @end
 
@@ -13,7 +13,7 @@
   [(SUHitTestView *)&v3 dealloc];
 }
 
-- (void)addHitTestTarget:(id)a3
+- (void)addHitTestTarget:(id)target
 {
   hitTestTargets = self->_hitTestTargets;
   if (!hitTestTargets)
@@ -22,13 +22,13 @@
     self->_hitTestTargets = hitTestTargets;
   }
 
-  [(NSMutableArray *)hitTestTargets addObject:a3];
+  [(NSMutableArray *)hitTestTargets addObject:target];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
@@ -51,7 +51,7 @@ LABEL_3:
 
       v13 = *(*(&v16 + 1) + 8 * v12);
       [v13 convertPoint:self fromView:{x, y}];
-      result = [v13 hitTest:a4 withEvent:?];
+      result = [v13 hitTest:event withEvent:?];
       if (result)
       {
         break;
@@ -75,7 +75,7 @@ LABEL_3:
 LABEL_9:
     v15.receiver = self;
     v15.super_class = SUHitTestView;
-    return [(SUHitTestView *)&v15 hitTest:a4 withEvent:x, y];
+    return [(SUHitTestView *)&v15 hitTest:event withEvent:x, y];
   }
 
   return result;

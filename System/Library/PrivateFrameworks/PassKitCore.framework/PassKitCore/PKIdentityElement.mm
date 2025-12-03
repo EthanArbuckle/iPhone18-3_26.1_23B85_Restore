@@ -19,28 +19,28 @@
 + (PKIdentityElement)sexElement;
 + (PKIdentityElement)veteranStatusElement;
 + (PKIdentityElement)weightElement;
-- (PKIdentityElement)initWithDIIdentityElement:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKIdentityElement)initWithDIIdentityElement:(id)element;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PKIdentityElement
 
-- (PKIdentityElement)initWithDIIdentityElement:(id)a3
+- (PKIdentityElement)initWithDIIdentityElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = PKIdentityElement;
   v5 = [(PKIdentityElement *)&v8 init];
   wrapped = v5->_wrapped;
-  v5->_wrapped = v4;
+  v5->_wrapped = elementCopy;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PKIdentityElement alloc];
-  v6 = [(DIIdentityElement *)self->_wrapped copyWithZone:a3];
+  v6 = [(DIIdentityElement *)self->_wrapped copyWithZone:zone];
   v7 = [(PKIdentityElement *)v5 initWithDIIdentityElement:v6];
 
   return v7;
@@ -49,8 +49,8 @@
 + (PKIdentityElement)givenNameElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] givenNameElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  givenNameElement = [MEMORY[0x1E6997DB8] givenNameElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:givenNameElement];
 
   return v4;
 }
@@ -58,8 +58,8 @@
 + (PKIdentityElement)familyNameElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] familyNameElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  familyNameElement = [MEMORY[0x1E6997DB8] familyNameElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:familyNameElement];
 
   return v4;
 }
@@ -67,8 +67,8 @@
 + (PKIdentityElement)portraitElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] portraitElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  portraitElement = [MEMORY[0x1E6997DB8] portraitElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:portraitElement];
 
   return v4;
 }
@@ -76,8 +76,8 @@
 + (PKIdentityElement)addressElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] addressElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  addressElement = [MEMORY[0x1E6997DB8] addressElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:addressElement];
 
   return v4;
 }
@@ -85,8 +85,8 @@
 + (PKIdentityElement)heightElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] heightElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  heightElement = [MEMORY[0x1E6997DB8] heightElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:heightElement];
 
   return v4;
 }
@@ -94,8 +94,8 @@
 + (PKIdentityElement)weightElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] weightElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  weightElement = [MEMORY[0x1E6997DB8] weightElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:weightElement];
 
   return v4;
 }
@@ -103,8 +103,8 @@
 + (PKIdentityElement)eyeColorElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] eyeColorElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  eyeColorElement = [MEMORY[0x1E6997DB8] eyeColorElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:eyeColorElement];
 
   return v4;
 }
@@ -112,8 +112,8 @@
 + (PKIdentityElement)hairColorElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] hairColorElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  hairColorElement = [MEMORY[0x1E6997DB8] hairColorElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:hairColorElement];
 
   return v4;
 }
@@ -121,8 +121,8 @@
 + (PKIdentityElement)organDonorStatusElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] organDonorStatusElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  organDonorStatusElement = [MEMORY[0x1E6997DB8] organDonorStatusElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:organDonorStatusElement];
 
   return v4;
 }
@@ -130,8 +130,8 @@
 + (PKIdentityElement)veteranStatusElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] veteranStatusElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  veteranStatusElement = [MEMORY[0x1E6997DB8] veteranStatusElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:veteranStatusElement];
 
   return v4;
 }
@@ -139,8 +139,8 @@
 + (PKIdentityElement)issuingAuthorityElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] issuingAuthorityElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  issuingAuthorityElement = [MEMORY[0x1E6997DB8] issuingAuthorityElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:issuingAuthorityElement];
 
   return v4;
 }
@@ -148,8 +148,8 @@
 + (PKIdentityElement)ageElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] ageElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  ageElement = [MEMORY[0x1E6997DB8] ageElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:ageElement];
 
   return v4;
 }
@@ -157,8 +157,8 @@
 + (PKIdentityElement)dateOfBirthElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] dateOfBirthElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  dateOfBirthElement = [MEMORY[0x1E6997DB8] dateOfBirthElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:dateOfBirthElement];
 
   return v4;
 }
@@ -166,8 +166,8 @@
 + (PKIdentityElement)sexElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] sexElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  sexElement = [MEMORY[0x1E6997DB8] sexElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:sexElement];
 
   return v4;
 }
@@ -175,8 +175,8 @@
 + (PKIdentityElement)documentIssueDateElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] documentIssueDateElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  documentIssueDateElement = [MEMORY[0x1E6997DB8] documentIssueDateElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:documentIssueDateElement];
 
   return v4;
 }
@@ -184,8 +184,8 @@
 + (PKIdentityElement)documentExpirationDateElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] documentExpirationDateElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  documentExpirationDateElement = [MEMORY[0x1E6997DB8] documentExpirationDateElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:documentExpirationDateElement];
 
   return v4;
 }
@@ -193,8 +193,8 @@
 + (PKIdentityElement)documentDHSComplianceStatusElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] documentDHSComplianceStatusElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  documentDHSComplianceStatusElement = [MEMORY[0x1E6997DB8] documentDHSComplianceStatusElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:documentDHSComplianceStatusElement];
 
   return v4;
 }
@@ -202,8 +202,8 @@
 + (PKIdentityElement)documentNumberElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] documentNumberElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  documentNumberElement = [MEMORY[0x1E6997DB8] documentNumberElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:documentNumberElement];
 
   return v4;
 }
@@ -211,8 +211,8 @@
 + (PKIdentityElement)drivingPrivilegesElement
 {
   v2 = [PKIdentityElement alloc];
-  v3 = [MEMORY[0x1E6997DB8] drivingPrivilegesElement];
-  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:v3];
+  drivingPrivilegesElement = [MEMORY[0x1E6997DB8] drivingPrivilegesElement];
+  v4 = [(PKIdentityElement *)v2 initWithDIIdentityElement:drivingPrivilegesElement];
 
   return v4;
 }

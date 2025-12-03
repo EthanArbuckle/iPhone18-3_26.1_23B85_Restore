@@ -1,44 +1,44 @@
 @interface ULDisplayMonitor
-- (BOOL)_checkDisplayOnFromLayout:(id)a3;
-- (BOOL)_checkScreenLockedFromLayout:(id)a3;
-- (id)_checkAppInFocusFromLayout:(id)a3;
-- (id)latestEventAfterAddingObserverForEventName:(id)a3;
-- (void)_didUpdateDisplayLayout:(id)a3;
-- (void)startMonitoring:(id)a3;
-- (void)stopMonitoring:(id)a3;
+- (BOOL)_checkDisplayOnFromLayout:(id)layout;
+- (BOOL)_checkScreenLockedFromLayout:(id)layout;
+- (id)_checkAppInFocusFromLayout:(id)layout;
+- (id)latestEventAfterAddingObserverForEventName:(id)name;
+- (void)_didUpdateDisplayLayout:(id)layout;
+- (void)startMonitoring:(id)monitoring;
+- (void)stopMonitoring:(id)monitoring;
 @end
 
 @implementation ULDisplayMonitor
 
-- (void)startMonitoring:(id)a3
+- (void)startMonitoring:(id)monitoring
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  monitoringCopy = monitoring;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D0AD08];
-  v7 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __36__ULDisplayMonitor_startMonitoring___block_invoke;
   v14[3] = &unk_2798D42A8;
   objc_copyWeak(&v15, &location);
-  [v7 setTransitionHandler:v14];
+  [configurationForDefaultMainDisplayMonitor setTransitionHandler:v14];
   objc_destroyWeak(&v15);
-  v8 = [v6 monitorWithConfiguration:v7];
+  v8 = [v6 monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
   [(ULDisplayMonitor *)self setDisplayLayoutMinitor:v8];
 
   v9 = dispatch_time(0, 100000000);
-  v10 = [(ULEventMonitor *)self queue];
+  queue2 = [(ULEventMonitor *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __36__ULDisplayMonitor_startMonitoring___block_invoke_3;
   v12[3] = &unk_2798D4280;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
-  dispatch_after(v9, v10, v12);
+  v13 = monitoringCopy;
+  v11 = monitoringCopy;
+  dispatch_after(v9, queue2, v12);
 
   objc_destroyWeak(&location);
 }
@@ -126,15 +126,15 @@ void __36__ULDisplayMonitor_startMonitoring___block_invoke_3(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopMonitoring:(id)a3
+- (void)stopMonitoring:(id)monitoring
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  monitoringCopy = monitoring;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ULDisplayMonitor *)self displayLayoutMinitor];
-  [v6 invalidate];
+  displayLayoutMinitor = [(ULDisplayMonitor *)self displayLayoutMinitor];
+  [displayLayoutMinitor invalidate];
 
   [(ULDisplayMonitor *)self setDisplayLayoutMinitor:0];
   [(ULDisplayMonitor *)self setAppInFocus:0];
@@ -149,27 +149,27 @@ void __36__ULDisplayMonitor_startMonitoring___block_invoke_3(uint64_t a1)
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = monitoringCopy;
     _os_log_impl(&dword_258FE9000, v7, OS_LOG_TYPE_DEFAULT, "Stop monitoring: %@", &v9, 0xCu);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)latestEventAfterAddingObserverForEventName:(id)a3
+- (id)latestEventAfterAddingObserverForEventName:(id)name
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[(ULEvent *)ULDisplayMonitorEventDisplayState];
-  v7 = [v4 isEqual:v6];
+  v7 = [nameCopy isEqual:v6];
 
   if (v7)
   {
     v8 = objc_alloc_init(ULDisplayMonitorEventDisplayState);
-    v9 = [(ULDisplayMonitor *)self appInFocus];
-    [(ULDisplayMonitorEventDisplayState *)v8 setAppInFocus:v9];
+    appInFocus = [(ULDisplayMonitor *)self appInFocus];
+    [(ULDisplayMonitorEventDisplayState *)v8 setAppInFocus:appInFocus];
 
     [(ULDisplayMonitorEventDisplayState *)v8 setAppInFocusChanged:1];
     [(ULDisplayMonitorEventDisplayState *)v8 setDisplayOn:[(ULDisplayMonitor *)self displayOn]];
@@ -186,42 +186,42 @@ void __36__ULDisplayMonitor_startMonitoring___block_invoke_3(uint64_t a1)
   return v8;
 }
 
-- (void)_didUpdateDisplayLayout:(id)a3
+- (void)_didUpdateDisplayLayout:(id)layout
 {
-  v17 = a3;
-  v4 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v4);
+  layoutCopy = layout;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = v17;
-  if (v17)
+  v5 = layoutCopy;
+  if (layoutCopy)
   {
-    v6 = [(ULDisplayMonitor *)self appInFocus];
-    v7 = [(ULDisplayMonitor *)self _checkAppInFocusFromLayout:v17];
+    appInFocus = [(ULDisplayMonitor *)self appInFocus];
+    v7 = [(ULDisplayMonitor *)self _checkAppInFocusFromLayout:layoutCopy];
     [(ULDisplayMonitor *)self setAppInFocus:v7];
 
-    v8 = [(ULDisplayMonitor *)self appInFocus];
-    if (v6 == v8)
+    appInFocus2 = [(ULDisplayMonitor *)self appInFocus];
+    if (appInFocus == appInFocus2)
     {
       v10 = 0;
     }
 
     else
     {
-      v9 = [(ULDisplayMonitor *)self appInFocus];
-      v10 = [v6 isEqual:v9] ^ 1;
+      appInFocus3 = [(ULDisplayMonitor *)self appInFocus];
+      v10 = [appInFocus isEqual:appInFocus3] ^ 1;
     }
 
-    v11 = [(ULDisplayMonitor *)self displayOn];
-    [(ULDisplayMonitor *)self setDisplayOn:[(ULDisplayMonitor *)self _checkDisplayOnFromLayout:v17]];
-    v12 = v11 ^ [(ULDisplayMonitor *)self displayOn];
-    v13 = [(ULDisplayMonitor *)self screenLocked];
-    [(ULDisplayMonitor *)self setScreenLocked:[(ULDisplayMonitor *)self _checkScreenLockedFromLayout:v17]];
-    v14 = v13 ^ [(ULDisplayMonitor *)self screenLocked];
+    displayOn = [(ULDisplayMonitor *)self displayOn];
+    [(ULDisplayMonitor *)self setDisplayOn:[(ULDisplayMonitor *)self _checkDisplayOnFromLayout:layoutCopy]];
+    v12 = displayOn ^ [(ULDisplayMonitor *)self displayOn];
+    screenLocked = [(ULDisplayMonitor *)self screenLocked];
+    [(ULDisplayMonitor *)self setScreenLocked:[(ULDisplayMonitor *)self _checkScreenLockedFromLayout:layoutCopy]];
+    v14 = screenLocked ^ [(ULDisplayMonitor *)self screenLocked];
     if ((v10 & 1) != 0 || (v12 & 1) != 0 || v14)
     {
       v15 = objc_alloc_init(ULDisplayMonitorEventDisplayState);
-      v16 = [(ULDisplayMonitor *)self appInFocus];
-      [(ULDisplayMonitorEventDisplayState *)v15 setAppInFocus:v16];
+      appInFocus4 = [(ULDisplayMonitor *)self appInFocus];
+      [(ULDisplayMonitorEventDisplayState *)v15 setAppInFocus:appInFocus4];
 
       [(ULDisplayMonitorEventDisplayState *)v15 setAppInFocusChanged:v10];
       [(ULDisplayMonitorEventDisplayState *)v15 setDisplayOn:[(ULDisplayMonitor *)self displayOn]];
@@ -231,15 +231,15 @@ void __36__ULDisplayMonitor_startMonitoring___block_invoke_3(uint64_t a1)
       [(ULEventMonitor *)self postEvent:v15];
     }
 
-    v5 = v17;
+    v5 = layoutCopy;
   }
 }
 
-- (id)_checkAppInFocusFromLayout:(id)a3
+- (id)_checkAppInFocusFromLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  layoutCopy = layout;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10 = 0;
   v11 = &v10;
@@ -247,13 +247,13 @@ void __36__ULDisplayMonitor_startMonitoring___block_invoke_3(uint64_t a1)
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
   v15 = 0;
-  v6 = [v4 elements];
+  elements = [layoutCopy elements];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__ULDisplayMonitor__checkAppInFocusFromLayout___block_invoke;
   v9[3] = &unk_2798D42D0;
   v9[4] = &v10;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [elements enumerateObjectsUsingBlock:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -285,38 +285,38 @@ void __47__ULDisplayMonitor__checkAppInFocusFromLayout___block_invoke(uint64_t a
   }
 }
 
-- (BOOL)_checkDisplayOnFromLayout:(id)a3
+- (BOOL)_checkDisplayOnFromLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  layoutCopy = layout;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 displayBacklightLevel];
-  return v6 > 0;
+  displayBacklightLevel = [layoutCopy displayBacklightLevel];
+  return displayBacklightLevel > 0;
 }
 
-- (BOOL)_checkScreenLockedFromLayout:(id)a3
+- (BOOL)_checkScreenLockedFromLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  layoutCopy = layout;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v6 = [v4 elements];
+  elements = [layoutCopy elements];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__ULDisplayMonitor__checkScreenLockedFromLayout___block_invoke;
   v8[3] = &unk_2798D42D0;
   v8[4] = &v9;
-  [v6 enumerateObjectsUsingBlock:v8];
+  [elements enumerateObjectsUsingBlock:v8];
 
-  LOBYTE(v6) = *(v10 + 24);
+  LOBYTE(elements) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
-  return v6;
+  return elements;
 }
 
 void __49__ULDisplayMonitor__checkScreenLockedFromLayout___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)

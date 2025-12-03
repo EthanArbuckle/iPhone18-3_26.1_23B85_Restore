@@ -1,9 +1,9 @@
 @interface AXMChartDescriptor
 - (AXMCategoricalDataAxisDescriptor)timbreAxisDescriptor;
 - (AXMCategoricalDataAxisDescriptor)timeCategoricalAxisDescriptor;
-- (AXMChartDescriptor)initWithAttributedTitle:(id)a3 summary:(id)a4 xAxisDescriptor:(id)a5 yAxisDescriptor:(id)a6 additionalAxes:(id)a7 series:(id)a8;
-- (AXMChartDescriptor)initWithDictionary:(id)a3;
-- (AXMChartDescriptor)initWithTitle:(id)a3 summary:(id)a4 xAxisDescriptor:(id)a5 yAxisDescriptor:(id)a6 additionalAxes:(id)a7 series:(id)a8;
+- (AXMChartDescriptor)initWithAttributedTitle:(id)title summary:(id)summary xAxisDescriptor:(id)descriptor yAxisDescriptor:(id)axisDescriptor additionalAxes:(id)axes series:(id)series;
+- (AXMChartDescriptor)initWithDictionary:(id)dictionary;
+- (AXMChartDescriptor)initWithTitle:(id)title summary:(id)summary xAxisDescriptor:(id)descriptor yAxisDescriptor:(id)axisDescriptor additionalAxes:(id)axes series:(id)series;
 - (AXMNumericDataAxisDescriptor)durationAxisDescriptor;
 - (AXMNumericDataAxisDescriptor)pitchAxisDescriptor;
 - (AXMNumericDataAxisDescriptor)timeNumericAxisDescriptor;
@@ -11,66 +11,66 @@
 - (CGRect)contentFrame;
 - (NSString)description;
 - (NSString)title;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)zCategoricalAxisDescriptor;
 - (id)zNumericAxisDescriptor;
-- (void)_commonInitWithSummary:(id)a3 xAxisDescriptor:(id)a4 yAxisDescriptor:(id)a5 additionalAxes:(id)a6 series:(id)a7;
-- (void)generateDataSummariesWithCompletion:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)_commonInitWithSummary:(id)summary xAxisDescriptor:(id)descriptor yAxisDescriptor:(id)axisDescriptor additionalAxes:(id)axes series:(id)series;
+- (void)generateDataSummariesWithCompletion:(id)completion;
+- (void)setTitle:(id)title;
 @end
 
 @implementation AXMChartDescriptor
 
-- (AXMChartDescriptor)initWithTitle:(id)a3 summary:(id)a4 xAxisDescriptor:(id)a5 yAxisDescriptor:(id)a6 additionalAxes:(id)a7 series:(id)a8
+- (AXMChartDescriptor)initWithTitle:(id)title summary:(id)summary xAxisDescriptor:(id)descriptor yAxisDescriptor:(id)axisDescriptor additionalAxes:(id)axes series:(id)series
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  titleCopy = title;
+  summaryCopy = summary;
+  descriptorCopy = descriptor;
+  axisDescriptorCopy = axisDescriptor;
+  axesCopy = axes;
+  seriesCopy = series;
   v24.receiver = self;
   v24.super_class = AXMChartDescriptor;
   v20 = [(AXMChartDescriptor *)&v24 init];
   if (v20)
   {
-    v21 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v14];
+    v21 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy];
     attributedTitle = v20->_attributedTitle;
     v20->_attributedTitle = v21;
 
-    [(AXMChartDescriptor *)v20 _commonInitWithSummary:v15 xAxisDescriptor:v16 yAxisDescriptor:v17 additionalAxes:v18 series:v19];
+    [(AXMChartDescriptor *)v20 _commonInitWithSummary:summaryCopy xAxisDescriptor:descriptorCopy yAxisDescriptor:axisDescriptorCopy additionalAxes:axesCopy series:seriesCopy];
   }
 
   return v20;
 }
 
-- (AXMChartDescriptor)initWithAttributedTitle:(id)a3 summary:(id)a4 xAxisDescriptor:(id)a5 yAxisDescriptor:(id)a6 additionalAxes:(id)a7 series:(id)a8
+- (AXMChartDescriptor)initWithAttributedTitle:(id)title summary:(id)summary xAxisDescriptor:(id)descriptor yAxisDescriptor:(id)axisDescriptor additionalAxes:(id)axes series:(id)series
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  titleCopy = title;
+  summaryCopy = summary;
+  descriptorCopy = descriptor;
+  axisDescriptorCopy = axisDescriptor;
+  axesCopy = axes;
+  seriesCopy = series;
   v24.receiver = self;
   v24.super_class = AXMChartDescriptor;
   v21 = [(AXMChartDescriptor *)&v24 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_attributedTitle, a3);
-    [(AXMChartDescriptor *)v22 _commonInitWithSummary:v16 xAxisDescriptor:v17 yAxisDescriptor:v18 additionalAxes:v19 series:v20];
+    objc_storeStrong(&v21->_attributedTitle, title);
+    [(AXMChartDescriptor *)v22 _commonInitWithSummary:summaryCopy xAxisDescriptor:descriptorCopy yAxisDescriptor:axisDescriptorCopy additionalAxes:axesCopy series:seriesCopy];
   }
 
   return v22;
 }
 
-- (AXMChartDescriptor)initWithDictionary:(id)a3
+- (AXMChartDescriptor)initWithDictionary:(id)dictionary
 {
   v68 = *MEMORY[0x1E69E9840];
-  v55 = a3;
-  v3 = [v55 objectForKeyedSubscript:@"kAXMChartTitleKey"];
+  dictionaryCopy = dictionary;
+  v3 = [dictionaryCopy objectForKeyedSubscript:@"kAXMChartTitleKey"];
   v52 = v3;
   if (v3)
   {
@@ -94,20 +94,20 @@
     v51 = 0;
   }
 
-  v50 = [v55 objectForKeyedSubscript:@"kAXMChartSummaryKey"];
-  v6 = [v55 objectForKeyedSubscript:@"kAXMChartContentDirectionKey"];
-  v48 = [v6 integerValue];
+  v50 = [dictionaryCopy objectForKeyedSubscript:@"kAXMChartSummaryKey"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"kAXMChartContentDirectionKey"];
+  integerValue = [v6 integerValue];
 
-  v7 = [v55 objectForKeyedSubscript:@"kAXMChartContentFrameKey"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"kAXMChartContentFrameKey"];
   [v7 AXMRectValue];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v54 = [v55 objectForKeyedSubscript:@"kAXMChartXAxisKey"];
-  v53 = [v55 objectForKeyedSubscript:@"kAXMChartYAxisKey"];
-  [v55 objectForKeyedSubscript:@"kAXMChartAdditionalAxesKey"];
+  v54 = [dictionaryCopy objectForKeyedSubscript:@"kAXMChartXAxisKey"];
+  v53 = [dictionaryCopy objectForKeyedSubscript:@"kAXMChartYAxisKey"];
+  [dictionaryCopy objectForKeyedSubscript:@"kAXMChartAdditionalAxesKey"];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
@@ -167,7 +167,7 @@
 
   while (v17);
 LABEL_20:
-  v29 = [v55 objectForKeyedSubscript:@"kAXMChartSeriesKey"];
+  v29 = [dictionaryCopy objectForKeyedSubscript:@"kAXMChartSeriesKey"];
   v30 = [v54 objectForKeyedSubscript:@"kAXMChartAxisType"];
   [v30 isEqualToString:@"categorical"];
   v31 = objc_opt_class();
@@ -199,11 +199,11 @@ LABEL_20:
     v33 = 0;
   }
 
-  v34 = [MEMORY[0x1E695DF70] array];
-  v35 = v34;
+  array = [MEMORY[0x1E695DF70] array];
+  v35 = array;
   if (v32)
   {
-    [v34 addObject:v32];
+    [array addObject:v32];
   }
 
   if (v33)
@@ -212,7 +212,7 @@ LABEL_20:
   }
 
   v45 = v32;
-  v36 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
@@ -233,7 +233,7 @@ LABEL_20:
         }
 
         v42 = [[AXMDataSeriesDescriptor alloc] initWithDictionary:*(*(&v58 + 1) + 8 * j)];
-        [v36 addObject:v42];
+        [array2 addObject:v42];
       }
 
       v39 = [v37 countByEnumeratingWithState:&v58 objects:v66 count:16];
@@ -242,92 +242,92 @@ LABEL_20:
     while (v39);
   }
 
-  v43 = [(AXMChartDescriptor *)self initWithAttributedTitle:v51 summary:v50 xAxisDescriptor:v46 yAxisDescriptor:v47 additionalAxes:v35 series:v36];
-  [(AXMChartDescriptor *)v43 setContentDirection:v48];
+  v43 = [(AXMChartDescriptor *)self initWithAttributedTitle:v51 summary:v50 xAxisDescriptor:v46 yAxisDescriptor:v47 additionalAxes:v35 series:array2];
+  [(AXMChartDescriptor *)v43 setContentDirection:integerValue];
   [(AXMChartDescriptor *)v43 setContentFrame:v9, v11, v13, v15];
 
   return v43;
 }
 
-- (void)_commonInitWithSummary:(id)a3 xAxisDescriptor:(id)a4 yAxisDescriptor:(id)a5 additionalAxes:(id)a6 series:(id)a7
+- (void)_commonInitWithSummary:(id)summary xAxisDescriptor:(id)descriptor yAxisDescriptor:(id)axisDescriptor additionalAxes:(id)axes series:(id)series
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = a6;
-  v16 = [a3 copy];
+  descriptorCopy = descriptor;
+  axisDescriptorCopy = axisDescriptor;
+  seriesCopy = series;
+  axesCopy = axes;
+  v16 = [summary copy];
   summary = self->_summary;
   self->_summary = v16;
 
   xAxis = self->_xAxis;
-  self->_xAxis = v12;
-  v25 = v12;
+  self->_xAxis = descriptorCopy;
+  v25 = descriptorCopy;
 
   yAxis = self->_yAxis;
-  self->_yAxis = v13;
-  v20 = v13;
+  self->_yAxis = axisDescriptorCopy;
+  v20 = axisDescriptorCopy;
 
-  v21 = [v15 copy];
+  v21 = [axesCopy copy];
   additionalAxes = self->_additionalAxes;
   self->_additionalAxes = v21;
 
-  v23 = [v14 copy];
+  v23 = [seriesCopy copy];
   series = self->_series;
   self->_series = v23;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [AXMChartDescriptor allocWithZone:a3];
-  v5 = [(AXMChartDescriptor *)self attributedTitle];
-  v6 = [(AXMChartDescriptor *)self summary];
-  v7 = [(AXMChartDescriptor *)self xAxis];
-  v8 = [(AXMChartDescriptor *)self yAxis];
-  v9 = [(AXMChartDescriptor *)self additionalAxes];
-  v10 = [(AXMChartDescriptor *)self series];
-  v11 = [(AXMChartDescriptor *)v4 initWithAttributedTitle:v5 summary:v6 xAxisDescriptor:v7 yAxisDescriptor:v8 additionalAxes:v9 series:v10];
+  v4 = [AXMChartDescriptor allocWithZone:zone];
+  attributedTitle = [(AXMChartDescriptor *)self attributedTitle];
+  summary = [(AXMChartDescriptor *)self summary];
+  xAxis = [(AXMChartDescriptor *)self xAxis];
+  yAxis = [(AXMChartDescriptor *)self yAxis];
+  additionalAxes = [(AXMChartDescriptor *)self additionalAxes];
+  series = [(AXMChartDescriptor *)self series];
+  v11 = [(AXMChartDescriptor *)v4 initWithAttributedTitle:attributedTitle summary:summary xAxisDescriptor:xAxis yAxisDescriptor:yAxis additionalAxes:additionalAxes series:series];
 
   return v11;
 }
 
 - (NSString)title
 {
-  v2 = [(AXMChartDescriptor *)self attributedTitle];
-  v3 = [v2 string];
+  attributedTitle = [(AXMChartDescriptor *)self attributedTitle];
+  string = [attributedTitle string];
 
-  return v3;
+  return string;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  titleCopy = title;
+  v6 = titleCopy;
+  if (titleCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4];
+    titleCopy = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy];
   }
 
   attributedTitle = self->_attributedTitle;
-  self->_attributedTitle = v4;
+  self->_attributedTitle = titleCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(AXMChartDescriptor *)self xAxis];
-  v25 = [v4 dictionaryRepresentation];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  xAxis = [(AXMChartDescriptor *)self xAxis];
+  dictionaryRepresentation = [xAxis dictionaryRepresentation];
 
-  v5 = [(AXMChartDescriptor *)self yAxis];
-  v6 = [v5 dictionaryRepresentation];
+  yAxis = [(AXMChartDescriptor *)self yAxis];
+  dictionaryRepresentation2 = [yAxis dictionaryRepresentation];
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = [(AXMChartDescriptor *)self additionalAxes];
-  v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  additionalAxes = [(AXMChartDescriptor *)self additionalAxes];
+  v9 = [additionalAxes countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v9)
   {
     v10 = v9;
@@ -338,26 +338,26 @@ LABEL_20:
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(additionalAxes);
         }
 
-        v13 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-        [v7 addObject:v13];
+        dictionaryRepresentation3 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+        [array addObject:dictionaryRepresentation3];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v10 = [additionalAxes countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v15 = [(AXMChartDescriptor *)self series];
-  v16 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  series = [(AXMChartDescriptor *)self series];
+  v16 = [series countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v16)
   {
     v17 = v16;
@@ -368,57 +368,57 @@ LABEL_20:
       {
         if (*v27 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(series);
         }
 
-        v20 = [*(*(&v26 + 1) + 8 * j) dictionaryRepresentation];
-        [v14 addObject:v20];
+        dictionaryRepresentation4 = [*(*(&v26 + 1) + 8 * j) dictionaryRepresentation];
+        [array2 addObject:dictionaryRepresentation4];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v17 = [series countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v17);
   }
 
-  v21 = [(AXMChartDescriptor *)self title];
-  [v3 setObject:v21 forKeyedSubscript:@"kAXMChartTitleKey"];
+  title = [(AXMChartDescriptor *)self title];
+  [dictionary setObject:title forKeyedSubscript:@"kAXMChartTitleKey"];
 
-  v22 = [(AXMChartDescriptor *)self summary];
-  [v3 setObject:v22 forKeyedSubscript:@"kAXMChartSummaryKey"];
+  summary = [(AXMChartDescriptor *)self summary];
+  [dictionary setObject:summary forKeyedSubscript:@"kAXMChartSummaryKey"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithInteger:{-[AXMChartDescriptor contentDirection](self, "contentDirection")}];
-  [v3 setObject:v23 forKeyedSubscript:@"kAXMChartContentDirectionKey"];
+  [dictionary setObject:v23 forKeyedSubscript:@"kAXMChartContentDirectionKey"];
 
-  [v3 setObject:v25 forKeyedSubscript:@"kAXMChartXAxisKey"];
-  [v3 setObject:v6 forKeyedSubscript:@"kAXMChartYAxisKey"];
-  [v3 setObject:v7 forKeyedSubscript:@"kAXMChartAdditionalAxesKey"];
-  [v3 setObject:v14 forKeyedSubscript:@"kAXMChartSeriesKey"];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"kAXMChartXAxisKey"];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"kAXMChartYAxisKey"];
+  [dictionary setObject:array forKeyedSubscript:@"kAXMChartAdditionalAxesKey"];
+  [dictionary setObject:array2 forKeyedSubscript:@"kAXMChartSeriesKey"];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSString)description
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AXMChartDescriptor *)self xAxis];
-  [v3 addObject:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  xAxis = [(AXMChartDescriptor *)self xAxis];
+  [array addObject:xAxis];
 
-  v5 = [(AXMChartDescriptor *)self yAxis];
+  yAxis = [(AXMChartDescriptor *)self yAxis];
 
-  if (v5)
+  if (yAxis)
   {
-    v6 = [(AXMChartDescriptor *)self yAxis];
-    [v3 addObject:v6];
+    yAxis2 = [(AXMChartDescriptor *)self yAxis];
+    [array addObject:yAxis2];
   }
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(AXMChartDescriptor *)self additionalAxes];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  additionalAxes = [(AXMChartDescriptor *)self additionalAxes];
+  v8 = [additionalAxes countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -429,13 +429,13 @@ LABEL_20:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(additionalAxes);
         }
 
-        [v3 addObject:*(*(&v19 + 1) + 8 * i)];
+        [array addObject:*(*(&v19 + 1) + 8 * i)];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [additionalAxes countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
@@ -443,18 +443,18 @@ LABEL_20:
 
   v12 = MEMORY[0x1E696AEC0];
   v13 = objc_opt_class();
-  v14 = [(AXMChartDescriptor *)self title];
-  v15 = [(AXMChartDescriptor *)self summary];
-  v16 = [(AXMChartDescriptor *)self series];
-  v17 = [v12 stringWithFormat:@"<%@ %p\n\ttitle=%@\n\tsummary=%@\n\tAxes:\n\t%@Series:\n\t%@>", v13, self, v14, v15, v3, v16];
+  title = [(AXMChartDescriptor *)self title];
+  summary = [(AXMChartDescriptor *)self summary];
+  series = [(AXMChartDescriptor *)self series];
+  v17 = [v12 stringWithFormat:@"<%@ %p\n\ttitle=%@\n\tsummary=%@\n\tAxes:\n\t%@Series:\n\t%@>", v13, self, title, summary, array, series];
 
   return v17;
 }
 
-- (void)generateDataSummariesWithCompletion:(id)a3
+- (void)generateDataSummariesWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -463,8 +463,8 @@ LABEL_20:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(AXMChartDescriptor *)self series];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  series = [(AXMChartDescriptor *)self series];
+  v6 = [series countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -475,7 +475,7 @@ LABEL_20:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(series);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -486,7 +486,7 @@ LABEL_20:
         v11[3] = &unk_1E7A1E380;
         v13 = v18;
         v11[4] = self;
-        v12 = v4;
+        v12 = completionCopy;
         [(AXMDataSummary *)v10 computeRegressionModel:v11];
         [v9 setDataSummary:v10];
 
@@ -494,7 +494,7 @@ LABEL_20:
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v6 = [series countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v6);
@@ -526,46 +526,46 @@ void __58__AXMChartDescriptor_generateDataSummariesWithCompletion___block_invoke
 
 - (AXMNumericDataAxisDescriptor)timeNumericAxisDescriptor
 {
-  v3 = self->_timeNumericAxisDescriptor;
-  if (!v3)
+  xAxis2 = self->_timeNumericAxisDescriptor;
+  if (!xAxis2)
   {
-    v4 = [(AXMChartDescriptor *)self xAxis];
-    v5 = [v4 isCategoricalAxis];
+    xAxis = [(AXMChartDescriptor *)self xAxis];
+    isCategoricalAxis = [xAxis isCategoricalAxis];
 
-    if (v5)
+    if (isCategoricalAxis)
     {
-      v3 = 0;
+      xAxis2 = 0;
     }
 
     else
     {
-      v3 = [(AXMChartDescriptor *)self xAxis];
+      xAxis2 = [(AXMChartDescriptor *)self xAxis];
     }
   }
 
-  return v3;
+  return xAxis2;
 }
 
 - (AXMCategoricalDataAxisDescriptor)timeCategoricalAxisDescriptor
 {
-  v3 = self->_timeCategoricalAxisDescriptor;
-  if (!v3)
+  xAxis2 = self->_timeCategoricalAxisDescriptor;
+  if (!xAxis2)
   {
-    v4 = [(AXMChartDescriptor *)self xAxis];
-    v5 = [v4 isCategoricalAxis];
+    xAxis = [(AXMChartDescriptor *)self xAxis];
+    isCategoricalAxis = [xAxis isCategoricalAxis];
 
-    if (v5)
+    if (isCategoricalAxis)
     {
-      v3 = [(AXMChartDescriptor *)self xAxis];
+      xAxis2 = [(AXMChartDescriptor *)self xAxis];
     }
 
     else
     {
-      v3 = 0;
+      xAxis2 = 0;
     }
   }
 
-  return v3;
+  return xAxis2;
 }
 
 - (AXMNumericDataAxisDescriptor)pitchAxisDescriptor
@@ -573,15 +573,15 @@ void __58__AXMChartDescriptor_generateDataSummariesWithCompletion___block_invoke
   pitchAxisDescriptor = self->_pitchAxisDescriptor;
   if (pitchAxisDescriptor)
   {
-    v3 = pitchAxisDescriptor;
+    yAxis = pitchAxisDescriptor;
   }
 
   else
   {
-    v3 = [(AXMChartDescriptor *)self yAxis];
+    yAxis = [(AXMChartDescriptor *)self yAxis];
   }
 
-  return v3;
+  return yAxis;
 }
 
 - (AXMNumericDataAxisDescriptor)durationAxisDescriptor
@@ -589,15 +589,15 @@ void __58__AXMChartDescriptor_generateDataSummariesWithCompletion___block_invoke
   durationAxisDescriptor = self->_durationAxisDescriptor;
   if (durationAxisDescriptor)
   {
-    v3 = durationAxisDescriptor;
+    zNumericAxisDescriptor = durationAxisDescriptor;
   }
 
   else
   {
-    v3 = [(AXMChartDescriptor *)self zNumericAxisDescriptor];
+    zNumericAxisDescriptor = [(AXMChartDescriptor *)self zNumericAxisDescriptor];
   }
 
-  return v3;
+  return zNumericAxisDescriptor;
 }
 
 - (AXMNumericDataAxisDescriptor)volumeAxisDescriptor
@@ -605,15 +605,15 @@ void __58__AXMChartDescriptor_generateDataSummariesWithCompletion___block_invoke
   volumeAxisDescriptor = self->_volumeAxisDescriptor;
   if (volumeAxisDescriptor)
   {
-    v3 = volumeAxisDescriptor;
+    zNumericAxisDescriptor = volumeAxisDescriptor;
   }
 
   else
   {
-    v3 = [(AXMChartDescriptor *)self zNumericAxisDescriptor];
+    zNumericAxisDescriptor = [(AXMChartDescriptor *)self zNumericAxisDescriptor];
   }
 
-  return v3;
+  return zNumericAxisDescriptor;
 }
 
 - (AXMCategoricalDataAxisDescriptor)timbreAxisDescriptor
@@ -621,15 +621,15 @@ void __58__AXMChartDescriptor_generateDataSummariesWithCompletion___block_invoke
   timbreAxisDescriptor = self->_timbreAxisDescriptor;
   if (timbreAxisDescriptor)
   {
-    v3 = timbreAxisDescriptor;
+    zCategoricalAxisDescriptor = timbreAxisDescriptor;
   }
 
   else
   {
-    v3 = [(AXMChartDescriptor *)self zCategoricalAxisDescriptor];
+    zCategoricalAxisDescriptor = [(AXMChartDescriptor *)self zCategoricalAxisDescriptor];
   }
 
-  return v3;
+  return zCategoricalAxisDescriptor;
 }
 
 - (id)zNumericAxisDescriptor
@@ -639,8 +639,8 @@ void __58__AXMChartDescriptor_generateDataSummariesWithCompletion___block_invoke
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(AXMChartDescriptor *)self additionalAxes];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  additionalAxes = [(AXMChartDescriptor *)self additionalAxes];
+  v3 = [additionalAxes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -650,7 +650,7 @@ void __58__AXMChartDescriptor_generateDataSummariesWithCompletion___block_invoke
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(additionalAxes);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -661,7 +661,7 @@ void __58__AXMChartDescriptor_generateDataSummariesWithCompletion___block_invoke
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [additionalAxes countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -683,8 +683,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(AXMChartDescriptor *)self additionalAxes];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  additionalAxes = [(AXMChartDescriptor *)self additionalAxes];
+  v3 = [additionalAxes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -694,7 +694,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(additionalAxes);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -705,7 +705,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [additionalAxes countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;

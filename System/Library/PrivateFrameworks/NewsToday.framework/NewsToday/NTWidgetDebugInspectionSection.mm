@@ -1,11 +1,11 @@
 @interface NTWidgetDebugInspectionSection
 - (NTWidgetDebugInspectionSection)init;
-- (NTWidgetDebugInspectionSection)initWithArticleIDs:(id)a3 name:(id)a4 sortedCandidates:(id)a5;
+- (NTWidgetDebugInspectionSection)initWithArticleIDs:(id)ds name:(id)name sortedCandidates:(id)candidates;
 @end
 
 @implementation NTWidgetDebugInspectionSection
 
-- (NTWidgetDebugInspectionSection)initWithArticleIDs:(id)a3 name:(id)a4 sortedCandidates:(id)a5
+- (NTWidgetDebugInspectionSection)initWithArticleIDs:(id)ds name:(id)name sortedCandidates:(id)candidates
 {
   v5 = sub_25BF6CAB0();
   v6 = sub_25BF6CA70();

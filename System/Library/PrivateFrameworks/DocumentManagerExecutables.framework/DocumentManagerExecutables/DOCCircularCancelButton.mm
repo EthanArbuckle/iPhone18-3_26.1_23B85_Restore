@@ -1,8 +1,8 @@
 @interface DOCCircularCancelButton
 - (BOOL)translatesAutoresizingMaskIntoConstraints;
-- (_TtC26DocumentManagerExecutables23DOCCircularCancelButton)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3;
+- (_TtC26DocumentManagerExecutables23DOCCircularCancelButton)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints;
 @end
 
 @implementation DOCCircularCancelButton
@@ -14,26 +14,26 @@
   return [(DOCCircularCancelButton *)&v3 translatesAutoresizingMaskIntoConstraints];
 }
 
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints
 {
-  v3 = a3;
+  constraintsCopy = constraints;
   v4.receiver = self;
   v4.super_class = type metadata accessor for DOCCircularCancelButton();
-  [(DOCCircularCancelButton *)&v4 setTranslatesAutoresizingMaskIntoConstraints:v3];
+  [(DOCCircularCancelButton *)&v4 setTranslatesAutoresizingMaskIntoConstraints:constraintsCopy];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
   v9 = specialized DOCCircularCancelButton.hitTest(_:with:)(x, y);
 
   return v9;
 }
 
-- (_TtC26DocumentManagerExecutables23DOCCircularCancelButton)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables23DOCCircularCancelButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

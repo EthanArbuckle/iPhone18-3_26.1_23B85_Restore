@@ -1,10 +1,10 @@
 @interface EKSerializableAttachment
-- (EKSerializableAttachment)initWithAttachment:(id)a3;
+- (EKSerializableAttachment)initWithAttachment:(id)attachment;
 @end
 
 @implementation EKSerializableAttachment
 
-- (EKSerializableAttachment)initWithAttachment:(id)a3
+- (EKSerializableAttachment)initWithAttachment:(id)attachment
 {
   v4.receiver = self;
   v4.super_class = EKSerializableAttachment;

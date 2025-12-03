@@ -1,6 +1,6 @@
 @interface FeatureAvailabilityProvider
 - (_TtC7NewsUI227FeatureAvailabilityProvider)init;
-- (void)configurationManager:(id)a3 appConfigurationDidChange:(id)a4;
+- (void)configurationManager:(id)manager appConfigurationDidChange:(id)change;
 @end
 
 @implementation FeatureAvailabilityProvider
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)configurationManager:(id)a3 appConfigurationDidChange:(id)a4
+- (void)configurationManager:(id)manager appConfigurationDidChange:(id)change
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_218C97270(a4);
+  selfCopy = self;
+  sub_218C97270(change);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }

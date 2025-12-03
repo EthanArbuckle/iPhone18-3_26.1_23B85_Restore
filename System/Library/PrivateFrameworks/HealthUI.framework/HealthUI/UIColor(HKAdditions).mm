@@ -98,7 +98,7 @@
 
   else
   {
-    [a1 hk_appTintColor];
+    [self hk_appTintColor];
   }
   v2 = ;
 
@@ -159,7 +159,7 @@
 {
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    [a1 hk_reproductiveHealthKeyColor];
+    [self hk_reproductiveHealthKeyColor];
   }
 
   else
@@ -214,13 +214,13 @@
     switch(a3)
     {
       case 3:
-        v3 = [a1 hk_sleepAsleepCoreColor];
+        hk_sleepAsleepCoreColor = [self hk_sleepAsleepCoreColor];
         break;
       case 4:
-        v3 = [a1 hk_sleepAsleepDeepColor];
+        hk_sleepAsleepCoreColor = [self hk_sleepAsleepDeepColor];
         break;
       case 5:
-        v3 = [a1 hk_sleepAsleepREMColor];
+        hk_sleepAsleepCoreColor = [self hk_sleepAsleepREMColor];
         break;
       default:
         goto LABEL_15;
@@ -231,7 +231,7 @@
   {
     if (a3 == 1)
     {
-      v3 = [a1 hk_sleepAsleepColor];
+      hk_sleepAsleepCoreColor = [self hk_sleepAsleepColor];
     }
 
     else
@@ -241,16 +241,16 @@
         goto LABEL_15;
       }
 
-      v3 = [a1 hk_sleepAwakeColor];
+      hk_sleepAsleepCoreColor = [self hk_sleepAwakeColor];
     }
   }
 
   else
   {
-    v3 = [a1 hk_sleepInBedColor];
+    hk_sleepAsleepCoreColor = [self hk_sleepInBedColor];
   }
 
-  a2 = v3;
+  a2 = hk_sleepAsleepCoreColor;
 LABEL_15:
 
   return a2;
@@ -263,13 +263,13 @@ LABEL_15:
     switch(a3)
     {
       case 3:
-        v3 = [a1 hk_sleepInactiveAsleepCoreColor];
+        hk_sleepInactiveAsleepCoreColor = [self hk_sleepInactiveAsleepCoreColor];
         break;
       case 4:
-        v3 = [a1 hk_sleepInactiveAsleepDeepColor];
+        hk_sleepInactiveAsleepCoreColor = [self hk_sleepInactiveAsleepDeepColor];
         break;
       case 5:
-        v3 = [a1 hk_sleepInactiveAsleepREMColor];
+        hk_sleepInactiveAsleepCoreColor = [self hk_sleepInactiveAsleepREMColor];
         break;
       default:
         goto LABEL_15;
@@ -280,7 +280,7 @@ LABEL_15:
   {
     if (a3 == 1)
     {
-      v3 = [a1 hk_sleepInactiveAsleepColor];
+      hk_sleepInactiveAsleepCoreColor = [self hk_sleepInactiveAsleepColor];
     }
 
     else
@@ -290,16 +290,16 @@ LABEL_15:
         goto LABEL_15;
       }
 
-      v3 = [a1 hk_sleepInactiveAwakeColor];
+      hk_sleepInactiveAsleepCoreColor = [self hk_sleepInactiveAwakeColor];
     }
   }
 
   else
   {
-    v3 = [a1 hk_sleepInactiveInBedColor];
+    hk_sleepInactiveAsleepCoreColor = [self hk_sleepInactiveInBedColor];
   }
 
-  a2 = v3;
+  a2 = hk_sleepInactiveAsleepCoreColor;
 LABEL_15:
 
   return a2;
@@ -315,16 +315,16 @@ LABEL_15:
   {
     if (((1 << a3) & 5) != 0 || ((1 << a3) & 0x18) == 0)
     {
-      a1 = [a1 hk_chartOverlayPillDarkColor];
+      self = [self hk_chartOverlayPillDarkColor];
     }
 
     else
     {
-      a1 = [a1 hk_chartOverlayPillLightColor];
+      self = [self hk_chartOverlayPillLightColor];
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (id)hk_otherSecondaryColor
@@ -347,26 +347,26 @@ LABEL_15:
 
 + (id)hk_chartInfoButtonPrimaryColor
 {
-  v0 = [MEMORY[0x1E69DC888] blackColor];
-  v1 = [MEMORY[0x1E69DC888] whiteColor];
-  v2 = HKUIDynamicColorWithColors(v0, v1);
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v2 = HKUIDynamicColorWithColors(blackColor, whiteColor);
 
   return v2;
 }
 
 + (id)hk_chartInfoButtonQuaternaryColor
 {
-  v0 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-  v1 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-  v2 = HKUIDynamicColorWithColors(v0, v1);
+  quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+  tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+  v2 = HKUIDynamicColorWithColors(quaternarySystemFillColor, tertiarySystemFillColor);
 
   return v2;
 }
 
 + (id)hk_chartPointLabelBackgroundColor
 {
-  v0 = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
-  v1 = [v0 colorWithAlphaComponent:0.7];
+  hk_chartBackgroundColor = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
+  v1 = [hk_chartBackgroundColor colorWithAlphaComponent:0.7];
 
   return v1;
 }
@@ -453,8 +453,8 @@ LABEL_15:
 + (id)hk_activityMoveGoalMissedGradientTopColor
 {
   v2 = [MEMORY[0x1E69DC888] colorWithRed:0.996 green:0.747 blue:0.837 alpha:1.0];
-  v3 = [a1 hk_activityMoveGoalMetGradientTopColor];
-  v4 = [v3 colorWithAlphaComponent:0.2];
+  hk_activityMoveGoalMetGradientTopColor = [self hk_activityMoveGoalMetGradientTopColor];
+  v4 = [hk_activityMoveGoalMetGradientTopColor colorWithAlphaComponent:0.2];
   v5 = HKUIDynamicColorWithColors(v2, v4);
 
   return v5;
@@ -463,8 +463,8 @@ LABEL_15:
 + (id)hk_activityMoveGoalMissedGradientBottomColor
 {
   v2 = [MEMORY[0x1E69DC888] colorWithRed:0.964 green:0.7 blue:0.725 alpha:1.0];
-  v3 = [a1 hk_activityMoveGoalMetGradientBottomColor];
-  v4 = [v3 colorWithAlphaComponent:0.2];
+  hk_activityMoveGoalMetGradientBottomColor = [self hk_activityMoveGoalMetGradientBottomColor];
+  v4 = [hk_activityMoveGoalMetGradientBottomColor colorWithAlphaComponent:0.2];
   v5 = HKUIDynamicColorWithColors(v2, v4);
 
   return v5;
@@ -472,8 +472,8 @@ LABEL_15:
 
 + (id)hk_activityMoveGoalMissedNonGradientColor
 {
-  v1 = [a1 hk_activityMoveGoalMetNonGradientColor];
-  v2 = [v1 colorWithAlphaComponent:0.3];
+  hk_activityMoveGoalMetNonGradientColor = [self hk_activityMoveGoalMetNonGradientColor];
+  v2 = [hk_activityMoveGoalMetNonGradientColor colorWithAlphaComponent:0.3];
 
   return v2;
 }
@@ -508,8 +508,8 @@ LABEL_15:
 + (id)hk_activityExerciseGoalMissedGradientTopColor
 {
   v2 = [MEMORY[0x1E69DC888] colorWithRed:0.876 green:0.998 blue:0.6 alpha:1.0];
-  v3 = [a1 hk_activityExerciseGoalMetGradientTopColor];
-  v4 = [v3 colorWithAlphaComponent:0.2];
+  hk_activityExerciseGoalMetGradientTopColor = [self hk_activityExerciseGoalMetGradientTopColor];
+  v4 = [hk_activityExerciseGoalMetGradientTopColor colorWithAlphaComponent:0.2];
   v5 = HKUIDynamicColorWithColors(v2, v4);
 
   return v5;
@@ -518,8 +518,8 @@ LABEL_15:
 + (id)hk_activityExerciseGoalMissedGradientBottomColor
 {
   v2 = [MEMORY[0x1E69DC888] colorWithRed:0.6876 green:0.944 blue:0.6 alpha:1.0];
-  v3 = [a1 hk_activityExerciseGoalMetGradientBottomColor];
-  v4 = [v3 colorWithAlphaComponent:0.2];
+  hk_activityExerciseGoalMetGradientBottomColor = [self hk_activityExerciseGoalMetGradientBottomColor];
+  v4 = [hk_activityExerciseGoalMetGradientBottomColor colorWithAlphaComponent:0.2];
   v5 = HKUIDynamicColorWithColors(v2, v4);
 
   return v5;
@@ -555,8 +555,8 @@ LABEL_15:
 + (id)hk_activityStandGoalMissedGradientTopColor
 {
   v2 = [MEMORY[0x1E69DC888] colorWithRed:0.6 green:0.991 blue:0.925 alpha:1.0];
-  v3 = [a1 hk_activityStandGoalMetGradientTopColor];
-  v4 = [v3 colorWithAlphaComponent:0.2];
+  hk_activityStandGoalMetGradientTopColor = [self hk_activityStandGoalMetGradientTopColor];
+  v4 = [hk_activityStandGoalMetGradientTopColor colorWithAlphaComponent:0.2];
   v5 = HKUIDynamicColorWithColors(v2, v4);
 
   return v5;
@@ -565,8 +565,8 @@ LABEL_15:
 + (id)hk_activityStandGoalMissedGradientBottomColor
 {
   v2 = [MEMORY[0x1E69DC888] colorWithRed:0.6 green:0.891 blue:0.948 alpha:1.0];
-  v3 = [a1 hk_activityStandGoalMetGradientBottomColor];
-  v4 = [v3 colorWithAlphaComponent:0.2];
+  hk_activityStandGoalMetGradientBottomColor = [self hk_activityStandGoalMetGradientBottomColor];
+  v4 = [hk_activityStandGoalMetGradientBottomColor colorWithAlphaComponent:0.2];
   v5 = HKUIDynamicColorWithColors(v2, v4);
 
   return v5;
@@ -636,8 +636,8 @@ LABEL_15:
 
 + (id)hk_electrocardiogramCardOnboardingBackgroundColor
 {
-  v0 = [objc_opt_class() hk_electrocardiogramCardOnboardingHeaderColor];
-  v1 = [v0 colorWithAlphaComponent:0.5];
+  hk_electrocardiogramCardOnboardingHeaderColor = [objc_opt_class() hk_electrocardiogramCardOnboardingHeaderColor];
+  v1 = [hk_electrocardiogramCardOnboardingHeaderColor colorWithAlphaComponent:0.5];
 
   return v1;
 }
@@ -646,38 +646,38 @@ LABEL_15:
 {
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v0 = [MEMORY[0x1E69DC888] systemDarkMidGrayColor];
+    systemDarkMidGrayColor = [MEMORY[0x1E69DC888] systemDarkMidGrayColor];
   }
 
   else
   {
-    v1 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v0 = [v1 colorWithAlphaComponent:0.3];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemDarkMidGrayColor = [systemGrayColor colorWithAlphaComponent:0.3];
   }
 
-  return v0;
+  return systemDarkMidGrayColor;
 }
 
 + (id)hk_electrocardiogramChartBorderColor
 {
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v0 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+    systemDarkGrayColor = [MEMORY[0x1E69DC888] systemDarkGrayColor];
   }
 
   else
   {
-    v1 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v0 = [v1 colorWithAlphaComponent:0.6];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemDarkGrayColor = [systemGrayColor colorWithAlphaComponent:0.6];
   }
 
-  return v0;
+  return systemDarkGrayColor;
 }
 
 + (id)hk_hearingHealthAudioExposureOkFill
 {
   v2 = [MEMORY[0x1E69DC888] colorWithRed:0.00784313772 green:0.866666675 blue:0.31764707 alpha:1.0];
-  v3 = [a1 _accessibilityHigherContrastTintColorForColorIfNeeded:v2];
+  v3 = [self _accessibilityHigherContrastTintColorForColorIfNeeded:v2];
 
   return v3;
 }
@@ -685,7 +685,7 @@ LABEL_15:
 + (id)hk_hearingHealthAudioExposureLoudFill
 {
   v2 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.792156875 blue:0.0 alpha:1.0];
-  v3 = [a1 _accessibilityHigherContrastTintColorForColorIfNeeded:v2];
+  v3 = [self _accessibilityHigherContrastTintColorForColorIfNeeded:v2];
 
   return v3;
 }
@@ -694,20 +694,20 @@ LABEL_15:
 {
   if (a3 == 2)
   {
-    v3 = [a1 hk_hearingHealthAudioExposureLoudFill];
+    hk_hearingHealthAudioExposureLoudFill = [self hk_hearingHealthAudioExposureLoudFill];
   }
 
   else if (a3 == 1)
   {
-    v3 = [a1 hk_hearingHealthAudioExposureOkFill];
+    hk_hearingHealthAudioExposureLoudFill = [self hk_hearingHealthAudioExposureOkFill];
   }
 
   else
   {
-    v3 = 0;
+    hk_hearingHealthAudioExposureLoudFill = 0;
   }
 
-  return v3;
+  return hk_hearingHealthAudioExposureLoudFill;
 }
 
 + (id)hk_hearingHealthAudiogramLeftEarLineColor
@@ -716,45 +716,45 @@ LABEL_15:
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.360784322 blue:0.749019623 alpha:1.0];
   v4 = HKUIDynamicColorWithColors(v2, v3);
 
-  v5 = [MEMORY[0x1E696C608] sharedBehavior];
-  v6 = [v5 features];
-  v7 = [v6 yodel];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  features = [mEMORY[0x1E696C608] features];
+  yodel = [features yodel];
 
-  if (v7)
+  if (yodel)
   {
-    v8 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
 
-    v4 = v8;
+    v4 = systemBlueColor;
   }
 
-  v9 = [a1 _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
+  v9 = [self _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
 
   return v9;
 }
 
 + (id)hk_hearingHealthAudiogramLeftEarPointMarkerColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v3 = [a1 _accessibilityHigherContrastTintColorForColorIfNeeded:v2];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v3 = [self _accessibilityHigherContrastTintColorForColorIfNeeded:systemBlueColor];
 
   return v3;
 }
 
 + (id)hk_hearingHealthAudiogramLeftEarAnnotationColor
 {
-  v1 = [a1 hk_hearingHealthAudiogramLeftEarPointMarkerColor];
-  v2 = [MEMORY[0x1E696C608] sharedBehavior];
-  v3 = [v2 features];
-  v4 = [v3 yodel];
+  hk_hearingHealthAudiogramLeftEarPointMarkerColor = [self hk_hearingHealthAudiogramLeftEarPointMarkerColor];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  features = [mEMORY[0x1E696C608] features];
+  yodel = [features yodel];
 
-  if (v4)
+  if (yodel)
   {
-    v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
 
-    v1 = v5;
+    hk_hearingHealthAudiogramLeftEarPointMarkerColor = systemBackgroundColor;
   }
 
-  return v1;
+  return hk_hearingHealthAudiogramLeftEarPointMarkerColor;
 }
 
 + (id)hk_hearingHealthAudiogramLeftEarDeemphasizedColor
@@ -763,18 +763,18 @@ LABEL_15:
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.192156866 blue:0.400000006 alpha:1.0];
   v4 = HKUIDynamicColorWithColors(v2, v3);
 
-  v5 = [MEMORY[0x1E696C608] sharedBehavior];
-  v6 = [v5 features];
-  v7 = [v6 yodel];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  features = [mEMORY[0x1E696C608] features];
+  yodel = [features yodel];
 
-  if (v7)
+  if (yodel)
   {
-    v8 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
 
-    v4 = v8;
+    v4 = tertiaryLabelColor;
   }
 
-  v9 = [a1 _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
+  v9 = [self _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
 
   return v9;
 }
@@ -785,18 +785,18 @@ LABEL_15:
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.192156866 blue:0.400000006 alpha:1.0];
   v4 = HKUIDynamicColorWithColors(v2, v3);
 
-  v5 = [MEMORY[0x1E696C608] sharedBehavior];
-  v6 = [v5 features];
-  v7 = [v6 yodel];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  features = [mEMORY[0x1E696C608] features];
+  yodel = [features yodel];
 
-  if (v7)
+  if (yodel)
   {
-    v8 = [MEMORY[0x1E69DC888] systemPinkColor];
+    systemPinkColor = [MEMORY[0x1E69DC888] systemPinkColor];
 
-    v4 = v8;
+    v4 = systemPinkColor;
   }
 
-  v9 = [a1 _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
+  v9 = [self _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
 
   return v9;
 }
@@ -807,37 +807,37 @@ LABEL_15:
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.286274523 blue:0.600000024 alpha:1.0];
   v4 = HKUIDynamicColorWithColors(v2, v3);
 
-  v5 = [MEMORY[0x1E696C608] sharedBehavior];
-  v6 = [v5 features];
-  v7 = [v6 yodel];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  features = [mEMORY[0x1E696C608] features];
+  yodel = [features yodel];
 
-  if (v7)
+  if (yodel)
   {
-    v8 = [MEMORY[0x1E69DC888] systemPinkColor];
+    systemPinkColor = [MEMORY[0x1E69DC888] systemPinkColor];
 
-    v4 = v8;
+    v4 = systemPinkColor;
   }
 
-  v9 = [a1 _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
+  v9 = [self _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
 
   return v9;
 }
 
 + (id)hk_hearingHealthAudiogramRightEarAnnotationColor
 {
-  v1 = [a1 hk_hearingHealthAudiogramRightEarPointMarkerColor];
-  v2 = [MEMORY[0x1E696C608] sharedBehavior];
-  v3 = [v2 features];
-  v4 = [v3 yodel];
+  hk_hearingHealthAudiogramRightEarPointMarkerColor = [self hk_hearingHealthAudiogramRightEarPointMarkerColor];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  features = [mEMORY[0x1E696C608] features];
+  yodel = [features yodel];
 
-  if (v4)
+  if (yodel)
   {
-    v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
 
-    v1 = v5;
+    hk_hearingHealthAudiogramRightEarPointMarkerColor = systemBackgroundColor;
   }
 
-  return v1;
+  return hk_hearingHealthAudiogramRightEarPointMarkerColor;
 }
 
 + (id)hk_hearingHealthAudiogramRightEarDeemphasizedColor
@@ -846,26 +846,26 @@ LABEL_15:
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.192156866 blue:0.400000006 alpha:1.0];
   v4 = HKUIDynamicColorWithColors(v2, v3);
 
-  v5 = [MEMORY[0x1E696C608] sharedBehavior];
-  v6 = [v5 features];
-  v7 = [v6 yodel];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  features = [mEMORY[0x1E696C608] features];
+  yodel = [features yodel];
 
-  if (v7)
+  if (yodel)
   {
-    v8 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
 
-    v4 = v8;
+    v4 = tertiaryLabelColor;
   }
 
-  v9 = [a1 _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
+  v9 = [self _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
 
   return v9;
 }
 
 + (id)hk_hearingHealthAudiogramAverageLineColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v3 = [a1 _accessibilityHigherContrastTintColorForColorIfNeeded:v2];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v3 = [self _accessibilityHigherContrastTintColorForColorIfNeeded:systemBlueColor];
 
   return v3;
 }
@@ -876,29 +876,29 @@ LABEL_15:
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.20784314 green:0.20784314 blue:0.219607845 alpha:1.0];
   v4 = HKUIDynamicColorWithColors(v2, v3);
 
-  v5 = [MEMORY[0x1E696C608] sharedBehavior];
-  v6 = [v5 features];
-  v7 = [v6 yodel];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  features = [mEMORY[0x1E696C608] features];
+  yodel = [features yodel];
 
-  if (v7)
+  if (yodel)
   {
-    v8 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
 
-    v4 = v8;
+    v4 = tertiaryLabelColor;
   }
 
-  v9 = [a1 _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
+  v9 = [self _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
 
   return v9;
 }
 
 + (id)hk_hearingHealthAudiogramDisabledPointMarkerColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemLightMidGrayColor];
+  systemLightMidGrayColor = [MEMORY[0x1E69DC888] systemLightMidGrayColor];
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.278431386 green:0.278431386 blue:0.290196091 alpha:1.0];
-  v4 = HKUIDynamicColorWithColors(v2, v3);
+  v4 = HKUIDynamicColorWithColors(systemLightMidGrayColor, v3);
 
-  v5 = [a1 _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
+  v5 = [self _accessibilityHigherContrastTintColorForColorIfNeeded:v4];
 
   return v5;
 }
@@ -1044,8 +1044,8 @@ LABEL_15:
   v4 = a3;
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v5 = [a1 _accessibilityColorView];
-    v6 = [v5 _accessibilityHigherContrastTintColorForColor:v4];
+    _accessibilityColorView = [self _accessibilityColorView];
+    v6 = [_accessibilityColorView _accessibilityHigherContrastTintColorForColor:v4];
   }
 
   else
@@ -1062,7 +1062,7 @@ LABEL_15:
   v10 = 0.0;
   v7 = 0.0;
   v8 = 0.0;
-  if ([a1 getHue:&v10 saturation:&v9 brightness:&v8 alpha:&v7])
+  if ([self getHue:&v10 saturation:&v9 brightness:&v8 alpha:&v7])
   {
     v4 = 1.0;
     if (v9 + a2 <= 1.0)
@@ -1070,15 +1070,15 @@ LABEL_15:
       v4 = v9 + a2;
     }
 
-    v5 = [MEMORY[0x1E69DC888] colorWithHue:v10 saturation:v4 brightness:v8 alpha:v7];
+    selfCopy = [MEMORY[0x1E69DC888] colorWithHue:v10 saturation:v4 brightness:v8 alpha:v7];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

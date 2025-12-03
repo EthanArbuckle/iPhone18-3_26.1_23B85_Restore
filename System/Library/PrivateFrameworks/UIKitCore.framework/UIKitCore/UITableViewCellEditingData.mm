@@ -1,25 +1,25 @@
 @interface UITableViewCellEditingData
 - (BOOL)wantsMaskingWhileAnimatingDisabled;
-- (UITableViewCellEditingData)initWithTableViewCell:(id)a3 editingStyle:(int64_t)a4;
-- (id)editControl:(BOOL)a3;
-- (id)reorderControl:(BOOL)a3;
-- (id)reorderSeparatorView:(BOOL)a3;
+- (UITableViewCellEditingData)initWithTableViewCell:(id)cell editingStyle:(int64_t)style;
+- (id)editControl:(BOOL)control;
+- (id)reorderControl:(BOOL)control;
+- (id)reorderSeparatorView:(BOOL)view;
 - (void)dealloc;
 @end
 
 @implementation UITableViewCellEditingData
 
-- (UITableViewCellEditingData)initWithTableViewCell:(id)a3 editingStyle:(int64_t)a4
+- (UITableViewCellEditingData)initWithTableViewCell:(id)cell editingStyle:(int64_t)style
 {
-  v6 = a3;
+  cellCopy = cell;
   v10.receiver = self;
   v10.super_class = UITableViewCellEditingData;
   v7 = [(UITableViewCellEditingData *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_cell, v6);
-    v8->_editingStyle = a4;
+    objc_storeWeak(&v7->_cell, cellCopy);
+    v8->_editingStyle = style;
   }
 
   return v8;
@@ -77,7 +77,7 @@ LABEL_5:
   return [(UITableViewCellReorderControl *)reorderControl wantsMaskingWhileAnimatingDisabled];
 }
 
-- (id)editControl:(BOOL)a3
+- (id)editControl:(BOOL)control
 {
   editControl = self->_editControl;
   if (editControl)
@@ -87,7 +87,7 @@ LABEL_5:
 
   else
   {
-    v5 = !a3;
+    v5 = !control;
   }
 
   if (!v5)
@@ -123,7 +123,7 @@ LABEL_5:
   return editControl;
 }
 
-- (id)reorderControl:(BOOL)a3
+- (id)reorderControl:(BOOL)control
 {
   reorderControl = self->_reorderControl;
   if (reorderControl)
@@ -133,7 +133,7 @@ LABEL_5:
 
   else
   {
-    v5 = !a3;
+    v5 = !control;
   }
 
   if (!v5)
@@ -155,7 +155,7 @@ LABEL_5:
   return reorderControl;
 }
 
-- (id)reorderSeparatorView:(BOOL)a3
+- (id)reorderSeparatorView:(BOOL)view
 {
   reorderSeparatorView = self->_reorderSeparatorView;
   if (reorderSeparatorView)
@@ -165,7 +165,7 @@ LABEL_5:
 
   else
   {
-    v5 = !a3;
+    v5 = !view;
   }
 
   if (!v5)

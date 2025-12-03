@@ -1,34 +1,34 @@
 @interface CDRichComplicationCornerGaugeTextView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (CDRichComplicationCornerGaugeTextView)initWithFontFallback:(int64_t)a3;
-- (void)_enumerateLabelsWithBlock:(id)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (CDRichComplicationCornerGaugeTextView)initWithFontFallback:(int64_t)fallback;
+- (void)_enumerateLabelsWithBlock:(id)block;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration;
 - (void)layoutSubviews;
-- (void)setFontStyle:(int64_t)a3;
-- (void)setOuterLabelProviders:(id)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setFontStyle:(int64_t)style;
+- (void)setOuterLabelProviders:(id)providers;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation CDRichComplicationCornerGaugeTextView
 
-- (CDRichComplicationCornerGaugeTextView)initWithFontFallback:(int64_t)a3
+- (CDRichComplicationCornerGaugeTextView)initWithFontFallback:(int64_t)fallback
 {
   v12.receiver = self;
   v12.super_class = CDRichComplicationCornerGaugeTextView;
-  v3 = [(CDRichComplicationCornerBaseGaugeView *)&v12 initWithFontFallback:a3];
+  v3 = [(CDRichComplicationCornerBaseGaugeView *)&v12 initWithFontFallback:fallback];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CDRichComplicationView *)v3 device];
-    ___LayoutConstants_block_invoke_6(v5, v11);
+    device = [(CDRichComplicationView *)v3 device];
+    ___LayoutConstants_block_invoke_6(device, v11);
     v6 = [(CDRichComplicationCornerView *)v4 _createAndAddColoringLabelWithFontSize:v11[0]];
     outerLabel = v4->_outerLabel;
     v4->_outerLabel = v6;
 
-    v8 = [(CDRichComplicationView *)v4 device];
-    ___LayoutConstants_block_invoke_6(v8, &v10);
+    device2 = [(CDRichComplicationView *)v4 device];
+    ___LayoutConstants_block_invoke_6(device2, &v10);
     CLKDegreesToRadians();
     [(CLKUICurvedColoringLabel *)v4->_outerLabel setMaxAngularWidth:?];
 
@@ -51,10 +51,10 @@
   v3 = [(CDRichComplicationView *)self device:0];
   ___LayoutConstants_block_invoke_6(v3, &v9);
 
-  v4 = [(CDRichComplicationCornerView *)self cornerComplicationPosition];
-  if (v4 <= 1)
+  cornerComplicationPosition = [(CDRichComplicationCornerView *)self cornerComplicationPosition];
+  if (cornerComplicationPosition <= 1)
   {
-    if (v4 > 1)
+    if (cornerComplicationPosition > 1)
     {
       goto LABEL_8;
     }
@@ -65,7 +65,7 @@
     goto LABEL_7;
   }
 
-  if (v4 == 2 || v4 == 3)
+  if (cornerComplicationPosition == 2 || cornerComplicationPosition == 3)
   {
     [(CLKUICurvedColoringLabel *)self->_outerLabel setCircleRadius:*(&v10 + 1)];
     [(CLKUICurvedColoringLabel *)self->_outerLabel setInterior:1];
@@ -81,31 +81,31 @@ LABEL_8:
   [(CDRichComplicationCornerView *)self _layoutCurvedLabel:outerLabel centerAngleInDegree:v7 editingRotationInDegree:v8];
 }
 
-- (void)setFontStyle:(int64_t)a3
+- (void)setFontStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = CDRichComplicationCornerGaugeTextView;
-  [(CDRichComplicationView *)&v3 setFontStyle:a3];
+  [(CDRichComplicationView *)&v3 setFontStyle:style];
 }
 
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration
 {
-  v9[0] = a3->var0;
-  v5 = a3->var1;
-  var2 = a3->var2;
+  v9[0] = configuration->var0;
+  v5 = configuration->var1;
+  var2 = configuration->var2;
   v10 = v5;
   v11 = var2;
   v8.receiver = self;
   v8.super_class = CDRichComplicationCornerGaugeTextView;
   [(CDRichComplicationCornerBaseGaugeView *)&v8 _setFontConfiguration:v9];
-  if (a3->var1)
+  if (configuration->var1)
   {
-    [(CDRichComplicationView *)self _updateColoringLabel:self->_outerLabel withFontDescriptor:a3->var2 andSizeFactor:?];
+    [(CDRichComplicationView *)self _updateColoringLabel:self->_outerLabel withFontDescriptor:configuration->var2 andSizeFactor:?];
   }
 
   else
   {
-    if (a3->var0)
+    if (configuration->var0)
     {
       v7 = MEMORY[0x277D74418];
     }
@@ -119,14 +119,14 @@ LABEL_8:
   }
 }
 
-- (void)setOuterLabelProviders:(id)a3
+- (void)setOuterLabelProviders:(id)providers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_outerLabelProviders, a3);
+  providersCopy = providers;
+  objc_storeStrong(&self->_outerLabelProviders, providers);
   if ([(NSArray *)self->_outerLabelProviders count])
   {
-    v14 = v5;
+    v14 = providersCopy;
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -146,17 +146,17 @@ LABEL_4:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) textProvider];
-        [(CLKUICurvedColoringLabel *)self->_outerLabel setTextProvider:v11];
+        textProvider = [*(*(&v16 + 1) + 8 * v10) textProvider];
+        [(CLKUICurvedColoringLabel *)self->_outerLabel setTextProvider:textProvider];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __64__CDRichComplicationCornerGaugeTextView_setOuterLabelProviders___block_invoke;
         v15[3] = &unk_278DF3558;
         v15[4] = self;
         [MEMORY[0x277D75D18] performWithoutAnimation:v15];
-        v12 = [(CLKUICurvedColoringLabel *)self->_outerLabel isTextTruncated];
+        isTextTruncated = [(CLKUICurvedColoringLabel *)self->_outerLabel isTextTruncated];
 
-        if (!v12)
+        if (!isTextTruncated)
         {
           break;
         }
@@ -174,7 +174,7 @@ LABEL_4:
       }
     }
 
-    v5 = v14;
+    providersCopy = v14;
   }
 
   else
@@ -186,44 +186,44 @@ LABEL_4:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
   outerLabel = self->_outerLabel;
-  v6 = a3;
-  v7 = [v6 outerTextProvider];
-  [(CLKUICurvedColoringLabel *)outerLabel setTextProvider:v7];
+  templateCopy = template;
+  outerTextProvider = [templateCopy outerTextProvider];
+  [(CLKUICurvedColoringLabel *)outerLabel setTextProvider:outerTextProvider];
 
-  v10 = [v6 gaugeProvider];
-  v8 = [v6 leadingTextProvider];
-  v9 = [v6 trailingTextProvider];
+  gaugeProvider = [templateCopy gaugeProvider];
+  leadingTextProvider = [templateCopy leadingTextProvider];
+  trailingTextProvider = [templateCopy trailingTextProvider];
 
-  [(CDRichComplicationCornerBaseGaugeView *)self handleGaugeProvider:v10 leftTextProvider:v8 rightTextProvider:v9];
+  [(CDRichComplicationCornerBaseGaugeView *)self handleGaugeProvider:gaugeProvider leftTextProvider:leadingTextProvider rightTextProvider:trailingTextProvider];
 }
 
-- (void)_enumerateLabelsWithBlock:(id)a3
+- (void)_enumerateLabelsWithBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = CDRichComplicationCornerGaugeTextView;
-  v4 = a3;
-  [(CDRichComplicationCornerBaseGaugeView *)&v5 _enumerateLabelsWithBlock:v4];
-  v4[2](v4, self->_outerLabel);
+  blockCopy = block;
+  [(CDRichComplicationCornerBaseGaugeView *)&v5 _enumerateLabelsWithBlock:blockCopy];
+  blockCopy[2](blockCopy, self->_outerLabel);
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = CDRichComplicationCornerGaugeTextView;
   [(CDRichComplicationCornerBaseGaugeView *)&v5 transitionToMonochromeWithFraction:?];
-  [(CLKUICurvedColoringLabel *)self->_outerLabel transitionToMonochromeWithFraction:0 style:a3];
+  [(CLKUICurvedColoringLabel *)self->_outerLabel transitionToMonochromeWithFraction:0 style:fraction];
 }
 
 - (void)updateMonochromeColor

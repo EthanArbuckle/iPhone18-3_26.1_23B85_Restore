@@ -1,37 +1,37 @@
 @interface OFTextConversion
-+ (CGColor)CGColorFromString:(id)a3;
++ (CGColor)CGColorFromString:(id)string;
 + (CGColor)blackCGColor;
-+ (id)attributedStringWithCTAttributesFromStringAttributes:(id)a3 scaleFactor:(double)a4;
-+ (id)attributedStringWithNSAttributesFromStringAttributes:(id)a3 scaleFactor:(double)a4;
-+ (id)stretchForFontDisplayName:(id)a3 andFamilyName:(id)a4;
-+ (id)stringAttributesWithAttributedString:(id)a3 scaleFactor:(double)a4;
-+ (id)stringFromCGColor:(CGColor *)a3;
-+ (id)stringFromLigature:(int64_t)a3;
-+ (id)stringFromTextAlignment:(int64_t)a3;
-+ (id)styleForFontDisplayName:(id)a3 andFamilyName:(id)a4;
-+ (id)textFormatFromUnderlineStyle:(unint64_t)a3;
-+ (id)textFormatWithCTAttributesForText:(id)a3 attributes:(id)a4 scaleFactor:(double)a5;
-+ (id)weightForFontDisplayName:(id)a3 andFamilyName:(id)a4;
-+ (int64_t)ligatureFromString:(id)a3;
-+ (int64_t)textAlignmentFromString:(id)a3;
-+ (unint64_t)underlineStyleFromTextFormat:(id)a3;
++ (id)attributedStringWithCTAttributesFromStringAttributes:(id)attributes scaleFactor:(double)factor;
++ (id)attributedStringWithNSAttributesFromStringAttributes:(id)attributes scaleFactor:(double)factor;
++ (id)stretchForFontDisplayName:(id)name andFamilyName:(id)familyName;
++ (id)stringAttributesWithAttributedString:(id)string scaleFactor:(double)factor;
++ (id)stringFromCGColor:(CGColor *)color;
++ (id)stringFromLigature:(int64_t)ligature;
++ (id)stringFromTextAlignment:(int64_t)alignment;
++ (id)styleForFontDisplayName:(id)name andFamilyName:(id)familyName;
++ (id)textFormatFromUnderlineStyle:(unint64_t)style;
++ (id)textFormatWithCTAttributesForText:(id)text attributes:(id)attributes scaleFactor:(double)factor;
++ (id)weightForFontDisplayName:(id)name andFamilyName:(id)familyName;
++ (int64_t)ligatureFromString:(id)string;
++ (int64_t)textAlignmentFromString:(id)string;
++ (unint64_t)underlineStyleFromTextFormat:(id)format;
 @end
 
 @implementation OFTextConversion
 
-+ (id)styleForFontDisplayName:(id)a3 andFamilyName:(id)a4
++ (id)styleForFontDisplayName:(id)name andFamilyName:(id)familyName
 {
-  v5 = a3;
-  if ([a3 hasPrefix:a4])
+  nameCopy = name;
+  if ([name hasPrefix:familyName])
   {
-    v5 = [v5 substringFromIndex:{objc_msgSend(a4, "length")}];
+    nameCopy = [nameCopy substringFromIndex:{objc_msgSend(familyName, "length")}];
   }
 
   v6 = @"italic";
-  if ([v5 rangeOfString:@"italic" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([nameCopy rangeOfString:@"italic" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = @"oblique";
-    if ([v5 rangeOfString:@"oblique" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([nameCopy rangeOfString:@"oblique" options:1] == 0x7FFFFFFFFFFFFFFFLL)
     {
       return @"normal";
     }
@@ -40,20 +40,20 @@
   return v6;
 }
 
-+ (id)weightForFontDisplayName:(id)a3 andFamilyName:(id)a4
++ (id)weightForFontDisplayName:(id)name andFamilyName:(id)familyName
 {
-  v5 = a3;
-  if ([a3 hasPrefix:a4])
+  nameCopy = name;
+  if ([name hasPrefix:familyName])
   {
-    v5 = [v5 substringFromIndex:{objc_msgSend(a4, "length")}];
+    nameCopy = [nameCopy substringFromIndex:{objc_msgSend(familyName, "length")}];
   }
 
-  if ([v5 rangeOfString:@"light" options:1] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([nameCopy rangeOfString:@"light" options:1] != 0x7FFFFFFFFFFFFFFFLL)
   {
     return @"lighter";
   }
 
-  if ([v5 rangeOfString:@"bold" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([nameCopy rangeOfString:@"bold" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
     return @"normal";
   }
@@ -61,15 +61,15 @@
   return @"bold";
 }
 
-+ (id)stretchForFontDisplayName:(id)a3 andFamilyName:(id)a4
++ (id)stretchForFontDisplayName:(id)name andFamilyName:(id)familyName
 {
-  v5 = a3;
-  if ([a3 hasPrefix:a4])
+  nameCopy = name;
+  if ([name hasPrefix:familyName])
   {
-    v5 = [v5 substringFromIndex:{objc_msgSend(a4, "length")}];
+    nameCopy = [nameCopy substringFromIndex:{objc_msgSend(familyName, "length")}];
   }
 
-  if ([v5 rangeOfString:@"condensed" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([nameCopy rangeOfString:@"condensed" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
@@ -80,19 +80,19 @@
   }
 }
 
-+ (int64_t)textAlignmentFromString:(id)a3
++ (int64_t)textAlignmentFromString:(id)string
 {
-  if ([a3 isEqualToString:@"left"])
+  if ([string isEqualToString:@"left"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"right"])
+  if ([string isEqualToString:@"right"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"center"])
+  if ([string isEqualToString:@"center"])
   {
     return 2;
   }
@@ -100,32 +100,32 @@
   return 0;
 }
 
-+ (id)stringFromTextAlignment:(int64_t)a3
++ (id)stringFromTextAlignment:(int64_t)alignment
 {
-  if (a3 > 2)
+  if (alignment > 2)
   {
     return @"center";
   }
 
   else
   {
-    return off_279C8A328[a3];
+    return off_279C8A328[alignment];
   }
 }
 
-+ (int64_t)ligatureFromString:(id)a3
++ (int64_t)ligatureFromString:(id)string
 {
-  if ([a3 isEqualToString:@"noLigatures"])
+  if ([string isEqualToString:@"noLigatures"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"defaultLigatures"])
+  if ([string isEqualToString:@"defaultLigatures"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"allLigatures"])
+  if ([string isEqualToString:@"allLigatures"])
   {
     return 2;
   }
@@ -133,27 +133,27 @@
   return 1;
 }
 
-+ (id)stringFromLigature:(int64_t)a3
++ (id)stringFromLigature:(int64_t)ligature
 {
-  if (a3 > 2)
+  if (ligature > 2)
   {
     return @"defaultLigatures";
   }
 
   else
   {
-    return off_279C8A340[a3];
+    return off_279C8A340[ligature];
   }
 }
 
-+ (id)stringFromCGColor:(CGColor *)a3
++ (id)stringFromCGColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
     return 0;
   }
 
-  Components = CGColorGetComponents(a3);
+  Components = CGColorGetComponents(color);
   v4 = *Components;
   v5 = *(Components + 1);
   v6 = *(Components + 2);
@@ -162,10 +162,10 @@
   return NSStringFromCGRect(*&v4);
 }
 
-+ (CGColor)CGColorFromString:(id)a3
++ (CGColor)CGColorFromString:(id)string
 {
   v7 = *MEMORY[0x277D85DE8];
-  components = CGRectFromString(a3);
+  components = CGRectFromString(string);
   v3 = +[OFTextConversion newColorSpaceForDevice];
   v4 = CGColorCreate(v3, &components.origin.x);
   CGColorSpaceRelease(v3);
@@ -181,9 +181,9 @@
   return v3;
 }
 
-+ (unint64_t)underlineStyleFromTextFormat:(id)a3
++ (unint64_t)underlineStyleFromTextFormat:(id)format
 {
-  v4 = [a3 objectForKey:@"thickness"];
+  v4 = [format objectForKey:@"thickness"];
   if ([v4 isEqualToString:@"single"])
   {
     v5 = 1;
@@ -204,7 +204,7 @@
     v5 = 1;
   }
 
-  v6 = [a3 objectForKey:@"pattern"];
+  v6 = [format objectForKey:@"pattern"];
   if (([v6 isEqualToString:@"solid"] & 1) == 0)
   {
     if ([v6 isEqualToString:@"dot"])
@@ -231,18 +231,18 @@
   return v5;
 }
 
-+ (id)textFormatFromUnderlineStyle:(unint64_t)a3
++ (id)textFormatFromUnderlineStyle:(unint64_t)style
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = v4;
+  styleCopy = style;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = dictionary;
   v6 = @"single";
-  if (v3 == 2)
+  if (styleCopy == 2)
   {
     v6 = @"thick";
   }
 
-  if (v3 == 9)
+  if (styleCopy == 9)
   {
     v7 = @"double";
   }
@@ -252,15 +252,15 @@
     v7 = v6;
   }
 
-  [v4 setObject:v7 forKey:@"thickness"];
-  if ((HIBYTE(v3) - 1) > 3u)
+  [dictionary setObject:v7 forKey:@"thickness"];
+  if ((HIBYTE(styleCopy) - 1) > 3u)
   {
     v8 = @"solid";
   }
 
   else
   {
-    v8 = off_279C8A358[(HIBYTE(v3) - 1)];
+    v8 = off_279C8A358[(HIBYTE(styleCopy) - 1)];
   }
 
   [v5 setObject:v8 forKey:@"pattern"];
@@ -268,11 +268,11 @@
   return v5;
 }
 
-+ (id)textFormatWithCTAttributesForText:(id)a3 attributes:(id)a4 scaleFactor:(double)a5
++ (id)textFormatWithCTAttributesForText:(id)text attributes:(id)attributes scaleFactor:(double)factor
 {
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  [v8 setObject:a3 forKey:@"text"];
-  v9 = [a4 objectForKey:*MEMORY[0x277CC4838]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:text forKey:@"text"];
+  v9 = [attributes objectForKey:*MEMORY[0x277CC4838]];
   if (!v9)
   {
     v9 = CTFontCreateWithName(@"Helvetica", 12.0, 0);
@@ -281,41 +281,41 @@
   v10 = CTFontCopyPostScriptName(v9);
   v11 = CTFontCopyFamilyName(v9);
   v12 = CTFontCopyDisplayName(v9);
-  [v8 setObject:v10 forKey:@"fontName"];
-  [v8 setObject:v11 forKey:@"fontFamily"];
+  [dictionary setObject:v10 forKey:@"fontName"];
+  [dictionary setObject:v11 forKey:@"fontFamily"];
   v13 = MEMORY[0x277CCABB0];
-  v14 = CTFontGetSize(v9) / a5;
+  v14 = CTFontGetSize(v9) / factor;
   *&v14 = v14;
-  [v8 setObject:objc_msgSend(v13 forKey:{"numberWithFloat:", v14), @"fontSize"}];
-  [v8 setObject:+[OFTextConversion styleForFontDisplayName:andFamilyName:](OFTextConversion forKey:{"styleForFontDisplayName:andFamilyName:", v12, v11), @"fontStyle"}];
-  [v8 setObject:+[OFTextConversion weightForFontDisplayName:andFamilyName:](OFTextConversion forKey:{"weightForFontDisplayName:andFamilyName:", v12, v11), @"fontWeight"}];
+  [dictionary setObject:objc_msgSend(v13 forKey:{"numberWithFloat:", v14), @"fontSize"}];
+  [dictionary setObject:+[OFTextConversion styleForFontDisplayName:andFamilyName:](OFTextConversion forKey:{"styleForFontDisplayName:andFamilyName:", v12, v11), @"fontStyle"}];
+  [dictionary setObject:+[OFTextConversion weightForFontDisplayName:andFamilyName:](OFTextConversion forKey:{"weightForFontDisplayName:andFamilyName:", v12, v11), @"fontWeight"}];
   v15 = [OFTextConversion stretchForFontDisplayName:v12 andFamilyName:v11];
   if (v15)
   {
-    [v8 setObject:v15 forKey:@"fontStretch"];
+    [dictionary setObject:v15 forKey:@"fontStretch"];
   }
 
-  v16 = [a4 objectForKey:*MEMORY[0x277CC49C0]];
+  v16 = [attributes objectForKey:*MEMORY[0x277CC49C0]];
   if (!v16)
   {
     v16 = +[OFTextConversion blackCGColor];
   }
 
-  [v8 setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v16), @"foregroundColor"}];
-  v17 = [a4 objectForKey:@"backgroundColor"];
+  [dictionary setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v16), @"foregroundColor"}];
+  v17 = [attributes objectForKey:@"backgroundColor"];
   if (v17)
   {
-    [v8 setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v17), @"backgroundColor"}];
+    [dictionary setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v17), @"backgroundColor"}];
   }
 
-  v18 = [a4 objectForKey:*MEMORY[0x277CC49F8]];
+  v18 = [attributes objectForKey:*MEMORY[0x277CC49F8]];
   if (v18)
   {
     v19 = v18;
     valueBuffer = 0;
     if (CTParagraphStyleGetValueForSpecifier(v18, kCTParagraphStyleSpecifierAlignment, 1uLL, &valueBuffer))
     {
-      [v8 setObject:+[OFTextConversion stringFromTextAlignment:](OFTextConversion forKey:{"stringFromTextAlignment:", valueBuffer), @"alignment"}];
+      [dictionary setObject:+[OFTextConversion stringFromTextAlignment:](OFTextConversion forKey:{"stringFromTextAlignment:", valueBuffer), @"alignment"}];
     }
 
     v47 = 0.0;
@@ -323,7 +323,7 @@
     {
       HIDWORD(v20) = HIDWORD(v47);
       *&v20 = v47;
-      [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithFloat:", v20), @"firstLineHeadIndent"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithFloat:", v20), @"firstLineHeadIndent"}];
     }
 
     valuePtr = 0.0;
@@ -331,27 +331,27 @@
     {
       HIDWORD(v21) = HIDWORD(valuePtr);
       *&v21 = valuePtr;
-      [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithFloat:", v21), @"headIndent"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithFloat:", v21), @"headIndent"}];
     }
   }
 
   LODWORD(v47) = 0;
-  v22 = [a4 objectForKey:@"shadow"];
+  v22 = [attributes objectForKey:@"shadow"];
   if (v22)
   {
     v23 = v22;
-    v24 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v25 = [v23 objectForKey:@"color"];
     if (v25)
     {
-      [v24 setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v25), @"color"}];
+      [dictionary2 setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v25), @"color"}];
     }
 
     v26 = [v23 objectForKey:@"offset"];
     if (v26)
     {
       [v26 CGSizeValue];
-      [v24 setObject:NSStringFromCGSize(v49) forKey:@"offset"];
+      [dictionary2 setObject:NSStringFromCGSize(v49) forKey:@"offset"];
     }
 
     v27 = [v23 objectForKey:@"blurRadius"];
@@ -360,88 +360,88 @@
       LODWORD(valuePtr) = 0;
       CFNumberGetValue(v27, kCFNumberFloat32Type, &valuePtr);
       LODWORD(v28) = LODWORD(valuePtr);
-      [v24 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithFloat:", v28), @"blurRadius"}];
+      [dictionary2 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithFloat:", v28), @"blurRadius"}];
     }
 
-    [v8 setObject:v24 forKey:@"shadow"];
+    [dictionary setObject:dictionary2 forKey:@"shadow"];
   }
 
-  v29 = [a4 objectForKey:*MEMORY[0x277CC4AC0]];
+  v29 = [attributes objectForKey:*MEMORY[0x277CC4AC0]];
   v30 = MEMORY[0x277CC4AB8];
   if (v29)
   {
     v31 = v29;
-    v32 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     CFNumberGetValue(v31, kCFNumberSInt32Type, &v47);
-    [v32 addEntriesFromDictionary:{+[OFTextConversion textFormatFromUnderlineStyle:](OFTextConversion, "textFormatFromUnderlineStyle:", SLODWORD(v47))}];
-    v33 = [a4 objectForKey:*v30];
+    [dictionary3 addEntriesFromDictionary:{+[OFTextConversion textFormatFromUnderlineStyle:](OFTextConversion, "textFormatFromUnderlineStyle:", SLODWORD(v47))}];
+    v33 = [attributes objectForKey:*v30];
     if (v33)
     {
-      [v32 setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v33), @"color"}];
+      [dictionary3 setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v33), @"color"}];
     }
 
-    [v8 setObject:v32 forKey:@"underline"];
+    [dictionary setObject:dictionary3 forKey:@"underline"];
   }
 
-  v34 = [a4 objectForKey:*MEMORY[0x277CC4A18]];
+  v34 = [attributes objectForKey:*MEMORY[0x277CC4A18]];
   if (v34)
   {
     CFNumberGetValue(v34, kCFNumberSInt32Type, &v47);
-    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", LODWORD(v47)), @"superscript"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", LODWORD(v47)), @"superscript"}];
   }
 
-  v35 = [a4 objectForKey:*MEMORY[0x277CC49F0]];
+  v35 = [attributes objectForKey:*MEMORY[0x277CC49F0]];
   if (v35)
   {
     CFNumberGetValue(v35, kCFNumberSInt32Type, &v47);
-    [v8 setObject:+[OFTextConversion stringFromLigature:](OFTextConversion forKey:{"stringFromLigature:", SLODWORD(v47)), @"ligature"}];
+    [dictionary setObject:+[OFTextConversion stringFromLigature:](OFTextConversion forKey:{"stringFromLigature:", SLODWORD(v47)), @"ligature"}];
   }
 
-  v36 = [a4 objectForKey:*MEMORY[0x277CC49E0]];
+  v36 = [attributes objectForKey:*MEMORY[0x277CC49E0]];
   if (v36)
   {
     CFNumberGetValue(v36, kCFNumberSInt32Type, &v47);
-    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", LODWORD(v47)), @"kern"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", LODWORD(v47)), @"kern"}];
   }
 
-  v37 = [a4 objectForKey:*MEMORY[0x277CC4A10]];
+  v37 = [attributes objectForKey:*MEMORY[0x277CC4A10]];
   if (v37)
   {
     v38 = v37;
-    v39 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     CFNumberGetValue(v38, kCFNumberSInt32Type, &v47);
-    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", LODWORD(v47)), @"strokeWidth"}];
-    v40 = [a4 objectForKey:*MEMORY[0x277CC4A08]];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", LODWORD(v47)), @"strokeWidth"}];
+    v40 = [attributes objectForKey:*MEMORY[0x277CC4A08]];
     if (v40)
     {
-      [v39 setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v40), @"strokeColor"}];
+      [dictionary4 setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v40), @"strokeColor"}];
     }
   }
 
-  v41 = [a4 objectForKey:@"strikethrough"];
+  v41 = [attributes objectForKey:@"strikethrough"];
   if (v41)
   {
     v42 = v41;
-    v43 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
     LODWORD(v47) = [v42 integerValue];
-    [v43 addEntriesFromDictionary:{+[OFTextConversion textFormatFromUnderlineStyle:](OFTextConversion, "textFormatFromUnderlineStyle:", SLODWORD(v47))}];
-    v44 = [a4 objectForKey:*v30];
+    [dictionary5 addEntriesFromDictionary:{+[OFTextConversion textFormatFromUnderlineStyle:](OFTextConversion, "textFormatFromUnderlineStyle:", SLODWORD(v47))}];
+    v44 = [attributes objectForKey:*v30];
     if (v44)
     {
-      [v43 setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v44), @"color"}];
+      [dictionary5 setObject:+[OFTextConversion stringFromCGColor:](OFTextConversion forKey:{"stringFromCGColor:", v44), @"color"}];
     }
 
-    [v8 setObject:v43 forKey:@"strikethrough"];
+    [dictionary setObject:dictionary5 forKey:@"strikethrough"];
   }
 
-  return v8;
+  return dictionary;
 }
 
-+ (id)stringAttributesWithAttributedString:(id)a3 scaleFactor:(double)a4
++ (id)stringAttributesWithAttributedString:(id)string scaleFactor:(double)factor
 {
-  v6 = [a3 length];
-  v7 = [a3 string];
-  v8 = [MEMORY[0x277CBEB18] array];
+  v6 = [string length];
+  string = [string string];
+  array = [MEMORY[0x277CBEB18] array];
   if (v6)
   {
     v9 = 0;
@@ -449,8 +449,8 @@
     v14 = 0;
     do
     {
-      v10 = [a3 attributesAtIndex:v9 longestEffectiveRange:&v13 inRange:{v9, v6}];
-      [v8 addObject:{+[OFTextConversion textFormatWithCTAttributesForText:attributes:scaleFactor:](OFTextConversion, "textFormatWithCTAttributesForText:attributes:scaleFactor:", objc_msgSend(v7, "substringWithRange:", v13, v14), v10, a4)}];
+      v10 = [string attributesAtIndex:v9 longestEffectiveRange:&v13 inRange:{v9, v6}];
+      [array addObject:{+[OFTextConversion textFormatWithCTAttributesForText:attributes:scaleFactor:](OFTextConversion, "textFormatWithCTAttributesForText:attributes:scaleFactor:", objc_msgSend(string, "substringWithRange:", v13, v14), v10, factor)}];
       v11 = v9 + v6;
       v9 = v14 + v13;
       v6 = v11 - (v14 + v13);
@@ -459,10 +459,10 @@
     while (v11 != v14 + v13);
   }
 
-  return v8;
+  return array;
 }
 
-+ (id)attributedStringWithCTAttributesFromStringAttributes:(id)a3 scaleFactor:(double)a4
++ (id)attributedStringWithCTAttributesFromStringAttributes:(id)attributes scaleFactor:(double)factor
 {
   v88 = *MEMORY[0x277D85DE8];
   v74 = objc_alloc_init(MEMORY[0x277CCAB48]);
@@ -470,7 +470,7 @@
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v81 objects:v87 count:16];
+  v6 = [attributes countByEnumeratingWithState:&v81 objects:v87 count:16];
   if (v6)
   {
     v7 = v6;
@@ -491,7 +491,7 @@
       {
         if (*v82 != v76)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(attributes);
         }
 
         v10 = *(*(&v81 + 1) + 8 * i);
@@ -528,7 +528,7 @@
             {
               v21 = v20;
               [objc_msgSend(v10 objectForKey:{@"fontSize", "floatValue"}];
-              v23 = CTFontCreateWithName(v21, v22 * a4, 0);
+              v23 = CTFontCreateWithName(v21, v22 * factor, 0);
               v91.location = 0;
               v91.length = v14;
               CFAttributedStringSetAttribute(aStr, v91, v72, v23);
@@ -593,11 +593,11 @@ LABEL_22:
             if (v33)
             {
               v35 = v33;
-              v36 = [MEMORY[0x277CBEB38] dictionary];
+              dictionary = [MEMORY[0x277CBEB38] dictionary];
               v37 = [v35 objectForKey:@"color"];
               if (v37)
               {
-                [v36 setObject:+[OFTextConversion CGColorFromString:](OFTextConversion forKey:{"CGColorFromString:", v37), @"color"}];
+                [dictionary setObject:+[OFTextConversion CGColorFromString:](OFTextConversion forKey:{"CGColorFromString:", v37), @"color"}];
               }
 
               v38 = [v35 objectForKey:@"offset"];
@@ -608,7 +608,7 @@ LABEL_22:
                 v41 = CGSizeFromString(v38);
                 v42 = v40;
                 v18 = v39;
-                [v36 setObject:objc_msgSend(v42 forKey:{"valueWithCGSize:", v41.width, v41.height), @"offset"}];
+                [dictionary setObject:objc_msgSend(v42 forKey:{"valueWithCGSize:", v41.width, v41.height), @"offset"}];
               }
 
               v43 = [v35 objectForKey:@"blurRadius"];
@@ -617,12 +617,12 @@ LABEL_22:
               {
                 v44 = MEMORY[0x277CCABB0];
                 [v43 floatValue];
-                [v36 setObject:objc_msgSend(v44 forKey:{"numberWithFloat:"), @"blurRadius"}];
+                [dictionary setObject:objc_msgSend(v44 forKey:{"numberWithFloat:"), @"blurRadius"}];
               }
 
               v93.location = 0;
               v93.length = v18;
-              CFAttributedStringSetAttribute(aStr, v93, @"shadow", v36);
+              CFAttributedStringSetAttribute(aStr, v93, @"shadow", dictionary);
             }
 
             v45 = [v10 objectForKey:@"underline"];
@@ -715,7 +715,7 @@ LABEL_22:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v81 objects:v87 count:16];
+      v7 = [attributes countByEnumeratingWithState:&v81 objects:v87 count:16];
     }
 
     while (v7);
@@ -724,7 +724,7 @@ LABEL_22:
   return v74;
 }
 
-+ (id)attributedStringWithNSAttributesFromStringAttributes:(id)a3 scaleFactor:(double)a4
++ (id)attributedStringWithNSAttributesFromStringAttributes:(id)attributes scaleFactor:(double)factor
 {
   v4 = objc_alloc_init(MEMORY[0x277CCAB48]);
 

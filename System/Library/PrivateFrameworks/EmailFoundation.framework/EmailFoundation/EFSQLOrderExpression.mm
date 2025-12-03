@@ -1,22 +1,22 @@
 @interface EFSQLOrderExpression
-- (EFSQLOrderExpression)initWithExpression:(id)a3 ascending:(BOOL)a4;
+- (EFSQLOrderExpression)initWithExpression:(id)expression ascending:(BOOL)ascending;
 - (NSString)ef_SQLExpression;
-- (void)ef_renderSQLExpressionInto:(id)a3;
+- (void)ef_renderSQLExpressionInto:(id)into;
 @end
 
 @implementation EFSQLOrderExpression
 
-- (EFSQLOrderExpression)initWithExpression:(id)a3 ascending:(BOOL)a4
+- (EFSQLOrderExpression)initWithExpression:(id)expression ascending:(BOOL)ascending
 {
-  v7 = a3;
+  expressionCopy = expression;
   v11.receiver = self;
   v11.super_class = EFSQLOrderExpression;
   v8 = [(EFSQLOrderExpression *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_expression, a3);
-    v9->_isAscending = a4;
+    objc_storeStrong(&v8->_expression, expression);
+    v9->_isAscending = ascending;
   }
 
   return v9;
@@ -24,15 +24,15 @@
 
 - (NSString)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(EFSQLOrderExpression *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(EFSQLOrderExpression *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
-  v5 = a3;
+  intoCopy = into;
   [(EFSQLExpressable *)self->_expression ef_renderSQLExpressionInto:?];
   if (self->_isAscending)
   {
@@ -44,7 +44,7 @@
     v4 = @" DESC";
   }
 
-  [v5 appendString:v4];
+  [intoCopy appendString:v4];
 }
 
 @end

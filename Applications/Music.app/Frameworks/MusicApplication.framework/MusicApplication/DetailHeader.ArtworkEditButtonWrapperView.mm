@@ -1,24 +1,24 @@
 @interface DetailHeader.ArtworkEditButtonWrapperView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCC16MusicApplication12DetailHeaderP33_A13DD19D58D33EBE9EDF18CE691179B728ArtworkEditButtonWrapperView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCC16MusicApplication12DetailHeaderP33_A13DD19D58D33EBE9EDF18CE691179B728ArtworkEditButtonWrapperView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DetailHeader.ArtworkEditButtonWrapperView
 
-- (_TtCC16MusicApplication12DetailHeaderP33_A13DD19D58D33EBE9EDF18CE691179B728ArtworkEditButtonWrapperView)initWithCoder:(id)a3
+- (_TtCC16MusicApplication12DetailHeaderP33_A13DD19D58D33EBE9EDF18CE691179B728ArtworkEditButtonWrapperView)initWithCoder:(id)coder
 {
   result = sub_ABAFD0();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(DetailHeader.ArtworkEditButtonWrapperView *)self intrinsicContentSize];
   if (height >= width)
   {
@@ -43,12 +43,12 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(DetailHeader.ArtworkEditButtonWrapperView *)v2 traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  selfCopy = self;
+  traitCollection = [(DetailHeader.ArtworkEditButtonWrapperView *)selfCopy traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v5 = 64.0;
-  if (v4 == &dword_0 + 2)
+  if (horizontalSizeClass == &dword_0 + 2)
   {
     v5 = 80.0;
   }
@@ -61,23 +61,23 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2A7AE8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for DetailHeader.ArtworkEditButtonWrapperView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v10.receiver;
-  [(DetailHeader.ArtworkEditButtonWrapperView *)&v10 traitCollectionDidChange:v4];
+  [(DetailHeader.ArtworkEditButtonWrapperView *)&v10 traitCollectionDidChange:changeCopy];
   v6 = *&v5[OBJC_IVAR____TtCC16MusicApplication12DetailHeaderP33_A13DD19D58D33EBE9EDF18CE691179B728ArtworkEditButtonWrapperView_button];
-  v7 = [v5 traitCollection];
-  v8 = [v7 horizontalSizeClass];
+  traitCollection = [v5 traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v9 = 12.0;
-  if (v8 == &dword_0 + 2)
+  if (horizontalSizeClass == &dword_0 + 2)
   {
     v9 = 25.0;
   }

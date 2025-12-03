@@ -1,16 +1,16 @@
 @interface REDonatedActionsApplicationStore
-- (BOOL)_shouldFilterDonation:(id)a3;
+- (BOOL)_shouldFilterDonation:(id)donation;
 - (REDonatedActionsApplicationStore)init;
-- (REDonatedActionsApplicationStore)initWithLocationManager:(id)a3;
+- (REDonatedActionsApplicationStore)initWithLocationManager:(id)manager;
 - (void)_notify;
 - (void)_notifyApplicationsUpdates;
-- (void)_queue_loadApplicationsIfNeededWithCompletion:(id)a3;
-- (void)_sortDonationsByCount:(id)a3 completion:(id)a4;
-- (void)donatedActionFilteredCacheDidAddDonation:(id)a3;
+- (void)_queue_loadApplicationsIfNeededWithCompletion:(id)completion;
+- (void)_sortDonationsByCount:(id)count completion:(id)completion;
+- (void)donatedActionFilteredCacheDidAddDonation:(id)donation;
 - (void)donatedActionFilteredCacheDonationRemoved;
-- (void)fetchApplicationsProvidingDonations:(id)a3;
-- (void)fetchDonationWithIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchTopDonationsForApplications:(id)a3 fromOnlyRecentPlatform:(BOOL)a4 block:(id)a5;
+- (void)fetchApplicationsProvidingDonations:(id)donations;
+- (void)fetchDonationWithIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchTopDonationsForApplications:(id)applications fromOnlyRecentPlatform:(BOOL)platform block:(id)block;
 @end
 
 @implementation REDonatedActionsApplicationStore
@@ -23,9 +23,9 @@
   return v4;
 }
 
-- (REDonatedActionsApplicationStore)initWithLocationManager:(id)a3
+- (REDonatedActionsApplicationStore)initWithLocationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v37.receiver = self;
   v37.super_class = REDonatedActionsApplicationStore;
   v5 = [(REDonatedActionsApplicationStore *)&v37 init];
@@ -40,8 +40,8 @@
     [v8 setAllowsRemoteTraining:1];
     [v8 setTrainingBehavior:1];
     [v8 setModelStorageBehavior:1];
-    v31 = v4;
-    [v8 setLocationManager:v4];
+    v31 = managerCopy;
+    [v8 setLocationManager:managerCopy];
     v9 = +[REDataSourceLoader disabledDataSourceLoader];
     [v8 setDataSourceLoader:v9];
 
@@ -49,8 +49,8 @@
     [v8 removeAllSections];
     v10 = [RESectionDescriptor defaultSectionDescriptorForIdentifier:@"defaultSectionIdentifier"];
     [v10 setHistoricSectionDescriptor:0];
-    v11 = [v10 rules];
-    v12 = [v11 mutableCopy];
+    rules = [v10 rules];
+    v12 = [rules mutableCopy];
 
     v13 = [REFilteringRule alloc];
     v14 = +[RECondition trueCondition];
@@ -104,7 +104,7 @@
     objc_destroyWeak(&v35);
     objc_destroyWeak(&location);
 
-    v4 = v31;
+    managerCopy = v31;
   }
 
   return v5;
@@ -122,11 +122,11 @@ void __60__REDonatedActionsApplicationStore_initWithLocationManager___block_invo
   [WeakRetained _notifyApplicationsUpdates];
 }
 
-- (void)fetchApplicationsProvidingDonations:(id)a3
+- (void)fetchApplicationsProvidingDonations:(id)donations
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  donationsCopy = donations;
+  v5 = donationsCopy;
+  if (donationsCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -134,7 +134,7 @@ void __60__REDonatedActionsApplicationStore_initWithLocationManager___block_invo
     v7[2] = __72__REDonatedActionsApplicationStore_fetchApplicationsProvidingDonations___block_invoke;
     v7[3] = &unk_2785F9A40;
     v7[4] = self;
-    v8 = v4;
+    v8 = donationsCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -159,24 +159,24 @@ void __72__REDonatedActionsApplicationStore_fetchApplicationsProvidingDonations_
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)fetchDonationWithIdentifier:(id)a3 completion:(id)a4
+- (void)fetchDonationWithIdentifier:(id)identifier completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    [(REDonatedActionFilteredCache *)self->_cache fetchDonationWithIdentifier:a3 completion:?];
+    [(REDonatedActionFilteredCache *)self->_cache fetchDonationWithIdentifier:identifier completion:?];
   }
 }
 
-- (void)fetchTopDonationsForApplications:(id)a3 fromOnlyRecentPlatform:(BOOL)a4 block:(id)a5
+- (void)fetchTopDonationsForApplications:(id)applications fromOnlyRecentPlatform:(BOOL)platform block:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  platformCopy = platform;
+  applicationsCopy = applications;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if ([v8 count])
+    if ([applicationsCopy count])
     {
-      if (v6)
+      if (platformCopy)
       {
         v10 = objc_alloc_init(_MultiplatformDonationRecencyStore);
       }
@@ -186,26 +186,26 @@ void __72__REDonatedActionsApplicationStore_fetchApplicationsProvidingDonations_
         v10 = 0;
       }
 
-      v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+      v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(applicationsCopy, "count")}];
       cache = self->_cache;
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __98__REDonatedActionsApplicationStore_fetchTopDonationsForApplications_fromOnlyRecentPlatform_block___block_invoke;
       v21[3] = &unk_2785FDAE8;
-      v22 = v8;
-      v23 = self;
+      v22 = applicationsCopy;
+      selfCopy = self;
       v24 = v11;
-      v26 = v6;
+      v26 = platformCopy;
       v25 = v10;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __98__REDonatedActionsApplicationStore_fetchTopDonationsForApplications_fromOnlyRecentPlatform_block___block_invoke_2;
       v15[3] = &unk_2785FDB38;
-      v20 = v6;
+      v20 = platformCopy;
       v16 = v25;
       v17 = v24;
-      v18 = self;
-      v19 = v9;
+      selfCopy2 = self;
+      v19 = blockCopy;
       v13 = v24;
       v14 = v25;
       [(REDonatedActionFilteredCache *)cache fetchAllUniqueActions:v21 completion:v15];
@@ -213,7 +213,7 @@ void __72__REDonatedActionsApplicationStore_fetchApplicationsProvidingDonations_
 
     else
     {
-      (*(v9 + 2))(v9, MEMORY[0x277CBEC10]);
+      (*(blockCopy + 2))(blockCopy, MEMORY[0x277CBEC10]);
     }
   }
 }
@@ -368,16 +368,16 @@ void __98__REDonatedActionsApplicationStore_fetchTopDonationsForApplications_fro
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)_shouldFilterDonation:(id)a3
+- (BOOL)_shouldFilterDonation:(id)donation
 {
-  v4 = a3;
-  v5 = [v4 relevanceProviders];
-  if ([v5 count])
+  donationCopy = donation;
+  relevanceProviders = [donationCopy relevanceProviders];
+  if ([relevanceProviders count])
   {
     v6 = [REElement alloc];
     v7 = objc_opt_new();
-    v8 = [v4 relevanceProviders];
-    v9 = [(REElement *)v6 initWithIdentifier:@"filtering-element" content:v7 action:0 relevanceProviders:v8];
+    relevanceProviders2 = [donationCopy relevanceProviders];
+    v9 = [(REElement *)v6 initWithIdentifier:@"filtering-element" content:v7 action:0 relevanceProviders:relevanceProviders2];
 
     v10 = [(REMLElementRanker *)self->_elementRanker shouldHideElement:v9];
   }
@@ -390,25 +390,25 @@ void __98__REDonatedActionsApplicationStore_fetchTopDonationsForApplications_fro
   return v10;
 }
 
-- (void)_sortDonationsByCount:(id)a3 completion:(id)a4
+- (void)_sortDonationsByCount:(id)count completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  countCopy = count;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v6 count] > 1)
+    if ([countCopy count] > 1)
     {
-      v22 = v7;
-      v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+      v22 = completionCopy;
+      v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(countCopy, "count")}];
       v10 = dispatch_group_create();
-      v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+      v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(countCopy, "count")}];
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v23 = v6;
-      obj = v6;
+      v23 = countCopy;
+      obj = countCopy;
       v12 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v12)
       {
@@ -433,7 +433,7 @@ void __98__REDonatedActionsApplicationStore_fetchTopDonationsForApplications_fro
             v29[3] = &unk_2785FDB88;
             v29[4] = v16;
             v30 = v10;
-            v31 = self;
+            selfCopy = self;
             v32 = v9;
             v33 = v11;
             [(REDonatedActionFilteredCache *)cache fetchCountForAction:v16 usingBlock:v29];
@@ -455,20 +455,20 @@ void __98__REDonatedActionsApplicationStore_fetchTopDonationsForApplications_fro
       block[3] = &unk_2785F99C8;
       v26 = v11;
       v27 = v9;
-      v7 = v22;
+      completionCopy = v22;
       v28 = v22;
       v19 = v9;
       v20 = v11;
       dispatch_group_notify(v10, queue, block);
 
-      v6 = v23;
+      countCopy = v23;
     }
 
     else
     {
-      if (v6)
+      if (countCopy)
       {
-        v8 = v6;
+        v8 = countCopy;
       }
 
       else
@@ -476,7 +476,7 @@ void __98__REDonatedActionsApplicationStore_fetchTopDonationsForApplications_fro
         v8 = MEMORY[0x277CBEBF8];
       }
 
-      (*(v7 + 2))(v7, v8);
+      (*(completionCopy + 2))(completionCopy, v8);
     }
   }
 
@@ -578,25 +578,25 @@ uint64_t __69__REDonatedActionsApplicationStore__sortDonationsByCount_completion
 
 - (void)_notify
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"REDonatedActionsApplicationStoreDidUpdate" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"REDonatedActionsApplicationStoreDidUpdate" object:self];
 }
 
 - (void)_notifyApplicationsUpdates
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"REDonatedActionsApplicationStoreDidUpdateApplications" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"REDonatedActionsApplicationStoreDidUpdateApplications" object:0];
 }
 
-- (void)_queue_loadApplicationsIfNeededWithCompletion:(id)a3
+- (void)_queue_loadApplicationsIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_applications)
   {
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4);
+      (*(completionCopy + 2))(completionCopy);
     }
   }
 
@@ -665,11 +665,11 @@ uint64_t __82__REDonatedActionsApplicationStore__queue_loadApplicationsIfNeededW
   return result;
 }
 
-- (void)donatedActionFilteredCacheDidAddDonation:(id)a3
+- (void)donatedActionFilteredCacheDidAddDonation:(id)donation
 {
-  v4 = [a3 bundleIdentifier];
-  v5 = v4;
-  if (v4)
+  bundleIdentifier = [donation bundleIdentifier];
+  v5 = bundleIdentifier;
+  if (bundleIdentifier)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -677,7 +677,7 @@ uint64_t __82__REDonatedActionsApplicationStore__queue_loadApplicationsIfNeededW
     v7[2] = __77__REDonatedActionsApplicationStore_donatedActionFilteredCacheDidAddDonation___block_invoke;
     v7[3] = &unk_2785F9AE0;
     v7[4] = self;
-    v8 = v4;
+    v8 = bundleIdentifier;
     dispatch_async(queue, v7);
   }
 }

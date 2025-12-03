@@ -1,10 +1,10 @@
 @interface SFAnalyticsActivityTracker
-- (SFAnalyticsActivityTracker)initWithName:(id)a3 clientClass:(Class)a4;
+- (SFAnalyticsActivityTracker)initWithName:(id)name clientClass:(Class)class;
 - (void)dealloc;
-- (void)performAction:(id)a3;
+- (void)performAction:(id)action;
 - (void)start;
 - (void)stop;
-- (void)stopWithEvent:(id)a3 result:(id)a4;
+- (void)stopWithEvent:(id)event result:(id)result;
 @end
 
 @implementation SFAnalyticsActivityTracker
@@ -18,8 +18,8 @@
 
   if (!self->_canceled && self->_measurement)
   {
-    v3 = [(objc_class *)self->_clientClass logger];
-    [v3 logMetric:self->_measurement withName:self->_name];
+    logger = [(objc_class *)self->_clientClass logger];
+    [logger logMetric:self->_measurement withName:self->_name];
   }
 
   v4.receiver = self;
@@ -27,13 +27,13 @@
   [(SFAnalyticsActivityTracker *)&v4 dealloc];
 }
 
-- (void)stopWithEvent:(id)a3 result:(id)a4
+- (void)stopWithEvent:(id)event result:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  eventCopy = event;
   [(SFAnalyticsActivityTracker *)self stop];
-  v8 = [(objc_class *)self->_clientClass logger];
-  [v8 logResultForEvent:v7 hardFailure:0 result:v6];
+  logger = [(objc_class *)self->_clientClass logger];
+  [logger logResultForEvent:eventCopy hardFailure:0 result:resultCopy];
 }
 
 - (void)stop
@@ -44,8 +44,8 @@
     v5 = v4;
     if (!self->_start)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"SFAnalyticsActivityTracker.m" lineNumber:89 description:@"SFAnalyticsActivityTracker user called stop w/o calling start"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SFAnalyticsActivityTracker.m" lineNumber:89 description:@"SFAnalyticsActivityTracker user called stop w/o calling start"];
     }
 
     if (!dword_1EA91CB5C)
@@ -69,34 +69,34 @@
   {
     if (self->_start)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"SFAnalyticsActivityTracker.m" lineNumber:77 description:@"SFAnalyticsActivityTracker user called start twice"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SFAnalyticsActivityTracker.m" lineNumber:77 description:@"SFAnalyticsActivityTracker user called start twice"];
     }
 
     self->_start = mach_absolute_time();
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(SFAnalyticsActivityTracker *)self start];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__SFAnalyticsActivityTracker_performAction___block_invoke;
   block[3] = &unk_1E70D4A38;
-  v8 = v4;
-  v6 = v4;
+  v8 = actionCopy;
+  v6 = actionCopy;
   dispatch_sync(queue, block);
   [(SFAnalyticsActivityTracker *)self stop];
 }
 
-- (SFAnalyticsActivityTracker)initWithName:(id)a3 clientClass:(Class)a4
+- (SFAnalyticsActivityTracker)initWithName:(id)name clientClass:(Class)class
 {
-  v7 = a3;
+  nameCopy = name;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     v16.receiver = self;
     v16.super_class = SFAnalyticsActivityTracker;
@@ -108,8 +108,8 @@
       queue = v8->_queue;
       v8->_queue = v10;
 
-      objc_storeStrong(&v8->_name, a3);
-      v8->_clientClass = a4;
+      objc_storeStrong(&v8->_name, name);
+      v8->_clientClass = class;
       measurement = v8->_measurement;
       v8->_measurement = 0;
 
@@ -118,7 +118,7 @@
     }
 
     self = v8;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -130,10 +130,10 @@
       _os_log_impl(&dword_1887D2000, v14, OS_LOG_TYPE_DEFAULT, "Cannot instantiate SFActivityTracker without name and client class", buf, 2u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

@@ -7,19 +7,19 @@
 
 - (id)_intents_encodeWithJSONEncoder:()INJSONSerialization codableDescription:
 {
-  v2 = [a1 name];
-  v3 = v2;
-  if (v2)
+  name = [self name];
+  v3 = name;
+  if (name)
   {
-    v4 = v2;
+    abbreviation = name;
   }
 
   else
   {
-    v4 = [a1 abbreviation];
+    abbreviation = [self abbreviation];
   }
 
-  v5 = v4;
+  v5 = abbreviation;
 
   return v5;
 }

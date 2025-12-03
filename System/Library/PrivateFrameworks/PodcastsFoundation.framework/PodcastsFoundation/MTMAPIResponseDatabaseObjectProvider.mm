@@ -1,9 +1,9 @@
 @interface MTMAPIResponseDatabaseObjectProvider
 - (MTMAPIResponseDatabaseObjectProvider)init;
 - (_TtP18PodcastsFoundation42MAPIResponseDatabaseObjectProviderDelegate_)delegate;
-- (id)databaseObjectWithStoreID:(int64_t)a3 contentType:(int64_t)a4;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)setDelegate:(id)a3;
+- (id)databaseObjectWithStoreID:(int64_t)d contentType:(int64_t)type;
+- (void)controllerDidChangeContent:(id)content;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MTMAPIResponseDatabaseObjectProvider
@@ -18,25 +18,25 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___MTMAPIResponseDatabaseObjectProvider_delegate;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (id)databaseObjectWithStoreID:(int64_t)a3 contentType:(int64_t)a4
+- (id)databaseObjectWithStoreID:(int64_t)d contentType:(int64_t)type
 {
-  v6 = self;
-  v7 = sub_1D9048D4C(a3, a4);
+  selfCopy = self;
+  v7 = sub_1D9048D4C(d, type);
 
   return v7;
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   *(&self->super.isa + OBJC_IVAR___MTMAPIResponseDatabaseObjectProvider_needsParsing) = 1;
   v4 = OBJC_IVAR___MTMAPIResponseDatabaseObjectProvider_delegate;

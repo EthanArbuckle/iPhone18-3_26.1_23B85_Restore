@@ -1,8 +1,8 @@
 @interface KTFixupRegistrationUpload
 + (NSString)fixupName;
-+ (void)setFixupName:(id)a3;
++ (void)setFixupName:(id)name;
 - (_TtC13transparencyd25KTFixupRegistrationUpload)init;
-- (_TtC13transparencyd25KTFixupRegistrationUpload)initWithDependencies:(id)a3;
+- (_TtC13transparencyd25KTFixupRegistrationUpload)initWithDependencies:(id)dependencies;
 @end
 
 @implementation KTFixupRegistrationUpload
@@ -16,7 +16,7 @@
   return v2;
 }
 
-+ (void)setFixupName:(id)a3
++ (void)setFixupName:(id)name
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -25,12 +25,12 @@
   off_100384FA8 = v5;
 }
 
-- (_TtC13transparencyd25KTFixupRegistrationUpload)initWithDependencies:(id)a3
+- (_TtC13transparencyd25KTFixupRegistrationUpload)initWithDependencies:(id)dependencies
 {
-  *(&self->super.isa + OBJC_IVAR____TtC13transparencyd25KTFixupRegistrationUpload_deps) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC13transparencyd25KTFixupRegistrationUpload_deps) = dependencies;
   v6.receiver = self;
   v6.super_class = type metadata accessor for KTFixupRegistrationUpload();
-  v4 = a3;
+  dependenciesCopy = dependencies;
   return [(KTFixupRegistrationUpload *)&v6 init];
 }
 

@@ -1,6 +1,6 @@
 @interface _SFSiteIconView
 - (CGRect)_imageFrame;
-- (_SFSiteIconView)initWithFrame:(CGRect)a3;
+- (_SFSiteIconView)initWithFrame:(CGRect)frame;
 - (_SFSiteIconViewUpdateObserver)updateObserver;
 - (double)_monogramFontSize;
 - (id)_effectiveBackgroundColor;
@@ -9,26 +9,26 @@
 - (int64_t)_inferredIconSize;
 - (void)_cancelTouchIconRequest;
 - (void)_displayDefaultFolderIcon;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setGlyph:(id)a3 withBackgroundColor:(id)a4;
-- (void)_setGlyph:(id)a3 withBackgroundEffect:(id)a4;
-- (void)_setMonogramWithString:(id)a3 backgroundColor:(id)a4;
-- (void)_setSiteIcon:(id)a3 withBackgroundColor:(id)a4;
-- (void)_setState:(int64_t)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setGlyph:(id)glyph withBackgroundColor:(id)color;
+- (void)_setGlyph:(id)glyph withBackgroundEffect:(id)effect;
+- (void)_setMonogramWithString:(id)string backgroundColor:(id)color;
+- (void)_setSiteIcon:(id)icon withBackgroundColor:(id)color;
+- (void)_setState:(int64_t)state;
 - (void)_updateGlyphConfiguration;
 - (void)_updateMonogramLabelSizeAndFont;
-- (void)_updateSiteIconViewWithTouchIconResponse:(id)a3;
+- (void)_updateSiteIconViewWithTouchIconResponse:(id)response;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAction:(id)a3 backgroundEffect:(id)a4;
-- (void)setAllowsDropShadow:(BOOL)a3;
-- (void)setBackdropCaptureView:(id)a3;
-- (void)setBookmark:(id)a3 withBackgroundColor:(id)a4;
-- (void)setImage:(id)a3;
-- (void)setImage:(id)a3 withBackgroundColor:(id)a4;
-- (void)setLeadingImage:(id)a3;
+- (void)setAction:(id)action backgroundEffect:(id)effect;
+- (void)setAllowsDropShadow:(BOOL)shadow;
+- (void)setBackdropCaptureView:(id)view;
+- (void)setBookmark:(id)bookmark withBackgroundColor:(id)color;
+- (void)setImage:(id)image;
+- (void)setImage:(id)image withBackgroundColor:(id)color;
+- (void)setLeadingImage:(id)image;
 - (void)updateBookmarkData;
-- (void)updateSiteIconViewWithLinkMetadata:(id)a3 requiredImageSize:(CGSize)a4 fallbackIcon:(id)a5;
+- (void)updateSiteIconViewWithLinkMetadata:(id)metadata requiredImageSize:(CGSize)size fallbackIcon:(id)icon;
 @end
 
 @implementation _SFSiteIconView
@@ -96,17 +96,17 @@
   v38.receiver = self;
   v38.super_class = _SFSiteIconView;
   [(_SFSiteIconView *)&v38 layoutSubviews];
-  v3 = [(_SFSiteIconView *)self layer];
-  [v3 bounds];
+  layer = [(_SFSiteIconView *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   [(UIVisualEffectView *)self->_backgroundView setFrame:v5, v7, v9, v11];
-  v12 = [(_SFSiteIconView *)self _effectiveBackgroundColor];
-  v13 = [(UIVisualEffectView *)self->_backgroundView contentView];
-  [v13 setBackgroundColor:v12];
+  _effectiveBackgroundColor = [(_SFSiteIconView *)self _effectiveBackgroundColor];
+  contentView = [(UIVisualEffectView *)self->_backgroundView contentView];
+  [contentView setBackgroundColor:_effectiveBackgroundColor];
 
   if ([(_SFSiteIconView *)self usesVibrantAppearance])
   {
@@ -119,8 +119,8 @@
 
       else
       {
-        v16 = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
-        [(_SFSiteIconView *)self _applyBackgroundEffect:v16];
+        _sf_defaultStartPageBackgroundEffect = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
+        [(_SFSiteIconView *)self _applyBackgroundEffect:_sf_defaultStartPageBackgroundEffect];
       }
     }
   }
@@ -145,8 +145,8 @@
   if (borderView || self->_shadowView)
   {
     [(_SFHairlineBorderView *)borderView setFrame:v5, v7, v9, v11];
-    v21 = [(UIImageView *)self->_shadowView image];
-    [v21 alignmentRectInsets];
+    image = [(UIImageView *)self->_shadowView image];
+    [image alignmentRectInsets];
     UIEdgeInsetsSubtract();
     v23 = v22;
     v25 = v24;
@@ -154,11 +154,11 @@
     v29 = v28;
 
     [(UIImageView *)self->_shadowView setFrame:v5 + v25, v7 + v23, v9 - (v25 + v29), v11 - (v23 + v27)];
-    v30 = [(UIImageView *)self->_imageView layer];
+    layer2 = [(UIImageView *)self->_imageView layer];
     if (self->_action || (-[UIImageView image](self->_imageView, "image"), v31 = objc_claimAutoreleasedReturnValue(), v32 = [v31 safari_transparencyAnalysisResult], v31, v32 != 4))
     {
-      [v30 setShadowColor:0];
-      [v30 setShadowOpacity:0.0];
+      [layer2 setShadowColor:0];
+      [layer2 setShadowOpacity:0.0];
       if ([(_SFSiteIconView *)self usesVibrantAppearance]|| self->_action || !self->_allowsDropShadow)
       {
         v36 = 1;
@@ -171,8 +171,8 @@
 
       else
       {
-        v37 = [(_SFSiteIconView *)self image];
-        v36 = v37 == 0;
+        image2 = [(_SFSiteIconView *)self image];
+        v36 = image2 == 0;
       }
 
       v35 = 1;
@@ -180,13 +180,13 @@
 
     else
     {
-      [v30 setShadowRadius:12.0];
-      [v30 setShadowOffset:{0.0, 6.0}];
-      v33 = [MEMORY[0x1E69DC888] blackColor];
-      [v30 setShadowColor:{objc_msgSend(v33, "CGColor")}];
+      [layer2 setShadowRadius:12.0];
+      [layer2 setShadowOffset:{0.0, 6.0}];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [layer2 setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
       LODWORD(v34) = *"\nף=";
-      [v30 setShadowOpacity:v34];
+      [layer2 setShadowOpacity:v34];
       v35 = 0;
       v36 = 1;
     }
@@ -201,29 +201,29 @@
 {
   if (self->_action || (-[UIImageView image](self->_imageView, "image"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 safari_transparencyAnalysisResult], v3, v4 != 4))
   {
-    v5 = self->_preferredBackgroundColor;
+    clearColor = self->_preferredBackgroundColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
-  return v5;
+  return clearColor;
 }
 
 - (void)_updateMonogramLabelSizeAndFont
 {
-  v3 = [(_SFSiteIconView *)self _inferredIconSize];
+  _inferredIconSize = [(_SFSiteIconView *)self _inferredIconSize];
   [(_SFSiteIconView *)self _monogramFontSize];
   v5 = v4;
-  [_SFSiteIcon labelWidthForIconSize:v3];
+  [_SFSiteIcon labelWidthForIconSize:_inferredIconSize];
   v7 = v6;
   [(UILabel *)self->_monogramLabel frame];
   if (v8 != v7)
   {
     v9 = MEMORY[0x1E69DB968];
-    if (!v3)
+    if (!_inferredIconSize)
     {
       v9 = MEMORY[0x1E69DB978];
     }
@@ -270,9 +270,9 @@
     return 24.0;
   }
 
-  v4 = [(_SFSiteIconView *)self _inferredIconSize];
+  _inferredIconSize = [(_SFSiteIconView *)self _inferredIconSize];
 
-  [_SFSiteIcon fontPointSizeForIconSize:v4];
+  [_SFSiteIcon fontPointSizeForIconSize:_inferredIconSize];
   return result;
 }
 
@@ -280,11 +280,11 @@
 {
   if (self->_state == 1)
   {
-    v8 = [(UIImageView *)self->_imageView image];
-    v4 = [v8 configuration];
-    if ([v8 isSymbolImage])
+    image = [(UIImageView *)self->_imageView image];
+    configuration = [image configuration];
+    if ([image isSymbolImage])
     {
-      v5 = v4 == 0;
+      v5 = configuration == 0;
     }
 
     else
@@ -294,10 +294,10 @@
 
     if (!v5)
     {
-      v6 = [(_SFSiteIconView *)self _glyphConfiguration];
-      if (([v4 isEqual:v6] & 1) == 0)
+      _glyphConfiguration = [(_SFSiteIconView *)self _glyphConfiguration];
+      if (([configuration isEqual:_glyphConfiguration] & 1) == 0)
       {
-        v7 = [v8 imageWithConfiguration:v6];
+        v7 = [image imageWithConfiguration:_glyphConfiguration];
         [(UIImageView *)self->_imageView setImage:v7];
       }
     }
@@ -310,8 +310,8 @@
   {
     if (self->_state == 1)
     {
-      v13 = [(UIImageView *)self->_imageView image];
-      [v13 size];
+      image = [(UIImageView *)self->_imageView image];
+      [image size];
       v15 = v14;
       [(_SFSiteIconView *)self bounds];
       x = _SFRoundRectToPixels(v17 + (v16 - v15) * 0.5);
@@ -369,22 +369,22 @@ LABEL_8:
   [(_SFSiteIconView *)&v3 dealloc];
 }
 
-- (_SFSiteIconView)initWithFrame:(CGRect)a3
+- (_SFSiteIconView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = _SFSiteIconView;
-  v3 = [(_SFSiteIconView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SFSiteIconView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(_SFSiteIconView *)v3 setUserInteractionEnabled:0];
-    v5 = [(_SFSiteIconView *)v4 usesVibrantAppearance];
+    usesVibrantAppearance = [(_SFSiteIconView *)v4 usesVibrantAppearance];
     v6 = objc_alloc_init(MEMORY[0x1E69DD298]);
     backgroundView = v4->_backgroundView;
     v4->_backgroundView = v6;
 
     [(UIVisualEffectView *)v4->_backgroundView setClipsToBounds:1];
-    if (v5)
+    if (usesVibrantAppearance)
     {
       v8 = 0;
     }
@@ -394,13 +394,13 @@ LABEL_8:
       v8 = +[_SFSiteIcon defaultIconKeyColor];
     }
 
-    v9 = [(UIVisualEffectView *)v4->_backgroundView contentView];
-    [v9 setBackgroundColor:v8];
+    contentView = [(UIVisualEffectView *)v4->_backgroundView contentView];
+    [contentView setBackgroundColor:v8];
 
-    if (v5)
+    if (usesVibrantAppearance)
     {
-      v10 = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
-      [(_SFSiteIconView *)v4 _applyBackgroundEffect:v10];
+      _sf_defaultStartPageBackgroundEffect = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
+      [(_SFSiteIconView *)v4 _applyBackgroundEffect:_sf_defaultStartPageBackgroundEffect];
     }
 
     else
@@ -425,43 +425,43 @@ LABEL_8:
   return v4;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v6.receiver = self;
   v6.super_class = _SFSiteIconView;
   [(_SFSiteIconView *)&v6 _setContinuousCornerRadius:?];
-  [(UIVisualEffectView *)self->_backgroundView _setContinuousCornerRadius:a3];
-  v5 = 0.0;
+  [(UIVisualEffectView *)self->_backgroundView _setContinuousCornerRadius:radius];
+  radiusCopy = 0.0;
   if (self->_customImageInset == 0.0)
   {
-    v5 = a3;
+    radiusCopy = radius;
   }
 
-  [(UIImageView *)self->_imageView _setContinuousCornerRadius:v5];
+  [(UIImageView *)self->_imageView _setContinuousCornerRadius:radiusCopy];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   bookmark = self->_bookmark;
   self->_bookmark = 0;
-  v5 = a3;
+  imageCopy = image;
 
   action = self->_action;
   self->_action = 0;
 
   [(_SFSiteIconView *)self _cancelTouchIconRequest];
   [(_SFSiteIconView *)self _setState:0];
-  [(_SFSiteIconView *)self setImage:v5 withBackgroundColor:0];
+  [(_SFSiteIconView *)self setImage:imageCopy withBackgroundColor:0];
 
   [(_SFSiteIconView *)self setNeedsLayout];
 }
 
-- (void)setBookmark:(id)a3 withBackgroundColor:(id)a4
+- (void)setBookmark:(id)bookmark withBackgroundColor:(id)color
 {
-  v10 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  colorCopy = color;
   leadingImage = self->_leadingImage;
-  if (self->_bookmark == v10)
+  if (self->_bookmark == bookmarkCopy)
   {
     if (!leadingImage)
     {
@@ -479,20 +479,20 @@ LABEL_6:
   action = self->_action;
   self->_action = 0;
 
-  objc_storeStrong(&self->_bookmark, a3);
-  objc_storeStrong(&self->_preferredBackgroundColor, a4);
+  objc_storeStrong(&self->_bookmark, bookmark);
+  objc_storeStrong(&self->_preferredBackgroundColor, color);
   [(_SFSiteIconView *)self updateBookmarkData];
 LABEL_7:
 }
 
-- (void)setAction:(id)a3 backgroundEffect:(id)a4
+- (void)setAction:(id)action backgroundEffect:(id)effect
 {
-  v12 = a3;
-  v7 = a4;
+  actionCopy = action;
+  effectCopy = effect;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_action, a3);
-    if (!v12)
+    objc_storeStrong(&self->_action, action);
+    if (!actionCopy)
     {
       [(_SFSiteIconView *)self setNeedsLayout];
       goto LABEL_11;
@@ -502,26 +502,26 @@ LABEL_7:
     self->_bookmark = 0;
 
     [(_SFSiteIconView *)self _cancelTouchIconRequest];
-    v9 = [(_SFSiteIconView *)self usesVibrantAppearance];
-    v10 = [v12 image];
-    if (v9)
+    usesVibrantAppearance = [(_SFSiteIconView *)self usesVibrantAppearance];
+    image = [actionCopy image];
+    if (usesVibrantAppearance)
     {
-      if (v7)
+      if (effectCopy)
       {
-        [(_SFSiteIconView *)self _setGlyph:v10 withBackgroundEffect:v7];
+        [(_SFSiteIconView *)self _setGlyph:image withBackgroundEffect:effectCopy];
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      v11 = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
-      [(_SFSiteIconView *)self _setGlyph:v10 withBackgroundEffect:v11];
+      _sf_defaultStartPageBackgroundEffect = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
+      [(_SFSiteIconView *)self _setGlyph:image withBackgroundEffect:_sf_defaultStartPageBackgroundEffect];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-      [(_SFSiteIconView *)self _setGlyph:v10 withBackgroundColor:v11];
+      _sf_defaultStartPageBackgroundEffect = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+      [(_SFSiteIconView *)self _setGlyph:image withBackgroundColor:_sf_defaultStartPageBackgroundEffect];
     }
 
     goto LABEL_10;
@@ -532,33 +532,33 @@ LABEL_11:
 
 - (void)_displayDefaultFolderIcon
 {
-  v3 = [(_SFSiteIconView *)self usesVibrantAppearance];
-  v4 = [(_SFSiteIconView *)self _tintedFolderImage];
-  v6 = v4;
-  if (v3)
+  usesVibrantAppearance = [(_SFSiteIconView *)self usesVibrantAppearance];
+  _tintedFolderImage = [(_SFSiteIconView *)self _tintedFolderImage];
+  v6 = _tintedFolderImage;
+  if (usesVibrantAppearance)
   {
-    v5 = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
-    [(_SFSiteIconView *)self _setGlyph:v6 withBackgroundEffect:v5];
+    _sf_defaultStartPageBackgroundEffect = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
+    [(_SFSiteIconView *)self _setGlyph:v6 withBackgroundEffect:_sf_defaultStartPageBackgroundEffect];
   }
 
   else
   {
     if (self->_preferredBackgroundColor)
     {
-      [(_SFSiteIconView *)self _setGlyph:v4 withBackgroundColor:?];
+      [(_SFSiteIconView *)self _setGlyph:_tintedFolderImage withBackgroundColor:?];
       goto LABEL_7;
     }
 
-    v5 = +[_SFSiteIcon defaultIconKeyColor];
-    [(_SFSiteIconView *)self _setGlyph:v6 withBackgroundColor:v5];
+    _sf_defaultStartPageBackgroundEffect = +[_SFSiteIcon defaultIconKeyColor];
+    [(_SFSiteIconView *)self _setGlyph:v6 withBackgroundColor:_sf_defaultStartPageBackgroundEffect];
   }
 
 LABEL_7:
 }
 
-- (void)_updateSiteIconViewWithTouchIconResponse:(id)a3
+- (void)_updateSiteIconViewWithTouchIconResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   if (!self->_leadingImage)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69C8A40]);
@@ -568,42 +568,42 @@ LABEL_7:
     v16[3] = &unk_1E721B360;
     v16[4] = self;
     [v5 setHandler:v16];
-    v6 = [v4 touchIcon];
-    v7 = [(WebBookmark *)self->_bookmark isFolder];
-    if (v6)
+    touchIcon = [responseCopy touchIcon];
+    isFolder = [(WebBookmark *)self->_bookmark isFolder];
+    if (touchIcon)
     {
-      if (v7)
+      if (isFolder)
       {
-        v8 = [v4 extractedBackgroundColor];
-        [(_SFSiteIconView *)self _setSiteIcon:v6 withBackgroundColor:v8];
+        extractedBackgroundColor = [responseCopy extractedBackgroundColor];
+        [(_SFSiteIconView *)self _setSiteIcon:touchIcon withBackgroundColor:extractedBackgroundColor];
 LABEL_11:
 
         goto LABEL_12;
       }
 
-      [(_SFSiteIconView *)self _setSiteIcon:v6 withBackgroundColor:0];
+      [(_SFSiteIconView *)self _setSiteIcon:touchIcon withBackgroundColor:0];
     }
 
-    else if ((v7 & 1) == 0)
+    else if ((isFolder & 1) == 0)
     {
       v9 = MEMORY[0x1E69C9888];
-      v10 = [(WebBookmark *)self->_bookmark title];
+      title = [(WebBookmark *)self->_bookmark title];
       v11 = MEMORY[0x1E695DFF8];
-      v12 = [(WebBookmark *)self->_bookmark address];
-      v13 = [v11 safari_URLWithUserTypedString:v12];
-      v8 = [v9 monogramStringForTitle:v10 url:v13];
+      address = [(WebBookmark *)self->_bookmark address];
+      v13 = [v11 safari_URLWithUserTypedString:address];
+      extractedBackgroundColor = [v9 monogramStringForTitle:title url:v13];
 
-      if ([v8 length])
+      if ([extractedBackgroundColor length])
       {
-        v14 = [v4 extractedBackgroundColor];
-        [(_SFSiteIconView *)self _setMonogramWithString:v8 backgroundColor:v14];
+        extractedBackgroundColor2 = [responseCopy extractedBackgroundColor];
+        [(_SFSiteIconView *)self _setMonogramWithString:extractedBackgroundColor backgroundColor:extractedBackgroundColor2];
       }
 
       else
       {
-        v14 = +[_SFSiteIcon defaultGlyph];
-        v15 = [v4 extractedBackgroundColor];
-        [(_SFSiteIconView *)self _setGlyph:v14 withBackgroundColor:v15];
+        extractedBackgroundColor2 = +[_SFSiteIcon defaultGlyph];
+        extractedBackgroundColor3 = [responseCopy extractedBackgroundColor];
+        [(_SFSiteIconView *)self _setGlyph:extractedBackgroundColor2 withBackgroundColor:extractedBackgroundColor3];
       }
 
       [(_SFSiteIconView *)self setNeedsLayout];
@@ -614,24 +614,24 @@ LABEL_12:
   }
 }
 
-- (void)updateSiteIconViewWithLinkMetadata:(id)a3 requiredImageSize:(CGSize)a4 fallbackIcon:(id)a5
+- (void)updateSiteIconViewWithLinkMetadata:(id)metadata requiredImageSize:(CGSize)size fallbackIcon:(id)icon
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 image];
-  v12 = [v11 platformImage];
-  v13 = v12;
-  if (v12)
+  height = size.height;
+  width = size.width;
+  metadataCopy = metadata;
+  iconCopy = icon;
+  image = [metadataCopy image];
+  platformImage = [image platformImage];
+  v13 = platformImage;
+  if (platformImage)
   {
-    v14 = v12;
+    platformImage2 = platformImage;
   }
 
   else
   {
-    v15 = [v9 icon];
-    v14 = [v15 platformImage];
+    icon = [metadataCopy icon];
+    platformImage2 = [icon platformImage];
   }
 
   [(UIImageView *)self->_imageView setContentMode:2];
@@ -642,26 +642,26 @@ LABEL_12:
   v37[3] = &unk_1E721B360;
   v37[4] = self;
   [v16 setHandler:v37];
-  if (!v14)
+  if (!platformImage2)
   {
     goto LABEL_14;
   }
 
-  [v14 size];
+  [platformImage2 size];
   if (v17 < width)
   {
-    [v14 size];
+    [platformImage2 size];
     if (v18 < height)
     {
       goto LABEL_14;
     }
   }
 
-  [v14 size];
+  [platformImage2 size];
   v20 = v19;
-  [v14 size];
+  [platformImage2 size];
   v22 = v21;
-  [v14 size];
+  [platformImage2 size];
   if (v20 >= v22)
   {
     v25 = v24;
@@ -672,11 +672,11 @@ LABEL_12:
     v25 = v23;
   }
 
-  [v14 size];
+  [platformImage2 size];
   v27 = v26;
-  [v14 size];
+  [platformImage2 size];
   v29 = v28;
-  [v14 size];
+  [platformImage2 size];
   if (v27 <= v29)
   {
     v30 = v31;
@@ -684,22 +684,22 @@ LABEL_12:
 
   if (v25 / v30 > 0.3)
   {
-    [(_SFSiteIconView *)self setImage:v14];
+    [(_SFSiteIconView *)self setImage:platformImage2];
   }
 
   else
   {
 LABEL_14:
     v32 = MEMORY[0x1E69C9888];
-    v33 = [v9 title];
-    v34 = [v9 URL];
-    v35 = [v32 monogramStringForTitle:v33 url:v34];
+    title = [metadataCopy title];
+    v34 = [metadataCopy URL];
+    v35 = [v32 monogramStringForTitle:title url:v34];
 
     if ([v35 length])
     {
-      if (v14)
+      if (platformImage2)
       {
-        [MEMORY[0x1E69C9840] keyColorForIcon:v14];
+        [MEMORY[0x1E69C9840] keyColorForIcon:platformImage2];
       }
 
       else
@@ -713,19 +713,19 @@ LABEL_14:
 
     else
     {
-      [(_SFSiteIconView *)self setImage:v10];
+      [(_SFSiteIconView *)self setImage:iconCopy];
     }
   }
 }
 
-- (void)setAllowsDropShadow:(BOOL)a3
+- (void)setAllowsDropShadow:(BOOL)shadow
 {
-  if (self->_allowsDropShadow != a3)
+  if (self->_allowsDropShadow != shadow)
   {
-    v3 = a3;
-    v5 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-    self->_allowsDropShadow = v3 & ~v5;
-    if ((v3 & ~v5) == 1)
+    shadowCopy = shadow;
+    isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    self->_allowsDropShadow = shadowCopy & ~isSolariumEnabled;
+    if ((shadowCopy & ~isSolariumEnabled) == 1)
     {
       if (!self->_shadowView)
       {
@@ -749,8 +749,8 @@ LABEL_14:
         borderView = self->_borderView;
         self->_borderView = v10;
 
-        v12 = [MEMORY[0x1E69DC888] labelColor];
-        v13 = [v12 colorWithAlphaComponent:0.07];
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
+        v13 = [labelColor colorWithAlphaComponent:0.07];
         [(_SFHairlineBorderView *)self->_borderView setBorderColor:v13];
 
         [(_SFSiteIconView *)self insertSubview:self->_borderView aboveSubview:self->_imageView];
@@ -761,66 +761,66 @@ LABEL_14:
   }
 }
 
-- (void)setBackdropCaptureView:(id)a3
+- (void)setBackdropCaptureView:(id)view
 {
-  v6 = a3;
-  v4 = [(UIVisualEffectView *)self->_backgroundView _captureView];
+  viewCopy = view;
+  _captureView = [(UIVisualEffectView *)self->_backgroundView _captureView];
   v5 = WBSIsEqual();
 
   if ((v5 & 1) == 0)
   {
-    [(UIVisualEffectView *)self->_backgroundView _setCaptureView:v6];
+    [(UIVisualEffectView *)self->_backgroundView _setCaptureView:viewCopy];
   }
 }
 
-- (void)setLeadingImage:(id)a3
+- (void)setLeadingImage:(id)image
 {
-  objc_storeStrong(&self->_leadingImage, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_leadingImage, image);
+  imageCopy = image;
   [(_SFSiteIconView *)self _setState:3];
-  [(_SFSiteIconView *)self setImage:v5 withBackgroundColor:0];
+  [(_SFSiteIconView *)self setImage:imageCopy withBackgroundColor:0];
 }
 
-- (void)setImage:(id)a3 withBackgroundColor:(id)a4
+- (void)setImage:(id)image withBackgroundColor:(id)color
 {
-  v14 = a3;
-  v6 = a4;
-  [(UIImageView *)self->_imageView setImage:v14];
-  objc_storeStrong(&self->_preferredBackgroundColor, a4);
+  imageCopy = image;
+  colorCopy = color;
+  [(UIImageView *)self->_imageView setImage:imageCopy];
+  objc_storeStrong(&self->_preferredBackgroundColor, color);
   if (![(_SFSiteIconView *)self usesVibrantAppearance]&& !self->_preferredBackgroundColor)
   {
-    v7 = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
+    tertiarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
     preferredBackgroundColor = self->_preferredBackgroundColor;
-    self->_preferredBackgroundColor = v7;
+    self->_preferredBackgroundColor = tertiarySystemGroupedBackgroundColor;
   }
 
-  v9 = [v14 safari_transparencyAnalysisResult];
-  v10 = [(WebBookmark *)self->_bookmark isFolder];
-  v12 = v9 != 4 && (v9 & 0xFFFFFFFFFFFFFFFDLL) != 1;
-  v13 = v12 & ~v10;
+  safari_transparencyAnalysisResult = [imageCopy safari_transparencyAnalysisResult];
+  isFolder = [(WebBookmark *)self->_bookmark isFolder];
+  v12 = safari_transparencyAnalysisResult != 4 && (safari_transparencyAnalysisResult & 0xFFFFFFFFFFFFFFFDLL) != 1;
+  v13 = v12 & ~isFolder;
   self->_imageIsTransparent = v13;
   [(_SFSiteIconView *)self setClipsToBounds:v13 ^ 1u];
   [(_SFSiteIconView *)self setNeedsLayout];
 }
 
-- (void)_setSiteIcon:(id)a3 withBackgroundColor:(id)a4
+- (void)_setSiteIcon:(id)icon withBackgroundColor:(id)color
 {
-  v6 = a4;
-  v7 = a3;
+  colorCopy = color;
+  iconCopy = icon;
   [(_SFSiteIconView *)self _setState:0];
-  [(_SFSiteIconView *)self setImage:v7 withBackgroundColor:v6];
+  [(_SFSiteIconView *)self setImage:iconCopy withBackgroundColor:colorCopy];
 }
 
-- (void)_setGlyph:(id)a3 withBackgroundColor:(id)a4
+- (void)_setGlyph:(id)glyph withBackgroundColor:(id)color
 {
-  v6 = a4;
-  v7 = a3;
+  colorCopy = color;
+  glyphCopy = glyph;
   [(_SFSiteIconView *)self _setState:1];
-  [(UIImageView *)self->_imageView setImage:v7];
+  [(UIImageView *)self->_imageView setImage:glyphCopy];
 
   preferredBackgroundColor = self->_preferredBackgroundColor;
-  self->_preferredBackgroundColor = v6;
-  v9 = v6;
+  self->_preferredBackgroundColor = colorCopy;
+  v9 = colorCopy;
 
   preferredBackgroundEffect = self->_preferredBackgroundEffect;
   self->_preferredBackgroundEffect = 0;
@@ -828,18 +828,18 @@ LABEL_14:
   [(_SFSiteIconView *)self setNeedsLayout];
 }
 
-- (void)_setGlyph:(id)a3 withBackgroundEffect:(id)a4
+- (void)_setGlyph:(id)glyph withBackgroundEffect:(id)effect
 {
-  v6 = a4;
-  v7 = a3;
+  effectCopy = effect;
+  glyphCopy = glyph;
   [(_SFSiteIconView *)self _setState:1];
-  [(UIImageView *)self->_imageView setImage:v7];
+  [(UIImageView *)self->_imageView setImage:glyphCopy];
 
   preferredBackgroundColor = self->_preferredBackgroundColor;
   self->_preferredBackgroundColor = 0;
 
   preferredBackgroundEffect = self->_preferredBackgroundEffect;
-  self->_preferredBackgroundEffect = v6;
+  self->_preferredBackgroundEffect = effectCopy;
 
   [(_SFSiteIconView *)self setNeedsLayout];
 }
@@ -864,11 +864,11 @@ LABEL_14:
 - (id)_tintedFolderImage
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [(_SFSiteIconView *)self _glyphConfiguration];
-  v4 = [v2 systemImageNamed:@"folder" withConfiguration:v3];
+  _glyphConfiguration = [(_SFSiteIconView *)self _glyphConfiguration];
+  v4 = [v2 systemImageNamed:@"folder" withConfiguration:_glyphConfiguration];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v4 flattenedImageWithColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [v4 flattenedImageWithColor:whiteColor];
 
   v7 = [v6 imageWithRenderingMode:1];
 
@@ -877,32 +877,32 @@ LABEL_14:
   return v7;
 }
 
-- (void)_setMonogramWithString:(id)a3 backgroundColor:(id)a4
+- (void)_setMonogramWithString:(id)string backgroundColor:(id)color
 {
-  v15 = a3;
-  v6 = a4;
+  stringCopy = string;
+  colorCopy = color;
   [(_SFSiteIconView *)self _setState:2];
   if ([(_SFSiteIconView *)self usesVibrantAppearance])
   {
     v7 = +[_SFSiteIcon defaultIconKeyColor];
-    v8 = [v6 isEqual:v7];
+    v8 = [colorCopy isEqual:v7];
 
     if (v8)
     {
 
-      v6 = 0;
+      colorCopy = 0;
     }
   }
 
-  else if (!v6)
+  else if (!colorCopy)
   {
-    v6 = +[_SFSiteIcon defaultIconKeyColor];
+    colorCopy = +[_SFSiteIcon defaultIconKeyColor];
   }
 
-  v9 = [(UILabel *)self->_monogramLabel text];
-  if ([v9 isEqualToString:v15])
+  text = [(UILabel *)self->_monogramLabel text];
+  if ([text isEqualToString:stringCopy])
   {
-    v10 = [v6 isEqual:self->_preferredBackgroundColor];
+    v10 = [colorCopy isEqual:self->_preferredBackgroundColor];
 
     if (v10)
     {
@@ -923,13 +923,13 @@ LABEL_14:
     [(UILabel *)self->_monogramLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)self->_monogramLabel setTextAlignment:1];
     [(UILabel *)self->_monogramLabel setNumberOfLines:0];
-    v13 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)self->_monogramLabel setTextColor:v13];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)self->_monogramLabel setTextColor:whiteColor];
 
     [(_SFSiteIconView *)self addSubview:self->_monogramLabel];
   }
 
-  if ([v15 safari_isSingleEmoji])
+  if ([stringCopy safari_isSingleEmoji])
   {
     v14 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.12];
     [(UILabel *)self->_monogramLabel setShadowColor:v14];
@@ -942,21 +942,21 @@ LABEL_14:
     [(UILabel *)self->_monogramLabel setShadowColor:0];
   }
 
-  [(UILabel *)self->_monogramLabel setText:v15];
-  objc_storeStrong(&self->_preferredBackgroundColor, v6);
+  [(UILabel *)self->_monogramLabel setText:stringCopy];
+  objc_storeStrong(&self->_preferredBackgroundColor, colorCopy);
   [(_SFSiteIconView *)self setNeedsLayout];
 LABEL_16:
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    v5 = a3 == 2;
-    [(UILabel *)self->_monogramLabel setHidden:a3 != 2];
+    self->_state = state;
+    v5 = state == 2;
+    [(UILabel *)self->_monogramLabel setHidden:state != 2];
     [(UIImageView *)self->_imageView setHidden:v5];
-    if (a3 != 3)
+    if (state != 3)
     {
       leadingImage = self->_leadingImage;
       self->_leadingImage = 0;

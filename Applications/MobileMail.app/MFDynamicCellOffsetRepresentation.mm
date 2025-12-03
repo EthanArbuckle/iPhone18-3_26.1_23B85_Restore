@@ -1,42 +1,42 @@
 @interface MFDynamicCellOffsetRepresentation
-- (BOOL)isEqual:(id)a3;
-- (MFDynamicCellOffsetRepresentation)initWithCoder:(id)a3;
-- (MFDynamicCellOffsetRepresentation)initWithRelativeCellAnchor:(double)a3 relativeDistanceFromTop:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (MFDynamicCellOffsetRepresentation)initWithCoder:(id)coder;
+- (MFDynamicCellOffsetRepresentation)initWithRelativeCellAnchor:(double)anchor relativeDistanceFromTop:(double)top;
 - (NSString)ef_publicDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MFDynamicCellOffsetRepresentation
 
-- (MFDynamicCellOffsetRepresentation)initWithRelativeCellAnchor:(double)a3 relativeDistanceFromTop:(double)a4
+- (MFDynamicCellOffsetRepresentation)initWithRelativeCellAnchor:(double)anchor relativeDistanceFromTop:(double)top
 {
   v7.receiver = self;
   v7.super_class = MFDynamicCellOffsetRepresentation;
   result = [(MFDynamicCellOffsetRepresentation *)&v7 init];
   if (result)
   {
-    result->_relativeCellAnchor = a3;
-    result->_relativeDistanceFromTop = a4;
+    result->_relativeCellAnchor = anchor;
+    result->_relativeDistanceFromTop = top;
   }
 
   return result;
 }
 
-- (MFDynamicCellOffsetRepresentation)initWithCoder:(id)a3
+- (MFDynamicCellOffsetRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MFDynamicCellOffsetRepresentation;
   v5 = [(MFDynamicCellOffsetRepresentation *)&v13 init];
   if (v5)
   {
     v6 = [NSSet setWithObjects:objc_opt_class(), 0];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"EFPropertyKey_relativeCellAnchor"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"EFPropertyKey_relativeCellAnchor"];
     [v7 floatValue];
     v5->_relativeCellAnchor = v8;
 
     v9 = [NSSet setWithObjects:objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"EFPropertyKey_relativeDistanceFromTop"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"EFPropertyKey_relativeDistanceFromTop"];
     [v10 floatValue];
     v5->_relativeDistanceFromTop = v11;
   }
@@ -44,16 +44,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   [(MFDynamicCellOffsetRepresentation *)self relativeCellAnchor];
   v4 = [NSNumber numberWithDouble:?];
-  [v6 encodeObject:v4 forKey:@"EFPropertyKey_relativeCellAnchor"];
+  [coderCopy encodeObject:v4 forKey:@"EFPropertyKey_relativeCellAnchor"];
 
   [(MFDynamicCellOffsetRepresentation *)self relativeDistanceFromTop];
   v5 = [NSNumber numberWithDouble:?];
-  [v6 encodeObject:v5 forKey:@"EFPropertyKey_relativeDistanceFromTop"];
+  [coderCopy encodeObject:v5 forKey:@"EFPropertyKey_relativeDistanceFromTop"];
 }
 
 - (NSString)ef_publicDescription
@@ -65,13 +65,13 @@
   return [NSString stringWithFormat:@"<%@:%p cellAnchor=%.02f%% distanceFromTop=%.02f%%>", v3, self, *&v5, v6 * 100.0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(MFDynamicCellOffsetRepresentation *)self relativeCellAnchor];
     v7 = v6;
     [v5 relativeCellAnchor];

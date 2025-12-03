@@ -1,12 +1,12 @@
 @interface LACMechanismTree
-+ (id)mechanismTreeFromError:(id)a3;
-+ (id)mechanismTreeFromSerializedTree:(id)a3;
-- (BOOL)isSatisfiableWithValue:(int64_t)a3;
-- (BOOL)isValue:(int64_t)a3 replaceableByValue:(int64_t)a4;
-- (BOOL)isValueRequired:(int64_t)a3;
++ (id)mechanismTreeFromError:(id)error;
++ (id)mechanismTreeFromSerializedTree:(id)tree;
+- (BOOL)isSatisfiableWithValue:(int64_t)value;
+- (BOOL)isValue:(int64_t)value replaceableByValue:(int64_t)byValue;
+- (BOOL)isValueRequired:(int64_t)required;
 - (LACMechanismTree)init;
-- (LACMechanismTree)initWithChildren:(id)a3 isAndNode:(BOOL)a4;
-- (LACMechanismTree)initWithValue:(int64_t)a3;
+- (LACMechanismTree)initWithChildren:(id)children isAndNode:(BOOL)node;
+- (LACMechanismTree)initWithValue:(int64_t)value;
 - (NSArray)children;
 - (NSString)description;
 @end
@@ -23,22 +23,22 @@
   return v3.super.isa;
 }
 
-- (LACMechanismTree)initWithChildren:(id)a3 isAndNode:(BOOL)a4
+- (LACMechanismTree)initWithChildren:(id)children isAndNode:(BOOL)node
 {
   type metadata accessor for LACMechanismTree(self);
   *(self + OBJC_IVAR___LACMechanismTree_children) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  *(self + OBJC_IVAR___LACMechanismTree_isAnd) = a4;
+  *(self + OBJC_IVAR___LACMechanismTree_isAnd) = node;
   *(self + OBJC_IVAR___LACMechanismTree_value) = -1;
   v7.receiver = self;
   v7.super_class = LACMechanismTree;
   return [(LACMechanismTree *)&v7 init];
 }
 
-- (LACMechanismTree)initWithValue:(int64_t)a3
+- (LACMechanismTree)initWithValue:(int64_t)value
 {
   *(self + OBJC_IVAR___LACMechanismTree_children) = MEMORY[0x1E69E7CC0];
   *(self + OBJC_IVAR___LACMechanismTree_isAnd) = 0;
-  *(self + OBJC_IVAR___LACMechanismTree_value) = a3;
+  *(self + OBJC_IVAR___LACMechanismTree_value) = value;
   v4.receiver = self;
   v4.super_class = LACMechanismTree;
   return [(LACMechanismTree *)&v4 init];
@@ -46,7 +46,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LACMechanismTree.description.getter();
   v5 = v4;
 
@@ -55,31 +55,31 @@
   return v6;
 }
 
-- (BOOL)isSatisfiableWithValue:(int64_t)a3
+- (BOOL)isSatisfiableWithValue:(int64_t)value
 {
-  v4 = self;
-  LOBYTE(a3) = LACMechanismTree.isSatisfiable(withValue:)(a3);
+  selfCopy = self;
+  LOBYTE(value) = LACMechanismTree.isSatisfiable(withValue:)(value);
 
-  return a3 & 1;
+  return value & 1;
 }
 
-- (BOOL)isValue:(int64_t)a3 replaceableByValue:(int64_t)a4
+- (BOOL)isValue:(int64_t)value replaceableByValue:(int64_t)byValue
 {
-  v6 = self;
-  LOBYTE(a4) = LACMechanismTree.isValue(_:replaceableByValue:)(a3, a4);
+  selfCopy = self;
+  LOBYTE(byValue) = LACMechanismTree.isValue(_:replaceableByValue:)(value, byValue);
 
-  return a4 & 1;
+  return byValue & 1;
 }
 
-- (BOOL)isValueRequired:(int64_t)a3
+- (BOOL)isValueRequired:(int64_t)required
 {
-  v4 = self;
-  LOBYTE(a3) = LACMechanismTree.isValueRequired(_:)(a3);
+  selfCopy = self;
+  LOBYTE(required) = LACMechanismTree.isValueRequired(_:)(required);
 
-  return a3 & 1;
+  return required & 1;
 }
 
-+ (id)mechanismTreeFromSerializedTree:(id)a3
++ (id)mechanismTreeFromSerializedTree:(id)tree
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -90,11 +90,11 @@
   return v6;
 }
 
-+ (id)mechanismTreeFromError:(id)a3
++ (id)mechanismTreeFromError:(id)error
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static LACMechanismTree.make(from:)(a3);
+  errorCopy = error;
+  v5 = static LACMechanismTree.make(from:)(error);
 
   return v5;
 }

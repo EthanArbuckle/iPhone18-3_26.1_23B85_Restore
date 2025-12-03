@@ -1,6 +1,6 @@
 @interface HKSleepDurationSeries
-- (BOOL)_currentGoal:(id)a3 differentFrom:(id)a4;
-- (BOOL)_dataIsHidden:(int64_t)a3;
+- (BOOL)_currentGoal:(id)goal differentFrom:(id)from;
+- (BOOL)_dataIsHidden:(int64_t)hidden;
 - (BOOL)extendGoalLineToAxis;
 - (BOOL)hideAsleepData;
 - (BOOL)hideInBedData;
@@ -10,32 +10,32 @@
 - (NSArray)defaultFillStyles;
 - (NSArray)highlightedFillStyles;
 - (NSArray)inactiveFillStyles;
-- (double)barWidthForVisibleBarCount:(int64_t)a3 axisRect:(CGRect)a4 minimumSpacing:(double)a5;
+- (double)barWidthForVisibleBarCount:(int64_t)count axisRect:(CGRect)rect minimumSpacing:(double)spacing;
 - (id)_durationAbbreviatedFormatter;
 - (id)_durationShortFormatter;
-- (id)_stringForDuration:(double)a3;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
+- (id)_stringForDuration:(double)duration;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
 - (id)goalLineMarkerImage;
 - (id)startOfDayTransform;
-- (void)_addAnnotationForValue:(double)a3 axisAnnotationDelegate:(id)a4;
-- (void)_addGoalAnnotationAtLocation:(double)a3 axisAnnotationDelegate:(id)a4;
-- (void)_drawGoalLineMarkers:(id)a3 context:(CGContext *)a4 goalLineMarkerImage:(id)a5;
-- (void)_drawGoalLinePath:(id)a3 context:(CGContext *)a4;
-- (void)_drawPaths:(id)a3 withFillStyles:(id)a4 strokeStyle:(id)a5 axisRect:(CGRect)a6 context:(CGContext *)a7;
+- (void)_addAnnotationForValue:(double)value axisAnnotationDelegate:(id)delegate;
+- (void)_addGoalAnnotationAtLocation:(double)location axisAnnotationDelegate:(id)delegate;
+- (void)_drawGoalLineMarkers:(id)markers context:(CGContext *)context goalLineMarkerImage:(id)image;
+- (void)_drawGoalLinePath:(id)path context:(CGContext *)context;
+- (void)_drawPaths:(id)paths withFillStyles:(id)styles strokeStyle:(id)style axisRect:(CGRect)rect context:(CGContext *)context;
 - (void)_rebuildPointMarkerImages;
-- (void)addGoalLinePathsToCoordinate:(id)a3 goalLinePath:(id)a4 goalLineMarkerPoints:(id)a5 previousCoordinateGoal:(id)a6 axisRect:(CGRect)a7;
+- (void)addGoalLinePathsToCoordinate:(id)coordinate goalLinePath:(id)path goalLineMarkerPoints:(id)points previousCoordinateGoal:(id)goal axisRect:(CGRect)rect;
 - (void)clearCaches;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
-- (void)drawWithBlockCoordinates:(id)a3 visibleBarCount:(int64_t)a4 pointTransform:(CGAffineTransform *)a5 context:(CGContext *)a6 axisRect:(CGRect)a7 seriesRenderingDelegate:(id)a8;
-- (void)setDefaultFillStyles:(id)a3;
-- (void)setExtendGoalLineToAxis:(BOOL)a3;
-- (void)setGoalLineMarkerStyle:(id)a3;
-- (void)setGoalLineStrokeStyle:(id)a3;
-- (void)setHideAsleepData:(BOOL)a3;
-- (void)setHideInBedData:(BOOL)a3;
-- (void)setHighlightedFillStyles:(id)a3;
-- (void)setInactiveFillStyles:(id)a3;
-- (void)setStartOfDayTransform:(id)a3;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
+- (void)drawWithBlockCoordinates:(id)coordinates visibleBarCount:(int64_t)count pointTransform:(CGAffineTransform *)transform context:(CGContext *)context axisRect:(CGRect)rect seriesRenderingDelegate:(id)delegate;
+- (void)setDefaultFillStyles:(id)styles;
+- (void)setExtendGoalLineToAxis:(BOOL)axis;
+- (void)setGoalLineMarkerStyle:(id)style;
+- (void)setGoalLineStrokeStyle:(id)style;
+- (void)setHideAsleepData:(BOOL)data;
+- (void)setHideInBedData:(BOOL)data;
+- (void)setHighlightedFillStyles:(id)styles;
+- (void)setInactiveFillStyles:(id)styles;
+- (void)setStartOfDayTransform:(id)transform;
 @end
 
 @implementation HKSleepDurationSeries
@@ -81,249 +81,249 @@
 
 - (NSArray)defaultFillStyles
 {
-  v3 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_defaultFillStylesStorage;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setDefaultFillStyles:(id)a3
+- (void)setDefaultFillStyles:(id)styles
 {
-  v4 = a3;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stylesCopy = styles;
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [stylesCopy copy];
   defaultFillStylesStorage = self->_defaultFillStylesStorage;
   self->_defaultFillStylesStorage = v6;
 
-  v8 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
-  v9 = [v4 lastObject];
+  lastObject = [stylesCopy lastObject];
 
-  [(HKBarSeries *)self setUnselectedFillStyle:v9];
+  [(HKBarSeries *)self setUnselectedFillStyle:lastObject];
 }
 
 - (NSArray)highlightedFillStyles
 {
-  v3 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_highlightedFillStylesStorage;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setHighlightedFillStyles:(id)a3
+- (void)setHighlightedFillStyles:(id)styles
 {
-  v4 = a3;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stylesCopy = styles;
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [stylesCopy copy];
   highlightedFillStylesStorage = self->_highlightedFillStylesStorage;
   self->_highlightedFillStylesStorage = v6;
 
-  v8 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (NSArray)inactiveFillStyles
 {
-  v3 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_inactiveFillStylesStorage;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setInactiveFillStyles:(id)a3
+- (void)setInactiveFillStyles:(id)styles
 {
-  v4 = a3;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stylesCopy = styles;
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [stylesCopy copy];
   inactiveFillStylesStorage = self->_inactiveFillStylesStorage;
   self->_inactiveFillStylesStorage = v6;
 
-  v8 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (HKStrokeStyle)goalLineStrokeStyle
 {
-  v3 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_goalLineStrokeStyleStorage;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setGoalLineStrokeStyle:(id)a3
+- (void)setGoalLineStrokeStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [styleCopy copy];
   goalLineStrokeStyleStorage = self->_goalLineStrokeStyleStorage;
   self->_goalLineStrokeStyleStorage = v6;
 
-  v8 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (HKLineSeriesPointMarkerStyle)goalLineMarkerStyle
 {
-  v3 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_goalLineMarkerStyleStorage;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setGoalLineMarkerStyle:(id)a3
+- (void)setGoalLineMarkerStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   goalLineMarkerStyleStorage = self->_goalLineMarkerStyleStorage;
-  self->_goalLineMarkerStyleStorage = v4;
+  self->_goalLineMarkerStyleStorage = styleCopy;
 
-  v7 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   [(HKSleepDurationSeries *)self _rebuildPointMarkerImages];
 }
 
 - (BOOL)extendGoalLineToAxis
 {
-  v3 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  LOBYTE(v3) = self->_extendGoalLineToAxisStorage;
-  v4 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v4 unlock];
+  LOBYTE(seriesMutableStateLock) = self->_extendGoalLineToAxisStorage;
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
-  return v3;
+  return seriesMutableStateLock;
 }
 
-- (void)setExtendGoalLineToAxis:(BOOL)a3
+- (void)setExtendGoalLineToAxis:(BOOL)axis
 {
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  self->_extendGoalLineToAxisStorage = a3;
-  v6 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  self->_extendGoalLineToAxisStorage = axis;
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (id)startOfDayTransform
 {
-  v3 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = _Block_copy(self->_startOfDayTransformStorage);
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   v6 = _Block_copy(v4);
 
   return v6;
 }
 
-- (void)setStartOfDayTransform:(id)a3
+- (void)setStartOfDayTransform:(id)transform
 {
-  v4 = a3;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  transformCopy = transform;
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [transformCopy copy];
   startOfDayTransformStorage = self->_startOfDayTransformStorage;
   self->_startOfDayTransformStorage = v6;
 
-  v8 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (BOOL)hideInBedData
 {
-  v3 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  LOBYTE(v3) = self->_hideInBedDataStorage;
-  v4 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v4 unlock];
+  LOBYTE(seriesMutableStateLock) = self->_hideInBedDataStorage;
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
-  return v3;
+  return seriesMutableStateLock;
 }
 
-- (void)setHideInBedData:(BOOL)a3
+- (void)setHideInBedData:(BOOL)data
 {
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  self->_hideInBedDataStorage = a3;
-  v6 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  self->_hideInBedDataStorage = data;
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (BOOL)hideAsleepData
 {
-  v3 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  LOBYTE(v3) = self->_hideAsleepDataStorage;
-  v4 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v4 unlock];
+  LOBYTE(seriesMutableStateLock) = self->_hideAsleepDataStorage;
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
-  return v3;
+  return seriesMutableStateLock;
 }
 
-- (void)setHideAsleepData:(BOOL)a3
+- (void)setHideAsleepData:(BOOL)data
 {
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  self->_hideAsleepDataStorage = a3;
-  v6 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  self->_hideAsleepDataStorage = data;
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (id)goalLineMarkerImage
 {
-  v3 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_goalLineMarkerImageStorage;
-  v5 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
 - (void)_rebuildPointMarkerImages
 {
-  v3 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   if (self->_goalLineMarkerStyleStorage)
   {
@@ -338,8 +338,8 @@
   goalLineMarkerImageStorage = self->_goalLineMarkerImageStorage;
   self->_goalLineMarkerImageStorage = v4;
 
-  v6 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  seriesMutableStateLock2 = [(HKSleepDurationSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (void)clearCaches
@@ -349,8 +349,8 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = [(HKSleepDurationSeries *)self defaultFillStyles];
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v33 count:16];
+  defaultFillStyles = [(HKSleepDurationSeries *)self defaultFillStyles];
+  v4 = [defaultFillStyles countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v4)
   {
     v5 = v4;
@@ -362,14 +362,14 @@
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(defaultFillStyles);
         }
 
         [*(*(&v27 + 1) + 8 * v7++) clearCache];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v27 objects:v33 count:16];
+      v5 = [defaultFillStyles countByEnumeratingWithState:&v27 objects:v33 count:16];
     }
 
     while (v5);
@@ -379,8 +379,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(HKSleepDurationSeries *)self highlightedFillStyles];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v32 count:16];
+  highlightedFillStyles = [(HKSleepDurationSeries *)self highlightedFillStyles];
+  v9 = [highlightedFillStyles countByEnumeratingWithState:&v23 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
@@ -392,14 +392,14 @@
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(highlightedFillStyles);
         }
 
         [*(*(&v23 + 1) + 8 * v12++) clearCache];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v32 count:16];
+      v10 = [highlightedFillStyles countByEnumeratingWithState:&v23 objects:v32 count:16];
     }
 
     while (v10);
@@ -409,8 +409,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = [(HKSleepDurationSeries *)self inactiveFillStyles];
-  v14 = [v13 countByEnumeratingWithState:&v19 objects:v31 count:16];
+  inactiveFillStyles = [(HKSleepDurationSeries *)self inactiveFillStyles];
+  v14 = [inactiveFillStyles countByEnumeratingWithState:&v19 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -422,14 +422,14 @@
       {
         if (*v20 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(inactiveFillStyles);
         }
 
         [*(*(&v19 + 1) + 8 * v17++) clearCache];
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v19 objects:v31 count:16];
+      v15 = [inactiveFillStyles countByEnumeratingWithState:&v19 objects:v31 count:16];
     }
 
     while (v15);
@@ -441,27 +441,27 @@
   [(HKBarSeries *)&v18 clearCaches];
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
   v62 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = [a3 chartPoints];
-  if (!v12)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKSleepDurationSeries coordinatesForBlock:a2 blockPath:self xAxis:? yAxis:?];
   }
 
-  v44 = v10;
-  v48 = [v10 transform];
-  v43 = v11;
-  v13 = [v11 transform];
-  v47 = [MEMORY[0x1E695DF70] array];
+  v44 = axisCopy;
+  transform = [axisCopy transform];
+  v43 = yAxisCopy;
+  transform2 = [yAxisCopy transform];
+  array = [MEMORY[0x1E695DF70] array];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v12;
+  obj = chartPoints;
   v49 = [obj countByEnumeratingWithState:&v56 objects:v61 count:16];
   if (v49)
   {
@@ -476,23 +476,23 @@
         }
 
         v15 = *(*(&v56 + 1) + 8 * i);
-        v16 = [v15 xValueAsGenericType];
-        [v48 coordinateForValue:v16];
+        xValueAsGenericType = [v15 xValueAsGenericType];
+        [transform coordinateForValue:xValueAsGenericType];
         v18 = v17;
 
         v19 = v18 + -0.25;
-        [v13 coordinateForValue:&unk_1F4382968];
+        [transform2 coordinateForValue:&unk_1F4382968];
         v21 = v20;
-        v22 = [v15 allYValues];
-        v23 = [MEMORY[0x1E695DF70] array];
+        allYValues = [v15 allYValues];
+        array2 = [MEMORY[0x1E695DF70] array];
         v24 = [MEMORY[0x1E696B098] valueWithCGPoint:{v19, v21}];
-        [v23 addObject:v24];
+        [array2 addObject:v24];
 
         v54 = 0u;
         v55 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v25 = v22;
+        v25 = allYValues;
         v26 = [v25 countByEnumeratingWithState:&v52 objects:v60 count:16];
         if (v26)
         {
@@ -507,9 +507,9 @@
                 objc_enumerationMutation(v25);
               }
 
-              [v13 coordinateForValue:*(*(&v52 + 1) + 8 * j)];
+              [transform2 coordinateForValue:*(*(&v52 + 1) + 8 * j)];
               v31 = [MEMORY[0x1E696B098] valueWithCGPoint:{v19, v30}];
-              [v23 addObject:v31];
+              [array2 addObject:v31];
             }
 
             v27 = [v25 countByEnumeratingWithState:&v52 objects:v60 count:16];
@@ -518,22 +518,22 @@
           while (v27);
         }
 
-        v32 = [v15 goalValue];
+        goalValue = [v15 goalValue];
 
-        if (v32)
+        if (goalValue)
         {
           v33 = MEMORY[0x1E696AD98];
-          v34 = [v15 goalValue];
-          [v13 coordinateForValue:v34];
-          v32 = [v33 numberWithDouble:?];
+          goalValue2 = [v15 goalValue];
+          [transform2 coordinateForValue:goalValue2];
+          goalValue = [v33 numberWithDouble:?];
         }
 
         v35 = [HKSleepDurationCoordinate alloc];
-        v36 = [v15 highlighted];
-        v37 = [v15 userInfo];
-        v38 = [(HKSleepDurationCoordinate *)v35 initWithStackPoints:v23 goalLineYValue:v32 highlighted:v36 userInfo:v37];
+        highlighted = [v15 highlighted];
+        userInfo = [v15 userInfo];
+        v38 = [(HKSleepDurationCoordinate *)v35 initWithStackPoints:array2 goalLineYValue:goalValue highlighted:highlighted userInfo:userInfo];
 
-        [v47 addObject:v38];
+        [array addObject:v38];
       }
 
       v49 = [obj countByEnumeratingWithState:&v56 objects:v61 count:16];
@@ -544,21 +544,21 @@
 
   v50 = *v42;
   v51 = *(v42 + 2);
-  v39 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v47 blockPath:&v50];
+  v39 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:array blockPath:&v50];
 
   return v39;
 }
 
-- (double)barWidthForVisibleBarCount:(int64_t)a3 axisRect:(CGRect)a4 minimumSpacing:(double)a5
+- (double)barWidthForVisibleBarCount:(int64_t)count axisRect:(CGRect)rect minimumSpacing:(double)spacing
 {
-  v5 = a4.size.width / a3;
-  v6 = v5 * 0.33;
-  if (v5 * 0.33 <= a5)
+  v5 = rect.size.width / count;
+  spacingCopy = v5 * 0.33;
+  if (v5 * 0.33 <= spacing)
   {
-    v6 = a5;
+    spacingCopy = spacing;
   }
 
-  result = round(v5 - v6);
+  result = round(v5 - spacingCopy);
   if (result > 29.0)
   {
     return 29.0;
@@ -567,48 +567,48 @@
   return result;
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a9;
-  v19 = a3;
-  v20 = [(HKBarSeries *)self visibleBarCountWithZoomLevelConfiguration:a5];
-  v21 = *&a6->c;
-  v22[0] = *&a6->a;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  delegateCopy = delegate;
+  coordinatesCopy = coordinates;
+  v20 = [(HKBarSeries *)self visibleBarCountWithZoomLevelConfiguration:configuration];
+  v21 = *&transform->c;
+  v22[0] = *&transform->a;
   v22[1] = v21;
-  v22[2] = *&a6->tx;
-  [(HKSleepDurationSeries *)self drawWithBlockCoordinates:v19 visibleBarCount:v20 pointTransform:v22 context:a7 axisRect:v18 seriesRenderingDelegate:x, y, width, height];
+  v22[2] = *&transform->tx;
+  [(HKSleepDurationSeries *)self drawWithBlockCoordinates:coordinatesCopy visibleBarCount:v20 pointTransform:v22 context:context axisRect:delegateCopy seriesRenderingDelegate:x, y, width, height];
 }
 
-- (void)drawWithBlockCoordinates:(id)a3 visibleBarCount:(int64_t)a4 pointTransform:(CGAffineTransform *)a5 context:(CGContext *)a6 axisRect:(CGRect)a7 seriesRenderingDelegate:(id)a8
+- (void)drawWithBlockCoordinates:(id)coordinates visibleBarCount:(int64_t)count pointTransform:(CGAffineTransform *)transform context:(CGContext *)context axisRect:(CGRect)rect seriesRenderingDelegate:(id)delegate
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v16 = a3;
-  v17 = a8;
-  v51 = [v17 seriesDrawingDuringTiling];
-  v52 = v16;
-  if (v51 && ([(HKBarSeries *)self tiledStrokeStyle], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinatesCopy = coordinates;
+  delegateCopy = delegate;
+  seriesDrawingDuringTiling = [delegateCopy seriesDrawingDuringTiling];
+  v52 = coordinatesCopy;
+  if (seriesDrawingDuringTiling && ([(HKBarSeries *)self tiledStrokeStyle], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v19 = v18;
-    v20 = [(HKBarSeries *)self tiledStrokeStyle];
+    tiledStrokeStyle = [(HKBarSeries *)self tiledStrokeStyle];
   }
 
   else
   {
-    v20 = [(HKBarSeries *)self unselectedStrokeStyle];
+    tiledStrokeStyle = [(HKBarSeries *)self unselectedStrokeStyle];
   }
 
-  v54 = v20;
-  [v20 lineWidth];
+  v54 = tiledStrokeStyle;
+  [tiledStrokeStyle lineWidth];
   v22 = v21;
-  v23 = [(HKBarSeries *)self selectedStrokeStyle];
-  [v23 lineWidth];
+  selectedStrokeStyle = [(HKBarSeries *)self selectedStrokeStyle];
+  [selectedStrokeStyle lineWidth];
   v25 = v24;
 
   if (v25 < v22)
@@ -616,8 +616,8 @@
     v25 = v22;
   }
 
-  [v17 screenRectForSeries:self];
-  [HKSleepDurationSeries barWidthForVisibleBarCount:"barWidthForVisibleBarCount:axisRect:minimumSpacing:" axisRect:a4 minimumSpacing:?];
+  [delegateCopy screenRectForSeries:self];
+  [HKSleepDurationSeries barWidthForVisibleBarCount:"barWidthForVisibleBarCount:axisRect:minimumSpacing:" axisRect:count minimumSpacing:?];
   v27 = v26;
   v28 = v25 + v26 + v25 + v26;
   v92.origin.x = x;
@@ -630,9 +630,9 @@
   v93.size.width = width;
   v93.size.height = height;
   MinX = CGRectGetMinX(v93);
-  v31 = [MEMORY[0x1E695DF70] array];
-  v32 = [MEMORY[0x1E695DF70] array];
-  v33 = [MEMORY[0x1E69DC728] bezierPath];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v86 = 0;
   v87 = &v86;
@@ -663,13 +663,13 @@
   v66 = MinX;
   v67 = v28;
   v68 = MaxX;
-  v35 = v31;
+  v35 = array;
   v57 = v35;
-  v36 = v32;
+  v36 = array2;
   v69 = v27;
   v58 = v36;
-  v59 = self;
-  v37 = v33;
+  selfCopy = self;
+  v37 = bezierPath;
   v60 = v37;
   v38 = v34;
   v61 = v38;
@@ -681,14 +681,14 @@
   v63 = &v74;
   v64 = &v86;
   v65 = &v80;
-  v39 = *&a5->c;
-  v55[0] = *&a5->a;
+  v39 = *&transform->c;
+  v55[0] = *&transform->a;
   v55[1] = v39;
-  v55[2] = *&a5->tx;
+  v55[2] = *&transform->tx;
   [v52 enumerateCoordinatesWithTransform:v55 roundToViewScale:1 block:v56];
-  v40 = [(HKSleepDurationSeries *)self defaultFillStyles];
+  defaultFillStyles = [(HKSleepDurationSeries *)self defaultFillStyles];
 
-  if (v40)
+  if (defaultFillStyles)
   {
     if ([(HKGraphSeries *)self allowsSelection])
     {
@@ -700,19 +700,19 @@
       [(HKSleepDurationSeries *)self inactiveFillStyles];
     }
     v41 = ;
-    [(HKSleepDurationSeries *)self _drawPaths:v35 withFillStyles:v41 strokeStyle:v20 axisRect:a6 context:x, y, width, height];
-    v42 = [(HKSleepDurationSeries *)self highlightedFillStyles];
-    v43 = v42;
-    if (!v42)
+    [(HKSleepDurationSeries *)self _drawPaths:v35 withFillStyles:v41 strokeStyle:tiledStrokeStyle axisRect:context context:x, y, width, height];
+    highlightedFillStyles = [(HKSleepDurationSeries *)self highlightedFillStyles];
+    defaultFillStyles2 = highlightedFillStyles;
+    if (!highlightedFillStyles)
     {
-      v43 = [(HKSleepDurationSeries *)self defaultFillStyles];
+      defaultFillStyles2 = [(HKSleepDurationSeries *)self defaultFillStyles];
     }
 
-    v44 = [(HKBarSeries *)self selectedStrokeStyle];
-    v45 = v44;
-    if (v44)
+    selectedStrokeStyle2 = [(HKBarSeries *)self selectedStrokeStyle];
+    v45 = selectedStrokeStyle2;
+    if (selectedStrokeStyle2)
     {
-      v46 = v44;
+      v46 = selectedStrokeStyle2;
     }
 
     else
@@ -720,18 +720,18 @@
       v46 = v54;
     }
 
-    [(HKSleepDurationSeries *)self _drawPaths:v36 withFillStyles:v43 strokeStyle:v46 axisRect:a6 context:x, y, width, height];
+    [(HKSleepDurationSeries *)self _drawPaths:v36 withFillStyles:defaultFillStyles2 strokeStyle:v46 axisRect:context context:x, y, width, height];
 
-    if (!v42)
+    if (!highlightedFillStyles)
     {
     }
   }
 
   if (([v37 isEmpty] & 1) == 0)
   {
-    v47 = [(HKSleepDurationSeries *)self goalLineStrokeStyle];
+    goalLineStrokeStyle = [(HKSleepDurationSeries *)self goalLineStrokeStyle];
 
-    if (v47)
+    if (goalLineStrokeStyle)
     {
       if (v81[5] && [(HKSleepDurationSeries *)self extendGoalLineToAxis])
       {
@@ -739,17 +739,17 @@
         [v37 addLineToPoint:{x + width, v48}];
       }
 
-      [(HKSleepDurationSeries *)self _drawGoalLinePath:v37 context:a6];
-      v49 = [(HKSleepDurationSeries *)self goalLineMarkerImage];
-      if (v49)
+      [(HKSleepDurationSeries *)self _drawGoalLinePath:v37 context:context];
+      goalLineMarkerImage = [(HKSleepDurationSeries *)self goalLineMarkerImage];
+      if (goalLineMarkerImage)
       {
-        [(HKSleepDurationSeries *)self _drawGoalLineMarkers:v38 context:a6 goalLineMarkerImage:v49];
+        [(HKSleepDurationSeries *)self _drawGoalLineMarkers:v38 context:context goalLineMarkerImage:goalLineMarkerImage];
       }
 
       if (v87[5])
       {
-        v50 = [v17 axisAnnotationDelegateForSeries:self];
-        if ((v51 & 1) != 0 || *(v75 + 24) != 1)
+        v50 = [delegateCopy axisAnnotationDelegateForSeries:self];
+        if ((seriesDrawingDuringTiling & 1) != 0 || *(v75 + 24) != 1)
         {
           [v87[5] doubleValue];
           [(HKSleepDurationSeries *)self _addAnnotationForValue:v50 axisAnnotationDelegate:?];
@@ -885,71 +885,71 @@ void __122__HKSleepDurationSeries_drawWithBlockCoordinates_visibleBarCount_point
   }
 }
 
-- (void)addGoalLinePathsToCoordinate:(id)a3 goalLinePath:(id)a4 goalLineMarkerPoints:(id)a5 previousCoordinateGoal:(id)a6 axisRect:(CGRect)a7
+- (void)addGoalLinePathsToCoordinate:(id)coordinate goalLinePath:(id)path goalLineMarkerPoints:(id)points previousCoordinateGoal:(id)goal axisRect:(CGRect)rect
 {
-  v23 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v23 goalLineYValue];
+  coordinateCopy = coordinate;
+  pathCopy = path;
+  pointsCopy = points;
+  goalLineYValue = [coordinateCopy goalLineYValue];
 
-  if (v12)
+  if (goalLineYValue)
   {
-    [v23 startXValue];
+    [coordinateCopy startXValue];
     v14 = v13;
-    v15 = [v23 goalLineYValue];
-    [v15 doubleValue];
-    if (a6)
+    goalLineYValue2 = [coordinateCopy goalLineYValue];
+    [goalLineYValue2 doubleValue];
+    if (goal)
     {
-      [v10 addLineToPoint:{v14, v16}];
+      [pathCopy addLineToPoint:{v14, v16}];
     }
 
     else
     {
-      [v10 moveToPoint:{v14, v16}];
+      [pathCopy moveToPoint:{v14, v16}];
     }
 
     v17 = MEMORY[0x1E696B098];
-    [v23 startXValue];
+    [coordinateCopy startXValue];
     v19 = v18;
-    v20 = [v23 goalLineYValue];
-    [v20 doubleValue];
+    goalLineYValue3 = [coordinateCopy goalLineYValue];
+    [goalLineYValue3 doubleValue];
     v22 = [v17 valueWithCGPoint:{v19, v21}];
-    [v11 addObject:v22];
+    [pointsCopy addObject:v22];
   }
 }
 
-- (BOOL)_currentGoal:(id)a3 differentFrom:(id)a4
+- (BOOL)_currentGoal:(id)goal differentFrom:(id)from
 {
-  v5 = a4;
-  [a3 doubleValue];
+  fromCopy = from;
+  [goal doubleValue];
   v7 = v6;
-  [v5 doubleValue];
+  [fromCopy doubleValue];
   v9 = v8;
 
   return vabdd_f64(v7, v9) >= 0.000001;
 }
 
-- (void)_drawGoalLinePath:(id)a3 context:(CGContext *)a4
+- (void)_drawGoalLinePath:(id)path context:(CGContext *)context
 {
-  v6 = a3;
-  CGContextSaveGState(a4);
-  v7 = [(HKSleepDurationSeries *)self goalLineStrokeStyle];
-  [v7 applyToContext:a4];
+  pathCopy = path;
+  CGContextSaveGState(context);
+  goalLineStrokeStyle = [(HKSleepDurationSeries *)self goalLineStrokeStyle];
+  [goalLineStrokeStyle applyToContext:context];
 
-  v8 = [v6 CGPath];
-  CGContextAddPath(a4, v8);
-  CGContextStrokePath(a4);
+  cGPath = [pathCopy CGPath];
+  CGContextAddPath(context, cGPath);
+  CGContextStrokePath(context);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)_drawGoalLineMarkers:(id)a3 context:(CGContext *)a4 goalLineMarkerImage:(id)a5
+- (void)_drawGoalLineMarkers:(id)markers context:(CGContext *)context goalLineMarkerImage:(id)image
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 CGImage];
-  v10 = HKChartSeriesPointMarkerBaseRect(v8);
+  markersCopy = markers;
+  imageCopy = image;
+  cGImage = [imageCopy CGImage];
+  v10 = HKChartSeriesPointMarkerBaseRect(imageCopy);
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -957,7 +957,7 @@ void __122__HKSleepDurationSeries_drawWithBlockCoordinates_visibleBarCount_point
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v17 = v7;
+  v17 = markersCopy;
   v18 = [v17 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v18)
   {
@@ -981,7 +981,7 @@ void __122__HKSleepDurationSeries_drawWithBlockCoordinates_visibleBarCount_point
         v32.size.width = v14;
         v32.size.height = v16;
         v33 = CGRectOffset(v32, v23, v25);
-        CGContextDrawImage(a4, v33, v9);
+        CGContextDrawImage(context, v33, cGImage);
         ++v21;
       }
 
@@ -993,42 +993,42 @@ void __122__HKSleepDurationSeries_drawWithBlockCoordinates_visibleBarCount_point
   }
 }
 
-- (void)_drawPaths:(id)a3 withFillStyles:(id)a4 strokeStyle:(id)a5 axisRect:(CGRect)a6 context:(CGContext *)a7
+- (void)_drawPaths:(id)paths withFillStyles:(id)styles strokeStyle:(id)style axisRect:(CGRect)rect context:(CGContext *)context
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v24 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = [v24 count];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pathsCopy = paths;
+  stylesCopy = styles;
+  styleCopy = style;
+  v17 = [pathsCopy count];
   if (v17 - 1 >= 0)
   {
     v18 = v17;
     do
     {
-      v19 = [v24 objectAtIndexedSubscript:--v18];
+      v19 = [pathsCopy objectAtIndexedSubscript:--v18];
       if (([v19 isEmpty] & 1) == 0 && !-[HKSleepDurationSeries _dataIsHidden:](self, "_dataIsHidden:", v18))
       {
-        if (v16)
+        if (styleCopy)
         {
-          CGContextSaveGState(a7);
-          [v16 applyToContext:a7];
-          CGContextAddPath(a7, [v19 CGPath]);
-          CGContextStrokePath(a7);
-          CGContextRestoreGState(a7);
+          CGContextSaveGState(context);
+          [styleCopy applyToContext:context];
+          CGContextAddPath(context, [v19 CGPath]);
+          CGContextStrokePath(context);
+          CGContextRestoreGState(context);
         }
 
-        if (v18 < [v15 count])
+        if (v18 < [stylesCopy count])
         {
-          v20 = [v15 objectAtIndexedSubscript:v18];
+          v20 = [stylesCopy objectAtIndexedSubscript:v18];
           if (v20)
           {
             v21 = v20;
-            v22 = [v19 CGPath];
+            cGPath = [v19 CGPath];
             [(HKGraphSeries *)self alpha];
-            [v21 renderPath:v22 context:a7 axisRect:x alpha:{y, width, height, v23}];
+            [v21 renderPath:cGPath context:context axisRect:x alpha:{y, width, height, v23}];
           }
         }
       }
@@ -1038,14 +1038,14 @@ void __122__HKSleepDurationSeries_drawWithBlockCoordinates_visibleBarCount_point
   }
 }
 
-- (BOOL)_dataIsHidden:(int64_t)a3
+- (BOOL)_dataIsHidden:(int64_t)hidden
 {
-  if (a3 == 1)
+  if (hidden == 1)
   {
     return [(HKSleepDurationSeries *)self hideInBedData];
   }
 
-  if (a3)
+  if (hidden)
   {
     return 0;
   }
@@ -1053,55 +1053,55 @@ void __122__HKSleepDurationSeries_drawWithBlockCoordinates_visibleBarCount_point
   return [(HKSleepDurationSeries *)self hideAsleepData];
 }
 
-- (void)_addAnnotationForValue:(double)a3 axisAnnotationDelegate:(id)a4
+- (void)_addAnnotationForValue:(double)value axisAnnotationDelegate:(id)delegate
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (delegate)
   {
-    v6 = a4;
-    v7 = [(HKGraphSeries *)self seriesDataSourceContext];
-    v8 = [v7 chartType];
+    delegateCopy = delegate;
+    seriesDataSourceContext = [(HKGraphSeries *)self seriesDataSourceContext];
+    chartType = [seriesDataSourceContext chartType];
     v9 = &stru_1F42FFBE0;
-    if (v8 <= 6 && ((1 << v8) & 0x65) != 0)
+    if (chartType <= 6 && ((1 << chartType) & 0x65) != 0)
     {
-      v9 = [(HKSleepDurationSeries *)self _stringForDuration:a3];
+      v9 = [(HKSleepDurationSeries *)self _stringForDuration:value];
     }
 
     v16[0] = *MEMORY[0x1E69DB650];
-    v10 = [(HKSleepDurationSeries *)self goalLineStrokeStyle];
-    v11 = [v10 strokeColor];
-    v17[0] = v11;
+    goalLineStrokeStyle = [(HKSleepDurationSeries *)self goalLineStrokeStyle];
+    strokeColor = [goalLineStrokeStyle strokeColor];
+    v17[0] = strokeColor;
     v16[1] = *MEMORY[0x1E69DB648];
-    v12 = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
-    v17[1] = v12;
+    hk_chartAxisLabelFont = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
+    v17[1] = hk_chartAxisLabelFont;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
     v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v9 attributes:v13];
-    v15 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    [v6 addAxisAnnotation:v14 forSeries:self modelCoordinate:v15];
+    v15 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+    [delegateCopy addAxisAnnotation:v14 forSeries:self modelCoordinate:v15];
   }
 }
 
-- (void)_addGoalAnnotationAtLocation:(double)a3 axisAnnotationDelegate:(id)a4
+- (void)_addGoalAnnotationAtLocation:(double)location axisAnnotationDelegate:(id)delegate
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AAE8];
-  v7 = a4;
+  delegateCopy = delegate;
   v8 = [v6 bundleWithIdentifier:@"com.apple.HealthUI"];
   v9 = [v8 localizedStringForKey:@"SLEEP_MULTIPLE_GOAL_AXIS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Eucalyptus"];
 
   v16[0] = *MEMORY[0x1E69DB650];
-  v10 = [(HKSleepDurationSeries *)self goalLineStrokeStyle];
-  v11 = [v10 strokeColor];
-  v17[0] = v11;
+  goalLineStrokeStyle = [(HKSleepDurationSeries *)self goalLineStrokeStyle];
+  strokeColor = [goalLineStrokeStyle strokeColor];
+  v17[0] = strokeColor;
   v16[1] = *MEMORY[0x1E69DB648];
-  v12 = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
-  v17[1] = v12;
+  hk_chartAxisLabelFont = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
+  v17[1] = hk_chartAxisLabelFont;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
   v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v9 attributes:v13];
-  v15 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v7 addAxisAnnotation:v14 forSeries:self modelCoordinate:v15];
+  v15 = [MEMORY[0x1E696AD98] numberWithDouble:location];
+  [delegateCopy addAxisAnnotation:v14 forSeries:self modelCoordinate:v15];
 }
 
 - (id)_durationAbbreviatedFormatter
@@ -1152,9 +1152,9 @@ uint64_t __48__HKSleepDurationSeries__durationShortFormatter__block_invoke()
   return [v2 setAllowedUnits:96];
 }
 
-- (id)_stringForDuration:(double)a3
+- (id)_stringForDuration:(double)duration
 {
-  if (__ROR8__(0xFEDCBA987654321 * llround(a3) + 0x91A2B3C4D5E6F0, 4) <= 0x123456789ABCDEuLL)
+  if (__ROR8__(0xFEDCBA987654321 * llround(duration) + 0x91A2B3C4D5E6F0, 4) <= 0x123456789ABCDEuLL)
   {
     [(HKSleepDurationSeries *)self _durationShortFormatter];
   }
@@ -1164,7 +1164,7 @@ uint64_t __48__HKSleepDurationSeries__durationShortFormatter__block_invoke()
     [(HKSleepDurationSeries *)self _durationAbbreviatedFormatter];
   }
   v4 = ;
-  v5 = [v4 stringFromTimeInterval:a3];
+  v5 = [v4 stringFromTimeInterval:duration];
 
   return v5;
 }

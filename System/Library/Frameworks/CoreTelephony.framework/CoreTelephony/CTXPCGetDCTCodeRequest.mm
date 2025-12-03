@@ -1,7 +1,7 @@
 @interface CTXPCGetDCTCodeRequest
 + (id)allowedClassesForArguments;
 - (CTXPCGetDCTCodeRequest)init;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCGetDCTCodeRequest
@@ -13,16 +13,16 @@
   return [(CTXPCRequestMessage *)&v3 init];
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v5 = a4;
+  completionHandlerCopy = completionHandler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__CTXPCGetDCTCodeRequest_performRequestWithHandler_completionHandler___block_invoke;
   v7[3] = &unk_1E6A45F28;
-  v8 = v5;
-  v6 = v5;
-  [a3 getDCTCode:v7];
+  v8 = completionHandlerCopy;
+  v6 = completionHandlerCopy;
+  [handler getDCTCode:v7];
 }
 
 void __70__CTXPCGetDCTCodeRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -35,7 +35,7 @@ void __70__CTXPCGetDCTCodeRequest_performRequestWithHandler_completionHandler___
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCGetDCTCodeRequest;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];

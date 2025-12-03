@@ -1,27 +1,27 @@
 @interface MNCommuteRouteSetInternalInfo
 - (MNCommuteRouteSetInternalInfo)init;
-- (MNCommuteRouteSetInternalInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MNCommuteRouteSetInternalInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNCommuteRouteSetInternalInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = *(&self->super.isa + OBJC_IVAR___MNCommuteRouteSetInternalInfo_displayedBannerInfo);
   _s16NotificationInfoCMa();
-  v6 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v7 = sub_1D3277190();
   v8 = sub_1D32770B0();
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
-- (MNCommuteRouteSetInternalInfo)initWithCoder:(id)a3
+- (MNCommuteRouteSetInternalInfo)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   _s16NotificationInfoCMa();
-  v6 = a3;
+  coderCopy = coder;
   v7 = sub_1D32775D0();
   v8 = MEMORY[0x1E69E7CC0];
   if (v7)

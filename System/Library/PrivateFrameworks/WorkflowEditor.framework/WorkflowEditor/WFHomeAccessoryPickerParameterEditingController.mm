@@ -1,77 +1,77 @@
 @interface WFHomeAccessoryPickerParameterEditingController
-- (void)actionBuilderEditor:(id)a3 didFinishWithTriggerActionSetBuilder:(id)a4;
-- (void)createViewControllerWithInitialState:(id)a3 completionHandler:(id)a4;
-- (void)finishWithActionSets:(id)a3 home:(id)a4;
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4;
+- (void)actionBuilderEditor:(id)editor didFinishWithTriggerActionSetBuilder:(id)builder;
+- (void)createViewControllerWithInitialState:(id)state completionHandler:(id)handler;
+- (void)finishWithActionSets:(id)sets home:(id)home;
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder;
 @end
 
 @implementation WFHomeAccessoryPickerParameterEditingController
 
-- (void)finishWithActionSets:(id)a3 home:(id)a4
+- (void)finishWithActionSets:(id)sets home:(id)home
 {
   v6 = MEMORY[0x277D7C4A8];
-  v7 = a4;
-  v8 = a3;
+  homeCopy = home;
+  setsCopy = sets;
   v9 = [v6 alloc];
   v10 = WFSerializableHomeIdentifier();
 
-  v12 = [v9 initWithActionSets:v8 homeIdentifier:v10];
-  v11 = [(WFUIKitParameterEditingController *)self delegate];
-  [v11 finishEditingWithParameterState:v12];
+  v12 = [v9 initWithActionSets:setsCopy homeIdentifier:v10];
+  delegate = [(WFUIKitParameterEditingController *)self delegate];
+  [delegate finishEditingWithParameterState:v12];
 }
 
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder
 {
-  v5 = a4;
-  v9 = v5;
-  if (v5)
+  builderCopy = builder;
+  v9 = builderCopy;
+  if (builderCopy)
   {
-    v6 = [v5 triggerActionSets];
-    v7 = [v6 allActionSets];
-    v8 = [v9 home];
-    [(WFHomeAccessoryPickerParameterEditingController *)self finishWithActionSets:v7 home:v8];
+    triggerActionSets = [builderCopy triggerActionSets];
+    allActionSets = [triggerActionSets allActionSets];
+    home = [v9 home];
+    [(WFHomeAccessoryPickerParameterEditingController *)self finishWithActionSets:allActionSets home:home];
   }
 
   else
   {
-    v6 = [(WFUIKitParameterEditingController *)self delegate];
-    [v6 cancelEditing];
+    triggerActionSets = [(WFUIKitParameterEditingController *)self delegate];
+    [triggerActionSets cancelEditing];
   }
 }
 
-- (void)actionBuilderEditor:(id)a3 didFinishWithTriggerActionSetBuilder:(id)a4
+- (void)actionBuilderEditor:(id)editor didFinishWithTriggerActionSetBuilder:(id)builder
 {
-  v5 = a4;
-  v8 = v5;
-  if (v5)
+  builderCopy = builder;
+  v8 = builderCopy;
+  if (builderCopy)
   {
-    v6 = [v5 allActionSets];
-    v7 = [v8 home];
-    [(WFHomeAccessoryPickerParameterEditingController *)self finishWithActionSets:v6 home:v7];
+    allActionSets = [builderCopy allActionSets];
+    home = [v8 home];
+    [(WFHomeAccessoryPickerParameterEditingController *)self finishWithActionSets:allActionSets home:home];
   }
 
   else
   {
-    v6 = [(WFUIKitParameterEditingController *)self delegate];
-    [v6 cancelEditing];
+    allActionSets = [(WFUIKitParameterEditingController *)self delegate];
+    [allActionSets cancelEditing];
   }
 }
 
-- (void)createViewControllerWithInitialState:(id)a3 completionHandler:(id)a4
+- (void)createViewControllerWithInitialState:(id)state completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D7C4F0] sharedManager];
+  stateCopy = state;
+  handlerCopy = handler;
+  mEMORY[0x277D7C4F0] = [MEMORY[0x277D7C4F0] sharedManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __106__WFHomeAccessoryPickerParameterEditingController_createViewControllerWithInitialState_completionHandler___block_invoke;
   v11[3] = &unk_279EDBFF0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  [v8 ensureHomesAreLoadedWithCompletionHandler:v11];
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = stateCopy;
+  v9 = handlerCopy;
+  v10 = stateCopy;
+  [mEMORY[0x277D7C4F0] ensureHomesAreLoadedWithCompletionHandler:v11];
 }
 
 void __106__WFHomeAccessoryPickerParameterEditingController_createViewControllerWithInitialState_completionHandler___block_invoke(uint64_t a1)

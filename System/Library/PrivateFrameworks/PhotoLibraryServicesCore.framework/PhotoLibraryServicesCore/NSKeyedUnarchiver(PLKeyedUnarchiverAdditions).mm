@@ -10,7 +10,7 @@
 {
   v11 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v3 = [a1 initForReadingFromData:a3 error:&v8];
+  v3 = [self initForReadingFromData:a3 error:&v8];
   v4 = v8;
   v5 = v3;
   if (!v5)
@@ -31,7 +31,7 @@
 {
   v11 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v4 = [a1 unarchivedObjectOfClasses:a4 fromData:a3 error:&v8];
+  v4 = [self unarchivedObjectOfClasses:a4 fromData:a3 error:&v8];
   v5 = v8;
   if (!v4)
   {
@@ -51,7 +51,7 @@
 {
   v11 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v4 = [a1 unarchivedObjectOfClass:a4 fromData:a3 error:&v8];
+  v4 = [self unarchivedObjectOfClass:a4 fromData:a3 error:&v8];
   v5 = v8;
   if (!v4)
   {

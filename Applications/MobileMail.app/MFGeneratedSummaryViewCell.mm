@@ -1,16 +1,16 @@
 @interface MFGeneratedSummaryViewCell
-- (BOOL)canBeginDragWithTouchAtPoint:(CGPoint)a3;
+- (BOOL)canBeginDragWithTouchAtPoint:(CGPoint)point;
 - (ConversationCellViewModel)viewModel;
 - (MFGeneratedSummaryViewCellDelegate)delegate;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (id)presentingViewControllerForSummaryViewManager:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (id)presentingViewControllerForSummaryViewManager:(id)manager;
 - (void)_displayMetricsDidChange;
 - (void)beginSummarizing;
 - (void)prepareForReuse;
-- (void)setDelegate:(id)a3;
-- (void)setViewModel:(id)a3;
-- (void)summaryViewManagerDidUpdateSummaryViewSize:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setViewModel:(id)model;
+- (void)summaryViewManagerDidUpdateSummaryViewSize:(id)size;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation MFGeneratedSummaryViewCell
@@ -24,7 +24,7 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   _objc_retain(self);
@@ -41,11 +41,11 @@
   return v4;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  _objc_retain(a3);
+  _objc_retain(model);
   _objc_retain(self);
-  GeneratedSummaryViewCell.viewModel.setter(a3);
+  GeneratedSummaryViewCell.viewModel.setter(model);
   _objc_release(self);
 }
 
@@ -70,7 +70,7 @@
   _objc_release(self);
 }
 
-- (BOOL)canBeginDragWithTouchAtPoint:(CGPoint)a3
+- (BOOL)canBeginDragWithTouchAtPoint:(CGPoint)point
 {
   _objc_retain(self);
   GeneratedSummaryViewCell.canBeginDragWithTouch(at:)();
@@ -78,45 +78,45 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  _objc_retain(a3);
+  _objc_retain(attributes);
   _objc_retain(self);
-  isa = GeneratedSummaryViewCell.preferredLayoutAttributesFitting(_:)(a3).super.isa;
+  isa = GeneratedSummaryViewCell.preferredLayoutAttributesFitting(_:)(attributes).super.isa;
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(attributes);
 
   return isa;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  _objc_retain(a3);
+  _objc_retain(window);
   _objc_retain(self);
-  v6.value.super.super.super.isa = a3;
+  v6.value.super.super.super.isa = window;
   GeneratedSummaryViewCell.willMove(toWindow:)(v6);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(window);
 }
 
-- (id)presentingViewControllerForSummaryViewManager:(id)a3
+- (id)presentingViewControllerForSummaryViewManager:(id)manager
 {
-  _objc_retain(a3);
+  _objc_retain(manager);
   _objc_retain(self);
   v7 = GeneratedSummaryViewCell.presentingViewController(for:)();
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(manager);
 
   return v7;
 }
 
-- (void)summaryViewManagerDidUpdateSummaryViewSize:(id)a3
+- (void)summaryViewManagerDidUpdateSummaryViewSize:(id)size
 {
-  _objc_retain(a3);
+  _objc_retain(size);
   _objc_retain(self);
   GeneratedSummaryViewCell.summaryViewManagerDidUpdateSummaryViewSize(_:)();
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(size);
 }
 
 @end

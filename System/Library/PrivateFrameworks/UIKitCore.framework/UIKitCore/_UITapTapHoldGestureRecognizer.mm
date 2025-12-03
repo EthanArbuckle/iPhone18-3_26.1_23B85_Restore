@@ -1,22 +1,22 @@
 @interface _UITapTapHoldGestureRecognizer
-- (BOOL)_shouldFailInResponseToPresses:(id)a3 withEvent:(id)a4;
-- (_UITapTapHoldGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)_shouldFailInResponseToPresses:(id)presses withEvent:(id)event;
+- (_UITapTapHoldGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)cancelPendingHoldToAction;
 - (void)cancelPendingTooSlowForDoubleTap;
-- (void)holdToAction:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)holdToAction:(id)action;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)reset;
-- (void)tooSlowForDoubleTap:(id)a3;
+- (void)tooSlowForDoubleTap:(id)tap;
 @end
 
 @implementation _UITapTapHoldGestureRecognizer
 
-- (_UITapTapHoldGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UITapTapHoldGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = _UITapTapHoldGestureRecognizer;
-  return [(UITapGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  return [(UITapGestureRecognizer *)&v5 initWithTarget:target action:action];
 }
 
 - (void)reset
@@ -33,9 +33,9 @@
   self->_currentNumberOfPresses = 0;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  if ([(_UITapTapHoldGestureRecognizer *)self _shouldFailInResponseToPresses:a3 withEvent:a4])
+  if ([(_UITapTapHoldGestureRecognizer *)self _shouldFailInResponseToPresses:began withEvent:event])
   {
 
     [(UIGestureRecognizer *)self setState:5];
@@ -61,17 +61,17 @@
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v5 = CACurrentMediaTime();
   v6 = v5;
   if (!self->_isInHoldToAction && v5 - self->_pressEventBeginTimestamp > 0.75)
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 5;
 LABEL_15:
 
-    [(UIGestureRecognizer *)v7 setState:v8];
+    [(UIGestureRecognizer *)selfCopy2 setState:v8];
     return;
   }
 
@@ -91,7 +91,7 @@ LABEL_15:
     }
 
     [(_UITapTapHoldGestureRecognizer *)self setGestureType:v12, v11];
-    v7 = self;
+    selfCopy2 = self;
     v8 = 3;
     goto LABEL_15;
   }
@@ -103,7 +103,7 @@ LABEL_15:
   }
 }
 
-- (void)tooSlowForDoubleTap:(id)a3
+- (void)tooSlowForDoubleTap:(id)tap
 {
   self->_isWaitingForTooSlowForDoubleTap = 0;
   [(_UITapTapHoldGestureRecognizer *)self setGestureType:1];
@@ -120,7 +120,7 @@ LABEL_15:
   }
 }
 
-- (void)holdToAction:(id)a3
+- (void)holdToAction:(id)action
 {
   self->_isWaitingForHoldToAction = 0;
   if ([(UIGestureRecognizer *)self state]!= UIGestureRecognizerStateEnded && [(UIGestureRecognizer *)self state]!= UIGestureRecognizerStateCancelled)
@@ -141,15 +141,15 @@ LABEL_15:
   }
 }
 
-- (BOOL)_shouldFailInResponseToPresses:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldFailInResponseToPresses:(id)presses withEvent:(id)event
 {
-  v5 = a3;
+  pressesCopy = presses;
   if (+[UIDictationUtilities _isUsingLargeFormatDictationUI])
   {
-    v6 = [(UIGestureRecognizer *)self allowedTouchTypes];
-    if ([v6 containsObject:&unk_1EFE31390])
+    allowedTouchTypes = [(UIGestureRecognizer *)self allowedTouchTypes];
+    if ([allowedTouchTypes containsObject:&unk_1EFE31390])
     {
-      v7 = _UIPressesContainsPressType(v5, 4);
+      v7 = _UIPressesContainsPressType(pressesCopy, 4);
 
       if (v7)
       {
@@ -165,8 +165,8 @@ LABEL_15:
 
   if (-[UITapGestureRecognizer isSingleKeyPressGesture](self, "isSingleKeyPressGesture") && (-[UIGestureRecognizer allowedPressTypes](self, "allowedPressTypes"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v10))
   {
-    v11 = [(UIGestureRecognizer *)self allowedPressTypes];
-    v8 = _UIPressesOnlyContainsPressTypes(v5, v11) ^ 1;
+    allowedPressTypes = [(UIGestureRecognizer *)self allowedPressTypes];
+    v8 = _UIPressesOnlyContainsPressTypes(pressesCopy, allowedPressTypes) ^ 1;
   }
 
   else

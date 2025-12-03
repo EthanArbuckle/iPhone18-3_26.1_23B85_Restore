@@ -1,6 +1,6 @@
 @interface MCMResultWithOwnersAndGroupsBaseFact
-- (BOOL)isEqual:(id)a3;
-- (MCMResultWithOwnersAndGroupsBaseFact)initWithOwnerIndex:(unint64_t)a3 groupIndex:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (MCMResultWithOwnersAndGroupsBaseFact)initWithOwnerIndex:(unint64_t)index groupIndex:(unint64_t)groupIndex;
 - (unint64_t)groupIndex;
 - (unint64_t)hash;
 - (unint64_t)ownerIndex;
@@ -24,19 +24,19 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 ownerIndex];
+    v5 = equalCopy;
+    ownerIndex = [v5 ownerIndex];
     v8 = 0;
-    if (v6 == [(MCMResultWithOwnersAndGroupsBaseFact *)self ownerIndex])
+    if (ownerIndex == [(MCMResultWithOwnersAndGroupsBaseFact *)self ownerIndex])
     {
-      v7 = [v5 groupIndex];
-      if (v7 == [(MCMResultWithOwnersAndGroupsBaseFact *)self groupIndex])
+      groupIndex = [v5 groupIndex];
+      if (groupIndex == [(MCMResultWithOwnersAndGroupsBaseFact *)self groupIndex])
       {
         v8 = 1;
       }
@@ -55,13 +55,13 @@
 - (unint64_t)hash
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMResultWithOwnersAndGroupsBaseFact *)self ownerIndex];
-  v4 = [(MCMResultWithOwnersAndGroupsBaseFact *)self groupIndex];
+  ownerIndex = [(MCMResultWithOwnersAndGroupsBaseFact *)self ownerIndex];
+  groupIndex = [(MCMResultWithOwnersAndGroupsBaseFact *)self groupIndex];
   v5 = *MEMORY[0x1E69E9840];
-  return v4 ^ v3;
+  return groupIndex ^ ownerIndex;
 }
 
-- (MCMResultWithOwnersAndGroupsBaseFact)initWithOwnerIndex:(unint64_t)a3 groupIndex:(unint64_t)a4
+- (MCMResultWithOwnersAndGroupsBaseFact)initWithOwnerIndex:(unint64_t)index groupIndex:(unint64_t)groupIndex
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -69,8 +69,8 @@
   result = [(MCMResultWithOwnersAndGroupsBaseFact *)&v8 init];
   if (result)
   {
-    result->_ownerIndex = a3;
-    result->_groupIndex = a4;
+    result->_ownerIndex = index;
+    result->_groupIndex = groupIndex;
   }
 
   v7 = *MEMORY[0x1E69E9840];

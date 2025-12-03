@@ -1,17 +1,17 @@
 @interface IMCoreAutomationNotifications
 + (id)sharedInstance;
 - (IMCoreAutomationNotifications)init;
-- (void)addNewAttachmentsSyncedCount:(int64_t)a3;
-- (void)addNewChatsSyncedCount:(int64_t)a3;
-- (void)addNewMessagesSyncedCount:(int64_t)a3;
-- (void)addNewRecoverableMessagesSyncedCount:(int64_t)a3;
+- (void)addNewAttachmentsSyncedCount:(int64_t)count;
+- (void)addNewChatsSyncedCount:(int64_t)count;
+- (void)addNewMessagesSyncedCount:(int64_t)count;
+- (void)addNewRecoverableMessagesSyncedCount:(int64_t)count;
 - (void)clearSyncCounts;
-- (void)postCoreAutomationNotificationFinishedPeriodicSyncNotificationWithStartTime:(id)a3 chatsDidsync:(BOOL)a4 messagesDidSync:(BOOL)a5 attachmentsDidSync:(BOOL)a6 recoverableMessagesDidSync:(BOOL)a7;
-- (void)postCoreAutomationNotificationFinishedPurgingAttachments:(id)a3 withErrorString:(id)a4;
-- (void)postCoreAutomationNotificationFinishedTapToDownload:(id)a3 downloadedFromCloudKitSuccessfully:(BOOL)a4;
+- (void)postCoreAutomationNotificationFinishedPeriodicSyncNotificationWithStartTime:(id)time chatsDidsync:(BOOL)didsync messagesDidSync:(BOOL)sync attachmentsDidSync:(BOOL)didSync recoverableMessagesDidSync:(BOOL)messagesDidSync;
+- (void)postCoreAutomationNotificationFinishedPurgingAttachments:(id)attachments withErrorString:(id)string;
+- (void)postCoreAutomationNotificationFinishedTapToDownload:(id)download downloadedFromCloudKitSuccessfully:(BOOL)successfully;
 - (void)postCoreAutomationNotificationPeriodicSyncUpdateNotification;
-- (void)postCoreAutomationNotificationWithAction:(id)a3;
-- (void)postCoreAutomationNotificationWithDictionary:(id)a3 withVerboseLogging:(BOOL)a4;
+- (void)postCoreAutomationNotificationWithAction:(id)action;
+- (void)postCoreAutomationNotificationWithDictionary:(id)dictionary withVerboseLogging:(BOOL)logging;
 @end
 
 @implementation IMCoreAutomationNotifications
@@ -55,12 +55,12 @@
   }
 }
 
-- (void)postCoreAutomationNotificationFinishedPeriodicSyncNotificationWithStartTime:(id)a3 chatsDidsync:(BOOL)a4 messagesDidSync:(BOOL)a5 attachmentsDidSync:(BOOL)a6 recoverableMessagesDidSync:(BOOL)a7
+- (void)postCoreAutomationNotificationFinishedPeriodicSyncNotificationWithStartTime:(id)time chatsDidsync:(BOOL)didsync messagesDidSync:(BOOL)sync attachmentsDidSync:(BOOL)didSync recoverableMessagesDidSync:(BOOL)messagesDidSync
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
+  messagesDidSyncCopy = messagesDidSync;
+  didSyncCopy = didSync;
+  syncCopy = sync;
+  didsyncCopy = didsync;
   v15[10] = *MEMORY[0x1E69E9840];
   v15[0] = @"initiatePeriodicSyncWithActivity";
   v14[0] = @"action";
@@ -69,13 +69,13 @@
   [objc_msgSend(MEMORY[0x1E695DF00] "date")];
   v15[1] = [v12 numberWithDouble:?];
   v14[2] = @"chatsDidSync";
-  v15[2] = [MEMORY[0x1E696AD98] numberWithBool:v10];
+  v15[2] = [MEMORY[0x1E696AD98] numberWithBool:didsyncCopy];
   v14[3] = @"messagesDidSync";
-  v15[3] = [MEMORY[0x1E696AD98] numberWithBool:v9];
+  v15[3] = [MEMORY[0x1E696AD98] numberWithBool:syncCopy];
   v14[4] = @"attachmentsDidSync";
-  v15[4] = [MEMORY[0x1E696AD98] numberWithBool:v8];
+  v15[4] = [MEMORY[0x1E696AD98] numberWithBool:didSyncCopy];
   v14[5] = @"recoverableMessagesDidSync";
-  v15[5] = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v15[5] = [MEMORY[0x1E696AD98] numberWithBool:messagesDidSyncCopy];
   v14[6] = @"chatsWrittenCount";
   v15[6] = [MEMORY[0x1E696AD98] numberWithInteger:self->_chatsWrittenCount];
   v14[7] = @"messagesWrittenCount";
@@ -105,21 +105,21 @@
   -[IMCoreAutomationNotifications postCoreAutomationNotificationWithDictionary:withVerboseLogging:](self, "postCoreAutomationNotificationWithDictionary:withVerboseLogging:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v4 forKeys:v3 count:5], 1);
 }
 
-- (void)postCoreAutomationNotificationWithAction:(id)a3
+- (void)postCoreAutomationNotificationWithAction:(id)action
 {
   v4[1] = *MEMORY[0x1E69E9840];
   v3 = @"action";
-  v4[0] = a3;
+  v4[0] = action;
   -[IMCoreAutomationNotifications postCoreAutomationNotificationWithDictionary:withVerboseLogging:](self, "postCoreAutomationNotificationWithDictionary:withVerboseLogging:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v4 forKeys:&v3 count:1], 1);
 }
 
-- (void)postCoreAutomationNotificationWithDictionary:(id)a3 withVerboseLogging:(BOOL)a4
+- (void)postCoreAutomationNotificationWithDictionary:(id)dictionary withVerboseLogging:(BOOL)logging
 {
-  v4 = a4;
+  loggingCopy = logging;
   v11 = *MEMORY[0x1E69E9840];
   if (IMIsRunningInAutomation())
   {
-    if (v4)
+    if (loggingCopy)
     {
       if (!IMOSLoggingEnabled())
       {
@@ -133,13 +133,13 @@
       }
 
       *v10 = 138412290;
-      *&v10[4] = a3;
+      *&v10[4] = dictionary;
       v7 = "postCoreAutomationNotificationWithDictionary with userInfo %@";
     }
 
     else
     {
-      v8 = [a3 objectForKey:@"action"];
+      v8 = [dictionary objectForKey:@"action"];
       if (v8)
       {
         v9 = v8;
@@ -172,15 +172,15 @@ LABEL_13:
   }
 }
 
-- (void)postCoreAutomationNotificationFinishedPurgingAttachments:(id)a3 withErrorString:(id)a4
+- (void)postCoreAutomationNotificationFinishedPurgingAttachments:(id)attachments withErrorString:(id)string
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (string)
   {
     v10[0] = @"action";
     v10[1] = @"error";
     v11[0] = @"purgeAttachments";
-    v11[1] = a4;
+    v11[1] = string;
     v5 = MEMORY[0x1E695DF20];
     v6 = v11;
     v7 = v10;
@@ -191,7 +191,7 @@ LABEL_13:
     v8[0] = @"action";
     v8[1] = @"deletedAttachments";
     v9[0] = @"purgeAttachments";
-    v9[1] = a3;
+    v9[1] = attachments;
     v5 = MEMORY[0x1E695DF20];
     v6 = v9;
     v7 = v8;
@@ -200,22 +200,22 @@ LABEL_13:
   -[IMCoreAutomationNotifications postCoreAutomationNotificationWithDictionary:withVerboseLogging:](self, "postCoreAutomationNotificationWithDictionary:withVerboseLogging:", [v5 dictionaryWithObjects:v6 forKeys:v7 count:2], 0);
 }
 
-- (void)postCoreAutomationNotificationFinishedTapToDownload:(id)a3 downloadedFromCloudKitSuccessfully:(BOOL)a4
+- (void)postCoreAutomationNotificationFinishedTapToDownload:(id)download downloadedFromCloudKitSuccessfully:(BOOL)successfully
 {
   v6[3] = *MEMORY[0x1E69E9840];
   v5[0] = @"action";
   v5[1] = @"guid";
   v6[0] = @"tapToDownload";
-  v6[1] = a3;
+  v6[1] = download;
   v5[2] = @"downloadedFromCloudKitSuccessfully";
-  v6[2] = [MEMORY[0x1E696AD98] numberWithBool:a4];
+  v6[2] = [MEMORY[0x1E696AD98] numberWithBool:successfully];
   -[IMCoreAutomationNotifications postCoreAutomationNotificationWithDictionary:withVerboseLogging:](self, "postCoreAutomationNotificationWithDictionary:withVerboseLogging:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:v5 count:3], 0);
 }
 
-- (void)addNewChatsSyncedCount:(int64_t)a3
+- (void)addNewChatsSyncedCount:(int64_t)count
 {
   v8 = *MEMORY[0x1E69E9840];
-  self->_chatsWrittenCount += a3;
+  self->_chatsWrittenCount += count;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -231,10 +231,10 @@ LABEL_13:
   [(IMCoreAutomationNotifications *)self postCoreAutomationNotificationPeriodicSyncUpdateNotification];
 }
 
-- (void)addNewAttachmentsSyncedCount:(int64_t)a3
+- (void)addNewAttachmentsSyncedCount:(int64_t)count
 {
   v8 = *MEMORY[0x1E69E9840];
-  self->_attachmentsWrittenCount += a3;
+  self->_attachmentsWrittenCount += count;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -250,10 +250,10 @@ LABEL_13:
   [(IMCoreAutomationNotifications *)self postCoreAutomationNotificationPeriodicSyncUpdateNotification];
 }
 
-- (void)addNewMessagesSyncedCount:(int64_t)a3
+- (void)addNewMessagesSyncedCount:(int64_t)count
 {
   v8 = *MEMORY[0x1E69E9840];
-  self->_messagesWrittenCount += a3;
+  self->_messagesWrittenCount += count;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -269,10 +269,10 @@ LABEL_13:
   [(IMCoreAutomationNotifications *)self postCoreAutomationNotificationPeriodicSyncUpdateNotification];
 }
 
-- (void)addNewRecoverableMessagesSyncedCount:(int64_t)a3
+- (void)addNewRecoverableMessagesSyncedCount:(int64_t)count
 {
   v8 = *MEMORY[0x1E69E9840];
-  self->_recoverableMessagesWrittenCount += a3;
+  self->_recoverableMessagesWrittenCount += count;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();

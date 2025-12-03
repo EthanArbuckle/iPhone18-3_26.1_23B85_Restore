@@ -1,23 +1,23 @@
 @interface ASDBooleanControl
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8;
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3;
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client;
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property;
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable;
 - (BOOL)value;
 - (id)driverClassName;
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5;
-- (void)setValue:(BOOL)a3;
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data;
+- (void)setValue:(BOOL)value;
 @end
 
 @implementation ASDBooleanControl
 
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1650685548)
+  if (property->mSelector == 1650685548)
   {
     return 1;
   }
@@ -29,14 +29,14 @@
   return [(ASDControl *)&v6 hasProperty:?];
 }
 
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1650685548)
+  if (property->mSelector == 1650685548)
   {
     return 4;
   }
@@ -48,22 +48,22 @@
   return [ASDControl dataSizeForProperty:sel_dataSizeForProperty_withQualifierSize_andQualifierData_ withQualifierSize:? andQualifierData:?];
 }
 
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client
 {
   v8 = 0;
-  if (a3 && a6 && a7)
+  if (property && dataSize && andData)
   {
-    if (a3->mSelector == 1650685548)
+    if (property->mSelector == 1650685548)
     {
-      if (*a6 < 4)
+      if (*dataSize < 4)
       {
         return 0;
       }
 
       else
       {
-        *a7 = [(ASDBooleanControl *)self value];
-        *a6 = 4;
+        *andData = [(ASDBooleanControl *)self value];
+        *dataSize = 4;
         return 1;
       }
     }
@@ -79,14 +79,14 @@
   return v8;
 }
 
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable
 {
-  if (!a3)
+  if (!settable)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1650685548)
+  if (settable->mSelector == 1650685548)
   {
 
     return [(ASDBooleanControl *)self isSettable];
@@ -102,7 +102,7 @@
   }
 }
 
-- (void)setValue:(BOOL)a3
+- (void)setValue:(BOOL)value
 {
   v10 = 0;
   v11 = &v10;
@@ -113,7 +113,7 @@
   block[1] = 3221225472;
   block[2] = __30__ASDBooleanControl_setValue___block_invoke;
   block[3] = &unk_278CE41E0;
-  v9 = a3;
+  valueCopy = value;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(valueQueue, block);
@@ -121,8 +121,8 @@
   {
     v7 = 0;
     v6 = 0x676C6F626263766CLL;
-    v5 = [(ASDObject *)self propertyChangedDelegate];
-    [v5 changedProperty:&v6 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v6 forObject:self];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -160,24 +160,24 @@ uint64_t __30__ASDBooleanControl_setValue___block_invoke(uint64_t result)
 
 - (id)driverClassName
 {
-  v2 = [(ASDControl *)self objectClass];
+  objectClass = [(ASDControl *)self objectClass];
   v3 = @"AudioBooleanControl";
-  if (v2 > 1885888877)
+  if (objectClass > 1885888877)
   {
     v4 = 1936682094;
     v12 = @"AudioLFEMuteControl";
     v13 = @"AudioTalkbackControl";
-    if (v2 != 1952541794)
+    if (objectClass != 1952541794)
     {
       v13 = @"AudioBooleanControl";
     }
 
-    if (v2 != 1937072749)
+    if (objectClass != 1937072749)
     {
       v12 = v13;
     }
 
-    if (v2 == 1936682095)
+    if (objectClass == 1936682095)
     {
       v7 = @"AudioSoloControl";
     }
@@ -198,17 +198,17 @@ uint64_t __30__ASDBooleanControl_setValue___block_invoke(uint64_t result)
     v4 = 1784767338;
     v5 = @"AudioListenbackControl";
     v6 = @"AudioMuteControl";
-    if (v2 != 1836414053)
+    if (objectClass != 1836414053)
     {
       v6 = @"AudioBooleanControl";
     }
 
-    if (v2 != 1819504226)
+    if (objectClass != 1819504226)
     {
       v5 = v6;
     }
 
-    if (v2 == 1784767339)
+    if (objectClass == 1784767339)
     {
       v7 = @"AudioJackControl";
     }
@@ -224,17 +224,17 @@ uint64_t __30__ASDBooleanControl_setValue___block_invoke(uint64_t result)
     v11 = @"AudioTapEnableControl";
   }
 
-  if (v2 == v10)
+  if (objectClass == v10)
   {
     v3 = v11;
   }
 
-  if (v2 == v8)
+  if (objectClass == v8)
   {
     v3 = v9;
   }
 
-  if (v2 <= v4)
+  if (objectClass <= v4)
   {
     return v3;
   }

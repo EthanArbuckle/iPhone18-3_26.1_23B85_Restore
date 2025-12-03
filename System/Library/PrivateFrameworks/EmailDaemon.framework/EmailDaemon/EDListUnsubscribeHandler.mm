@@ -2,10 +2,10 @@
 + (id)log;
 - (EDListUnsubscribeHandler)init;
 - (EMListUnsubscribeDetector)detector;
-- (void)ignoreWithCommand:(id)a3 completion:(id)a4;
-- (void)unsubscribeHTMLWithCommand:(id)a3 timeout:(double)a4 completion:(id)a5;
-- (void)unsubscribeMailtoWithCommand:(id)a3 completion:(id)a4;
-- (void)unsubscribeWithCommand:(id)a3 completion:(id)a4;
+- (void)ignoreWithCommand:(id)command completion:(id)completion;
+- (void)unsubscribeHTMLWithCommand:(id)command timeout:(double)timeout completion:(id)completion;
+- (void)unsubscribeMailtoWithCommand:(id)command completion:(id)completion;
+- (void)unsubscribeWithCommand:(id)command completion:(id)completion;
 @end
 
 @implementation EDListUnsubscribeHandler
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __31__EDListUnsubscribeHandler_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_48 != -1)
   {
     dispatch_once(&log_onceToken_48, block);
@@ -71,53 +71,53 @@ void __31__EDListUnsubscribeHandler_log__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)ignoreWithCommand:(id)a3 completion:(id)a4
+- (void)ignoreWithCommand:(id)command completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   [(EDListUnsubscribeHandler *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDListUnsubscribeHandler ignoreWithCommand:completion:]", "EDListUnsubscribeHandler.m", 45, "0");
 }
 
-- (void)unsubscribeWithCommand:(id)a3 completion:(id)a4
+- (void)unsubscribeWithCommand:(id)command completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v7 isMailtoOperation])
+  commandCopy = command;
+  completionCopy = completion;
+  if ([commandCopy isMailtoOperation])
   {
-    [(EDListUnsubscribeHandler *)self unsubscribeMailtoWithCommand:v7 completion:v6];
+    [(EDListUnsubscribeHandler *)self unsubscribeMailtoWithCommand:commandCopy completion:completionCopy];
   }
 
   else
   {
-    [(EDListUnsubscribeHandler *)self unsubscribeHTMLWithCommand:v7 timeout:v6 completion:15.0];
+    [(EDListUnsubscribeHandler *)self unsubscribeHTMLWithCommand:commandCopy timeout:completionCopy completion:15.0];
   }
 }
 
-- (void)unsubscribeMailtoWithCommand:(id)a3 completion:(id)a4
+- (void)unsubscribeMailtoWithCommand:(id)command completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   [(EDListUnsubscribeHandler *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDListUnsubscribeHandler unsubscribeMailtoWithCommand:completion:]", "EDListUnsubscribeHandler.m", 57, "0");
 }
 
-- (void)unsubscribeHTMLWithCommand:(id)a3 timeout:(double)a4 completion:(id)a5
+- (void)unsubscribeHTMLWithCommand:(id)command timeout:(double)timeout completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(EDListUnsubscribeHandler *)self scheduler];
+  commandCopy = command;
+  completionCopy = completion;
+  scheduler = [(EDListUnsubscribeHandler *)self scheduler];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__EDListUnsubscribeHandler_unsubscribeHTMLWithCommand_timeout_completion___block_invoke;
   v13[3] = &unk_1E8252E78;
-  v11 = v8;
-  v17 = a4;
+  v11 = commandCopy;
+  timeoutCopy = timeout;
   v14 = v11;
-  v15 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = completionCopy;
   v16 = v12;
-  [v10 performBlock:v13];
+  [scheduler performBlock:v13];
 }
 
 void __74__EDListUnsubscribeHandler_unsubscribeHTMLWithCommand_timeout_completion___block_invoke(uint64_t a1)

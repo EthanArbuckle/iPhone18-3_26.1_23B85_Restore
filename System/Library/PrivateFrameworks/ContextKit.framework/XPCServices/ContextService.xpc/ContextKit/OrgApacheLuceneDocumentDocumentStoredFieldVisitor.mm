@@ -1,31 +1,31 @@
 @interface OrgApacheLuceneDocumentDocumentStoredFieldVisitor
-- (id)needsFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3;
-- (void)binaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withByteArray:(id)a4;
+- (id)needsFieldWithOrgApacheLuceneIndexFieldInfo:(id)info;
+- (void)binaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withByteArray:(id)array;
 - (void)dealloc;
-- (void)doubleFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withDouble:(double)a4;
-- (void)floatFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withFloat:(float)a4;
-- (void)intFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withInt:(int)a4;
-- (void)longFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withLong:(int64_t)a4;
-- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withByteArray:(id)a4;
-- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4;
+- (void)doubleFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withDouble:(double)double;
+- (void)floatFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withFloat:(float)float;
+- (void)intFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withInt:(int)int;
+- (void)longFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withLong:(int64_t)long;
+- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withByteArray:(id)array;
+- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneUtilBytesRef:(id)ref;
 @end
 
 @implementation OrgApacheLuceneDocumentDocumentStoredFieldVisitor
 
-- (void)binaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withByteArray:(id)a4
+- (void)binaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withByteArray:(id)array
 {
   doc = self->doc_;
-  if (!doc || !a3)
+  if (!doc || !info)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = new_OrgApacheLuceneDocumentStoredField_initWithNSString_withByteArray_(*(a3 + 1), a4);
+  v5 = new_OrgApacheLuceneDocumentStoredField_initWithNSString_withByteArray_(*(info + 1), array);
 
   [(OrgApacheLuceneDocumentDocument *)doc addWithOrgApacheLuceneIndexIndexableField:v5];
 }
 
-- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4
+- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneUtilBytesRef:(id)ref
 {
   if ((atomic_load_explicit(OrgApacheLuceneDocumentTextField__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -33,15 +33,15 @@
   }
 
   v7 = new_OrgApacheLuceneDocumentFieldType_initWithOrgApacheLuceneDocumentFieldType_(OrgApacheLuceneDocumentTextField_TYPE_STORED_);
-  if (!a3 || (v8 = v7, -[OrgApacheLuceneDocumentFieldType setStoreTermVectorsWithBoolean:](v7, "setStoreTermVectorsWithBoolean:", [a3 hasVectors]), -[OrgApacheLuceneDocumentFieldType setOmitNormsWithBoolean:](v8, "setOmitNormsWithBoolean:", objc_msgSend(a3, "omitsNorms")), -[OrgApacheLuceneDocumentFieldType setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:](v8, "setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:", objc_msgSend(a3, "getIndexOptions")), (doc = self->doc_) == 0) || !a4)
+  if (!info || (v8 = v7, -[OrgApacheLuceneDocumentFieldType setStoreTermVectorsWithBoolean:](v7, "setStoreTermVectorsWithBoolean:", [info hasVectors]), -[OrgApacheLuceneDocumentFieldType setOmitNormsWithBoolean:](v8, "setOmitNormsWithBoolean:", objc_msgSend(info, "omitsNorms")), -[OrgApacheLuceneDocumentFieldType setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:](v8, "setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:", objc_msgSend(info, "getIndexOptions")), (doc = self->doc_) == 0) || !ref)
   {
     JreThrowNullPointerException();
   }
 
-  v10 = *(a3 + 1);
-  v11 = *(a4 + 1);
-  v12 = *(a4 + 4);
-  v13 = *(a4 + 5);
+  v10 = *(info + 1);
+  v11 = *(ref + 1);
+  v12 = *(ref + 4);
+  v13 = *(ref + 5);
   if ((atomic_load_explicit(OrgLukhnosPortmobileCharsetStandardCharsets__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10003A2FC();
@@ -52,81 +52,81 @@
   [(OrgApacheLuceneDocumentDocument *)doc addWithOrgApacheLuceneIndexIndexableField:v14];
 }
 
-- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withByteArray:(id)a4
+- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withByteArray:(id)array
 {
-  if (!a4)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_withInt_withInt_(a4, 0, *(a4 + 2));
+  v6 = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_withInt_withInt_(array, 0, *(array + 2));
 
-  [(OrgApacheLuceneDocumentDocumentStoredFieldVisitor *)self stringFieldWithOrgApacheLuceneIndexFieldInfo:a3 withOrgApacheLuceneUtilBytesRef:v6];
+  [(OrgApacheLuceneDocumentDocumentStoredFieldVisitor *)self stringFieldWithOrgApacheLuceneIndexFieldInfo:info withOrgApacheLuceneUtilBytesRef:v6];
 }
 
-- (void)intFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withInt:(int)a4
+- (void)intFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withInt:(int)int
 {
   doc = self->doc_;
-  if (!doc || !a3)
+  if (!doc || !info)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = new_OrgApacheLuceneDocumentStoredField_initWithNSString_withInt_(*(a3 + 1), a4);
+  v5 = new_OrgApacheLuceneDocumentStoredField_initWithNSString_withInt_(*(info + 1), int);
 
   [(OrgApacheLuceneDocumentDocument *)doc addWithOrgApacheLuceneIndexIndexableField:v5];
 }
 
-- (void)longFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withLong:(int64_t)a4
+- (void)longFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withLong:(int64_t)long
 {
   doc = self->doc_;
-  if (!doc || !a3)
+  if (!doc || !info)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = new_OrgApacheLuceneDocumentStoredField_initWithNSString_withLong_(*(a3 + 1), a4);
+  v5 = new_OrgApacheLuceneDocumentStoredField_initWithNSString_withLong_(*(info + 1), long);
 
   [(OrgApacheLuceneDocumentDocument *)doc addWithOrgApacheLuceneIndexIndexableField:v5];
 }
 
-- (void)floatFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withFloat:(float)a4
+- (void)floatFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withFloat:(float)float
 {
   doc = self->doc_;
-  if (!doc || !a3)
+  if (!doc || !info)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = new_OrgApacheLuceneDocumentStoredField_initWithNSString_withFloat_(*(a3 + 1), a4);
+  v5 = new_OrgApacheLuceneDocumentStoredField_initWithNSString_withFloat_(*(info + 1), float);
 
   [(OrgApacheLuceneDocumentDocument *)doc addWithOrgApacheLuceneIndexIndexableField:v5];
 }
 
-- (void)doubleFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withDouble:(double)a4
+- (void)doubleFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withDouble:(double)double
 {
   doc = self->doc_;
-  if (!doc || !a3)
+  if (!doc || !info)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = new_OrgApacheLuceneDocumentStoredField_initWithNSString_withDouble_(*(a3 + 1), a4);
+  v5 = new_OrgApacheLuceneDocumentStoredField_initWithNSString_withDouble_(*(info + 1), double);
 
   [(OrgApacheLuceneDocumentDocument *)doc addWithOrgApacheLuceneIndexIndexableField:v5];
 }
 
-- (id)needsFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3
+- (id)needsFieldWithOrgApacheLuceneIndexFieldInfo:(id)info
 {
   fieldsToAdd = self->fieldsToAdd_;
   if (fieldsToAdd)
   {
-    if (!a3)
+    if (!info)
     {
       JreThrowNullPointerException();
     }
 
-    if (![(JavaUtilSet *)fieldsToAdd containsWithId:*(a3 + 1)])
+    if (![(JavaUtilSet *)fieldsToAdd containsWithId:*(info + 1)])
     {
       v4 = &qword_100557808;
       if (atomic_load_explicit(OrgApacheLuceneIndexStoredFieldVisitor_StatusEnum__initialized, memory_order_acquire))

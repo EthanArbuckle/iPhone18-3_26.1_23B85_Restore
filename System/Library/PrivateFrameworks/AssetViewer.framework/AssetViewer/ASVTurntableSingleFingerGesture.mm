@@ -1,5 +1,5 @@
 @interface ASVTurntableSingleFingerGesture
-- (ASVTurntableSingleFingerGesture)initWithTouch:(id)a3 dataSource:(id)a4 turntableDelegate:(id)a5 enabledGestureTypes:(unint64_t)a6;
+- (ASVTurntableSingleFingerGesture)initWithTouch:(id)touch dataSource:(id)source turntableDelegate:(id)delegate enabledGestureTypes:(unint64_t)types;
 - (ASVTurntableSingleFingerGestureDelegate)turntableDelegate;
 - (void)finishGesture;
 - (void)updateGesture;
@@ -8,16 +8,16 @@
 
 @implementation ASVTurntableSingleFingerGesture
 
-- (ASVTurntableSingleFingerGesture)initWithTouch:(id)a3 dataSource:(id)a4 turntableDelegate:(id)a5 enabledGestureTypes:(unint64_t)a6
+- (ASVTurntableSingleFingerGesture)initWithTouch:(id)touch dataSource:(id)source turntableDelegate:(id)delegate enabledGestureTypes:(unint64_t)types
 {
-  v10 = a5;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = ASVTurntableSingleFingerGesture;
-  v11 = [(ASVSingleFingerGesture *)&v14 initWithTouch:a3 dataSource:a4 delegate:v10 enabledGestureTypes:a6];
+  v11 = [(ASVSingleFingerGesture *)&v14 initWithTouch:touch dataSource:source delegate:delegateCopy enabledGestureTypes:types];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_turntableDelegate, v10);
+    objc_storeWeak(&v11->_turntableDelegate, delegateCopy);
   }
 
   return v12;
@@ -47,17 +47,17 @@
     if (v4.f32[0] >= v7)
     {
       [(ASVSingleFingerGesture *)self setPanThresholdPassed:1];
-      v8 = [(ASVTurntableSingleFingerGesture *)self turntableDelegate];
+      turntableDelegate = [(ASVTurntableSingleFingerGesture *)self turntableDelegate];
       [(ASVSingleFingerGesture *)self latestTouchLocation];
-      [v8 gesture:self beganPanningAtScreenPoint:?];
+      [turntableDelegate gesture:self beganPanningAtScreenPoint:?];
     }
   }
 
   if ([(ASVSingleFingerGesture *)self panThresholdPassed])
   {
-    v9 = [(ASVTurntableSingleFingerGesture *)self turntableDelegate];
+    turntableDelegate2 = [(ASVTurntableSingleFingerGesture *)self turntableDelegate];
     [(ASVSingleFingerGesture *)self latestTouchLocation];
-    [v9 gesture:self pannedToScreenPoint:?];
+    [turntableDelegate2 gesture:self pannedToScreenPoint:?];
   }
 }
 
@@ -65,8 +65,8 @@
 {
   if ([(ASVSingleFingerGesture *)self panThresholdPassed])
   {
-    v3 = [(ASVTurntableSingleFingerGesture *)self turntableDelegate];
-    [v3 gestureEndedPanning:self];
+    turntableDelegate = [(ASVTurntableSingleFingerGesture *)self turntableDelegate];
+    [turntableDelegate gestureEndedPanning:self];
   }
 
   else

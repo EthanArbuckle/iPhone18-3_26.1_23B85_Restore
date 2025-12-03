@@ -1,20 +1,20 @@
 @interface HFInputSourceServiceItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
 @end
 
 @implementation HFInputSourceServiceItem
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
+  controlItemValueSourceForPrimaryService = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
   v4 = [HFValueTransformer transformerForValueClass:objc_opt_class() transformBlock:&__block_literal_global_154 reverseTransformBlock:&__block_literal_global_7_5];
   v11 = @"controlItemPurpose";
   v12[0] = &unk_2825245E8;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v6 = [HFPrimaryStateControlItem alloc];
-  v7 = [(HFPrimaryStateControlItem *)v6 initWithValueSource:v3 characteristicType:*MEMORY[0x277CCFB80] valueTransformer:v4 displayResults:v5];
+  v7 = [(HFPrimaryStateControlItem *)v6 initWithValueSource:controlItemValueSourceForPrimaryService characteristicType:*MEMORY[0x277CCFB80] valueTransformer:v4 displayResults:v5];
   v8 = [MEMORY[0x277CBEB98] setWithObject:v7];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -55,15 +55,15 @@ uint64_t __58__HFInputSourceServiceItem_createControlItemsWithOptions___block_in
   return [v2 numberWithInteger:v3];
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = MEMORY[0x277CBEB98];
   v5 = *MEMORY[0x277CCF920];
   v6 = *MEMORY[0x277CCF880];
   v7 = *MEMORY[0x277CCFB80];
-  v8 = a3;
+  optionsCopy = options;
   v9 = [v4 setWithObjects:{v5, v6, v7, 0}];
-  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:v8];
+  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:optionsCopy];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;

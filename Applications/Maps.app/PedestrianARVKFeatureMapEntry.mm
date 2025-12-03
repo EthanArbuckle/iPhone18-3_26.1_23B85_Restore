@@ -1,5 +1,5 @@
 @interface PedestrianARVKFeatureMapEntry
-- (PedestrianARVKFeatureMapEntry)initWithFeature:(id)a3 guidanceInfo:(id)a4;
+- (PedestrianARVKFeatureMapEntry)initWithFeature:(id)feature guidanceInfo:(id)info;
 - (id)description;
 @end
 
@@ -10,17 +10,17 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   feature = self->_feature;
-  v6 = [(MNGuidanceARInfo *)self->_guidanceInfo mapsShortDescription];
-  v7 = [NSString stringWithFormat:@"<%@: %p, feature: %@, guidanceInfo: %@>", v4, self, feature, v6];
+  mapsShortDescription = [(MNGuidanceARInfo *)self->_guidanceInfo mapsShortDescription];
+  v7 = [NSString stringWithFormat:@"<%@: %p, feature: %@, guidanceInfo: %@>", v4, self, feature, mapsShortDescription];
 
   return v7;
 }
 
-- (PedestrianARVKFeatureMapEntry)initWithFeature:(id)a3 guidanceInfo:(id)a4
+- (PedestrianARVKFeatureMapEntry)initWithFeature:(id)feature guidanceInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  featureCopy = feature;
+  infoCopy = info;
+  if (!featureCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -49,7 +49,7 @@
     }
   }
 
-  if (!v8)
+  if (!infoCopy)
   {
     v15 = sub_10006D178();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -84,8 +84,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_feature, a3);
-    objc_storeStrong(&v10->_guidanceInfo, a4);
+    objc_storeStrong(&v9->_feature, feature);
+    objc_storeStrong(&v10->_guidanceInfo, info);
   }
 
   return v10;

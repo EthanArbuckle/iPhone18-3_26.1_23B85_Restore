@@ -1,22 +1,22 @@
 @interface _TUIDynamicValueUpdate
-- (_TUIDynamicValueUpdate)initWithValue:(id)a3 transaction:(id)a4;
+- (_TUIDynamicValueUpdate)initWithValue:(id)value transaction:(id)transaction;
 - (void)dealloc;
 @end
 
 @implementation _TUIDynamicValueUpdate
 
-- (_TUIDynamicValueUpdate)initWithValue:(id)a3 transaction:(id)a4
+- (_TUIDynamicValueUpdate)initWithValue:(id)value transaction:(id)transaction
 {
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  transactionCopy = transaction;
   v12.receiver = self;
   v12.super_class = _TUIDynamicValueUpdate;
   v9 = [(_TUIDynamicValueUpdate *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_value, a3);
-    objc_storeStrong(&v10->_transaction, a4);
+    objc_storeStrong(&v9->_value, value);
+    objc_storeStrong(&v10->_transaction, transaction);
     [(_TUITransaction *)v10->_transaction addCompletionDeferral];
   }
 

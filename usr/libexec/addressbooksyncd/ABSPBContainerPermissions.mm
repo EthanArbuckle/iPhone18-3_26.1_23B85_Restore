@@ -1,21 +1,21 @@
 @interface ABSPBContainerPermissions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCanCreateGrouops:(BOOL)a3;
-- (void)setHasCanDeleteContacts:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCanCreateGrouops:(BOOL)grouops;
+- (void)setHasCanDeleteContacts:(BOOL)contacts;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABSPBContainerPermissions
 
-- (void)setHasCanDeleteContacts:(BOOL)a3
+- (void)setHasCanDeleteContacts:(BOOL)contacts
 {
-  if (a3)
+  if (contacts)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCanCreateGrouops:(BOOL)a3
+- (void)setHasCanCreateGrouops:(BOOL)grouops
 {
-  if (a3)
+  if (grouops)
   {
     v3 = 2;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = ABSPBContainerPermissions;
   v3 = [(ABSPBContainerPermissions *)&v7 description];
-  v4 = [(ABSPBContainerPermissions *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ABSPBContainerPermissions *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -96,16 +96,16 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     canCreateContacts = self->_canCreateContacts;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -126,26 +126,26 @@ LABEL_3:
 
   canDeleteContacts = self->_canDeleteContacts;
   PBDataWriterWriteBOOLField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     canCreateGrouops = self->_canCreateGrouops;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[8] = self->_canCreateContacts;
-    v4[12] |= 1u;
+    toCopy[8] = self->_canCreateContacts;
+    toCopy[12] |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -164,21 +164,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[10] = self->_canDeleteContacts;
-  v4[12] |= 4u;
+  toCopy[10] = self->_canDeleteContacts;
+  toCopy[12] |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    v4[9] = self->_canCreateGrouops;
-    v4[12] |= 2u;
+    toCopy[9] = self->_canCreateGrouops;
+    toCopy[12] |= 2u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -215,44 +215,44 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   if (*&self->_has)
   {
-    if ((v4[12] & 1) == 0)
+    if ((equalCopy[12] & 1) == 0)
     {
       goto LABEL_24;
     }
 
-    v6 = v4[8];
+    v6 = equalCopy[8];
     if (self->_canCreateContacts)
     {
-      if ((v4[8] & 1) == 0)
+      if ((equalCopy[8] & 1) == 0)
       {
         goto LABEL_24;
       }
     }
 
-    else if (v4[8])
+    else if (equalCopy[8])
     {
       goto LABEL_24;
     }
   }
 
-  else if (v4[12])
+  else if (equalCopy[12])
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((v4[12] & 4) == 0)
+    if ((equalCopy[12] & 4) == 0)
     {
       goto LABEL_6;
     }
@@ -262,40 +262,40 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if ((v4[12] & 4) == 0)
+  if ((equalCopy[12] & 4) == 0)
   {
     goto LABEL_24;
   }
 
-  v7 = v4[10];
+  v7 = equalCopy[10];
   if (self->_canDeleteContacts)
   {
-    if ((v4[10] & 1) == 0)
+    if ((equalCopy[10] & 1) == 0)
     {
       goto LABEL_24;
     }
   }
 
-  else if (v4[10])
+  else if (equalCopy[10])
   {
     goto LABEL_24;
   }
 
 LABEL_6:
-  v5 = (v4[12] & 2) == 0;
+  v5 = (equalCopy[12] & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[12] & 2) != 0)
+    if ((equalCopy[12] & 2) != 0)
     {
       if (self->_canCreateGrouops)
       {
-        if (v4[9])
+        if (equalCopy[9])
         {
           goto LABEL_26;
         }
       }
 
-      else if (!v4[9])
+      else if (!equalCopy[9])
       {
 LABEL_26:
         v5 = 1;
@@ -351,15 +351,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[12];
+  fromCopy = from;
+  v5 = fromCopy[12];
   if (v5)
   {
-    self->_canCreateContacts = v4[8];
+    self->_canCreateContacts = fromCopy[8];
     *&self->_has |= 1u;
-    v5 = v4[12];
+    v5 = fromCopy[12];
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -372,17 +372,17 @@ LABEL_3:
     }
   }
 
-  else if ((v4[12] & 4) == 0)
+  else if ((fromCopy[12] & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_canDeleteContacts = v4[10];
+  self->_canDeleteContacts = fromCopy[10];
   *&self->_has |= 4u;
-  if ((v4[12] & 2) != 0)
+  if ((fromCopy[12] & 2) != 0)
   {
 LABEL_4:
-    self->_canCreateGrouops = v4[9];
+    self->_canCreateGrouops = fromCopy[9];
     *&self->_has |= 2u;
   }
 

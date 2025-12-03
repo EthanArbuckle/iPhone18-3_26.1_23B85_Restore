@@ -2,35 +2,35 @@
 - (BOOL)shouldPresentCameraControlPane;
 - (BOOL)shouldPresentVisualIntelligencePane;
 - (_TtC5Setup38BuddyCameraControlPresentationProvider)init;
-- (_TtC5Setup38BuddyCameraControlPresentationProvider)initWithIsIntelligenceEnabled:(BOOL)a3;
-- (_TtC5Setup38BuddyCameraControlPresentationProvider)initWithIsIntelligenceEnabled:(BOOL)a3 preferenceController:(id)a4;
-- (void)updatePaneVisibilityPreferencesWithNewState:(BOOL)a3;
+- (_TtC5Setup38BuddyCameraControlPresentationProvider)initWithIsIntelligenceEnabled:(BOOL)enabled;
+- (_TtC5Setup38BuddyCameraControlPresentationProvider)initWithIsIntelligenceEnabled:(BOOL)enabled preferenceController:(id)controller;
+- (void)updatePaneVisibilityPreferencesWithNewState:(BOOL)state;
 @end
 
 @implementation BuddyCameraControlPresentationProvider
 
-- (_TtC5Setup38BuddyCameraControlPresentationProvider)initWithIsIntelligenceEnabled:(BOOL)a3
+- (_TtC5Setup38BuddyCameraControlPresentationProvider)initWithIsIntelligenceEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [objc_opt_self() buddyPreferences];
-  v6 = [(BuddyCameraControlPresentationProvider *)self initWithIsIntelligenceEnabled:v3 preferenceController:v5];
+  enabledCopy = enabled;
+  buddyPreferences = [objc_opt_self() buddyPreferences];
+  v6 = [(BuddyCameraControlPresentationProvider *)self initWithIsIntelligenceEnabled:enabledCopy preferenceController:buddyPreferences];
 
   return v6;
 }
 
-- (_TtC5Setup38BuddyCameraControlPresentationProvider)initWithIsIntelligenceEnabled:(BOOL)a3 preferenceController:(id)a4
+- (_TtC5Setup38BuddyCameraControlPresentationProvider)initWithIsIntelligenceEnabled:(BOOL)enabled preferenceController:(id)controller
 {
-  *(&self->super.isa + OBJC_IVAR____TtC5Setup38BuddyCameraControlPresentationProvider_isIntelligenceEnabled) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC5Setup38BuddyCameraControlPresentationProvider_preferenceController) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC5Setup38BuddyCameraControlPresentationProvider_isIntelligenceEnabled) = enabled;
+  *(&self->super.isa + OBJC_IVAR____TtC5Setup38BuddyCameraControlPresentationProvider_preferenceController) = controller;
   v7.receiver = self;
   v7.super_class = type metadata accessor for BuddyCameraControlPresentationProvider();
-  v5 = a4;
+  controllerCopy = controller;
   return [(BuddyCameraControlPresentationProvider *)&v7 init];
 }
 
 - (BOOL)shouldPresentCameraControlPane
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BuddyCameraControlPresentationProvider.shouldPresentCameraControlPane()();
 
   return v3;
@@ -44,17 +44,17 @@
   }
 
   v2 = *(&self->super.isa + OBJC_IVAR____TtC5Setup38BuddyCameraControlPresentationProvider_preferenceController);
-  v3 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
   LOBYTE(v2) = [v2 BOOLForKey:v4];
 
   return v2 ^ 1;
 }
 
-- (void)updatePaneVisibilityPreferencesWithNewState:(BOOL)a3
+- (void)updatePaneVisibilityPreferencesWithNewState:(BOOL)state
 {
-  v4 = self;
-  BuddyCameraControlPresentationProvider.updatePaneVisibilityPreferences(newState:)(a3);
+  selfCopy = self;
+  BuddyCameraControlPresentationProvider.updatePaneVisibilityPreferences(newState:)(state);
 }
 
 - (_TtC5Setup38BuddyCameraControlPresentationProvider)init

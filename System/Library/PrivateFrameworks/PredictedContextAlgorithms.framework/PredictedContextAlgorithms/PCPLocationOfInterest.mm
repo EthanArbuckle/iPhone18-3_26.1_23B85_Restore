@@ -1,16 +1,16 @@
 @interface PCPLocationOfInterest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPlaceType:(id)a3;
+- (int)StringAsPlaceType:(id)type;
 - (int)placeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPlaceType:(BOOL)a3;
-- (void)setHasVisitFrequency:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPlaceType:(BOOL)type;
+- (void)setHasVisitFrequency:(BOOL)frequency;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPLocationOfInterest
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasPlaceType:(BOOL)a3
+- (void)setHasPlaceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -43,30 +43,30 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsPlaceType:(id)a3
+- (int)StringAsPlaceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Home"])
+  else if ([typeCopy isEqualToString:@"Home"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Work"])
+  else if ([typeCopy isEqualToString:@"Work"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"School"])
+  else if ([typeCopy isEqualToString:@"School"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Gym"])
+  else if ([typeCopy isEqualToString:@"Gym"])
   {
     v4 = 4;
   }
@@ -79,9 +79,9 @@
   return v4;
 }
 
-- (void)setHasVisitFrequency:(BOOL)a3
+- (void)setHasVisitFrequency:(BOOL)frequency
 {
-  if (a3)
+  if (frequency)
   {
     v3 = 2;
   }
@@ -100,27 +100,27 @@
   v8.receiver = self;
   v8.super_class = PCPLocationOfInterest;
   v4 = [(PCPLocationOfInterest *)&v8 description];
-  v5 = [(PCPLocationOfInterest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPLocationOfInterest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   loiIdentifier = self->_loiIdentifier;
   if (loiIdentifier)
   {
-    [v3 setObject:loiIdentifier forKey:@"loiIdentifier"];
+    [dictionary setObject:loiIdentifier forKey:@"loiIdentifier"];
   }
 
   location = self->_location;
   if (location)
   {
-    v7 = [(PCPLocation *)location dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"location"];
+    dictionaryRepresentation = [(PCPLocation *)location dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"location"];
   }
 
   has = self->_has;
@@ -159,27 +159,27 @@
   placeMapItem = self->_placeMapItem;
   if (placeMapItem)
   {
-    v14 = [(PCPMapItem *)placeMapItem dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"placeMapItem"];
+    dictionaryRepresentation2 = [(PCPMapItem *)placeMapItem dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"placeMapItem"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_loiIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_location)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -187,7 +187,7 @@
   {
     placeType = self->_placeType;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -208,44 +208,44 @@ LABEL_7:
 
   lastVisitTimeCFAbsolute = self->_lastVisitTimeCFAbsolute;
   PBDataWriterWriteDoubleField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
     visitFrequency = self->_visitFrequency;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_9:
   if (self->_placeMapItem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_loiIdentifier)
   {
-    [v4 setLoiIdentifier:?];
-    v4 = v6;
+    [toCopy setLoiIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_location)
   {
     [v6 setLocation:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 12) = self->_placeType;
-    *(v4 + 52) |= 4u;
+    *(toCopy + 12) = self->_placeType;
+    *(toCopy + 52) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -264,31 +264,31 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 1) = *&self->_lastVisitTimeCFAbsolute;
-  *(v4 + 52) |= 1u;
+  *(toCopy + 1) = *&self->_lastVisitTimeCFAbsolute;
+  *(toCopy + 52) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
-    *(v4 + 2) = *&self->_visitFrequency;
-    *(v4 + 52) |= 2u;
+    *(toCopy + 2) = *&self->_visitFrequency;
+    *(toCopy + 52) |= 2u;
   }
 
 LABEL_9:
   if (self->_placeMapItem)
   {
     [v6 setPlaceMapItem:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_loiIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_loiIdentifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(PCPLocation *)self->_location copyWithZone:a3];
+  v8 = [(PCPLocation *)self->_location copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -328,23 +328,23 @@ LABEL_4:
   }
 
 LABEL_5:
-  v11 = [(PCPMapItem *)self->_placeMapItem copyWithZone:a3];
+  v11 = [(PCPMapItem *)self->_placeMapItem copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   loiIdentifier = self->_loiIdentifier;
-  if (loiIdentifier | *(v4 + 4))
+  if (loiIdentifier | *(equalCopy + 4))
   {
     if (![(NSData *)loiIdentifier isEqual:?])
     {
@@ -353,7 +353,7 @@ LABEL_5:
   }
 
   location = self->_location;
-  if (location | *(v4 + 3))
+  if (location | *(equalCopy + 3))
   {
     if (![(PCPLocation *)location isEqual:?])
     {
@@ -361,16 +361,16 @@ LABEL_5:
     }
   }
 
-  v7 = *(v4 + 52);
+  v7 = *(equalCopy + 52);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_placeType != *(v4 + 12))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_placeType != *(equalCopy + 12))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
 LABEL_23:
     v9 = 0;
@@ -379,32 +379,32 @@ LABEL_23:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_lastVisitTimeCFAbsolute != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_lastVisitTimeCFAbsolute != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_visitFrequency != *(v4 + 2))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_visitFrequency != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   placeMapItem = self->_placeMapItem;
-  if (placeMapItem | *(v4 + 5))
+  if (placeMapItem | *(equalCopy + 5))
   {
     v9 = [(PCPMapItem *)placeMapItem isEqual:?];
   }
@@ -506,18 +506,18 @@ LABEL_9:
   return v4 ^ v3 ^ v7 ^ v11 ^ v12 ^ [(PCPMapItem *)self->_placeMapItem hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v10 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v10 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(PCPLocationOfInterest *)self setLoiIdentifier:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
   location = self->_location;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (location)
   {
     if (!v6)
@@ -538,14 +538,14 @@ LABEL_9:
     [(PCPLocationOfInterest *)self setLocation:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_9:
-  v7 = *(v4 + 52);
+  v7 = *(fromCopy + 52);
   if ((v7 & 4) != 0)
   {
-    self->_placeType = *(v4 + 12);
+    self->_placeType = *(fromCopy + 12);
     *&self->_has |= 4u;
-    v7 = *(v4 + 52);
+    v7 = *(fromCopy + 52);
     if ((v7 & 1) == 0)
     {
 LABEL_11:
@@ -558,23 +558,23 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 52) & 1) == 0)
+  else if ((*(fromCopy + 52) & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_lastVisitTimeCFAbsolute = *(v4 + 1);
+  self->_lastVisitTimeCFAbsolute = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 52) & 2) != 0)
+  if ((*(fromCopy + 52) & 2) != 0)
   {
 LABEL_12:
-    self->_visitFrequency = *(v4 + 2);
+    self->_visitFrequency = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_13:
   placeMapItem = self->_placeMapItem;
-  v9 = *(v4 + 5);
+  v9 = *(fromCopy + 5);
   if (placeMapItem)
   {
     if (v9)

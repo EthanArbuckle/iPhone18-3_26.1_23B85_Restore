@@ -1,17 +1,17 @@
 @interface ASCredentialRequestButtonContinue
-- (ASCredentialRequestButtonContinue)initWithCoder:(id)a3;
-- (ASCredentialRequestButtonContinue)initWithFrame:(CGRect)a3;
+- (ASCredentialRequestButtonContinue)initWithCoder:(id)coder;
+- (ASCredentialRequestButtonContinue)initWithFrame:(CGRect)frame;
 - (id)_backgroundColorForCurrentControlState;
 - (void)_commonInit;
 @end
 
 @implementation ASCredentialRequestButtonContinue
 
-- (ASCredentialRequestButtonContinue)initWithFrame:(CGRect)a3
+- (ASCredentialRequestButtonContinue)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = ASCredentialRequestButtonContinue;
-  v3 = [(ASCredentialRequestButtonContinue *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCredentialRequestButtonContinue *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,11 +22,11 @@
   return v4;
 }
 
-- (ASCredentialRequestButtonContinue)initWithCoder:(id)a3
+- (ASCredentialRequestButtonContinue)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = ASCredentialRequestButtonContinue;
-  v3 = [(ASCredentialRequestButtonContinue *)&v7 initWithCoder:a3];
+  v3 = [(ASCredentialRequestButtonContinue *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -59,40 +59,40 @@
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 setMaximumContentSizeCategory:*MEMORY[0x1E69DDC38]];
   [(ASCredentialRequestButton *)self setTitleLabel:v5];
-  v8 = [(ASCredentialRequestButton *)self titleLabel];
-  [(ASCredentialRequestButtonContinue *)self addSubview:v8];
+  titleLabel = [(ASCredentialRequestButton *)self titleLabel];
+  [(ASCredentialRequestButtonContinue *)self addSubview:titleLabel];
 
-  v9 = [(ASCredentialRequestButton *)self titleLabel];
-  v10 = [v9 centerYAnchor];
-  v11 = [(ASCredentialRequestButtonContinue *)self centerYAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  titleLabel2 = [(ASCredentialRequestButton *)self titleLabel];
+  centerYAnchor = [titleLabel2 centerYAnchor];
+  centerYAnchor2 = [(ASCredentialRequestButtonContinue *)self centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v31[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
   v26 = [v13 mutableCopy];
 
-  v29 = [(ASCredentialRequestButton *)self titleLabel];
-  v28 = [v29 centerXAnchor];
-  v27 = [(ASCredentialRequestButtonContinue *)self centerXAnchor];
-  v25 = [v28 constraintEqualToAnchor:v27];
+  titleLabel3 = [(ASCredentialRequestButton *)self titleLabel];
+  centerXAnchor = [titleLabel3 centerXAnchor];
+  centerXAnchor2 = [(ASCredentialRequestButtonContinue *)self centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v30[0] = v25;
-  v24 = [(ASCredentialRequestButton *)self titleLabel];
-  v23 = [v24 leadingAnchor];
-  v14 = [(ASCredentialRequestButtonContinue *)self leadingAnchor];
+  titleLabel4 = [(ASCredentialRequestButton *)self titleLabel];
+  leadingAnchor = [titleLabel4 leadingAnchor];
+  leadingAnchor2 = [(ASCredentialRequestButtonContinue *)self leadingAnchor];
   +[ASViewServiceInterfaceUtilities continueButtonTitleMargin];
-  v15 = [v23 constraintGreaterThanOrEqualToAnchor:v14 constant:?];
+  v15 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:?];
   v30[1] = v15;
-  v16 = [(ASCredentialRequestButtonContinue *)self trailingAnchor];
-  v17 = [(ASCredentialRequestButton *)self titleLabel];
-  v18 = [v17 trailingAnchor];
+  trailingAnchor = [(ASCredentialRequestButtonContinue *)self trailingAnchor];
+  titleLabel5 = [(ASCredentialRequestButton *)self titleLabel];
+  trailingAnchor2 = [titleLabel5 trailingAnchor];
   +[ASViewServiceInterfaceUtilities continueButtonTitleMargin];
-  v19 = [v16 constraintGreaterThanOrEqualToAnchor:v18 constant:?];
+  v19 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:?];
   v30[2] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:3];
   [v26 addObjectsFromArray:v20];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v26];
-  v21 = [MEMORY[0x1E69DCAB0] automaticStyle];
-  [(ASCredentialRequestButtonContinue *)self setHoverStyle:v21];
+  automaticStyle = [MEMORY[0x1E69DCAB0] automaticStyle];
+  [(ASCredentialRequestButtonContinue *)self setHoverStyle:automaticStyle];
 
   v22 = *MEMORY[0x1E69E9840];
 }

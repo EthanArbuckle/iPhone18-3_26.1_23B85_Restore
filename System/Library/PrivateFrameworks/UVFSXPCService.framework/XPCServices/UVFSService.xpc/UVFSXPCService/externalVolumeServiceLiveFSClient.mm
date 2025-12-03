@@ -1,16 +1,16 @@
 @interface externalVolumeServiceLiveFSClient
-- (BOOL)sameVolumeAlreadyLoaded:(id)a3 device:(id)a4 withError:(id *)a5;
-- (id)getUniqueName:(id)a3 withError:(id *)a4;
-- (id)registerNewVolume:(id)a3 listener:(id)a4 device:(id)a5;
+- (BOOL)sameVolumeAlreadyLoaded:(id)loaded device:(id)device withError:(id *)error;
+- (id)getUniqueName:(id)name withError:(id *)error;
+- (id)registerNewVolume:(id)volume listener:(id)listener device:(id)device;
 @end
 
 @implementation externalVolumeServiceLiveFSClient
 
-- (id)registerNewVolume:(id)a3 listener:(id)a4 device:(id)a5
+- (id)registerNewVolume:(id)volume listener:(id)listener device:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  volumeCopy = volume;
+  listenerCopy = listener;
+  deviceCopy = device;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -34,7 +34,7 @@
   v26 = &v30;
   v15 = v13;
   v25 = v15;
-  [v14 addVolume:v8 listener:v9 description:v10 reply:&v21];
+  [v14 addVolume:volumeCopy listener:listenerCopy description:deviceCopy reply:&v21];
   v16 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v15, v16))
   {
@@ -55,9 +55,9 @@
   return v19;
 }
 
-- (id)getUniqueName:(id)a3 withError:(id *)a4
+- (id)getUniqueName:(id)name withError:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -80,9 +80,9 @@
   v9 = v7;
   v22 = v9;
   v10 = [v8 remoteObjectProxyWithErrorHandler:v21];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v17[0] = _NSConcreteStackBlock;
@@ -93,7 +93,7 @@
   v20 = &v30;
   v11 = v9;
   v18 = v11;
-  [v10 uniqueNameForName:v6 reply:v17];
+  [v10 uniqueNameForName:nameCopy reply:v17];
   v12 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v11, v12))
   {
@@ -107,9 +107,9 @@
     v31[5] = v13;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v31[5];
+    *error = v31[5];
   }
 
   v15 = v25[5];
@@ -120,10 +120,10 @@
   return v15;
 }
 
-- (BOOL)sameVolumeAlreadyLoaded:(id)a3 device:(id)a4 withError:(id *)a5
+- (BOOL)sameVolumeAlreadyLoaded:(id)loaded device:(id)device withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  loadedCopy = loaded;
+  deviceCopy = device;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -165,12 +165,12 @@
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_1000245E8();
-      if (!a5)
+      if (!error)
       {
 LABEL_7:
         if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
         {
-          sub_100024628(a5 == 0, a5);
+          sub_100024628(error == 0, error);
         }
 
 LABEL_21:
@@ -179,37 +179,37 @@ LABEL_21:
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
       goto LABEL_7;
     }
 
-    *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:60 userInfo:0, v22, v23, v24, v25];
+    *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:60 userInfo:0, v22, v23, v24, v25];
     goto LABEL_7;
   }
 
   v16 = v38[5];
   if (v16)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v16;
+      *error = v16;
     }
 
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000246AC(a5 == 0, a5);
+      sub_1000246AC(error == 0, error);
     }
 
     goto LABEL_21;
   }
 
-  v17 = [v32[5] objectForKeyedSubscript:{v8, v22, v23, v24, v25}];
-  if (!v17 || ([v32[5] objectForKeyedSubscript:v8], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqual:", v9), v18, v17, !v19))
+  v17 = [v32[5] objectForKeyedSubscript:{loadedCopy, v22, v23, v24, v25}];
+  if (!v17 || ([v32[5] objectForKeyedSubscript:loadedCopy], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqual:", deviceCopy), v18, v17, !v19))
   {
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000247B0(a5);
+      sub_1000247B0(error);
     }
 
     goto LABEL_21;

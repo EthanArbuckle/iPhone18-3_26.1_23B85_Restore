@@ -1,31 +1,31 @@
 @interface AVTAvatarAttributeEditorSectionControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)viewForIndex:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)viewForIndex:(int64_t)index;
 @end
 
 @implementation AVTAvatarAttributeEditorSectionControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTAvatarAttributeEditorSection"];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionItem"];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionController" hasInstanceMethod:@"section" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSection" hasInstanceMethod:@"sectionItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionItem" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSection" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionController" hasInstanceMethod:@"viewForIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionCoordinator"];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionCoordinator" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorDataSource" hasInstanceMethod:@"categories" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorDataSource" hasInstanceMethod:@"currentCategoryIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorCategory" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorCategory" hasInstanceMethod:@"sections" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"AVTAvatarAttributeEditorSection" hasRequiredInstanceMethod:@"localizedName"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSection"];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionItem"];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionController" hasInstanceMethod:@"section" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSection" hasInstanceMethod:@"sectionItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionItem" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSection" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionController" hasInstanceMethod:@"viewForIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionCoordinator"];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionCoordinator" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorDataSource" hasInstanceMethod:@"categories" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorDataSource" hasInstanceMethod:@"currentCategoryIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorCategory" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorCategory" hasInstanceMethod:@"sections" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"AVTAvatarAttributeEditorSection" hasRequiredInstanceMethod:@"localizedName"];
 }
 
-- (id)viewForIndex:(int64_t)a3
+- (id)viewForIndex:(int64_t)index
 {
   v30.receiver = self;
   v30.super_class = AVTAvatarAttributeEditorSectionControllerAccessibility;
@@ -34,7 +34,7 @@
   v6 = [(AVTAvatarAttributeEditorSectionControllerAccessibility *)self safeValueForKeyPath:@"section.sectionItems"];
   v7 = __UIAccessibilityCastAsClass();
 
-  v8 = [v7 objectAtIndex:a3];
+  v8 = [v7 objectAtIndex:index];
   MEMORY[0x29C2CABD0](@"AVTAvatarAttributeEditorSectionItem");
   if (objc_opt_isKindOfClass())
   {
@@ -89,7 +89,7 @@ LABEL_10:
 
     v20 = [v11 length];
     v21 = MEMORY[0x29EDBA0F8];
-    v22 = a3 + 1;
+    v22 = index + 1;
     if (v20)
     {
       v23 = accessibilityLocalizedString(@"starfish.number.of.in");

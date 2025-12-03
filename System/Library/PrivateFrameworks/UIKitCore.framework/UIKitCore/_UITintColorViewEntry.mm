@@ -1,5 +1,5 @@
 @interface _UITintColorViewEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -15,10 +15,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -28,11 +28,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_UITintColorViewEntry *)self tintColor];
-      v7 = [(_UITintColorViewEntry *)v5 tintColor];
+      v5 = equalCopy;
+      tintColor = [(_UITintColorViewEntry *)self tintColor];
+      tintColor2 = [(_UITintColorViewEntry *)v5 tintColor];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [tintColor isEqual:tintColor2];
     }
 
     else

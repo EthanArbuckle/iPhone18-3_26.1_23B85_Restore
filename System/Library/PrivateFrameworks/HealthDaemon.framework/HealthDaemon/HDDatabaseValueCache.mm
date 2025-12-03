@@ -1,17 +1,17 @@
 @interface HDDatabaseValueCache
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)statistics;
 - (HDDatabaseValueCache)init;
-- (HDDatabaseValueCache)initWithName:(id)a3 cacheScope:(int64_t)a4;
-- (HDDatabaseValueCacheTransactionStorage)_storageForTransaction:(int)a3 createIfNecessary:;
-- (id)_lock_objectForKey:(void *)a3 storage:;
+- (HDDatabaseValueCache)initWithName:(id)name cacheScope:(int64_t)scope;
+- (HDDatabaseValueCacheTransactionStorage)_storageForTransaction:(int)transaction createIfNecessary:;
+- (id)_lock_objectForKey:(void *)key storage:;
 - (id)diagnosticDescription;
-- (id)fetchObjectForKey:(id)a3 transaction:(id)a4 error:(id *)a5 faultHandler:(id)a6;
-- (id)objectForKey:(id)a3;
-- (void)_lock_storeObject:(void *)a3 forKey:(void *)a4 transaction:;
+- (id)fetchObjectForKey:(id)key transaction:(id)transaction error:(id *)error faultHandler:(id)handler;
+- (id)objectForKey:(id)key;
+- (void)_lock_storeObject:(void *)object forKey:(void *)key transaction:;
 - (void)dealloc;
-- (void)removeAllObjectsWithTransaction:(id)a3;
-- (void)removeObjectForKey:(id)a3 transaction:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4 transaction:(id)a5;
+- (void)removeAllObjectsWithTransaction:(id)transaction;
+- (void)removeObjectForKey:(id)key transaction:(id)transaction;
+- (void)setObject:(id)object forKey:(id)key transaction:(id)transaction;
 @end
 
 @implementation HDDatabaseValueCache
@@ -26,9 +26,9 @@
   return 0;
 }
 
-- (HDDatabaseValueCache)initWithName:(id)a3 cacheScope:(int64_t)a4
+- (HDDatabaseValueCache)initWithName:(id)name cacheScope:(int64_t)scope
 {
-  v6 = a3;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = HDDatabaseValueCache;
   v7 = [(HDDatabaseValueCache *)&v16 init];
@@ -38,11 +38,11 @@
     cache = v7->_cache;
     v7->_cache = v8;
 
-    v10 = [v6 copy];
+    v10 = [nameCopy copy];
     name = v7->_name;
     v7->_name = v10;
 
-    v7->_cacheScope = a4;
+    v7->_cacheScope = scope;
     v7->_lock._os_unfair_lock_opaque = 0;
     v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%p", objc_opt_class(), v7];
     threadLocalKey = v7->_threadLocalKey;
@@ -51,8 +51,8 @@
     v7->_statistics.faultCount = 0;
     v7->_statistics.lookupCount = 0;
     v7->_statistics.resetCount = 0;
-    v14 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v14 addObject:v7];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v7];
   }
 
   return v7;
@@ -60,8 +60,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-  [v3 removeObject:self];
+  mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+  [mEMORY[0x277D10AF8] removeObject:self];
 
   v4.receiver = self;
   v4.super_class = HDDatabaseValueCache;
@@ -77,23 +77,23 @@
   return result;
 }
 
-- (id)fetchObjectForKey:(id)a3 transaction:(id)a4 error:(id *)a5 faultHandler:(id)a6
+- (id)fetchObjectForKey:(id)key transaction:(id)transaction error:(id *)error faultHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v11)
+  keyCopy = key;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  if (keyCopy)
   {
-    if (v12)
+    if (transactionCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_21:
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"HDDatabaseValueCache.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"transaction != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseValueCache.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"transaction != nil"}];
 
-    if (v13)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -101,28 +101,28 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"HDDatabaseValueCache.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDDatabaseValueCache.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
 
-  if (!v12)
+  if (!transactionCopy)
   {
     goto LABEL_21;
   }
 
 LABEL_3:
-  if (v13)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_22:
-  v24 = [MEMORY[0x277CCA890] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"HDDatabaseValueCache.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"handler != NULL"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDDatabaseValueCache.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"handler != NULL"}];
 
 LABEL_4:
   os_unfair_lock_lock(&self->_lock);
-  v14 = [(HDDatabaseValueCache *)self _storageForTransaction:v12 createIfNecessary:0];
-  v15 = [(HDDatabaseValueCache *)self _lock_objectForKey:v11 storage:v14];
+  v14 = [(HDDatabaseValueCache *)self _storageForTransaction:transactionCopy createIfNecessary:0];
+  v15 = [(HDDatabaseValueCache *)self _lock_objectForKey:keyCopy storage:v14];
   if (v15)
   {
     v16 = v15;
@@ -135,17 +135,17 @@ LABEL_11:
   ++self->_statistics.faultCount;
   v18 = objc_autoreleasePoolPush();
   v25 = 0;
-  v16 = v13[2](v13, v12, &v25);
+  v16 = handlerCopy[2](handlerCopy, transactionCopy, &v25);
   v17 = v25;
   objc_autoreleasePoolPop(v18);
   if (v16)
   {
-    if (v14 || ([(HDDatabaseValueCache *)self _storageForTransaction:v12 createIfNecessary:1], v19 = objc_claimAutoreleasedReturnValue(), (v14 = v19) != 0))
+    if (v14 || ([(HDDatabaseValueCache *)self _storageForTransaction:transactionCopy createIfNecessary:1], v19 = objc_claimAutoreleasedReturnValue(), (v14 = v19) != 0))
     {
       v19 = v14[2];
     }
 
-    [v19 setObject:v16 forKeyedSubscript:v11];
+    [v19 setObject:v16 forKeyedSubscript:keyCopy];
     goto LABEL_11;
   }
 
@@ -153,10 +153,10 @@ LABEL_11:
   v17 = v17;
   if (v17)
   {
-    if (a5)
+    if (error)
     {
       v21 = v17;
-      *a5 = v17;
+      *error = v17;
     }
 
     else
@@ -171,15 +171,15 @@ LABEL_12:
   return v16;
 }
 
-- (HDDatabaseValueCacheTransactionStorage)_storageForTransaction:(int)a3 createIfNecessary:
+- (HDDatabaseValueCacheTransactionStorage)_storageForTransaction:(int)transaction createIfNecessary:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [MEMORY[0x277CCACC8] currentThread];
-    v7 = [v6 threadDictionary];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v8 = [v7 objectForKeyedSubscript:*(a1 + 16)];
+    v8 = [threadDictionary objectForKeyedSubscript:*(self + 16)];
     if (v8)
     {
       v9 = 1;
@@ -187,69 +187,69 @@ LABEL_12:
 
     else
     {
-      v9 = a3 == 0;
+      v9 = transaction == 0;
     }
 
     if (!v9)
     {
       if (!v5)
       {
-        v19 = [MEMORY[0x277CCA890] currentHandler];
-        [v19 handleFailureInMethod:sel__storageForTransaction_createIfNecessary_ object:a1 file:@"HDDatabaseValueCache.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"transaction != nil"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel__storageForTransaction_createIfNecessary_ object:self file:@"HDDatabaseValueCache.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"transaction != nil"}];
       }
 
       v10 = objc_alloc_init(HDDatabaseValueCacheTransactionStorage);
       v11 = v5;
       v12 = v11;
-      v13 = *(a1 + 24);
-      if (!v13)
+      cacheScope = *(self + 24);
+      if (!cacheScope)
       {
         if (v5 && [v11 cacheScope])
         {
-          v13 = [v12 cacheScope];
+          cacheScope = [v12 cacheScope];
         }
 
         else
         {
-          v14 = [MEMORY[0x277CCDD30] sharedBehavior];
-          v15 = [v14 features];
-          v16 = [v15 databaseStateCacheTransactionScoped];
+          mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+          features = [mEMORY[0x277CCDD30] features];
+          databaseStateCacheTransactionScoped = [features databaseStateCacheTransactionScoped];
 
-          if (v16)
+          if (databaseStateCacheTransactionScoped)
           {
-            v13 = 1;
+            cacheScope = 1;
           }
 
           else
           {
-            v13 = 2;
+            cacheScope = 2;
           }
         }
       }
 
-      if (!v10 || (v10->_cacheScope = v13) == 0)
+      if (!v10 || (v10->_cacheScope = cacheScope) == 0)
       {
-        v20 = [MEMORY[0x277CCA890] currentHandler];
-        [v20 handleFailureInMethod:sel__storageForTransaction_createIfNecessary_ object:a1 file:@"HDDatabaseValueCache.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"storage.cacheScope != HDDatabaseTransactionCacheScopeUnspecified"}];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel__storageForTransaction_createIfNecessary_ object:self file:@"HDDatabaseValueCache.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"storage.cacheScope != HDDatabaseTransactionCacheScopeUnspecified"}];
       }
 
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __65__HDDatabaseValueCache__storageForTransaction_createIfNecessary___block_invoke;
       v24[3] = &unk_278613830;
-      v24[4] = a1;
+      v24[4] = self;
       v8 = v10;
       v25 = v8;
-      v26 = v7;
+      v26 = threadDictionary;
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __65__HDDatabaseValueCache__storageForTransaction_createIfNecessary___block_invoke_2;
       v21[3] = &unk_278619460;
       v17 = v26;
       v22 = v17;
-      v23 = a1;
+      selfCopy = self;
       [v12 onCommit:v24 orRollback:v21];
-      [v17 setObject:v8 forKeyedSubscript:*(a1 + 16)];
+      [v17 setObject:v8 forKeyedSubscript:*(self + 16)];
     }
   }
 
@@ -261,17 +261,17 @@ LABEL_12:
   return v8;
 }
 
-- (id)_lock_objectForKey:(void *)a3 storage:
+- (id)_lock_objectForKey:(void *)key storage:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  keyCopy = key;
+  if (self)
   {
-    os_unfair_lock_assert_owner(a1 + 8);
-    ++*(a1 + 6);
-    if (v6)
+    os_unfair_lock_assert_owner(self + 8);
+    ++*(self + 6);
+    if (keyCopy)
     {
-      v7 = v6[2];
+      v7 = keyCopy[2];
     }
 
     else
@@ -280,8 +280,8 @@ LABEL_12:
     }
 
     v8 = [v7 objectForKeyedSubscript:v5];
-    v9 = [MEMORY[0x277CBEB68] null];
-    v10 = [v8 isEqual:v9];
+    null = [MEMORY[0x277CBEB68] null];
+    v10 = [v8 isEqual:null];
 
     if (v10)
     {
@@ -295,48 +295,48 @@ LABEL_12:
 
     else
     {
-      if (v6 && (v6[1] & 1) != 0)
+      if (keyCopy && (keyCopy[1] & 1) != 0)
       {
 LABEL_5:
-        a1 = 0;
+        self = 0;
 LABEL_12:
 
         goto LABEL_13;
       }
 
-      v11 = [*(a1 + 1) objectForKeyedSubscript:v5];
+      v11 = [*(self + 1) objectForKeyedSubscript:v5];
     }
 
-    a1 = v11;
+    self = v11;
     goto LABEL_12;
   }
 
 LABEL_13:
 
-  return a1;
+  return self;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(HDDatabaseValueCache *)self _storageForTransaction:0 createIfNecessary:?];
-  v6 = [(HDDatabaseValueCache *)self _lock_objectForKey:v4 storage:v5];
+  v6 = [(HDDatabaseValueCache *)self _lock_objectForKey:keyCopy storage:v5];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v6;
 }
 
-- (void)_lock_storeObject:(void *)a3 forKey:(void *)a4 transaction:
+- (void)_lock_storeObject:(void *)object forKey:(void *)key transaction:
 {
-  if (a1)
+  if (self)
   {
-    v7 = a4;
-    v8 = a3;
+    keyCopy = key;
+    objectCopy = object;
     v9 = a2;
-    os_unfair_lock_assert_owner(a1 + 8);
-    v11 = [(HDDatabaseValueCache *)a1 _storageForTransaction:v7 createIfNecessary:1];
+    os_unfair_lock_assert_owner(self + 8);
+    v11 = [(HDDatabaseValueCache *)self _storageForTransaction:keyCopy createIfNecessary:1];
 
     v10 = v11;
     if (v11)
@@ -344,50 +344,50 @@ LABEL_13:
       v10 = v11[2];
     }
 
-    [v10 setObject:v9 forKeyedSubscript:v8];
+    [v10 setObject:v9 forKeyedSubscript:objectCopy];
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 transaction:(id)a5
+- (void)setObject:(id)object forKey:(id)key transaction:(id)transaction
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  objectCopy = object;
+  keyCopy = key;
+  transactionCopy = transaction;
+  if (!keyCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HDDatabaseValueCache.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseValueCache.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(HDDatabaseValueCache *)self _lock_storeObject:v12 forKey:v9 transaction:v10];
+  [(HDDatabaseValueCache *)self _lock_storeObject:objectCopy forKey:keyCopy transaction:transactionCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObjectForKey:(id)a3 transaction:(id)a4
+- (void)removeObjectForKey:(id)key transaction:(id)transaction
 {
-  v10 = a3;
-  v7 = a4;
-  if (!v10)
+  keyCopy = key;
+  transactionCopy = transaction;
+  if (!keyCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HDDatabaseValueCache.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseValueCache.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v8 = [MEMORY[0x277CBEB68] null];
-  [(HDDatabaseValueCache *)self _lock_storeObject:v8 forKey:v10 transaction:v7];
+  null = [MEMORY[0x277CBEB68] null];
+  [(HDDatabaseValueCache *)self _lock_storeObject:null forKey:keyCopy transaction:transactionCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeAllObjectsWithTransaction:(id)a3
+- (void)removeAllObjectsWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_lock(&self->_lock);
   if (self)
   {
-    v5 = v4;
+    v5 = transactionCopy;
     os_unfair_lock_assert_owner(&self->_lock);
     v6 = [(HDDatabaseValueCache *)self _storageForTransaction:v5 createIfNecessary:1];
 
@@ -501,8 +501,8 @@ void __50__HDDatabaseValueCache__commitTransactionStorage___block_invoke(uint64_
   }
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HDDatabaseValueCache *)self name];
-  v7 = [v5 stringWithFormat:@"%@: %lu values, %d%% fault rate (%ld/%ld), %ld resets", v6, -[NSMutableDictionary count](self->_cache, "count"), v4, self->_statistics.faultCount, self->_statistics.lookupCount, self->_statistics.resetCount, 0];
+  name = [(HDDatabaseValueCache *)self name];
+  v7 = [v5 stringWithFormat:@"%@: %lu values, %d%% fault rate (%ld/%ld), %ld resets", name, -[NSMutableDictionary count](self->_cache, "count"), v4, self->_statistics.faultCount, self->_statistics.lookupCount, self->_statistics.resetCount, 0];
 
   os_unfair_lock_unlock(&self->_lock);
 

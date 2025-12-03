@@ -1,62 +1,62 @@
 @interface FBSBasicSceneClientAgent
-- (void)scene:(id)a3 didInitializeWithEvent:(id)a4 completion:(id)a5;
-- (void)scene:(id)a3 handleEvent:(id)a4 withCompletion:(id)a5;
-- (void)scene:(id)a3 willInvalidateWithEvent:(id)a4 completion:(id)a5;
+- (void)scene:(id)scene didInitializeWithEvent:(id)event completion:(id)completion;
+- (void)scene:(id)scene handleEvent:(id)event withCompletion:(id)completion;
+- (void)scene:(id)scene willInvalidateWithEvent:(id)event completion:(id)completion;
 @end
 
 @implementation FBSBasicSceneClientAgent
 
-- (void)scene:(id)a3 didInitializeWithEvent:(id)a4 completion:(id)a5
+- (void)scene:(id)scene didInitializeWithEvent:(id)event completion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  eventCopy = event;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
 
-  if (WeakRetained != v12)
+  if (WeakRetained != sceneCopy)
   {
     [FBSBasicSceneClientAgent scene:a2 didInitializeWithEvent:? completion:?];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)scene:(id)a3 willInvalidateWithEvent:(id)a4 completion:(id)a5
+- (void)scene:(id)scene willInvalidateWithEvent:(id)event completion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  eventCopy = event;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
 
-  if (WeakRetained != v12)
+  if (WeakRetained != sceneCopy)
   {
     [FBSBasicSceneClientAgent scene:a2 willInvalidateWithEvent:? completion:?];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)scene:(id)a3 handleEvent:(id)a4 withCompletion:(id)a5
+- (void)scene:(id)scene handleEvent:(id)event withCompletion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  eventCopy = event;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->super._scene);
 
-  if (WeakRetained != v12)
+  if (WeakRetained != sceneCopy)
   {
     [FBSBasicSceneClientAgent scene:a2 handleEvent:? withCompletion:?];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 

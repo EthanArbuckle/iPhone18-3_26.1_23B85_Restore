@@ -1,12 +1,12 @@
 @interface PLThermalMonitorService
 + (void)load;
 - (PLThermalMonitorService)init;
-- (id)handlePowerHUDCallback:(id)a3;
-- (id)handleSysdiagnoseCallback:(id)a3;
-- (void)handleSMCCallback:(id)a3;
+- (id)handlePowerHUDCallback:(id)callback;
+- (id)handleSysdiagnoseCallback:(id)callback;
+- (void)handleSMCCallback:(id)callback;
 - (void)initOperatorDependancies;
-- (void)performLogging:(id)a3;
-- (void)performLoggingWithCadence:(int)a3 withDate:(id)a4;
+- (void)performLogging:(id)logging;
+- (void)performLoggingWithCadence:(int)cadence withDate:(id)date;
 @end
 
 @implementation PLThermalMonitorService
@@ -29,7 +29,7 @@ void __51__PLThermalMonitorService_initOperatorDependancies__block_invoke(uint64
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLThermalMonitorService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -57,49 +57,49 @@ void __51__PLThermalMonitorService_initOperatorDependancies__block_invoke(uint64
   self->_thermalNotification = v5;
 
   v7 = objc_alloc(MEMORY[0x277D3F278]);
-  v8 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __51__PLThermalMonitorService_initOperatorDependancies__block_invoke_30;
   v16[3] = &unk_278259810;
   v16[4] = self;
-  v9 = [v7 initWithWorkQueue:v8 withRegistration:&unk_282C16C80 withBlock:v16];
+  v9 = [v7 initWithWorkQueue:workQueue withRegistration:&unk_282C16C80 withBlock:v16];
   sysdiagnoseResponder = self->_sysdiagnoseResponder;
   self->_sysdiagnoseResponder = v9;
 
   v11 = objc_alloc(MEMORY[0x277D3F278]);
-  v12 = [(PLOperator *)self workQueue];
+  workQueue2 = [(PLOperator *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __51__PLThermalMonitorService_initOperatorDependancies__block_invoke_41;
   v15[3] = &unk_278259810;
   v15[4] = self;
-  v13 = [v11 initWithWorkQueue:v12 withRegistration:&unk_282C16CA8 withBlock:v15];
+  v13 = [v11 initWithWorkQueue:workQueue2 withRegistration:&unk_282C16CA8 withBlock:v15];
   powerHUDResponder = self->_powerHUDResponder;
   self->_powerHUDResponder = v13;
 }
 
-- (void)performLoggingWithCadence:(int)a3 withDate:(id)a4
+- (void)performLoggingWithCadence:(int)cadence withDate:(id)date
 {
-  v6 = a4;
-  v7 = [(PLThermalMonitorService *)self lastSMCThermalTrigger];
+  dateCopy = date;
+  lastSMCThermalTrigger = [(PLThermalMonitorService *)self lastSMCThermalTrigger];
 
-  if (!v7)
+  if (!lastSMCThermalTrigger)
   {
-    [(PLThermalMonitorService *)self setLastSMCThermalTrigger:v6];
+    [(PLThermalMonitorService *)self setLastSMCThermalTrigger:dateCopy];
     v12 = &unk_282C16CD0;
 LABEL_8:
     [(PLThermalMonitorService *)self performLogging:v12];
     goto LABEL_9;
   }
 
-  v8 = [(PLThermalMonitorService *)self lastSMCThermalTrigger];
-  [v8 timeIntervalSinceDate:v6];
+  lastSMCThermalTrigger2 = [(PLThermalMonitorService *)self lastSMCThermalTrigger];
+  [lastSMCThermalTrigger2 timeIntervalSinceDate:dateCopy];
   v10 = fabs(v9);
 
-  if (v10 >= a3)
+  if (v10 >= cadence)
   {
-    [(PLThermalMonitorService *)self setLastSMCThermalTrigger:v6];
+    [(PLThermalMonitorService *)self setLastSMCThermalTrigger:dateCopy];
     v12 = &unk_282C16CF8;
     goto LABEL_8;
   }
@@ -114,23 +114,23 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)handleSMCCallback:(id)a3
+- (void)handleSMCCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = [MEMORY[0x277D3F180] BOOLForKey:@"EnableSMCNotification" ifNotSet:1];
-  if (v4 && v5)
+  if (callbackCopy && v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"timestamp"];
+    v6 = [callbackCopy objectForKeyedSubscript:@"timestamp"];
     if (![MEMORY[0x277D3F208] isiPhone] || !_os_feature_enabled_impl())
     {
-      v10 = [v4 objectForKeyedSubscript:@"mTPL"];
+      v10 = [callbackCopy objectForKeyedSubscript:@"mTPL"];
       if (v10)
       {
         v11 = v10;
-        v12 = [v4 objectForKeyedSubscript:@"mTPL"];
-        v13 = [v12 integerValue];
+        v12 = [callbackCopy objectForKeyedSubscript:@"mTPL"];
+        integerValue = [v12 integerValue];
 
-        if (v13 >= 1)
+        if (integerValue >= 1)
         {
           [(PLThermalMonitorService *)self performLoggingWithCadence:40 withDate:v6];
         }
@@ -139,7 +139,7 @@ LABEL_9:
       goto LABEL_42;
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"TVMx"];
+    v7 = [callbackCopy objectForKeyedSubscript:@"TVMx"];
     v8 = v7;
     if (v7)
     {
@@ -148,12 +148,12 @@ LABEL_9:
 
     else
     {
-      v9 = [v4 objectForKeyedSubscript:@"TVRM"];
+      v9 = [callbackCopy objectForKeyedSubscript:@"TVRM"];
     }
 
     v14 = v9;
 
-    v15 = [v4 objectForKeyedSubscript:@"xDPE"];
+    v15 = [callbackCopy objectForKeyedSubscript:@"xDPE"];
     v16 = v15;
     if (v14)
     {
@@ -178,15 +178,15 @@ LABEL_9:
     v20 = v19 < 2.3 || v18;
     if ((v20 & 1) == 0)
     {
-      v31 = [(PLThermalMonitorService *)self sustainedStartDate];
+      sustainedStartDate = [(PLThermalMonitorService *)self sustainedStartDate];
 
-      if (!v31)
+      if (!sustainedStartDate)
       {
         [(PLThermalMonitorService *)self setSustainedStartDate:v6];
       }
 
-      v32 = [(PLThermalMonitorService *)self sustainedStartDate];
-      [v32 timeIntervalSinceDate:v6];
+      sustainedStartDate2 = [(PLThermalMonitorService *)self sustainedStartDate];
+      [sustainedStartDate2 timeIntervalSinceDate:v6];
       v34 = fabs(v33);
 
       v35 = PLLogThermal();
@@ -208,18 +208,18 @@ LABEL_9:
         _os_log_debug_impl(&dword_21A4C6000, v35, OS_LOG_TYPE_DEBUG, "Increase logging if we are in high power and high thermal condition", v40, 2u);
       }
 
-      v27 = self;
+      selfCopy2 = self;
       v28 = 60;
       goto LABEL_40;
     }
 
 LABEL_19:
-    v21 = [v4 objectForKeyedSubscript:@"mTPL"];
-    if (!v21 || (v22 = v21, [v4 objectForKeyedSubscript:@"mTPL"], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "integerValue"), v23, v22, v24 < 1))
+    v21 = [callbackCopy objectForKeyedSubscript:@"mTPL"];
+    if (!v21 || (v22 = v21, [callbackCopy objectForKeyedSubscript:@"mTPL"], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "integerValue"), v23, v22, v24 < 1))
     {
-      v29 = [(PLThermalMonitorService *)self sustainedStartDate];
+      sustainedStartDate3 = [(PLThermalMonitorService *)self sustainedStartDate];
 
-      if (v29)
+      if (sustainedStartDate3)
       {
         [(PLThermalMonitorService *)self setSustainedStartDate:0];
       }
@@ -234,9 +234,9 @@ LABEL_19:
       goto LABEL_41;
     }
 
-    v25 = [(PLThermalMonitorService *)self sustainedStartDate];
+    sustainedStartDate4 = [(PLThermalMonitorService *)self sustainedStartDate];
 
-    if (v25)
+    if (sustainedStartDate4)
     {
       [(PLThermalMonitorService *)self setSustainedStartDate:0];
     }
@@ -248,25 +248,25 @@ LABEL_19:
       _os_log_debug_impl(&dword_21A4C6000, v26, OS_LOG_TYPE_DEBUG, "Increase logging if we are in thermal pressure regardless of power", buf, 2u);
     }
 
-    v27 = self;
+    selfCopy2 = self;
     v28 = 300;
 LABEL_40:
-    [(PLThermalMonitorService *)v27 performLoggingWithCadence:v28 withDate:v6];
+    [(PLThermalMonitorService *)selfCopy2 performLoggingWithCadence:v28 withDate:v6];
 LABEL_41:
 
 LABEL_42:
   }
 }
 
-- (id)handleSysdiagnoseCallback:(id)a3
+- (id)handleSysdiagnoseCallback:(id)callback
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   v5 = PLLogThermal();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = callbackCopy;
     _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "Received event from Sysdiagnose: %@", &v8, 0xCu);
   }
 
@@ -275,15 +275,15 @@ LABEL_42:
   return &unk_282C16D48;
 }
 
-- (id)handlePowerHUDCallback:(id)a3
+- (id)handlePowerHUDCallback:(id)callback
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   v5 = PLLogThermal();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = callbackCopy;
     _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "Received event from PowerHUD: %@", &v8, 0xCu);
   }
 
@@ -292,19 +292,19 @@ LABEL_42:
   return &unk_282C16D98;
 }
 
-- (void)performLogging:(id)a3
+- (void)performLogging:(id)logging
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loggingCopy = logging;
   v5 = PLLogThermal();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = loggingCopy;
     _os_log_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEFAULT, "Sent notification to submodules: %{public}@", &v7, 0xCu);
   }
 
-  [MEMORY[0x277D3F258] postNotificationName:@"PLThermalMonitorNotification" object:self userInfo:v4];
+  [MEMORY[0x277D3F258] postNotificationName:@"PLThermalMonitorNotification" object:self userInfo:loggingCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 

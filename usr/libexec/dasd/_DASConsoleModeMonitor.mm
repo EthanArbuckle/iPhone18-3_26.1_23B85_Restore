@@ -1,11 +1,11 @@
 @interface _DASConsoleModeMonitor
 + (id)sharedMonitor;
-- (BOOL)queryAndUpdateCurrentConsoleModeState:(id)a3;
-- (BOOL)queryConsoleModeState:(unint64_t)a3;
+- (BOOL)queryAndUpdateCurrentConsoleModeState:(id)state;
+- (BOOL)queryConsoleModeState:(unint64_t)state;
 - (_DASConsoleModeMonitor)init;
-- (id)registerStateChangeHandler:(id)a3 forConsoleModeType:(unint64_t)a4;
-- (void)consoleModeNotificationHandler:(id)a3;
-- (void)deregisterStateChangeHandler:(id)a3 forConsoleModeType:(unint64_t)a4;
+- (id)registerStateChangeHandler:(id)handler forConsoleModeType:(unint64_t)type;
+- (void)consoleModeNotificationHandler:(id)handler;
+- (void)deregisterStateChangeHandler:(id)handler forConsoleModeType:(unint64_t)type;
 - (void)registerForConsoleModeChangedNotification;
 @end
 
@@ -96,7 +96,7 @@
   block[1] = 3221225472;
   block[2] = sub_10009F630;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B698 != -1)
   {
     dispatch_once(&qword_10020B698, block);
@@ -141,7 +141,7 @@
         objc_initWeak(&location, self);
         v7 = [(NSMutableDictionary *)self->_notificationMap objectForKeyedSubscript:v5];
         v8 = v7;
-        v9 = [v7 UTF8String];
+        uTF8String = [v7 UTF8String];
         notifyQueue = self->_notifyQueue;
         handler[0] = _NSConcreteStackBlock;
         handler[1] = 3221225472;
@@ -149,7 +149,7 @@
         handler[3] = &unk_1001B79F8;
         objc_copyWeak(&v14, &location);
         handler[4] = v5;
-        notify_register_dispatch(v9, (self + v6), notifyQueue, handler);
+        notify_register_dispatch(uTF8String, (self + v6), notifyQueue, handler);
 
         objc_destroyWeak(&v14);
         objc_destroyWeak(&location);
@@ -162,10 +162,10 @@
   }
 }
 
-- (void)consoleModeNotificationHandler:(id)a3
+- (void)consoleModeNotificationHandler:(id)handler
 {
-  v4 = a3;
-  if ([(_DASConsoleModeMonitor *)self queryAndUpdateCurrentConsoleModeState:v4])
+  handlerCopy = handler;
+  if ([(_DASConsoleModeMonitor *)self queryAndUpdateCurrentConsoleModeState:handlerCopy])
   {
     v22 = 0;
     v23 = &v22;
@@ -180,8 +180,8 @@
     block[3] = &unk_1001B5D98;
     v21 = &v22;
     block[4] = self;
-    v14 = v4;
-    v6 = v4;
+    v14 = handlerCopy;
+    v6 = handlerCopy;
     v20 = v6;
     dispatch_sync(handlerQueue, block);
     v17 = 0u;
@@ -222,15 +222,15 @@
     }
 
     _Block_object_dispose(&v22, 8);
-    v4 = v14;
+    handlerCopy = v14;
   }
 }
 
-- (BOOL)queryAndUpdateCurrentConsoleModeState:(id)a3
+- (BOOL)queryAndUpdateCurrentConsoleModeState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   state64 = 0;
-  if ([v4 unsignedIntValue] == 10)
+  if ([stateCopy unsignedIntValue] == 10)
   {
     v5 = 8;
   }
@@ -253,17 +253,17 @@
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->_consoleModeStateMap objectForKeyedSubscript:v4];
-    v7 = [v6 BOOLValue];
+    v6 = [(NSMutableDictionary *)self->_consoleModeStateMap objectForKeyedSubscript:stateCopy];
+    bOOLValue = [v6 BOOLValue];
 
     state = notify_get_state(*(&self->super.isa + v5), &state64);
     v9 = self->_log;
     if (state)
     {
-      v10 = state;
+      stateCopy2 = state;
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
       {
-        sub_100126928(v10, v9);
+        sub_100126928(stateCopy2, v9);
       }
     }
 
@@ -274,7 +274,7 @@
         *buf = 134218242;
         v18 = state64;
         v19 = 2112;
-        v20 = v4;
+        v20 = stateCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Console Mode Status is now %llu for %@", buf, 0x16u);
       }
 
@@ -288,17 +288,17 @@
         v13 = &__kCFBooleanFalse;
       }
 
-      [(NSMutableDictionary *)self->_consoleModeStateMap setObject:v13 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_consoleModeStateMap setObject:v13 forKeyedSubscript:stateCopy];
     }
 
-    v14 = [(NSMutableDictionary *)self->_consoleModeStateMap objectForKeyedSubscript:v4];
-    v12 = v7 ^ [v14 BOOLValue];
+    v14 = [(NSMutableDictionary *)self->_consoleModeStateMap objectForKeyedSubscript:stateCopy];
+    v12 = bOOLValue ^ [v14 BOOLValue];
   }
 
   return v12;
 }
 
-- (BOOL)queryConsoleModeState:(unint64_t)a3
+- (BOOL)queryConsoleModeState:(unint64_t)state
 {
   v7 = 0;
   v8 = &v7;
@@ -310,7 +310,7 @@
   block[2] = sub_10009FE3C;
   block[3] = &unk_1001B7A20;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = state;
   block[4] = self;
   dispatch_sync(notifyQueue, block);
   v4 = *(v8 + 24);
@@ -318,10 +318,10 @@
   return v4;
 }
 
-- (id)registerStateChangeHandler:(id)a3 forConsoleModeType:(unint64_t)a4
+- (id)registerStateChangeHandler:(id)handler forConsoleModeType:(unint64_t)type
 {
-  v6 = a3;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v7 = +[NSUUID UUID];
     handlerQueue = self->_handlerQueue;
@@ -332,8 +332,8 @@
     v13[4] = self;
     v9 = v7;
     v14 = v9;
-    v16 = a4;
-    v15 = v6;
+    typeCopy = type;
+    v15 = handlerCopy;
     dispatch_sync(handlerQueue, v13);
     v10 = v15;
     v11 = v9;
@@ -347,18 +347,18 @@
   return v11;
 }
 
-- (void)deregisterStateChangeHandler:(id)a3 forConsoleModeType:(unint64_t)a4
+- (void)deregisterStateChangeHandler:(id)handler forConsoleModeType:(unint64_t)type
 {
-  v6 = a3;
+  handlerCopy = handler;
   handlerQueue = self->_handlerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A01A8;
   block[3] = &unk_1001B5DC0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = handlerCopy;
+  typeCopy = type;
+  v8 = handlerCopy;
   dispatch_sync(handlerQueue, block);
 }
 

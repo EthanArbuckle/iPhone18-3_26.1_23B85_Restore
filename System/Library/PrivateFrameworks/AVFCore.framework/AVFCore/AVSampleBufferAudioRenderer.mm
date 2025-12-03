@@ -1,42 +1,42 @@
 @interface AVSampleBufferAudioRenderer
 + (id)currentFigAudioRendererFactory;
 + (id)sampleBufferAudioRenderer;
-+ (void)setFigAudioRendererFactory:(id)a3 forQueue:(id)a4;
++ (void)setFigAudioRendererFactory:(id)factory forQueue:(id)queue;
 - (AVAudioTimePitchAlgorithm)audioTimePitchAlgorithm;
 - (AVSampleBufferAudioRenderer)init;
 - (BOOL)hasSufficientMediaDataForReliablePlaybackStart;
 - (BOOL)isDefunct;
 - (BOOL)isReadyForMoreMediaData;
-- (BOOL)setRenderSynchronizer:(id)a3 error:(id *)a4;
+- (BOOL)setRenderSynchronizer:(id)synchronizer error:(id *)error;
 - (BOOL)willTrimShortDurationSamples;
 - (NSError)error;
 - (OpaqueCMTimebase)timebase;
 - (id)audioSession;
 - (id)loggingIdentifier;
 - (id)outputContext;
-- (int)_attachToContentKeySession:(id)a3 contentKeyBoss:(OpaqueFigContentKeyBoss *)a4 failedSinceAlreadyAttachedToAnotherSession:(BOOL *)a5;
+- (int)_attachToContentKeySession:(id)session contentKeyBoss:(OpaqueFigContentKeyBoss *)boss failedSinceAlreadyAttachedToAnotherSession:(BOOL *)anotherSession;
 - (int)_initializeTimebase;
 - (int)_installNotificationHandlers;
-- (void)_transitionToFailedStatusWithOSStatus:(int)a3;
-- (void)_transitionToStatus:(int64_t)a3 error:(id)a4;
+- (void)_transitionToFailedStatusWithOSStatus:(int)status;
+- (void)_transitionToStatus:(int64_t)status error:(id)error;
 - (void)_triggerMediaRequestCallback;
 - (void)_uninstallNotificationHandlers;
-- (void)_wasFlushedAutomaticallyAtTime:(id *)a3;
-- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)a3;
+- (void)_wasFlushedAutomaticallyAtTime:(id *)time;
+- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)renderer;
 - (void)dealloc;
-- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)flush;
 - (void)flushFromSourceTime:(CMTime *)time completionHandler:(void *)completionHandler;
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4;
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block;
 - (void)setAllowedAudioSpatializationFormats:(AVAudioSpatializationFormats)allowedAudioSpatializationFormats;
 - (void)setAudioOutputDeviceUniqueID:(NSString *)audioOutputDeviceUniqueID;
-- (void)setAudioSession:(id)a3;
-- (void)setAudioTapProcessor:(opaqueMTAudioProcessingTap *)a3;
+- (void)setAudioSession:(id)session;
+- (void)setAudioTapProcessor:(opaqueMTAudioProcessingTap *)processor;
 - (void)setAudioTimePitchAlgorithm:(AVAudioTimePitchAlgorithm)audioTimePitchAlgorithm;
-- (void)setLoggingIdentifier:(id)a3;
+- (void)setLoggingIdentifier:(id)identifier;
 - (void)setMuted:(BOOL)muted;
-- (void)setOutputContext:(id)a3;
-- (void)setSTSLabel:(id)a3;
+- (void)setOutputContext:(id)context;
+- (void)setSTSLabel:(id)label;
 - (void)setVolume:(float)volume;
 - (void)stopRequestingMediaData;
 @end
@@ -51,10 +51,10 @@
   [(AVMediaDataRequester *)v3 startRequestingMediaData];
 }
 
-- (void)_wasFlushedAutomaticallyAtTime:(id *)a3
+- (void)_wasFlushedAutomaticallyAtTime:(id *)time
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v5 = *a3;
+  v5 = *time;
   v6 = @"AVSampleBufferAudioRendererFlushTimeKey";
   v7[0] = [MEMORY[0x1E696B098] valueWithCMTime:&v5];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
@@ -95,15 +95,15 @@ LABEL_4:
   return v6;
 }
 
-- (void)setOutputContext:(id)a3
+- (void)setOutputContext:(id)context
 {
-  if (!a3)
+  if (!context)
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "outputContext != nil"), 0}];
     objc_exception_throw(v8);
   }
 
-  [(AVSampleBufferAudioRenderer *)self setOutputContext:a3];
+  [(AVSampleBufferAudioRenderer *)self setOutputContext:context];
 }
 
 + (id)sampleBufferAudioRenderer
@@ -178,19 +178,19 @@ LABEL_4:
   [(AVSampleBufferAudioRenderer *)&v12 dealloc];
 }
 
-- (void)setAudioSession:(id)a3
+- (void)setAudioSession:(id)session
 {
-  if (!a3)
+  if (!session)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "audioSession != nil"), 0}];
     objc_exception_throw(v11);
   }
 
-  [a3 opaqueSessionID];
+  [session opaqueSessionID];
   SInt32 = FigCFNumberCreateSInt32();
   if (SInt32)
   {
-    [(AVSampleBufferAudioRenderer *)self setAudioSession:a3];
+    [(AVSampleBufferAudioRenderer *)self setAudioSession:session];
   }
 }
 
@@ -207,23 +207,23 @@ LABEL_4:
   return result;
 }
 
-- (void)_transitionToStatus:(int64_t)a3 error:(id)a4
+- (void)_transitionToStatus:(int64_t)status error:(id)error
 {
-  if (self->_audioRendererInternal->status < a3)
+  if (self->_audioRendererInternal->status < status)
   {
     [(AVSampleBufferAudioRenderer *)self willChangeValueForKey:@"status"];
-    if (a4)
+    if (error)
     {
       v8 = @"error";
       [(AVSampleBufferAudioRenderer *)self willChangeValueForKey:@"error"];
-      self->_audioRendererInternal->status = a3;
-      self->_audioRendererInternal->error = a4;
+      self->_audioRendererInternal->status = status;
+      self->_audioRendererInternal->error = error;
       [(AVSampleBufferAudioRenderer *)self didChangeValueForKey:@"status"];
     }
 
     else
     {
-      self->_audioRendererInternal->status = a3;
+      self->_audioRendererInternal->status = status;
       self->_audioRendererInternal->error = 0;
       v8 = @"status";
     }
@@ -232,9 +232,9 @@ LABEL_4:
   }
 }
 
-- (void)_transitionToFailedStatusWithOSStatus:(int)a3
+- (void)_transitionToFailedStatusWithOSStatus:(int)status
 {
-  v4 = AVLocalizedErrorWithUnderlyingOSStatus(a3, 0);
+  v4 = AVLocalizedErrorWithUnderlyingOSStatus(status, 0);
 
   [(AVSampleBufferAudioRenderer *)self _transitionToStatus:2 error:v4];
 }
@@ -331,11 +331,11 @@ LABEL_11:
   return readOnlyControlTimebase;
 }
 
-- (BOOL)setRenderSynchronizer:(id)a3 error:(id *)a4
+- (BOOL)setRenderSynchronizer:(id)synchronizer error:(id *)error
 {
   timebaseOut = 0;
   weakReferenceToSynchronizer = self->_audioRendererInternal->weakReferenceToSynchronizer;
-  if (!a3)
+  if (!synchronizer)
   {
 
     self->_audioRendererInternal->weakReferenceToSynchronizer = 0;
@@ -347,7 +347,7 @@ LABEL_9:
       [(AVSampleBufferAudioRenderer *)self _transitionToFailedStatusWithOSStatus:OnlyTimebaseSetTargetTimebase];
 LABEL_10:
       v8 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -368,16 +368,16 @@ LABEL_8:
   if (![(AVWeakReference *)weakReferenceToSynchronizer referencedObject])
   {
 
-    self->_audioRendererInternal->weakReferenceToSynchronizer = [[AVWeakReference alloc] initWithReferencedObject:a3];
-    [a3 timebase];
+    self->_audioRendererInternal->weakReferenceToSynchronizer = [[AVWeakReference alloc] initWithReferencedObject:synchronizer];
+    [synchronizer timebase];
     goto LABEL_8;
   }
 
   v8 = AVErrorForClientProgrammingError([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"The AudioRenderer cannot be added to a Synchronizer when it has already been added to a Synchronizer." userInfo:0]);
-  if (a4)
+  if (error)
   {
 LABEL_11:
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_12:
@@ -389,7 +389,7 @@ LABEL_12:
   return v8 == 0;
 }
 
-- (void)setSTSLabel:(id)a3
+- (void)setSTSLabel:(id)label
 {
   figAudioRenderer = self->_audioRendererInternal->figAudioRenderer;
   v5 = *(*(CMBaseObjectGetVTable() + 8) + 56);
@@ -397,11 +397,11 @@ LABEL_12:
   {
     v6 = *MEMORY[0x1E6973698];
 
-    v5(figAudioRenderer, v6, a3);
+    v5(figAudioRenderer, v6, label);
   }
 }
 
-- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -410,7 +410,7 @@ LABEL_12:
 
   cf = 0;
   v35 = 0;
-  if (!a3)
+  if (!buffer)
   {
     v25 = MEMORY[0x1E695DF30];
     v26 = *MEMORY[0x1E695D940];
@@ -418,7 +418,7 @@ LABEL_12:
     goto LABEL_36;
   }
 
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  FormatDescription = CMSampleBufferGetFormatDescription(buffer);
   v12 = FormatDescription;
   if (FormatDescription)
   {
@@ -504,7 +504,7 @@ LABEL_27:
   v23 = *(*(CMBaseObjectGetVTable() + 16) + 16);
   if (v23)
   {
-    v24 = v23(figAudioRenderer, a3);
+    v24 = v23(figAudioRenderer, buffer);
   }
 
   else
@@ -581,9 +581,9 @@ LABEL_6:
   return result;
 }
 
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block
 {
-  if (!a3)
+  if (!queue)
   {
     v13 = MEMORY[0x1E695DF30];
     v14 = *MEMORY[0x1E695D940];
@@ -591,13 +591,13 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!block)
   {
     v13 = MEMORY[0x1E695DF30];
     v14 = *MEMORY[0x1E695D940];
     v15 = "block != nil";
 LABEL_8:
-    v16 = [v13 exceptionWithName:v14 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a4, v4, v5, v6, v7, v15), 0}];
+    v16 = [v13 exceptionWithName:v14 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", block, v4, v5, v6, v7, v15), 0}];
     objc_exception_throw(v16);
   }
 
@@ -605,7 +605,7 @@ LABEL_8:
   audioRendererInternal = self->_audioRendererInternal;
   requester = audioRendererInternal->mediaDataRequester.requester;
   audioRendererInternal->mediaDataRequester.requester = 0;
-  v17 = [[AVMediaDataRequester alloc] initWithMediaDataConsumer:self requestQueue:a3 requestBlock:a4];
+  v17 = [[AVMediaDataRequester alloc] initWithMediaDataConsumer:self requestQueue:queue requestBlock:block];
   self->_audioRendererInternal->mediaDataRequester.requester = v17;
   FigSimpleMutexUnlock();
   [(AVMediaDataRequester *)requester invalidate];
@@ -707,17 +707,17 @@ LABEL_9:
   return v5 == 1;
 }
 
-- (int)_attachToContentKeySession:(id)a3 contentKeyBoss:(OpaqueFigContentKeyBoss *)a4 failedSinceAlreadyAttachedToAnotherSession:(BOOL *)a5
+- (int)_attachToContentKeySession:(id)session contentKeyBoss:(OpaqueFigContentKeyBoss *)boss failedSinceAlreadyAttachedToAnotherSession:(BOOL *)anotherSession
 {
   Weak = objc_loadWeak(&self->_audioRendererInternal->weakContentKeySession);
   if (!Weak)
   {
-    objc_storeWeak(&self->_audioRendererInternal->weakContentKeySession, a3);
+    objc_storeWeak(&self->_audioRendererInternal->weakContentKeySession, session);
   }
 
-  if (a5)
+  if (anotherSession)
   {
-    *a5 = Weak != 0;
+    *anotherSession = Weak != 0;
   }
 
   return 0;
@@ -730,13 +730,13 @@ LABEL_9:
   return v2;
 }
 
-- (void)setLoggingIdentifier:(id)a3
+- (void)setLoggingIdentifier:(id)identifier
 {
   loggingIdentifier = self->_audioRendererInternal->loggingIdentifier;
-  if (loggingIdentifier != a3)
+  if (loggingIdentifier != identifier)
   {
 
-    self->_audioRendererInternal->loggingIdentifier = a3;
+    self->_audioRendererInternal->loggingIdentifier = identifier;
   }
 }
 
@@ -752,11 +752,11 @@ LABEL_9:
   return result;
 }
 
-+ (void)setFigAudioRendererFactory:(id)a3 forQueue:(id)a4
++ (void)setFigAudioRendererFactory:(id)factory forQueue:(id)queue
 {
-  v5 = a3;
+  factoryCopy = factory;
 
-  dispatch_queue_set_specific(a4, @"AVSampleBufferAudioRendererFigFactoryKey", v5, AVSampleBufferAudioRendererReleaseObject);
+  dispatch_queue_set_specific(queue, @"AVSampleBufferAudioRendererFigFactoryKey", factoryCopy, AVSampleBufferAudioRendererReleaseObject);
 }
 
 - (int)_initializeTimebase
@@ -825,7 +825,7 @@ LABEL_9:
 
 - (AVSampleBufferAudioRenderer)init
 {
-  v3 = [objc_opt_class() currentFigAudioRendererFactory];
+  currentFigAudioRendererFactory = [objc_opt_class() currentFigAudioRendererFactory];
   v12 = 0;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   if (Mutable)
@@ -865,7 +865,7 @@ LABEL_9:
     self->_audioRendererInternal->outputContext = 0;
     self->_audioRendererInternal->loggingIdentifier = [[AVCommonLoggingIdentifier alloc] initWithIdentifierSuffix:0x1F0A91870 prefixlength:3];
     CFDictionarySetValue(v5, *MEMORY[0x1E6973628], [(AVLoggingIdentifier *)self->_audioRendererInternal->loggingIdentifier name]);
-    self->_audioRendererInternal->figAudioRenderer = [v3 createAudioRendererWithAllocator:0 options:v5 error:&v12];
+    self->_audioRendererInternal->figAudioRenderer = [currentFigAudioRendererFactory createAudioRendererWithAllocator:0 options:v5 error:&v12];
     if (!self->_audioRendererInternal->figAudioRenderer)
     {
       goto LABEL_11;
@@ -882,13 +882,13 @@ LABEL_9:
     self->_audioRendererInternal->allowedAudioSpatializationFormats = 4;
     if (![(AVSampleBufferAudioRenderer *)self _installNotificationHandlers])
     {
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
 LABEL_11:
-      v9 = 0;
+      selfCopy = 0;
     }
 
     CFRelease(v5);
@@ -896,24 +896,24 @@ LABEL_11:
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)setAudioTapProcessor:(opaqueMTAudioProcessingTap *)a3
+- (void)setAudioTapProcessor:(opaqueMTAudioProcessingTap *)processor
 {
   figAudioRenderer = self->_audioRendererInternal->figAudioRenderer;
   v6 = *(*(CMBaseObjectGetVTable() + 8) + 56);
-  if (v6 && !v6(figAudioRenderer, *MEMORY[0x1E6973660], a3))
+  if (v6 && !v6(figAudioRenderer, *MEMORY[0x1E6973660], processor))
   {
     audioRendererInternal = self->_audioRendererInternal;
     audioProcessingTap = audioRendererInternal->audioProcessingTap;
-    audioRendererInternal->audioProcessingTap = a3;
-    if (a3)
+    audioRendererInternal->audioProcessingTap = processor;
+    if (processor)
     {
-      CFRetain(a3);
+      CFRetain(processor);
     }
 
     if (audioProcessingTap)
@@ -1018,9 +1018,9 @@ LABEL_11:
   }
 }
 
-- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)a3
+- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)renderer
 {
-  if (a3)
+  if (renderer)
   {
     figAudioRenderer = self->_audioRendererInternal->figAudioRenderer;
     if (figAudioRenderer)
@@ -1028,7 +1028,7 @@ LABEL_11:
       figAudioRenderer = CFRetain(figAudioRenderer);
     }
 
-    *a3 = figAudioRenderer;
+    *renderer = figAudioRenderer;
   }
 }
 

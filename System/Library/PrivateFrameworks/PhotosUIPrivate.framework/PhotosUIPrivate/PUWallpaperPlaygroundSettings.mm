@@ -70,8 +70,8 @@
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:7];
   v19 = [v4 sectionWithRows:v18 title:@"Low Luminance"];
   v45[1] = v19;
-  v20 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v45[2] = v20;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v45[2] = px_restoreDefaultsSection;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:3];
   v31 = [v30 moduleWithTitle:@"Settings" contents:v21];
 
@@ -91,9 +91,9 @@ uint64_t __57__PUWallpaperPlaygroundSettings_settingsControllerModule__block_inv
   os_unfair_lock_lock(MEMORY[0x1E69C4148]);
   if (!sharedInstance_sharedInstance_14109)
   {
-    v3 = [a1 createSharedInstance];
+    createSharedInstance = [self createSharedInstance];
     v4 = sharedInstance_sharedInstance_14109;
-    sharedInstance_sharedInstance_14109 = v3;
+    sharedInstance_sharedInstance_14109 = createSharedInstance;
   }
 
   os_unfair_lock_unlock(MEMORY[0x1E69C4148]);

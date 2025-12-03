@@ -1,14 +1,14 @@
 @interface PXSectionsBlurController
 - (PXSectionsBlurController)init;
-- (PXSectionsBlurController)initWithBlurrableSectionsSource:(id)a3;
+- (PXSectionsBlurController)initWithBlurrableSectionsSource:(id)source;
 - (int64_t)behavior;
-- (void)setBehavior:(int64_t)a3;
-- (void)updateSectionsBlurWithVisibleRect:(CGRect)a3 safeAreaInsets:(UIEdgeInsets)a4 interSectionSpacing:(double)a5;
+- (void)setBehavior:(int64_t)behavior;
+- (void)updateSectionsBlurWithVisibleRect:(CGRect)rect safeAreaInsets:(UIEdgeInsets)insets interSectionSpacing:(double)spacing;
 @end
 
 @implementation PXSectionsBlurController
 
-- (PXSectionsBlurController)initWithBlurrableSectionsSource:(id)a3
+- (PXSectionsBlurController)initWithBlurrableSectionsSource:(id)source
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakAssign();
@@ -25,16 +25,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setBehavior:(int64_t)a3
+- (void)setBehavior:(int64_t)behavior
 {
   v5 = OBJC_IVAR___PXSectionsBlurController_behavior;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = behavior;
 }
 
-- (void)updateSectionsBlurWithVisibleRect:(CGRect)a3 safeAreaInsets:(UIEdgeInsets)a4 interSectionSpacing:(double)a5
+- (void)updateSectionsBlurWithVisibleRect:(CGRect)rect safeAreaInsets:(UIEdgeInsets)insets interSectionSpacing:(double)spacing
 {
-  v5 = self;
+  selfCopy = self;
   sub_1A46165DC();
 }
 

@@ -1,15 +1,15 @@
 @interface SBSlideOverToFullScreenSwitcherModifier
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBSlideOverToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 slideOverAppLayout:(id)a4 fullScreenAppLayout:(id)a5 replacingMainAppLayout:(id)a6;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)preferredAppLayoutToReuseAccessoryForAppLayout:(id)a3 fromAppLayouts:(id)a4;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBSlideOverToFullScreenSwitcherModifier)initWithTransitionID:(id)d slideOverAppLayout:(id)layout fullScreenAppLayout:(id)appLayout replacingMainAppLayout:(id)mainAppLayout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)preferredAppLayoutToReuseAccessoryForAppLayout:(id)layout fromAppLayouts:(id)layouts;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
 - (id)visibleHomeAffordanceLayoutElements;
@@ -17,24 +17,24 @@
 
 @implementation SBSlideOverToFullScreenSwitcherModifier
 
-- (SBSlideOverToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 slideOverAppLayout:(id)a4 fullScreenAppLayout:(id)a5 replacingMainAppLayout:(id)a6
+- (SBSlideOverToFullScreenSwitcherModifier)initWithTransitionID:(id)d slideOverAppLayout:(id)layout fullScreenAppLayout:(id)appLayout replacingMainAppLayout:(id)mainAppLayout
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  mainAppLayoutCopy = mainAppLayout;
   v19.receiver = self;
   v19.super_class = SBSlideOverToFullScreenSwitcherModifier;
-  v14 = [(SBTransitionSwitcherModifier *)&v19 initWithTransitionID:v10];
+  v14 = [(SBTransitionSwitcherModifier *)&v19 initWithTransitionID:dCopy];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_fromSlideOverAppLayout, a4);
-    objc_storeStrong(&v15->_toFullScreenAppLayout, a5);
-    objc_storeStrong(&v15->_removedMainAppLayout, a6);
-    if (!v13)
+    objc_storeStrong(&v14->_fromSlideOverAppLayout, layout);
+    objc_storeStrong(&v15->_toFullScreenAppLayout, appLayout);
+    objc_storeStrong(&v15->_removedMainAppLayout, mainAppLayout);
+    if (!mainAppLayoutCopy)
     {
-      v16 = [[SBHomeScreenZoomSwitcherModifier alloc] initWithTransitionID:v10 direction:2];
+      v16 = [[SBHomeScreenZoomSwitcherModifier alloc] initWithTransitionID:dCopy direction:2];
       homeScreenZoomModifier = v15->_homeScreenZoomModifier;
       v15->_homeScreenZoomModifier = v16;
 
@@ -45,11 +45,11 @@
   return v15;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBSlideOverToFullScreenSwitcherModifier;
-  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:a3];
+  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:event];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:2];
   v5 = SBAppendSwitcherModifierResponse(v4, v3);
 
@@ -60,18 +60,18 @@
 {
   v6.receiver = self;
   v6.super_class = SBSlideOverToFullScreenSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
-  v4 = SBAppendSwitcherModifierResponse(v3, v2);
+  v4 = SBAppendSwitcherModifierResponse(v3, transitionWillBegin);
 
   return v4;
 }
 
-- (id)preferredAppLayoutToReuseAccessoryForAppLayout:(id)a3 fromAppLayouts:(id)a4
+- (id)preferredAppLayoutToReuseAccessoryForAppLayout:(id)layout fromAppLayouts:(id)layouts
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_fromSlideOverAppLayout == v6 || self->_toFullScreenAppLayout == v6)
+  layoutCopy = layout;
+  layoutsCopy = layouts;
+  if (self->_fromSlideOverAppLayout == layoutCopy || self->_toFullScreenAppLayout == layoutCopy)
   {
     v8 = 0;
   }
@@ -80,7 +80,7 @@
   {
     v10.receiver = self;
     v10.super_class = SBSlideOverToFullScreenSwitcherModifier;
-    v8 = [(SBSlideOverToFullScreenSwitcherModifier *)&v10 preferredAppLayoutToReuseAccessoryForAppLayout:v6 fromAppLayouts:v7];
+    v8 = [(SBSlideOverToFullScreenSwitcherModifier *)&v10 preferredAppLayoutToReuseAccessoryForAppLayout:layoutCopy fromAppLayouts:layoutsCopy];
   }
 
   return v8;
@@ -90,13 +90,13 @@
 {
   v9.receiver = self;
   v9.super_class = SBSlideOverToFullScreenSwitcherModifier;
-  v3 = [(SBSlideOverToFullScreenSwitcherModifier *)&v9 visibleAppLayouts];
+  visibleAppLayouts = [(SBSlideOverToFullScreenSwitcherModifier *)&v9 visibleAppLayouts];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__SBSlideOverToFullScreenSwitcherModifier_visibleAppLayouts__block_invoke;
   v8[3] = &unk_2783A8CB8;
   v8[4] = self;
-  v4 = [v3 bs_filter:v8];
+  v4 = [visibleAppLayouts bs_filter:v8];
   v5 = [v4 mutableCopy];
 
   [v5 addObject:self->_toFullScreenAppLayout];
@@ -105,7 +105,7 @@
   return v5;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v23.receiver = self;
   v23.super_class = SBSlideOverToFullScreenSwitcherModifier;
@@ -114,8 +114,8 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBSlideOverToFullScreenSwitcherModifier *)self appLayouts];
-  v14 = [v13 objectAtIndex:a3];
+  appLayouts = [(SBSlideOverToFullScreenSwitcherModifier *)self appLayouts];
+  v14 = [appLayouts objectAtIndex:index];
 
   if (self->_removedMainAppLayout == v14)
   {
@@ -137,75 +137,75 @@
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
   v16.receiver = self;
   v16.super_class = SBSlideOverToFullScreenSwitcherModifier;
-  v8 = a4;
-  [(SBSlideOverToFullScreenSwitcherModifier *)&v16 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+  layoutCopy = layout;
+  [(SBSlideOverToFullScreenSwitcherModifier *)&v16 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
   v10 = v9;
   removedMainAppLayout = self->_removedMainAppLayout;
 
-  if (removedMainAppLayout == v8)
+  if (removedMainAppLayout == layoutCopy)
   {
     v12 = [(SBSlideOverToFullScreenSwitcherModifier *)self switcherSettings:v16.receiver];
-    v13 = [v12 animationSettings];
-    [v13 slideOverToFullScreenOutgoingFinalOpacity];
+    animationSettings = [v12 animationSettings];
+    [animationSettings slideOverToFullScreenOutgoingFinalOpacity];
     v10 = v14;
   }
 
   return v10;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v13.receiver = self;
   v13.super_class = SBSlideOverToFullScreenSwitcherModifier;
   [(SBSlideOverToFullScreenSwitcherModifier *)&v13 scaleForIndex:?];
   v6 = v5;
-  v7 = [(SBSlideOverToFullScreenSwitcherModifier *)self appLayouts];
-  v8 = [v7 objectAtIndex:a3];
+  appLayouts = [(SBSlideOverToFullScreenSwitcherModifier *)self appLayouts];
+  v8 = [appLayouts objectAtIndex:index];
 
   if (self->_removedMainAppLayout == v8)
   {
-    v9 = [(SBSlideOverToFullScreenSwitcherModifier *)self switcherSettings];
-    v10 = [v9 animationSettings];
-    [v10 slideOverToFullScreenOutgoingAppScaleBack];
+    switcherSettings = [(SBSlideOverToFullScreenSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings slideOverToFullScreenOutgoingAppScaleBack];
     v6 = v11;
   }
 
   return v6;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([v6 isEqual:self->_toFullScreenAppLayout])
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_toFullScreenAppLayout])
   {
-    LODWORD(a3) = [(SBSlideOverToFullScreenSwitcherModifier *)self isLayoutRoleContentReady:a3 inAppLayout:self->_toFullScreenAppLayout]^ 1;
+    LODWORD(blurred) = [(SBSlideOverToFullScreenSwitcherModifier *)self isLayoutRoleContentReady:blurred inAppLayout:self->_toFullScreenAppLayout]^ 1;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBSlideOverToFullScreenSwitcherModifier;
-    LOBYTE(a3) = [(SBSlideOverToFullScreenSwitcherModifier *)&v8 isLayoutRoleBlurred:a3 inAppLayout:v6];
+    LOBYTE(blurred) = [(SBSlideOverToFullScreenSwitcherModifier *)&v8 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
   }
 
-  return a3;
+  return blurred;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v10.receiver = self;
   v10.super_class = SBSlideOverToFullScreenSwitcherModifier;
-  v6 = a4;
-  [(SBSlideOverToFullScreenSwitcherModifier *)&v10 blurDelayForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBSlideOverToFullScreenSwitcherModifier *)&v10 blurDelayForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
-  LODWORD(a3) = [v6 isEqual:{self->_toFullScreenAppLayout, v10.receiver, v10.super_class}];
+  LODWORD(role) = [layoutCopy isEqual:{self->_toFullScreenAppLayout, v10.receiver, v10.super_class}];
 
   result = 0.0;
-  if (!a3)
+  if (!role)
   {
     return v8;
   }
@@ -213,19 +213,19 @@
   return result;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v5 = self;
+  selfCopy = self;
   v8.receiver = self;
   v8.super_class = SBSlideOverToFullScreenSwitcherModifier;
-  v6 = a4;
-  LOBYTE(a3) = [(SBSlideOverToFullScreenSwitcherModifier *)&v8 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
-  LOBYTE(v5) = [v6 isEqual:{v5->_toFullScreenAppLayout, v8.receiver, v8.super_class}];
+  layoutCopy = layout;
+  LOBYTE(scene) = [(SBSlideOverToFullScreenSwitcherModifier *)&v8 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
+  LOBYTE(selfCopy) = [layoutCopy isEqual:{selfCopy->_toFullScreenAppLayout, v8.receiver, v8.super_class}];
 
-  return (v5 | a3) & 1;
+  return (selfCopy | scene) & 1;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   [(SBSlideOverToFullScreenSwitcherModifier *)self displayCornerRadius];
 
@@ -237,17 +237,17 @@
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v10.receiver = self;
   v10.super_class = SBSlideOverToFullScreenSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBSlideOverToFullScreenSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
-  v8 = [v7 slideOverToFullScreenAnimationSettings];
-  [v5 setLayoutSettings:v8];
+  switcherSettings = [(SBSlideOverToFullScreenSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  slideOverToFullScreenAnimationSettings = [animationSettings slideOverToFullScreenAnimationSettings];
+  [v5 setLayoutSettings:slideOverToFullScreenAnimationSettings];
 
   [v5 setUpdateMode:3];
 
@@ -258,8 +258,8 @@
 {
   v6.receiver = self;
   v6.super_class = SBSlideOverToFullScreenSwitcherModifier;
-  v3 = [(SBSlideOverToFullScreenSwitcherModifier *)&v6 visibleHomeAffordanceLayoutElements];
-  v4 = [v3 mutableCopy];
+  visibleHomeAffordanceLayoutElements = [(SBSlideOverToFullScreenSwitcherModifier *)&v6 visibleHomeAffordanceLayoutElements];
+  v4 = [visibleHomeAffordanceLayoutElements mutableCopy];
 
   [v4 removeObject:self->_fromSlideOverAppLayout];
   [v4 removeObject:self->_toFullScreenAppLayout];

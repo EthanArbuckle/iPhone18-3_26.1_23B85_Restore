@@ -1,8 +1,8 @@
 @interface AVTPresetDependency
 - (id)description;
 - (uint64_t)setCategory:(uint64_t)result;
-- (void)setMaterialVariant:(uint64_t)a1;
-- (void)setVisibilityRules:(uint64_t)a1;
+- (void)setMaterialVariant:(uint64_t)variant;
+- (void)setVisibilityRules:(uint64_t)rules;
 @end
 
 @implementation AVTPresetDependency
@@ -17,8 +17,8 @@
   preset = self->_preset;
   if (preset)
   {
-    v8 = [(AVTPreset *)preset identifier];
-    [v6 appendFormat:@" preset: %@", v8];
+    identifier = [(AVTPreset *)preset identifier];
+    [v6 appendFormat:@" preset: %@", identifier];
   }
 
   if (self->_morphVariant)
@@ -51,19 +51,19 @@
   return result;
 }
 
-- (void)setMaterialVariant:(uint64_t)a1
+- (void)setMaterialVariant:(uint64_t)variant
 {
-  if (a1)
+  if (variant)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((variant + 48), a2);
   }
 }
 
-- (void)setVisibilityRules:(uint64_t)a1
+- (void)setVisibilityRules:(uint64_t)rules
 {
-  if (a1)
+  if (rules)
   {
-    objc_storeStrong((a1 + 56), a2);
+    objc_storeStrong((rules + 56), a2);
   }
 }
 

@@ -1,19 +1,19 @@
 @interface WBSAutoFillAssociatedDomainsManager
-- (WBSAutoFillAssociatedDomainsManager)initWithDomainsWithAssociatedCredentials:(id)a3 domainsToConsiderIdentical:(id)a4;
-- (id)domainsToConsiderIdenticalToDomain:(id)a3;
-- (id)domainsWithAssociatedCredentialsForDomain:(id)a3;
+- (WBSAutoFillAssociatedDomainsManager)initWithDomainsWithAssociatedCredentials:(id)credentials domainsToConsiderIdentical:(id)identical;
+- (id)domainsToConsiderIdenticalToDomain:(id)domain;
+- (id)domainsWithAssociatedCredentialsForDomain:(id)domain;
 - (void)_updateDomainToDomainsToConsiderIdentical;
 - (void)_updateDomainToDomainsWithAssociatedCredentials;
-- (void)setDomainsToConsiderIdentical:(id)a3;
-- (void)setDomainsWithAssociatedCredentials:(id)a3;
+- (void)setDomainsToConsiderIdentical:(id)identical;
+- (void)setDomainsWithAssociatedCredentials:(id)credentials;
 @end
 
 @implementation WBSAutoFillAssociatedDomainsManager
 
-- (WBSAutoFillAssociatedDomainsManager)initWithDomainsWithAssociatedCredentials:(id)a3 domainsToConsiderIdentical:(id)a4
+- (WBSAutoFillAssociatedDomainsManager)initWithDomainsWithAssociatedCredentials:(id)credentials domainsToConsiderIdentical:(id)identical
 {
-  v6 = a3;
-  v7 = a4;
+  credentialsCopy = credentials;
+  identicalCopy = identical;
   v18.receiver = self;
   v18.super_class = WBSAutoFillAssociatedDomainsManager;
   v8 = [(WBSAutoFillAssociatedDomainsManager *)&v18 init];
@@ -28,25 +28,25 @@
     queue = v8->_queue;
     v8->_queue = v14;
 
-    [(WBSAutoFillAssociatedDomainsManager *)v8 setDomainsWithAssociatedCredentials:v6];
-    [(WBSAutoFillAssociatedDomainsManager *)v8 setDomainsToConsiderIdentical:v7];
+    [(WBSAutoFillAssociatedDomainsManager *)v8 setDomainsWithAssociatedCredentials:credentialsCopy];
+    [(WBSAutoFillAssociatedDomainsManager *)v8 setDomainsToConsiderIdentical:identicalCopy];
     v16 = v8;
   }
 
   return v8;
 }
 
-- (void)setDomainsWithAssociatedCredentials:(id)a3
+- (void)setDomainsWithAssociatedCredentials:(id)credentials
 {
-  v4 = a3;
+  credentialsCopy = credentials;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__WBSAutoFillAssociatedDomainsManager_setDomainsWithAssociatedCredentials___block_invoke;
   v7[3] = &unk_1E7CF1708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = credentialsCopy;
+  v6 = credentialsCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -62,17 +62,17 @@ uint64_t __75__WBSAutoFillAssociatedDomainsManager_setDomainsWithAssociatedCrede
   return [v5 _updateDomainToDomainsWithAssociatedCredentials];
 }
 
-- (void)setDomainsToConsiderIdentical:(id)a3
+- (void)setDomainsToConsiderIdentical:(id)identical
 {
-  v4 = a3;
+  identicalCopy = identical;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__WBSAutoFillAssociatedDomainsManager_setDomainsToConsiderIdentical___block_invoke;
   v7[3] = &unk_1E7CF1708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identicalCopy;
+  v6 = identicalCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -88,10 +88,10 @@ uint64_t __69__WBSAutoFillAssociatedDomainsManager_setDomainsToConsiderIdentical
   return [v5 _updateDomainToDomainsToConsiderIdentical];
 }
 
-- (id)domainsWithAssociatedCredentialsForDomain:(id)a3
+- (id)domainsWithAssociatedCredentialsForDomain:(id)domain
 {
-  v4 = a3;
-  if ([v4 length])
+  domainCopy = domain;
+  if ([domainCopy length])
   {
     v11 = 0;
     v12 = &v11;
@@ -106,7 +106,7 @@ uint64_t __69__WBSAutoFillAssociatedDomainsManager_setDomainsToConsiderIdentical
     block[3] = &unk_1E7CF1730;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = domainCopy;
     dispatch_sync(queue, block);
     v6 = v12[5];
 
@@ -141,10 +141,10 @@ void __81__WBSAutoFillAssociatedDomainsManager_domainsWithAssociatedCredentialsF
   }
 }
 
-- (id)domainsToConsiderIdenticalToDomain:(id)a3
+- (id)domainsToConsiderIdenticalToDomain:(id)domain
 {
-  v4 = a3;
-  if ([v4 length])
+  domainCopy = domain;
+  if ([domainCopy length])
   {
     v11 = 0;
     v12 = &v11;
@@ -159,7 +159,7 @@ void __81__WBSAutoFillAssociatedDomainsManager_domainsWithAssociatedCredentialsF
     block[3] = &unk_1E7CF1730;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = domainCopy;
     dispatch_sync(queue, block);
     v6 = v12[5];
 
@@ -185,9 +185,9 @@ void __74__WBSAutoFillAssociatedDomainsManager_domainsToConsiderIdenticalToDomai
 - (void)_updateDomainToDomainsWithAssociatedCredentials
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   domainToDomainsWithAssociatedCredentials = self->_domainToDomainsWithAssociatedCredentials;
-  self->_domainToDomainsWithAssociatedCredentials = v3;
+  self->_domainToDomainsWithAssociatedCredentials = dictionary;
 
   v25 = 0u;
   v26 = 0u;
@@ -255,9 +255,9 @@ void __74__WBSAutoFillAssociatedDomainsManager_domainsToConsiderIdenticalToDomai
 - (void)_updateDomainToDomainsToConsiderIdentical
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   domainsToDomainsToConsiderIdentical = self->_domainsToDomainsToConsiderIdentical;
-  self->_domainsToDomainsToConsiderIdentical = v3;
+  self->_domainsToDomainsToConsiderIdentical = dictionary;
 
   v25 = 0u;
   v26 = 0u;

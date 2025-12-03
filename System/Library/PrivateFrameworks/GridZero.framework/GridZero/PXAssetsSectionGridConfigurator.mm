@@ -1,38 +1,38 @@
 @interface PXAssetsSectionGridConfigurator
-- (BOOL)_layoutHasIndividualItems:(id)a3 forSpec:(id)a4;
-- (BOOL)_layoutIsAspectFit:(id)a3 forSpec:(id)a4;
-- (CGSize)estimatedSizeOfSectionForAssetCollection:(id)a3 isCurated:(BOOL)a4 numberOfAssets:(int64_t)a5 referenceSize:(CGSize)a6;
-- (double)_interItemSpacingForLayout:(id)a3 forSpec:(id)a4;
-- (int64_t)numberOfZoomStepsWithDataSource:(id)a3;
-- (void)_configureGridLayout:(id)a3 inSectionLayout:(id)a4;
-- (void)configureAssetSectionLayout:(id)a3;
+- (BOOL)_layoutHasIndividualItems:(id)items forSpec:(id)spec;
+- (BOOL)_layoutIsAspectFit:(id)fit forSpec:(id)spec;
+- (CGSize)estimatedSizeOfSectionForAssetCollection:(id)collection isCurated:(BOOL)curated numberOfAssets:(int64_t)assets referenceSize:(CGSize)size;
+- (double)_interItemSpacingForLayout:(id)layout forSpec:(id)spec;
+- (int64_t)numberOfZoomStepsWithDataSource:(id)source;
+- (void)_configureGridLayout:(id)layout inSectionLayout:(id)sectionLayout;
+- (void)configureAssetSectionLayout:(id)layout;
 @end
 
 @implementation PXAssetsSectionGridConfigurator
 
-- (int64_t)numberOfZoomStepsWithDataSource:(id)a3
+- (int64_t)numberOfZoomStepsWithDataSource:(id)source
 {
-  v3 = [(PXAssetsSectionConfigurator *)self assetsSectionLayoutSpec];
-  v4 = [v3 zoomableSpec];
-  v5 = [v4 legacyMacSupportedColumns];
-  v6 = [v5 count];
+  assetsSectionLayoutSpec = [(PXAssetsSectionConfigurator *)self assetsSectionLayoutSpec];
+  zoomableSpec = [assetsSectionLayoutSpec zoomableSpec];
+  legacyMacSupportedColumns = [zoomableSpec legacyMacSupportedColumns];
+  v6 = [legacyMacSupportedColumns count];
 
   return v6;
 }
 
-- (void)_configureGridLayout:(id)a3 inSectionLayout:(id)a4
+- (void)_configureGridLayout:(id)layout inSectionLayout:(id)sectionLayout
 {
-  v83 = a3;
-  v6 = a4;
-  v7 = [(PXAssetsSectionConfigurator *)self assetsSectionLayoutSpec];
-  v8 = [v7 zoomableSpec];
+  layoutCopy = layout;
+  sectionLayoutCopy = sectionLayout;
+  assetsSectionLayoutSpec = [(PXAssetsSectionConfigurator *)self assetsSectionLayoutSpec];
+  zoomableSpec = [assetsSectionLayoutSpec zoomableSpec];
 
-  v9 = [(PXAssetsSectionGridConfigurator *)self _layoutHasIndividualItems:v83 forSpec:v8];
-  v82 = [v8 userInterfaceIdiom];
-  v10 = [v8 userInterfaceIdiom];
-  v79 = [v8 userInterfaceIdiom];
-  v11 = [v8 userInterfaceIdiom];
-  if ([v8 userInterfaceIdiom] == 1 && objc_msgSend(v8, "layoutOrientation") == 2)
+  v9 = [(PXAssetsSectionGridConfigurator *)self _layoutHasIndividualItems:layoutCopy forSpec:zoomableSpec];
+  userInterfaceIdiom = [zoomableSpec userInterfaceIdiom];
+  userInterfaceIdiom2 = [zoomableSpec userInterfaceIdiom];
+  userInterfaceIdiom3 = [zoomableSpec userInterfaceIdiom];
+  userInterfaceIdiom4 = [zoomableSpec userInterfaceIdiom];
+  if ([zoomableSpec userInterfaceIdiom] == 1 && objc_msgSend(zoomableSpec, "layoutOrientation") == 2)
   {
     v12 = PFIsPhotosPicker();
   }
@@ -42,17 +42,17 @@
     v12 = 0;
   }
 
-  v13 = [v6 assetCollection];
-  v14 = [v13 px_isPanoramasSmartAlbum];
+  assetCollection = [sectionLayoutCopy assetCollection];
+  px_isPanoramasSmartAlbum = [assetCollection px_isPanoramasSmartAlbum];
 
-  v15 = [v6 isFaceModeEnabled];
-  v16 = [v83 numberOfColumns];
-  if (v14)
+  isFaceModeEnabled = [sectionLayoutCopy isFaceModeEnabled];
+  numberOfColumns = [layoutCopy numberOfColumns];
+  if (px_isPanoramasSmartAlbum)
   {
-    [v8 panoramaInteritemSpacing];
+    [zoomableSpec panoramaInteritemSpacing];
     v18 = v17;
-    v81 = [(PXAssetsSectionGridConfigurator *)self _layoutIsAspectFit:v83 forSpec:v8];
-    if (v15)
+    v81 = [(PXAssetsSectionGridConfigurator *)self _layoutIsAspectFit:layoutCopy forSpec:zoomableSpec];
+    if (isFaceModeEnabled)
     {
       goto LABEL_13;
     }
@@ -60,13 +60,13 @@
 
   else
   {
-    [(PXAssetsSectionGridConfigurator *)self _interItemSpacingForLayout:v83 forSpec:v8];
+    [(PXAssetsSectionGridConfigurator *)self _interItemSpacingForLayout:layoutCopy forSpec:zoomableSpec];
     v18 = v19;
-    if ([(PXAssetsSectionGridConfigurator *)self _layoutIsAspectFit:v83 forSpec:v8])
+    if ([(PXAssetsSectionGridConfigurator *)self _layoutIsAspectFit:layoutCopy forSpec:zoomableSpec])
     {
-      if (v15)
+      if (isFaceModeEnabled)
       {
-        v80 = v16 <= [v8 maxColumnsForSaliency];
+        v80 = numberOfColumns <= [zoomableSpec maxColumnsForSaliency];
       }
 
       else
@@ -74,14 +74,14 @@
         v80 = 0;
       }
 
-      [v8 aspectFitEdgeMargins];
+      [zoomableSpec aspectFitEdgeMargins];
       v27 = v31;
       v28 = v32;
       v29 = v33;
       v30 = v34;
-      if ([v6 itemCaptionsVisible])
+      if ([sectionLayoutCopy itemCaptionsVisible])
       {
-        [v8 captionSpacing];
+        [zoomableSpec captionSpacing];
         v25 = v35;
         v24 = 1;
         v81 = 1;
@@ -95,7 +95,7 @@
       }
 
 LABEL_25:
-      v38 = v79 == 2 || v10 == 4 || v11 == 5;
+      v38 = userInterfaceIdiom3 == 2 || userInterfaceIdiom2 == 4 || userInterfaceIdiom4 == 5;
       v39 = v38 | v12;
       v26 = 0x278296000uLL;
       if ((v39 & 1) == 0)
@@ -107,34 +107,34 @@ LABEL_25:
     }
 
     v81 = 0;
-    if (v15)
+    if (isFaceModeEnabled)
     {
       goto LABEL_13;
     }
   }
 
-  if ([v8 useSaliency])
+  if ([zoomableSpec useSaliency])
   {
 LABEL_13:
-    v80 = v16 <= [v8 maxColumnsForSaliency];
+    v80 = numberOfColumns <= [zoomableSpec maxColumnsForSaliency];
     goto LABEL_15;
   }
 
   v80 = 0;
 LABEL_15:
-  if (v10 != 4 || v9)
+  if (userInterfaceIdiom2 != 4 || v9)
   {
-    if (v82 == 3)
+    if (userInterfaceIdiom == 3)
     {
-      [v6 safeAreaInsets];
+      [sectionLayoutCopy safeAreaInsets];
       PXEdgeInsetsForEdges();
-      [v8 squareEdgeMargins];
+      [zoomableSpec squareEdgeMargins];
       PXEdgeInsetsAdd();
     }
 
     else
     {
-      [v8 squareEdgeMargins];
+      [zoomableSpec squareEdgeMargins];
     }
 
     v27 = v20;
@@ -150,7 +150,7 @@ LABEL_15:
   v25 = 0.0;
   v26 = 0x278296000;
 LABEL_35:
-  [v6 safeAreaInsets];
+  [sectionLayoutCopy safeAreaInsets];
   v41 = v40;
   v43 = v42;
   PXEdgeInsetsAdd();
@@ -160,8 +160,8 @@ LABEL_35:
   v30 = v47;
   if (v41 != v43)
   {
-    v48 = [*(v26 + 2776) sharedInstance];
-    [v48 sidebarPadding];
+    sharedInstance = [*(v26 + 2776) sharedInstance];
+    [sharedInstance sidebarPadding];
     v50 = v41 + v49;
 
     if (v28 < v50)
@@ -171,7 +171,7 @@ LABEL_35:
   }
 
 LABEL_38:
-  if (![v6 numberOfAssets])
+  if (![sectionLayoutCopy numberOfAssets])
   {
     v27 = *MEMORY[0x277D3CF90];
     v28 = *(MEMORY[0x277D3CF90] + 8);
@@ -179,68 +179,68 @@ LABEL_38:
     v30 = *(MEMORY[0x277D3CF90] + 24);
   }
 
-  if (v14)
+  if (px_isPanoramasSmartAlbum)
   {
-    [v83 setNumberOfColumns:1];
+    [layoutCopy setNumberOfColumns:1];
     v25 = 0.0;
-    if ([v6 itemCaptionsVisible])
+    if ([sectionLayoutCopy itemCaptionsVisible])
     {
-      [v8 captionSpacing];
+      [zoomableSpec captionSpacing];
       v25 = v51;
     }
   }
 
   else
   {
-    if (v10 == 4)
+    if (userInterfaceIdiom2 == 4)
     {
-      v52 = [(PXAssetsSectionGridConfigurator *)self zoomStep];
-      v53 = [v8 legacyMacSupportedColumns];
-      v54 = [v53 objectAtIndexedSubscript:v52];
-      v55 = [v54 integerValue];
+      zoomStep = [(PXAssetsSectionGridConfigurator *)self zoomStep];
+      legacyMacSupportedColumns = [zoomableSpec legacyMacSupportedColumns];
+      v54 = [legacyMacSupportedColumns objectAtIndexedSubscript:zoomStep];
+      integerValue = [v54 integerValue];
 
-      v56 = v83;
-      v57 = v55;
+      v56 = layoutCopy;
+      staticNumberOfColumns = integerValue;
     }
 
     else
     {
-      v57 = [v8 staticNumberOfColumns];
-      v56 = v83;
+      staticNumberOfColumns = [zoomableSpec staticNumberOfColumns];
+      v56 = layoutCopy;
     }
 
-    [v56 setNumberOfColumns:v57];
+    [v56 setNumberOfColumns:staticNumberOfColumns];
   }
 
   if (v9)
   {
-    v58 = [v6 burstStackEffect];
-    [v58 setNumberOfItemsStackedBehind:2];
+    burstStackEffect = [sectionLayoutCopy burstStackEffect];
+    [burstStackEffect setNumberOfItemsStackedBehind:2];
   }
 
-  [v83 setContentMode:v24];
-  [v83 setHideIncompleteLastRowOrColumn:v9 ^ 1];
-  [v83 setEnableEffects:v9];
-  [v83 setEnableBestCropRect:v80];
-  [v83 setInterItemSpacing:{v18, v18}];
-  [v83 setItemCaptionSpacing:v25];
+  [layoutCopy setContentMode:v24];
+  [layoutCopy setHideIncompleteLastRowOrColumn:v9 ^ 1];
+  [layoutCopy setEnableEffects:v9];
+  [layoutCopy setEnableBestCropRect:v80];
+  [layoutCopy setInterItemSpacing:{v18, v18}];
+  [layoutCopy setItemCaptionSpacing:v25];
   if (v81)
   {
-    [v8 aspectFitItemCornerRadius];
+    [zoomableSpec aspectFitItemCornerRadius];
   }
 
   else
   {
-    [v8 itemCornerRadius];
+    [zoomableSpec itemCornerRadius];
   }
 
   *&v59 = v59;
   LODWORD(v60) = LODWORD(v59);
   LODWORD(v61) = LODWORD(v59);
   LODWORD(v62) = LODWORD(v59);
-  [v83 setItemCornerRadius:{v59, v60, v61, v62}];
-  [v83 setPadding:{v27, v28, v29, v30}];
-  [v83 setFillSafeAreaTopInset:0];
+  [layoutCopy setItemCornerRadius:{v59, v60, v61, v62}];
+  [layoutCopy setPadding:{v27, v28, v29, v30}];
+  [layoutCopy setFillSafeAreaTopInset:0];
   if (v9)
   {
     v63 = 2;
@@ -251,16 +251,16 @@ LABEL_38:
     v63 = 0;
   }
 
-  [v83 setStyle:v63];
-  [v83 setItemZPosition:0.0];
+  [layoutCopy setStyle:v63];
+  [layoutCopy setItemZPosition:0.0];
   v64 = 1.0;
-  if (v14)
+  if (px_isPanoramasSmartAlbum)
   {
-    [v8 panoramaItemAspectRatio];
+    [zoomableSpec panoramaItemAspectRatio];
   }
 
-  [v83 setItemAspectRatio:v64];
-  if (v10 == 4)
+  [layoutCopy setItemAspectRatio:v64];
+  if (userInterfaceIdiom2 == 4)
   {
     v65 = 2;
   }
@@ -270,22 +270,22 @@ LABEL_38:
     v65 = 1;
   }
 
-  [v83 setDropTargetStyle:v65];
-  [v83 setSupportsAutomaticContentRotation:v14];
-  [v6 preferredCornerRadius];
-  [v83 setEdgeCornerRadius:?];
-  v66 = [*(v26 + 2776) sharedInstance];
-  v67 = v66;
-  if (v82 == 3)
+  [layoutCopy setDropTargetStyle:v65];
+  [layoutCopy setSupportsAutomaticContentRotation:px_isPanoramasSmartAlbum];
+  [sectionLayoutCopy preferredCornerRadius];
+  [layoutCopy setEdgeCornerRadius:?];
+  sharedInstance2 = [*(v26 + 2776) sharedInstance];
+  v67 = sharedInstance2;
+  if (userInterfaceIdiom == 3)
   {
-    v68 = [v66 allPhotosAspectFillFocusAnimationStyle];
-    v69 = [v67 allPhotosAspectFillFocusPadding];
+    allPhotosAspectFillFocusAnimationStyle = [sharedInstance2 allPhotosAspectFillFocusAnimationStyle];
+    allPhotosAspectFillFocusPadding = [v67 allPhotosAspectFillFocusPadding];
     v71 = v70;
-    if ((MEMORY[0x21CEE04B0](v69) & 1) == 0)
+    if ((MEMORY[0x21CEE04B0](allPhotosAspectFillFocusPadding) & 1) == 0)
     {
-      v72 = [v67 pressedAnimationStyle];
+      pressedAnimationStyle = [v67 pressedAnimationStyle];
       [v67 pressedAnimationPadding];
-      [v83 setAnimationParameters:v72 forStylableType:{v73, 2}];
+      [layoutCopy setAnimationParameters:pressedAnimationStyle forStylableType:{v73, 2}];
     }
   }
 
@@ -293,23 +293,23 @@ LABEL_38:
   {
     if (v81)
     {
-      v68 = [v66 allPhotosAspectFitFocusAnimationStyle];
+      allPhotosAspectFillFocusAnimationStyle = [sharedInstance2 allPhotosAspectFitFocusAnimationStyle];
       [v67 allPhotosAspectFitFocusPadding];
     }
 
     else
     {
-      v68 = [v66 allPhotosAspectFillFocusAnimationStyle];
+      allPhotosAspectFillFocusAnimationStyle = [sharedInstance2 allPhotosAspectFillFocusAnimationStyle];
       [v67 allPhotosAspectFillFocusPadding];
     }
 
     v71 = v74;
   }
 
-  [v83 setAnimationParameters:v68 forStylableType:{v71, 1}];
-  v75 = [v83 axGroup];
-  v76 = v75;
-  if (v10 == 4)
+  [layoutCopy setAnimationParameters:allPhotosAspectFillFocusAnimationStyle forStylableType:{v71, 1}];
+  axGroup = [layoutCopy axGroup];
+  v76 = axGroup;
+  if (userInterfaceIdiom2 == 4)
   {
     v77 = 9;
   }
@@ -319,25 +319,25 @@ LABEL_38:
     v77 = 0;
   }
 
-  [v75 setLeafFeatures:{objc_msgSend(v75, "leafFeatures") | v77}];
+  [axGroup setLeafFeatures:{objc_msgSend(axGroup, "leafFeatures") | v77}];
 
-  v78 = [v6 addContentActionHandler];
-  [v83 setNumberOfAccessoryItems:v78 != 0];
+  addContentActionHandler = [sectionLayoutCopy addContentActionHandler];
+  [layoutCopy setNumberOfAccessoryItems:addContentActionHandler != 0];
 }
 
-- (double)_interItemSpacingForLayout:(id)a3 forSpec:(id)a4
+- (double)_interItemSpacingForLayout:(id)layout forSpec:(id)spec
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXAssetsSectionGridConfigurator *)self _layoutIsAspectFit:v7 forSpec:v6];
-  v9 = [(PXAssetsSectionGridConfigurator *)self _layoutHasIndividualItems:v7 forSpec:v6];
+  specCopy = spec;
+  layoutCopy = layout;
+  v8 = [(PXAssetsSectionGridConfigurator *)self _layoutIsAspectFit:layoutCopy forSpec:specCopy];
+  v9 = [(PXAssetsSectionGridConfigurator *)self _layoutHasIndividualItems:layoutCopy forSpec:specCopy];
 
   v10 = 0.0;
   if (v8)
   {
     if (v9)
     {
-      [v6 aspectFitInteritemSpacing];
+      [specCopy aspectFitInteritemSpacing];
 LABEL_6:
       v10 = v11;
     }
@@ -345,20 +345,20 @@ LABEL_6:
 
   else if (v9)
   {
-    [v6 interitemSpacing];
+    [specCopy interitemSpacing];
     goto LABEL_6;
   }
 
   return v10;
 }
 
-- (BOOL)_layoutIsAspectFit:(id)a3 forSpec:(id)a4
+- (BOOL)_layoutIsAspectFit:(id)fit forSpec:(id)spec
 {
-  v6 = a3;
-  v7 = a4;
+  fitCopy = fit;
+  specCopy = spec;
   if ([(PXAssetsSectionGridConfigurator *)self aspectFitContent])
   {
-    v8 = [(PXAssetsSectionGridConfigurator *)self _layoutHasIndividualItems:v6 forSpec:v7];
+    v8 = [(PXAssetsSectionGridConfigurator *)self _layoutHasIndividualItems:fitCopy forSpec:specCopy];
   }
 
   else
@@ -369,37 +369,37 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)_layoutHasIndividualItems:(id)a3 forSpec:(id)a4
+- (BOOL)_layoutHasIndividualItems:(id)items forSpec:(id)spec
 {
-  v5 = a4;
-  v6 = [a3 numberOfColumns];
-  v7 = [v5 maxColumnsForIndividualItems];
+  specCopy = spec;
+  numberOfColumns = [items numberOfColumns];
+  maxColumnsForIndividualItems = [specCopy maxColumnsForIndividualItems];
 
-  return v6 <= v7;
+  return numberOfColumns <= maxColumnsForIndividualItems;
 }
 
-- (CGSize)estimatedSizeOfSectionForAssetCollection:(id)a3 isCurated:(BOOL)a4 numberOfAssets:(int64_t)a5 referenceSize:(CGSize)a6
+- (CGSize)estimatedSizeOfSectionForAssetCollection:(id)collection isCurated:(BOOL)curated numberOfAssets:(int64_t)assets referenceSize:(CGSize)size
 {
-  width = a6.width;
-  v7 = a6.width;
-  if (a5)
+  width = size.width;
+  v7 = size.width;
+  if (assets)
   {
-    v9 = [(PXAssetsSectionConfigurator *)self assetsSectionLayoutSpec:a3];
-    v10 = [v9 zoomableSpec];
+    v9 = [(PXAssetsSectionConfigurator *)self assetsSectionLayoutSpec:collection];
+    zoomableSpec = [v9 zoomableSpec];
 
-    v11 = [v10 staticNumberOfColumns];
-    if (v11 <= 1)
+    staticNumberOfColumns = [zoomableSpec staticNumberOfColumns];
+    if (staticNumberOfColumns <= 1)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = v11;
+      v12 = staticNumberOfColumns;
     }
 
-    v13 = a5 / v12;
-    if ((a5 / v12) <= 1)
+    v13 = assets / v12;
+    if ((assets / v12) <= 1)
     {
       v13 = 1;
     }
@@ -414,47 +414,47 @@ LABEL_6:
   return result;
 }
 
-- (void)configureAssetSectionLayout:(id)a3
+- (void)configureAssetSectionLayout:(id)layout
 {
-  v9 = a3;
-  v4 = [v9 bodyContentLayout];
+  layoutCopy = layout;
+  bodyContentLayout = [layoutCopy bodyContentLayout];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v9 bodyContentLayout];
+    bodyContentLayout2 = [layoutCopy bodyContentLayout];
   }
 
   else
   {
-    v6 = objc_alloc_init(MEMORY[0x277D73CA0]);
-    [v6 setMediaKind:2];
-    [v6 setPresentationType:0];
-    [v6 setContentSource:v9];
-    [v6 setLazy:1];
-    [v6 setDelegate:v9];
-    [v6 setNumberOfItems:{objc_msgSend(v9, "numberOfAssets")}];
-    if ([v9 preferredInitialContentLayoutAxis])
+    bodyContentLayout2 = objc_alloc_init(MEMORY[0x277D73CA0]);
+    [bodyContentLayout2 setMediaKind:2];
+    [bodyContentLayout2 setPresentationType:0];
+    [bodyContentLayout2 setContentSource:layoutCopy];
+    [bodyContentLayout2 setLazy:1];
+    [bodyContentLayout2 setDelegate:layoutCopy];
+    [bodyContentLayout2 setNumberOfItems:{objc_msgSend(layoutCopy, "numberOfAssets")}];
+    if ([layoutCopy preferredInitialContentLayoutAxis])
     {
-      [v6 setAxis:{objc_msgSend(v9, "preferredInitialContentLayoutAxis")}];
+      [bodyContentLayout2 setAxis:{objc_msgSend(layoutCopy, "preferredInitialContentLayoutAxis")}];
     }
 
-    v7 = [v9 preferredInitialContentLayoutNumberOfRows];
+    preferredInitialContentLayoutNumberOfRows = [layoutCopy preferredInitialContentLayoutNumberOfRows];
 
-    if (v7)
+    if (preferredInitialContentLayoutNumberOfRows)
     {
-      v8 = [v9 preferredInitialContentLayoutNumberOfRows];
-      [v6 setNumberOfRows:{objc_msgSend(v8, "integerValue")}];
+      preferredInitialContentLayoutNumberOfRows2 = [layoutCopy preferredInitialContentLayoutNumberOfRows];
+      [bodyContentLayout2 setNumberOfRows:{objc_msgSend(preferredInitialContentLayoutNumberOfRows2, "integerValue")}];
     }
 
-    [v6 setAccessoryMediaKind:10];
-    [v6 setAccessoryPresentationType:1];
-    [v6 setAccessoryItemContentSource:v9];
+    [bodyContentLayout2 setAccessoryMediaKind:10];
+    [bodyContentLayout2 setAccessoryPresentationType:1];
+    [bodyContentLayout2 setAccessoryItemContentSource:layoutCopy];
   }
 
-  [(PXAssetsSectionGridConfigurator *)self _configureGridLayout:v6 inSectionLayout:v9];
-  [v9 setBodyContentLayout:v6 wantsDecoration:1];
+  [(PXAssetsSectionGridConfigurator *)self _configureGridLayout:bodyContentLayout2 inSectionLayout:layoutCopy];
+  [layoutCopy setBodyContentLayout:bodyContentLayout2 wantsDecoration:1];
 }
 
 @end

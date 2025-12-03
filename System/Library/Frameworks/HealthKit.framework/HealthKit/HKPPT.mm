@@ -1,18 +1,18 @@
 @interface HKPPT
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
 - (HKPPT)init;
-- (HKPPT)initWithHKPPTInterface:(id)a3 usingQueue:(id)a4;
-- (id)_testNameForDriver:(id)a3;
+- (HKPPT)initWithHKPPTInterface:(id)interface usingQueue:(id)queue;
+- (id)_testNameForDriver:(id)driver;
 - (id)builtinTests;
-- (void)_failedTest:(id)a3;
-- (void)_failedTest:(id)a3 withResults:(id)a4;
-- (void)_finishedTest:(id)a3;
-- (void)_finishedTest:(id)a3 extraResults:(id)a4;
-- (void)_startedTest:(id)a3;
-- (void)failedTest:(id)a3 results:(id)a4 error:(id)a5;
-- (void)finishedTest:(id)a3 extraResults:(id)a4;
-- (void)invalidConfigurationForTest:(id)a3 error:(id)a4;
-- (void)startedTest:(id)a3;
+- (void)_failedTest:(id)test;
+- (void)_failedTest:(id)test withResults:(id)results;
+- (void)_finishedTest:(id)test;
+- (void)_finishedTest:(id)test extraResults:(id)results;
+- (void)_startedTest:(id)test;
+- (void)failedTest:(id)test results:(id)results error:(id)error;
+- (void)finishedTest:(id)test extraResults:(id)results;
+- (void)invalidConfigurationForTest:(id)test error:(id)error;
+- (void)startedTest:(id)test;
 @end
 
 @implementation HKPPT
@@ -27,20 +27,20 @@
   return 0;
 }
 
-- (HKPPT)initWithHKPPTInterface:(id)a3 usingQueue:(id)a4
+- (HKPPT)initWithHKPPTInterface:(id)interface usingQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  interfaceCopy = interface;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = HKPPT;
   v9 = [(HKPPT *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pptInterface, a3);
-    if (v8)
+    objc_storeStrong(&v9->_pptInterface, interface);
+    if (queueCopy)
     {
-      v11 = v8;
+      v11 = queueCopy;
       pptQueue = v10->_pptQueue;
       v10->_pptQueue = v11;
     }
@@ -64,15 +64,15 @@
 - (id)builtinTests
 {
   v2 = +[HKPPTPluginManager sharedPluginManager];
-  v3 = [v2 builtinTests];
+  builtinTests = [v2 builtinTests];
 
-  return v3;
+  return builtinTests;
 }
 
-- (id)_testNameForDriver:(id)a3
+- (id)_testNameForDriver:(id)driver
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  driverCopy = driver;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -95,7 +95,7 @@
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_activeTestsByName objectForKeyedSubscript:v10, v15];
 
-        if (v11 == v4)
+        if (v11 == driverCopy)
         {
           v12 = v10;
           goto LABEL_11;
@@ -120,17 +120,17 @@ LABEL_11:
   return v12;
 }
 
-- (void)invalidConfigurationForTest:(id)a3 error:(id)a4
+- (void)invalidConfigurationForTest:(id)test error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  [(HKPPT *)self startedTest:v7];
-  [(HKPPT *)self failedTest:v7 results:0 error:v6];
+  errorCopy = error;
+  testCopy = test;
+  [(HKPPT *)self startedTest:testCopy];
+  [(HKPPT *)self failedTest:testCopy results:0 error:errorCopy];
 }
 
-- (void)startedTest:(id)a3
+- (void)startedTest:(id)test
 {
-  v4 = [(HKPPT *)self _testNameForDriver:a3];
+  v4 = [(HKPPT *)self _testNameForDriver:test];
   v5 = v4;
   if (v4)
   {
@@ -142,25 +142,25 @@ LABEL_11:
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)failedTest:(id)a3 results:(id)a4 error:(id)a5
+- (void)failedTest:(id)test results:(id)results error:(id)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HKPPT *)self _testNameForDriver:a3];
+  resultsCopy = results;
+  errorCopy = error;
+  v10 = [(HKPPT *)self _testNameForDriver:test];
   if (v10)
   {
     [(NSMutableDictionary *)self->_activeTestsByName removeObjectForKey:v10];
-    if (v9)
+    if (errorCopy)
     {
-      if (!v8)
+      if (!resultsCopy)
       {
         v15 = @"error";
-        v13 = [v9 description];
+        v13 = [errorCopy description];
         v16[0] = v13;
-        v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
+        resultsCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
-        if (v8)
+        if (resultsCopy)
         {
           goto LABEL_6;
         }
@@ -168,17 +168,17 @@ LABEL_11:
         goto LABEL_8;
       }
 
-      v11 = [v8 mutableCopy];
-      v12 = [v9 description];
+      v11 = [resultsCopy mutableCopy];
+      v12 = [errorCopy description];
       [v11 setObject:v12 forKeyedSubscript:@"error"];
 
-      v8 = v11;
+      resultsCopy = v11;
     }
 
-    if (v8)
+    if (resultsCopy)
     {
 LABEL_6:
-      [(HKPPT *)self _failedTest:v10 withResults:v8];
+      [(HKPPT *)self _failedTest:v10 withResults:resultsCopy];
       goto LABEL_9;
     }
 
@@ -191,16 +191,16 @@ LABEL_9:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishedTest:(id)a3 extraResults:(id)a4
+- (void)finishedTest:(id)test extraResults:(id)results
 {
-  v7 = a4;
-  v6 = [(HKPPT *)self _testNameForDriver:a3];
+  resultsCopy = results;
+  v6 = [(HKPPT *)self _testNameForDriver:test];
   if (v6)
   {
     [(NSMutableDictionary *)self->_activeTestsByName removeObjectForKey:v6];
-    if (v7)
+    if (resultsCopy)
     {
-      [(HKPPT *)self _finishedTest:v6 extraResults:v7];
+      [(HKPPT *)self _finishedTest:v6 extraResults:resultsCopy];
     }
 
     else
@@ -210,12 +210,12 @@ LABEL_9:
   }
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKey:@"testType"];
+  testCopy = test;
+  optionsCopy = options;
+  v8 = [optionsCopy objectForKey:@"testType"];
   if (!v8)
   {
     _HKInitializeLogging();
@@ -223,7 +223,7 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v6;
+      v20 = testCopy;
       v16 = "[PPT] Skipping unspecified performance test type for: %@";
 LABEL_9:
       _os_log_impl(&dword_19197B000, v15, OS_LOG_TYPE_DEFAULT, v16, &v19, 0xCu);
@@ -235,17 +235,17 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"enabled"];
-  v10 = [v9 BOOLValue];
+  v9 = [optionsCopy objectForKeyedSubscript:@"enabled"];
+  bOOLValue = [v9 BOOLValue];
 
-  if ((v10 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     _HKInitializeLogging();
     v15 = HKLogTesting();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v6;
+      v20 = testCopy;
       v16 = "[PPT] Skipping disabled performance test: %@";
       goto LABEL_9;
     }
@@ -262,15 +262,15 @@ LABEL_12:
     v15 = HKLogTesting();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(HKPPT *)v6 runTest:v8 options:v15];
+      [(HKPPT *)testCopy runTest:v8 options:v15];
     }
 
     goto LABEL_12;
   }
 
   v13 = objc_alloc_init(v12);
-  [(NSMutableDictionary *)self->_activeTestsByName setObject:v13 forKeyedSubscript:v6];
-  [v13 runTest:v6 options:v7 controller:self];
+  [(NSMutableDictionary *)self->_activeTestsByName setObject:v13 forKeyedSubscript:testCopy];
+  [v13 runTest:testCopy options:optionsCopy controller:self];
 
   v14 = 1;
 LABEL_13:
@@ -279,17 +279,17 @@ LABEL_13:
   return v14;
 }
 
-- (void)_startedTest:(id)a3
+- (void)_startedTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   pptQueue = self->_pptQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __22__HKPPT__startedTest___block_invoke;
   v7[3] = &unk_1E7378400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = testCopy;
+  v6 = testCopy;
   dispatch_async(pptQueue, v7);
 }
 
@@ -316,17 +316,17 @@ void __22__HKPPT__startedTest___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_finishedTest:(id)a3
+- (void)_finishedTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   pptQueue = self->_pptQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __23__HKPPT__finishedTest___block_invoke;
   v7[3] = &unk_1E7378400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = testCopy;
+  v6 = testCopy;
   dispatch_async(pptQueue, v7);
 }
 
@@ -353,20 +353,20 @@ void __23__HKPPT__finishedTest___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_finishedTest:(id)a3 extraResults:(id)a4
+- (void)_finishedTest:(id)test extraResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  resultsCopy = results;
   pptQueue = self->_pptQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__HKPPT__finishedTest_extraResults___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = testCopy;
+  v13 = resultsCopy;
+  v9 = resultsCopy;
+  v10 = testCopy;
   dispatch_async(pptQueue, block);
 }
 
@@ -394,17 +394,17 @@ void __36__HKPPT__finishedTest_extraResults___block_invoke(void *a1)
   }
 }
 
-- (void)_failedTest:(id)a3
+- (void)_failedTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   pptQueue = self->_pptQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __21__HKPPT__failedTest___block_invoke;
   v7[3] = &unk_1E7378400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = testCopy;
+  v6 = testCopy;
   dispatch_async(pptQueue, v7);
 }
 
@@ -431,20 +431,20 @@ void __21__HKPPT__failedTest___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_failedTest:(id)a3 withResults:(id)a4
+- (void)_failedTest:(id)test withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  resultsCopy = results;
   pptQueue = self->_pptQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__HKPPT__failedTest_withResults___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = testCopy;
+  v13 = resultsCopy;
+  v9 = resultsCopy;
+  v10 = testCopy;
   dispatch_async(pptQueue, block);
 }
 

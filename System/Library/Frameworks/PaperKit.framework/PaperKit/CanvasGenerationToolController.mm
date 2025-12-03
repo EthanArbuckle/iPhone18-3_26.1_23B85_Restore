@@ -1,13 +1,13 @@
 @interface CanvasGenerationToolController
-- (_TtC8PaperKit30CanvasGenerationToolController)initWithCoder:(id)a3;
-- (_TtC8PaperKit30CanvasGenerationToolController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8PaperKit30CanvasGenerationToolController)initWithCoder:(id)coder;
+- (_TtC8PaperKit30CanvasGenerationToolController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CanvasGenerationToolController
 
-- (_TtC8PaperKit30CanvasGenerationToolController)initWithCoder:(id)a3
+- (_TtC8PaperKit30CanvasGenerationToolController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -23,21 +23,21 @@
   [*&v2[OBJC_IVAR____TtC8PaperKit30CanvasGenerationToolController_canvasGenerationTool] setTranslatesAutoresizingMaskIntoConstraints_];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CanvasGenerationToolController();
   swift_unknownObjectRetain();
   v7 = v8.receiver;
-  [(CanvasGenerationToolController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(CanvasGenerationToolController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   CanvasGenerationTool.updateScrollViewLayout(_:animationDuration:animationCurveOptions:)(0, 0.0, 0.0);
 
   swift_unknownObjectRelease();
 }
 
-- (_TtC8PaperKit30CanvasGenerationToolController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8PaperKit30CanvasGenerationToolController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,5 +1,5 @@
 @interface PKLinkedAppViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityHint;
@@ -8,18 +8,18 @@
 
 @implementation PKLinkedAppViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKLinkedApplication"];
-  [v3 validateClass:@"ASCLockupContentView"];
-  [v3 validateClass:@"ASCLockupContentView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASCLockupContentView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASCLockupContentView" hasInstanceMethod:@"offerButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKContinuousButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"PKLinkedAppView" hasInstanceMethod:@"linkedAppView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKLinkedAppContentView" hasInstanceMethod:@"linkedApplication" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKLinkedApplication" hasInstanceMethod:@"isInstalled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKLinkedApplication"];
+  [validationsCopy validateClass:@"ASCLockupContentView"];
+  [validationsCopy validateClass:@"ASCLockupContentView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASCLockupContentView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASCLockupContentView" hasInstanceMethod:@"offerButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKContinuousButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"PKLinkedAppView" hasInstanceMethod:@"linkedAppView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKLinkedAppContentView" hasInstanceMethod:@"linkedApplication" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKLinkedApplication" hasInstanceMethod:@"isInstalled" withFullSignature:{"B", 0}];
 }
 
 uint64_t __45__PKLinkedAppViewAccessibility__axGetAppView__block_invoke(uint64_t a1, void *a2)
@@ -33,9 +33,9 @@ uint64_t __45__PKLinkedAppViewAccessibility__axGetAppView__block_invoke(uint64_t
 
 - (id)accessibilityLabel
 {
-  v2 = [(PKLinkedAppViewAccessibility *)self _axGetAppView];
-  v3 = [v2 safeValueForKey:@"titleLabel"];
-  v6 = [v2 safeValueForKey:@"subtitleLabel"];
+  _axGetAppView = [(PKLinkedAppViewAccessibility *)self _axGetAppView];
+  v3 = [_axGetAppView safeValueForKey:@"titleLabel"];
+  v6 = [_axGetAppView safeValueForKey:@"subtitleLabel"];
   v4 = __UIAXStringForVariables();
 
   return v4;
@@ -43,8 +43,8 @@ uint64_t __45__PKLinkedAppViewAccessibility__axGetAppView__block_invoke(uint64_t
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v2 = [(PKLinkedAppViewAccessibility *)self _axGetAppView];
-  v3 = [v2 safeValueForKey:@"offerButton"];
+  _axGetAppView = [(PKLinkedAppViewAccessibility *)self _axGetAppView];
+  v3 = [_axGetAppView safeValueForKey:@"offerButton"];
 
   v4 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v3}];
 
@@ -74,8 +74,8 @@ uint64_t __45__PKLinkedAppViewAccessibility__axGetAppView__block_invoke(uint64_t
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(PKLinkedAppViewAccessibility *)self _axGetAppView];
-  v3 = [v2 safeValueForKey:@"offerButton"];
+  _axGetAppView = [(PKLinkedAppViewAccessibility *)self _axGetAppView];
+  v3 = [_axGetAppView safeValueForKey:@"offerButton"];
   [v3 accessibilityActivationPoint];
   v5 = v4;
   v7 = v6;

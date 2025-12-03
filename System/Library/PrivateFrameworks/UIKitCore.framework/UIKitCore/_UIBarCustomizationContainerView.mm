@@ -1,15 +1,15 @@
 @interface _UIBarCustomizationContainerView
-- (_UIBarCustomizationContainerView)initWithParentTraitEnvironment:(id)a3;
+- (_UIBarCustomizationContainerView)initWithParentTraitEnvironment:(id)environment;
 - (_UITraitEnvironmentInternal)parentTraitEnvironment;
 - (id)traitCollection;
-- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)a3;
+- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)internal;
 @end
 
 @implementation _UIBarCustomizationContainerView
 
-- (_UIBarCustomizationContainerView)initWithParentTraitEnvironment:(id)a3
+- (_UIBarCustomizationContainerView)initWithParentTraitEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = _UIBarCustomizationContainerView;
   v5 = [(UIView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -17,7 +17,7 @@
   if (v5)
   {
     [(UIView *)v5 setAutoresizingMask:18];
-    [(_UIBarCustomizationContainerView *)v6 setParentTraitEnvironment:v4];
+    [(_UIBarCustomizationContainerView *)v6 setParentTraitEnvironment:environmentCopy];
     v7 = +[_UIBarCustomizationCustomViewPortalSourceContainer sharedContainer];
     [(UIView *)v6 addSubview:v7];
   }
@@ -27,25 +27,25 @@
 
 - (id)traitCollection
 {
-  v3 = [(_UIBarCustomizationContainerView *)self parentTraitEnvironment];
-  v4 = [v3 _traitCollectionForChildEnvironment:self];
+  parentTraitEnvironment = [(_UIBarCustomizationContainerView *)self parentTraitEnvironment];
+  v4 = [parentTraitEnvironment _traitCollectionForChildEnvironment:self];
 
   v5 = [v4 _traitCollectionByReplacingNSIntegerValue:1 forTraitToken:0x1EFE32488];
 
   return v5;
 }
 
-- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)a3
+- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)internal
 {
   v6.receiver = self;
   v6.super_class = _UIBarCustomizationContainerView;
-  [(UIView *)&v6 _traitCollectionDidChangeOnSubtreeInternal:a3];
-  v4 = [(_UIBarCustomizationContainerView *)self traitChangeHandler];
+  [(UIView *)&v6 _traitCollectionDidChangeOnSubtreeInternal:internal];
+  traitChangeHandler = [(_UIBarCustomizationContainerView *)self traitChangeHandler];
 
-  if (v4)
+  if (traitChangeHandler)
   {
-    v5 = [(_UIBarCustomizationContainerView *)self traitChangeHandler];
-    (v5)[2](v5, self);
+    traitChangeHandler2 = [(_UIBarCustomizationContainerView *)self traitChangeHandler];
+    (traitChangeHandler2)[2](traitChangeHandler2, self);
   }
 }
 

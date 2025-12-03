@@ -1,44 +1,44 @@
 @interface SFSSTTSEngineFactory
-+ (id)getKeyByVoiceAsset:(id)a3 resourceAsset:(id)a4;
++ (id)getKeyByVoiceAsset:(id)asset resourceAsset:(id)resourceAsset;
 + (id)sharedInstance;
 - (SFSSTTSEngineFactory)init;
-- (id)getEngineByVoiceAsset:(id)a3 resourceAsset:(id)a4;
+- (id)getEngineByVoiceAsset:(id)asset resourceAsset:(id)resourceAsset;
 - (void)removeAllEngines;
-- (void)removeEngineByVoiceAsset:(id)a3 resourceAsset:(id)a4;
+- (void)removeEngineByVoiceAsset:(id)asset resourceAsset:(id)resourceAsset;
 @end
 
 @implementation SFSSTTSEngineFactory
 
 - (void)removeAllEngines
 {
-  v2 = [(SFSSTTSEngineFactory *)self keyToTTSEngineMap];
-  [v2 removeAllObjects];
+  keyToTTSEngineMap = [(SFSSTTSEngineFactory *)self keyToTTSEngineMap];
+  [keyToTTSEngineMap removeAllObjects];
 }
 
-- (void)removeEngineByVoiceAsset:(id)a3 resourceAsset:(id)a4
+- (void)removeEngineByVoiceAsset:(id)asset resourceAsset:(id)resourceAsset
 {
-  v6 = [SFSSTTSEngineFactory getKeyByVoiceAsset:a3 resourceAsset:a4];
-  v5 = [(SFSSTTSEngineFactory *)self keyToTTSEngineMap];
-  [v5 removeObjectForKey:v6];
+  v6 = [SFSSTTSEngineFactory getKeyByVoiceAsset:asset resourceAsset:resourceAsset];
+  keyToTTSEngineMap = [(SFSSTTSEngineFactory *)self keyToTTSEngineMap];
+  [keyToTTSEngineMap removeObjectForKey:v6];
 }
 
-- (id)getEngineByVoiceAsset:(id)a3 resourceAsset:(id)a4
+- (id)getEngineByVoiceAsset:(id)asset resourceAsset:(id)resourceAsset
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [SFSSTTSEngineFactory getKeyByVoiceAsset:v6 resourceAsset:v7];
-  v9 = [(SFSSTTSEngineFactory *)self keyToTTSEngineMap];
-  v10 = [v9 objectForKey:v8];
+  assetCopy = asset;
+  resourceAssetCopy = resourceAsset;
+  v8 = [SFSSTTSEngineFactory getKeyByVoiceAsset:assetCopy resourceAsset:resourceAssetCopy];
+  keyToTTSEngineMap = [(SFSSTTSEngineFactory *)self keyToTTSEngineMap];
+  v10 = [keyToTTSEngineMap objectForKey:v8];
 
   if (!v10)
   {
     v11 = [SFSSTTSEngine alloc];
-    v12 = [v6 assetPath];
-    v13 = [v7 assetPath];
-    v10 = [(SFSSTTSEngine *)v11 initWithVoicePath:v12 resourcePath:v13];
+    assetPath = [assetCopy assetPath];
+    assetPath2 = [resourceAssetCopy assetPath];
+    v10 = [(SFSSTTSEngine *)v11 initWithVoicePath:assetPath resourcePath:assetPath2];
 
-    v14 = [(SFSSTTSEngineFactory *)self keyToTTSEngineMap];
-    [v14 setValue:v10 forKey:v8];
+    keyToTTSEngineMap2 = [(SFSSTTSEngineFactory *)self keyToTTSEngineMap];
+    [keyToTTSEngineMap2 setValue:v10 forKey:v8];
   }
 
   return v10;
@@ -59,12 +59,12 @@
   return v2;
 }
 
-+ (id)getKeyByVoiceAsset:(id)a3 resourceAsset:(id)a4
++ (id)getKeyByVoiceAsset:(id)asset resourceAsset:(id)resourceAsset
 {
-  v5 = a4;
+  resourceAssetCopy = resourceAsset;
   v6 = MEMORY[0x277CBEA60];
-  v7 = [a3 key];
-  v8 = [v5 key];
+  v7 = [asset key];
+  v8 = [resourceAssetCopy key];
   v9 = [v6 arrayWithObjects:{v7, v8, 0}];
 
   v10 = [v9 componentsJoinedByString:@"-"];

@@ -1,90 +1,90 @@
 @interface STSPicker
-- (STSPicker)initWithSearchModel:(id)a3 showSuggestions:(BOOL)a4;
+- (STSPicker)initWithSearchModel:(id)model showSuggestions:(BOOL)suggestions;
 - (STSPickerSelectionDelegate)selectionDelegate;
 - (STSPickerView)pickerView;
-- (id)_detailViewControllerForIndexPath:(id)a3;
+- (id)_detailViewControllerForIndexPath:(id)path;
 - (id)_loadMoreFooter;
-- (id)_noticeTextForSearchError:(id)a3;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)getTapToRadarPunchOut:(id)a3;
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4;
+- (id)_noticeTextForSearchError:(id)error;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)getTapToRadarPunchOut:(id)out;
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location;
 - (id)snapshotImage;
-- (int64_t)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)_beginDownloadingResultAtIndexPath:(id)a3;
+- (int64_t)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)_beginDownloadingResultAtIndexPath:(id)path;
 - (void)_cancelActiveDownload;
-- (void)_fetchImageWithURL:(id)a3 priority:(int64_t)a4 forCollectionView:(id)a5 atIndexPath:(id)a6;
-- (void)_handleDebugGesture:(id)a3;
-- (void)_handleLongPress:(id)a3;
+- (void)_fetchImageWithURL:(id)l priority:(int64_t)priority forCollectionView:(id)view atIndexPath:(id)path;
+- (void)_handleDebugGesture:(id)gesture;
+- (void)_handleLongPress:(id)press;
 - (void)_loadMoreResultsIfNecessary;
-- (void)_presentDetailViewControllerForIndexPath:(id)a3;
-- (void)_presentNoticeWithText:(id)a3;
-- (void)_reportFeedbackDisplayedResultsDidScroll:(BOOL)a3;
-- (void)_updatePredictedSuggestionsForSize:(CGSize)a3;
+- (void)_presentDetailViewControllerForIndexPath:(id)path;
+- (void)_presentNoticeWithText:(id)text;
+- (void)_reportFeedbackDisplayedResultsDidScroll:(BOOL)scroll;
+- (void)_updatePredictedSuggestionsForSize:(CGSize)size;
 - (void)cancelImageDownloads;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)detailViewControllerDidInsert:(id)a3;
-- (void)detailViewControllerDidReportConcern:(id)a3 result:(id)a4 punchout:(id)a5;
-- (void)detailViewControllerDidSelectProviderLink:(id)a3;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)detailViewControllerDidInsert:(id)insert;
+- (void)detailViewControllerDidReportConcern:(id)concern result:(id)result punchout:(id)punchout;
+- (void)detailViewControllerDidSelectProviderLink:(id)link;
 - (void)didReceiveMemoryWarning;
-- (void)headerDidSelectCancelButton:(id)a3;
-- (void)headerView:(id)a3 didRequestCompletion:(id)a4;
-- (void)headerView:(id)a3 didSearchFor:(id)a4;
-- (void)headerView:(id)a3 didSelectSuggestionButtonAtIndex:(unint64_t)a4;
+- (void)headerDidSelectCancelButton:(id)button;
+- (void)headerView:(id)view didRequestCompletion:(id)completion;
+- (void)headerView:(id)view didSearchFor:(id)for;
+- (void)headerView:(id)view didSelectSuggestionButtonAtIndex:(unint64_t)index;
 - (void)headerViewDidDeleteText;
-- (void)headerViewDidSelectSearchButton:(id)a3;
+- (void)headerViewDidSelectSearchButton:(id)button;
 - (void)loadMoreFooterDidTapLogo;
 - (void)loadView;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
-- (void)performSearchWithQueryString:(id)a3 requestType:(int64_t)a4;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
+- (void)performSearchWithQueryString:(id)string requestType:(int64_t)type;
 - (void)performZKWSearchQuery;
-- (void)previewingContext:(id)a3 commitViewController:(id)a4;
+- (void)previewingContext:(id)context commitViewController:(id)controller;
 - (void)resetContent;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)searchModel:(id)a3 insertedResultsAtIndexPaths:(id)a4 removedResultsAtIndexPaths:(id)a5;
-- (void)searchModelUpdatedPredictedSuggestions:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)searchModel:(id)model insertedResultsAtIndexPaths:(id)paths removedResultsAtIndexPaths:(id)indexPaths;
+- (void)searchModelUpdatedPredictedSuggestions:(id)suggestions;
 - (void)sendVisibleResultsFeedback;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateContentOffset:(double)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateContentOffset:(double)offset;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)willTransitionToPresentationStyle:(unint64_t)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)willTransitionToPresentationStyle:(unint64_t)style;
 @end
 
 @implementation STSPicker
 
-- (STSPicker)initWithSearchModel:(id)a3 showSuggestions:(BOOL)a4
+- (STSPicker)initWithSearchModel:(id)model showSuggestions:(BOOL)suggestions
 {
-  v7 = a3;
+  modelCopy = model;
   v21.receiver = self;
   v21.super_class = STSPicker;
   v8 = [(STSPicker *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_searchModel, a3);
-    v9->_showSuggestions = a4;
+    objc_storeStrong(&v8->_searchModel, model);
+    v9->_showSuggestions = suggestions;
     [(STSSearchModel *)v9->_searchModel setDelegate:v9];
     v9->_sectionsTag = 0;
     v10 = [MEMORY[0x277CBEB58] set];
     lastInsertedIndexesWaitingToLoad = v9->_lastInsertedIndexesWaitingToLoad;
     v9->_lastInsertedIndexesWaitingToLoad = v10;
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     displayedResults = v9->_displayedResults;
-    v9->_displayedResults = v12;
+    v9->_displayedResults = array;
 
     v14 = dispatch_queue_create("com.apple.messages.picker.displayedresultsq", 0);
     displayedResultsQueue = v9->_displayedResultsQueue;
@@ -96,9 +96,9 @@
 
     v9->_isSnapShotting = 0;
     v9->_debugMode = 0;
-    v18 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     debugItems = v9->_debugItems;
-    v9->_debugItems = v18;
+    v9->_debugItems = array2;
   }
 
   return v9;
@@ -125,49 +125,49 @@
   [(STSPicker *)self setTitle:v3];
 
   v17 = objc_alloc_init(STSPickerView);
-  v4 = [(STSPickerView *)v17 collectionView];
-  v5 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v5];
+  collectionView = [(STSPickerView *)v17 collectionView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [collectionView setBackgroundColor:clearColor];
 
-  v6 = [(STSPickerView *)v17 collectionView];
-  [v6 setScrollsToTop:1];
+  collectionView2 = [(STSPickerView *)v17 collectionView];
+  [collectionView2 setScrollsToTop:1];
 
-  v7 = [(STSPickerView *)v17 collectionView];
-  [v7 setDataSource:self];
+  collectionView3 = [(STSPickerView *)v17 collectionView];
+  [collectionView3 setDataSource:self];
 
-  v8 = [(STSPickerView *)v17 collectionView];
-  [v8 setDelegate:self];
+  collectionView4 = [(STSPickerView *)v17 collectionView];
+  [collectionView4 setDelegate:self];
 
-  v9 = [(STSPickerView *)v17 collectionView];
-  [v9 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"STSGridLayoutElementKindHeader" withReuseIdentifier:@"STSGridLayoutElementKindHeader"];
+  collectionView5 = [(STSPickerView *)v17 collectionView];
+  [collectionView5 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"STSGridLayoutElementKindHeader" withReuseIdentifier:@"STSGridLayoutElementKindHeader"];
 
-  v10 = [(STSPickerView *)v17 collectionView];
-  [v10 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"STSGridLayoutElementKindFooter" withReuseIdentifier:@"STSGridLayoutElementKindFooter"];
+  collectionView6 = [(STSPickerView *)v17 collectionView];
+  [collectionView6 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"STSGridLayoutElementKindFooter" withReuseIdentifier:@"STSGridLayoutElementKindFooter"];
 
-  v11 = [(STSPickerView *)v17 collectionView];
-  [v11 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"STSImageCell"];
+  collectionView7 = [(STSPickerView *)v17 collectionView];
+  [collectionView7 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"STSImageCell"];
 
-  v12 = [(STSPickerView *)v17 collectionView];
-  [v12 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"STSVideoCell"];
+  collectionView8 = [(STSPickerView *)v17 collectionView];
+  [collectionView8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"STSVideoCell"];
 
   v13 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__handleLongPress_];
   [v13 setMinimumPressDuration:0.75];
-  v14 = [(STSPickerView *)v17 collectionView];
-  [v14 addGestureRecognizer:v13];
+  collectionView9 = [(STSPickerView *)v17 collectionView];
+  [collectionView9 addGestureRecognizer:v13];
 
   if (STSIsInternalInstall())
   {
     v15 = [objc_alloc(MEMORY[0x277D75AE0]) initWithTarget:self action:sel__handleDebugGesture_];
     [v15 setDirection:3];
     [v15 setNumberOfTouchesRequired:2];
-    v16 = [(STSPickerView *)v17 collectionView];
-    [v16 addGestureRecognizer:v15];
+    collectionView10 = [(STSPickerView *)v17 collectionView];
+    [collectionView10 addGestureRecognizer:v15];
   }
 
   [(STSPicker *)self setView:v17];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   displayedResultsQueue = self->_displayedResultsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -178,19 +178,19 @@
   dispatch_async(displayedResultsQueue, block);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v22.receiver = self;
   v22.super_class = STSPicker;
   [(STSPicker *)&v22 willMoveToParentViewController:?];
-  v5 = [(STSSearchModel *)self->_searchModel sections];
-  v6 = [v5 firstObject];
-  v7 = [v6 results];
+  sections = [(STSSearchModel *)self->_searchModel sections];
+  firstObject = [sections firstObject];
+  results = [firstObject results];
 
-  v8 = [(STSPicker *)self view];
-  v9 = [v8 collectionView];
-  v10 = [v9 indexPathsForVisibleItems];
-  if (a3)
+  view = [(STSPicker *)self view];
+  collectionView = [view collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  if (controller)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -198,9 +198,9 @@
     v20[3] = &unk_279B8AA78;
     v11 = &v21;
     v20[4] = self;
-    v21 = v7;
-    v12 = v7;
-    [v10 enumerateObjectsUsingBlock:v20];
+    v21 = results;
+    v12 = results;
+    [indexPathsForVisibleItems enumerateObjectsUsingBlock:v20];
   }
 
   else
@@ -210,13 +210,13 @@
     v16 = __44__STSPicker_willMoveToParentViewController___block_invoke_2;
     v17 = &unk_279B8AA78;
     v11 = &v19;
-    v18 = self;
-    v19 = v7;
-    v13 = v7;
-    [v10 enumerateObjectsUsingBlock:&v14];
+    selfCopy = self;
+    v19 = results;
+    v13 = results;
+    [indexPathsForVisibleItems enumerateObjectsUsingBlock:&v14];
 
-    v8 = [STSImageCache sharedCache:v14];
-    [v8 clearInMemoryCache];
+    view = [STSImageCache sharedCache:v14];
+    [view clearInMemoryCache];
   }
 }
 
@@ -259,22 +259,22 @@ void __44__STSPicker_willMoveToParentViewController___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(STSPicker *)self parentViewController];
+  parentViewController = [(STSPicker *)self parentViewController];
 
-  if (v4)
+  if (parentViewController)
   {
     if (!self->_previewingContext)
     {
-      v5 = [(STSPicker *)self traitCollection];
-      v6 = [v5 forceTouchCapability];
+      traitCollection = [(STSPicker *)self traitCollection];
+      forceTouchCapability = [traitCollection forceTouchCapability];
 
-      if (v6 == 2)
+      if (forceTouchCapability == 2)
       {
-        v11 = [(STSPicker *)self view];
-        v7 = [v11 collectionView];
-        v8 = [(STSPicker *)self registerForPreviewingWithDelegate:self sourceView:v7];
+        view = [(STSPicker *)self view];
+        collectionView = [view collectionView];
+        v8 = [(STSPicker *)self registerForPreviewingWithDelegate:self sourceView:collectionView];
         previewingContext = self->_previewingContext;
         self->_previewingContext = v8;
       }
@@ -283,8 +283,8 @@ void __44__STSPicker_willMoveToParentViewController___block_invoke_2(uint64_t a1
 
   else
   {
-    v10 = [(STSPicker *)self view];
-    [v10 setOverlayView:0];
+    view2 = [(STSPicker *)self view];
+    [view2 setOverlayView:0];
 
     if (self->_previewingContext)
     {
@@ -299,13 +299,13 @@ void __44__STSPicker_willMoveToParentViewController___block_invoke_2(uint64_t a1
   if (self->_needsReloadAfterLayout)
   {
     self->_needsReloadAfterLayout = 0;
-    v3 = [(STSPicker *)self view];
-    v4 = [v3 collectionView];
-    [v4 reloadData];
+    view = [(STSPicker *)self view];
+    collectionView = [view collectionView];
+    [collectionView reloadData];
   }
 
-  v5 = [(STSPicker *)self view];
-  [v5 frame];
+  view2 = [(STSPicker *)self view];
+  [view2 frame];
   [(STSPicker *)self _updatePredictedSuggestionsForSize:v6, v7];
 
   if (!self->_isSnapShotting)
@@ -315,30 +315,30 @@ void __44__STSPicker_willMoveToParentViewController___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(STSPicker *)self _updatePredictedSuggestionsForSize:width, height];
-  [v7 animateAlongsideTransition:0 completion:0];
+  [coordinatorCopy animateAlongsideTransition:0 completion:0];
   v8.receiver = self;
   v8.super_class = STSPicker;
-  [(STSPicker *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(STSPicker *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)willTransitionToPresentationStyle:(unint64_t)a3
+- (void)willTransitionToPresentationStyle:(unint64_t)style
 {
-  if (!a3)
+  if (!style)
   {
-    v4 = [(STSPicker *)self presentedViewController];
+    presentedViewController = [(STSPicker *)self presentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v6 = [(STSPicker *)self presentedViewController];
-      [v6 dismissViewControllerAnimated:0 completion:0];
+      presentedViewController2 = [(STSPicker *)self presentedViewController];
+      [presentedViewController2 dismissViewControllerAnimated:0 completion:0];
     }
   }
 }
@@ -346,40 +346,40 @@ void __44__STSPicker_willMoveToParentViewController___block_invoke_2(uint64_t a1
 - (id)snapshotImage
 {
   self->_isSnapShotting = 1;
-  v3 = [(STSPicker *)self view];
-  [v3 scrollToTopWithAnimation:0];
+  view = [(STSPicker *)self view];
+  [view scrollToTopWithAnimation:0];
 
-  v4 = [(STSPicker *)self view];
-  v5 = [v4 collectionView];
-  [v5 setHidden:1];
+  view2 = [(STSPicker *)self view];
+  collectionView = [view2 collectionView];
+  [collectionView setHidden:1];
 
-  v6 = [(STSPicker *)self view];
-  v7 = [v6 overlayView];
-  [v7 setHidden:1];
+  view3 = [(STSPicker *)self view];
+  overlayView = [view3 overlayView];
+  [overlayView setHidden:1];
 
   showSuggestions = self->_showSuggestions;
   self->_showSuggestions = 0;
-  v9 = [(STSPicker *)self view];
-  v10 = [v9 headerView];
+  view4 = [(STSPicker *)self view];
+  headerView = [view4 headerView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [(STSPicker *)self view];
-    v13 = [v12 headerView];
+    view5 = [(STSPicker *)self view];
+    headerView2 = [view5 headerView];
 
-    [v13 setTopSuggestions:0];
-    [v13 setBottomSuggestions:0];
-    v14 = [(STSPicker *)self view];
-    [v14 setNeedsLayout];
+    [headerView2 setTopSuggestions:0];
+    [headerView2 setBottomSuggestions:0];
+    view6 = [(STSPicker *)self view];
+    [view6 setNeedsLayout];
 
-    v15 = [(STSPicker *)self view];
-    [v15 layoutIfNeeded];
+    view7 = [(STSPicker *)self view];
+    [view7 layoutIfNeeded];
   }
 
-  v16 = [(STSPicker *)self view];
-  [v16 bounds];
+  view8 = [(STSPicker *)self view];
+  [view8 bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -397,20 +397,20 @@ void __44__STSPicker_willMoveToParentViewController___block_invoke_2(uint64_t a1
   v34[4] = self;
   v26 = [v25 imageWithActions:v34];
   self->_showSuggestions = showSuggestions;
-  v27 = [(STSPicker *)self view];
-  v28 = [v27 collectionView];
-  [v28 setHidden:0];
+  view9 = [(STSPicker *)self view];
+  collectionView2 = [view9 collectionView];
+  [collectionView2 setHidden:0];
 
-  v29 = [(STSPicker *)self view];
-  v30 = [v29 overlayView];
-  [v30 setHidden:0];
+  view10 = [(STSPicker *)self view];
+  overlayView2 = [view10 overlayView];
+  [overlayView2 setHidden:0];
 
   [(STSPicker *)self _updatePredictedSuggestionsForSize:v22, v24];
-  v31 = [(STSPicker *)self view];
-  [v31 setNeedsLayout];
+  view11 = [(STSPicker *)self view];
+  [view11 setNeedsLayout];
 
-  v32 = [(STSPicker *)self view];
-  [v32 layoutIfNeeded];
+  view12 = [(STSPicker *)self view];
+  [view12 layoutIfNeeded];
 
   self->_isSnapShotting = 0;
 
@@ -441,8 +441,8 @@ void __26__STSPicker_snapshotImage__block_invoke(uint64_t a1, void *a2)
   block[3] = &unk_279B8A988;
   block[4] = self;
   dispatch_async(displayedResultsQueue, block);
-  v5 = [(STSPicker *)self view];
-  [v5 setOverlayView:0];
+  view = [(STSPicker *)self view];
+  [view setOverlayView:0];
 
   v16[0] = 0;
   v16[1] = v16;
@@ -456,8 +456,8 @@ void __26__STSPicker_snapshotImage__block_invoke(uint64_t a1, void *a2)
   v15[4] = self;
   v15[5] = v16;
   dispatch_after(v6, MEMORY[0x277D85CD0], v15);
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  objc_storeStrong(&self->_lastSearchId, v7);
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  objc_storeStrong(&self->_lastSearchId, uUID);
   objc_initWeak(&location, self);
   searchModel = self->_searchModel;
   v10[0] = MEMORY[0x277D85DD0];
@@ -466,7 +466,7 @@ void __26__STSPicker_snapshotImage__block_invoke(uint64_t a1, void *a2)
   v10[3] = &unk_279B8AEA0;
   objc_copyWeak(&v13, &location);
   v12 = v16;
-  v9 = v7;
+  v9 = uUID;
   v11 = v9;
   [(STSSearchModel *)searchModel performZKWSearchQueryWithCompletion:v10];
 
@@ -511,12 +511,12 @@ void __34__STSPicker_performZKWSearchQuery__block_invoke_3(uint64_t a1, char a2,
   }
 }
 
-- (void)performSearchWithQueryString:(id)a3 requestType:(int64_t)a4
+- (void)performSearchWithQueryString:(id)string requestType:(int64_t)type
 {
-  v7 = a3;
-  objc_storeStrong(&self->_currentQuery, a3);
-  v8 = [(STSPicker *)self view];
-  [v8 setOverlayView:0];
+  stringCopy = string;
+  objc_storeStrong(&self->_currentQuery, string);
+  view = [(STSPicker *)self view];
+  [view setOverlayView:0];
 
   displayedResultsQueue = self->_displayedResultsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -537,8 +537,8 @@ void __34__STSPicker_performZKWSearchQuery__block_invoke_3(uint64_t a1, char a2,
   v19[4] = self;
   v19[5] = v20;
   dispatch_after(v10, MEMORY[0x277D85CD0], v19);
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  objc_storeStrong(&self->_lastSearchId, v11);
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  objc_storeStrong(&self->_lastSearchId, uUID);
   objc_initWeak(&location, self);
   searchModel = self->_searchModel;
   v14[0] = MEMORY[0x277D85DD0];
@@ -547,10 +547,10 @@ void __34__STSPicker_performZKWSearchQuery__block_invoke_3(uint64_t a1, char a2,
   v14[3] = &unk_279B8AEC8;
   objc_copyWeak(v17, &location);
   v16 = v20;
-  v13 = v11;
+  v13 = uUID;
   v15 = v13;
-  v17[1] = a4;
-  [(STSSearchModel *)searchModel performSearchWithQueryString:v7 requestType:a4 completion:v14];
+  v17[1] = type;
+  [(STSSearchModel *)searchModel performSearchWithQueryString:stringCopy requestType:type completion:v14];
 
   objc_destroyWeak(v17);
   objc_destroyWeak(&location);
@@ -614,8 +614,8 @@ LABEL_8:
 - (void)resetContent
 {
   [(STSSearchModel *)self->_searchModel removeAllSections];
-  v3 = [(STSPicker *)self view];
-  [v3 setOverlayView:0];
+  view = [(STSPicker *)self view];
+  [view setOverlayView:0];
 }
 
 - (STSPickerView)pickerView
@@ -625,44 +625,44 @@ LABEL_8:
   return [(STSPicker *)self view];
 }
 
-- (void)updateContentOffset:(double)a3
+- (void)updateContentOffset:(double)offset
 {
-  v4 = [(STSPicker *)self pickerView];
-  [v4 updateContentOffset:a3];
+  pickerView = [(STSPicker *)self pickerView];
+  [pickerView updateContentOffset:offset];
 }
 
-- (void)_handleLongPress:(id)a3
+- (void)_handleLongPress:(id)press
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
-    v5 = [(STSPicker *)self view];
-    v6 = [v5 collectionView];
-    v7 = [(STSPicker *)self view];
-    v8 = [v7 collectionView];
-    [v4 locationInView:v8];
-    v9 = [v6 indexPathForItemAtPoint:?];
+    view = [(STSPicker *)self view];
+    collectionView = [view collectionView];
+    view2 = [(STSPicker *)self view];
+    collectionView2 = [view2 collectionView];
+    [pressCopy locationInView:collectionView2];
+    v9 = [collectionView indexPathForItemAtPoint:?];
 
     [(STSPicker *)self _presentDetailViewControllerForIndexPath:v9];
-    v10 = [v9 section];
-    v11 = [(STSSearchModel *)self->_searchModel sections];
-    v12 = [v11 count];
+    section = [v9 section];
+    sections = [(STSSearchModel *)self->_searchModel sections];
+    v12 = [sections count];
 
-    if (v10 >= v12)
+    if (section >= v12)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
       {
-        [(STSPicker *)&self->_searchModel _handleLongPress:v10];
+        [(STSPicker *)&self->_searchModel _handleLongPress:section];
       }
     }
 
     else
     {
-      v13 = [(STSSearchModel *)self->_searchModel sections];
-      v14 = [v13 objectAtIndexedSubscript:v10];
+      sections2 = [(STSSearchModel *)self->_searchModel sections];
+      v14 = [sections2 objectAtIndexedSubscript:section];
 
-      v15 = [v14 results];
-      v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v9, "item")}];
+      results = [v14 results];
+      v16 = [results objectAtIndexedSubscript:{objc_msgSend(v9, "item")}];
 
       v17 = +[STSFeedbackReporter sharedInstance];
       [v17 didPreviewResultLongPress:v16];
@@ -670,20 +670,20 @@ LABEL_8:
   }
 }
 
-- (void)_handleDebugGesture:(id)a3
+- (void)_handleDebugGesture:(id)gesture
 {
   if (STSIsInternalInstall())
   {
     if (self->_debugMode)
     {
       self->_debugMode = 0;
-      v4 = [(STSPicker *)self pickerView];
-      v5 = [v4 collectionView];
-      [v5 setAllowsMultipleSelection:0];
+      pickerView = [(STSPicker *)self pickerView];
+      collectionView = [pickerView collectionView];
+      [collectionView setAllowsMultipleSelection:0];
 
-      v6 = [(STSPicker *)self pickerView];
-      v7 = [v6 collectionView];
-      [v7 setBackgroundColor:self->_originalColor];
+      pickerView2 = [(STSPicker *)self pickerView];
+      collectionView2 = [pickerView2 collectionView];
+      [collectionView2 setBackgroundColor:self->_originalColor];
 
       if ([(NSMutableArray *)self->_debugItems count])
       {
@@ -709,20 +709,20 @@ LABEL_8:
     else
     {
       self->_debugMode = 1;
-      v11 = [(STSPicker *)self pickerView];
-      v12 = [v11 collectionView];
-      v13 = [v12 backgroundColor];
+      pickerView3 = [(STSPicker *)self pickerView];
+      collectionView3 = [pickerView3 collectionView];
+      backgroundColor = [collectionView3 backgroundColor];
       originalColor = self->_originalColor;
-      self->_originalColor = v13;
+      self->_originalColor = backgroundColor;
 
-      v15 = [(STSPicker *)self pickerView];
-      v16 = [v15 collectionView];
-      v17 = [MEMORY[0x277D75348] purpleColor];
-      [v16 setBackgroundColor:v17];
+      pickerView4 = [(STSPicker *)self pickerView];
+      collectionView4 = [pickerView4 collectionView];
+      purpleColor = [MEMORY[0x277D75348] purpleColor];
+      [collectionView4 setBackgroundColor:purpleColor];
 
-      v19 = [(STSPicker *)self pickerView];
-      v18 = [v19 collectionView];
-      [v18 setAllowsMultipleSelection:1];
+      pickerView5 = [(STSPicker *)self pickerView];
+      collectionView5 = [pickerView5 collectionView];
+      [collectionView5 setAllowsMultipleSelection:1];
     }
   }
 }
@@ -872,10 +872,10 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
   [v4 setDebugBadge:0];
 }
 
-- (id)getTapToRadarPunchOut:(id)a3
+- (id)getTapToRadarPunchOut:(id)out
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  outCopy = out;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n\n############################\n\n#IMAGES DEBUG INFO (PLEASE DO NOT EDIT):\n"];
   currentQuery = self->_currentQuery;
   if (!currentQuery)
@@ -883,14 +883,14 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
     currentQuery = @"ZKW";
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"\nQUERY:\n%@\n", currentQuery];
-  v8 = [v5 stringByAppendingString:v7];
+  currentQuery = [MEMORY[0x277CCACA8] stringWithFormat:@"\nQUERY:\n%@\n", currentQuery];
+  v8 = [v5 stringByAppendingString:currentQuery];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v4;
+  obj = outCopy;
   v9 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v9)
   {
@@ -954,42 +954,42 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
   return v31;
 }
 
-- (void)searchModelUpdatedPredictedSuggestions:(id)a3
+- (void)searchModelUpdatedPredictedSuggestions:(id)suggestions
 {
-  v4 = [(STSPicker *)self view];
-  v5 = [v4 headerView];
+  view = [(STSPicker *)self view];
+  headerView = [view headerView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(STSPicker *)self view];
-    [v7 frame];
+    view2 = [(STSPicker *)self view];
+    [view2 frame];
     [(STSPicker *)self _updatePredictedSuggestionsForSize:v8, v9];
 
-    v10 = [(STSPicker *)self view];
-    [v10 setNeedsLayout];
+    view3 = [(STSPicker *)self view];
+    [view3 setNeedsLayout];
   }
 }
 
-- (void)searchModel:(id)a3 insertedResultsAtIndexPaths:(id)a4 removedResultsAtIndexPaths:(id)a5
+- (void)searchModel:(id)model insertedResultsAtIndexPaths:(id)paths removedResultsAtIndexPaths:(id)indexPaths
 {
-  v28 = a4;
-  v7 = a5;
+  pathsCopy = paths;
+  indexPathsCopy = indexPaths;
   self->_isLoadingMoreResults = 0;
-  v8 = [(STSPicker *)self _loadMoreFooter];
-  [v8 setLoading:0];
+  _loadMoreFooter = [(STSPicker *)self _loadMoreFooter];
+  [_loadMoreFooter setLoading:0];
 
-  if ([v28 count])
+  if ([pathsCopy count])
   {
-    self->_lastInsertedIndexesCount = [v28 count];
+    self->_lastInsertedIndexesCount = [pathsCopy count];
     [(NSMutableSet *)self->_lastInsertedIndexesWaitingToLoad removeAllObjects];
-    [(NSMutableSet *)self->_lastInsertedIndexesWaitingToLoad addObjectsFromArray:v28];
+    [(NSMutableSet *)self->_lastInsertedIndexesWaitingToLoad addObjectsFromArray:pathsCopy];
   }
 
-  v9 = [(STSPicker *)self view];
-  v10 = [v9 collectionView];
-  [v10 bounds];
+  view = [(STSPicker *)self view];
+  collectionView = [view collectionView];
+  [collectionView bounds];
   IsEmpty = CGRectIsEmpty(v30);
 
   if (IsEmpty)
@@ -997,26 +997,26 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
     self->_needsReloadAfterLayout = 1;
   }
 
-  else if ([v7 count] && (-[STSPicker view](self, "view"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "collectionView"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "numberOfItemsInSection:", 0), v15 = objc_msgSend(v7, "count"), v13, v12, v14 > v15))
+  else if ([indexPathsCopy count] && (-[STSPicker view](self, "view"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "collectionView"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "numberOfItemsInSection:", 0), v15 = objc_msgSend(indexPathsCopy, "count"), v13, v12, v14 > v15))
   {
-    v16 = [(STSPicker *)self view];
-    v17 = [v16 collectionView];
-    [v17 reloadData];
+    view2 = [(STSPicker *)self view];
+    collectionView2 = [view2 collectionView];
+    [collectionView2 reloadData];
   }
 
-  else if ([v28 count])
+  else if ([pathsCopy count])
   {
-    v18 = [(STSPicker *)self view];
-    v19 = [v18 collectionView];
-    [v19 reloadData];
+    view3 = [(STSPicker *)self view];
+    collectionView3 = [view3 collectionView];
+    [collectionView3 reloadData];
 
     [(STSPicker *)self sendVisibleResultsFeedback];
   }
 
-  v20 = [(STSSearchModel *)self->_searchModel sections];
-  v21 = [v20 firstObject];
-  v22 = [v21 results];
-  if ([v22 count])
+  sections = [(STSSearchModel *)self->_searchModel sections];
+  firstObject = [sections firstObject];
+  results = [firstObject results];
+  if ([results count])
   {
     +[STSLoadMoreFooter defaultHeight];
     v24 = v23;
@@ -1027,16 +1027,16 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
     v24 = 0.0;
   }
 
-  v25 = [(STSPicker *)self view];
-  v26 = [v25 collectionView];
-  v27 = [v26 collectionViewLayout];
-  [v27 setFooterHeight:v24];
+  view4 = [(STSPicker *)self view];
+  collectionView4 = [view4 collectionView];
+  collectionViewLayout = [collectionView4 collectionViewLayout];
+  [collectionViewLayout setFooterHeight:v24];
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(STSSearchModel *)self->_searchModel sections];
-  v4 = [v3 count];
+  sections = [(STSSearchModel *)self->_searchModel sections];
+  v4 = [sections count];
 
   if (v4 <= 1)
   {
@@ -1049,60 +1049,60 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(STSSearchModel *)self->_searchModel sections:a3];
-  v5 = [v4 firstObject];
-  v6 = [v5 results];
-  v7 = [v6 count];
+  v4 = [(STSSearchModel *)self->_searchModel sections:view];
+  firstObject = [v4 firstObject];
+  results = [firstObject results];
+  v7 = [results count];
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STSSearchModel *)self->_searchModel sections];
-  v9 = [v8 count];
-  if (v9 <= [v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  sections = [(STSSearchModel *)self->_searchModel sections];
+  v9 = [sections count];
+  if (v9 <= [pathCopy section])
   {
-    v17 = [v6 dequeueReusableCellWithReuseIdentifier:@"STSImageCell" forIndexPath:v7];
-    v21 = [MEMORY[0x277D75348] sts_defaultCellPlaceholderColor];
-    [v17 setPlaceholderColor:v21];
+    v17 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"STSImageCell" forIndexPath:pathCopy];
+    sts_defaultCellPlaceholderColor = [MEMORY[0x277D75348] sts_defaultCellPlaceholderColor];
+    [v17 setPlaceholderColor:sts_defaultCellPlaceholderColor];
 
     goto LABEL_40;
   }
 
-  v10 = [(STSSearchModel *)self->_searchModel sections];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+  sections2 = [(STSSearchModel *)self->_searchModel sections];
+  v11 = [sections2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v58 = [v11 results];
-  v12 = [v58 count];
-  if (v12 > [v7 item])
+  results = [v11 results];
+  v12 = [results count];
+  if (v12 > [pathCopy item])
   {
-    v13 = [v11 results];
-    v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+    results2 = [v11 results];
+    v14 = [results2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-    v55 = [v14 sts_badge];
-    v57 = [v14 thumbnail];
-    v56 = [v57 urlValue];
-    v54 = [v14 sts_descriptionText];
-    v15 = [v14 resultType];
-    v16 = [v15 isEqualToString:@"image_search"];
+    sts_badge = [v14 sts_badge];
+    thumbnail = [v14 thumbnail];
+    urlValue = [thumbnail urlValue];
+    sts_descriptionText = [v14 sts_descriptionText];
+    resultType = [v14 resultType];
+    v16 = [resultType isEqualToString:@"image_search"];
 
     if (v16)
     {
-      v17 = [v6 dequeueReusableCellWithReuseIdentifier:@"STSImageCell" forIndexPath:v7];
+      v17 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"STSImageCell" forIndexPath:pathCopy];
       v18 = +[STSImageCache sharedCache];
-      v53 = [v18 fetchCachedImageInfoForURL:v56];
+      v53 = [v18 fetchCachedImageInfoForURL:urlValue];
 
       [v17 setCategory:0];
       if (STSIsInternalInstall())
       {
         [v17 setDebugBadge:0];
-        if ([(NSMutableArray *)self->_debugItems containsObject:v7])
+        if ([(NSMutableArray *)self->_debugItems containsObject:pathCopy])
         {
           v19 = [MEMORY[0x277D755B8] imageNamed:@"feedback-selected-icon"];
           [v17 setDebugBadge:v19];
@@ -1120,14 +1120,14 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
 
         v20 = [MEMORY[0x277D755B8] agif_animatedImageWithImageInfo:v53];
         [v17 setImage:v20];
-        [(NSMutableSet *)self->_lastInsertedIndexesWaitingToLoad removeObject:v7];
+        [(NSMutableSet *)self->_lastInsertedIndexesWaitingToLoad removeObject:pathCopy];
       }
 
       else
       {
         v70 = 0;
         v38 = +[STSImageCache sharedCache];
-        v39 = [v38 fetchCachedStaticImageForURL:v56 hasMultipleFrames:&v70];
+        v39 = [v38 fetchCachedStaticImageForURL:urlValue hasMultipleFrames:&v70];
 
         [v17 setImage:v39];
         if (!v39 || v70 == 1)
@@ -1135,19 +1135,19 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v72 = v56;
+            v72 = urlValue;
             _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Cache Miss: fetching %@", buf, 0xCu);
           }
 
-          [(STSPicker *)self _fetchImageWithURL:v56 priority:0 forCollectionView:v6 atIndexPath:v7];
+          [(STSPicker *)self _fetchImageWithURL:urlValue priority:0 forCollectionView:viewCopy atIndexPath:pathCopy];
         }
       }
 
-      if (v54)
+      if (sts_descriptionText)
       {
         [v17 setAccessibilityTraits:*MEMORY[0x277D76578]];
         [v17 setIsAccessibilityElement:1];
-        [v17 setAccessibilityValue:v54];
+        [v17 setAccessibilityValue:sts_descriptionText];
       }
 
       else
@@ -1156,15 +1156,15 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
         [v17 setAccessibilityTraits:*MEMORY[0x277D76560]];
       }
 
-      v40 = [v14 secondaryTitle];
+      secondaryTitle = [v14 secondaryTitle];
 
-      if (v40)
+      if (secondaryTitle)
       {
-        v41 = [v14 secondaryTitle];
-        [v17 setCategory:v41];
+        secondaryTitle2 = [v14 secondaryTitle];
+        [v17 setCategory:secondaryTitle2];
       }
 
-      if ([(NSIndexPath *)self->_activeDownloadIndexPath isEqual:v7])
+      if ([(NSIndexPath *)self->_activeDownloadIndexPath isEqual:pathCopy])
       {
         [v17 setDownloadProgress:self->_activeDownloadProgress];
         [v17 setShowDownloadIndicator:0 animated:1.0];
@@ -1173,8 +1173,8 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
 
     else
     {
-      v23 = [v14 resultType];
-      v24 = [v23 isEqualToString:@"web_video"];
+      resultType2 = [v14 resultType];
+      v24 = [resultType2 isEqualToString:@"web_video"];
 
       if (!v24)
       {
@@ -1182,41 +1182,41 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
         goto LABEL_32;
       }
 
-      v17 = [v6 dequeueReusableCellWithReuseIdentifier:@"STSVideoCell" forIndexPath:v7];
-      v25 = [v14 title];
-      v26 = [v25 text];
-      [v17 setTitle:v26];
+      v17 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"STSVideoCell" forIndexPath:pathCopy];
+      title = [v14 title];
+      text = [title text];
+      [v17 setTitle:text];
 
       v27 = objc_opt_new();
-      v28 = [v14 descriptions];
+      descriptions = [v14 descriptions];
       v68[0] = MEMORY[0x277D85DD0];
       v68[1] = 3221225472;
       v68[2] = __51__STSPicker_collectionView_cellForItemAtIndexPath___block_invoke;
       v68[3] = &unk_279B8AF40;
       v53 = v27;
       v69 = v53;
-      [v28 enumerateObjectsUsingBlock:v68];
+      [descriptions enumerateObjectsUsingBlock:v68];
 
       [v17 setCategory:0];
       v52 = [v53 componentsJoinedByString:@"\n"];
       [v17 setSubtitle:v52];
-      v29 = [v14 sts_videoDuration];
-      [v17 setDuration:v29];
+      sts_videoDuration = [v14 sts_videoDuration];
+      [v17 setDuration:sts_videoDuration];
 
-      v30 = [v14 sts_providerName];
-      [v17 setProviderName:v30];
+      sts_providerName = [v14 sts_providerName];
+      [v17 setProviderName:sts_providerName];
 
       [v17 setProviderIcon:0];
-      v31 = [MEMORY[0x277D759A0] mainScreen];
-      [v31 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v33 = v32;
       v65[0] = MEMORY[0x277D85DD0];
       v65[1] = 3221225472;
       v65[2] = __51__STSPicker_collectionView_cellForItemAtIndexPath___block_invoke_3;
       v65[3] = &unk_279B8AF90;
-      v51 = v6;
+      v51 = viewCopy;
       v66 = v51;
-      v34 = v7;
+      v34 = pathCopy;
       v67 = v34;
       [v14 sts_providerIconWithScale:v65 completion:v33];
 
@@ -1230,12 +1230,12 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
       v63 = v35;
       [v17 setPlayButtonAction:v62];
       v36 = +[STSImageCache sharedCache];
-      v37 = [v36 fetchCachedStaticImageForURL:v56];
+      v37 = [v36 fetchCachedStaticImageForURL:urlValue];
 
       [v17 setImage:v37];
       if (!v37)
       {
-        [(STSPicker *)self _fetchImageWithURL:v56 priority:0 forCollectionView:v51 atIndexPath:v35];
+        [(STSPicker *)self _fetchImageWithURL:urlValue priority:0 forCollectionView:v51 atIndexPath:v35];
       }
 
       objc_destroyWeak(&v64);
@@ -1244,19 +1244,19 @@ void __33__STSPicker__handleDebugGesture___block_invoke_4(uint64_t a1)
 
 LABEL_32:
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || (v42 = MEMORY[0x277D75348], [v57 keyColor], v43 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v42, "sts_colorFromHexString:alpha:", v43, 1.0), v44 = objc_claimAutoreleasedReturnValue(), v43, !v44))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || (v42 = MEMORY[0x277D75348], [thumbnail keyColor], v43 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v42, "sts_colorFromHexString:alpha:", v43, 1.0), sts_defaultCellPlaceholderColor2 = objc_claimAutoreleasedReturnValue(), v43, !sts_defaultCellPlaceholderColor2))
     {
-      v44 = [MEMORY[0x277D75348] sts_defaultCellPlaceholderColor];
+      sts_defaultCellPlaceholderColor2 = [MEMORY[0x277D75348] sts_defaultCellPlaceholderColor];
     }
 
-    [v17 setPlaceholderColor:{v44, v51}];
-    v45 = [v55 imageData];
-    if (v45)
+    [v17 setPlaceholderColor:{sts_defaultCellPlaceholderColor2, v51}];
+    imageData = [sts_badge imageData];
+    if (imageData)
     {
       v46 = MEMORY[0x277D755B8];
-      v47 = [MEMORY[0x277D759A0] mainScreen];
-      [v47 scale];
-      v48 = [v46 imageWithData:v45 scale:?];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 scale];
+      v48 = [v46 imageWithData:imageData scale:?];
 
       [v17 setBadge:v48];
     }
@@ -1264,14 +1264,14 @@ LABEL_32:
     else
     {
       [v17 setBadge:0];
-      v49 = [v14 sts_badge];
+      sts_badge2 = [v14 sts_badge];
       v59[0] = MEMORY[0x277D85DD0];
       v59[1] = 3221225472;
       v59[2] = __51__STSPicker_collectionView_cellForItemAtIndexPath___block_invoke_6;
       v59[3] = &unk_279B8AFE0;
-      v60 = v6;
-      v61 = v7;
-      [v49 loadImageDataWithCompletionAndErrorHandler:v59];
+      v60 = viewCopy;
+      v61 = pathCopy;
+      [sts_badge2 loadImageDataWithCompletionAndErrorHandler:v59];
 
       v48 = v60;
     }
@@ -1279,9 +1279,9 @@ LABEL_32:
     goto LABEL_39;
   }
 
-  v17 = [v6 dequeueReusableCellWithReuseIdentifier:@"STSImageCell" forIndexPath:v7];
-  v22 = [MEMORY[0x277D75348] sts_defaultCellPlaceholderColor];
-  [v17 setPlaceholderColor:v22];
+  v17 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"STSImageCell" forIndexPath:pathCopy];
+  sts_defaultCellPlaceholderColor3 = [MEMORY[0x277D75348] sts_defaultCellPlaceholderColor];
+  [v17 setPlaceholderColor:sts_defaultCellPlaceholderColor3];
 
 LABEL_39:
 LABEL_40:
@@ -1362,18 +1362,18 @@ void __51__STSPicker_collectionView_cellForItemAtIndexPath___block_invoke_7(uint
   [v2 setBadge:*(a1 + 48)];
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  if ([a4 isEqualToString:@"STSGridLayoutElementKindFooter"])
+  viewCopy = view;
+  pathCopy = path;
+  if ([kind isEqualToString:@"STSGridLayoutElementKindFooter"])
   {
-    v10 = [v8 dequeueReusableSupplementaryViewOfKind:@"STSGridLayoutElementKindFooter" withReuseIdentifier:@"STSGridLayoutElementKindFooter" forIndexPath:v9];
+    v10 = [viewCopy dequeueReusableSupplementaryViewOfKind:@"STSGridLayoutElementKindFooter" withReuseIdentifier:@"STSGridLayoutElementKindFooter" forIndexPath:pathCopy];
     [v10 setLoading:self->_isLoadingMoreResults];
     [v10 setDelegate:self];
     v11 = +[STSImageCache sharedCache];
-    v12 = [v11 searchProviderImage];
-    [v10 setSearchProviderImage:v12];
+    searchProviderImage = [v11 searchProviderImage];
+    [v10 setSearchProviderImage:searchProviderImage];
   }
 
   else
@@ -1384,39 +1384,39 @@ void __51__STSPicker_collectionView_cellForItemAtIndexPath___block_invoke_7(uint
   return v10;
 }
 
-- (int64_t)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (int64_t)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(STSSearchModel *)self->_searchModel sections];
-  v8 = [v7 count];
-  v9 = [v6 section];
+  pathCopy = path;
+  sections = [(STSSearchModel *)self->_searchModel sections];
+  v8 = [sections count];
+  section = [pathCopy section];
 
-  if (v8 <= v9)
+  if (v8 <= section)
   {
     v19 = 1;
   }
 
   else
   {
-    v10 = [(STSSearchModel *)self->_searchModel sections];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+    sections2 = [(STSSearchModel *)self->_searchModel sections];
+    v11 = [sections2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v12 = [v6 item];
-    v13 = [v11 results];
-    v14 = [v13 count];
+    item = [pathCopy item];
+    results = [v11 results];
+    v14 = [results count];
 
-    if (v12 >= v14)
+    if (item >= v14)
     {
       v19 = 1;
     }
 
     else
     {
-      v15 = [v11 results];
-      v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+      results2 = [v11 results];
+      v16 = [results2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-      v17 = [v16 resultType];
-      v18 = [v17 isEqualToString:@"web_video"];
+      resultType = [v16 resultType];
+      v18 = [resultType isEqualToString:@"web_video"];
 
       v19 = v18 ^ 1u;
     }
@@ -1425,14 +1425,14 @@ void __51__STSPicker_collectionView_cellForItemAtIndexPath___block_invoke_7(uint
   return v19;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v18 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (self->_debugMode)
   {
-    [(NSMutableArray *)self->_debugItems addObject:v6];
-    v7 = [v18 cellForItemAtIndexPath:v6];
+    [(NSMutableArray *)self->_debugItems addObject:pathCopy];
+    v7 = [viewCopy cellForItemAtIndexPath:pathCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1441,33 +1441,33 @@ void __51__STSPicker_collectionView_cellForItemAtIndexPath___block_invoke_7(uint
       goto LABEL_15;
     }
 
-    v9 = [v18 cellForItemAtIndexPath:v6];
+    sections = [viewCopy cellForItemAtIndexPath:pathCopy];
     v10 = [MEMORY[0x277D755B8] imageNamed:@"feedback-selected-icon"];
-    [v9 setDebugBadge:v10];
+    [sections setDebugBadge:v10];
     goto LABEL_13;
   }
 
-  v11 = [(NSIndexPath *)self->_activeDownloadIndexPath isEqual:v6];
+  v11 = [(NSIndexPath *)self->_activeDownloadIndexPath isEqual:pathCopy];
   [(STSPicker *)self _cancelActiveDownload];
-  v9 = [(STSSearchModel *)self->_searchModel sections];
-  v12 = [v9 count];
-  if (v12 > [v6 section])
+  sections = [(STSSearchModel *)self->_searchModel sections];
+  v12 = [sections count];
+  if (v12 > [pathCopy section])
   {
-    v10 = [v9 objectAtIndex:{objc_msgSend(v6, "section")}];
-    v13 = [v10 results];
-    v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+    v10 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
+    results = [v10 results];
+    v14 = [results objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-    v15 = [v14 secondaryTitle];
+    secondaryTitle = [v14 secondaryTitle];
 
-    if (v15)
+    if (secondaryTitle)
     {
-      v16 = [(STSPicker *)self selectionDelegate];
-      [v16 browser:self didSelectCategoryResult:v14];
+      selectionDelegate = [(STSPicker *)self selectionDelegate];
+      [selectionDelegate browser:self didSelectCategoryResult:v14];
     }
 
     else
     {
-      if (v6)
+      if (pathCopy)
       {
         v17 = v11;
       }
@@ -1479,7 +1479,7 @@ void __51__STSPicker_collectionView_cellForItemAtIndexPath___block_invoke_7(uint
 
       if ((v17 & 1) == 0)
       {
-        [(STSPicker *)self _beginDownloadingResultAtIndexPath:v6];
+        [(STSPicker *)self _beginDownloadingResultAtIndexPath:pathCopy];
       }
     }
 
@@ -1489,67 +1489,67 @@ LABEL_13:
 LABEL_15:
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (self->_debugMode)
   {
-    [(NSMutableArray *)self->_debugItems removeObject:v6];
-    v7 = [v10 cellForItemAtIndexPath:v6];
+    [(NSMutableArray *)self->_debugItems removeObject:pathCopy];
+    v7 = [viewCopy cellForItemAtIndexPath:pathCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [v10 cellForItemAtIndexPath:v6];
+      v9 = [viewCopy cellForItemAtIndexPath:pathCopy];
       [v9 setDebugBadge:0];
     }
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v13 = a3;
+  scrollCopy = scroll;
   [(STSPicker *)self _cancelActiveDownload];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v5)
+  if (!userInterfaceIdiom)
   {
-    v6 = [(STSPicker *)self view];
-    [v6 updateHeaderPositionOnScroll];
+    view = [(STSPicker *)self view];
+    [view updateHeaderPositionOnScroll];
   }
 
-  v7 = [(STSPicker *)self selectionDelegate];
+  selectionDelegate = [(STSPicker *)self selectionDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(STSPicker *)self selectionDelegate];
-    [v9 browserDidScroll:self];
+    selectionDelegate2 = [(STSPicker *)self selectionDelegate];
+    [selectionDelegate2 browserDidScroll:self];
   }
 
   [(STSPicker *)self _loadMoreResultsIfNecessary];
-  [v13 contentOffset];
+  [scrollCopy contentOffset];
   if (v10 - self->_startScrollPosition.y > 50.0)
   {
     [(STSPicker *)self sendVisibleResultsFeedback];
-    [v13 contentOffset];
+    [scrollCopy contentOffset];
     self->_startScrollPosition.x = v11;
     self->_startScrollPosition.y = v12;
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = [(STSPicker *)self view];
-  [v5 updateHeaderPositionOnDraggingBegan];
+  draggingCopy = dragging;
+  view = [(STSPicker *)self view];
+  [view updateHeaderPositionOnDraggingBegan];
 
   self->_isScrolling = 1;
   self = (self + 1136);
-  [v4 contentOffset];
+  [draggingCopy contentOffset];
   v7 = v6;
   v9 = v8;
 
@@ -1557,57 +1557,57 @@ LABEL_15:
   *&self->super.super._responderFlags = v9;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(STSPicker *)self view:a3];
+  y = velocity.y;
+  x = velocity.x;
+  v7 = [(STSPicker *)self view:dragging];
   [v7 updateHeaderPositionOnDraggingEndedWithVelocity:{x, y}];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = [(STSPicker *)self view];
-  [v4 updateHeaderPositionOnDecelerationEnded];
+  view = [(STSPicker *)self view];
+  [view updateHeaderPositionOnDecelerationEnded];
 
   self->_isScrolling = 0;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v24 = v7;
-  v9 = [v24 imageInfo];
-  if (v9)
+  cellCopy = cell;
+  pathCopy = path;
+  v24 = cellCopy;
+  imageInfo = [v24 imageInfo];
+  if (imageInfo)
   {
 LABEL_2:
 
     goto LABEL_4;
   }
 
-  v10 = [v24 image];
+  image = [v24 image];
 
-  if (!v10)
+  if (!image)
   {
-    v9 = [(STSSearchModel *)self->_searchModel sections];
-    v11 = [v9 count];
-    if (v11 > [v8 section])
+    imageInfo = [(STSSearchModel *)self->_searchModel sections];
+    v11 = [imageInfo count];
+    if (v11 > [pathCopy section])
     {
-      v12 = [(STSSearchModel *)self->_searchModel sections];
-      v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v8, "section")}];
+      sections = [(STSSearchModel *)self->_searchModel sections];
+      v13 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-      v14 = [v13 results];
-      v15 = [v14 count];
-      if (v15 > [v8 item])
+      results = [v13 results];
+      v15 = [results count];
+      if (v15 > [pathCopy item])
       {
-        v16 = [v13 results];
-        v17 = [v16 objectAtIndexedSubscript:{objc_msgSend(v8, "item")}];
+        results2 = [v13 results];
+        v17 = [results2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-        v18 = [v17 thumbnail];
-        v19 = [v18 urlValue];
+        thumbnail = [v17 thumbnail];
+        urlValue = [thumbnail urlValue];
         v20 = +[STSImageCache sharedCache];
-        v21 = [v20 fetchCachedImageInfoForURL:v19];
+        v21 = [v20 fetchCachedImageInfoForURL:urlValue];
 
         if (v21)
         {
@@ -1617,7 +1617,7 @@ LABEL_2:
         else
         {
           v23 = +[STSImageCache sharedCache];
-          v22 = [v23 fetchCachedStaticImageForURL:v19];
+          v22 = [v23 fetchCachedStaticImageForURL:urlValue];
         }
 
         [v24 setImage:v22];
@@ -1630,49 +1630,49 @@ LABEL_2:
 LABEL_4:
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v16 = a5;
-  v6 = [(STSSearchModel *)self->_searchModel sections];
-  v7 = [v6 firstObject];
+  pathCopy = path;
+  sections = [(STSSearchModel *)self->_searchModel sections];
+  firstObject = [sections firstObject];
 
-  v8 = [v16 row];
-  v9 = [v7 results];
-  v10 = [v9 count];
+  v8 = [pathCopy row];
+  results = [firstObject results];
+  v10 = [results count];
 
   if (v8 < v10)
   {
-    v11 = [v7 results];
-    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v16, "row")}];
+    results2 = [firstObject results];
+    v12 = [results2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v13 = [v12 thumbnail];
-    v14 = [v13 urlValue];
+    thumbnail = [v12 thumbnail];
+    urlValue = [thumbnail urlValue];
     v15 = +[STSImageCache sharedCache];
-    [v15 setPriority:-8 forQueuedDownloadWithURL:v14];
+    [v15 setPriority:-8 forQueuedDownloadWithURL:urlValue];
   }
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(STSPicker *)self view];
-  v10 = [v9 collectionView];
-  v11 = [v10 cellForItemAtIndexPath:self->_detailResultIndexPath];
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  view = [(STSPicker *)self view];
+  collectionView = [view collectionView];
+  v11 = [collectionView cellForItemAtIndexPath:self->_detailResultIndexPath];
 
-  v12 = [(STSPicker *)self view];
-  v13 = [v12 collectionView];
-  v14 = [v13 layoutAttributesForItemAtIndexPath:self->_detailResultIndexPath];
+  view2 = [(STSPicker *)self view];
+  collectionView2 = [view2 collectionView];
+  v14 = [collectionView2 layoutAttributesForItemAtIndexPath:self->_detailResultIndexPath];
   [v14 frame];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(STSPicker *)self view];
-  v24 = [(STSPicker *)self view];
-  v25 = [v24 collectionView];
-  [v23 convertRect:v25 fromView:{v16, v18, v20, v22}];
+  view3 = [(STSPicker *)self view];
+  view4 = [(STSPicker *)self view];
+  collectionView3 = [view4 collectionView];
+  [view3 convertRect:collectionView3 fromView:{v16, v18, v20, v22}];
   v27 = v26;
   v29 = v28;
   v31 = v30;
@@ -1682,8 +1682,8 @@ LABEL_4:
   v35 = [v34 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v35 setClipsToBounds:1];
   [v35 setContentMode:2];
-  v36 = [v11 image];
-  [v35 setImage:v36];
+  image = [v11 image];
+  [v35 setImage:image];
 
   v37 = objc_alloc_init(STSDetailTransitionAnimator);
   detailTransitionAnimator = self->_detailTransitionAnimator;
@@ -1695,15 +1695,15 @@ LABEL_4:
   [(STSDetailTransitionAnimator *)v39 setSourceInsets:?];
   [(STSDetailTransitionAnimator *)self->_detailTransitionAnimator setSourceFrame:v27, v29, v31, v33];
   v40 = self->_detailTransitionAnimator;
-  v41 = [v8 view];
-  [v41 bounds];
+  view5 = [presentingControllerCopy view];
+  [view5 bounds];
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v49 = v48;
-  v50 = [v8 traitCollection];
+  traitCollection = [presentingControllerCopy traitCollection];
 
-  [v7 contentFrameForBounds:v50 traitCollection:{v43, v45, v47, v49}];
+  [controllerCopy contentFrameForBounds:traitCollection traitCollection:{v43, v45, v47, v49}];
   [(STSDetailTransitionAnimator *)v40 setPresentedFrame:?];
 
   [(STSDetailTransitionAnimator *)self->_detailTransitionAnimator setPresenting:1];
@@ -1713,22 +1713,22 @@ LABEL_4:
   return v51;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
-  v5 = [(STSPicker *)self view];
-  v6 = [v5 collectionView];
-  v7 = [v6 layoutAttributesForItemAtIndexPath:self->_detailResultIndexPath];
+  controllerCopy = controller;
+  view = [(STSPicker *)self view];
+  collectionView = [view collectionView];
+  v7 = [collectionView layoutAttributesForItemAtIndexPath:self->_detailResultIndexPath];
   [v7 frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(STSPicker *)self view];
-  v17 = [(STSPicker *)self view];
-  v18 = [v17 collectionView];
-  [v16 convertRect:v18 fromView:{v9, v11, v13, v15}];
+  view2 = [(STSPicker *)self view];
+  view3 = [(STSPicker *)self view];
+  collectionView2 = [view3 collectionView];
+  [view2 convertRect:collectionView2 fromView:{v9, v11, v13, v15}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -1736,14 +1736,14 @@ LABEL_4:
 
   [(STSDetailTransitionAnimator *)self->_detailTransitionAnimator setSourceFrame:v20, v22, v24, v26];
   detailTransitionAnimator = self->_detailTransitionAnimator;
-  v28 = [v4 view];
-  [v28 bounds];
+  view4 = [controllerCopy view];
+  [view4 bounds];
   v30 = v29;
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  v37 = [v4 traitCollection];
-  [v4 contentFrameForBounds:v37 traitCollection:{v30, v32, v34, v36}];
+  traitCollection = [controllerCopy traitCollection];
+  [controllerCopy contentFrameForBounds:traitCollection traitCollection:{v30, v32, v34, v36}];
   v39 = v38;
   v41 = v40;
   v43 = v42;
@@ -1756,19 +1756,19 @@ LABEL_4:
   return v46;
 }
 
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(STSPicker *)self selectionDelegate];
-  v9 = [v8 browserIsPresentedFullscreen:self];
+  y = location.y;
+  x = location.x;
+  contextCopy = context;
+  selectionDelegate = [(STSPicker *)self selectionDelegate];
+  v9 = [selectionDelegate browserIsPresentedFullscreen:self];
 
   if (v9)
   {
-    v10 = [(STSPicker *)self view];
-    v11 = [v10 collectionView];
-    v12 = [v11 indexPathForItemAtPoint:{x, y}];
+    view = [(STSPicker *)self view];
+    collectionView = [view collectionView];
+    v12 = [collectionView indexPathForItemAtPoint:{x, y}];
 
     if (v12)
     {
@@ -1777,18 +1777,18 @@ LABEL_4:
       [v13 setModalTransitionStyle:2];
       [v13 setModalPresentationStyle:6];
       [v13 setIsFullscreen:0];
-      v14 = [(STSPicker *)self view];
-      v15 = [v14 collectionView];
-      v16 = [v15 layoutAttributesForItemAtIndexPath:v12];
+      view2 = [(STSPicker *)self view];
+      collectionView2 = [view2 collectionView];
+      v16 = [collectionView2 layoutAttributesForItemAtIndexPath:v12];
       [v16 frame];
-      [v7 setSourceRect:?];
+      [contextCopy setSourceRect:?];
 
       objc_storeStrong(&self->_detailResultIndexPath, v12);
-      v17 = [(STSSearchModel *)self->_searchModel sections];
-      v18 = [v17 objectAtIndexedSubscript:{objc_msgSend(v12, "section")}];
+      sections = [(STSSearchModel *)self->_searchModel sections];
+      v18 = [sections objectAtIndexedSubscript:{objc_msgSend(v12, "section")}];
 
-      v19 = [v18 results];
-      v20 = [v19 objectAtIndexedSubscript:{objc_msgSend(v12, "item")}];
+      results = [v18 results];
+      v20 = [results objectAtIndexedSubscript:{objc_msgSend(v12, "item")}];
 
       v21 = +[STSFeedbackReporter sharedInstance];
       [v21 didPreviewResult:v20 peek:1];
@@ -1811,15 +1811,15 @@ LABEL_4:
   return v13;
 }
 
-- (void)previewingContext:(id)a3 commitViewController:(id)a4
+- (void)previewingContext:(id)context commitViewController:(id)controller
 {
-  v5 = a4;
-  [v5 setUseBackgroundBlur:1];
+  controllerCopy = controller;
+  [controllerCopy setUseBackgroundBlur:1];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__STSPicker_previewingContext_commitViewController___block_invoke;
   v9[3] = &unk_279B8A988;
-  v6 = v5;
+  v6 = controllerCopy;
   v10 = v6;
   [(STSPicker *)self presentViewController:v6 animated:0 completion:v9];
   if (self->_previewingSearchResult)
@@ -1846,52 +1846,52 @@ uint64_t __52__STSPicker_previewingContext_commitViewController___block_invoke(u
   return result;
 }
 
-- (void)detailViewControllerDidSelectProviderLink:(id)a3
+- (void)detailViewControllerDidSelectProviderLink:(id)link
 {
-  v4 = [(STSSearchModel *)self->_searchModel sections];
-  v8 = [v4 firstObject];
+  sections = [(STSSearchModel *)self->_searchModel sections];
+  firstObject = [sections firstObject];
 
-  v5 = [v8 results];
-  v6 = [v5 objectAtIndexedSubscript:{-[NSIndexPath row](self->_detailResultIndexPath, "row")}];
+  results = [firstObject results];
+  v6 = [results objectAtIndexedSubscript:{-[NSIndexPath row](self->_detailResultIndexPath, "row")}];
 
-  v7 = [(STSPicker *)self selectionDelegate];
-  [v7 browser:self didSelectProviderLink:v6];
+  selectionDelegate = [(STSPicker *)self selectionDelegate];
+  [selectionDelegate browser:self didSelectProviderLink:v6];
 }
 
-- (void)detailViewControllerDidInsert:(id)a3
+- (void)detailViewControllerDidInsert:(id)insert
 {
-  v4 = a3;
+  insertCopy = insert;
   detailResultIndexPath = self->_detailResultIndexPath;
   if (detailResultIndexPath)
   {
-    v6 = v4;
+    v6 = insertCopy;
     detailResultIndexPath = [detailResultIndexPath isEqual:self->_activeDownloadIndexPath];
-    v4 = v6;
+    insertCopy = v6;
     if ((detailResultIndexPath & 1) == 0)
     {
       [(STSPicker *)self _cancelActiveDownload];
       detailResultIndexPath = [(STSPicker *)self _beginDownloadingResultAtIndexPath:self->_detailResultIndexPath];
-      v4 = v6;
+      insertCopy = v6;
     }
   }
 
-  MEMORY[0x2821F96F8](detailResultIndexPath, v4);
+  MEMORY[0x2821F96F8](detailResultIndexPath, insertCopy);
 }
 
-- (void)detailViewControllerDidReportConcern:(id)a3 result:(id)a4 punchout:(id)a5
+- (void)detailViewControllerDidReportConcern:(id)concern result:(id)result punchout:(id)punchout
 {
-  v7 = a4;
-  v8 = a5;
+  resultCopy = result;
+  punchoutCopy = punchout;
   v9 = +[STSFeedbackReporter sharedInstance];
-  [v9 didReportConcern:v7 punchout:v8];
+  [v9 didReportConcern:resultCopy punchout:punchoutCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__STSPicker_detailViewControllerDidReportConcern_result_punchout___block_invoke;
   v11[3] = &unk_279B8AEF0;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
+  v12 = resultCopy;
+  v10 = resultCopy;
   dispatch_async(MEMORY[0x277D85CD0], v11);
 }
 
@@ -1904,74 +1904,74 @@ uint64_t __66__STSPicker_detailViewControllerDidReportConcern_result_punchout___
   return [v3 addSearchResultToReportConcernStore:v2];
 }
 
-- (void)headerViewDidSelectSearchButton:(id)a3
+- (void)headerViewDidSelectSearchButton:(id)button
 {
-  v4 = [(STSPicker *)self selectionDelegate];
-  [v4 browserSearchBarButtonClicked:self];
+  selectionDelegate = [(STSPicker *)self selectionDelegate];
+  [selectionDelegate browserSearchBarButtonClicked:self];
 }
 
-- (void)headerDidSelectCancelButton:(id)a3
+- (void)headerDidSelectCancelButton:(id)button
 {
-  v4 = [(STSPicker *)self selectionDelegate];
+  selectionDelegate = [(STSPicker *)self selectionDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(STSPicker *)self selectionDelegate];
-    [v6 browserSearchBarCancelButtonClicked:self];
+    selectionDelegate2 = [(STSPicker *)self selectionDelegate];
+    [selectionDelegate2 browserSearchBarCancelButtonClicked:self];
   }
 }
 
 - (void)headerViewDidDeleteText
 {
-  v2 = [(STSPicker *)self selectionDelegate];
-  [v2 browserDidDeleteQuery];
+  selectionDelegate = [(STSPicker *)self selectionDelegate];
+  [selectionDelegate browserDidDeleteQuery];
 }
 
-- (void)headerView:(id)a3 didSearchFor:(id)a4
+- (void)headerView:(id)view didSearchFor:(id)for
 {
-  v5 = a4;
-  v6 = [(STSPicker *)self selectionDelegate];
-  [v6 browser:self didSearchFor:v5];
+  forCopy = for;
+  selectionDelegate = [(STSPicker *)self selectionDelegate];
+  [selectionDelegate browser:self didSearchFor:forCopy];
 }
 
-- (void)headerView:(id)a3 didRequestCompletion:(id)a4
+- (void)headerView:(id)view didRequestCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(STSPicker *)self selectionDelegate];
-  [v6 browser:self requestSuggestionsFor:v5];
+  completionCopy = completion;
+  selectionDelegate = [(STSPicker *)self selectionDelegate];
+  [selectionDelegate browser:self requestSuggestionsFor:completionCopy];
 }
 
-- (void)headerView:(id)a3 didSelectSuggestionButtonAtIndex:(unint64_t)a4
+- (void)headerView:(id)view didSelectSuggestionButtonAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  viewCopy = view;
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = v6;
-    v7 = [(NSArray *)self->_visiblePredictions count]> a4;
-    v6 = v10;
+    v10 = viewCopy;
+    v7 = [(NSArray *)self->_visiblePredictions count]> index;
+    viewCopy = v10;
     if (v7)
     {
-      v8 = [(NSArray *)self->_visiblePredictions objectAtIndexedSubscript:a4];
-      v9 = [(STSPicker *)self selectionDelegate];
-      [v9 browserSuggestionButtonClicked:self suggestion:v8];
+      v8 = [(NSArray *)self->_visiblePredictions objectAtIndexedSubscript:index];
+      selectionDelegate = [(STSPicker *)self selectionDelegate];
+      [selectionDelegate browserSuggestionButtonClicked:self suggestion:v8];
 
-      v6 = v10;
+      viewCopy = v10;
     }
   }
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__STSPicker_mailComposeController_didFinishWithResult_error___block_invoke;
   v9[3] = &unk_279B8B008;
-  v11 = self;
-  v12 = a4;
-  v10 = v7;
-  v8 = v7;
+  selfCopy = self;
+  resultCopy = result;
+  v10 = errorCopy;
+  v8 = errorCopy;
   [(STSPicker *)self dismissViewControllerAnimated:1 completion:v9];
 }
 
@@ -1995,16 +1995,16 @@ void __61__STSPicker_mailComposeController_didFinishWithResult_error___block_inv
 
 - (void)loadMoreFooterDidTapLogo
 {
-  v3 = [(STSPicker *)self selectionDelegate];
-  [v3 browserDidTapLogo:self];
+  selectionDelegate = [(STSPicker *)self selectionDelegate];
+  [selectionDelegate browserDidTapLogo:self];
 }
 
-- (void)_fetchImageWithURL:(id)a3 priority:(int64_t)a4 forCollectionView:(id)a5 atIndexPath:(id)a6
+- (void)_fetchImageWithURL:(id)l priority:(int64_t)priority forCollectionView:(id)view atIndexPath:(id)path
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  viewCopy = view;
+  pathCopy = path;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v13 = +[STSImageCache sharedCache];
@@ -2029,7 +2029,7 @@ void __61__STSPicker_mailComposeController_didFinishWithResult_error___block_inv
   v26[1] = 3221225472;
   v26[2] = __71__STSPicker__fetchImageWithURL_priority_forCollectionView_atIndexPath___block_invoke;
   v26[3] = &unk_279B8B030;
-  v27 = v10;
+  v27 = lCopy;
   objc_copyWeak(&v30, &location);
   p_buf = &buf;
   v29 = v31;
@@ -2042,12 +2042,12 @@ void __61__STSPicker_mailComposeController_didFinishWithResult_error___block_inv
   v19 = v15;
   v24 = &buf;
   objc_copyWeak(&v25, &location);
-  v16 = v12;
+  v16 = pathCopy;
   v20 = v16;
-  v17 = v11;
+  v17 = viewCopy;
   v21 = v17;
-  v22 = self;
-  [v14 fetchImageWithURL:v15 priority:a4 isSource:0 begin:v26 progress:0 completion:v18];
+  selfCopy = self;
+  [v14 fetchImageWithURL:v15 priority:priority isSource:0 begin:v26 progress:0 completion:v18];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&v30);
@@ -2196,42 +2196,42 @@ void __71__STSPicker__fetchImageWithURL_priority_forCollectionView_atIndexPath__
 {
   if (!self->_isLoadingMoreResults)
   {
-    v23 = [(STSSearchModel *)self->_searchModel sections];
-    if ([v23 count])
+    sections = [(STSSearchModel *)self->_searchModel sections];
+    if ([sections count])
     {
-      v3 = [(STSSearchModel *)self->_searchModel sections];
-      v4 = [v3 objectAtIndexedSubscript:0];
-      v5 = [v4 results];
-      v6 = [v5 count];
+      sections2 = [(STSSearchModel *)self->_searchModel sections];
+      v4 = [sections2 objectAtIndexedSubscript:0];
+      results = [v4 results];
+      v6 = [results count];
 
       if (!v6)
       {
         return;
       }
 
-      v7 = [(STSPicker *)self view];
-      v23 = [v7 collectionView];
+      view = [(STSPicker *)self view];
+      sections = [view collectionView];
 
-      [v23 contentOffset];
+      [sections contentOffset];
       v9 = v8;
-      [v23 bounds];
+      [sections bounds];
       Height = CGRectGetHeight(v25);
-      [v23 contentInset];
+      [sections contentInset];
       v12 = v11;
-      [v23 contentSize];
+      [sections contentSize];
       if (v13 > 0.0)
       {
         v14 = v9 + Height - v12;
-        [v23 contentSize];
+        [sections contentSize];
         v16 = v15;
-        v17 = [MEMORY[0x277D759A0] mainScreen];
-        [v17 bounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen bounds];
         v18 = v16 + CGRectGetHeight(v26) * -0.5;
 
         if (v14 > v18)
         {
-          v19 = [(STSPicker *)self _loadMoreFooter];
-          [v19 setLoading:1];
+          _loadMoreFooter = [(STSPicker *)self _loadMoreFooter];
+          [_loadMoreFooter setLoading:1];
 
           lastInsertedIndexesCount = self->_lastInsertedIndexesCount;
           v21 = [(NSMutableSet *)self->_lastInsertedIndexesWaitingToLoad count];
@@ -2247,12 +2247,12 @@ void __71__STSPicker__fetchImageWithURL_priority_forCollectionView_atIndexPath__
   }
 }
 
-- (void)_updatePredictedSuggestionsForSize:(CGSize)a3
+- (void)_updatePredictedSuggestionsForSize:(CGSize)size
 {
   if (self->_showSuggestions)
   {
-    width = a3.width;
-    v6 = [(STSSearchModel *)self->_searchModel predictedSuggestions:a3.width];
+    width = size.width;
+    v6 = [(STSSearchModel *)self->_searchModel predictedSuggestions:size.width];
     if (v6)
     {
       v16 = v6;
@@ -2277,8 +2277,8 @@ void __71__STSPicker__fetchImageWithURL_priority_forCollectionView_atIndexPath__
         v9 = MEMORY[0x277CBEBF8];
       }
 
-      v10 = [(STSPicker *)self view];
-      v11 = [v10 headerView];
+      view = [(STSPicker *)self view];
+      headerView = [view headerView];
 
       if (width >= 480.0)
       {
@@ -2300,13 +2300,13 @@ void __71__STSPicker__fetchImageWithURL_priority_forCollectionView_atIndexPath__
         v13 = v9;
       }
 
-      [v11 setTopSuggestions:v12];
-      [v11 setBottomSuggestions:v13];
+      [headerView setTopSuggestions:v12];
+      [headerView setBottomSuggestions:v13];
       if (![(NSArray *)self->_visiblePredictions isEqualToArray:v9])
       {
         v14 = +[STSFeedbackReporter sharedInstance];
-        v15 = [(STSSearchModel *)self->_searchModel conversationID];
-        [v14 didShowProactiveSuggestions:v9 conversationId:v15];
+        conversationID = [(STSSearchModel *)self->_searchModel conversationID];
+        [v14 didShowProactiveSuggestions:v9 conversationId:conversationID];
 
         objc_storeStrong(&self->_visiblePredictions, v9);
       }
@@ -2318,42 +2318,42 @@ void __71__STSPicker__fetchImageWithURL_priority_forCollectionView_atIndexPath__
 
 - (id)_loadMoreFooter
 {
-  v2 = [(STSPicker *)self view];
-  v3 = [v2 collectionView];
+  view = [(STSPicker *)self view];
+  collectionView = [view collectionView];
   v4 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
-  v5 = [v3 supplementaryViewForElementKind:@"STSGridLayoutElementKindFooter" atIndexPath:v4];
+  v5 = [collectionView supplementaryViewForElementKind:@"STSGridLayoutElementKindFooter" atIndexPath:v4];
 
   return v5;
 }
 
-- (void)_presentNoticeWithText:(id)a3
+- (void)_presentNoticeWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v7 = objc_alloc_init(STSSearchNoticeView);
-  [(STSSearchNoticeView *)v7 setText:v4];
+  [(STSSearchNoticeView *)v7 setText:textCopy];
 
-  v5 = [MEMORY[0x277D75348] sts_searchErrorTextColor];
-  [(STSSearchNoticeView *)v7 setTextColor:v5];
+  sts_searchErrorTextColor = [MEMORY[0x277D75348] sts_searchErrorTextColor];
+  [(STSSearchNoticeView *)v7 setTextColor:sts_searchErrorTextColor];
 
   [(STSSearchNoticeView *)v7 setContentCentered:1];
-  v6 = [(STSPicker *)self view];
-  [v6 setOverlayView:v7];
+  view = [(STSPicker *)self view];
+  [view setOverlayView:v7];
 }
 
-- (void)_presentDetailViewControllerForIndexPath:(id)a3
+- (void)_presentDetailViewControllerForIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     [(STSPicker *)self _cancelActiveDownload];
-    v5 = [(STSPicker *)self selectionDelegate];
+    selectionDelegate = [(STSPicker *)self selectionDelegate];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__STSPicker__presentDetailViewControllerForIndexPath___block_invoke;
     v6[3] = &unk_279B8AEF0;
     v6[4] = self;
-    v7 = v4;
-    [v5 requestExpandedPresentationStyleForBrowser:self completion:v6];
+    v7 = pathCopy;
+    [selectionDelegate requestExpandedPresentationStyleForBrowser:self completion:v6];
   }
 }
 
@@ -2368,57 +2368,57 @@ void __54__STSPicker__presentDetailViewControllerForIndexPath___block_invoke(uin
   [*(a1 + 32) presentViewController:v2 animated:1 completion:0];
 }
 
-- (id)_detailViewControllerForIndexPath:(id)a3
+- (id)_detailViewControllerForIndexPath:(id)path
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STSSearchModel *)self->_searchModel sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  sections = [(STSSearchModel *)self->_searchModel sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   v49 = v6;
-  v7 = [v6 results];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
+  results = [v6 results];
+  v8 = [results objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v9 = [v8 thumbnail];
-  v10 = [v8 sts_providerHostPageURL];
-  v11 = [v9 urlValue];
+  thumbnail = [v8 thumbnail];
+  sts_providerHostPageURL = [v8 sts_providerHostPageURL];
+  urlValue = [thumbnail urlValue];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v12 = [v8 url];
     *buf = 138412546;
-    v53 = v11;
+    v53 = urlValue;
     v54 = 2112;
     v55 = v12;
     _os_log_impl(&dword_264E95000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Generating detail view for result with thumbnail: %@, url: %@", buf, 0x16u);
   }
 
-  v13 = [v8 resultType];
-  v14 = [v13 isEqualToString:@"image_search"];
+  resultType = [v8 resultType];
+  v14 = [resultType isEqualToString:@"image_search"];
 
   if (v14)
   {
     v15 = [[STSImageDetailViewController alloc] initWithNibName:0 bundle:0];
     [(STSResultDetailViewController *)v15 setQueryId:+[STSSearchModel clientQueryId]];
-    v16 = [(STSSearchModel *)self->_searchModel currentQuery];
-    [(STSResultDetailViewController *)v15 setQueryString:v16];
+    currentQuery = [(STSSearchModel *)self->_searchModel currentQuery];
+    [(STSResultDetailViewController *)v15 setQueryString:currentQuery];
 
-    v17 = [v8 sts_appProviderName];
+    sts_appProviderName = [v8 sts_appProviderName];
 LABEL_7:
-    v20 = v17;
-    [(STSResultDetailViewController *)v15 setProviderName:v17];
+    v20 = sts_appProviderName;
+    [(STSResultDetailViewController *)v15 setProviderName:sts_appProviderName];
 
     goto LABEL_9;
   }
 
-  v18 = [v8 resultType];
-  v19 = [v18 isEqualToString:@"web_video"];
+  resultType2 = [v8 resultType];
+  v19 = [resultType2 isEqualToString:@"web_video"];
 
   if (v19)
   {
     v15 = [[STSVideoDetailViewController alloc] initWithNibName:0 bundle:0];
     [(STSResultDetailViewController *)v15 setQueryId:+[STSSearchModel clientQueryId]];
     [(STSResultDetailViewController *)v15 setContentSize:16.0, 9.0];
-    v17 = [v8 sts_providerName];
+    sts_appProviderName = [v8 sts_providerName];
     goto LABEL_7;
   }
 
@@ -2427,8 +2427,8 @@ LABEL_9:
   [(STSResultDetailViewController *)v15 setNumberOfReportedResults:[(STSSearchModel *)self->_searchModel numberOfReportedResults]];
   [v8 sts_providerIconSize];
   [(STSResultDetailViewController *)v15 setProviderIconSize:?];
-  v21 = [MEMORY[0x277D759A0] mainScreen];
-  [v21 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v23 = v22;
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
@@ -2438,8 +2438,8 @@ LABEL_9:
   v51 = v24;
   [v8 sts_providerIconWithScale:v50 completion:v23];
 
-  v25 = [(STSPicker *)self view];
-  [v25 bounds];
+  view = [(STSPicker *)self view];
+  [view bounds];
   v27 = v26;
   v29 = v28;
   v31 = v30;
@@ -2464,42 +2464,42 @@ LABEL_9:
   v36 = [v8 url];
   [(STSImageDetailViewController *)v24 setContentURL:v36];
 
-  [(STSResultDetailViewController *)v24 setProviderURL:v10];
+  [(STSResultDetailViewController *)v24 setProviderURL:sts_providerHostPageURL];
   [(STSResultDetailViewController *)v24 setDelegate:self];
   [(STSResultDetailViewController *)v24 setSearchResult:v8];
-  v37 = [(STSPicker *)self view];
-  v38 = [v37 collectionView];
-  v39 = [v38 cellForItemAtIndexPath:v4];
+  view2 = [(STSPicker *)self view];
+  collectionView = [view2 collectionView];
+  v39 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v40 = [v39 image];
-  v41 = [v40 images];
-  v42 = [v41 count];
+  image = [v39 image];
+  images = [image images];
+  v42 = [images count];
 
   if (v42 < 2)
   {
     v44 = +[STSImageCache sharedCache];
-    v45 = [v44 fetchCachedImageInfoForURL:v11];
+    v45 = [v44 fetchCachedImageInfoForURL:urlValue];
 
     if (v45)
     {
-      v43 = [MEMORY[0x277D755B8] agif_animatedImageWithImageInfo:v45];
+      image2 = [MEMORY[0x277D755B8] agif_animatedImageWithImageInfo:v45];
     }
 
     else
     {
       v46 = +[STSImageCache sharedCache];
-      v43 = [v46 fetchCachedStaticImageForURL:v11];
+      image2 = [v46 fetchCachedStaticImageForURL:urlValue];
     }
   }
 
   else
   {
-    v43 = [v39 image];
+    image2 = [v39 image];
   }
 
-  [v43 size];
+  [image2 size];
   [(STSResultDetailViewController *)v24 setContentSize:?];
-  [(STSResultDetailViewController *)v24 updateWithThumbnail:v43 orThumbnailInfo:0];
+  [(STSResultDetailViewController *)v24 updateWithThumbnail:image2 orThumbnailInfo:0];
   v47 = v24;
 
   return v24;
@@ -2518,17 +2518,17 @@ void __47__STSPicker__detailViewControllerForIndexPath___block_invoke(uint64_t a
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 
-- (void)_beginDownloadingResultAtIndexPath:(id)a3
+- (void)_beginDownloadingResultAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(STSSearchModel *)self->_searchModel sections];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  sections = [(STSSearchModel *)self->_searchModel sections];
+  v7 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v8 = [v7 results];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v5, "item")}];
+  results = [v7 results];
+  v9 = [results objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v10 = [v9 resultType];
-  v11 = [v10 isEqualToString:@"web_video"];
+  resultType = [v9 resultType];
+  v11 = [resultType isEqualToString:@"web_video"];
 
   if (v11)
   {
@@ -2537,18 +2537,18 @@ void __47__STSPicker__detailViewControllerForIndexPath___block_invoke(uint64_t a
     block[2] = __48__STSPicker__beginDownloadingResultAtIndexPath___block_invoke;
     block[3] = &unk_279B8AEF0;
     v42 = v9;
-    v43 = self;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v12 = v42;
   }
 
   else
   {
-    objc_storeStrong(&self->_activeDownloadIndexPath, a3);
+    objc_storeStrong(&self->_activeDownloadIndexPath, path);
     self->_activeDownloadProgress = 0.0;
-    v13 = [(STSPicker *)self view];
-    v14 = [v13 collectionView];
-    v12 = [v14 cellForItemAtIndexPath:self->_activeDownloadIndexPath];
+    view = [(STSPicker *)self view];
+    collectionView = [view collectionView];
+    v12 = [collectionView cellForItemAtIndexPath:self->_activeDownloadIndexPath];
 
     [v12 setShowDownloadIndicator:1 animated:1.0];
     objc_initWeak(&location, self);
@@ -2571,7 +2571,7 @@ void __47__STSPicker__detailViewControllerForIndexPath___block_invoke(uint64_t a
     v17 = v15;
     v32 = v17;
     objc_copyWeak(&v36, &location);
-    v33 = self;
+    selfCopy2 = self;
     v34 = v38;
     v35 = v37;
     v28[0] = MEMORY[0x277D85DD0];
@@ -2580,7 +2580,7 @@ void __47__STSPicker__detailViewControllerForIndexPath___block_invoke(uint64_t a
     v28[3] = &unk_279B8B148;
     objc_copyWeak(&v30, &location);
     v28[4] = self;
-    v18 = v5;
+    v18 = pathCopy;
     v29 = v18;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -2593,7 +2593,7 @@ void __47__STSPicker__detailViewControllerForIndexPath___block_invoke(uint64_t a
     v22 = v19;
     v26 = v38;
     v23 = v9;
-    v24 = self;
+    selfCopy3 = self;
     [v16 fetchImageDataWithURL:v19 priority:8 isSource:1 begin:v31 progress:v28 completion:v20];
 
     objc_destroyWeak(&v27);
@@ -2916,25 +2916,25 @@ void __48__STSPicker__beginDownloadingResultAtIndexPath___block_invoke_4(uint64_
     v4 = activeDownloadIndexPath;
 
     self->_activeDownloadProgress = 0.0;
-    v5 = [(STSSearchModel *)self->_searchModel sections];
-    v13 = [v5 objectAtIndexedSubscript:{-[NSIndexPath section](v4, "section")}];
+    sections = [(STSSearchModel *)self->_searchModel sections];
+    v13 = [sections objectAtIndexedSubscript:{-[NSIndexPath section](v4, "section")}];
 
-    v6 = [v13 results];
-    v7 = [v6 objectAtIndexedSubscript:{-[NSIndexPath item](v4, "item")}];
+    results = [v13 results];
+    v7 = [results objectAtIndexedSubscript:{-[NSIndexPath item](v4, "item")}];
 
     v8 = +[STSImageCache sharedCache];
     v9 = [v7 url];
     [v8 cancelQueuedDownloadForURL:v9];
 
-    v10 = [(STSPicker *)self view];
-    v11 = [v10 collectionView];
-    v12 = [v11 cellForItemAtIndexPath:v4];
+    view = [(STSPicker *)self view];
+    collectionView = [view collectionView];
+    v12 = [collectionView cellForItemAtIndexPath:v4];
 
     [v12 setShowDownloadIndicator:1 animated:0.0];
   }
 }
 
-- (void)_reportFeedbackDisplayedResultsDidScroll:(BOOL)a3
+- (void)_reportFeedbackDisplayedResultsDidScroll:(BOOL)scroll
 {
   displayedResultsQueue = self->_displayedResultsQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -2942,7 +2942,7 @@ void __48__STSPicker__beginDownloadingResultAtIndexPath___block_invoke_4(uint64_
   v4[2] = __54__STSPicker__reportFeedbackDisplayedResultsDidScroll___block_invoke;
   v4[3] = &unk_279B8B198;
   v4[4] = self;
-  v5 = a3;
+  scrollCopy = scroll;
   dispatch_async(displayedResultsQueue, v4);
 }
 
@@ -2963,15 +2963,15 @@ uint64_t __54__STSPicker__reportFeedbackDisplayedResultsDidScroll___block_invoke
   return result;
 }
 
-- (id)_noticeTextForSearchError:(id)a3
+- (id)_noticeTextForSearchError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"STSErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"STSErrorDomain"])
   {
-    v5 = [v3 code];
+    code = [errorCopy code];
 
-    if (v5 == 2)
+    if (code == 2)
     {
       goto LABEL_7;
     }
@@ -2981,15 +2981,15 @@ uint64_t __54__STSPicker__reportFeedbackDisplayedResultsDidScroll___block_invoke
   {
   }
 
-  v6 = [v3 domain];
-  if ([v6 isEqualToString:*MEMORY[0x277CCA738]])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:*MEMORY[0x277CCA738]])
   {
-    v7 = [v3 code];
+    code2 = [errorCopy code];
 
-    if (v7 == -1009)
+    if (code2 == -1009)
     {
 LABEL_7:
-      v8 = [v3 localizedDescription];
+      localizedDescription = [errorCopy localizedDescription];
       goto LABEL_10;
     }
   }
@@ -2998,9 +2998,9 @@ LABEL_7:
   {
   }
 
-  v8 = STSLocalizedString(@"ERROR_DESC_COULD_NOT_LOAD");
+  localizedDescription = STSLocalizedString(@"ERROR_DESC_COULD_NOT_LOAD");
 LABEL_10:
-  v9 = v8;
+  v9 = localizedDescription;
 
   return v9;
 }
@@ -3008,21 +3008,21 @@ LABEL_10:
 - (void)sendVisibleResultsFeedback
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(STSSearchModel *)self->_searchModel sections];
-  v4 = [v3 count];
+  sections = [(STSSearchModel *)self->_searchModel sections];
+  v4 = [sections count];
 
   if (v4)
   {
-    v5 = [(STSPicker *)self pickerView];
-    v6 = [v5 collectionView];
-    v7 = [v6 indexPathsForVisibleItems];
+    pickerView = [(STSPicker *)self pickerView];
+    collectionView = [pickerView collectionView];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
     v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v8 = v7;
+    v8 = indexPathsForVisibleItems;
     v9 = [v8 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v9)
     {
@@ -3038,31 +3038,31 @@ LABEL_10:
           }
 
           v13 = *(*(&v37 + 1) + 8 * i);
-          v14 = [(STSPicker *)self pickerView];
-          v15 = [v14 collectionView];
-          v16 = [v15 cellForItemAtIndexPath:v13];
+          pickerView2 = [(STSPicker *)self pickerView];
+          collectionView2 = [pickerView2 collectionView];
+          v16 = [collectionView2 cellForItemAtIndexPath:v13];
 
           if (v16)
           {
-            v17 = [v16 layer];
-            [v17 frame];
+            layer = [v16 layer];
+            [layer frame];
             v19 = v18;
 
-            v20 = [(STSPicker *)self pickerView];
-            v21 = [v20 collectionView];
+            pickerView3 = [(STSPicker *)self pickerView];
+            collectionView3 = [pickerView3 collectionView];
 
-            [v21 contentOffset];
+            [collectionView3 contentOffset];
             v23 = v22;
-            [v21 frame];
+            [collectionView3 frame];
             v25 = v23 + v24;
-            [v21 contentInset];
+            [collectionView3 contentInset];
             if (v19 < v25 - v26 + -20.0)
             {
-              v27 = [(STSSearchModel *)self->_searchModel sections];
-              v28 = [v27 objectAtIndexedSubscript:{objc_msgSend(v13, "section")}];
+              sections2 = [(STSSearchModel *)self->_searchModel sections];
+              v28 = [sections2 objectAtIndexedSubscript:{objc_msgSend(v13, "section")}];
 
-              v29 = [v28 results];
-              v30 = [v29 objectAtIndexedSubscript:{objc_msgSend(v13, "item")}];
+              results = [v28 results];
+              v30 = [results objectAtIndexedSubscript:{objc_msgSend(v13, "item")}];
 
               if (([(NSMutableSet *)self->_visibleResultsSent containsObject:v30]& 1) == 0)
               {

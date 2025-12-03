@@ -1,17 +1,17 @@
 @interface SKUIAddToWishlistAnimation
-- (SKUIAddToWishlistAnimation)initWithImage:(id)a3 buttonItem:(id)a4 navigationBar:(id)a5;
-- (void)animateWithCompletionBlock:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (SKUIAddToWishlistAnimation)initWithImage:(id)image buttonItem:(id)item navigationBar:(id)bar;
+- (void)animateWithCompletionBlock:(id)block;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation SKUIAddToWishlistAnimation
 
-- (SKUIAddToWishlistAnimation)initWithImage:(id)a3 buttonItem:(id)a4 navigationBar:(id)a5
+- (SKUIAddToWishlistAnimation)initWithImage:(id)image buttonItem:(id)item navigationBar:(id)bar
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  imageCopy = image;
+  itemCopy = item;
+  barCopy = bar;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIAddToWishlistAnimation initWithImage:buttonItem:navigationBar:];
@@ -23,17 +23,17 @@
   v13 = v12;
   if (v12)
   {
-    v27 = v9;
-    objc_storeStrong(&v12->_image, a3);
-    v14 = [v10 image];
-    v15 = [v10 title];
+    v27 = imageCopy;
+    objc_storeStrong(&v12->_image, image);
+    image = [itemCopy image];
+    title = [itemCopy title];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v26 = v11;
-    v16 = [v11 _allViews];
-    v17 = [v16 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    v26 = barCopy;
+    _allViews = [barCopy _allViews];
+    v17 = [_allViews countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v17)
     {
       v18 = v17;
@@ -45,7 +45,7 @@
         {
           if (*v29 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(_allViews);
           }
 
           v21 = *(*(&v28 + 1) + 8 * i);
@@ -54,7 +54,7 @@
           {
             v22 = [v21 imageForState:0];
             v23 = [v21 titleForState:0];
-            if (v22 == v14 || ([v15 isEqualToString:v23] & 1) != 0)
+            if (v22 == image || ([title isEqualToString:v23] & 1) != 0)
             {
               v13 = v25;
               objc_storeStrong(&v25->_targetButton, v21);
@@ -64,7 +64,7 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v18 = [_allViews countByEnumeratingWithState:&v28 objects:v33 count:16];
         v13 = v25;
         if (v18)
         {
@@ -83,25 +83,25 @@ LABEL_19:
       v13 = 0;
     }
 
-    v9 = v27;
-    v11 = v26;
+    imageCopy = v27;
+    barCopy = v26;
   }
 
   return v13;
 }
 
-- (void)animateWithCompletionBlock:(id)a3
+- (void)animateWithCompletionBlock:(id)block
 {
   v56[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CD9FF0];
-  v5 = a3;
+  blockCopy = block;
   [v4 begin];
-  v6 = [v5 copy];
+  v6 = [blockCopy copy];
 
   completionBlock = self->_completionBlock;
   self->_completionBlock = v6;
 
-  v8 = self;
+  selfCopy = self;
   v9 = __AddToWishlistAnimations;
   if (!__AddToWishlistAnimations)
   {
@@ -112,22 +112,22 @@ LABEL_19:
     v9 = __AddToWishlistAnimations;
   }
 
-  [v9 addObject:v8];
+  [v9 addObject:selfCopy];
 
-  v12 = [(UINavigationButton *)v8->_targetButton window];
-  targetButton = v8->_targetButton;
+  window = [(UINavigationButton *)selfCopy->_targetButton window];
+  targetButton = selfCopy->_targetButton;
   [(UINavigationButton *)targetButton bounds];
-  [(UINavigationButton *)targetButton convertRect:v12 toView:?];
+  [(UINavigationButton *)targetButton convertRect:window toView:?];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v8->_image];
+  v22 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:selfCopy->_image];
   [v22 frame];
   v24 = (v19 - v23) * 0.5;
   v26 = (v21 - v25) * 0.5;
   [v22 setFrame:{v15 + floorf(v24), v17 + floorf(v26)}];
-  [v12 addSubview:v22];
+  [window addSubview:v22];
   v27 = MEMORY[0x277D75D18];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
@@ -143,7 +143,7 @@ LABEL_19:
   [v27 animateWithDuration:0x20000 delay:v53 options:v51 animations:0.4 completion:0.0];
   v29 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"transform"];
   [v29 setBeginTime:CACurrentMediaTime() + 0.4];
-  [v29 setDelegate:v8];
+  [v29 setDelegate:selfCopy];
   [v29 setDuration:0.33];
   [v29 setFillMode:*MEMORY[0x277CDA230]];
   UIAnimationDragCoefficient();
@@ -194,8 +194,8 @@ LABEL_19:
   v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:3];
   [v29 setValues:v40];
 
-  v41 = [(UINavigationButton *)v8->_targetButton layer];
-  [v41 addAnimation:v29 forKey:@"WishlistPop"];
+  layer = [(UINavigationButton *)selfCopy->_targetButton layer];
+  [layer addAnimation:v29 forKey:@"WishlistPop"];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -207,9 +207,9 @@ uint64_t __57__SKUIAddToWishlistAnimation_animateWithCompletionBlock___block_inv
   return [v1 setTransform:&v3];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v8 = a3;
+  stopCopy = stop;
   completionBlock = self->_completionBlock;
   if (completionBlock)
   {

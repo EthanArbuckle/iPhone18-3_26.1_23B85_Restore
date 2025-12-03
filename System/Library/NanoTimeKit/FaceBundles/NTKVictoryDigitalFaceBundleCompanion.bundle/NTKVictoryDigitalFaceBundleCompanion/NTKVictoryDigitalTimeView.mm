@@ -1,41 +1,41 @@
 @interface NTKVictoryDigitalTimeView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NTKVictoryDigitalTimeViewDelegate)delegate;
-- (id)initForDevice:(id)a3;
-- (int64_t)_lowerDigitAppearanceForStyle:(unint64_t)a3;
-- (int64_t)_upperDigitAppearanceForStyle:(unint64_t)a3;
-- (void)_resetDigitAppearanceForStyle:(unint64_t)a3;
-- (void)_setFlipViewIsLower:(BOOL)a3;
+- (id)initForDevice:(id)device;
+- (int64_t)_lowerDigitAppearanceForStyle:(unint64_t)style;
+- (int64_t)_upperDigitAppearanceForStyle:(unint64_t)style;
+- (void)_resetDigitAppearanceForStyle:(unint64_t)style;
+- (void)_setFlipViewIsLower:(BOOL)lower;
 - (void)_setupFlipDigitsView;
-- (void)applyPopAnimationTransitionFraction:(double)a3;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
+- (void)applyPopAnimationTransitionFraction:(double)fraction;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
 - (void)clearEditingTransitions;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorPalette:(id)a3;
-- (void)setInvertedColors:(BOOL)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)timeFormatterTextDidChange:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorPalette:(id)palette;
+- (void)setInvertedColors:(BOOL)colors;
+- (void)setStyle:(unint64_t)style;
+- (void)timeFormatterTextDidChange:(id)change;
 @end
 
 @implementation NTKVictoryDigitalTimeView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = NTKVictoryDigitalTimeView;
   v6 = [(NTKVictoryDigitalTimeView *)&v22 init];
   p_isa = &v6->super.super.super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
-    v8 = [[NTKVictoryDigitsView alloc] initForDevice:v5];
+    objc_storeStrong(&v6->_device, device);
+    v8 = [[NTKVictoryDigitsView alloc] initForDevice:deviceCopy];
     v9 = p_isa[2];
     p_isa[2] = v8;
 
-    v10 = [[NTKVictoryDigitsView alloc] initForDevice:v5];
+    v10 = [[NTKVictoryDigitsView alloc] initForDevice:deviceCopy];
     v11 = p_isa[3];
     p_isa[3] = v10;
 
@@ -51,17 +51,17 @@
     v24[2] = v12;
     v24[3] = v12;
     v13 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:4];
-    v14 = [p_isa[2] layer];
-    [v14 setActions:v13];
+    layer = [p_isa[2] layer];
+    [layer setActions:v13];
 
-    v15 = [p_isa[3] layer];
-    [v15 setActions:v13];
+    layer2 = [p_isa[3] layer];
+    [layer2 setActions:v13];
 
-    v16 = [p_isa[2] layer];
-    [v16 setAnchorPoint:{0.5, 1.0}];
+    layer3 = [p_isa[2] layer];
+    [layer3 setAnchorPoint:{0.5, 1.0}];
 
-    v17 = [p_isa[3] layer];
-    [v17 setAnchorPoint:{0.5, 0.0}];
+    layer4 = [p_isa[3] layer];
+    [layer4 setAnchorPoint:{0.5, 0.0}];
 
     v18 = +[UIColor blackColor];
     [p_isa setBackgroundColor:v18];
@@ -118,19 +118,19 @@
     flipDigitsView = self->_flipDigitsView;
     self->_flipDigitsView = v7;
 
-    v9 = [(NTKVictoryDigitsView *)self->_upperDigitsView layer];
-    v10 = [v9 actions];
-    v11 = [(NTKVictoryDigitsView *)self->_flipDigitsView layer];
-    [v11 setActions:v10];
+    layer = [(NTKVictoryDigitsView *)self->_upperDigitsView layer];
+    actions = [layer actions];
+    layer2 = [(NTKVictoryDigitsView *)self->_flipDigitsView layer];
+    [layer2 setActions:actions];
 
-    v12 = [(NTKVictoryDigitsView *)self->_upperDigitsView layer];
-    [v12 bounds];
+    layer3 = [(NTKVictoryDigitsView *)self->_upperDigitsView layer];
+    [layer3 bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(NTKVictoryDigitsView *)self->_flipDigitsView layer];
-    [v21 setBounds:{v14, v16, v18, v20}];
+    layer4 = [(NTKVictoryDigitsView *)self->_flipDigitsView layer];
+    [layer4 setBounds:{v14, v16, v18, v20}];
 
     [(NTKVictoryDigitsView *)self->_flipDigitsView setAppearance:[(NTKVictoryDigitsView *)self->_upperDigitsView appearance]];
     [(NTKVictoryDigitsView *)self->_flipDigitsView setHidden:1];
@@ -139,170 +139,170 @@
     [(NTKVictoryDigitalTimeView *)self addSubview:self->_flipDigitsView];
   }
 
-  v22 = [(NTKVictoryDigitsView *)self->_upperDigitsView color];
-  [(NTKVictoryDigitsView *)self->_flipDigitsView setColor:v22];
+  color = [(NTKVictoryDigitsView *)self->_upperDigitsView color];
+  [(NTKVictoryDigitsView *)self->_flipDigitsView setColor:color];
 
   [(NTKVictoryDigitsView *)self->_flipDigitsView prepareAppearance:1];
   [(NTKVictoryDigitsView *)self->_flipDigitsView prepareAppearance:3];
 }
 
-- (void)setInvertedColors:(BOOL)a3
+- (void)setInvertedColors:(BOOL)colors
 {
   invertedColors = self->_invertedColors;
-  self->_invertedColors = a3;
-  if (invertedColors != a3)
+  self->_invertedColors = colors;
+  if (invertedColors != colors)
   {
     [(NTKVictoryDigitalTimeView *)self setColorPalette:self->_colorPalette];
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(NTKVictoryDigitalTimeView *)self _resetDigitAppearanceForStyle:?];
   }
 }
 
-- (void)_resetDigitAppearanceForStyle:(unint64_t)a3
+- (void)_resetDigitAppearanceForStyle:(unint64_t)style
 {
   [(NTKVictoryDigitsView *)self->_upperDigitsView setAppearance:[(NTKVictoryDigitalTimeView *)self _upperDigitAppearanceForStyle:?]];
-  [(NTKVictoryDigitsView *)self->_lowerDigitsView setAppearance:[(NTKVictoryDigitalTimeView *)self _lowerDigitAppearanceForStyle:a3]];
+  [(NTKVictoryDigitsView *)self->_lowerDigitsView setAppearance:[(NTKVictoryDigitalTimeView *)self _lowerDigitAppearanceForStyle:style]];
   flipDigitsView = self->_flipDigitsView;
 
   [(NTKVictoryDigitsView *)flipDigitsView setHidden:1];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
-  if (a4 == a5)
+  if (style == toStyle)
   {
 
-    [(NTKVictoryDigitalTimeView *)self _resetDigitAppearanceForStyle:a3];
+    [(NTKVictoryDigitalTimeView *)self _resetDigitAppearanceForStyle:fraction];
   }
 
   else
   {
     [(NTKVictoryDigitsView *)self->_flipDigitsView setHidden:0];
     flipViewIsLower = self->_flipViewIsLower;
-    if (flipViewIsLower != a3 < 0.5)
+    if (flipViewIsLower != fraction < 0.5)
     {
       [(NTKVictoryDigitalTimeView *)self _setFlipViewIsLower:!flipViewIsLower];
-      if (a3 >= 0.5)
+      if (fraction >= 0.5)
       {
-        v10 = [(NTKVictoryDigitalTimeView *)self _upperDigitAppearanceForStyle:a5];
+        v10 = [(NTKVictoryDigitalTimeView *)self _upperDigitAppearanceForStyle:toStyle];
       }
 
       else
       {
-        v10 = [(NTKVictoryDigitalTimeView *)self _lowerDigitAppearanceForStyle:a4];
+        v10 = [(NTKVictoryDigitalTimeView *)self _lowerDigitAppearanceForStyle:style];
       }
 
       [(NTKVictoryDigitsView *)self->_flipDigitsView setAppearance:v10];
     }
 
-    v11 = (1.0 - a3) * -2.0;
-    if (a3 < 0.5)
+    v11 = (1.0 - fraction) * -2.0;
+    if (fraction < 0.5)
     {
-      v11 = 1.0 - (0.5 - a3 + 0.5 - a3);
+      v11 = 1.0 - (0.5 - fraction + 0.5 - fraction);
     }
 
     v12 = v11;
-    v13 = a3;
-    v14 = fabs(v13 + -0.5);
-    [(NTKVictoryDigitsView *)self->_flipDigitsView setDimmingFactor:a3 >= 0.5 isUpper:1.0 - (v14 + v14)];
+    fractionCopy = fraction;
+    v14 = fabs(fractionCopy + -0.5);
+    [(NTKVictoryDigitsView *)self->_flipDigitsView setDimmingFactor:fraction >= 0.5 isUpper:1.0 - (v14 + v14)];
     CATransform3DMakeRotation(&v17, v12 * 1.57079633, 1.0, 0.0, 0.0);
-    v15 = [(NTKVictoryDigitsView *)self->_flipDigitsView layer];
+    layer = [(NTKVictoryDigitsView *)self->_flipDigitsView layer];
     v16 = v17;
-    [v15 setTransform:&v16];
+    [layer setTransform:&v16];
 
-    [(NTKVictoryDigitsView *)self->_upperDigitsView setAppearance:[(NTKVictoryDigitalTimeView *)self _upperDigitAppearanceForStyle:a4]];
-    [(NTKVictoryDigitsView *)self->_lowerDigitsView setAppearance:[(NTKVictoryDigitalTimeView *)self _lowerDigitAppearanceForStyle:a5]];
+    [(NTKVictoryDigitsView *)self->_upperDigitsView setAppearance:[(NTKVictoryDigitalTimeView *)self _upperDigitAppearanceForStyle:style]];
+    [(NTKVictoryDigitsView *)self->_lowerDigitsView setAppearance:[(NTKVictoryDigitalTimeView *)self _lowerDigitAppearanceForStyle:toStyle]];
   }
 }
 
-- (void)_setFlipViewIsLower:(BOOL)a3
+- (void)_setFlipViewIsLower:(BOOL)lower
 {
-  self->_flipViewIsLower = a3;
+  self->_flipViewIsLower = lower;
   v4 = &OBJC_IVAR___NTKVictoryDigitalTimeView__upperDigitsView;
-  if (a3)
+  if (lower)
   {
     v4 = &OBJC_IVAR___NTKVictoryDigitalTimeView__lowerDigitsView;
   }
 
   v5 = *(&self->super.super.super.isa + *v4);
-  v6 = [v5 layer];
-  [v6 anchorPoint];
+  layer = [v5 layer];
+  [layer anchorPoint];
   v8 = v7;
   v10 = v9;
-  v11 = [(NTKVictoryDigitsView *)self->_flipDigitsView layer];
-  [v11 setAnchorPoint:{v8, v10}];
+  layer2 = [(NTKVictoryDigitsView *)self->_flipDigitsView layer];
+  [layer2 setAnchorPoint:{v8, v10}];
 
-  v12 = [v5 layer];
-  [v12 position];
+  layer3 = [v5 layer];
+  [layer3 position];
   v14 = v13;
   v16 = v15;
-  v17 = [(NTKVictoryDigitsView *)self->_flipDigitsView layer];
-  [v17 setPosition:{v14, v16}];
+  layer4 = [(NTKVictoryDigitsView *)self->_flipDigitsView layer];
+  [layer4 setPosition:{v14, v16}];
 
-  v18 = [v5 digitText];
-  [(NTKVictoryDigitsView *)self->_flipDigitsView setDigitText:v18];
+  digitText = [v5 digitText];
+  [(NTKVictoryDigitsView *)self->_flipDigitsView setDigitText:digitText];
 }
 
-- (int64_t)_upperDigitAppearanceForStyle:(unint64_t)a3
+- (int64_t)_upperDigitAppearanceForStyle:(unint64_t)style
 {
-  if (a3 - 2 > 3)
+  if (style - 2 > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_EBF0[a3 - 2];
+    return qword_EBF0[style - 2];
   }
 }
 
-- (int64_t)_lowerDigitAppearanceForStyle:(unint64_t)a3
+- (int64_t)_lowerDigitAppearanceForStyle:(unint64_t)style
 {
-  if (a3 - 1 > 4)
+  if (style - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_EC10[a3 - 1];
+    return qword_EC10[style - 1];
   }
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  v9 = a3;
-  objc_storeStrong(&self->_colorPalette, a3);
-  v5 = [v9 digits];
+  paletteCopy = palette;
+  objc_storeStrong(&self->_colorPalette, palette);
+  digits = [paletteCopy digits];
   if (self->_invertedColors)
   {
-    v6 = [v9 background];
+    background = [paletteCopy background];
 
-    v5 = v6;
+    digits = background;
   }
 
-  v7 = [v9 digitsOutlineBackground];
-  [(NTKVictoryDigitsView *)self->_upperDigitsView setOutlineBackgroundColor:v7];
-  [(NTKVictoryDigitsView *)self->_upperDigitsView setColor:v5];
-  [(NTKVictoryDigitsView *)self->_lowerDigitsView setOutlineBackgroundColor:v7];
-  [(NTKVictoryDigitsView *)self->_lowerDigitsView setColor:v5];
-  [(NTKVictoryDigitsView *)self->_flipDigitsView setColor:v5];
-  [(NTKVictoryDigitsView *)self->_flipDigitsView setOutlineBackgroundColor:v7];
-  v8 = [v9 background];
-  [(NTKVictoryDigitsView *)self->_flipDigitsView setBackgroundColor:v8];
+  digitsOutlineBackground = [paletteCopy digitsOutlineBackground];
+  [(NTKVictoryDigitsView *)self->_upperDigitsView setOutlineBackgroundColor:digitsOutlineBackground];
+  [(NTKVictoryDigitsView *)self->_upperDigitsView setColor:digits];
+  [(NTKVictoryDigitsView *)self->_lowerDigitsView setOutlineBackgroundColor:digitsOutlineBackground];
+  [(NTKVictoryDigitsView *)self->_lowerDigitsView setColor:digits];
+  [(NTKVictoryDigitsView *)self->_flipDigitsView setColor:digits];
+  [(NTKVictoryDigitsView *)self->_flipDigitsView setOutlineBackgroundColor:digitsOutlineBackground];
+  background2 = [paletteCopy background];
+  [(NTKVictoryDigitsView *)self->_flipDigitsView setBackgroundColor:background2];
 
   [(NTKVictoryDigitsView *)self->_upperDigitsView setScale:1.0];
   [(NTKVictoryDigitsView *)self->_lowerDigitsView setScale:1.0];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4 = +[UIColor clearColor];
   [(NTKVictoryDigitsView *)self->_upperDigitsView setBackgroundColor:v4];
@@ -314,12 +314,12 @@
   [(NTKVictoryDigitsView *)self->_flipDigitsView setBackgroundColor:v6];
 }
 
-- (void)applyPopAnimationTransitionFraction:(double)a3
+- (void)applyPopAnimationTransitionFraction:(double)fraction
 {
   v5 = NTKVictoryTransitionTimingFunction();
   v12 = v5;
-  v6 = a3;
-  *&v7 = fabsf((v6 + -0.4) / 0.4);
+  fractionCopy = fraction;
+  *&v7 = fabsf((fractionCopy + -0.4) / 0.4);
   if (*&v7 > 1.0)
   {
     *&v7 = 1.0;
@@ -327,7 +327,7 @@
 
   [v5 _solveForInput:v7];
   v8 = *&v9;
-  *&v9 = fabsf((v6 + -0.5333) / 0.4);
+  *&v9 = fabsf((fractionCopy + -0.5333) / 0.4);
   if (*&v9 > 1.0)
   {
     *&v9 = 1.0;
@@ -354,7 +354,7 @@
   [(NTKVictoryDigitsView *)lowerDigitsView ntk_setBoundsAndPositionFromFrame:v12, v10, v4, v7];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   sub_812C(self, self->_device);
   v5 = v4;
@@ -365,18 +365,18 @@
   return result;
 }
 
-- (void)timeFormatterTextDidChange:(id)a3
+- (void)timeFormatterTextDidChange:(id)change
 {
-  v9 = [(CLKTimeFormatter *)self->_timeFormatter timeText];
-  v4 = [(CLKTimeFormatter *)self->_timeFormatter separatorRangeInTimeText];
-  v6 = [v9 substringFromIndex:&v4[v5]];
+  timeText = [(CLKTimeFormatter *)self->_timeFormatter timeText];
+  separatorRangeInTimeText = [(CLKTimeFormatter *)self->_timeFormatter separatorRangeInTimeText];
+  v6 = [timeText substringFromIndex:&separatorRangeInTimeText[v5]];
   [(NTKVictoryDigitsView *)self->_lowerDigitsView setDigitText:v6];
 
-  v7 = [v9 substringToIndex:v4];
+  v7 = [timeText substringToIndex:separatorRangeInTimeText];
   [(NTKVictoryDigitsView *)self->_upperDigitsView setDigitText:v7];
 
-  v8 = [(NTKVictoryDigitalTimeView *)self delegate];
-  [v8 victoryDigitalTimeViewDidChangeTime:self];
+  delegate = [(NTKVictoryDigitalTimeView *)self delegate];
+  [delegate victoryDigitalTimeViewDidChangeTime:self];
 }
 
 - (NTKVictoryDigitalTimeViewDelegate)delegate

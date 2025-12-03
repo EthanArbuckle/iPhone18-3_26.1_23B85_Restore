@@ -1,14 +1,14 @@
 @interface SpatialPhoto.CinematicCameraAnimator
-- (void)tick:(id)a3;
+- (void)tick:(id)tick;
 @end
 
 @implementation SpatialPhoto.CinematicCameraAnimator
 
-- (void)tick:(id)a3
+- (void)tick:(id)tick
 {
-  v3 = a3;
+  tickCopy = tick;
 
-  sub_25E6D22A4(v3);
+  sub_25E6D22A4(tickCopy);
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface UtilityServiceAddress
 - (_TtC19HomeUtilityServices21UtilityServiceAddress)init;
-- (_TtC19HomeUtilityServices21UtilityServiceAddress)initWithAddressLine1:(id)a3 addressLine2:(id)a4 addressLine3:(id)a5 city:(id)a6 state:(id)a7 postalCode:(id)a8 country:(id)a9;
+- (_TtC19HomeUtilityServices21UtilityServiceAddress)initWithAddressLine1:(id)line1 addressLine2:(id)line2 addressLine3:(id)line3 city:(id)city state:(id)state postalCode:(id)code country:(id)country;
 - (id)data;
 @end
 
 @implementation UtilityServiceAddress
 
-- (_TtC19HomeUtilityServices21UtilityServiceAddress)initWithAddressLine1:(id)a3 addressLine2:(id)a4 addressLine3:(id)a5 city:(id)a6 state:(id)a7 postalCode:(id)a8 country:(id)a9
+- (_TtC19HomeUtilityServices21UtilityServiceAddress)initWithAddressLine1:(id)line1 addressLine2:(id)line2 addressLine3:(id)line3 city:(id)city state:(id)state postalCode:(id)code country:(id)country
 {
   v12 = sub_20E0091D4();
   v38 = v13;
   v39 = v12;
-  if (!a4)
+  if (!line2)
   {
     v37 = 0;
     v15 = 0;
-    if (a5)
+    if (line3)
     {
       goto LABEL_3;
     }
@@ -27,14 +27,14 @@ LABEL_5:
 
   v37 = sub_20E0091D4();
   v15 = v14;
-  if (!a5)
+  if (!line3)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v16 = sub_20E0091D4();
-  a5 = v17;
+  line3 = v17;
 LABEL_6:
   v18 = sub_20E0091D4();
   v20 = v19;
@@ -51,7 +51,7 @@ LABEL_6:
   v29[1] = v15;
   v30 = (self + OBJC_IVAR____TtC19HomeUtilityServices21UtilityServiceAddress_addressLine3);
   *v30 = v16;
-  v30[1] = a5;
+  v30[1] = line3;
   v31 = (self + OBJC_IVAR____TtC19HomeUtilityServices21UtilityServiceAddress_city);
   *v31 = v18;
   v31[1] = v20;
@@ -78,7 +78,7 @@ LABEL_6:
 
 - (id)data
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20DFBA434();
   v5 = v4;
 

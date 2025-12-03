@@ -5,9 +5,9 @@
 - (CSOpportuneSpeakEventMonitor)init;
 - (NSString)audioProviderUUID;
 - (void)_notifyStopOpportuneSpeakImmediately;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)opportuneSpeakBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 audioProviderUUID:(id)a5 successfully:(BOOL)a6 option:(id)a7;
+- (void)opportuneSpeakBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context audioProviderUUID:(id)d successfully:(BOOL)successfully option:(id)option;
 @end
 
 @implementation CSOpportuneSpeakEventMonitor
@@ -23,21 +23,21 @@
   dispatch_sync(queue, block);
 }
 
-- (void)opportuneSpeakBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 audioProviderUUID:(id)a5 successfully:(BOOL)a6 option:(id)a7
+- (void)opportuneSpeakBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context audioProviderUUID:(id)d successfully:(BOOL)successfully option:(id)option
 {
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  dCopy = d;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10004EEC0;
   v15[3] = &unk_100252420;
-  v18 = a6;
+  successfullyCopy = successfully;
   v15[4] = self;
-  v16 = v11;
-  v17 = v10;
-  v13 = v10;
-  v14 = v11;
+  v16 = dCopy;
+  v17 = contextCopy;
+  v13 = contextCopy;
+  v14 = dCopy;
   dispatch_async(queue, v15);
 }
 
@@ -129,7 +129,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v4 = +[CSOpportuneSpeakBehaviorMonitor sharedInstance];
   [v4 registerObserver:self];

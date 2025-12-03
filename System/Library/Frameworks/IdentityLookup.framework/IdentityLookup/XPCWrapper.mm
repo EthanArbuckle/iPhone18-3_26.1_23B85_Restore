@@ -1,28 +1,28 @@
 @interface XPCWrapper
 - (_TtC14IdentityLookup10XPCWrapper)init;
-- (_TtC14IdentityLookup10XPCWrapper)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC14IdentityLookup10XPCWrapper)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XPCWrapper
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC14IdentityLookup10XPCWrapper_data);
   v5 = *&self->data[OBJC_IVAR____TtC14IdentityLookup10XPCWrapper_data];
-  v6 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_238A5C83C(v4, v5);
   v7 = sub_238A61A2C();
   sub_238A5DC94(v4, v5);
   v8 = sub_238A61B9C();
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
-- (_TtC14IdentityLookup10XPCWrapper)initWithCoder:(id)a3
+- (_TtC14IdentityLookup10XPCWrapper)initWithCoder:(id)coder
 {
   sub_238A5EA94();
-  v5 = a3;
+  coderCopy = coder;
   v6 = sub_238A61D2C();
   if (v6)
   {

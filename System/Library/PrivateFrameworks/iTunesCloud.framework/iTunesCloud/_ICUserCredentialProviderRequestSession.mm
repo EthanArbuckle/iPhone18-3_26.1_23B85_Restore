@@ -1,29 +1,29 @@
 @interface _ICUserCredentialProviderRequestSession
 - (ICUserIdentityStore)identityStore;
-- (_ICUserCredentialProviderRequestSession)initWithCredentialRequests:(id)a3 responseHandler:(id)a4;
+- (_ICUserCredentialProviderRequestSession)initWithCredentialRequests:(id)requests responseHandler:(id)handler;
 @end
 
 @implementation _ICUserCredentialProviderRequestSession
 
 - (ICUserIdentityStore)identityStore
 {
-  v2 = [(NSArray *)self->_credentialRequests firstObject];
-  v3 = [v2 identityStore];
+  firstObject = [(NSArray *)self->_credentialRequests firstObject];
+  identityStore = [firstObject identityStore];
 
-  return v3;
+  return identityStore;
 }
 
-- (_ICUserCredentialProviderRequestSession)initWithCredentialRequests:(id)a3 responseHandler:(id)a4
+- (_ICUserCredentialProviderRequestSession)initWithCredentialRequests:(id)requests responseHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = _ICUserCredentialProviderRequestSession;
   v8 = [(_ICUserCredentialProviderRequestSession *)&v27 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [requestsCopy copy];
     credentialRequests = v8->_credentialRequests;
     v8->_credentialRequests = v9;
 
@@ -35,7 +35,7 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = v6;
+    v13 = requestsCopy;
     v14 = [v13 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v14)
     {
@@ -51,10 +51,10 @@
             objc_enumerationMutation(v13);
           }
 
-          v19 = [*(*(&v23 + 1) + 8 * i) qualityOfService];
-          if (v17 <= v19)
+          qualityOfService = [*(*(&v23 + 1) + 8 * i) qualityOfService];
+          if (v17 <= qualityOfService)
           {
-            v17 = v19;
+            v17 = qualityOfService;
           }
         }
 
@@ -70,7 +70,7 @@
     }
 
     v8->_maximumQualityOfService = v17;
-    v20 = MEMORY[0x1B8C781E0](v7);
+    v20 = MEMORY[0x1B8C781E0](handlerCopy);
     responseHandler = v8->_responseHandler;
     v8->_responseHandler = v20;
   }

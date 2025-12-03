@@ -1,90 +1,90 @@
 @interface THSectionController
-- (BOOL)allowsDescendersToClipForPageController:(id)a3;
-- (BOOL)displaySinglePageChapterSeparatelyForPageController:(id)a3;
-- (BOOL)isCompactFlowPresentationForPageController:(id)a3;
-- (BOOL)isTwoUpForNavigationUnitForPageController:(id)a3;
-- (BOOL)p_showingPagesInNodeContainingRelativePageIndex:(unint64_t)a3;
-- (BOOL)shouldAllowFinishingPartionedAttachmentLayoutForPageController:(id)a3;
+- (BOOL)allowsDescendersToClipForPageController:(id)controller;
+- (BOOL)displaySinglePageChapterSeparatelyForPageController:(id)controller;
+- (BOOL)isCompactFlowPresentationForPageController:(id)controller;
+- (BOOL)isTwoUpForNavigationUnitForPageController:(id)controller;
+- (BOOL)p_showingPagesInNodeContainingRelativePageIndex:(unint64_t)index;
+- (BOOL)shouldAllowFinishingPartionedAttachmentLayoutForPageController:(id)controller;
 - (BOOL)shouldEnablePaging;
-- (BOOL)shouldScaleFlowLayoutsForPageController:(id)a3;
+- (BOOL)shouldScaleFlowLayoutsForPageController:(id)controller;
 - (CGPoint)canvasOriginDelta;
-- (CGPoint)canvasOriginDeltaForPageController:(id)a3;
-- (CGPoint)canvasOriginForPageController:(id)a3;
-- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)a3;
-- (CGPoint)sectionOriginForContentNode:(id)a3;
-- (CGRect)canvasRectForRelativePageIndex:(unint64_t)a3;
-- (CGRect)p_expandCanvasRectIfFlow:(CGRect)a3;
-- (CGRect)rectForBodyAnchor:(id)a3;
-- (CGRect)rectForContentNode:(id)a3 layout:(id)a4;
-- (CGRect)sectionRelativeCanvasRectForRelativePageIndex:(unint64_t)a3;
+- (CGPoint)canvasOriginDeltaForPageController:(id)controller;
+- (CGPoint)canvasOriginForPageController:(id)controller;
+- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)index;
+- (CGPoint)sectionOriginForContentNode:(id)node;
+- (CGRect)canvasRectForRelativePageIndex:(unint64_t)index;
+- (CGRect)p_expandCanvasRectIfFlow:(CGRect)flow;
+- (CGRect)rectForBodyAnchor:(id)anchor;
+- (CGRect)rectForContentNode:(id)node layout:(id)layout;
+- (CGRect)sectionRelativeCanvasRectForRelativePageIndex:(unint64_t)index;
 - (CGSize)pageSize;
 - (CGSize)preferredCanvasSize;
-- (CGSize)sectionSizeForContentNode:(id)a3;
+- (CGSize)sectionSizeForContentNode:(id)node;
 - (NSArray)currentContentNodes;
-- (THSectionController)initWithDelegate:(id)a3 pagePositionController:(id)a4 presentationType:(id)a5;
+- (THSectionController)initWithDelegate:(id)delegate pagePositionController:(id)controller presentationType:(id)type;
 - (TSKSearchTargetProvider)searchTargetProvider;
-- (_NSRange)firstLineInRect:(CGRect)a3 forBodyAnchor:(id)a4;
-- (_NSRange)relativePageRangeForCanvasRect:(CGRect)a3 pad:(int)a4;
-- (id)accessControllerForPageController:(id)a3;
-- (id)bodyAnchorForCanvasRect:(CGRect)a3;
-- (id)bodyInfoForStorage:(id)a3 anchoredCharIndex:(unint64_t)a4;
-- (id)bodyInfoForStorage:(id)a3 charIndex:(unint64_t)a4;
-- (id)bodyStorageForPageController:(id)a3 presentationType:(id)a4;
-- (id)displaySectionInfoForRelativePageIndex:(unint64_t)a3;
-- (id)infosToDisplayForRelativePageRange:(_NSRange)a3 forceLoad:(BOOL)a4;
-- (id)layoutControllerForPageController:(id)a3;
-- (id)newPageControllerForContentNode:(id)a3;
-- (id)p_contentNodeForBodyStorage:(id)a3 forceLoad:(BOOL)a4;
-- (id)p_contentNodeForRelativePageIndex:(unint64_t)a3;
-- (id)pageControllerForContentNode:(id)a3;
-- (id)pageInfoForBeginningOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (id)pageInfoForCenterOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (id)pageInfoForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (id)pageInfoForPageController:(id)a3 pageIndex:(unint64_t)a4 presentationType:(id)a5;
-- (id)pageInfoForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (unint64_t)_navigationUnitRelativePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (unint64_t)_navigationUnitRelativePageIndexForCenterOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (unint64_t)_navigationUnitRelativePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (unint64_t)_navigationUnitRelativePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (unint64_t)absolutePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (unint64_t)absolutePageIndexForBodyStorageAnchor:(id)a3;
-- (unint64_t)absolutePageIndexForCenterOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (unint64_t)absolutePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (unint64_t)absolutePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3;
-- (unint64_t)mostVisibleAbsolutePageIndexForCanvasBoundsRect:(CGRect)a3;
-- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)a3 forString:(id)a4 options:(unint64_t)a5 inDirection:(unint64_t)a6;
-- (unint64_t)p_relativeSheetIndexFromCanvasPoint:(CGPoint)a3;
+- (_NSRange)firstLineInRect:(CGRect)rect forBodyAnchor:(id)anchor;
+- (_NSRange)relativePageRangeForCanvasRect:(CGRect)rect pad:(int)pad;
+- (id)accessControllerForPageController:(id)controller;
+- (id)bodyAnchorForCanvasRect:(CGRect)rect;
+- (id)bodyInfoForStorage:(id)storage anchoredCharIndex:(unint64_t)index;
+- (id)bodyInfoForStorage:(id)storage charIndex:(unint64_t)index;
+- (id)bodyStorageForPageController:(id)controller presentationType:(id)type;
+- (id)displaySectionInfoForRelativePageIndex:(unint64_t)index;
+- (id)infosToDisplayForRelativePageRange:(_NSRange)range forceLoad:(BOOL)load;
+- (id)layoutControllerForPageController:(id)controller;
+- (id)newPageControllerForContentNode:(id)node;
+- (id)p_contentNodeForBodyStorage:(id)storage forceLoad:(BOOL)load;
+- (id)p_contentNodeForRelativePageIndex:(unint64_t)index;
+- (id)pageControllerForContentNode:(id)node;
+- (id)pageInfoForBeginningOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (id)pageInfoForCenterOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (id)pageInfoForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (id)pageInfoForPageController:(id)controller pageIndex:(unint64_t)index presentationType:(id)type;
+- (id)pageInfoForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (unint64_t)_navigationUnitRelativePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (unint64_t)_navigationUnitRelativePageIndexForCenterOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (unint64_t)_navigationUnitRelativePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (unint64_t)_navigationUnitRelativePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (unint64_t)absolutePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (unint64_t)absolutePageIndexForBodyStorageAnchor:(id)anchor;
+- (unint64_t)absolutePageIndexForCenterOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (unint64_t)absolutePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (unint64_t)absolutePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller;
+- (unint64_t)mostVisibleAbsolutePageIndexForCanvasBoundsRect:(CGRect)rect;
+- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)index forString:(id)string options:(unint64_t)options inDirection:(unint64_t)direction;
+- (unint64_t)p_relativeSheetIndexFromCanvasPoint:(CGPoint)point;
 - (unint64_t)pageCount;
-- (unint64_t)pageCountForNavigationUnitForPageController:(id)a3;
-- (unint64_t)pageCountForPageController:(id)a3 presentationType:(id)a4;
-- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)a3;
-- (unint64_t)relativePageIndexForBodyStorage:(id)a3 charIndex:(unint64_t)a4 forceLoad:(BOOL)a5;
-- (unint64_t)relativePageIndexForBodyStorageAnchor:(id)a3;
-- (unint64_t)relativePageIndexForContentNode:(id)a3;
-- (unint64_t)relativePageIndexForStorageAnchor:(id)a3;
-- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)a3;
+- (unint64_t)pageCountForNavigationUnitForPageController:(id)controller;
+- (unint64_t)pageCountForPageController:(id)controller presentationType:(id)type;
+- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)index;
+- (unint64_t)relativePageIndexForBodyStorage:(id)storage charIndex:(unint64_t)index forceLoad:(BOOL)load;
+- (unint64_t)relativePageIndexForBodyStorageAnchor:(id)anchor;
+- (unint64_t)relativePageIndexForContentNode:(id)node;
+- (unint64_t)relativePageIndexForStorageAnchor:(id)anchor;
+- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)index;
 - (void)clearCTCaches;
 - (void)dealloc;
-- (void)ensureSectionInfosLaidOut:(id)a3 layoutController:(id)a4;
-- (void)layoutContentAtLayoutAnchor:(id)a3 padAbove:(double)a4 padBelow:(double)a5 layoutController:(id)a6;
-- (void)layoutContentFromBottom:(double)a3 layoutController:(id)a4;
-- (void)p_addPagesInRange:(_NSRange)a3 forceLoad:(BOOL)a4;
+- (void)ensureSectionInfosLaidOut:(id)out layoutController:(id)controller;
+- (void)layoutContentAtLayoutAnchor:(id)anchor padAbove:(double)above padBelow:(double)below layoutController:(id)controller;
+- (void)layoutContentFromBottom:(double)bottom layoutController:(id)controller;
+- (void)p_addPagesInRange:(_NSRange)range forceLoad:(BOOL)load;
 - (void)p_clearDataForUnusedContentNodes;
 - (void)p_ensureDataForContentNodes;
-- (void)p_ensureLayoutThroughRect:(CGRect)a3 pad:(int)a4 withLayoutController:(id)a5;
-- (void)p_ensureLayoutThroughRelativePageRange:(_NSRange)a3 withLayoutController:(id)a4;
-- (void)p_enumerateRelativePageRange:(_NSRange)a3 acrossContentNodesUsingBlock:(id)a4;
-- (void)p_updateSectionInfosForRelativePageRange:(_NSRange)a3 forceLoad:(BOOL)a4;
-- (void)pageControllerNeedsLayout:(id)a3;
-- (void)setCurrentNavigationUnit:(id)a3;
-- (void)setPresentationType:(id)a3;
+- (void)p_ensureLayoutThroughRect:(CGRect)rect pad:(int)pad withLayoutController:(id)controller;
+- (void)p_ensureLayoutThroughRelativePageRange:(_NSRange)range withLayoutController:(id)controller;
+- (void)p_enumerateRelativePageRange:(_NSRange)range acrossContentNodesUsingBlock:(id)block;
+- (void)p_updateSectionInfosForRelativePageRange:(_NSRange)range forceLoad:(BOOL)load;
+- (void)pageControllerNeedsLayout:(id)layout;
+- (void)setCurrentNavigationUnit:(id)unit;
+- (void)setPresentationType:(id)type;
 - (void)teardown;
-- (void)withRootSearchTargetAtIndex:(unint64_t)a3 executeBlock:(id)a4;
+- (void)withRootSearchTargetAtIndex:(unint64_t)index executeBlock:(id)block;
 @end
 
 @implementation THSectionController
 
-- (THSectionController)initWithDelegate:(id)a3 pagePositionController:(id)a4 presentationType:(id)a5
+- (THSectionController)initWithDelegate:(id)delegate pagePositionController:(id)controller presentationType:(id)type
 {
   v10.receiver = self;
   v10.super_class = THSectionController;
@@ -93,9 +93,9 @@
   {
     [(THSectionController *)v8 setPageControllers:+[TSUPointerKeyDictionary dictionary]];
     [(THSectionController *)v8 setSectionInfos:+[TSUPointerKeyDictionary dictionary]];
-    [(THSectionController *)v8 setDelegate:a3];
-    v8->_presentationType = [a5 copy];
-    [(THSectionController *)v8 setPagePositionController:a4];
+    [(THSectionController *)v8 setDelegate:delegate];
+    v8->_presentationType = [type copy];
+    [(THSectionController *)v8 setPagePositionController:controller];
     [(THSectionController *)v8 setCanvasOriginDelta:CGPointZero.x, CGPointZero.y];
   }
 
@@ -108,8 +108,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(TSUPointerKeyDictionary *)[(THSectionController *)self sectionInfos] allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(TSUPointerKeyDictionary *)[(THSectionController *)self sectionInfos] allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -121,7 +121,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7) setPageController:0];
@@ -129,7 +129,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -190,8 +190,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(THSectionController *)self currentContentNodes];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  currentContentNodes = [(THSectionController *)self currentContentNodes];
+  v4 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (!v4)
   {
     return 0;
@@ -206,23 +206,23 @@
     {
       if (*v11 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(currentContentNodes);
       }
 
       v6 += [*(*(&v10 + 1) + 8 * i) pageCountForPresentationType:{-[THSectionController presentationType](self, "presentationType")}];
     }
 
-    v5 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v5 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v10 objects:v14 count:16];
   }
 
   while (v5);
   return v6;
 }
 
-- (void)p_enumerateRelativePageRange:(_NSRange)a3 acrossContentNodesUsingBlock:(id)a4
+- (void)p_enumerateRelativePageRange:(_NSRange)range acrossContentNodesUsingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -263,7 +263,7 @@ LABEL_3:
         location -= v13;
       }
 
-      (*(a4 + 2))(a4, v12, v16, v17);
+      (*(block + 2))(block, v12, v16, v17);
       v18 = length > v17;
       length -= v17;
       if (!v18)
@@ -336,8 +336,8 @@ LABEL_3:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(THSectionController *)self currentContentNodes];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  currentContentNodes = [(THSectionController *)self currentContentNodes];
+  v4 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -349,7 +349,7 @@ LABEL_3:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(currentContentNodes);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
@@ -367,7 +367,7 @@ LABEL_3:
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -376,22 +376,22 @@ LABEL_3:
 
 - (NSArray)currentContentNodes
 {
-  v2 = [(THSectionController *)self currentNavigationUnit];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
 
-  return [(THNavigationUnit *)v2 contentNodes];
+  return [(THNavigationUnit *)currentNavigationUnit contentNodes];
 }
 
-- (void)setCurrentNavigationUnit:(id)a3
+- (void)setCurrentNavigationUnit:(id)unit
 {
-  if (self->mCurrentNavigationUnit != a3)
+  if (self->mCurrentNavigationUnit != unit)
   {
-    v5 = a3;
+    unitCopy = unit;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = [a3 contentNodes];
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    contentNodes = [unit contentNodes];
+    v7 = [contentNodes countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v7)
     {
       v8 = v7;
@@ -403,7 +403,7 @@ LABEL_3:
         {
           if (*v21 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(contentNodes);
           }
 
           [*(*(&v20 + 1) + 8 * v10) retainBodies];
@@ -411,7 +411,7 @@ LABEL_3:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v8 = [contentNodes countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v8);
@@ -421,8 +421,8 @@ LABEL_3:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = [(THNavigationUnit *)self->mCurrentNavigationUnit contentNodes];
-    v12 = [(NSArray *)v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+    contentNodes2 = [(THNavigationUnit *)self->mCurrentNavigationUnit contentNodes];
+    v12 = [(NSArray *)contentNodes2 countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -434,7 +434,7 @@ LABEL_3:
         {
           if (*v17 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(contentNodes2);
           }
 
           [*(*(&v16 + 1) + 8 * v15) releaseBodies];
@@ -442,32 +442,32 @@ LABEL_3:
         }
 
         while (v13 != v15);
-        v13 = [(NSArray *)v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v13 = [(NSArray *)contentNodes2 countByEnumeratingWithState:&v16 objects:v24 count:16];
       }
 
       while (v13);
     }
 
-    self->mCurrentNavigationUnit = a3;
+    self->mCurrentNavigationUnit = unit;
     [(THSectionController *)self p_clearDataForUnusedContentNodes];
     [(THSectionController *)self p_ensureDataForContentNodes];
   }
 }
 
-- (void)setPresentationType:(id)a3
+- (void)setPresentationType:(id)type
 {
-  if (a3)
+  if (type)
   {
-    if (([a3 isEqualIncludingSize:{-[THSectionController presentationType](self, "presentationType")}] & 1) == 0 && objc_msgSend(a3, "isPaginated") && -[THPresentationType isPaginated](-[THSectionController presentationType](self, "presentationType"), "isPaginated"))
+    if (([type isEqualIncludingSize:{-[THSectionController presentationType](self, "presentationType")}] & 1) == 0 && objc_msgSend(type, "isPaginated") && -[THPresentationType isPaginated](-[THSectionController presentationType](self, "presentationType"), "isPaginated"))
     {
 
-      self->_presentationType = [a3 copyFixingSize];
+      self->_presentationType = [type copyFixingSize];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v5 = [(TSUPointerKeyDictionary *)[(THSectionController *)self pageControllers] allValues];
-      v6 = [v5 countByEnumeratingWithState:&v24 objects:v33 count:16];
+      allValues = [(TSUPointerKeyDictionary *)[(THSectionController *)self pageControllers] allValues];
+      v6 = [allValues countByEnumeratingWithState:&v24 objects:v33 count:16];
       if (v6)
       {
         v7 = v6;
@@ -478,13 +478,13 @@ LABEL_3:
           {
             if (*v25 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(allValues);
             }
 
-            [*(*(&v24 + 1) + 8 * i) setPresentationType:a3];
+            [*(*(&v24 + 1) + 8 * i) setPresentationType:type];
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v24 objects:v33 count:16];
+          v7 = [allValues countByEnumeratingWithState:&v24 objects:v33 count:16];
         }
 
         while (v7);
@@ -494,8 +494,8 @@ LABEL_3:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = [(THNavigationUnit *)self->mCurrentNavigationUnit contentNodes];
-      v11 = [(NSArray *)v10 countByEnumeratingWithState:&v20 objects:v32 count:16];
+      contentNodes = [(THNavigationUnit *)self->mCurrentNavigationUnit contentNodes];
+      v11 = [(NSArray *)contentNodes countByEnumeratingWithState:&v20 objects:v32 count:16];
       if (v11)
       {
         v12 = v11;
@@ -506,13 +506,13 @@ LABEL_3:
           {
             if (*v21 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(contentNodes);
             }
 
             [*(*(&v20 + 1) + 8 * j) waitUntilFinishedLoadingAndPaginating];
           }
 
-          v12 = [(NSArray *)v10 countByEnumeratingWithState:&v20 objects:v32 count:16];
+          v12 = [(NSArray *)contentNodes countByEnumeratingWithState:&v20 objects:v32 count:16];
         }
 
         while (v12);
@@ -528,8 +528,8 @@ LABEL_3:
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v15 = [(TSUPointerKeyDictionary *)[(THSectionController *)self pageControllers] allValues];
-    v16 = [v15 countByEnumeratingWithState:&v28 objects:v34 count:16];
+    allValues2 = [(TSUPointerKeyDictionary *)[(THSectionController *)self pageControllers] allValues];
+    v16 = [allValues2 countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v16)
     {
       v17 = v16;
@@ -540,13 +540,13 @@ LABEL_3:
         {
           if (*v29 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allValues2);
           }
 
           [*(*(&v28 + 1) + 8 * k) setPresentationType:0];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v28 objects:v34 count:16];
+        v17 = [allValues2 countByEnumeratingWithState:&v28 objects:v34 count:16];
       }
 
       while (v17);
@@ -554,13 +554,13 @@ LABEL_3:
   }
 }
 
-- (id)pageControllerForContentNode:(id)a3
+- (id)pageControllerForContentNode:(id)node
 {
-  if (a3)
+  if (node)
   {
-    v4 = [(THSectionController *)self pageControllers];
+    pageControllers = [(THSectionController *)self pageControllers];
 
-    return [(TSUPointerKeyDictionary *)v4 objectForKey:a3];
+    return [(TSUPointerKeyDictionary *)pageControllers objectForKey:node];
   }
 
   else
@@ -572,9 +572,9 @@ LABEL_3:
 
 - (CGSize)pageSize
 {
-  v2 = [(THSectionController *)self presentationType];
+  presentationType = [(THSectionController *)self presentationType];
 
-  [(THPresentationType *)v2 pageSize];
+  [(THPresentationType *)presentationType pageSize];
   result.height = v4;
   result.width = v3;
   return result;
@@ -587,8 +587,8 @@ LABEL_3:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(THSectionController *)self currentContentNodes];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  currentContentNodes = [(THSectionController *)self currentContentNodes];
+  v5 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -600,7 +600,7 @@ LABEL_3:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(currentContentNodes);
         }
 
         [(THSectionController *)self sectionSizeForContentNode:*(*(&v11 + 1) + 8 * v8)];
@@ -609,7 +609,7 @@ LABEL_3:
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -623,14 +623,14 @@ LABEL_3:
 
 - (BOOL)shouldEnablePaging
 {
-  v2 = [(THSectionController *)self pagePositionController];
+  pagePositionController = [(THSectionController *)self pagePositionController];
 
-  return [(THPagePositionController *)v2 shouldEnablePaging];
+  return [(THPagePositionController *)pagePositionController shouldEnablePaging];
 }
 
-- (BOOL)p_showingPagesInNodeContainingRelativePageIndex:(unint64_t)a3
+- (BOOL)p_showingPagesInNodeContainingRelativePageIndex:(unint64_t)index
 {
-  v4 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] contentNodeForRelativePageIndex:a3 forPresentationType:[(THSectionController *)self presentationType]];
+  v4 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] contentNodeForRelativePageIndex:index forPresentationType:[(THSectionController *)self presentationType]];
   if (v4)
   {
     v4 = [(TSUPointerKeyDictionary *)[(THSectionController *)self sectionInfos] objectForKey:v4];
@@ -639,22 +639,22 @@ LABEL_3:
   return [objc_msgSend(v4 "pages")] != 0;
 }
 
-- (void)p_addPagesInRange:(_NSRange)a3 forceLoad:(BOOL)a4
+- (void)p_addPagesInRange:(_NSRange)range forceLoad:(BOOL)load
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_56298;
   v4[3] = &unk_45BB70;
   v4[4] = self;
-  v5 = a4;
-  [(THSectionController *)self p_enumerateRelativePageRange:a3.location acrossContentNodesUsingBlock:a3.length, v4];
+  loadCopy = load;
+  [(THSectionController *)self p_enumerateRelativePageRange:range.location acrossContentNodesUsingBlock:range.length, v4];
 }
 
-- (void)p_updateSectionInfosForRelativePageRange:(_NSRange)a3 forceLoad:(BOOL)a4
+- (void)p_updateSectionInfosForRelativePageRange:(_NSRange)range forceLoad:(BOOL)load
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
+  loadCopy = load;
+  length = range.length;
+  location = range.location;
   v16 = 0u;
   v17 = 0u;
   if (![(THSectionController *)self shouldEnablePaging])
@@ -665,8 +665,8 @@ LABEL_3:
 
   v18 = 0uLL;
   v19 = 0uLL;
-  v8 = [(TSUPointerKeyDictionary *)[(THSectionController *)self sectionInfos] allValues];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allValues = [(TSUPointerKeyDictionary *)[(THSectionController *)self sectionInfos] allValues];
+  v9 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -677,19 +677,19 @@ LABEL_3:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v16 + 1) + 8 * i) setPages:{+[NSArray array](NSArray, "array")}];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
   }
 
-  [(THSectionController *)self p_addPagesInRange:location forceLoad:length, v4];
+  [(THSectionController *)self p_addPagesInRange:location forceLoad:length, loadCopy];
   [(THSectionController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
@@ -700,17 +700,17 @@ LABEL_3:
     v14[2] = sub_56830;
     v14[3] = &unk_45BB98;
     v14[4] = self;
-    v15 = v4;
+    v15 = loadCopy;
     [v13 enumerateIndexesUsingBlock:v14];
   }
 }
 
-- (CGRect)p_expandCanvasRectIfFlow:(CGRect)a3
+- (CGRect)p_expandCanvasRectIfFlow:(CGRect)flow
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = flow.size.height;
+  width = flow.size.width;
+  y = flow.origin.y;
+  x = flow.origin.x;
   if (![(THPagePositionController *)[(THSectionController *)self pagePositionController] shouldEnablePaging])
   {
     [(THPagePositionController *)[(THSectionController *)self pagePositionController] pageSize];
@@ -738,22 +738,22 @@ LABEL_3:
   return result;
 }
 
-- (id)infosToDisplayForRelativePageRange:(_NSRange)a3 forceLoad:(BOOL)a4
+- (id)infosToDisplayForRelativePageRange:(_NSRange)range forceLoad:(BOOL)load
 {
-  [(THSectionController *)self p_updateSectionInfosForRelativePageRange:a3.location forceLoad:a3.length, a4];
-  v5 = [(TSUPointerKeyDictionary *)[(THSectionController *)self sectionInfos] allValues];
+  [(THSectionController *)self p_updateSectionInfosForRelativePageRange:range.location forceLoad:range.length, load];
+  allValues = [(TSUPointerKeyDictionary *)[(THSectionController *)self sectionInfos] allValues];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_56984;
   v7[3] = &unk_45BBC0;
   v7[4] = [(THSectionController *)self currentContentNodes];
-  return [v5 sortedArrayUsingComparator:v7];
+  return [allValues sortedArrayUsingComparator:v7];
 }
 
-- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)a3
+- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)index
 {
-  v5 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] contentNodeForRelativePageIndex:a3 forPresentationType:[(THSectionController *)self presentationType]];
-  v6 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] nodeRelativePageIndexInContentNode:v5 forNavigationUnitRelativePageIndex:a3 presentationType:[(THSectionController *)self presentationType]];
+  v5 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] contentNodeForRelativePageIndex:index forPresentationType:[(THSectionController *)self presentationType]];
+  v6 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] nodeRelativePageIndexInContentNode:v5 forNavigationUnitRelativePageIndex:index presentationType:[(THSectionController *)self presentationType]];
   if (v5)
   {
     v7 = [(TSUPointerKeyDictionary *)[(THSectionController *)self pageControllers] objectForKey:v5];
@@ -794,7 +794,7 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)canvasRectForRelativePageIndex:(unint64_t)a3
+- (CGRect)canvasRectForRelativePageIndex:(unint64_t)index
 {
   v13 = 0;
   v14 = &v13;
@@ -811,7 +811,7 @@ LABEL_3:
   v12[3] = &unk_45BBE8;
   v12[4] = self;
   v12[5] = &v13;
-  v12[6] = a3;
+  v12[6] = index;
   [objc_msgSend(-[THSectionControllerDelegate documentRootForSectionController:](-[THSectionController delegate](self "delegate")];
   v4 = v14[6];
   v5 = v14[7];
@@ -829,14 +829,14 @@ LABEL_3:
   return result;
 }
 
-- (unint64_t)relativePageIndexForContentNode:(id)a3
+- (unint64_t)relativePageIndexForContentNode:(id)node
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(THSectionController *)self currentContentNodes];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  currentContentNodes = [(THSectionController *)self currentContentNodes];
+  v6 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v6)
   {
     return 0;
@@ -851,11 +851,11 @@ LABEL_3:
   {
     if (*v14 != v9)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(currentContentNodes);
     }
 
     v11 = *(*(&v13 + 1) + 8 * v10);
-    if (v11 == a3)
+    if (v11 == node)
     {
       return v8;
     }
@@ -863,7 +863,7 @@ LABEL_3:
     v8 += [v11 pageCountForPresentationType:{-[THSectionController presentationType](self, "presentationType")}];
     if (v7 == ++v10)
     {
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -874,15 +874,15 @@ LABEL_3:
   }
 }
 
-- (CGPoint)sectionOriginForContentNode:(id)a3
+- (CGPoint)sectionOriginForContentNode:(id)node
 {
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(THSectionController *)self currentContentNodes];
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  currentContentNodes = [(THSectionController *)self currentContentNodes];
+  v7 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -893,10 +893,10 @@ LABEL_3:
     {
       if (*v14 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(currentContentNodes);
       }
 
-      if (*(*(&v13 + 1) + 8 * v10) == a3)
+      if (*(*(&v13 + 1) + 8 * v10) == node)
       {
         break;
       }
@@ -905,7 +905,7 @@ LABEL_3:
       [v5 addObject:{+[NSValue valueWithCGSize:](NSValue, "valueWithCGSize:")}];
       if (v8 == ++v10)
       {
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -932,8 +932,8 @@ LABEL_3:
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(THSectionController *)self currentContentNodes];
-    v6 = [(NSArray *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    currentContentNodes = [(THSectionController *)self currentContentNodes];
+    v6 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -945,7 +945,7 @@ LABEL_3:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(currentContentNodes);
           }
 
           [v4 addObject:{-[THSectionController pageControllerForContentNode:](self, "pageControllerForContentNode:", *(*(&v10 + 1) + 8 * v9))}];
@@ -953,7 +953,7 @@ LABEL_3:
         }
 
         while (v7 != v9);
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -966,31 +966,31 @@ LABEL_3:
   return result;
 }
 
-- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)a3
+- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)index
 {
-  v4 = [(THSectionController *)self searchTargetProvider];
+  searchTargetProvider = [(THSectionController *)self searchTargetProvider];
 
-  return [(TSKSearchTargetProvider *)v4 rootSearchTargetCountThroughIndex:a3];
+  return [(TSKSearchTargetProvider *)searchTargetProvider rootSearchTargetCountThroughIndex:index];
 }
 
-- (void)withRootSearchTargetAtIndex:(unint64_t)a3 executeBlock:(id)a4
+- (void)withRootSearchTargetAtIndex:(unint64_t)index executeBlock:(id)block
 {
-  v6 = [(THSectionController *)self searchTargetProvider];
+  searchTargetProvider = [(THSectionController *)self searchTargetProvider];
 
-  [(TSKSearchTargetProvider *)v6 withRootSearchTargetAtIndex:a3 executeBlock:a4];
+  [(TSKSearchTargetProvider *)searchTargetProvider withRootSearchTargetAtIndex:index executeBlock:block];
 }
 
-- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)a3 forString:(id)a4 options:(unint64_t)a5 inDirection:(unint64_t)a6
+- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)index forString:(id)string options:(unint64_t)options inDirection:(unint64_t)direction
 {
-  v10 = [(THSectionController *)self searchTargetProvider];
+  searchTargetProvider = [(THSectionController *)self searchTargetProvider];
 
-  return [(TSKSearchTargetProvider *)v10 nextRootSearchTargetIndexFromIndex:a3 forString:a4 options:a5 inDirection:a6];
+  return [(TSKSearchTargetProvider *)searchTargetProvider nextRootSearchTargetIndexFromIndex:index forString:string options:options inDirection:direction];
 }
 
-- (unint64_t)p_relativeSheetIndexFromCanvasPoint:(CGPoint)a3
+- (unint64_t)p_relativeSheetIndexFromCanvasPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (![(NSArray *)[(THSectionController *)self currentContentNodes] count])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -1001,7 +1001,7 @@ LABEL_3:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [(THPagePositionController *)[(THSectionController *)self pagePositionController] pageHorizontally];
+  pageHorizontally = [(THPagePositionController *)[(THSectionController *)self pagePositionController] pageHorizontally];
   [(THPagePositionController *)[(THSectionController *)self pagePositionController] pageSize];
   v7 = y;
   v8 = fmaxf(v7, 0.0);
@@ -1009,7 +1009,7 @@ LABEL_3:
   v11 = x;
   v12 = fmaxf(v11, 0.0);
   v14 = v13 * 0.5;
-  if (v6)
+  if (pageHorizontally)
   {
     v15 = v12;
   }
@@ -1019,7 +1019,7 @@ LABEL_3:
     v15 = v10;
   }
 
-  if (v6)
+  if (pageHorizontally)
   {
     v16 = v14;
   }
@@ -1034,8 +1034,8 @@ LABEL_3:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v18 = [(THSectionController *)self currentContentNodes];
-  v19 = [(NSArray *)v18 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  currentContentNodes = [(THSectionController *)self currentContentNodes];
+  v19 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1047,7 +1047,7 @@ LABEL_3:
       {
         if (*v40 != v22)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(currentContentNodes);
         }
 
         v24 = *(*(&v39 + 1) + 8 * i);
@@ -1080,7 +1080,7 @@ LABEL_3:
         [v17 addObject:{+[NSValue valueWithCGSize:](NSValue, "valueWithCGSize:", v26, v28)}];
       }
 
-      v20 = [(NSArray *)v18 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v20 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (v20)
       {
         continue;
@@ -1107,16 +1107,16 @@ LABEL_3:
   return v38 + v21 + v34;
 }
 
-- (_NSRange)relativePageRangeForCanvasRect:(CGRect)a3 pad:(int)a4
+- (_NSRange)relativePageRangeForCanvasRect:(CGRect)rect pad:(int)pad
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4)
+  padCopy = pad;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (pad)
   {
-    [(THSectionController *)self p_expandCanvasRectIfFlow:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(THSectionController *)self p_expandCanvasRectIfFlow:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
     x = v10;
     y = v11;
     width = v12;
@@ -1134,8 +1134,8 @@ LABEL_3:
   v27.size.width = width;
   v27.size.height = height;
   v16 = [(THSectionController *)self p_relativeSheetIndexFromCanvasPoint:v15, CGRectGetMaxY(v27) + -0.01];
-  v17 = [(THSectionController *)self pageCount];
-  v18 = v17;
+  pageCount = [(THSectionController *)self pageCount];
+  v18 = pageCount;
   if (v16 <= v14)
   {
     v19 = v14;
@@ -1146,9 +1146,9 @@ LABEL_3:
     v19 = v16;
   }
 
-  if (v19 >= v17)
+  if (v19 >= pageCount)
   {
-    v20 = v17 - 1;
+    v20 = pageCount - 1;
   }
 
   else
@@ -1173,13 +1173,13 @@ LABEL_3:
   }
 
   v22 = v20 - v14 + 1;
-  if (v4)
+  if (padCopy)
   {
     v14 = THRangeExtendBackward(v14, v22, v21);
   }
 
   v23 = v14;
-  if ((v4 & 2) != 0)
+  if ((padCopy & 2) != 0)
   {
 
     v23 = THRangeExtendForward(v14, v22, v21, v18);
@@ -1190,39 +1190,39 @@ LABEL_3:
   return result;
 }
 
-- (void)p_ensureLayoutThroughRelativePageRange:(_NSRange)a3 withLayoutController:(id)a4
+- (void)p_ensureLayoutThroughRelativePageRange:(_NSRange)range withLayoutController:(id)controller
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_57790;
   v4[3] = &unk_45BC10;
   v4[4] = self;
-  v4[5] = a4;
-  [(THSectionController *)self p_enumerateRelativePageRange:a3.location acrossContentNodesUsingBlock:a3.length, v4];
+  v4[5] = controller;
+  [(THSectionController *)self p_enumerateRelativePageRange:range.location acrossContentNodesUsingBlock:range.length, v4];
 }
 
-- (void)p_ensureLayoutThroughRect:(CGRect)a3 pad:(int)a4 withLayoutController:(id)a5
+- (void)p_ensureLayoutThroughRect:(CGRect)rect pad:(int)pad withLayoutController:(id)controller
 {
-  v6 = *&a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v6 = *&pad;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(THSectionController *)self currentContentNodes])
   {
-    v13 = [(THSectionController *)self relativePageRangeForCanvasRect:v6 pad:x, y, width, height];
+    height = [(THSectionController *)self relativePageRangeForCanvasRect:v6 pad:x, y, width, height];
 
-    [(THSectionController *)self p_ensureLayoutThroughRelativePageRange:v13 withLayoutController:v12, a5];
+    [(THSectionController *)self p_ensureLayoutThroughRelativePageRange:height withLayoutController:v12, controller];
   }
 }
 
-- (void)ensureSectionInfosLaidOut:(id)a3 layoutController:(id)a4
+- (void)ensureSectionInfosLaidOut:(id)out layoutController:(id)controller
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [out countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1233,30 +1233,30 @@ LABEL_3:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(out);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [v10 lastPage];
-        if (v11)
+        lastPage = [v10 lastPage];
+        if (lastPage)
         {
           [objc_msgSend(v10 "pageController")];
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [out countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (unint64_t)mostVisibleAbsolutePageIndexForCanvasBoundsRect:(CGRect)a3
+- (unint64_t)mostVisibleAbsolutePageIndexForCanvasBoundsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (![(THPresentationType *)[(THSectionController *)self presentationType] isPaginated])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -1276,17 +1276,17 @@ LABEL_3:
   return [(THSectionController *)self p_relativeSheetIndexFromCanvasPoint:MidX, MidY];
 }
 
-- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)a3
+- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)index
 {
-  v5 = [(THSectionController *)self currentNavigationUnit];
-  v6 = [(THSectionController *)self presentationType];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v5 relativePageIndexForAbsolutePageIndex:a3 forPresentationType:v6];
+  return [(THNavigationUnit *)currentNavigationUnit relativePageIndexForAbsolutePageIndex:index forPresentationType:presentationType];
 }
 
-- (id)displaySectionInfoForRelativePageIndex:(unint64_t)a3
+- (id)displaySectionInfoForRelativePageIndex:(unint64_t)index
 {
-  v5 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] pageInfoForRelativePageIndex:a3 forPresentationType:[(THSectionController *)self presentationType]];
+  v5 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] pageInfoForRelativePageIndex:index forPresentationType:[(THSectionController *)self presentationType]];
   if ([v5 parent])
   {
     if (v5)
@@ -1330,17 +1330,17 @@ LABEL_3:
 
   [(THSectionInfo *)v6 setPages:v8];
   [(THSectionInfo *)v6 setAnchorAtOrigin:1];
-  [(THSectionController *)self p_ensureLayoutThroughRelativePageRange:a3 withLayoutController:1, 0];
+  [(THSectionController *)self p_ensureLayoutThroughRelativePageRange:index withLayoutController:1, 0];
 
   return v6;
 }
 
-- (CGRect)sectionRelativeCanvasRectForRelativePageIndex:(unint64_t)a3
+- (CGRect)sectionRelativeCanvasRectForRelativePageIndex:(unint64_t)index
 {
   [(THSectionController *)self canvasRectForRelativePageIndex:?];
   v6 = v5;
   v8 = v7;
-  [(THSectionController *)self sectionOriginForContentNode:[(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] contentNodeForRelativePageIndex:a3 forPresentationType:[(THSectionController *)self presentationType]]];
+  [(THSectionController *)self sectionOriginForContentNode:[(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] contentNodeForRelativePageIndex:index forPresentationType:[(THSectionController *)self presentationType]]];
   TSDSubtractPoints();
   v11 = v6;
   v12 = v8;
@@ -1351,30 +1351,30 @@ LABEL_3:
   return result;
 }
 
-- (unint64_t)_navigationUnitRelativePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:(id)a3
+- (unint64_t)_navigationUnitRelativePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:(id)controller
 {
-  [a3 visibleUnscaledRect];
+  [controller visibleUnscaledRect];
 
   return [(THSectionController *)self relativePageRangeForCanvasRect:0 pad:?];
 }
 
-- (unint64_t)absolutePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:(id)a3
+- (unint64_t)absolutePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:(id)controller
 {
-  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:a3];
-  v5 = [(THSectionController *)self currentNavigationUnit];
-  v6 = [(THSectionController *)self presentationType];
+  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:controller];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v5 absolutePageIndexForRelativePageIndex:v4 forPresentationType:v6];
+  return [(THNavigationUnit *)currentNavigationUnit absolutePageIndexForRelativePageIndex:v4 forPresentationType:presentationType];
 }
 
-- (unint64_t)_navigationUnitRelativePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3
+- (unint64_t)_navigationUnitRelativePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller
 {
   if (![(THPresentationType *)[(THSectionController *)self presentationType] isPaginated])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [a3 visibleUnscaledRect];
+  [controller visibleUnscaledRect];
   TSDCenterOfRect();
   TSDRectWithOriginAndSize();
   TSDCenterOfRect();
@@ -1382,23 +1382,23 @@ LABEL_3:
   return [(THSectionController *)self p_relativeSheetIndexFromCanvasPoint:?];
 }
 
-- (unint64_t)absolutePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3
+- (unint64_t)absolutePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller
 {
-  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:a3];
-  v5 = [(THSectionController *)self currentNavigationUnit];
-  v6 = [(THSectionController *)self presentationType];
+  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:controller];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v5 absolutePageIndexForRelativePageIndex:v4 forPresentationType:v6];
+  return [(THNavigationUnit *)currentNavigationUnit absolutePageIndexForRelativePageIndex:v4 forPresentationType:presentationType];
 }
 
-- (unint64_t)_navigationUnitRelativePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3
+- (unint64_t)_navigationUnitRelativePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller
 {
   if (![(THPresentationType *)[(THSectionController *)self presentationType] isPaginated])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [a3 visibleUnscaledRect];
+  [controller visibleUnscaledRect];
   TSDCenterOfRect();
   TSDRectWithOriginAndSize();
   TSDCenterOfRect();
@@ -1406,80 +1406,80 @@ LABEL_3:
   return [(THSectionController *)self p_relativeSheetIndexFromCanvasPoint:?];
 }
 
-- (unint64_t)absolutePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3
+- (unint64_t)absolutePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller
 {
-  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:a3];
-  v5 = [(THSectionController *)self currentNavigationUnit];
-  v6 = [(THSectionController *)self presentationType];
+  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:controller];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v5 absolutePageIndexForRelativePageIndex:v4 forPresentationType:v6];
+  return [(THNavigationUnit *)currentNavigationUnit absolutePageIndexForRelativePageIndex:v4 forPresentationType:presentationType];
 }
 
-- (unint64_t)_navigationUnitRelativePageIndexForCenterOfVisibleRectInInteractiveCanvasController:(id)a3
+- (unint64_t)_navigationUnitRelativePageIndexForCenterOfVisibleRectInInteractiveCanvasController:(id)controller
 {
   if (![(THPresentationType *)[(THSectionController *)self presentationType] isPaginated])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [a3 visibleUnscaledRect];
+  [controller visibleUnscaledRect];
   [(THSectionControllerDelegate *)[(THSectionController *)self delegate] isTwoUpForSectionController:self];
   TSDCenterOfRect();
 
   return [(THSectionController *)self p_relativeSheetIndexFromCanvasPoint:?];
 }
 
-- (unint64_t)absolutePageIndexForCenterOfVisibleRectInInteractiveCanvasController:(id)a3
+- (unint64_t)absolutePageIndexForCenterOfVisibleRectInInteractiveCanvasController:(id)controller
 {
-  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForCenterOfVisibleRectInInteractiveCanvasController:a3];
-  v5 = [(THSectionController *)self currentNavigationUnit];
-  v6 = [(THSectionController *)self presentationType];
+  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForCenterOfVisibleRectInInteractiveCanvasController:controller];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v5 absolutePageIndexForRelativePageIndex:v4 forPresentationType:v6];
+  return [(THNavigationUnit *)currentNavigationUnit absolutePageIndexForRelativePageIndex:v4 forPresentationType:presentationType];
 }
 
-- (id)pageInfoForBeginningOfVisibleRectInInteractiveCanvasController:(id)a3
+- (id)pageInfoForBeginningOfVisibleRectInInteractiveCanvasController:(id)controller
 {
-  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:a3];
-  v5 = [(THSectionController *)self currentNavigationUnit];
-  v6 = [(THSectionController *)self presentationType];
+  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForBeginningOfVisibleRectInInteractiveCanvasController:controller];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v5 pageInfoForRelativePageIndex:v4 forPresentationType:v6];
+  return [(THNavigationUnit *)currentNavigationUnit pageInfoForRelativePageIndex:v4 forPresentationType:presentationType];
 }
 
-- (id)pageInfoForCenterOfVisibleRectInInteractiveCanvasController:(id)a3
+- (id)pageInfoForCenterOfVisibleRectInInteractiveCanvasController:(id)controller
 {
-  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForCenterOfVisibleRectInInteractiveCanvasController:a3];
-  v5 = [(THSectionController *)self currentNavigationUnit];
-  v6 = [(THSectionController *)self presentationType];
+  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForCenterOfVisibleRectInInteractiveCanvasController:controller];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v5 pageInfoForRelativePageIndex:v4 forPresentationType:v6];
+  return [(THNavigationUnit *)currentNavigationUnit pageInfoForRelativePageIndex:v4 forPresentationType:presentationType];
 }
 
-- (id)pageInfoForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3
+- (id)pageInfoForFirstQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller
 {
-  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:a3];
-  v5 = [(THSectionController *)self currentNavigationUnit];
-  v6 = [(THSectionController *)self presentationType];
+  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForFirstQuadrantOfVisibleRectInInteractiveCanvasController:controller];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v5 pageInfoForRelativePageIndex:v4 forPresentationType:v6];
+  return [(THNavigationUnit *)currentNavigationUnit pageInfoForRelativePageIndex:v4 forPresentationType:presentationType];
 }
 
-- (id)pageInfoForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)a3
+- (id)pageInfoForSecondQuadrantOfVisibleRectInInteractiveCanvasController:(id)controller
 {
-  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:a3];
-  v5 = [(THSectionController *)self currentNavigationUnit];
-  v6 = [(THSectionController *)self presentationType];
+  v4 = [(THSectionController *)self _navigationUnitRelativePageIndexForSecondQuadrantOfVisibleRectInInteractiveCanvasController:controller];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v5 pageInfoForRelativePageIndex:v4 forPresentationType:v6];
+  return [(THNavigationUnit *)currentNavigationUnit pageInfoForRelativePageIndex:v4 forPresentationType:presentationType];
 }
 
-- (id)bodyAnchorForCanvasRect:(CGRect)a3
+- (id)bodyAnchorForCanvasRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = [(THSectionController *)self relativePageRangeForCanvasRect:0 pad:?];
   v9 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] contentNodeForRelativePageIndex:v8 forPresentationType:[(THSectionController *)self presentationType]];
   v10 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] nodeRelativePageIndexInContentNode:v9 forNavigationUnitRelativePageIndex:v8 presentationType:[(THSectionController *)self presentationType]];
@@ -1512,17 +1512,17 @@ LABEL_3:
   return v18;
 }
 
-- (CGRect)rectForBodyAnchor:(id)a3
+- (CGRect)rectForBodyAnchor:(id)anchor
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v9 = [a3 contentNode];
-  [v9 waitUntilFinishedLoadingAndPaginating];
-  if (v9)
+  contentNode = [anchor contentNode];
+  [contentNode waitUntilFinishedLoadingAndPaginating];
+  if (contentNode)
   {
-    v10 = [(TSUPointerKeyDictionary *)[(THSectionController *)self pageControllers] objectForKey:v9];
+    v10 = [(TSUPointerKeyDictionary *)[(THSectionController *)self pageControllers] objectForKey:contentNode];
   }
 
   else
@@ -1530,13 +1530,13 @@ LABEL_3:
     v10 = 0;
   }
 
-  v11 = [v10 relativePageIndexForCharIndex:objc_msgSend(a3 forceLayout:{"range"), 1}];
+  v11 = [v10 relativePageIndexForCharIndex:objc_msgSend(anchor forceLayout:{"range"), 1}];
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = v11;
     if ([(THPagePositionController *)[(THSectionController *)self pagePositionController] shouldEnablePaging])
     {
-      v13 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] navUnitRelativePageIndexForContentNode:v9 forContentNodeRelativePageIndex:v12 presentationType:[(THSectionController *)self presentationType]];
+      v13 = [(THNavigationUnit *)[(THSectionController *)self currentNavigationUnit] navUnitRelativePageIndexForContentNode:contentNode forContentNodeRelativePageIndex:v12 presentationType:[(THSectionController *)self presentationType]];
       if (v13 != 0x7FFFFFFFFFFFFFFFLL)
       {
         [(THSectionController *)self canvasRectForRelativePageIndex:v13];
@@ -1549,7 +1549,7 @@ LABEL_3:
 
     else
     {
-      [v10 originOfCharacterIndex:objc_msgSend(a3 forRelativePageIndex:{"range"), v12}];
+      [v10 originOfCharacterIndex:objc_msgSend(anchor forRelativePageIndex:{"range"), v12}];
       [(THSectionController *)self canvasOriginForPageController:v10];
       TSDAddPoints();
       x = v18;
@@ -1571,10 +1571,10 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)rectForContentNode:(id)a3 layout:(id)a4
+- (CGRect)rectForContentNode:(id)node layout:(id)layout
 {
-  [(THSectionController *)self canvasOriginForPageController:[(TSUPointerKeyDictionary *)[(THSectionController *)self pageControllers] objectForKey:a3]];
-  [objc_msgSend(a4 "geometry")];
+  [(THSectionController *)self canvasOriginForPageController:[(TSUPointerKeyDictionary *)[(THSectionController *)self pageControllers] objectForKey:node]];
+  [objc_msgSend(layout "geometry")];
   x = CGPointZero.x;
   y = CGPointZero.y;
   if (!CGRectIsNull(v16))
@@ -1596,12 +1596,12 @@ LABEL_3:
   return result;
 }
 
-- (unint64_t)absolutePageIndexForBodyStorageAnchor:(id)a3
+- (unint64_t)absolutePageIndexForBodyStorageAnchor:(id)anchor
 {
-  v5 = [a3 contentNode];
-  if (v5)
+  contentNode = [anchor contentNode];
+  if (contentNode)
   {
-    v6 = [(TSUPointerKeyDictionary *)[(THSectionController *)self pageControllers] objectForKey:v5];
+    v6 = [(TSUPointerKeyDictionary *)[(THSectionController *)self pageControllers] objectForKey:contentNode];
   }
 
   else
@@ -1609,40 +1609,40 @@ LABEL_3:
     v6 = 0;
   }
 
-  v7 = [v6 relativePageIndexForCharIndex:objc_msgSend(a3 forceLayout:{"range"), 1}];
-  v8 = [(THSectionController *)self presentationType];
+  v7 = [v6 relativePageIndexForCharIndex:objc_msgSend(anchor forceLayout:{"range"), 1}];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [v5 absolutePageIndexForRelativePageIndex:v7 forPresentationType:v8];
+  return [contentNode absolutePageIndexForRelativePageIndex:v7 forPresentationType:presentationType];
 }
 
-- (unint64_t)relativePageIndexForBodyStorageAnchor:(id)a3
+- (unint64_t)relativePageIndexForBodyStorageAnchor:(id)anchor
 {
-  v4 = [(THSectionController *)self absolutePageIndexForBodyStorageAnchor:a3];
-  v5 = [(THSectionController *)self currentNavigationUnit];
-  v6 = [(THSectionController *)self presentationType];
+  v4 = [(THSectionController *)self absolutePageIndexForBodyStorageAnchor:anchor];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v5 relativePageIndexForAbsolutePageIndex:v4 forPresentationType:v6];
+  return [(THNavigationUnit *)currentNavigationUnit relativePageIndexForAbsolutePageIndex:v4 forPresentationType:presentationType];
 }
 
-- (unint64_t)relativePageIndexForStorageAnchor:(id)a3
+- (unint64_t)relativePageIndexForStorageAnchor:(id)anchor
 {
-  v5 = [a3 contentNode];
+  contentNode = [anchor contentNode];
   objc_opt_class();
-  [v5 infoForNodeUniqueID:objc_msgSend(a3 forPresentationType:{"storageUID"), -[THSectionController presentationType](self, "presentationType")}];
+  [contentNode infoForNodeUniqueID:objc_msgSend(anchor forPresentationType:{"storageUID"), -[THSectionController presentationType](self, "presentationType")}];
   v6 = TSUDynamicCast();
   if (!v6)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (v6 == [v5 bodyStorageForPresentationType:{-[THSectionController presentationType](self, "presentationType")}])
+  if (v6 == [contentNode bodyStorageForPresentationType:{-[THSectionController presentationType](self, "presentationType")}])
   {
-    v7 = [(THSectionController *)self relativePageIndexForBodyStorageAnchor:a3];
+    v7 = [(THSectionController *)self relativePageIndexForBodyStorageAnchor:anchor];
   }
 
   else
   {
-    v7 = -[THNavigationUnit relativePageIndexForAbsolutePageIndex:forPresentationType:](-[THSectionController currentNavigationUnit](self, "currentNavigationUnit"), "relativePageIndexForAbsolutePageIndex:forPresentationType:", [v5 absolutePageIndexForRelativePageIndex:objc_msgSend(v5 forPresentationType:{"relativePageIndexForInfo:forPresentationType:", v6, -[THSectionController presentationType](self, "presentationType")), -[THSectionController presentationType](self, "presentationType")}], -[THSectionController presentationType](self, "presentationType"));
+    v7 = -[THNavigationUnit relativePageIndexForAbsolutePageIndex:forPresentationType:](-[THSectionController currentNavigationUnit](self, "currentNavigationUnit"), "relativePageIndexForAbsolutePageIndex:forPresentationType:", [contentNode absolutePageIndexForRelativePageIndex:objc_msgSend(contentNode forPresentationType:{"relativePageIndexForInfo:forPresentationType:", v6, -[THSectionController presentationType](self, "presentationType")), -[THSectionController presentationType](self, "presentationType")}], -[THSectionController presentationType](self, "presentationType"));
   }
 
   v8 = v7;
@@ -1654,15 +1654,15 @@ LABEL_3:
   return v8;
 }
 
-- (id)p_contentNodeForBodyStorage:(id)a3 forceLoad:(BOOL)a4
+- (id)p_contentNodeForBodyStorage:(id)storage forceLoad:(BOOL)load
 {
-  v4 = a4;
+  loadCopy = load;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(THSectionController *)self currentContentNodes];
-  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  currentContentNodes = [(THSectionController *)self currentContentNodes];
+  v8 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v8)
   {
     return 0;
@@ -1676,20 +1676,20 @@ LABEL_3:
   {
     if (*v17 != v10)
     {
-      objc_enumerationMutation(v7);
+      objc_enumerationMutation(currentContentNodes);
     }
 
     v12 = *(*(&v16 + 1) + 8 * v11);
-    v13 = [(THSectionController *)self presentationType];
-    v14 = v4 ? [v12 bodyStorageForPresentationType:v13] : objc_msgSend(objc_msgSend(v12, "nodeBodyForPresentationType:", v13), "bodyStorage");
-    if (v14 == a3)
+    presentationType = [(THSectionController *)self presentationType];
+    v14 = loadCopy ? [v12 bodyStorageForPresentationType:presentationType] : objc_msgSend(objc_msgSend(v12, "nodeBodyForPresentationType:", presentationType), "bodyStorage");
+    if (v14 == storage)
     {
       return v12;
     }
 
     if (v9 == ++v11)
     {
-      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         goto LABEL_3;
@@ -1700,65 +1700,65 @@ LABEL_3:
   }
 }
 
-- (unint64_t)relativePageIndexForBodyStorage:(id)a3 charIndex:(unint64_t)a4 forceLoad:(BOOL)a5
+- (unint64_t)relativePageIndexForBodyStorage:(id)storage charIndex:(unint64_t)index forceLoad:(BOOL)load
 {
-  v7 = [(THSectionController *)self p_contentNodeForBodyStorage:a3 forceLoad:a5];
+  v7 = [(THSectionController *)self p_contentNodeForBodyStorage:storage forceLoad:load];
   if (!v7)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v8 = v7;
-  v9 = [-[THSectionController pageControllerForContentNode:](self pageControllerForContentNode:{v7), "relativePageIndexForCharIndex:forceLayout:", a4, 1}];
-  v10 = [(THSectionController *)self currentNavigationUnit];
-  v11 = [(THSectionController *)self presentationType];
+  v9 = [-[THSectionController pageControllerForContentNode:](self pageControllerForContentNode:{v7), "relativePageIndexForCharIndex:forceLayout:", index, 1}];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v10 navUnitRelativePageIndexForContentNode:v8 forContentNodeRelativePageIndex:v9 presentationType:v11];
+  return [(THNavigationUnit *)currentNavigationUnit navUnitRelativePageIndexForContentNode:v8 forContentNodeRelativePageIndex:v9 presentationType:presentationType];
 }
 
-- (id)bodyInfoForStorage:(id)a3 charIndex:(unint64_t)a4
+- (id)bodyInfoForStorage:(id)storage charIndex:(unint64_t)index
 {
-  result = [(THSectionController *)self p_contentNodeForBodyStorage:a3 forceLoad:1];
+  result = [(THSectionController *)self p_contentNodeForBodyStorage:storage forceLoad:1];
   if (result)
   {
     v7 = [(THSectionController *)self pageControllerForContentNode:result];
 
-    return [v7 bodyInfoForCharIndex:a4 forceLayout:1];
+    return [v7 bodyInfoForCharIndex:index forceLayout:1];
   }
 
   return result;
 }
 
-- (id)bodyInfoForStorage:(id)a3 anchoredCharIndex:(unint64_t)a4
+- (id)bodyInfoForStorage:(id)storage anchoredCharIndex:(unint64_t)index
 {
-  result = [(THSectionController *)self p_contentNodeForBodyStorage:a3 forceLoad:1];
+  result = [(THSectionController *)self p_contentNodeForBodyStorage:storage forceLoad:1];
   if (result)
   {
     v7 = [(THSectionController *)self pageControllerForContentNode:result];
 
-    return [v7 bodyInfoForAnchoredCharIndex:a4 forceLayout:1];
+    return [v7 bodyInfoForAnchoredCharIndex:index forceLayout:1];
   }
 
   return result;
 }
 
-- (id)newPageControllerForContentNode:(id)a3
+- (id)newPageControllerForContentNode:(id)node
 {
   v5 = [THPaginatedPageController alloc];
-  v6 = [(THSectionController *)self reflowablePaginationController];
-  v7 = [(THSectionController *)self presentationType];
+  reflowablePaginationController = [(THSectionController *)self reflowablePaginationController];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THPaginatedPageController *)v5 initWithDelegate:self contentNode:a3 paginationController:v6 presentationType:v7];
+  return [(THPaginatedPageController *)v5 initWithDelegate:self contentNode:node paginationController:reflowablePaginationController presentationType:presentationType];
 }
 
-- (CGSize)sectionSizeForContentNode:(id)a3
+- (CGSize)sectionSizeForContentNode:(id)node
 {
-  v5 = [a3 pageCountForPresentationType:{-[THSectionController presentationType](self, "presentationType")}];
+  v5 = [node pageCountForPresentationType:{-[THSectionController presentationType](self, "presentationType")}];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 startLoading];
-    [a3 waitUntilFinishedLoadingAndPaginating];
-    v5 = [a3 pageCountForPresentationType:{-[THSectionController presentationType](self, "presentationType")}];
+    [node startLoading];
+    [node waitUntilFinishedLoadingAndPaginating];
+    v5 = [node pageCountForPresentationType:{-[THSectionController presentationType](self, "presentationType")}];
   }
 
   [(THPagePositionController *)[(THSectionController *)self pagePositionController] canvasSizeForPageCount:v5];
@@ -1776,14 +1776,14 @@ LABEL_3:
   return result;
 }
 
-- (id)p_contentNodeForRelativePageIndex:(unint64_t)a3
+- (id)p_contentNodeForRelativePageIndex:(unint64_t)index
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(THSectionController *)self currentContentNodes];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  currentContentNodes = [(THSectionController *)self currentContentNodes];
+  v6 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1794,13 +1794,13 @@ LABEL_3:
     {
       if (*v15 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(currentContentNodes);
       }
 
       v10 = *(*(&v14 + 1) + 8 * v9);
       v11 = [v10 pageCountForPresentationType:{-[THSectionController presentationType](self, "presentationType")}];
-      v12 = a3 >= v11;
-      a3 -= v11;
+      v12 = index >= v11;
+      index -= v11;
       if (!v12)
       {
         break;
@@ -1808,7 +1808,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [(NSArray *)currentContentNodes countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1829,109 +1829,109 @@ LABEL_10:
   return v10;
 }
 
-- (id)accessControllerForPageController:(id)a3
+- (id)accessControllerForPageController:(id)controller
 {
   v3 = [(THSectionControllerDelegate *)[(THSectionController *)self delegate] documentRootForSectionController:self];
 
   return [v3 accessController];
 }
 
-- (void)pageControllerNeedsLayout:(id)a3
+- (void)pageControllerNeedsLayout:(id)layout
 {
-  v4 = [(THSectionController *)self delegate];
+  delegate = [(THSectionController *)self delegate];
 
-  [(THSectionControllerDelegate *)v4 sectionControllerNeedsLayout:self];
+  [(THSectionControllerDelegate *)delegate sectionControllerNeedsLayout:self];
 }
 
-- (CGPoint)canvasOriginForPageController:(id)a3
+- (CGPoint)canvasOriginForPageController:(id)controller
 {
-  v4 = [a3 contentNode];
+  contentNode = [controller contentNode];
 
-  [(THSectionController *)self sectionOriginForContentNode:v4];
+  [(THSectionController *)self sectionOriginForContentNode:contentNode];
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (BOOL)isCompactFlowPresentationForPageController:(id)a3
+- (BOOL)isCompactFlowPresentationForPageController:(id)controller
 {
-  v4 = [(THSectionController *)self delegate];
+  delegate = [(THSectionController *)self delegate];
 
-  return [(THSectionControllerDelegate *)v4 isCompactFlowPresentationForSectionController:self];
+  return [(THSectionControllerDelegate *)delegate isCompactFlowPresentationForSectionController:self];
 }
 
-- (unint64_t)pageCountForNavigationUnitForPageController:(id)a3
+- (unint64_t)pageCountForNavigationUnitForPageController:(id)controller
 {
-  v4 = [(THSectionController *)self currentNavigationUnit];
-  v5 = [(THSectionController *)self presentationType];
+  currentNavigationUnit = [(THSectionController *)self currentNavigationUnit];
+  presentationType = [(THSectionController *)self presentationType];
 
-  return [(THNavigationUnit *)v4 pageCountForPresentationType:v5];
+  return [(THNavigationUnit *)currentNavigationUnit pageCountForPresentationType:presentationType];
 }
 
-- (BOOL)displaySinglePageChapterSeparatelyForPageController:(id)a3
+- (BOOL)displaySinglePageChapterSeparatelyForPageController:(id)controller
 {
-  v4 = [(THSectionController *)self delegate];
+  delegate = [(THSectionController *)self delegate];
 
-  return [(THSectionControllerDelegate *)v4 displaySinglePageChapterSeparately:self];
+  return [(THSectionControllerDelegate *)delegate displaySinglePageChapterSeparately:self];
 }
 
-- (BOOL)isTwoUpForNavigationUnitForPageController:(id)a3
+- (BOOL)isTwoUpForNavigationUnitForPageController:(id)controller
 {
-  v4 = [(THSectionController *)self delegate];
+  delegate = [(THSectionController *)self delegate];
 
-  return [(THSectionControllerDelegate *)v4 isTwoUpForSectionController:self];
+  return [(THSectionControllerDelegate *)delegate isTwoUpForSectionController:self];
 }
 
-- (unint64_t)pageCountForPageController:(id)a3 presentationType:(id)a4
+- (unint64_t)pageCountForPageController:(id)controller presentationType:(id)type
 {
-  v5 = [a3 contentNode];
+  contentNode = [controller contentNode];
 
-  return [v5 pageCountForPresentationType:a4];
+  return [contentNode pageCountForPresentationType:type];
 }
 
-- (id)bodyStorageForPageController:(id)a3 presentationType:(id)a4
+- (id)bodyStorageForPageController:(id)controller presentationType:(id)type
 {
-  v5 = [a3 contentNode];
+  contentNode = [controller contentNode];
 
-  return [v5 bodyStorageForPresentationType:a4];
+  return [contentNode bodyStorageForPresentationType:type];
 }
 
-- (id)pageInfoForPageController:(id)a3 pageIndex:(unint64_t)a4 presentationType:(id)a5
+- (id)pageInfoForPageController:(id)controller pageIndex:(unint64_t)index presentationType:(id)type
 {
-  v7 = [a3 contentNode];
+  contentNode = [controller contentNode];
 
-  return [v7 pageAtRelativeIndex:a4 forPresentationType:a5];
+  return [contentNode pageAtRelativeIndex:index forPresentationType:type];
 }
 
-- (id)layoutControllerForPageController:(id)a3
+- (id)layoutControllerForPageController:(id)controller
 {
-  v4 = [(THSectionController *)self delegate];
+  delegate = [(THSectionController *)self delegate];
 
-  return [(THSectionControllerDelegate *)v4 layoutControllerForSectionController:self];
+  return [(THSectionControllerDelegate *)delegate layoutControllerForSectionController:self];
 }
 
-- (BOOL)allowsDescendersToClipForPageController:(id)a3
+- (BOOL)allowsDescendersToClipForPageController:(id)controller
 {
-  v4 = [(THSectionController *)self delegate];
+  delegate = [(THSectionController *)self delegate];
 
-  return [(THSectionControllerDelegate *)v4 allowsDescendersToClipForSectionController:self];
+  return [(THSectionControllerDelegate *)delegate allowsDescendersToClipForSectionController:self];
 }
 
-- (BOOL)shouldAllowFinishingPartionedAttachmentLayoutForPageController:(id)a3
+- (BOOL)shouldAllowFinishingPartionedAttachmentLayoutForPageController:(id)controller
 {
-  v4 = [(THSectionController *)self delegate];
+  delegate = [(THSectionController *)self delegate];
 
-  return [(THSectionControllerDelegate *)v4 shouldAllowFinishingPartionedAttachmentLayoutForSectionController:self];
+  return [(THSectionControllerDelegate *)delegate shouldAllowFinishingPartionedAttachmentLayoutForSectionController:self];
 }
 
-- (BOOL)shouldScaleFlowLayoutsForPageController:(id)a3
+- (BOOL)shouldScaleFlowLayoutsForPageController:(id)controller
 {
-  v4 = [(THSectionController *)self delegate];
+  delegate = [(THSectionController *)self delegate];
 
-  return [(THSectionControllerDelegate *)v4 shouldScaleFlowLayoutsForSectionController:self];
+  return [(THSectionControllerDelegate *)delegate shouldScaleFlowLayoutsForSectionController:self];
 }
 
-- (CGPoint)canvasOriginDeltaForPageController:(id)a3
+- (CGPoint)canvasOriginDeltaForPageController:(id)controller
 {
   x = self->_canvasOriginDelta.x;
   y = self->_canvasOriginDelta.y;
@@ -1940,25 +1940,25 @@ LABEL_10:
   return result;
 }
 
-- (void)layoutContentAtLayoutAnchor:(id)a3 padAbove:(double)a4 padBelow:(double)a5 layoutController:(id)a6
+- (void)layoutContentAtLayoutAnchor:(id)anchor padAbove:(double)above padBelow:(double)below layoutController:(id)controller
 {
-  v6 = [TSUAssertionHandler currentHandler:a3];
+  v6 = [TSUAssertionHandler currentHandler:anchor];
   v7 = [NSString stringWithUTF8String:"[THSectionController layoutContentAtLayoutAnchor:padAbove:padBelow:layoutController:]"];
   v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THSectionController.mm"];
 
   [v6 handleFailureInFunction:v7 file:v8 lineNumber:1163 description:@"layout anchors aren't supported by paginated section controller"];
 }
 
-- (void)layoutContentFromBottom:(double)a3 layoutController:(id)a4
+- (void)layoutContentFromBottom:(double)bottom layoutController:(id)controller
 {
-  v4 = [TSUAssertionHandler currentHandler:a4];
+  v4 = [TSUAssertionHandler currentHandler:controller];
   v5 = [NSString stringWithUTF8String:"[THSectionController layoutContentFromBottom:layoutController:]"];
   v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THSectionController.mm"];
 
   [v4 handleFailureInFunction:v5 file:v6 lineNumber:1167 description:@"layout from bottom isn't supported by paginated section controller"];
 }
 
-- (_NSRange)firstLineInRect:(CGRect)a3 forBodyAnchor:(id)a4
+- (_NSRange)firstLineInRect:(CGRect)rect forBodyAnchor:(id)anchor
 {
   [+[TSUAssertionHandler currentHandler](TSUAssertionHandler currentHandler];
   v4 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1970,9 +1970,9 @@ LABEL_10:
 
 - (void)clearCTCaches
 {
-  v2 = [(THSectionController *)self pageControllers];
+  pageControllers = [(THSectionController *)self pageControllers];
 
-  [(TSUPointerKeyDictionary *)v2 enumerateKeysAndObjectsUsingBlock:&stru_45BC50];
+  [(TSUPointerKeyDictionary *)pageControllers enumerateKeysAndObjectsUsingBlock:&stru_45BC50];
 }
 
 - (CGPoint)canvasOriginDelta

@@ -1,9 +1,9 @@
 @interface PPEventNameRecordLoadingDelegate
-- (PPEventNameRecordLoadingDelegate)initWithName:(id)a3;
+- (PPEventNameRecordLoadingDelegate)initWithName:(id)name;
 - (id)description;
-- (unsigned)recentRecordLoadingHandler:(id)a3;
+- (unsigned)recentRecordLoadingHandler:(id)handler;
 - (unsigned)recentRecordLoadingSetup;
-- (unsigned)recordLoadingHandler:(id)a3;
+- (unsigned)recordLoadingHandler:(id)handler;
 - (unsigned)recordLoadingSetup;
 - (void)recentRecordLoadingCompletion;
 - (void)recordLoadingCompletion;
@@ -30,12 +30,12 @@
   }
 }
 
-- (unsigned)recentRecordLoadingHandler:(id)a3
+- (unsigned)recentRecordLoadingHandler:(id)handler
 {
   recentEventNameRecordsHandler = self->_recentEventNameRecordsHandler;
   if (recentEventNameRecordsHandler)
   {
-    LOBYTE(recentEventNameRecordsHandler) = recentEventNameRecordsHandler[2](recentEventNameRecordsHandler, a3);
+    LOBYTE(recentEventNameRecordsHandler) = recentEventNameRecordsHandler[2](recentEventNameRecordsHandler, handler);
   }
 
   return recentEventNameRecordsHandler;
@@ -61,12 +61,12 @@
   }
 }
 
-- (unsigned)recordLoadingHandler:(id)a3
+- (unsigned)recordLoadingHandler:(id)handler
 {
   eventNameRecordsHandler = self->_eventNameRecordsHandler;
   if (eventNameRecordsHandler)
   {
-    LOBYTE(eventNameRecordsHandler) = eventNameRecordsHandler[2](eventNameRecordsHandler, a3);
+    LOBYTE(eventNameRecordsHandler) = eventNameRecordsHandler[2](eventNameRecordsHandler, handler);
   }
 
   return eventNameRecordsHandler;
@@ -92,11 +92,11 @@
   return v2;
 }
 
-- (PPEventNameRecordLoadingDelegate)initWithName:(id)a3
+- (PPEventNameRecordLoadingDelegate)initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = PPEventNameRecordLoadingDelegate;
-  return [(PPRecordLoadingDelegate *)&v4 initWithName:a3];
+  return [(PPRecordLoadingDelegate *)&v4 initWithName:name];
 }
 
 @end

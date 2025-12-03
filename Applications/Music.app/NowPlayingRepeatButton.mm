@@ -1,5 +1,5 @@
 @interface NowPlayingRepeatButton
-- (_TtC5Music22NowPlayingRepeatButton)initWithCoder:(id)a3;
+- (_TtC5Music22NowPlayingRepeatButton)initWithCoder:(id)coder;
 - (void)tintColorDidChange;
 @end
 
@@ -14,7 +14,7 @@
   sub_100050478();
 }
 
-- (_TtC5Music22NowPlayingRepeatButton)initWithCoder:(id)a3
+- (_TtC5Music22NowPlayingRepeatButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Music22NowPlayingRepeatButton_repeatType) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Music22NowPlayingRepeatButton_defaultColor) = 0;

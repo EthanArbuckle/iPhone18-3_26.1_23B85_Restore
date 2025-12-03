@@ -57,7 +57,7 @@ LABEL_6:
   v13 = a3;
   v14 = a4;
   v10 = v8;
-  [a1 generateCollectionByCoercingToItemClasses:v9 completionHandler:v11];
+  [self generateCollectionByCoercingToItemClasses:v9 completionHandler:v11];
 }
 
 @end

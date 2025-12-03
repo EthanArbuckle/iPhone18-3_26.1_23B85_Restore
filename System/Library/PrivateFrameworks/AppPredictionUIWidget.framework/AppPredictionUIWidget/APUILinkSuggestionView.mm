@@ -1,46 +1,46 @@
 @interface APUILinkSuggestionView
-- (void)_tapRecognized:(id)a3;
-- (void)layoutSuggestion:(id)a3;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4;
+- (void)_tapRecognized:(id)recognized;
+- (void)layoutSuggestion:(id)suggestion;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress;
 @end
 
 @implementation APUILinkSuggestionView
 
-- (void)layoutSuggestion:(id)a3
+- (void)layoutSuggestion:(id)suggestion
 {
-  v4 = a3;
-  if (v4)
+  suggestionCopy = suggestion;
+  if (suggestionCopy)
   {
-    [(APUISuggestionView *)self setSuggestion:v4];
+    [(APUISuggestionView *)self setSuggestion:suggestionCopy];
     [(APUISuggestionView *)self createViewsIfNeeded];
     v5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__tapRecognized_];
     tapRecognizer = self->_tapRecognizer;
     self->_tapRecognizer = v5;
 
     [(APUILinkSuggestionView *)self addGestureRecognizer:self->_tapRecognizer];
-    v7 = [v4 executableSpecification];
-    v8 = [v7 executableObject];
+    executableSpecification = [suggestionCopy executableSpecification];
+    executableObject = [executableSpecification executableObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&self->_linkAction, v8);
-      v9 = [v8 bundleId];
-      v10 = [v4 uiSpecification];
-      v11 = [v10 title];
+      objc_storeStrong(&self->_linkAction, executableObject);
+      bundleId = [executableObject bundleId];
+      uiSpecification = [suggestionCopy uiSpecification];
+      title = [uiSpecification title];
 
-      v12 = [v4 uiSpecification];
-      v13 = [v12 subtitle];
+      uiSpecification2 = [suggestionCopy uiSpecification];
+      subtitle = [uiSpecification2 subtitle];
 
-      v14 = [v8 image];
-      [(APUISuggestionView *)self setLNImage:v14 withBundleID:v9];
+      image = [executableObject image];
+      [(APUISuggestionView *)self setLNImage:image withBundleID:bundleId];
 
-      v15 = [(APUISuggestionView *)self titleLabel];
-      [v15 setText:v11];
+      titleLabel = [(APUISuggestionView *)self titleLabel];
+      [titleLabel setText:title];
 
-      v16 = [(APUISuggestionView *)self subtitleLabel];
-      [v16 setText:v13];
+      subtitleLabel = [(APUISuggestionView *)self subtitleLabel];
+      [subtitleLabel setText:subtitle];
     }
 
     else
@@ -55,17 +55,17 @@
 
   else
   {
-    v8 = __atxlog_handle_ui();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    executableObject = __atxlog_handle_ui();
+    if (os_log_type_enabled(executableObject, OS_LOG_TYPE_ERROR))
     {
       [APUILinkSuggestionView layoutSuggestion:];
     }
   }
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
-  v4 = a3;
+  recognizedCopy = recognized;
   if (![(APUISuggestionView *)self canEngageSuggestion])
   {
     workflowRunnerClient = __atxlog_handle_ui();
@@ -78,11 +78,11 @@
   }
 
   [(APUISuggestionView *)self setCanEngageSuggestion:0];
-  if ([v4 state] == 3)
+  if ([recognizedCopy state] == 3)
   {
-    v5 = [(APUISuggestionView *)self delegate];
-    v6 = [(APUISuggestionView *)self suggestion];
-    [v5 view:self didTapSuggestion:v6];
+    delegate = [(APUISuggestionView *)self delegate];
+    suggestion = [(APUISuggestionView *)self suggestion];
+    [delegate view:self didTapSuggestion:suggestion];
 
     v7 = __atxlog_handle_ui();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -92,9 +92,9 @@
     }
 
     v8 = objc_alloc(MEMORY[0x277D7A150]);
-    v9 = [(ATXLinkActionContainer *)self->_linkAction action];
-    v10 = [(ATXLinkActionContainer *)self->_linkAction bundleId];
-    v11 = [v8 initWithLinkAction:v9 bundleIdentifier:v10 resultSurface:1];
+    action = [(ATXLinkActionContainer *)self->_linkAction action];
+    bundleId = [(ATXLinkActionContainer *)self->_linkAction bundleId];
+    v11 = [v8 initWithLinkAction:action bundleIdentifier:bundleId resultSurface:1];
 
     [v11 setDelegate:self];
     [v11 start];
@@ -104,41 +104,41 @@ LABEL_8:
   }
 }
 
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  progressCopy = progress;
   v7 = __atxlog_handle_ui();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218240;
-    v10 = v5;
+    v10 = clientCopy;
     v11 = 2048;
-    v12 = v6;
+    v12 = progressCopy;
     _os_log_impl(&dword_240036000, v7, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: workflowRunnerClient: <%p> didStartRunningWorkflowWithProgress: <%p>", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
-  v6 = a6;
+  cancelledCopy = cancelled;
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  clientCopy = client;
+  errorCopy = error;
   v11 = __atxlog_handle_ui();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v21 = v9;
+    v21 = clientCopy;
     _os_log_impl(&dword_240036000, v11, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: workflowRunnerClient: <%p> didFinishRunningWorkflowWithOutput:error:cancelled:", buf, 0xCu);
   }
 
-  if (v10 || v6)
+  if (errorCopy || cancelledCopy)
   {
-    if (v6)
+    if (cancelledCopy)
     {
       v15 = __atxlog_handle_ui();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -148,7 +148,7 @@ LABEL_8:
       }
     }
 
-    if (v10)
+    if (errorCopy)
     {
       v16 = __atxlog_handle_ui();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))

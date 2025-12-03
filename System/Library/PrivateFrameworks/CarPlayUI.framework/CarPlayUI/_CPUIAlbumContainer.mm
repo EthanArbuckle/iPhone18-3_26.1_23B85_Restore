@@ -1,15 +1,15 @@
 @interface _CPUIAlbumContainer
 - (CGSize)intrinsicContentSize;
 - (CPUIModernButton)button;
-- (_CPUIAlbumContainer)initWithButton:(id)a3;
+- (_CPUIAlbumContainer)initWithButton:(id)button;
 @end
 
 @implementation _CPUIAlbumContainer
 
-- (_CPUIAlbumContainer)initWithButton:(id)a3
+- (_CPUIAlbumContainer)initWithButton:(id)button
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  buttonCopy = button;
   v27.receiver = self;
   v27.super_class = _CPUIAlbumContainer;
   v5 = [(_CPUIAlbumContainer *)&v27 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -17,28 +17,28 @@
   if (v5)
   {
     [(_CPUIAlbumContainer *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(_CPUIAlbumContainer *)v6 addSubview:v4];
-    v7 = objc_storeWeak(&v6->_button, v4);
+    [(_CPUIAlbumContainer *)v6 addSubview:buttonCopy];
+    v7 = objc_storeWeak(&v6->_button, buttonCopy);
     v20 = MEMORY[0x277CCAAD0];
     v8 = v7;
-    v26 = [v4 leadingAnchor];
-    v25 = [(_CPUIAlbumContainer *)v6 leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    leadingAnchor = [buttonCopy leadingAnchor];
+    leadingAnchor2 = [(_CPUIAlbumContainer *)v6 leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v28[0] = v24;
     WeakRetained = objc_loadWeakRetained(&v6->_button);
-    v22 = [WeakRetained trailingAnchor];
-    v21 = [(_CPUIAlbumContainer *)v6 trailingAnchor];
-    v19 = [v22 constraintEqualToAnchor:v21];
+    trailingAnchor = [WeakRetained trailingAnchor];
+    trailingAnchor2 = [(_CPUIAlbumContainer *)v6 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v28[1] = v19;
     v18 = objc_loadWeakRetained(&v6->_button);
-    v9 = [v18 bottomAnchor];
-    v10 = [(_CPUIAlbumContainer *)v6 bottomAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    bottomAnchor = [v18 bottomAnchor];
+    bottomAnchor2 = [(_CPUIAlbumContainer *)v6 bottomAnchor];
+    v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v28[2] = v11;
     v12 = objc_loadWeakRetained(&v6->_button);
-    v13 = [v12 topAnchor];
-    v14 = [(_CPUIAlbumContainer *)v6 topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    topAnchor = [v12 topAnchor];
+    topAnchor2 = [(_CPUIAlbumContainer *)v6 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v28[3] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:4];
     [v20 activateConstraints:v16];
@@ -49,8 +49,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(_CPUIAlbumContainer *)self button];
-  [v2 intrinsicContentSize];
+  button = [(_CPUIAlbumContainer *)self button];
+  [button intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 

@@ -1,26 +1,26 @@
 @interface DataStreamBulkSendPendingSessionContext
 - (BOOL)shouldCloseSessionWithTimeoutReason;
-- (DataStreamBulkSendPendingSessionContext)initWithSessionStartCallback:(id)a3 handleOpenRequestResponseTimer:(id)a4 sendCloseEventTimer:(id)a5;
+- (DataStreamBulkSendPendingSessionContext)initWithSessionStartCallback:(id)callback handleOpenRequestResponseTimer:(id)timer sendCloseEventTimer:(id)eventTimer;
 @end
 
 @implementation DataStreamBulkSendPendingSessionContext
 
-- (DataStreamBulkSendPendingSessionContext)initWithSessionStartCallback:(id)a3 handleOpenRequestResponseTimer:(id)a4 sendCloseEventTimer:(id)a5
+- (DataStreamBulkSendPendingSessionContext)initWithSessionStartCallback:(id)callback handleOpenRequestResponseTimer:(id)timer sendCloseEventTimer:(id)eventTimer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  callbackCopy = callback;
+  timerCopy = timer;
+  eventTimerCopy = eventTimer;
   v15.receiver = self;
   v15.super_class = DataStreamBulkSendPendingSessionContext;
   v11 = [(DataStreamBulkSendPendingSessionContext *)&v15 init];
   if (v11)
   {
-    v12 = objc_retainBlock(v8);
+    v12 = objc_retainBlock(callbackCopy);
     sessionStartCallback = v11->_sessionStartCallback;
     v11->_sessionStartCallback = v12;
 
-    objc_storeStrong(&v11->_handleOpenRequestResponseTimer, a4);
-    objc_storeStrong(&v11->_sendCloseEventTimer, a5);
+    objc_storeStrong(&v11->_handleOpenRequestResponseTimer, timer);
+    objc_storeStrong(&v11->_sendCloseEventTimer, eventTimer);
   }
 
   return v11;
@@ -28,16 +28,16 @@
 
 - (BOOL)shouldCloseSessionWithTimeoutReason
 {
-  v3 = [(DataStreamBulkSendPendingSessionContext *)self handleOpenRequestResponseTimer];
-  if (v3)
+  handleOpenRequestResponseTimer = [(DataStreamBulkSendPendingSessionContext *)self handleOpenRequestResponseTimer];
+  if (handleOpenRequestResponseTimer)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(DataStreamBulkSendPendingSessionContext *)self sendCloseEventTimer];
-    v4 = v5 != 0;
+    sendCloseEventTimer = [(DataStreamBulkSendPendingSessionContext *)self sendCloseEventTimer];
+    v4 = sendCloseEventTimer != 0;
   }
 
   return v4;

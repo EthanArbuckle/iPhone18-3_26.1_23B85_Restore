@@ -8,29 +8,29 @@
 
 - (uint64_t)doc_canHaveAppContainer
 {
-  if ([a1 supportsOpenInPlace] && (objc_msgSend(a1, "isFileSharingEnabled") & 1) != 0)
+  if ([self supportsOpenInPlace] && (objc_msgSend(self, "isFileSharingEnabled") & 1) != 0)
   {
     return 1;
   }
 
-  v3 = [a1 infoDictionary];
-  v4 = [v3 objectForKey:@"UISupportsDocumentBrowser" ofClass:objc_opt_class()];
+  infoDictionary = [self infoDictionary];
+  v4 = [infoDictionary objectForKey:@"UISupportsDocumentBrowser" ofClass:objc_opt_class()];
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)doc_hasFileProviderExtension
 {
   v18 = *MEMORY[0x277D85DE8];
-  v1 = [a1 applicationExtensionRecords];
-  if ([v1 count])
+  applicationExtensionRecords = [self applicationExtensionRecords];
+  if ([applicationExtensionRecords count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v2 = v1;
+    v2 = applicationExtensionRecords;
     v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v3)
     {
@@ -46,9 +46,9 @@
             objc_enumerationMutation(v2);
           }
 
-          v7 = [*(*(&v13 + 1) + 8 * v6) extensionPointRecord];
-          v8 = [v7 identifier];
-          v9 = [v8 isEqualToString:@"com.apple.fileprovider-nonui"];
+          extensionPointRecord = [*(*(&v13 + 1) + 8 * v6) extensionPointRecord];
+          identifier = [extensionPointRecord identifier];
+          v9 = [identifier isEqualToString:@"com.apple.fileprovider-nonui"];
 
           if (v9)
           {

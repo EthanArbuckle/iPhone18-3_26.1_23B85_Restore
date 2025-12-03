@@ -13,15 +13,15 @@
   v9 = a4;
   if (a5)
   {
-    v10 = [v8 localizedUppercaseString];
+    localizedUppercaseString = [v8 localizedUppercaseString];
   }
 
   else
   {
-    v10 = v8;
+    localizedUppercaseString = v8;
   }
 
-  v11 = v10;
+  v11 = localizedUppercaseString;
   v12 = objc_alloc(MEMORY[0x1E696AAB0]);
   v24 = *MEMORY[0x1E69DB648];
   v13 = v24;
@@ -38,26 +38,26 @@
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   v21 = [v16 initWithString:v18 attributes:v20];
 
-  if ([a1 length])
+  if ([self length])
   {
-    [a1 appendAttributedString:v21];
+    [self appendAttributedString:v21];
   }
 
-  [a1 appendAttributedString:v15];
+  [self appendAttributedString:v15];
 }
 
 - (void)cnui_appendTaglineString:()CNUI uppercased:
 {
   v6 = a3;
   v7 = +[CNUIFontRepository contactCardStaticHeaderDefaultTaglineFont];
-  [a1 cnui_appendTaglineString:v6 withFont:v7 uppercased:a4];
+  [self cnui_appendTaglineString:v6 withFont:v7 uppercased:a4];
 }
 
 - (void)cnui_appendTaglineString:()CNUI
 {
   v4 = a3;
   v5 = +[CNUIFontRepository contactCardStaticHeaderDefaultTaglineFont];
-  [a1 cnui_appendTaglineString:v4 withFont:v5];
+  [self cnui_appendTaglineString:v4 withFont:v5];
 }
 
 @end

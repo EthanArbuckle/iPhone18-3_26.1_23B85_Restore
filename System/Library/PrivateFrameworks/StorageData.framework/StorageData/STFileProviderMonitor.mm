@@ -1,6 +1,6 @@
 @interface STFileProviderMonitor
 + (id)sharedMonitor;
-- (void)_postNotify:(id)a3;
+- (void)_postNotify:(id)notify;
 - (void)postNotify;
 - (void)startMonitor;
 - (void)stopMonitor;
@@ -30,9 +30,9 @@ uint64_t __38__STFileProviderMonitor_sharedMonitor__block_invoke()
 
 - (void)startMonitor
 {
-  v3 = [(STFileProviderMonitor *)self fpContext];
+  fpContext = [(STFileProviderMonitor *)self fpContext];
 
-  if (!v3)
+  if (!fpContext)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -89,22 +89,22 @@ void __37__STFileProviderMonitor_startMonitor__block_invoke(uint64_t a1, void *a
 
 - (void)stopMonitor
 {
-  v4 = [(STFileProviderMonitor *)self fpContext];
+  fpContext = [(STFileProviderMonitor *)self fpContext];
   [(STFileProviderMonitor *)self setFpContext:0];
-  v3 = v4;
-  if (v4)
+  v3 = fpContext;
+  if (fpContext)
   {
-    [MEMORY[0x277CC6420] endMonitoringProviderDomainChanges:v4];
-    v3 = v4;
+    [MEMORY[0x277CC6420] endMonitoringProviderDomainChanges:fpContext];
+    v3 = fpContext;
   }
 }
 
-- (void)_postNotify:(id)a3
+- (void)_postNotify:(id)notify
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  [v5 postNotificationName:v4 object:0];
+  notifyCopy = notify;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter postNotificationName:notifyCopy object:0];
 }
 
 - (void)postNotify
@@ -136,12 +136,12 @@ uint64_t __35__STFileProviderMonitor_postNotify__block_invoke(uint64_t a1)
   v9 = 3221225472;
   v10 = __29__STFileProviderMonitor_sync__block_invoke;
   v11 = &unk_279D1D548;
-  v12 = self;
+  selfCopy = self;
   v13 = v4;
   v6 = v4;
   v7 = [v5 beginMonitoringProviderDomainChangesWithHandler:&v8];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-  [MEMORY[0x277CC6420] endMonitoringProviderDomainChanges:{v7, v8, v9, v10, v11, v12}];
+  [MEMORY[0x277CC6420] endMonitoringProviderDomainChanges:{v7, v8, v9, v10, v11, selfCopy}];
 
   objc_autoreleasePoolPop(v3);
 }

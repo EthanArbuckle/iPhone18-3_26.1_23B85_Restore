@@ -1,40 +1,40 @@
 @interface TIKeyboardInputManagerWrapper
 - (TIKeyboardInputManagerLogging)logger;
 - (TIKeyboardInputManagerWrapper)init;
-- (id)generateInlineCompletions:(id)a3 withPrefix:(id)a4;
-- (void)_updateKeyboardOutput:(id)a3 withSecureCandidatePayload:(id)a4 keyboardState:(id)a5;
-- (void)acceptSecureCandidate:(id)a3 keyboardState:(id)a4 completion:(id)a5;
-- (void)acceptingCandidateWithTrigger:(id)a3;
-- (void)addSupplementalLexicon:(id)a3 completionHandler:(id)a4;
-- (void)candidateRejected:(id)a3;
-- (void)changingContextWithTrigger:(id)a3;
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 requestToken:(id)a5 completionHandler:(id)a6;
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 requestToken:(id)a5 completionHandler:(id)a6;
-- (void)generateRefinementsForCandidate:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5;
-- (void)generateReplacementsForString:(id)a3 keyLayout:(id)a4 continuation:(id)a5;
-- (void)handleAcceptedCandidate:(id)a3 acceptedSecureCandidate:(id)a4 keyboardState:(id)a5 completionHandler:(id)a6;
-- (void)handleAcceptedCandidate:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5;
-- (void)handleKeyboardInput:(id)a3 acceptedSecureCandidate:(id)a4 keyboardState:(id)a5 completionHandler:(id)a6;
-- (void)handleKeyboardInput:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5;
-- (void)handleKeyboardState:(id)a3 withInputEvent:(id)a4;
+- (id)generateInlineCompletions:(id)completions withPrefix:(id)prefix;
+- (void)_updateKeyboardOutput:(id)output withSecureCandidatePayload:(id)payload keyboardState:(id)state;
+- (void)acceptSecureCandidate:(id)candidate keyboardState:(id)state completion:(id)completion;
+- (void)acceptingCandidateWithTrigger:(id)trigger;
+- (void)addSupplementalLexicon:(id)lexicon completionHandler:(id)handler;
+- (void)candidateRejected:(id)rejected;
+- (void)changingContextWithTrigger:(id)trigger;
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range completionHandler:(id)handler;
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range requestToken:(id)token completionHandler:(id)handler;
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range completionHandler:(id)handler;
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range requestToken:(id)token completionHandler:(id)handler;
+- (void)generateRefinementsForCandidate:(id)candidate keyboardState:(id)state completionHandler:(id)handler;
+- (void)generateReplacementsForString:(id)string keyLayout:(id)layout continuation:(id)continuation;
+- (void)handleAcceptedCandidate:(id)candidate acceptedSecureCandidate:(id)secureCandidate keyboardState:(id)state completionHandler:(id)handler;
+- (void)handleAcceptedCandidate:(id)candidate keyboardState:(id)state completionHandler:(id)handler;
+- (void)handleKeyboardInput:(id)input acceptedSecureCandidate:(id)candidate keyboardState:(id)state completionHandler:(id)handler;
+- (void)handleKeyboardInput:(id)input keyboardState:(id)state completionHandler:(id)handler;
+- (void)handleKeyboardState:(id)state withInputEvent:(id)event;
 - (void)lastAcceptedCandidateCorrected;
-- (void)performHitTestForTouchEvent:(id)a3 keyboardState:(id)a4 continuation:(id)a5;
-- (void)performHitTestForTouchEvents:(id)a3 keyboardState:(id)a4 continuation:(id)a5;
-- (void)registerLearning:(id)a3 fullCandidate:(id)a4 keyboardState:(id)a5 mode:(id)a6;
-- (void)registerLearningForCompletion:(id)a3 fullCompletion:(id)a4 context:(id)a5 prefix:(id)a6 mode:(id)a7;
-- (void)removeSupplementalLexiconWithIdentifier:(unint64_t)a3;
-- (void)setLogger:(id)a3;
-- (void)setOriginalInput:(id)a3;
-- (void)skipHitTestForTouchEvent:(id)a3 keyboardState:(id)a4;
-- (void)skipHitTestForTouchEvents:(id)a3 keyboardState:(id)a4;
-- (void)smartSelectionForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 tokenizedRanges:(id)a6 options:(unint64_t)a7 completion:(id)a8;
-- (void)stickerWithIdentifier:(id)a3 stickerRoles:(id)a4 completionHandler:(id)a5;
-- (void)syncToKeyboardState:(id)a3 completionHandler:(id)a4;
-- (void)textAccepted:(id)a3 completionHandler:(id)a4;
-- (void)updateAnalyticsForRejectedSuggestion:(id)a3 keyboardState:(id)a4;
-- (void)writeTypologyLogWithCompletionHandler:(id)a3;
+- (void)performHitTestForTouchEvent:(id)event keyboardState:(id)state continuation:(id)continuation;
+- (void)performHitTestForTouchEvents:(id)events keyboardState:(id)state continuation:(id)continuation;
+- (void)registerLearning:(id)learning fullCandidate:(id)candidate keyboardState:(id)state mode:(id)mode;
+- (void)registerLearningForCompletion:(id)completion fullCompletion:(id)fullCompletion context:(id)context prefix:(id)prefix mode:(id)mode;
+- (void)removeSupplementalLexiconWithIdentifier:(unint64_t)identifier;
+- (void)setLogger:(id)logger;
+- (void)setOriginalInput:(id)input;
+- (void)skipHitTestForTouchEvent:(id)event keyboardState:(id)state;
+- (void)skipHitTestForTouchEvents:(id)events keyboardState:(id)state;
+- (void)smartSelectionForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language tokenizedRanges:(id)ranges options:(unint64_t)options completion:(id)completion;
+- (void)stickerWithIdentifier:(id)identifier stickerRoles:(id)roles completionHandler:(id)handler;
+- (void)syncToKeyboardState:(id)state completionHandler:(id)handler;
+- (void)textAccepted:(id)accepted completionHandler:(id)handler;
+- (void)updateAnalyticsForRejectedSuggestion:(id)suggestion keyboardState:(id)state;
+- (void)writeTypologyLogWithCompletionHandler:(id)handler;
 @end
 
 @implementation TIKeyboardInputManagerWrapper
@@ -56,17 +56,17 @@
 
 - (TIKeyboardInputManagerLogging)logger
 {
-  v2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v3 = [v2 inputManagerLogger];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  inputManagerLogger = [inputManager inputManagerLogger];
 
-  return v3;
+  return inputManagerLogger;
 }
 
-- (void)stickerWithIdentifier:(id)a3 stickerRoles:(id)a4 completionHandler:(id)a5
+- (void)stickerWithIdentifier:(id)identifier stickerRoles:(id)roles completionHandler:(id)handler
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  rolesCopy = roles;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     v10 = _os_feature_enabled_impl();
@@ -74,15 +74,15 @@
 
   else
   {
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
-    v12 = [v11 languageCode];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    languageCode = [currentLocale languageCode];
 
-    v13 = [(TIKeyboardInputManagerBase *)self->_inputManager inputMode];
-    v14 = [v13 languageWithRegion];
+    inputMode = [(TIKeyboardInputManagerBase *)self->_inputManager inputMode];
+    languageWithRegion = [inputMode languageWithRegion];
 
-    if (_os_feature_enabled_impl() && [v12 hasPrefix:@"en"])
+    if (_os_feature_enabled_impl() && [languageCode hasPrefix:@"en"])
     {
-      v10 = [v14 hasPrefix:@"en"];
+      v10 = [languageWithRegion hasPrefix:@"en"];
     }
 
     else
@@ -91,20 +91,20 @@
     }
   }
 
-  if (v17 && v10)
+  if (identifierCopy && v10)
   {
     v15 = objc_alloc_init(TIStickerCandidateGenerator);
-    v16 = [(TIStickerCandidateGenerator *)v15 keyboardStickerWithIdentifier:v17 roles:v8];
-    v9[2](v9, v16);
+    v16 = [(TIStickerCandidateGenerator *)v15 keyboardStickerWithIdentifier:identifierCopy roles:rolesCopy];
+    handlerCopy[2](handlerCopy, v16);
   }
 
   else
   {
-    v9[2](v9, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)removeSupplementalLexiconWithIdentifier:(unint64_t)a3
+- (void)removeSupplementalLexiconWithIdentifier:(unint64_t)identifier
 {
   kdebug_trace();
   v5 = kac_get_log();
@@ -120,8 +120,8 @@
   }
 
   v8 = +[TITransientLexiconManager sharedInstance];
-  v9 = [v8 supplementalLexicons];
-  [v9 removeLexiconWithIdentifier:a3];
+  supplementalLexicons = [v8 supplementalLexicons];
+  [supplementalLexicons removeLexiconWithIdentifier:identifier];
 
   kdebug_trace();
   v10 = kac_get_log();
@@ -137,10 +137,10 @@
   }
 }
 
-- (void)addSupplementalLexicon:(id)a3 completionHandler:(id)a4
+- (void)addSupplementalLexicon:(id)lexicon completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lexiconCopy = lexicon;
+  handlerCopy = handler;
   kdebug_trace();
   v8 = kac_get_log();
   v9 = os_signpost_id_make_with_pointer(v8, (self ^ 0xE));
@@ -155,12 +155,12 @@
   }
 
   v11 = +[TITransientLexiconManager sharedInstance];
-  v12 = [v11 ensureSupplementalLexicons];
-  [v12 addLexicon:v6];
+  ensureSupplementalLexicons = [v11 ensureSupplementalLexicons];
+  [ensureSupplementalLexicons addLexicon:lexiconCopy];
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   kdebug_trace();
@@ -177,20 +177,20 @@
   }
 }
 
-- (void)writeTypologyLogWithCompletionHandler:(id)a3
+- (void)writeTypologyLogWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v5 storeLanguageModelDynamicDataIncludingCache];
+  handlerCopy = handler;
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager storeLanguageModelDynamicDataIncludingCache];
 
-  v6 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v6 clearHumanReadableTrace];
+  inputManager2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager2 clearHumanReadableTrace];
 
-  v7 = [(TIKeyboardInputManagerWrapper *)self logger];
-  v9 = [v7 writeToFile];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  writeToFile = [logger writeToFile];
 
-  v8 = [v9 objectAtIndexedSubscript:0];
-  v4[2](v4, v8);
+  v8 = [writeToFile objectAtIndexedSubscript:0];
+  handlerCopy[2](handlerCopy, v8);
 }
 
 - (void)lastAcceptedCandidateCorrected
@@ -208,11 +208,11 @@
     }
   }
 
-  v6 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v6 lastAcceptedCandidateCorrected];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager lastAcceptedCandidateCorrected];
 
-  v7 = [(TIKeyboardInputManagerWrapper *)self logger];
-  [v7 logReceivedLastAcceptedCandidateCorrected];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  [logger logReceivedLastAcceptedCandidateCorrected];
 
   kdebug_trace();
   v8 = kac_get_log();
@@ -228,13 +228,13 @@
   }
 }
 
-- (void)registerLearningForCompletion:(id)a3 fullCompletion:(id)a4 context:(id)a5 prefix:(id)a6 mode:(id)a7
+- (void)registerLearningForCompletion:(id)completion fullCompletion:(id)fullCompletion context:(id)context prefix:(id)prefix mode:(id)mode
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  completionCopy = completion;
+  fullCompletionCopy = fullCompletion;
+  contextCopy = context;
+  prefixCopy = prefix;
+  modeCopy = mode;
   kdebug_trace();
   v17 = kac_get_log();
   v18 = os_signpost_id_make_with_pointer(v17, (self ^ 0xC));
@@ -248,8 +248,8 @@
     }
   }
 
-  v20 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v20 registerLearningForCompletion:v12 fullCompletion:v13 context:v14 prefix:v15 mode:v16];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager registerLearningForCompletion:completionCopy fullCompletion:fullCompletionCopy context:contextCopy prefix:prefixCopy mode:modeCopy];
 
   kdebug_trace();
   v21 = kac_get_log();
@@ -265,12 +265,12 @@
   }
 }
 
-- (void)registerLearning:(id)a3 fullCandidate:(id)a4 keyboardState:(id)a5 mode:(id)a6
+- (void)registerLearning:(id)learning fullCandidate:(id)candidate keyboardState:(id)state mode:(id)mode
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  learningCopy = learning;
+  candidateCopy = candidate;
+  stateCopy = state;
+  modeCopy = mode;
   kdebug_trace();
   v14 = kac_get_log();
   v15 = os_signpost_id_make_with_pointer(v14, (self ^ 0xC));
@@ -284,8 +284,8 @@
     }
   }
 
-  v17 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v17 registerLearning:v10 fullCandidate:v11 keyboardState:v12 mode:v13];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager registerLearning:learningCopy fullCandidate:candidateCopy keyboardState:stateCopy mode:modeCopy];
 
   kdebug_trace();
   v18 = kac_get_log();
@@ -301,9 +301,9 @@
   }
 }
 
-- (void)candidateRejected:(id)a3
+- (void)candidateRejected:(id)rejected
 {
-  v4 = a3;
+  rejectedCopy = rejected;
   kdebug_trace();
   v5 = kac_get_log();
   v6 = os_signpost_id_make_with_pointer(v5, (self ^ 0xC));
@@ -317,11 +317,11 @@
     }
   }
 
-  v8 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v8 candidateRejected:v4];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager candidateRejected:rejectedCopy];
 
-  v9 = [(TIKeyboardInputManagerWrapper *)self logger];
-  [v9 logReceivedCandidateRejected:v4];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  [logger logReceivedCandidateRejected:rejectedCopy];
 
   kdebug_trace();
   v10 = kac_get_log();
@@ -337,10 +337,10 @@
   }
 }
 
-- (void)textAccepted:(id)a3 completionHandler:(id)a4
+- (void)textAccepted:(id)accepted completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  acceptedCopy = accepted;
+  handlerCopy = handler;
   kdebug_trace();
   v8 = kac_get_log();
   v9 = os_signpost_id_make_with_pointer(v8, (self ^ 0xB));
@@ -354,14 +354,14 @@
     }
   }
 
-  v11 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v11 textAccepted:v6 fromPredictiveInputBar:0 withInput:0];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager textAccepted:acceptedCopy fromPredictiveInputBar:0 withInput:0];
 
-  v12 = [(TIKeyboardInputManagerWrapper *)self logger];
-  [v12 logReceivedTextAccepted:v6];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  [logger logReceivedTextAccepted:acceptedCopy];
 
-  v13 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v14 = [v13 keyboardConfiguration];
+  inputManager2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  keyboardConfiguration = [inputManager2 keyboardConfiguration];
 
   kdebug_trace();
   v15 = kac_get_log();
@@ -376,15 +376,15 @@
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v14);
+    handlerCopy[2](handlerCopy, keyboardConfiguration);
   }
 }
 
-- (void)setOriginalInput:(id)a3
+- (void)setOriginalInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   kdebug_trace();
   v5 = kac_get_log();
   v6 = os_signpost_id_make_with_pointer(v5, (self ^ 0xA));
@@ -398,11 +398,11 @@
     }
   }
 
-  v8 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v8 setOriginalInput:v4];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager setOriginalInput:inputCopy];
 
-  v9 = [(TIKeyboardInputManagerWrapper *)self logger];
-  [v9 logReceivedSetOriginalInput:v4];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  [logger logReceivedSetOriginalInput:inputCopy];
 
   kdebug_trace();
   v10 = kac_get_log();
@@ -418,31 +418,31 @@
   }
 }
 
-- (void)smartSelectionForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 tokenizedRanges:(id)a6 options:(unint64_t)a7 completion:(id)a8
+- (void)smartSelectionForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language tokenizedRanges:(id)ranges options:(unint64_t)options completion:(id)completion
 {
-  length = a4.length;
-  location = a4.location;
-  v22 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a3;
-  v18 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v19 = [v18 smartSelectionRangeForTextInDocument:v17 inRange:location language:length tokenizedRanges:v16 options:{v15, a7}];
+  length = range.length;
+  location = range.location;
+  completionCopy = completion;
+  rangesCopy = ranges;
+  languageCopy = language;
+  documentCopy = document;
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  v19 = [inputManager smartSelectionRangeForTextInDocument:documentCopy inRange:location language:length tokenizedRanges:languageCopy options:{rangesCopy, options}];
   v21 = v20;
 
-  v22[2](v22, v19, v21);
+  completionCopy[2](completionCopy, v19, v21);
 }
 
-- (void)skipHitTestForTouchEvents:(id)a3 keyboardState:(id)a4
+- (void)skipHitTestForTouchEvents:(id)events keyboardState:(id)state
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v7];
-  v8 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v8)
+  eventsCopy = events;
+  stateCopy = state;
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v9 = [v7 copy];
+    v9 = [stateCopy copy];
   }
 
   else
@@ -454,7 +454,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v6;
+  v10 = eventsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -470,11 +470,11 @@
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-        [v16 skipHitTestForTouchEvent:v15 keyboardState:v7];
+        inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+        [inputManager skipHitTestForTouchEvent:v15 keyboardState:stateCopy];
 
-        v17 = [(TIKeyboardInputManagerWrapper *)self logger];
-        [v17 logReceivedSkipHitTestForTouchEvent:v15 forKeyboardState:v9];
+        logger2 = [(TIKeyboardInputManagerWrapper *)self logger];
+        [logger2 logReceivedSkipHitTestForTouchEvent:v15 forKeyboardState:v9];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -486,15 +486,15 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)skipHitTestForTouchEvent:(id)a3 keyboardState:(id)a4
+- (void)skipHitTestForTouchEvent:(id)event keyboardState:(id)state
 {
-  v11 = a4;
-  v6 = a3;
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v11];
-  v7 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v7)
+  stateCopy = state;
+  eventCopy = event;
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v8 = [v11 copy];
+    v8 = [stateCopy copy];
   }
 
   else
@@ -502,18 +502,18 @@
     v8 = 0;
   }
 
-  v9 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v9 skipHitTestForTouchEvent:v6 keyboardState:v11];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager skipHitTestForTouchEvent:eventCopy keyboardState:stateCopy];
 
-  v10 = [(TIKeyboardInputManagerWrapper *)self logger];
-  [v10 logReceivedSkipHitTestForTouchEvent:v6 forKeyboardState:v8];
+  logger2 = [(TIKeyboardInputManagerWrapper *)self logger];
+  [logger2 logReceivedSkipHitTestForTouchEvent:eventCopy forKeyboardState:v8];
 }
 
-- (void)performHitTestForTouchEvents:(id)a3 keyboardState:(id)a4 continuation:(id)a5
+- (void)performHitTestForTouchEvents:(id)events keyboardState:(id)state continuation:(id)continuation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventsCopy = events;
+  stateCopy = state;
+  continuationCopy = continuation;
   kdebug_trace();
   v11 = kac_get_log();
   v12 = os_signpost_id_make_with_pointer(v11, (self ^ 7));
@@ -527,11 +527,11 @@
     }
   }
 
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v9];
-  v14 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v14)
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v15 = [v9 copy];
+    v15 = [stateCopy copy];
   }
 
   else
@@ -539,32 +539,32 @@
     v15 = 0;
   }
 
-  if ([v8 count] >= 2)
+  if ([eventsCopy count] >= 2)
   {
     v16 = 1;
     do
     {
-      v17 = [v8 objectAtIndexedSubscript:v16 - 1];
-      v18 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-      [v18 skipHitTestForTouchEvent:v17 keyboardState:v9];
+      v17 = [eventsCopy objectAtIndexedSubscript:v16 - 1];
+      inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+      [inputManager skipHitTestForTouchEvent:v17 keyboardState:stateCopy];
 
-      v19 = [(TIKeyboardInputManagerWrapper *)self logger];
-      [v19 logReceivedSkipHitTestForTouchEvent:v17 forKeyboardState:v15];
+      logger2 = [(TIKeyboardInputManagerWrapper *)self logger];
+      [logger2 logReceivedSkipHitTestForTouchEvent:v17 forKeyboardState:v15];
 
       ++v16;
     }
 
-    while (v16 < [v8 count]);
+    while (v16 < [eventsCopy count]);
   }
 
-  v20 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v21 = [v8 lastObject];
-  v22 = [v20 performHitTestForTouchEvent:v21 keyboardState:v9];
+  inputManager2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  lastObject = [eventsCopy lastObject];
+  v22 = [inputManager2 performHitTestForTouchEvent:lastObject keyboardState:stateCopy];
 
-  v10[2](v10, v22);
-  v23 = [(TIKeyboardInputManagerWrapper *)self logger];
-  v24 = [v8 lastObject];
-  [v23 logHitKeyCode:v22 forTouchEvent:v24 keyboardState:v15];
+  continuationCopy[2](continuationCopy, v22);
+  logger3 = [(TIKeyboardInputManagerWrapper *)self logger];
+  lastObject2 = [eventsCopy lastObject];
+  [logger3 logHitKeyCode:v22 forTouchEvent:lastObject2 keyboardState:v15];
 
   kdebug_trace();
   v25 = kac_get_log();
@@ -580,11 +580,11 @@
   }
 }
 
-- (void)performHitTestForTouchEvent:(id)a3 keyboardState:(id)a4 continuation:(id)a5
+- (void)performHitTestForTouchEvent:(id)event keyboardState:(id)state continuation:(id)continuation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  stateCopy = state;
+  continuationCopy = continuation;
   kdebug_trace();
   v11 = kac_get_log();
   v12 = os_signpost_id_make_with_pointer(v11, (self ^ 7));
@@ -598,11 +598,11 @@
     }
   }
 
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v9];
-  v14 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v14)
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v15 = [v9 copy];
+    v15 = [stateCopy copy];
   }
 
   else
@@ -610,12 +610,12 @@
     v15 = 0;
   }
 
-  v16 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v17 = [v16 performHitTestForTouchEvent:v8 keyboardState:v9];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  v17 = [inputManager performHitTestForTouchEvent:eventCopy keyboardState:stateCopy];
 
-  v10[2](v10, v17);
-  v18 = [(TIKeyboardInputManagerWrapper *)self logger];
-  [v18 logHitKeyCode:v17 forTouchEvent:v8 keyboardState:v15];
+  continuationCopy[2](continuationCopy, v17);
+  logger2 = [(TIKeyboardInputManagerWrapper *)self logger];
+  [logger2 logHitKeyCode:v17 forTouchEvent:eventCopy keyboardState:v15];
 
   kdebug_trace();
   v19 = kac_get_log();
@@ -631,11 +631,11 @@
   }
 }
 
-- (void)generateRefinementsForCandidate:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5
+- (void)generateRefinementsForCandidate:(id)candidate keyboardState:(id)state completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  candidateCopy = candidate;
+  stateCopy = state;
+  handlerCopy = handler;
   kdebug_trace();
   v11 = kac_get_log();
   v12 = os_signpost_id_make_with_pointer(v11, (self ^ 6));
@@ -649,11 +649,11 @@
     }
   }
 
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v9];
-  v14 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v14)
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v15 = [v9 copy];
+    v15 = [stateCopy copy];
   }
 
   else
@@ -661,12 +661,12 @@
     v15 = 0;
   }
 
-  v16 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v17 = [v16 generateRefinementsForCandidate:v8];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  v17 = [inputManager generateRefinementsForCandidate:candidateCopy];
 
-  v10[2](v10, v17);
-  v18 = [(TIKeyboardInputManagerWrapper *)self logger];
-  [v18 logRefinements:v17 forCandidate:v8 keyboardState:v15];
+  handlerCopy[2](handlerCopy, v17);
+  logger2 = [(TIKeyboardInputManagerWrapper *)self logger];
+  [logger2 logRefinements:v17 forCandidate:candidateCopy keyboardState:v15];
 
   kdebug_trace();
   v19 = kac_get_log();
@@ -682,11 +682,11 @@
   }
 }
 
-- (void)generateReplacementsForString:(id)a3 keyLayout:(id)a4 continuation:(id)a5
+- (void)generateReplacementsForString:(id)string keyLayout:(id)layout continuation:(id)continuation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  layoutCopy = layout;
+  continuationCopy = continuation;
   kdebug_trace();
   v11 = kac_get_log();
   v12 = os_signpost_id_make_with_pointer(v11, (self ^ 5));
@@ -700,12 +700,12 @@
     }
   }
 
-  v14 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v15 = [v14 generateReplacementsForString:v8 keyLayout:v9];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  v15 = [inputManager generateReplacementsForString:stringCopy keyLayout:layoutCopy];
 
-  v10[2](v10, v15);
-  v16 = [(TIKeyboardInputManagerWrapper *)self logger];
-  [v16 logReplacements:v15 forString:v8 keyLayout:v9];
+  continuationCopy[2](continuationCopy, v15);
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  [logger logReplacements:v15 forString:stringCopy keyLayout:layoutCopy];
 
   kdebug_trace();
   v17 = kac_get_log();
@@ -721,37 +721,37 @@
   }
 }
 
-- (void)changingContextWithTrigger:(id)a3
+- (void)changingContextWithTrigger:(id)trigger
 {
-  v7 = a3;
-  v4 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v5 = [v4 isMemberOfClass:objc_opt_class()];
+  triggerCopy = trigger;
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  v5 = [inputManager isMemberOfClass:objc_opt_class()];
 
   if (v5)
   {
-    [(TIKeyboardInputManagerWrapper *)self setCachedContextChangeTrigger:v7];
+    [(TIKeyboardInputManagerWrapper *)self setCachedContextChangeTrigger:triggerCopy];
   }
 
   else
   {
-    v6 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-    [v6 changingContextWithTrigger:v7];
+    inputManager2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+    [inputManager2 changingContextWithTrigger:triggerCopy];
   }
 }
 
-- (void)acceptingCandidateWithTrigger:(id)a3
+- (void)acceptingCandidateWithTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v5 acceptingCandidateWithTrigger:v4];
+  triggerCopy = trigger;
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager acceptingCandidateWithTrigger:triggerCopy];
 }
 
-- (void)handleAcceptedCandidate:(id)a3 acceptedSecureCandidate:(id)a4 keyboardState:(id)a5 completionHandler:(id)a6
+- (void)handleAcceptedCandidate:(id)candidate acceptedSecureCandidate:(id)secureCandidate keyboardState:(id)state completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  candidateCopy = candidate;
+  secureCandidateCopy = secureCandidate;
+  stateCopy = state;
+  handlerCopy = handler;
   kdebug_trace();
   v14 = kac_get_log();
   v15 = os_signpost_id_make_with_pointer(v14, (self ^ 4));
@@ -765,18 +765,18 @@
     }
   }
 
-  if (!v10)
+  if (!candidateCopy)
   {
-    v18 = v11;
+    v18 = secureCandidateCopy;
     v19 = 0;
     goto LABEL_17;
   }
 
-  v17 = [v10 slotID];
-  v18 = v11;
+  slotID = [candidateCopy slotID];
+  v18 = secureCandidateCopy;
 
   v19 = 0;
-  if (v11 == v10 || !v17)
+  if (secureCandidateCopy == candidateCopy || !slotID)
   {
     goto LABEL_17;
   }
@@ -785,24 +785,24 @@
   if (objc_opt_isKindOfClass())
   {
     v20 = v18;
-    v21 = [v20 proactivePredictedItem];
+    proactivePredictedItem = [v20 proactivePredictedItem];
     v18 = v20;
-    if (v21)
+    if (proactivePredictedItem)
     {
-      v22 = v21;
-      v23 = [v20 proactivePredictedItem];
-      if ([v23 itemType] != 1)
+      v22 = proactivePredictedItem;
+      proactivePredictedItem2 = [v20 proactivePredictedItem];
+      if ([proactivePredictedItem2 itemType] != 1)
       {
 
         v18 = v20;
         goto LABEL_14;
       }
 
-      v24 = [v20 proactivePredictedItem];
-      v25 = [v24 operationData];
+      proactivePredictedItem3 = [v20 proactivePredictedItem];
+      operationData = [proactivePredictedItem3 operationData];
 
       v18 = v20;
-      if (v25)
+      if (operationData)
       {
         v18 = [v20 candidateByReplacingWithCandidate:&stru_283FDFAF8];
         v22 = v20;
@@ -813,11 +813,11 @@ LABEL_14:
 
   v19 = 1;
 LABEL_17:
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v12];
-  v26 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v26)
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v27 = [v12 copy];
+    v27 = [stateCopy copy];
   }
 
   else
@@ -825,26 +825,26 @@ LABEL_17:
     v27 = 0;
   }
 
-  v28 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v29 = [v28 handleAcceptedCandidate:v18 keyboardState:v12];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  v29 = [inputManager handleAcceptedCandidate:v18 keyboardState:stateCopy];
 
   v30 = objc_alloc_init(MEMORY[0x277D6F410]);
   [v30 setTextToCommit:v29];
   if (v19)
   {
     v31 = +[TIAppAutofillManager sharedInstance];
-    v32 = [v31 secureCandidateRenderer];
+    secureCandidateRenderer = [v31 secureCandidateRenderer];
 
-    v33 = [v32 cachedPayloadForSecureCandidateSlotID:{objc_msgSend(v18, "slotID")}];
-    [(TIKeyboardInputManagerWrapper *)self _updateKeyboardOutput:v30 withSecureCandidatePayload:v33 keyboardState:v12];
+    v33 = [secureCandidateRenderer cachedPayloadForSecureCandidateSlotID:{objc_msgSend(v18, "slotID")}];
+    [(TIKeyboardInputManagerWrapper *)self _updateKeyboardOutput:v30 withSecureCandidatePayload:v33 keyboardState:stateCopy];
   }
 
-  v34 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v35 = [v34 keyboardConfiguration];
+  inputManager2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  keyboardConfiguration = [inputManager2 keyboardConfiguration];
 
-  v13[2](v13, v35, v30);
-  v36 = [(TIKeyboardInputManagerWrapper *)self logger];
-  [v36 logKeyboardConfig:v35 textToCommit:v29 forAcceptedCandidate:v18 keyboardState:v27];
+  handlerCopy[2](handlerCopy, keyboardConfiguration, v30);
+  logger2 = [(TIKeyboardInputManagerWrapper *)self logger];
+  [logger2 logKeyboardConfig:keyboardConfiguration textToCommit:v29 forAcceptedCandidate:v18 keyboardState:v27];
 
   kdebug_trace();
   v37 = kac_get_log();
@@ -860,28 +860,28 @@ LABEL_17:
   }
 }
 
-- (void)handleAcceptedCandidate:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5
+- (void)handleAcceptedCandidate:(id)candidate keyboardState:(id)state completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [v8 slotID])
+  candidateCopy = candidate;
+  stateCopy = state;
+  handlerCopy = handler;
+  if (candidateCopy && [candidateCopy slotID])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __89__TIKeyboardInputManagerWrapper_handleAcceptedCandidate_keyboardState_completionHandler___block_invoke;
     v11[3] = &unk_27872F2B0;
     v11[4] = self;
-    v12 = v8;
-    v13 = v9;
-    v14 = v10;
+    v12 = candidateCopy;
+    v13 = stateCopy;
+    v14 = handlerCopy;
     [(TIKeyboardInputManagerWrapper *)self acceptSecureCandidate:v12 keyboardState:v13 completion:v11];
   }
 
   else
   {
-    [(TIKeyboardInputManagerWrapper *)self updateAnalyticsForRejectedSuggestion:v8 keyboardState:v9];
-    [(TIKeyboardInputManagerWrapper *)self handleAcceptedCandidate:v8 acceptedSecureCandidate:v8 keyboardState:v9 completionHandler:v10];
+    [(TIKeyboardInputManagerWrapper *)self updateAnalyticsForRejectedSuggestion:candidateCopy keyboardState:stateCopy];
+    [(TIKeyboardInputManagerWrapper *)self handleAcceptedCandidate:candidateCopy acceptedSecureCandidate:candidateCopy keyboardState:stateCopy completionHandler:handlerCopy];
   }
 }
 
@@ -909,11 +909,11 @@ uint64_t __89__TIKeyboardInputManagerWrapper_handleAcceptedCandidate_keyboardSta
   return [v3 handleAcceptedCandidate:v4 acceptedSecureCandidate:v7 keyboardState:v5 completionHandler:v6];
 }
 
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 requestToken:(id)a5 completionHandler:(id)a6
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range requestToken:(id)token completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  stateCopy = state;
+  tokenCopy = token;
+  handlerCopy = handler;
   kdebug_trace();
   v12 = kac_get_log();
   v13 = os_signpost_id_make_with_pointer(v12, (self ^ 3));
@@ -927,11 +927,11 @@ uint64_t __89__TIKeyboardInputManagerWrapper_handleAcceptedCandidate_keyboardSta
     }
   }
 
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v9];
-  v15 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v15)
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v16 = [v9 copy];
+    v16 = [stateCopy copy];
   }
 
   else
@@ -941,24 +941,24 @@ uint64_t __89__TIKeyboardInputManagerWrapper_handleAcceptedCandidate_keyboardSta
 
   objc_initWeak(buf, self);
   v17 = [TIStreamingCandidateHandler alloc];
-  v18 = [(TIKeyboardInputManagerWrapper *)self clientProxy];
-  v19 = [(TIKeyboardInputManagerWrapper *)self logger];
+  clientProxy = [(TIKeyboardInputManagerWrapper *)self clientProxy];
+  logger2 = [(TIKeyboardInputManagerWrapper *)self logger];
   inputManager = self->_inputManager;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __115__TIKeyboardInputManagerWrapper_generateCandidatesWithKeyboardState_candidateRange_requestToken_completionHandler___block_invoke;
   v27[3] = &unk_27872F288;
   objc_copyWeak(&v31, buf);
-  v29 = v10;
-  v30 = v11;
+  v29 = tokenCopy;
+  v30 = handlerCopy;
   v28 = v16;
-  v21 = v10;
+  v21 = tokenCopy;
   v22 = v16;
-  v23 = v11;
-  v24 = [(TIStreamingCandidateHandler *)v17 initWithClientProxy:v18 keyboardState:v22 requestToken:v21 logger:v19 inputManager:inputManager candidateResultSetHandler:v27];
+  v23 = handlerCopy;
+  v24 = [(TIStreamingCandidateHandler *)v17 initWithClientProxy:clientProxy keyboardState:v22 requestToken:v21 logger:logger2 inputManager:inputManager candidateResultSetHandler:v27];
 
-  v25 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v25 generateCandidatesWithKeyboardState:v9 candidateRange:a4.location candidateHandler:{a4.length, v24}];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager generateCandidatesWithKeyboardState:stateCopy candidateRange:range.location candidateHandler:{range.length, v24}];
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(buf);
@@ -991,12 +991,12 @@ void __115__TIKeyboardInputManagerWrapper_generateCandidatesWithKeyboardState_ca
   [v11 clearHumanReadableTrace];
 }
 
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range completionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  stateCopy = state;
+  handlerCopy = handler;
   kdebug_trace();
   v11 = kac_get_log();
   v12 = os_signpost_id_make_with_pointer(v11, (self ^ 3));
@@ -1010,11 +1010,11 @@ void __115__TIKeyboardInputManagerWrapper_generateCandidatesWithKeyboardState_ca
     }
   }
 
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v9];
-  v14 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v14)
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v15 = [v9 copy];
+    v15 = [stateCopy copy];
   }
 
   else
@@ -1028,13 +1028,13 @@ void __115__TIKeyboardInputManagerWrapper_generateCandidatesWithKeyboardState_ca
   v21[2] = __102__TIKeyboardInputManagerWrapper_generateCandidatesWithKeyboardState_candidateRange_completionHandler___block_invoke;
   v21[3] = &unk_27872F260;
   v22 = v15;
-  v23 = v10;
+  v23 = handlerCopy;
   v21[4] = self;
   v17 = v15;
-  v18 = v10;
+  v18 = handlerCopy;
   v19 = [(TIAccumulatingCandidateHandler *)v16 initWithResultSetHandlerBlock:v21];
-  v20 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v20 generateCandidatesWithKeyboardState:v9 candidateRange:location candidateHandler:{length, v19}];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager generateCandidatesWithKeyboardState:stateCopy candidateRange:location candidateHandler:{length, v19}];
 }
 
 void __102__TIKeyboardInputManagerWrapper_generateCandidatesWithKeyboardState_candidateRange_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1064,26 +1064,26 @@ void __102__TIKeyboardInputManagerWrapper_generateCandidatesWithKeyboardState_ca
   [v11 clearHumanReadableTrace];
 }
 
-- (id)generateInlineCompletions:(id)a3 withPrefix:(id)a4
+- (id)generateInlineCompletions:(id)completions withPrefix:(id)prefix
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v9 = [v8 generateInlineCompletions:v7 withPrefix:v6];
+  prefixCopy = prefix;
+  completionsCopy = completions;
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  v9 = [inputManager generateInlineCompletions:completionsCopy withPrefix:prefixCopy];
 
-  v10 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v10 clearHumanReadableTrace];
+  inputManager2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager2 clearHumanReadableTrace];
 
   return v9;
 }
 
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 requestToken:(id)a5 completionHandler:(id)a6
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range requestToken:(id)token completionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  length = range.length;
+  location = range.location;
+  stateCopy = state;
+  tokenCopy = token;
+  handlerCopy = handler;
   kdebug_trace();
   v13 = kac_get_log();
   v14 = os_signpost_id_make_with_pointer(v13, (self ^ 1));
@@ -1097,11 +1097,11 @@ void __102__TIKeyboardInputManagerWrapper_generateCandidatesWithKeyboardState_ca
     }
   }
 
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v10];
-  v16 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v16)
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v17 = [v10 copy];
+    v17 = [stateCopy copy];
   }
 
   else
@@ -1110,26 +1110,26 @@ void __102__TIKeyboardInputManagerWrapper_generateCandidatesWithKeyboardState_ca
   }
 
   v18 = [TIStreamingCandidateHandler alloc];
-  v19 = [(TIKeyboardInputManagerWrapper *)self clientProxy];
-  v20 = [(TIKeyboardInputManagerWrapper *)self logger];
+  clientProxy = [(TIKeyboardInputManagerWrapper *)self clientProxy];
+  logger2 = [(TIKeyboardInputManagerWrapper *)self logger];
   inputManager = self->_inputManager;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __120__TIKeyboardInputManagerWrapper_generateAutocorrectionsWithKeyboardState_candidateRange_requestToken_completionHandler___block_invoke;
   v29[3] = &unk_27872F238;
-  v32 = v10;
-  v33 = v12;
+  v32 = stateCopy;
+  v33 = handlerCopy;
   v29[4] = self;
   v30 = v17;
-  v31 = v11;
-  v22 = v10;
-  v23 = v11;
+  v31 = tokenCopy;
+  v22 = stateCopy;
+  v23 = tokenCopy;
   v24 = v17;
-  v25 = v12;
-  v26 = [(TIStreamingCandidateHandler *)v18 initWithClientProxy:v19 keyboardState:v24 requestToken:v23 logger:v20 inputManager:inputManager candidateHandler:v29];
+  v25 = handlerCopy;
+  v26 = [(TIStreamingCandidateHandler *)v18 initWithClientProxy:clientProxy keyboardState:v24 requestToken:v23 logger:logger2 inputManager:inputManager candidateHandler:v29];
 
-  v27 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v27 generateAutocorrectionsWithKeyboardState:v22 candidateRange:location candidateHandler:{length, v26}];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager generateAutocorrectionsWithKeyboardState:v22 candidateRange:location candidateHandler:{length, v26}];
 }
 
 void __120__TIKeyboardInputManagerWrapper_generateAutocorrectionsWithKeyboardState_candidateRange_requestToken_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1162,12 +1162,12 @@ void __120__TIKeyboardInputManagerWrapper_generateAutocorrectionsWithKeyboardSta
   [v12 clearHumanReadableTrace];
 }
 
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range completionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  stateCopy = state;
+  handlerCopy = handler;
   kdebug_trace();
   v11 = kac_get_log();
   v12 = os_signpost_id_make_with_pointer(v11, (self ^ 1));
@@ -1181,11 +1181,11 @@ void __120__TIKeyboardInputManagerWrapper_generateAutocorrectionsWithKeyboardSta
     }
   }
 
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v9];
-  v14 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v14)
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v15 = [v9 copy];
+    v15 = [stateCopy copy];
   }
 
   else
@@ -1198,13 +1198,13 @@ void __120__TIKeyboardInputManagerWrapper_generateAutocorrectionsWithKeyboardSta
   v23 = 3221225472;
   v24 = __107__TIKeyboardInputManagerWrapper_generateAutocorrectionsWithKeyboardState_candidateRange_completionHandler___block_invoke;
   v25 = &unk_27872F210;
-  v26 = self;
+  selfCopy = self;
   v27 = v15;
-  v28 = v9;
-  v29 = v10;
-  v17 = v9;
+  v28 = stateCopy;
+  v29 = handlerCopy;
+  v17 = stateCopy;
   v18 = v15;
-  v19 = v10;
+  v19 = handlerCopy;
   v20 = [(TIAccumulatingCandidateHandler *)v16 initWithHandlerBlock:&v22];
   v21 = [(TIKeyboardInputManagerWrapper *)self inputManager:v22];
   [v21 generateAutocorrectionsWithKeyboardState:v17 candidateRange:location candidateHandler:{length, v20}];
@@ -1240,37 +1240,37 @@ void __107__TIKeyboardInputManagerWrapper_generateAutocorrectionsWithKeyboardSta
   [v12 clearHumanReadableTrace];
 }
 
-- (void)handleKeyboardInput:(id)a3 acceptedSecureCandidate:(id)a4 keyboardState:(id)a5 completionHandler:(id)a6
+- (void)handleKeyboardInput:(id)input acceptedSecureCandidate:(id)candidate keyboardState:(id)state completionHandler:(id)handler
 {
   v69[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v67 = a6;
-  v13 = [v10 acceptedCandidate];
+  inputCopy = input;
+  candidateCopy = candidate;
+  stateCopy = state;
+  handlerCopy = handler;
+  acceptedCandidate = [inputCopy acceptedCandidate];
 
-  if (v13 == v11)
+  if (acceptedCandidate == candidateCopy)
   {
     v21 = 0;
   }
 
   else
   {
-    [v10 setAcceptedCandidate:v11];
+    [inputCopy setAcceptedCandidate:candidateCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v11;
-      v15 = [v14 proactivePredictedItem];
-      if (v15)
+      v14 = candidateCopy;
+      proactivePredictedItem = [v14 proactivePredictedItem];
+      if (proactivePredictedItem)
       {
-        v16 = v15;
-        v17 = [v14 proactivePredictedItem];
-        if ([v17 itemType] == 1)
+        v16 = proactivePredictedItem;
+        proactivePredictedItem2 = [v14 proactivePredictedItem];
+        if ([proactivePredictedItem2 itemType] == 1)
         {
-          v18 = [v14 proactivePredictedItem];
-          v19 = [v18 operationData];
-          v20 = v19 == 0;
+          proactivePredictedItem3 = [v14 proactivePredictedItem];
+          operationData = [proactivePredictedItem3 operationData];
+          v20 = operationData == 0;
         }
 
         else
@@ -1290,41 +1290,41 @@ void __107__TIKeyboardInputManagerWrapper_generateAutocorrectionsWithKeyboardSta
       v20 = 1;
     }
 
-    v22 = [v10 acceptedCandidate];
-    v23 = [v22 candidate];
-    v24 = [v23 length];
+    acceptedCandidate2 = [inputCopy acceptedCandidate];
+    candidate = [acceptedCandidate2 candidate];
+    v24 = [candidate length];
 
     if (v20 && v24)
     {
       v25 = MEMORY[0x277CCACA8];
-      v26 = [v10 acceptedCandidate];
-      v27 = [v26 candidate];
-      v28 = [v10 string];
-      v29 = v28;
+      acceptedCandidate3 = [inputCopy acceptedCandidate];
+      candidate2 = [acceptedCandidate3 candidate];
+      string = [inputCopy string];
+      v29 = string;
       v30 = &stru_283FDFAF8;
-      if (v28)
+      if (string)
       {
-        v30 = v28;
+        v30 = string;
       }
 
-      v31 = [v25 stringWithFormat:@"%@%@", v27, v30];
-      [v10 setString:v31];
+      v31 = [v25 stringWithFormat:@"%@%@", candidate2, v30];
+      [inputCopy setString:v31];
     }
 
     else
     {
-      [v10 setString:&stru_283FDFAF8];
+      [inputCopy setString:&stru_283FDFAF8];
     }
 
-    v32 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-    v33 = [v10 acceptedCandidate];
-    v34 = [v33 input];
-    v35 = [v32 deletionCountForString:v34];
+    inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+    acceptedCandidate4 = [inputCopy acceptedCandidate];
+    input = [acceptedCandidate4 input];
+    v35 = [inputManager deletionCountForString:input];
 
-    v36 = [v10 acceptedCandidate];
-    v37 = [v36 customInfoType];
+    acceptedCandidate5 = [inputCopy acceptedCandidate];
+    customInfoType = [acceptedCandidate5 customInfoType];
 
-    if (v37 == 4096)
+    if (customInfoType == 4096)
     {
       v21 = 0;
     }
@@ -1335,11 +1335,11 @@ void __107__TIKeyboardInputManagerWrapper_generateAutocorrectionsWithKeyboardSta
     }
   }
 
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v12 withInputEvent:v10];
-  v38 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v38)
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy withInputEvent:inputCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v66 = [v12 copy];
+    v66 = [stateCopy copy];
   }
 
   else
@@ -1347,139 +1347,139 @@ void __107__TIKeyboardInputManagerWrapper_generateAutocorrectionsWithKeyboardSta
     v66 = 0;
   }
 
-  v39 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  if ([v39 isHardwareKeyboardAutocorrectionEnabled])
+  inputManager2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  if ([inputManager2 isHardwareKeyboardAutocorrectionEnabled])
   {
-    v40 = [v10 touchEvent];
+    touchEvent = [inputCopy touchEvent];
 
-    if (v40)
+    if (touchEvent)
     {
       goto LABEL_28;
     }
 
-    v39 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-    [v39 addSynthesizedTouchToInput:v10 keyboardState:v12];
+    inputManager2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+    [inputManager2 addSynthesizedTouchToInput:inputCopy keyboardState:stateCopy];
   }
 
 LABEL_28:
-  v41 = [v10 touchEvent];
+  touchEvent2 = [inputCopy touchEvent];
 
-  if (v41)
+  if (touchEvent2)
   {
-    v42 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-    v43 = [v10 touchEvent];
-    [v42 skipHitTestForTouchEvent:v43 keyboardState:v12];
+    inputManager3 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+    touchEvent3 = [inputCopy touchEvent];
+    [inputManager3 skipHitTestForTouchEvent:touchEvent3 keyboardState:stateCopy];
   }
 
-  v44 = [v10 acceptedCandidate];
+  acceptedCandidate6 = [inputCopy acceptedCandidate];
 
-  if (v44)
+  if (acceptedCandidate6)
   {
-    v45 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-    v46 = [v10 acceptedCandidate];
-    [v45 textAccepted:v46 fromPredictiveInputBar:objc_msgSend(v10 withInput:{"isSynthesizedByAcceptingCandidate"), v10}];
+    inputManager4 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+    acceptedCandidate7 = [inputCopy acceptedCandidate];
+    [inputManager4 textAccepted:acceptedCandidate7 fromPredictiveInputBar:objc_msgSend(inputCopy withInput:{"isSynthesizedByAcceptingCandidate"), inputCopy}];
   }
 
-  v47 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v47 syncToKeyboardState:v12];
+  inputManager5 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager5 syncToKeyboardState:stateCopy];
 
-  v48 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v49 = [v48 handleKeyboardInput:v10];
+  inputManager6 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  v49 = [inputManager6 handleKeyboardInput:inputCopy];
 
-  if (![v12 secureTextEntry] || (objc_msgSend(v12, "textInputTraits"), v50 = objc_claimAutoreleasedReturnValue(), v51 = objc_msgSend(v50, "keyboardAppearance"), v50, v51 != 5))
+  if (![stateCopy secureTextEntry] || (objc_msgSend(stateCopy, "textInputTraits"), v50 = objc_claimAutoreleasedReturnValue(), v51 = objc_msgSend(v50, "keyboardAppearance"), v50, v51 != 5))
   {
     v52 = +[TIAppAutofillManager sharedInstance];
-    v53 = [v52 secureCandidateRenderer];
+    secureCandidateRenderer = [v52 secureCandidateRenderer];
 
-    if (v13 == v11)
+    if (acceptedCandidate == candidateCopy)
     {
 LABEL_42:
-      if ([v12 needAutofill])
+      if ([stateCopy needAutofill])
       {
         v57 = +[TIAppAutofillManager sharedInstance];
-        v58 = [v57 secureCandidateRenderer];
-        [v58 clearSecureCandidateCache];
+        secureCandidateRenderer2 = [v57 secureCandidateRenderer];
+        [secureCandidateRenderer2 clearSecureCandidateCache];
       }
 
       else
       {
-        [v53 clearSecureCandidateCache];
+        [secureCandidateRenderer clearSecureCandidateCache];
       }
 
       goto LABEL_46;
     }
 
     [v49 setDeletionCount:v21];
-    if ([v11 customInfoType] == 1024)
+    if ([candidateCopy customInfoType] == 1024)
     {
       v68 = @"AutofillSuggestedUsername";
-      v54 = [v11 candidate];
-      v69[0] = v54;
+      candidate3 = [candidateCopy candidate];
+      v69[0] = candidate3;
       v55 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v69 forKeys:&v68 count:1];
     }
 
     else
     {
-      if (([v11 customInfoType] & 0x800) != 0)
+      if (([candidateCopy customInfoType] & 0x800) != 0)
       {
         v56 = 0;
         goto LABEL_41;
       }
 
-      v54 = [v10 acceptedCandidate];
-      v55 = [v53 cachedPayloadForSecureCandidateSlotID:{objc_msgSend(v54, "slotID")}];
+      candidate3 = [inputCopy acceptedCandidate];
+      v55 = [secureCandidateRenderer cachedPayloadForSecureCandidateSlotID:{objc_msgSend(candidate3, "slotID")}];
     }
 
     v56 = v55;
 
 LABEL_41:
-    [(TIKeyboardInputManagerWrapper *)self _updateKeyboardOutput:v49 withSecureCandidatePayload:v56 keyboardState:v12];
+    [(TIKeyboardInputManagerWrapper *)self _updateKeyboardOutput:v49 withSecureCandidatePayload:v56 keyboardState:stateCopy];
 
     goto LABEL_42;
   }
 
 LABEL_46:
-  v59 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v60 = [v59 keyboardConfiguration];
+  inputManager7 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  keyboardConfiguration = [inputManager7 keyboardConfiguration];
 
-  v67[2](v67, v49, v60);
-  v61 = [(TIKeyboardInputManagerWrapper *)self logger];
-  v62 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  v63 = [v62 humanReadableTrace];
-  [v61 logKeyboardOutput:v49 keyboardConfiguration:v60 trace:v63 forKeyboardInput:v10 keyboardState:v66];
+  handlerCopy[2](handlerCopy, v49, keyboardConfiguration);
+  logger2 = [(TIKeyboardInputManagerWrapper *)self logger];
+  inputManager8 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  humanReadableTrace = [inputManager8 humanReadableTrace];
+  [logger2 logKeyboardOutput:v49 keyboardConfiguration:keyboardConfiguration trace:humanReadableTrace forKeyboardInput:inputCopy keyboardState:v66];
 
-  v64 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v64 clearHumanReadableTrace];
+  inputManager9 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager9 clearHumanReadableTrace];
 
   v65 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleKeyboardInput:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5
+- (void)handleKeyboardInput:(id)input keyboardState:(id)state completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 acceptedCandidate];
-  v12 = v11;
-  if (v11 && [v11 slotID])
+  inputCopy = input;
+  stateCopy = state;
+  handlerCopy = handler;
+  acceptedCandidate = [inputCopy acceptedCandidate];
+  v12 = acceptedCandidate;
+  if (acceptedCandidate && [acceptedCandidate slotID])
   {
-    v13 = [v8 acceptedCandidate];
+    acceptedCandidate2 = [inputCopy acceptedCandidate];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __85__TIKeyboardInputManagerWrapper_handleKeyboardInput_keyboardState_completionHandler___block_invoke;
     v14[3] = &unk_27872F1E8;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
-    v18 = v10;
+    v15 = inputCopy;
+    v16 = stateCopy;
+    v18 = handlerCopy;
     v17 = v12;
-    [(TIKeyboardInputManagerWrapper *)self acceptSecureCandidate:v13 keyboardState:v16 completion:v14];
+    [(TIKeyboardInputManagerWrapper *)self acceptSecureCandidate:acceptedCandidate2 keyboardState:v16 completion:v14];
   }
 
   else
   {
-    [(TIKeyboardInputManagerWrapper *)self updateAnalyticsForRejectedSuggestion:v12 keyboardState:v9];
-    [(TIKeyboardInputManagerWrapper *)self handleKeyboardInput:v8 acceptedSecureCandidate:v12 keyboardState:v9 completionHandler:v10];
+    [(TIKeyboardInputManagerWrapper *)self updateAnalyticsForRejectedSuggestion:v12 keyboardState:stateCopy];
+    [(TIKeyboardInputManagerWrapper *)self handleKeyboardInput:inputCopy acceptedSecureCandidate:v12 keyboardState:stateCopy completionHandler:handlerCopy];
   }
 }
 
@@ -1507,18 +1507,18 @@ uint64_t __85__TIKeyboardInputManagerWrapper_handleKeyboardInput_keyboardState_c
   return [v3 handleKeyboardInput:v5 acceptedSecureCandidate:v7 keyboardState:v4 completionHandler:v6];
 }
 
-- (void)_updateKeyboardOutput:(id)a3 withSecureCandidatePayload:(id)a4 keyboardState:(id)a5
+- (void)_updateKeyboardOutput:(id)output withSecureCandidatePayload:(id)payload keyboardState:(id)state
 {
-  v50 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v50 && v7)
+  outputCopy = output;
+  payloadCopy = payload;
+  stateCopy = state;
+  if (outputCopy && payloadCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v7 mutableCopy];
-      [v50 setCustomInfo:v9];
+      v9 = [payloadCopy mutableCopy];
+      [outputCopy setCustomInfo:v9];
 LABEL_5:
 
       goto LABEL_16;
@@ -1527,12 +1527,12 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v7 stickerIdentifier];
+      stickerIdentifier = [payloadCopy stickerIdentifier];
 
-      if (v10)
+      if (stickerIdentifier)
       {
-        [v50 setAcceptedCandidate:v7];
-        [v50 setTextToCommit:&stru_283FDFAF8];
+        [outputCopy setAcceptedCandidate:payloadCopy];
+        [outputCopy setTextToCommit:&stru_283FDFAF8];
         goto LABEL_16;
       }
     }
@@ -1540,115 +1540,115 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v7;
-      v11 = [v9 proactivePredictedItem];
-      if (!v11)
+      v9 = payloadCopy;
+      proactivePredictedItem = [v9 proactivePredictedItem];
+      if (!proactivePredictedItem)
       {
         goto LABEL_29;
       }
 
-      v12 = v11;
-      v13 = [v9 proactivePredictedItem];
-      if ([v13 itemType] == 1)
+      dictionary = proactivePredictedItem;
+      proactivePredictedItem2 = [v9 proactivePredictedItem];
+      if ([proactivePredictedItem2 itemType] == 1)
       {
-        v14 = [v9 proactivePredictedItem];
-        v15 = [v14 operationData];
+        proactivePredictedItem3 = [v9 proactivePredictedItem];
+        operationData = [proactivePredictedItem3 operationData];
 
-        if (!v15)
+        if (!operationData)
         {
           goto LABEL_29;
         }
 
-        v16 = [v9 proactivePredictedItem];
-        v17 = [v16 operationData];
-        v18 = [v17 objectForKey:@"bundleID"];
+        proactivePredictedItem4 = [v9 proactivePredictedItem];
+        operationData2 = [proactivePredictedItem4 operationData];
+        v18 = [operationData2 objectForKey:@"bundleID"];
         v19 = [v18 isEqualToString:@"com.apple.messages.currentLocation"];
 
         if (v19)
         {
-          v12 = [MEMORY[0x277CBEB38] dictionary];
-          [v12 setObject:@"com.apple.messages.currentLocation" forKey:*MEMORY[0x277D6F8B8]];
-          v20 = [v9 proactivePredictedItem];
-          v21 = [v20 identifier];
-          v22 = [v21 isEqualToString:@"currentLocation"];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:@"com.apple.messages.currentLocation" forKey:*MEMORY[0x277D6F8B8]];
+          proactivePredictedItem5 = [v9 proactivePredictedItem];
+          identifier = [proactivePredictedItem5 identifier];
+          v22 = [identifier isEqualToString:@"currentLocation"];
 
           if (v22)
           {
-            [v50 setShouldSendCurrentLocation:1];
+            [outputCopy setShouldSendCurrentLocation:1];
             v23 = MEMORY[0x277D6F900];
           }
 
           else
           {
-            v31 = [v9 proactivePredictedItem];
-            v32 = [v31 identifier];
-            v33 = [v32 isEqualToString:@"requestLocation"];
+            proactivePredictedItem6 = [v9 proactivePredictedItem];
+            identifier2 = [proactivePredictedItem6 identifier];
+            v33 = [identifier2 isEqualToString:@"requestLocation"];
 
             if (!v33)
             {
 LABEL_25:
-              [v50 setCustomInfo:v12];
+              [outputCopy setCustomInfo:dictionary];
 LABEL_28:
 
 LABEL_29:
               v36 = +[TIProactiveQuickTypeManager sharedInstance];
-              v37 = [v36 usePQT2Flow];
+              usePQT2Flow = [v36 usePQT2Flow];
 
-              v38 = [v9 proactivePredictedItem];
-              v39 = v38;
-              if (v37)
+              proactivePredictedItem7 = [v9 proactivePredictedItem];
+              documentState = proactivePredictedItem7;
+              if (usePQT2Flow)
               {
-                if (!v38)
+                if (!proactivePredictedItem7)
                 {
                   goto LABEL_5;
                 }
 
-                v40 = [v9 proactivePredictedItem];
-                if (![v40 itemType])
+                proactivePredictedItem8 = [v9 proactivePredictedItem];
+                if (![proactivePredictedItem8 itemType])
                 {
-                  v41 = [v8 needContactAutofill];
+                  needContactAutofill = [stateCopy needContactAutofill];
 
-                  if (!v41)
+                  if (!needContactAutofill)
                   {
                     goto LABEL_5;
                   }
 
-                  v39 = [v8 documentState];
-                  v40 = [v39 contextBeforeInput];
-                  [v50 setDeletionCount:{objc_msgSend(v40, "length")}];
+                  documentState = [stateCopy documentState];
+                  proactivePredictedItem8 = [documentState contextBeforeInput];
+                  [outputCopy setDeletionCount:{objc_msgSend(proactivePredictedItem8, "length")}];
                 }
               }
 
               else
               {
-                if (!v38)
+                if (!proactivePredictedItem7)
                 {
                   goto LABEL_5;
                 }
 
-                v40 = [v9 proactivePredictedItem];
-                if (![v40 itemType])
+                proactivePredictedItem8 = [v9 proactivePredictedItem];
+                if (![proactivePredictedItem8 itemType])
                 {
-                  v42 = [v9 proactivePredictedItem];
-                  v43 = [v42 trigger];
-                  if (v43)
+                  proactivePredictedItem9 = [v9 proactivePredictedItem];
+                  trigger = [proactivePredictedItem9 trigger];
+                  if (trigger)
                   {
-                    v44 = v43;
-                    v49 = [v9 proactivePredictedItem];
-                    v45 = [v49 trigger];
-                    v46 = [v45 attributedString];
-                    v47 = [v46 objectForKey:@"contextBeforeInput"];
+                    v44 = trigger;
+                    proactivePredictedItem10 = [v9 proactivePredictedItem];
+                    trigger2 = [proactivePredictedItem10 trigger];
+                    attributedString = [trigger2 attributedString];
+                    v47 = [attributedString objectForKey:@"contextBeforeInput"];
 
                     if (!v47)
                     {
                       goto LABEL_5;
                     }
 
-                    v39 = [v9 proactivePredictedItem];
-                    v40 = [v39 trigger];
-                    v42 = [v40 attributedString];
-                    v48 = [v42 objectForKey:@"contextBeforeInput"];
-                    [v50 setDeletionCount:{objc_msgSend(v48, "length")}];
+                    documentState = [v9 proactivePredictedItem];
+                    proactivePredictedItem8 = [documentState trigger];
+                    proactivePredictedItem9 = [proactivePredictedItem8 attributedString];
+                    v48 = [proactivePredictedItem9 objectForKey:@"contextBeforeInput"];
+                    [outputCopy setDeletionCount:{objc_msgSend(v48, "length")}];
                   }
                 }
               }
@@ -1660,36 +1660,36 @@ LABEL_29:
           }
 
           v34 = [MEMORY[0x277CCABB0] numberWithBool:1];
-          [v12 setObject:v34 forKey:*v23];
+          [dictionary setObject:v34 forKey:*v23];
 
           goto LABEL_25;
         }
 
-        v24 = [v9 proactivePredictedItem];
-        v25 = [v24 operationData];
-        v26 = [v25 objectForKey:@"bundleID"];
+        proactivePredictedItem11 = [v9 proactivePredictedItem];
+        operationData3 = [proactivePredictedItem11 operationData];
+        v26 = [operationData3 objectForKey:@"bundleID"];
         v27 = [v26 isEqualToString:@"com.apple.SafetyMonitorApp.SafetyMonitorMessages"];
 
-        v28 = [v9 proactivePredictedItem];
-        v12 = v28;
+        proactivePredictedItem12 = [v9 proactivePredictedItem];
+        dictionary = proactivePredictedItem12;
         if (v27)
         {
-          v29 = [v28 identifier];
-          v30 = [v29 isEqualToString:@"start check-in"];
+          identifier3 = [proactivePredictedItem12 identifier];
+          v30 = [identifier3 isEqualToString:@"start check-in"];
 
           if (!v30)
           {
             goto LABEL_29;
           }
 
-          v12 = [MEMORY[0x277CBEB38] dictionary];
-          [v12 setObject:@"com.apple.SafetyMonitorApp.SafetyMonitorMessages" forKey:*MEMORY[0x277D6F8B8]];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:@"com.apple.SafetyMonitorApp.SafetyMonitorMessages" forKey:*MEMORY[0x277D6F8B8]];
           goto LABEL_25;
         }
 
-        v13 = [v28 operationData];
-        v35 = [v13 mutableCopy];
-        [v50 setCustomInfo:v35];
+        proactivePredictedItem2 = [proactivePredictedItem12 operationData];
+        v35 = [proactivePredictedItem2 mutableCopy];
+        [outputCopy setCustomInfo:v35];
       }
 
       goto LABEL_28;
@@ -1699,17 +1699,17 @@ LABEL_29:
 LABEL_16:
 }
 
-- (void)updateAnalyticsForRejectedSuggestion:(id)a3 keyboardState:(id)a4
+- (void)updateAnalyticsForRejectedSuggestion:(id)suggestion keyboardState:(id)state
 {
-  v13 = a3;
-  v5 = a4;
+  suggestionCopy = suggestion;
+  stateCopy = state;
   v6 = +[TIAppAutofillManager sharedInstance];
-  v7 = [v6 secureCandidateRenderer];
+  secureCandidateRenderer = [v6 secureCandidateRenderer];
 
-  if (v13)
+  if (suggestionCopy)
   {
-    v8 = [v13 slotID] != 0;
-    if (!v7)
+    v8 = [suggestionCopy slotID] != 0;
+    if (!secureCandidateRenderer)
     {
       goto LABEL_12;
     }
@@ -1718,20 +1718,20 @@ LABEL_16:
   else
   {
     v8 = 0;
-    if (!v7)
+    if (!secureCandidateRenderer)
     {
       goto LABEL_12;
     }
   }
 
-  v9 = [v7 secureCandidateCache];
-  if ([v9 count] != 0 && !v8)
+  secureCandidateCache = [secureCandidateRenderer secureCandidateCache];
+  if ([secureCandidateCache count] != 0 && !v8)
   {
-    if ([v5 needAutofill])
+    if ([stateCopy needAutofill])
     {
-      v10 = [v5 autofillMode];
+      autofillMode = [stateCopy autofillMode];
 
-      if (v10)
+      if (autofillMode)
       {
         goto LABEL_12;
       }
@@ -1741,36 +1741,36 @@ LABEL_16:
     {
     }
 
-    v9 = +[TIProactiveQuickTypeManager sharedInstance];
-    v11 = [v7 secureCandidateCache];
-    v12 = [v11 allValues];
-    [v9 suggestionNotAccepted:v12];
+    secureCandidateCache = +[TIProactiveQuickTypeManager sharedInstance];
+    secureCandidateCache2 = [secureCandidateRenderer secureCandidateCache];
+    allValues = [secureCandidateCache2 allValues];
+    [secureCandidateCache suggestionNotAccepted:allValues];
   }
 
 LABEL_12:
 }
 
-- (void)acceptSecureCandidate:(id)a3 keyboardState:(id)a4 completion:(id)a5
+- (void)acceptSecureCandidate:(id)candidate keyboardState:(id)state completion:(id)completion
 {
   v93[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  candidateCopy = candidate;
+  stateCopy = state;
+  completionCopy = completion;
   v11 = +[TIAppAutofillManager sharedInstance];
-  v12 = [v11 secureCandidateRenderer];
+  secureCandidateRenderer = [v11 secureCandidateRenderer];
 
-  if (!v8)
+  if (!candidateCopy)
   {
     v17 = 0;
     goto LABEL_34;
   }
 
-  v13 = [v8 slotID];
-  v14 = v8;
+  slotID = [candidateCopy slotID];
+  v14 = candidateCopy;
   v15 = v14;
-  if (v12)
+  if (secureCandidateRenderer)
   {
-    v16 = v13 == 0;
+    v16 = slotID == 0;
   }
 
   else
@@ -1784,18 +1784,18 @@ LABEL_12:
     goto LABEL_34;
   }
 
-  v81 = v10;
+  v81 = completionCopy;
   v18 = +[TIKeyboardSecureTouchManager sharedInstance];
-  v19 = [v9 eventAuthenticationMessage];
-  [v18 touchEventWithAuthenticationMessage:v19];
+  eventAuthenticationMessage = [stateCopy eventAuthenticationMessage];
+  [v18 touchEventWithAuthenticationMessage:eventAuthenticationMessage];
 
   v20 = +[TIKeyboardSecureTouchManager sharedInstance];
   v21 = [v20 verifySlotID:{objc_msgSend(v15, "slotID")}];
 
-  v22 = self;
+  selfCopy = self;
   if (v21)
   {
-    [v12 cachedCandidateForSecureCandidate:v15];
+    [secureCandidateRenderer cachedCandidateForSecureCandidate:v15];
   }
 
   else
@@ -1804,23 +1804,23 @@ LABEL_12:
   }
   v17 = ;
 
-  v23 = [v17 candidate];
-  v80 = v12;
-  if (![v23 length])
+  candidate = [v17 candidate];
+  v80 = secureCandidateRenderer;
+  if (![candidate length])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = [v17 proactivePredictedItem];
-      v25 = [v24 value];
+      proactivePredictedItem = [v17 proactivePredictedItem];
+      value = [proactivePredictedItem value];
 
-      v23 = v25;
+      candidate = value;
     }
   }
 
-  v83 = v9;
+  v83 = stateCopy;
   v84 = v17;
-  v82 = v23;
+  v82 = candidate;
   if ([v17 indexForMetrics])
   {
     if ([v17 indexForMetrics] != 1)
@@ -1828,17 +1828,17 @@ LABEL_12:
       goto LABEL_20;
     }
 
-    v78 = [(TIKeyboardInputManagerBase *)v22->_inputManager inputMode];
-    v26 = [v78 languageWithRegion];
-    v27 = [v17 proactiveTrigger];
-    v28 = [v9 textInputTraits];
-    v29 = [v28 textContentType];
-    v93[0] = v23;
+    inputMode = [(TIKeyboardInputManagerBase *)selfCopy->_inputManager inputMode];
+    languageWithRegion = [inputMode languageWithRegion];
+    proactiveTrigger = [v17 proactiveTrigger];
+    textInputTraits = [stateCopy textInputTraits];
+    textContentType = [textInputTraits textContentType];
+    v93[0] = candidate;
     v30 = MEMORY[0x277CBEA60];
-    v31 = v23;
-    v32 = v29;
-    v33 = v27;
-    v34 = v26;
+    v31 = candidate;
+    v32 = textContentType;
+    v33 = proactiveTrigger;
+    v34 = languageWithRegion;
     v35 = [v30 arrayWithObjects:v93 count:1];
 
     v36 = v34;
@@ -1848,17 +1848,17 @@ LABEL_12:
 
   else
   {
-    v78 = [(TIKeyboardInputManagerBase *)v22->_inputManager inputMode];
-    v39 = [v78 languageWithRegion];
-    v40 = [v17 proactiveTrigger];
-    v28 = [v9 textInputTraits];
-    v41 = [v28 textContentType];
-    v93[0] = v23;
+    inputMode = [(TIKeyboardInputManagerBase *)selfCopy->_inputManager inputMode];
+    languageWithRegion2 = [inputMode languageWithRegion];
+    proactiveTrigger2 = [v17 proactiveTrigger];
+    textInputTraits = [stateCopy textInputTraits];
+    textContentType2 = [textInputTraits textContentType];
+    v93[0] = candidate;
     v42 = MEMORY[0x277CBEA60];
-    v43 = v23;
-    v32 = v41;
-    v33 = v40;
-    v34 = v39;
+    v43 = candidate;
+    v32 = textContentType2;
+    v33 = proactiveTrigger2;
+    v34 = languageWithRegion2;
     v35 = [v42 arrayWithObjects:v93 count:1];
 
     v36 = v34;
@@ -1868,25 +1868,25 @@ LABEL_12:
 
   TIStatisticLogProactive(v36, v37, v38, v32, v35);
 
-  v9 = v83;
+  stateCopy = v83;
   v17 = v84;
 LABEL_20:
   v44 = +[TIProactiveQuickTypeManager sharedInstance];
-  v45 = [(TIKeyboardInputManagerBase *)v22->_inputManager inputMode];
-  v46 = [v45 languageWithRegion];
-  v47 = [v9 textInputTraits];
-  v48 = [v47 textContentType];
-  [v44 suggestionAccepted:v46 fieldType:v48];
+  inputMode2 = [(TIKeyboardInputManagerBase *)selfCopy->_inputManager inputMode];
+  languageWithRegion3 = [inputMode2 languageWithRegion];
+  textInputTraits2 = [stateCopy textInputTraits];
+  textContentType3 = [textInputTraits2 textContentType];
+  [v44 suggestionAccepted:languageWithRegion3 fieldType:textContentType3];
 
-  v49 = [v17 proactiveTrigger];
-  v50 = [v49 attributes];
-  v51 = [v50 objectForKeyedSubscript:@"subtype"];
+  proactiveTrigger3 = [v17 proactiveTrigger];
+  attributes = [proactiveTrigger3 attributes];
+  v51 = [attributes objectForKeyedSubscript:@"subtype"];
 
-  if ([v49 triggerSourceType] == 2 || (objc_msgSend(v51, "isEqual:", @"recent location") & 1) != 0 || objc_msgSend(v51, "isEqual:", @"recent phone"))
+  if ([proactiveTrigger3 triggerSourceType] == 2 || (objc_msgSend(v51, "isEqual:", @"recent location") & 1) != 0 || objc_msgSend(v51, "isEqual:", @"recent phone"))
   {
-    if ([v49 triggerSourceType])
+    if ([proactiveTrigger3 triggerSourceType])
     {
-      v52 = [v49 triggerSourceType] == 1;
+      v52 = [proactiveTrigger3 triggerSourceType] == 1;
     }
 
     else
@@ -1897,7 +1897,7 @@ LABEL_20:
     v76 = v52;
     objc_opt_class();
     v77 = v51;
-    v79 = v49;
+    v79 = proactiveTrigger3;
     if (objc_opt_isKindOfClass())
     {
       v53 = v17;
@@ -1910,8 +1910,8 @@ LABEL_20:
 
     [v17 proactiveTrigger];
     v55 = v54 = v17;
-    v56 = [v55 attributes];
-    v57 = [v56 objectForKeyedSubscript:@"field"];
+    attributes2 = [v55 attributes];
+    v57 = [attributes2 objectForKeyedSubscript:@"field"];
     v58 = v57;
     if (v57)
     {
@@ -1920,61 +1920,61 @@ LABEL_20:
 
     else
     {
-      v60 = [v54 proactiveTrigger];
-      v61 = [v60 attributes];
-      v59 = [v61 objectForKeyedSubscript:@"type"];
+      proactiveTrigger4 = [v54 proactiveTrigger];
+      attributes3 = [proactiveTrigger4 attributes];
+      v59 = [attributes3 objectForKeyedSubscript:@"type"];
     }
 
-    v62 = [v53 fromBundleId];
-    v9 = v83;
-    v63 = [v83 clientIdentifier];
+    fromBundleId = [v53 fromBundleId];
+    stateCopy = v83;
+    clientIdentifier = [v83 clientIdentifier];
     v64 = +[TIConnectionsMetricsTracker sharedInstance];
-    v65 = [v53 ageForConnectionsMetrics];
-    v66 = [v83 textInputTraits];
-    v67 = [v66 textContentType];
+    ageForConnectionsMetrics = [v53 ageForConnectionsMetrics];
+    textInputTraits3 = [v83 textInputTraits];
+    textContentType4 = [textInputTraits3 textContentType];
     BYTE1(v75) = !v76;
     LOBYTE(v75) = v76;
-    [v64 trackPredictionEngagmentWithConversion:1 age:v65 fieldType:v67 resultType:v59 fromBundleId:v62 targetApp:v63 linguistic:v75 semantic:?];
+    [v64 trackPredictionEngagmentWithConversion:1 age:ageForConnectionsMetrics fieldType:textContentType4 resultType:v59 fromBundleId:fromBundleId targetApp:clientIdentifier linguistic:v75 semantic:?];
 
     v17 = v84;
     v51 = v77;
-    v49 = v79;
+    proactiveTrigger3 = v79;
   }
 
-  v12 = v80;
-  v10 = v81;
+  secureCandidateRenderer = v80;
+  completionCopy = v81;
 LABEL_34:
-  if ([v8 customInfoType] == 64 || objc_msgSend(v8, "customInfoType") == 512)
+  if ([candidateCopy customInfoType] == 64 || objc_msgSend(candidateCopy, "customInfoType") == 512)
   {
     v68 = +[TIAppAutofillManager sharedInstance];
     v89[0] = MEMORY[0x277D85DD0];
     v89[1] = 3221225472;
     v89[2] = __80__TIKeyboardInputManagerWrapper_acceptSecureCandidate_keyboardState_completion___block_invoke;
     v89[3] = &unk_27872F1C0;
-    v92 = v10;
+    v92 = completionCopy;
     v90 = v17;
-    v91 = v8;
+    v91 = candidateCopy;
     [v68 shouldAcceptOneTimeCode:v91 completion:v89];
   }
 
-  else if ([v8 customInfoType] == 1024)
+  else if ([candidateCopy customInfoType] == 1024)
   {
     v70 = +[TIAppAutofillManager sharedInstance];
-    [v70 presentHideMyEmailUI:v8 keyboardState:v9 completion:v10];
+    [v70 presentHideMyEmailUI:candidateCopy keyboardState:stateCopy completion:completionCopy];
   }
 
   else
   {
-    if ([v9 needAutofill])
+    if ([stateCopy needAutofill])
     {
       v71 = +[TIAppAutofillManager sharedInstance];
-      v72 = [v71 secureCandidateRenderer];
-      v73 = [v72 cachedPayloadForSecureCandidateSlotID:{objc_msgSend(v8, "slotID")}];
+      secureCandidateRenderer2 = [v71 secureCandidateRenderer];
+      v73 = [secureCandidateRenderer2 cachedPayloadForSecureCandidateSlotID:{objc_msgSend(candidateCopy, "slotID")}];
     }
 
     else
     {
-      v73 = [v12 cachedPayloadForSecureCandidateSlotID:{objc_msgSend(v8, "slotID")}];
+      v73 = [secureCandidateRenderer cachedPayloadForSecureCandidateSlotID:{objc_msgSend(candidateCopy, "slotID")}];
     }
 
     v74 = +[TIAppAutofillManager sharedInstance];
@@ -1982,9 +1982,9 @@ LABEL_34:
     v85[1] = 3221225472;
     v85[2] = __80__TIKeyboardInputManagerWrapper_acceptSecureCandidate_keyboardState_completion___block_invoke_2;
     v85[3] = &unk_27872F1C0;
-    v88 = v10;
+    v88 = completionCopy;
     v86 = v17;
-    v87 = v8;
+    v87 = candidateCopy;
     [v74 shouldAcceptAutofill:v87 withPayload:v73 completion:v85];
   }
 
@@ -2013,10 +2013,10 @@ uint64_t __80__TIKeyboardInputManagerWrapper_acceptSecureCandidate_keyboardState
   return (*(*(a1 + 48) + 16))(*(a1 + 48), *(a1 + v2));
 }
 
-- (void)syncToKeyboardState:(id)a3 completionHandler:(id)a4
+- (void)syncToKeyboardState:(id)state completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  handlerCopy = handler;
   kdebug_trace();
   v8 = kac_get_log();
   v9 = os_signpost_id_make_with_pointer(v8, self);
@@ -2030,11 +2030,11 @@ uint64_t __80__TIKeyboardInputManagerWrapper_acceptSecureCandidate_keyboardState
     }
   }
 
-  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:v6];
-  v11 = [(TIKeyboardInputManagerWrapper *)self logger];
-  if (v11)
+  [(TIKeyboardInputManagerWrapper *)self handleKeyboardState:stateCopy];
+  logger = [(TIKeyboardInputManagerWrapper *)self logger];
+  if (logger)
   {
-    v12 = [v6 copy];
+    v12 = [stateCopy copy];
   }
 
   else
@@ -2042,29 +2042,29 @@ uint64_t __80__TIKeyboardInputManagerWrapper_acceptSecureCandidate_keyboardState
     v12 = 0;
   }
 
-  v13 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __71__TIKeyboardInputManagerWrapper_syncToKeyboardState_completionHandler___block_invoke;
   v24[3] = &unk_27872F198;
-  v14 = v7;
+  v14 = handlerCopy;
   v26 = v14;
   v24[4] = self;
   v15 = v12;
   v25 = v15;
-  v16 = [v13 syncToKeyboardState:v6 completionHandler:v24];
+  v16 = [inputManager syncToKeyboardState:stateCopy completionHandler:v24];
 
   if ((v16 & 1) == 0)
   {
-    v17 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-    [v17 syncToKeyboardState:v6];
+    inputManager2 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+    [inputManager2 syncToKeyboardState:stateCopy];
 
-    v18 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-    v19 = [v18 keyboardConfiguration];
+    inputManager3 = [(TIKeyboardInputManagerWrapper *)self inputManager];
+    keyboardConfiguration = [inputManager3 keyboardConfiguration];
 
-    (*(v14 + 2))(v14, v19);
-    v20 = [(TIKeyboardInputManagerWrapper *)self logger];
-    [v20 logKeyboardConfig:v19 forSyncToKeyboardState:v15];
+    (*(v14 + 2))(v14, keyboardConfiguration);
+    logger2 = [(TIKeyboardInputManagerWrapper *)self logger];
+    [logger2 logKeyboardConfig:keyboardConfiguration forSyncToKeyboardState:v15];
 
     kdebug_trace();
     v21 = kac_get_log();
@@ -2105,25 +2105,25 @@ void __71__TIKeyboardInputManagerWrapper_syncToKeyboardState_completionHandler__
   }
 }
 
-- (void)handleKeyboardState:(id)a3 withInputEvent:(id)a4
+- (void)handleKeyboardState:(id)state withInputEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 canSuggestSupplementalItemsForCurrentSelection];
+  stateCopy = state;
+  canSuggestSupplementalItemsForCurrentSelection = [stateCopy canSuggestSupplementalItemsForCurrentSelection];
   v6 = +[TITransientLexiconManager sharedInstance];
-  [v6 setSupplementalLexiconSearchEnabled:v5];
+  [v6 setSupplementalLexiconSearchEnabled:canSuggestSupplementalItemsForCurrentSelection];
 
   v9 = +[TITransientLexiconManager sharedInstance];
-  v7 = [v9 supplementalLexicons];
-  v8 = [v4 supplementalLexiconIdentifier];
+  supplementalLexicons = [v9 supplementalLexicons];
+  supplementalLexiconIdentifier = [stateCopy supplementalLexiconIdentifier];
 
-  [v7 setActiveLexiconWithIdentifier:v8];
+  [supplementalLexicons setActiveLexiconWithIdentifier:supplementalLexiconIdentifier];
 }
 
-- (void)setLogger:(id)a3
+- (void)setLogger:(id)logger
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerWrapper *)self inputManager];
-  [v5 setInputManagerLogger:v4];
+  loggerCopy = logger;
+  inputManager = [(TIKeyboardInputManagerWrapper *)self inputManager];
+  [inputManager setInputManagerLogger:loggerCopy];
 }
 
 @end

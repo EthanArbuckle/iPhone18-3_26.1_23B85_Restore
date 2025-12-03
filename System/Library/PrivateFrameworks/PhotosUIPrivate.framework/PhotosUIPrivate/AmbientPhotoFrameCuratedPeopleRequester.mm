@@ -1,13 +1,13 @@
 @interface AmbientPhotoFrameCuratedPeopleRequester
-- (void)passiveContentPeoplePickerDataSourceChanged:(id)a3;
+- (void)passiveContentPeoplePickerDataSourceChanged:(id)changed;
 @end
 
 @implementation AmbientPhotoFrameCuratedPeopleRequester
 
-- (void)passiveContentPeoplePickerDataSourceChanged:(id)a3
+- (void)passiveContentPeoplePickerDataSourceChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
+  changedCopy = changed;
+  selfCopy = self;
   sub_1B37F7E8C();
 }
 

@@ -1,85 +1,85 @@
 @interface PLPrimaryResourceDataStore
-+ (BOOL)bailOutOfVideoFinalizationIfNeededForAsset:(id)a3 taskIdentifier:(id)a4 didPromoteProxy:(BOOL *)a5 error:(id *)a6;
-+ (id)contextualVideoThumbnailIdentifierFromFileURL:(id)a3;
++ (BOOL)bailOutOfVideoFinalizationIfNeededForAsset:(id)asset taskIdentifier:(id)identifier didPromoteProxy:(BOOL *)proxy error:(id *)error;
++ (id)contextualVideoThumbnailIdentifierFromFileURL:(id)l;
 + (id)supportedRecipes;
 + (id)utiForContextualVideoThumbnail;
 + (unsigned)currentDeviceMasterThumbRecipeID;
-+ (unsigned)keyLengthWithDataPreview:(unsigned __int8)a3;
-- (BOOL)_lock_taskIsPendingDownloadWithIdentifier:(id)a3;
-- (BOOL)canMarkAsynchronousLocalRenderAsOptionalForProgress:(id)a3;
-- (BOOL)canStoreExternalResource:(id)a3;
-- (BOOL)canStreamResource:(id)a3;
++ (unsigned)keyLengthWithDataPreview:(unsigned __int8)preview;
+- (BOOL)_lock_taskIsPendingDownloadWithIdentifier:(id)identifier;
+- (BOOL)canMarkAsynchronousLocalRenderAsOptionalForProgress:(id)progress;
+- (BOOL)canStoreExternalResource:(id)resource;
+- (BOOL)canStreamResource:(id)resource;
 - (BOOL)isCPLSyncableLibraryStore;
-- (BOOL)storeExternalResource:(id)a3 forAsset:(id)a4 options:(id)a5 error:(id *)a6 resultingResource:(id *)a7;
-- (BOOL)videoResource:(id)a3 matchesOrExceedsQualityLevel:(unsigned int)a4;
+- (BOOL)storeExternalResource:(id)resource forAsset:(id)asset options:(id)options error:(id *)error resultingResource:(id *)resultingResource;
+- (BOOL)videoResource:(id)resource matchesOrExceedsQualityLevel:(unsigned int)level;
 - (PLCloudPhotoLibraryManager)_cplManager;
-- (PLPrimaryResourceDataStore)initWithPathManager:(id)a3;
-- (id)_contextualVideoThumbnailResourceForAsset:(id)a3 atURL:(id)a4;
-- (id)_contextualVideoThumbnailResourcesForAsset:(id)a3;
-- (id)_cplResourceIfDownloadIsAvailableForResource:(id)a3 asset:(id)a4 options:(id)a5;
+- (PLPrimaryResourceDataStore)initWithPathManager:(id)manager;
+- (id)_contextualVideoThumbnailResourceForAsset:(id)asset atURL:(id)l;
+- (id)_contextualVideoThumbnailResourcesForAsset:(id)asset;
+- (id)_cplResourceIfDownloadIsAvailableForResource:(id)resource asset:(id)asset options:(id)options;
 - (id)_deferredPhotoFinalizer;
-- (id)_expectedFileURLForMasterThumbnailForAsset:(id)a3;
-- (id)_fileURLForContextualVideoThumbnailIdentifier:(id)a3 asset:(id)a4 forWriting:(BOOL)a5;
-- (id)_finalizeDeferredResource:(id)a3 asset:(id)a4 options:(id)a5 clientBundleIdentifier:(id)a6 completionHandler:(id)a7;
+- (id)_expectedFileURLForMasterThumbnailForAsset:(id)asset;
+- (id)_fileURLForContextualVideoThumbnailIdentifier:(id)identifier asset:(id)asset forWriting:(BOOL)writing;
+- (id)_finalizeDeferredResource:(id)resource asset:(id)asset options:(id)options clientBundleIdentifier:(id)identifier completionHandler:(id)handler;
 - (id)_imageConversionServiceClient;
-- (id)_makeResourceLocallyAvailable:(id)a3 options:(id)a4 completion:(id)a5;
-- (id)_masterThumbnailVirtualResourceForAsset:(id)a3;
-- (id)_newProgressForTaskWithIdentifier:(id)a3 type:(int64_t)a4;
+- (id)_makeResourceLocallyAvailable:(id)available options:(id)options completion:(id)completion;
+- (id)_masterThumbnailVirtualResourceForAsset:(id)asset;
+- (id)_newProgressForTaskWithIdentifier:(id)identifier type:(int64_t)type;
 - (id)_videoConversionServiceClient;
-- (id)descriptionForSubtype:(int64_t)a3;
-- (id)expectedFileURLForResource:(id)a3 asset:(id)a4;
-- (id)getClosestResourceMatchingCPLResourceType:(unint64_t)a3 version:(unsigned int)a4 asset:(id)a5;
-- (id)keyFromKeyStruct:(const void *)a3;
-- (id)keyHelperForBundleScope:(unsigned __int16)a3;
-- (id)requestLocalAvailabilityChange:(signed __int16)a3 forResource:(id)a4 options:(id)a5 completion:(id)a6;
-- (id)resourceDataForKey:(id)a3 assetID:(id)a4;
-- (id)resourceURLForKey:(id)a3 assetID:(id)a4;
-- (id)virtualResourcesForAsset:(id)a3 options:(unsigned __int16)a4;
+- (id)descriptionForSubtype:(int64_t)subtype;
+- (id)expectedFileURLForResource:(id)resource asset:(id)asset;
+- (id)getClosestResourceMatchingCPLResourceType:(unint64_t)type version:(unsigned int)version asset:(id)asset;
+- (id)keyFromKeyStruct:(const void *)struct;
+- (id)keyHelperForBundleScope:(unsigned __int16)scope;
+- (id)requestLocalAvailabilityChange:(signed __int16)change forResource:(id)resource options:(id)options completion:(id)completion;
+- (id)resourceDataForKey:(id)key assetID:(id)d;
+- (id)resourceURLForKey:(id)key assetID:(id)d;
+- (id)virtualResourcesForAsset:(id)asset options:(unsigned __int16)options;
 - (unsigned)masterThumbRecipeID;
-- (void)_cancelAvailabilityRequestWithTaskIdentifier:(id)a3;
-- (void)_downloadCPLResource:(id)a3 options:(id)a4 taskDidBeginHandler:(id)a5 completionHandler:(id)a6;
-- (void)_lock_transitionTaskToInflightWithIdentifier:(id)a3;
-- (void)_verifyResourceLocalAvailability:(id)a3 localResourceFileURL:(id *)a4 resourceReapirNeeded:(int64_t *)a5;
+- (void)_cancelAvailabilityRequestWithTaskIdentifier:(id)identifier;
+- (void)_downloadCPLResource:(id)resource options:(id)options taskDidBeginHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)_lock_transitionTaskToInflightWithIdentifier:(id)identifier;
+- (void)_verifyResourceLocalAvailability:(id)availability localResourceFileURL:(id *)l resourceReapirNeeded:(int64_t *)needed;
 - (void)dealloc;
-- (void)generateDeferredAdjustmentForAsset:(id)a3 imageConversionServiceClient:(id)a4 videoConversionServiceClient:(id)a5 reason:(id)a6 taskIdentifier:(id)a7 cplResourceType:(unint64_t)a8 version:(unsigned int)a9 clientBundleID:(id)a10 completion:(id)a11;
-- (void)markAsynchronousLocalRenderAsOptionalForProgress:(id)a3;
-- (void)requestStreamingURLForResource:(id)a3 asset:(id)a4 intent:(unint64_t)a5 timeRange:(id *)a6 streamingHints:(id)a7 inContext:(id)a8 clientBundleID:(id)a9 completion:(id)a10;
-- (void)transitional_reconsiderLocalAvailabilityBasedOnExistingLocationOfCPLResource:(id)a3 givenFilePath:(id)a4;
+- (void)generateDeferredAdjustmentForAsset:(id)asset imageConversionServiceClient:(id)client videoConversionServiceClient:(id)serviceClient reason:(id)reason taskIdentifier:(id)identifier cplResourceType:(unint64_t)type version:(unsigned int)version clientBundleID:(id)self0 completion:(id)self1;
+- (void)markAsynchronousLocalRenderAsOptionalForProgress:(id)progress;
+- (void)requestStreamingURLForResource:(id)resource asset:(id)asset intent:(unint64_t)intent timeRange:(id *)range streamingHints:(id)hints inContext:(id)context clientBundleID:(id)d completion:(id)self0;
+- (void)transitional_reconsiderLocalAvailabilityBasedOnExistingLocationOfCPLResource:(id)resource givenFilePath:(id)path;
 @end
 
 @implementation PLPrimaryResourceDataStore
 
-- (void)transitional_reconsiderLocalAvailabilityBasedOnExistingLocationOfCPLResource:(id)a3 givenFilePath:(id)a4
+- (void)transitional_reconsiderLocalAvailabilityBasedOnExistingLocationOfCPLResource:(id)resource givenFilePath:(id)path
 {
-  v13 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v6 fileExistsAtPath:v5])
+  resourceCopy = resource;
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:pathCopy])
   {
-    v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5 isDirectory:0];
-    v8 = [v13 validatedExternalResourceRepresentationUsingFileURL:v7];
+    v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
+    v8 = [resourceCopy validatedExternalResourceRepresentationUsingFileURL:v7];
 
     v9 = [PLPrimaryResourceDataStoreKey alloc];
-    v10 = [v13 asset];
-    v11 = [(PLPrimaryResourceDataStoreKey *)v9 initFromExistingLocationOfExternalResource:v8 asset:v10];
+    asset = [resourceCopy asset];
+    v11 = [(PLPrimaryResourceDataStoreKey *)v9 initFromExistingLocationOfExternalResource:v8 asset:asset];
 
     if (v11)
     {
-      v12 = [v11 keyData];
-      [v13 setDataStoreKeyData:v12];
+      keyData = [v11 keyData];
+      [resourceCopy setDataStoreKeyData:keyData];
 
-      [v13 setLocalAvailability:1];
+      [resourceCopy setLocalAvailability:1];
     }
 
     else
     {
-      [v13 markAsNotLocallyAvailable];
+      [resourceCopy markAsNotLocallyAvailable];
     }
   }
 
   else
   {
-    [v13 markAsNotLocallyAvailable];
+    [resourceCopy markAsNotLocallyAvailable];
   }
 }
 
@@ -95,44 +95,44 @@
   return result;
 }
 
-- (void)markAsynchronousLocalRenderAsOptionalForProgress:(id)a3
+- (void)markAsynchronousLocalRenderAsOptionalForProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(PLPrimaryResourceDataStore *)self _videoConversionServiceClient];
-  [v5 markPendingRequestAsOptionalForProgress:v4];
+  progressCopy = progress;
+  _videoConversionServiceClient = [(PLPrimaryResourceDataStore *)self _videoConversionServiceClient];
+  [_videoConversionServiceClient markPendingRequestAsOptionalForProgress:progressCopy];
 }
 
-- (BOOL)canMarkAsynchronousLocalRenderAsOptionalForProgress:(id)a3
+- (BOOL)canMarkAsynchronousLocalRenderAsOptionalForProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(PLPrimaryResourceDataStore *)self _videoConversionServiceClient];
-  v6 = [v5 canMarkPendingRequestAsOptionalForProgress:v4];
+  progressCopy = progress;
+  _videoConversionServiceClient = [(PLPrimaryResourceDataStore *)self _videoConversionServiceClient];
+  v6 = [_videoConversionServiceClient canMarkPendingRequestAsOptionalForProgress:progressCopy];
 
   return v6;
 }
 
-- (void)requestStreamingURLForResource:(id)a3 asset:(id)a4 intent:(unint64_t)a5 timeRange:(id *)a6 streamingHints:(id)a7 inContext:(id)a8 clientBundleID:(id)a9 completion:(id)a10
+- (void)requestStreamingURLForResource:(id)resource asset:(id)asset intent:(unint64_t)intent timeRange:(id *)range streamingHints:(id)hints inContext:(id)context clientBundleID:(id)d completion:(id)self0
 {
   v35 = *MEMORY[0x1E69E9840];
-  v15 = a4;
-  v16 = a7;
-  v17 = a9;
-  v18 = a10;
-  v19 = [a3 cplType];
-  if (v19)
+  assetCopy = asset;
+  hintsCopy = hints;
+  dCopy = d;
+  completionCopy = completion;
+  cplType = [resource cplType];
+  if (cplType)
   {
-    v20 = v19;
-    v21 = [(PLPrimaryResourceDataStore *)self _cplManager];
+    v20 = cplType;
+    _cplManager = [(PLPrimaryResourceDataStore *)self _cplManager];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __135__PLPrimaryResourceDataStore_requestStreamingURLForResource_asset_intent_timeRange_streamingHints_inContext_clientBundleID_completion___block_invoke;
     v28[3] = &unk_1E75650C8;
-    v29 = v18;
-    v22 = *&a6->var0.var3;
-    *buf = *&a6->var0.var0;
+    v29 = completionCopy;
+    v22 = *&range->var0.var3;
+    *buf = *&range->var0.var0;
     v33 = v22;
-    v34 = *&a6->var1.var1;
-    [v21 getStreamingURLForAsset:v15 resourceType:v20 intent:a5 hints:v16 timeRange:buf clientBundleID:v17 completionHandler:v28];
+    v34 = *&range->var1.var1;
+    [_cplManager getStreamingURLForAsset:assetCopy resourceType:v20 intent:intent hints:hintsCopy timeRange:buf clientBundleID:dCopy completionHandler:v28];
 
     v23 = v29;
   }
@@ -154,86 +154,86 @@
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v23 = [v25 errorWithDomain:v26 code:4 userInfo:v27];
 
-    (*(v18 + 2))(v18, 0, 0, 0, 0, v23);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0, v23);
   }
 }
 
-- (BOOL)canStreamResource:(id)a3
+- (BOOL)canStreamResource:(id)resource
 {
-  v3 = a3;
-  if ([v3 isInCloud])
+  resourceCopy = resource;
+  if ([resourceCopy isInCloud])
   {
-    v4 = [v3 uniformTypeIdentifier];
-    v5 = [v4 conformsToMovie];
+    uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
+    conformsToMovie = [uniformTypeIdentifier conformsToMovie];
   }
 
   else
   {
-    v5 = 0;
+    conformsToMovie = 0;
   }
 
-  return v5;
+  return conformsToMovie;
 }
 
-- (BOOL)videoResource:(id)a3 matchesOrExceedsQualityLevel:(unsigned int)a4
+- (BOOL)videoResource:(id)resource matchesOrExceedsQualityLevel:(unsigned int)level
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 > 1)
+  resourceCopy = resource;
+  v6 = resourceCopy;
+  if (level > 1)
   {
-    if (a4 == 2)
+    if (level == 2)
     {
-      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v5, "recipeID")}];
-      v8 = [&unk_1F0FBF280 containsObject:v7];
+      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(resourceCopy, "recipeID")}];
+      isDerivative = [&unk_1F0FBF280 containsObject:v7];
       goto LABEL_12;
     }
 
-    LOBYTE(a4) = a4 == 3;
+    LOBYTE(level) = level == 3;
   }
 
-  else if (a4)
+  else if (level)
   {
-    if (a4 == 1)
+    if (level == 1)
     {
-      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v5, "recipeID")}];
+      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(resourceCopy, "recipeID")}];
       if ([&unk_1F0FBF298 containsObject:v7])
       {
-        LOBYTE(a4) = 1;
+        LOBYTE(level) = 1;
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      v8 = [v6 isDerivative];
+      isDerivative = [v6 isDerivative];
 LABEL_12:
-      LOBYTE(a4) = v8 ^ 1;
+      LOBYTE(level) = isDerivative ^ 1;
       goto LABEL_13;
     }
 
-    LOBYTE(a4) = 0;
+    LOBYTE(level) = 0;
   }
 
   else
   {
-    a4 = [v5 isDerivative] ^ 1;
+    level = [resourceCopy isDerivative] ^ 1;
   }
 
 LABEL_14:
 
-  return a4;
+  return level;
 }
 
-- (id)requestLocalAvailabilityChange:(signed __int16)a3 forResource:(id)a4 options:(id)a5 completion:(id)a6
+- (id)requestLocalAvailabilityChange:(signed __int16)change forResource:(id)resource options:(id)options completion:(id)completion
 {
-  v8 = a3;
+  changeCopy = change;
   v48[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v11)
+  resourceCopy = resource;
+  optionsCopy = options;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (resourceCopy)
   {
-    if (v13)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -241,8 +241,8 @@ LABEL_14:
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1669 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1669 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
 
     if (v14)
     {
@@ -250,22 +250,22 @@ LABEL_14:
     }
   }
 
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1670 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1670 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
-  v15 = [v11 dataStore];
+  dataStore = [resourceCopy dataStore];
 
-  if (v15 != self)
+  if (dataStore != self)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1671 description:@"resource does not belong to this data store."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1671 description:@"resource does not belong to this data store."];
   }
 
-  if (v8 == -1)
+  if (changeCopy == -1)
   {
     v40 = 0;
-    v20 = [v11 purgeIfPossibleReturningError:&v40];
+    v20 = [resourceCopy purgeIfPossibleReturningError:&v40];
     v19 = v40;
     (v14)[2](v14, v19, 0, v20);
 
@@ -274,7 +274,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (v8 == -32768)
+  if (changeCopy == -32768)
   {
     v16 = PLBackendGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -294,20 +294,20 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (v8 < 1)
+  if (changeCopy < 1)
   {
-    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid local availability value requested: %ld", v8];
+    changeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid local availability value requested: %ld", changeCopy];
     v29 = PLBackendGetLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v44 = v28;
+      v44 = changeCopy;
       _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
     v30 = MEMORY[0x1E696ABC0];
     v41 = *MEMORY[0x1E696A578];
-    v42 = v28;
+    v42 = changeCopy;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     v19 = [v30 errorWithDomain:*MEMORY[0x1E69BFF70] code:4 userInfo:v31];
 
@@ -315,7 +315,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v19 = +[PLResourceRecipe recipeFromID:](PLResourceRecipe, "recipeFromID:", [v11 recipeID]);
+  v19 = +[PLResourceRecipe recipeFromID:](PLResourceRecipe, "recipeFromID:", [resourceCopy recipeID]);
   v21 = PLImageManagerGetLog();
   v22 = os_signpost_id_generate(v21);
 
@@ -323,9 +323,9 @@ LABEL_19:
   v24 = v23;
   if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
   {
-    v25 = [v12 taskIdentifier];
+    taskIdentifier = [optionsCopy taskIdentifier];
     *buf = 138543618;
-    v44 = v25;
+    v44 = taskIdentifier;
     v45 = 2114;
     v46 = v19;
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v24, OS_SIGNPOST_INTERVAL_BEGIN, v22, "MakeResourceLocallyAvailable", "taskIdentifier = %{public}@, resource %{public}@", buf, 0x16u);
@@ -339,7 +339,7 @@ LABEL_19:
   v39 = v22;
   v37 = v14;
   v26 = v24;
-  v27 = [(PLPrimaryResourceDataStore *)self _makeResourceLocallyAvailable:v11 options:v12 completion:v36];
+  v27 = [(PLPrimaryResourceDataStore *)self _makeResourceLocallyAvailable:resourceCopy options:optionsCopy completion:v36];
 
 LABEL_20:
 
@@ -362,15 +362,15 @@ void __92__PLPrimaryResourceDataStore_requestLocalAvailabilityChange_forResource
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)storeExternalResource:(id)a3 forAsset:(id)a4 options:(id)a5 error:(id *)a6 resultingResource:(id *)a7
+- (BOOL)storeExternalResource:(id)resource forAsset:(id)asset options:(id)options error:(id *)error resultingResource:(id *)resultingResource
 {
   v75[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v12)
+  resourceCopy = resource;
+  assetCopy = asset;
+  optionsCopy = options;
+  if (resourceCopy)
   {
-    if (v13)
+    if (assetCopy)
     {
       goto LABEL_3;
     }
@@ -378,28 +378,28 @@ void __92__PLPrimaryResourceDataStore_requestLocalAvailabilityChange_forResource
 
   else
   {
-    v63 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v63 handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1490 description:{@"Invalid parameter not satisfying: %@", @"externalResource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1490 description:{@"Invalid parameter not satisfying: %@", @"externalResource"}];
 
-    if (v13)
+    if (assetCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v64 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v64 handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1491 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1491 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
 LABEL_3:
-  v15 = [v13 managedObjectContext];
-  if (v15)
+  managedObjectContext = [assetCopy managedObjectContext];
+  if (managedObjectContext)
   {
-    v68 = [MEMORY[0x1E696AC08] defaultManager];
-    v67 = [v13 assetID];
-    v16 = [v12 cplTypeWithAssetID:?];
-    v17 = [v12 uniformTypeIdentifier];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    assetID = [assetCopy assetID];
+    v16 = [resourceCopy cplTypeWithAssetID:?];
+    uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
 
-    if (v17)
+    if (uniformTypeIdentifier)
     {
       if (v16)
       {
@@ -409,36 +409,36 @@ LABEL_3:
 
     else
     {
-      v28 = -[PLResourceDataStore guessUTIForExternalResource:forAssetKind:](self, "guessUTIForExternalResource:forAssetKind:", v12, [v13 kind]);
-      [v12 setUniformTypeIdentifier:v28];
+      v28 = -[PLResourceDataStore guessUTIForExternalResource:forAssetKind:](self, "guessUTIForExternalResource:forAssetKind:", resourceCopy, [assetCopy kind]);
+      [resourceCopy setUniformTypeIdentifier:v28];
 
       v29 = PLImageManagerGetLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [v13 uuid];
+        uuid = [assetCopy uuid];
         *buf = 138543618;
-        v71 = v12;
+        v71 = resourceCopy;
         v72 = 2114;
-        v73 = v30;
+        v73 = uuid;
         _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_DEFAULT, "[RM] guessed UTI for external resource: %{public}@ for asset uuid: %{public}@", buf, 0x16u);
       }
 
       if (v16)
       {
 LABEL_6:
-        v18 = [v12 resourceType];
-        v19 = v68;
-        if (([v14 assumeNoExistingResources] & 1) == 0)
+        resourceType = [resourceCopy resourceType];
+        v19 = defaultManager;
+        if (([optionsCopy assumeNoExistingResources] & 1) == 0)
         {
           v20 = v16;
-          if (v18 != 5)
+          if (resourceType != 5)
           {
-            v21 = [v13 resourceForCPLType:v16 version:{objc_msgSend(v12, "version")}];
-            if ([v21 resourceType] == 4 && (PLResourceIdentityIsEqual(v12, v21) & 1) == 0)
+            v21 = [assetCopy resourceForCPLType:v16 version:{objc_msgSend(resourceCopy, "version")}];
+            if ([v21 resourceType] == 4 && (PLResourceIdentityIsEqual(resourceCopy, v21) & 1) == 0)
             {
 
-              [v12 setResourceType:5];
-              v20 = [v12 cplTypeWithAssetID:v67];
+              [resourceCopy setResourceType:5];
+              v20 = [resourceCopy cplTypeWithAssetID:assetID];
               v21 = 0;
             }
 
@@ -447,19 +447,19 @@ LABEL_6:
               v20 = v16;
             }
 
-            [v21 setResourceIdentity:v12 managedObjectContext:v15];
+            [v21 setResourceIdentity:resourceCopy managedObjectContext:managedObjectContext];
             if (v21)
             {
 LABEL_26:
-              v66 = v15;
-              v32 = v14;
-              v33 = [v12 fileURL];
+              v66 = managedObjectContext;
+              v32 = optionsCopy;
+              fileURL = [resourceCopy fileURL];
 
-              if (v33)
+              if (fileURL)
               {
-                v34 = [v12 fileURL];
-                v35 = [v34 path];
-                v36 = [v19 fileExistsAtPath:v35];
+                fileURL2 = [resourceCopy fileURL];
+                path = [fileURL2 path];
+                v36 = [v19 fileExistsAtPath:path];
               }
 
               else
@@ -476,37 +476,37 @@ LABEL_26:
                 }
               }
 
-              v37 = [v12 codecFourCharCode];
+              codecFourCharCode = [resourceCopy codecFourCharCode];
 
-              v14 = v32;
-              if (v37)
+              optionsCopy = v32;
+              if (codecFourCharCode)
               {
-                v38 = [v12 codecFourCharCode];
-                [v21 setCodecFourCharCodeName:v38];
+                codecFourCharCode2 = [resourceCopy codecFourCharCode];
+                [v21 setCodecFourCharCodeName:codecFourCharCode2];
               }
 
-              [v21 setUnorientedWidth:{objc_msgSend(v12, "unorientedWidth")}];
-              [v21 setUnorientedHeight:{objc_msgSend(v12, "unorientedHeight")}];
+              [v21 setUnorientedWidth:{objc_msgSend(resourceCopy, "unorientedWidth")}];
+              [v21 setUnorientedHeight:{objc_msgSend(resourceCopy, "unorientedHeight")}];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
                 v65 = v36;
-                v39 = v12;
+                v39 = resourceCopy;
                 [v21 setRemoteAvailability:{objc_msgSend(v39, "remoteAvailability")}];
-                v40 = [v21 fingerprint];
-                if (v40)
+                fingerprint = [v21 fingerprint];
+                if (fingerprint)
                 {
-                  v41 = v40;
-                  v42 = [v39 fingerprint];
-                  if (v42)
+                  v41 = fingerprint;
+                  fingerprint2 = [v39 fingerprint];
+                  if (fingerprint2)
                   {
-                    v43 = v42;
-                    v44 = [v21 fingerprint];
-                    v45 = [v39 fingerprint];
-                    v46 = [v44 isEqualToString:v45];
+                    v43 = fingerprint2;
+                    fingerprint3 = [v21 fingerprint];
+                    fingerprint4 = [v39 fingerprint];
+                    v46 = [fingerprint3 isEqualToString:fingerprint4];
 
-                    v19 = v68;
-                    v14 = v32;
+                    v19 = defaultManager;
+                    optionsCopy = v32;
 
                     if ((v46 & 1) == 0)
                     {
@@ -524,28 +524,28 @@ LABEL_26:
                 v36 = v65;
               }
 
-              v47 = [v12 sidecarIndex];
-              [v21 setSidecarIndex:v47];
+              sidecarIndex = [resourceCopy sidecarIndex];
+              [v21 setSidecarIndex:sidecarIndex];
 
-              v48 = [v21 fileSystemBookmark];
+              fileSystemBookmark = [v21 fileSystemBookmark];
 
-              if (v48)
+              if (fileSystemBookmark)
               {
-                v49 = -[PLPrimaryResourceDataStoreReferenceFileKey initWithResourceType:]([PLPrimaryResourceDataStoreReferenceFileKey alloc], "initWithResourceType:", [v12 resourceType]);
-                v15 = v66;
+                v49 = -[PLPrimaryResourceDataStoreReferenceFileKey initWithResourceType:]([PLPrimaryResourceDataStoreReferenceFileKey alloc], "initWithResourceType:", [resourceCopy resourceType]);
+                managedObjectContext = v66;
                 if (!v49)
                 {
                   goto LABEL_50;
                 }
 
 LABEL_46:
-                v50 = [v21 dataStoreKey];
-                if (v50 && (v51 = v50, [v21 dataStoreKey], v52 = objc_claimAutoreleasedReturnValue(), v53 = -[PLPrimaryResourceDataStoreKey isEqualToKey:](v49, "isEqualToKey:", v52), v52, v51, !v53))
+                dataStoreKey = [v21 dataStoreKey];
+                if (dataStoreKey && (v51 = dataStoreKey, [v21 dataStoreKey], v52 = objc_claimAutoreleasedReturnValue(), v53 = -[PLPrimaryResourceDataStoreKey isEqualToKey:](v49, "isEqualToKey:", v52), v52, v51, !v53))
                 {
-                  v55 = [v21 dataStoreKey];
-                  v56 = [v55 fileURLForAssetID:v67];
+                  dataStoreKey2 = [v21 dataStoreKey];
+                  v56 = [dataStoreKey2 fileURLForAssetID:assetID];
 
-                  v57 = [(PLPrimaryResourceDataStoreReferenceFileKey *)v49 fileURLForAssetID:v67];
+                  v57 = [(PLPrimaryResourceDataStoreReferenceFileKey *)v49 fileURLForAssetID:assetID];
                   if (([MEMORY[0x1E69BF238] fileURL:v56 isEqualToFileURL:v57] & 1) == 0)
                   {
                     v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Attempt to overwrite primary store resource with existing key: %@ with new key: %@, on resource: %@.  Store will orphan the previous key."], v56, v57, v21);
@@ -553,7 +553,7 @@ LABEL_46:
                   }
 
                   v54 = 0;
-                  v19 = v68;
+                  v19 = defaultManager;
                 }
 
                 else
@@ -564,10 +564,10 @@ LABEL_46:
                 goto LABEL_54;
               }
 
-              v15 = v66;
+              managedObjectContext = v66;
               if (v36)
               {
-                v49 = [[PLPrimaryResourceDataStoreKey alloc] initFromExistingLocationOfExternalResource:v12 asset:v13];
+                v49 = [[PLPrimaryResourceDataStoreKey alloc] initFromExistingLocationOfExternalResource:resourceCopy asset:assetCopy];
                 if (v49)
                 {
                   goto LABEL_46;
@@ -582,15 +582,15 @@ LABEL_46:
 LABEL_50:
               v54 = 1;
 LABEL_54:
-              [v21 setDataLength:{objc_msgSend(v12, "dataLength")}];
-              v59 = [(PLPrimaryResourceDataStoreReferenceFileKey *)v49 keyData];
-              [v21 setDataStoreKeyData:v59];
+              [v21 setDataLength:{objc_msgSend(resourceCopy, "dataLength")}];
+              keyData = [(PLPrimaryResourceDataStoreReferenceFileKey *)v49 keyData];
+              [v21 setDataStoreKeyData:keyData];
 
-              if ([v12 trashedState] >= 1 && !objc_msgSend(v21, "trashedState"))
+              if ([resourceCopy trashedState] >= 1 && !objc_msgSend(v21, "trashedState"))
               {
-                [v21 setTrashedState:{objc_msgSend(v12, "trashedState")}];
-                v60 = [v12 trashedDate];
-                [v21 setTrashedDate:v60];
+                [v21 setTrashedState:{objc_msgSend(resourceCopy, "trashedState")}];
+                trashedDate = [resourceCopy trashedDate];
+                [v21 setTrashedDate:trashedDate];
               }
 
               if (v54)
@@ -605,19 +605,19 @@ LABEL_54:
               }
 
               v27 = v21 != 0;
-              if (a7 && v21)
+              if (resultingResource && v21)
               {
                 v61 = v21;
-                *a7 = v21;
+                *resultingResource = v21;
               }
 
-              v26 = v67;
+              v26 = assetID;
               goto LABEL_64;
             }
           }
 
 LABEL_25:
-          v21 = [v13 fetchOrCreateResourceWithIdentity:v12];
+          v21 = [assetCopy fetchOrCreateResourceWithIdentity:resourceCopy];
           goto LABEL_26;
         }
 
@@ -625,16 +625,16 @@ LABEL_25:
       }
     }
 
-    v19 = v68;
-    if (![v14 assumeNoExistingResources])
+    v19 = defaultManager;
+    if (![optionsCopy assumeNoExistingResources])
     {
       v20 = 0;
       goto LABEL_25;
     }
 
 LABEL_19:
-    v31 = [v13 objectID];
-    v21 = [PLInternalResource insertResourceForAssetObjectID:v31 resourceIdentity:v12 inManagedObjectContext:v15];
+    objectID = [assetCopy objectID];
+    v21 = [PLInternalResource insertResourceForAssetObjectID:objectID resourceIdentity:resourceCopy inManagedObjectContext:managedObjectContext];
 
     v20 = v16;
     if (v21)
@@ -648,9 +648,9 @@ LABEL_19:
   v22 = PLBackendGetLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
-    v23 = [v13 uuid];
+    uuid2 = [assetCopy uuid];
     *buf = 138543362;
-    v71 = v23;
+    v71 = uuid2;
     _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "asset %{public}@ managed object context is nil, cannot complete storing external resource", buf, 0xCu);
   }
 
@@ -660,11 +660,11 @@ LABEL_19:
   v75[0] = @"asset managed object context is nil";
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:&v74 count:1];
   v26 = [v24 errorWithDomain:v25 code:47001 userInfo:v19];
-  if (a6)
+  if (error)
   {
     v26 = v26;
     v27 = 0;
-    *a6 = v26;
+    *error = v26;
   }
 
   else
@@ -677,13 +677,13 @@ LABEL_64:
   return v27;
 }
 
-- (BOOL)canStoreExternalResource:(id)a3
+- (BOOL)canStoreExternalResource:(id)resource
 {
-  v5 = a3;
-  if (!v5)
+  resourceCopy = resource;
+  if (!resourceCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1477 description:{@"Invalid parameter not satisfying: %@", @"externalResource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1477 description:{@"Invalid parameter not satisfying: %@", @"externalResource"}];
   }
 
   v6 = objc_opt_class();
@@ -701,30 +701,30 @@ LABEL_64:
   return v8;
 }
 
-- (id)virtualResourcesForAsset:(id)a3 options:(unsigned __int16)a4
+- (id)virtualResourcesForAsset:(id)asset options:(unsigned __int16)options
 {
-  v4 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  assetCopy = asset;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (([v6 isDeleted] & 1) == 0 && ((objc_msgSend(v6, "hasMasterThumb") & 1) != 0 || objc_msgSend(v6, "thumbnailIndex") == -3))
+  if (([assetCopy isDeleted] & 1) == 0 && ((objc_msgSend(assetCopy, "hasMasterThumb") & 1) != 0 || objc_msgSend(assetCopy, "thumbnailIndex") == -3))
   {
-    v8 = [(PLPrimaryResourceDataStore *)self _masterThumbnailVirtualResourceForAsset:v6];
+    v8 = [(PLPrimaryResourceDataStore *)self _masterThumbnailVirtualResourceForAsset:assetCopy];
     [v7 addObject:v8];
   }
 
-  if ([v6 hasAdjustments])
+  if ([assetCopy hasAdjustments])
   {
     v9 = [PLAdjustmentVirtualResource alloc];
-    v10 = [v6 pathForAdjustmentFile];
-    v11 = [(PLAdjustmentVirtualResource *)v9 initWithAdjustmentFilePath:v10 forAsset:v6];
+    pathForAdjustmentFile = [assetCopy pathForAdjustmentFile];
+    v11 = [(PLAdjustmentVirtualResource *)v9 initWithAdjustmentFilePath:pathForAdjustmentFile forAsset:assetCopy];
 
     [(PLVirtualResource *)v11 setDataStore:self];
     [v7 addObject:v11];
   }
 
-  if ((v4 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
-    v12 = [(PLPrimaryResourceDataStore *)self _contextualVideoThumbnailResourcesForAsset:v6];
+    v12 = [(PLPrimaryResourceDataStore *)self _contextualVideoThumbnailResourcesForAsset:assetCopy];
     if ([v12 count])
     {
       [v7 addObjectsFromArray:v12];
@@ -736,14 +736,14 @@ LABEL_64:
   return v13;
 }
 
-- (id)expectedFileURLForResource:(id)a3 asset:(id)a4
+- (id)expectedFileURLForResource:(id)resource asset:(id)asset
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 cplType])
+  resourceCopy = resource;
+  assetCopy = asset;
+  if ([resourceCopy cplType])
   {
-    v8 = [v7 pathForCPLResourceType:objc_msgSend(v6 adjusted:{"dataStoreSubtype"), objc_msgSend(v6, "version") == 2}];
+    v8 = [assetCopy pathForCPLResourceType:objc_msgSend(resourceCopy adjusted:{"dataStoreSubtype"), objc_msgSend(resourceCopy, "version") == 2}];
     if (v8)
     {
       v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8 isDirectory:0];
@@ -754,28 +754,28 @@ LABEL_64:
       v21 = PLBackendGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
-        v39 = [v6 resourceType];
-        v37 = [v6 version];
-        v22 = [v6 recipeID];
-        v23 = [v6 dataStore];
-        v24 = [objc_opt_class() storeClassID];
-        v25 = [v6 dataStoreSubtype];
-        v26 = [v6 uniformTypeIdentifier];
-        v27 = [v7 uuid];
+        resourceType = [resourceCopy resourceType];
+        version = [resourceCopy version];
+        recipeID = [resourceCopy recipeID];
+        dataStore = [resourceCopy dataStore];
+        storeClassID = [objc_opt_class() storeClassID];
+        dataStoreSubtype = [resourceCopy dataStoreSubtype];
+        uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
+        uuid = [assetCopy uuid];
         *buf = 67110658;
-        v41 = v39;
+        v41 = resourceType;
         v42 = 1024;
-        v43 = v37;
+        v43 = version;
         v44 = 1024;
-        v45 = v22;
+        v45 = recipeID;
         v46 = 1024;
-        v47 = v24;
+        v47 = storeClassID;
         v48 = 2048;
-        v49 = v25;
+        v49 = dataStoreSubtype;
         v50 = 2112;
-        v51 = v26;
+        v51 = uniformTypeIdentifier;
         v52 = 2112;
-        v53 = v27;
+        v53 = uuid;
         _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_FAULT, "Unable to build expectedFileURL for resource type: %d, version: %d, recipeID: %d, store: %d, storeSubType: %lld, UTI: %@ on asset uuid: %@", buf, 0x38u);
       }
 
@@ -785,40 +785,40 @@ LABEL_64:
 
   else
   {
-    v10 = [v7 pathManager];
-    v11 = [v10 isUBF];
+    pathManager = [assetCopy pathManager];
+    isUBF = [pathManager isUBF];
 
-    if (v11)
+    if (isUBF)
     {
       v36 = objc_alloc(MEMORY[0x1E69BF298]);
-      v12 = [v7 uuid];
-      v35 = [v7 bundleScope];
-      v38 = [v6 uniformTypeIdentifier];
-      v13 = [v38 identifier];
-      v14 = [v6 version];
-      v15 = [v6 resourceType];
-      v16 = [v6 recipeID];
-      v17 = [v7 originalFilename];
-      v18 = [v6 customSuffix];
-      v19 = [v36 initWithAssetUuid:v12 bundleScope:v35 uti:v13 resourceVersion:v14 resourceType:v15 recipeID:v16 originalFilename:v17 customSuffix:v18];
+      uuid2 = [assetCopy uuid];
+      bundleScope = [assetCopy bundleScope];
+      uniformTypeIdentifier2 = [resourceCopy uniformTypeIdentifier];
+      identifier = [uniformTypeIdentifier2 identifier];
+      version2 = [resourceCopy version];
+      resourceType2 = [resourceCopy resourceType];
+      recipeID2 = [resourceCopy recipeID];
+      originalFilename = [assetCopy originalFilename];
+      customSuffix = [resourceCopy customSuffix];
+      v19 = [v36 initWithAssetUuid:uuid2 bundleScope:bundleScope uti:identifier resourceVersion:version2 resourceType:resourceType2 recipeID:recipeID2 originalFilename:originalFilename customSuffix:customSuffix];
 
-      v20 = [(PLResourceDataStore *)self pathManager];
-      v9 = [v20 readOnlyUrlWithIdentifier:v19];
+      pathManager2 = [(PLResourceDataStore *)self pathManager];
+      v9 = [pathManager2 readOnlyUrlWithIdentifier:v19];
 
       goto LABEL_11;
     }
 
-    v28 = [v6 uniformTypeIdentifier];
-    v29 = [v28 identifier];
-    v8 = [PLManagedAsset preferredFileExtensionForType:v29];
+    uniformTypeIdentifier3 = [resourceCopy uniformTypeIdentifier];
+    identifier2 = [uniformTypeIdentifier3 identifier];
+    v8 = [PLManagedAsset preferredFileExtensionForType:identifier2];
 
     [v8 UTF8String];
-    [v6 version];
-    [v6 recipeID];
-    [v6 resourceType];
-    v30 = [v7 filename];
-    v31 = [v7 directory];
-    v32 = [v7 pathManager];
+    [resourceCopy version];
+    [resourceCopy recipeID];
+    [resourceCopy resourceType];
+    filename = [assetCopy filename];
+    directory = [assetCopy directory];
+    pathManager3 = [assetCopy pathManager];
     v33 = +[PLThumbnailManager masterThumbFilename];
     [v33 UTF8String];
     v9 = PLDCIMURLForResourcePropertiesAndPathManager();
@@ -829,32 +829,32 @@ LABEL_11:
   return v9;
 }
 
-- (id)resourceURLForKey:(id)a3 assetID:(id)a4
+- (id)resourceURLForKey:(id)key assetID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  keyCopy = key;
+  dCopy = d;
+  if (!keyCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1401 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1401 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
-  v9 = [v7 fileURLForAssetID:v8];
+  v9 = [keyCopy fileURLForAssetID:dCopy];
 
   return v9;
 }
 
-- (id)resourceDataForKey:(id)a3 assetID:(id)a4
+- (id)resourceDataForKey:(id)key assetID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  keyCopy = key;
+  dCopy = d;
+  if (!keyCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1387 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPrimaryResourceDataStore.m" lineNumber:1387 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
-  v9 = [v7 fileURLForAssetID:v8];
+  v9 = [keyCopy fileURLForAssetID:dCopy];
   if (v9)
   {
     v10 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v9 options:2 error:0];
@@ -868,16 +868,16 @@ LABEL_11:
   return v10;
 }
 
-- (id)keyFromKeyStruct:(const void *)a3
+- (id)keyFromKeyStruct:(const void *)struct
 {
-  v3 = [[PLPrimaryResourceDataStoreKey alloc] initWithKeyStruct:a3];
+  v3 = [[PLPrimaryResourceDataStoreKey alloc] initWithKeyStruct:struct];
 
   return v3;
 }
 
-- (id)descriptionForSubtype:(int64_t)a3
+- (id)descriptionForSubtype:(int64_t)subtype
 {
-  if (a3)
+  if (subtype)
   {
     v4 = [MEMORY[0x1E6994B90] shortDescriptionForResourceType:?];
   }
@@ -895,20 +895,20 @@ LABEL_11:
   if (PLIsAssetsd())
   {
     v3 = +[PLPhotoLibraryBundleController sharedBundleController];
-    v4 = [(PLResourceDataStore *)self pathManager];
-    v5 = [v4 libraryURL];
-    v6 = [v3 bundleForLibraryURL:v5];
+    pathManager = [(PLResourceDataStore *)self pathManager];
+    libraryURL = [pathManager libraryURL];
+    v6 = [v3 bundleForLibraryURL:libraryURL];
 
-    v7 = [v6 libraryServicesManager];
-    v8 = [v7 cloudPhotoLibraryManager];
+    libraryServicesManager = [v6 libraryServicesManager];
+    cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
   }
 
   else
   {
-    v8 = 0;
+    cloudPhotoLibraryManager = 0;
   }
 
-  return v8;
+  return cloudPhotoLibraryManager;
 }
 
 - (void)dealloc
@@ -919,12 +919,12 @@ LABEL_11:
   [(PLPrimaryResourceDataStore *)&v3 dealloc];
 }
 
-- (PLPrimaryResourceDataStore)initWithPathManager:(id)a3
+- (PLPrimaryResourceDataStore)initWithPathManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = PLPrimaryResourceDataStore;
-  v5 = [(PLResourceDataStore *)&v17 initWithPathManager:v4];
+  v5 = [(PLResourceDataStore *)&v17 initWithPathManager:managerCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -933,7 +933,7 @@ LABEL_11:
 
     v5->_lock._os_unfair_lock_opaque = 0;
     v5->_masterThumbRecipeID = 0;
-    v8 = [[PLPrimaryResourceDataStoreKeyHelper alloc] initWithPathManager:v4];
+    v8 = [[PLPrimaryResourceDataStoreKeyHelper alloc] initWithPathManager:managerCopy];
     mainScopeKeyHelper = v5->_mainScopeKeyHelper;
     v5->_mainScopeKeyHelper = v8;
 
@@ -944,7 +944,7 @@ LABEL_11:
     v15[3] = &unk_1E7566798;
     v16 = v10;
     v11 = v10;
-    [v4 enumerateBundleScopesWithBlock:v15];
+    [managerCopy enumerateBundleScopesWithBlock:v15];
     v12 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v11];
     keyHelperByBundleScope = v5->_keyHelperByBundleScope;
     v5->_keyHelperByBundleScope = v12;
@@ -966,25 +966,25 @@ void __50__PLPrimaryResourceDataStore_initWithPathManager___block_invoke(uint64_
   }
 }
 
-- (id)_contextualVideoThumbnailResourceForAsset:(id)a3 atURL:(id)a4
+- (id)_contextualVideoThumbnailResourceForAsset:(id)asset atURL:(id)l
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 photoLibrary];
-  v9 = [v8 libraryID];
+  assetCopy = asset;
+  lCopy = l;
+  photoLibrary = [assetCopy photoLibrary];
+  libraryID = [photoLibrary libraryID];
 
-  if (v9)
+  if (libraryID)
   {
-    v10 = [v7 lastPathComponent];
-    v11 = [v10 componentsSeparatedByString:@"_"];
-    v12 = [v11 lastObject];
+    lastPathComponent = [lCopy lastPathComponent];
+    v11 = [lastPathComponent componentsSeparatedByString:@"_"];
+    lastObject = [v11 lastObject];
 
-    v13 = [[PLContextualVideoThumbnailVirtualResource alloc] initWithAsset:v6 thumbnailIdentifier:v12];
+    v13 = [[PLContextualVideoThumbnailVirtualResource alloc] initWithAsset:assetCopy thumbnailIdentifier:lastObject];
     [(PLVirtualResource *)v13 setDataStore:self];
     v14 = [PLPrimaryResourceDataStoreFilePathKey alloc];
-    v15 = [v7 path];
-    v16 = [(PLPrimaryResourceDataStoreFilePathKey *)v14 initWithFilePath:v15 andLibraryID:v9];
+    path = [lCopy path];
+    v16 = [(PLPrimaryResourceDataStoreFilePathKey *)v14 initWithFilePath:path andLibraryID:libraryID];
 
     [(PLVirtualResource *)v13 setDataStoreKey:v16];
   }
@@ -994,10 +994,10 @@ void __50__PLPrimaryResourceDataStore_initWithPathManager___block_invoke(uint64_
     v17 = PLBackendGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v6 objectID];
-      v19 = [v18 pl_shortURI];
+      objectID = [assetCopy objectID];
+      pl_shortURI = [objectID pl_shortURI];
       v21 = 138543362;
-      v22 = v19;
+      v22 = pl_shortURI;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "libraryID is nil for asset %{public}@", &v21, 0xCu);
     }
 
@@ -1007,17 +1007,17 @@ void __50__PLPrimaryResourceDataStore_initWithPathManager___block_invoke(uint64_
   return v13;
 }
 
-- (id)_contextualVideoThumbnailResourcesForAsset:(id)a3
+- (id)_contextualVideoThumbnailResourcesForAsset:(id)asset
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isVideo])
+  assetCopy = asset;
+  if ([assetCopy isVideo])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [(PLPrimaryResourceDataStore *)self _fileURLForContextualVideoThumbnailIdentifier:0 asset:v4 forWriting:0];
+    v6 = [(PLPrimaryResourceDataStore *)self _fileURLForContextualVideoThumbnailIdentifier:0 asset:assetCopy forWriting:0];
     v7 = objc_alloc(MEMORY[0x1E69BF240]);
-    v8 = [v6 path];
-    v9 = [v7 initWithFilePath:v8];
+    path = [v6 path];
+    v9 = [v7 initWithFilePath:path];
 
     v17[0] = *MEMORY[0x1E695DC30];
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
@@ -1026,7 +1026,7 @@ void __50__PLPrimaryResourceDataStore_initWithPathManager___block_invoke(uint64_
     v14[2] = __73__PLPrimaryResourceDataStore__contextualVideoThumbnailResourcesForAsset___block_invoke;
     v14[3] = &unk_1E75650A0;
     v14[4] = self;
-    v15 = v4;
+    v15 = assetCopy;
     v16 = v5;
     v11 = v5;
     [v9 visitURLsLoadingPropertiesForKeys:v10 withBlock:v14];
@@ -1052,18 +1052,18 @@ uint64_t __73__PLPrimaryResourceDataStore__contextualVideoThumbnailResourcesForA
   return 1;
 }
 
-- (id)_fileURLForContextualVideoThumbnailIdentifier:(id)a3 asset:(id)a4 forWriting:(BOOL)a5
+- (id)_fileURLForContextualVideoThumbnailIdentifier:(id)identifier asset:(id)asset forWriting:(BOOL)writing
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isVideo])
+  identifierCopy = identifier;
+  assetCopy = asset;
+  if ([assetCopy isVideo])
   {
     v10 = objc_alloc(MEMORY[0x1E69BF298]);
-    v11 = [v9 uuid];
-    v12 = [v9 bundleScope];
+    uuid = [assetCopy uuid];
+    bundleScope = [assetCopy bundleScope];
     v13 = +[PLContextualVideoThumbnailVirtualResource uniformTypeIdentifierForContextualVideoThumbnail];
-    v14 = [v13 identifier];
-    v15 = [v10 initWithAssetUuid:v11 bundleScope:v12 uti:v14 resourceVersion:3 resourceType:16 recipeID:+[PLContextualVideoThumbnailVirtualResource recipeIDForContextualVideoThumbnail](PLContextualVideoThumbnailVirtualResource originalFilename:"recipeIDForContextualVideoThumbnail") customSuffix:{0, v8}];
+    identifier = [v13 identifier];
+    v15 = [v10 initWithAssetUuid:uuid bundleScope:bundleScope uti:identifier resourceVersion:3 resourceType:16 recipeID:+[PLContextualVideoThumbnailVirtualResource recipeIDForContextualVideoThumbnail](PLContextualVideoThumbnailVirtualResource originalFilename:"recipeIDForContextualVideoThumbnail") customSuffix:{0, identifierCopy}];
 
     v23 = 0;
     v24 = &v23;
@@ -1072,14 +1072,14 @@ uint64_t __73__PLPrimaryResourceDataStore__contextualVideoThumbnailResourcesForA
     v27 = __Block_byref_object_dispose__2227;
     v28 = 0;
     [(PLResourceDataStore *)self pathManager];
-    if (a5)
+    if (writing)
       v16 = {;
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __93__PLPrimaryResourceDataStore__fileURLForContextualVideoThumbnailIdentifier_asset_forWriting___block_invoke;
       v20[3] = &unk_1E7565078;
       v22 = &v23;
-      v21 = v9;
+      v21 = assetCopy;
       [v16 obtainAccessAndWaitWithFileWithIdentifier:v15 mode:2 toURLWithHandler:v20];
 
       v17 = v24[5];
@@ -1124,13 +1124,13 @@ void __93__PLPrimaryResourceDataStore__fileURLForContextualVideoThumbnailIdentif
   }
 }
 
-- (id)_masterThumbnailVirtualResourceForAsset:(id)a3
+- (id)_masterThumbnailVirtualResourceForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PLPrimaryResourceDataStore *)self masterThumbRecipeID];
-  v6 = [PLResourceRecipe recipeFromID:v5];
-  v7 = [(PLVirtualResource *)[PLFileBackedThumbnailVirtualResource alloc] initWithRecipe:v6 forAsset:v4];
-  [v6 sizeForAssetWidth:objc_msgSend(v4 height:{"width"), objc_msgSend(v4, "height")}];
+  assetCopy = asset;
+  masterThumbRecipeID = [(PLPrimaryResourceDataStore *)self masterThumbRecipeID];
+  v6 = [PLResourceRecipe recipeFromID:masterThumbRecipeID];
+  v7 = [(PLVirtualResource *)[PLFileBackedThumbnailVirtualResource alloc] initWithRecipe:v6 forAsset:assetCopy];
+  [v6 sizeForAssetWidth:objc_msgSend(assetCopy height:{"width"), objc_msgSend(assetCopy, "height")}];
   v9 = v8;
   v11 = v10;
   [(PLVirtualResource *)v7 setUnorientedWidth:v8];
@@ -1138,49 +1138,49 @@ void __93__PLPrimaryResourceDataStore__fileURLForContextualVideoThumbnailIdentif
   v12 = +[PLUniformTypeIdentifier jpegUniformTypeIdentifier];
   [(PLVirtualResource *)v7 setUniformTypeIdentifier:v12];
 
-  v13 = [v6 codecFourCharCodeName];
-  [(PLVirtualResource *)v7 setCodecFourCharCodeName:v13];
+  codecFourCharCodeName = [v6 codecFourCharCodeName];
+  [(PLVirtualResource *)v7 setCodecFourCharCodeName:codecFourCharCodeName];
 
-  v14 = [v4 width];
-  if ([v4 height] * v14 < 1)
+  width = [assetCopy width];
+  if ([assetCopy height] * width < 1)
   {
     v17 = 0.0;
   }
 
   else
   {
-    v16 = [v4 width];
+    width2 = [assetCopy width];
     v15 = v9 * v11;
-    *&v17 = v15 / ([v4 height] * v16);
+    *&v17 = v15 / ([assetCopy height] * width2);
   }
 
   [(PLVirtualResource *)v7 setScale:v17];
   [(PLVirtualResource *)v7 setDataStore:self];
   v18 = objc_alloc_init(PLValidatedExternalResource);
   [(PLValidatedExternalResource *)v18 setVersion:3];
-  [(PLValidatedExternalResource *)v18 setRecipeID:v5];
+  [(PLValidatedExternalResource *)v18 setRecipeID:masterThumbRecipeID];
   [(PLValidatedExternalResource *)v18 setResourceType:0];
-  v19 = [(PLPrimaryResourceDataStore *)self _expectedFileURLForMasterThumbnailForAsset:v4];
+  v19 = [(PLPrimaryResourceDataStore *)self _expectedFileURLForMasterThumbnailForAsset:assetCopy];
   [(PLValidatedExternalResource *)v18 setFileURL:v19];
 
-  v20 = [[PLPrimaryResourceDataStoreKey alloc] initFromExistingLocationOfExternalResource:v18 asset:v4];
+  v20 = [[PLPrimaryResourceDataStoreKey alloc] initFromExistingLocationOfExternalResource:v18 asset:assetCopy];
   [(PLVirtualResource *)v7 setDataStoreKey:v20];
 
   return v7;
 }
 
-- (id)_expectedFileURLForMasterThumbnailForAsset:(id)a3
+- (id)_expectedFileURLForMasterThumbnailForAsset:(id)asset
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 thumbnailIdentifier];
+  assetCopy = asset;
+  thumbnailIdentifier = [assetCopy thumbnailIdentifier];
 
-  if (v5)
+  if (thumbnailIdentifier)
   {
     v6 = MEMORY[0x1E69BF308];
-    v7 = [v4 thumbnailIdentifier];
-    v8 = [v4 pathManager];
-    v9 = [v6 thumbnailPathForThumbIdentifier:v7 withPathManager:v8 recipeID:-[PLPrimaryResourceDataStore masterThumbRecipeID](self forDelete:{"masterThumbRecipeID"), 0}];
+    thumbnailIdentifier2 = [assetCopy thumbnailIdentifier];
+    pathManager = [assetCopy pathManager];
+    v9 = [v6 thumbnailPathForThumbIdentifier:thumbnailIdentifier2 withPathManager:pathManager recipeID:-[PLPrimaryResourceDataStore masterThumbRecipeID](self forDelete:{"masterThumbRecipeID"), 0}];
 
     if (v9)
     {
@@ -1198,9 +1198,9 @@ void __93__PLPrimaryResourceDataStore__fileURLForContextualVideoThumbnailIdentif
     v11 = PLBackendGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v4 uuid];
+      uuid = [assetCopy uuid];
       v14 = 138543362;
-      v15 = v12;
+      v15 = uuid;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Unable to resolve master thumbnail path for asset %{public}@ due to nil thumbnail identifier", &v14, 0xCu);
     }
 
@@ -1210,42 +1210,42 @@ void __93__PLPrimaryResourceDataStore__fileURLForContextualVideoThumbnailIdentif
   return v10;
 }
 
-- (id)_makeResourceLocallyAvailable:(id)a3 options:(id)a4 completion:(id)a5
+- (id)_makeResourceLocallyAvailable:(id)available options:(id)options completion:(id)completion
 {
   v273[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v202 = a4;
-  v201 = a5;
+  availableCopy = available;
+  optionsCopy = options;
+  completionCopy = completion;
   v9 = PLImageManagerGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v202 taskIdentifier];
+    taskIdentifier = [optionsCopy taskIdentifier];
     *buf = 138412290;
-    *&buf[4] = v10;
+    *&buf[4] = taskIdentifier;
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEBUG, "[RM] %@ primaryDataStore - making resource available", buf, 0xCu);
   }
 
-  v11 = [v8 fileSystemBookmark];
-  if (v11)
+  fileSystemBookmark = [availableCopy fileSystemBookmark];
+  if (fileSystemBookmark)
   {
-    v12 = [v8 fileURL];
-    v13 = v12 == 0;
+    fileURL = [availableCopy fileURL];
+    v13 = fileURL == 0;
 
     if (v13)
     {
       v19 = PLImageManagerGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v202 taskIdentifier];
+        taskIdentifier2 = [optionsCopy taskIdentifier];
         *buf = 138412290;
-        *&buf[4] = v20;
+        *&buf[4] = taskIdentifier2;
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "[RM] %@ reference media resource is missing fileURL, attempting to recreate from bookmark", buf, 0xCu);
       }
 
-      v21 = [v8 fileSystemBookmark];
-      v22 = [v8 fileSystemVolume];
+      fileSystemBookmark2 = [availableCopy fileSystemBookmark];
+      fileSystemVolume = [availableCopy fileSystemVolume];
       v257 = 0;
-      v23 = PLPrimaryResourceDataStoreReferenceFileURL(v21, v22, &v257);
+      v23 = PLPrimaryResourceDataStoreReferenceFileURL(fileSystemBookmark2, fileSystemVolume, &v257);
       v14 = v257;
 
       if (v23)
@@ -1256,7 +1256,7 @@ LABEL_51:
           v52 = objc_alloc_init(MEMORY[0x1E695DF90]);
           [v52 setObject:v14 forKeyedSubscript:*MEMORY[0x1E69BFF78]];
           v53 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF70] code:7 userInfo:v52];
-          (*(v201 + 2))(v201, v53, 0, [v8 cplType], 0);
+          (*(completionCopy + 2))(completionCopy, v53, 0, [availableCopy cplType], 0);
 
           goto LABEL_52;
         }
@@ -1264,13 +1264,13 @@ LABEL_51:
         v24 = PLImageManagerGetLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v202 taskIdentifier];
-          v26 = [v8 asset];
-          v27 = [v26 uuid];
+          taskIdentifier3 = [optionsCopy taskIdentifier];
+          asset = [availableCopy asset];
+          uuid = [asset uuid];
           *buf = 138412802;
-          *&buf[4] = v25;
+          *&buf[4] = taskIdentifier3;
           *&buf[12] = 2114;
-          *&buf[14] = v27;
+          *&buf[14] = uuid;
           *&buf[22] = 2112;
           v267 = v14;
           _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEFAULT, "[RM] %@ No volume URL for referenced resource for asset %{public}@, using artificial volume for URL %@", buf, 0x20u);
@@ -1282,13 +1282,13 @@ LABEL_51:
         v24 = PLImageManagerGetLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v49 = [v202 taskIdentifier];
-          v50 = [v8 asset];
-          v51 = [v50 uuid];
+          taskIdentifier4 = [optionsCopy taskIdentifier];
+          asset2 = [availableCopy asset];
+          uuid2 = [asset2 uuid];
           *buf = 138412546;
-          *&buf[4] = v49;
+          *&buf[4] = taskIdentifier4;
           *&buf[12] = 2114;
-          *&buf[14] = v51;
+          *&buf[14] = uuid2;
           _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "[RM] %@ Failed to resolve bookmark URL for asset %{public}@", buf, 0x16u);
         }
       }
@@ -1297,66 +1297,66 @@ LABEL_51:
     }
   }
 
-  if ([v202 isTransient])
+  if ([optionsCopy isTransient])
   {
     goto LABEL_24;
   }
 
   *buf = 0;
   v256 = 0;
-  [(PLPrimaryResourceDataStore *)self _verifyResourceLocalAvailability:v8 localResourceFileURL:&v256 resourceReapirNeeded:buf];
+  [(PLPrimaryResourceDataStore *)self _verifyResourceLocalAvailability:availableCopy localResourceFileURL:&v256 resourceReapirNeeded:buf];
   v14 = v256;
   switch(*buf)
   {
     case 3:
-      v32 = [v8 photoLibrary];
+      photoLibrary = [availableCopy photoLibrary];
       v31 = v253;
       v253[0] = MEMORY[0x1E69E9820];
       v253[1] = 3221225472;
       v253[2] = __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_completion___block_invoke_103;
       v253[3] = &unk_1E7578848;
-      v253[4] = v202;
-      v253[5] = v8;
-      [v32 performTransactionAndWait:v253];
+      v253[4] = optionsCopy;
+      v253[5] = availableCopy;
+      [photoLibrary performTransactionAndWait:v253];
 
 LABEL_20:
       v18 = (v31 + 4);
-      v17 = v31[5];
+      photoLibrary3 = v31[5];
       goto LABEL_21;
     case 2:
-      v28 = [v8 fileSystemBookmark];
-      v29 = v28 == 0;
+      fileSystemBookmark3 = [availableCopy fileSystemBookmark];
+      v29 = fileSystemBookmark3 == 0;
 
       if (!v29)
       {
         break;
       }
 
-      v30 = [v8 photoLibrary];
+      photoLibrary2 = [availableCopy photoLibrary];
       v31 = v251;
       v251[0] = MEMORY[0x1E69E9820];
       v251[1] = 3221225472;
       v251[2] = __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_completion___block_invoke_104;
       v251[3] = &unk_1E75761B8;
-      v251[4] = v202;
-      v251[5] = v8;
+      v251[4] = optionsCopy;
+      v251[5] = availableCopy;
       v252 = v14;
-      [v30 performTransactionAndWait:v251];
+      [photoLibrary2 performTransactionAndWait:v251];
 
       goto LABEL_20;
     case 1:
-      v15 = [v8 fileSystemBookmark];
-      v16 = v15 == 0;
+      fileSystemBookmark4 = [availableCopy fileSystemBookmark];
+      v16 = fileSystemBookmark4 == 0;
 
       if (v16)
       {
-        v17 = [v8 photoLibrary];
+        photoLibrary3 = [availableCopy photoLibrary];
         v254[0] = MEMORY[0x1E69E9820];
         v254[1] = 3221225472;
         v254[2] = __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_completion___block_invoke;
         v254[3] = &unk_1E75781E8;
-        v255 = v8;
-        [v17 performTransactionAndWait:v254];
+        v255 = availableCopy;
+        [photoLibrary3 performTransactionAndWait:v254];
         v18 = &v255;
 LABEL_21:
       }
@@ -1366,61 +1366,61 @@ LABEL_21:
 
   if (v14)
   {
-    (*(v201 + 2))(v201, 0, 0, [v8 cplType], v14);
+    (*(completionCopy + 2))(completionCopy, 0, 0, [availableCopy cplType], v14);
 LABEL_52:
     v54 = 0;
     goto LABEL_152;
   }
 
 LABEL_24:
-  if ([objc_opt_class() isMasterThumbRecipeID:{objc_msgSend(v8, "recipeID")}])
+  if ([objc_opt_class() isMasterThumbRecipeID:{objc_msgSend(availableCopy, "recipeID")}])
   {
-    v33 = [v8 asset];
-    if ([v33 hasAdjustments])
+    asset3 = [availableCopy asset];
+    if ([asset3 hasAdjustments])
     {
-      [v33 assetResourceForCPLType:5];
+      [asset3 assetResourceForCPLType:5];
     }
 
     else
     {
-      [v33 masterResourceForCPLType:5];
+      [asset3 masterResourceForCPLType:5];
     }
     v34 = ;
   }
 
   else
   {
-    v34 = v8;
+    v34 = availableCopy;
   }
 
-  v35 = [v34 recipeID];
-  v36 = [v34 asset];
-  v37 = [v36 kind];
-  v38 = [v34 asset];
-  v39 = [v38 deferredProcessingNeeded];
-  v40 = [v34 asset];
-  v41 = [v40 videoDeferredProcessingNeeded];
-  v42 = [v34 localAvailabilityTarget];
-  if ((v35 & 0xFFFFFFFD) == 0x10198)
+  recipeID = [v34 recipeID];
+  asset4 = [v34 asset];
+  kind = [asset4 kind];
+  asset5 = [v34 asset];
+  deferredProcessingNeeded = [asset5 deferredProcessingNeeded];
+  asset6 = [v34 asset];
+  videoDeferredProcessingNeeded = [asset6 videoDeferredProcessingNeeded];
+  localAvailabilityTarget = [v34 localAvailabilityTarget];
+  if ((recipeID & 0xFFFFFFFD) == 0x10198)
   {
     v43 = 1;
     goto LABEL_67;
   }
 
-  if (v35 >= 0x20000)
+  if (recipeID >= 0x20000)
   {
-    switch(v35)
+    switch(recipeID)
     {
       case 131072:
         goto LABEL_46;
       case 131280:
-        v43 = v41 != 0;
+        v43 = videoDeferredProcessingNeeded != 0;
         goto LABEL_67;
       case 131272:
 LABEL_46:
-        if ((v39 - 1) >= 0xA || ((0x303u >> (v39 - 1)) & 1) == 0)
+        if ((deferredProcessingNeeded - 1) >= 0xA || ((0x303u >> (deferredProcessingNeeded - 1)) & 1) == 0)
         {
-          v44 = v41 == 0;
+          v44 = videoDeferredProcessingNeeded == 0;
           v45 = 2;
           v46 = 4;
 LABEL_54:
@@ -1437,7 +1437,7 @@ LABEL_54:
           goto LABEL_67;
         }
 
-        v47 = (v39 - 1);
+        v47 = (deferredProcessingNeeded - 1);
         v48 = &unk_19C610040;
 LABEL_63:
         v43 = v48[v47];
@@ -1445,20 +1445,20 @@ LABEL_63:
     }
 
 LABEL_60:
-    if (v42 != 1 || (v39 - 2) > 7u)
+    if (localAvailabilityTarget != 1 || (deferredProcessingNeeded - 2) > 7u)
     {
       v43 = 0;
       goto LABEL_67;
     }
 
-    v47 = (v39 - 2);
+    v47 = (deferredProcessingNeeded - 2);
     v48 = &unk_19C60B120;
     goto LABEL_63;
   }
 
-  if (v35 == 65741)
+  if (recipeID == 65741)
   {
-    if (v37 == 1)
+    if (kind == 1)
     {
       v43 = 7;
     }
@@ -1471,21 +1471,21 @@ LABEL_60:
     goto LABEL_67;
   }
 
-  if (v35 == 65749)
+  if (recipeID == 65749)
   {
     v43 = 6;
     goto LABEL_67;
   }
 
-  if (v35 != 65938)
+  if (recipeID != 65938)
   {
     goto LABEL_60;
   }
 
   v43 = 3;
-  if (v39 != 2 && v39 != 9)
+  if (deferredProcessingNeeded != 2 && deferredProcessingNeeded != 9)
   {
-    v44 = v39 == 1 || v39 == 10;
+    v44 = deferredProcessingNeeded == 1 || deferredProcessingNeeded == 10;
     v45 = 4;
     v46 = 2;
     goto LABEL_54;
@@ -1493,70 +1493,70 @@ LABEL_60:
 
 LABEL_67:
 
-  v198 = [v34 cplType];
-  v55 = [v34 asset];
-  v200 = [(PLPrimaryResourceDataStore *)self _cplResourceIfDownloadIsAvailableForResource:v34 asset:v55 options:v202];
+  cplType = [v34 cplType];
+  asset7 = [v34 asset];
+  v200 = [(PLPrimaryResourceDataStore *)self _cplResourceIfDownloadIsAvailableForResource:v34 asset:asset7 options:optionsCopy];
 
   if (v200 && ((1 << v43) & 0x6E) == 0)
   {
-    v83 = [v202 isNetworkAccessAllowed];
+    isNetworkAccessAllowed = [optionsCopy isNetworkAccessAllowed];
     v84 = PLImageManagerGetLog();
     v85 = v84;
-    if (v83)
+    if (isNetworkAccessAllowed)
     {
       if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
       {
-        v86 = [v202 taskIdentifier];
-        v87 = [MEMORY[0x1E6994B90] shortDescriptionForResourceType:v198];
+        taskIdentifier5 = [optionsCopy taskIdentifier];
+        v87 = [MEMORY[0x1E6994B90] shortDescriptionForResourceType:cplType];
         *buf = 138543618;
-        *&buf[4] = v86;
+        *&buf[4] = taskIdentifier5;
         *&buf[12] = 2112;
         *&buf[14] = v87;
         _os_log_impl(&dword_19BF1F000, v85, OS_LOG_TYPE_DEFAULT, "[RM]: %{public}@ downloading CPL resource type: %@", buf, 0x16u);
       }
 
-      v88 = [v202 taskIdentifier];
-      if (!v88)
+      taskIdentifier6 = [optionsCopy taskIdentifier];
+      if (!taskIdentifier6)
       {
-        v88 = [MEMORY[0x1E69BF320] UUIDString];
-        [v202 setTaskIdentifier:v88];
+        taskIdentifier6 = [MEMORY[0x1E69BF320] UUIDString];
+        [optionsCopy setTaskIdentifier:taskIdentifier6];
       }
 
-      v62 = [(PLPrimaryResourceDataStore *)self _newProgressForTaskWithIdentifier:v88 type:1];
+      v62 = [(PLPrimaryResourceDataStore *)self _newProgressForTaskWithIdentifier:taskIdentifier6 type:1];
       os_unfair_lock_lock(&self->_lock);
-      [(NSMutableDictionary *)self->_lock_makeAvailableProgressByTaskIdentifier setObject:v62 forKeyedSubscript:v88];
+      [(NSMutableDictionary *)self->_lock_makeAvailableProgressByTaskIdentifier setObject:v62 forKeyedSubscript:taskIdentifier6];
       os_unfair_lock_unlock(&self->_lock);
       v247[0] = MEMORY[0x1E69E9820];
       v247[1] = 3221225472;
       v247[2] = __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_completion___block_invoke_106;
       v247[3] = &unk_1E7564F10;
-      v248 = v88;
-      v249 = self;
-      v250 = v201;
+      v248 = taskIdentifier6;
+      selfCopy = self;
+      v250 = completionCopy;
       v242[0] = MEMORY[0x1E69E9820];
       v242[1] = 3221225472;
       v242[2] = __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_completion___block_invoke_109;
       v242[3] = &unk_1E7564F38;
       v243 = v248;
-      v244 = self;
+      selfCopy2 = self;
       v245 = v250;
-      v246 = v198;
-      v71 = v248;
-      [(PLPrimaryResourceDataStore *)self _downloadCPLResource:v200 options:v202 taskDidBeginHandler:v247 completionHandler:v242];
+      v246 = cplType;
+      asset14 = v248;
+      [(PLPrimaryResourceDataStore *)self _downloadCPLResource:v200 options:optionsCopy taskDidBeginHandler:v247 completionHandler:v242];
 
       goto LABEL_151;
     }
 
     if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
     {
-      v95 = [v202 taskIdentifier];
+      taskIdentifier7 = [optionsCopy taskIdentifier];
       *buf = 138543362;
-      *&buf[4] = v95;
+      *&buf[4] = taskIdentifier7;
       _os_log_impl(&dword_19BF1F000, v85, OS_LOG_TYPE_DEBUG, "[RM] %{public}@ network access permission needed to download resource", buf, 0xCu);
     }
 
-    v71 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF70] code:6 userInfo:0];
-    (*(v201 + 2))(v201, v71, 0, v198, 0);
+    asset14 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF70] code:6 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, asset14, 0, cplType, 0);
     goto LABEL_150;
   }
 
@@ -1568,40 +1568,40 @@ LABEL_67:
       {
         if (v43 == 6)
         {
-          v71 = +[PLResourceRecipe recipeFromID:](PLResourceRecipe, "recipeFromID:", [v34 recipeID]);
+          asset14 = +[PLResourceRecipe recipeFromID:](PLResourceRecipe, "recipeFromID:", [v34 recipeID]);
           v97 = PLImageManagerGetLog();
           if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
           {
-            v98 = [v202 taskIdentifier];
-            v99 = [v34 asset];
-            v100 = [v99 uuid];
+            taskIdentifier8 = [optionsCopy taskIdentifier];
+            asset8 = [v34 asset];
+            uuid3 = [asset8 uuid];
             *buf = 138543618;
-            *&buf[4] = v98;
+            *&buf[4] = taskIdentifier8;
             *&buf[12] = 2114;
-            *&buf[14] = v100;
+            *&buf[14] = uuid3;
             _os_log_impl(&dword_19BF1F000, v97, OS_LOG_TYPE_DEFAULT, "[RM]: %{public}@ Generating image from video for asset %{public}@", buf, 0x16u);
           }
 
           v101 = MEMORY[0x1E695DFF8];
-          v102 = [v34 asset];
-          v103 = [v102 pathForLocalVideoKeyFrame];
-          v104 = [v101 fileURLWithPath:v103];
+          asset9 = [v34 asset];
+          pathForLocalVideoKeyFrame = [asset9 pathForLocalVideoKeyFrame];
+          v104 = [v101 fileURLWithPath:pathForLocalVideoKeyFrame];
 
           v105 = [PLResourceRecipeGenerationOptions alloc];
-          v106 = [v202 taskIdentifier];
-          v107 = [v202 isNetworkAccessAllowed];
-          v108 = [v202 clientBundleID];
-          v109 = [(PLResourceRecipeGenerationOptions *)v105 initWithVersion:3 taskIdentifier:v106 reason:@"Local video keyframe on demand" networkAccessAllowed:v107 clientBundleID:v108];
+          taskIdentifier9 = [optionsCopy taskIdentifier];
+          isNetworkAccessAllowed2 = [optionsCopy isNetworkAccessAllowed];
+          clientBundleID = [optionsCopy clientBundleID];
+          v109 = [(PLResourceRecipeGenerationOptions *)v105 initWithVersion:3 taskIdentifier:taskIdentifier9 reason:@"Local video keyframe on demand" networkAccessAllowed:isNetworkAccessAllowed2 clientBundleID:clientBundleID];
 
-          v110 = [v34 asset];
+          asset10 = [v34 asset];
           v203[0] = MEMORY[0x1E69E9820];
           v203[1] = 3221225472;
           v203[2] = __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_completion___block_invoke_176;
           v203[3] = &unk_1E7565050;
           v204 = v104;
-          v205 = v201;
+          v205 = completionCopy;
           v111 = v104;
-          [v71 generateAndStoreForAsset:v110 options:v109 progress:0 completion:v203];
+          [asset14 generateAndStoreForAsset:asset10 options:v109 progress:0 completion:v203];
         }
 
         else
@@ -1617,20 +1617,20 @@ LABEL_67:
             v148 = PLImageManagerGetLog();
             if (os_log_type_enabled(v148, OS_LOG_TYPE_DEFAULT))
             {
-              v149 = [v202 taskIdentifier];
-              v150 = [v34 singleLineDescription];
+              taskIdentifier10 = [optionsCopy taskIdentifier];
+              singleLineDescription = [v34 singleLineDescription];
               *v262 = 138412546;
-              v263 = v149;
+              v263 = taskIdentifier10;
               v264 = 2112;
-              v265 = v150;
+              v265 = singleLineDescription;
               _os_log_impl(&dword_19BF1F000, v148, OS_LOG_TYPE_DEFAULT, "[RM]: %@ Generating thumbnails to make-available resource %@", v262, 0x16u);
             }
 
-            v151 = [v34 asset];
-            [v151 generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:0 forceSRGBConversion:0];
+            asset11 = [v34 asset];
+            [asset11 generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:0 forceSRGBConversion:0];
 
             v152 = +[PLResourceRecipe recipeFromID:](PLResourceRecipe, "recipeFromID:", [v34 recipeID]);
-            v153 = [v34 photoLibrary];
+            photoLibrary4 = [v34 photoLibrary];
             v233[0] = MEMORY[0x1E69E9820];
             v233[1] = 3221225472;
             v233[2] = __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_completion___block_invoke_134;
@@ -1639,11 +1639,11 @@ LABEL_67:
             v234 = v154;
             v235 = v34;
             v236 = buf;
-            [v153 performTransactionAndWait:v233];
+            [photoLibrary4 performTransactionAndWait:v233];
 
             if (*(*&buf[8] + 40))
             {
-              v71 = 0;
+              asset14 = 0;
             }
 
             else
@@ -1660,7 +1660,7 @@ LABEL_67:
               v260 = *MEMORY[0x1E696A578];
               v261 = @"Thumbnail generation failed";
               v187 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v261 forKeys:&v260 count:1];
-              v71 = [v186 errorWithDomain:*MEMORY[0x1E69BFF70] code:4 userInfo:v187];
+              asset14 = [v186 errorWithDomain:*MEMORY[0x1E69BFF70] code:4 userInfo:v187];
             }
           }
 
@@ -1678,10 +1678,10 @@ LABEL_67:
             v258 = *MEMORY[0x1E696A578];
             v259 = @"Unable to generate thumbnails for resource with no recipeID";
             v154 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v259 forKeys:&v258 count:1];
-            v71 = [v167 errorWithDomain:*MEMORY[0x1E69BFF70] code:47005 userInfo:v154];
+            asset14 = [v167 errorWithDomain:*MEMORY[0x1E69BFF70] code:47005 userInfo:v154];
           }
 
-          (*(v201 + 2))(v201, v71, 0, v198, *(*&buf[8] + 40));
+          (*(completionCopy + 2))(completionCopy, asset14, 0, cplType, *(*&buf[8] + 40));
           _Block_object_dispose(buf, 8);
         }
 
@@ -1690,38 +1690,38 @@ LABEL_67:
 
       if (v43 != 4)
       {
-        v137 = [v34 recipeID];
-        v138 = [v34 asset];
+        recipeID2 = [v34 recipeID];
+        asset12 = [v34 asset];
         v139 = PLImageManagerGetLog();
         if (os_log_type_enabled(v139, OS_LOG_TYPE_DEFAULT))
         {
-          v140 = [v202 taskIdentifier];
-          v141 = [v138 uuid];
+          taskIdentifier11 = [optionsCopy taskIdentifier];
+          uuid4 = [asset12 uuid];
           *buf = 138543618;
-          *&buf[4] = v140;
+          *&buf[4] = taskIdentifier11;
           *&buf[12] = 2114;
-          *&buf[14] = v141;
+          *&buf[14] = uuid4;
           _os_log_impl(&dword_19BF1F000, v139, OS_LOG_TYPE_DEFAULT, "[RM]: %{public}@ Generating missing derivatives for asset %{public}@", buf, 0x16u);
         }
 
-        v71 = objc_alloc_init(MEMORY[0x1E695DF90]);
+        asset14 = objc_alloc_init(MEMORY[0x1E695DF90]);
         v142 = MEMORY[0x1E696AEC0];
-        v143 = [v202 taskIdentifier];
-        v144 = [v142 stringWithFormat:@"Resource local availability request task %@", v143];
+        taskIdentifier12 = [optionsCopy taskIdentifier];
+        v143 = [v142 stringWithFormat:@"Resource local availability request task %@", taskIdentifier12];
 
-        v145 = [(PLPrimaryResourceDataStore *)self _imageConversionServiceClient];
-        v146 = [(PLPrimaryResourceDataStore *)self _videoConversionServiceClient];
+        _imageConversionServiceClient = [(PLPrimaryResourceDataStore *)self _imageConversionServiceClient];
+        _videoConversionServiceClient = [(PLPrimaryResourceDataStore *)self _videoConversionServiceClient];
         v206[0] = MEMORY[0x1E69E9820];
         v206[1] = 3221225472;
         v206[2] = __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_completion___block_invoke_165;
         v206[3] = &unk_1E7565028;
-        v211 = v137;
-        v207 = v138;
-        v209 = v201;
-        v210 = v198;
+        v211 = recipeID2;
+        v207 = asset12;
+        v209 = completionCopy;
+        v210 = cplType;
         v208 = v34;
-        v147 = v138;
-        v62 = [PLResourceGenerator generateAndStoreMissingExpectedLocalResourcesForAsset:v147 versions:&unk_1F0FBF268 imageConversionClient:v145 videoConversionClient:v146 conversionServiceOptions:v71 reason:v144 completion:v206];
+        v147 = asset12;
+        v62 = [PLResourceGenerator generateAndStoreMissingExpectedLocalResourcesForAsset:v147 versions:&unk_1F0FBF268 imageConversionClient:_imageConversionServiceClient videoConversionClient:_videoConversionServiceClient conversionServiceOptions:asset14 reason:v143 completion:v206];
 
         goto LABEL_151;
       }
@@ -1729,13 +1729,13 @@ LABEL_67:
       v89 = PLImageManagerGetLog();
       if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
       {
-        v90 = [v202 taskIdentifier];
-        v91 = [v34 asset];
-        v92 = [v91 uuid];
+        taskIdentifier13 = [optionsCopy taskIdentifier];
+        asset13 = [v34 asset];
+        uuid5 = [asset13 uuid];
         *buf = 138543618;
-        *&buf[4] = v90;
+        *&buf[4] = taskIdentifier13;
         *&buf[12] = 2114;
-        *&buf[14] = v92;
+        *&buf[14] = uuid5;
         _os_log_impl(&dword_19BF1F000, v89, OS_LOG_TYPE_DEFAULT, "[RM] %{public}@ Unable to download, attempting optimistic adjustment rendering for asset %{public}@", buf, 0x16u);
       }
     }
@@ -1744,13 +1744,13 @@ LABEL_67:
     {
       if ((v43 - 1) < 2)
       {
-        v71 = [v34 asset];
-        v193 = [v34 version];
-        v196 = [v71 uuidDescription];
+        asset14 = [v34 asset];
+        version = [v34 version];
+        uuidDescription = [asset14 uuidDescription];
         v72 = PLImageManagerGetLog();
         if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
         {
-          v73 = [v202 taskIdentifier];
+          taskIdentifier14 = [optionsCopy taskIdentifier];
           if (v43 == 2)
           {
             v74 = @"Y";
@@ -1761,40 +1761,40 @@ LABEL_67:
             v74 = @"N";
           }
 
-          v75 = [v34 singleLineDescription];
+          singleLineDescription2 = [v34 singleLineDescription];
           *buf = 138544130;
-          *&buf[4] = v73;
+          *&buf[4] = taskIdentifier14;
           *&buf[12] = 2114;
-          *&buf[14] = v196;
+          *&buf[14] = uuidDescription;
           *&buf[22] = 2114;
           v267 = v74;
           LOWORD(v268) = 2114;
-          *(&v268 + 2) = v75;
+          *(&v268 + 2) = singleLineDescription2;
           _os_log_impl(&dword_19BF1F000, v72, OS_LOG_TYPE_DEFAULT, "[RM] %{public}@ finalizing deferred asset %{public}@, with deferred adjustment: %{public}@, resource: %{public}@", buf, 0x2Au);
         }
 
-        v76 = [v71 objectID];
-        v77 = [v71 photoLibrary];
-        v78 = [v77 libraryServicesManager];
+        objectID = [asset14 objectID];
+        photoLibrary5 = [asset14 photoLibrary];
+        libraryServicesManager = [photoLibrary5 libraryServicesManager];
 
-        v79 = [v202 clientBundleID];
+        clientBundleID2 = [optionsCopy clientBundleID];
         v223[0] = MEMORY[0x1E69E9820];
         v223[1] = 3221225472;
         v223[2] = __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_completion___block_invoke_142;
         v223[3] = &unk_1E7564FB0;
-        v224 = v78;
-        v225 = v76;
-        v229 = v201;
-        v230 = v198;
+        v224 = libraryServicesManager;
+        v225 = objectID;
+        v229 = completionCopy;
+        v230 = cplType;
         v231 = v43;
-        v226 = v202;
-        v227 = self;
-        v232 = v193;
-        v228 = v196;
-        v80 = v196;
-        v81 = v76;
-        v82 = v78;
-        v62 = [(PLPrimaryResourceDataStore *)self _finalizeDeferredResource:v34 asset:v71 options:v226 clientBundleIdentifier:v79 completionHandler:v223];
+        v226 = optionsCopy;
+        selfCopy3 = self;
+        v232 = version;
+        v228 = uuidDescription;
+        v80 = uuidDescription;
+        v81 = objectID;
+        v82 = libraryServicesManager;
+        v62 = [(PLPrimaryResourceDataStore *)self _finalizeDeferredResource:v34 asset:asset14 options:v226 clientBundleIdentifier:clientBundleID2 completionHandler:v223];
 
         goto LABEL_151;
       }
@@ -1815,131 +1815,131 @@ LABEL_67:
         if (os_log_type_enabled(v158, OS_LOG_TYPE_ERROR))
         {
           v159 = MEMORY[0x1E696AEC0];
-          v160 = [v34 asset];
-          v161 = [v160 uuid];
+          asset15 = [v34 asset];
+          uuid6 = [asset15 uuid];
           v162 = [v96 description];
-          v163 = [v34 asset];
-          v164 = [v163 deferredProcessingNeeded];
-          if (v164 > 0xA)
+          asset16 = [v34 asset];
+          deferredProcessingNeeded2 = [asset16 deferredProcessingNeeded];
+          if (deferredProcessingNeeded2 > 0xA)
           {
             v165 = 0;
           }
 
           else
           {
-            v165 = off_1E7567B18[v164];
+            v165 = off_1E7567B18[deferredProcessingNeeded2];
           }
 
           v168 = v165;
-          v169 = [v34 localAvailabilityTarget];
+          localAvailabilityTarget2 = [v34 localAvailabilityTarget];
           v170 = @"N";
-          if (v169 > 0)
+          if (localAvailabilityTarget2 > 0)
           {
             v170 = @"Y";
           }
 
-          v171 = [v159 stringWithFormat:@"Unable to download or generate resource for asset: %@, recipe: %@, deferred processing: %@ local availability targeted: %@", v161, v162, v168, v170];
+          v170 = [v159 stringWithFormat:@"Unable to download or generate resource for asset: %@, recipe: %@, deferred processing: %@ local availability targeted: %@", uuid6, v162, v168, v170];
           *buf = 138412290;
-          *&buf[4] = v171;
+          *&buf[4] = v170;
           _os_log_impl(&dword_19BF1F000, v158, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
 
         v172 = MEMORY[0x1E696ABC0];
         v269 = *MEMORY[0x1E696A578];
         v173 = MEMORY[0x1E696AEC0];
-        v174 = [v34 asset];
-        v175 = [v174 uuid];
+        asset17 = [v34 asset];
+        uuid7 = [asset17 uuid];
         v176 = [v96 description];
-        v177 = [v34 asset];
-        v178 = [v177 deferredProcessingNeeded];
-        if (v178 > 0xA)
+        asset18 = [v34 asset];
+        deferredProcessingNeeded3 = [asset18 deferredProcessingNeeded];
+        if (deferredProcessingNeeded3 > 0xA)
         {
           v179 = 0;
         }
 
         else
         {
-          v179 = off_1E7567B18[v178];
+          v179 = off_1E7567B18[deferredProcessingNeeded3];
         }
 
         v180 = v179;
-        v181 = [v34 localAvailabilityTarget];
+        localAvailabilityTarget3 = [v34 localAvailabilityTarget];
         v182 = @"N";
-        if (v181 > 0)
+        if (localAvailabilityTarget3 > 0)
         {
           v182 = @"Y";
         }
 
-        v183 = [v173 stringWithFormat:@"Unable to download or generate resource for asset: %@, recipe: %@, deferred processing: %@ local availability targeted: %@", v175, v176, v180, v182];
-        v270 = v183;
+        v182 = [v173 stringWithFormat:@"Unable to download or generate resource for asset: %@, recipe: %@, deferred processing: %@ local availability targeted: %@", uuid7, v176, v180, v182];
+        v270 = v182;
         v184 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v270 forKeys:&v269 count:1];
-        v71 = [v172 errorWithDomain:*MEMORY[0x1E69BFF70] code:4 userInfo:v184];
+        asset14 = [v172 errorWithDomain:*MEMORY[0x1E69BFF70] code:4 userInfo:v184];
 
-        (*(v201 + 2))(v201, v71, 0, v198, 0);
+        (*(completionCopy + 2))(completionCopy, asset14, 0, cplType, 0);
         goto LABEL_150;
       }
     }
 
-    v71 = [v34 asset];
+    asset14 = [v34 asset];
     v112 = PLImageManagerGetLog();
     if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
     {
-      v113 = [v202 taskIdentifier];
-      v114 = [v71 uuid];
+      taskIdentifier15 = [optionsCopy taskIdentifier];
+      uuid8 = [asset14 uuid];
       *buf = 138543618;
-      *&buf[4] = v113;
+      *&buf[4] = taskIdentifier15;
       *&buf[12] = 2112;
-      *&buf[14] = v114;
+      *&buf[14] = uuid8;
       _os_log_impl(&dword_19BF1F000, v112, OS_LOG_TYPE_DEFAULT, "[RM]: %{public}@ Generating deferred adjustment for asset %@", buf, 0x16u);
     }
 
-    v115 = [v202 taskIdentifier];
+    taskIdentifier16 = [optionsCopy taskIdentifier];
     v222 = 0;
-    v116 = [PLPrimaryResourceDataStore bailOutOfVideoFinalizationIfNeededForAsset:v71 taskIdentifier:v115 error:&v222];
+    v116 = [PLPrimaryResourceDataStore bailOutOfVideoFinalizationIfNeededForAsset:asset14 taskIdentifier:taskIdentifier16 error:&v222];
     v197 = v222;
 
     if (v116)
     {
-      v191 = [v34 version];
-      v117 = [v202 downloadOptions];
-      v118 = [v117 priority];
+      version2 = [v34 version];
+      downloadOptions = [optionsCopy downloadOptions];
+      priority = [downloadOptions priority];
 
-      v194 = (v118 - 1) < 2;
+      v194 = (priority - 1) < 2;
       v119 = MEMORY[0x1E696AEC0];
       v120 = off_1E7565118[v43];
-      v121 = [v202 taskIdentifier];
-      v192 = [v119 stringWithFormat:@"Deferred adjustment resource generation (%@) for image manager request %@, allow cancellation = %d (transfer priority = %tu)", v120, v121, v194, v118];
+      taskIdentifier17 = [optionsCopy taskIdentifier];
+      v118 = [v119 stringWithFormat:@"Deferred adjustment resource generation (%@) for image manager request %@, allow cancellation = %d (transfer priority = %tu)", v120, taskIdentifier17, v194, priority];
 
-      v190 = [v71 objectID];
-      v122 = [v71 photoLibrary];
-      v123 = [v122 libraryServicesManager];
+      objectID2 = [asset14 objectID];
+      photoLibrary6 = [asset14 photoLibrary];
+      libraryServicesManager2 = [photoLibrary6 libraryServicesManager];
 
-      v124 = [v202 taskIdentifier];
-      v125 = [(PLPrimaryResourceDataStore *)self _imageConversionServiceClient];
-      v126 = [(PLPrimaryResourceDataStore *)self _videoConversionServiceClient];
-      v127 = [v202 clientBundleID];
+      taskIdentifier18 = [optionsCopy taskIdentifier];
+      _imageConversionServiceClient2 = [(PLPrimaryResourceDataStore *)self _imageConversionServiceClient];
+      _videoConversionServiceClient2 = [(PLPrimaryResourceDataStore *)self _videoConversionServiceClient];
+      clientBundleID3 = [optionsCopy clientBundleID];
       LOBYTE(v189) = v194;
-      v195 = [PLIntensiveResourceTask taskForGeneratingDeferredAdjustmentForAsset:v71 trackingIdentifier:v124 imageConversionClient:v125 videoConversionClient:v126 reason:v192 clientBundleID:v127 allowCancellationByService:v189];
+      v195 = [PLIntensiveResourceTask taskForGeneratingDeferredAdjustmentForAsset:asset14 trackingIdentifier:taskIdentifier18 imageConversionClient:_imageConversionServiceClient2 videoConversionClient:_videoConversionServiceClient2 reason:v118 clientBundleID:clientBundleID3 allowCancellationByService:v189];
 
-      v128 = [v71 photoLibrary];
-      v129 = [v128 libraryServicesManager];
-      v130 = [v129 intensiveResourceTaskManager];
+      photoLibrary7 = [asset14 photoLibrary];
+      libraryServicesManager3 = [photoLibrary7 libraryServicesManager];
+      intensiveResourceTaskManager = [libraryServicesManager3 intensiveResourceTaskManager];
       v212[0] = MEMORY[0x1E69E9820];
       v212[1] = 3221225472;
       v212[2] = __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_completion___block_invoke_152;
       v212[3] = &unk_1E7565000;
-      v213 = v123;
-      v214 = v190;
-      v215 = self;
-      v219 = v198;
-      v221 = v191;
-      v218 = v201;
+      v213 = libraryServicesManager2;
+      v214 = objectID2;
+      selfCopy4 = self;
+      v219 = cplType;
+      v221 = version2;
+      v218 = completionCopy;
       v220 = v43;
-      v216 = v71;
-      v217 = v202;
-      v131 = v190;
-      v132 = v123;
-      v62 = [v130 submitTask:v195 completionHandler:v212];
+      v216 = asset14;
+      v217 = optionsCopy;
+      v131 = objectID2;
+      v132 = libraryServicesManager2;
+      v62 = [intensiveResourceTaskManager submitTask:v195 completionHandler:v212];
     }
 
     else
@@ -1947,93 +1947,93 @@ LABEL_67:
       v155 = PLImageManagerGetLog();
       if (os_log_type_enabled(v155, OS_LOG_TYPE_ERROR))
       {
-        v156 = [v202 taskIdentifier];
-        v157 = [v71 uuid];
+        taskIdentifier19 = [optionsCopy taskIdentifier];
+        uuid9 = [asset14 uuid];
         *buf = 138543874;
-        *&buf[4] = v156;
+        *&buf[4] = taskIdentifier19;
         *&buf[12] = 2112;
-        *&buf[14] = v157;
+        *&buf[14] = uuid9;
         *&buf[22] = 2112;
         v267 = v197;
         _os_log_impl(&dword_19BF1F000, v155, OS_LOG_TYPE_ERROR, "[RM]: %{public}@ Error bailing out of video finalization for asset %@: %@", buf, 0x20u);
       }
 
-      (*(v201 + 2))(v201, v197, 0, v198, 0);
+      (*(completionCopy + 2))(completionCopy, v197, 0, cplType, 0);
       v62 = 0;
     }
 
     goto LABEL_151;
   }
 
-  if ([v202 isNetworkAccessAllowed])
+  if ([optionsCopy isNetworkAccessAllowed])
   {
-    v56 = [v34 asset];
-    v57 = [v56 shouldDownloadComputeSyncPayload];
+    asset19 = [v34 asset];
+    shouldDownloadComputeSyncPayload = [asset19 shouldDownloadComputeSyncPayload];
 
     v58 = PLImageManagerGetLog();
     v59 = v58;
-    if (v57)
+    if (shouldDownloadComputeSyncPayload)
     {
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
       {
-        v60 = [v202 taskIdentifier];
+        taskIdentifier20 = [optionsCopy taskIdentifier];
         *buf = 138543362;
-        *&buf[4] = v60;
+        *&buf[4] = taskIdentifier20;
         _os_log_impl(&dword_19BF1F000, v59, OS_LOG_TYPE_DEFAULT, "[RM][CCSS]: %{public}@ downloading computesync resource", buf, 0xCu);
       }
 
-      v61 = [v202 taskIdentifier];
-      if (!v61)
+      taskIdentifier21 = [optionsCopy taskIdentifier];
+      if (!taskIdentifier21)
       {
-        v61 = [MEMORY[0x1E69BF320] UUIDString];
-        [v202 setTaskIdentifier:v61];
+        taskIdentifier21 = [MEMORY[0x1E69BF320] UUIDString];
+        [optionsCopy setTaskIdentifier:taskIdentifier21];
       }
 
-      v62 = [(PLPrimaryResourceDataStore *)self _newProgressForTaskWithIdentifier:v61 type:1];
+      v62 = [(PLPrimaryResourceDataStore *)self _newProgressForTaskWithIdentifier:taskIdentifier21 type:1];
       os_unfair_lock_lock(&self->_lock);
-      [(NSMutableDictionary *)self->_lock_makeAvailableProgressByTaskIdentifier setObject:v62 forKeyedSubscript:v61];
+      [(NSMutableDictionary *)self->_lock_makeAvailableProgressByTaskIdentifier setObject:v62 forKeyedSubscript:taskIdentifier21];
       os_unfair_lock_unlock(&self->_lock);
-      v63 = [v34 photoLibrary];
-      v64 = [v63 libraryServicesManager];
+      photoLibrary8 = [v34 photoLibrary];
+      libraryServicesManager4 = [photoLibrary8 libraryServicesManager];
 
-      v65 = [v34 objectID];
-      v199 = [(PLPrimaryResourceDataStore *)self _cplManager];
-      v66 = [v34 asset];
-      v67 = [v66 scopedIdentifier];
-      v271 = v67;
+      objectID3 = [v34 objectID];
+      _cplManager = [(PLPrimaryResourceDataStore *)self _cplManager];
+      asset20 = [v34 asset];
+      scopedIdentifier = [asset20 scopedIdentifier];
+      v271 = scopedIdentifier;
       v68 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v271 count:1];
       v237[0] = MEMORY[0x1E69E9820];
       v237[1] = 3221225472;
       v237[2] = __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_completion___block_invoke_115;
       v237[3] = &unk_1E7564F60;
       v237[4] = self;
-      v238 = v61;
-      v241 = v201;
-      v239 = v64;
-      v240 = v65;
-      v69 = v65;
-      v70 = v64;
-      v71 = v61;
-      [v199 fetchComputeStatesForRecordsWithScopedIdentifiers:v68 onDemand:1 completionHandler:v237];
+      v238 = taskIdentifier21;
+      v241 = completionCopy;
+      v239 = libraryServicesManager4;
+      v240 = objectID3;
+      v69 = objectID3;
+      v70 = libraryServicesManager4;
+      asset14 = taskIdentifier21;
+      [_cplManager fetchComputeStatesForRecordsWithScopedIdentifiers:v68 onDemand:1 completionHandler:v237];
 
       goto LABEL_151;
     }
 
     if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
     {
-      v133 = [v34 asset];
-      v134 = [v133 scopedIdentifier];
+      asset21 = [v34 asset];
+      scopedIdentifier2 = [asset21 scopedIdentifier];
       *buf = 138543362;
-      *&buf[4] = v134;
+      *&buf[4] = scopedIdentifier2;
       _os_log_impl(&dword_19BF1F000, v59, OS_LOG_TYPE_ERROR, "[CCSS] Skip on-demand download of ComputeSync resource %{public}@ as download check failed", buf, 0xCu);
     }
 
     v135 = MEMORY[0x1E696ABC0];
     v272 = *MEMORY[0x1E696A278];
     v273[0] = @"Download check failed for ComputeSync resource";
-    v71 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v273 forKeys:&v272 count:1];
-    v136 = [v135 errorWithDomain:*MEMORY[0x1E69BFF48] code:47013 userInfo:v71];
-    (*(v201 + 2))(v201, v136, 0, 0, 0);
+    asset14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v273 forKeys:&v272 count:1];
+    v136 = [v135 errorWithDomain:*MEMORY[0x1E69BFF48] code:47013 userInfo:asset14];
+    (*(completionCopy + 2))(completionCopy, v136, 0, 0, 0);
   }
 
   else
@@ -2041,14 +2041,14 @@ LABEL_67:
     v93 = PLImageManagerGetLog();
     if (os_log_type_enabled(v93, OS_LOG_TYPE_DEBUG))
     {
-      v94 = [v202 taskIdentifier];
+      taskIdentifier22 = [optionsCopy taskIdentifier];
       *buf = 138543362;
-      *&buf[4] = v94;
+      *&buf[4] = taskIdentifier22;
       _os_log_impl(&dword_19BF1F000, v93, OS_LOG_TYPE_DEBUG, "[RM][CCSS] %{public}@ network access permission needed to download computesync resource", buf, 0xCu);
     }
 
-    v71 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF70] code:6 userInfo:0];
-    (*(v201 + 2))(v201, v71, 0, 0, 0);
+    asset14 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF70] code:6 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, asset14, 0, 0, 0);
   }
 
 LABEL_150:
@@ -2056,7 +2056,7 @@ LABEL_150:
 LABEL_151:
 
   v14 = v62;
-  v8 = v34;
+  availableCopy = v34;
   v54 = v14;
 LABEL_152:
 
@@ -3027,25 +3027,25 @@ void __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_comp
   }
 }
 
-- (void)_verifyResourceLocalAvailability:(id)a3 localResourceFileURL:(id *)a4 resourceReapirNeeded:(int64_t *)a5
+- (void)_verifyResourceLocalAvailability:(id)availability localResourceFileURL:(id *)l resourceReapirNeeded:(int64_t *)needed
 {
-  v7 = a3;
-  if ([v7 isLocallyAvailable])
+  availabilityCopy = availability;
+  if ([availabilityCopy isLocallyAvailable])
   {
     v26 = 0;
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v7 fileURL];
-    v10 = [v9 path];
-    v11 = [v8 fileExistsAtPath:v10 isDirectory:&v26];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    fileURL = [availabilityCopy fileURL];
+    path = [fileURL path];
+    v11 = [defaultManager fileExistsAtPath:path isDirectory:&v26];
 
     v12 = 1;
     if (v11 && (v26 & 1) == 0)
     {
-      v13 = [v7 asset];
-      if (PLCanIncludeResourceInHints(v7, v13))
+      asset = [availabilityCopy asset];
+      if (PLCanIncludeResourceInHints(availabilityCopy, asset))
       {
-        v14 = [v7 asset];
-        v15 = [v14 imageRequestHintsContainsResource:v7];
+        asset2 = [availabilityCopy asset];
+        v15 = [asset2 imageRequestHintsContainsResource:availabilityCopy];
 
         if (v15)
         {
@@ -3064,8 +3064,8 @@ void __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_comp
         v12 = 0;
       }
 
-      v23 = [v7 fileURL];
-      if (!a4)
+      fileURL2 = [availabilityCopy fileURL];
+      if (!l)
       {
         goto LABEL_17;
       }
@@ -3079,71 +3079,71 @@ void __79__PLPrimaryResourceDataStore__makeResourceLocallyAvailable_options_comp
     v12 = 0;
   }
 
-  v16 = [v7 fileURL];
-  v17 = v16;
-  if (v16)
+  fileURL3 = [availabilityCopy fileURL];
+  v17 = fileURL3;
+  if (fileURL3)
   {
-    v18 = v16;
+    expectedFileURL = fileURL3;
   }
 
   else
   {
-    v18 = [v7 expectedFileURL];
+    expectedFileURL = [availabilityCopy expectedFileURL];
   }
 
-  v19 = v18;
+  v19 = expectedFileURL;
 
   v25 = 0;
-  v20 = [MEMORY[0x1E696AC08] defaultManager];
-  v21 = [v19 path];
-  v22 = [v20 fileExistsAtPath:v21 isDirectory:&v25];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  path2 = [v19 path];
+  v22 = [defaultManager2 fileExistsAtPath:path2 isDirectory:&v25];
 
-  v23 = 0;
+  fileURL2 = 0;
   if (v22 && (v25 & 1) == 0)
   {
-    v23 = v19;
+    fileURL2 = v19;
     v12 = 2;
   }
 
-  if (a4)
+  if (l)
   {
 LABEL_16:
-    v24 = v23;
-    *a4 = v23;
+    v24 = fileURL2;
+    *l = fileURL2;
   }
 
 LABEL_17:
-  if (a5)
+  if (needed)
   {
-    *a5 = v12;
+    *needed = v12;
   }
 }
 
-- (void)_cancelAvailabilityRequestWithTaskIdentifier:(id)a3
+- (void)_cancelAvailabilityRequestWithTaskIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_lock_makeAvailableProgressByTaskIdentifier objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_lock_makeAvailableProgressByTaskIdentifier objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"_PLMakeAvailableProgressTypeKey"];
-    v9 = [v8 integerValue];
+    userInfo = [v5 userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"_PLMakeAvailableProgressTypeKey"];
+    integerValue = [v8 integerValue];
 
-    v10 = [v6 userInfo];
-    v11 = [v10 objectForKeyedSubscript:@"_PLMakeAvailableProgressStateKey"];
-    v12 = [v11 integerValue];
+    userInfo2 = [v6 userInfo];
+    v11 = [userInfo2 objectForKeyedSubscript:@"_PLMakeAvailableProgressStateKey"];
+    integerValue2 = [v11 integerValue];
   }
 
   else
   {
-    v12 = 0;
-    v9 = 0;
+    integerValue2 = 0;
+    integerValue = 0;
   }
 
-  [(NSMutableDictionary *)self->_lock_makeAvailableProgressByTaskIdentifier setObject:0 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_lock_makeAvailableProgressByTaskIdentifier setObject:0 forKeyedSubscript:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
   v13 = PLImageManagerGetLog();
   v14 = v13;
@@ -3151,28 +3151,28 @@ LABEL_17:
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      if (v9 > 2)
+      if (integerValue > 2)
       {
         v15 = @"undefined";
       }
 
       else
       {
-        v15 = off_1E75650E8[v9];
+        v15 = off_1E75650E8[integerValue];
       }
 
-      if (v12 > 2)
+      if (integerValue2 > 2)
       {
         v20 = @"undefined";
       }
 
       else
       {
-        v20 = off_1E7565100[v12];
+        v20 = off_1E7565100[integerValue2];
       }
 
       *buf = 138543874;
-      v25 = v4;
+      v25 = identifierCopy;
       v26 = 2112;
       v27 = v15;
       v28 = 2112;
@@ -3188,7 +3188,7 @@ LABEL_17:
   else if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = v4;
+    v25 = identifierCopy;
     v16 = "Attempting to cancel availability request with identifier: %{public}@ that is not being tracked";
     v17 = v14;
     v18 = OS_LOG_TYPE_DEFAULT;
@@ -3197,15 +3197,15 @@ LABEL_15:
     _os_log_impl(&dword_19BF1F000, v17, v18, v16, buf, v19);
   }
 
-  if (v9 == 1 && v12 == 2)
+  if (integerValue == 1 && integerValue2 == 2)
   {
-    v21 = [(PLPrimaryResourceDataStore *)self _cplManager];
+    _cplManager = [(PLPrimaryResourceDataStore *)self _cplManager];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __75__PLPrimaryResourceDataStore__cancelAvailabilityRequestWithTaskIdentifier___block_invoke;
     v22[3] = &unk_1E7564EE8;
-    v23 = v4;
-    [v21 cancelResourceTransferTaskWithIdentifier:v23 completion:v22];
+    v23 = identifierCopy;
+    [_cplManager cancelResourceTransferTaskWithIdentifier:v23 completion:v22];
   }
 }
 
@@ -3232,69 +3232,69 @@ void __75__PLPrimaryResourceDataStore__cancelAvailabilityRequestWithTaskIdentifi
 
 - (id)_videoConversionServiceClient
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_videoConversionServiceClient)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_videoConversionServiceClient)
   {
     v3 = objc_alloc_init(MEMORY[0x1E69AE888]);
-    videoConversionServiceClient = v2->_videoConversionServiceClient;
-    v2->_videoConversionServiceClient = v3;
+    videoConversionServiceClient = selfCopy->_videoConversionServiceClient;
+    selfCopy->_videoConversionServiceClient = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_videoConversionServiceClient;
+  v5 = selfCopy->_videoConversionServiceClient;
 
   return v5;
 }
 
 - (id)_imageConversionServiceClient
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_imageConversionServiceClient)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_imageConversionServiceClient)
   {
     v3 = objc_alloc_init(MEMORY[0x1E69AE870]);
-    imageConversionServiceClient = v2->_imageConversionServiceClient;
-    v2->_imageConversionServiceClient = v3;
+    imageConversionServiceClient = selfCopy->_imageConversionServiceClient;
+    selfCopy->_imageConversionServiceClient = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_imageConversionServiceClient;
+  v5 = selfCopy->_imageConversionServiceClient;
 
   return v5;
 }
 
 - (id)_deferredPhotoFinalizer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_deferredPhotoFinalizer)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_deferredPhotoFinalizer)
   {
     v3 = [[PLDeferredPhotoFinalizer alloc] initForUseCase:0];
-    deferredPhotoFinalizer = v2->_deferredPhotoFinalizer;
-    v2->_deferredPhotoFinalizer = v3;
+    deferredPhotoFinalizer = selfCopy->_deferredPhotoFinalizer;
+    selfCopy->_deferredPhotoFinalizer = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_deferredPhotoFinalizer;
+  v5 = selfCopy->_deferredPhotoFinalizer;
 
   return v5;
 }
 
-- (void)_downloadCPLResource:(id)a3 options:(id)a4 taskDidBeginHandler:(id)a5 completionHandler:(id)a6
+- (void)_downloadCPLResource:(id)resource options:(id)options taskDidBeginHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  if ([v10 isTransient])
+  optionsCopy = options;
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  resourceCopy = resource;
+  if ([optionsCopy isTransient])
   {
-    v14 = [v10 dataHandler];
+    dataHandler = [optionsCopy dataHandler];
 
-    if (!v14)
+    if (!dataHandler)
     {
       v15 = PLImageManagerGetLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -3304,34 +3304,34 @@ void __75__PLPrimaryResourceDataStore__cancelAvailabilityRequestWithTaskIdentifi
       }
     }
 
-    v16 = [(PLPrimaryResourceDataStore *)self _cplManager];
-    v17 = [v10 clientBundleID];
-    v18 = [v10 taskIdentifier];
+    _cplManager = [(PLPrimaryResourceDataStore *)self _cplManager];
+    clientBundleID = [optionsCopy clientBundleID];
+    taskIdentifier = [optionsCopy taskIdentifier];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __97__PLPrimaryResourceDataStore__downloadCPLResource_options_taskDidBeginHandler_completionHandler___block_invoke;
     v28[3] = &unk_1E7564E98;
-    v29 = v10;
-    v30 = v11;
-    [v16 downloadResourceInMemory:v13 clientBundleID:v17 proposedTaskIdentifier:v18 taskDidBeginHandler:v12 completionHandler:v28];
+    v29 = optionsCopy;
+    v30 = completionHandlerCopy;
+    [_cplManager downloadResourceInMemory:resourceCopy clientBundleID:clientBundleID proposedTaskIdentifier:taskIdentifier taskDidBeginHandler:handlerCopy completionHandler:v28];
   }
 
   else
   {
-    v19 = [(PLPrimaryResourceDataStore *)self _cplManager];
-    v20 = [v10 downloadOptions];
-    v21 = [v10 clientBundleID];
-    v22 = [v10 taskIdentifier];
-    if ([v10 wantsProgress])
+    _cplManager2 = [(PLPrimaryResourceDataStore *)self _cplManager];
+    downloadOptions = [optionsCopy downloadOptions];
+    clientBundleID2 = [optionsCopy clientBundleID];
+    taskIdentifier2 = [optionsCopy taskIdentifier];
+    if ([optionsCopy wantsProgress])
     {
       v23 = MEMORY[0x1E69E9820];
       v24 = 3221225472;
       v25 = __97__PLPrimaryResourceDataStore__downloadCPLResource_options_taskDidBeginHandler_completionHandler___block_invoke_2;
       v26 = &unk_1E7564EC0;
-      v27 = self;
+      selfCopy = self;
     }
 
-    [v19 downloadResource:v13 options:v20 clientBundleID:v21 proposedTaskIdentifier:v22 taskDidBeginHandler:v12 progressBlock:v11 completionHandler:{v23, v24, v25, v26, v27}];
+    [_cplManager2 downloadResource:resourceCopy options:downloadOptions clientBundleID:clientBundleID2 proposedTaskIdentifier:taskIdentifier2 taskDidBeginHandler:handlerCopy progressBlock:completionHandlerCopy completionHandler:{v23, v24, v25, v26, selfCopy}];
   }
 }
 
@@ -3375,30 +3375,30 @@ void __97__PLPrimaryResourceDataStore__downloadCPLResource_options_taskDidBeginH
   [v7 setCompletedUnitCount:{(objc_msgSend(v7, "totalUnitCount") * a3)}];
 }
 
-- (id)_cplResourceIfDownloadIsAvailableForResource:(id)a3 asset:(id)a4 options:(id)a5
+- (id)_cplResourceIfDownloadIsAvailableForResource:(id)resource asset:(id)asset options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (-[PLPrimaryResourceDataStore isCPLSyncableLibraryStore](self, "isCPLSyncableLibraryStore") && [v8 isCPLResource])
+  resourceCopy = resource;
+  assetCopy = asset;
+  optionsCopy = options;
+  if (-[PLPrimaryResourceDataStore isCPLSyncableLibraryStore](self, "isCPLSyncableLibraryStore") && [resourceCopy isCPLResource])
   {
-    if ([v10 isTransient])
+    if ([optionsCopy isTransient])
     {
-      v11 = [v9 rm_cplResourceForResourceType:{objc_msgSend(v8, "cplType")}];
+      v11 = [assetCopy rm_cplResourceForResourceType:{objc_msgSend(resourceCopy, "cplType")}];
     }
 
     else
     {
-      v14 = [v10 downloadOptions];
-      v15 = [v14 hasValidTimeRange];
+      downloadOptions = [optionsCopy downloadOptions];
+      hasValidTimeRange = [downloadOptions hasValidTimeRange];
 
-      if (v15)
+      if (hasValidTimeRange)
       {
-        v16 = [v10 downloadOptions];
-        v17 = v16;
-        if (v16)
+        downloadOptions2 = [optionsCopy downloadOptions];
+        v17 = downloadOptions2;
+        if (downloadOptions2)
         {
-          [v16 timeRange];
+          [downloadOptions2 timeRange];
         }
 
         else
@@ -3406,12 +3406,12 @@ void __97__PLPrimaryResourceDataStore__downloadCPLResource_options_taskDidBeginH
           memset(v18, 0, sizeof(v18));
         }
 
-        v12 = [v8 cplResourceForTimeRange:v18];
+        v12 = [resourceCopy cplResourceForTimeRange:v18];
 
         goto LABEL_6;
       }
 
-      v11 = [v8 cplResourceIncludeFile:1];
+      v11 = [resourceCopy cplResourceIncludeFile:1];
     }
 
     v12 = v11;
@@ -3429,40 +3429,40 @@ LABEL_6:
 
 - (BOOL)isCPLSyncableLibraryStore
 {
-  v2 = [(PLResourceDataStore *)self pathManager];
-  v3 = [v2 isCPLSyncablePhotoLibraryPathManager];
+  pathManager = [(PLResourceDataStore *)self pathManager];
+  isCPLSyncablePhotoLibraryPathManager = [pathManager isCPLSyncablePhotoLibraryPathManager];
 
-  return v3;
+  return isCPLSyncablePhotoLibraryPathManager;
 }
 
-- (id)_finalizeDeferredResource:(id)a3 asset:(id)a4 options:(id)a5 clientBundleIdentifier:(id)a6 completionHandler:(id)a7
+- (id)_finalizeDeferredResource:(id)resource asset:(id)asset options:(id)options clientBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v63 = *MEMORY[0x1E69E9840];
-  v47 = a3;
-  v11 = a4;
-  v12 = a5;
-  v42 = a6;
-  v43 = v12;
-  v44 = a7;
-  v13 = [v12 taskIdentifier];
-  v46 = [v11 uuid];
+  resourceCopy = resource;
+  assetCopy = asset;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  v43 = optionsCopy;
+  handlerCopy = handler;
+  taskIdentifier = [optionsCopy taskIdentifier];
+  uuid = [assetCopy uuid];
   v14 = PLImageManagerGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    *&buf[4] = v13;
+    *&buf[4] = taskIdentifier;
     *&buf[12] = 2112;
-    *&buf[14] = v46;
+    *&buf[14] = uuid;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "[RM]: %{public}@ requesting final image from deferred processing demon for asset: %@", buf, 0x16u);
   }
 
-  if (!v13)
+  if (!taskIdentifier)
   {
-    v13 = [MEMORY[0x1E69BF320] UUIDString];
-    [v12 setTaskIdentifier:v13];
+    taskIdentifier = [MEMORY[0x1E69BF320] UUIDString];
+    [optionsCopy setTaskIdentifier:taskIdentifier];
   }
 
-  PLSendCTMScheduleAnalytics(v11, 0, 1);
+  PLSendCTMScheduleAnalytics(assetCopy, 0, 1);
   v15 = [PLResourceRecipe recipeFromID:65944];
   v45 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.mobileslideshow"];
   v16 = [v45 BOOLForKey:@"PLFrameDropRecoveryOnDemandProcessingUserDefaultsKey"];
@@ -3475,7 +3475,7 @@ LABEL_6:
   else
   {
     v57 = 0;
-    v18 = [PLPrimaryResourceDataStore bailOutOfVideoFinalizationIfNeededForAsset:v11 taskIdentifier:v13 didPromoteProxy:&v58 error:&v57];
+    v18 = [PLPrimaryResourceDataStore bailOutOfVideoFinalizationIfNeededForAsset:assetCopy taskIdentifier:taskIdentifier didPromoteProxy:&v58 error:&v57];
     v17 = v57;
     if (!v18)
     {
@@ -3483,9 +3483,9 @@ LABEL_6:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        *&buf[4] = v13;
+        *&buf[4] = taskIdentifier;
         *&buf[12] = 2114;
-        *&buf[14] = v46;
+        *&buf[14] = uuid;
         *&buf[22] = 2112;
         v62 = v17;
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "[RM] %{public}@ Error bailing out of video finalization for asset with uuid %{public}@: %@", buf, 0x20u);
@@ -3495,19 +3495,19 @@ LABEL_6:
     }
   }
 
-  if (([v47 resourceType] == 1 || objc_msgSend(v47, "resourceType") == 3) && v58 == 1)
+  if (([resourceCopy resourceType] == 1 || objc_msgSend(resourceCopy, "resourceType") == 3) && v58 == 1)
   {
     v20 = PLImageManagerGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v13;
+      *&buf[4] = taskIdentifier;
       *&buf[12] = 2114;
-      *&buf[14] = v46;
+      *&buf[14] = uuid;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "[RM]: %{public}@ bailed out of video finalization and promoted proxy for asset: %{public}@", buf, 0x16u);
     }
 
-    v44[2](v44, v13, 0);
+    handlerCopy[2](handlerCopy, taskIdentifier, 0);
 LABEL_37:
     v34 = 0;
     goto LABEL_38;
@@ -3520,13 +3520,13 @@ LABEL_37:
       v35 = PLImageManagerGetLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v36 = [v47 singleLineDescription];
+        singleLineDescription = [resourceCopy singleLineDescription];
         *buf = 138543874;
-        *&buf[4] = v13;
+        *&buf[4] = taskIdentifier;
         *&buf[12] = 2114;
-        *&buf[14] = v46;
+        *&buf[14] = uuid;
         *&buf[22] = 2114;
-        v62 = v36;
+        v62 = singleLineDescription;
         _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "[RM] %{public}@ Unable to find resource recipe for deferred finalization for asset with uuid %{public}@, resource: %{public}@", buf, 0x20u);
       }
 
@@ -3537,7 +3537,7 @@ LABEL_37:
       v17 = [v37 errorWithDomain:*MEMORY[0x1E69BFF48] code:47001 userInfo:v38];
     }
 
-    (v44)[2](v44, v13, v17);
+    (handlerCopy)[2](handlerCopy, taskIdentifier, v17);
     v15 = 0;
     goto LABEL_37;
   }
@@ -3546,7 +3546,7 @@ LABEL_37:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    *&buf[4] = v13;
+    *&buf[4] = taskIdentifier;
     *&buf[12] = 2112;
     *&buf[14] = v15;
     _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEBUG, "[RM] %{public}@ Generating resource for recipe %@ as it is not available", buf, 0x16u);
@@ -3558,7 +3558,7 @@ LABEL_37:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v13;
+      *&buf[4] = taskIdentifier;
       *&buf[12] = 2112;
       *&buf[14] = @"PLFrameDropRecoveryOnDemandProcessingUserDefaultsKey";
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "[RM] %{public}@ Requesting on demand frame drop recovery because the user default %@ is set", buf, 0x16u);
@@ -3577,7 +3577,7 @@ LABEL_37:
   if (v25 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
   {
     *buf = 138543618;
-    *&buf[4] = v13;
+    *&buf[4] = taskIdentifier;
     *&buf[12] = 2114;
     *&buf[14] = v15;
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v27, OS_SIGNPOST_INTERVAL_BEGIN, v25, "GenerateAndStoreDeferredResource", "taskIdentifier = %{public}@, recipe %{public}@", buf, 0x16u);
@@ -3588,9 +3588,9 @@ LABEL_37:
   *&buf[16] = 0x2020000000;
   LOBYTE(v62) = 0;
   v28 = [PLResourceRecipeGenerationOptions alloc];
-  v29 = [v43 taskIdentifier];
-  v30 = [(PLPrimaryResourceDataStore *)self _deferredPhotoFinalizer];
-  v31 = [(PLResourceRecipeGenerationOptions *)v28 initWithVersion:0 taskIdentifier:v29 reason:@"On demand recipe generation request" clientBundleID:v42 deferredPhotoFinalizer:v30];
+  taskIdentifier2 = [v43 taskIdentifier];
+  _deferredPhotoFinalizer = [(PLPrimaryResourceDataStore *)self _deferredPhotoFinalizer];
+  v31 = [(PLResourceRecipeGenerationOptions *)v28 initWithVersion:0 taskIdentifier:taskIdentifier2 reason:@"On demand recipe generation request" clientBundleID:identifierCopy deferredPhotoFinalizer:_deferredPhotoFinalizer];
 
   v56 = 0;
   v48[0] = MEMORY[0x1E69E9820];
@@ -3600,13 +3600,13 @@ LABEL_37:
   v32 = v27;
   v54 = v32;
   v55 = v25;
-  v33 = v13;
+  v33 = taskIdentifier;
   v49 = v33;
-  v50 = v46;
-  v51 = self;
+  v50 = uuid;
+  selfCopy = self;
   v53 = buf;
-  v52 = v44;
-  [v15 generateAndStoreForAsset:v11 options:v31 progress:&v56 completion:v48];
+  v52 = handlerCopy;
+  [v15 generateAndStoreForAsset:assetCopy options:v31 progress:&v56 completion:v48];
   v34 = v56;
   if (v34)
   {
@@ -3711,31 +3711,31 @@ void __111__PLPrimaryResourceDataStore__finalizeDeferredResource_asset_options_c
   }
 }
 
-- (void)_lock_transitionTaskToInflightWithIdentifier:(id)a3
+- (void)_lock_transitionTaskToInflightWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [(NSMutableDictionary *)self->_lock_makeAvailableProgressByTaskIdentifier objectForKeyedSubscript:?];
     [v3 setUserInfoObject:&unk_1F0FBA960 forKey:@"_PLMakeAvailableProgressStateKey"];
   }
 }
 
-- (BOOL)_lock_taskIsPendingDownloadWithIdentifier:(id)a3
+- (BOOL)_lock_taskIsPendingDownloadWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v4)
+  if (identifierCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_lock_makeAvailableProgressByTaskIdentifier objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_lock_makeAvailableProgressByTaskIdentifier objectForKeyedSubscript:identifierCopy];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 userInfo];
-      v8 = [v7 objectForKeyedSubscript:@"_PLMakeAvailableProgressTypeKey"];
+      userInfo = [v5 userInfo];
+      v8 = [userInfo objectForKeyedSubscript:@"_PLMakeAvailableProgressTypeKey"];
       if ([v8 integerValue] == 1)
       {
-        v9 = [v6 userInfo];
-        v10 = [v9 objectForKeyedSubscript:@"_PLMakeAvailableProgressStateKey"];
+        userInfo2 = [v6 userInfo];
+        v10 = [userInfo2 objectForKeyedSubscript:@"_PLMakeAvailableProgressStateKey"];
         v11 = [v10 integerValue] == 1;
       }
 
@@ -3759,9 +3759,9 @@ void __111__PLPrimaryResourceDataStore__finalizeDeferredResource_asset_options_c
   return v11;
 }
 
-- (id)_newProgressForTaskWithIdentifier:(id)a3 type:(int64_t)a4
+- (id)_newProgressForTaskWithIdentifier:(id)identifier type:(int64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [PLSyncCancellingProgress discreteProgressWithTotalUnitCount:100];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
@@ -3769,10 +3769,10 @@ void __111__PLPrimaryResourceDataStore__finalizeDeferredResource_asset_options_c
   v11[2] = __69__PLPrimaryResourceDataStore__newProgressForTaskWithIdentifier_type___block_invoke;
   v11[3] = &unk_1E75782A8;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = identifierCopy;
   v12 = v8;
   [v7 setCancellationHandler:v11];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [v7 setUserInfoObject:v9 forKey:@"_PLMakeAvailableProgressTypeKey"];
 
   [v7 setUserInfoObject:&unk_1F0FBA948 forKey:@"_PLMakeAvailableProgressStateKey"];
@@ -3816,20 +3816,20 @@ void __62__PLPrimaryResourceDataStore_currentDeviceMasterThumbRecipeID__block_in
   currentDeviceMasterThumbRecipeID_s_recipeID = v1;
 }
 
-+ (unsigned)keyLengthWithDataPreview:(unsigned __int8)a3
++ (unsigned)keyLengthWithDataPreview:(unsigned __int8)preview
 {
-  v3 = a3;
-  if (a3 >= 0x10u)
+  previewCopy = preview;
+  if (preview >= 0x10u)
   {
-    v4 = 16;
+    previewCopy2 = 16;
   }
 
   else
   {
-    v4 = a3;
+    previewCopy2 = preview;
   }
 
-  if (v4 == 3 || v4 == 4 || v4 == 16)
+  if (previewCopy2 == 3 || previewCopy2 == 4 || previewCopy2 == 16)
   {
     v5 = objc_opt_class();
   }
@@ -3841,7 +3841,7 @@ void __62__PLPrimaryResourceDataStore_currentDeviceMasterThumbRecipeID__block_in
 
   v6 = v5;
 
-  return [v6 keyLengthWithDataPreview:v3];
+  return [v6 keyLengthWithDataPreview:previewCopy];
 }
 
 + (id)supportedRecipes
@@ -3850,7 +3850,7 @@ void __62__PLPrimaryResourceDataStore_currentDeviceMasterThumbRecipeID__block_in
   block[1] = 3221225472;
   block[2] = __46__PLPrimaryResourceDataStore_supportedRecipes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (supportedRecipes_s_onceToken != -1)
   {
     dispatch_once(&supportedRecipes_s_onceToken, block);
@@ -3906,69 +3906,69 @@ void __46__PLPrimaryResourceDataStore_supportedRecipes__block_invoke(uint64_t a1
 + (id)utiForContextualVideoThumbnail
 {
   v2 = +[PLContextualVideoThumbnailVirtualResource uniformTypeIdentifierForContextualVideoThumbnail];
-  v3 = [v2 identifier];
+  identifier = [v2 identifier];
 
-  return v3;
+  return identifier;
 }
 
-+ (id)contextualVideoThumbnailIdentifierFromFileURL:(id)a3
++ (id)contextualVideoThumbnailIdentifierFromFileURL:(id)l
 {
-  v3 = [a3 lastPathComponent];
-  v4 = [v3 stringByDeletingPathExtension];
-  v5 = [v4 componentsSeparatedByString:@"_cvt_"];
-  v6 = [v5 lastObject];
+  lastPathComponent = [l lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v5 = [stringByDeletingPathExtension componentsSeparatedByString:@"_cvt_"];
+  lastObject = [v5 lastObject];
 
-  return v6;
+  return lastObject;
 }
 
-- (id)keyHelperForBundleScope:(unsigned __int16)a3
+- (id)keyHelperForBundleScope:(unsigned __int16)scope
 {
-  v3 = a3;
-  v5 = [(PLPrimaryResourceDataStore *)self keyHelperByBundleScope];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  scopeCopy = scope;
+  keyHelperByBundleScope = [(PLPrimaryResourceDataStore *)self keyHelperByBundleScope];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:scopeCopy];
+  mainScopeKeyHelper = [keyHelperByBundleScope objectForKeyedSubscript:v6];
 
-  if (!v7)
+  if (!mainScopeKeyHelper)
   {
-    v7 = [(PLPrimaryResourceDataStore *)self mainScopeKeyHelper];
+    mainScopeKeyHelper = [(PLPrimaryResourceDataStore *)self mainScopeKeyHelper];
   }
 
-  return v7;
+  return mainScopeKeyHelper;
 }
 
-- (void)generateDeferredAdjustmentForAsset:(id)a3 imageConversionServiceClient:(id)a4 videoConversionServiceClient:(id)a5 reason:(id)a6 taskIdentifier:(id)a7 cplResourceType:(unint64_t)a8 version:(unsigned int)a9 clientBundleID:(id)a10 completion:(id)a11
+- (void)generateDeferredAdjustmentForAsset:(id)asset imageConversionServiceClient:(id)client videoConversionServiceClient:(id)serviceClient reason:(id)reason taskIdentifier:(id)identifier cplResourceType:(unint64_t)type version:(unsigned int)version clientBundleID:(id)self0 completion:(id)self1
 {
-  HIDWORD(v32) = a9;
-  v15 = a7;
-  v16 = a11;
-  v17 = a10;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [v21 objectID];
-  v23 = [v21 photoLibrary];
-  v24 = [v23 libraryServicesManager];
+  HIDWORD(v32) = version;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  dCopy = d;
+  reasonCopy = reason;
+  serviceClientCopy = serviceClient;
+  clientCopy = client;
+  assetCopy = asset;
+  objectID = [assetCopy objectID];
+  photoLibrary = [assetCopy photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
 
   LOBYTE(v32) = 0;
-  v25 = [PLIntensiveResourceTask taskForGeneratingDeferredAdjustmentForAsset:v21 trackingIdentifier:v15 imageConversionClient:v20 videoConversionClient:v19 reason:v18 clientBundleID:v17 allowCancellationByService:v32];
+  v25 = [PLIntensiveResourceTask taskForGeneratingDeferredAdjustmentForAsset:assetCopy trackingIdentifier:identifierCopy imageConversionClient:clientCopy videoConversionClient:serviceClientCopy reason:reasonCopy clientBundleID:dCopy allowCancellationByService:v32];
 
-  v26 = [v24 intensiveResourceTaskManager];
+  intensiveResourceTaskManager = [libraryServicesManager intensiveResourceTaskManager];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __209__PLPrimaryResourceDataStore_Finalization__generateDeferredAdjustmentForAsset_imageConversionServiceClient_videoConversionServiceClient_reason_taskIdentifier_cplResourceType_version_clientBundleID_completion___block_invoke;
   v35[3] = &unk_1E756F960;
-  v36 = v15;
-  v37 = v24;
-  v39 = v16;
-  v40 = a8;
+  v36 = identifierCopy;
+  v37 = libraryServicesManager;
+  v39 = completionCopy;
+  typeCopy = type;
   v41 = v33;
-  v38 = v22;
-  v27 = v16;
-  v28 = v22;
-  v29 = v24;
-  v30 = v15;
-  v31 = [v26 submitTask:v25 completionHandler:v35];
+  v38 = objectID;
+  v27 = completionCopy;
+  v28 = objectID;
+  v29 = libraryServicesManager;
+  v30 = identifierCopy;
+  v31 = [intensiveResourceTaskManager submitTask:v25 completionHandler:v35];
 }
 
 void __209__PLPrimaryResourceDataStore_Finalization__generateDeferredAdjustmentForAsset_imageConversionServiceClient_videoConversionServiceClient_reason_taskIdentifier_cplResourceType_version_clientBundleID_completion___block_invoke(uint64_t a1, void *a2)
@@ -4074,12 +4074,12 @@ void __209__PLPrimaryResourceDataStore_Finalization__generateDeferredAdjustmentF
   (*(v9 + 16))(v9, 0, v10, v11, v12);
 }
 
-- (id)getClosestResourceMatchingCPLResourceType:(unint64_t)a3 version:(unsigned int)a4 asset:(id)a5
+- (id)getClosestResourceMatchingCPLResourceType:(unint64_t)type version:(unsigned int)version asset:(id)asset
 {
-  v5 = *&a4;
+  v5 = *&version;
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [v7 resourceForCPLType:a3 version:v5];
+  assetCopy = asset;
+  v8 = [assetCopy resourceForCPLType:type version:v5];
   v9 = v8;
   if (!v8 || [v8 localAvailability] <= 0)
   {
@@ -4088,8 +4088,8 @@ void __209__PLPrimaryResourceDataStore_Finalization__generateDeferredAdjustmentF
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v7 modernResources];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    modernResources = [assetCopy modernResources];
+    v11 = [modernResources countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -4101,7 +4101,7 @@ void __209__PLPrimaryResourceDataStore_Finalization__generateDeferredAdjustmentF
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(modernResources);
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
@@ -4116,7 +4116,7 @@ void __209__PLPrimaryResourceDataStore_Finalization__generateDeferredAdjustmentF
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v12 = [modernResources countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v12);
@@ -4131,10 +4131,10 @@ void __209__PLPrimaryResourceDataStore_Finalization__generateDeferredAdjustmentF
   return v9;
 }
 
-+ (BOOL)bailOutOfVideoFinalizationIfNeededForAsset:(id)a3 taskIdentifier:(id)a4 didPromoteProxy:(BOOL *)a5 error:(id *)a6
++ (BOOL)bailOutOfVideoFinalizationIfNeededForAsset:(id)asset taskIdentifier:(id)identifier didPromoteProxy:(BOOL *)proxy error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  assetCopy = asset;
+  identifierCopy = identifier;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -4149,10 +4149,10 @@ void __209__PLPrimaryResourceDataStore_Finalization__generateDeferredAdjustmentF
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (![v9 requiresVideoComplementDeferredFinalization])
+  if (![assetCopy requiresVideoComplementDeferredFinalization])
   {
     *(v25 + 24) = 1;
-    if (!a5)
+    if (!proxy)
     {
       goto LABEL_6;
     }
@@ -4160,28 +4160,28 @@ void __209__PLPrimaryResourceDataStore_Finalization__generateDeferredAdjustmentF
     goto LABEL_5;
   }
 
-  v11 = [v9 photoLibrary];
+  photoLibrary = [assetCopy photoLibrary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __124__PLPrimaryResourceDataStore_Finalization__bailOutOfVideoFinalizationIfNeededForAsset_taskIdentifier_didPromoteProxy_error___block_invoke;
   v14[3] = &unk_1E756F910;
-  v15 = v9;
+  v15 = assetCopy;
   v17 = &v28;
-  v16 = v10;
+  v16 = identifierCopy;
   v18 = &v24;
   v19 = &v20;
-  [v11 performTransactionAndWait:v14];
+  [photoLibrary performTransactionAndWait:v14];
 
-  if (a5)
+  if (proxy)
   {
 LABEL_5:
-    *a5 = *(v21 + 24);
+    *proxy = *(v21 + 24);
   }
 
 LABEL_6:
-  if (a6)
+  if (error)
   {
-    *a6 = v29[5];
+    *error = v29[5];
   }
 
   v12 = *(v25 + 24);

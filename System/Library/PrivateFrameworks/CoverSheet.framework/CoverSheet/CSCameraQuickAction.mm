@@ -2,7 +2,7 @@
 - (BOOL)_allowsCamera;
 - (BOOL)_shouldPrelaunchOnTouch;
 - (BOOL)_shouldPrewarmOnTouch;
-- (CSCameraQuickAction)initWithDelegate:(id)a3 prewarmer:(id)a4 prototypeSettings:(id)a5 defaults:(id)a6;
+- (CSCameraQuickAction)initWithDelegate:(id)delegate prewarmer:(id)prewarmer prototypeSettings:(id)settings defaults:(id)defaults;
 - (id)_containingApplicationBundleIdentifier;
 - (id)_prewarmingIdentifier;
 - (int64_t)appearance;
@@ -41,22 +41,22 @@
   }
 }
 
-- (CSCameraQuickAction)initWithDelegate:(id)a3 prewarmer:(id)a4 prototypeSettings:(id)a5 defaults:(id)a6
+- (CSCameraQuickAction)initWithDelegate:(id)delegate prewarmer:(id)prewarmer prototypeSettings:(id)settings defaults:(id)defaults
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  delegateCopy = delegate;
+  prewarmerCopy = prewarmer;
+  settingsCopy = settings;
+  defaultsCopy = defaults;
   v18.receiver = self;
   v18.super_class = CSCameraQuickAction;
   v15 = [(CSCameraQuickAction *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_delegate, a3);
-    objc_storeStrong(&v16->_prewarmer, a4);
-    objc_storeStrong(&v16->_prototypeSettings, a5);
-    objc_storeStrong(&v16->_lockScreenDefaults, a6);
+    objc_storeStrong(&v15->_delegate, delegate);
+    objc_storeStrong(&v16->_prewarmer, prewarmer);
+    objc_storeStrong(&v16->_prototypeSettings, settings);
+    objc_storeStrong(&v16->_lockScreenDefaults, defaults);
   }
 
   return v16;
@@ -66,9 +66,9 @@
 {
   self->_hasFiredForTouch = 0;
   prewarmer = self->_prewarmer;
-  v4 = [(CSCameraQuickAction *)self _prewarmingIdentifier];
-  v5 = [(CSCameraQuickAction *)self _prewarmReason];
-  [(CSCameraPrewarming *)prewarmer prewarmCameraForIdentifier:v4 prewarmReason:v5];
+  _prewarmingIdentifier = [(CSCameraQuickAction *)self _prewarmingIdentifier];
+  _prewarmReason = [(CSCameraQuickAction *)self _prewarmReason];
+  [(CSCameraPrewarming *)prewarmer prewarmCameraForIdentifier:_prewarmingIdentifier prewarmReason:_prewarmReason];
 
   activePrewarmTimer = self->_activePrewarmTimer;
   if (activePrewarmTimer)
@@ -78,8 +78,8 @@
     self->_activePrewarmTimer = 0;
   }
 
-  v8 = [(CSLockScreenSettings *)self->_prototypeSettings dashBoardQuickActionButtonSettings];
-  [v8 maximumTouchDuration];
+  dashBoardQuickActionButtonSettings = [(CSLockScreenSettings *)self->_prototypeSettings dashBoardQuickActionButtonSettings];
+  [dashBoardQuickActionButtonSettings maximumTouchDuration];
   v10 = v9;
 
   IsZero = BSFloatIsZero();
@@ -103,26 +103,26 @@
   self->_activePrewarmTimer = 0;
 
   prewarmer = self->_prewarmer;
-  v5 = [(CSCameraQuickAction *)self _prewarmingIdentifier];
-  [(CSCameraPrewarming *)prewarmer notePrewarmRequestEndedForIdentifier:v5];
+  _prewarmingIdentifier = [(CSCameraQuickAction *)self _prewarmingIdentifier];
+  [(CSCameraPrewarming *)prewarmer notePrewarmRequestEndedForIdentifier:_prewarmingIdentifier];
 }
 
 - (void)fireAction
 {
   self->_hasFiredForTouch = 1;
-  v8 = [(CSCameraQuickAction *)self _prewarmingIdentifier];
+  _prewarmingIdentifier = [(CSCameraQuickAction *)self _prewarmingIdentifier];
   prewarmer = self->_prewarmer;
-  v4 = [(CSCameraQuickAction *)self _prewarmReason];
-  [(CSCameraPrewarming *)prewarmer prewarmCameraForIdentifier:v8 prewarmReason:v4];
+  _prewarmReason = [(CSCameraQuickAction *)self _prewarmReason];
+  [(CSCameraPrewarming *)prewarmer prewarmCameraForIdentifier:_prewarmingIdentifier prewarmReason:_prewarmReason];
 
-  v5 = [(CSCameraPrewarming *)self->_prewarmer prewarmConfigurationForIdentifier:v8];
-  LOBYTE(v4) = [v5 prewarmForCaptureLaunch];
+  v5 = [(CSCameraPrewarming *)self->_prewarmer prewarmConfigurationForIdentifier:_prewarmingIdentifier];
+  LOBYTE(_prewarmReason) = [v5 prewarmForCaptureLaunch];
 
   delegate = self->_delegate;
-  if (v4)
+  if (_prewarmReason)
   {
-    v7 = [(CSCameraQuickAction *)self _containingApplicationBundleIdentifier];
-    [(CSCameraQuickActionDelegate *)delegate launchCameraCapture:v7];
+    _containingApplicationBundleIdentifier = [(CSCameraQuickAction *)self _containingApplicationBundleIdentifier];
+    [(CSCameraQuickActionDelegate *)delegate launchCameraCapture:_containingApplicationBundleIdentifier];
   }
 
   else
@@ -130,7 +130,7 @@
     [(CSCameraQuickActionDelegate *)self->_delegate activateCameraView];
   }
 
-  [(CSCameraPrewarming *)self->_prewarmer notePrewarmRequestWasUsefulForIdentifier:v8];
+  [(CSCameraPrewarming *)self->_prewarmer notePrewarmRequestWasUsefulForIdentifier:_prewarmingIdentifier];
 }
 
 - (void)touchEnded
@@ -142,8 +142,8 @@
   if (!self->_hasFiredForTouch)
   {
     prewarmer = self->_prewarmer;
-    v5 = [(CSCameraQuickAction *)self _prewarmingIdentifier];
-    [(CSCameraPrewarming *)prewarmer notePrewarmRequestEndedForIdentifier:v5];
+    _prewarmingIdentifier = [(CSCameraQuickAction *)self _prewarmingIdentifier];
+    [(CSCameraPrewarming *)prewarmer notePrewarmRequestEndedForIdentifier:_prewarmingIdentifier];
   }
 }
 
@@ -183,8 +183,8 @@
 
 - (id)_containingApplicationBundleIdentifier
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 stringForKey:@"SBCameraContainingApplicationBundleIdentifier"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"SBCameraContainingApplicationBundleIdentifier"];
 
   if (v3)
   {
@@ -214,8 +214,8 @@
   }
 
   v4 = [CSCameraPrewarmingIdentifier alloc];
-  v5 = [(CSCameraQuickAction *)self _containingApplicationBundleIdentifier];
-  v6 = [(CSCameraPrewarmingIdentifier *)v4 initWithCameraPrewarmType:v3 applicationBundleIdentifier:v5];
+  _containingApplicationBundleIdentifier = [(CSCameraQuickAction *)self _containingApplicationBundleIdentifier];
+  v6 = [(CSCameraPrewarmingIdentifier *)v4 initWithCameraPrewarmType:v3 applicationBundleIdentifier:_containingApplicationBundleIdentifier];
 
   return v6;
 }

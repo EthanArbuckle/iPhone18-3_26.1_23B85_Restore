@@ -1,47 +1,47 @@
 @interface FMDCommandHandlerTrack
 - (void)handleCommand;
-- (void)sendAckWithCompletion:(id)a3;
+- (void)sendAckWithCompletion:(id)completion;
 @end
 
 @implementation FMDCommandHandlerTrack
 
 - (void)handleCommand
 {
-  v3 = [(FMDCommandHandler *)self commandParams];
-  v4 = [v3 objectForKeyedSubscript:@"trackingStatus"];
-  v5 = [v4 intValue];
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v4 = [commandParams objectForKeyedSubscript:@"trackingStatus"];
+  intValue = [v4 intValue];
 
-  v6 = [(FMDCommandHandler *)self commandParams];
-  v7 = [v6 objectForKeyedSubscript:@"track.sendTrackedLocationsOnChange"];
-  v8 = [v7 BOOLValue];
+  commandParams2 = [(FMDCommandHandler *)self commandParams];
+  v7 = [commandParams2 objectForKeyedSubscript:@"track.sendTrackedLocationsOnChange"];
+  bOOLValue = [v7 BOOLValue];
 
   v51 = +[NSMutableDictionary dictionary];
-  v9 = [(FMDCommandHandler *)self commandParams];
-  v10 = [v9 objectForKeyedSubscript:@"loc.timeout"];
+  commandParams3 = [(FMDCommandHandler *)self commandParams];
+  v10 = [commandParams3 objectForKeyedSubscript:@"loc.timeout"];
   [v51 fm_safelyMapKey:@"timeout" toObject:v10];
 
-  v11 = [(FMDCommandHandler *)self commandParams];
-  v12 = [v11 objectForKeyedSubscript:@"loc.startThreshold"];
+  commandParams4 = [(FMDCommandHandler *)self commandParams];
+  v12 = [commandParams4 objectForKeyedSubscript:@"loc.startThreshold"];
   [v51 fm_safelyMapKey:@"startThreshold" toObject:v12];
 
-  v13 = [(FMDCommandHandler *)self commandParams];
-  v14 = [v13 objectForKeyedSubscript:@"loc.endThreshold"];
+  commandParams5 = [(FMDCommandHandler *)self commandParams];
+  v14 = [commandParams5 objectForKeyedSubscript:@"loc.endThreshold"];
   [v51 fm_safelyMapKey:@"endThreshold" toObject:v14];
 
-  v15 = [(FMDCommandHandler *)self commandParams];
-  v16 = [v15 objectForKeyedSubscript:@"loc.decayFactor"];
+  commandParams6 = [(FMDCommandHandler *)self commandParams];
+  v16 = [commandParams6 objectForKeyedSubscript:@"loc.decayFactor"];
   [v51 fm_safelyMapKey:@"decayFactor" toObject:v16];
 
-  v17 = [(FMDCommandHandler *)self commandParams];
-  v18 = [v17 objectForKeyedSubscript:@"loc.desiredAccuracy"];
+  commandParams7 = [(FMDCommandHandler *)self commandParams];
+  v18 = [commandParams7 objectForKeyedSubscript:@"loc.desiredAccuracy"];
   [v51 fm_safelyMapKey:@"desiredAccuracy" toObject:v18];
 
-  v19 = [(FMDCommandHandler *)self commandParams];
-  v20 = [v19 objectForKeyedSubscript:@"loc.validityDuration"];
+  commandParams8 = [(FMDCommandHandler *)self commandParams];
+  v20 = [commandParams8 objectForKeyedSubscript:@"loc.validityDuration"];
   [v51 fm_safelyMapKey:@"validityDuration" toObject:v20];
 
-  v21 = [(FMDCommandHandler *)self commandParams];
-  v22 = [v21 objectForKeyedSubscript:@"track.minSLCThresholdInMeters"];
+  commandParams9 = [(FMDCommandHandler *)self commandParams];
+  v22 = [commandParams9 objectForKeyedSubscript:@"track.minSLCThresholdInMeters"];
 
   if (v22)
   {
@@ -54,69 +54,69 @@
     v24 = 400.0;
   }
 
-  v25 = [(FMDCommandHandler *)self commandParams];
-  v26 = [v25 objectForKeyedSubscript:@"track.maxTrackedLocationsCount"];
-  v27 = [v26 intValue];
+  commandParams10 = [(FMDCommandHandler *)self commandParams];
+  v26 = [commandParams10 objectForKeyedSubscript:@"track.maxTrackedLocationsCount"];
+  intValue2 = [v26 intValue];
 
-  v28 = [(FMDCommandHandler *)self commandParams];
-  v29 = [v28 objectForKeyedSubscript:@"track.locCacheDurationInSecs"];
+  commandParams11 = [(FMDCommandHandler *)self commandParams];
+  v29 = [commandParams11 objectForKeyedSubscript:@"track.locCacheDurationInSecs"];
   [v29 doubleValue];
   v31 = v30;
 
-  v32 = [(FMDCommandHandler *)self commandParams];
-  v33 = [v32 objectForKeyedSubscript:@"track.maxCallbackTimeInSecs"];
+  commandParams12 = [(FMDCommandHandler *)self commandParams];
+  v33 = [commandParams12 objectForKeyedSubscript:@"track.maxCallbackTimeInSecs"];
   [v33 doubleValue];
   v35 = v34;
 
-  v36 = [(FMDCommandHandler *)self commandParams];
-  v37 = [v36 objectForKeyedSubscript:@"track.minDistanceThresholdInMeters"];
+  commandParams13 = [(FMDCommandHandler *)self commandParams];
+  v37 = [commandParams13 objectForKeyedSubscript:@"track.minDistanceThresholdInMeters"];
   [v37 doubleValue];
   v39 = v38;
 
-  v40 = [(FMDCommandHandler *)self commandParams];
-  v41 = [v40 objectForKeyedSubscript:@"track.minTimeBetweenLocationsInSecs"];
+  commandParams14 = [(FMDCommandHandler *)self commandParams];
+  v41 = [commandParams14 objectForKeyedSubscript:@"track.minTimeBetweenLocationsInSecs"];
   [v41 doubleValue];
   v43 = v42;
 
-  v44 = [(FMDCommandHandler *)self commandParams];
-  v45 = [v44 objectForKeyedSubscript:@"track.minCallbackTimeInSecs"];
+  commandParams15 = [(FMDCommandHandler *)self commandParams];
+  v45 = [commandParams15 objectForKeyedSubscript:@"track.minCallbackTimeInSecs"];
   [v45 doubleValue];
   v47 = v46;
 
-  v48 = [(FMDCommandHandler *)self provider];
-  v49 = [v48 locationTracker];
+  provider = [(FMDCommandHandler *)self provider];
+  locationTracker = [provider locationTracker];
 
-  if (v49)
+  if (locationTracker)
   {
-    v50 = [v48 locationTracker];
-    [v50 updateLocationTrackingInfoWithTrackingStatus:v5 minSLCAccuracyThreshold:v51 locateParams:v8 trackNotifyEnabled:v27 maxLocations:v24 keepAlive:v31 periodicCheckInterval:v35 minDistanceBetweenLocations:v39 minTimeBetweenLocations:v43 minTimeBetweenServerCalls:v47];
+    locationTracker2 = [provider locationTracker];
+    [locationTracker2 updateLocationTrackingInfoWithTrackingStatus:intValue minSLCAccuracyThreshold:v51 locateParams:bOOLValue trackNotifyEnabled:intValue2 maxLocations:v24 keepAlive:v31 periodicCheckInterval:v35 minDistanceBetweenLocations:v39 minTimeBetweenLocations:v43 minTimeBetweenServerCalls:v47];
   }
 
   [(FMDCommandHandler *)self didHandleCommandWithAckData:0];
 }
 
-- (void)sendAckWithCompletion:(id)a3
+- (void)sendAckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FMDCommandHandler *)self commandParams];
-  v6 = [v5 objectForKeyedSubscript:@"ackURL"];
+  completionCopy = completion;
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v6 = [commandParams objectForKeyedSubscript:@"ackURL"];
 
-  v7 = [(FMDCommandHandler *)self provider];
+  provider = [(FMDCommandHandler *)self provider];
   if (v6)
   {
     v8 = [NSURL URLWithString:v6];
     v9 = [FMDRequestAckTrack alloc];
-    v10 = [v7 account];
-    v11 = [(FMDCommandHandler *)self commandParams];
-    v12 = [(FMDRequestAckTrack *)v9 initWithAccount:v10 trackCommand:v11 ackURL:v8];
+    account = [provider account];
+    commandParams2 = [(FMDCommandHandler *)self commandParams];
+    v12 = [(FMDRequestAckTrack *)v9 initWithAccount:account trackCommand:commandParams2 ackURL:v8];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100129774;
     v14[3] = &unk_1002CD1D0;
-    v15 = v4;
+    v15 = completionCopy;
     [(FMDRequest *)v12 setCompletionHandler:v14];
-    [v7 enqueueRequest:v12];
+    [provider enqueueRequest:v12];
   }
 
   else

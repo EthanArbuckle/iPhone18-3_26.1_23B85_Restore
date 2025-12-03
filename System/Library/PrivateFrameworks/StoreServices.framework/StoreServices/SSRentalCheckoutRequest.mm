@@ -2,21 +2,21 @@
 - (NSArray)sinfs;
 - (NSNumber)accountIdentifier;
 - (NSNumber)rentalKeyIdentifier;
-- (SSRentalCheckoutRequest)initWithAccountIdentifier:(id)a3 rentalKeyIdentifier:(id)a4;
-- (SSRentalCheckoutRequest)initWithDownloadIdentifier:(int64_t)a3;
-- (SSRentalCheckoutRequest)initWithSinfs:(id)a3;
-- (SSRentalCheckoutRequest)initWithXPCEncoding:(id)a3;
+- (SSRentalCheckoutRequest)initWithAccountIdentifier:(id)identifier rentalKeyIdentifier:(id)keyIdentifier;
+- (SSRentalCheckoutRequest)initWithDownloadIdentifier:(int64_t)identifier;
+- (SSRentalCheckoutRequest)initWithSinfs:(id)sinfs;
+- (SSRentalCheckoutRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (void)dealloc;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithConnectionResponseBlock:(id)a3;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithConnectionResponseBlock:(id)block;
 @end
 
 @implementation SSRentalCheckoutRequest
 
-- (SSRentalCheckoutRequest)initWithAccountIdentifier:(id)a3 rentalKeyIdentifier:(id)a4
+- (SSRentalCheckoutRequest)initWithAccountIdentifier:(id)identifier rentalKeyIdentifier:(id)keyIdentifier
 {
-  if (![a3 unsignedLongLongValue])
+  if (![identifier unsignedLongLongValue])
   {
 
     v8 = MEMORY[0x1E695DF30];
@@ -27,7 +27,7 @@ LABEL_7:
     return 0;
   }
 
-  if (![a4 unsignedLongLongValue])
+  if (![keyIdentifier unsignedLongLongValue])
   {
 
     v8 = MEMORY[0x1E695DF30];
@@ -41,24 +41,24 @@ LABEL_7:
   v7 = [(SSRequest *)&v12 init];
   if (v7)
   {
-    v7->_accountIdentifier = [a3 copy];
-    v7->_rentalKeyIdentifier = [a4 copy];
+    v7->_accountIdentifier = [identifier copy];
+    v7->_rentalKeyIdentifier = [keyIdentifier copy];
     v7->_shouldValidateRentalInfo = 1;
   }
 
   return v7;
 }
 
-- (SSRentalCheckoutRequest)initWithDownloadIdentifier:(int64_t)a3
+- (SSRentalCheckoutRequest)initWithDownloadIdentifier:(int64_t)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v5.receiver = self;
     v5.super_class = SSRentalCheckoutRequest;
     result = [(SSRequest *)&v5 init];
     if (result)
     {
-      result->_downloadIdentifier = a3;
+      result->_downloadIdentifier = identifier;
       result->_shouldValidateRentalInfo = 1;
     }
   }
@@ -73,16 +73,16 @@ LABEL_7:
   return result;
 }
 
-- (SSRentalCheckoutRequest)initWithSinfs:(id)a3
+- (SSRentalCheckoutRequest)initWithSinfs:(id)sinfs
 {
-  if ([a3 count])
+  if ([sinfs count])
   {
     v7.receiver = self;
     v7.super_class = SSRentalCheckoutRequest;
     v5 = [(SSRequest *)&v7 init];
     if (v5)
     {
-      v5->_sinfs = [a3 copy];
+      v5->_sinfs = [sinfs copy];
       v5->_shouldValidateRentalInfo = 1;
     }
   }
@@ -125,13 +125,13 @@ LABEL_7:
   return v2;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __52__SSRentalCheckoutRequest_startWithCompletionBlock___block_invoke;
   v3[3] = &unk_1E84ADF30;
-  v3[4] = a3;
+  v3[4] = block;
   [(SSRentalCheckoutRequest *)self startWithConnectionResponseBlock:v3];
 }
 
@@ -146,7 +146,7 @@ uint64_t __52__SSRentalCheckoutRequest_startWithCompletionBlock___block_invoke(u
   return result;
 }
 
-- (void)startWithConnectionResponseBlock:(id)a3
+- (void)startWithConnectionResponseBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -157,15 +157,15 @@ uint64_t __52__SSRentalCheckoutRequest_startWithCompletionBlock___block_invoke(u
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -200,7 +200,7 @@ uint64_t __52__SSRentalCheckoutRequest_startWithCompletionBlock___block_invoke(u
   v20[2] = __60__SSRentalCheckoutRequest_startWithConnectionResponseBlock___block_invoke;
   v20[3] = &unk_1E84AC760;
   v20[4] = self;
-  v20[5] = a3;
+  v20[5] = block;
   [(SSRequest *)self _startWithMessageID:60 messageBlock:v20, v18];
 }
 
@@ -248,20 +248,20 @@ uint64_t __60__SSRentalCheckoutRequest_startWithConnectionResponseBlock___block_
   return v3;
 }
 
-- (SSRentalCheckoutRequest)initWithXPCEncoding:(id)a3
+- (SSRentalCheckoutRequest)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     objc_opt_class();
-    self->_accountIdentifier = SSXPCDictionaryCopyCFObjectWithClass(a3, "50");
-    self->_checkoutWithPlay = xpc_dictionary_get_BOOL(a3, "55");
-    self->_downloadIdentifier = xpc_dictionary_get_int64(a3, "51");
+    self->_accountIdentifier = SSXPCDictionaryCopyCFObjectWithClass(encoding, "50");
+    self->_checkoutWithPlay = xpc_dictionary_get_BOOL(encoding, "55");
+    self->_downloadIdentifier = xpc_dictionary_get_int64(encoding, "51");
     objc_opt_class();
-    self->_rentalKeyIdentifier = SSXPCDictionaryCopyCFObjectWithClass(a3, "52");
+    self->_rentalKeyIdentifier = SSXPCDictionaryCopyCFObjectWithClass(encoding, "52");
     objc_opt_class();
-    self->_sinfs = SSXPCDictionaryCopyCFObjectWithClass(a3, "54");
-    self->_shouldValidateRentalInfo = xpc_dictionary_get_BOOL(a3, "53");
-    self->_checkoutType = xpc_dictionary_get_uint64(a3, "56");
+    self->_sinfs = SSXPCDictionaryCopyCFObjectWithClass(encoding, "54");
+    self->_shouldValidateRentalInfo = xpc_dictionary_get_BOOL(encoding, "53");
+    self->_checkoutType = xpc_dictionary_get_uint64(encoding, "56");
   }
 
   else

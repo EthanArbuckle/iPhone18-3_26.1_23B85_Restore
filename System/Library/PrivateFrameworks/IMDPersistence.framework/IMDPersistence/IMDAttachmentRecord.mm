@@ -1,8 +1,8 @@
 @interface IMDAttachmentRecord
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)keyPathsToColumns;
 - (BOOL)isAdaptiveImageGlyph;
-- (IMDAttachmentRecord)initWithRecordRef:(_IMDAttachmentRecordStruct *)a3;
+- (IMDAttachmentRecord)initWithRecordRef:(_IMDAttachmentRecordStruct *)ref;
 - (IMDMessageRecord)messageRecord;
 - (NSDictionary)attributionInfo;
 - (NSDictionary)stickerUserInfo;
@@ -19,14 +19,14 @@
 
 @implementation IMDAttachmentRecord
 
-- (IMDAttachmentRecord)initWithRecordRef:(_IMDAttachmentRecordStruct *)a3
+- (IMDAttachmentRecord)initWithRecordRef:(_IMDAttachmentRecordStruct *)ref
 {
-  v4 = a3;
+  refCopy = ref;
 
-  return v4;
+  return refCopy;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v3 = *MEMORY[0x1E695E480];
   IMDAttachmentRecordGetTypeID();

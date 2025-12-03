@@ -1,23 +1,23 @@
 @interface GKDiscoveryBonjour
 - (BOOL)isAppleTV;
 - (GKDiscoveryBonjour)init;
-- (GKDiscoveryBonjour)initWithDomain:(id)a3 type:(id)a4;
+- (GKDiscoveryBonjour)initWithDomain:(id)domain type:(id)type;
 - (int)ipV4Socket;
 - (int)ipV6Socket;
-- (int)resolveName:(id)a3 onIndex:(unsigned int)a4 withCompletionHandler:(id)a5;
-- (int)startBrowsing:(id)a3;
+- (int)resolveName:(id)name onIndex:(unsigned int)index withCompletionHandler:(id)handler;
+- (int)startBrowsing:(id)browsing;
 - (void)closeListeningSockets;
-- (void)createDispatchEventWithSocket:(int)a3;
+- (void)createDispatchEventWithSocket:(int)socket;
 - (void)dealloc;
 - (void)ipV4Socket;
 - (void)ipV6Socket;
-- (void)sendBonjourRegistrationEvent:(id)a3 discoveryInfo:(id)a4;
+- (void)sendBonjourRegistrationEvent:(id)event discoveryInfo:(id)info;
 - (void)setupBothListeningSockets;
 - (void)setupListeningSockets;
-- (void)startAdvertisingServiceName:(id)a3 discoveryInfo:(id)a4;
+- (void)startAdvertisingServiceName:(id)name discoveryInfo:(id)info;
 - (void)stopAdvertising;
 - (void)stopBrowsing;
-- (void)stopResolve:(id)a3;
+- (void)stopResolve:(id)resolve;
 @end
 
 @implementation GKDiscoveryBonjour
@@ -30,15 +30,15 @@
   return 0;
 }
 
-- (GKDiscoveryBonjour)initWithDomain:(id)a3 type:(id)a4
+- (GKDiscoveryBonjour)initWithDomain:(id)domain type:(id)type
 {
   v8.receiver = self;
   v8.super_class = GKDiscoveryBonjour;
   v6 = [(GKDiscoveryBonjour *)&v8 init];
   if (v6)
   {
-    v6->_serviceDomain = [a3 copy];
-    v6->_serviceType = [a4 copy];
+    v6->_serviceDomain = [domain copy];
+    v6->_serviceType = [type copy];
     v6->_launchdSources = objc_alloc_init(MEMORY[0x277CBEB18]);
     v6->_resolveContainers = objc_alloc_init(MEMORY[0x277CBEB38]);
     v6->_resolveContainersSyncQueue = dispatch_queue_create("com.apple.gamed.GKDiscoveryBonjour.resolveContanersSyncQueue", 0);
@@ -95,7 +95,7 @@ void __31__GKDiscoveryBonjour_isAppleTV__block_invoke()
   [(GKDiscoveryBonjour *)&v6 dealloc];
 }
 
-- (int)startBrowsing:(id)a3
+- (int)startBrowsing:(id)browsing
 {
   p_browseRef = &self->_browseRef;
   if (self->_browseRef)
@@ -103,7 +103,7 @@ void __31__GKDiscoveryBonjour_isAppleTV__block_invoke()
     [(GKDiscoveryBonjour *)self stopBrowsing];
   }
 
-  [(GKDiscoveryBonjour *)self setBrowseCallback:a3];
+  [(GKDiscoveryBonjour *)self setBrowseCallback:browsing];
   v6 = DNSServiceBrowse(p_browseRef, 0x20000u, 0, [(NSString *)self->_serviceType UTF8String], [(NSString *)self->_serviceDomain UTF8String], gkDiscoveryBrowseCallback, self);
   if (v6)
   {
@@ -149,7 +149,7 @@ void __31__GKDiscoveryBonjour_isAppleTV__block_invoke()
   [(GKDiscoveryBonjour *)self setBrowseCallback:0];
 }
 
-- (int)resolveName:(id)a3 onIndex:(unsigned int)a4 withCompletionHandler:(id)a5
+- (int)resolveName:(id)name onIndex:(unsigned int)index withCompletionHandler:(id)handler
 {
   v10 = 0;
   v11 = &v10;
@@ -161,10 +161,10 @@ void __31__GKDiscoveryBonjour_isAppleTV__block_invoke()
   block[2] = __64__GKDiscoveryBonjour_resolveName_onIndex_withCompletionHandler___block_invoke;
   block[3] = &unk_2796832C0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a5;
+  block[5] = name;
+  block[6] = handler;
   block[7] = &v10;
-  v9 = a4;
+  indexCopy = index;
   dispatch_sync(resolveContainersSyncQueue, block);
   v6 = *(v11 + 6);
   _Block_object_dispose(&v10, 8);
@@ -225,7 +225,7 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)stopResolve:(id)a3
+- (void)stopResolve:(id)resolve
 {
   resolveContainersSyncQueue = self->_resolveContainersSyncQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -233,7 +233,7 @@ LABEL_13:
   v4[2] = __34__GKDiscoveryBonjour_stopResolve___block_invoke;
   v4[3] = &unk_279682BF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = resolve;
   dispatch_async(resolveContainersSyncQueue, v4);
 }
 
@@ -245,26 +245,26 @@ uint64_t __34__GKDiscoveryBonjour_stopResolve___block_invoke(uint64_t a1)
   return [v2 removeObjectForKey:v3];
 }
 
-- (void)createDispatchEventWithSocket:(int)a3
+- (void)createDispatchEventWithSocket:(int)socket
 {
-  v5 = dispatch_source_create(MEMORY[0x277D85D28], a3, 0, MEMORY[0x277D85CD0]);
-  v6 = [(GKDiscoveryBonjour *)self connectionCallback];
+  v5 = dispatch_source_create(MEMORY[0x277D85D28], socket, 0, MEMORY[0x277D85CD0]);
+  connectionCallback = [(GKDiscoveryBonjour *)self connectionCallback];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __52__GKDiscoveryBonjour_createDispatchEventWithSocket___block_invoke;
   handler[3] = &unk_2796832E8;
-  v11 = a3;
-  handler[4] = v6;
+  socketCopy = socket;
+  handler[4] = connectionCallback;
   dispatch_source_set_event_handler(v5, handler);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __52__GKDiscoveryBonjour_createDispatchEventWithSocket___block_invoke_2;
   v8[3] = &__block_descriptor_36_e5_v8__0l;
-  v9 = a3;
+  socketCopy2 = socket;
   dispatch_source_set_cancel_handler(v5, v8);
   dispatch_resume(v5);
-  v7 = [(GKDiscoveryBonjour *)self launchdSources];
-  -[NSMutableArray addObject:](v7, "addObject:", [MEMORY[0x277CCAE60] valueWithPointer:v5]);
+  launchdSources = [(GKDiscoveryBonjour *)self launchdSources];
+  -[NSMutableArray addObject:](launchdSources, "addObject:", [MEMORY[0x277CCAE60] valueWithPointer:v5]);
 }
 
 uint64_t __52__GKDiscoveryBonjour_createDispatchEventWithSocket___block_invoke(uint64_t a1)
@@ -421,11 +421,11 @@ LABEL_13:
           objc_enumerationMutation(launchdSources);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) pointerValue];
-        dispatch_source_cancel(v8);
-        if (v8)
+        pointerValue = [*(*(&v10 + 1) + 8 * i) pointerValue];
+        dispatch_source_cancel(pointerValue);
+        if (pointerValue)
         {
-          dispatch_release(v8);
+          dispatch_release(pointerValue);
         }
       }
 
@@ -439,7 +439,7 @@ LABEL_13:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendBonjourRegistrationEvent:(id)a3 discoveryInfo:(id)a4
+- (void)sendBonjourRegistrationEvent:(id)event discoveryInfo:(id)info
 {
   v37 = *MEMORY[0x277D85DE8];
   txtRecord.ForceNaturalAlignment = 0xAAAAAAAAAAAAAAAALL;
@@ -449,8 +449,8 @@ LABEL_13:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [a4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  allKeys = [info allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v6)
   {
     v7 = *v29;
@@ -460,18 +460,18 @@ LABEL_13:
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v28 + 1) + 8 * i);
-        v10 = [a4 valueForKey:v9];
+        v10 = [info valueForKey:v9];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 UTF8String];
-          v12 = [v9 UTF8String];
-          v13 = strlen(v11);
-          v14 = TXTRecordSetValue(&txtRecord, v12, v13, v11);
+          uTF8String = [v10 UTF8String];
+          uTF8String2 = [v9 UTF8String];
+          v13 = strlen(uTF8String);
+          v14 = TXTRecordSetValue(&txtRecord, uTF8String2, v13, uTF8String);
           if (v14)
           {
             if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -495,7 +495,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v28 objects:v35 count:16];
     }
 
     while (v6);
@@ -514,21 +514,21 @@ LABEL_13:
   *&buf[16] = 0x3052000000;
   *&v33 = __Block_byref_object_copy__0;
   *(&v33 + 1) = __Block_byref_object_dispose__0;
-  v34 = self;
+  selfCopy = self;
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __65__GKDiscoveryBonjour_sendBonjourRegistrationEvent_discoveryInfo___block_invoke;
   v27[3] = &unk_279683310;
-  v27[4] = a4;
+  v27[4] = info;
   v27[5] = buf;
   self->_collisionCallback = [v27 copy];
-  v19 = [a3 UTF8String];
-  v20 = [(NSString *)self->_serviceType UTF8String];
+  uTF8String3 = [event UTF8String];
+  uTF8String4 = [(NSString *)self->_serviceType UTF8String];
   listeningPort_low = LOWORD(self->_listeningPort);
   txtLen = TXTRecordGetLength(&txtRecord);
   BytesPtr = TXTRecordGetBytesPtr(&txtRecord);
-  if (DNSServiceRegister(p_advertiseRef, 0x20008u, 0, v19, v20, 0, 0, bswap32(listeningPort_low) >> 16, txtLen, BytesPtr, gkDiscoveryRegisterCallback, self->_collisionCallback))
+  if (DNSServiceRegister(p_advertiseRef, 0x20008u, 0, uTF8String3, uTF8String4, 0, 0, bswap32(listeningPort_low) >> 16, txtLen, BytesPtr, gkDiscoveryRegisterCallback, self->_collisionCallback))
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -572,11 +572,11 @@ uint64_t __65__GKDiscoveryBonjour_sendBonjourRegistrationEvent_discoveryInfo___b
   return result;
 }
 
-- (void)startAdvertisingServiceName:(id)a3 discoveryInfo:(id)a4
+- (void)startAdvertisingServiceName:(id)name discoveryInfo:(id)info
 {
   [(GKDiscoveryBonjour *)self setupListeningSockets];
 
-  [(GKDiscoveryBonjour *)self sendBonjourRegistrationEvent:a3 discoveryInfo:a4];
+  [(GKDiscoveryBonjour *)self sendBonjourRegistrationEvent:name discoveryInfo:info];
 }
 
 - (void)stopAdvertising

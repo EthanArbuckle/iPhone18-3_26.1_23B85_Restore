@@ -1,19 +1,19 @@
 @interface SXWebCalAction
-- (SXWebCalAction)initWithURL:(id)a3;
+- (SXWebCalAction)initWithURL:(id)l;
 @end
 
 @implementation SXWebCalAction
 
-- (SXWebCalAction)initWithURL:(id)a3
+- (SXWebCalAction)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = SXWebCalAction;
   v6 = [(SXWebCalAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
   }
 
   return v7;

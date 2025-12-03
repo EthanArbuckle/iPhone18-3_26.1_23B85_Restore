@@ -13,8 +13,8 @@
   v13 = a6;
   v14 = objc_alloc_init(MEMORY[0x277D2C900]);
   v15 = +[HFHomeKitDispatcher sharedDispatcher];
-  v16 = [v15 homeManager];
-  v17 = [v16 hf_homeWithIdentifier:v10];
+  homeManager = [v15 homeManager];
+  v17 = [homeManager hf_homeWithIdentifier:v10];
 
   v18 = [v17 hf_accessoryWithIdentifier:v11];
   [v18 hf_onboardSiriEndpointIfNeededWithSettingKeyPath:v12 settingValue:v13];
@@ -42,7 +42,7 @@
   v21 = v13;
   v22 = v11;
   v23 = v12;
-  [a1 updateAccessorySettingWithHomeIdentifier:v10 accessoryIdentifier:v22 keyPath:v23 settingValue:v21 completionHandler:v28];
+  [self updateAccessorySettingWithHomeIdentifier:v10 accessoryIdentifier:v22 keyPath:v23 settingValue:v21 completionHandler:v28];
   v24 = v32;
   v25 = v20;
 

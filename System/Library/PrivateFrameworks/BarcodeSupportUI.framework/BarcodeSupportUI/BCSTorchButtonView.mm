@@ -1,10 +1,10 @@
 @interface BCSTorchButtonView
 - (BCSTorchButtonView)init;
 - (BCSTorchButtonViewDelegate)delegate;
-- (void)_torchButtonPressed:(id)a3;
+- (void)_torchButtonPressed:(id)pressed;
 - (void)_updateTorchButtonTintColor;
 - (void)rotationAnimationDidFinish;
-- (void)torchActivenessChangedTo:(BOOL)a3;
+- (void)torchActivenessChangedTo:(BOOL)to;
 @end
 
 @implementation BCSTorchButtonView
@@ -76,8 +76,8 @@
 
     else
     {
-      v18 = [(UIView *)v17 contentView];
-      [v18 addSubview:v2->_torchButton];
+      contentView = [(UIView *)v17 contentView];
+      [contentView addSubview:v2->_torchButton];
     }
 
     [(BCSTorchButtonView *)v2 addSubview:v2->_torchButtonPlatter];
@@ -92,43 +92,43 @@
     }
 
     v20 = MEMORY[0x277CCAAD0];
-    v54 = [(UIButton *)v2->_torchButton leadingAnchor];
-    v45 = [(UIView *)v2->_torchButtonPlatter leadingAnchor];
-    v44 = [v54 constraintEqualToAnchor:?];
+    leadingAnchor = [(UIButton *)v2->_torchButton leadingAnchor];
+    leadingAnchor2 = [(UIView *)v2->_torchButtonPlatter leadingAnchor];
+    v44 = [leadingAnchor constraintEqualToAnchor:?];
     v57[0] = v44;
-    v53 = [(UIButton *)v2->_torchButton trailingAnchor];
-    v43 = [(UIView *)v2->_torchButtonPlatter trailingAnchor];
-    v42 = [v53 constraintEqualToAnchor:?];
+    trailingAnchor = [(UIButton *)v2->_torchButton trailingAnchor];
+    trailingAnchor2 = [(UIView *)v2->_torchButtonPlatter trailingAnchor];
+    v42 = [trailingAnchor constraintEqualToAnchor:?];
     v57[1] = v42;
-    v52 = [(UIButton *)v2->_torchButton topAnchor];
-    v41 = [(UIView *)v2->_torchButtonPlatter topAnchor];
-    v40 = [v52 constraintEqualToAnchor:?];
+    topAnchor = [(UIButton *)v2->_torchButton topAnchor];
+    topAnchor2 = [(UIView *)v2->_torchButtonPlatter topAnchor];
+    v40 = [topAnchor constraintEqualToAnchor:?];
     v57[2] = v40;
-    v51 = [(UIButton *)v2->_torchButton bottomAnchor];
-    v39 = [(UIView *)v2->_torchButtonPlatter bottomAnchor];
-    v38 = [v51 constraintEqualToAnchor:?];
+    bottomAnchor = [(UIButton *)v2->_torchButton bottomAnchor];
+    bottomAnchor2 = [(UIView *)v2->_torchButtonPlatter bottomAnchor];
+    v38 = [bottomAnchor constraintEqualToAnchor:?];
     v57[3] = v38;
-    v50 = [(UIView *)v2->_torchButtonPlatter leadingAnchor];
-    v37 = [(BCSTorchButtonView *)v2 leadingAnchor];
-    v36 = [v50 constraintEqualToAnchor:?];
+    leadingAnchor3 = [(UIView *)v2->_torchButtonPlatter leadingAnchor];
+    leadingAnchor4 = [(BCSTorchButtonView *)v2 leadingAnchor];
+    v36 = [leadingAnchor3 constraintEqualToAnchor:?];
     v57[4] = v36;
-    v49 = [(UIView *)v2->_torchButtonPlatter trailingAnchor];
-    v35 = [(BCSTorchButtonView *)v2 trailingAnchor];
-    v34 = [v49 constraintEqualToAnchor:?];
+    trailingAnchor3 = [(UIView *)v2->_torchButtonPlatter trailingAnchor];
+    trailingAnchor4 = [(BCSTorchButtonView *)v2 trailingAnchor];
+    v34 = [trailingAnchor3 constraintEqualToAnchor:?];
     v57[5] = v34;
-    v48 = [(UIView *)v2->_torchButtonPlatter topAnchor];
-    v33 = [(BCSTorchButtonView *)v2 topAnchor];
-    v32 = [v48 constraintEqualToAnchor:?];
+    topAnchor3 = [(UIView *)v2->_torchButtonPlatter topAnchor];
+    topAnchor4 = [(BCSTorchButtonView *)v2 topAnchor];
+    v32 = [topAnchor3 constraintEqualToAnchor:?];
     v57[6] = v32;
-    v21 = [(UIView *)v2->_torchButtonPlatter bottomAnchor];
-    v22 = [(BCSTorchButtonView *)v2 bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    bottomAnchor3 = [(UIView *)v2->_torchButtonPlatter bottomAnchor];
+    bottomAnchor4 = [(BCSTorchButtonView *)v2 bottomAnchor];
+    v23 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v57[7] = v23;
-    v24 = [(UIView *)v2->_torchButtonPlatter widthAnchor];
-    v25 = [v24 constraintEqualToConstant:v19];
+    widthAnchor = [(UIView *)v2->_torchButtonPlatter widthAnchor];
+    v25 = [widthAnchor constraintEqualToConstant:v19];
     v57[8] = v25;
-    v26 = [(UIView *)v2->_torchButtonPlatter heightAnchor];
-    v27 = [v26 constraintEqualToConstant:v19];
+    heightAnchor = [(UIView *)v2->_torchButtonPlatter heightAnchor];
+    v27 = [heightAnchor constraintEqualToConstant:v19];
     v57[9] = v27;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:10];
     [v20 activateConstraints:v28];
@@ -140,21 +140,21 @@
   return v2;
 }
 
-- (void)torchActivenessChangedTo:(BOOL)a3
+- (void)torchActivenessChangedTo:(BOOL)to
 {
-  if (!a3)
+  if (!to)
   {
     [(UIButton *)self->_torchButton setSelected:0];
     [(BCSTorchButtonView *)self _updateTorchButtonTintColor];
     if (_UISolariumEnabled())
     {
-      v4 = [MEMORY[0x277D75348] clearColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
       [(UIView *)self->_torchButtonPlatter setBackgroundColor:?];
     }
 
     else
     {
-      v4 = [MEMORY[0x277D75210] effectWithStyle:2];
+      clearColor = [MEMORY[0x277D75210] effectWithStyle:2];
       [(UIView *)self->_torchButtonPlatter setEffect:?];
     }
   }
@@ -172,34 +172,34 @@
   [MEMORY[0x277D75D18] animateWithDuration:v3 animations:0.2];
 }
 
-- (void)_torchButtonPressed:(id)a3
+- (void)_torchButtonPressed:(id)pressed
 {
-  v8 = a3;
-  v4 = [v8 isSelected];
-  [(UIButton *)self->_torchButton setSelected:v4 ^ 1u];
+  pressedCopy = pressed;
+  isSelected = [pressedCopy isSelected];
+  [(UIButton *)self->_torchButton setSelected:isSelected ^ 1u];
   if (_UISolariumEnabled())
   {
-    if (v4)
+    if (isSelected)
     {
-      v5 = [MEMORY[0x277D75348] clearColor];
-      v6 = v5;
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      whiteColor = clearColor;
     }
 
     else
     {
-      v6 = [MEMORY[0x277D75348] whiteColor];
-      v5 = [v6 colorWithAlphaComponent:0.9];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      clearColor = [whiteColor colorWithAlphaComponent:0.9];
     }
 
-    [(UIView *)self->_torchButtonPlatter setBackgroundColor:v5];
-    if ((v4 & 1) == 0)
+    [(UIView *)self->_torchButtonPlatter setBackgroundColor:clearColor];
+    if ((isSelected & 1) == 0)
     {
     }
   }
 
   else
   {
-    if (v4)
+    if (isSelected)
     {
       [MEMORY[0x277D75210] effectWithStyle:2];
     }
@@ -208,13 +208,13 @@
     {
       [MEMORY[0x277D75210] effectWithStyle:1];
     }
-    v6 = ;
-    [(UIView *)self->_torchButtonPlatter setEffect:v6];
+    whiteColor = ;
+    [(UIView *)self->_torchButtonPlatter setEffect:whiteColor];
   }
 
   [(BCSTorchButtonView *)self _updateTorchButtonTintColor];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained torchButtonView:self torchModeChangedTo:v4 ^ 1u];
+  [WeakRetained torchButtonView:self torchModeChangedTo:isSelected ^ 1u];
 }
 
 - (void)_updateTorchButtonTintColor
@@ -229,8 +229,8 @@
     [MEMORY[0x277D75348] systemWhiteColor];
   }
   v4 = ;
-  v3 = [(UIButton *)self->_torchButton imageView];
-  [v3 setTintColor:v4];
+  imageView = [(UIButton *)self->_torchButton imageView];
+  [imageView setTintColor:v4];
 }
 
 - (BCSTorchButtonViewDelegate)delegate

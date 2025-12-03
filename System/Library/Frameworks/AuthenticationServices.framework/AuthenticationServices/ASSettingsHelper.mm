@@ -1,7 +1,7 @@
 @interface ASSettingsHelper
 + (void)openCredentialProviderAppSettingsWithCompletionHandler:(void *)completionHandler;
 + (void)openVerificationCodeAppSettingsWithCompletionHandler:(void *)completionHandler;
-+ (void)requestToTurnOnCredentialProviderExtensionWithCompletionHandler:(id)a3;
++ (void)requestToTurnOnCredentialProviderExtensionWithCompletionHandler:(id)handler;
 @end
 
 @implementation ASSettingsHelper
@@ -58,17 +58,17 @@ uint64_t __73__ASSettingsHelper_openVerificationCodeAppSettingsWithCompletionHan
   return result;
 }
 
-+ (void)requestToTurnOnCredentialProviderExtensionWithCompletionHandler:(id)a3
++ (void)requestToTurnOnCredentialProviderExtensionWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(MEMORY[0x1E698DFA0]);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __84__ASSettingsHelper_requestToTurnOnCredentialProviderExtensionWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7AF8DF8;
   v8 = v4;
-  v9 = v3;
-  v5 = v3;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   v6 = v4;
   [v6 requestToTurnOnCredentialProviderExtensionWithCompletionHandler:v7];
 }

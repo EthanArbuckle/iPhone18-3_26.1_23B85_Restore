@@ -1,12 +1,12 @@
 @interface CHWorkoutDetailFourColumnTableViewCell
-+ (double)preferredHeightForWorkout:(id)a3 indexPath:(id)a4 numberOfRows:(int64_t)a5;
-- (CHWorkoutDetailFourColumnTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (double)preferredHeightForWorkout:(id)workout indexPath:(id)path numberOfRows:(int64_t)rows;
+- (CHWorkoutDetailFourColumnTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation CHWorkoutDetailFourColumnTableViewCell
 
-+ (double)preferredHeightForWorkout:(id)a3 indexPath:(id)a4 numberOfRows:(int64_t)a5
++ (double)preferredHeightForWorkout:(id)workout indexPath:(id)path numberOfRows:(int64_t)rows
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -17,11 +17,11 @@
   return 32.0;
 }
 
-- (CHWorkoutDetailFourColumnTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailFourColumnTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -30,7 +30,7 @@
     v6 = 0;
   }
 
-  return sub_1002256D0(a3, a4, v6);
+  return sub_1002256D0(style, identifier, v6);
 }
 
 - (void)prepareForReuse

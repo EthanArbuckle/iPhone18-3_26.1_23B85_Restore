@@ -1,34 +1,34 @@
 @interface PRPosterContentLUTStyle
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)nonVariatedIdentifier;
-- (PRPosterContentLUTStyle)initWithCoder:(id)a3;
-- (PRPosterContentLUTStyle)initWithLUTIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRPosterContentLUTStyle)initWithCoder:(id)coder;
+- (PRPosterContentLUTStyle)initWithLUTIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)applyStyleWithRenderer:(id)a3;
+- (void)applyStyleWithRenderer:(id)renderer;
 @end
 
 @implementation PRPosterContentLUTStyle
 
-- (PRPosterContentLUTStyle)initWithLUTIdentifier:(id)a3
+- (PRPosterContentLUTStyle)initWithLUTIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PRPosterContentLUTStyle;
   v6 = [(PRPosterContentLUTStyle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lutIdentifier, a3);
+    objc_storeStrong(&v6->_lutIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -38,9 +38,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PRPosterContentLUTStyle *)v4 lutIdentifier];
-      v6 = [(PRPosterContentLUTStyle *)self lutIdentifier];
-      v7 = [v5 isEqual:v6];
+      lutIdentifier = [(PRPosterContentLUTStyle *)equalCopy lutIdentifier];
+      lutIdentifier2 = [(PRPosterContentLUTStyle *)self lutIdentifier];
+      v7 = [lutIdentifier isEqual:lutIdentifier2];
     }
 
     else
@@ -69,25 +69,25 @@
   return v4;
 }
 
-- (void)applyStyleWithRenderer:(id)a3
+- (void)applyStyleWithRenderer:(id)renderer
 {
-  v4 = a3;
+  rendererCopy = renderer;
   if (objc_opt_respondsToSelector())
   {
-    [v4 renderLUTStyle:self];
+    [rendererCopy renderLUTStyle:self];
   }
 }
 
-- (PRPosterContentLUTStyle)initWithCoder:(id)a3
+- (PRPosterContentLUTStyle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lutIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lutIdentifier"];
 
   v6 = [(PRPosterContentLUTStyle *)self initWithLUTIdentifier:v5];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRPosterContentLUTStyle alloc];
   lutIdentifier = self->_lutIdentifier;

@@ -1,20 +1,20 @@
 @interface UISearchTextFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)a3 replacementString:(id)a4 delegateCares:(BOOL *)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)ranges replacementString:(id)string delegateCares:(BOOL *)cares;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_setClearButtonImage:(id)a3 forState:(unint64_t)a4;
+- (void)_setClearButtonImage:(id)image forState:(unint64_t)state;
 @end
 
 @implementation UISearchTextFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   v5 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = "@";
   v4 = @"UISearchTextField";
   [location[0] validateClass:"@" hasInstanceMethod:"@" withFullSignature:{"^B", 0}];
@@ -23,18 +23,18 @@
   objc_storeStrong(v6, v5);
 }
 
-- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)a3 replacementString:(id)a4 delegateCares:(BOOL *)a5
+- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)ranges replacementString:(id)string delegateCares:(BOOL *)cares
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, ranges);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11 = a5;
-  v9.receiver = v14;
+  objc_storeStrong(&v12, string);
+  caresCopy = cares;
+  v9.receiver = selfCopy;
   v9.super_class = UISearchTextFieldAccessibility;
-  v10 = [(UISearchTextFieldAccessibility *)&v9 _delegateShouldChangeCharactersInTextStorageRanges:location[0] replacementString:v12 delegateCares:a5];
+  v10 = [(UISearchTextFieldAccessibility *)&v9 _delegateShouldChangeCharactersInTextStorageRanges:location[0] replacementString:v12 delegateCares:cares];
   if ((v10 & 1) == 0)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7458], 0);
@@ -49,13 +49,13 @@
 - (void)_accessibilityLoadAccessibilityInformation
 {
   v17 = *MEMORY[0x29EDCA608];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v13.receiver = self;
   v13.super_class = UISearchTextFieldAccessibility;
   [(UISearchTextFieldAccessibility *)&v13 _accessibilityLoadAccessibilityInformation];
   memset(__b, 0, sizeof(__b));
-  v8 = [(UISearchTextFieldAccessibility *)v15 safeDictionaryForKey:@"_customClearButtons"];
+  v8 = [(UISearchTextFieldAccessibility *)selfCopy safeDictionaryForKey:@"_customClearButtons"];
   obj = [v8 allValues];
   v10 = [obj countByEnumeratingWithState:__b objects:v16 count:{16, MEMORY[0x29EDC9740](v8).n128_f64[0]}];
   if (v10)
@@ -91,16 +91,16 @@
   MEMORY[0x29EDC9740](obj);
 }
 
-- (void)_setClearButtonImage:(id)a3 forState:(unint64_t)a4
+- (void)_setClearButtonImage:(id)image forState:(unint64_t)state
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = a4;
-  v6.receiver = v9;
+  objc_storeStrong(location, image);
+  stateCopy = state;
+  v6.receiver = selfCopy;
   v6.super_class = UISearchTextFieldAccessibility;
-  [(UISearchTextFieldAccessibility *)&v6 _setClearButtonImage:location[0] forState:a4];
+  [(UISearchTextFieldAccessibility *)&v6 _setClearButtonImage:location[0] forState:state];
   v5 = UIKitAccessibilityLocalizedString();
   [location[0] setAccessibilityLabel:?];
   MEMORY[0x29EDC9740](v5);

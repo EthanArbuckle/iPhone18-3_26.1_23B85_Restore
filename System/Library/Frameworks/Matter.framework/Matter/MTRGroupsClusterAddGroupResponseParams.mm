@@ -1,9 +1,9 @@
 @interface MTRGroupsClusterAddGroupResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct;
 - (MTRGroupsClusterAddGroupResponseParams)init;
-- (MTRGroupsClusterAddGroupResponseParams)initWithDecodableStruct:(const DecodableType *)a3;
+- (MTRGroupsClusterAddGroupResponseParams)initWithDecodableStruct:(const DecodableType *)struct;
 - (MTRGroupsClusterAddGroupResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,17 +30,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGroupsClusterAddGroupResponseParams);
-  v5 = [(MTRGroupsClusterAddGroupResponseParams *)self status];
-  [(MTRGroupsClusterAddGroupResponseParams *)v4 setStatus:v5];
+  status = [(MTRGroupsClusterAddGroupResponseParams *)self status];
+  [(MTRGroupsClusterAddGroupResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTRGroupsClusterAddGroupResponseParams *)self groupID];
-  [(MTRGroupsClusterAddGroupResponseParams *)v4 setGroupID:v6];
+  groupID = [(MTRGroupsClusterAddGroupResponseParams *)self groupID];
+  [(MTRGroupsClusterAddGroupResponseParams *)v4 setGroupID:groupID];
 
-  v7 = [(MTRGroupsClusterAddGroupResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRGroupsClusterAddGroupResponseParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRGroupsClusterAddGroupResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRGroupsClusterAddGroupResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -100,7 +100,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRGroupsClusterAddGroupResponseParams)initWithDecodableStruct:(const DecodableType *)a3
+- (MTRGroupsClusterAddGroupResponseParams)initWithDecodableStruct:(const DecodableType *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRGroupsClusterAddGroupResponseParams;
@@ -108,7 +108,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRGroupsClusterAddGroupResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRGroupsClusterAddGroupResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -124,12 +124,12 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var0];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:struct->var0];
   [(MTRGroupsClusterAddGroupResponseParams *)self setStatus:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*&a3[2].var0];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*&struct[2].var0];
   [(MTRGroupsClusterAddGroupResponseParams *)self setGroupID:v6];
 
   v7 = 0;

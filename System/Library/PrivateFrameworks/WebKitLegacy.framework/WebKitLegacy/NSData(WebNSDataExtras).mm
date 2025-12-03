@@ -8,10 +8,10 @@
 
 - (__CFString)_webkit_guessedMIMETypeForXML
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 bytes];
-    v3 = [a1 length];
+    bytes = [self bytes];
+    v3 = [self length];
     v4 = 1024;
     if (v3 < 0x400)
     {
@@ -46,7 +46,7 @@
       {
         v13 = v5 >= 0x10 ? 16 : v5;
         v14 = v13;
-        v15 = v2;
+        v15 = bytes;
         while (*v15 != 60)
         {
           ++v15;
@@ -57,7 +57,7 @@
               return 0;
             }
 
-            v15 = memchr((v2 + v13), 60, v5 - v13);
+            v15 = memchr((bytes + v13), 60, v5 - v13);
             if (!v15)
             {
               return 0;
@@ -67,8 +67,8 @@
           }
         }
 
-        v16 = &v15[-v2];
-        if (&v15[-v2] == -1)
+        v16 = &v15[-bytes];
+        if (&v15[-bytes] == -1)
         {
           return 0;
         }
@@ -185,7 +185,7 @@ LABEL_57:
 
 LABEL_64:
               v27 = v16 + 1;
-              v2 += v27;
+              bytes += v27;
               v5 -= v27;
               if (v5)
               {
@@ -208,20 +208,20 @@ LABEL_64:
 
 - (unint64_t)_webkit_guessedMIMEType
 {
-  v2 = [a1 _webkit_guessedMIMETypeForXML];
-  result = [(__CFString *)v2 length];
+  _webkit_guessedMIMETypeForXML = [self _webkit_guessedMIMETypeForXML];
+  result = [(__CFString *)_webkit_guessedMIMETypeForXML length];
   if (result)
   {
-    return v2;
+    return _webkit_guessedMIMETypeForXML;
   }
 
-  if (!a1)
+  if (!self)
   {
     goto LABEL_132;
   }
 
-  v4 = [a1 bytes];
-  result = [a1 length];
+  bytes = [self bytes];
+  result = [self length];
   v5 = result;
   v6 = result >= 0x400 ? 1024 : result;
   v7 = v6 - 6;
@@ -245,8 +245,8 @@ LABEL_64:
     v48 = *(MEMORY[0x1E696EBB8] + 114);
     v51 = *(MEMORY[0x1E696EBB8] + 99);
     v53 = *(MEMORY[0x1E696EBB8] + 105);
-    v2 = @"text/html";
-    v11 = v4;
+    _webkit_guessedMIMETypeForXML = @"text/html";
+    v11 = bytes;
     v45 = *(MEMORY[0x1E696EBB8] + 101);
     v46 = *(MEMORY[0x1E696EBB8] + 112);
     while (1)
@@ -310,7 +310,7 @@ LABEL_64:
 
         if (v16 == v9 && v8[*(result + 1)] == v10 && v8[*(result + 2)] == v57)
         {
-          return v2;
+          return _webkit_guessedMIMETypeForXML;
         }
       }
 
@@ -332,13 +332,13 @@ LABEL_51:
     v16 = v8[*result];
     if (v16 == v9 && v8[*(result + 1)] == v59 && v8[*(result + 2)] == v61 && v8[*(result + 3)] == v50 && v8[*(result + 4)] == v49 && v8[*(result + 5)] == v47)
     {
-      return v2;
+      return _webkit_guessedMIMETypeForXML;
     }
 
 LABEL_34:
     if (v16 == v9 && v8[*(result + 1)] == v10 && v8[*(result + 2)] == v57)
     {
-      return v2;
+      return _webkit_guessedMIMETypeForXML;
     }
 
     if (v15 >= 7 && v16 == v9)
@@ -346,12 +346,12 @@ LABEL_34:
       v17 = v8[*(result + 1)];
       if (v17 == v55 && v8[*(result + 2)] == v51 && v8[*(result + 3)] == v48 && v8[*(result + 4)] == v53 && v8[*(result + 5)] == v46 && v8[*(result + 6)] == v61)
       {
-        return v2;
+        return _webkit_guessedMIMETypeForXML;
       }
 
       if (v17 == v61 && v8[*(result + 2)] == v53 && v8[*(result + 3)] == v17 && v8[*(result + 4)] == v49 && v8[*(result + 5)] == v45 && v8[*(result + 6)] == v47)
       {
-        return v2;
+        return _webkit_guessedMIMETypeForXML;
       }
     }
 
@@ -369,8 +369,8 @@ LABEL_53:
       v62 = v8[101];
       v56 = v8[104];
       v58 = v8[47];
-      v2 = @"text/html";
-      v21 = v4;
+      _webkit_guessedMIMETypeForXML = @"text/html";
+      v21 = bytes;
       v52 = v8[108];
       v54 = v8[109];
       do
@@ -457,7 +457,7 @@ LABEL_77:
           v30 = v8[*(v21 + v28)];
           if (v30 == v20 && v8[v29[1]] == v62 && v8[v29[2]] == v60 && v8[v29[3]] == v30 && v8[v29[4]] == v58 && v8[v29[5]] == v56 && v8[v29[6]] == v30 && v8[v29[7]] == v54 && v8[v29[8]] == v52)
           {
-            return v2;
+            return _webkit_guessedMIMETypeForXML;
           }
         }
 
@@ -477,12 +477,12 @@ LABEL_77:
 
     if (v5 >= 0xB)
     {
-      if (*v4 == 0x43563A4E49474542 && *(v4 + 3) == 0x44524143563A4E49)
+      if (*bytes == 0x43563A4E49474542 && *(bytes + 3) == 0x44524143563A4E49)
       {
         return @"text/vcard";
       }
 
-      if (v5 >= 0xF && *v4 == 0x43563A4E49474542 && *(v4 + 7) == 0x5241444E454C4143)
+      if (v5 >= 0xF && *bytes == 0x43563A4E49474542 && *(bytes + 7) == 0x5241444E454C4143)
       {
         return @"text/calendar";
       }
@@ -497,9 +497,9 @@ LABEL_77:
     v36 = 0;
     do
     {
-      if ((*(v4 + v35) - 32) >= 0x5Fu)
+      if ((*(bytes + v35) - 32) >= 0x5Fu)
       {
-        v37 = *(v4 + v35);
+        v37 = *(bytes + v35);
         v38 = (1 << v37) & 0x2600;
         if (v37 > 0xD || v38 == 0)
         {
@@ -523,7 +523,7 @@ LABEL_77:
         return 0;
       }
 
-      v41 = bswap32(*v4);
+      v41 = bswap32(*bytes);
       v42 = bswap32(0xE0FFD8FF);
       v32 = v41 >= v42;
       v43 = v41 > v42;
@@ -549,10 +549,10 @@ LABEL_132:
 
 - (BOOL)_web_isCaseInsensitiveEqualToCString:()WebNSDataExtras
 {
-  if (a1)
+  if (self)
   {
-    v5 = [a1 bytes];
-    v6 = [a1 length];
+    bytes = [self bytes];
+    v6 = [self length];
     if (a3)
     {
       goto LABEL_3;
@@ -567,7 +567,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v5 = 0;
+  bytes = 0;
   v6 = 0;
   if (!a3)
   {
@@ -586,7 +586,7 @@ LABEL_7:
     return 1;
   }
 
-  if ((*v5 | 0x20) != *a3)
+  if ((*bytes | 0x20) != *a3)
   {
     return 0;
   }
@@ -595,7 +595,7 @@ LABEL_7:
   while (v6 - 1 != v7)
   {
     v8 = a3[v7 + 1];
-    v9 = v5[++v7] | 0x20;
+    v9 = bytes[++v7] | 0x20;
     if (v9 != v8)
     {
       return v7 >= v6;

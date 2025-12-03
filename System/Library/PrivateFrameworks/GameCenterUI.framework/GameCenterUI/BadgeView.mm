@@ -2,29 +2,29 @@
 - (BOOL)isHidden;
 - (CGRect)frame;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation BadgeView
 
 - (BOOL)isHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E28680C();
 
   return v3 & 1;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v4 = self;
-  sub_24E284CFC(a3);
+  selfCopy = self;
+  sub_24E284CFC(hidden);
 }
 
 - (CGRect)frame
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2869D4();
   v4 = v3;
   v6 = v5;
@@ -42,19 +42,19 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_24E286A84(x, y, width, height);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E286DE8();
 }
 

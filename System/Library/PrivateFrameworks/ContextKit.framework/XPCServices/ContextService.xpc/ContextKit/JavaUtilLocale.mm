@@ -4,29 +4,29 @@
 + (id)getISOCountries;
 + (id)getISOLanguages;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (JavaUtilLocale)initWithBoolean:(BOOL)a3 withNSString:(id)a4 withNSString:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (JavaUtilLocale)initWithBoolean:(BOOL)boolean withNSString:(id)string withNSString:(id)sString;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)getDisplayCountry;
-- (id)getDisplayCountryWithJavaUtilLocale:(id)a3;
+- (id)getDisplayCountryWithJavaUtilLocale:(id)locale;
 - (id)getDisplayLanguage;
-- (id)getDisplayLanguageWithJavaUtilLocale:(id)a3;
+- (id)getDisplayLanguageWithJavaUtilLocale:(id)locale;
 - (id)getDisplayName;
-- (id)getDisplayNameWithJavaUtilLocale:(id)a3;
+- (id)getDisplayNameWithJavaUtilLocale:(id)locale;
 - (id)getDisplayVariant;
-- (id)getDisplayVariantWithJavaUtilLocale:(id)a3;
+- (id)getDisplayVariantWithJavaUtilLocale:(id)locale;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilLocale
 
-- (JavaUtilLocale)initWithBoolean:(BOOL)a3 withNSString:(id)a4 withNSString:(id)a5
+- (JavaUtilLocale)initWithBoolean:(BOOL)boolean withNSString:(id)string withNSString:(id)sString
 {
-  JreStrongAssign(&self->languageCode_, a4);
-  JreStrongAssign(&self->countryCode_, a5);
+  JreStrongAssign(&self->languageCode_, string);
+  JreStrongAssign(&self->countryCode_, sString);
   JreStrongAssign(&self->variantCode_, &stru_100484358);
   return self;
 }
@@ -38,9 +38,9 @@
   return [(JavaUtilLocale *)&v3 clone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -55,7 +55,7 @@
     }
 
     objc_opt_class();
-    if (!a3)
+    if (!equal)
     {
       languageCode = self->languageCode_;
       JreThrowNullPointerException();
@@ -72,7 +72,7 @@
       goto LABEL_16;
     }
 
-    v6 = [(NSString *)v5 isEqual:*(a3 + 2)];
+    v6 = [(NSString *)v5 isEqual:*(equal + 2)];
     if (!v6)
     {
       return v6;
@@ -84,7 +84,7 @@
       goto LABEL_16;
     }
 
-    v6 = [(NSString *)countryCode isEqual:*(a3 + 1)];
+    v6 = [(NSString *)countryCode isEqual:*(equal + 1)];
     if (!v6)
     {
       return v6;
@@ -97,7 +97,7 @@ LABEL_16:
       JreThrowNullPointerException();
     }
 
-    v9 = *(a3 + 3);
+    v9 = *(equal + 3);
 
     LOBYTE(v6) = [(NSString *)variantCode isEqual:v9];
   }
@@ -141,7 +141,7 @@ LABEL_16:
   return [(JavaUtilLocale *)self getDisplayCountryWithJavaUtilLocale:v3];
 }
 
-- (id)getDisplayCountryWithJavaUtilLocale:(id)a3
+- (id)getDisplayCountryWithJavaUtilLocale:(id)locale
 {
   countryCode = self->countryCode_;
   if (!countryCode)
@@ -155,13 +155,13 @@ LABEL_16:
   }
 
   v7 = [JavaUtilLocale description]_0(&self->super.isa);
-  if (!a3)
+  if (!locale)
   {
     goto LABEL_12;
   }
 
   v8 = v7;
-  v9 = [JavaUtilLocale description]_0(a3);
+  v9 = [JavaUtilLocale description]_0(locale);
   result = LibcoreIcuICU_getDisplayCountryNativeWithNSString_withNSString_(v8, v9);
   if (result)
   {
@@ -187,13 +187,13 @@ LABEL_12:
 
 - (id)description
 {
-  v1 = a1 + 4;
-  if (a1[4])
+  v1 = self + 4;
+  if (self[4])
   {
-    return a1[4];
+    return self[4];
   }
 
-  v3 = sub_100184A34(a1[2], a1[1], a1[3]);
+  v3 = sub_100184A34(self[2], self[1], self[3]);
 
   return JreStrongAssign(v1, v3);
 }
@@ -210,7 +210,7 @@ LABEL_12:
   return [(JavaUtilLocale *)self getDisplayLanguageWithJavaUtilLocale:v3];
 }
 
-- (id)getDisplayLanguageWithJavaUtilLocale:(id)a3
+- (id)getDisplayLanguageWithJavaUtilLocale:(id)locale
 {
   languageCode = self->languageCode_;
   if (!languageCode)
@@ -229,12 +229,12 @@ LABEL_12:
     v7 = sub_100184A34(@"fil", self->countryCode_, self->variantCode_);
   }
 
-  if (!a3)
+  if (!locale)
   {
     goto LABEL_14;
   }
 
-  v8 = [JavaUtilLocale description]_0(a3);
+  v8 = [JavaUtilLocale description]_0(locale);
   result = LibcoreIcuICU_getDisplayLanguageNativeWithNSString_withNSString_(v7, v8);
   if (result)
   {
@@ -269,7 +269,7 @@ LABEL_14:
   return [(JavaUtilLocale *)self getDisplayNameWithJavaUtilLocale:v3];
 }
 
-- (id)getDisplayNameWithJavaUtilLocale:(id)a3
+- (id)getDisplayNameWithJavaUtilLocale:(id)locale
 {
   v5 = new_JavaLangStringBuilder_init();
   languageCode = self->languageCode_;
@@ -278,15 +278,15 @@ LABEL_14:
     goto LABEL_32;
   }
 
-  v7 = [(NSString *)languageCode isEmpty];
-  if (v7)
+  isEmpty = [(NSString *)languageCode isEmpty];
+  if (isEmpty)
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(JavaUtilLocale *)self getDisplayLanguageWithJavaUtilLocale:a3];
+    v9 = [(JavaUtilLocale *)self getDisplayLanguageWithJavaUtilLocale:locale];
     if (!v9)
     {
       goto LABEL_32;
@@ -313,12 +313,12 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  if ((v7 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
     -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", @" (");
   }
 
-  v12 = [(JavaUtilLocale *)self getDisplayCountryWithJavaUtilLocale:a3];
+  v12 = [(JavaUtilLocale *)self getDisplayCountryWithJavaUtilLocale:locale];
   if (!v12)
   {
 LABEL_32:
@@ -362,7 +362,7 @@ LABEL_16:
 
   [(JavaLangStringBuilder *)v5 appendWithNSString:v15];
 LABEL_23:
-  v16 = [(JavaUtilLocale *)self getDisplayVariantWithJavaUtilLocale:a3];
+  v16 = [(JavaUtilLocale *)self getDisplayVariantWithJavaUtilLocale:locale];
   if (!v16)
   {
     goto LABEL_32;
@@ -397,7 +397,7 @@ LABEL_27:
   return [(JavaUtilLocale *)self getDisplayVariantWithJavaUtilLocale:v3];
 }
 
-- (id)getDisplayVariantWithJavaUtilLocale:(id)a3
+- (id)getDisplayVariantWithJavaUtilLocale:(id)locale
 {
   variantCode = self->variantCode_;
   if (!variantCode)
@@ -411,13 +411,13 @@ LABEL_27:
   }
 
   v6 = [JavaUtilLocale description]_0(&self->super.isa);
-  if (!a3)
+  if (!locale)
   {
     goto LABEL_13;
   }
 
   v7 = v6;
-  v8 = [JavaUtilLocale description]_0(a3);
+  v8 = [JavaUtilLocale description]_0(locale);
   result = LibcoreIcuICU_getDisplayVariantNativeWithNSString_withNSString_(v7, v8);
   if (result)
   {
@@ -490,16 +490,16 @@ LABEL_13:
   [(JavaUtilLocale *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilLocale *)self clone];
+  clone = [(JavaUtilLocale *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = sub_1001855D0(@"en", @"CA");
     JreStrongAssignAndConsume(&JavaUtilLocale_CANADA_, v2);

@@ -1,22 +1,22 @@
 @interface NRNSXPCConnection
-- (NRNSXPCConnection)initWithConnection:(id)a3;
-- (NRNSXPCConnection)initWithMachServiceName:(id)a3 options:(unint64_t)a4;
+- (NRNSXPCConnection)initWithConnection:(id)connection;
+- (NRNSXPCConnection)initWithMachServiceName:(id)name options:(unint64_t)options;
 - (NSString)processName;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 @end
 
 @implementation NRNSXPCConnection
 
 - (NSString)processName
 {
-  v3 = [(NRNSXPCConnection *)self processIdentifier];
+  processIdentifier = [(NRNSXPCConnection *)self processIdentifier];
   v4 = malloc_type_malloc(0x1000uLL, 0x2881A4B5uLL);
   if (v4)
   {
     v5 = v4;
-    if (proc_pidpath(v3, v4, 0x1000u) > 0)
+    if (proc_pidpath(processIdentifier, v4, 0x1000u) > 0)
     {
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
       free(v5);
@@ -32,26 +32,26 @@ LABEL_6:
   return v6;
 }
 
-- (NRNSXPCConnection)initWithConnection:(id)a3
+- (NRNSXPCConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [(NRNSXPCConnection *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (NRNSXPCConnection)initWithMachServiceName:(id)a3 options:(unint64_t)a4
+- (NRNSXPCConnection)initWithMachServiceName:(id)name options:(unint64_t)options
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = [(NRNSXPCConnection *)self init];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v6 options:a4];
+    v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:nameCopy options:options];
     connection = v7->_connection;
     v7->_connection = v8;
   }
@@ -61,25 +61,25 @@ LABEL_6:
 
 - (id)remoteObjectProxy
 {
-  v2 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
   v3 = [NRLoggingXPCProxy alloc];
-  [(NRLoggingXPCProxy *)&v3->super.isa initWithBlahBlahBlahProxy:v2];
+  [(NRLoggingXPCProxy *)&v3->super.isa initWithBlahBlahBlahProxy:remoteObjectProxy];
 
   return v3;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v3 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:a3];
+  v3 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:handler];
   v4 = [NRLoggingXPCProxy alloc];
   [(NRLoggingXPCProxy *)&v4->super.isa initWithBlahBlahBlahProxy:v3];
 
   return v4;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v3 = [(NSXPCConnection *)self->_connection synchronousRemoteObjectProxyWithErrorHandler:a3];
+  v3 = [(NSXPCConnection *)self->_connection synchronousRemoteObjectProxyWithErrorHandler:handler];
   v4 = [NRLoggingXPCProxy alloc];
   [(NRLoggingXPCProxy *)&v4->super.isa initWithBlahBlahBlahProxy:v3];
 

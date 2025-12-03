@@ -1,28 +1,28 @@
 @interface GCHIDInputElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GCHIDInputElement)init;
-- (GCHIDInputElement)initWithElement:(id)a3;
-- (double)scaledValue:(int64_t)a3;
+- (GCHIDInputElement)initWithElement:(id)element;
+- (double)scaledValue:(int64_t)value;
 - (id)description;
-- (id)registerScaled:(int64_t)a3 valueChangedHandler:(id)a4;
-- (id)registerValueChangedHandler:(id)a3;
+- (id)registerScaled:(int64_t)scaled valueChangedHandler:(id)handler;
+- (id)registerValueChangedHandler:(id)handler;
 - (unint64_t)hash;
-- (void)addScaled:(int64_t)a3 valueChangedHandler:(id)a4;
-- (void)addValueChangedHandler:(id)a3;
+- (void)addScaled:(int64_t)scaled valueChangedHandler:(id)handler;
+- (void)addValueChangedHandler:(id)handler;
 - (void)dealloc;
-- (void)valueChanged:(void *)a1;
+- (void)valueChanged:(void *)changed;
 @end
 
 @implementation GCHIDInputElement
 
-- (GCHIDInputElement)initWithElement:(id)a3
+- (GCHIDInputElement)initWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = GCHIDInputElement;
   v5 = [(GCHIDInputElement *)&v8 init];
   element = v5->_element;
-  v5->_element = v4;
+  v5->_element = elementCopy;
 
   v5->_observers.tqh_first = 0;
   v5->_observers.tqh_last = &v5->_observers.tqh_first;
@@ -81,44 +81,44 @@
   [(GCHIDInputElement *)&v10 dealloc];
 }
 
-- (double)scaledValue:(int64_t)a3
+- (double)scaledValue:(int64_t)value
 {
-  v5 = [(GCHIDInputElement *)self value];
-  pValue = v5;
-  if (!v5)
+  value = [(GCHIDInputElement *)self value];
+  pValue = value;
+  if (!value)
   {
-    v6 = [(GCHIDInputElement *)self element];
+    element = [(GCHIDInputElement *)self element];
 
-    Device = IOHIDElementGetDevice(v6);
-    IOHIDDeviceGetValue(Device, v6, &pValue);
-    v5 = pValue;
+    Device = IOHIDElementGetDevice(element);
+    IOHIDDeviceGetValue(Device, element, &pValue);
+    value = pValue;
     if (!pValue)
     {
       return 0.0;
     }
   }
 
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((value & 0x8000000000000000) == 0)
   {
-    return IOHIDValueGetScaledValue(v5, a3);
+    return IOHIDValueGetScaledValue(value, value);
   }
 
-  if (a3 == -3)
+  if (value == -3)
   {
-    IOHIDValueGetBytePtr(v5);
+    IOHIDValueGetBytePtr(value);
     IOHIDValueGetLength(pValue);
     __memcpy_chk();
     return 0;
   }
 
-  else if (a3 == -2)
+  else if (value == -2)
   {
-    return IOHIDValueGetIntegerValue(v5);
+    return IOHIDValueGetIntegerValue(value);
   }
 
   else
   {
-    IntegerValue = IOHIDValueGetIntegerValue(v5);
+    IntegerValue = IOHIDValueGetIntegerValue(value);
     Element = IOHIDValueGetElement(pValue);
     LogicalMin = IOHIDElementGetLogicalMin(Element);
     v12 = IOHIDValueGetElement(pValue);
@@ -142,51 +142,51 @@
   }
 }
 
-- (void)addValueChangedHandler:(id)a3
+- (void)addValueChangedHandler:(id)handler
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v4 = PushValueChangedHandler(self, v5, 0x8000000000000000, 0);
 }
 
-- (void)addScaled:(int64_t)a3 valueChangedHandler:(id)a4
+- (void)addScaled:(int64_t)scaled valueChangedHandler:(id)handler
 {
-  v7 = _Block_copy(a4);
-  v6 = PushValueChangedHandler(self, v7, a3, 0);
+  v7 = _Block_copy(handler);
+  v6 = PushValueChangedHandler(self, v7, scaled, 0);
 }
 
-- (id)registerValueChangedHandler:(id)a3
+- (id)registerValueChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = PushValueChangedHandler(self, v4, 0x8000000000000000, 1);
 
   return v5;
 }
 
-- (id)registerScaled:(int64_t)a3 valueChangedHandler:(id)a4
+- (id)registerScaled:(int64_t)scaled valueChangedHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
-  v7 = PushValueChangedHandler(self, v6, a3, 1);
+  v6 = _Block_copy(handler);
+  v7 = PushValueChangedHandler(self, v6, scaled, 1);
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(GCHIDInputElement *)self element];
-  v3 = [v2 hash];
+  element = [(GCHIDInputElement *)self element];
+  v3 = [element hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(GCHIDInputElement *)self element];
-    v6 = [v4 element];
-    v7 = [v5 isEqual:v6];
+    element = [(GCHIDInputElement *)self element];
+    element2 = [equalCopy element];
+    v7 = [element isEqual:element2];
   }
 
   else
@@ -194,7 +194,7 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = CFGetTypeID(v4);
+      v8 = CFGetTypeID(equalCopy);
       if (v8 != IOHIDElementGetTypeID())
       {
         v7 = 0;
@@ -202,8 +202,8 @@
       }
     }
 
-    v5 = [(GCHIDInputElement *)self element];
-    v7 = [v5 isEqual:v4];
+    element = [(GCHIDInputElement *)self element];
+    v7 = [element isEqual:equalCopy];
   }
 
 LABEL_7:
@@ -215,21 +215,21 @@ LABEL_7:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GCHIDInputElement *)self element];
-  Cookie = IOHIDElementGetCookie(v6);
-  v8 = [(GCHIDInputElement *)self element];
-  v9 = [v8 description];
+  element = [(GCHIDInputElement *)self element];
+  Cookie = IOHIDElementGetCookie(element);
+  element2 = [(GCHIDInputElement *)self element];
+  v9 = [element2 description];
   v10 = [v3 stringWithFormat:@"<%@ cookie: %u %@>", v5, Cookie, v9];;
 
   return v10;
 }
 
-- (void)valueChanged:(void *)a1
+- (void)valueChanged:(void *)changed
 {
-  if (a1)
+  if (changed)
   {
-    objc_setProperty(a1, sel_valueChanged_, 16, newValue, 0, 0);
-    v4 = a1[3];
+    objc_setProperty(changed, sel_valueChanged_, 16, newValue, 0, 0);
+    v4 = changed[3];
     if (v4)
     {
       while (2)

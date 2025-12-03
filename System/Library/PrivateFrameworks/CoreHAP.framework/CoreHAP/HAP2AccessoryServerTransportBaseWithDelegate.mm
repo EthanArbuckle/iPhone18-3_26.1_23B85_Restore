@@ -1,46 +1,46 @@
 @interface HAP2AccessoryServerTransportBaseWithDelegate
 - (HAP2AccessoryServerTransportDelegate)delegate;
-- (void)didChangeStateWithError:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)didChangeStateWithError:(id)error;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HAP2AccessoryServerTransportBaseWithDelegate
 
-- (void)didChangeStateWithError:(id)a3
+- (void)didChangeStateWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v5 assertCurrentQueue];
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v6 = [(HAP2AccessoryServerTransportBaseWithDelegate *)self delegate];
-  if (v6)
+  delegate = [(HAP2AccessoryServerTransportBaseWithDelegate *)self delegate];
+  if (delegate)
   {
-    v7 = [(HAP2AccessoryServerTransportBase *)self state];
-    v8 = [(HAP2AccessoryServerTransportBase *)self delegateQueue];
+    state = [(HAP2AccessoryServerTransportBase *)self state];
+    delegateQueue = [(HAP2AccessoryServerTransportBase *)self delegateQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __72__HAP2AccessoryServerTransportBaseWithDelegate_didChangeStateWithError___block_invoke;
     v9[3] = &unk_2786D6E88;
-    v10 = v6;
-    v11 = self;
-    v13 = v7;
-    v12 = v4;
-    dispatch_async(v8, v9);
+    v10 = delegate;
+    selfCopy = self;
+    v13 = state;
+    v12 = errorCopy;
+    dispatch_async(delegateQueue, v9);
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerTransportBase *)self propertyLock];
+  delegateCopy = delegate;
+  propertyLock = [(HAP2AccessoryServerTransportBase *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__HAP2AccessoryServerTransportBaseWithDelegate_setDelegate___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 - (HAP2AccessoryServerTransportDelegate)delegate
@@ -51,14 +51,14 @@
   v10 = __Block_byref_object_copy__25107;
   v11 = __Block_byref_object_dispose__25108;
   v12 = 0;
-  v3 = [(HAP2AccessoryServerTransportBase *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerTransportBase *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__HAP2AccessoryServerTransportBaseWithDelegate_delegate__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

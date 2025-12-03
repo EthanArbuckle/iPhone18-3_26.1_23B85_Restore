@@ -1,60 +1,60 @@
 @interface CHStringOVSChecker
-- (BOOL)isInappropriateString:(id)a3;
-- (BOOL)isInappropriateTokenID:(unsigned int)a3;
-- (CHStringOVSChecker)initWithTrie:(_CFBurstTrie *)a3 staticLexicon:(_LXLexicon *)a4 customLexicon:(_LXLexicon *)a5 flags:(unsigned int)a6 stringNormalizationFunction:(void *)a7;
+- (BOOL)isInappropriateString:(id)string;
+- (BOOL)isInappropriateTokenID:(unsigned int)d;
+- (CHStringOVSChecker)initWithTrie:(_CFBurstTrie *)trie staticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon flags:(unsigned int)flags stringNormalizationFunction:(void *)function;
 - (id).cxx_construct;
 - (void)dealloc;
 @end
 
 @implementation CHStringOVSChecker
 
-- (CHStringOVSChecker)initWithTrie:(_CFBurstTrie *)a3 staticLexicon:(_LXLexicon *)a4 customLexicon:(_LXLexicon *)a5 flags:(unsigned int)a6 stringNormalizationFunction:(void *)a7
+- (CHStringOVSChecker)initWithTrie:(_CFBurstTrie *)trie staticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon flags:(unsigned int)flags stringNormalizationFunction:(void *)function
 {
   v16.receiver = self;
   v16.super_class = CHStringOVSChecker;
   v12 = [(CHStringOVSChecker *)&v16 init];
   if (v12)
   {
-    if (a3)
+    if (trie)
     {
       v12->_ovsTrie = CFBurstTrieRetain();
     }
 
-    if (a4)
+    if (lexicon)
     {
-      CFRetain(a4);
+      CFRetain(lexicon);
       mCFObject = v12->_staticLexicon.mCFObject;
-      v12->_staticLexicon.mCFObject = a4;
+      v12->_staticLexicon.mCFObject = lexicon;
       if (mCFObject)
       {
         CFRelease(mCFObject);
       }
     }
 
-    if (a5)
+    if (customLexicon)
     {
-      CFRetain(a5);
+      CFRetain(customLexicon);
       v14 = v12->_customLexicon.mCFObject;
-      v12->_customLexicon.mCFObject = a5;
+      v12->_customLexicon.mCFObject = customLexicon;
       if (v14)
       {
         CFRelease(v14);
       }
     }
 
-    v12->_flagsFilter = a6;
-    v12->_stringNormalizationFunction = a7;
+    v12->_flagsFilter = flags;
+    v12->_stringNormalizationFunction = function;
   }
 
   return v12;
 }
 
-- (BOOL)isInappropriateString:(id)a3
+- (BOOL)isInappropriateString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (self->_staticLexicon.mCFObject)
   {
-    v5 = sub_1838DAB50(self, v4);
+    v5 = sub_1838DAB50(self, stringCopy);
     mCFObject = self->_customLexicon.mCFObject;
     v7 = (mCFObject != 0) | v5;
     if (!mCFObject)
@@ -76,7 +76,7 @@
 
   if ((v5 & 1) == 0)
   {
-    v7 = sub_1838DAB50(self, v4);
+    v7 = sub_1838DAB50(self, stringCopy);
   }
 
 LABEL_7:
@@ -84,7 +84,7 @@ LABEL_7:
   v10 = (ovsTrie != 0) | v7;
   if (ovsTrie && (v7 & 1) == 0)
   {
-    v11 = v4;
+    v11 = stringCopy;
     v16 = v11;
     if (v11 && (objc_msgSend_isEqualToString_(v11, v12, &stru_1EF1C0318, v13, v14, v15) & 1) == 0)
     {
@@ -111,7 +111,7 @@ LABEL_7:
   return v10 & 1;
 }
 
-- (BOOL)isInappropriateTokenID:(unsigned int)a3
+- (BOOL)isInappropriateTokenID:(unsigned int)d
 {
   v4 = LXLexiconCopyEntryForTokenID();
   if (v4)

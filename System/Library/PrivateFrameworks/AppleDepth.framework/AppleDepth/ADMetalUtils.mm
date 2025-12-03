@@ -1,36 +1,36 @@
 @interface ADMetalUtils
-+ (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)a3 pixelFormat:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 plane:(unint64_t)a7 metalDevice:(id)a8 error:(id *)a9;
-+ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 metalDevice:(id)a4;
-+ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 pixelFormat:(unint64_t)a4 textureSize:(CGSize)a5 plane:(unint64_t)a6 metalDevice:(id)a7 error:(id *)a8;
-+ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 plane:(unint64_t)a4 metalDevice:(id)a5 error:(id *)a6;
-+ (id)textureForSize:(CGSize)a3 pixelFormat:(unsigned int)a4 metalDevice:(id)a5;
-+ (id)textureForSize:(CGSize)a3 pixelFormat:(unsigned int)a4 mipmapped:(BOOL)a5 metalDevice:(id)a6;
-+ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)a3;
-+ (unint64_t)getMTLPixelFormat:(unsigned int)a3;
-+ (void)dispatchCommandEncoder:(id)a3 pipeline:(id)a4 width:(unsigned int)a5 height:(unsigned int)a6;
++ (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)texture pixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height plane:(unint64_t)plane metalDevice:(id)device error:(id *)error;
++ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture metalDevice:(id)device;
++ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture pixelFormat:(unint64_t)format textureSize:(CGSize)size plane:(unint64_t)plane metalDevice:(id)device error:(id *)error;
++ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture plane:(unint64_t)plane metalDevice:(id)device error:(id *)error;
++ (id)textureForSize:(CGSize)size pixelFormat:(unsigned int)format metalDevice:(id)device;
++ (id)textureForSize:(CGSize)size pixelFormat:(unsigned int)format mipmapped:(BOOL)mipmapped metalDevice:(id)device;
++ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)format;
++ (unint64_t)getMTLPixelFormat:(unsigned int)format;
++ (void)dispatchCommandEncoder:(id)encoder pipeline:(id)pipeline width:(unsigned int)width height:(unsigned int)height;
 @end
 
 @implementation ADMetalUtils
 
-+ (void)dispatchCommandEncoder:(id)a3 pipeline:(id)a4 width:(unsigned int)a5 height:(unsigned int)a6
++ (void)dispatchCommandEncoder:(id)encoder pipeline:(id)pipeline width:(unsigned int)width height:(unsigned int)height
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 threadExecutionWidth];
-  v12 = [v10 maxTotalThreadsPerThreadgroup];
-  v14[0] = ((a5 + v11 - 1) / v11);
-  v14[1] = ((a6 + v12 / v11 - 1) / (v12 / v11));
+  encoderCopy = encoder;
+  pipelineCopy = pipeline;
+  threadExecutionWidth = [pipelineCopy threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [pipelineCopy maxTotalThreadsPerThreadgroup];
+  v14[0] = ((width + threadExecutionWidth - 1) / threadExecutionWidth);
+  v14[1] = ((height + maxTotalThreadsPerThreadgroup / threadExecutionWidth - 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth));
   v14[2] = 1;
-  v13[0] = v11;
-  v13[1] = v12 / v11;
+  v13[0] = threadExecutionWidth;
+  v13[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v13[2] = 1;
-  [v9 dispatchThreadgroups:v14 threadsPerThreadgroup:v13];
+  [encoderCopy dispatchThreadgroups:v14 threadsPerThreadgroup:v13];
 }
 
-+ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)a3
++ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)format
 {
   result = 1;
-  switch(a3)
+  switch(format)
   {
     case 1uLL:
     case 0xAuLL:
@@ -93,15 +93,15 @@
   return result;
 }
 
-+ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 pixelFormat:(unint64_t)a4 textureSize:(CGSize)a5 plane:(unint64_t)a6 metalDevice:(id)a7 error:(id *)a8
++ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture pixelFormat:(unint64_t)format textureSize:(CGSize)size plane:(unint64_t)plane metalDevice:(id)device error:(id *)error
 {
-  height = a5.height;
-  width = a5.width;
-  v14 = a7;
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  height = size.height;
+  width = size.width;
+  deviceCopy = device;
+  IOSurface = CVPixelBufferGetIOSurface(texture);
   if (IOSurface)
   {
-    v16 = [ADMetalUtils bindIOSurfaceToMTL2DTexture:IOSurface pixelFormat:a4 width:width height:height plane:a6 metalDevice:v14 error:a8];
+    v16 = [ADMetalUtils bindIOSurfaceToMTL2DTexture:IOSurface pixelFormat:format width:width height:height plane:plane metalDevice:deviceCopy error:error];
   }
 
   else
@@ -112,41 +112,41 @@
   return v16;
 }
 
-+ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 plane:(unint64_t)a4 metalDevice:(id)a5 error:(id *)a6
++ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture plane:(unint64_t)plane metalDevice:(id)device error:(id *)error
 {
-  v9 = a5;
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  deviceCopy = device;
+  IOSurface = CVPixelBufferGetIOSurface(texture);
   if (IOSurface)
   {
-    v11 = [ADMetalUtils getMTLPixelFormat:CVPixelBufferGetPixelFormatType(a3)];
-    WidthOfPlane = IOSurfaceGetWidthOfPlane(IOSurface, a4);
-    v13 = [ADMetalUtils bindIOSurfaceToMTL2DTexture:IOSurface pixelFormat:v11 width:WidthOfPlane height:IOSurfaceGetHeightOfPlane(IOSurface plane:a4) metalDevice:a4 error:v9, a6];
+    v11 = [ADMetalUtils getMTLPixelFormat:CVPixelBufferGetPixelFormatType(texture)];
+    WidthOfPlane = IOSurfaceGetWidthOfPlane(IOSurface, plane);
+    error = [ADMetalUtils bindIOSurfaceToMTL2DTexture:IOSurface pixelFormat:v11 width:WidthOfPlane height:IOSurfaceGetHeightOfPlane(IOSurface plane:plane) metalDevice:plane error:deviceCopy, error];
   }
 
   else
   {
-    v13 = 0;
+    error = 0;
   }
 
-  return v13;
+  return error;
 }
 
-+ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 metalDevice:(id)a4
++ (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture metalDevice:(id)device
 {
-  v4 = [ADMetalUtils bindPixelBufferToMTL2DTexture:a3 plane:0 metalDevice:a4 error:0];
+  v4 = [ADMetalUtils bindPixelBufferToMTL2DTexture:texture plane:0 metalDevice:device error:0];
 
   return v4;
 }
 
-+ (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)a3 pixelFormat:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 plane:(unint64_t)a7 metalDevice:(id)a8 error:(id *)a9
++ (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)texture pixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height plane:(unint64_t)plane metalDevice:(id)device error:(id *)error
 {
-  v14 = a8;
-  v15 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:a4 width:a5 height:a6 mipmapped:0];
+  deviceCopy = device;
+  v15 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:format width:width height:height mipmapped:0];
   v16 = v15;
   if (v15)
   {
     [v15 setUsage:23];
-    v17 = [v14 newTextureWithDescriptor:v16 iosurface:a3 plane:a7];
+    v17 = [deviceCopy newTextureWithDescriptor:v16 iosurface:texture plane:plane];
   }
 
   else
@@ -157,41 +157,41 @@
   return v17;
 }
 
-+ (id)textureForSize:(CGSize)a3 pixelFormat:(unsigned int)a4 mipmapped:(BOOL)a5 metalDevice:(id)a6
++ (id)textureForSize:(CGSize)size pixelFormat:(unsigned int)format mipmapped:(BOOL)mipmapped metalDevice:(id)device
 {
-  v6 = a5;
-  v7 = *&a4;
-  height = a3.height;
-  width = a3.width;
-  v10 = a6;
-  v11 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:+[ADMetalUtils getMTLPixelFormat:](ADMetalUtils width:"getMTLPixelFormat:" height:v7) mipmapped:width, height, v6];
-  [v11 setUsage:19];
-  v12 = [v10 newTextureWithDescriptor:v11];
+  mipmappedCopy = mipmapped;
+  v7 = *&format;
+  height = size.height;
+  width = size.width;
+  deviceCopy = device;
+  mipmappedCopy = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:+[ADMetalUtils getMTLPixelFormat:](ADMetalUtils width:"getMTLPixelFormat:" height:v7) mipmapped:width, height, mipmappedCopy];
+  [mipmappedCopy setUsage:19];
+  v12 = [deviceCopy newTextureWithDescriptor:mipmappedCopy];
 
   return v12;
 }
 
-+ (id)textureForSize:(CGSize)a3 pixelFormat:(unsigned int)a4 metalDevice:(id)a5
++ (id)textureForSize:(CGSize)size pixelFormat:(unsigned int)format metalDevice:(id)device
 {
-  v5 = [ADMetalUtils textureForSize:*&a4 pixelFormat:0 mipmapped:a5 metalDevice:a3.width, a3.height];
+  v5 = [ADMetalUtils textureForSize:*&format pixelFormat:0 mipmapped:device metalDevice:size.width, size.height];
 
   return v5;
 }
 
-+ (unint64_t)getMTLPixelFormat:(unsigned int)a3
++ (unint64_t)getMTLPixelFormat:(unsigned int)format
 {
-  if (a3 > 1380401728)
+  if (format > 1380401728)
   {
-    if (a3 <= 1717855599)
+    if (format <= 1717855599)
     {
-      if (a3 <= 1380411456)
+      if (format <= 1380411456)
       {
-        if (a3 == 1380401729)
+        if (format == 1380401729)
         {
           return 70;
         }
 
-        if (a3 == 1380410945)
+        if (format == 1380410945)
         {
           return 125;
         }
@@ -199,7 +199,7 @@
         goto LABEL_35;
       }
 
-      if (a3 == 1380411457)
+      if (format == 1380411457)
       {
         return 115;
       }
@@ -208,9 +208,9 @@
       goto LABEL_26;
     }
 
-    if (a3 <= 1751410031)
+    if (format <= 1751410031)
     {
-      if (a3 == 1717855600)
+      if (format == 1717855600)
       {
         return 55;
       }
@@ -219,7 +219,7 @@
       goto LABEL_17;
     }
 
-    if (a3 != 1751410032 && a3 != 1751411059)
+    if (format != 1751410032 && format != 1751411059)
     {
       goto LABEL_35;
     }
@@ -227,16 +227,16 @@
     return 25;
   }
 
-  if (a3 <= 1278226487)
+  if (format <= 1278226487)
   {
-    if (a3 > 843264103)
+    if (format > 843264103)
     {
-      if (a3 == 843264104)
+      if (format == 843264104)
       {
         return 65;
       }
 
-      if (a3 == 1111970369)
+      if (format == 1111970369)
       {
         return 80;
       }
@@ -244,7 +244,7 @@
       goto LABEL_35;
     }
 
-    if (a3 == 825306677)
+    if (format == 825306677)
     {
       return 23;
     }
@@ -253,13 +253,13 @@
     goto LABEL_26;
   }
 
-  if (a3 > 1278226535)
+  if (format > 1278226535)
   {
-    if (a3 != 1278226536)
+    if (format != 1278226536)
     {
       v5 = 1278226742;
 LABEL_26:
-      if (a3 == v5)
+      if (format == v5)
       {
         return 23;
       }
@@ -270,14 +270,14 @@ LABEL_26:
     return 25;
   }
 
-  if (a3 == 1278226488)
+  if (format == 1278226488)
   {
     return 10;
   }
 
   v7 = 1278226534;
 LABEL_17:
-  if (a3 == v7)
+  if (format == v7)
   {
     return 55;
   }

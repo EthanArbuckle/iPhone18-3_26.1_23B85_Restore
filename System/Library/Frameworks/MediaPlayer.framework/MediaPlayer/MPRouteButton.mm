@@ -1,23 +1,23 @@
 @interface MPRouteButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MPRouteButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MPRouteButton)initWithFrame:(CGRect)frame;
 - (NSArray)contentViews;
 - (UIEdgeInsets)hitRectInsets;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)_updateAccessoryIcon;
 - (void)layoutSubviews;
-- (void)routeDidChangeNotification:(id)a3;
-- (void)setAccessoryImage:(id)a3;
-- (void)setAccessoryImageSpacing:(double)a3;
-- (void)setAlpha:(double)a3;
-- (void)setFont:(id)a3;
-- (void)setForcesUppercaseText:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRoute:(id)a3;
-- (void)setRouteLabelAxis:(int64_t)a3;
-- (void)setRouteLabelHidden:(BOOL)a3;
+- (void)routeDidChangeNotification:(id)notification;
+- (void)setAccessoryImage:(id)image;
+- (void)setAccessoryImageSpacing:(double)spacing;
+- (void)setAlpha:(double)alpha;
+- (void)setFont:(id)font;
+- (void)setForcesUppercaseText:(BOOL)text;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRoute:(id)route;
+- (void)setRouteLabelAxis:(int64_t)axis;
+- (void)setRouteLabelHidden:(BOOL)hidden;
 - (void)tintColorDidChange;
 @end
 
@@ -43,11 +43,11 @@
   if (objc_opt_isKindOfClass())
   {
     v3 = self->_route;
-    v4 = [(MPAVRoute *)v3 endpointObject];
-    v5 = [v4 predictedOutputDevice];
+    endpointObject = [(MPAVRoute *)v3 endpointObject];
+    predictedOutputDevice = [endpointObject predictedOutputDevice];
     if ([(MPAVRoute *)v3 isDeviceSpeakerRoute])
     {
-      v6 = v5 == 0;
+      v6 = predictedOutputDevice == 0;
     }
 
     else
@@ -62,13 +62,13 @@
 
     else
     {
-      v7 = [v4 outputDevices];
-      if (v5)
+      outputDevices = [endpointObject outputDevices];
+      if (predictedOutputDevice)
       {
-        v16[0] = v5;
+        v16[0] = predictedOutputDevice;
         v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
 
-        v7 = v8;
+        outputDevices = v8;
       }
 
       v9 = os_log_create("com.apple.amp.mediaplayer", "Default");
@@ -77,11 +77,11 @@
         v12 = 138543618;
         v13 = objc_opt_class();
         v14 = 2114;
-        v15 = v7;
+        v15 = outputDevices;
         _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ imageForRoute routes: %{public}@", &v12, 0x16u);
       }
 
-      v10 = [MEMORY[0x1E69B09B8] symbolNameForOutputDevices:v7];
+      v10 = [MEMORY[0x1E69B09B8] symbolNameForOutputDevices:outputDevices];
       v11 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v10];
       [(UIImageView *)self->_accessoryImageView setImage:v11];
     }
@@ -96,24 +96,24 @@
   [(MPRouteButton *)self setNeedsLayout];
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
-  if (self->_routeLabel == a3)
+  if (self->_routeLabel == view)
   {
     [(MPRouteButton *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)routeDidChangeNotification:(id)a3
+- (void)routeDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__MPRouteButton_routeDidChangeNotification___block_invoke;
   v6[3] = &unk_1E76823C0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -135,29 +135,29 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
 {
   v5[2] = *MEMORY[0x1E69E9840];
   v5[0] = self->_accessoryImageView;
-  v2 = [(MPRouteLabel *)self->_routeLabel titleLabel];
-  v5[1] = v2;
+  titleLabel = [(MPRouteLabel *)self->_routeLabel titleLabel];
+  v5[1] = titleLabel;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:2];
 
   return v3;
 }
 
-- (void)setRouteLabelAxis:(int64_t)a3
+- (void)setRouteLabelAxis:(int64_t)axis
 {
-  if (self->_routeLabelAxis != a3)
+  if (self->_routeLabelAxis != axis)
   {
-    self->_routeLabelAxis = a3;
+    self->_routeLabelAxis = axis;
     [(MPRouteButton *)self invalidateIntrinsicContentSize];
 
     [(MPRouteButton *)self setNeedsLayout];
   }
 }
 
-- (void)setRouteLabelHidden:(BOOL)a3
+- (void)setRouteLabelHidden:(BOOL)hidden
 {
-  if (self->_routeLabelHidden != a3)
+  if (self->_routeLabelHidden != hidden)
   {
-    self->_routeLabelHidden = a3;
+    self->_routeLabelHidden = hidden;
     [(MPRouteLabel *)self->_routeLabel setHidden:?];
     [(MPRouteButton *)self invalidateIntrinsicContentSize];
 
@@ -165,19 +165,19 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setForcesUppercaseText:(BOOL)a3
+- (void)setForcesUppercaseText:(BOOL)text
 {
-  [(MPRouteLabel *)self->_routeLabel setForcesUppercaseText:a3];
+  [(MPRouteLabel *)self->_routeLabel setForcesUppercaseText:text];
   [(MPRouteButton *)self invalidateIntrinsicContentSize];
 
   [(MPRouteButton *)self setNeedsLayout];
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  objc_storeStrong(&self->_route, a3);
-  v5 = a3;
-  [(MPRouteLabel *)self->_routeLabel setRoute:v5];
+  objc_storeStrong(&self->_route, route);
+  routeCopy = route;
+  [(MPRouteLabel *)self->_routeLabel setRoute:routeCopy];
 
   [(MPRouteButton *)self invalidateIntrinsicContentSize];
   [(MPRouteButton *)self setNeedsLayout];
@@ -185,12 +185,12 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
   [(MPRouteButton *)self _updateAccessoryIcon];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   routeLabel = self->_routeLabel;
-  v5 = a3;
-  [(MPRouteLabel *)routeLabel setFont:v5];
-  LOBYTE(routeLabel) = [(UIFont *)self->_font isEqual:v5];
+  fontCopy = font;
+  [(MPRouteLabel *)routeLabel setFont:fontCopy];
+  LOBYTE(routeLabel) = [(UIFont *)self->_font isEqual:fontCopy];
 
   if ((routeLabel & 1) == 0)
   {
@@ -200,9 +200,9 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAccessoryImageSpacing:(double)a3
+- (void)setAccessoryImageSpacing:(double)spacing
 {
-  v4 = self->_accessoryImageSpacing - a3;
+  v4 = self->_accessoryImageSpacing - spacing;
   if (v4 < 0.0)
   {
     v4 = -v4;
@@ -210,19 +210,19 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
 
   if (v4 > 0.00000011920929)
   {
-    self->_accessoryImageSpacing = a3;
+    self->_accessoryImageSpacing = spacing;
     [(MPRouteButton *)self invalidateIntrinsicContentSize];
 
     [(MPRouteButton *)self setNeedsLayout];
   }
 }
 
-- (void)setAccessoryImage:(id)a3
+- (void)setAccessoryImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if (([(UIImage *)self->_accessoryImage isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_accessoryImage, a3);
+    objc_storeStrong(&self->_accessoryImage, image);
     [(MPRouteButton *)self _updateAccessoryIcon];
   }
 }
@@ -232,21 +232,21 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
   v4.receiver = self;
   v4.super_class = MPRouteButton;
   [(MPRouteButton *)&v4 tintColorDidChange];
-  v3 = [(MPRouteButton *)self tintColor];
-  [(MPRouteLabel *)self->_routeLabel setTintColor:v3];
+  tintColor = [(MPRouteButton *)self tintColor];
+  [(MPRouteLabel *)self->_routeLabel setTintColor:tintColor];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v5.receiver = self;
   v5.super_class = MPRouteButton;
   [(MPRouteButton *)&v5 setAlpha:?];
-  self->_alphaOverride = a3;
+  self->_alphaOverride = alpha;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v21 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = MPRouteButton;
@@ -255,13 +255,13 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(MPRouteButton *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  subviews = [(MPRouteButton *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v16;
-    if (v3)
+    if (highlightedCopy)
     {
       v9 = 0.0;
     }
@@ -277,12 +277,12 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         alphaOverride = 0.2;
-        if (!v3)
+        if (!highlightedCopy)
         {
           alphaOverride = self->_alphaOverride;
         }
@@ -300,17 +300,17 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v7);
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIImageView *)self->_accessoryImageView sizeThatFits:?];
   v7 = v6;
   v9 = v8;
@@ -386,10 +386,10 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MPRouteButton *)self bounds];
   top = self->_hitRectInsets.top;
   left = self->_hitRectInsets.left;
@@ -421,8 +421,8 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
   v6 = v5;
   [(UIImageView *)self->_accessoryImageView sizeThatFits:v3, v5];
   v8 = v7;
-  v9 = [(MPRouteButton *)self routeLabelAxis];
-  if (v9 == 1)
+  routeLabelAxis = [(MPRouteButton *)self routeLabelAxis];
+  if (routeLabelAxis == 1)
   {
     [(MPRouteButton *)self bounds];
     UIRectCenteredXInRect();
@@ -432,7 +432,7 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
     v6 = v6 - (v13 + v14);
   }
 
-  else if (!v9)
+  else if (!routeLabelAxis)
   {
     [(MPRouteButton *)self accessoryImageSpacing];
     v4 = v4 - (v8 + v10 + 0.0);
@@ -445,20 +445,20 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
 
   if (![(MPRouteButton *)self isRouteLabelHidden])
   {
-    v15 = [(MPRouteButton *)self routeLabelAxis];
-    if (v15 == 1)
+    routeLabelAxis2 = [(MPRouteButton *)self routeLabelAxis];
+    if (routeLabelAxis2 == 1)
     {
       UIRectCenteredXInRect();
     }
 
-    else if (!v15)
+    else if (!routeLabelAxis2)
     {
       UIRectCenteredYInRect();
     }
   }
 
-  v16 = [(MPRouteButton *)self traitCollection];
-  [v16 displayScale];
+  traitCollection = [(MPRouteButton *)self traitCollection];
+  [traitCollection displayScale];
 
   UIRectIntegralWithScale();
   v18 = v17;
@@ -476,11 +476,11 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
   [(MPRouteLabel *)self->_routeLabel setFrame:MPRectByApplyingUserInterfaceLayoutDirectionInRect(v30, v32, v34, v36, v37, v38, v39, v40)];
 }
 
-- (MPRouteButton)initWithFrame:(CGRect)a3
+- (MPRouteButton)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = MPRouteButton;
-  v3 = [(MPRouteButton *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPRouteButton *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -508,8 +508,8 @@ void __44__MPRouteButton_routeDidChangeNotification___block_invoke(uint64_t a1)
     [(MPRouteLabel *)v4->_routeLabel setUserInteractionEnabled:0];
     [(MPRouteLabel *)v4->_routeLabel _setTextColorFollowsTintColor:1];
     [(MPRouteButton *)v4 addSubview:v4->_routeLabel];
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v4 selector:sel_routeDidChangeNotification_ name:@"MPAVRouteDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_routeDidChangeNotification_ name:@"MPAVRouteDidChangeNotification" object:0];
   }
 
   return v4;

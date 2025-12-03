@@ -1,9 +1,9 @@
 @interface MOSettingsManager
 + (id)sharedInstance;
-- (BOOL)getStateForSetting:(unint64_t)a3;
+- (BOOL)getStateForSetting:(unint64_t)setting;
 - (MOSettingsManager)init;
 - (MOSettingsManagerDelegate)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MOSettingsManager
@@ -11,16 +11,16 @@
 - (MOSettingsManagerDelegate)delegate
 {
   v2 = +[MOOnboardingAndSettingsManager sharedInstance];
-  v3 = [v2 settingsManagerDelegate];
+  settingsManagerDelegate = [v2 settingsManagerDelegate];
 
-  return v3;
+  return settingsManagerDelegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = +[MOOnboardingAndSettingsManager sharedInstance];
-  [v4 setSettingsManagerDelegate:v3];
+  [v4 setSettingsManagerDelegate:delegateCopy];
 }
 
 - (MOSettingsManager)init
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __35__MOSettingsManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -54,12 +54,12 @@ uint64_t __35__MOSettingsManager_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)getStateForSetting:(unint64_t)a3
+- (BOOL)getStateForSetting:(unint64_t)setting
 {
   v4 = +[MOOnboardingAndSettingsManager sharedInstance];
-  LOBYTE(a3) = [v4 getStateForSetting:a3];
+  LOBYTE(setting) = [v4 getStateForSetting:setting];
 
-  return a3;
+  return setting;
 }
 
 @end

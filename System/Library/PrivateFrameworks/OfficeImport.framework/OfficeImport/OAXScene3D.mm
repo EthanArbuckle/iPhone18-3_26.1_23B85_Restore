@@ -1,20 +1,20 @@
 @interface OAXScene3D
-+ (BOOL)isEmpty:(id)a3;
++ (BOOL)isEmpty:(id)empty;
 + (id)cameraTypeEnumMap;
 + (id)lightRigDirectionEnumMap;
 + (id)lightRigTypeEnumMap;
-+ (id)readBackdropFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readCameraFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readLightRigFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readScene3DFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 drawingState:(id)a5;
++ (id)readBackdropFromXmlNode:(_xmlNode *)node drawingState:(id)state;
++ (id)readCameraFromXmlNode:(_xmlNode *)node drawingState:(id)state;
++ (id)readLightRigFromXmlNode:(_xmlNode *)node drawingState:(id)state;
++ (id)readScene3DFromXmlNode:(_xmlNode *)node packagePart:(id)part drawingState:(id)state;
 + (void)cameraTypeEnumMap;
 + (void)lightRigDirectionEnumMap;
 + (void)lightRigTypeEnumMap;
-+ (void)writeBackdrop:(id)a3 to:(id)a4;
-+ (void)writeCamera:(id)a3 to:(id)a4;
-+ (void)writeLightRig:(id)a3 to:(id)a4;
-+ (void)writeRotation3D:(id)a3 to:(id)a4;
-+ (void)writeScene3D:(id)a3 to:(id)a4;
++ (void)writeBackdrop:(id)backdrop to:(id)to;
++ (void)writeCamera:(id)camera to:(id)to;
++ (void)writeLightRig:(id)rig to:(id)to;
++ (void)writeRotation3D:(id)d to:(id)to;
++ (void)writeScene3D:(id)d to:(id)to;
 @end
 
 @implementation OAXScene3D
@@ -76,12 +76,12 @@
   return v2;
 }
 
-+ (id)readCameraFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readCameraFromXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADCamera);
-  v8 = [v6 OAXMainNamespace];
-  v9 = OCXFindChild(a3, v8, "rot");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v9 = OCXFindChild(node, oAXMainNamespace, "rot");
 
   if (v9)
   {
@@ -89,17 +89,17 @@
     [(OADCamera *)v7 setRotation:v10];
   }
 
-  v11 = CXDefaultStringAttribute(a3, CXNoNamespace, "prst", 0);
+  v11 = CXDefaultStringAttribute(node, CXNoNamespace, "prst", 0);
   if (v11)
   {
-    v12 = [a1 cameraTypeEnumMap];
-    v13 = [v12 valueForString:v11];
+    cameraTypeEnumMap = [self cameraTypeEnumMap];
+    v13 = [cameraTypeEnumMap valueForString:v11];
 
     [(OADCamera *)v7 setCameraType:v13];
   }
 
   v18 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "fov", &v18))
+  if (CXOptionalLongAttribute(node, CXNoNamespace, "fov", &v18))
   {
     v14 = v18 / 60000.0;
     *&v14 = v14;
@@ -107,7 +107,7 @@
   }
 
   v17 = 0.0;
-  if (CXOptionalFractionAttribute(a3, CXNoNamespace, "zoom", &v17))
+  if (CXOptionalFractionAttribute(node, CXNoNamespace, "zoom", &v17))
   {
     HIDWORD(v15) = HIDWORD(v17);
     *&v15 = v17;
@@ -117,12 +117,12 @@
   return v7;
 }
 
-+ (id)readLightRigFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readLightRigFromXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADLightRig);
-  v8 = [v6 OAXMainNamespace];
-  v9 = OCXFindChild(a3, v8, "rot");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v9 = OCXFindChild(node, oAXMainNamespace, "rot");
 
   if (v9)
   {
@@ -130,20 +130,20 @@
     [(OADLightRig *)v7 setRotation:v10];
   }
 
-  v11 = CXDefaultStringAttribute(a3, CXNoNamespace, "rig", 0);
+  v11 = CXDefaultStringAttribute(node, CXNoNamespace, "rig", 0);
   if (v11)
   {
-    v12 = [a1 lightRigTypeEnumMap];
-    v13 = [v12 valueForString:v11];
+    lightRigTypeEnumMap = [self lightRigTypeEnumMap];
+    v13 = [lightRigTypeEnumMap valueForString:v11];
 
     [(OADLightRig *)v7 setType:v13];
   }
 
-  v14 = CXDefaultStringAttribute(a3, CXNoNamespace, "dir", 0);
+  v14 = CXDefaultStringAttribute(node, CXNoNamespace, "dir", 0);
   if (v14)
   {
-    v15 = [a1 lightRigDirectionEnumMap];
-    v16 = [v15 valueForString:v14];
+    lightRigDirectionEnumMap = [self lightRigDirectionEnumMap];
+    v16 = [lightRigDirectionEnumMap valueForString:v14];
 
     [(OADLightRig *)v7 setDirection:v16];
   }
@@ -151,12 +151,12 @@
   return v7;
 }
 
-+ (id)readBackdropFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readBackdropFromXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = objc_alloc_init(OADBackdrop);
-  v7 = [v5 OAXMainNamespace];
-  v8 = OCXFindChild(a3, v7, "anchor");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v8 = OCXFindChild(node, oAXMainNamespace, "anchor");
 
   if (v8)
   {
@@ -164,8 +164,8 @@
     [(OADBackdrop *)v6 setAnchor:v9];
   }
 
-  v10 = [v5 OAXMainNamespace];
-  v11 = OCXFindChild(a3, v10, "norm");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v11 = OCXFindChild(node, oAXMainNamespace2, "norm");
 
   if (v11)
   {
@@ -173,8 +173,8 @@
     [(OADBackdrop *)v6 setNormal:v12];
   }
 
-  v13 = [v5 OAXMainNamespace];
-  v14 = OCXFindChild(a3, v13, "up");
+  oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+  v14 = OCXFindChild(node, oAXMainNamespace3, "up");
 
   if (v14)
   {
@@ -185,80 +185,80 @@
   return v6;
 }
 
-+ (id)readScene3DFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 drawingState:(id)a5
++ (id)readScene3DFromXmlNode:(_xmlNode *)node packagePart:(id)part drawingState:(id)state
 {
-  v7 = a5;
+  stateCopy = state;
   v8 = objc_alloc_init(OADScene3D);
-  v9 = [v7 OAXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "camera");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v10 = OCXFindChild(node, oAXMainNamespace, "camera");
 
   if (v10)
   {
-    v11 = [a1 readCameraFromXmlNode:v10 drawingState:v7];
+    v11 = [self readCameraFromXmlNode:v10 drawingState:stateCopy];
     [(OADScene3D *)v8 setCamera:v11];
   }
 
-  v12 = [v7 OAXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "lightRig");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v13 = OCXFindChild(node, oAXMainNamespace2, "lightRig");
 
   if (v13)
   {
-    v14 = [a1 readLightRigFromXmlNode:v13 drawingState:v7];
+    v14 = [self readLightRigFromXmlNode:v13 drawingState:stateCopy];
     [(OADScene3D *)v8 setLightRig:v14];
   }
 
-  v15 = [v7 OAXMainNamespace];
-  v16 = OCXFindChild(a3, v15, "backdrop");
+  oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+  v16 = OCXFindChild(node, oAXMainNamespace3, "backdrop");
 
   if (v16)
   {
-    v17 = [a1 readBackdropFromXmlNode:v16 drawingState:v7];
+    v17 = [self readBackdropFromXmlNode:v16 drawingState:stateCopy];
     [(OADScene3D *)v8 setBackdrop:v17];
   }
 
   return v8;
 }
 
-+ (void)writeScene3D:(id)a3 to:(id)a4
++ (void)writeScene3D:(id)d to:(id)to
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 backdrop];
-  if (v7)
+  dCopy = d;
+  toCopy = to;
+  backdrop = [dCopy backdrop];
+  if (backdrop)
   {
-    [v6 startOAElement:@"backdrop"];
-    [a1 writeBackdrop:v7 to:v6];
-    [v6 endElement];
+    [toCopy startOAElement:@"backdrop"];
+    [self writeBackdrop:backdrop to:toCopy];
+    [toCopy endElement];
   }
 
-  v8 = [v10 camera];
-  if (v8)
+  camera = [dCopy camera];
+  if (camera)
   {
-    [v6 startOAElement:@"camera"];
-    [a1 writeCamera:v8 to:v6];
-    [v6 endElement];
+    [toCopy startOAElement:@"camera"];
+    [self writeCamera:camera to:toCopy];
+    [toCopy endElement];
   }
 
-  v9 = [v10 lightRig];
-  if (v9)
+  lightRig = [dCopy lightRig];
+  if (lightRig)
   {
-    [v6 startOAElement:@"lightRig"];
-    [a1 writeLightRig:v9 to:v6];
-    [v6 endElement];
+    [toCopy startOAElement:@"lightRig"];
+    [self writeLightRig:lightRig to:toCopy];
+    [toCopy endElement];
   }
 }
 
-+ (BOOL)isEmpty:(id)a3
++ (BOOL)isEmpty:(id)empty
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  emptyCopy = empty;
+  v4 = emptyCopy;
+  if (emptyCopy)
   {
-    v5 = [v3 camera];
-    if (v5)
+    camera = [emptyCopy camera];
+    if (camera)
     {
-      v6 = [v4 lightRig];
-      v7 = v6 == 0;
+      lightRig = [v4 lightRig];
+      v7 = lightRig == 0;
     }
 
     else
@@ -275,195 +275,195 @@
   return v7;
 }
 
-+ (void)writeBackdrop:(id)a3 to:(id)a4
++ (void)writeBackdrop:(id)backdrop to:(id)to
 {
-  v63 = a3;
-  v5 = a4;
-  v6 = [v63 anchor];
-  if (v6)
+  backdropCopy = backdrop;
+  toCopy = to;
+  anchor = [backdropCopy anchor];
+  if (anchor)
   {
-    [v5 startOAElement:@"anchor"];
+    [toCopy startOAElement:@"anchor"];
     v7 = MEMORY[0x277CCABB0];
-    [v6 x];
+    [anchor x];
     *&v9 = v8 * 12700.0;
     v10 = [v7 numberWithFloat:v9];
-    v11 = [v10 longValue];
+    longValue = [v10 longValue];
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v11];
-    [v5 writeOAAttribute:@"x" content:v12];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue];
+    [toCopy writeOAAttribute:@"x" content:v12];
 
     v13 = MEMORY[0x277CCABB0];
-    [v6 y];
+    [anchor y];
     *&v15 = v14 * 12700.0;
     v16 = [v13 numberWithFloat:v15];
-    v17 = [v16 longValue];
+    longValue2 = [v16 longValue];
 
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v17];
-    [v5 writeOAAttribute:@"y" content:v18];
+    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue2];
+    [toCopy writeOAAttribute:@"y" content:v18];
 
     v19 = MEMORY[0x277CCABB0];
-    [v6 z];
+    [anchor z];
     *&v21 = v20 * 12700.0;
     v22 = [v19 numberWithFloat:v21];
-    v23 = [v22 longValue];
+    longValue3 = [v22 longValue];
 
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v23];
-    [v5 writeOAAttribute:@"z" content:v24];
+    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue3];
+    [toCopy writeOAAttribute:@"z" content:v24];
 
-    [v5 endElement];
+    [toCopy endElement];
   }
 
-  v25 = [v63 normal];
-  if (v25)
+  normal = [backdropCopy normal];
+  if (normal)
   {
-    [v5 startOAElement:@"norm"];
+    [toCopy startOAElement:@"norm"];
     v26 = MEMORY[0x277CCABB0];
-    [v25 dx];
+    [normal dx];
     *&v28 = v27 * 12700.0;
     v29 = [v26 numberWithFloat:v28];
-    v30 = [v29 longValue];
+    longValue4 = [v29 longValue];
 
-    v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v30];
-    [v5 writeOAAttribute:@"dx" content:v31];
+    v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue4];
+    [toCopy writeOAAttribute:@"dx" content:v31];
 
     v32 = MEMORY[0x277CCABB0];
-    [v25 dy];
+    [normal dy];
     *&v34 = v33 * 12700.0;
     v35 = [v32 numberWithFloat:v34];
-    v36 = [v35 longValue];
+    longValue5 = [v35 longValue];
 
-    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v36];
-    [v5 writeOAAttribute:@"dy" content:v37];
+    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue5];
+    [toCopy writeOAAttribute:@"dy" content:v37];
 
     v38 = MEMORY[0x277CCABB0];
-    [v25 dz];
+    [normal dz];
     *&v40 = v39 * 12700.0;
     v41 = [v38 numberWithFloat:v40];
-    v42 = [v41 longValue];
+    longValue6 = [v41 longValue];
 
-    v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v42];
-    [v5 writeOAAttribute:@"dz" content:v43];
+    v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue6];
+    [toCopy writeOAAttribute:@"dz" content:v43];
 
-    [v5 endElement];
+    [toCopy endElement];
   }
 
-  v44 = [v63 up];
+  v44 = [backdropCopy up];
   if (v44)
   {
-    [v5 startOAElement:@"up"];
+    [toCopy startOAElement:@"up"];
     v45 = MEMORY[0x277CCABB0];
     [v44 dx];
     *&v47 = v46 * 12700.0;
     v48 = [v45 numberWithFloat:v47];
-    v49 = [v48 longValue];
+    longValue7 = [v48 longValue];
 
-    v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v49];
-    [v5 writeOAAttribute:@"dx" content:v50];
+    v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue7];
+    [toCopy writeOAAttribute:@"dx" content:v50];
 
     v51 = MEMORY[0x277CCABB0];
     [v44 dy];
     *&v53 = v52 * 12700.0;
     v54 = [v51 numberWithFloat:v53];
-    v55 = [v54 longValue];
+    longValue8 = [v54 longValue];
 
-    v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v55];
-    [v5 writeOAAttribute:@"dy" content:v56];
+    v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue8];
+    [toCopy writeOAAttribute:@"dy" content:v56];
 
     v57 = MEMORY[0x277CCABB0];
     [v44 dz];
     *&v59 = v58 * 12700.0;
     v60 = [v57 numberWithFloat:v59];
-    v61 = [v60 longValue];
+    longValue9 = [v60 longValue];
 
-    v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v61];
-    [v5 writeOAAttribute:@"dz" content:v62];
+    v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue9];
+    [toCopy writeOAAttribute:@"dz" content:v62];
 
-    [v5 endElement];
+    [toCopy endElement];
   }
 }
 
-+ (void)writeRotation3D:(id)a3 to:(id)a4
++ (void)writeRotation3D:(id)d to:(id)to
 {
-  v24 = a3;
-  v5 = a4;
-  if (v24)
+  dCopy = d;
+  toCopy = to;
+  if (dCopy)
   {
-    [v5 startOAElement:@"rot"];
+    [toCopy startOAElement:@"rot"];
     v6 = MEMORY[0x277CCABB0];
-    [v24 latitude];
+    [dCopy latitude];
     *&v8 = v7 * 60000.0;
     v9 = [v6 numberWithFloat:v8];
-    v10 = [v9 longValue];
+    longValue = [v9 longValue];
 
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v10];
-    [v5 writeOAAttribute:@"lat" content:v11];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue];
+    [toCopy writeOAAttribute:@"lat" content:v11];
 
     v12 = MEMORY[0x277CCABB0];
-    [v24 longitude];
+    [dCopy longitude];
     *&v14 = v13 * 60000.0;
     v15 = [v12 numberWithFloat:v14];
-    v16 = [v15 longValue];
+    longValue2 = [v15 longValue];
 
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v16];
-    [v5 writeOAAttribute:@"lon" content:v17];
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue2];
+    [toCopy writeOAAttribute:@"lon" content:v17];
 
     v18 = MEMORY[0x277CCABB0];
-    [v24 revolution];
+    [dCopy revolution];
     *&v20 = v19 * 60000.0;
     v21 = [v18 numberWithFloat:v20];
-    v22 = [v21 longValue];
+    longValue3 = [v21 longValue];
 
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v22];
-    [v5 writeOAAttribute:@"rev" content:v23];
+    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue3];
+    [toCopy writeOAAttribute:@"rev" content:v23];
 
-    [v5 endElement];
+    [toCopy endElement];
   }
 }
 
-+ (void)writeCamera:(id)a3 to:(id)a4
++ (void)writeCamera:(id)camera to:(id)to
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [a1 cameraTypeEnumMap];
-  v8 = [v7 stringForValue:{objc_msgSend(v22, "cameraType")}];
+  cameraCopy = camera;
+  toCopy = to;
+  cameraTypeEnumMap = [self cameraTypeEnumMap];
+  v8 = [cameraTypeEnumMap stringForValue:{objc_msgSend(cameraCopy, "cameraType")}];
 
-  [v6 writeOAAttribute:@"prst" content:v8];
+  [toCopy writeOAAttribute:@"prst" content:v8];
   v9 = MEMORY[0x277CCABB0];
-  [v22 fieldOfView];
+  [cameraCopy fieldOfView];
   *&v11 = v10 * 60000.0;
   v12 = [v9 numberWithFloat:v11];
-  v13 = [v12 longValue];
+  longValue = [v12 longValue];
 
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v13];
-  [v6 writeOAAttribute:@"fov" content:v14];
+  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue];
+  [toCopy writeOAAttribute:@"fov" content:v14];
 
   v15 = MEMORY[0x277CCABB0];
-  [v22 zoom];
+  [cameraCopy zoom];
   *&v17 = v16 * 100000.0;
   v18 = [v15 numberWithFloat:v17];
-  v19 = [v18 longValue];
+  longValue2 = [v18 longValue];
 
-  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v19];
-  [v6 writeOAAttribute:@"zoom" content:v20];
+  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue2];
+  [toCopy writeOAAttribute:@"zoom" content:v20];
 
-  v21 = [v22 rotation];
-  [a1 writeRotation3D:v21 to:v6];
+  rotation = [cameraCopy rotation];
+  [self writeRotation3D:rotation to:toCopy];
 }
 
-+ (void)writeLightRig:(id)a3 to:(id)a4
++ (void)writeLightRig:(id)rig to:(id)to
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [a1 lightRigTypeEnumMap];
-  v8 = [v7 stringForValue:{objc_msgSend(v12, "type")}];
+  rigCopy = rig;
+  toCopy = to;
+  lightRigTypeEnumMap = [self lightRigTypeEnumMap];
+  v8 = [lightRigTypeEnumMap stringForValue:{objc_msgSend(rigCopy, "type")}];
 
-  [v6 writeOAAttribute:@"rig" content:v8];
-  v9 = [a1 lightRigDirectionEnumMap];
-  v10 = [v9 stringForValue:{objc_msgSend(v12, "direction")}];
+  [toCopy writeOAAttribute:@"rig" content:v8];
+  lightRigDirectionEnumMap = [self lightRigDirectionEnumMap];
+  v10 = [lightRigDirectionEnumMap stringForValue:{objc_msgSend(rigCopy, "direction")}];
 
-  [v6 writeOAAttribute:@"dir" content:v10];
-  v11 = [v12 rotation];
-  [a1 writeRotation3D:v11 to:v6];
+  [toCopy writeOAAttribute:@"dir" content:v10];
+  rotation = [rigCopy rotation];
+  [self writeRotation3D:rotation to:toCopy];
 }
 
 + (void)cameraTypeEnumMap

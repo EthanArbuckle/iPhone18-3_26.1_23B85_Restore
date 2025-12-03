@@ -1,29 +1,29 @@
 @interface CAMTransientAsset
 - (BOOL)isLivePhoto;
 - (CAMTransientAsset)init;
-- (CAMTransientAsset)initWithAsset:(id)a3 convertible:(id)a4;
-- (CAMTransientAsset)initWithAsset:(id)a3 uuid:(id)a4;
-- (CAMTransientAsset)initWithUUID:(id)a3;
+- (CAMTransientAsset)initWithAsset:(id)asset convertible:(id)convertible;
+- (CAMTransientAsset)initWithAsset:(id)asset uuid:(id)uuid;
+- (CAMTransientAsset)initWithUUID:(id)d;
 - (NSString)description;
 - (double)aspectRatio;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)playbackStyle;
-- (unint64_t)isContentEqualTo:(id)a3;
-- (void)_populateStillImageTransientAssetFromConvertible:(id)a3;
-- (void)_populateVideoTransientAssetFromConvertible:(id)a3;
+- (unint64_t)isContentEqualTo:(id)to;
+- (void)_populateStillImageTransientAssetFromConvertible:(id)convertible;
+- (void)_populateVideoTransientAssetFromConvertible:(id)convertible;
 @end
 
 @implementation CAMTransientAsset
 
 - (int64_t)playbackStyle
 {
-  v3 = [(CAMTransientAsset *)self mediaType];
-  if (!v3 || v3 == 3)
+  mediaType = [(CAMTransientAsset *)self mediaType];
+  if (!mediaType || mediaType == 3)
   {
     return 0;
   }
 
-  if (v3 != 1)
+  if (mediaType != 1)
   {
     return 4;
   }
@@ -43,8 +43,8 @@
     return 1.0;
   }
 
-  v3 = [(CAMTransientAsset *)self pixelWidth];
-  return v3 / [(CAMTransientAsset *)self pixelHeight];
+  pixelWidth = [(CAMTransientAsset *)self pixelWidth];
+  return pixelWidth / [(CAMTransientAsset *)self pixelHeight];
 }
 
 - (BOOL)isLivePhoto
@@ -57,11 +57,11 @@
   return [(CAMTransientAsset *)self isPhotoIrisPlaceholder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CAMTransientAsset alloc];
-  v5 = [(CAMTransientAsset *)self uuid];
-  v6 = [(CAMTransientAsset *)v4 initWithAsset:self uuid:v5];
+  uuid = [(CAMTransientAsset *)self uuid];
+  v6 = [(CAMTransientAsset *)v4 initWithAsset:self uuid:uuid];
 
   return v6;
 }
@@ -70,17 +70,17 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CAMTransientAsset *)self uuid];
-  v6 = [(CAMTransientAsset *)self creationDate];
-  v7 = [(CAMTransientAsset *)self creationDate];
-  [v7 timeIntervalSince1970];
+  uuid = [(CAMTransientAsset *)self uuid];
+  creationDate = [(CAMTransientAsset *)self creationDate];
+  creationDate2 = [(CAMTransientAsset *)self creationDate];
+  [creationDate2 timeIntervalSince1970];
   v9 = v8;
-  v10 = [(CAMTransientAsset *)self modificationDate];
-  v11 = [(CAMTransientAsset *)self modificationDate];
-  [v11 timeIntervalSince1970];
+  modificationDate = [(CAMTransientAsset *)self modificationDate];
+  modificationDate2 = [(CAMTransientAsset *)self modificationDate];
+  [modificationDate2 timeIntervalSince1970];
   v13 = v12;
-  v14 = [(CAMTransientAsset *)self representsBurst];
-  if (v14)
+  representsBurst = [(CAMTransientAsset *)self representsBurst];
+  if (representsBurst)
   {
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"YES, %ld frames", -[CAMTransientAsset numberOfRepresentedAssets](self, "numberOfRepresentedAssets")];
   }
@@ -90,10 +90,10 @@
     v15 = @"NO";
   }
 
-  v16 = [(CAMTransientAsset *)self burstIdentifier];
-  v17 = [v3 stringWithFormat:@"<%@ uuid:%@ creationDate:%@ (%.6f) modificationDate:%@ (%.3f) burst:%@ burstIdentifier:%@>", v4, v5, v6, v9, v10, v13, v15, v16];
+  burstIdentifier = [(CAMTransientAsset *)self burstIdentifier];
+  v17 = [v3 stringWithFormat:@"<%@ uuid:%@ creationDate:%@ (%.6f) modificationDate:%@ (%.3f) burst:%@ burstIdentifier:%@>", v4, uuid, creationDate, v9, modificationDate, v13, v15, burstIdentifier];
 
-  if (v14)
+  if (representsBurst)
   {
   }
 
@@ -107,15 +107,15 @@
   return [(CAMTransientAsset *)self initWithUUID:&stru_1F1660A30];
 }
 
-- (CAMTransientAsset)initWithUUID:(id)a3
+- (CAMTransientAsset)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = CAMTransientAsset;
   v5 = [(CAMTransientAsset *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
@@ -126,34 +126,34 @@
   return v5;
 }
 
-- (CAMTransientAsset)initWithAsset:(id)a3 uuid:(id)a4
+- (CAMTransientAsset)initWithAsset:(id)asset uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = [(CAMTransientAsset *)self initWithUUID:a4];
+  assetCopy = asset;
+  v7 = [(CAMTransientAsset *)self initWithUUID:uuid];
   if (v7)
   {
-    v7->_mediaType = [v6 mediaType];
-    v7->_mediaSubtypes = [v6 mediaSubtypes];
-    v7->_pixelWidth = [v6 pixelWidth];
-    v7->_pixelHeight = [v6 pixelHeight];
-    [v6 duration];
+    v7->_mediaType = [assetCopy mediaType];
+    v7->_mediaSubtypes = [assetCopy mediaSubtypes];
+    v7->_pixelWidth = [assetCopy pixelWidth];
+    v7->_pixelHeight = [assetCopy pixelHeight];
+    [assetCopy duration];
     v7->_duration = v8;
-    v9 = [v6 creationDate];
+    creationDate = [assetCopy creationDate];
     creationDate = v7->_creationDate;
-    v7->_creationDate = v9;
+    v7->_creationDate = creationDate;
 
-    v11 = [v6 modificationDate];
+    modificationDate = [assetCopy modificationDate];
     modificationDate = v7->_modificationDate;
-    v7->_modificationDate = v11;
+    v7->_modificationDate = modificationDate;
 
-    v7->_playbackVariation = [v6 playbackVariation];
-    v7->_canPlayPhotoIris = [v6 canPlayPhotoIris];
-    if (v6)
+    v7->_playbackVariation = [assetCopy playbackVariation];
+    v7->_canPlayPhotoIris = [assetCopy canPlayPhotoIris];
+    if (assetCopy)
     {
-      [v6 photoIrisStillDisplayTime];
+      [assetCopy photoIrisStillDisplayTime];
       *&v7->_photoIrisStillDisplayTime.value = v17;
       v7->_photoIrisStillDisplayTime.epoch = v18;
-      [v6 photoIrisVideoDuration];
+      [assetCopy photoIrisVideoDuration];
     }
 
     else
@@ -167,62 +167,62 @@
 
     *&v7->_photoIrisVideoDuration.value = v17;
     v7->_photoIrisVideoDuration.epoch = v18;
-    v13 = [v6 placeholderImage];
+    placeholderImage = [assetCopy placeholderImage];
     placeholderImage = v7->_placeholderImage;
-    v7->_placeholderImage = v13;
+    v7->_placeholderImage = placeholderImage;
 
-    v7->_isTemporaryPlaceholder = [v6 isTemporaryPlaceholder];
+    v7->_isTemporaryPlaceholder = [assetCopy isTemporaryPlaceholder];
     v15 = v7;
   }
 
   return v7;
 }
 
-- (void)_populateStillImageTransientAssetFromConvertible:(id)a3
+- (void)_populateStillImageTransientAssetFromConvertible:(id)convertible
 {
-  v4 = a3;
-  [v4 finalExpectedPixelSize];
+  convertibleCopy = convertible;
+  [convertibleCopy finalExpectedPixelSize];
   self->_pixelWidth = v5;
-  [v4 finalExpectedPixelSize];
+  [convertibleCopy finalExpectedPixelSize];
   self->_pixelHeight = v6;
-  v7 = [v4 captureDate];
-  objc_storeStrong(&self->_creationDate, v7);
-  objc_storeStrong(&self->_modificationDate, v7);
-  v8 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v9 = [v8 secondsFromGMTForDate:v7];
+  captureDate = [convertibleCopy captureDate];
+  objc_storeStrong(&self->_creationDate, captureDate);
+  objc_storeStrong(&self->_modificationDate, captureDate);
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v9 = [localTimeZone secondsFromGMTForDate:captureDate];
 
-  v10 = [v7 dateByAddingTimeInterval:v9];
+  v10 = [captureDate dateByAddingTimeInterval:v9];
   localCreationDate = self->_localCreationDate;
   self->_localCreationDate = v10;
 
-  v12 = [v4 burstIdentifier];
-  self->_numberOfRepresentedAssets = [v4 numberOfRepresentedAssets];
-  self->_representsBurst = v12 != 0;
-  objc_storeStrong(&self->_burstIdentifier, v12);
-  v13 = self->_mediaSubtypes | [v4 mediaSubtypes];
+  burstIdentifier = [convertibleCopy burstIdentifier];
+  self->_numberOfRepresentedAssets = [convertibleCopy numberOfRepresentedAssets];
+  self->_representsBurst = burstIdentifier != 0;
+  objc_storeStrong(&self->_burstIdentifier, burstIdentifier);
+  v13 = self->_mediaSubtypes | [convertibleCopy mediaSubtypes];
   self->_mediaSubtypes = v13;
   self->_HDR = (v13 & 2) != 0;
-  v14 = [v4 placeholderImage];
+  placeholderImage = [convertibleCopy placeholderImage];
   [(UIImage *)self->_placeholderImage size];
   v16 = v15;
   v18 = v17;
-  [v14 size];
+  [placeholderImage size];
   if (v20 > v16 && v19 > v18)
   {
-    objc_storeStrong(&self->_placeholderImage, v14);
+    objc_storeStrong(&self->_placeholderImage, placeholderImage);
   }
 
-  if ([v4 isExpectingPairedVideo])
+  if ([convertibleCopy isExpectingPairedVideo])
   {
     self->_canPlayPhotoIris = 1;
     self->_mediaSubtypes |= 8uLL;
     self->_isPhotoIrisPlaceholder = 1;
-    if (v4)
+    if (convertibleCopy)
     {
-      [v4 irisStillDisplayTime];
+      [convertibleCopy irisStillDisplayTime];
       *&self->_photoIrisStillDisplayTime.value = v21;
       self->_photoIrisStillDisplayTime.epoch = v22;
-      [v4 duration];
+      [convertibleCopy duration];
     }
 
     else
@@ -239,43 +239,43 @@
   }
 }
 
-- (void)_populateVideoTransientAssetFromConvertible:(id)a3
+- (void)_populateVideoTransientAssetFromConvertible:(id)convertible
 {
-  v4 = a3;
-  v5 = [v4 isTransientAssetTemporaryPlaceholder];
-  v6 = [v4 placeholderImage];
+  convertibleCopy = convertible;
+  isTransientAssetTemporaryPlaceholder = [convertibleCopy isTransientAssetTemporaryPlaceholder];
+  placeholderImage = [convertibleCopy placeholderImage];
 
-  if (v6)
+  if (placeholderImage)
   {
-    v7 = [v4 placeholderImage];
+    placeholderImage2 = [convertibleCopy placeholderImage];
     placeholderImage = self->_placeholderImage;
-    self->_placeholderImage = v7;
+    self->_placeholderImage = placeholderImage2;
   }
 
-  v9 = [v4 persistenceURL];
-  v10 = v9;
-  if ((v5 & 1) == 0)
+  persistenceURL = [convertibleCopy persistenceURL];
+  v10 = persistenceURL;
+  if ((isTransientAssetTemporaryPlaceholder & 1) == 0)
   {
-    v11 = [v9 copy];
+    v11 = [persistenceURL copy];
     persistenceURL = self->_persistenceURL;
     self->_persistenceURL = v11;
   }
 
-  [v4 finalExpectedPixelSize];
+  [convertibleCopy finalExpectedPixelSize];
   if (v13 == 0.0 || (height = v14, v14 == 0.0))
   {
     v17 = [MEMORY[0x1E6988168] assetWithURL:v10];
     v18 = [v17 tracksWithMediaType:*MEMORY[0x1E6987608]];
-    v19 = [v18 firstObject];
+    firstObject = [v18 firstObject];
 
-    if (v19)
+    if (firstObject)
     {
       v20 = *MEMORY[0x1E695EFF8];
       v21 = *(MEMORY[0x1E695EFF8] + 8);
-      [v19 naturalSize];
+      [firstObject naturalSize];
       v23 = v22;
       v25 = v24;
-      [v19 preferredTransform];
+      [firstObject preferredTransform];
       v33.origin.x = v20;
       v33.origin.y = v21;
       v33.size.width = v23;
@@ -307,11 +307,11 @@
     self->_pixelHeight = height;
   }
 
-  if ((v5 & 1) == 0)
+  if ((isTransientAssetTemporaryPlaceholder & 1) == 0)
   {
-    if (v4)
+    if (convertibleCopy)
     {
-      [v4 duration];
+      [convertibleCopy duration];
     }
 
     else
@@ -322,11 +322,11 @@
     self->_duration = CMTimeGetSeconds(&v32);
   }
 
-  v28 = [v4 captureDate];
-  objc_storeStrong(&self->_creationDate, v28);
+  captureDate = [convertibleCopy captureDate];
+  objc_storeStrong(&self->_creationDate, captureDate);
   modificationDate = self->_modificationDate;
-  self->_modificationDate = v28;
-  v30 = v28;
+  self->_modificationDate = captureDate;
+  v30 = captureDate;
 
   self->_representsBurst = 0;
   burstIdentifier = self->_burstIdentifier;
@@ -335,34 +335,34 @@
   self->_numberOfRepresentedAssets = 0;
 }
 
-- (CAMTransientAsset)initWithAsset:(id)a3 convertible:(id)a4
+- (CAMTransientAsset)initWithAsset:(id)asset convertible:(id)convertible
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  assetCopy = asset;
+  convertibleCopy = convertible;
+  v8 = convertibleCopy;
+  if (assetCopy)
   {
-    v7 = v6;
+    convertibleCopy = assetCopy;
   }
 
-  v9 = [v7 uuid];
-  v10 = [(CAMTransientAsset *)self initWithAsset:v6 uuid:v9];
+  uuid = [convertibleCopy uuid];
+  v10 = [(CAMTransientAsset *)self initWithAsset:assetCopy uuid:uuid];
   if (v10)
   {
-    v11 = [v6 mediaType];
-    if (!v11)
+    mediaType = [assetCopy mediaType];
+    if (!mediaType)
     {
-      v11 = [v8 mediaType];
-      v10->_mediaType = v11;
+      mediaType = [v8 mediaType];
+      v10->_mediaType = mediaType;
     }
 
     v10->_isTemporaryPlaceholder = [v8 isTransientAssetTemporaryPlaceholder];
-    if (v11 <= 1)
+    if (mediaType <= 1)
     {
-      if (v11)
+      if (mediaType)
       {
-        if (v11 == 1)
+        if (mediaType == 1)
         {
           [(CAMTransientAsset *)v10 _populateStillImageTransientAssetFromConvertible:v8];
         }
@@ -375,19 +375,19 @@ LABEL_12:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 134217984;
-        v16 = v11;
+        v16 = mediaType;
         _os_log_impl(&dword_1A3640000, v12, OS_LOG_TYPE_DEFAULT, "Attempting to populate a transient asset for an unsupported media type %ld", &v15, 0xCu);
       }
 
       goto LABEL_16;
     }
 
-    if (v11 == 2)
+    if (mediaType == 2)
     {
       [(CAMTransientAsset *)v10 _populateVideoTransientAssetFromConvertible:v8];
     }
 
-    else if (v11 == 3)
+    else if (mediaType == 3)
     {
       goto LABEL_12;
     }
@@ -399,18 +399,18 @@ LABEL_16:
   return v10;
 }
 
-- (unint64_t)isContentEqualTo:(id)a3
+- (unint64_t)isContentEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  toCopy = to;
+  v5 = toCopy;
+  if (toCopy == self)
   {
     goto LABEL_14;
   }
 
-  v6 = [(CAMTransientAsset *)v4 uuid];
-  v7 = [(CAMTransientAsset *)self uuid];
-  v8 = [v6 isEqualToString:v7];
+  uuid = [(CAMTransientAsset *)toCopy uuid];
+  uuid2 = [(CAMTransientAsset *)self uuid];
+  v8 = [uuid isEqualToString:uuid2];
 
   if (!v8)
   {
@@ -418,20 +418,20 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  v9 = [(CAMTransientAsset *)self mediaType];
-  v10 = [(CAMTransientAsset *)self canPlayPhotoIris];
-  if (v9 == 2 || v10)
+  mediaType = [(CAMTransientAsset *)self mediaType];
+  canPlayPhotoIris = [(CAMTransientAsset *)self canPlayPhotoIris];
+  if (mediaType == 2 || canPlayPhotoIris)
   {
-    v12 = [(CAMTransientAsset *)self persistenceURL];
-    if (v12 || (objc_opt_respondsToSelector() & 1) == 0)
+    persistenceURL = [(CAMTransientAsset *)self persistenceURL];
+    if (persistenceURL || (objc_opt_respondsToSelector() & 1) == 0)
     {
     }
 
     else
     {
-      v13 = [(CAMTransientAsset *)v5 persistenceURL];
+      persistenceURL2 = [(CAMTransientAsset *)v5 persistenceURL];
 
-      if (v13)
+      if (persistenceURL2)
       {
         goto LABEL_5;
       }

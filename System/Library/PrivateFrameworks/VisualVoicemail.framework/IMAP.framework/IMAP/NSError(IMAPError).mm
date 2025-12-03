@@ -62,9 +62,9 @@ LABEL_3:
       CFDictionarySetValue(v18, @"_ShortDescription", v14);
     }
 
-    v16 = [a1 errorWithDomain:v12 code:a4 localizedDescription:0 title:0 userInfo:v18];
-    v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v20 = [v19 BOOLForKey:@"NoErrorLog"];
+    v16 = [self errorWithDomain:v12 code:a4 localizedDescription:0 title:0 userInfo:v18];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v20 = [standardUserDefaults BOOLForKey:@"NoErrorLog"];
 
     if ((v20 & 1) == 0)
     {
@@ -80,7 +80,7 @@ LABEL_3:
 
   else
   {
-    v16 = [a1 errorWithDomain:v12 code:a4 userInfo:v15];
+    v16 = [self errorWithDomain:v12 code:a4 userInfo:v15];
   }
 
 LABEL_19:
@@ -90,8 +90,8 @@ LABEL_19:
 
 + (id)errorWithException:()IMAPError
 {
-  v4 = [a3 reason];
-  v5 = [a1 errorWithDomain:@"MFMessageErrorDomain" code:1029 localizedDescription:v4 title:0 userInfo:0];
+  reason = [a3 reason];
+  v5 = [self errorWithDomain:@"MFMessageErrorDomain" code:1029 localizedDescription:reason title:0 userInfo:0];
 
   return v5;
 }
@@ -100,10 +100,10 @@ LABEL_19:
 {
   v4 = MEMORY[0x277CCA9B8];
   v5 = a3;
-  v6 = [a1 domain];
-  v7 = [a1 code];
-  v8 = [a1 userInfo];
-  v9 = [v4 errorWithDomain:v6 code:v7 localizedDescription:v5 title:0 userInfo:v8];
+  domain = [self domain];
+  code = [self code];
+  userInfo = [self userInfo];
+  v9 = [v4 errorWithDomain:domain code:code localizedDescription:v5 title:0 userInfo:userInfo];
 
   return v9;
 }
@@ -112,10 +112,10 @@ LABEL_19:
 {
   v4 = MEMORY[0x277CCA9B8];
   v5 = a3;
-  v6 = [a1 domain];
-  v7 = [a1 code];
-  v8 = [a1 userInfo];
-  v9 = [v4 errorWithDomain:v6 code:v7 localizedDescription:0 title:v5 userInfo:v8];
+  domain = [self domain];
+  code = [self code];
+  userInfo = [self userInfo];
+  v9 = [v4 errorWithDomain:domain code:code localizedDescription:0 title:v5 userInfo:userInfo];
 
   return v9;
 }
@@ -136,7 +136,7 @@ LABEL_19:
   }
 
   v14 = v13;
-  v15 = [a1 errorWithDomain:v10 code:a4 localizedDescription:v13 title:0 userInfo:0];
+  v15 = [self errorWithDomain:v10 code:a4 localizedDescription:v13 title:0 userInfo:0];
 
   return v15;
 }
@@ -144,9 +144,9 @@ LABEL_19:
 - (id)useGenericDescription:()IMAPError
 {
   v4 = a3;
-  v5 = [a1 localizedDescription];
-  v6 = v5;
-  if (v5 && ([v5 isEqualToString:&stru_288159858] & 1) == 0)
+  localizedDescription = [self localizedDescription];
+  v6 = localizedDescription;
+  if (localizedDescription && ([localizedDescription isEqualToString:&stru_288159858] & 1) == 0)
   {
     v7 = [objc_allocWithZone(MEMORY[0x277CCACA8]) initWithFormat:@"%@\n\nThe server error encountered was: %@", v4, v6];
 
@@ -154,33 +154,33 @@ LABEL_19:
   }
 
   v8 = MEMORY[0x277CCA9B8];
-  v9 = [a1 domain];
-  v10 = [a1 code];
-  v11 = [a1 userInfo];
-  v12 = [v8 errorWithDomain:v9 code:v10 localizedDescription:v4 title:0 userInfo:v11];
+  domain = [self domain];
+  code = [self code];
+  userInfo = [self userInfo];
+  v12 = [v8 errorWithDomain:domain code:code localizedDescription:v4 title:0 userInfo:userInfo];
 
   return v12;
 }
 
 - (uint64_t)mf_isUserCancelledError
 {
-  if ([a1 code] != 1028)
+  if ([self code] != 1028)
   {
     return 0;
   }
 
-  v2 = [a1 domain];
-  v3 = [@"MFMessageErrorDomain" isEqualToString:v2];
+  domain = [self domain];
+  v3 = [@"MFMessageErrorDomain" isEqualToString:domain];
 
   return v3;
 }
 
 - (uint64_t)mf_isSMIMEError
 {
-  v2 = [a1 domain];
-  v3 = [a1 code];
-  v4 = [@"MFMessageErrorDomain" isEqualToString:v2];
-  if ((v3 - 1035) < 2)
+  domain = [self domain];
+  code = [self code];
+  v4 = [@"MFMessageErrorDomain" isEqualToString:domain];
+  if ((code - 1035) < 2)
   {
     v5 = v4;
   }
@@ -195,36 +195,36 @@ LABEL_19:
 
 - (uint64_t)mf_shouldBeReportedToUser
 {
-  if ([a1 mf_isUserCancelledError])
+  if ([self mf_isUserCancelledError])
   {
     return 0;
   }
 
-  if ([a1 code] != 1029)
+  if ([self code] != 1029)
   {
     return 1;
   }
 
-  v3 = [a1 domain];
-  v2 = [@"MFMessageErrorDomain" isEqualToString:v3] ^ 1;
+  domain = [self domain];
+  v2 = [@"MFMessageErrorDomain" isEqualToString:domain] ^ 1;
 
   return v2;
 }
 
 - (id)mf_shortDescription
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"_ShortDescription"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"_ShortDescription"];
 
   return v2;
 }
 
 - (BOOL)mf_shouldFailDownload
 {
-  v2 = [a1 domain];
-  if ([@"MFMessageErrorDomain" isEqualToString:v2])
+  domain = [self domain];
+  if ([@"MFMessageErrorDomain" isEqualToString:domain])
   {
-    v3 = [a1 code] != 1036 && objc_msgSend(a1, "code") != 1035;
+    v3 = [self code] != 1036 && objc_msgSend(self, "code") != 1035;
   }
 
   else

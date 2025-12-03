@@ -1,13 +1,13 @@
 @interface BSUIVibrancyAnimatingPortalView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation BSUIVibrancyAnimatingPortalView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"filters"])
+  keyCopy = key;
+  if ([keyCopy hasPrefix:@"filters"])
   {
     v5 = 1;
   }
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = BSUIVibrancyAnimatingPortalView;
-    v5 = [(_UIPortalView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(_UIPortalView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

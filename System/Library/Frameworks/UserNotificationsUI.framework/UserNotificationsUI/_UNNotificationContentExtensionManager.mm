@@ -3,7 +3,7 @@
 + (void)initialize;
 - (_UNNotificationContentExtensionManager)init;
 - (id)_matchingAttributes;
-- (id)extensionForNotificationSourceIdentifier:(id)a3 categoryIdentifier:(id)a4;
+- (id)extensionForNotificationSourceIdentifier:(id)identifier categoryIdentifier:(id)categoryIdentifier;
 - (void)_beginMatchingExtensions;
 - (void)_stopMatchingExtensions;
 @end
@@ -12,8 +12,8 @@
 
 + (void)initialize
 {
-  v2 = [objc_opt_class() sharedInstance];
-  [v2 _beginMatchingExtensions];
+  sharedInstance = [objc_opt_class() sharedInstance];
+  [sharedInstance _beginMatchingExtensions];
 }
 
 - (_UNNotificationContentExtensionManager)init
@@ -44,14 +44,14 @@
   return v3;
 }
 
-- (id)extensionForNotificationSourceIdentifier:(id)a3 categoryIdentifier:(id)a4
+- (id)extensionForNotificationSourceIdentifier:(id)identifier categoryIdentifier:(id)categoryIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  categoryIdentifierCopy = categoryIdentifier;
+  if (categoryIdentifierCopy)
   {
-    v8 = [(_UNNotificationContentExtensionManager *)self extensionsCache];
-    v9 = [v8 extensionForNotificationSourceIdentifier:v6 categoryIdentifier:v7];
+    extensionsCache = [(_UNNotificationContentExtensionManager *)self extensionsCache];
+    v9 = [extensionsCache extensionForNotificationSourceIdentifier:identifierCopy categoryIdentifier:categoryIdentifierCopy];
   }
 
   else
@@ -86,13 +86,13 @@
     _os_log_impl(&dword_23AB78000, v3, OS_LOG_TYPE_DEFAULT, "Starting notifications extensions discovery", buf, 2u);
   }
 
-  v4 = [(_UNNotificationContentExtensionManager *)self _matchingAttributes];
+  _matchingAttributes = [(_UNNotificationContentExtensionManager *)self _matchingAttributes];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66___UNNotificationContentExtensionManager__beginMatchingExtensions__block_invoke;
   v7[3] = &unk_278B716A8;
   v7[4] = self;
-  v5 = [MEMORY[0x277CCA9C8] beginMatchingExtensionsWithAttributes:v4 completion:v7];
+  v5 = [MEMORY[0x277CCA9C8] beginMatchingExtensionsWithAttributes:_matchingAttributes completion:v7];
   extensionsDiscoveryToken = self->_extensionsDiscoveryToken;
   self->_extensionsDiscoveryToken = v5;
 }

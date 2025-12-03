@@ -1,23 +1,23 @@
 @interface CalLocationAuthorization
-+ (BOOL)preciseLocationAuthorizedForBundleIdentifier:(id)a3 bundle:(id)a4;
-+ (id)_cachedInstanceForBundleID:(id)a3 bundle:(id)a4;
-+ (id)_keyForBundleID:(id)a3 bundle:(id)a4;
-+ (id)authorizationForBundleIdentifier:(id)a3 bundle:(id)a4 createIfNecessary:(BOOL)a5;
++ (BOOL)preciseLocationAuthorizedForBundleIdentifier:(id)identifier bundle:(id)bundle;
++ (id)_cachedInstanceForBundleID:(id)d bundle:(id)bundle;
++ (id)_keyForBundleID:(id)d bundle:(id)bundle;
++ (id)authorizationForBundleIdentifier:(id)identifier bundle:(id)bundle createIfNecessary:(BOOL)necessary;
 + (id)locationAuthorizationAsyncCallersQueue;
 + (id)logHandle;
-+ (int)authorizationStatusForBundle:(id)a3;
-+ (int)authorizationStatusForBundleIdentifier:(id)a3 bundle:(id)a4;
-+ (unint64_t)locationPrecisionForBundleIdentifier:(id)a3 bundle:(id)a4;
++ (int)authorizationStatusForBundle:(id)bundle;
++ (int)authorizationStatusForBundleIdentifier:(id)identifier bundle:(id)bundle;
++ (unint64_t)locationPrecisionForBundleIdentifier:(id)identifier bundle:(id)bundle;
 + (unint64_t)ttlLocationStatus;
-+ (void)authorizationStatusForBundle:(id)a3 completion:(id)a4;
-+ (void)authorizationStatusForBundleIdentifier:(id)a3 bundle:(id)a4 completion:(id)a5;
++ (void)authorizationStatusForBundle:(id)bundle completion:(id)completion;
++ (void)authorizationStatusForBundleIdentifier:(id)identifier bundle:(id)bundle completion:(id)completion;
 + (void)initializeQueueAndInstancesIfNeeded;
-+ (void)preciseLocationAuthorizedForBundleIdentifier:(id)a3 bundle:(id)a4 completion:(id)a5;
-+ (void)ttlLocationStatusWithCompletion:(id)a3;
-- (CalLocationAuthorization)initWithBundleID:(id)a3 bundle:(id)a4 queue:(id)a5;
++ (void)preciseLocationAuthorizedForBundleIdentifier:(id)identifier bundle:(id)bundle completion:(id)completion;
++ (void)ttlLocationStatusWithCompletion:(id)completion;
+- (CalLocationAuthorization)initWithBundleID:(id)d bundle:(id)bundle queue:(id)queue;
 - (id)authorizationStatus;
 - (unint64_t)waitForPrecision;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)waitForPrecision;
 @end
 
@@ -62,27 +62,27 @@ void __66__CalLocationAuthorization_locationAuthorizationAsyncCallersQueue__bloc
   locationAuthorizationAsyncCallersQueue_queue = v0;
 }
 
-+ (void)authorizationStatusForBundle:(id)a3 completion:(id)a4
++ (void)authorizationStatusForBundle:(id)bundle completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 bundleIdentifier];
-  [a1 authorizationStatusForBundleIdentifier:v8 bundle:v7 completion:v6];
+  completionCopy = completion;
+  bundleCopy = bundle;
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  [self authorizationStatusForBundleIdentifier:bundleIdentifier bundle:bundleCopy completion:completionCopy];
 }
 
-+ (void)authorizationStatusForBundleIdentifier:(id)a3 bundle:(id)a4 completion:(id)a5
++ (void)authorizationStatusForBundleIdentifier:(id)identifier bundle:(id)bundle completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 _cachedInstanceForBundleID:v8 bundle:v9];
+  identifierCopy = identifier;
+  bundleCopy = bundle;
+  completionCopy = completion;
+  v11 = [self _cachedInstanceForBundleID:identifierCopy bundle:bundleCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 authorizationStatus];
-    v14 = [v13 status];
+    authorizationStatus = [v11 authorizationStatus];
+    status = [authorizationStatus status];
 
-    v10[2](v10, v14);
+    completionCopy[2](completionCopy, status);
   }
 
   else
@@ -91,13 +91,13 @@ void __66__CalLocationAuthorization_locationAuthorizationAsyncCallersQueue__bloc
     v18 = 3221225472;
     v19 = __85__CalLocationAuthorization_authorizationStatusForBundleIdentifier_bundle_completion___block_invoke;
     v20 = &unk_1E7EC6490;
-    v24 = a1;
-    v21 = v8;
-    v22 = v9;
-    v23 = v10;
+    selfCopy = self;
+    v21 = identifierCopy;
+    v22 = bundleCopy;
+    v23 = completionCopy;
     v15 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, &v17);
-    v16 = [a1 locationAuthorizationAsyncCallersQueue];
-    dispatch_async(v16, v15);
+    locationAuthorizationAsyncCallersQueue = [self locationAuthorizationAsyncCallersQueue];
+    dispatch_async(locationAuthorizationAsyncCallersQueue, v15);
   }
 }
 
@@ -109,69 +109,69 @@ uint64_t __85__CalLocationAuthorization_authorizationStatusForBundleIdentifier_b
   return v2();
 }
 
-+ (int)authorizationStatusForBundle:(id)a3
++ (int)authorizationStatusForBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  LODWORD(a1) = [a1 authorizationStatusForBundleIdentifier:v5 bundle:v4];
+  bundleCopy = bundle;
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  LODWORD(self) = [self authorizationStatusForBundleIdentifier:bundleIdentifier bundle:bundleCopy];
 
-  return a1;
+  return self;
 }
 
-+ (int)authorizationStatusForBundleIdentifier:(id)a3 bundle:(id)a4
++ (int)authorizationStatusForBundleIdentifier:(id)identifier bundle:(id)bundle
 {
-  v4 = [a1 authorizationForBundleIdentifier:a3 bundle:a4 createIfNecessary:1];
+  v4 = [self authorizationForBundleIdentifier:identifier bundle:bundle createIfNecessary:1];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 authorizationStatus];
-    v7 = [v6 status];
+    authorizationStatus = [v4 authorizationStatus];
+    status = [authorizationStatus status];
   }
 
   else
   {
-    v7 = 2;
+    status = 2;
   }
 
-  return v7;
+  return status;
 }
 
-+ (unint64_t)locationPrecisionForBundleIdentifier:(id)a3 bundle:(id)a4
++ (unint64_t)locationPrecisionForBundleIdentifier:(id)identifier bundle:(id)bundle
 {
-  v4 = [a1 authorizationForBundleIdentifier:a3 bundle:a4 createIfNecessary:0];
+  v4 = [self authorizationForBundleIdentifier:identifier bundle:bundle createIfNecessary:0];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 authorizationStatus];
-    v7 = [v6 precision];
+    authorizationStatus = [v4 authorizationStatus];
+    precision = [authorizationStatus precision];
   }
 
   else
   {
-    v7 = 0;
+    precision = 0;
   }
 
-  return v7;
+  return precision;
 }
 
-+ (void)preciseLocationAuthorizedForBundleIdentifier:(id)a3 bundle:(id)a4 completion:(id)a5
++ (void)preciseLocationAuthorizedForBundleIdentifier:(id)identifier bundle:(id)bundle completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleCopy = bundle;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __91__CalLocationAuthorization_preciseLocationAuthorizedForBundleIdentifier_bundle_completion___block_invoke;
   aBlock[3] = &unk_1E7EC6490;
-  v24 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = identifierCopy;
   v21 = v11;
-  v12 = v9;
+  v12 = bundleCopy;
   v22 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v23 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [a1 _cachedInstanceForBundleID:v11 bundle:v12];
+  v15 = [self _cachedInstanceForBundleID:v11 bundle:v12];
   if (v15)
   {
     v14[2](v14);
@@ -185,8 +185,8 @@ uint64_t __85__CalLocationAuthorization_authorizationStatusForBundleIdentifier_b
     block[3] = &unk_1E7EC64B8;
     v19 = v14;
     v16 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-    v17 = [a1 locationAuthorizationAsyncCallersQueue];
-    dispatch_async(v17, v16);
+    locationAuthorizationAsyncCallersQueue = [self locationAuthorizationAsyncCallersQueue];
+    dispatch_async(locationAuthorizationAsyncCallersQueue, v16);
   }
 }
 
@@ -198,9 +198,9 @@ uint64_t __91__CalLocationAuthorization_preciseLocationAuthorizedForBundleIdenti
   return v2();
 }
 
-+ (BOOL)preciseLocationAuthorizedForBundleIdentifier:(id)a3 bundle:(id)a4
++ (BOOL)preciseLocationAuthorizedForBundleIdentifier:(id)identifier bundle:(id)bundle
 {
-  v4 = [a1 authorizationForBundleIdentifier:a3 bundle:a4 createIfNecessary:1];
+  v4 = [self authorizationForBundleIdentifier:identifier bundle:bundle createIfNecessary:1];
   v5 = [v4 waitForPrecision] == 2;
 
   return v5;
@@ -212,7 +212,7 @@ uint64_t __91__CalLocationAuthorization_preciseLocationAuthorizedForBundleIdenti
   block[1] = 3221225472;
   block[2] = __63__CalLocationAuthorization_initializeQueueAndInstancesIfNeeded__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initializeQueueAndInstancesIfNeeded_onceToken != -1)
   {
     dispatch_once(&initializeQueueAndInstancesIfNeeded_onceToken, block);
@@ -247,38 +247,38 @@ void __63__CalLocationAuthorization_initializeQueueAndInstancesIfNeeded__block_i
   }
 }
 
-+ (id)_keyForBundleID:(id)a3 bundle:(id)a4
++ (id)_keyForBundleID:(id)d bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = v7;
+  dCopy = d;
+  bundleCopy = bundle;
+  v7 = dCopy;
+  bundlePath = v7;
   if (!v7)
   {
-    v8 = [v6 bundlePath];
-    if (!v8)
+    bundlePath = [bundleCopy bundlePath];
+    if (!bundlePath)
     {
-      v9 = [v6 bundleURL];
-      v8 = [v9 absoluteString];
+      bundleURL = [bundleCopy bundleURL];
+      bundlePath = [bundleURL absoluteString];
     }
   }
 
-  return v8;
+  return bundlePath;
 }
 
-+ (id)_cachedInstanceForBundleID:(id)a3 bundle:(id)a4
++ (id)_cachedInstanceForBundleID:(id)d bundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
-  [a1 initializeQueueAndInstancesIfNeeded];
+  bundleCopy = bundle;
+  dCopy = d;
+  [self initializeQueueAndInstancesIfNeeded];
   v8 = &idInstances;
-  if (v6)
+  if (bundleCopy)
   {
     v8 = &bundleInstances;
   }
 
   v9 = *v8;
-  v10 = [a1 _keyForBundleID:v7 bundle:v6];
+  v10 = [self _keyForBundleID:dCopy bundle:bundleCopy];
 
   os_unfair_lock_lock(&instancesDictionaryLock);
   if (v10)
@@ -296,14 +296,14 @@ void __63__CalLocationAuthorization_initializeQueueAndInstancesIfNeeded__block_i
   return v11;
 }
 
-+ (id)authorizationForBundleIdentifier:(id)a3 bundle:(id)a4 createIfNecessary:(BOOL)a5
++ (id)authorizationForBundleIdentifier:(id)identifier bundle:(id)bundle createIfNecessary:(BOOL)necessary
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v8 | v9)
+  necessaryCopy = necessary;
+  identifierCopy = identifier;
+  bundleCopy = bundle;
+  if (identifierCopy | bundleCopy)
   {
-    [a1 initializeQueueAndInstancesIfNeeded];
+    [self initializeQueueAndInstancesIfNeeded];
     if (!locationAuthorizationQueue)
     {
       v11 = 0;
@@ -311,13 +311,13 @@ void __63__CalLocationAuthorization_initializeQueueAndInstancesIfNeeded__block_i
     }
 
     v12 = &idInstances;
-    if (v9)
+    if (bundleCopy)
     {
       v12 = &bundleInstances;
     }
 
-    v10 = *v12;
-    v13 = [a1 _keyForBundleID:v8 bundle:v9];
+    logHandle = *v12;
+    v13 = [self _keyForBundleID:identifierCopy bundle:bundleCopy];
     v24 = 0;
     v25 = &v24;
     v26 = 0x3032000000;
@@ -327,7 +327,7 @@ void __63__CalLocationAuthorization_initializeQueueAndInstancesIfNeeded__block_i
     os_unfair_lock_lock(&instancesDictionaryLock);
     if (v13)
     {
-      v14 = [v10 objectForKeyedSubscript:v13];
+      v14 = [logHandle objectForKeyedSubscript:v13];
     }
 
     else
@@ -342,7 +342,7 @@ void __63__CalLocationAuthorization_initializeQueueAndInstancesIfNeeded__block_i
 
     os_unfair_lock_unlock(&instancesDictionaryLock);
     v15 = v25[5];
-    if (!v15 && v5)
+    if (!v15 && necessaryCopy)
     {
       v16 = locationAuthorizationQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -351,9 +351,9 @@ void __63__CalLocationAuthorization_initializeQueueAndInstancesIfNeeded__block_i
       block[3] = &unk_1E7EC6500;
       v19 = v13;
       v23 = &v24;
-      v20 = v10;
-      v21 = v8;
-      v22 = v9;
+      v20 = logHandle;
+      v21 = identifierCopy;
+      v22 = bundleCopy;
       dispatch_sync(v16, block);
 
       v15 = v25[5];
@@ -365,10 +365,10 @@ void __63__CalLocationAuthorization_initializeQueueAndInstancesIfNeeded__block_i
 
   else
   {
-    v10 = [a1 logHandle];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    logHandle = [self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_FAULT))
     {
-      [CalLocationAuthorization authorizationForBundleIdentifier:v10 bundle:? createIfNecessary:?];
+      [CalLocationAuthorization authorizationForBundleIdentifier:logHandle bundle:? createIfNecessary:?];
     }
 
     v11 = 0;
@@ -410,27 +410,27 @@ void __86__CalLocationAuthorization_authorizationForBundleIdentifier_bundle_crea
   }
 }
 
-- (CalLocationAuthorization)initWithBundleID:(id)a3 bundle:(id)a4 queue:(id)a5
+- (CalLocationAuthorization)initWithBundleID:(id)d bundle:(id)bundle queue:(id)queue
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  dispatch_assert_queue_V2(v10);
+  dCopy = d;
+  bundleCopy = bundle;
+  queueCopy = queue;
+  dispatch_assert_queue_V2(queueCopy);
   v30.receiver = self;
   v30.super_class = CalLocationAuthorization;
   v11 = [(CalLocationAuthorization *)&v30 init];
   v12 = v11;
   if (v11)
   {
-    if (v9)
+    if (bundleCopy)
     {
-      v13 = v9;
+      v13 = bundleCopy;
     }
 
     else
     {
-      v13 = v8;
+      v13 = dCopy;
     }
 
     objc_storeStrong(&v11->_bundleOrBundleIdentifier, v13);
@@ -439,15 +439,15 @@ void __86__CalLocationAuthorization_authorizationForBundleIdentifier_bundle_crea
     v12->_initializationGroup = v14;
 
     v16 = MEMORY[0x1E695FBE8];
-    if (v9)
+    if (bundleCopy)
     {
-      v17 = [v9 bundlePath];
-      v18 = [v16 authorizationStatusForBundlePath:v17];
+      bundlePath = [bundleCopy bundlePath];
+      v18 = [v16 authorizationStatusForBundlePath:bundlePath];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695FBE8] authorizationStatusForBundleIdentifier:v8];
+      v18 = [MEMORY[0x1E695FBE8] authorizationStatusForBundleIdentifier:dCopy];
     }
 
     if (v18 >= 3)
@@ -459,31 +459,31 @@ void __86__CalLocationAuthorization_authorizationForBundleIdentifier_bundle_crea
     status = v12->_status;
     v12->_status = v19;
 
-    v21 = [objc_opt_class() logHandle];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    logHandle = [objc_opt_class() logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v32 = v8;
+      v32 = dCopy;
       v33 = 1024;
       v34 = v18;
-      _os_log_impl(&dword_1B990D000, v21, OS_LOG_TYPE_DEFAULT, "Got initial location auth status for %{public}@ = %d", buf, 0x12u);
+      _os_log_impl(&dword_1B990D000, logHandle, OS_LOG_TYPE_DEFAULT, "Got initial location auth status for %{public}@ = %d", buf, 0x12u);
     }
 
     v12->_initializedTimestamp = CalApproximateContinuousTime();
     v22 = objc_alloc(MEMORY[0x1E695FBE8]);
     v23 = v22;
-    if (v9)
+    if (bundleCopy)
     {
-      v24 = [v9 bundlePath];
-      v25 = [v23 initWithEffectiveBundlePath:v24 delegate:v12 onQueue:v10];
+      bundlePath2 = [bundleCopy bundlePath];
+      v25 = [v23 initWithEffectiveBundlePath:bundlePath2 delegate:v12 onQueue:queueCopy];
       locationManager = v12->_locationManager;
       v12->_locationManager = v25;
     }
 
     else
     {
-      v27 = [v22 initWithEffectiveBundleIdentifier:v8 delegate:v12 onQueue:v10];
-      v24 = v12->_locationManager;
+      v27 = [v22 initWithEffectiveBundleIdentifier:dCopy delegate:v12 onQueue:queueCopy];
+      bundlePath2 = v12->_locationManager;
       v12->_locationManager = v27;
     }
   }
@@ -501,25 +501,25 @@ void __86__CalLocationAuthorization_authorizationForBundleIdentifier_bundle_crea
   return v3;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 authorizationStatus];
-  v6 = [objc_opt_class() logHandle];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  authorizationCopy = authorization;
+  authorizationStatus = [authorizationCopy authorizationStatus];
+  logHandle = [objc_opt_class() logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     bundleOrBundleIdentifier = self->_bundleOrBundleIdentifier;
     *buf = 138543618;
     v29 = *&bundleOrBundleIdentifier;
     v30 = 1024;
-    v31 = v5;
-    _os_log_impl(&dword_1B990D000, v6, OS_LOG_TYPE_DEFAULT, "Got updated location auth status for %{public}@ = %d", buf, 0x12u);
+    v31 = authorizationStatus;
+    _os_log_impl(&dword_1B990D000, logHandle, OS_LOG_TYPE_DEFAULT, "Got updated location auth status for %{public}@ = %d", buf, 0x12u);
   }
 
-  v8 = [v4 _limitsPrecision];
+  _limitsPrecision = [authorizationCopy _limitsPrecision];
   v9 = 1;
-  if (v8)
+  if (_limitsPrecision)
   {
     v10 = 1;
   }
@@ -529,10 +529,10 @@ void __86__CalLocationAuthorization_authorizationForBundleIdentifier_bundle_crea
     v10 = 2;
   }
 
-  v11 = [[CalLocationAuthorizationStatus alloc] initWithStatus:v5 precision:v10];
+  v11 = [[CalLocationAuthorizationStatus alloc] initWithStatus:authorizationStatus precision:v10];
   os_unfair_lock_lock(&self->_lock);
-  v12 = [(CalLocationAuthorizationStatus *)self->_status precision];
-  if ([(CalLocationAuthorizationStatus *)self->_status status]== v5)
+  precision = [(CalLocationAuthorizationStatus *)self->_status precision];
+  if ([(CalLocationAuthorizationStatus *)self->_status status]== authorizationStatus)
   {
     v9 = [(CalLocationAuthorizationStatus *)self->_status precision]!= v10;
   }
@@ -563,7 +563,7 @@ void __86__CalLocationAuthorization_authorizationForBundleIdentifier_bundle_crea
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v12)
+  if (precision)
   {
     if (!v9)
     {
@@ -632,10 +632,10 @@ void __66__CalLocationAuthorization_locationManagerDidChangeAuthorization___bloc
 - (unint64_t)waitForPrecision
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(CalLocationAuthorizationStatus *)self->_status precision];
-  if (v3 || !self->_firstCallbackReceivedTimestamp && (v5 = CalApproximateContinuousTime(), v6 = 60.0 - CalContinuousIntervalToNSTimeInterval(v5 - self->_initializedTimestamp), v6 > 0.0) && (v7 = dispatch_time(0, (v6 * 1000000000.0)), os_unfair_lock_unlock(&self->_lock), dispatch_group_wait(self->_initializationGroup, v7), os_unfair_lock_lock(&self->_lock), (v3 = [(CalLocationAuthorizationStatus *)self->_status precision]) != 0))
+  precision = [(CalLocationAuthorizationStatus *)self->_status precision];
+  if (precision || !self->_firstCallbackReceivedTimestamp && (v5 = CalApproximateContinuousTime(), v6 = 60.0 - CalContinuousIntervalToNSTimeInterval(v5 - self->_initializedTimestamp), v6 > 0.0) && (v7 = dispatch_time(0, (v6 * 1000000000.0)), os_unfair_lock_unlock(&self->_lock), dispatch_group_wait(self->_initializationGroup, v7), os_unfair_lock_lock(&self->_lock), (precision = [(CalLocationAuthorizationStatus *)self->_status precision]) != 0))
   {
-    v4 = v3;
+    v4 = precision;
   }
 
   else
@@ -660,18 +660,18 @@ void __66__CalLocationAuthorization_locationManagerDidChangeAuthorization___bloc
   return v4;
 }
 
-+ (void)ttlLocationStatusWithCompletion:(id)a3
++ (void)ttlLocationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__CalLocationAuthorization_ttlLocationStatusWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7EC6550;
-  v14 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = completionCopy;
   v13 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [a1 _cachedInstanceForBundleID:@"com.apple.mobilecal" bundle:0];
+  v7 = [self _cachedInstanceForBundleID:@"com.apple.mobilecal" bundle:0];
   if (v7)
   {
     v6[2](v6);
@@ -685,8 +685,8 @@ void __66__CalLocationAuthorization_locationManagerDidChangeAuthorization___bloc
     block[3] = &unk_1E7EC64B8;
     v11 = v6;
     v8 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-    v9 = [a1 locationAuthorizationAsyncCallersQueue];
-    dispatch_async(v9, v8);
+    locationAuthorizationAsyncCallersQueue = [self locationAuthorizationAsyncCallersQueue];
+    dispatch_async(locationAuthorizationAsyncCallersQueue, v8);
   }
 }
 
@@ -737,9 +737,9 @@ void __63__CalLocationAuthorization_initializeQueueAndInstancesIfNeeded__block_i
 - (void)waitForPrecision
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = *(a1 + 8);
+  v4 = *(self + 8);
   v5 = CalApproximateContinuousTime();
-  v6 = CalContinuousIntervalToNSTimeInterval(v5 - *(a1 + 48));
+  v6 = CalContinuousIntervalToNSTimeInterval(v5 - *(self + 48));
   v8 = 138412546;
   v9 = v4;
   v10 = 2048;

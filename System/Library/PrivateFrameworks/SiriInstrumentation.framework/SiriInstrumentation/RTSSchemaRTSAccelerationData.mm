@@ -1,27 +1,27 @@
 @interface RTSSchemaRTSAccelerationData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RTSSchemaRTSAccelerationData)initWithDictionary:(id)a3;
-- (RTSSchemaRTSAccelerationData)initWithJSON:(id)a3;
+- (RTSSchemaRTSAccelerationData)initWithDictionary:(id)dictionary;
+- (RTSSchemaRTSAccelerationData)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasYAcceleration:(BOOL)a3;
-- (void)setHasZAcceleration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasYAcceleration:(BOOL)acceleration;
+- (void)setHasZAcceleration:(BOOL)acceleration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RTSSchemaRTSAccelerationData
 
-- (RTSSchemaRTSAccelerationData)initWithDictionary:(id)a3
+- (RTSSchemaRTSAccelerationData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = RTSSchemaRTSAccelerationData;
   v5 = [(RTSSchemaRTSAccelerationData *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"xAcceleration"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"xAcceleration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(RTSSchemaRTSAccelerationData *)v5 setXAcceleration:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"yAcceleration"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"yAcceleration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(RTSSchemaRTSAccelerationData *)v5 setYAcceleration:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"zAcceleration"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"zAcceleration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,30 +51,30 @@
   return v5;
 }
 
-- (RTSSchemaRTSAccelerationData)initWithJSON:(id)a3
+- (RTSSchemaRTSAccelerationData)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RTSSchemaRTSAccelerationData *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RTSSchemaRTSAccelerationData *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RTSSchemaRTSAccelerationData *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -87,14 +87,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v8 = MEMORY[0x1E696AD98];
     [(RTSSchemaRTSAccelerationData *)self xAcceleration];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:@"xAcceleration"];
+    [dictionary setObject:v9 forKeyedSubscript:@"xAcceleration"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -117,7 +117,7 @@ LABEL_3:
   v10 = MEMORY[0x1E696AD98];
   [(RTSSchemaRTSAccelerationData *)self yAcceleration];
   v11 = [v10 numberWithDouble:?];
-  [v3 setObject:v11 forKeyedSubscript:@"yAcceleration"];
+  [dictionary setObject:v11 forKeyedSubscript:@"yAcceleration"];
 
   if ((*&self->_has & 4) != 0)
   {
@@ -125,13 +125,13 @@ LABEL_4:
     v5 = MEMORY[0x1E696AD98];
     [(RTSSchemaRTSAccelerationData *)self zAcceleration];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"zAcceleration"];
+    [dictionary setObject:v6 forKeyedSubscript:@"zAcceleration"];
   }
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -240,16 +240,16 @@ LABEL_5:
   return v8 ^ v4 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_13;
@@ -258,14 +258,14 @@ LABEL_5:
   if (*&has)
   {
     xAcceleration = self->_xAcceleration;
-    [v4 xAcceleration];
+    [equalCopy xAcceleration];
     if (xAcceleration != v8)
     {
       goto LABEL_13;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -274,20 +274,20 @@ LABEL_5:
     if (v9)
     {
       yAcceleration = self->_yAcceleration;
-      [v4 yAcceleration];
+      [equalCopy yAcceleration];
       if (yAcceleration != v11)
       {
         goto LABEL_13;
       }
 
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
     }
 
     v12 = (*&has >> 2) & 1;
     if (v12 == ((v6 >> 2) & 1))
     {
-      if (!v12 || (zAcceleration = self->_zAcceleration, [v4 zAcceleration], zAcceleration == v14))
+      if (!v12 || (zAcceleration = self->_zAcceleration, [equalCopy zAcceleration], zAcceleration == v14))
       {
         v15 = 1;
         goto LABEL_14;
@@ -302,15 +302,15 @@ LABEL_14:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -330,20 +330,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasZAcceleration:(BOOL)a3
+- (void)setHasZAcceleration:(BOOL)acceleration
 {
-  if (a3)
+  if (acceleration)
   {
     v3 = 4;
   }
@@ -356,9 +356,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasYAcceleration:(BOOL)a3
+- (void)setHasYAcceleration:(BOOL)acceleration
 {
-  if (a3)
+  if (acceleration)
   {
     v3 = 2;
   }

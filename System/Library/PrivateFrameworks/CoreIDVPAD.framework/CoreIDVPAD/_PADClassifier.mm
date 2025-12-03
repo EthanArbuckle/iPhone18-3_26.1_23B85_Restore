@@ -1,6 +1,6 @@
 @interface _PADClassifier
 - (_PADClassifier)init;
-- (void)processRecordedLivenessFrame:(id)a3 withPRD:(BOOL)a4 FAC:(BOOL)a5;
+- (void)processRecordedLivenessFrame:(id)frame withPRD:(BOOL)d FAC:(BOOL)c;
 @end
 
 @implementation _PADClassifier
@@ -20,22 +20,22 @@
   return v2;
 }
 
-- (void)processRecordedLivenessFrame:(id)a3 withPRD:(BOOL)a4 FAC:(BOOL)a5
+- (void)processRecordedLivenessFrame:(id)frame withPRD:(BOOL)d FAC:(BOOL)c
 {
   classifier = self->_classifier;
   v6 = 0x10000;
-  if (!a4)
+  if (!d)
   {
     v6 = 0;
   }
 
   v7 = 257;
-  if (!a5)
+  if (!c)
   {
     v7 = 1;
   }
 
-  [(PADInternalClassifier *)classifier processLivenessFrame:a3 withOptions:v7 | v6 taOptions:1];
+  [(PADInternalClassifier *)classifier processLivenessFrame:frame withOptions:v7 | v6 taOptions:1];
 }
 
 @end

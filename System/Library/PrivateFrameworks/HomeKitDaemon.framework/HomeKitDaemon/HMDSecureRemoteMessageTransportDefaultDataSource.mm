@@ -1,16 +1,16 @@
 @interface HMDSecureRemoteMessageTransportDefaultDataSource
 - (HMDSecureRemoteMessageTransportDefaultDataSource)init;
-- (id)secureSessionWithDevice:(id)a3;
+- (id)secureSessionWithDevice:(id)device;
 @end
 
 @implementation HMDSecureRemoteMessageTransportDefaultDataSource
 
-- (id)secureSessionWithDevice:(id)a3
+- (id)secureSessionWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [HMDSecureRemoteSession alloc];
-  v6 = [(HMDSecureRemoteMessageTransportDefaultDataSource *)self accountRegistry];
-  v7 = [(HMDSecureRemoteSession *)v5 initWithDevice:v4 accountRegistry:v6];
+  accountRegistry = [(HMDSecureRemoteMessageTransportDefaultDataSource *)self accountRegistry];
+  v7 = [(HMDSecureRemoteSession *)v5 initWithDevice:deviceCopy accountRegistry:accountRegistry];
 
   return v7;
 }
@@ -22,8 +22,8 @@
   v2 = [(HMDSecureRemoteMessageTransportDefaultDataSource *)&v21 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D0F8E8] productInfo];
-    v4 = [HMDRemoteMessageTransport remoteMessageTransportsForProductInfo:v3];
+    productInfo = [MEMORY[0x277D0F8E8] productInfo];
+    v4 = [HMDRemoteMessageTransport remoteMessageTransportsForProductInfo:productInfo];
     transports = v2->_transports;
     v2->_transports = v4;
 
@@ -34,14 +34,14 @@
     v8 = [HMDRemoteDeviceMonitor alloc];
     v9 = v2->_accountRegistry;
     v10 = +[HMDIDSServiceManager sharedManager];
-    v11 = [v10 activityObserver];
+    activityObserver = [v10 activityObserver];
     v12 = +[HMDAppleAccountManager sharedManager];
-    v13 = [(HMDRemoteDeviceMonitor *)v8 initWithAccountRegistry:v9 activityObserver:v11 accountManager:v12];
+    v13 = [(HMDRemoteDeviceMonitor *)v8 initWithAccountRegistry:v9 activityObserver:activityObserver accountManager:v12];
     deviceMonitor = v2->_deviceMonitor;
     v2->_deviceMonitor = v13;
 
-    v15 = [MEMORY[0x277D0F8E8] productInfo];
-    if ([v15 productPlatform] == 3)
+    productInfo2 = [MEMORY[0x277D0F8E8] productInfo];
+    if ([productInfo2 productPlatform] == 3)
     {
       v16 = 0;
     }

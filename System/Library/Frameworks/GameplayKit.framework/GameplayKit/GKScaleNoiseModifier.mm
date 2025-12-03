@@ -1,7 +1,7 @@
 @interface GKScaleNoiseModifier
 - (GKScaleNoiseModifier)init;
 - (GKScaleNoiseModifier)initWithFactor:(GKScaleNoiseModifier *)self;
-- (GKScaleNoiseModifier)initWithInputModuleCount:(unint64_t)a3;
+- (GKScaleNoiseModifier)initWithInputModuleCount:(unint64_t)count;
 - (double)valueAt:(GKScaleNoiseModifier *)self;
 - (id)cloneModule;
 @end
@@ -17,7 +17,7 @@
   return [(GKScaleNoiseModifier *)self initWithFactor:v8];
 }
 
-- (GKScaleNoiseModifier)initWithInputModuleCount:(unint64_t)a3
+- (GKScaleNoiseModifier)initWithInputModuleCount:(unint64_t)count
 {
   __asm { FMOV            V0.2D, #1.0 }
 

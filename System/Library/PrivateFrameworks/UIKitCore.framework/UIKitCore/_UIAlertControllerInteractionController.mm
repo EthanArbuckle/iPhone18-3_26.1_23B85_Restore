@@ -1,24 +1,24 @@
 @interface _UIAlertControllerInteractionController
-- (void)interactionProgress:(id)a3 didEnd:(BOOL)a4;
-- (void)interactionProgressDidUpdate:(id)a3;
-- (void)startInteractiveTransition:(id)a3;
+- (void)interactionProgress:(id)progress didEnd:(BOOL)end;
+- (void)interactionProgressDidUpdate:(id)update;
+- (void)startInteractiveTransition:(id)transition;
 @end
 
 @implementation _UIAlertControllerInteractionController
 
-- (void)startInteractiveTransition:(id)a3
+- (void)startInteractiveTransition:(id)transition
 {
   v9.receiver = self;
   v9.super_class = _UIAlertControllerInteractionController;
-  v4 = a3;
-  [(UIPercentDrivenInteractiveTransition *)&v9 startInteractiveTransition:v4];
-  [(_UIAlertControllerInteractionController *)self setContext:v4, v9.receiver, v9.super_class];
+  transitionCopy = transition;
+  [(UIPercentDrivenInteractiveTransition *)&v9 startInteractiveTransition:transitionCopy];
+  [(_UIAlertControllerInteractionController *)self setContext:transitionCopy, v9.receiver, v9.super_class];
 
-  v5 = [(_UIAlertControllerInteractionController *)self alertController];
-  v6 = [v5 _visualStyle];
+  alertController = [(_UIAlertControllerInteractionController *)self alertController];
+  _visualStyle = [alertController _visualStyle];
 
-  v7 = [(_UIAlertControllerInteractionController *)self alertController];
-  v8 = [v6 interactionProgressForTransitionOfType:0 forAlertController:v7];
+  alertController2 = [(_UIAlertControllerInteractionController *)self alertController];
+  v8 = [_visualStyle interactionProgressForTransitionOfType:0 forAlertController:alertController2];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -46,9 +46,9 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)interactionProgressDidUpdate:(id)a3
+- (void)interactionProgressDidUpdate:(id)update
 {
-  [a3 percentComplete];
+  [update percentComplete];
   if (v4 > 1.0)
   {
     v4 = 1.0;
@@ -59,9 +59,9 @@ LABEL_7:
   [(UIPercentDrivenInteractiveTransition *)self updateInteractiveTransition:v5];
 }
 
-- (void)interactionProgress:(id)a3 didEnd:(BOOL)a4
+- (void)interactionProgress:(id)progress didEnd:(BOOL)end
 {
-  if (a4)
+  if (end)
   {
     [(UIPercentDrivenInteractiveTransition *)self finishInteractiveTransition];
   }

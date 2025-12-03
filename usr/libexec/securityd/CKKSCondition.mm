@@ -1,6 +1,6 @@
 @interface CKKSCondition
-- (id)initToChain:(id)a3;
-- (int64_t)wait:(unint64_t)a3;
+- (id)initToChain:(id)chain;
+- (int64_t)wait:(unint64_t)wait;
 - (void)fulfill;
 @end
 
@@ -8,33 +8,33 @@
 
 - (void)fulfill
 {
-  v3 = [(CKKSCondition *)self semaphore];
-  dispatch_semaphore_signal(v3);
+  semaphore = [(CKKSCondition *)self semaphore];
+  dispatch_semaphore_signal(semaphore);
 
-  v4 = [(CKKSCondition *)self chain];
-  [v4 fulfill];
+  chain = [(CKKSCondition *)self chain];
+  [chain fulfill];
 
   [(CKKSCondition *)self setChain:0];
 }
 
-- (int64_t)wait:(unint64_t)a3
+- (int64_t)wait:(unint64_t)wait
 {
-  v5 = [(CKKSCondition *)self semaphore];
-  v6 = dispatch_time(0, a3);
-  v7 = dispatch_semaphore_wait(v5, v6);
+  semaphore = [(CKKSCondition *)self semaphore];
+  v6 = dispatch_time(0, wait);
+  v7 = dispatch_semaphore_wait(semaphore, v6);
 
   if (!v7)
   {
-    v8 = [(CKKSCondition *)self semaphore];
-    dispatch_semaphore_signal(v8);
+    semaphore2 = [(CKKSCondition *)self semaphore];
+    dispatch_semaphore_signal(semaphore2);
   }
 
   return v7;
 }
 
-- (id)initToChain:(id)a3
+- (id)initToChain:(id)chain
 {
-  v5 = a3;
+  chainCopy = chain;
   v10.receiver = self;
   v10.super_class = CKKSCondition;
   v6 = [(CKKSCondition *)&v10 init];
@@ -44,7 +44,7 @@
     semaphore = v6->_semaphore;
     v6->_semaphore = v7;
 
-    objc_storeStrong(&v6->_chain, a3);
+    objc_storeStrong(&v6->_chain, chain);
   }
 
   return v6;

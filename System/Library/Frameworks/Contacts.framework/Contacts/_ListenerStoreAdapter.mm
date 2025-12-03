@@ -1,11 +1,11 @@
 @interface _ListenerStoreAdapter
 - (_ListenerStoreAdapter)init;
-- (_ListenerStoreAdapter)initWithStore:(id)a3;
-- (void)countForFetchRequest:(id)a3 reply:(id)a4;
-- (void)executeCreateRequest:(id)a3 reply:(id)a4;
-- (void)executeDeleteRequest:(id)a3 reply:(id)a4;
-- (void)executeFetchRequest:(id)a3 reply:(id)a4;
-- (void)executeUpdateRequest:(id)a3 reply:(id)a4;
+- (_ListenerStoreAdapter)initWithStore:(id)store;
+- (void)countForFetchRequest:(id)request reply:(id)reply;
+- (void)executeCreateRequest:(id)request reply:(id)reply;
+- (void)executeDeleteRequest:(id)request reply:(id)reply;
+- (void)executeFetchRequest:(id)request reply:(id)reply;
+- (void)executeUpdateRequest:(id)request reply:(id)reply;
 @end
 
 @implementation _ListenerStoreAdapter
@@ -18,16 +18,16 @@
   return v4;
 }
 
-- (_ListenerStoreAdapter)initWithStore:(id)a3
+- (_ListenerStoreAdapter)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = _ListenerStoreAdapter;
   v6 = [(_ListenerStoreAdapter *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v8 = objc_alloc_init(MEMORY[0x1E6996630]);
     integerGenerator = v7->_integerGenerator;
     v7->_integerGenerator = v8;
@@ -38,11 +38,11 @@
   return v7;
 }
 
-- (void)countForFetchRequest:(id)a3 reply:(id)a4
+- (void)countForFetchRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
+  requestCopy = request;
   integerGenerator = self->_integerGenerator;
-  v8 = a4;
+  replyCopy = reply;
   [(CNAtomicUnsignedIntegerGenerator *)integerGenerator nextUnsignedInteger];
   v9 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -50,9 +50,9 @@
     [_ListenerStoreAdapter countForFetchRequest:reply:];
   }
 
-  v10 = [(_ListenerStoreAdapter *)self store];
+  store = [(_ListenerStoreAdapter *)self store];
   v15 = 0;
-  v11 = [v10 countForFetchRequest:v6 error:&v15];
+  v11 = [store countForFetchRequest:requestCopy error:&v15];
   v12 = v15;
 
   v13 = +[CNContactPosterDataStore log];
@@ -61,7 +61,7 @@
     [_ListenerStoreAdapter countForFetchRequest:reply:];
   }
 
-  v8[2](v8, v11, v12);
+  replyCopy[2](replyCopy, v11, v12);
   v14 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -69,10 +69,10 @@
   }
 }
 
-- (void)executeCreateRequest:(id)a3 reply:(id)a4
+- (void)executeCreateRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   [(CNAtomicUnsignedIntegerGenerator *)self->_integerGenerator nextUnsignedInteger];
   v8 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -80,9 +80,9 @@
     [_ListenerStoreAdapter countForFetchRequest:reply:];
   }
 
-  v9 = [(_ListenerStoreAdapter *)self store];
+  store = [(_ListenerStoreAdapter *)self store];
   v15 = 0;
-  v10 = [v9 executeCreateRequest:v6 error:&v15];
+  v10 = [store executeCreateRequest:requestCopy error:&v15];
   v11 = v15;
 
   v12 = +[CNContactPosterDataStore log];
@@ -93,18 +93,18 @@
 
   if (v10)
   {
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else if (v11)
   {
-    (v7)[2](v7, v11);
+    (replyCopy)[2](replyCopy, v11);
   }
 
   else
   {
     v14 = [CNErrorFactory errorWithCode:1010];
-    (v7)[2](v7, v14);
+    (replyCopy)[2](replyCopy, v14);
   }
 
   v13 = +[CNContactPosterDataStore log];
@@ -114,10 +114,10 @@
   }
 }
 
-- (void)executeDeleteRequest:(id)a3 reply:(id)a4
+- (void)executeDeleteRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   [(CNAtomicUnsignedIntegerGenerator *)self->_integerGenerator nextUnsignedInteger];
   v8 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -125,9 +125,9 @@
     [_ListenerStoreAdapter countForFetchRequest:reply:];
   }
 
-  v9 = [(_ListenerStoreAdapter *)self store];
+  store = [(_ListenerStoreAdapter *)self store];
   v15 = 0;
-  v10 = [v9 executeDeleteRequest:v6 error:&v15];
+  v10 = [store executeDeleteRequest:requestCopy error:&v15];
   v11 = v15;
 
   v12 = +[CNContactPosterDataStore log];
@@ -138,18 +138,18 @@
 
   if (v10)
   {
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else if (v11)
   {
-    (v7)[2](v7, v11);
+    (replyCopy)[2](replyCopy, v11);
   }
 
   else
   {
     v14 = [CNErrorFactory errorWithCode:1010];
-    (v7)[2](v7, v14);
+    (replyCopy)[2](replyCopy, v14);
   }
 
   v13 = +[CNContactPosterDataStore log];
@@ -159,11 +159,11 @@
   }
 }
 
-- (void)executeFetchRequest:(id)a3 reply:(id)a4
+- (void)executeFetchRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
+  requestCopy = request;
   integerGenerator = self->_integerGenerator;
-  v8 = a4;
+  replyCopy = reply;
   [(CNAtomicUnsignedIntegerGenerator *)integerGenerator nextUnsignedInteger];
   v9 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -171,9 +171,9 @@
     [_ListenerStoreAdapter countForFetchRequest:reply:];
   }
 
-  v10 = [(_ListenerStoreAdapter *)self store];
+  store = [(_ListenerStoreAdapter *)self store];
   v15 = 0;
-  v11 = [v10 executeFetchRequest:v6 error:&v15];
+  v11 = [store executeFetchRequest:requestCopy error:&v15];
   v12 = v15;
 
   v13 = +[CNContactPosterDataStore log];
@@ -182,7 +182,7 @@
     [_ListenerStoreAdapter countForFetchRequest:reply:];
   }
 
-  v8[2](v8, v11, v12);
+  replyCopy[2](replyCopy, v11, v12);
   v14 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -190,10 +190,10 @@
   }
 }
 
-- (void)executeUpdateRequest:(id)a3 reply:(id)a4
+- (void)executeUpdateRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   [(CNAtomicUnsignedIntegerGenerator *)self->_integerGenerator nextUnsignedInteger];
   v8 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -201,9 +201,9 @@
     [_ListenerStoreAdapter countForFetchRequest:reply:];
   }
 
-  v9 = [(_ListenerStoreAdapter *)self store];
+  store = [(_ListenerStoreAdapter *)self store];
   v15 = 0;
-  v10 = [v9 executeUpdateRequest:v6 error:&v15];
+  v10 = [store executeUpdateRequest:requestCopy error:&v15];
   v11 = v15;
 
   v12 = +[CNContactPosterDataStore log];
@@ -214,18 +214,18 @@
 
   if (v10)
   {
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else if (v11)
   {
-    (v7)[2](v7, v11);
+    (replyCopy)[2](replyCopy, v11);
   }
 
   else
   {
     v14 = [CNErrorFactory errorWithCode:1010];
-    (v7)[2](v7, v14);
+    (replyCopy)[2](replyCopy, v14);
   }
 
   v13 = +[CNContactPosterDataStore log];

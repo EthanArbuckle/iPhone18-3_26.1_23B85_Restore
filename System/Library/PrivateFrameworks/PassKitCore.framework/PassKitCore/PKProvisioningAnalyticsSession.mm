@@ -1,58 +1,58 @@
 @interface PKProvisioningAnalyticsSession
-+ (id)continueAnalyticsSessionForEnvironment:(id)a3 intent:(id)a4 referralSource:(id)a5 archivedParent:(id)a6;
-+ (id)startAnalyticsSessionForEnvironment:(id)a3 intent:(id)a4 referralSource:(id)a5;
-- (PKProvisioningAnalyticsSession)initWithEnvironment:(id)a3 intent:(id)a4 referralSource:(id)a5 archivedParent:(id)a6;
++ (id)continueAnalyticsSessionForEnvironment:(id)environment intent:(id)intent referralSource:(id)source archivedParent:(id)parent;
++ (id)startAnalyticsSessionForEnvironment:(id)environment intent:(id)intent referralSource:(id)source;
+- (PKProvisioningAnalyticsSession)initWithEnvironment:(id)environment intent:(id)intent referralSource:(id)source archivedParent:(id)parent;
 - (id)createPreflightReporter;
 - (id)createStepReporter;
-- (id)createViewReporterForPage:(id)a3;
-- (void)_populateDictionary:(id)a3 withError:(id)a4;
-- (void)reportButtonPressedForReporter:(id)a3 buttonTag:(unint64_t)a4 context:(id)a5;
-- (void)reportErrorForReporter:(id)a3 error:(id)a4 context:(id)a5;
-- (void)reportOtherButtonPressedForReporter:(id)a3 otherButtonTag:(id)a4 context:(id)a5;
-- (void)reportOtherErrorForReporter:(id)a3 error:(id)a4 context:(id)a5;
-- (void)reportPageCompletedForReporter:(id)a3 success:(BOOL)a4 context:(id)a5;
-- (void)reportPreflightEventForReporter:(id)a3 context:(id)a4;
-- (void)reportProvisioningCompleteForReporter:(id)a3 success:(BOOL)a4;
-- (void)reportProvisioningStepForReporter:(id)a3 step:(id)a4 success:(BOOL)a5 error:(id)a6 context:(id)a7;
-- (void)reportProvisioningStepStartForReporter:(id)a3 step:(id)a4 context:(id)a5;
-- (void)reportStateChangedForReporter:(id)a3 context:(id)a4;
-- (void)reportViewAppearedForReporter:(id)a3 context:(id)a4;
+- (id)createViewReporterForPage:(id)page;
+- (void)_populateDictionary:(id)dictionary withError:(id)error;
+- (void)reportButtonPressedForReporter:(id)reporter buttonTag:(unint64_t)tag context:(id)context;
+- (void)reportErrorForReporter:(id)reporter error:(id)error context:(id)context;
+- (void)reportOtherButtonPressedForReporter:(id)reporter otherButtonTag:(id)tag context:(id)context;
+- (void)reportOtherErrorForReporter:(id)reporter error:(id)error context:(id)context;
+- (void)reportPageCompletedForReporter:(id)reporter success:(BOOL)success context:(id)context;
+- (void)reportPreflightEventForReporter:(id)reporter context:(id)context;
+- (void)reportProvisioningCompleteForReporter:(id)reporter success:(BOOL)success;
+- (void)reportProvisioningStepForReporter:(id)reporter step:(id)step success:(BOOL)success error:(id)error context:(id)context;
+- (void)reportProvisioningStepStartForReporter:(id)reporter step:(id)step context:(id)context;
+- (void)reportStateChangedForReporter:(id)reporter context:(id)context;
+- (void)reportViewAppearedForReporter:(id)reporter context:(id)context;
 - (void)resetForNewProductSetup;
-- (void)setPass:(id)a3;
-- (void)setProductType:(id)a3 subtype:(id)a4;
-- (void)setSetupProduct:(id)a3;
+- (void)setPass:(id)pass;
+- (void)setProductType:(id)type subtype:(id)subtype;
+- (void)setSetupProduct:(id)product;
 - (void)stop;
 @end
 
 @implementation PKProvisioningAnalyticsSession
 
-+ (id)startAnalyticsSessionForEnvironment:(id)a3 intent:(id)a4 referralSource:(id)a5
++ (id)startAnalyticsSessionForEnvironment:(id)environment intent:(id)intent referralSource:(id)source
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PKProvisioningAnalyticsSession alloc] initWithEnvironment:v9 intent:v8 referralSource:v7];
+  sourceCopy = source;
+  intentCopy = intent;
+  environmentCopy = environment;
+  v10 = [[PKProvisioningAnalyticsSession alloc] initWithEnvironment:environmentCopy intent:intentCopy referralSource:sourceCopy];
 
   return v10;
 }
 
-+ (id)continueAnalyticsSessionForEnvironment:(id)a3 intent:(id)a4 referralSource:(id)a5 archivedParent:(id)a6
++ (id)continueAnalyticsSessionForEnvironment:(id)environment intent:(id)intent referralSource:(id)source archivedParent:(id)parent
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[PKProvisioningAnalyticsSession alloc] initWithEnvironment:v12 intent:v11 referralSource:v10 archivedParent:v9];
+  parentCopy = parent;
+  sourceCopy = source;
+  intentCopy = intent;
+  environmentCopy = environment;
+  v13 = [[PKProvisioningAnalyticsSession alloc] initWithEnvironment:environmentCopy intent:intentCopy referralSource:sourceCopy archivedParent:parentCopy];
 
   return v13;
 }
 
-- (PKProvisioningAnalyticsSession)initWithEnvironment:(id)a3 intent:(id)a4 referralSource:(id)a5 archivedParent:(id)a6
+- (PKProvisioningAnalyticsSession)initWithEnvironment:(id)environment intent:(id)intent referralSource:(id)source archivedParent:(id)parent
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  environmentCopy = environment;
+  intentCopy = intent;
+  sourceCopy = source;
+  parentCopy = parent;
   v58.receiver = self;
   v58.super_class = PKProvisioningAnalyticsSession;
   v14 = [(PKProvisioningAnalyticsSession *)&v58 init];
@@ -61,27 +61,27 @@
     goto LABEL_91;
   }
 
-  if (v13)
+  if (parentCopy)
   {
-    v15 = [PKProvisioningAnalyticsArchive createArchiveFromArchiveData:v13];
+    v15 = [PKProvisioningAnalyticsArchive createArchiveFromArchiveData:parentCopy];
     v16 = v15;
     if (v15)
     {
-      v17 = [v15 state];
+      state = [v15 state];
       state = v14->_state;
-      v14->_state = v17;
+      v14->_state = state;
 
-      v19 = [v16 provisioningSubjectHandle];
+      provisioningSubjectHandle = [v16 provisioningSubjectHandle];
       provisioningSubjectHandle = v14->_provisioningSubjectHandle;
-      v14->_provisioningSubjectHandle = v19;
+      v14->_provisioningSubjectHandle = provisioningSubjectHandle;
 
-      v21 = [v16 marketingSubjectHandle];
+      marketingSubjectHandle = [v16 marketingSubjectHandle];
       marketingSubjectHandle = v14->_marketingSubjectHandle;
-      v14->_marketingSubjectHandle = v21;
+      v14->_marketingSubjectHandle = marketingSubjectHandle;
 
-      v23 = [v16 campaignAttributionSubjectHandle];
+      campaignAttributionSubjectHandle = [v16 campaignAttributionSubjectHandle];
       campaignAttributionSubjectHandle = v14->_campaignAttributionSubjectHandle;
-      v14->_campaignAttributionSubjectHandle = v23;
+      v14->_campaignAttributionSubjectHandle = campaignAttributionSubjectHandle;
     }
   }
 
@@ -93,10 +93,10 @@
 
     v27 = v14->_state;
     v28 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-    v29 = [v28 UUIDString];
-    [(PKProvisioningAnalyticsState *)v27 setSessionID:v29];
+    uUIDString = [v28 UUIDString];
+    [(PKProvisioningAnalyticsState *)v27 setSessionID:uUIDString];
 
-    v30 = v12;
+    v30 = sourceCopy;
     v31 = v30;
     if (v30 && @"notification")
     {
@@ -342,8 +342,8 @@ LABEL_84:
   }
 
 LABEL_85:
-  [(PKProvisioningAnalyticsState *)v14->_state setEnvironment:v10];
-  [(PKProvisioningAnalyticsState *)v14->_state setIntent:v11];
+  [(PKProvisioningAnalyticsState *)v14->_state setEnvironment:environmentCopy];
+  [(PKProvisioningAnalyticsState *)v14->_state setIntent:intentCopy];
   if (!v14->_provisioningSubjectHandle)
   {
     v46 = [[PKProvisioningAnalyticsSessionProvisioningSubjectHandle alloc] initWithArchivedParent:0];
@@ -373,18 +373,18 @@ LABEL_91:
 - (id)createPreflightReporter
 {
   v3 = [PKProvisioningAnalyticsSessionPreflightReporter alloc];
-  v4 = [(PKProvisioningAnalyticsState *)self->_state sessionID];
-  v5 = [(PKProvisioningAnalyticsSessionReporter *)v3 initWithResponder:self sessionID:v4];
+  sessionID = [(PKProvisioningAnalyticsState *)self->_state sessionID];
+  v5 = [(PKProvisioningAnalyticsSessionReporter *)v3 initWithResponder:self sessionID:sessionID];
 
   return v5;
 }
 
-- (id)createViewReporterForPage:(id)a3
+- (id)createViewReporterForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v5 = [PKProvisioningAnalyticsSessionUIReporter alloc];
-  v6 = [(PKProvisioningAnalyticsState *)self->_state sessionID];
-  v7 = [(PKProvisioningAnalyticsSessionUIReporter *)v5 initWithResponder:self sessionID:v6 pageTag:v4];
+  sessionID = [(PKProvisioningAnalyticsState *)self->_state sessionID];
+  v7 = [(PKProvisioningAnalyticsSessionUIReporter *)v5 initWithResponder:self sessionID:sessionID pageTag:pageCopy];
 
   return v7;
 }
@@ -392,8 +392,8 @@ LABEL_91:
 - (id)createStepReporter
 {
   v3 = [PKProvisioningAnalyticsSessionStepReporter alloc];
-  v4 = [(PKProvisioningAnalyticsState *)self->_state sessionID];
-  v5 = [(PKProvisioningAnalyticsSessionReporter *)v3 initWithResponder:self sessionID:v4];
+  sessionID = [(PKProvisioningAnalyticsState *)self->_state sessionID];
+  v5 = [(PKProvisioningAnalyticsSessionReporter *)v3 initWithResponder:self sessionID:sessionID];
 
   return v5;
 }
@@ -416,16 +416,16 @@ LABEL_91:
   [(PKProvisioningAnalyticsSession *)self _clearEnvironmentValues];
   state = self->_state;
   v5 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-  v4 = [v5 UUIDString];
-  [(PKProvisioningAnalyticsState *)state setSessionID:v4];
+  uUIDString = [v5 UUIDString];
+  [(PKProvisioningAnalyticsState *)state setSessionID:uUIDString];
 }
 
-- (void)setProductType:(id)a3 subtype:(id)a4
+- (void)setProductType:(id)type subtype:(id)subtype
 {
   state = self->_state;
-  v7 = a4;
-  [(PKProvisioningAnalyticsState *)state setProductTypeDescriptor:a3];
-  [(PKProvisioningAnalyticsState *)self->_state setProductSubtypeDescriptor:v7];
+  subtypeCopy = subtype;
+  [(PKProvisioningAnalyticsState *)state setProductTypeDescriptor:type];
+  [(PKProvisioningAnalyticsState *)self->_state setProductSubtypeDescriptor:subtypeCopy];
 
   [(PKProvisioningAnalyticsState *)self->_state setPassMetadata:0];
   [(PKProvisioningAnalyticsState *)self->_state setProductMetadata:0];
@@ -434,46 +434,46 @@ LABEL_91:
   [(PKProvisioningAnalyticsState *)v8 setProductIssuer:0];
 }
 
-- (void)setSetupProduct:(id)a3
+- (void)setSetupProduct:(id)product
 {
-  v18 = a3;
-  if (v18)
+  productCopy = product;
+  if (productCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v6 = [v18 displayName];
-    [v5 setObject:v6 forKeyedSubscript:@"issuer"];
+    displayName = [productCopy displayName];
+    [v5 setObject:displayName forKeyedSubscript:@"issuer"];
 
     [(PKProvisioningAnalyticsState *)self->_state setProductMetadata:v5];
     state = self->_state;
-    v8 = [v18 configuration];
-    v9 = [v8 type];
-    if (v9 <= 0xC)
+    configuration = [productCopy configuration];
+    type = [configuration type];
+    if (type <= 0xC)
     {
-      v3 = *off_1E79CBBB0[v9];
+      v3 = *off_1E79CBBB0[type];
     }
 
     [(PKProvisioningAnalyticsState *)state setProductTypeDescriptor:v3];
 
     [(PKProvisioningAnalyticsState *)self->_state setProductSubtypeDescriptor:0];
-    v10 = [v18 partners];
-    v11 = [v10 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_36];
+    partners = [productCopy partners];
+    v11 = [partners pk_createArrayBySafelyApplyingBlock:&__block_literal_global_36];
     v12 = [v11 componentsJoinedByString:{@", "}];
     v13 = v12;
     if (v12)
     {
-      v14 = v12;
+      partnerName = v12;
     }
 
     else
     {
-      v14 = [v18 partnerName];
+      partnerName = [productCopy partnerName];
     }
 
-    v15 = v14;
+    v15 = partnerName;
 
     v16 = self->_state;
-    v17 = [v15 lowercaseString];
-    [(PKProvisioningAnalyticsState *)v16 setProductIssuer:v17];
+    lowercaseString = [v15 lowercaseString];
+    [(PKProvisioningAnalyticsState *)v16 setProductIssuer:lowercaseString];
   }
 
   else
@@ -482,12 +482,12 @@ LABEL_91:
   }
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passCopy = pass;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = v4;
+  v6 = passCopy;
   v7 = v6;
   if (v6)
   {
@@ -505,31 +505,31 @@ LABEL_91:
     goto LABEL_77;
   }
 
-  v10 = [v6 passType];
-  if ((v10 + 1) >= 3)
+  passType = [v6 passType];
+  if ((passType + 1) >= 3)
   {
     v11 = @"unknown";
   }
 
   else
   {
-    v11 = off_1E79CBC18[v10 + 1];
+    v11 = off_1E79CBC18[passType + 1];
   }
 
   [v5 setObject:v11 forKeyedSubscript:@"passType"];
 
-  v12 = [v7 style];
-  v13 = [v7 secureElementPass];
-  v14 = [v13 isIdentityPass];
+  style = [v7 style];
+  secureElementPass = [v7 secureElementPass];
+  isIdentityPass = [secureElementPass isIdentityPass];
 
-  if (v14)
+  if (isIdentityPass)
   {
     v15 = @"identity";
   }
 
-  else if (v12 < 0xE && ((0x27FFu >> v12) & 1) != 0)
+  else if (style < 0xE && ((0x27FFu >> style) & 1) != 0)
   {
-    v15 = off_1E79CBC30[v12];
+    v15 = off_1E79CBC30[style];
   }
 
   else
@@ -539,18 +539,18 @@ LABEL_91:
 
   [v5 setObject:v15 forKeyedSubscript:@"passStyle"];
 
-  v16 = [v7 nfcPayload];
-  v17 = PKAnalyticsReportSwitchToggleResultValue(v16 != 0);
+  nfcPayload = [v7 nfcPayload];
+  v17 = PKAnalyticsReportSwitchToggleResultValue(nfcPayload != 0);
   [v5 setObject:v17 forKeyedSubscript:@"hasNFC"];
 
   v18 = v7;
   if ([v18 passType] == 1)
   {
-    v19 = [v18 secureElementPass];
-    v20 = [v19 cardType];
-    if (v20 <= 4)
+    secureElementPass2 = [v18 secureElementPass];
+    cardType = [secureElementPass2 cardType];
+    if (cardType <= 4)
     {
-      v17 = *off_1E79CBCA0[v20];
+      v17 = *off_1E79CBCA0[cardType];
     }
   }
 
@@ -560,19 +560,19 @@ LABEL_91:
   }
 
   [v5 setObject:v17 forKeyedSubscript:@"productType"];
-  v21 = [v18 secureElementPass];
-  if ([v21 isIdentityPass])
+  secureElementPass3 = [v18 secureElementPass];
+  if ([secureElementPass3 isIdentityPass])
   {
-    v22 = [v21 identityType];
-    if (v22 <= 2)
+    identityType = [secureElementPass3 identityType];
+    if (identityType <= 2)
     {
-      if (v22 == 1)
+      if (identityType == 1)
       {
         v23 = PKAnalyticsReportDriversLicenseProductSubtype;
         goto LABEL_43;
       }
 
-      if (v22 == 2)
+      if (identityType == 2)
       {
         v23 = PKAnalyticsReportStateIDProductSubtype;
         goto LABEL_43;
@@ -581,7 +581,7 @@ LABEL_91:
 
     else
     {
-      switch(v22)
+      switch(identityType)
       {
         case 3:
           goto LABEL_27;
@@ -604,19 +604,19 @@ LABEL_44:
     goto LABEL_57;
   }
 
-  if (![v21 isAccessPass])
+  if (![secureElementPass3 isAccessPass])
   {
     goto LABEL_36;
   }
 
-  v24 = [v21 accessType];
-  v25 = [v21 accessReportingType];
-  v26 = v25;
-  if (v24 > 2)
+  accessType = [secureElementPass3 accessType];
+  accessReportingType = [secureElementPass3 accessReportingType];
+  v26 = accessReportingType;
+  if (accessType > 2)
   {
-    if (v24 <= 4)
+    if (accessType <= 4)
     {
-      if (v24 == 3)
+      if (accessType == 3)
       {
         v27 = @"singlefamily";
       }
@@ -629,13 +629,13 @@ LABEL_44:
       goto LABEL_56;
     }
 
-    if (v24 == 5)
+    if (accessType == 5)
     {
       v27 = @"multifamily";
       goto LABEL_56;
     }
 
-    if (v24 == 6)
+    if (accessType == 6)
     {
       v27 = @"urbanmobility";
       goto LABEL_56;
@@ -644,24 +644,24 @@ LABEL_44:
     goto LABEL_51;
   }
 
-  if (!v24)
+  if (!accessType)
   {
     v29 = @"general";
-    if (v25)
+    if (accessReportingType)
     {
-      v29 = v25;
+      v29 = accessReportingType;
     }
 
     goto LABEL_52;
   }
 
-  if (v24 == 1)
+  if (accessType == 1)
   {
     v27 = @"hospitality";
     goto LABEL_56;
   }
 
-  if (v24 != 2)
+  if (accessType != 2)
   {
 LABEL_51:
     v29 = @"unknown";
@@ -676,34 +676,34 @@ LABEL_56:
 LABEL_57:
   [v5 setObject:v27 forKeyedSubscript:@"productSubType"];
 
-  v30 = [v18 secureElementPass];
-  v31 = [v30 devicePaymentApplications];
-  v32 = [v31 count] > 1;
+  secureElementPass4 = [v18 secureElementPass];
+  devicePaymentApplications = [secureElementPass4 devicePaymentApplications];
+  v32 = [devicePaymentApplications count] > 1;
 
   v33 = PKAnalyticsReportSwitchToggleResultValue(v32);
 
   [v5 setObject:v33 forKeyedSubscript:@"coBadgeEnable"];
-  v34 = [v18 secureElementPass];
+  secureElementPass5 = [v18 secureElementPass];
   v35 = @"unknown";
-  v36 = [v34 organizationName];
-  if ([v36 length])
+  organizationName = [secureElementPass5 organizationName];
+  if ([organizationName length])
   {
-    v37 = [v34 cardType];
-    if (v37 <= 4 && ((1 << v37) & 0x16) != 0)
+    cardType2 = [secureElementPass5 cardType];
+    if (cardType2 <= 4 && ((1 << cardType2) & 0x16) != 0)
     {
-      v38 = v36;
+      v38 = organizationName;
 
       v35 = v38;
     }
   }
 
   [v5 setObject:v35 forKeyedSubscript:@"issuer"];
-  v39 = [v18 secureElementPass];
-  v40 = v39;
-  if (v39)
+  secureElementPass6 = [v18 secureElementPass];
+  v40 = secureElementPass6;
+  if (secureElementPass6)
   {
     v64 = v9;
-    [v39 devicePaymentApplications];
+    [secureElementPass6 devicePaymentApplications];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
@@ -712,7 +712,7 @@ LABEL_57:
     if (v42)
     {
       v43 = v42;
-      v44 = 0;
+      paymentType = 0;
       v45 = *v66;
       while (2)
       {
@@ -724,14 +724,14 @@ LABEL_57:
           }
 
           v47 = *(*(&v65 + 1) + 8 * i);
-          if (v44 && v44 != [*(*(&v65 + 1) + 8 * i) paymentType])
+          if (paymentType && paymentType != [*(*(&v65 + 1) + 8 * i) paymentType])
           {
 
             v48 = @"multiple";
             goto LABEL_75;
           }
 
-          v44 = [v47 paymentType];
+          paymentType = [v47 paymentType];
         }
 
         v43 = [v41 countByEnumeratingWithState:&v65 objects:v69 count:16];
@@ -746,15 +746,15 @@ LABEL_57:
 
     else
     {
-      v44 = 0;
+      paymentType = 0;
     }
 
-    v48 = PKPaymentMethodTypeToString(v44);
+    v48 = PKPaymentMethodTypeToString(paymentType);
 LABEL_75:
 
     [v5 setObject:v48 forKeyedSubscript:@"paymentMethodType"];
-    v49 = [v40 issuerCountryCode];
-    [v5 setObject:v49 forKeyedSubscript:@"issuerCountryCode"];
+    issuerCountryCode = [v40 issuerCountryCode];
+    [v5 setObject:issuerCountryCode forKeyedSubscript:@"issuerCountryCode"];
 
     v9 = v64;
   }
@@ -769,14 +769,14 @@ LABEL_77:
       v52 = PKAnalyticsReportSwitchToggleResultValue([v50 isCobranded]);
       [v51 setObject:v52 forKeyedSubscript:@"isCobrandedCard"];
 
-      v53 = [v50 cobrandName];
-      [v51 setObject:v53 forKeyedSubscript:@"cobrandName"];
+      cobrandName = [v50 cobrandName];
+      [v51 setObject:cobrandName forKeyedSubscript:@"cobrandName"];
 
-      v54 = [v50 issuerCountryCode];
-      [v51 setObject:v54 forKeyedSubscript:@"issuerCountryCode"];
+      issuerCountryCode2 = [v50 issuerCountryCode];
+      [v51 setObject:issuerCountryCode2 forKeyedSubscript:@"issuerCountryCode"];
 
-      v55 = [v50 devicePrimaryPaymentApplication];
-      v56 = PKPaymentNetworkNameForPaymentCredentialType([v55 paymentNetworkIdentifier]);
+      devicePrimaryPaymentApplication = [v50 devicePrimaryPaymentApplication];
+      v56 = PKPaymentNetworkNameForPaymentCredentialType([devicePrimaryPaymentApplication paymentNetworkIdentifier]);
       [v51 setObject:v56 forKeyedSubscript:@"networkName"];
     }
 
@@ -789,20 +789,20 @@ LABEL_77:
 
     else
     {
-      v60 = [v58 devicePrimaryPaymentApplication];
-      v61 = [v60 paymentType];
+      devicePrimaryPaymentApplication2 = [v58 devicePrimaryPaymentApplication];
+      paymentType2 = [devicePrimaryPaymentApplication2 paymentType];
 
-      if (v61 == 1)
+      if (paymentType2 == 1)
       {
         v59 = 2;
       }
 
       else
       {
-        v62 = [v58 devicePrimaryPaymentApplication];
-        v63 = [v62 paymentType];
+        devicePrimaryPaymentApplication3 = [v58 devicePrimaryPaymentApplication];
+        paymentType3 = [devicePrimaryPaymentApplication3 paymentType];
 
-        if (v63 == 2)
+        if (paymentType3 == 2)
         {
           v59 = 3;
         }
@@ -830,10 +830,10 @@ LABEL_77:
   [(PKProvisioningAnalyticsState *)self->_state setPassMetadata:v5];
 }
 
-- (void)reportErrorForReporter:(id)a3 error:(id)a4 context:(id)a5
+- (void)reportErrorForReporter:(id)reporter error:(id)error context:(id)context
 {
-  v7 = a4;
-  v8 = [a5 mutableCopy];
+  errorCopy = error;
+  v8 = [context mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -848,17 +848,17 @@ LABEL_77:
   v13 = v10;
 
   [v13 setObject:@"pageError" forKeyedSubscript:@"eventType"];
-  [(PKProvisioningAnalyticsSession *)self _populateDictionary:v13 withError:v7];
+  [(PKProvisioningAnalyticsSession *)self _populateDictionary:v13 withError:errorCopy];
 
   provisioningSubjectHandle = self->_provisioningSubjectHandle;
   v12 = [v13 copy];
   [(PKProvisioningAnalyticsSessionProvisioningSubjectHandle *)provisioningSubjectHandle reportEvent:v12 state:self->_state];
 }
 
-- (void)reportOtherErrorForReporter:(id)a3 error:(id)a4 context:(id)a5
+- (void)reportOtherErrorForReporter:(id)reporter error:(id)error context:(id)context
 {
-  v7 = a4;
-  v8 = [a5 mutableCopy];
+  errorCopy = error;
+  v8 = [context mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -873,17 +873,17 @@ LABEL_77:
   v13 = v10;
 
   [v13 setObject:@"pageError" forKeyedSubscript:@"eventType"];
-  [v13 setObject:v7 forKeyedSubscript:@"errorText"];
+  [v13 setObject:errorCopy forKeyedSubscript:@"errorText"];
 
   provisioningSubjectHandle = self->_provisioningSubjectHandle;
   v12 = [v13 copy];
   [(PKProvisioningAnalyticsSessionProvisioningSubjectHandle *)provisioningSubjectHandle reportEvent:v12 state:self->_state];
 }
 
-- (void)reportViewAppearedForReporter:(id)a3 context:(id)a4
+- (void)reportViewAppearedForReporter:(id)reporter context:(id)context
 {
-  v17 = a3;
-  v6 = [a4 mutableCopy];
+  reporterCopy = reporter;
+  v6 = [context mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -898,8 +898,8 @@ LABEL_77:
   v9 = v8;
 
   [v9 setObject:@"viewDidAppear" forKeyedSubscript:@"eventType"];
-  v10 = [v17 pageTag];
-  [v9 setObject:v10 forKeyedSubscript:@"pageTag"];
+  pageTag = [reporterCopy pageTag];
+  [v9 setObject:pageTag forKeyedSubscript:@"pageTag"];
 
   provisioningSubjectHandle = self->_provisioningSubjectHandle;
   v12 = [v9 copy];
@@ -911,8 +911,8 @@ LABEL_77:
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
 
     [v13 setObject:@"sessionStarted" forKeyedSubscript:@"eventType"];
-    v14 = [v17 pageTag];
-    [v13 setObject:v14 forKeyedSubscript:@"pageTag"];
+    pageTag2 = [reporterCopy pageTag];
+    [v13 setObject:pageTag2 forKeyedSubscript:@"pageTag"];
 
     marketingSubjectHandle = self->_marketingSubjectHandle;
     v16 = [v13 copy];
@@ -922,10 +922,10 @@ LABEL_77:
   }
 }
 
-- (void)reportButtonPressedForReporter:(id)a3 buttonTag:(unint64_t)a4 context:(id)a5
+- (void)reportButtonPressedForReporter:(id)reporter buttonTag:(unint64_t)tag context:(id)context
 {
-  v8 = a3;
-  v9 = [a5 mutableCopy];
+  reporterCopy = reporter;
+  v9 = [context mutableCopy];
   v10 = v9;
   if (v9)
   {
@@ -940,26 +940,26 @@ LABEL_77:
   v15 = v11;
 
   [v15 setObject:@"buttonTap" forKeyedSubscript:@"eventType"];
-  v12 = [(__CFString *)v8 pageTag];
+  pageTag = [(__CFString *)reporterCopy pageTag];
 
-  [v15 setObject:v12 forKeyedSubscript:@"pageTag"];
-  if (a4 <= 5)
+  [v15 setObject:pageTag forKeyedSubscript:@"pageTag"];
+  if (tag <= 5)
   {
-    v8 = *off_1E79CBCC8[a4];
+    reporterCopy = *off_1E79CBCC8[tag];
   }
 
-  [v15 setObject:v8 forKeyedSubscript:@"buttonTag"];
+  [v15 setObject:reporterCopy forKeyedSubscript:@"buttonTag"];
 
   provisioningSubjectHandle = self->_provisioningSubjectHandle;
   v14 = [v15 copy];
   [(PKProvisioningAnalyticsSessionProvisioningSubjectHandle *)provisioningSubjectHandle reportEvent:v14 state:self->_state];
 }
 
-- (void)reportOtherButtonPressedForReporter:(id)a3 otherButtonTag:(id)a4 context:(id)a5
+- (void)reportOtherButtonPressedForReporter:(id)reporter otherButtonTag:(id)tag context:(id)context
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 mutableCopy];
+  tagCopy = tag;
+  reporterCopy = reporter;
+  v10 = [context mutableCopy];
   v11 = v10;
   if (v10)
   {
@@ -974,48 +974,48 @@ LABEL_77:
   v16 = v12;
 
   [v16 setObject:@"buttonTap" forKeyedSubscript:@"eventType"];
-  [v16 setObject:v8 forKeyedSubscript:@"buttonTag"];
+  [v16 setObject:tagCopy forKeyedSubscript:@"buttonTag"];
 
-  v13 = [v9 pageTag];
+  pageTag = [reporterCopy pageTag];
 
-  [v16 setObject:v13 forKeyedSubscript:@"pageTag"];
+  [v16 setObject:pageTag forKeyedSubscript:@"pageTag"];
   provisioningSubjectHandle = self->_provisioningSubjectHandle;
   v15 = [v16 copy];
   [(PKProvisioningAnalyticsSessionProvisioningSubjectHandle *)provisioningSubjectHandle reportEvent:v15 state:self->_state];
 }
 
-- (void)reportPageCompletedForReporter:(id)a3 success:(BOOL)a4 context:(id)a5
+- (void)reportPageCompletedForReporter:(id)reporter success:(BOOL)success context:(id)context
 {
-  v5 = a4;
-  v15 = a5;
+  successCopy = success;
+  contextCopy = context;
   v8 = MEMORY[0x1E695DF90];
-  v9 = a3;
+  reporterCopy = reporter;
   v10 = objc_alloc_init(v8);
-  if (v15)
+  if (contextCopy)
   {
-    [v10 addEntriesFromDictionary:v15];
+    [v10 addEntriesFromDictionary:contextCopy];
   }
 
   [v10 setObject:@"pageTaskFinished" forKeyedSubscript:@"eventType"];
   v11 = PKAnalyticsReportResultSuccess;
-  if (!v5)
+  if (!successCopy)
   {
     v11 = PKAnalyticsReportResultFailure;
   }
 
   [v10 setObject:*v11 forKeyedSubscript:@"result"];
-  v12 = [v9 pageTag];
+  pageTag = [reporterCopy pageTag];
 
-  [v10 setObject:v12 forKeyedSubscript:@"pageTag"];
+  [v10 setObject:pageTag forKeyedSubscript:@"pageTag"];
   provisioningSubjectHandle = self->_provisioningSubjectHandle;
   v14 = [v10 copy];
   [(PKProvisioningAnalyticsSessionProvisioningSubjectHandle *)provisioningSubjectHandle reportEvent:v14 state:self->_state];
 }
 
-- (void)reportProvisioningStepStartForReporter:(id)a3 step:(id)a4 context:(id)a5
+- (void)reportProvisioningStepStartForReporter:(id)reporter step:(id)step context:(id)context
 {
-  v7 = a4;
-  v8 = [a5 mutableCopy];
+  stepCopy = step;
+  v8 = [context mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -1030,20 +1030,20 @@ LABEL_77:
   v13 = v10;
 
   [v13 setObject:@"provisioningStepStart" forKeyedSubscript:@"eventType"];
-  [v13 setObject:v7 forKeyedSubscript:@"provisioningStep"];
+  [v13 setObject:stepCopy forKeyedSubscript:@"provisioningStep"];
 
   provisioningSubjectHandle = self->_provisioningSubjectHandle;
   v12 = [v13 copy];
   [(PKProvisioningAnalyticsSessionProvisioningSubjectHandle *)provisioningSubjectHandle reportEvent:v12 state:self->_state];
 }
 
-- (void)reportProvisioningStepForReporter:(id)a3 step:(id)a4 success:(BOOL)a5 error:(id)a6 context:(id)a7
+- (void)reportProvisioningStepForReporter:(id)reporter step:(id)step success:(BOOL)success error:(id)error context:(id)context
 {
-  v9 = a5;
-  v29 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [a7 mutableCopy];
+  successCopy = success;
+  reporterCopy = reporter;
+  stepCopy = step;
+  errorCopy = error;
+  v14 = [context mutableCopy];
   v15 = v14;
   if (v14)
   {
@@ -1058,17 +1058,17 @@ LABEL_77:
   v17 = v16;
 
   [v17 setObject:@"provisioningStatus" forKeyedSubscript:@"eventType"];
-  [v17 setObject:v12 forKeyedSubscript:@"provisioningStep"];
+  [v17 setObject:stepCopy forKeyedSubscript:@"provisioningStep"];
   v18 = PKAnalyticsReportResultSuccess;
-  if (!v9)
+  if (!successCopy)
   {
     v18 = PKAnalyticsReportResultFailure;
   }
 
   [v17 setObject:*v18 forKeyedSubscript:@"result"];
-  if (v9)
+  if (successCopy)
   {
-    v19 = v12;
+    v19 = stepCopy;
     v20 = v19;
     if (@"provisioningSuccess" == v19)
     {
@@ -1107,14 +1107,14 @@ LABEL_16:
   }
 
 LABEL_17:
-  [(PKProvisioningAnalyticsSession *)self _populateDictionary:v17 withError:v13];
+  [(PKProvisioningAnalyticsSession *)self _populateDictionary:v17 withError:errorCopy];
   provisioningSubjectHandle = self->_provisioningSubjectHandle;
   v25 = [v17 copy];
   [(PKProvisioningAnalyticsSessionProvisioningSubjectHandle *)provisioningSubjectHandle reportEvent:v25 state:self->_state];
 
-  if (([v29 didReportProvisioningStart] & 1) == 0)
+  if (([reporterCopy didReportProvisioningStart] & 1) == 0)
   {
-    [v29 setDidReportProvisioningStart:1];
+    [reporterCopy setDidReportProvisioningStart:1];
     [(PKProvisioningAnalyticsSessionCampaignAttributionSubjectHandle *)self->_campaignAttributionSubjectHandle reportProvisioningStartWithState:self->_state];
     v26 = objc_alloc_init(MEMORY[0x1E695DF90]);
 
@@ -1127,19 +1127,19 @@ LABEL_17:
   }
 }
 
-- (void)reportProvisioningCompleteForReporter:(id)a3 success:(BOOL)a4
+- (void)reportProvisioningCompleteForReporter:(id)reporter success:(BOOL)success
 {
-  v4 = a4;
-  v10 = a3;
-  if (([v10 didReportSuccessfulProvisioning] & 1) == 0)
+  successCopy = success;
+  reporterCopy = reporter;
+  if (([reporterCopy didReportSuccessfulProvisioning] & 1) == 0)
   {
-    [v10 setDidReportSuccessfulProvisioning:1];
-    [(PKProvisioningAnalyticsSession *)self reportProvisioningStepForReporter:v10 step:@"provisioningSuccess" success:v4 error:0 context:0];
-    [(PKProvisioningAnalyticsSessionCampaignAttributionSubjectHandle *)self->_campaignAttributionSubjectHandle reportProvisioningCompleteWithState:self->_state success:v4];
+    [reporterCopy setDidReportSuccessfulProvisioning:1];
+    [(PKProvisioningAnalyticsSession *)self reportProvisioningStepForReporter:reporterCopy step:@"provisioningSuccess" success:successCopy error:0 context:0];
+    [(PKProvisioningAnalyticsSessionCampaignAttributionSubjectHandle *)self->_campaignAttributionSubjectHandle reportProvisioningCompleteWithState:self->_state success:successCopy];
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v6 setObject:@"sessionFinished" forKeyedSubscript:@"eventType"];
     v7 = PKAnalyticsReportResultSuccess;
-    if (!v4)
+    if (!successCopy)
     {
       v7 = PKAnalyticsReportResultFailure;
     }
@@ -1151,10 +1151,10 @@ LABEL_17:
   }
 }
 
-- (void)reportStateChangedForReporter:(id)a3 context:(id)a4
+- (void)reportStateChangedForReporter:(id)reporter context:(id)context
 {
-  v6 = a3;
-  v7 = [a4 mutableCopy];
+  reporterCopy = reporter;
+  v7 = [context mutableCopy];
   v8 = v7;
   if (v7)
   {
@@ -1169,17 +1169,17 @@ LABEL_17:
   v13 = v9;
 
   [v13 setObject:@"stateChange" forKeyedSubscript:@"eventType"];
-  v10 = [v6 pageTag];
+  pageTag = [reporterCopy pageTag];
 
-  [v13 setObject:v10 forKeyedSubscript:@"pageTag"];
+  [v13 setObject:pageTag forKeyedSubscript:@"pageTag"];
   provisioningSubjectHandle = self->_provisioningSubjectHandle;
   v12 = [v13 copy];
   [(PKProvisioningAnalyticsSessionProvisioningSubjectHandle *)provisioningSubjectHandle reportEvent:v12 state:self->_state];
 }
 
-- (void)reportPreflightEventForReporter:(id)a3 context:(id)a4
+- (void)reportPreflightEventForReporter:(id)reporter context:(id)context
 {
-  v5 = [a4 mutableCopy];
+  v5 = [context mutableCopy];
   v6 = v5;
   if (v5)
   {
@@ -1199,11 +1199,11 @@ LABEL_17:
   [(PKProvisioningAnalyticsSessionProvisioningSubjectHandle *)provisioningSubjectHandle reportEvent:v9 state:self->_state];
 }
 
-- (void)_populateDictionary:(id)a3 withError:(id)a4
+- (void)_populateDictionary:(id)dictionary withError:(id)error
 {
-  if (a4)
+  if (error)
   {
-    [a3 setObject:@"other" forKeyedSubscript:@"errorType"];
+    [dictionary setObject:@"other" forKeyedSubscript:@"errorType"];
   }
 }
 

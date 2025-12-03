@@ -17,7 +17,7 @@
 - (BOOL)supportsKappaDetection;
 - (BOOL)supportsPeriocularFaceID;
 - (id)_paymentScreenRequirements;
-- (void)eligibilitySetDeviceLocale:(id)a3;
+- (void)eligibilitySetDeviceLocale:(id)locale;
 - (void)eligibleForChlorine;
 @end
 
@@ -48,8 +48,8 @@
 
   v3 = v2;
   _Block_object_dispose(&v9, 8);
-  v4 = [v2 manager];
-  v5 = [v4 identities:0];
+  manager = [v2 manager];
+  v5 = [manager identities:0];
   v6 = [v5 count] != 0;
 
   return v6;
@@ -125,25 +125,25 @@
 {
   if (+[BYManagedAppleIDBootstrap isMultiUser])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(mgHasSiriCapability) = 0;
   }
 
   else
   {
-    v3 = [(BYCapabilities *)self mgHasSiriCapability];
-    if (v3)
+    mgHasSiriCapability = [(BYCapabilities *)self mgHasSiriCapability];
+    if (mgHasSiriCapability)
     {
-      LOBYTE(v3) = ![(BYCapabilities *)self isSiriRestricted];
+      LOBYTE(mgHasSiriCapability) = ![(BYCapabilities *)self isSiriRestricted];
     }
   }
 
-  return v3;
+  return mgHasSiriCapability;
 }
 
 - (BOOL)canShowPaymentScreen
 {
-  v3 = [(BYCapabilities *)self _paymentScreenRequirements];
-  v4 = (![(BYCapabilities *)self _paymentScreenRequirementsIncludePasscode:v3]|| [(BYCapabilities *)self canShowPasscodeScreen]) && (![(BYCapabilities *)self _paymentScreenRequirementsIncludeiCloud:v3]|| [(BYCapabilities *)self canShowAppleIDScreen]) && [(BYCapabilities *)self mgHasSecureElement];
+  _paymentScreenRequirements = [(BYCapabilities *)self _paymentScreenRequirements];
+  v4 = (![(BYCapabilities *)self _paymentScreenRequirementsIncludePasscode:_paymentScreenRequirements]|| [(BYCapabilities *)self canShowPasscodeScreen]) && (![(BYCapabilities *)self _paymentScreenRequirementsIncludeiCloud:_paymentScreenRequirements]|| [(BYCapabilities *)self canShowAppleIDScreen]) && [(BYCapabilities *)self mgHasSecureElement];
 
   return v4;
 }
@@ -197,8 +197,8 @@
 
 - (BOOL)canShowTouchIDScreen
 {
-  v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  if ([v3 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE90]] == 2)
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  if ([mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADE90]] == 2)
   {
 
     return 0;
@@ -216,8 +216,8 @@
 
 - (BOOL)canShowFaceIDScreen
 {
-  v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  if ([v3 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE90]] == 2)
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  if ([mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADE90]] == 2)
   {
 
     return 0;
@@ -235,8 +235,8 @@
 
 - (BOOL)canShowPasscodeScreen
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  if ([v2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADF10]] == 2)
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  if ([mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADF10]] == 2)
   {
     LOBYTE(v3) = 0;
 LABEL_6:
@@ -248,8 +248,8 @@ LABEL_6:
 
   if (!v4)
   {
-    v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v3 = [v2 isPasscodeSet] ^ 1;
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    v3 = [mEMORY[0x1E69ADFB8] isPasscodeSet] ^ 1;
     goto LABEL_6;
   }
 
@@ -259,27 +259,27 @@ LABEL_6:
 
 - (BOOL)canShowAppleIDScreen
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADD70]] != 2;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADD70]] != 2;
 
   return v3;
 }
 
 - (BOOL)isSiriRestricted
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADDA8]] == 2;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADDA8]] == 2;
 
   return v3;
 }
 
 - (BOOL)isDeviceAnalyticsRestricted
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x1E69ADE40]];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] isBoolSettingLockedDownByRestrictions:*MEMORY[0x1E69ADE40]];
 
-  v4 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v5 = [v4 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE48]];
+  mEMORY[0x1E69ADFB8]2 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v5 = [mEMORY[0x1E69ADFB8]2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE48]];
 
   if (v5 == 2)
   {
@@ -294,24 +294,24 @@ LABEL_6:
 
 - (BOOL)isAppAnalyticsRestricted
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x1E69ADD88]];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] isBoolSettingLockedDownByRestrictions:*MEMORY[0x1E69ADD88]];
 
   return v3;
 }
 
 - (BOOL)isCloudAnalyticsRestricted
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADD70]] == 2;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADD70]] == 2;
 
   return v3;
 }
 
 - (BOOL)isScreenTimeRestricted
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE50]] == 2;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADE50]] == 2;
 
   return v3;
 }
@@ -328,11 +328,11 @@ LABEL_6:
   return 0;
 }
 
-- (void)eligibilitySetDeviceLocale:(id)a3
+- (void)eligibilitySetDeviceLocale:(id)locale
 {
-  if (a3)
+  if (locale)
   {
-    v3 = xpc_string_create([a3 UTF8String]);
+    v3 = xpc_string_create([locale UTF8String]);
     v4 = os_eligibility_set_input();
     if (v4)
     {
@@ -409,7 +409,7 @@ LABEL_6:
       _os_log_impl(&dword_1B862F000, v6, OS_LOG_TYPE_DEFAULT, "Failed to fetch BKDevice: %@", buf, 0xCu);
     }
 
-    v9 = 0;
+    bOOLValue = 0;
   }
 
   else
@@ -436,18 +436,18 @@ LABEL_6:
       _os_log_impl(&dword_1B862F000, v8, OS_LOG_TYPE_DEFAULT, "periocularSupported: %@", buf, 0xCu);
     }
 
-    v9 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v9;
+  return bOOLValue;
 }
 
 - (void)eligibleForChlorine
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_1B862F000, a2, OS_LOG_TYPE_ERROR, "Failed to get eligibility for chlorine with error %d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

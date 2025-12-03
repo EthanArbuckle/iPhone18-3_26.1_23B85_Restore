@@ -1,97 +1,97 @@
 @interface ConversationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (id)_accessibilityFirstElementForFocus;
-- (id)_accessibilityTitleForLeadingActionWithCell:(id)a3;
-- (id)_axElementForFocusInCell:(id)a3 shouldAllowCollapsedCell:(BOOL)a4;
+- (id)_accessibilityTitleForLeadingActionWithCell:(id)cell;
+- (id)_axElementForFocusInCell:(id)cell shouldAllowCollapsedCell:(BOOL)collapsedCell;
 - (id)_axFirstVisibleCell;
 - (id)_axFirstVisibleExpandedCell;
 - (id)_axMessageSubjectView;
 - (id)accessibilityCustomRotors;
 - (id)arrowControlsView;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityPerformLeadingActionWithCell:(id)a3;
+- (void)_accessibilityPerformLeadingActionWithCell:(id)cell;
 - (void)_accessibilitySetConversationViewInsets;
 - (void)_axCancelMarkAsReadTimer;
 - (void)_scrollToInitialPosition;
-- (void)_selectNextMessageCommandInvoked:(id)a3;
-- (void)_selectPreviousMessageCommandInvoked:(id)a3;
-- (void)_shrinkMessagesToBarButton:(id)a3 withInteraction:(id)a4 completionHandler:(id)a5;
-- (void)_updateFooterViewFrameForCell:(id)a3 atIndexPath:(id)a4;
-- (void)cancelAutomaticMarkAsReadForCellViewModel:(id)a3;
+- (void)_selectNextMessageCommandInvoked:(id)invoked;
+- (void)_selectPreviousMessageCommandInvoked:(id)invoked;
+- (void)_shrinkMessagesToBarButton:(id)button withInteraction:(id)interaction completionHandler:(id)handler;
+- (void)_updateFooterViewFrameForCell:(id)cell atIndexPath:(id)path;
+- (void)cancelAutomaticMarkAsReadForCellViewModel:(id)model;
 - (void)invalidateAutomaticMarkAsReadForAllMessages;
-- (void)messageViewController:(id)a3 didTapRevealActionsButton:(id)a4;
-- (void)scheduleAutomaticMarkAsReadForMessage:(id)a3;
+- (void)messageViewController:(id)controller didTapRevealActionsButton:(id)button;
+- (void)scheduleAutomaticMarkAsReadForMessage:(id)message;
 @end
 
 @implementation ConversationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"_scrollToInitialPosition" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"messageViewController:didTapRevealActionsButton:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"_visibleIndexPathForMessageViewController:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"invalidateAutomaticMarkAsReadForAllMessages" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"cancelAutomaticMarkAsReadForCellViewModel:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"scheduleAutomaticMarkAsReadForMessage:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"_shouldAutomaticallyMarkAsReadMessage:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"swipableCollectionViewLayout:leadingSwipeActionsConfigurationForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"_referenceDisplayMessage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"collectionViewDataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"_messageAtIndexPath:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"ConversationViewController" isKindOfClass:@"ConversationViewControllerBase"];
-  [v3 validateClass:@"ConversationViewControllerBase" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"arrowControlsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"deleteButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"archiveButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"moveButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"replyButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"_shrinkMessagesToBarButton:withInteraction:completionHandler:" withFullSignature:{"v", "@", "@", "@?", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"conversationSubject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"arrowControlsView:didTapButtonWithDirection:" withFullSignature:{"v", "@", "i", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"conversationLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"conversationHeaderView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceVariable:@"_conversationView" withType:"_MFConversationViewCollectionView"];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"displayMetrics" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"_updateFooterViewFrameForCell:atIndexPath:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"_selectNextMessageCommandInvoked:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"_selectPreviousMessageCommandInvoked:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"referenceMessageListItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFConversationViewCell" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationCellViewModel" hasInstanceMethod:@"messageLoadingContext" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationCellViewModel" hasInstanceMethod:@"messageContentRequest" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFMessageLoadingContext" hasInstanceMethod:@"messageBody" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFMessageLoadingContext" hasInstanceMethod:@"hasLoadedSomeContent" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MFMessageLoadingContext" hasInstanceMethod:@"hasLoadedCompleteMessage" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MFMessageLoadingContext" hasInstanceMethod:@"message" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageContentRepresentationRequest" hasInstanceMethod:@"hasStarted" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageContentRepresentationRequest" hasInstanceMethod:@"isFinished" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MFMimeBody" hasInstanceMethod:@"totalTextSize" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"MFExpandedMessageCell" hasInstanceMethod:@"messageViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFMessageViewController" hasInstanceMethod:@"messageContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFMessageContentView" hasInstanceVariable:@"_footerView" withType:"MFConversationItemFooterView"];
-  [v3 validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"flags"];
-  [v3 validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"displayMessageItemID"];
-  [v3 validateProtocol:@"EMMessageListItem" conformsToProtocol:@"EMCollectionItem"];
-  [v3 validateClass:@"UIContextualAction" hasInstanceMethod:@"executePreHandlerWithView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIContextualAction" hasInstanceMethod:@"executeHandlerWithView:completionHandler:" withFullSignature:{"v", "@", "@?", 0}];
-  [v3 validateClass:@"ConversationHeaderView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationHeaderContentView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageHeaderSubjectBlock" hasInstanceMethod:@"subjectTextView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFMessageDisplayMetrics" hasInstanceMethod:@"estimatedFooterViewHeight" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"conversationViewController:advanceToNextConversationWithDirection:" withFullSignature:{"v", "@", "i", 0}];
-  [v3 validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ECSubject" hasInstanceMethod:@"subjectString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKContentView"];
-  [v3 validateClass:@"MFModernAddressAtom"];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"barItemsManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MobileMail.ConversationNavigationBarItemsManager" hasInstanceMethod:@"revealActionsButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MobileMail.ConversationNavigationBarItemsManager" hasInstanceMethod:@"downArrowBarButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MobileMail.ConversationNavigationBarItemsManager" hasInstanceMethod:@"upArrowBarButtonItem" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"_scrollToInitialPosition" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"messageViewController:didTapRevealActionsButton:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"_visibleIndexPathForMessageViewController:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"invalidateAutomaticMarkAsReadForAllMessages" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"cancelAutomaticMarkAsReadForCellViewModel:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"scheduleAutomaticMarkAsReadForMessage:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"_shouldAutomaticallyMarkAsReadMessage:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"swipableCollectionViewLayout:leadingSwipeActionsConfigurationForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"_referenceDisplayMessage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"collectionViewDataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"_messageAtIndexPath:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" isKindOfClass:@"ConversationViewControllerBase"];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"arrowControlsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"deleteButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"archiveButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"moveButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"replyButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"_shrinkMessagesToBarButton:withInteraction:completionHandler:" withFullSignature:{"v", "@", "@", "@?", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"conversationSubject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"arrowControlsView:didTapButtonWithDirection:" withFullSignature:{"v", "@", "i", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"conversationLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"conversationHeaderView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceVariable:@"_conversationView" withType:"_MFConversationViewCollectionView"];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"displayMetrics" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"_updateFooterViewFrameForCell:atIndexPath:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"_selectNextMessageCommandInvoked:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"_selectPreviousMessageCommandInvoked:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"referenceMessageListItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFConversationViewCell" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationCellViewModel" hasInstanceMethod:@"messageLoadingContext" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationCellViewModel" hasInstanceMethod:@"messageContentRequest" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFMessageLoadingContext" hasInstanceMethod:@"messageBody" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFMessageLoadingContext" hasInstanceMethod:@"hasLoadedSomeContent" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MFMessageLoadingContext" hasInstanceMethod:@"hasLoadedCompleteMessage" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MFMessageLoadingContext" hasInstanceMethod:@"message" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageContentRepresentationRequest" hasInstanceMethod:@"hasStarted" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageContentRepresentationRequest" hasInstanceMethod:@"isFinished" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MFMimeBody" hasInstanceMethod:@"totalTextSize" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"MFExpandedMessageCell" hasInstanceMethod:@"messageViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFMessageViewController" hasInstanceMethod:@"messageContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFMessageContentView" hasInstanceVariable:@"_footerView" withType:"MFConversationItemFooterView"];
+  [validationsCopy validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"flags"];
+  [validationsCopy validateProtocol:@"EMMessageListItem" hasRequiredInstanceMethod:@"displayMessageItemID"];
+  [validationsCopy validateProtocol:@"EMMessageListItem" conformsToProtocol:@"EMCollectionItem"];
+  [validationsCopy validateClass:@"UIContextualAction" hasInstanceMethod:@"executePreHandlerWithView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIContextualAction" hasInstanceMethod:@"executeHandlerWithView:completionHandler:" withFullSignature:{"v", "@", "@?", 0}];
+  [validationsCopy validateClass:@"ConversationHeaderView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationHeaderContentView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageHeaderSubjectBlock" hasInstanceMethod:@"subjectTextView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFMessageDisplayMetrics" hasInstanceMethod:@"estimatedFooterViewHeight" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"conversationViewController:advanceToNextConversationWithDirection:" withFullSignature:{"v", "@", "i", 0}];
+  [validationsCopy validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ECSubject" hasInstanceMethod:@"subjectString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKContentView"];
+  [validationsCopy validateClass:@"MFModernAddressAtom"];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"barItemsManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MobileMail.ConversationNavigationBarItemsManager" hasInstanceMethod:@"revealActionsButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MobileMail.ConversationNavigationBarItemsManager" hasInstanceMethod:@"downArrowBarButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MobileMail.ConversationNavigationBarItemsManager" hasInstanceMethod:@"upArrowBarButtonItem" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -167,7 +167,7 @@ id __85__ConversationViewControllerAccessibility__accessibilityLoadAccessibility
       v11[2] = __68__ConversationViewControllerAccessibility_accessibilityCustomRotors__block_invoke;
       v11[3] = &unk_29F2D3ED8;
       v12 = v4;
-      v13 = self;
+      selfCopy = self;
       v5 = [v6 initWithName:v7 itemSearchBlock:v11];
 
       [(ConversationViewControllerAccessibility *)self _accessibilitySetRetainedValue:v5 forKey:@"MailConversationRotor"];
@@ -305,11 +305,11 @@ uint64_t __68__ConversationViewControllerAccessibility_accessibilityCustomRotors
   return isKindOfClass & 1;
 }
 
-- (id)_axElementForFocusInCell:(id)a3 shouldAllowCollapsedCell:(BOOL)a4
+- (id)_axElementForFocusInCell:(id)cell shouldAllowCollapsedCell:(BOOL)collapsedCell
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 safeValueForKey:@"viewModel"];
+  collapsedCellCopy = collapsedCell;
+  cellCopy = cell;
+  v6 = [cellCopy safeValueForKey:@"viewModel"];
   v7 = [v6 safeValueForKey:@"messageLoadingContext"];
   v8 = v7;
   if (v7)
@@ -343,7 +343,7 @@ uint64_t __68__ConversationViewControllerAccessibility_accessibilityCustomRotors
     }
   }
 
-  v15 = [v5 _accessibilityFindSubviewDescendant:&__block_literal_global_586];
+  v15 = [cellCopy _accessibilityFindSubviewDescendant:&__block_literal_global_586];
   if ([v15 accessibilityElementCount] <= 0)
   {
   }
@@ -359,10 +359,10 @@ uint64_t __68__ConversationViewControllerAccessibility_accessibilityCustomRotors
   }
 
 LABEL_12:
-  v16 = [v5 _accessibilityFindSubviewDescendant:&__block_literal_global_588];
-  if (!v16 && v4)
+  v16 = [cellCopy _accessibilityFindSubviewDescendant:&__block_literal_global_588];
+  if (!v16 && collapsedCellCopy)
   {
-    v16 = v5;
+    v16 = cellCopy;
   }
 
 LABEL_15:
@@ -397,15 +397,15 @@ uint64_t __93__ConversationViewControllerAccessibility__axElementForFocusInCell_
   v5 = [(ConversationViewControllerAccessibility *)self safeValueForKey:@"collectionViewDataSource"];
   if ((objc_opt_respondsToSelector() & 1) != 0 && (-[ConversationViewControllerAccessibility safeValueForKeyPath:](self, "safeValueForKeyPath:", @"referenceMessageListItem.displayMessageItemID"), v6 = objc_claimAutoreleasedReturnValue(), [v5 indexPathForItemIdentifier:v6], v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
   {
-    v8 = [v4 cellForItemAtIndexPath:v7];
+    _axFirstVisibleExpandedCell = [v4 cellForItemAtIndexPath:v7];
   }
 
   else
   {
-    v8 = [(ConversationViewControllerAccessibility *)self _axFirstVisibleExpandedCell];
+    _axFirstVisibleExpandedCell = [(ConversationViewControllerAccessibility *)self _axFirstVisibleExpandedCell];
   }
 
-  v9 = [(ConversationViewControllerAccessibility *)self _axElementForFocusInCell:v8 shouldAllowCollapsedCell:0];
+  v9 = [(ConversationViewControllerAccessibility *)self _axElementForFocusInCell:_axFirstVisibleExpandedCell shouldAllowCollapsedCell:0];
 
   return v9;
 }
@@ -422,20 +422,20 @@ uint64_t __93__ConversationViewControllerAccessibility__axElementForFocusInCell_
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [v4 visibleCells];
+  visibleCells = [v4 visibleCells];
   v11[0] = MEMORY[0x29EDCA5F8];
   v11[1] = 3221225472;
   v11[2] = __70__ConversationViewControllerAccessibility__axFirstVisibleExpandedCell__block_invoke;
   v11[3] = &unk_29F2D3F00;
   v11[4] = &v12;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [visibleCells enumerateObjectsUsingBlock:v11];
 
   v6 = v13[5];
   if (!v6)
   {
-    v7 = [(ConversationViewControllerAccessibility *)self _axFirstVisibleCell];
+    _axFirstVisibleCell = [(ConversationViewControllerAccessibility *)self _axFirstVisibleCell];
     v8 = v13[5];
-    v13[5] = v7;
+    v13[5] = _axFirstVisibleCell;
 
     v6 = v13[5];
   }
@@ -474,7 +474,7 @@ void __70__ConversationViewControllerAccessibility__axFirstVisibleExpandedCell__
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  v11 = [v4 visibleCells];
+  visibleCells = [v4 visibleCells];
   v14[0] = MEMORY[0x29EDCA5F8];
   v14[1] = 3221225472;
   v14[2] = __62__ConversationViewControllerAccessibility__axFirstVisibleCell__block_invoke;
@@ -484,7 +484,7 @@ void __70__ConversationViewControllerAccessibility__axFirstVisibleExpandedCell__
   *&v14[7] = v8;
   *&v14[8] = v10 + v8;
   v14[4] = &v15;
-  [v11 enumerateObjectsUsingBlock:v14];
+  [visibleCells enumerateObjectsUsingBlock:v14];
 
   v12 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -507,25 +507,25 @@ void __62__ConversationViewControllerAccessibility__axFirstVisibleCell__block_in
   }
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v5 = [(ConversationViewControllerAccessibility *)self safeValueForKey:@"_conversationView"];
   v6 = v5;
   v7 = 0;
-  if (a3 > 3)
+  if (scroll > 3)
   {
-    if (a3 == 4)
+    if (scroll == 4)
     {
-      v8 = [v5 accessibilityScrollDownPage];
+      accessibilityScrollDownPage = [v5 accessibilityScrollDownPage];
       goto LABEL_12;
     }
 
-    if (a3 == 5)
+    if (scroll == 5)
     {
       goto LABEL_10;
     }
 
-    if (a3 != 6)
+    if (scroll != 6)
     {
       goto LABEL_13;
     }
@@ -536,7 +536,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  switch(a3)
+  switch(scroll)
   {
     case 1:
       goto LABEL_9;
@@ -546,9 +546,9 @@ LABEL_10:
       v7 = 1;
       break;
     case 3:
-      v8 = [v5 accessibilityScrollUpPage];
+      accessibilityScrollDownPage = [v5 accessibilityScrollUpPage];
 LABEL_12:
-      v7 = v8;
+      v7 = accessibilityScrollDownPage;
       break;
   }
 
@@ -599,15 +599,15 @@ uint64_t __64__ConversationViewControllerAccessibility__axMessageSubjectView__bl
   return isKindOfClass & 1;
 }
 
-- (void)_accessibilityPerformLeadingActionWithCell:(id)a3
+- (void)_accessibilityPerformLeadingActionWithCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   LOBYTE(v18) = 0;
   objc_opt_class();
   v5 = [(ConversationViewControllerAccessibility *)self safeValueForKey:@"collectionView"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 indexPathForCell:v4];
+  v7 = [v6 indexPathForCell:cellCopy];
   v8 = [(ConversationViewControllerAccessibility *)self safeValueForKey:@"conversationLayout"];
   v24 = 0;
   objc_opt_class();
@@ -630,12 +630,12 @@ uint64_t __64__ConversationViewControllerAccessibility__axMessageSubjectView__bl
     abort();
   }
 
-  v13 = [v12 actions];
-  v14 = [v13 firstObject];
+  actions = [v12 actions];
+  firstObject = [actions firstObject];
 
-  v17 = v4;
-  v15 = v4;
-  v16 = v14;
+  v17 = cellCopy;
+  v15 = cellCopy;
+  v16 = firstObject;
   AXPerformSafeBlock();
 }
 
@@ -672,10 +672,10 @@ uint64_t __86__ConversationViewControllerAccessibility__accessibilityPerformLead
   {
     objc_opt_class();
     v3 = __UIAccessibilityCastAsClass();
-    v4 = [v3 view];
-    v5 = [v4 _accessibilityViewIsVisible];
+    view = [v3 view];
+    _accessibilityViewIsVisible = [view _accessibilityViewIsVisible];
 
-    if (v5)
+    if (_accessibilityViewIsVisible)
     {
       AXPerformBlockOnMainThreadAfterDelay();
     }
@@ -694,11 +694,11 @@ void __67__ConversationViewControllerAccessibility__scrollToInitialPosition__blo
   }
 }
 
-- (void)_shrinkMessagesToBarButton:(id)a3 withInteraction:(id)a4 completionHandler:(id)a5
+- (void)_shrinkMessagesToBarButton:(id)button withInteraction:(id)interaction completionHandler:(id)handler
 {
   v5.receiver = self;
   v5.super_class = ConversationViewControllerAccessibility;
-  [(ConversationViewControllerAccessibility *)&v5 _shrinkMessagesToBarButton:a3 withInteraction:a4 completionHandler:a5];
+  [(ConversationViewControllerAccessibility *)&v5 _shrinkMessagesToBarButton:button withInteraction:interaction completionHandler:handler];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
@@ -721,10 +721,10 @@ void __104__ConversationViewControllerAccessibility__shrinkMessagesToBarButton_w
 {
   v5.receiver = self;
   v5.super_class = ConversationViewControllerAccessibility;
-  v3 = [(ConversationViewControllerAccessibility *)&v5 arrowControlsView];
+  arrowControlsView = [(ConversationViewControllerAccessibility *)&v5 arrowControlsView];
   [(ConversationViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 
-  return v3;
+  return arrowControlsView;
 }
 
 void __87__ConversationViewControllerAccessibility_arrowControlsView_didTapButtonWithDirection___block_invoke(uint64_t a1)
@@ -736,51 +736,51 @@ void __87__ConversationViewControllerAccessibility_arrowControlsView_didTapButto
   UIAccessibilitySpeak();
 }
 
-- (void)_selectNextMessageCommandInvoked:(id)a3
+- (void)_selectNextMessageCommandInvoked:(id)invoked
 {
-  v4 = a3;
+  invokedCopy = invoked;
   [(ConversationViewControllerAccessibility *)self _axSetSkipNextFocusOnMessage:1];
   v12.receiver = self;
   v12.super_class = ConversationViewControllerAccessibility;
-  [(ConversationViewControllerAccessibility *)&v12 _selectNextMessageCommandInvoked:v4];
+  [(ConversationViewControllerAccessibility *)&v12 _selectNextMessageCommandInvoked:invokedCopy];
   objc_opt_class();
   v5 = [(ConversationViewControllerAccessibility *)self safeValueForKey:@"delegate"];
   v6 = [v5 safeValueForKey:@"collectionView"];
   v7 = __UIAccessibilityCastAsClass();
 
   v8 = *MEMORY[0x29EDC7488];
-  v9 = [v7 indexPathsForSelectedItems];
-  v10 = [v9 firstObject];
-  v11 = [v7 cellForItemAtIndexPath:v10];
+  indexPathsForSelectedItems = [v7 indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
+  v11 = [v7 cellForItemAtIndexPath:firstObject];
   UIAccessibilityPostNotification(v8, v11);
 }
 
-- (void)_selectPreviousMessageCommandInvoked:(id)a3
+- (void)_selectPreviousMessageCommandInvoked:(id)invoked
 {
-  v4 = a3;
+  invokedCopy = invoked;
   [(ConversationViewControllerAccessibility *)self _axSetSkipNextFocusOnMessage:1];
   v12.receiver = self;
   v12.super_class = ConversationViewControllerAccessibility;
-  [(ConversationViewControllerAccessibility *)&v12 _selectPreviousMessageCommandInvoked:v4];
+  [(ConversationViewControllerAccessibility *)&v12 _selectPreviousMessageCommandInvoked:invokedCopy];
   objc_opt_class();
   v5 = [(ConversationViewControllerAccessibility *)self safeValueForKey:@"delegate"];
   v6 = [v5 safeValueForKey:@"collectionView"];
   v7 = __UIAccessibilityCastAsClass();
 
   v8 = *MEMORY[0x29EDC7488];
-  v9 = [v7 indexPathsForSelectedItems];
-  v10 = [v9 lastObject];
-  v11 = [v7 cellForItemAtIndexPath:v10];
+  indexPathsForSelectedItems = [v7 indexPathsForSelectedItems];
+  lastObject = [indexPathsForSelectedItems lastObject];
+  v11 = [v7 cellForItemAtIndexPath:lastObject];
   UIAccessibilityPostNotification(v8, v11);
 }
 
-- (void)messageViewController:(id)a3 didTapRevealActionsButton:(id)a4
+- (void)messageViewController:(id)controller didTapRevealActionsButton:(id)button
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  buttonCopy = button;
   v23.receiver = self;
   v23.super_class = ConversationViewControllerAccessibility;
-  [(ConversationViewControllerAccessibility *)&v23 messageViewController:v6 didTapRevealActionsButton:v7];
+  [(ConversationViewControllerAccessibility *)&v23 messageViewController:controllerCopy didTapRevealActionsButton:buttonCopy];
   v22 = 0;
   objc_opt_class();
   v16 = 0;
@@ -790,7 +790,7 @@ void __87__ConversationViewControllerAccessibility_arrowControlsView_didTapButto
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
   v15 = MEMORY[0x29EDCA5F8];
-  v8 = v6;
+  v8 = controllerCopy;
   AXPerformSafeBlock();
   v9 = v17[5];
 
@@ -852,27 +852,27 @@ uint64_t __91__ConversationViewControllerAccessibility_messageViewController_did
   [(ConversationViewControllerAccessibility *)self _axCancelMarkAsReadTimer];
 }
 
-- (void)cancelAutomaticMarkAsReadForCellViewModel:(id)a3
+- (void)cancelAutomaticMarkAsReadForCellViewModel:(id)model
 {
   v4.receiver = self;
   v4.super_class = ConversationViewControllerAccessibility;
-  [(ConversationViewControllerAccessibility *)&v4 cancelAutomaticMarkAsReadForCellViewModel:a3];
+  [(ConversationViewControllerAccessibility *)&v4 cancelAutomaticMarkAsReadForCellViewModel:model];
   [(ConversationViewControllerAccessibility *)self _axCancelMarkAsReadTimer];
 }
 
 - (void)_axCancelMarkAsReadTimer
 {
-  v3 = [(ConversationViewControllerAccessibility *)self _axAutomaticallyMarkReadTimer];
-  [v3 cancel];
+  _axAutomaticallyMarkReadTimer = [(ConversationViewControllerAccessibility *)self _axAutomaticallyMarkReadTimer];
+  [_axAutomaticallyMarkReadTimer cancel];
   [(ConversationViewControllerAccessibility *)self _axSetAutomaticallyMarkReadTimer:0];
 }
 
-- (void)scheduleAutomaticMarkAsReadForMessage:(id)a3
+- (void)scheduleAutomaticMarkAsReadForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v22.receiver = self;
   v22.super_class = ConversationViewControllerAccessibility;
-  [(ConversationViewControllerAccessibility *)&v22 scheduleAutomaticMarkAsReadForMessage:v4];
+  [(ConversationViewControllerAccessibility *)&v22 scheduleAutomaticMarkAsReadForMessage:messageCopy];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -882,8 +882,8 @@ uint64_t __91__ConversationViewControllerAccessibility_messageViewController_did
   v13 = __81__ConversationViewControllerAccessibility_scheduleAutomaticMarkAsReadForMessage___block_invoke;
   v14 = &unk_29F2D3FE8;
   v17 = &v18;
-  v15 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = messageCopy;
   v16 = v5;
   AXPerformSafeBlock();
   v6 = *(v19 + 24);
@@ -891,13 +891,13 @@ uint64_t __91__ConversationViewControllerAccessibility_messageViewController_did
   _Block_object_dispose(&v18, 8);
   if (v6)
   {
-    v7 = [(ConversationViewControllerAccessibility *)self _axAutomaticallyMarkReadTimer];
-    [v7 cancel];
-    if (!v7)
+    _axAutomaticallyMarkReadTimer = [(ConversationViewControllerAccessibility *)self _axAutomaticallyMarkReadTimer];
+    [_axAutomaticallyMarkReadTimer cancel];
+    if (!_axAutomaticallyMarkReadTimer)
     {
       v8 = objc_alloc(MEMORY[0x29EDBD6A0]);
-      v7 = [v8 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
-      [(ConversationViewControllerAccessibility *)self _axSetAutomaticallyMarkReadTimer:v7];
+      _axAutomaticallyMarkReadTimer = [v8 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
+      [(ConversationViewControllerAccessibility *)self _axSetAutomaticallyMarkReadTimer:_axAutomaticallyMarkReadTimer];
     }
 
     v9[0] = MEMORY[0x29EDCA5F8];
@@ -906,7 +906,7 @@ uint64_t __91__ConversationViewControllerAccessibility_messageViewController_did
     v9[3] = &unk_29F2D3FC0;
     v9[4] = self;
     v10 = v5;
-    [v7 afterDelay:v9 processBlock:0.7];
+    [_axAutomaticallyMarkReadTimer afterDelay:v9 processBlock:0.7];
   }
 }
 
@@ -959,15 +959,15 @@ void __81__ConversationViewControllerAccessibility_scheduleAutomaticMarkAsReadFo
   }
 }
 
-- (id)_accessibilityTitleForLeadingActionWithCell:(id)a3
+- (id)_accessibilityTitleForLeadingActionWithCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   LOBYTE(v22) = 0;
   objc_opt_class();
   v5 = [(ConversationViewControllerAccessibility *)self safeValueForKey:@"collectionView"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 indexPathForCell:v4];
+  v7 = [v6 indexPathForCell:cellCopy];
   if (v7)
   {
     v28 = 0;
@@ -982,7 +982,7 @@ void __81__ConversationViewControllerAccessibility_scheduleAutomaticMarkAsReadFo
     v17 = 3221225472;
     v18 = __87__ConversationViewControllerAccessibility__accessibilityTitleForLeadingActionWithCell___block_invoke;
     v19 = &unk_29F2D3FE8;
-    v20 = self;
+    selfCopy = self;
     v21 = v7;
     AXPerformSafeBlock();
     v8 = v23[5];
@@ -1001,11 +1001,11 @@ void __81__ConversationViewControllerAccessibility_scheduleAutomaticMarkAsReadFo
     v9 = 0;
   }
 
-  v10 = [v9 flags];
-  v11 = [v10 read];
+  flags = [v9 flags];
+  read = [flags read];
   if (v9)
   {
-    v12 = v11;
+    v12 = read;
   }
 
   else
@@ -1038,11 +1038,11 @@ uint64_t __87__ConversationViewControllerAccessibility__accessibilityTitleForLea
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)_updateFooterViewFrameForCell:(id)a3 atIndexPath:(id)a4
+- (void)_updateFooterViewFrameForCell:(id)cell atIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = ConversationViewControllerAccessibility;
-  [(ConversationViewControllerAccessibility *)&v5 _updateFooterViewFrameForCell:a3 atIndexPath:a4];
+  [(ConversationViewControllerAccessibility *)&v5 _updateFooterViewFrameForCell:cell atIndexPath:path];
   [(ConversationViewControllerAccessibility *)self _accessibilitySetConversationViewInsets];
 }
 

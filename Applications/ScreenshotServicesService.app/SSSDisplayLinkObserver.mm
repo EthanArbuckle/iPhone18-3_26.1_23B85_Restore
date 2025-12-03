@@ -1,5 +1,5 @@
 @interface SSSDisplayLinkObserver
-- (void)_displayLinkHandler:(id)a3;
+- (void)_displayLinkHandler:(id)handler;
 - (void)dealloc;
 - (void)startObserver;
 - (void)stopObserver;
@@ -30,14 +30,14 @@
   }
 }
 
-- (void)_displayLinkHandler:(id)a3
+- (void)_displayLinkHandler:(id)handler
 {
-  v4 = [(SSSDisplayLinkObserver *)self displayLinkObserverHandler];
+  displayLinkObserverHandler = [(SSSDisplayLinkObserver *)self displayLinkObserverHandler];
 
-  if (v4)
+  if (displayLinkObserverHandler)
   {
-    v5 = [(SSSDisplayLinkObserver *)self displayLinkObserverHandler];
-    v6 = v5[2]();
+    displayLinkObserverHandler2 = [(SSSDisplayLinkObserver *)self displayLinkObserverHandler];
+    v6 = displayLinkObserverHandler2[2]();
 
     if ((v6 & 1) == 0)
     {

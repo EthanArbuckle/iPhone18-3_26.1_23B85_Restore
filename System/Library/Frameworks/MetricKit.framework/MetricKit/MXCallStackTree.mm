@@ -1,29 +1,29 @@
 @interface MXCallStackTree
-- (MXCallStackTree)initWithCoder:(id)a3;
-- (MXCallStackTree)initWithThreadArray:(id)a3 aggregatedByProcess:(BOOL)a4;
+- (MXCallStackTree)initWithCoder:(id)coder;
+- (MXCallStackTree)initWithThreadArray:(id)array aggregatedByProcess:(BOOL)process;
 - (NSData)JSONRepresentation;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXCallStackTree
 
-- (MXCallStackTree)initWithThreadArray:(id)a3 aggregatedByProcess:(BOOL)a4
+- (MXCallStackTree)initWithThreadArray:(id)array aggregatedByProcess:(BOOL)process
 {
-  v7 = a3;
+  arrayCopy = array;
   v11.receiver = self;
   v11.super_class = MXCallStackTree;
   v8 = [(MXCallStackTree *)&v11 init];
   if (v8)
   {
-    if (![v7 count])
+    if (![arrayCopy count])
     {
       v9 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v8->_callStackThreads, a3);
-    v8->_callStackPerThread = !a4;
+    objc_storeStrong(&v8->_callStackThreads, array);
+    v8->_callStackPerThread = !process;
   }
 
   v9 = v8;
@@ -32,17 +32,17 @@ LABEL_6:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   callStackThreads = self->_callStackThreads;
-  v5 = a3;
-  [v5 encodeObject:callStackThreads forKey:@"callStacks"];
-  [v5 encodeBool:self->_callStackPerThread forKey:@"callStackPerThread"];
+  coderCopy = coder;
+  [coderCopy encodeObject:callStackThreads forKey:@"callStacks"];
+  [coderCopy encodeBool:self->_callStackPerThread forKey:@"callStackPerThread"];
 }
 
-- (MXCallStackTree)initWithCoder:(id)a3
+- (MXCallStackTree)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MXCallStackTree;
   v5 = [(MXCallStackTree *)&v12 init];
@@ -51,11 +51,11 @@ LABEL_6:
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"callStacks"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"callStacks"];
     callStackThreads = v5->_callStackThreads;
     v5->_callStackThreads = v9;
 
-    v5->_callStackPerThread = [v4 decodeBoolForKey:@"callStackPerThread"];
+    v5->_callStackPerThread = [coderCopy decodeBoolForKey:@"callStackPerThread"];
   }
 
   return v5;
@@ -91,11 +91,11 @@ LABEL_6:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) toDictionary];
-          v13 = v12;
+          toDictionary = [*(*(&v17 + 1) + 8 * i) toDictionary];
+          v13 = toDictionary;
           if (!self->_callStackPerThread)
           {
-            v14 = [v12 mutableCopy];
+            v14 = [toDictionary mutableCopy];
             [v14 removeObjectForKey:@"threadAttributed"];
 
             v13 = v14;
@@ -120,11 +120,11 @@ LABEL_6:
 
 - (NSData)JSONRepresentation
 {
-  v2 = [(MXCallStackTree *)self toDictionary];
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v2])
+  toDictionary = [(MXCallStackTree *)self toDictionary];
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:toDictionary])
   {
     v5 = 0;
-    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:1 error:&v5];
+    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:toDictionary options:1 error:&v5];
   }
 
   else

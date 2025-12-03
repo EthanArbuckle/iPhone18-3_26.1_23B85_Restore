@@ -1,64 +1,64 @@
 @interface PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource
-- (BOOL)canSelectReason:(id)a3;
-- (PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource)initWithReasons:(id)a3 currentlySelected:(id)a4;
+- (BOOL)canSelectReason:(id)reason;
+- (PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource)initWithReasons:(id)reasons currentlySelected:(id)selected;
 - (id)selectedReasons;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (int64_t)selectedReasonsCount;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)deselect:(id)a3;
-- (void)select:(id)a3;
-- (void)setupOtherReasons:(id)a3;
-- (void)setupPromotedReasons:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)deselect:(id)deselect;
+- (void)select:(id)select;
+- (void)setupOtherReasons:(id)reasons;
+- (void)setupPromotedReasons:(id)reasons;
 @end
 
 @implementation PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = objc_alloc_init(MEMORY[0x1E69DD028]);
-  if ([v7 section])
+  if ([pathCopy section])
   {
-    if ([v7 section] != 1)
+    if ([pathCopy section] != 1)
     {
       PXAssertGetLog();
     }
 
-    v9 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self otherReasons];
+    otherReasons = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self otherReasons];
   }
 
   else
   {
-    v9 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self promotedReasons];
+    otherReasons = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self promotedReasons];
   }
 
-  v10 = v9;
-  v11 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  v10 = otherReasons;
+  v11 = [otherReasons objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v12 = [v8 textLabel];
-  [v12 setText:v11];
+  textLabel = [v8 textLabel];
+  [textLabel setText:v11];
 
   if ([v11 isEqualToString:@"None of These Options"])
   {
-    v13 = [MEMORY[0x1E69DC888] systemRedColor];
-    v14 = [v8 textLabel];
-    [v14 setTextColor:v13];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    textLabel2 = [v8 textLabel];
+    [textLabel2 setTextColor:systemRedColor];
   }
 
-  v15 = [v6 indexPathsForSelectedRows];
-  if ([v15 containsObject:v7])
+  indexPathsForSelectedRows = [viewCopy indexPathsForSelectedRows];
+  if ([indexPathsForSelectedRows containsObject:pathCopy])
   {
 
 LABEL_10:
-    [v6 selectRowAtIndexPath:v7 animated:1 scrollPosition:0];
+    [viewCopy selectRowAtIndexPath:pathCopy animated:1 scrollPosition:0];
     v18 = 3;
     goto LABEL_13;
   }
 
-  v16 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
-  v17 = [v16 containsObject:v11];
+  currentlySelectedReasons = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
+  v17 = [currentlySelectedReasons containsObject:v11];
 
   if (v17)
   {
@@ -73,17 +73,17 @@ LABEL_13:
   return v19;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
     v6 = @"PXInternalPhotosChallengeAdditionalReasonExhaustiveMomentLabelingAllOptions";
   }
 
   else
   {
-    if (a4)
+    if (section)
     {
       PXAssertGetLog();
     }
@@ -96,70 +96,70 @@ LABEL_13:
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
-    v7 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self otherReasons];
+    otherReasons = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self otherReasons];
   }
 
   else
   {
-    if (a4)
+    if (section)
     {
       PXAssertGetLog();
     }
 
-    v7 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self promotedReasons];
+    otherReasons = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self promotedReasons];
   }
 
-  v8 = v7;
-  v9 = [v7 count];
+  v8 = otherReasons;
+  v9 = [otherReasons count];
 
   return v9;
 }
 
-- (void)deselect:(id)a3
+- (void)deselect:(id)deselect
 {
-  v4 = a3;
-  v5 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
-  [v5 removeObject:v4];
+  deselectCopy = deselect;
+  currentlySelectedReasons = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
+  [currentlySelectedReasons removeObject:deselectCopy];
 }
 
-- (void)select:(id)a3
+- (void)select:(id)select
 {
-  v4 = a3;
-  v5 = [v4 isEqualToString:@"None of These Options"];
-  v6 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
-  v7 = v6;
+  selectCopy = select;
+  v5 = [selectCopy isEqualToString:@"None of These Options"];
+  currentlySelectedReasons = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
+  v7 = currentlySelectedReasons;
   if (v5)
   {
-    [v6 removeAllObjects];
+    [currentlySelectedReasons removeAllObjects];
   }
 
   else
   {
-    [v6 removeObject:@"None of These Options"];
+    [currentlySelectedReasons removeObject:@"None of These Options"];
   }
 
-  v8 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
-  [v8 addObject:v4];
+  currentlySelectedReasons2 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
+  [currentlySelectedReasons2 addObject:selectCopy];
 }
 
-- (BOOL)canSelectReason:(id)a3
+- (BOOL)canSelectReason:(id)reason
 {
-  v4 = [a3 isEqualToString:@"None of These Options"];
-  v5 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
-  v6 = v5;
+  v4 = [reason isEqualToString:@"None of These Options"];
+  currentlySelectedReasons = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
+  v6 = currentlySelectedReasons;
   if (v4)
   {
-    LOBYTE(v7) = [v5 count] == 0;
+    LOBYTE(v7) = [currentlySelectedReasons count] == 0;
   }
 
   else
   {
-    v7 = [v5 containsObject:@"None of These Options"] ^ 1;
+    v7 = [currentlySelectedReasons containsObject:@"None of These Options"] ^ 1;
   }
 
   return v7;
@@ -167,25 +167,25 @@ LABEL_13:
 
 - (int64_t)selectedReasonsCount
 {
-  v2 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
-  v3 = [v2 count];
+  currentlySelectedReasons = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
+  v3 = [currentlySelectedReasons count];
 
   return v3;
 }
 
 - (id)selectedReasons
 {
-  v2 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
-  v3 = [v2 allObjects];
+  currentlySelectedReasons = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)self currentlySelectedReasons];
+  allObjects = [currentlySelectedReasons allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (void)setupOtherReasons:(id)a3
+- (void)setupOtherReasons:(id)reasons
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArray:v5];
+  reasonsCopy = reasons;
+  v6 = [[v4 alloc] initWithArray:reasonsCopy];
 
   [v6 removeObject:@"None of These Options"];
   v7 = objc_alloc(MEMORY[0x1E695DF70]);
@@ -197,36 +197,36 @@ LABEL_13:
   self->_otherReasons = v9;
 }
 
-- (void)setupPromotedReasons:(id)a3
+- (void)setupPromotedReasons:(id)reasons
 {
-  v6 = a3;
-  if ([v6 count] < 5)
+  reasonsCopy = reasons;
+  if ([reasonsCopy count] < 5)
   {
     v4 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v4 = [v6 subarrayWithRange:{0, 4}];
+    v4 = [reasonsCopy subarrayWithRange:{0, 4}];
   }
 
   promotedReasons = self->_promotedReasons;
   self->_promotedReasons = v4;
 }
 
-- (PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource)initWithReasons:(id)a3 currentlySelected:(id)a4
+- (PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource)initWithReasons:(id)reasons currentlySelected:(id)selected
 {
-  v6 = a3;
-  v7 = a4;
+  reasonsCopy = reasons;
+  selectedCopy = selected;
   v11.receiver = self;
   v11.super_class = PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource;
   v8 = [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)v8 setupPromotedReasons:v6];
-    [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)v9 setupOtherReasons:v6];
-    objc_storeStrong(&v9->_currentlySelectedReasons, a4);
+    [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)v8 setupPromotedReasons:reasonsCopy];
+    [(PXSurveyQuestionsMultipleAnswerSelectionTableViewDataSource *)v9 setupOtherReasons:reasonsCopy];
+    objc_storeStrong(&v9->_currentlySelectedReasons, selected);
   }
 
   return v9;

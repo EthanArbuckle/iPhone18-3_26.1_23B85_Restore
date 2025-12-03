@@ -1,21 +1,21 @@
 @interface HACCCapsuleTitleView
-- (HACCCapsuleTitleView)initWithFrame:(CGRect)a3;
+- (HACCCapsuleTitleView)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 @end
 
 @implementation HACCCapsuleTitleView
 
-- (HACCCapsuleTitleView)initWithFrame:(CGRect)a3
+- (HACCCapsuleTitleView)initWithFrame:(CGRect)frame
 {
   v52[8] = *MEMORY[0x277D85DE8];
   v51.receiver = self;
   v51.super_class = HACCCapsuleTitleView;
-  v3 = [(HACCCapsuleTitleView *)&v51 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HACCCapsuleTitleView *)&v51 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D68]);
-    v5 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
-    v6 = [v4 initWithEffect:v5];
+    controlCenterSecondaryVibrancyEffect = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
+    v6 = [v4 initWithEffect:controlCenterSecondaryVibrancyEffect];
     titleContainer = v3->_titleContainer;
     v3->_titleContainer = v6;
 
@@ -34,8 +34,8 @@
     [(UILabel *)v11 setFont:v13];
 
     v14 = v3->_titleLabel;
-    v15 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v14 setTextColor:v15];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v14 setTextColor:whiteColor];
 
     [(UILabel *)v3->_titleLabel setTextAlignment:2 * v8];
     [(UILabel *)v3->_titleLabel setClipsToBounds:0];
@@ -46,46 +46,46 @@
     LODWORD(v17) = 1148846080;
     [(UILabel *)v3->_titleLabel setContentCompressionResistancePriority:0 forAxis:v17];
     [(UILabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [(UIVisualEffectView *)v3->_titleContainer contentView];
-    [v18 addSubview:v3->_titleLabel];
+    contentView = [(UIVisualEffectView *)v3->_titleContainer contentView];
+    [contentView addSubview:v3->_titleLabel];
 
     v38 = MEMORY[0x277CCAAD0];
-    v49 = [(UIVisualEffectView *)v3->_titleContainer leadingAnchor];
-    v48 = [(HACCCapsuleTitleView *)v3 leadingAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    leadingAnchor = [(UIVisualEffectView *)v3->_titleContainer leadingAnchor];
+    leadingAnchor2 = [(HACCCapsuleTitleView *)v3 leadingAnchor];
+    v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v52[0] = v47;
-    v46 = [(UIVisualEffectView *)v3->_titleContainer trailingAnchor];
-    v45 = [(HACCCapsuleTitleView *)v3 trailingAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    trailingAnchor = [(UIVisualEffectView *)v3->_titleContainer trailingAnchor];
+    trailingAnchor2 = [(HACCCapsuleTitleView *)v3 trailingAnchor];
+    v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v52[1] = v44;
-    v43 = [(UIVisualEffectView *)v3->_titleContainer topAnchor];
-    v42 = [(HACCCapsuleTitleView *)v3 topAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42];
+    topAnchor = [(UIVisualEffectView *)v3->_titleContainer topAnchor];
+    topAnchor2 = [(HACCCapsuleTitleView *)v3 topAnchor];
+    v41 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v52[2] = v41;
-    v40 = [(UIVisualEffectView *)v3->_titleContainer bottomAnchor];
-    v39 = [(HACCCapsuleTitleView *)v3 bottomAnchor];
-    v37 = [v40 constraintEqualToAnchor:v39];
+    bottomAnchor = [(UIVisualEffectView *)v3->_titleContainer bottomAnchor];
+    bottomAnchor2 = [(HACCCapsuleTitleView *)v3 bottomAnchor];
+    v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v52[3] = v37;
-    v35 = [(UILabel *)v3->_titleLabel leadingAnchor];
-    v36 = [(UIVisualEffectView *)v3->_titleContainer contentView];
-    v34 = [v36 leadingAnchor];
+    leadingAnchor3 = [(UILabel *)v3->_titleLabel leadingAnchor];
+    contentView2 = [(UIVisualEffectView *)v3->_titleContainer contentView];
+    leadingAnchor4 = [contentView2 leadingAnchor];
     CCUILayoutGutter();
-    v33 = [v35 constraintEqualToAnchor:v34 constant:?];
+    v33 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
     v52[4] = v33;
-    v31 = [(UILabel *)v3->_titleLabel trailingAnchor];
-    v32 = [(UIVisualEffectView *)v3->_titleContainer contentView];
-    v30 = [v32 trailingAnchor];
+    trailingAnchor3 = [(UILabel *)v3->_titleLabel trailingAnchor];
+    contentView3 = [(UIVisualEffectView *)v3->_titleContainer contentView];
+    trailingAnchor4 = [contentView3 trailingAnchor];
     CCUILayoutGutter();
-    v20 = [v31 constraintEqualToAnchor:v30 constant:-v19];
+    v20 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v19];
     v52[5] = v20;
-    v21 = [(UILabel *)v3->_titleLabel topAnchor];
-    v22 = [(UIVisualEffectView *)v3->_titleContainer contentView];
-    v23 = [v22 topAnchor];
-    v24 = [v21 constraintGreaterThanOrEqualToAnchor:v23 constant:10.0];
+    topAnchor3 = [(UILabel *)v3->_titleLabel topAnchor];
+    contentView4 = [(UIVisualEffectView *)v3->_titleContainer contentView];
+    topAnchor4 = [contentView4 topAnchor];
+    v24 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:10.0];
     v52[6] = v24;
-    v25 = [(UILabel *)v3->_titleLabel lastBaselineAnchor];
-    v26 = [(UIVisualEffectView *)v3->_titleContainer lastBaselineAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:-10.0];
+    lastBaselineAnchor = [(UILabel *)v3->_titleLabel lastBaselineAnchor];
+    lastBaselineAnchor2 = [(UIVisualEffectView *)v3->_titleContainer lastBaselineAnchor];
+    v27 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:-10.0];
     v52[7] = v27;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:8];
     [v38 activateConstraints:v28];
@@ -96,10 +96,10 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(HACCCapsuleTitleView *)self titleLabel];
-  v3 = [v2 accessibilityLabel];
+  titleLabel = [(HACCCapsuleTitleView *)self titleLabel];
+  accessibilityLabel = [titleLabel accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

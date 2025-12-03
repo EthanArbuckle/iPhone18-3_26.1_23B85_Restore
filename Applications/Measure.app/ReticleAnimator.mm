@@ -1,6 +1,6 @@
 @interface ReticleAnimator
 - (_TtC7Measure15ReticleAnimator)init;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation ReticleAnimator
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v6 = a3;
-  v7 = self;
-  sub_100177430(v6, a4);
+  stopCopy = stop;
+  selfCopy = self;
+  sub_100177430(stopCopy, finished);
 }
 
 @end

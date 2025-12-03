@@ -1,65 +1,65 @@
 @interface TUIStarRatingControl
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_foregroundImageClipBounds;
 - (CGRect)_foregroundImageContainerClipBounds;
 - (CGRect)hitRect;
-- (TUIStarRatingControl)initWithRating:(double)a3 backgroundImageName:(id)a4 foregroundImageName:(id)a5 direction:(unint64_t)a6 color:(id)a7 startColor:(id)a8 backgroundColor:(id)a9 starWidth:(double)a10 starPadding:(double)a11;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (TUIStarRatingControl)initWithRating:(double)rating backgroundImageName:(id)name foregroundImageName:(id)imageName direction:(unint64_t)direction color:(id)color startColor:(id)startColor backgroundColor:(id)backgroundColor starWidth:(double)self0 starPadding:(double)self1;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateBackgroundImage;
 - (void)_updateForegroundImage;
-- (void)_updateImagesIfNeededWithForegroundImageName:(id)a3 backgroundImageName:(id)a4 starWidth:(double)a5 starPadding:(double)a6;
-- (void)_updateValueForPoint:(CGPoint)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)_updateImagesIfNeededWithForegroundImageName:(id)name backgroundImageName:(id)imageName starWidth:(double)width starPadding:(double)padding;
+- (void)_updateValueForPoint:(CGPoint)point;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setStarPadding:(double)a3;
-- (void)setStarWidth:(double)a3;
-- (void)setStartColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setForegroundColor:(id)color;
+- (void)setStarPadding:(double)padding;
+- (void)setStarWidth:(double)width;
+- (void)setStartColor:(id)color;
 - (void)sizeToFit;
 @end
 
 @implementation TUIStarRatingControl
 
-- (TUIStarRatingControl)initWithRating:(double)a3 backgroundImageName:(id)a4 foregroundImageName:(id)a5 direction:(unint64_t)a6 color:(id)a7 startColor:(id)a8 backgroundColor:(id)a9 starWidth:(double)a10 starPadding:(double)a11
+- (TUIStarRatingControl)initWithRating:(double)rating backgroundImageName:(id)name foregroundImageName:(id)imageName direction:(unint64_t)direction color:(id)color startColor:(id)startColor backgroundColor:(id)backgroundColor starWidth:(double)self0 starPadding:(double)self1
 {
-  v46 = a4;
-  v45 = a5;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
+  nameCopy = name;
+  imageNameCopy = imageName;
+  colorCopy = color;
+  startColorCopy = startColor;
+  backgroundColorCopy = backgroundColor;
   v47.receiver = self;
   v47.super_class = TUIStarRatingControl;
   v24 = [(TUIStarRatingControl *)&v47 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_backgroundImageName, a4);
-    objc_storeStrong(&v25->_foregroundImageName, a5);
-    v25->_direction = a6;
-    objc_storeStrong(&v25->_foregroundColor, a7);
-    objc_storeStrong(&v25->_backgroundColor, a9);
-    objc_storeStrong(&v25->_startColor, a8);
-    v26 = a3;
-    v25->_value = v26;
-    v25->_starWidth = a10;
-    v25->_starPadding = a11;
+    objc_storeStrong(&v24->_backgroundImageName, name);
+    objc_storeStrong(&v25->_foregroundImageName, imageName);
+    v25->_direction = direction;
+    objc_storeStrong(&v25->_foregroundColor, color);
+    objc_storeStrong(&v25->_backgroundColor, backgroundColor);
+    objc_storeStrong(&v25->_startColor, startColor);
+    ratingCopy = rating;
+    v25->_value = ratingCopy;
+    v25->_starWidth = width;
+    v25->_starPadding = padding;
     v27 = +[TUIStarRatingImageCache sharedInstance];
-    v28 = [(TUIStarRatingControl *)v25 traitCollection];
-    v29 = [v27 ratingStarsImageWithName:v46 starSize:5 starCount:v28 starPadding:a10 traitCollection:a11];
+    traitCollection = [(TUIStarRatingControl *)v25 traitCollection];
+    v29 = [v27 ratingStarsImageWithName:nameCopy starSize:5 starCount:traitCollection starPadding:width traitCollection:padding];
 
     v30 = +[TUIStarRatingImageCache sharedInstance];
-    v31 = [(TUIStarRatingControl *)v25 traitCollection];
-    v32 = [v30 ratingStarsImageWithName:v45 starSize:5 starCount:v31 starPadding:a10 traitCollection:a11];
+    traitCollection2 = [(TUIStarRatingControl *)v25 traitCollection];
+    v32 = [v30 ratingStarsImageWithName:imageNameCopy starSize:5 starCount:traitCollection2 starPadding:width traitCollection:padding];
 
     v33 = [[UIImageView alloc] initWithImage:v29];
     placeholderImageView = v25->_placeholderImageView;
     v25->_placeholderImageView = v33;
 
-    [(UIImageView *)v25->_placeholderImageView setTintColor:v22];
+    [(UIImageView *)v25->_placeholderImageView setTintColor:startColorCopy];
     [(UIImageView *)v25->_placeholderImageView setUserInteractionEnabled:0];
     [(UIImageView *)v25->_placeholderImageView sizeToFit];
     [(TUIStarRatingControl *)v25 addSubview:v25->_placeholderImageView];
@@ -67,7 +67,7 @@
     backgroundImageView = v25->_backgroundImageView;
     v25->_backgroundImageView = v35;
 
-    [(UIImageView *)v25->_backgroundImageView setTintColor:v23];
+    [(UIImageView *)v25->_backgroundImageView setTintColor:backgroundColorCopy];
     [(UIImageView *)v25->_backgroundImageView setUserInteractionEnabled:0];
     [(UIImageView *)v25->_backgroundImageView sizeToFit];
     [(TUIStarRatingControl *)v25 addSubview:v25->_backgroundImageView];
@@ -85,7 +85,7 @@
     foregroundImageView = v25->_foregroundImageView;
     v25->_foregroundImageView = v40;
 
-    [(UIImageView *)v25->_foregroundImageView setTintColor:v21];
+    [(UIImageView *)v25->_foregroundImageView setTintColor:colorCopy];
     [(UIImageView *)v25->_foregroundImageView setUserInteractionEnabled:0];
     [(UIImageView *)v25->_foregroundImageView sizeToFit];
     [(UIView *)v25->_foregroundContainerView addSubview:v25->_foregroundImageView];
@@ -131,112 +131,112 @@
   [(TUIStarRatingControl *)self setFrame:v4, v6];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  [(TUIStarRatingControl *)self _updateForegroundImage:a3];
+  [(TUIStarRatingControl *)self _updateForegroundImage:change];
 
   [(TUIStarRatingControl *)self _updateBackgroundImage];
 }
 
-- (void)setStarWidth:(double)a3
+- (void)setStarWidth:(double)width
 {
-  if (self->_starWidth != a3)
+  if (self->_starWidth != width)
   {
-    self->_starWidth = a3;
+    self->_starWidth = width;
     [(TUIStarRatingControl *)self _updateForegroundImage];
 
     [(TUIStarRatingControl *)self _updateBackgroundImage];
   }
 }
 
-- (void)setStarPadding:(double)a3
+- (void)setStarPadding:(double)padding
 {
-  if (self->_starPadding != a3)
+  if (self->_starPadding != padding)
   {
-    self->_starPadding = a3;
+    self->_starPadding = padding;
     [(TUIStarRatingControl *)self _updateForegroundImage];
 
     [(TUIStarRatingControl *)self _updateBackgroundImage];
   }
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_foregroundColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_foregroundColor != colorCopy)
   {
-    v8 = v5;
-    v7 = [(UIColor *)v5 isEqual:?];
+    v8 = colorCopy;
+    v7 = [(UIColor *)colorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_foregroundColor, a3);
+      objc_storeStrong(&self->_foregroundColor, color);
       [(UIImageView *)self->_foregroundImageView setTintColor:v8];
       v6 = v8;
     }
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_backgroundColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_backgroundColor != colorCopy)
   {
-    v8 = v5;
-    v7 = [(UIColor *)v5 isEqual:?];
+    v8 = colorCopy;
+    v7 = [(UIColor *)colorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_backgroundColor, a3);
+      objc_storeStrong(&self->_backgroundColor, color);
       [(UIImageView *)self->_backgroundImageView setTintColor:v8];
       v6 = v8;
     }
   }
 }
 
-- (void)setStartColor:(id)a3
+- (void)setStartColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_startColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_startColor != colorCopy)
   {
-    v8 = v5;
-    v7 = [(UIColor *)v5 isEqual:?];
+    v8 = colorCopy;
+    v7 = [(UIColor *)colorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_startColor, a3);
+      objc_storeStrong(&self->_startColor, color);
       [(UIImageView *)self->_placeholderImageView setTintColor:v8];
       v6 = v8;
     }
   }
 }
 
-- (void)_updateImagesIfNeededWithForegroundImageName:(id)a3 backgroundImageName:(id)a4 starWidth:(double)a5 starPadding:(double)a6
+- (void)_updateImagesIfNeededWithForegroundImageName:(id)name backgroundImageName:(id)imageName starWidth:(double)width starPadding:(double)padding
 {
-  v12 = a3;
-  v11 = a4;
-  if (self->_starWidth != a5 || self->_starPadding != a6)
+  nameCopy = name;
+  imageNameCopy = imageName;
+  if (self->_starWidth != width || self->_starPadding != padding)
   {
-    self->_starWidth = a5;
-    self->_starPadding = a6;
-    objc_storeStrong(&self->_foregroundImageName, a3);
+    self->_starWidth = width;
+    self->_starPadding = padding;
+    objc_storeStrong(&self->_foregroundImageName, name);
     [(TUIStarRatingControl *)self _updateForegroundImage];
 LABEL_4:
-    objc_storeStrong(&self->_backgroundImageName, a4);
+    objc_storeStrong(&self->_backgroundImageName, imageName);
     [(TUIStarRatingControl *)self _updateBackgroundImage];
     goto LABEL_5;
   }
 
-  if (([v12 isEqualToString:self->_foregroundImageName] & 1) == 0)
+  if (([nameCopy isEqualToString:self->_foregroundImageName] & 1) == 0)
   {
-    objc_storeStrong(&self->_foregroundImageName, a3);
+    objc_storeStrong(&self->_foregroundImageName, name);
     [(TUIStarRatingControl *)self _updateForegroundImage];
   }
 
-  if (([v11 isEqualToString:self->_backgroundImageName] & 1) == 0)
+  if (([imageNameCopy isEqualToString:self->_backgroundImageName] & 1) == 0)
   {
     goto LABEL_4;
   }
@@ -250,8 +250,8 @@ LABEL_5:
   foregroundImageName = self->_foregroundImageName;
   starWidth = self->_starWidth;
   starPadding = self->_starPadding;
-  v7 = [(TUIStarRatingControl *)self traitCollection];
-  v8 = [v3 ratingStarsImageWithName:foregroundImageName starSize:5 starCount:v7 starPadding:starWidth traitCollection:starPadding];
+  traitCollection = [(TUIStarRatingControl *)self traitCollection];
+  v8 = [v3 ratingStarsImageWithName:foregroundImageName starSize:5 starCount:traitCollection starPadding:starWidth traitCollection:starPadding];
 
   [(UIImageView *)self->_foregroundImageView setImage:v8];
 }
@@ -262,18 +262,18 @@ LABEL_5:
   backgroundImageName = self->_backgroundImageName;
   starWidth = self->_starWidth;
   starPadding = self->_starPadding;
-  v7 = [(TUIStarRatingControl *)self traitCollection];
-  v8 = [v3 ratingStarsImageWithName:backgroundImageName starSize:5 starCount:v7 starPadding:starWidth traitCollection:starPadding];
+  traitCollection = [(TUIStarRatingControl *)self traitCollection];
+  v8 = [v3 ratingStarsImageWithName:backgroundImageName starSize:5 starCount:traitCollection starPadding:starWidth traitCollection:starPadding];
 
   [(UIImageView *)self->_placeholderImageView setImage:v8];
   [(UIImageView *)self->_backgroundImageView setImage:v8];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v3 = a3;
+  beginCopy = begin;
   v4 = 1;
-  if ([v3 numberOfTouches] == &dword_0 + 1)
+  if ([beginCopy numberOfTouches] == &dword_0 + 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -285,18 +285,18 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   p_trackingStartPoint = &self->_trackingStartPoint;
-  [a3 locationInView:{self, a4}];
+  [touch locationInView:{self, event}];
   p_trackingStartPoint->x = v5;
   p_trackingStartPoint->y = v6;
   return 1;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [a3 locationInView:{self, a4}];
+  [touch locationInView:{self, event}];
   v6 = v5 - self->_trackingStartPoint.y;
   self->_trackingLastPoint.x = v7;
   self->_trackingLastPoint.y = v5;
@@ -325,10 +325,10 @@ LABEL_5:
   return v8 <= 40.0;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   p_trackingLastPoint = &self->_trackingLastPoint;
-  [a3 locationInView:{self, a4}];
+  [touch locationInView:{self, event}];
   p_trackingLastPoint->x = v6;
   p_trackingLastPoint->y = v7;
   [(TUIStarRatingControl *)self _updateValueForPoint:?];
@@ -345,10 +345,10 @@ LABEL_5:
   return CGRectInset(*&v3, v7, v8);
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(TUIStarRatingControl *)self hitRect];
   v10 = x;
   v11 = y;
@@ -429,10 +429,10 @@ LABEL_5:
   return result;
 }
 
-- (void)_updateValueForPoint:(CGPoint)a3
+- (void)_updateValueForPoint:(CGPoint)point
 {
-  x = a3.x;
-  [(TUIStarRatingControl *)self starWidth:a3.x];
+  x = point.x;
+  [(TUIStarRatingControl *)self starWidth:point.x];
   v7 = v6;
   [(TUIStarRatingControl *)self bounds];
   v9 = ceil((v8 - v7 * 5uLL) / 4uLL);

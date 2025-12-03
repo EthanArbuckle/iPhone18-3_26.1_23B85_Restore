@@ -1,43 +1,43 @@
 @interface PUITrackingReportManager
-+ (BOOL)queryWithOptions:(id)a3 reply:(id)a4;
++ (BOOL)queryWithOptions:(id)options reply:(id)reply;
 - (BOOL)hadDataInLastQuery;
-- (BOOL)shouldIncludeBundleID:(id)a3;
+- (BOOL)shouldIncludeBundleID:(id)d;
 - (BOOL)trackingReportEnabled;
 - (PUITrackingReportManager)init;
-- (id)allEntriesFromAppsToTrackers:(id)a3;
-- (id)appsIDsContactingTrackersInAppOnly:(BOOL)a3;
-- (id)appsToTrackersInAppOnlyFromAppsToTrackers:(id)a3;
-- (id)appsToTrackersWithoutHiddenApps:(id)a3;
-- (id)appsToWebsitesDictFromAppsToTrackersDict:(id)a3;
-- (id)entries:(id)a3 filtered:(id)a4;
-- (id)entriesFiltered:(id)a3;
-- (id)trackerDataForAppID:(id)a3 inAppOnly:(BOOL)a4;
-- (id)trackerDataForAppID:(id)a3 websiteDomain:(id)a4;
-- (id)trackerDataForTrackerDomain:(id)a3 inAppOnly:(BOOL)a4;
-- (id)trackerDataForTrackerDomain:(id)a3 websiteDomain:(id)a4;
-- (id)trackerDomainsInAppOnly:(BOOL)a3;
-- (id)trackersToAppsDictFromAppsToTrackersDict:(id)a3;
-- (id)trackersToWebsitesDictFromAppsToTrackersDict:(id)a3;
-- (id)valuesAndCountsForKey:(id)a3 entries:(id)a4;
-- (id)valuesForKey:(id)a3 withLargestValueForKey:(id)a4 entries:(id)a5;
-- (id)websiteDomainsForAppID:(id)a3;
-- (id)websiteDomainsForTrackerDomain:(id)a3;
-- (int64_t)highestNumberOfTrackerDataPerAppInAppOnly:(BOOL)a3;
-- (int64_t)highestNumberOfTrackerDataPerTrackerInAppOnly:(BOOL)a3;
+- (id)allEntriesFromAppsToTrackers:(id)trackers;
+- (id)appsIDsContactingTrackersInAppOnly:(BOOL)only;
+- (id)appsToTrackersInAppOnlyFromAppsToTrackers:(id)trackers;
+- (id)appsToTrackersWithoutHiddenApps:(id)apps;
+- (id)appsToWebsitesDictFromAppsToTrackersDict:(id)dict;
+- (id)entries:(id)entries filtered:(id)filtered;
+- (id)entriesFiltered:(id)filtered;
+- (id)trackerDataForAppID:(id)d inAppOnly:(BOOL)only;
+- (id)trackerDataForAppID:(id)d websiteDomain:(id)domain;
+- (id)trackerDataForTrackerDomain:(id)domain inAppOnly:(BOOL)only;
+- (id)trackerDataForTrackerDomain:(id)domain websiteDomain:(id)websiteDomain;
+- (id)trackerDomainsInAppOnly:(BOOL)only;
+- (id)trackersToAppsDictFromAppsToTrackersDict:(id)dict;
+- (id)trackersToWebsitesDictFromAppsToTrackersDict:(id)dict;
+- (id)valuesAndCountsForKey:(id)key entries:(id)entries;
+- (id)valuesForKey:(id)key withLargestValueForKey:(id)forKey entries:(id)entries;
+- (id)websiteDomainsForAppID:(id)d;
+- (id)websiteDomainsForTrackerDomain:(id)domain;
+- (int64_t)highestNumberOfTrackerDataPerAppInAppOnly:(BOOL)only;
+- (int64_t)highestNumberOfTrackerDataPerTrackerInAppOnly:(BOOL)only;
 - (void)dataDidChange;
-- (void)exportToStream:(id)a3 error:(id *)a4;
-- (void)reloadDataWithCompletion:(id)a3;
-- (void)reloadEnabledWithCompletion:(id)a3;
-- (void)reloadWithCompletion:(id)a3;
+- (void)exportToStream:(id)stream error:(id *)error;
+- (void)reloadDataWithCompletion:(id)completion;
+- (void)reloadEnabledWithCompletion:(id)completion;
+- (void)reloadWithCompletion:(id)completion;
 @end
 
 @implementation PUITrackingReportManager
 
-+ (BOOL)queryWithOptions:(id)a3 reply:(id)a4
++ (BOOL)queryWithOptions:(id)options reply:(id)reply
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   v7 = objc_alloc(MEMORY[0x277D6B500]);
   v8 = [v7 initWorkspaceWithService:*MEMORY[0x277D6B6A0]];
   v31 = 0;
@@ -47,12 +47,12 @@
   v35 = __Block_byref_object_dispose__3;
   v36 = [objc_alloc(MEMORY[0x277D6B700]) initWithWorkspace:v8];
   v9 = *MEMORY[0x277D6B668];
-  v10 = [v5 objectForKeyedSubscript:*MEMORY[0x277D6B668]];
+  integerValue = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D6B668]];
 
-  if (v10)
+  if (integerValue)
   {
-    v11 = [v5 objectForKeyedSubscript:v9];
-    v10 = [v11 integerValue];
+    v11 = [optionsCopy objectForKeyedSubscript:v9];
+    integerValue = [v11 integerValue];
   }
 
   v12 = _PUILoggingFacility();
@@ -61,7 +61,7 @@
     *buf = 136315394;
     v38 = "+[PUITrackingReportManager queryWithOptions:reply:]";
     v39 = 2048;
-    v40 = v10;
+    v40 = integerValue;
     _os_log_impl(&dword_2657FE000, v12, OS_LOG_TYPE_DEFAULT, "%s: Starting query for NetworkDomainQueryType %ld data", buf, 0x16u);
   }
 
@@ -82,12 +82,12 @@
   v26[1] = 3221225472;
   v26[2] = __51__PUITrackingReportManager_queryWithOptions_reply___block_invoke;
   v26[3] = &unk_279BA23B8;
-  v29 = v10;
+  v29 = integerValue;
   v30 = v14;
-  v19 = v6;
+  v19 = replyCopy;
   v27 = v19;
   v28 = &v31;
-  v20 = [v17 networkDomainsToDateWithOptionsFor:0 nameKind:v18 domainType:1 startTime:0 options:v5 reply:v26];
+  v20 = [v17 networkDomainsToDateWithOptionsFor:0 nameKind:v18 domainType:1 startTime:0 options:optionsCopy reply:v26];
   if ((v20 & 1) == 0)
   {
     if (v19)
@@ -186,33 +186,33 @@ void __51__PUITrackingReportManager_queryWithOptions_reply___block_invoke(void *
     [(PUITrackingReportManager *)v2 setWorkspace:v4];
 
     v5 = objc_alloc(MEMORY[0x277D6B700]);
-    v6 = [(PUITrackingReportManager *)v2 workspace];
-    v7 = [v5 initWithWorkspace:v6];
+    workspace = [(PUITrackingReportManager *)v2 workspace];
+    v7 = [v5 initWithWorkspace:workspace];
     [(PUITrackingReportManager *)v2 setFeed:v7];
   }
 
   return v2;
 }
 
-- (void)reloadWithCompletion:(id)a3
+- (void)reloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__PUITrackingReportManager_reloadWithCompletion___block_invoke;
   v6[3] = &unk_279BA1E00;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(PUITrackingReportManager *)self reloadEnabledWithCompletion:v6];
 }
 
-- (void)reloadEnabledWithCompletion:(id)a3
+- (void)reloadEnabledWithCompletion:(id)completion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(PUITrackingReportManager *)self feed];
+  feed = [(PUITrackingReportManager *)self feed];
   v21 = *MEMORY[0x277D6B680];
   v22[0] = MEMORY[0x277CBEC38];
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
@@ -221,10 +221,10 @@ void __51__PUITrackingReportManager_queryWithOptions_reply___block_invoke(void *
   v13 = __56__PUITrackingReportManager_reloadEnabledWithCompletion___block_invoke;
   v14 = &unk_279BA2408;
   objc_copyWeak(&v17, &location);
-  v15 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = completionCopy;
   v16 = v7;
-  v8 = [v5 getNetworkDomainsOptions:v6 reply:&v11];
+  v8 = [feed getNetworkDomainsOptions:v6 reply:&v11];
 
   if ((v8 & 1) == 0)
   {
@@ -305,10 +305,10 @@ uint64_t __56__PUITrackingReportManager_reloadEnabledWithCompletion___block_invo
   return result;
 }
 
-- (void)reloadDataWithCompletion:(id)a3
+- (void)reloadDataWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if ([(PUITrackingReportManager *)self trackingReportEnabled])
   {
     objc_initWeak(&location, self);
@@ -331,7 +331,7 @@ uint64_t __56__PUITrackingReportManager_reloadEnabledWithCompletion___block_invo
       _os_signpost_emit_with_name_impl(&dword_2657FE000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "PUITrackingReportManager.reloadDataWithCompletion", "", buf, 2u);
     }
 
-    v10 = [(PUITrackingReportManager *)self feed];
+    feed = [(PUITrackingReportManager *)self feed];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __53__PUITrackingReportManager_reloadDataWithCompletion___block_invoke;
@@ -339,10 +339,10 @@ uint64_t __56__PUITrackingReportManager_reloadEnabledWithCompletion___block_invo
     objc_copyWeak(v20, &location);
     v11 = *MEMORY[0x277D6B758];
     v18[4] = self;
-    v12 = v4;
+    v12 = completionCopy;
     v19 = v12;
     v20[1] = v7;
-    LOBYTE(v11) = [v10 networkDomainsToDateWithOptionsFor:0 nameKind:v11 domainType:1 startTime:0 options:0 reply:v18];
+    LOBYTE(v11) = [feed networkDomainsToDateWithOptionsFor:0 nameKind:v11 domainType:1 startTime:0 options:0 reply:v18];
 
     if ((v11 & 1) == 0)
     {
@@ -382,9 +382,9 @@ uint64_t __56__PUITrackingReportManager_reloadEnabledWithCompletion___block_invo
       _os_log_impl(&dword_2657FE000, v16, OS_LOG_TYPE_DEFAULT, "%s: did not query, tracker analytics is off.", buf, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -523,32 +523,32 @@ void __53__PUITrackingReportManager_reloadDataWithCompletion___block_invoke_2(ui
 
 - (void)dataDidChange
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"PSUITrackingReportDataHasChanged" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"PSUITrackingReportDataHasChanged" object:0];
 }
 
-- (BOOL)shouldIncludeBundleID:(id)a3
+- (BOOL)shouldIncludeBundleID:(id)d
 {
   v3 = MEMORY[0x277CC1E70];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
+  dCopy = d;
+  v5 = [[v3 alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:0];
 
-  v6 = [v5 appTags];
-  v7 = [v6 containsObject:@"hidden"];
+  appTags = [v5 appTags];
+  v7 = [appTags containsObject:@"hidden"];
 
   return v7 ^ 1;
 }
 
-- (id)appsToTrackersWithoutHiddenApps:(id)a3
+- (id)appsToTrackersWithoutHiddenApps:(id)apps
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appsCopy = apps;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = appsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -582,16 +582,16 @@ void __53__PUITrackingReportManager_reloadDataWithCompletion___block_invoke_2(ui
   return v5;
 }
 
-- (id)allEntriesFromAppsToTrackers:(id)a3
+- (id)allEntriesFromAppsToTrackers:(id)trackers
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  trackersCopy = trackers;
   v4 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v3;
+  v5 = trackersCopy;
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
@@ -648,28 +648,28 @@ void __53__PUITrackingReportManager_reloadDataWithCompletion___block_invoke_2(ui
   return v16;
 }
 
-- (id)entriesFiltered:(id)a3
+- (id)entriesFiltered:(id)filtered
 {
-  v4 = a3;
-  v5 = [(PUITrackingReportManager *)self allEntries];
-  v6 = [(PUITrackingReportManager *)self entries:v5 filtered:v4];
+  filteredCopy = filtered;
+  allEntries = [(PUITrackingReportManager *)self allEntries];
+  v6 = [(PUITrackingReportManager *)self entries:allEntries filtered:filteredCopy];
 
   return v6;
 }
 
-- (id)entries:(id)a3 filtered:(id)a4
+- (id)entries:(id)entries filtered:(id)filtered
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  entriesCopy = entries;
+  filteredCopy = filtered;
+  if (filteredCopy)
   {
     v7 = objc_opt_new();
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v5;
+    v8 = entriesCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -685,7 +685,7 @@ void __53__PUITrackingReportManager_reloadDataWithCompletion___block_invoke_2(ui
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          if (v6[2](v6, v13))
+          if (filteredCopy[2](filteredCopy, v13))
           {
             [v7 addObject:{v13, v17}];
           }
@@ -702,7 +702,7 @@ void __53__PUITrackingReportManager_reloadDataWithCompletion___block_invoke_2(ui
 
   else
   {
-    v14 = v5;
+    v14 = entriesCopy;
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -710,17 +710,17 @@ void __53__PUITrackingReportManager_reloadDataWithCompletion___block_invoke_2(ui
   return v14;
 }
 
-- (id)valuesAndCountsForKey:(id)a3 entries:(id)a4
+- (id)valuesAndCountsForKey:(id)key entries:(id)entries
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  entriesCopy = entries;
   v7 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v6;
+  obj = entriesCopy;
   v8 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v8)
   {
@@ -737,25 +737,25 @@ void __53__PUITrackingReportManager_reloadDataWithCompletion___block_invoke_2(ui
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 objectForKeyedSubscript:v5];
+        v12 = [v11 objectForKeyedSubscript:keyCopy];
         v13 = [v7 objectForKeyedSubscript:v12];
 
         if (v13)
         {
           v14 = MEMORY[0x277CCABB0];
-          v15 = [v11 objectForKeyedSubscript:v5];
+          v15 = [v11 objectForKeyedSubscript:keyCopy];
           v16 = [v7 objectForKeyedSubscript:v15];
-          v17 = [v16 integerValue];
+          integerValue = [v16 integerValue];
           v18 = [v11 objectForKeyedSubscript:v25];
-          v19 = [v14 numberWithInteger:{objc_msgSend(v18, "integerValue") + v17}];
-          v20 = [v11 objectForKeyedSubscript:v5];
+          v19 = [v14 numberWithInteger:{objc_msgSend(v18, "integerValue") + integerValue}];
+          v20 = [v11 objectForKeyedSubscript:keyCopy];
           [v7 setObject:v19 forKeyedSubscript:v20];
         }
 
         else
         {
           v15 = [v11 objectForKeyedSubscript:v25];
-          v16 = [v11 objectForKeyedSubscript:v5];
+          v16 = [v11 objectForKeyedSubscript:keyCopy];
           [v7 setObject:v15 forKeyedSubscript:v16];
         }
       }
@@ -772,18 +772,18 @@ void __53__PUITrackingReportManager_reloadDataWithCompletion___block_invoke_2(ui
   return v21;
 }
 
-- (id)valuesForKey:(id)a3 withLargestValueForKey:(id)a4 entries:(id)a5
+- (id)valuesForKey:(id)key withLargestValueForKey:(id)forKey entries:(id)entries
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  forKeyCopy = forKey;
+  entriesCopy = entries;
   v10 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v9;
+  obj = entriesCopy;
   v11 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v11)
   {
@@ -799,12 +799,12 @@ void __53__PUITrackingReportManager_reloadDataWithCompletion___block_invoke_2(ui
         }
 
         v15 = *(*(&v35 + 1) + 8 * i);
-        v16 = [v15 objectForKeyedSubscript:v8];
+        v16 = [v15 objectForKeyedSubscript:forKeyCopy];
         v17 = objc_opt_respondsToSelector();
 
         if (v17)
         {
-          v18 = [v15 objectForKeyedSubscript:v7];
+          v18 = [v15 objectForKeyedSubscript:keyCopy];
           v19 = [v10 objectForKeyedSubscript:v18];
 
           if (!v19)
@@ -812,27 +812,27 @@ void __53__PUITrackingReportManager_reloadDataWithCompletion___block_invoke_2(ui
             goto LABEL_9;
           }
 
-          v20 = [v15 objectForKeyedSubscript:v7];
+          v20 = [v15 objectForKeyedSubscript:keyCopy];
           v21 = [v10 objectForKeyedSubscript:v20];
-          [v15 objectForKeyedSubscript:v8];
-          v22 = v8;
+          [v15 objectForKeyedSubscript:forKeyCopy];
+          v22 = forKeyCopy;
           v23 = v12;
           v24 = v13;
           v25 = v10;
-          v27 = v26 = v7;
+          v27 = v26 = keyCopy;
           v34 = [v21 compare:v27];
 
-          v7 = v26;
+          keyCopy = v26;
           v10 = v25;
           v13 = v24;
           v12 = v23;
-          v8 = v22;
+          forKeyCopy = v22;
 
           if (v34 == 1)
           {
 LABEL_9:
-            v28 = [v15 objectForKeyedSubscript:v8];
-            v29 = [v15 objectForKeyedSubscript:v7];
+            v28 = [v15 objectForKeyedSubscript:forKeyCopy];
+            v29 = [v15 objectForKeyedSubscript:keyCopy];
             [v10 setObject:v28 forKeyedSubscript:v29];
           }
         }
@@ -850,16 +850,16 @@ LABEL_9:
   return v30;
 }
 
-- (id)appsToTrackersInAppOnlyFromAppsToTrackers:(id)a3
+- (id)appsToTrackersInAppOnlyFromAppsToTrackers:(id)trackers
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  trackersCopy = trackers;
   v4 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v3;
+  obj = trackersCopy;
   v22 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v22)
   {
@@ -936,16 +936,16 @@ LABEL_9:
   return v4;
 }
 
-- (id)trackersToAppsDictFromAppsToTrackersDict:(id)a3
+- (id)trackersToAppsDictFromAppsToTrackersDict:(id)dict
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v3;
+  obj = dictCopy;
   v21 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v21)
   {
@@ -1017,16 +1017,16 @@ LABEL_9:
   return v4;
 }
 
-- (id)appsToWebsitesDictFromAppsToTrackersDict:(id)a3
+- (id)appsToWebsitesDictFromAppsToTrackersDict:(id)dict
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_opt_new();
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v3;
+  obj = dictCopy;
   v27 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v27)
   {
@@ -1119,16 +1119,16 @@ LABEL_9:
   return v4;
 }
 
-- (id)trackersToWebsitesDictFromAppsToTrackersDict:(id)a3
+- (id)trackersToWebsitesDictFromAppsToTrackersDict:(id)dict
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v3;
+  obj = dictCopy;
   v28 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v28)
   {
@@ -1225,16 +1225,16 @@ LABEL_9:
 
 - (BOOL)hadDataInLastQuery
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PSUITrackerHasDataKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PSUITrackerHasDataKey"];
 
   return v3;
 }
 
 - (BOOL)trackingReportEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PSUITrackerAnalyticsEnabledKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PSUITrackerAnalyticsEnabledKey"];
 
   return v3;
 }
@@ -1273,10 +1273,10 @@ void __53__PUITrackingReportManager_setTrackingReportEnabled___block_invoke_2(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)exportToStream:(id)a3 error:(id *)a4
+- (void)exportToStream:(id)stream error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v36 = a3;
+  streamCopy = stream;
   [(PUITrackingReportManager *)self allData];
   v43 = 0u;
   v44 = 0u;
@@ -1325,16 +1325,16 @@ void __53__PUITrackingReportManager_setTrackingReportEnabled___block_invoke_2(ui
               v14 = [v12 mutableCopy];
               [v14 setObject:@"networkActivity" forKeyedSubscript:@"type"];
               v38 = v11;
-              v15 = v36;
+              v15 = streamCopy;
               v16 = [PUIJSONSerialization dataWithJSONObject:v14 options:0 error:&v38];
               v17 = v16;
               if (v16 && (v18 = v16, v19 = v15, v20 = PUIWriteBytesToStream(v19, [v17 bytes], objc_msgSend(v17, "length"), &v38), v19, v20))
               {
                 v21 = v19;
                 v35 = v12;
-                v22 = [@"\n" UTF8String];
+                uTF8String = [@"\n" UTF8String];
                 v23 = [@"\n" lengthOfBytesUsingEncoding:4];
-                v24 = v22;
+                v24 = uTF8String;
                 v12 = v35;
                 v25 = PUIWriteBytesToStream(v21, v24, v23, &v38);
               }
@@ -1360,7 +1360,7 @@ void __53__PUITrackingReportManager_setTrackingReportEnabled___block_invoke_2(ui
                 }
 
                 v27 = v5;
-                *a4 = v5;
+                *error = v5;
               }
 
               objc_autoreleasePoolPop(v13);
@@ -1388,10 +1388,10 @@ void __53__PUITrackingReportManager_setTrackingReportEnabled___block_invoke_2(ui
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)highestNumberOfTrackerDataPerAppInAppOnly:(BOOL)a3
+- (int64_t)highestNumberOfTrackerDataPerAppInAppOnly:(BOOL)only
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (only)
   {
     [(PUITrackingReportManager *)self appsToTrackersInAppOnly];
   }
@@ -1444,10 +1444,10 @@ void __53__PUITrackingReportManager_setTrackingReportEnabled___block_invoke_2(ui
   return v6;
 }
 
-- (int64_t)highestNumberOfTrackerDataPerTrackerInAppOnly:(BOOL)a3
+- (int64_t)highestNumberOfTrackerDataPerTrackerInAppOnly:(BOOL)only
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (only)
   {
     [(PUITrackingReportManager *)self trackersToAppsInAppOnly];
   }
@@ -1500,9 +1500,9 @@ void __53__PUITrackingReportManager_setTrackingReportEnabled___block_invoke_2(ui
   return v6;
 }
 
-- (id)appsIDsContactingTrackersInAppOnly:(BOOL)a3
+- (id)appsIDsContactingTrackersInAppOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     [(PUITrackingReportManager *)self appsToTrackersInAppOnly];
   }
@@ -1512,15 +1512,15 @@ void __53__PUITrackingReportManager_setTrackingReportEnabled___block_invoke_2(ui
     [(PUITrackingReportManager *)self appsToTrackers];
   }
   v3 = ;
-  v4 = [v3 allKeys];
+  allKeys = [v3 allKeys];
 
-  return v4;
+  return allKeys;
 }
 
-- (id)trackerDataForAppID:(id)a3 inAppOnly:(BOOL)a4
+- (id)trackerDataForAppID:(id)d inAppOnly:(BOOL)only
 {
-  v6 = a3;
-  if (a4)
+  dCopy = d;
+  if (only)
   {
     [(PUITrackingReportManager *)self appsToTrackersInAppOnly];
   }
@@ -1530,14 +1530,14 @@ void __53__PUITrackingReportManager_setTrackingReportEnabled___block_invoke_2(ui
     [(PUITrackingReportManager *)self appsToTrackers];
   }
   v7 = ;
-  v8 = [v7 objectForKeyedSubscript:v6];
+  v8 = [v7 objectForKeyedSubscript:dCopy];
 
   return v8;
 }
 
-- (id)trackerDomainsInAppOnly:(BOOL)a3
+- (id)trackerDomainsInAppOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     [(PUITrackingReportManager *)self trackersToAppsInAppOnly];
   }
@@ -1547,15 +1547,15 @@ void __53__PUITrackingReportManager_setTrackingReportEnabled___block_invoke_2(ui
     [(PUITrackingReportManager *)self trackersToApps];
   }
   v3 = ;
-  v4 = [v3 allKeys];
+  allKeys = [v3 allKeys];
 
-  return v4;
+  return allKeys;
 }
 
-- (id)trackerDataForTrackerDomain:(id)a3 inAppOnly:(BOOL)a4
+- (id)trackerDataForTrackerDomain:(id)domain inAppOnly:(BOOL)only
 {
-  v6 = a3;
-  if (a4)
+  domainCopy = domain;
+  if (only)
   {
     [(PUITrackingReportManager *)self trackersToAppsInAppOnly];
   }
@@ -1565,53 +1565,53 @@ void __53__PUITrackingReportManager_setTrackingReportEnabled___block_invoke_2(ui
     [(PUITrackingReportManager *)self trackersToApps];
   }
   v7 = ;
-  v8 = [v7 objectForKeyedSubscript:v6];
+  v8 = [v7 objectForKeyedSubscript:domainCopy];
 
   return v8;
 }
 
-- (id)websiteDomainsForAppID:(id)a3
+- (id)websiteDomainsForAppID:(id)d
 {
-  v4 = a3;
-  v5 = [(PUITrackingReportManager *)self appsToWebsitesToTrackers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  appsToWebsitesToTrackers = [(PUITrackingReportManager *)self appsToWebsitesToTrackers];
+  v6 = [appsToWebsitesToTrackers objectForKeyedSubscript:dCopy];
 
-  v7 = [v6 allKeys];
+  allKeys = [v6 allKeys];
 
-  return v7;
+  return allKeys;
 }
 
-- (id)trackerDataForAppID:(id)a3 websiteDomain:(id)a4
+- (id)trackerDataForAppID:(id)d websiteDomain:(id)domain
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUITrackingReportManager *)self appsToWebsitesToTrackers];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  domainCopy = domain;
+  dCopy = d;
+  appsToWebsitesToTrackers = [(PUITrackingReportManager *)self appsToWebsitesToTrackers];
+  v9 = [appsToWebsitesToTrackers objectForKeyedSubscript:dCopy];
 
-  v10 = [v9 objectForKeyedSubscript:v6];
+  v10 = [v9 objectForKeyedSubscript:domainCopy];
 
   return v10;
 }
 
-- (id)websiteDomainsForTrackerDomain:(id)a3
+- (id)websiteDomainsForTrackerDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(PUITrackingReportManager *)self trackersToWebsitesToTrackers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  domainCopy = domain;
+  trackersToWebsitesToTrackers = [(PUITrackingReportManager *)self trackersToWebsitesToTrackers];
+  v6 = [trackersToWebsitesToTrackers objectForKeyedSubscript:domainCopy];
 
-  v7 = [v6 allKeys];
+  allKeys = [v6 allKeys];
 
-  return v7;
+  return allKeys;
 }
 
-- (id)trackerDataForTrackerDomain:(id)a3 websiteDomain:(id)a4
+- (id)trackerDataForTrackerDomain:(id)domain websiteDomain:(id)websiteDomain
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUITrackingReportManager *)self trackersToWebsitesToTrackers];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  websiteDomainCopy = websiteDomain;
+  domainCopy = domain;
+  trackersToWebsitesToTrackers = [(PUITrackingReportManager *)self trackersToWebsitesToTrackers];
+  v9 = [trackersToWebsitesToTrackers objectForKeyedSubscript:domainCopy];
 
-  v10 = [v9 objectForKeyedSubscript:v6];
+  v10 = [v9 objectForKeyedSubscript:websiteDomainCopy];
 
   return v10;
 }

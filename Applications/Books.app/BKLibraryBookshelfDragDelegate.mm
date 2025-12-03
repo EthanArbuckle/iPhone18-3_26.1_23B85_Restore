@@ -1,66 +1,66 @@
 @interface BKLibraryBookshelfDragDelegate
 + (void)initialize;
-- (BKLibraryBookshelfDragDelegate)initWithBookDataSource:(id)a3;
-- (BOOL)collectionViewIsReorderable:(id)a3;
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)collectionViewCollectionID:(id)a3;
-- (id)dragItemAtIndexPath:(id)a3;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
+- (BKLibraryBookshelfDragDelegate)initWithBookDataSource:(id)source;
+- (BOOL)collectionViewIsReorderable:(id)reorderable;
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)collectionViewCollectionID:(id)d;
+- (id)dragItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
 @end
 
 @implementation BKLibraryBookshelfDragDelegate
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && qword_100AF77D0 != -1)
+  if (objc_opt_class() == self && qword_100AF77D0 != -1)
   {
     sub_100792BCC();
   }
 }
 
-- (BKLibraryBookshelfDragDelegate)initWithBookDataSource:(id)a3
+- (BKLibraryBookshelfDragDelegate)initWithBookDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = BKLibraryBookshelfDragDelegate;
   v6 = [(BKLibraryBookshelfDragDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bookDataSource, a3);
+    objc_storeStrong(&v6->_bookDataSource, source);
   }
 
   return v7;
 }
 
-- (id)collectionViewCollectionID:(id)a3
+- (id)collectionViewCollectionID:(id)d
 {
-  v3 = [a3 dataSource];
+  dataSource = [d dataSource];
   v4 = BUProtocolCast();
 
-  v5 = [v4 dataSourceID];
+  dataSourceID = [v4 dataSourceID];
 
-  return v5;
+  return dataSourceID;
 }
 
-- (BOOL)collectionViewIsReorderable:(id)a3
+- (BOOL)collectionViewIsReorderable:(id)reorderable
 {
-  v3 = a3;
-  v4 = [v3 dataSource];
+  reorderableCopy = reorderable;
+  dataSource = [reorderableCopy dataSource];
   v5 = [NSIndexPath indexPathForItem:0 inSection:0];
-  v6 = [v4 collectionView:v3 canMoveItemAtIndexPath:v5];
+  v6 = [dataSource collectionView:reorderableCopy canMoveItemAtIndexPath:v5];
 
   return v6;
 }
 
-- (id)dragItemAtIndexPath:(id)a3
+- (id)dragItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfDragDelegate *)self bookDataSource];
-  v6 = [v5 representedObjectForIndexPath:v4];
+  pathCopy = path;
+  bookDataSource = [(BKLibraryBookshelfDragDelegate *)self bookDataSource];
+  v6 = [bookDataSource representedObjectForIndexPath:pathCopy];
 
   v7 = objc_alloc_init(NSItemProvider);
   v8 = +[BKLibraryManager defaultManager];
@@ -83,11 +83,11 @@
   return v11;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  if (([v7 hasActiveDrop] & 1) != 0 || (objc_msgSend(v7, "hasActiveDrag") & 1) != 0 || (byte_100AF77C0 = 1, -[BKLibraryBookshelfDragDelegate dragItemAtIndexPath:](self, "dragItemAtIndexPath:", v8), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  viewCopy = view;
+  pathCopy = path;
+  if (([viewCopy hasActiveDrop] & 1) != 0 || (objc_msgSend(viewCopy, "hasActiveDrag") & 1) != 0 || (byte_100AF77C0 = 1, -[BKLibraryBookshelfDragDelegate dragItemAtIndexPath:](self, "dragItemAtIndexPath:", pathCopy), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v11 = 0;
   }
@@ -102,31 +102,31 @@
   return v11;
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
-  v9 = a4;
-  v10 = a5;
-  if ([a3 isEditing])
+  sessionCopy = session;
+  pathCopy = path;
+  if ([view isEditing])
   {
     v11 = 0;
   }
 
   else
   {
-    v28 = v10;
-    v12 = [(BKLibraryBookshelfDragDelegate *)self dragItemAtIndexPath:v10];
+    v28 = pathCopy;
+    v12 = [(BKLibraryBookshelfDragDelegate *)self dragItemAtIndexPath:pathCopy];
     objc_opt_class();
     v27 = v12;
-    v13 = [v12 localObject];
+    localObject = [v12 localObject];
     v14 = BUDynamicCast();
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v29 = v9;
-    v15 = [v9 items];
-    v16 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    v29 = sessionCopy;
+    items = [sessionCopy items];
+    v16 = [items countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v16)
     {
       v17 = v16;
@@ -137,17 +137,17 @@
         {
           if (*v31 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(items);
           }
 
           v20 = *(*(&v30 + 1) + 8 * i);
           objc_opt_class();
-          v21 = [v20 localObject];
+          localObject2 = [v20 localObject];
           v22 = BUDynamicCast();
 
-          v23 = [v22 assetID];
-          v24 = [v14 assetID];
-          v25 = [v23 isEqualToString:v24];
+          assetID = [v22 assetID];
+          assetID2 = [v14 assetID];
+          v25 = [assetID isEqualToString:assetID2];
 
           if (v25)
           {
@@ -157,7 +157,7 @@
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v17 = [items countByEnumeratingWithState:&v30 objects:v35 count:16];
         if (v17)
         {
           continue;
@@ -173,24 +173,24 @@
       v34 = v27;
       v11 = [NSArray arrayWithObjects:&v34 count:1];
 LABEL_14:
-      v10 = v28;
-      v9 = v29;
+      pathCopy = v28;
+      sessionCopy = v29;
     }
 
     else
     {
       v11 = 0;
-      v10 = v28;
-      v9 = v29;
+      pathCopy = v28;
+      sessionCopy = v29;
     }
   }
 
   return v11;
 }
 
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path
 {
-  v4 = [a3 cellForItemAtIndexPath:a4];
+  v4 = [view cellForItemAtIndexPath:path];
   v5 = BUProtocolCast();
 
   [v5 prepareForDragPreview];
@@ -199,27 +199,27 @@ LABEL_14:
   return v6;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 delegate];
+  beginCopy = begin;
+  viewCopy = view;
+  delegate = [viewCopy delegate];
   v10 = BUProtocolCast();
 
   [v10 dragAndDropSessionDidStart];
-  v9 = [(BKLibraryBookshelfDragDelegate *)self collectionViewCollectionID:v7];
+  v9 = [(BKLibraryBookshelfDragDelegate *)self collectionViewCollectionID:viewCopy];
 
-  [v6 setLocalContext:v9];
+  [beginCopy setLocalContext:v9];
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
-  v5 = a4;
-  v6 = a3;
+  endCopy = end;
+  viewCopy = view;
   v7 = +[BKDragAndDropMonitor sharedInstance];
-  [v7 processWithDragSession:v5];
+  [v7 processWithDragSession:endCopy];
 
-  v8 = [v6 delegate];
+  delegate = [viewCopy delegate];
 
   v9 = BUProtocolCast();
 

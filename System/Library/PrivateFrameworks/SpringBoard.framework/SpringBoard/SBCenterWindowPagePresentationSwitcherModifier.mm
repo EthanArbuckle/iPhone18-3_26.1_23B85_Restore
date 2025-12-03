@@ -1,32 +1,32 @@
 @interface SBCenterWindowPagePresentationSwitcherModifier
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBCenterWindowPagePresentationSwitcherModifier)initWithTransitionID:(id)a3 toAppLayout:(id)a4 isMorph:(BOOL)a5;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBCenterWindowPagePresentationSwitcherModifier)initWithTransitionID:(id)d toAppLayout:(id)layout isMorph:(BOOL)morph;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
 @end
 
 @implementation SBCenterWindowPagePresentationSwitcherModifier
 
-- (SBCenterWindowPagePresentationSwitcherModifier)initWithTransitionID:(id)a3 toAppLayout:(id)a4 isMorph:(BOOL)a5
+- (SBCenterWindowPagePresentationSwitcherModifier)initWithTransitionID:(id)d toAppLayout:(id)layout isMorph:(BOOL)morph
 {
-  v9 = a4;
+  layoutCopy = layout;
   v16.receiver = self;
   v16.super_class = SBCenterWindowPagePresentationSwitcherModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:a3];
+  v10 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_toAppLayout, a4);
-    v11->_isInAppMorphAnimation = a5;
-    v12 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+    objc_storeStrong(&v10->_toAppLayout, layout);
+    v11->_isInAppMorphAnimation = morph;
+    initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
     defaultCriticallyDampedSettings = v11->_defaultCriticallyDampedSettings;
-    v11->_defaultCriticallyDampedSettings = v12;
+    v11->_defaultCriticallyDampedSettings = initWithDefaultValues;
 
     [(SBFFluidBehaviorSettings *)v11->_defaultCriticallyDampedSettings setDefaultCriticallyDampedValues];
     v14 = v11->_defaultCriticallyDampedSettings;
@@ -41,9 +41,9 @@
 {
   v6.receiver = self;
   v6.super_class = SBCenterWindowPagePresentationSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
-  v4 = SBAppendSwitcherModifierResponse(v3, v2);
+  v4 = SBAppendSwitcherModifierResponse(v3, transitionWillBegin);
 
   return v4;
 }
@@ -52,22 +52,22 @@
 {
   v7.receiver = self;
   v7.super_class = SBCenterWindowPagePresentationSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
   if ([(SBTransitionSwitcherModifier *)self isInterrupted])
   {
     v4 = objc_alloc_init(SBCancelWindowMorphingSwitcherEventResponse);
-    v5 = SBAppendSwitcherModifierResponse(v4, v3);
+    v5 = SBAppendSwitcherModifierResponse(v4, transitionDidEnd);
 
-    v3 = v5;
+    transitionDidEnd = v5;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([v4 isEqual:self->_toAppLayout] && self->_isInAppMorphAnimation)
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_toAppLayout] && self->_isInAppMorphAnimation)
   {
     v5 = SBSwitcherAsyncRenderingAttributesMake(0, 0);
   }
@@ -76,7 +76,7 @@
   {
     v8.receiver = self;
     v8.super_class = SBCenterWindowPagePresentationSwitcherModifier;
-    v5 = [(SBTransitionSwitcherModifier *)&v8 asyncRenderingAttributesForAppLayout:v4];
+    v5 = [(SBTransitionSwitcherModifier *)&v8 asyncRenderingAttributesForAppLayout:layoutCopy];
   }
 
   v6 = v5;
@@ -84,10 +84,10 @@
   return v6;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBCenterWindowPagePresentationSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBCenterWindowPagePresentationSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_toAppLayout] && -[SBTransitionSwitcherModifier isPreparingLayout](self, "isPreparingLayout"))
   {
@@ -98,7 +98,7 @@
   {
     v19.receiver = self;
     v19.super_class = SBCenterWindowPagePresentationSwitcherModifier;
-    [(SBCenterWindowPagePresentationSwitcherModifier *)&v19 frameForIndex:a3];
+    [(SBCenterWindowPagePresentationSwitcherModifier *)&v19 frameForIndex:index];
   }
 
   v11 = v7;
@@ -117,41 +117,41 @@
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBCenterWindowPagePresentationSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBCenterWindowPagePresentationSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (![v6 isEqual:self->_toAppLayout] || (v7 = 1.0, !-[SBTransitionSwitcherModifier isPreparingLayout](self, "isPreparingLayout")))
   {
     v10.receiver = self;
     v10.super_class = SBCenterWindowPagePresentationSwitcherModifier;
-    [(SBCenterWindowPagePresentationSwitcherModifier *)&v10 scaleForIndex:a3];
+    [(SBCenterWindowPagePresentationSwitcherModifier *)&v10 scaleForIndex:index];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v31.receiver = self;
   v31.super_class = SBCenterWindowPagePresentationSwitcherModifier;
-  v11 = a4;
-  [(SBCenterWindowPagePresentationSwitcherModifier *)&v31 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+  layoutCopy = layout;
+  [(SBCenterWindowPagePresentationSwitcherModifier *)&v31 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v11 isEqual:{self->_toAppLayout, v31.receiver, v31.super_class}];
+  v20 = [layoutCopy isEqual:{self->_toAppLayout, v31.receiver, v31.super_class}];
 
   if (v20)
   {
-    v21 = a3 == 4;
+    v21 = role == 4;
   }
 
   else
@@ -166,9 +166,9 @@
     v32.size.width = v17;
     v32.size.height = v19;
     v22 = CGRectGetHeight(v32);
-    v23 = [(SBCenterWindowPagePresentationSwitcherModifier *)self entityRemovalSettings];
-    v24 = [v23 dosidoDeclineIntentAnimationSettings];
-    [v24 fromViewSlideOutHeightOffsetMultiplier];
+    entityRemovalSettings = [(SBCenterWindowPagePresentationSwitcherModifier *)self entityRemovalSettings];
+    dosidoDeclineIntentAnimationSettings = [entityRemovalSettings dosidoDeclineIntentAnimationSettings];
+    [dosidoDeclineIntentAnimationSettings fromViewSlideOutHeightOffsetMultiplier];
     v26 = v22 * v25;
 
     v15 = v15 + v26;
@@ -185,18 +185,18 @@
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
   v13.receiver = self;
   v13.super_class = SBCenterWindowPagePresentationSwitcherModifier;
-  v8 = a4;
-  [(SBCenterWindowPagePresentationSwitcherModifier *)&v13 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+  layoutCopy = layout;
+  [(SBCenterWindowPagePresentationSwitcherModifier *)&v13 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
   v10 = v9;
-  LODWORD(a5) = [v8 isEqual:{self->_toAppLayout, v13.receiver, v13.super_class}];
+  LODWORD(index) = [layoutCopy isEqual:{self->_toAppLayout, v13.receiver, v13.super_class}];
 
-  if (a5)
+  if (index)
   {
-    v11 = a3 == 4;
+    v11 = role == 4;
   }
 
   else
@@ -212,10 +212,10 @@
   return v10;
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBCenterWindowPagePresentationSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBCenterWindowPagePresentationSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_toAppLayout] && -[SBTransitionSwitcherModifier isPreparingLayout](self, "isPreparingLayout"))
   {
@@ -227,7 +227,7 @@
   {
     v13.receiver = self;
     v13.super_class = SBCenterWindowPagePresentationSwitcherModifier;
-    [(SBCenterWindowPagePresentationSwitcherModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBCenterWindowPagePresentationSwitcherModifier *)&v13 perspectiveAngleForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -239,11 +239,11 @@
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBCenterWindowPagePresentationSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = v4;
   if (!self->_isInAppMorphAnimation)
   {

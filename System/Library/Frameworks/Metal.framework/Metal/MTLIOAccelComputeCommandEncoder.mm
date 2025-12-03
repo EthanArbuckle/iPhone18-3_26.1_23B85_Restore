@@ -1,31 +1,31 @@
 @interface MTLIOAccelComputeCommandEncoder
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4;
-- (void)memoryBarrierWithScope:(unint64_t)a3;
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count;
+- (void)memoryBarrierWithScope:(unint64_t)scope;
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
 @end
 
 @implementation MTLIOAccelComputeCommandEncoder
 
-- (void)memoryBarrierWithScope:(unint64_t)a3
+- (void)memoryBarrierWithScope:(unint64_t)scope
 {
   if ([(_MTLCommandEncoder *)self dispatchType]== 1)
   {
     [(MTLIOAccelComputeCommandEncoder *)self doesNotRecognizeSelector:a2];
   }
 
-  [(_MTLCommandEncoder *)self memoryBarrierNotificationWithScope:a3];
+  [(_MTLCommandEncoder *)self memoryBarrierNotificationWithScope:scope];
 }
 
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    v5 = a4;
+    countCopy = count;
     v7 = 0;
     do
     {
-      v8 = *a3++;
+      v8 = *resources++;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -38,10 +38,10 @@
       }
 
       v7 |= v9;
-      --v5;
+      --countCopy;
     }
 
-    while (v5);
+    while (countCopy);
   }
 
   else
@@ -52,13 +52,13 @@
   [(MTLIOAccelComputeCommandEncoder *)self memoryBarrierWithScope:v7];
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 visibleFunctionTable];
+    visibleFunctionTable = [table visibleFunctionTable];
 
-    [(MTLIOAccelComputeCommandEncoder *)self setVisibleFunctionTable:v8 atBufferIndex:a4];
+    [(MTLIOAccelComputeCommandEncoder *)self setVisibleFunctionTable:visibleFunctionTable atBufferIndex:index];
   }
 
   else
@@ -68,10 +68,10 @@
   }
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14[1] = *MEMORY[0x1E69E9840];
   if (([(MTLDevice *)[(_MTLCommandEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
@@ -81,7 +81,7 @@
       v10 = length;
       do
       {
-        v11 = *a3++;
+        v11 = *tables++;
         *v9++ = [v11 visibleFunctionTable];
         --v10;
       }

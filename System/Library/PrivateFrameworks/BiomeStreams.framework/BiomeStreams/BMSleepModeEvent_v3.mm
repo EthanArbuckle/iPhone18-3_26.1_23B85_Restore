@@ -1,21 +1,21 @@
 @interface BMSleepModeEvent_v3
-- (BMSleepModeEvent_v3)initWithProto:(id)a3;
+- (BMSleepModeEvent_v3)initWithProto:(id)proto;
 @end
 
 @implementation BMSleepModeEvent_v3
 
-- (BMSleepModeEvent_v3)initWithProto:(id)a3
+- (BMSleepModeEvent_v3)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 sleepModeState];
-      v7 = v6;
-      if (v6 >= 4)
+      v5 = protoCopy;
+      sleepModeState = [v5 sleepModeState];
+      v7 = sleepModeState;
+      if (sleepModeState >= 4)
       {
         v10 = __biome_log_for_category();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -28,12 +28,12 @@
 
       else
       {
-        v8 = qword_184D27BE8[v6];
+        v8 = qword_184D27BE8[sleepModeState];
       }
 
       v11 = BMSleepModeChangeReasonFromReason([v5 sleepModeChangeReason]);
-      v12 = [v5 hasExpectedEndDate];
-      if (v12)
+      hasExpectedEndDate = [v5 hasExpectedEndDate];
+      if (hasExpectedEndDate)
       {
         v13 = MEMORY[0x1E695DF00];
         [v5 expectedEndDate];
@@ -48,12 +48,12 @@
       v17.receiver = self;
       v17.super_class = BMSleepModeEvent_v3;
       v15 = [(BMSleepModeEvent *)&v17 initWithSleepModeState:v8 sleepModeChangeReason:v11 expectedEndDate:v14];
-      if (v12)
+      if (hasExpectedEndDate)
       {
       }
 
       self = v15;
-      v9 = self;
+      selfCopy = self;
     }
 
     else
@@ -64,16 +64,16 @@
         [BMSleepModeEvent initWithProto:];
       }
 
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

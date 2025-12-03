@@ -1,17 +1,17 @@
 @interface CSLPRFWatchChoiceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CSLPRFWatchChoiceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSLPRFWatchChoiceView" hasInstanceVariable:@"_button" withType:"CSLPRFAppViewChoiceButton"];
-  [v3 validateClass:@"CSLPRFAppViewChoiceButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"CSLPRFWatchChoiceView" hasInstanceMethod:@"choice" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSLPRFWatchChoiceView" hasInstanceVariable:@"_button" withType:"CSLPRFAppViewChoiceButton"];
+  [validationsCopy validateClass:@"CSLPRFAppViewChoiceButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"CSLPRFWatchChoiceView" hasInstanceMethod:@"choice" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -33,7 +33,7 @@
 LABEL_8:
         v10.receiver = self;
         v10.super_class = CSLPRFWatchChoiceViewAccessibility;
-        v5 = [(CSLPRFWatchChoiceViewAccessibility *)&v10 accessibilityLabel];
+        accessibilityLabel = [(CSLPRFWatchChoiceViewAccessibility *)&v10 accessibilityLabel];
         goto LABEL_9;
       }
 
@@ -49,9 +49,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 LABEL_9:
-  v8 = v5;
+  v8 = accessibilityLabel;
 LABEL_10:
 
   return v8;
@@ -75,12 +75,12 @@ uint64_t __56__CSLPRFWatchChoiceViewAccessibility_accessibilityLabel__block_invo
 
   if (v4)
   {
-    v5 = [v4 isSelected];
-    v6 = [v4 accessibilityTraits];
-    v7 = v6;
-    if (v5)
+    isSelected = [v4 isSelected];
+    accessibilityTraits = [v4 accessibilityTraits];
+    accessibilityTraits2 = accessibilityTraits;
+    if (isSelected)
     {
-      v7 = *MEMORY[0x29EDC7FC0] | v6;
+      accessibilityTraits2 = *MEMORY[0x29EDC7FC0] | accessibilityTraits;
     }
   }
 
@@ -88,10 +88,10 @@ uint64_t __56__CSLPRFWatchChoiceViewAccessibility_accessibilityLabel__block_invo
   {
     v9.receiver = self;
     v9.super_class = CSLPRFWatchChoiceViewAccessibility;
-    v7 = [(CSLPRFWatchChoiceViewAccessibility *)&v9 accessibilityTraits];
+    accessibilityTraits2 = [(CSLPRFWatchChoiceViewAccessibility *)&v9 accessibilityTraits];
   }
 
-  return v7;
+  return accessibilityTraits2;
 }
 
 @end

@@ -6,18 +6,18 @@
 + (TUCallHistoryControllerXPCServer)synchronousServer;
 - (NSXPCConnection)xpcConnection;
 - (TUCallHistoryControllerXPCClient)init;
-- (id)asynchronousServerWithErrorHandler:(id)a3;
-- (id)synchronousServerWithErrorHandler:(id)a3;
-- (void)_invokeCompletionHandler:(id)a3;
+- (id)asynchronousServerWithErrorHandler:(id)handler;
+- (id)synchronousServerWithErrorHandler:(id)handler;
+- (void)_invokeCompletionHandler:(id)handler;
 - (void)_requestInitialStateIfNecessary;
-- (void)_requestInitialStateWithCompletionHandler:(id)a3;
+- (void)_requestInitialStateWithCompletionHandler:(id)handler;
 - (void)allCallHistoryDeleted;
 - (void)dealloc;
 - (void)init;
 - (void)invalidate;
-- (void)recentCallsDeleted:(id)a3;
-- (void)registerWithCompletionHandler:(id)a3;
-- (void)setXpcConnection:(id)a3;
+- (void)recentCallsDeleted:(id)deleted;
+- (void)registerWithCompletionHandler:(id)handler;
+- (void)setXpcConnection:(id)connection;
 @end
 
 @implementation TUCallHistoryControllerXPCClient
@@ -119,18 +119,18 @@ void __40__TUCallHistoryControllerXPCClient_init__block_invoke(uint64_t a1)
   [(TUCallHistoryControllerXPCClient *)&v4 dealloc];
 }
 
-- (void)registerWithCompletionHandler:(id)a3
+- (void)registerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUCallHistoryControllerXPCClient *)self queue];
+  handlerCopy = handler;
+  queue = [(TUCallHistoryControllerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__TUCallHistoryControllerXPCClient_registerWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __66__TUCallHistoryControllerXPCClient_registerWithCompletionHandler___block_invoke(uint64_t a1)
@@ -151,15 +151,15 @@ uint64_t __66__TUCallHistoryControllerXPCClient_registerWithCompletionHandler___
   }
 }
 
-- (void)recentCallsDeleted:(id)a3
+- (void)recentCallsDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__TUCallHistoryControllerXPCClient_recentCallsDeleted___block_invoke;
   v7[3] = &unk_1E7425828;
-  v8 = v4;
-  v5 = v4;
+  v8 = deletedCopy;
+  v5 = deletedCopy;
   v6 = [(TUCallHistoryControllerXPCClient *)self asynchronousServerWithErrorHandler:v7];
   [v6 recentCallsDeleted:v5];
 }
@@ -205,19 +205,19 @@ void __57__TUCallHistoryControllerXPCClient_allCallHistoryDeleted__block_invoke(
 
 - (void)invalidate
 {
-  v3 = [(TUCallHistoryControllerXPCClient *)self queue];
+  queue = [(TUCallHistoryControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__TUCallHistoryControllerXPCClient_invalidate__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_requestInitialStateIfNecessary
 {
-  v3 = [(TUCallHistoryControllerXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallHistoryControllerXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(TUCallHistoryControllerXPCClient *)self hasRequestedInitialState])
   {
@@ -226,22 +226,22 @@ void __57__TUCallHistoryControllerXPCClient_allCallHistoryDeleted__block_invoke(
   }
 }
 
-- (void)_requestInitialStateWithCompletionHandler:(id)a3
+- (void)_requestInitialStateWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v4 = [(TUCallHistoryControllerXPCClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  handlerCopy = handler;
+  queue = [(TUCallHistoryControllerXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(TUCallHistoryControllerXPCClient *)self setHasRequestedInitialState:1];
-  [(TUCallHistoryControllerXPCClient *)self _invokeCompletionHandler:v5];
+  [(TUCallHistoryControllerXPCClient *)self _invokeCompletionHandler:handlerCopy];
 }
 
-- (void)_invokeCompletionHandler:(id)a3
+- (void)_invokeCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     v4 = dispatch_get_global_queue(21, 0);
-    dispatch_async(v4, a3);
+    dispatch_async(v4, handler);
   }
 }
 
@@ -262,11 +262,11 @@ void __57__TUCallHistoryControllerXPCClient_allCallHistoryDeleted__block_invoke(
     v6 = self->_xpcConnection;
     self->_xpcConnection = v5;
 
-    v7 = [objc_opt_class() callHistoryControllerServerXPCInterface];
-    [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:v7];
+    callHistoryControllerServerXPCInterface = [objc_opt_class() callHistoryControllerServerXPCInterface];
+    [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:callHistoryControllerServerXPCInterface];
 
-    v8 = [objc_opt_class() callHistoryControllerClientXPCInterface];
-    [(NSXPCConnection *)self->_xpcConnection setExportedInterface:v8];
+    callHistoryControllerClientXPCInterface = [objc_opt_class() callHistoryControllerClientXPCInterface];
+    [(NSXPCConnection *)self->_xpcConnection setExportedInterface:callHistoryControllerClientXPCInterface];
 
     [(NSXPCConnection *)self->_xpcConnection setExportedObject:self];
     objc_initWeak(buf, self);
@@ -353,21 +353,21 @@ uint64_t __49__TUCallHistoryControllerXPCClient_xpcConnection__block_invoke_2_10
   return [*(*(a1 + 32) + 24) invalidate];
 }
 
-- (void)setXpcConnection:(id)a3
+- (void)setXpcConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_xpcConnection != v5)
+  if (self->_xpcConnection != connectionCopy)
   {
-    objc_storeStrong(&self->_xpcConnection, a3);
+    objc_storeStrong(&self->_xpcConnection, connection);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (id)asynchronousServerWithErrorHandler:(id)a3
+- (id)asynchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&sAsynchronousServer_4);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -377,16 +377,16 @@ uint64_t __49__TUCallHistoryControllerXPCClient_xpcConnection__block_invoke_2_10
 
   else
   {
-    v8 = [(TUCallHistoryControllerXPCClient *)self xpcConnection];
-    v7 = [v8 remoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUCallHistoryControllerXPCClient *)self xpcConnection];
+    v7 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
 }
 
-- (id)synchronousServerWithErrorHandler:(id)a3
+- (id)synchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&sSynchronousServer_4);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -396,8 +396,8 @@ uint64_t __49__TUCallHistoryControllerXPCClient_xpcConnection__block_invoke_2_10
 
   else
   {
-    v8 = [(TUCallHistoryControllerXPCClient *)self xpcConnection];
-    v7 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUCallHistoryControllerXPCClient *)self xpcConnection];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
@@ -461,7 +461,7 @@ uint64_t __75__TUCallHistoryControllerXPCClient_callHistoryControllerClientXPCIn
   block[1] = 3221225472;
   block[2] = __75__TUCallHistoryControllerXPCClient_callHistoryControllerServerXPCInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (callHistoryControllerServerXPCInterface_onceToken != -1)
   {
     dispatch_once(&callHistoryControllerServerXPCInterface_onceToken, block);
@@ -487,7 +487,7 @@ void __75__TUCallHistoryControllerXPCClient_callHistoryControllerServerXPCInterf
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 134218240;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2048;
   v7 = a2;
   _os_log_debug_impl(&dword_1956FD000, log, OS_LOG_TYPE_DEBUG, "Registering TUCallHistoryControllerXPCClient %p with async server %p", &v4, 0x16u);

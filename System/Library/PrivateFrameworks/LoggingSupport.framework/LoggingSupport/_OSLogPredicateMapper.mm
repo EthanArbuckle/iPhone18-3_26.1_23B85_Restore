@@ -1,20 +1,20 @@
 @interface _OSLogPredicateMapper
 - (NSMutableSet)validKeyPaths;
-- (_OSLogPredicateMapper)initWithPredicate:(id)a3 andValidate:(BOOL)a4;
-- (id)caseInsensitiveMapKeywordToConstantExpression:(id)a3 keywordMap:(id)a4;
-- (id)mapEventTypeExpression:(id)a3;
-- (id)mapKeywordToConstantExpression:(id)a3 keywordMap:(id)a4;
-- (id)mapMessageTypeExpression:(id)a3;
-- (id)mapSignpostScopeExpression:(id)a3;
-- (id)mapSignpostTypeExpression:(id)a3;
-- (void)mapLeftExpression:(id *)a3 andRightExpression:(id *)a4;
-- (void)processComparisonPredicate:(id)a3;
-- (void)processCompoundPredicate:(id)a3;
-- (void)validateExpression:(id)a3;
-- (void)validateKeyPath:(id)a3;
-- (void)visitPredicate:(id)a3;
-- (void)visitPredicateExpression:(id)a3;
-- (void)visitPredicateOperator:(id)a3;
+- (_OSLogPredicateMapper)initWithPredicate:(id)predicate andValidate:(BOOL)validate;
+- (id)caseInsensitiveMapKeywordToConstantExpression:(id)expression keywordMap:(id)map;
+- (id)mapEventTypeExpression:(id)expression;
+- (id)mapKeywordToConstantExpression:(id)expression keywordMap:(id)map;
+- (id)mapMessageTypeExpression:(id)expression;
+- (id)mapSignpostScopeExpression:(id)expression;
+- (id)mapSignpostTypeExpression:(id)expression;
+- (void)mapLeftExpression:(id *)expression andRightExpression:(id *)rightExpression;
+- (void)processComparisonPredicate:(id)predicate;
+- (void)processCompoundPredicate:(id)predicate;
+- (void)validateExpression:(id)expression;
+- (void)validateKeyPath:(id)path;
+- (void)visitPredicate:(id)predicate;
+- (void)visitPredicateExpression:(id)expression;
+- (void)visitPredicateOperator:(id)operator;
 @end
 
 @implementation _OSLogPredicateMapper
@@ -34,10 +34,10 @@
   return validKeyPaths__validKeyPaths;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  expressionCopy = expression;
   if (self->_pass != 1)
   {
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -46,43 +46,43 @@
     __break(1u);
   }
 
-  v6 = v4;
-  [(_OSLogPredicateMapper *)self validateExpression:v4];
+  v6 = expressionCopy;
+  [(_OSLogPredicateMapper *)self validateExpression:expressionCopy];
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)visitPredicateOperator:(id)a3
+- (void)visitPredicateOperator:(id)operator
 {
-  v3 = a3;
+  operatorCopy = operator;
   _os_crash();
   __break(1u);
 }
 
-- (void)validateExpression:(id)a3
+- (void)validateExpression:(id)expression
 {
   v13 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v4 = [v12 expressionType];
-  if (v4 <= 0xE)
+  expressionCopy = expression;
+  expressionType = [expressionCopy expressionType];
+  if (expressionType <= 0xE)
   {
-    if (((1 << v4) & 0x4403) != 0)
+    if (((1 << expressionType) & 0x4403) != 0)
     {
       goto LABEL_3;
     }
 
-    if (v4 == 3)
+    if (expressionType == 3)
     {
-      v6 = [v12 operand];
-      v7 = [v6 expressionType];
+      operand = [expressionCopy operand];
+      expressionType2 = [operand expressionType];
 
-      if (v7 == 1)
+      if (expressionType2 == 1)
       {
-        v8 = [v12 arguments];
-        v9 = [v8 count];
+        arguments = [expressionCopy arguments];
+        v9 = [arguments count];
 
         if (v9 == 1)
         {
-          [(_OSLogPredicateMapper *)self validateKeyPath:v12];
+          [(_OSLogPredicateMapper *)self validateKeyPath:expressionCopy];
           goto LABEL_3;
         }
       }
@@ -103,20 +103,20 @@
   }
 
   validationErrors = self->_validationErrors;
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid expression: %@", v12];
-  [(NSMutableArray *)validationErrors addObject:v11];
+  expressionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid expression: %@", expressionCopy];
+  [(NSMutableArray *)validationErrors addObject:expressionCopy];
 
 LABEL_3:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validateKeyPath:(id)a3
+- (void)validateKeyPath:(id)path
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_OSLogPredicateMapper *)self validKeyPaths];
-  v6 = [v4 keyPath];
-  v7 = [v5 containsObject:v6];
+  pathCopy = path;
+  validKeyPaths = [(_OSLogPredicateMapper *)self validKeyPaths];
+  keyPath = [pathCopy keyPath];
+  v7 = [validKeyPaths containsObject:keyPath];
 
   if ((v7 & 1) == 0)
   {
@@ -124,8 +124,8 @@ LABEL_3:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = self->_validKeyPathPrefixes;
-    v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    keyPath3 = self->_validKeyPathPrefixes;
+    v9 = [(NSMutableArray *)keyPath3 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -136,12 +136,12 @@ LABEL_4:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(keyPath3);
         }
 
         v13 = *(*(&v19 + 1) + 8 * v12);
-        v14 = [v4 keyPath];
-        LOBYTE(v13) = [v14 hasPrefix:v13];
+        keyPath2 = [pathCopy keyPath];
+        LOBYTE(v13) = [keyPath2 hasPrefix:v13];
 
         if (v13)
         {
@@ -150,7 +150,7 @@ LABEL_4:
 
         if (v10 == ++v12)
         {
-          v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v10 = [(NSMutableArray *)keyPath3 countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v10)
           {
             goto LABEL_4;
@@ -167,8 +167,8 @@ LABEL_10:
 
       validationErrors = self->_validationErrors;
       v16 = MEMORY[0x277CCACA8];
-      v8 = [v4 keyPath];
-      v17 = [v16 stringWithFormat:@"no such field: %@", v8];
+      keyPath3 = [pathCopy keyPath];
+      v17 = [v16 stringWithFormat:@"no such field: %@", keyPath3];
       [(NSMutableArray *)validationErrors addObject:v17];
     }
   }
@@ -176,117 +176,117 @@ LABEL_10:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processCompoundPredicate:(id)a3
+- (void)processCompoundPredicate:(id)predicate
 {
   stack = self->_stack;
-  v5 = a3;
+  predicateCopy = predicate;
   v6 = [(NSMutableArray *)stack count];
-  v7 = [v5 subpredicates];
-  v8 = v6 - [v7 count];
-  v9 = [v5 subpredicates];
-  v10 = [v9 count];
+  subpredicates = [predicateCopy subpredicates];
+  v8 = v6 - [subpredicates count];
+  subpredicates2 = [predicateCopy subpredicates];
+  v10 = [subpredicates2 count];
 
   v14 = [(NSMutableArray *)self->_stack subarrayWithRange:v8, v10];
   [(NSMutableArray *)self->_stack removeObjectsInRange:v8, v10];
   v11 = objc_alloc(MEMORY[0x277CCA920]);
-  v12 = [v5 compoundPredicateType];
+  compoundPredicateType = [predicateCopy compoundPredicateType];
 
-  v13 = [v11 initWithType:v12 subpredicates:v14];
+  v13 = [v11 initWithType:compoundPredicateType subpredicates:v14];
   [(NSMutableArray *)self->_stack addObject:v13];
 }
 
-- (void)processComparisonPredicate:(id)a3
+- (void)processComparisonPredicate:(id)predicate
 {
-  v4 = a3;
-  v13 = [v4 leftExpression];
-  v12 = [v4 rightExpression];
-  [(_OSLogPredicateMapper *)self mapLeftExpression:&v13 andRightExpression:&v12];
-  [(_OSLogPredicateMapper *)self mapLeftExpression:&v12 andRightExpression:&v13];
+  predicateCopy = predicate;
+  leftExpression = [predicateCopy leftExpression];
+  rightExpression = [predicateCopy rightExpression];
+  [(_OSLogPredicateMapper *)self mapLeftExpression:&leftExpression andRightExpression:&rightExpression];
+  [(_OSLogPredicateMapper *)self mapLeftExpression:&rightExpression andRightExpression:&leftExpression];
   v5 = objc_alloc(MEMORY[0x277CCA918]);
-  v7 = v12;
-  v6 = v13;
-  v8 = [v4 comparisonPredicateModifier];
-  v9 = [v4 predicateOperatorType];
-  v10 = [v4 options];
+  v7 = rightExpression;
+  v6 = leftExpression;
+  comparisonPredicateModifier = [predicateCopy comparisonPredicateModifier];
+  predicateOperatorType = [predicateCopy predicateOperatorType];
+  options = [predicateCopy options];
 
-  v11 = [v5 initWithLeftExpression:v6 rightExpression:v7 modifier:v8 type:v9 options:v10];
+  v11 = [v5 initWithLeftExpression:v6 rightExpression:v7 modifier:comparisonPredicateModifier type:predicateOperatorType options:options];
   [(NSMutableArray *)self->_stack addObject:v11];
 }
 
-- (void)mapLeftExpression:(id *)a3 andRightExpression:(id *)a4
+- (void)mapLeftExpression:(id *)expression andRightExpression:(id *)rightExpression
 {
   if (mapLeftExpression_andRightExpression__once != -1)
   {
     dispatch_once(&mapLeftExpression_andRightExpression__once, &__block_literal_global_259);
   }
 
-  if ([*a3 expressionType] == 3)
+  if ([*expression expressionType] == 3)
   {
-    v24 = [*a3 keyPath];
+    keyPath = [*expression keyPath];
     v7 = [mapLeftExpression_andRightExpression__keypathMaps objectForKeyedSubscript:?];
 
     if (v7)
     {
       v8 = MEMORY[0x277CCA9C0];
-      v9 = [mapLeftExpression_andRightExpression__keypathMaps objectForKeyedSubscript:v24];
-      v10 = [v8 expressionForKeyPath:v9];
-      v11 = *a3;
-      *a3 = v10;
+      constantValue = [mapLeftExpression_andRightExpression__keypathMaps objectForKeyedSubscript:keyPath];
+      v10 = [v8 expressionForKeyPath:constantValue];
+      v11 = *expression;
+      *expression = v10;
     }
 
     else
     {
-      if (([v24 isEqualToString:@"type"] & 1) != 0 || objc_msgSend(v24, "isEqualToString:", @"eventType"))
+      if (([keyPath isEqualToString:@"type"] & 1) != 0 || objc_msgSend(keyPath, "isEqualToString:", @"eventType"))
       {
         v12 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"type"];
-        v13 = *a3;
-        *a3 = v12;
+        v13 = *expression;
+        *expression = v12;
 
-        v14 = [(_OSLogPredicateMapper *)self mapEventTypeExpression:*a4];
+        v14 = [(_OSLogPredicateMapper *)self mapEventTypeExpression:*rightExpression];
       }
 
-      else if ([v24 isEqualToString:@"signpostScope"])
+      else if ([keyPath isEqualToString:@"signpostScope"])
       {
-        v14 = [(_OSLogPredicateMapper *)self mapSignpostScopeExpression:*a4];
+        v14 = [(_OSLogPredicateMapper *)self mapSignpostScopeExpression:*rightExpression];
       }
 
       else
       {
-        if (![v24 isEqualToString:@"signpostType"])
+        if (![keyPath isEqualToString:@"signpostType"])
         {
-          if (([v24 isEqualToString:@"messageType"] & 1) == 0 && !objc_msgSend(v24, "isEqualToString:", @"logType"))
+          if (([keyPath isEqualToString:@"messageType"] & 1) == 0 && !objc_msgSend(keyPath, "isEqualToString:", @"logType"))
           {
-            v23 = [MEMORY[0x277CCA9C0] expressionForKeyPath:v24];
-            v9 = *a3;
-            *a3 = v23;
+            v23 = [MEMORY[0x277CCA9C0] expressionForKeyPath:keyPath];
+            constantValue = *expression;
+            *expression = v23;
             goto LABEL_11;
           }
 
           v15 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"logType"];
-          v16 = *a3;
-          *a3 = v15;
+          v16 = *expression;
+          *expression = v15;
 
-          v17 = [(_OSLogPredicateMapper *)self mapMessageTypeExpression:*a4];
-          v18 = *a4;
-          *a4 = v17;
+          v17 = [(_OSLogPredicateMapper *)self mapMessageTypeExpression:*rightExpression];
+          v18 = *rightExpression;
+          *rightExpression = v17;
 
-          if ([*a4 expressionType] || (objc_msgSend(*a4, "constantValue"), v19 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v19, (isKindOfClass & 1) == 0))
+          if ([*rightExpression expressionType] || (objc_msgSend(*rightExpression, "constantValue"), v19 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v19, (isKindOfClass & 1) == 0))
           {
 LABEL_12:
 
             return;
           }
 
-          v9 = [*a4 constantValue];
-          v21 = [v9 integerValue];
-          if (v21 == 2)
+          constantValue = [*rightExpression constantValue];
+          integerValue = [constantValue integerValue];
+          if (integerValue == 2)
           {
             v22 = 1;
           }
 
           else
           {
-            if (v21 != 1)
+            if (integerValue != 1)
             {
               goto LABEL_11;
             }
@@ -298,11 +298,11 @@ LABEL_12:
           goto LABEL_11;
         }
 
-        v14 = [(_OSLogPredicateMapper *)self mapSignpostTypeExpression:*a4];
+        v14 = [(_OSLogPredicateMapper *)self mapSignpostTypeExpression:*rightExpression];
       }
 
-      v9 = *a4;
-      *a4 = v14;
+      constantValue = *rightExpression;
+      *rightExpression = v14;
     }
 
 LABEL_11:
@@ -311,119 +311,119 @@ LABEL_11:
   }
 }
 
-- (id)mapSignpostTypeExpression:(id)a3
+- (id)mapSignpostTypeExpression:(id)expression
 {
   v4 = mapSignpostTypeExpression__once;
-  v5 = a3;
+  expressionCopy = expression;
   if (v4 != -1)
   {
     dispatch_once(&mapSignpostTypeExpression__once, &__block_literal_global_244);
   }
 
-  v6 = [(_OSLogPredicateMapper *)self mapKeywordToConstantExpression:v5 keywordMap:mapSignpostTypeExpression__types];
+  v6 = [(_OSLogPredicateMapper *)self mapKeywordToConstantExpression:expressionCopy keywordMap:mapSignpostTypeExpression__types];
 
   return v6;
 }
 
-- (id)mapSignpostScopeExpression:(id)a3
+- (id)mapSignpostScopeExpression:(id)expression
 {
   v4 = mapSignpostScopeExpression__once;
-  v5 = a3;
+  expressionCopy = expression;
   if (v4 != -1)
   {
     dispatch_once(&mapSignpostScopeExpression__once, &__block_literal_global_223);
   }
 
-  v6 = [(_OSLogPredicateMapper *)self mapKeywordToConstantExpression:v5 keywordMap:mapSignpostScopeExpression__scopes];
+  v6 = [(_OSLogPredicateMapper *)self mapKeywordToConstantExpression:expressionCopy keywordMap:mapSignpostScopeExpression__scopes];
 
   return v6;
 }
 
-- (id)mapMessageTypeExpression:(id)a3
+- (id)mapMessageTypeExpression:(id)expression
 {
   v4 = mapMessageTypeExpression__once;
-  v5 = a3;
+  expressionCopy = expression;
   if (v4 != -1)
   {
     dispatch_once(&mapMessageTypeExpression__once, &__block_literal_global_189);
   }
 
-  v6 = [(_OSLogPredicateMapper *)self caseInsensitiveMapKeywordToConstantExpression:v5 keywordMap:mapMessageTypeExpression__messageTypes];
+  v6 = [(_OSLogPredicateMapper *)self caseInsensitiveMapKeywordToConstantExpression:expressionCopy keywordMap:mapMessageTypeExpression__messageTypes];
 
   return v6;
 }
 
-- (id)mapEventTypeExpression:(id)a3
+- (id)mapEventTypeExpression:(id)expression
 {
   v4 = mapEventTypeExpression__once;
-  v5 = a3;
+  expressionCopy = expression;
   if (v4 != -1)
   {
     dispatch_once(&mapEventTypeExpression__once, &__block_literal_global_739);
   }
 
-  v6 = [(_OSLogPredicateMapper *)self mapKeywordToConstantExpression:v5 keywordMap:mapEventTypeExpression__eventTypes];
+  v6 = [(_OSLogPredicateMapper *)self mapKeywordToConstantExpression:expressionCopy keywordMap:mapEventTypeExpression__eventTypes];
 
   return v6;
 }
 
-- (id)caseInsensitiveMapKeywordToConstantExpression:(id)a3 keywordMap:(id)a4
+- (id)caseInsensitiveMapKeywordToConstantExpression:(id)expression keywordMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 expressionType] || (objc_msgSend(v6, "constantValue"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) == 0))
+  expressionCopy = expression;
+  mapCopy = map;
+  if ([expressionCopy expressionType] || (objc_msgSend(expressionCopy, "constantValue"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) == 0))
   {
-    v14 = [(_OSLogPredicateMapper *)self mapKeywordToConstantExpression:v6 keywordMap:v7];
+    v14 = [(_OSLogPredicateMapper *)self mapKeywordToConstantExpression:expressionCopy keywordMap:mapCopy];
   }
 
   else
   {
     v10 = MEMORY[0x277CCA9C0];
-    v11 = [v6 constantValue];
-    v12 = [v11 lowercaseString];
-    v13 = [v10 expressionForConstantValue:v12];
+    constantValue = [expressionCopy constantValue];
+    lowercaseString = [constantValue lowercaseString];
+    v13 = [v10 expressionForConstantValue:lowercaseString];
 
-    v14 = [(_OSLogPredicateMapper *)self mapKeywordToConstantExpression:v13 keywordMap:v7];
+    v14 = [(_OSLogPredicateMapper *)self mapKeywordToConstantExpression:v13 keywordMap:mapCopy];
   }
 
   return v14;
 }
 
-- (id)mapKeywordToConstantExpression:(id)a3 keywordMap:(id)a4
+- (id)mapKeywordToConstantExpression:(id)expression keywordMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 expressionType] == 3)
+  expressionCopy = expression;
+  mapCopy = map;
+  if ([expressionCopy expressionType] == 3)
   {
-    v7 = [v5 keyPath];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    keyPath = [expressionCopy keyPath];
+    v8 = [mapCopy objectForKeyedSubscript:keyPath];
 
     if (v8)
     {
       v9 = MEMORY[0x277CCA9C0];
-      v10 = [v5 keyPath];
+      keyPath2 = [expressionCopy keyPath];
 LABEL_8:
-      v14 = v10;
-      v15 = [v6 objectForKeyedSubscript:v10];
+      v14 = keyPath2;
+      v15 = [mapCopy objectForKeyedSubscript:keyPath2];
       v16 = [v9 expressionForConstantValue:v15];
 
       goto LABEL_11;
     }
   }
 
-  if (![v5 expressionType])
+  if (![expressionCopy expressionType])
   {
-    v11 = [v5 constantValue];
+    constantValue = [expressionCopy constantValue];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v5 constantValue];
-      v13 = [v6 objectForKeyedSubscript:v12];
+      constantValue2 = [expressionCopy constantValue];
+      v13 = [mapCopy objectForKeyedSubscript:constantValue2];
 
       if (v13)
       {
         v9 = MEMORY[0x277CCA9C0];
-        v10 = [v5 constantValue];
+        keyPath2 = [expressionCopy constantValue];
         goto LABEL_8;
       }
     }
@@ -433,18 +433,18 @@ LABEL_8:
     }
   }
 
-  v16 = v5;
+  v16 = expressionCopy;
 LABEL_11:
 
   return v16;
 }
 
-- (void)visitPredicate:(id)a3
+- (void)visitPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   if (!self->_pass)
   {
-    v5 = v4;
+    v5 = predicateCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -465,14 +465,14 @@ LABEL_11:
       }
     }
 
-    v4 = v5;
+    predicateCopy = v5;
   }
 }
 
-- (_OSLogPredicateMapper)initWithPredicate:(id)a3 andValidate:(BOOL)a4
+- (_OSLogPredicateMapper)initWithPredicate:(id)predicate andValidate:(BOOL)validate
 {
-  v4 = a4;
-  v6 = a3;
+  validateCopy = validate;
+  predicateCopy = predicate;
   v7 = [(_OSLogPredicateMapper *)self init];
   if (v7)
   {
@@ -485,25 +485,25 @@ LABEL_11:
     v7->_validKeyPathPrefixes = v10;
 
     v7->_pass = 0;
-    [v6 acceptVisitor:v7 flags:0];
-    v12 = [(NSMutableArray *)v7->_stack lastObject];
+    [predicateCopy acceptVisitor:v7 flags:0];
+    lastObject = [(NSMutableArray *)v7->_stack lastObject];
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     validationErrors = v7->_validationErrors;
     v7->_validationErrors = v13;
 
-    if (v4)
+    if (validateCopy)
     {
       v7->_pass = 1;
-      [v12 acceptVisitor:v7 flags:1];
+      [lastObject acceptVisitor:v7 flags:1];
     }
 
     if (![(NSMutableArray *)v7->_validationErrors count])
     {
-      objc_storeStrong(&v7->_predicate, v12);
+      objc_storeStrong(&v7->_predicate, lastObject);
       v15 = [[_OSLogPredicateCompiler alloc] initWithPredicate:v7->_predicate];
-      v16 = [(_OSLogPredicateCompiler *)v15 compiledPredicate];
+      compiledPredicate = [(_OSLogPredicateCompiler *)v15 compiledPredicate];
       compiledPredicate = v7->_compiledPredicate;
-      v7->_compiledPredicate = v16;
+      v7->_compiledPredicate = compiledPredicate;
     }
   }
 

@@ -6,8 +6,8 @@
 
 - (void)_sb_recursiveUpdateContentOverlayInsetsFromParentIfNecessary
 {
-  v1 = [a1 rootViewController];
-  [v1 _sb_recursiveUpdateContentOverlayInsetsFromParentIfNecessary];
+  rootViewController = [self rootViewController];
+  [rootViewController _sb_recursiveUpdateContentOverlayInsetsFromParentIfNecessary];
 }
 
 @end

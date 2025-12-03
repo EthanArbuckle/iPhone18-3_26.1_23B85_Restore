@@ -1,17 +1,17 @@
 @interface AAUIOBCustodianInvitationModel
-- (AAUIOBCustodianInvitationModel)initWithModel:(id)a3;
-- (AAUIOBCustodianInvitationModel)initWithType:(int64_t)a3 initiatorsHandle:(id)a4;
+- (AAUIOBCustodianInvitationModel)initWithModel:(id)model;
+- (AAUIOBCustodianInvitationModel)initWithType:(int64_t)type initiatorsHandle:(id)handle;
 - (NSString)description;
 - (void)_setupAAUIOBWelcomeControllerProtocolProperties;
 @end
 
 @implementation AAUIOBCustodianInvitationModel
 
-- (AAUIOBCustodianInvitationModel)initWithType:(int64_t)a3 initiatorsHandle:(id)a4
+- (AAUIOBCustodianInvitationModel)initWithType:(int64_t)type initiatorsHandle:(id)handle
 {
   v7.receiver = self;
   v7.super_class = AAUIOBCustodianInvitationModel;
-  v4 = [(AAOBCustodianInvitationModel *)&v7 initWithType:a3 ownerHandle:a4];
+  v4 = [(AAOBCustodianInvitationModel *)&v7 initWithType:type ownerHandle:handle];
   v5 = v4;
   if (v4)
   {
@@ -21,41 +21,41 @@
   return v5;
 }
 
-- (AAUIOBCustodianInvitationModel)initWithModel:(id)a3
+- (AAUIOBCustodianInvitationModel)initWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v16.receiver = self;
   v16.super_class = AAUIOBCustodianInvitationModel;
   v5 = [(AAUIOBCustodianInvitationModel *)&v16 init];
   if (v5)
   {
-    -[AAOBCustodianInvitationModel setType:](v5, "setType:", [v4 type]);
-    v6 = [v4 detailText];
-    [(AAOBCustodianInvitationModel *)v5 setDetailText:v6];
+    -[AAOBCustodianInvitationModel setType:](v5, "setType:", [modelCopy type]);
+    detailText = [modelCopy detailText];
+    [(AAOBCustodianInvitationModel *)v5 setDetailText:detailText];
 
-    v7 = [v4 title];
-    [(AAOBCustodianInvitationModel *)v5 setTitle:v7];
+    title = [modelCopy title];
+    [(AAOBCustodianInvitationModel *)v5 setTitle:title];
 
-    v8 = [v4 primaryButton];
-    [(AAOBCustodianInvitationModel *)v5 setPrimaryButton:v8];
+    primaryButton = [modelCopy primaryButton];
+    [(AAOBCustodianInvitationModel *)v5 setPrimaryButton:primaryButton];
 
-    v9 = [v4 secondaryButton];
-    [(AAOBCustodianInvitationModel *)v5 setSecondaryButton:v9];
+    secondaryButton = [modelCopy secondaryButton];
+    [(AAOBCustodianInvitationModel *)v5 setSecondaryButton:secondaryButton];
 
-    v10 = [v4 ownerHandle];
-    [(AAOBCustodianInvitationModel *)v5 setOwnerHandle:v10];
+    ownerHandle = [modelCopy ownerHandle];
+    [(AAOBCustodianInvitationModel *)v5 setOwnerHandle:ownerHandle];
 
-    v11 = [v4 custodianshipInfo];
-    [(AAOBCustodianInvitationModel *)v5 setCustodianshipInfo:v11];
+    custodianshipInfo = [modelCopy custodianshipInfo];
+    [(AAOBCustodianInvitationModel *)v5 setCustodianshipInfo:custodianshipInfo];
 
-    v12 = [v4 helpLinkTitle];
-    [(AAOBCustodianInvitationModel *)v5 setHelpLinkTitle:v12];
+    helpLinkTitle = [modelCopy helpLinkTitle];
+    [(AAOBCustodianInvitationModel *)v5 setHelpLinkTitle:helpLinkTitle];
 
-    v13 = [v4 helpLinkURL];
-    [(AAOBCustodianInvitationModel *)v5 setHelpLinkURL:v13];
+    helpLinkURL = [modelCopy helpLinkURL];
+    [(AAOBCustodianInvitationModel *)v5 setHelpLinkURL:helpLinkURL];
 
-    v14 = [v4 imageName];
-    [(AAOBCustodianInvitationModel *)v5 setImageName:v14];
+    imageName = [modelCopy imageName];
+    [(AAOBCustodianInvitationModel *)v5 setImageName:imageName];
 
     [(AAUIOBCustodianInvitationModel *)v5 _setupAAUIOBWelcomeControllerProtocolProperties];
   }
@@ -66,24 +66,24 @@
 - (void)_setupAAUIOBWelcomeControllerProtocolProperties
 {
   v3 = MEMORY[0x1E698B930];
-  v4 = [(AAOBCustodianInvitationModel *)self ownerHandle];
-  v14 = [v3 contactInfoForHandle:v4];
+  ownerHandle = [(AAOBCustodianInvitationModel *)self ownerHandle];
+  v14 = [v3 contactInfoForHandle:ownerHandle];
 
   v5 = [MEMORY[0x1E698B930] firstNameForLocalContactInfo:v14];
-  v6 = [v14 displayName];
-  v7 = [(AAOBCustodianInvitationModel *)self detailsTextWithFirstName:v5 fullName:v6];
+  displayName = [v14 displayName];
+  v7 = [(AAOBCustodianInvitationModel *)self detailsTextWithFirstName:v5 fullName:displayName];
   [(AAOBCustodianInvitationModel *)self setDetailText:v7];
 
   self->_contentViewLayout = 2;
-  v8 = [(AAOBCustodianInvitationModel *)self imageName];
-  v9 = [v8 length];
+  imageName = [(AAOBCustodianInvitationModel *)self imageName];
+  v9 = [imageName length];
 
   if (v9)
   {
     v10 = MEMORY[0x1E69DCAB8];
-    v11 = [(AAOBCustodianInvitationModel *)self imageName];
+    imageName2 = [(AAOBCustodianInvitationModel *)self imageName];
     v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v13 = [v10 imageNamed:v11 inBundle:v12];
+    v13 = [v10 imageNamed:imageName2 inBundle:v12];
     [(AAUIOBCustodianInvitationModel *)self setImage:v13];
   }
 }
@@ -91,16 +91,16 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AAOBCustodianInvitationModel *)self imageName];
-  v5 = [(AAOBCustodianInvitationModel *)self title];
-  v6 = [(AAOBCustodianInvitationModel *)self detailText];
-  v7 = [(AAOBCustodianInvitationModel *)self primaryButton];
-  v8 = [(AAOBCustodianInvitationModel *)self secondaryButton];
-  v9 = [(AAOBCustodianInvitationModel *)self helpLinkURL];
-  v10 = [(AAOBCustodianInvitationModel *)self helpLinkTitle];
-  v11 = [(AAOBCustodianInvitationModel *)self ownerHandle];
-  v12 = [(AAOBCustodianInvitationModel *)self recipientHandle];
-  v13 = [v3 stringWithFormat:@"imageName: %@\title: %@\ndetailText: %@\nprimaryButton: %@\nsecondaryButton: %@\nhelpLinkTitle: %@\nhelpLinkURL: %@\nownerHandle: %@\nrecipientHandle: %@\n", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  imageName = [(AAOBCustodianInvitationModel *)self imageName];
+  title = [(AAOBCustodianInvitationModel *)self title];
+  detailText = [(AAOBCustodianInvitationModel *)self detailText];
+  primaryButton = [(AAOBCustodianInvitationModel *)self primaryButton];
+  secondaryButton = [(AAOBCustodianInvitationModel *)self secondaryButton];
+  helpLinkURL = [(AAOBCustodianInvitationModel *)self helpLinkURL];
+  helpLinkTitle = [(AAOBCustodianInvitationModel *)self helpLinkTitle];
+  ownerHandle = [(AAOBCustodianInvitationModel *)self ownerHandle];
+  recipientHandle = [(AAOBCustodianInvitationModel *)self recipientHandle];
+  v13 = [v3 stringWithFormat:@"imageName: %@\title: %@\ndetailText: %@\nprimaryButton: %@\nsecondaryButton: %@\nhelpLinkTitle: %@\nhelpLinkURL: %@\nownerHandle: %@\nrecipientHandle: %@\n", imageName, title, detailText, primaryButton, secondaryButton, helpLinkURL, helpLinkTitle, ownerHandle, recipientHandle];
 
   return v13;
 }

@@ -1,12 +1,12 @@
 @interface UberContentContainer
-- (_TtC18ASMessagesProviderP33_BA520009733D56FF860AA8122DA44FE220UberContentContainer)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProviderP33_BA520009733D56FF860AA8122DA44FE220UberContentContainer)initWithFrame:(CGRect)a3;
+- (_TtC18ASMessagesProviderP33_BA520009733D56FF860AA8122DA44FE220UberContentContainer)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProviderP33_BA520009733D56FF860AA8122DA44FE220UberContentContainer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation UberContentContainer
 
-- (_TtC18ASMessagesProviderP33_BA520009733D56FF860AA8122DA44FE220UberContentContainer)initWithCoder:(id)a3
+- (_TtC18ASMessagesProviderP33_BA520009733D56FF860AA8122DA44FE220UberContentContainer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_BA520009733D56FF860AA8122DA44FE220UberContentContainer_contents) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_BA520009733D56FF860AA8122DA44FE220UberContentContainer_parallaxY) = 0;
@@ -20,11 +20,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1F94EC();
 }
 
-- (_TtC18ASMessagesProviderP33_BA520009733D56FF860AA8122DA44FE220UberContentContainer)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProviderP33_BA520009733D56FF860AA8122DA44FE220UberContentContainer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,18 +1,18 @@
 @interface SBSAContainerPressBehaviorProvider
 - (id)_contentInteractionBeginBehaviorSettings;
-- (id)preferencesFromContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSAContainerPressBehaviorProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v142[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     v5 = objc_opt_self();
-    v6 = v4;
+    v6 = contextCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -44,9 +44,9 @@
     v8 = 0;
   }
 
-  v9 = [v8 preferences];
+  preferences = [v8 preferences];
   v10 = objc_opt_class();
-  v11 = v9;
+  v11 = preferences;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -67,8 +67,8 @@
 
   v13 = v12;
 
-  v14 = [v8 gestureDescriptions];
-  v15 = [v14 bs_firstObjectPassingTest:&__block_literal_global_429];
+  gestureDescriptions = [v8 gestureDescriptions];
+  v15 = [gestureDescriptions bs_firstObjectPassingTest:&__block_literal_global_429];
 
   if (v15)
   {
@@ -77,28 +77,28 @@
 
   if (self->_activeGestureDescription)
   {
-    v16 = [v8 elapsedTimerDescriptions];
-    v110 = v16;
-    if ([v16 count])
+    elapsedTimerDescriptions = [v8 elapsedTimerDescriptions];
+    v110 = elapsedTimerDescriptions;
+    if ([elapsedTimerDescriptions count])
     {
       v135[0] = MEMORY[0x277D85DD0];
       v135[1] = 3221225472;
       v135[2] = __61__SBSAContainerPressBehaviorProvider_preferencesFromContext___block_invoke_2;
       v135[3] = &unk_2783BD9C0;
       v135[4] = self;
-      if ([v16 indexOfObjectPassingTest:v135] != 0x7FFFFFFFFFFFFFFFLL)
+      if ([elapsedTimerDescriptions indexOfObjectPassingTest:v135] != 0x7FFFFFFFFFFFFFFFLL)
       {
         identifierOfActiveTimer = self->_identifierOfActiveTimer;
         self->_identifierOfActiveTimer = 0;
 
         v104 = v15;
         v18 = [SBSAContainerPressAction alloc];
-        v102 = [(SBSAGestureDescription *)self->_activeGestureDescription associatedInterfaceElementIdentifier];
+        associatedInterfaceElementIdentifier = [(SBSAGestureDescription *)self->_activeGestureDescription associatedInterfaceElementIdentifier];
         v141 = @"containerPressBehaviorProvider.pressAction";
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v141 count:1];
-        v20 = [(SBSAContainerStaticTouchAction *)v18 initWithAssociatedInterfaceElementIdentifier:v102 reasons:v19];
+        v20 = [(SBSAContainerStaticTouchAction *)v18 initWithAssociatedInterfaceElementIdentifier:associatedInterfaceElementIdentifier reasons:v19];
         v142[0] = v20;
-        v106 = v4;
+        v106 = contextCopy;
         v21 = [SBSAImpactFeedbackAction alloc];
         v140 = @"containerPressBehaviorProvider.pressAction";
         v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v140 count:1];
@@ -107,24 +107,24 @@
         v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v142 count:2];
         v25 = [v13 copyByAddingActions:v24];
 
-        v4 = v106;
+        contextCopy = v106;
         v15 = v104;
 
         v13 = [v25 copyWithCancellationOfGestureOfClass:objc_opt_class() context:v8];
       }
     }
 
-    v26 = [(SBSAGestureDescription *)self->_activeGestureDescription gestureRecognizerState];
-    v27 = v26;
-    if (v26 >= 3)
+    gestureRecognizerState = [(SBSAGestureDescription *)self->_activeGestureDescription gestureRecognizerState];
+    v27 = gestureRecognizerState;
+    if (gestureRecognizerState >= 3)
     {
-      if (v26 == 3 && self->_identifierOfActiveTimer)
+      if (gestureRecognizerState == 3 && self->_identifierOfActiveTimer)
       {
         v28 = [SBSAContainerTapAction alloc];
-        v107 = [(SBSAGestureDescription *)self->_activeGestureDescription associatedInterfaceElementIdentifier];
+        associatedInterfaceElementIdentifier2 = [(SBSAGestureDescription *)self->_activeGestureDescription associatedInterfaceElementIdentifier];
         v138 = @"containerPressBehaviorProvider.tapAction";
         v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v138 count:1];
-        v30 = [(SBSAContainerStaticTouchAction *)v28 initWithAssociatedInterfaceElementIdentifier:v107 reasons:v29];
+        v30 = [(SBSAContainerStaticTouchAction *)v28 initWithAssociatedInterfaceElementIdentifier:associatedInterfaceElementIdentifier2 reasons:v29];
         v139 = v30;
         v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v139 count:1];
         v32 = [v13 copyByAddingActions:v31];
@@ -151,9 +151,9 @@
         if (!self->_identifierOfActiveTimer)
         {
           v39 = [[SBSATimerDescription alloc] initWithTimeInterval:0.2];
-          v40 = [(SBSATimerDescription *)v39 timerDescriptionIdentifier];
+          timerDescriptionIdentifier = [(SBSATimerDescription *)v39 timerDescriptionIdentifier];
           v41 = self->_identifierOfActiveTimer;
-          self->_identifierOfActiveTimer = v40;
+          self->_identifierOfActiveTimer = timerDescriptionIdentifier;
 
           v132[0] = MEMORY[0x277D85DD0];
           v132[1] = 3221225472;
@@ -175,9 +175,9 @@
         }
 
 LABEL_31:
-        v47 = [v13 containerViewDescriptions];
+        containerViewDescriptions = [v13 containerViewDescriptions];
         v48 = v13;
-        v49 = [v47 mutableCopy];
+        v49 = [containerViewDescriptions mutableCopy];
 
         v131[0] = MEMORY[0x277D85DD0];
         v131[1] = 3221225472;
@@ -195,7 +195,7 @@ LABEL_44:
           goto LABEL_45;
         }
 
-        v109 = v4;
+        v109 = contextCopy;
         v127[0] = MEMORY[0x277D85DD0];
         v127[1] = 3221225472;
         v127[2] = __61__SBSAContainerPressBehaviorProvider_preferencesFromContext___block_invoke_5;
@@ -212,12 +212,12 @@ LABEL_44:
         v105 = v53;
         [v49 replaceObjectAtIndex:v54 withObject:v53];
         v103 = v48;
-        v55 = [v48 maintainedPreferences];
-        v56 = [v55 indicatorAppearanceStateContext];
+        maintainedPreferences = [v48 maintainedPreferences];
+        indicatorAppearanceStateContext = [maintainedPreferences indicatorAppearanceStateContext];
 
-        v57 = [v56 activeIndicatorElementContext];
-        v101 = v56;
-        if ([v57 supportsMicroIndicatorPosition] && v56)
+        activeIndicatorElementContext = [indicatorAppearanceStateContext activeIndicatorElementContext];
+        v101 = indicatorAppearanceStateContext;
+        if ([activeIndicatorElementContext supportsMicroIndicatorPosition] && indicatorAppearanceStateContext)
         {
           v58 = [v49 count] - 1;
 
@@ -227,13 +227,13 @@ LABEL_44:
             v124 = *MEMORY[0x277CBF2C0];
             v125 = v59;
             v126 = *(MEMORY[0x277CBF2C0] + 32);
-            v60 = [v52 elementContexts];
-            v61 = SBSAElementContextAssociatedWithContainerViewDescription(v105, v60, 0);
+            elementContexts = [v52 elementContexts];
+            v61 = SBSAElementContextAssociatedWithContainerViewDescription(v105, elementContexts, 0);
 
-            v62 = 0;
+            systemApertureCustomLayout = 0;
             if ([v61 layoutMode] == 3)
             {
-              v62 = [v61 systemApertureCustomLayout];
+              systemApertureCustomLayout = [v61 systemApertureCustomLayout];
             }
 
             v99 = v61;
@@ -241,7 +241,7 @@ LABEL_44:
             [v105 bounds];
             [v105 center];
             SBUnintegralizedRectCenteredAboutPoint();
-            SBSAMicroIndicatorFrameNearContainer(v62, [v101 microIndicatorEjectionPhase] > 1, &v124, v101, v52, v64, v65, v66, v67);
+            SBSAMicroIndicatorFrameNearContainer(systemApertureCustomLayout, [v101 microIndicatorEjectionPhase] > 1, &v124, v101, v52, v64, v65, v66, v67);
             BSRectWithSize();
             v69 = v68;
             v71 = v70;
@@ -253,7 +253,7 @@ LABEL_44:
             UIRectGetCenter();
             v80 = v79;
             v82 = v81;
-            v83 = [v103 indicatorContainerViewDescription];
+            indicatorContainerViewDescription = [v103 indicatorContainerViewDescription];
             v123[0] = MEMORY[0x277D85DD0];
             v123[1] = 3221225472;
             v123[2] = __61__SBSAContainerPressBehaviorProvider_preferencesFromContext___block_invoke_6;
@@ -268,9 +268,9 @@ LABEL_44:
             v123[11] = v78;
             v123[12] = v80;
             v123[13] = v82;
-            v84 = [v83 copyWithBlock:v123];
+            v84 = [indicatorContainerViewDescription copyWithBlock:v123];
 
-            v85 = [v103 indicatorElementDescription];
+            indicatorElementDescription = [v103 indicatorElementDescription];
             v119[0] = MEMORY[0x277D85DD0];
             v119[1] = 3221225472;
             v119[2] = __61__SBSAContainerPressBehaviorProvider_preferencesFromContext___block_invoke_7;
@@ -280,7 +280,7 @@ LABEL_44:
             v120 = v124;
             v121 = v125;
             v122 = v126;
-            v86 = [v85 copyWithBlock:v119];
+            v86 = [indicatorElementDescription copyWithBlock:v119];
 
             goto LABEL_43;
           }
@@ -312,7 +312,7 @@ LABEL_43:
 
         v8 = [v52 copyByAddingFlags:1 debugRequestingProvider:self];
         v88 = v91;
-        v4 = v109;
+        contextCopy = v109;
         v15 = v63;
         v50 = v100;
         goto LABEL_44;
@@ -684,10 +684,10 @@ void __61__SBSAContainerPressBehaviorProvider_preferencesFromContext___block_inv
 
 - (id)_contentInteractionBeginBehaviorSettings
 {
-  v2 = [objc_opt_class() settings];
-  v3 = [v2 contentInteractionBeginBehaviorSettings];
+  settings = [objc_opt_class() settings];
+  contentInteractionBeginBehaviorSettings = [settings contentInteractionBeginBehaviorSettings];
 
-  return v3;
+  return contentInteractionBeginBehaviorSettings;
 }
 
 - (void)preferencesFromContext:(uint64_t)a3 .cold.1(uint64_t a1, uint64_t a2, uint64_t a3)

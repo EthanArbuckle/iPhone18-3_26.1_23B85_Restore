@@ -1,14 +1,14 @@
 @interface SDAutoUnlockSuggestionManager
-- (BOOL)canSuggestForDeviceID:(id)a3;
-- (BOOL)featureSuggestedForDeviceID:(id)a3;
+- (BOOL)canSuggestForDeviceID:(id)d;
+- (BOOL)featureSuggestedForDeviceID:(id)d;
 - (BOOL)retriedSetup;
-- (BOOL)shouldSendRequestsForDeviceID:(id)a3;
+- (BOOL)shouldSendRequestsForDeviceID:(id)d;
 - (SDAutoUnlockSuggestionManager)init;
 - (id)testDeviceID;
 - (void)_systemHasPoweredOn;
 - (void)_systemWillSleep;
 - (void)addObservers;
-- (void)handleFoundPeer:(id)a3;
+- (void)handleFoundPeer:(id)peer;
 - (void)handleTestSuggestion;
 - (void)invalidateScanTimer;
 - (void)invalidateScanner;
@@ -19,21 +19,21 @@
 - (void)loadSuggestedPeers;
 - (void)postNotificationIfNeeded;
 - (void)postSuggestionNotification;
-- (void)restartScanTimer:(unint64_t)a3;
-- (void)restartServiceTimer:(unint64_t)a3;
-- (void)restartSetupRetryDeviceTimer:(int64_t)a3;
-- (void)restartSuggestedDeviceTimer:(int64_t)a3;
-- (void)screenLockUnlocked:(id)a3;
-- (void)sendStartAdvertisingToDeviceID:(id)a3;
-- (void)setFeatureSuggestedForDeviceID:(id)a3;
+- (void)restartScanTimer:(unint64_t)timer;
+- (void)restartServiceTimer:(unint64_t)timer;
+- (void)restartSetupRetryDeviceTimer:(int64_t)timer;
+- (void)restartSuggestedDeviceTimer:(int64_t)timer;
+- (void)screenLockUnlocked:(id)unlocked;
+- (void)sendStartAdvertisingToDeviceID:(id)d;
+- (void)setFeatureSuggestedForDeviceID:(id)d;
 - (void)setRetriedSetup;
-- (void)setSetupRetryDeviceID:(id)a3;
-- (void)setSuggestedDeviceID:(id)a3;
+- (void)setSetupRetryDeviceID:(id)d;
+- (void)setSuggestedDeviceID:(id)d;
 - (void)setupRetryIfNeeded;
 - (void)setupRetryNotificationDismissed;
-- (void)startScanningForIDSDeviceIDs:(id)a3;
-- (void)transport:(id)a3 didReceivePayload:(id)a4 type:(unsigned __int16)a5 deviceID:(id)a6;
-- (void)updateDefaultsForDeviceID:(id)a3;
+- (void)startScanningForIDSDeviceIDs:(id)ds;
+- (void)transport:(id)transport didReceivePayload:(id)payload type:(unsigned __int16)type deviceID:(id)d;
+- (void)updateDefaultsForDeviceID:(id)d;
 - (void)updateSuggestionService;
 @end
 
@@ -91,20 +91,20 @@
   if (IsAppleInternalBuild())
   {
     v3 = +[SDAutoUnlockTransport sharedTransport];
-    v4 = [(SDAutoUnlockSuggestionManager *)self testDeviceID];
-    v6 = [v3 autoUnlockDeviceForDeviceID:v4];
+    testDeviceID = [(SDAutoUnlockSuggestionManager *)self testDeviceID];
+    v6 = [v3 autoUnlockDeviceForDeviceID:testDeviceID];
 
     if (v6)
     {
-      v5 = [(SDAutoUnlockSuggestionManager *)self foundPeers];
-      [v5 setObject:v6 atIndexedSubscript:0];
+      foundPeers = [(SDAutoUnlockSuggestionManager *)self foundPeers];
+      [foundPeers setObject:v6 atIndexedSubscript:0];
 
       [(SDAutoUnlockSuggestionManager *)self postSuggestionNotification];
     }
   }
 }
 
-- (void)screenLockUnlocked:(id)a3
+- (void)screenLockUnlocked:(id)unlocked
 {
   v4 = auto_unlock_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -124,18 +124,18 @@
 {
   if (IsAppleInternalBuild())
   {
-    v3 = [(SDAutoUnlockSuggestionManager *)self retriedSetup];
-    v4 = [(SDAutoUnlockSuggestionManager *)self alwaysShowSetupRetry];
-    v5 = v4;
-    if ((!v3 || v4) && ([(SDAutoUnlockSuggestionManager *)self lastSuccessfulDevice], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+    retriedSetup = [(SDAutoUnlockSuggestionManager *)self retriedSetup];
+    alwaysShowSetupRetry = [(SDAutoUnlockSuggestionManager *)self alwaysShowSetupRetry];
+    v5 = alwaysShowSetupRetry;
+    if ((!retriedSetup || alwaysShowSetupRetry) && ([(SDAutoUnlockSuggestionManager *)self lastSuccessfulDevice], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
     {
-      v7 = [(SDAutoUnlockSuggestionManager *)self lastSuccessfulDevice];
-      [(SDAutoUnlockSuggestionManager *)self setSetupRetryDevice:v7];
+      lastSuccessfulDevice = [(SDAutoUnlockSuggestionManager *)self lastSuccessfulDevice];
+      [(SDAutoUnlockSuggestionManager *)self setSetupRetryDevice:lastSuccessfulDevice];
 
       [(SDAutoUnlockSuggestionManager *)self setLastSuccessfulDevice:0];
       v13 = +[SDAutoUnlockNotificationsManager sharedManager];
-      v8 = [(SDAutoUnlockSuggestionManager *)self setupRetryDevice];
-      [v13 showSetupRetryNotificationWithDevice:v8];
+      setupRetryDevice = [(SDAutoUnlockSuggestionManager *)self setupRetryDevice];
+      [v13 showSetupRetryNotificationWithDevice:setupRetryDevice];
     }
 
     else
@@ -143,7 +143,7 @@
       v9 = auto_unlock_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        if (v3)
+        if (retriedSetup)
         {
           v10 = @"YES";
         }
@@ -163,13 +163,13 @@
           v11 = @"NO";
         }
 
-        v12 = [(SDAutoUnlockSuggestionManager *)self lastSuccessfulDevice];
+        lastSuccessfulDevice2 = [(SDAutoUnlockSuggestionManager *)self lastSuccessfulDevice];
         *buf = 138412802;
         v15 = v10;
         v16 = 2112;
         v17 = v11;
         v18 = 2112;
-        v19 = v12;
+        v19 = lastSuccessfulDevice2;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Not initiating setup retry (already retried: %@, always show: %@, lastSuccessfulDevice: %@)", buf, 0x20u);
       }
     }
@@ -183,9 +183,9 @@
   [(SDAutoUnlockSuggestionManager *)self setSetupRetryDevice:0];
 }
 
-- (void)setSetupRetryDeviceID:(id)a3
+- (void)setSetupRetryDeviceID:(id)d
 {
-  objc_storeStrong(&self->_setupRetryDeviceID, a3);
+  objc_storeStrong(&self->_setupRetryDeviceID, d);
   if (!self->_setupRetryDeviceID)
   {
     v4 = auto_unlock_log();
@@ -199,7 +199,7 @@
   }
 }
 
-- (void)restartSetupRetryDeviceTimer:(int64_t)a3
+- (void)restartSetupRetryDeviceTimer:(int64_t)timer
 {
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -208,26 +208,26 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Restarting retry setup device timer", buf, 2u);
   }
 
-  v6 = [(SDAutoUnlockSuggestionManager *)self setupRetryDeviceTimer];
+  setupRetryDeviceTimer = [(SDAutoUnlockSuggestionManager *)self setupRetryDeviceTimer];
 
-  if (!v6)
+  if (!setupRetryDeviceTimer)
   {
-    v7 = [(SDAutoUnlockSuggestionManager *)self suggestionManagerQueue];
+    suggestionManagerQueue = [(SDAutoUnlockSuggestionManager *)self suggestionManagerQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10021FF84;
     v12[3] = &unk_1008CDEA0;
     v12[4] = self;
-    v8 = sub_1001F0548(0, v7, v12);
+    v8 = sub_1001F0548(0, suggestionManagerQueue, v12);
     [(SDAutoUnlockSuggestionManager *)self setSetupRetryDeviceTimer:v8];
 
-    v9 = [(SDAutoUnlockSuggestionManager *)self setupRetryDeviceTimer];
-    dispatch_resume(v9);
+    setupRetryDeviceTimer2 = [(SDAutoUnlockSuggestionManager *)self setupRetryDeviceTimer];
+    dispatch_resume(setupRetryDeviceTimer2);
   }
 
-  v10 = [(SDAutoUnlockSuggestionManager *)self setupRetryDeviceTimer];
-  v11 = sub_1001F0530(a3);
-  sub_1001F05F0(v10, v11);
+  setupRetryDeviceTimer3 = [(SDAutoUnlockSuggestionManager *)self setupRetryDeviceTimer];
+  v11 = sub_1001F0530(timer);
+  sub_1001F05F0(setupRetryDeviceTimer3, v11);
 }
 
 - (void)invalidateSetupRetryDeviceTimer
@@ -239,12 +239,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invaliding setup device device timer", v6, 2u);
   }
 
-  v4 = [(SDAutoUnlockSuggestionManager *)self setupRetryDeviceTimer];
+  setupRetryDeviceTimer = [(SDAutoUnlockSuggestionManager *)self setupRetryDeviceTimer];
 
-  if (v4)
+  if (setupRetryDeviceTimer)
   {
-    v5 = [(SDAutoUnlockSuggestionManager *)self setupRetryDeviceTimer];
-    dispatch_source_cancel(v5);
+    setupRetryDeviceTimer2 = [(SDAutoUnlockSuggestionManager *)self setupRetryDeviceTimer];
+    dispatch_source_cancel(setupRetryDeviceTimer2);
 
     [(SDAutoUnlockSuggestionManager *)self setSetupRetryDeviceTimer:0];
   }
@@ -252,20 +252,20 @@
 
 - (void)postNotificationIfNeeded
 {
-  v3 = [(SDAutoUnlockSuggestionManager *)self foundPeers];
-  v4 = [v3 count];
+  foundPeers = [(SDAutoUnlockSuggestionManager *)self foundPeers];
+  v4 = [foundPeers count];
 
   if (v4)
   {
-    v5 = [(SDAutoUnlockSuggestionManager *)self foundPeers];
-    [v5 sortUsingComparator:&stru_1008D4AE0];
+    foundPeers2 = [(SDAutoUnlockSuggestionManager *)self foundPeers];
+    [foundPeers2 sortUsingComparator:&stru_1008D4AE0];
 
     v6 = auto_unlock_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SDAutoUnlockSuggestionManager *)self foundPeers];
+      foundPeers3 = [(SDAutoUnlockSuggestionManager *)self foundPeers];
       v8 = 138412290;
-      v9 = v7;
+      v9 = foundPeers3;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Suggestion Found Peers %@", &v8, 0xCu);
     }
 
@@ -275,18 +275,18 @@
 
 - (void)postSuggestionNotification
 {
-  v3 = [(SDAutoUnlockSuggestionManager *)self foundPeers];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  foundPeers = [(SDAutoUnlockSuggestionManager *)self foundPeers];
+  v4 = [foundPeers objectAtIndexedSubscript:0];
   [(SDAutoUnlockSuggestionManager *)self setSuggestedPeer:v4];
 
   v6 = +[SDAutoUnlockNotificationsManager sharedManager];
-  v5 = [(SDAutoUnlockSuggestionManager *)self suggestedPeer];
-  [v6 showSuggestionNotificationWithDevice:v5];
+  suggestedPeer = [(SDAutoUnlockSuggestionManager *)self suggestedPeer];
+  [v6 showSuggestionNotificationWithDevice:suggestedPeer];
 }
 
-- (void)setSuggestedDeviceID:(id)a3
+- (void)setSuggestedDeviceID:(id)d
 {
-  objc_storeStrong(&self->_suggestedDeviceID, a3);
+  objc_storeStrong(&self->_suggestedDeviceID, d);
   if (!self->_suggestedDeviceID)
   {
     v4 = auto_unlock_log();
@@ -300,7 +300,7 @@
   }
 }
 
-- (void)restartSuggestedDeviceTimer:(int64_t)a3
+- (void)restartSuggestedDeviceTimer:(int64_t)timer
 {
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -309,26 +309,26 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Restarting suggested device timer", buf, 2u);
   }
 
-  v6 = [(SDAutoUnlockSuggestionManager *)self deviceTimer];
+  deviceTimer = [(SDAutoUnlockSuggestionManager *)self deviceTimer];
 
-  if (!v6)
+  if (!deviceTimer)
   {
-    v7 = [(SDAutoUnlockSuggestionManager *)self suggestionManagerQueue];
+    suggestionManagerQueue = [(SDAutoUnlockSuggestionManager *)self suggestionManagerQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1002204BC;
     v12[3] = &unk_1008CDEA0;
     v12[4] = self;
-    v8 = sub_1001F0548(0, v7, v12);
+    v8 = sub_1001F0548(0, suggestionManagerQueue, v12);
     [(SDAutoUnlockSuggestionManager *)self setDeviceTimer:v8];
 
-    v9 = [(SDAutoUnlockSuggestionManager *)self deviceTimer];
-    dispatch_resume(v9);
+    deviceTimer2 = [(SDAutoUnlockSuggestionManager *)self deviceTimer];
+    dispatch_resume(deviceTimer2);
   }
 
-  v10 = [(SDAutoUnlockSuggestionManager *)self deviceTimer];
-  v11 = sub_1001F0530(a3);
-  sub_1001F05F0(v10, v11);
+  deviceTimer3 = [(SDAutoUnlockSuggestionManager *)self deviceTimer];
+  v11 = sub_1001F0530(timer);
+  sub_1001F05F0(deviceTimer3, v11);
 }
 
 - (void)invalidateSuggestedDeviceTimer
@@ -340,12 +340,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invaliding suggested device timer", v6, 2u);
   }
 
-  v4 = [(SDAutoUnlockSuggestionManager *)self deviceTimer];
+  deviceTimer = [(SDAutoUnlockSuggestionManager *)self deviceTimer];
 
-  if (v4)
+  if (deviceTimer)
   {
-    v5 = [(SDAutoUnlockSuggestionManager *)self deviceTimer];
-    dispatch_source_cancel(v5);
+    deviceTimer2 = [(SDAutoUnlockSuggestionManager *)self deviceTimer];
+    dispatch_source_cancel(deviceTimer2);
 
     [(SDAutoUnlockSuggestionManager *)self setDeviceTimer:0];
   }
@@ -369,7 +369,7 @@
   [(SDAutoUnlockSuggestionManager *)self invalidateServiceTimer];
 }
 
-- (void)restartServiceTimer:(unint64_t)a3
+- (void)restartServiceTimer:(unint64_t)timer
 {
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -378,25 +378,25 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Restarting suggestion service timer", buf, 2u);
   }
 
-  v6 = [(SDAutoUnlockSuggestionManager *)self serviceTimer];
+  serviceTimer = [(SDAutoUnlockSuggestionManager *)self serviceTimer];
 
-  if (!v6)
+  if (!serviceTimer)
   {
-    v7 = [(SDAutoUnlockSuggestionManager *)self suggestionManagerQueue];
+    suggestionManagerQueue = [(SDAutoUnlockSuggestionManager *)self suggestionManagerQueue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1002207EC;
     v11[3] = &unk_1008CDEA0;
     v11[4] = self;
-    v8 = sub_1001F0548(0, v7, v11);
+    v8 = sub_1001F0548(0, suggestionManagerQueue, v11);
     [(SDAutoUnlockSuggestionManager *)self setServiceTimer:v8];
 
-    v9 = [(SDAutoUnlockSuggestionManager *)self serviceTimer];
-    dispatch_resume(v9);
+    serviceTimer2 = [(SDAutoUnlockSuggestionManager *)self serviceTimer];
+    dispatch_resume(serviceTimer2);
   }
 
-  v10 = [(SDAutoUnlockSuggestionManager *)self serviceTimer];
-  sub_1001F05F0(v10, a3);
+  serviceTimer3 = [(SDAutoUnlockSuggestionManager *)self serviceTimer];
+  sub_1001F05F0(serviceTimer3, timer);
 }
 
 - (void)invalidateServiceTimer
@@ -408,23 +408,23 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invaliding suggestion service timer", v6, 2u);
   }
 
-  v4 = [(SDAutoUnlockSuggestionManager *)self serviceTimer];
+  serviceTimer = [(SDAutoUnlockSuggestionManager *)self serviceTimer];
 
-  if (v4)
+  if (serviceTimer)
   {
-    v5 = [(SDAutoUnlockSuggestionManager *)self serviceTimer];
-    dispatch_source_cancel(v5);
+    serviceTimer2 = [(SDAutoUnlockSuggestionManager *)self serviceTimer];
+    dispatch_source_cancel(serviceTimer2);
 
     [(SDAutoUnlockSuggestionManager *)self setServiceTimer:0];
   }
 }
 
-- (void)startScanningForIDSDeviceIDs:(id)a3
+- (void)startScanningForIDSDeviceIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(SDAutoUnlockSuggestionManager *)self scanner];
+  dsCopy = ds;
+  scanner = [(SDAutoUnlockSuggestionManager *)self scanner];
 
-  if (v5)
+  if (scanner)
   {
     v6 = auto_unlock_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -440,15 +440,15 @@ LABEL_19:
   }
 
   v7 = +[SDAutoUnlockTransport sharedTransport];
-  v8 = [v7 autoUnlockEligibleWatches];
-  v9 = [v8 allObjects];
+  autoUnlockEligibleWatches = [v7 autoUnlockEligibleWatches];
+  allObjects = [autoUnlockEligibleWatches allObjects];
 
   v10 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = v9;
+  v6 = allObjects;
   v11 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v11)
   {
@@ -463,13 +463,13 @@ LABEL_19:
         }
 
         v14 = *(*(&v35 + 1) + 8 * i);
-        v15 = [v14 uniqueID];
-        v16 = [v4 containsObject:v15];
+        uniqueID = [v14 uniqueID];
+        v16 = [dsCopy containsObject:uniqueID];
 
         if (v16)
         {
-          v17 = [v14 bluetoothID];
-          [v10 addObject:v17];
+          bluetoothID = [v14 bluetoothID];
+          [v10 addObject:bluetoothID];
         }
       }
 
@@ -482,31 +482,31 @@ LABEL_19:
   if ([v10 count])
   {
     objc_initWeak(&location, self);
-    v18 = [(SDAutoUnlockSuggestionManager *)self scanner];
+    scanner2 = [(SDAutoUnlockSuggestionManager *)self scanner];
 
-    if (v18)
+    if (scanner2)
     {
-      v19 = [(SDAutoUnlockSuggestionManager *)self scanner];
-      [v19 invalidate];
+      scanner3 = [(SDAutoUnlockSuggestionManager *)self scanner];
+      [scanner3 invalidate];
     }
 
     v20 = [[SFBLEScanner alloc] initWithType:16];
     [(SDAutoUnlockSuggestionManager *)self setScanner:v20];
 
-    v21 = [(SDAutoUnlockSuggestionManager *)self suggestionManagerQueue];
-    v22 = [(SDAutoUnlockSuggestionManager *)self scanner];
-    [v22 setDispatchQueue:v21];
+    suggestionManagerQueue = [(SDAutoUnlockSuggestionManager *)self suggestionManagerQueue];
+    scanner4 = [(SDAutoUnlockSuggestionManager *)self scanner];
+    [scanner4 setDispatchQueue:suggestionManagerQueue];
 
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_100220DEC;
     v32[3] = &unk_1008D1090;
     objc_copyWeak(&v33, &location);
-    v23 = [(SDAutoUnlockSuggestionManager *)self scanner];
-    [v23 setDeviceFoundHandler:v32];
+    scanner5 = [(SDAutoUnlockSuggestionManager *)self scanner];
+    [scanner5 setDeviceFoundHandler:v32];
 
-    v24 = [(SDAutoUnlockSuggestionManager *)self scanner];
-    [v24 setInvalidationHandler:&stru_1008D4B00];
+    scanner6 = [(SDAutoUnlockSuggestionManager *)self scanner];
+    [scanner6 setInvalidationHandler:&stru_1008D4B00];
 
     v25 = auto_unlock_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -516,20 +516,20 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Suggestion scanning for bluetooth IDs %@", buf, 0xCu);
     }
 
-    v26 = [v10 allObjects];
-    v27 = [(SDAutoUnlockSuggestionManager *)self scanner];
-    [v27 setDeviceFilter:v26];
+    allObjects2 = [v10 allObjects];
+    scanner7 = [(SDAutoUnlockSuggestionManager *)self scanner];
+    [scanner7 setDeviceFilter:allObjects2];
 
-    v28 = [v10 allObjects];
-    [(SDAutoUnlockSuggestionManager *)self setCurrentBluetoothIDs:v28];
+    allObjects3 = [v10 allObjects];
+    [(SDAutoUnlockSuggestionManager *)self setCurrentBluetoothIDs:allObjects3];
 
-    v29 = [(SDAutoUnlockSuggestionManager *)self scanner];
+    scanner8 = [(SDAutoUnlockSuggestionManager *)self scanner];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_100220EC4;
     v31[3] = &unk_1008CDF90;
     v31[4] = self;
-    [v29 activateWithCompletion:v31];
+    [scanner8 activateWithCompletion:v31];
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(&location);
@@ -547,34 +547,34 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)handleFoundPeer:(id)a3
+- (void)handleFoundPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *v24 = 138412290;
-    *&v24[4] = v4;
+    *&v24[4] = peerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Suggestion manager found peer: %@", v24, 0xCu);
   }
 
-  v6 = [v4 identifier];
-  if (!v6)
+  identifier = [peerCopy identifier];
+  if (!identifier)
   {
     goto LABEL_7;
   }
 
-  v7 = v6;
-  v8 = [(SDAutoUnlockSuggestionManager *)self currentBluetoothIDs];
-  v9 = [v4 identifier];
-  v10 = [v8 containsObject:v9];
+  v7 = identifier;
+  currentBluetoothIDs = [(SDAutoUnlockSuggestionManager *)self currentBluetoothIDs];
+  identifier2 = [peerCopy identifier];
+  v10 = [currentBluetoothIDs containsObject:identifier2];
 
   if (v10)
   {
-    v11 = sub_1001116AC(v4);
+    v11 = sub_1001116AC(peerCopy);
     v12 = +[SDAutoUnlockTransport sharedTransport];
-    v13 = [v4 identifier];
-    v14 = [v12 autoUnlockDeviceForBluetoothID:v13];
+    identifier3 = [peerCopy identifier];
+    v14 = [v12 autoUnlockDeviceForBluetoothID:identifier3];
 
     if (v14)
     {
@@ -630,17 +630,17 @@ LABEL_20:
 
     if (v15)
     {
-      v22 = [(SDAutoUnlockSuggestionManager *)self foundPeers];
-      if ([v22 containsObject:v4])
+      foundPeers = [(SDAutoUnlockSuggestionManager *)self foundPeers];
+      if ([foundPeers containsObject:peerCopy])
       {
 LABEL_27:
 
         goto LABEL_28;
       }
 
-      v23 = [v14 unlockEnabled];
+      unlockEnabled = [v14 unlockEnabled];
 
-      if ((v23 & 1) == 0)
+      if ((unlockEnabled & 1) == 0)
       {
         if (![(SDAutoUnlockSuggestionManager *)self foundFirstPeer])
         {
@@ -648,8 +648,8 @@ LABEL_27:
           [(SDAutoUnlockSuggestionManager *)self restartScanTimer:sub_1001F0530(3.0)];
         }
 
-        v22 = [(SDAutoUnlockSuggestionManager *)self foundPeers];
-        [v22 addObject:v14];
+        foundPeers = [(SDAutoUnlockSuggestionManager *)self foundPeers];
+        [foundPeers addObject:v14];
         goto LABEL_27;
       }
     }
@@ -661,10 +661,10 @@ LABEL_7:
     v14 = auto_unlock_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v4 identifier];
-      v17 = [v16 UUIDString];
+      identifier4 = [peerCopy identifier];
+      uUIDString = [identifier4 UUIDString];
       *v24 = 138412290;
-      *&v24[4] = v17;
+      *&v24[4] = uUIDString;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Not looking for peer, ignoring: %@", v24, 0xCu);
     }
   }
@@ -674,9 +674,9 @@ LABEL_28:
 
 - (void)invalidateScanner
 {
-  v3 = [(SDAutoUnlockSuggestionManager *)self scanner];
+  scanner = [(SDAutoUnlockSuggestionManager *)self scanner];
 
-  if (v3)
+  if (scanner)
   {
     v4 = auto_unlock_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -685,20 +685,20 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Invalidating suggestion scanner", v7, 2u);
     }
 
-    v5 = [(SDAutoUnlockSuggestionManager *)self scanner];
-    [v5 invalidate];
+    scanner2 = [(SDAutoUnlockSuggestionManager *)self scanner];
+    [scanner2 invalidate];
 
     [(SDAutoUnlockSuggestionManager *)self setScanner:0];
     [(SDAutoUnlockSuggestionManager *)self setCurrentBluetoothIDs:0];
     [(SDAutoUnlockSuggestionManager *)self setFoundFirstPeer:0];
-    v6 = [(SDAutoUnlockSuggestionManager *)self foundPeers];
-    [v6 removeAllObjects];
+    foundPeers = [(SDAutoUnlockSuggestionManager *)self foundPeers];
+    [foundPeers removeAllObjects];
 
     [(SDAutoUnlockSuggestionManager *)self invalidateScanTimer];
   }
 }
 
-- (void)restartScanTimer:(unint64_t)a3
+- (void)restartScanTimer:(unint64_t)timer
 {
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -707,9 +707,9 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Restarting suggestion scan timer", buf, 2u);
   }
 
-  v6 = [(SDAutoUnlockSuggestionManager *)self scanTimer];
+  scanTimer = [(SDAutoUnlockSuggestionManager *)self scanTimer];
 
-  if (!v6)
+  if (!scanTimer)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -719,12 +719,12 @@ LABEL_28:
     v7 = sub_1001F0548(0, &_dispatch_main_q, v10);
     [(SDAutoUnlockSuggestionManager *)self setScanTimer:v7];
 
-    v8 = [(SDAutoUnlockSuggestionManager *)self scanTimer];
-    dispatch_resume(v8);
+    scanTimer2 = [(SDAutoUnlockSuggestionManager *)self scanTimer];
+    dispatch_resume(scanTimer2);
   }
 
-  v9 = [(SDAutoUnlockSuggestionManager *)self scanTimer];
-  sub_1001F05F0(v9, a3);
+  scanTimer3 = [(SDAutoUnlockSuggestionManager *)self scanTimer];
+  sub_1001F05F0(scanTimer3, timer);
 }
 
 - (void)invalidateScanTimer
@@ -736,58 +736,58 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invaliding suggestion scan timer", v6, 2u);
   }
 
-  v4 = [(SDAutoUnlockSuggestionManager *)self scanTimer];
+  scanTimer = [(SDAutoUnlockSuggestionManager *)self scanTimer];
 
-  if (v4)
+  if (scanTimer)
   {
-    v5 = [(SDAutoUnlockSuggestionManager *)self scanTimer];
-    dispatch_source_cancel(v5);
+    scanTimer2 = [(SDAutoUnlockSuggestionManager *)self scanTimer];
+    dispatch_source_cancel(scanTimer2);
 
     [(SDAutoUnlockSuggestionManager *)self setScanTimer:0];
   }
 }
 
-- (void)sendStartAdvertisingToDeviceID:(id)a3
+- (void)sendStartAdvertisingToDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_opt_new();
   [v5 setVersion:2];
   v6 = +[SDAutoUnlockTransport sharedTransport];
-  v7 = [v5 data];
-  v8 = [(SDAutoUnlockSuggestionManager *)self suggestionManagerSessionID];
+  data = [v5 data];
+  suggestionManagerSessionID = [(SDAutoUnlockSuggestionManager *)self suggestionManagerSessionID];
   v9 = [NSNumber numberWithInteger:15];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1002216FC;
   v11[3] = &unk_1008CDF90;
-  v12 = v4;
-  v10 = v4;
-  [v6 sendPayload:v7 toDevice:v10 type:401 sessionID:v8 timeout:v9 errorHandler:v11];
+  v12 = dCopy;
+  v10 = dCopy;
+  [v6 sendPayload:data toDevice:v10 type:401 sessionID:suggestionManagerSessionID timeout:v9 errorHandler:v11];
 }
 
-- (void)transport:(id)a3 didReceivePayload:(id)a4 type:(unsigned __int16)a5 deviceID:(id)a6
+- (void)transport:(id)transport didReceivePayload:(id)payload type:(unsigned __int16)type deviceID:(id)d
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [(SDAutoUnlockSuggestionManager *)self suggestionManagerQueue];
+  payloadCopy = payload;
+  dCopy = d;
+  suggestionManagerQueue = [(SDAutoUnlockSuggestionManager *)self suggestionManagerQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100221830;
   v14[3] = &unk_1008CDDC0;
-  v18 = a5;
-  v15 = v10;
-  v16 = v9;
-  v17 = self;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, v14);
+  typeCopy = type;
+  v15 = dCopy;
+  v16 = payloadCopy;
+  selfCopy = self;
+  v12 = payloadCopy;
+  v13 = dCopy;
+  dispatch_async(suggestionManagerQueue, v14);
 }
 
-- (BOOL)shouldSendRequestsForDeviceID:(id)a3
+- (BOOL)shouldSendRequestsForDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[SDAutoUnlockAKSManager sharedManager];
-  v6 = [v5 deviceEnabledAsKey:v4];
+  v6 = [v5 deviceEnabledAsKey:dCopy];
 
   v7 = auto_unlock_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -799,7 +799,7 @@ LABEL_28:
     }
 
     v11 = 138412546;
-    v12 = v4;
+    v12 = dCopy;
     v13 = 2112;
     v14 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Should send request (device: %@ enabled: %@)", &v11, 0x16u);
@@ -812,18 +812,18 @@ LABEL_28:
 
   else
   {
-    v9 = [(SDAutoUnlockSuggestionManager *)self canSuggestForDeviceID:v4];
+    v9 = [(SDAutoUnlockSuggestionManager *)self canSuggestForDeviceID:dCopy];
   }
 
   return v9;
 }
 
-- (BOOL)canSuggestForDeviceID:(id)a3
+- (BOOL)canSuggestForDeviceID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 objectForKey:@"AutoUnlockPeerRetries"];
-  v6 = [v5 objectForKeyedSubscript:v3];
+  v6 = [v5 objectForKeyedSubscript:dCopy];
   v7 = [v6 objectForKeyedSubscript:@"AutoUnlockRetryDate"];
   v8 = [v6 objectForKeyedSubscript:@"AutoUnlockRetryMultiplier"];
   if ([v8 integerValue] > 2048)
@@ -832,9 +832,9 @@ LABEL_28:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v3;
+      v17 = dCopy;
       v18 = 2048;
-      v19 = [v8 integerValue];
+      integerValue = [v8 integerValue];
       v13 = "Reached limit of suggestions (device %@, multiplier: %ld)";
       goto LABEL_8;
     }
@@ -852,9 +852,9 @@ LABEL_28:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v3;
+      v17 = dCopy;
       v18 = 2112;
-      v19 = v7;
+      integerValue = v7;
       v13 = "Suggestions still backing off (device %@, retry date %@)";
 LABEL_8:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v13, &v16, 0x16u);
@@ -867,14 +867,14 @@ LABEL_11:
   return v14;
 }
 
-- (void)updateDefaultsForDeviceID:(id)a3
+- (void)updateDefaultsForDeviceID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 objectForKey:@"AutoUnlockPeerRetries"];
   v6 = [v5 mutableCopy];
 
-  v7 = [v6 objectForKeyedSubscript:v3];
+  v7 = [v6 objectForKeyedSubscript:dCopy];
   v8 = [v7 mutableCopy];
 
   v9 = [v8 objectForKeyedSubscript:@"AutoUnlockRetryMultiplier"];
@@ -895,10 +895,10 @@ LABEL_11:
 
   else
   {
-    v11 = [v10 integerValue];
-    if (v11 >= 24)
+    integerValue = [v10 integerValue];
+    if (integerValue >= 24)
     {
-      v12 = (3600 * v11);
+      v12 = (3600 * integerValue);
     }
 
     else
@@ -914,9 +914,9 @@ LABEL_11:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138413058;
-    v19 = v3;
+    v19 = dCopy;
     v20 = 2048;
-    v21 = [v10 integerValue];
+    integerValue2 = [v10 integerValue];
     v22 = 2048;
     v23 = v12;
     v24 = 2112;
@@ -948,45 +948,45 @@ LABEL_13:
   [v8 setObject:v14 forKeyedSubscript:@"AutoUnlockRetryDate"];
   [v8 setObject:v16 forKeyedSubscript:@"AutoUnlockRetryMultiplier"];
   v17 = [v8 copy];
-  [v6 setObject:v17 forKeyedSubscript:v3];
+  [v6 setObject:v17 forKeyedSubscript:dCopy];
 
   [v4 setObject:v6 forKey:@"AutoUnlockPeerRetries"];
   [v4 synchronize];
 }
 
-- (BOOL)featureSuggestedForDeviceID:(id)a3
+- (BOOL)featureSuggestedForDeviceID:(id)d
 {
-  v4 = a3;
-  v5 = [(SDAutoUnlockSuggestionManager *)self suggestedPeers];
-  v6 = [v5 containsObject:v4];
+  dCopy = d;
+  suggestedPeers = [(SDAutoUnlockSuggestionManager *)self suggestedPeers];
+  v6 = [suggestedPeers containsObject:dCopy];
 
   return v6;
 }
 
-- (void)setFeatureSuggestedForDeviceID:(id)a3
+- (void)setFeatureSuggestedForDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting feature suggested for device: %@", &v11, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v6 = [(SDAutoUnlockSuggestionManager *)self suggestedPeers];
-    v7 = [v6 containsObject:v4];
+    suggestedPeers = [(SDAutoUnlockSuggestionManager *)self suggestedPeers];
+    v7 = [suggestedPeers containsObject:dCopy];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(SDAutoUnlockSuggestionManager *)self suggestedPeers];
-      [v8 addObject:v4];
+      suggestedPeers2 = [(SDAutoUnlockSuggestionManager *)self suggestedPeers];
+      [suggestedPeers2 addObject:dCopy];
 
       v9 = +[NSUserDefaults standardUserDefaults];
-      v10 = [(SDAutoUnlockSuggestionManager *)self suggestedPeers];
-      [v9 setObject:v10 forKey:@"AutoUnlockSuggestedPeers"];
+      suggestedPeers3 = [(SDAutoUnlockSuggestionManager *)self suggestedPeers];
+      [v9 setObject:suggestedPeers3 forKey:@"AutoUnlockSuggestedPeers"];
 
       [v9 synchronize];
     }

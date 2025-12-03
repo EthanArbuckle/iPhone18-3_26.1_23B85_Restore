@@ -9,18 +9,18 @@
 {
   v4.receiver = self;
   v4.super_class = _UITabSidebarItem;
-  v2 = [(UITabSidebarItem *)&v4 _defaultContentConfiguration];
+  _defaultContentConfiguration = [(UITabSidebarItem *)&v4 _defaultContentConfiguration];
 
-  return v2;
+  return _defaultContentConfiguration;
 }
 
 - (id)_defaultBackgroundConfiguration
 {
   v4.receiver = self;
   v4.super_class = _UITabSidebarItem;
-  v2 = [(UITabSidebarItem *)&v4 _defaultBackgroundConfiguration];
+  _defaultBackgroundConfiguration = [(UITabSidebarItem *)&v4 _defaultBackgroundConfiguration];
 
-  return v2;
+  return _defaultBackgroundConfiguration;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface AccountPromotionViewModel
 - (_TtC9PassKitUI25AccountPromotionViewModel)init;
 - (void)dealloc;
-- (void)linkedApplicationDidChangeState:(id)a3;
+- (void)linkedApplicationDidChangeState:(id)state;
 @end
 
 @implementation AccountPromotionViewModel
@@ -16,7 +16,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   v5.receiver = self;
@@ -31,9 +31,9 @@
   return result;
 }
 
-- (void)linkedApplicationDidChangeState:(id)a3
+- (void)linkedApplicationDidChangeState:(id)state
 {
-  v3 = self;
+  selfCopy = self;
   sub_1BD36C5DC();
 }
 

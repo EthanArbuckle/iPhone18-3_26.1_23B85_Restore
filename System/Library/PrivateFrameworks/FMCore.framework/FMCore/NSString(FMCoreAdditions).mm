@@ -10,33 +10,33 @@
 
 - (id)fm_encodeToPercentEscape
 {
-  v2 = [a1 legacyAllowedCharacterSet];
-  v3 = [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  legacyAllowedCharacterSet = [self legacyAllowedCharacterSet];
+  v3 = [self stringByAddingPercentEncodingWithAllowedCharacters:legacyAllowedCharacterSet];
 
   return v3;
 }
 
 - (uint64_t)fm_isNumeric
 {
-  v2 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v3 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:a1];
-  v4 = [v2 isSupersetOfSet:v3];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  v3 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:self];
+  v4 = [decimalDigitCharacterSet isSupersetOfSet:v3];
 
   return v4;
 }
 
 - (id)fm_decodeHexString
 {
-  if ([a1 length])
+  if ([self length])
   {
     v11 = 0;
   }
 
   else
   {
-    v2 = [a1 cStringUsingEncoding:1];
+    v2 = [self cStringUsingEncoding:1];
     v3 = objc_alloc_init(MEMORY[0x277CBEB28]);
-    if ([a1 length] >= 1)
+    if ([self length] >= 1)
     {
       v4 = 0;
       v5 = MEMORY[0x277D85DE0];
@@ -73,7 +73,7 @@
         v13 = v10 + v7 + 16 * v9;
         [v3 appendBytes:&v13 length:1];
         v4 += 2;
-        if (v4 >= [a1 length])
+        if (v4 >= [self length])
         {
           goto LABEL_16;
         }
@@ -99,12 +99,12 @@ LABEL_16:
   if (fm_wifiToWLAN___wapi == 1)
   {
     v2 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.icloud.FMCore"];
-    v3 = [v2 preferredLocalizations];
-    v4 = [v3 firstObject];
+    preferredLocalizations = [v2 preferredLocalizations];
+    firstObject = [preferredLocalizations firstObject];
 
-    v5 = @"WLAN";
+    selfCopy = @"WLAN";
     v6 = [v2 localizedStringForKey:@"WLAN" value:@"WLAN" table:0];
-    if ([fm_wifiToWLAN_stripWhitespaceWhitelist containsObject:v4])
+    if ([fm_wifiToWLAN_stripWhitespaceWhitelist containsObject:firstObject])
     {
       v7 = @"(\\s?Wi\\-?Fi\\s?)";
     }
@@ -115,19 +115,19 @@ LABEL_16:
     }
 
     v8 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v7 options:1 error:0];
-    v9 = [a1 length];
+    v9 = [self length];
     if (v6)
     {
-      v5 = [v8 stringByReplacingMatchesInString:a1 options:0 range:0 withTemplate:{v9, v6}];
+      selfCopy = [v8 stringByReplacingMatchesInString:self options:0 range:0 withTemplate:{v9, v6}];
     }
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)legacyAllowedCharacterSet

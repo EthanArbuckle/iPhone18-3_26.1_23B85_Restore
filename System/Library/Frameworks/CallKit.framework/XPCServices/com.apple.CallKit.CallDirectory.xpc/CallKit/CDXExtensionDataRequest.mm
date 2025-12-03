@@ -1,33 +1,33 @@
 @interface CDXExtensionDataRequest
-- (CDXExtensionDataRequest)initWithExtension:(id)a3 queue:(id)a4;
+- (CDXExtensionDataRequest)initWithExtension:(id)extension queue:(id)queue;
 - (CDXExtensionDataRequestDelegate)delegate;
-- (void)_cancelWithError:(id)a3;
-- (void)addBlockingEntriesWithData:(id)a3 reply:(id)a4;
-- (void)addIdentificationEntriesWithData:(id)a3 reply:(id)a4;
-- (void)beginWithCompletion:(id)a3;
-- (void)completeRequestWithReply:(id)a3;
-- (void)isIncrementalLoadingAllowed:(id)a3;
-- (void)removeAllBlockingEntriesWithReply:(id)a3;
-- (void)removeAllIdentificationEntriesWithReply:(id)a3;
-- (void)removeBlockingEntriesWithData:(id)a3 reply:(id)a4;
-- (void)removeIdentificationEntriesWithData:(id)a3 reply:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)_cancelWithError:(id)error;
+- (void)addBlockingEntriesWithData:(id)data reply:(id)reply;
+- (void)addIdentificationEntriesWithData:(id)data reply:(id)reply;
+- (void)beginWithCompletion:(id)completion;
+- (void)completeRequestWithReply:(id)reply;
+- (void)isIncrementalLoadingAllowed:(id)allowed;
+- (void)removeAllBlockingEntriesWithReply:(id)reply;
+- (void)removeAllIdentificationEntriesWithReply:(id)reply;
+- (void)removeBlockingEntriesWithData:(id)data reply:(id)reply;
+- (void)removeIdentificationEntriesWithData:(id)data reply:(id)reply;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CDXExtensionDataRequest
 
-- (CDXExtensionDataRequest)initWithExtension:(id)a3 queue:(id)a4
+- (CDXExtensionDataRequest)initWithExtension:(id)extension queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  extensionCopy = extension;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = CDXExtensionDataRequest;
   v9 = [(CDXExtensionDataRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a4);
-    objc_storeStrong(&v10->_extension, a3);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_extension, extension);
   }
 
   return v10;
@@ -35,62 +35,62 @@
 
 - (CDXExtensionDataRequestDelegate)delegate
 {
-  v3 = [(CDXExtensionDataRequest *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CDXExtensionDataRequest *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
-  v4 = [(CDXExtensionDataRequest *)self queue];
-  dispatch_assert_queue_V2(v4);
+  obj = delegate;
+  queue = [(CDXExtensionDataRequest *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   objc_storeWeak(&self->_delegate, obj);
 }
 
-- (void)beginWithCompletion:(id)a3
+- (void)beginWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CDXExtensionDataRequest *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(CDXExtensionDataRequest *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(CDXExtensionDataRequest *)self setCompletionHandler:v4];
+  [(CDXExtensionDataRequest *)self setCompletionHandler:completionCopy];
   objc_initWeak(&location, self);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100003890;
   v15[3] = &unk_100034A90;
   objc_copyWeak(&v16, &location);
-  v6 = [(CDXExtensionDataRequest *)self extension];
-  [v6 setRequestCompletionBlock:v15];
+  extension = [(CDXExtensionDataRequest *)self extension];
+  [extension setRequestCompletionBlock:v15];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100003A50;
   v13[3] = &unk_100034AE0;
   objc_copyWeak(&v14, &location);
-  v7 = [(CDXExtensionDataRequest *)self extension];
-  [v7 setRequestCancellationBlock:v13];
+  extension2 = [(CDXExtensionDataRequest *)self extension];
+  [extension2 setRequestCancellationBlock:v13];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100003C64;
   v11[3] = &unk_100034B08;
   objc_copyWeak(&v12, &location);
-  v8 = [(CDXExtensionDataRequest *)self extension];
-  [v8 setRequestInterruptionBlock:v11];
+  extension3 = [(CDXExtensionDataRequest *)self extension];
+  [extension3 setRequestInterruptionBlock:v11];
 
-  v9 = [(CDXExtensionDataRequest *)self extension];
+  extension4 = [(CDXExtensionDataRequest *)self extension];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100003DEC;
   v10[3] = &unk_100034B30;
   v10[4] = self;
-  [v9 beginExtensionRequestWithInputItems:0 completion:v10];
+  [extension4 beginExtensionRequestWithInputItems:0 completion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&v14);
@@ -98,21 +98,21 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_cancelWithError:(id)a3
+- (void)_cancelWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(CDXExtensionDataRequest *)self queue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  queue = [(CDXExtensionDataRequest *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CDXExtensionDataRequest *)self requestIdentifier];
+  requestIdentifier = [(CDXExtensionDataRequest *)self requestIdentifier];
 
-  if (!v6)
+  if (!requestIdentifier)
   {
-    v14 = [(CDXExtensionDataRequest *)self extension];
+    extension = [(CDXExtensionDataRequest *)self extension];
 
     v9 = sub_100001C1C();
     v15 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v14)
+    if (extension)
     {
       if (!v15)
       {
@@ -120,7 +120,7 @@
       }
 
       *buf = 138412290;
-      v20 = self;
+      selfCopy2 = self;
       v16 = "Requested to cancel data request %@ which has not yet begun";
     }
 
@@ -132,7 +132,7 @@
       }
 
       *buf = 138412290;
-      v20 = self;
+      selfCopy2 = self;
       v16 = "Requested to cancel data request %@ which has already been completed or cancelled";
     }
 
@@ -141,14 +141,14 @@
   }
 
   v7 = dispatch_semaphore_create(0);
-  v8 = [(CDXExtensionDataRequest *)self context];
+  context = [(CDXExtensionDataRequest *)self context];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000427C;
   v17[3] = &unk_100034B58;
   v9 = v7;
   v18 = v9;
-  [v8 requestFailedWithError:v4 completion:v17];
+  [context requestFailedWithError:errorCopy completion:v17];
 
   v10 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v9, v10))
@@ -161,129 +161,129 @@
     }
   }
 
-  [(CDXExtensionDataRequest *)self setHostCancellationError:v4];
-  v12 = [(CDXExtensionDataRequest *)self extension];
-  v13 = [(CDXExtensionDataRequest *)self requestIdentifier];
-  [v12 cancelExtensionRequestWithIdentifier:v13];
+  [(CDXExtensionDataRequest *)self setHostCancellationError:errorCopy];
+  extension2 = [(CDXExtensionDataRequest *)self extension];
+  requestIdentifier2 = [(CDXExtensionDataRequest *)self requestIdentifier];
+  [extension2 cancelExtensionRequestWithIdentifier:requestIdentifier2];
 
 LABEL_13:
 }
 
-- (void)isIncrementalLoadingAllowed:(id)a3
+- (void)isIncrementalLoadingAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [(CDXExtensionDataRequest *)self queue];
+  allowedCopy = allowed;
+  queue = [(CDXExtensionDataRequest *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100004338;
   v7[3] = &unk_100034B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = allowedCopy;
+  v6 = allowedCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)addBlockingEntriesWithData:(id)a3 reply:(id)a4
+- (void)addBlockingEntriesWithData:(id)data reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CDXExtensionDataRequest *)self queue];
+  dataCopy = data;
+  replyCopy = reply;
+  queue = [(CDXExtensionDataRequest *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000044A0;
   block[3] = &unk_100034BA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = dataCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = dataCopy;
+  dispatch_sync(queue, block);
 }
 
-- (void)removeBlockingEntriesWithData:(id)a3 reply:(id)a4
+- (void)removeBlockingEntriesWithData:(id)data reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CDXExtensionDataRequest *)self queue];
+  dataCopy = data;
+  replyCopy = reply;
+  queue = [(CDXExtensionDataRequest *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004600;
   block[3] = &unk_100034BA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = dataCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = dataCopy;
+  dispatch_sync(queue, block);
 }
 
-- (void)removeAllBlockingEntriesWithReply:(id)a3
+- (void)removeAllBlockingEntriesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CDXExtensionDataRequest *)self queue];
+  replyCopy = reply;
+  queue = [(CDXExtensionDataRequest *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000473C;
   v7[3] = &unk_100034B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)addIdentificationEntriesWithData:(id)a3 reply:(id)a4
+- (void)addIdentificationEntriesWithData:(id)data reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CDXExtensionDataRequest *)self queue];
+  dataCopy = data;
+  replyCopy = reply;
+  queue = [(CDXExtensionDataRequest *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000489C;
   block[3] = &unk_100034BA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = dataCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = dataCopy;
+  dispatch_sync(queue, block);
 }
 
-- (void)removeIdentificationEntriesWithData:(id)a3 reply:(id)a4
+- (void)removeIdentificationEntriesWithData:(id)data reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CDXExtensionDataRequest *)self queue];
+  dataCopy = data;
+  replyCopy = reply;
+  queue = [(CDXExtensionDataRequest *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000049FC;
   block[3] = &unk_100034BA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = dataCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = dataCopy;
+  dispatch_sync(queue, block);
 }
 
-- (void)removeAllIdentificationEntriesWithReply:(id)a3
+- (void)removeAllIdentificationEntriesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CDXExtensionDataRequest *)self queue];
+  replyCopy = reply;
+  queue = [(CDXExtensionDataRequest *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100004B38;
   v7[3] = &unk_100034B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)completeRequestWithReply:(id)a3
+- (void)completeRequestWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CDXExtensionDataRequest *)self queue];
-  dispatch_async(v5, v4);
+  replyCopy = reply;
+  queue = [(CDXExtensionDataRequest *)self queue];
+  dispatch_async(queue, replyCopy);
 }
 
 @end

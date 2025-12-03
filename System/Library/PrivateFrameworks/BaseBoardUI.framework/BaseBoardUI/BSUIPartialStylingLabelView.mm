@@ -1,17 +1,17 @@
 @interface BSUIPartialStylingLabelView
-- (BSUIPartialStylingLabelView)initWithTokenType:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)_initWithFrame:(double)a3 rangeFindingBlock:(double)a4;
+- (BSUIPartialStylingLabelView)initWithTokenType:(int64_t)type;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)_initWithFrame:(double)frame rangeFindingBlock:(double)block;
 - (void)_newLabel;
-- (void)_setTextAlignmentFollowsWritingDirection:(BOOL)a3;
-- (void)_updateLabelsWithRawText:(uint64_t)a1;
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setNumberOfLines:(int64_t)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
+- (void)_setTextAlignmentFollowsWritingDirection:(BOOL)direction;
+- (void)_updateLabelsWithRawText:(uint64_t)text;
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width;
+- (void)setAttributedText:(id)text;
+- (void)setFont:(id)font;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setNumberOfLines:(int64_t)lines;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
 @end
 
 @implementation BSUIPartialStylingLabelView
@@ -19,47 +19,47 @@
 - (void)_newLabel
 {
   v2 = objc_alloc(MEMORY[0x1E69DCC10]);
-  [a1 bounds];
+  [self bounds];
   v3 = [v2 initWithFrame:?];
-  [a1 addSubview:v3];
+  [self addSubview:v3];
   [v3 setAutoresizingMask:18];
   return v3;
 }
 
-- (void)_initWithFrame:(double)a3 rangeFindingBlock:(double)a4
+- (void)_initWithFrame:(double)frame rangeFindingBlock:(double)block
 {
   v11 = a2;
-  if (a1)
+  if (self)
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = BSUIPartialStylingLabelView;
-    v12 = objc_msgSendSuper2(&v18, sel_initWithFrame_, a3, a4, a5, a6);
-    a1 = v12;
+    v12 = objc_msgSendSuper2(&v18, sel_initWithFrame_, frame, block, a5, a6);
+    self = v12;
     if (v12)
     {
-      v13 = [(BSUIPartialStylingLabelView *)v12 _newLabel];
-      v14 = a1[55];
-      a1[55] = v13;
+      _newLabel = [(BSUIPartialStylingLabelView *)v12 _newLabel];
+      v14 = self[55];
+      self[55] = _newLabel;
 
-      [a1 setUserInteractionEnabled:0];
+      [self setUserInteractionEnabled:0];
       v15 = [v11 copy];
-      v16 = a1[51];
-      a1[51] = v15;
+      v16 = self[51];
+      self[51] = v15;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BSUIPartialStylingLabelView)initWithTokenType:(int64_t)a3
+- (BSUIPartialStylingLabelView)initWithTokenType:(int64_t)type
 {
   v3 = &__block_literal_global_3;
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v4 = v3;
   }
@@ -242,27 +242,27 @@ id __49__BSUIPartialStylingLabelView_initWithTokenType___block_invoke_2(uint64_t
   return v10;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_contentLabel sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_contentLabel sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   [(UILabel *)self->_contentLabel setFont:?];
-  [(UILabel *)self->_tokenTypeLabel setFont:v4];
+  [(UILabel *)self->_tokenTypeLabel setFont:fontCopy];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v7 = a3;
+  textCopy = text;
   if ((BSEqualStrings() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [textCopy copy];
     rawText = self->_rawText;
     self->_rawText = v4;
 
@@ -273,10 +273,10 @@ id __49__BSUIPartialStylingLabelView_initWithTokenType___block_invoke_2(uint64_t
   }
 }
 
-- (void)_updateLabelsWithRawText:(uint64_t)a1
+- (void)_updateLabelsWithRawText:(uint64_t)text
 {
   v3 = a2;
-  if (a1)
+  if (text)
   {
     v4 = objc_opt_class();
     v5 = v3;
@@ -324,7 +324,7 @@ id __49__BSUIPartialStylingLabelView_initWithTokenType___block_invoke_2(uint64_t
 
     if (v7 | v11)
     {
-      v12 = *(a1 + 408);
+      v12 = *(text + 408);
       v31 = 0;
       v13 = (*(v12 + 16))();
       v14 = 0;
@@ -338,26 +338,26 @@ id __49__BSUIPartialStylingLabelView_initWithTokenType___block_invoke_2(uint64_t
         v29 = v11;
         v30 = v7;
         v15 = MEMORY[0x1A58E5D00](v28);
-        v16 = *(a1 + 440);
+        v16 = *(text + 440);
         v17 = (v15)[2](v15, v13);
         [v16 setAttributedText:v17];
 
-        v18 = *(a1 + 416);
+        v18 = *(text + 416);
         if (!v18)
         {
-          v19 = [(BSUIPartialStylingLabelView *)a1 _newLabel];
-          v20 = *(a1 + 416);
-          *(a1 + 416) = v19;
+          _newLabel = [(BSUIPartialStylingLabelView *)text _newLabel];
+          v20 = *(text + 416);
+          *(text + 416) = _newLabel;
 
-          v21 = *(a1 + 416);
-          v22 = [*(a1 + 440) font];
-          [v21 setFont:v22];
+          v21 = *(text + 416);
+          font = [*(text + 440) font];
+          [v21 setFont:font];
 
-          [*(a1 + 416) setNumberOfLines:{objc_msgSend(*(a1 + 440), "numberOfLines")}];
-          [*(a1 + 416) setTextAlignment:{objc_msgSend(*(a1 + 440), "textAlignment")}];
-          [*(a1 + 416) setLineBreakMode:{objc_msgSend(*(a1 + 440), "lineBreakMode")}];
-          [*(a1 + 416) setAdjustsFontSizeToFitWidth:{objc_msgSend(*(a1 + 440), "adjustsFontSizeToFitWidth")}];
-          v18 = *(a1 + 416);
+          [*(text + 416) setNumberOfLines:{objc_msgSend(*(text + 440), "numberOfLines")}];
+          [*(text + 416) setTextAlignment:{objc_msgSend(*(text + 440), "textAlignment")}];
+          [*(text + 416) setLineBreakMode:{objc_msgSend(*(text + 440), "lineBreakMode")}];
+          [*(text + 416) setAdjustsFontSizeToFitWidth:{objc_msgSend(*(text + 440), "adjustsFontSizeToFitWidth")}];
+          v18 = *(text + 416);
         }
 
         v23 = (v15)[2](v15, v27);
@@ -369,7 +369,7 @@ id __49__BSUIPartialStylingLabelView_initWithTokenType___block_invoke_2(uint64_t
 
       else
       {
-        v26 = *(a1 + 440);
+        v26 = *(text + 440);
         if (v7)
         {
           [v26 setText:v7];
@@ -380,29 +380,29 @@ id __49__BSUIPartialStylingLabelView_initWithTokenType___block_invoke_2(uint64_t
           [v26 setAttributedText:v11];
         }
 
-        [*(a1 + 416) removeFromSuperview];
-        v24 = *(a1 + 416);
-        *(a1 + 416) = 0;
+        [*(text + 416) removeFromSuperview];
+        v24 = *(text + 416);
+        *(text + 416) = 0;
       }
     }
 
     else
     {
-      [*(a1 + 440) setText:0];
-      [*(a1 + 440) setAttributedText:0];
-      [*(a1 + 416) removeFromSuperview];
-      v25 = *(a1 + 416);
-      *(a1 + 416) = 0;
+      [*(text + 440) setText:0];
+      [*(text + 440) setAttributedText:0];
+      [*(text + 416) removeFromSuperview];
+      v25 = *(text + 416);
+      *(text + 416) = 0;
     }
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v7 = a3;
+  textCopy = text;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [textCopy copy];
     rawAttributedText = self->_rawAttributedText;
     self->_rawAttributedText = v4;
 
@@ -413,46 +413,46 @@ id __49__BSUIPartialStylingLabelView_initWithTokenType___block_invoke_2(uint64_t
   }
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
   [(UILabel *)self->_contentLabel setNumberOfLines:?];
   tokenTypeLabel = self->_tokenTypeLabel;
 
-  [(UILabel *)tokenTypeLabel setNumberOfLines:a3];
+  [(UILabel *)tokenTypeLabel setNumberOfLines:lines];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   [(UILabel *)self->_contentLabel setTextAlignment:?];
   tokenTypeLabel = self->_tokenTypeLabel;
 
-  [(UILabel *)tokenTypeLabel setTextAlignment:a3];
+  [(UILabel *)tokenTypeLabel setTextAlignment:alignment];
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
   [(UILabel *)self->_contentLabel setLineBreakMode:?];
   tokenTypeLabel = self->_tokenTypeLabel;
 
-  [(UILabel *)tokenTypeLabel setLineBreakMode:a3];
+  [(UILabel *)tokenTypeLabel setLineBreakMode:mode];
 }
 
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width
 {
-  v3 = a3;
+  widthCopy = width;
   [(UILabel *)self->_contentLabel setAdjustsFontSizeToFitWidth:?];
   tokenTypeLabel = self->_tokenTypeLabel;
 
-  [(UILabel *)tokenTypeLabel setAdjustsFontSizeToFitWidth:v3];
+  [(UILabel *)tokenTypeLabel setAdjustsFontSizeToFitWidth:widthCopy];
 }
 
-- (void)_setTextAlignmentFollowsWritingDirection:(BOOL)a3
+- (void)_setTextAlignmentFollowsWritingDirection:(BOOL)direction
 {
-  v3 = a3;
+  directionCopy = direction;
   [(UILabel *)self->_contentLabel _setTextAlignmentFollowsWritingDirection:?];
   tokenTypeLabel = self->_tokenTypeLabel;
 
-  [(UILabel *)tokenTypeLabel _setTextAlignmentFollowsWritingDirection:v3];
+  [(UILabel *)tokenTypeLabel _setTextAlignmentFollowsWritingDirection:directionCopy];
 }
 
 id __56__BSUIPartialStylingLabelView__updateLabelsWithRawText___block_invoke(uint64_t a1, void *a2)

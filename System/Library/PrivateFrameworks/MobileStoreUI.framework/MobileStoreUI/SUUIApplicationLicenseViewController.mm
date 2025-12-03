@@ -1,23 +1,23 @@
 @interface SUUIApplicationLicenseViewController
-- (SUUIApplicationLicenseViewController)initWithLicenseAgreementPage:(id)a3;
-- (SUUIApplicationLicenseViewController)initWithLicenseAgreementURL:(id)a3;
-- (void)_displayPage:(id)a3 error:(id)a4;
+- (SUUIApplicationLicenseViewController)initWithLicenseAgreementPage:(id)page;
+- (SUUIApplicationLicenseViewController)initWithLicenseAgreementURL:(id)l;
+- (void)_displayPage:(id)page error:(id)error;
 - (void)loadView;
 - (void)reloadData;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUUIApplicationLicenseViewController
 
-- (SUUIApplicationLicenseViewController)initWithLicenseAgreementPage:(id)a3
+- (SUUIApplicationLicenseViewController)initWithLicenseAgreementPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v9.receiver = self;
   v9.super_class = SUUIApplicationLicenseViewController;
   v5 = [(SUUIApplicationLicenseViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pageCopy copy];
     licensePage = v5->_licensePage;
     v5->_licensePage = v6;
   }
@@ -25,15 +25,15 @@
   return v5;
 }
 
-- (SUUIApplicationLicenseViewController)initWithLicenseAgreementURL:(id)a3
+- (SUUIApplicationLicenseViewController)initWithLicenseAgreementURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = SUUIApplicationLicenseViewController;
   v5 = [(SUUIApplicationLicenseViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
   }
@@ -56,8 +56,8 @@
       [(SSVLoadURLOperation *)v5 setDataConsumer:v6];
 
       v7 = self->_loadOperation;
-      v8 = [(SUUIViewController *)self clientContext];
-      v9 = [v8 valueForConfigurationKey:@"sfsuffix"];
+      clientContext = [(SUUIViewController *)self clientContext];
+      v9 = [clientContext valueForConfigurationKey:@"sfsuffix"];
       [(SSVLoadURLOperation *)v7 setStoreFrontSuffix:v9];
 
       objc_initWeak(&location, self);
@@ -111,19 +111,19 @@ void __50__SUUIApplicationLicenseViewController_reloadData__block_invoke_2(uint6
     self->_webView = v4;
 
     v6 = self->_webView;
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(UIWebView *)v6 setBackgroundColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIWebView *)v6 setBackgroundColor:whiteColor];
 
-    v8 = [(UIWebView *)self->_webView scrollView];
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [v8 setBackgroundColor:v9];
+    scrollView = [(UIWebView *)self->_webView scrollView];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [scrollView setBackgroundColor:whiteColor2];
 
     licensePage = self->_licensePage;
     webView = self->_webView;
     if (licensePage)
     {
-      v11 = [(SUUIApplicationLicensePage *)licensePage licenseAgreementHTML];
-      [(UIWebView *)webView loadHTMLString:v11 baseURL:0];
+      licenseAgreementHTML = [(SUUIApplicationLicensePage *)licensePage licenseAgreementHTML];
+      [(UIWebView *)webView loadHTMLString:licenseAgreementHTML baseURL:0];
 
       webView = self->_webView;
     }
@@ -134,40 +134,40 @@ void __50__SUUIApplicationLicenseViewController_reloadData__block_invoke_2(uint6
   [(SUUIViewController *)self showDefaultNavigationItems];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUUIApplicationLicenseViewController *)self reloadData];
   v5.receiver = self;
   v5.super_class = SUUIApplicationLicenseViewController;
-  [(SUUIViewController *)&v5 viewWillAppear:v3];
+  [(SUUIViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)_displayPage:(id)a3 error:(id)a4
+- (void)_displayPage:(id)page error:(id)error
 {
-  v12 = a3;
-  v7 = a4;
+  pageCopy = page;
+  errorCopy = error;
   [(SSVLoadURLOperation *)self->_loadOperation setOutputBlock:0];
   loadOperation = self->_loadOperation;
   self->_loadOperation = 0;
 
-  if (v7)
+  if (errorCopy)
   {
-    [(SUUIViewController *)self showError:v7];
+    [(SUUIViewController *)self showError:errorCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_licensePage, a3);
+    objc_storeStrong(&self->_licensePage, page);
     webView = self->_webView;
     if (webView)
     {
-      v10 = [(SUUIApplicationLicensePage *)self->_licensePage licenseAgreementHTML];
-      [(UIWebView *)webView loadHTMLString:v10 baseURL:0];
+      licenseAgreementHTML = [(SUUIApplicationLicensePage *)self->_licensePage licenseAgreementHTML];
+      [(UIWebView *)webView loadHTMLString:licenseAgreementHTML baseURL:0];
     }
 
-    v11 = [(SUUIApplicationLicensePage *)self->_licensePage title];
-    [(SUUIApplicationLicenseViewController *)self setTitle:v11];
+    title = [(SUUIApplicationLicensePage *)self->_licensePage title];
+    [(SUUIApplicationLicenseViewController *)self setTitle:title];
   }
 }
 

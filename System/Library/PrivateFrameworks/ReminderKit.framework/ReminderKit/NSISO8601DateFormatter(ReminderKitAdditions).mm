@@ -22,12 +22,12 @@
 
 - (id)rem_dateComponentsFromString:()ReminderKitAdditions
 {
-  v2 = [a1 dateFromString:?];
+  v2 = [self dateFromString:?];
   if (v2)
   {
     v3 = MEMORY[0x1E695DF10];
-    v4 = [a1 timeZone];
-    v5 = [v3 rem_dateComponentsWithDate:v2 timeZone:v4 isAllDay:0];
+    timeZone = [self timeZone];
+    v5 = [v3 rem_dateComponentsWithDate:v2 timeZone:timeZone isAllDay:0];
   }
 
   else
@@ -42,10 +42,10 @@
 {
   v4 = MEMORY[0x1E695DF10];
   v5 = a3;
-  v6 = [a1 timeZone];
-  v7 = [v4 rem_dateWithDateComponents:v5 timeZone:v6];
+  timeZone = [self timeZone];
+  v7 = [v4 rem_dateWithDateComponents:v5 timeZone:timeZone];
 
-  v8 = [a1 stringFromDate:v7];
+  v8 = [self stringFromDate:v7];
 
   return v8;
 }

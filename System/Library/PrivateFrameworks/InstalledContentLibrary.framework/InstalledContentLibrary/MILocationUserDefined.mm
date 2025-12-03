@@ -1,16 +1,16 @@
 @interface MILocationUserDefined
 + (NSString)plistTypeName;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualWithLocationUserDefined:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualWithLocationUserDefined:(id)defined;
 - (MILocationUserDefined)init;
-- (MILocationUserDefined)initWithAppBundleURL:(id)a3 error:(id *)a4;
-- (MILocationUserDefined)initWithAppBundleURLInternal:(id)a3;
+- (MILocationUserDefined)initWithAppBundleURL:(id)l error:(id *)error;
+- (MILocationUserDefined)initWithAppBundleURLInternal:(id)internal;
 - (NSDictionary)plistDictionary;
 - (NSString)description;
 - (NSURL)appBundleURL;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MILocationUserDefined
@@ -21,8 +21,8 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v11 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
-  v8 = [(MILocationUserDefined *)v7 _appBundleURL];
+  selfCopy = self;
+  _appBundleURL = [(MILocationUserDefined *)selfCopy _appBundleURL];
   sub_1B1756EB8();
 
   v9 = sub_1B1756EA8();
@@ -31,7 +31,7 @@
   return v9;
 }
 
-- (MILocationUserDefined)initWithAppBundleURL:(id)a3 error:(id *)a4
+- (MILocationUserDefined)initWithAppBundleURL:(id)l error:(id *)error
 {
   v4 = sub_1B1756EE8();
   MEMORY[0x1EEE9AC00](v4 - 8);
@@ -40,7 +40,7 @@
   return sub_1B1752B0C(v6);
 }
 
-- (MILocationUserDefined)initWithAppBundleURLInternal:(id)a3
+- (MILocationUserDefined)initWithAppBundleURLInternal:(id)internal
 {
   v4 = sub_1B1756EE8();
   v5 = *(v4 - 8);
@@ -55,15 +55,15 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = sub_1B1756EE8();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = self;
-  v11 = [(MILocationUserDefined *)v10 appBundleURL];
+  coderCopy = coder;
+  selfCopy = self;
+  appBundleURL = [(MILocationUserDefined *)selfCopy appBundleURL];
   sub_1B1756EB8();
 
   sub_1B1756EC8();
@@ -71,45 +71,45 @@
   v12 = sub_1B1756F58();
 
   v13 = sub_1B1756F58();
-  [v9 encodeObject:v12 forKey:v13];
+  [coderCopy encodeObject:v12 forKey:v13];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   swift_getObjectType();
   v4 = sub_1B1756EE8();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
-  v9 = [(MILocationUserDefined *)v8 appBundleURL];
+  selfCopy = self;
+  appBundleURL = [(MILocationUserDefined *)selfCopy appBundleURL];
   sub_1B1756EB8();
 
   v10 = objc_allocWithZone(swift_getObjCClassFromMetadata());
   v11 = sub_1B1756EA8();
-  v12 = [v10 initWithAppBundleURLInternal_];
+  initWithAppBundleURLInternal_ = [v10 initWithAppBundleURLInternal_];
 
   (*(v5 + 8))(v7, v4);
-  v15[1] = v12;
+  v15[1] = initWithAppBundleURLInternal_;
   v13 = sub_1B1757038();
 
   return v13;
 }
 
-- (BOOL)isEqualWithLocationUserDefined:(id)a3
+- (BOOL)isEqualWithLocationUserDefined:(id)defined
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1B1753A6C(v4);
+  definedCopy = defined;
+  selfCopy = self;
+  LOBYTE(self) = sub_1B1753A6C(definedCopy);
 
   return self & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B1756FC8();
     swift_unknownObjectRelease();
@@ -118,7 +118,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = MILocationUserDefined.isEqual(_:)(v8);
@@ -133,8 +133,8 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = v14 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
-  v8 = [(MILocationUserDefined *)v7 appBundleURL];
+  selfCopy = self;
+  appBundleURL = [(MILocationUserDefined *)selfCopy appBundleURL];
   sub_1B1756EB8();
 
   v9 = sub_1B1756EC8();
@@ -150,7 +150,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   MILocationUserDefined.description.getter();
 
   v3 = sub_1B1756F58();
@@ -177,8 +177,8 @@
   strcpy((inited + 32), "appBundleURL");
   *(inited + 45) = 0;
   *(inited + 46) = -5120;
-  v8 = self;
-  v9 = [(MILocationUserDefined *)v8 appBundleURL];
+  selfCopy = self;
+  appBundleURL = [(MILocationUserDefined *)selfCopy appBundleURL];
   sub_1B1756EB8();
 
   v10 = sub_1B1756EC8();

@@ -3,15 +3,15 @@
 + (id)allAuditIssueClassificationCodes;
 + (id)auditIssueTypeToAuditTestTypeMapping;
 + (id)sharedManager;
-- (id)_locKeyForAuditIssueClassification:(int64_t)a3;
-- (id)_locKeyWithSuffix:(id)a3 issueClassification:(int64_t)a4;
-- (id)_locStringForIssue:(id)a3 suffix:(id)a4;
-- (id)_locStringForKey:(id)a3;
-- (id)humanReadableDescriptionForAuditIssueTestType:(id)a3;
-- (id)humanReadableDescriptionForAuditTestType:(id)a3;
-- (id)longDescExtraInfoForAuditIssue:(id)a3;
-- (id)shortTitleForAuditIssue:(id)a3;
-- (id)suggestionDescriptionForAuditIssue:(id)a3;
+- (id)_locKeyForAuditIssueClassification:(int64_t)classification;
+- (id)_locKeyWithSuffix:(id)suffix issueClassification:(int64_t)classification;
+- (id)_locStringForIssue:(id)issue suffix:(id)suffix;
+- (id)_locStringForKey:(id)key;
+- (id)humanReadableDescriptionForAuditIssueTestType:(id)type;
+- (id)humanReadableDescriptionForAuditTestType:(id)type;
+- (id)longDescExtraInfoForAuditIssue:(id)issue;
+- (id)shortTitleForAuditIssue:(id)issue;
+- (id)suggestionDescriptionForAuditIssue:(id)issue;
 @end
 
 @implementation AXAuditIssueDescriptionManager
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __47__AXAuditIssueDescriptionManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_4 != -1)
   {
     dispatch_once(&sharedManager_onceToken_4, block);
@@ -41,15 +41,15 @@ uint64_t __47__AXAuditIssueDescriptionManager_sharedManager__block_invoke(uint64
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)shortTitleForAuditIssue:(id)a3
+- (id)shortTitleForAuditIssue:(id)issue
 {
-  v4 = a3;
-  v5 = [v4 mlGeneratedDescription];
+  issueCopy = issue;
+  mlGeneratedDescription = [issueCopy mlGeneratedDescription];
 
-  if (v5)
+  if (mlGeneratedDescription)
   {
-    v6 = [v4 mlGeneratedDescription];
-    v7 = -[AXAuditIssueDescriptionManager _locKeyWithSuffix:issueClassification:](self, "_locKeyWithSuffix:issueClassification:", @"title.formatter", [v4 issueClassification]);
+    mlGeneratedDescription2 = [issueCopy mlGeneratedDescription];
+    v7 = -[AXAuditIssueDescriptionManager _locKeyWithSuffix:issueClassification:](self, "_locKeyWithSuffix:issueClassification:", @"title.formatter", [issueCopy issueClassification]);
     v8 = v7;
     v9 = &stru_284FBB130;
     if (v7)
@@ -62,28 +62,28 @@ uint64_t __47__AXAuditIssueDescriptionManager_sharedManager__block_invoke(uint64
     v11 = MEMORY[0x277CCACA8];
     v12 = [(AXAuditIssueDescriptionManager *)self _locStringForKey:v10];
 
-    v13 = [v11 stringWithFormat:v12, v6];
+    v13 = [v11 stringWithFormat:v12, mlGeneratedDescription2];
   }
 
   else
   {
-    v13 = [(AXAuditIssueDescriptionManager *)self _locStringForIssue:v4 suffix:@"title"];
+    v13 = [(AXAuditIssueDescriptionManager *)self _locStringForIssue:issueCopy suffix:@"title"];
   }
 
   return v13;
 }
 
-- (id)longDescExtraInfoForAuditIssue:(id)a3
+- (id)longDescExtraInfoForAuditIssue:(id)issue
 {
-  v4 = a3;
-  v5 = [v4 longDescExtraInfo];
+  issueCopy = issue;
+  longDescExtraInfo = [issueCopy longDescExtraInfo];
 
-  if (v5)
+  if (longDescExtraInfo)
   {
-    v6 = [v4 longDescExtraInfo];
-    v7 = [v6 componentsJoinedByString:{@", "}];
+    longDescExtraInfo2 = [issueCopy longDescExtraInfo];
+    v7 = [longDescExtraInfo2 componentsJoinedByString:{@", "}];
 
-    v8 = [(AXAuditIssueDescriptionManager *)self _locStringForIssue:v4 suffix:@"longDescExtraInfo"];
+    v8 = [(AXAuditIssueDescriptionManager *)self _locStringForIssue:issueCopy suffix:@"longDescExtraInfo"];
     if (v8)
     {
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v8, v7];
@@ -105,14 +105,14 @@ uint64_t __47__AXAuditIssueDescriptionManager_sharedManager__block_invoke(uint64
   return v10;
 }
 
-- (id)suggestionDescriptionForAuditIssue:(id)a3
+- (id)suggestionDescriptionForAuditIssue:(id)issue
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 suggestedSelectorsToFix];
-  if ([v5 count])
+  issueCopy = issue;
+  suggestedSelectorsToFix = [issueCopy suggestedSelectorsToFix];
+  if ([suggestedSelectorsToFix count])
   {
-    v6 = -[AXAuditIssueDescriptionManager _locKeyWithSuffix:issueClassification:](self, "_locKeyWithSuffix:issueClassification:", @"suggestion.formatter", [v4 issueClassification]);
+    v6 = -[AXAuditIssueDescriptionManager _locKeyWithSuffix:issueClassification:](self, "_locKeyWithSuffix:issueClassification:", @"suggestion.formatter", [issueCopy issueClassification]);
     if (!v6)
     {
       v15 = 0;
@@ -125,7 +125,7 @@ uint64_t __47__AXAuditIssueDescriptionManager_sharedManager__block_invoke(uint64
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = v5;
+    v8 = suggestedSelectorsToFix;
     v9 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v9)
     {
@@ -169,7 +169,7 @@ LABEL_23:
     }
 
 LABEL_19:
-    if ([v4 platform] == 1)
+    if ([issueCopy platform] == 1)
     {
       v25 = @"defaultIOSSuggestion";
     }
@@ -185,11 +185,11 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  v16 = [v4 mlGeneratedDescription];
+  mlGeneratedDescription = [issueCopy mlGeneratedDescription];
 
-  if (!v16)
+  if (!mlGeneratedDescription)
   {
-    v6 = -[AXAuditIssueDescriptionManager _locKeyWithSuffix:issueClassification:](self, "_locKeyWithSuffix:issueClassification:", @"suggestion", [v4 issueClassification]);
+    v6 = -[AXAuditIssueDescriptionManager _locKeyWithSuffix:issueClassification:](self, "_locKeyWithSuffix:issueClassification:", @"suggestion", [issueCopy issueClassification]);
     v15 = [(AXAuditIssueDescriptionManager *)self _locStringForKey:v6];
     v7 = 0;
     if (!v15)
@@ -200,8 +200,8 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  v17 = [v4 mlGeneratedDescription];
-  v18 = -[AXAuditIssueDescriptionManager _locKeyWithSuffix:issueClassification:](self, "_locKeyWithSuffix:issueClassification:", @"suggestion.formatter", [v4 issueClassification]);
+  mlGeneratedDescription2 = [issueCopy mlGeneratedDescription];
+  v18 = -[AXAuditIssueDescriptionManager _locKeyWithSuffix:issueClassification:](self, "_locKeyWithSuffix:issueClassification:", @"suggestion.formatter", [issueCopy issueClassification]);
   v19 = v18;
   v20 = &stru_284FBB130;
   if (v18)
@@ -214,7 +214,7 @@ LABEL_19:
   v22 = MEMORY[0x277CCACA8];
   v23 = [(AXAuditIssueDescriptionManager *)self _locStringForKey:v21];
 
-  v24 = [v22 stringWithFormat:v23, v17];
+  v24 = [v22 stringWithFormat:v23, mlGeneratedDescription2];
 
 LABEL_24:
   v27 = *MEMORY[0x277D85DE8];
@@ -222,16 +222,16 @@ LABEL_24:
   return v24;
 }
 
-- (id)_locStringForKey:(id)a3
+- (id)_locStringForKey:(id)key
 {
   v3 = _locStringForKey__onceToken_0;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     [AXAuditIssueDescriptionManager _locStringForKey:];
   }
 
-  v5 = [_locStringForKey__myBundle_0 localizedStringForKey:v4 value:v4 table:@"AuditIssues"];
+  v5 = [_locStringForKey__myBundle_0 localizedStringForKey:keyCopy value:keyCopy table:@"AuditIssues"];
 
   return v5;
 }
@@ -243,22 +243,22 @@ uint64_t __51__AXAuditIssueDescriptionManager__locStringForKey___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_locStringForIssue:(id)a3 suffix:(id)a4
+- (id)_locStringForIssue:(id)issue suffix:(id)suffix
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[AXAuditIssueDescriptionManager _locKeyWithSuffix:issueClassification:](self, "_locKeyWithSuffix:issueClassification:", v6, [v7 issueClassification]);
+  suffixCopy = suffix;
+  issueCopy = issue;
+  v8 = -[AXAuditIssueDescriptionManager _locKeyWithSuffix:issueClassification:](self, "_locKeyWithSuffix:issueClassification:", suffixCopy, [issueCopy issueClassification]);
 
-  v9 = [v7 elementDescription];
+  elementDescription = [issueCopy elementDescription];
 
-  if (!v9)
+  if (!elementDescription)
   {
-    v9 = [(AXAuditIssueDescriptionManager *)self _locStringForKey:@"element"];
+    elementDescription = [(AXAuditIssueDescriptionManager *)self _locStringForKey:@"element"];
   }
 
   v10 = MEMORY[0x277CCACA8];
   v11 = [(AXAuditIssueDescriptionManager *)self _locStringForKey:v8];
-  v12 = [v10 stringWithFormat:v11, v9];
+  v12 = [v10 stringWithFormat:v11, elementDescription];
 
   if ([v12 isEqual:v8])
   {
@@ -275,27 +275,27 @@ uint64_t __51__AXAuditIssueDescriptionManager__locStringForKey___block_invoke()
   return v13;
 }
 
-- (id)_locKeyWithSuffix:(id)a3 issueClassification:(int64_t)a4
+- (id)_locKeyWithSuffix:(id)suffix issueClassification:(int64_t)classification
 {
-  v6 = a3;
-  v7 = [(AXAuditIssueDescriptionManager *)self _locKeyForAuditIssueClassification:a4];
+  suffixCopy = suffix;
+  v7 = [(AXAuditIssueDescriptionManager *)self _locKeyForAuditIssueClassification:classification];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v7, v6];
+    suffixCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v7, suffixCopy];
   }
 
   else
   {
-    v8 = 0;
+    suffixCopy = 0;
   }
 
-  return v8;
+  return suffixCopy;
 }
 
-- (id)_locKeyForAuditIssueClassification:(int64_t)a3
+- (id)_locKeyForAuditIssueClassification:(int64_t)classification
 {
   v4 = +[AXAuditIssueDescriptionManager _auditIssueTypeToLocalizationKeyLookup];
-  v5 = [MEMORY[0x277CCABB0] numberWithLong:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithLong:classification];
   v6 = [v4 objectForKey:v5];
 
   return v6;
@@ -397,10 +397,10 @@ void __72__AXAuditIssueDescriptionManager__auditIssueTypeToLocalizationKeyLookup
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)humanReadableDescriptionForAuditIssueTestType:(id)a3
+- (id)humanReadableDescriptionForAuditIssueTestType:(id)type
 {
-  v4 = [a3 issueClassification];
-  v5 = [MEMORY[0x277CCABB0] numberWithLong:v4];
+  issueClassification = [type issueClassification];
+  v5 = [MEMORY[0x277CCABB0] numberWithLong:issueClassification];
   v6 = +[AXAuditIssueDescriptionManager auditIssueTypeToAuditTestTypeMapping];
   v7 = [v6 objectForKey:v5];
 
@@ -409,55 +409,55 @@ void __72__AXAuditIssueDescriptionManager__auditIssueTypeToLocalizationKeyLookup
   return v8;
 }
 
-- (id)humanReadableDescriptionForAuditTestType:(id)a3
+- (id)humanReadableDescriptionForAuditTestType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"testTypeContrast"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"testTypeContrast"])
   {
     v5 = @"contrast";
   }
 
-  else if ([v4 isEqualToString:@"testTypeHitRegion"])
+  else if ([typeCopy isEqualToString:@"testTypeHitRegion"])
   {
     v5 = @"hitRegion";
   }
 
-  else if ([v4 isEqualToString:@"testTypeSufficientElementDescription"])
+  else if ([typeCopy isEqualToString:@"testTypeSufficientElementDescription"])
   {
     v5 = @"elementDescription";
   }
 
-  else if ([v4 isEqualToString:@"testTypeAction"])
+  else if ([typeCopy isEqualToString:@"testTypeAction"])
   {
     v5 = @"action";
   }
 
-  else if ([v4 isEqualToString:@"testTypeTrait"])
+  else if ([typeCopy isEqualToString:@"testTypeTrait"])
   {
     v5 = @"trait";
   }
 
-  else if ([v4 isEqualToString:@"testTypeElementDetection"])
+  else if ([typeCopy isEqualToString:@"testTypeElementDetection"])
   {
     v5 = @"elementDetection";
   }
 
-  else if ([v4 isEqualToString:@"testTypeSwipeOrder"])
+  else if ([typeCopy isEqualToString:@"testTypeSwipeOrder"])
   {
     v5 = @"swipeOrder";
   }
 
-  else if ([v4 isEqualToString:@"testTypeDynamicText"])
+  else if ([typeCopy isEqualToString:@"testTypeDynamicText"])
   {
     v5 = @"dynamicText";
   }
 
-  else if ([v4 isEqualToString:@"testTypeTextClipped"])
+  else if ([typeCopy isEqualToString:@"testTypeTextClipped"])
   {
     v5 = @"textClipped";
   }
 
-  else if ([v4 isEqualToString:@"testTypeParentChild"])
+  else if ([typeCopy isEqualToString:@"testTypeParentChild"])
   {
     v5 = @"parentChild";
   }
@@ -579,10 +579,10 @@ void __70__AXAuditIssueDescriptionManager_auditIssueTypeToAuditTestTypeMapping__
 
 + (id)allAuditIssueClassificationCodes
 {
-  v2 = [objc_opt_class() _auditIssueTypeToLocalizationKeyLookup];
-  v3 = [v2 allKeys];
+  _auditIssueTypeToLocalizationKeyLookup = [objc_opt_class() _auditIssueTypeToLocalizationKeyLookup];
+  allKeys = [_auditIssueTypeToLocalizationKeyLookup allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface ASPStorageiBootUpdater
 + (id)IOMatchingPropertyTable;
-- (BOOL)updateBootFirmwareWithError:(id *)a3;
+- (BOOL)updateBootFirmwareWithError:(id *)error;
 - (void)dealloc;
 @end
 
@@ -13,28 +13,28 @@
   return [NSDictionary dictionaryWithObjects:&v4 forKeys:&v3 count:1];
 }
 
-- (BOOL)updateBootFirmwareWithError:(id *)a3
+- (BOOL)updateBootFirmwareWithError:(id *)error
 {
   v157 = 0;
   v156 = 1;
   v155 = 0;
   if (![(DevNodeWriter *)[(ASPStorageiBootUpdater *)self llbWriter] isAvailable])
   {
-    v37 = [(ASPStorageiBootUpdater *)self llbWriter];
-    iBU_LOG_real(@"LLB writer %@ was unavailable at write-time", "[ASPStorageiBootUpdater updateBootFirmwareWithError:]", v38, v39, v40, v41, v42, v43, v37);
-    if (a3)
+    llbWriter = [(ASPStorageiBootUpdater *)self llbWriter];
+    iBU_LOG_real(@"LLB writer %@ was unavailable at write-time", "[ASPStorageiBootUpdater updateBootFirmwareWithError:]", v38, v39, v40, v41, v42, v43, llbWriter);
+    if (error)
     {
-      v142 = [(ASPStorageiBootUpdater *)self llbWriter];
+      llbWriter2 = [(ASPStorageiBootUpdater *)self llbWriter];
       v36 = @"LLB writer %@ was unavailable at write-time";
 LABEL_18:
       v51 = 6;
       v35 = 0;
 LABEL_22:
-      v52 = MSUBootFirmwareError(v51, v35, v36, v30, v31, v32, v33, v34, v142);
+      v52 = MSUBootFirmwareError(v51, v35, v36, v30, v31, v32, v33, v34, llbWriter2);
 LABEL_23:
       v53 = v52;
       result = 0;
-      *a3 = v53;
+      *error = v53;
       return result;
     }
 
@@ -43,11 +43,11 @@ LABEL_23:
 
   if (![(DevNodeWriter *)[(ASPStorageiBootUpdater *)self firmwareWriter] isAvailable])
   {
-    v44 = [(ASPStorageiBootUpdater *)self firmwareWriter];
-    iBU_LOG_real(@"Firmware writer %@ was unavailable at write-time", "[ASPStorageiBootUpdater updateBootFirmwareWithError:]", v45, v46, v47, v48, v49, v50, v44);
-    if (a3)
+    firmwareWriter = [(ASPStorageiBootUpdater *)self firmwareWriter];
+    iBU_LOG_real(@"Firmware writer %@ was unavailable at write-time", "[ASPStorageiBootUpdater updateBootFirmwareWithError:]", v45, v46, v47, v48, v49, v50, firmwareWriter);
+    if (error)
     {
-      v142 = [(ASPStorageiBootUpdater *)self firmwareWriter];
+      llbWriter2 = [(ASPStorageiBootUpdater *)self firmwareWriter];
       v36 = @"Firmware writer %@ was unavailable at write-time";
       goto LABEL_18;
     }
@@ -61,8 +61,8 @@ LABEL_23:
   v154 = 0u;
   v151 = 0u;
   v152 = 0u;
-  v12 = [(MSUBootFirmwareUpdater *)self firmwareImages];
-  v13 = [(NSArray *)v12 countByEnumeratingWithState:&v151 objects:v159 count:16];
+  firmwareImages = [(MSUBootFirmwareUpdater *)self firmwareImages];
+  v13 = [(NSArray *)firmwareImages countByEnumeratingWithState:&v151 objects:v159 count:16];
   if (v13)
   {
     v20 = v13;
@@ -73,7 +73,7 @@ LABEL_5:
     {
       if (*v152 != v21)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(firmwareImages);
       }
 
       v23 = *(*(&v151 + 1) + 8 * v22);
@@ -85,7 +85,7 @@ LABEL_5:
 
       if (v20 == ++v22)
       {
-        v20 = [(NSArray *)v12 countByEnumeratingWithState:&v151 objects:v159 count:16];
+        v20 = [(NSArray *)firmwareImages countByEnumeratingWithState:&v151 objects:v159 count:16];
         if (v20)
         {
           goto LABEL_5;
@@ -96,7 +96,7 @@ LABEL_5:
     }
 
     iBU_LOG_real(@"Failed to write FW data to firmwareWriter", "[ASPStorageiBootUpdater updateBootFirmwareWithError:]", v14, v15, v16, v17, v18, v19, v140);
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -111,7 +111,7 @@ LABEL_11:
   if ([(DevNodeWriter *)[(ASPStorageiBootUpdater *)self firmwareWriter] writeData:[NSData withError:"dataWithBytes:length:" dataWithBytes:2 length:?], &v155])
   {
     iBU_LOG_real(@"Failed to write end-of-contents bytes to firmwareWriter.", "[ASPStorageiBootUpdater updateBootFirmwareWithError:]", v24, v25, v26, v27, v28, v29, v141);
-    if (a3)
+    if (error)
     {
       v35 = v155;
       v36 = @"Failed to write end-of-contents bytes to firmwareWriter.";
@@ -139,8 +139,8 @@ LABEL_21:
   v150 = 0u;
   v147 = 0u;
   v148 = 0u;
-  v82 = [(MSUBootFirmwareUpdater *)self bootBlockImages];
-  v83 = [(NSArray *)v82 countByEnumeratingWithState:&v147 objects:v158 count:16];
+  bootBlockImages = [(MSUBootFirmwareUpdater *)self bootBlockImages];
+  v83 = [(NSArray *)bootBlockImages countByEnumeratingWithState:&v147 objects:v158 count:16];
   if (v83)
   {
     v90 = v83;
@@ -152,7 +152,7 @@ LABEL_31:
     {
       if (*v148 != v92)
       {
-        objc_enumerationMutation(v82);
+        objc_enumerationMutation(bootBlockImages);
       }
 
       v94 = [(MSUBootFirmwareUpdater *)self _encodeFirmware:*(*(&v147 + 1) + 8 * v93) withRestoreInfo:[(MSUBootFirmwareUpdater *)self _restoreInfoDictionary]];
@@ -165,9 +165,9 @@ LABEL_31:
       if ([(DevNodeWriter *)[(ASPStorageiBootUpdater *)self llbWriter] writeData:v94 withError:&v155])
       {
         iBU_LOG_real(@"Failed to write boot block data to dev node.", "[ASPStorageiBootUpdater updateBootFirmwareWithError:]", v102, v103, v104, v105, v106, v107, v143);
-        if (a3)
+        if (error)
         {
-          *a3 = MSUBootFirmwareError(3, v155, @"Failed to write boot block data to dev node.", v115, v116, v117, v118, v119, v145);
+          *error = MSUBootFirmwareError(3, v155, @"Failed to write boot block data to dev node.", v115, v116, v117, v118, v119, v145);
         }
 
         return 0;
@@ -177,7 +177,7 @@ LABEL_31:
 
       if (v90 == ++v93)
       {
-        v90 = [(NSArray *)v82 countByEnumeratingWithState:&v147 objects:v158 count:16];
+        v90 = [(NSArray *)bootBlockImages countByEnumeratingWithState:&v147 objects:v158 count:16];
         if (v90)
         {
           goto LABEL_31;
@@ -188,7 +188,7 @@ LABEL_31:
     }
 
     iBU_LOG_real(@"Got NULL data while wrapping boot-block IMG4 data.", "[ASPStorageiBootUpdater updateBootFirmwareWithError:]", v95, v96, v97, v98, v99, v100, v143);
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -205,7 +205,7 @@ LABEL_40:
   if ([(DevNodeWriter *)[(ASPStorageiBootUpdater *)self llbWriter] writeData:v108 withError:&v155])
   {
     iBU_LOG_real(@"Failed to write end-of-contents bytes to llbWriter.", "[ASPStorageiBootUpdater updateBootFirmwareWithError:]", v109, v110, v111, v112, v113, v114, v144);
-    if (a3)
+    if (error)
     {
       v35 = v155;
       v36 = @"Failed to write end-of-contents bytes to llbWriter.";
@@ -222,7 +222,7 @@ LABEL_40:
   if ([(DevNodeWriter *)[(ASPStorageiBootUpdater *)self llbWriter] writeBytes:v121 ofLength:v120 withError:&v155])
   {
     iBU_LOG_real(@"Failed to write LLB to dev node.", "[ASPStorageiBootUpdater updateBootFirmwareWithError:]", v128, v129, v130, v131, v132, v133, v146);
-    if (a3)
+    if (error)
     {
       v35 = v155;
       v36 = @"Failed to write LLB to dev node.";
@@ -243,7 +243,7 @@ LABEL_27:
     v61 = __error();
     strerror(*v61);
     iBU_LOG_real(@"sysctlbyname('%s') failed with error: %s", "[ASPStorageiBootUpdater updateBootFirmwareWithError:]", v62, v63, v64, v65, v66, v67, "debug.ASPFW");
-    if (a3)
+    if (error)
     {
       v68 = v155;
       v69 = __error();

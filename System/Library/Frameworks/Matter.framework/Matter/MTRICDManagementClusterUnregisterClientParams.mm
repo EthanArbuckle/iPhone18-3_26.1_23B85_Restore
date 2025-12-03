@@ -1,8 +1,8 @@
 @interface MTRICDManagementClusterUnregisterClientParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRICDManagementClusterUnregisterClientParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -32,20 +32,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRICDManagementClusterUnregisterClientParams);
-  v5 = [(MTRICDManagementClusterUnregisterClientParams *)self checkInNodeID];
-  [(MTRICDManagementClusterUnregisterClientParams *)v4 setCheckInNodeID:v5];
+  checkInNodeID = [(MTRICDManagementClusterUnregisterClientParams *)self checkInNodeID];
+  [(MTRICDManagementClusterUnregisterClientParams *)v4 setCheckInNodeID:checkInNodeID];
 
-  v6 = [(MTRICDManagementClusterUnregisterClientParams *)self verificationKey];
-  [(MTRICDManagementClusterUnregisterClientParams *)v4 setVerificationKey:v6];
+  verificationKey = [(MTRICDManagementClusterUnregisterClientParams *)self verificationKey];
+  [(MTRICDManagementClusterUnregisterClientParams *)v4 setVerificationKey:verificationKey];
 
-  v7 = [(MTRICDManagementClusterUnregisterClientParams *)self timedInvokeTimeoutMs];
-  [(MTRICDManagementClusterUnregisterClientParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRICDManagementClusterUnregisterClientParams *)self timedInvokeTimeoutMs];
+  [(MTRICDManagementClusterUnregisterClientParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRICDManagementClusterUnregisterClientParams *)self serverSideProcessingTimeout];
-  [(MTRICDManagementClusterUnregisterClientParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRICDManagementClusterUnregisterClientParams *)self serverSideProcessingTimeout];
+  [(MTRICDManagementClusterUnregisterClientParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -62,24 +62,24 @@
   return v8;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v24 = 0;
+  unsignedLongLongValue = 0;
   v25 = 0;
   v23[0] = 0;
   v23[1] = 0;
   v22 = v23;
-  v5 = [(MTRICDManagementClusterUnregisterClientParams *)self checkInNodeID];
-  v24 = [v5 unsignedLongLongValue];
+  checkInNodeID = [(MTRICDManagementClusterUnregisterClientParams *)self checkInNodeID];
+  unsignedLongLongValue = [checkInNodeID unsignedLongLongValue];
 
-  v6 = [(MTRICDManagementClusterUnregisterClientParams *)self verificationKey];
+  verificationKey = [(MTRICDManagementClusterUnregisterClientParams *)self verificationKey];
 
-  if (v6)
+  if (verificationKey)
   {
     v25 = 1;
     v26 = 0uLL;
-    v7 = [(MTRICDManagementClusterUnregisterClientParams *)self verificationKey];
-    sub_238DB6950(v16, [v7 bytes], objc_msgSend(v7, "length"));
+    verificationKey2 = [(MTRICDManagementClusterUnregisterClientParams *)self verificationKey];
+    sub_238DB6950(v16, [verificationKey2 bytes], objc_msgSend(verificationKey2, "length"));
 
     v26 = v16[0];
   }
@@ -94,7 +94,7 @@
     v20 = 0;
     sub_238EA16C4(&v17, &v21, 0);
     sub_2393C7BF0(v16, &v17, 0xFFFFFFFF);
-    v8 = sub_238F1A36C(&v24, v16, 0x100uLL);
+    v8 = sub_238F1A36C(&unsignedLongLongValue, v16, 0x100uLL);
     v10 = v8;
     if (v8 || (v8 = sub_238DD2EFC(v16, &v21), v10 = v8, v8))
     {
@@ -103,8 +103,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v21);
-      v8 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v21);
+      v8 = sub_2393C7114(reader, 21, 256);
       v11 = v15;
       v10 = v8;
     }
@@ -132,19 +132,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRICDManagementClusterUnregisterClientParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -155,7 +155,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x2A3100000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

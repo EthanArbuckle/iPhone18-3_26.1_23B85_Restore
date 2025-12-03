@@ -1,5 +1,5 @@
 @interface AudioTraitButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityLabelHelper;
 - (id)accessibilityValue;
@@ -8,22 +8,22 @@
 
 @implementation AudioTraitButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateSwiftEnum:@"Music.AudioTrait"];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasSwiftField:@"_playingItemAudioTrait" withSwiftType:"Optional<AudioTrait>"];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasSwiftField:@"hapticsState" withSwiftType:"Optional<HapticsState>"];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"updatePlayingItemAudioTraitButton" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateSwiftEnum:@"Music.AudioTrait"];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasSwiftField:@"_playingItemAudioTrait" withSwiftType:"Optional<AudioTrait>"];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasSwiftField:@"hapticsState" withSwiftType:"Optional<HapticsState>"];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"updatePlayingItemAudioTraitButton" withFullSignature:{"v", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(AudioTraitButtonAccessibility *)self _accessibilityLabelHelper];
-  v3 = v2;
-  if (v2)
+  _accessibilityLabelHelper = [(AudioTraitButtonAccessibility *)self _accessibilityLabelHelper];
+  v3 = _accessibilityLabelHelper;
+  if (_accessibilityLabelHelper)
   {
-    v4 = [v2 length] != 0;
+    v4 = [_accessibilityLabelHelper length] != 0;
   }
 
   else
@@ -36,9 +36,9 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(AudioTraitButtonAccessibility *)self isUserInteractionEnabled];
+  isUserInteractionEnabled = [(AudioTraitButtonAccessibility *)self isUserInteractionEnabled];
   v3 = MEMORY[0x29EDC7F70];
-  if (!v2)
+  if (!isUserInteractionEnabled)
   {
     v3 = MEMORY[0x29EDC7FA0];
   }
@@ -49,11 +49,11 @@
 - (id)_accessibilityLabelHelper
 {
   v3 = [(AudioTraitButtonAccessibility *)self _accessibilityFindViewAncestor:&__block_literal_global_5 startWithSelf:0];
-  v4 = [v3 _accessibilityViewController];
-  v5 = [v4 safeValueForKey:@"updatePlayingItemAudioTraitButton"];
-  v6 = [v4 safeSwiftValueForKey:@"_playingItemAudioTrait"];
-  v7 = [v6 safeSwiftEnumCase];
-  if ([v7 isEqualToString:@"dolbyAtmos"])
+  _accessibilityViewController = [v3 _accessibilityViewController];
+  v5 = [_accessibilityViewController safeValueForKey:@"updatePlayingItemAudioTraitButton"];
+  v6 = [_accessibilityViewController safeSwiftValueForKey:@"_playingItemAudioTrait"];
+  safeSwiftEnumCase = [v6 safeSwiftEnumCase];
+  if ([safeSwiftEnumCase isEqualToString:@"dolbyAtmos"])
   {
     v8 = @"dolby.atmos";
 LABEL_11:
@@ -63,31 +63,31 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v7 isEqualToString:@"dolbyAudio"])
+  if ([safeSwiftEnumCase isEqualToString:@"dolbyAudio"])
   {
     v8 = @"dolby.audio";
     goto LABEL_11;
   }
 
-  if ([v7 isEqualToString:@"highResolutionLossless"])
+  if ([safeSwiftEnumCase isEqualToString:@"highResolutionLossless"])
   {
     v8 = @"high.resolution.lossless";
     goto LABEL_11;
   }
 
-  if ([v7 isEqualToString:@"lossless"])
+  if ([safeSwiftEnumCase isEqualToString:@"lossless"])
   {
     v8 = @"lossless";
     goto LABEL_11;
   }
 
-  if ([v7 isEqualToString:@"appleDigitalMaster"])
+  if ([safeSwiftEnumCase isEqualToString:@"appleDigitalMaster"])
   {
     v8 = @"apple.digital.master";
     goto LABEL_11;
   }
 
-  if ([v7 isEqualToString:@"musicHaptics"])
+  if ([safeSwiftEnumCase isEqualToString:@"musicHaptics"])
   {
     v9 = accessibilityMusicLocalizedString(@"music.haptics.badge");
     goto LABEL_12;
@@ -99,9 +99,9 @@ LABEL_13:
   {
     v13.receiver = self;
     v13.super_class = AudioTraitButtonAccessibility;
-    v11 = [(AudioTraitButtonAccessibility *)&v13 accessibilityLabel];
+    accessibilityLabel = [(AudioTraitButtonAccessibility *)&v13 accessibilityLabel];
 
-    v10 = v11;
+    v10 = accessibilityLabel;
   }
 
   return v10;
@@ -119,31 +119,31 @@ uint64_t __58__AudioTraitButtonAccessibility__accessibilityLabelHelper__block_in
 - (id)accessibilityValue
 {
   v3 = [(AudioTraitButtonAccessibility *)self _accessibilityFindViewAncestor:&__block_literal_global_340 startWithSelf:0];
-  v4 = [v3 _accessibilityViewController];
-  v5 = [v4 safeSwiftValueForKey:@"_playingItemAudioTrait"];
-  v6 = [v5 safeSwiftEnumCase];
-  if (![v6 isEqualToString:@"musicHaptics"])
+  _accessibilityViewController = [v3 _accessibilityViewController];
+  v5 = [_accessibilityViewController safeSwiftValueForKey:@"_playingItemAudioTrait"];
+  safeSwiftEnumCase = [v5 safeSwiftEnumCase];
+  if (![safeSwiftEnumCase isEqualToString:@"musicHaptics"])
   {
     v10 = 0;
     goto LABEL_11;
   }
 
-  v7 = [v4 safeSwiftValueForKey:@"hapticsState"];
-  v8 = [v7 safeSwiftEnumCase];
+  v7 = [_accessibilityViewController safeSwiftValueForKey:@"hapticsState"];
+  safeSwiftEnumCase2 = [v7 safeSwiftEnumCase];
 
-  if ([v8 isEqualToString:@"unavailable"])
+  if ([safeSwiftEnumCase2 isEqualToString:@"unavailable"])
   {
     v9 = @"music.haptics.unavailable";
   }
 
-  else if ([v8 isEqualToString:@"availableActive"])
+  else if ([safeSwiftEnumCase2 isEqualToString:@"availableActive"])
   {
     v9 = @"music.haptics.active";
   }
 
   else
   {
-    if (![v8 isEqualToString:@"availablePaused"])
+    if (![safeSwiftEnumCase2 isEqualToString:@"availablePaused"])
     {
       v10 = 0;
       goto LABEL_10;
@@ -160,9 +160,9 @@ LABEL_11:
   {
     v13.receiver = self;
     v13.super_class = AudioTraitButtonAccessibility;
-    v11 = [(AudioTraitButtonAccessibility *)&v13 accessibilityValue];
+    accessibilityValue = [(AudioTraitButtonAccessibility *)&v13 accessibilityValue];
 
-    v10 = v11;
+    v10 = accessibilityValue;
   }
 
   return v10;

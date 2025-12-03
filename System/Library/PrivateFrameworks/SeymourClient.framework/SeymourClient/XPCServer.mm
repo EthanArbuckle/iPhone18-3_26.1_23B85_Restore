@@ -1,18 +1,18 @@
 @interface XPCServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC13SeymourClient9XPCServer)init;
-- (void)receiveEvent:(int64_t)a3 data:(id)a4;
-- (void)receiveRequest:(int64_t)a3 data:(id)a4 completion:(id)a5;
+- (void)receiveEvent:(int64_t)event data:(id)data;
+- (void)receiveRequest:(int64_t)request data:(id)data completion:(id)completion;
 @end
 
 @implementation XPCServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1B4DCB0A8(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_1B4DCB0A8(connectionCopy);
 
   return v9 & 1;
 }
@@ -24,14 +24,14 @@
   return result;
 }
 
-- (void)receiveRequest:(int64_t)a3 data:(id)a4 completion:(id)a5
+- (void)receiveRequest:(int64_t)request data:(id)data completion:(id)completion
 {
-  v7 = _Block_copy(a5);
-  v8 = self;
-  if (a4)
+  v7 = _Block_copy(completion);
+  selfCopy = self;
+  if (data)
   {
-    v9 = a4;
-    a4 = sub_1B4F64894();
+    dataCopy = data;
+    data = sub_1B4F64894();
     v11 = v10;
   }
 
@@ -42,31 +42,31 @@
 
   v12 = *(&self->super.isa + OBJC_IVAR____TtC13SeymourClient9XPCServer_dispatchService);
   _Block_copy(v7);
-  sub_1B4F63484(a3, a4, v11, v12, v7);
+  sub_1B4F63484(request, data, v11, v12, v7);
   _Block_release(v7);
   _Block_release(v7);
-  sub_1B4DD2B5C(a4, v11);
+  sub_1B4DD2B5C(data, v11);
 }
 
-- (void)receiveEvent:(int64_t)a3 data:(id)a4
+- (void)receiveEvent:(int64_t)event data:(id)data
 {
-  if (a4)
+  if (data)
   {
-    v6 = self;
-    v7 = a4;
+    selfCopy = self;
+    dataCopy = data;
     v8 = sub_1B4F64894();
     v10 = v9;
   }
 
   else
   {
-    v11 = self;
+    selfCopy2 = self;
     v8 = 0;
     v10 = 0xF000000000000000;
   }
 
   v12 = *(&self->super.isa + OBJC_IVAR____TtC13SeymourClient9XPCServer_dispatchService);
-  TransportDispatchService.dispatchEvent(_:data:)(a3, v8, v10);
+  TransportDispatchService.dispatchEvent(_:data:)(event, v8, v10);
   sub_1B4DD2B5C(v8, v10);
 }
 

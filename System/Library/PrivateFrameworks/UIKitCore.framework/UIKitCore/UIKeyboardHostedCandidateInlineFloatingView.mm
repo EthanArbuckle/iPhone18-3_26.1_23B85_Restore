@@ -1,23 +1,23 @@
 @interface UIKeyboardHostedCandidateInlineFloatingView
 - (BOOL)hostInlineRectIsVertical;
-- (UIKeyboardHostedCandidateInlineFloatingView)initWithContainer:(id)a3 delegate:(id)a4;
+- (UIKeyboardHostedCandidateInlineFloatingView)initWithContainer:(id)container delegate:(id)delegate;
 - (UIKeyboardHostedCandidateInlineFloatingViewDelegate)delegate;
-- (void)hostIsTextVerticalDidChange:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)hostIsTextVerticalDidChange:(id)change;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation UIKeyboardHostedCandidateInlineFloatingView
 
 - (BOOL)hostInlineRectIsVertical
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188FD04E0();
 
   return v3 & 1;
 }
 
-- (UIKeyboardHostedCandidateInlineFloatingView)initWithContainer:(id)a3 delegate:(id)a4
+- (UIKeyboardHostedCandidateInlineFloatingView)initWithContainer:(id)container delegate:(id)delegate
 {
   v33[4] = *MEMORY[0x1E69E9840];
   v32.receiver = self;
@@ -26,85 +26,85 @@
   v6 = *(MEMORY[0x1E695F058] + 8);
   v7 = *(MEMORY[0x1E695F058] + 16);
   v8 = *(MEMORY[0x1E695F058] + 24);
-  v9 = a4;
-  v10 = a3;
+  delegateCopy = delegate;
+  containerCopy = container;
   v11 = [(UIKeyboardCandidateInlineFloatingView *)&v32 initWithFrame:v5, v6, v7, v8];
   [(UIView *)v11 setClipsToBounds:1];
-  [v10 addSubview:v11];
+  [containerCopy addSubview:v11];
   [(UIView *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIKeyboardHostedCandidateInlineFloatingView *)v11 setDelegate:v9];
+  [(UIKeyboardHostedCandidateInlineFloatingView *)v11 setDelegate:delegateCopy];
 
   v12 = +[UIColor clearColor];
   [(UIView *)v11 setBackgroundColor:v12];
 
   v13 = +[UIColor systemBackgroundColor];
-  [v10 setBackgroundColor:v13];
+  [containerCopy setBackgroundColor:v13];
 
-  v14 = [v10 layer];
-  [v14 setCornerRadius:22.0];
+  layer = [containerCopy layer];
+  [layer setCornerRadius:22.0];
 
-  v15 = [(UIView *)v11 layer];
-  [v15 setCornerRadius:18.0];
+  layer2 = [(UIView *)v11 layer];
+  [layer2 setCornerRadius:18.0];
 
   v27 = MEMORY[0x1E69977A0];
-  v31 = [(UIView *)v11 topAnchor];
-  v30 = [v10 topAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:4.0];
+  topAnchor = [(UIView *)v11 topAnchor];
+  topAnchor2 = [containerCopy topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
   v33[0] = v29;
-  v28 = [(UIView *)v11 leadingAnchor];
-  v16 = [v10 leadingAnchor];
-  v17 = [v28 constraintEqualToAnchor:v16 constant:4.0];
+  leadingAnchor = [(UIView *)v11 leadingAnchor];
+  leadingAnchor2 = [containerCopy leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
   v33[1] = v17;
-  v18 = [(UIView *)v11 trailingAnchor];
-  v19 = [v10 trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:-4.0];
+  trailingAnchor = [(UIView *)v11 trailingAnchor];
+  trailingAnchor2 = [containerCopy trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-4.0];
   v33[2] = v20;
-  v21 = [(UIView *)v11 bottomAnchor];
-  v22 = [v10 bottomAnchor];
+  bottomAnchor = [(UIView *)v11 bottomAnchor];
+  bottomAnchor2 = [containerCopy bottomAnchor];
 
-  v23 = [v21 constraintEqualToAnchor:v22 constant:-4.0];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
   v33[3] = v23;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
   [v27 activateConstraints:v24];
 
-  v25 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v25 addObserver:v11 selector:sel_hostIsTextVerticalDidChange_ name:@"_UIKeyboardCandidateInlineFloatingViewHostIsTextVerticalDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v11 selector:sel_hostIsTextVerticalDidChange_ name:@"_UIKeyboardCandidateInlineFloatingViewHostIsTextVerticalDidChangeNotification" object:0];
 
   return v11;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = UIKeyboardHostedCandidateInlineFloatingView;
-  [(UIView *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(UIKeyboardHostedCandidateInlineFloatingView *)self delegate];
-  [v4 hostedInlineFloatingViewFrameUpdated];
+  [(UIView *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  delegate = [(UIKeyboardHostedCandidateInlineFloatingView *)self delegate];
+  [delegate hostedInlineFloatingViewFrameUpdated];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v9[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = UIKeyboardHostedCandidateInlineFloatingView;
   [(UIView *)&v7 setHidden:?];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = @"_UIKeyboardCandidateInlineFloatingViewHiddenDidChangeHiddenKey";
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:hiddenCopy];
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v4 postNotificationName:@"_UIKeyboardCandidateInlineFloatingViewHiddenDidChangeNotification" object:0 userInfo:v6];
+  [defaultCenter postNotificationName:@"_UIKeyboardCandidateInlineFloatingViewHiddenDidChangeNotification" object:0 userInfo:v6];
 }
 
-- (void)hostIsTextVerticalDidChange:(id)a3
+- (void)hostIsTextVerticalDidChange:(id)change
 {
-  v7 = [a3 userInfo];
-  v4 = [v7 objectForKeyedSubscript:@"isVertical"];
-  v5 = [v4 BOOLValue];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"isVertical"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [(UIKeyboardHostedCandidateInlineFloatingView *)self delegate];
-  [v6 hostedInlineFloatingViewIsTextVerticalUpdated:v5];
+  delegate = [(UIKeyboardHostedCandidateInlineFloatingView *)self delegate];
+  [delegate hostedInlineFloatingViewIsTextVerticalUpdated:bOOLValue];
 }
 
 - (UIKeyboardHostedCandidateInlineFloatingViewDelegate)delegate

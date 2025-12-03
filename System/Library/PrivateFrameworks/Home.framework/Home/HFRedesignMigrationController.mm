@@ -1,33 +1,33 @@
 @interface HFRedesignMigrationController
-- (BOOL)_accessoryLikeItemIsHighValue:(id)a3;
-- (BOOL)_accessoryLikeObjectMustUseLargerSize:(id)a3;
-- (HFRedesignMigrationController)initWithHome:(id)a3;
-- (double)_computeUsageThreshold:(id)a3;
+- (BOOL)_accessoryLikeItemIsHighValue:(id)value;
+- (BOOL)_accessoryLikeObjectMustUseLargerSize:(id)size;
+- (HFRedesignMigrationController)initWithHome:(id)home;
+- (double)_computeUsageThreshold:(id)threshold;
 - (id)_clearHomeDashboardSectionOrder;
 - (id)_migrateFavorites;
 - (id)_migrateRoomOrder;
 - (id)_migrateServiceItemsOrderInRooms;
 - (id)_migrateTileSize;
-- (id)_sortAccessoriesInRoom:(id)a3 fromScoreMap:(id)a4;
-- (void)_reduceScoreForRepeatingPattern:(id)a3 accessoryScores:(id)a4;
-- (void)_updateScoreForAccessoriesInGroup:(id)a3 accessoryScores:(id)a4 incrementBy:(int64_t)a5 singleAccessoryIncrement:(int64_t)a6;
+- (id)_sortAccessoriesInRoom:(id)room fromScoreMap:(id)map;
+- (void)_reduceScoreForRepeatingPattern:(id)pattern accessoryScores:(id)scores;
+- (void)_updateScoreForAccessoriesInGroup:(id)group accessoryScores:(id)scores incrementBy:(int64_t)by singleAccessoryIncrement:(int64_t)increment;
 - (void)performMigrationIfNeeded;
 - (void)performMigrationSuccessTasks;
 @end
 
 @implementation HFRedesignMigrationController
 
-- (HFRedesignMigrationController)initWithHome:(id)a3
+- (HFRedesignMigrationController)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HFRedesignMigrationController;
   v6 = [(HFRedesignMigrationController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
-    v8 = [HFItemProviderUtilities _legacyFavoriteServicesForHome:v5 withLimit:-1];
+    objc_storeStrong(&v6->_home, home);
+    v8 = [HFItemProviderUtilities _legacyFavoriteServicesForHome:homeCopy withLimit:-1];
     legacyFavoriteTiles = v7->_legacyFavoriteTiles;
     v7->_legacyFavoriteTiles = v8;
   }
@@ -39,55 +39,55 @@
 {
   v31 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
-  v4 = [(HFRedesignMigrationController *)self home];
-  LOBYTE(v3) = [v3 homeNeedsMigration:v4];
+  home = [(HFRedesignMigrationController *)self home];
+  LOBYTE(v3) = [v3 homeNeedsMigration:home];
 
   if ((v3 & 1) == 0)
   {
-    v10 = HFLogForCategory(9uLL);
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    _migrateFavorites = HFLogForCategory(9uLL);
+    if (!os_log_type_enabled(_migrateFavorites, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_13;
     }
 
-    v24 = [(HFRedesignMigrationController *)self home];
+    home2 = [(HFRedesignMigrationController *)self home];
     *buf = 138412290;
-    v30 = v24;
+    v30 = home2;
     v25 = "HFRedesignMigrationController: Migration not needed for home: %@";
 LABEL_12:
-    _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, v25, buf, 0xCu);
+    _os_log_impl(&dword_20D9BF000, _migrateFavorites, OS_LOG_TYPE_DEFAULT, v25, buf, 0xCu);
 
     goto LABEL_13;
   }
 
-  v5 = [(HFRedesignMigrationController *)self home];
-  v6 = [(HFRedesignMigrationController *)self home];
-  v7 = [v6 currentUser];
-  v8 = [v5 homeAccessControlForUser:v7];
-  v9 = [v8 isAdministrator];
+  home3 = [(HFRedesignMigrationController *)self home];
+  home4 = [(HFRedesignMigrationController *)self home];
+  currentUser = [home4 currentUser];
+  v8 = [home3 homeAccessControlForUser:currentUser];
+  isAdministrator = [v8 isAdministrator];
 
-  v10 = HFLogForCategory(9uLL);
-  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if ((v9 & 1) == 0)
+  _migrateFavorites = HFLogForCategory(9uLL);
+  v11 = os_log_type_enabled(_migrateFavorites, OS_LOG_TYPE_DEFAULT);
+  if ((isAdministrator & 1) == 0)
   {
     if (!v11)
     {
       goto LABEL_13;
     }
 
-    v24 = [(HFRedesignMigrationController *)self home];
+    home2 = [(HFRedesignMigrationController *)self home];
     *buf = 138412290;
-    v30 = v24;
+    v30 = home2;
     v25 = "HFRedesignMigrationController: User is not admin; skipping migration for home %@";
     goto LABEL_12;
   }
 
   if (v11)
   {
-    v12 = [(HFRedesignMigrationController *)self home];
+    home5 = [(HFRedesignMigrationController *)self home];
     *buf = 138412290;
-    v30 = v12;
-    _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "HFRedesignMigrationController: Performing migration for home %@", buf, 0xCu);
+    v30 = home5;
+    _os_log_impl(&dword_20D9BF000, _migrateFavorites, OS_LOG_TYPE_DEFAULT, "HFRedesignMigrationController: Performing migration for home %@", buf, 0xCu);
   }
 
   v13 = HFLogForCategory(9uLL);
@@ -97,22 +97,22 @@ LABEL_12:
     _os_log_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_DEFAULT, "HFRedesignMigrationController: Legacy favorites:", buf, 2u);
   }
 
-  v14 = [(HFRedesignMigrationController *)self legacyFavoriteTiles];
-  [v14 na_each:&__block_literal_global_238];
+  legacyFavoriteTiles = [(HFRedesignMigrationController *)self legacyFavoriteTiles];
+  [legacyFavoriteTiles na_each:&__block_literal_global_238];
 
   v15 = MEMORY[0x277D2C900];
-  v10 = [(HFRedesignMigrationController *)self _migrateFavorites];
-  v28[0] = v10;
-  v16 = [(HFRedesignMigrationController *)self _migrateRoomOrder];
-  v28[1] = v16;
-  v17 = [(HFRedesignMigrationController *)self _migrateServiceItemsOrderInRooms];
-  v28[2] = v17;
-  v18 = [(HFRedesignMigrationController *)self _clearHomeDashboardSectionOrder];
-  v28[3] = v18;
-  v19 = [(HFRedesignMigrationController *)self _migrateShowOnHomeDashboard];
-  v28[4] = v19;
-  v20 = [(HFRedesignMigrationController *)self _migrateTileSize];
-  v28[5] = v20;
+  _migrateFavorites = [(HFRedesignMigrationController *)self _migrateFavorites];
+  v28[0] = _migrateFavorites;
+  _migrateRoomOrder = [(HFRedesignMigrationController *)self _migrateRoomOrder];
+  v28[1] = _migrateRoomOrder;
+  _migrateServiceItemsOrderInRooms = [(HFRedesignMigrationController *)self _migrateServiceItemsOrderInRooms];
+  v28[2] = _migrateServiceItemsOrderInRooms;
+  _clearHomeDashboardSectionOrder = [(HFRedesignMigrationController *)self _clearHomeDashboardSectionOrder];
+  v28[3] = _clearHomeDashboardSectionOrder;
+  _migrateShowOnHomeDashboard = [(HFRedesignMigrationController *)self _migrateShowOnHomeDashboard];
+  v28[4] = _migrateShowOnHomeDashboard;
+  _migrateTileSize = [(HFRedesignMigrationController *)self _migrateTileSize];
+  v28[5] = _migrateTileSize;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:6];
   v22 = [v15 chainFutures:v21];
   v27[0] = MEMORY[0x277D85DD0];
@@ -166,13 +166,13 @@ id __57__HFRedesignMigrationController_performMigrationIfNeeded__block_invoke_4(
 - (void)performMigrationSuccessTasks
 {
   objc_initWeak(&location, self);
-  v3 = [(HFRedesignMigrationController *)self migrationFuture];
+  migrationFuture = [(HFRedesignMigrationController *)self migrationFuture];
   v5 = MEMORY[0x277D85DD0];
   v6 = 3221225472;
   v7 = __61__HFRedesignMigrationController_performMigrationSuccessTasks__block_invoke;
   v8 = &unk_277DFF118;
   objc_copyWeak(&v9, &location);
-  v4 = [v3 addSuccessBlock:&v5];
+  v4 = [migrationFuture addSuccessBlock:&v5];
 
   [(HFRedesignMigrationController *)self setMigrationFuture:0, v5, v6, v7, v8];
   objc_destroyWeak(&v9);
@@ -189,12 +189,12 @@ void __61__HFRedesignMigrationController_performMigrationSuccessTasks__block_inv
 - (id)_migrateFavorites
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(HFRedesignMigrationController *)self legacyFavoriteTiles];
-  v4 = [v3 count];
+  legacyFavoriteTiles = [(HFRedesignMigrationController *)self legacyFavoriteTiles];
+  v4 = [legacyFavoriteTiles count];
 
-  v5 = [(HFRedesignMigrationController *)self home];
-  v6 = [v5 hf_accessoryLikeObjects];
-  v7 = [v6 count];
+  home = [(HFRedesignMigrationController *)self home];
+  hf_accessoryLikeObjects = [home hf_accessoryLikeObjects];
+  v7 = [hf_accessoryLikeObjects count];
 
   if (v7)
   {
@@ -246,7 +246,7 @@ void __61__HFRedesignMigrationController_performMigrationSuccessTasks__block_inv
     _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "HFRedesignMigrationController: Migrating %lu favorites (%lu previous favorites, %lu accessories total)", buf, 0x20u);
   }
 
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v9)
   {
     v14 = 0;
@@ -254,16 +254,16 @@ void __61__HFRedesignMigrationController_performMigrationSuccessTasks__block_inv
     v27 = v13;
     do
     {
-      v15 = [(HFRedesignMigrationController *)self legacyFavoriteTiles];
-      v16 = [v15 count];
+      legacyFavoriteTiles2 = [(HFRedesignMigrationController *)self legacyFavoriteTiles];
+      v16 = [legacyFavoriteTiles2 count];
 
       if (v14 >= v16)
       {
         break;
       }
 
-      v17 = [(HFRedesignMigrationController *)self legacyFavoriteTiles];
-      v18 = [v17 objectAtIndexedSubscript:v14];
+      legacyFavoriteTiles3 = [(HFRedesignMigrationController *)self legacyFavoriteTiles];
+      v18 = [legacyFavoriteTiles3 objectAtIndexedSubscript:v14];
       v19 = &unk_28252A588;
       if ([v18 conformsToProtocol:v19])
       {
@@ -286,7 +286,7 @@ void __61__HFRedesignMigrationController_performMigrationSuccessTasks__block_inv
       }
 
       v23 = [v21 hf_updateIsFavorite:1];
-      [v12 addObject:v23];
+      [array addObject:v23];
 
       ++v14;
     }
@@ -294,9 +294,9 @@ void __61__HFRedesignMigrationController_performMigrationSuccessTasks__block_inv
     while (v9 != v14);
   }
 
-  if ([v12 count])
+  if ([array count])
   {
-    [MEMORY[0x277D2C900] combineAllFutures:v12];
+    [MEMORY[0x277D2C900] combineAllFutures:array];
   }
 
   else
@@ -313,55 +313,55 @@ void __61__HFRedesignMigrationController_performMigrationSuccessTasks__block_inv
 - (id)_migrateRoomOrder
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(HFRedesignMigrationController *)self home];
-  v4 = [v3 hf_reorderableRoomsList];
-  v5 = [v4 mutableCopy];
+  home = [(HFRedesignMigrationController *)self home];
+  hf_reorderableRoomsList = [home hf_reorderableRoomsList];
+  v5 = [hf_reorderableRoomsList mutableCopy];
 
   v6 = [HFReorderableHomeKitItemList alloc];
-  v7 = [(HFRedesignMigrationController *)self home];
-  v8 = [(HFReorderableHomeKitItemList *)v6 initWithApplicationDataContainer:v7 category:@"homeRooms_legacy"];
+  home2 = [(HFRedesignMigrationController *)self home];
+  v8 = [(HFReorderableHomeKitItemList *)v6 initWithApplicationDataContainer:home2 category:@"homeRooms_legacy"];
   v9 = [(HFReorderableHomeKitItemList *)v8 mutableCopy];
 
   v10 = HFLogForCategory(9uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 sortedHomeKitObjectIdentifiers];
+    sortedHomeKitObjectIdentifiers = [v9 sortedHomeKitObjectIdentifiers];
     *buf = 138412290;
-    v40 = v11;
+    v40 = sortedHomeKitObjectIdentifiers;
     _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "HFRedesignMigrationController: Legacy room order: %@", buf, 0xCu);
   }
 
   if ([v9 isEmpty])
   {
-    v12 = [v5 sortedHomeKitObjectIdentifiers];
-    [v9 setSortedHomeKitIdentifiers:v12];
+    sortedHomeKitObjectIdentifiers2 = [v5 sortedHomeKitObjectIdentifiers];
+    [v9 setSortedHomeKitIdentifiers:sortedHomeKitObjectIdentifiers2];
 
     v13 = [v9 saveWithSender:self];
   }
 
   v32 = v5;
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  v15 = [(HFRedesignMigrationController *)self legacyFavoriteTiles];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  legacyFavoriteTiles = [(HFRedesignMigrationController *)self legacyFavoriteTiles];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __50__HFRedesignMigrationController__migrateRoomOrder__block_invoke;
   v37[3] = &unk_277E02F00;
-  v16 = v14;
+  v16 = dictionary;
   v38 = v16;
-  [v15 enumerateObjectsUsingBlock:v37];
+  [legacyFavoriteTiles enumerateObjectsUsingBlock:v37];
 
-  v17 = [(HFRedesignMigrationController *)self home];
-  v18 = [v17 hf_allRooms];
+  home3 = [(HFRedesignMigrationController *)self home];
+  hf_allRooms = [home3 hf_allRooms];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __50__HFRedesignMigrationController__migrateRoomOrder__block_invoke_2;
   v33[3] = &unk_277E02F28;
   v31 = v16;
   v34 = v31;
-  v35 = self;
+  selfCopy = self;
   v30 = v9;
   v36 = v30;
-  v19 = [v18 sortedArrayUsingComparator:v33];
+  v19 = [hf_allRooms sortedArrayUsingComparator:v33];
 
   v20 = HFLogForCategory(9uLL);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -379,15 +379,15 @@ void __61__HFRedesignMigrationController_performMigrationSuccessTasks__block_inv
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v23 = [v19 objectAtIndexedSubscript:v21];
-        v24 = [v23 name];
+        name = [v23 name];
         v25 = [v19 objectAtIndexedSubscript:v21];
-        v26 = [v25 uniqueIdentifier];
+        uniqueIdentifier = [v25 uniqueIdentifier];
         *buf = 134218498;
         v40 = v21;
         v41 = 2112;
-        v42 = v24;
+        v42 = name;
         v43 = 2112;
-        v44 = v26;
+        v44 = uniqueIdentifier;
         _os_log_impl(&dword_20D9BF000, v22, OS_LOG_TYPE_DEFAULT, "HFRedesignMigrationController: %lu: %@ (%@)", buf, 0x20u);
       }
 
@@ -548,11 +548,11 @@ uint64_t __50__HFRedesignMigrationController__migrateRoomOrder__block_invoke_2(u
 
 - (id)_clearHomeDashboardSectionOrder
 {
-  v3 = [(HFRedesignMigrationController *)self home];
-  v4 = [v3 hf_reorderableDashboardSectionList];
+  home = [(HFRedesignMigrationController *)self home];
+  hf_reorderableDashboardSectionList = [home hf_reorderableDashboardSectionList];
 
-  [v4 setSortedItems:MEMORY[0x277CBEBF8]];
-  v5 = [v4 saveWithSender:self];
+  [hf_reorderableDashboardSectionList setSortedItems:MEMORY[0x277CBEBF8]];
+  v5 = [hf_reorderableDashboardSectionList saveWithSender:self];
 
   return v5;
 }
@@ -566,12 +566,12 @@ uint64_t __50__HFRedesignMigrationController__migrateRoomOrder__block_invoke_2(u
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v52 = self;
-  v3 = [(HFRedesignMigrationController *)self home];
-  v4 = [v3 hf_allRooms];
+  selfCopy = self;
+  home = [(HFRedesignMigrationController *)self home];
+  hf_allRooms = [home hf_allRooms];
 
-  obj = v4;
-  v46 = [v4 countByEnumeratingWithState:&v65 objects:v75 count:16];
+  obj = hf_allRooms;
+  v46 = [hf_allRooms countByEnumeratingWithState:&v65 objects:v75 count:16];
   if (v46)
   {
     v45 = *v66;
@@ -592,9 +592,9 @@ uint64_t __50__HFRedesignMigrationController__migrateRoomOrder__block_invoke_2(u
         v9 = HFLogForCategory(9uLL);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 sortedHomeKitObjectIdentifiers];
+          sortedHomeKitObjectIdentifiers = [v8 sortedHomeKitObjectIdentifiers];
           *buf = 138412546;
-          v72 = v10;
+          v72 = sortedHomeKitObjectIdentifiers;
           v73 = 2112;
           v74 = v6;
           _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "HFRedesignMigrationController: Legacy service item order: %@ for room %@", buf, 0x16u);
@@ -604,16 +604,16 @@ uint64_t __50__HFRedesignMigrationController__migrateRoomOrder__block_invoke_2(u
 
         if ([v8 isEmpty])
         {
-          v11 = [v6 hf_reorderableServicesList];
-          v12 = [v11 sortedHomeKitObjectIdentifiers];
-          [v8 setSortedHomeKitIdentifiers:v12];
+          hf_reorderableServicesList = [v6 hf_reorderableServicesList];
+          sortedHomeKitObjectIdentifiers2 = [hf_reorderableServicesList sortedHomeKitObjectIdentifiers];
+          [v8 setSortedHomeKitIdentifiers:sortedHomeKitObjectIdentifiers2];
 
-          v13 = [v8 saveWithSender:v52];
+          v13 = [v8 saveWithSender:selfCopy];
         }
 
-        v14 = [v6 hf_accessoryLikeObjects];
-        v15 = [v14 allObjects];
-        v16 = [v15 na_filter:&__block_literal_global_148];
+        hf_accessoryLikeObjects = [v6 hf_accessoryLikeObjects];
+        allObjects = [hf_accessoryLikeObjects allObjects];
+        v16 = [allObjects na_filter:&__block_literal_global_148];
         v63[0] = MEMORY[0x277D85DD0];
         v63[1] = 3221225472;
         v63[2] = __65__HFRedesignMigrationController__migrateServiceItemsOrderInRooms__block_invoke_2;
@@ -643,12 +643,12 @@ uint64_t __50__HFRedesignMigrationController__migrateRoomOrder__block_invoke_2(u
               }
 
               v23 = *(*(&v59 + 1) + 8 * i);
-              v24 = [v23 accessoryType];
+              accessoryType = [v23 accessoryType];
               v57[0] = MEMORY[0x277D85DD0];
               v57[1] = 3221225472;
               v57[2] = __65__HFRedesignMigrationController__migrateServiceItemsOrderInRooms__block_invoke_3;
               v57[3] = &unk_277DF4CE8;
-              v25 = v24;
+              v25 = accessoryType;
               v58 = v25;
               v26 = [v51 na_firstObjectPassingTest:v57];
               if (!v26)
@@ -656,16 +656,16 @@ uint64_t __50__HFRedesignMigrationController__migrateRoomOrder__block_invoke_2(u
                 v26 = +[HFAccessoryTypeGroup otherAccessoryTypeGroup];
               }
 
-              v27 = [v26 uniqueIdentifier];
-              v28 = [v27 UUIDString];
+              uniqueIdentifier = [v26 uniqueIdentifier];
+              uUIDString = [uniqueIdentifier UUIDString];
 
-              if (v28)
+              if (uUIDString)
               {
-                v29 = [v18 objectForKeyedSubscript:v28];
+                v29 = [v18 objectForKeyedSubscript:uUIDString];
                 if (!v29)
                 {
                   v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
-                  [v18 setValue:v29 forKey:v28];
+                  [v18 setValue:v29 forKey:uUIDString];
                 }
 
                 [v29 addObject:v23];
@@ -716,7 +716,7 @@ uint64_t __50__HFRedesignMigrationController__migrateRoomOrder__block_invoke_2(u
               v38 = [@"roomServicesGroupedByType-" stringByAppendingString:v35];
               v39 = [(HFReorderableHomeKitItemList *)[HFMutableReorderableHomeKitItemList alloc] initWithApplicationDataContainer:v6 category:v38];
               [(HFMutableReorderableHomeKitItemList *)v39 setSortedHomeKitObjects:v37];
-              v40 = [(HFMutableReorderableHomeKitItemList *)v39 saveWithSender:v52];
+              v40 = [(HFMutableReorderableHomeKitItemList *)v39 saveWithSender:selfCopy];
               [v50 addObject:v40];
             }
 
@@ -765,16 +765,16 @@ uint64_t __65__HFRedesignMigrationController__migrateServiceItemsOrderInRooms__b
   return v10;
 }
 
-- (void)_updateScoreForAccessoriesInGroup:(id)a3 accessoryScores:(id)a4 incrementBy:(int64_t)a5 singleAccessoryIncrement:(int64_t)a6
+- (void)_updateScoreForAccessoriesInGroup:(id)group accessoryScores:(id)scores incrementBy:(int64_t)by singleAccessoryIncrement:(int64_t)increment
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  groupCopy = group;
+  scoresCopy = scores;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v11 = [groupCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -785,28 +785,28 @@ uint64_t __65__HFRedesignMigrationController__migrateServiceItemsOrderInRooms__b
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(groupCopy);
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v10 objectForKey:v15];
-        v17 = [v16 integerValue];
-        if ([v9 count] == 1)
+        v16 = [scoresCopy objectForKey:v15];
+        integerValue = [v16 integerValue];
+        if ([groupCopy count] == 1)
         {
-          v18 = a6;
+          incrementCopy = increment;
         }
 
         else
         {
-          v18 = 0;
+          incrementCopy = 0;
         }
 
-        v19 = [MEMORY[0x277CCABB0] numberWithInteger:v17 + a5 + v18];
+        incrementCopy = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + by + incrementCopy];
 
-        [v10 setObject:v19 forKey:v15];
+        [scoresCopy setObject:incrementCopy forKey:v15];
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v12 = [groupCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v12);
@@ -815,11 +815,11 @@ uint64_t __65__HFRedesignMigrationController__migrateServiceItemsOrderInRooms__b
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_accessoryLikeItemIsHighValue:(id)a3
+- (BOOL)_accessoryLikeItemIsHighValue:(id)value
 {
   v14[5] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CD0E58];
-  v4 = a3;
+  valueCopy = value;
   v5 = [HFAccessoryType serviceType:v3];
   v6 = [HFAccessoryType serviceType:*MEMORY[0x277CD0EB0], v5];
   v14[1] = v6;
@@ -831,47 +831,47 @@ uint64_t __65__HFRedesignMigrationController__migrateServiceItemsOrderInRooms__b
   v14[4] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:5];
 
-  v11 = [v4 accessoryType];
+  accessoryType = [valueCopy accessoryType];
 
-  LOBYTE(v4) = [v10 containsObject:v11];
+  LOBYTE(valueCopy) = [v10 containsObject:accessoryType];
   v12 = *MEMORY[0x277D85DE8];
-  return v4;
+  return valueCopy;
 }
 
-- (BOOL)_accessoryLikeObjectMustUseLargerSize:(id)a3
+- (BOOL)_accessoryLikeObjectMustUseLargerSize:(id)size
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CD0E60];
-  v4 = a3;
+  sizeCopy = size;
   v5 = [HFAccessoryType serviceType:v3];
   v11[0] = v5;
   v6 = [HFAccessoryType serviceType:*MEMORY[0x277CD0F30]];
   v11[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
 
-  v8 = [v4 accessoryType];
+  accessoryType = [sizeCopy accessoryType];
 
-  LOBYTE(v5) = [v7 containsObject:v8];
+  LOBYTE(v5) = [v7 containsObject:accessoryType];
   v9 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (id)_sortAccessoriesInRoom:(id)a3 fromScoreMap:(id)a4
+- (id)_sortAccessoriesInRoom:(id)room fromScoreMap:(id)map
 {
-  v5 = a4;
-  v6 = [a3 hf_reorderableServicesList];
-  v7 = [v6 sortedHomeKitObjectComparator];
+  mapCopy = map;
+  hf_reorderableServicesList = [room hf_reorderableServicesList];
+  sortedHomeKitObjectComparator = [hf_reorderableServicesList sortedHomeKitObjectComparator];
 
-  v8 = [v5 keyEnumerator];
+  keyEnumerator = [mapCopy keyEnumerator];
 
-  v9 = [v8 allObjects];
+  allObjects = [keyEnumerator allObjects];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __69__HFRedesignMigrationController__sortAccessoriesInRoom_fromScoreMap___block_invoke;
   v13[3] = &unk_277E02F98;
-  v14 = v7;
-  v10 = v7;
-  v11 = [v9 sortedArrayUsingComparator:v13];
+  v14 = sortedHomeKitObjectComparator;
+  v10 = sortedHomeKitObjectComparator;
+  v11 = [allObjects sortedArrayUsingComparator:v13];
 
   return v11;
 }
@@ -887,17 +887,17 @@ uint64_t __69__HFRedesignMigrationController__sortAccessoriesInRoom_fromScoreMap
   return v8;
 }
 
-- (double)_computeUsageThreshold:(id)a3
+- (double)_computeUsageThreshold:(id)threshold
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  thresholdCopy = threshold;
+  if ([thresholdCopy count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = v3;
+    v4 = thresholdCopy;
     v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
@@ -943,23 +943,23 @@ uint64_t __69__HFRedesignMigrationController__sortAccessoriesInRoom_fromScoreMap
   return v13;
 }
 
-- (void)_reduceScoreForRepeatingPattern:(id)a3 accessoryScores:(id)a4
+- (void)_reduceScoreForRepeatingPattern:(id)pattern accessoryScores:(id)scores
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = [v5 objectForKey:v10];
-  v7 = [v6 integerValue];
+  patternCopy = pattern;
+  scoresCopy = scores;
+  v6 = [scoresCopy objectForKey:patternCopy];
+  integerValue = [v6 integerValue];
 
-  if (v7 >= 1)
+  if (integerValue >= 1)
   {
     v8 = 5;
-    if (v7 > 5)
+    if (integerValue > 5)
     {
-      v8 = v7;
+      v8 = integerValue;
     }
 
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:v8 - 5];
-    [v5 setObject:v9 forKey:v10];
+    [scoresCopy setObject:v9 forKey:patternCopy];
   }
 }
 
@@ -971,8 +971,8 @@ uint64_t __69__HFRedesignMigrationController__sortAccessoriesInRoom_fromScoreMap
   aBlock[3] = &unk_277E02FC0;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(HFRedesignMigrationController *)self home];
-  v5 = [v4 hf_accessoryRepresentableUsageCountsByRoomWithFilter:&__block_literal_global_180_1];
+  home = [(HFRedesignMigrationController *)self home];
+  v5 = [home hf_accessoryRepresentableUsageCountsByRoomWithFilter:&__block_literal_global_180_1];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__HFRedesignMigrationController__migrateTileSize__block_invoke_3;

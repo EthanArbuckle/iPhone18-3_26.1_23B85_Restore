@@ -1,15 +1,15 @@
 @interface FeatureDiscoveryView
-+ ($1AB5FA073B851C12C2339EC22442E995)_cellMetricsForIdiom:(int64_t)a3 context:(unint64_t)a4;
-+ ($29727DC6989B69F22950FCD998EA20D4)_metricsForIdiom:(SEL)a3;
-+ (id)_constraintsForFeatureDiscoveryView:(id)a3 centeredInContentView:(id)a4 withIdiom:(int64_t)a5 context:(unint64_t)a6;
-- (FeatureDiscoveryView)initWithFrame:(CGRect)a3;
++ ($1AB5FA073B851C12C2339EC22442E995)_cellMetricsForIdiom:(int64_t)idiom context:(unint64_t)context;
++ ($29727DC6989B69F22950FCD998EA20D4)_metricsForIdiom:(SEL)idiom;
++ (id)_constraintsForFeatureDiscoveryView:(id)view centeredInContentView:(id)contentView withIdiom:(int64_t)idiom context:(unint64_t)context;
+- (FeatureDiscoveryView)initWithFrame:(CGRect)frame;
 - (double)arrowOffset;
 - (void)_configureActionButton;
 - (void)_dismiss;
 - (void)_performAction;
 - (void)_performBodyTap;
 - (void)_setupActionButtonIfNeeded;
-- (void)setModel:(id)a3;
+- (void)setModel:(id)model;
 @end
 
 @implementation FeatureDiscoveryView
@@ -24,13 +24,13 @@
   [v14 setObject:v4 forKeyedSubscript:NSForegroundColorAttributeName];
 
   [(UIButton *)self->_actionButton setUserInteractionEnabled:1];
-  v5 = [(FeatureDiscoveryView *)self model];
-  if ([v5 shouldDisableAffordanceAfterAction])
+  model = [(FeatureDiscoveryView *)self model];
+  if ([model shouldDisableAffordanceAfterAction])
   {
-    v6 = [(FeatureDiscoveryView *)self model];
-    v7 = [v6 hasActionExecuted];
+    model2 = [(FeatureDiscoveryView *)self model];
+    hasActionExecuted = [model2 hasActionExecuted];
 
-    if (v7)
+    if (hasActionExecuted)
     {
       v8 = +[UIColor systemGray2Color];
       [v14 setObject:v8 forKeyedSubscript:NSForegroundColorAttributeName];
@@ -43,12 +43,12 @@
   {
   }
 
-  v9 = [(FeatureDiscoveryModel *)self->_model actionTitle];
-  if (v9)
+  actionTitle = [(FeatureDiscoveryModel *)self->_model actionTitle];
+  if (actionTitle)
   {
     v10 = [NSAttributedString alloc];
-    v11 = [(FeatureDiscoveryModel *)self->_model actionTitle];
-    v12 = [v10 initWithString:v11 attributes:v14];
+    actionTitle2 = [(FeatureDiscoveryModel *)self->_model actionTitle];
+    v12 = [v10 initWithString:actionTitle2 attributes:v14];
   }
 
   else
@@ -56,20 +56,20 @@
     v12 = 0;
   }
 
-  v13 = [(UIButton *)self->_actionButton configuration];
-  [v13 setAttributedTitle:v12];
-  [(UIButton *)self->_actionButton setConfiguration:v13];
+  configuration = [(UIButton *)self->_actionButton configuration];
+  [configuration setAttributedTitle:v12];
+  [(UIButton *)self->_actionButton setConfiguration:configuration];
 }
 
 - (void)_setupActionButtonIfNeeded
 {
   v98 = 0u;
   v3 = objc_opt_class();
-  v4 = [(FeatureDiscoveryView *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  traitCollection = [(FeatureDiscoveryView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   if (v3)
   {
-    [v3 _metricsForIdiom:v5];
+    [v3 _metricsForIdiom:userInterfaceIdiom];
   }
 
   else
@@ -77,14 +77,14 @@
     v98 = 0u;
   }
 
-  v6 = [(FeatureDiscoveryView *)self model];
-  v7 = [v6 dismissHandler];
+  model = [(FeatureDiscoveryView *)self model];
+  dismissHandler = [model dismissHandler];
 
-  v8 = [(FeatureDiscoveryView *)self model];
-  v9 = [v8 actionTitle];
-  if (!v9)
+  model2 = [(FeatureDiscoveryView *)self model];
+  actionTitle = [model2 actionTitle];
+  if (!actionTitle)
   {
-    if (v7)
+    if (dismissHandler)
     {
       v14 = sub_10000FA08(self);
 
@@ -96,23 +96,23 @@
 LABEL_11:
       [(NSLayoutConstraint *)self->_bottomConstraint setActive:0];
       [(NSLayoutConstraint *)self->_closeButtonTrailingConstraint setActive:0];
-      v15 = [(FeatureDiscoveryView *)self bottomAnchor];
-      v16 = [(MapsLargerHitTargetButton *)self->_closeButton bottomAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16 constant:0.0];
+      bottomAnchor = [(FeatureDiscoveryView *)self bottomAnchor];
+      bottomAnchor2 = [(MapsLargerHitTargetButton *)self->_closeButton bottomAnchor];
+      v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
       bottomConstraint = self->_bottomConstraint;
       self->_bottomConstraint = v17;
 
-      v19 = [(FeatureDiscoveryView *)self trailingAnchor];
-      v20 = [(MapsLargerHitTargetButton *)self->_closeButton trailingAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20 constant:0.0];
+      trailingAnchor = [(FeatureDiscoveryView *)self trailingAnchor];
+      trailingAnchor2 = [(MapsLargerHitTargetButton *)self->_closeButton trailingAnchor];
+      v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
       closeButtonTrailingConstraint = self->_closeButtonTrailingConstraint;
       self->_closeButtonTrailingConstraint = v21;
 
       v23 = self->_bottomConstraint;
       v102[0] = self->_closeButtonTrailingConstraint;
       v102[1] = v23;
-      v24 = [NSArray arrayWithObjects:v102 count:2];
-      [NSLayoutConstraint activateConstraints:v24];
+      model4 = [NSArray arrayWithObjects:v102 count:2];
+      [NSLayoutConstraint activateConstraints:model4];
 LABEL_16:
 
       return;
@@ -123,10 +123,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v10 = v9;
-  v11 = [(FeatureDiscoveryView *)self model];
-  v12 = [v11 actionTitle];
-  if ([v12 length] || !v7)
+  v10 = actionTitle;
+  model3 = [(FeatureDiscoveryView *)self model];
+  actionTitle2 = [model3 actionTitle];
+  if ([actionTitle2 length] || !dismissHandler)
   {
 
     goto LABEL_13;
@@ -140,12 +140,12 @@ LABEL_13:
   }
 
 LABEL_14:
-  v24 = [(FeatureDiscoveryView *)self model];
-  v25 = [v24 actionTitle];
-  v26 = [(UIButton *)self->_actionButton titleLabel];
-  v27 = [v26 text];
-  v28 = v25;
-  v29 = v27;
+  model4 = [(FeatureDiscoveryView *)self model];
+  actionTitle3 = [model4 actionTitle];
+  titleLabel = [(UIButton *)self->_actionButton titleLabel];
+  text = [titleLabel text];
+  v28 = actionTitle3;
+  v29 = text;
   if (!(v28 | v29))
   {
 
@@ -160,13 +160,13 @@ LABEL_14:
     [(UIButton *)self->_actionButton removeFromSuperview];
     [(NSLayoutConstraint *)self->_bottomConstraint setActive:0];
     [(NSLayoutConstraint *)self->_closeButtonTrailingConstraint setActive:0];
-    v32 = [(FeatureDiscoveryView *)self model];
-    v33 = [v32 actionTitle];
-    v34 = [v33 length];
+    model5 = [(FeatureDiscoveryView *)self model];
+    actionTitle4 = [model5 actionTitle];
+    v34 = [actionTitle4 length];
 
     if (v34)
     {
-      v24 = objc_alloc_init(NSMutableArray);
+      model4 = objc_alloc_init(NSMutableArray);
       if (sub_10000FA08(self) == 5)
       {
         v35 = [UIButton buttonWithType:1];
@@ -174,41 +174,41 @@ LABEL_14:
         self->_actionButton = v35;
 
         [(UIButton *)self->_actionButton setAccessibilityIdentifier:@"FeatureDiscoveryActionButton"];
-        v37 = [(FeatureDiscoveryView *)self bottomAnchor];
-        v38 = [(UIButton *)self->_actionButton bottomAnchor];
-        v39 = [v37 constraintEqualToAnchor:v38 constant:0.0];
+        bottomAnchor3 = [(FeatureDiscoveryView *)self bottomAnchor];
+        bottomAnchor4 = [(UIButton *)self->_actionButton bottomAnchor];
+        v39 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:0.0];
         v40 = self->_bottomConstraint;
         self->_bottomConstraint = v39;
 
-        v41 = [(UIButton *)self->_actionButton leadingAnchor];
-        v42 = [(MapsLargerHitTargetButton *)self->_closeButton trailingAnchor];
-        v43 = [v41 constraintEqualToSystemSpacingAfterAnchor:v42 multiplier:1.0];
+        leadingAnchor = [(UIButton *)self->_actionButton leadingAnchor];
+        trailingAnchor3 = [(MapsLargerHitTargetButton *)self->_closeButton trailingAnchor];
+        v43 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor3 multiplier:1.0];
         v44 = self->_closeButtonTrailingConstraint;
         self->_closeButtonTrailingConstraint = v43;
 
         v100[0] = self->_closeButtonTrailingConstraint;
-        v45 = [(FeatureDiscoveryView *)self trailingAnchor];
-        v46 = [(UIButton *)self->_actionButton trailingAnchor];
-        v47 = [v45 constraintEqualToAnchor:v46 constant:0.0];
+        trailingAnchor4 = [(FeatureDiscoveryView *)self trailingAnchor];
+        trailingAnchor5 = [(UIButton *)self->_actionButton trailingAnchor];
+        v47 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:0.0];
         v100[1] = v47;
-        v48 = [(MapsLargerHitTargetButton *)self->_closeButton topAnchor];
-        v97 = [(UIButton *)self->_actionButton topAnchor];
-        v96 = [v48 constraintEqualToAnchor:?];
+        topAnchor = [(MapsLargerHitTargetButton *)self->_closeButton topAnchor];
+        topAnchor2 = [(UIButton *)self->_actionButton topAnchor];
+        v96 = [topAnchor constraintEqualToAnchor:?];
         v100[2] = v96;
-        v49 = [(MapsLargerHitTargetButton *)self->_closeButton bottomAnchor];
-        v95 = [(UIButton *)self->_actionButton bottomAnchor];
-        v94 = [v49 constraintEqualToAnchor:?];
+        bottomAnchor5 = [(MapsLargerHitTargetButton *)self->_closeButton bottomAnchor];
+        bottomAnchor6 = [(UIButton *)self->_actionButton bottomAnchor];
+        v94 = [bottomAnchor5 constraintEqualToAnchor:?];
         v100[3] = v94;
-        v50 = [(UIButton *)self->_actionButton topAnchor];
-        v92 = [(UIStackView *)self->_textStackView bottomAnchor];
-        v93 = v50;
-        v51 = [v50 constraintEqualToAnchor:*&v98 constant:?];
+        topAnchor3 = [(UIButton *)self->_actionButton topAnchor];
+        bottomAnchor7 = [(UIStackView *)self->_textStackView bottomAnchor];
+        trailingAnchor7 = topAnchor3;
+        v51 = [topAnchor3 constraintEqualToAnchor:*&v98 constant:?];
         v52 = self->_bottomConstraint;
         v53 = v51;
         v100[4] = v51;
         v100[5] = v52;
-        v54 = [NSArray arrayWithObjects:v100 count:6];
-        [v24 addObjectsFromArray:v54];
+        bottomAnchor11 = [NSArray arrayWithObjects:v100 count:6];
+        [model4 addObjectsFromArray:bottomAnchor11];
       }
 
       else
@@ -219,11 +219,11 @@ LABEL_14:
 
         [(UIButton *)self->_actionButton setAccessibilityIdentifier:@"FeatureDiscoveryActionButton"];
         [(UIButton *)self->_actionButton setContentHorizontalAlignment:4];
-        v62 = [(UIButton *)self->_actionButton titleLabel];
-        [v62 setLineBreakMode:4];
+        titleLabel2 = [(UIButton *)self->_actionButton titleLabel];
+        [titleLabel2 setLineBreakMode:4];
 
-        v63 = [(UIButton *)self->_actionButton titleLabel];
-        [v63 setNumberOfLines:0];
+        titleLabel3 = [(UIButton *)self->_actionButton titleLabel];
+        [titleLabel3 setNumberOfLines:0];
 
         v91 = +[UIButtonConfiguration plainButtonConfiguration];
         [v91 setContentInsets:{*(&v98 + 1), 0.0, 0.0, 0.0}];
@@ -233,71 +233,71 @@ LABEL_14:
         v65 = [[HairlineView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
         [(HairlineView *)v65 setTranslatesAutoresizingMaskIntoConstraints:0];
         [(FeatureDiscoveryView *)self addSubview:v65];
-        v66 = [(FeatureDiscoveryView *)self bottomAnchor];
-        v67 = [(UIButton *)self->_actionButton bottomAnchor];
-        v68 = [v66 constraintEqualToAnchor:v67];
+        bottomAnchor8 = [(FeatureDiscoveryView *)self bottomAnchor];
+        bottomAnchor9 = [(UIButton *)self->_actionButton bottomAnchor];
+        v68 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
         v69 = self->_bottomConstraint;
         self->_bottomConstraint = v68;
 
-        v90 = [(UIButton *)self->_actionButton leadingAnchor];
-        v89 = [(UIStackView *)self->_textStackView leadingAnchor];
-        v97 = [v90 constraintEqualToAnchor:v89];
-        v99[0] = v97;
-        v70 = [(HairlineView *)v65 leadingAnchor];
-        v88 = [(UIButton *)self->_actionButton leadingAnchor];
-        v96 = v70;
-        v95 = [v70 constraintEqualToAnchor:v88];
-        v99[1] = v95;
-        v71 = [(FeatureDiscoveryView *)self trailingAnchor];
-        v93 = [(HairlineView *)v65 trailingAnchor];
-        v94 = v71;
-        v92 = [v71 constraintEqualToAnchor:?];
-        v99[2] = v92;
-        v85 = [(HairlineView *)v65 bottomAnchor];
-        v54 = [(UIStackView *)self->_textStackView bottomAnchor];
-        v87 = [v85 constraintEqualToAnchor:v54 constant:*&v98];
+        leadingAnchor2 = [(UIButton *)self->_actionButton leadingAnchor];
+        leadingAnchor3 = [(UIStackView *)self->_textStackView leadingAnchor];
+        topAnchor2 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
+        v99[0] = topAnchor2;
+        leadingAnchor4 = [(HairlineView *)v65 leadingAnchor];
+        leadingAnchor5 = [(UIButton *)self->_actionButton leadingAnchor];
+        v96 = leadingAnchor4;
+        bottomAnchor6 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
+        v99[1] = bottomAnchor6;
+        trailingAnchor6 = [(FeatureDiscoveryView *)self trailingAnchor];
+        trailingAnchor7 = [(HairlineView *)v65 trailingAnchor];
+        v94 = trailingAnchor6;
+        bottomAnchor7 = [trailingAnchor6 constraintEqualToAnchor:?];
+        v99[2] = bottomAnchor7;
+        bottomAnchor10 = [(HairlineView *)v65 bottomAnchor];
+        bottomAnchor11 = [(UIStackView *)self->_textStackView bottomAnchor];
+        v87 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11 constant:*&v98];
         v99[3] = v87;
-        v86 = [(UIButton *)self->_actionButton trailingAnchor];
-        v84 = [(MapsLargerHitTargetButton *)self->_closeButton leadingAnchor];
-        v72 = [v86 constraintLessThanOrEqualToAnchor:v84];
+        trailingAnchor8 = [(UIButton *)self->_actionButton trailingAnchor];
+        leadingAnchor6 = [(MapsLargerHitTargetButton *)self->_closeButton leadingAnchor];
+        v72 = [trailingAnchor8 constraintLessThanOrEqualToAnchor:leadingAnchor6];
         v99[4] = v72;
-        v73 = [(UIButton *)self->_actionButton topAnchor];
-        v74 = [(HairlineView *)v65 bottomAnchor];
-        v75 = [v73 constraintEqualToAnchor:v74];
+        topAnchor4 = [(UIButton *)self->_actionButton topAnchor];
+        bottomAnchor12 = [(HairlineView *)v65 bottomAnchor];
+        v75 = [topAnchor4 constraintEqualToAnchor:bottomAnchor12];
         v76 = self->_bottomConstraint;
         v99[5] = v75;
         v99[6] = v76;
         v77 = [NSArray arrayWithObjects:v99 count:7];
-        [v24 addObjectsFromArray:v77];
+        [model4 addObjectsFromArray:v77];
 
-        v53 = v85;
-        v49 = v88;
+        v53 = bottomAnchor10;
+        bottomAnchor5 = leadingAnchor5;
 
-        v48 = v89;
-        v46 = v65;
-        v47 = v90;
+        topAnchor = leadingAnchor3;
+        trailingAnchor5 = v65;
+        v47 = leadingAnchor2;
 
-        v45 = v91;
+        trailingAnchor4 = v91;
       }
 
       [(UIButton *)self->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
-      v78 = [(UIButton *)self->_actionButton titleLabel];
-      [v78 setAdjustsFontForContentSizeCategory:1];
+      titleLabel4 = [(UIButton *)self->_actionButton titleLabel];
+      [titleLabel4 setAdjustsFontForContentSizeCategory:1];
 
       [(UIButton *)self->_actionButton setRole:1];
-      v79 = [(FeatureDiscoveryView *)self model];
-      v80 = [v79 actionHandler];
-      [(UIButton *)self->_actionButton setEnabled:v80 != 0];
+      model6 = [(FeatureDiscoveryView *)self model];
+      actionHandler = [model6 actionHandler];
+      [(UIButton *)self->_actionButton setEnabled:actionHandler != 0];
 
       [(UIButton *)self->_actionButton addTarget:self action:"_performAction" forControlEvents:64];
       [(FeatureDiscoveryView *)self addSubview:self->_actionButton];
-      [NSLayoutConstraint activateConstraints:v24];
+      [NSLayoutConstraint activateConstraints:model4];
       if (sub_10000FA08(self) == 5)
       {
         v81 = self->_actionButton;
-        v82 = [(FeatureDiscoveryView *)self model];
-        v83 = [v82 actionTitle];
-        [(UIButton *)v81 setTitle:v83 forState:0];
+        model7 = [(FeatureDiscoveryView *)self model];
+        actionTitle5 = [model7 actionTitle];
+        [(UIButton *)v81 setTitle:actionTitle5 forState:0];
       }
 
       else
@@ -308,9 +308,9 @@ LABEL_14:
 
     else
     {
-      v55 = [(FeatureDiscoveryView *)self bottomAnchor];
-      v56 = [(UIStackView *)self->_textStackView bottomAnchor];
-      v57 = [v55 constraintEqualToAnchor:v56 constant:0.0];
+      bottomAnchor13 = [(FeatureDiscoveryView *)self bottomAnchor];
+      bottomAnchor14 = [(UIStackView *)self->_textStackView bottomAnchor];
+      v57 = [bottomAnchor13 constraintEqualToAnchor:bottomAnchor14 constant:0.0];
       v58 = self->_bottomConstraint;
       self->_bottomConstraint = v57;
 
@@ -318,7 +318,7 @@ LABEL_14:
       v59 = [NSArray arrayWithObjects:&v101 count:1];
       [NSLayoutConstraint activateConstraints:v59];
 
-      v24 = self->_actionButton;
+      model4 = self->_actionButton;
       self->_actionButton = 0;
     }
 
@@ -328,40 +328,40 @@ LABEL_14:
 
 - (void)_performBodyTap
 {
-  v6 = [(FeatureDiscoveryView *)self model];
-  if (([v6 isDismissed] & 1) == 0)
+  model = [(FeatureDiscoveryView *)self model];
+  if (([model isDismissed] & 1) == 0)
   {
-    v3 = [(FeatureDiscoveryView *)self model];
-    v4 = [v3 bodyTapHandler];
+    model2 = [(FeatureDiscoveryView *)self model];
+    bodyTapHandler = [model2 bodyTapHandler];
 
-    if (!v4)
+    if (!bodyTapHandler)
     {
       return;
     }
 
-    v6 = [(FeatureDiscoveryView *)self model];
-    v5 = [v6 bodyTapHandler];
-    v5[2]();
+    model = [(FeatureDiscoveryView *)self model];
+    bodyTapHandler2 = [model bodyTapHandler];
+    bodyTapHandler2[2]();
   }
 }
 
 - (void)_performAction
 {
-  v7 = [(FeatureDiscoveryView *)self model];
-  if ([v7 isDismissed])
+  model = [(FeatureDiscoveryView *)self model];
+  if ([model isDismissed])
   {
   }
 
   else
   {
-    v3 = [(FeatureDiscoveryView *)self model];
-    v4 = [v3 actionHandler];
+    model2 = [(FeatureDiscoveryView *)self model];
+    actionHandler = [model2 actionHandler];
 
-    if (v4)
+    if (actionHandler)
     {
-      v5 = [(FeatureDiscoveryView *)self model];
-      v6 = [v5 actionHandler];
-      v6[2]();
+      model3 = [(FeatureDiscoveryView *)self model];
+      actionHandler2 = [model3 actionHandler];
+      actionHandler2[2]();
 
       [(FeatureDiscoveryView *)self _configureActionButton];
     }
@@ -370,65 +370,65 @@ LABEL_14:
 
 - (void)_dismiss
 {
-  v3 = [(FeatureDiscoveryView *)self model];
-  if (([v3 isDismissed] & 1) == 0)
+  model = [(FeatureDiscoveryView *)self model];
+  if (([model isDismissed] & 1) == 0)
   {
-    v4 = [(FeatureDiscoveryView *)self model];
-    v5 = [v4 dismissHandler];
+    model2 = [(FeatureDiscoveryView *)self model];
+    dismissHandler = [model2 dismissHandler];
 
-    if (!v5)
+    if (!dismissHandler)
     {
       goto LABEL_5;
     }
 
-    v3 = [(FeatureDiscoveryView *)self model];
-    v6 = [v3 dismissHandler];
-    v6[2]();
+    model = [(FeatureDiscoveryView *)self model];
+    dismissHandler2 = [model dismissHandler];
+    dismissHandler2[2]();
   }
 
 LABEL_5:
-  v7 = [(FeatureDiscoveryView *)self model];
-  [v7 setDismissed:1];
+  model3 = [(FeatureDiscoveryView *)self model];
+  [model3 setDismissed:1];
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   model = self->_model;
-  v20 = v5;
-  v7 = model;
+  v20 = modelCopy;
+  modelCopy2 = model;
   v8 = v20;
-  if (v20 | v7)
+  if (v20 | modelCopy2)
   {
-    v9 = [v20 isEqual:v7];
+    v9 = [v20 isEqual:modelCopy2];
 
     v8 = v20;
     if ((v9 & 1) == 0)
     {
-      objc_storeStrong(&self->_model, a3);
+      objc_storeStrong(&self->_model, model);
       [(FeatureDiscoveryModel *)self->_model setUpdatesDelegate:self];
       [(FeatureDiscoveryView *)self setShowBubbleIndicator:[(FeatureDiscoveryModel *)self->_model isTipMode]];
-      v10 = [v20 image];
+      image = [v20 image];
 
-      v11 = [v20 image];
-      [(UIImageView *)self->_imageView setImage:v11];
+      image2 = [v20 image];
+      [(UIImageView *)self->_imageView setImage:image2];
 
-      [(UIImageView *)self->_imageView setHidden:v10 == 0];
-      v12 = [v20 title];
-      [(UILabel *)self->_titleLabel setText:v12];
+      [(UIImageView *)self->_imageView setHidden:image == 0];
+      title = [v20 title];
+      [(UILabel *)self->_titleLabel setText:title];
 
-      v13 = [v20 subtitle];
-      [(UILabel *)self->_subtitleLabel setText:v13];
+      subtitle = [v20 subtitle];
+      [(UILabel *)self->_subtitleLabel setText:subtitle];
 
-      v14 = [v20 dismissHandler];
-      v15 = v14 == 0;
+      dismissHandler = [v20 dismissHandler];
+      v15 = dismissHandler == 0;
 
       [(MapsLargerHitTargetButton *)self->_closeButton setHidden:v15];
       [(FeatureDiscoveryView *)self _setupActionButtonIfNeeded];
-      v16 = [v20 bodyTapHandler];
+      bodyTapHandler = [v20 bodyTapHandler];
 
       tapGesture = self->_tapGesture;
-      if (v16)
+      if (bodyTapHandler)
       {
         [(FeatureDiscoveryView *)self addGestureRecognizer:tapGesture];
       }
@@ -438,7 +438,7 @@ LABEL_5:
         [(FeatureDiscoveryView *)self removeGestureRecognizer:tapGesture];
       }
 
-      if (v10)
+      if (image)
       {
         v18 = &OBJC_IVAR___FeatureDiscoveryView__constraintsWithoutImage;
       }
@@ -448,7 +448,7 @@ LABEL_5:
         v18 = &OBJC_IVAR___FeatureDiscoveryView__constraintsWithImage;
       }
 
-      if (v10)
+      if (image)
       {
         v19 = &OBJC_IVAR___FeatureDiscoveryView__constraintsWithImage;
       }
@@ -467,9 +467,9 @@ LABEL_5:
 
 - (double)arrowOffset
 {
-  v3 = [(FeatureDiscoveryView *)self sourceView];
+  sourceView = [(FeatureDiscoveryView *)self sourceView];
 
-  if (v3)
+  if (sourceView)
   {
     v6.receiver = self;
     v6.super_class = FeatureDiscoveryView;
@@ -485,17 +485,17 @@ LABEL_5:
   return result;
 }
 
-- (FeatureDiscoveryView)initWithFrame:(CGRect)a3
+- (FeatureDiscoveryView)initWithFrame:(CGRect)frame
 {
   v117.receiver = self;
   v117.super_class = FeatureDiscoveryView;
-  v3 = [(FeatureDiscoveryView *)&v117 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FeatureDiscoveryView *)&v117 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(FeatureDiscoveryView *)v3 setClipsToBounds:0];
     [(FeatureDiscoveryView *)v4 setFloatingIndicator:1];
-    v5 = [(FeatureDiscoveryView *)v4 traitCollection];
+    traitCollection = [(FeatureDiscoveryView *)v4 traitCollection];
     _UITableViewDefaultSectionCornerRadiusForTraitCollection();
     [(FeatureDiscoveryView *)v4 setCornerRadius:?];
 
@@ -506,11 +506,11 @@ LABEL_5:
     v116 = 0u;
     v115 = 0u;
     v8 = objc_opt_class();
-    v9 = [(FeatureDiscoveryView *)v4 traitCollection];
-    v10 = [v9 userInterfaceIdiom];
+    traitCollection2 = [(FeatureDiscoveryView *)v4 traitCollection];
+    userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
     if (v8)
     {
-      [v8 _metricsForIdiom:v10];
+      [v8 _metricsForIdiom:userInterfaceIdiom];
     }
 
     else
@@ -582,7 +582,7 @@ LABEL_5:
     v4->_tapGesture = v32;
 
     v34 = objc_alloc_init(NSMutableArray);
-    v35 = [(FeatureDiscoveryView *)v4 traitCollection];
+    traitCollection3 = [(FeatureDiscoveryView *)v4 traitCollection];
     _UITableViewDefaultSectionCornerRadiusForTraitCollection();
     [(FeatureDiscoveryView *)v4 setCornerRadius:?];
 
@@ -591,24 +591,24 @@ LABEL_5:
     if (sub_10000FA08(v4) == 5)
     {
       v37 = [UIColor colorWithWhite:0.0 alpha:0.0199999996];
-      v38 = [v37 CGColor];
-      v39 = [(FeatureDiscoveryView *)v4 layer];
-      [v39 setBorderColor:v38];
+      cGColor = [v37 CGColor];
+      layer = [(FeatureDiscoveryView *)v4 layer];
+      [layer setBorderColor:cGColor];
 
-      v40 = [(FeatureDiscoveryView *)v4 traitCollection];
-      [v40 displayScale];
+      traitCollection4 = [(FeatureDiscoveryView *)v4 traitCollection];
+      [traitCollection4 displayScale];
       v42 = v41;
       v43 = v41 <= 1.0;
       v44 = 1.0;
       if (!v43)
       {
-        v38 = [(FeatureDiscoveryView *)v4 traitCollection];
-        [v38 displayScale];
+        cGColor = [(FeatureDiscoveryView *)v4 traitCollection];
+        [cGColor displayScale];
       }
 
       v45 = 1.0 / v44;
-      v46 = [(FeatureDiscoveryView *)v4 layer];
-      [v46 setBorderWidth:v45];
+      layer2 = [(FeatureDiscoveryView *)v4 layer];
+      [layer2 setBorderWidth:v45];
 
       if (v42 > 1.0)
       {
@@ -625,21 +625,21 @@ LABEL_5:
       [(MapsLargerHitTargetButton *)v49 setTitle:v51 forState:0];
 
       [(MapsLargerHitTargetButton *)v4->_closeButton setAccessibilityIdentifier:@"FeatureDiscoveryCloseButton"];
-      v52 = [(MapsLargerHitTargetButton *)v4->_closeButton leadingAnchor];
-      v107 = [(FeatureDiscoveryView *)v4 leadingAnchor];
-      v109 = [v52 constraintGreaterThanOrEqualToAnchor:*&v115 constant:?];
+      leadingAnchor = [(MapsLargerHitTargetButton *)v4->_closeButton leadingAnchor];
+      leadingAnchor2 = [(FeatureDiscoveryView *)v4 leadingAnchor];
+      v109 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:*&v115 constant:?];
       v121[0] = v109;
-      v53 = [(MapsLargerHitTargetButton *)v4->_closeButton topAnchor];
-      v54 = [(UIStackView *)v4->_textStackView bottomAnchor];
-      v105 = v53;
-      v55 = [v53 constraintEqualToAnchor:v54 constant:*&v115];
-      v121[1] = v55;
-      v56 = [(FeatureDiscoveryView *)v4 trailingAnchor];
-      v57 = [(UIStackView *)v4->_textStackView trailingAnchor];
-      v58 = [v56 constraintEqualToAnchor:v57 constant:*&v115];
-      v121[2] = v58;
-      v59 = [NSArray arrayWithObjects:v121 count:3];
-      [v34 addObjectsFromArray:v59];
+      topAnchor = [(MapsLargerHitTargetButton *)v4->_closeButton topAnchor];
+      bottomAnchor = [(UIStackView *)v4->_textStackView bottomAnchor];
+      v105 = topAnchor;
+      trailingAnchor3 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:*&v115];
+      v121[1] = trailingAnchor3;
+      trailingAnchor = [(FeatureDiscoveryView *)v4 trailingAnchor];
+      trailingAnchor2 = [(UIStackView *)v4->_textStackView trailingAnchor];
+      topAnchor2 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:*&v115];
+      v121[2] = topAnchor2;
+      topAnchor3 = [NSArray arrayWithObjects:v121 count:3];
+      [v34 addObjectsFromArray:topAnchor3];
       v60 = v112;
     }
 
@@ -683,25 +683,25 @@ LABEL_5:
       [(MapsLargerHitTargetButton *)v4->_closeButton setContentHuggingPriority:0 forAxis:v74];
       LODWORD(v75) = 1148846080;
       [(MapsLargerHitTargetButton *)v4->_closeButton setContentCompressionResistancePriority:0 forAxis:v75];
-      v76 = [(MapsLargerHitTargetButton *)v4->_closeButton leadingAnchor];
+      leadingAnchor3 = [(MapsLargerHitTargetButton *)v4->_closeButton leadingAnchor];
       [(UIStackView *)v4->_textStackView trailingAnchor];
-      v105 = v109 = v76;
-      v54 = [v76 constraintEqualToAnchor:*&v115 constant:?];
-      v120[0] = v54;
-      v55 = [(FeatureDiscoveryView *)v4 trailingAnchor];
+      v105 = v109 = leadingAnchor3;
+      bottomAnchor = [leadingAnchor3 constraintEqualToAnchor:*&v115 constant:?];
+      v120[0] = bottomAnchor;
+      trailingAnchor3 = [(FeatureDiscoveryView *)v4 trailingAnchor];
       [(MapsLargerHitTargetButton *)v4->_closeButton trailingAnchor];
-      v56 = v107 = v67;
-      v57 = [v55 constraintEqualToAnchor:v56 constant:*&v115];
-      v120[1] = v57;
-      v58 = [(MapsLargerHitTargetButton *)v4->_closeButton topAnchor];
-      v59 = [(UIStackView *)v4->_textStackView topAnchor];
-      v77 = [v58 constraintEqualToAnchor:v59];
+      trailingAnchor = leadingAnchor2 = v67;
+      trailingAnchor2 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor constant:*&v115];
+      v120[1] = trailingAnchor2;
+      topAnchor2 = [(MapsLargerHitTargetButton *)v4->_closeButton topAnchor];
+      topAnchor3 = [(UIStackView *)v4->_textStackView topAnchor];
+      v77 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
       v120[2] = v77;
       v78 = [NSArray arrayWithObjects:v120 count:3];
       [v34 addObjectsFromArray:v78];
 
       v60 = v113;
-      v52 = v104;
+      leadingAnchor = v104;
     }
 
     v79 = [UIFont preferredFontForTextStyle:v60];
@@ -710,42 +710,42 @@ LABEL_5:
     [(MapsLargerHitTargetButton *)v4->_closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MapsLargerHitTargetButton *)v4->_closeButton addTarget:v4 action:"_dismiss" forControlEvents:64];
     [(FeatureDiscoveryView *)v4 addSubview:v4->_closeButton];
-    v111 = [(UIImageView *)v4->_imageView widthAnchor];
-    v110 = [v111 constraintEqualToConstant:*(&v116 + 1)];
+    widthAnchor = [(UIImageView *)v4->_imageView widthAnchor];
+    v110 = [widthAnchor constraintEqualToConstant:*(&v116 + 1)];
     v119[0] = v110;
-    v108 = [(UIImageView *)v4->_imageView leadingAnchor];
-    v106 = [(FeatureDiscoveryView *)v4 leadingAnchor];
-    v80 = [v108 constraintEqualToAnchor:v106 constant:*&v115];
+    leadingAnchor4 = [(UIImageView *)v4->_imageView leadingAnchor];
+    leadingAnchor5 = [(FeatureDiscoveryView *)v4 leadingAnchor];
+    v80 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:*&v115];
     v119[1] = v80;
-    v81 = [(UIImageView *)v4->_imageView centerYAnchor];
-    v82 = [(UIStackView *)v4->_textStackView centerYAnchor];
-    v83 = [v81 constraintEqualToAnchor:v82];
+    centerYAnchor = [(UIImageView *)v4->_imageView centerYAnchor];
+    centerYAnchor2 = [(UIStackView *)v4->_textStackView centerYAnchor];
+    v83 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v119[2] = v83;
-    v84 = [(UIStackView *)v4->_textStackView topAnchor];
-    v85 = [(FeatureDiscoveryView *)v4 topAnchor];
-    v86 = [v84 constraintEqualToAnchor:v85 constant:*(&v115 + 1)];
+    topAnchor4 = [(UIStackView *)v4->_textStackView topAnchor];
+    topAnchor5 = [(FeatureDiscoveryView *)v4 topAnchor];
+    v86 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:*(&v115 + 1)];
     v119[3] = v86;
     v87 = [NSArray arrayWithObjects:v119 count:4];
     [v114 addObjectsFromArray:v87];
 
-    v88 = [(UIStackView *)v4->_textStackView leadingAnchor];
-    v89 = [(UIImageView *)v4->_imageView trailingAnchor];
-    v90 = [v88 constraintEqualToAnchor:v89 constant:*&v115];
+    leadingAnchor6 = [(UIStackView *)v4->_textStackView leadingAnchor];
+    trailingAnchor4 = [(UIImageView *)v4->_imageView trailingAnchor];
+    v90 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor4 constant:*&v115];
     v91 = [v114 arrayByAddingObject:v90];
     constraintsWithImage = v4->_constraintsWithImage;
     v4->_constraintsWithImage = v91;
 
-    v93 = [(UIStackView *)v4->_textStackView leadingAnchor];
-    v94 = [(UIImageView *)v4->_imageView leadingAnchor];
-    v95 = [v93 constraintEqualToAnchor:v94];
+    leadingAnchor7 = [(UIStackView *)v4->_textStackView leadingAnchor];
+    leadingAnchor8 = [(UIImageView *)v4->_imageView leadingAnchor];
+    v95 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v96 = [v114 arrayByAddingObject:v95];
     constraintsWithoutImage = v4->_constraintsWithoutImage;
     v4->_constraintsWithoutImage = v96;
 
     [NSLayoutConstraint activateConstraints:v4->_constraintsWithoutImage];
-    v98 = [(FeatureDiscoveryView *)v4 bottomAnchor];
-    v99 = [(UIStackView *)v4->_textStackView bottomAnchor];
-    v100 = [v98 constraintEqualToAnchor:v99 constant:*&v116];
+    bottomAnchor2 = [(FeatureDiscoveryView *)v4 bottomAnchor];
+    bottomAnchor3 = [(UIStackView *)v4->_textStackView bottomAnchor];
+    v100 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:*&v116];
     bottomConstraint = v4->_bottomConstraint;
     v4->_bottomConstraint = v100;
 
@@ -759,39 +759,39 @@ LABEL_5:
   return v4;
 }
 
-+ (id)_constraintsForFeatureDiscoveryView:(id)a3 centeredInContentView:(id)a4 withIdiom:(int64_t)a5 context:(unint64_t)a6
++ (id)_constraintsForFeatureDiscoveryView:(id)view centeredInContentView:(id)contentView withIdiom:(int64_t)idiom context:(unint64_t)context
 {
-  v9 = a4;
-  v10 = a3;
-  [FeatureDiscoveryView _cellMetricsForIdiom:a5 context:a6];
-  v11 = [v10 _maps_constraintsEqualToEdgesOfView:v9 insets:? priority:?];
+  contentViewCopy = contentView;
+  viewCopy = view;
+  [FeatureDiscoveryView _cellMetricsForIdiom:idiom context:context];
+  v11 = [viewCopy _maps_constraintsEqualToEdgesOfView:contentViewCopy insets:? priority:?];
 
-  v12 = [v11 allConstraints];
+  allConstraints = [v11 allConstraints];
 
-  return v12;
+  return allConstraints;
 }
 
-+ ($1AB5FA073B851C12C2339EC22442E995)_cellMetricsForIdiom:(int64_t)a3 context:(unint64_t)a4
++ ($1AB5FA073B851C12C2339EC22442E995)_cellMetricsForIdiom:(int64_t)idiom context:(unint64_t)context
 {
   v4 = 2.0;
-  if (!a4)
+  if (!context)
   {
     v4 = 12.0;
   }
 
   v5 = 4.0;
-  if (!a4)
+  if (!context)
   {
     v5 = 0.0;
   }
 
-  if (a3 == 5)
+  if (idiom == 5)
   {
     v5 = v4;
   }
 
   v6 = 10.0;
-  if (a3 != 5)
+  if (idiom != 5)
   {
     v6 = 16.0;
   }
@@ -803,7 +803,7 @@ LABEL_5:
   return result;
 }
 
-+ ($29727DC6989B69F22950FCD998EA20D4)_metricsForIdiom:(SEL)a3
++ ($29727DC6989B69F22950FCD998EA20D4)_metricsForIdiom:(SEL)idiom
 {
   if (a4 == 5)
   {

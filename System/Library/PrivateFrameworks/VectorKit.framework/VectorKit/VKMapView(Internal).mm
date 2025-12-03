@@ -38,7 +38,7 @@
         {
           ChildNode = gdc::DebugTreeNode::createChildNode(a3, v36);
           v10 = v8;
-          std::function<void ()(NSDictionary *,gdc::DebugTreeNode &)>::operator()(*(a1 + 8), v10, ChildNode);
+          std::function<void ()(NSDictionary *,gdc::DebugTreeNode &)>::operator()(*(self + 8), v10, ChildNode);
         }
 
         else

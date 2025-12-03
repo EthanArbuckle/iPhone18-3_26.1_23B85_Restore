@@ -1,9 +1,9 @@
 @interface VoiceManagerWrapper
 + (_TtC9axassetsd19VoiceManagerWrapper)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (_TtC9axassetsd19VoiceManagerWrapper)init;
-- (void)handleDarwinNotification:(NSString *)a3 completion:(id)a4;
-- (void)run:(id)a3;
+- (void)handleDarwinNotification:(NSString *)notification completion:(id)completion;
+- (void)run:(id)run;
 @end
 
 @implementation VoiceManagerWrapper
@@ -19,10 +19,10 @@
   return static VoiceManagerWrapper.shared;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_10001DF18;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
     swift_once();
@@ -30,15 +30,15 @@
 
   swift_beginAccess();
   v5 = static VoiceManagerWrapper.shared;
-  static VoiceManagerWrapper.shared = v4;
+  static VoiceManagerWrapper.shared = sharedCopy;
 }
 
-- (void)run:(id)a3
+- (void)run:(id)run
 {
   v5 = (*(*(sub_10000854C(&qword_10001DF68, &qword_100010888) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(run);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -54,18 +54,18 @@
   v12[3] = 0;
   v12[4] = &unk_1000108E8;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_100009760(0, 0, v7, &unk_1000108F0, v12);
 }
 
-- (void)handleDarwinNotification:(NSString *)a3 completion:(id)a4
+- (void)handleDarwinNotification:(NSString *)notification completion:(id)completion
 {
   v7 = (*(*(sub_10000854C(&qword_10001DF68, &qword_100010888) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = notification;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -80,8 +80,8 @@
   v14[3] = 0;
   v14[4] = &unk_1000108A8;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_100009760(0, 0, v9, &unk_1000108B8, v14);
 }
 

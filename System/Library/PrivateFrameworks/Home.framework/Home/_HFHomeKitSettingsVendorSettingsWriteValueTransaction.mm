@@ -1,17 +1,17 @@
 @interface _HFHomeKitSettingsVendorSettingsWriteValueTransaction
 - (_HFHomeKitSettingsVendorSettingsWriteValueTransaction)init;
-- (_HFHomeKitSettingsVendorSettingsWriteValueTransaction)initWithSetting:(id)a3 previousValue:(id)a4 value:(id)a5 changeType:(unint64_t)a6;
+- (_HFHomeKitSettingsVendorSettingsWriteValueTransaction)initWithSetting:(id)setting previousValue:(id)value value:(id)a5 changeType:(unint64_t)type;
 - (id)description;
 - (id)descriptionBuilder;
-- (void)setStarted:(BOOL)a3;
+- (void)setStarted:(BOOL)started;
 @end
 
 @implementation _HFHomeKitSettingsVendorSettingsWriteValueTransaction
 
-- (_HFHomeKitSettingsVendorSettingsWriteValueTransaction)initWithSetting:(id)a3 previousValue:(id)a4 value:(id)a5 changeType:(unint64_t)a6
+- (_HFHomeKitSettingsVendorSettingsWriteValueTransaction)initWithSetting:(id)setting previousValue:(id)value value:(id)a5 changeType:(unint64_t)type
 {
-  v11 = a3;
-  v12 = a4;
+  settingCopy = setting;
+  valueCopy = value;
   v13 = a5;
   v21.receiver = self;
   v21.super_class = _HFHomeKitSettingsVendorSettingsWriteValueTransaction;
@@ -19,8 +19,8 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_setting, a3);
-    objc_storeStrong(&v15->_previousValue, a4);
+    objc_storeStrong(&v14->_setting, setting);
+    objc_storeStrong(&v15->_previousValue, value);
     objc_storeStrong(&v15->_value, a5);
     ++initWithSetting_previousValue_value_changeType__i;
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -31,7 +31,7 @@
     settingWriteFuture = v15->_settingWriteFuture;
     v15->_settingWriteFuture = v18;
 
-    v15->_changeType = a6;
+    v15->_changeType = type;
   }
 
   return v15;
@@ -39,29 +39,29 @@
 
 - (_HFHomeKitSettingsVendorSettingsWriteValueTransaction)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithSetting_previousValue_value_changeType_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFHomeKitSettingsValueManager.m" lineNumber:69 description:{@"%s is unavailable; use %@ instead", "-[_HFHomeKitSettingsVendorSettingsWriteValueTransaction init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFHomeKitSettingsValueManager.m" lineNumber:69 description:{@"%s is unavailable; use %@ instead", "-[_HFHomeKitSettingsVendorSettingsWriteValueTransaction init]", v5}];
 
   return 0;
 }
 
-- (void)setStarted:(BOOL)a3
+- (void)setStarted:(BOOL)started
 {
-  self->_started = a3;
-  if (a3 && !self->_transactionStartDate)
+  self->_started = started;
+  if (started && !self->_transactionStartDate)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     transactionStartDate = self->_transactionStartDate;
-    self->_transactionStartDate = v4;
+    self->_transactionStartDate = date;
   }
 }
 
 - (id)descriptionBuilder
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self transactionNumber];
-  v5 = [v3 appendObject:v4 withName:@"transactionNumber"];
+  transactionNumber = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self transactionNumber];
+  v5 = [v3 appendObject:transactionNumber withName:@"transactionNumber"];
 
   if ([(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self changeType]== 1)
   {
@@ -81,22 +81,22 @@
   v26[4] = self;
   v8 = __75___HFHomeKitSettingsVendorSettingsWriteValueTransaction_descriptionBuilder__block_invoke(v26);
   v9 = [v3 appendObject:v8 withName:@"status"];
-  v10 = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self setting];
-  v11 = [v10 keyPath];
-  v12 = [v3 appendObject:v11 withName:@"setting"];
+  setting = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self setting];
+  keyPath = [setting keyPath];
+  v12 = [v3 appendObject:keyPath withName:@"setting"];
 
   v13 = MEMORY[0x277CD1DA0];
-  v14 = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self previousValue];
-  v15 = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self setting];
-  v16 = [v15 keyPath];
-  v17 = [v13 hf_debugDescriptionForValue:v14 keyPath:v16];
+  previousValue = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self previousValue];
+  setting2 = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self setting];
+  keyPath2 = [setting2 keyPath];
+  v17 = [v13 hf_debugDescriptionForValue:previousValue keyPath:keyPath2];
   v18 = [v3 appendObject:v17 withName:@"previousValue"];
 
   v19 = MEMORY[0x277CD1DA0];
-  v20 = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self value];
-  v21 = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self setting];
-  v22 = [v21 keyPath];
-  v23 = [v19 hf_debugDescriptionForValue:v20 keyPath:v22];
+  value = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self value];
+  setting3 = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self setting];
+  keyPath3 = [setting3 keyPath];
+  v23 = [v19 hf_debugDescriptionForValue:value keyPath:keyPath3];
   v24 = [v3 appendObject:v23 withName:@"value"];
 
   return v3;
@@ -104,10 +104,10 @@
 
 - (id)description
 {
-  v2 = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self descriptionBuilder];
-  v3 = [v2 build];
+  descriptionBuilder = [(_HFHomeKitSettingsVendorSettingsWriteValueTransaction *)self descriptionBuilder];
+  build = [descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

@@ -2,52 +2,52 @@
 + (BOOL)isInternalInstall;
 + (BOOL)isInternetReachable;
 + (BOOL)showInternalInstallUI;
-+ (_NSRange)range:(_NSRange)a3 liesWithinRange:(_NSRange)a4 assert:(BOOL)a5;
++ (_NSRange)range:(_NSRange)range liesWithinRange:(_NSRange)withinRange assert:(BOOL)assert;
 @end
 
 @implementation ICUtilities
 
 + (BOOL)isInternalInstall
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 UTF8String];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  uTF8String = [bundleIdentifier UTF8String];
 
-  return MEMORY[0x1EEE71D60](v4);
+  return MEMORY[0x1EEE71D60](uTF8String);
 }
 
 + (BOOL)showInternalInstallUI
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 UTF8String];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  uTF8String = [bundleIdentifier UTF8String];
 
-  return MEMORY[0x1EEE71D70](v4);
+  return MEMORY[0x1EEE71D70](uTF8String);
 }
 
 + (BOOL)isInternetReachable
 {
   v2 = +[ICReachability sharedReachabilityForInternetConnection];
-  v3 = [v2 currentReachabilityStatus];
+  currentReachabilityStatus = [v2 currentReachabilityStatus];
 
-  return v3 != 0;
+  return currentReachabilityStatus != 0;
 }
 
-+ (_NSRange)range:(_NSRange)a3 liesWithinRange:(_NSRange)a4 assert:(BOOL)a5
++ (_NSRange)range:(_NSRange)range liesWithinRange:(_NSRange)withinRange assert:(BOOL)assert
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL || a4.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL || withinRange.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
     v10 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_25;
   }
 
-  v6 = a5;
-  length = a4.length;
-  location = a4.location;
-  v9 = a3.length;
-  v10 = a3.location;
-  v11 = NSIntersectionRange(a3, a4);
+  assertCopy = assert;
+  length = withinRange.length;
+  location = withinRange.location;
+  v9 = range.length;
+  v10 = range.location;
+  v11 = NSIntersectionRange(range, withinRange);
   if (v9)
   {
     if (v10 == v11.location && v9 == v11.length)
@@ -62,7 +62,7 @@
     goto LABEL_25;
   }
 
-  if (v6)
+  if (assertCopy)
   {
     v17.location = v10;
     v17.length = v9;

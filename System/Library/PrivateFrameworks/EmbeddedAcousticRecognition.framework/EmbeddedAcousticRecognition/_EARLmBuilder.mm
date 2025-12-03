@@ -1,29 +1,29 @@
 @interface _EARLmBuilder
-+ (id)buildLmWithConfig:(id)a3 root:(id)a4 data:(id)a5 dir:(id)a6 shouldStop:(id)a7;
-+ (id)generateNgramCountsWithConfig:(id)a3 root:(id)a4 data:(id)a5;
-+ (id)loadLmFromDir:(id)a3;
-+ (void)removeLmDir:(id)a3;
++ (id)buildLmWithConfig:(id)config root:(id)root data:(id)data dir:(id)dir shouldStop:(id)stop;
++ (id)generateNgramCountsWithConfig:(id)config root:(id)root data:(id)data;
++ (id)loadLmFromDir:(id)dir;
++ (void)removeLmDir:(id)dir;
 @end
 
 @implementation _EARLmBuilder
 
-+ (id)buildLmWithConfig:(id)a3 root:(id)a4 data:(id)a5 dir:(id)a6 shouldStop:(id)a7
++ (id)buildLmWithConfig:(id)config root:(id)root data:(id)data dir:(id)dir shouldStop:(id)stop
 {
   v22 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
-  v17 = [v16 fileExistsAtPath:v11];
+  configCopy = config;
+  rootCopy = root;
+  dataCopy = data;
+  dirCopy = dir;
+  stopCopy = stop;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v17 = [defaultManager fileExistsAtPath:configCopy];
 
   if (v17)
   {
-    if (v11)
+    if (configCopy)
     {
-      [v11 ear_toString];
-      if (!v12)
+      [configCopy ear_toString];
+      if (!rootCopy)
       {
         goto LABEL_9;
       }
@@ -33,14 +33,14 @@
     {
       buf = 0uLL;
       v21 = 0;
-      if (!v12)
+      if (!rootCopy)
       {
 LABEL_9:
         quasar::makeLmBuildConfig();
       }
     }
 
-    [v12 ear_toString];
+    [rootCopy ear_toString];
     goto LABEL_9;
   }
 
@@ -48,30 +48,30 @@ LABEL_9:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = configCopy;
     _os_log_impl(&dword_1B501D000, v18, OS_LOG_TYPE_DEFAULT, "File does not exist %@", &buf, 0xCu);
   }
 
   return 0;
 }
 
-+ (id)loadLmFromDir:(id)a3
++ (id)loadLmFromDir:(id)dir
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dirCopy = dir;
   v14 = 0;
   v15 = 0;
   v16 = 0;
   LOBYTE(v9) = 0;
   v11 = 0;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:dirCopy];
 
   if (v5)
   {
-    if (v3)
+    if (dirCopy)
     {
-      [v3 ear_toString];
+      [dirCopy ear_toString];
     }
 
     else
@@ -88,7 +88,7 @@ LABEL_9:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = dirCopy;
     _os_log_impl(&dword_1B501D000, v6, OS_LOG_TYPE_DEFAULT, "File does not exist %@", &buf, 0xCu);
   }
 
@@ -105,13 +105,13 @@ LABEL_9:
   return 0;
 }
 
-+ (void)removeLmDir:(id)a3
++ (void)removeLmDir:(id)dir
 {
   __p[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dirCopy = dir;
+  if (dirCopy)
   {
-    [v3 ear_toString];
+    [dirCopy ear_toString];
   }
 
   else
@@ -122,27 +122,27 @@ LABEL_9:
   quasar::removeLm(__p);
 }
 
-+ (id)generateNgramCountsWithConfig:(id)a3 root:(id)a4 data:(id)a5
++ (id)generateNgramCountsWithConfig:(id)config root:(id)root data:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  configCopy = config;
+  rootCopy = root;
+  dataCopy = data;
+  if (configCopy)
   {
-    [v7 ear_toString];
-    if (!v8)
+    [configCopy ear_toString];
+    if (!rootCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (!v8)
+  else if (!rootCopy)
   {
 LABEL_5:
     quasar::makeLmBuildConfig();
   }
 
-  [v8 ear_toString];
+  [rootCopy ear_toString];
   goto LABEL_5;
 }
 

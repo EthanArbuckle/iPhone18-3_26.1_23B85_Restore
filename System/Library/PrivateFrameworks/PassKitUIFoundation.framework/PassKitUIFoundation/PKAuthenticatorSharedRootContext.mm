@@ -3,7 +3,7 @@
 - (PKAuthenticatorSharedRootContext)init;
 - (id)externalizedContext;
 - (int64_t)_initialUserIntentAvailabilityState;
-- (void)_consumeWithCompletion:(id)a3 reset:(BOOL)a4;
+- (void)_consumeWithCompletion:(id)completion reset:(BOOL)reset;
 - (void)dealloc;
 @end
 
@@ -71,27 +71,27 @@ uint64_t __50__PKAuthenticatorSharedRootContext_sharedInstance__block_invoke()
   return 2;
 }
 
-- (void)_consumeWithCompletion:(id)a3 reset:(BOOL)a4
+- (void)_consumeWithCompletion:(id)completion reset:(BOOL)reset
 {
-  v4 = a4;
+  resetCopy = reset;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v7 = self->_LAContext;
   LAContext = self->_LAContext;
   self->_LAContext = 0;
 
-  if (v4)
+  if (resetCopy)
   {
-    v9 = [(PKAuthenticatorSharedRootContext *)self _initialUserIntentAvailabilityState];
+    _initialUserIntentAvailabilityState = [(PKAuthenticatorSharedRootContext *)self _initialUserIntentAvailabilityState];
   }
 
   else
   {
-    v9 = 2;
+    _initialUserIntentAvailabilityState = 2;
   }
 
-  self->_userIntentAvailabilityState = v9;
+  self->_userIntentAvailabilityState = _initialUserIntentAvailabilityState;
   os_unfair_lock_unlock(&self->_lock);
   if (v7)
   {
@@ -108,13 +108,13 @@ uint64_t __50__PKAuthenticatorSharedRootContext_sharedInstance__block_invoke()
     v12[2] = __65__PKAuthenticatorSharedRootContext__consumeWithCompletion_reset___block_invoke;
     v12[3] = &unk_2799FFDC8;
     v13 = v7;
-    v14 = v6;
+    v14 = completionCopy;
     [(LAContext *)v13 resetWithReply:v12];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -196,11 +196,11 @@ LABEL_8:
 
   v8 = LAContext;
   os_unfair_lock_unlock(&self->_lock);
-  v9 = [(LAContext *)v8 externalizedContext];
+  externalizedContext = [(LAContext *)v8 externalizedContext];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return externalizedContext;
 }
 
 @end

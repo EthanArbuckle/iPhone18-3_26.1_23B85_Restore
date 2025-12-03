@@ -1,61 +1,61 @@
 @interface UGCAddPhotosController
-- (BOOL)_isValidImageSize:(CGSize)a3;
-- (UGCAddPhotosController)initWithPresentingViewController:(id)a3 sourceType:(int64_t)a4 multipleSelectionLimit:(unint64_t)a5 placeQuestionnaire:(id)a6 delegate:(id)a7;
-- (id)_resizeImageIfNeeded:(id)a3 imageSize:(CGSize)a4;
-- (void)_handleAddFromCameraWithImageData:(id)a3 mediaInfo:(id)a4;
-- (void)_handleAddFromLibraryWithEditingInfoList:(id)a3;
-- (void)_presentImagePickerWithSourceType:(int64_t)a3;
+- (BOOL)_isValidImageSize:(CGSize)size;
+- (UGCAddPhotosController)initWithPresentingViewController:(id)controller sourceType:(int64_t)type multipleSelectionLimit:(unint64_t)limit placeQuestionnaire:(id)questionnaire delegate:(id)delegate;
+- (id)_resizeImageIfNeeded:(id)needed imageSize:(CGSize)size;
+- (void)_handleAddFromCameraWithImageData:(id)data mediaInfo:(id)info;
+- (void)_handleAddFromLibraryWithEditingInfoList:(id)list;
+- (void)_presentImagePickerWithSourceType:(int64_t)type;
 - (void)_resolveInitialSourceTypeIfNeeded;
-- (void)dismissWithCompletion:(id)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerController:(id)a3 didFinishPickingMultipleMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
-- (void)photoOptionsPickerDidCancel:(id)a3;
-- (void)photoOptionsPickerDidSelectAddFromLibrary:(id)a3;
-- (void)photoOptionsPickerDidSelectTakePhoto:(id)a3;
+- (void)dismissWithCompletion:(id)completion;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerController:(id)controller didFinishPickingMultipleMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
+- (void)photoOptionsPickerDidCancel:(id)cancel;
+- (void)photoOptionsPickerDidSelectAddFromLibrary:(id)library;
+- (void)photoOptionsPickerDidSelectTakePhoto:(id)photo;
 - (void)present;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation UGCAddPhotosController
 
-- (void)photoOptionsPickerDidSelectTakePhoto:(id)a3
+- (void)photoOptionsPickerDidSelectTakePhoto:(id)photo
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100BB2E24;
   v3[3] = &unk_101661B18;
   v3[4] = self;
-  [a3 dismissPhotoOptionsWithCompletion:v3];
+  [photo dismissPhotoOptionsWithCompletion:v3];
 }
 
-- (void)photoOptionsPickerDidSelectAddFromLibrary:(id)a3
+- (void)photoOptionsPickerDidSelectAddFromLibrary:(id)library
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100BB2EE0;
   v3[3] = &unk_101661B18;
   v3[4] = self;
-  [a3 dismissPhotoOptionsWithCompletion:v3];
+  [library dismissPhotoOptionsWithCompletion:v3];
 }
 
-- (void)photoOptionsPickerDidCancel:(id)a3
+- (void)photoOptionsPickerDidCancel:(id)cancel
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100BB2F9C;
   v3[3] = &unk_101661B18;
   v3[4] = self;
-  [a3 dismissPhotoOptionsWithCompletion:v3];
+  [cancel dismissPhotoOptionsWithCompletion:v3];
 }
 
-- (void)dismissWithCompletion:(id)a3
+- (void)dismissWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   photoOptionsPicker = self->_photoOptionsPicker;
   if (photoOptionsPicker)
   {
-    [(PhotoOptionsPicker *)photoOptionsPicker dismissPhotoOptionsWithCompletion:v4];
+    [(PhotoOptionsPicker *)photoOptionsPicker dismissPhotoOptionsWithCompletion:completionCopy];
   }
 
   else
@@ -68,22 +68,22 @@
       v7[2] = sub_100BB3080;
       v7[3] = &unk_101661090;
       v7[4] = self;
-      v8 = v4;
+      v8 = completionCopy;
       [(UIImagePickerController *)imagePicker dismissViewControllerAnimated:1 completion:v7];
     }
 
     else
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (id)_resizeImageIfNeeded:(id)a3 imageSize:(CGSize)a4
+- (id)_resizeImageIfNeeded:(id)needed imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  neededCopy = needed;
   if (width * height > [(GEOPlaceQuestionnaire *)self->_placeQuestionnaire maxPixels]&& [(GEOPlaceQuestionnaire *)self->_placeQuestionnaire maxPixels])
   {
     if (width > height)
@@ -96,9 +96,9 @@
       v8 = height / width;
     }
 
-    v9 = [(GEOPlaceQuestionnaire *)self->_placeQuestionnaire maxPixels];
+    maxPixels = [(GEOPlaceQuestionnaire *)self->_placeQuestionnaire maxPixels];
     v21[0] = kCGImageSourceThumbnailMaxPixelSize;
-    v10 = [NSNumber numberWithInt:sqrt(v8 * v9)];
+    v10 = [NSNumber numberWithInt:sqrt(v8 * maxPixels)];
     v22[0] = v10;
     v22[1] = kCFBooleanTrue;
     v21[1] = kCGImageSourceCreateThumbnailFromImageAlways;
@@ -106,7 +106,7 @@
     v22[2] = kCFBooleanTrue;
     v11 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:3];
 
-    v12 = CGImageSourceCreateWithData(v7, 0);
+    v12 = CGImageSourceCreateWithData(neededCopy, 0);
     ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(v12, 0, v11);
     if (v12)
     {
@@ -129,17 +129,17 @@
 
   else
   {
-    v14 = v7;
+    v14 = neededCopy;
   }
 
   return v14;
 }
 
-- (BOOL)_isValidImageSize:(CGSize)a3
+- (BOOL)_isValidImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width * a3.height < [(GEOPlaceQuestionnaire *)self->_placeQuestionnaire minPixels])
+  height = size.height;
+  width = size.width;
+  if (size.width * size.height < [(GEOPlaceQuestionnaire *)self->_placeQuestionnaire minPixels])
   {
     return 0;
   }
@@ -158,14 +158,14 @@
   return v7 <= v8;
 }
 
-- (void)_handleAddFromCameraWithImageData:(id)a3 mediaInfo:(id)a4
+- (void)_handleAddFromCameraWithImageData:(id)data mediaInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  infoCopy = info;
   v8 = +[MKLocationManager sharedLocationManager];
-  v9 = [v8 isLocationServicesPossiblyAvailable];
+  isLocationServicesPossiblyAvailable = [v8 isLocationServicesPossiblyAvailable];
 
-  if (v9)
+  if (isLocationServicesPossiblyAvailable)
   {
     objc_initWeak(&location, self);
     v10 = +[MKLocationManager sharedLocationManager];
@@ -174,7 +174,7 @@
     v12[2] = sub_100BB34EC;
     v12[3] = &unk_101651820;
     objc_copyWeak(&v14, &location);
-    v13 = v6;
+    v13 = dataCopy;
     v11 = [v10 singleLocationUpdateWithHandler:v12];
 
     [v11 start];
@@ -183,15 +183,15 @@
   }
 }
 
-- (void)_handleAddFromLibraryWithEditingInfoList:(id)a3
+- (void)_handleAddFromLibraryWithEditingInfoList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v19 = objc_alloc_init(NSMutableArray);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = listCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
@@ -245,26 +245,26 @@
   [WeakRetained takePhotoController:self didSelectPhotosWithMetadata:v18];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMultipleMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMultipleMediaWithInfo:(id)info
 {
-  v6 = a4;
-  if (![a3 sourceType])
+  infoCopy = info;
+  if (![controller sourceType])
   {
-    [(UGCAddPhotosController *)self _handleAddFromLibraryWithEditingInfoList:v6];
+    [(UGCAddPhotosController *)self _handleAddFromLibraryWithEditingInfoList:infoCopy];
   }
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 sourceType] == 1)
+  controllerCopy = controller;
+  infoCopy = info;
+  if ([controllerCopy sourceType] == 1)
   {
     [(UGCAddPhotosController *)self _captureUserAction:2129];
-    v8 = [v7 objectForKeyedSubscript:UIImagePickerControllerEditedImage];
+    v8 = [infoCopy objectForKeyedSubscript:UIImagePickerControllerEditedImage];
     if (!v8)
     {
-      v8 = [v7 objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
+      v8 = [infoCopy objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
     }
 
     [(UIImage *)v8 size];
@@ -278,30 +278,30 @@
       if (v11)
       {
         UIImageDataWriteToSavedPhotosAlbum();
-        [(UGCAddPhotosController *)self _handleAddFromCameraWithImageData:v11 mediaInfo:v7];
+        [(UGCAddPhotosController *)self _handleAddFromCameraWithImageData:v11 mediaInfo:infoCopy];
       }
     }
 
     goto LABEL_12;
   }
 
-  v12 = [v6 sourceType];
-  if (v7 && !v12 && ([(UIImagePickerController *)self->_imagePicker _allowsMultipleSelection]& 1) == 0)
+  sourceType = [controllerCopy sourceType];
+  if (infoCopy && !sourceType && ([(UIImagePickerController *)self->_imagePicker _allowsMultipleSelection]& 1) == 0)
   {
-    v13 = v7;
+    v13 = infoCopy;
     v8 = [NSArray arrayWithObjects:&v13 count:1];
     [(UGCAddPhotosController *)self _handleAddFromLibraryWithEditingInfoList:v8];
 LABEL_12:
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained takePhotoControllerDidCancel:self];
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:_UIImagePickerControllerUserDidRejectItemNotification object:0];
@@ -310,7 +310,7 @@ LABEL_12:
   [WeakRetained takePhotoControllerDidCancel:self];
 }
 
-- (void)_presentImagePickerWithSourceType:(int64_t)a3
+- (void)_presentImagePickerWithSourceType:(int64_t)type
 {
   v5 = objc_alloc_init(UIImagePickerController);
   imagePicker = self->_imagePicker;
@@ -323,7 +323,7 @@ LABEL_12:
     [(UIImagePickerController *)self->_imagePicker _setMultipleSelectionLimit:self->_multipleSelectionLimit];
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     [(UIImagePickerController *)self->_imagePicker setSourceType:0];
     v9 = sub_10000FA08(self->_imagePicker);
@@ -334,18 +334,18 @@ LABEL_12:
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v11 = [WeakRetained addPhotosControllerRequestsAnchoringView:self];
 
-      v12 = [(UIViewController *)self->_presentingViewController view];
-      v13 = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
-      [v13 setSourceView:v12];
+      view = [(UIViewController *)self->_presentingViewController view];
+      popoverPresentationController = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
+      [popoverPresentationController setSourceView:view];
 
       [v11 bounds];
-      [v12 convertRect:v11 fromView:?];
+      [view convertRect:v11 fromView:?];
       v15 = v14;
       v17 = v16;
       v19 = v18;
       v21 = v20;
-      v22 = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
-      [v22 setSourceRect:{v15, v17, v19, v21}];
+      popoverPresentationController2 = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
+      [popoverPresentationController2 setSourceRect:{v15, v17, v19, v21}];
 
       goto LABEL_10;
     }
@@ -355,7 +355,7 @@ LABEL_12:
 
   else
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_10;
     }
@@ -367,11 +367,11 @@ LABEL_12:
 
   [(UIImagePickerController *)v7 setModalPresentationStyle:v8];
 LABEL_10:
-  v23 = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
-  [v23 setDelegate:self];
+  popoverPresentationController3 = [(UIImagePickerController *)self->_imagePicker popoverPresentationController];
+  [popoverPresentationController3 setDelegate:self];
 
-  v24 = [(UIImagePickerController *)self->_imagePicker presentationController];
-  [v24 setDelegate:self];
+  presentationController = [(UIImagePickerController *)self->_imagePicker presentationController];
+  [presentationController setDelegate:self];
 
   [(UIImagePickerController *)self->_imagePicker _setImagePickerSavingOptions:6];
   presentingViewController = self->_presentingViewController;
@@ -431,22 +431,22 @@ LABEL_10:
   }
 }
 
-- (UGCAddPhotosController)initWithPresentingViewController:(id)a3 sourceType:(int64_t)a4 multipleSelectionLimit:(unint64_t)a5 placeQuestionnaire:(id)a6 delegate:(id)a7
+- (UGCAddPhotosController)initWithPresentingViewController:(id)controller sourceType:(int64_t)type multipleSelectionLimit:(unint64_t)limit placeQuestionnaire:(id)questionnaire delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  controllerCopy = controller;
+  questionnaireCopy = questionnaire;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = UGCAddPhotosController;
   v16 = [(UGCAddPhotosController *)&v20 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_presentingViewController, a3);
-    v17->_initialSourceType = a4;
-    objc_storeWeak(&v17->_delegate, v15);
-    v17->_multipleSelectionLimit = a5;
-    objc_storeStrong(&v17->_placeQuestionnaire, a6);
+    objc_storeStrong(&v16->_presentingViewController, controller);
+    v17->_initialSourceType = type;
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    v17->_multipleSelectionLimit = limit;
+    objc_storeStrong(&v17->_placeQuestionnaire, questionnaire);
     [(UGCAddPhotosController *)v17 _resolveInitialSourceTypeIfNeeded];
     v18 = +[NSNotificationCenter defaultCenter];
     [v18 addObserver:v17 selector:"_imagePickerDidRetake:" name:_UIImagePickerControllerUserDidRejectItemNotification object:0];

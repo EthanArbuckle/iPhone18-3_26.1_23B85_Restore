@@ -13,42 +13,42 @@
   if (_os_feature_enabled_impl())
   {
     v3 = +[CSSiriEnabledMonitor sharedInstance];
-    v4 = [v3 isEnabled];
+    isEnabled = [v3 isEnabled];
 
     if ([(CSSelfTriggerDetectorUseAVVCEnabledPolicyIOS *)self _deviceSupportMyriadFriendlySelfTrigger])
     {
       v5 = +[CSAVCallConnectedMonitor sharedInstance];
-      if (([v5 hasConnectedAVCall] & v4) == 1)
+      if (([v5 hasConnectedAVCall] & isEnabled) == 1)
       {
         v6 = +[CSSystemShellStartMonitorFactory defaultShellStartMonitor];
         if ([v6 isSystemShellStarted])
         {
           v7 = +[CSFirstUnlockMonitor sharedInstance];
-          v8 = [v7 isFirstUnlocked];
+          isFirstUnlocked = [v7 isFirstUnlocked];
         }
 
         else
         {
-          v8 = 0;
+          isFirstUnlocked = 0;
         }
       }
 
       else
       {
-        v8 = 0;
+        isFirstUnlocked = 0;
       }
     }
 
     else
     {
-      v8 = 0;
+      isFirstUnlocked = 0;
     }
 
     v9 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"NO";
-      if (v8)
+      if (isFirstUnlocked)
       {
         v10 = @"YES";
       }
@@ -63,10 +63,10 @@
 
   else
   {
-    LOBYTE(v8) = 0;
+    LOBYTE(isFirstUnlocked) = 0;
   }
 
-  return v8;
+  return isFirstUnlocked;
 }
 
 - (BOOL)_deviceSupportMyriadFriendlySelfTrigger

@@ -1,36 +1,36 @@
 @interface BWNodeOutput
 - (BWNodeConnection)connection;
-- (BWNodeOutput)initWithMediaType:(unsigned int)a3 node:(id)a4;
+- (BWNodeOutput)initWithMediaType:(unsigned int)type node:(id)node;
 - (NSString)description;
 - (_BYTE)_makeConfiguredFormatLiveForAttachedMediaKey:(_BYTE *)result;
 - (_BYTE)_markEndOfLiveOutputForAttachedMediaKey:(_BYTE *)result;
 - (_BYTE)_markEndOfLiveOutputForConfigurationForAttachedMediaKey:(_BYTE *)result;
-- (id)_mediaConfigurationForBufferCountOfPossiblyUnspecifiedAttachedMediaKey:(id)a3;
-- (id)_mediaConfigurationForPossiblyUnspecifiedAttachedMediaKey:(id)a3;
-- (id)_mediaPropertiesForPossiblyUnspecifiedAttachedMediaKey:(id)a3;
+- (id)_mediaConfigurationForBufferCountOfPossiblyUnspecifiedAttachedMediaKey:(id)key;
+- (id)_mediaConfigurationForPossiblyUnspecifiedAttachedMediaKey:(id)key;
+- (id)_mediaPropertiesForPossiblyUnspecifiedAttachedMediaKey:(id)key;
 - (id)_poolName;
 - (id)_prepareForConfiguredFormatToBecomeLiveForAttachedMediaKey:(id *)result;
-- (id)attachedMediaKeyDrivenByInputAttachedMediaKey:(id)a3 inputIndex:(unint64_t)a4;
-- (id)mediaConfigurationForAttachedMediaKey:(id)a3;
-- (id)mediaPropertiesForAttachedMediaKey:(id)a3;
+- (id)attachedMediaKeyDrivenByInputAttachedMediaKey:(id)key inputIndex:(unint64_t)index;
+- (id)mediaConfigurationForAttachedMediaKey:(id)key;
+- (id)mediaPropertiesForAttachedMediaKey:(id)key;
 - (id)osStatePropertyList;
-- (int)_passthroughModeForAttachedMediaKey:(id)a3;
+- (int)_passthroughModeForAttachedMediaKey:(id)key;
 - (int)_passthroughModeForUnspecifiedAttachedMedia;
 - (uint64_t)prepareForConfiguredFormatToBecomeLive;
 - (void)_clearAllMediaProperties;
-- (void)_setMediaProperties:(id)a3 forAttachedMediaKey:(id)a4;
-- (void)addPoolPreallocationCompletionHandler:(id)a3;
+- (void)_setMediaProperties:(id)properties forAttachedMediaKey:(id)key;
+- (void)addPoolPreallocationCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)emitDroppedSample:(id)a3;
-- (void)emitNodeError:(id)a3;
-- (void)emitSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)emitStillImagePrewarmMessageWithSettings:(id)a3 resourceConfig:(id)a4;
-- (void)emitStillImageReferenceFrameBracketedCaptureSequenceNumberMessageWithSequenceNumber:(int)a3;
+- (void)emitDroppedSample:(id)sample;
+- (void)emitNodeError:(id)error;
+- (void)emitSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)emitStillImagePrewarmMessageWithSettings:(id)settings resourceConfig:(id)config;
+- (void)emitStillImageReferenceFrameBracketedCaptureSequenceNumberMessageWithSequenceNumber:(int)number;
 - (void)makeConfiguredFormatLive;
-- (void)markEndOfLiveOutputForConfigurationID:(id)a3;
+- (void)markEndOfLiveOutputForConfigurationID:(id)d;
 - (void)prepareForConfiguredFormatToBecomeLive;
-- (void)setConsumer:(id)a3;
-- (void)setMediaConfiguration:(id)a3 forAttachedMediaKey:(id)a4;
+- (void)setConsumer:(id)consumer;
+- (void)setMediaConfiguration:(id)configuration forAttachedMediaKey:(id)key;
 - (void)suspendResources;
 @end
 
@@ -65,13 +65,13 @@
 
 - (uint64_t)prepareForConfiguredFormatToBecomeLive
 {
-  [(BWNodeOutput *)a1 _prepareForConfiguredFormatToBecomeLiveForAttachedMediaKey:?];
+  [(BWNodeOutput *)self _prepareForConfiguredFormatToBecomeLiveForAttachedMediaKey:?];
   *(a2 + 32) = 0u;
   *(a2 + 48) = 0u;
   *a2 = 0u;
   *(a2 + 16) = 0u;
-  v6 = [a1 resolvedAttachedMediaKeys];
-  result = [v6 countByEnumeratingWithState:a2 objects:a3 count:16];
+  resolvedAttachedMediaKeys = [self resolvedAttachedMediaKeys];
+  result = [resolvedAttachedMediaKeys countByEnumeratingWithState:a2 objects:a3 count:16];
   if (result)
   {
     v8 = result;
@@ -83,21 +83,21 @@
       {
         if (**(a2 + 16) != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(resolvedAttachedMediaKeys);
         }
 
-        [(BWNodeOutput *)a1 _prepareForConfiguredFormatToBecomeLiveForAttachedMediaKey:?];
+        [(BWNodeOutput *)self _prepareForConfiguredFormatToBecomeLiveForAttachedMediaKey:?];
       }
 
       while (v8 != v10);
-      result = [v6 countByEnumeratingWithState:a2 objects:a3 count:16];
+      result = [resolvedAttachedMediaKeys countByEnumeratingWithState:a2 objects:a3 count:16];
       v8 = result;
     }
 
     while (result);
   }
 
-  *(a1 + 232) = *(a1 + 48);
+  *(self + 232) = *(self + 48);
   return result;
 }
 
@@ -118,16 +118,16 @@
     v1 = result;
     if ([result[4] name])
     {
-      v2 = [v1[4] name];
+      name = [v1[4] name];
     }
 
     else
     {
       v3 = objc_opt_class();
-      v2 = NSStringFromClass(v3);
+      name = NSStringFromClass(v3);
     }
 
-    v4 = [(NSString *)v2 mutableCopy];
+    v4 = [(NSString *)name mutableCopy];
     v5 = v4;
     if (v4 && v1[1])
     {
@@ -148,8 +148,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(BWNodeOutput *)self resolvedAttachedMediaKeys];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  resolvedAttachedMediaKeys = [(BWNodeOutput *)self resolvedAttachedMediaKeys];
+  v5 = [(NSArray *)resolvedAttachedMediaKeys countByEnumeratingWithState:&v17 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -161,14 +161,14 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resolvedAttachedMediaKeys);
         }
 
         [(BWNodeOutput *)self _makeConfiguredFormatLiveForAttachedMediaKey:?];
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      v6 = [(NSArray *)resolvedAttachedMediaKeys countByEnumeratingWithState:&v17 objects:v16 count:16];
     }
 
     while (v6);
@@ -183,24 +183,24 @@
   }
 
   self->_liveConfigurationID = preparedConfigurationID;
-  v11 = [(BWNode *)self->_node renderDelegate];
-  if (v11)
+  renderDelegate = [(BWNode *)self->_node renderDelegate];
+  if (renderDelegate)
   {
-    [(BWNodeRenderDelegate *)v11 node:self->_node format:[(BWNodeOutputMediaProperties *)self->_primaryMediaProperties liveFormat] didBecomeLiveForOutput:self];
+    [(BWNodeRenderDelegate *)renderDelegate node:self->_node format:[(BWNodeOutputMediaProperties *)self->_primaryMediaProperties liveFormat] didBecomeLiveForOutput:self];
   }
 
   liveConfigurationID = self->_liveConfigurationID;
   if (v3)
   {
-    v13 = 0;
+    liveFormat = 0;
   }
 
   else
   {
-    v13 = [(BWNodeOutputMediaProperties *)self->_primaryMediaProperties liveFormat];
+    liveFormat = [(BWNodeOutputMediaProperties *)self->_primaryMediaProperties liveFormat];
   }
 
-  v14 = [BWNodeConfigurationLiveMessage newMessageWithConfigurationID:liveConfigurationID updatedFormat:v13];
+  v14 = [BWNodeConfigurationLiveMessage newMessageWithConfigurationID:liveConfigurationID updatedFormat:liveFormat];
   ++self->_numberOfConfigurationDidBecomeLiveMessagesReceived;
   consumer = self->_consumer;
   if (consumer)
@@ -209,7 +209,7 @@
   }
 }
 
-- (BWNodeOutput)initWithMediaType:(unsigned int)a3 node:(id)a4
+- (BWNodeOutput)initWithMediaType:(unsigned int)type node:(id)node
 {
   v12.receiver = self;
   v12.super_class = BWNodeOutput;
@@ -217,10 +217,10 @@
   v7 = v6;
   if (v6)
   {
-    *(v6 + 7) = a3;
-    v6[25] = a3 == 1986618469;
-    v6[26] = a3 == 1885564004;
-    *(v6 + 4) = a4;
+    *(v6 + 7) = type;
+    v6[25] = type == 1986618469;
+    v6[26] = type == 1885564004;
+    *(v6 + 4) = node;
     v8 = MEMORY[0x1E6960C70];
     *(v6 + 116) = *MEMORY[0x1E6960C70];
     *(v6 + 132) = *(v8 + 16);
@@ -249,11 +249,11 @@
   [(BWNodeOutput *)&v3 dealloc];
 }
 
-- (void)setConsumer:(id)a3
+- (void)setConsumer:(id)consumer
 {
-  if (self->_consumer != a3)
+  if (self->_consumer != consumer)
   {
-    self->_consumer = a3;
+    self->_consumer = consumer;
     objc_opt_class();
     self->_consumerIsANodeConnection = objc_opt_isKindOfClass() & 1;
   }
@@ -277,9 +277,9 @@
   return [v5 stringWithFormat:@"<%@: %p> %@('%@', idx: %u, owner: %@)", v6, self, v4, BWStringForOSType(), v3, -[BWNodeOutput node](self, "node")];
 }
 
-- (void)setMediaConfiguration:(id)a3 forAttachedMediaKey:(id)a4
+- (void)setMediaConfiguration:(id)configuration forAttachedMediaKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
@@ -287,7 +287,7 @@
     goto LABEL_14;
   }
 
-  if ([a4 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
@@ -297,58 +297,58 @@ LABEL_14:
   }
 
   attachedMediaConfigurations = self->_attachedMediaConfigurations;
-  if (a3)
+  if (configuration)
   {
     if (!attachedMediaConfigurations)
     {
       self->_attachedMediaConfigurations = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    [a3 _setAssociatedAttachedMediaKey:a4];
+    [configuration _setAssociatedAttachedMediaKey:key];
     v8 = self->_attachedMediaConfigurations;
 
-    [(NSMutableDictionary *)v8 setObject:a3 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)v8 setObject:configuration forKeyedSubscript:key];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)attachedMediaConfigurations removeObjectForKey:a4];
+    [(NSMutableDictionary *)attachedMediaConfigurations removeObjectForKey:key];
   }
 }
 
-- (id)mediaConfigurationForAttachedMediaKey:(id)a3
+- (id)mediaConfigurationForAttachedMediaKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot set media configuration for nil attachedMediaKey" userInfo:0]);
   }
 
-  if ([a3 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     return self->_primaryMediaConfiguration;
   }
 
   attachedMediaConfigurations = self->_attachedMediaConfigurations;
 
-  return [(NSMutableDictionary *)attachedMediaConfigurations objectForKeyedSubscript:a3];
+  return [(NSMutableDictionary *)attachedMediaConfigurations objectForKeyedSubscript:key];
 }
 
-- (id)mediaPropertiesForAttachedMediaKey:(id)a3
+- (id)mediaPropertiesForAttachedMediaKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot set media configuration for nil attachedMediaKey" userInfo:0]);
   }
 
-  if ([a3 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     return self->_primaryMediaProperties;
   }
 
   attachedMediaProperties = self->_attachedMediaProperties;
 
-  return [(NSMutableDictionary *)attachedMediaProperties objectForKeyedSubscript:a3];
+  return [(NSMutableDictionary *)attachedMediaProperties objectForKeyedSubscript:key];
 }
 
 void __75__BWNodeOutput__prepareForConfiguredFormatToBecomeLiveForAttachedMediaKey___block_invoke(uint64_t a1)
@@ -402,13 +402,13 @@ uint64_t __75__BWNodeOutput__prepareForConfiguredFormatToBecomeLiveForAttachedMe
   return FigSimpleMutexUnlock();
 }
 
-- (void)emitSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)emitSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   value = *MEMORY[0x1E6960C70];
   flags = *(MEMORY[0x1E6960C70] + 12);
   timescale = *(MEMORY[0x1E6960C70] + 8);
   epoch = *(MEMORY[0x1E6960C70] + 16);
-  if (a3)
+  if (buffer)
   {
     if (self->_discardsSampleData)
     {
@@ -417,7 +417,7 @@ uint64_t __75__BWNodeOutput__prepareForConfiguredFormatToBecomeLiveForAttachedMe
 
     if (self->_dropsSampleBuffersWithUnexpectedPTS)
     {
-      CMSampleBufferGetPresentationTimeStamp(&time1, a3);
+      CMSampleBufferGetPresentationTimeStamp(&time1, buffer);
       value = time1.value;
       flags = time1.flags;
       timescale = time1.timescale;
@@ -452,7 +452,7 @@ uint64_t __75__BWNodeOutput__prepareForConfiguredFormatToBecomeLiveForAttachedMe
       goto LABEL_17;
     }
 
-    v7 = CMGetAttachment(a3, *off_1E798A420, 0);
+    v7 = CMGetAttachment(buffer, *off_1E798A420, 0);
     if (v7)
     {
       CMTimeMakeFromDictionary(&time1, v7);
@@ -460,7 +460,7 @@ uint64_t __75__BWNodeOutput__prepareForConfiguredFormatToBecomeLiveForAttachedMe
 
     else
     {
-      CMSampleBufferGetPresentationTimeStamp(&time1, a3);
+      CMSampleBufferGetPresentationTimeStamp(&time1, buffer);
     }
 
     value = time1.value;
@@ -493,7 +493,7 @@ uint64_t __75__BWNodeOutput__prepareForConfiguredFormatToBecomeLiveForAttachedMe
   else if (!self->_discardsSampleData)
   {
 LABEL_17:
-    v10 = [BWNodeSampleBufferMessage newMessageWithSampleBuffer:a3];
+    v10 = [BWNodeSampleBufferMessage newMessageWithSampleBuffer:buffer];
     consumer = self->_consumer;
     if (consumer)
     {
@@ -521,9 +521,9 @@ LABEL_11:
   }
 }
 
-- (void)emitNodeError:(id)a3
+- (void)emitNodeError:(id)error
 {
-  v4 = [BWNodeErrorMessage newMessageWithNodeError:a3];
+  v4 = [BWNodeErrorMessage newMessageWithNodeError:error];
   consumer = self->_consumer;
   if (consumer)
   {
@@ -535,11 +535,11 @@ LABEL_11:
   MEMORY[0x1EEE66BB8](consumer, v4);
 }
 
-- (void)emitDroppedSample:(id)a3
+- (void)emitDroppedSample:(id)sample
 {
   if (self->_discardsSampleData)
   {
-    if (self->_sourceEmitSemaphore && ([objc_msgSend(a3 "backPressureSemaphoresToIgnore")] & 1) == 0)
+    if (self->_sourceEmitSemaphore && ([objc_msgSend(sample "backPressureSemaphoresToIgnore")] & 1) == 0)
     {
       sourceEmitSemaphore = self->_sourceEmitSemaphore;
 
@@ -550,7 +550,7 @@ LABEL_11:
   else
   {
     ++self->_numberOfDataDroppedMessagesReceived;
-    v4 = [BWNodeDroppedSampleMessage newMessageWithDroppedSample:a3];
+    v4 = [BWNodeDroppedSampleMessage newMessageWithDroppedSample:sample];
     consumer = self->_consumer;
     if (consumer)
     {
@@ -563,9 +563,9 @@ LABEL_11:
   }
 }
 
-- (void)emitStillImageReferenceFrameBracketedCaptureSequenceNumberMessageWithSequenceNumber:(int)a3
+- (void)emitStillImageReferenceFrameBracketedCaptureSequenceNumberMessageWithSequenceNumber:(int)number
 {
-  v4 = [BWNodeStillImageReferenceFrameBracketedCaptureSequenceNumberMessage newMessageWithStillImageReferenceFrameBracketedCaptureSequenceNumber:*&a3];
+  v4 = [BWNodeStillImageReferenceFrameBracketedCaptureSequenceNumberMessage newMessageWithStillImageReferenceFrameBracketedCaptureSequenceNumber:*&number];
   consumer = self->_consumer;
   if (consumer)
   {
@@ -577,9 +577,9 @@ LABEL_11:
   MEMORY[0x1EEE66BB8](consumer, v4);
 }
 
-- (void)emitStillImagePrewarmMessageWithSettings:(id)a3 resourceConfig:(id)a4
+- (void)emitStillImagePrewarmMessageWithSettings:(id)settings resourceConfig:(id)config
 {
-  v5 = [BWNodeStillImagePrewarmMessage newMessageWithStillImageSettings:a3 resourceConfig:a4];
+  v5 = [BWNodeStillImagePrewarmMessage newMessageWithStillImageSettings:settings resourceConfig:config];
   consumer = self->_consumer;
   if (consumer)
   {
@@ -591,17 +591,17 @@ LABEL_11:
   MEMORY[0x1EEE66BB8](consumer, v5);
 }
 
-- (void)markEndOfLiveOutputForConfigurationID:(id)a3
+- (void)markEndOfLiveOutputForConfigurationID:(id)d
 {
-  if (a3)
+  if (d)
   {
     [(BWNodeOutput *)self _markEndOfLiveOutputForConfigurationForAttachedMediaKey:?];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = [(BWNodeOutput *)self resolvedAttachedMediaKeys];
-    v12 = [(NSArray *)v11 countByEnumeratingWithState:&v24 objects:v23 count:16];
+    resolvedAttachedMediaKeys = [(BWNodeOutput *)self resolvedAttachedMediaKeys];
+    v12 = [(NSArray *)resolvedAttachedMediaKeys countByEnumeratingWithState:&v24 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -613,14 +613,14 @@ LABEL_11:
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(resolvedAttachedMediaKeys);
           }
 
           [(BWNodeOutput *)self _markEndOfLiveOutputForConfigurationForAttachedMediaKey:?];
         }
 
         while (v13 != v15);
-        v13 = [(NSArray *)v11 countByEnumeratingWithState:&v24 objects:v23 count:16];
+        v13 = [(NSArray *)resolvedAttachedMediaKeys countByEnumeratingWithState:&v24 objects:v23 count:16];
       }
 
       while (v13);
@@ -641,8 +641,8 @@ LABEL_11:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = [(BWNodeOutput *)self resolvedAttachedMediaKeys];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v19 objects:v18 count:16];
+    resolvedAttachedMediaKeys2 = [(BWNodeOutput *)self resolvedAttachedMediaKeys];
+    v5 = [(NSArray *)resolvedAttachedMediaKeys2 countByEnumeratingWithState:&v19 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -654,23 +654,23 @@ LABEL_11:
         {
           if (*v20 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(resolvedAttachedMediaKeys2);
           }
 
           [(BWNodeOutput *)self _markEndOfLiveOutputForAttachedMediaKey:?];
         }
 
         while (v6 != v8);
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v19 objects:v18 count:16];
+        v6 = [(NSArray *)resolvedAttachedMediaKeys2 countByEnumeratingWithState:&v19 objects:v18 count:16];
       }
 
       while (v6);
     }
 
-    v9 = [(BWNode *)self->_node renderDelegate];
-    if (v9)
+    renderDelegate = [(BWNode *)self->_node renderDelegate];
+    if (renderDelegate)
     {
-      [(BWNodeRenderDelegate *)v9 node:self->_node format:0 didBecomeLiveForOutput:self];
+      [(BWNodeRenderDelegate *)renderDelegate node:self->_node format:0 didBecomeLiveForOutput:self];
     }
 
     ++self->_numberOfEndOfDataMessagesReceived;
@@ -700,8 +700,8 @@ LABEL_11:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_attachedMediaProperties allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_attachedMediaProperties allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v6)
   {
     v7 = v6;
@@ -712,7 +712,7 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -720,14 +720,14 @@ LABEL_11:
         [objc_msgSend(v10 "liveDataBufferPool")];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v11 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)addPoolPreallocationCompletionHandler:(id)a3
+- (void)addPoolPreallocationCompletionHandler:(id)handler
 {
   FigSimpleMutexLock();
   if (!self->_receivedEOD)
@@ -740,13 +740,13 @@ LABEL_11:
       v7[2] = __54__BWNodeOutput_addPoolPreallocationCompletionHandler___block_invoke;
       v7[3] = &unk_1E7990390;
       v7[4] = self;
-      v7[5] = a3;
+      v7[5] = handler;
       dispatch_async(global_queue, v7);
     }
 
     else
     {
-      v6 = [a3 copy];
+      v6 = [handler copy];
       [(NSMutableArray *)self->_poolPreallocationCompletionHandlers addObject:v6];
     }
   }
@@ -772,9 +772,9 @@ uint64_t __54__BWNodeOutput_addPoolPreallocationCompletionHandler___block_invoke
   self->_attachedMediaProperties = 0;
 }
 
-- (void)_setMediaProperties:(id)a3 forAttachedMediaKey:(id)a4
+- (void)_setMediaProperties:(id)properties forAttachedMediaKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -782,7 +782,7 @@ uint64_t __54__BWNodeOutput_addPoolPreallocationCompletionHandler___block_invoke
     goto LABEL_14;
   }
 
-  if ([a4 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -790,7 +790,7 @@ uint64_t __54__BWNodeOutput_addPoolPreallocationCompletionHandler___block_invoke
     goto LABEL_14;
   }
 
-  if (!a3)
+  if (!properties)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -802,7 +802,7 @@ LABEL_14:
   attachedMediaProperties = self->_attachedMediaProperties;
   if (attachedMediaProperties)
   {
-    if ([(NSMutableDictionary *)attachedMediaProperties objectForKeyedSubscript:a4])
+    if ([(NSMutableDictionary *)attachedMediaProperties objectForKeyedSubscript:key])
     {
       v8 = MEMORY[0x1E695DF30];
       v9 = *MEMORY[0x1E695D940];
@@ -816,20 +816,20 @@ LABEL_14:
     self->_attachedMediaProperties = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  [a3 _setOwningNodeOutput:self associatedAttachedMediaKey:a4];
+  [properties _setOwningNodeOutput:self associatedAttachedMediaKey:key];
   v11 = self->_attachedMediaProperties;
 
-  [(NSMutableDictionary *)v11 setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)v11 setObject:properties forKeyedSubscript:key];
 }
 
-- (int)_passthroughModeForAttachedMediaKey:(id)a3
+- (int)_passthroughModeForAttachedMediaKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot get passthrough mode for nil attachedMediaKey" userInfo:0]);
   }
 
-  if ([a3 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     primaryMediaConfiguration = self->_primaryMediaConfiguration;
 LABEL_5:
@@ -837,7 +837,7 @@ LABEL_5:
     return [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration passthroughMode];
   }
 
-  primaryMediaConfiguration = [(NSMutableDictionary *)self->_attachedMediaConfigurations objectForKeyedSubscript:a3];
+  primaryMediaConfiguration = [(NSMutableDictionary *)self->_attachedMediaConfigurations objectForKeyedSubscript:key];
   if (primaryMediaConfiguration)
   {
     goto LABEL_5;
@@ -846,14 +846,14 @@ LABEL_5:
   return [(BWNodeOutput *)self _passthroughModeForUnspecifiedAttachedMedia];
 }
 
-- (id)_mediaConfigurationForPossiblyUnspecifiedAttachedMediaKey:(id)a3
+- (id)_mediaConfigurationForPossiblyUnspecifiedAttachedMediaKey:(id)key
 {
-  if ([a3 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     return self->_primaryMediaConfiguration;
   }
 
-  result = [(BWNodeOutput *)self mediaConfigurationForAttachedMediaKey:a3];
+  result = [(BWNodeOutput *)self mediaConfigurationForAttachedMediaKey:key];
   if (!result)
   {
     result = self->_unspecifiedAttachedMediaConfiguration;
@@ -866,9 +866,9 @@ LABEL_5:
   return result;
 }
 
-- (id)_mediaConfigurationForBufferCountOfPossiblyUnspecifiedAttachedMediaKey:(id)a3
+- (id)_mediaConfigurationForBufferCountOfPossiblyUnspecifiedAttachedMediaKey:(id)key
 {
-  result = [(BWNodeOutput *)self mediaConfigurationForAttachedMediaKey:a3];
+  result = [(BWNodeOutput *)self mediaConfigurationForAttachedMediaKey:key];
   if (!result)
   {
     return self->_primaryMediaConfiguration;
@@ -877,9 +877,9 @@ LABEL_5:
   return result;
 }
 
-- (id)_mediaPropertiesForPossiblyUnspecifiedAttachedMediaKey:(id)a3
+- (id)_mediaPropertiesForPossiblyUnspecifiedAttachedMediaKey:(id)key
 {
-  result = [(BWNodeOutput *)self mediaPropertiesForAttachedMediaKey:a3];
+  result = [(BWNodeOutput *)self mediaPropertiesForAttachedMediaKey:key];
   if (!result)
   {
     return self->_primaryMediaProperties;
@@ -888,12 +888,12 @@ LABEL_5:
   return result;
 }
 
-- (id)attachedMediaKeyDrivenByInputAttachedMediaKey:(id)a3 inputIndex:(unint64_t)a4
+- (id)attachedMediaKeyDrivenByInputAttachedMediaKey:(id)key inputIndex:(unint64_t)index
 {
-  if ([-[BWNodeOutput _mediaConfigurationForPossiblyUnspecifiedAttachedMediaKey:](self "_mediaConfigurationForPossiblyUnspecifiedAttachedMediaKey:{"isDrivenByInputWithIndex:", a4}")])
+  if ([-[BWNodeOutput _mediaConfigurationForPossiblyUnspecifiedAttachedMediaKey:](self "_mediaConfigurationForPossiblyUnspecifiedAttachedMediaKey:{"isDrivenByInputWithIndex:", index}")])
   {
     v7 = @"PrimaryFormat";
-    if ([a3 isEqualToString:@"PrimaryFormat"])
+    if ([key isEqualToString:@"PrimaryFormat"])
     {
       if (![(BWNodeOutputMediaConfiguration *)self->_primaryMediaConfiguration performsAttachedMediaRemapping])
       {
@@ -901,34 +901,34 @@ LABEL_5:
       }
     }
 
-    else if (-[NSArray containsObject:](-[BWNodeOutput specifiedAttachedMediaKeys](self, "specifiedAttachedMediaKeys"), "containsObject:", a3) && ![-[BWNodeOutput mediaConfigurationForAttachedMediaKey:](self mediaConfigurationForAttachedMediaKey:{a3), "performsAttachedMediaRemapping"}])
+    else if (-[NSArray containsObject:](-[BWNodeOutput specifiedAttachedMediaKeys](self, "specifiedAttachedMediaKeys"), "containsObject:", key) && ![-[BWNodeOutput mediaConfigurationForAttachedMediaKey:](self mediaConfigurationForAttachedMediaKey:{key), "performsAttachedMediaRemapping"}])
     {
-      return a3;
+      return key;
     }
   }
 
-  if (![(BWNodeOutputMediaConfiguration *)self->_primaryMediaConfiguration isDrivenByInputWithIndex:a4])
+  if (![(BWNodeOutputMediaConfiguration *)self->_primaryMediaConfiguration isDrivenByInputWithIndex:index])
   {
     goto LABEL_11;
   }
 
   v7 = @"PrimaryFormat";
-  v8 = [(BWNodeOutputMediaConfiguration *)self->_primaryMediaConfiguration performsAttachedMediaRemapping];
-  v9 = @"PrimaryFormat";
-  if (v8)
+  performsAttachedMediaRemapping = [(BWNodeOutputMediaConfiguration *)self->_primaryMediaConfiguration performsAttachedMediaRemapping];
+  attachedMediaKeyOfInputWhichDrivesThisOutput = @"PrimaryFormat";
+  if (performsAttachedMediaRemapping)
   {
-    v9 = [(BWNodeOutputMediaConfiguration *)self->_primaryMediaConfiguration attachedMediaKeyOfInputWhichDrivesThisOutput];
+    attachedMediaKeyOfInputWhichDrivesThisOutput = [(BWNodeOutputMediaConfiguration *)self->_primaryMediaConfiguration attachedMediaKeyOfInputWhichDrivesThisOutput];
   }
 
-  if (([a3 isEqualToString:v9] & 1) == 0)
+  if (([key isEqualToString:attachedMediaKeyOfInputWhichDrivesThisOutput] & 1) == 0)
   {
 LABEL_11:
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [(BWNodeOutput *)self specifiedAttachedMediaKeys];
-    v11 = [(NSArray *)v10 countByEnumeratingWithState:&v20 objects:v19 count:16];
+    specifiedAttachedMediaKeys = [(BWNodeOutput *)self specifiedAttachedMediaKeys];
+    v11 = [(NSArray *)specifiedAttachedMediaKeys countByEnumeratingWithState:&v20 objects:v19 count:16];
     if (v11)
     {
       v12 = v11;
@@ -939,21 +939,21 @@ LABEL_13:
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(specifiedAttachedMediaKeys);
         }
 
         v7 = *(*(&v20 + 1) + 8 * v14);
         v15 = [(BWNodeOutput *)self mediaConfigurationForAttachedMediaKey:v7];
-        if ([v15 isDrivenByInputWithIndex:a4])
+        if ([v15 isDrivenByInputWithIndex:index])
         {
-          v16 = [v15 performsAttachedMediaRemapping];
-          v17 = v7;
-          if (v16)
+          performsAttachedMediaRemapping2 = [v15 performsAttachedMediaRemapping];
+          attachedMediaKeyOfInputWhichDrivesThisOutput2 = v7;
+          if (performsAttachedMediaRemapping2)
           {
-            v17 = [v15 attachedMediaKeyOfInputWhichDrivesThisOutput];
+            attachedMediaKeyOfInputWhichDrivesThisOutput2 = [v15 attachedMediaKeyOfInputWhichDrivesThisOutput];
           }
 
-          if ([a3 isEqualToString:v17])
+          if ([key isEqualToString:attachedMediaKeyOfInputWhichDrivesThisOutput2])
           {
             break;
           }
@@ -961,7 +961,7 @@ LABEL_13:
 
         if (v12 == ++v14)
         {
-          v12 = [(NSArray *)v10 countByEnumeratingWithState:&v20 objects:v19 count:16];
+          v12 = [(NSArray *)specifiedAttachedMediaKeys countByEnumeratingWithState:&v20 objects:v19 count:16];
           if (v12)
           {
             goto LABEL_13;
@@ -975,14 +975,14 @@ LABEL_13:
     else
     {
 LABEL_22:
-      if (([a3 isEqualToString:@"PrimaryFormat"] & 1) != 0 || -[NSArray containsObject:](-[BWNodeOutput specifiedAttachedMediaKeys](self, "specifiedAttachedMediaKeys"), "containsObject:", a3) || !-[BWNodeOutputMediaConfiguration isDrivenByInputWithIndex:](self->_primaryMediaConfiguration, "isDrivenByInputWithIndex:", a4))
+      if (([key isEqualToString:@"PrimaryFormat"] & 1) != 0 || -[NSArray containsObject:](-[BWNodeOutput specifiedAttachedMediaKeys](self, "specifiedAttachedMediaKeys"), "containsObject:", key) || !-[BWNodeOutputMediaConfiguration isDrivenByInputWithIndex:](self->_primaryMediaConfiguration, "isDrivenByInputWithIndex:", index))
       {
         return 0;
       }
 
       else if ([(BWNodeOutput *)self _passthroughModeForUnspecifiedAttachedMedia])
       {
-        return a3;
+        return key;
       }
 
       else
@@ -997,14 +997,14 @@ LABEL_22:
 
 - (id)osStatePropertyList
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_consumerIsANodeConnection), @"consumerIsNodeConnection"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_mediaTypeIsVideo), @"mediaTypeIsVideo"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_mediaTypeIsPointCloud), @"mediaTypeIsPointCloud"}];
-  [v3 setObject:BWStringForOSType() forKeyedSubscript:@"mediaType"];
-  [v3 setObject:-[BWFormat description](-[BWNodeOutput liveFormat](self forKeyedSubscript:{"liveFormat"), "description"), @"liveFormat"}];
-  [v3 setObject:-[BWNode osStatePropertyListWithVerbose:](-[BWNodeInput node](-[BWNodeConnection input](-[BWNodeOutput connection](self forKeyedSubscript:{"connection"), "input"), "node"), "osStatePropertyListWithVerbose:", 0), @"node"}];
-  return v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_consumerIsANodeConnection), @"consumerIsNodeConnection"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_mediaTypeIsVideo), @"mediaTypeIsVideo"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_mediaTypeIsPointCloud), @"mediaTypeIsPointCloud"}];
+  [dictionary setObject:BWStringForOSType() forKeyedSubscript:@"mediaType"];
+  [dictionary setObject:-[BWFormat description](-[BWNodeOutput liveFormat](self forKeyedSubscript:{"liveFormat"), "description"), @"liveFormat"}];
+  [dictionary setObject:-[BWNode osStatePropertyListWithVerbose:](-[BWNodeInput node](-[BWNodeConnection input](-[BWNodeOutput connection](self forKeyedSubscript:{"connection"), "input"), "node"), "osStatePropertyListWithVerbose:", 0), @"node"}];
+  return dictionary;
 }
 
 - (id)_prepareForConfiguredFormatToBecomeLiveForAttachedMediaKey:(id *)result
@@ -1033,26 +1033,26 @@ LABEL_22:
         result = [v5 resolvedVideoFormat];
         if (result)
         {
-          v6 = [v5 resolvedRetainedBufferCount];
-          if (v6 <= [v4 owningNodeRetainedBufferCount])
+          resolvedRetainedBufferCount = [v5 resolvedRetainedBufferCount];
+          if (resolvedRetainedBufferCount <= [v4 owningNodeRetainedBufferCount])
           {
-            v7 = [v4 owningNodeRetainedBufferCount];
+            owningNodeRetainedBufferCount = [v4 owningNodeRetainedBufferCount];
           }
 
           else
           {
-            v7 = [v5 resolvedRetainedBufferCount];
+            owningNodeRetainedBufferCount = [v5 resolvedRetainedBufferCount];
           }
 
-          [v5 setPreparedPixelBufferPoolSize:{v7 + objc_msgSend(v4, "owningNodeIndefinitelyHeldBufferCount") + 1}];
+          [v5 setPreparedPixelBufferPoolSize:{owningNodeRetainedBufferCount + objc_msgSend(v4, "owningNodeIndefinitelyHeldBufferCount") + 1}];
           v8 = [BWPixelBufferPool alloc];
-          v9 = [v5 resolvedVideoFormat];
-          v10 = [v5 preparedPixelBufferPoolSize];
+          resolvedVideoFormat = [v5 resolvedVideoFormat];
+          preparedPixelBufferPoolSize = [v5 preparedPixelBufferPoolSize];
           v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", -[BWNodeOutput _poolName](v3), a2];
           v12 = v3[26];
-          v13 = [v4 pixelBufferPoolProvidesBackPressure];
+          pixelBufferPoolProvidesBackPressure = [v4 pixelBufferPoolProvidesBackPressure];
           LOBYTE(v15) = [v4 pixelBufferPoolReportSlowBackPressureAllocations];
-          v14 = [(BWPixelBufferPool *)v8 initWithVideoFormat:v9 capacity:v10 name:v11 clientProvidesPool:0 memoryPool:v12 providesBackPressure:v13 reportSlowBackPressureAllocations:v15];
+          v14 = [(BWPixelBufferPool *)v8 initWithVideoFormat:resolvedVideoFormat capacity:preparedPixelBufferPoolSize name:v11 clientProvidesPool:0 memoryPool:v12 providesBackPressure:pixelBufferPoolProvidesBackPressure reportSlowBackPressureAllocations:v15];
           [v5 setPreparedPixelBufferPool:v14];
           result = [v4 owningNodeRetainedBufferCount];
           if (result <= 0)
@@ -1094,26 +1094,26 @@ LABEL_22:
       [v5 _makePreparedPixelBufferPoolLiveLocked];
       if ([v5 preparedPixelBufferPoolSize])
       {
-        v6 = [v5 preparedPixelBufferPoolSize];
+        preparedPixelBufferPoolSize = [v5 preparedPixelBufferPoolSize];
       }
 
       else
       {
-        v8 = [v5 resolvedRetainedBufferCount];
-        if (v8 <= [v4 owningNodeRetainedBufferCount])
+        resolvedRetainedBufferCount = [v5 resolvedRetainedBufferCount];
+        if (resolvedRetainedBufferCount <= [v4 owningNodeRetainedBufferCount])
         {
-          v9 = [v4 owningNodeRetainedBufferCount];
+          owningNodeRetainedBufferCount = [v4 owningNodeRetainedBufferCount];
         }
 
         else
         {
-          v9 = [v5 resolvedRetainedBufferCount];
+          owningNodeRetainedBufferCount = [v5 resolvedRetainedBufferCount];
         }
 
-        v6 = (v9 + 1);
+        preparedPixelBufferPoolSize = (owningNodeRetainedBufferCount + 1);
       }
 
-      [v5 setLivePixelBufferPoolSize:v6];
+      [v5 setLivePixelBufferPoolSize:preparedPixelBufferPoolSize];
       v12 = OUTLINED_FUNCTION_0_60();
 
       return [v12 setPreparedPixelBufferPoolSize:?];
@@ -1124,26 +1124,26 @@ LABEL_22:
       [v5 _makePreparedDataBufferPoolLiveLocked];
       if ([v5 preparedDataBufferPoolSize])
       {
-        v7 = [v5 preparedDataBufferPoolSize];
+        preparedDataBufferPoolSize = [v5 preparedDataBufferPoolSize];
       }
 
       else
       {
-        v10 = [v5 resolvedRetainedBufferCount];
-        if (v10 <= [v4 owningNodeRetainedBufferCount])
+        resolvedRetainedBufferCount2 = [v5 resolvedRetainedBufferCount];
+        if (resolvedRetainedBufferCount2 <= [v4 owningNodeRetainedBufferCount])
         {
-          v11 = [v4 owningNodeRetainedBufferCount];
+          owningNodeRetainedBufferCount2 = [v4 owningNodeRetainedBufferCount];
         }
 
         else
         {
-          v11 = [v5 resolvedRetainedBufferCount];
+          owningNodeRetainedBufferCount2 = [v5 resolvedRetainedBufferCount];
         }
 
-        v7 = (v11 + 1);
+        preparedDataBufferPoolSize = (owningNodeRetainedBufferCount2 + 1);
       }
 
-      [v5 setLiveDataBufferPoolSize:v7];
+      [v5 setLiveDataBufferPoolSize:preparedDataBufferPoolSize];
       v13 = OUTLINED_FUNCTION_0_60();
 
       return [v13 setPreparedDataBufferPoolSize:?];

@@ -1,19 +1,19 @@
 @interface PGMeaningfulEventCollectionTrait
-- (PGMeaningfulEventCollectionTrait)initWithNodes:(id)a3 negativeNodes:(id)a4;
-- (id)debugDescriptionWithMomentNode:(id)a3;
+- (PGMeaningfulEventCollectionTrait)initWithNodes:(id)nodes negativeNodes:(id)negativeNodes;
+- (id)debugDescriptionWithMomentNode:(id)node;
 @end
 
 @implementation PGMeaningfulEventCollectionTrait
 
-- (id)debugDescriptionWithMomentNode:(id)a3
+- (id)debugDescriptionWithMomentNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__PGMeaningfulEventCollectionTrait_debugDescriptionWithMomentNode___block_invoke;
   aBlock[3] = &unk_278887D20;
-  v17 = v4;
-  v5 = v4;
+  v17 = nodeCopy;
+  v5 = nodeCopy;
   v6 = _Block_copy(aBlock);
   v7 = v6[2](v6, self->_nodes);
   v8 = v6[2](v6, self->_negativeNodes);
@@ -106,18 +106,18 @@ void __67__PGMeaningfulEventCollectionTrait_debugDescriptionWithMomentNode___blo
   }
 }
 
-- (PGMeaningfulEventCollectionTrait)initWithNodes:(id)a3 negativeNodes:(id)a4
+- (PGMeaningfulEventCollectionTrait)initWithNodes:(id)nodes negativeNodes:(id)negativeNodes
 {
-  v7 = a3;
-  v8 = a4;
+  nodesCopy = nodes;
+  negativeNodesCopy = negativeNodes;
   v12.receiver = self;
   v12.super_class = PGMeaningfulEventCollectionTrait;
   v9 = [(PGMeaningfulEventTrait *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_nodes, a3);
-    objc_storeStrong(&v10->_negativeNodes, a4);
+    objc_storeStrong(&v9->_nodes, nodes);
+    objc_storeStrong(&v10->_negativeNodes, negativeNodes);
   }
 
   return v10;

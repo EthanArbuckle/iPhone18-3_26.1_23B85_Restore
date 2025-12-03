@@ -1,91 +1,91 @@
 @interface HKQuantitySeriesTableViewCell
-- (HKQuantitySeriesTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKQuantitySeriesTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_makeAccessibilityConstraints;
 - (id)_makeConstraints;
 - (void)_configureLabels;
-- (void)_configureLayoutForTraitCollection:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_configureLayoutForTraitCollection:(id)collection;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HKQuantitySeriesTableViewCell
 
-- (HKQuantitySeriesTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKQuantitySeriesTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = HKQuantitySeriesTableViewCell;
-  v4 = [(HKQuantitySeriesTableViewCell *)&v8 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(HKQuantitySeriesTableViewCell *)&v8 initWithStyle:1 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(HKQuantitySeriesTableViewCell *)v4 _configureLabels];
-    v6 = [(HKQuantitySeriesTableViewCell *)v5 traitCollection];
-    [(HKQuantitySeriesTableViewCell *)v5 _configureLayoutForTraitCollection:v6];
+    traitCollection = [(HKQuantitySeriesTableViewCell *)v5 traitCollection];
+    [(HKQuantitySeriesTableViewCell *)v5 _configureLayoutForTraitCollection:traitCollection];
   }
 
   return v5;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = HKQuantitySeriesTableViewCell;
-  v4 = a3;
-  [(HKQuantitySeriesTableViewCell *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(HKQuantitySeriesTableViewCell *)&v9 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(HKQuantitySeriesTableViewCell *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  traitCollection = [(HKQuantitySeriesTableViewCell *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v5 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v8 = [(HKQuantitySeriesTableViewCell *)self traitCollection];
-    [(HKQuantitySeriesTableViewCell *)self _configureLayoutForTraitCollection:v8];
+    traitCollection2 = [(HKQuantitySeriesTableViewCell *)self traitCollection];
+    [(HKQuantitySeriesTableViewCell *)self _configureLayoutForTraitCollection:traitCollection2];
   }
 }
 
 - (void)_configureLabels
 {
-  v3 = [(HKQuantitySeriesTableViewCell *)self textLabel];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel = [(HKQuantitySeriesTableViewCell *)self textLabel];
+  [textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(HKQuantitySeriesTableViewCell *)self textLabel];
+  textLabel2 = [(HKQuantitySeriesTableViewCell *)self textLabel];
   LODWORD(v5) = 1144750080;
-  [v4 setContentCompressionResistancePriority:0 forAxis:v5];
+  [textLabel2 setContentCompressionResistancePriority:0 forAxis:v5];
 
-  v6 = [(HKQuantitySeriesTableViewCell *)self textLabel];
+  textLabel3 = [(HKQuantitySeriesTableViewCell *)self textLabel];
   LODWORD(v7) = 1144750080;
-  [v6 setContentHuggingPriority:0 forAxis:v7];
+  [textLabel3 setContentHuggingPriority:0 forAxis:v7];
 
-  v8 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailTextLabel = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  [detailTextLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
-  [v9 setLineBreakMode:0];
+  detailTextLabel2 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  [detailTextLabel2 setLineBreakMode:0];
 
-  v10 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
-  [v10 setNumberOfLines:0];
+  detailTextLabel3 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  [detailTextLabel3 setNumberOfLines:0];
 
-  v11 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  detailTextLabel4 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
   LODWORD(v12) = 1132068864;
-  [v11 setContentCompressionResistancePriority:0 forAxis:v12];
+  [detailTextLabel4 setContentCompressionResistancePriority:0 forAxis:v12];
 
-  v14 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  detailTextLabel5 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
   LODWORD(v13) = 1132068864;
-  [v14 setContentHuggingPriority:0 forAxis:v13];
+  [detailTextLabel5 setContentHuggingPriority:0 forAxis:v13];
 }
 
-- (void)_configureLayoutForTraitCollection:(id)a3
+- (void)_configureLayoutForTraitCollection:(id)collection
 {
   v4 = MEMORY[0x1E696ACD8];
-  v5 = a3;
-  v6 = [(HKQuantitySeriesTableViewCell *)self currentConstraints];
-  [v4 deactivateConstraints:v6];
+  collectionCopy = collection;
+  currentConstraints = [(HKQuantitySeriesTableViewCell *)self currentConstraints];
+  [v4 deactivateConstraints:currentConstraints];
 
   [(HKQuantitySeriesTableViewCell *)self setCurrentConstraints:0];
-  v7 = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
 
-  LODWORD(v5) = UIContentSizeCategoryIsAccessibilityCategory(v7);
-  if (v5)
+  LODWORD(collectionCopy) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+  if (collectionCopy)
   {
     [(HKQuantitySeriesTableViewCell *)self _makeAccessibilityConstraints];
   }
@@ -98,36 +98,36 @@
   [(HKQuantitySeriesTableViewCell *)self setCurrentConstraints:v8];
 
   v9 = MEMORY[0x1E696ACD8];
-  v10 = [(HKQuantitySeriesTableViewCell *)self currentConstraints];
-  [v9 activateConstraints:v10];
+  currentConstraints2 = [(HKQuantitySeriesTableViewCell *)self currentConstraints];
+  [v9 activateConstraints:currentConstraints2];
 }
 
 - (id)_makeConstraints
 {
   v54[4] = *MEMORY[0x1E69E9840];
-  v3 = [(HKQuantitySeriesTableViewCell *)self contentView];
-  v4 = [v3 layoutMarginsGuide];
+  contentView = [(HKQuantitySeriesTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
 
-  v45 = [(HKQuantitySeriesTableViewCell *)self textLabel];
-  v43 = [v45 topAnchor];
-  v41 = [v4 topAnchor];
-  v39 = [v43 constraintEqualToAnchor:v41];
+  textLabel = [(HKQuantitySeriesTableViewCell *)self textLabel];
+  topAnchor = [textLabel topAnchor];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v54[0] = v39;
-  v37 = [(HKQuantitySeriesTableViewCell *)self textLabel];
-  v35 = [v37 bottomAnchor];
-  v33 = [v4 bottomAnchor];
-  v5 = [v35 constraintEqualToAnchor:v33];
+  textLabel2 = [(HKQuantitySeriesTableViewCell *)self textLabel];
+  bottomAnchor = [textLabel2 bottomAnchor];
+  bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+  v5 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v54[1] = v5;
-  v6 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
-  v7 = [v6 topAnchor];
-  v8 = [v4 topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  detailTextLabel = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  topAnchor3 = [detailTextLabel topAnchor];
+  topAnchor4 = [layoutMarginsGuide topAnchor];
+  v9 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v54[2] = v9;
-  v10 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
-  v11 = [v10 bottomAnchor];
-  v47 = v4;
-  v12 = [v4 bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  detailTextLabel2 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  bottomAnchor3 = [detailTextLabel2 bottomAnchor];
+  v47 = layoutMarginsGuide;
+  bottomAnchor4 = [layoutMarginsGuide bottomAnchor];
+  v13 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v54[3] = v13;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:4];
 
@@ -160,25 +160,25 @@
     while (v17);
   }
 
-  v46 = [(HKQuantitySeriesTableViewCell *)self textLabel];
-  v44 = [v46 leadingAnchor];
-  v42 = [v47 leadingAnchor];
-  v40 = [v44 constraintEqualToAnchor:v42];
+  textLabel3 = [(HKQuantitySeriesTableViewCell *)self textLabel];
+  leadingAnchor = [textLabel3 leadingAnchor];
+  leadingAnchor2 = [v47 leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v52[0] = v40;
-  v38 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
-  v36 = [v38 trailingAnchor];
-  v34 = [v47 trailingAnchor];
-  v32 = [v36 constraintEqualToAnchor:v34];
+  detailTextLabel3 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  trailingAnchor = [detailTextLabel3 trailingAnchor];
+  trailingAnchor2 = [v47 trailingAnchor];
+  v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v52[1] = v32;
-  v20 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
-  v21 = [v20 leadingAnchor];
-  v22 = [(HKQuantitySeriesTableViewCell *)self textLabel];
-  v23 = [v22 trailingAnchor];
-  v24 = [v21 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v23 multiplier:1.0];
+  detailTextLabel4 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  leadingAnchor3 = [detailTextLabel4 leadingAnchor];
+  textLabel4 = [(HKQuantitySeriesTableViewCell *)self textLabel];
+  trailingAnchor3 = [textLabel4 trailingAnchor];
+  v24 = [leadingAnchor3 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor3 multiplier:1.0];
   v52[2] = v24;
-  v25 = [(HKQuantitySeriesTableViewCell *)self contentView];
-  v26 = [v25 heightAnchor];
-  v27 = [v26 constraintGreaterThanOrEqualToConstant:44.0];
+  contentView2 = [(HKQuantitySeriesTableViewCell *)self contentView];
+  heightAnchor = [contentView2 heightAnchor];
+  v27 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
   v52[3] = v27;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:4];
   v30 = [v14 arrayByAddingObjectsFromArray:v28];
@@ -189,44 +189,44 @@
 - (id)_makeAccessibilityConstraints
 {
   v36[7] = *MEMORY[0x1E69E9840];
-  v3 = [(HKQuantitySeriesTableViewCell *)self contentView];
-  v4 = [v3 layoutMarginsGuide];
+  contentView = [(HKQuantitySeriesTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
 
-  v35 = [(HKQuantitySeriesTableViewCell *)self textLabel];
-  v34 = [v35 topAnchor];
-  v33 = [v4 topAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  textLabel = [(HKQuantitySeriesTableViewCell *)self textLabel];
+  topAnchor = [textLabel topAnchor];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v36[0] = v32;
-  v31 = [(HKQuantitySeriesTableViewCell *)self textLabel];
-  v30 = [v31 leadingAnchor];
-  v29 = [v4 leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  textLabel2 = [(HKQuantitySeriesTableViewCell *)self textLabel];
+  leadingAnchor = [textLabel2 leadingAnchor];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v36[1] = v28;
-  v27 = [(HKQuantitySeriesTableViewCell *)self textLabel];
-  v26 = [v27 trailingAnchor];
-  v25 = [v4 trailingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  textLabel3 = [(HKQuantitySeriesTableViewCell *)self textLabel];
+  trailingAnchor = [textLabel3 trailingAnchor];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v36[2] = v24;
-  v23 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
-  v21 = [v23 topAnchor];
-  v22 = [(HKQuantitySeriesTableViewCell *)self textLabel];
-  v20 = [v22 bottomAnchor];
-  v19 = [v21 constraintEqualToSystemSpacingBelowAnchor:v20 multiplier:1.0];
+  detailTextLabel = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  topAnchor3 = [detailTextLabel topAnchor];
+  textLabel4 = [(HKQuantitySeriesTableViewCell *)self textLabel];
+  bottomAnchor = [textLabel4 bottomAnchor];
+  v19 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:1.0];
   v36[3] = v19;
-  v18 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
-  v17 = [v18 bottomAnchor];
-  v16 = [v4 bottomAnchor];
-  v5 = [v17 constraintEqualToAnchor:v16];
+  detailTextLabel2 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  bottomAnchor2 = [detailTextLabel2 bottomAnchor];
+  bottomAnchor3 = [layoutMarginsGuide bottomAnchor];
+  v5 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v36[4] = v5;
-  v6 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
-  v7 = [v6 leadingAnchor];
-  v8 = [v4 leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  detailTextLabel3 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  leadingAnchor3 = [detailTextLabel3 leadingAnchor];
+  leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+  v9 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v36[5] = v9;
-  v10 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
-  v11 = [v10 trailingAnchor];
-  v12 = [v4 trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  detailTextLabel4 = [(HKQuantitySeriesTableViewCell *)self detailTextLabel];
+  trailingAnchor3 = [detailTextLabel4 trailingAnchor];
+  trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+  v13 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v36[6] = v13;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:7];
 

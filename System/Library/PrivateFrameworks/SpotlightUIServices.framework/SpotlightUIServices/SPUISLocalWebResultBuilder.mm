@@ -1,7 +1,7 @@
 @interface SPUISLocalWebResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-+ (id)stringWithUrl:(id)a3;
-- (SPUISLocalWebResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
++ (id)stringWithUrl:(id)url;
+- (SPUISLocalWebResultBuilder)initWithResult:(id)result;
 - (id)buildCommand;
 - (id)buildDescriptions;
 - (id)buildResult;
@@ -9,50 +9,50 @@
 
 @implementation SPUISLocalWebResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v3 = [a3 contentType];
-  v4 = [&unk_287C59F00 containsObject:v3];
+  contentType = [result contentType];
+  v4 = [&unk_287C59F00 containsObject:contentType];
 
   return v4;
 }
 
-+ (id)stringWithUrl:(id)a3
++ (id)stringWithUrl:(id)url
 {
-  v3 = a3;
-  v4 = [v3 _lp_simplifiedDisplayString];
-  v5 = [v3 absoluteString];
+  urlCopy = url;
+  _lp_simplifiedDisplayString = [urlCopy _lp_simplifiedDisplayString];
+  absoluteString = [urlCopy absoluteString];
 
-  if (!v4)
+  if (!_lp_simplifiedDisplayString)
   {
-    v6 = [v5 rangeOfString:@"."];
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v6 + v7, v9 = [v5 length], v10 = v9 - v8, v9 <= v8) || (v11 = objc_msgSend(v5, "rangeOfString:options:range:", @"/", 0, v8, v10), v11 == 0x7FFFFFFFFFFFFFFFLL) && (v11 = objc_msgSend(v5, "rangeOfString:options:range:", @"?", 0, v8, v10), v11 == 0x7FFFFFFFFFFFFFFFLL))
+    v6 = [absoluteString rangeOfString:@"."];
+    if (v6 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v6 + v7, v9 = [absoluteString length], v10 = v9 - v8, v9 <= v8) || (v11 = objc_msgSend(absoluteString, "rangeOfString:options:range:", @"/", 0, v8, v10), v11 == 0x7FFFFFFFFFFFFFFFLL) && (v11 = objc_msgSend(absoluteString, "rangeOfString:options:range:", @"?", 0, v8, v10), v11 == 0x7FFFFFFFFFFFFFFFLL))
     {
-      v4 = 0;
+      _lp_simplifiedDisplayString = 0;
     }
 
     else
     {
-      v4 = [v5 substringToIndex:v11];
+      _lp_simplifiedDisplayString = [absoluteString substringToIndex:v11];
     }
   }
 
-  return v4;
+  return _lp_simplifiedDisplayString;
 }
 
-- (SPUISLocalWebResultBuilder)initWithResult:(id)a3
+- (SPUISLocalWebResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = SPUISLocalWebResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v14 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v14 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
     [(SPUISLocalWebResultBuilder *)v5 setSiteName:v6];
 
     v7 = *MEMORY[0x277CC2688];
-    v8 = [v4 valueForAttribute:*MEMORY[0x277CC2688] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x277CC2688] withType:objc_opt_class()];
     if (v8)
     {
       [(SPUISLocalWebResultBuilder *)v5 setUrl:v8];
@@ -61,12 +61,12 @@
     else
     {
       v9 = MEMORY[0x277CBEBC0];
-      v10 = [v4 valueForAttribute:v7 withType:objc_opt_class()];
+      v10 = [resultCopy valueForAttribute:v7 withType:objc_opt_class()];
       v11 = [v9 URLWithString:v10];
       [(SPUISLocalWebResultBuilder *)v5 setUrl:v11];
     }
 
-    v12 = [v4 valueForAttribute:*MEMORY[0x277CC30D8] withType:objc_opt_class()];
+    v12 = [resultCopy valueForAttribute:*MEMORY[0x277CC30D8] withType:objc_opt_class()];
     [(SPUISLocalWebResultBuilder *)v5 setCloudTabDeviceName:v12];
   }
 
@@ -77,15 +77,15 @@
 {
   v10.receiver = self;
   v10.super_class = SPUISLocalWebResultBuilder;
-  v3 = [(SPUISResultBuilder *)&v10 buildResult];
+  buildResult = [(SPUISResultBuilder *)&v10 buildResult];
   v4 = objc_opt_class();
   v5 = [(SPUISLocalWebResultBuilder *)self url];
   v6 = [v4 stringWithUrl:v5];
-  v7 = [MEMORY[0x277CCA900] controlCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
-  [v3 setCompletion:v8];
+  controlCharacterSet = [MEMORY[0x277CCA900] controlCharacterSet];
+  v8 = [v6 stringByTrimmingCharactersInSet:controlCharacterSet];
+  [buildResult setCompletion:v8];
 
-  return v3;
+  return buildResult;
 }
 
 - (id)buildCommand
@@ -98,18 +98,18 @@
     v5 = [(SPUISLocalWebResultBuilder *)self url];
     v6 = [v4 punchoutWithURL:v5];
 
-    v7 = objc_opt_new();
-    [v7 setPunchout:v6];
+    buildCommand = objc_opt_new();
+    [buildCommand setPunchout:v6];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SPUISLocalWebResultBuilder;
-    v7 = [(SPUISResultBuilder *)&v9 buildCommand];
+    buildCommand = [(SPUISResultBuilder *)&v9 buildCommand];
   }
 
-  return v7;
+  return buildCommand;
 }
 
 - (id)buildDescriptions
@@ -126,30 +126,30 @@
     [v4 addObject:v7];
   }
 
-  v8 = [(SPUISLocalWebResultBuilder *)self cloudTabDeviceName];
-  v9 = [v8 length];
+  cloudTabDeviceName = [(SPUISLocalWebResultBuilder *)self cloudTabDeviceName];
+  v9 = [cloudTabDeviceName length];
 
   if (v9)
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = [SPUISUtilities localizedStringForKey:@"FROM_CLOUD_TAB_DEVICE_FORMAT"];
-    v12 = [(SPUISLocalWebResultBuilder *)self cloudTabDeviceName];
-    v13 = [v10 stringWithFormat:v11, v12];
+    cloudTabDeviceName2 = [(SPUISLocalWebResultBuilder *)self cloudTabDeviceName];
+    v13 = [v10 stringWithFormat:v11, cloudTabDeviceName2];
     [v4 addObject:v13];
   }
 
-  v14 = [(SPUISResultBuilder *)self lastUsedDate];
-  if (v14)
+  lastUsedDate = [(SPUISResultBuilder *)self lastUsedDate];
+  if (lastUsedDate)
   {
-    v15 = v14;
-    v16 = [(SPUISResultBuilder *)self result];
-    v17 = [v16 contentType];
-    v18 = [v17 isEqualToString:@"com.apple.safari.history"];
+    v15 = lastUsedDate;
+    result = [(SPUISResultBuilder *)self result];
+    contentType = [result contentType];
+    v18 = [contentType isEqualToString:@"com.apple.safari.history"];
 
     if (v18)
     {
-      v19 = [(SPUISResultBuilder *)self lastUsedDate];
-      v20 = [SPUISDateFormatManager dyanmicStringFromDate:v19];
+      lastUsedDate2 = [(SPUISResultBuilder *)self lastUsedDate];
+      v20 = [SPUISDateFormatManager dyanmicStringFromDate:lastUsedDate2];
 
       v21 = MEMORY[0x277CCACA8];
       v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -169,9 +169,9 @@
     }
 
     v26 = buildDescriptions_symbolNamesForContentTypes;
-    v27 = [(SPUISResultBuilder *)self result];
-    v28 = [v27 contentType];
-    v29 = [v26 objectForKeyedSubscript:v28];
+    result2 = [(SPUISResultBuilder *)self result];
+    contentType2 = [result2 contentType];
+    v29 = [v26 objectForKeyedSubscript:contentType2];
 
     if (v29)
     {

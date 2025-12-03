@@ -1,25 +1,25 @@
 @interface FBSComponentScene
-- (BOOL)conformsToExtension:(Class)a3;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)isMemberOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)conformsToExtension:(Class)extension;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)isMemberOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (Class)class;
 - (Class)superclass;
-- (FBSComponentScene)initWithScene:(id)a3 extension:(Class)a4;
+- (FBSComponentScene)initWithScene:(id)scene extension:(Class)extension;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)clientSettings;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (id)loggingIdentifier;
-- (id)remoteTargetForProtocol:(id)a3;
+- (id)remoteTargetForProtocol:(id)protocol;
 - (id)scene;
 - (id)settings;
-- (id)siblingComponentOfClass:(Class)a3;
+- (id)siblingComponentOfClass:(Class)class;
 - (unint64_t)hash;
-- (void)sendActions:(id)a3;
-- (void)sendPrivateActions:(id)a3;
+- (void)sendActions:(id)actions;
+- (void)sendPrivateActions:(id)actions;
 @end
 
 @implementation FBSComponentScene
@@ -27,25 +27,25 @@
 - (id)settings
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v3 = [WeakRetained settings];
+  settings = [WeakRetained settings];
 
-  return v3;
+  return settings;
 }
 
 - (id)clientSettings
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v3 = [WeakRetained clientSettings];
+  clientSettings = [WeakRetained clientSettings];
 
-  return v3;
+  return clientSettings;
 }
 
 - (id)loggingIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v3 = [WeakRetained loggingIdentifier];
+  loggingIdentifier = [WeakRetained loggingIdentifier];
 
-  return v3;
+  return loggingIdentifier;
 }
 
 - (unint64_t)hash
@@ -64,10 +64,10 @@
   return v3;
 }
 
-- (FBSComponentScene)initWithScene:(id)a3 extension:(Class)a4
+- (FBSComponentScene)initWithScene:(id)scene extension:(Class)extension
 {
-  objc_storeWeak(&self->_scene, a3);
-  self->_extension = a4;
+  objc_storeWeak(&self->_scene, scene);
+  self->_extension = extension;
   return self;
 }
 
@@ -78,14 +78,14 @@
   return WeakRetained;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
 
   return WeakRetained;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   v4 = objc_opt_respondsToSelector();
@@ -93,11 +93,11 @@
   return v4 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v6 = [WeakRetained isEqual:v4];
+  v6 = [WeakRetained isEqual:equalCopy];
 
   return v6;
 }
@@ -110,7 +110,7 @@
   return v3;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   isKindOfClass = objc_opt_isKindOfClass();
@@ -118,19 +118,19 @@
   return isKindOfClass & 1;
 }
 
-- (BOOL)isMemberOfClass:(Class)a3
+- (BOOL)isMemberOfClass:(Class)class
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  LOBYTE(a3) = [WeakRetained isMemberOfClass:a3];
+  LOBYTE(class) = [WeakRetained isMemberOfClass:class];
 
-  return a3;
+  return class;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v6 = [WeakRetained conformsToProtocol:v4];
+  v6 = [WeakRetained conformsToProtocol:protocolCopy];
 
   return v6;
 }
@@ -150,42 +150,42 @@
   v5 = NSStringFromClass(v4);
   v6 = NSStringFromClass(self->_extension);
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v8 = [WeakRetained succinctDescription];
-  v9 = [v3 stringWithFormat:@"<%@: %p ex: %@> --> %@", v5, self, v6, v8];;
+  succinctDescription = [WeakRetained succinctDescription];
+  v9 = [v3 stringWithFormat:@"<%@: %p ex: %@> --> %@", v5, self, v6, succinctDescription];;
 
   return v9;
 }
 
-- (void)sendActions:(id)a3
+- (void)sendActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  [WeakRetained sendActions:v4];
+  [WeakRetained sendActions:actionsCopy];
 }
 
-- (void)sendPrivateActions:(id)a3
+- (void)sendPrivateActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  [WeakRetained sendActions:v4 toExtension:self->_extension];
+  [WeakRetained sendActions:actionsCopy toExtension:self->_extension];
 }
 
-- (id)siblingComponentOfClass:(Class)a3
+- (id)siblingComponentOfClass:(Class)class
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v6 = [WeakRetained componentForExtension:self->_extension ofClass:a3];
+  v6 = [WeakRetained componentForExtension:self->_extension ofClass:class];
 
   return v6;
 }
 
-- (id)remoteTargetForProtocol:(id)a3
+- (id)remoteTargetForProtocol:(id)protocol
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __45__FBSComponentScene_remoteTargetForProtocol___block_invoke;
   v5[3] = &unk_1E76BCD38;
   v5[4] = self;
-  v3 = [FBSInvocationTarget targetWithInterface:a3 handler:v5];
+  v3 = [FBSInvocationTarget targetWithInterface:protocol handler:v5];
 
   return v3;
 }
@@ -206,12 +206,12 @@ BOOL __45__FBSComponentScene_remoteTargetForProtocol___block_invoke(uint64_t a1,
   return WeakRetained != 0;
 }
 
-- (BOOL)conformsToExtension:(Class)a3
+- (BOOL)conformsToExtension:(Class)extension
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  LOBYTE(a3) = [WeakRetained conformsToExtension:a3];
+  LOBYTE(extension) = [WeakRetained conformsToExtension:extension];
 
-  return a3;
+  return extension;
 }
 
 @end

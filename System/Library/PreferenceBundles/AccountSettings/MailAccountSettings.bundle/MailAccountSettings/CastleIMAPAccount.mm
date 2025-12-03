@@ -1,6 +1,6 @@
 @interface CastleIMAPAccount
-+ (id)aliasSpecifiersForEmails:(id)a3;
-+ (id)copyShortFormForHost:(id)a3 descriptionPlaceholder:(id)a4 addressIsEditable:(BOOL)a5;
++ (id)aliasSpecifiersForEmails:(id)emails;
++ (id)copyShortFormForHost:(id)host descriptionPlaceholder:(id)placeholder addressIsEditable:(BOOL)editable;
 + (id)descriptionPlaceholder;
 + (id)helpTitle;
 + (id)helpURL;
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_A4FC;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D6438 != -1)
   {
     dispatch_once(&qword_D6438, block);
@@ -31,32 +31,32 @@
 
 - (BOOL)hasCustomDomain
 {
-  v3 = [(CastleIMAPAccount *)self parentAccount];
-  if (v3)
+  parentAccount = [(CastleIMAPAccount *)self parentAccount];
+  if (parentAccount)
   {
-    v4 = [(CastleIMAPAccount *)self parentAccount];
-    v5 = [v4 propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
+    parentAccount2 = [(CastleIMAPAccount *)self parentAccount];
+    v5 = [parentAccount2 propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
     v6 = [v5 objectForKeyedSubscript:@"customDomainEnabled"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
   v8 = +[CastleIMAPAccount log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CastleIMAPAccount *)self parentAccount];
+    parentAccount3 = [(CastleIMAPAccount *)self parentAccount];
     v11 = 134218240;
-    v12 = v9;
+    v12 = parentAccount3;
     v13 = 1024;
-    v14 = v7;
+    v14 = bOOLValue;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Parent account: %p, Custom Domain enabled: %{BOOL}d", &v11, 0x12u);
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)dataclassName
@@ -100,19 +100,19 @@
 
 + (id)userInfoForAccountTopLevelSpecifier
 {
-  v3 = NSStringFromClass(a1);
-  v4 = [NSDictionary dictionaryWithObjectsAndKeys:a1, @"class", v3, @"chosenType", 0];
+  v3 = NSStringFromClass(self);
+  v4 = [NSDictionary dictionaryWithObjectsAndKeys:self, @"class", v3, @"chosenType", 0];
 
   return v4;
 }
 
-+ (id)aliasSpecifiersForEmails:(id)a3
++ (id)aliasSpecifiersForEmails:(id)emails
 {
-  v3 = a3;
+  emailsCopy = emails;
   v37 = +[NSMutableArray array];
-  v4 = [v3 count];
-  v5 = [v3 allKeys];
-  v6 = [v5 sortedArrayUsingComparator:&stru_B8DB8];
+  v4 = [emailsCopy count];
+  allKeys = [emailsCopy allKeys];
+  v6 = [allKeys sortedArrayUsingComparator:&stru_B8DB8];
 
   v38 = [v6 ef_map:&stru_B8DF8];
   v7 = objc_alloc_init(MFAddressPickerReformatter);
@@ -165,7 +165,7 @@
   [v35 setValues:v38 titles:v10];
   [v37 addObject:v35];
   v20 = [NSBundle bundleForClass:objc_opt_class()];
-  v33 = v3;
+  v33 = emailsCopy;
   v21 = [v20 localizedStringForKey:@"ALLOW_SENDING_FROM" value:&stru_B9FC8 table:@"AccountPreferences"];
   v34 = [PSSpecifier groupSpecifierWithName:v21];
 
@@ -201,7 +201,7 @@
   return v37;
 }
 
-+ (id)copyShortFormForHost:(id)a3 descriptionPlaceholder:(id)a4 addressIsEditable:(BOOL)a5
++ (id)copyShortFormForHost:(id)host descriptionPlaceholder:(id)placeholder addressIsEditable:(BOOL)editable
 {
   v6 = [[NSMutableArray alloc] initWithCapacity:3];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
@@ -226,13 +226,13 @@
   v16 = [[NSMutableDictionary alloc] initWithCapacity:3];
   [v16 setObject:@"YES" forKey:@"AccountPreferenceRequired"];
   [v16 setObject:kCFBooleanTrue forKey:@"disableForManagedAccounts"];
-  v17 = [a1 editableSuffix];
-  v18 = [v17 length];
+  editableSuffix = [self editableSuffix];
+  v18 = [editableSuffix length];
 
   if (v18)
   {
-    v19 = [a1 editableSuffix];
-    [v16 setObject:v19 forKey:@"UserEditableSuffix"];
+    editableSuffix2 = [self editableSuffix];
+    [v16 setObject:editableSuffix2 forKey:@"UserEditableSuffix"];
   }
 
   [v15 setUserInfo:v16];

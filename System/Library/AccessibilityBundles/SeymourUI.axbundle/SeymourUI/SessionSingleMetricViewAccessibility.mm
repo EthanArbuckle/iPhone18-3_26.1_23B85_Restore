@@ -9,9 +9,9 @@
 {
   v2 = [(SessionSingleMetricViewAccessibility *)self _accessibilityTextForSubhierarchyIncludingHeaders:0 focusableItems:1 exclusions:0];
   v3 = [v2 stringByReplacingOccurrencesOfString:@" withString:{", &stru_2A22D9E70}];
-  v4 = [v3 localizedLowercaseString];
+  localizedLowercaseString = [v3 localizedLowercaseString];
 
-  return v4;
+  return localizedLowercaseString;
 }
 
 - (unint64_t)accessibilityTraits

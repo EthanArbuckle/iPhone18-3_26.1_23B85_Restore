@@ -1,25 +1,25 @@
 @interface PXFeedbackTapToRadarRequestHandler
-+ (void)fileRadarFromSourceView:(id)a3 viewTitleForRadar:(id)a4 completionHandler:(id)a5;
++ (void)fileRadarFromSourceView:(id)view viewTitleForRadar:(id)radar completionHandler:(id)handler;
 @end
 
 @implementation PXFeedbackTapToRadarRequestHandler
 
-+ (void)fileRadarFromSourceView:(id)a3 viewTitleForRadar:(id)a4 completionHandler:(id)a5
++ (void)fileRadarFromSourceView:(id)view viewTitleForRadar:(id)radar completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  viewCopy = view;
+  radarCopy = radar;
+  handlerCopy = handler;
+  if (!viewCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PXFeedbackTapToRadarRequestHandler.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"sourceView"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedbackTapToRadarRequestHandler.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"sourceView"}];
   }
 
-  v12 = [v9 window];
-  [v12 rootViewController];
+  window = [viewCopy window];
+  [window rootViewController];
   objc_claimAutoreleasedReturnValue();
 
-  [v9 bounds];
+  [viewCopy bounds];
   PXRectGetCenter();
 }
 

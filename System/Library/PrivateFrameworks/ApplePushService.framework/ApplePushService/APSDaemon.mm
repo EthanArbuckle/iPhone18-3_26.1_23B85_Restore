@@ -1,19 +1,19 @@
 @interface APSDaemon
 - (APSDaemon)init;
 - (BOOL)_systemIsReady;
-- (double)keepAliveIntervalForEnvironment:(id)a3;
-- (id)JSONDebugString:(BOOL)a3;
+- (double)keepAliveIntervalForEnvironment:(id)environment;
+- (id)JSONDebugString:(BOOL)string;
 - (id)_connectionsDebuggingState;
-- (id)courierForEnvironmentName:(id)a3;
-- (id)createCourierForEnvironment:(id)a3;
-- (id)environmentForConnectionPortName:(id)a3 connection:(id)a4;
-- (id)getConnectionServerForEnvironment:(id)a3 connectionPortName:(id)a4 processName:(id)a5 enableDarkWake:(BOOL)a6 peerConnection:(id)a7 isNewConnection:(BOOL *)a8;
+- (id)courierForEnvironmentName:(id)name;
+- (id)createCourierForEnvironment:(id)environment;
+- (id)environmentForConnectionPortName:(id)name connection:(id)connection;
+- (id)getConnectionServerForEnvironment:(id)environment connectionPortName:(id)name processName:(id)processName enableDarkWake:(BOOL)wake peerConnection:(id)connection isNewConnection:(BOOL *)newConnection;
 - (id)prettyStatus;
 - (void)_clearCourierConnectTimerAndPowerAssertion;
 - (void)_clearInactivityTerminationTimer;
 - (void)_connectCouriersTimerFired;
 - (void)_enableAllCouriers;
-- (void)_inactivityTerminationTimerFired:(id)a3;
+- (void)_inactivityTerminationTimerFired:(id)fired;
 - (void)_performPeriodicSignal;
 - (void)_receivedShutdownNotification;
 - (void)_schedulePeriodicSignal;
@@ -21,26 +21,26 @@
 - (void)_startInactivityTerminationTimerIfNecessary;
 - (void)_updateCourierConnectTimerAndPowerAssertion;
 - (void)_updateNetworkGuidance;
-- (void)appendPrettyStatusToStatusPrinter:(id)a3;
-- (void)courierConnectionStatusDidChange:(id)a3;
-- (void)courierHasNoConnections:(id)a3;
-- (void)courierIsIdle:(id)a3;
+- (void)appendPrettyStatusToStatusPrinter:(id)printer;
+- (void)courierConnectionStatusDidChange:(id)change;
+- (void)courierHasNoConnections:(id)connections;
+- (void)courierIsIdle:(id)idle;
 - (void)dealloc;
 - (void)finalizeProcessedUsers;
-- (void)finishLoggingInUserID:(id)a3;
-- (void)flushUser:(id)a3;
+- (void)finishLoggingInUserID:(id)d;
+- (void)flushUser:(id)user;
 - (void)invalidateDeviceIdentity;
-- (void)loginForUser:(id)a3;
-- (void)loginInUserID:(id)a3;
-- (void)logoutUser:(id)a3;
-- (void)proxyManager:(id)a3 canUseProxyChanged:(BOOL)a4;
-- (void)proxyManager:(id)a3 incomingPresenceWithGuid:(id)a4 token:(id)a5 hwVersion:(id)a6 swVersion:(id)a7 swBuild:(id)a8 certificates:(id)a9 nonce:(id)a10 signature:(id)a11 additionalFlags:(int)a12 environmentName:(id)a13;
+- (void)loginForUser:(id)user;
+- (void)loginInUserID:(id)d;
+- (void)logoutUser:(id)user;
+- (void)proxyManager:(id)manager canUseProxyChanged:(BOOL)changed;
+- (void)proxyManager:(id)manager incomingPresenceWithGuid:(id)guid token:(id)token hwVersion:(id)version swVersion:(id)swVersion swBuild:(id)build certificates:(id)certificates nonce:(id)self0 signature:(id)self1 additionalFlags:(int)self2 environmentName:(id)self3;
 - (void)receivedClientConnection;
 - (void)requestCourierConnections;
-- (void)rollTokensForAllBAAEnvironments:(id)a3;
-- (void)setupUser:(id)a3;
-- (void)shouldUseInternetDidChange:(id)a3;
-- (void)updateSafeToSendFilterForce:(BOOL)a3;
+- (void)rollTokensForAllBAAEnvironments:(id)environments;
+- (void)setupUser:(id)user;
+- (void)shouldUseInternetDidChange:(id)change;
+- (void)updateSafeToSendFilterForce:(BOOL)force;
 @end
 
 @implementation APSDaemon
@@ -197,9 +197,9 @@
   return v4;
 }
 
-- (void)appendPrettyStatusToStatusPrinter:(id)a3
+- (void)appendPrettyStatusToStatusPrinter:(id)printer
 {
-  v4 = a3;
+  printerCopy = printer;
   if ([(NSMutableDictionary *)self->_environmentsToCouriers count])
   {
     v5 = @"Running";
@@ -210,8 +210,8 @@
     v5 = @"Down";
   }
 
-  [v4 appendDescription:@"daemon status" stringValue:v5];
-  [v4 appendDescription:@"startup time" timeIntervalValue:self->_startupTime];
+  [printerCopy appendDescription:@"daemon status" stringValue:v5];
+  [printerCopy appendDescription:@"startup time" timeIntervalValue:self->_startupTime];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -233,12 +233,12 @@
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = [(APSDaemon *)self courierForEnvironment:v11, v14];
-        v13 = [v11 name];
-        [v4 appendDescription:@"connection environment" stringValue:v13];
+        name = [v11 name];
+        [printerCopy appendDescription:@"connection environment" stringValue:name];
 
-        [v4 pushIndent];
-        [v12 appendPrettyStatusToStatusPrinter:v4];
-        [v4 popIndent];
+        [printerCopy pushIndent];
+        [v12 appendPrettyStatusToStatusPrinter:printerCopy];
+        [printerCopy popIndent];
       }
 
       v8 = [(NSMutableDictionary *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -248,9 +248,9 @@
   }
 }
 
-- (id)JSONDebugString:(BOOL)a3
+- (id)JSONDebugString:(BOOL)string
 {
-  v3 = a3;
+  stringCopy = string;
   v28 = @"startupTime";
   v5 = [NSNumber numberWithDouble:self->_startupTime];
   v29 = v5;
@@ -278,9 +278,9 @@
 
         v13 = *(*(&v23 + 1) + 8 * i);
         v14 = [(APSDaemon *)self courierForEnvironment:v13];
-        v15 = [v14 JSONDebugState];
-        v16 = [v13 name];
-        [v7 setObject:v15 forKeyedSubscript:v16];
+        jSONDebugState = [v14 JSONDebugState];
+        name = [v13 name];
+        [v7 setObject:jSONDebugState forKeyedSubscript:name];
       }
 
       v10 = [(NSMutableDictionary *)v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -290,7 +290,7 @@
   }
 
   v22 = 0;
-  v17 = [NSJSONSerialization dataWithJSONObject:v7 options:!v3 error:&v22];
+  v17 = [NSJSONSerialization dataWithJSONObject:v7 options:!stringCopy error:&v22];
   v18 = v22;
   if (v18)
   {
@@ -348,20 +348,20 @@
   }
 }
 
-- (void)updateSafeToSendFilterForce:(BOOL)a3
+- (void)updateSafeToSendFilterForce:(BOOL)force
 {
-  v3 = a3;
+  forceCopy = force;
   v5 = +[APSLog daemon];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (forceCopy)
     {
       v6 = @"YES";
     }
 
     v11 = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: updateSafeToSendFilter force: %@", &v11, 0x16u);
@@ -377,13 +377,13 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = *&v9;
+      selfCopy = *&v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "timeSinceLastConnection: %f", &v11, 0xCu);
     }
 
-    if (v3 || v9 < 10.0)
+    if (forceCopy || v9 < 10.0)
     {
-      if (!v3)
+      if (!forceCopy)
       {
 LABEL_14:
         [(APSDaemon *)self _updateCourierConnectTimerAndPowerAssertion];
@@ -411,10 +411,10 @@ LABEL_14:
   v7 = +[APSLog daemon];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(APSDaemon *)self _systemIsReady];
+    _systemIsReady = [(APSDaemon *)self _systemIsReady];
     v9 = @"NO";
     hasEnabledCouriers = self->_hasEnabledCouriers;
-    if (v8)
+    if (_systemIsReady)
     {
       v11 = @"YES";
     }
@@ -462,8 +462,8 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Delaying courier connection for %g seconds", buf, 0xCu);
       }
 
-      v17 = [NSString stringWithFormat:@"%@-connectcouriers", APSBundleIdentifier];
-      v18 = [[APSPowerAssertion alloc] initWithName:v17 category:210 holdDuration:30.0];
+      aPSBundleIdentifier = [NSString stringWithFormat:@"%@-connectcouriers", APSBundleIdentifier];
+      v18 = [[APSPowerAssertion alloc] initWithName:aPSBundleIdentifier category:210 holdDuration:30.0];
       [(APSDaemon *)self setCourierConnectTimerPowerAssertion:v18];
 
       v19 = [[PCSimpleTimer alloc] initWithTimeInterval:@"APSDaemon-courierconnecttimer" serviceIdentifier:self target:"_connectCouriersTimerFired" selector:0 userInfo:v14];
@@ -519,7 +519,7 @@ LABEL_14:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@: System is shutting down! Disabling all couriers cleanly.", buf, 0xCu);
   }
 
@@ -619,7 +619,7 @@ LABEL_13:
     }
 
     *buf = 138412546;
-    v40 = self;
+    selfCopy3 = self;
     v41 = 2112;
     v42 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ updating network guidance isConnected? %@", buf, 0x16u);
@@ -649,8 +649,8 @@ LABEL_13:
         v18 = [(APSDaemon *)self courierForEnvironment:*(*(&v28 + 1) + 8 * j)];
         if ([v18 shouldUseInternet])
         {
-          v19 = [v18 ifname];
-          v20 = [v19 cStringUsingEncoding:4];
+          ifname = [v18 ifname];
+          v20 = [ifname cStringUsingEncoding:4];
 
           if (v20)
           {
@@ -686,7 +686,7 @@ LABEL_13:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v40 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@ no courier should be enabled - providing no guidance", buf, 0xCu);
   }
 
@@ -716,7 +716,7 @@ LABEL_35:
     {
       v27 = self->_networkGuidanceString;
       *buf = 138412546;
-      v40 = self;
+      selfCopy3 = self;
       v41 = 2112;
       v42 = v27;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%@ providing network guidance %@", buf, 0x16u);
@@ -769,7 +769,7 @@ LABEL_35:
     if (v5)
     {
       *buf = 138412290;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, &v4->super.super, OS_LOG_TYPE_DEFAULT, "%@: Ignoring call to _enableAllCouriers - system is shutting down", buf, 0xCu);
     }
   }
@@ -786,7 +786,7 @@ LABEL_35:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@: Enabling all couriers", buf, 0xCu);
     }
 
@@ -852,9 +852,9 @@ LABEL_35:
   }
 }
 
-- (double)keepAliveIntervalForEnvironment:(id)a3
+- (double)keepAliveIntervalForEnvironment:(id)environment
 {
-  v4 = [APSEnvironment environmentForName:a3];
+  v4 = [APSEnvironment environmentForName:environment];
   if (v4)
   {
     v5 = [(APSDaemon *)self courierForEnvironment:v4];
@@ -879,20 +879,20 @@ LABEL_35:
   return v8;
 }
 
-- (id)getConnectionServerForEnvironment:(id)a3 connectionPortName:(id)a4 processName:(id)a5 enableDarkWake:(BOOL)a6 peerConnection:(id)a7 isNewConnection:(BOOL *)a8
+- (id)getConnectionServerForEnvironment:(id)environment connectionPortName:(id)name processName:(id)processName enableDarkWake:(BOOL)wake peerConnection:(id)connection isNewConnection:(BOOL *)newConnection
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = v16;
+  environmentCopy = environment;
+  nameCopy = name;
+  processNameCopy = processName;
+  connectionCopy = connection;
+  v17 = connectionCopy;
   if (self->_systemIsShuttingDown)
   {
     v18 = +[APSLog daemon];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v76 = self;
+      selfCopy2 = self;
       v19 = "%@: Ignoring call to getConnectionServerForEnvironment - system is shutting down";
 LABEL_33:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, v19, buf, 0xCu);
@@ -902,13 +902,13 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (!v16)
+  if (!connectionCopy)
   {
     v18 = +[APSLog daemon];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v76 = self;
+      selfCopy2 = self;
       v19 = "%@: Ignoring call to getConnectionServerForEnvironment - missing peer";
       goto LABEL_33;
     }
@@ -918,19 +918,19 @@ LABEL_34:
     goto LABEL_57;
   }
 
-  v18 = [APSEnvironment environmentForName:v13];
+  v18 = [APSEnvironment environmentForName:environmentCopy];
   if (v18)
   {
-    v60 = a8;
-    v64 = v15;
-    v62 = [NSString stringWithFormat:@"%@-getconnectionserver-%@", APSBundleIdentifier, v13];
-    v61 = [(_APSPowerAssertion_MacOnly *)[APSNoOpPowerAssertion alloc] initWithName:v62 category:211];
+    newConnectionCopy = newConnection;
+    v64 = processNameCopy;
+    environmentCopy = [NSString stringWithFormat:@"%@-getconnectionserver-%@", APSBundleIdentifier, environmentCopy];
+    v61 = [(_APSPowerAssertion_MacOnly *)[APSNoOpPowerAssertion alloc] initWithName:environmentCopy category:211];
     [(APSNoOpPowerAssertion *)v61 hold];
-    v20 = [(APSDaemon *)self userTracker];
+    userTracker = [(APSDaemon *)self userTracker];
     v63 = v17;
-    v21 = [v20 userForConnection:v17];
+    v21 = [userTracker userForConnection:v17];
 
-    if (v14)
+    if (nameCopy)
     {
       v73 = 0u;
       v74 = 0u;
@@ -954,7 +954,7 @@ LABEL_34:
             if (*(*(&v71 + 1) + 8 * i) != v18)
             {
               v27 = [(APSDaemon *)self courierForEnvironment:?];
-              [v27 removeConnectionForConnectionPortName:v14 user:v21];
+              [v27 removeConnectionForConnectionPortName:nameCopy user:v21];
             }
           }
 
@@ -967,20 +967,20 @@ LABEL_34:
 
     v65 = v21;
     v28 = [(APSDaemon *)self courierForEnvironment:v18];
-    v66 = self;
+    selfCopy3 = self;
     if (!v28)
     {
-      v58 = v14;
-      v59 = v13;
+      v58 = nameCopy;
+      v59 = environmentCopy;
       v28 = [(APSDaemon *)self createCourierForEnvironment:v18];
-      v29 = [(APSDaemon *)self userTracker];
-      v30 = [v29 sortedLoggedInUsers];
+      userTracker2 = [(APSDaemon *)self userTracker];
+      sortedLoggedInUsers = [userTracker2 sortedLoggedInUsers];
 
       v69 = 0u;
       v70 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v31 = v30;
+      v31 = sortedLoggedInUsers;
       v32 = [v31 countByEnumeratingWithState:&v67 objects:v79 count:16];
       if (v32)
       {
@@ -996,11 +996,11 @@ LABEL_34:
             }
 
             v36 = *(*(&v67 + 1) + 8 * j);
-            v37 = [(APSDaemon *)self userTracker];
-            v38 = [(APSDaemon *)v28 clientIdentityProvider];
-            v39 = [v37 dependenciesForUser:v36 environment:v18 mainIdentityProvider:v38];
+            userTracker3 = [(APSDaemon *)self userTracker];
+            clientIdentityProvider = [(APSDaemon *)v28 clientIdentityProvider];
+            v39 = [userTracker3 dependenciesForUser:v36 environment:v18 mainIdentityProvider:clientIdentityProvider];
 
-            self = v66;
+            self = selfCopy3;
             [(APSDaemon *)v28 setupForUser:v36 dependencies:v39];
           }
 
@@ -1010,23 +1010,23 @@ LABEL_34:
         while (v33);
       }
 
-      v14 = v58;
-      v13 = v59;
+      nameCopy = v58;
+      environmentCopy = v59;
     }
 
-    if (!v14)
+    if (!nameCopy)
     {
       goto LABEL_35;
     }
 
-    v40 = [(APSDaemon *)v28 connectionForConnectionPortName:v14 user:v65];
+    v40 = [(APSDaemon *)v28 connectionForConnectionPortName:nameCopy user:v65];
     v41 = +[APSLog daemon];
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v76 = v40;
+      selfCopy2 = v40;
       v77 = 2112;
-      v78 = v14;
+      v78 = nameCopy;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Found existing connection %@ for port name: %@", buf, 0x16u);
     }
 
@@ -1044,19 +1044,19 @@ LABEL_34:
     else
     {
 LABEL_35:
-      if (v60)
+      if (newConnectionCopy)
       {
-        *v60 = 1;
+        *newConnectionCopy = 1;
       }
 
-      v45 = [(APSDaemon *)self userTracker];
-      v46 = [(APSDaemon *)v28 clientIdentityProvider];
-      v44 = [v45 dependenciesForUser:v65 environment:v18 mainIdentityProvider:v46];
+      userTracker4 = [(APSDaemon *)self userTracker];
+      clientIdentityProvider2 = [(APSDaemon *)v28 clientIdentityProvider];
+      v44 = [userTracker4 dependenciesForUser:v65 environment:v18 mainIdentityProvider:clientIdentityProvider2];
 
       v47 = [APSConnectionServer alloc];
       v48 = [(APSDaemon *)v28 connectionServerDelegateForUser:v65 dependencies:v44];
-      v49 = [v44 userPreferences];
-      v40 = [(APSConnectionServer *)v47 initWithDelegate:v48 user:v65 userPreferences:v49 enableDarkWake:0 environmentName:v13 connectionPortName:v14 processName:v64 connection:v63];
+      userPreferences = [v44 userPreferences];
+      v40 = [(APSConnectionServer *)v47 initWithDelegate:v48 user:v65 userPreferences:userPreferences enableDarkWake:0 environmentName:environmentCopy connectionPortName:nameCopy processName:v64 connection:v63];
 
       [(APSDaemon *)v28 addConnection:v40 forUser:v65 dependencies:v44];
       v50 = [(APSDaemon *)v28 publicTokenForUser:v65];
@@ -1075,19 +1075,19 @@ LABEL_35:
           v53 = @"NO";
         }
 
-        if (v66->_hasEnabledCouriers)
+        if (selfCopy3->_hasEnabledCouriers)
         {
           v52 = @"YES";
         }
 
         *buf = 138412546;
-        v76 = v53;
+        selfCopy2 = v53;
         v77 = 2112;
         v78 = v52;
         _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "Do we need to enable the courier? needToken %@  _hasEnabledCouriers %@", buf, 0x16u);
       }
 
-      if (v66->_hasEnabledCouriers || v50)
+      if (selfCopy3->_hasEnabledCouriers || v50)
       {
         if (v50)
         {
@@ -1095,7 +1095,7 @@ LABEL_35:
           if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v76 = v28;
+            selfCopy2 = v28;
             _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "Connecting courier %@ immediately to get public token", buf, 0xCu);
           }
         }
@@ -1108,11 +1108,11 @@ LABEL_35:
       v43 = v65;
     }
 
-    [(APSDaemon *)v66 _clearInactivityTerminationTimer];
+    [(APSDaemon *)selfCopy3 _clearInactivityTerminationTimer];
     [(APSNoOpPowerAssertion *)v61 clear];
 
-    v15 = v64;
-    v56 = v62;
+    processNameCopy = v64;
+    v56 = environmentCopy;
   }
 
   else
@@ -1121,7 +1121,7 @@ LABEL_35:
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v76 = v13;
+      selfCopy2 = environmentCopy;
       _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "Unknown environment '%@'", buf, 0xCu);
     }
 
@@ -1133,18 +1133,18 @@ LABEL_57:
   return v40;
 }
 
-- (id)environmentForConnectionPortName:(id)a3 connection:(id)a4
+- (id)environmentForConnectionPortName:(id)name connection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(APSDaemon *)self userTracker];
-  v9 = [v8 userForConnection:v6];
+  connectionCopy = connection;
+  nameCopy = name;
+  userTracker = [(APSDaemon *)self userTracker];
+  v9 = [userTracker userForConnection:connectionCopy];
 
-  v10 = [(APSDaemon *)self userTracker];
-  v11 = [v10 dependenciesWithNoIdentityForUser:v9];
+  userTracker2 = [(APSDaemon *)self userTracker];
+  v11 = [userTracker2 dependenciesWithNoIdentityForUser:v9];
 
-  v12 = [v11 userPreferences];
-  v13 = [APSConnectionServer environmentForNamedPort:v7 userPreferences:v12];
+  userPreferences = [v11 userPreferences];
+  v13 = [APSConnectionServer environmentForNamedPort:nameCopy userPreferences:userPreferences];
 
   return v13;
 }
@@ -1266,16 +1266,16 @@ LABEL_57:
   }
 }
 
-- (void)courierIsIdle:(id)a3
+- (void)courierIsIdle:(id)idle
 {
-  v4 = a3;
+  idleCopy = idle;
   v5 = +[APSLog daemon];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = idleCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: Courier %@ is idle", &v6, 0x16u);
   }
 
@@ -1283,69 +1283,69 @@ LABEL_57:
   [(APSDaemon *)self _setActivePushConnectionState];
 }
 
-- (void)courierConnectionStatusDidChange:(id)a3
+- (void)courierConnectionStatusDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[APSLog daemon];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ received courierConnectionStatusDidChange from %@.", &v6, 0x16u);
   }
 
   [(APSDaemon *)self _updateNetworkGuidance];
 }
 
-- (void)shouldUseInternetDidChange:(id)a3
+- (void)shouldUseInternetDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[APSLog daemon];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ received shouldUseInternetDidChange from %@.", &v6, 0x16u);
   }
 
   [(APSDaemon *)self _updateNetworkGuidance];
 }
 
-- (void)courierHasNoConnections:(id)a3
+- (void)courierHasNoConnections:(id)connections
 {
-  v4 = a3;
-  v5 = [v4 environment];
-  v6 = [(APSDaemon *)self courierForEnvironment:v5];
+  connectionsCopy = connections;
+  environment = [connectionsCopy environment];
+  v6 = [(APSDaemon *)self courierForEnvironment:environment];
 
-  if (v6 == v4)
+  if (v6 == connectionsCopy)
   {
     v7 = +[APSLog daemon];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = connectionsCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Removing courier %@", &v8, 0xCu);
     }
 
-    [v4 setEnabled:0];
-    [(APSDaemon *)self _removeCourierForEnvironment:v5];
+    [connectionsCopy setEnabled:0];
+    [(APSDaemon *)self _removeCourierForEnvironment:environment];
     [(APSDaemon *)self _startInactivityTerminationTimerIfNecessary];
   }
 }
 
-- (void)rollTokensForAllBAAEnvironments:(id)a3
+- (void)rollTokensForAllBAAEnvironments:(id)environments
 {
-  v4 = a3;
+  environmentsCopy = environments;
   v5 = &fputc_ptr;
   v6 = +[APSLog daemon];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v4;
+    v31 = environmentsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ was notified of a BAA identity change, rolling push tokens for all BAA environments", buf, 0xCu);
   }
 
@@ -1373,31 +1373,31 @@ LABEL_57:
         }
 
         v13 = [(APSDaemon *)self courierForEnvironment:*(*(&v26 + 1) + 8 * v12), v24];
-        v14 = [v4 clientIdentityProvider];
-        v15 = [v14 identityStatus];
+        clientIdentityProvider = [environmentsCopy clientIdentityProvider];
+        identityStatus = [clientIdentityProvider identityStatus];
 
-        if (!v15)
+        if (!identityStatus)
         {
-          v16 = [v5[414] daemon];
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+          daemon = [v5[414] daemon];
+          if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [v13 environment];
-            [v17 name];
+            environment = [v13 environment];
+            [environment name];
             v18 = v11;
-            v19 = v4;
-            v20 = self;
+            v19 = environmentsCopy;
+            selfCopy = self;
             v21 = v7;
             v23 = v22 = v5;
             *buf = v24;
             v31 = v13;
             v32 = 2112;
             v33 = v23;
-            _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ is currently using a BAA identity provider, rolling token for environment %@", buf, 0x16u);
+            _os_log_impl(&_mh_execute_header, daemon, OS_LOG_TYPE_DEFAULT, "%@ is currently using a BAA identity provider, rolling token for environment %@", buf, 0x16u);
 
             v5 = v22;
             v7 = v21;
-            self = v20;
-            v4 = v19;
+            self = selfCopy;
+            environmentsCopy = v19;
             v11 = v18;
             v10 = v25;
           }
@@ -1416,20 +1416,20 @@ LABEL_57:
   }
 }
 
-- (void)proxyManager:(id)a3 canUseProxyChanged:(BOOL)a4
+- (void)proxyManager:(id)manager canUseProxyChanged:(BOOL)changed
 {
-  v4 = a4;
+  changedCopy = changed;
   v6 = +[APSLog daemon];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v4)
+    if (changedCopy)
     {
       v7 = @"YES";
     }
 
     *buf = 138412546;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
     v22 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ canUseProxyChanged %@", buf, 0x16u);
@@ -1469,40 +1469,40 @@ LABEL_57:
   }
 }
 
-- (void)proxyManager:(id)a3 incomingPresenceWithGuid:(id)a4 token:(id)a5 hwVersion:(id)a6 swVersion:(id)a7 swBuild:(id)a8 certificates:(id)a9 nonce:(id)a10 signature:(id)a11 additionalFlags:(int)a12 environmentName:(id)a13
+- (void)proxyManager:(id)manager incomingPresenceWithGuid:(id)guid token:(id)token hwVersion:(id)version swVersion:(id)swVersion swBuild:(id)build certificates:(id)certificates nonce:(id)self0 signature:(id)self1 additionalFlags:(int)self2 environmentName:(id)self3
 {
-  v42 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a13;
-  v43 = v25;
+  guidCopy = guid;
+  tokenCopy = token;
+  versionCopy = version;
+  swVersionCopy = swVersion;
+  buildCopy = build;
+  certificatesCopy = certificates;
+  nonceCopy = nonce;
+  signatureCopy = signature;
+  nameCopy = name;
+  v43 = nameCopy;
   if (self->_systemIsShuttingDown)
   {
-    v26 = v24;
-    v27 = v23;
-    v28 = v21;
+    v26 = signatureCopy;
+    v27 = nonceCopy;
+    v28 = buildCopy;
     v29 = +[APSLog daemon];
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v45 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%@ is shutting down, ignoring incomingPresence from proxy client", buf, 0xCu);
     }
 
-    v30 = v42;
+    v30 = guidCopy;
   }
 
   else
   {
-    v39 = v21;
-    v40 = v20;
-    v29 = [APSEnvironment environmentForName:v25];
-    v41 = self;
+    v39 = buildCopy;
+    v40 = swVersionCopy;
+    v29 = [APSEnvironment environmentForName:nameCopy];
+    selfCopy2 = self;
     v31 = [(APSDaemon *)self courierForEnvironment:v29];
     v32 = v31;
     if (v29 && !v31)
@@ -1511,15 +1511,15 @@ LABEL_57:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v45 = v41;
+        selfCopy = selfCopy2;
         v46 = 2112;
         v47 = v29;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%@ creating courier for environment %@ for incoming presence", buf, 0x16u);
       }
 
-      v34 = [(APSDaemon *)v41 createCourierForEnvironment:v29];
+      v34 = [(APSDaemon *)selfCopy2 createCourierForEnvironment:v29];
       v32 = v34;
-      if (v41->_hasEnabledCouriers)
+      if (selfCopy2->_hasEnabledCouriers)
       {
         [v34 setEnabled:1];
       }
@@ -1529,7 +1529,7 @@ LABEL_57:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v45 = v41;
+      selfCopy = selfCopy2;
       v46 = 2112;
       v47 = v32;
       v48 = 2112;
@@ -1537,16 +1537,16 @@ LABEL_57:
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%@ incomingPresence we have courier %@ for environment %@", buf, 0x20u);
     }
 
-    LODWORD(v38) = a12;
-    v36 = v23;
-    v37 = v24;
-    v26 = v24;
-    v27 = v23;
-    v30 = v42;
+    LODWORD(v38) = flags;
+    v36 = nonceCopy;
+    v37 = signatureCopy;
+    v26 = signatureCopy;
+    v27 = nonceCopy;
+    v30 = guidCopy;
     v28 = v39;
-    v20 = v40;
-    [v32 incomingPresenceWithGuid:v42 token:v18 hwVersion:v19 swVersion:v40 swBuild:v39 certificates:v22 nonce:v36 signature:v37 additionalFlags:v38];
-    [(APSDaemon *)v41 _clearInactivityTerminationTimer];
+    swVersionCopy = v40;
+    [v32 incomingPresenceWithGuid:guidCopy token:tokenCopy hwVersion:versionCopy swVersion:v40 swBuild:v39 certificates:certificatesCopy nonce:v36 signature:v37 additionalFlags:v38];
+    [(APSDaemon *)selfCopy2 _clearInactivityTerminationTimer];
   }
 }
 
@@ -1651,40 +1651,40 @@ LABEL_57:
   }
 }
 
-- (void)_inactivityTerminationTimerFired:(id)a3
+- (void)_inactivityTerminationTimerFired:(id)fired
 {
   [(NSTimer *)self->_inactivityTerminationTimer invalidate];
   inactivityTerminationTimer = self->_inactivityTerminationTimer;
   self->_inactivityTerminationTimer = 0;
 }
 
-- (id)createCourierForEnvironment:(id)a3
+- (id)createCourierForEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = +[APSLog daemon];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = environmentCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "createCourierForEnvironment '%@'", &v12, 0xCu);
   }
 
-  v6 = [(APSDaemon *)self userTracker];
-  v7 = [v6 defaultUser];
+  userTracker = [(APSDaemon *)self userTracker];
+  defaultUser = [userTracker defaultUser];
 
-  v8 = [(APSDaemon *)self userTracker];
-  v9 = [v8 dependenciesForUser:v7 environment:v4 mainIdentityProvider:0];
+  userTracker2 = [(APSDaemon *)self userTracker];
+  v9 = [userTracker2 dependenciesForUser:defaultUser environment:environmentCopy mainIdentityProvider:0];
 
-  v10 = [[APSCourier alloc] initWithEnvironment:v4 defaultUser:v7 userDependencies:v9 delegate:self];
-  [(NSMutableDictionary *)self->_environmentsToCouriers setObject:v10 forKey:v4];
+  v10 = [[APSCourier alloc] initWithEnvironment:environmentCopy defaultUser:defaultUser userDependencies:v9 delegate:self];
+  [(NSMutableDictionary *)self->_environmentsToCouriers setObject:v10 forKey:environmentCopy];
 
   return v10;
 }
 
-- (id)courierForEnvironmentName:(id)a3
+- (id)courierForEnvironmentName:(id)name
 {
-  v4 = a3;
-  v5 = [APSEnvironment environmentForName:v4];
+  nameCopy = name;
+  v5 = [APSEnvironment environmentForName:nameCopy];
   if (v5)
   {
     v6 = [(APSDaemon *)self courierForEnvironment:v5];
@@ -1696,7 +1696,7 @@ LABEL_57:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = nameCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "courierForEnvironmentName Unknown environment '%@'", &v9, 0xCu);
     }
 
@@ -1708,29 +1708,29 @@ LABEL_57:
 
 - (id)_connectionsDebuggingState
 {
-  v2 = [(NSMutableDictionary *)self->_environmentsToCouriers allValues];
+  allValues = [(NSMutableDictionary *)self->_environmentsToCouriers allValues];
   v3 = APSPrettyPrintCollection();
 
   return v3;
 }
 
-- (void)loginInUserID:(id)a3
+- (void)loginInUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(APSDaemon *)self userTracker];
-  [v5 manuallySetupAndLoginUser:v4];
+  dCopy = d;
+  userTracker = [(APSDaemon *)self userTracker];
+  [userTracker manuallySetupAndLoginUser:dCopy];
 }
 
-- (void)finishLoggingInUserID:(id)a3
+- (void)finishLoggingInUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(APSDaemon *)self userTracker];
-  [v5 manuallyLoginUser:v4];
+  dCopy = d;
+  userTracker = [(APSDaemon *)self userTracker];
+  [userTracker manuallyLoginUser:dCopy];
 }
 
-- (void)setupUser:(id)a3
+- (void)setupUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1752,10 +1752,10 @@ LABEL_57:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(APSDaemon *)self courierForEnvironment:v10, v15];
-        v12 = [(APSDaemon *)self userTracker];
-        v13 = [v11 clientIdentityProvider];
-        v14 = [v12 dependenciesForUser:v4 environment:v10 mainIdentityProvider:v13];
-        [v11 setupForUser:v4 dependencies:v14];
+        userTracker = [(APSDaemon *)self userTracker];
+        clientIdentityProvider = [v11 clientIdentityProvider];
+        v14 = [userTracker dependenciesForUser:userCopy environment:v10 mainIdentityProvider:clientIdentityProvider];
+        [v11 setupForUser:userCopy dependencies:v14];
       }
 
       v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1765,15 +1765,15 @@ LABEL_57:
   }
 }
 
-- (void)loginForUser:(id)a3
+- (void)loginForUser:(id)user
 {
-  v4 = a3;
-  v42 = self;
-  v5 = [(APSDaemon *)self userTracker];
-  v6 = [v5 dependenciesWithNoIdentityForUser:v4];
+  userCopy = user;
+  selfCopy = self;
+  userTracker = [(APSDaemon *)self userTracker];
+  v6 = [userTracker dependenciesWithNoIdentityForUser:userCopy];
 
-  v7 = [v6 userPreferences];
-  v8 = [APSConnectionServer serverEnvironmentNamesForUserPreferences:v7];
+  userPreferences = [v6 userPreferences];
+  v8 = [APSConnectionServer serverEnvironmentNamesForUserPreferences:userPreferences];
 
   v54 = 0u;
   v55 = 0u;
@@ -1800,19 +1800,19 @@ LABEL_57:
         {
           v40 = i;
           v43 = v12;
-          v13 = [(APSDaemon *)v42 courierForEnvironment:?];
+          v13 = [(APSDaemon *)selfCopy courierForEnvironment:?];
           if (!v13)
           {
             v37 = v11;
-            v13 = [(APSDaemon *)v42 createCourierForEnvironment:v43];
-            v14 = [(APSDaemon *)v42 userTracker];
-            v15 = [v14 sortedLoggedInUsers];
+            v13 = [(APSDaemon *)selfCopy createCourierForEnvironment:v43];
+            userTracker2 = [(APSDaemon *)selfCopy userTracker];
+            sortedLoggedInUsers = [userTracker2 sortedLoggedInUsers];
 
             v50 = 0u;
             v51 = 0u;
             v48 = 0u;
             v49 = 0u;
-            obj = v15;
+            obj = sortedLoggedInUsers;
             v16 = [obj countByEnumeratingWithState:&v48 objects:v63 count:16];
             if (v16)
             {
@@ -1828,9 +1828,9 @@ LABEL_57:
                   }
 
                   v20 = *(*(&v48 + 1) + 8 * j);
-                  v21 = [(APSDaemon *)v42 userTracker];
-                  v22 = [v13 clientIdentityProvider];
-                  v23 = [v21 dependenciesForUser:v20 environment:v43 mainIdentityProvider:v22];
+                  userTracker3 = [(APSDaemon *)selfCopy userTracker];
+                  clientIdentityProvider = [v13 clientIdentityProvider];
+                  v23 = [userTracker3 dependenciesForUser:v20 environment:v43 mainIdentityProvider:clientIdentityProvider];
 
                   [v13 setupForUser:v20 dependencies:v23];
                 }
@@ -1845,10 +1845,10 @@ LABEL_57:
             v11 = v37;
           }
 
-          v24 = [v6 userPreferences];
-          v25 = [v13 connectionServersForUser:v4];
-          v26 = [v13 connectionServerDelegateForUser:v4 dependencies:v6];
-          [APSConnectionServer serversWithEnvironmentName:v11 user:v4 userPreferences:v24 excludeServers:v25 delegate:v26];
+          userPreferences2 = [v6 userPreferences];
+          v25 = [v13 connectionServersForUser:userCopy];
+          v26 = [v13 connectionServerDelegateForUser:userCopy dependencies:v6];
+          [APSConnectionServer serversWithEnvironmentName:v11 user:userCopy userPreferences:userPreferences2 excludeServers:v25 delegate:v26];
           v28 = v27 = v11;
 
           v29 = +[APSLog daemon];
@@ -1858,7 +1858,7 @@ LABEL_57:
             *buf = 134218498;
             v58 = v30;
             v59 = 2112;
-            v60 = v4;
+            v60 = userCopy;
             v61 = 2112;
             v62 = v27;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Loaded %ld connection servers for user %@ environment %@", buf, 0x20u);
@@ -1883,7 +1883,7 @@ LABEL_57:
                   objc_enumerationMutation(v31);
                 }
 
-                [v13 addConnection:*(*(&v44 + 1) + 8 * k) forUser:v4 dependencies:v6];
+                [v13 addConnection:*(*(&v44 + 1) + 8 * k) forUser:userCopy dependencies:v6];
               }
 
               v33 = [v31 countByEnumeratingWithState:&v44 objects:v56 count:16];
@@ -1904,13 +1904,13 @@ LABEL_57:
     while (v39);
   }
 
-  [(APSDaemon *)v42 _setActivePushConnectionState];
-  [(APSDaemon *)v42 _startInactivityTerminationTimerIfNecessary];
+  [(APSDaemon *)selfCopy _setActivePushConnectionState];
+  [(APSDaemon *)selfCopy _startInactivityTerminationTimerIfNecessary];
 }
 
-- (void)flushUser:(id)a3
+- (void)flushUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1932,7 +1932,7 @@ LABEL_57:
         }
 
         v10 = [(APSDaemon *)self courierForEnvironment:*(*(&v11 + 1) + 8 * v9), v11];
-        [v10 flushUser:v4];
+        [v10 flushUser:userCopy];
 
         v9 = v9 + 1;
       }
@@ -1945,9 +1945,9 @@ LABEL_57:
   }
 }
 
-- (void)logoutUser:(id)a3
+- (void)logoutUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1969,7 +1969,7 @@ LABEL_57:
         }
 
         v10 = [(APSDaemon *)self courierForEnvironment:*(*(&v11 + 1) + 8 * v9), v11];
-        [v10 logoutUser:v4];
+        [v10 logoutUser:userCopy];
 
         v9 = v9 + 1;
       }

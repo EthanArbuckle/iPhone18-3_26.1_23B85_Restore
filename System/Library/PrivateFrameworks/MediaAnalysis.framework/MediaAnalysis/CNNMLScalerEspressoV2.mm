@@ -1,9 +1,9 @@
 @interface CNNMLScalerEspressoV2
-- (CNNMLScalerEspressoV2)initWithConfig:(id)a3 modelIndex:(int64_t)a4 inputSize:(CGSize)a5 scalingFactor:(int)a6;
-- (int)configInput:(int)a3;
-- (int)copyOutput:(id)a3 pixelbuffer:(__CVBuffer *)a4;
-- (int)inferenceWithPixelBuffer:(__CVBuffer *)a3 toDestinationPixelBuffer:(__CVBuffer *)a4;
-- (int)prepareInput:(__CVBuffer *)a3 withChannels:(int)a4;
+- (CNNMLScalerEspressoV2)initWithConfig:(id)config modelIndex:(int64_t)index inputSize:(CGSize)size scalingFactor:(int)factor;
+- (int)configInput:(int)input;
+- (int)copyOutput:(id)output pixelbuffer:(__CVBuffer *)pixelbuffer;
+- (int)inferenceWithPixelBuffer:(__CVBuffer *)buffer toDestinationPixelBuffer:(__CVBuffer *)pixelBuffer;
+- (int)prepareInput:(__CVBuffer *)input withChannels:(int)channels;
 - (void)dealloc;
 @end
 
@@ -16,25 +16,25 @@
   [(CNNMLScalerEspressoV2 *)&v2 dealloc];
 }
 
-- (CNNMLScalerEspressoV2)initWithConfig:(id)a3 modelIndex:(int64_t)a4 inputSize:(CGSize)a5 scalingFactor:(int)a6
+- (CNNMLScalerEspressoV2)initWithConfig:(id)config modelIndex:(int64_t)index inputSize:(CGSize)size scalingFactor:(int)factor
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
+  height = size.height;
+  width = size.width;
+  configCopy = config;
   v26.receiver = self;
   v26.super_class = CNNMLScalerEspressoV2;
   v12 = [(CNNMLScalerEspressoV2 *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    v14 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v15 = [v14 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
     v12->_inputWidth = width;
     v12->_inputHeight = height;
-    v12->_outputWidth = width * a6;
-    v12->_outputHeight = height * a6;
-    if (a4 != 1 || a6 != 4 && a6 != 2)
+    v12->_outputWidth = width * factor;
+    v12->_outputHeight = height * factor;
+    if (index != 1 || factor != 4 && factor != 2)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -50,7 +50,7 @@
 
     if (v17)
     {
-      if (a6 == 2)
+      if (factor == 2)
       {
         v18 = @"cnn_gp_mlscaler";
       }
@@ -61,7 +61,7 @@
       }
 
       v19 = [MEMORY[0x1E695DFF8] URLWithString:v18 relativeToURL:v17];
-      v20 = [[VCPCNNModelEspressoV2 alloc] initWithParameters:v19 outputNames:&unk_1F49BE848 inputNames:&unk_1F49BE860 functionName:v11 precompiled:0];
+      v20 = [[VCPCNNModelEspressoV2 alloc] initWithParameters:v19 outputNames:&unk_1F49BE848 inputNames:&unk_1F49BE860 functionName:configCopy precompiled:0];
       modelEspressoV2 = v12->_modelEspressoV2;
       v12->_modelEspressoV2 = v20;
 
@@ -101,7 +101,7 @@ LABEL_22:
   return v23;
 }
 
-- (int)inferenceWithPixelBuffer:(__CVBuffer *)a3 toDestinationPixelBuffer:(__CVBuffer *)a4
+- (int)inferenceWithPixelBuffer:(__CVBuffer *)buffer toDestinationPixelBuffer:(__CVBuffer *)pixelBuffer
 {
   v7 = VCPSignPostLog();
   v8 = os_signpost_id_generate(v7);
@@ -114,18 +114,18 @@ LABEL_22:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "VCPMADMLScalingInference", "", &v23, 2u);
   }
 
-  v11 = [(CNNMLScalerEspressoV2 *)self prepareInput:a3 withChannels:4];
+  v11 = [(CNNMLScalerEspressoV2 *)self prepareInput:buffer withChannels:4];
   if (!v11)
   {
-    v12 = [(VCPCNNModelEspressoV2 *)self->_modelEspressoV2 inputsType];
-    v13 = [v12 objectAtIndexedSubscript:0];
-    v14 = [v13 unsignedIntValue];
+    inputsType = [(VCPCNNModelEspressoV2 *)self->_modelEspressoV2 inputsType];
+    v13 = [inputsType objectAtIndexedSubscript:0];
+    unsignedIntValue = [v13 unsignedIntValue];
 
-    v11 = [(VCPCNNModelEspressoV2 *)self->_modelEspressoV2 espressoForward:[(VCPEspressoV2Data *)self->_inputData getData:v14]];
+    v11 = [(VCPCNNModelEspressoV2 *)self->_modelEspressoV2 espressoForward:[(VCPEspressoV2Data *)self->_inputData getData:unsignedIntValue]];
     if (!v11)
     {
-      v17 = [(VCPCNNModelEspressoV2 *)self->_modelEspressoV2 outputsSize];
-      if ([v17 count])
+      outputsSize = [(VCPCNNModelEspressoV2 *)self->_modelEspressoV2 outputsSize];
+      if ([outputsSize count])
       {
         modelEspressoV2 = self->_modelEspressoV2;
         if (modelEspressoV2)
@@ -138,7 +138,7 @@ LABEL_22:
           if (v19 != v20)
           {
             [(VCPCNNModelEspressoV2 *)self->_modelEspressoV2 outputs];
-            v15 = [(CNNMLScalerEspressoV2 *)self copyOutput:*v23 pixelbuffer:a4];
+            v15 = [(CNNMLScalerEspressoV2 *)self copyOutput:*v23 pixelbuffer:pixelBuffer];
             v26 = &v23;
             std::vector<VCPEspressoV2Data * {__strong}>::__destroy_vector::operator()[abi:ne200100](&v26);
             if (!v15)
@@ -178,22 +178,22 @@ LABEL_18:
   return v11;
 }
 
-- (int)configInput:(int)a3
+- (int)configInput:(int)input
 {
-  v5 = [(VCPCNNModelEspressoV2 *)self->_modelEspressoV2 inputsSize];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 unsignedIntValue];
+  inputsSize = [(VCPCNNModelEspressoV2 *)self->_modelEspressoV2 inputsSize];
+  v6 = [inputsSize objectAtIndexedSubscript:0];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  if (v7 != self->_inputHeight * a3 * self->_inputWidth)
+  if (unsignedIntValue != self->_inputHeight * input * self->_inputWidth)
   {
     return -50;
   }
 
-  v8 = [(VCPCNNModelEspressoV2 *)self->_modelEspressoV2 inputsType];
-  v9 = [v8 objectAtIndexedSubscript:0];
-  v10 = [v9 unsignedIntValue];
+  inputsType = [(VCPCNNModelEspressoV2 *)self->_modelEspressoV2 inputsType];
+  v9 = [inputsType objectAtIndexedSubscript:0];
+  unsignedIntValue2 = [v9 unsignedIntValue];
 
-  v11 = [[VCPEspressoV2Data alloc] initWithTensorType:v10 size:v7];
+  v11 = [[VCPEspressoV2Data alloc] initWithTensorType:unsignedIntValue2 size:unsignedIntValue];
   inputData = self->_inputData;
   self->_inputData = v11;
 
@@ -208,7 +208,7 @@ LABEL_18:
   }
 }
 
-- (int)prepareInput:(__CVBuffer *)a3 withChannels:(int)a4
+- (int)prepareInput:(__CVBuffer *)input withChannels:(int)channels
 {
   v50 = *MEMORY[0x1E69E9840];
   v7 = VCPSignPostLog();
@@ -222,28 +222,28 @@ LABEL_18:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "VCPMADMLScalingPrepareInput", "", buf, 2u);
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  if (a4 != 4)
+  Width = CVPixelBufferGetWidth(input);
+  Height = CVPixelBufferGetHeight(input);
+  if (channels != 4)
   {
     return -50;
   }
 
   inputWidth = self->_inputWidth;
   inputHeight = self->_inputHeight;
-  pixelBuffer = a3;
+  pixelBuffer = input;
   unlockFlags = 1;
-  if (a3)
+  if (input)
   {
     v14 = Height;
-    v15 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v15 = CVPixelBufferLockBaseAddress(input, 1uLL);
     *buf = v15;
     if (!v15 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*v46 = 134218240, v47 = pixelBuffer, v48 = 1024, v49 = v15, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v46, 0x12u), (v15 = *buf) == 0))
     {
       v34 = v8 - 1;
       v35 = v8;
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(input);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(input);
       if (v14 >= 1)
       {
         v19 = 0;
@@ -332,9 +332,9 @@ LABEL_18:
   return v15;
 }
 
-- (int)copyOutput:(id)a3 pixelbuffer:(__CVBuffer *)a4
+- (int)copyOutput:(id)output pixelbuffer:(__CVBuffer *)pixelbuffer
 {
-  v6 = a3;
+  outputCopy = output;
   v7 = VCPSignPostLog();
   v8 = os_signpost_id_generate(v7);
 
@@ -346,16 +346,16 @@ LABEL_18:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "VCPMADMLScalingCopyOutput", "", buf, 2u);
   }
 
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
+  Width = CVPixelBufferGetWidth(pixelbuffer);
+  Height = CVPixelBufferGetHeight(pixelbuffer);
   outputWidth = self->_outputWidth;
   outputHeight = self->_outputHeight;
-  pixelBuffer = a4;
+  pixelBuffer = pixelbuffer;
   unlockFlags = 1;
-  if (a4)
+  if (pixelbuffer)
   {
     v15 = Height;
-    v16 = CVPixelBufferLockBaseAddress(a4, 1uLL);
+    v16 = CVPixelBufferLockBaseAddress(pixelbuffer, 1uLL);
     *buf = v16;
     if (v16)
     {
@@ -367,9 +367,9 @@ LABEL_18:
 
     else
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a4);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
-      v19 = [v6 getData:2];
+      BaseAddress = CVPixelBufferGetBaseAddress(pixelbuffer);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(pixelbuffer);
+      v19 = [outputCopy getData:2];
       if (v15 >= 1)
       {
         v20 = 0;

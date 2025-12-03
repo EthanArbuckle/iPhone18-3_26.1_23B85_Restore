@@ -1,20 +1,20 @@
 @interface ASUDefaultsManager
-+ (BOOL)_BOOLForKey:(__CFString *)a3 applicationId:(__CFString *)a4 ifMissing:(BOOL)a5;
++ (BOOL)_BOOLForKey:(__CFString *)key applicationId:(__CFString *)id ifMissing:(BOOL)missing;
 + (BOOL)_isRunningInAppleVirtualMachine;
-+ (double)_doubleForKey:(__CFString *)a3 applicationId:(__CFString *)a4 ifMissing:(double)a5;
-+ (id)_copyNumberForKey:(__CFString *)a3 applicationId:(__CFString *)a4;
-+ (id)copyDefaultsKeyForEncryptionKeyWithIdentifier:(id)a3;
-+ (id)databaseEncryptionKeyWithIdentifier:(uint64_t)a1;
++ (double)_doubleForKey:(__CFString *)key applicationId:(__CFString *)id ifMissing:(double)missing;
++ (id)_copyNumberForKey:(__CFString *)key applicationId:(__CFString *)id;
++ (id)copyDefaultsKeyForEncryptionKeyWithIdentifier:(id)identifier;
++ (id)databaseEncryptionKeyWithIdentifier:(uint64_t)identifier;
 + (id)transporterConfiguration;
-+ (uint64_t)setTransporterConfiguration:(uint64_t)a1;
-+ (void)_setDouble:(double)a3 forKey:(__CFString *)a4 applicationId:(__CFString *)a5;
-+ (void)_setNullableValue:(void *)a3 forKey:(__CFString *)a4;
-+ (void)setDatabaseEncryptionKey:(void *)a3 withIdentifier:;
++ (uint64_t)setTransporterConfiguration:(uint64_t)configuration;
++ (void)_setDouble:(double)double forKey:(__CFString *)key applicationId:(__CFString *)id;
++ (void)_setNullableValue:(void *)value forKey:(__CFString *)key;
++ (void)setDatabaseEncryptionKey:(void *)key withIdentifier:;
 @end
 
 @implementation ASUDefaultsManager
 
-+ (id)databaseEncryptionKeyWithIdentifier:(uint64_t)a1
++ (id)databaseEncryptionKeyWithIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   v3 = [objc_opt_self() copyDefaultsKeyForEncryptionKeyWithIdentifier:v2];
@@ -33,11 +33,11 @@
   return v5;
 }
 
-+ (void)setDatabaseEncryptionKey:(void *)a3 withIdentifier:
++ (void)setDatabaseEncryptionKey:(void *)key withIdentifier:
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = a2;
-  key = [objc_opt_self() copyDefaultsKeyForEncryptionKeyWithIdentifier:v4];
+  key = [objc_opt_self() copyDefaultsKeyForEncryptionKeyWithIdentifier:keyCopy];
 
   v6 = [v5 base64EncodedStringWithOptions:0];
 
@@ -45,15 +45,15 @@
   CFPreferencesAppSynchronize(@"com.apple.appstoreutilities");
 }
 
-+ (id)copyDefaultsKeyForEncryptionKeyWithIdentifier:(id)a3
++ (id)copyDefaultsKeyForEncryptionKeyWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CEE470];
-  v5 = a3;
-  v6 = [v4 serialNumber];
-  v7 = v6;
-  if (!v6)
+  identifierCopy = identifier;
+  serialNumber = [v4 serialNumber];
+  v7 = serialNumber;
+  if (!serialNumber)
   {
-    if (([a1 _isRunningInAppleVirtualMachine] & 1) == 0)
+    if (([self _isRunningInAppleVirtualMachine] & 1) == 0)
     {
       v8 = ASULogHandleForCategory(1);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -68,7 +68,7 @@
 
   v9 = v7;
 
-  v10 = [v5 stringByAppendingString:v9];
+  v10 = [identifierCopy stringByAppendingString:v9];
 
   v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%lu", objc_msgSend(v10, "hash")];
   return v11;
@@ -82,7 +82,7 @@
   return v0;
 }
 
-+ (uint64_t)setTransporterConfiguration:(uint64_t)a1
++ (uint64_t)setTransporterConfiguration:(uint64_t)configuration
 {
   v2 = a2;
   objc_opt_self();
@@ -91,10 +91,10 @@
   return CFPreferencesAppSynchronize(@"com.apple.appstoreutilities");
 }
 
-+ (BOOL)_BOOLForKey:(__CFString *)a3 applicationId:(__CFString *)a4 ifMissing:(BOOL)a5
++ (BOOL)_BOOLForKey:(__CFString *)key applicationId:(__CFString *)id ifMissing:(BOOL)missing
 {
   keyExistsAndHasValidFormat = 0;
-  v6 = CFPreferencesGetAppBooleanValue(a3, a4, &keyExistsAndHasValidFormat) == 1;
+  v6 = CFPreferencesGetAppBooleanValue(key, id, &keyExistsAndHasValidFormat) == 1;
   if (keyExistsAndHasValidFormat == 1)
   {
     return v6;
@@ -102,33 +102,33 @@
 
   else
   {
-    return a5;
+    return missing;
   }
 }
 
-+ (double)_doubleForKey:(__CFString *)a3 applicationId:(__CFString *)a4 ifMissing:(double)a5
++ (double)_doubleForKey:(__CFString *)key applicationId:(__CFString *)id ifMissing:(double)missing
 {
-  v6 = [a1 _copyNumberForKey:a3 applicationId:a4];
+  v6 = [self _copyNumberForKey:key applicationId:id];
   v7 = v6;
   if (v6)
   {
     [v6 doubleValue];
-    a5 = v8;
+    missing = v8;
   }
 
-  return a5;
+  return missing;
 }
 
-+ (void)_setDouble:(double)a3 forKey:(__CFString *)a4 applicationId:(__CFString *)a5
++ (void)_setDouble:(double)double forKey:(__CFString *)key applicationId:(__CFString *)id
 {
-  v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithDouble:double];
 
-  CFPreferencesSetAppValue(a4, v7, a5);
+  CFPreferencesSetAppValue(key, v7, id);
 }
 
-+ (id)_copyNumberForKey:(__CFString *)a3 applicationId:(__CFString *)a4
++ (id)_copyNumberForKey:(__CFString *)key applicationId:(__CFString *)id
 {
-  v4 = CFPreferencesCopyAppValue(a3, a4);
+  v4 = CFPreferencesCopyAppValue(key, id);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -145,9 +145,9 @@
   return v6;
 }
 
-+ (void)_setNullableValue:(void *)a3 forKey:(__CFString *)a4
++ (void)_setNullableValue:(void *)value forKey:(__CFString *)key
 {
-  CFPreferencesSetAppValue(a4, a3, @"com.apple.appstoreutilities");
+  CFPreferencesSetAppValue(key, value, @"com.apple.appstoreutilities");
 
   CFPreferencesAppSynchronize(@"com.apple.appstoreutilities");
 }

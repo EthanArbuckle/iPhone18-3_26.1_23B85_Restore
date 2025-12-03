@@ -1,32 +1,32 @@
 @interface _UISceneDisplayLinkTargetAndAction
 - (SEL)action;
-- (_UISceneDisplayLinkTargetAndAction)initWithTarget:(id)a3 action:(SEL)a4;
+- (_UISceneDisplayLinkTargetAndAction)initWithTarget:(id)target action:(SEL)action;
 - (id)target;
 @end
 
 @implementation _UISceneDisplayLinkTargetAndAction
 
-- (_UISceneDisplayLinkTargetAndAction)initWithTarget:(id)a3 action:(SEL)a4
+- (_UISceneDisplayLinkTargetAndAction)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = _UISceneDisplayLinkTargetAndAction;
   v7 = [(_UISceneDisplayLinkTargetAndAction *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_target, v6);
-    if (a4)
+    objc_storeWeak(&v7->_target, targetCopy);
+    if (action)
     {
-      v9 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v9 = 0;
+      actionCopy = 0;
     }
 
-    v8->_action = v9;
+    v8->_action = actionCopy;
   }
 
   return v8;

@@ -8,9 +8,9 @@
 - (BOOL)revertSnapshot;
 - (BOOL)unlockSnapshot;
 - (MSDPairedWatchProxy)init;
-- (void)_updateSyncStatusFromSyncSession:(id)a3;
+- (void)_updateSyncStatusFromSyncSession:(id)session;
 - (void)bootstrap;
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4;
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update;
 @end
 
 @implementation MSDPairedWatchProxy
@@ -46,18 +46,18 @@
   v7.receiver = self;
   v7.super_class = MSDPairedWatchProxy;
   [(MSDPairedDeviceProxy *)&v7 bootstrap];
-  v3 = [(MSDPairedWatchProxy *)self idsHandler];
-  [v3 start];
+  idsHandler = [(MSDPairedWatchProxy *)self idsHandler];
+  [idsHandler start];
 
   [(MSDPairedWatchProxy *)self setSyncState:0];
   v4 = objc_alloc_init(PSYSyncSessionObserver);
   [(MSDPairedWatchProxy *)self setSyncSessionObserver:v4];
 
-  v5 = [(MSDPairedWatchProxy *)self syncSessionObserver];
-  [v5 setDelegate:self];
+  syncSessionObserver = [(MSDPairedWatchProxy *)self syncSessionObserver];
+  [syncSessionObserver setDelegate:self];
 
-  v6 = [(MSDPairedWatchProxy *)self syncSessionObserver];
-  [v6 startObservingSyncSessionsWithCompletion:&stru_10016A6F0];
+  syncSessionObserver2 = [(MSDPairedWatchProxy *)self syncSessionObserver];
+  [syncSessionObserver2 startObservingSyncSessionsWithCompletion:&stru_10016A6F0];
 }
 
 - (BOOL)canUpdateContent
@@ -136,21 +136,21 @@
   return self;
 }
 
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update
 {
-  v5 = [a4 updatedSession];
-  [(MSDPairedWatchProxy *)self _updateSyncStatusFromSyncSession:v5];
+  updatedSession = [update updatedSession];
+  [(MSDPairedWatchProxy *)self _updateSyncStatusFromSyncSession:updatedSession];
 }
 
-- (void)_updateSyncStatusFromSyncSession:(id)a3
+- (void)_updateSyncStatusFromSyncSession:(id)session
 {
-  v4 = a3;
-  if ([v4 syncSessionType] != 1)
+  sessionCopy = session;
+  if ([sessionCopy syncSessionType] != 1)
   {
-    v5 = [v4 syncSessionState];
-    v6 = [v4 syncSessionType];
+    syncSessionState = [sessionCopy syncSessionState];
+    syncSessionType = [sessionCopy syncSessionType];
     v7 = NSStringfromPSYSyncSessionType();
-    if (v5 == 2)
+    if (syncSessionState == 2)
     {
       if ([(MSDPairedWatchProxy *)self syncState]== 2)
       {
@@ -169,7 +169,7 @@
       v11 = +[MSDTargetDevice sharedInstance];
       [v11 setWaitingForCommand:1];
 
-      if (v6)
+      if (syncSessionType)
       {
         goto LABEL_18;
       }
@@ -181,7 +181,7 @@
       [v8 startFullScreenUIWith:@"IN_PROGRESS" allowCancel:1];
     }
 
-    else if (v5 == 1)
+    else if (syncSessionState == 1)
     {
       if ([(MSDPairedWatchProxy *)self syncState]== 1)
       {
@@ -205,7 +205,7 @@ LABEL_18:
 
     else
     {
-      if (v5 || ![(MSDPairedWatchProxy *)self syncState])
+      if (syncSessionState || ![(MSDPairedWatchProxy *)self syncState])
       {
         goto LABEL_18;
       }

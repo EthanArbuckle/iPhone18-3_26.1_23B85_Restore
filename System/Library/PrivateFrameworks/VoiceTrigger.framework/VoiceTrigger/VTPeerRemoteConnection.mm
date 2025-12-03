@@ -1,93 +1,93 @@
 @interface VTPeerRemoteConnection
 - (BOOL)_hasNearbyPeer;
 - (BOOL)hasPeer;
-- (VTPeerRemoteConnection)initWithServiceIdentifier:(id)a3 requireNearbyPeer:(BOOL)a4;
+- (VTPeerRemoteConnection)initWithServiceIdentifier:(id)identifier requireNearbyPeer:(BOOL)peer;
 - (id)_account;
 - (id)_destination;
 - (id)_pairedDevice;
 - (id)_service;
-- (id)_wrappedSendFailureError:(id)a3;
-- (void)_invokeCompletionForIdentifier:(id)a3 response:(id)a4 error:(id)a5;
-- (void)_sendResponse:(id)a3 forRequestId:(id)a4;
-- (void)sendRequestType:(unint64_t)a3 nonWaking:(BOOL)a4;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)setDelegate:(id)a3;
+- (id)_wrappedSendFailureError:(id)error;
+- (void)_invokeCompletionForIdentifier:(id)identifier response:(id)response error:(id)error;
+- (void)_sendResponse:(id)response forRequestId:(id)id;
+- (void)sendRequestType:(unint64_t)type nonWaking:(BOOL)waking;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation VTPeerRemoteConnection
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (!a6)
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (!success)
   {
     v16 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
     {
       v18 = 138543618;
-      v19 = v14;
+      v19 = identifierCopy;
       v20 = 2114;
-      v21 = v15;
+      v21 = errorCopy;
       _os_log_error_impl(&dword_223A31000, v16, OS_LOG_TYPE_ERROR, "Message send with identifier %{public}@ failed %{public}@", &v18, 0x16u);
     }
 
-    v17 = [(VTPeerRemoteConnection *)self _wrappedSendFailureError:v15];
-    [(VTPeerRemoteConnection *)self _invokeCompletionForIdentifier:v14 response:0 error:v17];
+    v17 = [(VTPeerRemoteConnection *)self _wrappedSendFailureError:errorCopy];
+    [(VTPeerRemoteConnection *)self _invokeCompletionForIdentifier:identifierCopy response:0 error:v17];
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = [v12 incomingResponseIdentifier];
-  v14 = [v12 outgoingResponseIdentifier];
-  v15 = [v12 expectsPeerResponse];
+  protobufCopy = protobuf;
+  dCopy = d;
+  contextCopy = context;
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+  outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+  expectsPeerResponse = [contextCopy expectsPeerResponse];
   v16 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = v13;
-    v18 = v15;
-    v19 = v14;
-    v20 = v11;
+    v17 = incomingResponseIdentifier;
+    v18 = expectsPeerResponse;
+    v19 = outgoingResponseIdentifier;
+    v20 = dCopy;
     identifier = self->_identifier;
     v22 = v16;
-    v23 = [v10 type];
-    v33 = self;
-    v24 = v10;
-    v25 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v12, "expectsPeerResponse")}];
+    type = [protobufCopy type];
+    selfCopy = self;
+    v24 = protobufCopy;
+    v25 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(contextCopy, "expectsPeerResponse")}];
     *buf = 138544642;
     v38 = identifier;
-    v11 = v20;
-    v14 = v19;
-    v15 = v18;
-    v13 = v17;
+    dCopy = v20;
+    outgoingResponseIdentifier = v19;
+    expectsPeerResponse = v18;
+    incomingResponseIdentifier = v17;
     v39 = 1026;
-    *v40 = v23;
+    *v40 = type;
     *&v40[4] = 2114;
-    *&v40[6] = v11;
+    *&v40[6] = dCopy;
     v41 = 2114;
     v42 = v17;
     v43 = 2114;
-    v44 = v14;
+    v44 = outgoingResponseIdentifier;
     v45 = 2114;
     v46 = v25;
     _os_log_impl(&dword_223A31000, v22, OS_LOG_TYPE_DEFAULT, "Received %{public}@ type %{public}d fromId %{public}@ incoming %{public}@ outgoing %{public}@ expects response %{public}@", buf, 0x3Au);
 
-    v10 = v24;
-    self = v33;
+    protobufCopy = v24;
+    self = selfCopy;
   }
 
-  if (v13)
+  if (incomingResponseIdentifier)
   {
-    [(VTPeerRemoteConnection *)self _invokeCompletionForIdentifier:v13 response:v10 error:0];
+    [(VTPeerRemoteConnection *)self _invokeCompletionForIdentifier:incomingResponseIdentifier response:protobufCopy error:0];
   }
 
   else
@@ -109,30 +109,30 @@
         }
 
         v30 = objc_loadWeakRetained(&self->_delegate);
-        v31 = [v10 type];
-        if (v15)
+        type2 = [protobufCopy type];
+        if (expectsPeerResponse)
         {
           v34[0] = MEMORY[0x277D85DD0];
           v34[1] = 3221225472;
           v34[2] = __83__VTPeerRemoteConnection_service_account_incomingUnhandledProtobuf_fromID_context___block_invoke;
           v34[3] = &unk_2784EC560;
-          v35 = v14;
-          v36 = self;
-          [v30 remoteConnection:self handleMessageType:v31 completion:v34];
+          v35 = outgoingResponseIdentifier;
+          selfCopy2 = self;
+          [v30 remoteConnection:self handleMessageType:type2 completion:v34];
         }
 
         else
         {
-          [v30 remoteConnection:self handleMessageType:v31 completion:0];
+          [v30 remoteConnection:self handleMessageType:type2 completion:0];
         }
       }
 
       else if (v29)
       {
         *buf = 138543618;
-        v38 = v10;
+        v38 = protobufCopy;
         v39 = 2114;
-        *v40 = v12;
+        *v40 = contextCopy;
         _os_log_impl(&dword_223A31000, v28, OS_LOG_TYPE_DEFAULT, "Tried to handle protobuf but couldn't find class or had no delegate %{public}@ %{public}@", buf, 0x16u);
       }
     }
@@ -143,15 +143,15 @@
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v38 = v10;
+        v38 = protobufCopy;
         v39 = 2114;
-        *v40 = v12;
+        *v40 = contextCopy;
         _os_log_impl(&dword_223A31000, v32, OS_LOG_TYPE_DEFAULT, "Don't know how to handle protobuf %{public}@ %{public}@", buf, 0x16u);
       }
 
-      if (v15)
+      if (expectsPeerResponse)
       {
-        [(VTPeerRemoteConnection *)self _sendResponse:0 forRequestId:v14];
+        [(VTPeerRemoteConnection *)self _sendResponse:0 forRequestId:outgoingResponseIdentifier];
       }
     }
   }
@@ -179,15 +179,15 @@ void __83__VTPeerRemoteConnection_service_account_incomingUnhandledProtobuf_from
   [*(a1 + 40) _sendResponse:v5 forRequestId:*(a1 + 32)];
 }
 
-- (id)_wrappedSendFailureError:(id)a3
+- (id)_wrappedSendFailureError:(id)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  errorCopy = error;
   v4 = objc_alloc(MEMORY[0x277CCA9B8]);
-  if (v3)
+  if (errorCopy)
   {
     v9 = *MEMORY[0x277CCA7E8];
-    v10[0] = v3;
+    v10[0] = errorCopy;
     v5 = v4;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     v7 = [v5 initWithDomain:@"VTRemoteConnectionErrorDomain" code:3 userInfo:v6];
@@ -201,13 +201,13 @@ void __83__VTPeerRemoteConnection_service_account_incomingUnhandledProtobuf_from
   return v7;
 }
 
-- (void)_invokeCompletionForIdentifier:(id)a3 response:(id)a4 error:(id)a5
+- (void)_invokeCompletionForIdentifier:(id)identifier response:(id)response error:(id)error
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_completions objectForKey:v14];
-  if (v9)
+  identifierCopy = identifier;
+  responseCopy = response;
+  errorCopy = error;
+  v10 = [(NSMutableDictionary *)self->_completions objectForKey:identifierCopy];
+  if (errorCopy)
   {
 LABEL_7:
     v13 = 0;
@@ -219,39 +219,39 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (![v8 isResponse] || (v11 = objc_alloc(-[NSMutableDictionary objectForKey:](self->_responseClasses, "objectForKey:", v14)), objc_msgSend(v8, "data"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "initWithData:", v12), v12, !v13))
+  if (![responseCopy isResponse] || (v11 = objc_alloc(-[NSMutableDictionary objectForKey:](self->_responseClasses, "objectForKey:", identifierCopy)), objc_msgSend(responseCopy, "data"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "initWithData:", v12), v12, !v13))
   {
-    v9 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"VTRemoteConnectionErrorDomain" code:0 userInfo:0];
+    errorCopy = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"VTRemoteConnectionErrorDomain" code:0 userInfo:0];
     goto LABEL_7;
   }
 
-  v9 = 0;
+  errorCopy = 0;
   if (v10)
   {
 LABEL_8:
-    (v10)[2](v10, v13, v9);
+    (v10)[2](v10, v13, errorCopy);
   }
 
 LABEL_9:
-  [(NSMutableDictionary *)self->_completions removeObjectForKey:v14];
-  [(NSMutableDictionary *)self->_responseClasses removeObjectForKey:v14];
+  [(NSMutableDictionary *)self->_completions removeObjectForKey:identifierCopy];
+  [(NSMutableDictionary *)self->_responseClasses removeObjectForKey:identifierCopy];
 }
 
-- (void)_sendResponse:(id)a3 forRequestId:(id)a4
+- (void)_sendResponse:(id)response forRequestId:(id)id
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  responseCopy = response;
+  idCopy = id;
+  if (idCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__VTPeerRemoteConnection__sendResponse_forRequestId___block_invoke;
     block[3] = &unk_2784EC538;
-    v11 = v6;
-    v12 = v7;
-    v13 = self;
+    v11 = responseCopy;
+    v12 = idCopy;
+    selfCopy = self;
     dispatch_async(queue, block);
   }
 
@@ -261,7 +261,7 @@ LABEL_9:
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = v6;
+      v15 = responseCopy;
       _os_log_impl(&dword_223A31000, v9, OS_LOG_TYPE_DEFAULT, "Ignoring response with no requestId %{public}@", buf, 0xCu);
     }
   }
@@ -299,17 +299,17 @@ void __53__VTPeerRemoteConnection__sendResponse_forRequestId___block_invoke(uint
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__VTPeerRemoteConnection_setDelegate___block_invoke;
   v7[3] = &unk_2784ED118;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -322,7 +322,7 @@ id __38__VTPeerRemoteConnection_setDelegate___block_invoke(uint64_t a1)
   return objc_storeWeak(v4, v3);
 }
 
-- (void)sendRequestType:(unint64_t)a3 nonWaking:(BOOL)a4
+- (void)sendRequestType:(unint64_t)type nonWaking:(BOOL)waking
 {
   v16 = *MEMORY[0x277D85DE8];
   v7 = VTLogContextFacilityVoiceTrigger;
@@ -330,7 +330,7 @@ id __38__VTPeerRemoteConnection_setDelegate___block_invoke(uint64_t a1)
   {
     v8 = MEMORY[0x277CCABB0];
     v9 = v7;
-    v10 = [v8 numberWithUnsignedInteger:a3];
+    v10 = [v8 numberWithUnsignedInteger:type];
     *buf = 138543362;
     v15 = v10;
     _os_log_impl(&dword_223A31000, v9, OS_LOG_TYPE_DEFAULT, "Sending Request %{public}@", buf, 0xCu);
@@ -342,8 +342,8 @@ id __38__VTPeerRemoteConnection_setDelegate___block_invoke(uint64_t a1)
   block[2] = __52__VTPeerRemoteConnection_sendRequestType_nonWaking___block_invoke;
   block[3] = &unk_2784EC628;
   block[4] = self;
-  block[5] = a3;
-  v13 = a4;
+  block[5] = type;
+  wakingCopy = waking;
   dispatch_async(queue, block);
 }
 
@@ -423,10 +423,10 @@ void __52__VTPeerRemoteConnection_sendRequestType_nonWaking___block_invoke(uint6
 
 - (id)_account
 {
-  v2 = [(IDSService *)self->_idsService accounts];
-  v3 = [v2 anyObject];
+  accounts = [(IDSService *)self->_idsService accounts];
+  anyObject = [accounts anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (id)_service
@@ -447,10 +447,10 @@ void __52__VTPeerRemoteConnection_sendRequestType_nonWaking___block_invoke(uint6
 
 - (BOOL)_hasNearbyPeer
 {
-  v2 = [(VTPeerRemoteConnection *)self _pairedDevice];
-  v3 = [v2 isNearby];
+  _pairedDevice = [(VTPeerRemoteConnection *)self _pairedDevice];
+  isNearby = [_pairedDevice isNearby];
 
-  return v3;
+  return isNearby;
 }
 
 - (id)_pairedDevice
@@ -460,13 +460,13 @@ void __52__VTPeerRemoteConnection_sendRequestType_nonWaking___block_invoke(uint6
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(VTPeerRemoteConnection *)self serviceIdentifier];
-    v6 = [(VTPeerRemoteConnection *)self _service];
-    v7 = [v6 devices];
+    serviceIdentifier = [(VTPeerRemoteConnection *)self serviceIdentifier];
+    _service = [(VTPeerRemoteConnection *)self _service];
+    devices = [_service devices];
     *buf = 138543618;
-    v21 = v5;
+    v21 = serviceIdentifier;
     v22 = 2114;
-    v23 = v7;
+    v23 = devices;
     _os_log_impl(&dword_223A31000, v4, OS_LOG_TYPE_DEFAULT, "devices for %{public}@: %{public}@", buf, 0x16u);
   }
 
@@ -474,10 +474,10 @@ void __52__VTPeerRemoteConnection_sendRequestType_nonWaking___block_invoke(uint6
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(VTPeerRemoteConnection *)self _service];
-  v9 = [v8 devices];
+  _service2 = [(VTPeerRemoteConnection *)self _service];
+  devices2 = [_service2 devices];
 
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v10 = [devices2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -487,7 +487,7 @@ void __52__VTPeerRemoteConnection_sendRequestType_nonWaking___block_invoke(uint6
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(devices2);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
@@ -498,7 +498,7 @@ void __52__VTPeerRemoteConnection_sendRequestType_nonWaking___block_invoke(uint6
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [devices2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v10)
       {
         continue;
@@ -515,21 +515,21 @@ LABEL_13:
 
 - (BOOL)hasPeer
 {
-  v2 = [(VTPeerRemoteConnection *)self _account];
-  v3 = v2 != 0;
+  _account = [(VTPeerRemoteConnection *)self _account];
+  v3 = _account != 0;
 
   return v3;
 }
 
-- (VTPeerRemoteConnection)initWithServiceIdentifier:(id)a3 requireNearbyPeer:(BOOL)a4
+- (VTPeerRemoteConnection)initWithServiceIdentifier:(id)identifier requireNearbyPeer:(BOOL)peer
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = VTPeerRemoteConnection;
   v7 = [(VTPeerRemoteConnection *)&v15 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
@@ -541,7 +541,7 @@ LABEL_13:
     v13 = dispatch_get_global_queue(33, 0);
     dispatch_set_target_queue(v12, v13);
 
-    v7->_requireNearbyPeer = a4;
+    v7->_requireNearbyPeer = peer;
   }
 
   return v7;

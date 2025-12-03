@@ -10,30 +10,30 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [v9 properties];
+  properties = [v9 properties];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __82__LNProperty_WFFetchValue__wf_getValueForEntity_entityMetadata_completionHandler___block_invoke;
   v22[3] = &unk_1E837E080;
-  v22[4] = a1;
-  v12 = [v11 if_firstObjectPassingTest:v22];
+  v22[4] = self;
+  v12 = [properties if_firstObjectPassingTest:v22];
 
   if (([v12 capabilities] & 2) != 0)
   {
-    v13 = [MEMORY[0x1E69ACE60] policyWithEntityMetadata:v9];
+    value = [MEMORY[0x1E69ACE60] policyWithEntityMetadata:v9];
     v21 = 0;
-    v14 = [v13 connectionWithError:&v21];
+    v14 = [value connectionWithError:&v21];
     v15 = v21;
     if (v14)
     {
-      v16 = [a1 identifier];
+      identifier = [self identifier];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __82__LNProperty_WFFetchValue__wf_getValueForEntity_entityMetadata_completionHandler___block_invoke_161;
       v19[3] = &unk_1E837AAA0;
-      v19[4] = a1;
+      v19[4] = self;
       v20 = v10;
-      [v14 fetchValueForPropertyWithIdentifier:v16 entity:v8 completionHandler:v19];
+      [v14 fetchValueForPropertyWithIdentifier:identifier entity:v8 completionHandler:v19];
     }
 
     else
@@ -54,8 +54,8 @@
 
   else
   {
-    v13 = [a1 value];
-    (*(v10 + 2))(v10, v13);
+    value = [self value];
+    (*(v10 + 2))(v10, value);
   }
 
   v18 = *MEMORY[0x1E69E9840];

@@ -1,8 +1,8 @@
 @interface MRVirtualOutputContextManager
 + (id)sharedManager;
-- (id)fetchForUID:(id)a3;
-- (void)addOutputContext:(id)a3;
-- (void)removeOutputContext:(id)a3;
+- (id)fetchForUID:(id)d;
+- (void)addOutputContext:(id)context;
+- (void)removeOutputContext:(id)context;
 @end
 
 @implementation MRVirtualOutputContextManager
@@ -26,36 +26,36 @@ void __46__MRVirtualOutputContextManager_sharedManager__block_invoke()
   sharedManager___sharedService = v0;
 }
 
-- (id)fetchForUID:(id)a3
+- (id)fetchForUID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_ouputContextMap objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_ouputContextMap objectForKeyedSubscript:dCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)addOutputContext:(id)a3
+- (void)addOutputContext:(id)context
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  ouputContextMap = v4->_ouputContextMap;
-  v6 = [v7 uniqueIdentifier];
-  [(NSMutableDictionary *)ouputContextMap setObject:v7 forKeyedSubscript:v6];
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ouputContextMap = selfCopy->_ouputContextMap;
+  uniqueIdentifier = [contextCopy uniqueIdentifier];
+  [(NSMutableDictionary *)ouputContextMap setObject:contextCopy forKeyedSubscript:uniqueIdentifier];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeOutputContext:(id)a3
+- (void)removeOutputContext:(id)context
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_ouputContextMap setObject:0 forKeyedSubscript:v5];
-  objc_sync_exit(v4);
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_ouputContextMap setObject:0 forKeyedSubscript:contextCopy];
+  objc_sync_exit(selfCopy);
 }
 
 @end

@@ -36,8 +36,8 @@
           v13 = *(*(&v22 + 1) + 8 * i);
           if ([v13 needsSanitization])
           {
-            v14 = [v13 contactIdentifier];
-            [v7 addObject:v14];
+            contactIdentifier = [v13 contactIdentifier];
+            [v7 addObject:contactIdentifier];
           }
 
           else
@@ -55,7 +55,7 @@
     if ([v7 count])
     {
       v21 = 0;
-      v15 = [a1 fetchContactsWithIdentifiers:v7 error:&v21];
+      v15 = [self fetchContactsWithIdentifiers:v7 error:&v21];
       v16 = v21;
       if (v16)
       {
@@ -107,15 +107,15 @@
   v15 = __Block_byref_object_copy__10;
   v16 = __Block_byref_object_dispose__10;
   v17 = 0;
-  v7 = [v6 allObjects];
+  allObjects = [v6 allObjects];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__CNContactStore_Sanitization__fetchContactsWithIdentifiers_error___block_invoke;
   v11[3] = &unk_278F8B2C0;
-  v11[4] = a1;
+  v11[4] = self;
   v11[5] = &v18;
   v11[6] = &v12;
-  [v7 enumerateBatchesOfSize:10 handler:v11];
+  [allObjects enumerateBatchesOfSize:10 handler:v11];
 
   if (a4)
   {

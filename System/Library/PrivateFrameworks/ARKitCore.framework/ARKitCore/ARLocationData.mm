@@ -1,28 +1,28 @@
 @interface ARLocationData
-+ (BOOL)isAltitudeValid:(id)a3;
-+ (id)grabNextFromReader:(id)a3 timestamp:(double *)a4;
-- (ARLocationData)initWithCoder:(id)a3;
-- (ARLocationData)initWithDictionary:(id)a3;
-- (ARLocationData)initWithLocation:(id)a3;
-- (ARLocationData)initWithLocation:(id)a3 timestamp:(double)a4 secure:(BOOL)a5;
-- (ARLocationData)initWithMetadataWrapper:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)isAltitudeValid:(id)valid;
++ (id)grabNextFromReader:(id)reader timestamp:(double *)timestamp;
+- (ARLocationData)initWithCoder:(id)coder;
+- (ARLocationData)initWithDictionary:(id)dictionary;
+- (ARLocationData)initWithLocation:(id)location;
+- (ARLocationData)initWithLocation:(id)location timestamp:(double)timestamp secure:(BOOL)secure;
+- (ARLocationData)initWithMetadataWrapper:(id)wrapper;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (__n128)ecefFromlocation;
 - (__n128)locationECEF;
 - (__n128)locationLLA;
-- (double)enuFromLocation:(void *)a1@<X2>;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)enuFromLocation:(void *)location@<X2>;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeToDictionary;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLocation:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLocation:(id)location;
 @end
 
 @implementation ARLocationData
 
-- (ARLocationData)initWithLocation:(id)a3
+- (ARLocationData)initWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v11.receiver = self;
   v11.super_class = ARLocationData;
   v5 = [(ARLocationData *)&v11 init];
@@ -35,12 +35,12 @@
 
     v6 = mach_absolute_time();
     v7 = *&initWithLocation__machTimeFactor;
-    v8 = [v4 timestamp];
-    [v8 timeIntervalSinceNow];
+    timestamp = [locationCopy timestamp];
+    [timestamp timeIntervalSinceNow];
     v5->_timestamp = v9 + v6 * v7;
 
     v5->_secure = 1;
-    [(ARLocationData *)v5 setLocation:v4];
+    [(ARLocationData *)v5 setLocation:locationCopy];
   }
 
   return v5;
@@ -57,33 +57,33 @@ double __35__ARLocationData_initWithLocation___block_invoke()
   return result;
 }
 
-- (ARLocationData)initWithLocation:(id)a3 timestamp:(double)a4 secure:(BOOL)a5
+- (ARLocationData)initWithLocation:(id)location timestamp:(double)timestamp secure:(BOOL)secure
 {
-  result = [(ARLocationData *)self initWithLocation:a3];
+  result = [(ARLocationData *)self initWithLocation:location];
   if (result)
   {
-    result->_timestamp = a4;
-    result->_secure = a5;
+    result->_timestamp = timestamp;
+    result->_secure = secure;
   }
 
   return result;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 copy];
+  locationCopy = location;
+  v5 = [locationCopy copy];
   location = self->_location;
   self->_location = v5;
 
-  [v4 altitudeWgs84];
+  [locationCopy altitudeWgs84];
   v32 = v7;
-  if ([v4 isAltitudeWgs84Available])
+  if ([locationCopy isAltitudeWgs84Available])
   {
-    [v4 altitudeWgs84];
+    [locationCopy altitudeWgs84];
     v9 = v8;
-    [v4 altitude];
+    [locationCopy altitude];
     self->_undulation = v9 - v10;
   }
 
@@ -101,9 +101,9 @@ double __35__ARLocationData_initWithLocation___block_invoke()
       v12 = v11;
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      [v4 coordinate];
+      [locationCopy coordinate];
       v16 = v15;
-      [v4 coordinate];
+      [locationCopy coordinate];
       *buf = 138544131;
       *&buf[4] = v14;
       *&buf[12] = 2048;
@@ -115,16 +115,16 @@ double __35__ARLocationData_initWithLocation___block_invoke()
       _os_log_impl(&dword_1C241C000, v12, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Getting fallback undulation for location: %{private}.06f, %{private}.06f", buf, 0x2Au);
     }
 
-    [v4 coordinate];
+    [locationCopy coordinate];
     v20 = ARGetFallbackUndulationValue(v18, v19);
     self->_undulation = v20;
     *&v21 = ARMSLToWGS84Altitude(*&v32, v20);
     v32 = v21;
   }
 
-  [v4 coordinate];
+  [locationCopy coordinate];
   v31 = v22;
-  [v4 coordinate];
+  [locationCopy coordinate];
   *&v23 = v31;
   *(&v23 + 1) = v24;
   *self->_locationLLA = v23;
@@ -153,11 +153,11 @@ double __35__ARLocationData_initWithLocation___block_invoke()
   *self[1]._locationLLA = v30;
 }
 
-- (double)enuFromLocation:(void *)a1@<X2>
+- (double)enuFromLocation:(void *)location@<X2>
 {
-  if (a1)
+  if (location)
   {
-    [a1 locationECEF];
+    [location locationECEF];
   }
 
   ARECEFToENU(v5);
@@ -168,30 +168,30 @@ double __35__ARLocationData_initWithLocation___block_invoke()
   return result;
 }
 
-+ (BOOL)isAltitudeValid:(id)a3
++ (BOOL)isAltitudeValid:(id)valid
 {
-  v3 = a3;
-  [v3 altitude];
-  [v3 verticalAccuracy];
+  validCopy = valid;
+  [validCopy altitude];
+  [validCopy verticalAccuracy];
   v5 = v4 >= 0.0;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(ARLocationData *)self timestamp];
-  [v4 encodeDouble:@"timestamp" forKey:?];
-  [v4 encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeDouble:@"timestamp" forKey:?];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
 }
 
-- (ARLocationData)initWithCoder:(id)a3
+- (ARLocationData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"timestamp"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"timestamp"];
   v6 = v5;
-  v7 = [v4 decodeObjectForKey:@"location"];
+  v7 = [coderCopy decodeObjectForKey:@"location"];
 
   v8 = [(ARLocationData *)self initWithLocation:v7];
   [(ARLocationData *)v8 setTimestamp:v6];
@@ -217,14 +217,14 @@ double __35__ARLocationData_initWithLocation___block_invoke()
   return v7;
 }
 
-- (ARLocationData)initWithDictionary:(id)a3
+- (ARLocationData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"timestamp"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"location"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"location"];
 
   v9 = [v8 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F4208A80];
 
@@ -239,10 +239,10 @@ double __35__ARLocationData_initWithLocation___block_invoke()
   return v13;
 }
 
-- (ARLocationData)initWithMetadataWrapper:(id)a3
+- (ARLocationData)initWithMetadataWrapper:(id)wrapper
 {
   v7 = 0.0;
-  v4 = [MEMORY[0x1E698BEB0] decodeCLLocation:a3 timestamp:&v7];
+  v4 = [MEMORY[0x1E698BEB0] decodeCLLocation:wrapper timestamp:&v7];
   v5 = [(ARLocationData *)self initWithLocation:v4];
   [(ARLocationData *)v5 setTimestamp:v7];
   v5->_secure = 0;
@@ -250,18 +250,18 @@ double __35__ARLocationData_initWithLocation___block_invoke()
   return v5;
 }
 
-+ (id)grabNextFromReader:(id)a3 timestamp:(double *)a4
++ (id)grabNextFromReader:(id)reader timestamp:(double *)timestamp
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  readerCopy = reader;
+  array = [MEMORY[0x1E695DF70] array];
   v7 = objc_autoreleasePoolPush();
   v8 = *(MEMORY[0x1E6960CA8] + 16);
   v31 = *MEMORY[0x1E6960CA8];
   v32 = v8;
   v33 = *(MEMORY[0x1E6960CA8] + 32);
   v30 = 0;
-  v9 = [v5 grabNextCLLocation:&v31 location:0 timestamps:&v30];
+  v9 = [readerCopy grabNextCLLocation:&v31 location:0 timestamps:&v30];
   v10 = v30;
   v11 = [v9 count];
   if (v11 != [v10 count])
@@ -302,7 +302,7 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    v28 = v6;
+    v28 = array;
     objc_autoreleasePoolPop(v7);
     goto LABEL_15;
   }
@@ -318,7 +318,7 @@ LABEL_13:
       v16 = v15;
 
       v17 = [objc_alloc(objc_opt_class()) initWithLocation:v13 timestamp:0 secure:v16];
-      [v6 addObject:v17];
+      [array addObject:v17];
 
       ++v12;
     }
@@ -328,16 +328,16 @@ LABEL_13:
 
   *&time.value = v31;
   time.epoch = v32;
-  *a4 = CMTimeGetSeconds(&time);
+  *timestamp = CMTimeGetSeconds(&time);
 
   objc_autoreleasePoolPop(v7);
-  v18 = v6;
+  v18 = array;
 LABEL_15:
 
-  return v6;
+  return array;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ARLocationData allocWithZone:?], "initWithLocation:", self->_location];
   [(ARLocationData *)self timestamp];
@@ -346,12 +346,12 @@ LABEL_15:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->_location == v5[3])
     {
       v9 = 1;
@@ -441,33 +441,33 @@ LABEL_15:
 
 - (__n128)locationLLA
 {
-  result = a1[3];
-  a2[1].n128_u64[0] = a1[4].n128_u64[0];
+  result = self[3];
+  a2[1].n128_u64[0] = self[4].n128_u64[0];
   *a2 = result;
   return result;
 }
 
 - (__n128)locationECEF
 {
-  result = a1[5];
-  a2[1].n128_u64[0] = a1[6].n128_u64[0];
+  result = self[5];
+  a2[1].n128_u64[0] = self[6].n128_u64[0];
   *a2 = result;
   return result;
 }
 
 - (__n128)ecefFromlocation
 {
-  v2 = *(a1 + 192);
-  *(a2 + 64) = *(a1 + 176);
+  v2 = *(self + 192);
+  *(a2 + 64) = *(self + 176);
   *(a2 + 80) = v2;
-  v3 = *(a1 + 224);
-  *(a2 + 96) = *(a1 + 208);
+  v3 = *(self + 224);
+  *(a2 + 96) = *(self + 208);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 128);
-  *a2 = *(a1 + 112);
+  v4 = *(self + 128);
+  *a2 = *(self + 112);
   *(a2 + 16) = v4;
-  result = *(a1 + 144);
-  v6 = *(a1 + 160);
+  result = *(self + 144);
+  v6 = *(self + 160);
   *(a2 + 32) = result;
   *(a2 + 48) = v6;
   return result;

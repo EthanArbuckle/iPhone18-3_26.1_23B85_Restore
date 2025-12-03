@@ -1,30 +1,30 @@
 @interface IDSSecOTRSession
-- (IDSSecOTRSession)initWithSecOTRSessionRef:(_SecOTRSession *)a3;
-- (id)signAndProtectMessage:(id)a3 withError:(id *)a4;
-- (id)verifyAndExposeMessage:(id)a3 withError:(id *)a4;
+- (IDSSecOTRSession)initWithSecOTRSessionRef:(_SecOTRSession *)ref;
+- (id)signAndProtectMessage:(id)message withError:(id *)error;
+- (id)verifyAndExposeMessage:(id)message withError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation IDSSecOTRSession
 
-- (IDSSecOTRSession)initWithSecOTRSessionRef:(_SecOTRSession *)a3
+- (IDSSecOTRSession)initWithSecOTRSessionRef:(_SecOTRSession *)ref
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = ref;
+  if (ref)
   {
     v6.receiver = self;
     v6.super_class = IDSSecOTRSession;
     v4 = [(IDSSecOTRSession *)&v6 init];
     if (v4)
     {
-      v4->_backingOTRSessionRef = CFRetain(v3);
+      v4->_backingOTRSessionRef = CFRetain(selfCopy);
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -41,9 +41,9 @@
   [(IDSSecOTRSession *)&v4 dealloc];
 }
 
-- (id)signAndProtectMessage:(id)a3 withError:(id *)a4
+- (id)signAndProtectMessage:(id)message withError:(id *)error
 {
-  v6 = a3;
+  messageCopy = message;
   v7 = objc_alloc_init(NSMutableData);
   backingOTRSessionRef = self->_backingOTRSessionRef;
   if (qword_100CBD0F8 != -1)
@@ -53,7 +53,7 @@
 
   if (off_100CBD0F0)
   {
-    v9 = off_100CBD0F0(backingOTRSessionRef, v6, v7);
+    v9 = off_100CBD0F0(backingOTRSessionRef, messageCopy, v7);
     if (!v9)
     {
       v10 = v7;
@@ -79,10 +79,10 @@
     _IDSLogV();
   }
 
-  if (a4)
+  if (error)
   {
     [NSError errorWithDomain:NSOSStatusErrorDomain code:v9 userInfo:0];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -95,9 +95,9 @@ LABEL_15:
   return v10;
 }
 
-- (id)verifyAndExposeMessage:(id)a3 withError:(id *)a4
+- (id)verifyAndExposeMessage:(id)message withError:(id *)error
 {
-  v6 = a3;
+  messageCopy = message;
   v7 = objc_alloc_init(NSMutableData);
   backingOTRSessionRef = self->_backingOTRSessionRef;
   if (qword_100CBD108 != -1)
@@ -107,7 +107,7 @@ LABEL_15:
 
   if (off_100CBD100)
   {
-    v9 = off_100CBD100(backingOTRSessionRef, v6, v7);
+    v9 = off_100CBD100(backingOTRSessionRef, messageCopy, v7);
     if (!v9)
     {
       v10 = v7;
@@ -133,10 +133,10 @@ LABEL_15:
     _IDSLogV();
   }
 
-  if (a4)
+  if (error)
   {
     [NSError errorWithDomain:NSOSStatusErrorDomain code:v9 userInfo:0];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else

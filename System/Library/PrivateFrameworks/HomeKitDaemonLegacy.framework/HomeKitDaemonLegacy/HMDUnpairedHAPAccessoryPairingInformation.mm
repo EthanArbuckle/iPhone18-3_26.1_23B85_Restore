@@ -1,8 +1,8 @@
 @interface HMDUnpairedHAPAccessoryPairingInformation
-- (BOOL)matchesAccessoryServer:(id)a3;
-- (BOOL)matchesUnpairedAccessory:(id)a3;
-- (HMDUnpairedHAPAccessoryPairingInformation)initWithAccessoryDescription:(id)a3 linkType:(int64_t)a4 completionHandler:(id)a5 progressHandler:(id)a6 pairingRequest:(id)a7;
-- (HMDUnpairedHAPAccessoryPairingInformation)initWithAccessoryUUID:(id)a3 accessoryName:(id)a4 linkType:(int64_t)a5 setupCode:(id)a6 completionHandler:(id)a7 setupCodeProvider:(id)a8 pairingRequest:(id)a9;
+- (BOOL)matchesAccessoryServer:(id)server;
+- (BOOL)matchesUnpairedAccessory:(id)accessory;
+- (HMDUnpairedHAPAccessoryPairingInformation)initWithAccessoryDescription:(id)description linkType:(int64_t)type completionHandler:(id)handler progressHandler:(id)progressHandler pairingRequest:(id)request;
+- (HMDUnpairedHAPAccessoryPairingInformation)initWithAccessoryUUID:(id)d accessoryName:(id)name linkType:(int64_t)type setupCode:(id)code completionHandler:(id)handler setupCodeProvider:(id)provider pairingRequest:(id)request;
 - (HMFActivity)pairingActivity;
 - (id)description;
 @end
@@ -16,30 +16,30 @@
   return WeakRetained;
 }
 
-- (BOOL)matchesAccessoryServer:(id)a3
+- (BOOL)matchesAccessoryServer:(id)server
 {
-  v4 = a3;
-  v5 = [(HMDUnpairedHAPAccessoryPairingInformation *)self setupID];
-  v6 = [(HMDUnpairedHAPAccessoryPairingInformation *)self accessoryServerIdentifier];
-  v7 = [v4 matchesSetupID:v5 serverIdentifier:v6];
+  serverCopy = server;
+  setupID = [(HMDUnpairedHAPAccessoryPairingInformation *)self setupID];
+  accessoryServerIdentifier = [(HMDUnpairedHAPAccessoryPairingInformation *)self accessoryServerIdentifier];
+  v7 = [serverCopy matchesSetupID:setupID serverIdentifier:accessoryServerIdentifier];
 
   return v7;
 }
 
-- (BOOL)matchesUnpairedAccessory:(id)a3
+- (BOOL)matchesUnpairedAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 preferredAccessoryServer];
-  if ([(HMDUnpairedHAPAccessoryPairingInformation *)self matchesAccessoryServer:v5])
+  accessoryCopy = accessory;
+  preferredAccessoryServer = [accessoryCopy preferredAccessoryServer];
+  if ([(HMDUnpairedHAPAccessoryPairingInformation *)self matchesAccessoryServer:preferredAccessoryServer])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v4 uuid];
-    v8 = [(HMDUnpairedHAPAccessoryPairingInformation *)self accessoryUUID];
-    v6 = [v7 isEqual:v8];
+    uuid = [accessoryCopy uuid];
+    accessoryUUID = [(HMDUnpairedHAPAccessoryPairingInformation *)self accessoryUUID];
+    v6 = [uuid isEqual:accessoryUUID];
   }
 
   return v6;
@@ -49,43 +49,43 @@
 {
   v3 = isInternalBuild();
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HMDUnpairedHAPAccessoryPairingInformation *)self accessoryName];
-  v6 = [(HMDUnpairedHAPAccessoryPairingInformation *)self accessoryUUID];
-  v7 = [v6 UUIDString];
-  v8 = v7;
+  accessoryName = [(HMDUnpairedHAPAccessoryPairingInformation *)self accessoryName];
+  accessoryUUID = [(HMDUnpairedHAPAccessoryPairingInformation *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
+  v8 = uUIDString;
   if (v3)
   {
-    v9 = [(HMDUnpairedHAPAccessoryPairingInformation *)self setupID];
-    v10 = [(HMDUnpairedHAPAccessoryPairingInformation *)self setupCode];
+    setupID = [(HMDUnpairedHAPAccessoryPairingInformation *)self setupID];
+    setupCode = [(HMDUnpairedHAPAccessoryPairingInformation *)self setupCode];
     [(HMDUnpairedHAPAccessoryPairingInformation *)self wacAccessory];
     v11 = HMFBooleanToString();
     [(HMDUnpairedHAPAccessoryPairingInformation *)self legacyWAC];
     v12 = HMFBooleanToString();
-    v13 = [(HMDUnpairedHAPAccessoryPairingInformation *)self homeUUID];
-    v14 = [v4 stringWithFormat:@"accessoryName: %@, accessoryUUID: %@, setupID: %@, setupCode: %@, WAC: %@, legacyWAC: %@ homeUUID: %@", v5, v8, v9, v10, v11, v12, v13];
+    homeUUID = [(HMDUnpairedHAPAccessoryPairingInformation *)self homeUUID];
+    v14 = [v4 stringWithFormat:@"accessoryName: %@, accessoryUUID: %@, setupID: %@, setupCode: %@, WAC: %@, legacyWAC: %@ homeUUID: %@", accessoryName, v8, setupID, setupCode, v11, v12, homeUUID];
   }
 
   else
   {
-    v14 = [v4 stringWithFormat:@"accessoryName: %@, accessoryUUID: %@", v5, v7];
+    v14 = [v4 stringWithFormat:@"accessoryName: %@, accessoryUUID: %@", accessoryName, uUIDString];
   }
 
   return v14;
 }
 
-- (HMDUnpairedHAPAccessoryPairingInformation)initWithAccessoryDescription:(id)a3 linkType:(int64_t)a4 completionHandler:(id)a5 progressHandler:(id)a6 pairingRequest:(id)a7
+- (HMDUnpairedHAPAccessoryPairingInformation)initWithAccessoryDescription:(id)description linkType:(int64_t)type completionHandler:(id)handler progressHandler:(id)progressHandler pairingRequest:(id)request
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  descriptionCopy = description;
+  handlerCopy = handler;
+  requestCopy = request;
   v40.receiver = self;
   v40.super_class = HMDUnpairedHAPAccessoryPairingInformation;
-  v15 = a6;
+  progressHandlerCopy = progressHandler;
   v16 = [(HMDUnpairedHAPAccessoryPairingInformation *)&v40 init];
-  v16->_linkType = a4;
-  if (!a4)
+  v16->_linkType = type;
+  if (!type)
   {
-    if ([v12 supportsBTLE])
+    if ([descriptionCopy supportsBTLE])
     {
       v17 = 2;
 LABEL_6:
@@ -93,7 +93,7 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    if ([v12 supportsIP])
+    if ([descriptionCopy supportsIP])
     {
       v17 = 1;
       goto LABEL_6;
@@ -101,88 +101,88 @@ LABEL_6:
   }
 
 LABEL_7:
-  v18 = _Block_copy(v13);
+  v18 = _Block_copy(handlerCopy);
   addAccessoryCompletionHandler = v16->_addAccessoryCompletionHandler;
   v16->_addAccessoryCompletionHandler = v18;
 
-  v20 = _Block_copy(v15);
+  v20 = _Block_copy(progressHandlerCopy);
   addAccessoryProgressHandler = v16->_addAccessoryProgressHandler;
   v16->_addAccessoryProgressHandler = v20;
 
-  v22 = [v12 accessoryUUID];
+  accessoryUUID = [descriptionCopy accessoryUUID];
   accessoryUUID = v16->_accessoryUUID;
-  v16->_accessoryUUID = v22;
+  v16->_accessoryUUID = accessoryUUID;
 
-  v24 = [v12 accessoryName];
+  accessoryName = [descriptionCopy accessoryName];
   accessoryName = v16->_accessoryName;
-  v16->_accessoryName = v24;
+  v16->_accessoryName = accessoryName;
 
-  v26 = [v12 accessoryServerIdentifier];
+  accessoryServerIdentifier = [descriptionCopy accessoryServerIdentifier];
   accessoryServerIdentifier = v16->_accessoryServerIdentifier;
-  v16->_accessoryServerIdentifier = v26;
+  v16->_accessoryServerIdentifier = accessoryServerIdentifier;
 
-  v28 = [v12 setupID];
+  setupID = [descriptionCopy setupID];
   setupID = v16->_setupID;
-  v16->_setupID = v28;
+  v16->_setupID = setupID;
 
-  v30 = [v12 setupCode];
+  setupCode = [descriptionCopy setupCode];
   setupCode = v16->_setupCode;
-  v16->_setupCode = v30;
+  v16->_setupCode = setupCode;
 
-  v32 = [v12 homeUUID];
+  homeUUID = [descriptionCopy homeUUID];
   homeUUID = v16->_homeUUID;
-  v16->_homeUUID = v32;
+  v16->_homeUUID = homeUUID;
 
-  v34 = [v12 setupAuthTokenUUID];
+  setupAuthTokenUUID = [descriptionCopy setupAuthTokenUUID];
   setupAuthTokenUUID = v16->_setupAuthTokenUUID;
-  v16->_setupAuthTokenUUID = v34;
+  v16->_setupAuthTokenUUID = setupAuthTokenUUID;
 
-  v36 = [v12 setupAuthToken];
+  setupAuthToken = [descriptionCopy setupAuthToken];
   setupAuthToken = v16->_setupAuthToken;
-  v16->_setupAuthToken = v36;
+  v16->_setupAuthToken = setupAuthToken;
 
-  v16->_wacAccessory = [v12 supportsWAC];
+  v16->_wacAccessory = [descriptionCopy supportsWAC];
   pairingRequest = v16->_pairingRequest;
-  v16->_pairingRequest = v14;
+  v16->_pairingRequest = requestCopy;
 
   return v16;
 }
 
-- (HMDUnpairedHAPAccessoryPairingInformation)initWithAccessoryUUID:(id)a3 accessoryName:(id)a4 linkType:(int64_t)a5 setupCode:(id)a6 completionHandler:(id)a7 setupCodeProvider:(id)a8 pairingRequest:(id)a9
+- (HMDUnpairedHAPAccessoryPairingInformation)initWithAccessoryUUID:(id)d accessoryName:(id)name linkType:(int64_t)type setupCode:(id)code completionHandler:(id)handler setupCodeProvider:(id)provider pairingRequest:(id)request
 {
-  v15 = a4;
-  v16 = a9;
+  nameCopy = name;
+  requestCopy = request;
   v34.receiver = self;
   v34.super_class = HMDUnpairedHAPAccessoryPairingInformation;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a3;
+  providerCopy = provider;
+  handlerCopy = handler;
+  codeCopy = code;
+  dCopy = d;
   v21 = [(HMDUnpairedHAPAccessoryPairingInformation *)&v34 init];
-  v21->_linkType = a5;
-  v22 = _Block_copy(v18);
+  v21->_linkType = type;
+  v22 = _Block_copy(handlerCopy);
 
   addAccessoryCompletionHandler = v21->_addAccessoryCompletionHandler;
   v21->_addAccessoryCompletionHandler = v22;
 
-  v24 = _Block_copy(v17);
+  v24 = _Block_copy(providerCopy);
   setupCodeProviderCompletionHandler = v21->_setupCodeProviderCompletionHandler;
   v21->_setupCodeProviderCompletionHandler = v24;
 
-  v26 = [v20 copy];
+  v26 = [dCopy copy];
   accessoryUUID = v21->_accessoryUUID;
   v21->_accessoryUUID = v26;
 
   accessoryName = v21->_accessoryName;
-  v21->_accessoryName = v15;
-  v29 = v15;
+  v21->_accessoryName = nameCopy;
+  v29 = nameCopy;
 
-  v30 = [v19 copy];
+  v30 = [codeCopy copy];
   setupCode = v21->_setupCode;
   v21->_setupCode = v30;
 
   pairingRequest = v21->_pairingRequest;
-  v21->_pairingRequest = v16;
+  v21->_pairingRequest = requestCopy;
 
   return v21;
 }

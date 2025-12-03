@@ -1,51 +1,51 @@
 @interface CHReflowableTextResultToken
-+ (id)reflowableTokensWithContext:(id)a3 contextStrokes:(id)a4 strokeProvider:(id)a5 skipLineOrientationEstimate:(BOOL)a6 shouldCancel:(id)a7;
-+ (id)reflowableTokensWithTextResult:(id)a3 principalLineResult:(id)a4 shouldUseRefinablePath:(BOOL)a5 strokeProvider:(id)a6 shouldCancel:(id)a7;
-+ (id)revertTokenOrder:(id)a3 textResult:(id)a4 initialStrokes:(id)a5 strokeProvider:(id)a6 shouldExtractFromRefinablePath:(BOOL)a7;
-- (CHReflowableTextResultToken)initWithString:(id)a3 strokeIdentifiers:(id)a4 nonTextStrokeIdentifiers:(id)a5 principalLines:(id *)a6 principalPoints:(id)a7 textSize:(id)a8 bounds:(CGRect)a9 hasPrecedingSpace:(BOOL)a10;
++ (id)reflowableTokensWithContext:(id)context contextStrokes:(id)strokes strokeProvider:(id)provider skipLineOrientationEstimate:(BOOL)estimate shouldCancel:(id)cancel;
++ (id)reflowableTokensWithTextResult:(id)result principalLineResult:(id)lineResult shouldUseRefinablePath:(BOOL)path strokeProvider:(id)provider shouldCancel:(id)cancel;
++ (id)revertTokenOrder:(id)order textResult:(id)result initialStrokes:(id)strokes strokeProvider:(id)provider shouldExtractFromRefinablePath:(BOOL)path;
+- (CHReflowableTextResultToken)initWithString:(id)string strokeIdentifiers:(id)identifiers nonTextStrokeIdentifiers:(id)strokeIdentifiers principalLines:(id *)lines principalPoints:(id)points textSize:(id)size bounds:(CGRect)bounds hasPrecedingSpace:(BOOL)self0;
 - (id)description;
 @end
 
 @implementation CHReflowableTextResultToken
 
-- (CHReflowableTextResultToken)initWithString:(id)a3 strokeIdentifiers:(id)a4 nonTextStrokeIdentifiers:(id)a5 principalLines:(id *)a6 principalPoints:(id)a7 textSize:(id)a8 bounds:(CGRect)a9 hasPrecedingSpace:(BOOL)a10
+- (CHReflowableTextResultToken)initWithString:(id)string strokeIdentifiers:(id)identifiers nonTextStrokeIdentifiers:(id)strokeIdentifiers principalLines:(id *)lines principalPoints:(id)points textSize:(id)size bounds:(CGRect)bounds hasPrecedingSpace:(BOOL)self0
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a7;
-  v24 = a8;
-  var1 = a6->var2.var1;
-  v46[4] = a6->var2.var0;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  stringCopy = string;
+  identifiersCopy = identifiers;
+  strokeIdentifiersCopy = strokeIdentifiers;
+  pointsCopy = points;
+  sizeCopy = size;
+  var1 = lines->var2.var1;
+  v46[4] = lines->var2.var0;
   v46[5] = var1;
-  v26 = a6->var3.var1;
-  v46[6] = a6->var3.var0;
+  v26 = lines->var3.var1;
+  v46[6] = lines->var3.var0;
   v46[7] = v26;
-  v27 = a6->var0.var1;
-  v46[0] = a6->var0.var0;
+  v27 = lines->var0.var1;
+  v46[0] = lines->var0.var0;
   v46[1] = v27;
-  v28 = a6->var1.var1;
-  v46[2] = a6->var1.var0;
+  v28 = lines->var1.var1;
+  v46[2] = lines->var1.var0;
   v46[3] = v28;
   v45.receiver = self;
   v45.super_class = CHReflowableTextResultToken;
-  v34 = [(CHReflowableTextToken *)&v45 initWithString:v20 principalLines:v46 principalPoints:v23 textSize:v24 bounds:a10 hasPrecedingSpace:x, y, width, height];
-  if (v34)
+  height = [(CHReflowableTextToken *)&v45 initWithString:stringCopy principalLines:v46 principalPoints:pointsCopy textSize:sizeCopy bounds:space hasPrecedingSpace:x, y, width, height];
+  if (height)
   {
-    v35 = objc_msgSend_copy(v21, v29, v30, v31, v32, v33);
-    strokeIdentifiers = v34->_strokeIdentifiers;
-    v34->_strokeIdentifiers = v35;
+    v35 = objc_msgSend_copy(identifiersCopy, v29, v30, v31, v32, v33);
+    strokeIdentifiers = height->_strokeIdentifiers;
+    height->_strokeIdentifiers = v35;
 
-    v42 = objc_msgSend_copy(v22, v37, v38, v39, v40, v41);
-    nonTextStrokeIdentifiers = v34->_nonTextStrokeIdentifiers;
-    v34->_nonTextStrokeIdentifiers = v42;
+    v42 = objc_msgSend_copy(strokeIdentifiersCopy, v37, v38, v39, v40, v41);
+    nonTextStrokeIdentifiers = height->_nonTextStrokeIdentifiers;
+    height->_nonTextStrokeIdentifiers = v42;
   }
 
-  return v34;
+  return height;
 }
 
 - (id)description
@@ -60,16 +60,16 @@
   return v31;
 }
 
-+ (id)reflowableTokensWithTextResult:(id)a3 principalLineResult:(id)a4 shouldUseRefinablePath:(BOOL)a5 strokeProvider:(id)a6 shouldCancel:(id)a7
++ (id)reflowableTokensWithTextResult:(id)result principalLineResult:(id)lineResult shouldUseRefinablePath:(BOOL)path strokeProvider:(id)provider shouldCancel:(id)cancel
 {
-  v9 = a5;
+  pathCopy = path;
   v33[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  resultCopy = result;
+  lineResultCopy = lineResult;
+  providerCopy = provider;
+  cancelCopy = cancel;
   v15 = objc_opt_class();
-  v17 = objc_msgSend_textLineFromTextResult_principalLineResult_shouldUseRefinablePath_strokeProvider_shouldCancel_(v15, v16, v11, v12, v9, v13, v14);
+  v17 = objc_msgSend_textLineFromTextResult_principalLineResult_shouldUseRefinablePath_strokeProvider_shouldCancel_(v15, v16, resultCopy, lineResultCopy, pathCopy, providerCopy, cancelCopy);
   v21 = v17;
   if (v17)
   {
@@ -85,23 +85,23 @@
   v23 = objc_opt_class();
   v28 = objc_msgSend_reflowableTextTokensFromTransformedTextLines_(v23, v24, v22, v25, v26, v27);
   v29 = objc_opt_class();
-  v31 = objc_msgSend_revertTokenOrder_textResult_initialStrokes_strokeProvider_shouldExtractFromRefinablePath_(v29, v30, v28, v11, 0, v13, v9);
+  v31 = objc_msgSend_revertTokenOrder_textResult_initialStrokes_strokeProvider_shouldExtractFromRefinablePath_(v29, v30, v28, resultCopy, 0, providerCopy, pathCopy);
 
   return v31;
 }
 
-+ (id)reflowableTokensWithContext:(id)a3 contextStrokes:(id)a4 strokeProvider:(id)a5 skipLineOrientationEstimate:(BOOL)a6 shouldCancel:(id)a7
++ (id)reflowableTokensWithContext:(id)context contextStrokes:(id)strokes strokeProvider:(id)provider skipLineOrientationEstimate:(BOOL)estimate shouldCancel:(id)cancel
 {
   v125 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v104 = v11;
-  v101 = v12;
-  v102 = a7;
-  v107 = v13;
+  contextCopy = context;
+  strokesCopy = strokes;
+  providerCopy = provider;
+  v104 = contextCopy;
+  v101 = strokesCopy;
+  cancelCopy = cancel;
+  v107 = providerCopy;
   v14 = objc_opt_class();
-  v103 = objc_msgSend_textLinesFromContext_strokeGroupingResult_contextStrokes_initialStrokes_strokeProvider_relatedNonTextStrokes_excludedStrokeTypes_skipLineOrientationEstimate_useCache_progress_shouldCancel_(v14, v15, v11, 0, v12, 0, v13, MEMORY[0x1E695E0F0], 0, a6, 0, v102);
+  v103 = objc_msgSend_textLinesFromContext_strokeGroupingResult_contextStrokes_initialStrokes_strokeProvider_relatedNonTextStrokes_excludedStrokeTypes_skipLineOrientationEstimate_useCache_progress_shouldCancel_(v14, v15, contextCopy, 0, strokesCopy, 0, providerCopy, MEMORY[0x1E695E0F0], 0, estimate, 0, cancelCopy);
   v16 = objc_opt_class();
   v21 = objc_msgSend_reflowableTextTokensFromTransformedTextLines_(v16, v17, v103, v18, v19, v20);
   v108 = objc_msgSend_array(MEMORY[0x1E695DF70], v22, v23, v24, v25, v26);
@@ -109,7 +109,7 @@
   v116 = 0u;
   v113 = 0u;
   v114 = 0u;
-  obj = objc_msgSend_textResults(v11, v27, v28, v29, v30, v31);
+  obj = objc_msgSend_textResults(contextCopy, v27, v28, v29, v30, v31);
   v39 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v32, &v113, v124, 16, v33);
   if (v39)
   {
@@ -130,7 +130,7 @@
 
         v55 = objc_opt_class();
         v61 = objc_msgSend_textResult(v42, v56, v57, v58, v59, v60);
-        v63 = objc_msgSend_revertTokenOrder_textResult_initialStrokes_strokeProvider_shouldExtractFromRefinablePath_(v55, v62, v21, v61, 0, v13, shouldUseOriginalTokensForLocale);
+        v63 = objc_msgSend_revertTokenOrder_textResult_initialStrokes_strokeProvider_shouldExtractFromRefinablePath_(v55, v62, v21, v61, 0, providerCopy, shouldUseOriginalTokensForLocale);
         objc_msgSend_addObjectsFromArray_(v108, v64, v63, v65, v66, v67);
       }
 
@@ -244,37 +244,37 @@ LABEL_27:
   return v105;
 }
 
-+ (id)revertTokenOrder:(id)a3 textResult:(id)a4 initialStrokes:(id)a5 strokeProvider:(id)a6 shouldExtractFromRefinablePath:(BOOL)a7
++ (id)revertTokenOrder:(id)order textResult:(id)result initialStrokes:(id)strokes strokeProvider:(id)provider shouldExtractFromRefinablePath:(BOOL)path
 {
-  v7 = a7;
+  pathCopy = path;
   v105 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v95 = v13;
+  orderCopy = order;
+  resultCopy = result;
+  strokesCopy = strokes;
+  providerCopy = provider;
+  v95 = strokesCopy;
   v20 = objc_msgSend_array(MEMORY[0x1E695DF70], v15, v16, v17, v18, v19);
-  v31 = objc_msgSend_inputStrokeIdentifiers(v12, v21, v22, v23, v24, v25);
-  if (v7)
+  v31 = objc_msgSend_inputStrokeIdentifiers(resultCopy, v21, v22, v23, v24, v25);
+  if (pathCopy)
   {
-    objc_msgSend_refinableTranscriptionPath(v12, v26, v27, v28, v29, v30, v31);
+    objc_msgSend_refinableTranscriptionPath(resultCopy, v26, v27, v28, v29, v30, v31);
   }
 
   else
   {
-    objc_msgSend_topModelTranscriptionPath(v12, v26, v27, v28, v29, v30, v31);
+    objc_msgSend_topModelTranscriptionPath(resultCopy, v26, v27, v28, v29, v30, v31);
   }
   v32 = ;
-  v35 = objc_msgSend_tokensAlignedWithStrokes_transcriptionPath_strokeProvider_(v12, v33, v13, v32, v14, v34);
+  v35 = objc_msgSend_tokensAlignedWithStrokes_transcriptionPath_strokeProvider_(resultCopy, v33, strokesCopy, v32, providerCopy, v34);
   v96[0] = MEMORY[0x1E69E9820];
   v96[1] = 3221225472;
   v96[2] = sub_1838915D0;
   v96[3] = &unk_1E6DDF568;
   v36 = v31;
   v97 = v36;
-  v37 = v11;
+  v37 = orderCopy;
   v98 = v37;
-  v38 = v14;
+  v38 = providerCopy;
   v99 = v38;
   v39 = v20;
   v100 = v39;

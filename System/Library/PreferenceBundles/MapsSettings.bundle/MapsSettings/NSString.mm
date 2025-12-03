@@ -1,29 +1,29 @@
 @interface NSString
-- (CGSize)_maps_sizeWithFont:(id)a3;
-- (CGSize)_maps_sizeWithFont:(id)a3 constrainedToSize:(CGSize)a4;
-- (CGSize)_maps_sizeWithFont:(id)a3 constrainedToSize:(CGSize)a4 options:(int64_t)a5;
+- (CGSize)_maps_sizeWithFont:(id)font;
+- (CGSize)_maps_sizeWithFont:(id)font constrainedToSize:(CGSize)size;
+- (CGSize)_maps_sizeWithFont:(id)font constrainedToSize:(CGSize)size options:(int64_t)options;
 - (NSString)sha1Hash;
-- (id)_maps_prefixMatchesForSearchString:(id)a3;
-- (void)_maps_drawAtPoint:(CGPoint)a3 withFont:(id)a4;
-- (void)_maps_drawInRect:(CGRect)a3 withFont:(id)a4;
+- (id)_maps_prefixMatchesForSearchString:(id)string;
+- (void)_maps_drawAtPoint:(CGPoint)point withFont:(id)font;
+- (void)_maps_drawInRect:(CGRect)rect withFont:(id)font;
 @end
 
 @implementation NSString
 
-- (id)_maps_prefixMatchesForSearchString:(id)a3
+- (id)_maps_prefixMatchesForSearchString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = +[NSMutableArray array];
   v6 = objc_autoreleasePoolPush();
   v7 = +[NSMutableArray array];
-  v8 = [v4 length];
+  v8 = [stringCopy length];
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_D500;
   v44[3] = &unk_69EA0;
   v9 = v7;
   v45 = v9;
-  [v4 enumerateSubstringsInRange:0 options:v8 usingBlock:{1027, v44}];
+  [stringCopy enumerateSubstringsInRange:0 options:v8 usingBlock:{1027, v44}];
   v10 = +[NSMutableArray array];
   v11 = [(NSString *)self length];
   v42[0] = _NSConcreteStackBlock;
@@ -44,7 +44,7 @@
     v31 = v5;
     v32 = *v39;
     context = v6;
-    v28 = v4;
+    v28 = stringCopy;
     v30 = v12;
     while (1)
     {
@@ -81,7 +81,7 @@ LABEL_8:
         v20 = *(*(&v34 + 1) + 8 * v19);
         v21 = [v20 objectAtIndexedSubscript:0];
         v22 = [v20 objectAtIndexedSubscript:1];
-        v23 = [v22 rangeValue];
+        rangeValue = [v22 rangeValue];
 
         if (![v21 localizedStandardRangeOfString:v14])
         {
@@ -100,7 +100,7 @@ LABEL_8:
         }
       }
 
-      v24 = +[NSValue valueWithRange:](NSValue, "valueWithRange:", v23, [v14 length]);
+      v24 = +[NSValue valueWithRange:](NSValue, "valueWithRange:", rangeValue, [v14 length]);
       v5 = v31;
       [v31 addObject:v24];
 
@@ -113,7 +113,7 @@ LABEL_8:
       }
 
       v6 = context;
-      v4 = v28;
+      stringCopy = v28;
       v33 = [obj countByEnumeratingWithState:&v38 objects:v47 count:16];
       if (!v33)
       {
@@ -125,7 +125,7 @@ LABEL_18:
 
     objc_autoreleasePoolPop(context);
     v25 = 0;
-    v4 = v28;
+    stringCopy = v28;
     v5 = v31;
   }
 
@@ -140,14 +140,14 @@ LABEL_17:
   return v25;
 }
 
-- (CGSize)_maps_sizeWithFont:(id)a3
+- (CGSize)_maps_sizeWithFont:(id)font
 {
-  if (a3)
+  if (font)
   {
     v12 = NSFontAttributeName;
-    v13 = a3;
-    v4 = a3;
-    v5 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
+    fontCopy = font;
+    fontCopy2 = font;
+    v5 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v12 count:1];
   }
 
   else
@@ -166,16 +166,16 @@ LABEL_17:
   return result;
 }
 
-- (CGSize)_maps_sizeWithFont:(id)a3 constrainedToSize:(CGSize)a4
+- (CGSize)_maps_sizeWithFont:(id)font constrainedToSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if (a3)
+  height = size.height;
+  width = size.width;
+  if (font)
   {
     v15 = NSFontAttributeName;
-    v16 = a3;
-    v7 = a3;
-    v8 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
+    fontCopy = font;
+    fontCopy2 = font;
+    v8 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v15 count:1];
   }
 
   else
@@ -194,16 +194,16 @@ LABEL_17:
   return result;
 }
 
-- (CGSize)_maps_sizeWithFont:(id)a3 constrainedToSize:(CGSize)a4 options:(int64_t)a5
+- (CGSize)_maps_sizeWithFont:(id)font constrainedToSize:(CGSize)size options:(int64_t)options
 {
-  height = a4.height;
-  width = a4.width;
-  if (a3)
+  height = size.height;
+  width = size.width;
+  if (font)
   {
     v17 = NSFontAttributeName;
-    v18 = a3;
-    v9 = a3;
-    v10 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
+    fontCopy = font;
+    fontCopy2 = font;
+    v10 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v17 count:1];
   }
 
   else
@@ -211,7 +211,7 @@ LABEL_17:
     v10 = 0;
   }
 
-  [(NSString *)self boundingRectWithSize:a5 options:v10 attributes:0 context:width, height];
+  [(NSString *)self boundingRectWithSize:options options:v10 attributes:0 context:width, height];
   v12 = v11;
   v14 = v13;
 
@@ -222,16 +222,16 @@ LABEL_17:
   return result;
 }
 
-- (void)_maps_drawAtPoint:(CGPoint)a3 withFont:(id)a4
+- (void)_maps_drawAtPoint:(CGPoint)point withFont:(id)font
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4)
+  y = point.y;
+  x = point.x;
+  if (font)
   {
     v9 = NSFontAttributeName;
-    v10 = a4;
-    v7 = a4;
-    v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
+    fontCopy = font;
+    fontCopy2 = font;
+    v8 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v9 count:1];
   }
 
   else
@@ -242,18 +242,18 @@ LABEL_17:
   [(NSString *)self drawAtPoint:v8 withAttributes:x, y];
 }
 
-- (void)_maps_drawInRect:(CGRect)a3 withFont:(id)a4
+- (void)_maps_drawInRect:(CGRect)rect withFont:(id)font
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (font)
   {
     v11 = NSFontAttributeName;
-    v12 = a4;
-    v9 = a4;
-    v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
+    fontCopy = font;
+    fontCopy2 = font;
+    v10 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v11 count:1];
   }
 
   else

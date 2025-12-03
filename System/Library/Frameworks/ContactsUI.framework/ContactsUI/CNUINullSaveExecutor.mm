@@ -1,25 +1,25 @@
 @interface CNUINullSaveExecutor
-- (id)executeSaveWithConfiguration:(id)a3 saveDelegate:(id)a4;
+- (id)executeSaveWithConfiguration:(id)configuration saveDelegate:(id)delegate;
 @end
 
 @implementation CNUINullSaveExecutor
 
-- (id)executeSaveWithConfiguration:(id)a3 saveDelegate:(id)a4
+- (id)executeSaveWithConfiguration:(id)configuration saveDelegate:(id)delegate
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = CNUILogContactCard();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134349056;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_199A75000, v6, OS_LOG_TYPE_DEFAULT, "[CNUINullSaveExecutor] %{public}p will execute save…", &v11, 0xCu);
   }
 
   v7 = [CNUIContactSaveResult alloc];
-  v8 = [v5 mutableContact];
+  mutableContact = [configurationCopy mutableContact];
 
-  v9 = [(CNUIContactSaveResult *)v7 initWithSuccess:1 contact:v8 identifiersOfIssuedSaveRequests:MEMORY[0x1E695E0F0]];
+  v9 = [(CNUIContactSaveResult *)v7 initWithSuccess:1 contact:mutableContact identifiersOfIssuedSaveRequests:MEMORY[0x1E695E0F0]];
 
   return v9;
 }

@@ -1,125 +1,125 @@
 @interface NTKPigmentCollectionConfig
-+ (id)collectionConfigFromProtoBuffer:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)collectionConfigFromProtoBuffer:(id)buffer;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)protoBuffer;
-- (void)applyCollectionOverrideNameOnItems:(id)a3;
-- (void)overridePropertiesFromConfig:(id)a3;
-- (void)removeExcludedItemsFromList:(id)a3;
+- (void)applyCollectionOverrideNameOnItems:(id)items;
+- (void)overridePropertiesFromConfig:(id)config;
+- (void)removeExcludedItemsFromList:(id)list;
 @end
 
 @implementation NTKPigmentCollectionConfig
 
-- (void)overridePropertiesFromConfig:(id)a3
+- (void)overridePropertiesFromConfig:(id)config
 {
-  v31 = a3;
-  v4 = [v31 defaultColorOptionName];
+  configCopy = config;
+  defaultColorOptionName = [configCopy defaultColorOptionName];
 
-  if (v4)
+  if (defaultColorOptionName)
   {
-    v5 = [v31 defaultColorOptionName];
-    [(NTKPigmentCollectionConfig *)self setDefaultColorOptionName:v5];
+    defaultColorOptionName2 = [configCopy defaultColorOptionName];
+    [(NTKPigmentCollectionConfig *)self setDefaultColorOptionName:defaultColorOptionName2];
   }
 
-  v6 = [v31 sensitivity];
+  sensitivity = [configCopy sensitivity];
 
-  if (v6)
+  if (sensitivity)
   {
-    v7 = [v31 sensitivity];
-    [(NTKPigmentCollectionConfig *)self setSensitivity:v7];
+    sensitivity2 = [configCopy sensitivity];
+    [(NTKPigmentCollectionConfig *)self setSensitivity:sensitivity2];
   }
 
-  v8 = [v31 isAddable];
+  isAddable = [configCopy isAddable];
 
-  if (v8)
+  if (isAddable)
   {
-    v9 = [v31 isAddable];
-    [(NTKPigmentCollectionConfig *)self setIsAddable:v9];
+    isAddable2 = [configCopy isAddable];
+    [(NTKPigmentCollectionConfig *)self setIsAddable:isAddable2];
   }
 
-  v10 = [v31 supportsSlider];
+  supportsSlider = [configCopy supportsSlider];
 
-  if (v10)
+  if (supportsSlider)
   {
-    v11 = [v31 supportsSlider];
-    [(NTKPigmentCollectionConfig *)self setSupportsSlider:v11];
+    supportsSlider2 = [configCopy supportsSlider];
+    [(NTKPigmentCollectionConfig *)self setSupportsSlider:supportsSlider2];
   }
 
-  v12 = [(NTKPigmentCollectionConfig *)self migration];
-  if (v12 && (v13 = v12, [v31 migration], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
+  migration = [(NTKPigmentCollectionConfig *)self migration];
+  if (migration && (v13 = migration, [configCopy migration], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
   {
-    v15 = [(NTKPigmentCollectionConfig *)self migration];
-    v16 = [v15 mutableCopy];
+    migration2 = [(NTKPigmentCollectionConfig *)self migration];
+    migration5 = [migration2 mutableCopy];
 
-    v17 = [v31 migration];
-    [v16 addEntriesFromDictionary:v17];
+    migration3 = [configCopy migration];
+    [migration5 addEntriesFromDictionary:migration3];
   }
 
   else
   {
-    v18 = [v31 migration];
+    migration4 = [configCopy migration];
 
-    if (!v18)
+    if (!migration4)
     {
       goto LABEL_15;
     }
 
-    v16 = [v31 migration];
+    migration5 = [configCopy migration];
   }
 
-  [(NTKPigmentCollectionConfig *)self setMigration:v16];
+  [(NTKPigmentCollectionConfig *)self setMigration:migration5];
 
 LABEL_15:
-  v19 = [v31 exclusions];
+  exclusions = [configCopy exclusions];
 
-  if (v19)
+  if (exclusions)
   {
-    v20 = [(NTKPigmentCollectionConfig *)self exclusions];
-    v21 = [v31 exclusions];
-    v22 = [v20 arrayByAddingObjectsFromArray:v21];
+    exclusions2 = [(NTKPigmentCollectionConfig *)self exclusions];
+    exclusions3 = [configCopy exclusions];
+    v22 = [exclusions2 arrayByAddingObjectsFromArray:exclusions3];
     [(NTKPigmentCollectionConfig *)self setExclusions:v22];
   }
 
-  v23 = [v31 excludesDuotone];
+  excludesDuotone = [configCopy excludesDuotone];
 
-  if (v23)
+  if (excludesDuotone)
   {
-    v24 = [v31 excludesDuotone];
-    [(NTKPigmentCollectionConfig *)self setExcludesDuotone:v24];
+    excludesDuotone2 = [configCopy excludesDuotone];
+    [(NTKPigmentCollectionConfig *)self setExcludesDuotone:excludesDuotone2];
   }
 
-  [v31 collectionOverride];
+  [configCopy collectionOverride];
 
-  v25 = [v31 defaultGalleryColorNames];
+  defaultGalleryColorNames = [configCopy defaultGalleryColorNames];
 
-  if (v25)
+  if (defaultGalleryColorNames)
   {
-    v26 = [v31 defaultGalleryColorNames];
-    [(NTKPigmentCollectionConfig *)self setDefaultGalleryColorNames:v26];
+    defaultGalleryColorNames2 = [configCopy defaultGalleryColorNames];
+    [(NTKPigmentCollectionConfig *)self setDefaultGalleryColorNames:defaultGalleryColorNames2];
   }
 
-  v27 = [v31 defaultColorOptionName];
-  if (v27)
+  defaultColorOptionName3 = [configCopy defaultColorOptionName];
+  if (defaultColorOptionName3)
   {
-    v28 = v27;
-    v29 = [v31 defaultConfigAttributeName];
+    v28 = defaultColorOptionName3;
+    defaultConfigAttributeName = [configCopy defaultConfigAttributeName];
 
-    if (v29)
+    if (defaultConfigAttributeName)
     {
-      v30 = [v31 defaultConfigAttributeName];
-      [(NTKPigmentCollectionConfig *)self setDefaultConfigAttributeName:v30];
+      defaultConfigAttributeName2 = [configCopy defaultConfigAttributeName];
+      [(NTKPigmentCollectionConfig *)self setDefaultConfigAttributeName:defaultConfigAttributeName2];
     }
   }
 }
 
-- (void)removeExcludedItemsFromList:(id)a3
+- (void)removeExcludedItemsFromList:(id)list
 {
-  v4 = a3;
-  v5 = [(NTKPigmentCollectionConfig *)self exclusions];
-  if ([v5 count])
+  listCopy = list;
+  exclusions = [(NTKPigmentCollectionConfig *)self exclusions];
+  if ([exclusions count])
   {
-    v6 = [v4 count];
+    v6 = [listCopy count];
 
     if (!v6)
     {
@@ -128,25 +128,25 @@ LABEL_15:
 
 LABEL_6:
     v9 = MEMORY[0x277CBEB58];
-    v10 = [(NTKPigmentCollectionConfig *)self exclusions];
-    v11 = [v9 setWithArray:v10];
+    exclusions2 = [(NTKPigmentCollectionConfig *)self exclusions];
+    v11 = [v9 setWithArray:exclusions2];
 
-    v12 = [(NTKPigmentCollectionConfig *)self exclusions];
+    exclusions3 = [(NTKPigmentCollectionConfig *)self exclusions];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __58__NTKPigmentCollectionConfig_removeExcludedItemsFromList___block_invoke;
     v19[3] = &unk_27877DED0;
     v13 = v11;
     v20 = v13;
-    [v12 enumerateObjectsUsingBlock:v19];
+    [exclusions3 enumerateObjectsUsingBlock:v19];
 
-    v14 = [v4 copy];
+    v14 = [listCopy copy];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __58__NTKPigmentCollectionConfig_removeExcludedItemsFromList___block_invoke_2;
     v16[3] = &unk_278780730;
     v16[4] = self;
-    v17 = v4;
+    v17 = listCopy;
     v18 = v13;
     v15 = v13;
     [v14 enumerateObjectsUsingBlock:v16];
@@ -154,14 +154,14 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v7 = [(NTKPigmentCollectionConfig *)self excludesDuotone];
-  if (([v7 BOOLValue] & 1) == 0)
+  excludesDuotone = [(NTKPigmentCollectionConfig *)self excludesDuotone];
+  if (([excludesDuotone BOOLValue] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [v4 count];
+  v8 = [listCopy count];
 
   if (v8)
   {
@@ -191,41 +191,41 @@ void __58__NTKPigmentCollectionConfig_removeExcludedItemsFromList___block_invoke
   }
 }
 
-- (void)applyCollectionOverrideNameOnItems:(id)a3
+- (void)applyCollectionOverrideNameOnItems:(id)items
 {
-  v14 = a3;
-  v4 = [(NTKPigmentCollectionConfig *)self collectionOverride];
-  v5 = v14;
-  if (v4)
+  itemsCopy = items;
+  collectionOverride = [(NTKPigmentCollectionConfig *)self collectionOverride];
+  v5 = itemsCopy;
+  if (collectionOverride)
   {
-    v6 = [v14 count];
+    v6 = [itemsCopy count];
 
-    v5 = v14;
+    v5 = itemsCopy;
     if (v6)
     {
-      v7 = [v14 copy];
+      v7 = [itemsCopy copy];
       if ([v7 count])
       {
         v8 = 0;
         do
         {
           v9 = [v7 objectAtIndexedSubscript:v8];
-          v10 = [v9 collectionName];
-          v11 = [v9 effectiveCollectionName];
-          if ([v10 isEqualToString:v11])
+          collectionName = [v9 collectionName];
+          effectiveCollectionName = [v9 effectiveCollectionName];
+          if ([collectionName isEqualToString:effectiveCollectionName])
           {
-            v12 = [(NTKPigmentCollectionConfig *)self collectionOverride];
-            v13 = [v9 copyWithCollectionOverride:v12];
+            collectionOverride2 = [(NTKPigmentCollectionConfig *)self collectionOverride];
+            v13 = [v9 copyWithCollectionOverride:collectionOverride2];
 
-            [v14 removeObject:v9];
-            if ([v14 count] - 1 <= v8)
+            [itemsCopy removeObject:v9];
+            if ([itemsCopy count] - 1 <= v8)
             {
-              [v14 addObject:v13];
+              [itemsCopy addObject:v13];
             }
 
             else
             {
-              [v14 insertObject:v13 atIndex:v8];
+              [itemsCopy insertObject:v13 atIndex:v8];
             }
           }
 
@@ -235,12 +235,12 @@ void __58__NTKPigmentCollectionConfig_removeExcludedItemsFromList___block_invoke
         while ([v7 count] > v8);
       }
 
-      v5 = v14;
+      v5 = itemsCopy;
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSString *)self->_defaultColorOptionName copy];
@@ -302,70 +302,70 @@ void __58__NTKPigmentCollectionConfig_removeExcludedItemsFromList___block_invoke
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     v29 = 0;
     v30 = &v29;
     v31 = 0x2020000000;
-    v32 = NTKEqualObjects(self->_defaultColorOptionName, v4[1]);
+    v32 = NTKEqualObjects(self->_defaultColorOptionName, equalCopy[1]);
     v5 = v30;
     if (*(v30 + 24) == 1)
     {
-      v6 = NTKEqualObjects(self->_fallbackDefaultColorOptionName, v4[2]);
+      v6 = NTKEqualObjects(self->_fallbackDefaultColorOptionName, equalCopy[2]);
       v5 = v30;
       *(v30 + 24) = v6;
       if (v6)
       {
-        v7 = NTKEqualObjects(self->_defaultConfigAttributeName, v4[3]);
+        v7 = NTKEqualObjects(self->_defaultConfigAttributeName, equalCopy[3]);
         v5 = v30;
         *(v30 + 24) = v7;
         if (v7)
         {
-          v8 = NTKEqualObjects(self->_sensitivity, v4[5]);
+          v8 = NTKEqualObjects(self->_sensitivity, equalCopy[5]);
           v5 = v30;
           *(v30 + 24) = v8;
           if (v8)
           {
-            v9 = NTKEqualObjects(self->_isAddable, v4[6]);
+            v9 = NTKEqualObjects(self->_isAddable, equalCopy[6]);
             v5 = v30;
             *(v30 + 24) = v9;
             if (v9)
             {
-              v10 = NTKEqualObjects(self->_supportsSlider, v4[7]);
+              v10 = NTKEqualObjects(self->_supportsSlider, equalCopy[7]);
               v5 = v30;
               *(v30 + 24) = v10;
               if (v10)
               {
-                v11 = NTKEqualObjects(self->_featureFlag, v4[10]);
+                v11 = NTKEqualObjects(self->_featureFlag, equalCopy[10]);
                 v5 = v30;
                 *(v30 + 24) = v11;
                 if (v11)
                 {
-                  v12 = NTKEqualObjects(self->_sortedByHue, v4[11]);
+                  v12 = NTKEqualObjects(self->_sortedByHue, equalCopy[11]);
                   v5 = v30;
                   *(v30 + 24) = v12;
                   if (v12)
                   {
-                    v13 = NTKEqualObjects(self->_collectionOverride, v4[13]);
+                    v13 = NTKEqualObjects(self->_collectionOverride, equalCopy[13]);
                     v5 = v30;
                     *(v30 + 24) = v13;
                     if (v13)
                     {
-                      v14 = self->_excludesDuotone == v4[8];
+                      v14 = self->_excludesDuotone == equalCopy[8];
                       *(v5 + 24) = v14;
                       if (v14)
                       {
                         v15 = [(NSArray *)self->_exclusions count];
-                        v16 = [v4[12] count];
+                        v16 = [equalCopy[12] count];
                         v5 = v30;
                         *(v30 + 24) = v15 == v16;
                         if (v15 == v16)
                         {
                           v17 = [(NSDictionary *)self->_migration count];
-                          v18 = [v4[9] count];
+                          v18 = [equalCopy[9] count];
                           *(v30 + 24) = v17 == v18;
                           if (v17 != v18)
                           {
@@ -376,7 +376,7 @@ void __58__NTKPigmentCollectionConfig_removeExcludedItemsFromList___block_invoke
                           while ([(NSArray *)self->_exclusions count]> v19)
                           {
                             v20 = [(NSArray *)self->_exclusions objectAtIndexedSubscript:v19];
-                            v21 = [v4[12] objectAtIndexedSubscript:v19];
+                            v21 = [equalCopy[12] objectAtIndexedSubscript:v19];
                             v22 = [v20 isEqualToString:v21];
                             *(v30 + 24) = v22;
 
@@ -395,7 +395,7 @@ void __58__NTKPigmentCollectionConfig_removeExcludedItemsFromList___block_invoke
                             v26[1] = 3221225472;
                             v26[2] = __38__NTKPigmentCollectionConfig_isEqual___block_invoke;
                             v26[3] = &unk_278787438;
-                            v27 = v4;
+                            v27 = equalCopy;
                             v28 = &v29;
                             [(NSDictionary *)migration enumerateKeysAndObjectsUsingBlock:v26];
 
@@ -494,85 +494,85 @@ void __38__NTKPigmentCollectionConfig_isEqual___block_invoke(uint64_t a1, uint64
   v2 = MEMORY[0x277CCACA8];
   collectionOverride = self->_collectionOverride;
   defaultColorOptionName = self->_defaultColorOptionName;
-  v5 = [(NSArray *)self->_defaultGalleryColorNames ntk_flatDescription];
-  v6 = [v2 stringWithFormat:@"config [collectionOverride: %@, defaultColorOptionName:%@, defaultGalleryColorNames:%@]", collectionOverride, defaultColorOptionName, v5];
+  ntk_flatDescription = [(NSArray *)self->_defaultGalleryColorNames ntk_flatDescription];
+  v6 = [v2 stringWithFormat:@"config [collectionOverride: %@, defaultColorOptionName:%@, defaultGalleryColorNames:%@]", collectionOverride, defaultColorOptionName, ntk_flatDescription];
 
   return v6;
 }
 
-+ (id)collectionConfigFromProtoBuffer:(id)a3
++ (id)collectionConfigFromProtoBuffer:(id)buffer
 {
-  v3 = a3;
-  if (v3)
+  bufferCopy = buffer;
+  if (bufferCopy)
   {
     v4 = objc_alloc_init(NTKPigmentCollectionConfig);
-    v5 = [v3 defaultColorOptionName];
-    [(NTKPigmentCollectionConfig *)v4 setDefaultColorOptionName:v5];
+    defaultColorOptionName = [bufferCopy defaultColorOptionName];
+    [(NTKPigmentCollectionConfig *)v4 setDefaultColorOptionName:defaultColorOptionName];
 
-    v6 = [v3 fallbackDefaultColorOptionName];
-    [(NTKPigmentCollectionConfig *)v4 setFallbackDefaultColorOptionName:v6];
+    fallbackDefaultColorOptionName = [bufferCopy fallbackDefaultColorOptionName];
+    [(NTKPigmentCollectionConfig *)v4 setFallbackDefaultColorOptionName:fallbackDefaultColorOptionName];
 
-    v7 = [v3 defaultConfigAttributeName];
-    [(NTKPigmentCollectionConfig *)v4 setDefaultConfigAttributeName:v7];
+    defaultConfigAttributeName = [bufferCopy defaultConfigAttributeName];
+    [(NTKPigmentCollectionConfig *)v4 setDefaultConfigAttributeName:defaultConfigAttributeName];
 
-    if ([v3 hasSensitivity])
+    if ([bufferCopy hasSensitivity])
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "sensitivity")}];
+      v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(bufferCopy, "sensitivity")}];
       [(NTKPigmentCollectionConfig *)v4 setSensitivity:v8];
     }
 
-    if ([v3 hasIsAddable])
+    if ([bufferCopy hasIsAddable])
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isAddable")}];
+      v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(bufferCopy, "isAddable")}];
       [(NTKPigmentCollectionConfig *)v4 setIsAddable:v9];
     }
 
-    if ([v3 hasSupportsSlider])
+    if ([bufferCopy hasSupportsSlider])
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "supportsSlider")}];
+      v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(bufferCopy, "supportsSlider")}];
       [(NTKPigmentCollectionConfig *)v4 setSupportsSlider:v10];
     }
 
-    v11 = [v3 featureFlag];
-    [(NTKPigmentCollectionConfig *)v4 setFeatureFlag:v11];
+    featureFlag = [bufferCopy featureFlag];
+    [(NTKPigmentCollectionConfig *)v4 setFeatureFlag:featureFlag];
 
-    if ([v3 hasSortedByHue])
+    if ([bufferCopy hasSortedByHue])
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "sortedByHue")}];
+      v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(bufferCopy, "sortedByHue")}];
       [(NTKPigmentCollectionConfig *)v4 setSortedByHue:v12];
     }
 
-    if ([v3 hasExcludesDuotone])
+    if ([bufferCopy hasExcludesDuotone])
     {
-      v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "excludesDuotone")}];
+      v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(bufferCopy, "excludesDuotone")}];
       [(NTKPigmentCollectionConfig *)v4 setExcludesDuotone:v13];
     }
 
-    v14 = [v3 collectionOverride];
-    [(NTKPigmentCollectionConfig *)v4 setCollectionOverride:v14];
+    collectionOverride = [bufferCopy collectionOverride];
+    [(NTKPigmentCollectionConfig *)v4 setCollectionOverride:collectionOverride];
 
-    v15 = [v3 exclusions];
-    [(NTKPigmentCollectionConfig *)v4 setExclusions:v15];
+    exclusions = [bufferCopy exclusions];
+    [(NTKPigmentCollectionConfig *)v4 setExclusions:exclusions];
 
-    v16 = [v3 migrations];
+    migrations = [bufferCopy migrations];
 
-    if (v16)
+    if (migrations)
     {
-      v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "migrationsCount")}];
-      v18 = [v3 migrations];
+      v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(bufferCopy, "migrationsCount")}];
+      migrations2 = [bufferCopy migrations];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __62__NTKPigmentCollectionConfig_collectionConfigFromProtoBuffer___block_invoke;
       v22[3] = &unk_278787460;
       v23 = v17;
       v19 = v17;
-      [v18 enumerateObjectsUsingBlock:v22];
+      [migrations2 enumerateObjectsUsingBlock:v22];
 
       [(NTKPigmentCollectionConfig *)v4 setMigration:v19];
     }
 
-    v20 = [v3 defaultGalleryColorNames];
-    [(NTKPigmentCollectionConfig *)v4 setDefaultGalleryColorNames:v20];
+    defaultGalleryColorNames = [bufferCopy defaultGalleryColorNames];
+    [(NTKPigmentCollectionConfig *)v4 setDefaultGalleryColorNames:defaultGalleryColorNames];
   }
 
   else

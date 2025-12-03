@@ -1,44 +1,44 @@
 @interface PDFOverlayViewsController
-+ (id)instanceForPlatformWithPDFView:(id)a3;
++ (id)instanceForPlatformWithPDFView:(id)view;
 - (PDFDocument)pdfDocument;
-- (PDFOverlayViewsController)initWithPDFView:(id)a3;
+- (PDFOverlayViewsController)initWithPDFView:(id)view;
 - (PDFPageOverlayViewProvider)viewProvider;
 - (PDFView)pdfView;
-- (id)_callOverlayViewForPage:(id)a3;
-- (void)_callWillEndDisplayingOverlayViewForPage:(id)a3;
-- (void)_pageRotationChanged:(id)a3;
-- (void)_setupRotationNotificationObservationForPageAtIndex:(unint64_t)a3;
+- (id)_callOverlayViewForPage:(id)page;
+- (void)_callWillEndDisplayingOverlayViewForPage:(id)page;
+- (void)_pageRotationChanged:(id)changed;
+- (void)_setupRotationNotificationObservationForPageAtIndex:(unint64_t)index;
 - (void)_teardown;
-- (void)_teardownRotationNotificationObservationForPageAtIndex:(unint64_t)a3;
+- (void)_teardownRotationNotificationObservationForPageAtIndex:(unint64_t)index;
 - (void)_uninstallAllOverlays;
 - (void)dealloc;
-- (void)pdfView:(id)a3 didAddView:(id)a4 forPage:(id)a5 atIndex:(unint64_t)a6;
-- (void)pdfView:(id)a3 didSetDocument:(id)a4;
-- (void)pdfView:(id)a3 willRemoveView:(id)a4 forPage:(id)a5 atIndex:(unint64_t)a6;
-- (void)pdfView:(id)a3 willSetDocument:(id)a4;
+- (void)pdfView:(id)view didAddView:(id)addView forPage:(id)page atIndex:(unint64_t)index;
+- (void)pdfView:(id)view didSetDocument:(id)document;
+- (void)pdfView:(id)view willRemoveView:(id)removeView forPage:(id)page atIndex:(unint64_t)index;
+- (void)pdfView:(id)view willSetDocument:(id)document;
 - (void)teardown;
 @end
 
 @implementation PDFOverlayViewsController
 
-+ (id)instanceForPlatformWithPDFView:(id)a3
++ (id)instanceForPlatformWithPDFView:(id)view
 {
-  v3 = a3;
-  v4 = [[PDFOverlayViewsController_ios alloc] initWithPDFView:v3];
+  viewCopy = view;
+  v4 = [[PDFOverlayViewsController_ios alloc] initWithPDFView:viewCopy];
 
   return v4;
 }
 
-- (PDFOverlayViewsController)initWithPDFView:(id)a3
+- (PDFOverlayViewsController)initWithPDFView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = PDFOverlayViewsController;
   v5 = [(PDFOverlayViewsController *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_pdfView, v4);
+    objc_storeWeak(&v5->_pdfView, viewCopy);
     v7 = objc_opt_new();
     observedPageIndices = v6->_observedPageIndices;
     v6->_observedPageIndices = v7;
@@ -95,106 +95,106 @@
   if (!self->_isTornDown)
   {
     self->_isTornDown = 1;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 }
 
-- (void)pdfView:(id)a3 willSetDocument:(id)a4
+- (void)pdfView:(id)view willSetDocument:(id)document
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  documentCopy = document;
   WeakRetained = objc_loadWeakRetained(&self->_pdfDocument);
 
-  if (WeakRetained != v6 && WeakRetained)
+  if (WeakRetained != documentCopy && WeakRetained)
   {
     v8 = objc_loadWeakRetained(&self->_viewProvider);
     if (objc_opt_respondsToSelector())
     {
-      [v8 teardownGestureRecognizersForView:v9];
+      [v8 teardownGestureRecognizersForView:viewCopy];
     }
 
     [(PDFOverlayViewsController *)self _uninstallAllOverlays];
   }
 }
 
-- (void)pdfView:(id)a3 didSetDocument:(id)a4
+- (void)pdfView:(id)view didSetDocument:(id)document
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  documentCopy = document;
   WeakRetained = objc_loadWeakRetained(&self->_pdfDocument);
 
-  if (WeakRetained != v6)
+  if (WeakRetained != documentCopy)
   {
-    objc_storeWeak(&self->_pdfDocument, v6);
-    if (v6)
+    objc_storeWeak(&self->_pdfDocument, documentCopy);
+    if (documentCopy)
     {
       v8 = objc_loadWeakRetained(&self->_viewProvider);
       if (objc_opt_respondsToSelector())
       {
-        [v8 setupGestureRecognizersForView:v9];
+        [v8 setupGestureRecognizersForView:viewCopy];
       }
     }
   }
 }
 
-- (void)pdfView:(id)a3 didAddView:(id)a4 forPage:(id)a5 atIndex:(unint64_t)a6
+- (void)pdfView:(id)view didAddView:(id)addView forPage:(id)page atIndex:(unint64_t)index
 {
-  v11 = a4;
-  v9 = a5;
+  addViewCopy = addView;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_pdfDocument);
 
   if (WeakRetained)
   {
-    [(PDFOverlayViewsController *)self _installOverlayForPageView:v11 ofPage:v9 atIndex:a6];
-    [(PDFOverlayViewsController *)self _setupRotationNotificationObservationForPageAtIndex:a6];
+    [(PDFOverlayViewsController *)self _installOverlayForPageView:addViewCopy ofPage:pageCopy atIndex:index];
+    [(PDFOverlayViewsController *)self _setupRotationNotificationObservationForPageAtIndex:index];
   }
 }
 
-- (void)pdfView:(id)a3 willRemoveView:(id)a4 forPage:(id)a5 atIndex:(unint64_t)a6
+- (void)pdfView:(id)view willRemoveView:(id)removeView forPage:(id)page atIndex:(unint64_t)index
 {
-  v11 = a4;
-  v9 = a5;
+  removeViewCopy = removeView;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_pdfDocument);
 
   if (WeakRetained)
   {
-    [(PDFOverlayViewsController *)self _teardownRotationNotificationObservationForPageAtIndex:a6];
-    [(PDFOverlayViewsController *)self _uninstallOverlayForPageView:v11 ofPage:v9 atIndex:a6];
+    [(PDFOverlayViewsController *)self _teardownRotationNotificationObservationForPageAtIndex:index];
+    [(PDFOverlayViewsController *)self _uninstallOverlayForPageView:removeViewCopy ofPage:pageCopy atIndex:index];
   }
 }
 
-- (id)_callOverlayViewForPage:(id)a3
+- (id)_callOverlayViewForPage:(id)page
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_pageToOverlayMap objectForKey:v4];
+  pageCopy = page;
+  v5 = [(NSMapTable *)self->_pageToOverlayMap objectForKey:pageCopy];
   if (!v5)
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewProvider);
-    v7 = [(PDFOverlayViewsController *)self pdfView];
-    v5 = [WeakRetained pdfView:v7 overlayViewForPage:v4];
+    pdfView = [(PDFOverlayViewsController *)self pdfView];
+    v5 = [WeakRetained pdfView:pdfView overlayViewForPage:pageCopy];
 
     if (v5)
     {
-      [(NSMapTable *)self->_pageToOverlayMap setObject:v5 forKey:v4];
+      [(NSMapTable *)self->_pageToOverlayMap setObject:v5 forKey:pageCopy];
     }
   }
 
   return v5;
 }
 
-- (void)_callWillEndDisplayingOverlayViewForPage:(id)a3
+- (void)_callWillEndDisplayingOverlayViewForPage:(id)page
 {
-  v7 = a3;
-  v4 = [(PDFOverlayViewsController *)self viewProvider];
-  v5 = [(PDFOverlayViewsController *)self _cachedOverlayViewForPage:v7];
+  pageCopy = page;
+  viewProvider = [(PDFOverlayViewsController *)self viewProvider];
+  v5 = [(PDFOverlayViewsController *)self _cachedOverlayViewForPage:pageCopy];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(PDFOverlayViewsController *)self pdfView];
-    [v4 pdfView:v6 willEndDisplayingOverlayView:v5 forPage:v7];
+    pdfView = [(PDFOverlayViewsController *)self pdfView];
+    [viewProvider pdfView:pdfView willEndDisplayingOverlayView:v5 forPage:pageCopy];
   }
 
-  [(NSMapTable *)self->_pageToOverlayMap removeObjectForKey:v7];
+  [(NSMapTable *)self->_pageToOverlayMap removeObjectForKey:pageCopy];
 }
 
 - (void)_uninstallAllOverlays
@@ -203,12 +203,12 @@
   if (WeakRetained)
   {
     v9 = WeakRetained;
-    v4 = [WeakRetained pageCount];
+    pageCount = [WeakRetained pageCount];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    if (v4)
+    if (pageCount)
     {
-      for (i = 0; i != v4; ++i)
+      for (i = 0; i != pageCount; ++i)
       {
         [(PDFOverlayViewsController *)self _teardownRotationNotificationObservationForPageAtIndex:i];
         v6 = objc_loadWeakRetained(&self->_pdfView);
@@ -224,46 +224,46 @@
   }
 }
 
-- (void)_setupRotationNotificationObservationForPageAtIndex:(unint64_t)a3
+- (void)_setupRotationNotificationObservationForPageAtIndex:(unint64_t)index
 {
   if (([(NSMutableIndexSet *)self->_observedPageIndices containsIndex:?]& 1) == 0)
   {
     if (![(NSMutableIndexSet *)self->_observedPageIndices count])
     {
       WeakRetained = objc_loadWeakRetained(&self->_pdfDocument);
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:self selector:sel__pageRotationChanged_ name:@"PDFPageDidRotate" object:WeakRetained];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__pageRotationChanged_ name:@"PDFPageDidRotate" object:WeakRetained];
     }
 
     observedPageIndices = self->_observedPageIndices;
 
-    [(NSMutableIndexSet *)observedPageIndices addIndex:a3];
+    [(NSMutableIndexSet *)observedPageIndices addIndex:index];
   }
 }
 
-- (void)_teardownRotationNotificationObservationForPageAtIndex:(unint64_t)a3
+- (void)_teardownRotationNotificationObservationForPageAtIndex:(unint64_t)index
 {
   if ([(NSMutableIndexSet *)self->_observedPageIndices containsIndex:?])
   {
-    [(NSMutableIndexSet *)self->_observedPageIndices removeIndex:a3];
+    [(NSMutableIndexSet *)self->_observedPageIndices removeIndex:index];
     if (![(NSMutableIndexSet *)self->_observedPageIndices count])
     {
       WeakRetained = objc_loadWeakRetained(&self->_pdfDocument);
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 removeObserver:self name:@"PDFPageDidRotate" object:WeakRetained];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:@"PDFPageDidRotate" object:WeakRetained];
     }
   }
 }
 
-- (void)_pageRotationChanged:(id)a3
+- (void)_pageRotationChanged:(id)changed
 {
-  v12 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_pdfDocument);
-  v5 = [v12 object];
-  if (v5 == WeakRetained)
+  object = [changedCopy object];
+  if (object == WeakRetained)
   {
-    v6 = [v12 userInfo];
-    v7 = [v6 objectForKey:@"page"];
+    userInfo = [changedCopy userInfo];
+    v7 = [userInfo objectForKey:@"page"];
     v8 = [WeakRetained indexForPage:v7];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {

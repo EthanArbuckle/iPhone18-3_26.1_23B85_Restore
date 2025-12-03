@@ -1,5 +1,5 @@
 @interface CHBoxcarFilterPointFIFO
-- (CHBoxcarFilterPointFIFO)initWithFIFO:(id)a3 width:(unint64_t)a4 spacing:(float)a5;
+- (CHBoxcarFilterPointFIFO)initWithFIFO:(id)o width:(unint64_t)width spacing:(float)spacing;
 - (id).cxx_construct;
 - (void)addPoint:(CHBoxcarFilterPointFIFO *)self;
 - (void)clear;
@@ -8,15 +8,15 @@
 
 @implementation CHBoxcarFilterPointFIFO
 
-- (CHBoxcarFilterPointFIFO)initWithFIFO:(id)a3 width:(unint64_t)a4 spacing:(float)a5
+- (CHBoxcarFilterPointFIFO)initWithFIFO:(id)o width:(unint64_t)width spacing:(float)spacing
 {
   v8.receiver = self;
   v8.super_class = CHBoxcarFilterPointFIFO;
-  result = [(CHPointFIFO *)&v8 initWithFIFO:a3];
+  result = [(CHPointFIFO *)&v8 initWithFIFO:o];
   if (result)
   {
-    result->_width = a4;
-    result->_spacing = a5;
+    result->_width = width;
+    result->_spacing = spacing;
   }
 
   return result;

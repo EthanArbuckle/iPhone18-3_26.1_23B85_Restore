@@ -16,7 +16,7 @@
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
   [v12 setObject:v11 forKeyedSubscript:@"upperBound"];
 
-  [a1 encodeObject:v12 forKey:v9];
+  [self encodeObject:v12 forKey:v9];
 }
 
 - (uint64_t)decodeMIORangeForKey:()MIORangeExtensions
@@ -26,14 +26,14 @@
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [a1 decodeObjectOfClasses:v8 forKey:v5];
+  v9 = [self decodeObjectOfClasses:v8 forKey:v5];
 
   v10 = [v9 objectForKeyedSubscript:@"lowerBound"];
   v11 = [v9 objectForKeyedSubscript:@"upperBound"];
-  v12 = [v10 integerValue];
+  integerValue = [v10 integerValue];
   [v11 integerValue];
 
-  return v12;
+  return integerValue;
 }
 
 @end

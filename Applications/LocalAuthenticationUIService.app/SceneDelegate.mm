@@ -1,25 +1,25 @@
 @interface SceneDelegate
 - (_TtC28LocalAuthenticationUIService13SceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  SceneDelegate.scene(_:willConnectTo:options:)(v8, v9, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  SceneDelegate.scene(_:willConnectTo:options:)(sceneCopy, sessionCopy, optionsCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  SceneDelegate.sceneDidDisconnect(_:)(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  SceneDelegate.sceneDidDisconnect(_:)(disconnectCopy);
 }
 
 - (_TtC28LocalAuthenticationUIService13SceneDelegate)init

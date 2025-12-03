@@ -6,7 +6,7 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (id)description;
-- (void)addCertificateString:(id)a3;
+- (void)addCertificateString:(id)string;
 @end
 
 @implementation ASResolveRecipientsCertificatesItem
@@ -20,7 +20,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_41 = v2;
     acceptsTopLevelLeaves___haveChecked_41 = 1;
   }
@@ -37,7 +37,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_41 = v2;
     parsingLeafNode___haveChecked_41 = 1;
   }
@@ -54,7 +54,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_41 = v2;
     parsingWithSubItems___haveChecked_41 = 1;
   }
@@ -71,7 +71,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_41 = v2;
     frontingBasicTypes___haveChecked_41 = 1;
   }
@@ -88,7 +88,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_41 = v2;
     notifyOfUnknownTokens___haveChecked_41 = 1;
   }
@@ -96,25 +96,25 @@
   return v2 & 1;
 }
 
-- (void)addCertificateString:(id)a3
+- (void)addCertificateString:(id)string
 {
-  v4 = a3;
-  v5 = [(ASResolveRecipientsCertificatesItem *)self mCertificates];
+  stringCopy = string;
+  mCertificates = [(ASResolveRecipientsCertificatesItem *)self mCertificates];
 
-  if (!v5)
+  if (!mCertificates)
   {
     v6 = objc_opt_new();
     [(ASResolveRecipientsCertificatesItem *)self setMCertificates:v6];
   }
 
-  v7 = [(ASResolveRecipientsCertificatesItem *)self mCertificates];
-  [v7 addObject:v4];
+  mCertificates2 = [(ASResolveRecipientsCertificatesItem *)self mCertificates];
+  [mCertificates2 addObject:stringCopy];
 }
 
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -131,7 +131,7 @@
     v5 = [v6 dictionaryWithObjectsAndKeys:{v7, v8, v9, v10, v11, v12, v13, v14, 0}];
 
     v15 = +[ASItem parseRuleCache];
-    v16 = NSStringFromClass(a1);
+    v16 = NSStringFromClass(self);
     [v15 setObject:v5 forKey:v16];
   }
 
@@ -145,13 +145,13 @@
   v22.receiver = self;
   v22.super_class = ASResolveRecipientsCertificatesItem;
   v4 = [(ASResolveRecipientsCertificatesItem *)&v22 description];
-  v5 = [(ASResolveRecipientsCertificatesItem *)self certCount];
-  v6 = [(ASResolveRecipientsCertificatesItem *)self recipientCount];
-  v7 = [(ASResolveRecipientsCertificatesItem *)self easStatus];
-  v8 = [v3 stringWithFormat:@"%@: certCount %@ recipientCount %@ easStatus %@", v4, v5, v6, v7];
+  certCount = [(ASResolveRecipientsCertificatesItem *)self certCount];
+  recipientCount = [(ASResolveRecipientsCertificatesItem *)self recipientCount];
+  easStatus = [(ASResolveRecipientsCertificatesItem *)self easStatus];
+  v8 = [v3 stringWithFormat:@"%@: certCount %@ recipientCount %@ easStatus %@", v4, certCount, recipientCount, easStatus];
 
-  v9 = [(ASResolveRecipientsCertificatesItem *)self certificates];
-  v10 = [v9 count];
+  certificates = [(ASResolveRecipientsCertificatesItem *)self certificates];
+  v10 = [certificates count];
 
   if (v10)
   {
@@ -162,8 +162,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(ASResolveRecipientsCertificatesItem *)self certificates];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  certificates2 = [(ASResolveRecipientsCertificatesItem *)self certificates];
+  v12 = [certificates2 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -174,13 +174,13 @@
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(certificates2);
         }
 
         [v8 appendFormat:@"<cert string length %ld hash %ld> ", objc_msgSend(*(*(&v18 + 1) + 8 * i), "length"), objc_msgSend(*(*(&v18 + 1) + 8 * i), "hash")];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v13 = [certificates2 countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v13);

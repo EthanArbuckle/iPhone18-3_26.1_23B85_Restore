@@ -1,12 +1,12 @@
 @interface HalogenMeasurement
 - (BOOL)_allocBuffers;
-- (BOOL)_connectToAccessoryManager:(int)a3;
+- (BOOL)_connectToAccessoryManager:(int)manager;
 - (BOOL)_createSleepWakeNotifier;
 - (BOOL)_initArbiter;
 - (BOOL)_initAudioPath;
 - (BOOL)shouldInvertData;
 - (id)getResultString;
-- (int)saveAsWav:(id)a3;
+- (int)saveAsWav:(id)wav;
 - (unsigned)maxOutputAmplitude;
 - (unsigned)signalOffset;
 - (void)_allocBuffers;
@@ -37,7 +37,7 @@
   [(HalogenMeasurement *)&v3 dealloc];
 }
 
-- (BOOL)_connectToAccessoryManager:(int)a3
+- (BOOL)_connectToAccessoryManager:(int)manager
 {
   ServiceWithPrimaryPort = IOAccessoryManagerGetServiceWithPrimaryPort();
   self->_service = ServiceWithPrimaryPort;
@@ -213,18 +213,18 @@ LABEL_9:
 
 - (void)_generateSineWave
 {
-  v3 = [(NSMutableData *)self->_pcmOutputData bytes];
+  bytes = [(NSMutableData *)self->_pcmOutputData bytes];
   if (self->_nTotalSamples >= 1)
   {
-    v4 = v3;
+    v4 = bytes;
     v5 = 0;
     v6 = self->_signalFreq * 6.28318531 / self->_sampleRate;
     v7 = (self->_initalPhaseInDegrees / 360.0 + self->_initalPhaseInDegrees / 360.0) * 3.14159265;
     do
     {
       v8 = sin(v7);
-      v9 = [(HalogenMeasurement *)self maxOutputAmplitude];
-      *(v4 + 2 * v5) = -([(HalogenMeasurement *)self signalOffset]- v8 * v9);
+      maxOutputAmplitude = [(HalogenMeasurement *)self maxOutputAmplitude];
+      *(v4 + 2 * v5) = -([(HalogenMeasurement *)self signalOffset]- v8 * maxOutputAmplitude);
       v7 = v6 + v7;
       ++v5;
     }
@@ -236,7 +236,7 @@ LABEL_9:
 - (BOOL)_initAudioPath
 {
   v26 = 0xAAAAAAAAAAAAAAAALL;
-  v27 = 0xAAAAAAAAAAAAAAAALL;
+  selfCopy2 = 0xAAAAAAAAAAAAAAAALL;
   v25 = 0;
   bitDepth = self->_bitDepth;
   sampleRate = self->_sampleRate;
@@ -305,7 +305,7 @@ LABEL_9:
   }
 
   v26 = recordCallback_0;
-  v27 = self;
+  selfCopy2 = self;
   if (AudioUnitSetProperty(self->_audioComponentInst, 0x7D5u, 0, 1u, &v26, 0x10u))
   {
     [HalogenMeasurement _initAudioPath];
@@ -313,7 +313,7 @@ LABEL_9:
   }
 
   v26 = playbackCallback_0;
-  v27 = self;
+  selfCopy2 = self;
   if (AudioUnitSetProperty(self->_audioComponentInst, 0x17u, 0, 0, &v26, 0x10u))
   {
     [HalogenMeasurement _initAudioPath];
@@ -402,21 +402,21 @@ LABEL_9:
     dispatch_release([(HalogenMeasurement *)self systemPowerQueue]);
   }
 
-  v3 = [(HalogenMeasurement *)self powerStateCond];
+  powerStateCond = [(HalogenMeasurement *)self powerStateCond];
 }
 
-- (int)saveAsWav:(id)a3
+- (int)saveAsWav:(id)wav
 {
   outExtAudioFile = 0xAAAAAAAAAAAAAAAALL;
-  v4 = [a3 UTF8String];
+  uTF8String = [wav UTF8String];
   if (!self->_isMeasurementDone)
   {
     [HalogenMeasurement saveAsWav:?];
     return LODWORD(inStreamDesc.mSampleRate);
   }
 
-  v5 = v4;
-  v6 = strlen(v4);
+  v5 = uTF8String;
+  v6 = strlen(uTF8String);
   v7 = CFURLCreateFromFileSystemRepresentation(0, v5, v6, 0);
   if (!v7)
   {
@@ -677,7 +677,7 @@ void __38__HalogenMeasurement_shouldInvertData__block_invoke(uint64_t a1)
     _os_log_impl(v2, v3, v4, v5, v6, 2u);
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)_initAudioPath
@@ -688,7 +688,7 @@ void __38__HalogenMeasurement_shouldInvertData__block_invoke(uint64_t a1)
     _os_log_impl(v2, v3, v4, v5, v6, 2u);
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)_createSleepWakeNotifier
@@ -699,7 +699,7 @@ void __38__HalogenMeasurement_shouldInvertData__block_invoke(uint64_t a1)
     _os_log_impl(v2, v3, v4, v5, v6, 2u);
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)saveAsWav:(_DWORD *)a1 .cold.1(_DWORD *a1)

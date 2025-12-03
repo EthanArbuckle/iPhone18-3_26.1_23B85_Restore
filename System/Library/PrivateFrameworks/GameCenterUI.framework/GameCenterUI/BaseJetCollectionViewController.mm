@@ -1,24 +1,24 @@
 @interface BaseJetCollectionViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
 - (NSDirectionalEdgeInsets)collectionViewFrameInsets;
 - (UICollectionViewCompositionalLayout)compositionalLayout;
 - (_TtC12GameCenterUI13BasePresenter)dataPresenter;
 - (_TtC12GameCenterUI18BootstrapPresenter)bootstrapPresenter;
-- (_TtC12GameCenterUI31BaseJetCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12GameCenterUI31BaseJetCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)dismissHandler;
 - (id)makeLayout;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
 - (void)didReceiveMemoryWarning;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setBootstrapPresenter:(id)a3;
-- (void)setCompositionalLayout:(id)a3;
-- (void)setDismissHandler:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setBootstrapPresenter:(id)presenter;
+- (void)setCompositionalLayout:(id)layout;
+- (void)setDismissHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BaseJetCollectionViewController
@@ -45,9 +45,9 @@
   return v4;
 }
 
-- (void)setDismissHandler:(id)a3
+- (void)setDismissHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -60,7 +60,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_24E13638C(v4, v5);
 }
 
@@ -71,16 +71,16 @@
   return v2;
 }
 
-- (void)setBootstrapPresenter:(id)a3
+- (void)setBootstrapPresenter:(id)presenter
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E13647C(a3);
+  presenterCopy = presenter;
+  selfCopy = self;
+  sub_24E13647C(presenter);
 }
 
 - (_TtC12GameCenterUI13BasePresenter)dataPresenter
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E137E60();
 
   return v3;
@@ -93,11 +93,11 @@
   return v2;
 }
 
-- (void)setCompositionalLayout:(id)a3
+- (void)setCompositionalLayout:(id)layout
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E1364B8(a3);
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_24E1364B8(layout);
 }
 
 - (NSDirectionalEdgeInsets)collectionViewFrameInsets
@@ -110,60 +110,60 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24E138520(a3);
+  selfCopy = self;
+  sub_24E138520(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24E138668(a3);
+  selfCopy = self;
+  sub_24E138668(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_24E1387BC(a3);
+  selfCopy = self;
+  sub_24E1387BC(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_24E138984(a3);
+  selfCopy = self;
+  sub_24E138984(disappear);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E138B00();
 }
 
 - (void)didReceiveMemoryWarning
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E138C38();
 }
 
 - (id)makeLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E1364D4();
   v4 = v3;
 
   return v4;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   v6 = sub_24E343518();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24E343498();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_24E1399DC();
   LOBYTE(self) = v12;
 
@@ -171,21 +171,21 @@
   return self & 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_24E343518();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24E343498();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_24E139DD0();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
   v9 = sub_24E343518();
   v10 = *(v9 - 8);
@@ -193,29 +193,29 @@
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24E347CF8();
   sub_24E343498();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
+  viewCopy = view;
+  supplementaryViewCopy = supplementaryView;
+  selfCopy = self;
   sub_24E13A3E4();
 
   (*(v10 + 8))(v12, v9);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E13A9A8(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_24E13A9A8(scrollCopy);
 }
 
-- (_TtC12GameCenterUI31BaseJetCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12GameCenterUI31BaseJetCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_24E347CF8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   BaseJetCollectionViewController.init(nibName:bundle:)();
 }
 

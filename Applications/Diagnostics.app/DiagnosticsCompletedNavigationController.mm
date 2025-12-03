@@ -1,8 +1,8 @@
 @interface DiagnosticsCompletedNavigationController
-- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithCoder:(id)a3;
-- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithRootViewController:(id)a3;
+- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithCoder:(id)coder;
+- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithRootViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -10,52 +10,52 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100074F38();
 }
 
-- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for DiagnosticsCompletedNavigationController();
-  return [(DiagnosticsCompletedNavigationController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  return [(DiagnosticsCompletedNavigationController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 }
 
-- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithRootViewController:(id)a3
+- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithRootViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for DiagnosticsCompletedNavigationController();
-  return [(DiagnosticsCompletedNavigationController *)&v5 initWithRootViewController:a3];
+  return [(DiagnosticsCompletedNavigationController *)&v5 initWithRootViewController:controller];
 }
 
-- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for DiagnosticsCompletedNavigationController();
-  v9 = [(DiagnosticsCompletedNavigationController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(DiagnosticsCompletedNavigationController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithCoder:(id)a3
+- (_TtC11Diagnostics40DiagnosticsCompletedNavigationController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for DiagnosticsCompletedNavigationController();
-  v4 = a3;
-  v5 = [(DiagnosticsCompletedNavigationController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DiagnosticsCompletedNavigationController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,15 +1,15 @@
 @interface CUWiFiTrafficPeer
 - ($4FF8D77539A8BD95DCE0A545902499A9)peerIP;
 - (id)peerMACAddressData;
-- (void)setPeerIP:(id *)a3;
+- (void)setPeerIP:(id *)p;
 @end
 
 @implementation CUWiFiTrafficPeer
 
-- (void)setPeerIP:(id *)a3
+- (void)setPeerIP:(id *)p
 {
-  var0 = a3->var0;
-  *(&self->_peerIP.v6.sin6_addr + 4) = *(&a3->var2.sin6_addr + 4);
+  var0 = p->var0;
+  *(&self->_peerIP.v6.sin6_addr + 4) = *(&p->var2.sin6_addr + 4);
   self->_peerIP.sa = var0;
 }
 

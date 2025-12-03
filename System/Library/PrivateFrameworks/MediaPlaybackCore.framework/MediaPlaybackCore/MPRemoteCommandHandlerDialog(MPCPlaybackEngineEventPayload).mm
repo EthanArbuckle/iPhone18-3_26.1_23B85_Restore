@@ -8,14 +8,14 @@
 - (id)mpc_jsonValue
 {
   v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
-  v3 = [a1 localizedTitle];
-  [v2 setObject:v3 forKeyedSubscript:@"title"];
+  localizedTitle = [self localizedTitle];
+  [v2 setObject:localizedTitle forKeyedSubscript:@"title"];
 
-  v4 = [a1 localizedMessage];
-  [v2 setObject:v4 forKeyedSubscript:@"message"];
+  localizedMessage = [self localizedMessage];
+  [v2 setObject:localizedMessage forKeyedSubscript:@"message"];
 
-  v5 = [a1 actions];
-  v6 = [v5 msv_map:&__block_literal_global_282];
+  actions = [self actions];
+  v6 = [actions msv_map:&__block_literal_global_282];
   [v2 setObject:v6 forKeyedSubscript:@"actions"];
 
   return v2;
@@ -27,7 +27,7 @@
   v4 = a3;
   v5 = [v4 objectForKeyedSubscript:@"title"];
   v6 = [v4 objectForKeyedSubscript:@"message"];
-  v7 = [a1 dialogWithTitle:v5 message:v6];
+  v7 = [self dialogWithTitle:v5 message:v6];
 
   v17 = 0u;
   v18 = 0u;

@@ -1,6 +1,6 @@
 @interface SASHIDGenerator
 - (SASHIDGenerator)init;
-- (void)_sendHIDEvent:(__IOHIDEvent *)a3;
+- (void)_sendHIDEvent:(__IOHIDEvent *)event;
 - (void)_sendHIDHoldHomeButton;
 - (void)_sendHIDHoldLockButton;
 - (void)dealloc;
@@ -108,9 +108,9 @@
   CFRelease(v5);
 }
 
-- (void)_sendHIDEvent:(__IOHIDEvent *)a3
+- (void)_sendHIDEvent:(__IOHIDEvent *)event
 {
-  if (a3)
+  if (event)
   {
     if (!self->_ioSystemClient)
     {

@@ -1,29 +1,29 @@
 @interface IMDSqlQuery
-+ (id)databaseQuery:(id)a3;
-- (IMDSqlQuery)initWithTableName:(id)a3;
++ (id)databaseQuery:(id)query;
+- (IMDSqlQuery)initWithTableName:(id)name;
 - (id)createQueryString;
 - (void)dealloc;
 @end
 
 @implementation IMDSqlQuery
 
-- (IMDSqlQuery)initWithTableName:(id)a3
+- (IMDSqlQuery)initWithTableName:(id)name
 {
   v8.receiver = self;
   v8.super_class = IMDSqlQuery;
   v6 = [(IMDSqlQuery *)&v8 init];
   if (v6)
   {
-    v6->_tableName = objc_msgSend_copy(a3, v4, v5);
+    v6->_tableName = objc_msgSend_copy(name, v4, v5);
   }
 
   return v6;
 }
 
-+ (id)databaseQuery:(id)a3
++ (id)databaseQuery:(id)query
 {
   v4 = objc_alloc(objc_opt_class());
-  v6 = objc_msgSend_initWithTableName_(v4, v5, a3);
+  v6 = objc_msgSend_initWithTableName_(v4, v5, query);
 
   return v6;
 }

@@ -1,40 +1,40 @@
 @interface SFOpenMediaCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFOpenMediaCommand)initWithCoder:(id)a3;
-- (SFOpenMediaCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFOpenMediaCommand)initWithCoder:(id)coder;
+- (SFOpenMediaCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFOpenMediaCommand
 
-- (SFOpenMediaCommand)initWithProtobuf:(id)a3
+- (SFOpenMediaCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v14.receiver = self;
   v14.super_class = SFOpenMediaCommand;
   v5 = [(SFOpenMediaCommand *)&v14 init];
   if (v5)
   {
-    v6 = [v4 mediaMetadata];
+    mediaMetadata = [protobufCopy mediaMetadata];
 
-    if (v6)
+    if (mediaMetadata)
     {
       v7 = [SFMediaMetadata alloc];
-      v8 = [v4 mediaMetadata];
-      v9 = [(SFMediaMetadata *)v7 initWithProtobuf:v8];
+      mediaMetadata2 = [protobufCopy mediaMetadata];
+      v9 = [(SFMediaMetadata *)v7 initWithProtobuf:mediaMetadata2];
       [(SFOpenMediaCommand *)v5 setMediaMetadata:v9];
     }
 
-    v10 = [v4 clientSelectedBundleIdentifier];
+    clientSelectedBundleIdentifier = [protobufCopy clientSelectedBundleIdentifier];
 
-    if (v10)
+    if (clientSelectedBundleIdentifier)
     {
-      v11 = [v4 clientSelectedBundleIdentifier];
-      [(SFOpenMediaCommand *)v5 setClientSelectedBundleIdentifier:v11];
+      clientSelectedBundleIdentifier2 = [protobufCopy clientSelectedBundleIdentifier];
+      [(SFOpenMediaCommand *)v5 setClientSelectedBundleIdentifier:clientSelectedBundleIdentifier2];
     }
 
     v12 = v5;
@@ -48,34 +48,34 @@
   v9.receiver = self;
   v9.super_class = SFOpenMediaCommand;
   v3 = [(SFCommand *)&v9 hash];
-  v4 = [(SFOpenMediaCommand *)self mediaMetadata];
-  v5 = [v4 hash];
-  v6 = [(SFOpenMediaCommand *)self clientSelectedBundleIdentifier];
-  v7 = v5 ^ [v6 hash];
+  mediaMetadata = [(SFOpenMediaCommand *)self mediaMetadata];
+  v5 = [mediaMetadata hash];
+  clientSelectedBundleIdentifier = [(SFOpenMediaCommand *)self clientSelectedBundleIdentifier];
+  v7 = v5 ^ [clientSelectedBundleIdentifier hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFOpenMediaCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFOpenMediaCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = SFOpenMediaCommand;
-      if ([(SFCommand *)&v22 isEqual:v5])
+      if ([(SFCommand *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFOpenMediaCommand *)self mediaMetadata];
-        v8 = [(SFOpenMediaCommand *)v6 mediaMetadata];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        mediaMetadata = [(SFOpenMediaCommand *)self mediaMetadata];
+        mediaMetadata2 = [(SFOpenMediaCommand *)v6 mediaMetadata];
+        if ((mediaMetadata != 0) == (mediaMetadata2 == 0))
         {
           v11 = 0;
 LABEL_20:
@@ -83,12 +83,12 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v9 = [(SFOpenMediaCommand *)self mediaMetadata];
-        if (v9)
+        mediaMetadata3 = [(SFOpenMediaCommand *)self mediaMetadata];
+        if (mediaMetadata3)
         {
-          v3 = [(SFOpenMediaCommand *)self mediaMetadata];
-          v10 = [(SFOpenMediaCommand *)v6 mediaMetadata];
-          if (![v3 isEqual:v10])
+          mediaMetadata4 = [(SFOpenMediaCommand *)self mediaMetadata];
+          mediaMetadata5 = [(SFOpenMediaCommand *)v6 mediaMetadata];
+          if (![mediaMetadata4 isEqual:mediaMetadata5])
           {
             v11 = 0;
 LABEL_18:
@@ -97,13 +97,13 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v21 = v10;
+          v21 = mediaMetadata5;
         }
 
-        v12 = [(SFOpenMediaCommand *)self clientSelectedBundleIdentifier];
-        v13 = [(SFOpenMediaCommand *)v6 clientSelectedBundleIdentifier];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        clientSelectedBundleIdentifier = [(SFOpenMediaCommand *)self clientSelectedBundleIdentifier];
+        clientSelectedBundleIdentifier2 = [(SFOpenMediaCommand *)v6 clientSelectedBundleIdentifier];
+        v14 = clientSelectedBundleIdentifier2;
+        if ((clientSelectedBundleIdentifier != 0) == (clientSelectedBundleIdentifier2 == 0))
         {
 
           v11 = 0;
@@ -111,16 +111,16 @@ LABEL_19:
 
         else
         {
-          v15 = [(SFOpenMediaCommand *)self clientSelectedBundleIdentifier];
-          if (v15)
+          clientSelectedBundleIdentifier3 = [(SFOpenMediaCommand *)self clientSelectedBundleIdentifier];
+          if (clientSelectedBundleIdentifier3)
           {
-            v16 = v15;
-            v19 = [(SFOpenMediaCommand *)self clientSelectedBundleIdentifier];
+            v16 = clientSelectedBundleIdentifier3;
+            clientSelectedBundleIdentifier4 = [(SFOpenMediaCommand *)self clientSelectedBundleIdentifier];
             [(SFOpenMediaCommand *)v6 clientSelectedBundleIdentifier];
-            v17 = v20 = v3;
-            v11 = [v19 isEqual:v17];
+            v17 = v20 = mediaMetadata4;
+            v11 = [clientSelectedBundleIdentifier4 isEqual:v17];
 
-            v3 = v20;
+            mediaMetadata4 = v20;
           }
 
           else
@@ -130,8 +130,8 @@ LABEL_19:
           }
         }
 
-        v10 = v21;
-        if (!v9)
+        mediaMetadata5 = v21;
+        if (!mediaMetadata3)
         {
           goto LABEL_19;
         }
@@ -148,17 +148,17 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFOpenMediaCommand;
-  v4 = [(SFCommand *)&v10 copyWithZone:a3];
-  v5 = [(SFOpenMediaCommand *)self mediaMetadata];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v10 copyWithZone:zone];
+  mediaMetadata = [(SFOpenMediaCommand *)self mediaMetadata];
+  v6 = [mediaMetadata copy];
   [v4 setMediaMetadata:v6];
 
-  v7 = [(SFOpenMediaCommand *)self clientSelectedBundleIdentifier];
-  v8 = [v7 copy];
+  clientSelectedBundleIdentifier = [(SFOpenMediaCommand *)self clientSelectedBundleIdentifier];
+  v8 = [clientSelectedBundleIdentifier copy];
   [v4 setClientSelectedBundleIdentifier:v8];
 
   return v4;
@@ -167,54 +167,54 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBOpenMediaCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBOpenMediaCommand *)v2 jsonData];
+  jsonData = [(_SFPBOpenMediaCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBOpenMediaCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBOpenMediaCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBOpenMediaCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFOpenMediaCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFOpenMediaCommand)initWithCoder:(id)a3
+- (SFOpenMediaCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFOpenMediaCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 mediaMetadata];
-    [(SFOpenMediaCommand *)v5 setMediaMetadata:v9];
+    mediaMetadata = [(SFCommand *)v8 mediaMetadata];
+    [(SFOpenMediaCommand *)v5 setMediaMetadata:mediaMetadata];
 
-    v10 = [(SFCommand *)v8 clientSelectedBundleIdentifier];
-    [(SFOpenMediaCommand *)v5 setClientSelectedBundleIdentifier:v10];
+    clientSelectedBundleIdentifier = [(SFCommand *)v8 clientSelectedBundleIdentifier];
+    [(SFOpenMediaCommand *)v5 setClientSelectedBundleIdentifier:clientSelectedBundleIdentifier];
 
-    v11 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v11];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v12 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v12];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v13 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v13];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v14 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v14];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

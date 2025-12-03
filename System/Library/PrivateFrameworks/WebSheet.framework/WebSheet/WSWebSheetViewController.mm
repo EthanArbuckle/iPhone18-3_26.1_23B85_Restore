@@ -1,6 +1,6 @@
 @interface WSWebSheetViewController
-- (void)dismissViewController:(int64_t)a3;
-- (void)handleProbeResult:(int64_t)a3 completionHandler:(id)a4;
+- (void)dismissViewController:(int64_t)controller;
+- (void)handleProbeResult:(int64_t)result completionHandler:(id)handler;
 - (void)loadView;
 @end
 
@@ -9,8 +9,8 @@
 - (void)loadView
 {
   NSLog(&cfstr_Loadview.isa, a2);
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
 
@@ -18,19 +18,19 @@
   [(WSWebSheetViewController *)self setView:v8];
 }
 
-- (void)dismissViewController:(int64_t)a3
+- (void)dismissViewController:(int64_t)controller
 {
-  v5 = [(WSWebSheetViewController *)self webSheetView];
-  v6 = [v5 delegate];
+  webSheetView = [(WSWebSheetViewController *)self webSheetView];
+  delegate = [webSheetView delegate];
 
-  if (v6)
+  if (delegate)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __50__WSWebSheetViewController_dismissViewController___block_invoke;
     v7[3] = &unk_279EAFE58;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = controller;
     dispatch_async(MEMORY[0x277D85CD0], v7);
   }
 }
@@ -41,17 +41,17 @@ void __50__WSWebSheetViewController_dismissViewController___block_invoke(uint64_
   [v2 dismissWebSheetWithCaptiveWebSheetResult:*(a1 + 40)];
 }
 
-- (void)handleProbeResult:(int64_t)a3 completionHandler:(id)a4
+- (void)handleProbeResult:(int64_t)result completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__WSWebSheetViewController_handleProbeResult_completionHandler___block_invoke;
   block[3] = &unk_279EAFFF8;
-  v9 = v6;
-  v10 = a3;
+  v9 = handlerCopy;
+  resultCopy = result;
   block[4] = self;
-  v7 = v6;
+  v7 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

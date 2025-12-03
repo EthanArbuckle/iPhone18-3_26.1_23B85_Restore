@@ -1,8 +1,8 @@
 @interface SHSDualSIMListController
-- (id)detailTextForToneWithSpecifier:(id)a3;
+- (id)detailTextForToneWithSpecifier:(id)specifier;
 - (id)specifiers;
 - (void)reloadSpecifiers;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 - (void)updateDifferentTonesState;
 @end
 
@@ -11,7 +11,7 @@
 - (void)reloadSpecifiers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(SHSDualSIMListController *)self hasDifferentTones];
+  hasDifferentTones = [(SHSDualSIMListController *)self hasDifferentTones];
   v9.receiver = self;
   v9.super_class = SHSDualSIMListController;
   [(SHSDualSIMListController *)&v9 reloadSpecifiers];
@@ -19,7 +19,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[SHSDualSIMListController hasDifferentTones](self, "hasDifferentTones")}];
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:hasDifferentTones];
     *buf = 136315650;
     v11 = "[SHSDualSIMListController reloadSpecifiers]";
     v12 = 2112;
@@ -29,7 +29,7 @@
     _os_log_impl(&dword_265896000, v4, OS_LOG_TYPE_DEFAULT, "%s self.hasDifferentTones: %@ differentTonesBeforeUpdate: %@", buf, 0x20u);
   }
 
-  if (v3 != [(SHSDualSIMListController *)self hasDifferentTones])
+  if (hasDifferentTones != [(SHSDualSIMListController *)self hasDifferentTones])
   {
     [(SHSDualSIMListController *)self alertType];
     v7 = NSStringFromTLAlertType();
@@ -39,13 +39,13 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = SHSDualSIMListController;
-  v4 = a3;
-  [(SHSDualSIMListController *)&v6 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"alertType", v6.receiver, v6.super_class}];
+  specifierCopy = specifier;
+  [(SHSDualSIMListController *)&v6 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"alertType", v6.receiver, v6.super_class}];
 
   if (v5)
   {
@@ -94,9 +94,9 @@
           }
 
           v9 = *(*(&v28 + 1) + 8 * i);
-          v10 = [v9 label];
-          v11 = [v9 labelID];
-          v12 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v10 target:self set:0 get:sel_detailTextForToneWithSpecifier_ detail:objc_opt_class() cell:2 edit:0];
+          label = [v9 label];
+          labelID = [v9 labelID];
+          v12 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:label target:self set:0 get:sel_detailTextForToneWithSpecifier_ detail:objc_opt_class() cell:2 edit:0];
           [v12 setProperty:v9 forKey:v25];
           [(SHSDualSIMListController *)self alertType];
           v13 = NSStringFromTLAlertType();
@@ -106,16 +106,16 @@
           v14 = [SHSDualSIMToneHelper fetchShortLabelForContext:v9];
           [v12 setProperty:v14 forKey:@"contextShortLabel"];
 
-          if (v11)
+          if (labelID)
           {
-            v15 = [@"TLAlertTopicIncomingCall" stringByAppendingString:v11];
+            v15 = [@"TLAlertTopicIncomingCall" stringByAppendingString:labelID];
             [v12 setProperty:v15 forKey:@"accountIdentifier"];
           }
 
-          v16 = [v9 userDefaultVoice];
-          v17 = [v16 BOOLValue];
+          userDefaultVoice = [v9 userDefaultVoice];
+          bOOLValue = [userDefaultVoice BOOLValue];
 
-          if (v17)
+          if (bOOLValue)
           {
             [v27 insertObject:v12 atIndex:0];
           }
@@ -145,37 +145,37 @@
   return v3;
 }
 
-- (id)detailTextForToneWithSpecifier:(id)a3
+- (id)detailTextForToneWithSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 propertyForKey:@"alertType"];
+  specifierCopy = specifier;
+  v4 = [specifierCopy propertyForKey:@"alertType"];
   v5 = TLAlertTypeFromString();
 
-  v6 = [v3 propertyForKey:@"accountIdentifier"];
+  v6 = [specifierCopy propertyForKey:@"accountIdentifier"];
 
-  v7 = [MEMORY[0x277D71F78] sharedToneManager];
-  v8 = [v7 currentToneIdentifierForAlertType:v5 topic:v6];
+  mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+  v8 = [mEMORY[0x277D71F78] currentToneIdentifierForAlertType:v5 topic:v6];
 
-  v9 = [MEMORY[0x277D71F78] sharedToneManager];
-  [v9 setCurrentToneIdentifier:v8 forAlertType:v5 topic:v6];
+  mEMORY[0x277D71F78]2 = [MEMORY[0x277D71F78] sharedToneManager];
+  [mEMORY[0x277D71F78]2 setCurrentToneIdentifier:v8 forAlertType:v5 topic:v6];
 
   if ((PSGetCapabilityBoolAnswer() & 1) != 0 || !PSGetCapabilityBoolAnswer())
   {
     goto LABEL_6;
   }
 
-  v10 = [MEMORY[0x277D71F88] sharedVibrationManager];
-  v11 = [v10 currentVibrationIdentifierForAlertType:v5 topic:v6];
+  mEMORY[0x277D71F88] = [MEMORY[0x277D71F88] sharedVibrationManager];
+  v11 = [mEMORY[0x277D71F88] currentVibrationIdentifierForAlertType:v5 topic:v6];
 
-  v12 = [MEMORY[0x277D71F88] sharedVibrationManager];
-  [v12 setCurrentVibrationIdentifier:v11 forAlertType:v5 topic:v6];
+  mEMORY[0x277D71F88]2 = [MEMORY[0x277D71F88] sharedVibrationManager];
+  [mEMORY[0x277D71F88]2 setCurrentVibrationIdentifier:v11 forAlertType:v5 topic:v6];
 
   if (![v8 isEqualToString:*MEMORY[0x277D72068]] || objc_msgSend(v11, "isEqualToString:", *MEMORY[0x277D72070]))
   {
 
 LABEL_6:
-    v13 = [MEMORY[0x277D71F78] sharedToneManager];
-    v14 = [v13 nameForToneIdentifier:v8];
+    mEMORY[0x277D71F78]3 = [MEMORY[0x277D71F78] sharedToneManager];
+    v14 = [mEMORY[0x277D71F78]3 nameForToneIdentifier:v8];
 
     goto LABEL_7;
   }

@@ -1,42 +1,42 @@
 @interface SKTaskExecuter
-- (BOOL)waitWithError:(id *)a3;
-- (SKTaskExecuter)initWithTasks:(id)a3;
+- (BOOL)waitWithError:(id *)error;
+- (SKTaskExecuter)initWithTasks:(id)tasks;
 @end
 
 @implementation SKTaskExecuter
 
-- (SKTaskExecuter)initWithTasks:(id)a3
+- (SKTaskExecuter)initWithTasks:(id)tasks
 {
-  v5 = a3;
+  tasksCopy = tasks;
   v9.receiver = self;
   v9.super_class = SKTaskExecuter;
   v6 = [(SKTaskExecuter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tasks, a3);
+    objc_storeStrong(&v6->_tasks, tasks);
   }
 
   return v7;
 }
 
-- (BOOL)waitWithError:(id *)a3
+- (BOOL)waitWithError:(id *)error
 {
-  v5 = [(SKTaskExecuter *)self tasks];
-  [v5 enumerateObjectsUsingBlock:&stru_1000083C0];
+  tasks = [(SKTaskExecuter *)self tasks];
+  [tasks enumerateObjectsUsingBlock:&stru_1000083C0];
 
-  v6 = [(SKTaskExecuter *)self tasks];
+  tasks2 = [(SKTaskExecuter *)self tasks];
   v7 = [NSPredicate predicateWithBlock:&stru_100008400];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
+  v8 = [tasks2 filteredArrayUsingPredicate:v7];
 
   if ([v8 count])
   {
     do
     {
       [v8 enumerateObjectsUsingBlock:&stru_100008420];
-      v9 = [(SKTaskExecuter *)self tasks];
+      tasks3 = [(SKTaskExecuter *)self tasks];
       v10 = [NSPredicate predicateWithBlock:&stru_100008440];
-      v11 = [v9 filteredArrayUsingPredicate:v10];
+      v11 = [tasks3 filteredArrayUsingPredicate:v10];
 
       v8 = v11;
     }
@@ -49,15 +49,15 @@
     v11 = v8;
   }
 
-  v12 = [(SKTaskExecuter *)self tasks];
-  [v12 enumerateObjectsUsingBlock:&stru_100008460];
+  tasks4 = [(SKTaskExecuter *)self tasks];
+  [tasks4 enumerateObjectsUsingBlock:&stru_100008460];
 
-  v13 = [(SKTaskExecuter *)self tasks];
-  [v13 enumerateObjectsUsingBlock:&stru_100008480];
+  tasks5 = [(SKTaskExecuter *)self tasks];
+  [tasks5 enumerateObjectsUsingBlock:&stru_100008480];
 
-  v14 = [(SKTaskExecuter *)self tasks];
+  tasks6 = [(SKTaskExecuter *)self tasks];
   v15 = [NSPredicate predicateWithBlock:&stru_1000084A0];
-  v16 = [v14 filteredArrayUsingPredicate:v15];
+  v16 = [tasks6 filteredArrayUsingPredicate:v15];
 
   v17 = [v16 count];
   if (v17)
@@ -67,19 +67,19 @@
     {
       v19 = [v16 count];
       v20 = [v16 objectAtIndexedSubscript:0];
-      v21 = [v20 task];
+      task = [v20 task];
       v23 = 136315650;
       v24 = "[SKTaskExecuter waitWithError:]";
       v25 = 2048;
       v26 = v19;
       v27 = 1024;
-      v28 = [v21 terminationStatus];
+      terminationStatus = [task terminationStatus];
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s: %lu tasks failed, first exit status %d", &v23, 0x1Cu);
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = [SKError errorWithCode:140 userInfo:0];
+      *error = [SKError errorWithCode:140 userInfo:0];
     }
   }
 

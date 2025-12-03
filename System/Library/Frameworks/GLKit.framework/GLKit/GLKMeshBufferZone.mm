@@ -1,46 +1,46 @@
 @interface GLKMeshBufferZone
-- (GLKMeshBufferZone)initWithCapacity:(unint64_t)a3 allocator:(id)a4;
-- (id)newBufferWithLength:(unint64_t)a3 type:(unint64_t)a4;
+- (GLKMeshBufferZone)initWithCapacity:(unint64_t)capacity allocator:(id)allocator;
+- (id)newBufferWithLength:(unint64_t)length type:(unint64_t)type;
 - (void)dealloc;
-- (void)destroyBuffer:(id)a3;
+- (void)destroyBuffer:(id)buffer;
 @end
 
 @implementation GLKMeshBufferZone
 
-- (GLKMeshBufferZone)initWithCapacity:(unint64_t)a3 allocator:(id)a4
+- (GLKMeshBufferZone)initWithCapacity:(unint64_t)capacity allocator:(id)allocator
 {
-  v7 = a4;
+  allocatorCopy = allocator;
   v13.receiver = self;
   v13.super_class = GLKMeshBufferZone;
   v8 = [(GLKMeshBufferZone *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_allocator, a4);
-    v9->_capacity = a3;
+    objc_storeStrong(&v8->_allocator, allocator);
+    v9->_capacity = capacity;
     v10 = objc_opt_new();
     buffers = v9->_buffers;
     v9->_buffers = v10;
 
     glGenBuffers(1, &v9->_glBufferName);
     glBindBuffer(0x8892u, v9->_glBufferName);
-    glBufferData(0x8892u, a3, 0, 0x88E4u);
+    glBufferData(0x8892u, capacity, 0, 0x88E4u);
     v9->_destroyInvoked = 0;
   }
 
   return v9;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 type:(unint64_t)a4
+- (id)newBufferWithLength:(unint64_t)length type:(unint64_t)type
 {
-  if (a4 == 1)
+  if (type == 1)
   {
     v7 = 256;
   }
 
   else
   {
-    if (a4 != 2)
+    if (type != 2)
     {
       return 0;
     }
@@ -52,11 +52,11 @@
   buffers = self->_buffers;
   if (!destroyInvoked)
   {
-    v17 = [(NSMutableOrderedSet *)buffers lastObject];
-    v18 = [v17 buffer];
+    lastObject = [(NSMutableOrderedSet *)buffers lastObject];
+    buffer = [lastObject buffer];
 
-    v19 = [v18 offset];
-    v10 = (v7 + v19 + [v18 length] - 1) & -v7;
+    offset = [buffer offset];
+    v10 = (v7 + offset + [buffer length] - 1) & -v7;
 
     goto LABEL_12;
   }
@@ -73,15 +73,15 @@
   while (1)
   {
     v14 = [(NSMutableOrderedSet *)self->_buffers objectAtIndexedSubscript:v11];
-    v15 = [v14 buffer];
+    buffer2 = [v14 buffer];
 
-    if ([v15 offset] - v10 >= a3)
+    if ([buffer2 offset] - v10 >= length)
     {
       break;
     }
 
-    v16 = [v15 offset];
-    v10 = (v12 + v16 + [v15 length]) & v13;
+    offset2 = [buffer2 offset];
+    v10 = (v12 + offset2 + [buffer2 length]) & v13;
 
     if (++v11 >= [(NSMutableOrderedSet *)self->_buffers count])
     {
@@ -89,7 +89,7 @@
     }
   }
 
-  v20 = [[GLKMeshBuffer alloc] _initWithLength:a3 offset:v10 zone:self type:a4];
+  v20 = [[GLKMeshBuffer alloc] _initWithLength:length offset:v10 zone:self type:type];
   v22 = objc_opt_new();
   [v22 setBuffer:v20];
   [(NSMutableOrderedSet *)self->_buffers insertObject:v22 atIndex:v11];
@@ -97,9 +97,9 @@
   if (!v20)
   {
 LABEL_12:
-    if (self->_capacity - v10 >= a3)
+    if (self->_capacity - v10 >= length)
     {
-      v20 = [[GLKMeshBuffer alloc] _initWithLength:a3 offset:v10 zone:self type:a4];
+      v20 = [[GLKMeshBuffer alloc] _initWithLength:length offset:v10 zone:self type:type];
       if (v20)
       {
         v21 = objc_opt_new();
@@ -116,10 +116,10 @@ LABEL_12:
   return v20;
 }
 
-- (void)destroyBuffer:(id)a3
+- (void)destroyBuffer:(id)buffer
 {
-  v8 = a3;
-  v4 = [v8 zone];
+  bufferCopy = buffer;
+  v4 = [bufferCopy zone];
   if (v4 != self)
   {
     [GLKMeshBufferZone destroyBuffer:];
@@ -132,9 +132,9 @@ LABEL_12:
     while (1)
     {
       v6 = [(NSMutableOrderedSet *)self->_buffers objectAtIndexedSubscript:v5];
-      v7 = [v6 buffer];
+      buffer = [v6 buffer];
 
-      if (v7 == v8)
+      if (buffer == bufferCopy)
       {
         break;
       }

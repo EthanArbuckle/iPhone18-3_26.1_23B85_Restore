@@ -1,15 +1,15 @@
 @interface PGGraphHasTypeEdge
 + (id)filter;
-- (id)initFromHighlightGroupNode:(id)a3 toHighlightTypeNode:(id)a4;
+- (id)initFromHighlightGroupNode:(id)node toHighlightTypeNode:(id)typeNode;
 @end
 
 @implementation PGGraphHasTypeEdge
 
-- (id)initFromHighlightGroupNode:(id)a3 toHighlightTypeNode:(id)a4
+- (id)initFromHighlightGroupNode:(id)node toHighlightTypeNode:(id)typeNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphHasTypeEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:typeNode];
 }
 
 + (id)filter

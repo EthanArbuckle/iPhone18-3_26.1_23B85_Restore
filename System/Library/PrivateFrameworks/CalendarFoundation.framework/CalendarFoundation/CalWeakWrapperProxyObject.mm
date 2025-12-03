@@ -1,32 +1,32 @@
 @interface CalWeakWrapperProxyObject
-- (CalWeakWrapperProxyObject)initWithWrappedObject:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (CalWeakWrapperProxyObject)initWithWrappedObject:(id)object;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)wrappedObject;
 @end
 
 @implementation CalWeakWrapperProxyObject
 
-- (CalWeakWrapperProxyObject)initWithWrappedObject:(id)a3
+- (CalWeakWrapperProxyObject)initWithWrappedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = CalWeakWrapperProxyObject;
   v5 = [(CalWeakWrapperProxyObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_wrappedObject, v4);
+    objc_storeWeak(&v5->_wrappedObject, objectCopy);
   }
 
   return v6;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = CalWeakWrapperProxyObject;
-  v4 = [(CalWeakWrapperProxyObject *)&v7 methodSignatureForSelector:a3];
+  v4 = [(CalWeakWrapperProxyObject *)&v7 methodSignatureForSelector:selector];
   if (v4)
   {
     WeakRetained = 0;
@@ -40,7 +40,7 @@
   return WeakRetained;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = CalWeakWrapperProxyObject;
@@ -54,7 +54,7 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_wrappedObject);
-    v7 = [WeakRetained methodSignatureForSelector:a3];
+    v7 = [WeakRetained methodSignatureForSelector:selector];
   }
 
   return v7;

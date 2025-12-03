@@ -1,39 +1,39 @@
 @interface MRMarimbaView
 - (BOOL)canInteract;
 - (CGRect)cleanAperture;
-- (MRMarimbaView)initWithCoder:(id)a3;
-- (MRMarimbaView)initWithFrame:(CGRect)a3;
+- (MRMarimbaView)initWithCoder:(id)coder;
+- (MRMarimbaView)initWithFrame:(CGRect)frame;
 - (void)_marimbaViewCommonInit;
 - (void)cleanup;
-- (void)close:(id)a3;
+- (void)close:(id)close;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)enterMarimbaWithDuration:(double)a3 andCompletionBlock:(id)a4;
-- (void)exitMarimbaWithDuration:(double)a3 location:(CGPoint)a4 andScale:(double)a5;
+- (void)enterMarimbaWithDuration:(double)duration andCompletionBlock:(id)block;
+- (void)exitMarimbaWithDuration:(double)duration location:(CGPoint)location andScale:(double)scale;
 - (void)hideHUD;
-- (void)marimbaWasSingleTappedAtPoint:(CGPoint)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAspectRatio:(double)a3;
-- (void)setDocument:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMarimbaContentsScale:(double)a3;
-- (void)setUsesExitButton:(BOOL)a3;
+- (void)marimbaWasSingleTappedAtPoint:(CGPoint)point;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAspectRatio:(double)ratio;
+- (void)setDocument:(id)document;
+- (void)setFrame:(CGRect)frame;
+- (void)setMarimbaContentsScale:(double)scale;
+- (void)setUsesExitButton:(BOOL)button;
 - (void)showHUD;
 - (void)stop;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)warmupAndPlay:(BOOL)a3 completionBlock:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)warmupAndPlay:(BOOL)play completionBlock:(id)block;
 @end
 
 @implementation MRMarimbaView
 
-- (MRMarimbaView)initWithFrame:(CGRect)a3
+- (MRMarimbaView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MRMarimbaView;
-  v3 = [(MRMarimbaView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRMarimbaView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -43,11 +43,11 @@
   return v4;
 }
 
-- (MRMarimbaView)initWithCoder:(id)a3
+- (MRMarimbaView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MRMarimbaView;
-  v3 = [(MRMarimbaView *)&v6 initWithCoder:a3];
+  v3 = [(MRMarimbaView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -85,9 +85,9 @@
   [(MRMarimbaLayerView *)marimbaLayerView setMultipleTouchEnabled:1];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:@"frame"])
+  if ([path isEqualToString:@"frame"])
   {
     [(MRMarimbaView *)self willChangeValueForKey:@"cleanAperture"];
 
@@ -98,7 +98,7 @@
   {
     v11.receiver = self;
     v11.super_class = MRMarimbaView;
-    [(MRMarimbaView *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+    [(MRMarimbaView *)&v11 observeValueForKeyPath:path ofObject:object change:change context:context];
   }
 }
 
@@ -138,12 +138,12 @@
   self->_orderedVideoPaths = 0;
 }
 
-- (void)setUsesExitButton:(BOOL)a3
+- (void)setUsesExitButton:(BOOL)button
 {
-  if (self->_usesExitButton != a3)
+  if (self->_usesExitButton != button)
   {
-    self->_usesExitButton = a3;
-    if (a3)
+    self->_usesExitButton = button;
+    if (button)
     {
       v4 = +[UIImage imageWithContentsOfFile:](UIImage, "imageWithContentsOfFile:", [+[NSBundle pathForResource:"pathForResource:ofType:"];
       v5 = [UIButton buttonWithType:0];
@@ -166,32 +166,32 @@
   }
 }
 
-- (void)warmupAndPlay:(BOOL)a3 completionBlock:(id)a4
+- (void)warmupAndPlay:(BOOL)play completionBlock:(id)block
 {
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_75A3C;
   block[3] = &unk_1AAFF0;
-  v9 = a3;
+  playCopy = play;
   block[4] = self;
-  block[5] = a4;
+  block[5] = block;
   dispatch_async(global_queue, block);
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = MRMarimbaView;
-  [(MRMarimbaView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MRMarimbaView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(MRMarimbaView *)self setAspectRatio:self->_aspectRatio];
 }
 
-- (void)setAspectRatio:(double)a3
+- (void)setAspectRatio:(double)ratio
 {
-  self->_aspectRatio = a3;
+  self->_aspectRatio = ratio;
   [(MRMarimbaView *)self bounds];
-  if (a3 > 0.0)
+  if (ratio > 0.0)
   {
     v5 = RectToFitInRect(v5, v6, v7, v8, self->_aspectRatio);
   }
@@ -215,22 +215,22 @@
   return result;
 }
 
-- (void)enterMarimbaWithDuration:(double)a3 andCompletionBlock:(id)a4
+- (void)enterMarimbaWithDuration:(double)duration andCompletionBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_75D60;
   v4[3] = &unk_1AB018;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = block;
   sub_75D60(v4);
 }
 
-- (void)exitMarimbaWithDuration:(double)a3 location:(CGPoint)a4 andScale:(double)a5
+- (void)exitMarimbaWithDuration:(double)duration location:(CGPoint)location andScale:(double)scale
 {
   self->_isInMarimba = 0;
   self->_isEnteringExitingMarimba = 0;
-  [(MRMarimbaView *)self close:self, a3, a4.x, a4.y, a5];
+  [(MRMarimbaView *)self close:self, duration, location.x, location.y, scale];
 }
 
 - (void)stop
@@ -245,7 +245,7 @@
   }
 }
 
-- (void)close:(id)a3
+- (void)close:(id)close
 {
   v3 = +[NSNotificationCenter defaultCenter];
 
@@ -260,15 +260,15 @@
     return 1;
   }
 
-  v3 = [(MRMarimbaView *)self interactionDelegate];
+  interactionDelegate = [(MRMarimbaView *)self interactionDelegate];
 
-  return [(MRMarimbaViewInteractionDelegate *)v3 marimbaViewCanInteract:self];
+  return [(MRMarimbaViewInteractionDelegate *)interactionDelegate marimbaViewCanInteract:self];
 }
 
-- (void)marimbaWasSingleTappedAtPoint:(CGPoint)a3
+- (void)marimbaWasSingleTappedAtPoint:(CGPoint)point
 {
-  x = a3.x;
-  [(MRMarimbaView *)self bounds:a3.x];
+  x = point.x;
+  [(MRMarimbaView *)self bounds:point.x];
   if (x <= v5 * 0.95)
   {
     [(MRMarimbaView *)self bounds];
@@ -279,9 +279,9 @@
         [(MRMarimbaView *)self interactionDelegate];
         if (objc_opt_respondsToSelector())
         {
-          v9 = [(MRMarimbaView *)self interactionDelegate];
+          interactionDelegate = [(MRMarimbaView *)self interactionDelegate];
 
-          [(MRMarimbaViewInteractionDelegate *)v9 slideshowWasTapped];
+          [(MRMarimbaViewInteractionDelegate *)interactionDelegate slideshowWasTapped];
         }
       }
 
@@ -294,17 +294,17 @@
 
     else
     {
-      v8 = [(MRMarimbaLayer *)self->_marimbaLayer renderer];
+      renderer = [(MRMarimbaLayer *)self->_marimbaLayer renderer];
 
-      [(MRRenderer *)v8 jumpToPreviousMarker];
+      [(MRRenderer *)renderer jumpToPreviousMarker];
     }
   }
 
   else
   {
-    v6 = [(MRMarimbaLayer *)self->_marimbaLayer renderer];
+    renderer2 = [(MRMarimbaLayer *)self->_marimbaLayer renderer];
 
-    [(MRRenderer *)v6 jumpToNextMarker];
+    [(MRRenderer *)renderer2 jumpToNextMarker];
   }
 }
 
@@ -360,7 +360,7 @@
   }
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
   [(MRMarimbaLayer *)self->_marimbaLayer setDocument:?];
   [(MRRenderer *)[(MRMarimbaLayer *)self->_marimbaLayer renderer] setSlideFocusModeBackgroundColor:[(MPDocument *)[(MRMarimbaLayer *)self->_marimbaLayer document] backgroundCGColor]];
@@ -369,46 +369,46 @@
   {
   }
 
-  self->_orderedVideoPaths = [a3 orderedVideoPaths];
+  self->_orderedVideoPaths = [document orderedVideoPaths];
 }
 
-- (void)setMarimbaContentsScale:(double)a3
+- (void)setMarimbaContentsScale:(double)scale
 {
   [(MRMarimbaLayerView *)self->_marimbaLayerView setContentScaleFactor:?];
   marimbaLayer = self->_marimbaLayer;
 
-  [(MRMarimbaLayer *)marimbaLayer setContentsScale:a3];
+  [(MRMarimbaLayer *)marimbaLayer setContentsScale:scale];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   if (self->_isInMarimba)
   {
-    [(MRMarimbaLayerView *)self->_marimbaLayerView touchesBegan:a3 withEvent:a4];
+    [(MRMarimbaLayerView *)self->_marimbaLayerView touchesBegan:began withEvent:event];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   if (self->_isInMarimba)
   {
-    [(MRMarimbaLayerView *)self->_marimbaLayerView touchesMoved:a3 withEvent:a4];
+    [(MRMarimbaLayerView *)self->_marimbaLayerView touchesMoved:moved withEvent:event];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   if (self->_isInMarimba)
   {
-    [(MRMarimbaLayerView *)self->_marimbaLayerView touchesCancelled:a3 withEvent:a4];
+    [(MRMarimbaLayerView *)self->_marimbaLayerView touchesCancelled:cancelled withEvent:event];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if (self->_isInMarimba)
   {
-    [(MRMarimbaLayerView *)self->_marimbaLayerView touchesEnded:a3 withEvent:a4];
+    [(MRMarimbaLayerView *)self->_marimbaLayerView touchesEnded:ended withEvent:event];
   }
 }
 

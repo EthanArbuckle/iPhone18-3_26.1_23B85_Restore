@@ -1,40 +1,40 @@
 @interface APMetricClientConnection
-- (APMetricClientConnection)initWithHost:(id)a3 port:(id)a4;
-- (id)lineBreakFramer:(id)a3;
-- (void)_sendRawData:(id)a3;
-- (void)_setupConnection:(id)a3 port:(id)a4;
-- (void)send:(id)a3;
+- (APMetricClientConnection)initWithHost:(id)host port:(id)port;
+- (id)lineBreakFramer:(id)framer;
+- (void)_sendRawData:(id)data;
+- (void)_setupConnection:(id)connection port:(id)port;
+- (void)send:(id)send;
 @end
 
 @implementation APMetricClientConnection
 
-- (APMetricClientConnection)initWithHost:(id)a3 port:(id)a4
+- (APMetricClientConnection)initWithHost:(id)host port:(id)port
 {
-  v6 = a3;
-  v7 = a4;
+  hostCopy = host;
+  portCopy = port;
   v11.receiver = self;
   v11.super_class = APMetricClientConnection;
   v8 = [(APMetricClientConnection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(APMetricClientConnection *)v8 _setupConnection:v6 port:v7];
+    [(APMetricClientConnection *)v8 _setupConnection:hostCopy port:portCopy];
   }
 
   return v9;
 }
 
-- (void)_setupConnection:(id)a3 port:(id)a4
+- (void)_setupConnection:(id)connection port:(id)port
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  portCopy = port;
   v8 = objc_autoreleasePoolPush();
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  if ([connectionCopy length] && objc_msgSend(portCopy, "length"))
   {
-    v9 = [v6 UTF8String];
-    v10 = [v7 UTF8String];
+    uTF8String = [connectionCopy UTF8String];
+    uTF8String2 = [portCopy UTF8String];
     secure_tcp = nw_parameters_create_secure_tcp(_nw_parameters_configure_protocol_disable, _nw_parameters_configure_protocol_default_configuration);
-    host = nw_endpoint_create_host(v9, v10);
+    host = nw_endpoint_create_host(uTF8String, uTF8String2);
     v13 = nw_connection_create(host, secure_tcp);
     v14 = dispatch_get_global_queue(9, 0);
     nw_connection_set_queue(v13, v14);
@@ -43,7 +43,7 @@
     handler[1] = 3221225472;
     handler[2] = sub_100378B3C;
     handler[3] = &unk_100480638;
-    handler[4] = v9;
+    handler[4] = uTF8String;
     nw_connection_set_state_changed_handler(v13, handler);
     nw_connection_start(v13);
     [(APMetricClientConnection *)self setClientConnection:v13];
@@ -62,28 +62,28 @@
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)send:(id)a3
+- (void)send:(id)send
 {
-  v4 = [(APMetricClientConnection *)self lineBreakFramer:a3];
+  v4 = [(APMetricClientConnection *)self lineBreakFramer:send];
   [(APMetricClientConnection *)self _sendRawData:v4];
 }
 
-- (void)_sendRawData:(id)a3
+- (void)_sendRawData:(id)data
 {
   queue = dispatch_get_global_queue(0, 0);
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v8 = [dataCopy2 length];
 
-  v9 = dispatch_data_create(v7, v8, queue, 0);
-  v10 = [(APMetricClientConnection *)self clientConnection];
-  nw_connection_send(v10, v9, _nw_content_context_default_message, 1, &stru_100480678);
+  v9 = dispatch_data_create(bytes, v8, queue, 0);
+  clientConnection = [(APMetricClientConnection *)self clientConnection];
+  nw_connection_send(clientConnection, v9, _nw_content_context_default_message, 1, &stru_100480678);
 }
 
-- (id)lineBreakFramer:(id)a3
+- (id)lineBreakFramer:(id)framer
 {
-  if (a3)
+  if (framer)
   {
     v3 = [NSMutableData dataWithData:?];
     v4 = [NSString stringWithFormat:@"\r\n"];

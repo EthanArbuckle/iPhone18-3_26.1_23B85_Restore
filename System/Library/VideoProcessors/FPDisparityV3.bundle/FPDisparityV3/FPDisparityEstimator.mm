@@ -7,43 +7,43 @@
 - (CGRect)sensorReadoutRect;
 - (CGRect)totalSensorCropRect;
 - (CGSize)outputDisparityResolution;
-- (FPDisparityEstimator)initWithMetalContext:(id)a3;
-- (id)CreateKernelWithConst:(id)a3 constants:(id)a4;
-- (int)_allocateFPCostWorkBuffer:(id *)a3;
-- (int)_computeCost:(id)a3 texGreenPixels:(id)a4 texOutputResU:(id)a5 texOutputHesU:(id)a6 level:(unsigned int)a7 resolutionScale:(float)a8;
-- (int)_computeFocusPixelDisparityFromResolution:(FPDisparityEstimator *)self box_cstr_range:(SEL)a2 disparity_scaling_factor:(float)a3;
-- (int)_costNCC:(id)a3 dynCfg:(id *)a4 texDisparityIn:(id)a5 texGreenPixelsIn:(id)a6 texFocusPixelsIn:(id)a7 texTcLrcOut:(id)a8 resolutionScale:(float)a9 level:(unsigned int)a10;
-- (int)_debugInterpolate:(id)a3 texTcLrcIn:(id)a4 dynCfg:(id *)a5 debugBuf:(id)a6;
-- (int)_filterHorz:(id)a3 texTcLrcIn:(id)a4 texTcLrcOut:(id)a5 dynCfg:(id *)a6;
-- (int)_filterVert:(id)a3 texTcLrcIn:(id)a4 texTcLrcOut:(id)a5 dynCfg:(id *)a6;
+- (FPDisparityEstimator)initWithMetalContext:(id)context;
+- (id)CreateKernelWithConst:(id)const constants:(id)constants;
+- (int)_allocateFPCostWorkBuffer:(id *)buffer;
+- (int)_computeCost:(id)cost texGreenPixels:(id)pixels texOutputResU:(id)u texOutputHesU:(id)hesU level:(unsigned int)level resolutionScale:(float)scale;
+- (int)_computeFocusPixelDisparityFromResolution:(FPDisparityEstimator *)self box_cstr_range:(SEL)box_cstr_range disparity_scaling_factor:(float)disparity_scaling_factor;
+- (int)_costNCC:(id)c dynCfg:(id *)cfg texDisparityIn:(id)in texGreenPixelsIn:(id)pixelsIn texFocusPixelsIn:(id)focusPixelsIn texTcLrcOut:(id)out resolutionScale:(float)scale level:(unsigned int)self0;
+- (int)_debugInterpolate:(id)interpolate texTcLrcIn:(id)in dynCfg:(id *)cfg debugBuf:(id)buf;
+- (int)_filterHorz:(id)horz texTcLrcIn:(id)in texTcLrcOut:(id)out dynCfg:(id *)cfg;
+- (int)_filterVert:(id)vert texTcLrcIn:(id)in texTcLrcOut:(id)out dynCfg:(id *)cfg;
 - (int)_generateCorrectionMap;
-- (int)_interpolateAndAccumulate:(id)a3 texTcLrcIn:(id)a4 dynCfg:(id *)a5;
-- (int)_proximityOperator:(id)a3 dynCfg:(id *)a4 texDisparityIn:(id)a5 texOutputResUOut:(id)a6 texOutputHesUOut:(id)a7 level:(unsigned int)a8;
-- (int)_setCorrectionMapCoefficients:(float *)a3;
+- (int)_interpolateAndAccumulate:(id)accumulate texTcLrcIn:(id)in dynCfg:(id *)cfg;
+- (int)_proximityOperator:(id)operator dynCfg:(id *)cfg texDisparityIn:(id)in texOutputResUOut:(id)out texOutputHesUOut:(id)uOut level:(unsigned int)level;
+- (int)_setCorrectionMapCoefficients:(float *)coefficients;
 - (int)_setupBuffer;
 - (int)_setupFPPipelines;
 - (int)_setupTexture;
-- (int)allocateResources:(id *)a3;
-- (int)computeFilterCurve:(float)a3 p3:(float)a4 array:(float *)a5;
-- (int)setOutputDisparity:(__CVBuffer *)a3;
-- (unint64_t)computeAlignedSize:(unint64_t)a3 pixelFormat:(unint64_t)a4;
+- (int)allocateResources:(id *)resources;
+- (int)computeFilterCurve:(float)curve p3:(float)p3 array:(float *)array;
+- (int)setOutputDisparity:(__CVBuffer *)disparity;
+- (unint64_t)computeAlignedSize:(unint64_t)size pixelFormat:(unint64_t)format;
 - (void)dealloc;
 - (void)releaseResources;
 @end
 
 @implementation FPDisparityEstimator
 
-- (FPDisparityEstimator)initWithMetalContext:(id)a3
+- (FPDisparityEstimator)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = FPDisparityEstimator;
   v6 = [(FPDisparityEstimator *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mtlContext, a3);
-    v10 = objc_msgSend_commandQueue(v5, v8, v9);
+    objc_storeStrong(&v6->_mtlContext, context);
+    v10 = objc_msgSend_commandQueue(contextCopy, v8, v9);
     commandQueue = v7->_commandQueue;
     v7->_commandQueue = v10;
 
@@ -86,12 +86,12 @@ LABEL_5:
   return v7;
 }
 
-- (int)allocateResources:(id *)a3
+- (int)allocateResources:(id *)resources
 {
-  v6.i64[0] = *&a3->var0;
-  v6.i64[1] = HIDWORD(*&a3->var0);
+  v6.i64[0] = *&resources->var0;
+  v6.i64[1] = HIDWORD(*&resources->var0);
   self->_outputDisparityResolution = vcvtq_f64_u64(v6);
-  v7 = objc_msgSend__setupBuffer(self, a2, a3);
+  v7 = objc_msgSend__setupBuffer(self, a2, resources);
   if (v7)
   {
     v20 = v7;
@@ -118,7 +118,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  FPCostWorkBuffer = objc_msgSend__allocateFPCostWorkBuffer_(self, v15, a3);
+  FPCostWorkBuffer = objc_msgSend__allocateFPCostWorkBuffer_(self, v15, resources);
   if (FPCostWorkBuffer)
   {
     v20 = FPCostWorkBuffer;
@@ -126,16 +126,16 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if ((a3[32].var0 & 1) == 0)
+  if ((resources[32].var0 & 1) == 0)
   {
-    *&a3[24].var0 = 0u;
-    *&a3[28].var0 = 0u;
-    *&a3[16].var0 = 0u;
-    *&a3[20].var0 = 0u;
-    *&a3[12].var0 = 0u;
+    *&resources[24].var0 = 0u;
+    *&resources[28].var0 = 0u;
+    *&resources[16].var0 = 0u;
+    *&resources[20].var0 = 0u;
+    *&resources[12].var0 = 0u;
   }
 
-  objc_msgSend__setCorrectionMapCoefficients_(self, v17, &a3[12]);
+  objc_msgSend__setCorrectionMapCoefficients_(self, v17, &resources[12]);
   objc_msgSend__generateCorrectionMap(self, v18, v19);
   return 0;
 }
@@ -155,17 +155,17 @@ LABEL_13:
   if (objc_msgSend_countScales(self->_imagePyramid, v4, v5) >= 1)
   {
     v6 = 0;
-    v7 = self;
+    selfCopy = self;
     do
     {
-      v8 = v7->_res_tex[0];
-      v7->_res_tex[0] = 0;
+      v8 = selfCopy->_res_tex[0];
+      selfCopy->_res_tex[0] = 0;
 
-      v9 = v7->_Hes_tex[0];
-      v7->_Hes_tex[0] = 0;
+      v9 = selfCopy->_Hes_tex[0];
+      selfCopy->_Hes_tex[0] = 0;
 
       ++v6;
-      v7 = (v7 + 8);
+      selfCopy = (selfCopy + 8);
     }
 
     while (v6 < objc_msgSend_countScales(self->_imagePyramid, v10, v11));
@@ -195,10 +195,10 @@ LABEL_13:
   self->_bufTcLrc2 = 0;
 }
 
-- (int)_allocateFPCostWorkBuffer:(id *)a3
+- (int)_allocateFPCostWorkBuffer:(id *)buffer
 {
-  v6 = HIDWORD(*&a3->var0);
-  v7 = objc_msgSend_computeAlignedSize_pixelFormat_(self, a2, 16 * *&a3->var0, 125) * v6;
+  v6 = HIDWORD(*&buffer->var0);
+  v7 = objc_msgSend_computeAlignedSize_pixelFormat_(self, a2, 16 * *&buffer->var0, 125) * v6;
   v10 = objc_msgSend_device(self->_mtlContext, v8, v9);
   v12 = objc_msgSend_newBufferWithLength_options_(v10, v11, v7, 0);
   costsBuffer = self->_costsBuffer;
@@ -206,13 +206,13 @@ LABEL_13:
 
   if (self->_costsBuffer)
   {
-    if (a3[2].var0)
+    if (buffer[2].var0)
     {
       v16 = 0;
       v17 = 0;
       do
       {
-        v18 = *&a3[2 * v16 + 4].var0;
+        v18 = *&buffer[2 * v16 + 4].var0;
         v19 = HIDWORD(v18);
         v20 = objc_msgSend_computeAlignedSize_pixelFormat_(self, v14, 16 * v18, 125);
         if (v20 * v19 > v17)
@@ -223,7 +223,7 @@ LABEL_13:
         ++v16;
       }
 
-      while (v16 < a3[2].var0);
+      while (v16 < buffer[2].var0);
     }
 
     else
@@ -269,14 +269,14 @@ LABEL_13:
   }
 }
 
-- (int)_computeFocusPixelDisparityFromResolution:(FPDisparityEstimator *)self box_cstr_range:(SEL)a2 disparity_scaling_factor:(float)a3
+- (int)_computeFocusPixelDisparityFromResolution:(FPDisparityEstimator *)self box_cstr_range:(SEL)box_cstr_range disparity_scaling_factor:(float)disparity_scaling_factor
 {
   v6 = v5;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v177 = 0;
-  v9 = objc_msgSend_countScales(self->_imagePyramid, a2, v3);
-  v151 = objc_msgSend_realPyramidDimensions(v8->_imagePyramid, v10, v11);
+  v9 = objc_msgSend_countScales(self->_imagePyramid, box_cstr_range, v3);
+  v151 = objc_msgSend_realPyramidDimensions(selfCopy->_imagePyramid, v10, v11);
   v14 = (v9 - 1);
   if (v9 < 1)
   {
@@ -284,14 +284,14 @@ LABEL_13:
   }
 
   v15 = 0;
-  v16 = LODWORD(a3);
-  res_tex = v8->_res_tex;
-  Hes_tex = v8->_Hes_tex;
+  v16 = LODWORD(disparity_scaling_factor);
+  res_tex = selfCopy->_res_tex;
+  Hes_tex = selfCopy->_Hes_tex;
   v150 = (v9 - 1);
   do
   {
     v18 = v15;
-    v19 = objc_msgSend_levelsParameters(v8->_fpDisparityEstimatorParams, v12, v13);
+    v19 = objc_msgSend_levelsParameters(selfCopy->_fpDisparityEstimatorParams, v12, v13);
     v21 = objc_msgSend_objectAtIndexedSubscript_(v19, v20, v14);
 
     v24 = objc_msgSend_solverParameters(v21, v22, v23);
@@ -304,10 +304,10 @@ LABEL_13:
     v35 = objc_msgSend_hbfParameters(v21, v33, v34);
     v155 = objc_msgSend_scales(v35, v36, v37);
 
-    v154 = objc_msgSend_textureRGBAU8AtScale_(v8->_imagePyramid, v38, v14);
-    v153 = objc_msgSend_textureU32AliasAtScale_(v8->_imagePyramid, v39, v14);
-    v41 = objc_msgSend_objectAtIndexedSubscript_(v8->_GChannelPyramid, v40, v14);
-    v43 = objc_msgSend_objectAtIndexedSubscript_(v8->_GChannelPyramid, v42, 0);
+    v154 = objc_msgSend_textureRGBAU8AtScale_(selfCopy->_imagePyramid, v38, v14);
+    v153 = objc_msgSend_textureU32AliasAtScale_(selfCopy->_imagePyramid, v39, v14);
+    v41 = objc_msgSend_objectAtIndexedSubscript_(selfCopy->_GChannelPyramid, v40, v14);
+    v43 = objc_msgSend_objectAtIndexedSubscript_(selfCopy->_GChannelPyramid, v42, 0);
     v46 = objc_msgSend_height(v41, v44, v45);
     v161 = objc_msgSend_height(v43, v47, v48);
     v157 = v41;
@@ -315,7 +315,7 @@ LABEL_13:
     v152 = v43;
     v54 = objc_msgSend_width(v43, v52, v53);
     v55 = *(v151 + 16 * v14);
-    v15 = objc_msgSend_commandBuffer(v8->_commandQueue, v56, v57);
+    v15 = objc_msgSend_commandBuffer(selfCopy->_commandQueue, v56, v57);
 
     if (!v15)
     {
@@ -329,7 +329,7 @@ LABEL_46:
     v159 = v51;
     if (v14 == v150)
     {
-      inited = objc_msgSend_doInitPrimalDualWithCommandBuffer_disparity_value_idx_swap_uv_idx_swap_p_level_(v8->_tvl1Instance, v58, v15, HIDWORD(v177), v177, 0.0);
+      inited = objc_msgSend_doInitPrimalDualWithCommandBuffer_disparity_value_idx_swap_uv_idx_swap_p_level_(selfCopy->_tvl1Instance, v58, v15, HIDWORD(v177), v177, 0.0);
       if (inited)
       {
         v62 = inited;
@@ -342,13 +342,13 @@ LABEL_42:
 
     else
     {
-      v63 = objc_msgSend_objectAtIndexedSubscript_(v8->_GChannelPyramid, v58, v14 + 1);
+      v63 = objc_msgSend_objectAtIndexedSubscript_(selfCopy->_GChannelPyramid, v58, v14 + 1);
       v66 = (objc_msgSend_width(v157, v64, v65) - 1);
       v69 = v66 / (objc_msgSend_width(v63, v67, v68) - 1);
       objc_msgSend_height(v157, v70, v71);
       objc_msgSend_height(v63, v72, v73);
       *&v74 = v69;
-      v76 = objc_msgSend_doUpscalePrimalDualWithCommandBuffer_idx_swap_uv_in_out_idx_swap_p_in_out_level_coeff_(v8->_tvl1Instance, v75, v15, &v177 + 4, &v177, v14, v74);
+      v76 = objc_msgSend_doUpscalePrimalDualWithCommandBuffer_idx_swap_uv_in_out_idx_swap_p_in_out_level_coeff_(selfCopy->_tvl1Instance, v75, v15, &v177 + 4, &v177, v14, v74);
       if (v76)
       {
         v62 = v76;
@@ -358,7 +358,7 @@ LABEL_42:
     }
 
     v77 = objc_msgSend_regularizationParameters(v158, v60, v61);
-    v62 = objc_msgSend__doLocalRegularizationWithCommandBuffer_in_tex_level_parameters_(v8, v78, v15, v154, v14, v77);
+    v62 = objc_msgSend__doLocalRegularizationWithCommandBuffer_in_tex_level_parameters_(selfCopy, v78, v15, v154, v14, v77);
 
     if (v62)
     {
@@ -395,9 +395,9 @@ LABEL_42:
       v94 = COERCE_DOUBLE(vmul_n_f32(v7, v93));
       while (1)
       {
-        v95 = objc_msgSend_textureUVAtLevel_idx_swap_uv_(v8->_tvl1Instance, v90, v14, HIDWORD(v177));
+        v95 = objc_msgSend_textureUVAtLevel_idx_swap_uv_(selfCopy->_tvl1Instance, v90, v14, HIDWORD(v177));
         *&v96 = v92;
-        v98 = objc_msgSend__computeCost_texGreenPixels_texOutputResU_texOutputHesU_level_resolutionScale_(v8, v97, v95, v157, res_tex[v14], Hes_tex[v14], v14, v96);
+        v98 = objc_msgSend__computeCost_texGreenPixels_texOutputResU_texOutputHesU_level_resolutionScale_(selfCopy, v97, v95, v157, res_tex[v14], Hes_tex[v14], v14, v96);
         if (v98)
         {
           v62 = v98;
@@ -405,7 +405,7 @@ LABEL_42:
           goto LABEL_41;
         }
 
-        v101 = objc_msgSend_commandBuffer(v8->_commandQueue, v99, v100);
+        v101 = objc_msgSend_commandBuffer(selfCopy->_commandQueue, v99, v100);
 
         if (!v101)
         {
@@ -421,12 +421,12 @@ LABEL_42:
         v162 = v95;
         if (!v14 && v27 == 1 && v155 <= 0)
         {
-          uv_tex_user_ref = v8->_uv_tex_user_ref;
+          uv_tex_user_ref = selfCopy->_uv_tex_user_ref;
           v105 = v6;
         }
 
-        v106 = v8;
-        tvl1Instance = v8->_tvl1Instance;
+        v106 = selfCopy;
+        tvl1Instance = selfCopy->_tvl1Instance;
         v108 = res_tex;
         v109 = res_tex[v14];
         v110 = Hes_tex[v14];
@@ -465,7 +465,7 @@ LABEL_42:
         v15 = v101;
         v27 = v160 - 1;
         res_tex = v108;
-        v8 = v106;
+        selfCopy = v106;
         if (v160 == 1)
         {
           goto LABEL_26;
@@ -475,7 +475,7 @@ LABEL_42:
       sub_29579A378();
       v15 = v101;
       res_tex = v108;
-      v8 = v106;
+      selfCopy = v106;
       v95 = v162;
 LABEL_41:
 
@@ -492,7 +492,7 @@ LABEL_26:
       goto LABEL_34;
     }
 
-    v15 = objc_msgSend_commandBuffer(v8->_commandQueue, v90, v91);
+    v15 = objc_msgSend_commandBuffer(selfCopy->_commandQueue, v90, v91);
 
     if (!v15)
     {
@@ -501,19 +501,19 @@ LABEL_26:
     }
 
     v127 = objc_msgSend_hbfParameters(v158, v125, v126);
-    objc_msgSend_setParams_(v8->_hbfgpuInstance, v128, v127);
+    objc_msgSend_setParams_(selfCopy->_hbfgpuInstance, v128, v127);
 
-    v130 = objc_msgSend_textureUVAtLevel_idx_swap_uv_(v8->_tvl1Instance, v129, v14, HIDWORD(v177));
-    v133 = objc_msgSend_textureUVAtLevel_idx_swap_uv_(v8->_tvl1Instance, v131, v14, HIDWORD(v177) ^ 1u);
+    v130 = objc_msgSend_textureUVAtLevel_idx_swap_uv_(selfCopy->_tvl1Instance, v129, v14, HIDWORD(v177));
+    v133 = objc_msgSend_textureUVAtLevel_idx_swap_uv_(selfCopy->_tvl1Instance, v131, v14, HIDWORD(v177) ^ 1u);
     LODWORD(v134) = 1.0;
     v135 = v133;
     if (!v14)
     {
-      v135 = v8->_uv_tex_user_ref;
+      v135 = selfCopy->_uv_tex_user_ref;
       *&v134 = v6;
     }
 
-    objc_msgSend_doFilterWithCommandBuffer_in_I_tex_in_J_u32_tex_in_W_tex_out_tex_disparity_scaling_factor_(v8->_hbfgpuInstance, v132, v15, v130, v153, 0, v135, v134);
+    objc_msgSend_doFilterWithCommandBuffer_in_I_tex_in_J_u32_tex_in_W_tex_out_tex_disparity_scaling_factor_(selfCopy->_hbfgpuInstance, v132, v15, v130, v153, 0, v135, v134);
     HIDWORD(v177) ^= 1u;
     if (*MEMORY[0x29EDB9270])
     {
@@ -553,13 +553,13 @@ LABEL_34:
   return v62;
 }
 
-- (int)setOutputDisparity:(__CVBuffer *)a3
+- (int)setOutputDisparity:(__CVBuffer *)disparity
 {
-  if (a3)
+  if (disparity)
   {
-    if (CVPixelBufferGetWidth(a3) == self->_outputDisparityResolution.width && CVPixelBufferGetHeight(a3) == self->_outputDisparityResolution.height)
+    if (CVPixelBufferGetWidth(disparity) == self->_outputDisparityResolution.width && CVPixelBufferGetHeight(disparity) == self->_outputDisparityResolution.height)
     {
-      v6 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_textureSize_plane_(self->_mtlContext, v5, a3, 25, 22, 0, self->_outputDisparityResolution.width);
+      v6 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_textureSize_plane_(self->_mtlContext, v5, disparity, 25, 22, 0, self->_outputDisparityResolution.width);
       uv_tex_user_ref = self->_uv_tex_user_ref;
       self->_uv_tex_user_ref = v6;
 
@@ -675,23 +675,23 @@ LABEL_34:
   return 0;
 }
 
-- (int)_computeCost:(id)a3 texGreenPixels:(id)a4 texOutputResU:(id)a5 texOutputHesU:(id)a6 level:(unsigned int)a7 resolutionScale:(float)a8
+- (int)_computeCost:(id)cost texGreenPixels:(id)pixels texOutputResU:(id)u texOutputHesU:(id)hesU level:(unsigned int)level resolutionScale:(float)scale
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  costCopy = cost;
+  pixelsCopy = pixels;
+  uCopy = u;
+  hesUCopy = hesU;
   v192 = 0u;
   v193 = 0u;
   v191 = 0u;
-  v19 = objc_msgSend_width(v13, v17, v18);
-  v176 = v13;
-  v22 = objc_msgSend_height(v13, v20, v21);
-  LODWORD(a5) = v22;
+  v19 = objc_msgSend_width(costCopy, v17, v18);
+  v176 = costCopy;
+  v22 = objc_msgSend_height(costCopy, v20, v21);
+  LODWORD(u) = v22;
   v190[0] = __PAIR64__(v22, v19);
-  LODWORD(v13) = objc_msgSend_width(v14, v23, v24);
-  v190[1] = __PAIR64__(objc_msgSend_height(v14, v25, v26), v13);
-  v28 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], v27, 25, v19, a5, 0);
+  LODWORD(costCopy) = objc_msgSend_width(pixelsCopy, v23, v24);
+  v190[1] = __PAIR64__(objc_msgSend_height(pixelsCopy, v25, v26), costCopy);
+  v28 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], v27, 25, v19, u, 0);
   v31 = v28;
   if (!v28)
   {
@@ -705,9 +705,9 @@ LABEL_34:
   objc_msgSend_setUsage_(v31, v33, v32 | 3);
   DWORD1(v192) = objc_msgSend_computeAlignedSize_pixelFormat_(self, v34, 16 * v19, 125) >> 2;
   v36 = objc_msgSend_objectAtIndexedSubscript_(self->_GChannelPyramid, v35, 0);
-  v173 = objc_msgSend_width(v14, v37, v38);
+  v173 = objc_msgSend_width(pixelsCopy, v37, v38);
   v41 = objc_msgSend_width(v36, v39, v40);
-  v44 = objc_msgSend_height(v14, v42, v43);
+  v44 = objc_msgSend_height(pixelsCopy, v42, v43);
   v47 = objc_msgSend_height(v36, v45, v46);
   v50 = objc_msgSend_width(v36, v48, v49);
   v172 = v36;
@@ -730,7 +730,7 @@ LABEL_23:
     if (v152)
     {
       v154 = v152;
-      v155 = objc_msgSend__proximityOperator_dynCfg_texDisparityIn_texOutputResUOut_texOutputHesUOut_level_(self, v153, v152, v190, v176, v15, v16, a7);
+      v155 = objc_msgSend__proximityOperator_dynCfg_texDisparityIn_texOutputResUOut_texOutputHesUOut_level_(self, v153, v152, v190, v176, uCopy, hesUCopy, level);
       if (!v155)
       {
         if (*MEMORY[0x29EDB9270])
@@ -743,14 +743,14 @@ LABEL_23:
           v182[1] = 3221225472;
           v182[2] = sub_29578A888;
           v182[3] = &unk_29EDD8EF8;
-          v183 = a7;
+          levelCopy = level;
           objc_msgSend_addCompletedHandler_(v161, v163, v182);
           objc_msgSend_commit(v161, v164, v165);
           v180[0] = MEMORY[0x29EDCA5F8];
           v180[1] = 3221225472;
           v180[2] = sub_29578A8BC;
           v180[3] = &unk_29EDD8EF8;
-          v181 = a7;
+          levelCopy2 = level;
           objc_msgSend_addCompletedHandler_(v154, v166, v180);
         }
 
@@ -776,8 +776,8 @@ LABEL_23:
     goto LABEL_28;
   }
 
-  v170 = v16;
-  v171 = v15;
+  v170 = hesUCopy;
+  v171 = uCopy;
   v68 = 0;
   v178 = 0;
   v179 = 0;
@@ -785,7 +785,7 @@ LABEL_23:
   v70 = 0;
   v71 = (v173 - 1) / (v41 - 1);
   v72 = (v44 - 1) / (v47 - 1);
-  v174 = v14;
+  v174 = pixelsCopy;
   while (1)
   {
     if (v70 == 3)
@@ -856,13 +856,13 @@ LABEL_23:
       v167 = v194[0];
       v109 = v178;
       v69 = v179;
-      v14 = v174;
+      pixelsCopy = v174;
       goto LABEL_38;
     }
 
     v109 = objc_msgSend_newTextureWithDescriptor_offset_bytesPerRow_(self->_bufTcLrc2, v108, v175, 0, v105);
 
-    v14 = v174;
+    pixelsCopy = v174;
     if (!v109)
     {
       sub_29579B06C(v194);
@@ -895,8 +895,8 @@ LABEL_23:
     }
 
     v69 = v124;
-    LODWORD(v169) = a7;
-    *&v126 = a8;
+    LODWORD(v169) = level;
+    *&v126 = scale;
     v127 = objc_msgSend__costNCC_dynCfg_texDisparityIn_texGreenPixelsIn_texFocusPixelsIn_texTcLrcOut_resolutionScale_level_(self, v125, v124, v190, v176, v174, v79, v107, v126, v169);
     if (v127)
     {
@@ -939,7 +939,7 @@ LABEL_23:
       v187[1] = 3221225472;
       v187[2] = sub_29578A79C;
       v187[3] = &unk_29EDD8F18;
-      v188 = a7;
+      levelCopy3 = level;
       v189 = v70;
       objc_msgSend_addCompletedHandler_(v139, v141, v187);
       objc_msgSend_commit(v139, v142, v143);
@@ -947,7 +947,7 @@ LABEL_23:
       v184[1] = 3221225472;
       v184[2] = sub_29578A7CC;
       v184[3] = &unk_29EDD8F18;
-      v185 = a7;
+      levelCopy4 = level;
       v186 = v70;
       objc_msgSend_addCompletedHandler_(v69, v144, v184);
     }
@@ -962,8 +962,8 @@ LABEL_23:
     if (v70 >= v150)
     {
 
-      v16 = v170;
-      v15 = v171;
+      hesUCopy = v170;
+      uCopy = v171;
       v151 = v178;
       goto LABEL_23;
     }
@@ -975,19 +975,19 @@ LABEL_37:
   v69 = v123;
 LABEL_38:
 
-  v16 = v170;
-  v15 = v171;
+  hesUCopy = v170;
+  uCopy = v171;
 LABEL_28:
 
   return v167;
 }
 
-- (int)_costNCC:(id)a3 dynCfg:(id *)a4 texDisparityIn:(id)a5 texGreenPixelsIn:(id)a6 texFocusPixelsIn:(id)a7 texTcLrcOut:(id)a8 resolutionScale:(float)a9 level:(unsigned int)a10
+- (int)_costNCC:(id)c dynCfg:(id *)cfg texDisparityIn:(id)in texGreenPixelsIn:(id)pixelsIn texFocusPixelsIn:(id)focusPixelsIn texTcLrcOut:(id)out resolutionScale:(float)scale level:(unsigned int)self0
 {
-  v215 = a5;
-  v17 = a6;
-  v213 = a7;
-  v18 = a8;
+  inCopy = in;
+  pixelsInCopy = pixelsIn;
+  focusPixelsInCopy = focusPixelsIn;
+  outCopy = out;
   v232 = 0u;
   v233 = 0u;
   v231 = 0u;
@@ -996,9 +996,9 @@ LABEL_28:
   v227 = 0u;
   v228 = 0u;
   v226 = 0u;
-  v19 = a3;
-  v22 = objc_msgSend_width(v17, v20, v21);
-  v25 = objc_msgSend_height(v17, v23, v24);
+  cCopy = c;
+  v22 = objc_msgSend_width(pixelsInCopy, v20, v21);
+  v25 = objc_msgSend_height(pixelsInCopy, v23, v24);
   v26.i64[0] = v22;
   v26.i64[1] = v25;
   v27.i64[0] = -1;
@@ -1030,7 +1030,7 @@ LABEL_28:
 
   v66 = objc_msgSend_FPcostParameters(self->_fpDisparityEstimatorParams, v64, v65);
   objc_msgSend_circleOfConfusionOffset(v66, v67, v68);
-  *(&v232 + 1) = __PAIR64__(LODWORD(a9), v69);
+  *(&v232 + 1) = __PAIR64__(LODWORD(scale), v69);
 
   if (objc_msgSend_quadraBinningFactor(self, v70, v71) == 2)
   {
@@ -1042,7 +1042,7 @@ LABEL_28:
     v74 = 1;
   }
 
-  if (objc_msgSend_quadraBinningFactor(self, v72, v73, v213))
+  if (objc_msgSend_quadraBinningFactor(self, v72, v73, focusPixelsInCopy))
   {
     v77 = 2;
   }
@@ -1083,7 +1083,7 @@ LABEL_28:
   HIWORD(v230) = (v109.i32[1] & 0xFFFCFFFF) / v77;
   WORD6(v230) = (v109.i32[0] & 0xFFFCFFFF) / v77;
   v112 = objc_msgSend_levelsParameters(self->_fpDisparityEstimatorParams, v110, v111);
-  v114 = objc_msgSend_objectAtIndexedSubscript_(v112, v113, a10);
+  v114 = objc_msgSend_objectAtIndexedSubscript_(v112, v113, level);
   v117 = objc_msgSend_costParameters(v114, v115, v116);
   objc_msgSend_step(v117, v118, v119);
   v216 = v120;
@@ -1105,28 +1105,28 @@ LABEL_28:
       v140 = fminf((imageAGC - v139) / v134, 1.0);
 
       v143 = objc_msgSend_levelsParameters(self->_fpDisparityEstimatorParams, v141, v142);
-      v145 = objc_msgSend_objectAtIndexedSubscript_(v143, v144, a10);
+      v145 = objc_msgSend_objectAtIndexedSubscript_(v143, v144, level);
       v148 = objc_msgSend_costParameters(v145, v146, v147);
       objc_msgSend_stepLowlight(v148, v149, v150);
       v216 = v216 + (v140 * (v151 - v216));
     }
   }
 
-  LODWORD(v152) = a4[1].var2.var0.var0;
-  *&v153 = a4[1].var2.var0.var1;
-  HIDWORD(v152) = a4[1].var2.var1.var0;
-  *(&v153 + 1) = a4[1].var2.var1.var1;
+  LODWORD(v152) = cfg[1].var2.var0.var0;
+  *&v153 = cfg[1].var2.var0.var1;
+  HIDWORD(v152) = cfg[1].var2.var1.var0;
+  *(&v153 + 1) = cfg[1].var2.var1.var1;
   *&v226 = v152;
   *(&v226 + 1) = v153;
-  v154 = vcvt_f32_u32(vadd_s32(*&a4->var0, 0x100000001));
+  v154 = vcvt_f32_u32(vadd_s32(*&cfg->var0, 0x100000001));
   v155 = vdup_n_s32(0x4B400000u);
   v156 = vdup_n_s32(0xCB400000);
   v157 = vadd_f32(vadd_f32(vorr_s8(vand_s8(v108, 0xFFFF0000FFFFLL), v155), v156), 0xBF000000BF000000);
   __asm { FMOV            V1.2S, #1.0 }
 
   v163 = vadd_f32(vadd_f32(vorr_s8(vand_s8(v109, 0xFFFF0000FFFFLL), v155), v156), _D1);
-  v221 = (objc_msgSend_width(v18, v121, v122) + 1);
-  v166 = objc_msgSend_height(v18, v164, v165);
+  v221 = (objc_msgSend_width(outCopy, v121, v122) + 1);
+  v166 = objc_msgSend_height(outCopy, v164, v165);
   v167.f32[0] = v221;
   v167.f32[1] = (v166 + 1);
   v222 = v167;
@@ -1140,20 +1140,20 @@ LABEL_28:
     v172 = 1;
   }
 
-  v173.i32[0] = LODWORD(a4[1].var2.var0.var1);
-  v174.f32[0] = a4[1].var2.var0.var0;
-  *&v175 = a4[1].var2.var0.var2;
-  v174.f32[1] = a4[1].var2.var1.var0;
-  v173.f32[1] = a4[1].var2.var1.var1;
+  v173.i32[0] = LODWORD(cfg[1].var2.var0.var1);
+  v174.f32[0] = cfg[1].var2.var0.var0;
+  *&v175 = cfg[1].var2.var0.var2;
+  v174.f32[1] = cfg[1].var2.var1.var0;
+  v173.f32[1] = cfg[1].var2.var1.var1;
   v176 = vmul_n_f32(v174, v172);
   v177 = vmla_n_f32(vmul_f32(v176, 0xBF000000BF000000), v173, v172);
   v178 = vdiv_f32(vmul_f32(v222, v176), v222);
   v179 = vdiv_f32(v154, v163);
   *&v227 = vmul_f32(v179, v178);
   *(&v227 + 1) = vmla_f32(0xBF000000BF000000, v179, vmla_f32(vsub_f32(v177, v157), 0x3F0000003F000000, v178));
-  HIDWORD(v175) = LODWORD(a4[1].var2.var1.var2);
+  HIDWORD(v175) = LODWORD(cfg[1].var2.var1.var2);
   *&v233 = v175;
-  var0 = a4[1].var0;
+  var0 = cfg[1].var0;
   if (var0 == 1)
   {
     *&v228 = 3212836864;
@@ -1192,26 +1192,26 @@ LABEL_28:
   }
 
 LABEL_21:
-  *&v229 = vdiv_f32(vcvt_f32_u32(vadd_s32(*&a4->var0, -1)), vcvt_f32_u32(vadd_s32(*&a4->var2.var0.var0, -1)));
+  *&v229 = vdiv_f32(vcvt_f32_u32(vadd_s32(*&cfg->var0, -1)), vcvt_f32_u32(vadd_s32(*&cfg->var2.var0.var0, -1)));
   v185 = objc_msgSend_FPcostParameters(self->_fpDisparityEstimatorParams, v170, v171);
   WORD4(v229) = objc_msgSend_rigidWindowSupport(v185, v186, v187) >> 1;
 
-  v190 = objc_msgSend_computeCommandEncoder(v19, v188, v189);
+  v190 = objc_msgSend_computeCommandEncoder(cCopy, v188, v189);
 
   if (v190)
   {
     objc_msgSend_setComputePipelineState_(v190, v191, self->_costNCCPipelineState);
     objc_msgSend_setTexture_atIndex_(v190, v192, v181, 0);
-    objc_msgSend_setTexture_atIndex_(v190, v193, v17, 1);
-    v194 = v215;
-    objc_msgSend_setTexture_atIndex_(v190, v195, v215, 2);
+    objc_msgSend_setTexture_atIndex_(v190, v193, pixelsInCopy, 1);
+    v194 = inCopy;
+    objc_msgSend_setTexture_atIndex_(v190, v195, inCopy, 2);
     objc_msgSend_setTexture_atIndex_(v190, v196, self->_disparityCorrectionTex, 3);
     objc_msgSend_setTexture_atIndex_(v190, v197, self->_binaryLambdaTexture, 4);
-    objc_msgSend_setTexture_atIndex_(v190, v198, v18, 5);
+    objc_msgSend_setTexture_atIndex_(v190, v198, outCopy, 5);
     objc_msgSend_setBytes_length_atIndex_(v190, v199, &v226, 128, 0);
     v202 = objc_msgSend_threadExecutionWidth(self->_costNCCPipelineState, v200, v201);
     v205 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_costNCCPipelineState, v203, v204);
-    v206 = *&a4->var2.var1.var1;
+    v206 = *&cfg->var2.var1.var1;
     *&v207 = v206;
     *(&v207 + 1) = HIDWORD(v206);
     v224 = v207;
@@ -1228,38 +1228,38 @@ LABEL_21:
   {
     sub_29579B280(&v224);
     v211 = v224;
-    v194 = v215;
+    v194 = inCopy;
   }
 
   return v211;
 }
 
-- (int)_filterVert:(id)a3 texTcLrcIn:(id)a4 texTcLrcOut:(id)a5 dynCfg:(id *)a6
+- (int)_filterVert:(id)vert texTcLrcIn:(id)in texTcLrcOut:(id)out dynCfg:(id *)cfg
 {
-  v10 = a4;
-  v11 = a5;
+  inCopy = in;
+  outCopy = out;
   v48 = 0u;
   memset(v47, 0, sizeof(v47));
   fpDisparityEstimatorParams = self->_fpDisparityEstimatorParams;
-  v13 = a3;
+  vertCopy = vert;
   v16 = objc_msgSend_FPcostParameters(fpDisparityEstimatorParams, v14, v15);
   objc_msgSend_costMapAntialiasingStrength(v16, v17, v18);
-  v20 = (v19 * LODWORD(a6->var2.var1.var2)) / a6->var1;
+  v20 = (v19 * LODWORD(cfg->var2.var1.var2)) / cfg->var1;
 
   *&v21 = roundf(v20 * 6.0);
   *&v22 = v20;
   LOWORD(v48) = objc_msgSend_computeFilterCurve_p3_array_(self, v23, v47, v21, v22);
-  v26 = objc_msgSend_computeCommandEncoder(v13, v24, v25);
+  v26 = objc_msgSend_computeCommandEncoder(vertCopy, v24, v25);
 
   if (v26)
   {
     objc_msgSend_setComputePipelineState_(v26, v27, self->_filterVertPipelineState);
-    objc_msgSend_setTexture_atIndex_(v26, v28, v10, 0);
-    objc_msgSend_setTexture_atIndex_(v26, v29, v11, 1);
+    objc_msgSend_setTexture_atIndex_(v26, v28, inCopy, 0);
+    objc_msgSend_setTexture_atIndex_(v26, v29, outCopy, 1);
     objc_msgSend_setBytes_length_atIndex_(v26, v30, v47, 272, 0);
     v33 = objc_msgSend_threadExecutionWidth(self->_filterVertPipelineState, v31, v32);
     v36 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_filterVertPipelineState, v34, v35);
-    v37 = *&a6->var2.var1.var1;
+    v37 = *&cfg->var2.var1.var1;
     *&v38 = v37;
     *(&v38 + 1) = HIDWORD(v37);
     v45 = v38;
@@ -1281,32 +1281,32 @@ LABEL_21:
   return v42;
 }
 
-- (int)_filterHorz:(id)a3 texTcLrcIn:(id)a4 texTcLrcOut:(id)a5 dynCfg:(id *)a6
+- (int)_filterHorz:(id)horz texTcLrcIn:(id)in texTcLrcOut:(id)out dynCfg:(id *)cfg
 {
-  v10 = a4;
-  v11 = a5;
+  inCopy = in;
+  outCopy = out;
   v48 = 0u;
   memset(v47, 0, sizeof(v47));
   fpDisparityEstimatorParams = self->_fpDisparityEstimatorParams;
-  v13 = a3;
+  horzCopy = horz;
   v16 = objc_msgSend_FPcostParameters(fpDisparityEstimatorParams, v14, v15);
   objc_msgSend_costMapAntialiasingStrength(v16, v17, v18);
-  v20 = (v19 * *&a6->var2.var1.var1) / *&a6->var0;
+  v20 = (v19 * *&cfg->var2.var1.var1) / *&cfg->var0;
 
   *&v21 = roundf(v20 * 6.0);
   *&v22 = v20;
   LOWORD(v48) = objc_msgSend_computeFilterCurve_p3_array_(self, v23, v47, v21, v22);
-  v26 = objc_msgSend_computeCommandEncoder(v13, v24, v25);
+  v26 = objc_msgSend_computeCommandEncoder(horzCopy, v24, v25);
 
   if (v26)
   {
     objc_msgSend_setComputePipelineState_(v26, v27, self->_filterHorzPipelineState);
-    objc_msgSend_setTexture_atIndex_(v26, v28, v10, 0);
-    objc_msgSend_setTexture_atIndex_(v26, v29, v11, 1);
+    objc_msgSend_setTexture_atIndex_(v26, v28, inCopy, 0);
+    objc_msgSend_setTexture_atIndex_(v26, v29, outCopy, 1);
     objc_msgSend_setBytes_length_atIndex_(v26, v30, v47, 272, 0);
     v33 = objc_msgSend_threadExecutionWidth(self->_filterHorzPipelineState, v31, v32);
     v36 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_filterHorzPipelineState, v34, v35);
-    v37 = *&a6->var2.var1.var1;
+    v37 = *&cfg->var2.var1.var1;
     *&v38 = v37;
     *(&v38 + 1) = HIDWORD(v37);
     v45 = v38;
@@ -1328,23 +1328,23 @@ LABEL_21:
   return v42;
 }
 
-- (int)_interpolateAndAccumulate:(id)a3 texTcLrcIn:(id)a4 dynCfg:(id *)a5
+- (int)_interpolateAndAccumulate:(id)accumulate texTcLrcIn:(id)in dynCfg:(id *)cfg
 {
-  v8 = a4;
+  inCopy = in;
   v101 = 0;
   v102 = 0;
   v9 = 56;
-  if (!a5[1].var0)
+  if (!cfg[1].var0)
   {
     v9 = 48;
   }
 
   v10 = *(&self->super.isa + v9);
-  v11 = vadd_s32(*&a5->var2.var0.var0, -1);
-  v102 = vadd_s32(*&a5->var0, -1);
+  v11 = vadd_s32(*&cfg->var2.var0.var0, -1);
+  v102 = vadd_s32(*&cfg->var0, -1);
   v103 = v11;
-  v104 = vadd_s32(*&a5->var2.var0.var2, -1);
-  v12 = a3;
+  v104 = vadd_s32(*&cfg->var2.var0.var2, -1);
+  accumulateCopy = accumulate;
   if (objc_msgSend_quadraBinningFactor(self, v13, v14) == 2)
   {
     v17 = 2;
@@ -1355,7 +1355,7 @@ LABEL_21:
     v17 = 1;
   }
 
-  v18 = vcvt_f32_u32(*&a5->var0);
+  v18 = vcvt_f32_u32(*&cfg->var0);
   objc_msgSend_sensorCropRect(self, v15, v16);
   v93 = v19;
   objc_msgSend_sensorCropRect(self, v20, v21);
@@ -1389,8 +1389,8 @@ LABEL_21:
   __asm { FMOV            V1.2S, #1.0 }
 
   v58 = vadd_f32(*&v46.f64[0], _D1);
-  *&v96 = (objc_msgSend_width(v8, v59, v60) + 1);
-  v63 = objc_msgSend_height(v8, v61, v62);
+  *&v96 = (objc_msgSend_width(inCopy, v59, v60) + 1);
+  v63 = objc_msgSend_height(inCopy, v61, v62);
   v64.i32[0] = LODWORD(v96);
   v64.f32[1] = (v63 + 1);
   v97 = v64;
@@ -1404,29 +1404,29 @@ LABEL_21:
     v69 = 1;
   }
 
-  v70.i32[0] = LODWORD(a5[1].var2.var0.var1);
-  v71.f32[0] = a5[1].var2.var0.var0;
-  v71.f32[1] = a5[1].var2.var1.var0;
+  v70.i32[0] = LODWORD(cfg[1].var2.var0.var1);
+  v71.f32[0] = cfg[1].var2.var0.var0;
+  v71.f32[1] = cfg[1].var2.var1.var0;
   v72 = vmul_n_f32(v71, v69);
-  v70.f32[1] = a5[1].var2.var1.var1;
+  v70.f32[1] = cfg[1].var2.var1.var1;
   v73 = vmla_n_f32(vmul_f32(v72, 0xBF000000BF000000), v70, v69);
   v74 = vdiv_f32(v97, vmul_f32(v97, v72));
   v75 = vdiv_f32(v58, v18);
   v105 = vmul_f32(v75, v74);
   v106 = vmla_f32(vmla_f32(0xBF000000BF000000, v74, vsub_f32(v52, v73)), v74, vmul_f32(v75, 0x3F0000003F000000));
-  LOWORD(v101) = a5[1].var1;
-  v76 = objc_msgSend_computeCommandEncoder(v12, v67, v68);
+  LOWORD(v101) = cfg[1].var1;
+  v76 = objc_msgSend_computeCommandEncoder(accumulateCopy, v67, v68);
 
   if (v76)
   {
     objc_msgSend_setComputePipelineState_(v76, v77, v10);
-    objc_msgSend_setTexture_atIndex_(v76, v78, v8, 0);
+    objc_msgSend_setTexture_atIndex_(v76, v78, inCopy, 0);
     objc_msgSend_setBuffer_offset_atIndex_(v76, v79, self->_costsBuffer, 0, 0);
     objc_msgSend_setBytes_length_atIndex_(v76, v80, &v101, 48, 1);
     v83 = objc_msgSend_threadExecutionWidth(v10, v81, v82);
     v86 = objc_msgSend_maxTotalThreadsPerThreadgroup(v10, v84, v85);
-    *&v87 = *&a5->var0;
-    *(&v87 + 1) = HIDWORD(*&a5->var0);
+    *&v87 = *&cfg->var0;
+    *(&v87 + 1) = HIDWORD(*&cfg->var0);
     v99 = v87;
     v100 = 1;
     v98[0] = v83;
@@ -1446,18 +1446,18 @@ LABEL_21:
   return v91;
 }
 
-- (int)_debugInterpolate:(id)a3 texTcLrcIn:(id)a4 dynCfg:(id *)a5 debugBuf:(id)a6
+- (int)_debugInterpolate:(id)interpolate texTcLrcIn:(id)in dynCfg:(id *)cfg debugBuf:(id)buf
 {
-  v10 = a4;
-  v11 = a6;
+  inCopy = in;
+  bufCopy = buf;
   v103 = 0;
   v104 = 0;
   v12 = self->_interpolateAndSetPipelineState;
-  v13 = vadd_s32(*&a5->var2.var0.var0, -1);
-  v104 = vadd_s32(*&a5->var0, -1);
+  v13 = vadd_s32(*&cfg->var2.var0.var0, -1);
+  v104 = vadd_s32(*&cfg->var0, -1);
   v105 = v13;
-  v106 = vadd_s32(*&a5->var2.var0.var2, -1);
-  v14 = a3;
+  v106 = vadd_s32(*&cfg->var2.var0.var2, -1);
+  interpolateCopy = interpolate;
   if (objc_msgSend_quadraBinningFactor(self, v15, v16) == 2)
   {
     v19 = 2;
@@ -1468,7 +1468,7 @@ LABEL_21:
     v19 = 1;
   }
 
-  v20 = vcvt_f32_u32(*&a5->var0);
+  v20 = vcvt_f32_u32(*&cfg->var0);
   objc_msgSend_sensorCropRect(self, v17, v18);
   v95 = v21;
   objc_msgSend_sensorCropRect(self, v22, v23);
@@ -1502,8 +1502,8 @@ LABEL_21:
   __asm { FMOV            V1.2S, #1.0 }
 
   v60 = vadd_f32(*&v48.f64[0], _D1);
-  *&v98 = objc_msgSend_width(v10, v61, v62);
-  v65 = objc_msgSend_height(v10, v63, v64);
+  *&v98 = objc_msgSend_width(inCopy, v61, v62);
+  v65 = objc_msgSend_height(inCopy, v63, v64);
   v66.i32[0] = LODWORD(v98);
   v66.f32[1] = v65;
   v99 = v66;
@@ -1517,29 +1517,29 @@ LABEL_21:
     v71 = 1;
   }
 
-  v72.i32[0] = LODWORD(a5[1].var2.var0.var1);
-  v73.f32[0] = a5[1].var2.var0.var0;
-  v73.f32[1] = a5[1].var2.var1.var0;
+  v72.i32[0] = LODWORD(cfg[1].var2.var0.var1);
+  v73.f32[0] = cfg[1].var2.var0.var0;
+  v73.f32[1] = cfg[1].var2.var1.var0;
   v74 = vmul_n_f32(v73, v71);
-  v72.f32[1] = a5[1].var2.var1.var1;
+  v72.f32[1] = cfg[1].var2.var1.var1;
   v75 = vmla_n_f32(vmul_f32(v74, 0xBF000000BF000000), v72, v71);
   v76 = vdiv_f32(v99, vmul_f32(v99, v74));
   v77 = vdiv_f32(v60, v20);
   v107 = vmul_f32(v77, v76);
   v108 = vmla_f32(vmla_f32(0xBF000000BF000000, v76, vsub_f32(v54, v75)), v76, vmul_f32(v77, 0x3F0000003F000000));
-  LOWORD(v103) = a5[1].var1;
-  v78 = objc_msgSend_computeCommandEncoder(v14, v69, v70);
+  LOWORD(v103) = cfg[1].var1;
+  v78 = objc_msgSend_computeCommandEncoder(interpolateCopy, v69, v70);
 
   if (v78)
   {
     objc_msgSend_setComputePipelineState_(v78, v79, v12);
-    objc_msgSend_setTexture_atIndex_(v78, v80, v10, 0);
-    objc_msgSend_setBuffer_offset_atIndex_(v78, v81, v11, 0, 0);
+    objc_msgSend_setTexture_atIndex_(v78, v80, inCopy, 0);
+    objc_msgSend_setBuffer_offset_atIndex_(v78, v81, bufCopy, 0, 0);
     objc_msgSend_setBytes_length_atIndex_(v78, v82, &v103, 48, 1);
     v85 = objc_msgSend_threadExecutionWidth(v12, v83, v84);
     v88 = objc_msgSend_maxTotalThreadsPerThreadgroup(v12, v86, v87);
-    *&v89 = *&a5->var0;
-    *(&v89 + 1) = HIDWORD(*&a5->var0);
+    *&v89 = *&cfg->var0;
+    *(&v89 + 1) = HIDWORD(*&cfg->var0);
     v101 = v89;
     v102 = 1;
     v100[0] = v85;
@@ -1559,30 +1559,30 @@ LABEL_21:
   return v93;
 }
 
-- (int)_proximityOperator:(id)a3 dynCfg:(id *)a4 texDisparityIn:(id)a5 texOutputResUOut:(id)a6 texOutputHesUOut:(id)a7 level:(unsigned int)a8
+- (int)_proximityOperator:(id)operator dynCfg:(id *)cfg texDisparityIn:(id)in texOutputResUOut:(id)out texOutputHesUOut:(id)uOut level:(unsigned int)level
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  inCopy = in;
+  outCopy = out;
+  uOutCopy = uOut;
   v171 = 0u;
   v172 = 0u;
   v170 = 0u;
   fpDisparityEstimatorParams = self->_fpDisparityEstimatorParams;
-  v18 = a3;
+  operatorCopy = operator;
   v21 = objc_msgSend_levelsParameters(fpDisparityEstimatorParams, v19, v20);
-  v23 = objc_msgSend_objectAtIndexedSubscript_(v21, v22, a8);
+  v23 = objc_msgSend_objectAtIndexedSubscript_(v21, v22, level);
   v26 = objc_msgSend_costParameters(v23, v24, v25);
   objc_msgSend_lambda(v26, v27, v28);
   v165 = v29;
 
   v32 = objc_msgSend_levelsParameters(self->_fpDisparityEstimatorParams, v30, v31);
-  v34 = objc_msgSend_objectAtIndexedSubscript_(v32, v33, a8);
+  v34 = objc_msgSend_objectAtIndexedSubscript_(v32, v33, level);
   v37 = objc_msgSend_costParameters(v34, v35, v36);
   objc_msgSend_lambda_foreground(v37, v38, v39);
   v166 = v40;
 
   v43 = objc_msgSend_levelsParameters(self->_fpDisparityEstimatorParams, v41, v42);
-  v45 = objc_msgSend_objectAtIndexedSubscript_(v43, v44, a8);
+  v45 = objc_msgSend_objectAtIndexedSubscript_(v43, v44, level);
   v48 = objc_msgSend_costParameters(v45, v46, v47);
   objc_msgSend_lambda_background(v48, v49, v50);
   v167 = v51;
@@ -1600,17 +1600,17 @@ LABEL_21:
   DWORD2(v170) = v69;
 
   v72 = objc_msgSend_levelsParameters(self->_fpDisparityEstimatorParams, v70, v71);
-  v74 = objc_msgSend_objectAtIndexedSubscript_(v72, v73, a8);
+  v74 = objc_msgSend_objectAtIndexedSubscript_(v72, v73, level);
   v77 = objc_msgSend_costParameters(v74, v75, v76);
   objc_msgSend_step(v77, v78, v79);
   v162[1] = v80;
 
-  var1 = a4[1].var1;
+  var1 = cfg[1].var1;
   v83 = objc_msgSend_FPcostParameters(self->_fpDisparityEstimatorParams, v81, v82);
   v164 = objc_msgSend_nView(v83, v84, v85);
 
-  v88 = objc_msgSend_width(v14, v86, v87);
-  v91 = objc_msgSend_height(v14, v89, v90);
+  v88 = objc_msgSend_width(inCopy, v86, v87);
+  v91 = objc_msgSend_height(inCopy, v89, v90);
   v92.i64[0] = v88;
   v92.i64[1] = v91;
   v93.i64[0] = -1;
@@ -1629,13 +1629,13 @@ LABEL_21:
   LODWORD(v170) = v111;
 
   width = self->_outputDisparityResolution.width;
-  v114 = objc_msgSend_width(v15, v112, v113);
+  v114 = objc_msgSend_width(outCopy, v112, v113);
   v115.f64[0] = width;
   v115.f64[1] = self->_outputDisparityResolution.height;
   __asm { FMOV            V0.2D, #-1.0 }
 
   v121 = vcvt_f32_f64(vaddq_f64(v115, _Q0));
-  v124 = objc_msgSend_height(v15, v122, v123);
+  v124 = objc_msgSend_height(outCopy, v122, v123);
   v125.i64[0] = v114;
   v125.i64[1] = v124;
   v126.i64[0] = -1;
@@ -1648,21 +1648,21 @@ LABEL_21:
   height = self->_outputDisparityResolution.height;
   *(&v171 + 1) = v127;
   *&v172 = __PAIR64__(v134 / height, LODWORD(width));
-  v138 = objc_msgSend_computeCommandEncoder(v18, v136, v137);
+  v138 = objc_msgSend_computeCommandEncoder(operatorCopy, v136, v137);
 
   if (v138)
   {
     objc_msgSend_setComputePipelineState_(v138, v139, self->_proximityOperatorPipelineState);
-    objc_msgSend_setTexture_atIndex_(v138, v140, v14, 0);
+    objc_msgSend_setTexture_atIndex_(v138, v140, inCopy, 0);
     objc_msgSend_setTexture_atIndex_(v138, v141, self->_segmentationTexture, 1);
-    objc_msgSend_setTexture_atIndex_(v138, v142, v15, 2);
-    objc_msgSend_setTexture_atIndex_(v138, v143, v16, 3);
+    objc_msgSend_setTexture_atIndex_(v138, v142, outCopy, 2);
+    objc_msgSend_setTexture_atIndex_(v138, v143, uOutCopy, 3);
     objc_msgSend_setBuffer_offset_atIndex_(v138, v144, self->_costsBuffer, 0, 0);
     objc_msgSend_setBytes_length_atIndex_(v138, v145, v162, 80, 1);
     v148 = objc_msgSend_threadExecutionWidth(self->_proximityOperatorPipelineState, v146, v147);
     v151 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_proximityOperatorPipelineState, v149, v150);
-    *&v152 = *&a4->var0;
-    *(&v152 + 1) = HIDWORD(*&a4->var0);
+    *&v152 = *&cfg->var0;
+    *(&v152 + 1) = HIDWORD(*&cfg->var0);
     v160 = v152;
     v161 = 1;
     v159[0] = v148;
@@ -1682,16 +1682,16 @@ LABEL_21:
   return v156;
 }
 
-- (id)CreateKernelWithConst:(id)a3 constants:(id)a4
+- (id)CreateKernelWithConst:(id)const constants:(id)constants
 {
-  v6 = a3;
-  v7 = a4;
+  constCopy = const;
+  constantsCopy = constants;
   v10 = objc_msgSend_library(self->_mtlContext, v8, v9);
   v12 = v10;
-  if (v7)
+  if (constantsCopy)
   {
     v23 = 0;
-    v13 = objc_msgSend_newFunctionWithName_constantValues_error_(v10, v11, v6, v7, &v23);
+    v13 = objc_msgSend_newFunctionWithName_constantValues_error_(v10, v11, constCopy, constantsCopy, &v23);
     v14 = v23;
 
     if (v13)
@@ -1709,7 +1709,7 @@ LABEL_3:
 
   else
   {
-    v13 = objc_msgSend_newFunctionWithName_(v10, v11, v6);
+    v13 = objc_msgSend_newFunctionWithName_(v10, v11, constCopy);
 
     v14 = 0;
     if (v13)
@@ -1724,10 +1724,10 @@ LABEL_6:
   return v19;
 }
 
-- (int)computeFilterCurve:(float)a3 p3:(float)a4 array:(float *)a5
+- (int)computeFilterCurve:(float)curve p3:(float)p3 array:(float *)array
 {
-  v5 = a5;
-  v6 = vcvtms_s32_f32(a3) | 1;
+  arrayCopy = array;
+  v6 = vcvtms_s32_f32(curve) | 1;
   if (v6 >= 63)
   {
     v6 = 63;
@@ -1743,13 +1743,13 @@ LABEL_6:
     v7 = v6;
   }
 
-  v22 = -1.0 / ((a4 + a4) * a4);
+  v22 = -1.0 / ((p3 + p3) * p3);
   v21 = vdupq_n_s64(v7 - 1);
   v8 = vdup_n_s32((v7 - 1) >> 1);
   v9 = v7 + 1;
   v10 = 0x100000000;
   v11 = xmmword_2957A3580;
-  v12 = a5 + 1;
+  v12 = array + 1;
   v13 = 0.0;
   v20 = vdupq_n_s64(2uLL);
   do
@@ -1784,8 +1784,8 @@ LABEL_6:
   v18 = v7;
   do
   {
-    *v5 = *v5 / v13;
-    ++v5;
+    *arrayCopy = *arrayCopy / v13;
+    ++arrayCopy;
     --v18;
   }
 
@@ -1793,32 +1793,32 @@ LABEL_6:
   return v7;
 }
 
-- (unint64_t)computeAlignedSize:(unint64_t)a3 pixelFormat:(unint64_t)a4
+- (unint64_t)computeAlignedSize:(unint64_t)size pixelFormat:(unint64_t)format
 {
-  v6 = objc_msgSend_device(self->_mtlContext, a2, a3);
-  v8 = objc_msgSend_minimumLinearTextureAlignmentForPixelFormat_(v6, v7, a4);
+  v6 = objc_msgSend_device(self->_mtlContext, a2, size);
+  v8 = objc_msgSend_minimumLinearTextureAlignmentForPixelFormat_(v6, v7, format);
 
-  if (a3 % v8)
+  if (size % v8)
   {
-    return v8 + a3 - a3 % v8;
+    return v8 + size - size % v8;
   }
 
   else
   {
-    return a3;
+    return size;
   }
 }
 
-- (int)_setCorrectionMapCoefficients:(float *)a3
+- (int)_setCorrectionMapCoefficients:(float *)coefficients
 {
   v5 = 0;
   correctionBasisCoefficients = self->_correctionBasisCoefficients;
   do
   {
-    if (a3)
+    if (coefficients)
     {
-      v7 = a3[v5];
-      v8 = objc_msgSend_FPcostParameters(self->_fpDisparityEstimatorParams, a2, a3);
+      v7 = coefficients[v5];
+      v8 = objc_msgSend_FPcostParameters(self->_fpDisparityEstimatorParams, a2, coefficients);
       v11 = objc_msgSend_correctionCoefficientsWeights(v8, v9, v10);
       v13 = objc_msgSend_objectAtIndexedSubscript_(v11, v12, v5);
       objc_msgSend_floatValue(v13, v14, v15);

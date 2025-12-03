@@ -1,22 +1,22 @@
 @interface HDHeartbeatSeriesFeatureStatusManager
-- (HDHeartbeatSeriesFeatureStatusManager)initWithClient:(id)a3;
-- (HDHeartbeatSeriesFeatureStatusManager)initWithProfile:(id)a3 aFibBurdenFeatureStatusManager:(id)a4 irregularRhythmNotificationsFeatureStatusManager:(id)a5 heartNotificationsUserDefaults:(id)a6;
-- (id)predominantFeatureWithError:(id *)a3;
+- (HDHeartbeatSeriesFeatureStatusManager)initWithClient:(id)client;
+- (HDHeartbeatSeriesFeatureStatusManager)initWithProfile:(id)profile aFibBurdenFeatureStatusManager:(id)manager irregularRhythmNotificationsFeatureStatusManager:(id)statusManager heartNotificationsUserDefaults:(id)defaults;
+- (id)predominantFeatureWithError:(id *)error;
 - (void)_notifyDelegateOfCurrentState;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
-- (void)getPredominantFeatureWithCompletion:(id)a3;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
+- (void)getPredominantFeatureWithCompletion:(id)completion;
 - (void)notifyDelegateOfCurrentState;
-- (void)startObservingChangesWithDelegate:(id)a3;
+- (void)startObservingChangesWithDelegate:(id)delegate;
 - (void)stopObservingChanges;
 @end
 
 @implementation HDHeartbeatSeriesFeatureStatusManager
 
-- (HDHeartbeatSeriesFeatureStatusManager)initWithClient:(id)a3
+- (HDHeartbeatSeriesFeatureStatusManager)initWithClient:(id)client
 {
-  v4 = a3;
-  v5 = [v4 profile];
-  v6 = [v5 profileExtensionWithIdentifier:*MEMORY[0x277D12F10]];
+  clientCopy = client;
+  profile = [clientCopy profile];
+  v6 = [profile profileExtensionWithIdentifier:*MEMORY[0x277D12F10]];
 
   if (([v6 conformsToProtocol:&unk_283CDC480] & 1) == 0)
   {
@@ -28,7 +28,7 @@
     [HDHeartbeatSeriesFeatureStatusManager initWithClient:];
   }
 
-  v7 = [v6 heartNotificationsUserDefaults];
+  heartNotificationsUserDefaults = [v6 heartNotificationsUserDefaults];
   v8 = v6;
   v9 = [v8 featureAvailabilityExtensionForFeatureIdentifier:*MEMORY[0x277CCC070]];
   if (!v9)
@@ -36,8 +36,8 @@
     [HDHeartbeatSeriesFeatureStatusManager initWithClient:];
   }
 
-  v10 = [v8 irregularRhythmNotificationsFeatureStatusManager];
-  if (!v10)
+  irregularRhythmNotificationsFeatureStatusManager = [v8 irregularRhythmNotificationsFeatureStatusManager];
+  if (!irregularRhythmNotificationsFeatureStatusManager)
   {
     [HDHeartbeatSeriesFeatureStatusManager initWithClient:];
   }
@@ -49,44 +49,44 @@
   }
 
   v12 = objc_alloc(MEMORY[0x277CCD460]);
-  v13 = [v4 profile];
-  v14 = [v12 initWithFeatureAvailabilityProviding:v11 healthDataSource:v13];
+  profile2 = [clientCopy profile];
+  v14 = [v12 initWithFeatureAvailabilityProviding:v11 healthDataSource:profile2];
 
-  v15 = [v4 profile];
+  profile3 = [clientCopy profile];
 
-  v16 = [(HDHeartbeatSeriesFeatureStatusManager *)self initWithProfile:v15 aFibBurdenFeatureStatusManager:v14 irregularRhythmNotificationsFeatureStatusManager:v10 heartNotificationsUserDefaults:v7];
+  v16 = [(HDHeartbeatSeriesFeatureStatusManager *)self initWithProfile:profile3 aFibBurdenFeatureStatusManager:v14 irregularRhythmNotificationsFeatureStatusManager:irregularRhythmNotificationsFeatureStatusManager heartNotificationsUserDefaults:heartNotificationsUserDefaults];
   return v16;
 }
 
-- (HDHeartbeatSeriesFeatureStatusManager)initWithProfile:(id)a3 aFibBurdenFeatureStatusManager:(id)a4 irregularRhythmNotificationsFeatureStatusManager:(id)a5 heartNotificationsUserDefaults:(id)a6
+- (HDHeartbeatSeriesFeatureStatusManager)initWithProfile:(id)profile aFibBurdenFeatureStatusManager:(id)manager irregularRhythmNotificationsFeatureStatusManager:(id)statusManager heartNotificationsUserDefaults:(id)defaults
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  managerCopy = manager;
+  statusManagerCopy = statusManager;
+  defaultsCopy = defaults;
   v19.receiver = self;
   v19.super_class = HDHeartbeatSeriesFeatureStatusManager;
   v14 = [(HDHeartbeatSeriesFeatureStatusManager *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v10);
+    objc_storeWeak(&v14->_profile, profileCopy);
     v16 = HKCreateSerialDispatchQueue();
     queue = v15->_queue;
     v15->_queue = v16;
 
-    objc_storeStrong(&v15->_heartNotificationsUserDefaults, a6);
-    objc_storeStrong(&v15->_aFibBurdenFeatureStatusManager, a4);
-    objc_storeStrong(&v15->_irregularRhythmNotificationsFeatureStatusManager, a5);
+    objc_storeStrong(&v15->_heartNotificationsUserDefaults, defaults);
+    objc_storeStrong(&v15->_aFibBurdenFeatureStatusManager, manager);
+    objc_storeStrong(&v15->_irregularRhythmNotificationsFeatureStatusManager, statusManager);
   }
 
   return v15;
 }
 
-- (void)startObservingChangesWithDelegate:(id)a3
+- (void)startObservingChangesWithDelegate:(id)delegate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   _HKInitializeLogging();
   v5 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -101,12 +101,12 @@
     _os_log_impl(&dword_229486000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting observing changes with delegate %{public}@", buf, 0x16u);
   }
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v9 = objc_loadWeakRetained(&self->_profile);
-  v10 = [v9 database];
-  v11 = [v10 isDataProtectedByFirstUnlockAvailable];
+  database = [v9 database];
+  isDataProtectedByFirstUnlockAvailable = [database isDataProtectedByFirstUnlockAvailable];
 
-  if ((v11 & 1) == 0)
+  if ((isDataProtectedByFirstUnlockAvailable & 1) == 0)
   {
     _HKInitializeLogging();
     v12 = HKLogHeartRateCategory();
@@ -119,14 +119,14 @@
       _os_log_impl(&dword_229486000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] First unlock has not occurred, registering to notify when it has", buf, 0xCu);
     }
 
-    v15 = [v9 database];
+    database2 = [v9 database];
     queue = self->_queue;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __75__HDHeartbeatSeriesFeatureStatusManager_startObservingChangesWithDelegate___block_invoke;
     v18[3] = &unk_27865FD90;
     v18[4] = self;
-    [v15 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v18];
+    [database2 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v18];
   }
 
   [(HKFeatureStatusProviding *)self->_aFibBurdenFeatureStatusManager registerObserver:self queue:self->_queue];
@@ -222,16 +222,16 @@ void __70__HDHeartbeatSeriesFeatureStatusManager__notifyDelegateOfCurrentState__
   }
 }
 
-- (void)getPredominantFeatureWithCompletion:(id)a3
+- (void)getPredominantFeatureWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDHeartbeatSeriesFeatureStatusManager *)self predominantFeatureWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (id)predominantFeatureWithError:(id *)a3
+- (id)predominantFeatureWithError:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
   aFibBurdenFeatureStatusManager = self->_aFibBurdenFeatureStatusManager;
@@ -250,11 +250,11 @@ void __70__HDHeartbeatSeriesFeatureStatusManager__notifyDelegateOfCurrentState__
     v9 = v7;
     if (v9)
     {
-      if (a3)
+      if (error)
       {
         v14 = v9;
         v15 = 0;
-        *a3 = v9;
+        *error = v9;
 LABEL_30:
         v7 = v9;
         goto LABEL_53;
@@ -271,10 +271,10 @@ LABEL_30:
   v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
   if (![v9 areAllRequirementsSatisfied])
   {
-    v16 = [v9 unsatisfiedRequirementIdentifiers];
+    unsatisfiedRequirementIdentifiers = [v9 unsatisfiedRequirementIdentifiers];
     v40[0] = *MEMORY[0x277CCBF60];
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-    v18 = [v16 isEqualToArray:v17];
+    v18 = [unsatisfiedRequirementIdentifiers isEqualToArray:v17];
 
     _HKInitializeLogging();
     v19 = HKHRAFibBurdenLogForCategory();
@@ -315,10 +315,10 @@ LABEL_30:
       v24 = [v12 objectForKeyedSubscript:v8];
       if ([v24 areAllRequirementsSatisfied])
       {
-        v25 = [v12 onboardingRecord];
-        v26 = [v25 onboardingCompletion];
-        v27 = [v26 featureIdentifier];
-        v28 = [v27 isEqualToString:*MEMORY[0x277CCC080]];
+        onboardingRecord = [v12 onboardingRecord];
+        onboardingCompletion = [onboardingRecord onboardingCompletion];
+        featureIdentifier = [onboardingCompletion featureIdentifier];
+        v28 = [featureIdentifier isEqualToString:*MEMORY[0x277CCC080]];
 
         _HKInitializeLogging();
         v29 = HKLogHeartRateCategory();
@@ -368,8 +368,8 @@ LABEL_50:
 
       if (v35)
       {
-        v25 = HKLogHeartRateCategory();
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+        onboardingRecord = HKLogHeartRateCategory();
+        if (os_log_type_enabled(onboardingRecord, OS_LOG_TYPE_DEBUG))
         {
           [HDHeartbeatSeriesFeatureStatusManager predominantFeatureWithError:];
         }
@@ -394,11 +394,11 @@ LABEL_51:
     v24 = v21;
     if (v24)
     {
-      if (a3)
+      if (error)
       {
         v33 = v24;
         v15 = 0;
-        *a3 = v24;
+        *error = v24;
         goto LABEL_51;
       }
 
@@ -438,22 +438,22 @@ LABEL_53:
   return v15;
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  providingCopy = providing;
+  statusCopy = status;
   _HKInitializeLogging();
   v8 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [v6 featureIdentifier];
+    featureIdentifier = [providingCopy featureIdentifier];
     v16 = 138543618;
     v17 = v9;
     v18 = 2114;
-    v19 = v11;
+    v19 = featureIdentifier;
     _os_log_impl(&dword_229486000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received feature status update for %{public}@", &v16, 0x16u);
   }
 

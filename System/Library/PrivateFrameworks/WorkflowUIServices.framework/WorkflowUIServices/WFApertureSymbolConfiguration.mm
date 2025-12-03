@@ -1,11 +1,11 @@
 @interface WFApertureSymbolConfiguration
-+ (id)configurationWithPointSize:(double)a3 weight:(int64_t)a4;
-- (WFApertureSymbolConfiguration)initWithPointSize:(double)a3 weight:(int64_t)a4;
++ (id)configurationWithPointSize:(double)size weight:(int64_t)weight;
+- (WFApertureSymbolConfiguration)initWithPointSize:(double)size weight:(int64_t)weight;
 @end
 
 @implementation WFApertureSymbolConfiguration
 
-- (WFApertureSymbolConfiguration)initWithPointSize:(double)a3 weight:(int64_t)a4
+- (WFApertureSymbolConfiguration)initWithPointSize:(double)size weight:(int64_t)weight
 {
   v10.receiver = self;
   v10.super_class = WFApertureSymbolConfiguration;
@@ -13,17 +13,17 @@
   v7 = v6;
   if (v6)
   {
-    v6->_pointSize = a3;
-    v6->_weight = a4;
+    v6->_pointSize = size;
+    v6->_weight = weight;
     v8 = v6;
   }
 
   return v7;
 }
 
-+ (id)configurationWithPointSize:(double)a3 weight:(int64_t)a4
++ (id)configurationWithPointSize:(double)size weight:(int64_t)weight
 {
-  v4 = [[WFApertureSymbolConfiguration alloc] initWithPointSize:a4 weight:a3];
+  v4 = [[WFApertureSymbolConfiguration alloc] initWithPointSize:weight weight:size];
 
   return v4;
 }

@@ -4,33 +4,33 @@
 - (id)description;
 - (id)makeViewControllerToPresent;
 - (id)present;
-- (void)configureCell:(id)a3;
-- (void)configureCollectionViewCell:(id)a3;
-- (void)setViewControllerClass:(Class)a3;
+- (void)configureCell:(id)cell;
+- (void)configureCollectionViewCell:(id)cell;
+- (void)setViewControllerClass:(Class)class;
 @end
 
 @implementation MapsDebugNavigationTableRow
 
 - (id)makeViewControllerToPresent
 {
-  v3 = [(MapsDebugTableRow *)self prepareContentBlock];
+  prepareContentBlock = [(MapsDebugTableRow *)self prepareContentBlock];
 
-  if (v3)
+  if (prepareContentBlock)
   {
     v4 = objc_alloc_init(MapsDebugValuesViewController);
-    v5 = [(MapsDebugTableRow *)self title];
-    [(MapsDebugValuesViewController *)v4 setTitle:v5];
+    title = [(MapsDebugTableRow *)self title];
+    [(MapsDebugValuesViewController *)v4 setTitle:title];
 
     [(MapsDebugValuesViewController *)v4 setOriginNavigationRow:self];
-    v6 = [(MapsDebugTableRow *)self prepareContentBlock];
-    [(MapsDebugValuesViewController *)v4 setPrepareContentBlock:v6];
+    prepareContentBlock2 = [(MapsDebugTableRow *)self prepareContentBlock];
+    [(MapsDebugValuesViewController *)v4 setPrepareContentBlock:prepareContentBlock2];
   }
 
   else if ([(MapsDebugNavigationTableRow *)self viewControllerClass])
   {
     v4 = objc_alloc_init([(MapsDebugNavigationTableRow *)self viewControllerClass]);
-    v7 = [(MapsDebugTableRow *)self title];
-    [(MapsDebugValuesViewController *)v4 setTitle:v7];
+    title2 = [(MapsDebugTableRow *)self title];
+    [(MapsDebugValuesViewController *)v4 setTitle:title2];
 
     [(MapsDebugValuesViewController *)v4 setOriginNavigationRow:self];
   }
@@ -45,34 +45,34 @@
 
 - (id)present
 {
-  v3 = [(MapsDebugNavigationTableRow *)self makeViewControllerToPresent];
-  if (v3)
+  makeViewControllerToPresent = [(MapsDebugNavigationTableRow *)self makeViewControllerToPresent];
+  if (makeViewControllerToPresent)
   {
-    v4 = [(MapsDebugTableRow *)self section];
-    v5 = [v4 displayingViewController];
+    section = [(MapsDebugTableRow *)self section];
+    displayingViewController = [section displayingViewController];
 
-    [v5 segueToViewController:v3];
-    v6 = v3;
+    [displayingViewController segueToViewController:makeViewControllerToPresent];
+    v6 = makeViewControllerToPresent;
   }
 
-  return v3;
+  return makeViewControllerToPresent;
 }
 
-- (void)setViewControllerClass:(Class)a3
+- (void)setViewControllerClass:(Class)class
 {
-  if (self->_viewControllerClass != a3)
+  if (self->_viewControllerClass != class)
   {
-    self->_viewControllerClass = a3;
-    v5 = [(objc_class *)a3 navigationDestinationTitle];
-    [(MapsDebugTableRow *)self setTitle:v5];
+    self->_viewControllerClass = class;
+    navigationDestinationTitle = [(objc_class *)class navigationDestinationTitle];
+    [(MapsDebugTableRow *)self setTitle:navigationDestinationTitle];
   }
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(MapsDebugTableRow *)self title];
-  v5 = [NSString stringWithFormat:@"<%@: %p title:%@>", v3, self, v4];
+  title = [(MapsDebugTableRow *)self title];
+  v5 = [NSString stringWithFormat:@"<%@: %p title:%@>", v3, self, title];
 
   return v5;
 }
@@ -98,16 +98,16 @@
   return v2;
 }
 
-- (void)configureCollectionViewCell:(id)a3
+- (void)configureCollectionViewCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v13.receiver = self;
   v13.super_class = MapsDebugNavigationTableRow;
-  [(MapsDebugTableRow *)&v13 configureCollectionViewCell:v4];
-  v5 = v4;
-  v6 = [v5 contentConfiguration];
-  v7 = [(MapsDebugTableRow *)self selectionAction];
-  if (v7)
+  [(MapsDebugTableRow *)&v13 configureCollectionViewCell:cellCopy];
+  v5 = cellCopy;
+  contentConfiguration = [v5 contentConfiguration];
+  selectionAction = [(MapsDebugTableRow *)self selectionAction];
+  if (selectionAction)
   {
     +[UIColor labelColor];
   }
@@ -118,37 +118,37 @@
   }
   v8 = ;
 
-  if (v6)
+  if (contentConfiguration)
   {
-    v9 = [v6 textProperties];
-    [v9 setColor:v8];
+    textProperties = [contentConfiguration textProperties];
+    [textProperties setColor:v8];
 
-    [v6 setPrefersSideBySideTextAndSecondaryText:1];
+    [contentConfiguration setPrefersSideBySideTextAndSecondaryText:1];
   }
 
   else
   {
-    v10 = [v5 textLabel];
-    [v10 setTextColor:v8];
+    textLabel = [v5 textLabel];
+    [textLabel setTextColor:v8];
   }
 
-  [v5 setContentConfiguration:v6];
+  [v5 setContentConfiguration:contentConfiguration];
   v11 = objc_alloc_init(UICellAccessoryDisclosureIndicator);
   v14 = v11;
   v12 = [NSArray arrayWithObjects:&v14 count:1];
   [v5 setAccessories:v12];
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v9.receiver = self;
   v9.super_class = MapsDebugNavigationTableRow;
-  [(MapsDebugTableRow *)&v9 configureCell:v4];
-  [v4 setAccessoryType:1];
-  v5 = [v4 contentConfiguration];
-  v6 = [(MapsDebugTableRow *)self selectionAction];
-  if (v6)
+  [(MapsDebugTableRow *)&v9 configureCell:cellCopy];
+  [cellCopy setAccessoryType:1];
+  contentConfiguration = [cellCopy contentConfiguration];
+  selectionAction = [(MapsDebugTableRow *)self selectionAction];
+  if (selectionAction)
   {
     +[UIColor labelColor];
   }
@@ -158,16 +158,16 @@
     +[UIColor secondaryLabelColor];
   }
   v7 = ;
-  v8 = [v5 textProperties];
-  [v8 setColor:v7];
+  textProperties = [contentConfiguration textProperties];
+  [textProperties setColor:v7];
 
-  [v4 setContentConfiguration:v5];
+  [cellCopy setContentConfiguration:contentConfiguration];
 }
 
 - (id)cellContentConfiguration
 {
-  v2 = [(MapsDebugTableRow *)self subtitle];
-  if ([v2 length])
+  subtitle = [(MapsDebugTableRow *)self subtitle];
+  if ([subtitle length])
   {
     +[UIListContentConfiguration valueCellConfiguration];
   }

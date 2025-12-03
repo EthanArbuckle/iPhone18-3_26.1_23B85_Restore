@@ -1,27 +1,27 @@
 @interface FMSubscriptionContext
 - (NSString)plmn;
 - (id)description;
-- (id)init:(id)a3 subscriptionID:(id)a4 mcc:(id)a5 mnc:(id)a6;
+- (id)init:(id)init subscriptionID:(id)d mcc:(id)mcc mnc:(id)mnc;
 @end
 
 @implementation FMSubscriptionContext
 
-- (id)init:(id)a3 subscriptionID:(id)a4 mcc:(id)a5 mnc:(id)a6
+- (id)init:(id)init subscriptionID:(id)d mcc:(id)mcc mnc:(id)mnc
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  initCopy = init;
+  dCopy = d;
+  mccCopy = mcc;
+  mncCopy = mnc;
   v19.receiver = self;
   v19.super_class = FMSubscriptionContext;
   v15 = [(FMSubscriptionContext *)&v19 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_uuid, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_uuid, init);
+    objc_storeStrong(p_isa + 2, d);
+    objc_storeStrong(p_isa + 3, mcc);
+    objc_storeStrong(p_isa + 4, mnc);
     v17 = p_isa;
   }
 
@@ -30,10 +30,10 @@
 
 - (id)description
 {
-  v3 = [(FMSubscriptionContext *)self uuid];
-  v4 = [(FMSubscriptionContext *)self subscriptionID];
-  v5 = [(FMSubscriptionContext *)self plmn];
-  v6 = [NSString stringWithFormat:@"UUID: %@, subscriptionID: %@, PLMN: %@", v3, v4, v5];
+  uuid = [(FMSubscriptionContext *)self uuid];
+  subscriptionID = [(FMSubscriptionContext *)self subscriptionID];
+  plmn = [(FMSubscriptionContext *)self plmn];
+  v6 = [NSString stringWithFormat:@"UUID: %@, subscriptionID: %@, PLMN: %@", uuid, subscriptionID, plmn];
 
   return v6;
 }

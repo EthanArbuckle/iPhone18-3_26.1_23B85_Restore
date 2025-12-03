@@ -3,26 +3,26 @@
 - (CGSize)_descriptionSize;
 - (CGSize)_dividerSize;
 - (CGSize)_logoSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)_descriptionMargin;
 - (UIEdgeInsets)_dividerMargin;
 - (UIEdgeInsets)_logoMargin;
 - (UIEdgeInsets)_margin;
-- (VUIProductPlacementView)initWithAdvisoryInfoDictionary:(id)a3;
-- (void)_configureSubviewsWithDictionary:(id)a3;
-- (void)_hideAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_hideWithAnimationWithCompletion:(id)a3;
-- (void)_showAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_showWithAnimationWithCompletion:(id)a3;
+- (VUIProductPlacementView)initWithAdvisoryInfoDictionary:(id)dictionary;
+- (void)_configureSubviewsWithDictionary:(id)dictionary;
+- (void)_hideAnimated:(BOOL)animated completion:(id)completion;
+- (void)_hideWithAnimationWithCompletion:(id)completion;
+- (void)_showAnimated:(BOOL)animated completion:(id)completion;
+- (void)_showWithAnimationWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)show:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)show:(BOOL)show animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation VUIProductPlacementView
 
-- (VUIProductPlacementView)initWithAdvisoryInfoDictionary:(id)a3
+- (VUIProductPlacementView)initWithAdvisoryInfoDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = VUIProductPlacementView;
   v5 = [(VUIProductPlacementView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -32,31 +32,31 @@
     layout = v5->_layout;
     v5->_layout = v6;
 
-    [(VUIProductPlacementView *)v5 _configureSubviewsWithDictionary:v4];
+    [(VUIProductPlacementView *)v5 _configureSubviewsWithDictionary:dictionaryCopy];
   }
 
   return v5;
 }
 
-- (void)show:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)show:(BOOL)show animated:(BOOL)animated completion:(id)completion
 {
-  if (a3)
+  if (show)
   {
-    [(VUIProductPlacementView *)self _showAnimated:a4 completion:a5];
+    [(VUIProductPlacementView *)self _showAnimated:animated completion:completion];
   }
 
   else
   {
-    [(VUIProductPlacementView *)self _hideAnimated:a4 completion:a5];
+    [(VUIProductPlacementView *)self _hideAnimated:animated completion:completion];
   }
 }
 
 - (BOOL)_isPortrait
 {
-  v2 = [(VUIProductPlacementView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(VUIProductPlacementView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v3 || (v4 = +[VUIUtilities isIpadPortrait]))
+  if (!userInterfaceIdiom || (v4 = +[VUIUtilities isIpadPortrait]))
   {
     LOBYTE(v4) = 1;
   }
@@ -66,17 +66,17 @@
 
 - (UIEdgeInsets)_margin
 {
-  v3 = [(VUIProductPlacementView *)self _isPortrait];
-  v4 = [(VUIProductPlacementView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIProductPlacementView *)self _isPortrait];
+  layout = [(VUIProductPlacementView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitMargin];
+    [layout portraitMargin];
   }
 
   else
   {
-    [v4 margin];
+    [layout margin];
   }
 
   v10 = v6;
@@ -97,17 +97,17 @@
 
 - (CGSize)_logoSize
 {
-  v3 = [(VUIProductPlacementView *)self _isPortrait];
-  v4 = [(VUIProductPlacementView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIProductPlacementView *)self _isPortrait];
+  layout = [(VUIProductPlacementView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitLogoSize];
+    [layout portraitLogoSize];
   }
 
   else
   {
-    [v4 logoSize];
+    [layout logoSize];
   }
 
   v8 = v6;
@@ -124,17 +124,17 @@
 {
   [(VUIProductPlacementView *)self bounds];
   v4 = v3;
-  v5 = [(VUIProductPlacementView *)self _isPortrait];
-  v6 = [(VUIProductPlacementView *)self layout];
-  v7 = v6;
-  if (v5)
+  _isPortrait = [(VUIProductPlacementView *)self _isPortrait];
+  layout = [(VUIProductPlacementView *)self layout];
+  v7 = layout;
+  if (_isPortrait)
   {
-    [v6 portraitDividerSize];
+    [layout portraitDividerSize];
   }
 
   else
   {
-    [v6 dividerSize];
+    [layout dividerSize];
   }
 
   v9 = v8;
@@ -148,17 +148,17 @@
 
 - (UIEdgeInsets)_logoMargin
 {
-  v3 = [(VUIProductPlacementView *)self _isPortrait];
-  v4 = [(VUIProductPlacementView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIProductPlacementView *)self _isPortrait];
+  layout = [(VUIProductPlacementView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitLogoMargin];
+    [layout portraitLogoMargin];
   }
 
   else
   {
-    [v4 logoMargin];
+    [layout logoMargin];
   }
 
   v10 = v6;
@@ -179,17 +179,17 @@
 
 - (UIEdgeInsets)_dividerMargin
 {
-  v3 = [(VUIProductPlacementView *)self _isPortrait];
-  v4 = [(VUIProductPlacementView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIProductPlacementView *)self _isPortrait];
+  layout = [(VUIProductPlacementView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitDividerMargin];
+    [layout portraitDividerMargin];
   }
 
   else
   {
-    [v4 dividerMargin];
+    [layout dividerMargin];
   }
 
   v10 = v6;
@@ -210,17 +210,17 @@
 
 - (UIEdgeInsets)_descriptionMargin
 {
-  v3 = [(VUIProductPlacementView *)self _isPortrait];
-  v4 = [(VUIProductPlacementView *)self layout];
-  v5 = v4;
-  if (v3)
+  _isPortrait = [(VUIProductPlacementView *)self _isPortrait];
+  layout = [(VUIProductPlacementView *)self layout];
+  v5 = layout;
+  if (_isPortrait)
   {
-    [v4 portraitDescriptionMargin];
+    [layout portraitDescriptionMargin];
   }
 
   else
   {
-    [v4 descriptionMargin];
+    [layout descriptionMargin];
   }
 
   v10 = v6;
@@ -241,13 +241,13 @@
 
 - (CGSize)_descriptionSize
 {
-  v3 = [(VUIProductPlacementView *)self layout];
-  [v3 descriptionMaxWidth];
+  layout = [(VUIProductPlacementView *)self layout];
+  [layout descriptionMaxWidth];
   v5 = v4;
 
-  v6 = [(VUIProductPlacementView *)self blockDescriptionLabel];
+  blockDescriptionLabel = [(VUIProductPlacementView *)self blockDescriptionLabel];
   [(VUIProductPlacementView *)self bounds];
-  [v6 sizeThatFits:{v5, CGRectGetHeight(v14)}];
+  [blockDescriptionLabel sizeThatFits:{v5, CGRectGetHeight(v14)}];
   v8 = v7;
   v10 = v9;
 
@@ -258,11 +258,11 @@
   return result;
 }
 
-- (void)_configureSubviewsWithDictionary:(id)a3
+- (void)_configureSubviewsWithDictionary:(id)dictionary
 {
-  v15 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
-  v5 = [v15 objectForKeyedSubscript:@"VUIAdvisoryViewLogoImageKey"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"VUIAdvisoryViewLogoImageKey"];
   if (v5)
   {
     [v4 setImage:v5];
@@ -271,7 +271,7 @@
   [v4 setAlpha:0.0];
   [(VUIProductPlacementView *)self addSubview:v4];
   [(VUIProductPlacementView *)self setLogoImageView:v4];
-  v6 = [v15 objectForKeyedSubscript:@"VUIAdvisoryViewBlockDescriptionKey"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"VUIAdvisoryViewBlockDescriptionKey"];
   if ([v6 length])
   {
     if (v5)
@@ -279,18 +279,18 @@
       [(VUIProductPlacementView *)self _dividerSize];
       v8 = v7;
       v9 = objc_opt_new();
-      v10 = [(VUIProductPlacementView *)self layout];
-      v11 = [v10 dividerColor];
-      [v9 setBackgroundColor:v11];
+      layout = [(VUIProductPlacementView *)self layout];
+      dividerColor = [layout dividerColor];
+      [v9 setBackgroundColor:dividerColor];
 
       [v9 setFrame:{0.0, 0.0, v8, 0.0}];
       [(VUIProductPlacementView *)self addSubview:v9];
       [(VUIProductPlacementView *)self setDividerView:v9];
     }
 
-    v12 = [(VUIProductPlacementView *)self layout];
-    v13 = [v12 descriptionLayout];
-    v14 = [VUILabel labelWithString:v6 textLayout:v13 existingLabel:0];
+    layout2 = [(VUIProductPlacementView *)self layout];
+    descriptionLayout = [layout2 descriptionLayout];
+    v14 = [VUILabel labelWithString:v6 textLayout:descriptionLayout existingLabel:0];
 
     [v14 setAlpha:0.0];
     [(VUIProductPlacementView *)self addSubview:v14];
@@ -298,10 +298,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(VUIProductPlacementView *)self _logoSize];
   v7 = v6;
   [(VUIProductPlacementView *)self _margin];
@@ -310,8 +310,8 @@
   v11 = v10;
   v13 = v12;
   v14 = width + v9 * -2.0;
-  v15 = [(VUIProductPlacementView *)self blockDescriptionLabel];
-  [v15 sizeThatFits:{width, height}];
+  blockDescriptionLabel = [(VUIProductPlacementView *)self blockDescriptionLabel];
+  [blockDescriptionLabel sizeThatFits:{width, height}];
   v17 = v16;
   v18 = v16 + 0.0;
 
@@ -336,7 +336,7 @@
   v54.receiver = self;
   v54.super_class = VUIProductPlacementView;
   [(VUIProductPlacementView *)&v54 layoutSubviews];
-  v3 = [(VUIProductPlacementView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(VUIProductPlacementView *)self effectiveUserInterfaceLayoutDirection];
   [(VUIProductPlacementView *)self bounds];
   v5 = v4;
   v48 = v6;
@@ -360,7 +360,7 @@
   v53 = v24;
   v25 = v8 - v14 - v10;
   v26 = v5 + v14;
-  if (v3 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v27 = v25;
   }
@@ -373,18 +373,18 @@
   v28 = v23;
   VUIRoundValue();
   v30 = v29;
-  v31 = [(VUIProductPlacementView *)self logoImageView];
-  [v31 setFrame:{v27, v30, v10, v12}];
+  logoImageView = [(VUIProductPlacementView *)self logoImageView];
+  [logoImageView setFrame:{v27, v30, v10, v12}];
 
-  v32 = [(VUIProductPlacementView *)self dividerView];
+  dividerView = [(VUIProductPlacementView *)self dividerView];
 
-  if (v32)
+  if (dividerView)
   {
     v33 = v26 + v20 + v49 + v10 + v26;
     v34 = v49 + v20;
     v35 = v50;
     v36 = v25 - (v34 - v50);
-    if (v3 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v37 = v36;
     }
@@ -394,12 +394,12 @@
       v37 = v33;
     }
 
-    v38 = [(VUIProductPlacementView *)self dividerView];
+    dividerView2 = [(VUIProductPlacementView *)self dividerView];
 
-    if (v38)
+    if (dividerView2)
     {
-      v39 = [(VUIProductPlacementView *)self dividerView];
-      [v39 frame];
+      dividerView3 = [(VUIProductPlacementView *)self dividerView];
+      [dividerView3 frame];
       v40 = v28;
       v42 = v41;
 
@@ -408,10 +408,10 @@
         v42 = v47;
       }
 
-      v43 = [(VUIProductPlacementView *)self dividerView];
+      dividerView4 = [(VUIProductPlacementView *)self dividerView];
       v44 = v42;
       v28 = v40;
-      [v43 setFrame:{v37, v48 + v46, v50, v44}];
+      [dividerView4 setFrame:{v37, v48 + v46, v50, v44}];
     }
 
     else
@@ -419,7 +419,7 @@
       v35 = *(MEMORY[0x1E695F058] + 16);
     }
 
-    if (v3 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v27 = v37 - (v51 + v52 + v28);
     }
@@ -430,51 +430,51 @@
     }
   }
 
-  v45 = [(VUIProductPlacementView *)self blockDescriptionLabel];
-  [v45 setFrame:{v27, v30, v28, v53}];
+  blockDescriptionLabel = [(VUIProductPlacementView *)self blockDescriptionLabel];
+  [blockDescriptionLabel setFrame:{v27, v30, v28, v53}];
 }
 
-- (void)_showAnimated:(BOOL)a3 completion:(id)a4
+- (void)_showAnimated:(BOOL)animated completion:(id)completion
 {
-  if (a3)
+  if (animated)
   {
 
-    [(VUIProductPlacementView *)self _showWithAnimationWithCompletion:a4];
+    [(VUIProductPlacementView *)self _showWithAnimationWithCompletion:completion];
   }
 
   else
   {
-    v5 = [(VUIProductPlacementView *)self dividerView:a3];
+    v5 = [(VUIProductPlacementView *)self dividerView:animated];
 
     if (v5)
     {
-      v6 = [(VUIProductPlacementView *)self dividerView];
-      [v6 frame];
+      dividerView = [(VUIProductPlacementView *)self dividerView];
+      [dividerView frame];
       v8 = v7;
       v10 = v9;
       v12 = v11;
 
       [(VUIProductPlacementView *)self _dividerSize];
       v14 = v13;
-      v15 = [(VUIProductPlacementView *)self dividerView];
-      [v15 setFrame:{v8, v10, v12, v14}];
+      dividerView2 = [(VUIProductPlacementView *)self dividerView];
+      [dividerView2 setFrame:{v8, v10, v12, v14}];
     }
 
-    v16 = [(VUIProductPlacementView *)self logoImageView];
-    [v16 setAlpha:1.0];
+    logoImageView = [(VUIProductPlacementView *)self logoImageView];
+    [logoImageView setAlpha:1.0];
 
-    v17 = [(VUIProductPlacementView *)self blockDescriptionLabel];
-    [v17 setAlpha:1.0];
+    blockDescriptionLabel = [(VUIProductPlacementView *)self blockDescriptionLabel];
+    [blockDescriptionLabel setAlpha:1.0];
   }
 }
 
-- (void)_showWithAnimationWithCompletion:(id)a3
+- (void)_showWithAnimationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(VUIProductPlacementView *)self dividerView];
+  dividerView = [(VUIProductPlacementView *)self dividerView];
 
-  if (v5)
+  if (dividerView)
   {
     v6 = MEMORY[0x1E69DD250];
     v23[0] = MEMORY[0x1E69E9820];
@@ -493,20 +493,20 @@
   v21[3] = &unk_1E872E4B8;
   objc_copyWeak(&v22, &location);
   [v7 animateWithDuration:0 delay:v21 options:0 animations:0.5 completion:0.3];
-  v8 = [(VUIProductPlacementView *)self effectiveUserInterfaceLayoutDirection];
-  v9 = [(VUIProductPlacementView *)self blockDescriptionLabel];
-  v10 = [(VUIProductPlacementView *)self dividerView];
+  effectiveUserInterfaceLayoutDirection = [(VUIProductPlacementView *)self effectiveUserInterfaceLayoutDirection];
+  blockDescriptionLabel = [(VUIProductPlacementView *)self blockDescriptionLabel];
+  dividerView2 = [(VUIProductPlacementView *)self dividerView];
 
-  if (v10)
+  if (dividerView2)
   {
     v11 = -20.0;
-    if (v8 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v11 = 20.0;
     }
 
     CGAffineTransformMakeTranslation(&v20, v11, 0.0);
-    [v9 setTransform:&v20];
+    [blockDescriptionLabel setTransform:&v20];
   }
 
   v12 = MEMORY[0x1E69DD250];
@@ -514,14 +514,14 @@
   v17[1] = 3221225472;
   v17[2] = __60__VUIProductPlacementView__showWithAnimationWithCompletion___block_invoke_3;
   v17[3] = &unk_1E87301C0;
-  v13 = v9;
+  v13 = blockDescriptionLabel;
   v18 = v13;
   objc_copyWeak(&v19, &location);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __60__VUIProductPlacementView__showWithAnimationWithCompletion___block_invoke_4;
   v15[3] = &unk_1E872D790;
-  v14 = v4;
+  v14 = completionCopy;
   v16 = v14;
   [v12 animateWithDuration:0 delay:v17 options:v15 animations:0.5 completion:0.0];
 
@@ -580,41 +580,41 @@ uint64_t __60__VUIProductPlacementView__showWithAnimationWithCompletion___block_
   return result;
 }
 
-- (void)_hideAnimated:(BOOL)a3 completion:(id)a4
+- (void)_hideAnimated:(BOOL)animated completion:(id)completion
 {
-  if (a3)
+  if (animated)
   {
 
-    [(VUIProductPlacementView *)self _hideWithAnimationWithCompletion:a4];
+    [(VUIProductPlacementView *)self _hideWithAnimationWithCompletion:completion];
   }
 
   else
   {
-    v5 = [(VUIProductPlacementView *)self dividerView:a3];
+    v5 = [(VUIProductPlacementView *)self dividerView:animated];
 
     if (v5)
     {
-      v6 = [(VUIProductPlacementView *)self dividerView];
-      [v6 frame];
+      dividerView = [(VUIProductPlacementView *)self dividerView];
+      [dividerView frame];
       v8 = v7;
       v10 = v9;
       v12 = v11;
 
-      v13 = [(VUIProductPlacementView *)self dividerView];
-      [v13 setFrame:{v8, v10, v12, 0.0}];
+      dividerView2 = [(VUIProductPlacementView *)self dividerView];
+      [dividerView2 setFrame:{v8, v10, v12, 0.0}];
     }
 
-    v14 = [(VUIProductPlacementView *)self logoImageView];
-    [v14 setAlpha:0.0];
+    logoImageView = [(VUIProductPlacementView *)self logoImageView];
+    [logoImageView setAlpha:0.0];
 
-    v15 = [(VUIProductPlacementView *)self blockDescriptionLabel];
-    [v15 setAlpha:0.0];
+    blockDescriptionLabel = [(VUIProductPlacementView *)self blockDescriptionLabel];
+    [blockDescriptionLabel setAlpha:0.0];
   }
 }
 
-- (void)_hideWithAnimationWithCompletion:(id)a3
+- (void)_hideWithAnimationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DD250];
   v15[0] = MEMORY[0x1E69E9820];
@@ -630,9 +630,9 @@ uint64_t __60__VUIProductPlacementView__showWithAnimationWithCompletion___block_
   v13[3] = &unk_1E872E4B8;
   objc_copyWeak(&v14, &location);
   [v6 animateWithDuration:0 delay:v13 options:0 animations:2.0 completion:0.0];
-  v7 = [(VUIProductPlacementView *)self dividerView];
+  dividerView = [(VUIProductPlacementView *)self dividerView];
 
-  if (v7)
+  if (dividerView)
   {
     v8 = MEMORY[0x1E69DD250];
     v11[0] = MEMORY[0x1E69E9820];
@@ -644,7 +644,7 @@ uint64_t __60__VUIProductPlacementView__showWithAnimationWithCompletion___block_
     v9[1] = 3221225472;
     v9[2] = __60__VUIProductPlacementView__hideWithAnimationWithCompletion___block_invoke_4;
     v9[3] = &unk_1E872D790;
-    v10 = v4;
+    v10 = completionCopy;
     [v8 animateWithDuration:0 delay:v11 options:v9 animations:2.0 completion:0.4];
 
     objc_destroyWeak(&v12);

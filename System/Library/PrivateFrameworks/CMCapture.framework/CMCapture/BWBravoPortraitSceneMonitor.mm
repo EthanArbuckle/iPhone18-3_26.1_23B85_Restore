@@ -1,38 +1,38 @@
 @interface BWBravoPortraitSceneMonitor
-- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatisticsByPortType:(id)a4 sceneFlags:(unint64_t)a5 flashOrTorchWillBeActive:(BOOL)a6 digitalFlashWillFire:(BOOL)a7 thermalPressureLevel:(int)a8 peakPowerPressureLevel:(int)a9 effectStatus:(int *)a10 stagePreviewStatus:(int *)a11;
-- (BWBravoPortraitSceneMonitor)initWithTuningParameters:(id)a3 attachDebugFrameStatistics:(BOOL)a4;
+- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatisticsByPortType:(id)type sceneFlags:(unint64_t)flags flashOrTorchWillBeActive:(BOOL)active digitalFlashWillFire:(BOOL)fire thermalPressureLevel:(int)level peakPowerPressureLevel:(int)pressureLevel effectStatus:(int *)self0 stagePreviewStatus:(int *)self1;
+- (BWBravoPortraitSceneMonitor)initWithTuningParameters:(id)parameters attachDebugFrameStatistics:(BOOL)statistics;
 - (void)dealloc;
 - (void)focusScanDidComplete;
-- (void)setAutoFocusInProgress:(BOOL)a3 focusLocked:(BOOL)a4 oneShotFocusScanInProgress:(BOOL)a5;
-- (void)setSDOFBackgroundShiftSum:(float)a3 invalidShiftRatio:(float)a4 closeCanonicalDisparityAverage:(float)a5 faceCanonicalDisparityAverages:(id)a6 erodedForegroundRatio:(float)a7 foregroundRatio:(float)a8 occluded:(BOOL)a9 faces:(id)a10 personSegmentationRatio:(float)a11;
+- (void)setAutoFocusInProgress:(BOOL)progress focusLocked:(BOOL)locked oneShotFocusScanInProgress:(BOOL)inProgress;
+- (void)setSDOFBackgroundShiftSum:(float)sum invalidShiftRatio:(float)ratio closeCanonicalDisparityAverage:(float)average faceCanonicalDisparityAverages:(id)averages erodedForegroundRatio:(float)foregroundRatio foregroundRatio:(float)a8 occluded:(BOOL)occluded faces:(id)self0 personSegmentationRatio:(float)self1;
 @end
 
 @implementation BWBravoPortraitSceneMonitor
 
-- (BWBravoPortraitSceneMonitor)initWithTuningParameters:(id)a3 attachDebugFrameStatistics:(BOOL)a4
+- (BWBravoPortraitSceneMonitor)initWithTuningParameters:(id)parameters attachDebugFrameStatistics:(BOOL)statistics
 {
   v9.receiver = self;
   v9.super_class = BWBravoPortraitSceneMonitor;
-  v5 = [(BWBravoPortraitSceneMonitor *)&v9 init:a3];
+  v5 = [(BWBravoPortraitSceneMonitor *)&v9 init:parameters];
   v6 = v5;
   if (v5)
   {
     *&v5->_backgroundShiftSumFiltered = vneg_f32(0x3F0000003FLL);
     v5->_subjectTooCloseMonitoringEnabled = 1;
-    v5->_subjectTooCloseWideFocusDistanceThreshold = [objc_msgSend(a3 objectForKeyedSubscript:{@"TooCloseFocusDistanceThreshold", "intValue"}];
+    v5->_subjectTooCloseWideFocusDistanceThreshold = [objc_msgSend(parameters objectForKeyedSubscript:{@"TooCloseFocusDistanceThreshold", "intValue"}];
     v6->_subjectTooCloseWideFocusDistanceHysteresisLag = 5.0;
     v6->_subjectTooFarMonitoringEnabled = 1;
-    v6->_subjectTooFarFocusDistanceThreshold = [objc_msgSend(a3 objectForKeyedSubscript:{@"TooFarFocusDistanceThreshold", "intValue"}];
+    v6->_subjectTooFarFocusDistanceThreshold = [objc_msgSend(parameters objectForKeyedSubscript:{@"TooFarFocusDistanceThreshold", "intValue"}];
     v6->_subjectTooFarFocusDistanceHysteresisLag = 20.0;
-    v6->_subjectTooFarFocusDistanceInfinityThreshold = [objc_msgSend(a3 objectForKeyedSubscript:{@"TooFarFocusDistanceInfinityThreshold", "intValue"}];
+    v6->_subjectTooFarFocusDistanceInfinityThreshold = [objc_msgSend(parameters objectForKeyedSubscript:{@"TooFarFocusDistanceInfinityThreshold", "intValue"}];
     v6->_subjectTooFarUseTeleForFocusDistance = 1;
     *&v6->_subjectTooFarBackgroundShiftSumTooLowThreshold = xmmword_1AD056DF0;
     v6->_sceneTooDarkMonitoringEnabled = 1;
     *&v6->_sceneTooDarkGainThreshold = xmmword_1AD056E00;
     v6->_stageFaceNumberOfFramesSinceLastFaceThreshold = 6;
     v6->_stageFaceMonitoringEnabled = 1;
-    v6->_stageTooFarFocusDistanceThreshold = [objc_msgSend(a3 objectForKeyedSubscript:{@"StageTooFarFocusDistanceThreshold", "intValue"}];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"StageTooFarBackgroundShiftSumNoFacesThreshold", "floatValue"}];
+    v6->_stageTooFarFocusDistanceThreshold = [objc_msgSend(parameters objectForKeyedSubscript:{@"StageTooFarFocusDistanceThreshold", "intValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"StageTooFarBackgroundShiftSumNoFacesThreshold", "floatValue"}];
     v6->_stageTooFarBackgroundShiftSumNoFacesThreshold = v7;
   }
 
@@ -46,20 +46,20 @@
   [(BWBravoPortraitSceneMonitor *)&v3 dealloc];
 }
 
-- (void)setAutoFocusInProgress:(BOOL)a3 focusLocked:(BOOL)a4 oneShotFocusScanInProgress:(BOOL)a5
+- (void)setAutoFocusInProgress:(BOOL)progress focusLocked:(BOOL)locked oneShotFocusScanInProgress:(BOOL)inProgress
 {
-  if (a3)
+  if (progress)
   {
     *&self->_oneShotFocusScanInProgress = 0;
   }
 
-  else if (a4)
+  else if (locked)
   {
     *&self->_oneShotFocusScanInProgress = 256;
     self->_numFramesSinceFocusLocked = 0;
   }
 
-  else if (a5)
+  else if (inProgress)
   {
     *&self->_oneShotFocusScanInProgress = 1;
   }
@@ -74,7 +74,7 @@
   }
 }
 
-- (void)setSDOFBackgroundShiftSum:(float)a3 invalidShiftRatio:(float)a4 closeCanonicalDisparityAverage:(float)a5 faceCanonicalDisparityAverages:(id)a6 erodedForegroundRatio:(float)a7 foregroundRatio:(float)a8 occluded:(BOOL)a9 faces:(id)a10 personSegmentationRatio:(float)a11
+- (void)setSDOFBackgroundShiftSum:(float)sum invalidShiftRatio:(float)ratio closeCanonicalDisparityAverage:(float)average faceCanonicalDisparityAverages:(id)averages erodedForegroundRatio:(float)foregroundRatio foregroundRatio:(float)a8 occluded:(BOOL)occluded faces:(id)self0 personSegmentationRatio:(float)self1
 {
   v14 = 1.0;
   v15 = 0.35;
@@ -115,18 +115,18 @@ LABEL_11:
   }
 
 LABEL_13:
-  self->_backgroundShiftSumFiltered = BWModifiedMovingAverage(a3, self->_backgroundShiftSumFiltered, v15);
-  self->_invalidShiftRatioFiltered = BWModifiedMovingAverage(a4, self->_invalidShiftRatioFiltered, v14);
+  self->_backgroundShiftSumFiltered = BWModifiedMovingAverage(sum, self->_backgroundShiftSumFiltered, v15);
+  self->_invalidShiftRatioFiltered = BWModifiedMovingAverage(ratio, self->_invalidShiftRatioFiltered, v14);
 
-  v17 = [a10 copy];
+  v17 = [faces copy];
   self->_stageMostRecentFaces = v17;
   self->_stageFaceHasBeenSeen |= [(NSArray *)v17 count]!= 0;
 }
 
-- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatisticsByPortType:(id)a4 sceneFlags:(unint64_t)a5 flashOrTorchWillBeActive:(BOOL)a6 digitalFlashWillFire:(BOOL)a7 thermalPressureLevel:(int)a8 peakPowerPressureLevel:(int)a9 effectStatus:(int *)a10 stagePreviewStatus:(int *)a11
+- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatisticsByPortType:(id)type sceneFlags:(unint64_t)flags flashOrTorchWillBeActive:(BOOL)active digitalFlashWillFire:(BOOL)fire thermalPressureLevel:(int)level peakPowerPressureLevel:(int)pressureLevel effectStatus:(int *)self0 stagePreviewStatus:(int *)self1
 {
-  v11 = a6;
-  v15 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  activeCopy = active;
+  v15 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v15)
   {
     return v15;
@@ -134,8 +134,8 @@ LABEL_13:
 
   v16 = v15;
   v17 = *off_1E798A0C0;
-  v87 = [a4 objectForKeyedSubscript:*off_1E798A0C0];
-  v18 = [a4 objectForKeyedSubscript:*off_1E798A0D8];
+  v87 = [type objectForKeyedSubscript:*off_1E798A0C0];
+  v18 = [type objectForKeyedSubscript:*off_1E798A0D8];
   invalidShiftRatioFiltered = self->_invalidShiftRatioFiltered;
   backgroundShiftSumFiltered = self->_backgroundShiftSumFiltered;
   if (self->_focusLocked)
@@ -151,7 +151,7 @@ LABEL_13:
   }
 
   portraitSceneMonitoringRequiresStageThresholds = self->_portraitSceneMonitoringRequiresStageThresholds;
-  CMSetAttachment(a3, @"SDOFFocusLocked", [MEMORY[0x1E696AD98] numberWithBool:v22], 1u);
+  CMSetAttachment(buffer, @"SDOFFocusLocked", [MEMORY[0x1E696AD98] numberWithBool:v22], 1u);
   subjectTooFarBackgroundShiftRollOffInvalidShiftRatioStart = self->_subjectTooFarBackgroundShiftRollOffInvalidShiftRatioStart;
   subjectTooFarBackgroundShiftRollOffInvalidShiftRatioEnd = self->_subjectTooFarBackgroundShiftRollOffInvalidShiftRatioEnd;
   v25 = 1.0;
@@ -174,7 +174,7 @@ LABEL_13:
   v28 = [objc_msgSend(v16 objectForKeyedSubscript:{*off_1E798B730), "objectForKeyedSubscript:", v17}];
   v29 = v28;
   v30 = *off_1E798B0A8;
-  v85 = v11;
+  v85 = activeCopy;
   if (v28)
   {
     v31 = [objc_msgSend(v28 objectForKeyedSubscript:{v30), "intValue"}] != 4;
@@ -244,7 +244,7 @@ LABEL_13:
     }
 
 LABEL_51:
-    v47 = [a4 frameCount] > 0x1F;
+    v47 = [type frameCount] > 0x1F;
     goto LABEL_56;
   }
 
@@ -254,7 +254,7 @@ LABEL_51:
     numFramesSinceAEBecameStable = self->_numFramesSinceAEBecameStable;
     if (numFramesSinceAEBecameStable <= 4)
     {
-      v43 = [a4 frameCount] > 0x13;
+      v43 = [type frameCount] > 0x13;
       numFramesSinceAEBecameStable = self->_numFramesSinceAEBecameStable;
     }
 
@@ -268,9 +268,9 @@ LABEL_51:
 
   else
   {
-    v44 = [a4 frameCount];
+    frameCount = [type frameCount];
     v45 = 0;
-    v43 = v44 > 0x13;
+    v43 = frameCount > 0x13;
   }
 
   self->_numFramesSinceAEBecameStable = v45;
@@ -326,10 +326,10 @@ LABEL_57:
   {
     if (self->_subjectTooCloseMonitoringEnabled)
     {
-      v49 = [v87 focusPosition];
+      focusPosition = [v87 focusPosition];
       subjectTooCloseLastWideFocusPosition = self->_subjectTooCloseLastWideFocusPosition;
       self->_subjectTooCloseLastWideFocusPosition = [v87 focusPosition];
-      if (v49 != subjectTooCloseLastWideFocusPosition)
+      if (focusPosition != subjectTooCloseLastWideFocusPosition)
       {
         subjectIsTooClose = self->_subjectIsTooClose;
         [v87 focusDistance];
@@ -597,14 +597,14 @@ LABEL_127:
   }
 
   self->_lastSDOFEffectStatus = v82;
-  if (a10)
+  if (status)
   {
-    *a10 = v82;
+    *status = v82;
   }
 
-  if (a11)
+  if (previewStatus)
   {
-    *a11 = v83;
+    *previewStatus = v83;
   }
 
   LOBYTE(v15) = 1;

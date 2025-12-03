@@ -1,25 +1,25 @@
 @interface DMFUpdateDeclarationsRequest
-- (DMFUpdateDeclarationsRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFUpdateDeclarationsRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFUpdateDeclarationsRequest
 
-- (DMFUpdateDeclarationsRequest)initWithCoder:(id)a3
+- (DMFUpdateDeclarationsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = DMFUpdateDeclarationsRequest;
-  v5 = [(CATTaskRequest *)&v41 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v41 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"organizationIdentifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"organizationIdentifier"];
     organizationIdentifier = v5->_organizationIdentifier;
     v5->_organizationIdentifier = v7;
 
     v9 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"syncToken"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"syncToken"];
     syncToken = v5->_syncToken;
     v5->_syncToken = v10;
 
@@ -35,7 +35,7 @@
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = [v39 setWithObjects:{v37, v35, v12, v13, v14, v15, v16, v17, v18, v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"upsertDeclarations"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"upsertDeclarations"];
     upsertDeclarations = v5->_upsertDeclarations;
     v5->_upsertDeclarations = v21;
 
@@ -51,7 +51,7 @@
     v29 = objc_opt_class();
     v30 = objc_opt_class();
     v31 = [v40 setWithObjects:{v38, v36, v23, v24, v25, v26, v27, v28, v29, v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"removeDeclarations"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"removeDeclarations"];
     removeDeclarations = v5->_removeDeclarations;
     v5->_removeDeclarations = v32;
   }
@@ -59,23 +59,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = DMFUpdateDeclarationsRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v9 encodeWithCoder:coderCopy];
   v5 = [(DMFUpdateDeclarationsRequest *)self organizationIdentifier:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"organizationIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"organizationIdentifier"];
 
-  v6 = [(DMFUpdateDeclarationsRequest *)self syncToken];
-  [v4 encodeObject:v6 forKey:@"syncToken"];
+  syncToken = [(DMFUpdateDeclarationsRequest *)self syncToken];
+  [coderCopy encodeObject:syncToken forKey:@"syncToken"];
 
-  v7 = [(DMFUpdateDeclarationsRequest *)self upsertDeclarations];
-  [v4 encodeObject:v7 forKey:@"upsertDeclarations"];
+  upsertDeclarations = [(DMFUpdateDeclarationsRequest *)self upsertDeclarations];
+  [coderCopy encodeObject:upsertDeclarations forKey:@"upsertDeclarations"];
 
-  v8 = [(DMFUpdateDeclarationsRequest *)self removeDeclarations];
-  [v4 encodeObject:v8 forKey:@"removeDeclarations"];
+  removeDeclarations = [(DMFUpdateDeclarationsRequest *)self removeDeclarations];
+  [coderCopy encodeObject:removeDeclarations forKey:@"removeDeclarations"];
 }
 
 @end

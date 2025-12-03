@@ -1,10 +1,10 @@
 @interface SNAudioFileUtils
-+ ($E36B78CDAC119E0352F6B513F3BB0FF8)getTimeRangeEncompassingEntireAudioFileAtURL:(SEL)a3 error:(id)a4;
++ ($E36B78CDAC119E0352F6B513F3BB0FF8)getTimeRangeEncompassingEntireAudioFileAtURL:(SEL)l error:(id)error;
 @end
 
 @implementation SNAudioFileUtils
 
-+ ($E36B78CDAC119E0352F6B513F3BB0FF8)getTimeRangeEncompassingEntireAudioFileAtURL:(SEL)a3 error:(id)a4
++ ($E36B78CDAC119E0352F6B513F3BB0FF8)getTimeRangeEncompassingEntireAudioFileAtURL:(SEL)l error:(id)error
 {
   v6 = sub_1C9A91558();
   v7 = *(v6 - 8);

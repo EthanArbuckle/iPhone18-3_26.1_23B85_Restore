@@ -1,22 +1,22 @@
 @interface CHRemoteLineWrappingRequestHandler
-- (BOOL)_isValidRemoteLineWrappingRequest:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-- (CHRemoteLineWrappingRequestHandler)initWithServerQueue:(id)a3 lowPriorityQueue:(id)a4 highPriorityQueue:(id)a5;
+- (BOOL)_isValidRemoteLineWrappingRequest:(id)request bundleIdentifier:(id)identifier error:(id *)error;
+- (CHRemoteLineWrappingRequestHandler)initWithServerQueue:(id)queue lowPriorityQueue:(id)priorityQueue highPriorityQueue:(id)highPriorityQueue;
 - (void)_checkInLineWrapper;
 - (void)_checkOutLineWrapper;
-- (void)_stageEvictionOfLineWrapperWithTargetIdleLifetime:(double)a3;
-- (void)handleRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5;
+- (void)_stageEvictionOfLineWrapperWithTargetIdleLifetime:(double)lifetime;
+- (void)handleRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier;
 @end
 
 @implementation CHRemoteLineWrappingRequestHandler
 
-- (CHRemoteLineWrappingRequestHandler)initWithServerQueue:(id)a3 lowPriorityQueue:(id)a4 highPriorityQueue:(id)a5
+- (CHRemoteLineWrappingRequestHandler)initWithServerQueue:(id)queue lowPriorityQueue:(id)priorityQueue highPriorityQueue:(id)highPriorityQueue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  priorityQueueCopy = priorityQueue;
+  highPriorityQueueCopy = highPriorityQueue;
   v15.receiver = self;
   v15.super_class = CHRemoteLineWrappingRequestHandler;
-  v11 = [(CHRemoteProcessingRequestHandler *)&v15 initWithServerQueue:v8 lowPriorityQueue:v9 highPriorityQueue:v10];
+  v11 = [(CHRemoteProcessingRequestHandler *)&v15 initWithServerQueue:queueCopy lowPriorityQueue:priorityQueueCopy highPriorityQueue:highPriorityQueueCopy];
   v12 = v11;
   if (v11)
   {
@@ -29,7 +29,7 @@
   return v12;
 }
 
-- (void)_stageEvictionOfLineWrapperWithTargetIdleLifetime:(double)a3
+- (void)_stageEvictionOfLineWrapperWithTargetIdleLifetime:(double)lifetime
 {
   if (qword_10002AD20 != -1)
   {
@@ -40,7 +40,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v8 = a3;
+    lifetimeCopy = lifetime;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Line wrapper for eviction with idle lifetime=%1.2f", buf, 0xCu);
   }
 
@@ -49,8 +49,8 @@
   v6[2] = sub_100014AFC;
   v6[3] = &unk_100024B10;
   v6[4] = self;
-  *&v6[5] = a3;
-  [(CHRemoteBasicRequestHandler *)self _stageEvictionOfResourceWithTargetLifetime:v6 block:a3];
+  *&v6[5] = lifetime;
+  [(CHRemoteBasicRequestHandler *)self _stageEvictionOfResourceWithTargetLifetime:v6 block:lifetime];
 }
 
 - (void)_checkOutLineWrapper
@@ -166,11 +166,11 @@ LABEL_11:
   [(CHRemoteLineWrappingRequestHandler *)self _stageEvictionOfLineWrapperWithTargetIdleLifetime:self->_targetIdleLifetime];
 }
 
-- (BOOL)_isValidRemoteLineWrappingRequest:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_isValidRemoteLineWrappingRequest:(id)request bundleIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  requestCopy = request;
+  identifierCopy = identifier;
+  if (!requestCopy)
   {
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"The line wrapping request is invalid" value:&stru_100025778 table:0];
@@ -183,7 +183,7 @@ LABEL_11:
 
     v9 = [objc_opt_class() invalidInputErrorWithDescription:v13 failureReason:v15 recoverySuggestion:v17 errorCode:-1002];
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -192,36 +192,36 @@ LABEL_11:
   }
 
   v9 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_3:
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
 LABEL_4:
 
-  return v7 != 0;
+  return requestCopy != 0;
 }
 
-- (void)handleRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5
+- (void)handleRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+  requestCopy = request;
+  replyCopy = reply;
+  identifierCopy = identifier;
+  serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000152DC;
   v15[3] = &unk_100024BB0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = requestCopy;
+  v17 = identifierCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = identifierCopy;
+  v14 = requestCopy;
+  dispatch_sync(serverQueue, v15);
 }
 
 @end

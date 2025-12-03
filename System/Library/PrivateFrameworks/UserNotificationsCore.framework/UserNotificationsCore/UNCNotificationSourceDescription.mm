@@ -1,18 +1,18 @@
 @interface UNCNotificationSourceDescription
-+ (id)_validEnvironmentFromEnvironment:(id)a3;
-+ (id)applicationSourceDescriptionWithApplication:(id)a3;
-+ (id)applicationSourceDescriptionWithBundleIdentifier:(id)a3;
-+ (id)sourceDescriptionWithBundleIdentifier:(id)a3;
-+ (id)systemSourceDescriptionWithBundleIdentifier:(id)a3;
-+ (id)systemSourceDescriptionWithBundleURL:(id)a3;
++ (id)_validEnvironmentFromEnvironment:(id)environment;
++ (id)applicationSourceDescriptionWithApplication:(id)application;
++ (id)applicationSourceDescriptionWithBundleIdentifier:(id)identifier;
++ (id)sourceDescriptionWithBundleIdentifier:(id)identifier;
++ (id)systemSourceDescriptionWithBundleIdentifier:(id)identifier;
++ (id)systemSourceDescriptionWithBundleURL:(id)l;
 + (id)systemSourceDirectoryURLs;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)setDefaultCategoriesFromArray:(id)a3 bundle:(id)a4;
-- (void)setDefaultTopicsFromArray:(id)a3 bundle:(id)a4;
-- (void)setIconFilesFromDictionary:(id)a3;
-- (void)setSystemPropertiesFromDictionary:(id)a3 bundle:(id)a4;
+- (void)setDefaultCategoriesFromArray:(id)array bundle:(id)bundle;
+- (void)setDefaultTopicsFromArray:(id)array bundle:(id)bundle;
+- (void)setIconFilesFromDictionary:(id)dictionary;
+- (void)setSystemPropertiesFromDictionary:(id)dictionary bundle:(id)bundle;
 @end
 
 @implementation UNCNotificationSourceDescription
@@ -60,17 +60,17 @@ id __70__UNCNotificationSourceDescription_Factory__systemSourceDirectoryURLs__bl
   return v6;
 }
 
-+ (id)applicationSourceDescriptionWithBundleIdentifier:(id)a3
++ (id)applicationSourceDescriptionWithBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:?];
-    v5 = [v4 correspondingApplicationRecord];
-    v6 = [v5 unc_isEligibleToDeliverNotifications];
+    correspondingApplicationRecord = [v4 correspondingApplicationRecord];
+    unc_isEligibleToDeliverNotifications = [correspondingApplicationRecord unc_isEligibleToDeliverNotifications];
 
-    if (v6)
+    if (unc_isEligibleToDeliverNotifications)
     {
-      v7 = [a1 applicationSourceDescriptionWithApplication:v4];
+      v7 = [self applicationSourceDescriptionWithApplication:v4];
     }
 
     else
@@ -87,48 +87,48 @@ id __70__UNCNotificationSourceDescription_Factory__systemSourceDirectoryURLs__bl
   return v7;
 }
 
-+ (id)applicationSourceDescriptionWithApplication:(id)a3
++ (id)applicationSourceDescriptionWithApplication:(id)application
 {
   v127 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  applicationCopy = application;
+  v5 = applicationCopy;
+  if (!applicationCopy)
   {
     v10 = 0;
     goto LABEL_70;
   }
 
-  v97 = a1;
-  v6 = [v4 bundleIdentifier];
-  v7 = [v5 bundleURL];
-  v8 = [v5 dataContainerURL];
-  v9 = [v5 groupContainerURLs];
+  selfCopy = self;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  bundleURL = [v5 bundleURL];
+  dataContainerURL = [v5 dataContainerURL];
+  groupContainerURLs = [v5 groupContainerURLs];
   v10 = objc_alloc_init(UNCNotificationSourceDescription);
-  v100 = v6;
-  [(UNCNotificationSourceDescription *)v10 setBundleIdentifier:v6];
-  v99 = v7;
-  [(UNCNotificationSourceDescription *)v10 setBundleURL:v7];
-  v96 = v8;
-  [(UNCNotificationSourceDescription *)v10 setDataContainerURL:v8];
-  v95 = v9;
-  [(UNCNotificationSourceDescription *)v10 setGroupContainerURLS:v9];
-  v94 = [v5 appState];
-  -[UNCNotificationSourceDescription setRestricted:](v10, "setRestricted:", [v94 isRestricted]);
+  v100 = bundleIdentifier;
+  [(UNCNotificationSourceDescription *)v10 setBundleIdentifier:bundleIdentifier];
+  v99 = bundleURL;
+  [(UNCNotificationSourceDescription *)v10 setBundleURL:bundleURL];
+  v96 = dataContainerURL;
+  [(UNCNotificationSourceDescription *)v10 setDataContainerURL:dataContainerURL];
+  v95 = groupContainerURLs;
+  [(UNCNotificationSourceDescription *)v10 setGroupContainerURLS:groupContainerURLs];
+  appState = [v5 appState];
+  -[UNCNotificationSourceDescription setRestricted:](v10, "setRestricted:", [appState isRestricted]);
   v11 = v5;
-  v12 = [MEMORY[0x1E698E730] sharedInstance];
-  LODWORD(v7) = [v12 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  LODWORD(bundleURL) = [mEMORY[0x1E698E730] deviceClass];
 
   v13 = 0x1E696A000;
-  v88 = v7;
+  v88 = bundleURL;
   v101 = v11;
-  if (v7 == 4)
+  if (bundleURL == 4)
   {
     v112 = 0uLL;
     v113 = 0uLL;
     v110 = 0uLL;
     v111 = 0uLL;
-    v14 = [v11 plugInKitPlugins];
-    v22 = [v14 countByEnumeratingWithState:&v110 objects:v126 count:16];
+    plugInKitPlugins = [v11 plugInKitPlugins];
+    v22 = [plugInKitPlugins countByEnumeratingWithState:&v110 objects:v126 count:16];
     if (v22)
     {
       v23 = v22;
@@ -140,7 +140,7 @@ id __70__UNCNotificationSourceDescription_Factory__systemSourceDirectoryURLs__bl
         {
           if (*v111 != v24)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(plugInKitPlugins);
           }
 
           v26 = *(*(&v110 + 1) + 8 * i);
@@ -160,7 +160,7 @@ LABEL_25:
           }
         }
 
-        v23 = [v14 countByEnumeratingWithState:&v110 objects:v126 count:16];
+        v23 = [plugInKitPlugins countByEnumeratingWithState:&v110 objects:v126 count:16];
         if (v23)
         {
           continue;
@@ -179,8 +179,8 @@ LABEL_22:
   v109 = 0uLL;
   v106 = 0uLL;
   v107 = 0uLL;
-  v14 = [v11 plugInKitPlugins];
-  v15 = [v14 countByEnumeratingWithState:&v106 objects:v125 count:16];
+  plugInKitPlugins = [v11 plugInKitPlugins];
+  v15 = [plugInKitPlugins countByEnumeratingWithState:&v106 objects:v125 count:16];
   if (!v15)
   {
     goto LABEL_22;
@@ -195,7 +195,7 @@ LABEL_22:
     {
       if (*v107 != v17)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(plugInKitPlugins);
       }
 
       v19 = *(*(&v106 + 1) + 8 * j);
@@ -213,7 +213,7 @@ LABEL_22:
       }
     }
 
-    v16 = [v14 countByEnumeratingWithState:&v106 objects:v125 count:16];
+    v16 = [plugInKitPlugins countByEnumeratingWithState:&v106 objects:v125 count:16];
     if (v16)
     {
       continue;
@@ -229,18 +229,18 @@ LABEL_21:
   v13 = 0x1E696A000;
 LABEL_26:
 
-  v31 = [v11 correspondingApplicationRecord];
-  v32 = v31;
-  if (v31)
+  correspondingApplicationRecord = [v11 correspondingApplicationRecord];
+  v32 = correspondingApplicationRecord;
+  if (correspondingApplicationRecord)
   {
-    v33 = [v31 localizedName];
-    [(UNCNotificationSourceDescription *)v10 setDisplayName:v33];
+    localizedName = [correspondingApplicationRecord localizedName];
+    [(UNCNotificationSourceDescription *)v10 setDisplayName:localizedName];
 
-    v34 = [v32 appClipMetadata];
-    [(UNCNotificationSourceDescription *)v10 setIsAppClip:v34 != 0];
+    appClipMetadata = [v32 appClipMetadata];
+    [(UNCNotificationSourceDescription *)v10 setIsAppClip:appClipMetadata != 0];
 
-    v35 = [v32 appClipMetadata];
-    -[UNCNotificationSourceDescription setWantsEphemeralNotifications:](v10, "setWantsEphemeralNotifications:", [v35 wantsEphemeralNotifications]);
+    appClipMetadata2 = [v32 appClipMetadata];
+    -[UNCNotificationSourceDescription setWantsEphemeralNotifications:](v10, "setWantsEphemeralNotifications:", [appClipMetadata2 wantsEphemeralNotifications]);
   }
 
   v93 = v32;
@@ -292,7 +292,7 @@ LABEL_38:
 
   [(UNCNotificationSourceDescription *)v10 setUsesCloudKit:v42];
   v91 = [v29 entitlementValueForKey:@"aps-environment" ofClass:objc_opt_class()];
-  v90 = [v97 _validEnvironmentFromEnvironment:?];
+  v90 = [selfCopy _validEnvironmentFromEnvironment:?];
   [(UNCNotificationSourceDescription *)v10 setPushEnvironment:?];
   v43 = *(v13 + 3480);
   v44 = [v29 entitlementValueForKey:@"com.apple.developer.usernotifications.critical-alerts" ofClass:objc_opt_class()];
@@ -314,7 +314,7 @@ LABEL_38:
   }
 
   v87 = v49;
-  v85 = [v49 BOOLValue];
+  bOOLValue = [v49 BOOLValue];
   [(UNCNotificationSourceDescription *)v10 setAllowTimeSensitive:?];
   v51 = *(v13 + 3480);
   v52 = [v29 entitlementValueForKey:@"com.apple.developer.usernotifications.communication" ofClass:objc_opt_class()];
@@ -325,8 +325,8 @@ LABEL_38:
   }
 
   v86 = v52;
-  v54 = [v52 BOOLValue];
-  v83 = [v100 un_isFirstPartyIdentifier];
+  bOOLValue2 = [v52 BOOLValue];
+  un_isFirstPartyIdentifier = [v100 un_isFirstPartyIdentifier];
   v55 = *MEMORY[0x1E696E6A0];
   CanDonateIntent = INBundleProxyCanDonateIntent();
   v57 = *MEMORY[0x1E696E688];
@@ -341,10 +341,10 @@ LABEL_38:
     CanDonateIntent = v60;
   }
 
-  [(UNCNotificationSourceDescription *)v10 setAllowCalls:v54 & v60];
-  [(UNCNotificationSourceDescription *)v10 setAllowIntercom:v54 & v58];
-  [(UNCNotificationSourceDescription *)v10 setAllowMessages:v54 & CanDonateIntent];
-  if ((v60 & 1) == 0 && (v58 & 1) == 0 && (CanDonateIntent & 1) == 0 && ((v54 ^ 1) & 1) == 0)
+  [(UNCNotificationSourceDescription *)v10 setAllowCalls:bOOLValue2 & v60];
+  [(UNCNotificationSourceDescription *)v10 setAllowIntercom:bOOLValue2 & v58];
+  [(UNCNotificationSourceDescription *)v10 setAllowMessages:bOOLValue2 & CanDonateIntent];
+  if ((v60 & 1) == 0 && (v58 & 1) == 0 && (CanDonateIntent & 1) == 0 && ((bOOLValue2 ^ 1) & 1) == 0)
   {
     v61 = *MEMORY[0x1E6983350];
     if (os_log_type_enabled(*MEMORY[0x1E6983350], OS_LOG_TYPE_ERROR))
@@ -352,7 +352,7 @@ LABEL_38:
       *buf = 138544386;
       v80 = &stru_1F563BF08;
       v115 = v100;
-      if (v83)
+      if (un_isFirstPartyIdentifier)
       {
         v80 = v57;
       }
@@ -373,13 +373,13 @@ LABEL_38:
   v63 = objc_opt_class();
   v64 = [v29 objectForInfoDictionaryKey:v62 ofClass:v63 valuesOfClass:objc_opt_class()];
   LOBYTE(v62) = [v64 containsObject:*MEMORY[0x1E69DDBD8]];
-  v65 = [v101 activityTypes];
-  v66 = [v65 copy];
+  activityTypes = [v101 activityTypes];
+  v66 = [activityTypes copy];
 
   [(UNCNotificationSourceDescription *)v10 setActivityTypes:v66];
   -[UNCNotificationSourceDescription setSupportsContentAvailableRemoteNotifications:](v10, "setSupportsContentAvailableRemoteNotifications:", (v62 | ([v101 isNewsstandApp] & objc_msgSend(v64, "containsObject:", @"newsstand-content"))) & 1);
-  v67 = [v101 applicationType];
-  v68 = [v67 isEqualToString:@"System"];
+  applicationType = [v101 applicationType];
+  v68 = [applicationType isEqualToString:@"System"];
   if (v68)
   {
     v69 = [v101 objectForInfoDictionaryKey:@"UNUserNotificationCenter" ofClass:objc_opt_class()];
@@ -391,23 +391,23 @@ LABEL_38:
 
     v81 = v69;
     v84 = v29;
-    if (v85)
+    if (bOOLValue)
     {
-      v71 = [(UNCNotificationSourceDescription *)v10 defaultSettings];
-      [v71 setSupportsTimeSensitive:1];
+      defaultSettings = [(UNCNotificationSourceDescription *)v10 defaultSettings];
+      [defaultSettings setSupportsTimeSensitive:1];
     }
 
     [(UNCNotificationSourceDescription *)v10 setAllowPrivateProperties:1, v81];
     v72 = [v101 objectForInfoDictionaryKey:@"SBAppUsesLocalNotifications" ofClass:0];
-    v73 = [v72 un_safeBoolValue];
+    un_safeBoolValue = [v72 un_safeBoolValue];
 
     v74 = [v101 objectForInfoDictionaryKey:@"BBDataProvider" ofClass:0];
-    v75 = [v74 un_safeBoolValue];
+    un_safeBoolValue2 = [v74 un_safeBoolValue];
 
     v76 = [v101 objectForInfoDictionaryKey:@"UNUserNotificationCenter" ofClass:0];
     LOBYTE(v74) = v76 != 0;
 
-    [(UNCNotificationSourceDescription *)v10 setUseDefaultDataProvider:(v74 | v73) & ~v75 & 1];
+    [(UNCNotificationSourceDescription *)v10 setUseDefaultDataProvider:(v74 | un_safeBoolValue) & ~un_safeBoolValue2 & 1];
     v77 = v99;
     v29 = v84;
   }
@@ -426,25 +426,25 @@ LABEL_70:
   return v10;
 }
 
-+ (id)sourceDescriptionWithBundleIdentifier:(id)a3
++ (id)sourceDescriptionWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 systemSourceDescriptionWithBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [self systemSourceDescriptionWithBundleIdentifier:identifierCopy];
   if (!v5)
   {
-    v5 = [a1 applicationSourceDescriptionWithBundleIdentifier:v4];
+    v5 = [self applicationSourceDescriptionWithBundleIdentifier:identifierCopy];
   }
 
   return v5;
 }
 
-+ (id)systemSourceDescriptionWithBundleIdentifier:(id)a3
++ (id)systemSourceDescriptionWithBundleIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 hasPrefix:@"com.apple."])
+  identifierCopy = identifier;
+  if ([identifierCopy hasPrefix:@"com.apple."])
   {
-    [a1 systemSourceDirectoryURLs];
+    [self systemSourceDirectoryURLs];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -463,9 +463,9 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * v9) URLByAppendingPathComponent:{v4, v16}];
-        v11 = [a1 systemSourcePathExtension];
-        v12 = [v10 URLByAppendingPathExtension:v11];
+        v10 = [*(*(&v16 + 1) + 8 * v9) URLByAppendingPathComponent:{identifierCopy, v16}];
+        systemSourcePathExtension = [self systemSourcePathExtension];
+        v12 = [v10 URLByAppendingPathExtension:systemSourcePathExtension];
 
         v13 = [UNCNotificationSourceDescription systemSourceDescriptionWithBundleURL:v12];
 
@@ -504,33 +504,33 @@ LABEL_10:
   return v13;
 }
 
-+ (id)systemSourceDescriptionWithBundleURL:(id)a3
++ (id)systemSourceDescriptionWithBundleURL:(id)l
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E698E640]) initWithURL:v3];
-  v5 = [v4 bundleIdentifier];
-  v6 = v5;
-  if (v5)
+  lCopy = l;
+  v4 = [objc_alloc(MEMORY[0x1E698E640]) initWithURL:lCopy];
+  bundleIdentifier = [v4 bundleIdentifier];
+  v6 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v7 = [v5 stringByAppendingPathExtension:@"bundle"];
-    v8 = [v3 lastPathComponent];
-    v9 = [v7 isEqualToString:v8];
+    v7 = [bundleIdentifier stringByAppendingPathExtension:@"bundle"];
+    lastPathComponent = [lCopy lastPathComponent];
+    v9 = [v7 isEqualToString:lastPathComponent];
 
     if (v9)
     {
-      v10 = [v4 localizedInfoDictionary];
-      v11 = [v10 bs_safeObjectForKey:*MEMORY[0x1E695E120] ofType:objc_opt_class()];
+      localizedInfoDictionary = [v4 localizedInfoDictionary];
+      v11 = [localizedInfoDictionary bs_safeObjectForKey:*MEMORY[0x1E695E120] ofType:objc_opt_class()];
       if (!v11)
       {
-        v11 = [v10 bs_safeObjectForKey:*MEMORY[0x1E695E4F8] ofType:objc_opt_class()];
+        v11 = [localizedInfoDictionary bs_safeObjectForKey:*MEMORY[0x1E695E4F8] ofType:objc_opt_class()];
       }
 
-      v12 = [v4 infoDictionary];
-      v13 = [v12 bs_safeObjectForKey:@"UNUserNotificationCenter" ofType:objc_opt_class()];
+      infoDictionary = [v4 infoDictionary];
+      v13 = [infoDictionary bs_safeObjectForKey:@"UNUserNotificationCenter" ofType:objc_opt_class()];
       v14 = objc_alloc_init(UNCNotificationSourceDescription);
       [(UNCNotificationSourceDescription *)v14 setAllowPrivateProperties:1];
       [(UNCNotificationSourceDescription *)v14 setBundleIdentifier:v6];
-      [(UNCNotificationSourceDescription *)v14 setBundleURL:v3];
+      [(UNCNotificationSourceDescription *)v14 setBundleURL:lCopy];
       [(UNCNotificationSourceDescription *)v14 setDisplayName:v11];
       [(UNCNotificationSourceDescription *)v14 setUseDefaultDataProvider:1];
       [(UNCNotificationSourceDescription *)v14 setSystemPropertiesFromDictionary:v13 bundle:v4];
@@ -550,11 +550,11 @@ LABEL_10:
   return v14;
 }
 
-+ (id)_validEnvironmentFromEnvironment:(id)a3
++ (id)_validEnvironmentFromEnvironment:(id)environment
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || (v5 = *MEMORY[0x1E698CF20], [v3 caseInsensitiveCompare:*MEMORY[0x1E698CF20]]) && (v5 = *MEMORY[0x1E698CF18], objc_msgSend(v4, "caseInsensitiveCompare:", *MEMORY[0x1E698CF18])) && (v5 = *MEMORY[0x1E698CF10], objc_msgSend(v4, "caseInsensitiveCompare:", *MEMORY[0x1E698CF10])) && (v5 = *MEMORY[0x1E698CF28], objc_msgSend(v4, "caseInsensitiveCompare:", *MEMORY[0x1E698CF28])))
+  environmentCopy = environment;
+  v4 = environmentCopy;
+  if (!environmentCopy || (v5 = *MEMORY[0x1E698CF20], [environmentCopy caseInsensitiveCompare:*MEMORY[0x1E698CF20]]) && (v5 = *MEMORY[0x1E698CF18], objc_msgSend(v4, "caseInsensitiveCompare:", *MEMORY[0x1E698CF18])) && (v5 = *MEMORY[0x1E698CF10], objc_msgSend(v4, "caseInsensitiveCompare:", *MEMORY[0x1E698CF10])) && (v5 = *MEMORY[0x1E698CF28], objc_msgSend(v4, "caseInsensitiveCompare:", *MEMORY[0x1E698CF28])))
   {
     v6 = 0;
   }
@@ -567,118 +567,118 @@ LABEL_10:
   return v6;
 }
 
-- (void)setSystemPropertiesFromDictionary:(id)a3 bundle:(id)a4
+- (void)setSystemPropertiesFromDictionary:(id)dictionary bundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
-  v47 = [v7 bs_safeObjectForKey:@"UNUniversalApplicationIdentifier" ofType:objc_opt_class()];
-  v45 = [v7 bs_safeObjectForKey:@"UNIntentsBundleIdentifier" ofType:objc_opt_class()];
-  v43 = [v7 bs_safeObjectForKey:@"UNNotificationIcons" ofType:objc_opt_class()];
-  v46 = [v7 bs_safeObjectForKey:@"UNDefaultSettings" ofType:objc_opt_class()];
-  v8 = [v7 bs_safeObjectForKey:@"UNDefaultCategories" ofType:objc_opt_class()];
+  bundleCopy = bundle;
+  dictionaryCopy = dictionary;
+  v47 = [dictionaryCopy bs_safeObjectForKey:@"UNUniversalApplicationIdentifier" ofType:objc_opt_class()];
+  v45 = [dictionaryCopy bs_safeObjectForKey:@"UNIntentsBundleIdentifier" ofType:objc_opt_class()];
+  v43 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIcons" ofType:objc_opt_class()];
+  v46 = [dictionaryCopy bs_safeObjectForKey:@"UNDefaultSettings" ofType:objc_opt_class()];
+  v8 = [dictionaryCopy bs_safeObjectForKey:@"UNDefaultCategories" ofType:objc_opt_class()];
   v9 = [UNCNotificationSourceSettingsDescription notificationSourceSettingsDescriptionFromDictionary:v46];
-  v40 = [v7 bs_safeObjectForKey:@"UNDefaultTopics" ofType:objc_opt_class()];
-  v44 = [v7 bs_safeObjectForKey:@"UNCustomSettingsBundle" ofType:objc_opt_class()];
-  v42 = [v7 bs_safeObjectForKey:@"UNCustomSettingsDetailControllerClass" ofType:objc_opt_class()];
-  v10 = [v7 objectForKey:@"UNSuppressUserAuthorizationPrompt"];
-  v41 = [v10 un_safeBoolValue];
+  v40 = [dictionaryCopy bs_safeObjectForKey:@"UNDefaultTopics" ofType:objc_opt_class()];
+  v44 = [dictionaryCopy bs_safeObjectForKey:@"UNCustomSettingsBundle" ofType:objc_opt_class()];
+  v42 = [dictionaryCopy bs_safeObjectForKey:@"UNCustomSettingsDetailControllerClass" ofType:objc_opt_class()];
+  v10 = [dictionaryCopy objectForKey:@"UNSuppressUserAuthorizationPrompt"];
+  un_safeBoolValue = [v10 un_safeBoolValue];
 
-  v11 = [v7 objectForKey:@"UNSuppressDismissalSync"];
-  v39 = [v11 un_safeBoolValue];
+  v11 = [dictionaryCopy objectForKey:@"UNSuppressDismissalSync"];
+  un_safeBoolValue2 = [v11 un_safeBoolValue];
 
-  v12 = [v7 objectForKey:@"UNSuppressIconMask"];
-  v38 = [v12 un_safeBoolValue];
+  v12 = [dictionaryCopy objectForKey:@"UNSuppressIconMask"];
+  un_safeBoolValue3 = [v12 un_safeBoolValue];
 
-  v13 = [v7 objectForKey:@"UNAllowUnlimitedContentBody"];
-  v37 = [v13 un_safeBoolValue];
+  v13 = [dictionaryCopy objectForKey:@"UNAllowUnlimitedContentBody"];
+  un_safeBoolValue4 = [v13 un_safeBoolValue];
 
-  v14 = [v7 objectForKey:@"UNAllowAlternateLaunchBundleIdentifiers"];
-  v36 = [v14 un_safeBoolValue];
+  v14 = [dictionaryCopy objectForKey:@"UNAllowAlternateLaunchBundleIdentifiers"];
+  un_safeBoolValue5 = [v14 un_safeBoolValue];
 
-  v15 = [v7 objectForKey:@"UNAutomaticallyShowSettings"];
-  v33 = [v15 un_safeBoolValue];
+  v15 = [dictionaryCopy objectForKey:@"UNAutomaticallyShowSettings"];
+  un_safeBoolValue6 = [v15 un_safeBoolValue];
 
-  v16 = [v7 objectForKey:@"UNHideSettings"];
-  v17 = [v16 un_safeBoolValue];
+  v16 = [dictionaryCopy objectForKey:@"UNHideSettings"];
+  un_safeBoolValue7 = [v16 un_safeBoolValue];
 
-  v18 = [v7 objectForKey:@"UNDaemonShouldReceiveBackgroundResponses"];
-  v35 = [v18 un_safeBoolValue];
+  v18 = [dictionaryCopy objectForKey:@"UNDaemonShouldReceiveBackgroundResponses"];
+  un_safeBoolValue8 = [v18 un_safeBoolValue];
 
-  v19 = [v7 objectForKey:@"UNDaemonShouldReceiveNotificationSettingsUpdates"];
-  v34 = [v19 un_safeBoolValue];
+  v19 = [dictionaryCopy objectForKey:@"UNDaemonShouldReceiveNotificationSettingsUpdates"];
+  un_safeBoolValue9 = [v19 un_safeBoolValue];
 
-  v20 = [v7 objectForKey:@"UNDaemonShouldReceiveApplicationEvents"];
-  v32 = [v20 un_safeBoolValue];
+  v20 = [dictionaryCopy objectForKey:@"UNDaemonShouldReceiveApplicationEvents"];
+  un_safeBoolValue10 = [v20 un_safeBoolValue];
 
-  v21 = [v7 objectForKey:@"UNRequiresTopics"];
-  v31 = [v21 un_safeBoolValue];
+  v21 = [dictionaryCopy objectForKey:@"UNRequiresTopics"];
+  un_safeBoolValue11 = [v21 un_safeBoolValue];
 
-  v22 = [v7 objectForKey:@"UNAllowCriticalAlerts"];
-  v30 = [v22 un_safeBoolValue];
+  v22 = [dictionaryCopy objectForKey:@"UNAllowCriticalAlerts"];
+  un_safeBoolValue12 = [v22 un_safeBoolValue];
 
-  v23 = [v7 objectForKey:@"UNAllowCalls"];
-  v29 = [v23 un_safeBoolValue];
+  v23 = [dictionaryCopy objectForKey:@"UNAllowCalls"];
+  un_safeBoolValue13 = [v23 un_safeBoolValue];
 
-  v24 = [v7 objectForKey:@"UNAllowIntercom"];
-  v28 = [v24 un_safeBoolValue];
+  v24 = [dictionaryCopy objectForKey:@"UNAllowIntercom"];
+  un_safeBoolValue14 = [v24 un_safeBoolValue];
 
-  v25 = [v7 objectForKey:@"UNAllowMessages"];
+  v25 = [dictionaryCopy objectForKey:@"UNAllowMessages"];
   LOBYTE(v24) = [v25 un_safeBoolValue];
 
-  v26 = [v7 objectForKey:@"UNSupportsProvisionalAlerts"];
+  v26 = [dictionaryCopy objectForKey:@"UNSupportsProvisionalAlerts"];
 
-  v27 = [v26 un_safeBoolValue];
-  [(UNCNotificationSourceDescription *)self setDefaultCategoriesFromArray:v8 bundle:v6];
+  un_safeBoolValue15 = [v26 un_safeBoolValue];
+  [(UNCNotificationSourceDescription *)self setDefaultCategoriesFromArray:v8 bundle:bundleCopy];
   [(UNCNotificationSourceDescription *)self setDefaultSettings:v9];
-  [(UNCNotificationSourceDescription *)self setDefaultTopicsFromArray:v40 bundle:v6];
+  [(UNCNotificationSourceDescription *)self setDefaultTopicsFromArray:v40 bundle:bundleCopy];
 
   [(UNCNotificationSourceDescription *)self setIconFilesFromDictionary:v43];
-  [(UNCNotificationSourceDescription *)self setAutomaticallyShowSettings:v33];
-  [(UNCNotificationSourceDescription *)self setHideSettings:v17];
+  [(UNCNotificationSourceDescription *)self setAutomaticallyShowSettings:un_safeBoolValue6];
+  [(UNCNotificationSourceDescription *)self setHideSettings:un_safeBoolValue7];
   [(UNCNotificationSourceDescription *)self setUniversalApplicationIdentifier:v47];
   [(UNCNotificationSourceDescription *)self setIntentsBundleIdentifier:v45];
-  [(UNCNotificationSourceDescription *)self setSuppressDismissalSync:v39];
-  [(UNCNotificationSourceDescription *)self setSuppressIconMask:v38];
-  [(UNCNotificationSourceDescription *)self setSuppressUserAuthorizationPrompt:v41];
-  [(UNCNotificationSourceDescription *)self setAllowUnlimitedContentBody:v37];
-  [(UNCNotificationSourceDescription *)self setAllowAlternateLaunchBundleIdentifiers:v36];
-  [(UNCNotificationSourceDescription *)self setDaemonShouldReceiveBackgroundResponses:v35];
-  [(UNCNotificationSourceDescription *)self setDaemonShouldReceiveNotificationSettingsUpdates:v34];
-  [(UNCNotificationSourceDescription *)self setDaemonShouldReceiveApplicationEvents:v32];
-  [(UNCNotificationSourceDescription *)self setRequiresTopics:v31];
+  [(UNCNotificationSourceDescription *)self setSuppressDismissalSync:un_safeBoolValue2];
+  [(UNCNotificationSourceDescription *)self setSuppressIconMask:un_safeBoolValue3];
+  [(UNCNotificationSourceDescription *)self setSuppressUserAuthorizationPrompt:un_safeBoolValue];
+  [(UNCNotificationSourceDescription *)self setAllowUnlimitedContentBody:un_safeBoolValue4];
+  [(UNCNotificationSourceDescription *)self setAllowAlternateLaunchBundleIdentifiers:un_safeBoolValue5];
+  [(UNCNotificationSourceDescription *)self setDaemonShouldReceiveBackgroundResponses:un_safeBoolValue8];
+  [(UNCNotificationSourceDescription *)self setDaemonShouldReceiveNotificationSettingsUpdates:un_safeBoolValue9];
+  [(UNCNotificationSourceDescription *)self setDaemonShouldReceiveApplicationEvents:un_safeBoolValue10];
+  [(UNCNotificationSourceDescription *)self setRequiresTopics:un_safeBoolValue11];
   [(UNCNotificationSourceDescription *)self setCustomSettingsBundle:v44];
   [(UNCNotificationSourceDescription *)self setCustomSettingsDetailControllerClass:v42];
-  [(UNCNotificationSourceDescription *)self setAllowCriticalAlerts:v30];
-  [(UNCNotificationSourceDescription *)self setAllowCalls:v29];
-  [(UNCNotificationSourceDescription *)self setAllowIntercom:([(UNCNotificationSourceDescription *)self allowIntercom]| v28) & 1];
+  [(UNCNotificationSourceDescription *)self setAllowCriticalAlerts:un_safeBoolValue12];
+  [(UNCNotificationSourceDescription *)self setAllowCalls:un_safeBoolValue13];
+  [(UNCNotificationSourceDescription *)self setAllowIntercom:([(UNCNotificationSourceDescription *)self allowIntercom]| un_safeBoolValue14) & 1];
   [(UNCNotificationSourceDescription *)self setAllowMessages:([(UNCNotificationSourceDescription *)self allowMessages]| v24) & 1];
-  [(UNCNotificationSourceDescription *)self setSupportsProvisionalAlerts:v27];
+  [(UNCNotificationSourceDescription *)self setSupportsProvisionalAlerts:un_safeBoolValue15];
 }
 
-- (void)setIconFilesFromDictionary:(id)a3
+- (void)setIconFilesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v23 = [v4 bs_safeObjectForKey:@"UNNotificationIconApplicationIdentifier" ofType:objc_opt_class()];
-  v15 = [v4 bs_safeObjectForKey:@"UNNotificationIconUTI" ofType:objc_opt_class()];
+  dictionaryCopy = dictionary;
+  v23 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconApplicationIdentifier" ofType:objc_opt_class()];
+  v15 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconUTI" ofType:objc_opt_class()];
   [(UNCNotificationSourceDescription *)self setIconApplicationIdentifier:v23];
   [(UNCNotificationSourceDescription *)self setIconUTI:v15];
-  v20 = [v4 bs_safeObjectForKey:@"UNNotificationIconCarPlay" ofType:objc_opt_class()];
-  v22 = [v4 bs_safeObjectForKey:@"UNNotificationIconDefault" ofType:objc_opt_class()];
-  v21 = [v4 bs_safeObjectForKey:@"UNNotificationIconSettings" ofType:objc_opt_class()];
-  v19 = [v4 bs_safeObjectForKey:@"UNNotificationIconSettingsSheet" ofType:objc_opt_class()];
-  v18 = [v4 bs_safeObjectForKey:@"UNNotificationIconSubordinate" ofType:objc_opt_class()];
-  v17 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchQuickLookSmall" ofType:objc_opt_class()];
-  v16 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchQuickLookLarge" ofType:objc_opt_class()];
-  v5 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchListSmall" ofType:objc_opt_class()];
-  v6 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchListLarge" ofType:objc_opt_class()];
-  v7 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook394h" ofType:objc_opt_class()];
-  v14 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook448h" ofType:objc_opt_class()];
-  v13 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchList394h" ofType:objc_opt_class()];
-  v8 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchList448h" ofType:objc_opt_class()];
-  v12 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook430h" ofType:objc_opt_class()];
-  v11 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook484h" ofType:objc_opt_class()];
-  v10 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook430h" ofType:objc_opt_class()];
-  v9 = [v4 bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook484h" ofType:objc_opt_class()];
+  v20 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconCarPlay" ofType:objc_opt_class()];
+  v22 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconDefault" ofType:objc_opt_class()];
+  v21 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconSettings" ofType:objc_opt_class()];
+  v19 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconSettingsSheet" ofType:objc_opt_class()];
+  v18 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconSubordinate" ofType:objc_opt_class()];
+  v17 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchQuickLookSmall" ofType:objc_opt_class()];
+  v16 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchQuickLookLarge" ofType:objc_opt_class()];
+  v5 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchListSmall" ofType:objc_opt_class()];
+  v6 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchListLarge" ofType:objc_opt_class()];
+  v7 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook394h" ofType:objc_opt_class()];
+  v14 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook448h" ofType:objc_opt_class()];
+  v13 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchList394h" ofType:objc_opt_class()];
+  v8 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchList448h" ofType:objc_opt_class()];
+  v12 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook430h" ofType:objc_opt_class()];
+  v11 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook484h" ofType:objc_opt_class()];
+  v10 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook430h" ofType:objc_opt_class()];
+  v9 = [dictionaryCopy bs_safeObjectForKey:@"UNNotificationIconWatchQuickLook484h" ofType:objc_opt_class()];
 
   [(UNCNotificationSourceDescription *)self setDefaultIconFile:v22];
   [(UNCNotificationSourceDescription *)self setSettingsIconFile:v21];
@@ -699,18 +699,18 @@ LABEL_10:
   [(UNCNotificationSourceDescription *)self setWatchList484hIconFile:v9];
 }
 
-- (void)setDefaultCategoriesFromArray:(id)a3 bundle:(id)a4
+- (void)setDefaultCategoriesFromArray:(id)array bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  arrayCopy = array;
+  bundleCopy = bundle;
+  if ([arrayCopy count])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __82__UNCNotificationSourceDescription_Factory__setDefaultCategoriesFromArray_bundle___block_invoke;
     v9[3] = &unk_1E85D7528;
-    v10 = v7;
-    v8 = [v6 bs_map:v9];
+    v10 = bundleCopy;
+    v8 = [arrayCopy bs_map:v9];
     [(UNCNotificationSourceDescription *)self setDefaultCategories:v8];
   }
 
@@ -978,18 +978,18 @@ UNCNotificationCategoryRecord *__82__UNCNotificationSourceDescription_Factory__s
   return v60;
 }
 
-- (void)setDefaultTopicsFromArray:(id)a3 bundle:(id)a4
+- (void)setDefaultTopicsFromArray:(id)array bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  arrayCopy = array;
+  bundleCopy = bundle;
+  if ([arrayCopy count])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __78__UNCNotificationSourceDescription_Factory__setDefaultTopicsFromArray_bundle___block_invoke;
     v9[3] = &unk_1E85D7528;
-    v10 = v7;
-    v8 = [v6 bs_map:v9];
+    v10 = bundleCopy;
+    v8 = [arrayCopy bs_map:v9];
     [(UNCNotificationSourceDescription *)self setDefaultTopics:v8];
   }
 
@@ -1030,497 +1030,497 @@ UNCNotificationTopicRecord *__78__UNCNotificationSourceDescription_Factory__setD
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(UNCNotificationSourceDescription *)self bundleIdentifier];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  bundleIdentifier = [(UNCNotificationSourceDescription *)self bundleIdentifier];
   v290[0] = MEMORY[0x1E69E9820];
   v290[1] = 3221225472;
   v290[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke;
   v290[3] = &unk_1E85D7AD0;
-  v7 = v4;
+  v7 = equalCopy;
   v291 = v7;
-  v8 = [v5 appendString:v6 counterpart:v290];
+  v8 = [v5 appendString:bundleIdentifier counterpart:v290];
 
-  v9 = [(UNCNotificationSourceDescription *)self intentsBundleIdentifier];
+  intentsBundleIdentifier = [(UNCNotificationSourceDescription *)self intentsBundleIdentifier];
   v288[0] = MEMORY[0x1E69E9820];
   v288[1] = 3221225472;
   v288[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_2;
   v288[3] = &unk_1E85D7AD0;
   v10 = v7;
   v289 = v10;
-  v11 = [v5 appendString:v9 counterpart:v288];
+  v11 = [v5 appendString:intentsBundleIdentifier counterpart:v288];
 
-  v12 = [(UNCNotificationSourceDescription *)self universalApplicationIdentifier];
+  universalApplicationIdentifier = [(UNCNotificationSourceDescription *)self universalApplicationIdentifier];
   v286[0] = MEMORY[0x1E69E9820];
   v286[1] = 3221225472;
   v286[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_3;
   v286[3] = &unk_1E85D7AD0;
   v13 = v10;
   v287 = v13;
-  v14 = [v5 appendString:v12 counterpart:v286];
+  v14 = [v5 appendString:universalApplicationIdentifier counterpart:v286];
 
-  v15 = [(UNCNotificationSourceDescription *)self displayName];
+  displayName = [(UNCNotificationSourceDescription *)self displayName];
   v284[0] = MEMORY[0x1E69E9820];
   v284[1] = 3221225472;
   v284[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_4;
   v284[3] = &unk_1E85D7AD0;
   v16 = v13;
   v285 = v16;
-  v17 = [v5 appendString:v15 counterpart:v284];
+  v17 = [v5 appendString:displayName counterpart:v284];
 
-  v18 = [(UNCNotificationSourceDescription *)self pushEnvironment];
+  pushEnvironment = [(UNCNotificationSourceDescription *)self pushEnvironment];
   v282[0] = MEMORY[0x1E69E9820];
   v282[1] = 3221225472;
   v282[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_5;
   v282[3] = &unk_1E85D7AD0;
   v19 = v16;
   v283 = v19;
-  v20 = [v5 appendString:v18 counterpart:v282];
+  v20 = [v5 appendString:pushEnvironment counterpart:v282];
 
-  v21 = [(UNCNotificationSourceDescription *)self defaultIconFile];
+  defaultIconFile = [(UNCNotificationSourceDescription *)self defaultIconFile];
   v280[0] = MEMORY[0x1E69E9820];
   v280[1] = 3221225472;
   v280[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_6;
   v280[3] = &unk_1E85D7AD0;
   v22 = v19;
   v281 = v22;
-  v23 = [v5 appendString:v21 counterpart:v280];
+  v23 = [v5 appendString:defaultIconFile counterpart:v280];
 
-  v24 = [(UNCNotificationSourceDescription *)self subordinateIconFile];
+  subordinateIconFile = [(UNCNotificationSourceDescription *)self subordinateIconFile];
   v278[0] = MEMORY[0x1E69E9820];
   v278[1] = 3221225472;
   v278[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_7;
   v278[3] = &unk_1E85D7AD0;
   v25 = v22;
   v279 = v25;
-  v26 = [v5 appendString:v24 counterpart:v278];
+  v26 = [v5 appendString:subordinateIconFile counterpart:v278];
 
-  v27 = [(UNCNotificationSourceDescription *)self settingsIconFile];
+  settingsIconFile = [(UNCNotificationSourceDescription *)self settingsIconFile];
   v276[0] = MEMORY[0x1E69E9820];
   v276[1] = 3221225472;
   v276[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_8;
   v276[3] = &unk_1E85D7AD0;
   v28 = v25;
   v277 = v28;
-  v29 = [v5 appendString:v27 counterpart:v276];
+  v29 = [v5 appendString:settingsIconFile counterpart:v276];
 
-  v30 = [(UNCNotificationSourceDescription *)self settingsSheetIconFile];
+  settingsSheetIconFile = [(UNCNotificationSourceDescription *)self settingsSheetIconFile];
   v274[0] = MEMORY[0x1E69E9820];
   v274[1] = 3221225472;
   v274[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_9;
   v274[3] = &unk_1E85D7AD0;
   v31 = v28;
   v275 = v31;
-  v32 = [v5 appendString:v30 counterpart:v274];
+  v32 = [v5 appendString:settingsSheetIconFile counterpart:v274];
 
-  v33 = [(UNCNotificationSourceDescription *)self carPlayIconFile];
+  carPlayIconFile = [(UNCNotificationSourceDescription *)self carPlayIconFile];
   v272[0] = MEMORY[0x1E69E9820];
   v272[1] = 3221225472;
   v272[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_10;
   v272[3] = &unk_1E85D7AD0;
   v34 = v31;
   v273 = v34;
-  v35 = [v5 appendString:v33 counterpart:v272];
+  v35 = [v5 appendString:carPlayIconFile counterpart:v272];
 
-  v36 = [(UNCNotificationSourceDescription *)self watchQuickLookSmallIconFile];
+  watchQuickLookSmallIconFile = [(UNCNotificationSourceDescription *)self watchQuickLookSmallIconFile];
   v270[0] = MEMORY[0x1E69E9820];
   v270[1] = 3221225472;
   v270[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_11;
   v270[3] = &unk_1E85D7AD0;
   v37 = v34;
   v271 = v37;
-  v38 = [v5 appendString:v36 counterpart:v270];
+  v38 = [v5 appendString:watchQuickLookSmallIconFile counterpart:v270];
 
-  v39 = [(UNCNotificationSourceDescription *)self watchQuickLookLargeIconFile];
+  watchQuickLookLargeIconFile = [(UNCNotificationSourceDescription *)self watchQuickLookLargeIconFile];
   v268[0] = MEMORY[0x1E69E9820];
   v268[1] = 3221225472;
   v268[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_12;
   v268[3] = &unk_1E85D7AD0;
   v40 = v37;
   v269 = v40;
-  v41 = [v5 appendString:v39 counterpart:v268];
+  v41 = [v5 appendString:watchQuickLookLargeIconFile counterpart:v268];
 
-  v42 = [(UNCNotificationSourceDescription *)self watchListSmallIconFile];
+  watchListSmallIconFile = [(UNCNotificationSourceDescription *)self watchListSmallIconFile];
   v266[0] = MEMORY[0x1E69E9820];
   v266[1] = 3221225472;
   v266[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_13;
   v266[3] = &unk_1E85D7AD0;
   v43 = v40;
   v267 = v43;
-  v44 = [v5 appendString:v42 counterpart:v266];
+  v44 = [v5 appendString:watchListSmallIconFile counterpart:v266];
 
-  v45 = [(UNCNotificationSourceDescription *)self watchListLargeIconFile];
+  watchListLargeIconFile = [(UNCNotificationSourceDescription *)self watchListLargeIconFile];
   v264[0] = MEMORY[0x1E69E9820];
   v264[1] = 3221225472;
   v264[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_14;
   v264[3] = &unk_1E85D7AD0;
   v46 = v43;
   v265 = v46;
-  v47 = [v5 appendString:v45 counterpart:v264];
+  v47 = [v5 appendString:watchListLargeIconFile counterpart:v264];
 
-  v48 = [(UNCNotificationSourceDescription *)self watchQuickLook394hIconFile];
+  watchQuickLook394hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook394hIconFile];
   v262[0] = MEMORY[0x1E69E9820];
   v262[1] = 3221225472;
   v262[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_15;
   v262[3] = &unk_1E85D7AD0;
   v49 = v46;
   v263 = v49;
-  v50 = [v5 appendString:v48 counterpart:v262];
+  v50 = [v5 appendString:watchQuickLook394hIconFile counterpart:v262];
 
-  v51 = [(UNCNotificationSourceDescription *)self watchQuickLook448hIconFile];
+  watchQuickLook448hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook448hIconFile];
   v260[0] = MEMORY[0x1E69E9820];
   v260[1] = 3221225472;
   v260[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_16;
   v260[3] = &unk_1E85D7AD0;
   v52 = v49;
   v261 = v52;
-  v53 = [v5 appendString:v51 counterpart:v260];
+  v53 = [v5 appendString:watchQuickLook448hIconFile counterpart:v260];
 
-  v54 = [(UNCNotificationSourceDescription *)self watchList394hIconFile];
+  watchList394hIconFile = [(UNCNotificationSourceDescription *)self watchList394hIconFile];
   v258[0] = MEMORY[0x1E69E9820];
   v258[1] = 3221225472;
   v258[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_17;
   v258[3] = &unk_1E85D7AD0;
   v55 = v52;
   v259 = v55;
-  v56 = [v5 appendString:v54 counterpart:v258];
+  v56 = [v5 appendString:watchList394hIconFile counterpart:v258];
 
-  v57 = [(UNCNotificationSourceDescription *)self watchList448hIconFile];
+  watchList448hIconFile = [(UNCNotificationSourceDescription *)self watchList448hIconFile];
   v256[0] = MEMORY[0x1E69E9820];
   v256[1] = 3221225472;
   v256[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_18;
   v256[3] = &unk_1E85D7AD0;
   v58 = v55;
   v257 = v58;
-  v59 = [v5 appendString:v57 counterpart:v256];
+  v59 = [v5 appendString:watchList448hIconFile counterpart:v256];
 
-  v60 = [(UNCNotificationSourceDescription *)self watchQuickLook430hIconFile];
+  watchQuickLook430hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook430hIconFile];
   v254[0] = MEMORY[0x1E69E9820];
   v254[1] = 3221225472;
   v254[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_19;
   v254[3] = &unk_1E85D7AD0;
   v61 = v58;
   v255 = v61;
-  v62 = [v5 appendString:v60 counterpart:v254];
+  v62 = [v5 appendString:watchQuickLook430hIconFile counterpart:v254];
 
-  v63 = [(UNCNotificationSourceDescription *)self watchQuickLook484hIconFile];
+  watchQuickLook484hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook484hIconFile];
   v252[0] = MEMORY[0x1E69E9820];
   v252[1] = 3221225472;
   v252[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_20;
   v252[3] = &unk_1E85D7AD0;
   v64 = v61;
   v253 = v64;
-  v65 = [v5 appendString:v63 counterpart:v252];
+  v65 = [v5 appendString:watchQuickLook484hIconFile counterpart:v252];
 
-  v66 = [(UNCNotificationSourceDescription *)self watchList430hIconFile];
+  watchList430hIconFile = [(UNCNotificationSourceDescription *)self watchList430hIconFile];
   v250[0] = MEMORY[0x1E69E9820];
   v250[1] = 3221225472;
   v250[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_21;
   v250[3] = &unk_1E85D7AD0;
   v67 = v64;
   v251 = v67;
-  v68 = [v5 appendString:v66 counterpart:v250];
+  v68 = [v5 appendString:watchList430hIconFile counterpart:v250];
 
-  v69 = [(UNCNotificationSourceDescription *)self watchList484hIconFile];
+  watchList484hIconFile = [(UNCNotificationSourceDescription *)self watchList484hIconFile];
   v248[0] = MEMORY[0x1E69E9820];
   v248[1] = 3221225472;
   v248[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_22;
   v248[3] = &unk_1E85D7AD0;
   v70 = v67;
   v249 = v70;
-  v71 = [v5 appendString:v69 counterpart:v248];
+  v71 = [v5 appendString:watchList484hIconFile counterpart:v248];
 
-  v72 = [(UNCNotificationSourceDescription *)self customSettingsBundle];
+  customSettingsBundle = [(UNCNotificationSourceDescription *)self customSettingsBundle];
   v246[0] = MEMORY[0x1E69E9820];
   v246[1] = 3221225472;
   v246[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_23;
   v246[3] = &unk_1E85D7AD0;
   v73 = v70;
   v247 = v73;
-  v74 = [v5 appendString:v72 counterpart:v246];
+  v74 = [v5 appendString:customSettingsBundle counterpart:v246];
 
-  v75 = [(UNCNotificationSourceDescription *)self customSettingsDetailControllerClass];
+  customSettingsDetailControllerClass = [(UNCNotificationSourceDescription *)self customSettingsDetailControllerClass];
   v244[0] = MEMORY[0x1E69E9820];
   v244[1] = 3221225472;
   v244[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_24;
   v244[3] = &unk_1E85D7AD0;
   v76 = v73;
   v245 = v76;
-  v77 = [v5 appendString:v75 counterpart:v244];
+  v77 = [v5 appendString:customSettingsDetailControllerClass counterpart:v244];
 
-  v78 = [(UNCNotificationSourceDescription *)self bundleURL];
+  bundleURL = [(UNCNotificationSourceDescription *)self bundleURL];
   v242[0] = MEMORY[0x1E69E9820];
   v242[1] = 3221225472;
   v242[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_25;
   v242[3] = &unk_1E85D7AF8;
   v79 = v76;
   v243 = v79;
-  v80 = [v5 appendObject:v78 counterpart:v242];
+  v80 = [v5 appendObject:bundleURL counterpart:v242];
 
-  v81 = [(UNCNotificationSourceDescription *)self dataContainerURL];
+  dataContainerURL = [(UNCNotificationSourceDescription *)self dataContainerURL];
   v240[0] = MEMORY[0x1E69E9820];
   v240[1] = 3221225472;
   v240[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_26;
   v240[3] = &unk_1E85D7AF8;
   v82 = v79;
   v241 = v82;
-  v83 = [v5 appendObject:v81 counterpart:v240];
+  v83 = [v5 appendObject:dataContainerURL counterpart:v240];
 
-  v84 = [(UNCNotificationSourceDescription *)self groupContainerURLS];
+  groupContainerURLS = [(UNCNotificationSourceDescription *)self groupContainerURLS];
   v238[0] = MEMORY[0x1E69E9820];
   v238[1] = 3221225472;
   v238[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_27;
   v238[3] = &unk_1E85D7AF8;
   v85 = v82;
   v239 = v85;
-  v86 = [v5 appendObject:v84 counterpart:v238];
+  v86 = [v5 appendObject:groupContainerURLS counterpart:v238];
 
-  v87 = [(UNCNotificationSourceDescription *)self defaultCategories];
+  defaultCategories = [(UNCNotificationSourceDescription *)self defaultCategories];
   v236[0] = MEMORY[0x1E69E9820];
   v236[1] = 3221225472;
   v236[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_28;
   v236[3] = &unk_1E85D7AF8;
   v88 = v85;
   v237 = v88;
-  v89 = [v5 appendObject:v87 counterpart:v236];
+  v89 = [v5 appendObject:defaultCategories counterpart:v236];
 
-  v90 = [(UNCNotificationSourceDescription *)self defaultSettings];
+  defaultSettings = [(UNCNotificationSourceDescription *)self defaultSettings];
   v234[0] = MEMORY[0x1E69E9820];
   v234[1] = 3221225472;
   v234[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_29;
   v234[3] = &unk_1E85D7AF8;
   v91 = v88;
   v235 = v91;
-  v92 = [v5 appendObject:v90 counterpart:v234];
+  v92 = [v5 appendObject:defaultSettings counterpart:v234];
 
-  v93 = [(UNCNotificationSourceDescription *)self defaultTopics];
+  defaultTopics = [(UNCNotificationSourceDescription *)self defaultTopics];
   v232[0] = MEMORY[0x1E69E9820];
   v232[1] = 3221225472;
   v232[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_30;
   v232[3] = &unk_1E85D7AF8;
   v94 = v91;
   v233 = v94;
-  v95 = [v5 appendObject:v93 counterpart:v232];
+  v95 = [v5 appendObject:defaultTopics counterpart:v232];
 
-  v96 = [(UNCNotificationSourceDescription *)self activityTypes];
+  activityTypes = [(UNCNotificationSourceDescription *)self activityTypes];
   v230[0] = MEMORY[0x1E69E9820];
   v230[1] = 3221225472;
   v230[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_31;
   v230[3] = &unk_1E85D7AF8;
   v97 = v94;
   v231 = v97;
-  v98 = [v5 appendObject:v96 counterpart:v230];
+  v98 = [v5 appendObject:activityTypes counterpart:v230];
 
-  v99 = [(UNCNotificationSourceDescription *)self allowCriticalAlerts];
+  allowCriticalAlerts = [(UNCNotificationSourceDescription *)self allowCriticalAlerts];
   v228[0] = MEMORY[0x1E69E9820];
   v228[1] = 3221225472;
   v228[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_32;
   v228[3] = &unk_1E85D7AA8;
   v100 = v97;
   v229 = v100;
-  v101 = [v5 appendBool:v99 counterpart:v228];
-  v102 = [(UNCNotificationSourceDescription *)self allowTimeSensitive];
+  v101 = [v5 appendBool:allowCriticalAlerts counterpart:v228];
+  allowTimeSensitive = [(UNCNotificationSourceDescription *)self allowTimeSensitive];
   v226[0] = MEMORY[0x1E69E9820];
   v226[1] = 3221225472;
   v226[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_33;
   v226[3] = &unk_1E85D7AA8;
   v103 = v100;
   v227 = v103;
-  v104 = [v5 appendBool:v102 counterpart:v226];
-  v105 = [(UNCNotificationSourceDescription *)self allowTimeSensitive];
+  v104 = [v5 appendBool:allowTimeSensitive counterpart:v226];
+  allowTimeSensitive2 = [(UNCNotificationSourceDescription *)self allowTimeSensitive];
   v224[0] = MEMORY[0x1E69E9820];
   v224[1] = 3221225472;
   v224[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_34;
   v224[3] = &unk_1E85D7AA8;
   v106 = v103;
   v225 = v106;
-  v107 = [v5 appendBool:v105 counterpart:v224];
-  v108 = [(UNCNotificationSourceDescription *)self allowCalls];
+  v107 = [v5 appendBool:allowTimeSensitive2 counterpart:v224];
+  allowCalls = [(UNCNotificationSourceDescription *)self allowCalls];
   v222[0] = MEMORY[0x1E69E9820];
   v222[1] = 3221225472;
   v222[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_35;
   v222[3] = &unk_1E85D7AA8;
   v109 = v106;
   v223 = v109;
-  v110 = [v5 appendBool:v108 counterpart:v222];
-  v111 = [(UNCNotificationSourceDescription *)self allowIntercom];
+  v110 = [v5 appendBool:allowCalls counterpart:v222];
+  allowIntercom = [(UNCNotificationSourceDescription *)self allowIntercom];
   v220[0] = MEMORY[0x1E69E9820];
   v220[1] = 3221225472;
   v220[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_36;
   v220[3] = &unk_1E85D7AA8;
   v112 = v109;
   v221 = v112;
-  v113 = [v5 appendBool:v111 counterpart:v220];
-  v114 = [(UNCNotificationSourceDescription *)self allowMessages];
+  v113 = [v5 appendBool:allowIntercom counterpart:v220];
+  allowMessages = [(UNCNotificationSourceDescription *)self allowMessages];
   v218[0] = MEMORY[0x1E69E9820];
   v218[1] = 3221225472;
   v218[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_37;
   v218[3] = &unk_1E85D7AA8;
   v115 = v112;
   v219 = v115;
-  v116 = [v5 appendBool:v114 counterpart:v218];
-  v117 = [(UNCNotificationSourceDescription *)self allowPrivateProperties];
+  v116 = [v5 appendBool:allowMessages counterpart:v218];
+  allowPrivateProperties = [(UNCNotificationSourceDescription *)self allowPrivateProperties];
   v216[0] = MEMORY[0x1E69E9820];
   v216[1] = 3221225472;
   v216[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_38;
   v216[3] = &unk_1E85D7AA8;
   v118 = v115;
   v217 = v118;
-  v119 = [v5 appendBool:v117 counterpart:v216];
-  v120 = [(UNCNotificationSourceDescription *)self allowUnlimitedContentBody];
+  v119 = [v5 appendBool:allowPrivateProperties counterpart:v216];
+  allowUnlimitedContentBody = [(UNCNotificationSourceDescription *)self allowUnlimitedContentBody];
   v214[0] = MEMORY[0x1E69E9820];
   v214[1] = 3221225472;
   v214[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_39;
   v214[3] = &unk_1E85D7AA8;
   v121 = v118;
   v215 = v121;
-  v122 = [v5 appendBool:v120 counterpart:v214];
-  v123 = [(UNCNotificationSourceDescription *)self allowAlternateLaunchBundleIdentifiers];
+  v122 = [v5 appendBool:allowUnlimitedContentBody counterpart:v214];
+  allowAlternateLaunchBundleIdentifiers = [(UNCNotificationSourceDescription *)self allowAlternateLaunchBundleIdentifiers];
   v212[0] = MEMORY[0x1E69E9820];
   v212[1] = 3221225472;
   v212[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_40;
   v212[3] = &unk_1E85D7AA8;
   v124 = v121;
   v213 = v124;
-  v125 = [v5 appendBool:v123 counterpart:v212];
-  v126 = [(UNCNotificationSourceDescription *)self allowServiceExtensionFiltering];
+  v125 = [v5 appendBool:allowAlternateLaunchBundleIdentifiers counterpart:v212];
+  allowServiceExtensionFiltering = [(UNCNotificationSourceDescription *)self allowServiceExtensionFiltering];
   v210[0] = MEMORY[0x1E69E9820];
   v210[1] = 3221225472;
   v210[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_41;
   v210[3] = &unk_1E85D7AA8;
   v127 = v124;
   v211 = v127;
-  v128 = [v5 appendBool:v126 counterpart:v210];
-  v129 = [(UNCNotificationSourceDescription *)self hideSettings];
+  v128 = [v5 appendBool:allowServiceExtensionFiltering counterpart:v210];
+  hideSettings = [(UNCNotificationSourceDescription *)self hideSettings];
   v208[0] = MEMORY[0x1E69E9820];
   v208[1] = 3221225472;
   v208[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_42;
   v208[3] = &unk_1E85D7AA8;
   v130 = v127;
   v209 = v130;
-  v131 = [v5 appendBool:v129 counterpart:v208];
-  v132 = [(UNCNotificationSourceDescription *)self automaticallyShowSettings];
+  v131 = [v5 appendBool:hideSettings counterpart:v208];
+  automaticallyShowSettings = [(UNCNotificationSourceDescription *)self automaticallyShowSettings];
   v206[0] = MEMORY[0x1E69E9820];
   v206[1] = 3221225472;
   v206[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_43;
   v206[3] = &unk_1E85D7AA8;
   v133 = v130;
   v207 = v133;
-  v134 = [v5 appendBool:v132 counterpart:v206];
-  v135 = [(UNCNotificationSourceDescription *)self suppressDismissalSync];
+  v134 = [v5 appendBool:automaticallyShowSettings counterpart:v206];
+  suppressDismissalSync = [(UNCNotificationSourceDescription *)self suppressDismissalSync];
   v204[0] = MEMORY[0x1E69E9820];
   v204[1] = 3221225472;
   v204[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_44;
   v204[3] = &unk_1E85D7AA8;
   v136 = v133;
   v205 = v136;
-  v137 = [v5 appendBool:v135 counterpart:v204];
-  v138 = [(UNCNotificationSourceDescription *)self suppressIconMask];
+  v137 = [v5 appendBool:suppressDismissalSync counterpart:v204];
+  suppressIconMask = [(UNCNotificationSourceDescription *)self suppressIconMask];
   v202[0] = MEMORY[0x1E69E9820];
   v202[1] = 3221225472;
   v202[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_45;
   v202[3] = &unk_1E85D7AA8;
   v139 = v136;
   v203 = v139;
-  v140 = [v5 appendBool:v138 counterpart:v202];
-  v141 = [(UNCNotificationSourceDescription *)self suppressUserAuthorizationPrompt];
+  v140 = [v5 appendBool:suppressIconMask counterpart:v202];
+  suppressUserAuthorizationPrompt = [(UNCNotificationSourceDescription *)self suppressUserAuthorizationPrompt];
   v200[0] = MEMORY[0x1E69E9820];
   v200[1] = 3221225472;
   v200[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_46;
   v200[3] = &unk_1E85D7AA8;
   v142 = v139;
   v201 = v142;
-  v143 = [v5 appendBool:v141 counterpart:v200];
-  v144 = [(UNCNotificationSourceDescription *)self useDefaultDataProvider];
+  v143 = [v5 appendBool:suppressUserAuthorizationPrompt counterpart:v200];
+  useDefaultDataProvider = [(UNCNotificationSourceDescription *)self useDefaultDataProvider];
   v198[0] = MEMORY[0x1E69E9820];
   v198[1] = 3221225472;
   v198[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_47;
   v198[3] = &unk_1E85D7AA8;
   v145 = v142;
   v199 = v145;
-  v146 = [v5 appendBool:v144 counterpart:v198];
-  v147 = [(UNCNotificationSourceDescription *)self usesCloudKit];
+  v146 = [v5 appendBool:useDefaultDataProvider counterpart:v198];
+  usesCloudKit = [(UNCNotificationSourceDescription *)self usesCloudKit];
   v196[0] = MEMORY[0x1E69E9820];
   v196[1] = 3221225472;
   v196[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_48;
   v196[3] = &unk_1E85D7AA8;
   v148 = v145;
   v197 = v148;
-  v149 = [v5 appendBool:v147 counterpart:v196];
-  v150 = [(UNCNotificationSourceDescription *)self requiresTopics];
+  v149 = [v5 appendBool:usesCloudKit counterpart:v196];
+  requiresTopics = [(UNCNotificationSourceDescription *)self requiresTopics];
   v194[0] = MEMORY[0x1E69E9820];
   v194[1] = 3221225472;
   v194[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_49;
   v194[3] = &unk_1E85D7AA8;
   v151 = v148;
   v195 = v151;
-  v152 = [v5 appendBool:v150 counterpart:v194];
-  v153 = [(UNCNotificationSourceDescription *)self supportsContentAvailableRemoteNotifications];
+  v152 = [v5 appendBool:requiresTopics counterpart:v194];
+  supportsContentAvailableRemoteNotifications = [(UNCNotificationSourceDescription *)self supportsContentAvailableRemoteNotifications];
   v192[0] = MEMORY[0x1E69E9820];
   v192[1] = 3221225472;
   v192[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_50;
   v192[3] = &unk_1E85D7AA8;
   v154 = v151;
   v193 = v154;
-  v155 = [v5 appendBool:v153 counterpart:v192];
-  v156 = [(UNCNotificationSourceDescription *)self isRestricted];
+  v155 = [v5 appendBool:supportsContentAvailableRemoteNotifications counterpart:v192];
+  isRestricted = [(UNCNotificationSourceDescription *)self isRestricted];
   v190[0] = MEMORY[0x1E69E9820];
   v190[1] = 3221225472;
   v190[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_51;
   v190[3] = &unk_1E85D7AA8;
   v157 = v154;
   v191 = v157;
-  v158 = [v5 appendBool:v156 counterpart:v190];
-  v159 = [(UNCNotificationSourceDescription *)self daemonShouldReceiveBackgroundResponses];
+  v158 = [v5 appendBool:isRestricted counterpart:v190];
+  daemonShouldReceiveBackgroundResponses = [(UNCNotificationSourceDescription *)self daemonShouldReceiveBackgroundResponses];
   v188[0] = MEMORY[0x1E69E9820];
   v188[1] = 3221225472;
   v188[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_52;
   v188[3] = &unk_1E85D7AA8;
   v160 = v157;
   v189 = v160;
-  v161 = [v5 appendBool:v159 counterpart:v188];
-  v162 = [(UNCNotificationSourceDescription *)self daemonShouldReceiveNotificationSettingsUpdates];
+  v161 = [v5 appendBool:daemonShouldReceiveBackgroundResponses counterpart:v188];
+  daemonShouldReceiveNotificationSettingsUpdates = [(UNCNotificationSourceDescription *)self daemonShouldReceiveNotificationSettingsUpdates];
   v186[0] = MEMORY[0x1E69E9820];
   v186[1] = 3221225472;
   v186[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_53;
   v186[3] = &unk_1E85D7AA8;
   v163 = v160;
   v187 = v163;
-  v164 = [v5 appendBool:v162 counterpart:v186];
-  v165 = [(UNCNotificationSourceDescription *)self daemonShouldReceiveApplicationEvents];
+  v164 = [v5 appendBool:daemonShouldReceiveNotificationSettingsUpdates counterpart:v186];
+  daemonShouldReceiveApplicationEvents = [(UNCNotificationSourceDescription *)self daemonShouldReceiveApplicationEvents];
   v184[0] = MEMORY[0x1E69E9820];
   v184[1] = 3221225472;
   v184[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_54;
   v184[3] = &unk_1E85D7AA8;
   v166 = v163;
   v185 = v166;
-  v167 = [v5 appendBool:v165 counterpart:v184];
-  v168 = [(UNCNotificationSourceDescription *)self isAppClip];
+  v167 = [v5 appendBool:daemonShouldReceiveApplicationEvents counterpart:v184];
+  isAppClip = [(UNCNotificationSourceDescription *)self isAppClip];
   v182[0] = MEMORY[0x1E69E9820];
   v182[1] = 3221225472;
   v182[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_55;
   v182[3] = &unk_1E85D7AA8;
   v169 = v166;
   v183 = v169;
-  v170 = [v5 appendBool:v168 counterpart:v182];
-  v171 = [(UNCNotificationSourceDescription *)self wantsEphemeralNotifications];
+  v170 = [v5 appendBool:isAppClip counterpart:v182];
+  wantsEphemeralNotifications = [(UNCNotificationSourceDescription *)self wantsEphemeralNotifications];
   v180[0] = MEMORY[0x1E69E9820];
   v180[1] = 3221225472;
   v180[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_56;
   v180[3] = &unk_1E85D7AA8;
   v172 = v169;
   v181 = v172;
-  v173 = [v5 appendBool:v171 counterpart:v180];
-  v174 = [(UNCNotificationSourceDescription *)self supportsProvisionalAlerts];
+  v173 = [v5 appendBool:wantsEphemeralNotifications counterpart:v180];
+  supportsProvisionalAlerts = [(UNCNotificationSourceDescription *)self supportsProvisionalAlerts];
   v178[0] = MEMORY[0x1E69E9820];
   v178[1] = 3221225472;
   v178[2] = __44__UNCNotificationSourceDescription_isEqual___block_invoke_57;
   v178[3] = &unk_1E85D7AA8;
   v179 = v172;
   v175 = v172;
-  v176 = [v5 appendBool:v174 counterpart:v178];
+  v176 = [v5 appendBool:supportsProvisionalAlerts counterpart:v178];
   LOBYTE(v172) = [v5 isEqual];
 
   return v172;
@@ -1528,126 +1528,126 @@ UNCNotificationTopicRecord *__78__UNCNotificationSourceDescription_Factory__setD
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(UNCNotificationSourceDescription *)self bundleIdentifier];
-  v5 = [v3 appendString:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  bundleIdentifier = [(UNCNotificationSourceDescription *)self bundleIdentifier];
+  v5 = [builder appendString:bundleIdentifier];
 
-  v6 = [(UNCNotificationSourceDescription *)self intentsBundleIdentifier];
-  v7 = [v3 appendString:v6];
+  intentsBundleIdentifier = [(UNCNotificationSourceDescription *)self intentsBundleIdentifier];
+  v7 = [builder appendString:intentsBundleIdentifier];
 
-  v8 = [(UNCNotificationSourceDescription *)self universalApplicationIdentifier];
-  v9 = [v3 appendString:v8];
+  universalApplicationIdentifier = [(UNCNotificationSourceDescription *)self universalApplicationIdentifier];
+  v9 = [builder appendString:universalApplicationIdentifier];
 
-  v10 = [(UNCNotificationSourceDescription *)self displayName];
-  v11 = [v3 appendString:v10];
+  displayName = [(UNCNotificationSourceDescription *)self displayName];
+  v11 = [builder appendString:displayName];
 
-  v12 = [(UNCNotificationSourceDescription *)self pushEnvironment];
-  v13 = [v3 appendString:v12];
+  pushEnvironment = [(UNCNotificationSourceDescription *)self pushEnvironment];
+  v13 = [builder appendString:pushEnvironment];
 
-  v14 = [(UNCNotificationSourceDescription *)self defaultIconFile];
-  v15 = [v3 appendString:v14];
+  defaultIconFile = [(UNCNotificationSourceDescription *)self defaultIconFile];
+  v15 = [builder appendString:defaultIconFile];
 
-  v16 = [(UNCNotificationSourceDescription *)self subordinateIconFile];
-  v17 = [v3 appendString:v16];
+  subordinateIconFile = [(UNCNotificationSourceDescription *)self subordinateIconFile];
+  v17 = [builder appendString:subordinateIconFile];
 
-  v18 = [(UNCNotificationSourceDescription *)self settingsIconFile];
-  v19 = [v3 appendString:v18];
+  settingsIconFile = [(UNCNotificationSourceDescription *)self settingsIconFile];
+  v19 = [builder appendString:settingsIconFile];
 
-  v20 = [(UNCNotificationSourceDescription *)self settingsSheetIconFile];
-  v21 = [v3 appendString:v20];
+  settingsSheetIconFile = [(UNCNotificationSourceDescription *)self settingsSheetIconFile];
+  v21 = [builder appendString:settingsSheetIconFile];
 
-  v22 = [(UNCNotificationSourceDescription *)self carPlayIconFile];
-  v23 = [v3 appendString:v22];
+  carPlayIconFile = [(UNCNotificationSourceDescription *)self carPlayIconFile];
+  v23 = [builder appendString:carPlayIconFile];
 
-  v24 = [(UNCNotificationSourceDescription *)self watchQuickLookSmallIconFile];
-  v25 = [v3 appendString:v24];
+  watchQuickLookSmallIconFile = [(UNCNotificationSourceDescription *)self watchQuickLookSmallIconFile];
+  v25 = [builder appendString:watchQuickLookSmallIconFile];
 
-  v26 = [(UNCNotificationSourceDescription *)self watchQuickLookLargeIconFile];
-  v27 = [v3 appendString:v26];
+  watchQuickLookLargeIconFile = [(UNCNotificationSourceDescription *)self watchQuickLookLargeIconFile];
+  v27 = [builder appendString:watchQuickLookLargeIconFile];
 
-  v28 = [(UNCNotificationSourceDescription *)self watchListSmallIconFile];
-  v29 = [v3 appendString:v28];
+  watchListSmallIconFile = [(UNCNotificationSourceDescription *)self watchListSmallIconFile];
+  v29 = [builder appendString:watchListSmallIconFile];
 
-  v30 = [(UNCNotificationSourceDescription *)self watchListLargeIconFile];
-  v31 = [v3 appendString:v30];
+  watchListLargeIconFile = [(UNCNotificationSourceDescription *)self watchListLargeIconFile];
+  v31 = [builder appendString:watchListLargeIconFile];
 
-  v32 = [(UNCNotificationSourceDescription *)self watchQuickLook394hIconFile];
-  v33 = [v3 appendString:v32];
+  watchQuickLook394hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook394hIconFile];
+  v33 = [builder appendString:watchQuickLook394hIconFile];
 
-  v34 = [(UNCNotificationSourceDescription *)self watchQuickLook448hIconFile];
-  v35 = [v3 appendString:v34];
+  watchQuickLook448hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook448hIconFile];
+  v35 = [builder appendString:watchQuickLook448hIconFile];
 
-  v36 = [(UNCNotificationSourceDescription *)self watchList394hIconFile];
-  v37 = [v3 appendString:v36];
+  watchList394hIconFile = [(UNCNotificationSourceDescription *)self watchList394hIconFile];
+  v37 = [builder appendString:watchList394hIconFile];
 
-  v38 = [(UNCNotificationSourceDescription *)self watchList448hIconFile];
-  v39 = [v3 appendString:v38];
+  watchList448hIconFile = [(UNCNotificationSourceDescription *)self watchList448hIconFile];
+  v39 = [builder appendString:watchList448hIconFile];
 
-  v40 = [(UNCNotificationSourceDescription *)self watchQuickLook430hIconFile];
-  v41 = [v3 appendString:v40];
+  watchQuickLook430hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook430hIconFile];
+  v41 = [builder appendString:watchQuickLook430hIconFile];
 
-  v42 = [(UNCNotificationSourceDescription *)self watchQuickLook484hIconFile];
-  v43 = [v3 appendString:v42];
+  watchQuickLook484hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook484hIconFile];
+  v43 = [builder appendString:watchQuickLook484hIconFile];
 
-  v44 = [(UNCNotificationSourceDescription *)self watchList430hIconFile];
-  v45 = [v3 appendString:v44];
+  watchList430hIconFile = [(UNCNotificationSourceDescription *)self watchList430hIconFile];
+  v45 = [builder appendString:watchList430hIconFile];
 
-  v46 = [(UNCNotificationSourceDescription *)self watchList484hIconFile];
-  v47 = [v3 appendString:v46];
+  watchList484hIconFile = [(UNCNotificationSourceDescription *)self watchList484hIconFile];
+  v47 = [builder appendString:watchList484hIconFile];
 
-  v48 = [(UNCNotificationSourceDescription *)self customSettingsBundle];
-  v49 = [v3 appendString:v48];
+  customSettingsBundle = [(UNCNotificationSourceDescription *)self customSettingsBundle];
+  v49 = [builder appendString:customSettingsBundle];
 
-  v50 = [(UNCNotificationSourceDescription *)self customSettingsDetailControllerClass];
-  v51 = [v3 appendString:v50];
+  customSettingsDetailControllerClass = [(UNCNotificationSourceDescription *)self customSettingsDetailControllerClass];
+  v51 = [builder appendString:customSettingsDetailControllerClass];
 
-  v52 = [(UNCNotificationSourceDescription *)self bundleURL];
-  v53 = [v3 appendObject:v52];
+  bundleURL = [(UNCNotificationSourceDescription *)self bundleURL];
+  v53 = [builder appendObject:bundleURL];
 
-  v54 = [(UNCNotificationSourceDescription *)self dataContainerURL];
-  v55 = [v3 appendObject:v54];
+  dataContainerURL = [(UNCNotificationSourceDescription *)self dataContainerURL];
+  v55 = [builder appendObject:dataContainerURL];
 
-  v56 = [(UNCNotificationSourceDescription *)self groupContainerURLS];
-  v57 = [v3 appendObject:v56];
+  groupContainerURLS = [(UNCNotificationSourceDescription *)self groupContainerURLS];
+  v57 = [builder appendObject:groupContainerURLS];
 
-  v58 = [(UNCNotificationSourceDescription *)self defaultCategories];
-  v59 = [v3 appendObject:v58];
+  defaultCategories = [(UNCNotificationSourceDescription *)self defaultCategories];
+  v59 = [builder appendObject:defaultCategories];
 
-  v60 = [(UNCNotificationSourceDescription *)self defaultSettings];
-  v61 = [v3 appendObject:v60];
+  defaultSettings = [(UNCNotificationSourceDescription *)self defaultSettings];
+  v61 = [builder appendObject:defaultSettings];
 
-  v62 = [(UNCNotificationSourceDescription *)self defaultTopics];
-  v63 = [v3 appendObject:v62];
+  defaultTopics = [(UNCNotificationSourceDescription *)self defaultTopics];
+  v63 = [builder appendObject:defaultTopics];
 
-  v64 = [(UNCNotificationSourceDescription *)self activityTypes];
-  v65 = [v3 appendObject:v64];
+  activityTypes = [(UNCNotificationSourceDescription *)self activityTypes];
+  v65 = [builder appendObject:activityTypes];
 
-  v66 = [v3 appendBool:{-[UNCNotificationSourceDescription allowCriticalAlerts](self, "allowCriticalAlerts")}];
-  v67 = [v3 appendBool:{-[UNCNotificationSourceDescription allowTimeSensitive](self, "allowTimeSensitive")}];
-  v68 = [v3 appendBool:{-[UNCNotificationSourceDescription allowCalls](self, "allowCalls")}];
-  v69 = [v3 appendBool:{-[UNCNotificationSourceDescription allowIntercom](self, "allowIntercom")}];
-  v70 = [v3 appendBool:{-[UNCNotificationSourceDescription allowMessages](self, "allowMessages")}];
-  v71 = [v3 appendBool:{-[UNCNotificationSourceDescription allowPrivateProperties](self, "allowPrivateProperties")}];
-  v72 = [v3 appendBool:{-[UNCNotificationSourceDescription allowUnlimitedContentBody](self, "allowUnlimitedContentBody")}];
-  v73 = [v3 appendBool:{-[UNCNotificationSourceDescription allowAlternateLaunchBundleIdentifiers](self, "allowAlternateLaunchBundleIdentifiers")}];
-  v74 = [v3 appendBool:{-[UNCNotificationSourceDescription allowServiceExtensionFiltering](self, "allowServiceExtensionFiltering")}];
-  v75 = [v3 appendBool:{-[UNCNotificationSourceDescription hideSettings](self, "hideSettings")}];
-  v76 = [v3 appendBool:{-[UNCNotificationSourceDescription automaticallyShowSettings](self, "automaticallyShowSettings")}];
-  v77 = [v3 appendBool:{-[UNCNotificationSourceDescription suppressDismissalSync](self, "suppressDismissalSync")}];
-  v78 = [v3 appendBool:{-[UNCNotificationSourceDescription suppressIconMask](self, "suppressIconMask")}];
-  v79 = [v3 appendBool:{-[UNCNotificationSourceDescription suppressUserAuthorizationPrompt](self, "suppressUserAuthorizationPrompt")}];
-  v80 = [v3 appendBool:{-[UNCNotificationSourceDescription useDefaultDataProvider](self, "useDefaultDataProvider")}];
-  v81 = [v3 appendBool:{-[UNCNotificationSourceDescription usesCloudKit](self, "usesCloudKit")}];
-  v82 = [v3 appendBool:{-[UNCNotificationSourceDescription requiresTopics](self, "requiresTopics")}];
-  v83 = [v3 appendBool:{-[UNCNotificationSourceDescription supportsContentAvailableRemoteNotifications](self, "supportsContentAvailableRemoteNotifications")}];
-  v84 = [v3 appendBool:{-[UNCNotificationSourceDescription isRestricted](self, "isRestricted")}];
-  v85 = [v3 appendBool:{-[UNCNotificationSourceDescription daemonShouldReceiveBackgroundResponses](self, "daemonShouldReceiveBackgroundResponses")}];
-  v86 = [v3 appendBool:{-[UNCNotificationSourceDescription daemonShouldReceiveNotificationSettingsUpdates](self, "daemonShouldReceiveNotificationSettingsUpdates")}];
-  v87 = [v3 appendBool:{-[UNCNotificationSourceDescription daemonShouldReceiveApplicationEvents](self, "daemonShouldReceiveApplicationEvents")}];
-  v88 = [v3 appendBool:{-[UNCNotificationSourceDescription isAppClip](self, "isAppClip")}];
-  v89 = [v3 appendBool:{-[UNCNotificationSourceDescription wantsEphemeralNotifications](self, "wantsEphemeralNotifications")}];
-  v90 = [v3 appendBool:{-[UNCNotificationSourceDescription supportsProvisionalAlerts](self, "supportsProvisionalAlerts")}];
-  v91 = [v3 hash];
+  v66 = [builder appendBool:{-[UNCNotificationSourceDescription allowCriticalAlerts](self, "allowCriticalAlerts")}];
+  v67 = [builder appendBool:{-[UNCNotificationSourceDescription allowTimeSensitive](self, "allowTimeSensitive")}];
+  v68 = [builder appendBool:{-[UNCNotificationSourceDescription allowCalls](self, "allowCalls")}];
+  v69 = [builder appendBool:{-[UNCNotificationSourceDescription allowIntercom](self, "allowIntercom")}];
+  v70 = [builder appendBool:{-[UNCNotificationSourceDescription allowMessages](self, "allowMessages")}];
+  v71 = [builder appendBool:{-[UNCNotificationSourceDescription allowPrivateProperties](self, "allowPrivateProperties")}];
+  v72 = [builder appendBool:{-[UNCNotificationSourceDescription allowUnlimitedContentBody](self, "allowUnlimitedContentBody")}];
+  v73 = [builder appendBool:{-[UNCNotificationSourceDescription allowAlternateLaunchBundleIdentifiers](self, "allowAlternateLaunchBundleIdentifiers")}];
+  v74 = [builder appendBool:{-[UNCNotificationSourceDescription allowServiceExtensionFiltering](self, "allowServiceExtensionFiltering")}];
+  v75 = [builder appendBool:{-[UNCNotificationSourceDescription hideSettings](self, "hideSettings")}];
+  v76 = [builder appendBool:{-[UNCNotificationSourceDescription automaticallyShowSettings](self, "automaticallyShowSettings")}];
+  v77 = [builder appendBool:{-[UNCNotificationSourceDescription suppressDismissalSync](self, "suppressDismissalSync")}];
+  v78 = [builder appendBool:{-[UNCNotificationSourceDescription suppressIconMask](self, "suppressIconMask")}];
+  v79 = [builder appendBool:{-[UNCNotificationSourceDescription suppressUserAuthorizationPrompt](self, "suppressUserAuthorizationPrompt")}];
+  v80 = [builder appendBool:{-[UNCNotificationSourceDescription useDefaultDataProvider](self, "useDefaultDataProvider")}];
+  v81 = [builder appendBool:{-[UNCNotificationSourceDescription usesCloudKit](self, "usesCloudKit")}];
+  v82 = [builder appendBool:{-[UNCNotificationSourceDescription requiresTopics](self, "requiresTopics")}];
+  v83 = [builder appendBool:{-[UNCNotificationSourceDescription supportsContentAvailableRemoteNotifications](self, "supportsContentAvailableRemoteNotifications")}];
+  v84 = [builder appendBool:{-[UNCNotificationSourceDescription isRestricted](self, "isRestricted")}];
+  v85 = [builder appendBool:{-[UNCNotificationSourceDescription daemonShouldReceiveBackgroundResponses](self, "daemonShouldReceiveBackgroundResponses")}];
+  v86 = [builder appendBool:{-[UNCNotificationSourceDescription daemonShouldReceiveNotificationSettingsUpdates](self, "daemonShouldReceiveNotificationSettingsUpdates")}];
+  v87 = [builder appendBool:{-[UNCNotificationSourceDescription daemonShouldReceiveApplicationEvents](self, "daemonShouldReceiveApplicationEvents")}];
+  v88 = [builder appendBool:{-[UNCNotificationSourceDescription isAppClip](self, "isAppClip")}];
+  v89 = [builder appendBool:{-[UNCNotificationSourceDescription wantsEphemeralNotifications](self, "wantsEphemeralNotifications")}];
+  v90 = [builder appendBool:{-[UNCNotificationSourceDescription supportsProvisionalAlerts](self, "supportsProvisionalAlerts")}];
+  v91 = [builder hash];
 
   return v91;
 }
@@ -1655,98 +1655,98 @@ UNCNotificationTopicRecord *__78__UNCNotificationSourceDescription_Factory__setD
 - (NSString)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(UNCNotificationSourceDescription *)self bundleIdentifier];
-  [v3 appendString:v4 withName:@"bundleIdentifier"];
+  bundleIdentifier = [(UNCNotificationSourceDescription *)self bundleIdentifier];
+  [v3 appendString:bundleIdentifier withName:@"bundleIdentifier"];
 
-  v5 = [(UNCNotificationSourceDescription *)self intentsBundleIdentifier];
-  [v3 appendString:v5 withName:@"intentsBundleIdentifier"];
+  intentsBundleIdentifier = [(UNCNotificationSourceDescription *)self intentsBundleIdentifier];
+  [v3 appendString:intentsBundleIdentifier withName:@"intentsBundleIdentifier"];
 
-  v6 = [(UNCNotificationSourceDescription *)self universalApplicationIdentifier];
-  [v3 appendString:v6 withName:@"universalApplicationIdentifier"];
+  universalApplicationIdentifier = [(UNCNotificationSourceDescription *)self universalApplicationIdentifier];
+  [v3 appendString:universalApplicationIdentifier withName:@"universalApplicationIdentifier"];
 
-  v7 = [(UNCNotificationSourceDescription *)self displayName];
-  [v3 appendString:v7 withName:@"displayName"];
+  displayName = [(UNCNotificationSourceDescription *)self displayName];
+  [v3 appendString:displayName withName:@"displayName"];
 
-  v8 = [(UNCNotificationSourceDescription *)self pushEnvironment];
-  [v3 appendString:v8 withName:@"pushEnvironment"];
+  pushEnvironment = [(UNCNotificationSourceDescription *)self pushEnvironment];
+  [v3 appendString:pushEnvironment withName:@"pushEnvironment"];
 
-  v9 = [(UNCNotificationSourceDescription *)self defaultIconFile];
-  [v3 appendString:v9 withName:@"defaultIconFile"];
+  defaultIconFile = [(UNCNotificationSourceDescription *)self defaultIconFile];
+  [v3 appendString:defaultIconFile withName:@"defaultIconFile"];
 
-  v10 = [(UNCNotificationSourceDescription *)self subordinateIconFile];
-  [v3 appendString:v10 withName:@"subordinateIconFile"];
+  subordinateIconFile = [(UNCNotificationSourceDescription *)self subordinateIconFile];
+  [v3 appendString:subordinateIconFile withName:@"subordinateIconFile"];
 
-  v11 = [(UNCNotificationSourceDescription *)self settingsIconFile];
-  [v3 appendString:v11 withName:@"settingsIconFile"];
+  settingsIconFile = [(UNCNotificationSourceDescription *)self settingsIconFile];
+  [v3 appendString:settingsIconFile withName:@"settingsIconFile"];
 
-  v12 = [(UNCNotificationSourceDescription *)self settingsSheetIconFile];
-  [v3 appendString:v12 withName:@"settingsSheetIconFile"];
+  settingsSheetIconFile = [(UNCNotificationSourceDescription *)self settingsSheetIconFile];
+  [v3 appendString:settingsSheetIconFile withName:@"settingsSheetIconFile"];
 
-  v13 = [(UNCNotificationSourceDescription *)self carPlayIconFile];
-  [v3 appendString:v13 withName:@"carPlayIconFile"];
+  carPlayIconFile = [(UNCNotificationSourceDescription *)self carPlayIconFile];
+  [v3 appendString:carPlayIconFile withName:@"carPlayIconFile"];
 
-  v14 = [(UNCNotificationSourceDescription *)self watchQuickLookSmallIconFile];
-  [v3 appendString:v14 withName:@"watchQuickLookSmallIconFile"];
+  watchQuickLookSmallIconFile = [(UNCNotificationSourceDescription *)self watchQuickLookSmallIconFile];
+  [v3 appendString:watchQuickLookSmallIconFile withName:@"watchQuickLookSmallIconFile"];
 
-  v15 = [(UNCNotificationSourceDescription *)self watchQuickLookLargeIconFile];
-  [v3 appendString:v15 withName:@"watchQuickLookLargeIconFile"];
+  watchQuickLookLargeIconFile = [(UNCNotificationSourceDescription *)self watchQuickLookLargeIconFile];
+  [v3 appendString:watchQuickLookLargeIconFile withName:@"watchQuickLookLargeIconFile"];
 
-  v16 = [(UNCNotificationSourceDescription *)self watchListSmallIconFile];
-  [v3 appendString:v16 withName:@"watchListSmallIconFile"];
+  watchListSmallIconFile = [(UNCNotificationSourceDescription *)self watchListSmallIconFile];
+  [v3 appendString:watchListSmallIconFile withName:@"watchListSmallIconFile"];
 
-  v17 = [(UNCNotificationSourceDescription *)self watchListLargeIconFile];
-  [v3 appendString:v17 withName:@"watchListLargeIconFile"];
+  watchListLargeIconFile = [(UNCNotificationSourceDescription *)self watchListLargeIconFile];
+  [v3 appendString:watchListLargeIconFile withName:@"watchListLargeIconFile"];
 
-  v18 = [(UNCNotificationSourceDescription *)self watchQuickLook394hIconFile];
-  [v3 appendString:v18 withName:@"watchQuickLook394hIconFile"];
+  watchQuickLook394hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook394hIconFile];
+  [v3 appendString:watchQuickLook394hIconFile withName:@"watchQuickLook394hIconFile"];
 
-  v19 = [(UNCNotificationSourceDescription *)self watchQuickLook448hIconFile];
-  [v3 appendString:v19 withName:@"watchQuickLook448hIconFile"];
+  watchQuickLook448hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook448hIconFile];
+  [v3 appendString:watchQuickLook448hIconFile withName:@"watchQuickLook448hIconFile"];
 
-  v20 = [(UNCNotificationSourceDescription *)self watchList394hIconFile];
-  [v3 appendString:v20 withName:@"watchList394hIconFile"];
+  watchList394hIconFile = [(UNCNotificationSourceDescription *)self watchList394hIconFile];
+  [v3 appendString:watchList394hIconFile withName:@"watchList394hIconFile"];
 
-  v21 = [(UNCNotificationSourceDescription *)self watchList448hIconFile];
-  [v3 appendString:v21 withName:@"watchList448hIconFile"];
+  watchList448hIconFile = [(UNCNotificationSourceDescription *)self watchList448hIconFile];
+  [v3 appendString:watchList448hIconFile withName:@"watchList448hIconFile"];
 
-  v22 = [(UNCNotificationSourceDescription *)self watchQuickLook430hIconFile];
-  [v3 appendString:v22 withName:@"watchQuickLook430hIconFile"];
+  watchQuickLook430hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook430hIconFile];
+  [v3 appendString:watchQuickLook430hIconFile withName:@"watchQuickLook430hIconFile"];
 
-  v23 = [(UNCNotificationSourceDescription *)self watchQuickLook484hIconFile];
-  [v3 appendString:v23 withName:@"watchQuickLook484hIconFile"];
+  watchQuickLook484hIconFile = [(UNCNotificationSourceDescription *)self watchQuickLook484hIconFile];
+  [v3 appendString:watchQuickLook484hIconFile withName:@"watchQuickLook484hIconFile"];
 
-  v24 = [(UNCNotificationSourceDescription *)self watchList430hIconFile];
-  [v3 appendString:v24 withName:@"watchList430hIconFile"];
+  watchList430hIconFile = [(UNCNotificationSourceDescription *)self watchList430hIconFile];
+  [v3 appendString:watchList430hIconFile withName:@"watchList430hIconFile"];
 
-  v25 = [(UNCNotificationSourceDescription *)self watchList484hIconFile];
-  [v3 appendString:v25 withName:@"watchList484hIconFile"];
+  watchList484hIconFile = [(UNCNotificationSourceDescription *)self watchList484hIconFile];
+  [v3 appendString:watchList484hIconFile withName:@"watchList484hIconFile"];
 
-  v26 = [(UNCNotificationSourceDescription *)self customSettingsBundle];
-  [v3 appendString:v26 withName:@"customSettingsBundle"];
+  customSettingsBundle = [(UNCNotificationSourceDescription *)self customSettingsBundle];
+  [v3 appendString:customSettingsBundle withName:@"customSettingsBundle"];
 
-  v27 = [(UNCNotificationSourceDescription *)self customSettingsDetailControllerClass];
-  [v3 appendString:v27 withName:@"customSettingsDetailControllerClass"];
+  customSettingsDetailControllerClass = [(UNCNotificationSourceDescription *)self customSettingsDetailControllerClass];
+  [v3 appendString:customSettingsDetailControllerClass withName:@"customSettingsDetailControllerClass"];
 
-  v28 = [(UNCNotificationSourceDescription *)self bundleURL];
-  v29 = [v3 appendObject:v28 withName:@"bundleURL"];
+  bundleURL = [(UNCNotificationSourceDescription *)self bundleURL];
+  v29 = [v3 appendObject:bundleURL withName:@"bundleURL"];
 
-  v30 = [(UNCNotificationSourceDescription *)self dataContainerURL];
-  v31 = [v3 appendObject:v30 withName:@"dataContainerURL"];
+  dataContainerURL = [(UNCNotificationSourceDescription *)self dataContainerURL];
+  v31 = [v3 appendObject:dataContainerURL withName:@"dataContainerURL"];
 
-  v32 = [(UNCNotificationSourceDescription *)self groupContainerURLS];
-  v33 = [v3 appendObject:v32 withName:@"groupContainerURLS"];
+  groupContainerURLS = [(UNCNotificationSourceDescription *)self groupContainerURLS];
+  v33 = [v3 appendObject:groupContainerURLS withName:@"groupContainerURLS"];
 
-  v34 = [(UNCNotificationSourceDescription *)self defaultCategories];
-  v35 = [v3 appendObject:v34 withName:@"defaultCategories"];
+  defaultCategories = [(UNCNotificationSourceDescription *)self defaultCategories];
+  v35 = [v3 appendObject:defaultCategories withName:@"defaultCategories"];
 
-  v36 = [(UNCNotificationSourceDescription *)self defaultSettings];
-  v37 = [v3 appendObject:v36 withName:@"defaultSettings"];
+  defaultSettings = [(UNCNotificationSourceDescription *)self defaultSettings];
+  v37 = [v3 appendObject:defaultSettings withName:@"defaultSettings"];
 
-  v38 = [(UNCNotificationSourceDescription *)self defaultTopics];
-  v39 = [v3 appendObject:v38 withName:@"defaultTopics"];
+  defaultTopics = [(UNCNotificationSourceDescription *)self defaultTopics];
+  v39 = [v3 appendObject:defaultTopics withName:@"defaultTopics"];
 
-  v40 = [(UNCNotificationSourceDescription *)self activityTypes];
-  v41 = [v3 appendObject:v40 withName:@"activityTypes"];
+  activityTypes = [(UNCNotificationSourceDescription *)self activityTypes];
+  v41 = [v3 appendObject:activityTypes withName:@"activityTypes"];
 
   v42 = [v3 appendBool:-[UNCNotificationSourceDescription allowCriticalAlerts](self withName:{"allowCriticalAlerts"), @"allowCriticalAlerts"}];
   v43 = [v3 appendBool:-[UNCNotificationSourceDescription allowTimeSensitive](self withName:{"allowTimeSensitive"), @"allowTimeSensitive"}];
@@ -1773,9 +1773,9 @@ UNCNotificationTopicRecord *__78__UNCNotificationSourceDescription_Factory__setD
   v64 = [v3 appendBool:-[UNCNotificationSourceDescription isAppClip](self withName:{"isAppClip"), @"isAppClip"}];
   v65 = [v3 appendBool:-[UNCNotificationSourceDescription wantsEphemeralNotifications](self withName:{"wantsEphemeralNotifications"), @"wantsEphemeralNotifications"}];
   v66 = [v3 appendBool:-[UNCNotificationSourceDescription supportsProvisionalAlerts](self withName:{"supportsProvisionalAlerts"), @"supportsProvisionalAlerts"}];
-  v67 = [v3 build];
+  build = [v3 build];
 
-  return v67;
+  return build;
 }
 
 @end

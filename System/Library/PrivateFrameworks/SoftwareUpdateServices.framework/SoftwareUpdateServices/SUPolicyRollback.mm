@@ -1,19 +1,19 @@
 @interface SUPolicyRollback
-- (SUPolicyRollback)initWithRollbackOptions:(id)a3;
+- (SUPolicyRollback)initWithRollbackOptions:(id)options;
 @end
 
 @implementation SUPolicyRollback
 
-- (SUPolicyRollback)initWithRollbackOptions:(id)a3
+- (SUPolicyRollback)initWithRollbackOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = SUPolicyRollback;
   v6 = [(SUPolicyRollback *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rollbackOptions, a3);
+    objc_storeStrong(&v6->_rollbackOptions, options);
   }
 
   return v7;

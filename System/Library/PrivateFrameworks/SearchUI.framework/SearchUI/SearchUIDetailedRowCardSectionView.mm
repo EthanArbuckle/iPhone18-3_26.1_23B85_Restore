@@ -1,13 +1,13 @@
 @interface SearchUIDetailedRowCardSectionView
-- (id)findDescendentOfView:(id)a3 matchingClass:(Class)a4;
+- (id)findDescendentOfView:(id)view matchingClass:(Class)class;
 - (id)leadingTextView;
 - (id)leadingView;
 - (id)setupContentView;
 - (id)viewForQuickLookZoomTransitionSource;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
-- (void)setFeedbackDelegate:(id)a3;
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4;
-- (void)updateWithRowModel:(id)a3;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
+- (void)setFeedbackDelegate:(id)delegate;
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIDetailedRowCardSectionView
@@ -15,8 +15,8 @@
 - (id)setupContentView
 {
   v3 = [SearchUIDetailedView alloc];
-  v4 = [(SearchUICardSectionView *)self feedbackDelegate];
-  v5 = [(SearchUIDetailedView *)v3 initWithFeedbackDelegate:v4];
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+  v5 = [(SearchUIDetailedView *)v3 initWithFeedbackDelegate:feedbackDelegate];
 
   [(SearchUIDetailedView *)v5 setButtonDelegate:self];
 
@@ -25,72 +25,72 @@
 
 - (id)leadingView
 {
-  v2 = [(SearchUICardSectionView *)self contentView];
-  v3 = [v2 leadingView];
+  contentView = [(SearchUICardSectionView *)self contentView];
+  leadingView = [contentView leadingView];
 
-  return v3;
+  return leadingView;
 }
 
 - (id)leadingTextView
 {
-  v2 = [(SearchUICardSectionView *)self contentView];
-  v3 = [v2 leadingTextView];
+  contentView = [(SearchUICardSectionView *)self contentView];
+  leadingTextView = [contentView leadingTextView];
 
-  return v3;
+  return leadingTextView;
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
   v8.receiver = self;
   v8.super_class = SearchUIDetailedRowCardSectionView;
-  [(SearchUICardSectionView *)&v8 containerView:a3 willMeasureArrangedSubviewsFittingSize:a5 forReason:a4.width, a4.height];
-  v6 = [(SearchUICardSectionView *)self isCompactWidth];
-  v7 = [(SearchUICardSectionView *)self contentView];
-  [v7 setIsCompactWidth:v6];
+  [(SearchUICardSectionView *)&v8 containerView:view willMeasureArrangedSubviewsFittingSize:reason forReason:size.width, size.height];
+  isCompactWidth = [(SearchUICardSectionView *)self isCompactWidth];
+  contentView = [(SearchUICardSectionView *)self contentView];
+  [contentView setIsCompactWidth:isCompactWidth];
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v8.receiver = self;
   v8.super_class = SearchUIDetailedRowCardSectionView;
-  v4 = a3;
-  [(SearchUICardSectionView *)&v8 updateWithRowModel:v4];
+  modelCopy = model;
+  [(SearchUICardSectionView *)&v8 updateWithRowModel:modelCopy];
   v5 = [(SearchUICardSectionView *)self contentView:v8.receiver];
-  [v5 updateWithRowModel:v4];
+  [v5 updateWithRowModel:modelCopy];
 
-  LODWORD(v5) = [v4 useCompactVersionOfUI];
+  LODWORD(v5) = [modelCopy useCompactVersionOfUI];
   if (v5)
   {
     if ([MEMORY[0x1E69D9240] isMacOS])
     {
       [MEMORY[0x1E69D9248] makeContainerShadowCompatible:self];
       v6 = MEMORY[0x1E69D9248];
-      v7 = [(SearchUICardSectionView *)self contentView];
-      [v6 makeContainerShadowCompatible:v7];
+      contentView = [(SearchUICardSectionView *)self contentView];
+      [v6 makeContainerShadowCompatible:contentView];
     }
   }
 }
 
-- (void)setFeedbackDelegate:(id)a3
+- (void)setFeedbackDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = SearchUIDetailedRowCardSectionView;
-  v4 = a3;
-  [(SearchUICardSectionView *)&v6 setFeedbackDelegate:v4];
+  delegateCopy = delegate;
+  [(SearchUICardSectionView *)&v6 setFeedbackDelegate:delegateCopy];
   v5 = [(SearchUICardSectionView *)self contentView:v6.receiver];
-  [v5 setFeedbackDelegate:v4];
+  [v5 setFeedbackDelegate:delegateCopy];
 }
 
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = [(SearchUICardSectionView *)self contentView];
-  v9 = [v8 currentAccessoryViewController];
+  chevronCopy = chevron;
+  visibleCopy = visible;
+  contentView = [(SearchUICardSectionView *)self contentView];
+  currentAccessoryViewController = [contentView currentAccessoryViewController];
 
-  if (!v9)
+  if (!currentAccessoryViewController)
   {
-    v12 = 1;
+    isHidden = 1;
     goto LABEL_9;
   }
 
@@ -98,16 +98,16 @@
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v4 = [(SearchUICardSectionView *)self rowModel];
-    if (![v4 useCompactVersionOfUI])
+    rowModel = [(SearchUICardSectionView *)self rowModel];
+    if (![rowModel useCompactVersionOfUI])
     {
-      v12 = 1;
+      isHidden = 1;
       goto LABEL_8;
     }
   }
 
-  v11 = [v9 view];
-  v12 = [v11 isHidden];
+  view = [currentAccessoryViewController view];
+  isHidden = [view isHidden];
 
   if (isKindOfClass)
   {
@@ -115,12 +115,12 @@ LABEL_8:
   }
 
 LABEL_9:
-  v13 = [(SearchUICardSectionView *)self rowModel];
-  v14 = [v13 buttonItems];
-  if ([v14 count])
+  rowModel2 = [(SearchUICardSectionView *)self rowModel];
+  buttonItems = [rowModel2 buttonItems];
+  if ([buttonItems count])
   {
-    v15 = [(SearchUICardSectionView *)self rowModel];
-    v16 = [v15 buttonItemsAreTrailing] ^ 1;
+    rowModel3 = [(SearchUICardSectionView *)self rowModel];
+    v16 = [rowModel3 buttonItemsAreTrailing] ^ 1;
   }
 
   else
@@ -130,38 +130,38 @@ LABEL_9:
 
   v17.receiver = self;
   v17.super_class = SearchUIDetailedRowCardSectionView;
-  [(SearchUICardSectionView *)&v17 updateChevronVisible:v6 & v12 & v16 leaveSpaceForChevron:v5];
+  [(SearchUICardSectionView *)&v17 updateChevronVisible:visibleCopy & isHidden & v16 leaveSpaceForChevron:chevronCopy];
 }
 
 - (id)viewForQuickLookZoomTransitionSource
 {
-  v3 = [(SearchUIDetailedRowCardSectionView *)self leadingView];
-  v4 = [(SearchUIDetailedRowCardSectionView *)self findDescendentOfView:v3 matchingClass:objc_opt_class()];
+  leadingView = [(SearchUIDetailedRowCardSectionView *)self leadingView];
+  v4 = [(SearchUIDetailedRowCardSectionView *)self findDescendentOfView:leadingView matchingClass:objc_opt_class()];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    viewForQuickLookZoomTransitionSource = v4;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SearchUIDetailedRowCardSectionView;
-    v6 = [(SearchUICardSectionView *)&v9 viewForQuickLookZoomTransitionSource];
+    viewForQuickLookZoomTransitionSource = [(SearchUICardSectionView *)&v9 viewForQuickLookZoomTransitionSource];
   }
 
-  v7 = v6;
+  v7 = viewForQuickLookZoomTransitionSource;
 
   return v7;
 }
 
-- (id)findDescendentOfView:(id)a3 matchingClass:(Class)a4
+- (id)findDescendentOfView:(id)view matchingClass:(Class)class
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  viewCopy = view;
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
   }
 
   else
@@ -170,8 +170,8 @@ LABEL_9:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v6 subviews];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    subviews = [viewCopy subviews];
+    v9 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -182,10 +182,10 @@ LABEL_9:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subviews);
           }
 
-          v13 = [(SearchUIDetailedRowCardSectionView *)self findDescendentOfView:*(*(&v15 + 1) + 8 * i) matchingClass:a4];
+          v13 = [(SearchUIDetailedRowCardSectionView *)self findDescendentOfView:*(*(&v15 + 1) + 8 * i) matchingClass:class];
           if (v13)
           {
             v7 = v13;
@@ -194,7 +194,7 @@ LABEL_9:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v10)
         {
           continue;

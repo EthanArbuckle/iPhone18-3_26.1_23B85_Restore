@@ -7,12 +7,12 @@
 + (id)_vl_createWithVLCrowdsourcingDetails:()VisualLocalizationExtras
 {
   v4 = a3;
-  v5 = [v4 statistics];
-  v6 = [v5 stats];
+  statistics = [v4 statistics];
+  stats = [statistics stats];
 
-  if (v6 && (![v4 slamTracksCount] || objc_msgSend(v4, "slamOrigin")) && (!objc_msgSend(v4, "slamTracksCount") || objc_msgSend(v4, "slamTracks")) && (!objc_msgSend(v4, "slamTracksCount") || objc_msgSend(v4, "slamTrackDescriptors")) && (!objc_msgSend(v4, "slamTracksCount") || objc_msgSend(v4, "slamTrackObservations")) && (!objc_msgSend(v4, "slamTracksCount") || objc_msgSend(v4, "slamTrackImageIndices")) && (!objc_msgSend(v4, "slamTracksCount") || objc_msgSend(v4, "slamTracks2D")) && (!objc_msgSend(v4, "frameCount") || objc_msgSend(v4, "perFrameVioStatusCodes")) && (!objc_msgSend(v4, "frameCount") || objc_msgSend(v4, "perFrameVioPoses")) && (!objc_msgSend(v4, "frameCount") || objc_msgSend(v4, "perFrameCalibrationMatrices")) && (!objc_msgSend(v4, "frameCount") || objc_msgSend(v4, "perFrameDistortion")) && objc_msgSend(v4, "resultPoseRotation") && objc_msgSend(v4, "resultPoseTranslation") && (!objc_msgSend(v4, "inliersCount") || objc_msgSend(v4, "points2D")) && (!objc_msgSend(v4, "inliersCount") || objc_msgSend(v4, "points3D")))
+  if (stats && (![v4 slamTracksCount] || objc_msgSend(v4, "slamOrigin")) && (!objc_msgSend(v4, "slamTracksCount") || objc_msgSend(v4, "slamTracks")) && (!objc_msgSend(v4, "slamTracksCount") || objc_msgSend(v4, "slamTrackDescriptors")) && (!objc_msgSend(v4, "slamTracksCount") || objc_msgSend(v4, "slamTrackObservations")) && (!objc_msgSend(v4, "slamTracksCount") || objc_msgSend(v4, "slamTrackImageIndices")) && (!objc_msgSend(v4, "slamTracksCount") || objc_msgSend(v4, "slamTracks2D")) && (!objc_msgSend(v4, "frameCount") || objc_msgSend(v4, "perFrameVioStatusCodes")) && (!objc_msgSend(v4, "frameCount") || objc_msgSend(v4, "perFrameVioPoses")) && (!objc_msgSend(v4, "frameCount") || objc_msgSend(v4, "perFrameCalibrationMatrices")) && (!objc_msgSend(v4, "frameCount") || objc_msgSend(v4, "perFrameDistortion")) && objc_msgSend(v4, "resultPoseRotation") && objc_msgSend(v4, "resultPoseTranslation") && (!objc_msgSend(v4, "inliersCount") || objc_msgSend(v4, "points2D")) && (!objc_msgSend(v4, "inliersCount") || objc_msgSend(v4, "points3D")))
   {
-    v7 = objc_alloc_init(a1);
+    v7 = objc_alloc_init(self);
     if (v7)
     {
       [v7 addSlamOrigin:{*objc_msgSend(v4, "slamOrigin")}];
@@ -39,12 +39,12 @@
           [v12 setZ:v15];
           [v10 setPosition:v12];
 
-          v16 = [v4 slamTrackDescriptors];
-          v17 = [v4 descriptorDimension];
+          slamTrackDescriptors = [v4 slamTrackDescriptors];
+          descriptorDimension = [v4 descriptorDimension];
           if ([v4 descriptorDimension])
           {
             v18 = 0;
-            v19 = v16 + v17 * v9;
+            v19 = slamTrackDescriptors + descriptorDimension * v9;
             do
             {
               [v10 addDescriptors:*(v19 + v18++)];
@@ -53,12 +53,12 @@
             while (v18 < [v4 descriptorDimension]);
           }
 
-          v20 = [v4 slamTrackObservations];
-          v21 = *(v20 + 2 * v9);
-          if (*(v20 + 2 * v9))
+          slamTrackObservations = [v4 slamTrackObservations];
+          v21 = *(slamTrackObservations + 2 * v9);
+          if (*(slamTrackObservations + 2 * v9))
           {
             v22 = 2 * v8;
-            v23 = *(v20 + 2 * v9);
+            v23 = *(slamTrackObservations + 2 * v9);
             do
             {
               [v10 addObservationImageIndices:{*(objc_msgSend(v4, "slamTrackImageIndices") + v22)}];
@@ -143,42 +143,42 @@
           [v33 setRadialDistortion1:v55];
           LODWORD(v56) = *([v4 perFrameDistortion] + v27 + 4);
           [v33 setRadialDistortion2:v56];
-          v58 = *(v6 + 248);
+          v58 = *(stats + 248);
           if (v58)
           {
             [v33 setTimestamp:*(v58 + 8 * v29)];
           }
 
-          v59 = *(v6 + 240);
+          v59 = *(stats + 240);
           if (v59)
           {
             LODWORD(v57) = *(v59 + v32 - 44);
             [v33 addSlamPose:v57];
-            LODWORD(v60) = *(*(v6 + 240) + v32 - 40);
+            LODWORD(v60) = *(*(stats + 240) + v32 - 40);
             [v33 addSlamPose:v60];
-            LODWORD(v61) = *(*(v6 + 240) + v32 - 36);
+            LODWORD(v61) = *(*(stats + 240) + v32 - 36);
             [v33 addSlamPose:v61];
-            LODWORD(v62) = *(*(v6 + 240) + v32 - 32);
+            LODWORD(v62) = *(*(stats + 240) + v32 - 32);
             [v33 addSlamPose:v62];
-            LODWORD(v63) = *(*(v6 + 240) + v32 - 28);
+            LODWORD(v63) = *(*(stats + 240) + v32 - 28);
             [v33 addSlamPose:v63];
-            LODWORD(v64) = *(*(v6 + 240) + v32 - 24);
+            LODWORD(v64) = *(*(stats + 240) + v32 - 24);
             [v33 addSlamPose:v64];
-            LODWORD(v65) = *(*(v6 + 240) + v32 - 20);
+            LODWORD(v65) = *(*(stats + 240) + v32 - 20);
             [v33 addSlamPose:v65];
-            LODWORD(v66) = *(*(v6 + 240) + v32 - 16);
+            LODWORD(v66) = *(*(stats + 240) + v32 - 16);
             [v33 addSlamPose:v66];
-            LODWORD(v67) = *(*(v6 + 240) + v32 - 12);
+            LODWORD(v67) = *(*(stats + 240) + v32 - 12);
             [v33 addSlamPose:v67];
-            LODWORD(v68) = *(*(v6 + 240) + v32 - 8);
+            LODWORD(v68) = *(*(stats + 240) + v32 - 8);
             [v33 addSlamPose:v68];
-            LODWORD(v69) = *(*(v6 + 240) + v32 - 4);
+            LODWORD(v69) = *(*(stats + 240) + v32 - 4);
             [v33 addSlamPose:v69];
-            LODWORD(v70) = *(*(v6 + 240) + v32);
+            LODWORD(v70) = *(*(stats + 240) + v32);
             [v33 addSlamPose:v70];
           }
 
-          v71 = *(v6 + 104);
+          v71 = *(stats + 104);
           if (v71)
           {
             v72 = (v71 + 4 * v28);
@@ -192,7 +192,7 @@
             [v33 setTileId:v76];
           }
 
-          v77 = *(v6 + 120);
+          v77 = *(stats + 120);
           if (v77)
           {
             v78 = (v77 + v30);
@@ -221,7 +221,7 @@
             [v33 setResultTranslationZ:v101];
           }
 
-          v87 = *(v6 + 128);
+          v87 = *(stats + 128);
           if (v87)
           {
             [v33 setResultStatus:*(v87 + v28)];
@@ -270,7 +270,7 @@
           [v102 addInlierPoints3D:v94];
           v95 = *([v4 points3D] + v89 + 16);
           [v102 addInlierPoints3D:v95];
-          v96 = *(v6 + 32);
+          v96 = *(stats + 32);
           if (v96)
           {
             [v102 addSlamPtsInlierIdx:*(v96 + 2 * v90)];
@@ -284,7 +284,7 @@
         while (v90 < [v4 inliersCount]);
       }
 
-      [v102 setStartFrameIdx:*(v6 + 296) & ~(*(v6 + 296) >> 31)];
+      [v102 setStartFrameIdx:*(stats + 296) & ~(*(stats + 296) >> 31)];
       v97 = v102;
     }
   }

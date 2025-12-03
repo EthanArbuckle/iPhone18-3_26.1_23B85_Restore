@@ -1,6 +1,6 @@
 @interface HMMDatedHomeLogEvent
-- (HMMDatedHomeLogEvent)initWithHomeUUID:(id)a3;
-- (HMMDatedHomeLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4;
+- (HMMDatedHomeLogEvent)initWithHomeUUID:(id)d;
+- (HMMDatedHomeLogEvent)initWithStartTime:(double)time homeUUID:(id)d;
 - (NSDate)endDate;
 - (void)markEndTime;
 @end
@@ -32,31 +32,31 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (HMMDatedHomeLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4
+- (HMMDatedHomeLogEvent)initWithStartTime:(double)time homeUUID:(id)d
 {
   v8.receiver = self;
   v8.super_class = HMMDatedHomeLogEvent;
-  v4 = [(HMMHomeLogEvent *)&v8 initWithStartTime:a4 homeUUID:a3];
+  v4 = [(HMMHomeLogEvent *)&v8 initWithStartTime:d homeUUID:time];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startDate = v4->_startDate;
-    v4->_startDate = v5;
+    v4->_startDate = date;
   }
 
   return v4;
 }
 
-- (HMMDatedHomeLogEvent)initWithHomeUUID:(id)a3
+- (HMMDatedHomeLogEvent)initWithHomeUUID:(id)d
 {
   v7.receiver = self;
   v7.super_class = HMMDatedHomeLogEvent;
-  v3 = [(HMMHomeLogEvent *)&v7 initWithHomeUUID:a3];
+  v3 = [(HMMHomeLogEvent *)&v7 initWithHomeUUID:d];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startDate = v3->_startDate;
-    v3->_startDate = v4;
+    v3->_startDate = date;
   }
 
   return v3;

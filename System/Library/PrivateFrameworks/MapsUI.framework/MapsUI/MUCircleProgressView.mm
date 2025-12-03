@@ -1,14 +1,14 @@
 @interface MUCircleProgressView
 - (CGSize)intrinsicContentSize;
-- (MUCircleProgressView)initWithFrame:(CGRect)a3;
-- (void)_handleTap:(id)a3;
+- (MUCircleProgressView)initWithFrame:(CGRect)frame;
+- (void)_handleTap:(id)tap;
 - (void)_startIndeterminateAnimation;
 - (void)_updateBorderWidthForUpdatedDisplayScale;
 - (void)_updateStrokeColorForUpdatedUserInterfaceStyle;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setPrimaryAction:(id)a3;
-- (void)setProgress:(double)a3 animated:(BOOL)a4;
+- (void)setPrimaryAction:(id)action;
+- (void)setProgress:(double)progress animated:(BOOL)animated;
 - (void)tintColorDidChange;
 @end
 
@@ -16,8 +16,8 @@
 
 - (void)_updateBorderWidthForUpdatedDisplayScale
 {
-  v3 = [(MUCircleProgressView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(MUCircleProgressView *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
   [(CAShapeLayer *)self->_borderLayer setLineWidth:1.0 / fmax(v5, 1.0) + 2.0];
@@ -31,18 +31,18 @@
 
 - (void)_updateStrokeColorForUpdatedUserInterfaceStyle
 {
-  v4 = [MEMORY[0x1E69DC888] systemFillColor];
-  v3 = v4;
-  -[CAShapeLayer setStrokeColor:](self->_borderLayer, "setStrokeColor:", [v4 CGColor]);
+  systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
+  v3 = systemFillColor;
+  -[CAShapeLayer setStrokeColor:](self->_borderLayer, "setStrokeColor:", [systemFillColor CGColor]);
 }
 
 - (void)tintColorDidChange
 {
-  v3 = [(MUCircleProgressView *)self tintColor];
-  -[CAShapeLayer setStrokeColor:](self->_progressLayer, "setStrokeColor:", [v3 CGColor]);
+  tintColor = [(MUCircleProgressView *)self tintColor];
+  -[CAShapeLayer setStrokeColor:](self->_progressLayer, "setStrokeColor:", [tintColor CGColor]);
 
-  v4 = [(MUCircleProgressView *)self tintColor];
-  -[CAShapeLayer setStrokeColor:](self->_indeterminateLayer, "setStrokeColor:", [v4 CGColor]);
+  tintColor2 = [(MUCircleProgressView *)self tintColor];
+  -[CAShapeLayer setStrokeColor:](self->_indeterminateLayer, "setStrokeColor:", [tintColor2 CGColor]);
 
   v5.receiver = self;
   v5.super_class = MUCircleProgressView;
@@ -110,9 +110,9 @@
 
 - (void)_startIndeterminateAnimation
 {
-  v3 = [(MUCircleProgressView *)self window];
+  window = [(MUCircleProgressView *)self window];
 
-  if (v3)
+  if (window)
   {
     v6 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform.rotation.z"];
     [v6 setValues:&unk_1F450E2D8];
@@ -126,7 +126,7 @@
   }
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   primaryAction = self->_primaryAction;
   if (primaryAction)
@@ -135,13 +135,13 @@
   }
 }
 
-- (void)setPrimaryAction:(id)a3
+- (void)setPrimaryAction:(id)action
 {
-  v4 = a3;
-  if (self->_primaryAction != v4)
+  actionCopy = action;
+  if (self->_primaryAction != actionCopy)
   {
-    v11 = v4;
-    v5 = [v4 copy];
+    v11 = actionCopy;
+    v5 = [actionCopy copy];
     primaryAction = self->_primaryAction;
     self->_primaryAction = v5;
 
@@ -167,18 +167,18 @@
     }
 
     [(UITapGestureRecognizer *)tapRecognizer setEnabled:v10];
-    v4 = v11;
+    actionCopy = v11;
   }
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4
+- (void)setProgress:(double)progress animated:(BOOL)animated
 {
   progress = self->_progress;
-  if (progress != a3)
+  if (progress != progress)
   {
-    v6 = fmax(fmin(a3, 1.0), 0.0);
+    v6 = fmax(fmin(progress, 1.0), 0.0);
     self->_progress = v6;
-    if (a4)
+    if (animated)
     {
       v7 = vabdd_f64(progress, v6);
       v12 = [MEMORY[0x1E6979318] animationWithKeyPath:@"strokeEnd"];
@@ -205,12 +205,12 @@
   }
 }
 
-- (MUCircleProgressView)initWithFrame:(CGRect)a3
+- (MUCircleProgressView)initWithFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v53[1] = *MEMORY[0x1E69E9840];
-  [(MUCircleProgressView *)self intrinsicContentSize:a3.origin.x];
+  [(MUCircleProgressView *)self intrinsicContentSize:frame.origin.x];
   v7 = v6;
   [(MUCircleProgressView *)self intrinsicContentSize];
   v51.receiver = self;
@@ -219,38 +219,38 @@
   v10 = v9;
   if (v9)
   {
-    v11 = [(MUCircleProgressView *)v9 traitCollection];
-    [v11 displayScale];
+    traitCollection = [(MUCircleProgressView *)v9 traitCollection];
+    [traitCollection displayScale];
     v13 = v12;
 
     v14 = 1.0 / fmax(v13, 1.0) + 2.0;
-    v15 = [MEMORY[0x1E69794A0] layer];
+    layer = [MEMORY[0x1E69794A0] layer];
     borderLayer = v10->_borderLayer;
-    v10->_borderLayer = v15;
+    v10->_borderLayer = layer;
 
     [(MUCircleProgressView *)v10 bounds];
     [(CAShapeLayer *)v10->_borderLayer setFrame:?];
-    v17 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setFillColor:](v10->_borderLayer, "setFillColor:", [v17 CGColor]);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setFillColor:](v10->_borderLayer, "setFillColor:", [clearColor CGColor]);
 
-    v18 = [MEMORY[0x1E69DC888] systemFillColor];
-    -[CAShapeLayer setStrokeColor:](v10->_borderLayer, "setStrokeColor:", [v18 CGColor]);
+    systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
+    -[CAShapeLayer setStrokeColor:](v10->_borderLayer, "setStrokeColor:", [systemFillColor CGColor]);
 
     [(CAShapeLayer *)v10->_borderLayer setLineWidth:v14];
-    v19 = [(MUCircleProgressView *)v10 layer];
-    [v19 addSublayer:v10->_borderLayer];
+    layer2 = [(MUCircleProgressView *)v10 layer];
+    [layer2 addSublayer:v10->_borderLayer];
 
-    v20 = [MEMORY[0x1E69794A0] layer];
+    layer3 = [MEMORY[0x1E69794A0] layer];
     progressLayer = v10->_progressLayer;
-    v10->_progressLayer = v20;
+    v10->_progressLayer = layer3;
 
     [(MUCircleProgressView *)v10 bounds];
     [(CAShapeLayer *)v10->_progressLayer setFrame:?];
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setFillColor:](v10->_progressLayer, "setFillColor:", [v22 CGColor]);
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setFillColor:](v10->_progressLayer, "setFillColor:", [clearColor2 CGColor]);
 
-    v23 = [(MUCircleProgressView *)v10 tintColor];
-    -[CAShapeLayer setStrokeColor:](v10->_progressLayer, "setStrokeColor:", [v23 CGColor]);
+    tintColor = [(MUCircleProgressView *)v10 tintColor];
+    -[CAShapeLayer setStrokeColor:](v10->_progressLayer, "setStrokeColor:", [tintColor CGColor]);
 
     [(CAShapeLayer *)v10->_progressLayer setLineWidth:v14];
     v24 = *MEMORY[0x1E6979E78];
@@ -261,8 +261,8 @@
     [(CAShapeLayer *)v25 setTransform:&v49];
     [(CAShapeLayer *)v10->_progressLayer setStrokeStart:0.0];
     [(CAShapeLayer *)v10->_progressLayer setStrokeEnd:0.0];
-    v26 = [(MUCircleProgressView *)v10 layer];
-    [v26 addSublayer:v10->_progressLayer];
+    layer4 = [(MUCircleProgressView *)v10 layer];
+    [layer4 addSublayer:v10->_progressLayer];
 
     v27 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     imageView = v10->_imageView;
@@ -270,35 +270,35 @@
 
     [(UIImageView *)v10->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MUCircleProgressView *)v10 addSubview:v10->_imageView];
-    v29 = [(UIImageView *)v10->_imageView centerXAnchor];
-    v30 = [(MUCircleProgressView *)v10 centerXAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    centerXAnchor = [(UIImageView *)v10->_imageView centerXAnchor];
+    centerXAnchor2 = [(MUCircleProgressView *)v10 centerXAnchor];
+    v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v31 setActive:1];
 
-    v32 = [(UIImageView *)v10->_imageView centerYAnchor];
-    v33 = [(MUCircleProgressView *)v10 centerYAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    centerYAnchor = [(UIImageView *)v10->_imageView centerYAnchor];
+    centerYAnchor2 = [(MUCircleProgressView *)v10 centerYAnchor];
+    v34 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v34 setActive:1];
 
-    v35 = [MEMORY[0x1E69794A0] layer];
+    layer5 = [MEMORY[0x1E69794A0] layer];
     indeterminateLayer = v10->_indeterminateLayer;
-    v10->_indeterminateLayer = v35;
+    v10->_indeterminateLayer = layer5;
 
     [(MUCircleProgressView *)v10 bounds];
     [(CAShapeLayer *)v10->_indeterminateLayer setFrame:?];
-    v37 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setFillColor:](v10->_indeterminateLayer, "setFillColor:", [v37 CGColor]);
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setFillColor:](v10->_indeterminateLayer, "setFillColor:", [clearColor3 CGColor]);
 
-    v38 = [(MUCircleProgressView *)v10 tintColor];
-    -[CAShapeLayer setStrokeColor:](v10->_indeterminateLayer, "setStrokeColor:", [v38 CGColor]);
+    tintColor2 = [(MUCircleProgressView *)v10 tintColor];
+    -[CAShapeLayer setStrokeColor:](v10->_indeterminateLayer, "setStrokeColor:", [tintColor2 CGColor]);
 
     [(CAShapeLayer *)v10->_indeterminateLayer setLineWidth:v14];
     [(CAShapeLayer *)v10->_indeterminateLayer setLineCap:v24];
     [(CAShapeLayer *)v10->_indeterminateLayer setStrokeStart:0.166666672];
     [(CAShapeLayer *)v10->_indeterminateLayer setStrokeEnd:1.0];
     [(CAShapeLayer *)v10->_indeterminateLayer setHidden:1];
-    v39 = [(MUCircleProgressView *)v10 layer];
-    [v39 addSublayer:v10->_indeterminateLayer];
+    layer6 = [(MUCircleProgressView *)v10 layer];
+    [layer6 addSublayer:v10->_indeterminateLayer];
 
     v40 = objc_opt_self();
     v53[0] = v40;

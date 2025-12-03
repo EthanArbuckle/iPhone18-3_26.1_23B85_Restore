@@ -1,9 +1,9 @@
 @interface ICMentionsParticipantNode
 - (NSMutableSet)participants;
 - (NSMutableSet)possibleParticipants;
-- (void)addChild:(id)a3;
-- (void)addParticipant:(id)a3;
-- (void)addPossibleParticipant:(id)a3;
+- (void)addChild:(id)child;
+- (void)addParticipant:(id)participant;
+- (void)addPossibleParticipant:(id)participant;
 @end
 
 @implementation ICMentionsParticipantNode
@@ -38,38 +38,38 @@
   return possibleParticipants;
 }
 
-- (void)addParticipant:(id)a3
+- (void)addParticipant:(id)participant
 {
-  v5 = a3;
-  v4 = [(ICMentionsParticipantNode *)self participants];
-  [v4 addObject:v5];
+  participantCopy = participant;
+  participants = [(ICMentionsParticipantNode *)self participants];
+  [participants addObject:participantCopy];
 
-  [(ICMentionsParticipantNode *)self addPossibleParticipant:v5];
+  [(ICMentionsParticipantNode *)self addPossibleParticipant:participantCopy];
 }
 
-- (void)addPossibleParticipant:(id)a3
+- (void)addPossibleParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [(ICMentionsParticipantNode *)self possibleParticipants];
-  [v5 addObject:v4];
+  participantCopy = participant;
+  possibleParticipants = [(ICMentionsParticipantNode *)self possibleParticipants];
+  [possibleParticipants addObject:participantCopy];
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   children = self->_children;
-  v9 = v4;
+  v9 = childCopy;
   if (!children)
   {
     v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:1];
     v7 = self->_children;
     self->_children = v6;
 
-    v4 = v9;
+    childCopy = v9;
     children = self->_children;
   }
 
-  v8 = [v4 key];
+  v8 = [childCopy key];
   [(NSMutableDictionary *)children setObject:v9 forKey:v8];
 }
 

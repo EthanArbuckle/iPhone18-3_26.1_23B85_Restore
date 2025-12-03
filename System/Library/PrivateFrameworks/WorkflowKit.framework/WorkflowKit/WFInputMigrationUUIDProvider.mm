@@ -1,24 +1,24 @@
 @interface WFInputMigrationUUIDProvider
-- (WFInputMigrationUUIDProvider)initWithAction:(id)a3 atPosition:(unint64_t)a4;
-- (id)generateOutputUUIDForAction:(id)a3;
+- (WFInputMigrationUUIDProvider)initWithAction:(id)action atPosition:(unint64_t)position;
+- (id)generateOutputUUIDForAction:(id)action;
 @end
 
 @implementation WFInputMigrationUUIDProvider
 
-- (id)generateOutputUUIDForAction:(id)a3
+- (id)generateOutputUUIDForAction:(id)action
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(WFInputMigrationUUIDProvider *)self action];
+  actionCopy = action;
+  action = [(WFInputMigrationUUIDProvider *)self action];
 
-  if (v6 != v5)
+  if (action != actionCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFInputMigrationUUIDProvider.m" lineNumber:59 description:{@"[%@] should be initialized with the UUID requested action %@", objc_opt_class(), v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFInputMigrationUUIDProvider.m" lineNumber:59 description:{@"[%@] should be initialized with the UUID requested action %@", objc_opt_class(), actionCopy}];
   }
 
-  v7 = [(WFInputMigrationUUIDProvider *)self position];
-  v8 = v5;
+  position = [(WFInputMigrationUUIDProvider *)self position];
+  v8 = actionCopy;
   if (!v8)
   {
     __assert_rtn("WFActionBootDeterministicID", "WFInputMigrationUUIDProvider.m", 24, "action != nil");
@@ -26,10 +26,10 @@
 
   v9 = v8;
   v10 = objc_alloc_init(MEMORY[0x1E69AA8A0]);
-  v11 = [v9 identifier];
-  v12 = [v10 combineContentsOfPropertyListObject:v11];
+  identifier = [v9 identifier];
+  v12 = [v10 combineContentsOfPropertyListObject:identifier];
 
-  v13 = [v10 combineInteger:v7];
+  v13 = [v10 combineInteger:position];
   v23 = 0;
   v14 = WFKernelBootTime(&v23);
   v15 = v23;
@@ -49,20 +49,20 @@
   }
 
   v18 = WFUUIDv4FromInteger();
-  v19 = [v18 UUIDString];
+  uUIDString = [v18 UUIDString];
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return uUIDString;
 }
 
-- (WFInputMigrationUUIDProvider)initWithAction:(id)a3 atPosition:(unint64_t)a4
+- (WFInputMigrationUUIDProvider)initWithAction:(id)action atPosition:(unint64_t)position
 {
-  v8 = a3;
-  if (!v8)
+  actionCopy = action;
+  if (!actionCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFInputMigrationUUIDProvider.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFInputMigrationUUIDProvider.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"action"}];
   }
 
   v14.receiver = self;
@@ -71,8 +71,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_action, a3);
-    v10->_position = a4;
+    objc_storeStrong(&v9->_action, action);
+    v10->_position = position;
     v11 = v10;
   }
 

@@ -1,38 +1,38 @@
 @interface DBSmartWidgetEngine
-- (BOOL)_useRangeEnd:(id)a3 refreshDate:(id)a4;
-- (BOOL)_useRangeStart:(id)a3 now:(id)a4 refreshDate:(id)a5;
+- (BOOL)_useRangeEnd:(id)end refreshDate:(id)date;
+- (BOOL)_useRangeStart:(id)start now:(id)now refreshDate:(id)date;
 - (BOOL)active;
 - (BOOL)hasHighPriorityPrediction;
 - (DBEnvironment)environment;
-- (DBSmartWidgetEngine)initWithEnvironment:(id)a3;
+- (DBSmartWidgetEngine)initWithEnvironment:(id)environment;
 - (NSArray)currentPredictions;
 - (NSString)description;
-- (id)_limitPredictions:(id)a3;
-- (id)_sourceForPrediction:(id)a3;
+- (id)_limitPredictions:(id)predictions;
+- (id)_sourceForPrediction:(id)prediction;
 - (void)_handleAppLibraryRefresh;
 - (void)_postUpdatedCurrentPredictionsIfNeeded;
 - (void)_resetCurrentPredictions;
 - (void)_start;
 - (void)_stop;
 - (void)_updatePredictionsFresh;
-- (void)_updateWithDashboardStateProvider:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_updateWithDashboardStateProvider:(id)provider;
+- (void)addObserver:(id)observer;
 - (void)currentPredictions;
-- (void)dashboardStateProvider:(id)a3 didChangeActiveBundleIdentifier:(id)a4;
-- (void)dashboardStateProvider:(id)a3 didChangeConnectionReady:(BOOL)a4;
-- (void)dashboardStateProvider:(id)a3 didChangeHomeScreenPageType:(unint64_t)a4;
-- (void)dashboardStateProvider:(id)a3 didChangeLockoutState:(unint64_t)a4;
+- (void)dashboardStateProvider:(id)provider didChangeActiveBundleIdentifier:(id)identifier;
+- (void)dashboardStateProvider:(id)provider didChangeConnectionReady:(BOOL)ready;
+- (void)dashboardStateProvider:(id)provider didChangeHomeScreenPageType:(unint64_t)type;
+- (void)dashboardStateProvider:(id)provider didChangeLockoutState:(unint64_t)state;
 - (void)dealloc;
-- (void)handleEvent:(id)a3;
+- (void)handleEvent:(id)event;
 - (void)invalidate;
 - (void)refreshDisabled;
 - (void)refreshGarageDoors;
 - (void)refreshPredictions;
-- (void)removeObserver:(id)a3;
-- (void)sessionShouldHidePrediction:(id)a3;
-- (void)setNextRefresh:(id)a3;
-- (void)setPredictionsFresh:(BOOL)a3;
-- (void)sourceDidRefresh:(id)a3 predictionsUpdated:(BOOL)a4;
+- (void)removeObserver:(id)observer;
+- (void)sessionShouldHidePrediction:(id)prediction;
+- (void)setNextRefresh:(id)refresh;
+- (void)setPredictionsFresh:(BOOL)fresh;
+- (void)sourceDidRefresh:(id)refresh predictionsUpdated:(BOOL)updated;
 - (void)startIfNeeded;
 - (void)stopIfNeeded;
 @end
@@ -49,9 +49,9 @@
 
   if ([(DBSmartWidgetEngine *)self active])
   {
-    v4 = [(DBSmartWidgetEngine *)self stoppingTimer];
+    stoppingTimer = [(DBSmartWidgetEngine *)self stoppingTimer];
 
-    if (!v4)
+    if (!stoppingTimer)
     {
       keyExistsAndHasValidFormat = 0;
       AppIntegerValue = CFPreferencesGetAppIntegerValue(@"SmartEngineStopDelay", @"com.apple.carplay.internal", &keyExistsAndHasValidFormat);
@@ -84,17 +84,17 @@
 
 - (BOOL)active
 {
-  v2 = [(DBSmartWidgetEngine *)self sources];
-  v3 = [v2 count] != 0;
+  sources = [(DBSmartWidgetEngine *)self sources];
+  v3 = [sources count] != 0;
 
   return v3;
 }
 
 - (BOOL)hasHighPriorityPrediction
 {
-  v2 = [(DBSmartWidgetEngine *)self currentPredictions];
-  v3 = [v2 firstObject];
-  v4 = [v3 score] > 19;
+  currentPredictions = [(DBSmartWidgetEngine *)self currentPredictions];
+  firstObject = [currentPredictions firstObject];
+  v4 = [firstObject score] > 19;
 
   return v4;
 }
@@ -116,8 +116,8 @@
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v6 = [(DBSmartWidgetEngine *)self sources];
-    v7 = [v6 countByEnumeratingWithState:&v55 objects:v66 count:16];
+    sources = [(DBSmartWidgetEngine *)self sources];
+    v7 = [sources countByEnumeratingWithState:&v55 objects:v66 count:16];
     if (v7)
     {
       v8 = v7;
@@ -128,14 +128,14 @@
         {
           if (*v56 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(sources);
           }
 
-          v11 = [*(*(&v55 + 1) + 8 * i) predictions];
-          [v5 addObjectsFromArray:v11];
+          predictions = [*(*(&v55 + 1) + 8 * i) predictions];
+          [v5 addObjectsFromArray:predictions];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v55 objects:v66 count:16];
+        v8 = [sources countByEnumeratingWithState:&v55 objects:v66 count:16];
       }
 
       while (v8);
@@ -158,7 +158,7 @@
     [v5 filterUsingPredicate:v16];
 
     v17 = [MEMORY[0x277CBEAA8] now];
-    v18 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     v41 = objc_opt_new();
     v50 = 0u;
     v51 = 0u;
@@ -180,16 +180,16 @@
           }
 
           v20 = *(*(&v50 + 1) + 8 * v19);
-          v21 = [v20 validRanges];
-          v22 = [v21 count] == 0;
+          validRanges = [v20 validRanges];
+          v22 = [validRanges count] == 0;
 
           v48 = 0u;
           v49 = 0u;
           v46 = 0u;
           v47 = 0u;
           v45 = v20;
-          v23 = [v20 validRanges];
-          v24 = [v23 countByEnumeratingWithState:&v46 objects:v63 count:16];
+          validRanges2 = [v20 validRanges];
+          v24 = [validRanges2 countByEnumeratingWithState:&v46 objects:v63 count:16];
           if (v24)
           {
             v25 = v24;
@@ -200,35 +200,35 @@
               {
                 if (*v47 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(validRanges2);
                 }
 
                 v28 = *(*(&v46 + 1) + 8 * j);
                 if (![v28 containsDate:v17])
                 {
-                  if (![(DBSmartWidgetEngine *)self _useRangeStart:v28 now:v17 refreshDate:v18])
+                  if (![(DBSmartWidgetEngine *)self _useRangeStart:v28 now:v17 refreshDate:distantFuture])
                   {
                     continue;
                   }
 
-                  v29 = [v28 start];
+                  start = [v28 start];
                   goto LABEL_26;
                 }
 
-                if ([(DBSmartWidgetEngine *)self _useRangeEnd:v28 refreshDate:v18])
+                if ([(DBSmartWidgetEngine *)self _useRangeEnd:v28 refreshDate:distantFuture])
                 {
-                  v29 = [v28 end];
+                  start = [v28 end];
                   v22 = 1;
 LABEL_26:
 
-                  v18 = v29;
+                  distantFuture = start;
                   continue;
                 }
 
                 v22 = 1;
               }
 
-              v25 = [v23 countByEnumeratingWithState:&v46 objects:v63 count:16];
+              v25 = [validRanges2 countByEnumeratingWithState:&v46 objects:v63 count:16];
             }
 
             while (v25);
@@ -274,7 +274,7 @@ LABEL_26:
     }
 
     v35 = v41;
-    [(DBSmartWidgetEngine *)self setNextRefresh:v18];
+    [(DBSmartWidgetEngine *)self setNextRefresh:distantFuture];
     [v35 sortUsingComparator:&__block_literal_global_30];
     v36 = [(DBSmartWidgetEngine *)self _limitPredictions:v35];
 
@@ -289,8 +289,8 @@ LABEL_26:
 
 - (void)_updatePredictionsFresh
 {
-  v2 = [a2 lastRefreshRequest];
-  v8 = [DBDateFormatter formattedDateTimeStamp:v2];
+  lastRefreshRequest = [a2 lastRefreshRequest];
+  v8 = [DBDateFormatter formattedDateTimeStamp:lastRefreshRequest];
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v3, v4, v5, v6, v7, 0x16u);
 }
@@ -302,9 +302,9 @@ LABEL_26:
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (DBSmartWidgetEngine)initWithEnvironment:(id)a3
+- (DBSmartWidgetEngine)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v25.receiver = self;
   v25.super_class = DBSmartWidgetEngine;
   v5 = [(DBSmartWidgetEngine *)&v25 init];
@@ -316,15 +316,15 @@ LABEL_26:
       [DBSmartWidgetEngine initWithEnvironment:];
     }
 
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = objc_alloc_init(DBHomeManager);
     homeManager = v5->_homeManager;
     v5->_homeManager = v7;
 
-    v9 = [v4 environmentConfiguration];
-    v10 = [v9 liveActivityMonitor];
+    environmentConfiguration = [environmentCopy environmentConfiguration];
+    liveActivityMonitor = [environmentConfiguration liveActivityMonitor];
     liveActivityMonitor = v5->_liveActivityMonitor;
-    v5->_liveActivityMonitor = v10;
+    v5->_liveActivityMonitor = liveActivityMonitor;
 
     v12 = [objc_alloc(MEMORY[0x277CF89C0]) initWithProtocol:&unk_285AE7A98];
     observers = v5->_observers;
@@ -356,11 +356,11 @@ LABEL_26:
 
     if (v21)
     {
-      v22 = [v21 dashboardStateProvider];
-      [(DBSmartWidgetEngine *)v5 _updateWithDashboardStateProvider:v22];
+      dashboardStateProvider = [v21 dashboardStateProvider];
+      [(DBSmartWidgetEngine *)v5 _updateWithDashboardStateProvider:dashboardStateProvider];
 
-      v23 = [v21 dashboardStateProvider];
-      [v23 addObserver:v5];
+      dashboardStateProvider2 = [v21 dashboardStateProvider];
+      [dashboardStateProvider2 addObserver:v5];
     }
   }
 
@@ -376,7 +376,7 @@ LABEL_26:
 
 - (void)startIfNeeded
 {
-  v1 = [a1 stoppingTimer];
+  stoppingTimer = [self stoppingTimer];
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
 }
@@ -402,18 +402,18 @@ LABEL_26:
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetEngine *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBSmartWidgetEngine *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetEngine *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBSmartWidgetEngine *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (void)_resetCurrentPredictions
@@ -437,42 +437,42 @@ LABEL_26:
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (BOOL)_useRangeEnd:(id)a3 refreshDate:(id)a4
+- (BOOL)_useRangeEnd:(id)end refreshDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 hasEnd];
-  v8 = [v6 end];
+  dateCopy = date;
+  endCopy = end;
+  hasEnd = [endCopy hasEnd];
+  v8 = [endCopy end];
 
   [v8 timeIntervalSinceReferenceDate];
   v10 = v9;
-  [v5 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v12 = v11;
 
-  return (v10 <= v12) & v7;
+  return (v10 <= v12) & hasEnd;
 }
 
-- (BOOL)_useRangeStart:(id)a3 now:(id)a4 refreshDate:(id)a5
+- (BOOL)_useRangeStart:(id)start now:(id)now refreshDate:(id)date
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 hasStart];
-  v11 = [v9 start];
-  [v11 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  nowCopy = now;
+  startCopy = start;
+  hasStart = [startCopy hasStart];
+  start = [startCopy start];
+  [start timeIntervalSinceReferenceDate];
   v13 = v12;
-  [v7 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v15 = v14;
 
-  v16 = [v9 start];
+  start2 = [startCopy start];
 
-  [v16 timeIntervalSinceReferenceDate];
+  [start2 timeIntervalSinceReferenceDate];
   v18 = v17;
-  [v8 timeIntervalSinceReferenceDate];
+  [nowCopy timeIntervalSinceReferenceDate];
   v20 = v19;
 
   v21 = v13 <= v15 && v18 >= v20;
-  return v21 & v10;
+  return v21 & hasStart;
 }
 
 uint64_t __41__DBSmartWidgetEngine_currentPredictions__block_invoke(uint64_t a1, void *a2)
@@ -486,10 +486,10 @@ uint64_t __41__DBSmartWidgetEngine_currentPredictions__block_invoke(uint64_t a1,
   return v3 ^ 1;
 }
 
-- (id)_limitPredictions:(id)a3
+- (id)_limitPredictions:(id)predictions
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionsCopy = predictions;
   keyExistsAndHasValidFormat[0] = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"SmartEngine_MaxPredictions", @"com.apple.carplay.internal", keyExistsAndHasValidFormat);
   if (keyExistsAndHasValidFormat[0])
@@ -502,9 +502,9 @@ uint64_t __41__DBSmartWidgetEngine_currentPredictions__block_invoke(uint64_t a1,
     v6 = 6;
   }
 
-  if ([v4 count] <= v6)
+  if ([predictionsCopy count] <= v6)
   {
-    v8 = v4;
+    v8 = predictionsCopy;
   }
 
   else
@@ -512,10 +512,10 @@ uint64_t __41__DBSmartWidgetEngine_currentPredictions__block_invoke(uint64_t a1,
     v7 = DBLogForCategory(9uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [DBSmartWidgetEngine _limitPredictions:v4];
+      [DBSmartWidgetEngine _limitPredictions:predictionsCopy];
     }
 
-    v36 = v4;
+    v36 = predictionsCopy;
 
     v8 = objc_opt_new();
     v9 = objc_opt_new();
@@ -524,8 +524,8 @@ uint64_t __41__DBSmartWidgetEngine_currentPredictions__block_invoke(uint64_t a1,
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v11 = [(DBSmartWidgetEngine *)self sources];
-    v12 = [v11 countByEnumeratingWithState:&v42 objects:v51 count:16];
+    sources = [(DBSmartWidgetEngine *)self sources];
+    v12 = [sources countByEnumeratingWithState:&v42 objects:v51 count:16];
     if (v12)
     {
       v13 = v12;
@@ -536,13 +536,13 @@ uint64_t __41__DBSmartWidgetEngine_currentPredictions__block_invoke(uint64_t a1,
         {
           if (*v43 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(sources);
           }
 
           [v9 addObject:objc_opt_class()];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v42 objects:v51 count:16];
+        v13 = [sources countByEnumeratingWithState:&v42 objects:v51 count:16];
       }
 
       while (v13);
@@ -586,12 +586,12 @@ uint64_t __41__DBSmartWidgetEngine_currentPredictions__block_invoke(uint64_t a1,
             v22 = DBLogForCategory(9uLL);
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
             {
-              v28 = [objc_opt_class() sourceClass];
+              sourceClass = [objc_opt_class() sourceClass];
               *keyExistsAndHasValidFormat = 138543618;
-              v47 = v28;
+              v47 = sourceClass;
               v48 = 2114;
               v49 = v21;
-              v29 = v28;
+              v29 = sourceClass;
               _os_log_debug_impl(&dword_248146000, v22, OS_LOG_TYPE_DEBUG, "[limitPredictions] first from %{public}@ %{public}@", keyExistsAndHasValidFormat, 0x16u);
             }
 
@@ -652,17 +652,17 @@ LABEL_39:
         break;
       }
 
-      v31 = [v10 firstObject];
+      firstObject = [v10 firstObject];
       [v10 removeObjectAtIndex:0];
       v32 = DBLogForCategory(9uLL);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
         *keyExistsAndHasValidFormat = 138543362;
-        v47 = v31;
+        v47 = firstObject;
         _os_log_debug_impl(&dword_248146000, v32, OS_LOG_TYPE_DEBUG, "[limitPredictions] Adding back %{public}@", keyExistsAndHasValidFormat, 0xCu);
       }
 
-      [v8 addObject:v31];
+      [v8 addObject:firstObject];
     }
 
     [v8 sortUsingComparator:&__block_literal_global_301];
@@ -672,53 +672,53 @@ LABEL_39:
       [(DBSmartWidgetEngine *)v8 _limitPredictions:v10];
     }
 
-    v4 = v36;
+    predictionsCopy = v36;
   }
 
   return v8;
 }
 
-- (void)sessionShouldHidePrediction:(id)a3
+- (void)sessionShouldHidePrediction:(id)prediction
 {
-  v4 = a3;
+  predictionCopy = prediction;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(DBSmartWidgetEngine *)self clearedPredictionsForSession];
-  [v5 addObject:v4];
+  clearedPredictionsForSession = [(DBSmartWidgetEngine *)self clearedPredictionsForSession];
+  [clearedPredictionsForSession addObject:predictionCopy];
 
   [(DBSmartWidgetEngine *)self setUpdatesPending:1];
 
   [(DBSmartWidgetEngine *)self _postUpdatedCurrentPredictionsIfNeeded];
 }
 
-- (void)setPredictionsFresh:(BOOL)a3
+- (void)setPredictionsFresh:(BOOL)fresh
 {
-  if (self->_predictionsFresh != a3)
+  if (self->_predictionsFresh != fresh)
   {
-    self->_predictionsFresh = a3;
-    v5 = [(DBSmartWidgetEngine *)self observers];
-    [v5 smartWidgetEngineDidUpdatePredictionsFresh:self];
+    self->_predictionsFresh = fresh;
+    observers = [(DBSmartWidgetEngine *)self observers];
+    [observers smartWidgetEngineDidUpdatePredictionsFresh:self];
   }
 }
 
-- (void)setNextRefresh:(id)a3
+- (void)setNextRefresh:(id)refresh
 {
-  v5 = a3;
+  refreshCopy = refresh;
   v6 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [DBSmartWidgetEngine setNextRefresh:v5];
+    [DBSmartWidgetEngine setNextRefresh:refreshCopy];
   }
 
-  if (![DBComparison isValue:self->_nextRefresh equalTo:v5])
+  if (![DBComparison isValue:self->_nextRefresh equalTo:refreshCopy])
   {
-    objc_storeStrong(&self->_nextRefresh, a3);
-    v7 = [(DBSmartWidgetEngine *)self refreshTimer];
-    [v7 invalidate];
+    objc_storeStrong(&self->_nextRefresh, refresh);
+    refreshTimer = [(DBSmartWidgetEngine *)self refreshTimer];
+    [refreshTimer invalidate];
 
     [(DBSmartWidgetEngine *)self setRefreshTimer:0];
-    if (v5 && ([MEMORY[0x277CBEAA8] distantFuture], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v5, "isEqualToDate:", v8), v8, (v9 & 1) == 0))
+    if (refreshCopy && ([MEMORY[0x277CBEAA8] distantFuture], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(refreshCopy, "isEqualToDate:", v8), v8, (v9 & 1) == 0))
     {
-      [v5 timeIntervalSinceReferenceDate];
+      [refreshCopy timeIntervalSinceReferenceDate];
       v12 = v11;
       v13 = [MEMORY[0x277CBEAA8] now];
       [v13 timeIntervalSinceReferenceDate];
@@ -808,24 +808,24 @@ void __38__DBSmartWidgetEngine_setNextRefresh___block_invoke(uint64_t a1)
     v7 = @"NO";
   }
 
-  v8 = [(DBSmartWidgetEngine *)self lastRefreshRequest];
-  v9 = [DBDateFormatter formattedDateTimeStamp:v8];
-  v10 = [(DBSmartWidgetEngine *)self sources];
-  v11 = [v3 stringWithFormat:@"<%@: %p updatesPending=%@ predictionsFresh=%@ lastRefreshRequest=%@ sources=%@>", v5, self, v6, v7, v9, v10];
+  lastRefreshRequest = [(DBSmartWidgetEngine *)self lastRefreshRequest];
+  v9 = [DBDateFormatter formattedDateTimeStamp:lastRefreshRequest];
+  sources = [(DBSmartWidgetEngine *)self sources];
+  v11 = [v3 stringWithFormat:@"<%@: %p updatesPending=%@ predictionsFresh=%@ lastRefreshRequest=%@ sources=%@>", v5, self, v6, v7, v9, sources];
 
   return v11;
 }
 
-- (id)_sourceForPrediction:(id)a3
+- (id)_sourceForPrediction:(id)prediction
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionCopy = prediction;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(DBSmartWidgetEngine *)self sources];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sources = [(DBSmartWidgetEngine *)self sources];
+  v6 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -835,12 +835,12 @@ void __38__DBSmartWidgetEngine_setNextRefresh___block_invoke(uint64_t a1)
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sources);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [objc_opt_class() predictionClasses];
-        v11 = [v10 containsObject:objc_opt_class()];
+        predictionClasses = [objc_opt_class() predictionClasses];
+        v11 = [predictionClasses containsObject:objc_opt_class()];
 
         if (v11)
         {
@@ -849,7 +849,7 @@ void __38__DBSmartWidgetEngine_setNextRefresh___block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -873,16 +873,16 @@ LABEL_11:
 
 - (void)invalidate
 {
-  v3 = [(DBSmartWidgetEngine *)self stoppingTimer];
-  [v3 invalidate];
+  stoppingTimer = [(DBSmartWidgetEngine *)self stoppingTimer];
+  [stoppingTimer invalidate];
 
   [(DBSmartWidgetEngine *)self _stop];
 }
 
-- (void)sourceDidRefresh:(id)a3 predictionsUpdated:(BOOL)a4
+- (void)sourceDidRefresh:(id)refresh predictionsUpdated:(BOOL)updated
 {
-  v4 = a4;
-  v6 = a3;
+  updatedCopy = updated;
+  refreshCopy = refresh;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v7 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -890,7 +890,7 @@ LABEL_11:
     [DBSmartWidgetEngine sourceDidRefresh:predictionsUpdated:];
   }
 
-  if (v4)
+  if (updatedCopy)
   {
     [(DBSmartWidgetEngine *)self setUpdatesPending:1];
   }
@@ -899,86 +899,86 @@ LABEL_11:
   [(DBSmartWidgetEngine *)self _postUpdatedCurrentPredictionsIfNeeded];
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetEngine *)self environment];
-  [v5 handleEvent:v4];
+  eventCopy = event;
+  environment = [(DBSmartWidgetEngine *)self environment];
+  [environment handleEvent:eventCopy];
 }
 
-- (void)dashboardStateProvider:(id)a3 didChangeConnectionReady:(BOOL)a4
+- (void)dashboardStateProvider:(id)provider didChangeConnectionReady:(BOOL)ready
 {
-  v5 = a3;
+  providerCopy = provider;
   v6 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [DBSmartWidgetEngine dashboardStateProvider:didChangeConnectionReady:];
   }
 
-  [(DBSmartWidgetEngine *)self _updateWithDashboardStateProvider:v5];
+  [(DBSmartWidgetEngine *)self _updateWithDashboardStateProvider:providerCopy];
 }
 
-- (void)dashboardStateProvider:(id)a3 didChangeLockoutState:(unint64_t)a4
+- (void)dashboardStateProvider:(id)provider didChangeLockoutState:(unint64_t)state
 {
-  v6 = a3;
+  providerCopy = provider;
   v7 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [DBSmartWidgetEngine dashboardStateProvider:a4 didChangeLockoutState:?];
+    [DBSmartWidgetEngine dashboardStateProvider:state didChangeLockoutState:?];
   }
 
-  [(DBSmartWidgetEngine *)self _updateWithDashboardStateProvider:v6];
+  [(DBSmartWidgetEngine *)self _updateWithDashboardStateProvider:providerCopy];
 }
 
-- (void)dashboardStateProvider:(id)a3 didChangeHomeScreenPageType:(unint64_t)a4
+- (void)dashboardStateProvider:(id)provider didChangeHomeScreenPageType:(unint64_t)type
 {
-  v6 = a3;
+  providerCopy = provider;
   v7 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [DBSmartWidgetEngine dashboardStateProvider:a4 didChangeHomeScreenPageType:?];
+    [DBSmartWidgetEngine dashboardStateProvider:type didChangeHomeScreenPageType:?];
   }
 
-  [(DBSmartWidgetEngine *)self _updateWithDashboardStateProvider:v6];
+  [(DBSmartWidgetEngine *)self _updateWithDashboardStateProvider:providerCopy];
 }
 
-- (void)dashboardStateProvider:(id)a3 didChangeActiveBundleIdentifier:(id)a4
+- (void)dashboardStateProvider:(id)provider didChangeActiveBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v8 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [DBSmartWidgetEngine dashboardStateProvider:didChangeActiveBundleIdentifier:];
   }
 
-  [(DBSmartWidgetEngine *)self _updateWithDashboardStateProvider:v7];
+  [(DBSmartWidgetEngine *)self _updateWithDashboardStateProvider:providerCopy];
 }
 
-- (void)_updateWithDashboardStateProvider:(id)a3
+- (void)_updateWithDashboardStateProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [DBSmartWidgetEngine _updateWithDashboardStateProvider:v4];
+    [DBSmartWidgetEngine _updateWithDashboardStateProvider:providerCopy];
   }
 
-  if (![v4 connectionReady] || objc_msgSend(v4, "lockoutState") != 2)
+  if (![providerCopy connectionReady] || objc_msgSend(providerCopy, "lockoutState") != 2)
   {
     goto LABEL_9;
   }
 
-  v6 = [v4 activeBundleIdentifier];
-  if (![v6 isEqualToString:@"com.apple.CarPlay.dashboard"])
+  activeBundleIdentifier = [providerCopy activeBundleIdentifier];
+  if (![activeBundleIdentifier isEqualToString:@"com.apple.CarPlay.dashboard"])
   {
 
     goto LABEL_9;
   }
 
-  v7 = [v4 pageType];
+  pageType = [providerCopy pageType];
 
-  if (v7 != 1)
+  if (pageType != 1)
   {
 LABEL_9:
     [(DBSmartWidgetEngine *)self stopIfNeeded];

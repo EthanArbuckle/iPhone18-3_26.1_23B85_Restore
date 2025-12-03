@@ -1,27 +1,27 @@
 @interface _TUIFeedCaptureSection
-- (_TUIFeedCaptureSection)initWithEntry:(id)a3 bindings:(id)a4 template:(id)a5;
+- (_TUIFeedCaptureSection)initWithEntry:(id)entry bindings:(id)bindings template:(id)template;
 - (id)dictionaryRepresentation;
-- (void)captureDynamicState:(id)a3 forKind:(id)a4 instance:(id)a5 parameters:(id)a6;
-- (void)captureImageResource:(id)a3 forKind:(id)a4 naturalSize:(CGSize)a5 contentsScale:(double)a6 instance:(id)a7 options:(id)a8;
-- (void)captureIntrinsicImageResource:(id)a3 forKind:(id)a4 instance:(id)a5 options:(id)a6;
+- (void)captureDynamicState:(id)state forKind:(id)kind instance:(id)instance parameters:(id)parameters;
+- (void)captureImageResource:(id)resource forKind:(id)kind naturalSize:(CGSize)size contentsScale:(double)scale instance:(id)instance options:(id)options;
+- (void)captureIntrinsicImageResource:(id)resource forKind:(id)kind instance:(id)instance options:(id)options;
 @end
 
 @implementation _TUIFeedCaptureSection
 
-- (_TUIFeedCaptureSection)initWithEntry:(id)a3 bindings:(id)a4 template:(id)a5
+- (_TUIFeedCaptureSection)initWithEntry:(id)entry bindings:(id)bindings template:(id)template
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  entryCopy = entry;
+  bindingsCopy = bindings;
+  templateCopy = template;
   v19.receiver = self;
   v19.super_class = _TUIFeedCaptureSection;
   v12 = [(_TUIFeedCaptureSection *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_entry, a3);
-    objc_storeStrong(&v13->_bindings, a4);
-    objc_storeStrong(&v13->_aTemplate, a5);
+    objc_storeStrong(&v12->_entry, entry);
+    objc_storeStrong(&v13->_bindings, bindings);
+    objc_storeStrong(&v13->_aTemplate, template);
     v14 = objc_opt_new();
     dynamicStates = v13->_dynamicStates;
     v13->_dynamicStates = v14;
@@ -34,37 +34,37 @@
   return v13;
 }
 
-- (void)captureDynamicState:(id)a3 forKind:(id)a4 instance:(id)a5 parameters:(id)a6
+- (void)captureDynamicState:(id)state forKind:(id)kind instance:(id)instance parameters:(id)parameters
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[_TUIFeedCaptureDynamicState alloc] initWithValue:v13 kind:v12 instance:v11 parameters:v10];
+  parametersCopy = parameters;
+  instanceCopy = instance;
+  kindCopy = kind;
+  stateCopy = state;
+  v14 = [[_TUIFeedCaptureDynamicState alloc] initWithValue:stateCopy kind:kindCopy instance:instanceCopy parameters:parametersCopy];
 
   [(NSMutableArray *)self->_dynamicStates addObject:v14];
 }
 
-- (void)captureImageResource:(id)a3 forKind:(id)a4 naturalSize:(CGSize)a5 contentsScale:(double)a6 instance:(id)a7 options:(id)a8
+- (void)captureImageResource:(id)resource forKind:(id)kind naturalSize:(CGSize)size contentsScale:(double)scale instance:(id)instance options:(id)options
 {
-  height = a5.height;
-  width = a5.width;
-  v15 = a8;
-  v16 = a7;
-  v17 = a4;
-  v18 = a3;
-  v19 = [[_TUIFeedCaptureImageResource alloc] initWithResource:v18 kind:v17 naturalSize:v16 contentsScale:v15 instance:width options:height, a6];
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
+  instanceCopy = instance;
+  kindCopy = kind;
+  resourceCopy = resource;
+  scale = [[_TUIFeedCaptureImageResource alloc] initWithResource:resourceCopy kind:kindCopy naturalSize:instanceCopy contentsScale:optionsCopy instance:width options:height, scale];
 
-  [(NSMutableArray *)self->_imageResources addObject:v19];
+  [(NSMutableArray *)self->_imageResources addObject:scale];
 }
 
-- (void)captureIntrinsicImageResource:(id)a3 forKind:(id)a4 instance:(id)a5 options:(id)a6
+- (void)captureIntrinsicImageResource:(id)resource forKind:(id)kind instance:(id)instance options:(id)options
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[_TUIFeedCaptureImageResource alloc] initWithResource:v13 kind:v12 instance:v11 options:v10];
+  optionsCopy = options;
+  instanceCopy = instance;
+  kindCopy = kind;
+  resourceCopy = resource;
+  v14 = [[_TUIFeedCaptureImageResource alloc] initWithResource:resourceCopy kind:kindCopy instance:instanceCopy options:optionsCopy];
 
   [(NSMutableArray *)self->_imageResources addObject:v14];
 }
@@ -73,35 +73,35 @@
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(TUIBindings *)self->_bindings data];
-  v6 = sub_75584(v5, v4, 0);
+  data = [(TUIBindings *)self->_bindings data];
+  v6 = sub_75584(data, v4, 0);
   [v3 setObject:v6 forKeyedSubscript:@"bindings"];
 
   if ([v4 count])
   {
-    v7 = [v4 allObjects];
-    v8 = [v7 sortedArrayUsingSelector:"compare:"];
+    allObjects = [v4 allObjects];
+    v8 = [allObjects sortedArrayUsingSelector:"compare:"];
     [v3 setObject:v8 forKeyedSubscript:@"bindingsDynamicKeyPaths"];
   }
 
-  v9 = [(TUITemplate *)self->_aTemplate package];
-  v10 = [v9 url];
-  v11 = [v10 URLByDeletingLastPathComponent];
-  v12 = [v11 URLByDeletingLastPathComponent];
+  package = [(TUITemplate *)self->_aTemplate package];
+  v10 = [package url];
+  uRLByDeletingLastPathComponent = [v10 URLByDeletingLastPathComponent];
+  v11URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
 
-  v13 = [(TUITemplate *)self->_aTemplate package];
-  v14 = [v13 url];
+  package2 = [(TUITemplate *)self->_aTemplate package];
+  v14 = [package2 url];
 
   v15 = [(TUITemplate *)self->_aTemplate url];
-  v16 = sub_756A4(v14, v12);
+  v16 = sub_756A4(v14, v11URLByDeletingLastPathComponent);
   [v3 setObject:v16 forKeyedSubscript:@"package"];
 
-  v17 = sub_756A4(v15, v12);
+  v17 = sub_756A4(v15, v11URLByDeletingLastPathComponent);
   [v3 setObject:v17 forKeyedSubscript:@"template"];
 
-  v18 = [(TUIFeedEntry *)self->_entry stackNames];
-  v19 = [v18 allObjects];
-  [v3 setObject:v19 forKeyedSubscript:@"stackNames"];
+  stackNames = [(TUIFeedEntry *)self->_entry stackNames];
+  allObjects2 = [stackNames allObjects];
+  [v3 setObject:allObjects2 forKeyedSubscript:@"stackNames"];
 
   return v3;
 }

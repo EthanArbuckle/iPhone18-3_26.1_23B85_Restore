@@ -1,37 +1,37 @@
 @interface VNRecognizedObjectObservation
-- (BOOL)isEqual:(id)a3;
-- (VNRecognizedObjectObservation)initWithCoder:(id)a3;
-- (VNRecognizedObjectObservation)initWithOriginatingRequestSpecifier:(id)a3 boundingBox:(CGRect)a4 confidence:(float)a5 labels:(id)a6 segmentationMask:(id)a7 groupId:(id)a8;
-- (VNRecognizedObjectObservation)initWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 confidence:(float)a5 labels:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (VNRecognizedObjectObservation)initWithCoder:(id)coder;
+- (VNRecognizedObjectObservation)initWithOriginatingRequestSpecifier:(id)specifier boundingBox:(CGRect)box confidence:(float)confidence labels:(id)labels segmentationMask:(id)mask groupId:(id)id;
+- (VNRecognizedObjectObservation)initWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box confidence:(float)confidence labels:(id)labels;
 - (id)description;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNRecognizedObjectObservation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = VNRecognizedObjectObservation;
-  [(VNDetectedObjectObservation *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_labels forKey:@"labels"];
+  [(VNDetectedObjectObservation *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_labels forKey:@"labels"];
   segmentationMask = self->_segmentationMask;
   if (segmentationMask)
   {
-    [v4 encodeObject:segmentationMask forKey:@"segmentationMask"];
+    [coderCopy encodeObject:segmentationMask forKey:@"segmentationMask"];
   }
 }
 
-- (VNRecognizedObjectObservation)initWithCoder:(id)a3
+- (VNRecognizedObjectObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = VNRecognizedObjectObservation;
-  v5 = [(VNDetectedObjectObservation *)&v16 initWithCoder:v4];
-  if (v5 && (v6 = objc_alloc(MEMORY[0x1E695DFD8]), v7 = objc_opt_class(), v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}], objc_msgSend(v4, "decodeObjectOfClasses:forKey:", v8, @"labels"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "copy"), labels = v5->_labels, v5->_labels = v10, labels, v9, v8, v5->_labels) && (!objc_msgSend(v4, "containsValueForKey:", @"segmentationMask") || (objc_msgSend(v4, "decodeObjectOfClass:forKey:", objc_opt_class(), @"segmentationMask"), v12 = objc_claimAutoreleasedReturnValue(), segmentationMask = v5->_segmentationMask, v5->_segmentationMask = v12, segmentationMask, v5->_segmentationMask)))
+  v5 = [(VNDetectedObjectObservation *)&v16 initWithCoder:coderCopy];
+  if (v5 && (v6 = objc_alloc(MEMORY[0x1E695DFD8]), v7 = objc_opt_class(), v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}], objc_msgSend(coderCopy, "decodeObjectOfClasses:forKey:", v8, @"labels"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "copy"), labels = v5->_labels, v5->_labels = v10, labels, v9, v8, v5->_labels) && (!objc_msgSend(coderCopy, "containsValueForKey:", @"segmentationMask") || (objc_msgSend(coderCopy, "decodeObjectOfClass:forKey:", objc_opt_class(), @"segmentationMask"), v12 = objc_claimAutoreleasedReturnValue(), segmentationMask = v5->_segmentationMask, v5->_segmentationMask = v12, segmentationMask, v5->_segmentationMask)))
   {
     v14 = v5;
   }
@@ -46,8 +46,8 @@
 
 - (id)description
 {
-  v3 = [(VNRecognizedObjectObservation *)self labels];
-  v4 = [v3 valueForKey:@"identifier"];
+  labels = [(VNRecognizedObjectObservation *)self labels];
+  v4 = [labels valueForKey:@"identifier"];
 
   v5 = MEMORY[0x1E696AEC0];
   v10.receiver = self;
@@ -59,22 +59,22 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = VNRecognizedObjectObservation;
-  if ([(VNDetectedObjectObservation *)&v13 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(VNDetectedObjectObservation *)&v13 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(VNRecognizedObjectObservation *)self segmentationMask];
-    v7 = [v5 segmentationMask];
+    v5 = equalCopy;
+    segmentationMask = [(VNRecognizedObjectObservation *)self segmentationMask];
+    segmentationMask2 = [v5 segmentationMask];
     v8 = VisionCoreEqualOrNilObjects();
 
     if (v8)
     {
-      v9 = [(VNRecognizedObjectObservation *)self labels];
-      v10 = [v5 labels];
+      labels = [(VNRecognizedObjectObservation *)self labels];
+      labels2 = [v5 labels];
       v11 = VisionCoreEquivalentOrNilUnorderedArrays();
     }
 
@@ -103,70 +103,70 @@
 {
   v9.receiver = self;
   v9.super_class = VNRecognizedObjectObservation;
-  v3 = [(VNDetectedObjectObservation *)&v9 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNDetectedObjectObservation *)&v9 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(NSArray *)self->_labels copy];
-    v5 = v3[20];
-    v3[20] = v4;
+    v5 = vn_cloneObject[20];
+    vn_cloneObject[20] = v4;
 
     v6 = [(VNPixelBufferObservation *)self->_segmentationMask copy];
-    v7 = v3[21];
-    v3[21] = v6;
+    v7 = vn_cloneObject[21];
+    vn_cloneObject[21] = v6;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (VNRecognizedObjectObservation)initWithOriginatingRequestSpecifier:(id)a3 boundingBox:(CGRect)a4 confidence:(float)a5 labels:(id)a6 segmentationMask:(id)a7 groupId:(id)a8
+- (VNRecognizedObjectObservation)initWithOriginatingRequestSpecifier:(id)specifier boundingBox:(CGRect)box confidence:(float)confidence labels:(id)labels segmentationMask:(id)mask groupId:(id)id
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a3;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  specifierCopy = specifier;
+  labelsCopy = labels;
+  maskCopy = mask;
+  idCopy = id;
   v27.receiver = self;
   v27.super_class = VNRecognizedObjectObservation;
-  v21 = [(VNDetectedObjectObservation *)&v27 initWithOriginatingRequestSpecifier:v17 boundingBox:v20 groupId:x, y, width, height];
-  v23 = v21;
-  if (v21)
+  height = [(VNDetectedObjectObservation *)&v27 initWithOriginatingRequestSpecifier:specifierCopy boundingBox:idCopy groupId:x, y, width, height];
+  v23 = height;
+  if (height)
   {
-    *&v22 = a5;
-    [(VNObservation *)v21 setConfidence:v22];
-    v24 = [v18 copy];
+    *&v22 = confidence;
+    [(VNObservation *)height setConfidence:v22];
+    v24 = [labelsCopy copy];
     labels = v23->_labels;
     v23->_labels = v24;
 
-    objc_storeStrong(&v23->_segmentationMask, a7);
+    objc_storeStrong(&v23->_segmentationMask, mask);
   }
 
   return v23;
 }
 
-- (VNRecognizedObjectObservation)initWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 confidence:(float)a5 labels:(id)a6
+- (VNRecognizedObjectObservation)initWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box confidence:(float)confidence labels:(id)labels
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
-  v14 = [objc_opt_class() defaultOriginatingRequestSpecifierForRevision:a3];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  labelsCopy = labels;
+  v14 = [objc_opt_class() defaultOriginatingRequestSpecifierForRevision:revision];
   if (v14)
   {
-    *&v15 = a5;
-    self = [(VNRecognizedObjectObservation *)self initWithOriginatingRequestSpecifier:v14 boundingBox:v13 confidence:0 labels:0 segmentationMask:x groupId:y, width, height, v15];
-    v16 = self;
+    *&v15 = confidence;
+    self = [(VNRecognizedObjectObservation *)self initWithOriginatingRequestSpecifier:v14 boundingBox:labelsCopy confidence:0 labels:0 segmentationMask:x groupId:y, width, height, v15];
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

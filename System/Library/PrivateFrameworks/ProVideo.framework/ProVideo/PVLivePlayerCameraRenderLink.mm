@@ -1,31 +1,31 @@
 @interface PVLivePlayerCameraRenderLink
-- (PVLivePlayerCameraRenderLink)initWithPlayerCameraSource:(id)a3;
-- (void)cameraSourceRecievedFrameSet:(id)a3;
+- (PVLivePlayerCameraRenderLink)initWithPlayerCameraSource:(id)source;
+- (void)cameraSourceRecievedFrameSet:(id)set;
 @end
 
 @implementation PVLivePlayerCameraRenderLink
 
-- (PVLivePlayerCameraRenderLink)initWithPlayerCameraSource:(id)a3
+- (PVLivePlayerCameraRenderLink)initWithPlayerCameraSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v7.receiver = self;
   v7.super_class = PVLivePlayerCameraRenderLink;
   v5 = [(PVLivePlayerRenderLink *)&v7 init];
   if (v5)
   {
-    [v4 registerRenderLink:v5];
+    [sourceCopy registerRenderLink:v5];
   }
 
   return v5;
 }
 
-- (void)cameraSourceRecievedFrameSet:(id)a3
+- (void)cameraSourceRecievedFrameSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  setCopy = set;
+  v5 = setCopy;
+  if (setCopy)
   {
-    [v4 presentationTimeStamp];
+    [setCopy presentationTimeStamp];
   }
 
   else

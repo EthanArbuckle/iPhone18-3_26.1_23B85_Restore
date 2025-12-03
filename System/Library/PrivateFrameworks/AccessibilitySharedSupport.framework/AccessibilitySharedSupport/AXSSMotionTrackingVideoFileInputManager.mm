@@ -17,9 +17,9 @@
   v2 = [(AXSSMotionTrackingVideoFileInputManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     videoFileInputNames = v2->__videoFileInputNames;
-    v2->__videoFileInputNames = v3;
+    v2->__videoFileInputNames = array;
   }
 
   return v2;
@@ -29,8 +29,8 @@
 {
   if (self->__monitoring)
   {
-    v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 
   v4.receiver = self;
@@ -50,8 +50,8 @@
   if (![(AXSSMotionTrackingVideoFileInputManager *)self _monitoring])
   {
     [(AXSSMotionTrackingVideoFileInputManager *)self set_monitoring:1];
-    v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v3 addObserver:self selector:sel__videoFileInputNamesChanged_ name:@"com.apple.accessibility.MotionTracking.testVideoFileInputNamesChanged" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__videoFileInputNamesChanged_ name:@"com.apple.accessibility.MotionTracking.testVideoFileInputNamesChanged" object:0];
 
     [(AXSSMotionTrackingVideoFileInputManager *)self _update];
   }
@@ -61,8 +61,8 @@
 {
   if ([(AXSSMotionTrackingVideoFileInputManager *)self _monitoring])
   {
-    v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     [(AXSSMotionTrackingVideoFileInputManager *)self set_monitoring:0];
   }
@@ -77,7 +77,7 @@
       [AXSSMotionTrackingVideoFileInputManager _update];
     }
 
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v4 = [_update_s_userDefaults objectForKey:@"testVideoFileInputNames"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -86,32 +86,32 @@
       v13[1] = 3221225472;
       v13[2] = __50__AXSSMotionTrackingVideoFileInputManager__update__block_invoke_2;
       v13[3] = &unk_1E8134A98;
-      v14 = v3;
+      v14 = array;
       [v4 enumerateObjectsUsingBlock:v13];
     }
 
-    v5 = [(AXSSMotionTrackingVideoFileInputManager *)self _videoFileInputNames];
-    v6 = [v3 isEqual:v5];
+    _videoFileInputNames = [(AXSSMotionTrackingVideoFileInputManager *)self _videoFileInputNames];
+    v6 = [array isEqual:_videoFileInputNames];
 
     if ((v6 & 1) == 0)
     {
       v7 = NSStringFromSelector(sel_videoFileInputNames);
       [(AXSSMotionTrackingVideoFileInputManager *)self willChangeValueForKey:v7];
 
-      v8 = [(AXSSMotionTrackingVideoFileInputManager *)self _videoFileInputNames];
-      [v8 setArray:v3];
+      _videoFileInputNames2 = [(AXSSMotionTrackingVideoFileInputManager *)self _videoFileInputNames];
+      [_videoFileInputNames2 setArray:array];
 
       v9 = NSStringFromSelector(sel_videoFileInputNames);
       [(AXSSMotionTrackingVideoFileInputManager *)self didChangeValueForKey:v9];
 
-      v10 = [(AXSSMotionTrackingVideoFileInputManager *)self delegate];
-      LOBYTE(v8) = objc_opt_respondsToSelector();
+      delegate = [(AXSSMotionTrackingVideoFileInputManager *)self delegate];
+      LOBYTE(_videoFileInputNames2) = objc_opt_respondsToSelector();
 
-      if (v8)
+      if (_videoFileInputNames2)
       {
-        v11 = [(AXSSMotionTrackingVideoFileInputManager *)self delegate];
-        v12 = [v3 copy];
-        [v11 motionTrackingVideoFileInputManager:self updatedVideoFileInputNames:v12];
+        delegate2 = [(AXSSMotionTrackingVideoFileInputManager *)self delegate];
+        v12 = [array copy];
+        [delegate2 motionTrackingVideoFileInputManager:self updatedVideoFileInputNames:v12];
       }
     }
   }

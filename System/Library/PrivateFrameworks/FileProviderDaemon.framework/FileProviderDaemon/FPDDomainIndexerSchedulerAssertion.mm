@@ -1,9 +1,9 @@
 @interface FPDDomainIndexerSchedulerAssertion
 + (id)stopQueue;
-- (FPDDomainIndexerSchedulerAssertion)initWithPID:(int)a3 forceForeground:(BOOL)a4;
-- (FPDDomainIndexerSchedulerAssertion)initWithPID:(int)a3 forceForeground:(BOOL)a4 monitor:(id)a5;
+- (FPDDomainIndexerSchedulerAssertion)initWithPID:(int)d forceForeground:(BOOL)foreground;
+- (FPDDomainIndexerSchedulerAssertion)initWithPID:(int)d forceForeground:(BOOL)foreground monitor:(id)monitor;
 - (void)dealloc;
-- (void)processMonitor:(id)a3 didBecomeForeground:(BOOL)a4;
+- (void)processMonitor:(id)monitor didBecomeForeground:(BOOL)foreground;
 - (void)start;
 - (void)stop;
 @end
@@ -53,32 +53,32 @@ void __47__FPDDomainIndexerSchedulerAssertion_stopQueue__block_invoke()
   stopQueue_stopQueue = v0;
 }
 
-- (FPDDomainIndexerSchedulerAssertion)initWithPID:(int)a3 forceForeground:(BOOL)a4 monitor:(id)a5
+- (FPDDomainIndexerSchedulerAssertion)initWithPID:(int)d forceForeground:(BOOL)foreground monitor:(id)monitor
 {
-  v9 = a5;
+  monitorCopy = monitor;
   v13.receiver = self;
   v13.super_class = FPDDomainIndexerSchedulerAssertion;
   v10 = [(FPDDomainIndexerSchedulerAssertion *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_pid = a3;
-    v10->_forceForeground = a4;
-    objc_storeStrong(&v10->_monitor, a5);
+    v10->_pid = d;
+    v10->_forceForeground = foreground;
+    objc_storeStrong(&v10->_monitor, monitor);
   }
 
   return v11;
 }
 
-- (FPDDomainIndexerSchedulerAssertion)initWithPID:(int)a3 forceForeground:(BOOL)a4
+- (FPDDomainIndexerSchedulerAssertion)initWithPID:(int)d forceForeground:(BOOL)foreground
 {
   v7.receiver = self;
   v7.super_class = FPDDomainIndexerSchedulerAssertion;
   result = [(FPDDomainIndexerSchedulerAssertion *)&v7 init];
   if (result)
   {
-    result->_pid = a3;
-    result->_forceForeground = a4;
+    result->_pid = d;
+    result->_forceForeground = foreground;
   }
 
   return result;
@@ -86,30 +86,30 @@ void __47__FPDDomainIndexerSchedulerAssertion_stopQueue__block_invoke()
 
 - (void)stop
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  unregisterForceRunning = v2->_unregisterForceRunning;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  unregisterForceRunning = selfCopy->_unregisterForceRunning;
   if (unregisterForceRunning)
   {
     unregisterForceRunning[2]();
-    v4 = v2->_unregisterForceRunning;
-    v2->_unregisterForceRunning = 0;
+    v4 = selfCopy->_unregisterForceRunning;
+    selfCopy->_unregisterForceRunning = 0;
   }
 
-  [(FPDProcessMonitor *)v2->_monitor setDelegate:0];
-  v5 = v2->_monitor;
-  monitor = v2->_monitor;
-  v2->_monitor = 0;
+  [(FPDProcessMonitor *)selfCopy->_monitor setDelegate:0];
+  v5 = selfCopy->_monitor;
+  monitor = selfCopy->_monitor;
+  selfCopy->_monitor = 0;
 
-  objc_sync_exit(v2);
-  v7 = [objc_opt_class() stopQueue];
+  objc_sync_exit(selfCopy);
+  stopQueue = [objc_opt_class() stopQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__FPDDomainIndexerSchedulerAssertion_stop__block_invoke;
   block[3] = &unk_1E83BE068;
   v10 = v5;
   v8 = v5;
-  dispatch_async(v7, block);
+  dispatch_async(stopQueue, block);
 }
 
 - (void)dealloc
@@ -120,14 +120,14 @@ void __47__FPDDomainIndexerSchedulerAssertion_stopQueue__block_invoke()
   [(FPDDomainIndexerSchedulerAssertion *)&v3 dealloc];
 }
 
-- (void)processMonitor:(id)a3 didBecomeForeground:(BOOL)a4
+- (void)processMonitor:(id)monitor didBecomeForeground:(BOOL)foreground
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  unregisterForceRunning = v6->_unregisterForceRunning;
-  if (v4)
+  foregroundCopy = foreground;
+  monitorCopy = monitor;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  unregisterForceRunning = selfCopy->_unregisterForceRunning;
+  if (foregroundCopy)
   {
     if (unregisterForceRunning)
     {
@@ -135,10 +135,10 @@ void __47__FPDDomainIndexerSchedulerAssertion_stopQueue__block_invoke()
     }
 
     v8 = indexingScheduler();
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"request from pid: %d", v6->_pid];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"request from pid: %d", selfCopy->_pid];
     v10 = [v8 forceRunningWithReason:v9];
-    v11 = v6->_unregisterForceRunning;
-    v6->_unregisterForceRunning = v10;
+    v11 = selfCopy->_unregisterForceRunning;
+    selfCopy->_unregisterForceRunning = v10;
   }
 
   else
@@ -149,12 +149,12 @@ void __47__FPDDomainIndexerSchedulerAssertion_stopQueue__block_invoke()
     }
 
     unregisterForceRunning[2]();
-    v8 = v6->_unregisterForceRunning;
-    v6->_unregisterForceRunning = 0;
+    v8 = selfCopy->_unregisterForceRunning;
+    selfCopy->_unregisterForceRunning = 0;
   }
 
 LABEL_7:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 @end

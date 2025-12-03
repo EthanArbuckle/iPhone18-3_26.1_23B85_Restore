@@ -1,5 +1,5 @@
 @interface COSInstallSpinnerButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -9,13 +9,13 @@
 
 @implementation COSInstallSpinnerButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"COSInstallSpinnerButton" hasInstanceVariable:@"_progressIndicator" withType:"SKUICircleProgressIndicator"];
-  [v3 validateClass:@"COSInstallSpinnerButton" hasInstanceVariable:@"_showingSpinner" withType:"B"];
-  [v3 validateClass:@"COSInstallSpinnerButton" hasInstanceMethod:@"showProgressAnimation" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"COSInstallSpinnerButton" hasInstanceMethod:@"stopSpinnerView" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"COSInstallSpinnerButton" hasInstanceVariable:@"_progressIndicator" withType:"SKUICircleProgressIndicator"];
+  [validationsCopy validateClass:@"COSInstallSpinnerButton" hasInstanceVariable:@"_showingSpinner" withType:"B"];
+  [validationsCopy validateClass:@"COSInstallSpinnerButton" hasInstanceMethod:@"showProgressAnimation" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"COSInstallSpinnerButton" hasInstanceMethod:@"stopSpinnerView" withFullSignature:{"v", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -35,17 +35,17 @@
     v4 = __UIAccessibilityCastAsClass();
 
     [v4 progress];
-    v5 = AXFormatFloatWithPercentage();
+    accessibilityValue = AXFormatFloatWithPercentage();
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = COSInstallSpinnerButtonAccessibility;
-    v5 = [(COSInstallSpinnerButtonAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(COSInstallSpinnerButtonAccessibility *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (void)showProgressAnimation
@@ -68,17 +68,17 @@
 {
   if ([(COSInstallSpinnerButtonAccessibility *)self safeBoolForKey:@"_showingSpinner"])
   {
-    v3 = accessibilityLocalizedString(@"downloading.spinner.button.label");
+    accessibilityLabel = accessibilityLocalizedString(@"downloading.spinner.button.label");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = COSInstallSpinnerButtonAccessibility;
-    v3 = [(COSInstallSpinnerButtonAccessibility *)&v5 accessibilityLabel];
+    accessibilityLabel = [(COSInstallSpinnerButtonAccessibility *)&v5 accessibilityLabel];
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

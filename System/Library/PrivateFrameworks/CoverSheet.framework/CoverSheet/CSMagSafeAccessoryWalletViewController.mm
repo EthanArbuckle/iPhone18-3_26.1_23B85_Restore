@@ -1,16 +1,16 @@
 @interface CSMagSafeAccessoryWalletViewController
-- (CSMagSafeAccessoryWalletViewController)initWithAccessory:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (CSMagSafeAccessoryWalletViewController)initWithAccessory:(id)accessory;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation CSMagSafeAccessoryWalletViewController
 
-- (CSMagSafeAccessoryWalletViewController)initWithAccessory:(id)a3
+- (CSMagSafeAccessoryWalletViewController)initWithAccessory:(id)accessory
 {
   v8.receiver = self;
   v8.super_class = CSMagSafeAccessoryWalletViewController;
-  v3 = [(CSMagSafeAccessoryViewController *)&v8 initWithAccessory:a3];
+  v3 = [(CSMagSafeAccessoryViewController *)&v8 initWithAccessory:accessory];
   if (v3)
   {
     v4 = [CSMagSafeAccessoryWalletView alloc];
@@ -27,15 +27,15 @@
   v4.receiver = self;
   v4.super_class = CSMagSafeAccessoryWalletViewController;
   [(CSCoverSheetViewControllerBase *)&v4 viewDidLoad];
-  v3 = [(CSMagSafeAccessoryWalletViewController *)self view];
-  [v3 addSubview:self->_walletView];
+  view = [(CSMagSafeAccessoryWalletViewController *)self view];
+  [view addSubview:self->_walletView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CSMagSafeAccessoryWalletViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:appear];
   [(CSMagSafeAccessoryWalletViewController *)self setIsAnimatingPresentation:1];
   walletView = self->_walletView;
   v5[0] = MEMORY[0x277D85DD0];

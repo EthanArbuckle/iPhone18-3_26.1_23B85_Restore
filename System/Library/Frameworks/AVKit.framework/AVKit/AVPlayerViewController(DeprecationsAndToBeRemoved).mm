@@ -6,8 +6,8 @@
 
 - (void)setDefaultPlaybackRate:()DeprecationsAndToBeRemoved
 {
-  v4 = [(AVPlayerViewController *)self playerController];
-  [v4 setDefaultPlaybackRate:a3];
+  playerController = [(AVPlayerViewController *)self playerController];
+  [playerController setDefaultPlaybackRate:a3];
 }
 
 @end

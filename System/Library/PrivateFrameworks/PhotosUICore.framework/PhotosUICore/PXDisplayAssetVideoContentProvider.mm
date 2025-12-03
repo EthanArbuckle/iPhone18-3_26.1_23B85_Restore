@@ -1,55 +1,55 @@
 @interface PXDisplayAssetVideoContentProvider
-- (BOOL)_loadingQueue_needsNewRequestForPriority:(int64_t)a3;
+- (BOOL)_loadingQueue_needsNewRequestForPriority:(int64_t)priority;
 - (NSString)description;
 - (PXDisplayAsset)asset;
 - (PXDisplayAssetVideoContentProvider)init;
-- (PXDisplayAssetVideoContentProvider)initWithAsset:(id)a3 mediaProvider:(id)a4 deliveryStrategies:(id)a5 audioSessionKind:(int64_t)a6 requestURLOnly:(BOOL)a7;
-- (PXDisplayAssetVideoContentProvider)initWithAsset:(id)a3 mediaProvider:(id)a4 deliveryStrategies:(id)a5 audioSessionKind:(int64_t)a6 requestURLOnly:(BOOL)a7 resourceReclamationController:(id)a8;
+- (PXDisplayAssetVideoContentProvider)initWithAsset:(id)asset mediaProvider:(id)provider deliveryStrategies:(id)strategies audioSessionKind:(int64_t)kind requestURLOnly:(BOOL)only;
+- (PXDisplayAssetVideoContentProvider)initWithAsset:(id)asset mediaProvider:(id)provider deliveryStrategies:(id)strategies audioSessionKind:(int64_t)kind requestURLOnly:(BOOL)only resourceReclamationController:(id)controller;
 - (id)analyticsPayload;
-- (void)_handlePostprocessedPlayerItem:(id)a3 priority:(int64_t)a4 description:(id)a5;
-- (void)_loadingQueueBeginLoadingWithPriority:(int64_t)a3;
-- (void)_loadingQueue_beginRequestForPriorityIfNeeded:(int64_t)a3;
+- (void)_handlePostprocessedPlayerItem:(id)item priority:(int64_t)priority description:(id)description;
+- (void)_loadingQueueBeginLoadingWithPriority:(int64_t)priority;
+- (void)_loadingQueue_beginRequestForPriorityIfNeeded:(int64_t)needed;
 - (void)_loadingQueue_cancelAllRequests;
 - (void)_loadingQueue_reloadContent;
-- (void)_loadingQueue_setAsset:(id)a3;
-- (void)_postprocessingQueue_performPostprocessingOfItem:(id)a3 info:(id)a4 priority:(int64_t)a5;
+- (void)_loadingQueue_setAsset:(id)asset;
+- (void)_postprocessingQueue_performPostprocessingOfItem:(id)item info:(id)info priority:(int64_t)priority;
 - (void)_reloadAVObjects;
-- (void)beginLoadingWithPriority:(int64_t)a3;
+- (void)beginLoadingWithPriority:(int64_t)priority;
 - (void)cancelLoading;
 - (void)makeUniqueContentIdentifier;
 - (void)reloadContent;
-- (void)request:(id)a3 didFinishWithPlayerItem:(id)a4 videoURL:(id)a5 downloadedTimeRange:(id *)a6 info:(id)a7;
-- (void)requestLoadingProgressDidChange:(id)a3;
-- (void)setAsset:(id)a3;
+- (void)request:(id)request didFinishWithPlayerItem:(id)item videoURL:(id)l downloadedTimeRange:(id *)range info:(id)info;
+- (void)requestLoadingProgressDidChange:(id)change;
+- (void)setAsset:(id)asset;
 @end
 
 @implementation PXDisplayAssetVideoContentProvider
 
-- (void)request:(id)a3 didFinishWithPlayerItem:(id)a4 videoURL:(id)a5 downloadedTimeRange:(id *)a6 info:(id)a7
+- (void)request:(id)request didFinishWithPlayerItem:(id)item videoURL:(id)l downloadedTimeRange:(id *)range info:(id)info
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  requestCopy = request;
+  itemCopy = item;
+  lCopy = l;
+  infoCopy = info;
   loadingQueue = self->_loadingQueue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __104__PXDisplayAssetVideoContentProvider_request_didFinishWithPlayerItem_videoURL_downloadedTimeRange_info___block_invoke;
   v23[3] = &unk_1E772C6C0;
-  v24 = v16;
-  v25 = self;
-  v26 = v13;
-  v27 = v14;
-  v18 = *&a6->var0.var3;
-  v30 = *&a6->var0.var0;
+  v24 = infoCopy;
+  selfCopy = self;
+  v26 = requestCopy;
+  v27 = itemCopy;
+  v18 = *&range->var0.var3;
+  v30 = *&range->var0.var0;
   v31 = v18;
-  v32 = *&a6->var1.var1;
-  v28 = v15;
+  v32 = *&range->var1.var1;
+  v28 = lCopy;
   v29 = a2;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v16;
+  v19 = lCopy;
+  v20 = itemCopy;
+  v21 = requestCopy;
+  v22 = infoCopy;
   dispatch_async(loadingQueue, v23);
 }
 
@@ -189,7 +189,7 @@ void __104__PXDisplayAssetVideoContentProvider_request_didFinishWithPlayerItem_v
   [*(a1 + 32) setLoadingResult:v6];
 }
 
-- (void)requestLoadingProgressDidChange:(id)a3
+- (void)requestLoadingProgressDidChange:(id)change
 {
   loadingQueue = self->_loadingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -268,12 +268,12 @@ uint64_t __65__PXDisplayAssetVideoContentProvider__loadingQueue_reloadContent__b
   return [v2 _loadingQueue_beginRequestForPriorityIfNeeded:v3];
 }
 
-- (void)_handlePostprocessedPlayerItem:(id)a3 priority:(int64_t)a4 description:(id)a5
+- (void)_handlePostprocessedPlayerItem:(id)item priority:(int64_t)priority description:(id)description
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  itemCopy = item;
+  descriptionCopy = description;
+  if (itemCopy)
   {
     v10 = 0;
   }
@@ -293,13 +293,13 @@ uint64_t __65__PXDisplayAssetVideoContentProvider__loadingQueue_reloadContent__b
   v17[2] = __90__PXDisplayAssetVideoContentProvider__handlePostprocessedPlayerItem_priority_description___block_invoke;
   v17[3] = &unk_1E7747928;
   v17[4] = self;
-  v18 = v8;
-  v20 = v9;
-  v21 = a4;
+  v18 = itemCopy;
+  v20 = descriptionCopy;
+  priorityCopy = priority;
   v19 = v10;
-  v14 = v9;
+  v14 = descriptionCopy;
   v15 = v10;
-  v16 = v8;
+  v16 = itemCopy;
   dispatch_async(loadingQueue, v17);
 }
 
@@ -337,18 +337,18 @@ void __90__PXDisplayAssetVideoContentProvider__handlePostprocessedPlayerItem_pri
   [*(a1 + 32) setLoadingResult:v8];
 }
 
-- (void)_postprocessingQueue_performPostprocessingOfItem:(id)a3 info:(id)a4 priority:(int64_t)a5
+- (void)_postprocessingQueue_performPostprocessingOfItem:(id)item info:(id)info priority:(int64_t)priority
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  infoCopy = info;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __101__PXDisplayAssetVideoContentProvider__postprocessingQueue_performPostprocessingOfItem_info_priority___block_invoke;
   v10[3] = &unk_1E772C620;
   objc_copyWeak(v11, &location);
-  v11[1] = a5;
-  [(PXDisplayAssetVideoContentProvider *)self postprocessPlayerItem:v8 completionHandler:v10];
+  v11[1] = priority;
+  [(PXDisplayAssetVideoContentProvider *)self postprocessPlayerItem:itemCopy completionHandler:v10];
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
 }
@@ -361,18 +361,18 @@ void __101__PXDisplayAssetVideoContentProvider__postprocessingQueue_performPostp
   [WeakRetained _handlePostprocessedPlayerItem:v6 priority:*(a1 + 40) description:v5];
 }
 
-- (BOOL)_loadingQueue_needsNewRequestForPriority:(int64_t)a3
+- (BOOL)_loadingQueue_needsNewRequestForPriority:(int64_t)priority
 {
-  v5 = [(PXVideoContentProvider *)self loadingResult];
-  v6 = [v5 playerItem];
-  if (v6)
+  loadingResult = [(PXVideoContentProvider *)self loadingResult];
+  playerItem = [loadingResult playerItem];
+  if (playerItem)
   {
   }
 
   else
   {
     loadingQueue_requestsByPriority = self->_loadingQueue_requestsByPriority;
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:priority];
     v9 = [(NSMutableDictionary *)loadingQueue_requestsByPriority objectForKeyedSubscript:v8];
 
     if (!v9)
@@ -384,7 +384,7 @@ void __101__PXDisplayAssetVideoContentProvider__postprocessingQueue_performPostp
   return 0;
 }
 
-- (void)_loadingQueue_beginRequestForPriorityIfNeeded:(int64_t)a3
+- (void)_loadingQueue_beginRequestForPriorityIfNeeded:(int64_t)needed
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = self->_loadingQueue_asset;
@@ -397,14 +397,14 @@ void __101__PXDisplayAssetVideoContentProvider__postprocessingQueue_performPostp
     }
   }
 
-  else if (v5 && [(PXDisplayAssetVideoContentProvider *)self _loadingQueue_needsNewRequestForPriority:a3])
+  else if (v5 && [(PXDisplayAssetVideoContentProvider *)self _loadingQueue_needsNewRequestForPriority:needed])
   {
-    self->_loadingQueue_lastRequestedPriority = a3;
-    v6 = [(PXDisplayAssetVideoContentProvider *)self mediaProvider];
-    v7 = [PXDisplayAssetVideoContentProviderRequest startRequestWithAsset:v5 mediaProvider:v6 strategies:self->_strategies priority:a3 requestURLOnly:self->_requestURLOnly delegate:self loadingQueue:self->_loadingQueue];
+    self->_loadingQueue_lastRequestedPriority = needed;
+    mediaProvider = [(PXDisplayAssetVideoContentProvider *)self mediaProvider];
+    v7 = [PXDisplayAssetVideoContentProviderRequest startRequestWithAsset:v5 mediaProvider:mediaProvider strategies:self->_strategies priority:needed requestURLOnly:self->_requestURLOnly delegate:self loadingQueue:self->_loadingQueue];
 
     loadingQueue_requestsByPriority = self->_loadingQueue_requestsByPriority;
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:needed];
     [(NSMutableDictionary *)loadingQueue_requestsByPriority setObject:v7 forKeyedSubscript:v9];
   }
 }
@@ -417,14 +417,14 @@ void __101__PXDisplayAssetVideoContentProvider__postprocessingQueue_performPostp
   [(NSMutableDictionary *)loadingQueue_requestsByPriority removeAllObjects];
 }
 
-- (void)_loadingQueueBeginLoadingWithPriority:(int64_t)a3
+- (void)_loadingQueueBeginLoadingWithPriority:(int64_t)priority
 {
-  v5 = [(PXVideoContentProvider *)self loadingResult];
-  if ([v5 priority] < a3)
+  loadingResult = [(PXVideoContentProvider *)self loadingResult];
+  if ([loadingResult priority] < priority)
   {
-    v6 = [v5 playerItem];
+    playerItem = [loadingResult playerItem];
 
-    if (!v6)
+    if (!playerItem)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -439,7 +439,7 @@ void __101__PXDisplayAssetVideoContentProvider__postprocessingQueue_performPostp
   if (loadingQueue_asset)
   {
     v8 = loadingQueue_asset;
-    [(PXDisplayAssetVideoContentProvider *)self _loadingQueue_beginRequestForPriorityIfNeeded:a3];
+    [(PXDisplayAssetVideoContentProvider *)self _loadingQueue_beginRequestForPriorityIfNeeded:priority];
   }
 
   else
@@ -453,19 +453,19 @@ void __101__PXDisplayAssetVideoContentProvider__postprocessingQueue_performPostp
   }
 }
 
-- (void)_loadingQueue_setAsset:(id)a3
+- (void)_loadingQueue_setAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   loadingQueue_asset = self->_loadingQueue_asset;
-  if (loadingQueue_asset != v5)
+  if (loadingQueue_asset != assetCopy)
   {
-    v13 = v5;
+    v13 = assetCopy;
     v7 = loadingQueue_asset;
-    objc_storeStrong(&self->_loadingQueue_asset, a3);
+    objc_storeStrong(&self->_loadingQueue_asset, asset);
     if (v7)
     {
-      v8 = [(PXDisplayAsset *)v7 playbackStyle];
-      if (v8 == [(PXDisplayAsset *)v13 playbackStyle])
+      playbackStyle = [(PXDisplayAsset *)v7 playbackStyle];
+      if (playbackStyle == [(PXDisplayAsset *)v13 playbackStyle])
       {
         v9 = v13;
         v10 = v7;
@@ -497,16 +497,16 @@ void __101__PXDisplayAssetVideoContentProvider__postprocessingQueue_performPostp
 
 LABEL_12:
 
-    v5 = v13;
+    assetCopy = v13;
   }
 }
 
 - (void)makeUniqueContentIdentifier
 {
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v3 = [v5 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   contentIdentifier = self->_contentIdentifier;
-  self->_contentIdentifier = v3;
+  self->_contentIdentifier = uUIDString;
 }
 
 - (void)cancelLoading
@@ -542,9 +542,9 @@ LABEL_12:
   return v3;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   objc_initWeak(&location, self);
   loadingQueue = self->_loadingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -552,8 +552,8 @@ LABEL_12:
   block[2] = __47__PXDisplayAssetVideoContentProvider_setAsset___block_invoke;
   block[3] = &unk_1E774B248;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(loadingQueue, block);
 
   objc_destroyWeak(&v9);
@@ -597,7 +597,7 @@ void __51__PXDisplayAssetVideoContentProvider_reloadContent__block_invoke(uint64
   return v5;
 }
 
-- (void)beginLoadingWithPriority:(int64_t)a3
+- (void)beginLoadingWithPriority:(int64_t)priority
 {
   objc_initWeak(&location, self);
   loadingQueue = self->_loadingQueue;
@@ -606,7 +606,7 @@ void __51__PXDisplayAssetVideoContentProvider_reloadContent__block_invoke(uint64
   block[2] = __63__PXDisplayAssetVideoContentProvider_beginLoadingWithPriority___block_invoke;
   block[3] = &unk_1E7749808;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = priority;
   dispatch_async(loadingQueue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -621,12 +621,12 @@ void __63__PXDisplayAssetVideoContentProvider_beginLoadingWithPriority___block_i
 - (id)analyticsPayload
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PXDisplayAssetVideoContentProvider *)self asset];
-  v3 = v2;
-  if (v2)
+  asset = [(PXDisplayAssetVideoContentProvider *)self asset];
+  v3 = asset;
+  if (asset)
   {
     v6 = *MEMORY[0x1E6991E18];
-    v7[0] = v2;
+    v7[0] = asset;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   }
 
@@ -638,27 +638,27 @@ void __63__PXDisplayAssetVideoContentProvider_beginLoadingWithPriority___block_i
   return v4;
 }
 
-- (PXDisplayAssetVideoContentProvider)initWithAsset:(id)a3 mediaProvider:(id)a4 deliveryStrategies:(id)a5 audioSessionKind:(int64_t)a6 requestURLOnly:(BOOL)a7 resourceReclamationController:(id)a8
+- (PXDisplayAssetVideoContentProvider)initWithAsset:(id)asset mediaProvider:(id)provider deliveryStrategies:(id)strategies audioSessionKind:(int64_t)kind requestURLOnly:(BOOL)only resourceReclamationController:(id)controller
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
+  assetCopy = asset;
+  providerCopy = provider;
+  strategiesCopy = strategies;
+  controllerCopy = controller;
   v27.receiver = self;
   v27.super_class = PXDisplayAssetVideoContentProvider;
   v19 = [(PXDisplayAssetVideoContentProvider *)&v27 init];
   v20 = v19;
   if (v19)
   {
-    v19->_audioSessionKind = a6;
-    objc_storeStrong(&v19->_loadingQueue_asset, a3);
-    objc_storeStrong(&v20->_mediaProvider, a4);
-    v21 = [v17 copy];
+    v19->_audioSessionKind = kind;
+    objc_storeStrong(&v19->_loadingQueue_asset, asset);
+    objc_storeStrong(&v20->_mediaProvider, provider);
+    v21 = [strategiesCopy copy];
     strategies = v20->_strategies;
     v20->_strategies = v21;
 
-    v20->_requestURLOnly = a7;
+    v20->_requestURLOnly = only;
     if (![(NSArray *)v20->_strategies count])
     {
       v23 = +[PXDisplayAssetVideoContentDeliveryStrategy defaultStreamingMediumQualityStrategy];
@@ -674,23 +674,23 @@ void __63__PXDisplayAssetVideoContentProvider_beginLoadingWithPriority___block_i
   return 0;
 }
 
-- (PXDisplayAssetVideoContentProvider)initWithAsset:(id)a3 mediaProvider:(id)a4 deliveryStrategies:(id)a5 audioSessionKind:(int64_t)a6 requestURLOnly:(BOOL)a7
+- (PXDisplayAssetVideoContentProvider)initWithAsset:(id)asset mediaProvider:(id)provider deliveryStrategies:(id)strategies audioSessionKind:(int64_t)kind requestURLOnly:(BOOL)only
 {
-  v7 = a7;
+  onlyCopy = only;
   v12 = MEMORY[0x1E69C1AC8];
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  strategiesCopy = strategies;
+  providerCopy = provider;
+  assetCopy = asset;
   v16 = objc_alloc_init(v12);
-  v17 = [(PXDisplayAssetVideoContentProvider *)self initWithAsset:v15 mediaProvider:v14 deliveryStrategies:v13 audioSessionKind:a6 requestURLOnly:v7 resourceReclamationController:v16];
+  v17 = [(PXDisplayAssetVideoContentProvider *)self initWithAsset:assetCopy mediaProvider:providerCopy deliveryStrategies:strategiesCopy audioSessionKind:kind requestURLOnly:onlyCopy resourceReclamationController:v16];
 
   return v17;
 }
 
 - (PXDisplayAssetVideoContentProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetVideoContentProvider.m" lineNumber:94 description:{@"%s is not available as initializer", "-[PXDisplayAssetVideoContentProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetVideoContentProvider.m" lineNumber:94 description:{@"%s is not available as initializer", "-[PXDisplayAssetVideoContentProvider init]"}];
 
   abort();
 }

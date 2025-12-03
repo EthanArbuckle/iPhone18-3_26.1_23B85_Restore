@@ -1,22 +1,22 @@
 @interface VCTextTransmitter
 - (BOOL)start;
 - (BOOL)startHeartbeat;
-- (VCTextTransmitter)initWithConfiguration:(_VCTextTransmitterConfiguration *)a3;
-- (unsigned)getCharTimestampForSystemTime:(double)a3;
+- (VCTextTransmitter)initWithConfiguration:(_VCTextTransmitterConfiguration *)configuration;
+- (unsigned)getCharTimestampForSystemTime:(double)time;
 - (void)dealloc;
 - (void)heartbeat;
-- (void)sendCharacter:(unsigned __int16)a3;
-- (void)sendText:(id)a3;
-- (void)sendTextFrameWithRedundancy:(id)a3 marker:(int)a4;
+- (void)sendCharacter:(unsigned __int16)character;
+- (void)sendText:(id)text;
+- (void)sendTextFrameWithRedundancy:(id)redundancy marker:(int)marker;
 - (void)startHeartbeat;
 - (void)stop;
 - (void)stopHeartbeat;
-- (void)updatePayloadHistory:(id)a3 timestamp:(unsigned int)a4 payloadType:(int *)a5 payload:(char *)a6 payloadLength:(int *)a7;
+- (void)updatePayloadHistory:(id)history timestamp:(unsigned int)timestamp payloadType:(int *)type payload:(char *)payload payloadLength:(int *)length;
 @end
 
 @implementation VCTextTransmitter
 
-- (VCTextTransmitter)initWithConfiguration:(_VCTextTransmitterConfiguration *)a3
+- (VCTextTransmitter)initWithConfiguration:(_VCTextTransmitterConfiguration *)configuration
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -25,8 +25,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->rtpHandle;
-    *(v4 + 3) = *&a3->numRedundantPayloads;
+    v6 = *&configuration->rtpHandle;
+    *(v4 + 3) = *&configuration->numRedundantPayloads;
     *(v4 + 8) = v6;
     LODWORD(v6) = *(v4 + 7);
     v7 = *&v6;
@@ -96,7 +96,7 @@
     v24 = 2112;
     v25 = v3;
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v6 = "VCTextTransmitter [%s] %s:%d %@(%p) ";
     v7 = v10;
     v8 = 48;
@@ -199,7 +199,7 @@ LABEL_11:
         WORD2(v12) = 2112;
         *(&v12 + 6) = v3;
         HIWORD(v12) = 2048;
-        v13 = self;
+        selfCopy = self;
         v6 = "VCTextTransmitter [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -212,14 +212,14 @@ LABEL_11:
   [(VCTextTransmitter *)self stopHeartbeat:*v11];
 }
 
-- (void)sendCharacter:(unsigned __int16)a3
+- (void)sendCharacter:(unsigned __int16)character
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  -[VCTextTransmitter sendText:](self, "sendText:", [MEMORY[0x1E696AEC0] stringWithCharacters:&v3 length:1]);
+  characterCopy = character;
+  -[VCTextTransmitter sendText:](self, "sendText:", [MEMORY[0x1E696AEC0] stringWithCharacters:&characterCopy length:1]);
 }
 
-- (void)sendText:(id)a3
+- (void)sendText:(id)text
 {
   v19 = *MEMORY[0x1E69E9840];
   if (self->_startTime == 0.0)
@@ -263,7 +263,7 @@ LABEL_11:
           v15 = 2112;
           v16 = v4;
           v17 = 2048;
-          v18 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, "VCTextTransmitter [%s] %s:%d %@(%p) Trying to send when the transmitter is stopped!", &v9, 0x30u);
         }
       }
@@ -273,22 +273,22 @@ LABEL_11:
   else
   {
     [(NSLock *)self->_textFramesSendQueueLock lock];
-    [(NSMutableArray *)self->_textFramesSendQueue addObject:a3];
+    [(NSMutableArray *)self->_textFramesSendQueue addObject:text];
     textFramesSendQueueLock = self->_textFramesSendQueueLock;
 
     [(NSLock *)textFramesSendQueueLock unlock];
   }
 }
 
-- (unsigned)getCharTimestampForSystemTime:(double)a3
+- (unsigned)getCharTimestampForSystemTime:(double)time
 {
   startTime = self->_startTime;
-  v4 = a3 - startTime;
+  v4 = time - startTime;
   LODWORD(startTime) = self->_config.sampleRate;
   return (v4 * *&startTime);
 }
 
-- (void)sendTextFrameWithRedundancy:(id)a3 marker:(int)a4
+- (void)sendTextFrameWithRedundancy:(id)redundancy marker:(int)marker
 {
   v47 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -339,9 +339,9 @@ LABEL_11:
         v39 = 1024;
         v40 = 103;
         v41 = 2112;
-        v42 = v7;
+        redundancyCopy = v7;
         v43 = 2048;
-        v44 = self;
+        selfCopy4 = self;
         v10 = "VCTextTransmitter [%s] %s:%d %@(%p) ";
         v11 = v14;
         v12 = 48;
@@ -374,7 +374,7 @@ LABEL_11:
       v39 = 1024;
       v40 = 104;
       v41 = 2112;
-      v42 = a3;
+      redundancyCopy = redundancy;
       v19 = "VCTextTransmitter [%s] %s:%d Sending text:%@";
       v20 = v17;
       v21 = 38;
@@ -420,11 +420,11 @@ LABEL_24:
         v39 = 1024;
         v40 = 104;
         v41 = 2112;
-        v42 = v15;
+        redundancyCopy = v15;
         v43 = 2048;
-        v44 = self;
+        selfCopy4 = self;
         v45 = 2112;
-        v46 = a3;
+        redundancyCopy3 = redundancy;
         v19 = "VCTextTransmitter [%s] %s:%d %@(%p) Sending text:%@";
         v20 = v23;
         v21 = 58;
@@ -440,11 +440,11 @@ LABEL_24:
         v39 = 1024;
         v40 = 104;
         v41 = 2112;
-        v42 = v15;
+        redundancyCopy = v15;
         v43 = 2048;
-        v44 = self;
+        selfCopy4 = self;
         v45 = 2112;
-        v46 = a3;
+        redundancyCopy3 = redundancy;
         _os_log_debug_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_DEBUG, "VCTextTransmitter [%s] %s:%d %@(%p) Sending text:%@", buf, 0x3Au);
       }
     }
@@ -456,12 +456,12 @@ LABEL_29:
   currentPayloadType = self->_currentPayloadType;
   v33 = 0;
   v32 = 0;
-  [(VCTextTransmitter *)self updatePayloadHistory:a3 timestamp:v26 payloadType:&currentPayloadType payload:&v33 payloadLength:&v32];
+  [(VCTextTransmitter *)self updatePayloadHistory:redundancy timestamp:v26 payloadType:&currentPayloadType payload:&v33 payloadLength:&v32];
   if (v33)
   {
     v31 = 0;
     txIntervalMin = self->_txIntervalMin;
-    if ((RTPSendRTP(self->_config.rtpHandle, currentPayloadType, a4, v26, v33, v32, &v31, 0, v25, txIntervalMin, 0, 0, 0, 0, 0, 0) & 0x80000000) != 0)
+    if ((RTPSendRTP(self->_config.rtpHandle, currentPayloadType, marker, v26, v33, v32, &v31, 0, v25, txIntervalMin, 0, 0, 0, 0, 0, 0) & 0x80000000) != 0)
     {
       if (objc_opt_class() == self)
       {
@@ -500,9 +500,9 @@ LABEL_29:
             v39 = 1024;
             v40 = 116;
             v41 = 2112;
-            v42 = v28;
+            redundancyCopy = v28;
             v43 = 2048;
-            v44 = self;
+            selfCopy4 = self;
             _os_log_error_impl(&dword_1DB56E000, v30, OS_LOG_TYPE_ERROR, "VCTextTransmitter [%s] %s:%d %@(%p) failed to send RTP", buf, 0x30u);
           }
         }
@@ -520,7 +520,7 @@ LABEL_29:
   }
 }
 
-- (void)updatePayloadHistory:(id)a3 timestamp:(unsigned int)a4 payloadType:(int *)a5 payload:(char *)a6 payloadLength:(int *)a7
+- (void)updatePayloadHistory:(id)history timestamp:(unsigned int)timestamp payloadType:(int *)type payload:(char *)payload payloadLength:(int *)length
 {
   v29 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -573,7 +573,7 @@ LABEL_11:
         *&v26[28] = 2112;
         *&v26[30] = v13;
         *&v26[38] = 2048;
-        v27 = self;
+        selfCopy = self;
         v16 = "VCTextTransmitter [%s] %s:%d %@(%p) ";
         v17 = v20;
         v18 = 48;
@@ -582,23 +582,23 @@ LABEL_11:
     }
   }
 
-  *a5 = self->_currentPayloadType;
-  *a6 = [a3 cStringUsingEncoding:{4, *v26, *&v26[16], *&v26[24], v27}];
-  *a7 = [a3 lengthOfBytesUsingEncoding:4];
+  *type = self->_currentPayloadType;
+  *payload = [history cStringUsingEncoding:{4, *v26, *&v26[16], *&v26[24], selfCopy}];
+  *length = [history lengthOfBytesUsingEncoding:4];
   if (self->_config.isRedEnabled)
   {
     v21 = RTPGetExternalPayload(self->_config.rtpHandle, LOWORD(self->_currentPayloadType));
-    *a5 = v21;
+    *type = v21;
     *&v22 = 0xAAAAAAAAAAAAAAAALL;
     *(&v22 + 1) = 0xAAAAAAAAAAAAAAAALL;
     *v26 = v22;
     *&v26[16] = v22;
     v26[0] = 1;
-    *&v26[8] = *a6;
-    *&v26[16] = *a7;
-    *&v26[20] = a4;
+    *&v26[8] = *payload;
+    *&v26[16] = *length;
+    *&v26[20] = timestamp;
     v26[24] = -1;
-    v27 = 0;
+    selfCopy = 0;
     v28 = 0;
     *&v26[32] = 0;
     PrimaryPayloadAndAppendSamples = VCAudioRedBuilder_GetPrimaryPayloadAndAppendSamples(self->_redBuilder, v26, v21);
@@ -607,8 +607,8 @@ LABEL_11:
       v24 = [(VCAudioRedBuilder *)self->_redBuilder redPayloadForPrimaryPayload:PrimaryPayloadAndAppendSamples];
       if (v24)
       {
-        *a5 = v24->payloadType;
-        *a6 = v24->buffer;
+        *type = v24->payloadType;
+        *payload = v24->buffer;
         bufferLength = v24->bufferLength;
       }
 
@@ -624,13 +624,13 @@ LABEL_11:
         }
 
         bufferLength = 0;
-        *a6 = 0;
+        *payload = 0;
       }
 
-      *a7 = bufferLength;
+      *length = bufferLength;
     }
 
-    if ([a3 length] != 1 || objc_msgSend(a3, "characterAtIndex:", 0) != 65279)
+    if ([history length] != 1 || objc_msgSend(history, "characterAtIndex:", 0) != 65279)
     {
       VCAudioRedBuilder_UpdatePayloadHistory(self->_redBuilder);
     }
@@ -726,7 +726,7 @@ LABEL_11:
         v27 = 2112;
         v28 = *&v3;
         v29 = 2048;
-        v30 = self;
+        selfCopy2 = self;
         v31 = 2048;
         v32 = v12;
         v7 = "VCTextTransmitter [%s] %s:%d %@(%p) Starting sending heartbeat (interval=%f)";
@@ -792,7 +792,7 @@ LABEL_11:
         v27 = 2112;
         v28 = *&v17;
         v29 = 2048;
-        v30 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_ERROR, "VCTextTransmitter [%s] %s:%d %@(%p) Failed to create polling", buf, 0x30u);
       }
     }

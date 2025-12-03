@@ -1,53 +1,53 @@
 @interface ASIDSMessageCenter
-+ (id)addContext:(id)a3 toInvitation:(id)a4;
-- (ASIDSMessageCenter)initWithServiceIdentifier:(id)a3;
++ (id)addContext:(id)context toInvitation:(id)invitation;
+- (ASIDSMessageCenter)initWithServiceIdentifier:(id)identifier;
 - (ASIDSMessageCenterDelegate)delegate;
 - (ASIDSMessageCenterSecureCloudDelegate)secureCloudDelegate;
-- (id)_idsIdentifierForDestination:(id)a3;
-- (id)_idsIdentifiersForDestinations:(id)a3;
-- (id)_messageHandlerForType:(int)a3;
-- (void)_dispatchAction:(SEL)a3 invocationBlock:(id)a4;
-- (void)_dispatchMessage:(id)a3 handler:(id)a4 messageHandledCompletion:(id)a5;
-- (void)_donateEntries:(id)a3 completion:(id)a4;
-- (void)_handleErrorForMessage:(id)a3;
-- (void)_handleErrorSendingFinalizeHandshake:(id)a3;
-- (void)_handleErrorSendingInviteRequest:(id)a3;
-- (void)_handleErrorSendingInviteResponse:(id)a3;
-- (void)_handleErrorSendingSecureCloudMessage:(id)a3;
-- (void)_handleErrorSendingWithdrawInviteRequest:(id)a3;
-- (void)_handleFinalizeHandshake:(id)a3 fromSenderAddress:(id)a4 receiverAddress:(id)a5 messageHandledCompletion:(id)a6;
-- (void)_handleInviteRequest:(id)a3 fromSenderAddress:(id)a4 receiverAddress:(id)a5 messageHandledCompletion:(id)a6;
-- (void)_handleInviteResponse:(id)a3 fromSenderAddress:(id)a4 receiverAddress:(id)a5 messageHandledCompletion:(id)a6;
-- (void)_handleMessage:(id)a3 identifier:(id)a4;
-- (void)_handleMessageSendSuccess:(BOOL)a3 error:(id)a4 identifier:(id)a5;
-- (void)_handleSecureCloudMessage:(id)a3 fromSenderAddress:(id)a4 receiverAddress:(id)a5 messageHandledCompletion:(id)a6;
-- (void)_handleWithdrawInviteRequest:(id)a3 fromSenderAddress:(id)a4 receiverAddress:(id)a5 messageHandledCompletion:(id)a6;
-- (void)_processMessageQueue:(id)a3 preprocessingBlock:(id)a4;
-- (void)_retrieveFirewallWithCompletion:(id)a3;
-- (void)_sendPayload:(id)a3 type:(int)a4 destinations:(id)a5 fromAddress:(id)a6 completion:(id)a7;
+- (id)_idsIdentifierForDestination:(id)destination;
+- (id)_idsIdentifiersForDestinations:(id)destinations;
+- (id)_messageHandlerForType:(int)type;
+- (void)_dispatchAction:(SEL)action invocationBlock:(id)block;
+- (void)_dispatchMessage:(id)message handler:(id)handler messageHandledCompletion:(id)completion;
+- (void)_donateEntries:(id)entries completion:(id)completion;
+- (void)_handleErrorForMessage:(id)message;
+- (void)_handleErrorSendingFinalizeHandshake:(id)handshake;
+- (void)_handleErrorSendingInviteRequest:(id)request;
+- (void)_handleErrorSendingInviteResponse:(id)response;
+- (void)_handleErrorSendingSecureCloudMessage:(id)message;
+- (void)_handleErrorSendingWithdrawInviteRequest:(id)request;
+- (void)_handleFinalizeHandshake:(id)handshake fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion;
+- (void)_handleInviteRequest:(id)request fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion;
+- (void)_handleInviteResponse:(id)response fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion;
+- (void)_handleMessage:(id)message identifier:(id)identifier;
+- (void)_handleMessageSendSuccess:(BOOL)success error:(id)error identifier:(id)identifier;
+- (void)_handleSecureCloudMessage:(id)message fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion;
+- (void)_handleWithdrawInviteRequest:(id)request fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion;
+- (void)_processMessageQueue:(id)queue preprocessingBlock:(id)block;
+- (void)_retrieveFirewallWithCompletion:(id)completion;
+- (void)_sendPayload:(id)payload type:(int)type destinations:(id)destinations fromAddress:(id)address completion:(id)completion;
 - (void)beginReceivingMessages;
 - (void)dealloc;
-- (void)donateAddresses:(id)a3 completion:(id)a4;
-- (void)donatedAddressesWithCompletion:(id)a3;
+- (void)donateAddresses:(id)addresses completion:(id)completion;
+- (void)donatedAddressesWithCompletion:(id)completion;
 - (void)endReceivingMessages;
 - (void)processPersistedMessageQueue;
 - (void)processRetryMessageQueue;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
 @end
 
 @implementation ASIDSMessageCenter
 
-- (ASIDSMessageCenter)initWithServiceIdentifier:(id)a3
+- (ASIDSMessageCenter)initWithServiceIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v25.receiver = self;
   v25.super_class = ASIDSMessageCenter;
   v6 = [(ASIDSMessageCenter *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceIdentifier, a3);
+    objc_storeStrong(&v6->_serviceIdentifier, identifier);
     v8 = HKCreateSerialDispatchQueue();
     outgoingDispatchQueue = v7->_outgoingDispatchQueue;
     v7->_outgoingDispatchQueue = v8;
@@ -57,20 +57,20 @@
     v7->_incomingDispatchQueue = v10;
 
     v12 = [ASMessageQueue alloc];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-outgoing", v5];
-    v14 = [(ASMessageQueue *)v12 initWithQueueName:v13];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-outgoing", identifierCopy];
+    v14 = [(ASMessageQueue *)v12 initWithQueueName:identifierCopy];
     outgoingMessageQueue = v7->_outgoingMessageQueue;
     v7->_outgoingMessageQueue = v14;
 
     v16 = [ASMessageQueue alloc];
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-retry", v5];
-    v18 = [(ASMessageQueue *)v16 initWithQueueName:v17];
+    identifierCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-retry", identifierCopy];
+    v18 = [(ASMessageQueue *)v16 initWithQueueName:identifierCopy2];
     retryMessageQueue = v7->_retryMessageQueue;
     v7->_retryMessageQueue = v18;
 
     v20 = [ASMessageQueue alloc];
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-persisted", v5];
-    v22 = [(ASMessageQueue *)v20 initWithQueueName:v21];
+    identifierCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-persisted", identifierCopy];
+    v22 = [(ASMessageQueue *)v20 initWithQueueName:identifierCopy3];
     persistedMessageQueue = v7->_persistedMessageQueue;
     v7->_persistedMessageQueue = v22;
   }
@@ -145,14 +145,14 @@ void __46__ASIDSMessageCenter_processRetryMessageQueue__block_invoke(uint64_t a1
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_messageHandlerForType:(int)a3
+- (id)_messageHandlerForType:(int)type
 {
   v3 = 0;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if ((a3 - 100) >= 4)
+    if ((type - 100) >= 4)
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         goto LABEL_13;
       }
@@ -173,7 +173,7 @@ void __46__ASIDSMessageCenter_processRetryMessageQueue__block_invoke(uint64_t a1
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
         v3 = objc_alloc_init(ASMessageHandler);
@@ -205,63 +205,63 @@ LABEL_13:
   return v3;
 }
 
-- (void)_handleInviteRequest:(id)a3 fromSenderAddress:(id)a4 receiverAddress:(id)a5 messageHandledCompletion:(id)a6
+- (void)_handleInviteRequest:(id)request fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  receiverAddressCopy = receiverAddress;
+  addressCopy = address;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained messageCenter:self didReceiveInviteRequest:v13 fromSenderAddress:v12 receiverAddress:v11 messageHandledCompletion:v10];
+  [WeakRetained messageCenter:self didReceiveInviteRequest:requestCopy fromSenderAddress:addressCopy receiverAddress:receiverAddressCopy messageHandledCompletion:completionCopy];
 }
 
-- (void)_handleInviteResponse:(id)a3 fromSenderAddress:(id)a4 receiverAddress:(id)a5 messageHandledCompletion:(id)a6
+- (void)_handleInviteResponse:(id)response fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  receiverAddressCopy = receiverAddress;
+  addressCopy = address;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained messageCenter:self didReceiveInviteResponse:v13 fromSenderAddress:v12 receiverAddress:v11 messageHandledCompletion:v10];
+  [WeakRetained messageCenter:self didReceiveInviteResponse:responseCopy fromSenderAddress:addressCopy receiverAddress:receiverAddressCopy messageHandledCompletion:completionCopy];
 }
 
-- (void)_handleFinalizeHandshake:(id)a3 fromSenderAddress:(id)a4 receiverAddress:(id)a5 messageHandledCompletion:(id)a6
+- (void)_handleFinalizeHandshake:(id)handshake fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  receiverAddressCopy = receiverAddress;
+  addressCopy = address;
+  handshakeCopy = handshake;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained messageCenter:self didReceiveFinalizeHandshake:v13 fromSenderAddress:v12 receiverAddress:v11 messageHandledCompletion:v10];
+  [WeakRetained messageCenter:self didReceiveFinalizeHandshake:handshakeCopy fromSenderAddress:addressCopy receiverAddress:receiverAddressCopy messageHandledCompletion:completionCopy];
 }
 
-- (void)_handleWithdrawInviteRequest:(id)a3 fromSenderAddress:(id)a4 receiverAddress:(id)a5 messageHandledCompletion:(id)a6
+- (void)_handleWithdrawInviteRequest:(id)request fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  receiverAddressCopy = receiverAddress;
+  addressCopy = address;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained messageCenter:self didReceiveWithdrawInviteRequest:v13 fromSenderAddress:v12 receiverAddress:v11 messageHandledCompletion:v10];
+  [WeakRetained messageCenter:self didReceiveWithdrawInviteRequest:requestCopy fromSenderAddress:addressCopy receiverAddress:receiverAddressCopy messageHandledCompletion:completionCopy];
 }
 
-- (void)_handleSecureCloudMessage:(id)a3 fromSenderAddress:(id)a4 receiverAddress:(id)a5 messageHandledCompletion:(id)a6
+- (void)_handleSecureCloudMessage:(id)message fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  addressCopy = address;
+  messageCopy = message;
   WeakRetained = objc_loadWeakRetained(&self->_secureCloudDelegate);
-  v12 = [v11 payload];
-  v13 = [v11 type];
+  payload = [messageCopy payload];
+  type = [messageCopy type];
 
-  [WeakRetained messageCenter:self didReceivePayload:v12 type:v13 fromSenderAddress:v10 messageHandledCompletion:v9];
+  [WeakRetained messageCenter:self didReceivePayload:payload type:type fromSenderAddress:addressCopy messageHandledCompletion:completionCopy];
 }
 
-- (void)_handleMessage:(id)a3 identifier:(id)a4
+- (void)_handleMessage:(id)message identifier:(id)identifier
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_incomingDispatchQueue);
   objc_initWeak(&location, self);
   v16 = MEMORY[0x277D85DD0];
@@ -269,9 +269,9 @@ LABEL_13:
   v18 = __48__ASIDSMessageCenter__handleMessage_identifier___block_invoke;
   v19 = &unk_278C4CDA0;
   objc_copyWeak(&v22, &location);
-  v8 = v6;
+  v8 = messageCopy;
   v20 = v8;
-  v9 = v7;
+  v9 = identifierCopy;
   v21 = v9;
   v10 = MEMORY[0x23EF0EB00](&v16);
   v11 = -[ASIDSMessageCenter _messageHandlerForType:](self, "_messageHandlerForType:", [v8 type]);
@@ -287,13 +287,13 @@ LABEL_13:
     v13 = *MEMORY[0x277CE9008];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v8 senderAddress];
+      senderAddress = [v8 senderAddress];
       *buf = 138543874;
       v25 = v12;
       v26 = 2114;
       v27 = v9;
       v28 = 2112;
-      v29 = v15;
+      v29 = senderAddress;
       _os_log_error_impl(&dword_23E5E3000, v13, OS_LOG_TYPE_ERROR, "IDSMessageCenter ignoring protobuf with unknown type %{public}@, guid: %{public}@, from: %@", buf, 0x20u);
     }
 
@@ -391,16 +391,16 @@ LABEL_16:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_dispatchMessage:(id)a3 handler:(id)a4 messageHandledCompletion:(id)a5
+- (void)_dispatchMessage:(id)message handler:(id)handler messageHandledCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 protobufClass])
+  messageCopy = message;
+  handlerCopy = handler;
+  completionCopy = completion;
+  if ([handlerCopy protobufClass])
   {
-    v11 = objc_alloc([v9 protobufClass]);
-    v12 = [v8 payload];
-    v13 = [v11 initWithData:v12];
+    v11 = objc_alloc([handlerCopy protobufClass]);
+    payload = [messageCopy payload];
+    v13 = [v11 initWithData:payload];
   }
 
   else
@@ -408,20 +408,20 @@ LABEL_16:
     v13 = 0;
   }
 
-  v14 = [v9 handleReceiveMessageAction];
+  handleReceiveMessageAction = [handlerCopy handleReceiveMessageAction];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __72__ASIDSMessageCenter__dispatchMessage_handler_messageHandledCompletion___block_invoke;
   v18[3] = &unk_278C4CDC8;
   v19 = v13;
-  v20 = v8;
-  v22 = v10;
-  v23 = v14;
-  v21 = self;
-  v15 = v10;
-  v16 = v8;
+  v20 = messageCopy;
+  v22 = completionCopy;
+  v23 = handleReceiveMessageAction;
+  selfCopy = self;
+  v15 = completionCopy;
+  v16 = messageCopy;
   v17 = v13;
-  [(ASIDSMessageCenter *)self _dispatchAction:v14 invocationBlock:v18];
+  [(ASIDSMessageCenter *)self _dispatchAction:handleReceiveMessageAction invocationBlock:v18];
 }
 
 void __72__ASIDSMessageCenter__dispatchMessage_handler_messageHandledCompletion___block_invoke(uint64_t a1, void (*a2)(uint64_t, uint64_t, id, id, void *, void *))
@@ -442,92 +442,92 @@ void __72__ASIDSMessageCenter__dispatchMessage_handler_messageHandledCompletion_
   a2(v6, v5, v8, v11, v9, v10);
 }
 
-- (void)_handleErrorSendingInviteRequest:(id)a3
+- (void)_handleErrorSendingInviteRequest:(id)request
 {
-  v7 = a3;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 messageCenter:self errorSendingInviteRequest:v7];
+    [v6 messageCenter:self errorSendingInviteRequest:requestCopy];
   }
 }
 
-- (void)_handleErrorSendingInviteResponse:(id)a3
+- (void)_handleErrorSendingInviteResponse:(id)response
 {
-  v7 = a3;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 messageCenter:self errorSendingInviteResponse:v7];
+    [v6 messageCenter:self errorSendingInviteResponse:responseCopy];
   }
 }
 
-- (void)_handleErrorSendingFinalizeHandshake:(id)a3
+- (void)_handleErrorSendingFinalizeHandshake:(id)handshake
 {
-  v7 = a3;
+  handshakeCopy = handshake;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 messageCenter:self errorSendingFinalizeHandshake:v7];
+    [v6 messageCenter:self errorSendingFinalizeHandshake:handshakeCopy];
   }
 }
 
-- (void)_handleErrorSendingWithdrawInviteRequest:(id)a3
+- (void)_handleErrorSendingWithdrawInviteRequest:(id)request
 {
-  v7 = a3;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 messageCenter:self errorSendingWithdrawInviteRequest:v7];
+    [v6 messageCenter:self errorSendingWithdrawInviteRequest:requestCopy];
   }
 }
 
-- (void)_handleErrorSendingSecureCloudMessage:(id)a3
+- (void)_handleErrorSendingSecureCloudMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   ASLoggingInitialize();
   v4 = *MEMORY[0x277CE8FE8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FE8], OS_LOG_TYPE_ERROR))
   {
-    [(ASIDSMessageCenter *)v4 _handleErrorSendingSecureCloudMessage:v3];
+    [(ASIDSMessageCenter *)v4 _handleErrorSendingSecureCloudMessage:messageCopy];
   }
 }
 
-- (void)_handleErrorForMessage:(id)a3
+- (void)_handleErrorForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_outgoingDispatchQueue);
-  v5 = -[ASIDSMessageCenter _messageHandlerForType:](self, "_messageHandlerForType:", [v4 type]);
+  v5 = -[ASIDSMessageCenter _messageHandlerForType:](self, "_messageHandlerForType:", [messageCopy type]);
   v6 = v5;
   if (v5)
   {
     v7 = objc_alloc([v5 protobufClass]);
-    v8 = [v4 payload];
-    v9 = [v7 initWithData:v8];
+    payload = [messageCopy payload];
+    v9 = [v7 initWithData:payload];
 
-    v10 = [v6 handleErrorSendingMessageAction];
+    handleErrorSendingMessageAction = [v6 handleErrorSendingMessageAction];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __45__ASIDSMessageCenter__handleErrorForMessage___block_invoke;
     v12[3] = &unk_278C4CDF0;
     v13 = v9;
-    v14 = v4;
-    v15 = self;
-    v16 = v10;
+    v14 = messageCopy;
+    selfCopy = self;
+    v16 = handleErrorSendingMessageAction;
     v11 = v9;
-    [(ASIDSMessageCenter *)self _dispatchAction:v10 invocationBlock:v12];
+    [(ASIDSMessageCenter *)self _dispatchAction:handleErrorSendingMessageAction invocationBlock:v12];
   }
 }
 
@@ -542,83 +542,83 @@ uint64_t __45__ASIDSMessageCenter__handleErrorForMessage___block_invoke(void *a1
   return a2(a1[6], a1[7], v2);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = [v12 context];
-  v14 = [v13 outgoingResponseIdentifier];
+  contextCopy = context;
+  dCopy = d;
+  protobufCopy = protobuf;
+  context = [protobufCopy context];
+  outgoingResponseIdentifier = [context outgoingResponseIdentifier];
 
   v15 = objc_alloc_init(ASMessage);
   v16 = IDSCopyRawAddressForDestination();
 
   [(ASMessage *)v15 setSenderAddress:v16];
-  v17 = [v10 toID];
+  toID = [contextCopy toID];
 
   v18 = IDSCopyRawAddressForDestination();
   [(ASMessage *)v15 setReceiverAddress:v18];
 
-  -[ASMessage setType:](v15, "setType:", [v12 type]);
-  v19 = [v12 data];
-  [(ASMessage *)v15 setPayload:v19];
+  -[ASMessage setType:](v15, "setType:", [protobufCopy type]);
+  data = [protobufCopy data];
+  [(ASMessage *)v15 setPayload:data];
 
-  v20 = [v12 type];
-  v21 = NSStringFromASMessageType(v20);
+  type = [protobufCopy type];
+  v21 = NSStringFromASMessageType(type);
   ASLoggingInitialize();
   v22 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     v23 = v22;
-    v24 = [(ASMessage *)v15 senderAddress];
+    senderAddress = [(ASMessage *)v15 senderAddress];
     v26 = 138543874;
     v27 = v21;
     v28 = 2114;
-    v29 = v14;
+    v29 = outgoingResponseIdentifier;
     v30 = 2112;
-    v31 = v24;
+    v31 = senderAddress;
     _os_log_impl(&dword_23E5E3000, v23, OS_LOG_TYPE_DEFAULT, "IDSMessageCenter received protobuf of type %{public}@, guid: %{public}@, from: %@", &v26, 0x20u);
   }
 
-  [(ASIDSMessageCenter *)self _handleMessage:v15 identifier:v14];
+  [(ASIDSMessageCenter *)self _handleMessage:v15 identifier:outgoingResponseIdentifier];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
   v12 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  identifierCopy = identifier;
   ASLoggingInitialize();
   v8 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v7;
+    v11 = identifierCopy;
     _os_log_impl(&dword_23E5E3000, v8, OS_LOG_TYPE_DEFAULT, "IDSMessageCenter successfully delivered protobuf with guid %{public}@ to remote device", &v10, 0xCu);
   }
 
-  [(ASIDSMessageCenter *)self _handleMessageSendSuccess:1 error:0 identifier:v7];
+  [(ASIDSMessageCenter *)self _handleMessageSendSuccess:1 error:0 identifier:identifierCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleMessageSendSuccess:(BOOL)a3 error:(id)a4 identifier:(id)a5
+- (void)_handleMessageSendSuccess:(BOOL)success error:(id)error identifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
+  errorCopy = error;
+  identifierCopy = identifier;
   outgoingDispatchQueue = self->_outgoingDispatchQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__ASIDSMessageCenter__handleMessageSendSuccess_error_identifier___block_invoke;
   v13[3] = &unk_278C4CE18;
   v13[4] = self;
-  v14 = v9;
-  v16 = a3;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
+  v14 = identifierCopy;
+  successCopy = success;
+  v15 = errorCopy;
+  v11 = errorCopy;
+  v12 = identifierCopy;
   dispatch_async(outgoingDispatchQueue, v13);
 }
 
@@ -690,27 +690,27 @@ void __65__ASIDSMessageCenter__handleMessageSendSuccess_error_identifier___block
   (*(v2 + 2))(v2, *(a1 + 48), *(a1 + 40));
 }
 
-- (void)_sendPayload:(id)a3 type:(int)a4 destinations:(id)a5 fromAddress:(id)a6 completion:(id)a7
+- (void)_sendPayload:(id)payload type:(int)type destinations:(id)destinations fromAddress:(id)address completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  payloadCopy = payload;
+  destinationsCopy = destinations;
+  addressCopy = address;
+  completionCopy = completion;
   outgoingDispatchQueue = self->_outgoingDispatchQueue;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __76__ASIDSMessageCenter__sendPayload_type_destinations_fromAddress_completion___block_invoke;
   v21[3] = &unk_278C4CE40;
-  v27 = a4;
-  v22 = v13;
-  v23 = v12;
-  v24 = v14;
-  v25 = self;
-  v26 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v12;
-  v20 = v13;
+  typeCopy = type;
+  v22 = destinationsCopy;
+  v23 = payloadCopy;
+  v24 = addressCopy;
+  selfCopy = self;
+  v26 = completionCopy;
+  v17 = completionCopy;
+  v18 = addressCopy;
+  v19 = payloadCopy;
+  v20 = destinationsCopy;
   dispatch_async(outgoingDispatchQueue, v21);
 }
 
@@ -806,10 +806,10 @@ void __76__ASIDSMessageCenter__sendPayload_type_destinations_fromAddress_complet
   (*(v2 + 2))(v2, *(a1 + 48), *(a1 + 40));
 }
 
-- (void)_dispatchAction:(SEL)a3 invocationBlock:(id)a4
+- (void)_dispatchAction:(SEL)action invocationBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(ASIDSMessageCenter *)self methodForSelector:a3];
+  blockCopy = block;
+  v7 = [(ASIDSMessageCenter *)self methodForSelector:action];
   if (v7)
   {
     v8 = v7;
@@ -817,26 +817,26 @@ void __76__ASIDSMessageCenter__sendPayload_type_destinations_fromAddress_complet
     v9[1] = 3221225472;
     v9[2] = __54__ASIDSMessageCenter__dispatchAction_invocationBlock___block_invoke;
     v9[3] = &unk_278C4CE68;
-    v10 = v6;
+    v10 = blockCopy;
     v11 = v8;
     dispatch_async(MEMORY[0x277D85CD0], v9);
   }
 }
 
-- (void)_processMessageQueue:(id)a3 preprocessingBlock:(id)a4
+- (void)_processMessageQueue:(id)queue preprocessingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   incomingDispatchQueue = self->_incomingDispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__ASIDSMessageCenter__processMessageQueue_preprocessingBlock___block_invoke;
   block[3] = &unk_278C4CEB8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = blockCopy;
+  v12 = queueCopy;
+  v9 = blockCopy;
+  v10 = queueCopy;
   dispatch_sync(incomingDispatchQueue, block);
 }
 
@@ -888,25 +888,25 @@ void __62__ASIDSMessageCenter__processMessageQueue_preprocessingBlock___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_idsIdentifierForDestination:(id)a3
+- (id)_idsIdentifierForDestination:(id)destination
 {
-  v3 = a3;
-  if (([v3 containsString:@"tel:"] & 1) != 0 || objc_msgSend(v3, "containsString:", @"mailto:"))
+  destinationCopy = destination;
+  if (([destinationCopy containsString:@"tel:"] & 1) != 0 || objc_msgSend(destinationCopy, "containsString:", @"mailto:"))
   {
-    v4 = v3;
+    v4 = destinationCopy;
 LABEL_4:
     v5 = v4;
     goto LABEL_5;
   }
 
-  if ([v3 containsString:@"@"])
+  if ([destinationCopy containsString:@"@"])
   {
-    v4 = MEMORY[0x23EF0E550](v3);
+    v4 = MEMORY[0x23EF0E550](destinationCopy);
     goto LABEL_4;
   }
 
-  v7 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v8 = [v3 rangeOfCharacterFromSet:v7];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  v8 = [destinationCopy rangeOfCharacterFromSet:decimalDigitCharacterSet];
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -920,16 +920,16 @@ LABEL_5:
   return v5;
 }
 
-- (id)_idsIdentifiersForDestinations:(id)a3
+- (id)_idsIdentifiersForDestinations:(id)destinations
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+  destinationsCopy = destinations;
+  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(destinationsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = destinationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -964,17 +964,17 @@ LABEL_5:
   return v12;
 }
 
-- (void)_retrieveFirewallWithCompletion:(id)a3
+- (void)_retrieveFirewallWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   idsService = self->_idsService;
   outgoingDispatchQueue = self->_outgoingDispatchQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__ASIDSMessageCenter__retrieveFirewallWithCompletion___block_invoke;
   v8[3] = &unk_278C4CEE0;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(IDSService *)idsService retrieveFirewallWithQueue:outgoingDispatchQueue completion:v8];
 }
 
@@ -1015,20 +1015,20 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_donateEntries:(id)a3 completion:(id)a4
+- (void)_donateEntries:(id)entries completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  completionCopy = completion;
   outgoingDispatchQueue = self->_outgoingDispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__ASIDSMessageCenter__donateEntries_completion___block_invoke;
   block[3] = &unk_278C4BA30;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = entriesCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = entriesCopy;
   dispatch_async(outgoingDispatchQueue, block);
 }
 
@@ -1128,15 +1128,15 @@ void __48__ASIDSMessageCenter__donateEntries_completion___block_invoke_395(uint6
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)donateAddresses:(id)a3 completion:(id)a4
+- (void)donateAddresses:(id)addresses completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hk_map:&__block_literal_global_399];
+  addressesCopy = addresses;
+  completionCopy = completion;
+  v8 = [addressesCopy hk_map:&__block_literal_global_399];
   v9 = [v8 count];
-  if (v9 == [v6 count])
+  if (v9 == [addressesCopy count])
   {
-    [(ASIDSMessageCenter *)self _donateEntries:v8 completion:v7];
+    [(ASIDSMessageCenter *)self _donateEntries:v8 completion:completionCopy];
   }
 
   else
@@ -1148,7 +1148,7 @@ void __48__ASIDSMessageCenter__donateEntries_completion___block_invoke_395(uint6
     }
 
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.IDSMessageCenter" code:2 userInfo:0];
-    v7[2](v7, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 }
 
@@ -1189,15 +1189,15 @@ id __49__ASIDSMessageCenter_donateAddresses_completion___block_invoke(uint64_t a
   return v5;
 }
 
-- (void)donatedAddressesWithCompletion:(id)a3
+- (void)donatedAddressesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__ASIDSMessageCenter_donatedAddressesWithCompletion___block_invoke;
   v6[3] = &unk_278C4CEE0;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(ASIDSMessageCenter *)self _retrieveFirewallWithCompletion:v6];
 }
 
@@ -1271,13 +1271,13 @@ id __53__ASIDSMessageCenter_donatedAddressesWithCompletion___block_invoke_402(ui
   return v3;
 }
 
-+ (id)addContext:(id)a3 toInvitation:(id)a4
++ (id)addContext:(id)context toInvitation:(id)invitation
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  invitationCopy = invitation;
   if (objc_opt_respondsToSelector())
   {
-    [v6 setContext:v5];
+    [invitationCopy setContext:contextCopy];
   }
 
   else
@@ -1289,7 +1289,7 @@ id __53__ASIDSMessageCenter_donatedAddressesWithCompletion___block_invoke_402(ui
     }
   }
 
-  return v6;
+  return invitationCopy;
 }
 
 - (ASIDSMessageCenterDelegate)delegate

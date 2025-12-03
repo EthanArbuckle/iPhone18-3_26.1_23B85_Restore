@@ -1,17 +1,17 @@
 @interface OrganDonationRegisteredBodyCell
-- (_TtC18HealthExperienceUI31OrganDonationRegisteredBodyCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI31OrganDonationRegisteredBodyCell)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI31OrganDonationRegisteredBodyCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI31OrganDonationRegisteredBodyCell)initWithFrame:(CGRect)frame;
 - (void)tappedLearnMore;
 @end
 
 @implementation OrganDonationRegisteredBodyCell
 
-- (_TtC18HealthExperienceUI31OrganDonationRegisteredBodyCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI31OrganDonationRegisteredBodyCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC18HealthExperienceUI31OrganDonationRegisteredBodyCell_bodyText;
   *(&self->super.super.super.super.super.isa + v8) = sub_1BA2EA8E8();
   v9 = OBJC_IVAR____TtC18HealthExperienceUI31OrganDonationRegisteredBodyCell_learnMoreButton;
@@ -23,13 +23,13 @@
   *(v10 + 4) = 0;
   v14.receiver = self;
   v14.super_class = v11;
-  v12 = [(OrganDonationRegisteredBodyCell *)&v14 initWithFrame:x, y, width, height];
+  height = [(OrganDonationRegisteredBodyCell *)&v14 initWithFrame:x, y, width, height];
   sub_1BA2EAEA0();
 
-  return v12;
+  return height;
 }
 
-- (_TtC18HealthExperienceUI31OrganDonationRegisteredBodyCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI31OrganDonationRegisteredBodyCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18HealthExperienceUI31OrganDonationRegisteredBodyCell_bodyText;
   *(&self->super.super.super.super.super.isa + v4) = sub_1BA2EA8E8();

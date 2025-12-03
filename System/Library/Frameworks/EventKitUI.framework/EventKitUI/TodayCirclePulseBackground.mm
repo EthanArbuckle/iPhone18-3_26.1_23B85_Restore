@@ -1,15 +1,15 @@
 @interface TodayCirclePulseBackground
-- (TodayCirclePulseBackground)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (TodayCirclePulseBackground)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation TodayCirclePulseBackground
 
-- (TodayCirclePulseBackground)initWithFrame:(CGRect)a3
+- (TodayCirclePulseBackground)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = TodayCirclePulseBackground;
-  result = [(TodayCirclePulseBackground *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(TodayCirclePulseBackground *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_roundedRectCornerRadius = 8.0;
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   if (CurrentContext)

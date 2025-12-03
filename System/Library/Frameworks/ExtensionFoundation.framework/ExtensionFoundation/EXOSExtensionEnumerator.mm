@@ -1,21 +1,21 @@
 @interface EXOSExtensionEnumerator
-+ (void)enumerateExtensionsInDirectoryAtURL:(id)a3 block:(id)a4;
-- (EXOSExtensionEnumerator)initWithCacheURLs:(id)a3 paths:(id)a4;
++ (void)enumerateExtensionsInDirectoryAtURL:(id)l block:(id)block;
+- (EXOSExtensionEnumerator)initWithCacheURLs:(id)ls paths:(id)paths;
 - (id)nextObject;
 @end
 
 @implementation EXOSExtensionEnumerator
 
-+ (void)enumerateExtensionsInDirectoryAtURL:(id)a3 block:(id)a4
++ (void)enumerateExtensionsInDirectoryAtURL:(id)l block:(id)block
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  blockCopy = block;
   v48[0] = *MEMORY[0x1E695DB78];
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v30 = v5;
-  v9 = [v8 enumeratorAtURL:v5 includingPropertiesForKeys:v7 options:1 errorHandler:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v30 = lCopy;
+  v9 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:v7 options:1 errorHandler:0];
 
   v42 = 0u;
   v43 = 0u;
@@ -42,7 +42,7 @@
         v14 = *(*(&v40 + 1) + 8 * v13);
         if ([v14 _EX_isDirectory] && (objc_msgSend(v14, "pathExtension"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "caseInsensitiveCompare:", @"appex"), v15, !v16))
         {
-          v6[2](v6, v14);
+          blockCopy[2](blockCopy, v14);
         }
 
         else if (([v14 _EX_isDirectory] & 1) == 0)
@@ -55,13 +55,13 @@
           {
             v33 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v14];
             v19 = [v33 _EX_dictionaryForKey:@"AppExtensions"];
-            v20 = [v19 allKeys];
+            allKeys = [v19 allKeys];
 
             v21 = _EXRegistrationLog();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138543362;
-              v46 = v20;
+              v46 = allKeys;
               _os_log_debug_impl(&dword_1847D1000, v21, OS_LOG_TYPE_DEBUG, "Discovered list of App Extension paths '%{public}@'", buf, 0xCu);
             }
 
@@ -69,7 +69,7 @@
             v39 = 0u;
             v36 = 0u;
             v37 = 0u;
-            v22 = v20;
+            v22 = allKeys;
             v23 = [v22 countByEnumeratingWithState:&v36 objects:v44 count:16];
             if (v23)
             {
@@ -89,7 +89,7 @@
                   if (objc_opt_isKindOfClass())
                   {
                     v28 = [MEMORY[0x1E695DFF8] fileURLWithPath:v27 isDirectory:1];
-                    v6[2](v6, v28);
+                    blockCopy[2](blockCopy, v28);
                   }
 
                   else
@@ -128,11 +128,11 @@
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (EXOSExtensionEnumerator)initWithCacheURLs:(id)a3 paths:(id)a4
+- (EXOSExtensionEnumerator)initWithCacheURLs:(id)ls paths:(id)paths
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lsCopy = ls;
+  pathsCopy = paths;
   v39.receiver = self;
   v39.super_class = EXOSExtensionEnumerator;
   v8 = [(EXOSExtensionEnumerator *)&v39 init];
@@ -146,14 +146,14 @@
       [EXOSExtensionEnumerator initWithCacheURLs:paths:];
     }
 
-    v31 = v7;
-    v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v7];
+    v31 = pathsCopy;
+    v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:pathsCopy];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v32 = v6;
-    v12 = v6;
+    v32 = lsCopy;
+    v12 = lsCopy;
     v13 = [v12 countByEnumeratingWithState:&v35 objects:v42 count:16];
     if (v13)
     {
@@ -184,18 +184,18 @@
           {
             v18 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v17];
             v19 = [v18 _EX_objectForKey:@"AppExtensions" ofClass:objc_opt_class()];
-            v20 = [v19 allKeys];
+            allKeys = [v19 allKeys];
 
             v21 = _EXRegistrationLog();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138543362;
-              v41 = v20;
+              v41 = allKeys;
               _os_log_debug_impl(&dword_1847D1000, v21, OS_LOG_TYPE_DEBUG, "Discovered cached App Extension paths '%{public}@'", buf, 0xCu);
             }
 
             v22 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_429];
-            v23 = [v20 filteredArrayUsingPredicate:v22];
+            v23 = [allKeys filteredArrayUsingPredicate:v22];
 
             [v11 addObjectsFromArray:v23];
           }
@@ -212,12 +212,12 @@
     extensionPaths = v30->_extensionPaths;
     v30->_extensionPaths = v24;
 
-    v26 = [(NSArray *)v30->_extensionPaths objectEnumerator];
+    objectEnumerator = [(NSArray *)v30->_extensionPaths objectEnumerator];
     extensionPathsEnumerator = v30->_extensionPathsEnumerator;
-    v30->_extensionPathsEnumerator = v26;
+    v30->_extensionPathsEnumerator = objectEnumerator;
 
-    v7 = v31;
-    v6 = v32;
+    pathsCopy = v31;
+    lsCopy = v32;
   }
 
   v28 = *MEMORY[0x1E69E9840];
@@ -265,10 +265,10 @@ uint64_t __51__EXOSExtensionEnumerator_initWithCacheURLs_paths___block_invoke_42
 
 - (id)nextObject
 {
-  v2 = [(NSEnumerator *)self->_extensionPathsEnumerator nextObject];
-  if (v2)
+  nextObject = [(NSEnumerator *)self->_extensionPathsEnumerator nextObject];
+  if (nextObject)
   {
-    v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:v2 isDirectory:1];
+    v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:nextObject isDirectory:1];
   }
 
   else

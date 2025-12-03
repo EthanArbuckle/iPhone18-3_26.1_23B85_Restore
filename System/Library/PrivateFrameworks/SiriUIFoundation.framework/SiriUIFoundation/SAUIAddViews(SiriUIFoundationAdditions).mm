@@ -7,17 +7,17 @@
 
 - (uint64_t)sruif_usefulUserResultType
 {
-  v1 = [a1 af_dialogPhase];
-  v2 = [v1 isReflectionDialogPhase];
+  af_dialogPhase = [self af_dialogPhase];
+  isReflectionDialogPhase = [af_dialogPhase isReflectionDialogPhase];
 
-  return v2 ^ 1u;
+  return isReflectionDialogPhase ^ 1u;
 }
 
 - (BOOL)sruif_isEmptyUtteranceView
 {
-  v2 = [a1 views];
-  v3 = [a1 views];
-  v4 = [v3 firstObject];
+  views = [self views];
+  views2 = [self views];
+  firstObject = [views2 firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -25,24 +25,24 @@
     goto LABEL_13;
   }
 
-  v5 = [v2 count];
+  v5 = [views count];
 
   if (v5 == 1)
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 speakableText];
-    if (v4 && ([v3 speakableText], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "length")))
+    views2 = [views firstObject];
+    firstObject = [views2 speakableText];
+    if (firstObject && ([views2 speakableText], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "length")))
     {
       v6 = 0;
     }
 
     else
     {
-      v7 = [v3 text];
-      if (v7)
+      text = [views2 text];
+      if (text)
       {
-        v8 = [v3 text];
-        v6 = [v8 length] == 0;
+        text2 = [views2 text];
+        v6 = [text2 length] == 0;
       }
 
       else
@@ -50,7 +50,7 @@
         v6 = 1;
       }
 
-      if (!v4)
+      if (!firstObject)
       {
         goto LABEL_13;
       }

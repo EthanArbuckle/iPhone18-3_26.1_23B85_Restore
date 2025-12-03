@@ -1,36 +1,36 @@
 @interface OSALog
 + (BOOL)isDataVaultEnabled;
-+ (BOOL)randomlySelectForRetention:(id)a3;
++ (BOOL)randomlySelectForRetention:(id)retention;
 + (id)additionalRootsInstalled;
-+ (id)commonFieldsForBody:(id)a3;
-+ (id)createForSubmission:(id)a3 metadata:(id)a4 options:(id)a5 error:(id *)a6 writing:(id)a7;
-+ (id)locallyCreateForSubmission:(id)a3 metadata:(id)a4 options:(id)a5 error:(id *)a6 writing:(id)a7;
-+ (id)logObjForBugType:(id)a3;
-+ (id)scanProxies:(id)a3;
-+ (unsigned)scanLogs:(id)a3 from:(id)a4 options:(id)a5;
-+ (void)cleanupForUser:(id)a3;
-+ (void)cleanupLogs:(id)a3 withFilters:(id)a4 error:(id *)a5;
-+ (void)cleanupRetired:(id)a3;
-+ (void)createRetiredDirectoriesForUser:(id)a3;
-+ (void)createRetiredDirectory:(id)a3;
-+ (void)iterateLogsWithOptions:(id)a3 usingBlock:(id)a4;
-+ (void)markDescriptor:(int)a3 forKey:(id)a4 withObj:(id)a5;
-+ (void)markDescriptor:(int)a3 withPairs:(id)a4 andOptions:(id)a5;
-+ (void)markFile:(id)a3 withKey:(const char *)a4 value:(const char *)a5;
-+ (void)markPurgeableLevel:(unint64_t)a3 path:(id)a4;
-+ (void)purgeLogs:(id)a3 withReason:(const char *)a4 includeRetired:(BOOL)a5 deleteOnRetire:(BOOL)a6 usingPredicate:(id)a7;
-- (BOOL)isReasonableSize:(int64_t)a3 forRouting:(id)a4;
-- (BOOL)retire:(const char *)a3;
-- (OSALog)initWithFilepath:(id)a3 type:(id)a4;
-- (OSALog)initWithPath:(id)a3 forRouting:(id)a4 options:(id)a5;
-- (OSALog)initWithPath:(id)a3 forRouting:(id)a4 options:(id)a5 error:(id *)a6;
-- (OSALog)initWithPath:(id)a3 forRouting:(id)a4 usingConfig:(id)a5 options:(id)a6 error:(id *)a7;
-- (OSALog)initWithPath:(id)a3 options:(id)a4 error:(id *)a5;
-- (OSALog)initWithType:(id)a3 filepath:(id)a4 metadata:(id)a5 options:(id)a6 at:(double)a7 error:(id *)a8;
++ (id)commonFieldsForBody:(id)body;
++ (id)createForSubmission:(id)submission metadata:(id)metadata options:(id)options error:(id *)error writing:(id)writing;
++ (id)locallyCreateForSubmission:(id)submission metadata:(id)metadata options:(id)options error:(id *)error writing:(id)writing;
++ (id)logObjForBugType:(id)type;
++ (id)scanProxies:(id)proxies;
++ (unsigned)scanLogs:(id)logs from:(id)from options:(id)options;
++ (void)cleanupForUser:(id)user;
++ (void)cleanupLogs:(id)logs withFilters:(id)filters error:(id *)error;
++ (void)cleanupRetired:(id)retired;
++ (void)createRetiredDirectoriesForUser:(id)user;
++ (void)createRetiredDirectory:(id)directory;
++ (void)iterateLogsWithOptions:(id)options usingBlock:(id)block;
++ (void)markDescriptor:(int)descriptor forKey:(id)key withObj:(id)obj;
++ (void)markDescriptor:(int)descriptor withPairs:(id)pairs andOptions:(id)options;
++ (void)markFile:(id)file withKey:(const char *)key value:(const char *)value;
++ (void)markPurgeableLevel:(unint64_t)level path:(id)path;
++ (void)purgeLogs:(id)logs withReason:(const char *)reason includeRetired:(BOOL)retired deleteOnRetire:(BOOL)retire usingPredicate:(id)predicate;
+- (BOOL)isReasonableSize:(int64_t)size forRouting:(id)routing;
+- (BOOL)retire:(const char *)retire;
+- (OSALog)initWithFilepath:(id)filepath type:(id)type;
+- (OSALog)initWithPath:(id)path forRouting:(id)routing options:(id)options;
+- (OSALog)initWithPath:(id)path forRouting:(id)routing options:(id)options error:(id *)error;
+- (OSALog)initWithPath:(id)path forRouting:(id)routing usingConfig:(id)config options:(id)options error:(id *)error;
+- (OSALog)initWithPath:(id)path options:(id)options error:(id *)error;
+- (OSALog)initWithType:(id)type filepath:(id)filepath metadata:(id)metadata options:(id)options at:(double)at error:(id *)error;
 - (void)closeFileStream;
 - (void)dealloc;
-- (void)markWithKey:(const char *)a3 value:(const char *)a4;
-- (void)rename:(id)a3;
+- (void)markWithKey:(const char *)key value:(const char *)value;
+- (void)rename:(id)rename;
 @end
 
 @implementation OSALog
@@ -78,12 +78,12 @@
   {
     if (fclose(stream) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(NSString *)self->_filepath lastPathComponent];
+      lastPathComponent = [(NSString *)self->_filepath lastPathComponent];
       v5 = *__error();
       v6 = __error();
       v7 = strerror(*v6);
       v9 = 138412802;
-      v10 = v4;
+      v10 = lastPathComponent;
       v11 = 1024;
       v12 = v5;
       v13 = 2080;
@@ -105,13 +105,13 @@
   [(OSALog *)&v3 dealloc];
 }
 
-- (OSALog)initWithPath:(id)a3 forRouting:(id)a4 usingConfig:(id)a5 options:(id)a6 error:(id *)a7
+- (OSALog)initWithPath:(id)path forRouting:(id)routing usingConfig:(id)config options:(id)options error:(id *)error
 {
   v116 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  pathCopy = path;
+  routingCopy = routing;
+  configCopy = config;
+  optionsCopy = options;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     [OSALog initWithPath:forRouting:usingConfig:options:error:];
@@ -126,23 +126,23 @@
   }
 
   v105 = "rejected";
-  v18 = [v16 objectForKeyedSubscript:@"<cleanup>"];
+  v18 = [optionsCopy objectForKeyedSubscript:@"<cleanup>"];
   v17->_deleteOnRetire = [v18 BOOLValue];
 
-  v19 = [v16 objectForKeyedSubscript:@"<preserve>"];
+  v19 = [optionsCopy objectForKeyedSubscript:@"<preserve>"];
   v17->_preserveFiles = [v19 BOOLValue];
 
-  v20 = [v16 objectForKeyedSubscript:@"<exempt>"];
-  v21 = [v20 BOOLValue];
+  v20 = [optionsCopy objectForKeyedSubscript:@"<exempt>"];
+  bOOLValue = [v20 BOOLValue];
 
-  objc_storeStrong(&v17->_filepath, a3);
+  objc_storeStrong(&v17->_filepath, path);
   v17->_stream = fopen([(NSString *)v17->_filepath fileSystemRepresentation], "r");
   v22 = __error();
   if (v17->_stream)
   {
     memset(&v104, 0, sizeof(v104));
     v23 = fileno(v17->_stream);
-    v101 = a7;
+    errorCopy = error;
     if (fstat(v23, &v104))
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -162,29 +162,29 @@
       goto LABEL_73;
     }
 
-    v33 = [(NSString *)v17->_filepath pathExtension];
-    v34 = [v33 isEqualToString:@"synced"];
+    pathExtension = [(NSString *)v17->_filepath pathExtension];
+    v34 = [pathExtension isEqualToString:@"synced"];
     v35 = v17->_filepath;
     if (v34)
     {
-      v36 = [(NSString *)v35 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [(NSString *)v35 stringByDeletingPathExtension];
     }
 
     else
     {
-      v36 = v35;
+      stringByDeletingPathExtension = v35;
     }
 
-    v37 = v36;
+    v37 = stringByDeletingPathExtension;
 
-    v38 = [(NSString *)v37 pathExtension];
+    pathExtension2 = [(NSString *)v37 pathExtension];
     bugType = v17->_bugType;
-    v17->_bugType = v38;
+    v17->_bugType = pathExtension2;
 
     v103.tv_sec = 0;
     *&v103.tv_usec = 0;
     gettimeofday(&v103, 0);
-    if ((v21 & 1) == 0 && v103.tv_sec - v104.st_mtimespec.tv_sec > 2591999)
+    if ((bOOLValue & 1) == 0 && v103.tv_sec - v104.st_mtimespec.tv_sec > 2591999)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
@@ -200,16 +200,16 @@
       goto LABEL_72;
     }
 
-    v40 = [v16 objectForKeyedSubscript:@"<metadata>"];
+    v40 = [optionsCopy objectForKeyedSubscript:@"<metadata>"];
     v41 = v40;
     if (v40 && ![v40 BOOLValue])
     {
-      if ((v21 & 1) != 0 || [(OSALog *)v17 isReasonableSize:v104.st_size forRouting:v14])
+      if ((bOOLValue & 1) != 0 || [(OSALog *)v17 isReasonableSize:v104.st_size forRouting:routingCopy])
       {
-        if (([v14 isEqualToString:@"anon"] & 1) != 0 || (objc_msgSend(v41, "BOOLValue") & 1) == 0)
+        if (([routingCopy isEqualToString:@"anon"] & 1) != 0 || (objc_msgSend(v41, "BOOLValue") & 1) == 0)
         {
           v97 = objc_opt_new();
-          if ([v14 isEqualToString:@"anon"])
+          if ([routingCopy isEqualToString:@"anon"])
           {
             [(NSString *)v37 stringByDeletingPathExtension];
             v65 = v64 = v41;
@@ -225,7 +225,7 @@
             v37 = v66;
           }
 
-          v99 = v13;
+          v99 = pathCopy;
           v94 = v41;
           v95 = v37;
           if (initWithPath_forRouting_usingConfig_options_error__onceToken != -1)
@@ -263,7 +263,7 @@
           metaData = v17->_metaData;
           v17->_metaData = v97;
 
-          v13 = v99;
+          pathCopy = v99;
           v41 = v94;
           v37 = v95;
         }
@@ -295,8 +295,8 @@
       goto LABEL_71;
     }
 
-    v98 = v13;
-    v100 = v15;
+    v98 = pathCopy;
+    v100 = configCopy;
     v42 = [MEMORY[0x1E695DF88] dataWithCapacity:1024];
     __ptr[0] = 0;
     if (fread(__ptr, 1uLL, 1uLL, v17->_stream) && __ptr[0] != 10)
@@ -326,12 +326,12 @@
 
     if (![v42 length])
     {
-      if (v21)
+      if (bOOLValue)
       {
 LABEL_70:
 
-        v13 = v98;
-        v15 = v100;
+        pathCopy = v98;
+        configCopy = v100;
 LABEL_71:
 
 LABEL_72:
@@ -342,7 +342,7 @@ LABEL_73:
         }
 
         v58 = v105;
-        v59 = v101;
+        v59 = errorCopy;
         goto LABEL_80;
       }
 
@@ -359,7 +359,7 @@ LABEL_73:
 
       v105 = "rejected-header";
 LABEL_68:
-      if (!((v17->_metaData != 0) | v21 & 1))
+      if (!((v17->_metaData != 0) | bOOLValue & 1))
       {
         fclose(v17->_stream);
         v17->_stream = 0;
@@ -388,13 +388,13 @@ LABEL_68:
         v17->_bugType = v52;
 
         v41 = v46;
-        if ((v21 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           v54 = v17->_filepath;
           v55 = v17->_bugType;
           v93 = v104.st_size;
-          v56 = [v16 objectForKeyedSubscript:@"<whitelist>"];
-          LOBYTE(v55) = [v100 isFile:v54 validForSubmission:v55 reasonableSize:v93 to:v14 internalTypes:v56 result:&v105];
+          v56 = [optionsCopy objectForKeyedSubscript:@"<whitelist>"];
+          LOBYTE(v55) = [v100 isFile:v54 validForSubmission:v55 reasonableSize:v93 to:routingCopy internalTypes:v56 result:&v105];
 
           v41 = v46;
           if ((v55 & 1) == 0)
@@ -420,7 +420,7 @@ LABEL_67:
     v41 = v46;
     v17->_metaData = 0;
 
-    if ((v21 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
@@ -438,16 +438,16 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  v26 = a7;
+  errorCopy2 = error;
   v27 = *v22;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v28 = v15;
+    v28 = configCopy;
     v29 = v17->_filepath;
     v30 = *__error();
     *buf = 138412546;
     v113 = v29;
-    v15 = v28;
+    configCopy = v28;
     v114 = 1024;
     LODWORD(st_size) = v30;
     _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Logfile '%@' failed to open (errno %d)", buf, 0x12u);
@@ -458,20 +458,20 @@ LABEL_67:
   {
     if (v27 == 2)
     {
-      if (v26)
+      if (errorCopy2)
       {
         v31 = MEMORY[0x1E696ABC0];
         v107 = *MEMORY[0x1E696A578];
         v108 = @"File doesn't exist";
         v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
-        *v26 = [v31 errorWithDomain:@"OSALog" code:1 userInfo:v32];
+        *errorCopy2 = [v31 errorWithDomain:@"OSALog" code:1 userInfo:v32];
       }
 
       goto LABEL_85;
     }
 
     v58 = "rejected-fopen";
-    v59 = v26;
+    v59 = errorCopy2;
 LABEL_80:
     if (v59)
     {
@@ -515,9 +515,9 @@ LABEL_74:
 
       if (!v82)
       {
-        v83 = [MEMORY[0x1E696AFB0] UUID];
-        v84 = [v83 UUIDString];
-        [(NSDictionary *)v81 setObject:v84 forKeyedSubscript:@"incident_id"];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
+        [(NSDictionary *)v81 setObject:uUIDString forKeyedSubscript:@"incident_id"];
       }
 
       v85 = v17->_metaData;
@@ -551,55 +551,55 @@ void __60__OSALog_initWithPath_forRouting_usingConfig_options_error___block_invo
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (OSALog)initWithPath:(id)a3 forRouting:(id)a4 options:(id)a5 error:(id *)a6
+- (OSALog)initWithPath:(id)path forRouting:(id)routing options:(id)options error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  optionsCopy = options;
+  routingCopy = routing;
+  pathCopy = path;
   v13 = +[OSASystemConfiguration sharedInstance];
-  v14 = [(OSALog *)self initWithPath:v12 forRouting:v11 usingConfig:v13 options:v10 error:a6];
+  v14 = [(OSALog *)self initWithPath:pathCopy forRouting:routingCopy usingConfig:v13 options:optionsCopy error:error];
 
   return v14;
 }
 
-- (OSALog)initWithPath:(id)a3 forRouting:(id)a4 options:(id)a5
+- (OSALog)initWithPath:(id)path forRouting:(id)routing options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  optionsCopy = options;
+  routingCopy = routing;
+  pathCopy = path;
   v11 = +[OSASystemConfiguration sharedInstance];
-  v12 = [(OSALog *)self initWithPath:v10 forRouting:v9 usingConfig:v11 options:v8 error:0];
+  v12 = [(OSALog *)self initWithPath:pathCopy forRouting:routingCopy usingConfig:v11 options:optionsCopy error:0];
 
   return v12;
 }
 
-- (OSALog)initWithPath:(id)a3 options:(id)a4 error:(id *)a5
+- (OSALog)initWithPath:(id)path options:(id)options error:(id *)error
 {
-  if (a4)
+  if (options)
   {
-    v9 = a3;
-    v10 = [a4 mutableCopy];
+    pathCopy = path;
+    v10 = [options mutableCopy];
   }
 
   else
   {
-    v11 = a3;
+    pathCopy2 = path;
     v10 = objc_opt_new();
   }
 
   v12 = v10;
   [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"<exempt>"];
-  v13 = [(OSALog *)self initWithPath:a3 forRouting:&stru_1F2411100 options:v12 error:a5];
+  v13 = [(OSALog *)self initWithPath:path forRouting:&stru_1F2411100 options:v12 error:error];
 
   return v13;
 }
 
-- (void)rename:(id)a3
+- (void)rename:(id)rename
 {
-  v5 = a3;
-  if (v5)
+  renameCopy = rename;
+  if (renameCopy)
   {
-    objc_storeStrong(&self->_filepath, a3);
+    objc_storeStrong(&self->_filepath, rename);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -608,31 +608,31 @@ void __60__OSALog_initWithPath_forRouting_usingConfig_options_error___block_invo
   }
 }
 
-+ (id)logObjForBugType:(id)a3
++ (id)logObjForBugType:(id)type
 {
-  v3 = a3;
-  if (v3 && ([&unk_1F241F200 containsObject:v3] & 1) != 0)
+  typeCopy = type;
+  if (typeCopy && ([&unk_1F241F200 containsObject:typeCopy] & 1) != 0)
   {
     v4 = +[OSASystemConfiguration sharedInstance];
-    v5 = [v4 logDomain];
+    logDomain = [v4 logDomain];
   }
 
   else
   {
-    v5 = MEMORY[0x1E69E9C10];
+    logDomain = MEMORY[0x1E69E9C10];
     v6 = MEMORY[0x1E69E9C10];
   }
 
-  return v5;
+  return logDomain;
 }
 
-- (OSALog)initWithType:(id)a3 filepath:(id)a4 metadata:(id)a5 options:(id)a6 at:(double)a7 error:(id *)a8
+- (OSALog)initWithType:(id)type filepath:(id)filepath metadata:(id)metadata options:(id)options at:(double)at error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  typeCopy = type;
+  filepathCopy = filepath;
+  metadataCopy = metadata;
+  optionsCopy = options;
   v50.receiver = self;
   v50.super_class = OSALog;
   v17 = [(OSALog *)&v50 init];
@@ -642,24 +642,24 @@ void __60__OSALog_initWithPath_forRouting_usingConfig_options_error___block_invo
   }
 
   v47 = umask(0);
-  objc_storeStrong(&v17->_filepath, a4);
-  v18 = [OSALog logObjForBugType:v13];
+  objc_storeStrong(&v17->_filepath, filepath);
+  v18 = [OSALog logObjForBugType:typeCopy];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v55 = v13;
+    v55 = typeCopy;
     v56 = 2114;
-    v57 = v14;
+    v57 = filepathCopy;
     _os_log_impl(&dword_1AE4F7000, v18, OS_LOG_TYPE_DEFAULT, "creating type %{public}@ as %{public}@", buf, 0x16u);
   }
 
-  v19 = v14;
-  v20 = open_dprotected_np([v14 UTF8String], 536873473, 4, 0, 432);
+  v19 = filepathCopy;
+  v20 = open_dprotected_np([filepathCopy UTF8String], 536873473, 4, 0, 432);
   if ((v20 & 0x80000000) == 0)
   {
-    [OSASystemConfiguration ensureConformanceOfFile:v20 options:v16];
+    [OSASystemConfiguration ensureConformanceOfFile:v20 options:optionsCopy];
     v21 = +[OSASystemConfiguration sharedInstance];
-    v22 = [v21 createReportMetadata:v13 with:v15 at:v16 usingOptions:a7];
+    v22 = [v21 createReportMetadata:typeCopy with:metadataCopy at:optionsCopy usingOptions:at];
     metaData = v17->_metaData;
     v17->_metaData = v22;
 
@@ -676,7 +676,7 @@ void __60__OSALog_initWithPath_forRouting_usingConfig_options_error___block_invo
     if (v28)
     {
       v46 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:v20 closeOnDealloc:0];
-      v31 = [v16 objectForKeyedSubscript:@"alt-metadata"];
+      v31 = [optionsCopy objectForKeyedSubscript:@"alt-metadata"];
       v32 = v31 == 0;
 
       if (v32)
@@ -688,7 +688,7 @@ void __60__OSALog_initWithPath_forRouting_usingConfig_options_error___block_invo
 
       if ((v20 & 0x80000000) == 0)
       {
-        [OSALog markDescriptor:v20 withPairs:v26 andOptions:v16];
+        [OSALog markDescriptor:v20 withPairs:v26 andOptions:optionsCopy];
         v17->_stream = fdopen(v20, "w");
         goto LABEL_20;
       }
@@ -696,10 +696,10 @@ void __60__OSALog_initWithPath_forRouting_usingConfig_options_error___block_invo
 
     else
     {
-      if (a8)
+      if (error)
       {
         v40 = v29;
-        *a8 = v30;
+        *error = v30;
       }
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -714,8 +714,8 @@ void __60__OSALog_initWithPath_forRouting_usingConfig_options_error___block_invo
       close(v20);
     }
 
-    v41 = v14;
-    unlink([v14 UTF8String]);
+    v41 = filepathCopy;
+    unlink([filepathCopy UTF8String]);
     goto LABEL_20;
   }
 
@@ -725,13 +725,13 @@ void __60__OSALog_initWithPath_forRouting_usingConfig_options_error___block_invo
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v55 = v14;
+    v55 = filepathCopy;
     v56 = 2082;
     v57 = v36;
     _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Error creating file %{public}@, %{public}s", buf, 0x16u);
   }
 
-  if (!a8)
+  if (!error)
   {
     goto LABEL_21;
   }
@@ -744,7 +744,7 @@ void __60__OSALog_initWithPath_forRouting_usingConfig_options_error___block_invo
   v38 = [MEMORY[0x1E696AD98] numberWithInt:v34];
   v52[1] = v38;
   v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:2];
-  *a8 = [v37 initWithDomain:@"OSALog" code:13 userInfo:v39];
+  *error = [v37 initWithDomain:@"OSALog" code:13 userInfo:v39];
 
 LABEL_20:
 LABEL_21:
@@ -766,36 +766,36 @@ LABEL_22:
   return v43;
 }
 
-- (OSALog)initWithFilepath:(id)a3 type:(id)a4
+- (OSALog)initWithFilepath:(id)filepath type:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  filepathCopy = filepath;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = OSALog;
   v9 = [(OSALog *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bugType, a4);
-    objc_storeStrong(&v10->_filepath, a3);
+    objc_storeStrong(&v9->_bugType, type);
+    objc_storeStrong(&v10->_filepath, filepath);
   }
 
   return v10;
 }
 
-+ (void)markPurgeableLevel:(unint64_t)a3 path:(id)a4
++ (void)markPurgeableLevel:(unint64_t)level path:(id)path
 {
-  v5 = a3;
-  v4 = a4;
-  if (fsctl([v4 fileSystemRepresentation], 0xC0084A44uLL, &v5, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  levelCopy = level;
+  pathCopy = path;
+  if (fsctl([pathCopy fileSystemRepresentation], 0xC0084A44uLL, &levelCopy, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    [OSALog markPurgeableLevel:v4 path:&v5];
+    [OSALog markPurgeableLevel:pathCopy path:&levelCopy];
   }
 }
 
-+ (BOOL)randomlySelectForRetention:(id)a3
++ (BOOL)randomlySelectForRetention:(id)retention
 {
-  v3 = a3;
+  retentionCopy = retention;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -810,9 +810,9 @@ LABEL_22:
   v7[1] = 3221225472;
   v7[2] = __37__OSALog_randomlySelectForRetention___block_invoke_2;
   v7[3] = &unk_1E7A27698;
-  v8 = v3;
+  v8 = retentionCopy;
   v9 = &v10;
-  v5 = v3;
+  v5 = retentionCopy;
   dispatch_sync(v4, v7);
   LOBYTE(v4) = *(v11 + 24);
 
@@ -850,13 +850,13 @@ void __37__OSALog_randomlySelectForRetention___block_invoke_2(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)locallyCreateForSubmission:(id)a3 metadata:(id)a4 options:(id)a5 error:(id *)a6 writing:(id)a7
++ (id)locallyCreateForSubmission:(id)submission metadata:(id)metadata options:(id)options error:(id *)error writing:(id)writing
 {
   v136[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v84 = a4;
-  v11 = a5;
-  v83 = a7;
+  submissionCopy = submission;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  writingCopy = writing;
   v119 = 0;
   v120 = &v119;
   v121 = 0x3032000000;
@@ -875,10 +875,10 @@ void __37__OSALog_randomlySelectForRetention___block_invoke_2(uint64_t a1)
   v110 = __Block_byref_object_copy__4;
   v111 = __Block_byref_object_dispose__4;
   v112 = @"Undescribed error";
-  v12 = [v11 objectForKeyedSubscript:@"LogType"];
+  v12 = [optionsCopy objectForKeyedSubscript:@"LogType"];
   if (![v12 length])
   {
-    v13 = v10;
+    v13 = submissionCopy;
 
     v12 = v13;
   }
@@ -888,11 +888,11 @@ void __37__OSALog_randomlySelectForRetention___block_invoke_2(uint64_t a1)
   v102 = 0;
   v103 = &v102;
   v104 = 0x2020000000;
-  v14 = [v11 objectForKeyedSubscript:@"override-filePath"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"override-filePath"];
 
-  v15 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v15 addSuiteNamed:@"com.apple.osanalytics.factoryproxysync"];
-  if (OSAIsConfiguredRSDDevice() && [v15 BOOLForKey:@"disableLogLimits"])
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults addSuiteNamed:@"com.apple.osanalytics.factoryproxysync"];
+  if (OSAIsConfiguredRSDDevice() && [standardUserDefaults BOOLForKey:@"disableLogLimits"])
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -907,7 +907,7 @@ void __37__OSALog_randomlySelectForRetention___block_invoke_2(uint64_t a1)
 LABEL_8:
     v16 = 1;
 LABEL_13:
-    v21 = v84;
+    v21 = metadataCopy;
     v22 = [v21 objectForKeyedSubscript:@"roots_installed"];
     v23 = v22 == 0;
 
@@ -932,14 +932,14 @@ LABEL_13:
     }
 
     v26 = +[OSASystemConfiguration sharedInstance];
-    v27 = [v26 isInDeviceRecoveryEnvironment];
+    isInDeviceRecoveryEnvironment = [v26 isInDeviceRecoveryEnvironment];
 
-    if (v27)
+    if (isInDeviceRecoveryEnvironment)
     {
       v28 = [v24 mutableCopy];
       v29 = +[OSASystemConfiguration sharedInstance];
-      v30 = [v29 recoveryModeReason];
-      [v28 setObject:v30 forKeyedSubscript:@"device_in_recovery_mode_with_reason"];
+      recoveryModeReason = [v29 recoveryModeReason];
+      [v28 setObject:recoveryModeReason forKeyedSubscript:@"device_in_recovery_mode_with_reason"];
     }
 
     else
@@ -947,16 +947,16 @@ LABEL_13:
       v28 = v24;
     }
 
-    v31 = [v11 objectForKeyedSubscript:@"capture-time"];
+    v31 = [optionsCopy objectForKeyedSubscript:@"capture-time"];
     [v31 doubleValue];
     v33 = v32;
 
     v34 = +[OSASystemConfiguration sharedInstance];
-    v35 = [v34 logPathForType:v10 at:v11 options:v33];
+    v35 = [v34 logPathForType:submissionCopy at:optionsCopy options:v33];
 
     if (v35)
     {
-      v36 = [v11 objectForKeyedSubscript:@"move-file"];
+      v36 = [optionsCopy objectForKeyedSubscript:@"move-file"];
       v86[0] = MEMORY[0x1E69E9820];
       v86[1] = 3221225472;
       v86[2] = __68__OSALog_locallyCreateForSubmission_metadata_options_error_writing___block_invoke;
@@ -965,11 +965,11 @@ LABEL_13:
       v87 = v37;
       v88 = v35;
       v94 = &v119;
-      v89 = v10;
+      v89 = submissionCopy;
       v90 = v28;
-      v91 = v11;
+      v91 = optionsCopy;
       v98 = v33;
-      v93 = v83;
+      v93 = writingCopy;
       v95 = &v107;
       v100 = v16;
       v96 = &v113;
@@ -986,7 +986,7 @@ LABEL_13:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v130 = v10;
+        v130 = submissionCopy;
         v131 = 2112;
         v132 = v12;
         _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Report of type '%{public}@(%@)' not saved because the destination is unavailable", buf, 0x16u);
@@ -1011,7 +1011,7 @@ LABEL_13:
   v17 = +[OSALogTrackerObject sharedTrackers];
   v18 = (v108 + 5);
   obj = v108[5];
-  v19 = [v17 osa_logTracker_isLog:v10 byKey:v12 count:v103 + 3 withinLimit:&v106 withOptions:v11 errorDescription:&obj];
+  v19 = [v17 osa_logTracker_isLog:submissionCopy byKey:v12 count:v103 + 3 withinLimit:&v106 withOptions:optionsCopy errorDescription:&obj];
   objc_storeStrong(v18, obj);
   if (v19)
   {
@@ -1021,7 +1021,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v20 = [OSALog randomlySelectForRetention:v10];
+  v20 = [OSALog randomlySelectForRetention:submissionCopy];
 
   if (v20)
   {
@@ -1031,7 +1031,7 @@ LABEL_12:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v130 = v10;
+    v130 = submissionCopy;
     v131 = 2112;
     v132 = v12;
     v133 = 2048;
@@ -1049,50 +1049,50 @@ LABEL_12:
   v114[5] = v75;
 LABEL_28:
 
-  v43 = [MEMORY[0x1E695DF90] dictionary];
-  [v43 setObject:v10 forKeyedSubscript:@"bug_type"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:submissionCopy forKeyedSubscript:@"bug_type"];
   v44 = [MEMORY[0x1E696AD98] numberWithInt:v108[5] == 0];
-  [v43 setObject:v44 forKeyedSubscript:@"saved"];
+  [dictionary setObject:v44 forKeyedSubscript:@"saved"];
 
   v45 = v114[5];
   if (v45)
   {
-    v46 = [v45 userInfo];
-    v47 = [v46 objectForKeyedSubscript:@"errno"];
-    v48 = [v47 intValue];
+    userInfo = [v45 userInfo];
+    v47 = [userInfo objectForKeyedSubscript:@"errno"];
+    intValue = [v47 intValue];
 
     v49 = MEMORY[0x1E696AEC0];
     v50 = v108[5];
-    v51 = [v114[5] domain];
-    v52 = [v49 stringWithFormat:@"%@ (%@:%ld:%d)", v50, v51, objc_msgSend(v114[5], "code"), v48];
-    [v43 setObject:v52 forKeyedSubscript:@"error"];
+    domain = [v114[5] domain];
+    v52 = [v49 stringWithFormat:@"%@ (%@:%ld:%d)", v50, domain, objc_msgSend(v114[5], "code"), intValue];
+    [dictionary setObject:v52 forKeyedSubscript:@"error"];
 
-    if (v48)
+    if (intValue)
     {
-      v53 = [v114[5] userInfo];
-      v54 = [v53 objectForKeyedSubscript:@"errno"];
-      [v43 setObject:v54 forKeyedSubscript:@"errno"];
+      userInfo2 = [v114[5] userInfo];
+      v54 = [userInfo2 objectForKeyedSubscript:@"errno"];
+      [dictionary setObject:v54 forKeyedSubscript:@"errno"];
     }
   }
 
   else
   {
-    [v43 setObject:v108[5] forKeyedSubscript:@"error"];
+    [dictionary setObject:v108[5] forKeyedSubscript:@"error"];
   }
 
   AnalyticsSendEvent();
-  if ([(__CFString *)v10 isEqualToString:@"211"])
+  if ([(__CFString *)submissionCopy isEqualToString:@"211"])
   {
     [OSAStateMonitor recordEvent:@"ca-log-written"];
     if (v108[5])
     {
       v125[0] = @"crk";
       v55 = +[OSASystemConfiguration sharedInstance];
-      v56 = [v55 crashReporterKey];
-      v57 = v56;
-      if (v10)
+      crashReporterKey = [v55 crashReporterKey];
+      v57 = crashReporterKey;
+      if (submissionCopy)
       {
-        v58 = v10;
+        v58 = submissionCopy;
       }
 
       else
@@ -1100,11 +1100,11 @@ LABEL_28:
         v58 = @"<unknown>";
       }
 
-      v126[0] = v56;
+      v126[0] = crashReporterKey;
       v126[1] = v58;
       v125[1] = @"bug_type";
       v125[2] = @"error";
-      v59 = [v43 objectForKeyedSubscript:?];
+      v59 = [dictionary objectForKeyedSubscript:?];
       v60 = v59;
       if (v59)
       {
@@ -1124,30 +1124,30 @@ LABEL_28:
 
   if (+[OSALog isDataVaultEnabled])
   {
-    v63 = [v11 objectForKeyedSubscript:@"datavault-filePath"];
-    if (![v63 BOOLValue] || v108[5])
+    lastPathComponent = [optionsCopy objectForKeyedSubscript:@"datavault-filePath"];
+    if (![lastPathComponent BOOLValue] || v108[5])
     {
 LABEL_53:
 
       goto LABEL_54;
     }
 
-    v64 = [v120[5] filepath];
-    v65 = v64 == 0;
+    filepath = [v120[5] filepath];
+    v65 = filepath == 0;
 
     if (!v65)
     {
-      v66 = [v120[5] filepath];
-      v63 = [v66 lastPathComponent];
+      filepath2 = [v120[5] filepath];
+      lastPathComponent = [filepath2 lastPathComponent];
 
       v67 = +[OSASystemConfiguration sharedInstance];
-      v68 = [v67 pathSubmission];
-      v69 = [v68 stringByAppendingPathComponent:v63];
+      pathSubmission = [v67 pathSubmission];
+      v69 = [pathSubmission stringByAppendingPathComponent:lastPathComponent];
 
-      v70 = [MEMORY[0x1E696AC08] defaultManager];
-      v71 = [v120[5] filepath];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      filepath3 = [v120[5] filepath];
       v85 = 0;
-      v72 = [v70 copyItemAtPath:v71 toPath:v69 error:&v85];
+      v72 = [defaultManager copyItemAtPath:filepath3 toPath:v69 error:&v85];
       v81 = v85;
 
       if (v72)
@@ -1161,20 +1161,20 @@ LABEL_53:
         +[OSALog locallyCreateForSubmission:metadata:options:error:writing:];
       }
 
-      v76 = [v120[5] filepath];
-      [OSALog markPurgeableLevel:98308 path:v76];
+      filepath4 = [v120[5] filepath];
+      [OSALog markPurgeableLevel:98308 path:filepath4];
 
       goto LABEL_53;
     }
   }
 
 LABEL_54:
-  if (a6)
+  if (error)
   {
     v77 = v114[5];
     if (v77)
     {
-      *a6 = v77;
+      *error = v77;
     }
   }
 
@@ -1444,23 +1444,23 @@ LABEL_36:
   v78 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)createForSubmission:(id)a3 metadata:(id)a4 options:(id)a5 error:(id *)a6 writing:(id)a7
++ (id)createForSubmission:(id)submission metadata:(id)metadata options:(id)options error:(id *)error writing:(id)writing
 {
   v120 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v97 = a7;
+  submissionCopy = submission;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  writingCopy = writing;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v66 = MEMORY[0x1B2703360](v97);
+    v66 = MEMORY[0x1B2703360](writingCopy);
     v67 = NSUserName();
     *v117 = 138413314;
-    *&v117[4] = v10;
+    *&v117[4] = submissionCopy;
     *&v117[12] = 2112;
-    *&v117[14] = v11;
+    *&v117[14] = metadataCopy;
     *&v117[22] = 2112;
-    v118 = v12;
+    v118 = optionsCopy;
     *v119 = 2048;
     *&v119[2] = v66;
     *&v119[10] = 2112;
@@ -1468,9 +1468,9 @@ LABEL_36:
     _os_log_debug_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "createForSubmission: %@ metadata: %@ options: %@ block: %p (by %@)", v117, 0x34u);
   }
 
-  if (v12)
+  if (optionsCopy)
   {
-    v13 = [v12 mutableCopy];
+    v13 = [optionsCopy mutableCopy];
   }
 
   else
@@ -1480,23 +1480,23 @@ LABEL_36:
 
   v14 = v13;
   v15 = objc_opt_new();
-  if (v11)
+  if (metadataCopy)
   {
-    v16 = [v12 objectForKeyedSubscript:@"nestedMetadata"];
-    v17 = [v16 BOOLValue];
+    v16 = [optionsCopy objectForKeyedSubscript:@"nestedMetadata"];
+    bOOLValue = [v16 BOOLValue];
 
-    if (v17)
+    if (bOOLValue)
     {
-      [v15 setObject:v11 forKeyedSubscript:@"custom_headers"];
+      [v15 setObject:metadataCopy forKeyedSubscript:@"custom_headers"];
     }
 
     else
     {
-      [v15 addEntriesFromDictionary:v11];
+      [v15 addEntriesFromDictionary:metadataCopy];
     }
   }
 
-  v18 = [v12 objectForKeyedSubscript:@"capture-time"];
+  v18 = [optionsCopy objectForKeyedSubscript:@"capture-time"];
   v19 = v18 == 0;
 
   if (v19)
@@ -1505,22 +1505,22 @@ LABEL_36:
     [v14 setObject:v20 forKeyedSubscript:@"capture-time"];
   }
 
-  v21 = [v11 objectForKeyedSubscript:@"incident_id"];
+  v21 = [metadataCopy objectForKeyedSubscript:@"incident_id"];
   v22 = v21 == 0;
 
   if (v22)
   {
-    v23 = [MEMORY[0x1E696AFB0] UUID];
-    v24 = [v23 UUIDString];
-    [v15 setObject:v24 forKeyedSubscript:@"incident_id"];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [v15 setObject:uUIDString forKeyedSubscript:@"incident_id"];
   }
 
-  v25 = [v12 objectForKeyedSubscript:@"LogType"];
+  v25 = [optionsCopy objectForKeyedSubscript:@"LogType"];
   v26 = [v25 length] == 0;
 
   if (v26)
   {
-    [v14 setObject:v10 forKeyedSubscript:@"LogType"];
+    [v14 setObject:submissionCopy forKeyedSubscript:@"LogType"];
   }
 
   v27 = geteuid();
@@ -1530,30 +1530,30 @@ LABEL_36:
     [v14 setObject:v28 forKeyedSubscript:@"file-owner-uid"];
   }
 
-  v29 = [v12 objectForKeyedSubscript:@"observer_info"];
+  v29 = [optionsCopy objectForKeyedSubscript:@"observer_info"];
   v30 = v29 == 0;
 
   if (v30)
   {
-    v31 = [MEMORY[0x1E695DF90] dictionaryWithObject:v10 forKey:@"bug_type"];
+    v31 = [MEMORY[0x1E695DF90] dictionaryWithObject:submissionCopy forKey:@"bug_type"];
     [v14 setObject:v31 forKeyedSubscript:@"observer_info"];
   }
 
   else
   {
     v31 = [v14 objectForKeyedSubscript:@"observer_info"];
-    [v31 setObject:v10 forKeyedSubscript:@"bug_type"];
+    [v31 setObject:submissionCopy forKeyedSubscript:@"bug_type"];
   }
 
   v32 = +[OSASystemConfiguration sharedInstance];
-  v33 = [v32 usesLegacySubmission:v10];
+  v33 = [v32 usesLegacySubmission:submissionCopy];
 
   if (v33)
   {
     [v14 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"alt-metadata"];
   }
 
-  if (+[OSALog isDataVaultEnabled](OSALog, "isDataVaultEnabled") && [v10 isEqualToString:@"309"])
+  if (+[OSALog isDataVaultEnabled](OSALog, "isDataVaultEnabled") && [submissionCopy isEqualToString:@"309"])
   {
     [v14 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"datavault-filePath"];
   }
@@ -1564,7 +1564,7 @@ LABEL_36:
   v118 = __Block_byref_object_copy__4;
   *v119 = __Block_byref_object_dispose__4;
   *&v119[8] = 0;
-  v34 = [v12 objectForKeyedSubscript:@"override-filePath"];
+  v34 = [optionsCopy objectForKeyedSubscript:@"override-filePath"];
 
   if (!v34)
   {
@@ -1622,7 +1622,7 @@ LABEL_36:
     v98[1] = 3221225472;
     v98[2] = __61__OSALog_createForSubmission_metadata_options_error_writing___block_invoke_289;
     v98[3] = &unk_1E7A27738;
-    v99 = v97;
+    v99 = writingCopy;
     xpc_connection_set_event_handler(v42, v98);
     value = xpc_endpoint_create(v42);
     xpc_connection_resume(v42);
@@ -1640,9 +1640,9 @@ LABEL_36:
 
     xpc_dictionary_set_string(v43, "caller", v44);
     xpc_dictionary_set_uint64(v43, "operation", 6uLL);
-    v46 = [@"bug_type" UTF8String];
-    v47 = v10;
-    xpc_dictionary_set_string(v43, v46, [v10 UTF8String]);
+    uTF8String = [@"bug_type" UTF8String];
+    v47 = submissionCopy;
+    xpc_dictionary_set_string(v43, uTF8String, [submissionCopy UTF8String]);
     if ([v15 count])
     {
       v48 = ns2xpc(v15);
@@ -1658,7 +1658,7 @@ LABEL_36:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v115 = v10;
+      v115 = submissionCopy;
       _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "C1. request '%@' report service via XPC/osanalyticshelper", buf, 0xCu);
     }
 
@@ -1674,7 +1674,7 @@ LABEL_36:
         {
           v53 = [OSALog alloc];
           v54 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
-          v38 = [(OSALog *)v53 initWithFilepath:v54 type:v10];
+          v38 = [(OSALog *)v53 initWithFilepath:v54 type:submissionCopy];
 
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
@@ -1732,27 +1732,27 @@ LABEL_36:
           free(v70);
         }
 
-        v71 = xpc_dictionary_get_string(v51, "error_desc");
-        if (!v71)
+        uTF8String2 = xpc_dictionary_get_string(v51, "error_desc");
+        if (!uTF8String2)
         {
           v72 = *(*&v117[8] + 40);
           if (v72)
           {
-            v73 = [v72 localizedDescription];
-            v74 = v73;
-            v71 = [v73 UTF8String];
+            localizedDescription = [v72 localizedDescription];
+            v74 = localizedDescription;
+            uTF8String2 = [localizedDescription UTF8String];
           }
 
           else
           {
-            v71 = 0;
+            uTF8String2 = 0;
           }
         }
 
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315138;
-          v115 = v71;
+          v115 = uTF8String2;
           _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "C6. report request failed: %s", buf, 0xCu);
         }
 
@@ -1772,9 +1772,9 @@ LABEL_36:
           }
 
           v110 = *MEMORY[0x1E696A578];
-          if (v71)
+          if (uTF8String2)
           {
-            v77 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v71];
+            v77 = [MEMORY[0x1E696AEC0] stringWithUTF8String:uTF8String2];
           }
 
           else
@@ -1789,7 +1789,7 @@ LABEL_36:
           v80 = *(*&v117[8] + 40);
           *(*&v117[8] + 40) = v79;
 
-          if (v71)
+          if (uTF8String2)
           {
           }
 
@@ -1838,7 +1838,7 @@ LABEL_97:
     v63 = v99;
 LABEL_98:
 
-    v60 = [OSALog logObjForBugType:v10];
+    v60 = [OSALog logObjForBugType:submissionCopy];
     if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
     {
       if (v38)
@@ -1862,7 +1862,7 @@ LABEL_98:
       }
       v82 = ;
       *v116 = 138543874;
-      *&v116[4] = v10;
+      *&v116[4] = submissionCopy;
       *&v116[12] = 2112;
       *&v116[14] = v81;
       *&v116[22] = 2114;
@@ -1877,9 +1877,9 @@ LABEL_106:
   }
 
   v35 = [v14 objectForKeyedSubscript:@"optinOverride"];
-  v36 = [v35 BOOLValue];
+  bOOLValue2 = [v35 BOOLValue];
 
-  if (v36)
+  if (bOOLValue2)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1895,10 +1895,10 @@ LABEL_106:
   v101[1] = 3221225472;
   v101[2] = __61__OSALog_createForSubmission_metadata_options_error_writing___block_invoke;
   v101[3] = &unk_1E7A276E8;
-  v102 = v97;
-  v38 = [OSALog locallyCreateForSubmission:v10 metadata:v15 options:v14 error:&obj writing:v101];
+  v102 = writingCopy;
+  v38 = [OSALog locallyCreateForSubmission:submissionCopy metadata:v15 options:v14 error:&obj writing:v101];
   objc_storeStrong((v37 + 40), obj);
-  v39 = [OSALog logObjForBugType:v10];
+  v39 = [OSALog logObjForBugType:submissionCopy];
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
     if (v38)
@@ -1922,7 +1922,7 @@ LABEL_106:
     }
     v61 = ;
     *v116 = 138543874;
-    *&v116[4] = v10;
+    *&v116[4] = submissionCopy;
     *&v116[12] = 2112;
     *&v116[14] = v40;
     *&v116[22] = 2114;
@@ -1931,12 +1931,12 @@ LABEL_106:
   }
 
 LABEL_107:
-  if (a6)
+  if (error)
   {
     v83 = *(*&v117[8] + 40);
     if (v83)
     {
-      *a6 = v83;
+      *error = v83;
     }
   }
 
@@ -2081,9 +2081,9 @@ void __61__OSALog_createForSubmission_metadata_options_error_writing___block_inv
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isReasonableSize:(int64_t)a3 forRouting:(id)a4
+- (BOOL)isReasonableSize:(int64_t)size forRouting:(id)routing
 {
-  v6 = [(NSString *)self->_filepath lastPathComponent:a3];
+  v6 = [(NSString *)self->_filepath lastPathComponent:size];
   if ([v6 hasSuffix:@".pll.anon"])
   {
   }
@@ -2095,20 +2095,20 @@ void __61__OSALog_createForSubmission_metadata_options_error_writing___block_inv
     if (!v7)
     {
       v8 = 0x100000;
-      return v8 >= a3;
+      return v8 >= size;
     }
   }
 
   v8 = 104857600;
-  return v8 >= a3;
+  return v8 >= size;
 }
 
-- (void)markWithKey:(const char *)a3 value:(const char *)a4
+- (void)markWithKey:(const char *)key value:(const char *)value
 {
   p_filepath = &self->_filepath;
-  v7 = [(NSString *)self->_filepath UTF8String];
-  v8 = strlen(a4);
-  if (setxattr(v7, a3, a4, v8 + 1, 0, 0))
+  uTF8String = [(NSString *)self->_filepath UTF8String];
+  v8 = strlen(value);
+  if (setxattr(uTF8String, key, value, v8 + 1, 0, 0))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -2117,27 +2117,27 @@ void __61__OSALog_createForSubmission_metadata_options_error_writing___block_inv
   }
 }
 
-+ (void)markFile:(id)a3 withKey:(const char *)a4 value:(const char *)a5
++ (void)markFile:(id)file withKey:(const char *)key value:(const char *)value
 {
-  v7 = a3;
-  v8 = [v7 UTF8String];
-  v9 = strlen(a5);
-  if (setxattr(v8, a4, a5, v9 + 1, 0, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  fileCopy = file;
+  uTF8String = [fileCopy UTF8String];
+  v9 = strlen(value);
+  if (setxattr(uTF8String, key, value, v9 + 1, 0, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     +[OSALog markFile:withKey:value:];
   }
 }
 
-+ (void)markDescriptor:(int)a3 forKey:(id)a4 withObj:(id)a5
++ (void)markDescriptor:(int)descriptor forKey:(id)key withObj:(id)obj
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  keyCopy = key;
+  objCopy = obj;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 UTF8String];
-    v10 = v9;
+    uTF8String = [objCopy UTF8String];
+    bytes = uTF8String;
   }
 
   else
@@ -2145,8 +2145,8 @@ void __61__OSALog_createForSubmission_metadata_options_error_writing___block_inv
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v8 bytes];
-      v11 = [v8 length];
+      bytes = [objCopy bytes];
+      v11 = [objCopy length];
       goto LABEL_6;
     }
 
@@ -2156,23 +2156,23 @@ void __61__OSALog_createForSubmission_metadata_options_error_writing___block_inv
       goto LABEL_13;
     }
 
-    v15 = [v8 stringValue];
-    v10 = [v15 UTF8String];
+    stringValue = [objCopy stringValue];
+    bytes = [stringValue UTF8String];
 
-    v9 = v10;
+    uTF8String = bytes;
   }
 
-  v11 = strlen(v9);
+  v11 = strlen(uTF8String);
 LABEL_6:
-  if (v10 && v11)
+  if (bytes && v11)
   {
-    if (fsetxattr(a3, [v7 UTF8String], v10, v11, 0, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
+    if (fsetxattr(descriptor, [keyCopy UTF8String], bytes, v11, 0, 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v12 = *__error();
       v13 = __error();
       v14 = strerror(*v13);
       v17 = 138412802;
-      v18 = v7;
+      v18 = keyCopy;
       v19 = 1024;
       v20 = v12;
       v21 = 2080;
@@ -2194,11 +2194,11 @@ LABEL_15:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)markDescriptor:(int)a3 withPairs:(id)a4 andOptions:(id)a5
++ (void)markDescriptor:(int)descriptor withPairs:(id)pairs andOptions:(id)options
 {
   v7 = markDescriptor_withPairs_andOptions__onceToken;
-  v8 = a5;
-  v9 = a4;
+  optionsCopy = options;
+  pairsCopy = pairs;
   if (v7 != -1)
   {
     +[OSALog markDescriptor:withPairs:andOptions:];
@@ -2208,15 +2208,15 @@ LABEL_15:
   v12[1] = 3221225472;
   v12[2] = __46__OSALog_markDescriptor_withPairs_andOptions___block_invoke_2;
   v12[3] = &__block_descriptor_36_e15_v32__0_8_16_B24l;
-  v13 = a3;
-  [v9 enumerateKeysAndObjectsUsingBlock:v12];
+  descriptorCopy = descriptor;
+  [pairsCopy enumerateKeysAndObjectsUsingBlock:v12];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__OSALog_markDescriptor_withPairs_andOptions___block_invoke_3;
   v10[3] = &__block_descriptor_36_e15_v32__0_8_16_B24l;
-  v11 = a3;
-  [v8 enumerateKeysAndObjectsUsingBlock:v10];
+  descriptorCopy2 = descriptor;
+  [optionsCopy enumerateKeysAndObjectsUsingBlock:v10];
 }
 
 void __46__OSALog_markDescriptor_withPairs_andOptions___block_invoke()
@@ -2260,7 +2260,7 @@ void __46__OSALog_markDescriptor_withPairs_andOptions___block_invoke_3(uint64_t 
   }
 }
 
-- (BOOL)retire:(const char *)a3
+- (BOOL)retire:(const char *)retire
 {
   v73 = *MEMORY[0x1E69E9840];
   p_filepath = &self->_filepath;
@@ -2275,9 +2275,9 @@ void __46__OSALog_markDescriptor_withPairs_andOptions___block_invoke_3(uint64_t 
       {
         v8 = *p_filepath;
         *buf = 136315394;
-        v66 = a3;
+        retireCopy2 = retire;
         v67 = 2114;
-        v68 = v8;
+        retireCopy3 = v8;
         _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Sparing %s '%{public}@'", buf, 0x16u);
       }
 
@@ -2295,9 +2295,9 @@ LABEL_48:
       {
         v11 = *p_filepath;
         *buf = 136315394;
-        v66 = a3;
+        retireCopy2 = retire;
         v67 = 2114;
-        v68 = v11;
+        retireCopy3 = v11;
         _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Cleanup %s '%{public}@'", buf, 0x16u);
       }
 
@@ -2339,7 +2339,7 @@ LABEL_25:
         {
           v23 = *p_filepath;
           *buf = 138543362;
-          v66 = v23;
+          retireCopy2 = v23;
           _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Auto deletion of '%{public}@'", buf, 0xCu);
         }
 
@@ -2379,9 +2379,9 @@ LABEL_32:
             v29 = "success";
           }
 
-          v66 = bugType;
+          retireCopy2 = bugType;
           v67 = 2082;
-          v68 = a3;
+          retireCopy3 = retire;
           v69 = 2114;
           v70 = v30;
           v71 = 2080;
@@ -2398,9 +2398,9 @@ LABEL_32:
         v64[0] = v31;
         v63[0] = @"bug_type";
         v63[1] = @"reason";
-        if (a3)
+        if (retire)
         {
-          v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
+          v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:retire];
         }
 
         else
@@ -2418,7 +2418,7 @@ LABEL_32:
         v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:v63 count:4];
         AnalyticsSendEvent();
 
-        if (a3)
+        if (retire)
         {
         }
 
@@ -2426,15 +2426,15 @@ LABEL_32:
         {
           v61[0] = @"crk";
           v53 = +[OSASystemConfiguration sharedInstance];
-          v38 = [v53 crashReporterKey];
-          v39 = v38;
+          crashReporterKey = [v53 crashReporterKey];
+          v39 = crashReporterKey;
           v40 = self->_bugType;
           if (!v40)
           {
             v40 = @"<unknown>";
           }
 
-          v62[0] = v38;
+          v62[0] = crashReporterKey;
           v62[1] = v40;
           v61[1] = @"bug_type";
           v61[2] = @"incident_id";
@@ -2466,9 +2466,9 @@ LABEL_32:
 
           v62[3] = v46;
           v61[4] = @"reason";
-          if (a3)
+          if (retire)
           {
-            v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
+            v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:retire];
           }
 
           v62[4] = v27;
@@ -2480,16 +2480,16 @@ LABEL_32:
           v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:v61 count:6];
           rtcsc_send(2001, 2001, v50);
 
-          if (a3)
+          if (retire)
           {
           }
 
           v60[0] = v54;
           v59[0] = @"logPath";
           v59[1] = @"retiredReason";
-          if (a3)
+          if (retire)
           {
-            v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
+            v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:retire];
           }
 
           else
@@ -2501,7 +2501,7 @@ LABEL_32:
           v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:v59 count:2];
           [OSAStateMonitor recordEvent:@"ca-log-retired" with:v52];
 
-          if (a3)
+          if (retire)
           {
           }
 
@@ -2521,10 +2521,10 @@ LABEL_32:
     {
     }
 
-    v15 = [*p_filepath stringByDeletingLastPathComponent];
-    v16 = [v15 stringByAppendingPathComponent:@"Retired"];
-    v17 = [*p_filepath lastPathComponent];
-    v18 = [v16 stringByAppendingPathComponent:v17];
+    stringByDeletingLastPathComponent = [*p_filepath stringByDeletingLastPathComponent];
+    v16 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"Retired"];
+    lastPathComponent = [*p_filepath lastPathComponent];
+    v18 = [v16 stringByAppendingPathComponent:lastPathComponent];
 
     v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:*p_filepath];
     v20 = [MEMORY[0x1E695DFF8] fileURLWithPath:v18];
@@ -2535,7 +2535,7 @@ LABEL_32:
     if (v10)
     {
       objc_storeStrong(p_filepath, v18);
-      [(OSALog *)self markWithKey:"retired-reason" value:a3];
+      [(OSALog *)self markWithKey:"retired-reason" value:retire];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -2545,13 +2545,13 @@ LABEL_32:
 
     if ([(NSString *)self->_bugType isEqualToString:@"211"])
     {
-      v21 = [(NSString *)self->_filepath fileSystemRepresentation];
+      fileSystemRepresentation = [(NSString *)self->_filepath fileSystemRepresentation];
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
       v55[2] = __17__OSALog_retire___block_invoke;
       v55[3] = &unk_1E7A27780;
       v55[4] = self;
-      OSASafeOpenReadOnly(v21, v55);
+      OSASafeOpenReadOnly(fileSystemRepresentation, v55);
     }
 
     goto LABEL_32;
@@ -2571,29 +2571,29 @@ void __17__OSALog_retire___block_invoke(uint64_t a1, int a2)
   }
 }
 
-+ (void)cleanupRetired:(id)a3
++ (void)cleanupRetired:(id)retired
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  retiredCopy = retired;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v3;
+    v14 = retiredCopy;
     _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Cleaning up retired logs (in %@)", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 stringByAppendingPathComponent:@"Retired"];
-  v6 = [v5 fileSystemRepresentation];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [retiredCopy stringByAppendingPathComponent:@"Retired"];
+  fileSystemRepresentation = [v5 fileSystemRepresentation];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __25__OSALog_cleanupRetired___block_invoke;
   v10[3] = &unk_1E7A277A8;
   v11 = v5;
-  v12 = v4;
-  v7 = v4;
+  v12 = defaultManager;
+  v7 = defaultManager;
   v8 = v5;
-  osa_scanDir(v6, 129, v10, 0);
+  osa_scanDir(fileSystemRepresentation, 129, v10, 0);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -2660,18 +2660,18 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)cleanupForUser:(id)a3
++ (void)cleanupForUser:(id)user
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  userCopy = user;
   v4 = [MEMORY[0x1E695DF70] arrayWithObject:&stru_1F2411100];
   v5 = v4;
-  if (v3)
+  if (userCopy)
   {
-    [v4 addObject:v3];
+    [v4 addObject:userCopy];
   }
 
-  v24 = v3;
+  v24 = userCopy;
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -2694,21 +2694,21 @@ LABEL_11:
         }
 
         v11 = *(*(&v32 + 1) + 8 * v10);
-        v12 = [MEMORY[0x1E695DF90] dictionary];
-        [v12 setObject:v8 forKeyedSubscript:@"include-hidden"];
-        [v12 setObject:v8 forKeyedSubscript:@"include-proxies"];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary setObject:v8 forKeyedSubscript:@"include-hidden"];
+        [dictionary setObject:v8 forKeyedSubscript:@"include-proxies"];
         if (+[OSALog isDataVaultEnabled])
         {
-          [v12 setObject:v8 forKeyedSubscript:@"datavault-filePath"];
+          [dictionary setObject:v8 forKeyedSubscript:@"datavault-filePath"];
         }
 
         if ([v11 length])
         {
-          [v12 setObject:v11 forKeyedSubscript:@"file-owner"];
+          [dictionary setObject:v11 forKeyedSubscript:@"file-owner"];
         }
 
         [OSALog createRetiredDirectoriesForUser:v11];
-        [OSALog iterateLogsWithOptions:v12 usingBlock:&__block_literal_global_367];
+        [OSALog iterateLogsWithOptions:dictionary usingBlock:&__block_literal_global_367];
 
         ++v10;
       }
@@ -2722,15 +2722,15 @@ LABEL_11:
 
   v13 = objc_opt_new();
   v14 = +[OSASystemConfiguration sharedInstance];
-  v15 = [v14 pathSubmission];
-  v16 = [v15 fileSystemRepresentation];
+  pathSubmission = [v14 pathSubmission];
+  fileSystemRepresentation = [pathSubmission fileSystemRepresentation];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __25__OSALog_cleanupForUser___block_invoke_2;
   v30[3] = &unk_1E7A27810;
   v17 = v13;
   v31 = v17;
-  osa_scanDir(v16, 0, &__block_literal_global_376, v30);
+  osa_scanDir(fileSystemRepresentation, 0, &__block_literal_global_376, v30);
 
   v28 = 0u;
   v29 = 0u;
@@ -2961,11 +2961,11 @@ LABEL_13:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)scanProxies:(id)a3
++ (id)scanProxies:(id)proxies
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = opendir([v3 fileSystemRepresentation]);
+  proxiesCopy = proxies;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = opendir([proxiesCopy fileSystemRepresentation]);
   if (v5)
   {
     v6 = v5;
@@ -2976,8 +2976,8 @@ LABEL_13:
         v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:i->d_name];
         if ([v8 hasPrefix:@"ProxiedDevice-"])
         {
-          v9 = [v3 stringByAppendingPathComponent:v8];
-          [v4 addObject:v9];
+          v9 = [proxiesCopy stringByAppendingPathComponent:v8];
+          [array addObject:v9];
         }
       }
     }
@@ -2985,15 +2985,15 @@ LABEL_13:
     closedir(v6);
   }
 
-  return v4;
+  return array;
 }
 
-+ (unsigned)scanLogs:(id)a3 from:(id)a4 options:(id)a5
++ (unsigned)scanLogs:(id)logs from:(id)from options:(id)options
 {
   v109 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v52 = a4;
-  v51 = a5;
+  logsCopy = logs;
+  fromCopy = from;
+  optionsCopy = options;
   v97 = 0;
   v98 = &v97;
   v99 = 0x2020000000;
@@ -3005,7 +3005,7 @@ LABEL_13:
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  obj = v7;
+  obj = logsCopy;
   v9 = [obj countByEnumeratingWithState:&v93 objects:v108 count:16];
   if (v9)
   {
@@ -3111,9 +3111,9 @@ LABEL_13:
 
           v9 = v53;
           v26 = [v59 objectForKeyedSubscript:@"<descend>"];
-          v27 = [v26 BOOLValue];
+          bOOLValue = [v26 BOOLValue];
 
-          if (v27)
+          if (bOOLValue)
           {
             v83 = 0u;
             v84 = 0u;
@@ -3159,13 +3159,13 @@ LABEL_13:
     while (v9);
   }
 
-  v33 = [v51 objectForKeyedSubscript:@"only-urgent"];
-  v34 = [v33 BOOLValue];
+  v33 = [optionsCopy objectForKeyedSubscript:@"only-urgent"];
+  bOOLValue2 = [v33 BOOLValue];
 
   v35 = 324;
   v79 = 0u;
   v80 = 0u;
-  if (v34)
+  if (bOOLValue2)
   {
     v35 = 836;
   }
@@ -3173,7 +3173,7 @@ LABEL_13:
   v58 = v35;
   v77 = 0uLL;
   v78 = 0uLL;
-  v54 = v52;
+  v54 = fromCopy;
   v62 = [v54 countByEnumeratingWithState:&v77 objects:v102 count:16];
   if (v62)
   {
@@ -3193,7 +3193,7 @@ LABEL_13:
         if (([v8 count] || objc_msgSend(v55, "count")) && objc_msgSend(v36, "length"))
         {
           v39 = v36;
-          v40 = [v36 fileSystemRepresentation];
+          fileSystemRepresentation = [v36 fileSystemRepresentation];
           v71[0] = MEMORY[0x1E69E9820];
           v71[1] = 3221225472;
           v71[2] = __32__OSALog_scanLogs_from_options___block_invoke;
@@ -3203,7 +3203,7 @@ LABEL_13:
           v73 = v8;
           v74 = v64;
           v75 = &v97;
-          osa_scanDir(v40, v58 | v38, v71, &__block_literal_global_400);
+          osa_scanDir(fileSystemRepresentation, v58 | v38, v71, &__block_literal_global_400);
           v69 = 0u;
           v70 = 0u;
           v67 = 0u;
@@ -3375,20 +3375,20 @@ uint64_t __32__OSALog_scanLogs_from_options___block_invoke_2(uint64_t a1, void *
   }
 }
 
-+ (void)cleanupLogs:(id)a3 withFilters:(id)a4 error:(id *)a5
++ (void)cleanupLogs:(id)logs withFilters:(id)filters error:(id *)error
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  logsCopy = logs;
+  filtersCopy = filters;
   v9 = objc_autoreleasePoolPush();
   v10 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v10, "operation", 9uLL);
-  xpc_dictionary_set_string(v10, [@"bug_type" UTF8String], objc_msgSend(v7, "UTF8String"));
-  v11 = [v8 objectForKeyedSubscript:@"filterByLogAge"];
+  xpc_dictionary_set_string(v10, [@"bug_type" UTF8String], objc_msgSend(logsCopy, "UTF8String"));
+  v11 = [filtersCopy objectForKeyedSubscript:@"filterByLogAge"];
 
   if (v11)
   {
-    v12 = [v8 objectForKeyedSubscript:@"filterByLogAge"];
+    v12 = [filtersCopy objectForKeyedSubscript:@"filterByLogAge"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ([v12 doubleValue], v13 == 0.0))
     {
@@ -3407,14 +3407,14 @@ LABEL_19:
     xpc_dictionary_set_double(v10, "filterByLogAge", v14);
   }
 
-  v15 = [v8 objectForKeyedSubscript:@"filterByHeaders"];
+  v15 = [filtersCopy objectForKeyedSubscript:@"filterByHeaders"];
 
   if (!v15)
   {
     goto LABEL_9;
   }
 
-  v12 = [v8 objectForKeyedSubscript:@"filterByHeaders"];
+  v12 = [filtersCopy objectForKeyedSubscript:@"filterByHeaders"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -3525,24 +3525,24 @@ LABEL_26:
 LABEL_28:
 
   objc_autoreleasePoolPop(v9);
-  if (a5 && v33)
+  if (error && v33)
   {
     v37 = v33;
-    *a5 = v33;
+    *error = v33;
   }
 
   v38 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)purgeLogs:(id)a3 withReason:(const char *)a4 includeRetired:(BOOL)a5 deleteOnRetire:(BOOL)a6 usingPredicate:(id)a7
++ (void)purgeLogs:(id)logs withReason:(const char *)reason includeRetired:(BOOL)retired deleteOnRetire:(BOOL)retire usingPredicate:(id)predicate
 {
-  v9 = a5;
-  v11 = a3;
-  v12 = a7;
-  if ([v11 length])
+  retiredCopy = retired;
+  logsCopy = logs;
+  predicateCopy = predicate;
+  if ([logsCopy length])
   {
-    v13 = !v9;
-    if (v9)
+    v13 = !retiredCopy;
+    if (retiredCopy)
     {
       v14 = 0;
     }
@@ -3562,15 +3562,15 @@ LABEL_28:
       v15 = &__block_literal_global_432;
     }
 
-    v16 = [v11 fileSystemRepresentation];
+    fileSystemRepresentation = [logsCopy fileSystemRepresentation];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __76__OSALog_purgeLogs_withReason_includeRetired_deleteOnRetire_usingPredicate___block_invoke_2;
     v17[3] = &unk_1E7A278A8;
-    v20 = a6;
-    v18 = v12;
-    v19 = a4;
-    osa_scanDir(v16, v14, v17, v15);
+    retireCopy = retire;
+    v18 = predicateCopy;
+    reasonCopy = reason;
+    osa_scanDir(fileSystemRepresentation, v14, v17, v15);
   }
 }
 
@@ -3658,14 +3658,14 @@ LABEL_18:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)iterateLogsWithOptions:(id)a3 usingBlock:(id)a4
++ (void)iterateLogsWithOptions:(id)options usingBlock:(id)block
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v39 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   v6 = objc_autoreleasePoolPush();
   v7 = objc_opt_new();
-  v8 = [v5 objectForKeyedSubscript:@"override-filePath"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"override-filePath"];
   v9 = +[OSASystemConfiguration sharedInstance];
   v10 = v9;
   if (v8)
@@ -3679,7 +3679,7 @@ LABEL_18:
 
     else
     {
-      v38 = 0;
+      bOOLValue2 = 0;
       if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_14;
@@ -3690,12 +3690,12 @@ LABEL_18:
       _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "path is not whitelisted for listing: %@", buf, 0xCu);
     }
 
-    v38 = 0;
+    bOOLValue2 = 0;
   }
 
   else
   {
-    v12 = [v5 objectForKeyedSubscript:@"file-owner"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"file-owner"];
     v13 = [v10 pathSubmissionForOwner:v12];
 
     if (v13)
@@ -3703,18 +3703,18 @@ LABEL_18:
       [v7 addObject:v13];
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"datavault-filePath"];
-    v15 = [v14 BOOLValue];
+    v14 = [optionsCopy objectForKeyedSubscript:@"datavault-filePath"];
+    bOOLValue = [v14 BOOLValue];
 
-    if (v15)
+    if (bOOLValue)
     {
       v16 = +[OSASystemConfiguration sharedInstance];
-      v17 = [v16 pathSubmissionDataVault];
+      pathSubmissionDataVault = [v16 pathSubmissionDataVault];
 
-      if (v17)
+      if (pathSubmissionDataVault)
       {
-        [v7 addObject:v17];
-        v13 = v17;
+        [v7 addObject:pathSubmissionDataVault];
+        v13 = pathSubmissionDataVault;
       }
 
       else
@@ -3723,17 +3723,17 @@ LABEL_18:
       }
     }
 
-    v18 = [v5 objectForKeyedSubscript:@"include-proxies"];
-    v38 = [v18 BOOLValue];
+    v18 = [optionsCopy objectForKeyedSubscript:@"include-proxies"];
+    bOOLValue2 = [v18 BOOLValue];
   }
 
 LABEL_14:
   if ([v7 count])
   {
-    v19 = [v5 objectForKeyedSubscript:@"include-hidden"];
-    v20 = [v19 BOOLValue];
+    v19 = [optionsCopy objectForKeyedSubscript:@"include-hidden"];
+    bOOLValue3 = [v19 BOOLValue];
 
-    if (v20)
+    if (bOOLValue3)
     {
       v21 = 0;
     }
@@ -3743,33 +3743,33 @@ LABEL_14:
       v21 = 4;
     }
 
-    v22 = [v5 objectForKeyedSubscript:@"exclude-retired"];
-    v23 = [v22 BOOLValue];
+    v22 = [optionsCopy objectForKeyedSubscript:@"exclude-retired"];
+    bOOLValue4 = [v22 BOOLValue];
 
-    if (v23)
+    if (bOOLValue4)
     {
       v21 |= 0x40uLL;
     }
 
     else
     {
-      v24 = [v5 objectForKeyedSubscript:@"only-retired"];
-      v25 = [v24 BOOLValue];
+      v24 = [optionsCopy objectForKeyedSubscript:@"only-retired"];
+      bOOLValue5 = [v24 BOOLValue];
 
-      if (v25)
+      if (bOOLValue5)
       {
         v21 |= 0x80uLL;
       }
     }
 
-    v36 = v5;
-    v26 = [v5 objectForKeyedSubscript:{@"only-urgent", v8}];
-    v27 = [v26 BOOLValue];
+    v36 = optionsCopy;
+    v26 = [optionsCopy objectForKeyedSubscript:{@"only-urgent", v8}];
+    bOOLValue6 = [v26 BOOLValue];
 
     v47 = 0u;
     v45 = 0u;
     v46 = 0u;
-    if (v27)
+    if (bOOLValue6)
     {
       v28 = v21 | 0x200;
     }
@@ -3795,19 +3795,19 @@ LABEL_14:
             objc_enumerationMutation(obj);
           }
 
-          v33 = [*(*(&v44 + 1) + 8 * i) fileSystemRepresentation];
+          fileSystemRepresentation = [*(*(&v44 + 1) + 8 * i) fileSystemRepresentation];
           v42[0] = MEMORY[0x1E69E9820];
           v42[1] = 3221225472;
           v42[2] = __44__OSALog_iterateLogsWithOptions_usingBlock___block_invoke;
           v42[3] = &unk_1E7A278D0;
-          v43 = v39;
+          v43 = blockCopy;
           v40[0] = MEMORY[0x1E69E9820];
           v40[1] = 3221225472;
           v40[2] = __44__OSALog_iterateLogsWithOptions_usingBlock___block_invoke_2;
           v40[3] = &__block_descriptor_41_e13_B24__0r_8r_16l;
           v40[4] = v28;
-          v41 = v38;
-          osa_scanDir(v33, v28, v42, v40);
+          v41 = bOOLValue2;
+          osa_scanDir(fileSystemRepresentation, v28, v42, v40);
         }
 
         v30 = [obj countByEnumeratingWithState:&v44 objects:v48 count:16];
@@ -3816,7 +3816,7 @@ LABEL_14:
       while (v30);
     }
 
-    v5 = v36;
+    optionsCopy = v36;
     v8 = v35;
   }
 
@@ -3865,12 +3865,12 @@ uint64_t __44__OSALog_iterateLogsWithOptions_usingBlock___block_invoke_2(uint64_
   return v4;
 }
 
-+ (id)commonFieldsForBody:(id)a3
++ (id)commonFieldsForBody:(id)body
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  bodyCopy = body;
   v13 = @"bug_type";
-  v14[0] = v3;
+  v14[0] = bodyCopy;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v5 = [v4 mutableCopy];
 
@@ -3881,13 +3881,13 @@ uint64_t __44__OSALog_iterateLogsWithOptions_usingBlock___block_invoke_2(uint64_
   }
 
   v7 = +[OSASystemConfiguration sharedInstance];
-  v8 = [v7 isInDeviceRecoveryEnvironment];
+  isInDeviceRecoveryEnvironment = [v7 isInDeviceRecoveryEnvironment];
 
-  if (v8)
+  if (isInDeviceRecoveryEnvironment)
   {
     v9 = +[OSASystemConfiguration sharedInstance];
-    v10 = [v9 recoveryModeReason];
-    [v5 setObject:v10 forKeyedSubscript:@"device_in_recovery_mode_with_reason"];
+    recoveryModeReason = [v9 recoveryModeReason];
+    [v5 setObject:recoveryModeReason forKeyedSubscript:@"device_in_recovery_mode_with_reason"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -3895,25 +3895,25 @@ uint64_t __44__OSALog_iterateLogsWithOptions_usingBlock___block_invoke_2(uint64_
   return v5;
 }
 
-+ (void)createRetiredDirectory:(id)a3
++ (void)createRetiredDirectory:(id)directory
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  directoryCopy = directory;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v10 = v3;
+    v10 = directoryCopy;
     _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Creating Retired directory in %@", buf, 0xCu);
   }
 
-  v4 = [v3 fileSystemRepresentation];
+  fileSystemRepresentation = [directoryCopy fileSystemRepresentation];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__OSALog_createRetiredDirectory___block_invoke;
   v7[3] = &unk_1E7A27780;
-  v8 = v3;
-  v5 = v3;
-  OSASafeOpenReadOnly(v4, v7);
+  v8 = directoryCopy;
+  v5 = directoryCopy;
+  OSASafeOpenReadOnly(fileSystemRepresentation, v7);
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -3946,17 +3946,17 @@ void __33__OSALog_createRetiredDirectory___block_invoke(uint64_t a1, int a2)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)createRetiredDirectoriesForUser:(id)a3
++ (void)createRetiredDirectoriesForUser:(id)user
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  userCopy = user;
+  array = [MEMORY[0x1E695DF70] array];
   v5 = +[OSASystemConfiguration sharedInstance];
-  v6 = [v5 pathSubmission];
+  pathSubmission = [v5 pathSubmission];
 
-  if ([v6 length])
+  if ([pathSubmission length])
   {
-    [v4 addObject:v6];
+    [array addObject:pathSubmission];
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -3967,11 +3967,11 @@ void __33__OSALog_createRetiredDirectory___block_invoke(uint64_t a1, int a2)
   if (+[OSALog isDataVaultEnabled])
   {
     v7 = +[OSASystemConfiguration sharedInstance];
-    v8 = [v7 pathSubmissionDataVault];
+    pathSubmissionDataVault = [v7 pathSubmissionDataVault];
 
-    if ([v8 length])
+    if ([pathSubmissionDataVault length])
     {
-      [v4 addObject:v8];
+      [array addObject:pathSubmissionDataVault];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -3980,14 +3980,14 @@ void __33__OSALog_createRetiredDirectory___block_invoke(uint64_t a1, int a2)
     }
   }
 
-  if (v3)
+  if (userCopy)
   {
     v9 = +[OSASystemConfiguration sharedInstance];
-    v10 = [v9 pathSubmissionForOwner:v3];
+    v10 = [v9 pathSubmissionForOwner:userCopy];
 
     if ([v10 length])
     {
-      [v4 addObject:v10];
+      [array addObject:v10];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -3996,12 +3996,12 @@ void __33__OSALog_createRetiredDirectory___block_invoke(uint64_t a1, int a2)
     }
   }
 
-  v11 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = v4;
+  v12 = array;
   v13 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v13)
   {
@@ -4017,9 +4017,9 @@ void __33__OSALog_createRetiredDirectory___block_invoke(uint64_t a1, int a2)
         }
 
         v17 = *(*(&v29 + 1) + 8 * i);
-        [v11 addObject:v17];
+        [array2 addObject:v17];
         v18 = [OSALog scanProxies:v17];
-        [v11 addObjectsFromArray:v18];
+        [array2 addObjectsFromArray:v18];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -4032,7 +4032,7 @@ void __33__OSALog_createRetiredDirectory___block_invoke(uint64_t a1, int a2)
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v19 = v11;
+  v19 = array2;
   v20 = [v19 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v20)
   {

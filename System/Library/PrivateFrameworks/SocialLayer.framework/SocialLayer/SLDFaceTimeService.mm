@@ -1,9 +1,9 @@
 @interface SLDFaceTimeService
 + (id)sharedService;
 - (SLDFaceTimeService)init;
-- (id)_applicationIdentifierForConnection:(id)a3;
-- (id)_bundleIdentifierForConnection:(id)a3;
-- (void)initiateTUConversationForAttributionIdentifier:(id)a3 videoEnabled:(BOOL)a4 completion:(id)a5;
+- (id)_applicationIdentifierForConnection:(id)connection;
+- (id)_bundleIdentifierForConnection:(id)connection;
+- (void)initiateTUConversationForAttributionIdentifier:(id)identifier videoEnabled:(BOOL)enabled completion:(id)completion;
 - (void)refreshShareableContentMetadataInJoinedConversation;
 @end
 
@@ -44,18 +44,18 @@ uint64_t __35__SLDFaceTimeService_sharedService__block_invoke()
   return v3;
 }
 
-- (void)initiateTUConversationForAttributionIdentifier:(id)a3 videoEnabled:(BOOL)a4 completion:(id)a5
+- (void)initiateTUConversationForAttributionIdentifier:(id)identifier videoEnabled:(BOOL)enabled completion:(id)completion
 {
-  v49 = a4;
+  enabledCopy = enabled;
   v76 = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v52 = a5;
-  v50 = [MEMORY[0x277CCAE80] currentConnection];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   if (IMCoreLibraryCore() && getIMSPILastAddressedHandleForChatWithGUIDSymbolLoc() && IMCoreLibraryCore() && getIMSPIResetChatRegistrySymbolLoc())
   {
-    v47 = [(SLDFaceTimeService *)self _applicationIdentifierForConnection:v50];
+    v47 = [(SLDFaceTimeService *)self _applicationIdentifierForConnection:currentConnection];
     v46 = [[SLInteractionHandler alloc] initWithAppIdentifier:v47];
-    v7 = [(SLInteractionHandler *)v46 fetchAttributionForAttributionIdentifier:v51];
+    v7 = [(SLInteractionHandler *)v46 fetchAttributionForAttributionIdentifier:identifierCopy];
     v8 = SLDaemonLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -63,8 +63,8 @@ uint64_t __35__SLDFaceTimeService_sharedService__block_invoke()
       *buf = 136315650;
       *&buf[4] = "[SLDFaceTimeService initiateTUConversationForAttributionIdentifier:videoEnabled:completion:]";
       *&buf[12] = 2112;
-      *&buf[14] = v51;
-      if (v49)
+      *&buf[14] = identifierCopy;
+      if (enabledCopy)
       {
         v9 = @"YES";
       }
@@ -74,7 +74,7 @@ uint64_t __35__SLDFaceTimeService_sharedService__block_invoke()
       _os_log_impl(&dword_231772000, v8, OS_LOG_TYPE_DEFAULT, "%s: Initiating FaceTime conversation for attribution identifier %@ {videoEnabled: %@}", buf, 0x20u);
     }
 
-    v10 = [v7 relatedPersons];
+    relatedPersons = [v7 relatedPersons];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -104,13 +104,13 @@ uint64_t __35__SLDFaceTimeService_sharedService__block_invoke()
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v13 = *(*&buf[8] + 40);
-        v14 = [v48 conversationIdentifier];
+        conversationIdentifier = [v48 conversationIdentifier];
         *v66 = 136315650;
         v67 = "[SLDFaceTimeService initiateTUConversationForAttributionIdentifier:videoEnabled:completion:]";
         v68 = 2112;
         v69 = v13;
         v70 = 2112;
-        v71 = v14;
+        v71 = conversationIdentifier;
         _os_log_impl(&dword_231772000, v12, OS_LOG_TYPE_DEFAULT, "%s: Using last addressed handle: %@ for chat GUID: %@", v66, 0x20u);
       }
 
@@ -125,19 +125,19 @@ uint64_t __35__SLDFaceTimeService_sharedService__block_invoke()
         *v66 = 136315394;
         v67 = "[SLDFaceTimeService initiateTUConversationForAttributionIdentifier:videoEnabled:completion:]";
         v68 = 2112;
-        v69 = v51;
+        v69 = identifierCopy;
         _os_log_impl(&dword_231772000, v18, OS_LOG_TYPE_DEFAULT, "%s: Did not receive a last addressed handle string from imagent. This may result in a FaceTime call including the local user. Attribution identifier: %@", v66, 0x16u);
       }
 
       v15 = 0;
     }
 
-    v54 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v10, "count")}];
+    v54 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(relatedPersons, "count")}];
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    obj = v10;
+    obj = relatedPersons;
     v19 = [obj countByEnumeratingWithState:&v58 objects:v65 count:16];
     if (v19)
     {
@@ -152,8 +152,8 @@ uint64_t __35__SLDFaceTimeService_sharedService__block_invoke()
           }
 
           v22 = MEMORY[0x277D6EEE8];
-          v23 = [*(*(&v58 + 1) + 8 * i) handle];
-          v24 = [v22 normalizedHandleWithDestinationID:v23];
+          handle = [*(*(&v58 + 1) + 8 * i) handle];
+          v24 = [v22 normalizedHandleWithDestinationID:handle];
 
           if (v15 && [v24 isEquivalentToHandle:v15])
           {
@@ -186,7 +186,7 @@ uint64_t __35__SLDFaceTimeService_sharedService__block_invoke()
 
     v28 = [objc_alloc(MEMORY[0x277D6EEF0]) initWithRemoteMembers:v54];
     v29 = v28;
-    if (v49)
+    if (enabledCopy)
     {
       v30 = 2;
     }
@@ -197,12 +197,12 @@ uint64_t __35__SLDFaceTimeService_sharedService__block_invoke()
     }
 
     [v28 setAvMode:v30];
-    [v29 setVideoEnabled:v49];
+    [v29 setVideoEnabled:enabledCopy];
     [v29 setShouldSuppressInCallUI:1];
-    v31 = [MEMORY[0x277D6EEB0] expanseProvider];
-    [v29 setProvider:v31];
+    expanseProvider = [MEMORY[0x277D6EEB0] expanseProvider];
+    [v29 setProvider:expanseProvider];
 
-    if (v49)
+    if (enabledCopy)
     {
       [v29 setShouldLaunchBackgroundInCallUI:1];
     }
@@ -227,33 +227,33 @@ uint64_t __35__SLDFaceTimeService_sharedService__block_invoke()
 
     else
     {
-      v34 = [v48 groupDisplayName];
+      groupDisplayName = [v48 groupDisplayName];
       v35 = SLDaemonLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [v48 groupID];
+        groupID = [v48 groupID];
         *v66 = 136315650;
         v67 = "[SLDFaceTimeService initiateTUConversationForAttributionIdentifier:videoEnabled:completion:]";
         v68 = 2112;
-        v69 = v36;
+        v69 = groupID;
         v70 = 2112;
-        v71 = v34;
+        v71 = groupDisplayName;
         _os_log_impl(&dword_231772000, v35, OS_LOG_TYPE_DEFAULT, "%s: FaceTime conversation being initiated is a group, setting group ID to %@ and messages group name to %@.", v66, 0x20u);
       }
 
-      v37 = [v48 groupID];
-      [v29 setMessagesGroupUUID:v37];
+      groupID2 = [v48 groupID];
+      [v29 setMessagesGroupUUID:groupID2];
 
-      [v29 setMessagesGroupName:v34];
+      [v29 setMessagesGroupName:groupDisplayName];
       v38 = [MEMORY[0x277D6EE88] invitationPreferencesForAllHandlesWithStyles:2];
     }
 
     [v29 setInvitationPreferences:v38];
     if (objc_opt_respondsToSelector())
     {
-      v40 = [v48 collaborationMetadata];
-      v41 = [v40 collaborationIdentifier];
-      [v29 setCollaborationIdentifier:v41];
+      collaborationMetadata = [v48 collaborationMetadata];
+      collaborationIdentifier = [collaborationMetadata collaborationIdentifier];
+      [v29 setCollaborationIdentifier:collaborationIdentifier];
     }
 
     v42 = SLDaemonLogHandle();
@@ -266,16 +266,16 @@ uint64_t __35__SLDFaceTimeService_sharedService__block_invoke()
       _os_log_impl(&dword_231772000, v42, OS_LOG_TYPE_DEFAULT, "%s: FaceTime conversation being initiated using join request %@", v66, 0x16u);
     }
 
-    v43 = [MEMORY[0x277D6EDF8] sharedInstance];
-    v44 = [v43 queue];
+    mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+    queue = [mEMORY[0x277D6EDF8] queue];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __93__SLDFaceTimeService_initiateTUConversationForAttributionIdentifier_videoEnabled_completion___block_invoke_162;
     v55[3] = &unk_2789266B0;
     v56 = v29;
-    v57 = v52;
+    v57 = completionCopy;
     v45 = v29;
-    dispatch_async(v44, v55);
+    dispatch_async(queue, v55);
 
     _Block_object_dispose(buf, 8);
   }
@@ -288,7 +288,7 @@ uint64_t __35__SLDFaceTimeService_sharedService__block_invoke()
       [SLDFaceTimeService initiateTUConversationForAttributionIdentifier:videoEnabled:completion:];
     }
 
-    (*(v52 + 2))(v52, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -437,14 +437,14 @@ BOOL __73__SLDFaceTimeService_refreshShareableContentMetadataInJoinedConversatio
   return result;
 }
 
-- (id)_applicationIdentifierForConnection:(id)a3
+- (id)_applicationIdentifierForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
+  connectionCopy = connection;
+  v5 = connectionCopy;
   v6 = MEMORY[0x277CC1E90];
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -455,9 +455,9 @@ BOOL __73__SLDFaceTimeService_refreshShareableContentMetadataInJoinedConversatio
   v13 = 0;
   v7 = [v6 bundleRecordForAuditToken:v14 error:&v13];
   v8 = v13;
-  v9 = [v7 applicationIdentifier];
+  applicationIdentifier = [v7 applicationIdentifier];
 
-  if (!v9)
+  if (!applicationIdentifier)
   {
     v10 = SLDaemonLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -466,19 +466,19 @@ BOOL __73__SLDFaceTimeService_refreshShareableContentMetadataInJoinedConversatio
     }
   }
 
-  v11 = [v7 applicationIdentifier];
+  applicationIdentifier2 = [v7 applicationIdentifier];
 
-  return v11;
+  return applicationIdentifier2;
 }
 
-- (id)_bundleIdentifierForConnection:(id)a3
+- (id)_bundleIdentifierForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
+  connectionCopy = connection;
+  v5 = connectionCopy;
   v6 = MEMORY[0x277CC1E90];
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -489,9 +489,9 @@ BOOL __73__SLDFaceTimeService_refreshShareableContentMetadataInJoinedConversatio
   v13 = 0;
   v7 = [v6 bundleRecordForAuditToken:v14 error:&v13];
   v8 = v13;
-  v9 = [v7 bundleIdentifier];
+  bundleIdentifier = [v7 bundleIdentifier];
 
-  if (!v9)
+  if (!bundleIdentifier)
   {
     v10 = SLDaemonLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -500,9 +500,9 @@ BOOL __73__SLDFaceTimeService_refreshShareableContentMetadataInJoinedConversatio
     }
   }
 
-  v11 = [v7 bundleIdentifier];
+  bundleIdentifier2 = [v7 bundleIdentifier];
 
-  return v11;
+  return bundleIdentifier2;
 }
 
 - (void)initiateTUConversationForAttributionIdentifier:videoEnabled:completion:.cold.1()

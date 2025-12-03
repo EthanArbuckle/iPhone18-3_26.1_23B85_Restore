@@ -1,28 +1,28 @@
 @interface _WKPreviewControllerDataSource
-- (_WKPreviewControllerDataSource)initWithSystemPreviewController:(void *)a3 MIMEType:(id)a4 originatingPageURL:(URL *)a5;
+- (_WKPreviewControllerDataSource)initWithSystemPreviewController:(void *)controller MIMEType:(id)type originatingPageURL:(URL *)l;
 - (id).cxx_construct;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
 - (void)dealloc;
-- (void)failWithError:(id)a3;
-- (void)finish:(URL *)a3;
-- (void)previewItem:(id)a3 didReceiveMessage:(id)a4;
-- (void)setProgress:(float)a3;
+- (void)failWithError:(id)error;
+- (void)finish:(URL *)finish;
+- (void)previewItem:(id)item didReceiveMessage:(id)message;
+- (void)setProgress:(float)progress;
 @end
 
 @implementation _WKPreviewControllerDataSource
 
-- (_WKPreviewControllerDataSource)initWithSystemPreviewController:(void *)a3 MIMEType:(id)a4 originatingPageURL:(URL *)a5
+- (_WKPreviewControllerDataSource)initWithSystemPreviewController:(void *)controller MIMEType:(id)type originatingPageURL:(URL *)l
 {
   v14.receiver = self;
   v14.super_class = _WKPreviewControllerDataSource;
   v9 = [(_WKPreviewControllerDataSource *)&v14 init];
   if (v9)
   {
-    if (a3)
+    if (controller)
     {
-      WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(a3, a3);
-      v10 = *a3;
-      if (*a3)
+      WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(controller, controller);
+      v10 = *controller;
+      if (*controller)
       {
         atomic_fetch_add(v10, 1u);
       }
@@ -41,11 +41,11 @@
       WTF::fastFree(v11, v8);
     }
 
-    WTF::String::operator=(v9 + 3, a5);
-    v12 = *&a5->m_hostEnd;
-    *(v9 + 2) = *(a5 + 8);
+    WTF::String::operator=(v9 + 3, l);
+    v12 = *&l->m_hostEnd;
+    *(v9 + 2) = *(l + 8);
     *(v9 + 3) = v12;
-    *(v9 + 15) = [a4 copy];
+    *(v9 + 15) = [type copy];
   }
 
   return v9;
@@ -58,7 +58,7 @@
   [(_WKPreviewControllerDataSource *)&v3 dealloc];
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
   v34[1] = *MEMORY[0x1E69E9840];
   m_ptr = self->_item.m_ptr;
@@ -179,7 +179,7 @@
   return m_ptr;
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
   m_ptr = self->_item.m_ptr;
   if (m_ptr)
@@ -190,17 +190,17 @@
   }
 }
 
-- (void)finish:(URL *)a3
+- (void)finish:(URL *)finish
 {
-  WTF::String::operator=(&self->_downloadedURL, a3);
-  v5 = *&a3->m_hostEnd;
-  *(&self->_downloadedURL + 8) = *(a3 + 8);
+  WTF::String::operator=(&self->_downloadedURL, finish);
+  v5 = *&finish->m_hostEnd;
+  *(&self->_downloadedURL + 8) = *(finish + 8);
   *&self->_downloadedURL.m_hostEnd = v5;
   if ([(_WKPreviewControllerDataSource *)self completionHandler])
   {
-    v6 = [(_WKPreviewControllerDataSource *)self completionHandler];
-    WTF::URL::createCFURL(&v8, a3);
-    v6[2](v6, v8, 0);
+    completionHandler = [(_WKPreviewControllerDataSource *)self completionHandler];
+    WTF::URL::createCFURL(&v8, finish);
+    completionHandler[2](completionHandler, v8, 0);
     v7 = v8;
     v8 = 0;
     if (v7)
@@ -209,7 +209,7 @@
   }
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
   if ([(_WKPreviewControllerDataSource *)self completionHandler])
   {
@@ -219,7 +219,7 @@
   }
 }
 
-- (void)previewItem:(id)a3 didReceiveMessage:(id)a4
+- (void)previewItem:(id)item didReceiveMessage:(id)message
 {
   m_ptr = self->_previewController.m_impl.m_ptr;
   if (m_ptr)
@@ -228,7 +228,7 @@
     if (v5)
     {
       ++*(v5 + 2);
-      if ([objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{@"callToAction", "stringValue"), "isEqualToString:", @"buttonTapped"}])
+      if ([objc_msgSend(objc_msgSend(message objectForKeyedSubscript:{@"callToAction", "stringValue"), "isEqualToString:", @"buttonTapped"}])
       {
         WebKit::SystemPreviewController::triggerSystemPreviewAction(v5);
       }

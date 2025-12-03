@@ -1,28 +1,28 @@
 @interface PPFeedbackUtils
-+ (BOOL)shouldSample:(id)a3;
-+ (BOOL)shouldSampleExtraction:(id)a3;
-+ (id)_flattenArraylikeToFeatures:(void *)a3 featureName:;
-+ (id)featuresForScoreDict:(id)a3;
-+ (id)feedbackItemForPPFeedbackItem:(id)a3;
-+ (id)feedbackItemsByItemString:(id)a3;
-+ (id)feedbackMetadataForBaseFeedback:(id)a3;
-+ (id)scoredItemWithFeaturesForFeatureDictionary:(id)a3 score:(float)a4;
-+ (void)addBoilerplateToFeedbackLog:(id)a3;
-+ (void)recordUniversalSearchSpotlightStatsFromFeedback:(id)a3 clientBundleId:(id)a4 clientIdentifier:(id)a5;
++ (BOOL)shouldSample:(id)sample;
++ (BOOL)shouldSampleExtraction:(id)extraction;
++ (id)_flattenArraylikeToFeatures:(void *)features featureName:;
++ (id)featuresForScoreDict:(id)dict;
++ (id)feedbackItemForPPFeedbackItem:(id)item;
++ (id)feedbackItemsByItemString:(id)string;
++ (id)feedbackMetadataForBaseFeedback:(id)feedback;
++ (id)scoredItemWithFeaturesForFeatureDictionary:(id)dictionary score:(float)score;
++ (void)addBoilerplateToFeedbackLog:(id)log;
++ (void)recordUniversalSearchSpotlightStatsFromFeedback:(id)feedback clientBundleId:(id)id clientIdentifier:(id)identifier;
 @end
 
 @implementation PPFeedbackUtils
 
-+ (id)featuresForScoreDict:(id)a3
++ (id)featuresForScoreDict:(id)dict
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_opt_new();
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = [v3 featureNames];
+  obj = [dictCopy featureNames];
   v5 = [obj countByEnumeratingWithState:&v39 objects:v46 count:16];
   if (v5)
   {
@@ -42,9 +42,9 @@
         v10 = objc_autoreleasePoolPush();
         if ([v9 hasPrefix:@"scalar"])
         {
-          v11 = [v3 featureValueForName:v9];
-          v12 = [v11 multiArrayValue];
-          v13 = [v12 objectAtIndexedSubscript:0];
+          v11 = [dictCopy featureValueForName:v9];
+          multiArrayValue = [v11 multiArrayValue];
+          v13 = [multiArrayValue objectAtIndexedSubscript:0];
           [v4 setObject:v13 forKeyedSubscript:v9];
 
 LABEL_24:
@@ -53,7 +53,7 @@ LABEL_24:
 
         if ([v9 hasPrefix:@"array"])
         {
-          v11 = [v3 featureValueForName:v9];
+          v11 = [dictCopy featureValueForName:v9];
           if (v11)
           {
             v14 = v11;
@@ -61,15 +61,15 @@ LABEL_24:
 
           else
           {
-            v30 = [MEMORY[0x277CCA890] currentHandler];
-            [v30 handleFailureInMethod:a2 object:a1 file:@"PPFeedbackUtils.m" lineNumber:314 description:@"The value at a listed feature output should be nonnull."];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PPFeedbackUtils.m" lineNumber:314 description:@"The value at a listed feature output should be nonnull."];
 
             v14 = 0;
           }
 
-          v12 = [PPFeedbackUtils _flattenArraylikeToFeatures:v14 featureName:v9];
+          multiArrayValue = [PPFeedbackUtils _flattenArraylikeToFeatures:v14 featureName:v9];
 LABEL_12:
-          [v4 addEntriesFromDictionary:v12];
+          [v4 addEntriesFromDictionary:multiArrayValue];
           goto LABEL_24;
         }
 
@@ -78,26 +78,26 @@ LABEL_12:
           goto LABEL_26;
         }
 
-        v11 = [v3 featureValueForName:v9];
-        v15 = [v11 type];
-        if (v15 > 2)
+        v11 = [dictCopy featureValueForName:v9];
+        type = [v11 type];
+        if (type > 2)
         {
-          if (v15 == 6)
+          if (type == 6)
           {
             v11 = v11;
             v22 = v9;
             v23 = objc_opt_self();
             if ([v11 type] != 6)
             {
-              v31 = [MEMORY[0x277CCA890] currentHandler];
-              [v31 handleFailureInMethod:sel__flattenDictionarylikeToFeatures_featureName_ object:v23 file:@"PPFeedbackUtils.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"value.type == MLFeatureTypeDictionary"}];
+              currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler2 handleFailureInMethod:sel__flattenDictionarylikeToFeatures_featureName_ object:v23 file:@"PPFeedbackUtils.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"value.type == MLFeatureTypeDictionary"}];
             }
 
             v24 = objc_alloc(MEMORY[0x277CBEB38]);
-            v25 = [v11 dictionaryValue];
-            v26 = [v24 initWithCapacity:{objc_msgSend(v25, "count")}];
+            dictionaryValue = [v11 dictionaryValue];
+            v26 = [v24 initWithCapacity:{objc_msgSend(dictionaryValue, "count")}];
 
-            v27 = [v11 dictionaryValue];
+            dictionaryValue2 = [v11 dictionaryValue];
             v43[0] = MEMORY[0x277D85DD0];
             v43[1] = 3221225472;
             v43[2] = __64__PPFeedbackUtils__flattenDictionarylikeToFeatures_featureName___block_invoke;
@@ -106,19 +106,19 @@ LABEL_12:
             v44 = v28;
             v45 = v22;
             v37 = v22;
-            [v27 enumerateKeysAndObjectsUsingBlock:v43];
+            [dictionaryValue2 enumerateKeysAndObjectsUsingBlock:v43];
 
             v29 = v45;
-            v12 = v28;
+            multiArrayValue = v28;
 
             goto LABEL_12;
           }
 
-          if (v15 == 3)
+          if (type == 3)
           {
             v18 = objc_alloc(MEMORY[0x277CCACA8]);
-            v12 = [v11 stringValue];
-            v19 = [v18 initWithFormat:@"%@_str_%@", v9, v12];
+            multiArrayValue = [v11 stringValue];
+            v19 = [v18 initWithFormat:@"%@_str_%@", v9, multiArrayValue];
             v20 = v4;
             v21 = &unk_284783A50;
 LABEL_23:
@@ -130,23 +130,23 @@ LABEL_23:
 
         else
         {
-          if (v15 == 1)
+          if (type == 1)
           {
-            v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v11, "int64Value")}];
+            multiArrayValue = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v11, "int64Value")}];
             v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_int", v9];
             goto LABEL_22;
           }
 
-          if (v15 == 2)
+          if (type == 2)
           {
             v16 = MEMORY[0x277CCABB0];
             [v11 doubleValue];
-            v12 = [v16 numberWithDouble:?];
+            multiArrayValue = [v16 numberWithDouble:?];
             v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_dbl", v9];
 LABEL_22:
             v19 = v17;
             v20 = v4;
-            v21 = v12;
+            v21 = multiArrayValue;
             goto LABEL_23;
           }
         }
@@ -171,59 +171,59 @@ LABEL_26:
   return v4;
 }
 
-+ (id)_flattenArraylikeToFeatures:(void *)a3 featureName:
++ (id)_flattenArraylikeToFeatures:(void *)features featureName:
 {
   v4 = a2;
-  v5 = a3;
+  featuresCopy = features;
   v6 = objc_opt_self();
   if ([v4 type] != 5)
   {
     if ([v4 type] != 7 || (objc_msgSend(v4, "sequenceValue"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "type"), v7, v8 != 1))
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:sel__flattenArraylikeToFeatures_featureName_ object:v6 file:@"PPFeedbackUtils.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"value.type == MLFeatureTypeMultiArray || (value.type == MLFeatureTypeSequence && value.sequenceValue.type == MLFeatureTypeInt64)"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__flattenArraylikeToFeatures_featureName_ object:v6 file:@"PPFeedbackUtils.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"value.type == MLFeatureTypeMultiArray || (value.type == MLFeatureTypeSequence && value.sequenceValue.type == MLFeatureTypeInt64)"}];
     }
   }
 
   if ([v4 type] == 7)
   {
-    v10 = [v4 sequenceValue];
-    v11 = [v10 int64Values];
+    sequenceValue = [v4 sequenceValue];
+    int64Values = [sequenceValue int64Values];
   }
 
   else
   {
-    v10 = [v4 multiArrayValue];
-    v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v10, "count")}];
-    if ([v10 count])
+    sequenceValue = [v4 multiArrayValue];
+    int64Values = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(sequenceValue, "count")}];
+    if ([sequenceValue count])
     {
       v12 = 0;
       do
       {
-        v13 = [v10 objectAtIndexedSubscript:v12];
-        [v11 setObject:v13 atIndexedSubscript:v12];
+        v13 = [sequenceValue objectAtIndexedSubscript:v12];
+        [int64Values setObject:v13 atIndexedSubscript:v12];
 
         ++v12;
       }
 
-      while (v12 < [v10 count]);
+      while (v12 < [sequenceValue count]);
     }
   }
 
-  v14 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v11, "count")}];
-  if ([v11 count])
+  v14 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(int64Values, "count")}];
+  if ([int64Values count])
   {
     v15 = 0;
     do
     {
-      v16 = [v11 objectAtIndexedSubscript:v15];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_%lu", v5, v15];
+      v16 = [int64Values objectAtIndexedSubscript:v15];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_%lu", featuresCopy, v15];
       [v14 setObject:v16 forKeyedSubscript:v17];
 
       ++v15;
     }
 
-    while (v15 < [v11 count]);
+    while (v15 < [int64Values count]);
   }
 
   return v14;
@@ -240,12 +240,12 @@ void __64__PPFeedbackUtils__flattenDictionarylikeToFeatures_featureName___block_
   [v5 setObject:v7 forKeyedSubscript:v9];
 }
 
-+ (void)recordUniversalSearchSpotlightStatsFromFeedback:(id)a3 clientBundleId:(id)a4 clientIdentifier:(id)a5
++ (void)recordUniversalSearchSpotlightStatsFromFeedback:(id)feedback clientBundleId:(id)id clientIdentifier:(id)identifier
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v20 = a4;
-  v8 = a5;
+  feedbackCopy = feedback;
+  idCopy = id;
+  identifierCopy = identifier;
   v9 = objc_autoreleasePoolPush();
   v21[0] = *MEMORY[0x277D3A270];
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -254,33 +254,33 @@ void __64__PPFeedbackUtils__flattenDictionarylikeToFeatures_featureName___block_
   v22[0] = v12;
   v21[1] = *MEMORY[0x277D3A288];
   v13 = +[PPTrialWrapper sharedInstance];
-  v14 = [v13 concatenatedTreatmentNames];
-  v22[1] = v14;
+  concatenatedTreatmentNames = [v13 concatenatedTreatmentNames];
+  v22[1] = concatenatedTreatmentNames;
   v21[2] = *MEMORY[0x277D3A280];
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "offeredCSSICount")}];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(feedbackCopy, "offeredCSSICount")}];
   v22[2] = v15;
   v21[3] = *MEMORY[0x277D3A260];
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "engagedCSSICount")}];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(feedbackCopy, "engagedCSSICount")}];
   v22[3] = v16;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:4];
 
-  v18 = [MEMORY[0x277D3A250] sharedInstance];
-  [v18 logMessage:v17 messageName:*MEMORY[0x277D3A268]];
+  mEMORY[0x277D3A250] = [MEMORY[0x277D3A250] sharedInstance];
+  [mEMORY[0x277D3A250] logMessage:v17 messageName:*MEMORY[0x277D3A268]];
 
   objc_autoreleasePoolPop(v9);
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)scoredItemWithFeaturesForFeatureDictionary:(id)a3 score:(float)a4
++ (id)scoredItemWithFeaturesForFeatureDictionary:(id)dictionary score:(float)score
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = dictionaryCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -300,7 +300,7 @@ void __64__PPFeedbackUtils__flattenDictionarylikeToFeatures_featureName___block_
         {
           v13 = [v7 objectForKeyedSubscript:v12];
           [v13 floatValue];
-          a4 = v14;
+          score = v14;
         }
 
         else
@@ -321,7 +321,7 @@ void __64__PPFeedbackUtils__flattenDictionarylikeToFeatures_featureName___block_
     while (v9);
   }
 
-  *&v16 = a4;
+  *&v16 = score;
   [v6 setScore:v16];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -329,76 +329,76 @@ void __64__PPFeedbackUtils__flattenDictionarylikeToFeatures_featureName___block_
   return v6;
 }
 
-+ (id)feedbackMetadataForBaseFeedback:(id)a3
++ (id)feedbackMetadataForBaseFeedback:(id)feedback
 {
-  v3 = a3;
+  feedbackCopy = feedback;
   v4 = objc_opt_new();
-  v5 = [v3 clientBundleId];
-  [v4 setClientBundleId:v5];
+  clientBundleId = [feedbackCopy clientBundleId];
+  [v4 setClientBundleId:clientBundleId];
 
-  v6 = [v3 clientIdentifier];
-  [v4 setClientIdentifier:v6];
+  clientIdentifier = [feedbackCopy clientIdentifier];
+  [v4 setClientIdentifier:clientIdentifier];
 
-  v7 = [v3 isMapped];
-  [v4 setIsMapped:v7];
+  isMapped = [feedbackCopy isMapped];
+  [v4 setIsMapped:isMapped];
 
   return v4;
 }
 
-+ (id)feedbackItemForPPFeedbackItem:(id)a3
++ (id)feedbackItemForPPFeedbackItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_opt_new();
   [v4 setFeedbackType:0];
-  v5 = [v3 itemFeedbackType];
+  itemFeedbackType = [itemCopy itemFeedbackType];
 
-  if (v5 <= 5)
+  if (itemFeedbackType <= 5)
   {
-    [v4 setFeedbackType:v5];
+    [v4 setFeedbackType:itemFeedbackType];
   }
 
   return v4;
 }
 
-+ (void)addBoilerplateToFeedbackLog:(id)a3
++ (void)addBoilerplateToFeedbackLog:(id)log
 {
-  v19 = a3;
+  logCopy = log;
   v3 = objc_opt_new();
   v4 = +[PPTrialWrapper sharedInstance];
-  v5 = [v4 concatenatedTreatmentNames];
-  [v3 setAbGroupIdentifier:v5];
+  concatenatedTreatmentNames = [v4 concatenatedTreatmentNames];
+  [v3 setAbGroupIdentifier:concatenatedTreatmentNames];
 
-  [v19 addExperimentalGroups:v3];
+  [logCopy addExperimentalGroups:v3];
   v6 = +[PPConfiguration sharedInstance];
-  v7 = [v6 feedbackSessionLogsGeohashLength];
+  feedbackSessionLogsGeohashLength = [v6 feedbackSessionLogsGeohashLength];
 
-  if (v7 >= 1)
+  if (feedbackSessionLogsGeohashLength >= 1)
   {
     v8 = +[PPSettings sharedInstance];
-    v9 = [v8 isAuthorizedToLogLocation];
+    isAuthorizedToLogLocation = [v8 isAuthorizedToLogLocation];
 
-    if (v9)
+    if (isAuthorizedToLogLocation)
     {
       v10 = [PPRoutineSupport fetchLocationOfInterestByType:0];
       v11 = v10;
       if (v10)
       {
         v12 = MEMORY[0x277D3A578];
-        v13 = [v10 location];
-        [v13 latitude];
+        location = [v10 location];
+        [location latitude];
         v15 = v14;
-        v16 = [v11 location];
-        [v16 longitude];
-        v18 = [v12 coordinatesToGeoHashWithLength:v7 latitude:v15 longitude:v17];
-        [v19 setHomeLocationGeohash:v18];
+        location2 = [v11 location];
+        [location2 longitude];
+        v18 = [v12 coordinatesToGeoHashWithLength:feedbackSessionLogsGeohashLength latitude:v15 longitude:v17];
+        [logCopy setHomeLocationGeohash:v18];
       }
     }
   }
 }
 
-+ (BOOL)shouldSampleExtraction:(id)a3
++ (BOOL)shouldSampleExtraction:(id)extraction
 {
-  if (![MEMORY[0x277D3A578] isFirstPartyApp:a3])
+  if (![MEMORY[0x277D3A578] isFirstPartyApp:extraction])
   {
     return 0;
   }
@@ -412,18 +412,18 @@ void __64__PPFeedbackUtils__flattenDictionarylikeToFeatures_featureName___block_
   return v6;
 }
 
-+ (BOOL)shouldSample:(id)a3
++ (BOOL)shouldSample:(id)sample
 {
-  v3 = a3;
+  sampleCopy = sample;
   v4 = +[PPConfiguration sharedInstance];
-  v5 = [v4 feedbackSessionLogsSamplingRateOverrides];
+  feedbackSessionLogsSamplingRateOverrides = [v4 feedbackSessionLogsSamplingRateOverrides];
 
-  v6 = [v5 allKeys];
-  v7 = [v6 containsObject:v3];
+  allKeys = [feedbackSessionLogsSamplingRateOverrides allKeys];
+  v7 = [allKeys containsObject:sampleCopy];
 
   if (v7)
   {
-    v8 = [v5 objectForKeyedSubscript:v3];
+    v8 = [feedbackSessionLogsSamplingRateOverrides objectForKeyedSubscript:sampleCopy];
     [v8 doubleValue];
     v10 = v9;
     objc_opt_self();
@@ -443,16 +443,16 @@ void __64__PPFeedbackUtils__flattenDictionarylikeToFeatures_featureName___block_
   return v11;
 }
 
-+ (id)feedbackItemsByItemString:(id)a3
++ (id)feedbackItemsByItemString:(id)string
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = stringCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -469,16 +469,16 @@ void __64__PPFeedbackUtils__flattenDictionarylikeToFeatures_featureName___block_
 
         v10 = *(*(&v18 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 itemString];
-        v13 = [v4 objectForKeyedSubscript:v12];
+        itemString = [v10 itemString];
+        v13 = [v4 objectForKeyedSubscript:itemString];
 
         if (!v13)
         {
           v14 = objc_opt_new();
-          [v4 setObject:v14 forKeyedSubscript:v12];
+          [v4 setObject:v14 forKeyedSubscript:itemString];
         }
 
-        v15 = [v4 objectForKeyedSubscript:v12];
+        v15 = [v4 objectForKeyedSubscript:itemString];
         [v15 addObject:v10];
 
         objc_autoreleasePoolPop(v11);

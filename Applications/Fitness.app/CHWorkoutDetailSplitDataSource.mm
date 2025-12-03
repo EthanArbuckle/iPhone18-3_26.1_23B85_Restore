@@ -1,15 +1,15 @@
 @interface CHWorkoutDetailSplitDataSource
 - (CHWorkoutDetailSplitDataSource)init;
-- (CHWorkoutDetailSplitDataSource)initWithWorkout:(id)a3 workoutActivity:(id)a4 dataCalculator:(id)a5 formattingManager:(id)a6;
+- (CHWorkoutDetailSplitDataSource)initWithWorkout:(id)workout workoutActivity:(id)activity dataCalculator:(id)calculator formattingManager:(id)manager;
 @end
 
 @implementation CHWorkoutDetailSplitDataSource
 
-- (CHWorkoutDetailSplitDataSource)initWithWorkout:(id)a3 workoutActivity:(id)a4 dataCalculator:(id)a5 formattingManager:(id)a6
+- (CHWorkoutDetailSplitDataSource)initWithWorkout:(id)workout workoutActivity:(id)activity dataCalculator:(id)calculator formattingManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  return sub_1005386D8(v9, a4, a5, a6);
+  workoutCopy = workout;
+  activityCopy = activity;
+  return sub_1005386D8(workoutCopy, activity, calculator, manager);
 }
 
 - (CHWorkoutDetailSplitDataSource)init

@@ -1,66 +1,66 @@
 @interface PKUpcomingPassInformationDetailsDataSource
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)a3;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)a3;
-- (BOOL)_eventMetadataShowsDateRange:(id)a3;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)path;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)section;
+- (BOOL)_eventMetadataShowsDateRange:(id)range;
 - (NSString)footerSecondaryText;
 - (NSString)footerSecondaryTitle;
 - (NSString)footerText;
 - (NSString)footerTitle;
-- (PKUpcomingPassInformationDetailsDataSource)initWithEntry:(id)a3 pass:(id)a4 passStateProvider:(id)a5 tileFactory:(id)a6;
-- (id)_createDescriptorForPass:(id)a3 fromEntry:(id)a4;
-- (id)_footerSecondaryTextFromEventMetadata:(id)a3;
-- (id)_footerSecondaryTitleFromEventMetadata:(id)a3;
-- (id)_footerTextFromEventMetadata:(id)a3;
-- (id)_footerTitleFromEventMetadata:(id)a3;
+- (PKUpcomingPassInformationDetailsDataSource)initWithEntry:(id)entry pass:(id)pass passStateProvider:(id)provider tileFactory:(id)factory;
+- (id)_createDescriptorForPass:(id)pass fromEntry:(id)entry;
+- (id)_footerSecondaryTextFromEventMetadata:(id)metadata;
+- (id)_footerSecondaryTitleFromEventMetadata:(id)metadata;
+- (id)_footerTextFromEventMetadata:(id)metadata;
+- (id)_footerTitleFromEventMetadata:(id)metadata;
 - (id)_headerItem;
-- (id)_seatingFieldGroupsFromEntry:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
+- (id)_seatingFieldGroupsFromEntry:(id)entry;
+- (id)itemAtIndexPath:(id)path;
 - (id)navigationBarTitle;
-- (id)textItemForPassField:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
-- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)a3;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
+- (id)textItemForPassField:(id)field;
+- (id)titleForSection:(unint64_t)section;
+- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)identifier;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
 - (unint64_t)numberOfSections;
 - (void)_reloadFieldGroups;
-- (void)_reloadTiles:(id)a3 descriptorIdentifier:(id)a4;
-- (void)_updateWithFieldGroups:(id)a3 titles:(id)a4;
-- (void)_updateWithTiles:(id)a3;
+- (void)_reloadTiles:(id)tiles descriptorIdentifier:(id)identifier;
+- (void)_updateWithFieldGroups:(id)groups titles:(id)titles;
+- (void)_updateWithTiles:(id)tiles;
 - (void)dealloc;
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4;
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state;
 - (void)reloadData;
 - (void)reloadFieldGroups;
 - (void)reloadTiles;
-- (void)setDataSourceDelegate:(id)a3;
-- (void)tileFactory:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5 descriptorIdentifier:(id)a6;
+- (void)setDataSourceDelegate:(id)delegate;
+- (void)tileFactory:(id)factory didUpdateTiles:(id)tiles forContext:(int64_t)context descriptorIdentifier:(id)identifier;
 - (void)updateContentIsLoaded;
-- (void)updateWithBlock:(id)a3 andDiff:(id)a4;
+- (void)updateWithBlock:(id)block andDiff:(id)diff;
 @end
 
 @implementation PKUpcomingPassInformationDetailsDataSource
 
-- (PKUpcomingPassInformationDetailsDataSource)initWithEntry:(id)a3 pass:(id)a4 passStateProvider:(id)a5 tileFactory:(id)a6
+- (PKUpcomingPassInformationDetailsDataSource)initWithEntry:(id)entry pass:(id)pass passStateProvider:(id)provider tileFactory:(id)factory
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  entryCopy = entry;
+  passCopy = pass;
+  providerCopy = provider;
+  factoryCopy = factory;
   v26.receiver = self;
   v26.super_class = PKUpcomingPassInformationDetailsDataSource;
   v15 = [(PKUpcomingPassInformationDetailsDataSource *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_entry, a3);
-    objc_storeStrong(&v16->_pass, a4);
-    objc_storeStrong(&v16->_passStateProvider, a5);
-    [v13 addPassStateObserver:v16];
-    v17 = [(PKUpcomingPassInformationDetailsDataSource *)v16 _createDescriptorForPass:v12 fromEntry:v11];
+    objc_storeStrong(&v15->_entry, entry);
+    objc_storeStrong(&v16->_pass, pass);
+    objc_storeStrong(&v16->_passStateProvider, provider);
+    [providerCopy addPassStateObserver:v16];
+    v17 = [(PKUpcomingPassInformationDetailsDataSource *)v16 _createDescriptorForPass:passCopy fromEntry:entryCopy];
     tileDescriptor = v16->_tileDescriptor;
     v16->_tileDescriptor = v17;
 
-    if (v14)
+    if (factoryCopy)
     {
-      v19 = v14;
+      v19 = factoryCopy;
     }
 
     else
@@ -96,9 +96,9 @@
   [(PKUpcomingPassInformationDetailsDataSource *)&v3 dealloc];
 }
 
-- (void)setDataSourceDelegate:(id)a3
+- (void)setDataSourceDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(PKUpcomingPassInformationDetailsDataSource *)self updateContentIsLoaded];
 }
@@ -129,9 +129,9 @@
   }
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
-  [(PKUpcomingPassInformationDetailsDataSource *)self _dataSourceIndicesForIndexSection:a3];
+  [(PKUpcomingPassInformationDetailsDataSource *)self _dataSourceIndicesForIndexSection:section];
 
   return 0;
 }
@@ -173,12 +173,12 @@ uint64_t __62__PKUpcomingPassInformationDetailsDataSource_numberOfSections__bloc
   return result;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
   v7 = 0;
   v8 = 0;
   v9 = 0;
-  result = [(PKUpcomingPassInformationDetailsDataSource *)self _dataSourceIndicesForIndexSection:a3];
+  result = [(PKUpcomingPassInformationDetailsDataSource *)self _dataSourceIndicesForIndexSection:section];
   if (v7 == 1)
   {
     if (self->_allContentIsLoaded)
@@ -211,24 +211,24 @@ uint64_t __62__PKUpcomingPassInformationDetailsDataSource_numberOfSections__bloc
   return result;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  [(PKUpcomingPassInformationDetailsDataSource *)self _dataSourceIndicesForIndexPath:v4];
-  v5 = [(PKUpcomingPassInformationDetailsDataSource *)self _headerItem];
+  pathCopy = path;
+  [(PKUpcomingPassInformationDetailsDataSource *)self _dataSourceIndicesForIndexPath:pathCopy];
+  _headerItem = [(PKUpcomingPassInformationDetailsDataSource *)self _headerItem];
 
-  return v5;
+  return _headerItem;
 }
 
-- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)a3
+- (unint64_t)firstSectionIndexForSectionIdentifier:(unint64_t)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
   v5 = 0;
-  for (i = 0; i != a3; ++i)
+  for (i = 0; i != identifier; ++i)
   {
     dynamicSections = self->_dynamicSections;
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
@@ -239,15 +239,15 @@ uint64_t __62__PKUpcomingPassInformationDetailsDataSource_numberOfSections__bloc
       v9 = &unk_1F3CC7CA0;
     }
 
-    v11 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    v5 += v11;
+    v5 += unsignedIntegerValue;
   }
 
   return v5;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexSection:(SEL)section
 {
   v6 = [MEMORY[0x1E696AC88] indexPathForItem:-1 inSection:a4];
   [(PKUpcomingPassInformationDetailsDataSource *)self _dataSourceIndicesForIndexPath:v6];
@@ -255,10 +255,10 @@ uint64_t __62__PKUpcomingPassInformationDetailsDataSource_numberOfSections__bloc
   return result;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)_dataSourceIndicesForIndexPath:(SEL)path
 {
   v16 = a4;
-  v6 = [v16 section];
+  section = [v16 section];
   v7 = 0;
   v8 = -1;
   do
@@ -274,14 +274,14 @@ uint64_t __62__PKUpcomingPassInformationDetailsDataSource_numberOfSections__bloc
       v12 = &unk_1F3CC7CA0;
     }
 
-    v14 = [v12 unsignedIntegerValue];
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-    v7 = v14 + v9;
+    v7 = unsignedIntegerValue + v9;
   }
 
-  while (v14 + v9 <= v6);
+  while (unsignedIntegerValue + v9 <= section);
   retstr->var0 = v8;
-  retstr->var1 = v6 - v9;
+  retstr->var1 = section - v9;
   retstr->var2 = [v16 item];
 
   return result;
@@ -289,128 +289,128 @@ uint64_t __62__PKUpcomingPassInformationDetailsDataSource_numberOfSections__bloc
 
 - (id)navigationBarTitle
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
-  v3 = [v2 name];
+  metadata = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
+  name = [metadata name];
 
-  return v3;
+  return name;
 }
 
 - (NSString)footerTitle
 {
-  v2 = self;
-  v3 = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
-  v4 = [v3 type];
-  if (v4 == 1)
+  selfCopy = self;
+  metadata = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
+  type = [metadata type];
+  if (type == 1)
   {
-    v5 = [v3 eventMetadata];
-    v2 = [v2 _footerTitleFromEventMetadata:v5];
+    eventMetadata = [metadata eventMetadata];
+    selfCopy = [selfCopy _footerTitleFromEventMetadata:eventMetadata];
   }
 
-  else if (!v4)
+  else if (!type)
   {
-    v2 = PKLocalizedTicketingString(&cfstr_UpcomingInform.isa);
+    selfCopy = PKLocalizedTicketingString(&cfstr_UpcomingInform.isa);
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSString)footerText
 {
-  v2 = self;
-  v3 = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
-  v4 = [v3 type];
-  if (v4 == 1)
+  selfCopy = self;
+  metadata = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
+  type = [metadata type];
+  if (type == 1)
   {
-    v5 = [v3 eventMetadata];
-    v2 = [v2 _footerTextFromEventMetadata:v5];
+    eventMetadata = [metadata eventMetadata];
+    selfCopy = [selfCopy _footerTextFromEventMetadata:eventMetadata];
   }
 
   else
   {
-    if (v4)
+    if (type)
     {
       goto LABEL_6;
     }
 
-    v5 = [v3 date];
-    v6 = [v3 timeZone];
-    v2 = PKMediumDateString(v5, v6);
+    eventMetadata = [metadata date];
+    timeZone = [metadata timeZone];
+    selfCopy = PKMediumDateString(eventMetadata, timeZone);
   }
 
 LABEL_6:
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSString)footerSecondaryTitle
 {
-  v2 = self;
-  v3 = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
-  v4 = [v3 type];
-  if (v4 == 1)
+  selfCopy = self;
+  metadata = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
+  type = [metadata type];
+  if (type == 1)
   {
-    v5 = [v3 eventMetadata];
-    v2 = [v2 _footerSecondaryTitleFromEventMetadata:v5];
+    eventMetadata = [metadata eventMetadata];
+    selfCopy = [selfCopy _footerSecondaryTitleFromEventMetadata:eventMetadata];
   }
 
-  else if (!v4)
+  else if (!type)
   {
-    v2 = PKLocalizedTicketingString(&cfstr_UpcomingInform_0.isa);
+    selfCopy = PKLocalizedTicketingString(&cfstr_UpcomingInform_0.isa);
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSString)footerSecondaryText
 {
-  v2 = self;
-  v3 = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
-  v4 = [v3 type];
-  if (v4 == 1)
+  selfCopy = self;
+  metadata = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
+  type = [metadata type];
+  if (type == 1)
   {
-    v5 = [v3 eventMetadata];
-    v2 = [v2 _footerSecondaryTextFromEventMetadata:v5];
+    eventMetadata = [metadata eventMetadata];
+    selfCopy = [selfCopy _footerSecondaryTextFromEventMetadata:eventMetadata];
   }
 
   else
   {
-    if (v4)
+    if (type)
     {
       goto LABEL_6;
     }
 
-    v5 = [v3 date];
-    v6 = [v3 timeZone];
-    v2 = PKTimeStringFromDate(v5, v6);
+    eventMetadata = [metadata date];
+    timeZone = [metadata timeZone];
+    selfCopy = PKTimeStringFromDate(eventMetadata, timeZone);
   }
 
 LABEL_6:
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)_eventMetadataShowsDateRange:(id)a3
+- (BOOL)_eventMetadataShowsDateRange:(id)range
 {
-  v3 = a3;
-  v4 = [v3 semantics];
-  v5 = [v3 date];
-  if (v5)
+  rangeCopy = range;
+  semantics = [rangeCopy semantics];
+  date = [rangeCopy date];
+  if (date)
   {
-    v6 = v5;
+    dateValue = date;
   }
 
   else
   {
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BBC58]];
-    v6 = [v7 dateValue];
+    v7 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBC58]];
+    dateValue = [v7 dateValue];
 
-    if (!v6)
+    if (!dateValue)
     {
-      v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BBCB8]];
-      v9 = [v8 eventDateInfoValue];
-      v6 = [v9 date];
+      v8 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBCB8]];
+      eventDateInfoValue = [v8 eventDateInfoValue];
+      dateValue = [eventDateInfoValue date];
 
-      if (!v6)
+      if (!dateValue)
       {
         LOBYTE(v15) = 0;
         goto LABEL_12;
@@ -418,27 +418,27 @@ LABEL_6:
     }
   }
 
-  v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BBC50]];
-  v11 = [v10 dateValue];
+  v10 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBC50]];
+  dateValue2 = [v10 dateValue];
 
-  if (v11)
+  if (dateValue2)
   {
-    v12 = [v3 timeZone];
-    v13 = v12;
-    if (v12)
+    timeZone = [rangeCopy timeZone];
+    v13 = timeZone;
+    if (timeZone)
     {
-      v14 = v12;
+      timeZoneValue = timeZone;
     }
 
     else
     {
-      v16 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BBF88]];
-      v14 = [v16 timeZoneValue];
+      v16 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBF88]];
+      timeZoneValue = [v16 timeZoneValue];
     }
 
-    v17 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-    [v17 setTimeZone:v14];
-    v15 = [v17 isDate:v6 inSameDayAsDate:v11] ^ 1;
+    autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+    [autoupdatingCurrentCalendar setTimeZone:timeZoneValue];
+    v15 = [autoupdatingCurrentCalendar isDate:dateValue inSameDayAsDate:dateValue2] ^ 1;
   }
 
   else
@@ -450,9 +450,9 @@ LABEL_12:
   return v15;
 }
 
-- (id)_footerTitleFromEventMetadata:(id)a3
+- (id)_footerTitleFromEventMetadata:(id)metadata
 {
-  if ([(PKUpcomingPassInformationDetailsDataSource *)self _eventMetadataShowsDateRange:a3])
+  if ([(PKUpcomingPassInformationDetailsDataSource *)self _eventMetadataShowsDateRange:metadata])
   {
     v3 = @"UPCOMING_INFORMATION_DETAILS_FOOTER_TITLE_START_DATE";
   }
@@ -467,67 +467,67 @@ LABEL_12:
   return v4;
 }
 
-- (id)_footerTextFromEventMetadata:(id)a3
+- (id)_footerTextFromEventMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [v3 semantics];
-  v5 = [v3 date];
-  if (v5)
+  metadataCopy = metadata;
+  semantics = [metadataCopy semantics];
+  date = [metadataCopy date];
+  if (date)
   {
-    v6 = v5;
+    dateValue = date;
   }
 
   else
   {
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BBC58]];
-    v6 = [v7 dateValue];
+    v7 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBC58]];
+    dateValue = [v7 dateValue];
 
-    if (!v6)
+    if (!dateValue)
     {
-      v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BBCB8]];
-      v9 = [v8 eventDateInfoValue];
-      v6 = [v9 date];
+      v8 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBCB8]];
+      eventDateInfoValue = [v8 eventDateInfoValue];
+      dateValue = [eventDateInfoValue date];
     }
   }
 
-  v10 = [v3 timeZone];
-  v11 = v10;
-  if (v10)
+  timeZone = [metadataCopy timeZone];
+  v11 = timeZone;
+  if (timeZone)
   {
-    v12 = v10;
+    timeZoneValue = timeZone;
   }
 
   else
   {
-    v13 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BBF88]];
-    v12 = [v13 timeZoneValue];
+    v13 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBF88]];
+    timeZoneValue = [v13 timeZoneValue];
   }
 
-  if (v6)
+  if (dateValue)
   {
-    v14 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-    [v14 setTimeZone:v12];
-    v15 = [MEMORY[0x1E695DF00] date];
-    if ([v14 isDate:v6 equalToDate:v15 toUnitGranularity:4])
+    autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+    [autoupdatingCurrentCalendar setTimeZone:timeZoneValue];
+    date2 = [MEMORY[0x1E695DF00] date];
+    if ([autoupdatingCurrentCalendar isDate:dateValue equalToDate:date2 toUnitGranularity:4])
     {
-      PKMediumDayAndMonthStringFromDate(v6, v12);
+      PKMediumDayAndMonthStringFromDate(dateValue, timeZoneValue);
     }
 
     else
     {
-      PKShortDateString(v6, v12);
+      PKShortDateString(dateValue, timeZoneValue);
     }
     v17 = ;
   }
 
   else
   {
-    if ([v3 isUndetermined])
+    if ([metadataCopy isUndetermined])
     {
       v16 = @"UPCOMING_INFORMATION_DETAILS_FOOTER_VALUE_TBD";
     }
 
-    else if ([v3 isUnannounced])
+    else if ([metadataCopy isUnannounced])
     {
       v16 = @"UPCOMING_INFORMATION_DETAILS_FOOTER_VALUE_TBA";
     }
@@ -543,9 +543,9 @@ LABEL_12:
   return v17;
 }
 
-- (id)_footerSecondaryTitleFromEventMetadata:(id)a3
+- (id)_footerSecondaryTitleFromEventMetadata:(id)metadata
 {
-  if ([(PKUpcomingPassInformationDetailsDataSource *)self _eventMetadataShowsDateRange:a3])
+  if ([(PKUpcomingPassInformationDetailsDataSource *)self _eventMetadataShowsDateRange:metadata])
   {
     v3 = @"UPCOMING_INFORMATION_DETAILS_FOOTER_SECONDARY_TITLE_END_DATE";
   }
@@ -560,86 +560,86 @@ LABEL_12:
   return v4;
 }
 
-- (id)_footerSecondaryTextFromEventMetadata:(id)a3
+- (id)_footerSecondaryTextFromEventMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 semantics];
-  v6 = [v4 date];
-  if (v6)
+  metadataCopy = metadata;
+  semantics = [metadataCopy semantics];
+  date = [metadataCopy date];
+  if (date)
   {
-    v7 = v6;
+    dateValue = date;
   }
 
   else
   {
-    v8 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69BBC58]];
-    v7 = [v8 dateValue];
+    v8 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBC58]];
+    dateValue = [v8 dateValue];
 
-    if (!v7)
+    if (!dateValue)
     {
-      v9 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69BBCB8]];
-      v10 = [v9 eventDateInfoValue];
-      v7 = [v10 date];
+      v9 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBCB8]];
+      eventDateInfoValue = [v9 eventDateInfoValue];
+      dateValue = [eventDateInfoValue date];
     }
   }
 
-  v11 = [v4 timeZone];
-  v12 = v11;
-  if (v11)
+  timeZone = [metadataCopy timeZone];
+  v12 = timeZone;
+  if (timeZone)
   {
-    v13 = v11;
+    timeZoneValue = timeZone;
   }
 
   else
   {
-    v14 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69BBF88]];
-    v13 = [v14 timeZoneValue];
+    v14 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBF88]];
+    timeZoneValue = [v14 timeZoneValue];
   }
 
-  if (v7)
+  if (dateValue)
   {
-    if ([(PKUpcomingPassInformationDetailsDataSource *)self _eventMetadataShowsDateRange:v4])
+    if ([(PKUpcomingPassInformationDetailsDataSource *)self _eventMetadataShowsDateRange:metadataCopy])
     {
-      v15 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-      [v15 setTimeZone:v13];
-      v16 = [MEMORY[0x1E695DF00] date];
-      v17 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69BBC50]];
-      v18 = [v17 dateValue];
+      autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+      [autoupdatingCurrentCalendar setTimeZone:timeZoneValue];
+      date2 = [MEMORY[0x1E695DF00] date];
+      v17 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBC50]];
+      dateValue2 = [v17 dateValue];
 
-      if ([v15 isDate:v18 equalToDate:v16 toUnitGranularity:4])
+      if ([autoupdatingCurrentCalendar isDate:dateValue2 equalToDate:date2 toUnitGranularity:4])
       {
-        PKMediumDayAndMonthStringFromDate(v18, v13);
+        PKMediumDayAndMonthStringFromDate(dateValue2, timeZoneValue);
       }
 
       else
       {
-        PKShortDateString(v18, v13);
+        PKShortDateString(dateValue2, timeZoneValue);
       }
       v21 = ;
 
       goto LABEL_25;
     }
 
-    if ([v4 ignoreTimeComponents])
+    if ([metadataCopy ignoreTimeComponents])
     {
       v20 = @"UPCOMING_INFORMATION_DETAILS_FOOTER_VALUE_NA";
     }
 
-    else if ([v4 isUndetermined])
+    else if ([metadataCopy isUndetermined])
     {
       v20 = @"UPCOMING_INFORMATION_DETAILS_FOOTER_VALUE_TBD";
     }
 
-    else if ([v4 isUnannounced])
+    else if ([metadataCopy isUnannounced])
     {
       v20 = @"UPCOMING_INFORMATION_DETAILS_FOOTER_VALUE_TBA";
     }
 
     else
     {
-      if (![v4 isAllDay])
+      if (![metadataCopy isAllDay])
       {
-        v19 = PKTimeStringFromDate(v7, v13);
+        v19 = PKTimeStringFromDate(dateValue, timeZoneValue);
         goto LABEL_24;
       }
 
@@ -651,7 +651,7 @@ LABEL_12:
 
   else
   {
-    v19 = [(PKUpcomingPassInformationDetailsDataSource *)self _footerTextFromEventMetadata:v4];
+    v19 = [(PKUpcomingPassInformationDetailsDataSource *)self _footerTextFromEventMetadata:metadataCopy];
   }
 
 LABEL_24:
@@ -663,41 +663,41 @@ LABEL_25:
 
 - (id)_headerItem
 {
-  v3 = [(PKPassUpcomingPassInformationEntry *)self->_entry content];
-  v4 = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_entry content];
+  metadata = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
   v5 = objc_alloc_init(PKUpcomingPassInformationDetailsHeaderItem);
-  v6 = [v4 name];
-  [(PKUpcomingPassInformationDetailsHeaderItem *)v5 setTitle:v6];
+  name = [metadata name];
+  [(PKUpcomingPassInformationDetailsHeaderItem *)v5 setTitle:name];
 
-  v7 = [v3 headerManifest];
-  [(PKUpcomingPassInformationDetailsHeaderItem *)v5 setHeaderManifest:v7];
+  headerManifest = [content headerManifest];
+  [(PKUpcomingPassInformationDetailsHeaderItem *)v5 setHeaderManifest:headerManifest];
 
-  v8 = [(PKPass *)self->_pass backgroundImage];
-  [(PKUpcomingPassInformationDetailsHeaderItem *)v5 setFallbackBackgroundImage:v8];
-  v9 = [v4 eventMetadata];
-  v10 = v9;
-  if (v9)
+  backgroundImage = [(PKPass *)self->_pass backgroundImage];
+  [(PKUpcomingPassInformationDetailsHeaderItem *)v5 setFallbackBackgroundImage:backgroundImage];
+  eventMetadata = [metadata eventMetadata];
+  v10 = eventMetadata;
+  if (eventMetadata)
   {
-    v11 = [v9 venueRegionName];
-    [(PKUpcomingPassInformationDetailsHeaderItem *)v5 setSecondaryText:v11];
+    venueRegionName = [eventMetadata venueRegionName];
+    [(PKUpcomingPassInformationDetailsHeaderItem *)v5 setSecondaryText:venueRegionName];
   }
 
   return v5;
 }
 
-- (id)_createDescriptorForPass:(id)a3 fromEntry:(id)a4
+- (id)_createDescriptorForPass:(id)pass fromEntry:(id)entry
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 metadata];
-  v8 = [v7 type];
+  passCopy = pass;
+  entryCopy = entry;
+  metadata = [entryCopy metadata];
+  type = [metadata type];
 
-  if (v8 && ([v6 content], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "type"), v9, v10))
+  if (type && ([entryCopy content], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "type"), v9, v10))
   {
-    v11 = [PKEventUpcomingPassInformationSemanticTileSupplier createSupplierForPass:v5 fromUpcomingPassInformationEntry:v6];
-    v12 = [v6 metadata];
-    v13 = [v12 semantics];
-    v14 = [PKPassSemanticTileDescriptor createWithPass:v5 semantics:v13 additionalTilesContentSupplier:v11];
+    v11 = [PKEventUpcomingPassInformationSemanticTileSupplier createSupplierForPass:passCopy fromUpcomingPassInformationEntry:entryCopy];
+    metadata2 = [entryCopy metadata];
+    semantics = [metadata2 semantics];
+    v14 = [PKPassSemanticTileDescriptor createWithPass:passCopy semantics:semantics additionalTilesContentSupplier:v11];
   }
 
   else
@@ -710,7 +710,7 @@ LABEL_25:
 
 - (void)reloadTiles
 {
-  v3 = [(PKPassSemanticTileDescriptor *)self->_tileDescriptor identifier];
+  identifier = [(PKPassSemanticTileDescriptor *)self->_tileDescriptor identifier];
   objc_initWeak(&location, self);
   tileDescriptor = self->_tileDescriptor;
   tileFactory = self->_tileFactory;
@@ -719,7 +719,7 @@ LABEL_25:
   v6[2] = __57__PKUpcomingPassInformationDetailsDataSource_reloadTiles__block_invoke;
   v6[3] = &unk_1E8011850;
   objc_copyWeak(&v7, &location);
-  v6[4] = v3;
+  v6[4] = identifier;
   [(PKPassSemanticTileFactory *)tileFactory fetchTilesForDescriptor:tileDescriptor context:4 queueUpdates:1 completion:v6];
   [(PKPassSemanticTileFactory *)self->_tileFactory prewarmTileContentForDescriptor:self->_tileDescriptor context:5];
   objc_destroyWeak(&v7);
@@ -754,41 +754,41 @@ void __57__PKUpcomingPassInformationDetailsDataSource_reloadTiles__block_invoke_
   }
 }
 
-- (void)_reloadTiles:(id)a3 descriptorIdentifier:(id)a4
+- (void)_reloadTiles:(id)tiles descriptorIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PKPassSemanticTileDescriptor *)self->_tileDescriptor identifier];
-  v8 = v6;
+  tilesCopy = tiles;
+  identifierCopy = identifier;
+  identifier = [(PKPassSemanticTileDescriptor *)self->_tileDescriptor identifier];
+  v8 = identifierCopy;
   v9 = v8;
-  if (v7 == v8)
+  if (identifier == v8)
   {
 
     goto LABEL_7;
   }
 
-  if (!v8 || !v7)
+  if (!v8 || !identifier)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [v7 isEqualToString:v8];
+  v10 = [identifier isEqualToString:v8];
 
   if (v10)
   {
 LABEL_7:
-    [(PKUpcomingPassInformationDetailsDataSource *)self _updateWithTiles:v11];
+    [(PKUpcomingPassInformationDetailsDataSource *)self _updateWithTiles:tilesCopy];
   }
 
 LABEL_9:
 }
 
-- (void)_updateWithTiles:(id)a3
+- (void)_updateWithTiles:(id)tiles
 {
-  v4 = a3;
+  tilesCopy = tiles;
   v5 = self->_tileGroups;
-  v6 = [v4 copy];
+  v6 = [tilesCopy copy];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -851,11 +851,11 @@ id __63__PKUpcomingPassInformationDetailsDataSource__updateWithTiles___block_inv
   return v6;
 }
 
-- (void)updateWithBlock:(id)a3 andDiff:(id)a4
+- (void)updateWithBlock:(id)block andDiff:(id)diff
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  diffCopy = diff;
+  if (diffCopy)
   {
     objc_initWeak(&location, self);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -864,8 +864,8 @@ id __63__PKUpcomingPassInformationDetailsDataSource__updateWithTiles___block_inv
     v14[2] = __70__PKUpcomingPassInformationDetailsDataSource_updateWithBlock_andDiff___block_invoke;
     v14[3] = &unk_1E8011108;
     objc_copyWeak(&v17, &location);
-    v16 = v6;
-    v9 = v7;
+    v16 = blockCopy;
+    v9 = diffCopy;
     v15 = v9;
     [WeakRetained performBatchUpdates:v14 completion:0];
 
@@ -985,15 +985,15 @@ void __70__PKUpcomingPassInformationDetailsDataSource_updateWithBlock_andDiff___
   }
 }
 
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state
 {
-  v5 = [(PKUpcomingPassInformationDetailsDataSource *)self firstSectionIndexForSectionIdentifier:1, a4];
+  state = [(PKUpcomingPassInformationDetailsDataSource *)self firstSectionIndexForSectionIdentifier:1, state];
   if ([(NSArray *)self->_tileGroups count])
   {
     v6 = 0;
     do
     {
-      v7 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:v5 + v6];
+      v7 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:state + v6];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v9 = [(PKUpcomingPassInformationDetailsDataSource *)self itemAtIndexPath:v7];
       [WeakRetained itemChanged:v9 atIndexPath:v7];
@@ -1005,11 +1005,11 @@ void __70__PKUpcomingPassInformationDetailsDataSource_updateWithBlock_andDiff___
   }
 }
 
-- (void)tileFactory:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5 descriptorIdentifier:(id)a6
+- (void)tileFactory:(id)factory didUpdateTiles:(id)tiles forContext:(int64_t)context descriptorIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a6;
-  if (a5 == 4)
+  tilesCopy = tiles;
+  identifierCopy = identifier;
+  if (context == 4)
   {
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x1E69E9820];
@@ -1017,8 +1017,8 @@ void __70__PKUpcomingPassInformationDetailsDataSource_updateWithBlock_andDiff___
     v11[2] = __105__PKUpcomingPassInformationDetailsDataSource_tileFactory_didUpdateTiles_forContext_descriptorIdentifier___block_invoke;
     v11[3] = &unk_1E8011828;
     objc_copyWeak(&v14, &location);
-    v12 = v9;
-    v13 = v10;
+    v12 = tilesCopy;
+    v13 = identifierCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v11);
 
     objc_destroyWeak(&v14);
@@ -1056,24 +1056,24 @@ void __63__PKUpcomingPassInformationDetailsDataSource_reloadFieldGroups__block_i
   [WeakRetained _reloadFieldGroups];
 }
 
-- (id)_seatingFieldGroupsFromEntry:(id)a3
+- (id)_seatingFieldGroupsFromEntry:(id)entry
 {
-  v3 = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
-  if ([v3 type])
+  metadata = [(PKPassUpcomingPassInformationEntry *)self->_entry metadata];
+  if ([metadata type])
   {
-    v4 = [v3 eventMetadata];
-    v5 = [v4 seatingInformation];
-    if (v5)
+    eventMetadata = [metadata eventMetadata];
+    seatingInformation = [eventMetadata seatingInformation];
+    if (seatingInformation)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = [v5 allSeats];
+      allSeats = [seatingInformation allSeats];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __75__PKUpcomingPassInformationDetailsDataSource__seatingFieldGroupsFromEntry___block_invoke;
       v10[3] = &unk_1E801ECB8;
       v8 = v6;
       v11 = v8;
-      [v7 enumerateObjectsUsingBlock:v10];
+      [allSeats enumerateObjectsUsingBlock:v10];
     }
 
     else
@@ -1106,16 +1106,16 @@ void __75__PKUpcomingPassInformationDetailsDataSource__seatingFieldGroupsFromEnt
   [*(a1 + 32) addObject:v10];
 }
 
-- (id)textItemForPassField:(id)a3
+- (id)textItemForPassField:(id)field
 {
-  v3 = a3;
+  fieldCopy = field;
   v4 = objc_alloc_init(PKDashboardTextActionItem);
-  v5 = [v3 label];
-  [(PKDashboardTextActionItem *)v4 setTitle:v5];
+  label = [fieldCopy label];
+  [(PKDashboardTextActionItem *)v4 setTitle:label];
 
-  v6 = [v3 value];
+  value = [fieldCopy value];
 
-  v7 = v6;
+  v7 = value;
   v8 = v7;
   if (v7)
   {
@@ -1158,10 +1158,10 @@ void __75__PKUpcomingPassInformationDetailsDataSource__seatingFieldGroupsFromEnt
     [v4 addObject:v7];
   }
 
-  v8 = [(PKPassUpcomingPassInformationEntry *)self->_entry content];
-  v9 = [v8 backFields];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_entry content];
+  backFields = [content backFields];
 
-  if ([v9 count])
+  if ([backFields count])
   {
     v19 = v5;
     v10 = PKLocalizedTicketingString(&cfstr_UpcomingInform_8.isa);
@@ -1172,7 +1172,7 @@ void __75__PKUpcomingPassInformationDetailsDataSource__seatingFieldGroupsFromEnt
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = v9;
+    v12 = backFields;
     v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v13)
     {
@@ -1210,12 +1210,12 @@ void __75__PKUpcomingPassInformationDetailsDataSource__seatingFieldGroupsFromEnt
   [(PKUpcomingPassInformationDetailsDataSource *)self _updateWithFieldGroups:v4 titles:v3];
 }
 
-- (void)_updateWithFieldGroups:(id)a3 titles:(id)a4
+- (void)_updateWithFieldGroups:(id)groups titles:(id)titles
 {
-  v6 = a3;
-  v7 = a4;
+  groupsCopy = groups;
+  titlesCopy = titles;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v8 = [v6 count];
+  v8 = [groupsCopy count];
   v9 = [(NSArray *)self->_fieldGroups count];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1223,9 +1223,9 @@ void __75__PKUpcomingPassInformationDetailsDataSource__seatingFieldGroupsFromEnt
   aBlock[2] = __76__PKUpcomingPassInformationDetailsDataSource__updateWithFieldGroups_titles___block_invoke;
   aBlock[3] = &unk_1E80160F8;
   objc_copyWeak(v22, &location);
-  v10 = v6;
+  v10 = groupsCopy;
   v20 = v10;
-  v11 = v7;
+  v11 = titlesCopy;
   v21 = v11;
   v22[1] = v8;
   v12 = _Block_copy(aBlock);

@@ -2,14 +2,14 @@
 - (CalXMLSanitizer)init;
 - (id)currentRedactionRule;
 - (id)getIndentation;
-- (void)_appendNamespaceURI:(id)a3 forElementName:(id)a4 qualifiedName:(id)a5;
+- (void)_appendNamespaceURI:(id)i forElementName:(id)name qualifiedName:(id)qualifiedName;
 - (void)flushContents;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCDATA:(id)a4;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parser:(id)a3 foundComment:(id)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCDATA:(id)a;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parser:(id)parser foundComment:(id)comment;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
 @end
 
 @implementation CalXMLSanitizer
@@ -52,18 +52,18 @@
   nestingLevel = self->_nestingLevel;
   if (v3 <= nestingLevel)
   {
-    v5 = [(NSMutableArray *)self->_cachedIndents lastObject];
+    lastObject = [(NSMutableArray *)self->_cachedIndents lastObject];
     v6 = [(NSMutableArray *)self->_cachedIndents count];
     if (v6 <= self->_nestingLevel)
     {
       v8 = v6;
       do
       {
-        v7 = [v5 stringByAppendingString:@"  "];
+        v7 = [lastObject stringByAppendingString:@"  "];
 
         [(NSMutableArray *)self->_cachedIndents addObject:v7];
         ++v8;
-        v5 = v7;
+        lastObject = v7;
       }
 
       while (v8 <= self->_nestingLevel);
@@ -71,7 +71,7 @@
 
     else
     {
-      v7 = v5;
+      v7 = lastObject;
     }
 
     nestingLevel = self->_nestingLevel;
@@ -84,20 +84,20 @@
 
 - (id)currentRedactionRule
 {
-  v3 = [(NSMutableArray *)self->elementNames lastObject];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->elementNames lastObject];
+  if (lastObject)
   {
-    v4 = [(NSMutableArray *)self->elementNamespaces lastObject];
+    lastObject2 = [(NSMutableArray *)self->elementNamespaces lastObject];
     if (currentRedactionRule_onceToken != -1)
     {
       [CalXMLSanitizer currentRedactionRule];
     }
 
-    v5 = [currentRedactionRule_redactionRules objectForKeyedSubscript:v4];
+    v5 = [currentRedactionRule_redactionRules objectForKeyedSubscript:lastObject2];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 objectForKeyedSubscript:v3];
+      v7 = [v5 objectForKeyedSubscript:lastObject];
       v8 = v7;
       if (v7)
       {
@@ -107,15 +107,15 @@
 
       else
       {
-        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@>%@", v4, v3];
+        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@>%@", lastObject2, lastObject];
         v12 = currentRedactionRule_logDedupingQueue;
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __39__CalXMLSanitizer_currentRedactionRule__block_invoke_120;
         v15[3] = &unk_27851AFA8;
         v16 = v11;
-        v17 = v4;
-        v18 = v3;
+        v17 = lastObject2;
+        v18 = lastObject;
         v13 = v11;
         dispatch_sync(v12, v15);
         v9 = kUnknownElementRedactionRule;
@@ -129,8 +129,8 @@
       block[1] = 3221225472;
       block[2] = __39__CalXMLSanitizer_currentRedactionRule__block_invoke_2;
       block[3] = &unk_27851AB28;
-      v20 = v4;
-      v21 = v3;
+      v20 = lastObject2;
+      v21 = lastObject;
       dispatch_sync(v10, block);
       v9 = kUnknownElementRedactionRule;
 
@@ -421,71 +421,71 @@ void __39__CalXMLSanitizer_currentRedactionRule__block_invoke_120(uint64_t a1)
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
   v48 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
+  attributesCopy = attributes;
   [(CalXMLSanitizer *)self flushContents];
-  [(NSMutableArray *)self->elementNames addObject:v11];
+  [(NSMutableArray *)self->elementNames addObject:elementCopy];
   elementNamespaces = self->elementNamespaces;
-  if (v12)
+  if (iCopy)
   {
-    [(NSMutableArray *)self->elementNamespaces addObject:v12];
+    [(NSMutableArray *)self->elementNamespaces addObject:iCopy];
   }
 
   else
   {
-    v16 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableArray *)elementNamespaces addObject:v16];
+    null = [MEMORY[0x277CBEB68] null];
+    [(NSMutableArray *)elementNamespaces addObject:null];
   }
 
-  v42 = [(CalXMLSanitizer *)self currentRedactionRule];
+  currentRedactionRule = [(CalXMLSanitizer *)self currentRedactionRule];
   if (!self->_currentElementHasNestedTags && self->_nestingLevel >= 1)
   {
     [(NSMutableString *)self->_xml appendString:@"\n"];
   }
 
-  v17 = [(CalXMLSanitizer *)self getIndentation];
+  getIndentation = [(CalXMLSanitizer *)self getIndentation];
   xml = self->_xml;
-  v19 = [v42 elementName];
-  if (v13)
+  elementName = [currentRedactionRule elementName];
+  if (nameCopy)
   {
-    v20 = v13;
+    v20 = nameCopy;
   }
 
   else
   {
-    v20 = v11;
+    v20 = elementCopy;
   }
 
-  v21 = CalRedactString(v19, v20);
-  v38 = v17;
-  [(NSMutableString *)xml appendFormat:@"%@<%@", v17, v21];
+  v21 = CalRedactString(elementName, v20);
+  v38 = getIndentation;
+  [(NSMutableString *)xml appendFormat:@"%@<%@", getIndentation, v21];
 
-  if ([v12 length])
+  if ([iCopy length])
   {
-    v22 = [(NSMutableDictionary *)self->namespaceURIToLevelOfFirstElementInNamespace objectForKeyedSubscript:v12];
+    v22 = [(NSMutableDictionary *)self->namespaceURIToLevelOfFirstElementInNamespace objectForKeyedSubscript:iCopy];
 
     if (!v22)
     {
-      [(CalXMLSanitizer *)self _appendNamespaceURI:v12 forElementName:v11 qualifiedName:v13];
+      [(CalXMLSanitizer *)self _appendNamespaceURI:iCopy forElementName:elementCopy qualifiedName:nameCopy];
       v23 = [MEMORY[0x277CCABB0] numberWithInt:self->_nestingLevel];
-      [(NSMutableDictionary *)self->namespaceURIToLevelOfFirstElementInNamespace setObject:v23 forKeyedSubscript:v12];
+      [(NSMutableDictionary *)self->namespaceURIToLevelOfFirstElementInNamespace setObject:v23 forKeyedSubscript:iCopy];
     }
   }
 
-  v39 = v13;
-  v40 = v12;
-  v24 = self;
-  v41 = v11;
+  v39 = nameCopy;
+  v40 = iCopy;
+  selfCopy = self;
+  v41 = elementCopy;
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v25 = v14;
+  v25 = attributesCopy;
   v26 = [v25 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v26)
   {
@@ -501,12 +501,12 @@ void __39__CalXMLSanitizer_currentRedactionRule__block_invoke_120(uint64_t a1)
         }
 
         v30 = *(*(&v43 + 1) + 8 * i);
-        v31 = [v42 redactionRuleForAttribute:v30];
-        v32 = v24->_xml;
+        v31 = [currentRedactionRule redactionRuleForAttribute:v30];
+        v32 = selfCopy->_xml;
         v33 = CalRedactString([v31 attributeName], v30);
-        v34 = [v31 attributeValue];
+        attributeValue = [v31 attributeValue];
         v35 = [v25 objectForKeyedSubscript:v30];
-        v36 = CalRedactString(v34, v35);
+        v36 = CalRedactString(attributeValue, v35);
         [(NSMutableString *)v32 appendFormat:@" %@=%@", v33, v36];
       }
 
@@ -516,36 +516,36 @@ void __39__CalXMLSanitizer_currentRedactionRule__block_invoke_120(uint64_t a1)
     while (v27);
   }
 
-  *&v24->_currentElementStartTagNeedsClosing = 1;
-  ++v24->_nestingLevel;
+  *&selfCopy->_currentElementStartTagNeedsClosing = 1;
+  ++selfCopy->_nestingLevel;
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v24 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
   if (*&self->_textContents != 0 || self->_mutableCDATAContents)
   {
     [(CalXMLSanitizer *)self flushContents];
   }
 
-  v13 = [(CalXMLSanitizer *)self currentRedactionRule];
+  currentRedactionRule = [(CalXMLSanitizer *)self currentRedactionRule];
   [(NSMutableArray *)self->elementNames removeLastObject];
   [(NSMutableArray *)self->elementNamespaces removeLastObject];
   --self->_nestingLevel;
-  if (v11)
+  if (iCopy)
   {
-    v14 = [(NSMutableDictionary *)self->namespaceURIToLevelOfFirstElementInNamespace objectForKeyedSubscript:v11];
-    v15 = [v14 integerValue];
+    v14 = [(NSMutableDictionary *)self->namespaceURIToLevelOfFirstElementInNamespace objectForKeyedSubscript:iCopy];
+    integerValue = [v14 integerValue];
     nestingLevel = self->_nestingLevel;
 
-    if (v15 == nestingLevel)
+    if (integerValue == nestingLevel)
     {
-      [(NSMutableDictionary *)self->namespaceURIToLevelOfFirstElementInNamespace removeObjectForKey:v11];
+      [(NSMutableDictionary *)self->namespaceURIToLevelOfFirstElementInNamespace removeObjectForKey:iCopy];
     }
   }
 
@@ -560,80 +560,80 @@ void __39__CalXMLSanitizer_currentRedactionRule__block_invoke_120(uint64_t a1)
     if ([(NSMutableString *)xml hasSuffix:@"\n"])
     {
       v18 = self->_xml;
-      v19 = [(CalXMLSanitizer *)self getIndentation];
-      [(NSMutableString *)v18 appendString:v19];
+      getIndentation = [(CalXMLSanitizer *)self getIndentation];
+      [(NSMutableString *)v18 appendString:getIndentation];
     }
 
     v20 = self->_xml;
-    v21 = [v13 elementName];
-    if (v12)
+    elementName = [currentRedactionRule elementName];
+    if (nameCopy)
     {
-      v22 = v12;
+      v22 = nameCopy;
     }
 
     else
     {
-      v22 = v10;
+      v22 = elementCopy;
     }
 
-    v23 = CalRedactString(v21, v22);
+    v23 = CalRedactString(elementName, v22);
     [(NSMutableString *)v20 appendFormat:@"</%@>\n", v23];
   }
 
   *&self->_currentElementStartTagNeedsClosing = 256;
 }
 
-- (void)_appendNamespaceURI:(id)a3 forElementName:(id)a4 qualifiedName:(id)a5
+- (void)_appendNamespaceURI:(id)i forElementName:(id)name qualifiedName:(id)qualifiedName
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8 && v13 && v9)
+  iCopy = i;
+  nameCopy = name;
+  qualifiedNameCopy = qualifiedName;
+  if (nameCopy && iCopy && qualifiedNameCopy)
   {
-    v10 = [v9 length];
-    if (v10 > [v8 length] && (objc_msgSend(v9, "substringToIndex:", objc_msgSend(v9, "length") + ~objc_msgSend(v8, "length")), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    v10 = [qualifiedNameCopy length];
+    if (v10 > [nameCopy length] && (objc_msgSend(qualifiedNameCopy, "substringToIndex:", objc_msgSend(qualifiedNameCopy, "length") + ~objc_msgSend(nameCopy, "length")), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = v11;
-      [(NSMutableString *)self->_xml appendFormat:@" xmlns:%@=%@", v11, v13];
+      [(NSMutableString *)self->_xml appendFormat:@" xmlns:%@=%@", v11, iCopy];
     }
 
     else
     {
-      [(NSMutableString *)self->_xml appendFormat:@" xmlns=%@", v13];
+      [(NSMutableString *)self->_xml appendFormat:@" xmlns=%@", iCopy];
     }
   }
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v5 = a4;
+  charactersCopy = characters;
   textContents = self->_textContents;
-  v9 = v5;
+  v9 = charactersCopy;
   if (textContents)
   {
-    v7 = [(NSString *)textContents stringByAppendingString:v5];
+    v7 = [(NSString *)textContents stringByAppendingString:charactersCopy];
   }
 
   else
   {
-    v7 = v5;
+    v7 = charactersCopy;
   }
 
   v8 = self->_textContents;
   self->_textContents = v7;
 }
 
-- (void)parser:(id)a3 foundComment:(id)a4
+- (void)parser:(id)parser foundComment:(id)comment
 {
-  v5 = a4;
+  commentCopy = comment;
   [(CalXMLSanitizer *)self flushContents];
-  [(NSMutableString *)self->_xml appendFormat:@"<!--%@-->", v5];
+  [(NSMutableString *)self->_xml appendFormat:@"<!--%@-->", commentCopy];
 }
 
-- (void)parser:(id)a3 foundCDATA:(id)a4
+- (void)parser:(id)parser foundCDATA:(id)a
 {
-  v12 = a3;
-  v6 = a4;
+  parserCopy = parser;
+  aCopy = a;
   mutableCDATAContents = self->_mutableCDATAContents;
   if (self->_cdataContents)
   {
@@ -648,7 +648,7 @@ void __39__CalXMLSanitizer_currentRedactionRule__block_invoke_120(uint64_t a1)
 
       v11 = self->_mutableCDATAContents;
 LABEL_6:
-      [(NSMutableData *)v11 appendData:v6];
+      [(NSMutableData *)v11 appendData:aCopy];
       goto LABEL_7;
     }
 
@@ -662,37 +662,37 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  objc_storeStrong(&self->_cdataContents, a4);
+  objc_storeStrong(&self->_cdataContents, a);
 LABEL_7:
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v9 = a4;
+  occurredCopy = occurred;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v9 redactedDescription];
+    redactedDescription = [occurredCopy redactedDescription];
   }
 
-  else if (v9)
+  else if (occurredCopy)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [v9 domain];
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "code")}];
-    v5 = [v6 stringWithFormat:@"[%@:%@]", v7, v8];
+    domain = [occurredCopy domain];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(occurredCopy, "code")}];
+    redactedDescription = [v6 stringWithFormat:@"[%@:%@]", domain, v8];
   }
 
   else
   {
-    v5 = @"(null)";
+    redactedDescription = @"(null)";
   }
 
-  [(NSMutableString *)self->_xml appendFormat:@"[Parse failure: XML parse error=%@]\n", v5];
+  [(NSMutableString *)self->_xml appendFormat:@"[Parse failure: XML parse error=%@]\n", redactedDescription];
 }
 
 - (void)flushContents
 {
-  v12 = [(CalXMLSanitizer *)self currentRedactionRule];
+  currentRedactionRule = [(CalXMLSanitizer *)self currentRedactionRule];
   if (self->_currentElementStartTagNeedsClosing)
   {
     [(NSMutableString *)self->_xml appendString:@">"];
@@ -709,7 +709,7 @@ LABEL_7:
     if ([(NSString *)self->_textContents rangeOfCharacterFromSet:flushContents_notWhitespaceSet options:0]!= 0x7FFFFFFFFFFFFFFFLL)
     {
       xml = self->_xml;
-      v4 = CalRedactString([v12 content], self->_textContents);
+      v4 = CalRedactString([currentRedactionRule content], self->_textContents);
       [(NSMutableString *)xml appendString:v4];
     }
 
@@ -738,7 +738,7 @@ LABEL_7:
 LABEL_14:
   v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:self->_cdataContents encoding:4];
   v9 = self->_xml;
-  v10 = CalRedactString([v12 cdata], v8);
+  v10 = CalRedactString([currentRedactionRule cdata], v8);
   [(NSMutableString *)v9 appendFormat:@"<![CDATA[%@]]>", v10];
 
   cdataContents = self->_cdataContents;

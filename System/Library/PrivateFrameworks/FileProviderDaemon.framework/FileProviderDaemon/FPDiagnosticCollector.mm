@@ -1,23 +1,23 @@
 @interface FPDiagnosticCollector
-+ (unint64_t)getStringCharactersSet:(id)a3;
-- (BOOL)_collectFnameAttributesWithError:(id *)a3;
-- (BOOL)_collectInodeAttributesWithError:(id *)a3;
-- (BOOL)_collectMountAttributesWithError:(id *)a3;
-- (BOOL)_collectParentACLCountWithError:(id *)a3;
-- (BOOL)_collectPurgeAttributesWithError:(id *)a3;
-- (BOOL)_collectXattrAttributesWithError:(id *)a3;
-- (BOOL)_collectdocIDAttributesWithError:(id *)a3;
-- (BOOL)_performStep:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_tryReadFirstByteOfFileWithError:(id *)a3;
-- (BOOL)collectDiagnosticDiskAttributesWithError:(id *)a3;
-- (FPDiagnosticCollector)initWithFD:(int)a3 trashURL:(id)a4 isExternalQuery:(BOOL)a5;
++ (unint64_t)getStringCharactersSet:(id)set;
+- (BOOL)_collectFnameAttributesWithError:(id *)error;
+- (BOOL)_collectInodeAttributesWithError:(id *)error;
+- (BOOL)_collectMountAttributesWithError:(id *)error;
+- (BOOL)_collectParentACLCountWithError:(id *)error;
+- (BOOL)_collectPurgeAttributesWithError:(id *)error;
+- (BOOL)_collectXattrAttributesWithError:(id *)error;
+- (BOOL)_collectdocIDAttributesWithError:(id *)error;
+- (BOOL)_performStep:(unint64_t)step error:(id *)error;
+- (BOOL)_tryReadFirstByteOfFileWithError:(id *)error;
+- (BOOL)collectDiagnosticDiskAttributesWithError:(id *)error;
+- (FPDiagnosticCollector)initWithFD:(int)d trashURL:(id)l isExternalQuery:(BOOL)query;
 @end
 
 @implementation FPDiagnosticCollector
 
-- (FPDiagnosticCollector)initWithFD:(int)a3 trashURL:(id)a4 isExternalQuery:(BOOL)a5
+- (FPDiagnosticCollector)initWithFD:(int)d trashURL:(id)l isExternalQuery:(BOOL)query
 {
-  v9 = a4;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = FPDiagnosticCollector;
   v10 = [(FPDiagnosticCollector *)&v14 init];
@@ -27,94 +27,94 @@
     diagnostic = v10->_diagnostic;
     v10->_diagnostic = v11;
 
-    v10->_fd = a3;
-    v10->_isExternalQuery = a5;
-    objc_storeStrong(&v10->_trashURL, a4);
+    v10->_fd = d;
+    v10->_isExternalQuery = query;
+    objc_storeStrong(&v10->_trashURL, l);
     v10->_stepsNeeded = 147;
   }
 
   return v10;
 }
 
-- (BOOL)_performStep:(unint64_t)a3 error:(id *)a4
+- (BOOL)_performStep:(unint64_t)step error:(id *)error
 {
-  if (a3 > 15)
+  if (step > 15)
   {
-    if (a3 > 63)
+    if (step > 63)
     {
-      if (a3 == 64)
+      if (step == 64)
       {
 
-        return [(FPDiagnosticCollector *)self _tryReadFirstByteOfFileWithError:a4];
+        return [(FPDiagnosticCollector *)self _tryReadFirstByteOfFileWithError:error];
       }
 
       else
       {
-        if (a3 != 128)
+        if (step != 128)
         {
           goto LABEL_36;
         }
 
-        return [(FPDiagnosticCollector *)self _collectParentACLCountWithError:a4];
+        return [(FPDiagnosticCollector *)self _collectParentACLCountWithError:error];
       }
     }
 
-    else if (a3 == 16)
+    else if (step == 16)
     {
 
-      return [(FPDiagnosticCollector *)self _collectMountAttributesWithError:a4];
+      return [(FPDiagnosticCollector *)self _collectMountAttributesWithError:error];
     }
 
     else
     {
-      if (a3 != 32)
+      if (step != 32)
       {
         goto LABEL_36;
       }
 
-      return [(FPDiagnosticCollector *)self _collectdocIDAttributesWithError:a4];
+      return [(FPDiagnosticCollector *)self _collectdocIDAttributesWithError:error];
     }
   }
 
-  else if (a3 > 3)
+  else if (step > 3)
   {
-    if (a3 == 4)
+    if (step == 4)
     {
 
-      return [(FPDiagnosticCollector *)self _collectXattrAttributesWithError:a4];
+      return [(FPDiagnosticCollector *)self _collectXattrAttributesWithError:error];
     }
 
     else
     {
-      if (a3 != 8)
+      if (step != 8)
       {
         goto LABEL_36;
       }
 
-      return [(FPDiagnosticCollector *)self _collectPurgeAttributesWithError:a4];
+      return [(FPDiagnosticCollector *)self _collectPurgeAttributesWithError:error];
     }
   }
 
   else
   {
-    if (a3 != 1)
+    if (step != 1)
     {
-      if (a3 == 2)
+      if (step == 2)
       {
 
-        return [(FPDiagnosticCollector *)self _collectFnameAttributesWithError:a4];
+        return [(FPDiagnosticCollector *)self _collectFnameAttributesWithError:error];
       }
 
 LABEL_36:
-      *a4 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:45];
+      *error = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:45];
       return 0;
     }
 
-    return [(FPDiagnosticCollector *)self _collectInodeAttributesWithError:a4];
+    return [(FPDiagnosticCollector *)self _collectInodeAttributesWithError:error];
   }
 }
 
-- (BOOL)collectDiagnosticDiskAttributesWithError:(id *)a3
+- (BOOL)collectDiagnosticDiskAttributesWithError:(id *)error
 {
   v5 = 0;
   v6 = 0;
@@ -152,30 +152,30 @@ LABEL_36:
   while (!v12);
   if ((v8 & 1) == 0)
   {
-    if (a3)
+    if (error)
     {
       v13 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
-    v14 = [v6 domain];
-    [(NSMutableDictionary *)self->_diagnostic setObject:v14 forKeyedSubscript:*MEMORY[0x1E6966F50]];
+    domain = [v6 domain];
+    [(NSMutableDictionary *)self->_diagnostic setObject:domain forKeyedSubscript:*MEMORY[0x1E6966F50]];
 
     v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "code")}];
     [(NSMutableDictionary *)self->_diagnostic setObject:v15 forKeyedSubscript:*MEMORY[0x1E6966F48]];
 
-    v16 = [v6 underlyingErrors];
-    v17 = [v16 count];
+    underlyingErrors = [v6 underlyingErrors];
+    v17 = [underlyingErrors count];
 
     if (v17)
     {
-      v18 = [v6 underlyingErrors];
-      v19 = [v18 firstObject];
+      underlyingErrors2 = [v6 underlyingErrors];
+      firstObject = [underlyingErrors2 firstObject];
 
-      v20 = [v19 domain];
-      [(NSMutableDictionary *)self->_diagnostic setObject:v20 forKeyedSubscript:*MEMORY[0x1E6966F68]];
+      domain2 = [firstObject domain];
+      [(NSMutableDictionary *)self->_diagnostic setObject:domain2 forKeyedSubscript:*MEMORY[0x1E6966F68]];
 
-      v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v19, "code")}];
+      v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(firstObject, "code")}];
       [(NSMutableDictionary *)self->_diagnostic setObject:v21 forKeyedSubscript:*MEMORY[0x1E6966F60]];
     }
 
@@ -186,7 +186,7 @@ LABEL_36:
   return v8 & 1;
 }
 
-- (BOOL)_collectInodeAttributesWithError:(id *)a3
+- (BOOL)_collectInodeAttributesWithError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v47 = xmmword_1CF9F4CB0;
@@ -196,7 +196,7 @@ LABEL_36:
   if (!v7)
   {
     [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
-    *a3 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_69;
   }
 
@@ -221,7 +221,7 @@ LABEL_36:
     v10 = MEMORY[0x1E696ABC0];
     v11 = 9;
 LABEL_9:
-    *a3 = [v10 fp_errorWithPOSIXCode:v11];
+    *error = [v10 fp_errorWithPOSIXCode:v11];
     free(v8);
     v12 = 0;
     goto LABEL_69;
@@ -525,20 +525,20 @@ LABEL_69:
   return v12;
 }
 
-+ (unint64_t)getStringCharactersSet:(id)a3
++ (unint64_t)getStringCharactersSet:(id)set
 {
   v3 = getStringCharactersSet__onceToken;
-  v4 = a3;
+  setCopy = set;
   if (v3 != -1)
   {
     +[FPDiagnosticCollector getStringCharactersSet:];
   }
 
-  v5 = [MEMORY[0x1E696AB08] controlCharacterSet];
-  v6 = [v4 rangeOfCharacterFromSet:v5];
+  controlCharacterSet = [MEMORY[0x1E696AB08] controlCharacterSet];
+  v6 = [setCopy rangeOfCharacterFromSet:controlCharacterSet];
 
-  v7 = [MEMORY[0x1E696AB08] illegalCharacterSet];
-  v8 = [v4 rangeOfCharacterFromSet:v7];
+  illegalCharacterSet = [MEMORY[0x1E696AB08] illegalCharacterSet];
+  v8 = [setCopy rangeOfCharacterFromSet:illegalCharacterSet];
 
   v9 = 2;
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
@@ -556,24 +556,24 @@ LABEL_69:
     v10 = v9;
   }
 
-  v11 = [MEMORY[0x1E696AB08] nonBaseCharacterSet];
-  v12 = [v4 rangeOfCharacterFromSet:v11];
+  nonBaseCharacterSet = [MEMORY[0x1E696AB08] nonBaseCharacterSet];
+  v12 = [setCopy rangeOfCharacterFromSet:nonBaseCharacterSet];
 
   if (v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 |= 4uLL;
   }
 
-  v13 = [MEMORY[0x1E696AB08] symbolCharacterSet];
-  v14 = [v4 rangeOfCharacterFromSet:v13];
+  symbolCharacterSet = [MEMORY[0x1E696AB08] symbolCharacterSet];
+  v14 = [setCopy rangeOfCharacterFromSet:symbolCharacterSet];
 
   if (v14 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 |= 8uLL;
   }
 
-  v15 = [MEMORY[0x1E696AB08] _emojiCharacterSet];
-  v16 = [v4 rangeOfCharacterFromSet:v15];
+  _emojiCharacterSet = [MEMORY[0x1E696AB08] _emojiCharacterSet];
+  v16 = [setCopy rangeOfCharacterFromSet:_emojiCharacterSet];
 
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -585,7 +585,7 @@ LABEL_69:
     v17 = v10 | 0x10;
   }
 
-  v18 = [v4 rangeOfCharacterFromSet:getStringCharactersSet__nonLatinCharacterSet];
+  v18 = [setCopy rangeOfCharacterFromSet:getStringCharactersSet__nonLatinCharacterSet];
 
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -606,7 +606,7 @@ void __48__FPDiagnosticCollector_getStringCharactersSet___block_invoke()
   getStringCharactersSet__nonLatinCharacterSet = v0;
 }
 
-- (BOOL)_collectFnameAttributesWithError:(id *)a3
+- (BOOL)_collectFnameAttributesWithError:(id *)error
 {
   v48[5] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -614,32 +614,32 @@ void __48__FPDiagnosticCollector_getStringCharactersSet___block_invoke()
   if (!v6)
   {
     [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
-    *a3 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_33;
   }
 
   v7 = v6;
   if (fsgetpath(v6, 0x2000uLL, &self->_fsid, self->_ino) < 0)
   {
-    *a3 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
+    *error = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
     free(v7);
     v12 = 0;
     goto LABEL_33;
   }
 
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v7];
-  v9 = [v8 lastPathComponent];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "length")}];
+  lastPathComponent = [v8 lastPathComponent];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(lastPathComponent, "length")}];
   [v5 setObject:v10 forKeyedSubscript:*MEMORY[0x1E6966F98]];
 
-  if ([v9 hasPrefix:@"._"])
+  if ([lastPathComponent hasPrefix:@"._"])
   {
     v11 = MEMORY[0x1E6966F80];
   }
 
   else
   {
-    if (![v9 hasPrefix:@"."])
+    if (![lastPathComponent hasPrefix:@"."])
     {
       goto LABEL_12;
     }
@@ -657,24 +657,24 @@ void __48__FPDiagnosticCollector_getStringCharactersSet___block_invoke()
 
   [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*v11];
 LABEL_12:
-  v14 = [v9 getUnicodeNormalization];
-  [v5 setObject:v14 forKeyedSubscript:*MEMORY[0x1E6966FB8]];
+  getUnicodeNormalization = [lastPathComponent getUnicodeNormalization];
+  [v5 setObject:getUnicodeNormalization forKeyedSubscript:*MEMORY[0x1E6966FB8]];
 
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "length")}];
   [v5 setObject:v15 forKeyedSubscript:*MEMORY[0x1E6966FA8]];
 
   v16 = MEMORY[0x1E696AD98];
-  v17 = [v8 pathComponents];
-  v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v17, "count")}];
+  pathComponents = [v8 pathComponents];
+  v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(pathComponents, "count")}];
   [v5 setObject:v18 forKeyedSubscript:*MEMORY[0x1E6966FA0]];
 
-  v19 = [v9 pathExtension];
-  if ([v19 length])
+  pathExtension = [lastPathComponent pathExtension];
+  if ([pathExtension length])
   {
-    [v5 setObject:v19 forKeyedSubscript:*MEMORY[0x1E6966F78]];
+    [v5 setObject:pathExtension forKeyedSubscript:*MEMORY[0x1E6966F78]];
   }
 
-  v20 = [FPDiagnosticCollector getStringCharactersSet:v9];
+  v20 = [FPDiagnosticCollector getStringCharactersSet:lastPathComponent];
   if (v20)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v20];
@@ -687,8 +687,8 @@ LABEL_12:
   v24 = v46;
   if (v23)
   {
-    v39 = v19;
-    v40 = v9;
+    v39 = pathExtension;
+    v40 = lastPathComponent;
     v41 = v8;
     v25 = *MEMORY[0x1E6982D80];
     v48[0] = *MEMORY[0x1E6982F30];
@@ -719,8 +719,8 @@ LABEL_12:
           v32 = *(*(&v42 + 1) + 8 * i);
           if ([v24 conformsToType:v32])
           {
-            v33 = [v32 identifier];
-            [v5 setObject:v33 forKeyedSubscript:*MEMORY[0x1E6966FB0]];
+            identifier = [v32 identifier];
+            [v5 setObject:identifier forKeyedSubscript:*MEMORY[0x1E6966FB0]];
 
             goto LABEL_27;
           }
@@ -738,14 +738,14 @@ LABEL_12:
 
 LABEL_27:
 
-    v9 = v40;
+    lastPathComponent = v40;
     v8 = v41;
-    v19 = v39;
+    pathExtension = v39;
   }
 
-  v34 = [v22 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [v22 URLByDeletingLastPathComponent];
   parentURL = self->_parentURL;
-  self->_parentURL = v34;
+  self->_parentURL = uRLByDeletingLastPathComponent;
 
   if (![(NSURL *)self->_trashURL fp_relationshipToItemAtURL:v22])
   {
@@ -771,7 +771,7 @@ LABEL_33:
   return v12;
 }
 
-- (BOOL)_collectXattrAttributesWithError:(id *)a3
+- (BOOL)_collectXattrAttributesWithError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = getpagesize();
@@ -779,7 +779,7 @@ LABEL_33:
   if (!v7)
   {
     [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
-    *a3 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_29;
   }
 
@@ -798,7 +798,7 @@ LABEL_33:
     v10 = MEMORY[0x1E696ABC0];
     v11 = 12;
 LABEL_7:
-    *a3 = [v10 fp_errorWithPOSIXCode:v11];
+    *error = [v10 fp_errorWithPOSIXCode:v11];
     free(v8);
     v12 = 0;
     goto LABEL_29;
@@ -811,7 +811,7 @@ LABEL_7:
     goto LABEL_27;
   }
 
-  v29 = self;
+  selfCopy = self;
   v33 = 0;
   LODWORD(self) = 0;
   v14 = &v8[v9];
@@ -869,10 +869,10 @@ LABEL_20:
   v23 = [MEMORY[0x1E696AD98] numberWithInt:self];
   [v5 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69670A8]];
 
-  self = v29;
+  self = selfCopy;
   if (v33)
   {
-    fd = v29->_fd;
+    fd = selfCopy->_fd;
     v25 = fpfs_fget_decmpf_type();
     if (v25 < 0)
     {
@@ -897,7 +897,7 @@ LABEL_29:
   return v12;
 }
 
-- (BOOL)_collectPurgeAttributesWithError:(id *)a3
+- (BOOL)_collectPurgeAttributesWithError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13 = 0u;
@@ -906,7 +906,7 @@ LABEL_29:
   v6 = ffsctl(self->_fd, 0x40304A6DuLL, &v12, 0);
   if (v6 < 0)
   {
-    *a3 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
+    *error = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
   }
 
   else
@@ -917,8 +917,8 @@ LABEL_29:
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(&v13 + 1)];
     [v5 setObject:v8 forKeyedSubscript:*MEMORY[0x1E6966FD0]];
 
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v13 / 0x3B9ACA00];
-    [v5 setObject:v9 forKeyedSubscript:*MEMORY[0x1E6966FC0]];
+    0x3B9ACA00 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v13 / 0x3B9ACA00];
+    [v5 setObject:0x3B9ACA00 forKeyedSubscript:*MEMORY[0x1E6966FC0]];
 
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v14];
     [v5 setObject:v10 forKeyedSubscript:*MEMORY[0x1E6966FD8]];
@@ -929,7 +929,7 @@ LABEL_29:
   return v6 >= 0;
 }
 
-- (BOOL)_collectMountAttributesWithError:(id *)a3
+- (BOOL)_collectMountAttributesWithError:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -937,7 +937,7 @@ LABEL_29:
   v6 = fstatfs(self->_fd, &v13);
   if (v6 < 0)
   {
-    *a3 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:12];
+    *error = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:12];
   }
 
   else
@@ -965,7 +965,7 @@ LABEL_29:
   return v6 >= 0;
 }
 
-- (BOOL)_collectdocIDAttributesWithError:(id *)a3
+- (BOOL)_collectdocIDAttributesWithError:(id *)error
 {
   docid = self->_docid;
   v5 = self->_fsid.val[0];
@@ -985,7 +985,7 @@ LABEL_29:
   return 1;
 }
 
-- (BOOL)_tryReadFirstByteOfFileWithError:(id *)a3
+- (BOOL)_tryReadFirstByteOfFileWithError:(id *)error
 {
   __buf = 0;
   if (pread(self->_fd, &__buf, 1uLL, 0) < 0)
@@ -1002,7 +1002,7 @@ LABEL_29:
   return 1;
 }
 
-- (BOOL)_collectParentACLCountWithError:(id *)a3
+- (BOOL)_collectParentACLCountWithError:(id *)error
 {
   if (!self->_parentURL)
   {
@@ -1018,7 +1018,7 @@ LABEL_29:
     v7 = v6;
     if (getattrlist([(NSURL *)self->_parentURL fileSystemRepresentation:v13], &v13, v6, v5, 0x20u) < 0)
     {
-      *a3 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
+      *error = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
       free(v7);
       return 0;
     }
@@ -1045,7 +1045,7 @@ LABEL_29:
     v11 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:{*__error(), v13, v14}];
     v12 = v11;
     result = 0;
-    *a3 = v11;
+    *error = v11;
   }
 
   return result;

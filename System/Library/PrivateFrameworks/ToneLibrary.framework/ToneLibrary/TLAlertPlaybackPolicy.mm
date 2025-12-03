@@ -1,25 +1,25 @@
 @interface TLAlertPlaybackPolicy
-+ (BOOL)shouldRepeatVibrationForAlert:(id)a3 withPlaybackBackend:(int64_t)a4;
++ (BOOL)shouldRepeatVibrationForAlert:(id)alert withPlaybackBackend:(int64_t)backend;
 @end
 
 @implementation TLAlertPlaybackPolicy
 
-+ (BOOL)shouldRepeatVibrationForAlert:(id)a3 withPlaybackBackend:(int64_t)a4
++ (BOOL)shouldRepeatVibrationForAlert:(id)alert withPlaybackBackend:(int64_t)backend
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  alertCopy = alert;
+  v6 = alertCopy;
+  if (backend)
   {
-    LOBYTE(v7) = 0;
+    LOBYTE(shouldRepeat) = 0;
   }
 
   else
   {
-    v8 = [v5 configuration];
-    v7 = [v8 shouldRepeat];
+    configuration = [alertCopy configuration];
+    shouldRepeat = [configuration shouldRepeat];
   }
 
-  v9 = ([v6 type] == 18) | v7;
+  v9 = ([v6 type] == 18) | shouldRepeat;
 
   return v9 & 1;
 }

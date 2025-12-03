@@ -1,15 +1,15 @@
 @interface PHAPredicateValidator
-- (BOOL)validateExpression:(id)a3 error:(id *)a4;
-- (BOOL)validatePredicate:(id)a3 error:(id *)a4;
-- (BOOL)validateValue:(id)a3 error:(id *)a4;
+- (BOOL)validateExpression:(id)expression error:(id *)error;
+- (BOOL)validatePredicate:(id)predicate error:(id *)error;
+- (BOOL)validateValue:(id)value error:(id *)error;
 @end
 
 @implementation PHAPredicateValidator
 
-- (BOOL)validateValue:(id)a3 error:(id *)a4
+- (BOOL)validateValue:(id)value error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -17,7 +17,7 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = v6;
+    v7 = valueCopy;
     v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v8)
     {
@@ -32,7 +32,7 @@
             objc_enumerationMutation(v7);
           }
 
-          if (![(PHAPredicateValidator *)self validateValue:*(*(&v24 + 1) + 8 * v10) error:a4])
+          if (![(PHAPredicateValidator *)self validateValue:*(*(&v24 + 1) + 8 * v10) error:error])
           {
             v11 = 0;
             goto LABEL_16;
@@ -78,10 +78,10 @@ LABEL_16:
       v13[4] = self;
       v13[5] = &v20;
       v13[6] = &v14;
-      [v6 enumerateKeysAndObjectsUsingBlock:v13];
-      if (a4)
+      [valueCopy enumerateKeysAndObjectsUsingBlock:v13];
+      if (error)
       {
-        *a4 = v15[5];
+        *error = v15[5];
       }
 
       v11 = *(v21 + 24);
@@ -98,10 +98,10 @@ LABEL_16:
         v11 = 1;
       }
 
-      else if (a4)
+      else if (error)
       {
         [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:11];
-        *a4 = v11 = 0;
+        *error = v11 = 0;
       }
 
       else
@@ -138,24 +138,24 @@ void __45__PHAPredicateValidator_validateValue_error___block_invoke(void *a1, ui
   *(v13 + 40) = v10;
 }
 
-- (BOOL)validateExpression:(id)a3 error:(id *)a4
+- (BOOL)validateExpression:(id)expression error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 expressionType];
-  if (v7 != 3)
+  expressionCopy = expression;
+  expressionType = [expressionCopy expressionType];
+  if (expressionType != 3)
   {
-    if (v7)
+    if (expressionType)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:11];
+        *error = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:11];
       }
     }
 
     else
     {
-      v8 = [v6 constantValue];
-      v9 = [(PHAPredicateValidator *)self validateValue:v8 error:a4];
+      constantValue = [expressionCopy constantValue];
+      v9 = [(PHAPredicateValidator *)self validateValue:constantValue error:error];
 
       if (v9)
       {
@@ -168,12 +168,12 @@ void __45__PHAPredicateValidator_validateValue_error___block_invoke(void *a1, ui
     goto LABEL_12;
   }
 
-  v11 = [v6 keyPath];
-  if (v11)
+  keyPath = [expressionCopy keyPath];
+  if (keyPath)
   {
-    v12 = [(PHAPredicateValidator *)self allowedKeyPaths];
-    v13 = [v6 keyPath];
-    v10 = [v12 containsObject:v13];
+    allowedKeyPaths = [(PHAPredicateValidator *)self allowedKeyPaths];
+    keyPath2 = [expressionCopy keyPath];
+    v10 = [allowedKeyPaths containsObject:keyPath2];
   }
 
   else
@@ -185,10 +185,10 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)validatePredicate:(id)a3 error:(id *)a4
+- (BOOL)validatePredicate:(id)predicate error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -196,8 +196,8 @@ LABEL_12:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v6 subpredicates];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    subpredicates = [predicateCopy subpredicates];
+    v8 = [subpredicates countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -208,17 +208,17 @@ LABEL_12:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(subpredicates);
           }
 
-          if (![(PHAPredicateValidator *)self validatePredicate:*(*(&v16 + 1) + 8 * i) error:a4])
+          if (![(PHAPredicateValidator *)self validatePredicate:*(*(&v16 + 1) + 8 * i) error:error])
           {
             v12 = 0;
             goto LABEL_19;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [subpredicates countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v9)
         {
           continue;
@@ -235,12 +235,12 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v13 = [v7 leftExpression];
-    if ([(PHAPredicateValidator *)self validateExpression:v13 error:a4])
+    subpredicates = predicateCopy;
+    leftExpression = [subpredicates leftExpression];
+    if ([(PHAPredicateValidator *)self validateExpression:leftExpression error:error])
     {
-      v14 = [v7 rightExpression];
-      v12 = [(PHAPredicateValidator *)self validateExpression:v14 error:a4];
+      rightExpression = [subpredicates rightExpression];
+      v12 = [(PHAPredicateValidator *)self validateExpression:rightExpression error:error];
     }
 
     else
@@ -252,10 +252,10 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:11];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else

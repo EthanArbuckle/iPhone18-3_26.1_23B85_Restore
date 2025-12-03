@@ -1,15 +1,15 @@
 @interface UIPPTRequestAction
 - (BOOL)shouldChangeOrientation;
-- (UIPPTRequestAction)initWithDesiredOrientation:(int64_t)a3;
+- (UIPPTRequestAction)initWithDesiredOrientation:(int64_t)orientation;
 - (int64_t)orientationRequested;
 @end
 
 @implementation UIPPTRequestAction
 
-- (UIPPTRequestAction)initWithDesiredOrientation:(int64_t)a3
+- (UIPPTRequestAction)initWithDesiredOrientation:(int64_t)orientation
 {
   v5 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
   [v5 setObject:v6 forSetting:1];
 
   v9.receiver = self;
@@ -21,19 +21,19 @@
 
 - (BOOL)shouldChangeOrientation
 {
-  v2 = [(UIPPTRequestAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(UIPPTRequestAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3 != 0;
 }
 
 - (int64_t)orientationRequested
 {
-  v2 = [(UIPPTRequestAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(UIPPTRequestAction *)self info];
+  v3 = [info objectForSetting:1];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
 @end

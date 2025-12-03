@@ -1,26 +1,26 @@
 @interface _FBSScenesClientHostEvent
-- (id)coalesceEvents:(uint64_t)a1;
-- (uint64_t)coalesceEvent:(BOOL *)a3 skipped:;
+- (id)coalesceEvents:(uint64_t)events;
+- (uint64_t)coalesceEvent:(BOOL *)event skipped:;
 - (void)complete;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setDiff:(uint64_t)a1;
-- (void)setIdentity:(uint64_t)a1;
+- (void)setDiff:(uint64_t)diff;
+- (void)setIdentity:(uint64_t)identity;
 @end
 
 @implementation _FBSScenesClientHostEvent
 
 - (void)complete
 {
-  if (a1)
+  if (self)
   {
-    v2 = MEMORY[0x1A58E80F0](a1[4]);
+    v2 = MEMORY[0x1A58E80F0](self[4]);
     if (v2)
     {
       v2[2]();
     }
 
-    [a1 invalidate];
+    [self invalidate];
   }
 }
 
@@ -29,7 +29,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"event deallocated with a completion"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -53,45 +53,45 @@
   self->_completion = 0;
 }
 
-- (uint64_t)coalesceEvent:(BOOL *)a3 skipped:
+- (uint64_t)coalesceEvent:(BOOL *)event skipped:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     if (!v5)
     {
       [_FBSScenesClientHostEvent coalesceEvent:? skipped:?];
     }
 
-    if (v5 == a1)
+    if (v5 == self)
     {
       [_FBSScenesClientHostEvent coalesceEvent:? skipped:?];
     }
 
-    if (!a3)
+    if (!event)
     {
       [_FBSScenesClientHostEvent coalesceEvent:? skipped:?];
     }
 
-    if ((*(a1 + 8) & 1) == 0)
+    if ((*(self + 8) & 1) == 0)
     {
       [_FBSScenesClientHostEvent coalesceEvent:? skipped:?];
     }
 
-    if (!*(a1 + 16))
+    if (!*(self + 16))
     {
       [_FBSScenesClientHostEvent coalesceEvent:? skipped:?];
     }
 
-    if ([*(a1 + 16) isEqual:*(v5 + 2)])
+    if ([*(self + 16) isEqual:*(v5 + 2)])
     {
       if (*(v5 + 8) == 1)
       {
-        v6 = [FBSSettingsDiff diffByApplyingDiff:*(v5 + 3) toDiff:*(a1 + 24)];
-        v7 = *(a1 + 24);
-        *(a1 + 24) = v6;
+        v6 = [FBSSettingsDiff diffByApplyingDiff:*(v5 + 3) toDiff:*(self + 24)];
+        v7 = *(self + 24);
+        *(self + 24) = v6;
 
-        v8 = MEMORY[0x1A58E80F0](*(a1 + 32));
+        v8 = MEMORY[0x1A58E80F0](*(self + 32));
         v9 = *(v5 + 4);
         v15 = MEMORY[0x1E69E9820];
         v16 = 3221225472;
@@ -102,35 +102,35 @@
         v10 = v9;
         v11 = v8;
         v12 = [&v15 copy];
-        v13 = *(a1 + 32);
-        *(a1 + 32) = v12;
+        v13 = *(self + 32);
+        *(self + 32) = v12;
 
         [v5 invalidate];
-        a1 = 1;
+        self = 1;
       }
 
       else
       {
-        a1 = 0;
+        self = 0;
       }
     }
 
     else
     {
-      a1 = 0;
-      *a3 = *(v5 + 2) != 0;
+      self = 0;
+      *event = *(v5 + 2) != 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)coalesceEvents:(uint64_t)a1
+- (id)coalesceEvents:(uint64_t)events
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1 && [v3 count])
+  if (events && [v3 count])
   {
     v16 = 0u;
     v17 = 0u;
@@ -154,7 +154,7 @@
 
           v11 = *(*(&v14 + 1) + 8 * i);
           v13 = 0;
-          if ([(_FBSScenesClientHostEvent *)a1 coalesceEvent:v11 skipped:&v13])
+          if ([(_FBSScenesClientHostEvent *)events coalesceEvent:v11 skipped:&v13])
           {
             if (!v8)
             {
@@ -192,19 +192,19 @@ LABEL_18:
   return v8;
 }
 
-- (void)setIdentity:(uint64_t)a1
+- (void)setIdentity:(uint64_t)identity
 {
-  if (a1)
+  if (identity)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((identity + 16), a2);
   }
 }
 
-- (void)setDiff:(uint64_t)a1
+- (void)setDiff:(uint64_t)diff
 {
-  if (a1)
+  if (diff)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((diff + 24), a2);
   }
 }
 

@@ -1,15 +1,15 @@
 @interface RDStagedLightweightCoreDataMigrationCoordinator
-+ (id)createCoordinatorForMigratingReminderDataWithClientNamesOfREMCDChangeTrackingStateWhichShouldNotBeResetUponPersistentHistoryTruncation:(id)a3;
-+ (id)stagedMigrationsInfoForPersistentStoreAt:(id)a3;
-- (BOOL)cloneStoreAtSourceStoreURL:(id)a3 destinationStoreURL:(id)a4 error:(id *)a5;
-- (BOOL)performStagedLightweightMigrationForStoreAtStoreURL:(id)a3 persistentStoreDescriptionOptionsOverride:(id)a4 postMigrationDataUpdatesTransactionAuthor:(id)a5 error:(id *)a6;
-- (BOOL)shouldPerformStagedLightweightMigrationForStoreAtStoreURL:(id)a3;
++ (id)createCoordinatorForMigratingReminderDataWithClientNamesOfREMCDChangeTrackingStateWhichShouldNotBeResetUponPersistentHistoryTruncation:(id)truncation;
++ (id)stagedMigrationsInfoForPersistentStoreAt:(id)at;
+- (BOOL)cloneStoreAtSourceStoreURL:(id)l destinationStoreURL:(id)rL error:(id *)error;
+- (BOOL)performStagedLightweightMigrationForStoreAtStoreURL:(id)l persistentStoreDescriptionOptionsOverride:(id)override postMigrationDataUpdatesTransactionAuthor:(id)author error:(id *)error;
+- (BOOL)shouldPerformStagedLightweightMigrationForStoreAtStoreURL:(id)l;
 - (_TtC7remindd47RDStagedLightweightCoreDataMigrationCoordinator)init;
 @end
 
 @implementation RDStagedLightweightCoreDataMigrationCoordinator
 
-- (BOOL)shouldPerformStagedLightweightMigrationForStoreAtStoreURL:(id)a3
+- (BOOL)shouldPerformStagedLightweightMigrationForStoreAtStoreURL:(id)l
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -17,14 +17,14 @@
   __chkstk_darwin(v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_1003D4994(v8);
 
   (*(v5 + 8))(v8, v4);
   return v10 & 1;
 }
 
-- (BOOL)performStagedLightweightMigrationForStoreAtStoreURL:(id)a3 persistentStoreDescriptionOptionsOverride:(id)a4 postMigrationDataUpdatesTransactionAuthor:(id)a5 error:(id *)a6
+- (BOOL)performStagedLightweightMigrationForStoreAtStoreURL:(id)l persistentStoreDescriptionOptionsOverride:(id)override postMigrationDataUpdatesTransactionAuthor:(id)author error:(id *)error
 {
   v9 = type metadata accessor for URL();
   v10 = *(v9 - 8);
@@ -32,15 +32,15 @@
   __chkstk_darwin(v9);
   v13 = &v18 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (override)
   {
     sub_1000060C8(0, &qword_100945FC0, NSObject_ptr);
-    a4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    override = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  if (a5)
+  if (author)
   {
-    a5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    author = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v15 = v14;
   }
 
@@ -49,14 +49,14 @@
     v15 = 0;
   }
 
-  v16 = self;
-  sub_1003D4FA8(v13, a4, a5, v15);
+  selfCopy = self;
+  sub_1003D4FA8(v13, override, author, v15);
   (*(v10 + 8))(v13, v9);
 
   return 1;
 }
 
-- (BOOL)cloneStoreAtSourceStoreURL:(id)a3 destinationStoreURL:(id)a4 error:(id *)a5
+- (BOOL)cloneStoreAtSourceStoreURL:(id)l destinationStoreURL:(id)rL error:(id *)error
 {
   v5 = type metadata accessor for URL();
   v6 = *(v5 - 8);
@@ -74,7 +74,7 @@
   return 1;
 }
 
-+ (id)stagedMigrationsInfoForPersistentStoreAt:(id)a3
++ (id)stagedMigrationsInfoForPersistentStoreAt:(id)at
 {
   v3 = type metadata accessor for URL();
   v4 = *(v3 - 8);
@@ -105,9 +105,9 @@
   return result;
 }
 
-+ (id)createCoordinatorForMigratingReminderDataWithClientNamesOfREMCDChangeTrackingStateWhichShouldNotBeResetUponPersistentHistoryTruncation:(id)a3
++ (id)createCoordinatorForMigratingReminderDataWithClientNamesOfREMCDChangeTrackingStateWhichShouldNotBeResetUponPersistentHistoryTruncation:(id)truncation
 {
-  if (a3)
+  if (truncation)
   {
     v3 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   }

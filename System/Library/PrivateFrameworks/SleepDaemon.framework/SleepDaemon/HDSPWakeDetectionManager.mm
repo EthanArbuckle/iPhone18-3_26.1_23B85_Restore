@@ -1,13 +1,13 @@
 @interface HDSPWakeDetectionManager
-+ (id)platformSpecificProviders:(id)a3;
++ (id)platformSpecificProviders:(id)providers;
 - (BOOL)isDetecting;
 - (BOOL)isWatch;
 - (BOOL)sleepFeaturesEnabled;
 - (BOOL)sleepModeIsOff;
 - (HDSPEnvironment)environment;
 - (HDSPSleepEventDelegate)sleepEventDelegate;
-- (HDSPWakeDetectionManager)initWithEnvironment:(id)a3;
-- (HDSPWakeDetectionManager)initWithEnvironment:(id)a3 wakeDetectorProviders:(id)a4;
+- (HDSPWakeDetectionManager)initWithEnvironment:(id)environment;
+- (HDSPWakeDetectionManager)initWithEnvironment:(id)environment wakeDetectorProviders:(id)providers;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (HKSPSleepScheduleOccurrence)relevantOccurrence;
 - (NSDate)currentDate;
@@ -15,55 +15,55 @@
 - (NSDate)upcomingStartDetection;
 - (NSString)providerIdentifier;
 - (id)_currentState;
-- (id)_detectionWindowForType:(unint64_t)a3 wakeUpDate:(id)a4 bedtimeDate:(id)a5;
-- (id)detectionWindowForType:(unint64_t)a3;
+- (id)_detectionWindowForType:(unint64_t)type wakeUpDate:(id)date bedtimeDate:(id)bedtimeDate;
+- (id)detectionWindowForType:(unint64_t)type;
 - (id)diagnosticDescription;
 - (id)eventIdentifiers;
-- (id)upcomingEventsDueAfterDate:(id)a3;
+- (id)upcomingEventsDueAfterDate:(id)date;
 - (unint64_t)activeTypes;
 - (unint64_t)sleepScheduleState;
-- (void)_simulateActivityDetectionOnDate:(id)a3;
+- (void)_simulateActivityDetectionOnDate:(id)date;
 - (void)earlyWakeUpWasNotifiedRemotely;
-- (void)environmentDidBecomeReady:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
-- (void)postWakeDetectionNotification:(unint64_t)a3;
+- (void)environmentDidBecomeReady:(id)ready;
+- (void)environmentWillBecomeReady:(id)ready;
+- (void)postWakeDetectionNotification:(unint64_t)notification;
 - (void)scheduleStateExpiration;
-- (void)significantTimeChangeDetected:(id)a3;
-- (void)sleepEventIsDue:(id)a3;
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4;
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5;
-- (void)startWakeDetection:(unint64_t)a3;
+- (void)significantTimeChangeDetected:(id)detected;
+- (void)sleepEventIsDue:(id)due;
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model;
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason;
+- (void)startWakeDetection:(unint64_t)detection;
 - (void)stopWakeDetection;
 - (void)unscheduleStateExpiration;
 - (void)updateState;
-- (void)wakeDetector:(id)a3 didDetectWakeUpEventOnDate:(id)a4;
+- (void)wakeDetector:(id)detector didDetectWakeUpEventOnDate:(id)date;
 @end
 
 @implementation HDSPWakeDetectionManager
 
-- (HDSPWakeDetectionManager)initWithEnvironment:(id)a3
+- (HDSPWakeDetectionManager)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = objc_opt_class();
-  v6 = [v4 behavior];
-  v7 = [v5 platformSpecificProviders:v6];
-  v8 = [(HDSPWakeDetectionManager *)self initWithEnvironment:v4 wakeDetectorProviders:v7];
+  behavior = [environmentCopy behavior];
+  v7 = [v5 platformSpecificProviders:behavior];
+  v8 = [(HDSPWakeDetectionManager *)self initWithEnvironment:environmentCopy wakeDetectorProviders:v7];
 
   return v8;
 }
 
-+ (id)platformSpecificProviders:(id)a3
++ (id)platformSpecificProviders:(id)providers
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
   v12[0] = &__block_literal_global_13;
   v12[1] = &__block_literal_global_295;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  providersCopy = providers;
   v6 = [v4 arrayWithObjects:v12 count:2];
   v7 = [v3 arrayWithArray:v6];
 
-  LODWORD(v6) = [v5 isAppleWatch];
+  LODWORD(v6) = [providersCopy isAppleWatch];
   if (v6)
   {
     v11[0] = &__block_literal_global_299_0;
@@ -120,27 +120,27 @@ HDSPActivityWakeDetector *__54__HDSPWakeDetectionManager_platformSpecificProvide
   return v5;
 }
 
-- (HDSPWakeDetectionManager)initWithEnvironment:(id)a3 wakeDetectorProviders:(id)a4
+- (HDSPWakeDetectionManager)initWithEnvironment:(id)environment wakeDetectorProviders:(id)providers
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  providersCopy = providers;
   v39.receiver = self;
   v39.super_class = HDSPWakeDetectionManager;
   v8 = [(HDSPWakeDetectionManager *)&v39 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_environment, v6);
+    objc_storeWeak(&v8->_environment, environmentCopy);
     v33 = MEMORY[0x277D85DD0];
     v34 = 3221225472;
     v35 = __70__HDSPWakeDetectionManager_initWithEnvironment_wakeDetectorProviders___block_invoke;
     v36 = &unk_279C7C498;
-    v10 = v6;
+    v10 = environmentCopy;
     v37 = v10;
     v11 = v9;
     v38 = v11;
-    v12 = [v7 na_map:&v33];
+    v12 = [providersCopy na_map:&v33];
     wakeDetectors = v11->_wakeDetectors;
     v11->_wakeDetectors = v12;
 
@@ -157,8 +157,8 @@ HDSPActivityWakeDetector *__54__HDSPWakeDetectionManager_platformSpecificProvide
       _os_log_impl(&dword_269B11000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] has wakeDetectors: %{public}@", buf, 0x16u);
     }
 
-    v18 = [v10 mutexGenerator];
-    v19 = v18[2]();
+    mutexGenerator = [v10 mutexGenerator];
+    v19 = mutexGenerator[2]();
     mutexProvider = v11->_mutexProvider;
     v11->_mutexProvider = v19;
 
@@ -166,10 +166,10 @@ HDSPActivityWakeDetector *__54__HDSPWakeDetectionManager_platformSpecificProvide
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
     v24 = objc_alloc(MEMORY[0x277D62558]);
-    v25 = [v10 userDefaults];
-    v26 = [v24 initWithUserDefaults:v25];
-    v27 = [v10 currentDateProvider];
-    v28 = [(HDSPWakeDetectionStateMachine *)v21 initWithIdentifier:v23 persistence:v26 delegate:v11 infoProvider:v11 currentDateProvider:v27];
+    userDefaults = [v10 userDefaults];
+    v26 = [v24 initWithUserDefaults:userDefaults];
+    currentDateProvider = [v10 currentDateProvider];
+    v28 = [(HDSPWakeDetectionStateMachine *)v21 initWithIdentifier:v23 persistence:v26 delegate:v11 infoProvider:v11 currentDateProvider:currentDateProvider];
     stateMachine = v11->_stateMachine;
     v11->_stateMachine = v28;
 
@@ -188,10 +188,10 @@ id __70__HDSPWakeDetectionManager_initWithEnvironment_wakeDetectorProviders___bl
   return v3;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -201,28 +201,28 @@ id __70__HDSPWakeDetectionManager_initWithEnvironment_wakeDetectorProviders___bl
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] environmentWillBecomeReady", &v14, 0xCu);
   }
 
-  v7 = [v4 sleepScheduleModelManager];
-  [v7 addObserver:self];
+  sleepScheduleModelManager = [readyCopy sleepScheduleModelManager];
+  [sleepScheduleModelManager addObserver:self];
 
-  v8 = [v4 sleepScheduler];
-  [v8 addEventHandler:self];
+  sleepScheduler = [readyCopy sleepScheduler];
+  [sleepScheduler addEventHandler:self];
 
-  v9 = [v4 sleepScheduler];
-  [v9 addEventProvider:self];
+  sleepScheduler2 = [readyCopy sleepScheduler];
+  [sleepScheduler2 addEventProvider:self];
 
-  v10 = [v4 sleepCoordinator];
-  [v10 addObserver:self];
+  sleepCoordinator = [readyCopy sleepCoordinator];
+  [sleepCoordinator addObserver:self];
 
-  v11 = [v4 timeChangeListener];
-  [v11 addObserver:self];
+  timeChangeListener = [readyCopy timeChangeListener];
+  [timeChangeListener addObserver:self];
 
-  v12 = [v4 diagnostics];
+  diagnostics = [readyCopy diagnostics];
 
-  [v12 addProvider:self];
+  [diagnostics addProvider:self];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentDidBecomeReady:(id)a3
+- (void)environmentDidBecomeReady:(id)ready
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -264,17 +264,17 @@ id __70__HDSPWakeDetectionManager_initWithEnvironment_wakeDetectorProviders___bl
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  modelCopy = model;
   v6 = HKSPLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
     v10 = objc_opt_class();
     v11 = 2114;
-    v12 = v5;
+    v12 = modelCopy;
     v7 = v10;
     _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] didUpdateSleepScheduleModel: %{public}@", &v9, 0x16u);
   }
@@ -283,7 +283,7 @@ id __70__HDSPWakeDetectionManager_initWithEnvironment_wakeDetectorProviders___bl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)significantTimeChangeDetected:(id)a3
+- (void)significantTimeChangeDetected:(id)detected
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -299,20 +299,20 @@ id __70__HDSPWakeDetectionManager_initWithEnvironment_wakeDetectorProviders___bl
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)wakeDetector:(id)a3 didDetectWakeUpEventOnDate:(id)a4
+- (void)wakeDetector:(id)detector didDetectWakeUpEventOnDate:(id)date
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  detectorCopy = detector;
+  dateCopy = date;
   v8 = HKSPLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     v17 = objc_opt_class();
     v18 = 2114;
-    v19 = v6;
+    v19 = detectorCopy;
     v20 = 2114;
-    v21 = v7;
+    v21 = dateCopy;
     v9 = v17;
     _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] wake up event was detected by %{public}@ at %{public}@", buf, 0x20u);
   }
@@ -322,10 +322,10 @@ id __70__HDSPWakeDetectionManager_initWithEnvironment_wakeDetectorProviders___bl
   v13[2] = __68__HDSPWakeDetectionManager_wakeDetector_didDetectWakeUpEventOnDate___block_invoke;
   v13[3] = &unk_279C7C050;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = detectorCopy;
+  v15 = dateCopy;
+  v10 = dateCopy;
+  v11 = detectorCopy;
   [(HDSPWakeDetectionManager *)self _withLock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -352,8 +352,8 @@ uint64_t __68__HDSPWakeDetectionManager_wakeDetector_didDetectWakeUpEventOnDate_
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] telling scheduler we have events to schedule", &v7, 0xCu);
   }
 
-  v5 = [(HDSPWakeDetectionManager *)self sleepEventDelegate];
-  [v5 eventProviderHasUpcomingEvents:self];
+  sleepEventDelegate = [(HDSPWakeDetectionManager *)self sleepEventDelegate];
+  [sleepEventDelegate eventProviderHasUpcomingEvents:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -370,13 +370,13 @@ uint64_t __68__HDSPWakeDetectionManager_wakeDetector_didDetectWakeUpEventOnDate_
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] telling scheduler we no longer have events to schedule", &v7, 0xCu);
   }
 
-  v5 = [(HDSPWakeDetectionManager *)self sleepEventDelegate];
-  [v5 eventProviderCancelledEvents:self];
+  sleepEventDelegate = [(HDSPWakeDetectionManager *)self sleepEventDelegate];
+  [sleepEventDelegate eventProviderCancelledEvents:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWakeDetection:(unint64_t)a3
+- (void)startWakeDetection:(unint64_t)detection
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -384,7 +384,7 @@ uint64_t __68__HDSPWakeDetectionManager_wakeDetector_didDetectWakeUpEventOnDate_
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = NSStringFromHDSPWakeDetectorTypes(a3);
+    v8 = NSStringFromHDSPWakeDetectorTypes(detection);
     *buf = 138543618;
     v14 = v6;
     v15 = 2114;
@@ -393,14 +393,14 @@ uint64_t __68__HDSPWakeDetectionManager_wakeDetector_didDetectWakeUpEventOnDate_
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v10 = [WeakRetained defaultCallbackScheduler];
+  defaultCallbackScheduler = [WeakRetained defaultCallbackScheduler];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __47__HDSPWakeDetectionManager_startWakeDetection___block_invoke;
   v12[3] = &unk_279C7B740;
   v12[4] = self;
-  v12[5] = a3;
-  [v10 performBlock:v12];
+  v12[5] = detection;
+  [defaultCallbackScheduler performBlock:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -447,18 +447,18 @@ BOOL __47__HDSPWakeDetectionManager_startWakeDetection___block_invoke_2(uint64_t
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained defaultCallbackScheduler];
+  defaultCallbackScheduler = [WeakRetained defaultCallbackScheduler];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__HDSPWakeDetectionManager_stopWakeDetection__block_invoke;
   v8[3] = &unk_279C7B108;
   v8[4] = self;
-  [v6 performBlock:v8];
+  [defaultCallbackScheduler performBlock:v8];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason
 {
   v11 = *MEMORY[0x277D85DE8];
   v6 = HKSPLogForCategory();
@@ -481,10 +481,10 @@ BOOL __47__HDSPWakeDetectionManager_startWakeDetection___block_invoke_2(uint64_t
   return NSStringFromClass(v2);
 }
 
-- (id)upcomingEventsDueAfterDate:(id)a3
+- (id)upcomingEventsDueAfterDate:(id)date
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -496,7 +496,7 @@ BOOL __47__HDSPWakeDetectionManager_startWakeDetection___block_invoke_2(uint64_t
   v13[2] = __55__HDSPWakeDetectionManager_upcomingEventsDueAfterDate___block_invoke;
   v13[3] = &unk_279C7B6C8;
   v13[4] = self;
-  v5 = v4;
+  v5 = dateCopy;
   v14 = v5;
   v15 = &v16;
   [(HDSPWakeDetectionManager *)self _withLock:v13];
@@ -544,12 +544,12 @@ void __55__HDSPWakeDetectionManager_upcomingEventsDueAfterDate___block_invoke(ui
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepEventIsDue:(id)a3
+- (void)sleepEventIsDue:(id)due
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D621B8]];
+  dueCopy = due;
+  identifier = [dueCopy identifier];
+  v6 = [identifier isEqualToString:*MEMORY[0x277D621B8]];
 
   v7 = HKSPLogForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -572,11 +572,11 @@ void __55__HDSPWakeDetectionManager_upcomingEventsDueAfterDate___block_invoke(ui
     {
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = [v4 identifier];
+      identifier2 = [dueCopy identifier];
       *buf = 138543618;
       v17 = v10;
       v18 = 2114;
-      v19 = v12;
+      v19 = identifier2;
       _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{public}@ expired", buf, 0x16u);
     }
 
@@ -585,7 +585,7 @@ void __55__HDSPWakeDetectionManager_upcomingEventsDueAfterDate___block_invoke(ui
     v14[2] = __44__HDSPWakeDetectionManager_sleepEventIsDue___block_invoke;
     v14[3] = &unk_279C7B2D0;
     v14[4] = self;
-    v15 = v4;
+    v15 = dueCopy;
     [(HDSPWakeDetectionManager *)self _withLock:v14];
   }
 
@@ -648,16 +648,16 @@ void __44__HDSPWakeDetectionManager_eventIdentifiers__block_invoke_2(uint64_t a1
   *(v3 + 40) = v2;
 }
 
-- (void)postWakeDetectionNotification:(unint64_t)a3
+- (void)postWakeDetectionNotification:(unint64_t)notification
 {
   v41 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v5 = [WeakRetained sleepModeManager];
-  v6 = [v5 sleepMode];
+  sleepModeManager = [WeakRetained sleepModeManager];
+  sleepMode = [sleepModeManager sleepMode];
 
-  v7 = [(HDSPWakeDetectionManager *)self relevantOccurrence];
-  v8 = [v7 alarmConfiguration];
-  v9 = [v8 isEnabled];
+  relevantOccurrence = [(HDSPWakeDetectionManager *)self relevantOccurrence];
+  alarmConfiguration = [relevantOccurrence alarmConfiguration];
+  isEnabled = [alarmConfiguration isEnabled];
 
   v10 = HKSPLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -665,18 +665,18 @@ void __44__HDSPWakeDetectionManager_eventIdentifiers__block_invoke_2(uint64_t a1
     *buf = 138544130;
     v34 = objc_opt_class();
     v35 = 1024;
-    v36 = ((v6 == 2) | v9 & 1) == 0;
+    v36 = ((sleepMode == 2) | isEnabled & 1) == 0;
     v37 = 1024;
-    v38 = v6 == 2;
+    v38 = sleepMode == 2;
     v39 = 1024;
-    v40 = v9 & 1;
+    v40 = isEnabled & 1;
     v11 = v34;
     _os_log_impl(&dword_269B11000, v10, OS_LOG_TYPE_INFO, "[%{public}@] canAutoConfirmAwake: %d (isSleepModeOn: %d, isAlarmEnabled: %d)", buf, 0x1Eu);
   }
 
   v12 = HKSPLogForCategory();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if ((v6 == 2) | v9 & 1)
+  if ((sleepMode == 2) | isEnabled & 1)
   {
     if (v13)
     {
@@ -687,25 +687,25 @@ void __44__HDSPWakeDetectionManager_eventIdentifiers__block_invoke_2(uint64_t a1
       _os_log_impl(&dword_269B11000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] posting wake detection notification", buf, 0xCu);
     }
 
-    v16 = v6 == 2;
+    v16 = sleepMode == 2;
 
     v17 = MEMORY[0x277D624D0];
     v18 = *MEMORY[0x277D621D8];
-    v19 = [(HDSPWakeDetectionManager *)self currentDate];
+    currentDate = [(HDSPWakeDetectionManager *)self currentDate];
     v31[0] = *MEMORY[0x277D62340];
     v20 = [MEMORY[0x277CCABB0] numberWithBool:v16];
     v32[0] = v20;
     v31[1] = *MEMORY[0x277D62338];
-    v21 = [MEMORY[0x277CCABB0] numberWithBool:v9 & 1];
+    v21 = [MEMORY[0x277CCABB0] numberWithBool:isEnabled & 1];
     v32[1] = v21;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
-    v23 = [v17 sleepEventWithIdentifier:v18 dueDate:v19 context:v22];
+    v23 = [v17 sleepEventWithIdentifier:v18 dueDate:currentDate context:v22];
 
-    v24 = objc_loadWeakRetained(&self->_environment);
-    v25 = [v24 sleepScheduler];
+    actionManager = objc_loadWeakRetained(&self->_environment);
+    sleepScheduler = [actionManager sleepScheduler];
     v30 = v23;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
-    [v25 notifyForOverdueEvents:v26];
+    [sleepScheduler notifyForOverdueEvents:v26];
   }
 
   else
@@ -720,8 +720,8 @@ void __44__HDSPWakeDetectionManager_eventIdentifiers__block_invoke_2(uint64_t a1
     }
 
     v23 = objc_loadWeakRetained(&self->_environment);
-    v24 = [v23 actionManager];
-    [v24 confirmWakeUp:0];
+    actionManager = [v23 actionManager];
+    [actionManager confirmWakeUp:0];
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -751,8 +751,8 @@ void __44__HDSPWakeDetectionManager_eventIdentifiers__block_invoke_2(uint64_t a1
 - (NSDate)currentDate
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained currentDateProvider];
-  v4 = v3[2]();
+  currentDateProvider = [WeakRetained currentDateProvider];
+  v4 = currentDateProvider[2]();
 
   return v4;
 }
@@ -760,35 +760,35 @@ void __44__HDSPWakeDetectionManager_eventIdentifiers__block_invoke_2(uint64_t a1
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepScheduleModelManager];
-  v4 = [v3 sleepScheduleModel];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepScheduleModel = [sleepScheduleModelManager sleepScheduleModel];
 
-  return v4;
+  return sleepScheduleModel;
 }
 
 - (BOOL)sleepFeaturesEnabled
 {
-  v2 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
-  v3 = [v2 sleepSettings];
-  v4 = [v3 watchSleepFeaturesEnabled];
+  sleepScheduleModel = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
+  sleepSettings = [sleepScheduleModel sleepSettings];
+  watchSleepFeaturesEnabled = [sleepSettings watchSleepFeaturesEnabled];
 
-  return v4;
+  return watchSleepFeaturesEnabled;
 }
 
 - (unint64_t)sleepScheduleState
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepCoordinator];
-  v4 = [v3 currentSleepScheduleState];
+  sleepCoordinator = [WeakRetained sleepCoordinator];
+  currentSleepScheduleState = [sleepCoordinator currentSleepScheduleState];
 
-  return v4;
+  return currentSleepScheduleState;
 }
 
 - (HKSPSleepScheduleOccurrence)relevantOccurrence
 {
-  v3 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
-  v4 = [(HDSPWakeDetectionManager *)self currentDate];
-  v5 = [v3 nextOccurrenceAfterDate:v4];
+  sleepScheduleModel = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
+  currentDate = [(HDSPWakeDetectionManager *)self currentDate];
+  v5 = [sleepScheduleModel nextOccurrenceAfterDate:currentDate];
 
   return v5;
 }
@@ -796,8 +796,8 @@ void __44__HDSPWakeDetectionManager_eventIdentifiers__block_invoke_2(uint64_t a1
 - (BOOL)sleepModeIsOff
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepModeManager];
-  v4 = [v3 sleepMode] == 0;
+  sleepModeManager = [WeakRetained sleepModeManager];
+  v4 = [sleepModeManager sleepMode] == 0;
 
   return v4;
 }
@@ -805,36 +805,36 @@ void __44__HDSPWakeDetectionManager_eventIdentifiers__block_invoke_2(uint64_t a1
 - (BOOL)isWatch
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained behavior];
-  v4 = [v3 isAppleWatch];
+  behavior = [WeakRetained behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  return v4;
+  return isAppleWatch;
 }
 
 - (unint64_t)activeTypes
 {
-  v3 = [(HDSPWakeDetectionManager *)self currentDate];
-  v4 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
-  v5 = [v4 nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:v3];
+  currentDate = [(HDSPWakeDetectionManager *)self currentDate];
+  sleepScheduleModel = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
+  v5 = [sleepScheduleModel nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:currentDate];
 
   if (v5)
   {
-    v6 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
-    v7 = [v6 nextEventWithIdentifier:*MEMORY[0x277D621B8] dueAfterDate:v3];
+    sleepScheduleModel2 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
+    v7 = [sleepScheduleModel2 nextEventWithIdentifier:*MEMORY[0x277D621B8] dueAfterDate:currentDate];
 
     v8 = 2;
     v9 = [(HDSPWakeDetectionManager *)self _detectionWindowForType:2 wakeUpDate:v5 bedtimeDate:v7];
-    v10 = [v9 startDate];
+    startDate = [v9 startDate];
 
-    if (![v3 hksp_isAfterOrSameAsDate:v10])
+    if (![currentDate hksp_isAfterOrSameAsDate:startDate])
     {
       v8 = 0;
     }
 
     v11 = [(HDSPWakeDetectionManager *)self _detectionWindowForType:1 wakeUpDate:v5 bedtimeDate:v7];
-    v12 = [v11 startDate];
+    startDate2 = [v11 startDate];
 
-    v13 = v8 | [v3 hksp_isAfterOrSameAsDate:v12];
+    v13 = v8 | [currentDate hksp_isAfterOrSameAsDate:startDate2];
   }
 
   else
@@ -847,31 +847,31 @@ void __44__HDSPWakeDetectionManager_eventIdentifiers__block_invoke_2(uint64_t a1
 
 - (NSDate)upcomingStartDetection
 {
-  v3 = [(HDSPWakeDetectionManager *)self currentDate];
-  v4 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
-  v5 = [v4 nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:v3];
+  currentDate = [(HDSPWakeDetectionManager *)self currentDate];
+  sleepScheduleModel = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
+  v5 = [sleepScheduleModel nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:currentDate];
 
   if (v5)
   {
-    v6 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
-    v7 = [v6 nextEventWithIdentifier:*MEMORY[0x277D621B8] dueAfterDate:v3];
+    sleepScheduleModel2 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
+    v7 = [sleepScheduleModel2 nextEventWithIdentifier:*MEMORY[0x277D621B8] dueAfterDate:currentDate];
 
     v8 = [(HDSPWakeDetectionManager *)self _detectionWindowForType:2 wakeUpDate:v5 bedtimeDate:v7];
-    v9 = [v8 startDate];
+    startDate = [v8 startDate];
 
-    if ([v3 hksp_isBeforeDate:v9])
+    if ([currentDate hksp_isBeforeDate:startDate])
     {
-      v10 = v9;
+      v10 = startDate;
     }
 
     else
     {
       v11 = [(HDSPWakeDetectionManager *)self _detectionWindowForType:1 wakeUpDate:v5 bedtimeDate:v7];
-      v12 = [v11 startDate];
+      startDate2 = [v11 startDate];
 
-      if ([v3 hksp_isBeforeDate:v12])
+      if ([currentDate hksp_isBeforeDate:startDate2])
       {
-        v10 = v12;
+        v10 = startDate2;
       }
 
       else
@@ -889,18 +889,18 @@ void __44__HDSPWakeDetectionManager_eventIdentifiers__block_invoke_2(uint64_t a1
   return v10;
 }
 
-- (id)detectionWindowForType:(unint64_t)a3
+- (id)detectionWindowForType:(unint64_t)type
 {
-  v5 = [(HDSPWakeDetectionManager *)self currentDate];
-  v6 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
-  v7 = [v6 nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:v5];
+  currentDate = [(HDSPWakeDetectionManager *)self currentDate];
+  sleepScheduleModel = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
+  v7 = [sleepScheduleModel nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:currentDate];
 
   if (v7)
   {
-    v8 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
-    v9 = [v8 nextEventWithIdentifier:*MEMORY[0x277D621B8] dueAfterDate:v5];
+    sleepScheduleModel2 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
+    v9 = [sleepScheduleModel2 nextEventWithIdentifier:*MEMORY[0x277D621B8] dueAfterDate:currentDate];
 
-    v10 = [(HDSPWakeDetectionManager *)self _detectionWindowForType:a3 wakeUpDate:v7 bedtimeDate:v9];
+    v10 = [(HDSPWakeDetectionManager *)self _detectionWindowForType:type wakeUpDate:v7 bedtimeDate:v9];
   }
 
   else
@@ -911,42 +911,42 @@ void __44__HDSPWakeDetectionManager_eventIdentifiers__block_invoke_2(uint64_t a1
   return v10;
 }
 
-- (id)_detectionWindowForType:(unint64_t)a3 wakeUpDate:(id)a4 bedtimeDate:(id)a5
+- (id)_detectionWindowForType:(unint64_t)type wakeUpDate:(id)date bedtimeDate:(id)bedtimeDate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 hksp_isAfterDate:v7];
+  typeCopy = type;
+  dateCopy = date;
+  bedtimeDateCopy = bedtimeDate;
+  v9 = [bedtimeDateCopy hksp_isAfterDate:dateCopy];
   v10 = -10800.0;
-  if ((v6 & 2) == 0)
+  if ((typeCopy & 2) == 0)
   {
     v10 = -0.0;
   }
 
-  if (v6)
+  if (typeCopy)
   {
     v10 = -1800.0;
   }
 
-  v11 = [v7 dateByAddingTimeInterval:v10];
+  v11 = [dateCopy dateByAddingTimeInterval:v10];
   v12 = v11;
   if ((v9 & 1) == 0)
   {
-    v13 = [v11 laterDate:v8];
+    v13 = [v11 laterDate:bedtimeDateCopy];
 
     v12 = v13;
   }
 
-  v14 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v12 endDate:v7];
+  v14 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v12 endDate:dateCopy];
 
   return v14;
 }
 
 - (NSDate)nextWakeUp
 {
-  v3 = [(HDSPWakeDetectionManager *)self currentDate];
-  v4 = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
-  v5 = [v4 nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:v3];
+  currentDate = [(HDSPWakeDetectionManager *)self currentDate];
+  sleepScheduleModel = [(HDSPWakeDetectionManager *)self sleepScheduleModel];
+  v5 = [sleepScheduleModel nextEventWithIdentifier:*MEMORY[0x277D621E0] dueAfterDate:currentDate];
 
   return v5;
 }
@@ -1010,8 +1010,8 @@ uint64_t __41__HDSPWakeDetectionManager__currentState__block_invoke(uint64_t a1)
 - (id)diagnosticDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HDSPWakeDetectionManager *)self _currentState];
-  v4 = [v2 stringWithFormat:@"Current State: %@", v3];
+  _currentState = [(HDSPWakeDetectionManager *)self _currentState];
+  v4 = [v2 stringWithFormat:@"Current State: %@", _currentState];
 
   return v4;
 }
@@ -1030,17 +1030,17 @@ uint64_t __41__HDSPWakeDetectionManager__currentState__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)_simulateActivityDetectionOnDate:(id)a3
+- (void)_simulateActivityDetectionOnDate:(id)date
 {
-  v8 = a3;
-  v4 = [(HDSPWakeDetectionManager *)self wakeDetectors];
-  v5 = [v4 count];
+  dateCopy = date;
+  wakeDetectors = [(HDSPWakeDetectionManager *)self wakeDetectors];
+  v5 = [wakeDetectors count];
 
   if (v5)
   {
-    v6 = [(HDSPWakeDetectionManager *)self wakeDetectors];
-    v7 = [v6 firstObject];
-    [(HDSPWakeDetectionManager *)self wakeDetector:v7 didDetectWakeUpEventOnDate:v8];
+    wakeDetectors2 = [(HDSPWakeDetectionManager *)self wakeDetectors];
+    firstObject = [wakeDetectors2 firstObject];
+    [(HDSPWakeDetectionManager *)self wakeDetector:firstObject didDetectWakeUpEventOnDate:dateCopy];
   }
 }
 

@@ -1,11 +1,11 @@
 @interface WFCurrencyAmountContentItem
 + (id)coercions;
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 + (id)propertyBuilders;
-- (BOOL)getListSubtitle:(id)a3;
+- (BOOL)getListSubtitle:(id)subtitle;
 - (INCurrencyAmount)currencyAmount;
 @end
 
@@ -60,20 +60,20 @@ id __52__WFCurrencyAmountContentItem_stringCoercionHandler__block_invoke(uint64_
   return v7;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Currency Amounts", @"Currency Amounts");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Currency Amount", @"Currency Amount");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -91,20 +91,20 @@ id __52__WFCurrencyAmountContentItem_stringCoercionHandler__block_invoke(uint64_
 {
   v17[4] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
-  v4 = [a1 stringCoercionHandler];
-  v5 = [WFCoercion coercionToClass:v3 handler:v4];
+  stringCoercionHandler = [self stringCoercionHandler];
+  v5 = [WFCoercion coercionToClass:v3 handler:stringCoercionHandler];
   v17[0] = v5;
   v6 = objc_opt_class();
-  v7 = [a1 numberCoercionHandler];
-  v8 = [WFCoercion coercionToClass:v6 handler:v7];
+  numberCoercionHandler = [self numberCoercionHandler];
+  v8 = [WFCoercion coercionToClass:v6 handler:numberCoercionHandler];
   v17[1] = v8;
   v9 = objc_opt_class();
-  v10 = [a1 decimalNumberCoercionHandler];
-  v11 = [WFCoercion coercionToClass:v9 handler:v10];
+  decimalNumberCoercionHandler = [self decimalNumberCoercionHandler];
+  v11 = [WFCoercion coercionToClass:v9 handler:decimalNumberCoercionHandler];
   v17[2] = v11;
   v12 = objc_opt_class();
-  v13 = [a1 quantityCoercionHandler];
-  v14 = [WFCoercion coercionToClass:v12 handler:v13];
+  quantityCoercionHandler = [self quantityCoercionHandler];
+  v14 = [WFCoercion coercionToClass:v12 handler:quantityCoercionHandler];
   v17[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
 
@@ -134,20 +134,20 @@ id __52__WFCurrencyAmountContentItem_stringCoercionHandler__block_invoke(uint64_
   return v6;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
-    v4 = a3;
-    v5 = [(WFCurrencyAmountContentItem *)self currencyAmount];
+    subtitleCopy = subtitle;
+    currencyAmount = [(WFCurrencyAmountContentItem *)self currencyAmount];
     v6 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v6 setNumberStyle:2];
-    v7 = [v5 currencyCode];
-    [v6 setCurrencyCode:v7];
+    currencyCode = [currencyAmount currencyCode];
+    [v6 setCurrencyCode:currencyCode];
 
-    v8 = [v5 amount];
-    v9 = [v6 stringFromNumber:v8];
-    v4[2](v4, v9);
+    amount = [currencyAmount amount];
+    v9 = [v6 stringFromNumber:amount];
+    subtitleCopy[2](subtitleCopy, v9);
   }
 
   return 1;

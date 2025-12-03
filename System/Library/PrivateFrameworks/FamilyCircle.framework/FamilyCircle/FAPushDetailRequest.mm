@@ -8,17 +8,17 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 getFamilyPushDetailsURL];
+  getFamilyPushDetailsURL = [v2 getFamilyPushDetailsURL];
 
-  return v3;
+  return getFamilyPushDetailsURL;
 }
 
 - (id)urlRequest
 {
   v11.receiver = self;
   v11.super_class = FAPushDetailRequest;
-  v3 = [(FAPushDetailRequest *)&v11 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(FAPushDetailRequest *)&v11 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
   v5 = [(NSDictionary *)self->_pushPayload mutableCopy];

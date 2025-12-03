@@ -1,8 +1,8 @@
 @interface OSASymbolInfo
-- (OSASymbolInfo)initWithAddress:(unint64_t)a3 size:(unint64_t)a4 for:(unsigned __int8)a5[16];
-- (OSASymbolInfo)initWithSharedCache:(unsigned __int8)a3[16] atBaseAddress:(unint64_t)a4;
+- (OSASymbolInfo)initWithAddress:(unint64_t)address size:(unint64_t)size for:(unsigned __int8)for[16];
+- (OSASymbolInfo)initWithSharedCache:(unsigned __int8)cache[16] atBaseAddress:(unint64_t)address;
 - (id)get_uuid;
-- (void)setPath:(id)a3;
+- (void)setPath:(id)path;
 @end
 
 @implementation OSASymbolInfo
@@ -18,26 +18,26 @@
   return v2;
 }
 
-- (OSASymbolInfo)initWithAddress:(unint64_t)a3 size:(unint64_t)a4 for:(unsigned __int8)a5[16]
+- (OSASymbolInfo)initWithAddress:(unint64_t)address size:(unint64_t)size for:(unsigned __int8)for[16]
 {
   v9.receiver = self;
   v9.super_class = OSASymbolInfo;
   result = [(OSASymbolInfo *)&v9 init];
   if (result)
   {
-    if (a5)
+    if (for)
     {
-      *result->_uuid = *a5;
+      *result->_uuid = *for;
     }
 
-    result->_start = a3;
-    result->_size = a4;
+    result->_start = address;
+    result->_size = size;
   }
 
   return result;
 }
 
-- (OSASymbolInfo)initWithSharedCache:(unsigned __int8)a3[16] atBaseAddress:(unint64_t)a4
+- (OSASymbolInfo)initWithSharedCache:(unsigned __int8)cache[16] atBaseAddress:(unint64_t)address
 {
   v20.receiver = self;
   v20.super_class = OSASymbolInfo;
@@ -45,7 +45,7 @@
   v7 = v6;
   if (v6)
   {
-    *(v6 + 8) = *a3;
+    *(v6 + 8) = *cache;
     v16 = 0;
     v17 = &v16;
     v18 = 0x2020000000;
@@ -54,7 +54,7 @@
     v14[1] = v14;
     v14[2] = 0x2020000000;
     v15 = 0;
-    *(v6 + 5) = a4;
+    *(v6 + 5) = address;
     v8 = v6;
     dyld_shared_cache_iterate_text();
     v9 = v17[3];
@@ -96,11 +96,11 @@ void *__51__OSASymbolInfo_initWithSharedCache_atBaseAddress___block_invoke(void 
   return result;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  objc_storeStrong(&self->_path, a3);
-  v5 = a3;
-  v6 = [OSABinaryImageCatalog isApplePath:v5 orBundle:0];
+  objc_storeStrong(&self->_path, path);
+  pathCopy = path;
+  v6 = [OSABinaryImageCatalog isApplePath:pathCopy orBundle:0];
 
   self->_isAppleCode = v6;
 }

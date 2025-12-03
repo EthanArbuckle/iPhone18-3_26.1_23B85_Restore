@@ -1,20 +1,20 @@
 @interface MSUiBootHeader
-- (MSUiBootHeader)initWithIOServiceWriter:(id)a3;
-- (int64_t)compareTo:(id)a3;
+- (MSUiBootHeader)initWithIOServiceWriter:(id)writer;
+- (int64_t)compareTo:(id)to;
 - (void)bumpGeneration;
 - (void)dealloc;
 @end
 
 @implementation MSUiBootHeader
 
-- (MSUiBootHeader)initWithIOServiceWriter:(id)a3
+- (MSUiBootHeader)initWithIOServiceWriter:(id)writer
 {
   v6.receiver = self;
   v6.super_class = MSUiBootHeader;
   v4 = [(MSUiBootHeader *)&v6 init];
   if (v4)
   {
-    v4->_serviceWriter = a3;
+    v4->_serviceWriter = writer;
   }
 
   return v4;
@@ -35,16 +35,16 @@
   [(MSUiBootHeader *)self setHeaderGeneration:v3];
 }
 
-- (int64_t)compareTo:(id)a3
+- (int64_t)compareTo:(id)to
 {
-  v5 = [(MSUiBootHeader *)self headerGeneration];
-  if (v5 < [a3 headerGeneration])
+  headerGeneration = [(MSUiBootHeader *)self headerGeneration];
+  if (headerGeneration < [to headerGeneration])
   {
     return -1;
   }
 
-  v7 = [(MSUiBootHeader *)self headerGeneration];
-  if (v7 > [a3 headerGeneration])
+  headerGeneration2 = [(MSUiBootHeader *)self headerGeneration];
+  if (headerGeneration2 > [to headerGeneration])
   {
     return 1;
   }

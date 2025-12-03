@@ -1,27 +1,27 @@
 @interface CCToolKitToolAssistantSchemaIdentifier
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolAssistantSchemaIdentifier)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolAssistantSchemaIdentifier)initWithKind:(id)a3 version:(id)a4 domain:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolAssistantSchemaIdentifier)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolAssistantSchemaIdentifier)initWithKind:(id)kind version:(id)version domain:(id)domain error:(id *)error;
 - (CCToolKitToolAssistantSchemaVersion)version;
 - (NSString)domain;
 - (NSString)kind;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolAssistantSchemaIdentifier
 
-- (CCToolKitToolAssistantSchemaIdentifier)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolAssistantSchemaIdentifier)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v17[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"kind"];
-    v10 = [v6 objectForKeyedSubscript:@"version"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     if (v10)
     {
       v11 = v10;
@@ -43,8 +43,8 @@
       v12 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"domain"];
-    v15 = [[CCToolKitToolAssistantSchemaIdentifier alloc] initWithKind:v9 version:v12 domain:v14 error:a4];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
+    v15 = [[CCToolKitToolAssistantSchemaIdentifier alloc] initWithKind:v9 version:v12 domain:v14 error:error];
     v11 = v12;
 LABEL_10:
 
@@ -63,21 +63,21 @@ LABEL_11:
   v3 = objc_opt_new();
   if (self->_kind)
   {
-    v4 = [(CCToolKitToolAssistantSchemaIdentifier *)self kind];
-    [v3 setObject:v4 forKeyedSubscript:@"kind"];
+    kind = [(CCToolKitToolAssistantSchemaIdentifier *)self kind];
+    [v3 setObject:kind forKeyedSubscript:@"kind"];
   }
 
   if (self->_version)
   {
-    v5 = [(CCToolKitToolAssistantSchemaIdentifier *)self version];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"version"];
+    version = [(CCToolKitToolAssistantSchemaIdentifier *)self version];
+    jsonDictionary = [version jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"version"];
   }
 
   if (self->_domain)
   {
-    v7 = [(CCToolKitToolAssistantSchemaIdentifier *)self domain];
-    [v3 setObject:v7 forKeyedSubscript:@"domain"];
+    domain = [(CCToolKitToolAssistantSchemaIdentifier *)self domain];
+    [v3 setObject:domain forKeyedSubscript:@"domain"];
   }
 
   v8 = [v3 copy];
@@ -85,11 +85,11 @@ LABEL_11:
   return v8;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v11 = v5;
+  v11 = blockCopy;
   if (self->_kind)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_kind];
@@ -133,10 +133,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -302,13 +302,13 @@ LABEL_40:
   return v36;
 }
 
-- (CCToolKitToolAssistantSchemaIdentifier)initWithKind:(id)a3 version:(id)a4 domain:(id)a5 error:(id *)a6
+- (CCToolKitToolAssistantSchemaIdentifier)initWithKind:(id)kind version:(id)version domain:(id)domain error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  kindCopy = kind;
+  versionCopy = version;
+  domainCopy = domain;
   v13 = objc_opt_new();
-  if (v10)
+  if (kindCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -319,11 +319,11 @@ LABEL_40:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!versionCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (domainCopy)
       {
         goto LABEL_5;
       }
@@ -337,7 +337,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!versionCopy)
     {
       goto LABEL_4;
     }
@@ -350,15 +350,15 @@ LABEL_11:
   if (!v19)
   {
     CCSetError();
-    v18 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
-  v20 = [v11 data];
+  data = [versionCopy data];
   CCPBDataWriterWriteDataField();
 
-  if (!v12)
+  if (!domainCopy)
   {
     goto LABEL_11;
   }
@@ -372,19 +372,19 @@ LABEL_5:
   {
     CCPBDataWriterWriteStringField();
 LABEL_12:
-    v21 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v21 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v18 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v18 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v18;
+  return selfCopy;
 }
 
 @end

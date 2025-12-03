@@ -1,14 +1,14 @@
 @interface TTRIQuickBarPopoverContentViewController
-- (_TtC15RemindersUICore40TTRIQuickBarPopoverContentViewController)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore40TTRIQuickBarPopoverContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15RemindersUICore40TTRIQuickBarPopoverContentViewController)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore40TTRIQuickBarPopoverContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation TTRIQuickBarPopoverContentViewController
 
-- (_TtC15RemindersUICore40TTRIQuickBarPopoverContentViewController)initWithCoder:(id)a3
+- (_TtC15RemindersUICore40TTRIQuickBarPopoverContentViewController)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC15RemindersUICore40TTRIQuickBarPopoverContentViewController_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -24,29 +24,29 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D49D0E0();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D49D4B0();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(TTRIQuickBarPopoverContentViewController *)&v6 viewDidAppear:v3];
-  LODWORD(v3) = *MEMORY[0x277D764D8];
-  v5 = [v4 view];
-  UIAccessibilityPostNotification(v3, v5);
+  [(TTRIQuickBarPopoverContentViewController *)&v6 viewDidAppear:appearCopy];
+  LODWORD(appearCopy) = *MEMORY[0x277D764D8];
+  view = [v4 view];
+  UIAccessibilityPostNotification(appearCopy, view);
 }
 
-- (_TtC15RemindersUICore40TTRIQuickBarPopoverContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15RemindersUICore40TTRIQuickBarPopoverContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

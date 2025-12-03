@@ -5,17 +5,17 @@
 - (SFAirDropDiscoveryController)init;
 - (SFAirDropDiscoveryControllerDelegate)delegate;
 - (id)discoverableModeAlertController;
-- (id)discoverableModeToString:(int64_t)a3;
-- (int64_t)operationDiscoverableModeToInteger:(id)a3;
+- (id)discoverableModeToString:(int64_t)string;
+- (int64_t)operationDiscoverableModeToInteger:(id)integer;
 - (void)dealloc;
-- (void)didChangeRadioState:(BOOL)a3;
-- (void)handleOperationCallback:(__SFOperation *)a3 event:(int64_t)a4 withResults:(id)a5;
+- (void)didChangeRadioState:(BOOL)state;
+- (void)handleOperationCallback:(__SFOperation *)callback event:(int64_t)event withResults:(id)results;
 - (void)invalidate;
 - (void)isNearbySharingSupported;
-- (void)setCellularUsageEnabled:(BOOL)a3;
-- (void)setDiscoverableMode:(int64_t)a3;
-- (void)setLegacyModeEnabled:(BOOL)a3;
-- (void)setNearbySharingEnabled:(BOOL)a3;
+- (void)setCellularUsageEnabled:(BOOL)enabled;
+- (void)setDiscoverableMode:(int64_t)mode;
+- (void)setLegacyModeEnabled:(BOOL)enabled;
+- (void)setNearbySharingEnabled:(BOOL)enabled;
 - (void)startNFCMonitoring;
 - (void)updateAlertControllerTitle;
 @end
@@ -41,8 +41,8 @@
 
   [(SFWirelessSettingsController *)self->_settingsController setDelegate:0];
   [(SFWirelessSettingsController *)self->_settingsController invalidate];
-  v3 = [(objc_class *)getNFHardwareManagerClass() sharedHardwareManagerWithNoUI];
-  [v3 unregisterEventListener:self];
+  sharedHardwareManagerWithNoUI = [(objc_class *)getNFHardwareManagerClass() sharedHardwareManagerWithNoUI];
+  [sharedHardwareManagerWithNoUI unregisterEventListener:self];
 }
 
 - (SFAirDropDiscoveryController)init
@@ -76,12 +76,12 @@
   return v3;
 }
 
-- (void)handleOperationCallback:(__SFOperation *)a3 event:(int64_t)a4 withResults:(id)a5
+- (void)handleOperationCallback:(__SFOperation *)callback event:(int64_t)event withResults:(id)results
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = v7;
-  if (a4 == 10)
+  resultsCopy = results;
+  v8 = resultsCopy;
+  if (event == 10)
   {
     v12 = airdrop_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -90,9 +90,9 @@
     }
   }
 
-  else if (a4 == 12)
+  else if (event == 12)
   {
-    v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69CDFA8]];
+    v9 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E69CDFA8]];
     self->_isLegacyDevice = [v9 BOOLValue];
 
     v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69CDFB0]];
@@ -148,23 +148,23 @@
     v12 = airdrop_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [SFAirDropDiscoveryController handleOperationCallback:a4 event:v8 withResults:v12];
+      [SFAirDropDiscoveryController handleOperationCallback:event event:v8 withResults:v12];
     }
   }
 }
 
-- (void)setLegacyModeEnabled:(BOOL)a3
+- (void)setLegacyModeEnabled:(BOOL)enabled
 {
-  if (self->_isLegacyModeEnabled != a3)
+  if (self->_isLegacyModeEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v4 = airdrop_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      [(SFAirDropDiscoveryController *)v3 setLegacyModeEnabled:v4];
+      [(SFAirDropDiscoveryController *)enabledCopy setLegacyModeEnabled:v4];
     }
 
-    [MEMORY[0x1E696AD98] numberWithBool:v3];
+    [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
     SFOperationSetProperty();
   }
 }
@@ -189,9 +189,9 @@ uint64_t __47__SFAirDropDiscoveryController_isStoreDemoMode__block_invoke()
 
 - (BOOL)isNearbySharingSupported
 {
-  v3 = [(objc_class *)getNFHardwareManagerClass() sharedHardwareManagerWithNoUI];
+  sharedHardwareManagerWithNoUI = [(objc_class *)getNFHardwareManagerClass() sharedHardwareManagerWithNoUI];
   v14 = 0;
-  v4 = [v3 areFeaturesSupported:1 outError:&v14];
+  v4 = [sharedHardwareManagerWithNoUI areFeaturesSupported:1 outError:&v14];
   v5 = v14;
 
   if (v5)
@@ -213,8 +213,8 @@ LABEL_10:
   }
 
   v13 = 0;
-  v7 = [(objc_class *)getNFHardwareManagerClass() sharedHardwareManagerWithNoUI];
-  v8 = [v7 getRadioEnabledState:&v13];
+  sharedHardwareManagerWithNoUI2 = [(objc_class *)getNFHardwareManagerClass() sharedHardwareManagerWithNoUI];
+  v8 = [sharedHardwareManagerWithNoUI2 getRadioEnabledState:&v13];
 
   if (v8)
   {
@@ -248,46 +248,46 @@ LABEL_11:
   return v10;
 }
 
-- (void)setNearbySharingEnabled:(BOOL)a3
+- (void)setNearbySharingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6 = *MEMORY[0x1E69E9840];
-  if ([MEMORY[0x1E69CDE08] nearFieldSharingEnabled] != a3)
+  if ([MEMORY[0x1E69CDE08] nearFieldSharingEnabled] != enabled)
   {
     v4 = airdrop_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5[0] = 67109120;
-      v5[1] = v3;
+      v5[1] = enabledCopy;
       _os_log_impl(&dword_1B9E4B000, v4, OS_LOG_TYPE_DEFAULT, "Changing nearby sharing enabled to %d", v5, 8u);
     }
 
-    [MEMORY[0x1E69CDE08] setNearFieldSharingEnabled:v3];
+    [MEMORY[0x1E69CDE08] setNearFieldSharingEnabled:enabledCopy];
     notify_post([*MEMORY[0x1E69CDF28] UTF8String]);
   }
 }
 
 - (void)startNFCMonitoring
 {
-  v3 = [(objc_class *)getNFHardwareManagerClass() sharedHardwareManagerWithNoUI];
-  [v3 registerEventListener:self];
+  sharedHardwareManagerWithNoUI = [(objc_class *)getNFHardwareManagerClass() sharedHardwareManagerWithNoUI];
+  [sharedHardwareManagerWithNoUI registerEventListener:self];
 }
 
-- (void)setCellularUsageEnabled:(BOOL)a3
+- (void)setCellularUsageEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6 = *MEMORY[0x1E69E9840];
-  if ([MEMORY[0x1E69CDE08] cellularUsageEnabled] != a3)
+  if ([MEMORY[0x1E69CDE08] cellularUsageEnabled] != enabled)
   {
     v4 = airdrop_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5[0] = 67109120;
-      v5[1] = v3;
+      v5[1] = enabledCopy;
       _os_log_impl(&dword_1B9E4B000, v4, OS_LOG_TYPE_DEFAULT, "Changing cellular usage enabled to %d", v5, 8u);
     }
 
-    [MEMORY[0x1E69CDE08] setCellularUsageEnabled:v3];
+    [MEMORY[0x1E69CDE08] setCellularUsageEnabled:enabledCopy];
     notify_post([*MEMORY[0x1E69CDF20] UTF8String]);
   }
 }
@@ -296,12 +296,12 @@ LABEL_11:
 {
   if ([(SFWirelessSettingsController *)self->_settingsController deviceSupportsWAPI])
   {
-    v3 = [(SFWirelessSettingsController *)self->_settingsController isWifiEnabled];
-    v4 = [(SFWirelessSettingsController *)self->_settingsController isBluetoothEnabled];
+    isWifiEnabled = [(SFWirelessSettingsController *)self->_settingsController isWifiEnabled];
+    isBluetoothEnabled = [(SFWirelessSettingsController *)self->_settingsController isBluetoothEnabled];
     v10 = SFLocalizedStringForKey();
-    if (v3)
+    if (isWifiEnabled)
     {
-      v5 = v4 == 0;
+      v5 = isBluetoothEnabled == 0;
     }
 
     else
@@ -331,12 +331,12 @@ LABEL_11:
   alertController = self->_alertController;
   if (!alertController)
   {
-    v4 = [getUMUserManagerClass[0]() sharedManager];
-    v30 = v4;
-    if ([v4 isMultiUser])
+    sharedManager = [getUMUserManagerClass[0]() sharedManager];
+    v30 = sharedManager;
+    if ([sharedManager isMultiUser])
     {
-      v5 = [v4 currentUser];
-      v6 = [v5 userType] == 1;
+      currentUser = [sharedManager currentUser];
+      v6 = [currentUser userType] == 1;
     }
 
     else
@@ -359,7 +359,7 @@ LABEL_11:
     v46[2] = 0x3032000000;
     v46[3] = __Block_byref_object_copy_;
     v46[4] = __Block_byref_object_dispose_;
-    v47 = self;
+    selfCopy = self;
     v44[0] = 0;
     v44[1] = v44;
     v44[2] = 0x3032000000;
@@ -467,32 +467,32 @@ uint64_t __63__SFAirDropDiscoveryController_discoverableModeAlertController__blo
   return v2();
 }
 
-- (void)setDiscoverableMode:(int64_t)a3
+- (void)setDiscoverableMode:(int64_t)mode
 {
   v5 = airdrop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SFAirDropDiscoveryController *)self setDiscoverableMode:a3, v5];
+    [(SFAirDropDiscoveryController *)self setDiscoverableMode:mode, v5];
   }
 
-  [(SFAirDropDiscoveryController *)self discoverableModeToString:a3];
+  [(SFAirDropDiscoveryController *)self discoverableModeToString:mode];
   SFOperationSetProperty();
 }
 
-- (int64_t)operationDiscoverableModeToInteger:(id)a3
+- (int64_t)operationDiscoverableModeToInteger:(id)integer
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69CDF80]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69CDF68]))
+  integerCopy = integer;
+  if ([integerCopy isEqualToString:*MEMORY[0x1E69CDF80]] & 1) != 0 || (objc_msgSend(integerCopy, "isEqualToString:", *MEMORY[0x1E69CDF68]))
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69CDF60]])
+  else if ([integerCopy isEqualToString:*MEMORY[0x1E69CDF60]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69CDF70]])
+  else if ([integerCopy isEqualToString:*MEMORY[0x1E69CDF70]])
   {
     v4 = 2;
   }
@@ -505,17 +505,17 @@ uint64_t __63__SFAirDropDiscoveryController_discoverableModeAlertController__blo
   return v4;
 }
 
-- (id)discoverableModeToString:(int64_t)a3
+- (id)discoverableModeToString:(int64_t)string
 {
-  if (a3 <= 2)
+  if (string <= 2)
   {
-    self = **(&unk_1E7EE3F08 + a3);
+    self = **(&unk_1E7EE3F08 + string);
   }
 
   return self;
 }
 
-- (void)didChangeRadioState:(BOOL)a3
+- (void)didChangeRadioState:(BOOL)state
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();

@@ -1,16 +1,16 @@
 @interface HUTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 @end
 
 @implementation HUTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUAnnounceNotificationSettingsItem"];
-  [v3 validateClass:@"HUTableViewCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUTableViewCell" isKindOfClass:@"UITableViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUAnnounceNotificationSettingsItem"];
+  [validationsCopy validateClass:@"HUTableViewCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUTableViewCell" isKindOfClass:@"UITableViewCell"];
 }
 
 - (id)accessibilityHint
@@ -21,12 +21,12 @@
   {
     objc_opt_class();
     v3 = __UIAccessibilityCastAsClass();
-    v4 = [v3 textLabel];
+    textLabel = [v3 textLabel];
 
     v5 = MEMORY[0x29EDBA0F8];
     v6 = accessibilityHomeUILocalizedString(@"receive.notifications.when.setting");
-    v7 = [v4 accessibilityLabel];
-    v8 = [v5 localizedStringWithFormat:v6, v7];
+    accessibilityLabel = [textLabel accessibilityLabel];
+    v8 = [v5 localizedStringWithFormat:v6, accessibilityLabel];
   }
 
   else

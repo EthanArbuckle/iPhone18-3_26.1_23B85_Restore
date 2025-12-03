@@ -1,22 +1,22 @@
 @interface _CLKUIBasicTimeLabelManager
-- (CGRect)_boundingRectOfBlinkerAtRange:(_NSRange)a3;
+- (CGRect)_boundingRectOfBlinkerAtRange:(_NSRange)range;
 - (CGRect)_boundingRectOfMinutesBlinker;
 - (CGRect)_boundingRectOfSecondsBlinker;
 - (CGSize)intrinsicSize;
 - (CGSize)sizeThatFits;
 - (UIEdgeInsets)opticalInsets;
-- (id)_attributedTextShowingBlinker:(BOOL)a3 numbers:(BOOL)a4;
-- (id)_initForDevice:(id)a3 primary:(BOOL)a4 withTimeFormatter:(id)a5 options:(unint64_t)a6 labelFactory:(id)a7;
+- (id)_attributedTextShowingBlinker:(BOOL)blinker numbers:(BOOL)numbers;
+- (id)_initForDevice:(id)device primary:(BOOL)primary withTimeFormatter:(id)formatter options:(unint64_t)options labelFactory:(id)factory;
 - (id)minutesDesignatorAttributedText;
 - (id)secondsDesignatorAttributedText;
 - (void)_updateAttributedText;
-- (void)enumerateUnderlyingLabelsWithBlock:(id)a3;
-- (void)setShowSeconds:(BOOL)a3;
-- (void)setShowsDesignator:(BOOL)a3;
-- (void)setStyle:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)enumerateUnderlyingLabelsWithBlock:(id)block;
+- (void)setShowSeconds:(BOOL)seconds;
+- (void)setShowsDesignator:(BOOL)designator;
+- (void)setStyle:(id)style;
+- (void)setTextColor:(id)color;
 - (void)sizeViewToFit;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTimeText;
 @end
 
@@ -40,7 +40,7 @@
         [(CLKTimeFormatter *)timeFormatter timeAndDesignatorText];
       }
 
-      v5 = LABEL_6:;
+      timeSubstringFromSeparatorText = LABEL_6:;
       goto LABEL_16;
     }
 
@@ -70,7 +70,7 @@
 
     if (self->_showSubstringFromSeparator)
     {
-      v5 = [(CLKTimeFormatter *)self->_timeFormatter timeSubstringFromSeparatorText];
+      timeSubstringFromSeparatorText = [(CLKTimeFormatter *)self->_timeFormatter timeSubstringFromSeparatorText];
       goto LABEL_16;
     }
 
@@ -80,10 +80,10 @@
   }
 
   [v8 raise:v9 format:v10];
-  v5 = 0;
+  timeSubstringFromSeparatorText = 0;
 LABEL_16:
-  obj = v5;
-  if (([v5 isEqualToString:self->_timeText] & 1) == 0)
+  obj = timeSubstringFromSeparatorText;
+  if (([timeSubstringFromSeparatorText isEqualToString:self->_timeText] & 1) == 0)
   {
     objc_storeStrong(&self->_timeText, obj);
     if (self->_showSubstringFromSeparator)
@@ -93,40 +93,40 @@ LABEL_16:
         v11 = self->_timeFormatter;
         if (self->_showsDesignator)
         {
-          v12 = [(CLKTimeFormatter *)v11 blinkerRangeInTimeAndDesignatorText];
+          blinkerRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)v11 blinkerRangeInTimeAndDesignatorText];
         }
 
         else
         {
-          v12 = [(CLKTimeFormatter *)v11 blinkerRangeInTimeText];
+          blinkerRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)v11 blinkerRangeInTimeText];
         }
       }
 
       else
       {
-        v12 = [(CLKTimeFormatter *)self->_timeFormatter blinkerRangeInTimeSubstringFromSeparatorText];
+        blinkerRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)self->_timeFormatter blinkerRangeInTimeSubstringFromSeparatorText];
       }
     }
 
     else
     {
-      v12 = [(CLKTimeFormatter *)self->_timeFormatter blinkerRangeInTimeSubstringToSeparatorText];
+      blinkerRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)self->_timeFormatter blinkerRangeInTimeSubstringToSeparatorText];
     }
 
-    self->_minutesBlinkerRange.location = v12;
+    self->_minutesBlinkerRange.location = blinkerRangeInTimeAndDesignatorText;
     self->_minutesBlinkerRange.length = v13;
     if (self->_showSeconds)
     {
-      v14 = [(CLKTimeFormatter *)self->_timeFormatter lastBlinkerRangeInTimeText];
+      lastBlinkerRangeInTimeText = [(CLKTimeFormatter *)self->_timeFormatter lastBlinkerRangeInTimeText];
     }
 
     else
     {
-      v14 = 0;
+      lastBlinkerRangeInTimeText = 0;
       v15 = 0;
     }
 
-    self->_secondsBlinkerRange.location = v14;
+    self->_secondsBlinkerRange.location = lastBlinkerRangeInTimeText;
     self->_secondsBlinkerRange.length = v15;
     [(_CLKUIBasicTimeLabelManager *)self _updateAttributedText];
   }
@@ -201,24 +201,24 @@ LABEL_16:
   return result;
 }
 
-- (id)_initForDevice:(id)a3 primary:(BOOL)a4 withTimeFormatter:(id)a5 options:(unint64_t)a6 labelFactory:(id)a7
+- (id)_initForDevice:(id)device primary:(BOOL)primary withTimeFormatter:(id)formatter options:(unint64_t)options labelFactory:(id)factory
 {
-  v8 = a6;
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
+  optionsCopy = options;
+  deviceCopy = device;
+  formatterCopy = formatter;
+  factoryCopy = factory;
   v23.receiver = self;
   v23.super_class = _CLKUIBasicTimeLabelManager;
   v16 = [(_CLKUIBasicTimeLabelManager *)&v23 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_device, a3);
-    v17->_primary = a4;
-    objc_storeStrong(&v17->_timeFormatter, a5);
-    v17->_hideMinutesIfZero = (v8 & 4) != 0;
-    v17->_showSubstringFromSeparator = (v8 & 0x400) == 0;
-    v17->_showSubstringToSeparator = (v8 & 0x800) == 0;
+    objc_storeStrong(&v16->_device, device);
+    v17->_primary = primary;
+    objc_storeStrong(&v17->_timeFormatter, formatter);
+    v17->_hideMinutesIfZero = (optionsCopy & 4) != 0;
+    v17->_showSubstringFromSeparator = (optionsCopy & 0x400) == 0;
+    v17->_showSubstringToSeparator = (optionsCopy & 0x800) == 0;
     v17->_showSeconds = 0;
     *&v17->_showsBlinker = 257;
     v18 = *MEMORY[0x1E695F050];
@@ -227,7 +227,7 @@ LABEL_16:
     v17->_boundingRectOfMinutesBlinkerAttributedText.size = v19;
     v17->_boundingRectOfSecondsBlinkerAttributedText.origin = v18;
     v17->_boundingRectOfSecondsBlinkerAttributedText.size = v19;
-    v20 = (v15)[2](v15, v17->_primary);
+    v20 = (factoryCopy)[2](factoryCopy, v17->_primary);
     label = v17->_label;
     v17->_label = v20;
 
@@ -237,31 +237,31 @@ LABEL_16:
   return v17;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v16 = a3;
-  if (([v16 isEqual:self->_style] & 1) == 0)
+  styleCopy = style;
+  if (([styleCopy isEqual:self->_style] & 1) == 0)
   {
     v4 = objc_alloc_init(CLKUITimeLabelStyle);
     style = self->_style;
     self->_style = v4;
 
-    v6 = [v16 threeDigitFont];
-    v7 = _FontWithCenteredColons(v6, [(CLKTimeFormatter *)self->_timeFormatter forcedNumberSystem]);
+    threeDigitFont = [styleCopy threeDigitFont];
+    v7 = _FontWithCenteredColons(threeDigitFont, [(CLKTimeFormatter *)self->_timeFormatter forcedNumberSystem]);
     [(CLKUITimeLabelStyle *)self->_style setThreeDigitFont:v7];
 
-    v8 = [v16 fourDigitFont];
-    v9 = _FontWithCenteredColons(v8, [(CLKTimeFormatter *)self->_timeFormatter forcedNumberSystem]);
+    fourDigitFont = [styleCopy fourDigitFont];
+    v9 = _FontWithCenteredColons(fourDigitFont, [(CLKTimeFormatter *)self->_timeFormatter forcedNumberSystem]);
     [(CLKUITimeLabelStyle *)self->_style setFourDigitFont:v9];
 
-    v10 = [v16 designatorFont];
-    [(CLKUITimeLabelStyle *)self->_style setDesignatorFont:v10];
+    designatorFont = [styleCopy designatorFont];
+    [(CLKUITimeLabelStyle *)self->_style setDesignatorFont:designatorFont];
 
-    v11 = [v16 stringAttributes];
-    [(CLKUITimeLabelStyle *)self->_style setStringAttributes:v11];
+    stringAttributes = [styleCopy stringAttributes];
+    [(CLKUITimeLabelStyle *)self->_style setStringAttributes:stringAttributes];
 
-    v12 = [(CLKTimeFormatter *)self->_timeFormatter timeText];
-    v13 = [v12 length];
+    timeText = [(CLKTimeFormatter *)self->_timeFormatter timeText];
+    v13 = [timeText length];
     v14 = self->_style;
     if (v13 > 4)
     {
@@ -279,11 +279,11 @@ LABEL_16:
   }
 }
 
-- (void)setShowsDesignator:(BOOL)a3
+- (void)setShowsDesignator:(BOOL)designator
 {
-  if (self->_showsDesignator != a3)
+  if (self->_showsDesignator != designator)
   {
-    self->_showsDesignator = a3;
+    self->_showsDesignator = designator;
     [(_CLKUIBasicTimeLabelManager *)self updateTimeText];
   }
 }
@@ -299,13 +299,13 @@ LABEL_16:
   [(UILabel *)label setBounds:v4, v6, v7, v8];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   timeText = self->_timeText;
   self->_timeText = 0;
-  v5 = a3;
+  changeCopy = change;
 
-  [(UILabel *)self->_label traitCollectionDidChange:v5];
+  [(UILabel *)self->_label traitCollectionDidChange:changeCopy];
 
   [(_CLKUIBasicTimeLabelManager *)self updateTimeText];
 }
@@ -339,9 +339,9 @@ LABEL_16:
 
   else
   {
-    v11 = [(UILabel *)self->_label _stringDrawingContext];
-    v12 = [(UILabel *)self->_label attributedText];
-    [v12 boundingRectWithSize:9 options:v11 context:{self->_cachedIntrinsicSize.width, self->_cachedIntrinsicSize.height}];
+    _stringDrawingContext = [(UILabel *)self->_label _stringDrawingContext];
+    attributedText = [(UILabel *)self->_label attributedText];
+    [attributedText boundingRectWithSize:9 options:_stringDrawingContext context:{self->_cachedIntrinsicSize.width, self->_cachedIntrinsicSize.height}];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -378,19 +378,19 @@ LABEL_16:
   return result;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  objc_storeStrong(&self->_textColor, a3);
-  v5 = a3;
-  [(UILabel *)self->_label setTextColor:v5];
+  objc_storeStrong(&self->_textColor, color);
+  colorCopy = color;
+  [(UILabel *)self->_label setTextColor:colorCopy];
   [(UILabel *)self->_label setAttributedText:self->_correctAttributedText];
 }
 
-- (void)setShowSeconds:(BOOL)a3
+- (void)setShowSeconds:(BOOL)seconds
 {
-  if (self->_showSeconds != a3)
+  if (self->_showSeconds != seconds)
   {
-    self->_showSeconds = a3;
+    self->_showSeconds = seconds;
     timeText = self->_timeText;
     self->_timeText = 0;
 
@@ -398,9 +398,9 @@ LABEL_16:
   }
 }
 
-- (void)enumerateUnderlyingLabelsWithBlock:(id)a3
+- (void)enumerateUnderlyingLabelsWithBlock:(id)block
 {
-  (*(a3 + 2))(a3, self->_label, self->_primary);
+  (*(block + 2))(block, self->_label, self->_primary);
   label = self->_label;
   correctAttributedText = self->_correctAttributedText;
 
@@ -462,10 +462,10 @@ LABEL_16:
   return v3;
 }
 
-- (CGRect)_boundingRectOfBlinkerAtRange:(_NSRange)a3
+- (CGRect)_boundingRectOfBlinkerAtRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v38[1] = *MEMORY[0x1E69E9840];
   [(_CLKUIBasicTimeLabelManager *)self intrinsicSize];
   v7 = v6;
@@ -476,9 +476,9 @@ LABEL_16:
   v12 = [objc_alloc(MEMORY[0x1E69DB800]) initWithSize:{v7, v9}];
   [v12 setLineFragmentPadding:0.0];
   [v11 addTextContainer:v12];
-  v13 = [(_CLKUIBasicTimeLabelManager *)self secondsDesignatorAttributedText];
+  secondsDesignatorAttributedText = [(_CLKUIBasicTimeLabelManager *)self secondsDesignatorAttributedText];
   v14 = *MEMORY[0x1E69DB648];
-  v15 = [v13 attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
+  v15 = [secondsDesignatorAttributedText attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
 
   if (!v15)
   {
@@ -605,7 +605,7 @@ LABEL_10:
   return result;
 }
 
-- (id)_attributedTextShowingBlinker:(BOOL)a3 numbers:(BOOL)a4
+- (id)_attributedTextShowingBlinker:(BOOL)blinker numbers:(BOOL)numbers
 {
   v48[1] = *MEMORY[0x1E69E9840];
   if (self->_timeText)
@@ -614,26 +614,26 @@ LABEL_10:
     timeText = self->_timeText;
     v8 = *MEMORY[0x1E69DB648];
     v47 = *MEMORY[0x1E69DB648];
-    v9 = [(_CLKUIBasicTimeLabelManager *)self effectiveFont];
-    v48[0] = v9;
+    effectiveFont = [(_CLKUIBasicTimeLabelManager *)self effectiveFont];
+    v48[0] = effectiveFont;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
     v11 = [v6 initWithString:timeText attributes:v10];
 
-    v12 = [(CLKUITimeLabelStyle *)self->_style designatorFont];
-    if (v12 && self->_showsDesignator)
+    designatorFont = [(CLKUITimeLabelStyle *)self->_style designatorFont];
+    if (designatorFont && self->_showsDesignator)
     {
       timeFormatter = self->_timeFormatter;
       if (self->_hideMinutesIfZero)
       {
-        v14 = [(CLKTimeFormatter *)timeFormatter designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero];
+        designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero = [(CLKTimeFormatter *)timeFormatter designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero];
       }
 
       else
       {
-        v14 = [(CLKTimeFormatter *)timeFormatter designatorRangeInTimeAndDesignatorText];
+        designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero = [(CLKTimeFormatter *)timeFormatter designatorRangeInTimeAndDesignatorText];
       }
 
-      [v11 addAttribute:v8 value:v12 range:{v14, v15}];
+      [v11 addAttribute:v8 value:designatorFont range:{designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero, v15}];
     }
 
     if (self->_showSubstringFromSeparator)
@@ -643,84 +643,84 @@ LABEL_10:
         v16 = self->_timeFormatter;
         if (self->_showsDesignator)
         {
-          v17 = [(CLKTimeFormatter *)v16 blinkerRangeInTimeAndDesignatorText];
+          blinkerRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)v16 blinkerRangeInTimeAndDesignatorText];
         }
 
         else
         {
-          v17 = [(CLKTimeFormatter *)v16 blinkerRangeInTimeText];
+          blinkerRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)v16 blinkerRangeInTimeText];
         }
       }
 
       else
       {
-        v17 = [(CLKTimeFormatter *)self->_timeFormatter blinkerRangeInTimeSubstringFromSeparatorText];
+        blinkerRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)self->_timeFormatter blinkerRangeInTimeSubstringFromSeparatorText];
       }
     }
 
     else
     {
-      v17 = [(CLKTimeFormatter *)self->_timeFormatter blinkerRangeInTimeSubstringToSeparatorText];
+      blinkerRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)self->_timeFormatter blinkerRangeInTimeSubstringToSeparatorText];
     }
 
-    v19 = v17;
+    v19 = blinkerRangeInTimeAndDesignatorText;
     v20 = v18;
     if (self->_showSeconds)
     {
-      v43 = [(CLKTimeFormatter *)self->_timeFormatter lastBlinkerRangeInTimeText];
+      lastBlinkerRangeInTimeText = [(CLKTimeFormatter *)self->_timeFormatter lastBlinkerRangeInTimeText];
       v22 = v21;
       if (self->_showSeconds)
       {
-        v42 = v12;
-        v23 = [(CLKTimeFormatter *)self->_timeFormatter rangeInTimeSubstringFromSecondsSeparatorText];
+        v42 = designatorFont;
+        rangeInTimeSubstringFromSecondsSeparatorText = [(CLKTimeFormatter *)self->_timeFormatter rangeInTimeSubstringFromSecondsSeparatorText];
         v25 = v24;
-        if (v23 + v24 <= [v11 length])
+        if (rangeInTimeSubstringFromSecondsSeparatorText + v24 <= [v11 length])
         {
           v45 = v8;
-          v26 = [(_CLKUIBasicTimeLabelManager *)self effectiveFont];
-          v41 = [v26 CLKFontWithMonospacedNumbers];
-          v46 = v41;
+          effectiveFont2 = [(_CLKUIBasicTimeLabelManager *)self effectiveFont];
+          cLKFontWithMonospacedNumbers = [effectiveFont2 CLKFontWithMonospacedNumbers];
+          v46 = cLKFontWithMonospacedNumbers;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-          [v11 addAttributes:v27 range:{v23, v25}];
+          [v11 addAttributes:v27 range:{rangeInTimeSubstringFromSecondsSeparatorText, v25}];
         }
 
-        v12 = v42;
+        designatorFont = v42;
       }
     }
 
     else
     {
-      v43 = 0;
+      lastBlinkerRangeInTimeText = 0;
       v22 = 0;
     }
 
-    v28 = [MEMORY[0x1E69DC888] clearColor];
-    if (!a3)
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    if (!blinker)
     {
       if (v19 + v20 < [v11 length])
       {
-        [v11 addAttribute:*MEMORY[0x1E69DB650] value:v28 range:{v19, v20}];
+        [v11 addAttribute:*MEMORY[0x1E69DB650] value:clearColor range:{v19, v20}];
       }
 
-      if (self->_showSeconds && v43 + v22 < [v11 length])
+      if (self->_showSeconds && lastBlinkerRangeInTimeText + v22 < [v11 length])
       {
-        [v11 addAttribute:*MEMORY[0x1E69DB650] value:v28 range:{v43, v22}];
+        [v11 addAttribute:*MEMORY[0x1E69DB650] value:clearColor range:{lastBlinkerRangeInTimeText, v22}];
       }
     }
 
-    if (!a4)
+    if (!numbers)
     {
       v29 = [v11 length];
       v30 = *MEMORY[0x1E69DB650];
-      [v11 addAttribute:*MEMORY[0x1E69DB650] value:v28 range:{0, v29}];
+      [v11 addAttribute:*MEMORY[0x1E69DB650] value:clearColor range:{0, v29}];
       if (v19 + v20 < [v11 length])
       {
         [v11 removeAttribute:v30 range:{v19, v20}];
       }
 
-      if (self->_showSeconds && v43 + v22 < [v11 length])
+      if (self->_showSeconds && lastBlinkerRangeInTimeText + v22 < [v11 length])
       {
-        [v11 removeAttribute:v30 range:{v43, v22}];
+        [v11 removeAttribute:v30 range:{lastBlinkerRangeInTimeText, v22}];
       }
     }
 
@@ -731,13 +731,13 @@ LABEL_10:
       [v11 addAttribute:*MEMORY[0x1E69DB688] value:v31 range:{0, -[NSString length](self->_timeText, "length")}];
     }
 
-    v32 = [(CLKTimeFormatter *)self->_timeFormatter fontTrackingAttribute];
+    fontTrackingAttribute = [(CLKTimeFormatter *)self->_timeFormatter fontTrackingAttribute];
 
-    if (v32)
+    if (fontTrackingAttribute)
     {
       v33 = *MEMORY[0x1E69DB748];
-      v34 = [(CLKTimeFormatter *)self->_timeFormatter fontTrackingAttribute];
-      [v11 addAttribute:v33 value:v34 range:{0, -[NSString length](self->_timeText, "length")}];
+      fontTrackingAttribute2 = [(CLKTimeFormatter *)self->_timeFormatter fontTrackingAttribute];
+      [v11 addAttribute:v33 value:fontTrackingAttribute2 range:{0, -[NSString length](self->_timeText, "length")}];
     }
 
     if ([(CLKTimeFormatter *)self->_timeFormatter forcedNumberSystem]!= -1)
@@ -748,13 +748,13 @@ LABEL_10:
       [v11 addAttribute:*MEMORY[0x1E696A518] value:v35 range:{0, v36}];
     }
 
-    v37 = [(CLKUITimeLabelStyle *)self->_style stringAttributes];
+    stringAttributes = [(CLKUITimeLabelStyle *)self->_style stringAttributes];
 
-    if (v37)
+    if (stringAttributes)
     {
       v38 = [v11 length];
-      v39 = [(CLKUITimeLabelStyle *)self->_style stringAttributes];
-      [v11 addAttributes:v39 range:{0, v38}];
+      stringAttributes2 = [(CLKUITimeLabelStyle *)self->_style stringAttributes];
+      [v11 addAttributes:stringAttributes2 range:{0, v38}];
     }
   }
 

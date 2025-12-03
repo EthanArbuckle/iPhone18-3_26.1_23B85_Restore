@@ -1,18 +1,18 @@
 @interface AVLookupableSpatialVideoConfiguration
-- (AVLookupableSpatialVideoConfiguration)initWithSpatialVideoConfiguration:(id)a3;
+- (AVLookupableSpatialVideoConfiguration)initWithSpatialVideoConfiguration:(id)configuration;
 - (void)dealloc;
 @end
 
 @implementation AVLookupableSpatialVideoConfiguration
 
-- (AVLookupableSpatialVideoConfiguration)initWithSpatialVideoConfiguration:(id)a3
+- (AVLookupableSpatialVideoConfiguration)initWithSpatialVideoConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = AVLookupableSpatialVideoConfiguration;
   v4 = [(AVLookupableSpatialVideoConfiguration *)&v6 init];
   if (v4)
   {
-    v4->_spatialVideoConfiguration = a3;
+    v4->_spatialVideoConfiguration = configuration;
   }
 
   return v4;

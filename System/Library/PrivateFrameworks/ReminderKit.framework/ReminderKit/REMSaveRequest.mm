@@ -1,105 +1,105 @@
 @interface REMSaveRequest
 - (BOOL)_changeItemsAreAllEmpty;
-- (BOOL)saveSynchronouslyWithError:(id *)a3;
-- (BOOL)updateReminderChangeItem:(id)a3 fromICSData:(id)a4 isNew:(BOOL)a5 withOptions:(id)a6 error:(id *)a7;
-- (REMSaveRequest)initWithStore:(id)a3;
+- (BOOL)saveSynchronouslyWithError:(id *)error;
+- (BOOL)updateReminderChangeItem:(id)item fromICSData:(id)data isNew:(BOOL)new withOptions:(id)options error:(id *)error;
+- (REMSaveRequest)initWithStore:(id)store;
 - (REMSaveRequestNotifyChangeDelegate)notifyChangeDelegate;
-- (id)__addAccountWithType:(int64_t)a3 name:(id)a4 accountObjectID:(id)a5;
-- (id)_addTestOnlyExtraPrimaryCKAccountWithName:(id)a3 accountObjectID:(id)a4;
-- (id)_addTestOnlyPrimaryCKAccountWithName:(id)a3 accountObjectID:(id)a4;
-- (id)_copyReminder:(id)a3 toListChangeItem:(id)a4;
-- (id)_copyReminder:(id)a3 toReminderSubtaskContextChangeItem:(id)a4;
-- (id)_copyReminderChangeItem:(id)a3 toListChangeItem:(id)a4;
-- (id)_copyReminderChangeItem:(id)a3 toReminderSubtaskContextChangeItem:(id)a4;
-- (id)_iCalendarDataFromICSTodoItem:(id)a3 icsCalendar:(id)a4;
-- (id)_trackedAccountCapabilitiesForObjectID:(id)a3;
-- (id)_trackedAccountChangeItemForObjectID:(id)a3;
-- (id)_trackedListChangeItemForObjectID:(id)a3;
-- (id)_trackedListSectionChangeItemForObjectID:(id)a3;
-- (id)_trackedReminderChangeItemForObjectID:(id)a3;
-- (id)_trackedSmartListChangeItemForObjectID:(id)a3;
-- (id)_trackedSmartListSectionChangeItemForObjectID:(id)a3;
-- (id)_trackedTemplateChangeItemForObjectID:(id)a3;
-- (id)_trackedTemplateSectionChangeItemForObjectID:(id)a3;
-- (id)_updateAccountWithListChangeItem:(id)a3;
-- (id)_updateListStorage:(id)a3 accountCapabilities:(id)a4;
-- (id)_updateListWithReminderChangeItem:(id)a3;
-- (id)addCustomSmartListWithName:(id)a3 toAccountChangeItem:(id)a4 smartListObjectID:(id)a5;
-- (id)addCustomSmartListWithName:(id)a3 toListSublistContextChangeItem:(id)a4 smartListObjectID:(id)a5;
-- (id)addGroupWithName:(id)a3 toAccountGroupContextChangeItem:(id)a4 groupObjectID:(id)a5;
-- (id)addListSectionWithDisplayName:(id)a3 toListSectionContextChangeItem:(id)a4 listSectionObjectID:(id)a5;
-- (id)addListUsingPublicTemplateWithREMListRepresentation:(id)a3 toAccountChangeItem:(id)a4;
-- (id)addListUsingTemplate:(id)a3 toAccountChangeItem:(id)a4;
-- (id)addListWithName:(id)a3 toAccountChangeItem:(id)a4 listObjectID:(id)a5;
-- (id)addListWithName:(id)a3 toListSublistContextChangeItem:(id)a4 listObjectID:(id)a5;
-- (id)addReminderWithTitle:(id)a3 toListChangeItem:(id)a4 reminderObjectID:(id)a5;
-- (id)addReminderWithTitle:(id)a3 toReminderSubtaskContextChangeItem:(id)a4 reminderObjectID:(id)a5;
-- (id)addSmartListSectionWithDisplayName:(id)a3 toSmartListSectionContextChangeItem:(id)a4 smartListSectionObjectID:(id)a5;
-- (id)addTemplateSectionWithDisplayName:(id)a3 toTemplateSectionContextChangeItem:(id)a4 templateSectionObjectID:(id)a5;
-- (id)addTemplateWithName:(id)a3 configuration:(id)a4 toAccountChangeItem:(id)a5;
-- (id)addTemplateWithName:(id)a3 configuration:(id)a4 toAccountChangeItem:(id)a5 templateObjectID:(id)a6;
+- (id)__addAccountWithType:(int64_t)type name:(id)name accountObjectID:(id)d;
+- (id)_addTestOnlyExtraPrimaryCKAccountWithName:(id)name accountObjectID:(id)d;
+- (id)_addTestOnlyPrimaryCKAccountWithName:(id)name accountObjectID:(id)d;
+- (id)_copyReminder:(id)reminder toListChangeItem:(id)item;
+- (id)_copyReminder:(id)reminder toReminderSubtaskContextChangeItem:(id)item;
+- (id)_copyReminderChangeItem:(id)item toListChangeItem:(id)changeItem;
+- (id)_copyReminderChangeItem:(id)item toReminderSubtaskContextChangeItem:(id)changeItem;
+- (id)_iCalendarDataFromICSTodoItem:(id)item icsCalendar:(id)calendar;
+- (id)_trackedAccountCapabilitiesForObjectID:(id)d;
+- (id)_trackedAccountChangeItemForObjectID:(id)d;
+- (id)_trackedListChangeItemForObjectID:(id)d;
+- (id)_trackedListSectionChangeItemForObjectID:(id)d;
+- (id)_trackedReminderChangeItemForObjectID:(id)d;
+- (id)_trackedSmartListChangeItemForObjectID:(id)d;
+- (id)_trackedSmartListSectionChangeItemForObjectID:(id)d;
+- (id)_trackedTemplateChangeItemForObjectID:(id)d;
+- (id)_trackedTemplateSectionChangeItemForObjectID:(id)d;
+- (id)_updateAccountWithListChangeItem:(id)item;
+- (id)_updateListStorage:(id)storage accountCapabilities:(id)capabilities;
+- (id)_updateListWithReminderChangeItem:(id)item;
+- (id)addCustomSmartListWithName:(id)name toAccountChangeItem:(id)item smartListObjectID:(id)d;
+- (id)addCustomSmartListWithName:(id)name toListSublistContextChangeItem:(id)item smartListObjectID:(id)d;
+- (id)addGroupWithName:(id)name toAccountGroupContextChangeItem:(id)item groupObjectID:(id)d;
+- (id)addListSectionWithDisplayName:(id)name toListSectionContextChangeItem:(id)item listSectionObjectID:(id)d;
+- (id)addListUsingPublicTemplateWithREMListRepresentation:(id)representation toAccountChangeItem:(id)item;
+- (id)addListUsingTemplate:(id)template toAccountChangeItem:(id)item;
+- (id)addListWithName:(id)name toAccountChangeItem:(id)item listObjectID:(id)d;
+- (id)addListWithName:(id)name toListSublistContextChangeItem:(id)item listObjectID:(id)d;
+- (id)addReminderWithTitle:(id)title toListChangeItem:(id)item reminderObjectID:(id)d;
+- (id)addReminderWithTitle:(id)title toReminderSubtaskContextChangeItem:(id)item reminderObjectID:(id)d;
+- (id)addSmartListSectionWithDisplayName:(id)name toSmartListSectionContextChangeItem:(id)item smartListSectionObjectID:(id)d;
+- (id)addTemplateSectionWithDisplayName:(id)name toTemplateSectionContextChangeItem:(id)item templateSectionObjectID:(id)d;
+- (id)addTemplateWithName:(id)name configuration:(id)configuration toAccountChangeItem:(id)item;
+- (id)addTemplateWithName:(id)name configuration:(id)configuration toAccountChangeItem:(id)item templateObjectID:(id)d;
 - (id)advanceForwardRecurrenceAfterNowAndCreateIncompleteCloneWithoutRecurrenceRulesAndSubtasks;
-- (id)advanceForwardRecurrenceAndCreateCompletedCloneWithoutRecurrenceRulesAndSubtasksAfterDate:(id)a3;
+- (id)advanceForwardRecurrenceAndCreateCompletedCloneWithoutRecurrenceRulesAndSubtasksAfterDate:(id)date;
 - (id)description;
-- (id)icsDueOrEndDateWithICSCalendarItem:(id)a3 options:(id)a4;
-- (id)importRemindersFromICSData:(id)a3 insertIntoListChangeItem:(id)a4 error:(id *)a5;
-- (id)updateAccount:(id)a3;
-- (id)updateList:(id)a3;
-- (id)updateListSection:(id)a3;
-- (id)updateReminder:(id)a3;
-- (id)updateSmartList:(id)a3;
-- (id)updateSmartListSection:(id)a3;
-- (id)updateTemplate:(id)a3;
-- (id)updateTemplateSection:(id)a3;
-- (void)_addAlarmsToReminderChangeItem:(id)a3 withICSAlarm:(id)a4 icsCalendar:(id)a5;
-- (void)_populateAlarmsInReminderChangeItem:(id)a3 withICSAlarms:(id)a4 icsCalendar:(id)a5;
-- (void)_populateRecurrencesInReminderChangeItem:(id)a3 withICSComponent:(id)a4 icsCalendar:(id)a5;
-- (void)_populateReminderChangeItem:(id)a3 withICSTodoItem:(id)a4 icsCalendar:(id)a5 isNew:(BOOL)a6 withOptions:(id)a7;
-- (void)_prepareSave:(id)a3;
-- (void)_trackAccountCapabilities:(id)a3 forObjectID:(id)a4;
-- (void)_trackAccountChangeItem:(id)a3;
-- (void)_trackListChangeItem:(id)a3;
-- (void)_trackListSectionChangeItem:(id)a3;
-- (void)_trackReminderChangeItem:(id)a3;
-- (void)_trackSmartListChangeItem:(id)a3;
-- (void)_trackSmartListSectionChangeItem:(id)a3;
-- (void)_trackTemplateChangeItem:(id)a3;
-- (void)_trackTemplateSectionChangeItem:(id)a3;
-- (void)_updateResolutionTokenMapForChangeItem:(id)a3;
-- (void)_updateTrackedAccountChangeItem:(id)a3 withObjectID:(id)a4;
-- (void)_updateTrackedListChangeItem:(id)a3 withObjectID:(id)a4;
-- (void)_updateTrackedReminderChangeItem:(id)a3 withObjectID:(id)a4;
-- (void)_updateTrackedSmartListChangeItem:(id)a3 withObjectID:(id)a4;
-- (void)_willSaveAccountChangeItems:(id)a3 listChangeItems:(id)a4 listSectionChangeItems:(id)a5 smartListChangeItems:(id)a6 smartListSectionChangeItems:(id)a7 templateChangeItems:(id)a8 templateSectionChangeItems:(id)a9 reminderChangeItems:(id)a10;
+- (id)icsDueOrEndDateWithICSCalendarItem:(id)item options:(id)options;
+- (id)importRemindersFromICSData:(id)data insertIntoListChangeItem:(id)item error:(id *)error;
+- (id)updateAccount:(id)account;
+- (id)updateList:(id)list;
+- (id)updateListSection:(id)section;
+- (id)updateReminder:(id)reminder;
+- (id)updateSmartList:(id)list;
+- (id)updateSmartListSection:(id)section;
+- (id)updateTemplate:(id)template;
+- (id)updateTemplateSection:(id)section;
+- (void)_addAlarmsToReminderChangeItem:(id)item withICSAlarm:(id)alarm icsCalendar:(id)calendar;
+- (void)_populateAlarmsInReminderChangeItem:(id)item withICSAlarms:(id)alarms icsCalendar:(id)calendar;
+- (void)_populateRecurrencesInReminderChangeItem:(id)item withICSComponent:(id)component icsCalendar:(id)calendar;
+- (void)_populateReminderChangeItem:(id)item withICSTodoItem:(id)todoItem icsCalendar:(id)calendar isNew:(BOOL)new withOptions:(id)options;
+- (void)_prepareSave:(id)save;
+- (void)_trackAccountCapabilities:(id)capabilities forObjectID:(id)d;
+- (void)_trackAccountChangeItem:(id)item;
+- (void)_trackListChangeItem:(id)item;
+- (void)_trackListSectionChangeItem:(id)item;
+- (void)_trackReminderChangeItem:(id)item;
+- (void)_trackSmartListChangeItem:(id)item;
+- (void)_trackSmartListSectionChangeItem:(id)item;
+- (void)_trackTemplateChangeItem:(id)item;
+- (void)_trackTemplateSectionChangeItem:(id)item;
+- (void)_updateResolutionTokenMapForChangeItem:(id)item;
+- (void)_updateTrackedAccountChangeItem:(id)item withObjectID:(id)d;
+- (void)_updateTrackedListChangeItem:(id)item withObjectID:(id)d;
+- (void)_updateTrackedReminderChangeItem:(id)item withObjectID:(id)d;
+- (void)_updateTrackedSmartListChangeItem:(id)item withObjectID:(id)d;
+- (void)_willSaveAccountChangeItems:(id)items listChangeItems:(id)changeItems listSectionChangeItems:(id)sectionChangeItems smartListChangeItems:(id)listChangeItems smartListSectionChangeItems:(id)listSectionChangeItems templateChangeItems:(id)templateChangeItems templateSectionChangeItems:(id)templateSectionChangeItems reminderChangeItems:(id)self0;
 - (void)advanceForwardRecurrenceAfterNowAndCreateIncompleteCloneWithoutRecurrenceRulesAndSubtasks;
-- (void)notifyChangeDelegateForSaveSuccess:(BOOL)a3;
+- (void)notifyChangeDelegateForSaveSuccess:(BOOL)success;
 - (void)performPreSaveActions;
 - (void)preFetchDueDateDeltaAlertsForCompletedRecurrenceClone;
-- (void)preFlightActionSaveAndUpdateParentsOfRecurrentSubtasksWithLogPrefix:(id)a3;
-- (void)saveWithQueue:(id)a3 completion:(id)a4;
-- (void)updateUIDInReminderChangeItem:(id)a3 fromICSComponent:(id)a4 icsCalendar:(id)a5;
+- (void)preFlightActionSaveAndUpdateParentsOfRecurrentSubtasksWithLogPrefix:(id)prefix;
+- (void)saveWithQueue:(id)queue completion:(id)completion;
+- (void)updateUIDInReminderChangeItem:(id)item fromICSComponent:(id)component icsCalendar:(id)calendar;
 @end
 
 @implementation REMSaveRequest
 
-- (id)importRemindersFromICSData:(id)a3 insertIntoListChangeItem:(id)a4 error:(id *)a5
+- (id)importRemindersFromICSData:(id)data insertIntoListChangeItem:(id)item error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E695DF70] array];
+  dataCopy = data;
+  itemCopy = item;
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0x1E7506000uLL;
   v12 = +[REMLogStore write];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v9 objectID];
+    objectID = [itemCopy objectID];
     *buf = 138412290;
-    v52 = v13;
+    v52 = objectID;
     _os_log_impl(&dword_19A0DB000, v12, OS_LOG_TYPE_INFO, "Importing ICS data into list change item {%@}.", buf, 0xCu);
   }
 
   v50 = 0;
-  v14 = [objc_alloc(MEMORY[0x1E69E3CB0]) initWithData:v8 options:0 error:&v50];
+  v14 = [objc_alloc(MEMORY[0x1E69E3CB0]) initWithData:dataCopy options:0 error:&v50];
   v15 = v50;
   if (v15 || !v14)
   {
@@ -109,26 +109,26 @@
       [REMSaveRequest(Importing) importRemindersFromICSData:v15 insertIntoListChangeItem:v34 error:?];
     }
 
-    if (a5)
+    if (error)
     {
       v35 = v15;
-      *a5 = v15;
+      *error = v15;
     }
   }
 
   else
   {
-    v16 = [v9 saveRequest];
-    if ([v16 updateLastModifiedDates])
+    saveRequest = [itemCopy saveRequest];
+    if ([saveRequest updateLastModifiedDates])
     {
-      [v16 setUpdateLastModifiedDates:0];
+      [saveRequest setUpdateLastModifiedDates:0];
     }
 
-    v39 = v8;
-    v17 = v16;
-    if ([v16 cloneCompletedRecurrentRemindersAtSave])
+    v39 = dataCopy;
+    v17 = saveRequest;
+    if ([saveRequest cloneCompletedRecurrentRemindersAtSave])
     {
-      [v16 setCloneCompletedRecurrentRemindersAtSave:0];
+      [saveRequest setCloneCompletedRecurrentRemindersAtSave:0];
     }
 
     v38 = v14;
@@ -142,8 +142,8 @@
     if (v44)
     {
       v43 = *v47;
-      v40 = v16;
-      v41 = v10;
+      v40 = saveRequest;
+      v41 = array;
       do
       {
         for (i = 0; i != v44; ++i)
@@ -157,12 +157,12 @@
           v20 = [v45 componentForKey:v19];
           if (!v20)
           {
-            v21 = [*(v11 + 3368) write];
-            if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+            write = [*(v11 + 3368) write];
+            if (os_log_type_enabled(write, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
               v52 = v19;
-              _os_log_impl(&dword_19A0DB000, v21, OS_LOG_TYPE_INFO, "Could not find a component with {key: %@}.", buf, 0xCu);
+              _os_log_impl(&dword_19A0DB000, write, OS_LOG_TYPE_INFO, "Could not find a component with {key: %@}.", buf, 0xCu);
             }
           }
 
@@ -171,34 +171,34 @@
           v24 = v23;
           if (v23)
           {
-            v25 = [v23 rem_nonNilSummary];
-            v26 = [v17 addReminderWithTitle:v25 toListChangeItem:v9];
+            rem_nonNilSummary = [v23 rem_nonNilSummary];
+            v26 = [v17 addReminderWithTitle:rem_nonNilSummary toListChangeItem:itemCopy];
 
             [(REMSaveRequest *)self _populateReminderChangeItem:v26 withICSTodoItem:v24 icsCalendar:v45 isNew:1 withOptions:0];
             v27 = [(REMSaveRequest *)self _iCalendarDataFromICSTodoItem:v24 icsCalendar:v45];
             [v26 setImportedICSData:v27];
 
-            [v10 addObject:v26];
-            v28 = [*(v11 + 3368) write];
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
+            [array addObject:v26];
+            write2 = [*(v11 + 3368) write];
+            if (os_log_type_enabled(write2, OS_LOG_TYPE_INFO))
             {
-              v29 = [v26 objectID];
-              [v9 objectID];
+              objectID2 = [v26 objectID];
+              [itemCopy objectID];
               v30 = v11;
-              v31 = self;
-              v33 = v32 = v9;
+              selfCopy = self;
+              v33 = v32 = itemCopy;
               *buf = 138412546;
-              v52 = v29;
+              v52 = objectID2;
               v53 = 2112;
               v54 = v33;
-              _os_log_impl(&dword_19A0DB000, v28, OS_LOG_TYPE_INFO, "Added ICSTodo as reminder change item into list change item {reminder: %@, list: %@}.", buf, 0x16u);
+              _os_log_impl(&dword_19A0DB000, write2, OS_LOG_TYPE_INFO, "Added ICSTodo as reminder change item into list change item {reminder: %@, list: %@}.", buf, 0x16u);
 
-              v9 = v32;
-              self = v31;
+              itemCopy = v32;
+              self = selfCopy;
               v11 = v30;
               v17 = v40;
 
-              v10 = v41;
+              array = v41;
             }
           }
         }
@@ -210,24 +210,24 @@
     }
 
     v14 = v38;
-    v8 = v39;
+    dataCopy = v39;
     v15 = 0;
   }
 
   v36 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return array;
 }
 
-- (BOOL)updateReminderChangeItem:(id)a3 fromICSData:(id)a4 isNew:(BOOL)a5 withOptions:(id)a6 error:(id *)a7
+- (BOOL)updateReminderChangeItem:(id)item fromICSData:(id)data isNew:(BOOL)new withOptions:(id)options error:(id *)error
 {
-  v9 = a5;
+  newCopy = new;
   v48 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  itemCopy = item;
+  dataCopy = data;
+  optionsCopy = options;
   v44 = 0;
-  v15 = [objc_alloc(MEMORY[0x1E69E3CB0]) initWithData:v13 options:0 error:&v44];
+  v15 = [objc_alloc(MEMORY[0x1E69E3CB0]) initWithData:dataCopy options:0 error:&v44];
   v16 = v44;
   if (v16)
   {
@@ -247,11 +247,11 @@
       [REMSaveRequest(Importing) importRemindersFromICSData:v16 insertIntoListChangeItem:v18 error:?];
     }
 
-    if (a7)
+    if (error)
     {
       v19 = v16;
       v20 = 0;
-      *a7 = v16;
+      *error = v16;
     }
 
     else
@@ -262,21 +262,21 @@
 
   else
   {
-    v38 = self;
-    v39 = v9;
-    v21 = [v15 calendar];
+    selfCopy = self;
+    v39 = newCopy;
+    calendar = [v15 calendar];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v22 = [v21 componentKeys];
-    v23 = [v22 countByEnumeratingWithState:&v40 objects:v47 count:16];
+    componentKeys = [calendar componentKeys];
+    v23 = [componentKeys countByEnumeratingWithState:&v40 objects:v47 count:16];
     if (v23)
     {
       v24 = v23;
       v35 = v16;
       v36 = v15;
-      v37 = v14;
+      v37 = optionsCopy;
       v25 = *v41;
       while (2)
       {
@@ -284,11 +284,11 @@
         {
           if (*v41 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(componentKeys);
           }
 
           v27 = *(*(&v40 + 1) + 8 * i);
-          v28 = [v21 componentForKey:v27];
+          v28 = [calendar componentForKey:v27];
           if (!v28)
           {
             v29 = +[REMLogStore write];
@@ -305,15 +305,15 @@
           if (v31)
           {
             v32 = v31;
-            v14 = v37;
-            [(REMSaveRequest *)v38 updateReminderChangeItem:v12 fromICSTodo:v31 icsCalendar:v21 isNew:v39 withOptions:v37];
+            optionsCopy = v37;
+            [(REMSaveRequest *)selfCopy updateReminderChangeItem:itemCopy fromICSTodo:v31 icsCalendar:calendar isNew:v39 withOptions:v37];
 
             v20 = 1;
             goto LABEL_24;
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v40 objects:v47 count:16];
+        v24 = [componentKeys countByEnumeratingWithState:&v40 objects:v47 count:16];
         if (v24)
         {
           continue;
@@ -323,7 +323,7 @@
       }
 
       v20 = 0;
-      v14 = v37;
+      optionsCopy = v37;
 LABEL_24:
       v16 = v35;
       v15 = v36;
@@ -339,28 +339,28 @@ LABEL_24:
   return v20;
 }
 
-- (void)updateUIDInReminderChangeItem:(id)a3 fromICSComponent:(id)a4 icsCalendar:(id)a5
+- (void)updateUIDInReminderChangeItem:(id)item fromICSComponent:(id)component icsCalendar:(id)calendar
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 recurrence_id];
+  itemCopy = item;
+  componentCopy = component;
+  calendarCopy = calendar;
+  recurrence_id = [componentCopy recurrence_id];
 
-  if (v10)
+  if (recurrence_id)
   {
-    v11 = [v8 recurrence_id];
-    v10 = [v11 rem_dateWithICSCalendar:v9];
+    recurrence_id2 = [componentCopy recurrence_id];
+    recurrence_id = [recurrence_id2 rem_dateWithICSCalendar:calendarCopy];
   }
 
-  v12 = [v8 uid];
-  if (v10)
+  v12 = [componentCopy uid];
+  if (recurrence_id)
   {
-    [v10 timeIntervalSinceReferenceDate];
+    [recurrence_id timeIntervalSinceReferenceDate];
     if (fabs(v13) >= 2.22044605e-16)
     {
-      v14 = [v8 uid];
-      v15 = REMGetRecurrenceUIDFromRealUID(v14, v10);
+      v14 = [componentCopy uid];
+      v15 = REMGetRecurrenceUIDFromRealUID(v14, recurrence_id);
 
       v12 = v15;
     }
@@ -371,30 +371,30 @@ LABEL_24:
     v16 = +[REMLogStore write];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [v7 objectID];
+      objectID = [itemCopy objectID];
       v19 = 138412546;
-      v20 = v17;
+      v20 = objectID;
       v21 = 2112;
       v22 = v12;
       _os_log_impl(&dword_19A0DB000, v16, OS_LOG_TYPE_INFO, "Setting ICS item UID to reminder change item {%@, uid: %@}.", &v19, 0x16u);
     }
 
-    [v7 setDaCalendarItemUniqueIdentifier:v12];
+    [itemCopy setDaCalendarItemUniqueIdentifier:v12];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_iCalendarDataFromICSTodoItem:(id)a3 icsCalendar:(id)a4
+- (id)_iCalendarDataFromICSTodoItem:(id)item icsCalendar:(id)calendar
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  calendarCopy = calendar;
   v7 = objc_alloc_init(MEMORY[0x1E69E3C68]);
   if (v7)
   {
-    [v7 setX_calendarserver_access:{objc_msgSend(v6, "x_calendarserver_access")}];
-    v12[0] = v5;
+    [v7 setX_calendarserver_access:{objc_msgSend(calendarCopy, "x_calendarserver_access")}];
+    v12[0] = itemCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     [v7 setComponents:v8 options:2];
 
@@ -411,77 +411,77 @@ LABEL_24:
   return v9;
 }
 
-- (void)_populateReminderChangeItem:(id)a3 withICSTodoItem:(id)a4 icsCalendar:(id)a5 isNew:(BOOL)a6 withOptions:(id)a7
+- (void)_populateReminderChangeItem:(id)item withICSTodoItem:(id)todoItem icsCalendar:(id)calendar isNew:(BOOL)new withOptions:(id)options
 {
-  v60 = a6;
+  newCopy = new;
   v71 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [v12 rem_nonNilSummary];
-  [v11 setTitleAsString:v15];
+  itemCopy = item;
+  todoItemCopy = todoItem;
+  calendarCopy = calendar;
+  optionsCopy = options;
+  rem_nonNilSummary = [todoItemCopy rem_nonNilSummary];
+  [itemCopy setTitleAsString:rem_nonNilSummary];
 
-  v16 = [v12 description];
+  v16 = [todoItemCopy description];
 
   if (v16)
   {
-    v17 = [v12 description];
-    [v11 setNotesAsString:v17];
+    v17 = [todoItemCopy description];
+    [itemCopy setNotesAsString:v17];
   }
 
-  v18 = [v12 last_modified];
-  if (!v18)
+  last_modified = [todoItemCopy last_modified];
+  if (!last_modified)
   {
-    v18 = [v12 dtstamp];
+    last_modified = [todoItemCopy dtstamp];
   }
 
-  v62 = v18;
-  v19 = [v18 rem_dateAsUTC];
-  [v11 setLastModifiedDate:v19];
+  v62 = last_modified;
+  rem_dateAsUTC = [last_modified rem_dateAsUTC];
+  [itemCopy setLastModifiedDate:rem_dateAsUTC];
 
-  v20 = [v12 created];
-  v21 = [v20 rem_dateAsUTC];
+  created = [todoItemCopy created];
+  rem_dateAsUTC2 = [created rem_dateAsUTC];
 
-  [v11 setCreationDate:v21];
-  [v11 setPriority:{objc_msgSend(v12, "priority")}];
-  v22 = [(REMSaveRequest *)self icsDueOrEndDateWithICSCalendarItem:v12 options:v14];
+  [itemCopy setCreationDate:rem_dateAsUTC2];
+  [itemCopy setPriority:{objc_msgSend(todoItemCopy, "priority")}];
+  v22 = [(REMSaveRequest *)self icsDueOrEndDateWithICSCalendarItem:todoItemCopy options:optionsCopy];
   v65 = v22;
   if (v22)
   {
     v23 = v22;
-    v24 = [v22 components];
-    [v11 setDueDateComponents:v24];
+    components = [v22 components];
+    [itemCopy setDueDateComponents:components];
 
-    v25 = [v13 systemTimeZoneForDate:v23];
-    v26 = [v11 dueDateComponents];
-    [v26 setTimeZone:v25];
+    v25 = [calendarCopy systemTimeZoneForDate:v23];
+    dueDateComponents = [itemCopy dueDateComponents];
+    [dueDateComponents setTimeZone:v25];
   }
 
   else
   {
-    [v11 setDueDateComponents:0];
+    [itemCopy setDueDateComponents:0];
   }
 
-  v61 = v21;
-  v63 = v14;
-  v64 = v13;
-  [(REMSaveRequest *)self updateUIDInReminderChangeItem:v11 fromICSComponent:v12 icsCalendar:v13];
-  v27 = [v12 url];
+  v61 = rem_dateAsUTC2;
+  v63 = optionsCopy;
+  v64 = calendarCopy;
+  [(REMSaveRequest *)self updateUIDInReminderChangeItem:itemCopy fromICSComponent:todoItemCopy icsCalendar:calendarCopy];
+  v27 = [todoItemCopy url];
 
   if (v27)
   {
-    v28 = [v12 url];
-    [v11 setIcsUrl:v28];
+    v28 = [todoItemCopy url];
+    [itemCopy setIcsUrl:v28];
   }
 
-  v29 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v30 = [v12 components];
-  v31 = [v30 countByEnumeratingWithState:&v66 objects:v70 count:16];
+  components2 = [todoItemCopy components];
+  v31 = [components2 countByEnumeratingWithState:&v66 objects:v70 count:16];
   if (v31)
   {
     v32 = v31;
@@ -492,31 +492,31 @@ LABEL_24:
       {
         if (*v67 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(components2);
         }
 
         v35 = *(*(&v66 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v29 addObject:v35];
+          [array addObject:v35];
         }
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v66 objects:v70 count:16];
+      v32 = [components2 countByEnumeratingWithState:&v66 objects:v70 count:16];
     }
 
     while (v32);
   }
 
-  [(REMSaveRequest *)self _populateAlarmsInReminderChangeItem:v11 withICSAlarms:v29 icsCalendar:v64];
-  [(REMSaveRequest *)self _populateRecurrencesInReminderChangeItem:v11 withICSComponent:v12 icsCalendar:v64];
-  v36 = [v12 completed];
-  v37 = [v36 rem_dateAsUTC];
+  [(REMSaveRequest *)self _populateAlarmsInReminderChangeItem:itemCopy withICSAlarms:array icsCalendar:v64];
+  [(REMSaveRequest *)self _populateRecurrencesInReminderChangeItem:itemCopy withICSComponent:todoItemCopy icsCalendar:v64];
+  completed = [todoItemCopy completed];
+  rem_dateAsUTC3 = [completed rem_dateAsUTC];
 
-  if (!v37)
+  if (!rem_dateAsUTC3)
   {
-    if ([v12 percentComplete] == 100 || objc_msgSend(v12, "status") == 4)
+    if ([todoItemCopy percentComplete] == 100 || objc_msgSend(todoItemCopy, "status") == 4)
     {
       if (v65)
       {
@@ -527,125 +527,125 @@ LABEL_24:
       {
         [MEMORY[0x1E695DF00] date];
       }
-      v37 = ;
+      rem_dateAsUTC3 = ;
     }
 
     else
     {
-      v37 = 0;
+      rem_dateAsUTC3 = 0;
     }
   }
 
-  [v11 setCompleted:v37 != 0];
-  [v11 setCompletionDate:v37];
-  v38 = [v12 x_apple_activity];
-  v39 = [v38 count];
+  [itemCopy setCompleted:rem_dateAsUTC3 != 0];
+  [itemCopy setCompletionDate:rem_dateAsUTC3];
+  x_apple_activity = [todoItemCopy x_apple_activity];
+  v39 = [x_apple_activity count];
 
   if (v39)
   {
     v40 = objc_opt_class();
-    v41 = [v12 x_apple_activity];
-    v42 = [v41 firstObject];
-    v43 = REMCheckedDynamicCast(v40, v42);
+    x_apple_activity2 = [todoItemCopy x_apple_activity];
+    firstObject = [x_apple_activity2 firstObject];
+    v43 = REMCheckedDynamicCast(v40, firstObject);
 
     v44 = objc_opt_class();
-    v45 = [v43 value];
-    v46 = REMCheckedDynamicCast(v44, v45);
+    value = [v43 value];
+    v46 = REMCheckedDynamicCast(v44, value);
 
     if (v46)
     {
       v47 = [[REMUserActivity alloc] initWithUniversalLink:v46];
-      [v11 setUserActivity:v47];
+      [itemCopy setUserActivity:v47];
     }
   }
 
-  v48 = [v12 x_apple_appLinkData];
+  x_apple_appLinkData = [todoItemCopy x_apple_appLinkData];
 
-  if (v48)
+  if (x_apple_appLinkData)
   {
     v49 = [REMUserActivity alloc];
-    v50 = [v12 x_apple_appLinkData];
-    v51 = [(REMUserActivity *)v49 initWithUserActivityData:v50];
-    [v11 setUserActivity:v51];
+    x_apple_appLinkData2 = [todoItemCopy x_apple_appLinkData];
+    v51 = [(REMUserActivity *)v49 initWithUserActivityData:x_apple_appLinkData2];
+    [itemCopy setUserActivity:v51];
   }
 
-  v52 = [v12 x_apple_sort_order];
-  if (!v52 && !v61)
+  x_apple_sort_order = [todoItemCopy x_apple_sort_order];
+  if (!x_apple_sort_order && !v61)
   {
     v53 = +[REMLogStore write];
     v54 = v63;
     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
     {
-      [REMSaveRequest(Importing) _populateReminderChangeItem:v12 withICSTodoItem:? icsCalendar:? isNew:? withOptions:?];
+      [REMSaveRequest(Importing) _populateReminderChangeItem:todoItemCopy withICSTodoItem:? icsCalendar:? isNew:? withOptions:?];
     }
 
-    v55 = [MEMORY[0x1E695DF00] date];
-    [v55 timeIntervalSinceReferenceDate];
-    [v11 setIcsDisplayOrder:v56];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
+    [itemCopy setIcsDisplayOrder:v56];
     goto LABEL_40;
   }
 
-  [v11 setIcsDisplayOrder:v52];
+  [itemCopy setIcsDisplayOrder:x_apple_sort_order];
   v54 = v63;
-  if (v60)
+  if (newCopy)
   {
-    v55 = [v11 listChangeItem];
-    [v55 setRemindersICSDisplayOrderChanged:1];
+    date = [itemCopy listChangeItem];
+    [date setRemindersICSDisplayOrderChanged:1];
 LABEL_40:
   }
 
-  v57 = [v12 x_apple_alternative_due_date_for_calendar];
-  v58 = [v57 rem_dateAsUTC];
+  x_apple_alternative_due_date_for_calendar = [todoItemCopy x_apple_alternative_due_date_for_calendar];
+  rem_dateAsUTC4 = [x_apple_alternative_due_date_for_calendar rem_dateAsUTC];
 
-  [v11 setAlternativeDisplayDateDateForCalendarWithNormalizedDate:v58];
+  [itemCopy setAlternativeDisplayDateDateForCalendarWithNormalizedDate:rem_dateAsUTC4];
   v59 = *MEMORY[0x1E69E9840];
 }
 
-- (id)icsDueOrEndDateWithICSCalendarItem:(id)a3 options:(id)a4
+- (id)icsDueOrEndDateWithICSCalendarItem:(id)item options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 due];
+  itemCopy = item;
+  optionsCopy = options;
+  v7 = [itemCopy due];
 
   if (!v7)
   {
     v8 = objc_opt_class();
-    v9 = [v6 valueForKey:@"ImportOptionConsiderDTENDForDueDate"];
+    v9 = [optionsCopy valueForKey:@"ImportOptionConsiderDTENDForDueDate"];
     v10 = REMDynamicCast(v8, v9);
 
     if ([v10 unsignedIntegerValue] == 1 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v11 = [v5 performSelector:sel_dtend];
+      v11 = [itemCopy performSelector:sel_dtend];
 
       goto LABEL_7;
     }
   }
 
-  v11 = [v5 due];
+  v11 = [itemCopy due];
 LABEL_7:
 
   return v11;
 }
 
-- (void)_populateAlarmsInReminderChangeItem:(id)a3 withICSAlarms:(id)a4 icsCalendar:(id)a5
+- (void)_populateAlarmsInReminderChangeItem:(id)item withICSAlarms:(id)alarms icsCalendar:(id)calendar
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 removeAllAlarms];
+  itemCopy = item;
+  alarmsCopy = alarms;
+  calendarCopy = calendar;
+  [itemCopy removeAllAlarms];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v11 = v9;
+  v11 = alarmsCopy;
   v12 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v30;
     v27 = *v30;
-    v28 = v8;
+    v28 = itemCopy;
     v26 = v11;
     do
     {
@@ -659,16 +659,16 @@ LABEL_7:
         v16 = *(*(&v29 + 1) + 8 * i);
         if (![v16 action])
         {
-          v17 = [v16 trigger];
-          if ([v17 isDurationBased])
+          trigger = [v16 trigger];
+          if ([trigger isDurationBased])
           {
           }
 
           else
           {
-            v18 = [v16 trigger];
-            [v18 value];
-            v19 = v10;
+            trigger2 = [v16 trigger];
+            [trigger2 value];
+            v19 = calendarCopy;
             v21 = v20 = self;
             [v21 components];
             v23 = v22 = v13;
@@ -676,11 +676,11 @@ LABEL_7:
 
             v13 = v22;
             self = v20;
-            v10 = v19;
+            calendarCopy = v19;
             v11 = v26;
             v14 = v27;
 
-            v8 = v28;
+            itemCopy = v28;
             if (v24)
             {
               continue;
@@ -688,7 +688,7 @@ LABEL_7:
           }
         }
 
-        [(REMSaveRequest *)self _addAlarmsToReminderChangeItem:v8 withICSAlarm:v16 icsCalendar:v10];
+        [(REMSaveRequest *)self _addAlarmsToReminderChangeItem:itemCopy withICSAlarm:v16 icsCalendar:calendarCopy];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -700,85 +700,85 @@ LABEL_7:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addAlarmsToReminderChangeItem:(id)a3 withICSAlarm:(id)a4 icsCalendar:(id)a5
+- (void)_addAlarmsToReminderChangeItem:(id)item withICSAlarm:(id)alarm icsCalendar:(id)calendar
 {
   v106 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [v8 uid];
-  if (![v11 length])
+  itemCopy = item;
+  alarmCopy = alarm;
+  calendarCopy = calendar;
+  array = [MEMORY[0x1E695DF70] array];
+  makeUID = [alarmCopy uid];
+  if (![makeUID length])
   {
-    v12 = [v8 x_wr_alarmuid];
+    x_wr_alarmuid = [alarmCopy x_wr_alarmuid];
 
-    v11 = v12;
+    makeUID = x_wr_alarmuid;
   }
 
   v13 = +[REMLogStore write];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    [REMSaveRequest(Importing) _addAlarmsToReminderChangeItem:v11 withICSAlarm:v7 icsCalendar:v13];
+    [REMSaveRequest(Importing) _addAlarmsToReminderChangeItem:makeUID withICSAlarm:itemCopy icsCalendar:v13];
   }
 
-  if (!v11)
+  if (!makeUID)
   {
-    v11 = [MEMORY[0x1E69E3C80] makeUID];
+    makeUID = [MEMORY[0x1E69E3C80] makeUID];
     v14 = +[REMLogStore write];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v7 objectID];
+      objectID = [itemCopy objectID];
       *buf = 138412546;
-      v103 = v11;
+      v103 = makeUID;
       v104 = 2112;
-      v105 = v15;
+      v105 = objectID;
       _os_log_impl(&dword_19A0DB000, v14, OS_LOG_TYPE_INFO, "Imported ICS alarm has no UID, generating one {alarmUID: %@, reminderID: %@}.", buf, 0x16u);
     }
   }
 
-  v16 = [v8 trigger];
-  v17 = [v16 isDurationBased];
-  v91 = v16;
-  v18 = [v16 value];
-  if (v17)
+  trigger = [alarmCopy trigger];
+  isDurationBased = [trigger isDurationBased];
+  v91 = trigger;
+  value = [trigger value];
+  if (isDurationBased)
   {
     v19 = [REMAlarmTimeIntervalTrigger alloc];
-    [v18 timeInterval];
+    [value timeInterval];
     v20 = [(REMAlarmTimeIntervalTrigger *)v19 initWithTimeInterval:?];
-    v21 = [v7 addAlarmWithTrigger:v20];
-    [v21 setAlarmUID:v11];
-    [v10 addObject:v21];
+    components = [itemCopy addAlarmWithTrigger:v20];
+    [components setAlarmUID:makeUID];
+    [array addObject:components];
   }
 
   else
   {
-    v22 = v10;
-    v20 = [objc_alloc(MEMORY[0x1E69E3C90]) initWithValue:v18];
-    v21 = [(REMAlarmTimeIntervalTrigger *)v20 components];
-    v23 = [v9 systemTimeZoneForDate:v20];
-    [v21 setTimeZone:v23];
+    v22 = array;
+    v20 = [objc_alloc(MEMORY[0x1E69E3C90]) initWithValue:value];
+    components = [(REMAlarmTimeIntervalTrigger *)v20 components];
+    v23 = [calendarCopy systemTimeZoneForDate:v20];
+    [components setTimeZone:v23];
 
-    if ((REMIsInvalidICSAlarmDateComponents(v21) & 1) == 0)
+    if ((REMIsInvalidICSAlarmDateComponents(components) & 1) == 0)
     {
-      v24 = [[REMAlarmDateTrigger alloc] initWithDateComponents:v21];
-      [v7 addAlarmWithTrigger:v24];
-      v26 = v25 = v11;
+      v24 = [[REMAlarmDateTrigger alloc] initWithDateComponents:components];
+      [itemCopy addAlarmWithTrigger:v24];
+      v26 = v25 = makeUID;
       [v26 setAlarmUID:v25];
       [v22 addObject:v26];
 
-      v11 = v25;
+      makeUID = v25;
     }
 
-    v10 = v22;
+    array = v22;
   }
 
-  v27 = [v8 x_apple_proximity];
-  if ([v27 isEqualToString:*MEMORY[0x1E69E4078]])
+  x_apple_proximity = [alarmCopy x_apple_proximity];
+  if ([x_apple_proximity isEqualToString:*MEMORY[0x1E69E4078]])
   {
     v28 = 1;
   }
 
-  else if ([v27 isEqualToString:*MEMORY[0x1E69E4088]])
+  else if ([x_apple_proximity isEqualToString:*MEMORY[0x1E69E4088]])
   {
     v28 = 2;
   }
@@ -788,13 +788,13 @@ LABEL_7:
     v28 = 0;
   }
 
-  v29 = [v8 x_apple_proximity];
-  if ([v29 isEqualToString:*MEMORY[0x1E69E4080]])
+  x_apple_proximity2 = [alarmCopy x_apple_proximity];
+  if ([x_apple_proximity2 isEqualToString:*MEMORY[0x1E69E4080]])
   {
     v30 = 1;
   }
 
-  else if ([v29 isEqualToString:*MEMORY[0x1E69E4090]])
+  else if ([x_apple_proximity2 isEqualToString:*MEMORY[0x1E69E4090]])
   {
     v30 = 2;
   }
@@ -804,14 +804,14 @@ LABEL_7:
     v30 = 0;
   }
 
-  v31 = [v8 x_apple_structured_location];
-  v89 = [v8 location];
-  v90 = v31;
-  if (v28 | v30 || v31 | v89)
+  x_apple_structured_location = [alarmCopy x_apple_structured_location];
+  location = [alarmCopy location];
+  v90 = x_apple_structured_location;
+  if (v28 | v30 || x_apple_structured_location | location)
   {
-    if ((v28 | v30) != 0 && (v31 | v89) != 0)
+    if ((v28 | v30) != 0 && (x_apple_structured_location | location) != 0)
     {
-      if (![v10 count])
+      if (![array count])
       {
         goto LABEL_38;
       }
@@ -819,25 +819,25 @@ LABEL_7:
       v32 = +[REMLogStore write];
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
-        v33 = [v7 objectID];
+        objectID2 = [itemCopy objectID];
         *buf = 138412546;
-        v103 = v11;
+        v103 = makeUID;
         v104 = 2112;
-        v105 = v33;
+        v105 = objectID2;
         _os_log_impl(&dword_19A0DB000, v32, OS_LOG_TYPE_INFO, "Importing a Proximity/Location trigger when we have already imported a TimeInterval/Date trigger from the same ICSAlarm. So we found a concrete case that they co-exist. {alarmUID: %@, reminderID: %@}", buf, 0x16u);
       }
     }
 
     else
     {
-      if (v31 | v89)
+      if (x_apple_structured_location | location)
       {
         if (!(v28 | v30))
         {
           v34 = +[REMLogStore write];
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
           {
-            [REMSaveRequest(Importing) _addAlarmsToReminderChangeItem:v11 withICSAlarm:v7 icsCalendar:?];
+            [REMSaveRequest(Importing) _addAlarmsToReminderChangeItem:makeUID withICSAlarm:itemCopy icsCalendar:?];
           }
 
           v28 = 1;
@@ -856,31 +856,31 @@ LABEL_38:
         }
 
 LABEL_39:
-        v85 = v7;
-        v35 = v8;
-        v36 = [v35 x_apple_structured_location];
-        v37 = [v35 location];
+        v85 = itemCopy;
+        v35 = alarmCopy;
+        x_apple_structured_location2 = [v35 x_apple_structured_location];
+        location2 = [v35 location];
 
-        if (v36)
+        if (x_apple_structured_location2)
         {
-          v87 = v9;
-          v83 = v10;
+          v87 = calendarCopy;
+          v83 = array;
           v38 = [REMStructuredLocation alloc];
-          v39 = [v36 title];
-          v40 = [(REMStructuredLocation *)v38 initWithTitle:v39];
+          title = [x_apple_structured_location2 title];
+          v40 = [(REMStructuredLocation *)v38 initWithTitle:title];
 
-          v41 = [v36 value];
-          v42 = [v41 scheme];
-          v43 = [v42 lowercaseString];
-          v44 = [v43 isEqualToString:@"geo"];
+          value2 = [x_apple_structured_location2 value];
+          scheme = [value2 scheme];
+          lowercaseString = [scheme lowercaseString];
+          v44 = [lowercaseString isEqualToString:@"geo"];
 
-          v84 = v41;
+          v84 = value2;
           if (v44)
           {
-            v45 = [v41 absoluteString];
-            v46 = [v45 substringFromIndex:4];
+            absoluteString = [value2 absoluteString];
+            v46 = [absoluteString substringFromIndex:4];
             v47 = [v46 rangeOfString:@";"];
-            v81 = v37;
+            v81 = location2;
             if (v48)
             {
               v49 = [v46 substringToIndex:v47];
@@ -888,8 +888,8 @@ LABEL_39:
               v46 = v49;
             }
 
-            v9 = v87;
-            v50 = v11;
+            calendarCopy = v87;
+            v50 = makeUID;
             v51 = [v46 componentsSeparatedByString:{@", ", v81}];
             if ([v51 count] == 2)
             {
@@ -913,75 +913,75 @@ LABEL_39:
               }
             }
 
-            v11 = v50;
-            v37 = v82;
+            makeUID = v50;
+            location2 = v82;
           }
 
           else
           {
-            v45 = +[REMLogStore write];
-            if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
+            absoluteString = +[REMLogStore write];
+            if (os_log_type_enabled(absoluteString, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v103 = v41;
-              _os_log_impl(&dword_19A0DB000, v45, OS_LOG_TYPE_INFO, "Ignoring unexpected location URL scheme when converting location from ICS: %@.", buf, 0xCu);
+              v103 = value2;
+              _os_log_impl(&dword_19A0DB000, absoluteString, OS_LOG_TYPE_INFO, "Ignoring unexpected location URL scheme when converting location from ICS: %@.", buf, 0xCu);
             }
 
-            v9 = v87;
+            calendarCopy = v87;
           }
 
-          v54 = [v36 parameterValueForName:@"X-APPLE-RADIUS"];
+          v54 = [x_apple_structured_location2 parameterValueForName:@"X-APPLE-RADIUS"];
           if (!v54)
           {
-            v54 = [v36 parameterValueForName:@"X-Apple-Radius"];
+            v54 = [x_apple_structured_location2 parameterValueForName:@"X-Apple-Radius"];
           }
 
           [v54 doubleValue];
           [(REMStructuredLocation *)v40 setRadius:?];
-          v55 = [v36 address];
-          [(REMStructuredLocation *)v40 setAddress:v55];
+          address = [x_apple_structured_location2 address];
+          [(REMStructuredLocation *)v40 setAddress:address];
 
-          v56 = [v36 routing];
-          [(REMStructuredLocation *)v40 setRouting:v56];
+          routing = [x_apple_structured_location2 routing];
+          [(REMStructuredLocation *)v40 setRouting:routing];
 
-          v57 = [v36 parameterValueForName:@"X-APPLE-REFERENCEFRAME"];
+          v57 = [x_apple_structured_location2 parameterValueForName:@"X-APPLE-REFERENCEFRAME"];
           if (v57)
           {
             [(REMStructuredLocation *)v40 setReferenceFrameString:v57];
           }
 
-          v58 = [v36 parameterValueForName:@"X-APPLE-ABUID"];
-          if (v58 || ([v36 parameterValueForName:@"X-Apple-ABUID"], (v58 = objc_claimAutoreleasedReturnValue()) != 0))
+          v58 = [x_apple_structured_location2 parameterValueForName:@"X-APPLE-ABUID"];
+          if (v58 || ([x_apple_structured_location2 parameterValueForName:@"X-Apple-ABUID"], (v58 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v59 = v58;
             [(REMStructuredLocation *)v40 setContactLabel:v58];
           }
 
-          v60 = [v36 mapKitHandle];
-          if (v60)
+          mapKitHandle = [x_apple_structured_location2 mapKitHandle];
+          if (mapKitHandle)
           {
-            [(REMStructuredLocation *)v40 setMapKitHandle:v60];
+            [(REMStructuredLocation *)v40 setMapKitHandle:mapKitHandle];
           }
 
-          v10 = v83;
+          array = v83;
         }
 
         else
         {
-          if (!v37)
+          if (!location2)
           {
-            v37 = &stru_1F0D67F00;
+            location2 = &stru_1F0D67F00;
           }
 
-          v40 = [[REMStructuredLocation alloc] initWithTitle:v37];
+          v40 = [[REMStructuredLocation alloc] initWithTitle:location2];
         }
 
         v30 = [[REMAlarmLocationTrigger alloc] initWithStructuredLocation:v40 proximity:v28];
-        v7 = v85;
+        itemCopy = v85;
 LABEL_67:
-        v61 = [v7 addAlarmWithTrigger:v30];
-        [v61 setAlarmUID:v11];
-        [v10 addObject:v61];
+        v61 = [itemCopy addAlarmWithTrigger:v30];
+        [v61 setAlarmUID:makeUID];
+        [array addObject:v61];
 
         goto LABEL_68;
       }
@@ -989,7 +989,7 @@ LABEL_67:
       v32 = +[REMLogStore write];
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        [REMSaveRequest(Importing) _addAlarmsToReminderChangeItem:v11 withICSAlarm:v7 icsCalendar:?];
+        [REMSaveRequest(Importing) _addAlarmsToReminderChangeItem:makeUID withICSAlarm:itemCopy icsCalendar:?];
       }
     }
 
@@ -997,13 +997,13 @@ LABEL_67:
   }
 
 LABEL_68:
-  v62 = [v8 acknowledged];
+  acknowledged = [alarmCopy acknowledged];
 
-  if (v62)
+  if (acknowledged)
   {
-    v63 = [v8 acknowledged];
-    v64 = [objc_alloc(MEMORY[0x1E69E3C90]) initWithValue:v63];
-    v65 = [v64 rem_dateWithICSCalendar:v9];
+    acknowledged2 = [alarmCopy acknowledged];
+    v64 = [objc_alloc(MEMORY[0x1E69E3C90]) initWithValue:acknowledged2];
+    v65 = [v64 rem_dateWithICSCalendar:calendarCopy];
   }
 
   else
@@ -1015,7 +1015,7 @@ LABEL_68:
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v66 = v10;
+  v66 = array;
   v67 = [v66 countByEnumeratingWithState:&v96 objects:v101 count:16];
   if (v67)
   {
@@ -1039,13 +1039,13 @@ LABEL_68:
     while (v68);
   }
 
-  v71 = [v8 relatedTo];
+  relatedTo = [alarmCopy relatedTo];
 
-  if (v71)
+  if (relatedTo)
   {
-    v86 = v11;
-    v88 = v9;
-    v72 = v7;
+    v86 = makeUID;
+    v88 = calendarCopy;
+    v72 = itemCopy;
     v94 = 0u;
     v95 = 0u;
     v92 = 0u;
@@ -1066,8 +1066,8 @@ LABEL_68:
           }
 
           v78 = *(*(&v92 + 1) + 8 * j);
-          v79 = [v8 relatedTo];
-          [v78 setOriginalAlarmUID:v79];
+          relatedTo2 = [alarmCopy relatedTo];
+          [v78 setOriginalAlarmUID:relatedTo2];
         }
 
         v75 = [v73 countByEnumeratingWithState:&v92 objects:v100 count:16];
@@ -1076,26 +1076,26 @@ LABEL_68:
       while (v75);
     }
 
-    v7 = v72;
-    v11 = v86;
-    v9 = v88;
+    itemCopy = v72;
+    makeUID = v86;
+    calendarCopy = v88;
   }
 
   v80 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateRecurrencesInReminderChangeItem:(id)a3 withICSComponent:(id)a4 icsCalendar:(id)a5
+- (void)_populateRecurrencesInReminderChangeItem:(id)item withICSComponent:(id)component icsCalendar:(id)calendar
 {
   v85 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 removeAllRecurrenceRules];
+  itemCopy = item;
+  componentCopy = component;
+  [itemCopy removeAllRecurrenceRules];
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v53 = v7;
-  obj = [v7 rrule];
+  v53 = componentCopy;
+  obj = [componentCopy rrule];
   v8 = [obj countByEnumeratingWithState:&v72 objects:v80 count:16];
   if (v8)
   {
@@ -1122,15 +1122,15 @@ LABEL_68:
           goto LABEL_46;
         }
 
-        v15 = [v6 accountID];
-        v71 = [v6 objectID];
+        accountID = [itemCopy accountID];
+        objectID = [itemCopy objectID];
         v16 = v13;
-        v68 = v15;
-        v17 = [v16 freq];
-        v18 = v17;
-        if (v17 <= 3)
+        v68 = accountID;
+        freq = [v16 freq];
+        v18 = freq;
+        if (freq <= 3)
         {
-          if ((v17 - 1) < 3)
+          if ((freq - 1) < 3)
           {
             v20 = +[REMLogStore write];
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1162,15 +1162,15 @@ LABEL_52:
           goto LABEL_20;
         }
 
-        if (v17 > 5)
+        if (freq > 5)
         {
-          if (v17 == 6)
+          if (freq == 6)
           {
             v19 = 2;
             goto LABEL_18;
           }
 
-          if (v17 == 7)
+          if (freq == 7)
           {
             v19 = 3;
             goto LABEL_18;
@@ -1179,7 +1179,7 @@ LABEL_52:
           goto LABEL_19;
         }
 
-        if (v17 != 4)
+        if (freq != 4)
         {
           v19 = 1;
 LABEL_18:
@@ -1190,14 +1190,14 @@ LABEL_18:
 LABEL_21:
         v66 = 0;
 LABEL_22:
-        v23 = [v16 interval];
-        v62 = [v23 integerValue];
+        interval = [v16 interval];
+        integerValue = [interval integerValue];
 
-        v24 = [v16 wkst];
-        v25 = v24;
-        if (v24)
+        wkst = [v16 wkst];
+        v25 = wkst;
+        if (wkst)
         {
-          v64 = REMWeekdayFromICSWeekday([v24 integerValue]);
+          v64 = REMWeekdayFromICSWeekday([wkst integerValue]);
         }
 
         else
@@ -1205,21 +1205,21 @@ LABEL_22:
           v64 = 0;
         }
 
-        v26 = [v16 until];
+        until = [v16 until];
         v67 = v25;
-        if (v26)
+        if (until)
         {
-          v27 = [objc_alloc(MEMORY[0x1E69E3C90]) initWithValue:v26];
-          v28 = [v27 rem_dateAsUTC];
+          v27 = [objc_alloc(MEMORY[0x1E69E3C90]) initWithValue:until];
+          rem_dateAsUTC = [v27 rem_dateAsUTC];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v29 = [v28 dateByAddingTimeInterval:86399.0];
+            v29 = [rem_dateAsUTC dateByAddingTimeInterval:86399.0];
 
-            v28 = v29;
+            rem_dateAsUTC = v29;
           }
 
-          v61 = [REMRecurrenceEnd recurrenceEndWithEndDate:v28];
+          v61 = [REMRecurrenceEnd recurrenceEndWithEndDate:rem_dateAsUTC];
 
           goto LABEL_31;
         }
@@ -1237,20 +1237,20 @@ LABEL_31:
 
         v61 = 0;
 LABEL_32:
-        v65 = v26;
+        v65 = until;
         v69 = v13;
         v70 = v12;
         v31 = v16;
-        v32 = [v16 byday];
-        v60 = v32;
-        if ([v32 count])
+        byday = [v16 byday];
+        v60 = byday;
+        if ([byday count])
         {
-          v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v32, "count")}];
+          v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(byday, "count")}];
           v76 = 0u;
           v77 = 0u;
           v78 = 0u;
           v79 = 0u;
-          v34 = v32;
+          v34 = byday;
           v35 = [v34 countByEnumeratingWithState:&v76 objects:buf count:16];
           if (v35)
           {
@@ -1267,8 +1267,8 @@ LABEL_32:
 
                 v39 = *(*(&v76 + 1) + 8 * i);
                 v40 = REMWeekdayFromICSWeekday([v39 weekday]);
-                v41 = [v39 number];
-                v42 = +[REMRecurrenceDayOfWeek dayOfWeek:weekNumber:](REMRecurrenceDayOfWeek, "dayOfWeek:weekNumber:", v40, [v41 integerValue]);
+                number = [v39 number];
+                v42 = +[REMRecurrenceDayOfWeek dayOfWeek:weekNumber:](REMRecurrenceDayOfWeek, "dayOfWeek:weekNumber:", v40, [number integerValue]);
 
                 [v33 addObject:v42];
               }
@@ -1285,8 +1285,8 @@ LABEL_32:
           v33 = 0;
         }
 
-        v43 = v62;
-        if (v62 <= 1)
+        v43 = integerValue;
+        if (integerValue <= 1)
         {
           v43 = 1;
         }
@@ -1295,12 +1295,12 @@ LABEL_32:
         v58 = +[REMRecurrenceRule newObjectID];
         v59 = [REMRecurrenceRule alloc];
         v44 = v31;
-        v57 = [v31 bymonthday];
-        v45 = [v31 bymonth];
-        v46 = [v31 byweekno];
-        v47 = [v31 byyearday];
-        v48 = [v31 bysetpos];
-        v49 = [(REMRecurrenceRule *)v59 initRecurrenceRuleWithObjectID:v58 accountID:v68 reminderID:v71 frequency:v66 interval:v63 firstDayOfTheWeek:v64 daysOfTheWeek:v33 daysOfTheMonth:v57 monthsOfTheYear:v45 weeksOfTheYear:v46 daysOfTheYear:v47 setPositions:v48 end:v61];
+        bymonthday = [v31 bymonthday];
+        bymonth = [v31 bymonth];
+        byweekno = [v31 byweekno];
+        byyearday = [v31 byyearday];
+        bysetpos = [v31 bysetpos];
+        v49 = [(REMRecurrenceRule *)v59 initRecurrenceRuleWithObjectID:v58 accountID:v68 reminderID:objectID frequency:v66 interval:v63 firstDayOfTheWeek:v64 daysOfTheWeek:v33 daysOfTheMonth:bymonthday monthsOfTheYear:bymonth weeksOfTheYear:byweekno daysOfTheYear:byyearday setPositions:bysetpos end:v61];
 
         v10 = v54;
         v9 = v55;
@@ -1309,7 +1309,7 @@ LABEL_32:
         v12 = v70;
         if (v49)
         {
-          [v6 addRecurrenceRule:v49];
+          [itemCopy addRecurrenceRule:v49];
           goto LABEL_48;
         }
 
@@ -1317,11 +1317,11 @@ LABEL_46:
         v49 = +[REMLogStore write];
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
-          v50 = [v6 objectID];
+          objectID2 = [itemCopy objectID];
           *buf = 138412546;
           v82 = v13;
           v83 = 2112;
-          v84 = v50;
+          v84 = objectID2;
           _os_log_error_impl(&dword_19A0DB000, v49, OS_LOG_TYPE_ERROR, "Couldn't populate the recurrence rule {icsRecurrence: %@, reminderID: %@}", buf, 0x16u);
         }
 
@@ -1341,10 +1341,10 @@ LABEL_48:
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (REMSaveRequest)initWithStore:(id)a3
+- (REMSaveRequest)initWithStore:(id)store
 {
-  v5 = a3;
-  if (!v5)
+  storeCopy = store;
+  if (!storeCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "store");
   }
@@ -1355,7 +1355,7 @@ LABEL_48:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     trackedAccountChangeItems = v7->_trackedAccountChangeItems;
     v7->_trackedAccountChangeItems = v8;
@@ -1399,12 +1399,12 @@ LABEL_48:
     *&v7->_updateLastModifiedDates = 1;
     v7->_cloneCompletedRecurrentRemindersAtSave = 1;
     v7->_syncToCloudKit = 1;
-    v28 = [v5 mode];
-    if (v28 > 2)
+    mode = [storeCopy mode];
+    if (mode > 2)
     {
-      if (v28 != 3)
+      if (mode != 3)
       {
-        if (v28 != 4)
+        if (mode != 4)
         {
           goto LABEL_22;
         }
@@ -1422,7 +1422,7 @@ LABEL_21:
 LABEL_22:
         if (!v7->_replicaManagerProvider)
         {
-          v35 = [[_REMDefaultReplicaManagerProvider alloc] initWithStore:v5];
+          v35 = [[_REMDefaultReplicaManagerProvider alloc] initWithStore:storeCopy];
           replicaManagerProvider = v7->_replicaManagerProvider;
           v7->_replicaManagerProvider = v35;
         }
@@ -1445,9 +1445,9 @@ LABEL_20:
 
     else
     {
-      if (v28 != 1)
+      if (mode != 1)
       {
-        if (v28 == 2)
+        if (mode == 2)
         {
           v29 = +[REMLogStore write];
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -1458,9 +1458,9 @@ LABEL_20:
 
           *&v7->_cloneCompletedRecurrentRemindersAtSave = 256;
           v7->_updateLastModifiedDates = 0;
-          v30 = [v5 replicaManagerProviderForCalDAVSync];
+          replicaManagerProviderForCalDAVSync = [storeCopy replicaManagerProviderForCalDAVSync];
           v31 = v7->_replicaManagerProvider;
-          v7->_replicaManagerProvider = v30;
+          v7->_replicaManagerProvider = replicaManagerProviderForCalDAVSync;
         }
 
         goto LABEL_22;
@@ -1489,44 +1489,44 @@ LABEL_24:
 {
   v19 = MEMORY[0x1E696AEC0];
   v17 = objc_opt_class();
-  v21 = [(REMSaveRequest *)self trackedAccountChangeItems];
-  v16 = [v21 count];
-  v20 = [(REMSaveRequest *)self trackedListChangeItems];
-  v15 = [v20 count];
-  v18 = [(REMSaveRequest *)self trackedSmartListChangeItems];
-  v14 = [v18 count];
-  v3 = [(REMSaveRequest *)self trackedTemplateChangeItems];
-  v4 = [v3 count];
-  v5 = [(REMSaveRequest *)self trackedReminderChangeItems];
-  v6 = [v5 count];
-  v7 = [(REMSaveRequest *)self trackedListSectionChangeItems];
-  v8 = [v7 count];
-  v9 = [(REMSaveRequest *)self trackedSmartListSectionChangeItems];
-  v10 = [v9 count];
-  v11 = [(REMSaveRequest *)self trackedTemplateSectionChangeItems];
-  v12 = [v19 stringWithFormat:@"<%@: %p acounts.count: %ld, lists.count: %ld, smartLists.count: %ld, templates.count: %ld, reminders.count: %ld, listSections.count: %ld>, smartListSections.count: %ld, templateSections.count: %ld>", v17, self, v16, v15, v14, v4, v6, v8, v10, objc_msgSend(v11, "count")];
+  trackedAccountChangeItems = [(REMSaveRequest *)self trackedAccountChangeItems];
+  v16 = [trackedAccountChangeItems count];
+  trackedListChangeItems = [(REMSaveRequest *)self trackedListChangeItems];
+  v15 = [trackedListChangeItems count];
+  trackedSmartListChangeItems = [(REMSaveRequest *)self trackedSmartListChangeItems];
+  v14 = [trackedSmartListChangeItems count];
+  trackedTemplateChangeItems = [(REMSaveRequest *)self trackedTemplateChangeItems];
+  v4 = [trackedTemplateChangeItems count];
+  trackedReminderChangeItems = [(REMSaveRequest *)self trackedReminderChangeItems];
+  v6 = [trackedReminderChangeItems count];
+  trackedListSectionChangeItems = [(REMSaveRequest *)self trackedListSectionChangeItems];
+  v8 = [trackedListSectionChangeItems count];
+  trackedSmartListSectionChangeItems = [(REMSaveRequest *)self trackedSmartListSectionChangeItems];
+  v10 = [trackedSmartListSectionChangeItems count];
+  trackedTemplateSectionChangeItems = [(REMSaveRequest *)self trackedTemplateSectionChangeItems];
+  v12 = [v19 stringWithFormat:@"<%@: %p acounts.count: %ld, lists.count: %ld, smartLists.count: %ld, templates.count: %ld, reminders.count: %ld, listSections.count: %ld>, smartListSections.count: %ld, templateSections.count: %ld>", v17, self, v16, v15, v14, v4, v6, v8, v10, objc_msgSend(trackedTemplateSectionChangeItems, "count")];
 
   return v12;
 }
 
-- (id)updateAccount:(id)a3
+- (id)updateAccount:(id)account
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  accountCopy = account;
+  v5 = accountCopy;
+  if (accountCopy)
   {
-    v6 = [v4 storage];
-    if (v6)
+    storage = [accountCopy storage];
+    if (storage)
     {
-      v7 = [v5 objectID];
-      if (v7)
+      objectID = [v5 objectID];
+      if (objectID)
       {
-        v8 = [(REMSaveRequest *)self _trackedAccountChangeItemForObjectID:v7];
+        v8 = [(REMSaveRequest *)self _trackedAccountChangeItemForObjectID:objectID];
         if (!v8)
         {
           v9 = [REMAccountChangeItem alloc];
-          v10 = [v5 capabilities];
-          v8 = [(REMAccountChangeItem *)v9 initWithSaveRequest:self storage:v6 capabilities:v10 observeInitialValues:0];
+          capabilities = [v5 capabilities];
+          v8 = [(REMAccountChangeItem *)v9 initWithSaveRequest:self storage:storage capabilities:capabilities observeInitialValues:0];
 
           [(REMSaveRequest *)self _trackAccountChangeItem:v8];
         }
@@ -1573,16 +1573,16 @@ LABEL_24:
   return v8;
 }
 
-- (id)_updateAccountWithListChangeItem:(id)a3
+- (id)_updateAccountWithListChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    v6 = [v4 parentAccountID];
-    if (v6)
+    parentAccountID = [itemCopy parentAccountID];
+    if (parentAccountID)
     {
-      v7 = [(REMSaveRequest *)self _trackedAccountChangeItemForObjectID:v6];
+      v7 = [(REMSaveRequest *)self _trackedAccountChangeItemForObjectID:parentAccountID];
       if (!v7)
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Assertion Failure. Missing REMAccountChangeItem associated with REMListChangeItem. {listChangeItem: %@}", v5}];
@@ -1617,33 +1617,33 @@ LABEL_24:
   return v7;
 }
 
-- (id)addGroupWithName:(id)a3 toAccountGroupContextChangeItem:(id)a4 groupObjectID:(id)a5
+- (id)addGroupWithName:(id)name toAccountGroupContextChangeItem:(id)item groupObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  itemCopy = item;
+  dCopy = d;
+  if (nameCopy)
   {
-    if (v9)
+    if (itemCopy)
     {
 LABEL_3:
-      if (!v10)
+      if (!dCopy)
       {
-        v10 = +[REMList newObjectID];
+        dCopy = +[REMList newObjectID];
       }
 
-      v11 = [v9 accountChangeItem];
-      v12 = [v11 saveRequest];
+      accountChangeItem = [itemCopy accountChangeItem];
+      saveRequest = [accountChangeItem saveRequest];
 
-      if (v12 != self)
+      if (saveRequest != self)
       {
         v13 = MEMORY[0x1E695DF30];
         v14 = *MEMORY[0x1E695D930];
-        v15 = [v11 saveRequest];
-        [v13 raise:v14 format:{@"accountChangeItem (%@) has incorrect saveRequest (%@). Expected %@", v11, v15, self}];
+        saveRequest2 = [accountChangeItem saveRequest];
+        [v13 raise:v14 format:{@"accountChangeItem (%@) has incorrect saveRequest (%@). Expected %@", accountChangeItem, saveRequest2, self}];
       }
 
-      v16 = [[REMListChangeItem alloc] initWithObjectID:v10 name:v8 insertIntoAccountChangeItem:v11 isGroup:1];
+      v16 = [[REMListChangeItem alloc] initWithObjectID:dCopy name:nameCopy insertIntoAccountChangeItem:accountChangeItem isGroup:1];
       [(REMSaveRequest *)self _trackListChangeItem:v16];
 
       goto LABEL_12;
@@ -1653,7 +1653,7 @@ LABEL_3:
   else
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "name");
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -1672,32 +1672,32 @@ LABEL_12:
   return v16;
 }
 
-- (id)addListWithName:(id)a3 toAccountChangeItem:(id)a4 listObjectID:(id)a5
+- (id)addListWithName:(id)name toAccountChangeItem:(id)item listObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  itemCopy = item;
+  dCopy = d;
+  if (nameCopy)
   {
-    if (v9)
+    if (itemCopy)
     {
 LABEL_3:
-      v11 = [v9 saveRequest];
+      saveRequest = [itemCopy saveRequest];
 
-      if (v11 != self)
+      if (saveRequest != self)
       {
         v12 = MEMORY[0x1E695DF30];
         v13 = *MEMORY[0x1E695D930];
-        v14 = [v9 saveRequest];
-        [v12 raise:v13 format:{@"accountChangeItem (%@) has incorrect saveRequest (%@). Expected %@", v9, v14, self}];
+        saveRequest2 = [itemCopy saveRequest];
+        [v12 raise:v13 format:{@"accountChangeItem (%@) has incorrect saveRequest (%@). Expected %@", itemCopy, saveRequest2, self}];
       }
 
-      if (!v10)
+      if (!dCopy)
       {
-        v10 = +[REMList newObjectID];
+        dCopy = +[REMList newObjectID];
       }
 
-      v15 = [[REMListChangeItem alloc] initWithObjectID:v10 name:v8 insertIntoAccountChangeItem:v9];
+      v15 = [[REMListChangeItem alloc] initWithObjectID:dCopy name:nameCopy insertIntoAccountChangeItem:itemCopy];
       [(REMSaveRequest *)self _trackListChangeItem:v15];
       goto LABEL_12;
     }
@@ -1706,7 +1706,7 @@ LABEL_3:
   else
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "name");
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -1725,21 +1725,21 @@ LABEL_12:
   return v15;
 }
 
-- (id)addListWithName:(id)a3 toListSublistContextChangeItem:(id)a4 listObjectID:(id)a5
+- (id)addListWithName:(id)name toListSublistContextChangeItem:(id)item listObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  itemCopy = item;
+  dCopy = d;
+  if (nameCopy)
   {
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
     NSLog(&cfstr_SIsUnexpectedl.isa, "listSublistContextChangeItem");
-    if (v10)
+    if (dCopy)
     {
       goto LABEL_4;
     }
@@ -1748,78 +1748,78 @@ LABEL_10:
   }
 
   NSLog(&cfstr_SIsUnexpectedl.isa, "name");
-  if (!v9)
+  if (!itemCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v10)
+  if (dCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v10 = +[REMList newObjectID];
+  dCopy = +[REMList newObjectID];
 LABEL_4:
-  v11 = [v9 listChangeItem];
-  v12 = [v11 saveRequest];
+  listChangeItem = [itemCopy listChangeItem];
+  saveRequest = [listChangeItem saveRequest];
 
-  if (v12 != self)
+  if (saveRequest != self)
   {
     v13 = MEMORY[0x1E695DF30];
     v14 = *MEMORY[0x1E695D930];
-    v15 = [v11 saveRequest];
-    [v13 raise:v14 format:{@"listSublistContextChangeItem (%@) has incorrect saveRequest (%@). Expected %@", v9, v15, self}];
+    saveRequest2 = [listChangeItem saveRequest];
+    [v13 raise:v14 format:{@"listSublistContextChangeItem (%@) has incorrect saveRequest (%@). Expected %@", itemCopy, saveRequest2, self}];
   }
 
-  v16 = [[REMListChangeItem alloc] initWithObjectID:v10 name:v8 insertIntoListSublistContextChangeItem:v9];
+  v16 = [[REMListChangeItem alloc] initWithObjectID:dCopy name:nameCopy insertIntoListSublistContextChangeItem:itemCopy];
   [(REMSaveRequest *)self _trackListChangeItem:v16];
 
   return v16;
 }
 
-- (id)addListUsingTemplate:(id)a3 toAccountChangeItem:(id)a4
+- (id)addListUsingTemplate:(id)template toAccountChangeItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 templatesContextChangeItem];
+  templateCopy = template;
+  itemCopy = item;
+  templatesContextChangeItem = [itemCopy templatesContextChangeItem];
 
-  if (v8)
+  if (templatesContextChangeItem)
   {
-    v9 = [v6 name];
+    name = [templateCopy name];
 
-    if (!v9)
+    if (!name)
     {
       v10 = +[REMLogStore write];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [REMSaveRequest addListUsingTemplate:v6 toAccountChangeItem:?];
+        [REMSaveRequest addListUsingTemplate:templateCopy toAccountChangeItem:?];
       }
     }
 
-    v11 = [v6 name];
-    v12 = [(REMSaveRequest *)self addListWithName:v11 toAccountChangeItem:v7 listObjectID:0];
-    v13 = [v6 color];
-    [v12 setColor:v13];
+    name2 = [templateCopy name];
+    v12 = [(REMSaveRequest *)self addListWithName:name2 toAccountChangeItem:itemCopy listObjectID:0];
+    color = [templateCopy color];
+    [v12 setColor:color];
 
-    v14 = [v6 badgeEmblem];
-    [v12 setBadgeEmblem:v14];
+    badgeEmblem = [templateCopy badgeEmblem];
+    [v12 setBadgeEmblem:badgeEmblem];
 
-    [v12 setShowingLargeAttachments:{objc_msgSend(v6, "showingLargeAttachments")}];
-    v15 = [v6 sortingStyle];
-    [v12 setSortingStyle:v15];
+    [v12 setShowingLargeAttachments:{objc_msgSend(templateCopy, "showingLargeAttachments")}];
+    sortingStyle = [templateCopy sortingStyle];
+    [v12 setSortingStyle:sortingStyle];
 
-    v16 = [v6 objectID];
-    [v12 setTemplateID:v16];
+    objectID = [templateCopy objectID];
+    [v12 setTemplateID:objectID];
   }
 
   else
   {
-    v11 = +[REMLogStore write];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    name2 = +[REMLogStore write];
+    if (os_log_type_enabled(name2, OS_LOG_TYPE_ERROR))
     {
-      [REMSaveRequest addListUsingTemplate:v7 toAccountChangeItem:?];
+      [REMSaveRequest addListUsingTemplate:itemCopy toAccountChangeItem:?];
     }
 
     v12 = 0;
@@ -1828,47 +1828,47 @@ LABEL_4:
   return v12;
 }
 
-- (id)addListUsingPublicTemplateWithREMListRepresentation:(id)a3 toAccountChangeItem:(id)a4
+- (id)addListUsingPublicTemplateWithREMListRepresentation:(id)representation toAccountChangeItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 templatesContextChangeItem];
+  representationCopy = representation;
+  itemCopy = item;
+  templatesContextChangeItem = [itemCopy templatesContextChangeItem];
 
-  if (v8)
+  if (templatesContextChangeItem)
   {
-    v9 = [v6 name];
+    name = [representationCopy name];
 
-    if (!v9)
+    if (!name)
     {
       v10 = +[REMLogStore write];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [REMSaveRequest addListUsingPublicTemplateWithREMListRepresentation:v6 toAccountChangeItem:?];
+        [REMSaveRequest addListUsingPublicTemplateWithREMListRepresentation:representationCopy toAccountChangeItem:?];
       }
     }
 
-    v11 = [v6 name];
-    v12 = [(REMSaveRequest *)self addListWithName:v11 toAccountChangeItem:v7 listObjectID:0];
-    v13 = [v6 color];
-    [v12 setColor:v13];
+    name2 = [representationCopy name];
+    v12 = [(REMSaveRequest *)self addListWithName:name2 toAccountChangeItem:itemCopy listObjectID:0];
+    color = [representationCopy color];
+    [v12 setColor:color];
 
-    v14 = [v6 badgeEmblem];
-    [v12 setBadgeEmblem:v14];
+    badgeEmblem = [representationCopy badgeEmblem];
+    [v12 setBadgeEmblem:badgeEmblem];
 
-    [v12 setShowingLargeAttachments:{objc_msgSend(v6, "showingLargeAttachments")}];
-    v15 = [v6 sortingStyle];
-    [v12 setSortingStyle:v15];
+    [v12 setShowingLargeAttachments:{objc_msgSend(representationCopy, "showingLargeAttachments")}];
+    sortingStyle = [representationCopy sortingStyle];
+    [v12 setSortingStyle:sortingStyle];
 
-    v16 = [v6 objectID];
-    [v12 setTemplateID:v16];
+    objectID = [representationCopy objectID];
+    [v12 setTemplateID:objectID];
   }
 
   else
   {
-    v11 = +[REMLogStore write];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    name2 = +[REMLogStore write];
+    if (os_log_type_enabled(name2, OS_LOG_TYPE_ERROR))
     {
-      [REMSaveRequest addListUsingPublicTemplateWithREMListRepresentation:v7 toAccountChangeItem:?];
+      [REMSaveRequest addListUsingPublicTemplateWithREMListRepresentation:itemCopy toAccountChangeItem:?];
     }
 
     v12 = 0;
@@ -1877,28 +1877,28 @@ LABEL_4:
   return v12;
 }
 
-- (id)updateList:(id)a3
+- (id)updateList:(id)list
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listCopy = list;
+  v5 = listCopy;
+  if (listCopy)
   {
-    v6 = [v4 storage];
-    if (v6)
+    storage = [listCopy storage];
+    if (storage)
     {
-      v7 = [v5 account];
-      v8 = [(REMSaveRequest *)self updateAccount:v7];
+      account = [v5 account];
+      v8 = [(REMSaveRequest *)self updateAccount:account];
 
-      v9 = [v5 parentList];
-      if (v9)
+      parentList = [v5 parentList];
+      if (parentList)
       {
-        v10 = [(REMSaveRequest *)self updateList:v9];
+        v10 = [(REMSaveRequest *)self updateList:parentList];
       }
 
-      v11 = [v5 storage];
-      v12 = [v5 account];
-      v13 = [v12 capabilities];
-      v14 = [(REMSaveRequest *)self _updateListStorage:v11 accountCapabilities:v13];
+      storage2 = [v5 storage];
+      account2 = [v5 account];
+      capabilities = [account2 capabilities];
+      v14 = [(REMSaveRequest *)self _updateListStorage:storage2 accountCapabilities:capabilities];
     }
 
     else
@@ -1929,12 +1929,12 @@ LABEL_4:
   return v14;
 }
 
-- (id)_updateListStorage:(id)a3 accountCapabilities:(id)a4
+- (id)_updateListStorage:(id)storage accountCapabilities:(id)capabilities
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  storageCopy = storage;
+  capabilitiesCopy = capabilities;
+  v8 = capabilitiesCopy;
+  if (!storageCopy)
   {
     v11 = +[REMLogStore write];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -1946,7 +1946,7 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!capabilitiesCopy)
   {
     v13 = +[REMLogStore write];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -1961,13 +1961,13 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v9 = [v6 objectID];
-  if (v9)
+  objectID = [storageCopy objectID];
+  if (objectID)
   {
-    v10 = [(REMSaveRequest *)self _trackedListChangeItemForObjectID:v9];
+    v10 = [(REMSaveRequest *)self _trackedListChangeItemForObjectID:objectID];
     if (!v10)
     {
-      v10 = [[REMListChangeItem alloc] initWithSaveRequest:self storage:v6 accountCapabilities:v8 observeInitialValues:0];
+      v10 = [[REMListChangeItem alloc] initWithSaveRequest:self storage:storageCopy accountCapabilities:v8 observeInitialValues:0];
       [(REMSaveRequest *)self _trackListChangeItem:v10];
     }
   }
@@ -1989,11 +1989,11 @@ LABEL_17:
   return v10;
 }
 
-- (id)_updateListWithReminderChangeItem:(id)a3
+- (id)_updateListWithReminderChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     v9 = +[REMLogStore write];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -2005,9 +2005,9 @@ LABEL_17:
     goto LABEL_12;
   }
 
-  v6 = [v4 storage];
+  storage = [itemCopy storage];
 
-  if (!v6)
+  if (!storage)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -2015,24 +2015,24 @@ LABEL_17:
       [REMSaveRequest _updateListWithReminderChangeItem:];
     }
 
-    v8 = [v5 storage];
+    storage2 = [v5 storage];
 
-    if (!v8)
+    if (!storage2)
     {
       NSLog(&cfstr_SIsUnexpectedl.isa, "reminderChangeItem.storage");
       goto LABEL_17;
     }
 
 LABEL_12:
-    v8 = 0;
+    storage2 = 0;
     goto LABEL_17;
   }
 
-  v7 = [v5 listID];
-  if (v7)
+  listID = [v5 listID];
+  if (listID)
   {
-    v8 = [(REMSaveRequest *)self _trackedListChangeItemForObjectID:v7];
-    if (!v8)
+    storage2 = [(REMSaveRequest *)self _trackedListChangeItemForObjectID:listID];
+    if (!storage2)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Assertion Failure. Missing REMListChangeItem associated with REMReminderChangeItem. {reminderChangeItem: %@}", v5}];
     }
@@ -2047,49 +2047,49 @@ LABEL_12:
     }
 
     NSLog(&cfstr_SIsUnexpectedl.isa, "listObjectID");
-    v8 = 0;
+    storage2 = 0;
   }
 
 LABEL_17:
 
-  return v8;
+  return storage2;
 }
 
-- (id)addCustomSmartListWithName:(id)a3 toAccountChangeItem:(id)a4 smartListObjectID:(id)a5
+- (id)addCustomSmartListWithName:(id)name toAccountChangeItem:(id)item smartListObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  itemCopy = item;
+  dCopy = d;
+  if (nameCopy)
   {
-    if (v9)
+    if (itemCopy)
     {
 LABEL_3:
-      v11 = [v9 saveRequest];
+      saveRequest = [itemCopy saveRequest];
 
       v12 = MEMORY[0x1E695D930];
-      if (v11 != self)
+      if (saveRequest != self)
       {
         v13 = MEMORY[0x1E695DF30];
         v14 = *MEMORY[0x1E695D930];
-        v15 = [v9 saveRequest];
-        [v13 raise:v14 format:{@"accountChangeItem (%@) has incorrect saveRequest (%@). Expected %@", v9, v15, self}];
+        saveRequest2 = [itemCopy saveRequest];
+        [v13 raise:v14 format:{@"accountChangeItem (%@) has incorrect saveRequest (%@). Expected %@", itemCopy, saveRequest2, self}];
       }
 
-      v16 = [v9 capabilities];
-      v17 = [v16 supportsCustomSmartLists];
+      capabilities = [itemCopy capabilities];
+      supportsCustomSmartLists = [capabilities supportsCustomSmartLists];
 
-      if ((v17 & 1) == 0)
+      if ((supportsCustomSmartLists & 1) == 0)
       {
         v18 = MEMORY[0x1E695DF30];
         v19 = *v12;
-        v20 = [v9 objectID];
-        [v18 raise:v19 format:{@"Cannot add CSL because the given accountChangeItem does not support it {accountID: %@}", v20}];
+        objectID = [itemCopy objectID];
+        [v18 raise:v19 format:{@"Cannot add CSL because the given accountChangeItem does not support it {accountID: %@}", objectID}];
       }
 
-      if (v10)
+      if (dCopy)
       {
-        v21 = v10;
+        v21 = dCopy;
       }
 
       else
@@ -2098,9 +2098,9 @@ LABEL_3:
       }
 
       v24 = v21;
-      v23 = [[REMSmartListChangeItem alloc] initWithCustomSmartListObjectID:v21 insertIntoAccountChangeItem:v9];
+      v23 = [[REMSmartListChangeItem alloc] initWithCustomSmartListObjectID:v21 insertIntoAccountChangeItem:itemCopy];
       [(REMSaveRequest *)self _trackSmartListChangeItem:v23];
-      [(REMSmartListChangeItem *)v23 setName:v8];
+      [(REMSmartListChangeItem *)v23 setName:nameCopy];
 
       goto LABEL_15;
     }
@@ -2109,7 +2109,7 @@ LABEL_3:
   else
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "name");
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -2128,20 +2128,20 @@ LABEL_15:
   return v23;
 }
 
-- (id)updateSmartList:(id)a3
+- (id)updateSmartList:(id)list
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listCopy = list;
+  v5 = listCopy;
+  if (listCopy)
   {
-    v6 = [v4 storage];
-    v7 = v6;
-    if (v6)
+    storage = [listCopy storage];
+    v7 = storage;
+    if (storage)
     {
-      v8 = [v6 objectID];
-      if (v8)
+      objectID = [storage objectID];
+      if (objectID)
       {
-        v9 = [(REMSaveRequest *)self _trackedSmartListChangeItemForObjectID:v8];
+        v9 = [(REMSaveRequest *)self _trackedSmartListChangeItemForObjectID:objectID];
         if (!v9)
         {
           v9 = -[REMSmartListChangeItem initWithSaveRequest:storage:observeInitialValues:]([REMSmartListChangeItem alloc], "initWithSaveRequest:storage:observeInitialValues:", self, v7, [v5 isPersisted] ^ 1);
@@ -2190,22 +2190,22 @@ LABEL_15:
   return v9;
 }
 
-- (id)addTemplateWithName:(id)a3 configuration:(id)a4 toAccountChangeItem:(id)a5 templateObjectID:(id)a6
+- (id)addTemplateWithName:(id)name configuration:(id)configuration toAccountChangeItem:(id)item templateObjectID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  nameCopy = name;
+  configurationCopy = configuration;
+  itemCopy = item;
+  dCopy = d;
+  if (nameCopy)
   {
-    if (v11)
+    if (configurationCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     NSLog(&cfstr_SIsUnexpectedl.isa, "configuration");
-    if (v12)
+    if (itemCopy)
     {
       goto LABEL_4;
     }
@@ -2214,26 +2214,26 @@ LABEL_8:
   }
 
   NSLog(&cfstr_SIsUnexpectedl.isa, "name");
-  if (!v11)
+  if (!configurationCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (itemCopy)
   {
 LABEL_4:
-    v14 = [v12 saveRequest];
+    saveRequest = [itemCopy saveRequest];
 
-    if (v14 != self)
+    if (saveRequest != self)
     {
       v15 = MEMORY[0x1E695DF30];
       v16 = *MEMORY[0x1E695D930];
-      v17 = [v12 saveRequest];
-      [v15 raise:v16 format:{@"accountChangeItem (%@) has incorrect saveRequest (%@). Expected %@", v12, v17, self}];
+      saveRequest2 = [itemCopy saveRequest];
+      [v15 raise:v16 format:{@"accountChangeItem (%@) has incorrect saveRequest (%@). Expected %@", itemCopy, saveRequest2, self}];
     }
 
-    v18 = [[REMTemplateChangeItem alloc] initWithObjectID:v13 name:v10 configuration:v11 insertIntoAccountChangeItem:v12];
+    v18 = [[REMTemplateChangeItem alloc] initWithObjectID:dCopy name:nameCopy configuration:configurationCopy insertIntoAccountChangeItem:itemCopy];
     [(REMSaveRequest *)self _trackTemplateChangeItem:v18];
     goto LABEL_12;
   }
@@ -2252,31 +2252,31 @@ LABEL_12:
   return v18;
 }
 
-- (id)addTemplateWithName:(id)a3 configuration:(id)a4 toAccountChangeItem:(id)a5
+- (id)addTemplateWithName:(id)name configuration:(id)configuration toAccountChangeItem:(id)item
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  itemCopy = item;
+  configurationCopy = configuration;
+  nameCopy = name;
   v11 = +[REMTemplate newObjectID];
-  v12 = [(REMSaveRequest *)self addTemplateWithName:v10 configuration:v9 toAccountChangeItem:v8 templateObjectID:v11];
+  v12 = [(REMSaveRequest *)self addTemplateWithName:nameCopy configuration:configurationCopy toAccountChangeItem:itemCopy templateObjectID:v11];
 
   return v12;
 }
 
-- (id)updateTemplate:(id)a3
+- (id)updateTemplate:(id)template
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  templateCopy = template;
+  v5 = templateCopy;
+  if (templateCopy)
   {
-    v6 = [v4 storage];
-    v7 = v6;
-    if (v6)
+    storage = [templateCopy storage];
+    v7 = storage;
+    if (storage)
     {
-      v8 = [v6 objectID];
-      if (v8)
+      objectID = [storage objectID];
+      if (objectID)
       {
-        v9 = [(REMSaveRequest *)self _trackedTemplateChangeItemForObjectID:v8];
+        v9 = [(REMSaveRequest *)self _trackedTemplateChangeItemForObjectID:objectID];
         if (!v9)
         {
           v9 = -[REMTemplateChangeItem initWithSaveRequest:storage:observeInitialValues:]([REMTemplateChangeItem alloc], "initWithSaveRequest:storage:observeInitialValues:", self, v7, [v5 isPersisted] ^ 1);
@@ -2325,14 +2325,14 @@ LABEL_12:
   return v9;
 }
 
-- (id)addReminderWithTitle:(id)a3 toListChangeItem:(id)a4 reminderObjectID:(id)a5
+- (id)addReminderWithTitle:(id)title toListChangeItem:(id)item reminderObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  titleCopy = title;
+  itemCopy = item;
+  dCopy = d;
+  if (titleCopy)
   {
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -2341,7 +2341,7 @@ LABEL_12:
   else
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "title");
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -2349,18 +2349,18 @@ LABEL_12:
 
   NSLog(&cfstr_SIsUnexpectedl.isa, "listChangeItem");
 LABEL_3:
-  v11 = [v9 objectID];
-  v12 = [v11 entityName];
+  objectID = [itemCopy objectID];
+  entityName = [objectID entityName];
   v13 = +[REMTemplate cdEntityName];
-  v14 = [v12 isEqualToString:v13];
+  v14 = [entityName isEqualToString:v13];
 
-  if (v10)
+  if (dCopy)
   {
-    v15 = [v10 entityName];
+    entityName2 = [dCopy entityName];
     if (v14)
     {
       v16 = +[REMTemplate cdEntityNameForSavedReminder];
-      v17 = [v15 isEqualToString:v16];
+      v17 = [entityName2 isEqualToString:v16];
 
       if ((v17 & 1) == 0)
       {
@@ -2371,7 +2371,7 @@ LABEL_3:
     else
     {
       v19 = +[REMReminder cdEntityName];
-      v20 = [v15 isEqualToString:v19];
+      v20 = [entityName2 isEqualToString:v19];
 
       if ((v20 & 1) == 0)
       {
@@ -2392,39 +2392,39 @@ LABEL_3:
       v18 = +[REMReminder newObjectID];
     }
 
-    v10 = v18;
+    dCopy = v18;
   }
 
-  v21 = [v9 saveRequest];
+  saveRequest = [itemCopy saveRequest];
 
   v22 = MEMORY[0x1E695D930];
-  if (v21 != self)
+  if (saveRequest != self)
   {
     v23 = MEMORY[0x1E695DF30];
     v24 = *MEMORY[0x1E695D930];
-    v25 = [v9 saveRequest];
-    [v23 raise:v24 format:{@"listChangeItem (%@) has incorrect saveRequest (%@). Expected %@", v9, v25, self}];
+    saveRequest2 = [itemCopy saveRequest];
+    [v23 raise:v24 format:{@"listChangeItem (%@) has incorrect saveRequest (%@). Expected %@", itemCopy, saveRequest2, self}];
   }
 
-  if ([v9 isGroup])
+  if ([itemCopy isGroup])
   {
-    [MEMORY[0x1E695DF30] raise:*v22 format:{@"listChangeItem is a group and adding reminder to group is not currently supported {listChangeItem: %@}", v9}];
+    [MEMORY[0x1E695DF30] raise:*v22 format:{@"listChangeItem is a group and adding reminder to group is not currently supported {listChangeItem: %@}", itemCopy}];
   }
 
-  v26 = [[REMReminderChangeItem alloc] initWithObjectID:v10 title:v8 insertIntoListChangeItem:v9];
+  v26 = [[REMReminderChangeItem alloc] initWithObjectID:dCopy title:titleCopy insertIntoListChangeItem:itemCopy];
   [(REMSaveRequest *)self _trackReminderChangeItem:v26];
 
   return v26;
 }
 
-- (id)addReminderWithTitle:(id)a3 toReminderSubtaskContextChangeItem:(id)a4 reminderObjectID:(id)a5
+- (id)addReminderWithTitle:(id)title toReminderSubtaskContextChangeItem:(id)item reminderObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  titleCopy = title;
+  itemCopy = item;
+  dCopy = d;
+  if (titleCopy)
   {
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -2433,7 +2433,7 @@ LABEL_3:
   else
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "title");
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -2441,19 +2441,19 @@ LABEL_3:
 
   NSLog(&cfstr_SIsUnexpectedl.isa, "parentReminderSubtaskContextChangeItem");
 LABEL_3:
-  v11 = [v9 reminderChangeItem];
-  v12 = [v11 objectID];
-  v13 = [v12 entityName];
+  reminderChangeItem = [itemCopy reminderChangeItem];
+  objectID = [reminderChangeItem objectID];
+  entityName = [objectID entityName];
   v14 = +[REMTemplate cdEntityNameForSavedReminder];
-  v15 = [v13 isEqualToString:v14];
+  v15 = [entityName isEqualToString:v14];
 
-  if (v10)
+  if (dCopy)
   {
-    v16 = [v10 entityName];
+    entityName2 = [dCopy entityName];
     if (v15)
     {
       v17 = +[REMTemplate cdEntityNameForSavedReminder];
-      v18 = [v16 isEqualToString:v17];
+      v18 = [entityName2 isEqualToString:v17];
 
       if ((v18 & 1) == 0)
       {
@@ -2464,7 +2464,7 @@ LABEL_3:
     else
     {
       v20 = +[REMReminder cdEntityName];
-      v21 = [v16 isEqualToString:v20];
+      v21 = [entityName2 isEqualToString:v20];
 
       if ((v21 & 1) == 0)
       {
@@ -2485,52 +2485,52 @@ LABEL_3:
       v19 = +[REMReminder newObjectID];
     }
 
-    v10 = v19;
+    dCopy = v19;
   }
 
-  v22 = [v9 reminderChangeItem];
-  v23 = [v22 saveRequest];
+  reminderChangeItem2 = [itemCopy reminderChangeItem];
+  saveRequest = [reminderChangeItem2 saveRequest];
 
-  if (v23 != self)
+  if (saveRequest != self)
   {
     v24 = MEMORY[0x1E695DF30];
     v25 = *MEMORY[0x1E695D930];
-    v26 = [v22 saveRequest];
-    [v24 raise:v25 format:{@"parentReminderChangeItem (%@) has incorrect saveRequest (%@). Expected %@", v22, v26, self}];
+    saveRequest2 = [reminderChangeItem2 saveRequest];
+    [v24 raise:v25 format:{@"parentReminderChangeItem (%@) has incorrect saveRequest (%@). Expected %@", reminderChangeItem2, saveRequest2, self}];
   }
 
-  v27 = [[REMReminderChangeItem alloc] initWithObjectID:v10 title:v8 insertIntoParentReminderSubtaskContextChangeItem:v9];
+  v27 = [[REMReminderChangeItem alloc] initWithObjectID:dCopy title:titleCopy insertIntoParentReminderSubtaskContextChangeItem:itemCopy];
   [(REMSaveRequest *)self _trackReminderChangeItem:v27];
 
   return v27;
 }
 
-- (id)updateReminder:(id)a3
+- (id)updateReminder:(id)reminder
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  reminderCopy = reminder;
+  v5 = reminderCopy;
+  if (reminderCopy)
   {
-    v6 = [v4 storage];
-    if (v6)
+    storage = [reminderCopy storage];
+    if (storage)
     {
-      v7 = [v5 objectID];
-      if (v7)
+      objectID = [v5 objectID];
+      if (objectID)
       {
-        v8 = [(REMSaveRequest *)self _trackedReminderChangeItemForObjectID:v7];
+        v8 = [(REMSaveRequest *)self _trackedReminderChangeItemForObjectID:objectID];
         if (!v8)
         {
           v9 = [REMReminderChangeItem alloc];
-          v10 = [v5 storage];
-          v11 = [v5 account];
-          v12 = [v11 capabilities];
-          v8 = [(REMReminderChangeItem *)v9 initWithSaveRequest:self storage:v10 accountCapabilities:v12 observeInitialValues:0];
+          storage2 = [v5 storage];
+          account = [v5 account];
+          capabilities = [account capabilities];
+          v8 = [(REMReminderChangeItem *)v9 initWithSaveRequest:self storage:storage2 accountCapabilities:capabilities observeInitialValues:0];
 
           [(REMSaveRequest *)self _trackReminderChangeItem:v8];
         }
 
-        v13 = [v5 list];
-        v14 = [(REMSaveRequest *)self updateList:v13];
+        list = [v5 list];
+        v14 = [(REMSaveRequest *)self updateList:list];
       }
 
       else
@@ -2574,38 +2574,38 @@ LABEL_3:
   return v8;
 }
 
-- (id)addListSectionWithDisplayName:(id)a3 toListSectionContextChangeItem:(id)a4 listSectionObjectID:(id)a5
+- (id)addListSectionWithDisplayName:(id)name toListSectionContextChangeItem:(id)item listSectionObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  itemCopy = item;
+  dCopy = d;
+  if (nameCopy)
   {
-    if (v9)
+    if (itemCopy)
     {
 LABEL_3:
-      v11 = [v9 listChangeItem];
-      v12 = [v11 saveRequest];
+      listChangeItem = [itemCopy listChangeItem];
+      saveRequest = [listChangeItem saveRequest];
 
-      if (v12 != self)
+      if (saveRequest != self)
       {
         v13 = MEMORY[0x1E695DF30];
         v14 = *MEMORY[0x1E695D930];
-        v15 = [v11 saveRequest];
-        [v13 raise:v14 format:{@"listSectionContextChangeItem.listChangeItem (%@) has incorrect saveRequest (%@). Expected %@", v11, v15, self}];
+        saveRequest2 = [listChangeItem saveRequest];
+        [v13 raise:v14 format:{@"listSectionContextChangeItem.listChangeItem (%@) has incorrect saveRequest (%@). Expected %@", listChangeItem, saveRequest2, self}];
       }
 
-      if (!v10)
+      if (!dCopy)
       {
-        v10 = +[REMListSection newObjectID];
+        dCopy = +[REMListSection newObjectID];
       }
 
-      v16 = [[REMListSectionChangeItem alloc] initWithObjectID:v10 displayName:v8 insertIntoListChangeItem:v11];
+      v16 = [[REMListSectionChangeItem alloc] initWithObjectID:dCopy displayName:nameCopy insertIntoListChangeItem:listChangeItem];
       v17 = [MEMORY[0x1E695DF00] now];
       [(REMListSectionChangeItem *)v16 setCreationDate:v17];
 
       [(REMSaveRequest *)self _trackListSectionChangeItem:v16];
-      [v9 setShouldUpdateSectionsOrdering:1];
+      [itemCopy setShouldUpdateSectionsOrdering:1];
 
       goto LABEL_12;
     }
@@ -2614,7 +2614,7 @@ LABEL_3:
   else
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "displayName");
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -2633,31 +2633,31 @@ LABEL_12:
   return v16;
 }
 
-- (id)updateListSection:(id)a3
+- (id)updateListSection:(id)section
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sectionCopy = section;
+  v5 = sectionCopy;
+  if (sectionCopy)
   {
-    v6 = [v4 storage];
-    if (v6)
+    storage = [sectionCopy storage];
+    if (storage)
     {
-      v7 = [v5 objectID];
-      if (v7)
+      objectID = [v5 objectID];
+      if (objectID)
       {
-        v8 = [(REMSaveRequest *)self _trackedListSectionChangeItemForObjectID:v7];
+        v8 = [(REMSaveRequest *)self _trackedListSectionChangeItemForObjectID:objectID];
         if (!v8)
         {
           v9 = [REMListSectionChangeItem alloc];
-          v10 = [v5 storage];
-          v11 = [v5 accountCapabilities];
-          v8 = [(REMBaseSectionChangeItem *)v9 initWithSaveRequest:self storage:v10 accountCapabilities:v11 observeInitialValues:0];
+          storage2 = [v5 storage];
+          accountCapabilities = [v5 accountCapabilities];
+          v8 = [(REMBaseSectionChangeItem *)v9 initWithSaveRequest:self storage:storage2 accountCapabilities:accountCapabilities observeInitialValues:0];
 
           [(REMSaveRequest *)self _trackListSectionChangeItem:v8];
         }
 
-        v12 = [v5 list];
-        v13 = [(REMSaveRequest *)self updateList:v12];
+        list = [v5 list];
+        v13 = [(REMSaveRequest *)self updateList:list];
       }
 
       else
@@ -2701,38 +2701,38 @@ LABEL_12:
   return v8;
 }
 
-- (id)addSmartListSectionWithDisplayName:(id)a3 toSmartListSectionContextChangeItem:(id)a4 smartListSectionObjectID:(id)a5
+- (id)addSmartListSectionWithDisplayName:(id)name toSmartListSectionContextChangeItem:(id)item smartListSectionObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  itemCopy = item;
+  dCopy = d;
+  if (nameCopy)
   {
-    if (v9)
+    if (itemCopy)
     {
 LABEL_3:
-      v11 = [v9 smartListChangeItem];
-      v12 = [v11 saveRequest];
+      smartListChangeItem = [itemCopy smartListChangeItem];
+      saveRequest = [smartListChangeItem saveRequest];
 
-      if (v12 != self)
+      if (saveRequest != self)
       {
         v13 = MEMORY[0x1E695DF30];
         v14 = *MEMORY[0x1E695D930];
-        v15 = [v11 saveRequest];
-        [v13 raise:v14 format:{@"smartListSectionContextChangeItem.smartListChangeItem (%@) has incorrect saveRequest (%@). Expected %@", v11, v15, self}];
+        saveRequest2 = [smartListChangeItem saveRequest];
+        [v13 raise:v14 format:{@"smartListSectionContextChangeItem.smartListChangeItem (%@) has incorrect saveRequest (%@). Expected %@", smartListChangeItem, saveRequest2, self}];
       }
 
-      if (!v10)
+      if (!dCopy)
       {
-        v10 = +[REMSmartListSection newObjectID];
+        dCopy = +[REMSmartListSection newObjectID];
       }
 
-      v16 = [[REMSmartListSectionChangeItem alloc] initWithObjectID:v10 displayName:v8 insertIntoSmartListChangeItem:v11];
+      v16 = [[REMSmartListSectionChangeItem alloc] initWithObjectID:dCopy displayName:nameCopy insertIntoSmartListChangeItem:smartListChangeItem];
       v17 = [MEMORY[0x1E695DF00] now];
       [(REMSmartListSectionChangeItem *)v16 setCreationDate:v17];
 
       [(REMSaveRequest *)self _trackSmartListSectionChangeItem:v16];
-      [v9 setShouldUpdateSectionsOrdering:1];
+      [itemCopy setShouldUpdateSectionsOrdering:1];
 
       goto LABEL_12;
     }
@@ -2741,7 +2741,7 @@ LABEL_3:
   else
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "displayName");
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -2760,31 +2760,31 @@ LABEL_12:
   return v16;
 }
 
-- (id)updateSmartListSection:(id)a3
+- (id)updateSmartListSection:(id)section
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sectionCopy = section;
+  v5 = sectionCopy;
+  if (sectionCopy)
   {
-    v6 = [v4 storage];
-    if (v6)
+    storage = [sectionCopy storage];
+    if (storage)
     {
-      v7 = [v5 objectID];
-      if (v7)
+      objectID = [v5 objectID];
+      if (objectID)
       {
-        v8 = [(REMSaveRequest *)self _trackedSmartListSectionChangeItemForObjectID:v7];
+        v8 = [(REMSaveRequest *)self _trackedSmartListSectionChangeItemForObjectID:objectID];
         if (!v8)
         {
           v9 = [REMSmartListSectionChangeItem alloc];
-          v10 = [v5 storage];
-          v11 = [v5 accountCapabilities];
-          v8 = [(REMBaseSectionChangeItem *)v9 initWithSaveRequest:self storage:v10 accountCapabilities:v11 observeInitialValues:0];
+          storage2 = [v5 storage];
+          accountCapabilities = [v5 accountCapabilities];
+          v8 = [(REMBaseSectionChangeItem *)v9 initWithSaveRequest:self storage:storage2 accountCapabilities:accountCapabilities observeInitialValues:0];
 
           [(REMSaveRequest *)self _trackSmartListSectionChangeItem:v8];
         }
 
-        v12 = [v5 smartList];
-        v13 = [(REMSaveRequest *)self updateSmartList:v12];
+        smartList = [v5 smartList];
+        v13 = [(REMSaveRequest *)self updateSmartList:smartList];
       }
 
       else
@@ -2828,38 +2828,38 @@ LABEL_12:
   return v8;
 }
 
-- (id)addTemplateSectionWithDisplayName:(id)a3 toTemplateSectionContextChangeItem:(id)a4 templateSectionObjectID:(id)a5
+- (id)addTemplateSectionWithDisplayName:(id)name toTemplateSectionContextChangeItem:(id)item templateSectionObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  itemCopy = item;
+  dCopy = d;
+  if (nameCopy)
   {
-    if (v9)
+    if (itemCopy)
     {
 LABEL_3:
-      v11 = [v9 templateChangeItem];
-      v12 = [v11 saveRequest];
+      templateChangeItem = [itemCopy templateChangeItem];
+      saveRequest = [templateChangeItem saveRequest];
 
-      if (v12 != self)
+      if (saveRequest != self)
       {
         v13 = MEMORY[0x1E695DF30];
         v14 = *MEMORY[0x1E695D930];
-        v15 = [v11 saveRequest];
-        [v13 raise:v14 format:{@"templateSectionContextChangeItem.templateChangeItem (%@) has incorrect saveRequest (%@). Expected %@", v11, v15, self}];
+        saveRequest2 = [templateChangeItem saveRequest];
+        [v13 raise:v14 format:{@"templateSectionContextChangeItem.templateChangeItem (%@) has incorrect saveRequest (%@). Expected %@", templateChangeItem, saveRequest2, self}];
       }
 
-      if (!v10)
+      if (!dCopy)
       {
-        v10 = +[REMTemplateSection newObjectID];
+        dCopy = +[REMTemplateSection newObjectID];
       }
 
-      v16 = [[REMTemplateSectionChangeItem alloc] initWithObjectID:v10 displayName:v8 insertIntoTemplateChangeItem:v11];
+      v16 = [[REMTemplateSectionChangeItem alloc] initWithObjectID:dCopy displayName:nameCopy insertIntoTemplateChangeItem:templateChangeItem];
       v17 = [MEMORY[0x1E695DF00] now];
       [(REMTemplateSectionChangeItem *)v16 setCreationDate:v17];
 
       [(REMSaveRequest *)self _trackTemplateSectionChangeItem:v16];
-      [v9 setShouldUpdateSectionsOrdering:1];
+      [itemCopy setShouldUpdateSectionsOrdering:1];
 
       goto LABEL_12;
     }
@@ -2868,7 +2868,7 @@ LABEL_3:
   else
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "displayName");
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -2887,31 +2887,31 @@ LABEL_12:
   return v16;
 }
 
-- (id)updateTemplateSection:(id)a3
+- (id)updateTemplateSection:(id)section
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sectionCopy = section;
+  v5 = sectionCopy;
+  if (sectionCopy)
   {
-    v6 = [v4 storage];
-    if (v6)
+    storage = [sectionCopy storage];
+    if (storage)
     {
-      v7 = [v5 objectID];
-      if (v7)
+      objectID = [v5 objectID];
+      if (objectID)
       {
-        v8 = [(REMSaveRequest *)self _trackedTemplateSectionChangeItemForObjectID:v7];
+        v8 = [(REMSaveRequest *)self _trackedTemplateSectionChangeItemForObjectID:objectID];
         if (!v8)
         {
           v9 = [REMTemplateSectionChangeItem alloc];
-          v10 = [v5 storage];
-          v11 = [v5 accountCapabilities];
-          v8 = [(REMBaseSectionChangeItem *)v9 initWithSaveRequest:self storage:v10 accountCapabilities:v11 observeInitialValues:0];
+          storage2 = [v5 storage];
+          accountCapabilities = [v5 accountCapabilities];
+          v8 = [(REMBaseSectionChangeItem *)v9 initWithSaveRequest:self storage:storage2 accountCapabilities:accountCapabilities observeInitialValues:0];
 
           [(REMSaveRequest *)self _trackTemplateSectionChangeItem:v8];
         }
 
-        v12 = [v5 parentTemplate];
-        v13 = [(REMSaveRequest *)self updateTemplate:v12];
+        parentTemplate = [v5 parentTemplate];
+        v13 = [(REMSaveRequest *)self updateTemplate:parentTemplate];
       }
 
       else
@@ -2955,20 +2955,20 @@ LABEL_12:
   return v8;
 }
 
-- (void)_updateResolutionTokenMapForChangeItem:(id)a3
+- (void)_updateResolutionTokenMapForChangeItem:(id)item
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 resolutionTokenMap];
-  if (v4)
+  itemCopy = item;
+  resolutionTokenMap = [itemCopy resolutionTokenMap];
+  if (resolutionTokenMap)
   {
     v5 = [MEMORY[0x1E695DFA8] set];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [v3 changedKeys];
-    v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    changedKeys = [itemCopy changedKeys];
+    v7 = [changedKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2979,17 +2979,17 @@ LABEL_12:
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(changedKeys);
           }
 
-          v11 = [v3 resolutionTokenKeyForChangedKey:*(*(&v22 + 1) + 8 * i)];
+          v11 = [itemCopy resolutionTokenKeyForChangedKey:*(*(&v22 + 1) + 8 * i)];
           if (v11)
           {
             [v5 addObject:v11];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v8 = [changedKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v8);
@@ -3014,7 +3014,7 @@ LABEL_12:
             objc_enumerationMutation(v12);
           }
 
-          [v4 updateForKey:{*(*(&v18 + 1) + 8 * j), v18}];
+          [resolutionTokenMap updateForKey:{*(*(&v18 + 1) + 8 * j), v18}];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -3036,22 +3036,22 @@ LABEL_12:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_willSaveAccountChangeItems:(id)a3 listChangeItems:(id)a4 listSectionChangeItems:(id)a5 smartListChangeItems:(id)a6 smartListSectionChangeItems:(id)a7 templateChangeItems:(id)a8 templateSectionChangeItems:(id)a9 reminderChangeItems:(id)a10
+- (void)_willSaveAccountChangeItems:(id)items listChangeItems:(id)changeItems listSectionChangeItems:(id)sectionChangeItems smartListChangeItems:(id)listChangeItems smartListSectionChangeItems:(id)listSectionChangeItems templateChangeItems:(id)templateChangeItems templateSectionChangeItems:(id)templateSectionChangeItems reminderChangeItems:(id)self0
 {
   v140 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v90 = a8;
-  v96 = a9;
-  v98 = a10;
+  itemsCopy = items;
+  changeItemsCopy = changeItems;
+  sectionChangeItemsCopy = sectionChangeItems;
+  listChangeItemsCopy = listChangeItems;
+  listSectionChangeItemsCopy = listSectionChangeItems;
+  templateChangeItemsCopy = templateChangeItems;
+  templateSectionChangeItemsCopy = templateSectionChangeItems;
+  reminderChangeItemsCopy = reminderChangeItems;
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
   v131 = 0u;
-  obj = v16;
+  obj = itemsCopy;
   v21 = [obj countByEnumeratingWithState:&v128 objects:v139 count:16];
   if (v21)
   {
@@ -3085,7 +3085,7 @@ LABEL_12:
   v127 = 0u;
   v124 = 0u;
   v125 = 0u;
-  v27 = v17;
+  v27 = changeItemsCopy;
   v28 = [v27 countByEnumeratingWithState:&v124 objects:v138 count:16];
   if (v28)
   {
@@ -3119,7 +3119,7 @@ LABEL_12:
   v123 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v94 = v18;
+  v94 = sectionChangeItemsCopy;
   v34 = [v94 countByEnumeratingWithState:&v120 objects:v137 count:16];
   if (v34)
   {
@@ -3153,7 +3153,7 @@ LABEL_12:
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  v93 = v19;
+  v93 = listChangeItemsCopy;
   v40 = [v93 countByEnumeratingWithState:&v116 objects:v136 count:16];
   if (v40)
   {
@@ -3187,7 +3187,7 @@ LABEL_12:
   v115 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v92 = v20;
+  v92 = listSectionChangeItemsCopy;
   v46 = [v92 countByEnumeratingWithState:&v112 objects:v135 count:16];
   if (v46)
   {
@@ -3223,7 +3223,7 @@ LABEL_12:
   v111 = 0u;
   v108 = 0u;
   v109 = 0u;
-  v52 = v90;
+  v52 = templateChangeItemsCopy;
   v53 = [v52 countByEnumeratingWithState:&v108 objects:v134 count:16];
   if (v53)
   {
@@ -3257,7 +3257,7 @@ LABEL_12:
   v107 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v59 = v96;
+  v59 = templateSectionChangeItemsCopy;
   v60 = [v59 countByEnumeratingWithState:&v104 objects:v133 count:16];
   if (v60)
   {
@@ -3294,7 +3294,7 @@ LABEL_12:
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v91 = v98;
+  v91 = reminderChangeItemsCopy;
   v99 = [v91 countByEnumeratingWithState:&v100 objects:v132 count:16];
   if (v99)
   {
@@ -3312,17 +3312,17 @@ LABEL_12:
 
         v68 = *(*(&v100 + 1) + 8 * v67);
         v69 = objc_autoreleasePoolPush();
-        v70 = [*(v66 + 3840) date];
-        v71 = [v68 creationDate];
+        date = [*(v66 + 3840) date];
+        creationDate = [v68 creationDate];
 
-        if (!v71)
+        if (!creationDate)
         {
-          [v68 setCreationDate:v70];
+          [v68 setCreationDate:date];
         }
 
         if (-[REMSaveRequest updateLastModifiedDates](self, "updateLastModifiedDates") || ([v68 lastModifiedDate], v72 = objc_claimAutoreleasedReturnValue(), v72, !v72))
         {
-          [v68 setLastModifiedDate:v70];
+          [v68 setLastModifiedDate:date];
         }
 
         [(REMSaveRequest *)self _updateResolutionTokenMapForChangeItem:v68];
@@ -3330,23 +3330,23 @@ LABEL_12:
 
         if (WeakRetained)
         {
-          v74 = [v68 listChangeItem];
-          v75 = [v74 sharees];
-          v76 = +[REMList isSharedWithShareeCount:sharingStatus:](REMList, "isSharedWithShareeCount:sharingStatus:", [v75 count], objc_msgSend(v74, "sharingStatus"));
+          listChangeItem = [v68 listChangeItem];
+          sharees = [listChangeItem sharees];
+          v76 = +[REMList isSharedWithShareeCount:sharingStatus:](REMList, "isSharedWithShareeCount:sharingStatus:", [sharees count], objc_msgSend(listChangeItem, "sharingStatus"));
 
           if (v76)
           {
-            v77 = [v68 changedKeys];
-            v78 = [v77 containsObject:@"objectID"];
+            changedKeys = [v68 changedKeys];
+            v78 = [changedKeys containsObject:@"objectID"];
 
-            v79 = [v68 changedKeys];
-            if ([v79 containsObject:@"titleDocument"])
+            changedKeys2 = [v68 changedKeys];
+            if ([changedKeys2 containsObject:@"titleDocument"])
             {
               goto LABEL_65;
             }
 
-            v80 = [v68 changedKeys];
-            if ([v80 containsObject:@"notesDocument"])
+            changedKeys3 = [v68 changedKeys];
+            if ([changedKeys3 containsObject:@"notesDocument"])
             {
 
 LABEL_65:
@@ -3360,16 +3360,16 @@ LABEL_66:
 LABEL_68:
               v81 = &unk_1F0D99B08;
 LABEL_69:
-              v84 = [(REMSaveRequest *)self saveRequestChangeEvents];
-              [v84 addObject:v81];
+              saveRequestChangeEvents = [(REMSaveRequest *)self saveRequestChangeEvents];
+              [saveRequestChangeEvents addObject:v81];
 
               v66 = 0x1E695D000;
             }
 
             else
             {
-              v82 = [v68 changedKeys];
-              v83 = [v82 containsObject:@"hashtags"];
+              changedKeys4 = [v68 changedKeys];
+              v83 = [changedKeys4 containsObject:@"hashtags"];
 
               if (v78)
               {
@@ -3400,15 +3400,15 @@ LABEL_69:
   v86 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveWithQueue:(id)a3 completion:(id)a4
+- (void)saveWithQueue:(id)queue completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  queueCopy = queue;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (queueCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -3427,30 +3427,30 @@ LABEL_69:
 LABEL_3:
   if ([(REMSaveRequest *)self _changeItemsAreAllEmpty])
   {
-    v9 = [(REMSaveRequest *)self author];
-    if ([v9 isEqualToString:@"com.apple.eventkitsyncd"])
+    author = [(REMSaveRequest *)self author];
+    if ([author isEqualToString:@"com.apple.eventkitsyncd"])
     {
 
 LABEL_9:
       v11 = +[REMLogStore write];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(REMSaveRequest *)self author];
+        author2 = [(REMSaveRequest *)self author];
         *buf = 138543618;
-        v24 = v12;
+        v24 = author2;
         v25 = 1024;
-        v26 = [(REMSaveRequest *)self saveIsNoopIfNoChangedKeys];
+        saveIsNoopIfNoChangedKeys = [(REMSaveRequest *)self saveIsNoopIfNoChangedKeys];
         _os_log_impl(&dword_19A0DB000, v11, OS_LOG_TYPE_DEFAULT, "Save Request has no changed keys. Opted to return early as no-op. {author: %{public}@, saveIsNoopIfNoChangedKeys: %d}", buf, 0x12u);
       }
 
-      v13 = [(REMSaveRequest *)self store];
-      [v13 processNoOpSaveRequest:self queue:v6 completion:v8];
+      store = [(REMSaveRequest *)self store];
+      [store processNoOpSaveRequest:self queue:queueCopy completion:v8];
       goto LABEL_18;
     }
 
-    v10 = [(REMSaveRequest *)self saveIsNoopIfNoChangedKeys];
+    saveIsNoopIfNoChangedKeys2 = [(REMSaveRequest *)self saveIsNoopIfNoChangedKeys];
 
-    if (v10)
+    if (saveIsNoopIfNoChangedKeys2)
     {
       goto LABEL_9;
     }
@@ -3458,9 +3458,9 @@ LABEL_9:
     v14 = +[REMLogStore write];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(REMSaveRequest *)self author];
+      author3 = [(REMSaveRequest *)self author];
       *buf = 138543362;
-      v24 = v15;
+      v24 = author3;
       _os_log_impl(&dword_19A0DB000, v14, OS_LOG_TYPE_DEFAULT, "LOOKATME: Save Request has no changed keys. Save will continue. Revisit if caller should avoid such saves. {author: %{public}@}", buf, 0xCu);
     }
   }
@@ -3479,10 +3479,10 @@ LABEL_9:
   activity_block[2] = __43__REMSaveRequest_saveWithQueue_completion___block_invoke;
   activity_block[3] = &unk_1E7507C90;
   activity_block[4] = self;
-  v20 = v6;
+  v20 = queueCopy;
   v21 = v17;
   v22 = v8;
-  v13 = v17;
+  store = v17;
   _os_activity_initiate(&dword_19A0DB000, "REMSaveRequest save async", OS_ACTIVITY_FLAG_IF_NONE_PRESENT, activity_block);
 
 LABEL_18:
@@ -3548,7 +3548,7 @@ id __43__REMSaveRequest_saveWithQueue_completion___block_invoke_3(uint64_t a1, u
   return objc_opt_self();
 }
 
-- (BOOL)saveSynchronouslyWithError:(id *)a3
+- (BOOL)saveSynchronouslyWithError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0;
@@ -3563,20 +3563,20 @@ id __43__REMSaveRequest_saveWithQueue_completion___block_invoke_3(uint64_t a1, u
   v21 = 0;
   if ([(REMSaveRequest *)self _changeItemsAreAllEmpty])
   {
-    v5 = [(REMSaveRequest *)self author];
-    if ([v5 isEqualToString:@"com.apple.eventkitsyncd"])
+    author = [(REMSaveRequest *)self author];
+    if ([author isEqualToString:@"com.apple.eventkitsyncd"])
     {
 
 LABEL_5:
       v7 = +[REMLogStore write];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(REMSaveRequest *)self author];
-        v9 = [(REMSaveRequest *)self saveIsNoopIfNoChangedKeys];
+        author2 = [(REMSaveRequest *)self author];
+        saveIsNoopIfNoChangedKeys = [(REMSaveRequest *)self saveIsNoopIfNoChangedKeys];
         *buf = 138543618;
-        *&buf[4] = v8;
+        *&buf[4] = author2;
         *&buf[12] = 1024;
-        *&buf[14] = v9;
+        *&buf[14] = saveIsNoopIfNoChangedKeys;
         _os_log_impl(&dword_19A0DB000, v7, OS_LOG_TYPE_DEFAULT, "Save Request has no changed keys. Opted to return early as no-op. {author: %{public}@, saveIsNoopIfNoChangedKeys: %d}", buf, 0x12u);
       }
 
@@ -3584,9 +3584,9 @@ LABEL_5:
       goto LABEL_14;
     }
 
-    v6 = [(REMSaveRequest *)self saveIsNoopIfNoChangedKeys];
+    saveIsNoopIfNoChangedKeys2 = [(REMSaveRequest *)self saveIsNoopIfNoChangedKeys];
 
-    if (v6)
+    if (saveIsNoopIfNoChangedKeys2)
     {
       goto LABEL_5;
     }
@@ -3594,9 +3594,9 @@ LABEL_5:
     v11 = +[REMLogStore write];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(REMSaveRequest *)self author];
+      author3 = [(REMSaveRequest *)self author];
       *buf = 138543362;
-      *&buf[4] = v12;
+      *&buf[4] = author3;
       _os_log_impl(&dword_19A0DB000, v11, OS_LOG_TYPE_DEFAULT, "LOOKATME: Save Request has no changed keys. Save will continue. Revisit if caller should avoid such saves. {author: %{public}@}", buf, 0xCu);
     }
   }
@@ -3614,9 +3614,9 @@ LABEL_5:
   v15[5] = &v22;
   v15[6] = &v16;
   [(REMSaveRequest *)self _prepareSave:v15];
-  if (a3)
+  if (error)
   {
-    *a3 = v17[5];
+    *error = v17[5];
   }
 
   v10 = *(v23 + 24);
@@ -3658,16 +3658,16 @@ void __45__REMSaveRequest_saveSynchronouslyWithError___block_invoke(uint64_t a1,
   [*(a1 + 32) notifyChangeDelegateForSaveSuccess:*(*(*(a1 + 40) + 8) + 24)];
 }
 
-- (void)notifyChangeDelegateForSaveSuccess:(BOOL)a3
+- (void)notifyChangeDelegateForSaveSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
-    v4 = [(REMSaveRequest *)self saveRequestChangeEvents];
-    if ([v4 count])
+    saveRequestChangeEvents = [(REMSaveRequest *)self saveRequestChangeEvents];
+    if ([saveRequestChangeEvents count])
     {
-      v5 = [(REMSaveRequest *)self notifyChangeDelegate];
+      notifyChangeDelegate = [(REMSaveRequest *)self notifyChangeDelegate];
 
-      if (v5)
+      if (notifyChangeDelegate)
       {
         v6 = +[REMLogStore write];
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -3676,20 +3676,20 @@ void __45__REMSaveRequest_saveSynchronouslyWithError___block_invoke(uint64_t a1,
           _os_log_impl(&dword_19A0DB000, v6, OS_LOG_TYPE_DEFAULT, "notifyChangeDelegateForSaveSuccess: SHOULD_NOTIFY {name: com.apple.reminderkit.REMSaveRequest}", buf, 2u);
         }
 
-        v7 = [(REMSaveRequest *)self saveRequestChangeEvents];
-        v8 = [v7 copy];
+        saveRequestChangeEvents2 = [(REMSaveRequest *)self saveRequestChangeEvents];
+        v8 = [saveRequestChangeEvents2 copy];
 
-        v9 = [(REMSaveRequest *)self notifyChangeDelegate];
-        v10 = [v9 callbackQueue];
+        notifyChangeDelegate2 = [(REMSaveRequest *)self notifyChangeDelegate];
+        callbackQueue = [notifyChangeDelegate2 callbackQueue];
 
         v13 = MEMORY[0x1E69E9820];
         v14 = 3221225472;
         v15 = __53__REMSaveRequest_notifyChangeDelegateForSaveSuccess___block_invoke;
         v16 = &unk_1E7508448;
-        v17 = self;
+        selfCopy = self;
         v18 = v8;
         v11 = v8;
-        dispatch_async(v10, &v13);
+        dispatch_async(callbackQueue, &v13);
       }
     }
 
@@ -3715,10 +3715,10 @@ void __53__REMSaveRequest_notifyChangeDelegateForSaveSuccess___block_invoke(uint
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v3 = [(REMSaveRequest *)self trackedAccountChangeItems];
-  v4 = [v3 allValues];
+  trackedAccountChangeItems = [(REMSaveRequest *)self trackedAccountChangeItems];
+  allValues = [trackedAccountChangeItems allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v99 objects:v110 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v99 objects:v110 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3729,12 +3729,12 @@ LABEL_3:
     {
       if (*v100 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allValues);
       }
 
-      v9 = [*(*(&v99 + 1) + 8 * v8) valueWithoutPerformingCopy];
-      v10 = [v9 changedKeys];
-      v11 = [v10 count];
+      valueWithoutPerformingCopy = [*(*(&v99 + 1) + 8 * v8) valueWithoutPerformingCopy];
+      changedKeys = [valueWithoutPerformingCopy changedKeys];
+      v11 = [changedKeys count];
 
       if (v11)
       {
@@ -3743,7 +3743,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v99 objects:v110 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v99 objects:v110 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -3762,10 +3762,10 @@ LABEL_9:
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v12 = [(REMSaveRequest *)self trackedListChangeItems];
-    v4 = [v12 allValues];
+    trackedListChangeItems = [(REMSaveRequest *)self trackedListChangeItems];
+    allValues = [trackedListChangeItems allValues];
 
-    v13 = [v4 countByEnumeratingWithState:&v95 objects:v109 count:16];
+    v13 = [allValues countByEnumeratingWithState:&v95 objects:v109 count:16];
     if (v13)
     {
       v14 = v13;
@@ -3776,12 +3776,12 @@ LABEL_11:
       {
         if (*v96 != v15)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        v17 = [*(*(&v95 + 1) + 8 * v16) valueWithoutPerformingCopy];
-        v18 = [v17 changedKeys];
-        v19 = [v18 count];
+        valueWithoutPerformingCopy2 = [*(*(&v95 + 1) + 8 * v16) valueWithoutPerformingCopy];
+        changedKeys2 = [valueWithoutPerformingCopy2 changedKeys];
+        v19 = [changedKeys2 count];
 
         if (v19)
         {
@@ -3790,7 +3790,7 @@ LABEL_11:
 
         if (v14 == ++v16)
         {
-          v14 = [v4 countByEnumeratingWithState:&v95 objects:v109 count:16];
+          v14 = [allValues countByEnumeratingWithState:&v95 objects:v109 count:16];
           if (v14)
           {
             goto LABEL_11;
@@ -3809,10 +3809,10 @@ LABEL_17:
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v20 = [(REMSaveRequest *)self trackedSmartListChangeItems];
-      v4 = [v20 allValues];
+      trackedSmartListChangeItems = [(REMSaveRequest *)self trackedSmartListChangeItems];
+      allValues = [trackedSmartListChangeItems allValues];
 
-      v21 = [v4 countByEnumeratingWithState:&v91 objects:v108 count:16];
+      v21 = [allValues countByEnumeratingWithState:&v91 objects:v108 count:16];
       if (v21)
       {
         v22 = v21;
@@ -3823,12 +3823,12 @@ LABEL_19:
         {
           if (*v92 != v23)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
-          v25 = [*(*(&v91 + 1) + 8 * v24) valueWithoutPerformingCopy];
-          v26 = [v25 changedKeys];
-          v27 = [v26 count];
+          valueWithoutPerformingCopy3 = [*(*(&v91 + 1) + 8 * v24) valueWithoutPerformingCopy];
+          changedKeys3 = [valueWithoutPerformingCopy3 changedKeys];
+          v27 = [changedKeys3 count];
 
           if (v27)
           {
@@ -3837,7 +3837,7 @@ LABEL_19:
 
           if (v22 == ++v24)
           {
-            v22 = [v4 countByEnumeratingWithState:&v91 objects:v108 count:16];
+            v22 = [allValues countByEnumeratingWithState:&v91 objects:v108 count:16];
             if (v22)
             {
               goto LABEL_19;
@@ -3856,10 +3856,10 @@ LABEL_25:
         v90 = 0u;
         v87 = 0u;
         v88 = 0u;
-        v28 = [(REMSaveRequest *)self trackedTemplateChangeItems];
-        v4 = [v28 allValues];
+        trackedTemplateChangeItems = [(REMSaveRequest *)self trackedTemplateChangeItems];
+        allValues = [trackedTemplateChangeItems allValues];
 
-        v29 = [v4 countByEnumeratingWithState:&v87 objects:v107 count:16];
+        v29 = [allValues countByEnumeratingWithState:&v87 objects:v107 count:16];
         if (v29)
         {
           v30 = v29;
@@ -3870,12 +3870,12 @@ LABEL_27:
           {
             if (*v88 != v31)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(allValues);
             }
 
-            v33 = [*(*(&v87 + 1) + 8 * v32) valueWithoutPerformingCopy];
-            v34 = [v33 changedKeys];
-            v35 = [v34 count];
+            valueWithoutPerformingCopy4 = [*(*(&v87 + 1) + 8 * v32) valueWithoutPerformingCopy];
+            changedKeys4 = [valueWithoutPerformingCopy4 changedKeys];
+            v35 = [changedKeys4 count];
 
             if (v35)
             {
@@ -3884,7 +3884,7 @@ LABEL_27:
 
             if (v30 == ++v32)
             {
-              v30 = [v4 countByEnumeratingWithState:&v87 objects:v107 count:16];
+              v30 = [allValues countByEnumeratingWithState:&v87 objects:v107 count:16];
               if (v30)
               {
                 goto LABEL_27;
@@ -3903,10 +3903,10 @@ LABEL_33:
           v86 = 0u;
           v83 = 0u;
           v84 = 0u;
-          v36 = [(REMSaveRequest *)self trackedReminderChangeItems];
-          v4 = [v36 allValues];
+          trackedReminderChangeItems = [(REMSaveRequest *)self trackedReminderChangeItems];
+          allValues = [trackedReminderChangeItems allValues];
 
-          v37 = [v4 countByEnumeratingWithState:&v83 objects:v106 count:16];
+          v37 = [allValues countByEnumeratingWithState:&v83 objects:v106 count:16];
           if (v37)
           {
             v38 = v37;
@@ -3917,12 +3917,12 @@ LABEL_35:
             {
               if (*v84 != v39)
               {
-                objc_enumerationMutation(v4);
+                objc_enumerationMutation(allValues);
               }
 
-              v41 = [*(*(&v83 + 1) + 8 * v40) valueWithoutPerformingCopy];
-              v42 = [v41 changedKeys];
-              v43 = [v42 count];
+              valueWithoutPerformingCopy5 = [*(*(&v83 + 1) + 8 * v40) valueWithoutPerformingCopy];
+              changedKeys5 = [valueWithoutPerformingCopy5 changedKeys];
+              v43 = [changedKeys5 count];
 
               if (v43)
               {
@@ -3931,7 +3931,7 @@ LABEL_35:
 
               if (v38 == ++v40)
               {
-                v38 = [v4 countByEnumeratingWithState:&v83 objects:v106 count:16];
+                v38 = [allValues countByEnumeratingWithState:&v83 objects:v106 count:16];
                 if (v38)
                 {
                   goto LABEL_35;
@@ -3950,10 +3950,10 @@ LABEL_41:
             v82 = 0u;
             v79 = 0u;
             v80 = 0u;
-            v44 = [(REMSaveRequest *)self trackedListSectionChangeItems];
-            v4 = [v44 allValues];
+            trackedListSectionChangeItems = [(REMSaveRequest *)self trackedListSectionChangeItems];
+            allValues = [trackedListSectionChangeItems allValues];
 
-            v45 = [v4 countByEnumeratingWithState:&v79 objects:v105 count:16];
+            v45 = [allValues countByEnumeratingWithState:&v79 objects:v105 count:16];
             if (v45)
             {
               v46 = v45;
@@ -3964,12 +3964,12 @@ LABEL_43:
               {
                 if (*v80 != v47)
                 {
-                  objc_enumerationMutation(v4);
+                  objc_enumerationMutation(allValues);
                 }
 
-                v49 = [*(*(&v79 + 1) + 8 * v48) valueWithoutPerformingCopy];
-                v50 = [v49 changedKeys];
-                v51 = [v50 count];
+                valueWithoutPerformingCopy6 = [*(*(&v79 + 1) + 8 * v48) valueWithoutPerformingCopy];
+                changedKeys6 = [valueWithoutPerformingCopy6 changedKeys];
+                v51 = [changedKeys6 count];
 
                 if (v51)
                 {
@@ -3978,7 +3978,7 @@ LABEL_43:
 
                 if (v46 == ++v48)
                 {
-                  v46 = [v4 countByEnumeratingWithState:&v79 objects:v105 count:16];
+                  v46 = [allValues countByEnumeratingWithState:&v79 objects:v105 count:16];
                   if (v46)
                   {
                     goto LABEL_43;
@@ -3997,10 +3997,10 @@ LABEL_49:
               v78 = 0u;
               v75 = 0u;
               v76 = 0u;
-              v52 = [(REMSaveRequest *)self trackedSmartListSectionChangeItems];
-              v4 = [v52 allValues];
+              trackedSmartListSectionChangeItems = [(REMSaveRequest *)self trackedSmartListSectionChangeItems];
+              allValues = [trackedSmartListSectionChangeItems allValues];
 
-              v53 = [v4 countByEnumeratingWithState:&v75 objects:v104 count:16];
+              v53 = [allValues countByEnumeratingWithState:&v75 objects:v104 count:16];
               if (v53)
               {
                 v54 = v53;
@@ -4011,12 +4011,12 @@ LABEL_51:
                 {
                   if (*v76 != v55)
                   {
-                    objc_enumerationMutation(v4);
+                    objc_enumerationMutation(allValues);
                   }
 
-                  v57 = [*(*(&v75 + 1) + 8 * v56) valueWithoutPerformingCopy];
-                  v58 = [v57 changedKeys];
-                  v59 = [v58 count];
+                  valueWithoutPerformingCopy7 = [*(*(&v75 + 1) + 8 * v56) valueWithoutPerformingCopy];
+                  changedKeys7 = [valueWithoutPerformingCopy7 changedKeys];
+                  v59 = [changedKeys7 count];
 
                   if (v59)
                   {
@@ -4025,7 +4025,7 @@ LABEL_51:
 
                   if (v54 == ++v56)
                   {
-                    v54 = [v4 countByEnumeratingWithState:&v75 objects:v104 count:16];
+                    v54 = [allValues countByEnumeratingWithState:&v75 objects:v104 count:16];
                     if (v54)
                     {
                       goto LABEL_51;
@@ -4044,10 +4044,10 @@ LABEL_57:
                 v74 = 0u;
                 v71 = 0u;
                 v72 = 0u;
-                v60 = [(REMSaveRequest *)self trackedTemplateSectionChangeItems];
-                v4 = [v60 allValues];
+                trackedTemplateSectionChangeItems = [(REMSaveRequest *)self trackedTemplateSectionChangeItems];
+                allValues = [trackedTemplateSectionChangeItems allValues];
 
-                v61 = [v4 countByEnumeratingWithState:&v71 objects:v103 count:16];
+                v61 = [allValues countByEnumeratingWithState:&v71 objects:v103 count:16];
                 if (!v61)
                 {
                   v68 = 1;
@@ -4062,12 +4062,12 @@ LABEL_59:
                 {
                   if (*v72 != v63)
                   {
-                    objc_enumerationMutation(v4);
+                    objc_enumerationMutation(allValues);
                   }
 
-                  v65 = [*(*(&v71 + 1) + 8 * v64) valueWithoutPerformingCopy];
-                  v66 = [v65 changedKeys];
-                  v67 = [v66 count];
+                  valueWithoutPerformingCopy8 = [*(*(&v71 + 1) + 8 * v64) valueWithoutPerformingCopy];
+                  changedKeys8 = [valueWithoutPerformingCopy8 changedKeys];
+                  v67 = [changedKeys8 count];
 
                   if (v67)
                   {
@@ -4076,7 +4076,7 @@ LABEL_59:
 
                   if (v62 == ++v64)
                   {
-                    v62 = [v4 countByEnumeratingWithState:&v71 objects:v103 count:16];
+                    v62 = [allValues countByEnumeratingWithState:&v71 objects:v103 count:16];
                     v68 = 1;
                     if (v62)
                     {
@@ -4101,46 +4101,46 @@ LABEL_67:
   return v68;
 }
 
-- (void)_prepareSave:(id)a3
+- (void)_prepareSave:(id)save
 {
   v123 = *MEMORY[0x1E69E9840];
-  v75 = a3;
-  if (!v75)
+  saveCopy = save;
+  if (!saveCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "saveBlock");
   }
 
   [(REMSaveRequest *)self performPreSaveActions];
-  v4 = [(REMSaveRequest *)self trackedAccountChangeItems];
-  v5 = [v4 allValues];
+  trackedAccountChangeItems = [(REMSaveRequest *)self trackedAccountChangeItems];
+  allValues = [trackedAccountChangeItems allValues];
 
-  v6 = [(REMSaveRequest *)self trackedListChangeItems];
-  v7 = [v6 allValues];
+  trackedListChangeItems = [(REMSaveRequest *)self trackedListChangeItems];
+  allValues2 = [trackedListChangeItems allValues];
 
-  v8 = [(REMSaveRequest *)self trackedSmartListChangeItems];
-  v9 = [v8 allValues];
+  trackedSmartListChangeItems = [(REMSaveRequest *)self trackedSmartListChangeItems];
+  allValues3 = [trackedSmartListChangeItems allValues];
 
-  v10 = [(REMSaveRequest *)self trackedTemplateChangeItems];
-  v11 = [v10 allValues];
+  trackedTemplateChangeItems = [(REMSaveRequest *)self trackedTemplateChangeItems];
+  allValues4 = [trackedTemplateChangeItems allValues];
 
-  v12 = [(REMSaveRequest *)self trackedReminderChangeItems];
-  v13 = [v12 allValues];
+  trackedReminderChangeItems = [(REMSaveRequest *)self trackedReminderChangeItems];
+  allValues5 = [trackedReminderChangeItems allValues];
 
-  v14 = [(REMSaveRequest *)self trackedListSectionChangeItems];
-  v70 = [v14 allValues];
+  trackedListSectionChangeItems = [(REMSaveRequest *)self trackedListSectionChangeItems];
+  allValues6 = [trackedListSectionChangeItems allValues];
 
-  v15 = [(REMSaveRequest *)self trackedSmartListSectionChangeItems];
-  v76 = [v15 allValues];
+  trackedSmartListSectionChangeItems = [(REMSaveRequest *)self trackedSmartListSectionChangeItems];
+  allValues7 = [trackedSmartListSectionChangeItems allValues];
 
-  v16 = [(REMSaveRequest *)self trackedTemplateSectionChangeItems];
-  v73 = [v16 allValues];
+  trackedTemplateSectionChangeItems = [(REMSaveRequest *)self trackedTemplateSectionChangeItems];
+  allValues8 = [trackedTemplateSectionChangeItems allValues];
 
-  v82 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  v82 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allValues, "count")}];
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
-  obj = v5;
+  obj = allValues;
   v17 = [obj countByEnumeratingWithState:&v111 objects:v122 count:16];
   if (v17)
   {
@@ -4165,12 +4165,12 @@ LABEL_67:
     while (v18);
   }
 
-  v81 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v81 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allValues2, "count")}];
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v22 = v7;
+  v22 = allValues2;
   v23 = [v22 countByEnumeratingWithState:&v107 objects:v121 count:16];
   if (v23)
   {
@@ -4195,12 +4195,12 @@ LABEL_67:
     while (v24);
   }
 
-  v80 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v80 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allValues3, "count")}];
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v28 = v9;
+  v28 = allValues3;
   v29 = [v28 countByEnumeratingWithState:&v103 objects:v120 count:16];
   if (v29)
   {
@@ -4225,12 +4225,12 @@ LABEL_67:
     while (v30);
   }
 
-  v79 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  v79 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allValues4, "count")}];
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v34 = v11;
+  v34 = allValues4;
   v35 = [v34 countByEnumeratingWithState:&v99 objects:v119 count:16];
   if (v35)
   {
@@ -4257,12 +4257,12 @@ LABEL_67:
 
   v69 = v34;
 
-  v40 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v13, "count")}];
+  v40 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allValues5, "count")}];
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v41 = v13;
+  v41 = allValues5;
   v42 = [v41 countByEnumeratingWithState:&v95 objects:v118 count:16];
   if (v42)
   {
@@ -4290,12 +4290,12 @@ LABEL_67:
   v72 = v28;
   v74 = v22;
 
-  v47 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v70, "count")}];
+  v47 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allValues6, "count")}];
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v48 = v70;
+  v48 = allValues6;
   v49 = [v48 countByEnumeratingWithState:&v91 objects:v117 count:16];
   if (v49)
   {
@@ -4322,12 +4322,12 @@ LABEL_67:
 
   v71 = v41;
 
-  v54 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v76, "count")}];
+  v54 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allValues7, "count")}];
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v77 = v76;
+  v77 = allValues7;
   v55 = [v77 countByEnumeratingWithState:&v87 objects:v116 count:16];
   if (v55)
   {
@@ -4354,12 +4354,12 @@ LABEL_67:
 
   v68 = v48;
 
-  v60 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v73, "count")}];
+  v60 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allValues8, "count")}];
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v61 = v73;
+  v61 = allValues8;
   v62 = [v61 countByEnumeratingWithState:&v83 objects:v115 count:16];
   if (v62)
   {
@@ -4385,7 +4385,7 @@ LABEL_67:
   }
 
   [(REMSaveRequest *)self _willSaveAccountChangeItems:v82 listChangeItems:v81 listSectionChangeItems:v47 smartListChangeItems:v80 smartListSectionChangeItems:v54 templateChangeItems:v79 templateSectionChangeItems:v60 reminderChangeItems:v40];
-  v75[2](v75, v82, v81, v47, v80, v54, v79, v60, v40);
+  saveCopy[2](saveCopy, v82, v81, v47, v80, v54, v79, v60, v40);
 
   v67 = *MEMORY[0x1E69E9840];
 }
@@ -4394,14 +4394,14 @@ LABEL_67:
 {
   if ([(REMSaveRequest *)self cloneCompletedRecurrentRemindersAtSave])
   {
-    v3 = [(REMSaveRequest *)self advanceForwardRecurrenceAfterNowAndAndCreateCompletedCloneWithoutRecurrenceRulesAndSubtasks];
+    advanceForwardRecurrenceAfterNowAndAndCreateCompletedCloneWithoutRecurrenceRulesAndSubtasks = [(REMSaveRequest *)self advanceForwardRecurrenceAfterNowAndAndCreateCompletedCloneWithoutRecurrenceRulesAndSubtasks];
   }
 }
 
 - (void)preFetchDueDateDeltaAlertsForCompletedRecurrenceClone
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [a2 allKeys];
+  allKeys = [a2 allKeys];
   OUTLINED_FUNCTION_8_0();
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0x16u);
@@ -4409,33 +4409,33 @@ LABEL_67:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)preFlightActionSaveAndUpdateParentsOfRecurrentSubtasksWithLogPrefix:(id)a3
+- (void)preFlightActionSaveAndUpdateParentsOfRecurrentSubtasksWithLogPrefix:(id)prefix
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = +[REMLogStore write];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v46 = v4;
+    v46 = prefixCopy;
     _os_log_impl(&dword_19A0DB000, v5, OS_LOG_TYPE_INFO, "%{public}@: Preflight - Collect parentsOfRecurrentSubtasks", buf, 0xCu);
   }
 
-  v33 = v4;
+  v33 = prefixCopy;
 
   v6 = MEMORY[0x1E695DFA8];
-  v7 = [(REMSaveRequest *)self trackedReminderChangeItems];
-  v8 = [v6 setWithCapacity:{objc_msgSend(v7, "count")}];
+  trackedReminderChangeItems = [(REMSaveRequest *)self trackedReminderChangeItems];
+  v8 = [v6 setWithCapacity:{objc_msgSend(trackedReminderChangeItems, "count")}];
 
   v9 = objc_opt_new();
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v10 = [(REMSaveRequest *)self trackedReminderChangeItems];
-  v11 = [v10 allValues];
+  trackedReminderChangeItems2 = [(REMSaveRequest *)self trackedReminderChangeItems];
+  allValues = [trackedReminderChangeItems2 allValues];
 
-  v12 = [v11 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  v12 = [allValues countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v12)
   {
     v13 = v12;
@@ -4446,30 +4446,30 @@ LABEL_67:
       {
         if (*v40 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allValues);
         }
 
         v16 = [*(*(&v39 + 1) + 8 * i) valueForSaveRequest:self];
-        v17 = [v16 objectID];
-        [v8 addObject:v17];
+        objectID = [v16 objectID];
+        [v8 addObject:objectID];
 
         if ([v16 isCompleted])
         {
-          v18 = [v16 recurrenceRules];
-          v19 = [v18 count];
+          recurrenceRules = [v16 recurrenceRules];
+          v19 = [recurrenceRules count];
 
           if (v19)
           {
-            v20 = [v16 parentReminderID];
-            if (v20)
+            parentReminderID = [v16 parentReminderID];
+            if (parentReminderID)
             {
-              [v9 addObject:v20];
+              [v9 addObject:parentReminderID];
             }
           }
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v13);
@@ -4486,16 +4486,16 @@ LABEL_67:
   [v9 minusSet:v8];
   if ([v9 count])
   {
-    v22 = [(REMSaveRequest *)self store];
-    v23 = [v9 allObjects];
+    store = [(REMSaveRequest *)self store];
+    allObjects = [v9 allObjects];
     v38 = 0;
-    v24 = [v22 fetchRemindersWithObjectIDs:v23 error:&v38];
+    v24 = [store fetchRemindersWithObjectIDs:allObjects error:&v38];
     v25 = v38;
 
     if (v25)
     {
-      v26 = +[REMLogStore write];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      objectEnumerator = +[REMLogStore write];
+      if (os_log_type_enabled(objectEnumerator, OS_LOG_TYPE_ERROR))
       {
         [REMSaveRequest preFlightActionSaveAndUpdateParentsOfRecurrentSubtasksWithLogPrefix:];
       }
@@ -4512,8 +4512,8 @@ LABEL_67:
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v26 = [v24 objectEnumerator];
-      v28 = [v26 countByEnumeratingWithState:&v34 objects:v43 count:16];
+      objectEnumerator = [v24 objectEnumerator];
+      v28 = [objectEnumerator countByEnumeratingWithState:&v34 objects:v43 count:16];
       if (v28)
       {
         v29 = v28;
@@ -4524,13 +4524,13 @@ LABEL_67:
           {
             if (*v35 != v30)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v32 = [(REMSaveRequest *)self updateReminder:*(*(&v34 + 1) + 8 * j)];
           }
 
-          v29 = [v26 countByEnumeratingWithState:&v34 objects:v43 count:16];
+          v29 = [objectEnumerator countByEnumeratingWithState:&v34 objects:v43 count:16];
         }
 
         while (v29);
@@ -4554,7 +4554,7 @@ LABEL_22:
     _os_log_impl(&dword_19A0DB000, v4, OS_LOG_TYPE_INFO, "IncompleteRecurrenceClone: Started advanceForwardRecurrenceAfterNowAndCreateIncompleteCloneWithoutRecurrenceRulesAndSubtasks", buf, 2u);
   }
 
-  v5 = [MEMORY[0x1E695DF00] rem_now];
+  rem_now = [MEMORY[0x1E695DF00] rem_now];
   v40 = objc_opt_new();
   [(REMSaveRequest *)self preFlightActionSaveAndUpdateParentsOfRecurrentSubtasksWithLogPrefix:@"IncompleteRecurrenceClone"];
   v6 = +[REMLogStore write];
@@ -4568,19 +4568,19 @@ LABEL_22:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = [(REMSaveRequest *)self trackedReminderChangeItems];
-  v8 = [v7 allValues];
+  trackedReminderChangeItems = [(REMSaveRequest *)self trackedReminderChangeItems];
+  allValues = [trackedReminderChangeItems allValues];
 
-  v42 = [v8 countByEnumeratingWithState:&v43 objects:v56 count:16];
+  v42 = [allValues countByEnumeratingWithState:&v43 objects:v56 count:16];
   if (v42)
   {
     v10 = *v44;
     *&v9 = 138543618;
     v36 = v9;
-    v38 = v5;
-    v39 = self;
+    v38 = rem_now;
+    selfCopy = self;
     v41 = *v44;
-    v37 = v8;
+    v37 = allValues;
     do
     {
       v11 = 0;
@@ -4588,61 +4588,61 @@ LABEL_22:
       {
         if (*v44 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = [*(*(&v43 + 1) + 8 * v11) valueForSaveRequest:{self, v36}];
-        v13 = [*(v3 + 3368) write];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+        write = [*(v3 + 3368) write];
+        if (os_log_type_enabled(write, OS_LOG_TYPE_INFO))
         {
-          v14 = [v12 objectID];
+          objectID = [v12 objectID];
           *buf = 138543362;
-          v48 = v14;
-          _os_log_impl(&dword_19A0DB000, v13, OS_LOG_TYPE_INFO, "IncompleteRecurrenceClone: Performing check for has recurrenceRules {reminderID: %{public}@};", buf, 0xCu);
+          v48 = objectID;
+          _os_log_impl(&dword_19A0DB000, write, OS_LOG_TYPE_INFO, "IncompleteRecurrenceClone: Performing check for has recurrenceRules {reminderID: %{public}@};", buf, 0xCu);
         }
 
-        v15 = [v12 recurrenceRules];
-        v16 = [v15 count];
+        recurrenceRules = [v12 recurrenceRules];
+        v16 = [recurrenceRules count];
 
         if (v16)
         {
-          v17 = [v12 dueDateComponents];
-          [v12 nextRecurrentAdvanceAmountForDateComponents:v17 afterDate:v5];
+          dueDateComponents = [v12 dueDateComponents];
+          [v12 nextRecurrentAdvanceAmountForDateComponents:dueDateComponents afterDate:rem_now];
           v19 = v18;
 
           if (v19 <= 0.0)
           {
-            v20 = [*(v3 + 3368) write];
-            if (!os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+            write2 = [*(v3 + 3368) write];
+            if (!os_log_type_enabled(write2, OS_LOG_TYPE_FAULT))
             {
               goto LABEL_25;
             }
 
-            v21 = [v12 objectID];
+            objectID2 = [v12 objectID];
             *buf = v36;
-            v48 = v21;
+            v48 = objectID2;
             v49 = 2048;
             *v50 = v19;
-            _os_log_fault_impl(&dword_19A0DB000, v20, OS_LOG_TYPE_FAULT, "IncompleteRecurrenceClone: Unable to clone recurrent reminder with dueDateAdvanceAmount < 0 {reminderID: %{public}@, dueDateAdvanceAmount: %f}", buf, 0x16u);
+            _os_log_fault_impl(&dword_19A0DB000, write2, OS_LOG_TYPE_FAULT, "IncompleteRecurrenceClone: Unable to clone recurrent reminder with dueDateAdvanceAmount < 0 {reminderID: %{public}@, dueDateAdvanceAmount: %f}", buf, 0x16u);
           }
 
           else
           {
-            v20 = +[REMReminder newObjectID];
-            v21 = [v12 duplicateForRecurrenceUsingReminderID:v20];
-            if (v21)
+            write2 = +[REMReminder newObjectID];
+            objectID2 = [v12 duplicateForRecurrenceUsingReminderID:write2];
+            if (objectID2)
             {
-              v22 = [v12 objectID];
-              [v40 setObject:v21 forKeyedSubscript:v22];
+              objectID3 = [v12 objectID];
+              [v40 setObject:objectID2 forKeyedSubscript:objectID3];
 
-              [v12 cleanupDuplicate:v21 markAsCompleted:0];
-              [v12 advanceForwardToNextRecurrenceAfterDate:v5];
+              [v12 cleanupDuplicate:objectID2 markAsCompleted:0];
+              [v12 advanceForwardToNextRecurrenceAfterDate:rem_now];
             }
 
             else
             {
-              v32 = [*(v3 + 3368) write];
-              if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
+              write3 = [*(v3 + 3368) write];
+              if (os_log_type_enabled(write3, OS_LOG_TYPE_FAULT))
               {
                 [(REMSaveRequest *)v55 advanceForwardRecurrenceAfterNowAndCreateIncompleteCloneWithoutRecurrenceRulesAndSubtasks];
               }
@@ -4652,34 +4652,34 @@ LABEL_22:
 
         else
         {
-          v23 = [v12 recurrenceRules];
-          v20 = [v23 firstObject];
+          recurrenceRules2 = [v12 recurrenceRules];
+          write2 = [recurrenceRules2 firstObject];
 
-          v24 = [*(v3 + 3368) write];
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+          write4 = [*(v3 + 3368) write];
+          if (os_log_type_enabled(write4, OS_LOG_TYPE_INFO))
           {
-            v25 = [v12 objectID];
-            v26 = [v12 isCompleted];
-            v27 = [v20 objectID];
-            v28 = [v20 iCalendarDescription];
+            objectID4 = [v12 objectID];
+            isCompleted = [v12 isCompleted];
+            objectID5 = [write2 objectID];
+            iCalendarDescription = [write2 iCalendarDescription];
             v29 = MEMORY[0x1E696AD98];
-            v30 = [v12 recurrenceRules];
-            v31 = [v29 numberWithUnsignedInteger:{objc_msgSend(v30, "count")}];
+            recurrenceRules3 = [v12 recurrenceRules];
+            v31 = [v29 numberWithUnsignedInteger:{objc_msgSend(recurrenceRules3, "count")}];
             *buf = 138544386;
-            v48 = v25;
+            v48 = objectID4;
             v49 = 1026;
-            *v50 = v26;
-            v8 = v37;
+            *v50 = isCompleted;
+            allValues = v37;
             *&v50[4] = 2114;
-            *&v50[6] = v27;
+            *&v50[6] = objectID5;
             v51 = 2114;
-            v52 = v28;
+            v52 = iCalendarDescription;
             v53 = 2114;
             v54 = v31;
-            _os_log_impl(&dword_19A0DB000, v24, OS_LOG_TYPE_INFO, "IncompleteRecurrenceClone: Skipping advanceForwardRecurrenceAfterNowAndCreateIncompleteCloneWithoutRecurrenceRulesAndSubtasks to advance forward date alarm for reminder, didn't meet conditions for hasRecurrenceRules {reminderID: %{public}@, isCompleted:%{public}i, recurrenceRuleID: %{public}@, recurrenceRule: %{public}@, ruleCount: %{public}@};", buf, 0x30u);
+            _os_log_impl(&dword_19A0DB000, write4, OS_LOG_TYPE_INFO, "IncompleteRecurrenceClone: Skipping advanceForwardRecurrenceAfterNowAndCreateIncompleteCloneWithoutRecurrenceRulesAndSubtasks to advance forward date alarm for reminder, didn't meet conditions for hasRecurrenceRules {reminderID: %{public}@, isCompleted:%{public}i, recurrenceRuleID: %{public}@, recurrenceRule: %{public}@, ruleCount: %{public}@};", buf, 0x30u);
 
-            v5 = v38;
-            self = v39;
+            rem_now = v38;
+            self = selfCopy;
 
             v3 = 0x1E7506000;
           }
@@ -4693,7 +4693,7 @@ LABEL_25:
       }
 
       while (v42 != v11);
-      v42 = [v8 countByEnumeratingWithState:&v43 objects:v56 count:16];
+      v42 = [allValues countByEnumeratingWithState:&v43 objects:v56 count:16];
     }
 
     while (v42);
@@ -4705,10 +4705,10 @@ LABEL_25:
   return v33;
 }
 
-- (id)advanceForwardRecurrenceAndCreateCompletedCloneWithoutRecurrenceRulesAndSubtasksAfterDate:(id)a3
+- (id)advanceForwardRecurrenceAndCreateCompletedCloneWithoutRecurrenceRulesAndSubtasksAfterDate:(id)date
 {
   v79 = *MEMORY[0x1E69E9840];
-  v63 = a3;
+  dateCopy = date;
   v4 = 0x1E7506000uLL;
   v5 = +[REMLogStore write];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -4731,11 +4731,11 @@ LABEL_25:
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v7 = [(REMSaveRequest *)self trackedReminderChangeItems];
-  v8 = [v7 allValues];
+  trackedReminderChangeItems = [(REMSaveRequest *)self trackedReminderChangeItems];
+  allValues = [trackedReminderChangeItems allValues];
 
-  obj = v8;
-  v68 = [v8 countByEnumeratingWithState:&v69 objects:v78 count:16];
+  obj = allValues;
+  v68 = [allValues countByEnumeratingWithState:&v69 objects:v78 count:16];
   if (v68)
   {
     v67 = *v70;
@@ -4752,54 +4752,54 @@ LABEL_25:
         }
 
         v11 = [*(*(&v69 + 1) + 8 * v10) valueForSaveRequest:{self, v59}];
-        v12 = [*(v4 + 3368) write];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+        write = [*(v4 + 3368) write];
+        if (os_log_type_enabled(write, OS_LOG_TYPE_INFO))
         {
-          v13 = [v11 objectID];
+          objectID = [v11 objectID];
           *buf = 138543362;
-          v75 = v13;
-          _os_log_impl(&dword_19A0DB000, v12, OS_LOG_TYPE_INFO, "CompletedRecurrenceClone: Performing check for isCompleted and has recurrenceRules {reminderID: %{public}@};", buf, 0xCu);
+          v75 = objectID;
+          _os_log_impl(&dword_19A0DB000, write, OS_LOG_TYPE_INFO, "CompletedRecurrenceClone: Performing check for isCompleted and has recurrenceRules {reminderID: %{public}@};", buf, 0xCu);
         }
 
-        v14 = [v11 changedKeys];
-        if (![v14 containsObject:@"completed"] || (objc_msgSend(v11, "isCompleted") & 1) == 0)
+        changedKeys = [v11 changedKeys];
+        if (![changedKeys containsObject:@"completed"] || (objc_msgSend(v11, "isCompleted") & 1) == 0)
         {
 
 LABEL_23:
-          v34 = [v11 recurrenceRules];
-          v18 = [v34 firstObject];
+          recurrenceRules = [v11 recurrenceRules];
+          firstObject = [recurrenceRules firstObject];
 
-          v35 = [*(v4 + 3368) write];
-          if (!os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
+          write2 = [*(v4 + 3368) write];
+          if (!os_log_type_enabled(write2, OS_LOG_TYPE_INFO))
           {
             goto LABEL_26;
           }
 
-          v36 = [v11 objectID];
-          v37 = [v11 isCompleted];
-          [v18 objectID];
+          objectID2 = [v11 objectID];
+          isCompleted = [v11 isCompleted];
+          [firstObject objectID];
           v38 = v66 = v10;
-          v39 = [v18 iCalendarDescription];
+          iCalendarDescription = [firstObject iCalendarDescription];
           v40 = MEMORY[0x1E696AD98];
           [v11 recurrenceRules];
-          v41 = v18;
+          v41 = firstObject;
           v43 = v42 = self;
           v44 = [v40 numberWithUnsignedInteger:{objc_msgSend(v43, "count")}];
           *buf = 138544386;
-          v75 = v36;
+          v75 = objectID2;
           v76 = 1026;
-          *v77 = v37;
+          *v77 = isCompleted;
           *&v77[4] = 2114;
           *&v77[6] = v38;
           *&v77[14] = 2114;
-          *&v77[16] = v39;
+          *&v77[16] = iCalendarDescription;
           *&v77[24] = 2114;
           *&v77[26] = v44;
-          _os_log_impl(&dword_19A0DB000, v35, OS_LOG_TYPE_INFO, "CompletedRecurrenceClone: Skipping advanceForwardRecurrenceAfterNowAndAndCreateCompletedCloneWithoutRecurrenceRulesAndSubtasks to advance forward date alarm for reminder, didn't meet conditions for isCompleted and hasRecurrenceRules {reminderID: %{public}@, isCompleted:%{public}i, recurrenceRuleID: %{public}@, recurrenceRule: %{public}@, ruleCount: %{public}@};", buf, 0x30u);
+          _os_log_impl(&dword_19A0DB000, write2, OS_LOG_TYPE_INFO, "CompletedRecurrenceClone: Skipping advanceForwardRecurrenceAfterNowAndAndCreateCompletedCloneWithoutRecurrenceRulesAndSubtasks to advance forward date alarm for reminder, didn't meet conditions for isCompleted and hasRecurrenceRules {reminderID: %{public}@, isCompleted:%{public}i, recurrenceRuleID: %{public}@, recurrenceRule: %{public}@, ruleCount: %{public}@};", buf, 0x30u);
 
           v4 = 0x1E7506000;
           self = v42;
-          v18 = v41;
+          firstObject = v41;
 
           v10 = v66;
 LABEL_25:
@@ -4807,118 +4807,118 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v15 = [v11 recurrenceRules];
-        v16 = [v15 count];
+        recurrenceRules2 = [v11 recurrenceRules];
+        v16 = [recurrenceRules2 count];
 
         if (!v16)
         {
           goto LABEL_23;
         }
 
-        if (!v63 || ([v11 objectID], v17 = objc_claimAutoreleasedReturnValue(), v63[2](v63, v17), v18 = objc_claimAutoreleasedReturnValue(), v17, !v18))
+        if (!dateCopy || ([v11 objectID], v17 = objc_claimAutoreleasedReturnValue(), dateCopy[2](dateCopy, v17), firstObject = objc_claimAutoreleasedReturnValue(), v17, !firstObject))
         {
-          v18 = [MEMORY[0x1E695DF00] rem_now];
+          firstObject = [MEMORY[0x1E695DF00] rem_now];
         }
 
-        v19 = [v11 dueDateComponents];
-        [v11 nextRecurrentAdvanceAmountForDateComponents:v19 afterDate:v18];
+        dueDateComponents = [v11 dueDateComponents];
+        [v11 nextRecurrentAdvanceAmountForDateComponents:dueDateComponents afterDate:firstObject];
         v21 = v20;
 
         if (v21 <= 0.0)
         {
-          v35 = [*(v4 + 3368) write];
-          if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
+          write2 = [*(v4 + 3368) write];
+          if (os_log_type_enabled(write2, OS_LOG_TYPE_FAULT))
           {
-            v36 = [v11 objectID];
+            objectID2 = [v11 objectID];
             *buf = v59;
-            v75 = v36;
+            v75 = objectID2;
             v76 = 2048;
             *v77 = v21;
-            _os_log_fault_impl(&dword_19A0DB000, v35, OS_LOG_TYPE_FAULT, "CompletedRecurrenceClone: Unable to clone recurrent reminder with dueDateAdvanceAmount < 0 {reminderID: %{public}@, dueDateAdvanceAmount: %f}", buf, 0x16u);
+            _os_log_fault_impl(&dword_19A0DB000, write2, OS_LOG_TYPE_FAULT, "CompletedRecurrenceClone: Unable to clone recurrent reminder with dueDateAdvanceAmount < 0 {reminderID: %{public}@, dueDateAdvanceAmount: %f}", buf, 0x16u);
             goto LABEL_25;
           }
         }
 
         else
         {
-          v62 = v18;
+          v62 = firstObject;
           v65 = v10;
-          v22 = [v11 dueDateComponents];
-          v23 = [v22 timeZone];
+          dueDateComponents2 = [v11 dueDateComponents];
+          timeZone = [dueDateComponents2 timeZone];
           v24 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"GMT"];
-          v25 = [v23 isEqual:v24];
+          v25 = [timeZone isEqual:v24];
 
           if (v25)
           {
-            v26 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-            v27 = [v11 dueDateComponents];
+            defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+            dueDateComponents3 = [v11 dueDateComponents];
             v28 = MEMORY[0x1E695DF10];
             v61 = v11;
-            v29 = [v11 dueDateComponents];
-            v30 = [v28 rem_dateWithDateComponents:v29 timeZone:v26];
+            dueDateComponents4 = [v11 dueDateComponents];
+            v30 = [v28 rem_dateWithDateComponents:dueDateComponents4 timeZone:defaultTimeZone];
 
-            v31 = [v26 nextDaylightSavingTimeTransitionAfterDate:v30];
+            v31 = [defaultTimeZone nextDaylightSavingTimeTransitionAfterDate:v30];
             v32 = v31;
             if (v31)
             {
-              v33 = v31;
+              distantFuture = v31;
             }
 
             else
             {
-              v33 = [MEMORY[0x1E695DF00] distantFuture];
+              distantFuture = [MEMORY[0x1E695DF00] distantFuture];
             }
 
-            v45 = v33;
+            v45 = distantFuture;
 
             [v45 timeIntervalSinceDate:v30];
             if (v46 < v21)
             {
-              v47 = [*(v4 + 3368) write];
-              if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
+              write3 = [*(v4 + 3368) write];
+              if (os_log_type_enabled(write3, OS_LOG_TYPE_DEFAULT))
               {
-                v48 = [v11 objectID];
-                v49 = [v27 rem_stringRepresentation];
+                objectID3 = [v11 objectID];
+                rem_stringRepresentation = [dueDateComponents3 rem_stringRepresentation];
                 *buf = 138544386;
-                v75 = v48;
+                v75 = objectID3;
                 v76 = 2114;
-                *v77 = v26;
+                *v77 = defaultTimeZone;
                 *&v77[8] = 2114;
-                *&v77[10] = v49;
+                *&v77[10] = rem_stringRepresentation;
                 *&v77[18] = 2114;
                 *&v77[20] = v45;
                 *&v77[28] = 2048;
                 *&v77[30] = v21;
-                _os_log_impl(&dword_19A0DB000, v47, OS_LOG_TYPE_DEFAULT, "CompletedRecurrenceClone: FYI we are advancing a GMT due date across a DST boundary, this user maybe impacted by an hour drift caused by loss of user original due date time zone. {reminderID: %{public}@, userTimeZone: %{public}@, dueDateComponents(before): %{public}@, nextDSTDate: %{public}@, dueDateAdvanceAmount: %f}", buf, 0x34u);
+                _os_log_impl(&dword_19A0DB000, write3, OS_LOG_TYPE_DEFAULT, "CompletedRecurrenceClone: FYI we are advancing a GMT due date across a DST boundary, this user maybe impacted by an hour drift caused by loss of user original due date time zone. {reminderID: %{public}@, userTimeZone: %{public}@, dueDateComponents(before): %{public}@, nextDSTDate: %{public}@, dueDateAdvanceAmount: %f}", buf, 0x34u);
               }
             }
 
             v11 = v61;
           }
 
-          v35 = +[REMReminder newObjectID];
-          v50 = [v11 duplicateForRecurrenceUsingReminderID:v35];
+          write2 = +[REMReminder newObjectID];
+          v50 = [v11 duplicateForRecurrenceUsingReminderID:write2];
           if (v50)
           {
-            v51 = [v11 objectID];
-            [v60 setObject:v50 forKeyedSubscript:v51];
+            objectID4 = [v11 objectID];
+            [v60 setObject:v50 forKeyedSubscript:objectID4];
 
             [v11 cleanupDuplicate:v50 markAsCompleted:1];
             [v11 setCompleted:0];
-            v52 = [v11 recurrenceRules];
-            v18 = v62;
+            recurrenceRules3 = [v11 recurrenceRules];
+            firstObject = v62;
             [v11 advanceForwardToNextRecurrenceAfterDate:v62];
-            v53 = [v11 displayDate];
-            v54 = [v53 date];
+            displayDate = [v11 displayDate];
+            date = [displayDate date];
 
-            [v50 setAlternativeDisplayDateDateForCalendarToPreviousRecurrentDateBefore:v54 recurrenceRules:v52];
+            [v50 setAlternativeDisplayDateDateForCalendarToPreviousRecurrentDateBefore:date recurrenceRules:recurrenceRules3];
           }
 
           else
           {
-            v52 = [*(v4 + 3368) write];
-            v18 = v62;
-            if (os_log_type_enabled(v52, OS_LOG_TYPE_FAULT))
+            recurrenceRules3 = [*(v4 + 3368) write];
+            firstObject = v62;
+            if (os_log_type_enabled(recurrenceRules3, OS_LOG_TYPE_FAULT))
             {
               [(REMSaveRequest *)v73 advanceForwardRecurrenceAndCreateCompletedCloneWithoutRecurrenceRulesAndSubtasksAfterDate:v11];
             }
@@ -4948,13 +4948,13 @@ LABEL_26:
   return v56;
 }
 
-- (id)_trackedAccountChangeItemForObjectID:(id)a3
+- (id)_trackedAccountChangeItemForObjectID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(REMSaveRequest *)self trackedAccountChangeItems];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    trackedAccountChangeItems = [(REMSaveRequest *)self trackedAccountChangeItems];
+    v6 = [trackedAccountChangeItems objectForKeyedSubscript:dCopy];
 
     v7 = [v6 valueForSaveRequest:self];
   }
@@ -4974,11 +4974,11 @@ LABEL_26:
   return v7;
 }
 
-- (void)_trackAccountChangeItem:(id)a3
+- (void)_trackAccountChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -4990,14 +4990,14 @@ LABEL_26:
     goto LABEL_7;
   }
 
-  v6 = [v4 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v6)
+  if (objectID)
   {
     v7 = [[REMSaveRequestTrackedValueContainer alloc] initWithValue:v5];
-    v8 = [(REMSaveRequest *)self trackedAccountChangeItems];
-    v9 = [v5 objectID];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    trackedAccountChangeItems = [(REMSaveRequest *)self trackedAccountChangeItems];
+    objectID2 = [v5 objectID];
+    [trackedAccountChangeItems setObject:v7 forKeyedSubscript:objectID2];
 
     goto LABEL_11;
   }
@@ -5008,9 +5008,9 @@ LABEL_26:
     [REMSaveRequest _trackAccountChangeItem:];
   }
 
-  v13 = [v5 objectID];
+  objectID3 = [v5 objectID];
 
-  if (!v13)
+  if (!objectID3)
   {
     v11 = "accountChangeItem.objectID";
 LABEL_7:
@@ -5020,11 +5020,11 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)_updateTrackedAccountChangeItem:(id)a3 withObjectID:(id)a4
+- (void)_updateTrackedAccountChangeItem:(id)item withObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  itemCopy = item;
+  dCopy = d;
+  if (!itemCopy)
   {
     v15 = +[REMLogStore write];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -5036,23 +5036,23 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v8 = [v6 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v8)
+  if (objectID)
   {
-    if (v7)
+    if (dCopy)
     {
-      v9 = [(REMSaveRequest *)self trackedAccountChangeItems];
-      v10 = [v6 objectID];
-      v11 = [v9 objectForKeyedSubscript:v10];
+      trackedAccountChangeItems = [(REMSaveRequest *)self trackedAccountChangeItems];
+      objectID2 = [itemCopy objectID];
+      v11 = [trackedAccountChangeItems objectForKeyedSubscript:objectID2];
 
-      v12 = [(REMSaveRequest *)self trackedAccountChangeItems];
-      v13 = [v6 objectID];
-      [v12 removeObjectForKey:v13];
+      trackedAccountChangeItems2 = [(REMSaveRequest *)self trackedAccountChangeItems];
+      objectID3 = [itemCopy objectID];
+      [trackedAccountChangeItems2 removeObjectForKey:objectID3];
 
-      [v6 setObjectID:v7];
-      v14 = [(REMSaveRequest *)self trackedAccountChangeItems];
-      [v14 setObject:v11 forKeyedSubscript:v7];
+      [itemCopy setObjectID:dCopy];
+      trackedAccountChangeItems3 = [(REMSaveRequest *)self trackedAccountChangeItems];
+      [trackedAccountChangeItems3 setObject:v11 forKeyedSubscript:dCopy];
 
       goto LABEL_16;
     }
@@ -5075,9 +5075,9 @@ LABEL_15:
     [REMSaveRequest _trackAccountChangeItem:];
   }
 
-  v18 = [v6 objectID];
+  objectID4 = [itemCopy objectID];
 
-  if (!v18)
+  if (!objectID4)
   {
     v16 = "accountChangeItem.objectID";
     goto LABEL_15;
@@ -5086,13 +5086,13 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)_trackedListChangeItemForObjectID:(id)a3
+- (id)_trackedListChangeItemForObjectID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(REMSaveRequest *)self trackedListChangeItems];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    trackedListChangeItems = [(REMSaveRequest *)self trackedListChangeItems];
+    v6 = [trackedListChangeItems objectForKeyedSubscript:dCopy];
 
     v7 = [v6 valueForSaveRequest:self];
   }
@@ -5112,11 +5112,11 @@ LABEL_16:
   return v7;
 }
 
-- (void)_trackListChangeItem:(id)a3
+- (void)_trackListChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -5128,14 +5128,14 @@ LABEL_16:
     goto LABEL_7;
   }
 
-  v6 = [v4 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v6)
+  if (objectID)
   {
     v7 = [[REMSaveRequestTrackedValueContainer alloc] initWithValue:v5];
-    v8 = [(REMSaveRequest *)self trackedListChangeItems];
-    v9 = [v5 objectID];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    trackedListChangeItems = [(REMSaveRequest *)self trackedListChangeItems];
+    objectID2 = [v5 objectID];
+    [trackedListChangeItems setObject:v7 forKeyedSubscript:objectID2];
 
     goto LABEL_11;
   }
@@ -5146,9 +5146,9 @@ LABEL_16:
     [REMSaveRequest _trackListChangeItem:];
   }
 
-  v13 = [v5 objectID];
+  objectID3 = [v5 objectID];
 
-  if (!v13)
+  if (!objectID3)
   {
     v11 = "listChangeItem.objectID";
 LABEL_7:
@@ -5158,11 +5158,11 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)_updateTrackedListChangeItem:(id)a3 withObjectID:(id)a4
+- (void)_updateTrackedListChangeItem:(id)item withObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  itemCopy = item;
+  dCopy = d;
+  if (!itemCopy)
   {
     v15 = +[REMLogStore write];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -5174,23 +5174,23 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v8 = [v6 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v8)
+  if (objectID)
   {
-    if (v7)
+    if (dCopy)
     {
-      v9 = [(REMSaveRequest *)self trackedListChangeItems];
-      v10 = [v6 objectID];
-      v11 = [v9 objectForKeyedSubscript:v10];
+      trackedListChangeItems = [(REMSaveRequest *)self trackedListChangeItems];
+      objectID2 = [itemCopy objectID];
+      v11 = [trackedListChangeItems objectForKeyedSubscript:objectID2];
 
-      v12 = [(REMSaveRequest *)self trackedListChangeItems];
-      v13 = [v6 objectID];
-      [v12 removeObjectForKey:v13];
+      trackedListChangeItems2 = [(REMSaveRequest *)self trackedListChangeItems];
+      objectID3 = [itemCopy objectID];
+      [trackedListChangeItems2 removeObjectForKey:objectID3];
 
-      [v6 setObjectID:v7];
-      v14 = [(REMSaveRequest *)self trackedListChangeItems];
-      [v14 setObject:v11 forKeyedSubscript:v7];
+      [itemCopy setObjectID:dCopy];
+      trackedListChangeItems3 = [(REMSaveRequest *)self trackedListChangeItems];
+      [trackedListChangeItems3 setObject:v11 forKeyedSubscript:dCopy];
 
       goto LABEL_16;
     }
@@ -5213,9 +5213,9 @@ LABEL_15:
     [REMSaveRequest _trackListChangeItem:];
   }
 
-  v18 = [v6 objectID];
+  objectID4 = [itemCopy objectID];
 
-  if (!v18)
+  if (!objectID4)
   {
     v16 = "listChangeItem.objectID";
     goto LABEL_15;
@@ -5224,13 +5224,13 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)_trackedSmartListChangeItemForObjectID:(id)a3
+- (id)_trackedSmartListChangeItemForObjectID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(REMSaveRequest *)self trackedSmartListChangeItems];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    trackedSmartListChangeItems = [(REMSaveRequest *)self trackedSmartListChangeItems];
+    v6 = [trackedSmartListChangeItems objectForKeyedSubscript:dCopy];
 
     v7 = [v6 valueForSaveRequest:self];
   }
@@ -5250,11 +5250,11 @@ LABEL_16:
   return v7;
 }
 
-- (void)_trackSmartListChangeItem:(id)a3
+- (void)_trackSmartListChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -5266,14 +5266,14 @@ LABEL_16:
     goto LABEL_7;
   }
 
-  v6 = [v4 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v6)
+  if (objectID)
   {
     v7 = [[REMSaveRequestTrackedValueContainer alloc] initWithValue:v5];
-    v8 = [(REMSaveRequest *)self trackedSmartListChangeItems];
-    v9 = [v5 objectID];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    trackedSmartListChangeItems = [(REMSaveRequest *)self trackedSmartListChangeItems];
+    objectID2 = [v5 objectID];
+    [trackedSmartListChangeItems setObject:v7 forKeyedSubscript:objectID2];
 
     goto LABEL_11;
   }
@@ -5284,9 +5284,9 @@ LABEL_16:
     [REMSaveRequest _trackSmartListChangeItem:];
   }
 
-  v13 = [v5 objectID];
+  objectID3 = [v5 objectID];
 
-  if (!v13)
+  if (!objectID3)
   {
     v11 = "smartListChangeItem.objectID";
 LABEL_7:
@@ -5296,11 +5296,11 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)_updateTrackedSmartListChangeItem:(id)a3 withObjectID:(id)a4
+- (void)_updateTrackedSmartListChangeItem:(id)item withObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  itemCopy = item;
+  dCopy = d;
+  if (!itemCopy)
   {
     v15 = +[REMLogStore write];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -5312,23 +5312,23 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v8 = [v6 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v8)
+  if (objectID)
   {
-    if (v7)
+    if (dCopy)
     {
-      v9 = [(REMSaveRequest *)self trackedSmartListChangeItems];
-      v10 = [v6 objectID];
-      v11 = [v9 objectForKeyedSubscript:v10];
+      trackedSmartListChangeItems = [(REMSaveRequest *)self trackedSmartListChangeItems];
+      objectID2 = [itemCopy objectID];
+      v11 = [trackedSmartListChangeItems objectForKeyedSubscript:objectID2];
 
-      v12 = [(REMSaveRequest *)self trackedSmartListChangeItems];
-      v13 = [v6 objectID];
-      [v12 removeObjectForKey:v13];
+      trackedSmartListChangeItems2 = [(REMSaveRequest *)self trackedSmartListChangeItems];
+      objectID3 = [itemCopy objectID];
+      [trackedSmartListChangeItems2 removeObjectForKey:objectID3];
 
-      [v6 setObjectID:v7];
-      v14 = [(REMSaveRequest *)self trackedSmartListChangeItems];
-      [v14 setObject:v11 forKeyedSubscript:v7];
+      [itemCopy setObjectID:dCopy];
+      trackedSmartListChangeItems3 = [(REMSaveRequest *)self trackedSmartListChangeItems];
+      [trackedSmartListChangeItems3 setObject:v11 forKeyedSubscript:dCopy];
 
       goto LABEL_16;
     }
@@ -5351,9 +5351,9 @@ LABEL_15:
     [REMSaveRequest _trackSmartListChangeItem:];
   }
 
-  v18 = [v6 objectID];
+  objectID4 = [itemCopy objectID];
 
-  if (!v18)
+  if (!objectID4)
   {
     v16 = "smartListChangeItem.objectID";
     goto LABEL_15;
@@ -5362,13 +5362,13 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)_trackedTemplateChangeItemForObjectID:(id)a3
+- (id)_trackedTemplateChangeItemForObjectID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(REMSaveRequest *)self trackedTemplateChangeItems];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    trackedTemplateChangeItems = [(REMSaveRequest *)self trackedTemplateChangeItems];
+    v6 = [trackedTemplateChangeItems objectForKeyedSubscript:dCopy];
 
     v7 = [v6 valueForSaveRequest:self];
   }
@@ -5388,11 +5388,11 @@ LABEL_16:
   return v7;
 }
 
-- (void)_trackTemplateChangeItem:(id)a3
+- (void)_trackTemplateChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -5404,14 +5404,14 @@ LABEL_16:
     goto LABEL_7;
   }
 
-  v6 = [v4 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v6)
+  if (objectID)
   {
     v7 = [[REMSaveRequestTrackedValueContainer alloc] initWithValue:v5];
-    v8 = [(REMSaveRequest *)self trackedTemplateChangeItems];
-    v9 = [v5 objectID];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    trackedTemplateChangeItems = [(REMSaveRequest *)self trackedTemplateChangeItems];
+    objectID2 = [v5 objectID];
+    [trackedTemplateChangeItems setObject:v7 forKeyedSubscript:objectID2];
 
     goto LABEL_11;
   }
@@ -5422,9 +5422,9 @@ LABEL_16:
     [REMSaveRequest _trackTemplateChangeItem:];
   }
 
-  v13 = [v5 objectID];
+  objectID3 = [v5 objectID];
 
-  if (!v13)
+  if (!objectID3)
   {
     v11 = "templateChangeItem.objectID";
 LABEL_7:
@@ -5434,11 +5434,11 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)_trackListSectionChangeItem:(id)a3
+- (void)_trackListSectionChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -5450,14 +5450,14 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  v6 = [v4 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v6)
+  if (objectID)
   {
     v7 = [[REMSaveRequestTrackedValueContainer alloc] initWithValue:v5];
-    v8 = [(REMSaveRequest *)self trackedListSectionChangeItems];
-    v9 = [v5 objectID];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    trackedListSectionChangeItems = [(REMSaveRequest *)self trackedListSectionChangeItems];
+    objectID2 = [v5 objectID];
+    [trackedListSectionChangeItems setObject:v7 forKeyedSubscript:objectID2];
 
     goto LABEL_11;
   }
@@ -5468,9 +5468,9 @@ LABEL_11:
     [REMSaveRequest _trackListSectionChangeItem:];
   }
 
-  v13 = [v5 objectID];
+  objectID3 = [v5 objectID];
 
-  if (!v13)
+  if (!objectID3)
   {
     v11 = "listSectionChangeItem.objectID";
 LABEL_7:
@@ -5480,13 +5480,13 @@ LABEL_7:
 LABEL_11:
 }
 
-- (id)_trackedListSectionChangeItemForObjectID:(id)a3
+- (id)_trackedListSectionChangeItemForObjectID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(REMSaveRequest *)self trackedListSectionChangeItems];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    trackedListSectionChangeItems = [(REMSaveRequest *)self trackedListSectionChangeItems];
+    v6 = [trackedListSectionChangeItems objectForKeyedSubscript:dCopy];
 
     v7 = [v6 valueForSaveRequest:self];
   }
@@ -5506,11 +5506,11 @@ LABEL_11:
   return v7;
 }
 
-- (void)_trackSmartListSectionChangeItem:(id)a3
+- (void)_trackSmartListSectionChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -5522,14 +5522,14 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  v6 = [v4 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v6)
+  if (objectID)
   {
     v7 = [[REMSaveRequestTrackedValueContainer alloc] initWithValue:v5];
-    v8 = [(REMSaveRequest *)self trackedSmartListSectionChangeItems];
-    v9 = [v5 objectID];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    trackedSmartListSectionChangeItems = [(REMSaveRequest *)self trackedSmartListSectionChangeItems];
+    objectID2 = [v5 objectID];
+    [trackedSmartListSectionChangeItems setObject:v7 forKeyedSubscript:objectID2];
 
     goto LABEL_11;
   }
@@ -5540,9 +5540,9 @@ LABEL_11:
     [REMSaveRequest _trackSmartListSectionChangeItem:];
   }
 
-  v13 = [v5 objectID];
+  objectID3 = [v5 objectID];
 
-  if (!v13)
+  if (!objectID3)
   {
     v11 = "smartListSectionChangeItem.objectID";
 LABEL_7:
@@ -5552,13 +5552,13 @@ LABEL_7:
 LABEL_11:
 }
 
-- (id)_trackedSmartListSectionChangeItemForObjectID:(id)a3
+- (id)_trackedSmartListSectionChangeItemForObjectID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(REMSaveRequest *)self trackedSmartListSectionChangeItems];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    trackedSmartListSectionChangeItems = [(REMSaveRequest *)self trackedSmartListSectionChangeItems];
+    v6 = [trackedSmartListSectionChangeItems objectForKeyedSubscript:dCopy];
 
     v7 = [v6 valueForSaveRequest:self];
   }
@@ -5578,11 +5578,11 @@ LABEL_11:
   return v7;
 }
 
-- (void)_trackTemplateSectionChangeItem:(id)a3
+- (void)_trackTemplateSectionChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -5594,14 +5594,14 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  v6 = [v4 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v6)
+  if (objectID)
   {
     v7 = [[REMSaveRequestTrackedValueContainer alloc] initWithValue:v5];
-    v8 = [(REMSaveRequest *)self trackedTemplateSectionChangeItems];
-    v9 = [v5 objectID];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    trackedTemplateSectionChangeItems = [(REMSaveRequest *)self trackedTemplateSectionChangeItems];
+    objectID2 = [v5 objectID];
+    [trackedTemplateSectionChangeItems setObject:v7 forKeyedSubscript:objectID2];
 
     goto LABEL_11;
   }
@@ -5612,9 +5612,9 @@ LABEL_11:
     [REMSaveRequest _trackTemplateSectionChangeItem:];
   }
 
-  v13 = [v5 objectID];
+  objectID3 = [v5 objectID];
 
-  if (!v13)
+  if (!objectID3)
   {
     v11 = "templateSectionChangeItem.objectID";
 LABEL_7:
@@ -5624,13 +5624,13 @@ LABEL_7:
 LABEL_11:
 }
 
-- (id)_trackedTemplateSectionChangeItemForObjectID:(id)a3
+- (id)_trackedTemplateSectionChangeItemForObjectID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(REMSaveRequest *)self trackedTemplateSectionChangeItems];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    trackedTemplateSectionChangeItems = [(REMSaveRequest *)self trackedTemplateSectionChangeItems];
+    v6 = [trackedTemplateSectionChangeItems objectForKeyedSubscript:dCopy];
 
     v7 = [v6 valueForSaveRequest:self];
   }
@@ -5650,13 +5650,13 @@ LABEL_11:
   return v7;
 }
 
-- (id)_trackedReminderChangeItemForObjectID:(id)a3
+- (id)_trackedReminderChangeItemForObjectID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(REMSaveRequest *)self trackedReminderChangeItems];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    trackedReminderChangeItems = [(REMSaveRequest *)self trackedReminderChangeItems];
+    v6 = [trackedReminderChangeItems objectForKeyedSubscript:dCopy];
 
     v7 = [v6 valueForSaveRequest:self];
   }
@@ -5676,11 +5676,11 @@ LABEL_11:
   return v7;
 }
 
-- (void)_trackReminderChangeItem:(id)a3
+- (void)_trackReminderChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -5692,14 +5692,14 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  v6 = [v4 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v6)
+  if (objectID)
   {
     v7 = [[REMSaveRequestTrackedValueContainer alloc] initWithValue:v5];
-    v8 = [(REMSaveRequest *)self trackedReminderChangeItems];
-    v9 = [v5 objectID];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    trackedReminderChangeItems = [(REMSaveRequest *)self trackedReminderChangeItems];
+    objectID2 = [v5 objectID];
+    [trackedReminderChangeItems setObject:v7 forKeyedSubscript:objectID2];
 
     goto LABEL_11;
   }
@@ -5710,9 +5710,9 @@ LABEL_11:
     [REMSaveRequest _trackReminderChangeItem:];
   }
 
-  v13 = [v5 objectID];
+  objectID3 = [v5 objectID];
 
-  if (!v13)
+  if (!objectID3)
   {
     v11 = "reminderChangeItem.objectID";
 LABEL_7:
@@ -5722,11 +5722,11 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)_updateTrackedReminderChangeItem:(id)a3 withObjectID:(id)a4
+- (void)_updateTrackedReminderChangeItem:(id)item withObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  itemCopy = item;
+  dCopy = d;
+  if (!itemCopy)
   {
     v15 = +[REMLogStore write];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -5738,23 +5738,23 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v8 = [v6 objectID];
+  objectID = [itemCopy objectID];
 
-  if (v8)
+  if (objectID)
   {
-    if (v7)
+    if (dCopy)
     {
-      v9 = [(REMSaveRequest *)self trackedReminderChangeItems];
-      v10 = [v6 objectID];
-      v11 = [v9 objectForKeyedSubscript:v10];
+      trackedReminderChangeItems = [(REMSaveRequest *)self trackedReminderChangeItems];
+      objectID2 = [itemCopy objectID];
+      v11 = [trackedReminderChangeItems objectForKeyedSubscript:objectID2];
 
-      v12 = [(REMSaveRequest *)self trackedReminderChangeItems];
-      v13 = [v6 objectID];
-      [v12 removeObjectForKey:v13];
+      trackedReminderChangeItems2 = [(REMSaveRequest *)self trackedReminderChangeItems];
+      objectID3 = [itemCopy objectID];
+      [trackedReminderChangeItems2 removeObjectForKey:objectID3];
 
-      [v6 setObjectID:v7];
-      v14 = [(REMSaveRequest *)self trackedReminderChangeItems];
-      [v14 setObject:v11 forKeyedSubscript:v7];
+      [itemCopy setObjectID:dCopy];
+      trackedReminderChangeItems3 = [(REMSaveRequest *)self trackedReminderChangeItems];
+      [trackedReminderChangeItems3 setObject:v11 forKeyedSubscript:dCopy];
 
       goto LABEL_16;
     }
@@ -5777,9 +5777,9 @@ LABEL_15:
     [REMSaveRequest _trackReminderChangeItem:];
   }
 
-  v18 = [v6 objectID];
+  objectID4 = [itemCopy objectID];
 
-  if (!v18)
+  if (!objectID4)
   {
     v16 = "reminderChangeItem.objectID";
     goto LABEL_15;
@@ -5788,12 +5788,12 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_trackAccountCapabilities:(id)a3 forObjectID:(id)a4
+- (void)_trackAccountCapabilities:(id)capabilities forObjectID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  capabilitiesCopy = capabilities;
+  dCopy = d;
+  if (!capabilitiesCopy)
   {
     v11 = +[REMLogStore write];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -5807,7 +5807,7 @@ LABEL_16:
 
   v8 = +[REMLogStore write];
   v9 = v8;
-  if (!v7)
+  if (!dCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
@@ -5823,35 +5823,35 @@ LABEL_12:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v6;
+    v17 = capabilitiesCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = dCopy;
     _os_log_debug_impl(&dword_19A0DB000, v9, OS_LOG_TYPE_DEBUG, "_trackAccountCapabilities {SaveRequest: %@ accountCapabilities: %@ objectID: %@", buf, 0x20u);
   }
 
-  v10 = [(REMSaveRequest *)self trackedAccountCapabilities];
-  [v10 setObject:v6 forKeyedSubscript:v7];
+  trackedAccountCapabilities = [(REMSaveRequest *)self trackedAccountCapabilities];
+  [trackedAccountCapabilities setObject:capabilitiesCopy forKeyedSubscript:dCopy];
 
 LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_trackedAccountCapabilitiesForObjectID:(id)a3
+- (id)_trackedAccountCapabilitiesForObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[REMLogStore write];
   v6 = v5;
-  if (v4)
+  if (dCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       [REMSaveRequest _trackedAccountCapabilitiesForObjectID:];
     }
 
-    v7 = [(REMSaveRequest *)self trackedAccountCapabilities];
-    v8 = [v7 objectForKeyedSubscript:v4];
+    trackedAccountCapabilities = [(REMSaveRequest *)self trackedAccountCapabilities];
+    v8 = [trackedAccountCapabilities objectForKeyedSubscript:dCopy];
 
     if (v8)
     {
@@ -5886,12 +5886,12 @@ LABEL_13:
   return v10;
 }
 
-- (id)_copyReminder:(id)a3 toListChangeItem:(id)a4
+- (id)_copyReminder:(id)reminder toListChangeItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  reminderCopy = reminder;
+  itemCopy = item;
+  v8 = itemCopy;
+  if (!reminderCopy)
   {
     v20 = +[REMLogStore write];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -5903,7 +5903,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v7)
+  if (!itemCopy)
   {
     v22 = +[REMLogStore write];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -5918,15 +5918,15 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = [v7 saveRequest];
+  saveRequest = [itemCopy saveRequest];
 
   v10 = MEMORY[0x1E695D930];
-  if (v9 != self)
+  if (saveRequest != self)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D930];
-    v13 = [v8 saveRequest];
-    [v11 raise:v12 format:{@"List has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", v8, v13, self}];
+    saveRequest2 = [v8 saveRequest];
+    [v11 raise:v12 format:{@"List has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", v8, saveRequest2, self}];
   }
 
   if ([v8 isGroup])
@@ -5935,10 +5935,10 @@ LABEL_14:
   }
 
   v14 = [REMReminderChangeItem alloc];
-  v15 = [v6 storage];
-  v16 = [v6 account];
-  v17 = [v16 capabilities];
-  v18 = [(REMReminderChangeItem *)v14 initWithSaveRequest:self storage:v15 accountCapabilities:v17 observeInitialValues:0];
+  storage = [reminderCopy storage];
+  account = [reminderCopy account];
+  capabilities = [account capabilities];
+  v18 = [(REMReminderChangeItem *)v14 initWithSaveRequest:self storage:storage accountCapabilities:capabilities observeInitialValues:0];
 
   v19 = [[REMReminderChangeItem alloc] initWithReminderChangeItem:v18 insertIntoListChangeItem:v8];
   [(REMSaveRequest *)self _trackReminderChangeItem:v19];
@@ -5947,12 +5947,12 @@ LABEL_15:
   return v19;
 }
 
-- (id)_copyReminder:(id)a3 toReminderSubtaskContextChangeItem:(id)a4
+- (id)_copyReminder:(id)reminder toReminderSubtaskContextChangeItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  reminderCopy = reminder;
+  itemCopy = item;
+  v8 = itemCopy;
+  if (!reminderCopy)
   {
     v20 = +[REMLogStore write];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -5964,7 +5964,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!itemCopy)
   {
     v22 = +[REMLogStore write];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -5979,22 +5979,22 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [v7 reminderChangeItem];
-  v10 = [v9 saveRequest];
+  reminderChangeItem = [itemCopy reminderChangeItem];
+  saveRequest = [reminderChangeItem saveRequest];
 
-  if (v10 != self)
+  if (saveRequest != self)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D930];
-    v13 = [v9 saveRequest];
-    [v11 raise:v12 format:{@"Parent reminder has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", v9, v13, self}];
+    saveRequest2 = [reminderChangeItem saveRequest];
+    [v11 raise:v12 format:{@"Parent reminder has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", reminderChangeItem, saveRequest2, self}];
   }
 
   v14 = [REMReminderChangeItem alloc];
-  v15 = [v6 storage];
-  v16 = [v6 account];
-  v17 = [v16 capabilities];
-  v18 = [(REMReminderChangeItem *)v14 initWithSaveRequest:self storage:v15 accountCapabilities:v17 observeInitialValues:0];
+  storage = [reminderCopy storage];
+  account = [reminderCopy account];
+  capabilities = [account capabilities];
+  v18 = [(REMReminderChangeItem *)v14 initWithSaveRequest:self storage:storage accountCapabilities:capabilities observeInitialValues:0];
 
   v19 = [[REMReminderChangeItem alloc] initWithReminderChangeItem:v18 insertIntoParentReminderSubtaskContextChangeItem:v8];
   [(REMSaveRequest *)self _trackReminderChangeItem:v19];
@@ -6003,12 +6003,12 @@ LABEL_13:
   return v19;
 }
 
-- (id)_copyReminderChangeItem:(id)a3 toListChangeItem:(id)a4
+- (id)_copyReminderChangeItem:(id)item toListChangeItem:(id)changeItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  itemCopy = item;
+  changeItemCopy = changeItem;
+  v8 = changeItemCopy;
+  if (!itemCopy)
   {
     v19 = +[REMLogStore write];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -6020,7 +6020,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if (!v7)
+  if (!changeItemCopy)
   {
     v21 = +[REMLogStore write];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -6035,25 +6035,25 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v9 = [v6 saveRequest];
+  saveRequest = [itemCopy saveRequest];
 
   v10 = MEMORY[0x1E695D930];
-  if (v9 != self)
+  if (saveRequest != self)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D930];
-    v13 = [v6 saveRequest];
-    [v11 raise:v12 format:{@"Original reminder has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", v6, v13, self}];
+    saveRequest2 = [itemCopy saveRequest];
+    [v11 raise:v12 format:{@"Original reminder has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", itemCopy, saveRequest2, self}];
   }
 
-  v14 = [v8 saveRequest];
+  saveRequest3 = [v8 saveRequest];
 
-  if (v14 != self)
+  if (saveRequest3 != self)
   {
     v15 = MEMORY[0x1E695DF30];
     v16 = *v10;
-    v17 = [v8 saveRequest];
-    [v15 raise:v16 format:{@"List has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", v8, v17, self}];
+    saveRequest4 = [v8 saveRequest];
+    [v15 raise:v16 format:{@"List has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", v8, saveRequest4, self}];
   }
 
   if ([v8 isGroup])
@@ -6061,19 +6061,19 @@ LABEL_16:
     [MEMORY[0x1E695DF30] raise:*v10 format:{@"listChangeItem is a group and adding reminder to group is not currently supported {listChangeItem: %@}", v8}];
   }
 
-  v18 = [[REMReminderChangeItem alloc] initWithReminderChangeItem:v6 insertIntoListChangeItem:v8];
+  v18 = [[REMReminderChangeItem alloc] initWithReminderChangeItem:itemCopy insertIntoListChangeItem:v8];
   [(REMSaveRequest *)self _trackReminderChangeItem:v18];
 LABEL_17:
 
   return v18;
 }
 
-- (id)_copyReminderChangeItem:(id)a3 toReminderSubtaskContextChangeItem:(id)a4
+- (id)_copyReminderChangeItem:(id)item toReminderSubtaskContextChangeItem:(id)changeItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  itemCopy = item;
+  changeItemCopy = changeItem;
+  v8 = changeItemCopy;
+  if (!itemCopy)
   {
     v20 = +[REMLogStore write];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -6085,7 +6085,7 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  if (!v7)
+  if (!changeItemCopy)
   {
     v22 = +[REMLogStore write];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -6100,29 +6100,29 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = [v6 saveRequest];
+  saveRequest = [itemCopy saveRequest];
 
   v10 = MEMORY[0x1E695D930];
-  if (v9 != self)
+  if (saveRequest != self)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D930];
-    v13 = [v6 saveRequest];
-    [v11 raise:v12 format:{@"Original reminder has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", v6, v13, self}];
+    saveRequest2 = [itemCopy saveRequest];
+    [v11 raise:v12 format:{@"Original reminder has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", itemCopy, saveRequest2, self}];
   }
 
-  v14 = [v8 reminderChangeItem];
-  v15 = [v14 saveRequest];
+  reminderChangeItem = [v8 reminderChangeItem];
+  saveRequest3 = [reminderChangeItem saveRequest];
 
-  if (v15 != self)
+  if (saveRequest3 != self)
   {
     v16 = MEMORY[0x1E695DF30];
     v17 = *v10;
-    v18 = [v14 saveRequest];
-    [v16 raise:v17 format:{@"Parent reminder has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", v14, v18, self}];
+    saveRequest4 = [reminderChangeItem saveRequest];
+    [v16 raise:v17 format:{@"Parent reminder has incorrect save request {original: %@, saveRequest: %@, expectedSaveRequest: %@}", reminderChangeItem, saveRequest4, self}];
   }
 
-  v19 = [[REMReminderChangeItem alloc] initWithReminderChangeItem:v6 insertIntoParentReminderSubtaskContextChangeItem:v8];
+  v19 = [[REMReminderChangeItem alloc] initWithReminderChangeItem:itemCopy insertIntoParentReminderSubtaskContextChangeItem:v8];
   [(REMSaveRequest *)self _trackReminderChangeItem:v19];
 
 LABEL_15:
@@ -6136,35 +6136,35 @@ LABEL_15:
   return WeakRetained;
 }
 
-- (id)_addTestOnlyPrimaryCKAccountWithName:(id)a3 accountObjectID:(id)a4
+- (id)_addTestOnlyPrimaryCKAccountWithName:(id)name accountObjectID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMSaveRequest *)self __addAccountWithType:_auto_REMAccountTypeForPrimaryCloudKit() name:v7 accountObjectID:v6];
+  dCopy = d;
+  nameCopy = name;
+  v8 = [(REMSaveRequest *)self __addAccountWithType:_auto_REMAccountTypeForPrimaryCloudKit() name:nameCopy accountObjectID:dCopy];
 
   return v8;
 }
 
-- (id)_addTestOnlyExtraPrimaryCKAccountWithName:(id)a3 accountObjectID:(id)a4
+- (id)_addTestOnlyExtraPrimaryCKAccountWithName:(id)name accountObjectID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMSaveRequest *)self __addAccountWithType:_auto_REMAccountTypeForPrimaryCloudKit() name:v7 accountObjectID:v6];
+  dCopy = d;
+  nameCopy = name;
+  v8 = [(REMSaveRequest *)self __addAccountWithType:_auto_REMAccountTypeForPrimaryCloudKit() name:nameCopy accountObjectID:dCopy];
 
-  v9 = [v8 storage];
-  [v9 _setIsAddingExtraPrimaryCKAccountForTesting:1];
+  storage = [v8 storage];
+  [storage _setIsAddingExtraPrimaryCKAccountForTesting:1];
 
   return v8;
 }
 
-- (id)__addAccountWithType:(int64_t)a3 name:(id)a4 accountObjectID:(id)a5
+- (id)__addAccountWithType:(int64_t)type name:(id)name accountObjectID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  nameCopy = name;
+  dCopy = d;
+  v10 = dCopy;
+  if (nameCopy)
   {
-    if (v9)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -6181,20 +6181,20 @@ LABEL_15:
 
   v10 = +[REMAccount newObjectID];
 LABEL_3:
-  v11 = [[REMAccountChangeItem alloc] initWithObjectID:v10 type:a3 name:v8 insertIntoSaveRequest:self];
+  v11 = [[REMAccountChangeItem alloc] initWithObjectID:v10 type:type name:nameCopy insertIntoSaveRequest:self];
   [(REMSaveRequest *)self _trackAccountChangeItem:v11];
 
   return v11;
 }
 
-- (id)addCustomSmartListWithName:(id)a3 toListSublistContextChangeItem:(id)a4 smartListObjectID:(id)a5
+- (id)addCustomSmartListWithName:(id)name toListSublistContextChangeItem:(id)item smartListObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  itemCopy = item;
+  dCopy = d;
+  if (nameCopy)
   {
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -6203,7 +6203,7 @@ LABEL_3:
   else
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "name");
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -6211,12 +6211,12 @@ LABEL_3:
 
   NSLog(&cfstr_SIsUnexpectedl.isa, "listSublistContextChangeItem");
 LABEL_3:
-  v11 = [v9 listChangeItem];
-  v12 = [(REMSaveRequest *)self _updateAccountWithListChangeItem:v11];
-  v13 = [v12 saveRequest];
+  listChangeItem = [itemCopy listChangeItem];
+  v12 = [(REMSaveRequest *)self _updateAccountWithListChangeItem:listChangeItem];
+  saveRequest = [v12 saveRequest];
 
   v14 = MEMORY[0x1E695D930];
-  if (v13 != self)
+  if (saveRequest != self)
   {
     v15 = MEMORY[0x1E695DF30];
     v16 = *MEMORY[0x1E695D930];
@@ -6227,25 +6227,25 @@ LABEL_3:
     v14 = v17;
   }
 
-  v19 = [v12 capabilities];
-  v20 = [v19 supportsCustomSmartLists];
+  capabilities = [v12 capabilities];
+  supportsCustomSmartLists = [capabilities supportsCustomSmartLists];
 
-  if ((v20 & 1) == 0)
+  if ((supportsCustomSmartLists & 1) == 0)
   {
     v21 = MEMORY[0x1E695DF30];
     v22 = *v14;
-    v23 = [v12 objectID];
-    [v21 raise:v22 format:{@"Cannot add CSL to sublist context because the account does not support it {accountID: %@}", v23}];
+    objectID = [v12 objectID];
+    [v21 raise:v22 format:{@"Cannot add CSL to sublist context because the account does not support it {accountID: %@}", objectID}];
   }
 
-  if (!v10)
+  if (!dCopy)
   {
-    v10 = +[REMSmartList newObjectID];
+    dCopy = +[REMSmartList newObjectID];
   }
 
-  v24 = [[REMSmartListChangeItem alloc] initWithCustomSmartListObjectID:v10 insertIntoListSublistContextChangeItem:v9];
+  v24 = [[REMSmartListChangeItem alloc] initWithCustomSmartListObjectID:dCopy insertIntoListSublistContextChangeItem:itemCopy];
   [(REMSaveRequest *)self _trackSmartListChangeItem:v24];
-  [(REMSmartListChangeItem *)v24 setName:v8];
+  [(REMSmartListChangeItem *)v24 setName:nameCopy];
 
   return v24;
 }
@@ -6799,7 +6799,7 @@ LABEL_3:
 
 - (void)advanceForwardRecurrenceAfterNowAndCreateIncompleteCloneWithoutRecurrenceRulesAndSubtasks
 {
-  v4 = [OUTLINED_FUNCTION_0_10(a1 a2)];
+  v4 = [OUTLINED_FUNCTION_0_10(self a2)];
   *v3 = 138543362;
   *v2 = v4;
   OUTLINED_FUNCTION_1_5();

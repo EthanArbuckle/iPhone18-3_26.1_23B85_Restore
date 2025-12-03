@@ -1,5 +1,5 @@
 @interface MFComposeDisplayMetrics
-+ (id)displayMetricsWithTraitCollection:(id)a3 layoutMargins:(NSDirectionalEdgeInsets)a4 safeAreaInsets:(UIEdgeInsets)a5;
++ (id)displayMetricsWithTraitCollection:(id)collection layoutMargins:(NSDirectionalEdgeInsets)margins safeAreaInsets:(UIEdgeInsets)insets;
 - (BOOL)isCompactHeight;
 - (NSDirectionalEdgeInsets)headerViewSeparatorInset;
 - (NSDirectionalEdgeInsets)layoutMargins;
@@ -10,18 +10,18 @@
 
 @implementation MFComposeDisplayMetrics
 
-+ (id)displayMetricsWithTraitCollection:(id)a3 layoutMargins:(NSDirectionalEdgeInsets)a4 safeAreaInsets:(UIEdgeInsets)a5
++ (id)displayMetricsWithTraitCollection:(id)collection layoutMargins:(NSDirectionalEdgeInsets)margins safeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  trailing = a4.trailing;
-  v10 = a4.bottom;
-  leading = a4.leading;
-  v12 = a4.top;
-  v13 = a3;
-  if ([v13 userInterfaceIdiom] == -1)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  trailing = margins.trailing;
+  v10 = margins.bottom;
+  leading = margins.leading;
+  v12 = margins.top;
+  collectionCopy = collection;
+  if ([collectionCopy userInterfaceIdiom] == -1)
   {
     v14 = 0;
   }
@@ -29,7 +29,7 @@
   else
   {
     v14 = objc_alloc_init(MFComposeDisplayMetrics);
-    [(MFComposeDisplayMetrics *)v14 setTraitCollection:v13];
+    [(MFComposeDisplayMetrics *)v14 setTraitCollection:collectionCopy];
     [(MFComposeDisplayMetrics *)v14 setLayoutMargins:v12, leading, v10, trailing];
     [(MFComposeDisplayMetrics *)v14 setSafeAreaInsets:top, left, bottom, right];
   }
@@ -39,9 +39,9 @@
 
 - (double)trailingButtonMidlineOffset
 {
-  v2 = [(MFComposeDisplayMetrics *)self isCompactHeight];
+  isCompactHeight = [(MFComposeDisplayMetrics *)self isCompactHeight];
   result = 21.0;
-  if (v2)
+  if (isCompactHeight)
   {
     return 0.0;
   }
@@ -51,18 +51,18 @@
 
 - (UIEdgeInsets)sendBarButtonItemImageInsets
 {
-  v3 = [(MFComposeDisplayMetrics *)self traitCollection];
-  v4 = [v3 layoutDirection];
+  traitCollection = [(MFComposeDisplayMetrics *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  v5 = [(MFComposeDisplayMetrics *)self isCompactHeight];
+  isCompactHeight = [(MFComposeDisplayMetrics *)self isCompactHeight];
   v6 = 8.5;
   v7 = 0.0;
-  if (v5)
+  if (isCompactHeight)
   {
     v6 = 0.0;
   }
 
-  if (v4 == 1)
+  if (layoutDirection == 1)
   {
     v8 = v6;
   }
@@ -72,7 +72,7 @@
     v8 = 0.0;
   }
 
-  if (v4 == 1)
+  if (layoutDirection == 1)
   {
     v9 = 0.0;
   }
@@ -140,8 +140,8 @@
 
 - (BOOL)isCompactHeight
 {
-  v2 = [(MFComposeDisplayMetrics *)self traitCollection];
-  v3 = [v2 verticalSizeClass] == 1;
+  traitCollection = [(MFComposeDisplayMetrics *)self traitCollection];
+  v3 = [traitCollection verticalSizeClass] == 1;
 
   return v3;
 }

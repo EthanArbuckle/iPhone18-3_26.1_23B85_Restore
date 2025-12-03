@@ -1,31 +1,31 @@
 @interface HKIntegerSet
-- (BOOL)containsInteger:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HKIntegerSet)initWithArray:(id)a3;
-- (HKIntegerSet)initWithCapacity:(unint64_t)a3;
-- (HKIntegerSet)initWithCoder:(id)a3;
-- (HKIntegerSet)initWithIndex:(int64_t)a3;
-- (HKIntegerSet)initWithSet:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)containsInteger:(int64_t)integer;
+- (BOOL)isEqual:(id)equal;
+- (HKIntegerSet)initWithArray:(id)array;
+- (HKIntegerSet)initWithCapacity:(unint64_t)capacity;
+- (HKIntegerSet)initWithCoder:(id)coder;
+- (HKIntegerSet)initWithIndex:(int64_t)index;
+- (HKIntegerSet)initWithSet:(id)set;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)count;
 - (unint64_t)hash;
 - (void)count;
 - (void)dealloc;
 - (void)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateIntegersUsingBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateIntegersUsingBlock:(id)block;
 @end
 
 @implementation HKIntegerSet
 
-- (HKIntegerSet)initWithCapacity:(unint64_t)a3
+- (HKIntegerSet)initWithCapacity:(unint64_t)capacity
 {
   v9.receiver = self;
   v9.super_class = HKIntegerSet;
   v4 = [(HKIntegerSet *)&v9 init];
-  if (v4 && (memset(&v8, 0, sizeof(v8)), v5 = CFSetCreateMutable(*MEMORY[0x1E695E480], a3, &v8), (v4->_set = v5) == 0))
+  if (v4 && (memset(&v8, 0, sizeof(v8)), v5 = CFSetCreateMutable(*MEMORY[0x1E695E480], capacity, &v8), (v4->_set = v5) == 0))
   {
     v6 = 0;
   }
@@ -51,30 +51,30 @@
   [(HKIntegerSet *)&v4 dealloc];
 }
 
-- (HKIntegerSet)initWithIndex:(int64_t)a3
+- (HKIntegerSet)initWithIndex:(int64_t)index
 {
   v4 = [(HKIntegerSet *)self initWithCapacity:1];
   v5 = v4;
   if (v4)
   {
-    CFSetAddValue(v4->_set, a3);
+    CFSetAddValue(v4->_set, index);
   }
 
   return v5;
 }
 
-- (HKIntegerSet)initWithSet:(id)a3
+- (HKIntegerSet)initWithSet:(id)set
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = -[HKIntegerSet initWithCapacity:](self, "initWithCapacity:", [v4 count]);
+  setCopy = set;
+  v5 = -[HKIntegerSet initWithCapacity:](self, "initWithCapacity:", [setCopy count]);
   if (v5)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = setCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -105,18 +105,18 @@
   return v5;
 }
 
-- (HKIntegerSet)initWithArray:(id)a3
+- (HKIntegerSet)initWithArray:(id)array
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = -[HKIntegerSet initWithCapacity:](self, "initWithCapacity:", [v4 count]);
+  arrayCopy = array;
+  v5 = -[HKIntegerSet initWithCapacity:](self, "initWithCapacity:", [arrayCopy count]);
   if (v5)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = arrayCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -179,22 +179,22 @@ void __27__HKIntegerSet_description__block_invoke(uint64_t a1, uint64_t a2)
   [v2 addObject:v3];
 }
 
-- (void)enumerateIntegersUsingBlock:(id)a3
+- (void)enumerateIntegersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   set = self->_set;
-  v6 = v4;
+  v6 = blockCopy;
   if (!set)
   {
     [HKIntegerSet enumerateIntegersUsingBlock:];
-    v4 = v6;
+    blockCopy = v6;
     set = v7;
   }
 
-  CFSetApplyFunction(set, HKIntegerSetEnumerateEntry, v4);
+  CFSetApplyFunction(set, HKIntegerSetEnumerateEntry, blockCopy);
 }
 
-- (BOOL)containsInteger:(int64_t)a3
+- (BOOL)containsInteger:(int64_t)integer
 {
   set = self->_set;
   if (!set)
@@ -203,7 +203,7 @@ void __27__HKIntegerSet_description__block_invoke(uint64_t a1, uint64_t a2)
     set = v6;
   }
 
-  return CFSetContainsValue(set, a3) != 0;
+  return CFSetContainsValue(set, integer) != 0;
 }
 
 - (unint64_t)count
@@ -239,13 +239,13 @@ void __27__HKIntegerSet_description__block_invoke(uint64_t a1, uint64_t a2)
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [v5 count];
     if (v6 == [(HKIntegerSet *)self count])
     {
@@ -290,7 +290,7 @@ uint64_t __24__HKIntegerSet_isEqual___block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   set = self->_set;
   if (!set)
@@ -308,7 +308,7 @@ uint64_t __24__HKIntegerSet_isEqual___block_invoke(uint64_t a1, uint64_t a2)
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   set = self->_set;
   if (!set)
@@ -326,9 +326,9 @@ uint64_t __24__HKIntegerSet_isEqual___block_invoke(uint64_t a1, uint64_t a2)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
+  coderCopy = coder;
   if (!self->_set)
   {
     [HKIntegerSet encodeWithCoder:];
@@ -339,35 +339,35 @@ uint64_t __24__HKIntegerSet_isEqual___block_invoke(uint64_t a1, uint64_t a2)
   if (v6)
   {
     v7 = v6;
-    v8 = v11;
+    v8 = coderCopy;
     if (!v5)
     {
       goto LABEL_8;
     }
 
     CFSetGetValues(self->_set, v7);
-    [v11 encodeArrayOfObjCType:"q" count:v5 at:v7];
+    [coderCopy encodeArrayOfObjCType:"q" count:v5 at:v7];
     free(v7);
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = NSStringFromSelector(a2);
-    [v9 handleFailureInMethod:a2 object:self file:@"HKIntegerSet.m" lineNumber:195 description:{@"%@ falled to allocate space to encode %d items", v10, v5}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKIntegerSet.m" lineNumber:195 description:{@"%@ falled to allocate space to encode %d items", v10, v5}];
 
     v5 = 0;
   }
 
-  [v11 encodeInteger:v5 forKey:@"count"];
-  v8 = v11;
+  [coderCopy encodeInteger:v5 forKey:@"count"];
+  v8 = coderCopy;
 LABEL_8:
 }
 
-- (HKIntegerSet)initWithCoder:(id)a3
+- (HKIntegerSet)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [v5 decodeIntegerForKey:@"count"];
+  coderCopy = coder;
+  v6 = [coderCopy decodeIntegerForKey:@"count"];
   v7 = [(HKIntegerSet *)self initWithCapacity:v6];
   if (!v7)
   {
@@ -380,7 +380,7 @@ LABEL_8:
     if (v8)
     {
       v9 = v8;
-      [v5 decodeArrayOfObjCType:"q" count:v6 at:v8];
+      [coderCopy decodeArrayOfObjCType:"q" count:v6 at:v8];
       for (i = 0; i != v6; ++i)
       {
         CFSetAddValue(v7->_set, v9[i]);
@@ -390,9 +390,9 @@ LABEL_8:
       goto LABEL_7;
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = NSStringFromSelector(a2);
-    [v12 handleFailureInMethod:a2 object:v7 file:@"HKIntegerSet.m" lineNumber:228 description:{@"%@ falled to allocate space to decode %d items", v13, v6}];
+    [currentHandler handleFailureInMethod:a2 object:v7 file:@"HKIntegerSet.m" lineNumber:228 description:{@"%@ falled to allocate space to decode %d items", v13, v6}];
 
 LABEL_9:
     v11 = 0;

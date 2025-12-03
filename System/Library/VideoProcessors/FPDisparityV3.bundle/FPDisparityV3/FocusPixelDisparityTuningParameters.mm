@@ -1,7 +1,7 @@
 @interface FocusPixelDisparityTuningParameters
 - (FocusPixelDisparityTuningParameters)init;
-- (FocusPixelDisparityTuningParameters)initWithTuningDictionary:(id)a3 cameraInfoByPortType:(id)a4;
-- (int)readFPDisparity_v3_Config:(id)a3;
+- (FocusPixelDisparityTuningParameters)initWithTuningDictionary:(id)dictionary cameraInfoByPortType:(id)type;
+- (int)readFPDisparity_v3_Config:(id)config;
 - (int)setDefaultFPDisparity_v3_Parameters;
 @end
 
@@ -217,9 +217,9 @@ LABEL_15:
   return v6;
 }
 
-- (int)readFPDisparity_v3_Config:(id)a3
+- (int)readFPDisparity_v3_Config:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v6 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   if (!v6)
   {
@@ -229,13 +229,13 @@ LABEL_35:
     goto LABEL_32;
   }
 
-  if (!v4)
+  if (!configCopy)
   {
     sub_29579C8F4(&v199);
     goto LABEL_35;
   }
 
-  v198 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"reg");
+  v198 = objc_msgSend_objectForKeyedSubscript_(configCopy, v5, @"reg");
   if (!v198)
   {
     sub_29579C880();
@@ -244,7 +244,7 @@ LABEL_42:
     goto LABEL_32;
   }
 
-  v8 = objc_msgSend_objectForKeyedSubscript_(v4, v7, @"cost");
+  v8 = objc_msgSend_objectForKeyedSubscript_(configCopy, v7, @"cost");
   if (!v8)
   {
     sub_29579C7F4(v198);
@@ -252,7 +252,7 @@ LABEL_42:
   }
 
   v10 = v8;
-  v11 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"solver");
+  v11 = objc_msgSend_objectForKeyedSubscript_(configCopy, v9, @"solver");
   if (!v11)
   {
     sub_29579C760(v10, v198);
@@ -260,21 +260,21 @@ LABEL_42:
   }
 
   v13 = v11;
-  v197 = objc_msgSend_objectForKeyedSubscript_(v4, v12, @"hbf");
+  v197 = objc_msgSend_objectForKeyedSubscript_(configCopy, v12, @"hbf");
   if (!v197)
   {
     sub_29579C6BC(v13, v10, v198);
     goto LABEL_42;
   }
 
-  v195 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"preprocessing");
+  v195 = objc_msgSend_objectForKeyedSubscript_(configCopy, v14, @"preprocessing");
   if (!v195)
   {
     sub_29579C610(v197, v13, v10, v198);
     goto LABEL_42;
   }
 
-  v194 = objc_msgSend_objectForKeyedSubscript_(v4, v15, @"postprocessing");
+  v194 = objc_msgSend_objectForKeyedSubscript_(configCopy, v15, @"postprocessing");
   if (!v194)
   {
     fig_log_get_emitter();
@@ -299,7 +299,7 @@ LABEL_47:
   }
 
   v19 = v18;
-  v192 = self;
+  selfCopy = self;
   v199 = 0;
   sub_29578DE10(v10, @"nview", &v199);
   objc_msgSend_setNView_(v19, v20, v199);
@@ -423,7 +423,7 @@ LABEL_46:
   }
 
   v190 = v85;
-  v191 = v4;
+  v191 = configCopy;
   v196 = v6;
   v199 = 0;
   v94 = v93;
@@ -439,7 +439,7 @@ LABEL_46:
   LODWORD(v101) = v199;
   objc_msgSend_setCalibrationMaxResidual2_(v94, v102, v103, v101);
   v189 = v94;
-  objc_msgSend_setFPpostprocessingParameters_(v192->_FPDisparityEstimator_Config, v104, v94);
+  objc_msgSend_setFPpostprocessingParameters_(selfCopy->_FPDisparityEstimator_Config, v104, v94);
   v105 = 0;
   while (1)
   {
@@ -603,24 +603,24 @@ LABEL_22:
     {
       v6 = v196;
       v186 = objc_msgSend_copy(v196, v184, v185);
-      objc_msgSend_setLevelsParameters_(v192->_FPDisparityEstimator_Config, v187, v186);
+      objc_msgSend_setLevelsParameters_(selfCopy->_FPDisparityEstimator_Config, v187, v186);
 
       v182 = 0;
-      v4 = v191;
+      configCopy = v191;
       goto LABEL_32;
     }
   }
 
-  v4 = v191;
+  configCopy = v191;
   v6 = v196;
 LABEL_32:
 
   return v182;
 }
 
-- (FocusPixelDisparityTuningParameters)initWithTuningDictionary:(id)a3 cameraInfoByPortType:(id)a4
+- (FocusPixelDisparityTuningParameters)initWithTuningDictionary:(id)dictionary cameraInfoByPortType:(id)type
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v8 = objc_msgSend_init(self, v6, v7);
   v10 = v8;
   if (!v8)
@@ -628,7 +628,7 @@ LABEL_32:
     goto LABEL_6;
   }
 
-  if (objc_msgSend_readFPDisparity_v3_Config_(v8, v9, v5))
+  if (objc_msgSend_readFPDisparity_v3_Config_(v8, v9, dictionaryCopy))
   {
     fig_log_get_emitter();
     FigDebugAssert3();

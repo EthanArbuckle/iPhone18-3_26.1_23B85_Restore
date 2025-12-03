@@ -1,43 +1,43 @@
 @interface OSMRelevanceEngine
 + (id)sharedEngine;
 - (OSMRelevanceEngine)init;
-- (void)predictionForSpeakable:(id)a3 withRelevanceProviders:(id)a4 handler:(id)a5;
-- (void)processFeedback:(int64_t)a3;
+- (void)predictionForSpeakable:(id)speakable withRelevanceProviders:(id)providers handler:(id)handler;
+- (void)processFeedback:(int64_t)feedback;
 @end
 
 @implementation OSMRelevanceEngine
 
-- (void)processFeedback:(int64_t)a3
+- (void)processFeedback:(int64_t)feedback
 {
   if (self->_currentElement)
   {
-    v3 = self;
-    if (a3 == 1 || a3 == 2)
+    selfCopy = self;
+    if (feedback == 1 || feedback == 2)
     {
       self = [OSMRelevanceEngineTrainingContext trainWithUnmanagedElement:"trainWithUnmanagedElement:isPositiveEvent:interaction:" isPositiveEvent:? interaction:?];
-      currentElement = v3->_currentElement;
+      currentElement = selfCopy->_currentElement;
     }
 
-    v3->_currentElement = 0;
+    selfCopy->_currentElement = 0;
 
     _objc_release_x2(self);
   }
 }
 
-- (void)predictionForSpeakable:(id)a3 withRelevanceProviders:(id)a4 handler:(id)a5
+- (void)predictionForSpeakable:(id)speakable withRelevanceProviders:(id)providers handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  speakableCopy = speakable;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = a4;
+    providersCopy = providers;
     v11 = objc_alloc_init(REContent);
-    v12 = [v8 speakableDescription];
-    [v11 setObject:v12 forKey:@"OSMSpeakableDescription"];
+    speakableDescription = [speakableCopy speakableDescription];
+    [v11 setObject:speakableDescription forKey:@"OSMSpeakableDescription"];
 
     v13 = [REElement alloc];
-    v14 = [v8 speakableIdentifier];
-    v15 = [v13 initWithIdentifier:v14 content:v11 action:0 relevanceProviders:v10];
+    speakableIdentifier = [speakableCopy speakableIdentifier];
+    v15 = [v13 initWithIdentifier:speakableIdentifier content:v11 action:0 relevanceProviders:providersCopy];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -45,8 +45,8 @@
     v17[3] = &unk_100010620;
     v17[4] = self;
     v18 = v15;
-    v19 = v8;
-    v20 = v9;
+    v19 = speakableCopy;
+    v20 = handlerCopy;
     v16 = v15;
     dispatch_async(&_dispatch_main_q, v17);
   }
@@ -72,16 +72,16 @@
   v10 = [NSURL fileURLWithPath:v9];
 
   [(REMutableRelevanceEngineConfiguration *)v7 setModelFileURL:v10];
-  v11 = [(REMutableRelevanceEngineConfiguration *)v2->_configuration interactionDescriptors];
-  v12 = [v11 count];
+  interactionDescriptors = [(REMutableRelevanceEngineConfiguration *)v2->_configuration interactionDescriptors];
+  v12 = [interactionDescriptors count];
 
   for (; v12; --v12)
   {
     [(REMutableRelevanceEngineConfiguration *)v2->_configuration removeInteractionAtIndex:0];
   }
 
-  v13 = [(REMutableRelevanceEngineConfiguration *)v2->_configuration sectionDescriptors];
-  v14 = [v13 count];
+  sectionDescriptors = [(REMutableRelevanceEngineConfiguration *)v2->_configuration sectionDescriptors];
+  v14 = [sectionDescriptors count];
 
   for (; v14; --v14)
   {

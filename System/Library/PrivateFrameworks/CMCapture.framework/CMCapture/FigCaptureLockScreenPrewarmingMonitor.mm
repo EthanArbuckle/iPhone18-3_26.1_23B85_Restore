@@ -8,20 +8,20 @@
 - (void)_evaluatePrewarmingConditions;
 - (void)_init;
 - (void)_invalidate;
-- (void)_prewarmAfterDelay:(uint64_t)a1;
-- (void)_setIsPrewarming:(uint64_t)a1;
+- (void)_prewarmAfterDelay:(uint64_t)delay;
+- (void)_setIsPrewarming:(uint64_t)prewarming;
 - (void)_stopMonitoring;
-- (void)_updateActiveBiometricOperation:(uint64_t)a1;
+- (void)_updateActiveBiometricOperation:(uint64_t)operation;
 - (void)_updateDeviceLockState;
 - (void)dealloc;
-- (void)layoutMonitor:(id)a3 didUpdateLayout:(id)a4;
+- (void)layoutMonitor:(id)monitor didUpdateLayout:(id)layout;
 @end
 
 @implementation FigCaptureLockScreenPrewarmingMonitor
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -94,14 +94,14 @@ void __97__FigCaptureLockScreenPrewarmingMonitor__registerForBiometricEnrollment
   }
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateLayout:(id)a4
+- (void)layoutMonitor:(id)monitor didUpdateLayout:(id)layout
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __71__FigCaptureLockScreenPrewarmingMonitor_layoutMonitor_didUpdateLayout___block_invoke;
   v9 = &unk_1E798F898;
-  v10 = a3;
-  v11 = self;
+  monitorCopy = monitor;
+  selfCopy = self;
   if (self->_addingLayoutObserver)
   {
     if (!_FigIsCurrentDispatchQueue())
@@ -155,12 +155,12 @@ uint64_t __71__FigCaptureLockScreenPrewarmingMonitor_layoutMonitor_didUpdateLayo
 
 - (void)_init
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = FigCaptureLockScreenPrewarmingMonitor;
   v1 = objc_msgSendSuper2(&v7, sel_init);
   if (v1)
@@ -183,18 +183,18 @@ uint64_t __71__FigCaptureLockScreenPrewarmingMonitor_layoutMonitor_didUpdateLayo
 
 - (void)_invalidate
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     if (v2)
     {
       notify_cancel(v2);
-      *(a1 + 16) = 0;
+      *(self + 16) = 0;
       OUTLINED_FUNCTION_7_1();
       v5 = 3221225472;
       v6 = __52__FigCaptureLockScreenPrewarmingMonitor__invalidate__block_invoke;
       v7 = &unk_1E798F870;
-      v8 = a1;
+      selfCopy = self;
       dispatch_async(v3, block);
     }
   }
@@ -202,7 +202,7 @@ uint64_t __71__FigCaptureLockScreenPrewarmingMonitor_layoutMonitor_didUpdateLayo
 
 - (void)_stopMonitoring
 {
-  if (a1)
+  if (self)
   {
     if (!OUTLINED_FUNCTION_10_38())
     {
@@ -275,53 +275,53 @@ uint64_t __71__FigCaptureLockScreenPrewarmingMonitor_layoutMonitor_didUpdateLayo
   return result;
 }
 
-- (void)_updateActiveBiometricOperation:(uint64_t)a1
+- (void)_updateActiveBiometricOperation:(uint64_t)operation
 {
-  if (a1)
+  if (operation)
   {
-    v3 = *(a1 + 28);
+    v3 = *(operation + 28);
     if (v3 != a2)
     {
-      *(a1 + 28) = a2;
+      *(operation + 28) = a2;
       if (v3 == 2)
       {
-        *(a1 + 32) = mach_absolute_time();
+        *(operation + 32) = mach_absolute_time();
       }
 
-      [(FigCaptureLockScreenPrewarmingMonitor *)a1 _evaluatePrewarmingConditions];
+      [(FigCaptureLockScreenPrewarmingMonitor *)operation _evaluatePrewarmingConditions];
     }
   }
 }
 
 - (void)_updateDeviceLockState
 {
-  if (a1)
+  if (self)
   {
     v2 = MKBGetDeviceLockState();
-    v3 = *(a1 + 52);
+    v3 = *(self + 52);
     if (v2 != v3)
     {
       v4 = v2;
       if (((v2 < 7) & (0x46u >> v2)) == 0 && v3 <= 6 && ((0x39u >> v3) & 1) == 0)
       {
-        *(a1 + 56) = mach_absolute_time();
+        *(self + 56) = mach_absolute_time();
       }
 
-      *(a1 + 52) = v4;
+      *(self + 52) = v4;
 
-      [(FigCaptureLockScreenPrewarmingMonitor *)a1 _evaluatePrewarmingConditions];
+      [(FigCaptureLockScreenPrewarmingMonitor *)self _evaluatePrewarmingConditions];
     }
   }
 }
 
 - (void)_evaluatePrewarmingConditions
 {
-  if (a1)
+  if (self)
   {
     mach_absolute_time();
-    v2 = [FigCaptureLockScreenPrewarmingMonitor _shouldPrewarmForHostTime:a1];
+    v2 = [FigCaptureLockScreenPrewarmingMonitor _shouldPrewarmForHostTime:self];
 
-    [(FigCaptureLockScreenPrewarmingMonitor *)a1 _setIsPrewarming:v2];
+    [(FigCaptureLockScreenPrewarmingMonitor *)self _setIsPrewarming:v2];
   }
 }
 
@@ -353,9 +353,9 @@ uint64_t __71__FigCaptureLockScreenPrewarmingMonitor_layoutMonitor_didUpdateLayo
   return result;
 }
 
-- (void)_setIsPrewarming:(uint64_t)a1
+- (void)_setIsPrewarming:(uint64_t)prewarming
 {
-  if (a1)
+  if (prewarming)
   {
     if (!OUTLINED_FUNCTION_10_38())
     {
@@ -412,9 +412,9 @@ uint64_t __71__FigCaptureLockScreenPrewarmingMonitor_layoutMonitor_didUpdateLayo
   }
 }
 
-- (void)_prewarmAfterDelay:(uint64_t)a1
+- (void)_prewarmAfterDelay:(uint64_t)delay
 {
-  if (a1)
+  if (delay)
   {
     if (!OUTLINED_FUNCTION_10_38())
     {
@@ -440,14 +440,14 @@ uint64_t __71__FigCaptureLockScreenPrewarmingMonitor_layoutMonitor_didUpdateLayo
 
 - (void)_cancelDelayedPrewarmTimer
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 72);
+    v2 = *(self + 72);
     if (v2)
     {
       dispatch_source_cancel(v2);
 
-      *(a1 + 72) = 0;
+      *(self + 72) = 0;
     }
   }
 }

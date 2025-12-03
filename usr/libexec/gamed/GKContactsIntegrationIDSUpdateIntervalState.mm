@@ -1,15 +1,15 @@
 @interface GKContactsIntegrationIDSUpdateIntervalState
-+ (id)stateWithMoc:(id)a3;
++ (id)stateWithMoc:(id)moc;
 @end
 
 @implementation GKContactsIntegrationIDSUpdateIntervalState
 
-+ (id)stateWithMoc:(id)a3
++ (id)stateWithMoc:(id)moc
 {
-  v3 = a3;
+  mocCopy = moc;
   v4 = +[GKCDIDSInfoList _gkFetchRequest];
   v16 = 0;
-  v5 = [v3 executeFetchRequest:v4 error:&v16];
+  v5 = [mocCopy executeFetchRequest:v4 error:&v16];
 
   v6 = v16;
   if (v6)
@@ -30,12 +30,12 @@
 
   else
   {
-    v10 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     v11 = [GKContactsIntegrationIDSUpdateIntervalState alloc];
-    v12 = [v10 updateIntervalHandlesCount];
-    v13 = [v12 unsignedIntValue];
-    v14 = [v10 updateIntervalStartTimeStamp];
-    v9 = [v11 initUpdateIntervalHandleCount:v13 updateIntervalStartTime:v14];
+    updateIntervalHandlesCount = [firstObject updateIntervalHandlesCount];
+    unsignedIntValue = [updateIntervalHandlesCount unsignedIntValue];
+    updateIntervalStartTimeStamp = [firstObject updateIntervalStartTimeStamp];
+    v9 = [v11 initUpdateIntervalHandleCount:unsignedIntValue updateIntervalStartTime:updateIntervalStartTimeStamp];
   }
 
   return v9;

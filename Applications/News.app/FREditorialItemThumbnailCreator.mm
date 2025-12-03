@@ -1,21 +1,21 @@
 @interface FREditorialItemThumbnailCreator
-- (id)editorialThumbnailImageWith:(id)a3;
+- (id)editorialThumbnailImageWith:(id)with;
 @end
 
 @implementation FREditorialItemThumbnailCreator
 
-- (id)editorialThumbnailImageWith:(id)a3
+- (id)editorialThumbnailImageWith:(id)with
 {
-  v3 = [UIImage imageWithData:a3];
+  v3 = [UIImage imageWithData:with];
   v4 = [UIImage alloc];
-  v5 = [v3 CGImage];
+  cGImage = [v3 CGImage];
   v6 = +[UIScreen mainScreen];
   [v6 scale];
-  v7 = [v4 initWithCGImage:v5 scale:0 orientation:?];
+  v7 = [v4 initWithCGImage:cGImage scale:0 orientation:?];
 
-  v8 = [v7 _imageThatSuppressesAccessibilityHairlineThickening];
+  _imageThatSuppressesAccessibilityHairlineThickening = [v7 _imageThatSuppressesAccessibilityHairlineThickening];
 
-  v9 = [v8 fr_scaledImageWithMaximumSize:{40.0, 40.0}];
+  v9 = [_imageThatSuppressesAccessibilityHairlineThickening fr_scaledImageWithMaximumSize:{40.0, 40.0}];
 
   return v9;
 }

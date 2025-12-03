@@ -1,16 +1,16 @@
 @interface REHistogram
-- (BOOL)isEqual:(id)a3;
-- (REHistogram)initWithFeature:(id)a3;
-- (REHistogram)initWithFeature:(id)a3 binningSize:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REHistogram)initWithFeature:(id)feature;
+- (REHistogram)initWithFeature:(id)feature binningSize:(unint64_t)size;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation REHistogram
 
-- (REHistogram)initWithFeature:(id)a3
+- (REHistogram)initWithFeature:(id)feature
 {
-  v4 = a3;
-  if ([v4 featureType] == 2)
+  featureCopy = feature;
+  if ([featureCopy featureType] == 2)
   {
     v5 = RECreateDoubleFeatureValueTaggedPointer();
   }
@@ -21,7 +21,7 @@
   }
 
   v6 = v5;
-  v7 = [(REHistogram *)self initWithFeature:v4 binningSize:v5];
+  v7 = [(REHistogram *)self initWithFeature:featureCopy binningSize:v5];
 
   v8 = v7;
   REReleaseFeatureValueTaggedPointer(v6);
@@ -29,12 +29,12 @@
   return v8;
 }
 
-- (REHistogram)initWithFeature:(id)a3 binningSize:(unint64_t)a4
+- (REHistogram)initWithFeature:(id)feature binningSize:(unint64_t)size
 {
-  v7 = a3;
+  featureCopy = feature;
   if ([(REHistogram *)self isMemberOfClass:objc_opt_class()])
   {
-    if ([v7 featureType] == 2)
+    if ([featureCopy featureType] == 2)
     {
       v8 = _REContinuousHistogram;
     }
@@ -44,7 +44,7 @@
       v8 = _RECategoricalHistogram;
     }
 
-    v11 = [[v8 alloc] initWithFeature:v7 binningSize:a4];
+    v11 = [[v8 alloc] initWithFeature:featureCopy binningSize:size];
   }
 
   else
@@ -55,7 +55,7 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_feature, a3);
+      objc_storeStrong(&v9->_feature, feature);
     }
 
     v11 = v10;
@@ -67,10 +67,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -81,7 +81,7 @@
     if (objc_opt_isKindOfClass())
     {
       feature = self->_feature;
-      v6 = v4->_feature;
+      v6 = equalCopy->_feature;
       v7 = feature;
       v8 = v7;
       if (v7 == v6)
@@ -104,9 +104,9 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_feature);
   return v4;
 }

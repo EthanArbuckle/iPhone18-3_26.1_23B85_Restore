@@ -1,14 +1,14 @@
 @interface LNSpotlightCascadeHandler
-+ (void)handleDeletionStream:(id)a3 items:(id)a4 bundleId:(id)a5 completionHandler:(id)a6;
-+ (void)handleFullSetStream:(id)a3 items:(id)a4 bundleId:(id)a5 indexName:(id)a6 serialNumber:(unint64_t)a7 completionHandler:(id)a8;
-+ (void)handleIncrementalStream:(id)a3 items:(id)a4 bundleId:(id)a5 existingItemCount:(unint64_t)a6 completionHandler:(id)a7;
++ (void)handleDeletionStream:(id)stream items:(id)items bundleId:(id)id completionHandler:(id)handler;
++ (void)handleFullSetStream:(id)stream items:(id)items bundleId:(id)id indexName:(id)name serialNumber:(unint64_t)number completionHandler:(id)handler;
++ (void)handleIncrementalStream:(id)stream items:(id)items bundleId:(id)id existingItemCount:(unint64_t)count completionHandler:(id)handler;
 @end
 
 @implementation LNSpotlightCascadeHandler
 
-+ (void)handleFullSetStream:(id)a3 items:(id)a4 bundleId:(id)a5 indexName:(id)a6 serialNumber:(unint64_t)a7 completionHandler:(id)a8
++ (void)handleFullSetStream:(id)stream items:(id)items bundleId:(id)id indexName:(id)name serialNumber:(unint64_t)number completionHandler:(id)handler
 {
-  v8 = a8;
+  handlerCopy = handler;
   v9 = getLNLogCategoryVocabulary();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -16,12 +16,12 @@
     _os_log_impl(&dword_19763D000, v9, OS_LOG_TYPE_ERROR, "No longer implemented", v10, 2u);
   }
 
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-+ (void)handleIncrementalStream:(id)a3 items:(id)a4 bundleId:(id)a5 existingItemCount:(unint64_t)a6 completionHandler:(id)a7
++ (void)handleIncrementalStream:(id)stream items:(id)items bundleId:(id)id existingItemCount:(unint64_t)count completionHandler:(id)handler
 {
-  v7 = a7;
+  handlerCopy = handler;
   v8 = getLNLogCategoryVocabulary();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -29,12 +29,12 @@
     _os_log_impl(&dword_19763D000, v8, OS_LOG_TYPE_ERROR, "No longer implemented", v9, 2u);
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-+ (void)handleDeletionStream:(id)a3 items:(id)a4 bundleId:(id)a5 completionHandler:(id)a6
++ (void)handleDeletionStream:(id)stream items:(id)items bundleId:(id)id completionHandler:(id)handler
 {
-  v6 = a6;
+  handlerCopy = handler;
   v7 = getLNLogCategoryVocabulary();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -42,7 +42,7 @@
     _os_log_impl(&dword_19763D000, v7, OS_LOG_TYPE_ERROR, "No longer implemented", v8, 2u);
   }
 
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 @end

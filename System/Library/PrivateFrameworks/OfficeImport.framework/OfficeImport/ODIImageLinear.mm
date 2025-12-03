@@ -1,38 +1,38 @@
 @interface ODIImageLinear
-- (ODIImageLinear)initWithImagePresentationName:(id)a3 state:(id)a4;
-- (void)mapPoint:(id)a3 bounds:(CGRect)a4;
+- (ODIImageLinear)initWithImagePresentationName:(id)name state:(id)state;
+- (void)mapPoint:(id)point bounds:(CGRect)bounds;
 @end
 
 @implementation ODIImageLinear
 
-- (ODIImageLinear)initWithImagePresentationName:(id)a3 state:(id)a4
+- (ODIImageLinear)initWithImagePresentationName:(id)name state:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  stateCopy = state;
   v12.receiver = self;
   v12.super_class = ODIImageLinear;
-  v9 = [(ODILinear *)&v12 initWithState:v8];
+  v9 = [(ODILinear *)&v12 initWithState:stateCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mImagePresentationName, a3);
+    objc_storeStrong(&v9->mImagePresentationName, name);
     [(ODILinear *)v10 setIsTextCentered:0];
   }
 
   return v10;
 }
 
-- (void)mapPoint:(id)a3 bounds:(CGRect)a4
+- (void)mapPoint:(id)point bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v27 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  pointCopy = point;
   LODWORD(v9) = 1033476506;
   v10 = [ODIDrawable shapeGeometryForRoundedRectangleWithRadius:v9];
   v11 = [ODIDrawable addShapeWithBounds:v10 rotation:self->super.mState geometry:x state:y, width, height, 0.0];
-  [ODIDrawable mapStyleFromPoint:v27 shape:v11 state:self->super.mState];
+  [ODIDrawable mapStyleFromPoint:pointCopy shape:v11 state:self->super.mState];
   if (self->super.mIsHorizontal)
   {
     v12 = width * 0.05;
@@ -88,11 +88,11 @@
   LODWORD(v18) = 1033476506;
   v21 = [ODIDrawable shapeGeometryForRoundedRectangleWithRadius:v18];
   v22 = [ODIDrawable addShapeWithBounds:v21 rotation:self->super.mState geometry:v13 state:v14, v15, v16, 0.0];
-  [ODIDrawable mapStyleForPresentationName:self->mImagePresentationName point:v27 shape:v22 state:self->super.mState];
+  [ODIDrawable mapStyleForPresentationName:self->mImagePresentationName point:pointCopy shape:v22 state:self->super.mState];
   v23 = +[ODIDrawable shapeGeometryForRectangle];
   v24 = [ODIDrawable addShapeWithBounds:v23 rotation:self->super.mState geometry:x state:y, width, height, 0.0];
 
-  [ODIText mapTextFromPoint:v27 toShape:v24 isCenteredHorizontally:self->super.mIsTextCenteredHorizontally isCenteredVertically:self->super.mIsTextCenteredVertically includeChildren:1 state:self->super.mState];
+  [ODIText mapTextFromPoint:pointCopy toShape:v24 isCenteredHorizontally:self->super.mIsTextCenteredHorizontally isCenteredVertically:self->super.mIsTextCenteredVertically includeChildren:1 state:self->super.mState];
 }
 
 @end

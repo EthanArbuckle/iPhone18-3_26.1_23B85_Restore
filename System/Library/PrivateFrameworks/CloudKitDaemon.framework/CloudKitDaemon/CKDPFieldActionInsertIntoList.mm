@@ -1,33 +1,33 @@
 @interface CKDPFieldActionInsertIntoList
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addValue:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addValue:(id)value;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPFieldActionInsertIntoList
 
-- (void)addValue:(id)a3
+- (void)addValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   values = self->_values;
-  v8 = v4;
+  v8 = valueCopy;
   if (!values)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_values;
     self->_values = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     values = self->_values;
   }
 
-  objc_msgSend_addObject_(values, v4, v4);
+  objc_msgSend_addObject_(values, valueCopy, valueCopy);
 }
 
 - (id)description
@@ -101,10 +101,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_position)
   {
     PBDataWriterWriteSubmessage();
@@ -151,21 +151,21 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   position = self->_position;
-  v17 = v4;
+  v17 = toCopy;
   if (position)
   {
-    objc_msgSend_setPosition_(v4, v5, position);
-    v4 = v17;
+    objc_msgSend_setPosition_(toCopy, v5, position);
+    toCopy = v17;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_insertAfter;
-    v4[28] |= 1u;
+    toCopy[24] = self->_insertAfter;
+    toCopy[28] |= 1u;
   }
 
   if (objc_msgSend_valuesCount(self, v5, position))
@@ -184,13 +184,13 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_position, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_position, v11, zone);
   v13 = *(v10 + 8);
   *(v10 + 8) = v12;
 
@@ -219,7 +219,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v21 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * i), v17, a3, v25);
+        v21 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * i), v17, zone, v25);
         objc_msgSend_addValue_(v10, v22, v21);
       }
 
@@ -233,17 +233,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_9;
   }
 
   position = self->_position;
-  v9 = v4[1];
+  v9 = equalCopy[1];
   if (position | v9)
   {
     if (!objc_msgSend_isEqual_(position, v7, v9))
@@ -252,18 +252,18 @@
     }
   }
 
-  v10 = *(v4 + 28);
+  v10 = *(equalCopy + 28);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if ((*(v4 + 28) & 1) == 0)
+  if ((*(equalCopy + 28) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v10 = *(v4 + 24);
+  v10 = *(equalCopy + 24);
   if (!self->_insertAfter)
   {
 LABEL_5:
@@ -277,14 +277,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ((v4[3] & 1) == 0)
+  if ((equalCopy[3] & 1) == 0)
   {
     goto LABEL_9;
   }
 
 LABEL_6:
   values = self->_values;
-  v12 = v4[2];
+  v12 = equalCopy[2];
   if (values | v12)
   {
     isEqual = objc_msgSend_isEqual_(values, v7, v12);
@@ -316,12 +316,12 @@ LABEL_10:
   return v7 ^ objc_msgSend_hash(self->_values, v4, v5) ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   position = self->_position;
-  v7 = *(v5 + 1);
+  v7 = *(fromCopy + 1);
   if (position)
   {
     if (v7)
@@ -335,9 +335,9 @@ LABEL_10:
     objc_msgSend_setPosition_(self, v4, v7);
   }
 
-  if (*(v5 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_insertAfter = *(v5 + 24);
+    self->_insertAfter = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 
@@ -345,7 +345,7 @@ LABEL_10:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = *(v5 + 2);
+  v8 = *(fromCopy + 2);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v16, v20, 16);
   if (v10)
   {

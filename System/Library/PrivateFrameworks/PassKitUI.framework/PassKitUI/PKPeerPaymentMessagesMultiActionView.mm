@@ -1,29 +1,29 @@
 @interface PKPeerPaymentMessagesMultiActionView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forStyle:(unint64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forStyle:(unint64_t)style;
 - (PKPeerPaymentMessagesMultiActionView)init;
-- (double)_heightForPrimaryButtonForAvailableSize:(CGSize)a3;
-- (id)_axIdentifierForAction:(unint64_t)a3;
-- (id)_buttonForAction:(unint64_t)a3;
+- (double)_heightForPrimaryButtonForAvailableSize:(CGSize)size;
+- (id)_axIdentifierForAction:(unint64_t)action;
+- (id)_buttonForAction:(unint64_t)action;
 - (id)_primaryButton;
 - (id)_secondaryButton;
-- (id)_titleForAction:(unint64_t)a3;
-- (void)_handleActionButton:(id)a3;
+- (id)_titleForAction:(unint64_t)action;
+- (void)_handleActionButton:(id)button;
 - (void)_updateActionButtons;
 - (void)_updateCenterActionButton;
-- (void)_updateConfigurationForButton:(id)a3 withAction:(unint64_t)a4;
-- (void)_updateForActiveActionWithAssociatedButton:(id)a3;
+- (void)_updateConfigurationForButton:(id)button withAction:(unint64_t)action;
+- (void)_updateForActiveActionWithAssociatedButton:(id)button;
 - (void)_updateLeadingActionButton;
 - (void)_updateTrailingActionButton;
 - (void)layoutSubviews;
 - (void)resetActiveAction;
-- (void)setActiveAction:(unint64_t)a3;
-- (void)setButtonEnabled:(BOOL)a3 forAction:(unint64_t)a4;
-- (void)setCenterAction:(unint64_t)a3;
-- (void)setCenterButtonVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLeadingAction:(unint64_t)a3;
-- (void)setRecipient:(id)a3;
-- (void)setTrailingAction:(unint64_t)a3;
+- (void)setActiveAction:(unint64_t)action;
+- (void)setButtonEnabled:(BOOL)enabled forAction:(unint64_t)action;
+- (void)setCenterAction:(unint64_t)action;
+- (void)setCenterButtonVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setLeadingAction:(unint64_t)action;
+- (void)setRecipient:(id)recipient;
+- (void)setTrailingAction:(unint64_t)action;
 @end
 
 @implementation PKPeerPaymentMessagesMultiActionView
@@ -36,30 +36,30 @@
   v2 = [(PKPeerPaymentMessagesMultiActionView *)&v28 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKPeerPaymentMessagesMultiActionView *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKPeerPaymentMessagesMultiActionView *)v2 setBackgroundColor:clearColor];
 
-    v4 = [(PKPeerPaymentMessagesMultiActionView *)v2 _secondaryButton];
+    _secondaryButton = [(PKPeerPaymentMessagesMultiActionView *)v2 _secondaryButton];
     centerButton = v2->_centerButton;
-    v2->_centerButton = v4;
+    v2->_centerButton = _secondaryButton;
 
     v6 = objc_alloc(MEMORY[0x1E6979378]);
     v7 = [v6 initWithType:*MEMORY[0x1E6979928]];
     [v7 setName:@"gaussianBlur"];
-    v8 = [(UIButton *)v2->_centerButton layer];
+    layer = [(UIButton *)v2->_centerButton layer];
     v29[0] = v7;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-    [v8 setFilters:v9];
+    [layer setFilters:v9];
 
     [(PKPeerPaymentMessagesMultiActionView *)v2 addSubview:v2->_centerButton];
-    v10 = [(PKPeerPaymentMessagesMultiActionView *)v2 _primaryButton];
+    _primaryButton = [(PKPeerPaymentMessagesMultiActionView *)v2 _primaryButton];
     leadingButton = v2->_leadingButton;
-    v2->_leadingButton = v10;
+    v2->_leadingButton = _primaryButton;
 
     [(PKPeerPaymentMessagesMultiActionView *)v2 addSubview:v2->_leadingButton];
-    v12 = [(PKPeerPaymentMessagesMultiActionView *)v2 _primaryButton];
+    _primaryButton2 = [(PKPeerPaymentMessagesMultiActionView *)v2 _primaryButton];
     trailingButton = v2->_trailingButton;
-    v2->_trailingButton = v12;
+    v2->_trailingButton = _primaryButton2;
 
     [(PKPeerPaymentMessagesMultiActionView *)v2 addSubview:v2->_trailingButton];
     if ((PKIsVision() & 1) != 0 || _UISolariumFeatureFlagEnabled())
@@ -131,10 +131,10 @@ void __44__PKPeerPaymentMessagesMultiActionView_init__block_invoke_3(uint64_t a1
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forStyle:(unint64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forStyle:(unint64_t)style
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (self->_leadingAction)
   {
     v7 = 1;
@@ -145,7 +145,7 @@ void __44__PKPeerPaymentMessagesMultiActionView_init__block_invoke_3(uint64_t a1
     v7 = self->_trailingAction != 0;
   }
 
-  if (a4)
+  if (style)
   {
     v8 = self->_centerAction == 0;
   }
@@ -228,9 +228,9 @@ void __44__PKPeerPaymentMessagesMultiActionView_init__block_invoke_3(uint64_t a1
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPeerPaymentMessagesMultiActionView *)self sizeThatFits:self->_style forStyle:a3.width, a3.height];
+  [(PKPeerPaymentMessagesMultiActionView *)self sizeThatFits:self->_style forStyle:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -252,7 +252,7 @@ void __44__PKPeerPaymentMessagesMultiActionView_init__block_invoke_3(uint64_t a1
   remainder.origin.y = v5;
   remainder.size.width = v7;
   remainder.size.height = v9;
-  v11 = [(PKPeerPaymentMessagesMultiActionView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKPeerPaymentMessagesMultiActionView *)self _shouldReverseLayoutDirection];
   leadingAction = self->_leadingAction;
   trailingAction = self->_trailingAction;
   centerAction = self->_centerAction;
@@ -305,7 +305,7 @@ void __44__PKPeerPaymentMessagesMultiActionView_init__block_invoke_3(uint64_t a1
 
   else
   {
-    if (v11)
+    if (_shouldReverseLayoutDirection)
     {
       v22 = CGRectMaxXEdge;
     }
@@ -340,25 +340,25 @@ void __44__PKPeerPaymentMessagesMultiActionView_init__block_invoke_3(uint64_t a1
   [(UIButton *)self->_centerButton setHidden:centerAction == 0];
 }
 
-- (void)setLeadingAction:(unint64_t)a3
+- (void)setLeadingAction:(unint64_t)action
 {
-  self->_leadingAction = a3;
+  self->_leadingAction = action;
   [(PKPeerPaymentMessagesMultiActionView *)self _updateLeadingActionButton];
 
   [(PKPeerPaymentMessagesMultiActionView *)self setNeedsLayout];
 }
 
-- (void)setTrailingAction:(unint64_t)a3
+- (void)setTrailingAction:(unint64_t)action
 {
-  self->_trailingAction = a3;
+  self->_trailingAction = action;
   [(PKPeerPaymentMessagesMultiActionView *)self _updateTrailingActionButton];
 
   [(PKPeerPaymentMessagesMultiActionView *)self setNeedsLayout];
 }
 
-- (void)setCenterAction:(unint64_t)a3
+- (void)setCenterAction:(unint64_t)action
 {
-  self->_centerAction = a3;
+  self->_centerAction = action;
   [(PKPeerPaymentMessagesMultiActionView *)self _updateCenterActionButton];
 
   [(PKPeerPaymentMessagesMultiActionView *)self setNeedsLayout];
@@ -433,25 +433,25 @@ void __44__PKPeerPaymentMessagesMultiActionView_init__block_invoke_3(uint64_t a1
   [(PKPeerPaymentMessagesMultiActionView *)self setNeedsLayout];
 }
 
-- (void)_updateConfigurationForButton:(id)a3 withAction:(unint64_t)a4
+- (void)_updateConfigurationForButton:(id)button withAction:(unint64_t)action
 {
-  v14 = a3;
-  v6 = [v14 configuration];
+  buttonCopy = button;
+  configuration = [buttonCopy configuration];
   activeAction = self->_activeAction;
-  [v6 setShowsActivityIndicator:activeAction == a4];
-  if (activeAction == a4)
+  [configuration setShowsActivityIndicator:activeAction == action];
+  if (activeAction == action)
   {
-    [v6 setTitle:0];
+    [configuration setTitle:0];
   }
 
   else
   {
-    v8 = [(PKPeerPaymentMessagesMultiActionView *)self _titleForAction:a4];
-    [v6 setTitle:v8];
+    v8 = [(PKPeerPaymentMessagesMultiActionView *)self _titleForAction:action];
+    [configuration setTitle:v8];
   }
 
   centerAction = self->_centerAction;
-  if (centerAction == a4)
+  if (centerAction == action)
   {
     +[PKPeerPaymentTheme secondaryButtonTextColor];
   }
@@ -461,14 +461,14 @@ void __44__PKPeerPaymentMessagesMultiActionView_init__block_invoke_3(uint64_t a1
     +[PKPeerPaymentTheme primaryTextColor];
   }
   v10 = ;
-  v11 = [v14 state];
-  if (v11 == 2)
+  state = [buttonCopy state];
+  if (state == 2)
   {
     v12 = +[PKPeerPaymentTheme disabledTextColor];
     goto LABEL_12;
   }
 
-  if (v11 == 1 && centerAction == a4)
+  if (state == 1 && centerAction == action)
   {
     v12 = +[PKPeerPaymentTheme secondaryButtonTextPressedColor];
 LABEL_12:
@@ -477,14 +477,14 @@ LABEL_12:
     v10 = v13;
   }
 
-  [v6 setBaseForegroundColor:v10];
-  [v14 setConfiguration:v6];
+  [configuration setBaseForegroundColor:v10];
+  [buttonCopy setConfiguration:configuration];
 }
 
-- (id)_buttonForAction:(unint64_t)a3
+- (id)_buttonForAction:(unint64_t)action
 {
   v4 = &OBJC_IVAR___PKPeerPaymentMessagesMultiActionView__centerButton;
-  if (self->_centerAction == a3 || (v4 = &OBJC_IVAR___PKPeerPaymentMessagesMultiActionView__leadingButton, self->_leadingAction == a3) || (v4 = &OBJC_IVAR___PKPeerPaymentMessagesMultiActionView__trailingButton, self->_trailingAction == a3))
+  if (self->_centerAction == action || (v4 = &OBJC_IVAR___PKPeerPaymentMessagesMultiActionView__leadingButton, self->_leadingAction == action) || (v4 = &OBJC_IVAR___PKPeerPaymentMessagesMultiActionView__trailingButton, self->_trailingAction == action))
   {
     v5 = *(&self->super.super.super.isa + *v4);
   }
@@ -497,18 +497,18 @@ LABEL_12:
   return v5;
 }
 
-- (void)_updateForActiveActionWithAssociatedButton:(id)a3
+- (void)_updateForActiveActionWithAssociatedButton:(id)button
 {
-  v6 = a3;
+  buttonCopy = button;
   activeAction = self->_activeAction;
   if ((PKIsVision() & 1) != 0 || _UISolariumFeatureFlagEnabled())
   {
-    [v6 setNeedsUpdateConfiguration];
+    [buttonCopy setNeedsUpdateConfiguration];
   }
 
   else
   {
-    [v6 setShowsActivityIndicator:activeAction != 0];
+    [buttonCopy setShowsActivityIndicator:activeAction != 0];
   }
 
   v5 = activeAction == 0;
@@ -517,7 +517,7 @@ LABEL_12:
   [(UIButton *)self->_trailingButton setEnabled:v5];
 }
 
-- (void)setActiveAction:(unint64_t)a3
+- (void)setActiveAction:(unint64_t)action
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = [(PKPeerPaymentMessagesMultiActionView *)self _buttonForAction:?];
@@ -528,7 +528,7 @@ LABEL_12:
       [(PKPeerPaymentMessagesMultiActionView *)self resetActiveAction];
     }
 
-    self->_activeAction = a3;
+    self->_activeAction = action;
     [(PKPeerPaymentMessagesMultiActionView *)self _updateForActiveActionWithAssociatedButton:v5];
   }
 
@@ -538,7 +538,7 @@ LABEL_12:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = 134217984;
-      v8 = a3;
+      actionCopy = action;
       _os_log_error_impl(&dword_1BD026000, v6, OS_LOG_TYPE_ERROR, "PKPeerPaymentMessagesMultiActionView: view has no button associated with action %lu", &v7, 0xCu);
     }
   }
@@ -551,22 +551,22 @@ LABEL_12:
   [(PKPeerPaymentMessagesMultiActionView *)self _updateForActiveActionWithAssociatedButton:v3];
 }
 
-- (void)setButtonEnabled:(BOOL)a3 forAction:(unint64_t)a4
+- (void)setButtonEnabled:(BOOL)enabled forAction:(unint64_t)action
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentMessagesMultiActionView *)self _buttonForAction:a4];
-  [v5 setEnabled:v4];
+  enabledCopy = enabled;
+  v5 = [(PKPeerPaymentMessagesMultiActionView *)self _buttonForAction:action];
+  [v5 setEnabled:enabledCopy];
 }
 
-- (void)setRecipient:(id)a3
+- (void)setRecipient:(id)recipient
 {
-  v5 = a3;
-  if (self->_recipient != v5)
+  recipientCopy = recipient;
+  if (self->_recipient != recipientCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_recipient, a3);
+    v6 = recipientCopy;
+    objc_storeStrong(&self->_recipient, recipient);
     [(PKPeerPaymentMessagesMultiActionView *)self _updateActionButtons];
-    v5 = v6;
+    recipientCopy = v6;
   }
 }
 
@@ -574,27 +574,27 @@ LABEL_12:
 {
   if (PKIsVision())
   {
-    v3 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-    [v3 setCornerStyle:4];
-    v4 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v3 primaryAction:0];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    [filledButtonConfiguration setCornerStyle:4];
+    v4 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:0];
   }
 
   else if (_UISolariumFeatureFlagEnabled())
   {
-    v3 = [MEMORY[0x1E69DC740] _clearGlassButtonConfiguration];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] _clearGlassButtonConfiguration];
     v5 = +[PKPeerPaymentTheme primaryTextColor];
-    [v3 setBaseForegroundColor:v5];
+    [filledButtonConfiguration setBaseForegroundColor:v5];
 
-    [v3 setImagePadding:5.0];
-    [v3 setTitleLineBreakMode:4];
+    [filledButtonConfiguration setImagePadding:5.0];
+    [filledButtonConfiguration setTitleLineBreakMode:4];
     objc_initWeak(&location, self);
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __54__PKPeerPaymentMessagesMultiActionView__primaryButton__block_invoke;
     v14 = &unk_1E80181D0;
     objc_copyWeak(&v15, &location);
-    [v3 setTitleTextAttributesTransformer:&v11];
-    v4 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v3 primaryAction:{0, v11, v12, v13, v14}];
+    [filledButtonConfiguration setTitleTextAttributesTransformer:&v11];
+    v4 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:{0, v11, v12, v13, v14}];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
@@ -611,9 +611,9 @@ LABEL_12:
     v8 = +[PKPeerPaymentTheme disabledTextColor];
     [(PKPeerPaymentMessagesRoundedRectangleButton *)v4 setTitleColor:v8 forState:2];
 
-    v3 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC40], 2, 0);
-    v9 = [(PKPeerPaymentMessagesRoundedRectangleButton *)v4 titleLabel];
-    [v9 setFont:v3];
+    filledButtonConfiguration = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC40], 2, 0);
+    titleLabel = [(PKPeerPaymentMessagesRoundedRectangleButton *)v4 titleLabel];
+    [titleLabel setFont:filledButtonConfiguration];
   }
 
   [(PKPeerPaymentMessagesRoundedRectangleButton *)v4 addTarget:self action:sel__handleActionButton_ forControlEvents:64];
@@ -644,24 +644,24 @@ id __54__PKPeerPaymentMessagesMultiActionView__primaryButton__block_invoke(uint6
 - (id)_secondaryButton
 {
   v3 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], *MEMORY[0x1E69DDC40]);
-  v4 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   if (_UISolariumFeatureFlagEnabled())
   {
     v5 = +[PKPeerPaymentTheme secondaryButtonTextColor];
-    [v4 setBaseForegroundColor:v5];
+    [plainButtonConfiguration setBaseForegroundColor:v5];
 
-    [v4 setTitleTextAttributesTransformer:&__block_literal_global_446];
-    v6 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v4 primaryAction:0];
+    [plainButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_446];
+    v6 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
   }
 
   else
   {
     v7 = [PKPeerPaymentMessagesButton alloc];
     v6 = [(PKPeerPaymentMessagesButton *)v7 initWithFrame:0 usePlatterColor:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v8 = [(PKPeerPaymentMessagesButton *)v6 titleLabel];
-    [v8 setFont:v3];
+    titleLabel = [(PKPeerPaymentMessagesButton *)v6 titleLabel];
+    [titleLabel setFont:v3];
 
-    [(PKPeerPaymentMessagesButton *)v6 setConfiguration:v4];
+    [(PKPeerPaymentMessagesButton *)v6 setConfiguration:plainButtonConfiguration];
     v9 = +[PKPeerPaymentTheme secondaryButtonTextColor];
     [(PKPeerPaymentMessagesButton *)v6 setTitleColor:v9 forState:0];
 
@@ -686,7 +686,7 @@ id __56__PKPeerPaymentMessagesMultiActionView__secondaryButton__block_invoke(uin
   return v2;
 }
 
-- (double)_heightForPrimaryButtonForAvailableSize:(CGSize)a3
+- (double)_heightForPrimaryButtonForAvailableSize:(CGSize)size
 {
   v3 = _UISolariumFeatureFlagEnabled();
   result = 50.0;
@@ -698,18 +698,18 @@ id __56__PKPeerPaymentMessagesMultiActionView__secondaryButton__block_invoke(uin
   return result;
 }
 
-- (id)_titleForAction:(unint64_t)a3
+- (id)_titleForAction:(unint64_t)action
 {
   v3 = 0;
-  if (a3 <= 6)
+  if (action <= 6)
   {
-    if (a3 == 1)
+    if (action == 1)
     {
-      v8 = [(PKPeerPaymentRecipient *)self->_recipient displayName];
-      v6 = v8;
-      if (v8)
+      displayName = [(PKPeerPaymentRecipient *)self->_recipient displayName];
+      v6 = displayName;
+      if (displayName)
       {
-        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentMes_4.isa, &stru_1F3BD5BF0.isa, v8);
+        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentMes_4.isa, &stru_1F3BD5BF0.isa, displayName);
         goto LABEL_16;
       }
 
@@ -718,16 +718,16 @@ id __56__PKPeerPaymentMessagesMultiActionView__secondaryButton__block_invoke(uin
 
     else
     {
-      if (a3 != 2)
+      if (action != 2)
       {
         goto LABEL_21;
       }
 
-      v5 = [(PKPeerPaymentRecipient *)self->_recipient displayName];
-      v6 = v5;
-      if (v5)
+      displayName2 = [(PKPeerPaymentRecipient *)self->_recipient displayName];
+      v6 = displayName2;
+      if (displayName2)
       {
-        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentMes_6.isa, &stru_1F3BD5BF0.isa, v5);
+        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentMes_6.isa, &stru_1F3BD5BF0.isa, displayName2);
         v9 = LABEL_16:;
 LABEL_20:
         v3 = v9;
@@ -742,21 +742,21 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a3 == 7)
+  if (action == 7)
   {
     v7 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentMes_8.isa);
   }
 
   else
   {
-    if (a3 == 11)
+    if (action == 11)
     {
       v4 = @"PEER_PAYMENT_MESSAGES_ACTION_REQUEST_WITHOUT_AMOUNT";
     }
 
     else
     {
-      if (a3 != 12)
+      if (action != 12)
       {
         goto LABEL_21;
       }
@@ -773,28 +773,28 @@ LABEL_21:
   return v3;
 }
 
-- (id)_axIdentifierForAction:(unint64_t)a3
+- (id)_axIdentifierForAction:(unint64_t)action
 {
-  if (a3 - 1 > 0xB)
+  if (action - 1 > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return off_1E8018250[a3 - 1];
+    return off_1E8018250[action - 1];
   }
 }
 
-- (void)_handleActionButton:(id)a3
+- (void)_handleActionButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   actionHandler = self->_actionHandler;
   if (actionHandler)
   {
     v6 = &OBJC_IVAR___PKPeerPaymentMessagesMultiActionView__leadingAction;
-    v8 = v4;
-    if (self->_leadingButton == v4 || (v6 = &OBJC_IVAR___PKPeerPaymentMessagesMultiActionView__trailingAction, self->_trailingButton == v4) || (v6 = &OBJC_IVAR___PKPeerPaymentMessagesMultiActionView__centerAction, self->_centerButton == v4))
+    v8 = buttonCopy;
+    if (self->_leadingButton == buttonCopy || (v6 = &OBJC_IVAR___PKPeerPaymentMessagesMultiActionView__trailingAction, self->_trailingButton == buttonCopy) || (v6 = &OBJC_IVAR___PKPeerPaymentMessagesMultiActionView__centerAction, self->_centerButton == buttonCopy))
     {
       v7 = *(&self->super.super.super.isa + *v6);
     }
@@ -805,34 +805,34 @@ LABEL_21:
     }
 
     actionHandler[2](actionHandler, self, v7);
-    v4 = v8;
+    buttonCopy = v8;
   }
 }
 
-- (void)setCenterButtonVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setCenterButtonVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(UIButton *)self->_centerButton layer];
-  [v6 opacity];
-  if (*&v7 != v5)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  layer = [(UIButton *)self->_centerButton layer];
+  [layer opacity];
+  if (*&v7 != visibleCopy)
   {
-    if (v4)
+    if (animatedCopy)
     {
-      if (v5)
+      if (visibleCopy)
       {
         v18 = 0;
         v19 = 0;
         ContentViewVisibilityAnimations(0, &v19, &v18, 0);
         v8 = v19;
         v9 = v18;
-        v10 = [v6 pkui_addAdditiveAnimation:v8];
-        v11 = [v6 pkui_addAdditiveAnimation:v9];
+        v10 = [layer pkui_addAdditiveAnimation:v8];
+        v11 = [layer pkui_addAdditiveAnimation:v9];
 
 LABEL_6:
         LODWORD(v7) = 1.0;
-        [v6 setOpacity:v7];
-        [v6 setValue:&unk_1F3CC6C28 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+        [layer setOpacity:v7];
+        [layer setValue:&unk_1F3CC6C28 forKeyPath:@"filters.gaussianBlur.inputRadius"];
         goto LABEL_9;
       }
 
@@ -841,17 +841,17 @@ LABEL_6:
       ContentViewVisibilityAnimations(&v17, 0, 0, &v16);
       v12 = v17;
       v13 = v16;
-      v14 = [v6 pkui_addAdditiveAnimation:v13];
-      v15 = [v6 pkui_addAdditiveAnimation:v12];
+      v14 = [layer pkui_addAdditiveAnimation:v13];
+      v15 = [layer pkui_addAdditiveAnimation:v12];
     }
 
-    else if (v5)
+    else if (visibleCopy)
     {
       goto LABEL_6;
     }
 
-    [v6 setValue:&unk_1F3CC6C38 forKeyPath:@"filters.gaussianBlur.inputRadius"];
-    [v6 setOpacity:0.0];
+    [layer setValue:&unk_1F3CC6C38 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    [layer setOpacity:0.0];
   }
 
 LABEL_9:

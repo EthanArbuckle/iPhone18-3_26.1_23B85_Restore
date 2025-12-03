@@ -1,16 +1,16 @@
 @interface _DASENManager
 + (id)activeENApplication;
-+ (id)enTaskIdentifiersForApplication:(id)a3;
++ (id)enTaskIdentifiersForApplication:(id)application;
 + (id)manager;
-+ (void)launchApplication:(id)a3;
++ (void)launchApplication:(id)application;
 + (void)runPeriodicRelaunchTask;
 + (void)schedulePeriodicRelaunchTask;
-- (BOOL)isPossibleENActivity:(id)a3;
+- (BOOL)isPossibleENActivity:(id)activity;
 - (_DASENManager)init;
-- (unint64_t)launchIntervalForENApplication:(id)a3;
+- (unint64_t)launchIntervalForENApplication:(id)application;
 - (void)handleActiveAppChanged;
-- (void)performIfENActive:(id)a3;
-- (void)setIsENActivity:(id)a3;
+- (void)performIfENActive:(id)active;
+- (void)setIsENActivity:(id)activity;
 @end
 
 @implementation _DASENManager
@@ -72,19 +72,19 @@
   return v7;
 }
 
-+ (id)enTaskIdentifiersForApplication:(id)a3
++ (id)enTaskIdentifiersForApplication:(id)application
 {
-  v3 = a3;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:0];
-  v5 = [v4 compatibilityObject];
+  applicationCopy = application;
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:applicationCopy allowPlaceholder:0 error:0];
+  compatibilityObject = [v4 compatibilityObject];
 
   v6 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v5 backgroundTaskSchedulerPermittedIdentifiers];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  backgroundTaskSchedulerPermittedIdentifiers = [compatibilityObject backgroundTaskSchedulerPermittedIdentifiers];
+  v8 = [backgroundTaskSchedulerPermittedIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -95,7 +95,7 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(backgroundTaskSchedulerPermittedIdentifiers);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -105,7 +105,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [backgroundTaskSchedulerPermittedIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -114,10 +114,10 @@
   return v6;
 }
 
-+ (void)launchApplication:(id)a3
++ (void)launchApplication:(id)application
 {
-  v20 = a3;
-  [objc_opt_class() enTaskIdentifiersForApplication:v20];
+  applicationCopy = application;
+  [objc_opt_class() enTaskIdentifiersForApplication:applicationCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -151,7 +151,7 @@
         v10 = _DASActivityDurationShort;
         v11 = +[NSDate date];
         v12 = [NSDate dateWithTimeIntervalSinceNow:60.0];
-        v13 = [_DASActivity applicationLaunchActivityWithName:v8 priority:v9 forApplication:v20 withReason:v18 duration:v10 startingAfter:v11 startingBefore:v12];
+        v13 = [_DASActivity applicationLaunchActivityWithName:v8 priority:v9 forApplication:applicationCopy withReason:v18 duration:v10 startingAfter:v11 startingBefore:v12];
 
         [v13 setClientProvidedIdentifier:v6];
         v14 = +[NSDate date];
@@ -176,24 +176,24 @@
 
 + (void)runPeriodicRelaunchTask
 {
-  v2 = [objc_opt_class() activeENApplication];
+  activeENApplication = [objc_opt_class() activeENApplication];
   v3 = [_DASDaemonLogger logForCategory:@"exposure-notification"];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    sub_10012C6D8(v2, v3);
+    sub_10012C6D8(activeENApplication, v3);
   }
 
-  if (v2)
+  if (activeENApplication)
   {
     v4 = [_DASDaemonLogger logForCategory:@"exposure-notification"];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138543362;
-      v6 = v2;
+      v6 = activeENApplication;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Creating EN relaunch task for %{public}@", &v5, 0xCu);
     }
 
-    [objc_opt_class() launchApplication:v2];
+    [objc_opt_class() launchApplication:activeENApplication];
   }
 }
 
@@ -224,7 +224,7 @@
   v17[1] = 3221225472;
   v17[2] = sub_1000FB1D4;
   v17[3] = &unk_1001B7870;
-  v17[4] = a1;
+  v17[4] = self;
   [v7 registerForTaskWithIdentifier:off_10020AB98 usingQueue:0 launchHandler:v17];
 
   v8 = +[BGSystemTaskScheduler sharedScheduler];
@@ -254,23 +254,23 @@
   }
 }
 
-- (void)performIfENActive:(id)a3
+- (void)performIfENActive:(id)active
 {
-  v3 = a3;
+  activeCopy = active;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000FB2E0;
   v6[3] = &unk_1001B8AF8;
   v7 = objc_alloc_init(ENManager);
-  v8 = v3;
-  v4 = v3;
+  v8 = activeCopy;
+  v4 = activeCopy;
   v5 = v7;
   [v5 activateWithCompletionHandler:v6];
 }
 
-- (unint64_t)launchIntervalForENApplication:(id)a3
+- (unint64_t)launchIntervalForENApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = objc_alloc_init(ENManager);
   v5 = dispatch_semaphore_create(0);
   v17 = 0;
@@ -281,7 +281,7 @@
   v12[1] = 3221225472;
   v12[2] = sub_1000FB548;
   v12[3] = &unk_1001B8B20;
-  v6 = v3;
+  v6 = applicationCopy;
   v13 = v6;
   v16 = &v17;
   v7 = v4;
@@ -300,12 +300,12 @@
 - (void)handleActiveAppChanged
 {
   v34 = +[_DASDaemon sharedInstance];
-  v3 = [v34 allPendingBackgroundTasks];
+  allPendingBackgroundTasks = [v34 allPendingBackgroundTasks];
   v4 = [_DASDaemonLogger logForCategory:@"exposure-notification"];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = v3;
+    v42 = allPendingBackgroundTasks;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
@@ -313,7 +313,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = v3;
+  v5 = allPendingBackgroundTasks;
   v6 = [v5 countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v6)
   {
@@ -333,9 +333,9 @@
         v11 = *(*(&v37 + 1) + 8 * i);
         if ([(_DASENManager *)self isPossibleENActivity:v11, v33])
         {
-          v12 = [v11 relatedApplications];
-          v13 = [v12 firstObject];
-          v14 = [(_DASENManager *)self launchIntervalForENApplication:v13];
+          relatedApplications = [v11 relatedApplications];
+          firstObject = [relatedApplications firstObject];
+          v14 = [(_DASENManager *)self launchIntervalForENApplication:firstObject];
 
           v15 = [_DASDaemonLogger logForCategory:@"exposure-notification"];
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -345,18 +345,18 @@
             _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Considering: %@", buf, 0xCu);
           }
 
-          v16 = [v11 isContactTracingBackgroundActivity];
+          isContactTracingBackgroundActivity = [v11 isContactTracingBackgroundActivity];
           if (v14)
           {
-            if (v16)
+            if (isContactTracingBackgroundActivity)
             {
               continue;
             }
 
             [v11 setIsContactTracingBackgroundActivity:1];
-            v17 = [v11 submitDate];
+            submitDate = [v11 submitDate];
 
-            if (!v17)
+            if (!submitDate)
             {
               v18 = [_DASDaemonLogger logForCategory:@"exposure-notification"];
               if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -368,28 +368,28 @@
               [v11 setSubmitDate:v19];
             }
 
-            v20 = [v11 submitDate];
-            v21 = [v20 dateByAddingTimeInterval:v14];
+            submitDate2 = [v11 submitDate];
+            v21 = [submitDate2 dateByAddingTimeInterval:v14];
 
-            v22 = [v11 clientProvidedStartDate];
-            if (v22)
+            clientProvidedStartDate = [v11 clientProvidedStartDate];
+            if (clientProvidedStartDate)
             {
-              v23 = v22;
-              v24 = [v11 clientProvidedStartDate];
-              [v24 timeIntervalSinceDate:v21];
+              v23 = clientProvidedStartDate;
+              clientProvidedStartDate2 = [v11 clientProvidedStartDate];
+              [clientProvidedStartDate2 timeIntervalSinceDate:v21];
               v26 = v25;
 
               if (v26 > 0.0)
               {
-                v27 = [v11 clientProvidedStartDate];
+                clientProvidedStartDate3 = [v11 clientProvidedStartDate];
 
-                v21 = v27;
+                v21 = clientProvidedStartDate3;
               }
             }
 
             [v11 setStartAfter:v21];
-            v28 = [v11 startAfter];
-            v29 = [v28 dateByAddingTimeInterval:3600.0];
+            startAfter = [v11 startAfter];
+            v29 = [startAfter dateByAddingTimeInterval:3600.0];
             [v11 setStartBefore:v29];
 
             v30 = [_DASDaemonLogger logForCategory:@"exposure-notification"];
@@ -408,7 +408,7 @@ LABEL_25:
 
           else
           {
-            if (!v16)
+            if (!isContactTracingBackgroundActivity)
             {
               continue;
             }
@@ -427,8 +427,8 @@ LABEL_25:
             }
           }
 
-          v32 = [v34 store];
-          [v32 saveActivity:v11];
+          store = [v34 store];
+          [store saveActivity:v11];
 
           continue;
         }
@@ -441,14 +441,14 @@ LABEL_25:
   }
 }
 
-- (BOOL)isPossibleENActivity:(id)a3
+- (BOOL)isPossibleENActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 launchReason];
-  if ([v4 isEqualToString:_DASLaunchReasonBackgroundProcessing])
+  activityCopy = activity;
+  launchReason = [activityCopy launchReason];
+  if ([launchReason isEqualToString:_DASLaunchReasonBackgroundProcessing])
   {
-    v5 = [v3 clientProvidedIdentifier];
-    v6 = [v5 hasSuffix:@"exposure-notification"];
+    clientProvidedIdentifier = [activityCopy clientProvidedIdentifier];
+    v6 = [clientProvidedIdentifier hasSuffix:@"exposure-notification"];
   }
 
   else
@@ -459,10 +459,10 @@ LABEL_25:
   return v6;
 }
 
-- (void)setIsENActivity:(id)a3
+- (void)setIsENActivity:(id)activity
 {
-  v4 = a3;
-  [v4 setIsContactTracingBackgroundActivity:0];
+  activityCopy = activity;
+  [activityCopy setIsContactTracingBackgroundActivity:0];
   if (!+[_DASConfig isiPhone])
   {
     v14 = [_DASDaemonLogger logForCategory:@"exposure-notification"];
@@ -475,11 +475,11 @@ LABEL_25:
     goto LABEL_12;
   }
 
-  if ([(_DASENManager *)self isPossibleENActivity:v4])
+  if ([(_DASENManager *)self isPossibleENActivity:activityCopy])
   {
-    v5 = [v4 relatedApplications];
-    v6 = [v5 firstObject];
-    v7 = [(_DASENManager *)self launchIntervalForENApplication:v6];
+    relatedApplications = [activityCopy relatedApplications];
+    firstObject = [relatedApplications firstObject];
+    v7 = [(_DASENManager *)self launchIntervalForENApplication:firstObject];
     v8 = v7;
 
     if (v7)
@@ -487,39 +487,39 @@ LABEL_25:
       v9 = +[NSDate now];
       v10 = [v9 dateByAddingTimeInterval:v8];
 
-      v11 = [v4 clientProvidedStartDate];
-      if (v11)
+      clientProvidedStartDate = [activityCopy clientProvidedStartDate];
+      if (clientProvidedStartDate)
       {
-        v12 = [v4 clientProvidedStartDate];
-        v13 = [v12 laterDate:v10];
-        [v4 setStartAfter:v13];
+        clientProvidedStartDate2 = [activityCopy clientProvidedStartDate];
+        v13 = [clientProvidedStartDate2 laterDate:v10];
+        [activityCopy setStartAfter:v13];
       }
 
       else
       {
-        [v4 setStartAfter:v10];
+        [activityCopy setStartAfter:v10];
       }
 
-      v15 = [v4 startAfter];
-      v16 = [v15 dateByAddingTimeInterval:3600.0];
-      [v4 setStartBefore:v16];
+      startAfter = [activityCopy startAfter];
+      v16 = [startAfter dateByAddingTimeInterval:3600.0];
+      [activityCopy setStartBefore:v16];
 
-      [v4 setIsContactTracingBackgroundActivity:1];
+      [activityCopy setIsContactTracingBackgroundActivity:1];
     }
 
     v14 = [_DASDaemonLogger logForCategory:@"exposure-notification"];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v4 isContactTracingBackgroundActivity];
-      v18 = [v4 startAfter];
+      isContactTracingBackgroundActivity = [activityCopy isContactTracingBackgroundActivity];
+      startAfter2 = [activityCopy startAfter];
       v19 = 138544130;
-      v20 = v4;
+      v20 = activityCopy;
       v21 = 2048;
       v22 = v8 / 60.0;
       v23 = 1024;
-      v24 = v17;
+      v24 = isContactTracingBackgroundActivity;
       v25 = 2114;
-      v26 = v18;
+      v26 = startAfter2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Activity: %{public}@, Interval=%.0lf, isCTBackgroundActivity=%u, Eligible=%{public}@", &v19, 0x26u);
     }
 

@@ -1,34 +1,34 @@
 @interface BRLTTranslationParameters
-- (BRLTTranslationParameters)initWithCoder:(id)a3;
-- (BRLTTranslationParameters)initWithLanguage:(id)a3 mode:(unint64_t)a4 partial:(BOOL)a5 useTechnicalTable:(BOOL)a6 textPositionsRange:(_NSRange)a7 textFormattingRanges:(id)a8;
+- (BRLTTranslationParameters)initWithCoder:(id)coder;
+- (BRLTTranslationParameters)initWithLanguage:(id)language mode:(unint64_t)mode partial:(BOOL)partial useTechnicalTable:(BOOL)table textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges;
 - (_NSRange)textPositionsRange;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BRLTTranslationParameters
 
-- (BRLTTranslationParameters)initWithLanguage:(id)a3 mode:(unint64_t)a4 partial:(BOOL)a5 useTechnicalTable:(BOOL)a6 textPositionsRange:(_NSRange)a7 textFormattingRanges:(id)a8
+- (BRLTTranslationParameters)initWithLanguage:(id)language mode:(unint64_t)mode partial:(BOOL)partial useTechnicalTable:(BOOL)table textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges
 {
-  length = a7.length;
-  location = a7.location;
-  v14 = a3;
-  v15 = a8;
+  length = range.length;
+  location = range.location;
+  languageCopy = language;
+  rangesCopy = ranges;
   v20.receiver = self;
   v20.super_class = BRLTTranslationParameters;
   v16 = [(BRLTTranslationParameters *)&v20 init];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [languageCopy copy];
     language = v16->_language;
     v16->_language = v17;
 
-    v16->_mode = a4;
-    v16->_partial = a5;
-    v16->_useTechnicalTableIfPossible = a6;
+    v16->_mode = mode;
+    v16->_partial = partial;
+    v16->_useTechnicalTableIfPossible = table;
     v16->_textPositionsRange.location = location;
     v16->_textPositionsRange.length = length;
-    objc_storeStrong(&v16->_textFormattingRanges, a8);
+    objc_storeStrong(&v16->_textFormattingRanges, ranges);
   }
 
   return v16;
@@ -40,7 +40,7 @@
   v13.receiver = self;
   v13.super_class = BRLTTranslationParameters;
   v4 = [(BRLTTranslationParameters *)&v13 description];
-  v5 = [(BRLTTranslationParameters *)self language];
+  language = [(BRLTTranslationParameters *)self language];
   v6 = [(BRLTTranslationParameters *)self mode]- 1;
   if (v6 > 3)
   {
@@ -74,28 +74,28 @@
 
   v15.location = [(BRLTTranslationParameters *)self textPositionsRange];
   v10 = NSStringFromRange(v15);
-  v11 = [v3 stringWithFormat:@"<%@ lang:%@ mode:%@%s useTechnicalTable:%s pos:%@>", v4, v5, v7, v8, v9, v10];
+  v11 = [v3 stringWithFormat:@"<%@ lang:%@ mode:%@%s useTechnicalTable:%s pos:%@>", v4, language, v7, v8, v9, v10];
 
   return v11;
 }
 
-- (BRLTTranslationParameters)initWithCoder:(id)a3
+- (BRLTTranslationParameters)initWithCoder:(id)coder
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = BRLTTranslationParameters;
   v5 = [(BRLTTranslationParameters *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"language"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"language"];
     language = v5->_language;
     v5->_language = v6;
 
-    v5->_mode = [v4 decodeIntegerForKey:@"mode"];
-    v5->_partial = [v4 decodeBoolForKey:@"partial"];
-    v5->_useTechnicalTableIfPossible = [v4 decodeBoolForKey:@"useTechnicalTable"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textPositionsRange"];
+    v5->_mode = [coderCopy decodeIntegerForKey:@"mode"];
+    v5->_partial = [coderCopy decodeBoolForKey:@"partial"];
+    v5->_useTechnicalTableIfPossible = [coderCopy decodeBoolForKey:@"useTechnicalTable"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textPositionsRange"];
     v5->_textPositionsRange.location = [v8 rangeValue];
     v5->_textPositionsRange.length = v9;
 
@@ -105,7 +105,7 @@
     v18[2] = objc_opt_class();
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"textFormatting"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"textFormatting"];
     textFormattingRanges = v5->_textFormattingRanges;
     v5->_textFormattingRanges = v13;
   }
@@ -114,22 +114,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BRLTTranslationParameters *)self language];
-  [v4 encodeObject:v5 forKey:@"language"];
+  coderCopy = coder;
+  language = [(BRLTTranslationParameters *)self language];
+  [coderCopy encodeObject:language forKey:@"language"];
 
-  [v4 encodeInteger:-[BRLTTranslationParameters mode](self forKey:{"mode"), @"mode"}];
-  [v4 encodeBool:-[BRLTTranslationParameters isPartial](self forKey:{"isPartial"), @"partial"}];
-  [v4 encodeBool:-[BRLTTranslationParameters useTechnicalTableIfPossible](self forKey:{"useTechnicalTableIfPossible"), @"useTechnicalTable"}];
+  [coderCopy encodeInteger:-[BRLTTranslationParameters mode](self forKey:{"mode"), @"mode"}];
+  [coderCopy encodeBool:-[BRLTTranslationParameters isPartial](self forKey:{"isPartial"), @"partial"}];
+  [coderCopy encodeBool:-[BRLTTranslationParameters useTechnicalTableIfPossible](self forKey:{"useTechnicalTableIfPossible"), @"useTechnicalTable"}];
   v6 = MEMORY[0x277CCAE60];
-  v7 = [(BRLTTranslationParameters *)self textPositionsRange];
-  v9 = [v6 valueWithRange:{v7, v8}];
-  [v4 encodeObject:v9 forKey:@"textPositionsRange"];
+  textPositionsRange = [(BRLTTranslationParameters *)self textPositionsRange];
+  v9 = [v6 valueWithRange:{textPositionsRange, v8}];
+  [coderCopy encodeObject:v9 forKey:@"textPositionsRange"];
 
-  v10 = [(BRLTTranslationParameters *)self textFormattingRanges];
-  [v4 encodeObject:v10 forKey:@"textFormatting"];
+  textFormattingRanges = [(BRLTTranslationParameters *)self textFormattingRanges];
+  [coderCopy encodeObject:textFormattingRanges forKey:@"textFormatting"];
 }
 
 - (_NSRange)textPositionsRange

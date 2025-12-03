@@ -1,19 +1,19 @@
 @interface RTIInputSystemSession
 - (RTIInputSystemSessionDelegate)sessionDelegate;
 - (RTITextOperations)textOperations;
-- (id)documentStateAfterModifyAndFlushTextOperations:(id)a3;
-- (id)documentStateAfterModifyAndFlushTextOperations:(id)a3 resultHandler:(id)a4;
-- (void)_applyLocalTextOperations:(id)a3 toDocumentState:(id)a4;
+- (id)documentStateAfterModifyAndFlushTextOperations:(id)operations;
+- (id)documentStateAfterModifyAndFlushTextOperations:(id)operations resultHandler:(id)handler;
+- (void)_applyLocalTextOperations:(id)operations toDocumentState:(id)state;
 - (void)_createTextOperationsIfNecessary;
-- (void)addSessionDelegate:(id)a3;
-- (void)beginOptionsSafeAccess:(id)a3;
-- (void)documentStateSafeAccess:(id)a3;
-- (void)documentTraitsSafeAccess:(id)a3;
-- (void)enumerateSessionDelegatesUsingBlock:(id)a3;
-- (void)modifyAndFlushTextOperations:(id)a3;
-- (void)modifyAndFlushTextOperations:(id)a3 resultHandler:(id)a4;
-- (void)textOperationsSafeAccess:(id)a3;
-- (void)uuidSafeAccess:(id)a3;
+- (void)addSessionDelegate:(id)delegate;
+- (void)beginOptionsSafeAccess:(id)access;
+- (void)documentStateSafeAccess:(id)access;
+- (void)documentTraitsSafeAccess:(id)access;
+- (void)enumerateSessionDelegatesUsingBlock:(id)block;
+- (void)modifyAndFlushTextOperations:(id)operations;
+- (void)modifyAndFlushTextOperations:(id)operations resultHandler:(id)handler;
+- (void)textOperationsSafeAccess:(id)access;
+- (void)uuidSafeAccess:(id)access;
 @end
 
 @implementation RTIInputSystemSession
@@ -25,39 +25,39 @@
   return WeakRetained;
 }
 
-- (void)uuidSafeAccess:(id)a3
+- (void)uuidSafeAccess:(id)access
 {
-  v5 = a3;
-  v6 = [(RTIInputSystemSession *)self uuid];
-  (*(a3 + 2))(v5, v6);
+  accessCopy = access;
+  uuid = [(RTIInputSystemSession *)self uuid];
+  (*(access + 2))(accessCopy, uuid);
 }
 
-- (void)beginOptionsSafeAccess:(id)a3
+- (void)beginOptionsSafeAccess:(id)access
 {
-  v5 = a3;
-  v6 = [(RTIInputSystemSession *)self beginOptions];
-  (*(a3 + 2))(v5, v6);
+  accessCopy = access;
+  beginOptions = [(RTIInputSystemSession *)self beginOptions];
+  (*(access + 2))(accessCopy, beginOptions);
 }
 
-- (void)documentTraitsSafeAccess:(id)a3
+- (void)documentTraitsSafeAccess:(id)access
 {
-  v5 = a3;
-  v6 = [(RTIInputSystemSession *)self documentTraits];
-  (*(a3 + 2))(v5, v6);
+  accessCopy = access;
+  documentTraits = [(RTIInputSystemSession *)self documentTraits];
+  (*(access + 2))(accessCopy, documentTraits);
 }
 
-- (void)documentStateSafeAccess:(id)a3
+- (void)documentStateSafeAccess:(id)access
 {
-  v5 = a3;
-  v6 = [(RTIInputSystemSession *)self documentState];
-  (*(a3 + 2))(v5, v6);
+  accessCopy = access;
+  documentState = [(RTIInputSystemSession *)self documentState];
+  (*(access + 2))(accessCopy, documentState);
 }
 
-- (void)textOperationsSafeAccess:(id)a3
+- (void)textOperationsSafeAccess:(id)access
 {
-  v5 = a3;
-  v6 = [(RTIInputSystemSession *)self textOperations];
-  (*(a3 + 2))(v5, v6);
+  accessCopy = access;
+  textOperations = [(RTIInputSystemSession *)self textOperations];
+  (*(access + 2))(accessCopy, textOperations);
 }
 
 - (void)_createTextOperationsIfNecessary
@@ -65,8 +65,8 @@
   if (!self->_textOperations)
   {
     v4 = [RTITextOperations alloc];
-    v7 = [(RTIInputSystemSession *)self uuid];
-    v5 = [(RTITextOperations *)v4 initWithTargetSessionUUID:v7];
+    uuid = [(RTIInputSystemSession *)self uuid];
+    v5 = [(RTITextOperations *)v4 initWithTargetSessionUUID:uuid];
     textOperations = self->_textOperations;
     self->_textOperations = v5;
   }
@@ -80,257 +80,257 @@
   return textOperations;
 }
 
-- (id)documentStateAfterModifyAndFlushTextOperations:(id)a3
+- (id)documentStateAfterModifyAndFlushTextOperations:(id)operations
 {
-  if (a3)
+  if (operations)
   {
-    v5 = a3;
-    v6 = [(RTIInputSystemSession *)self textOperations];
-    (*(a3 + 2))(v5, v6);
+    operationsCopy = operations;
+    textOperations = [(RTIInputSystemSession *)self textOperations];
+    (*(operations + 2))(operationsCopy, textOperations);
   }
 
   [(RTIInputSystemSession *)self flushOperations];
-  v7 = [(RTIInputSystemSession *)self documentState];
-  v8 = [v7 copy];
+  documentState = [(RTIInputSystemSession *)self documentState];
+  v8 = [documentState copy];
 
   return v8;
 }
 
-- (void)modifyAndFlushTextOperations:(id)a3
+- (void)modifyAndFlushTextOperations:(id)operations
 {
-  if (a3)
+  if (operations)
   {
-    v5 = a3;
-    v6 = [(RTIInputSystemSession *)self textOperations];
-    (*(a3 + 2))(v5, v6);
+    operationsCopy = operations;
+    textOperations = [(RTIInputSystemSession *)self textOperations];
+    (*(operations + 2))(operationsCopy, textOperations);
   }
 
   [(RTIInputSystemSession *)self flushOperations];
 }
 
-- (id)documentStateAfterModifyAndFlushTextOperations:(id)a3 resultHandler:(id)a4
+- (id)documentStateAfterModifyAndFlushTextOperations:(id)operations resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  operationsCopy = operations;
+  handlerCopy = handler;
+  if (operationsCopy)
   {
-    v8 = [(RTIInputSystemSession *)self textOperations];
-    v6[2](v6, v8);
+    textOperations = [(RTIInputSystemSession *)self textOperations];
+    operationsCopy[2](operationsCopy, textOperations);
   }
 
   [(RTIInputSystemSession *)self flushOperations];
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, 255);
+    handlerCopy[2](handlerCopy, 255);
   }
 
-  v9 = [(RTIInputSystemSession *)self documentState];
-  v10 = [v9 copy];
+  documentState = [(RTIInputSystemSession *)self documentState];
+  v10 = [documentState copy];
 
   return v10;
 }
 
-- (void)modifyAndFlushTextOperations:(id)a3 resultHandler:(id)a4
+- (void)modifyAndFlushTextOperations:(id)operations resultHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  operationsCopy = operations;
+  handlerCopy = handler;
+  if (operationsCopy)
   {
-    v7 = [(RTIInputSystemSession *)self textOperations];
-    v8[2](v8, v7);
+    textOperations = [(RTIInputSystemSession *)self textOperations];
+    operationsCopy[2](operationsCopy, textOperations);
   }
 
   [(RTIInputSystemSession *)self flushOperations];
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, 255);
+    handlerCopy[2](handlerCopy, 255);
   }
 }
 
-- (void)_applyLocalTextOperations:(id)a3 toDocumentState:(id)a4
+- (void)_applyLocalTextOperations:(id)operations toDocumentState:(id)state
 {
-  v57 = a3;
-  v5 = a4;
-  v6 = [v5 textCheckingAnnotatedString];
+  operationsCopy = operations;
+  stateCopy = state;
+  textCheckingAnnotatedString = [stateCopy textCheckingAnnotatedString];
 
-  if (v6)
+  if (textCheckingAnnotatedString)
   {
-    v7 = [v5 textCheckingAnnotatedString];
-    v8 = [v7 string];
-    v9 = [v5 documentState];
-    v10 = [v9 contextBeforeInput];
-    LODWORD(v6) = [v8 isEqualToString:v10];
+    textCheckingAnnotatedString2 = [stateCopy textCheckingAnnotatedString];
+    string = [textCheckingAnnotatedString2 string];
+    documentState = [stateCopy documentState];
+    contextBeforeInput = [documentState contextBeforeInput];
+    LODWORD(textCheckingAnnotatedString) = [string isEqualToString:contextBeforeInput];
   }
 
-  v11 = [v57 textToAssert];
+  textToAssert = [operationsCopy textToAssert];
 
-  if (v11)
+  if (textToAssert)
   {
     v12 = objc_alloc(MEMORY[0x1E69D9590]);
-    v13 = [v57 textToAssert];
-    v14 = [v12 initWithContextBefore:v13 markedText:0 selectedText:0 contextAfter:0 selectedRangeInMarkedText:{0x7FFFFFFFFFFFFFFFLL, 0}];
-    [v5 setDocumentState:v14];
+    textToAssert2 = [operationsCopy textToAssert];
+    v14 = [v12 initWithContextBefore:textToAssert2 markedText:0 selectedText:0 contextAfter:0 selectedRangeInMarkedText:{0x7FFFFFFFFFFFFFFFLL, 0}];
+    [stateCopy setDocumentState:v14];
   }
 
-  if ([v57 selectionRangeToAssert] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([operationsCopy selectionRangeToAssert] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [v57 selectionRangeToAssert];
-    [v5 setSelectedTextRange:{v15, v16}];
+    selectionRangeToAssert = [operationsCopy selectionRangeToAssert];
+    [stateCopy setSelectedTextRange:{selectionRangeToAssert, v16}];
   }
 
-  v17 = [v57 keyboardOutput];
-  v18 = [v17 unmarkIfNecessary];
-  v19 = [v17 textToCommit];
-  v20 = [v17 acceptedCandidate];
-  v21 = [v20 input];
-  v22 = [v21 length];
+  keyboardOutput = [operationsCopy keyboardOutput];
+  unmarkIfNecessary = [keyboardOutput unmarkIfNecessary];
+  textToCommit = [keyboardOutput textToCommit];
+  acceptedCandidate = [keyboardOutput acceptedCandidate];
+  input = [acceptedCandidate input];
+  v22 = [input length];
 
   if (v22)
   {
-    v23 = [v5 documentState];
-    v24 = [v20 input];
-    v25 = [v20 candidate];
-    v26 = [v23 documentStateAfterReplacingText:v24 withText:v25];
-    [v5 setDocumentState:v26];
+    documentState2 = [stateCopy documentState];
+    input2 = [acceptedCandidate input];
+    candidate = [acceptedCandidate candidate];
+    v26 = [documentState2 documentStateAfterReplacingText:input2 withText:candidate];
+    [stateCopy setDocumentState:v26];
   }
 
   else
   {
-    if (!v20)
+    if (!acceptedCandidate)
     {
       goto LABEL_12;
     }
 
-    v23 = [v5 documentState];
-    v24 = [v20 candidate];
-    v25 = [v23 documentStateAfterInsertingText:v24];
-    [v5 setDocumentState:v25];
+    documentState2 = [stateCopy documentState];
+    input2 = [acceptedCandidate candidate];
+    candidate = [documentState2 documentStateAfterInsertingText:input2];
+    [stateCopy setDocumentState:candidate];
   }
 
 LABEL_12:
-  if (v19)
+  if (textToCommit)
   {
-    v27 = [v5 documentState];
-    v28 = [v27 documentStateAfterSettingMarkedText:v19 selectedRange:{objc_msgSend(v19, "length"), 0}];
-    [v5 setDocumentState:v28];
+    documentState3 = [stateCopy documentState];
+    v28 = [documentState3 documentStateAfterSettingMarkedText:textToCommit selectedRange:{objc_msgSend(textToCommit, "length"), 0}];
+    [stateCopy setDocumentState:v28];
 
 LABEL_15:
-    v29 = [v5 documentState];
-    v30 = [v29 documentStateAfterUnmarkingText];
-    [v5 setDocumentState:v30];
+    documentState4 = [stateCopy documentState];
+    documentStateAfterUnmarkingText = [documentState4 documentStateAfterUnmarkingText];
+    [stateCopy setDocumentState:documentStateAfterUnmarkingText];
 
     goto LABEL_16;
   }
 
-  if (v18)
+  if (unmarkIfNecessary)
   {
     goto LABEL_15;
   }
 
 LABEL_16:
-  if ([v17 forwardDeletionCount] && objc_msgSend(v17, "forwardDeletionCount"))
+  if ([keyboardOutput forwardDeletionCount] && objc_msgSend(keyboardOutput, "forwardDeletionCount"))
   {
     v31 = 0;
     do
     {
-      v32 = [v5 documentState];
-      v33 = [v32 documentStateAfterDeletingForward];
-      [v5 setDocumentState:v33];
+      documentState5 = [stateCopy documentState];
+      documentStateAfterDeletingForward = [documentState5 documentStateAfterDeletingForward];
+      [stateCopy setDocumentState:documentStateAfterDeletingForward];
 
       ++v31;
     }
 
-    while (v31 < [v17 forwardDeletionCount]);
+    while (v31 < [keyboardOutput forwardDeletionCount]);
   }
 
-  v34 = [v17 insertionTextAfterSelection];
+  insertionTextAfterSelection = [keyboardOutput insertionTextAfterSelection];
 
-  if (v34)
+  if (insertionTextAfterSelection)
   {
-    v35 = [v5 documentState];
-    v36 = [v17 insertionTextAfterSelection];
-    v37 = [v35 documentStateAfterInsertingTextAfterSelection:v36];
-    [v5 setDocumentState:v37];
+    documentState6 = [stateCopy documentState];
+    insertionTextAfterSelection2 = [keyboardOutput insertionTextAfterSelection];
+    v37 = [documentState6 documentStateAfterInsertingTextAfterSelection:insertionTextAfterSelection2];
+    [stateCopy setDocumentState:v37];
   }
 
-  if ([v17 deletionCount] && objc_msgSend(v17, "deletionCount"))
+  if ([keyboardOutput deletionCount] && objc_msgSend(keyboardOutput, "deletionCount"))
   {
     v38 = 0;
     do
     {
-      v39 = [v5 documentState];
-      v40 = [v39 documentStateAfterDeletingBackward];
-      [v5 setDocumentState:v40];
+      documentState7 = [stateCopy documentState];
+      documentStateAfterDeletingBackward = [documentState7 documentStateAfterDeletingBackward];
+      [stateCopy setDocumentState:documentStateAfterDeletingBackward];
 
       ++v38;
     }
 
-    while (v38 < [v17 deletionCount]);
+    while (v38 < [keyboardOutput deletionCount]);
   }
 
-  v41 = [v17 insertionText];
-  v42 = [v41 length];
+  insertionText = [keyboardOutput insertionText];
+  v42 = [insertionText length];
 
   if (v42)
   {
-    v43 = [v5 documentState];
-    v44 = [v17 insertionText];
-    v45 = [v43 documentStateAfterInsertingText:v44];
-    [v5 setDocumentState:v45];
+    documentState8 = [stateCopy documentState];
+    insertionText2 = [keyboardOutput insertionText];
+    v45 = [documentState8 documentStateAfterInsertingText:insertionText2];
+    [stateCopy setDocumentState:v45];
   }
 
-  v46 = [v57 intermediateText];
+  intermediateText = [operationsCopy intermediateText];
 
-  if (v46)
+  if (intermediateText)
   {
-    v47 = [v57 intermediateText];
-    v48 = [v5 documentState];
-    v49 = [v47 displayString];
-    v50 = [v47 selectedRange];
-    v52 = [v48 documentStateAfterSettingMarkedText:v49 selectedRange:{v50, v51}];
-    [v5 setDocumentState:v52];
+    intermediateText2 = [operationsCopy intermediateText];
+    documentState9 = [stateCopy documentState];
+    displayString = [intermediateText2 displayString];
+    selectedRange = [intermediateText2 selectedRange];
+    v52 = [documentState9 documentStateAfterSettingMarkedText:displayString selectedRange:{selectedRange, v51}];
+    [stateCopy setDocumentState:v52];
   }
 
-  if (v6)
+  if (textCheckingAnnotatedString)
   {
     v53 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v54 = [v5 documentState];
-    v55 = [v54 contextBeforeInput];
-    v56 = [v53 initWithString:v55 attributes:&unk_1F0DA38A8];
-    [v5 setTextCheckingAnnotatedString:v56];
+    documentState10 = [stateCopy documentState];
+    contextBeforeInput2 = [documentState10 contextBeforeInput];
+    v56 = [v53 initWithString:contextBeforeInput2 attributes:&unk_1F0DA38A8];
+    [stateCopy setTextCheckingAnnotatedString:v56];
   }
 }
 
-- (void)addSessionDelegate:(id)a3
+- (void)addSessionDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   extraSessionDelegates = self->_extraSessionDelegates;
-  v8 = v4;
+  v8 = delegateCopy;
   if (!extraSessionDelegates)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_extraSessionDelegates;
-    self->_extraSessionDelegates = v6;
+    self->_extraSessionDelegates = weakObjectsHashTable;
 
-    v4 = v8;
+    delegateCopy = v8;
     extraSessionDelegates = self->_extraSessionDelegates;
   }
 
-  [(NSHashTable *)extraSessionDelegates addObject:v4];
+  [(NSHashTable *)extraSessionDelegates addObject:delegateCopy];
 }
 
-- (void)enumerateSessionDelegatesUsingBlock:(id)a3
+- (void)enumerateSessionDelegatesUsingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(RTIInputSystemSession *)self sessionDelegate];
+    sessionDelegate = [(RTIInputSystemSession *)self sessionDelegate];
 
-    if (v5)
+    if (sessionDelegate)
     {
-      v6 = [(RTIInputSystemSession *)self sessionDelegate];
-      v4[2](v4, v6);
+      sessionDelegate2 = [(RTIInputSystemSession *)self sessionDelegate];
+      blockCopy[2](blockCopy, sessionDelegate2);
     }
 
     v7 = [(NSHashTable *)self->_extraSessionDelegates copy];
@@ -354,7 +354,7 @@ LABEL_16:
             objc_enumerationMutation(v8);
           }
 
-          v4[2](v4, *(*(&v14 + 1) + 8 * v12++));
+          blockCopy[2](blockCopy, *(*(&v14 + 1) + 8 * v12++));
         }
 
         while (v10 != v12);

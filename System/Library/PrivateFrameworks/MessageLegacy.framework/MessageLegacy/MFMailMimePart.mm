@@ -1,13 +1,13 @@
 @interface MFMailMimePart
-+ (BOOL)isRecognizedClassForContent:(id)a3;
++ (BOOL)isRecognizedClassForContent:(id)content;
 - (id)decodeMessageRfc822;
 - (id)decodeMultipartAppledouble;
 - (id)decodeTextEnriched;
 - (id)decodeTextHtml;
 - (id)decodeTextPlain;
 - (id)decodeTextRichtext;
-- (id)fileWrapperForDecodedObject:(id)a3 withFileData:(id *)a4;
-- (void)configureFileWrapper:(id)a3;
+- (id)fileWrapperForDecodedObject:(id)object withFileData:(id *)data;
+- (void)configureFileWrapper:(id)wrapper;
 @end
 
 @implementation MFMailMimePart
@@ -77,60 +77,60 @@
   return [v2 fileWrapperForcingDownload:0];
 }
 
-- (id)fileWrapperForDecodedObject:(id)a3 withFileData:(id *)a4
+- (id)fileWrapperForDecodedObject:(id)object withFileData:(id *)data
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [a3 fileWrapper];
+    return [object fileWrapper];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MFMailMimePart;
-    return [(MFMailMimePart *)&v8 fileWrapperForDecodedObject:a3 withFileData:a4];
+    return [(MFMailMimePart *)&v8 fileWrapperForDecodedObject:object withFileData:data];
   }
 }
 
-- (void)configureFileWrapper:(id)a3
+- (void)configureFileWrapper:(id)wrapper
 {
   v13.receiver = self;
   v13.super_class = MFMailMimePart;
   [(MFMailMimePart *)&v13 configureFileWrapper:?];
-  if (a3)
+  if (wrapper)
   {
     v5 = [(MFMailMimePart *)self bodyParameterForKey:*MEMORY[0x277D24E78]];
     if (v5 || (v12 = [objc_msgSend(-[MFMailMimePart mimeBody](self "mimeBody")]) != 0 && (v5 = objc_msgSend(v12, "stringByAppendingFormat:", @"&aid=%@", -[MFMailMimePart partNumber](self, "partNumber"))) != 0)
     {
-      [a3 setURL:v5];
+      [wrapper setURL:v5];
     }
   }
 
-  if (([a3 isPlaceholder] & 1) == 0)
+  if (([wrapper isPlaceholder] & 1) == 0)
   {
     v6 = [-[MFMailMimePart mimeBody](self "mimeBody")];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v8 = [v6 performSelector:sel__attachmentStorageLocation];
       if (v8)
       {
         v9 = [v8 stringByAppendingPathComponent:{-[MFMailMimePart partNumber](self, "partNumber")}];
-        if (([v7 fileExistsAtPath:v9] & 1) == 0)
+        if (([defaultManager fileExistsAtPath:v9] & 1) == 0)
         {
-          [v7 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
+          [defaultManager createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
         }
 
-        v10 = [a3 preferredFilename];
-        if (v10)
+        preferredFilename = [wrapper preferredFilename];
+        if (preferredFilename)
         {
-          v11 = [v9 stringByAppendingPathComponent:v10];
-          if (([v7 fileExistsAtPath:v11] & 1) == 0)
+          v11 = [v9 stringByAppendingPathComponent:preferredFilename];
+          if (([defaultManager fileExistsAtPath:v11] & 1) == 0)
           {
-            [v7 createFileAtPath:v11 contents:objc_msgSend(a3 attributes:{"regularFileContents"), objc_msgSend(a3, "fileAttributes")}];
-            [a3 setPath:v11];
+            [defaultManager createFileAtPath:v11 contents:objc_msgSend(wrapper attributes:{"regularFileContents"), objc_msgSend(wrapper, "fileAttributes")}];
+            [wrapper setPath:v11];
           }
         }
       }
@@ -138,7 +138,7 @@
   }
 }
 
-+ (BOOL)isRecognizedClassForContent:(id)a3
++ (BOOL)isRecognizedClassForContent:(id)content
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -152,32 +152,32 @@
     return 1;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___MFMailMimePart;
-  return objc_msgSendSuper2(&v6, sel_isRecognizedClassForContent_, a3);
+  return objc_msgSendSuper2(&v6, sel_isRecognizedClassForContent_, content);
 }
 
 - (id)decodeMessageRfc822
 {
-  v3 = [(MFMailMimePart *)self bodyData];
-  if (v3)
+  bodyData = [(MFMailMimePart *)self bodyData];
+  if (bodyData)
   {
-    v4 = [(MFMessage *)MFMailMessage messageWithRFC822Data:v3 withParentPart:self];
-    v5 = [(MFMailMimePart *)self mimeBody];
-    if (v5)
+    v4 = [(MFMessage *)MFMailMessage messageWithRFC822Data:bodyData withParentPart:self];
+    mimeBody = [(MFMailMimePart *)self mimeBody];
+    if (mimeBody)
     {
-      v6 = v5;
-      v7 = [objc_msgSend(v5 "message")];
+      v6 = mimeBody;
+      v7 = [objc_msgSend(mimeBody "message")];
       [(MFMailMessage *)v4 setMessageURL:v7];
-      v8 = -[MFRFC822AttachmentDataProvider initWithMessageData:parentPart:]([MFRFC822AttachmentDataProvider alloc], "initWithMessageData:parentPart:", v3, [v6 topLevelPart]);
+      v8 = -[MFRFC822AttachmentDataProvider initWithMessageData:parentPart:]([MFRFC822AttachmentDataProvider alloc], "initWithMessageData:parentPart:", bodyData, [v6 topLevelPart]);
       [objc_msgSend(+[MFAttachmentManager allManagers](MFAttachmentManager "allManagers")];
     }
 
     v13 = 0;
-    v9 = [(MFMailMessage *)v4 messageBody];
+    messageBody = [(MFMailMessage *)v4 messageBody];
     if ([(MFMailMimePart *)self isGenerated])
     {
-      v3 = [v9 contentToOffset:0x7FFFFFFFFFFFFFFFLL resultOffset:0 asHTML:1 isComplete:&v13];
+      bodyData = [messageBody contentToOffset:0x7FFFFFFFFFFFFFFFLL resultOffset:0 asHTML:1 isComplete:&v13];
     }
 
     else
@@ -188,13 +188,13 @@
     v10 = [objc_msgSend(MEMORY[0x277CCACC8] "currentThread")];
     v11 = [MEMORY[0x277CCABB0] numberWithBool:v13];
     [v10 setObject:v11 forKey:*MEMORY[0x277D24EA0]];
-    if (v9 && [objc_msgSend(v10 objectForKey:{*MEMORY[0x277D24E90]), "BOOLValue"}])
+    if (messageBody && [objc_msgSend(v10 objectForKey:{*MEMORY[0x277D24E90]), "BOOLValue"}])
     {
-      [v10 setObject:v9 forKey:*MEMORY[0x277D24EA8]];
+      [v10 setObject:messageBody forKey:*MEMORY[0x277D24EA8]];
     }
   }
 
-  return v3;
+  return bodyData;
 }
 
 @end

@@ -8,22 +8,22 @@
 
 + (NSURL)containerURL
 {
-  if ([a1 isUnitTesting])
+  if ([self isUnitTesting])
   {
     if (qword_1ECF75E30 != -1)
     {
       sub_1E47091B8();
     }
 
-    v2 = qword_1ECF75E38;
+    bu_booksGroupContainerURL = qword_1ECF75E38;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E695DFF8] bu_booksGroupContainerURL];
+    bu_booksGroupContainerURL = [MEMORY[0x1E695DFF8] bu_booksGroupContainerURL];
   }
 
-  return v2;
+  return bu_booksGroupContainerURL;
 }
 
 + (BOOL)isUnitTesting
@@ -38,8 +38,8 @@
 
 + (NSURL)documentsURL
 {
-  v2 = [objc_opt_class() containerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Documents"];
+  containerURL = [objc_opt_class() containerURL];
+  v3 = [containerURL URLByAppendingPathComponent:@"Documents"];
 
   return v3;
 }

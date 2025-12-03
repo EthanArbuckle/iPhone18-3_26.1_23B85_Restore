@@ -1,88 +1,88 @@
 @interface PKSharedPassSharesController
-+ (BOOL)_isPlatformSharingFeatureBlockedForPass:(id)a3 targetDevice:(id)a4;
++ (BOOL)_isPlatformSharingFeatureBlockedForPass:(id)pass targetDevice:(id)device;
 - (BOOL)hasRevokableShares;
 - (BOOL)isCrossPlatformSharingEnabled;
-- (BOOL)isSharingChannelBlockedForChannel:(id)a3 isRecipientKnownContact:(BOOL)a4;
+- (BOOL)isSharingChannelBlockedForChannel:(id)channel isRecipientKnownContact:(BOOL)contact;
 - (BOOL)sharingEnabled;
 - (BOOL)sharingFeatureEnabled;
 - (NSArray)interAccountUserShares;
 - (NSArray)shares;
-- (PKSharedPassSharesController)initWithPass:(id)a3 contactResolver:(id)a4 webService:(id)a5 paymentServiceProvider:(id)a6 queue:(id)a7;
-- (id)_baseNewShareForPassIsTransfer:(BOOL)a3;
+- (PKSharedPassSharesController)initWithPass:(id)pass contactResolver:(id)resolver webService:(id)service paymentServiceProvider:(id)provider queue:(id)queue;
+- (id)_baseNewShareForPassIsTransfer:(BOOL)transfer;
 - (id)_contactResolver;
 - (id)_feature;
-- (id)_sharingActivationConfigurationForChannel:(id)a3 channelRisk:(int64_t)a4;
+- (id)_sharingActivationConfigurationForChannel:(id)channel channelRisk:(int64_t)risk;
 - (id)allowedSharingChannels;
-- (id)baseShareForPassTransferWithIsForCompanion:(BOOL)a3;
+- (id)baseShareForPassTransferWithIsForCompanion:(BOOL)companion;
 - (id)blockedSharingChannels;
-- (id)childSharesOfShare:(id)a3;
-- (id)contactForShare:(id)a3;
-- (id)entitlementsForShare:(id)a3;
+- (id)childSharesOfShare:(id)share;
+- (id)contactForShare:(id)share;
+- (id)entitlementsForShare:(id)share;
 - (id)possiblePredefinedEntitlements;
 - (id)revocableShares;
-- (id)senderShareForShare:(id)a3;
-- (id)shareForShareIdentifier:(id)a3;
-- (id)shareInitiationActivationConfigurationForChannelBundleIdentifier:(id)a3 isRecipientKnownContact:(BOOL)a4;
-- (int64_t)_randomCodeOfLength:(int64_t)a3;
+- (id)senderShareForShare:(id)share;
+- (id)shareForShareIdentifier:(id)identifier;
+- (id)shareInitiationActivationConfigurationForChannelBundleIdentifier:(id)identifier isRecipientKnownContact:(BOOL)contact;
+- (int64_t)_randomCodeOfLength:(int64_t)length;
 - (int64_t)_totalPendingCredentialShares;
 - (int64_t)_totalPendingShares;
 - (unint64_t)_numberOfSharesPartnerDoesNotKnowAbout;
 - (unint64_t)maxEntitlementSelectionCount;
-- (void)_immobilizerTokenCountWithCompletion:(id)a3;
-- (void)addDefaultShareActivationOptionsToShare:(id)a3 availableOptions:(id *)a4 allowUserEdit:(BOOL *)a5 channelBundleIdentifier:(id)a6 isRecipientKnownContact:(BOOL)a7;
-- (void)addDelegate:(id)a3;
-- (void)canSendInvitationWithIsTransfer:(BOOL)a3 completion:(id)a4;
-- (void)createShareWithPartialShare:(id)a3 authorization:(id)a4 completion:(id)a5;
+- (void)_immobilizerTokenCountWithCompletion:(id)completion;
+- (void)addDefaultShareActivationOptionsToShare:(id)share availableOptions:(id *)options allowUserEdit:(BOOL *)edit channelBundleIdentifier:(id)identifier isRecipientKnownContact:(BOOL)contact;
+- (void)addDelegate:(id)delegate;
+- (void)canSendInvitationWithIsTransfer:(BOOL)transfer completion:(id)completion;
+- (void)createShareWithPartialShare:(id)share authorization:(id)authorization completion:(id)completion;
 - (void)dealloc;
 - (void)didUpdateShares;
-- (void)fetchContactForShare:(id)a3 withCompletion:(id)a4;
+- (void)fetchContactForShare:(id)share withCompletion:(id)completion;
 - (void)prewarmCreateShare;
-- (void)removeDelegate:(id)a3;
-- (void)revokeAllSharesWithCompletion:(id)a3;
-- (void)revokeShare:(id)a3 shouldCascade:(BOOL)a4 withCompletion:(id)a5;
-- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)a3;
-- (void)updateEntitlementsWithCompletion:(id)a3;
-- (void)updateShare:(id)a3 authorization:(id)a4 completion:(id)a5;
-- (void)updateSharesWithCompletion:(id)a3;
+- (void)removeDelegate:(id)delegate;
+- (void)revokeAllSharesWithCompletion:(id)completion;
+- (void)revokeShare:(id)share shouldCascade:(BOOL)cascade withCompletion:(id)completion;
+- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)identifier;
+- (void)updateEntitlementsWithCompletion:(id)completion;
+- (void)updateShare:(id)share authorization:(id)authorization completion:(id)completion;
+- (void)updateSharesWithCompletion:(id)completion;
 @end
 
 @implementation PKSharedPassSharesController
 
-- (PKSharedPassSharesController)initWithPass:(id)a3 contactResolver:(id)a4 webService:(id)a5 paymentServiceProvider:(id)a6 queue:(id)a7
+- (PKSharedPassSharesController)initWithPass:(id)pass contactResolver:(id)resolver webService:(id)service paymentServiceProvider:(id)provider queue:(id)queue
 {
-  v13 = a3;
-  v29 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  passCopy = pass;
+  resolverCopy = resolver;
+  serviceCopy = service;
+  providerCopy = provider;
+  queueCopy = queue;
   v17 = [(PKSharedPassSharesController *)self init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_pass, a3);
-    objc_storeStrong(&v18->_contactResolver, a4);
-    objc_storeStrong(&v18->_webService, a5);
-    objc_storeStrong(&v18->_paymentServiceProvider, a6);
+    objc_storeStrong(&v17->_pass, pass);
+    objc_storeStrong(&v18->_contactResolver, resolver);
+    objc_storeStrong(&v18->_webService, service);
+    objc_storeStrong(&v18->_paymentServiceProvider, provider);
     [(PKPaymentDataProvider *)v18->_paymentServiceProvider addDelegate:v18];
-    objc_storeStrong(&v18->_queue, a7);
-    v19 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    objc_storeStrong(&v18->_queue, queue);
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     delegates = v18->_delegates;
-    v18->_delegates = v19;
+    v18->_delegates = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v18->_lock._os_unfair_lock_opaque = 0;
-    v21 = [(PKPaymentWebService *)v18->_webService targetDevice];
-    v22 = [v21 paymentWebService:v18->_webService supportedRegionFeatureOfType:2];
+    targetDevice = [(PKPaymentWebService *)v18->_webService targetDevice];
+    v22 = [targetDevice paymentWebService:v18->_webService supportedRegionFeatureOfType:2];
 
-    v23 = [(PKPaymentWebService *)v18->_webService targetDevice];
-    v24 = [v23 deviceVersion];
-    v25 = [v23 deviceClass];
-    v26 = [v22 friendSharingOSVersionRequirement];
-    v18->_friendSharingFeatureSupported = [v26 versionMeetsRequirements:v24 deviceClass:v25];
+    targetDevice2 = [(PKPaymentWebService *)v18->_webService targetDevice];
+    deviceVersion = [targetDevice2 deviceVersion];
+    deviceClass = [targetDevice2 deviceClass];
+    friendSharingOSVersionRequirement = [v22 friendSharingOSVersionRequirement];
+    v18->_friendSharingFeatureSupported = [friendSharingOSVersionRequirement versionMeetsRequirements:deviceVersion deviceClass:deviceClass];
 
-    v27 = [v22 ownerSharingOSVersionRequirement];
-    v18->_ownerSharingFeatureSupported = [v27 versionMeetsRequirements:v24 deviceClass:v25];
+    ownerSharingOSVersionRequirement = [v22 ownerSharingOSVersionRequirement];
+    v18->_ownerSharingFeatureSupported = [ownerSharingOSVersionRequirement versionMeetsRequirements:deviceVersion deviceClass:deviceClass];
 
-    v18->_platformSharingFeatureBlocked = [objc_opt_class() _isPlatformSharingFeatureBlockedForPass:v13 targetDevice:v23];
+    v18->_platformSharingFeatureBlocked = [objc_opt_class() _isPlatformSharingFeatureBlockedForPass:passCopy targetDevice:targetDevice2];
     [(PKSharedPassSharesController *)v18 updateSharesWithCompletion:0];
   }
 
@@ -97,29 +97,29 @@
   [(PKSharedPassSharesController *)&v3 dealloc];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v5 = v4;
+    v5 = delegateCopy;
     os_unfair_lock_lock(&self->_lock);
     [(NSHashTable *)self->_delegates addObject:v5];
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v5;
+    delegateCopy = v5;
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v5 = v4;
+    v5 = delegateCopy;
     os_unfair_lock_lock(&self->_lock);
     [(NSHashTable *)self->_delegates removeObject:v5];
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v5;
+    delegateCopy = v5;
   }
 }
 
@@ -128,17 +128,17 @@
   if (!self->_isPerformingBatchOpperation)
   {
     os_unfair_lock_lock(&self->_lock);
-    v3 = [(NSHashTable *)self->_delegates allObjects];
+    allObjects = [(NSHashTable *)self->_delegates allObjects];
     os_unfair_lock_unlock(&self->_lock);
-    if ([v3 count])
+    if ([allObjects count])
     {
       queue = self->_queue;
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __47__PKSharedPassSharesController_didUpdateShares__block_invoke;
       v5[3] = &unk_1E79C4DD8;
-      v6 = v3;
-      v7 = self;
+      v6 = allObjects;
+      selfCopy = self;
       dispatch_async(queue, v5);
     }
   }
@@ -178,31 +178,31 @@ void __47__PKSharedPassSharesController_didUpdateShares__block_invoke(uint64_t a
   }
 }
 
-- (id)contactForShare:(id)a3
+- (id)contactForShare:(id)share
 {
-  v4 = a3;
-  v5 = [(PKSharedPassSharesController *)self _contactResolver];
-  v6 = [v4 recipientHandle];
+  shareCopy = share;
+  _contactResolver = [(PKSharedPassSharesController *)self _contactResolver];
+  recipientHandle = [shareCopy recipientHandle];
 
-  v7 = [v5 contactForHandle:v6];
+  v7 = [_contactResolver contactForHandle:recipientHandle];
 
   return v7;
 }
 
-- (void)fetchContactForShare:(id)a3 withCompletion:(id)a4
+- (void)fetchContactForShare:(id)share withCompletion:(id)completion
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  shareCopy = share;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [(PKSharedPassSharesController *)self _contactResolver];
+    _contactResolver = [(PKSharedPassSharesController *)self _contactResolver];
 
     queue = self->_queue;
-    if (v8)
+    if (_contactResolver)
     {
       v10 = queue;
-      if ([v6 isForCurrentUser])
+      if ([shareCopy isForCurrentUser])
       {
         v24[0] = *MEMORY[0x1E695C400];
         v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
@@ -213,22 +213,22 @@ void __47__PKSharedPassSharesController_didUpdateShares__block_invoke(uint64_t a
         block[2] = __68__PKSharedPassSharesController_fetchContactForShare_withCompletion___block_invoke_2;
         block[3] = &unk_1E79C44A0;
         v20 = v12;
-        v21 = v7;
+        v21 = completionCopy;
         v13 = v12;
         dispatch_async(v10, block);
       }
 
       else
       {
-        v14 = [(PKSharedPassSharesController *)self _contactResolver];
-        v15 = [v6 recipientHandle];
+        _contactResolver2 = [(PKSharedPassSharesController *)self _contactResolver];
+        recipientHandle = [shareCopy recipientHandle];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __68__PKSharedPassSharesController_fetchContactForShare_withCompletion___block_invoke_3;
         v16[3] = &unk_1E79E1610;
         v17 = v10;
-        v18 = v7;
-        [v14 contactForHandle:v15 withCompletion:v16];
+        v18 = completionCopy;
+        [_contactResolver2 contactForHandle:recipientHandle withCompletion:v16];
 
         v13 = v17;
       }
@@ -240,7 +240,7 @@ void __47__PKSharedPassSharesController_didUpdateShares__block_invoke(uint64_t a
       v22[1] = 3221225472;
       v22[2] = __68__PKSharedPassSharesController_fetchContactForShare_withCompletion___block_invoke;
       v22[3] = &unk_1E79C4428;
-      v23 = v7;
+      v23 = completionCopy;
       dispatch_async(queue, v22);
       v10 = v23;
     }
@@ -279,29 +279,29 @@ void __68__PKSharedPassSharesController_fetchContactForShare_withCompletion___bl
   return contactResolver;
 }
 
-- (id)senderShareForShare:(id)a3
+- (id)senderShareForShare:(id)share
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKSharedPassSharesController *)self shares];
+  shareCopy = share;
+  shares = [(PKSharedPassSharesController *)self shares];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __52__PKSharedPassSharesController_senderShareForShare___block_invoke;
   v17[3] = &unk_1E79E1638;
-  v6 = v4;
+  v6 = shareCopy;
   v18 = v6;
-  v7 = [v5 pk_firstObjectPassingTest:v17];
+  v7 = [shares pk_firstObjectPassingTest:v17];
 
   if (!v7)
   {
-    v8 = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
-    v9 = [v8 subcredentials];
-    v10 = [v9 anyObject];
+    devicePrimaryPaymentApplication = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
+    subcredentials = [devicePrimaryPaymentApplication subcredentials];
+    anyObject = [subcredentials anyObject];
 
     v11 = objc_alloc_init(PKPassShare);
     v12 = objc_alloc_init(PKPassCredentialShare);
-    v13 = [v10 identifier];
-    [(PKPassCredentialShare *)v12 setIdentifier:v13];
+    identifier = [anyObject identifier];
+    [(PKPassCredentialShare *)v12 setIdentifier:identifier];
 
     v19[0] = v12;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -324,32 +324,32 @@ void __68__PKSharedPassSharesController_fetchContactForShare_withCompletion___bl
   return v7;
 }
 
-- (void)updateSharesWithCompletion:(id)a3
+- (void)updateSharesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__PKSharedPassSharesController_updateSharesWithCompletion___block_invoke;
   aBlock[3] = &unk_1E79C4A40;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v16 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(PKSharedPassSharesController *)self shares];
-  v8 = [v7 pk_arrayBySafelyApplyingBlock:&__block_literal_global_210];
+  shares = [(PKSharedPassSharesController *)self shares];
+  v8 = [shares pk_arrayBySafelyApplyingBlock:&__block_literal_global_210];
 
-  v9 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(PKObject *)self->_pass uniqueID];
+    uniqueID = [(PKObject *)self->_pass uniqueID];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __59__PKSharedPassSharesController_updateSharesWithCompletion___block_invoke_4;
     v11[3] = &unk_1E79CC750;
     v12 = v8;
-    v13 = self;
+    selfCopy = self;
     v14 = v6;
-    [v9 displayableSharesForPassIdentifier:v10 completion:v11];
+    [targetDevice displayableSharesForPassIdentifier:uniqueID completion:v11];
   }
 
   else
@@ -422,28 +422,28 @@ uint64_t __59__PKSharedPassSharesController_updateSharesWithCompletion___block_i
   return v2 ^ 1;
 }
 
-- (void)updateEntitlementsWithCompletion:(id)a3
+- (void)updateEntitlementsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__PKSharedPassSharesController_updateEntitlementsWithCompletion___block_invoke;
   aBlock[3] = &unk_1E79C4A40;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v12 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(PKObject *)self->_pass uniqueID];
+    uniqueID = [(PKObject *)self->_pass uniqueID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __65__PKSharedPassSharesController_updateEntitlementsWithCompletion___block_invoke_3;
     v9[3] = &unk_1E79C4838;
     v9[4] = self;
     v10 = v6;
-    [v7 displayableEntitlementsForPassIdentifier:v8 completion:v9];
+    [targetDevice displayableEntitlementsForPassIdentifier:uniqueID completion:v9];
   }
 
   else
@@ -531,17 +531,17 @@ void __65__PKSharedPassSharesController_updateEntitlementsWithCompletion___block
   [v2 replaceSharedEntitlementWithEntitlement:v3];
 }
 
-- (id)entitlementsForShare:(id)a3
+- (id)entitlementsForShare:(id)share
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  shareCopy = share;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [v4 sharedEntitlements];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  sharedEntitlements = [shareCopy sharedEntitlements];
+  v7 = [sharedEntitlements countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v7)
   {
     v8 = v7;
@@ -552,14 +552,14 @@ void __65__PKSharedPassSharesController_updateEntitlementsWithCompletion___block
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sharedEntitlements);
         }
 
-        v11 = [*(*(&v28 + 1) + 8 * i) entitlementIdentifier];
-        [v5 addObject:v11];
+        entitlementIdentifier = [*(*(&v28 + 1) + 8 * i) entitlementIdentifier];
+        [v5 addObject:entitlementIdentifier];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v8 = [sharedEntitlements countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v8);
@@ -586,13 +586,13 @@ void __65__PKSharedPassSharesController_updateEntitlementsWithCompletion___block
         }
 
         v18 = *(*(&v24 + 1) + 8 * j);
-        v19 = [v18 entitlementIdentifier];
-        v20 = [v5 containsObject:v19];
+        entitlementIdentifier2 = [v18 entitlementIdentifier];
+        v20 = [v5 containsObject:entitlementIdentifier2];
 
         if (v20)
         {
-          v21 = [v18 entitlement];
-          [v12 addObject:v21];
+          entitlement = [v18 entitlement];
+          [v12 addObject:entitlement];
         }
       }
 
@@ -607,19 +607,19 @@ void __65__PKSharedPassSharesController_updateEntitlementsWithCompletion___block
   return v22;
 }
 
-- (id)childSharesOfShare:(id)a3
+- (id)childSharesOfShare:(id)share
 {
-  v4 = a3;
-  v5 = [(PKSharedPassSharesController *)self shares];
-  v6 = [v4 descendantsInShares:v5];
+  shareCopy = share;
+  shares = [(PKSharedPassSharesController *)self shares];
+  v6 = [shareCopy descendantsInShares:shares];
 
   return v6;
 }
 
 - (id)revocableShares
 {
-  v2 = [(PKSharedPassSharesController *)self shares];
-  v3 = [v2 pk_objectsPassingTest:&__block_literal_global_98];
+  shares = [(PKSharedPassSharesController *)self shares];
+  v3 = [shares pk_objectsPassingTest:&__block_literal_global_98];
 
   return v3;
 }
@@ -651,8 +651,8 @@ uint64_t __47__PKSharedPassSharesController_revocableShares__block_invoke(uint64
 
 - (NSArray)interAccountUserShares
 {
-  v2 = [(PKSharedPassSharesController *)self shares];
-  v3 = [v2 pk_objectsPassingTest:&__block_literal_global_100];
+  shares = [(PKSharedPassSharesController *)self shares];
+  v3 = [shares pk_objectsPassingTest:&__block_literal_global_100];
 
   return v3;
 }
@@ -673,18 +673,18 @@ uint64_t __54__PKSharedPassSharesController_interAccountUserShares__block_invoke
   return v3;
 }
 
-- (id)shareForShareIdentifier:(id)a3
+- (id)shareForShareIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(PKSharedPassSharesController *)self shares];
+    shares = [(PKSharedPassSharesController *)self shares];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __56__PKSharedPassSharesController_shareForShareIdentifier___block_invoke;
     v8[3] = &unk_1E79E1638;
-    v9 = v4;
-    v6 = [v5 pk_firstObjectPassingTest:v8];
+    v9 = identifierCopy;
+    v6 = [shares pk_firstObjectPassingTest:v8];
   }
 
   else
@@ -754,25 +754,25 @@ uint64_t __56__PKSharedPassSharesController_shareForShareIdentifier___block_invo
   return !v6 && !self->_platformSharingFeatureBlocked;
 }
 
-- (void)canSendInvitationWithIsTransfer:(BOOL)a3 completion:(id)a4
+- (void)canSendInvitationWithIsTransfer:(BOOL)transfer completion:(id)completion
 {
-  v4 = a3;
+  transferCopy = transfer;
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = self->_queue;
-  if (v6)
+  if (completionCopy)
   {
-    v8 = [(PKObject *)self->_pass uniqueID];
+    uniqueID = [(PKObject *)self->_pass uniqueID];
     v9 = PKLogFacilityTypeGetObject(0x22uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v8;
+      v33 = uniqueID;
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Can Share: Checking if pass can send invitation: %@", buf, 0xCu);
     }
 
-    v10 = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
-    if (-[PKSecureElementPass contactlessActivationState](self->_pass, "contactlessActivationState") || [v10 state] == 15)
+    devicePrimaryPaymentApplication = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
+    if (-[PKSecureElementPass contactlessActivationState](self->_pass, "contactlessActivationState") || [devicePrimaryPaymentApplication state] == 15)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -785,12 +785,12 @@ uint64_t __56__PKSharedPassSharesController_shareForShareIdentifier___block_invo
 
       v13 = PKLocalizedShareableCredentialString(&cfstr_UnableToShareG_0.isa, 0);
       v14 = PKDisplayableErrorCustomWithType(-1, v13, v12, 0, 0);
-      v6[2](v6, v14);
+      completionCopy[2](completionCopy, v14);
 
       goto LABEL_9;
     }
 
-    if (v4)
+    if (transferCopy)
     {
       v15 = [(NSArray *)self->_myEntitlements pk_countObjectsPassingTest:&__block_literal_global_110];
       if (v15 != [(NSArray *)self->_myEntitlements count])
@@ -823,9 +823,9 @@ LABEL_23:
 
 LABEL_24:
 
-        v20 = [MEMORY[0x1E696ABC0] pkSharingError:7];
-        v24 = _PKSharingDisplayableError(v20, 0, 0);
-        v6[2](v6, v24);
+        anyObject = [MEMORY[0x1E696ABC0] pkSharingError:7];
+        v24 = _PKSharingDisplayableError(anyObject, 0, 0);
+        completionCopy[2](completionCopy, v24);
 LABEL_31:
 
         goto LABEL_32;
@@ -837,10 +837,10 @@ LABEL_31:
         {
 LABEL_30:
 
-          v20 = PKLocalizedCredentialString(&cfstr_UnableToShareT_0.isa, 0);
+          anyObject = PKLocalizedCredentialString(&cfstr_UnableToShareT_0.isa, 0);
           v24 = PKLocalizedCredentialString(&cfstr_UnableToShareE.isa, 0);
-          v26 = PKDisplayableErrorCustomWithType(-1, v20, v24, 0, 0);
-          v6[2](v6, v26);
+          v26 = PKDisplayableErrorCustomWithType(-1, anyObject, v24, 0, 0);
+          completionCopy[2](completionCopy, v26);
 
           goto LABEL_31;
         }
@@ -857,25 +857,25 @@ LABEL_29:
     {
       if (![(PKSecureElementPass *)self->_pass isCarKeyPass])
       {
-        v6[2](v6, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_9;
       }
 
-      v19 = [v10 subcredentials];
-      v20 = [v19 anyObject];
+      subcredentials = [devicePrimaryPaymentApplication subcredentials];
+      anyObject = [subcredentials anyObject];
 
-      v21 = [(PKPaymentWebService *)self->_webService targetDevice];
+      targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
       webService = self->_webService;
-      v23 = [v20 identifier];
+      identifier = [anyObject identifier];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __75__PKSharedPassSharesController_canSendInvitationWithIsTransfer_completion___block_invoke_121;
       v27[3] = &unk_1E79E1758;
       v28 = v7;
-      v29 = self;
-      v30 = v6;
-      v31 = v4;
-      [v21 paymentWebService:webService credentialWithIdentifier:v23 completion:v27];
+      selfCopy = self;
+      v30 = completionCopy;
+      v31 = transferCopy;
+      [targetDevice paymentWebService:webService credentialWithIdentifier:identifier completion:v27];
 
 LABEL_32:
 LABEL_9:
@@ -1146,8 +1146,8 @@ LABEL_17:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PKSharedPassSharesController *)self shares];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  shares = [(PKSharedPassSharesController *)self shares];
+  v3 = [shares countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1159,17 +1159,17 @@ LABEL_17:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(shares);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) groupIdentifier];
-        if (!v8)
+        groupIdentifier = [*(*(&v10 + 1) + 8 * i) groupIdentifier];
+        if (!groupIdentifier)
         {
           ++v5;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [shares countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -1190,8 +1190,8 @@ LABEL_17:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(PKSharedPassSharesController *)self shares];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  shares = [(PKSharedPassSharesController *)self shares];
+  v3 = [shares countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1203,16 +1203,16 @@ LABEL_17:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(shares);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) credentialShares];
-        v9 = [v8 pk_containsObjectPassingTest:&__block_literal_global_140_0];
+        credentialShares = [*(*(&v11 + 1) + 8 * i) credentialShares];
+        v9 = [credentialShares pk_containsObjectPassingTest:&__block_literal_global_140_0];
 
         v5 += v9;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [shares countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -1233,8 +1233,8 @@ LABEL_17:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v2 = [(PKSharedPassSharesController *)self shares];
-  v3 = [v2 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  shares = [(PKSharedPassSharesController *)self shares];
+  v3 = [shares countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1246,7 +1246,7 @@ LABEL_17:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(shares);
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
@@ -1254,8 +1254,8 @@ LABEL_17:
         v16 = 0u;
         v17 = 0u;
         v18 = 0u;
-        v9 = [v8 credentialShares];
-        v10 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        credentialShares = [v8 credentialShares];
+        v10 = [credentialShares countByEnumeratingWithState:&v15 objects:v23 count:16];
         if (v10)
         {
           v11 = v10;
@@ -1266,7 +1266,7 @@ LABEL_17:
             {
               if (*v16 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(credentialShares);
               }
 
               if (([*(*(&v15 + 1) + 8 * j) status] & 0xFFFFFFFFFFFFFFFELL) == 2)
@@ -1275,14 +1275,14 @@ LABEL_17:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+            v11 = [credentialShares countByEnumeratingWithState:&v15 objects:v23 count:16];
           }
 
           while (v11);
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v4 = [shares countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v4);
@@ -1296,57 +1296,57 @@ LABEL_17:
   return v5;
 }
 
-- (void)_immobilizerTokenCountWithCompletion:(id)a3
+- (void)_immobilizerTokenCountWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
-    v6 = [v5 subcredentials];
-    v7 = [v6 anyObject];
+    devicePrimaryPaymentApplication = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
+    subcredentials = [devicePrimaryPaymentApplication subcredentials];
+    anyObject = [subcredentials anyObject];
 
-    if (v7)
+    if (anyObject)
     {
       v8 = objc_alloc_init(PKDAManager);
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __69__PKSharedPassSharesController__immobilizerTokenCountWithCompletion___block_invoke;
       v9[3] = &unk_1E79E17A0;
-      v10 = v4;
-      [(PKDAManager *)v8 immobilizerTokensCountForCredential:v7 completion:v9];
+      v10 = completionCopy;
+      [(PKDAManager *)v8 immobilizerTokensCountForCredential:anyObject completion:v9];
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
 
 - (BOOL)hasRevokableShares
 {
-  v2 = [(PKSharedPassSharesController *)self revocableShares];
-  v3 = [v2 count] != 0;
+  revocableShares = [(PKSharedPassSharesController *)self revocableShares];
+  v3 = [revocableShares count] != 0;
 
   return v3;
 }
 
-- (void)revokeShare:(id)a3 shouldCascade:(BOOL)a4 withCompletion:(id)a5
+- (void)revokeShare:(id)share shouldCascade:(BOOL)cascade withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PKPaymentWebService *)self->_webService targetDevice];
+  cascadeCopy = cascade;
+  shareCopy = share;
+  completionCopy = completion;
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   objc_initWeak(&location, self);
-  v11 = [(PKObject *)self->_pass uniqueID];
+  uniqueID = [(PKObject *)self->_pass uniqueID];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__PKSharedPassSharesController_revokeShare_shouldCascade_withCompletion___block_invoke;
   v13[3] = &unk_1E79E1868;
   objc_copyWeak(&v15, &location);
-  v12 = v9;
+  v12 = completionCopy;
   v14 = v12;
-  [v10 revokeShareForPassIdentifier:v11 share:v8 shouldCascade:v6 completion:v13];
+  [targetDevice revokeShareForPassIdentifier:uniqueID share:shareCopy shouldCascade:cascadeCopy completion:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1393,21 +1393,21 @@ void __73__PKSharedPassSharesController_revokeShare_shouldCascade_withCompletion
   }
 }
 
-- (void)revokeAllSharesWithCompletion:(id)a3
+- (void)revokeAllSharesWithCompletion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v14 = a3;
+  completionCopy = completion;
   val = self;
-  v16 = [(PKObject *)self->_pass uniqueID];
+  uniqueID = [(PKObject *)self->_pass uniqueID];
   v4 = PKLogFacilityTypeGetObject(0x1CuLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v16;
+    *(&buf + 4) = uniqueID;
     _os_log_impl(&dword_1AD337000, v4, OS_LOG_TYPE_DEFAULT, "Revoking all shares for pass %@", &buf, 0xCu);
   }
 
-  v17 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   v5 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -1427,13 +1427,13 @@ void __73__PKSharedPassSharesController_revokeShare_shouldCascade_withCompletion
     v32[1] = 3221225472;
     v32[2] = __62__PKSharedPassSharesController_revokeAllSharesWithCompletion___block_invoke_3;
     v32[3] = &unk_1E79CC040;
-    v33 = v17;
-    v34 = v16;
-    v35 = self;
+    v33 = targetDevice;
+    v34 = uniqueID;
+    selfCopy = self;
     p_buf = &buf;
     [(PKAsyncUnaryOperationComposer *)v5 addOperation:v32];
 
-    v6 = v33;
+    revocableShares = v33;
   }
 
   else
@@ -1442,8 +1442,8 @@ void __73__PKSharedPassSharesController_revokeShare_shouldCascade_withCompletion
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v6 = [(PKSharedPassSharesController *)self revocableShares];
-    v7 = [v6 countByEnumeratingWithState:&v28 objects:v38 count:16];
+    revocableShares = [(PKSharedPassSharesController *)self revocableShares];
+    v7 = [revocableShares countByEnumeratingWithState:&v28 objects:v38 count:16];
     if (v7)
     {
       v8 = *v29;
@@ -1453,7 +1453,7 @@ void __73__PKSharedPassSharesController_revokeShare_shouldCascade_withCompletion
         {
           if (*v29 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(revocableShares);
           }
 
           v10 = *(*(&v28 + 1) + 8 * i);
@@ -1461,14 +1461,14 @@ void __73__PKSharedPassSharesController_revokeShare_shouldCascade_withCompletion
           v23[1] = 3221225472;
           v23[2] = __62__PKSharedPassSharesController_revokeAllSharesWithCompletion___block_invoke_5;
           v23[3] = &unk_1E79CC040;
-          v24 = v17;
-          v25 = v16;
+          v24 = targetDevice;
+          v25 = uniqueID;
           v26 = v10;
           v27 = &buf;
           [(PKAsyncUnaryOperationComposer *)v5 addOperation:v23];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v28 objects:v38 count:16];
+        v7 = [revocableShares countByEnumeratingWithState:&v28 objects:v38 count:16];
       }
 
       while (v7);
@@ -1476,7 +1476,7 @@ void __73__PKSharedPassSharesController_revokeShare_shouldCascade_withCompletion
   }
 
   objc_initWeak(&location, val);
-  v11 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __62__PKSharedPassSharesController_revokeAllSharesWithCompletion___block_invoke_7;
@@ -1484,9 +1484,9 @@ void __73__PKSharedPassSharesController_revokeShare_shouldCascade_withCompletion
   v18[4] = val;
   objc_copyWeak(&v21, &location);
   v20 = &buf;
-  v12 = v14;
+  v12 = completionCopy;
   v19 = v12;
-  v13 = [(PKAsyncUnaryOperationComposer *)v5 evaluateWithInput:v11 completion:v18];
+  v13 = [(PKAsyncUnaryOperationComposer *)v5 evaluateWithInput:null completion:v18];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -1647,22 +1647,22 @@ void __62__PKSharedPassSharesController_revokeAllSharesWithCompletion___block_in
   }
 }
 
-- (void)createShareWithPartialShare:(id)a3 authorization:(id)a4 completion:(id)a5
+- (void)createShareWithPartialShare:(id)share authorization:(id)authorization completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKPaymentWebService *)self->_webService targetDevice];
+  shareCopy = share;
+  authorizationCopy = authorization;
+  completionCopy = completion;
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __85__PKSharedPassSharesController_createShareWithPartialShare_authorization_completion___block_invoke;
   v13[3] = &unk_1E79E1840;
   objc_copyWeak(&v15, &location);
-  v12 = v10;
+  v12 = completionCopy;
   v13[4] = self;
   v14 = v12;
-  [v11 createShareForPartialShareInvitation:v8 authorization:v9 completion:v13];
+  [targetDevice createShareForPartialShareInvitation:shareCopy authorization:authorizationCopy completion:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1713,22 +1713,22 @@ void __85__PKSharedPassSharesController_createShareWithPartialShare_authorizatio
   }
 }
 
-- (void)updateShare:(id)a3 authorization:(id)a4 completion:(id)a5
+- (void)updateShare:(id)share authorization:(id)authorization completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKPaymentWebService *)self->_webService targetDevice];
+  shareCopy = share;
+  authorizationCopy = authorization;
+  completionCopy = completion;
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   objc_initWeak(&location, self);
-  v12 = [(PKObject *)self->_pass uniqueID];
+  uniqueID = [(PKObject *)self->_pass uniqueID];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __69__PKSharedPassSharesController_updateShare_authorization_completion___block_invoke;
   v14[3] = &unk_1E79E1868;
-  v13 = v10;
+  v13 = completionCopy;
   v15 = v13;
   objc_copyWeak(&v16, &location);
-  [v11 updateShareForPassIdentifier:v12 share:v8 authorization:v9 completion:v14];
+  [targetDevice updateShareForPassIdentifier:uniqueID share:shareCopy authorization:authorizationCopy completion:v14];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -1770,28 +1770,28 @@ uint64_t __49__PKSharedPassSharesController_canAllowResharing__block_invoke(uint
     return 1;
   }
 
-  v3 = [(PKSharedPassSharesController *)self _feature];
-  v4 = v3;
-  if (v3)
+  _feature = [(PKSharedPassSharesController *)self _feature];
+  v4 = _feature;
+  if (_feature)
   {
-    v5 = [v3 enabled];
+    enabled = [_feature enabled];
   }
 
   else
   {
-    v5 = 1;
+    enabled = 1;
   }
 
-  return v5;
+  return enabled;
 }
 
-- (id)_baseNewShareForPassIsTransfer:(BOOL)a3
+- (id)_baseNewShareForPassIsTransfer:(BOOL)transfer
 {
-  v3 = a3;
+  transferCopy = transfer;
   v5 = objc_alloc_init(PKPassShare);
   v6 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-  v7 = [v6 UUIDString];
-  [(PKPassShare *)v5 setIdentifier:v7];
+  uUIDString = [v6 UUIDString];
+  [(PKPassShare *)v5 setIdentifier:uUIDString];
 
   [(PKPassShare *)v5 setStatus:3];
   if ([(PKSecureElementPass *)self->_pass isCarKeyPass])
@@ -1807,7 +1807,7 @@ uint64_t __49__PKSharedPassSharesController_canAllowResharing__block_invoke(uint
   [(PKPassShare *)v5 setManageability:v8];
   v9 = [PKPassEntitlementsComposer alloc];
   v10 = v9;
-  if (v3)
+  if (transferCopy)
   {
     v11 = [(PKPassEntitlementsComposer *)v9 initWithMyEntitlements:self->_myEntitlements];
   }
@@ -1824,27 +1824,27 @@ uint64_t __49__PKSharedPassSharesController_canAllowResharing__block_invoke(uint
       shareableEntitlements = MEMORY[0x1E695E0F0];
     }
 
-    v13 = [(PKSharedPassSharesController *)self possiblePredefinedEntitlements];
-    v11 = [(PKPassEntitlementsComposer *)v10 initWithSharedEntitlements:MEMORY[0x1E695E0F0] availableEntitlements:shareableEntitlements predefinedSharedEntitlements:v13 editable:1];
+    possiblePredefinedEntitlements = [(PKSharedPassSharesController *)self possiblePredefinedEntitlements];
+    v11 = [(PKPassEntitlementsComposer *)v10 initWithSharedEntitlements:MEMORY[0x1E695E0F0] availableEntitlements:shareableEntitlements predefinedSharedEntitlements:possiblePredefinedEntitlements editable:1];
 
-    v14 = [(PKPassEntitlementsComposer *)v11 predefinedEntitlementEntries];
-    if ([v14 count])
+    predefinedEntitlementEntries = [(PKPassEntitlementsComposer *)v11 predefinedEntitlementEntries];
+    if ([predefinedEntitlementEntries count])
     {
-      v15 = [v14 objectAtIndexedSubscript:0];
-      v16 = [(PKPassEntitlementsComposer *)v11 viewForPredefined:v15];
+      v15 = [predefinedEntitlementEntries objectAtIndexedSubscript:0];
+      entitlementEntries = [(PKPassEntitlementsComposer *)v11 viewForPredefined:v15];
 
-      [v16 setEnabled:1];
+      [entitlementEntries setEnabled:1];
     }
 
     else
     {
-      v16 = [(PKPassEntitlementsComposer *)v11 entitlementEntries];
-      v17 = fmin([v16 count], -[PKSharedPassSharesController maxEntitlementSelectionCount](self, "maxEntitlementSelectionCount"));
+      entitlementEntries = [(PKPassEntitlementsComposer *)v11 entitlementEntries];
+      v17 = fmin([entitlementEntries count], -[PKSharedPassSharesController maxEntitlementSelectionCount](self, "maxEntitlementSelectionCount"));
       if (v17)
       {
         for (i = 0; i != v17; ++i)
         {
-          v19 = [v16 objectAtIndexedSubscript:i];
+          v19 = [entitlementEntries objectAtIndexedSubscript:i];
           v20 = [(PKPassEntitlementsComposer *)v11 viewFor:v19];
 
           [v20 setEnabled:1];
@@ -1853,32 +1853,32 @@ uint64_t __49__PKSharedPassSharesController_canAllowResharing__block_invoke(uint
     }
   }
 
-  v21 = [(PKPassEntitlementsComposer *)v11 composeSharedEntitlements];
-  [(PKPassShare *)v5 setSharedEntitlements:v21];
+  composeSharedEntitlements = [(PKPassEntitlementsComposer *)v11 composeSharedEntitlements];
+  [(PKPassShare *)v5 setSharedEntitlements:composeSharedEntitlements];
 
   return v5;
 }
 
-- (id)baseShareForPassTransferWithIsForCompanion:(BOOL)a3
+- (id)baseShareForPassTransferWithIsForCompanion:(BOOL)companion
 {
-  v3 = a3;
+  companionCopy = companion;
   v5 = [(PKSharedPassSharesController *)self _baseNewShareForPassIsTransfer:1];
-  v6 = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
-  v7 = [v6 subcredentials];
-  v8 = [v7 anyObject];
-  v9 = [v8 sharingFriendlyName];
-  v10 = v9;
-  if (v9)
+  devicePrimaryPaymentApplication = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
+  subcredentials = [devicePrimaryPaymentApplication subcredentials];
+  anyObject = [subcredentials anyObject];
+  sharingFriendlyName = [anyObject sharingFriendlyName];
+  v10 = sharingFriendlyName;
+  if (sharingFriendlyName)
   {
-    v11 = v9;
+    v11 = sharingFriendlyName;
   }
 
   else
   {
     v12 = objc_alloc(MEMORY[0x1E696AEC0]);
     v13 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-    v14 = [v13 UUIDString];
-    v11 = [v12 initWithFormat:@"Transfer-%@", v14];
+    uUIDString = [v13 UUIDString];
+    v11 = [v12 initWithFormat:@"Transfer-%@", uUIDString];
   }
 
   [v5 setRecipientNickname:v11];
@@ -1886,7 +1886,7 @@ uint64_t __49__PKSharedPassSharesController_canAllowResharing__block_invoke(uint
   {
     v15 = objc_alloc_init(PKPassCredentialShare);
     [(PKPassCredentialShare *)v15 setStatus:2];
-    if (v3)
+    if (companionCopy)
     {
       v16 = 4;
     }
@@ -1969,46 +1969,46 @@ uint64_t __49__PKSharedPassSharesController_canAllowResharing__block_invoke(uint
   return v35;
 }
 
-- (void)addDefaultShareActivationOptionsToShare:(id)a3 availableOptions:(id *)a4 allowUserEdit:(BOOL *)a5 channelBundleIdentifier:(id)a6 isRecipientKnownContact:(BOOL)a7
+- (void)addDefaultShareActivationOptionsToShare:(id)share availableOptions:(id *)options allowUserEdit:(BOOL *)edit channelBundleIdentifier:(id)identifier isRecipientKnownContact:(BOOL)contact
 {
-  v7 = a7;
-  v15 = a3;
-  v12 = [(PKSharedPassSharesController *)self shareInitiationActivationConfigurationForChannelBundleIdentifier:a6 isRecipientKnownContact:v7];
+  contactCopy = contact;
+  shareCopy = share;
+  v12 = [(PKSharedPassSharesController *)self shareInitiationActivationConfigurationForChannelBundleIdentifier:identifier isRecipientKnownContact:contactCopy];
   v13 = v12;
-  if (a5)
+  if (edit)
   {
-    *a5 = [v12 allowUserEdit];
+    *edit = [v12 allowUserEdit];
   }
 
-  if (a4)
+  if (options)
   {
-    *a4 = [v13 availableOptions];
+    *options = [v13 availableOptions];
   }
 
-  v14 = [v13 defaultOptions];
-  if (v14)
+  defaultOptions = [v13 defaultOptions];
+  if (defaultOptions)
   {
-    [v15 setActivationOptions:v14];
+    [shareCopy setActivationOptions:defaultOptions];
   }
 }
 
-- (id)shareInitiationActivationConfigurationForChannelBundleIdentifier:(id)a3 isRecipientKnownContact:(BOOL)a4
+- (id)shareInitiationActivationConfigurationForChannelBundleIdentifier:(id)identifier isRecipientKnownContact:(BOOL)contact
 {
-  v4 = a4;
+  contactCopy = contact;
   v95[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6 == @"com.apple.UIKit.activity.Message")
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy == @"com.apple.UIKit.activity.Message")
   {
     goto LABEL_110;
   }
 
-  if (!v6)
+  if (!identifierCopy)
   {
     goto LABEL_16;
   }
 
-  v8 = [(__CFString *)v6 isEqualToString:@"com.apple.UIKit.activity.Message"];
+  v8 = [(__CFString *)identifierCopy isEqualToString:@"com.apple.UIKit.activity.Message"];
 
   if (v8)
   {
@@ -2023,7 +2023,7 @@ LABEL_110:
   if (v9 == @"com.apple.UIKit.activity.AirDrop")
   {
 LABEL_12:
-    if (v4)
+    if (contactCopy)
     {
       v12 = 3;
     }
@@ -2041,7 +2041,7 @@ LABEL_12:
   {
     v11 = [(__CFString *)v9 isEqualToString:@"com.apple.UIKit.activity.AirDrop"];
 
-    if (v4)
+    if (contactCopy)
     {
       v12 = 3;
     }
@@ -2085,65 +2085,65 @@ LABEL_18:
     v16 = [v14 trustLevel] == 1;
   }
 
-  v17 = [v15 defaultState];
-  v77 = v4;
-  if (v15 && v17)
+  defaultState = [v15 defaultState];
+  v77 = contactCopy;
+  if (v15 && defaultState)
   {
-    v18 = v17 == 1;
+    v18 = defaultState == 1;
   }
 
   else
   {
-    v18 = !v16 || !v4;
+    v18 = !v16 || !contactCopy;
   }
 
-  v19 = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
-  v20 = [v19 subcredentials];
-  v21 = [v20 anyObject];
-  v22 = [v21 sharingConfiguration];
+  devicePrimaryPaymentApplication = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
+  subcredentials = [devicePrimaryPaymentApplication subcredentials];
+  anyObject = [subcredentials anyObject];
+  sharingConfiguration = [anyObject sharingConfiguration];
 
   v23 = PKLogFacilityTypeGetObject(0x22uLL);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v85 = v22;
+    v85 = sharingConfiguration;
     _os_log_debug_impl(&dword_1AD337000, v23, OS_LOG_TYPE_DEBUG, "ShareInitiation: creating share with subcredentialSharingConfig: %@", buf, 0xCu);
   }
 
-  v24 = [(__CFString *)v22 sharingPasswordLength];
-  if (v24)
+  sharingPasswordLength = [(__CFString *)sharingConfiguration sharingPasswordLength];
+  if (sharingPasswordLength)
   {
-    if (v24 <= 6)
+    if (sharingPasswordLength <= 6)
     {
-      v25 = 6;
+      codeLength = 6;
     }
 
     else
     {
-      v25 = v24;
+      codeLength = sharingPasswordLength;
     }
   }
 
   else if ([v15 codeLength] >= 6)
   {
-    v25 = [v15 codeLength];
+    codeLength = [v15 codeLength];
   }
 
   else
   {
-    v25 = 6;
+    codeLength = 6;
   }
 
   v26 = 0x1E696A000;
-  v80 = v22;
+  v80 = sharingConfiguration;
   if (![(PKSecureElementPass *)self->_pass isCarKeyPass])
   {
-    v27 = 0;
+    activationOptions = 0;
     goto LABEL_80;
   }
 
   v78 = v18;
-  v27 = [(__CFString *)v22 activationOptions];
+  activationOptions = [(__CFString *)sharingConfiguration activationOptions];
   v28 = PKSharingCarKeyActivationOptionForceVEP();
   v29 = PKSharingCarKeyActivationOptionForcePhysicalKey();
   if (v16)
@@ -2163,7 +2163,7 @@ LABEL_18:
   {
     if (v29)
     {
-      v82 = v27;
+      v82 = activationOptions;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
@@ -2176,7 +2176,7 @@ LABEL_18:
       v95[1] = v35;
       v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v95 count:2];
 
-      v27 = v82;
+      activationOptions = v82;
       if (!v28)
       {
         goto LABEL_56;
@@ -2197,7 +2197,7 @@ LABEL_56:
             _os_log_impl(&dword_1AD337000, v23, OS_LOG_TYPE_DEFAULT, "ShareInitiation: Warning: Forcing Online Sharing Pin activation option due to debug toggle", buf, 2u);
           }
 
-          v38 = [v27 optionOfType:4];
+          v38 = [activationOptions optionOfType:4];
           v39 = v38;
           if (v38)
           {
@@ -2261,7 +2261,7 @@ LABEL_66:
 
   else
   {
-    v43 = v27 == 0;
+    v43 = activationOptions == 0;
   }
 
   v44 = v43;
@@ -2279,13 +2279,13 @@ LABEL_66:
   if ((v45 & 1) == 0)
   {
     v47 = PKPassShareActivationOptionExternallyManagedTypes();
-    v46 = [v27 optionsOfTypes:v47];
+    v46 = [activationOptions optionsOfTypes:v47];
   }
 
   v18 = v78;
   if (v46)
   {
-    v83 = v27;
+    v83 = activationOptions;
     v79 = 0;
     v18 = 1;
     goto LABEL_88;
@@ -2293,8 +2293,8 @@ LABEL_66:
 
   v26 = 0x1E696A000uLL;
 LABEL_80:
-  v83 = v27;
-  v48 = [v27 optionOfType:1];
+  v83 = activationOptions;
+  v48 = [activationOptions optionOfType:1];
   if (!v48)
   {
     v48 = [[PKPassShareActivationOption alloc] initWithDefaultIdentifierForType:1];
@@ -2302,9 +2302,9 @@ LABEL_80:
 
   v49 = *(v26 + 3480);
   v50 = 10;
-  if (v25 < 10)
+  if (codeLength < 10)
   {
-    v50 = v25;
+    v50 = codeLength;
   }
 
   if (v50 <= 1)
@@ -2320,10 +2320,10 @@ LABEL_80:
   v52 = __exp10((v51 - 1));
   v53 = __exp10(v51);
   v54 = [v49 numberWithInteger:arc4random_uniform((v53 + -1.0) - v52 + 1) + v52];
-  v55 = [v54 stringValue];
-  [(PKPassShareActivationOption *)v48 setValue:v55];
+  stringValue = [v54 stringValue];
+  [(PKPassShareActivationOption *)v48 setValue:stringValue];
 
-  [(PKPassShareActivationOption *)v48 setValueLength:v25];
+  [(PKPassShareActivationOption *)v48 setValueLength:codeLength];
   v92 = v48;
   v79 = 1;
   v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v92 count:1];
@@ -2344,17 +2344,17 @@ LABEL_88:
   v59 = [(PKPassShareActivationOptions *)v56 optionOfType:2];
   if (v58)
   {
-    [v58 setValueLength:v25];
-    v60 = [v58 value];
-    v61 = v60 | v59;
+    [v58 setValueLength:codeLength];
+    value = [v58 value];
+    v61 = value | v59;
 
     if (!v61)
     {
       v76 = MEMORY[0x1E696AD98];
       v62 = 10;
-      if (v25 < 10)
+      if (codeLength < 10)
       {
-        v62 = v25;
+        v62 = codeLength;
       }
 
       if (v62 <= 1)
@@ -2377,8 +2377,8 @@ LABEL_88:
       v15 = v65;
       v18 = v64;
       v70 = [v76 numberWithInteger:v69];
-      v71 = [v70 stringValue];
-      [v58 setValue:v71];
+      stringValue2 = [v70 stringValue];
+      [v58 setValue:stringValue2];
     }
   }
 
@@ -2416,98 +2416,98 @@ LABEL_88:
 
 - (void)prewarmCreateShare
 {
-  v4 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(PKObject *)self->_pass uniqueID];
-    [v4 prewarmCreateShareForPassIdentifier:v3 completion:0];
+    uniqueID = [(PKObject *)self->_pass uniqueID];
+    [targetDevice prewarmCreateShareForPassIdentifier:uniqueID completion:0];
   }
 }
 
-- (int64_t)_randomCodeOfLength:(int64_t)a3
+- (int64_t)_randomCodeOfLength:(int64_t)length
 {
-  v4 = __exp10((a3 - 1));
-  v5 = __exp10(a3);
+  v4 = __exp10((length - 1));
+  v5 = __exp10(length);
   return arc4random_uniform((v5 + -1.0) - v4 + 1) + v4;
 }
 
 - (id)blockedSharingChannels
 {
   v2 = [(PKSharedPassSharesController *)self _sharingActivationConfigurationForChannel:0 channelRisk:0];
-  v3 = [v2 blockedSharingChannels];
+  blockedSharingChannels = [v2 blockedSharingChannels];
 
-  return v3;
+  return blockedSharingChannels;
 }
 
 - (id)allowedSharingChannels
 {
   v2 = [(PKSharedPassSharesController *)self _sharingActivationConfigurationForChannel:0 channelRisk:0];
-  v3 = [v2 allowedSharingChannels];
+  allowedSharingChannels = [v2 allowedSharingChannels];
 
-  return v3;
+  return allowedSharingChannels;
 }
 
-- (BOOL)isSharingChannelBlockedForChannel:(id)a3 isRecipientKnownContact:(BOOL)a4
+- (BOOL)isSharingChannelBlockedForChannel:(id)channel isRecipientKnownContact:(BOOL)contact
 {
-  v4 = [(PKSharedPassSharesController *)self shareInitiationActivationConfigurationForChannelBundleIdentifier:a3 isRecipientKnownContact:a4];
-  v5 = [v4 isBlocked];
+  v4 = [(PKSharedPassSharesController *)self shareInitiationActivationConfigurationForChannelBundleIdentifier:channel isRecipientKnownContact:contact];
+  isBlocked = [v4 isBlocked];
 
-  return v5;
+  return isBlocked;
 }
 
 - (id)_feature
 {
-  v3 = [(PKPaymentWebService *)self->_webService context];
-  v4 = [(PKPass *)self->_pass passTypeIdentifier];
-  v5 = [v3 regionForIdentifier:v4];
+  context = [(PKPaymentWebService *)self->_webService context];
+  passTypeIdentifier = [(PKPass *)self->_pass passTypeIdentifier];
+  v5 = [context regionForIdentifier:passTypeIdentifier];
 
-  v6 = [v5 regionCode];
-  v7 = v6;
-  if (v6)
+  regionCode = [v5 regionCode];
+  v7 = regionCode;
+  if (regionCode)
   {
-    v8 = v6;
+    deviceRegion = regionCode;
   }
 
   else
   {
-    v9 = [(PKPaymentWebService *)self->_webService targetDevice];
-    v8 = [v9 deviceRegion];
+    targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+    deviceRegion = [targetDevice deviceRegion];
   }
 
-  v10 = [v3 configuration];
-  v11 = [v10 featureWithType:5 inRegion:v8];
+  configuration = [context configuration];
+  v11 = [configuration featureWithType:5 inRegion:deviceRegion];
 
   return v11;
 }
 
-- (id)_sharingActivationConfigurationForChannel:(id)a3 channelRisk:(int64_t)a4
+- (id)_sharingActivationConfigurationForChannel:(id)channel channelRisk:(int64_t)risk
 {
-  v6 = a3;
-  v21 = [(PKSharedPassSharesController *)self _feature];
-  v7 = [v21 activationCodeConfigurations];
-  v8 = [(PKSecureElementPass *)self->_pass accessType];
+  channelCopy = channel;
+  _feature = [(PKSharedPassSharesController *)self _feature];
+  activationCodeConfigurations = [_feature activationCodeConfigurations];
+  accessType = [(PKSecureElementPass *)self->_pass accessType];
   v9 = PKDeviceClass();
   v10 = +[PKOSVersionRequirement fromDeviceVersion];
-  v11 = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
-  v12 = [v11 subcredentials];
-  v13 = [v12 anyObject];
-  v14 = [v13 manufacturerIdentifier];
+  devicePrimaryPaymentApplication = [(PKSecureElementPass *)self->_pass devicePrimaryPaymentApplication];
+  subcredentials = [devicePrimaryPaymentApplication subcredentials];
+  anyObject = [subcredentials anyObject];
+  manufacturerIdentifier = [anyObject manufacturerIdentifier];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __86__PKSharedPassSharesController__sharingActivationConfigurationForChannel_channelRisk___block_invoke;
   v22[3] = &unk_1E79E18D0;
-  v27 = a4;
-  v28 = v8;
-  v23 = v6;
+  riskCopy = risk;
+  v28 = accessType;
+  v23 = channelCopy;
   v24 = v10;
   v25 = v9;
-  v26 = v14;
-  v15 = v14;
+  v26 = manufacturerIdentifier;
+  v15 = manufacturerIdentifier;
   v16 = v9;
   v17 = v10;
-  v18 = v6;
-  v19 = [v7 pk_firstObjectPassingTest:v22];
+  v18 = channelCopy;
+  v19 = [activationCodeConfigurations pk_firstObjectPassingTest:v22];
 
   return v19;
 }
@@ -2576,18 +2576,18 @@ LABEL_24:
   return v12;
 }
 
-+ (BOOL)_isPlatformSharingFeatureBlockedForPass:(id)a3 targetDevice:(id)a4
++ (BOOL)_isPlatformSharingFeatureBlockedForPass:(id)pass targetDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && ![v5 isCarKeyPass])
+  passCopy = pass;
+  deviceCopy = device;
+  if (passCopy && ![passCopy isCarKeyPass])
   {
     v7 = 0;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 isCarKeySharingBlockedForSecureElementPass:v5];
+    v7 = [deviceCopy isCarKeySharingBlockedForSecureElementPass:passCopy];
   }
 
   else
@@ -2598,14 +2598,14 @@ LABEL_24:
   return v7;
 }
 
-- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)a3
+- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKObject *)self->_pass uniqueID];
-  v6 = v5;
-  if (v4 && v5)
+  identifierCopy = identifier;
+  uniqueID = [(PKObject *)self->_pass uniqueID];
+  v6 = uniqueID;
+  if (identifierCopy && uniqueID)
   {
-    v7 = [v4 isEqual:v5];
+    v7 = [identifierCopy isEqual:uniqueID];
 
     if ((v7 & 1) == 0)
     {
@@ -2615,7 +2615,7 @@ LABEL_24:
     goto LABEL_6;
   }
 
-  if (v6 == v4)
+  if (v6 == identifierCopy)
   {
 LABEL_6:
     objc_initWeak(&location, self);

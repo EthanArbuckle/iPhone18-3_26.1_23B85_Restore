@@ -1,19 +1,19 @@
 @interface _UIFlowLayoutSection
 - (_UIFlowLayoutItem)addItem;
-- (_UIFlowLayoutRow)addRowAtEnd:(void *)a1;
+- (_UIFlowLayoutRow)addRowAtEnd:(void *)end;
 - (_UIFlowLayoutSection)init;
 - (double)effectiveFooterFrameWithSectionMarginsApplied;
 - (double)effectiveHeaderFrameWithSectionMarginsApplied;
-- (double)frameForItemAtIndexPath:(uint64_t)a1;
-- (uint64_t)addInvalidatedIndexPath:(uint64_t)a1;
+- (double)frameForItemAtIndexPath:(uint64_t)path;
+- (uint64_t)addInvalidatedIndexPath:(uint64_t)path;
 - (uint64_t)computeLayout;
-- (void)computeLayoutInRect:(unsigned int)a3 forSection:(void *)a4 invalidating:(CGFloat)a5 invalidationContext:(CGFloat)a6;
+- (void)computeLayoutInRect:(unsigned int)rect forSection:(void *)section invalidating:(CGFloat)invalidating invalidationContext:(CGFloat)context;
 - (void)logInvalidSizes;
-- (void)logInvalidSizesForHorizontalDirection:(int)a3 warnAboutDelegateValues:;
-- (void)setEstimatedSize:(double)a3 forSection:(double)a4;
-- (void)setFooterDimension:(double)a3 forSection:;
-- (void)setHeaderDimension:(double)a3 forSection:;
-- (void)updateEstimatedSizeForSection:(uint64_t)a1;
+- (void)logInvalidSizesForHorizontalDirection:(int)direction warnAboutDelegateValues:;
+- (void)setEstimatedSize:(double)size forSection:(double)section;
+- (void)setFooterDimension:(double)dimension forSection:;
+- (void)setHeaderDimension:(double)dimension forSection:;
+- (void)updateEstimatedSizeForSection:(uint64_t)section;
 @end
 
 @implementation _UIFlowLayoutSection
@@ -84,8 +84,8 @@
     v8 = 0;
   }
 
-  v9 = [v8 collectionView];
-  if ([v9 _shouldReverseLayoutDirection])
+  collectionView = [v8 collectionView];
+  if ([collectionView _shouldReverseLayoutDirection])
   {
     v10 = objc_loadWeakRetained((v1 + 144));
     v11 = v10;
@@ -99,12 +99,12 @@
       v12 = 0;
     }
 
-    v13 = [v12 _wantsRightToLeftHorizontalMirroringIfNeeded];
+    _wantsRightToLeftHorizontalMirroringIfNeeded = [v12 _wantsRightToLeftHorizontalMirroringIfNeeded];
   }
 
   else
   {
-    v13 = 1;
+    _wantsRightToLeftHorizontalMirroringIfNeeded = 1;
   }
 
   if (*(v1 + 88) == 1)
@@ -624,7 +624,7 @@ LABEL_110:
 
   v86 = v84;
   v133 = v24;
-  v135 = v13;
+  v135 = _wantsRightToLeftHorizontalMirroringIfNeeded;
   v87 = 0;
   v88 = 0;
   if (v3)
@@ -720,14 +720,14 @@ LABEL_132:
     if (!v92)
     {
       v127 = 0;
-      v13 = v135;
+      _wantsRightToLeftHorizontalMirroringIfNeeded = v135;
       v24 = v133;
       goto LABEL_177;
     }
 
     v74 = v100;
     v102 = 0;
-    v13 = v135;
+    _wantsRightToLeftHorizontalMirroringIfNeeded = v135;
     v24 = v133;
 LABEL_137:
     v86 = v102;
@@ -747,7 +747,7 @@ LABEL_137:
   }
 
   *(v87 + 20) = *(v1 + 88);
-  v13 = v135;
+  _wantsRightToLeftHorizontalMirroringIfNeeded = v135;
   v24 = v133;
   v85 = 0;
   if (v92)
@@ -916,7 +916,7 @@ LABEL_170:
   *(v1 + 336) = v24;
 
 LABEL_171:
-  if (!(v13 & 1 | ((v3 & 1) == 0)))
+  if (!(_wantsRightToLeftHorizontalMirroringIfNeeded & 1 | ((v3 & 1) == 0)))
   {
     MaxX = CGRectGetMaxX(*(v1 + 312));
     v124 = MaxX - CGRectGetWidth(*(v1 + 344));
@@ -935,16 +935,16 @@ LABEL_173:
 
 - (_UIFlowLayoutItem)addItem
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(_UIFlowLayoutItem);
     v3 = v2;
     if (v2)
     {
-      objc_storeWeak(&v2->_section, a1);
+      objc_storeWeak(&v2->_section, self);
     }
 
-    [a1[12] addObject:v3];
+    [self[12] addObject:v3];
   }
 
   else
@@ -955,21 +955,21 @@ LABEL_173:
   return v3;
 }
 
-- (double)frameForItemAtIndexPath:(uint64_t)a1
+- (double)frameForItemAtIndexPath:(uint64_t)path
 {
-  if (!a1)
+  if (!path)
   {
     return 0.0;
   }
 
-  v3 = [a2 item];
-  v4 = *(a1 + 264);
-  v6 = v3 >= v4;
-  v5 = v3 - v4;
-  v6 = !v6 || v5 >= *(a1 + 272);
+  item = [a2 item];
+  v4 = *(path + 264);
+  v6 = item >= v4;
+  v5 = item - v4;
+  v6 = !v6 || v5 >= *(path + 272);
   if (v6)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 144));
+    WeakRetained = objc_loadWeakRetained((path + 144));
     v8 = WeakRetained;
     if (WeakRetained)
     {
@@ -981,10 +981,10 @@ LABEL_173:
       v9 = 0;
     }
 
-    v10 = [v9 collectionView];
-    if ([v10 _shouldReverseLayoutDirection])
+    collectionView = [v9 collectionView];
+    if ([collectionView _shouldReverseLayoutDirection])
     {
-      v11 = objc_loadWeakRetained((a1 + 144));
+      v11 = objc_loadWeakRetained((path + 144));
       v12 = v11;
       if (v11)
       {
@@ -996,15 +996,15 @@ LABEL_173:
         v13 = 0;
       }
 
-      v14 = [v13 _wantsRightToLeftHorizontalMirroringIfNeeded];
+      _wantsRightToLeftHorizontalMirroringIfNeeded = [v13 _wantsRightToLeftHorizontalMirroringIfNeeded];
     }
 
     else
     {
-      v14 = 1;
+      _wantsRightToLeftHorizontalMirroringIfNeeded = 1;
     }
 
-    v17 = [*(a1 + 96) objectAtIndex:v3];
+    v17 = [*(path + 96) objectAtIndex:item];
     if (v17)
     {
       v19 = v17[4];
@@ -1021,14 +1021,14 @@ LABEL_173:
       v19 = 0.0;
     }
 
-    v22 = *(a1 + 104);
-    if (v3 >= *(a1 + 264))
+    v22 = *(path + 104);
+    if (item >= *(path + 264))
     {
-      v42 = [v22 lastObject];
-      v24 = v42;
-      if (v42)
+      lastObject = [v22 lastObject];
+      v24 = lastObject;
+      if (lastObject)
       {
-        v43 = *(v42 + 40);
+        v43 = *(lastObject + 40);
       }
 
       else
@@ -1048,7 +1048,7 @@ LABEL_173:
         v45 = v44;
       }
 
-      v46 = v3 - (*(a1 + 264) + *(a1 + 272));
+      v46 = item - (*(path + 264) + *(path + 272));
       v34 = v46 / v45;
       if (v24)
       {
@@ -1067,7 +1067,7 @@ LABEL_173:
       }
 
       v33 = v46 % v45;
-      v47 = objc_loadWeakRetained((a1 + 144));
+      v47 = objc_loadWeakRetained((path + 144));
       if (v47)
       {
         v48 = v47[97];
@@ -1078,7 +1078,7 @@ LABEL_173:
           v38 = v29;
           v39 = v32;
           v40 = v31;
-          if (!v14)
+          if (!_wantsRightToLeftHorizontalMirroringIfNeeded)
           {
             goto LABEL_26;
           }
@@ -1091,13 +1091,13 @@ LABEL_173:
       v65.origin.y = v29;
       v65.size.width = v32;
       v65.size.height = v31;
-      v54 = CGRectGetMaxY(v65) + *(a1 + 112);
+      v54 = CGRectGetMaxY(v65) + *(path + 112);
       v66.origin.x = v30;
       v66.origin.y = v29;
       v66.size.width = v32;
       v66.size.height = v31;
-      v51 = v54 + (CGRectGetHeight(v66) + *(a1 + 112)) * v34;
-      if (v14)
+      v51 = v54 + (CGRectGetHeight(v66) + *(path + 112)) * v34;
+      if (_wantsRightToLeftHorizontalMirroringIfNeeded)
       {
         goto LABEL_40;
       }
@@ -1105,11 +1105,11 @@ LABEL_173:
 
     else
     {
-      v23 = [v22 firstObject];
-      v24 = v23;
-      if (v23)
+      firstObject = [v22 firstObject];
+      v24 = firstObject;
+      if (firstObject)
       {
-        v25 = *(v23 + 40);
+        v25 = *(firstObject + 40);
       }
 
       else
@@ -1119,7 +1119,7 @@ LABEL_173:
 
       v26 = v25;
       v27 = [v26 count];
-      v28 = *(a1 + 264) - v3;
+      v28 = *(path + 264) - item;
       if (v24)
       {
         v30 = v24[9];
@@ -1138,7 +1138,7 @@ LABEL_173:
 
       v33 = v27 + ~(v28 % v27);
       v34 = vcvtpd_s64_f64(v28 / v27);
-      v35 = objc_loadWeakRetained((a1 + 144));
+      v35 = objc_loadWeakRetained((path + 144));
       if (v35)
       {
         v36 = v35[97];
@@ -1149,7 +1149,7 @@ LABEL_173:
           v38 = v29;
           v39 = v32;
           v40 = v31;
-          if (v14)
+          if (_wantsRightToLeftHorizontalMirroringIfNeeded)
           {
 LABEL_26:
             MinX = CGRectGetMinX(*&v37);
@@ -1157,24 +1157,24 @@ LABEL_26:
             v59.origin.y = v29;
             v59.size.width = v32;
             v59.size.height = v31;
-            v16 = MinX - (CGRectGetWidth(v59) + *(a1 + 120)) * v34;
+            v16 = MinX - (CGRectGetWidth(v59) + *(path + 120)) * v34;
 LABEL_38:
-            v50 = *(a1 + 280);
+            v50 = *(path + 280);
             v61.origin.x = v16;
             v61.origin.y = v18;
             v61.size.width = v21;
             v61.size.height = v20;
-            v51 = v50 + (CGRectGetHeight(v61) + *(a1 + 112)) * v33;
+            v51 = v50 + (CGRectGetHeight(v61) + *(path + 112)) * v33;
             goto LABEL_43;
           }
 
 LABEL_37:
-          v49 = CGRectGetMaxX(*&v37) + *(a1 + 120);
+          v49 = CGRectGetMaxX(*&v37) + *(path + 120);
           v60.origin.x = v30;
           v60.origin.y = v29;
           v60.size.width = v32;
           v60.size.height = v31;
-          v16 = v49 + (CGRectGetWidth(v60) + *(a1 + 120)) * v34;
+          v16 = v49 + (CGRectGetWidth(v60) + *(path + 120)) * v34;
           goto LABEL_38;
         }
       }
@@ -1188,16 +1188,16 @@ LABEL_37:
       v63.origin.y = v29;
       v63.size.width = v32;
       v63.size.height = v31;
-      v51 = MinY - (CGRectGetHeight(v63) + *(a1 + 112)) * v34;
-      if (v14)
+      v51 = MinY - (CGRectGetHeight(v63) + *(path + 112)) * v34;
+      if (_wantsRightToLeftHorizontalMirroringIfNeeded)
       {
 LABEL_40:
-        v53 = *(a1 + 288);
+        v53 = *(path + 288);
         v64.origin.x = v19;
         v64.origin.y = v51;
         v64.size.width = v21;
         v64.size.height = v20;
-        v16 = v53 + (CGRectGetWidth(v64) + *(a1 + 120)) * v33;
+        v16 = v53 + (CGRectGetWidth(v64) + *(path + 120)) * v33;
         goto LABEL_43;
       }
     }
@@ -1207,12 +1207,12 @@ LABEL_40:
     v67.size.width = v32;
     v67.size.height = v31;
     Width = CGRectGetWidth(v67);
-    v56 = *(a1 + 288);
+    v56 = *(path + 288);
     v68.origin.x = v19;
     v68.origin.y = v51;
     v68.size.width = v21;
     v68.size.height = v20;
-    v57 = Width - (v56 + (CGRectGetWidth(v68) + *(a1 + 120)) * v33);
+    v57 = Width - (v56 + (CGRectGetWidth(v68) + *(path + 120)) * v33);
     v69.origin.x = v19;
     v69.origin.y = v51;
     v69.size.width = v21;
@@ -1220,7 +1220,7 @@ LABEL_40:
     v16 = v57 - CGRectGetWidth(v69);
 LABEL_43:
 
-    v15 = [*(a1 + 96) objectAtIndexedSubscript:v3];
+    v15 = [*(path + 96) objectAtIndexedSubscript:item];
     if (v15)
     {
       *(v15 + 32) = v16;
@@ -1233,7 +1233,7 @@ LABEL_43:
     goto LABEL_45;
   }
 
-  v15 = [*(a1 + 96) objectAtIndex:v3];
+  v15 = [*(path + 96) objectAtIndex:item];
   if (v15)
   {
     v16 = *(v15 + 32);
@@ -1249,7 +1249,7 @@ LABEL_45:
   return v16;
 }
 
-- (void)logInvalidSizesForHorizontalDirection:(int)a3 warnAboutDelegateValues:
+- (void)logInvalidSizesForHorizontalDirection:(int)direction warnAboutDelegateValues:
 {
   NSLog(&cfstr_TheBehaviorOfT.isa);
   if (a2)
@@ -1262,12 +1262,12 @@ LABEL_45:
     NSLog(&cfstr_TheItemWidthMu.isa);
   }
 
-  if (a3)
+  if (direction)
   {
     NSLog(&cfstr_PleaseCheckThe.isa);
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 144));
+  WeakRetained = objc_loadWeakRetained((self + 144));
   v7 = WeakRetained;
   if (WeakRetained)
   {
@@ -1279,23 +1279,23 @@ LABEL_45:
     v9 = 0;
   }
 
-  v8 = [v9 collectionView];
-  NSLog(&cfstr_TheRelevantUic.isa, v9, v8);
+  collectionView = [v9 collectionView];
+  NSLog(&cfstr_TheRelevantUic.isa, v9, collectionView);
 
   NSLog(&cfstr_MakeASymbolicB_0.isa);
   UICollectionViewFlowLayoutBreakForInvalidSizes(v9);
 }
 
-- (_UIFlowLayoutRow)addRowAtEnd:(void *)a1
+- (_UIFlowLayoutRow)addRowAtEnd:(void *)end
 {
   v4 = objc_alloc_init(_UIFlowLayoutRow);
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_section, a1);
+    objc_storeWeak(&v4->_section, end);
   }
 
-  v6 = a1[13];
+  v6 = end[13];
   if (a2)
   {
     [v6 addObject:v5];
@@ -1311,7 +1311,7 @@ LABEL_45:
 
 - (void)logInvalidSizes
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 144));
+  WeakRetained = objc_loadWeakRetained((self + 144));
   v4 = WeakRetained;
   if (WeakRetained)
   {
@@ -1323,20 +1323,20 @@ LABEL_45:
     v3 = 0;
   }
 
-  [(_UIFlowLayoutSection *)a1 logInvalidSizesForHorizontalDirection:1 warnAboutDelegateValues:?];
+  [(_UIFlowLayoutSection *)self logInvalidSizesForHorizontalDirection:1 warnAboutDelegateValues:?];
 }
 
-- (void)setHeaderDimension:(double)a3 forSection:
+- (void)setHeaderDimension:(double)dimension forSection:
 {
-  if (a1)
+  if (self)
   {
-    v4 = a3 - *(a1 + 128);
-    *(a1 + 128) = a3;
+    v4 = dimension - *(self + 128);
+    *(self + 128) = dimension;
     if (v4 != 0.0)
     {
-      v6 = *(a1 + 328);
-      v7 = *(a1 + 336);
-      WeakRetained = objc_loadWeakRetained((a1 + 144));
+      v6 = *(self + 328);
+      v7 = *(self + 336);
+      WeakRetained = objc_loadWeakRetained((self + 144));
       if (WeakRetained)
       {
         v9 = WeakRetained[97];
@@ -1354,54 +1354,54 @@ LABEL_45:
         v10 = v4 + v7;
       }
 
-      [(_UIFlowLayoutSection *)a1 setEstimatedSize:a2 forSection:v6, v10];
+      [(_UIFlowLayoutSection *)self setEstimatedSize:a2 forSection:v6, v10];
     }
   }
 }
 
-- (void)setEstimatedSize:(double)a3 forSection:(double)a4
+- (void)setEstimatedSize:(double)size forSection:(double)section
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 328) == a3 && *(a1 + 336) == a4)
+    if (*(self + 328) == size && *(self + 336) == section)
     {
-      *(a1 + 328) = a3;
-      *(a1 + 336) = a4;
+      *(self + 328) = size;
+      *(self + 336) = section;
     }
 
     else
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 144));
+      WeakRetained = objc_loadWeakRetained((self + 144));
       v10 = WeakRetained;
       if (WeakRetained && *(WeakRetained + 97) == 1)
       {
-        v11 = a3 - CGRectGetWidth(*(a1 + 312));
+        v11 = size - CGRectGetWidth(*(self + 312));
       }
 
       else
       {
-        v11 = a4 - CGRectGetHeight(*(a1 + 312));
+        v11 = section - CGRectGetHeight(*(self + 312));
       }
 
-      *(a1 + 328) = a3;
-      *(a1 + 336) = a4;
-      v12 = objc_loadWeakRetained((a1 + 144));
+      *(self + 328) = size;
+      *(self + 336) = section;
+      v12 = objc_loadWeakRetained((self + 144));
       [(_UIFlowLayoutInfo *)v12 didUpdateSizeForSection:a2 withDelta:v11];
     }
   }
 }
 
-- (void)setFooterDimension:(double)a3 forSection:
+- (void)setFooterDimension:(double)dimension forSection:
 {
-  if (a1)
+  if (self)
   {
-    v4 = a3 - *(a1 + 136);
-    *(a1 + 136) = a3;
+    v4 = dimension - *(self + 136);
+    *(self + 136) = dimension;
     if (v4 != 0.0)
     {
-      v6 = *(a1 + 328);
-      v7 = *(a1 + 336);
-      WeakRetained = objc_loadWeakRetained((a1 + 144));
+      v6 = *(self + 328);
+      v7 = *(self + 336);
+      WeakRetained = objc_loadWeakRetained((self + 144));
       if (WeakRetained)
       {
         v9 = WeakRetained[97];
@@ -1419,29 +1419,29 @@ LABEL_45:
         v10 = v4 + v7;
       }
 
-      [(_UIFlowLayoutSection *)a1 setEstimatedSize:a2 forSection:v6, v10];
+      [(_UIFlowLayoutSection *)self setEstimatedSize:a2 forSection:v6, v10];
     }
   }
 }
 
 - (double)effectiveHeaderFrameWithSectionMarginsApplied
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = *(a1 + 344);
-  WeakRetained = objc_loadWeakRetained((a1 + 144));
+  v2 = *(self + 344);
+  WeakRetained = objc_loadWeakRetained((self + 144));
   if (WeakRetained && (v4 = WeakRetained[97], WeakRetained, v4 == 1))
   {
-    CGRectGetHeight(*(a1 + 344));
+    CGRectGetHeight(*(self + 344));
   }
 
   else
   {
-    v2 = *(a1 + 288);
-    CGRectGetWidth(*(a1 + 344));
+    v2 = *(self + 288);
+    CGRectGetWidth(*(self + 344));
   }
 
   return v2;
@@ -1449,65 +1449,65 @@ LABEL_45:
 
 - (double)effectiveFooterFrameWithSectionMarginsApplied
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = *(a1 + 376);
-  WeakRetained = objc_loadWeakRetained((a1 + 144));
+  v2 = *(self + 376);
+  WeakRetained = objc_loadWeakRetained((self + 144));
   if (WeakRetained && (v4 = WeakRetained[97], WeakRetained, v4 == 1))
   {
-    CGRectGetHeight(*(a1 + 376));
+    CGRectGetHeight(*(self + 376));
   }
 
   else
   {
-    v2 = *(a1 + 288);
-    CGRectGetWidth(*(a1 + 376));
+    v2 = *(self + 288);
+    CGRectGetWidth(*(self + 376));
   }
 
   return v2;
 }
 
-- (uint64_t)addInvalidatedIndexPath:(uint64_t)a1
+- (uint64_t)addInvalidatedIndexPath:(uint64_t)path
 {
-  v4 = *(a1 + 80);
+  v4 = *(path + 80);
   if (!v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v6 = *(a1 + 80);
-    *(a1 + 80) = v5;
+    v6 = *(path + 80);
+    *(path + 80) = v5;
 
-    v4 = *(a1 + 80);
+    v4 = *(path + 80);
   }
 
   return [v4 addObject:a2];
 }
 
-- (void)computeLayoutInRect:(unsigned int)a3 forSection:(void *)a4 invalidating:(CGFloat)a5 invalidationContext:(CGFloat)a6
+- (void)computeLayoutInRect:(unsigned int)rect forSection:(void *)section invalidating:(CGFloat)invalidating invalidationContext:(CGFloat)context
 {
   v377 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v12 = a1;
+  selfCopy = self;
   v360 = 0u;
   v361 = 0u;
   v362 = 0u;
   v363 = 0u;
-  obj = *(a1 + 80);
-  v350 = v12;
+  obj = *(self + 80);
+  v350 = selfCopy;
   v325 = [obj countByEnumeratingWithState:&v360 objects:v371 count:16];
   if (v325)
   {
     v323 = *v361;
-    v346 = (v12 + 112);
-    v339 = (v12 + 40);
-    v342 = (v12 + 32);
-    v337 = (v12 + 120);
+    v346 = (selfCopy + 112);
+    v339 = (selfCopy + 40);
+    v342 = (selfCopy + 32);
+    v337 = (selfCopy + 120);
     do
     {
       v13 = 0;
@@ -1519,7 +1519,7 @@ LABEL_45:
         }
 
         v14 = *(*(&v360 + 1) + 8 * v13);
-        v15 = [*(v12 + 96) objectAtIndexedSubscript:{objc_msgSend(v14, "item")}];
+        v15 = [*(selfCopy + 96) objectAtIndexedSubscript:{objc_msgSend(v14, "item")}];
         v16 = v15;
         if (v15)
         {
@@ -1537,8 +1537,8 @@ LABEL_45:
         *&v367.origin.y = 3221225472;
         *&v367.size.width = __61___UIFlowLayoutSection_sizeChangedForItem_atIndexPath_inRow___block_invoke;
         *&v367.size.height = &unk_1E7100298;
-        v368 = v12;
-        v19 = objc_loadWeakRetained((v12 + 144));
+        v368 = selfCopy;
+        v19 = objc_loadWeakRetained((selfCopy + 144));
         v329 = v13;
         if (v19)
         {
@@ -1550,7 +1550,7 @@ LABEL_45:
           v20 = 0;
         }
 
-        v21 = [*(v12 + 104) indexOfObject:v18];
+        v21 = [*(selfCopy + 104) indexOfObject:v18];
         v331 = v18;
         if (v18)
         {
@@ -1563,8 +1563,8 @@ LABEL_45:
         }
 
         v335 = v22;
-        v23 = [*(v12 + 104) count];
-        v24 = objc_loadWeakRetained((v12 + 144));
+        v23 = [*(selfCopy + 104) count];
+        v24 = objc_loadWeakRetained((selfCopy + 144));
         v25 = v24;
         if (v24)
         {
@@ -1576,10 +1576,10 @@ LABEL_45:
           v26 = 0;
         }
 
-        v27 = [v26 collectionView];
-        if ([v27 _shouldReverseLayoutDirection])
+        collectionView = [v26 collectionView];
+        if ([collectionView _shouldReverseLayoutDirection])
         {
-          v28 = objc_loadWeakRetained((v12 + 144));
+          v28 = objc_loadWeakRetained((selfCopy + 144));
           v29 = v28;
           if (v28)
           {
@@ -1593,7 +1593,7 @@ LABEL_45:
 
           rect = [v30 _wantsRightToLeftHorizontalMirroringIfNeeded];
 
-          v12 = v350;
+          selfCopy = v350;
         }
 
         else
@@ -1605,17 +1605,17 @@ LABEL_45:
         {
           if (!v21)
           {
-            v52 = [v14 item];
+            item = [v14 item];
             v53 = [v335 indexOfObject:v333];
-            v54 = *(v12 + 264);
-            if (v52 - v53 == v54)
+            v54 = *(selfCopy + 264);
+            if (item - v53 == v54)
             {
               if (v54)
               {
                 v55 = [v335 count];
-                v56 = *(v12 + 272) - v55;
-                *(v12 + 264) += v55;
-                *(v12 + 272) = v56;
+                v56 = *(selfCopy + 272) - v55;
+                *(selfCopy + 264) += v55;
+                *(selfCopy + 272) = v56;
                 if (v331)
                 {
                   v57 = v331[7];
@@ -1626,11 +1626,11 @@ LABEL_45:
                   }
 
 LABEL_58:
-                  v379.origin.x = *(v12 + 16);
-                  v379.origin.y = *(v12 + 24) + v58 + *(v12 + 112);
-                  *(v12 + 24) = v379.origin.y;
-                  v379.size.width = *(v12 + 32);
-                  v379.size.height = *(v12 + 40);
+                  v379.origin.x = *(selfCopy + 16);
+                  v379.origin.y = *(selfCopy + 24) + v58 + *(selfCopy + 112);
+                  *(selfCopy + 24) = v379.origin.y;
+                  v379.size.width = *(selfCopy + 32);
+                  v379.size.height = *(selfCopy + 40);
                   Height = CGRectGetHeight(v379);
                   v64 = v346;
                   v57 = v58;
@@ -1647,7 +1647,7 @@ LABEL_58:
                   }
 
 LABEL_49:
-                  v59 = *(v12 + 120);
+                  v59 = *(selfCopy + 120);
                   v60 = v57 - v59;
                   v61 = v57 + v59;
                   v62 = -v60;
@@ -1656,11 +1656,11 @@ LABEL_49:
                     v61 = v62;
                   }
 
-                  v378.origin.y = *(v12 + 24);
-                  v378.origin.x = *(v12 + 16) + v61;
-                  *(v12 + 16) = v378.origin.x;
-                  v378.size.width = *(v12 + 32);
-                  v378.size.height = *(v12 + 40);
+                  v378.origin.y = *(selfCopy + 24);
+                  v378.origin.x = *(selfCopy + 16) + v61;
+                  *(selfCopy + 16) = v378.origin.x;
+                  v378.size.width = *(selfCopy + 32);
+                  v378.size.height = *(selfCopy + 40);
                   Height = CGRectGetWidth(v378);
                   v64 = v337;
                   v65 = v342;
@@ -1711,7 +1711,7 @@ LABEL_49:
                   while (v69);
                 }
 
-                [*(v12 + 104) removeObjectAtIndex:0];
+                [*(selfCopy + 104) removeObjectAtIndex:0];
                 goto LABEL_71;
               }
             }
@@ -1719,7 +1719,7 @@ LABEL_49:
 
           while (v23 > v21)
           {
-            v31 = [*(v12 + 104) objectAtIndexedSubscript:--v23];
+            v31 = [*(selfCopy + 104) objectAtIndexedSubscript:--v23];
             v32 = v31;
             if (v31)
             {
@@ -1732,12 +1732,12 @@ LABEL_49:
             }
 
             v34 = v33;
-            *(v12 + 272) -= [v34 count];
+            *(selfCopy + 272) -= [v34 count];
 
-            v35 = *(v12 + 16);
-            v36 = *(v12 + 24);
-            v37 = *(v12 + 32);
-            v38 = *(v12 + 40);
+            v35 = *(selfCopy + 16);
+            v36 = *(selfCopy + 24);
+            v37 = *(selfCopy + 32);
+            v38 = *(selfCopy + 40);
             if (v20)
             {
               Width = CGRectGetWidth(*&v35);
@@ -1811,7 +1811,7 @@ LABEL_30:
               while (v46);
             }
 
-            v12 = v350;
+            selfCopy = v350;
             [*(v350 + 104) removeObjectAtIndex:v23];
 
             continue;
@@ -1831,70 +1831,70 @@ LABEL_71:
     while (v73);
   }
 
-  [*(v12 + 80) removeAllObjects];
-  if (!CGRectIsEmpty(*(v12 + 48)))
+  [*(selfCopy + 80) removeAllObjects];
+  if (!CGRectIsEmpty(*(selfCopy + 48)))
   {
-    v417.origin.x = a5;
-    v417.origin.y = a6;
+    v417.origin.x = invalidating;
+    v417.origin.y = context;
     v417.size.width = a7;
     v417.size.height = a8;
-    if (CGRectIntersectsRect(*(v12 + 48), v417) && !CGRectContainsRect(*(v12 + 16), *(v12 + 48)))
+    if (CGRectIntersectsRect(*(selfCopy + 48), v417) && !CGRectContainsRect(*(selfCopy + 16), *(selfCopy + 48)))
     {
-      v74 = *(v12 + 48);
-      v75 = *(v12 + 56);
-      v76 = *(v12 + 64);
-      v77 = *(v12 + 72);
+      v74 = *(selfCopy + 48);
+      v75 = *(selfCopy + 56);
+      v76 = *(selfCopy + 64);
+      v77 = *(selfCopy + 72);
       v78 = *(MEMORY[0x1E695F058] + 16);
-      *(v12 + 48) = *MEMORY[0x1E695F058];
-      *(v12 + 64) = v78;
-      [(_UIFlowLayoutSection *)v12 computeLayoutInRect:a2 forSection:a3 invalidating:a4 invalidationContext:v74, v75, v76, v77];
+      *(selfCopy + 48) = *MEMORY[0x1E695F058];
+      *(selfCopy + 64) = v78;
+      [(_UIFlowLayoutSection *)selfCopy computeLayoutInRect:a2 forSection:rect invalidating:section invalidationContext:v74, v75, v76, v77];
     }
   }
 
-  v79 = objc_loadWeakRetained((v12 + 144));
+  v79 = objc_loadWeakRetained((selfCopy + 144));
   if (!v79)
   {
     memset(&remainder, 0, sizeof(remainder));
 LABEL_86:
-    v385.origin.x = a5;
-    v385.origin.y = a6;
+    v385.origin.x = invalidating;
+    v385.origin.y = context;
     v385.size.width = a7;
     v385.size.height = a8;
     MaxY = CGRectGetMaxY(v385);
-    if (MaxY > CGRectGetMaxY(*(v12 + 16)))
+    if (MaxY > CGRectGetMaxY(*(selfCopy + 16)))
     {
-      v386.origin.x = a5;
-      v386.origin.y = a6;
+      v386.origin.x = invalidating;
+      v386.origin.y = context;
       v386.size.width = a7;
       v386.size.height = a8;
       MinY = CGRectGetMinY(v386);
-      if (MinY < CGRectGetMinY(*(v12 + 16)))
+      if (MinY < CGRectGetMinY(*(selfCopy + 16)))
       {
         memset(&slice, 0, sizeof(slice));
-        v98 = CGRectGetMinY(*(v12 + 16));
-        v387.origin.x = a5;
-        v387.origin.y = a6;
+        v98 = CGRectGetMinY(*(selfCopy + 16));
+        v387.origin.x = invalidating;
+        v387.origin.y = context;
         v387.size.width = a7;
         v387.size.height = a8;
         v99 = v98 - CGRectGetMinY(v387);
-        v388.origin.x = a5;
-        v388.origin.y = a6;
+        v388.origin.x = invalidating;
+        v388.origin.y = context;
         v388.size.width = a7;
         v388.size.height = a8;
         CGRectDivide(v388, &slice, &remainder, v99, CGRectMinYEdge);
-        v85 = a4;
+        sectionCopy2 = section;
         v86 = a2;
-        v87 = a3;
-        [(_UIFlowLayoutSection *)v12 computeLayoutInRect:a2 forSection:a3 invalidating:a4 invalidationContext:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
+        rectCopy2 = rect;
+        [(_UIFlowLayoutSection *)selfCopy computeLayoutInRect:a2 forSection:rect invalidating:section invalidationContext:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
         memset(&v367, 0, sizeof(v367));
-        v389.origin.x = a5;
-        v389.origin.y = a6;
+        v389.origin.x = invalidating;
+        v389.origin.y = context;
         v389.size.width = a7;
         v389.size.height = a8;
         v100 = CGRectGetMaxY(v389);
-        v89 = v100 - CGRectGetMaxY(*(v12 + 16));
-        v90 = a5;
-        v91 = a6;
+        v89 = v100 - CGRectGetMaxY(*(selfCopy + 16));
+        invalidatingCopy2 = invalidating;
+        contextCopy2 = context;
         v92 = a7;
         v93 = a8;
         v94 = CGRectMaxYEdge;
@@ -1914,51 +1914,51 @@ LABEL_86:
     goto LABEL_86;
   }
 
-  v380.origin.x = a5;
-  v380.origin.y = a6;
+  v380.origin.x = invalidating;
+  v380.origin.y = context;
   v380.size.width = a7;
   v380.size.height = a8;
   MaxX = CGRectGetMaxX(v380);
-  if (MaxX > CGRectGetMaxX(*(v12 + 16)))
+  if (MaxX > CGRectGetMaxX(*(selfCopy + 16)))
   {
-    v381.origin.x = a5;
-    v381.origin.y = a6;
+    v381.origin.x = invalidating;
+    v381.origin.y = context;
     v381.size.width = a7;
     v381.size.height = a8;
     MinX = CGRectGetMinX(v381);
-    if (MinX < CGRectGetMinX(*(v12 + 16)))
+    if (MinX < CGRectGetMinX(*(selfCopy + 16)))
     {
       memset(&slice, 0, sizeof(slice));
-      v83 = CGRectGetMinX(*(v12 + 16));
-      v382.origin.x = a5;
-      v382.origin.y = a6;
+      v83 = CGRectGetMinX(*(selfCopy + 16));
+      v382.origin.x = invalidating;
+      v382.origin.y = context;
       v382.size.width = a7;
       v382.size.height = a8;
       v84 = v83 - CGRectGetMinX(v382);
-      v383.origin.x = a5;
-      v383.origin.y = a6;
+      v383.origin.x = invalidating;
+      v383.origin.y = context;
       v383.size.width = a7;
       v383.size.height = a8;
       CGRectDivide(v383, &slice, &remainder, v84, CGRectMinXEdge);
-      v85 = a4;
+      sectionCopy2 = section;
       v86 = a2;
-      v87 = a3;
-      [(_UIFlowLayoutSection *)v12 computeLayoutInRect:a2 forSection:a3 invalidating:a4 invalidationContext:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
+      rectCopy2 = rect;
+      [(_UIFlowLayoutSection *)selfCopy computeLayoutInRect:a2 forSection:rect invalidating:section invalidationContext:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
       memset(&v367, 0, sizeof(v367));
-      v384.origin.x = a5;
-      v384.origin.y = a6;
+      v384.origin.x = invalidating;
+      v384.origin.y = context;
       v384.size.width = a7;
       v384.size.height = a8;
       v88 = CGRectGetMaxX(v384);
-      v89 = v88 - CGRectGetMaxX(*(v12 + 16));
-      v90 = a5;
-      v91 = a6;
+      v89 = v88 - CGRectGetMaxX(*(selfCopy + 16));
+      invalidatingCopy2 = invalidating;
+      contextCopy2 = context;
       v92 = a7;
       v93 = a8;
       v94 = CGRectMaxXEdge;
 LABEL_89:
-      CGRectDivide(*&v90, &remainder, &v367, v89, v94);
-      [(_UIFlowLayoutSection *)v12 computeLayoutInRect:v86 forSection:v87 invalidating:v85 invalidationContext:v367.origin.x, v367.origin.y, v367.size.width, v367.size.height];
+      CGRectDivide(*&invalidatingCopy2, &remainder, &v367, v89, v94);
+      [(_UIFlowLayoutSection *)selfCopy computeLayoutInRect:v86 forSection:rectCopy2 invalidating:sectionCopy2 invalidationContext:v367.origin.x, v367.origin.y, v367.size.width, v367.size.height];
       return;
     }
   }
@@ -1969,24 +1969,24 @@ LABEL_91:
   *v347 = *MEMORY[0x1E695F058];
   v367.origin = *MEMORY[0x1E695F058];
   v367.size = v343;
-  v390.origin.x = a5;
-  v390.origin.y = a6;
+  v390.origin.x = invalidating;
+  v390.origin.y = context;
   v390.size.width = a7;
   v390.size.height = a8;
-  v324 = a5;
+  invalidatingCopy3 = invalidating;
   if (!CGRectIsEmpty(v390))
   {
-    if (CGRectIsEmpty(*(v12 + 16)))
+    if (CGRectIsEmpty(*(selfCopy + 16)))
     {
-      v367.origin.x = a5;
-      v367.origin.y = a6;
+      v367.origin.x = invalidating;
+      v367.origin.y = context;
       v367.size.width = a7;
       v367.size.height = a8;
-      v418.origin.x = a5;
-      v418.origin.y = a6;
+      v418.origin.x = invalidating;
+      v418.origin.y = context;
       v418.size.width = a7;
       v418.size.height = a8;
-      v391 = CGRectUnion(*(v12 + 16), v418);
+      v391 = CGRectUnion(*(selfCopy + 16), v418);
       y = v391.origin.y;
       x = v391.origin.x;
       a7 = v391.size.width;
@@ -1995,30 +1995,30 @@ LABEL_91:
       goto LABEL_116;
     }
 
-    v419.origin.x = a5;
-    v419.origin.y = a6;
+    v419.origin.x = invalidating;
+    v419.origin.y = context;
     v419.size.width = a7;
     v419.size.height = a8;
-    if (!CGRectContainsRect(*(v12 + 16), v419))
+    if (!CGRectContainsRect(*(selfCopy + 16), v419))
     {
-      v420.origin.x = a5;
-      v420.origin.y = a6;
+      v420.origin.x = invalidating;
+      v420.origin.y = context;
       v420.size.width = a7;
       v420.size.height = a8;
-      if (CGRectIntersectsRect(*(v12 + 16), v420))
+      if (CGRectIntersectsRect(*(selfCopy + 16), v420))
       {
         goto LABEL_103;
       }
 
-      v102 = *(v12 + 16);
-      v103 = *(v12 + 24);
-      v104 = *(v12 + 32);
-      v105 = *(v12 + 40);
+      v102 = *(selfCopy + 16);
+      v103 = *(selfCopy + 24);
+      v104 = *(selfCopy + 32);
+      v105 = *(selfCopy + 40);
       if (v95)
       {
         v106 = CGRectGetMinX(*&v102);
-        v392.origin.x = a5;
-        v392.origin.y = a6;
+        v392.origin.x = invalidating;
+        v392.origin.y = context;
         v392.size.width = a7;
         v392.size.height = a8;
         if (v106 == CGRectGetMaxX(v392))
@@ -2026,9 +2026,9 @@ LABEL_91:
           goto LABEL_103;
         }
 
-        v107 = CGRectGetMaxX(*(v12 + 16));
-        v393.origin.x = a5;
-        v393.origin.y = a6;
+        v107 = CGRectGetMaxX(*(selfCopy + 16));
+        v393.origin.x = invalidating;
+        v393.origin.y = context;
         v393.size.width = a7;
         v393.size.height = a8;
         v108 = CGRectGetMinX(v393);
@@ -2037,8 +2037,8 @@ LABEL_91:
       else
       {
         v109 = CGRectGetMinY(*&v102);
-        v394.origin.x = a5;
-        v394.origin.y = a6;
+        v394.origin.x = invalidating;
+        v394.origin.y = context;
         v394.size.width = a7;
         v394.size.height = a8;
         if (v109 == CGRectGetMaxY(v394))
@@ -2046,9 +2046,9 @@ LABEL_91:
           goto LABEL_103;
         }
 
-        v107 = CGRectGetMaxY(*(v12 + 16));
-        v395.origin.x = a5;
-        v395.origin.y = a6;
+        v107 = CGRectGetMaxY(*(selfCopy + 16));
+        v395.origin.x = invalidating;
+        v395.origin.y = context;
         v395.size.width = a7;
         v395.size.height = a8;
         v108 = CGRectGetMinY(v395);
@@ -2056,38 +2056,38 @@ LABEL_91:
 
       if (v107 != v108)
       {
-        *(v12 + 264) = 0;
-        *(v12 + 272) = 0;
-        [*(v12 + 104) removeAllObjects];
+        *(selfCopy + 264) = 0;
+        *(selfCopy + 272) = 0;
+        [*(selfCopy + 104) removeAllObjects];
         v101 = 1;
-        y = a6;
-        x = a5;
+        y = context;
+        x = invalidating;
         goto LABEL_116;
       }
 
 LABEL_103:
-      v421.origin.x = a5;
-      v421.origin.y = a6;
+      v421.origin.x = invalidating;
+      v421.origin.y = context;
       v421.size.width = a7;
       v421.size.height = a8;
-      v396 = CGRectUnion(*(v12 + 16), v421);
+      v396 = CGRectUnion(*(selfCopy + 16), v421);
       y = v396.origin.y;
       x = v396.origin.x;
       v110 = v396.size.width;
       v111 = v396.size.height;
-      v112 = a5;
-      v113 = a6;
+      invalidatingCopy4 = invalidating;
+      contextCopy3 = context;
       v114 = a7;
       v115 = a8;
       if (v95)
       {
-        v116 = a6;
-        v117 = CGRectGetMinX(*&v112);
-        if (v117 < CGRectGetMinX(*(v12 + 16)))
+        contextCopy5 = context;
+        v117 = CGRectGetMinX(*&invalidatingCopy4);
+        if (v117 < CGRectGetMinX(*(selfCopy + 16)))
         {
-          v118 = CGRectGetMinX(*(v12 + 16));
-          v397.origin.x = a5;
-          v397.origin.y = v116;
+          v118 = CGRectGetMinX(*(selfCopy + 16));
+          v397.origin.x = invalidating;
+          v397.origin.y = contextCopy5;
           v397.size.width = a7;
           v397.size.height = a8;
           v119 = v118 - CGRectGetMinX(v397);
@@ -2102,23 +2102,23 @@ LABEL_108:
 LABEL_115:
           a8 = v111;
           a7 = v110;
-          a6 = v116;
+          context = contextCopy5;
           goto LABEL_116;
         }
 
-        v399.origin.x = a5;
-        v399.origin.y = v116;
+        v399.origin.x = invalidating;
+        v399.origin.y = contextCopy5;
         v399.size.width = a7;
         v399.size.height = a8;
         v127 = CGRectGetMaxX(v399);
-        if (v127 > CGRectGetMaxX(*(v12 + 16)))
+        if (v127 > CGRectGetMaxX(*(selfCopy + 16)))
         {
-          v400.origin.x = a5;
-          v400.origin.y = v116;
+          v400.origin.x = invalidating;
+          v400.origin.y = contextCopy5;
           v400.size.width = a7;
           v400.size.height = a8;
           v128 = CGRectGetMaxX(v400);
-          v129 = v128 - CGRectGetMaxX(*(v12 + 16));
+          v129 = v128 - CGRectGetMaxX(*(selfCopy + 16));
           v131 = y;
           v130 = x;
           v132 = v110;
@@ -2131,13 +2131,13 @@ LABEL_113:
 
       else
       {
-        v116 = a6;
-        v125 = CGRectGetMinY(*&v112);
-        if (v125 < CGRectGetMinY(*(v12 + 16)))
+        contextCopy5 = context;
+        v125 = CGRectGetMinY(*&invalidatingCopy4);
+        if (v125 < CGRectGetMinY(*(selfCopy + 16)))
         {
-          v126 = CGRectGetMinY(*(v12 + 16));
-          v398.origin.x = a5;
-          v398.origin.y = v116;
+          v126 = CGRectGetMinY(*(selfCopy + 16));
+          v398.origin.x = invalidating;
+          v398.origin.y = contextCopy5;
           v398.size.width = a7;
           v398.size.height = a8;
           v119 = v126 - CGRectGetMinY(v398);
@@ -2149,19 +2149,19 @@ LABEL_113:
           goto LABEL_108;
         }
 
-        v401.origin.x = a5;
-        v401.origin.y = v116;
+        v401.origin.x = invalidating;
+        v401.origin.y = contextCopy5;
         v401.size.width = a7;
         v401.size.height = a8;
         v135 = CGRectGetMaxY(v401);
-        if (v135 > CGRectGetMaxY(*(v12 + 16)))
+        if (v135 > CGRectGetMaxY(*(selfCopy + 16)))
         {
-          v402.origin.x = a5;
-          v402.origin.y = v116;
+          v402.origin.x = invalidating;
+          v402.origin.y = contextCopy5;
           v402.size.width = a7;
           v402.size.height = a8;
           v136 = CGRectGetMaxY(v402);
-          v129 = v136 - CGRectGetMaxY(*(v12 + 16));
+          v129 = v136 - CGRectGetMaxY(*(selfCopy + 16));
           v131 = y;
           v130 = x;
           v132 = v110;
@@ -2178,14 +2178,14 @@ LABEL_113:
 
   v367.origin = *v347;
   v367.size = v343;
-  y = *(v12 + 24);
-  x = *(v12 + 16);
+  y = *(selfCopy + 24);
+  x = *(selfCopy + 16);
   v101 = 1;
-  a7 = *(v12 + 32);
-  a8 = *(v12 + 40);
+  a7 = *(selfCopy + 32);
+  a8 = *(selfCopy + 40);
 LABEL_116:
   v137 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v138 = objc_loadWeakRetained((v12 + 144));
+  v138 = objc_loadWeakRetained((selfCopy + 144));
   v139 = 0.0;
   v140 = 0.0;
   if (v138)
@@ -2193,7 +2193,7 @@ LABEL_116:
     v140 = v138[14];
   }
 
-  v141 = *(v12 + 120);
+  v141 = *(selfCopy + 120);
   v142 = 288;
   if (v95)
   {
@@ -2206,13 +2206,13 @@ LABEL_116:
     v143 = 296;
   }
 
-  v144 = *(v12 + v142);
-  v145 = *(v12 + v143);
+  v144 = *(selfCopy + v142);
+  v145 = *(selfCopy + v143);
   v356 = 0u;
   v357 = 0u;
   v358 = 0u;
   v359 = 0u;
-  v348 = *(v12 + 104);
+  v348 = *(selfCopy + 104);
   v146 = [v348 countByEnumeratingWithState:&v356 objects:v370 count:16];
   v338 = v137;
   if (!v146)
@@ -2358,12 +2358,12 @@ LABEL_156:
       {
         LOBYTE(v149) = 0;
         LOBYTE(v150) = 0;
-        v12 = v350;
+        selfCopy = v350;
         goto LABEL_162;
       }
 
       ++v151;
-      v12 = v350;
+      selfCopy = v350;
     }
 
     while (v151 != v147);
@@ -2380,7 +2380,7 @@ LABEL_162:
   }
 
   v330 = v150;
-  v319 = a6;
+  contextCopy6 = context;
   v171 = 0;
   v317 = sel_computeLayoutInRect_forSection_invalidating_invalidationContext_;
   v179 = v140 - (v144 + v145);
@@ -2389,7 +2389,7 @@ LABEL_162:
   v326 = v141;
   while (2)
   {
-    v180 = *(v12 + 264);
+    v180 = *(selfCopy + 264);
     if (!v101)
     {
       if (!v180)
@@ -2397,14 +2397,14 @@ LABEL_162:
         break;
       }
 
-      if (*(v12 + 272))
+      if (*(selfCopy + 272))
       {
         v182 = v180 - 1;
         goto LABEL_192;
       }
 
 LABEL_176:
-      v183 = objc_loadWeakRetained((v12 + 144));
+      v183 = objc_loadWeakRetained((selfCopy + 144));
       if (v183)
       {
         v184 = v183[97];
@@ -2419,27 +2419,27 @@ LABEL_176:
       *&slice.origin.y = 3221225472;
       *&slice.size.width = __52___UIFlowLayoutSection_estimatedIndexOfItemAtPoint___block_invoke;
       *&slice.size.height = &unk_1E71002E8;
-      v373 = v12;
-      v374 = v324;
-      v375 = v319;
+      v373 = selfCopy;
+      v374 = invalidatingCopy3;
+      v375 = contextCopy6;
       v376 = v184 & 1;
       v185 = _Block_copy(&slice);
-      v186 = *(v12 + 16);
-      v187 = *(v12 + 24);
-      v188 = *(v12 + 32);
-      v189 = *(v12 + 40);
+      v186 = *(selfCopy + 16);
+      v187 = *(selfCopy + 24);
+      v188 = *(selfCopy + 32);
+      v189 = *(selfCopy + 40);
       if (v184)
       {
         v190 = CGRectGetMinX(*&v186);
-        v191 = *(v12 + 16);
-        v192 = *(v12 + 24);
-        v193 = *(v12 + 32);
-        v194 = *(v12 + 40);
-        if (v324 < v190)
+        v191 = *(selfCopy + 16);
+        v192 = *(selfCopy + 24);
+        v193 = *(selfCopy + 32);
+        v194 = *(selfCopy + 40);
+        if (invalidatingCopy3 < v190)
         {
-          v195 = v324 / CGRectGetMinX(*&v191);
+          v195 = invalidatingCopy3 / CGRectGetMinX(*&v191);
 LABEL_183:
-          v201 = *(v12 + 264);
+          v201 = *(selfCopy + 264);
 LABEL_189:
           v182 = (v195 * v201);
 LABEL_191:
@@ -2447,14 +2447,14 @@ LABEL_191:
           goto LABEL_192;
         }
 
-        if (v324 > CGRectGetMaxX(*&v191))
+        if (invalidatingCopy3 > CGRectGetMaxX(*&v191))
         {
-          v202 = v324 - CGRectGetMaxX(*(v12 + 16));
-          v203 = CGRectGetMaxX(*(v12 + 312));
-          v204 = CGRectGetMaxX(*(v12 + 16));
+          v202 = invalidatingCopy3 - CGRectGetMaxX(*(selfCopy + 16));
+          v203 = CGRectGetMaxX(*(selfCopy + 312));
+          v204 = CGRectGetMaxX(*(selfCopy + 16));
 LABEL_188:
           v195 = v202 / (v203 - v204);
-          v201 = (*(v12 + 208) - (*(v12 + 264) + *(v12 + 272)));
+          v201 = (*(selfCopy + 208) - (*(selfCopy + 264) + *(selfCopy + 272)));
           goto LABEL_189;
         }
       }
@@ -2462,21 +2462,21 @@ LABEL_188:
       else
       {
         v196 = CGRectGetMinY(*&v186);
-        v197 = *(v12 + 16);
-        v198 = *(v12 + 24);
-        v199 = *(v12 + 32);
-        v200 = *(v12 + 40);
-        if (v319 < v196)
+        v197 = *(selfCopy + 16);
+        v198 = *(selfCopy + 24);
+        v199 = *(selfCopy + 32);
+        v200 = *(selfCopy + 40);
+        if (contextCopy6 < v196)
         {
-          v195 = v319 / CGRectGetMinY(*&v197);
+          v195 = contextCopy6 / CGRectGetMinY(*&v197);
           goto LABEL_183;
         }
 
-        if (v319 > CGRectGetMaxY(*&v197))
+        if (contextCopy6 > CGRectGetMaxY(*&v197))
         {
-          v202 = v319 - CGRectGetMaxY(*(v12 + 16));
-          v203 = CGRectGetMaxY(*(v12 + 312));
-          v204 = CGRectGetMaxY(*(v12 + 16));
+          v202 = contextCopy6 - CGRectGetMaxY(*(selfCopy + 16));
+          v203 = CGRectGetMaxY(*(selfCopy + 312));
+          v204 = CGRectGetMaxY(*(selfCopy + 16));
           goto LABEL_188;
         }
       }
@@ -2485,9 +2485,9 @@ LABEL_188:
       goto LABEL_191;
     }
 
-    v181 = *(v12 + 272);
+    v181 = *(selfCopy + 272);
     v182 = v181 + v180;
-    if ((v181 + v180) >= *(v12 + 208))
+    if ((v181 + v180) >= *(selfCopy + 208))
     {
       break;
     }
@@ -2498,11 +2498,11 @@ LABEL_188:
     }
 
 LABEL_192:
-    v205 = [(_UIFlowLayoutSection *)v12 addRowAtEnd:v101];
+    v205 = [(_UIFlowLayoutSection *)selfCopy addRowAtEnd:v101];
     v206 = v179;
     while (2)
     {
-      v207 = [*(v12 + 96) objectAtIndexedSubscript:{v182, v317}];
+      v207 = [*(selfCopy + 96) objectAtIndexedSubscript:{v182, v317}];
       v208 = v207;
       if (v207)
       {
@@ -2537,7 +2537,7 @@ LABEL_195:
       v214 = v213;
       if (v213 > v179)
       {
-        [(_UIFlowLayoutSection *)v12 logInvalidSizes];
+        [(_UIFlowLayoutSection *)selfCopy logInvalidSizes];
       }
 
       if (v139 == 0.0)
@@ -2556,7 +2556,7 @@ LABEL_195:
           v208[8] &= ~2u;
         }
 
-        v12 = v350;
+        selfCopy = v350;
         ++*(v350 + 272);
         if (v101)
         {
@@ -2608,7 +2608,7 @@ LABEL_216:
           v222 = [v221 count] == 1;
 
           v223 = v222 | v219;
-          v12 = v350;
+          selfCopy = v350;
           if ((v223 & 1) == 0)
           {
 LABEL_223:
@@ -2661,7 +2661,7 @@ LABEL_235:
       v330 = 0;
     }
 
-    v12 = v350;
+    selfCopy = v350;
 LABEL_233:
     if (v205)
     {
@@ -2676,7 +2676,7 @@ LABEL_288:
     v226 = 0.0;
 LABEL_236:
     v349 = v226;
-    v228 = [*(v12 + 104) count];
+    v228 = [*(selfCopy + 104) count];
     v229 = v228;
     if (v101)
     {
@@ -2687,12 +2687,12 @@ LABEL_236:
         if (v228 < 2)
         {
           v233 = a7;
-          v238 = *(v12 + 128) + *(v12 + 288);
+          v238 = *(selfCopy + 128) + *(selfCopy + 288);
         }
 
         else
         {
-          v231 = [*(v12 + 104) objectAtIndex:v230];
+          v231 = [*(selfCopy + 104) objectAtIndex:v230];
           v232 = v231;
           v233 = a7;
           if (v231)
@@ -2711,14 +2711,14 @@ LABEL_236:
             v234 = 0;
           }
 
-          v238 = CGRectGetMaxX(*&v234) + *(v12 + 112);
+          v238 = CGRectGetMaxX(*&v234) + *(selfCopy + 112);
         }
 
         v411.origin.x = v238;
         v411.origin.y = recta;
         v411.size.width = v349;
         v411.size.height = v227;
-        v271 = CGRectGetMaxX(v411) + *(v12 + 120);
+        v271 = CGRectGetMaxX(v411) + *(selfCopy + 120);
         v272 = v271 - CGRectGetMinX(v367);
         if (v272 > 0.0)
         {
@@ -2730,7 +2730,7 @@ LABEL_236:
         v412.origin.y = recta;
         v412.size.width = v349;
         v412.size.height = v227;
-        v273 = CGRectGetMaxX(v412) + *(v12 + 120);
+        v273 = CGRectGetMaxX(v412) + *(selfCopy + 120);
         v413.origin.y = y;
         v413.origin.x = x;
         v413.size.width = v233;
@@ -2751,12 +2751,12 @@ LABEL_236:
         if (v228 < 2)
         {
           v255 = a8;
-          v247 = *(v12 + 128) + *(v12 + 280);
+          v247 = *(selfCopy + 128) + *(selfCopy + 280);
         }
 
         else
         {
-          v253 = [*(v12 + 104) objectAtIndex:v230];
+          v253 = [*(selfCopy + 104) objectAtIndex:v230];
           v254 = v253;
           v255 = a8;
           if (v253)
@@ -2775,14 +2775,14 @@ LABEL_236:
             v256 = 0;
           }
 
-          v247 = CGRectGetMaxY(*&v256) + *(v12 + 112);
+          v247 = CGRectGetMaxY(*&v256) + *(selfCopy + 112);
         }
 
         v414.origin.x = v336;
         v414.origin.y = v247;
         v414.size.width = v349;
         v414.size.height = v227;
-        v275 = CGRectGetMaxY(v414) + *(v12 + 112);
+        v275 = CGRectGetMaxY(v414) + *(selfCopy + 112);
         v276 = v275 - CGRectGetMinY(v367);
         if (v276 > 0.0)
         {
@@ -2794,7 +2794,7 @@ LABEL_236:
         v415.origin.y = v247;
         v415.size.width = v349;
         v415.size.height = v227;
-        v277 = CGRectGetMaxY(v415) + *(v12 + 112);
+        v277 = CGRectGetMaxY(v415) + *(selfCopy + 112);
         v416.origin.y = y;
         v416.origin.x = x;
         v416.size.width = v345;
@@ -2814,11 +2814,11 @@ LABEL_236:
     {
       if (v228 <= 1)
       {
-        v280 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v280 handleFailureInMethod:v317 object:v12 file:@"UIFlowLayoutSupport.m" lineNumber:1087 description:@"UICollectionViewFlowLayout internal error"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:v317 object:selfCopy file:@"UIFlowLayoutSupport.m" lineNumber:1087 description:@"UICollectionViewFlowLayout internal error"];
       }
 
-      v239 = [*(v12 + 104) objectAtIndex:v229 - 2];
+      v239 = [*(selfCopy + 104) objectAtIndex:v229 - 2];
       v240 = v239;
       if (v95)
       {
@@ -2845,14 +2845,14 @@ LABEL_236:
         v403.origin.y = recta;
         v403.size.width = v349;
         v403.size.height = v227;
-        v247 = v246 - (CGRectGetWidth(v403) + *(v12 + 120));
+        v247 = v246 - (CGRectGetWidth(v403) + *(selfCopy + 120));
 
         v248 = CGRectGetMaxX(v367);
         v404.origin.x = v336;
         v404.origin.y = v247;
         v404.size.width = v349;
         v404.size.height = v227;
-        v249 = v248 - (CGRectGetMinX(v404) + *(v12 + 120));
+        v249 = v248 - (CGRectGetMinX(v404) + *(selfCopy + 120));
         if (v249 > 0.0)
         {
           v367.size.width = v367.size.width - v249;
@@ -2869,7 +2869,7 @@ LABEL_236:
         v406.origin.y = v247;
         v406.size.width = v349;
         v406.size.height = v227;
-        v252 = v251 - (CGRectGetMinX(v406) - *(v12 + 120));
+        v252 = v251 - (CGRectGetMinX(v406) - *(selfCopy + 120));
         if (v252 > 0.0)
         {
           v241 = v241 + v252;
@@ -2904,19 +2904,19 @@ LABEL_236:
           v261 = 0;
         }
 
-        v265 = CGRectGetMinY(*&v261) + *(v12 + 128);
+        v265 = CGRectGetMinY(*&v261) + *(selfCopy + 128);
         v407.origin.x = v336;
         v407.origin.y = recta;
         v407.size.width = v349;
         v407.size.height = v227;
-        v247 = v265 - (CGRectGetHeight(v407) + *(v12 + 112));
+        v247 = v265 - (CGRectGetHeight(v407) + *(selfCopy + 112));
 
         v266 = CGRectGetMaxY(v367);
         v408.origin.x = v336;
         v408.origin.y = v247;
         v408.size.width = v349;
         v408.size.height = v227;
-        v267 = v266 - (CGRectGetMinY(v408) + *(v12 + 112));
+        v267 = v266 - (CGRectGetMinY(v408) + *(selfCopy + 112));
         if (v267 > 0.0)
         {
           v367.size.height = v367.size.height - v267;
@@ -2932,7 +2932,7 @@ LABEL_236:
         v410.origin.y = v247;
         v410.size.width = v349;
         v410.size.height = v227;
-        v270 = v269 - (CGRectGetMinY(v410) - *(v12 + 112));
+        v270 = v269 - (CGRectGetMinY(v410) - *(selfCopy + 112));
         if (v270 > 0.0)
         {
           v260 = v260 + v270;
@@ -2987,36 +2987,36 @@ LABEL_236:
   }
 
 LABEL_164:
-  *(v12 + 16) = x;
-  *(v12 + 24) = y;
-  *(v12 + 32) = a7;
-  *(v12 + 40) = a8;
-  *(v12 + 48) = x;
-  *(v12 + 56) = y;
-  *(v12 + 64) = a7;
-  *(v12 + 72) = a8;
-  [(_UIFlowLayoutSection *)v12 updateEstimatedSizeForSection:a2];
-  v172 = (v12 + 144);
+  *(selfCopy + 16) = x;
+  *(selfCopy + 24) = y;
+  *(selfCopy + 32) = a7;
+  *(selfCopy + 40) = a8;
+  *(selfCopy + 48) = x;
+  *(selfCopy + 56) = y;
+  *(selfCopy + 64) = a7;
+  *(selfCopy + 72) = a8;
+  [(_UIFlowLayoutSection *)selfCopy updateEstimatedSizeForSection:a2];
+  v172 = (selfCopy + 144);
   if (v95)
   {
     v173 = objc_loadWeakRetained(v172);
     if (v173 && (v174 = v173[98], v173, v174 == 1))
     {
-      v175 = CGRectGetWidth(*(v12 + 312));
-      v176 = *(v12 + 128);
-      v177 = v175 - *(v12 + 136);
+      v175 = CGRectGetWidth(*(selfCopy + 312));
+      v176 = *(selfCopy + 128);
+      v177 = v175 - *(selfCopy + 136);
       v178 = 0.0;
     }
 
     else
     {
-      v290 = CGRectGetWidth(*(v12 + 312));
-      v176 = *(v12 + 128);
+      v290 = CGRectGetWidth(*(selfCopy + 312));
+      v176 = *(selfCopy + 128);
       v178 = v290 - v176;
       v177 = 0.0;
     }
 
-    v291 = objc_loadWeakRetained((v12 + 144));
+    v291 = objc_loadWeakRetained((selfCopy + 144));
     v289 = 0;
     v292 = 0;
     if (v291)
@@ -3024,19 +3024,19 @@ LABEL_164:
       v292 = v291[14];
     }
 
-    *(v12 + 344) = v178;
-    *(v12 + 352) = 0;
-    *(v12 + 360) = v176;
-    *(v12 + 368) = v292;
+    *(selfCopy + 344) = v178;
+    *(selfCopy + 352) = 0;
+    *(selfCopy + 360) = v176;
+    *(selfCopy + 368) = v292;
 
-    v282 = *(v12 + 136);
-    v287 = objc_loadWeakRetained((v12 + 144));
+    v282 = *(selfCopy + 136);
+    v287 = objc_loadWeakRetained((selfCopy + 144));
     if (v287)
     {
       v289 = v287[14];
     }
 
-    *(v12 + 376) = v177;
+    *(selfCopy + 376) = v177;
     v288 = 0.0;
   }
 
@@ -3050,44 +3050,44 @@ LABEL_164:
       v283 = v281[14];
     }
 
-    v284 = *(v12 + 128);
-    *(v12 + 344) = 0;
-    *(v12 + 352) = 0;
-    *(v12 + 360) = v283;
-    *(v12 + 368) = v284;
+    v284 = *(selfCopy + 128);
+    *(selfCopy + 344) = 0;
+    *(selfCopy + 352) = 0;
+    *(selfCopy + 360) = v283;
+    *(selfCopy + 368) = v284;
 
-    v285 = CGRectGetHeight(*(v12 + 312));
-    v286 = *(v12 + 136);
-    v287 = objc_loadWeakRetained((v12 + 144));
+    v285 = CGRectGetHeight(*(selfCopy + 312));
+    v286 = *(selfCopy + 136);
+    v287 = objc_loadWeakRetained((selfCopy + 144));
     if (v287)
     {
       v282 = v287[14];
     }
 
     v288 = v285 - v286;
-    v289 = *(v12 + 136);
-    *(v12 + 376) = 0;
+    v289 = *(selfCopy + 136);
+    *(selfCopy + 376) = 0;
   }
 
-  *(v12 + 384) = v288;
-  *(v12 + 392) = v282;
-  *(v12 + 400) = v289;
+  *(selfCopy + 384) = v288;
+  *(selfCopy + 392) = v282;
+  *(selfCopy + 400) = v289;
 
-  if (a4 && [v137 count])
+  if (section && [v137 count])
   {
-    [a4 setInvalidateFlowLayoutAttributes:0];
-    [a4 setInvalidateFlowLayoutDelegateMetrics:0];
+    [section setInvalidateFlowLayoutAttributes:0];
+    [section setInvalidateFlowLayoutDelegateMetrics:0];
     if (v171)
     {
       v351 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v293 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      if (*(v12 + 136) > 0.0)
+      if (*(selfCopy + 136) > 0.0)
       {
         v294 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:a2];
         [v293 addObject:v294];
       }
 
-      v295 = objc_loadWeakRetained((v12 + 144));
+      v295 = objc_loadWeakRetained((selfCopy + 144));
       v296 = v295;
       if (v295)
       {
@@ -3188,27 +3188,27 @@ LABEL_164:
 
       if ([v351 count])
       {
-        [a4 invalidateSupplementaryElementsOfKind:@"UICollectionElementKindSectionHeader" atIndexPaths:v351];
+        [section invalidateSupplementaryElementsOfKind:@"UICollectionElementKindSectionHeader" atIndexPaths:v351];
       }
 
       if ([v293 count])
       {
-        [a4 invalidateSupplementaryElementsOfKind:@"UICollectionElementKindSectionFooter" atIndexPaths:v293];
+        [section invalidateSupplementaryElementsOfKind:@"UICollectionElementKindSectionFooter" atIndexPaths:v293];
       }
 
       v137 = v338;
     }
 
-    [a4 invalidateItemsAtIndexPaths:{v137, v317}];
+    [section invalidateItemsAtIndexPaths:{v137, v317}];
   }
 }
 
-- (void)updateEstimatedSizeForSection:(uint64_t)a1
+- (void)updateEstimatedSizeForSection:(uint64_t)section
 {
   v106 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (section)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 144));
+    WeakRetained = objc_loadWeakRetained((section + 144));
     if (WeakRetained)
     {
       v5 = WeakRetained[97];
@@ -3219,9 +3219,9 @@ LABEL_164:
       v5 = 0;
     }
 
-    if ([*(a1 + 96) count])
+    if ([*(section + 96) count])
     {
-      if ([*(a1 + 104) count])
+      if ([*(section + 104) count])
       {
         if (v5)
         {
@@ -3229,7 +3229,7 @@ LABEL_164:
           v101 = 0uLL;
           v98 = 0uLL;
           v99 = 0uLL;
-          v6 = *(a1 + 104);
+          v6 = *(section + 104);
           v7 = [v6 countByEnumeratingWithState:&v98 objects:v105 count:16];
           v8 = 0.0;
           v9 = 0.0;
@@ -3264,7 +3264,7 @@ LABEL_164:
                   v14 = 0;
                 }
 
-                v9 = v9 + CGRectGetWidth(*&v14) + *(a1 + 112);
+                v9 = v9 + CGRectGetWidth(*&v14) + *(section + 112);
                 ++v12;
               }
 
@@ -3276,15 +3276,15 @@ LABEL_164:
             while (v18);
           }
 
-          v19 = v9 * (*(a1 + 208) / *(a1 + 272)) - *(a1 + 112) + *(a1 + 288) + *(a1 + 304) + *(a1 + 128) + *(a1 + 136);
-          v20 = objc_loadWeakRetained((a1 + 144));
+          v19 = v9 * (*(section + 208) / *(section + 272)) - *(section + 112) + *(section + 288) + *(section + 304) + *(section + 128) + *(section + 136);
+          v20 = objc_loadWeakRetained((section + 144));
           v21 = v20;
           if (v20)
           {
             v8 = v20[14];
           }
 
-          v22 = a1;
+          sectionCopy4 = section;
           v23 = v19;
         }
 
@@ -3294,7 +3294,7 @@ LABEL_164:
           v97 = 0uLL;
           v94 = 0uLL;
           v95 = 0uLL;
-          v48 = *(a1 + 104);
+          v48 = *(section + 104);
           v49 = [v48 countByEnumeratingWithState:&v94 objects:v104 count:16];
           if (v49)
           {
@@ -3328,7 +3328,7 @@ LABEL_164:
                   v54 = 0;
                 }
 
-                v8 = v8 + CGRectGetHeight(*&v54) + *(a1 + 112);
+                v8 = v8 + CGRectGetHeight(*&v54) + *(section + 112);
                 ++v52;
               }
 
@@ -3345,13 +3345,13 @@ LABEL_164:
             v8 = 0.0;
           }
 
-          v78 = *(a1 + 272);
+          v78 = *(section + 272);
           if (v78)
           {
-            v8 = round(v8 * (*(a1 + 208) / v78)) - *(a1 + 112) + *(a1 + 280) + *(a1 + 296) + *(a1 + 128) + *(a1 + 136);
+            v8 = round(v8 * (*(section + 208) / v78)) - *(section + 112) + *(section + 280) + *(section + 296) + *(section + 128) + *(section + 136);
           }
 
-          v79 = objc_loadWeakRetained((a1 + 144));
+          v79 = objc_loadWeakRetained((section + 144));
           v21 = v79;
           if (v79)
           {
@@ -3363,14 +3363,14 @@ LABEL_164:
             v23 = 0.0;
           }
 
-          v22 = a1;
+          sectionCopy4 = section;
         }
 
         v80 = v8;
         goto LABEL_97;
       }
 
-      v29 = objc_loadWeakRetained((a1 + 144));
+      v29 = objc_loadWeakRetained((section + 144));
       if (v5)
       {
         if (v29)
@@ -3383,14 +3383,14 @@ LABEL_164:
           v30 = 0.0;
         }
 
-        v31 = *(a1 + 280);
-        v32 = *(a1 + 296);
+        v31 = *(section + 280);
+        v32 = *(section + 296);
 
         v92 = 0u;
         v93 = 0u;
         v90 = 0u;
         v91 = 0u;
-        v33 = *(a1 + 96);
+        v33 = *(section + 96);
         v34 = [v33 countByEnumeratingWithState:&v90 objects:v103 count:16];
         if (v34)
         {
@@ -3442,7 +3442,7 @@ LABEL_164:
               v109.origin.y = v43;
               v109.size.width = v45;
               v109.size.height = v46;
-              v37 = v37 - (CGRectGetHeight(v109) + *(a1 + 120));
+              v37 = v37 - (CGRectGetHeight(v109) + *(section + 120));
               v110.origin.x = v44;
               v110.origin.y = v43;
               v110.size.width = v45;
@@ -3472,11 +3472,11 @@ LABEL_82:
           v39 = 0.0;
         }
 
-        [(_UIFlowLayoutSection *)a1 logInvalidSizes];
+        [(_UIFlowLayoutSection *)section logInvalidSizes];
         v36 = 1;
 LABEL_89:
-        v81 = *(a1 + 136) + *(a1 + 128) + *(a1 + 304) + *(a1 + 288) + (v39 + *(a1 + 112)) * (*(a1 + 208) / v36) - *(a1 + 112);
-        v82 = objc_loadWeakRetained((a1 + 144));
+        v81 = *(section + 136) + *(section + 128) + *(section + 304) + *(section + 288) + (v39 + *(section + 112)) * (*(section + 208) / v36) - *(section + 112);
+        v82 = objc_loadWeakRetained((section + 144));
         v21 = v82;
         if (v82)
         {
@@ -3488,10 +3488,10 @@ LABEL_89:
           v80 = 0.0;
         }
 
-        v22 = a1;
+        sectionCopy4 = section;
         v23 = v81;
 LABEL_97:
-        [(_UIFlowLayoutSection *)v22 setEstimatedSize:a2 forSection:v23, v80];
+        [(_UIFlowLayoutSection *)sectionCopy4 setEstimatedSize:a2 forSection:v23, v80];
 
         return;
       }
@@ -3506,14 +3506,14 @@ LABEL_97:
         v60 = 0.0;
       }
 
-      v61 = *(a1 + 288);
-      v62 = *(a1 + 304);
+      v61 = *(section + 288);
+      v62 = *(section + 304);
 
       v88 = 0u;
       v89 = 0u;
       v86 = 0u;
       v87 = 0u;
-      v63 = *(a1 + 96);
+      v63 = *(section + 96);
       v64 = [v63 countByEnumeratingWithState:&v86 objects:v102 count:16];
       if (v64)
       {
@@ -3565,7 +3565,7 @@ LABEL_97:
             v112.origin.y = v73;
             v112.size.width = v75;
             v112.size.height = v76;
-            v67 = v67 - (CGRectGetWidth(v112) + *(a1 + 120));
+            v67 = v67 - (CGRectGetWidth(v112) + *(section + 120));
             v113.origin.x = v74;
             v113.origin.y = v73;
             v113.size.width = v75;
@@ -3595,11 +3595,11 @@ LABEL_85:
         v69 = 0.0;
       }
 
-      [(_UIFlowLayoutSection *)a1 logInvalidSizes];
+      [(_UIFlowLayoutSection *)section logInvalidSizes];
       v66 = 1;
 LABEL_94:
-      v83 = (v69 + *(a1 + 112)) * ceil(*(a1 + 208) / v66) - *(a1 + 112);
-      v84 = objc_loadWeakRetained((a1 + 144));
+      v83 = (v69 + *(section + 112)) * ceil(*(section + 208) / v66) - *(section + 112);
+      v84 = objc_loadWeakRetained((section + 144));
       v21 = v84;
       if (v84)
       {
@@ -3611,15 +3611,15 @@ LABEL_94:
         v23 = 0.0;
       }
 
-      v80 = v83 + *(a1 + 280) + *(a1 + 296) + *(a1 + 128) + *(a1 + 136);
-      v22 = a1;
+      v80 = v83 + *(section + 280) + *(section + 296) + *(section + 128) + *(section + 136);
+      sectionCopy4 = section;
       goto LABEL_97;
     }
 
     if (v5)
     {
-      v24 = *(a1 + 288) + *(a1 + 304) + *(a1 + 128) + *(a1 + 136);
-      v25 = objc_loadWeakRetained((a1 + 144));
+      v24 = *(section + 288) + *(section + 304) + *(section + 128) + *(section + 136);
+      v25 = objc_loadWeakRetained((section + 144));
       v85 = v25;
       if (v25)
       {
@@ -3631,13 +3631,13 @@ LABEL_94:
         v26 = 0.0;
       }
 
-      v27 = a1;
+      sectionCopy6 = section;
       v28 = v24;
     }
 
     else
     {
-      v59 = objc_loadWeakRetained((a1 + 144));
+      v59 = objc_loadWeakRetained((section + 144));
       v85 = v59;
       if (v59)
       {
@@ -3649,11 +3649,11 @@ LABEL_94:
         v28 = 0.0;
       }
 
-      v26 = *(a1 + 280) + *(a1 + 296) + *(a1 + 128) + *(a1 + 136);
-      v27 = a1;
+      v26 = *(section + 280) + *(section + 296) + *(section + 128) + *(section + 136);
+      sectionCopy6 = section;
     }
 
-    [(_UIFlowLayoutSection *)v27 setEstimatedSize:a2 forSection:v28, v26];
+    [(_UIFlowLayoutSection *)sectionCopy6 setEstimatedSize:a2 forSection:v28, v26];
   }
 }
 

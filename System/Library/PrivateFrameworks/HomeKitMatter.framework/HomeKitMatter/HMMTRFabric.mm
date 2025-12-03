@@ -1,6 +1,6 @@
 @interface HMMTRFabric
 + (id)logCategory;
-- (HMMTRFabric)initWithDelegate:(id)a3 queue:(id)a4;
+- (HMMTRFabric)initWithDelegate:(id)delegate queue:(id)queue;
 - (HMMTRFabricDelegate)delegate;
 - (NSUUID)targetFabricUUID;
 - (id)attributeDescriptions;
@@ -18,35 +18,35 @@
 
 - (id)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMMTRFabric *)self fabricID];
-  v6 = [v4 initWithName:@"Fabric ID" value:v5];
-  [v3 addObject:v6];
+  fabricID = [(HMMTRFabric *)self fabricID];
+  v6 = [v4 initWithName:@"Fabric ID" value:fabricID];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMMTRFabric *)self isSystemCommissionerFabric];
   v8 = HMFBooleanToString();
   v9 = [v7 initWithName:@"System Commissioner" value:v8];
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   v10 = objc_alloc(MEMORY[0x277D0F778]);
-  v11 = [(HMMTRFabric *)self accessControl];
-  v12 = [v10 initWithName:@"Access Control" value:v11];
-  [v3 addObject:v12];
+  accessControl = [(HMMTRFabric *)self accessControl];
+  v12 = [v10 initWithName:@"Access Control" value:accessControl];
+  [array addObject:v12];
 
   v13 = objc_alloc(MEMORY[0x277D0F778]);
-  v14 = [(HMMTRFabric *)self currentDeviceNodeData];
-  v15 = [v13 initWithName:@"Controller Data" value:v14];
-  [v3 addObject:v15];
+  currentDeviceNodeData = [(HMMTRFabric *)self currentDeviceNodeData];
+  v15 = [v13 initWithName:@"Controller Data" value:currentDeviceNodeData];
+  [array addObject:v15];
 
   v16 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMMTRFabric *)self isCachedDataValid];
   v17 = HMFBooleanToString();
   v18 = [v16 initWithName:@"Is Cached Data Valid" value:v17];
-  [v3 addObject:v18];
+  [array addObject:v18];
 
-  v19 = [v3 copy];
+  v19 = [array copy];
 
   return v19;
 }
@@ -54,31 +54,31 @@
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMMTRFabric *)self fabricID];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  fabricID = [(HMMTRFabric *)self fabricID];
+  v4 = [v2 stringWithFormat:@"%@", fabricID];
 
   return v4;
 }
 
 - (NSUUID)targetFabricUUID
 {
-  v2 = [(HMMTRFabric *)self delegate];
-  v3 = [v2 targetFabricUUID];
+  delegate = [(HMMTRFabric *)self delegate];
+  targetFabricUUID = [delegate targetFabricUUID];
 
-  return v3;
+  return targetFabricUUID;
 }
 
-- (HMMTRFabric)initWithDelegate:(id)a3 queue:(id)a4
+- (HMMTRFabric)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = HMMTRFabric;
   v8 = [(HMMTRFabric *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v10 = objc_alloc_init(HMMTRAccessControl);
     accessControl = v9->_accessControl;
     v9->_accessControl = v10;
@@ -88,7 +88,7 @@
     currentDeviceNodeData = v9->_currentDeviceNodeData;
     v9->_currentDeviceNodeData = v12;
 
-    objc_storeStrong(&v9->_workQueue, a4);
+    objc_storeStrong(&v9->_workQueue, queue);
     v9->_cachedDataValid = 1;
   }
 

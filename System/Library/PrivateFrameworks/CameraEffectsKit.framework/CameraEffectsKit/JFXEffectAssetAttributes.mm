@@ -1,7 +1,7 @@
 @interface JFXEffectAssetAttributes
-- (BOOL)isMatchingFilterAttributes:(id)a3;
+- (BOOL)isMatchingFilterAttributes:(id)attributes;
 - (JFXEffectAssetAttributes)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -56,9 +56,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_aspectRatio;
   *(result + 4) = self->_colorDynamicRange;
   *(result + 1) = self->_contentType;
@@ -67,21 +67,21 @@
   return result;
 }
 
-- (BOOL)isMatchingFilterAttributes:(id)a3
+- (BOOL)isMatchingFilterAttributes:(id)attributes
 {
-  v4 = a3;
-  if ([v4 contentType])
+  attributesCopy = attributes;
+  if ([attributesCopy contentType])
   {
-    v5 = [v4 contentType];
-    if (v5 != [(JFXEffectAssetAttributes *)self contentType])
+    contentType = [attributesCopy contentType];
+    if (contentType != [(JFXEffectAssetAttributes *)self contentType])
     {
       goto LABEL_15;
     }
   }
 
-  if ([v4 usageMode])
+  if ([attributesCopy usageMode])
   {
-    if ([v4 usageMode] == 2)
+    if ([attributesCopy usageMode] == 2)
     {
       if ([(JFXEffectAssetAttributes *)self usageMode]== 1)
       {
@@ -91,8 +91,8 @@
 
     else
     {
-      v6 = [v4 usageMode];
-      if (v6 != [(JFXEffectAssetAttributes *)self usageMode])
+      usageMode = [attributesCopy usageMode];
+      if (usageMode != [(JFXEffectAssetAttributes *)self usageMode])
       {
 LABEL_15:
         v10 = 0;
@@ -101,28 +101,28 @@ LABEL_15:
     }
   }
 
-  if ([v4 aspectRatio])
+  if ([attributesCopy aspectRatio])
   {
-    v7 = [v4 aspectRatio];
-    if (v7 != [(JFXEffectAssetAttributes *)self aspectRatio])
+    aspectRatio = [attributesCopy aspectRatio];
+    if (aspectRatio != [(JFXEffectAssetAttributes *)self aspectRatio])
     {
       goto LABEL_15;
     }
   }
 
-  if ([v4 colorDynamicRange])
+  if ([attributesCopy colorDynamicRange])
   {
-    v8 = [v4 colorDynamicRange];
-    if (v8 != [(JFXEffectAssetAttributes *)self colorDynamicRange])
+    colorDynamicRange = [attributesCopy colorDynamicRange];
+    if (colorDynamicRange != [(JFXEffectAssetAttributes *)self colorDynamicRange])
     {
       goto LABEL_15;
     }
   }
 
-  if ([v4 quality])
+  if ([attributesCopy quality])
   {
-    v9 = [v4 quality];
-    if (v9 != [(JFXEffectAssetAttributes *)self quality])
+    quality = [attributesCopy quality];
+    if (quality != [(JFXEffectAssetAttributes *)self quality])
     {
       goto LABEL_15;
     }

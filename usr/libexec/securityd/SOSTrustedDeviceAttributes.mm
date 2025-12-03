@@ -1,31 +1,31 @@
 @interface SOSTrustedDeviceAttributes
-- (SOSTrustedDeviceAttributes)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SOSTrustedDeviceAttributes)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SOSTrustedDeviceAttributes
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   machineID = self->_machineID;
-  v5 = a3;
-  [v5 encodeObject:machineID forKey:@"machineID"];
-  [v5 encodeObject:self->_serialNumber forKey:@"serialNumber"];
+  coderCopy = coder;
+  [coderCopy encodeObject:machineID forKey:@"machineID"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"serialNumber"];
 }
 
-- (SOSTrustedDeviceAttributes)initWithCoder:(id)a3
+- (SOSTrustedDeviceAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SOSTrustedDeviceAttributes;
   v5 = [(SOSTrustedDeviceAttributes *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"machineID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"machineID"];
     machineID = v5->_machineID;
     v5->_machineID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v8;
   }

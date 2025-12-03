@@ -1,32 +1,32 @@
 @interface _UIInterfaceActionSeparatorConstraintController
 - (UIInterfaceActionVisualSeparatorDisplaying)separatorView;
-- (_UIInterfaceActionSeparatorConstraintController)initWithSeparatorView:(id)a3;
+- (_UIInterfaceActionSeparatorConstraintController)initWithSeparatorView:(id)view;
 - (double)constantAxisDimension;
 - (void)_updateConstantSizedConstraints;
-- (void)setConstantAxisDimension:(double)a3;
-- (void)setConstantSizedAxis:(int64_t)a3;
+- (void)setConstantAxisDimension:(double)dimension;
+- (void)setConstantSizedAxis:(int64_t)axis;
 @end
 
 @implementation _UIInterfaceActionSeparatorConstraintController
 
-- (_UIInterfaceActionSeparatorConstraintController)initWithSeparatorView:(id)a3
+- (_UIInterfaceActionSeparatorConstraintController)initWithSeparatorView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = _UIInterfaceActionSeparatorConstraintController;
   v5 = [(_UIInterfaceActionSeparatorConstraintController *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_separatorView, v4);
-    v7 = [v4 widthAnchor];
-    v8 = [v7 constraintEqualToConstant:0.0];
+    objc_storeWeak(&v5->_separatorView, viewCopy);
+    widthAnchor = [viewCopy widthAnchor];
+    v8 = [widthAnchor constraintEqualToConstant:0.0];
     fixedWidthConstraint = v6->_fixedWidthConstraint;
     v6->_fixedWidthConstraint = v8;
 
     [(NSLayoutConstraint *)v6->_fixedWidthConstraint setIdentifier:@"verticalSeparatorWidth"];
-    v10 = [v4 heightAnchor];
-    v11 = [v10 constraintEqualToConstant:0.0];
+    heightAnchor = [viewCopy heightAnchor];
+    v11 = [heightAnchor constraintEqualToConstant:0.0];
     fixedHeightConstraint = v6->_fixedHeightConstraint;
     v6->_fixedHeightConstraint = v11;
 
@@ -35,19 +35,19 @@
     [(NSLayoutConstraint *)v6->_fixedHeightConstraint setPriority:v13];
     v6->_constantSizedAxis = 1;
     v6->_constantAxisDimension = -1.0;
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v4 setNeedsUpdateConstraints];
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    [viewCopy setNeedsUpdateConstraints];
     [(_UIInterfaceActionSeparatorConstraintController *)v6 _updateConstantSizedConstraints];
   }
 
   return v6;
 }
 
-- (void)setConstantSizedAxis:(int64_t)a3
+- (void)setConstantSizedAxis:(int64_t)axis
 {
-  if (self->_constantSizedAxis != a3)
+  if (self->_constantSizedAxis != axis)
   {
-    self->_constantSizedAxis = a3;
+    self->_constantSizedAxis = axis;
     WeakRetained = objc_loadWeakRetained(&self->_separatorView);
     if ([(_UIInterfaceActionSeparatorConstraintController *)self _isFixedWidth])
     {
@@ -65,11 +65,11 @@
   }
 }
 
-- (void)setConstantAxisDimension:(double)a3
+- (void)setConstantAxisDimension:(double)dimension
 {
-  if (self->_constantAxisDimension != a3)
+  if (self->_constantAxisDimension != dimension)
   {
-    self->_constantAxisDimension = a3;
+    self->_constantAxisDimension = dimension;
     WeakRetained = objc_loadWeakRetained(&self->_separatorView);
     [WeakRetained setNeedsUpdateConstraints];
   }
@@ -81,10 +81,10 @@
   if (result < 0.0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_separatorView);
-    v4 = [WeakRetained traitCollection];
-    v5 = [v4 preferredContentSizeCategory];
+    traitCollection = [WeakRetained traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    if (!UIContentSizeCategoryIsAccessibilityCategory(v5))
+    if (!UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
       [WeakRetained _currentScreenScale];
     }

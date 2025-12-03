@@ -1,7 +1,7 @@
 @interface MTIDInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValueExpired;
-- (MTIDInfo)initWithScheme:(id)a3 secret:(id)a4 idString:(id)a5 dsId:(id)a6 effectiveDate:(id)a7 expirationDate:(id)a8 shouldGenerateMetricsFields:(BOOL)a9;
+- (MTIDInfo)initWithScheme:(id)scheme secret:(id)secret idString:(id)string dsId:(id)id effectiveDate:(id)date expirationDate:(id)expirationDate shouldGenerateMetricsFields:(BOOL)fields;
 - (NSDictionary)metricsFields;
 - (NSString)description;
 - (NSString)idNamespace;
@@ -14,36 +14,36 @@
 
 - (int64_t)idType
 {
-  v2 = [(MTIDInfo *)self scheme];
-  v3 = [v2 idType];
+  scheme = [(MTIDInfo *)self scheme];
+  idType = [scheme idType];
 
-  return v3;
+  return idType;
 }
 
-- (MTIDInfo)initWithScheme:(id)a3 secret:(id)a4 idString:(id)a5 dsId:(id)a6 effectiveDate:(id)a7 expirationDate:(id)a8 shouldGenerateMetricsFields:(BOOL)a9
+- (MTIDInfo)initWithScheme:(id)scheme secret:(id)secret idString:(id)string dsId:(id)id effectiveDate:(id)date expirationDate:(id)expirationDate shouldGenerateMetricsFields:(BOOL)fields
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  schemeCopy = scheme;
+  secretCopy = secret;
+  stringCopy = string;
+  idCopy = id;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
   v26.receiver = self;
   v26.super_class = MTIDInfo;
   v21 = [(MTIDInfo *)&v26 init];
   v22 = v21;
   if (v21)
   {
-    [(MTIDInfo *)v21 setScheme:v15];
-    [(MTIDInfo *)v22 setSecret:v16];
-    [(MTIDInfo *)v22 setIdString:v17];
-    [(MTIDInfo *)v22 setDsId:v18];
-    [(MTIDInfo *)v22 setExpirationDate:v20];
-    [(MTIDInfo *)v22 setEffectiveDate:v19];
-    [(MTIDInfo *)v22 setShouldGenerateMetricsFields:a9];
+    [(MTIDInfo *)v21 setScheme:schemeCopy];
+    [(MTIDInfo *)v22 setSecret:secretCopy];
+    [(MTIDInfo *)v22 setIdString:stringCopy];
+    [(MTIDInfo *)v22 setDsId:idCopy];
+    [(MTIDInfo *)v22 setExpirationDate:expirationDateCopy];
+    [(MTIDInfo *)v22 setEffectiveDate:dateCopy];
+    [(MTIDInfo *)v22 setShouldGenerateMetricsFields:fields];
     v23 = +[MTFrameworkEnvironment sharedEnvironment];
-    v24 = [v23 date];
-    [(MTIDInfo *)v22 setComputedDate:v24];
+    date = [v23 date];
+    [(MTIDInfo *)v22 setComputedDate:date];
   }
 
   return v22;
@@ -51,29 +51,29 @@
 
 - (NSString)idNamespace
 {
-  v2 = [(MTIDInfo *)self scheme];
-  v3 = [v2 idNamespace];
+  scheme = [(MTIDInfo *)self scheme];
+  idNamespace = [scheme idNamespace];
 
-  return v3;
+  return idNamespace;
 }
 
 - (double)lifespan
 {
-  v2 = [(MTIDInfo *)self scheme];
-  v3 = [v2 lifespan];
+  scheme = [(MTIDInfo *)self scheme];
+  lifespan = [scheme lifespan];
 
-  return v3;
+  return lifespan;
 }
 
 - (BOOL)isValueExpired
 {
-  v2 = [(MTIDInfo *)self expirationDate];
-  if (v2)
+  expirationDate = [(MTIDInfo *)self expirationDate];
+  if (expirationDate)
   {
     v3 = +[MTFrameworkEnvironment sharedEnvironment];
-    v4 = [v3 date];
+    date = [v3 date];
 
-    v5 = [v4 compare:v2] == 1;
+    v5 = [date compare:expirationDate] == 1;
   }
 
   else
@@ -86,23 +86,23 @@
 
 - (NSDictionary)metricsFields
 {
-  v3 = [(MTIDInfo *)self idString];
-  if (v3 && (v4 = v3, v5 = [(MTIDInfo *)self shouldGenerateMetricsFields], v4, v5))
+  idString = [(MTIDInfo *)self idString];
+  if (idString && (v4 = idString, v5 = [(MTIDInfo *)self shouldGenerateMetricsFields], v4, v5))
   {
     v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-    v7 = [(MTIDInfo *)self idType];
-    if (v7 == 1)
+    idType = [(MTIDInfo *)self idType];
+    if (idType == 1)
     {
-      v15 = [(MTIDInfo *)self idString];
-      [v6 setObject:v15 forKeyedSubscript:@"clientId"];
+      idString2 = [(MTIDInfo *)self idString];
+      [v6 setObject:idString2 forKeyedSubscript:@"clientId"];
 
       [v6 setObject:@"device" forKeyedSubscript:@"xpClientIdSource"];
     }
 
-    else if (v7 == 2)
+    else if (idType == 2)
     {
-      v8 = [(MTIDInfo *)self idString];
-      [v6 setObject:v8 forKeyedSubscript:@"userId"];
+      idString3 = [(MTIDInfo *)self idString];
+      [v6 setObject:idString3 forKeyedSubscript:@"userId"];
 
       v9 = [(MTIDInfo *)self isSynchronized]? @"synchronized" : @"unsynchronized";
       [v6 setObject:v9 forKeyedSubscript:@"xpUserIdSyncState"];
@@ -132,48 +132,48 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MTIDInfo *)self idString];
-  v7 = [(MTIDInfo *)self scheme];
-  v8 = [v7 idNamespace];
-  v9 = [v3 stringWithFormat:@"<%@: %p, idString: %@, namespace: %@ >", v5, self, v6, v8];
+  idString = [(MTIDInfo *)self idString];
+  scheme = [(MTIDInfo *)self scheme];
+  idNamespace = [scheme idNamespace];
+  v9 = [v3 stringWithFormat:@"<%@: %p, idString: %@, namespace: %@ >", v5, self, idString, idNamespace];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MTIDInfo *)self scheme];
-    v7 = [v6 idNamespace];
-    v8 = [v5 scheme];
-    v9 = [v8 idNamespace];
-    if ([v7 isEqual:v9])
+    v5 = equalCopy;
+    scheme = [(MTIDInfo *)self scheme];
+    idNamespace = [scheme idNamespace];
+    scheme2 = [v5 scheme];
+    idNamespace2 = [scheme2 idNamespace];
+    if ([idNamespace isEqual:idNamespace2])
     {
-      v10 = [(MTIDInfo *)self idString];
-      v11 = [v5 idString];
-      if ([v10 isEqual:v11])
+      idString = [(MTIDInfo *)self idString];
+      idString2 = [v5 idString];
+      if ([idString isEqual:idString2])
       {
-        v12 = [(MTIDInfo *)self expirationDate];
-        v13 = [v5 expirationDate];
-        if (v12 == v13)
+        expirationDate = [(MTIDInfo *)self expirationDate];
+        expirationDate2 = [v5 expirationDate];
+        if (expirationDate == expirationDate2)
         {
           v15 = 1;
         }
 
         else
         {
-          v18 = v13;
-          v17 = [(MTIDInfo *)self expirationDate];
+          v18 = expirationDate2;
+          expirationDate3 = [(MTIDInfo *)self expirationDate];
           [v5 expirationDate];
-          v14 = v19 = v12;
-          v15 = [v17 isEqual:v14];
+          v14 = v19 = expirationDate;
+          v15 = [expirationDate3 isEqual:v14];
 
-          v12 = v19;
-          v13 = v18;
+          expirationDate = v19;
+          expirationDate2 = v18;
         }
       }
 
@@ -199,33 +199,33 @@
 
 - (id)debugInfo
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(MTIDInfo *)self idString];
-  [v3 setObject:v4 forKeyedSubscript:@"ID"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  idString = [(MTIDInfo *)self idString];
+  [dictionary setObject:idString forKeyedSubscript:@"ID"];
 
-  v5 = [(MTIDInfo *)self scheme];
-  v6 = [v5 idNamespace];
-  [v3 setObject:v6 forKeyedSubscript:@"namespace"];
+  scheme = [(MTIDInfo *)self scheme];
+  idNamespace = [scheme idNamespace];
+  [dictionary setObject:idNamespace forKeyedSubscript:@"namespace"];
 
-  v7 = [(MTIDInfo *)self secret];
-  v8 = [v7 debugInfo];
-  [v3 setObject:v8 forKeyedSubscript:@"secret"];
+  secret = [(MTIDInfo *)self secret];
+  debugInfo = [secret debugInfo];
+  [dictionary setObject:debugInfo forKeyedSubscript:@"secret"];
 
-  v9 = [(MTIDInfo *)self effectiveDate];
-  v10 = [v9 description];
-  [v3 setObject:v10 forKeyedSubscript:@"effectiveDate"];
+  effectiveDate = [(MTIDInfo *)self effectiveDate];
+  v10 = [effectiveDate description];
+  [dictionary setObject:v10 forKeyedSubscript:@"effectiveDate"];
 
-  v11 = [(MTIDInfo *)self expirationDate];
-  v12 = [v11 description];
-  [v3 setObject:v12 forKeyedSubscript:@"expirationDate"];
+  expirationDate = [(MTIDInfo *)self expirationDate];
+  v12 = [expirationDate description];
+  [dictionary setObject:v12 forKeyedSubscript:@"expirationDate"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[MTIDInfo isSynchronized](self, "isSynchronized")}];
-  [v3 setObject:v13 forKeyedSubscript:@"isSynchronized"];
+  [dictionary setObject:v13 forKeyedSubscript:@"isSynchronized"];
 
-  v14 = [(MTIDInfo *)self dsId];
-  [v3 setObject:v14 forKeyedSubscript:@"dsId"];
+  dsId = [(MTIDInfo *)self dsId];
+  [dictionary setObject:dsId forKeyedSubscript:@"dsId"];
 
-  v15 = [v3 copy];
+  v15 = [dictionary copy];
 
   return v15;
 }

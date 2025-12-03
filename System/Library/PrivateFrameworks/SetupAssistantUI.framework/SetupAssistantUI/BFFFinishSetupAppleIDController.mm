@@ -1,8 +1,8 @@
 @interface BFFFinishSetupAppleIDController
 + (id)finishSetupAppleIDController;
-- (id)viewControllerWithCompletion:(id)a3;
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4;
-- (void)signInControllerDidCancel:(id)a3;
+- (id)viewControllerWithCompletion:(id)completion;
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results;
+- (void)signInControllerDidCancel:(id)cancel;
 @end
 
 @implementation BFFFinishSetupAppleIDController
@@ -14,10 +14,10 @@
   return v2;
 }
 
-- (id)viewControllerWithCompletion:(id)a3
+- (id)viewControllerWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  [(BFFFinishSetupAppleIDController *)self setCompletion:a3];
+  [(BFFFinishSetupAppleIDController *)self setCompletion:completion];
   v4 = objc_alloc_init(MEMORY[0x277CECAC8]);
   signInController = self->_signInController;
   self->_signInController = v4;
@@ -33,21 +33,21 @@
 
   [(AAUISignInController *)self->_signInController setDelegate:self];
   objc_storeStrong(&self->_selfReference, self);
-  v8 = [(AAUISignInController *)self->_signInController view];
-  v9 = [(AAUISignInController *)self->_signInController viewControllers];
-  v10 = [v9 firstObject];
+  view = [(AAUISignInController *)self->_signInController view];
+  viewControllers = [(AAUISignInController *)self->_signInController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = [a4 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
-  v8 = [v7 success];
+  v7 = [results objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  success = [v7 success];
   v9 = _BYLoggingFacility();
   v10 = v9;
-  if (v8)
+  if (success)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -58,22 +58,22 @@
 
   else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v19 = _BYIsInternalInstall();
-    v20 = [v7 error];
-    v21 = v20;
-    if (v19)
+    error2 = _BYIsInternalInstall();
+    error = [v7 error];
+    v21 = error;
+    if (error2)
     {
       v22 = 0;
-      v23 = v20;
+      v23 = error;
     }
 
-    else if (v20)
+    else if (error)
     {
       v24 = MEMORY[0x277CCACA8];
-      v19 = [v7 error];
-      v4 = [v19 domain];
-      v5 = [v7 error];
-      v23 = [v24 stringWithFormat:@"<Error domain: %@, code %ld>", v4, objc_msgSend(v5, "code")];
+      error2 = [v7 error];
+      domain = [error2 domain];
+      error3 = [v7 error];
+      v23 = [v24 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(error3, "code")];
       v22 = 1;
     }
 
@@ -91,14 +91,14 @@
     }
   }
 
-  v11 = [(BFFFinishSetupAppleIDController *)self flowSkipController];
+  flowSkipController = [(BFFFinishSetupAppleIDController *)self flowSkipController];
   v12 = *MEMORY[0x277D4D9A0];
-  [v11 didCompleteFlow:*MEMORY[0x277D4D9A0]];
+  [flowSkipController didCompleteFlow:*MEMORY[0x277D4D9A0]];
 
   CFPreferencesSetValue(@"AppleIDPB10Presented", *MEMORY[0x277CBED28], *MEMORY[0x277D4D9E0], *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
-  v13 = [(BFFFinishSetupAppleIDController *)self paneFeatureAnalyticsManager];
+  paneFeatureAnalyticsManager = [(BFFFinishSetupAppleIDController *)self paneFeatureAnalyticsManager];
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "success")}];
-  [v13 recordActionWithValue:v14 forFeature:14];
+  [paneFeatureAnalyticsManager recordActionWithValue:v14 forFeature:14];
 
   completion = self->_completion;
   if (completion)
@@ -115,7 +115,7 @@
   self->_selfReference = 0;
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = _BYLoggingFacility();
@@ -127,13 +127,13 @@
     _os_log_impl(&dword_265AC5000, v4, OS_LOG_TYPE_DEFAULT, "signInControllerDidCancel: %@", buf, 0xCu);
   }
 
-  v6 = [(BFFFinishSetupAppleIDController *)self flowSkipController];
+  flowSkipController = [(BFFFinishSetupAppleIDController *)self flowSkipController];
   v7 = *MEMORY[0x277D4D9A0];
-  [v6 didCompleteFlow:*MEMORY[0x277D4D9A0]];
+  [flowSkipController didCompleteFlow:*MEMORY[0x277D4D9A0]];
 
   CFPreferencesSetValue(@"AppleIDPB10Presented", *MEMORY[0x277CBED28], *MEMORY[0x277D4D9E0], *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
-  v8 = [(BFFFinishSetupAppleIDController *)self paneFeatureAnalyticsManager];
-  [v8 recordActionWithValue:MEMORY[0x277CBEC28] forFeature:14];
+  paneFeatureAnalyticsManager = [(BFFFinishSetupAppleIDController *)self paneFeatureAnalyticsManager];
+  [paneFeatureAnalyticsManager recordActionWithValue:MEMORY[0x277CBEC28] forFeature:14];
 
   completion = self->_completion;
   if (completion)

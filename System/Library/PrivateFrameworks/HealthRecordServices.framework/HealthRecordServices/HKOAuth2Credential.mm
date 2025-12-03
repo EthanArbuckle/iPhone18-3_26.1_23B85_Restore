@@ -1,17 +1,17 @@
 @interface HKOAuth2Credential
-+ (id)scopeStringFromScopes:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCredential:(id)a3 epsilonExpiration:(double)a4;
++ (id)scopeStringFromScopes:(id)scopes;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCredential:(id)credential epsilonExpiration:(double)expiration;
 - (BOOL)isExpired;
 - (HKOAuth2Credential)init;
-- (HKOAuth2Credential)initWithAccessToken:(id)a3 refreshToken:(id)a4 expiration:(id)a5 requestedScopeString:(id)a6 scopeString:(id)a7;
-- (HKOAuth2Credential)initWithAccessToken:(id)a3 refreshToken:(id)a4 expiration:(id)a5 requestedScopeString:(id)a6 scopes:(id)a7;
-- (HKOAuth2Credential)initWithCoder:(id)a3;
+- (HKOAuth2Credential)initWithAccessToken:(id)token refreshToken:(id)refreshToken expiration:(id)expiration requestedScopeString:(id)string scopeString:(id)scopeString;
+- (HKOAuth2Credential)initWithAccessToken:(id)token refreshToken:(id)refreshToken expiration:(id)expiration requestedScopeString:(id)string scopes:(id)scopes;
+- (HKOAuth2Credential)initWithCoder:(id)coder;
 - (NSString)scopeString;
 - (id)description;
 - (unint64_t)hash;
-- (void)_commonInitWithAccessToken:(id)a3 refreshToken:(id)a4 expiration:(id)a5 requestedScopeString:(id)a6 scopes:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (void)_commonInitWithAccessToken:(id)token refreshToken:(id)refreshToken expiration:(id)expiration requestedScopeString:(id)string scopes:(id)scopes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKOAuth2Credential
@@ -26,79 +26,79 @@
   return 0;
 }
 
-- (HKOAuth2Credential)initWithAccessToken:(id)a3 refreshToken:(id)a4 expiration:(id)a5 requestedScopeString:(id)a6 scopeString:(id)a7
+- (HKOAuth2Credential)initWithAccessToken:(id)token refreshToken:(id)refreshToken expiration:(id)expiration requestedScopeString:(id)string scopeString:(id)scopeString
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a7)
+  tokenCopy = token;
+  refreshTokenCopy = refreshToken;
+  expirationCopy = expiration;
+  stringCopy = string;
+  if (scopeString)
   {
-    a7 = [HKOAuth2ScopeSet scopesFromScopeString:a7];
+    scopeString = [HKOAuth2ScopeSet scopesFromScopeString:scopeString];
   }
 
-  v16 = [(HKOAuth2Credential *)self initWithAccessToken:v12 refreshToken:v13 expiration:v14 requestedScopeString:v15 scopes:a7];
+  v16 = [(HKOAuth2Credential *)self initWithAccessToken:tokenCopy refreshToken:refreshTokenCopy expiration:expirationCopy requestedScopeString:stringCopy scopes:scopeString];
 
   return v16;
 }
 
-- (HKOAuth2Credential)initWithAccessToken:(id)a3 refreshToken:(id)a4 expiration:(id)a5 requestedScopeString:(id)a6 scopes:(id)a7
+- (HKOAuth2Credential)initWithAccessToken:(id)token refreshToken:(id)refreshToken expiration:(id)expiration requestedScopeString:(id)string scopes:(id)scopes
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  tokenCopy = token;
+  refreshTokenCopy = refreshToken;
+  expirationCopy = expiration;
+  stringCopy = string;
+  scopesCopy = scopes;
   v20.receiver = self;
   v20.super_class = HKOAuth2Credential;
   v17 = [(HKOAuth2Credential *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    [(HKOAuth2Credential *)v17 _commonInitWithAccessToken:v12 refreshToken:v13 expiration:v14 requestedScopeString:v15 scopes:v16];
+    [(HKOAuth2Credential *)v17 _commonInitWithAccessToken:tokenCopy refreshToken:refreshTokenCopy expiration:expirationCopy requestedScopeString:stringCopy scopes:scopesCopy];
   }
 
   return v18;
 }
 
-- (void)_commonInitWithAccessToken:(id)a3 refreshToken:(id)a4 expiration:(id)a5 requestedScopeString:(id)a6 scopes:(id)a7
+- (void)_commonInitWithAccessToken:(id)token refreshToken:(id)refreshToken expiration:(id)expiration requestedScopeString:(id)string scopes:(id)scopes
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [a3 copy];
+  scopesCopy = scopes;
+  stringCopy = string;
+  expirationCopy = expiration;
+  refreshTokenCopy = refreshToken;
+  v16 = [token copy];
   accessToken = self->_accessToken;
   self->_accessToken = v16;
 
-  v18 = [v15 copy];
+  v18 = [refreshTokenCopy copy];
   refreshToken = self->_refreshToken;
   self->_refreshToken = v18;
 
-  v20 = [v14 copy];
+  v20 = [expirationCopy copy];
   expiration = self->_expiration;
   self->_expiration = v20;
 
-  v22 = [v13 copy];
+  v22 = [stringCopy copy];
   requestedScopeString = self->_requestedScopeString;
   self->_requestedScopeString = v22;
 
-  v24 = [v12 copy];
+  v24 = [scopesCopy copy];
   scopes = self->_scopes;
   self->_scopes = v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
 
-  else if ([(HKOAuth2Credential *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(HKOAuth2Credential *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(HKOAuth2Credential *)self isEqualToCredential:v4 epsilonExpiration:0.0];
+    v5 = [(HKOAuth2Credential *)self isEqualToCredential:equalCopy epsilonExpiration:0.0];
   }
 
   else
@@ -109,29 +109,29 @@
   return v5;
 }
 
-- (BOOL)isEqualToCredential:(id)a3 epsilonExpiration:(double)a4
+- (BOOL)isEqualToCredential:(id)credential epsilonExpiration:(double)expiration
 {
-  v6 = a3;
-  v7 = [(HKOAuth2Credential *)self expiration];
-  v8 = [v6 expiration];
-  [v7 timeIntervalSinceDate:v8];
+  credentialCopy = credential;
+  expiration = [(HKOAuth2Credential *)self expiration];
+  expiration2 = [credentialCopy expiration];
+  [expiration timeIntervalSinceDate:expiration2];
   v10 = v9;
 
   accessToken = self->_accessToken;
-  v12 = [v6 accessToken];
-  if (accessToken != v12)
+  accessToken = [credentialCopy accessToken];
+  if (accessToken != accessToken)
   {
-    v13 = [v6 accessToken];
-    if (!v13)
+    accessToken2 = [credentialCopy accessToken];
+    if (!accessToken2)
     {
       v22 = 0;
       goto LABEL_38;
     }
 
-    v8 = v13;
+    expiration2 = accessToken2;
     v14 = self->_accessToken;
-    v15 = [v6 accessToken];
-    if (![(NSString *)v14 isEqualToString:v15])
+    accessToken3 = [credentialCopy accessToken];
+    if (![(NSString *)v14 isEqualToString:accessToken3])
     {
       v22 = 0;
 LABEL_37:
@@ -139,40 +139,40 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v43 = v15;
+    v43 = accessToken3;
   }
 
   refreshToken = self->_refreshToken;
-  v17 = [v6 refreshToken];
-  if (refreshToken != v17)
+  refreshToken = [credentialCopy refreshToken];
+  if (refreshToken != refreshToken)
   {
-    v18 = [v6 refreshToken];
-    if (!v18)
+    refreshToken2 = [credentialCopy refreshToken];
+    if (!refreshToken2)
     {
       v22 = 0;
       goto LABEL_29;
     }
 
-    v19 = v18;
+    v19 = refreshToken2;
     v20 = self->_refreshToken;
-    v21 = [v6 refreshToken];
-    if (![(NSString *)v20 isEqualToString:v21])
+    refreshToken3 = [credentialCopy refreshToken];
+    if (![(NSString *)v20 isEqualToString:refreshToken3])
     {
 
       v22 = 0;
       goto LABEL_36;
     }
 
-    v41 = v21;
+    v41 = refreshToken3;
     v42 = v19;
   }
 
   v23 = fabs(v10);
   requestedScopeString = self->_requestedScopeString;
-  v25 = [v6 requestedScopeString];
-  if (requestedScopeString == v25)
+  requestedScopeString = [credentialCopy requestedScopeString];
+  if (requestedScopeString == requestedScopeString)
   {
-    if (v23 <= a4)
+    if (v23 <= expiration)
     {
       goto LABEL_22;
     }
@@ -182,25 +182,25 @@ LABEL_18:
     goto LABEL_33;
   }
 
-  v26 = [v6 requestedScopeString];
-  if (!v26)
+  requestedScopeString2 = [credentialCopy requestedScopeString];
+  if (!requestedScopeString2)
   {
     goto LABEL_18;
   }
 
-  v40 = v26;
+  v40 = requestedScopeString2;
   v27 = self->_requestedScopeString;
-  v28 = [v6 requestedScopeString];
+  requestedScopeString3 = [credentialCopy requestedScopeString];
   v29 = v27;
-  v30 = v28;
-  if (![(NSString *)v29 isEqualToString:v28])
+  v30 = requestedScopeString3;
+  if (![(NSString *)v29 isEqualToString:requestedScopeString3])
   {
 
     v22 = 0;
     goto LABEL_27;
   }
 
-  if (v23 > a4)
+  if (v23 > expiration)
   {
     v22 = 0;
     goto LABEL_32;
@@ -209,13 +209,13 @@ LABEL_18:
   v39 = v30;
 LABEL_22:
   scopes = self->_scopes;
-  v32 = [v6 scopes];
-  if (scopes == v32)
+  scopes = [credentialCopy scopes];
+  if (scopes == scopes)
   {
 
     v22 = 1;
     v30 = v39;
-    if (requestedScopeString == v25)
+    if (requestedScopeString == requestedScopeString)
     {
       goto LABEL_33;
     }
@@ -223,18 +223,18 @@ LABEL_22:
     goto LABEL_32;
   }
 
-  v38 = v32;
-  v33 = [v6 scopes];
+  v38 = scopes;
+  scopes2 = [credentialCopy scopes];
   v30 = v39;
-  if (!v33)
+  if (!scopes2)
   {
 
     v22 = 0;
-    if (requestedScopeString == v25)
+    if (requestedScopeString == requestedScopeString)
     {
 LABEL_33:
 
-      if (refreshToken != v17)
+      if (refreshToken != refreshToken)
       {
       }
 
@@ -247,22 +247,22 @@ LABEL_32:
   }
 
   v34 = self->_scopes;
-  v37 = v33;
-  v36 = [v6 scopes];
-  v22 = [(NSSet *)v34 isEqual:v36];
+  v37 = scopes2;
+  scopes3 = [credentialCopy scopes];
+  v22 = [(NSSet *)v34 isEqual:scopes3];
 
-  if (requestedScopeString != v25)
+  if (requestedScopeString != requestedScopeString)
   {
   }
 
 LABEL_27:
-  if (refreshToken != v17)
+  if (refreshToken != refreshToken)
   {
 
 LABEL_29:
-    v15 = v43;
+    accessToken3 = v43;
 
-    if (accessToken == v12)
+    if (accessToken == accessToken)
     {
       goto LABEL_38;
     }
@@ -273,8 +273,8 @@ LABEL_29:
 LABEL_35:
 
 LABEL_36:
-  v15 = v43;
-  if (accessToken != v12)
+  accessToken3 = v43;
+  if (accessToken != accessToken)
   {
     goto LABEL_37;
   }
@@ -293,28 +293,28 @@ LABEL_38:
   return v6 ^ [(NSSet *)self->_scopes hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accessToken = self->_accessToken;
-  v5 = a3;
-  [v5 encodeObject:accessToken forKey:@"accessToken"];
-  [v5 encodeObject:self->_refreshToken forKey:@"refreshToken"];
-  [v5 encodeObject:self->_expiration forKey:@"expiration"];
-  [v5 encodeObject:self->_scopes forKey:@"scopes"];
-  [v5 encodeObject:self->_requestedScopeString forKey:@"requestedScopeString"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accessToken forKey:@"accessToken"];
+  [coderCopy encodeObject:self->_refreshToken forKey:@"refreshToken"];
+  [coderCopy encodeObject:self->_expiration forKey:@"expiration"];
+  [coderCopy encodeObject:self->_scopes forKey:@"scopes"];
+  [coderCopy encodeObject:self->_requestedScopeString forKey:@"requestedScopeString"];
 }
 
-- (HKOAuth2Credential)initWithCoder:(id)a3
+- (HKOAuth2Credential)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessToken"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"refreshToken"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessToken"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"refreshToken"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
   v8 = MEMORY[0x277CBEB98];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"scopes"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedScopeString"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"scopes"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedScopeString"];
   if (v12)
   {
     v17.receiver = self;
@@ -327,45 +327,45 @@ LABEL_38:
     }
 
     self = v14;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v15 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (BOOL)isExpired
 {
-  v3 = [(HKOAuth2Credential *)self accessToken];
-  if (v3)
+  accessToken = [(HKOAuth2Credential *)self accessToken];
+  if (accessToken)
   {
   }
 
   else
   {
-    v9 = [(HKOAuth2Credential *)self refreshToken];
+    refreshToken = [(HKOAuth2Credential *)self refreshToken];
 
-    if (v9)
+    if (refreshToken)
     {
       return 1;
     }
   }
 
-  v4 = [(HKOAuth2Credential *)self expiration];
+  expiration = [(HKOAuth2Credential *)self expiration];
 
-  if (!v4)
+  if (!expiration)
   {
     return 0;
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEAA8]);
-  v6 = [(HKOAuth2Credential *)self expiration];
-  v7 = [v6 hk_isBeforeDate:v5];
+  expiration2 = [(HKOAuth2Credential *)self expiration];
+  v7 = [expiration2 hk_isBeforeDate:v5];
 
   return v7;
 }
@@ -399,10 +399,10 @@ LABEL_38:
   return v10;
 }
 
-+ (id)scopeStringFromScopes:(id)a3
++ (id)scopeStringFromScopes:(id)scopes
 {
-  v3 = [a3 allObjects];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_10];
+  allObjects = [scopes allObjects];
+  v4 = [allObjects sortedArrayUsingComparator:&__block_literal_global_10];
 
   v5 = [v4 componentsJoinedByString:@" "];
 

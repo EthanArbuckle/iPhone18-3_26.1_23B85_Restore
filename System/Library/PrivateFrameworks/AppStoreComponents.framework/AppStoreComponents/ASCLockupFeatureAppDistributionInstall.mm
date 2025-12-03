@@ -1,116 +1,116 @@
 @interface ASCLockupFeatureAppDistributionInstall
-- (ASCLockupFeatureAppDistributionInstall)initWithCoder:(id)a3;
-- (ASCLockupFeatureAppDistributionInstall)initWithDeveloperId:(id)a3 webDistributionDomains:(id)a4 supportUrl:(id)a5 ageRatingValue:(int64_t)a6 contentRatingsBySystem:(id)a7 isDistributor:(BOOL)a8;
-- (BOOL)isEqual:(id)a3;
+- (ASCLockupFeatureAppDistributionInstall)initWithCoder:(id)coder;
+- (ASCLockupFeatureAppDistributionInstall)initWithDeveloperId:(id)id webDistributionDomains:(id)domains supportUrl:(id)url ageRatingValue:(int64_t)value contentRatingsBySystem:(id)system isDistributor:(BOOL)distributor;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupFeatureAppDistributionInstall
 
-- (ASCLockupFeatureAppDistributionInstall)initWithDeveloperId:(id)a3 webDistributionDomains:(id)a4 supportUrl:(id)a5 ageRatingValue:(int64_t)a6 contentRatingsBySystem:(id)a7 isDistributor:(BOOL)a8
+- (ASCLockupFeatureAppDistributionInstall)initWithDeveloperId:(id)id webDistributionDomains:(id)domains supportUrl:(id)url ageRatingValue:(int64_t)value contentRatingsBySystem:(id)system isDistributor:(BOOL)distributor
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  idCopy = id;
+  domainsCopy = domains;
+  urlCopy = url;
+  systemCopy = system;
   v28.receiver = self;
   v28.super_class = ASCLockupFeatureAppDistributionInstall;
   v18 = [(ASCLockupFeatureAppDistributionInstall *)&v28 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [idCopy copy];
     developerId = v18->_developerId;
     v18->_developerId = v19;
 
-    v21 = [v15 copy];
+    v21 = [domainsCopy copy];
     webDistributionDomains = v18->_webDistributionDomains;
     v18->_webDistributionDomains = v21;
 
-    v23 = [v16 copy];
+    v23 = [urlCopy copy];
     supportUrl = v18->_supportUrl;
     v18->_supportUrl = v23;
 
-    v18->_ageRatingValue = a6;
-    v25 = [v17 copy];
+    v18->_ageRatingValue = value;
+    v25 = [systemCopy copy];
     contentRatingsBySystem = v18->_contentRatingsBySystem;
     v18->_contentRatingsBySystem = v25;
 
-    v18->_isDistributor = a8;
+    v18->_isDistributor = distributor;
   }
 
   return v18;
 }
 
-- (ASCLockupFeatureAppDistributionInstall)initWithCoder:(id)a3
+- (ASCLockupFeatureAppDistributionInstall)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"developerId"];
-  v4 = [v3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"webDistributionDomains"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"supportUrl"];
-  v6 = [v3 decodeIntegerForKey:@"ageRatingValue"];
+  coderCopy = coder;
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"developerId"];
+  v4 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"webDistributionDomains"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportUrl"];
+  v6 = [coderCopy decodeIntegerForKey:@"ageRatingValue"];
   v7 = objc_alloc(MEMORY[0x277CBEB98]);
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v7 initWithObjects:{v8, v9, v10, v11, objc_opt_class(), 0}];
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"contentRatingsBySystem"];
-  v14 = [v3 decodeBoolForKey:@"isDistributor"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"contentRatingsBySystem"];
+  v14 = [coderCopy decodeBoolForKey:@"isDistributor"];
 
   v15 = [(ASCLockupFeatureAppDistributionInstall *)self initWithDeveloperId:v17 webDistributionDomains:v4 supportUrl:v5 ageRatingValue:v6 contentRatingsBySystem:v13 isDistributor:v14];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(ASCLockupFeatureAppDistributionInstall *)self developerId];
-  [v8 encodeObject:v4 forKey:@"developerId"];
+  coderCopy = coder;
+  developerId = [(ASCLockupFeatureAppDistributionInstall *)self developerId];
+  [coderCopy encodeObject:developerId forKey:@"developerId"];
 
-  v5 = [(ASCLockupFeatureAppDistributionInstall *)self webDistributionDomains];
-  [v8 encodeObject:v5 forKey:@"webDistributionDomains"];
+  webDistributionDomains = [(ASCLockupFeatureAppDistributionInstall *)self webDistributionDomains];
+  [coderCopy encodeObject:webDistributionDomains forKey:@"webDistributionDomains"];
 
-  v6 = [(ASCLockupFeatureAppDistributionInstall *)self supportUrl];
-  [v8 encodeObject:v6 forKey:@"supportUrl"];
+  supportUrl = [(ASCLockupFeatureAppDistributionInstall *)self supportUrl];
+  [coderCopy encodeObject:supportUrl forKey:@"supportUrl"];
 
-  [v8 encodeInteger:-[ASCLockupFeatureAppDistributionInstall ageRatingValue](self forKey:{"ageRatingValue"), @"ageRatingValue"}];
-  v7 = [(ASCLockupFeatureAppDistributionInstall *)self contentRatingsBySystem];
-  [v8 encodeObject:v7 forKey:@"contentRatingsBySystem"];
+  [coderCopy encodeInteger:-[ASCLockupFeatureAppDistributionInstall ageRatingValue](self forKey:{"ageRatingValue"), @"ageRatingValue"}];
+  contentRatingsBySystem = [(ASCLockupFeatureAppDistributionInstall *)self contentRatingsBySystem];
+  [coderCopy encodeObject:contentRatingsBySystem forKey:@"contentRatingsBySystem"];
 
-  [v8 encodeBool:-[ASCLockupFeatureAppDistributionInstall isDistributor](self forKey:{"isDistributor"), @"isDistributor"}];
+  [coderCopy encodeBool:-[ASCLockupFeatureAppDistributionInstall isDistributor](self forKey:{"isDistributor"), @"isDistributor"}];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCLockupFeatureAppDistributionInstall *)self developerId];
-  [(ASCHasher *)v3 combineObject:v4];
+  developerId = [(ASCLockupFeatureAppDistributionInstall *)self developerId];
+  [(ASCHasher *)v3 combineObject:developerId];
 
-  v5 = [(ASCLockupFeatureAppDistributionInstall *)self webDistributionDomains];
-  [(ASCHasher *)v3 combineObject:v5];
+  webDistributionDomains = [(ASCLockupFeatureAppDistributionInstall *)self webDistributionDomains];
+  [(ASCHasher *)v3 combineObject:webDistributionDomains];
 
-  v6 = [(ASCLockupFeatureAppDistributionInstall *)self supportUrl];
-  [(ASCHasher *)v3 combineObject:v6];
+  supportUrl = [(ASCLockupFeatureAppDistributionInstall *)self supportUrl];
+  [(ASCHasher *)v3 combineObject:supportUrl];
 
   [(ASCHasher *)v3 combineInteger:[(ASCLockupFeatureAppDistributionInstall *)self ageRatingValue]];
-  v7 = [(ASCLockupFeatureAppDistributionInstall *)self contentRatingsBySystem];
-  [(ASCHasher *)v3 combineObject:v7];
+  contentRatingsBySystem = [(ASCLockupFeatureAppDistributionInstall *)self contentRatingsBySystem];
+  [(ASCHasher *)v3 combineObject:contentRatingsBySystem];
 
   [(ASCHasher *)v3 combineBool:[(ASCLockupFeatureAppDistributionInstall *)self isDistributor]];
-  v8 = [(ASCHasher *)v3 finalizeHash];
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
 
-  return v8;
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -139,65 +139,65 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v9 = [(ASCLockupFeatureAppDistributionInstall *)self developerId];
-    v10 = [(ASCLockupFeatureAppDistributionInstall *)v8 developerId];
-    v11 = v10;
-    if (v9 && v10)
+    developerId = [(ASCLockupFeatureAppDistributionInstall *)self developerId];
+    developerId2 = [(ASCLockupFeatureAppDistributionInstall *)v8 developerId];
+    v11 = developerId2;
+    if (developerId && developerId2)
     {
-      if ([v9 isEqual:v10])
+      if ([developerId isEqual:developerId2])
       {
 LABEL_12:
-        v12 = [(ASCLockupFeatureAppDistributionInstall *)self webDistributionDomains];
-        v13 = [(ASCLockupFeatureAppDistributionInstall *)v8 webDistributionDomains];
-        v14 = v13;
-        if (v12 && v13)
+        webDistributionDomains = [(ASCLockupFeatureAppDistributionInstall *)self webDistributionDomains];
+        webDistributionDomains2 = [(ASCLockupFeatureAppDistributionInstall *)v8 webDistributionDomains];
+        v14 = webDistributionDomains2;
+        if (webDistributionDomains && webDistributionDomains2)
         {
-          if ([v12 isEqual:v13])
+          if ([webDistributionDomains isEqual:webDistributionDomains2])
           {
 LABEL_15:
-            v15 = [(ASCLockupFeatureAppDistributionInstall *)self supportUrl];
-            v16 = [(ASCLockupFeatureAppDistributionInstall *)v8 supportUrl];
-            v17 = v16;
-            if (v15 && v16)
+            supportUrl = [(ASCLockupFeatureAppDistributionInstall *)self supportUrl];
+            supportUrl2 = [(ASCLockupFeatureAppDistributionInstall *)v8 supportUrl];
+            v17 = supportUrl2;
+            if (supportUrl && supportUrl2)
             {
-              if (![v15 isEqual:v16])
+              if (![supportUrl isEqual:supportUrl2])
               {
                 goto LABEL_30;
               }
             }
 
-            else if (v15 != v16)
+            else if (supportUrl != supportUrl2)
             {
               goto LABEL_30;
             }
 
-            v18 = [(ASCLockupFeatureAppDistributionInstall *)self ageRatingValue];
-            if (v18 == [(ASCLockupFeatureAppDistributionInstall *)v8 ageRatingValue])
+            ageRatingValue = [(ASCLockupFeatureAppDistributionInstall *)self ageRatingValue];
+            if (ageRatingValue == [(ASCLockupFeatureAppDistributionInstall *)v8 ageRatingValue])
             {
-              v19 = [(ASCLockupFeatureAppDistributionInstall *)self contentRatingsBySystem];
-              v20 = [(ASCLockupFeatureAppDistributionInstall *)v8 contentRatingsBySystem];
-              v21 = v20;
-              v28 = v19;
-              if (v19 && v20)
+              contentRatingsBySystem = [(ASCLockupFeatureAppDistributionInstall *)self contentRatingsBySystem];
+              contentRatingsBySystem2 = [(ASCLockupFeatureAppDistributionInstall *)v8 contentRatingsBySystem];
+              v21 = contentRatingsBySystem2;
+              v28 = contentRatingsBySystem;
+              if (contentRatingsBySystem && contentRatingsBySystem2)
               {
-                v22 = v20;
-                v23 = [v28 isEqual:v20];
+                v22 = contentRatingsBySystem2;
+                v23 = [v28 isEqual:contentRatingsBySystem2];
                 v21 = v22;
                 if (v23)
                 {
 LABEL_29:
                   v24 = v21;
-                  v25 = [(ASCLockupFeatureAppDistributionInstall *)self isDistributor];
-                  v26 = [(ASCLockupFeatureAppDistributionInstall *)v8 isDistributor];
+                  isDistributor = [(ASCLockupFeatureAppDistributionInstall *)self isDistributor];
+                  isDistributor2 = [(ASCLockupFeatureAppDistributionInstall *)v8 isDistributor];
                   v21 = v24;
-                  v7 = v25 ^ v26 ^ 1;
+                  v7 = isDistributor ^ isDistributor2 ^ 1;
 LABEL_33:
 
                   goto LABEL_34;
                 }
               }
 
-              else if (v19 == v20)
+              else if (contentRatingsBySystem == contentRatingsBySystem2)
               {
                 goto LABEL_29;
               }
@@ -214,7 +214,7 @@ LABEL_34:
           }
         }
 
-        else if (v12 == v13)
+        else if (webDistributionDomains == webDistributionDomains2)
         {
           goto LABEL_15;
         }
@@ -226,7 +226,7 @@ LABEL_35:
       }
     }
 
-    else if (v9 == v10)
+    else if (developerId == developerId2)
     {
       goto LABEL_12;
     }
@@ -246,23 +246,23 @@ LABEL_38:
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupFeatureAppDistributionInstall *)self developerId];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"developerId"];
+  developerId = [(ASCLockupFeatureAppDistributionInstall *)self developerId];
+  [(ASCDescriber *)v3 addObject:developerId withName:@"developerId"];
 
-  v5 = [(ASCLockupFeatureAppDistributionInstall *)self webDistributionDomains];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"webDistributionDomains"];
+  webDistributionDomains = [(ASCLockupFeatureAppDistributionInstall *)self webDistributionDomains];
+  [(ASCDescriber *)v3 addObject:webDistributionDomains withName:@"webDistributionDomains"];
 
-  v6 = [(ASCLockupFeatureAppDistributionInstall *)self supportUrl];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"supportUrl"];
+  supportUrl = [(ASCLockupFeatureAppDistributionInstall *)self supportUrl];
+  [(ASCDescriber *)v3 addObject:supportUrl withName:@"supportUrl"];
 
   [(ASCDescriber *)v3 addInteger:[(ASCLockupFeatureAppDistributionInstall *)self ageRatingValue] withName:@"ageRatingValue"];
-  v7 = [(ASCLockupFeatureAppDistributionInstall *)self contentRatingsBySystem];
-  [(ASCDescriber *)v3 addObject:v7 withName:@"contentRatingsBySystem"];
+  contentRatingsBySystem = [(ASCLockupFeatureAppDistributionInstall *)self contentRatingsBySystem];
+  [(ASCDescriber *)v3 addObject:contentRatingsBySystem withName:@"contentRatingsBySystem"];
 
   [(ASCDescriber *)v3 addBool:[(ASCLockupFeatureAppDistributionInstall *)self isDistributor] withName:@"isDistributor"];
-  v8 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v8;
+  return finalizeDescription;
 }
 
 @end

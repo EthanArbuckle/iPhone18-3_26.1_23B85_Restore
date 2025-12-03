@@ -2,36 +2,36 @@
 - (BOOL)p_shouldShowCompactMenu;
 - (BOOL)p_shouldShowShareButton;
 - (UIView)colorControls;
-- (id)localizedAccessibilityStringForStyle:(int64_t)a3;
-- (id)p_buildPaletteImageForFrontTag:(int64_t)a3 middleTag:(int64_t)a4 backTag:(int64_t)a5 pageTheme:(int)a6;
-- (id)p_colorControlImageForColor:(id)a3 withForegroundImage:(id)a4;
-- (id)p_colorControlImageForTag:(int64_t)a3 pageTheme:(int)a4;
-- (id)p_colorControlUnderlineImageForPageTheme:(int)a3;
-- (id)p_colorForTag:(int64_t)a3 pageTheme:(int)a4;
-- (id)p_monochromaticImageFromImage:(id)a3 withColor:(id)a4;
-- (id)p_noteGlyphForTag:(int64_t)a3 pageTheme:(int)a4;
-- (id)p_paletteImageForTag:(int64_t)a3 pageTheme:(int)a4;
-- (id)p_paletteImageWithFrontColor:(id)a3 middleColor:(id)a4 backColor:(id)a5 frontForegroundImage:(id)a6;
-- (id)p_themeForStyle:(int64_t)a3 pageTheme:(int)a4;
-- (id)p_underlineForegroundImageForPageTheme:(int)a3;
-- (int64_t)p_buttonTagForTheme:(id)a3;
+- (id)localizedAccessibilityStringForStyle:(int64_t)style;
+- (id)p_buildPaletteImageForFrontTag:(int64_t)tag middleTag:(int64_t)middleTag backTag:(int64_t)backTag pageTheme:(int)theme;
+- (id)p_colorControlImageForColor:(id)color withForegroundImage:(id)image;
+- (id)p_colorControlImageForTag:(int64_t)tag pageTheme:(int)theme;
+- (id)p_colorControlUnderlineImageForPageTheme:(int)theme;
+- (id)p_colorForTag:(int64_t)tag pageTheme:(int)theme;
+- (id)p_monochromaticImageFromImage:(id)image withColor:(id)color;
+- (id)p_noteGlyphForTag:(int64_t)tag pageTheme:(int)theme;
+- (id)p_paletteImageForTag:(int64_t)tag pageTheme:(int)theme;
+- (id)p_paletteImageWithFrontColor:(id)color middleColor:(id)middleColor backColor:(id)backColor frontForegroundImage:(id)image;
+- (id)p_themeForStyle:(int64_t)style pageTheme:(int)theme;
+- (id)p_underlineForegroundImageForPageTheme:(int)theme;
+- (int64_t)p_buttonTagForTheme:(id)theme;
 - (void)didShow;
-- (void)handleAddNoteButton:(id)a3;
-- (void)handleDeleteButtonTap:(id)a3;
-- (void)handleRightArrowButton:(id)a3;
-- (void)handleShareButton:(id)a3;
+- (void)handleAddNoteButton:(id)button;
+- (void)handleDeleteButtonTap:(id)tap;
+- (void)handleRightArrowButton:(id)button;
+- (void)handleShareButton:(id)button;
 - (void)loadView;
-- (void)p_drawColorControlCircleWithFrame:(CGRect)a3 color:(id)a4;
-- (void)p_drawCrescentWithCircleRect:(CGRect)a3 color:(id)a4 leftShift:(double)a5 addRadius:(double)a6;
+- (void)p_drawColorControlCircleWithFrame:(CGRect)frame color:(id)color;
+- (void)p_drawCrescentWithCircleRect:(CGRect)rect color:(id)color leftShift:(double)shift addRadius:(double)radius;
 - (void)p_postDeleteConfirmation;
-- (void)p_removeAnnotation:(id)a3;
-- (void)p_setStyle:(int64_t)a3 forAnnotation:(id)a4;
+- (void)p_removeAnnotation:(id)annotation;
+- (void)p_setStyle:(int64_t)style forAnnotation:(id)annotation;
 - (void)p_updateAppearance;
-- (void)presentFromRect:(CGRect)a3 view:(id)a4;
+- (void)presentFromRect:(CGRect)rect view:(id)view;
 - (void)releaseOutlets;
-- (void)setDelegate:(id)a3;
-- (void)showColorControlsMenu:(id)a3;
-- (void)useColorOf:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)showColorControlsMenu:(id)menu;
+- (void)useColorOf:(id)of;
 - (void)viewDidLoad;
 - (void)willShow;
 @end
@@ -45,20 +45,20 @@
   [(AKAnnotationPopoverViewController *)&v7 releaseOutlets];
   [(AKHighlightColorEditorController *)self setCalloutBar:0];
   [(AKHighlightColorEditorController *)self setColorControls:0];
-  v3 = [(AKHighlightColorEditorController *)self addNoteButton];
-  [v3 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  addNoteButton = [(AKHighlightColorEditorController *)self addNoteButton];
+  [addNoteButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   [(AKHighlightColorEditorController *)self setAddNoteButton:0];
-  v4 = [(AKHighlightColorEditorController *)self deleteButton];
-  [v4 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  deleteButton = [(AKHighlightColorEditorController *)self deleteButton];
+  [deleteButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   [(AKHighlightColorEditorController *)self setDeleteButton:0];
-  v5 = [(AKHighlightColorEditorController *)self rightArrowButton];
-  [v5 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  rightArrowButton = [(AKHighlightColorEditorController *)self rightArrowButton];
+  [rightArrowButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   [(AKHighlightColorEditorController *)self setRightArrowButton:0];
-  v6 = [(AKHighlightColorEditorController *)self shareButton];
-  [v6 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  shareButton = [(AKHighlightColorEditorController *)self shareButton];
+  [shareButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   [(AKHighlightColorEditorController *)self setShareButton:0];
   [(AKHighlightColorEditorController *)self setAlertController:0];
@@ -76,17 +76,17 @@
   v52.super_class = AKHighlightColorEditorController;
   [(AKAnnotationPopoverViewController *)&v52 viewDidLoad];
   v3 = [AKCalloutBar alloc];
-  v4 = [(AKHighlightColorEditorController *)self view];
-  [v4 bounds];
+  view = [(AKHighlightColorEditorController *)self view];
+  [view bounds];
   v5 = [(AKCalloutBar *)v3 initWithFrame:?];
 
   [(AKCalloutBar *)v5 setAutoresizingMask:18];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(AKAnnotationPopoverViewController *)self delegate];
+  delegate = [(AKAnnotationPopoverViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(AKAnnotationPopoverViewController *)self annotation];
-    v51 = [v7 editorController:self isRightArrowEnabledForAnnotation:v8];
+    annotation = [(AKAnnotationPopoverViewController *)self annotation];
+    v51 = [delegate editorController:self isRightArrowEnabledForAnnotation:annotation];
   }
 
   else
@@ -96,35 +96,35 @@
 
   if ([(AKHighlightColorEditorController *)self p_shouldShowCompactMenu])
   {
-    v9 = [(AKAnnotationPopoverViewController *)self annotationTheme];
-    v10 = [(AKHighlightColorEditorController *)self p_buttonTagForTheme:v9];
+    annotationTheme = [(AKAnnotationPopoverViewController *)self annotationTheme];
+    v10 = [(AKHighlightColorEditorController *)self p_buttonTagForTheme:annotationTheme];
 
     v11 = [AKFingerPotView alloc];
     v12 = *MEMORY[0x277CBF3A0];
     v13 = *(MEMORY[0x277CBF3A0] + 8);
     v14 = *(MEMORY[0x277CBF3A0] + 16);
     v15 = *(MEMORY[0x277CBF3A0] + 24);
-    v16 = [(AKFingerPotView *)v11 initWithFrame:*MEMORY[0x277CBF3A0], v13, v14, v15];
+    colorControls = [(AKFingerPotView *)v11 initWithFrame:*MEMORY[0x277CBF3A0], v13, v14, v15];
     v17 = [(AKHighlightColorEditorController *)self p_paletteImageForTag:v10 pageTheme:[(AKHighlightColorEditorController *)self pageTheme]];
-    [(AKFingerPotView *)v16 setImage:v17 forState:0];
+    [(AKFingerPotView *)colorControls setImage:v17 forState:0];
 
-    [(AKFingerPotView *)v16 addTarget:self action:sel_showColorControlsMenu_ forControlEvents:64];
-    [(AKFingerPotView *)v16 setFrame:0.0, 0.0, 40.0, 38.0];
+    [(AKFingerPotView *)colorControls addTarget:self action:sel_showColorControlsMenu_ forControlEvents:64];
+    [(AKFingerPotView *)colorControls setFrame:0.0, 0.0, 40.0, 38.0];
     v18 = +[AKController akBundle];
     v19 = [v18 localizedStringForKey:@"Selection_Menu_Colors" value:@"Colors…" table:@"AKHighlightColorEditorController"];
-    [(AKFingerPotView *)v16 setAccessibilityLabel:v19];
+    [(AKFingerPotView *)colorControls setAccessibilityLabel:v19];
   }
 
   else
   {
-    v16 = [(AKHighlightColorEditorController *)self colorControls];
+    colorControls = [(AKHighlightColorEditorController *)self colorControls];
     v12 = *MEMORY[0x277CBF3A0];
     v13 = *(MEMORY[0x277CBF3A0] + 8);
     v14 = *(MEMORY[0x277CBF3A0] + 16);
     v15 = *(MEMORY[0x277CBF3A0] + 24);
   }
 
-  [v6 addObject:v16];
+  [v6 addObject:colorControls];
   v20 = [[AKFingerPotView alloc] initWithFrame:v12, v13, v14, v15];
   v21 = [MEMORY[0x277D755B8] akImageNamed:@"ib_text_pop_icon_trash"];
   [(AKFingerPotView *)v20 setImage:v21 forState:0];
@@ -192,8 +192,8 @@
   if ([(AKHighlightColorEditorController *)self p_shouldShowCompactMenu])
   {
     v43 = objc_alloc(MEMORY[0x277CBEA60]);
-    v44 = [(AKHighlightColorEditorController *)self colorControls];
-    v45 = [v43 initWithObjects:{v44, 0}];
+    colorControls2 = [(AKHighlightColorEditorController *)self colorControls];
+    v45 = [v43 initWithObjects:{colorControls2, 0}];
 
     [(AKCalloutBar *)v5 sizeThatFitsControls:v45];
     if (v40 < v46)
@@ -207,11 +207,11 @@
   Width = CGRectGetWidth(v53);
   [(AKCalloutBar *)v5 frame];
   Height = CGRectGetHeight(v54);
-  v49 = [(AKHighlightColorEditorController *)self view];
-  [v49 setFrame:{0.0, 0.0, Width, Height}];
+  view2 = [(AKHighlightColorEditorController *)self view];
+  [view2 setFrame:{0.0, 0.0, Width, Height}];
 
-  v50 = [(AKHighlightColorEditorController *)self view];
-  [v50 addSubview:v5];
+  view3 = [(AKHighlightColorEditorController *)self view];
+  [view3 addSubview:v5];
 
   [(AKHighlightColorEditorController *)self setCalloutBar:v5];
   [(AKHighlightColorEditorController *)self p_updateAppearance];
@@ -219,11 +219,11 @@
 
 - (BOOL)p_shouldShowShareButton
 {
-  v3 = [(AKAnnotationPopoverViewController *)self delegate];
+  delegate = [(AKAnnotationPopoverViewController *)self delegate];
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v4 = [(AKAnnotationPopoverViewController *)self annotation];
-    v5 = [v3 editorController:self isSharingEnabledForAnnotation:v4];
+    annotation = [(AKAnnotationPopoverViewController *)self annotation];
+    v5 = [delegate editorController:self isSharingEnabledForAnnotation:annotation];
   }
 
   else
@@ -236,19 +236,19 @@
 
 - (BOOL)p_shouldShowCompactMenu
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v3 traitCollection];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
 
-  v5 = 1;
+  p_shouldShowShareButton = 1;
   v6 = [MEMORY[0x277D75C80] traitCollectionWithHorizontalSizeClass:1];
-  v7 = [v4 containsTraitsInCollection:v6];
+  v7 = [traitCollection containsTraitsInCollection:v6];
 
   if ((v7 & 1) == 0)
   {
-    v5 = [(AKHighlightColorEditorController *)self p_shouldShowShareButton];
+    p_shouldShowShareButton = [(AKHighlightColorEditorController *)self p_shouldShowShareButton];
   }
 
-  return v5;
+  return p_shouldShowShareButton;
 }
 
 - (UIView)colorControls
@@ -323,9 +323,9 @@
   return mColorControls;
 }
 
-- (int64_t)p_buttonTagForTheme:(id)a3
+- (int64_t)p_buttonTagForTheme:(id)theme
 {
-  v3 = a3;
+  themeCopy = theme;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -389,8 +389,8 @@
 {
   if ([(AKHighlightColorEditorController *)self isViewLoaded])
   {
-    v3 = [(AKAnnotationPopoverViewController *)self annotationTheme];
-    v4 = [(AKHighlightColorEditorController *)self p_buttonTagForTheme:v3];
+    annotationTheme = [(AKAnnotationPopoverViewController *)self annotationTheme];
+    v4 = [(AKHighlightColorEditorController *)self p_buttonTagForTheme:annotationTheme];
 
     for (i = 1; i != 7; ++i)
     {
@@ -403,8 +403,8 @@
     [(UIButton *)mAddNoteButton setImage:v8 forState:0];
 
     v9 = self->super.mPosition == 1;
-    v10 = [(AKHighlightColorEditorController *)self calloutBar];
-    [v10 setUp:v9];
+    calloutBar = [(AKHighlightColorEditorController *)self calloutBar];
+    [calloutBar setUp:v9];
   }
 }
 
@@ -413,8 +413,8 @@
   v4.receiver = self;
   v4.super_class = AKHighlightColorEditorController;
   [(AKAnnotationPopoverViewController *)&v4 willShow];
-  v3 = [(AKHighlightColorEditorController *)self calloutBar];
-  [v3 setBlurDisabled:1];
+  calloutBar = [(AKHighlightColorEditorController *)self calloutBar];
+  [calloutBar setBlurDisabled:1];
 }
 
 - (void)didShow
@@ -422,22 +422,22 @@
   v4.receiver = self;
   v4.super_class = AKHighlightColorEditorController;
   [(AKAnnotationPopoverViewController *)&v4 didShow];
-  v3 = [(AKHighlightColorEditorController *)self calloutBar];
-  [v3 setBlurDisabled:0];
+  calloutBar = [(AKHighlightColorEditorController *)self calloutBar];
+  [calloutBar setBlurDisabled:0];
 }
 
-- (void)presentFromRect:(CGRect)a3 view:(id)a4
+- (void)presentFromRect:(CGRect)rect view:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21.receiver = self;
   v21.super_class = AKHighlightColorEditorController;
-  v9 = a4;
-  [(AKAnnotationPopoverViewController *)&v21 presentFromRect:v9 view:x, y, width, height];
+  viewCopy = view;
+  [(AKAnnotationPopoverViewController *)&v21 presentFromRect:viewCopy view:x, y, width, height];
   v10 = [(AKHighlightColorEditorController *)self calloutBar:v21.receiver];
-  [v9 convertRect:v10 toView:{x, y, width, height}];
+  [viewCopy convertRect:v10 toView:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -448,16 +448,16 @@
   v22.size.width = v16;
   v22.size.height = v18;
   MidX = CGRectGetMidX(v22);
-  v20 = [(AKHighlightColorEditorController *)self calloutBar];
-  [v20 setArrowX:MidX];
+  calloutBar = [(AKHighlightColorEditorController *)self calloutBar];
+  [calloutBar setArrowX:MidX];
 }
 
-- (id)localizedAccessibilityStringForStyle:(int64_t)a3
+- (id)localizedAccessibilityStringForStyle:(int64_t)style
 {
   v3 = 0;
-  if (a3 > 3)
+  if (style > 3)
   {
-    switch(a3)
+    switch(style)
     {
       case 4:
         v4 = +[AKController akBundle];
@@ -484,7 +484,7 @@
 
   else
   {
-    switch(a3)
+    switch(style)
     {
       case 1:
         v4 = +[AKController akBundle];
@@ -516,37 +516,37 @@ LABEL_15:
   return v3;
 }
 
-- (id)p_themeForStyle:(int64_t)a3 pageTheme:(int)a4
+- (id)p_themeForStyle:(int64_t)style pageTheme:(int)theme
 {
   v4 = 0;
-  if (a3 > 3)
+  if (style > 3)
   {
-    switch(a3)
+    switch(style)
     {
       case 4:
-        v4 = [AKAnnotationTheme pinkTheme:*&a4];
+        v4 = [AKAnnotationTheme pinkTheme:*&theme];
         break;
       case 5:
-        v4 = [AKAnnotationTheme purpleTheme:*&a4];
+        v4 = [AKAnnotationTheme purpleTheme:*&theme];
         break;
       case 6:
-        v4 = [AKAnnotationTheme underlineTheme:*&a4];
+        v4 = [AKAnnotationTheme underlineTheme:*&theme];
         break;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(style)
     {
       case 1:
-        v4 = [AKAnnotationTheme yellowTheme:*&a4];
+        v4 = [AKAnnotationTheme yellowTheme:*&theme];
         break;
       case 2:
-        v4 = [AKAnnotationTheme greenTheme:*&a4];
+        v4 = [AKAnnotationTheme greenTheme:*&theme];
         break;
       case 3:
-        v4 = [AKAnnotationTheme blueTheme:*&a4];
+        v4 = [AKAnnotationTheme blueTheme:*&theme];
         break;
     }
   }
@@ -554,23 +554,23 @@ LABEL_15:
   return v4;
 }
 
-- (void)p_setStyle:(int64_t)a3 forAnnotation:(id)a4
+- (void)p_setStyle:(int64_t)style forAnnotation:(id)annotation
 {
-  v6 = a4;
-  v7 = [(AKAnnotationPopoverViewController *)self annotationTheme];
-  v8 = [v7 pageTheme];
+  annotationCopy = annotation;
+  annotationTheme = [(AKAnnotationPopoverViewController *)self annotationTheme];
+  pageTheme = [annotationTheme pageTheme];
 
-  v10 = [(AKHighlightColorEditorController *)self p_themeForStyle:a3 pageTheme:v8];
+  v10 = [(AKHighlightColorEditorController *)self p_themeForStyle:style pageTheme:pageTheme];
   [(AKAnnotationPopoverViewController *)self setAnnotationTheme:v10];
-  v9 = [(AKAnnotationPopoverViewController *)self delegate];
-  [v9 editorController:self setTheme:v10 forAnnotation:v6];
+  delegate = [(AKAnnotationPopoverViewController *)self delegate];
+  [delegate editorController:self setTheme:v10 forAnnotation:annotationCopy];
 }
 
-- (void)p_removeAnnotation:(id)a3
+- (void)p_removeAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(AKAnnotationPopoverViewController *)self delegate];
-  [v5 editorController:self deleteAnnotation:v4];
+  annotationCopy = annotation;
+  delegate = [(AKAnnotationPopoverViewController *)self delegate];
+  [delegate editorController:self deleteAnnotation:annotationCopy];
 }
 
 - (void)p_postDeleteConfirmation
@@ -603,77 +603,77 @@ LABEL_15:
   [(AKHighlightColorEditorController *)self presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(AKHighlightColorEditorController *)self alertController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  delegateCopy = delegate;
+  alertController = [(AKHighlightColorEditorController *)self alertController];
+  [alertController dismissViewControllerAnimated:1 completion:0];
 
   [(AKHighlightColorEditorController *)self setAlertController:0];
   v6.receiver = self;
   v6.super_class = AKHighlightColorEditorController;
-  [(AKAnnotationPopoverViewController *)&v6 setDelegate:v4];
+  [(AKAnnotationPopoverViewController *)&v6 setDelegate:delegateCopy];
 }
 
-- (void)useColorOf:(id)a3
+- (void)useColorOf:(id)of
 {
-  v4 = [a3 tag];
-  v5 = [(AKAnnotationPopoverViewController *)self annotation];
-  [(AKHighlightColorEditorController *)self p_setStyle:v4 forAnnotation:v5];
+  v4 = [of tag];
+  annotation = [(AKAnnotationPopoverViewController *)self annotation];
+  [(AKHighlightColorEditorController *)self p_setStyle:v4 forAnnotation:annotation];
 
   [(AKHighlightColorEditorController *)self p_updateAppearance];
 }
 
-- (void)showColorControlsMenu:(id)a3
+- (void)showColorControlsMenu:(id)menu
 {
   v4 = objc_alloc(MEMORY[0x277CBEA60]);
-  v5 = [(AKHighlightColorEditorController *)self colorControls];
-  v7 = [v4 initWithObjects:{v5, 0}];
+  colorControls = [(AKHighlightColorEditorController *)self colorControls];
+  v7 = [v4 initWithObjects:{colorControls, 0}];
 
-  v6 = [(AKHighlightColorEditorController *)self calloutBar];
-  [v6 setControls:v7];
+  calloutBar = [(AKHighlightColorEditorController *)self calloutBar];
+  [calloutBar setControls:v7];
 }
 
-- (void)handleAddNoteButton:(id)a3
+- (void)handleAddNoteButton:(id)button
 {
   [(AKAnnotationPopoverViewController *)self hide];
-  v5 = [(AKAnnotationPopoverViewController *)self delegate];
-  v4 = [(AKAnnotationPopoverViewController *)self annotation];
-  [v5 editorController:self editNote:v4];
+  delegate = [(AKAnnotationPopoverViewController *)self delegate];
+  annotation = [(AKAnnotationPopoverViewController *)self annotation];
+  [delegate editorController:self editNote:annotation];
 }
 
-- (void)handleShareButton:(id)a3
+- (void)handleShareButton:(id)button
 {
-  v4 = [(AKAnnotationPopoverViewController *)self delegate];
+  delegate = [(AKAnnotationPopoverViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AKAnnotationPopoverViewController *)self delegate];
-    v7 = [(AKAnnotationPopoverViewController *)self annotation];
-    [v6 editorController:self shareAnnotation:v7];
+    delegate2 = [(AKAnnotationPopoverViewController *)self delegate];
+    annotation = [(AKAnnotationPopoverViewController *)self annotation];
+    [delegate2 editorController:self shareAnnotation:annotation];
   }
 
   [(AKAnnotationPopoverViewController *)self hide];
 }
 
-- (void)handleDeleteButtonTap:(id)a3
+- (void)handleDeleteButtonTap:(id)tap
 {
-  v4 = [(AKAnnotationPopoverViewController *)self annotation];
-  [(AKHighlightColorEditorController *)self p_removeAnnotation:v4];
+  annotation = [(AKAnnotationPopoverViewController *)self annotation];
+  [(AKHighlightColorEditorController *)self p_removeAnnotation:annotation];
 
   [(AKAnnotationPopoverViewController *)self hide];
 }
 
-- (void)handleRightArrowButton:(id)a3
+- (void)handleRightArrowButton:(id)button
 {
-  v5 = [(AKAnnotationPopoverViewController *)self delegate];
+  delegate = [(AKAnnotationPopoverViewController *)self delegate];
   [(AKAnnotationPopoverViewController *)self hide];
-  v4 = [(AKAnnotationPopoverViewController *)self annotation];
-  [v5 editorController:self showEditMenuForAnnotation:v4];
+  annotation = [(AKAnnotationPopoverViewController *)self annotation];
+  [delegate editorController:self showEditMenuForAnnotation:annotation];
 }
 
-- (id)p_colorForTag:(int64_t)a3 pageTheme:(int)a4
+- (id)p_colorForTag:(int64_t)tag pageTheme:(int)theme
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -686,23 +686,23 @@ LABEL_15:
   }
 
   v6 = 0;
-  if (a3 && a3 <= 6 && a4 <= 4)
+  if (tag && tag <= 6 && theme <= 4)
   {
-    v7 = *off_278C7BEC8[a4];
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v7 = *off_278C7BEC8[theme];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:tag];
     v6 = [v7 objectForKeyedSubscript:v8];
   }
 
   return v6;
 }
 
-- (void)p_drawColorControlCircleWithFrame:(CGRect)a3 color:(id)a4
+- (void)p_drawColorControlCircleWithFrame:(CGRect)frame color:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;
@@ -725,8 +725,8 @@ LABEL_15:
 
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  [v8 setStroke];
-  [v8 setFill];
+  [colorCopy setStroke];
+  [colorCopy setFill];
 
   v13 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{x, y, v11, v11}];
   [v13 stroke];
@@ -735,25 +735,25 @@ LABEL_15:
   CGContextRestoreGState(CurrentContext);
 }
 
-- (id)p_colorControlImageForColor:(id)a3 withForegroundImage:(id)a4
+- (id)p_colorControlImageForColor:(id)color withForegroundImage:(id)image
 {
-  v6 = a4;
-  v7 = a3;
+  imageCopy = image;
+  colorCopy = color;
   v11.width = 38.0;
   v11.height = 38.0;
   UIGraphicsBeginImageContextWithOptions(v11, 0, 0.0);
-  [(AKHighlightColorEditorController *)self p_drawColorControlCircleWithFrame:v7 color:6.0, 6.0, 26.0, 26.0];
+  [(AKHighlightColorEditorController *)self p_drawColorControlCircleWithFrame:colorCopy color:6.0, 6.0, 26.0, 26.0];
 
-  [v6 drawAtPoint:{6.0, 6.0}];
+  [imageCopy drawAtPoint:{6.0, 6.0}];
   v8 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v8;
 }
 
-- (id)p_underlineForegroundImageForPageTheme:(int)a3
+- (id)p_underlineForegroundImageForPageTheme:(int)theme
 {
-  if (a3 == 3)
+  if (theme == 3)
   {
     v3 = @"ib_text_pop_icon_highlight_underline_night";
   }
@@ -766,17 +766,17 @@ LABEL_15:
   return [MEMORY[0x277D755B8] akImageNamed:v3];
 }
 
-- (id)p_colorControlUnderlineImageForPageTheme:(int)a3
+- (id)p_colorControlUnderlineImageForPageTheme:(int)theme
 {
-  v3 = *&a3;
-  v5 = [(AKHighlightColorEditorController *)self p_colorForTag:6 pageTheme:*&a3];
+  v3 = *&theme;
+  v5 = [(AKHighlightColorEditorController *)self p_colorForTag:6 pageTheme:*&theme];
   v6 = [(AKHighlightColorEditorController *)self p_underlineForegroundImageForPageTheme:v3];
   v7 = [(AKHighlightColorEditorController *)self p_colorControlImageForColor:v5 withForegroundImage:v6];
 
   return v7;
 }
 
-- (id)p_colorControlImageForTag:(int64_t)a3 pageTheme:(int)a4
+- (id)p_colorControlImageForTag:(int64_t)tag pageTheme:(int)theme
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -789,30 +789,30 @@ LABEL_15:
   }
 
   v6 = 0;
-  if (a3 && a3 <= 6 && a4 <= 4)
+  if (tag && tag <= 6 && theme <= 4)
   {
-    v7 = *off_278C7BEF0[a4];
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v7 = *off_278C7BEF0[theme];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:tag];
     v6 = [v7 objectForKeyedSubscript:v8];
   }
 
   return v6;
 }
 
-- (void)p_drawCrescentWithCircleRect:(CGRect)a3 color:(id)a4 leftShift:(double)a5 addRadius:(double)a6
+- (void)p_drawCrescentWithCircleRect:(CGRect)rect color:(id)color leftShift:(double)shift addRadius:(double)radius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   v32.origin.x = x;
   v32.origin.y = y;
   v32.size.width = width;
   v32.size.height = height;
-  v28 = CGRectGetMidX(v32) - a5;
+  v28 = CGRectGetMidX(v32) - shift;
   v33.origin.x = x;
   v33.origin.y = y;
   v33.size.width = width;
@@ -822,16 +822,16 @@ LABEL_15:
   v34.origin.y = y;
   v34.size.width = width;
   v34.size.height = height;
-  v27 = a6;
+  radiusCopy = radius;
   v29 = height;
-  v30 = CGRectGetHeight(v34) * 0.5 + a6;
-  v35.origin.x = x - a5;
+  v30 = CGRectGetHeight(v34) * 0.5 + radius;
+  v35.origin.x = x - shift;
   v35.origin.y = y;
   v14 = y;
   v35.size.width = width;
   v15 = width;
   v35.size.height = height;
-  v36 = CGRectInset(v35, -a6, -a6);
+  v36 = CGRectInset(v35, -radius, -radius);
   v16 = v36.origin.x;
   v17 = v36.origin.y;
   v18 = v36.size.height;
@@ -851,7 +851,7 @@ LABEL_15:
   v38.origin.y = v17;
   v38.size.width = MaxX;
   v38.size.height = v18;
-  v22 = CGRectGetMaxX(v38) + v27;
+  v22 = CGRectGetMaxX(v38) + radiusCopy;
   v39.origin.x = v16;
   v39.origin.y = v17;
   v39.size.width = MaxX;
@@ -861,7 +861,7 @@ LABEL_15:
   v40.origin.y = v17;
   v40.size.width = MaxX;
   v40.size.height = v18;
-  v23 = CGRectGetMaxX(v40) + v27;
+  v23 = CGRectGetMaxX(v40) + radiusCopy;
   v41.origin.x = v16;
   v41.origin.y = v17;
   v41.size.width = MaxX;
@@ -879,8 +879,8 @@ LABEL_15:
   [v21 addLineToPoint:{v24, CGRectGetMinY(v43)}];
   [v21 closePath];
   [v21 addClip];
-  [v12 setStroke];
-  [v12 setFill];
+  [colorCopy setStroke];
+  [colorCopy setFill];
 
   v25 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{x, v14, v15, v29}];
   [v25 stroke];
@@ -889,17 +889,17 @@ LABEL_15:
   CGContextRestoreGState(CurrentContext);
 }
 
-- (id)p_paletteImageWithFrontColor:(id)a3 middleColor:(id)a4 backColor:(id)a5 frontForegroundImage:(id)a6
+- (id)p_paletteImageWithFrontColor:(id)color middleColor:(id)middleColor backColor:(id)backColor frontForegroundImage:(id)image
 {
   v10 = MEMORY[0x277D759A0];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 mainScreen];
+  imageCopy = image;
+  backColorCopy = backColor;
+  middleColorCopy = middleColor;
+  colorCopy = color;
+  mainScreen = [v10 mainScreen];
   if (objc_opt_respondsToSelector())
   {
-    [v15 scale];
+    [mainScreen scale];
     v17 = v16;
 
     if (v17 <= 1.0)
@@ -922,25 +922,25 @@ LABEL_15:
   v22.width = 40.0;
   v22.height = 38.0;
   UIGraphicsBeginImageContextWithOptions(v22, 0, 0.0);
-  [(AKHighlightColorEditorController *)self p_drawCrescentWithCircleRect:v12 color:11.5 leftShift:5.0 addRadius:27.0, 27.0, 5.0, v18];
+  [(AKHighlightColorEditorController *)self p_drawCrescentWithCircleRect:backColorCopy color:11.5 leftShift:5.0 addRadius:27.0, 27.0, 5.0, v18];
 
-  [(AKHighlightColorEditorController *)self p_drawCrescentWithCircleRect:v13 color:6.5 leftShift:5.0 addRadius:27.0, 27.0, 5.0, v18];
-  [(AKHighlightColorEditorController *)self p_drawColorControlCircleWithFrame:v14 color:1.5, 5.0, 27.0, 27.0];
+  [(AKHighlightColorEditorController *)self p_drawCrescentWithCircleRect:middleColorCopy color:6.5 leftShift:5.0 addRadius:27.0, 27.0, 5.0, v18];
+  [(AKHighlightColorEditorController *)self p_drawColorControlCircleWithFrame:colorCopy color:1.5, 5.0, 27.0, 27.0];
 
-  [v11 drawInRect:{1.5, 5.0, 27.0, 27.0}];
+  [imageCopy drawInRect:{1.5, 5.0, 27.0, 27.0}];
   v19 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v19;
 }
 
-- (id)p_buildPaletteImageForFrontTag:(int64_t)a3 middleTag:(int64_t)a4 backTag:(int64_t)a5 pageTheme:(int)a6
+- (id)p_buildPaletteImageForFrontTag:(int64_t)tag middleTag:(int64_t)middleTag backTag:(int64_t)backTag pageTheme:(int)theme
 {
-  v6 = *&a6;
-  v11 = [(AKHighlightColorEditorController *)self p_colorForTag:a3 pageTheme:*&a6];
-  v12 = [(AKHighlightColorEditorController *)self p_colorForTag:a4 pageTheme:v6];
-  v13 = [(AKHighlightColorEditorController *)self p_colorForTag:a5 pageTheme:v6];
-  if (a3 == 6)
+  v6 = *&theme;
+  v11 = [(AKHighlightColorEditorController *)self p_colorForTag:tag pageTheme:*&theme];
+  v12 = [(AKHighlightColorEditorController *)self p_colorForTag:middleTag pageTheme:v6];
+  v13 = [(AKHighlightColorEditorController *)self p_colorForTag:backTag pageTheme:v6];
+  if (tag == 6)
   {
     v14 = [(AKHighlightColorEditorController *)self p_underlineForegroundImageForPageTheme:v6];
   }
@@ -955,7 +955,7 @@ LABEL_15:
   return v15;
 }
 
-- (id)p_paletteImageForTag:(int64_t)a3 pageTheme:(int)a4
+- (id)p_paletteImageForTag:(int64_t)tag pageTheme:(int)theme
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -968,38 +968,38 @@ LABEL_15:
   }
 
   v6 = 0;
-  if (a3 && a3 <= 6 && a4 <= 4)
+  if (tag && tag <= 6 && theme <= 4)
   {
-    v7 = *off_278C7BF18[a4];
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v7 = *off_278C7BF18[theme];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:tag];
     v6 = [v7 objectForKeyedSubscript:v8];
   }
 
   return v6;
 }
 
-- (id)p_monochromaticImageFromImage:(id)a3 withColor:(id)a4
+- (id)p_monochromaticImageFromImage:(id)image withColor:(id)color
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 size];
+  colorCopy = color;
+  imageCopy = image;
+  [imageCopy size];
   UIGraphicsBeginImageContextWithOptions(v17, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  [v6 size];
+  [imageCopy size];
   v9 = v8;
-  [v6 size];
+  [imageCopy size];
   v11 = v10;
-  [v6 size];
+  [imageCopy size];
   CGContextTranslateCTM(CurrentContext, 0.0, v12);
   CGContextScaleCTM(CurrentContext, 1.0, -1.0);
-  v13 = [v6 CGImage];
+  cGImage = [imageCopy CGImage];
 
   v18.origin.x = 0.0;
   v18.origin.y = 0.0;
   v18.size.width = v9;
   v18.size.height = v11;
-  CGContextClipToMask(CurrentContext, v18, v13);
-  [v5 setFill];
+  CGContextClipToMask(CurrentContext, v18, cGImage);
+  [colorCopy setFill];
 
   v19.origin.x = 0.0;
   v19.origin.y = 0.0;
@@ -1012,7 +1012,7 @@ LABEL_15:
   return v14;
 }
 
-- (id)p_noteGlyphForTag:(int64_t)a3 pageTheme:(int)a4
+- (id)p_noteGlyphForTag:(int64_t)tag pageTheme:(int)theme
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1025,10 +1025,10 @@ LABEL_15:
   }
 
   v6 = 0;
-  if (a3 && a3 <= 6 && a4 <= 4)
+  if (tag && tag <= 6 && theme <= 4)
   {
-    v7 = *off_278C7BF40[a4];
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v7 = *off_278C7BF40[theme];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:tag];
     v6 = [v7 objectForKeyedSubscript:v8];
   }
 

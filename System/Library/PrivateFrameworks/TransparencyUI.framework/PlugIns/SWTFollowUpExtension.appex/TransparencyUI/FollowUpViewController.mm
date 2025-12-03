@@ -1,8 +1,8 @@
 @interface FollowUpViewController
 - (_TtC20SWTFollowUpExtension22FollowUpViewController)init;
-- (_TtC20SWTFollowUpExtension22FollowUpViewController)initWithCoder:(id)a3;
-- (_TtC20SWTFollowUpExtension22FollowUpViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
+- (_TtC20SWTFollowUpExtension22FollowUpViewController)initWithCoder:(id)coder;
+- (_TtC20SWTFollowUpExtension22FollowUpViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -23,7 +23,7 @@
   return [(FollowUpViewController *)&v10 initWithNibName:0 bundle:0];
 }
 
-- (_TtC20SWTFollowUpExtension22FollowUpViewController)initWithCoder:(id)a3
+- (_TtC20SWTFollowUpExtension22FollowUpViewController)initWithCoder:(id)coder
 {
   result = sub_100003A04();
   __break(1u);
@@ -37,9 +37,9 @@
   [(FollowUpViewController *)&v2 viewDidLoad];
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -52,14 +52,14 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  FollowUpViewController.processFollowUpItem(_:selectedAction:completion:)(a3, a4, v8, v9);
+  itemCopy = item;
+  actionCopy = action;
+  selfCopy = self;
+  FollowUpViewController.processFollowUpItem(_:selectedAction:completion:)(item, action, v8, v9);
   sub_100003764(v8);
 }
 
-- (_TtC20SWTFollowUpExtension22FollowUpViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20SWTFollowUpExtension22FollowUpViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -3,8 +3,8 @@
 - (NSString)ipa_phone_seq;
 - (NSString)phone_seq;
 - (NSString)token_text;
-- (Offset<siri::speech::schema_fb::RecognitionToken>)addObjectToBuffer:(void *)a3;
-- (QSSRecognitionToken)initWithFlatbuffData:(id)a3 root:(const RecognitionToken *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::RecognitionToken>)addObjectToBuffer:(void *)buffer;
+- (QSSRecognitionToken)initWithFlatbuffData:(id)data root:(const RecognitionToken *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)confidence;
 - (int)end_milli_seconds;
@@ -43,60 +43,60 @@ flatbuffers::DetachedBuffer *__35__QSSRecognitionToken_flatbuffData__block_invok
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::RecognitionToken>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::RecognitionToken>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSRecognitionToken *)self token_text];
-  v6 = v5;
-  if (!v5)
+  token_text = [(QSSRecognitionToken *)self token_text];
+  v6 = token_text;
+  if (!token_text)
   {
-    v5 = &stru_2879AE8E0;
+    token_text = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)token_text UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSRecognitionToken *)self start_milli_seconds];
-  v11 = [(QSSRecognitionToken *)self end_milli_seconds];
-  v12 = [(QSSRecognitionToken *)self silence_start_milli_seconds];
-  v13 = [(QSSRecognitionToken *)self confidence];
-  v26 = [(QSSRecognitionToken *)self add_space_after];
-  v14 = [(QSSRecognitionToken *)self phone_seq];
-  v15 = v14;
-  if (!v14)
+  start_milli_seconds = [(QSSRecognitionToken *)self start_milli_seconds];
+  end_milli_seconds = [(QSSRecognitionToken *)self end_milli_seconds];
+  silence_start_milli_seconds = [(QSSRecognitionToken *)self silence_start_milli_seconds];
+  confidence = [(QSSRecognitionToken *)self confidence];
+  add_space_after = [(QSSRecognitionToken *)self add_space_after];
+  phone_seq = [(QSSRecognitionToken *)self phone_seq];
+  v15 = phone_seq;
+  if (!phone_seq)
   {
-    v14 = &stru_2879AE8E0;
+    phone_seq = &stru_2879AE8E0;
   }
 
-  v16 = [(__CFString *)v14 UTF8String];
-  v17 = strlen(v16);
-  v18 = flatbuffers::FlatBufferBuilder::CreateString(a3, v16, v17);
+  uTF8String2 = [(__CFString *)phone_seq UTF8String];
+  v17 = strlen(uTF8String2);
+  v18 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v17);
 
-  v19 = [(QSSRecognitionToken *)self ipa_phone_seq];
-  v20 = v19;
-  if (!v19)
+  ipa_phone_seq = [(QSSRecognitionToken *)self ipa_phone_seq];
+  v20 = ipa_phone_seq;
+  if (!ipa_phone_seq)
   {
-    v19 = &stru_2879AE8E0;
+    ipa_phone_seq = &stru_2879AE8E0;
   }
 
-  v21 = [(__CFString *)v19 UTF8String];
-  v22 = strlen(v21);
-  LODWORD(v21) = flatbuffers::FlatBufferBuilder::CreateString(a3, v21, v22);
+  uTF8String3 = [(__CFString *)ipa_phone_seq UTF8String];
+  v22 = strlen(uTF8String3);
+  LODWORD(uTF8String3) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v22);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v23 = *(a3 + 10);
-  v24 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v10);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v11);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 12, v13);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 14, v26);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 16, v18);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 18, v21);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v23 = *(buffer + 10);
+  v24 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, start_milli_seconds);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, end_milli_seconds);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, silence_start_milli_seconds);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 12, confidence);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 14, add_space_after);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 16, v18);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 18, uTF8String3);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v24 + v23);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v24 + v23);
 }
 
 - (NSString)ipa_phone_seq
@@ -235,42 +235,42 @@ flatbuffers::DetachedBuffer *__35__QSSRecognitionToken_flatbuffData__block_invok
   return v6;
 }
 
-- (QSSRecognitionToken)initWithFlatbuffData:(id)a3 root:(const RecognitionToken *)a4 verify:(BOOL)a5
+- (QSSRecognitionToken)initWithFlatbuffData:(id)data root:(const RecognitionToken *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSRecognitionToken;
   v10 = [(QSSRecognitionToken *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -292,9 +292,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

@@ -1,15 +1,15 @@
 @interface DownloadableAttachmentStateChangeListener
 - (_TtC15HealthRecordsUI41DownloadableAttachmentStateChangeListener)init;
-- (void)downloadableAttachmentDidChangeState:(id)a3;
+- (void)downloadableAttachmentDidChangeState:(id)state;
 @end
 
 @implementation DownloadableAttachmentStateChangeListener
 
-- (void)downloadableAttachmentDidChangeState:(id)a3
+- (void)downloadableAttachmentDidChangeState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1213584(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1D1213584(stateCopy);
 }
 
 - (_TtC15HealthRecordsUI41DownloadableAttachmentStateChangeListener)init

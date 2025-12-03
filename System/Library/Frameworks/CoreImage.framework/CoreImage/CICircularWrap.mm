@@ -337,7 +337,7 @@
         v61 = v39;
         v62 = (v44 - v42);
         v63 = (v45 - v39);
-        v64 = [(CICircularWrap *)self _kernel];
+        _kernel = [(CICircularWrap *)self _kernel];
         v77[0] = MEMORY[0x1E69E9820];
         v77[1] = 3221225472;
         v77[2] = __29__CICircularWrap_outputImage__block_invoke;
@@ -354,7 +354,7 @@
         v78[3] = [MEMORY[0x1E696AD98] numberWithDouble:v70 + 0.5];
         *&v67 = v18;
         v78[4] = [MEMORY[0x1E696AD98] numberWithFloat:v67];
-        return [v64 applyWithExtent:v77 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v78, 5), v60, v61, v62, v63}];
+        return [_kernel applyWithExtent:v77 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v78, 5), v60, v61, v62, v63}];
       }
     }
   }

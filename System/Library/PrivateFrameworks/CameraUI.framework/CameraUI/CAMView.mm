@@ -1,32 +1,32 @@
 @interface CAMView
-+ (void)animateIfNeededWithDuration:(double)a3 options:(unint64_t)a4 animations:(id)a5 completion:(id)a6;
-+ (void)animateIfNeededWithDuration:(double)a3 usingSpringWithDamping:(double)a4 initialSpringVelocity:(double)a5 options:(unint64_t)a6 animations:(id)a7 completion:(id)a8;
-+ (void)ceilBounds:(CGRect *)a3 andRoundCenter:(CGPoint *)a4 toViewScale:(id)a5;
-+ (void)convertRect:(CGRect)a3 toCeiledBounds:(CGRect *)a4 andRoundedCenter:(CGPoint *)a5 toViewScale:(id)a6;
-+ (void)rotateView:(id)a3 toInterfaceOrientation:(int64_t)a4 animated:(BOOL)a5;
-+ (void)setBorderColor:(id)a3 width:(double)a4 forView:(id)a5;
-+ (void)setBorderForView:(id)a3;
-+ (void)view:(id)a3 insertSubview:(id)a4 aboveSubview:(id)a5;
-+ (void)view:(id)a3 insertSubview:(id)a4 belowSubview:(id)a5;
++ (void)animateIfNeededWithDuration:(double)duration options:(unint64_t)options animations:(id)animations completion:(id)completion;
++ (void)animateIfNeededWithDuration:(double)duration usingSpringWithDamping:(double)damping initialSpringVelocity:(double)velocity options:(unint64_t)options animations:(id)animations completion:(id)completion;
++ (void)ceilBounds:(CGRect *)bounds andRoundCenter:(CGPoint *)center toViewScale:(id)scale;
++ (void)convertRect:(CGRect)rect toCeiledBounds:(CGRect *)bounds andRoundedCenter:(CGPoint *)center toViewScale:(id)scale;
++ (void)rotateView:(id)view toInterfaceOrientation:(int64_t)orientation animated:(BOOL)animated;
++ (void)setBorderColor:(id)color width:(double)width forView:(id)view;
++ (void)setBorderForView:(id)view;
++ (void)view:(id)view insertSubview:(id)subview aboveSubview:(id)aboveSubview;
++ (void)view:(id)view insertSubview:(id)subview belowSubview:(id)belowSubview;
 @end
 
 @implementation CAMView
 
-+ (void)ceilBounds:(CGRect *)a3 andRoundCenter:(CGPoint *)a4 toViewScale:(id)a5
++ (void)ceilBounds:(CGRect *)bounds andRoundCenter:(CGPoint *)center toViewScale:(id)scale
 {
-  if (a3 && a4)
+  if (bounds && center)
   {
-    origin = a3->origin;
-    v7 = a5;
+    origin = bounds->origin;
+    scaleCopy = scale;
     UICeilToViewScale();
     v9 = v8;
     v24 = v8;
     UICeilToViewScale();
     v23 = v10;
-    x = a4->x;
-    y = a4->y;
+    x = center->x;
+    y = center->y;
     v13 = v9 * 0.5;
-    v14 = a4->x - v13;
+    v14 = center->x - v13;
     v15 = v10 * 0.5;
     v16 = y - v10 * 0.5;
     UIRoundToViewScale();
@@ -41,29 +41,29 @@
     }
 
     v22 = v15 + v20;
-    a3->origin = origin;
+    bounds->origin = origin;
     if (v20 == v16)
     {
       v22 = y;
     }
 
-    a3->size.width = v24;
-    a3->size.height = v23;
-    a4->x = v21;
-    a4->y = v22;
+    bounds->size.width = v24;
+    bounds->size.height = v23;
+    center->x = v21;
+    center->y = v22;
   }
 }
 
-+ (void)convertRect:(CGRect)a3 toCeiledBounds:(CGRect *)a4 andRoundedCenter:(CGPoint *)a5 toViewScale:(id)a6
++ (void)convertRect:(CGRect)rect toCeiledBounds:(CGRect *)bounds andRoundedCenter:(CGPoint *)center toViewScale:(id)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16 = *MEMORY[0x1E695EFF8];
-  v17.width = a3.size.width;
-  v17.height = a3.size.height;
-  v12 = a6;
+  v17.width = rect.size.width;
+  v17.height = rect.size.height;
+  scaleCopy = scale;
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
@@ -75,30 +75,30 @@
   v19.size.height = height;
   v15.x = MidX;
   v15.y = CGRectGetMidY(v19);
-  [CAMView ceilBounds:&v16 andRoundCenter:&v15 toViewScale:v12];
+  [CAMView ceilBounds:&v16 andRoundCenter:&v15 toViewScale:scaleCopy];
 
-  if (a4)
+  if (bounds)
   {
     v14 = v17;
-    a4->origin = v16;
-    a4->size = v14;
+    bounds->origin = v16;
+    bounds->size = v14;
   }
 
-  if (a5)
+  if (center)
   {
-    *a5 = v15;
+    *center = v15;
   }
 }
 
-+ (void)rotateView:(id)a3 toInterfaceOrientation:(int64_t)a4 animated:(BOOL)a5
++ (void)rotateView:(id)view toInterfaceOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   v11[1] = 3221225472;
   v11[0] = MEMORY[0x1E69E9820];
   v11[2] = __54__CAMView_rotateView_toInterfaceOrientation_animated___block_invoke;
   v11[3] = &unk_1E76F7A38;
-  if (v5)
+  if (animatedCopy)
   {
     v9 = 0.3;
   }
@@ -108,113 +108,113 @@
     v9 = 0.0;
   }
 
-  v12 = v8;
-  v13 = a4;
-  v10 = v8;
-  [a1 animateIfNeededWithDuration:2 options:v11 animations:0 completion:v9];
+  v12 = viewCopy;
+  orientationCopy = orientation;
+  v10 = viewCopy;
+  [self animateIfNeededWithDuration:2 options:v11 animations:0 completion:v9];
 }
 
-+ (void)animateIfNeededWithDuration:(double)a3 usingSpringWithDamping:(double)a4 initialSpringVelocity:(double)a5 options:(unint64_t)a6 animations:(id)a7 completion:(id)a8
++ (void)animateIfNeededWithDuration:(double)duration usingSpringWithDamping:(double)damping initialSpringVelocity:(double)velocity options:(unint64_t)options animations:(id)animations completion:(id)completion
 {
-  v14 = a8;
-  if (a3 == 0.0)
+  completionCopy = completion;
+  if (duration == 0.0)
   {
-    (*(a7 + 2))(a7);
-    v13 = v14;
-    if (!v14)
+    (*(animations + 2))(animations);
+    v13 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    (*(v14 + 2))();
+    (*(completionCopy + 2))();
   }
 
   else
   {
-    [MEMORY[0x1E69DD250] animateWithDuration:a6 delay:a7 usingSpringWithDamping:v14 initialSpringVelocity:a3 options:0.0 animations:a4 completion:a5];
+    [MEMORY[0x1E69DD250] animateWithDuration:options delay:animations usingSpringWithDamping:completionCopy initialSpringVelocity:duration options:0.0 animations:damping completion:velocity];
   }
 
-  v13 = v14;
+  v13 = completionCopy;
 LABEL_6:
 }
 
-+ (void)animateIfNeededWithDuration:(double)a3 options:(unint64_t)a4 animations:(id)a5 completion:(id)a6
++ (void)animateIfNeededWithDuration:(double)duration options:(unint64_t)options animations:(id)animations completion:(id)completion
 {
-  v10 = a6;
-  if (a3 == 0.0)
+  completionCopy = completion;
+  if (duration == 0.0)
   {
-    (*(a5 + 2))(a5);
-    v9 = v10;
-    if (!v10)
+    (*(animations + 2))(animations);
+    v9 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    (*(v10 + 2))();
+    (*(completionCopy + 2))();
   }
 
   else
   {
-    [MEMORY[0x1E69DD250] animateWithDuration:a4 delay:a5 options:v10 animations:a3 completion:0.0];
+    [MEMORY[0x1E69DD250] animateWithDuration:options delay:animations options:completionCopy animations:duration completion:0.0];
   }
 
-  v9 = v10;
+  v9 = completionCopy;
 LABEL_6:
 }
 
-+ (void)view:(id)a3 insertSubview:(id)a4 belowSubview:(id)a5
++ (void)view:(id)view insertSubview:(id)subview belowSubview:(id)belowSubview
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v8 && ([v8 superview], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == v11))
+  viewCopy = view;
+  subviewCopy = subview;
+  belowSubviewCopy = belowSubview;
+  v9 = belowSubviewCopy;
+  if (belowSubviewCopy && ([belowSubviewCopy superview], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == viewCopy))
   {
-    [v11 insertSubview:v7 belowSubview:v9];
+    [viewCopy insertSubview:subviewCopy belowSubview:v9];
   }
 
   else
   {
-    [v11 addSubview:v7];
+    [viewCopy addSubview:subviewCopy];
   }
 }
 
-+ (void)view:(id)a3 insertSubview:(id)a4 aboveSubview:(id)a5
++ (void)view:(id)view insertSubview:(id)subview aboveSubview:(id)aboveSubview
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v8 && ([v8 superview], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == v11))
+  viewCopy = view;
+  subviewCopy = subview;
+  aboveSubviewCopy = aboveSubview;
+  v9 = aboveSubviewCopy;
+  if (aboveSubviewCopy && ([aboveSubviewCopy superview], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == viewCopy))
   {
-    [v11 insertSubview:v7 aboveSubview:v9];
+    [viewCopy insertSubview:subviewCopy aboveSubview:v9];
   }
 
   else
   {
-    [v11 addSubview:v7];
+    [viewCopy addSubview:subviewCopy];
   }
 }
 
-+ (void)setBorderForView:(id)a3
++ (void)setBorderForView:(id)view
 {
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [v4 whiteColor];
-  [a1 setBorderColor:v6 forView:v5];
+  viewCopy = view;
+  whiteColor = [v4 whiteColor];
+  [self setBorderColor:whiteColor forView:viewCopy];
 }
 
-+ (void)setBorderColor:(id)a3 width:(double)a4 forView:(id)a5
++ (void)setBorderColor:(id)color width:(double)width forView:(id)view
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a3 CGColor];
-  v11 = [v9 layer];
-  [v11 setBorderColor:v10];
+  colorCopy = color;
+  viewCopy = view;
+  cGColor = [color CGColor];
+  layer = [viewCopy layer];
+  [layer setBorderColor:cGColor];
 
-  v12 = [v9 layer];
+  layer2 = [viewCopy layer];
 
-  [v12 setBorderWidth:a4];
+  [layer2 setBorderWidth:width];
 }
 
 @end

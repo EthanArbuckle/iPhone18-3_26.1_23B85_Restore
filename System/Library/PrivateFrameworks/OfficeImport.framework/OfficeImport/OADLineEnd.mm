@@ -1,18 +1,18 @@
 @interface OADLineEnd
 + (id)defaultProperties;
-+ (id)stringForLineEndLength:(unsigned __int8)a3;
-+ (id)stringForLineEndType:(unsigned __int8)a3;
-+ (id)stringForLineEndWidth:(unsigned __int8)a3;
++ (id)stringForLineEndLength:(unsigned __int8)length;
++ (id)stringForLineEndType:(unsigned __int8)type;
++ (id)stringForLineEndWidth:(unsigned __int8)width;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADLineEnd)initWithDefaults;
-- (OADLineEnd)initWithType:(unsigned __int8)a3 width:(unsigned __int8)a4 length:(unsigned __int8)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OADLineEnd)initWithType:(unsigned __int8)type width:(unsigned __int8)width length:(unsigned __int8)length;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unsigned)length;
 - (unsigned)type;
 - (unsigned)width;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 - (void)removeUnnecessaryOverrides;
 @end
 
@@ -34,11 +34,11 @@
 {
   v5.receiver = self;
   v5.super_class = OADLineEnd;
-  v2 = [(OADProperties *)&v5 initWithDefaults];
-  v3 = v2;
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v5 initWithDefaults];
+  v3 = initWithDefaults;
+  if (initWithDefaults)
   {
-    [(OADLineEnd *)v2 setType:0];
+    [(OADLineEnd *)initWithDefaults setType:0];
     [(OADLineEnd *)v3 setWidth:1];
     [(OADLineEnd *)v3 setLength:1];
   }
@@ -70,9 +70,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*(&self->super + 20))
   {
@@ -92,32 +92,32 @@
   return v5;
 }
 
-- (OADLineEnd)initWithType:(unsigned __int8)a3 width:(unsigned __int8)a4 length:(unsigned __int8)a5
+- (OADLineEnd)initWithType:(unsigned __int8)type width:(unsigned __int8)width length:(unsigned __int8)length
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  lengthCopy = length;
+  widthCopy = width;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = OADLineEnd;
   v8 = [(OADProperties *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(OADLineEnd *)v8 setType:v7];
-    [(OADLineEnd *)v9 setWidth:v6];
-    [(OADLineEnd *)v9 setLength:v5];
+    [(OADLineEnd *)v8 setType:typeCopy];
+    [(OADLineEnd *)v9 setWidth:widthCopy];
+    [(OADLineEnd *)v9 setLength:lengthCopy];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     v6 = *(&self->super + 17) == v7[17] && *(&self->super + 18) == v7[18] && *(&self->super + 19) == v7[19];
   }
 
@@ -143,16 +143,16 @@ void __31__OADLineEnd_defaultProperties__block_invoke()
   return [(OADProperties *)&v4 isAnythingOverridden]|| [(OADLineEnd *)self isTypeOverridden]|| [(OADLineEnd *)self isWidthOverridden]|| [(OADLineEnd *)self isLengthOverridden];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v11.receiver = self;
   v11.super_class = OADLineEnd;
-  [(OADProperties *)&v11 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ((*(&self->super + 20) & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v11 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ((*(&self->super + 20) & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
-    v6 = [(OADLineEnd *)self type];
-    if (v6 == [v4 type])
+    type = [(OADLineEnd *)self type];
+    if (type == [valuesCopy type])
     {
       *(&self->super + 20) &= ~1u;
     }
@@ -163,10 +163,10 @@ void __31__OADLineEnd_defaultProperties__block_invoke()
     }
   }
 
-  if ((*(&self->super + 20) & 2) != 0 || ([(OADProperties *)self parent], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 != v4))
+  if ((*(&self->super + 20) & 2) != 0 || ([(OADProperties *)self parent], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 != valuesCopy))
   {
-    v8 = [(OADLineEnd *)self width];
-    if (v8 == [v4 width])
+    width = [(OADLineEnd *)self width];
+    if (width == [valuesCopy width])
     {
       *(&self->super + 20) &= ~2u;
     }
@@ -177,10 +177,10 @@ void __31__OADLineEnd_defaultProperties__block_invoke()
     }
   }
 
-  if ((*(&self->super + 20) & 4) != 0 || ([(OADProperties *)self parent], v9 = objc_claimAutoreleasedReturnValue(), v9, v9 != v4))
+  if ((*(&self->super + 20) & 4) != 0 || ([(OADProperties *)self parent], v9 = objc_claimAutoreleasedReturnValue(), v9, v9 != valuesCopy))
   {
     v10 = [(OADLineEnd *)self length];
-    if (v10 == [v4 length])
+    if (v10 == [valuesCopy length])
     {
       *(&self->super + 20) &= ~4u;
     }
@@ -194,19 +194,19 @@ void __31__OADLineEnd_defaultProperties__block_invoke()
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(OADProperties *)self isMerged];
-    v5 = [(OADProperties *)self isMergedWithParent];
+    isMerged = [(OADProperties *)self isMerged];
+    isMergedWithParent = [(OADProperties *)self isMergedWithParent];
     [(OADProperties *)self setMerged:0];
     [(OADProperties *)self setMergedWithParent:0];
     if ([(OADLineEnd *)self isTypeOverridden])
     {
-      v6 = [(OADProperties *)self parent];
-      v7 = [(OADLineEnd *)self type];
-      if (v7 == [v6 type])
+      parent2 = [(OADProperties *)self parent];
+      type = [(OADLineEnd *)self type];
+      if (type == [parent2 type])
       {
         [(OADLineEnd *)self setType:0];
         *(&self->super + 20) &= ~1u;
@@ -215,9 +215,9 @@ void __31__OADLineEnd_defaultProperties__block_invoke()
 
     if ([(OADLineEnd *)self isWidthOverridden])
     {
-      v8 = [(OADProperties *)self parent];
-      v9 = [(OADLineEnd *)self width];
-      if (v9 == [v8 width])
+      parent3 = [(OADProperties *)self parent];
+      width = [(OADLineEnd *)self width];
+      if (width == [parent3 width])
       {
         [(OADLineEnd *)self setWidth:1];
         *(&self->super + 20) &= ~2u;
@@ -226,59 +226,59 @@ void __31__OADLineEnd_defaultProperties__block_invoke()
 
     if ([(OADLineEnd *)self isLengthOverridden])
     {
-      v10 = [(OADProperties *)self parent];
+      parent4 = [(OADProperties *)self parent];
       v11 = [(OADLineEnd *)self length];
-      if (v11 == [v10 length])
+      if (v11 == [parent4 length])
       {
         [(OADLineEnd *)self setLength:1];
         *(&self->super + 20) &= ~4u;
       }
     }
 
-    [(OADProperties *)self setMerged:v4];
-    [(OADProperties *)self setMergedWithParent:v5];
+    [(OADProperties *)self setMerged:isMerged];
+    [(OADProperties *)self setMergedWithParent:isMergedWithParent];
     v12.receiver = self;
     v12.super_class = OADLineEnd;
     [(OADProperties *)&v12 removeUnnecessaryOverrides];
   }
 }
 
-+ (id)stringForLineEndType:(unsigned __int8)a3
++ (id)stringForLineEndType:(unsigned __int8)type
 {
-  if (a3 > 5u)
+  if (type > 5u)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799C7EA8[a3];
+    return off_2799C7EA8[type];
   }
 }
 
-+ (id)stringForLineEndWidth:(unsigned __int8)a3
++ (id)stringForLineEndWidth:(unsigned __int8)width
 {
-  if (a3 > 2u)
+  if (width > 2u)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799C7ED8[a3];
+    return off_2799C7ED8[width];
   }
 }
 
-+ (id)stringForLineEndLength:(unsigned __int8)a3
++ (id)stringForLineEndLength:(unsigned __int8)length
 {
-  if (a3 > 2u)
+  if (length > 2u)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799C7ED8[a3];
+    return off_2799C7ED8[length];
   }
 }
 

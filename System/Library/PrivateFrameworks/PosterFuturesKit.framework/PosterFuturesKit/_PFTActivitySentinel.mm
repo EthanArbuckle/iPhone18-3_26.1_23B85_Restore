@@ -1,5 +1,5 @@
 @interface _PFTActivitySentinel
-- (_PFTActivitySentinel)initWithActivity:(id)a3;
+- (_PFTActivitySentinel)initWithActivity:(id)activity;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -24,28 +24,28 @@
   [(_PFTActivitySentinel *)&v3 dealloc];
 }
 
-- (_PFTActivitySentinel)initWithActivity:(id)a3
+- (_PFTActivitySentinel)initWithActivity:(id)activity
 {
-  v6 = a3;
-  if (!v6)
+  activityCopy = activity;
+  if (!activityCopy)
   {
     [(_PFTActivitySentinel *)a2 initWithActivity:?];
   }
 
-  v7 = v6;
+  v7 = activityCopy;
   v14.receiver = self;
   v14.super_class = _PFTActivitySentinel;
   v8 = [(_PFTActivitySentinel *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_activity, a3);
+    objc_storeStrong(&v8->_activity, activity);
     v10 = objc_opt_new();
     invalidationSignal = v9->_invalidationSignal;
     v9->_invalidationSignal = v10;
 
-    v12 = [v7 wrappedActivity];
-    os_activity_scope_enter(v12, &v9->_state);
+    wrappedActivity = [v7 wrappedActivity];
+    os_activity_scope_enter(wrappedActivity, &v9->_state);
   }
 
   return v9;

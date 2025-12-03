@@ -1,10 +1,10 @@
 @interface WiFiUsageRangingSession
 - (WiFiUsageRangingSession)init;
-- (void)addRangingRttSampleWithRssi:(int64_t)a3 rtt:(int64_t)a4 snr:(unint64_t)a5 flags:(unint64_t)a6 channel:(unint64_t)a7 coreId:(unint64_t)a8 bitErrorRate:(unint64_t)a9 phyError:(unint64_t)a10 andPeerSnr:(unint64_t)a11 andPeerCoreId:(unint64_t)a12 andPeerBitErrorRate:(unint64_t)a13 andPeerPhyError:(unint64_t)a14;
-- (void)rangingCompletedWithValidCount:(unint64_t)a3 resultStatus:(int64_t)a4 resultFlags:(unint64_t)a5;
+- (void)addRangingRttSampleWithRssi:(int64_t)rssi rtt:(int64_t)rtt snr:(unint64_t)snr flags:(unint64_t)flags channel:(unint64_t)channel coreId:(unint64_t)id bitErrorRate:(unint64_t)rate phyError:(unint64_t)self0 andPeerSnr:(unint64_t)self1 andPeerCoreId:(unint64_t)self2 andPeerBitErrorRate:(unint64_t)self3 andPeerPhyError:(unint64_t)self4;
+- (void)rangingCompletedWithValidCount:(unint64_t)count resultStatus:(int64_t)status resultFlags:(unint64_t)flags;
 - (void)rangingLinkUp;
-- (void)rangingSessionRequestedWithSelfPreferredChannel:(unint64_t)a3 selfMainChannel:(unint64_t)a4 selfChannelFlags:(unint64_t)a5 peerPreferredChannel:(unint64_t)a6 peerMainChannel:(unint64_t)a7 peerChannelFlags:(unint64_t)a8 requester:(id)a9;
-- (void)rangingStartedWithNumMeasurements:(unint64_t)a3;
+- (void)rangingSessionRequestedWithSelfPreferredChannel:(unint64_t)channel selfMainChannel:(unint64_t)mainChannel selfChannelFlags:(unint64_t)flags peerPreferredChannel:(unint64_t)preferredChannel peerMainChannel:(unint64_t)peerMainChannel peerChannelFlags:(unint64_t)channelFlags requester:(id)requester;
+- (void)rangingStartedWithNumMeasurements:(unint64_t)measurements;
 @end
 
 @implementation WiFiUsageRangingSession
@@ -32,21 +32,21 @@
   return v2;
 }
 
-- (void)rangingSessionRequestedWithSelfPreferredChannel:(unint64_t)a3 selfMainChannel:(unint64_t)a4 selfChannelFlags:(unint64_t)a5 peerPreferredChannel:(unint64_t)a6 peerMainChannel:(unint64_t)a7 peerChannelFlags:(unint64_t)a8 requester:(id)a9
+- (void)rangingSessionRequestedWithSelfPreferredChannel:(unint64_t)channel selfMainChannel:(unint64_t)mainChannel selfChannelFlags:(unint64_t)flags peerPreferredChannel:(unint64_t)preferredChannel peerMainChannel:(unint64_t)peerMainChannel peerChannelFlags:(unint64_t)channelFlags requester:(id)requester
 {
   v16 = MEMORY[0x277CBEAA8];
-  v17 = a9;
-  v18 = [v16 date];
+  requesterCopy = requester;
+  date = [v16 date];
   sessionStartTimestamp = self->_sessionStartTimestamp;
-  self->_sessionStartTimestamp = v18;
+  self->_sessionStartTimestamp = date;
 
-  self->_selfPreferredChannel = a3;
-  self->_selfMainChannel = a4;
-  self->_selfChannelFlags = a5;
-  self->_peerPreferredChannel = a6;
-  self->_peerMainChannel = a7;
-  self->_peerChannelFlags = a8;
-  v20 = [v17 copy];
+  self->_selfPreferredChannel = channel;
+  self->_selfMainChannel = mainChannel;
+  self->_selfChannelFlags = flags;
+  self->_peerPreferredChannel = preferredChannel;
+  self->_peerMainChannel = peerMainChannel;
+  self->_peerChannelFlags = channelFlags;
+  v20 = [requesterCopy copy];
 
   requester = self->_requester;
   self->_requester = v20;
@@ -73,31 +73,31 @@
 
 - (void)rangingLinkUp
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   sessionLinkUpTimestamp = self->_sessionLinkUpTimestamp;
-  self->_sessionLinkUpTimestamp = v3;
+  self->_sessionLinkUpTimestamp = date;
 
-  MEMORY[0x2821F96F8](v3, sessionLinkUpTimestamp);
+  MEMORY[0x2821F96F8](date, sessionLinkUpTimestamp);
 }
 
-- (void)rangingStartedWithNumMeasurements:(unint64_t)a3
+- (void)rangingStartedWithNumMeasurements:(unint64_t)measurements
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   if (!self->_sessionLinkUpTimestamp)
   {
-    objc_storeStrong(&self->_sessionLinkUpTimestamp, v5);
+    objc_storeStrong(&self->_sessionLinkUpTimestamp, date);
   }
 
   if (!self->_peerDiscoveryTimestamp)
   {
-    objc_storeStrong(&self->_peerDiscoveryTimestamp, v5);
+    objc_storeStrong(&self->_peerDiscoveryTimestamp, date);
   }
 
   rangingStartedTimestamp = self->_rangingStartedTimestamp;
-  self->_rangingStartedTimestamp = v5;
-  v7 = v5;
+  self->_rangingStartedTimestamp = date;
+  v7 = date;
 
-  self->_numRequestedMeasurements = a3;
+  self->_numRequestedMeasurements = measurements;
   [(NSMutableArray *)self->_rttSamples removeAllObjects];
 
   self->_numValidMeasurements = 0;
@@ -105,15 +105,15 @@
   self->_measurementFlags = 0;
 }
 
-- (void)rangingCompletedWithValidCount:(unint64_t)a3 resultStatus:(int64_t)a4 resultFlags:(unint64_t)a5
+- (void)rangingCompletedWithValidCount:(unint64_t)count resultStatus:(int64_t)status resultFlags:(unint64_t)flags
 {
-  v9 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   rangingCompletionTimestamp = self->_rangingCompletionTimestamp;
-  self->_rangingCompletionTimestamp = v9;
+  self->_rangingCompletionTimestamp = date;
 
-  self->_numValidMeasurements = a3;
-  self->_measurementStatus = a4;
-  self->_measurementFlags = a5;
+  self->_numValidMeasurements = count;
+  self->_measurementStatus = status;
+  self->_measurementFlags = flags;
   if (self->_sessionStartTimestamp)
   {
     peerDiscoveryTimestamp = self->_peerDiscoveryTimestamp;
@@ -135,32 +135,32 @@
   }
 }
 
-- (void)addRangingRttSampleWithRssi:(int64_t)a3 rtt:(int64_t)a4 snr:(unint64_t)a5 flags:(unint64_t)a6 channel:(unint64_t)a7 coreId:(unint64_t)a8 bitErrorRate:(unint64_t)a9 phyError:(unint64_t)a10 andPeerSnr:(unint64_t)a11 andPeerCoreId:(unint64_t)a12 andPeerBitErrorRate:(unint64_t)a13 andPeerPhyError:(unint64_t)a14
+- (void)addRangingRttSampleWithRssi:(int64_t)rssi rtt:(int64_t)rtt snr:(unint64_t)snr flags:(unint64_t)flags channel:(unint64_t)channel coreId:(unint64_t)id bitErrorRate:(unint64_t)rate phyError:(unint64_t)self0 andPeerSnr:(unint64_t)self1 andPeerCoreId:(unint64_t)self2 andPeerBitErrorRate:(unint64_t)self3 andPeerPhyError:(unint64_t)self4
 {
   v24 = objc_alloc_init(WiFiUsageRangingRttSample);
-  [(WiFiUsageRangingRttSample *)v24 setRssi:a3];
-  [(WiFiUsageRangingRttSample *)v24 setRtt:a4];
-  [(WiFiUsageRangingRttSample *)v24 setFlags:a6];
-  [(WiFiUsageRangingRttSample *)v24 setChannel:a7];
-  [(WiFiUsageRangingRttSample *)v24 setSelfSnr:a5];
-  [(WiFiUsageRangingRttSample *)v24 setSelfCoreId:a8];
-  [(WiFiUsageRangingRttSample *)v24 setSelfBitErrorRate:a9];
-  [(WiFiUsageRangingRttSample *)v24 setSelfPhyError:a10];
-  [(WiFiUsageRangingRttSample *)v24 setPeerSnr:a11];
-  [(WiFiUsageRangingRttSample *)v24 setPeerCoreId:a12];
-  [(WiFiUsageRangingRttSample *)v24 setPeerBitErrorRate:a13];
-  [(WiFiUsageRangingRttSample *)v24 setPeerPhyError:a14];
+  [(WiFiUsageRangingRttSample *)v24 setRssi:rssi];
+  [(WiFiUsageRangingRttSample *)v24 setRtt:rtt];
+  [(WiFiUsageRangingRttSample *)v24 setFlags:flags];
+  [(WiFiUsageRangingRttSample *)v24 setChannel:channel];
+  [(WiFiUsageRangingRttSample *)v24 setSelfSnr:snr];
+  [(WiFiUsageRangingRttSample *)v24 setSelfCoreId:id];
+  [(WiFiUsageRangingRttSample *)v24 setSelfBitErrorRate:rate];
+  [(WiFiUsageRangingRttSample *)v24 setSelfPhyError:error];
+  [(WiFiUsageRangingRttSample *)v24 setPeerSnr:peerSnr];
+  [(WiFiUsageRangingRttSample *)v24 setPeerCoreId:coreId];
+  [(WiFiUsageRangingRttSample *)v24 setPeerBitErrorRate:errorRate];
+  [(WiFiUsageRangingRttSample *)v24 setPeerPhyError:phyError];
   rttSamples = self->_rttSamples;
   if (!rttSamples)
   {
-    v22 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v23 = self->_rttSamples;
-    self->_rttSamples = v22;
+    self->_rttSamples = array;
 
     rttSamples = self->_rttSamples;
   }
 
-  [(NSMutableArray *)rttSamples addObject:v24, a12];
+  [(NSMutableArray *)rttSamples addObject:v24, coreId];
 }
 
 @end

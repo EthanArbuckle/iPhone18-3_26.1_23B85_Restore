@@ -7,12 +7,12 @@
 
 - (void)init
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = TransactionStore;
   v1 = objc_msgSendSuper2(&v12, "init");
   if (v1)

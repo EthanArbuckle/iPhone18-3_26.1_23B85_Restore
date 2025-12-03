@@ -1,5 +1,5 @@
 @interface SUScriptActivityNativeObject
-- (void)activity:(id)a3 prepareWithActivityItems:(id)a4;
+- (void)activity:(id)activity prepareWithActivityItems:(id)items;
 - (void)destroyNativeObject;
 - (void)setupNativeObject;
 @end
@@ -22,11 +22,11 @@
   [(SUScriptNativeObject *)&v3 setupNativeObject];
 }
 
-- (void)activity:(id)a3 prepareWithActivityItems:(id)a4
+- (void)activity:(id)activity prepareWithActivityItems:(id)items
 {
-  v5 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  [(SUScriptObject *)v5 _performActionFunctionWithItems:a4];
+  [(SUScriptObject *)scriptObject _performActionFunctionWithItems:items];
 }
 
 @end

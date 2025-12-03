@@ -1,59 +1,59 @@
 @interface HMDNetworkRouterClientConfiguration
-+ (id)configurationForFirewallConfiguration:(id)a3 hapAccessory:(BOOL)a4 airplayAccessory:(BOOL)a5 withClientIdentifier:(id)a6;
-+ (id)configurationForOpenProtectionWithClientIdentifier:(id)a3;
-+ (id)configurationWithClientIdentifier:(id)a3 lanIdentifier:(int64_t)a4;
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)configurationForFirewallConfiguration:(id)configuration hapAccessory:(BOOL)accessory airplayAccessory:(BOOL)airplayAccessory withClientIdentifier:(id)identifier;
++ (id)configurationForOpenProtectionWithClientIdentifier:(id)identifier;
++ (id)configurationWithClientIdentifier:(id)identifier lanIdentifier:(int64_t)lanIdentifier;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterClientConfiguration)init;
-- (HMDNetworkRouterClientConfiguration)initWithClientIdentifier:(id)a3 lanIdentifier:(id)a4 credential:(id)a5 wanFirewallConfiguration:(id)a6 lanFirewallConfiguration:(id)a7;
+- (HMDNetworkRouterClientConfiguration)initWithClientIdentifier:(id)identifier lanIdentifier:(id)lanIdentifier credential:(id)credential wanFirewallConfiguration:(id)configuration lanFirewallConfiguration:(id)firewallConfiguration;
 - (NSString)description;
 - (NSUUID)fingerprint;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterClientConfiguration
 
 - (NSUUID)fingerprint
 {
-  v3 = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
-  if (!v3)
+  lanIdentifier = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
+  if (!lanIdentifier)
   {
     goto LABEL_6;
   }
 
-  v4 = v3;
-  v5 = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
-  if (v5)
+  selfCopy = lanIdentifier;
+  lanFirewallConfiguration = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
+  if (lanFirewallConfiguration)
   {
-    v6 = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
+    wanFirewallConfiguration = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
 
-    if (v6)
+    if (wanFirewallConfiguration)
     {
-      v4 = self;
-      v7 = [(HMDNetworkRouterClientConfiguration *)v4 clientIdentifier];
-      if (v7)
+      selfCopy = self;
+      clientIdentifier = [(HMDNetworkRouterClientConfiguration *)selfCopy clientIdentifier];
+      if (clientIdentifier)
       {
       }
 
       else
       {
-        v8 = [(HMDNetworkRouterClientConfiguration *)v4 credential];
+        credential = [(HMDNetworkRouterClientConfiguration *)selfCopy credential];
 
-        if (!v8)
+        if (!credential)
         {
 LABEL_9:
-          v14 = [(HMDNetworkRouterClientConfiguration *)v4 serializeWithError:0];
+          v14 = [(HMDNetworkRouterClientConfiguration *)selfCopy serializeWithError:0];
           if (v14)
           {
             v15 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"5FA86C71-D9DE-4FE8-80BB-823164245F58"];
-            v5 = [MEMORY[0x277CCAD78] hmf_UUIDWithNamespace:v15 data:v14];
+            lanFirewallConfiguration = [MEMORY[0x277CCAD78] hmf_UUIDWithNamespace:v15 data:v14];
           }
 
           else
           {
-            v5 = 0;
+            lanFirewallConfiguration = 0;
           }
 
           goto LABEL_13;
@@ -61,17 +61,17 @@ LABEL_9:
       }
 
       v9 = [HMDNetworkRouterClientConfiguration alloc];
-      v10 = [(HMDNetworkRouterClientConfiguration *)v4 lanIdentifier];
-      v11 = [(HMDNetworkRouterClientConfiguration *)v4 wanFirewallConfiguration];
-      v12 = [(HMDNetworkRouterClientConfiguration *)v4 lanFirewallConfiguration];
-      v13 = [(HMDNetworkRouterClientConfiguration *)v9 initWithClientIdentifier:0 lanIdentifier:v10 credential:0 wanFirewallConfiguration:v11 lanFirewallConfiguration:v12];
+      lanIdentifier2 = [(HMDNetworkRouterClientConfiguration *)selfCopy lanIdentifier];
+      wanFirewallConfiguration2 = [(HMDNetworkRouterClientConfiguration *)selfCopy wanFirewallConfiguration];
+      lanFirewallConfiguration2 = [(HMDNetworkRouterClientConfiguration *)selfCopy lanFirewallConfiguration];
+      v13 = [(HMDNetworkRouterClientConfiguration *)v9 initWithClientIdentifier:0 lanIdentifier:lanIdentifier2 credential:0 wanFirewallConfiguration:wanFirewallConfiguration2 lanFirewallConfiguration:lanFirewallConfiguration2];
 
-      v4 = v13;
+      selfCopy = v13;
       goto LABEL_9;
     }
 
 LABEL_6:
-    v5 = 0;
+    lanFirewallConfiguration = 0;
     goto LABEL_14;
   }
 
@@ -79,16 +79,16 @@ LABEL_13:
 
 LABEL_14:
 
-  return v5;
+  return lanFirewallConfiguration;
 }
 
-+ (id)configurationForFirewallConfiguration:(id)a3 hapAccessory:(BOOL)a4 airplayAccessory:(BOOL)a5 withClientIdentifier:(id)a6
++ (id)configurationForFirewallConfiguration:(id)configuration hapAccessory:(BOOL)accessory airplayAccessory:(BOOL)airplayAccessory withClientIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = a6;
-  if ([v9 hasFullAccessToLAN])
+  airplayAccessoryCopy = airplayAccessory;
+  accessoryCopy = accessory;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  if ([configurationCopy hasFullAccessToLAN])
   {
     v11 = 1;
   }
@@ -98,35 +98,35 @@ LABEL_14:
     v11 = 3;
   }
 
-  v12 = [HMDNetworkRouterClientConfiguration configurationWithClientIdentifier:v10 lanIdentifier:v11];
+  v12 = [HMDNetworkRouterClientConfiguration configurationWithClientIdentifier:identifierCopy lanIdentifier:v11];
 
-  v13 = [HMDNetworkRouterLANFirewallConfiguration configurationFromFirewallRuleConfiguration:v9];
+  v13 = [HMDNetworkRouterLANFirewallConfiguration configurationFromFirewallRuleConfiguration:configurationCopy];
   [v12 setLanFirewallConfiguration:v13];
 
-  v14 = [HMDNetworkRouterWANFirewallConfiguration configurationFromFirewallRuleConfiguration:v9];
+  v14 = [HMDNetworkRouterWANFirewallConfiguration configurationFromFirewallRuleConfiguration:configurationCopy];
   [v12 setWanFirewallConfiguration:v14];
 
-  if (v8 && ([v9 hasFullAccessToLAN] & 1) == 0)
+  if (accessoryCopy && ([configurationCopy hasFullAccessToLAN] & 1) == 0)
   {
     v15 = +[HMDNetworkRouterDynamicPortRule ruleForHAP];
-    v16 = [v12 lanFirewallConfiguration];
-    v17 = [v16 ruleList];
-    [v15 addTo:v17];
+    lanFirewallConfiguration = [v12 lanFirewallConfiguration];
+    ruleList = [lanFirewallConfiguration ruleList];
+    [v15 addTo:ruleList];
   }
 
-  if (v7 && ([v9 hasAirplayRules] & 1) == 0)
+  if (airplayAccessoryCopy && ([configurationCopy hasAirplayRules] & 1) == 0)
   {
     v18 = [HMDNetworkRouterHomeKitOnlyFirewallConfiguration fallbackConfigurationForRuleset:@"AirPlay2"];
-    v19 = [v12 lanFirewallConfiguration];
-    [v19 addRulesFromFirewallConfiguration:v18];
+    lanFirewallConfiguration2 = [v12 lanFirewallConfiguration];
+    [lanFirewallConfiguration2 addRulesFromFirewallConfiguration:v18];
   }
 
   return v12;
 }
 
-+ (id)configurationForOpenProtectionWithClientIdentifier:(id)a3
++ (id)configurationForOpenProtectionWithClientIdentifier:(id)identifier
 {
-  v3 = [HMDNetworkRouterClientConfiguration configurationWithClientIdentifier:a3 lanIdentifier:1];
+  v3 = [HMDNetworkRouterClientConfiguration configurationWithClientIdentifier:identifier lanIdentifier:1];
   v4 = +[HMDNetworkRouterLANFirewallConfiguration configurationWithFullAccess];
   [v3 setLanFirewallConfiguration:v4];
 
@@ -136,18 +136,18 @@ LABEL_14:
   return v3;
 }
 
-+ (id)configurationWithClientIdentifier:(id)a3 lanIdentifier:(int64_t)a4
++ (id)configurationWithClientIdentifier:(id)identifier lanIdentifier:(int64_t)lanIdentifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(HMDNetworkRouterClientConfiguration);
-  if (v5)
+  if (identifierCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x277CFEC98]) initWithValue:v5];
+    v7 = [objc_alloc(MEMORY[0x277CFEC98]) initWithValue:identifierCopy];
     [(HMDNetworkRouterClientConfiguration *)v6 setClientIdentifier:v7];
   }
 
   v8 = objc_alloc(MEMORY[0x277CFEC98]);
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:lanIdentifier];
   v10 = [v8 initWithValue:v9];
   [(HMDNetworkRouterClientConfiguration *)v6 setLanIdentifier:v10];
 
@@ -157,20 +157,20 @@ LABEL_14:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
-  v5 = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
-  v6 = [(HMDNetworkRouterClientConfiguration *)self credential];
-  v7 = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
-  v8 = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
-  v9 = [v3 stringWithFormat:@"<HMDNetworkRouterClientConfiguration clientIdentifier=%@, lanIdentifier=%@, credential=%@, wanFirewallConfiguration=%@, lanFirewallConfiguration=%@>", v4, v5, v6, v7, v8];
+  clientIdentifier = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
+  lanIdentifier = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
+  credential = [(HMDNetworkRouterClientConfiguration *)self credential];
+  wanFirewallConfiguration = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
+  lanFirewallConfiguration = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
+  v9 = [v3 stringWithFormat:@"<HMDNetworkRouterClientConfiguration clientIdentifier=%@, lanIdentifier=%@, credential=%@, wanFirewallConfiguration=%@, lanFirewallConfiguration=%@>", clientIdentifier, lanIdentifier, credential, wanFirewallConfiguration, lanFirewallConfiguration];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -180,35 +180,35 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
-      v8 = [(HMDNetworkRouterClientConfiguration *)v6 clientIdentifier];
-      if (v7 != v8)
+      v6 = equalCopy;
+      clientIdentifier = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
+      clientIdentifier2 = [(HMDNetworkRouterClientConfiguration *)v6 clientIdentifier];
+      if (clientIdentifier != clientIdentifier2)
       {
-        v9 = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
-        v39 = [(HMDNetworkRouterClientConfiguration *)v6 clientIdentifier];
-        v40 = v9;
-        if (![v9 isEqual:?])
+        clientIdentifier3 = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
+        clientIdentifier4 = [(HMDNetworkRouterClientConfiguration *)v6 clientIdentifier];
+        v40 = clientIdentifier3;
+        if (![clientIdentifier3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_29;
         }
       }
 
-      v11 = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
-      v12 = [(HMDNetworkRouterClientConfiguration *)v6 lanIdentifier];
-      v41 = v11;
-      if (v11 != v12)
+      lanIdentifier = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
+      lanIdentifier2 = [(HMDNetworkRouterClientConfiguration *)v6 lanIdentifier];
+      v41 = lanIdentifier;
+      if (lanIdentifier != lanIdentifier2)
       {
-        v3 = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
-        v37 = [(HMDNetworkRouterClientConfiguration *)v6 lanIdentifier];
-        if (![v3 isEqual:?])
+        lanIdentifier3 = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
+        lanIdentifier4 = [(HMDNetworkRouterClientConfiguration *)v6 lanIdentifier];
+        if (![lanIdentifier3 isEqual:?])
         {
           v10 = 0;
 LABEL_27:
 
 LABEL_28:
-          if (v7 == v8)
+          if (clientIdentifier == clientIdentifier2)
           {
 LABEL_30:
 
@@ -221,24 +221,24 @@ LABEL_29:
         }
       }
 
-      v13 = [(HMDNetworkRouterClientConfiguration *)self credential];
-      v14 = [(HMDNetworkRouterClientConfiguration *)v6 credential];
-      v38 = v13;
-      v27 = v13 == v14;
-      v15 = v14;
+      credential = [(HMDNetworkRouterClientConfiguration *)self credential];
+      credential2 = [(HMDNetworkRouterClientConfiguration *)v6 credential];
+      v38 = credential;
+      v27 = credential == credential2;
+      v15 = credential2;
       if (!v27)
       {
-        v16 = [(HMDNetworkRouterClientConfiguration *)self credential];
-        v33 = [(HMDNetworkRouterClientConfiguration *)v6 credential];
-        v34 = v16;
-        if (![v16 isEqual:?])
+        credential3 = [(HMDNetworkRouterClientConfiguration *)self credential];
+        credential4 = [(HMDNetworkRouterClientConfiguration *)v6 credential];
+        v34 = credential3;
+        if (![credential3 isEqual:?])
         {
           v10 = 0;
           v17 = v38;
 LABEL_25:
 
 LABEL_26:
-          if (v41 == v12)
+          if (v41 == lanIdentifier2)
           {
             goto LABEL_28;
           }
@@ -247,56 +247,56 @@ LABEL_26:
         }
       }
 
-      v18 = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
-      v35 = [(HMDNetworkRouterClientConfiguration *)v6 wanFirewallConfiguration];
+      wanFirewallConfiguration = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
+      wanFirewallConfiguration2 = [(HMDNetworkRouterClientConfiguration *)v6 wanFirewallConfiguration];
       v36 = v15;
-      if (v18 == v35)
+      if (wanFirewallConfiguration == wanFirewallConfiguration2)
       {
-        v31 = v3;
-        v32 = v12;
+        v31 = lanIdentifier3;
+        v32 = lanIdentifier2;
       }
 
       else
       {
-        v19 = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
-        v29 = [(HMDNetworkRouterClientConfiguration *)v6 wanFirewallConfiguration];
-        v30 = v19;
-        if (![v19 isEqual:?])
+        wanFirewallConfiguration3 = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
+        wanFirewallConfiguration4 = [(HMDNetworkRouterClientConfiguration *)v6 wanFirewallConfiguration];
+        v30 = wanFirewallConfiguration3;
+        if (![wanFirewallConfiguration3 isEqual:?])
         {
           v10 = 0;
-          v26 = v35;
+          v26 = wanFirewallConfiguration2;
           goto LABEL_23;
         }
 
-        v31 = v3;
-        v32 = v12;
+        v31 = lanIdentifier3;
+        v32 = lanIdentifier2;
       }
 
-      v20 = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
-      v21 = [(HMDNetworkRouterClientConfiguration *)v6 lanFirewallConfiguration];
-      v22 = v21;
-      if (v20 == v21)
+      lanFirewallConfiguration = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
+      lanFirewallConfiguration2 = [(HMDNetworkRouterClientConfiguration *)v6 lanFirewallConfiguration];
+      v22 = lanFirewallConfiguration2;
+      if (lanFirewallConfiguration == lanFirewallConfiguration2)
       {
 
         v10 = 1;
-        v26 = v35;
-        v27 = v18 == v35;
+        v26 = wanFirewallConfiguration2;
+        v27 = wanFirewallConfiguration == wanFirewallConfiguration2;
       }
 
       else
       {
-        v23 = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
+        lanFirewallConfiguration3 = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
         [(HMDNetworkRouterClientConfiguration *)v6 lanFirewallConfiguration];
-        v25 = v24 = v18;
-        v10 = [v23 isEqual:v25];
+        v25 = v24 = wanFirewallConfiguration;
+        v10 = [lanFirewallConfiguration3 isEqual:v25];
 
-        v18 = v24;
-        v26 = v35;
-        v27 = v24 == v35;
+        wanFirewallConfiguration = v24;
+        v26 = wanFirewallConfiguration2;
+        v27 = v24 == wanFirewallConfiguration2;
       }
 
-      v3 = v31;
-      v12 = v32;
+      lanIdentifier3 = v31;
+      lanIdentifier2 = v32;
       if (v27)
       {
 LABEL_24:
@@ -324,20 +324,20 @@ LABEL_31:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterClientConfiguration allocWithZone:a3];
-  v5 = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
-  v6 = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
-  v7 = [(HMDNetworkRouterClientConfiguration *)self credential];
-  v8 = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
-  v9 = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
-  v10 = [(HMDNetworkRouterClientConfiguration *)v4 initWithClientIdentifier:v5 lanIdentifier:v6 credential:v7 wanFirewallConfiguration:v8 lanFirewallConfiguration:v9];
+  v4 = [HMDNetworkRouterClientConfiguration allocWithZone:zone];
+  clientIdentifier = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
+  lanIdentifier = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
+  credential = [(HMDNetworkRouterClientConfiguration *)self credential];
+  wanFirewallConfiguration = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
+  lanFirewallConfiguration = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
+  v10 = [(HMDNetworkRouterClientConfiguration *)v4 initWithClientIdentifier:clientIdentifier lanIdentifier:lanIdentifier credential:credential wanFirewallConfiguration:wanFirewallConfiguration lanFirewallConfiguration:lanFirewallConfiguration];
 
   return v10;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
   v46 = 0u;
@@ -362,13 +362,13 @@ LABEL_31:
   v27 = 0u;
   v28 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
+  clientIdentifier = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
 
-  if (v5)
+  if (clientIdentifier)
   {
-    v6 = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
+    clientIdentifier2 = [(HMDNetworkRouterClientConfiguration *)self clientIdentifier];
     v26 = 0;
-    v7 = [v6 serializeWithError:&v26];
+    v7 = [clientIdentifier2 serializeWithError:&v26];
     v8 = v26;
 
     if (v8)
@@ -384,13 +384,13 @@ LABEL_31:
     }
   }
 
-  v9 = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
+  lanIdentifier = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
 
-  if (v9)
+  if (lanIdentifier)
   {
-    v10 = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
+    lanIdentifier2 = [(HMDNetworkRouterClientConfiguration *)self lanIdentifier];
     v25 = 0;
-    v7 = [v10 serializeWithError:&v25];
+    v7 = [lanIdentifier2 serializeWithError:&v25];
     v8 = v25;
 
     if (v8)
@@ -406,16 +406,16 @@ LABEL_31:
     }
   }
 
-  v11 = [(HMDNetworkRouterClientConfiguration *)self credential];
+  credential = [(HMDNetworkRouterClientConfiguration *)self credential];
 
-  if (!v11)
+  if (!credential)
   {
     goto LABEL_13;
   }
 
-  v12 = [(HMDNetworkRouterClientConfiguration *)self credential];
+  credential2 = [(HMDNetworkRouterClientConfiguration *)self credential];
   v24 = 0;
-  v7 = [v12 serializeWithError:&v24];
+  v7 = [credential2 serializeWithError:&v24];
   v8 = v24;
 
   if (v8)
@@ -430,11 +430,11 @@ LABEL_31:
 LABEL_16:
 
 LABEL_17:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus();
       v8 = 0;
-      *a3 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_26;
     }
 
@@ -445,13 +445,13 @@ LABEL_25:
   }
 
 LABEL_13:
-  v13 = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
+  wanFirewallConfiguration = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
 
-  if (v13)
+  if (wanFirewallConfiguration)
   {
-    v14 = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
+    wanFirewallConfiguration2 = [(HMDNetworkRouterClientConfiguration *)self wanFirewallConfiguration];
     v23 = 0;
-    v7 = [v14 serializeWithError:&v23];
+    v7 = [wanFirewallConfiguration2 serializeWithError:&v23];
     v8 = v23;
 
     if (v8)
@@ -467,24 +467,24 @@ LABEL_13:
     }
   }
 
-  v16 = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
+  lanFirewallConfiguration = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
 
-  if (v16)
+  if (lanFirewallConfiguration)
   {
-    v17 = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
+    lanFirewallConfiguration2 = [(HMDNetworkRouterClientConfiguration *)self lanFirewallConfiguration];
     v22 = 0;
-    v7 = [v17 serializeWithError:&v22];
+    v7 = [lanFirewallConfiguration2 serializeWithError:&v22];
     v8 = v22;
 
     if (v8)
     {
 LABEL_23:
 
-      if (a3)
+      if (error)
       {
         v18 = v8;
         v15 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_26;
       }
 
@@ -511,16 +511,16 @@ LABEL_26:
   return v15;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -532,15 +532,15 @@ LABEL_26:
     goto LABEL_32;
   }
 
-  v25 = self;
-  v26 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v10 = 0;
   v27 = 0;
   v11 = 0;
   v12 = 0;
   v13 = 0;
   v14 = 0;
-  v15 = v8 + v9;
+  v15 = bytes + v9;
   do
   {
     v37 = 0;
@@ -551,10 +551,10 @@ LABEL_26:
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
       v20 = v27;
-      if (v26)
+      if (errorCopy)
       {
         HMErrorFromOSStatus();
-        *v26 = v22 = 0;
+        *errorCopy = v22 = 0;
         goto LABEL_33;
       }
 
@@ -645,11 +645,11 @@ LABEL_20:
   {
 LABEL_24:
     v20 = v27;
-    if (v26)
+    if (errorCopy)
     {
       v21 = v10;
       v22 = 0;
-      *v26 = v10;
+      *errorCopy = v10;
       goto LABEL_33;
     }
 
@@ -660,7 +660,7 @@ LABEL_29:
 
 LABEL_31:
   v20 = v27;
-  self = v25;
+  self = selfCopy;
 LABEL_32:
   [(HMDNetworkRouterClientConfiguration *)self setClientIdentifier:v20];
   [(HMDNetworkRouterClientConfiguration *)self setLanIdentifier:v14];
@@ -674,24 +674,24 @@ LABEL_33:
   return v22;
 }
 
-- (HMDNetworkRouterClientConfiguration)initWithClientIdentifier:(id)a3 lanIdentifier:(id)a4 credential:(id)a5 wanFirewallConfiguration:(id)a6 lanFirewallConfiguration:(id)a7
+- (HMDNetworkRouterClientConfiguration)initWithClientIdentifier:(id)identifier lanIdentifier:(id)lanIdentifier credential:(id)credential wanFirewallConfiguration:(id)configuration lanFirewallConfiguration:(id)firewallConfiguration
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  lanIdentifierCopy = lanIdentifier;
+  credentialCopy = credential;
+  configurationCopy = configuration;
+  firewallConfigurationCopy = firewallConfiguration;
   v21.receiver = self;
   v21.super_class = HMDNetworkRouterClientConfiguration;
   v17 = [(HMDNetworkRouterClientConfiguration *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_clientIdentifier, a3);
-    objc_storeStrong(&v18->_lanIdentifier, a4);
-    objc_storeStrong(&v18->_credential, a5);
-    objc_storeStrong(&v18->_wanFirewallConfiguration, a6);
-    objc_storeStrong(&v18->_lanFirewallConfiguration, a7);
+    objc_storeStrong(&v17->_clientIdentifier, identifier);
+    objc_storeStrong(&v18->_lanIdentifier, lanIdentifier);
+    objc_storeStrong(&v18->_credential, credential);
+    objc_storeStrong(&v18->_wanFirewallConfiguration, configuration);
+    objc_storeStrong(&v18->_lanFirewallConfiguration, firewallConfiguration);
   }
 
   return v18;
@@ -704,24 +704,24 @@ LABEL_33:
   return [(HMDNetworkRouterClientConfiguration *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterClientConfiguration);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterClientConfiguration *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterClientConfiguration *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

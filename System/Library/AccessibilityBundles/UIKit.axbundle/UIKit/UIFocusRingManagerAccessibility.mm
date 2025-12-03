@@ -1,23 +1,23 @@
 @interface UIFocusRingManagerAccessibility
-+ (Class)shapeLayerClassForItem:(id)a3 client:(id)a4;
-+ (void)_accessibilityPerformValidations:(id)a3;
-+ (void)moveRingToFocusItem:(id)a3 forClient:(id)a4;
-+ (void)removeRingFromFocusItem:(id)a3 forClient:(id)a4;
-- (BOOL)_accessibilityFKAShouldFocusItem:(id)a3;
-- (BOOL)_focusItemWantsFocusRing:(id)a3 forClient:(id)a4;
-- (id)_focusRingPathForItem:(id)a3 inView:(id)a4;
++ (Class)shapeLayerClassForItem:(id)item client:(id)client;
++ (void)_accessibilityPerformValidations:(id)validations;
++ (void)moveRingToFocusItem:(id)item forClient:(id)client;
++ (void)removeRingFromFocusItem:(id)item forClient:(id)client;
+- (BOOL)_accessibilityFKAShouldFocusItem:(id)item;
+- (BOOL)_focusItemWantsFocusRing:(id)ring forClient:(id)client;
+- (id)_focusRingPathForItem:(id)item inView:(id)view;
 @end
 
 @implementation UIFocusRingManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v5 = "@";
   v4 = @"UIFocusRingManager";
   [location[0] validateClass:"@" hasClassMethod:"@" withFullSignature:0];
@@ -34,14 +34,14 @@
   objc_storeStrong(v7, v6);
 }
 
-+ (Class)shapeLayerClassForItem:(id)a3 client:(id)a4
++ (Class)shapeLayerClassForItem:(id)item client:(id)client
 {
-  v11 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, client);
   if ([v9 isEqualToString:@"AXSpeakFingerManager"])
   {
     goto LABEL_4;
@@ -56,7 +56,7 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v7.receiver = v11;
+  v7.receiver = selfCopy;
   v7.super_class = &OBJC_METACLASS___UIFocusRingManagerAccessibility;
   v12 = objc_msgSendSuper2(&v7, sel_shapeLayerClassForItem_client_, location[0], v9);
   v8 = 1;
@@ -68,14 +68,14 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)_focusItemWantsFocusRing:(id)a3 forClient:(id)a4
+- (BOOL)_focusItemWantsFocusRing:(id)ring forClient:(id)client
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, ring);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, client);
   v18 = [v19 isEqualToString:@"AXSpeakFingerManager"];
   v16 = 0;
   objc_opt_class();
@@ -83,19 +83,19 @@ LABEL_6:
   v14 = MEMORY[0x29EDC9748](v15);
   objc_storeStrong(&v15, 0);
   v17 = v14;
-  v7 = 0;
+  _accessibilityDisplayFocusIndicatorForFocusEverywhereView = 0;
   if ([v14 _accessibilityIsFocusForFocusEverywhereRunningForFocusItem])
   {
-    v7 = [v17 _accessibilityDisplayFocusIndicatorForFocusEverywhereView];
+    _accessibilityDisplayFocusIndicatorForFocusEverywhereView = [v17 _accessibilityDisplayFocusIndicatorForFocusEverywhereView];
   }
 
-  v13 = v7 & 1;
-  v12 = [v17 _accessibilityParentView];
+  v13 = _accessibilityDisplayFocusIndicatorForFocusEverywhereView & 1;
+  _accessibilityParentView = [v17 _accessibilityParentView];
   v11 = 0;
-  if (([v12 _accessibilityIsFKARunningForFocusItem] & 1) == 0 || -[UIFocusRingManagerAccessibility _accessibilityFKAShouldFocusItem:](v21, "_accessibilityFKAShouldFocusItem:", location[0]))
+  if (([_accessibilityParentView _accessibilityIsFKARunningForFocusItem] & 1) == 0 || -[UIFocusRingManagerAccessibility _accessibilityFKAShouldFocusItem:](selfCopy, "_accessibilityFKAShouldFocusItem:", location[0]))
   {
     v6 = 1;
-    if (([v12 _accessibilityIsFKARunningForFocusItem] & 1) == 0)
+    if (([_accessibilityParentView _accessibilityIsFKARunningForFocusItem] & 1) == 0)
     {
       v6 = 1;
       if ((v18 & 1) == 0)
@@ -115,7 +115,7 @@ LABEL_6:
 
     else
     {
-      v9.receiver = v21;
+      v9.receiver = selfCopy;
       v9.super_class = UIFocusRingManagerAccessibility;
       v5 = [(UIFocusRingManagerAccessibility *)&v9 _focusItemWantsFocusRing:location[0] forClient:v19];
     }
@@ -130,27 +130,27 @@ LABEL_6:
     v10 = 1;
   }
 
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&_accessibilityParentView, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
   return v22;
 }
 
-- (id)_focusRingPathForItem:(id)a3 inView:(id)a4
+- (id)_focusRingPathForItem:(id)item inView:(id)view
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v8 = [v16 traitCollection];
-  v9 = [v8 userInterfaceIdiom];
-  *&v4 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-  v15 = v9;
+  objc_storeStrong(&v16, view);
+  traitCollection = [v16 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  *&v4 = MEMORY[0x29EDC9740](traitCollection).n128_u64[0];
+  v15 = userInterfaceIdiom;
   v10 = 0;
-  if (v9 != 3)
+  if (userInterfaceIdiom != 3)
   {
     v10 = v15 != 2;
   }
@@ -158,7 +158,7 @@ LABEL_6:
   v14 = v10;
   if (!v10 || ((v13 = [location[0] accessibilityPath]) == 0 ? (v12 = 0) : (v19 = UIAccessibilityConvertAccessibilityPathToViewCoordinates(), v12 = 1), objc_storeStrong(&v13, 0), !v12))
   {
-    v11.receiver = v18;
+    v11.receiver = selfCopy;
     v11.super_class = UIFocusRingManagerAccessibility;
     v19 = [(UIFocusRingManagerAccessibility *)&v11 _focusRingPathForItem:location[0] inView:v16, v4];
     v12 = 1;
@@ -171,14 +171,14 @@ LABEL_6:
   return v5;
 }
 
-+ (void)moveRingToFocusItem:(id)a3 forClient:(id)a4
++ (void)moveRingToFocusItem:(id)item forClient:(id)client
 {
-  v19 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, client);
   v15 = 0;
   objc_opt_class();
   v14 = __UIAccessibilityCastAsClass();
@@ -209,7 +209,7 @@ LABEL_6:
 
   else
   {
-    v6.receiver = v19;
+    v6.receiver = selfCopy;
     v6.super_class = &OBJC_METACLASS___UIFocusRingManagerAccessibility;
     objc_msgSendSuper2(&v6, sel_moveRingToFocusItem_forClient_, location[0], v17);
   }
@@ -308,15 +308,15 @@ double __65__UIFocusRingManagerAccessibility_moveRingToFocusItem_forClient___blo
   return result;
 }
 
-+ (void)removeRingFromFocusItem:(id)a3 forClient:(id)a4
++ (void)removeRingFromFocusItem:(id)item forClient:(id)client
 {
-  v17 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14.receiver = v17;
+  objc_storeStrong(&v15, client);
+  v14.receiver = selfCopy;
   v14.super_class = &OBJC_METACLASS___UIFocusRingManagerAccessibility;
   objc_msgSendSuper2(&v14, sel_removeRingFromFocusItem_forClient_, location[0], v15);
   if ((_UIAccessibilityFullKeyboardAccessEnabled() & 1) == 0)
@@ -351,12 +351,12 @@ double __69__UIFocusRingManagerAccessibility_removeRingFromFocusItem_forClient__
   return result;
 }
 
-- (BOOL)_accessibilityFKAShouldFocusItem:(id)a3
+- (BOOL)_accessibilityFKAShouldFocusItem:(id)item
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   NSClassFromString(&cfstr_Uisizetracking_0.isa);
   isKindOfClass = 1;
   if ((objc_opt_isKindOfClass() & 1) == 0)

@@ -1,25 +1,25 @@
 @interface PublisherViewDataSource
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (MKCollectionCarouselRoutingDelegate)routingDelegate;
-- (PublisherViewDataSource)initWithCollectionView:(id)a3 usingCuratedCollections:(id)a4 usingPlaceCollectionIds:(id)a5 withResultFilters:(id)a6 withAPIController:(id)a7 withCollectionRoutingDelegate:(id)a8 usingAnalyticsManager:(id)a9 usingPublisherActionsManager:(id)a10;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (PublisherViewDataSource)initWithCollectionView:(id)view usingCuratedCollections:(id)collections usingPlaceCollectionIds:(id)ids withResultFilters:(id)filters withAPIController:(id)controller withCollectionRoutingDelegate:(id)delegate usingAnalyticsManager:(id)manager usingPublisherActionsManager:(id)self0;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (void)clearPublisherData;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)collections;
 - (void)dealloc;
-- (void)didRouteToAddressFilter:(id)a3 atIndexPath:(id)a4;
-- (void)didRouteToKeywordFilter:(id)a3 atIndexPath:(id)a4;
+- (void)didRouteToAddressFilter:(id)filter atIndexPath:(id)path;
+- (void)didRouteToKeywordFilter:(id)filter atIndexPath:(id)path;
 - (void)didTapTryAgainOnErrorView;
 - (void)dismissedCollections;
-- (void)displayCollections:(id)a3;
+- (void)displayCollections:(id)collections;
 - (void)filterDataFetchStarted;
-- (void)updateCollections:(id)a3 usingBatchIdentifiers:(id)a4;
+- (void)updateCollections:(id)collections usingBatchIdentifiers:(id)identifiers;
 @end
 
 @implementation PublisherViewDataSource
@@ -31,101 +31,101 @@
   return WeakRetained;
 }
 
-- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)a3
+- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)collections
 {
-  v3 = [(PublisherViewDataSource *)self logicController];
-  [v3 refreshCollections];
+  logicController = [(PublisherViewDataSource *)self logicController];
+  [logicController refreshCollections];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v9 = a5;
-  v6 = [(PublisherViewDataSource *)self logicController];
-  v7 = [v6 sectionKindAtIndex:{objc_msgSend(v9, "section")}];
+  pathCopy = path;
+  logicController = [(PublisherViewDataSource *)self logicController];
+  v7 = [logicController sectionKindAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if (v7 != 1)
   {
-    v8 = [(PublisherViewDataSource *)self logicController];
-    [v8 willDisplayCellAtIndexpath:v9];
+    logicController2 = [(PublisherViewDataSource *)self logicController];
+    [logicController2 willDisplayCellAtIndexpath:pathCopy];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v15 = a4;
-  v5 = [(PublisherViewDataSource *)self logicController];
-  v6 = [v5 sectionKindAtIndex:{objc_msgSend(v15, "section")}];
+  pathCopy = path;
+  logicController = [(PublisherViewDataSource *)self logicController];
+  v6 = [logicController sectionKindAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if (v6 != 1)
   {
-    v7 = [(PublisherViewDataSource *)self routingDelegate];
-    v8 = [(PublisherViewDataSource *)self logicController];
-    v9 = [v8 geoCollectionAtIndex:{objc_msgSend(v15, "item")}];
-    [v7 routeToCuratedCollection:v9];
+    routingDelegate = [(PublisherViewDataSource *)self routingDelegate];
+    logicController2 = [(PublisherViewDataSource *)self logicController];
+    v9 = [logicController2 geoCollectionAtIndex:{objc_msgSend(pathCopy, "item")}];
+    [routingDelegate routeToCuratedCollection:v9];
 
-    v10 = [(PublisherViewDataSource *)self analyticsManager];
-    v11 = [(PublisherViewDataSource *)self logicController];
-    v12 = [v11 identifierForCollectionAtIndex:{objc_msgSend(v15, "item")}];
-    v13 = [v15 item];
-    v14 = [(PublisherViewDataSource *)self logicController];
-    [v10 publisherCollectionTapped:v12 atIndex:v13 isCurrentlySaved:{objc_msgSend(v14, "isCollectionSavedAtIndex:", objc_msgSend(v15, "item"))}];
+    analyticsManager = [(PublisherViewDataSource *)self analyticsManager];
+    logicController3 = [(PublisherViewDataSource *)self logicController];
+    v12 = [logicController3 identifierForCollectionAtIndex:{objc_msgSend(pathCopy, "item")}];
+    item = [pathCopy item];
+    logicController4 = [(PublisherViewDataSource *)self logicController];
+    [analyticsManager publisherCollectionTapped:v12 atIndex:item isCurrentlySaved:{objc_msgSend(logicController4, "isCollectionSavedAtIndex:", objc_msgSend(pathCopy, "item"))}];
   }
 }
 
 - (void)dismissedCollections
 {
-  v2 = [(PublisherViewDataSource *)self logicController];
-  [v2 dismissedCollections];
+  logicController = [(PublisherViewDataSource *)self logicController];
+  [logicController dismissedCollections];
 }
 
-- (void)updateCollections:(id)a3 usingBatchIdentifiers:(id)a4
+- (void)updateCollections:(id)collections usingBatchIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(PublisherViewDataSource *)self logicController];
-  v8 = [(PublisherViewDataSource *)self apiController];
-  v9 = [(PublisherViewDataSource *)self apiController];
-  [v10 updateCollections:v7 usingBatchedIdentifiers:v6 usingCollectionFetcher:v8 usingBatchSize:{objc_msgSend(v9, "batchSize")}];
+  identifiersCopy = identifiers;
+  collectionsCopy = collections;
+  logicController = [(PublisherViewDataSource *)self logicController];
+  apiController = [(PublisherViewDataSource *)self apiController];
+  apiController2 = [(PublisherViewDataSource *)self apiController];
+  [logicController updateCollections:collectionsCopy usingBatchedIdentifiers:identifiersCopy usingCollectionFetcher:apiController usingBatchSize:{objc_msgSend(apiController2, "batchSize")}];
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index
 {
-  v7 = [(PublisherViewDataSource *)self logicController:a3];
-  v8 = [v7 sectionKindAtIndex:a5];
+  v7 = [(PublisherViewDataSource *)self logicController:view];
+  v8 = [v7 sectionKindAtIndex:index];
 
   if (v8 == 1)
   {
     return 0.0;
   }
 
-  v10 = [(PublisherViewDataSource *)self sizeController];
-  [v10 minimumInterItemSpacing];
+  sizeController = [(PublisherViewDataSource *)self sizeController];
+  [sizeController minimumInterItemSpacing];
   v12 = v11;
 
   return v12;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
-  v7 = [(PublisherViewDataSource *)self logicController:a3];
-  v8 = [v7 sectionKindAtIndex:a5];
+  v7 = [(PublisherViewDataSource *)self logicController:view];
+  v8 = [v7 sectionKindAtIndex:index];
 
   if (v8 == 1)
   {
     return 0.0;
   }
 
-  v10 = [(PublisherViewDataSource *)self sizeController];
-  [v10 minimumInterItemSpacing];
+  sizeController = [(PublisherViewDataSource *)self sizeController];
+  [sizeController minimumInterItemSpacing];
   v12 = v11;
 
   return v12;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = [(PublisherViewDataSource *)self logicController:a3];
-  v8 = [v7 sectionKindAtIndex:a5];
+  v7 = [(PublisherViewDataSource *)self logicController:view];
+  v8 = [v7 sectionKindAtIndex:index];
 
   if (v8 == 1)
   {
@@ -137,8 +137,8 @@
 
   else
   {
-    v13 = [(PublisherViewDataSource *)self sizeController];
-    [v13 sectionInsets];
+    sizeController = [(PublisherViewDataSource *)self sizeController];
+    [sizeController sectionInsets];
     top = v14;
     left = v15;
     bottom = v16;
@@ -156,31 +156,31 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(PublisherViewDataSource *)self logicController];
-  v10 = [v8 section];
+  viewCopy = view;
+  pathCopy = path;
+  logicController = [(PublisherViewDataSource *)self logicController];
+  section = [pathCopy section];
 
-  v11 = [v9 sectionKindAtIndex:v10];
+  v11 = [logicController sectionKindAtIndex:section];
   if (v11 == 1)
   {
-    [v7 frame];
+    [viewCopy frame];
     v13 = v12;
     v14 = 100.0;
   }
 
   else
   {
-    v15 = [(PublisherViewDataSource *)self sizeController];
-    [v7 frame];
-    [v15 sizeForCollectionWithMaxCollectionsWidth:v16];
+    sizeController = [(PublisherViewDataSource *)self sizeController];
+    [viewCopy frame];
+    [sizeController sizeForCollectionWithMaxCollectionsWidth:v16];
     v13 = v17;
     v19 = v18;
 
-    v20 = [(PublisherViewDataSource *)self sizeController];
-    [v20 sectionInsets];
+    sizeController2 = [(PublisherViewDataSource *)self sizeController];
+    [sizeController2 sectionInsets];
     v14 = v19 - v21;
   }
 
@@ -191,27 +191,27 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = a3;
-  v8 = [(PublisherViewDataSource *)self logicController];
-  v9 = [v8 sectionKindAtIndex:a5];
+  viewCopy = view;
+  logicController = [(PublisherViewDataSource *)self logicController];
+  v9 = [logicController sectionKindAtIndex:section];
 
   if (v9 == 1)
   {
     goto LABEL_2;
   }
 
-  if (sub_10000FA08(v7) != 5)
+  if (sub_10000FA08(viewCopy) != 5)
   {
     v16 = [PublisherActionView alloc];
-    [v7 frame];
+    [viewCopy frame];
     v17 = [(PublisherActionView *)v16 initWithFrame:0.0, 0.0];
-    v18 = [(PublisherViewDataSource *)self actionsManager];
-    v19 = [(PublisherViewDataSource *)self apiController];
-    v20 = [v19 publisherViewResultFilters];
-    v21 = [(PublisherViewDataSource *)self selectedFilterIndexPath];
-    [(PublisherActionView *)v17 configureWithActionManager:v18 publishersResultFilters:v20 routingDelegate:self selectedFilterIndex:v21];
+    actionsManager = [(PublisherViewDataSource *)self actionsManager];
+    apiController = [(PublisherViewDataSource *)self apiController];
+    publisherViewResultFilters = [apiController publisherViewResultFilters];
+    selectedFilterIndexPath = [(PublisherViewDataSource *)self selectedFilterIndexPath];
+    [(PublisherActionView *)v17 configureWithActionManager:actionsManager publishersResultFilters:publisherViewResultFilters routingDelegate:self selectedFilterIndex:selectedFilterIndexPath];
 
     [(PublisherActionView *)v17 frame];
     v23 = v22;
@@ -225,8 +225,8 @@
     goto LABEL_7;
   }
 
-  v12 = [(PublisherViewDataSource *)self resultFilters];
-  v13 = [v12 count];
+  resultFilters = [(PublisherViewDataSource *)self resultFilters];
+  v13 = [resultFilters count];
 
   if (v13 == 1)
   {
@@ -237,7 +237,7 @@ LABEL_2:
 
   else
   {
-    [v7 frame];
+    [viewCopy frame];
     width = v14;
     [CollectionsFilterMenu defaultHeightForDisplayStyle:1 inContext:0];
     height = v15;
@@ -252,121 +252,121 @@ LABEL_7:
   return result;
 }
 
-- (void)didRouteToAddressFilter:(id)a3 atIndexPath:(id)a4
+- (void)didRouteToAddressFilter:(id)filter atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PublisherViewDataSource *)self apiController];
-  [v8 cancelFetchingPublisher];
+  filterCopy = filter;
+  pathCopy = path;
+  apiController = [(PublisherViewDataSource *)self apiController];
+  [apiController cancelFetchingPublisher];
 
-  [(PublisherViewDataSource *)self setSelectedFilterIndexPath:v7];
+  [(PublisherViewDataSource *)self setSelectedFilterIndexPath:pathCopy];
   [(PublisherViewDataSource *)self filterDataFetchStarted];
   objc_initWeak(&location, self);
-  v9 = [(PublisherViewDataSource *)self apiController];
+  apiController2 = [(PublisherViewDataSource *)self apiController];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100FD6430;
   v15 = &unk_101661B98;
   objc_copyWeak(&v16, &location);
-  [v9 fetchPublisherViewForKeywordFilter:0 addressFilter:v6 onCompletion:&v12];
+  [apiController2 fetchPublisherViewForKeywordFilter:0 addressFilter:filterCopy onCompletion:&v12];
 
   v10 = [(PublisherViewDataSource *)self analyticsManager:v12];
-  v11 = [(FilterAnalyticsProvider *)self->_filterAnalyticsProvider titleForFilterAtIndexPath:v7];
-  [v10 publisherFilterTappedWithValue:v11 atIndex:{objc_msgSend(v7, "item")}];
+  v11 = [(FilterAnalyticsProvider *)self->_filterAnalyticsProvider titleForFilterAtIndexPath:pathCopy];
+  [v10 publisherFilterTappedWithValue:v11 atIndex:{objc_msgSend(pathCopy, "item")}];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)didRouteToKeywordFilter:(id)a3 atIndexPath:(id)a4
+- (void)didRouteToKeywordFilter:(id)filter atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PublisherViewDataSource *)self apiController];
-  [v8 cancelFetchingPublisher];
+  filterCopy = filter;
+  pathCopy = path;
+  apiController = [(PublisherViewDataSource *)self apiController];
+  [apiController cancelFetchingPublisher];
 
-  [(PublisherViewDataSource *)self setSelectedFilterIndexPath:v7];
+  [(PublisherViewDataSource *)self setSelectedFilterIndexPath:pathCopy];
   [(PublisherViewDataSource *)self filterDataFetchStarted];
   objc_initWeak(&location, self);
-  v9 = [(PublisherViewDataSource *)self apiController];
+  apiController2 = [(PublisherViewDataSource *)self apiController];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100FD670C;
   v15 = &unk_101661B98;
   objc_copyWeak(&v16, &location);
-  [v9 fetchPublisherViewForKeywordFilter:v6 addressFilter:0 onCompletion:&v12];
+  [apiController2 fetchPublisherViewForKeywordFilter:filterCopy addressFilter:0 onCompletion:&v12];
 
   v10 = [(PublisherViewDataSource *)self analyticsManager:v12];
-  v11 = [(FilterAnalyticsProvider *)self->_filterAnalyticsProvider titleForFilterAtIndexPath:v7];
-  [v10 publisherFilterTappedWithValue:v11 atIndex:{objc_msgSend(v7, "item")}];
+  v11 = [(FilterAnalyticsProvider *)self->_filterAnalyticsProvider titleForFilterAtIndexPath:pathCopy];
+  [v10 publisherFilterTappedWithValue:v11 atIndex:{objc_msgSend(pathCopy, "item")}];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (UICollectionElementKindSectionHeader == v9 && (-[PublisherViewDataSource logicController](self, "logicController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 sectionKindAtIndex:{objc_msgSend(v10, "section")}], v11, !v12))
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if (UICollectionElementKindSectionHeader == kindCopy && (-[PublisherViewDataSource logicController](self, "logicController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 sectionKindAtIndex:{objc_msgSend(pathCopy, "section")}], v11, !v12))
   {
-    v15 = sub_10000FA08(v8);
-    v16 = [(DataSource *)self collectionView];
+    v15 = sub_10000FA08(viewCopy);
+    collectionView = [(DataSource *)self collectionView];
     if (v15 == 5)
     {
       v17 = +[CollectionsFilterMenu reuseIdentifier];
-      v18 = [v16 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v17 forIndexPath:v10];
+      v18 = [collectionView dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v17 forIndexPath:pathCopy];
       [(PublisherViewDataSource *)self setFilterMenu:v18];
 
-      v19 = [(PublisherViewDataSource *)self filterMenu];
-      v20 = [(PublisherViewDataSource *)self resultFilters];
-      v21 = [(PublisherViewDataSource *)self selectedFilterIndexPath];
-      v22 = [(PublisherViewDataSource *)self apiController];
-      v23 = [v22 publisherViewIdentifiers];
-      [v19 configureForPublisherWithRoutingDelegate:self withPublishersResultFilters:v20 withSelectedFilterIndex:v21 selectedFilterResultsCount:{objc_msgSend(v23, "count")}];
+      filterMenu = [(PublisherViewDataSource *)self filterMenu];
+      resultFilters = [(PublisherViewDataSource *)self resultFilters];
+      selectedFilterIndexPath = [(PublisherViewDataSource *)self selectedFilterIndexPath];
+      apiController = [(PublisherViewDataSource *)self apiController];
+      publisherViewIdentifiers = [apiController publisherViewIdentifiers];
+      [filterMenu configureForPublisherWithRoutingDelegate:self withPublishersResultFilters:resultFilters withSelectedFilterIndex:selectedFilterIndexPath selectedFilterResultsCount:{objc_msgSend(publisherViewIdentifiers, "count")}];
 
-      v24 = [(PublisherViewDataSource *)self filterMenu];
+      filterMenu2 = [(PublisherViewDataSource *)self filterMenu];
       filterAnalyticsProvider = self->_filterAnalyticsProvider;
-      self->_filterAnalyticsProvider = v24;
+      self->_filterAnalyticsProvider = filterMenu2;
 
-      v13 = [(PublisherViewDataSource *)self filterMenu];
+      filterMenu3 = [(PublisherViewDataSource *)self filterMenu];
     }
 
     else
     {
       v26 = +[PublisherActionView reuseIdentifier];
-      v13 = [v16 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v26 forIndexPath:v10];
+      filterMenu3 = [collectionView dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v26 forIndexPath:pathCopy];
 
-      v27 = [(PublisherViewDataSource *)self actionsManager];
-      v28 = [(PublisherViewDataSource *)self apiController];
-      v29 = [v28 publisherViewResultFilters];
-      v30 = [(PublisherViewDataSource *)self selectedFilterIndexPath];
-      [v13 configureWithActionManager:v27 publishersResultFilters:v29 routingDelegate:self selectedFilterIndex:v30];
+      actionsManager = [(PublisherViewDataSource *)self actionsManager];
+      apiController2 = [(PublisherViewDataSource *)self apiController];
+      publisherViewResultFilters = [apiController2 publisherViewResultFilters];
+      selectedFilterIndexPath2 = [(PublisherViewDataSource *)self selectedFilterIndexPath];
+      [filterMenu3 configureWithActionManager:actionsManager publishersResultFilters:publisherViewResultFilters routingDelegate:self selectedFilterIndex:selectedFilterIndexPath2];
 
-      objc_storeStrong(&self->_filterAnalyticsProvider, v13);
+      objc_storeStrong(&self->_filterAnalyticsProvider, filterMenu3);
     }
   }
 
   else
   {
-    v13 = 0;
+    filterMenu3 = 0;
   }
 
-  return v13;
+  return filterMenu3;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PublisherViewDataSource *)self logicController];
-  v10 = [v9 sectionKindAtIndex:{objc_msgSend(v7, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  logicController = [(PublisherViewDataSource *)self logicController];
+  v10 = [logicController sectionKindAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if (v10 == 1)
   {
     v11 = +[MKCollectionBatchCell reuseIdentifier];
-    v12 = [v8 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v7];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
     [v12 startedLoadingBatch];
   }
@@ -374,10 +374,10 @@ LABEL_7:
   else
   {
     v13 = +[MKPlaceCollectionCell reuseIdentifier];
-    v12 = [v8 dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:v7];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:pathCopy];
 
-    v14 = [(PublisherViewDataSource *)self logicController];
-    v15 = [v14 collectionAtIndex:{objc_msgSend(v7, "item")}];
+    logicController2 = [(PublisherViewDataSource *)self logicController];
+    v15 = [logicController2 collectionAtIndex:{objc_msgSend(pathCopy, "item")}];
     [v12 configureWithModel:v15];
   }
 
@@ -400,28 +400,28 @@ LABEL_7:
 
 - (void)didTapTryAgainOnErrorView
 {
-  v3 = [(PublisherViewDataSource *)self resultFilters];
-  v4 = [(PublisherViewDataSource *)self selectedFilterIndexPath];
-  v8 = [v3 objectAtIndex:{objc_msgSend(v4, "item")}];
+  resultFilters = [(PublisherViewDataSource *)self resultFilters];
+  selectedFilterIndexPath = [(PublisherViewDataSource *)self selectedFilterIndexPath];
+  v8 = [resultFilters objectAtIndex:{objc_msgSend(selectedFilterIndexPath, "item")}];
 
-  v5 = [v8 filterType];
-  if (v5 == 2)
+  filterType = [v8 filterType];
+  if (filterType == 2)
   {
-    v6 = [v8 keywordFilter];
-    v7 = [(PublisherViewDataSource *)self selectedFilterIndexPath];
-    [(PublisherViewDataSource *)self didRouteToKeywordFilter:v6 atIndexPath:v7];
+    keywordFilter = [v8 keywordFilter];
+    selectedFilterIndexPath2 = [(PublisherViewDataSource *)self selectedFilterIndexPath];
+    [(PublisherViewDataSource *)self didRouteToKeywordFilter:keywordFilter atIndexPath:selectedFilterIndexPath2];
   }
 
   else
   {
-    if (v5 != 1)
+    if (filterType != 1)
     {
       goto LABEL_6;
     }
 
-    v6 = [v8 addressFilter];
-    v7 = [(PublisherViewDataSource *)self selectedFilterIndexPath];
-    [(PublisherViewDataSource *)self didRouteToAddressFilter:v6 atIndexPath:v7];
+    keywordFilter = [v8 addressFilter];
+    selectedFilterIndexPath2 = [(PublisherViewDataSource *)self selectedFilterIndexPath];
+    [(PublisherViewDataSource *)self didRouteToAddressFilter:keywordFilter atIndexPath:selectedFilterIndexPath2];
   }
 
 LABEL_6:
@@ -429,24 +429,24 @@ LABEL_6:
 
 - (void)clearPublisherData
 {
-  v2 = [(PublisherViewDataSource *)self logicController];
-  [v2 clearSnapshotData];
+  logicController = [(PublisherViewDataSource *)self logicController];
+  [logicController clearSnapshotData];
 }
 
-- (void)displayCollections:(id)a3
+- (void)displayCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   objc_initWeak(&location, self);
-  v5 = [(PublisherViewDataSource *)self logicController];
-  v6 = [(PublisherViewDataSource *)self dataSource];
+  logicController = [(PublisherViewDataSource *)self logicController];
+  dataSource = [(PublisherViewDataSource *)self dataSource];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100FD6FD4;
   v8[3] = &unk_101660648;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = collectionsCopy;
   v9 = v7;
-  [v5 getCollectionsUsingDataSource:v6 onCompletion:v8];
+  [logicController getCollectionsUsingDataSource:dataSource onCompletion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -462,28 +462,28 @@ LABEL_6:
   [(PublisherViewDataSource *)&v4 dealloc];
 }
 
-- (PublisherViewDataSource)initWithCollectionView:(id)a3 usingCuratedCollections:(id)a4 usingPlaceCollectionIds:(id)a5 withResultFilters:(id)a6 withAPIController:(id)a7 withCollectionRoutingDelegate:(id)a8 usingAnalyticsManager:(id)a9 usingPublisherActionsManager:(id)a10
+- (PublisherViewDataSource)initWithCollectionView:(id)view usingCuratedCollections:(id)collections usingPlaceCollectionIds:(id)ids withResultFilters:(id)filters withAPIController:(id)controller withCollectionRoutingDelegate:(id)delegate usingAnalyticsManager:(id)manager usingPublisherActionsManager:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v52 = a5;
-  v51 = a6;
-  v18 = a7;
-  v19 = a8;
-  v50 = a9;
-  v49 = a10;
+  viewCopy = view;
+  collectionsCopy = collections;
+  idsCopy = ids;
+  filtersCopy = filters;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  managerCopy = manager;
+  actionsManagerCopy = actionsManager;
   v53.receiver = self;
   v53.super_class = PublisherViewDataSource;
-  v20 = [(DataSource *)&v53 initWithCollectionView:v16 updateLocation:0];
+  v20 = [(DataSource *)&v53 initWithCollectionView:viewCopy updateLocation:0];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_placeCollections, a4);
-    objc_storeStrong(&v21->_resultFilters, a6);
-    objc_storeStrong(&v21->_apiController, a7);
-    objc_storeWeak(&v21->_routingDelegate, v19);
-    objc_storeStrong(&v21->_analyticsManager, a9);
-    objc_storeStrong(&v21->_actionsManager, a10);
+    objc_storeStrong(&v20->_placeCollections, collections);
+    objc_storeStrong(&v21->_resultFilters, filters);
+    objc_storeStrong(&v21->_apiController, controller);
+    objc_storeWeak(&v21->_routingDelegate, delegateCopy);
+    objc_storeStrong(&v21->_analyticsManager, manager);
+    objc_storeStrong(&v21->_actionsManager, actionsManager);
     v22 = [NSIndexPath indexPathForItem:0 inSection:0];
     selectedFilterIndexPath = v21->_selectedFilterIndexPath;
     v21->_selectedFilterIndexPath = v22;
@@ -491,21 +491,21 @@ LABEL_6:
     v24 = +[CuratedCollectionSyncManager sharedManager];
     [v24 addObserver:v21];
 
-    v25 = [(DataSource *)v21 collectionView];
-    [v25 setDelegate:v21];
+    collectionView = [(DataSource *)v21 collectionView];
+    [collectionView setDelegate:v21];
 
-    v26 = [(DataSource *)v21 collectionView];
+    collectionView2 = [(DataSource *)v21 collectionView];
     v27 = objc_opt_class();
     v28 = +[MKPlaceCollectionCell reuseIdentifier];
-    [v26 registerClass:v27 forCellWithReuseIdentifier:v28];
+    [collectionView2 registerClass:v27 forCellWithReuseIdentifier:v28];
 
-    v29 = [(DataSource *)v21 collectionView];
+    collectionView3 = [(DataSource *)v21 collectionView];
     v30 = objc_opt_class();
     v31 = +[MKCollectionBatchCell reuseIdentifier];
-    [v29 registerClass:v30 forCellWithReuseIdentifier:v31];
+    [collectionView3 registerClass:v30 forCellWithReuseIdentifier:v31];
 
-    v32 = sub_10000FA08(v16);
-    v33 = [(DataSource *)v21 collectionView];
+    v32 = sub_10000FA08(viewCopy);
+    collectionView4 = [(DataSource *)v21 collectionView];
     if (v32 == 5)
     {
       v34 = off_1015F61B8;
@@ -517,12 +517,12 @@ LABEL_6:
     }
 
     v35 = objc_opt_class();
-    v36 = [(__objc2_class *)*v34 reuseIdentifier];
-    [v33 registerClass:v35 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v36];
+    reuseIdentifier = [(__objc2_class *)*v34 reuseIdentifier];
+    [collectionView4 registerClass:v35 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:reuseIdentifier];
 
     v37 = [UICollectionViewDiffableDataSource alloc];
     v38 = sub_1007CDFC8(v21);
-    v39 = [v37 initWithCollectionView:v16 cellProvider:v38];
+    v39 = [v37 initWithCollectionView:viewCopy cellProvider:v38];
     dataSource = v21->_dataSource;
     v21->_dataSource = v39;
 
@@ -531,12 +531,12 @@ LABEL_6:
     [(UICollectionViewDiffableDataSource *)v41 setSupplementaryViewProvider:v42];
 
     v43 = [MKPlaceCollectionsLogicController alloc];
-    v44 = [(DataSource *)v21 collectionView];
+    collectionView5 = [(DataSource *)v21 collectionView];
     v45 = +[CuratedCollectionSyncManager sharedManager];
-    v46 = [v43 initWithCollectionView:v44 withPlaceCollections:v17 usingCollectionIds:v52 usingCollectionFetcher:v18 usingGuideConsumer:0 usingSyncCoordinator:v45 inContext:2 usingBatchSize:{objc_msgSend(v18, "batchSize")}];
+    v46 = [v43 initWithCollectionView:collectionView5 withPlaceCollections:collectionsCopy usingCollectionIds:idsCopy usingCollectionFetcher:controllerCopy usingGuideConsumer:0 usingSyncCoordinator:v45 inContext:2 usingBatchSize:{objc_msgSend(controllerCopy, "batchSize")}];
     [(PublisherViewDataSource *)v21 setLogicController:v46];
 
-    v47 = [[MKPlaceCollectionsSizeController alloc] initWithCollectionsConfiguration:2 isSingleCollection:2 usingTraitCollections:objc_msgSend(v17 inContext:{"count") == 1, v16, 2}];
+    v47 = [[MKPlaceCollectionsSizeController alloc] initWithCollectionsConfiguration:2 isSingleCollection:2 usingTraitCollections:objc_msgSend(collectionsCopy inContext:{"count") == 1, viewCopy, 2}];
     [(PublisherViewDataSource *)v21 setSizeController:v47];
   }
 

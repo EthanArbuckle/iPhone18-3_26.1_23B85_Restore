@@ -10,10 +10,10 @@
 + (id)spotlightColor;
 + (id)supportingCastColor;
 + (id)woodyColor;
-- (id)initForDevice:(id)a3;
-- (id)listingsForCharacter:(unint64_t)a3;
-- (id)listingsForCharacter:(unint64_t)a3 ofTypes:(id)a4 withAttributes:(id)a5 recentlyUsed:(id)a6;
-- (id)listingsOfTypes:(id)a3 withAttributes:(id)a4 recentlyUsed:(id)a5;
+- (id)initForDevice:(id)device;
+- (id)listingsForCharacter:(unint64_t)character;
+- (id)listingsForCharacter:(unint64_t)character ofTypes:(id)types withAttributes:(id)attributes recentlyUsed:(id)used;
+- (id)listingsOfTypes:(id)types withAttributes:(id)attributes recentlyUsed:(id)used;
 - (void)_countListings;
 - (void)_loadCharacters;
 @end
@@ -152,16 +152,16 @@
   return v3;
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKInfinityDataSource;
   v6 = [(NTKInfinityDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     [(NTKInfinityDataSource *)v7 _loadCharacters];
     [(NTKInfinityDataSource *)v7 _countListings];
   }
@@ -169,10 +169,10 @@
   return v7;
 }
 
-- (id)listingsForCharacter:(unint64_t)a3
+- (id)listingsForCharacter:(unint64_t)character
 {
   v16 = @"character";
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:character];
   v17 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   v6 = [NTKInfinityListingAttributes attributesWithDictionary:v5];
@@ -189,40 +189,40 @@
   return v9;
 }
 
-- (id)listingsForCharacter:(unint64_t)a3 ofTypes:(id)a4 withAttributes:(id)a5 recentlyUsed:(id)a6
+- (id)listingsForCharacter:(unint64_t)character ofTypes:(id)types withAttributes:(id)attributes recentlyUsed:(id)used
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(NTKInfinityDataSource *)self listingsForCharacter:a3];
+  typesCopy = types;
+  attributesCopy = attributes;
+  usedCopy = used;
+  v13 = [(NTKInfinityDataSource *)self listingsForCharacter:character];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_19C4;
   v20[3] = &unk_C470;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v21 = typesCopy;
+  v22 = attributesCopy;
+  v23 = usedCopy;
+  v14 = usedCopy;
+  v15 = attributesCopy;
+  v16 = typesCopy;
   v17 = [NSPredicate predicateWithBlock:v20];
   v18 = [v13 filteredArrayUsingPredicate:v17];
 
   return v18;
 }
 
-- (id)listingsOfTypes:(id)a3 withAttributes:(id)a4 recentlyUsed:(id)a5
+- (id)listingsOfTypes:(id)types withAttributes:(id)attributes recentlyUsed:(id)used
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1BA0;
   v14[3] = &unk_C470;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v8 = v17;
-  v9 = v16;
-  v10 = v15;
+  typesCopy = types;
+  attributesCopy = attributes;
+  usedCopy = used;
+  v8 = usedCopy;
+  v9 = attributesCopy;
+  v10 = typesCopy;
   v11 = [NSPredicate predicateWithBlock:v14];
   v12 = [(NSArray *)self->_listings filteredArrayUsingPredicate:v11];
 
@@ -262,11 +262,11 @@
           objc_enumerationMutation(v3);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) type];
-        if (v10 - 1 >= 3)
+        type = [*(*(&v12 + 1) + 8 * v9) type];
+        if (type - 1 >= 3)
         {
           v11 = p_numberOfTotalMagicMoments;
-          if (v10 != &dword_4)
+          if (type != &dword_4)
           {
             goto LABEL_10;
           }

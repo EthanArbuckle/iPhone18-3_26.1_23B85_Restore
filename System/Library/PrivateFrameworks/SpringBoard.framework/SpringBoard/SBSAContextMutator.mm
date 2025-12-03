@@ -1,22 +1,22 @@
 @interface SBSAContextMutator
 - (CGRect)inertContainerFrame;
 - (CGRect)systemContainerBounds;
-- (SBSAContextMutator)initWithContext:(id)a3;
+- (SBSAContextMutator)initWithContext:(id)context;
 - (UIEdgeInsets)landscapeScreenEdgeInsets;
 @end
 
 @implementation SBSAContextMutator
 
-- (SBSAContextMutator)initWithContext:(id)a3
+- (SBSAContextMutator)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SBSAContextMutator;
   v6 = [(SBSAContextMutator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;

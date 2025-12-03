@@ -1,19 +1,19 @@
 @interface RMSDAAPLoginManager
-- (BOOL)_isFairplayRequiredForServerInfo:(id)a3;
-- (RMSDAAPLoginManager)initWithRequestManager:(id)a3;
-- (void)_continueFairPlayHandshakeWithData:(id)a3 completionHandler:(id)a4;
-- (void)_requestControlInterfaceWithCompletionHandler:(id)a3;
-- (void)_requestFairPlayHandshake:(id)a3;
-- (void)_requestLoginWithCompletionHandler:(id)a3;
-- (void)_requestServerInfoWithCompletionHandler:(id)a3;
-- (void)loginWithCompletionHandler:(id)a3;
+- (BOOL)_isFairplayRequiredForServerInfo:(id)info;
+- (RMSDAAPLoginManager)initWithRequestManager:(id)manager;
+- (void)_continueFairPlayHandshakeWithData:(id)data completionHandler:(id)handler;
+- (void)_requestControlInterfaceWithCompletionHandler:(id)handler;
+- (void)_requestFairPlayHandshake:(id)handshake;
+- (void)_requestLoginWithCompletionHandler:(id)handler;
+- (void)_requestServerInfoWithCompletionHandler:(id)handler;
+- (void)loginWithCompletionHandler:(id)handler;
 @end
 
 @implementation RMSDAAPLoginManager
 
-- (RMSDAAPLoginManager)initWithRequestManager:(id)a3
+- (RMSDAAPLoginManager)initWithRequestManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = RMSDAAPLoginManager;
   v6 = [(RMSDAAPLoginManager *)&v10 init];
@@ -23,22 +23,22 @@
     fairPlaySession = v6->_fairPlaySession;
     v6->_fairPlaySession = v7;
 
-    objc_storeStrong(&v6->_requestManager, a3);
+    objc_storeStrong(&v6->_requestManager, manager);
     [(RMSDAAPRequestManager *)v6->_requestManager setFairPlaySession:v6->_fairPlaySession];
   }
 
   return v6;
 }
 
-- (void)loginWithCompletionHandler:(id)a3
+- (void)loginWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__RMSDAAPLoginManager_loginWithCompletionHandler___block_invoke;
   v6[3] = &unk_279B08C78;
-  v5 = v4;
+  v5 = handlerCopy;
   v7 = v5;
   objc_copyWeak(&v8, &location);
   [(RMSDAAPLoginManager *)self _requestServerInfoWithCompletionHandler:v6];
@@ -149,17 +149,17 @@ void __50__RMSDAAPLoginManager_loginWithCompletionHandler___block_invoke_2(uint6
   }
 }
 
-- (void)_requestServerInfoWithCompletionHandler:(id)a3
+- (void)_requestServerInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   requestManager = self->_requestManager;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__RMSDAAPLoginManager__requestServerInfoWithCompletionHandler___block_invoke;
   v8[3] = &unk_279B08CC8;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(RMSDAAPRequestManager *)requestManager requestWithPath:@"server-info" method:@"GET" postData:0 queryArgs:0 completionHandler:v8];
 }
 
@@ -176,16 +176,16 @@ uint64_t __63__RMSDAAPLoginManager__requestServerInfoWithCompletionHandler___blo
   return v4();
 }
 
-- (void)_requestControlInterfaceWithCompletionHandler:(id)a3
+- (void)_requestControlInterfaceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   requestManager = self->_requestManager;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__RMSDAAPLoginManager__requestControlInterfaceWithCompletionHandler___block_invoke;
   v8[3] = &unk_279B08CF0;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(RMSDAAPRequestManager *)requestManager requestWithPath:@"ctrl-int" method:@"POST" postData:0 queryArgs:0 completionHandler:v8];
 }
 
@@ -211,9 +211,9 @@ void __69__RMSDAAPLoginManager__requestControlInterfaceWithCompletionHandler___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_requestLoginWithCompletionHandler:(id)a3
+- (void)_requestLoginWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_isFairPlayRequired)
   {
     v5 = &unk_287486D28;
@@ -229,8 +229,8 @@ void __69__RMSDAAPLoginManager__requestControlInterfaceWithCompletionHandler___b
   v9[1] = 3221225472;
   v9[2] = __58__RMSDAAPLoginManager__requestLoginWithCompletionHandler___block_invoke;
   v9[3] = &unk_279B08CF0;
-  v10 = v4;
-  v7 = v4;
+  v10 = handlerCopy;
+  v7 = handlerCopy;
   v8 = [(RMSDAAPRequestManager *)requestManager requestWithPath:@"login" method:@"GET" postData:0 queryArgs:v5 completionHandler:v9];
 }
 
@@ -249,38 +249,38 @@ void __58__RMSDAAPLoginManager__requestLoginWithCompletionHandler___block_invoke
   (*(*(a1 + 32) + 16))(*(a1 + 32), a2, [v4 intValue]);
 }
 
-- (void)_requestFairPlayHandshake:(id)a3
+- (void)_requestFairPlayHandshake:(id)handshake
 {
   if (self->_isFairPlayRequired)
   {
     fairPlaySession = self->_fairPlaySession;
-    v5 = a3;
-    v7 = [(RMSFairPlaySession *)fairPlaySession handshakeData];
+    handshakeCopy = handshake;
+    handshakeCopy2 = [(RMSFairPlaySession *)fairPlaySession handshakeData];
     [RMSDAAPLoginManager _continueFairPlayHandshakeWithData:"_continueFairPlayHandshakeWithData:completionHandler:" completionHandler:?];
   }
 
   else
   {
-    v6 = *(a3 + 2);
-    v7 = a3;
+    v6 = *(handshake + 2);
+    handshakeCopy2 = handshake;
     v6();
   }
 }
 
-- (void)_continueFairPlayHandshakeWithData:(id)a3 completionHandler:(id)a4
+- (void)_continueFairPlayHandshakeWithData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   requestManager = self->_requestManager;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__RMSDAAPLoginManager__continueFairPlayHandshakeWithData_completionHandler___block_invoke;
   v12[3] = &unk_279B08D18;
-  v13 = v6;
-  v14 = v7;
+  v13 = dataCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dataCopy;
+  v10 = handlerCopy;
   v11 = [(RMSDAAPRequestManager *)requestManager requestWithPath:@"fp-setup" method:@"POST" postData:v9 queryArgs:0 completionHandler:v12];
 }
 
@@ -307,26 +307,26 @@ void __76__RMSDAAPLoginManager__continueFairPlayHandshakeWithData_completionHand
 LABEL_7:
 }
 
-- (BOOL)_isFairplayRequiredForServerInfo:(id)a3
+- (BOOL)_isFairplayRequiredForServerInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"com.apple.itunes.supportedextensions"];
-  v5 = [v4 unsignedLongLongValue];
+  infoCopy = info;
+  v4 = [infoCopy objectForKeyedSubscript:@"com.apple.itunes.supportedextensions"];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
-  if ((v5 & 2) != 0)
+  if ((unsignedLongLongValue & 2) != 0)
   {
     v10 = 1;
   }
 
   else
   {
-    v6 = [v3 objectForKeyedSubscript:@"com.apple.itunes.req-fplay"];
-    v7 = [v6 BOOLValue];
+    v6 = [infoCopy objectForKeyedSubscript:@"com.apple.itunes.req-fplay"];
+    bOOLValue = [v6 BOOLValue];
 
-    v8 = [v3 objectForKeyedSubscript:@"com.apple.itunes.supports-fprap"];
-    v9 = [v8 BOOLValue];
+    v8 = [infoCopy objectForKeyedSubscript:@"com.apple.itunes.supports-fprap"];
+    bOOLValue2 = [v8 BOOLValue];
 
-    v10 = v7 & v9;
+    v10 = bOOLValue & bOOLValue2;
   }
 
   return v10;

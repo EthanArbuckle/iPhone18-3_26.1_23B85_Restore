@@ -1,7 +1,7 @@
 @interface SAOnBehalfOfMultiple
 - (SAOnBehalfOfMultiple)init;
-- (id)displayStringWithPids:(_DWORD *)a1;
-- (void)addProximateName:(uint64_t)a3 proximatePid:(void *)a4 originName:(uint64_t)a5 originPid:(int)a6 count:;
+- (id)displayStringWithPids:(_DWORD *)pids;
+- (void)addProximateName:(uint64_t)name proximatePid:(void *)pid originName:(uint64_t)originName originPid:(int)originPid count:;
 @end
 
 @implementation SAOnBehalfOfMultiple
@@ -21,16 +21,16 @@
   return v2;
 }
 
-- (id)displayStringWithPids:(_DWORD *)a1
+- (id)displayStringWithPids:(_DWORD *)pids
 {
   v80 = *MEMORY[0x1E69E9840];
-  if (a1[2])
+  if (pids[2])
   {
-    v3 = a1;
+    pidsCopy = pids;
     context = objc_autoreleasePoolPush();
-    v5 = [objc_getProperty(v3 v4];
+    v5 = [objc_getProperty(pidsCopy v4];
     v6 = objc_alloc(MEMORY[0x1E695DF70]);
-    v62 = [v6 initWithCapacity:{objc_msgSend(objc_getProperty(v3, v7, 16, 1), "count")}];
+    v62 = [v6 initWithCapacity:{objc_msgSend(objc_getProperty(pidsCopy, v7, 16, 1), "count")}];
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
@@ -39,7 +39,7 @@
     v65 = [obj countByEnumeratingWithState:&v70 objects:v78 count:16];
     if (v65)
     {
-      v63 = v3;
+      v63 = pidsCopy;
       v64 = *v71;
       do
       {
@@ -51,7 +51,7 @@
             objc_enumerationMutation(obj);
           }
 
-          v10 = [objc_getProperty(v3 v8];
+          v10 = [objc_getProperty(pidsCopy v8];
           if (v10)
           {
             v12 = v10;
@@ -193,7 +193,7 @@
               v51 = [v53 initWithFormat:@"%u sample%s %@ (%@)", v54, v55, v50, v48];
             }
 
-            v3 = v63;
+            pidsCopy = v63;
             if (v51)
             {
               [v62 addObject:v51];
@@ -315,11 +315,11 @@ LABEL_9:
   return v13;
 }
 
-- (void)addProximateName:(uint64_t)a3 proximatePid:(void *)a4 originName:(uint64_t)a5 originPid:(int)a6 count:
+- (void)addProximateName:(uint64_t)name proximatePid:(void *)pid originName:(uint64_t)originName originPid:(int)originPid count:
 {
-  if (a1)
+  if (self)
   {
-    Property = [objc_getProperty(a1 a2];
+    Property = [objc_getProperty(self a2];
     if (Property)
     {
       goto LABEL_8;
@@ -348,7 +348,7 @@ LABEL_9:
     }
 
     v23 = 1;
-    [objc_getProperty(a1 v15];
+    [objc_getProperty(self v15];
     Property = self;
     if (self)
     {
@@ -365,7 +365,7 @@ LABEL_8:
 
     v24 = MEMORY[0x1E696AD98];
     v25 = Property;
-    v26 = [v24 numberWithInt:a3];
+    v26 = [v24 numberWithInt:name];
     v27 = [v25 containsObject:v26];
 
     if ((v27 & 1) == 0)
@@ -382,7 +382,7 @@ LABEL_8:
 
       v30 = MEMORY[0x1E696AD98];
       v31 = v29;
-      v32 = [v30 numberWithInt:a3];
+      v32 = [v30 numberWithInt:name];
       [v31 addObject:v32];
     }
 
@@ -396,7 +396,7 @@ LABEL_8:
       v33 = objc_getProperty(selfa, v28, 32, 1);
     }
 
-    v35 = [v33 objectForKeyedSubscript:a4];
+    v35 = [v33 objectForKeyedSubscript:pid];
     if (v35)
     {
       goto LABEL_22;
@@ -410,7 +410,7 @@ LABEL_8:
       v35 = objc_msgSendSuper2(&v56, sel_init);
       if (v35)
       {
-        v38 = [a4 copy];
+        v38 = [pid copy];
         v39 = *(v35 + 16);
         *(v35 + 16) = v38;
 
@@ -426,7 +426,7 @@ LABEL_8:
     }
 
     v42 = (v23 & 1) != 0 ? 0 : objc_getProperty(selfa, v37, 32, 1);
-    [v42 setObject:v35 forKeyedSubscript:a4];
+    [v42 setObject:v35 forKeyedSubscript:pid];
     if (v35)
     {
 LABEL_22:
@@ -442,7 +442,7 @@ LABEL_22:
 
     v45 = MEMORY[0x1E696AD98];
     v46 = v43;
-    v47 = [v45 numberWithInt:a5];
+    v47 = [v45 numberWithInt:originName];
     v48 = [v46 containsObject:v47];
 
     if ((v48 & 1) == 0)
@@ -459,19 +459,19 @@ LABEL_22:
 
       v51 = MEMORY[0x1E696AD98];
       v52 = v50;
-      v53 = [v51 numberWithInt:a5];
+      v53 = [v51 numberWithInt:originName];
       [v52 addObject:v53];
     }
 
-    a1[2] += a6;
+    self[2] += originPid;
     if ((v23 & 1) == 0)
     {
-      selfa[2] += a6;
+      selfa[2] += originPid;
     }
 
     if ((v44 & 1) == 0)
     {
-      *(v35 + 8) += a6;
+      *(v35 + 8) += originPid;
     }
   }
 }

@@ -1,53 +1,53 @@
 @interface NSPOutageReasonStats
-- (NSPOutageReasonStats)initWithCoder:(id)a3;
+- (NSPOutageReasonStats)initWithCoder:(id)coder;
 - (id)analyticsDict;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPOutageReasonStats
 
-- (NSPOutageReasonStats)initWithCoder:(id)a3
+- (NSPOutageReasonStats)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = NSPOutageReasonStats;
   v5 = [(NSPOutageReasonStats *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TierType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TierType"];
     tierType = v5->_tierType;
     v5->_tierType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OutageReasonType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OutageReasonType"];
     outageReasonType = v5->_outageReasonType;
     v5->_outageReasonType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OutageReasonSubType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OutageReasonSubType"];
     outageReasonSubType = v5->_outageReasonSubType;
     v5->_outageReasonSubType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryIngressProxy"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryIngressProxy"];
     primaryIngressProxy = v5->_primaryIngressProxy;
     v5->_primaryIngressProxy = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryEgressProxy"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryEgressProxy"];
     primaryEgressProxy = v5->_primaryEgressProxy;
     v5->_primaryEgressProxy = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FallbackIngressProxy"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FallbackIngressProxy"];
     fallbackIngressProxy = v5->_fallbackIngressProxy;
     v5->_fallbackIngressProxy = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FallbackEgressProxy"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FallbackEgressProxy"];
     fallbackEgressProxy = v5->_fallbackEgressProxy;
     v5->_fallbackEgressProxy = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ODoHProxy"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ODoHProxy"];
     odohProxy = v5->_odohProxy;
     v5->_odohProxy = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TokenProxy"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TokenProxy"];
     tokenProxy = v5->_tokenProxy;
     v5->_tokenProxy = v22;
   }
@@ -55,75 +55,75 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NSPOutageReasonStats *)self tierType];
-  [v4 encodeObject:v5 forKey:@"TierType"];
+  coderCopy = coder;
+  tierType = [(NSPOutageReasonStats *)self tierType];
+  [coderCopy encodeObject:tierType forKey:@"TierType"];
 
-  v6 = [(NSPOutageReasonStats *)self outageReasonType];
-  [v4 encodeObject:v6 forKey:@"OutageReasonType"];
+  outageReasonType = [(NSPOutageReasonStats *)self outageReasonType];
+  [coderCopy encodeObject:outageReasonType forKey:@"OutageReasonType"];
 
-  v7 = [(NSPOutageReasonStats *)self outageReasonSubType];
-  [v4 encodeObject:v7 forKey:@"OutageReasonSubType"];
+  outageReasonSubType = [(NSPOutageReasonStats *)self outageReasonSubType];
+  [coderCopy encodeObject:outageReasonSubType forKey:@"OutageReasonSubType"];
 
-  v8 = [(NSPOutageReasonStats *)self primaryIngressProxy];
-  [v4 encodeObject:v8 forKey:@"PrimaryIngressProxy"];
+  primaryIngressProxy = [(NSPOutageReasonStats *)self primaryIngressProxy];
+  [coderCopy encodeObject:primaryIngressProxy forKey:@"PrimaryIngressProxy"];
 
-  v9 = [(NSPOutageReasonStats *)self primaryEgressProxy];
-  [v4 encodeObject:v9 forKey:@"PrimaryEgressProxy"];
+  primaryEgressProxy = [(NSPOutageReasonStats *)self primaryEgressProxy];
+  [coderCopy encodeObject:primaryEgressProxy forKey:@"PrimaryEgressProxy"];
 
-  v10 = [(NSPOutageReasonStats *)self fallbackIngressProxy];
-  [v4 encodeObject:v10 forKey:@"FallbackIngressProxy"];
+  fallbackIngressProxy = [(NSPOutageReasonStats *)self fallbackIngressProxy];
+  [coderCopy encodeObject:fallbackIngressProxy forKey:@"FallbackIngressProxy"];
 
-  v11 = [(NSPOutageReasonStats *)self fallbackEgressProxy];
-  [v4 encodeObject:v11 forKey:@"FallbackEgressProxy"];
+  fallbackEgressProxy = [(NSPOutageReasonStats *)self fallbackEgressProxy];
+  [coderCopy encodeObject:fallbackEgressProxy forKey:@"FallbackEgressProxy"];
 
-  v12 = [(NSPOutageReasonStats *)self odohProxy];
-  [v4 encodeObject:v12 forKey:@"ODoHProxy"];
+  odohProxy = [(NSPOutageReasonStats *)self odohProxy];
+  [coderCopy encodeObject:odohProxy forKey:@"ODoHProxy"];
 
-  v13 = [(NSPOutageReasonStats *)self tokenProxy];
-  [v4 encodeObject:v13 forKey:@"TokenProxy"];
+  tokenProxy = [(NSPOutageReasonStats *)self tokenProxy];
+  [coderCopy encodeObject:tokenProxy forKey:@"TokenProxy"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPOutageReasonStats allocWithZone:?]];
-  v5 = [(NSPOutageReasonStats *)self tierType];
-  [(NSPOutageReasonStats *)v4 setTierType:v5];
+  tierType = [(NSPOutageReasonStats *)self tierType];
+  [(NSPOutageReasonStats *)v4 setTierType:tierType];
 
-  v6 = [(NSPOutageReasonStats *)self outageReasonType];
-  [(NSPOutageReasonStats *)v4 setOutageReasonType:v6];
+  outageReasonType = [(NSPOutageReasonStats *)self outageReasonType];
+  [(NSPOutageReasonStats *)v4 setOutageReasonType:outageReasonType];
 
-  v7 = [(NSPOutageReasonStats *)self outageReasonSubType];
-  [(NSPOutageReasonStats *)v4 setOutageReasonSubType:v7];
+  outageReasonSubType = [(NSPOutageReasonStats *)self outageReasonSubType];
+  [(NSPOutageReasonStats *)v4 setOutageReasonSubType:outageReasonSubType];
 
-  v8 = [(NSPOutageReasonStats *)self primaryIngressProxy];
-  [(NSPOutageReasonStats *)v4 setPrimaryIngressProxy:v8];
+  primaryIngressProxy = [(NSPOutageReasonStats *)self primaryIngressProxy];
+  [(NSPOutageReasonStats *)v4 setPrimaryIngressProxy:primaryIngressProxy];
 
-  v9 = [(NSPOutageReasonStats *)self primaryEgressProxy];
-  [(NSPOutageReasonStats *)v4 setPrimaryEgressProxy:v9];
+  primaryEgressProxy = [(NSPOutageReasonStats *)self primaryEgressProxy];
+  [(NSPOutageReasonStats *)v4 setPrimaryEgressProxy:primaryEgressProxy];
 
-  v10 = [(NSPOutageReasonStats *)self fallbackIngressProxy];
-  [(NSPOutageReasonStats *)v4 setFallbackIngressProxy:v10];
+  fallbackIngressProxy = [(NSPOutageReasonStats *)self fallbackIngressProxy];
+  [(NSPOutageReasonStats *)v4 setFallbackIngressProxy:fallbackIngressProxy];
 
-  v11 = [(NSPOutageReasonStats *)self fallbackEgressProxy];
-  [(NSPOutageReasonStats *)v4 setFallbackEgressProxy:v11];
+  fallbackEgressProxy = [(NSPOutageReasonStats *)self fallbackEgressProxy];
+  [(NSPOutageReasonStats *)v4 setFallbackEgressProxy:fallbackEgressProxy];
 
-  v12 = [(NSPOutageReasonStats *)self odohProxy];
-  [(NSPOutageReasonStats *)v4 setOdohProxy:v12];
+  odohProxy = [(NSPOutageReasonStats *)self odohProxy];
+  [(NSPOutageReasonStats *)v4 setOdohProxy:odohProxy];
 
-  v13 = [(NSPOutageReasonStats *)self tokenProxy];
-  [(NSPOutageReasonStats *)v4 setTokenProxy:v13];
+  tokenProxy = [(NSPOutageReasonStats *)self tokenProxy];
+  [(NSPOutageReasonStats *)v4 setTokenProxy:tokenProxy];
 
   return v4;
 }
 
 - (id)analyticsDict
 {
-  v3 = [(NSPOutageReasonStats *)self outageReasonType];
+  outageReasonType = [(NSPOutageReasonStats *)self outageReasonType];
 
-  if (!v3)
+  if (!outageReasonType)
   {
     v16 = nplog_obj();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -139,37 +139,37 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v4 = [(NSPOutageReasonStats *)self outageReasonSubType];
+  outageReasonSubType = [(NSPOutageReasonStats *)self outageReasonSubType];
 
-  if (v4)
+  if (outageReasonSubType)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
-    v6 = [(NSPOutageReasonStats *)self tierType];
-    [v5 setObject:v6 forKeyedSubscript:@"TierType"];
+    tierType = [(NSPOutageReasonStats *)self tierType];
+    [v5 setObject:tierType forKeyedSubscript:@"TierType"];
 
-    v7 = [(NSPOutageReasonStats *)self outageReasonType];
-    [v5 setObject:v7 forKeyedSubscript:@"OutageReasonType"];
+    outageReasonType2 = [(NSPOutageReasonStats *)self outageReasonType];
+    [v5 setObject:outageReasonType2 forKeyedSubscript:@"OutageReasonType"];
 
-    v8 = [(NSPOutageReasonStats *)self outageReasonSubType];
-    [v5 setObject:v8 forKeyedSubscript:@"OutageReasonSubType"];
+    outageReasonSubType2 = [(NSPOutageReasonStats *)self outageReasonSubType];
+    [v5 setObject:outageReasonSubType2 forKeyedSubscript:@"OutageReasonSubType"];
 
-    v9 = [(NSPOutageReasonStats *)self primaryIngressProxy];
-    [v5 setObject:v9 forKeyedSubscript:@"PrimaryIngressProxy"];
+    primaryIngressProxy = [(NSPOutageReasonStats *)self primaryIngressProxy];
+    [v5 setObject:primaryIngressProxy forKeyedSubscript:@"PrimaryIngressProxy"];
 
-    v10 = [(NSPOutageReasonStats *)self primaryEgressProxy];
-    [v5 setObject:v10 forKeyedSubscript:@"PrimaryEgressProxy"];
+    primaryEgressProxy = [(NSPOutageReasonStats *)self primaryEgressProxy];
+    [v5 setObject:primaryEgressProxy forKeyedSubscript:@"PrimaryEgressProxy"];
 
-    v11 = [(NSPOutageReasonStats *)self fallbackIngressProxy];
-    [v5 setObject:v11 forKeyedSubscript:@"FallbackIngressProxy"];
+    fallbackIngressProxy = [(NSPOutageReasonStats *)self fallbackIngressProxy];
+    [v5 setObject:fallbackIngressProxy forKeyedSubscript:@"FallbackIngressProxy"];
 
-    v12 = [(NSPOutageReasonStats *)self fallbackEgressProxy];
-    [v5 setObject:v12 forKeyedSubscript:@"FallbackEgressProxy"];
+    fallbackEgressProxy = [(NSPOutageReasonStats *)self fallbackEgressProxy];
+    [v5 setObject:fallbackEgressProxy forKeyedSubscript:@"FallbackEgressProxy"];
 
-    v13 = [(NSPOutageReasonStats *)self odohProxy];
-    [v5 setObject:v13 forKeyedSubscript:@"ODoHProxy"];
+    odohProxy = [(NSPOutageReasonStats *)self odohProxy];
+    [v5 setObject:odohProxy forKeyedSubscript:@"ODoHProxy"];
 
-    v14 = [(NSPOutageReasonStats *)self tokenProxy];
-    [v5 setObject:v14 forKeyedSubscript:@"TokenProxy"];
+    tokenProxy = [(NSPOutageReasonStats *)self tokenProxy];
+    [v5 setObject:tokenProxy forKeyedSubscript:@"TokenProxy"];
 
     goto LABEL_4;
   }

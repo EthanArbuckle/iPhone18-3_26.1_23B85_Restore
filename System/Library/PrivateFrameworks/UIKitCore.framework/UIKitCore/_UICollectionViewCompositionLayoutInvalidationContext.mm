@@ -1,17 +1,17 @@
 @interface _UICollectionViewCompositionLayoutInvalidationContext
-- (void)_setInvalidationContextTable:(id)a3;
+- (void)_setInvalidationContextTable:(id)table;
 @end
 
 @implementation _UICollectionViewCompositionLayoutInvalidationContext
 
-- (void)_setInvalidationContextTable:(id)a3
+- (void)_setInvalidationContextTable:(id)table
 {
-  v5 = a3;
-  if (self->_invalidationContextTable != v5)
+  tableCopy = table;
+  if (self->_invalidationContextTable != tableCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_invalidationContextTable, a3);
-    v5 = v6;
+    v6 = tableCopy;
+    objc_storeStrong(&self->_invalidationContextTable, table);
+    tableCopy = v6;
   }
 }
 

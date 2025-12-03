@@ -1,31 +1,31 @@
 @interface HUPCCenterFillContentController
-- (HUPCCenterFillContentController)initWithTitle:(id)a3 detailText:(id)a4 contentView:(id)a5;
+- (HUPCCenterFillContentController)initWithTitle:(id)title detailText:(id)text contentView:(id)view;
 - (UIEdgeInsets)contentInsets;
 - (void)_updateContentViewContainerConstraints;
 - (void)_updateContentViewInsetConstraints;
 - (void)_viewDidUpdateContent;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setContentMode:(unint64_t)a3;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setContentMode:(unint64_t)mode;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HUPCCenterFillContentController
 
-- (HUPCCenterFillContentController)initWithTitle:(id)a3 detailText:(id)a4 contentView:(id)a5
+- (HUPCCenterFillContentController)initWithTitle:(id)title detailText:(id)text contentView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  textCopy = text;
+  viewCopy = view;
   v38.receiver = self;
   v38.super_class = HUPCCenterFillContentController;
   v11 = [(HUPCCenterFillContentController *)&v38 initWithContentView:0];
   v12 = v11;
   if (v11)
   {
-    [(HUPCCenterFillContentController *)v11 setTitle:v8];
-    [(HUPCCenterFillContentController *)v12 setSubtitle:v9];
-    objc_storeStrong(&v12->_centerFillContentView, a5);
+    [(HUPCCenterFillContentController *)v11 setTitle:titleCopy];
+    [(HUPCCenterFillContentController *)v12 setSubtitle:textCopy];
+    objc_storeStrong(&v12->_centerFillContentView, view);
     [(UIView *)v12->_centerFillContentView setTranslatesAutoresizingMaskIntoConstraints:0];
     v13 = objc_alloc_init(MEMORY[0x277D75D18]);
     contentViewContainer = v12->_contentViewContainer;
@@ -36,37 +36,37 @@
     v12->_contentMode = 1;
     *&v12->_contentInsets.top = xmmword_20D5CAA60;
     *&v12->_contentInsets.bottom = xmmword_20D5CAA60;
-    v15 = [(UIView *)v12->_contentViewContainer heightAnchor];
-    v16 = [v15 constraintEqualToConstant:1.0];
+    heightAnchor = [(UIView *)v12->_contentViewContainer heightAnchor];
+    v16 = [heightAnchor constraintEqualToConstant:1.0];
     contentViewContainerHeightConstraint = v12->_contentViewContainerHeightConstraint;
     v12->_contentViewContainerHeightConstraint = v16;
 
-    v18 = [(UIView *)v12->_contentViewContainer widthAnchor];
-    v19 = [v18 constraintEqualToConstant:1.0];
+    widthAnchor = [(UIView *)v12->_contentViewContainer widthAnchor];
+    v19 = [widthAnchor constraintEqualToConstant:1.0];
     contentViewContainerWidthConstraint = v12->_contentViewContainerWidthConstraint;
     v12->_contentViewContainerWidthConstraint = v19;
 
-    v21 = [(UIView *)v12->_centerFillContentView topAnchor];
-    v22 = [(UIView *)v12->_contentViewContainer topAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    topAnchor = [(UIView *)v12->_centerFillContentView topAnchor];
+    topAnchor2 = [(UIView *)v12->_contentViewContainer topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
     contentViewTopConstraint = v12->_contentViewTopConstraint;
     v12->_contentViewTopConstraint = v23;
 
-    v25 = [(UIView *)v12->_centerFillContentView bottomAnchor];
-    v26 = [(UIView *)v12->_contentViewContainer bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    bottomAnchor = [(UIView *)v12->_centerFillContentView bottomAnchor];
+    bottomAnchor2 = [(UIView *)v12->_contentViewContainer bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     contentViewBottomConstraint = v12->_contentViewBottomConstraint;
     v12->_contentViewBottomConstraint = v27;
 
-    v29 = [(UIView *)v12->_centerFillContentView leadingAnchor];
-    v30 = [(UIView *)v12->_contentViewContainer leadingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    leadingAnchor = [(UIView *)v12->_centerFillContentView leadingAnchor];
+    leadingAnchor2 = [(UIView *)v12->_contentViewContainer leadingAnchor];
+    v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     contentViewLeadingConstraint = v12->_contentViewLeadingConstraint;
     v12->_contentViewLeadingConstraint = v31;
 
-    v33 = [(UIView *)v12->_centerFillContentView trailingAnchor];
-    v34 = [(UIView *)v12->_contentViewContainer trailingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    trailingAnchor = [(UIView *)v12->_centerFillContentView trailingAnchor];
+    trailingAnchor2 = [(UIView *)v12->_contentViewContainer trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     contentViewTrailingConstraint = v12->_contentViewTrailingConstraint;
     v12->_contentViewTrailingConstraint = v35;
 
@@ -76,11 +76,11 @@
   return v12;
 }
 
-- (void)setContentMode:(unint64_t)a3
+- (void)setContentMode:(unint64_t)mode
 {
-  if (self->_contentMode != a3)
+  if (self->_contentMode != mode)
   {
-    self->_contentMode = a3;
+    self->_contentMode = mode;
     if ([(HUPCCenterFillContentController *)self isViewLoaded])
     {
       [(HUPCCenterFillContentController *)self _updateContentViewContainerConstraints];
@@ -90,15 +90,15 @@
   }
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     if ([(HUPCCenterFillContentController *)self isViewLoaded])
     {
       [(HUPCCenterFillContentController *)self _updateContentViewContainerConstraints];
@@ -136,9 +136,9 @@
 {
   if ([(HUPCCenterFillContentController *)self contentMode]== 1)
   {
-    v3 = [(HUPCCenterFillContentController *)self contentViewContainer];
-    v4 = [v3 superview];
-    [v4 frame];
+    contentViewContainer = [(HUPCCenterFillContentController *)self contentViewContainer];
+    superview = [contentViewContainer superview];
+    [superview frame];
     v6 = v5;
 
     if (v6 <= 0.0)
@@ -156,31 +156,31 @@
     v14 = v13;
     [(HUPCCenterFillContentController *)self contentInsets];
     v16 = v12 + v14 + v15;
-    v17 = [(HUPCCenterFillContentController *)self contentViewContainerWidthConstraint];
-    [v17 setConstant:v6];
+    contentViewContainerWidthConstraint = [(HUPCCenterFillContentController *)self contentViewContainerWidthConstraint];
+    [contentViewContainerWidthConstraint setConstant:v6];
 
-    v18 = [(HUPCCenterFillContentController *)self contentViewContainerWidthConstraint];
-    [v18 setActive:1];
+    contentViewContainerWidthConstraint2 = [(HUPCCenterFillContentController *)self contentViewContainerWidthConstraint];
+    [contentViewContainerWidthConstraint2 setActive:1];
 
-    v19 = [(HUPCCenterFillContentController *)self contentViewContainerHeightConstraint];
-    [v19 setConstant:v16];
+    contentViewContainerHeightConstraint = [(HUPCCenterFillContentController *)self contentViewContainerHeightConstraint];
+    [contentViewContainerHeightConstraint setConstant:v16];
 
-    v20 = [(HUPCCenterFillContentController *)self contentViewContainerHeightConstraint];
-    v23 = v20;
+    contentViewContainerHeightConstraint2 = [(HUPCCenterFillContentController *)self contentViewContainerHeightConstraint];
+    v23 = contentViewContainerHeightConstraint2;
     v21 = 1;
   }
 
   else
   {
-    v22 = [(HUPCCenterFillContentController *)self contentViewContainerHeightConstraint];
-    [v22 setActive:0];
+    contentViewContainerHeightConstraint3 = [(HUPCCenterFillContentController *)self contentViewContainerHeightConstraint];
+    [contentViewContainerHeightConstraint3 setActive:0];
 
-    v20 = [(HUPCCenterFillContentController *)self contentViewContainerWidthConstraint];
-    v23 = v20;
+    contentViewContainerHeightConstraint2 = [(HUPCCenterFillContentController *)self contentViewContainerWidthConstraint];
+    v23 = contentViewContainerHeightConstraint2;
     v21 = 0;
   }
 
-  [v20 setActive:v21];
+  [contentViewContainerHeightConstraint2 setActive:v21];
 }
 
 - (void)_updateContentViewInsetConstraints
@@ -202,29 +202,29 @@
     v10 = *(MEMORY[0x277D768C8] + 24);
   }
 
-  v11 = [(HUPCCenterFillContentController *)self contentViewTopConstraint];
-  [v11 setConstant:v4];
+  contentViewTopConstraint = [(HUPCCenterFillContentController *)self contentViewTopConstraint];
+  [contentViewTopConstraint setConstant:v4];
 
-  v12 = [(HUPCCenterFillContentController *)self contentViewTopConstraint];
-  [v12 setActive:1];
+  contentViewTopConstraint2 = [(HUPCCenterFillContentController *)self contentViewTopConstraint];
+  [contentViewTopConstraint2 setActive:1];
 
-  v13 = [(HUPCCenterFillContentController *)self contentViewBottomConstraint];
-  [v13 setConstant:-v8];
+  contentViewBottomConstraint = [(HUPCCenterFillContentController *)self contentViewBottomConstraint];
+  [contentViewBottomConstraint setConstant:-v8];
 
-  v14 = [(HUPCCenterFillContentController *)self contentViewBottomConstraint];
-  [v14 setActive:1];
+  contentViewBottomConstraint2 = [(HUPCCenterFillContentController *)self contentViewBottomConstraint];
+  [contentViewBottomConstraint2 setActive:1];
 
-  v15 = [(HUPCCenterFillContentController *)self contentViewLeadingConstraint];
-  [v15 setConstant:v6];
+  contentViewLeadingConstraint = [(HUPCCenterFillContentController *)self contentViewLeadingConstraint];
+  [contentViewLeadingConstraint setConstant:v6];
 
-  v16 = [(HUPCCenterFillContentController *)self contentViewLeadingConstraint];
-  [v16 setActive:1];
+  contentViewLeadingConstraint2 = [(HUPCCenterFillContentController *)self contentViewLeadingConstraint];
+  [contentViewLeadingConstraint2 setActive:1];
 
-  v17 = [(HUPCCenterFillContentController *)self contentViewTrailingConstraint];
-  [v17 setConstant:-v10];
+  contentViewTrailingConstraint = [(HUPCCenterFillContentController *)self contentViewTrailingConstraint];
+  [contentViewTrailingConstraint setConstant:-v10];
 
-  v18 = [(HUPCCenterFillContentController *)self contentViewTrailingConstraint];
-  [v18 setActive:1];
+  contentViewTrailingConstraint2 = [(HUPCCenterFillContentController *)self contentViewTrailingConstraint];
+  [contentViewTrailingConstraint2 setActive:1];
 }
 
 - (UIEdgeInsets)contentInsets

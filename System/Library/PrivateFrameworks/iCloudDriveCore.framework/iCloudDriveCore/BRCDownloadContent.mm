@@ -1,12 +1,12 @@
 @interface BRCDownloadContent
-- (BOOL)_prepareSecondStageWithManifest:(id)a3 package:(id)a4 error:(id *)a5;
-- (BOOL)_stageWithError:(id *)a3;
-- (BOOL)_stageWithManifest:(id)a3 package:(id)a4 xattrsPackage:(id)a5 error:(id *)a6;
-- (BRCDownloadContent)initWithDocument:(id)a3 stageID:(id)a4 etagIfLoser:(id)a5 downloadKind:(int)a6 downloadStager:(id)a7;
-- (id)_getDesiredPackageIndicesUsingReader:(id)a3 savedContentsURL:(id)a4 package:(id)a5 itemCount:(unint64_t)a6 error:(id *)a7;
+- (BOOL)_prepareSecondStageWithManifest:(id)manifest package:(id)package error:(id *)error;
+- (BOOL)_stageWithError:(id *)error;
+- (BOOL)_stageWithManifest:(id)manifest package:(id)package xattrsPackage:(id)xattrsPackage error:(id *)error;
+- (BRCDownloadContent)initWithDocument:(id)document stageID:(id)d etagIfLoser:(id)loser downloadKind:(int)kind downloadStager:(id)stager;
+- (id)_getDesiredPackageIndicesUsingReader:(id)reader savedContentsURL:(id)l package:(id)package itemCount:(unint64_t)count error:(id *)error;
 - (id)description;
 - (id)etagIfLoser;
-- (void)_prepareDataForPackageTwoPhaseDownloadIfNeededForItem:(id)a3;
+- (void)_prepareDataForPackageTwoPhaseDownloadIfNeededForItem:(id)item;
 @end
 
 @implementation BRCDownloadContent
@@ -24,12 +24,12 @@
   }
 }
 
-- (void)_prepareDataForPackageTwoPhaseDownloadIfNeededForItem:(id)a3
+- (void)_prepareDataForPackageTwoPhaseDownloadIfNeededForItem:(id)item
 {
-  v4 = [a3 currentVersion];
-  v5 = [v4 isPackage];
+  currentVersion = [item currentVersion];
+  isPackage = [currentVersion isPackage];
 
-  if (v5)
+  if (isPackage)
   {
     v16 = [(BRCDownloadStagingProtocol *)self->_downloadStager createURLForDownloadWithStageID:self->super._stageID name:@"brpackage-dlspec"];
     v6 = [MEMORY[0x277CFAE68] dataWithContentsOfURL:?];
@@ -44,9 +44,9 @@
     if (!self->_desiredIndices)
     {
       v10 = [(BRCDownloadStagingProtocol *)self->_downloadStager createURLForDownloadWithStageID:self->super._stageID name:@"brpackage-existing-content"];
-      v11 = [MEMORY[0x277CCAA00] defaultManager];
-      v12 = [v10 path];
-      v13 = [v11 fileExistsAtPath:v12];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      path = [v10 path];
+      v13 = [defaultManager fileExistsAtPath:path];
 
       if (v13)
       {
@@ -60,44 +60,44 @@
   }
 }
 
-- (BRCDownloadContent)initWithDocument:(id)a3 stageID:(id)a4 etagIfLoser:(id)a5 downloadKind:(int)a6 downloadStager:(id)a7
+- (BRCDownloadContent)initWithDocument:(id)document stageID:(id)d etagIfLoser:(id)loser downloadKind:(int)kind downloadStager:(id)stager
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  documentCopy = document;
+  loserCopy = loser;
+  stagerCopy = stager;
   v24.receiver = self;
   v24.super_class = BRCDownloadContent;
-  v15 = [(BRCDownload *)&v24 initWithDocument:v12 stageID:a4];
+  v15 = [(BRCDownload *)&v24 initWithDocument:documentCopy stageID:d];
   if (v15)
   {
-    v16 = [v12 serverZone];
+    serverZone = [documentCopy serverZone];
     zone = v15->_zone;
-    v15->_zone = v16;
+    v15->_zone = serverZone;
 
-    v18 = [v12 currentVersion];
-    v15->super._totalSize = [v18 size];
+    currentVersion = [documentCopy currentVersion];
+    v15->super._totalSize = [currentVersion size];
 
-    v15->_isFinderBookmark = [v12 isFinderBookmark];
-    etag = v13;
-    if (!v13)
+    v15->_isFinderBookmark = [documentCopy isFinderBookmark];
+    etag = loserCopy;
+    if (!loserCopy)
     {
       etag = v15->super._etag;
     }
 
     objc_storeStrong(&v15->super._etag, etag);
-    v15->_isLoser = v13 != 0;
-    v15->_kind = a6;
-    objc_storeStrong(&v15->_downloadStager, a7);
-    v20 = [v12 currentVersion];
-    v21 = [v12 dbFacade];
-    v22 = [v20 lastEditorUserIdentityWithDBFacade:v21];
+    v15->_isLoser = loserCopy != 0;
+    v15->_kind = kind;
+    objc_storeStrong(&v15->_downloadStager, stager);
+    currentVersion2 = [documentCopy currentVersion];
+    dbFacade = [documentCopy dbFacade];
+    v22 = [currentVersion2 lastEditorUserIdentityWithDBFacade:dbFacade];
 
     if (v22)
     {
       v15->_isDocumentModifiedByOtherUser = 1;
     }
 
-    [(BRCDownloadContent *)v15 _prepareDataForPackageTwoPhaseDownloadIfNeededForItem:v12];
+    [(BRCDownloadContent *)v15 _prepareDataForPackageTwoPhaseDownloadIfNeededForItem:documentCopy];
   }
 
   return v15;
@@ -118,12 +118,12 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"<dl-content[%lld] %@_%@ %s>", self->super._throttleID, self->super._itemID, self->super._etag, v2];
 }
 
-- (id)_getDesiredPackageIndicesUsingReader:(id)a3 savedContentsURL:(id)a4 package:(id)a5 itemCount:(unint64_t)a6 error:(id *)a7
+- (id)_getDesiredPackageIndicesUsingReader:(id)reader savedContentsURL:(id)l package:(id)package itemCount:(unint64_t)count error:(id *)error
 {
   v89 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v60 = a4;
-  v62 = a5;
+  readerCopy = reader;
+  lCopy = l;
+  packageCopy = package;
   v58 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v73 = 0;
   v74 = &v73;
@@ -132,62 +132,62 @@
   v77 = __Block_byref_object_dispose__37;
   v78 = 0;
   v10 = [BRCUserDefaults defaultsForMangledID:0];
-  v11 = [v10 supportsEnhancedDrivePrivacy];
+  supportsEnhancedDrivePrivacy = [v10 supportsEnhancedDrivePrivacy];
 
-  v59 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v61 = 0;
   v12 = 0;
   v63 = 0;
   v13 = 0;
   v14 = "(passed to caller)";
-  if (!a7)
+  if (!error)
   {
     v14 = "(ignored by caller)";
   }
 
   v55 = v14;
-  v57 = v11 ^ 1;
+  v57 = supportsEnhancedDrivePrivacy ^ 1;
   v56 = *MEMORY[0x277CFACB0];
   while (1)
   {
-    v15 = [v9 nextObject];
+    nextObject = [readerCopy nextObject];
 
-    if (!v15)
+    if (!nextObject)
     {
       break;
     }
 
     v16 = objc_autoreleasePoolPush();
-    if ([v15 type] == 4)
+    if ([nextObject type] == 4)
     {
       ++v13;
     }
 
-    else if ([v15 type] == 2)
+    else if ([nextObject type] == 2)
     {
-      if (v13 >= a6)
+      if (v13 >= count)
       {
         v32 = brc_bread_crumbs();
         v33 = brc_default_log();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
         {
-          v50 = [(BRCDownload *)self itemID];
+          itemID = [(BRCDownload *)self itemID];
           *buf = 138413314;
-          v80 = v50;
+          v80 = itemID;
           v81 = 2048;
           v82 = v13;
           v83 = 2048;
-          v84 = a6;
+          countCopy = count;
           v85 = 2112;
-          v86 = v62;
+          v86 = packageCopy;
           v87 = 2112;
           v88 = v32;
           _os_log_fault_impl(&dword_223E7A000, v33, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Package inside %@ is corrupted in the cloud\nAsking for asset index out of bounds %lu vs %lu in package: %@%@", buf, 0x34u);
         }
 
         v34 = MEMORY[0x277CCA9B8];
-        v35 = [(BRCDownload *)self itemID];
-        v36 = [v34 br_errorWithDomain:v56 code:15 description:{@"unreachable: Package inside %@ is corrupted in the cloud\nAsking for asset index out of bounds %lu vs %lu in package: %@", v35, v13, a6, v62}];
+        itemID2 = [(BRCDownload *)self itemID];
+        v36 = [v34 br_errorWithDomain:v56 code:15 description:{@"unreachable: Package inside %@ is corrupted in the cloud\nAsking for asset index out of bounds %lu vs %lu in package: %@", itemID2, v13, count, packageCopy}];
 
         if (v36)
         {
@@ -200,25 +200,25 @@
             v81 = 2080;
             v82 = v55;
             v83 = 2112;
-            v84 = v36;
+            countCopy = v36;
             v85 = 2112;
             v86 = v37;
             _os_log_error_impl(&dword_223E7A000, v38, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
           }
         }
 
-        if (a7)
+        if (error)
         {
-          objc_storeStrong(a7, v36);
+          objc_storeStrong(error, v36);
         }
 
         if ([(BRCServerZone *)self->_zone isPrivateZone])
         {
-          v39 = [(BRCServerZone *)self->_zone clientZone];
-          v40 = [v39 asPrivateClientZone];
-          v41 = [(BRCDownload *)self recordID];
-          v42 = [v41 recordName];
-          [v40 reportProblemWithType:9 recordName:v42];
+          clientZone = [(BRCServerZone *)self->_zone clientZone];
+          asPrivateClientZone = [clientZone asPrivateClientZone];
+          recordID = [(BRCDownload *)self recordID];
+          recordName = [recordID recordName];
+          [asPrivateClientZone reportProblemWithType:9 recordName:recordName];
         }
 
         v31 = 1;
@@ -227,27 +227,27 @@
 
       if (((v57 | v61) & 1) == 0)
       {
-        v17 = [(BRCServerZone *)self->_zone clientZone];
-        v18 = [v17 db];
-        v19 = [v18 serialQueue];
+        clientZone2 = [(BRCServerZone *)self->_zone clientZone];
+        v18 = [clientZone2 db];
+        serialQueue = [v18 serialQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __100__BRCDownloadContent__getDesiredPackageIndicesUsingReader_savedContentsURL_package_itemCount_error___block_invoke;
         block[3] = &unk_278500D08;
         v72 = &v73;
-        v70 = v17;
-        v71 = self;
-        v20 = v17;
-        dispatch_sync(v19, block);
+        v70 = clientZone2;
+        selfCopy = self;
+        v20 = clientZone2;
+        dispatch_sync(serialQueue, block);
 
         v61 = 1;
       }
 
-      v21 = [v15 path];
-      v22 = [v60 URLByAppendingPathComponent:v21];
+      path = [nextObject path];
+      v22 = [lCopy URLByAppendingPathComponent:path];
 
-      v23 = [v22 path];
-      v24 = [v59 fileExistsAtPath:v23];
+      path2 = [v22 path];
+      v24 = [defaultManager fileExistsAtPath:path2];
 
       if (!v24)
       {
@@ -272,15 +272,15 @@
           v81 = 2080;
           v82 = v55;
           v83 = 2112;
-          v84 = v63;
+          countCopy = v63;
           v85 = 2112;
           v86 = v29;
           _os_log_error_impl(&dword_223E7A000, v30, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
         }
 
-        if (a7)
+        if (error)
         {
-          objc_storeStrong(a7, v27);
+          objc_storeStrong(error, v27);
         }
 
         v31 = 1;
@@ -288,14 +288,14 @@
       }
 
       v67 = 0;
-      v43 = [v62 itemAtIndex:v13 error:&v67];
+      v43 = [packageCopy itemAtIndex:v13 error:&v67];
       v44 = v67;
       v45 = v67;
       v63 = v45;
       if (v43)
       {
-        v46 = [v43 signature];
-        v47 = [v26 isEqualToData:v46];
+        signature = [v43 signature];
+        v47 = [v26 isEqualToData:signature];
 
         if (v47)
         {
@@ -324,16 +324,16 @@ LABEL_44:
             v81 = 2080;
             v82 = v55;
             v83 = 2112;
-            v84 = v48;
+            countCopy = v48;
             v85 = 2112;
             v86 = v54;
             _os_log_error_impl(&dword_223E7A000, v49, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
           }
         }
 
-        if (a7)
+        if (error)
         {
-          objc_storeStrong(a7, v44);
+          objc_storeStrong(error, v44);
         }
 
         v31 = 1;
@@ -348,7 +348,7 @@ LABEL_45:
     v31 = 2;
 LABEL_19:
     objc_autoreleasePoolPop(v16);
-    v12 = v15;
+    v12 = nextObject;
     if ((v31 | 2) != 2)
     {
       v51 = 0;
@@ -376,12 +376,12 @@ void __100__BRCDownloadContent__getDesiredPackageIndicesUsingReader_savedContent
   *(v5 + 40) = v4;
 }
 
-- (BOOL)_prepareSecondStageWithManifest:(id)a3 package:(id)a4 error:(id *)a5
+- (BOOL)_prepareSecondStageWithManifest:(id)manifest package:(id)package error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v8 = a4;
-  v9 = [v8 itemCount];
+  manifestCopy = manifest;
+  packageCopy = package;
+  itemCount = [packageCopy itemCount];
   v10 = [(BRCDownloadStagingProtocol *)self->_downloadStager createURLForDownloadWithStageID:self->super._stageID name:@"brpackage-existing-content"];
   memset(v29, 0, sizeof(v29));
   __brc_create_section(0, "[BRCDownloadContent _prepareSecondStageWithManifest:package:error:]", 373, 0, v29);
@@ -392,18 +392,18 @@ void __100__BRCDownloadContent__getDesiredPackageIndicesUsingReader_savedContent
     [BRCDownloadContent _prepareSecondStageWithManifest:v29 package:? error:?];
   }
 
-  v13 = [[BRCPackageManifestReader alloc] initWithAsset:v28];
+  v13 = [[BRCPackageManifestReader alloc] initWithAsset:manifestCopy];
   [(BRCPackageManifestReader *)v13 setItemClass:objc_opt_class()];
-  v14 = [(BRCDownloadContent *)self _getDesiredPackageIndicesUsingReader:v13 savedContentsURL:v10 package:v8 itemCount:v9 error:a5];
+  v14 = [(BRCDownloadContent *)self _getDesiredPackageIndicesUsingReader:v13 savedContentsURL:v10 package:packageCopy itemCount:itemCount error:error];
   if (v14)
   {
-    v15 = [(BRCPackageManifestReader *)v13 error];
+    error = [(BRCPackageManifestReader *)v13 error];
 
-    v16 = v15 == 0;
-    if (v15)
+    v16 = error == 0;
+    if (error)
     {
-      v17 = [(BRCPackageManifestReader *)v13 error];
-      if (v17)
+      error2 = [(BRCPackageManifestReader *)v13 error];
+      if (error2)
       {
         v18 = brc_bread_crumbs();
         v19 = brc_default_log();
@@ -413,36 +413,36 @@ void __100__BRCDownloadContent__getDesiredPackageIndicesUsingReader_savedContent
           *buf = 136315906;
           v31 = "[BRCDownloadContent _prepareSecondStageWithManifest:package:error:]";
           v32 = 2080;
-          if (!a5)
+          if (!error)
           {
             v27 = "(ignored by caller)";
           }
 
           v33 = v27;
           v34 = 2112;
-          v35 = v17;
+          v35 = error2;
           v36 = 2112;
           v37 = v18;
           _os_log_error_impl(&dword_223E7A000, v19, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
         }
       }
 
-      if (!a5)
+      if (!error)
       {
         v16 = 0;
         goto LABEL_20;
       }
 
-      v17 = v17;
-      v20 = *a5;
-      *a5 = v17;
+      error2 = error2;
+      v20 = *error;
+      *error = error2;
     }
 
     else
     {
-      v17 = [(BRCDownloadStagingProtocol *)self->_downloadStager createURLForDownloadWithStageID:self->super._stageID name:@"brpackage-dlspec"];
+      error2 = [(BRCDownloadStagingProtocol *)self->_downloadStager createURLForDownloadWithStageID:self->super._stageID name:@"brpackage-dlspec"];
       v20 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v14 requiringSecureCoding:1 error:0];
-      if (([MEMORY[0x277CFAE68] writeData:v20 toURL:v17 atomically:1] & 1) == 0)
+      if (([MEMORY[0x277CFAE68] writeData:v20 toURL:error2 atomically:1] & 1) == 0)
       {
         v21 = brc_bread_crumbs();
         v22 = brc_default_log();
@@ -459,7 +459,7 @@ void __100__BRCDownloadContent__getDesiredPackageIndicesUsingReader_savedContent
         *buf = 138412802;
         v31 = v14;
         v32 = 2048;
-        v33 = v9;
+        v33 = itemCount;
         v34 = 2112;
         v35 = v23;
         _os_log_debug_impl(&dword_223E7A000, v24, OS_LOG_TYPE_DEBUG, "[DEBUG] Desired indices are: %@ (itemCount: %ld)%@", buf, 0x20u);
@@ -478,34 +478,34 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)_stageWithManifest:(id)a3 package:(id)a4 xattrsPackage:(id)a5 error:(id *)a6
+- (BOOL)_stageWithManifest:(id)manifest package:(id)package xattrsPackage:(id)xattrsPackage error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v36 = a4;
-  v35 = a5;
+  manifestCopy = manifest;
+  packageCopy = package;
+  xattrsPackageCopy = xattrsPackage;
   v34 = [(BRCDownloadStagingProtocol *)self->_downloadStager createURLForDownloadWithStageID:self->super._stageID name:@"item"];
   v11 = [(BRCDownloadStagingProtocol *)self->_downloadStager createURLForDownloadWithStageID:self->super._stageID name:@"brpackage-extended"];
-  v12 = [(BRCDownloadContent *)self desiredIndices];
+  desiredIndices = [(BRCDownloadContent *)self desiredIndices];
 
-  if (!v12)
+  if (!desiredIndices)
   {
     v13 = 0;
     goto LABEL_9;
   }
 
   v13 = [(BRCDownloadStagingProtocol *)self->_downloadStager createURLForDownloadWithStageID:self->super._stageID name:@"brpackage-existing-content"];
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v15 = [v13 path];
-  v16 = [v14 fileExistsAtPath:v15];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v13 path];
+  v16 = [defaultManager fileExistsAtPath:path];
 
   if (v16)
   {
 LABEL_9:
-    v22 = [[BRCPackageManifestReader alloc] initWithAsset:v10];
+    v22 = [[BRCPackageManifestReader alloc] initWithAsset:manifestCopy];
     v23 = [BRCPackageManifestWriter alloc];
-    v24 = [(BRCServerZone *)self->_zone clientZone];
-    v25 = [(BRCPackageManifestWriter *)v23 initWithZone:v24 stageID:self->super._stageID url:v11];
+    clientZone = [(BRCServerZone *)self->_zone clientZone];
+    v25 = [(BRCPackageManifestWriter *)v23 initWithZone:clientZone stageID:self->super._stageID url:v11];
 
     v26 = MEMORY[0x277CBEBC0];
     v37[0] = MEMORY[0x277D85DD0];
@@ -516,25 +516,25 @@ LABEL_9:
     v38 = v21;
     v17 = v22;
     v39 = v17;
-    v40 = v36;
-    v41 = v35;
+    v40 = packageCopy;
+    v41 = xattrsPackageCopy;
     v42 = v34;
     v13 = v13;
     v43 = v13;
-    v44 = self;
-    v45 = a6;
+    selfCopy = self;
+    errorCopy = error;
     [v26 br_setIOPolicy:1 type:7 forBlock:v37];
-    v27 = [v10 fileURL];
+    fileURL = [manifestCopy fileURL];
 
-    if (v27)
+    if (fileURL)
     {
-      v28 = [MEMORY[0x277CCAA00] defaultManager];
-      v29 = [v10 fileURL];
-      [v28 removeItemAtURL:v29 error:0];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      fileURL2 = [manifestCopy fileURL];
+      [defaultManager2 removeItemAtURL:fileURL2 error:0];
     }
 
-    v30 = [(BRCPackageManifestWriter *)v21 error];
-    v20 = v30 == 0;
+    error = [(BRCPackageManifestWriter *)v21 error];
+    v20 = error == 0;
 
     goto LABEL_12;
   }
@@ -550,7 +550,7 @@ LABEL_9:
       *buf = 136315906;
       v47 = "[BRCDownloadContent _stageWithManifest:package:xattrsPackage:error:]";
       v48 = 2080;
-      if (!a6)
+      if (!error)
       {
         v33 = "(ignored by caller)";
       }
@@ -564,7 +564,7 @@ LABEL_9:
     }
   }
 
-  if (!a6)
+  if (!error)
   {
     v20 = 0;
     goto LABEL_13;
@@ -572,8 +572,8 @@ LABEL_9:
 
   v17 = v17;
   v20 = 0;
-  v21 = *a6;
-  *a6 = v17;
+  v21 = *error;
+  *error = v17;
 LABEL_12:
 
 LABEL_13:
@@ -637,7 +637,7 @@ void __69__BRCDownloadContent__stageWithManifest_package_xattrsPackage_error___b
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_stageWithError:(id *)a3
+- (BOOL)_stageWithError:(id *)error
 {
   v64 = *MEMORY[0x277D85DE8];
   isFinderBookmark = self->_isFinderBookmark;
@@ -661,9 +661,9 @@ void __69__BRCDownloadContent__stageWithManifest_package_xattrsPackage_error___b
     if (objc_opt_isKindOfClass())
     {
       v11 = [(BRCDownloadStagingProtocol *)self->_downloadStager createURLForDownloadWithStageID:self->super._stageID name:@"item"];
-      v12 = [v10 fileURL];
+      fileURL = [v10 fileURL];
 
-      if (v12)
+      if (fileURL)
       {
         v13 = v11 == 0;
       }
@@ -679,9 +679,9 @@ void __69__BRCDownloadContent__stageWithManifest_package_xattrsPackage_error___b
         v15 = brc_default_log();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
         {
-          v48 = [v10 fileURL];
+          fileURL2 = [v10 fileURL];
           *buf = 138412802;
-          v57 = v48;
+          v57 = fileURL2;
           v58 = 2112;
           v59 = v11;
           v60 = 2112;
@@ -691,8 +691,8 @@ void __69__BRCDownloadContent__stageWithManifest_package_xattrsPackage_error___b
 
         v16 = MEMORY[0x277CCA9B8];
         v17 = *MEMORY[0x277CFACB0];
-        v18 = [v10 fileURL];
-        v40 = [v16 br_errorWithDomain:v17 code:15 description:{@"unreachable: asset has a missing url (%@), or we can't compute the stage url %@", v18, v11}];
+        fileURL3 = [v10 fileURL];
+        v40 = [v16 br_errorWithDomain:v17 code:15 description:{@"unreachable: asset has a missing url (%@), or we can't compute the stage url %@", fileURL3, v11}];
 
         if (v40)
         {
@@ -704,7 +704,7 @@ void __69__BRCDownloadContent__stageWithManifest_package_xattrsPackage_error___b
             *buf = 136315906;
             v57 = "[BRCDownloadContent _stageWithError:]";
             v58 = 2080;
-            if (!a3)
+            if (!error)
             {
               v54 = "(ignored by caller)";
             }
@@ -718,9 +718,9 @@ void __69__BRCDownloadContent__stageWithManifest_package_xattrsPackage_error___b
           }
         }
 
-        if (a3)
+        if (error)
         {
-          objc_storeStrong(a3, v40);
+          objc_storeStrong(error, v40);
         }
 
         v21 = 0;
@@ -728,16 +728,16 @@ void __69__BRCDownloadContent__stageWithManifest_package_xattrsPackage_error___b
 
       else
       {
-        v37 = [MEMORY[0x277CCAA00] defaultManager];
-        v38 = [v10 fileURL];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        fileURL4 = [v10 fileURL];
         v55 = 0;
-        [v37 br_forceMoveItemAtURL:v38 toURL:v11 error:&v55];
+        [defaultManager br_forceMoveItemAtURL:fileURL4 toURL:v11 error:&v55];
         v39 = v55;
         v40 = v55;
 
-        if (a3)
+        if (error)
         {
-          objc_storeStrong(a3, v39);
+          objc_storeStrong(error, v39);
         }
 
         v21 = v40 == 0;
@@ -764,7 +764,7 @@ void __69__BRCDownloadContent__stageWithManifest_package_xattrsPackage_error___b
         *buf = 136315906;
         v57 = "[BRCDownloadContent _stageWithError:]";
         v58 = 2080;
-        if (!a3)
+        if (!error)
         {
           v47 = "(ignored by caller)";
         }
@@ -778,9 +778,9 @@ void __69__BRCDownloadContent__stageWithManifest_package_xattrsPackage_error___b
       }
     }
 
-    if (a3)
+    if (error)
     {
-      objc_storeStrong(a3, v11);
+      objc_storeStrong(error, v11);
     }
 
 LABEL_87:
@@ -829,7 +829,7 @@ LABEL_87:
       *buf = 136315906;
       v57 = "[BRCDownloadContent _stageWithError:]";
       v58 = 2080;
-      if (!a3)
+      if (!error)
       {
         v36 = "(ignored by caller)";
       }
@@ -848,12 +848,12 @@ LABEL_87:
           {
             if ([(BRCDownloadContent *)self requiresTwoPhase])
             {
-              v42 = [(BRCDownloadContent *)self _prepareSecondStageWithManifest:v10 package:v11 error:a3];
+              v42 = [(BRCDownloadContent *)self _prepareSecondStageWithManifest:v10 package:v11 error:error];
             }
 
             else
             {
-              v42 = [(BRCDownloadContent *)self _stageWithManifest:v10 package:v11 xattrsPackage:v40 error:a3];
+              v42 = [(BRCDownloadContent *)self _stageWithManifest:v10 package:v11 xattrsPackage:v40 error:error];
             }
 
             v21 = v42;
@@ -886,7 +886,7 @@ LABEL_49:
           *buf = 136315906;
           v57 = "[BRCDownloadContent _stageWithError:]";
           v58 = 2080;
-          if (!a3)
+          if (!error)
           {
             v36 = "(ignored by caller)";
           }
@@ -914,9 +914,9 @@ LABEL_49:
 LABEL_83:
 
 LABEL_84:
-            if (a3)
+            if (error)
             {
-              objc_storeStrong(a3, v33);
+              objc_storeStrong(error, v33);
             }
 
             goto LABEL_87;
@@ -926,7 +926,7 @@ LABEL_84:
           *buf = 136315906;
           v57 = "[BRCDownloadContent _stageWithError:]";
           v58 = 2080;
-          if (!a3)
+          if (!error)
           {
             v36 = "(ignored by caller)";
           }
@@ -959,7 +959,7 @@ LABEL_84:
         *buf = 136315906;
         v57 = "[BRCDownloadContent _stageWithError:]";
         v58 = 2080;
-        if (!a3)
+        if (!error)
         {
           v36 = "(ignored by caller)";
         }
@@ -993,7 +993,7 @@ LABEL_84:
       *buf = 136315906;
       v57 = "[BRCDownloadContent _stageWithError:]";
       v58 = 2080;
-      if (!a3)
+      if (!error)
       {
         v53 = "(ignored by caller)";
       }
@@ -1007,12 +1007,12 @@ LABEL_84:
     }
   }
 
-  if (a3)
+  if (error)
   {
     v10 = v10;
     v21 = 0;
-    v11 = *a3;
-    *a3 = v10;
+    v11 = *error;
+    *error = v10;
 LABEL_88:
 
     goto LABEL_89;

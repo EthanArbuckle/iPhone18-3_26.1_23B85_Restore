@@ -1,23 +1,23 @@
 @interface SGStorageContact
-+ (id)contactFromContactEntity:(id)a3;
-+ (id)contactWithMasterEntityId:(int64_t)a3;
-+ (id)mergeAll:(id)a3;
++ (id)contactFromContactEntity:(id)entity;
++ (id)contactWithMasterEntityId:(int64_t)id;
++ (id)mergeAll:(id)all;
 - (BOOL)hasProfileFromInteraction;
 - (BOOL)hasProfileFromTextMessage;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStorageContact:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStorageContact:(id)contact;
 - (NSString)name;
 - (SGStorageContact)init;
 - (id)allNames;
 - (id)bestProfile;
-- (id)convertToContact:(id)a3 sourceEntity:(id)a4 enrichments:(id)a5;
+- (id)convertToContact:(id)contact sourceEntity:(id)entity enrichments:(id)enrichments;
 - (id)description;
-- (id)loadAddressDetailsFrom:(id)a3;
-- (id)loadAllDetailsFrom:(id)a3;
-- (id)loadBirthdayDetailsFrom:(id)a3;
-- (id)loadEmailAddressDetailsFrom:(id)a3;
-- (id)loadPhoneDetailsFrom:(id)a3;
-- (void)merge:(id)a3;
+- (id)loadAddressDetailsFrom:(id)from;
+- (id)loadAllDetailsFrom:(id)from;
+- (id)loadBirthdayDetailsFrom:(id)from;
+- (id)loadEmailAddressDetailsFrom:(id)from;
+- (id)loadPhoneDetailsFrom:(id)from;
+- (void)merge:(id)merge;
 @end
 
 @implementation SGStorageContact
@@ -25,7 +25,7 @@
 - (BOOL)hasProfileFromTextMessage
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D01FA0] fromTextMessage];
+  fromTextMessage = [MEMORY[0x277D01FA0] fromTextMessage];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -44,8 +44,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) tags];
-        v9 = [v8 containsObject:v3];
+        tags = [*(*(&v12 + 1) + 8 * i) tags];
+        v9 = [tags containsObject:fromTextMessage];
 
         if (v9)
         {
@@ -73,7 +73,7 @@ LABEL_11:
 - (BOOL)hasProfileFromInteraction
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D01FA0] fromInteraction];
+  fromInteraction = [MEMORY[0x277D01FA0] fromInteraction];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -92,8 +92,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) tags];
-        v9 = [v8 containsObject:v3];
+        tags = [*(*(&v12 + 1) + 8 * i) tags];
+        v9 = [tags containsObject:fromInteraction];
 
         if (v9)
         {
@@ -121,7 +121,7 @@ LABEL_11:
 - (id)bestProfile
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(SGStorageContact *)self name];
+  name = [(SGStorageContact *)self name];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -144,8 +144,8 @@ LABEL_11:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 title];
-        v13 = [v12 isEqualToString:v3];
+        title = [v11 title];
+        v13 = [title isEqualToString:name];
 
         if (v13)
         {
@@ -188,21 +188,21 @@ LABEL_14:
   return v7;
 }
 
-- (id)convertToContact:(id)a3 sourceEntity:(id)a4 enrichments:(id)a5
+- (id)convertToContact:(id)contact sourceEntity:(id)entity enrichments:(id)enrichments
 {
   v96 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
-  v10 = v8;
-  v11 = a5;
+  contactCopy = contact;
+  entityCopy = entity;
+  v9 = contactCopy;
+  v10 = entityCopy;
+  enrichmentsCopy = enrichments;
   v82 = [MEMORY[0x277D02070] originWithType:0 sourceKey:0 externalKey:0 fromForwardedMessage:0];
   v85 = objc_opt_new();
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v12 = v11;
+  v12 = enrichmentsCopy;
   v13 = [v12 countByEnumeratingWithState:&v90 objects:v95 count:16];
   if (v13)
   {
@@ -218,15 +218,15 @@ LABEL_14:
         }
 
         v17 = *(*(&v90 + 1) + 8 * i);
-        v18 = [v17 recordId];
+        recordId = [v17 recordId];
 
-        if (v18)
+        if (recordId)
         {
           v19 = MEMORY[0x277D02070];
-          v20 = [v17 duplicateKey];
-          v21 = [v19 originForDuplicateKey:v20 entity:v17 parent:v10 store:v9];
-          v22 = [v17 recordId];
-          [v85 setObject:v21 forKeyedSubscript:v22];
+          duplicateKey = [v17 duplicateKey];
+          v21 = [v19 originForDuplicateKey:duplicateKey entity:v17 parent:v10 store:v9];
+          recordId2 = [v17 recordId];
+          [v85 setObject:v21 forKeyedSubscript:recordId2];
         }
       }
 
@@ -236,45 +236,45 @@ LABEL_14:
     while (v14);
   }
 
-  v23 = [v10 recordId];
+  recordId3 = [v10 recordId];
 
-  if (v23)
+  if (recordId3)
   {
     v24 = MEMORY[0x277D02070];
-    v25 = [v10 duplicateKey];
-    v26 = [v24 originForDuplicateKey:v25 entity:v10 parent:0 store:v9];
-    v27 = [v10 recordId];
-    [v85 setObject:v26 forKeyedSubscript:v27];
+    duplicateKey2 = [v10 duplicateKey];
+    v26 = [v24 originForDuplicateKey:duplicateKey2 entity:v10 parent:0 store:v9];
+    recordId4 = [v10 recordId];
+    [v85 setObject:v26 forKeyedSubscript:recordId4];
   }
 
   v28 = [(SGStorageContact *)self loadAllDetailsFrom:v9];
-  v29 = [v28 phoneNumbers];
+  phoneNumbers = [v28 phoneNumbers];
   v81 = sgMapAndFilter();
 
-  v30 = [v28 postalAddresses];
+  postalAddresses = [v28 postalAddresses];
   v80 = sgMapAndFilter();
 
-  v31 = [v28 emailAddresses];
+  emailAddresses = [v28 emailAddresses];
   v79 = sgMapAndFilter();
 
-  v32 = [v28 socialProfiles];
+  socialProfiles = [v28 socialProfiles];
   v78 = sgMapAndFilter();
 
-  v33 = [v28 birthday];
+  birthday = [v28 birthday];
 
-  if (v33)
+  if (birthday)
   {
     v76 = MEMORY[0x277D01F78];
-    v74 = [v28 birthday];
-    v72 = [v74 value];
-    v34 = SGDateComponentsFromNormalizeBirthday(v72);
-    v70 = [v28 birthday];
-    v35 = [v70 label];
-    v36 = [v28 birthday];
-    v37 = [v36 extractionInfo];
-    v38 = [v28 birthday];
-    v39 = [v38 recordId];
-    v77 = [v76 dateComponents:v34 label:v35 extractionInfo:v37 withRecordId:v39];
+    birthday2 = [v28 birthday];
+    value = [birthday2 value];
+    v34 = SGDateComponentsFromNormalizeBirthday(value);
+    birthday3 = [v28 birthday];
+    label = [birthday3 label];
+    birthday4 = [v28 birthday];
+    extractionInfo = [birthday4 extractionInfo];
+    birthday5 = [v28 birthday];
+    recordId5 = [birthday5 recordId];
+    v77 = [v76 dateComponents:v34 label:label extractionInfo:extractionInfo withRecordId:recordId5];
   }
 
   else
@@ -282,22 +282,22 @@ LABEL_14:
     v77 = 0;
   }
 
-  v40 = [v28 photoPath];
+  photoPath = [v28 photoPath];
 
-  if (v40)
+  if (photoPath)
   {
-    v41 = [v28 photoPath];
-    v75 = [v41 value];
+    photoPath2 = [v28 photoPath];
+    value2 = [photoPath2 value];
   }
 
   else
   {
-    v75 = 0;
+    value2 = 0;
   }
 
-  v42 = [(SGStorageContact *)self bestProfile];
-  v43 = [MEMORY[0x277D020C8] recordIdForContactWithRowId:{objc_msgSend(v42, "masterEntityId")}];
-  v44 = [v42 title];
+  bestProfile = [(SGStorageContact *)self bestProfile];
+  v43 = [MEMORY[0x277D020C8] recordIdForContactWithRowId:{objc_msgSend(bestProfile, "masterEntityId")}];
+  title = [bestProfile title];
   v45 = [v85 objectForKeyedSubscript:v43];
   v46 = v45;
   if (v45)
@@ -310,13 +310,13 @@ LABEL_14:
     v47 = v82;
   }
 
-  v71 = v42;
-  v48 = [v42 extractionInfo];
-  v49 = [SGNames sgNameFromString:v44 origin:v47 recordId:v43 extractionInfo:v48];
+  v71 = bestProfile;
+  extractionInfo2 = [bestProfile extractionInfo];
+  v49 = [SGNames sgNameFromString:title origin:v47 recordId:v43 extractionInfo:extractionInfo2];
 
   v67 = v49;
   v68 = v43;
-  v50 = [MEMORY[0x277D01F60] contactWithId:v43 name:v49 emailAddresses:v79 phones:v81 postalAddresses:v80 socialProfiles:v78 birthday:v77 photoPath:v75];
+  v50 = [MEMORY[0x277D01F60] contactWithId:v43 name:v49 emailAddresses:v79 phones:v81 postalAddresses:v80 socialProfiles:v78 birthday:v77 photoPath:value2];
   if ([(SGStorageContact *)self hasProfileFromInteraction])
   {
     [v50 setSignificance:1];
@@ -346,13 +346,13 @@ LABEL_14:
         }
 
         v56 = *(*(&v86 + 1) + 8 * j);
-        v57 = [v56 extractionInfo];
-        if ([v57 extractionType] == 64)
+        extractionInfo3 = [v56 extractionInfo];
+        if ([extractionInfo3 extractionType] == 64)
         {
-          v58 = [v56 duplicateKey];
+          duplicateKey3 = [v56 duplicateKey];
           v59 = v10;
           v60 = v9;
-          v61 = [v58 entityType] == 4;
+          v61 = [duplicateKey3 entityType] == 4;
 
           v53 = v53 | v61;
           v9 = v60;
@@ -363,13 +363,13 @@ LABEL_14:
         {
         }
 
-        v62 = [v56 extractionInfo];
-        if ([v62 extractionType] == 64)
+        extractionInfo4 = [v56 extractionInfo];
+        if ([extractionInfo4 extractionType] == 64)
         {
-          v63 = [v56 duplicateKey];
-          v64 = [v63 entityType];
+          duplicateKey4 = [v56 duplicateKey];
+          entityType = [duplicateKey4 entityType];
 
-          if (v64 == 23)
+          if (entityType == 23)
           {
             v53 = v53 | 2;
           }
@@ -514,44 +514,44 @@ id __62__SGStorageContact_convertToContact_sourceEntity_enrichments___block_invo
   return v8;
 }
 
-- (id)loadBirthdayDetailsFrom:(id)a3
+- (id)loadBirthdayDetailsFrom:(id)from
 {
-  v3 = [(SGStorageContact *)self loadAllDetailsFrom:a3];
-  v4 = [v3 birthday];
+  v3 = [(SGStorageContact *)self loadAllDetailsFrom:from];
+  birthday = [v3 birthday];
 
-  return v4;
+  return birthday;
 }
 
-- (id)loadEmailAddressDetailsFrom:(id)a3
+- (id)loadEmailAddressDetailsFrom:(id)from
 {
-  v3 = [(SGStorageContact *)self loadAllDetailsFrom:a3];
-  v4 = [v3 emailAddresses];
+  v3 = [(SGStorageContact *)self loadAllDetailsFrom:from];
+  emailAddresses = [v3 emailAddresses];
 
-  return v4;
+  return emailAddresses;
 }
 
-- (id)loadAddressDetailsFrom:(id)a3
+- (id)loadAddressDetailsFrom:(id)from
 {
-  v3 = [(SGStorageContact *)self loadAllDetailsFrom:a3];
-  v4 = [v3 postalAddresses];
+  v3 = [(SGStorageContact *)self loadAllDetailsFrom:from];
+  postalAddresses = [v3 postalAddresses];
 
-  return v4;
+  return postalAddresses;
 }
 
-- (id)loadPhoneDetailsFrom:(id)a3
+- (id)loadPhoneDetailsFrom:(id)from
 {
-  v3 = [(SGStorageContact *)self loadAllDetailsFrom:a3];
-  v4 = [v3 phoneNumbers];
+  v3 = [(SGStorageContact *)self loadAllDetailsFrom:from];
+  phoneNumbers = [v3 phoneNumbers];
 
-  return v4;
+  return phoneNumbers;
 }
 
-- (id)loadAllDetailsFrom:(id)a3
+- (id)loadAllDetailsFrom:(id)from
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SGStorageContact *)self internalDetectedDetails];
-  if (!v5)
+  fromCopy = from;
+  internalDetectedDetails = [(SGStorageContact *)self internalDetectedDetails];
+  if (!internalDetectedDetails)
   {
     v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableSet count](self->_profiles, "count")}];
     v29 = 0u;
@@ -573,8 +573,8 @@ id __62__SGStorageContact_convertToContact_sourceEntity_enrichments___block_invo
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v29 + 1) + 8 * i) recordId];
-          v13 = [v4 loadAllContactDetailsForRecordId:v12];
+          recordId = [*(*(&v29 + 1) + 8 * i) recordId];
+          v13 = [fromCopy loadAllContactDetailsForRecordId:recordId];
           [v6 addObjectsFromArray:v13];
         }
 
@@ -592,31 +592,31 @@ id __62__SGStorageContact_convertToContact_sourceEntity_enrichments___block_invo
     v28 = v14;
     v15 = v14;
     v16 = MEMORY[0x2383809F0](v27);
-    v5 = objc_opt_new();
+    internalDetectedDetails = objc_opt_new();
     v17 = v16[2](v16, 2);
-    [v5 setEmailAddresses:v17];
+    [internalDetectedDetails setEmailAddresses:v17];
 
     v18 = v16[2](v16, 1);
-    [v5 setPostalAddresses:v18];
+    [internalDetectedDetails setPostalAddresses:v18];
 
     v19 = v16[2](v16, 0);
-    [v5 setPhoneNumbers:v19];
+    [internalDetectedDetails setPhoneNumbers:v19];
 
     v20 = v16[2](v16, 4);
-    [v5 setSocialProfiles:v20];
+    [internalDetectedDetails setSocialProfiles:v20];
 
     v21 = v16[2](v16, 6);
-    v22 = [v21 firstObject];
-    [v5 setBirthday:v22];
+    firstObject = [v21 firstObject];
+    [internalDetectedDetails setBirthday:firstObject];
 
     v23 = v16[2](v16, 5);
-    v24 = [v23 firstObject];
-    [v5 setPhotoPath:v24];
+    firstObject2 = [v23 firstObject];
+    [internalDetectedDetails setPhotoPath:firstObject2];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return internalDetectedDetails;
 }
 
 id __39__SGStorageContact_loadAllDetailsFrom___block_invoke(uint64_t a1, uint64_t a2)
@@ -638,21 +638,21 @@ id __39__SGStorageContact_loadAllDetailsFrom___block_invoke(uint64_t a1, uint64_
   return v5;
 }
 
-- (void)merge:(id)a3
+- (void)merge:(id)merge
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(SGStorageContact *)self canMerge:v5])
+  mergeCopy = merge;
+  if (![(SGStorageContact *)self canMerge:mergeCopy])
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGStorageContact.m" lineNumber:149 description:@"Merging with a contact that isn't mergable"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGStorageContact.m" lineNumber:149 description:@"Merging with a contact that isn't mergable"];
   }
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v5[1];
+  v6 = mergeCopy[1];
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -705,12 +705,12 @@ id __39__SGStorageContact_loadAllDetailsFrom___block_invoke(uint64_t a1, uint64_
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 title];
+        title = [v9 title];
 
-        if (v10)
+        if (title)
         {
-          v11 = [v9 title];
-          v12 = normalizeName(v11);
+          title2 = [v9 title];
+          v12 = normalizeName(title2);
           [v3 addObject:v12];
         }
       }
@@ -752,12 +752,12 @@ id __39__SGStorageContact_loadAllDetailsFrom___block_invoke(uint64_t a1, uint64_
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 title];
+        title = [v9 title];
 
-        if (v10)
+        if (title)
         {
-          v11 = [v9 title];
-          v12 = normalizeName(v11);
+          title2 = [v9 title];
+          v12 = normalizeName(title2);
           [v3 addObject:v12];
         }
       }
@@ -776,21 +776,21 @@ id __39__SGStorageContact_loadAllDetailsFrom___block_invoke(uint64_t a1, uint64_
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SGStorageContact *)self name];
-  v5 = [v3 initWithFormat:@"<SGStorageContact: %@ - %lu profile(s)>", v4, -[NSMutableSet count](self->_profiles, "count")];
+  name = [(SGStorageContact *)self name];
+  v5 = [v3 initWithFormat:@"<SGStorageContact: %@ - %lu profile(s)>", name, -[NSMutableSet count](self->_profiles, "count")];
 
   return v5;
 }
 
-- (BOOL)isEqualToStorageContact:(id)a3
+- (BOOL)isEqualToStorageContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   masterEntityId = self->_masterEntityId;
-  if (masterEntityId == [v4 masterEntityId])
+  if (masterEntityId == [contactCopy masterEntityId])
   {
     v6 = self->_profiles;
     v7 = v6;
-    if (v6 == v4[1])
+    if (v6 == contactCopy[1])
     {
       v8 = 1;
     }
@@ -809,18 +809,18 @@ id __39__SGStorageContact_loadAllDetailsFrom___block_invoke(uint64_t a1, uint64_
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGStorageContact *)self isEqualToStorageContact:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGStorageContact *)self isEqualToStorageContact:v5];
   }
 
   return v6;
@@ -841,16 +841,16 @@ id __39__SGStorageContact_loadAllDetailsFrom___block_invoke(uint64_t a1, uint64_
   return v2;
 }
 
-+ (id)mergeAll:(id)a3
++ (id)mergeAll:(id)all
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  allCopy = all;
+  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(allCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v3;
+  obj = allCopy;
   v5 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
@@ -920,24 +920,24 @@ LABEL_16:
   return v4;
 }
 
-+ (id)contactWithMasterEntityId:(int64_t)a3
++ (id)contactWithMasterEntityId:(int64_t)id
 {
   v4 = objc_opt_new();
-  v4[2] = a3;
+  v4[2] = id;
 
   return v4;
 }
 
-+ (id)contactFromContactEntity:(id)a3
++ (id)contactFromContactEntity:(id)entity
 {
-  v3 = a3;
+  entityCopy = entity;
   v4 = objc_opt_new();
-  v4[2] = [v3 masterEntityId];
-  v5 = [MEMORY[0x277D020C8] recordIdForContactWithRowId:{objc_msgSend(v3, "masterEntityId")}];
+  v4[2] = [entityCopy masterEntityId];
+  v5 = [MEMORY[0x277D020C8] recordIdForContactWithRowId:{objc_msgSend(entityCopy, "masterEntityId")}];
   v6 = v4[3];
   v4[3] = v5;
 
-  [v4 addProfile:v3];
+  [v4 addProfile:entityCopy];
 
   return v4;
 }

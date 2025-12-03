@@ -1,17 +1,17 @@
 @interface CKDPMarkAssetBrokenRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFileSignature:(id)a3;
-- (void)addReferenceSignature:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsPackage:(BOOL)a3;
-- (void)setHasSkipWriteMissingAssetStatusRecord:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFileSignature:(id)signature;
+- (void)addReferenceSignature:(id)signature;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsPackage:(BOOL)package;
+- (void)setHasSkipWriteMissingAssetStatusRecord:(BOOL)record;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPMarkAssetBrokenRequest
@@ -28,45 +28,45 @@
   return v3;
 }
 
-- (void)addFileSignature:(id)a3
+- (void)addFileSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   fileSignatures = self->_fileSignatures;
-  v8 = v4;
+  v8 = signatureCopy;
   if (!fileSignatures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fileSignatures;
     self->_fileSignatures = v6;
 
-    v4 = v8;
+    signatureCopy = v8;
     fileSignatures = self->_fileSignatures;
   }
 
-  objc_msgSend_addObject_(fileSignatures, v4, v4);
+  objc_msgSend_addObject_(fileSignatures, signatureCopy, signatureCopy);
 }
 
-- (void)addReferenceSignature:(id)a3
+- (void)addReferenceSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   referenceSignatures = self->_referenceSignatures;
-  v8 = v4;
+  v8 = signatureCopy;
   if (!referenceSignatures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_referenceSignatures;
     self->_referenceSignatures = v6;
 
-    v4 = v8;
+    signatureCopy = v8;
     referenceSignatures = self->_referenceSignatures;
   }
 
-  objc_msgSend_addObject_(referenceSignatures, v4, v4);
+  objc_msgSend_addObject_(referenceSignatures, signatureCopy, signatureCopy);
 }
 
-- (void)setHasIsPackage:(BOOL)a3
+- (void)setHasIsPackage:(BOOL)package
 {
-  if (a3)
+  if (package)
   {
     v3 = 2;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSkipWriteMissingAssetStatusRecord:(BOOL)a3
+- (void)setHasSkipWriteMissingAssetStatusRecord:(BOOL)record
 {
-  if (a3)
+  if (record)
   {
     v3 = 4;
   }
@@ -161,10 +161,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_brokenAssetRecordID)
   {
     PBDataWriterWriteSubmessage();
@@ -265,28 +265,28 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   brokenAssetRecordID = self->_brokenAssetRecordID;
-  v28 = v4;
+  v28 = toCopy;
   if (brokenAssetRecordID)
   {
-    objc_msgSend_setBrokenAssetRecordID_(v4, v5, brokenAssetRecordID);
-    v4 = v28;
+    objc_msgSend_setBrokenAssetRecordID_(toCopy, v5, brokenAssetRecordID);
+    toCopy = v28;
   }
 
   fieldName = self->_fieldName;
   if (fieldName)
   {
     objc_msgSend_setFieldName_(v28, v5, fieldName);
-    v4 = v28;
+    toCopy = v28;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 10) = self->_listIndex;
-    v4[60] |= 1u;
+    *(toCopy + 10) = self->_listIndex;
+    toCopy[60] |= 1u;
   }
 
   if (objc_msgSend_fileSignaturesCount(self, v5, fieldName))
@@ -340,17 +340,17 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v50 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_brokenAssetRecordID, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_brokenAssetRecordID, v11, zone);
   v13 = *(v10 + 16);
   *(v10 + 16) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_fieldName, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_fieldName, v14, zone);
   v16 = *(v10 + 24);
   *(v10 + 24) = v15;
 
@@ -379,7 +379,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v24 = objc_msgSend_copyWithZone_(*(*(&v44 + 1) + 8 * i), v20, a3);
+        v24 = objc_msgSend_copyWithZone_(*(*(&v44 + 1) + 8 * i), v20, zone);
         objc_msgSend_addFileSignature_(v10, v25, v24);
       }
 
@@ -408,7 +408,7 @@
           objc_enumerationMutation(v26);
         }
 
-        v33 = objc_msgSend_copyWithZone_(*(*(&v40 + 1) + 8 * j), v29, a3, v40);
+        v33 = objc_msgSend_copyWithZone_(*(*(&v40 + 1) + 8 * j), v29, zone, v40);
         objc_msgSend_addReferenceSignature_(v10, v34, v33);
       }
 
@@ -424,7 +424,7 @@
     *(v10 + 60) |= 2u;
   }
 
-  v36 = objc_msgSend_copyWithZone_(self->_affectedRecordType, v35, a3, v40);
+  v36 = objc_msgSend_copyWithZone_(self->_affectedRecordType, v35, zone, v40);
   v37 = *(v10 + 8);
   *(v10 + 8) = v36;
 
@@ -438,17 +438,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_26;
   }
 
   brokenAssetRecordID = self->_brokenAssetRecordID;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (brokenAssetRecordID | v9)
   {
     if (!objc_msgSend_isEqual_(brokenAssetRecordID, v7, v9))
@@ -458,7 +458,7 @@
   }
 
   fieldName = self->_fieldName;
-  v11 = v4[3];
+  v11 = equalCopy[3];
   if (fieldName | v11)
   {
     if (!objc_msgSend_isEqual_(fieldName, v7, v11))
@@ -467,29 +467,29 @@
     }
   }
 
-  v12 = *(v4 + 60);
+  v12 = *(equalCopy + 60);
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_listIndex != *(v4 + 10))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_listIndex != *(equalCopy + 10))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_26;
   }
 
   fileSignatures = self->_fileSignatures;
-  v14 = v4[4];
+  v14 = equalCopy[4];
   if (fileSignatures | v14 && !objc_msgSend_isEqual_(fileSignatures, v7, v14))
   {
     goto LABEL_26;
   }
 
   referenceSignatures = self->_referenceSignatures;
-  v16 = v4[6];
+  v16 = equalCopy[6];
   if (referenceSignatures | v16)
   {
     if (!objc_msgSend_isEqual_(referenceSignatures, v7, v16))
@@ -499,36 +499,36 @@
   }
 
   has = self->_has;
-  v18 = *(v4 + 60);
+  v18 = *(equalCopy + 60);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0)
+    if ((*(equalCopy + 60) & 2) == 0)
     {
       goto LABEL_26;
     }
 
-    v23 = *(v4 + 56);
+    v23 = *(equalCopy + 56);
     if (self->_isPackage)
     {
-      if ((v4[7] & 1) == 0)
+      if ((equalCopy[7] & 1) == 0)
       {
         goto LABEL_26;
       }
     }
 
-    else if (v4[7])
+    else if (equalCopy[7])
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   affectedRecordType = self->_affectedRecordType;
-  v20 = v4[1];
+  v20 = equalCopy[1];
   if (affectedRecordType | v20)
   {
     if (!objc_msgSend_isEqual_(affectedRecordType, v7, v20))
@@ -537,7 +537,7 @@
     }
 
     has = self->_has;
-    v18 = *(v4 + 60);
+    v18 = *(equalCopy + 60);
   }
 
   v21 = (v18 & 4) == 0;
@@ -547,13 +547,13 @@
     {
       if (self->_skipWriteMissingAssetStatusRecord)
       {
-        if (*(v4 + 57))
+        if (*(equalCopy + 57))
         {
           goto LABEL_34;
         }
       }
 
-      else if (!*(v4 + 57))
+      else if (!*(equalCopy + 57))
       {
 LABEL_34:
         v21 = 1;
@@ -610,12 +610,12 @@ LABEL_27:
   return v9 ^ v4 ^ v10 ^ v11 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   brokenAssetRecordID = self->_brokenAssetRecordID;
-  v7 = *(v5 + 2);
+  v7 = *(fromCopy + 2);
   if (brokenAssetRecordID)
   {
     if (v7)
@@ -629,15 +629,15 @@ LABEL_27:
     objc_msgSend_setBrokenAssetRecordID_(self, v4, v7);
   }
 
-  v8 = *(v5 + 3);
+  v8 = *(fromCopy + 3);
   if (v8)
   {
     objc_msgSend_setFieldName_(self, v4, v8);
   }
 
-  if (*(v5 + 60))
+  if (*(fromCopy + 60))
   {
-    self->_listIndex = *(v5 + 10);
+    self->_listIndex = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
@@ -645,7 +645,7 @@ LABEL_27:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = *(v5 + 4);
+  v9 = *(fromCopy + 4);
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v30, v35, 16);
   if (v11)
   {
@@ -673,7 +673,7 @@ LABEL_27:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = *(v5 + 6);
+  v16 = *(fromCopy + 6);
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v26, v34, 16);
   if (v18)
   {
@@ -697,21 +697,21 @@ LABEL_27:
     while (v20);
   }
 
-  if ((*(v5 + 60) & 2) != 0)
+  if ((*(fromCopy + 60) & 2) != 0)
   {
-    self->_isPackage = *(v5 + 56);
+    self->_isPackage = *(fromCopy + 56);
     *&self->_has |= 2u;
   }
 
-  v24 = *(v5 + 1);
+  v24 = *(fromCopy + 1);
   if (v24)
   {
     objc_msgSend_setAffectedRecordType_(self, v23, v24);
   }
 
-  if ((*(v5 + 60) & 4) != 0)
+  if ((*(fromCopy + 60) & 4) != 0)
   {
-    self->_skipWriteMissingAssetStatusRecord = *(v5 + 57);
+    self->_skipWriteMissingAssetStatusRecord = *(fromCopy + 57);
     *&self->_has |= 4u;
   }
 

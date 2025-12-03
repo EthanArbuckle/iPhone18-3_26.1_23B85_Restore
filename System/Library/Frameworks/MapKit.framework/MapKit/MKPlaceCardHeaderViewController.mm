@@ -2,9 +2,9 @@
 + (double)minimalModeHeight;
 - (BOOL)_hasSecondaryName;
 - (BOOL)_isLikelyToShowDistance;
-- (BOOL)_mapItemShouldDisplayDistance:(id)a3;
-- (MKPlaceCardHeaderViewController)initWithLineItem:(id)a3 layout:(unint64_t)a4;
-- (MKPlaceCardHeaderViewController)initWithPlaceItem:(id)a3 layout:(unint64_t)a4;
+- (BOOL)_mapItemShouldDisplayDistance:(id)distance;
+- (MKPlaceCardHeaderViewController)initWithLineItem:(id)item layout:(unint64_t)layout;
+- (MKPlaceCardHeaderViewController)initWithPlaceItem:(id)item layout:(unint64_t)layout;
 - (MKPlaceCardHeaderViewControllerDelegate)delegate;
 - (_MKLocalizedHoursBuilder)localizedHoursBuilder;
 - (double)contentAlpha;
@@ -17,16 +17,16 @@
 - (id)newLabel;
 - (id)secondaryNameTimingFunction;
 - (id)titleFont;
-- (void)ETAProviderUpdated:(id)a3;
+- (void)ETAProviderUpdated:(id)updated;
 - (void)_commonInit;
 - (void)_contentSizeDidChange;
 - (void)_createViews;
 - (void)_loadLogo;
 - (void)_setupDatas;
-- (void)animateSecondLabelWithPercentage:(double)a3;
+- (void)animateSecondLabelWithPercentage:(double)percentage;
 - (void)infoCardThemeChanged;
 - (void)setConstraints;
-- (void)setContentAlpha:(double)a3;
+- (void)setContentAlpha:(double)alpha;
 - (void)updateContent;
 - (void)updateContentAlpha;
 - (void)updateHeaderTitle;
@@ -49,8 +49,8 @@
   v4.receiver = self;
   v4.super_class = MKPlaceCardHeaderViewController;
   [(UIViewController *)&v4 infoCardThemeChanged];
-  v3 = [(MKPlaceCardHeaderViewController *)self _reviewLabelText];
-  [(_MKTokenAttributedString *)self->_ratingsToken setAttributedString:v3];
+  _reviewLabelText = [(MKPlaceCardHeaderViewController *)self _reviewLabelText];
+  [(_MKTokenAttributedString *)self->_ratingsToken setAttributedString:_reviewLabelText];
 
   [(MKPlaceCardHeaderViewController *)self updateViews];
 }
@@ -58,50 +58,50 @@
 - (void)updateContent
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MKPlaceCardHeaderViewController *)self view];
+  view = [(MKPlaceCardHeaderViewController *)self view];
 
-  if (v3)
+  if (view)
   {
     v4 = +[MKFontManager sharedManager];
-    v5 = [v4 subtitleFont];
+    subtitleFont = [v4 subtitleFont];
 
     v28 = *MEMORY[0x1E69DB648];
     v6 = v28;
-    v7 = [(MKPlaceCardHeaderViewController *)self titleFont];
-    v29[0] = v7;
+    titleFont = [(MKPlaceCardHeaderViewController *)self titleFont];
+    v29[0] = titleFont;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    v9 = [(_MKDataHeaderModel *)self->_dataModel firstLine];
-    [v9 setFontAttribute:v8];
+    firstLine = [(_MKDataHeaderModel *)self->_dataModel firstLine];
+    [firstLine setFontAttribute:v8];
 
     v26 = v6;
-    v27 = v5;
+    v27 = subtitleFont;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    v11 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
-    [v11 setFontAttribute:v10];
+    secondLine = [(_MKDataHeaderModel *)self->_dataModel secondLine];
+    [secondLine setFontAttribute:v10];
 
     v24 = v6;
-    v25 = v5;
+    v25 = subtitleFont;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    v13 = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
-    [v13 setFontAttribute:v12];
+    thirdLine = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
+    [thirdLine setFontAttribute:v12];
 
     v22 = v6;
-    v23 = v5;
+    v23 = subtitleFont;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    v15 = [(_MKDataHeaderModel *)self->_dataModel forthLine];
-    [v15 setFontAttribute:v14];
+    forthLine = [(_MKDataHeaderModel *)self->_dataModel forthLine];
+    [forthLine setFontAttribute:v14];
 
     v20 = v6;
-    v21 = v5;
+    v21 = subtitleFont;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v17 = [(_MKDataHeaderModel *)self->_dataModel secondaryNameLine];
-    [v17 setFontAttribute:v16];
+    secondaryNameLine = [(_MKDataHeaderModel *)self->_dataModel secondaryNameLine];
+    [secondaryNameLine setFontAttribute:v16];
 
-    v18 = [(MKPlaceCardHeaderViewController *)self _reviewLabelText];
-    [(_MKTokenAttributedString *)self->_ratingsToken setAttributedString:v18];
+    _reviewLabelText = [(MKPlaceCardHeaderViewController *)self _reviewLabelText];
+    [(_MKTokenAttributedString *)self->_ratingsToken setAttributedString:_reviewLabelText];
 
-    v19 = [(MKPlaceCardHeaderViewController *)self _verifiedText];
-    [(_MKTokenAttributedString *)self->_verifiedToken setAttributedString:v19];
+    _verifiedText = [(MKPlaceCardHeaderViewController *)self _verifiedText];
+    [(_MKTokenAttributedString *)self->_verifiedToken setAttributedString:_verifiedText];
 
     [(MKPlaceCardHeaderViewController *)self updateViews];
   }
@@ -126,10 +126,10 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(MKPlaceCardHeaderViewController *)self view];
-    v4 = [v3 subviews];
+    view = [(MKPlaceCardHeaderViewController *)self view];
+    subviews = [view subviews];
 
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    v5 = [subviews countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -140,7 +140,7 @@
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subviews);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
@@ -148,7 +148,7 @@
           [v9 layoutIfNeeded];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v6 = [subviews countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v6);
@@ -170,7 +170,7 @@
   {
     self->_constraintsCreated = 1;
     v3 = +[MKFontManager sharedManager];
-    v84 = [v3 subtitleFont];
+    subtitleFont = [v3 subtitleFont];
 
     [MEMORY[0x1E696ACD8] deactivateConstraints:self->_constraints];
     v4 = [MEMORY[0x1E695E0F0] mutableCopy];
@@ -182,24 +182,24 @@
       v5 = v7;
     }
 
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    v85 = [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v9 = [(UILayoutGuide *)self->_leadingGuide leadingAnchor];
-    v10 = [(MKPlaceSectionRowView *)self->_labelsSectionView layoutMarginsGuide];
-    v11 = [v10 leadingAnchor];
-    v12 = [v9 constraintEqualToAnchor:v11];
+    leadingAnchor = [(UILayoutGuide *)self->_leadingGuide leadingAnchor];
+    layoutMarginsGuide = [(MKPlaceSectionRowView *)self->_labelsSectionView layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v106[0] = v12;
-    v13 = [(UILayoutGuide *)self->_leadingGuide widthAnchor];
-    [v13 constraintEqualToConstant:0.0];
+    widthAnchor = [(UILayoutGuide *)self->_leadingGuide widthAnchor];
+    [widthAnchor constraintEqualToConstant:0.0];
     v14 = v88 = self;
     v106[1] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v106 count:2];
     v95 = v4;
     [v4 addObjectsFromArray:v15];
 
-    v16 = self;
-    if (self->_layout == 1 && (-[UIImageView centerXAnchor](self->_logoImageView, "centerXAnchor"), v93 = objc_claimAutoreleasedReturnValue(), -[MKPlaceSectionRowView centerXAnchor](self->_labelsSectionView, "centerXAnchor"), v91 = objc_claimAutoreleasedReturnValue(), [v93 constraintEqualToAnchor:v91], v89 = objc_claimAutoreleasedReturnValue(), v105[0] = v89, -[UIImageView topAnchor](self->_logoImageView, "topAnchor"), v86 = objc_claimAutoreleasedReturnValue(), -[MKPlaceSectionRowView topAnchor](self->_labelsSectionView, "topAnchor"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v86, "constraintEqualToAnchor:constant:", v17, 15.0), v18 = objc_claimAutoreleasedReturnValue(), v105[1] = v18, -[UIImageView widthAnchor](self->_logoImageView, "widthAnchor"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "constraintEqualToConstant:", 86.0), v20 = objc_claimAutoreleasedReturnValue(), v105[2] = v20, -[UIImageView widthAnchor](self->_logoImageView, "widthAnchor"), v21 = objc_claimAutoreleasedReturnValue(), -[UIImageView heightAnchor](self->_logoImageView, "heightAnchor"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "constraintEqualToAnchor:", v22), v23 = objc_claimAutoreleasedReturnValue(), v105[3] = v23, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v105, 4), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "addObjectsFromArray:", v24), v24, v23, v22, v21, v20, v19, v18, v17, v16 = self, v86, v89, v91, v93, self->_layout == 1))
+    selfCopy = self;
+    if (self->_layout == 1 && (-[UIImageView centerXAnchor](self->_logoImageView, "centerXAnchor"), v93 = objc_claimAutoreleasedReturnValue(), -[MKPlaceSectionRowView centerXAnchor](self->_labelsSectionView, "centerXAnchor"), v91 = objc_claimAutoreleasedReturnValue(), [v93 constraintEqualToAnchor:v91], v89 = objc_claimAutoreleasedReturnValue(), v105[0] = v89, -[UIImageView topAnchor](self->_logoImageView, "topAnchor"), v86 = objc_claimAutoreleasedReturnValue(), -[MKPlaceSectionRowView topAnchor](self->_labelsSectionView, "topAnchor"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v86, "constraintEqualToAnchor:constant:", v17, 15.0), v18 = objc_claimAutoreleasedReturnValue(), v105[1] = v18, -[UIImageView widthAnchor](self->_logoImageView, "widthAnchor"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "constraintEqualToConstant:", 86.0), v20 = objc_claimAutoreleasedReturnValue(), v105[2] = v20, -[UIImageView widthAnchor](self->_logoImageView, "widthAnchor"), v21 = objc_claimAutoreleasedReturnValue(), -[UIImageView heightAnchor](self->_logoImageView, "heightAnchor"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "constraintEqualToAnchor:", v22), v23 = objc_claimAutoreleasedReturnValue(), v105[3] = v23, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v105, 4), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "addObjectsFromArray:", v24), v24, v23, v22, v21, v20, v19, v18, v17, selfCopy = self, v86, v89, v91, v93, self->_layout == 1))
     {
       v25 = self->_logoImageView;
       if (v88->_notVerified)
@@ -225,24 +225,24 @@
 
     else
     {
-      v29 = v16->_secondLabel;
-      v102[0] = v16->_firstLabel;
+      v29 = selfCopy->_secondLabel;
+      v102[0] = selfCopy->_firstLabel;
       v102[1] = v29;
-      v102[2] = v16->_thirdDisplayedLabel;
+      v102[2] = selfCopy->_thirdDisplayedLabel;
       v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:3];
       v31 = [v30 mutableCopy];
 
-      if ([(MKPlaceCardHeaderViewController *)v16 _hasSecondaryName]&& !v16->_layout)
+      if ([(MKPlaceCardHeaderViewController *)selfCopy _hasSecondaryName]&& !selfCopy->_layout)
       {
-        [v31 insertObject:v16->_secondaryNameLabel atIndex:1];
-        v32 = [(_MKUILabel *)v16->_secondLabel topAnchor];
-        v33 = [(_MKUILabel *)v16->_firstLabel bottomAnchor];
-        v34 = [v32 constraintEqualToAnchor:v33];
-        secondLabelToFirstLabelConstraint = v16->_secondLabelToFirstLabelConstraint;
-        v16->_secondLabelToFirstLabelConstraint = v34;
+        [v31 insertObject:selfCopy->_secondaryNameLabel atIndex:1];
+        topAnchor = [(_MKUILabel *)selfCopy->_secondLabel topAnchor];
+        bottomAnchor = [(_MKUILabel *)selfCopy->_firstLabel bottomAnchor];
+        v34 = [topAnchor constraintEqualToAnchor:bottomAnchor];
+        secondLabelToFirstLabelConstraint = selfCopy->_secondLabelToFirstLabelConstraint;
+        selfCopy->_secondLabelToFirstLabelConstraint = v34;
 
         LODWORD(v36) = 1148846080;
-        [(NSLayoutConstraint *)v16->_secondLabelToFirstLabelConstraint setPriority:v36];
+        [(NSLayoutConstraint *)selfCopy->_secondLabelToFirstLabelConstraint setPriority:v36];
       }
 
       v37 = [v31 copy];
@@ -250,7 +250,7 @@
       v25 = 0;
     }
 
-    v82 = [v37 lastObject];
+    lastObject = [v37 lastObject];
     v96 = 0u;
     v97 = 0u;
     v98 = 0u;
@@ -273,14 +273,14 @@
           }
 
           v42 = *(*(&v96 + 1) + 8 * i);
-          v43 = [(_MKUILabel *)v42 leadingAnchor];
-          v44 = [(UILayoutGuide *)v16->_leadingGuide trailingAnchor];
-          v45 = [v43 constraintEqualToAnchor:v44 constant:0.0];
+          leadingAnchor3 = [(_MKUILabel *)v42 leadingAnchor];
+          trailingAnchor = [(UILayoutGuide *)selfCopy->_leadingGuide trailingAnchor];
+          v45 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:0.0];
           v100[0] = v45;
           v92 = v42;
-          v46 = [(_MKUILabel *)v42 trailingAnchor];
-          v47 = [(MKPlaceSectionRowView *)v16->_labelsSectionView layoutMarginsGuide];
-          v48 = [v47 trailingAnchor];
+          trailingAnchor2 = [(_MKUILabel *)v42 trailingAnchor];
+          layoutMarginsGuide2 = [(MKPlaceSectionRowView *)selfCopy->_labelsSectionView layoutMarginsGuide];
+          trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
           if (v25)
           {
             v49 = 0.0;
@@ -291,7 +291,7 @@
             v49 = -v5;
           }
 
-          [v46 constraintEqualToAnchor:v48 constant:v49];
+          [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:v49];
           v51 = v50 = v25;
           v100[1] = v51;
           v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v100 count:2];
@@ -299,10 +299,10 @@
 
           if (v94)
           {
-            if (v85 == 5)
+            if (userInterfaceIdiom == 5)
             {
               v53 = v92;
-              if (v82 == v92)
+              if (lastObject == v92)
               {
                 v54 = 6.0;
               }
@@ -312,19 +312,19 @@
                 v54 = 1.0;
               }
 
-              v55 = [(_MKUILabel *)v92 topAnchor];
-              v56 = [(_MKUILabel *)v94 bottomAnchor];
-              v57 = [v55 constraintEqualToAnchor:v56 constant:v54];
+              topAnchor2 = [(_MKUILabel *)v92 topAnchor];
+              bottomAnchor2 = [(_MKUILabel *)v94 bottomAnchor];
+              topAnchor3 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:v54];
 
-              v16 = v88;
+              selfCopy = v88;
             }
 
             else
             {
               v53 = v92;
-              v63 = [(_MKUILabel *)v92 firstBaselineAnchor];
-              v64 = [(_MKUILabel *)v94 lastBaselineAnchor];
-              v16 = v88;
+              firstBaselineAnchor = [(_MKUILabel *)v92 firstBaselineAnchor];
+              lastBaselineAnchor = [(_MKUILabel *)v94 lastBaselineAnchor];
+              selfCopy = v88;
               if (v88->_layout == 1)
               {
                 v65 = 26.0;
@@ -335,55 +335,55 @@
                 v65 = 21.0;
               }
 
-              [v84 _mapkit_scaledValueForValue:v65];
-              v57 = [v63 constraintEqualToAnchor:v64 constant:?];
+              [subtitleFont _mapkit_scaledValueForValue:v65];
+              topAnchor3 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor constant:?];
             }
 
-            if (v53 == v16->_secondLabel)
+            if (v53 == selfCopy->_secondLabel)
             {
               LODWORD(v58) = 1148829696;
-              [v57 setPriority:v58];
+              [topAnchor3 setPriority:v58];
             }
 
-            [v95 addObject:v57];
+            [v95 addObject:topAnchor3];
             v25 = v50;
           }
 
           else if (v50)
           {
             v53 = v92;
-            v69 = [(_MKUILabel *)v92 firstBaselineAnchor];
-            v70 = [(UIImageView *)v50 bottomAnchor];
-            [v84 _mapkit_scaledValueForValue:34.0];
-            v71 = [v69 constraintEqualToAnchor:v70 constant:?];
+            firstBaselineAnchor2 = [(_MKUILabel *)v92 firstBaselineAnchor];
+            bottomAnchor3 = [(UIImageView *)v50 bottomAnchor];
+            [subtitleFont _mapkit_scaledValueForValue:34.0];
+            v71 = [firstBaselineAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:?];
             [v95 addObject:v71];
 
-            v57 = v50;
+            topAnchor3 = v50;
             v25 = 0;
-            v16 = v88;
+            selfCopy = v88;
           }
 
           else
           {
-            v16 = v88;
+            selfCopy = v88;
             v53 = v92;
-            if (v85 == 5)
+            if (userInterfaceIdiom == 5)
             {
-              v57 = [(_MKUILabel *)v92 topAnchor];
-              v59 = [(MKPlaceSectionRowView *)v88->_labelsSectionView topAnchor];
+              topAnchor3 = [(_MKUILabel *)v92 topAnchor];
+              topAnchor4 = [(MKPlaceSectionRowView *)v88->_labelsSectionView topAnchor];
               v60 = 15.0;
-              v61 = v57;
-              v62 = v59;
+              v61 = topAnchor3;
+              v62 = topAnchor4;
             }
 
             else
             {
-              [v84 _mapkit_scaledValueForValue:0 scalingForMacIdiom:0 respectingTraitEnvironment:*&kMapKitPlaceCardHeaderTitleLabelBaselineToTop];
+              [subtitleFont _mapkit_scaledValueForValue:0 scalingForMacIdiom:0 respectingTraitEnvironment:*&kMapKitPlaceCardHeaderTitleLabelBaselineToTop];
               v67 = v66;
-              v57 = [(_MKUILabel *)v92 firstBaselineAnchor];
-              v59 = [(MKPlaceSectionRowView *)v88->_labelsSectionView topAnchor];
-              v61 = v57;
-              v62 = v59;
+              topAnchor3 = [(_MKUILabel *)v92 firstBaselineAnchor];
+              topAnchor4 = [(MKPlaceSectionRowView *)v88->_labelsSectionView topAnchor];
+              v61 = topAnchor3;
+              v62 = topAnchor4;
               v60 = v67;
             }
 
@@ -406,9 +406,9 @@
       if (v40)
       {
         v73 = +[MKSystemController sharedInstance];
-        v74 = [v73 userInterfaceIdiom];
+        userInterfaceIdiom2 = [v73 userInterfaceIdiom];
 
-        if (v74 == 2)
+        if (userInterfaceIdiom2 == 2)
         {
           [(_MKUILabel *)v40 bottomAnchor];
         }
@@ -418,14 +418,14 @@
           [(_MKUILabel *)v40 lastBaselineAnchor];
         }
         v76 = ;
-        v77 = [(MKPlaceSectionRowView *)v16->_labelsSectionView bottomAnchor];
-        [(MKPlaceCardHeaderViewController *)v16 lastLabelToBottomConstant];
-        v78 = [v76 constraintEqualToAnchor:v77 constant:?];
-        lastLabelToBottomConstraint = v16->_lastLabelToBottomConstraint;
-        v16->_lastLabelToBottomConstraint = v78;
+        bottomAnchor4 = [(MKPlaceSectionRowView *)selfCopy->_labelsSectionView bottomAnchor];
+        [(MKPlaceCardHeaderViewController *)selfCopy lastLabelToBottomConstant];
+        v78 = [v76 constraintEqualToAnchor:bottomAnchor4 constant:?];
+        lastLabelToBottomConstraint = selfCopy->_lastLabelToBottomConstraint;
+        selfCopy->_lastLabelToBottomConstraint = v78;
 
         v75 = v95;
-        [v95 addObject:v16->_lastLabelToBottomConstraint];
+        [v95 addObject:selfCopy->_lastLabelToBottomConstraint];
         goto LABEL_50;
       }
     }
@@ -440,10 +440,10 @@
     v75 = v95;
 LABEL_50:
     v80 = [v75 copy];
-    constraints = v16->_constraints;
-    v16->_constraints = v80;
+    constraints = selfCopy->_constraints;
+    selfCopy->_constraints = v80;
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v16->_constraints];
+    [MEMORY[0x1E696ACD8] activateConstraints:selfCopy->_constraints];
   }
 }
 
@@ -454,60 +454,60 @@ LABEL_50:
   v4 = layout == 1;
   if (layout == 1)
   {
-    v5 = [(UIImageView *)self->_logoImageView superview];
+    superview = [(UIImageView *)self->_logoImageView superview];
 
-    if (!v5)
+    if (!superview)
     {
       [(MKPlaceSectionRowView *)self->_labelsSectionView addSubview:self->_logoImageView];
       [(MKPlaceCardHeaderViewController *)self _loadLogo];
     }
   }
 
-  v6 = [(_MKDataHeaderModel *)self->_dataModel firstLine];
-  [v6 setColorProvider:&__block_literal_global_81];
+  firstLine = [(_MKDataHeaderModel *)self->_dataModel firstLine];
+  [firstLine setColorProvider:&__block_literal_global_81];
 
   LOBYTE(v34) = v4;
   v7 = [(_MKDataHeaderModel *)self->_dataModel secondLine:MEMORY[0x1E69E9820]];
   [v7 setColorProvider:&v33];
 
-  v8 = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
-  [v8 setColorProvider:&__block_literal_global_83];
+  thirdLine = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
+  [thirdLine setColorProvider:&__block_literal_global_83];
 
-  v9 = [(_MKDataHeaderModel *)self->_dataModel forthLine];
-  [v9 setColorProvider:&__block_literal_global_85];
+  forthLine = [(_MKDataHeaderModel *)self->_dataModel forthLine];
+  [forthLine setColorProvider:&__block_literal_global_85];
 
-  v10 = [(_MKDataHeaderModel *)self->_dataModel secondaryNameLine];
-  [v10 setColorProvider:&__block_literal_global_87];
+  secondaryNameLine = [(_MKDataHeaderModel *)self->_dataModel secondaryNameLine];
+  [secondaryNameLine setColorProvider:&__block_literal_global_87];
 
   if ([(MKPlaceCardHeaderViewController *)self _hasSecondaryName])
   {
     if (self->_layout == 1)
     {
 LABEL_10:
-      v22 = [(_MKDataHeaderModel *)self->_dataModel firstLine];
-      v23 = [v22 contentAttributedString];
-      [(_MKUILabel *)self->_firstLabel setAttributedText:v23];
+      firstLine2 = [(_MKDataHeaderModel *)self->_dataModel firstLine];
+      contentAttributedString = [firstLine2 contentAttributedString];
+      [(_MKUILabel *)self->_firstLabel setAttributedText:contentAttributedString];
 
-      v24 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
-      v25 = [v24 contentAttributedString];
-      [(_MKUILabel *)self->_secondLabel setAttributedText:v25];
+      secondLine = [(_MKDataHeaderModel *)self->_dataModel secondLine];
+      contentAttributedString2 = [secondLine contentAttributedString];
+      [(_MKUILabel *)self->_secondLabel setAttributedText:contentAttributedString2];
 
-      v26 = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
-      v27 = [v26 contentAttributedString];
-      [(_MKUILabel *)self->_thirdLabel setAttributedText:v27];
+      thirdLine2 = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
+      contentAttributedString3 = [thirdLine2 contentAttributedString];
+      [(_MKUILabel *)self->_thirdLabel setAttributedText:contentAttributedString3];
 
-      v28 = [(MKPlaceSectionViewController *)self sectionView];
+      sectionView = [(MKPlaceSectionViewController *)self sectionView];
       labelsSectionView = self->_labelsSectionView;
       v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&labelsSectionView count:1];
-      [v28 setRowViews:v29];
+      [sectionView setRowViews:v29];
 
       [(_MKUILabel *)self->_secondLabel setHidden:self->_notVerified];
       goto LABEL_11;
     }
 
-    v11 = [(_MKDataHeaderModel *)self->_dataModel secondaryNameLine];
-    v12 = [v11 contentAttributedString];
-    [(_MKUILabel *)self->_secondaryNameLabel setAttributedText:v12];
+    secondaryNameLine2 = [(_MKDataHeaderModel *)self->_dataModel secondaryNameLine];
+    contentAttributedString4 = [secondaryNameLine2 contentAttributedString];
+    [(_MKUILabel *)self->_secondaryNameLabel setAttributedText:contentAttributedString4];
   }
 
   v13 = self->_layout;
@@ -518,35 +518,35 @@ LABEL_10:
 
   if (!v13)
   {
-    v14 = [(_MKDataHeaderModel *)self->_dataModel firstLine];
-    v15 = [v14 contentAttributedString];
-    [(_MKUILabel *)self->_firstLabel setAttributedText:v15];
+    firstLine3 = [(_MKDataHeaderModel *)self->_dataModel firstLine];
+    contentAttributedString5 = [firstLine3 contentAttributedString];
+    [(_MKUILabel *)self->_firstLabel setAttributedText:contentAttributedString5];
 
-    v16 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
-    v17 = [v16 contentAttributedString];
-    [(_MKUILabel *)self->_secondLabel setAttributedText:v17];
+    secondLine2 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
+    contentAttributedString6 = [secondLine2 contentAttributedString];
+    [(_MKUILabel *)self->_secondLabel setAttributedText:contentAttributedString6];
 
-    v18 = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
-    v19 = [v18 contentAttributedString];
-    [(_MKUILabel *)self->_thirdLabel setAttributedText:v19];
+    thirdLine3 = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
+    contentAttributedString7 = [thirdLine3 contentAttributedString];
+    [(_MKUILabel *)self->_thirdLabel setAttributedText:contentAttributedString7];
 
-    v20 = [(MKPlaceSectionViewController *)self sectionView];
+    sectionView2 = [(MKPlaceSectionViewController *)self sectionView];
     v36[0] = self->_labelsSectionView;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
-    [v20 setRowViews:v21];
+    [sectionView2 setRowViews:v21];
 
     [(MKPlaceCardHeaderViewController *)self lastLabelToBottomConstant];
     [(NSLayoutConstraint *)self->_lastLabelToBottomConstraint setConstant:?];
   }
 
 LABEL_11:
-  v30 = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
+  transitLabel = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
 
-  if (v30)
+  if (transitLabel)
   {
-    v31 = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
+    transitLabel2 = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
     thirdDisplayedLabel = self->_thirdDisplayedLabel;
-    self->_thirdDisplayedLabel = v31;
+    self->_thirdDisplayedLabel = transitLabel2;
 
     [(MKPlaceSectionRowView *)self->_labelsSectionView addSubview:self->_thirdDisplayedLabel];
     [(_MKUILabel *)self->_thirdLabel setHidden:1];
@@ -587,31 +587,31 @@ id __46__MKPlaceCardHeaderViewController_updateViews__block_invoke_2(uint64_t a1
     self->_logoImageView = v4;
 
     [(UIImageView *)self->_logoImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(UIImageView *)self->_logoImageView layer];
-    [v6 setBounds:{0.0, 0.0, 86.0, 86.0}];
+    layer = [(UIImageView *)self->_logoImageView layer];
+    [layer setBounds:{0.0, 0.0, 86.0, 86.0}];
 
-    v7 = [(UIImageView *)self->_logoImageView layer];
-    [v7 setCornerRadius:11.0];
+    layer2 = [(UIImageView *)self->_logoImageView layer];
+    [layer2 setCornerRadius:11.0];
 
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIImageView *)self->_logoImageView setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIImageView *)self->_logoImageView setBackgroundColor:clearColor];
 
     [(UIImageView *)self->_logoImageView setClipsToBounds:1];
     [(UIImageView *)self->_logoImageView _mapkit_setImageContentMode:2];
   }
 
-  v9 = [(MKPlaceCardHeaderViewController *)self newLabel];
+  newLabel = [(MKPlaceCardHeaderViewController *)self newLabel];
   titleOnlyLabel = self->_titleOnlyLabel;
-  self->_titleOnlyLabel = v9;
+  self->_titleOnlyLabel = newLabel;
 
   [(_MKUILabel *)self->_titleOnlyLabel setTextAlignment:1];
-  v11 = [(MKPlaceCardHeaderViewController *)self newLabel];
+  newLabel2 = [(MKPlaceCardHeaderViewController *)self newLabel];
   firstLabel = self->_firstLabel;
-  self->_firstLabel = v11;
+  self->_firstLabel = newLabel2;
 
-  v13 = [(MKPlaceCardHeaderViewController *)self newLabel];
+  newLabel3 = [(MKPlaceCardHeaderViewController *)self newLabel];
   secondLabel = self->_secondLabel;
-  self->_secondLabel = v13;
+  self->_secondLabel = newLabel3;
 
   if (self->_layout == 1)
   {
@@ -619,9 +619,9 @@ id __46__MKPlaceCardHeaderViewController_updateViews__block_invoke_2(uint64_t a1
     [(_MKUILabel *)self->_secondLabel setTextAlignment:1];
   }
 
-  v15 = [(MKPlaceCardHeaderViewController *)self newLabel];
+  newLabel4 = [(MKPlaceCardHeaderViewController *)self newLabel];
   thirdLabel = self->_thirdLabel;
-  self->_thirdLabel = v15;
+  self->_thirdLabel = newLabel4;
 
   if (self->_layout == 1)
   {
@@ -653,9 +653,9 @@ id __46__MKPlaceCardHeaderViewController_updateViews__block_invoke_2(uint64_t a1
   {
     if (!layout)
     {
-      v23 = [(MKPlaceCardHeaderViewController *)self newLabel];
+      newLabel5 = [(MKPlaceCardHeaderViewController *)self newLabel];
       secondaryNameLabel = self->_secondaryNameLabel;
-      self->_secondaryNameLabel = v23;
+      self->_secondaryNameLabel = newLabel5;
 
       LODWORD(v25) = 1148846080;
       [(UIView *)self->_secondaryNameLabel _mapkit_setContentCompressionResistancePriority:1 forAxis:v25];
@@ -668,8 +668,8 @@ id __46__MKPlaceCardHeaderViewController_updateViews__block_invoke_2(uint64_t a1
 
   [(MKPlaceSectionRowView *)self->_labelsSectionView addSubview:self->_secondLabel];
   [(MKPlaceSectionRowView *)self->_labelsSectionView addSubview:self->_thirdLabel];
-  v26 = [(MKPlaceSectionViewController *)self sectionView];
-  [v26 setStackDelegate:self];
+  sectionView = [(MKPlaceSectionViewController *)self sectionView];
+  [sectionView setStackDelegate:self];
 
   v27 = objc_alloc_init(MEMORY[0x1E69DCC20]);
   leadingGuide = self->_leadingGuide;
@@ -690,12 +690,12 @@ id __46__MKPlaceCardHeaderViewController_updateViews__block_invoke_2(uint64_t a1
   return v3;
 }
 
-- (BOOL)_mapItemShouldDisplayDistance:(id)a3
+- (BOOL)_mapItemShouldDisplayDistance:(id)distance
 {
-  v3 = a3;
-  if ([v3 _hasVenueFeatureType])
+  distanceCopy = distance;
+  if ([distanceCopy _hasVenueFeatureType])
   {
-    v4 = [v3 _venueFeatureType] != 4;
+    v4 = [distanceCopy _venueFeatureType] != 4;
   }
 
   else
@@ -706,77 +706,77 @@ id __46__MKPlaceCardHeaderViewController_updateViews__block_invoke_2(uint64_t a1
   return v4;
 }
 
-- (void)ETAProviderUpdated:(id)a3
+- (void)ETAProviderUpdated:(id)updated
 {
-  v20 = a3;
-  v5 = [(_MKTokenAttributedString *)self->_distanceToken string];
-  v6 = [v20 distanceString];
-  if (v5 == v6)
+  updatedCopy = updated;
+  string = [(_MKTokenAttributedString *)self->_distanceToken string];
+  distanceString = [updatedCopy distanceString];
+  if (string == distanceString)
   {
-    v3 = [v20 distanceString];
-    if (!v3)
+    distanceString2 = [updatedCopy distanceString];
+    if (!distanceString2)
     {
       goto LABEL_16;
     }
   }
 
-  v7 = [(_MKTokenAttributedString *)self->_distanceToken string];
-  if (!v7)
+  string2 = [(_MKTokenAttributedString *)self->_distanceToken string];
+  if (!string2)
   {
     goto LABEL_10;
   }
 
-  v8 = v7;
-  v9 = [v20 distanceString];
-  if (!v9)
+  v8 = string2;
+  distanceString3 = [updatedCopy distanceString];
+  if (!distanceString3)
   {
 
 LABEL_10:
-    if (v5 == v6)
+    if (string == distanceString)
     {
     }
 
     goto LABEL_13;
   }
 
-  v10 = v9;
-  v11 = [(_MKTokenAttributedString *)self->_distanceToken string];
-  v12 = [v20 distanceString];
-  v13 = [v11 isEqualToString:v12];
+  v10 = distanceString3;
+  string3 = [(_MKTokenAttributedString *)self->_distanceToken string];
+  distanceString4 = [updatedCopy distanceString];
+  v13 = [string3 isEqualToString:distanceString4];
 
-  if (v5 == v6)
+  if (string == distanceString)
   {
   }
 
   if ((v13 & 1) == 0)
   {
 LABEL_13:
-    v14 = [(_MKPlaceItem *)self->_placeItem mapItem];
-    v15 = [(MKPlaceCardHeaderViewController *)self _mapItemShouldDisplayDistance:v14];
+    mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+    v15 = [(MKPlaceCardHeaderViewController *)self _mapItemShouldDisplayDistance:mapItem];
 
     if (!v15)
     {
       goto LABEL_17;
     }
 
-    v16 = [(MKPlaceCardHeaderViewController *)self view];
+    view = [(MKPlaceCardHeaderViewController *)self view];
 
-    if (!v16)
+    if (!view)
     {
       goto LABEL_17;
     }
 
-    v17 = [v20 distanceString];
-    [(_MKTokenAttributedString *)self->_distanceToken setString:v17];
+    distanceString5 = [updatedCopy distanceString];
+    [(_MKTokenAttributedString *)self->_distanceToken setString:distanceString5];
 
     [(MKPlaceCardHeaderViewController *)self updateViews];
-    v18 = [(MKPlaceCardHeaderViewController *)self view];
-    v19 = [v18 superview];
-    [v19 _mapkit_setNeedsLayout];
+    view2 = [(MKPlaceCardHeaderViewController *)self view];
+    superview = [view2 superview];
+    [superview _mapkit_setNeedsLayout];
 
-    v5 = [(MKPlaceCardHeaderViewController *)self view];
-    v6 = [v5 superview];
-    [v6 _mapkit_layoutIfNeeded];
+    string = [(MKPlaceCardHeaderViewController *)self view];
+    distanceString = [string superview];
+    [distanceString _mapkit_layoutIfNeeded];
 LABEL_16:
   }
 
@@ -816,8 +816,8 @@ void __44__MKPlaceCardHeaderViewController__loadLogo__block_invoke(uint64_t a1, 
 
 - (BOOL)_isLikelyToShowDistance
 {
-  v2 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  if ([_MKQuickRouteManager isLikelyToReturnETAForLocation:v2])
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  if ([_MKQuickRouteManager isLikelyToReturnETAForLocation:mapItem])
   {
     v3 = 1;
   }
@@ -825,8 +825,8 @@ void __44__MKPlaceCardHeaderViewController__loadLogo__block_invoke(uint64_t a1, 
   else
   {
     v4 = +[MKLocationManager sharedLocationManager];
-    v5 = [v4 lastLocation];
-    v3 = v5 != 0;
+    lastLocation = [v4 lastLocation];
+    v3 = lastLocation != 0;
   }
 
   return v3;
@@ -834,47 +834,47 @@ void __44__MKPlaceCardHeaderViewController__loadLogo__block_invoke(uint64_t a1, 
 
 - (void)_setupDatas
 {
-  v3 = [(MKPlaceCardHeaderViewController *)self _currentTitle];
-  [(_MKTokenAttributedString *)self->_titleToken setString:v3];
+  _currentTitle = [(MKPlaceCardHeaderViewController *)self _currentTitle];
+  [(_MKTokenAttributedString *)self->_titleToken setString:_currentTitle];
 
-  v4 = [(MKPlaceCardHeaderViewController *)self _secondaryNameTitle];
-  [(_MKTokenAttributedString *)self->_secondaryNameToken setString:v4];
+  _secondaryNameTitle = [(MKPlaceCardHeaderViewController *)self _secondaryNameTitle];
+  [(_MKTokenAttributedString *)self->_secondaryNameToken setString:_secondaryNameTitle];
 
-  v5 = [(MKPlaceCardHeaderViewController *)self _reviewLabelText];
-  [(_MKTokenAttributedString *)self->_ratingsToken setAttributedString:v5];
+  _reviewLabelText = [(MKPlaceCardHeaderViewController *)self _reviewLabelText];
+  [(_MKTokenAttributedString *)self->_ratingsToken setAttributedString:_reviewLabelText];
 
-  v6 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v7 = [v6 _hasPriceDescription];
-  v8 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v9 = v8;
-  if (v7)
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  _hasPriceDescription = [mapItem _hasPriceDescription];
+  mapItem2 = [(_MKPlaceItem *)self->_placeItem mapItem];
+  v9 = mapItem2;
+  if (_hasPriceDescription)
   {
-    [v8 _priceDescription];
+    [mapItem2 _priceDescription];
   }
 
   else
   {
-    [v8 _priceRangeString];
+    [mapItem2 _priceRangeString];
   }
   v10 = ;
   [(_MKTokenAttributedString *)self->_priceToken setString:v10];
 
-  v11 = [(MKPlaceCardHeaderViewController *)self _openStateString];
-  [(_MKTokenAttributedString *)self->_openStateToken setAttributedString:v11];
+  _openStateString = [(MKPlaceCardHeaderViewController *)self _openStateString];
+  [(_MKTokenAttributedString *)self->_openStateToken setAttributedString:_openStateString];
 
-  v12 = [(MKPlaceCardHeaderViewController *)self _verifiedText];
-  [(_MKTokenAttributedString *)self->_verifiedToken setAttributedString:v12];
+  _verifiedText = [(MKPlaceCardHeaderViewController *)self _verifiedText];
+  [(_MKTokenAttributedString *)self->_verifiedToken setAttributedString:_verifiedText];
 
-  v13 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v14 = [v13 _firstLocalizedCategoryName];
-  v15 = [v14 length];
+  mapItem3 = [(_MKPlaceItem *)self->_placeItem mapItem];
+  _firstLocalizedCategoryName = [mapItem3 _firstLocalizedCategoryName];
+  v15 = [_firstLocalizedCategoryName length];
 
   v16 = &OBJC_IVAR___MKLookAroundView__storefrontFullyDrawn;
   if (v15)
   {
-    v17 = [(_MKPlaceItem *)self->_placeItem mapItem];
-    v18 = [v17 _firstLocalizedCategoryName];
-    [(_MKTokenAttributedString *)self->_categoryToken setString:v18];
+    mapItem4 = [(_MKPlaceItem *)self->_placeItem mapItem];
+    _firstLocalizedCategoryName2 = [mapItem4 _firstLocalizedCategoryName];
+    [(_MKTokenAttributedString *)self->_categoryToken setString:_firstLocalizedCategoryName2];
   }
 
   else
@@ -884,8 +884,8 @@ void __44__MKPlaceCardHeaderViewController__loadLogo__block_invoke(uint64_t a1, 
       goto LABEL_9;
     }
 
-    v17 = _MKLocalizedStringFromThisBundle(@"Line_Card_Category");
-    [(_MKTokenAttributedString *)self->_categoryToken setString:v17];
+    mapItem4 = _MKLocalizedStringFromThisBundle(@"Line_Card_Category");
+    [(_MKTokenAttributedString *)self->_categoryToken setString:mapItem4];
   }
 
 LABEL_9:
@@ -896,27 +896,27 @@ LABEL_9:
 
   v19 = _MKLocalizedStringFromThisBundle(@"NEAR_BY_PLACE_HEADER_STRING");
   v20 = +[MKLocationManager sharedLocationManager];
-  v21 = [v20 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v20 isAuthorizedForPreciseLocation];
 
-  v22 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v23 = [v22 _geoAddress];
-  v24 = [v23 structuredAddress];
-  v25 = v24;
-  if (!v21)
+  mapItem5 = [(_MKPlaceItem *)self->_placeItem mapItem];
+  _geoAddress = [mapItem5 _geoAddress];
+  structuredAddress = [_geoAddress structuredAddress];
+  v25 = structuredAddress;
+  if (!isAuthorizedForPreciseLocation)
   {
-    v26 = [v24 locality];
+    locality = [structuredAddress locality];
 
-    if ([v26 length])
+    if ([locality length])
     {
-      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:v19, v26];
-      v28 = [(_MKPlaceItem *)self->_placeItem mapItem];
-      v29 = [v28 _geoAddress];
-      v30 = [v29 structuredAddress];
-      v31 = [v30 administrativeAreaCode];
+      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:v19, locality];
+      mapItem6 = [(_MKPlaceItem *)self->_placeItem mapItem];
+      _geoAddress2 = [mapItem6 _geoAddress];
+      structuredAddress2 = [_geoAddress2 structuredAddress];
+      administrativeAreaCode = [structuredAddress2 administrativeAreaCode];
 
-      if ([v31 length])
+      if ([administrativeAreaCode length])
       {
-        v32 = [v27 stringByAppendingFormat:@", %@", v31];
+        v32 = [v27 stringByAppendingFormat:@", %@", administrativeAreaCode];
 
         v27 = v32;
       }
@@ -929,24 +929,24 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  v26 = [v24 fullThoroughfare];
+  locality = [structuredAddress fullThoroughfare];
 
-  if (![v26 length])
+  if (![locality length])
   {
 LABEL_17:
     v27 = 0;
     goto LABEL_18;
   }
 
-  v27 = [MEMORY[0x1E696AEC0] stringWithFormat:v19, v26];
+  v27 = [MEMORY[0x1E696AEC0] stringWithFormat:v19, locality];
 LABEL_18:
   v16 = &OBJC_IVAR___MKLookAroundView__storefrontFullyDrawn;
 LABEL_19:
 
   [(_MKTokenAttributedString *)self->_userLocationToken setString:v27];
 LABEL_20:
-  v33 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  if ([v33 _venueFeatureType] == 4)
+  mapItem7 = [(_MKPlaceItem *)self->_placeItem mapItem];
+  if ([mapItem7 _venueFeatureType] == 4)
   {
   }
 
@@ -960,17 +960,17 @@ LABEL_20:
     }
   }
 
-  v35 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v36 = [v35 venueLabelWithContext:2];
+  mapItem8 = [(_MKPlaceItem *)self->_placeItem mapItem];
+  v36 = [mapItem8 venueLabelWithContext:2];
   [(_MKTokenAttributedString *)self->_venueToken setString:v36];
 
 LABEL_24:
-  v37 = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
-  [v37 removeFromSuperview];
+  transitLabel = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
+  [transitLabel removeFromSuperview];
 
   [(_MKDataHeaderModel *)self->_dataModel setTransitLabel:0];
-  v38 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  if ([v38 _hasTransitLabels])
+  mapItem9 = [(_MKPlaceItem *)self->_placeItem mapItem];
+  if ([mapItem9 _hasTransitLabels])
   {
   }
 
@@ -985,25 +985,25 @@ LABEL_24:
   }
 
   v40 = [MKTransitInfoLabelView alloc];
-  v41 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v42 = [(MKTransitInfoLabelView *)v40 initWithMapItem:v41];
+  mapItem10 = [(_MKPlaceItem *)self->_placeItem mapItem];
+  v42 = [(MKTransitInfoLabelView *)v40 initWithMapItem:mapItem10];
   [(_MKDataHeaderModel *)self->_dataModel setTransitLabel:v42];
 
-  v43 = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
-  [v43 set_mapkit_themeColorProvider:&__block_literal_global_70];
+  transitLabel2 = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
+  [transitLabel2 set_mapkit_themeColorProvider:&__block_literal_global_70];
 
   v44 = v16[867];
   v45 = *(&self->super.super.super.super.isa + v44);
   if (v45)
   {
-    v46 = [v45 labelItems];
-    v47 = [v46 count];
+    labelItems = [v45 labelItems];
+    v47 = [labelItems count];
 
     if (v47)
     {
-      v48 = [*(&self->super.super.super.super.isa + v44) labelItems];
-      v49 = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
-      [v49 setLabelItems:v48];
+      labelItems2 = [*(&self->super.super.super.super.isa + v44) labelItems];
+      transitLabel3 = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
+      [transitLabel3 setLabelItems:labelItems2];
     }
 
     else
@@ -1012,52 +1012,52 @@ LABEL_24:
     }
   }
 
-  v50 = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
-  [v50 setTranslatesAutoresizingMaskIntoConstraints:0];
+  transitLabel4 = [(_MKDataHeaderModel *)self->_dataModel transitLabel];
+  [transitLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
 LABEL_32:
-  v51 = [(MKPlaceCardHeaderViewController *)self _isLikelyToShowDistance];
-  v52 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
-  [v52 setShouldUseEmptyPlaceholder:v51];
+  _isLikelyToShowDistance = [(MKPlaceCardHeaderViewController *)self _isLikelyToShowDistance];
+  secondLine = [(_MKDataHeaderModel *)self->_dataModel secondLine];
+  [secondLine setShouldUseEmptyPlaceholder:_isLikelyToShowDistance];
 
-  v53 = [(_MKDataHeaderModel *)self->_dataModel firstLine];
-  [v53 addToken:self->_titleToken];
+  firstLine = [(_MKDataHeaderModel *)self->_dataModel firstLine];
+  [firstLine addToken:self->_titleToken];
 
   if (self->_layout == 1)
   {
     p_verifiedToken = &self->_verifiedToken;
-    v55 = [(_MKTokenAttributedString *)self->_verifiedToken isEmpty];
-    self->_notVerified = v55;
-    if (v55)
+    isEmpty = [(_MKTokenAttributedString *)self->_verifiedToken isEmpty];
+    self->_notVerified = isEmpty;
+    if (isEmpty)
     {
       return;
     }
 
-    v61 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
+    secondLine2 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
   }
 
   else
   {
     if ([(_MKTokenAttributedString *)self->_userLocationToken isEmpty])
     {
-      v56 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
-      [v56 addToken:self->_categoryToken];
+      secondLine3 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
+      [secondLine3 addToken:self->_categoryToken];
 
-      v57 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
-      [v57 addToken:self->_venueToken];
+      secondLine4 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
+      [secondLine4 addToken:self->_venueToken];
 
-      v58 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
-      [v58 addToken:self->_distanceToken];
+      secondLine5 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
+      [secondLine5 addToken:self->_distanceToken];
 
-      v59 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
+      secondLine6 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
       p_openStateToken = &self->_openStateToken;
     }
 
     else
     {
-      v62 = [(_MKTokenAttributedString *)self->_venueToken isEmpty];
-      v59 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
-      if (v62)
+      isEmpty2 = [(_MKTokenAttributedString *)self->_venueToken isEmpty];
+      secondLine6 = [(_MKDataHeaderModel *)self->_dataModel secondLine];
+      if (isEmpty2)
       {
         p_openStateToken = &self->_userLocationToken;
       }
@@ -1068,32 +1068,32 @@ LABEL_32:
       }
     }
 
-    [v59 addToken:*p_openStateToken];
+    [secondLine6 addToken:*p_openStateToken];
 
     if ([(MKPlaceCardHeaderViewController *)self _hasSecondaryName]&& ![(_MKTokenAttributedString *)self->_secondaryNameToken isEmpty])
     {
-      v63 = [(_MKDataHeaderModel *)self->_dataModel secondaryNameLine];
-      [v63 addToken:self->_secondaryNameToken];
+      secondaryNameLine = [(_MKDataHeaderModel *)self->_dataModel secondaryNameLine];
+      [secondaryNameLine addToken:self->_secondaryNameToken];
     }
 
-    v64 = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
-    [v64 addToken:self->_ratingsToken];
+    thirdLine = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
+    [thirdLine addToken:self->_ratingsToken];
 
-    v61 = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
+    secondLine2 = [(_MKDataHeaderModel *)self->_dataModel thirdLine];
     p_verifiedToken = &self->_priceToken;
   }
 
-  v65 = v61;
-  [v61 addToken:*p_verifiedToken];
+  v65 = secondLine2;
+  [secondLine2 addToken:*p_verifiedToken];
 }
 
 - (id)_openStateString
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v4 = [v3 _hasBusinessHours];
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  _hasBusinessHours = [mapItem _hasBusinessHours];
 
-  if (v4)
+  if (_hasBusinessHours)
   {
     if (self->_optionSmallScreen)
     {
@@ -1105,18 +1105,18 @@ LABEL_32:
       v5 = 9;
     }
 
-    v6 = [(MKPlaceCardHeaderViewController *)self localizedHoursBuilder];
-    [v6 setLocalizedHoursStringOptions:v5];
+    localizedHoursBuilder = [(MKPlaceCardHeaderViewController *)self localizedHoursBuilder];
+    [localizedHoursBuilder setLocalizedHoursStringOptions:v5];
 
     v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v8 = [(MKPlaceCardHeaderViewController *)self localizedHoursBuilder];
-    v9 = [v8 localizedOperatingHours];
+    localizedHoursBuilder2 = [(MKPlaceCardHeaderViewController *)self localizedHoursBuilder];
+    localizedOperatingHours = [localizedHoursBuilder2 localizedOperatingHours];
     v15 = *MEMORY[0x1E69DB650];
-    v10 = [(MKPlaceCardHeaderViewController *)self localizedHoursBuilder];
-    v11 = [v10 hoursStateLabelColor];
-    v16[0] = v11;
+    localizedHoursBuilder3 = [(MKPlaceCardHeaderViewController *)self localizedHoursBuilder];
+    hoursStateLabelColor = [localizedHoursBuilder3 hoursStateLabelColor];
+    v16[0] = hoursStateLabelColor;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    v13 = [v7 initWithString:v9 attributes:v12];
+    v13 = [v7 initWithString:localizedOperatingHours attributes:v12];
   }
 
   else
@@ -1133,8 +1133,8 @@ LABEL_32:
   if (!localizedHoursBuilder)
   {
     v4 = [_MKLocalizedHoursBuilder alloc];
-    v5 = [(_MKPlaceItem *)self->_placeItem mapItem];
-    v6 = [(_MKLocalizedHoursBuilder *)v4 initWithMapItem:v5 localizedHoursStringOptions:0];
+    mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+    v6 = [(_MKLocalizedHoursBuilder *)v4 initWithMapItem:mapItem localizedHoursStringOptions:0];
     v7 = self->_localizedHoursBuilder;
     self->_localizedHoursBuilder = v6;
 
@@ -1146,19 +1146,19 @@ LABEL_32:
 
 - (id)_reviewLabelText
 {
-  v3 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v4 = [v3 _hasUserRatingScore];
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  _hasUserRatingScore = [mapItem _hasUserRatingScore];
 
-  if (v4)
+  if (_hasUserRatingScore)
   {
-    v5 = [(UIViewController *)self mk_theme];
-    v6 = [v5 lightTextColor];
+    mk_theme = [(UIViewController *)self mk_theme];
+    lightTextColor = [mk_theme lightTextColor];
 
-    v7 = [(_MKPlaceItem *)self->_placeItem mapItem];
+    mapItem2 = [(_MKPlaceItem *)self->_placeItem mapItem];
     v8 = +[MKFontManager sharedManager];
-    v9 = [v8 subtitleFont];
-    v10 = [(UIViewController *)self mk_theme];
-    v11 = [MKRatingStringBuilder ratingAndReviewSummaryAttributedStringForMapItem:v7 textColor:v6 font:v9 theme:v10];
+    subtitleFont = [v8 subtitleFont];
+    mk_theme2 = [(UIViewController *)self mk_theme];
+    v11 = [MKRatingStringBuilder ratingAndReviewSummaryAttributedStringForMapItem:mapItem2 textColor:lightTextColor font:subtitleFont theme:mk_theme2];
   }
 
   else
@@ -1172,13 +1172,13 @@ LABEL_32:
 - (id)_verifiedText
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v4 = [v3 _isMessageIDVerified];
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  _isMessageIDVerified = [mapItem _isMessageIDVerified];
 
-  if (v4)
+  if (_isMessageIDVerified)
   {
-    v5 = [(UIViewController *)self mk_theme];
-    v6 = [v5 lightTextColor];
+    mk_theme = [(UIViewController *)self mk_theme];
+    lightTextColor = [mk_theme lightTextColor];
 
     v7 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
     v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.seal.fill"];
@@ -1190,7 +1190,7 @@ LABEL_32:
 
     v24 = *MEMORY[0x1E69DB650];
     v12 = v24;
-    v25[0] = v6;
+    v25[0] = lightTextColor;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     [v11 addAttributes:v13 range:{0, 1}];
 
@@ -1199,10 +1199,10 @@ LABEL_32:
     v16 = _MKLocalizedStringFromThisBundle(@"Brand_Card_Verified");
     v22[0] = *MEMORY[0x1E69DB648];
     v17 = +[MKFontManager sharedManager];
-    v18 = [v17 subtitleFont];
+    subtitleFont = [v17 subtitleFont];
     v22[1] = v12;
-    v23[0] = v18;
-    v23[1] = v6;
+    v23[0] = subtitleFont;
+    v23[1] = lightTextColor;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
     v20 = [v15 initWithString:v16 attributes:v19];
 
@@ -1222,37 +1222,37 @@ LABEL_32:
 
 - (id)_secondaryNameTitle
 {
-  v2 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v3 = [v2 _secondaryName];
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  _secondaryName = [mapItem _secondaryName];
 
-  return v3;
+  return _secondaryName;
 }
 
 - (BOOL)_hasSecondaryName
 {
-  v2 = [(MKPlaceCardHeaderViewController *)self _secondaryNameTitle];
-  v3 = [v2 length] != 0;
+  _secondaryNameTitle = [(MKPlaceCardHeaderViewController *)self _secondaryNameTitle];
+  v3 = [_secondaryNameTitle length] != 0;
 
   return v3;
 }
 
 - (id)_currentTitle
 {
-  v3 = [(_MKPlaceItem *)self->_placeItem name];
-  v4 = [v3 length];
+  name = [(_MKPlaceItem *)self->_placeItem name];
+  v4 = [name length];
 
   if (v4)
   {
     placeItem = self->_placeItem;
 LABEL_4:
-    v8 = [(_MKPlaceItem *)placeItem name];
+    name2 = [(_MKPlaceItem *)placeItem name];
 LABEL_5:
-    v9 = v8;
+    name5 = name2;
     goto LABEL_6;
   }
 
-  v6 = [(GEOTransitLineItem *)self->_lineItem name];
-  v7 = [v6 length];
+  name3 = [(GEOTransitLineItem *)self->_lineItem name];
+  v7 = [name3 length];
 
   placeItem = self->_lineItem;
   if (v7)
@@ -1260,37 +1260,37 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  v11 = [(_MKPlaceItem *)placeItem system];
-  v12 = [v11 name];
-  v13 = [v12 length];
+  system = [(_MKPlaceItem *)placeItem system];
+  name4 = [system name];
+  v13 = [name4 length];
 
   lineItem = self->_lineItem;
   if (v13)
   {
-    v15 = [(GEOTransitLineItem *)lineItem system];
-    v9 = [v15 name];
+    system2 = [(GEOTransitLineItem *)lineItem system];
+    name5 = [system2 name];
   }
 
   else
   {
     if (lineItem)
     {
-      v8 = _MKLocalizedStringFromThisBundle(@"Line_Card_Default_Title");
+      name2 = _MKLocalizedStringFromThisBundle(@"Line_Card_Default_Title");
       goto LABEL_5;
     }
 
-    v9 = 0;
+    name5 = 0;
   }
 
 LABEL_6:
 
-  return v9;
+  return name5;
 }
 
-- (void)animateSecondLabelWithPercentage:(double)a3
+- (void)animateSecondLabelWithPercentage:(double)percentage
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = fmin(a3, 1.0);
+  v4 = fmin(percentage, 1.0);
   if (v4 >= 0.0)
   {
     v5 = v4;
@@ -1304,10 +1304,10 @@ LABEL_6:
   secondLabelToFirstLabelConstraint = self->_secondLabelToFirstLabelConstraint;
   if (secondLabelToFirstLabelConstraint)
   {
-    v7 = [(NSLayoutConstraint *)secondLabelToFirstLabelConstraint isActive];
+    isActive = [(NSLayoutConstraint *)secondLabelToFirstLabelConstraint isActive];
     if (v5 == 1.0)
     {
-      if (v7)
+      if (isActive)
       {
         v8 = MEMORY[0x1E696ACD8];
         v14[0] = self->_secondLabelToFirstLabelConstraint;
@@ -1318,7 +1318,7 @@ LABEL_6:
 
     else
     {
-      if (!v7)
+      if (!isActive)
       {
         v10 = MEMORY[0x1E696ACD8];
         v13 = self->_secondLabelToFirstLabelConstraint;
@@ -1339,28 +1339,28 @@ LABEL_6:
   {
     [(MKPlaceCardHeaderViewController *)self animateSecondLabelWithPercentage:self->_contentAlpha];
     [(UIView *)self->_thirdDisplayedLabel setAlpha:self->_contentAlpha];
-    v6 = [(MKPlaceCardHeaderViewController *)self secondaryNameTimingFunction];
+    secondaryNameTimingFunction = [(MKPlaceCardHeaderViewController *)self secondaryNameTimingFunction];
     contentAlpha = self->_contentAlpha;
     *&contentAlpha = contentAlpha;
-    [v6 _solveForInput:contentAlpha];
+    [secondaryNameTimingFunction _solveForInput:contentAlpha];
     [(_MKUILabel *)self->_secondaryNameLabel setAlpha:v5];
   }
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  if (self->_contentAlpha != a3)
+  if (self->_contentAlpha != alpha)
   {
-    self->_contentAlpha = a3;
+    self->_contentAlpha = alpha;
     [(MKPlaceCardHeaderViewController *)self updateContentAlpha];
   }
 }
 
 - (double)contentAlpha
 {
-  v3 = [(MKPlaceSectionRowView *)self->_labelsSectionView isHidden];
+  isHidden = [(MKPlaceSectionRowView *)self->_labelsSectionView isHidden];
   result = 0.0;
-  if ((v3 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     return self->_contentAlpha;
   }
@@ -1370,14 +1370,14 @@ LABEL_6:
 
 - (void)updateHeaderTitle
 {
-  v3 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v5 = [v3 name];
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  name = [mapItem name];
 
-  v4 = [(MKPlaceCardHeaderViewController *)self view];
+  view = [(MKPlaceCardHeaderViewController *)self view];
 
-  if (v4)
+  if (view)
   {
-    [(_MKTokenAttributedString *)self->_titleToken setString:v5];
+    [(_MKTokenAttributedString *)self->_titleToken setString:name];
     [(MKPlaceCardHeaderViewController *)self updateViews];
   }
 }
@@ -1387,17 +1387,17 @@ LABEL_6:
   v6.receiver = self;
   v6.super_class = MKPlaceCardHeaderViewController;
   [(MKPlaceCardHeaderViewController *)&v6 viewDidLoad];
-  v3 = [(MKPlaceSectionViewController *)self sectionView];
-  [v3 setPreservesSuperviewLayoutMargins:1];
+  sectionView = [(MKPlaceSectionViewController *)self sectionView];
+  [sectionView setPreservesSuperviewLayoutMargins:1];
 
-  v4 = [(MKPlaceSectionViewController *)self sectionView];
-  [v4 setShowsBottomHairline:0];
+  sectionView2 = [(MKPlaceSectionViewController *)self sectionView];
+  [sectionView2 setShowsBottomHairline:0];
 
   [(MKPlaceCardHeaderViewController *)self _createViews];
   [(MKPlaceCardHeaderViewController *)self _setupDatas];
   [(MKPlaceCardHeaderViewController *)self updateContent];
-  v5 = [(MKPlaceCardHeaderViewController *)self view];
-  [(_MKDataHeaderModel *)self->_dataModel setOwnerView:v5];
+  view = [(MKPlaceCardHeaderViewController *)self view];
+  [(_MKDataHeaderModel *)self->_dataModel setOwnerView:view];
 }
 
 - (void)_commonInit
@@ -1453,43 +1453,43 @@ LABEL_6:
   self->_verifiedToken = v23;
 
   self->_isUserLocation = [(_MKPlaceItem *)self->_placeItem options]& 1;
-  v25 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v25 addObserver:self selector:sel__contentSizeDidChangeNotificationHandler name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeDidChangeNotificationHandler name:*MEMORY[0x1E69DDC48] object:0];
 
-  v28 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v26 = [v28 _bestBrandIconURLForSize:1 allowSmaller:{86.0, 86.0}];
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  v26 = [mapItem _bestBrandIconURLForSize:1 allowSmaller:{86.0, 86.0}];
   logoURL = self->_logoURL;
   self->_logoURL = v26;
 }
 
-- (MKPlaceCardHeaderViewController)initWithLineItem:(id)a3 layout:(unint64_t)a4
+- (MKPlaceCardHeaderViewController)initWithLineItem:(id)item layout:(unint64_t)layout
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = MKPlaceCardHeaderViewController;
   v8 = [(MKPlaceCardHeaderViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_lineItem, a3);
-    v9->_layout = a4;
+    objc_storeStrong(&v8->_lineItem, item);
+    v9->_layout = layout;
     [(MKPlaceCardHeaderViewController *)v9 _commonInit];
   }
 
   return v9;
 }
 
-- (MKPlaceCardHeaderViewController)initWithPlaceItem:(id)a3 layout:(unint64_t)a4
+- (MKPlaceCardHeaderViewController)initWithPlaceItem:(id)item layout:(unint64_t)layout
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = MKPlaceCardHeaderViewController;
   v8 = [(MKPlaceCardHeaderViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_placeItem, a3);
-    v9->_layout = a4;
+    objc_storeStrong(&v8->_placeItem, item);
+    v9->_layout = layout;
     [(MKPlaceCardHeaderViewController *)v9 _commonInit];
   }
 
@@ -1499,15 +1499,15 @@ LABEL_6:
 - (double)lastLabelToBottomConstant
 {
   v2 = +[MKFontManager sharedManager];
-  v3 = [v2 subtitleFont];
+  subtitleFont = [v2 subtitleFont];
 
   v4 = +[MKSystemController sharedInstance];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
   v6 = 0.0;
-  if (v5 != 2)
+  if (userInterfaceIdiom != 2)
   {
-    [v3 _mapkit_scaledValueForValue:21.0];
+    [subtitleFont _mapkit_scaledValueForValue:21.0];
     v6 = -v7;
   }
 
@@ -1555,11 +1555,11 @@ void __62__MKPlaceCardHeaderViewController_secondaryNameTimingFunction__block_in
 + (double)minimalModeHeight
 {
   v2 = +[MKFontManager sharedManager];
-  v3 = [v2 largeTitleFont];
+  largeTitleFont = [v2 largeTitleFont];
 
-  [v3 _mapkit_scaledValueForValue:32.0];
+  [largeTitleFont _mapkit_scaledValueForValue:32.0];
   v5 = v4 + 4.0;
-  [v3 _mapkit_scaledValueForValue:21.0];
+  [largeTitleFont _mapkit_scaledValueForValue:21.0];
   v7 = v5 + v6 + 21.0;
 
   return v7;

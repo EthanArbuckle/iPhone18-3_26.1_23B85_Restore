@@ -1,9 +1,9 @@
 @interface MTROperationalStateClusterOperationalCommandResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTROperationalStateClusterOperationalCommandResponseParams)init;
-- (MTROperationalStateClusterOperationalCommandResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTROperationalStateClusterOperationalCommandResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTROperationalStateClusterOperationalCommandResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTROperationalStateClusterOperationalCommandResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,11 +24,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalStateClusterOperationalCommandResponseParams);
-  v5 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
-  [(MTROperationalStateClusterOperationalCommandResponseParams *)v4 setCommandResponseState:v5];
+  commandResponseState = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
+  [(MTROperationalStateClusterOperationalCommandResponseParams *)v4 setCommandResponseState:commandResponseState];
 
   return v4;
 }
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (MTROperationalStateClusterOperationalCommandResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTROperationalStateClusterOperationalCommandResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MTROperationalStateClusterOperationalCommandResponseParams;
   v7 = [(MTROperationalStateClusterOperationalCommandResponseParams *)&v15 init];
@@ -55,7 +55,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:96 commandID:4 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:96 commandID:4 error:error];
   if (v14)
   {
     sub_2393C5AAC(v13);
@@ -78,7 +78,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -89,7 +89,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTROperationalStateClusterOperationalCommandResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTROperationalStateClusterOperationalCommandResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTROperationalStateClusterOperationalCommandResponseParams;
@@ -97,7 +97,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTROperationalStateClusterOperationalCommandResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTROperationalStateClusterOperationalCommandResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -113,34 +113,34 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v5 = objc_opt_new();
   [(MTROperationalStateClusterOperationalCommandResponseParams *)self setCommandResponseState:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
-  v7 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
-  [v7 setErrorStateID:v6];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
+  commandResponseState = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
+  [commandResponseState setErrorStateID:v6];
 
-  if (*(a3 + 8) != 1)
+  if (*(struct + 8) != 1)
   {
-    v15 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
-    [v15 setErrorStateLabel:0];
+    commandResponseState2 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
+    [commandResponseState2 setErrorStateLabel:0];
 
 LABEL_5:
-    v17 = *(a3 + 32);
-    v16 = a3 + 32;
+    v17 = *(struct + 32);
+    v16 = struct + 32;
     if (v17 == 1)
     {
       v18 = sub_238DE36B8(v16);
       v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v18 length:v18[1] encoding:4];
-      v20 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
-      [v20 setErrorStateDetails:v19];
+      commandResponseState3 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
+      [commandResponseState3 setErrorStateDetails:v19];
 
-      v21 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
-      v22 = [v21 errorStateDetails];
+      commandResponseState4 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
+      errorStateDetails = [commandResponseState4 errorStateDetails];
 
-      if (!v22)
+      if (!errorStateDetails)
       {
         v13 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
         v14 = 0x353200000000;
@@ -150,8 +150,8 @@ LABEL_5:
 
     else
     {
-      v24 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
-      [v24 setErrorStateDetails:0];
+      commandResponseState5 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
+      [commandResponseState5 setErrorStateDetails:0];
     }
 
     v14 = 0;
@@ -160,15 +160,15 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v8 = sub_238DE36B8(a3 + 8);
+  v8 = sub_238DE36B8(struct + 8);
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v8 length:v8[1] encoding:4];
-  v10 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
-  [v10 setErrorStateLabel:v9];
+  commandResponseState6 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
+  [commandResponseState6 setErrorStateLabel:v9];
 
-  v11 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
-  v12 = [v11 errorStateLabel];
+  commandResponseState7 = [(MTROperationalStateClusterOperationalCommandResponseParams *)self commandResponseState];
+  errorStateLabel = [commandResponseState7 errorStateLabel];
 
-  if (v12)
+  if (errorStateLabel)
   {
     goto LABEL_5;
   }

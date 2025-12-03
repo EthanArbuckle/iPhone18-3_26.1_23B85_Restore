@@ -1,34 +1,34 @@
 @interface _UIBarButtonItemAppearanceStorage
-- (double)backgroundVerticalAdjustmentForBarMetrics:(int64_t)a3;
+- (double)backgroundVerticalAdjustmentForBarMetrics:(int64_t)metrics;
 - (id)anyBackgroundImage;
-- (id)backgroundImageForState:(unint64_t)a3 style:(int64_t)a4 isMini:(BOOL)a5;
-- (void)setBackButtonBackgroundImage:(id)a3 forState:(unint64_t)a4 isMini:(BOOL)a5;
-- (void)setBackButtonBackgroundVerticalAdjustment:(double)a3 forBarMetrics:(int64_t)a4;
-- (void)setBackButtonTitlePositionOffset:(id)a3;
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 style:(int64_t)a5 isMini:(BOOL)a6;
-- (void)setBackgroundVerticalAdjustment:(double)a3 forBarMetrics:(int64_t)a4;
-- (void)setMiniBackButtonTitlePositionOffset:(id)a3;
+- (id)backgroundImageForState:(unint64_t)state style:(int64_t)style isMini:(BOOL)mini;
+- (void)setBackButtonBackgroundImage:(id)image forState:(unint64_t)state isMini:(BOOL)mini;
+- (void)setBackButtonBackgroundVerticalAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics;
+- (void)setBackButtonTitlePositionOffset:(id)offset;
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state style:(int64_t)style isMini:(BOOL)mini;
+- (void)setBackgroundVerticalAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics;
+- (void)setMiniBackButtonTitlePositionOffset:(id)offset;
 @end
 
 @implementation _UIBarButtonItemAppearanceStorage
 
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 style:(int64_t)a5 isMini:(BOOL)a6
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state style:(int64_t)style isMini:(BOOL)mini
 {
-  v6 = a6;
-  v20 = a3;
+  miniCopy = mini;
+  imageCopy = image;
   v10 = 1;
-  if (v6)
+  if (miniCopy)
   {
     v10 = 0;
   }
 
   v11 = OBJC_IVAR____UIBarButtonItemAppearanceStorage_miniBackgroundImages[v10];
   v12 = *(&self->super.super.isa + v11);
-  v13 = v20;
-  if (v20 | v12)
+  v13 = imageCopy;
+  if (imageCopy | v12)
   {
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    if (v20)
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+    if (imageCopy)
     {
       if (!v12)
       {
@@ -46,14 +46,14 @@
         [v12 setObject:v17 forKey:v14];
       }
 
-      v18 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-      [v17 setObject:v20 forKey:v18];
+      v18 = [MEMORY[0x1E696AD98] numberWithInteger:style];
+      [v17 setObject:imageCopy forKey:v18];
     }
 
     else
     {
       v17 = [v12 objectForKey:v14];
-      v19 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+      v19 = [MEMORY[0x1E696AD98] numberWithInteger:style];
       [v17 removeObjectForKey:v19];
 
       if ([v17 count])
@@ -72,36 +72,36 @@
     }
 
 LABEL_13:
-    v13 = v20;
+    v13 = imageCopy;
   }
 }
 
-- (id)backgroundImageForState:(unint64_t)a3 style:(int64_t)a4 isMini:(BOOL)a5
+- (id)backgroundImageForState:(unint64_t)state style:(int64_t)style isMini:(BOOL)mini
 {
   v7 = 1;
-  if (a5)
+  if (mini)
   {
     v7 = 0;
   }
 
   v8 = MEMORY[0x1E696AD98];
   v9 = *(&self->super.super.isa + OBJC_IVAR____UIBarButtonItemAppearanceStorage_miniBackgroundImages[v7]);
-  v10 = [v8 numberWithInteger:a3];
+  v10 = [v8 numberWithInteger:state];
   v11 = [v9 objectForKey:v10];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:style];
   v13 = [v11 objectForKey:v12];
 
   if (!v13)
   {
     v14 = dyld_program_sdk_at_least();
-    if (!a4 && v14)
+    if (!style && v14)
     {
       v15 = [MEMORY[0x1E696AD98] numberWithInteger:1];
       v13 = [v11 objectForKey:v15];
     }
 
-    if (a4 != 8 && !v13)
+    if (style != 8 && !v13)
     {
       v16 = [MEMORY[0x1E696AD98] numberWithInteger:8];
       v13 = [v11 objectForKey:v16];
@@ -119,65 +119,65 @@ LABEL_13:
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    lastObject = v5;
   }
 
   else
   {
-    v8 = [(NSMutableDictionary *)self->backgroundImages allValues];
-    v7 = [v8 lastObject];
+    allValues = [(NSMutableDictionary *)self->backgroundImages allValues];
+    lastObject = [allValues lastObject];
   }
 
-  v9 = [v7 objectForKey:v4];
+  v9 = [lastObject objectForKey:v4];
   if (v9)
   {
-    v10 = v9;
+    lastObject2 = v9;
   }
 
   else
   {
-    v11 = [v7 allValues];
-    v10 = [v11 lastObject];
+    allValues2 = [lastObject allValues];
+    lastObject2 = [allValues2 lastObject];
 
-    if (!v10)
+    if (!lastObject2)
     {
       v12 = [(NSMutableDictionary *)self->miniBackgroundImages objectForKey:v3];
       v13 = v12;
       if (v12)
       {
-        v14 = v7;
-        v7 = v12;
+        allValues3 = lastObject;
+        lastObject = v12;
       }
 
       else
       {
-        v14 = [(NSMutableDictionary *)self->miniBackgroundImages allValues];
-        v15 = [v14 lastObject];
+        allValues3 = [(NSMutableDictionary *)self->miniBackgroundImages allValues];
+        lastObject3 = [allValues3 lastObject];
 
-        v7 = v15;
+        lastObject = lastObject3;
       }
 
-      v16 = [v7 objectForKey:v4];
+      v16 = [lastObject objectForKey:v4];
       v17 = v16;
       if (v16)
       {
-        v10 = v16;
+        lastObject2 = v16;
       }
 
       else
       {
-        v18 = [v7 allValues];
-        v10 = [v18 lastObject];
+        allValues4 = [lastObject allValues];
+        lastObject2 = [allValues4 lastObject];
       }
     }
   }
 
-  return v10;
+  return lastObject2;
 }
 
-- (void)setBackgroundVerticalAdjustment:(double)a3 forBarMetrics:(int64_t)a4
+- (void)setBackgroundVerticalAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics
 {
-  v5 = a3;
+  adjustmentCopy = adjustment;
   if (!self->backgroundVerticalAdjustmentsForBarMetrics)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -185,13 +185,13 @@ LABEL_13:
     self->backgroundVerticalAdjustmentsForBarMetrics = v7;
   }
 
-  *&a3 = v5;
-  v10 = [MEMORY[0x1E696AD98] numberWithFloat:a3];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  *&adjustment = adjustmentCopy;
+  v10 = [MEMORY[0x1E696AD98] numberWithFloat:adjustment];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:metrics];
   [(NSMutableDictionary *)self->backgroundVerticalAdjustmentsForBarMetrics setObject:v10 forKey:v9];
 }
 
-- (double)backgroundVerticalAdjustmentForBarMetrics:(int64_t)a3
+- (double)backgroundVerticalAdjustmentForBarMetrics:(int64_t)metrics
 {
   backgroundVerticalAdjustmentsForBarMetrics = self->backgroundVerticalAdjustmentsForBarMetrics;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -199,7 +199,7 @@ LABEL_13:
 
   if (!v7)
   {
-    if ((a3 - 101) > 1)
+    if ((metrics - 101) > 1)
     {
       v7 = 0;
     }
@@ -207,7 +207,7 @@ LABEL_13:
     else
     {
       v8 = self->backgroundVerticalAdjustmentsForBarMetrics;
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3 == 102];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:metrics == 102];
       v7 = [(NSMutableDictionary *)v8 objectForKey:v9];
     }
   }
@@ -218,7 +218,7 @@ LABEL_13:
   return v11;
 }
 
-- (void)setBackButtonBackgroundVerticalAdjustment:(double)a3 forBarMetrics:(int64_t)a4
+- (void)setBackButtonBackgroundVerticalAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics
 {
   backButtonAppearance = self->backButtonAppearance;
   if (!backButtonAppearance)
@@ -230,16 +230,16 @@ LABEL_13:
     backButtonAppearance = self->backButtonAppearance;
   }
 
-  [(_UIBarBackButtonItemAppearanceStorage *)backButtonAppearance setBackgroundVerticalAdjustment:a4 forBarMetrics:a3];
+  [(_UIBarBackButtonItemAppearanceStorage *)backButtonAppearance setBackgroundVerticalAdjustment:metrics forBarMetrics:adjustment];
 }
 
-- (void)setBackButtonBackgroundImage:(id)a3 forState:(unint64_t)a4 isMini:(BOOL)a5
+- (void)setBackButtonBackgroundImage:(id)image forState:(unint64_t)state isMini:(BOOL)mini
 {
-  v5 = a5;
-  v8 = a3;
+  miniCopy = mini;
+  imageCopy = image;
   backButtonAppearance = self->backButtonAppearance;
-  v12 = v8;
-  if (v8)
+  v12 = imageCopy;
+  if (imageCopy)
   {
     if (!backButtonAppearance)
     {
@@ -256,17 +256,17 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  [(_UIBarBackButtonItemAppearanceStorage *)backButtonAppearance setBackgroundImage:v12 forState:a4 isMini:v5];
-  v8 = v12;
+  [(_UIBarBackButtonItemAppearanceStorage *)backButtonAppearance setBackgroundImage:v12 forState:state isMini:miniCopy];
+  imageCopy = v12;
 LABEL_6:
 }
 
-- (void)setBackButtonTitlePositionOffset:(id)a3
+- (void)setBackButtonTitlePositionOffset:(id)offset
 {
-  v4 = a3;
+  offsetCopy = offset;
   backButtonAppearance = self->backButtonAppearance;
-  v8 = v4;
-  if (v4)
+  v8 = offsetCopy;
+  if (offsetCopy)
   {
     if (!backButtonAppearance)
     {
@@ -284,16 +284,16 @@ LABEL_6:
   }
 
   [(_UIBarBackButtonItemAppearanceStorage *)backButtonAppearance setTitlePositionOffset:v8];
-  v4 = v8;
+  offsetCopy = v8;
 LABEL_6:
 }
 
-- (void)setMiniBackButtonTitlePositionOffset:(id)a3
+- (void)setMiniBackButtonTitlePositionOffset:(id)offset
 {
-  v4 = a3;
+  offsetCopy = offset;
   backButtonAppearance = self->backButtonAppearance;
-  v8 = v4;
-  if (v4)
+  v8 = offsetCopy;
+  if (offsetCopy)
   {
     if (!backButtonAppearance)
     {
@@ -311,7 +311,7 @@ LABEL_6:
   }
 
   [(_UIBarBackButtonItemAppearanceStorage *)backButtonAppearance setMiniTitlePositionOffset:v8];
-  v4 = v8;
+  offsetCopy = v8;
 LABEL_6:
 }
 

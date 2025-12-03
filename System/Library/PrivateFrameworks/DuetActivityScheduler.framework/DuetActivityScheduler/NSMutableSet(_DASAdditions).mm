@@ -9,8 +9,8 @@
 - (void)_DAS_addOrReplaceObject:()_DASAdditions
 {
   v4 = a3;
-  [a1 removeObject:v4];
-  [a1 addObject:v4];
+  [self removeObject:v4];
+  [self addObject:v4];
 }
 
 - (void)_DAS_unionSetOverridingExisting:()_DASAdditions
@@ -36,7 +36,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 _DAS_addOrReplaceObject:*(*(&v10 + 1) + 8 * v8++)];
+        [self _DAS_addOrReplaceObject:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
@@ -72,7 +72,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 _DAS_addOrReplaceObject:*(*(&v10 + 1) + 8 * v8++)];
+        [self _DAS_addOrReplaceObject:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);

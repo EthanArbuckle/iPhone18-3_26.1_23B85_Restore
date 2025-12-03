@@ -1,45 +1,45 @@
 @interface CAMPreviewView
 - ($C2CB173DCCDA0DFA06C09C718FD45322)viewportAnchorsForFrontPIP;
-- ($C2CB173DCCDA0DFA06C09C718FD45322)viewportAnchorsForFrontPIPOriginWithSize:(SEL)a3;
+- ($C2CB173DCCDA0DFA06C09C718FD45322)viewportAnchorsForFrontPIPOriginWithSize:(SEL)size;
 - (BOOL)_isFrontPIPAtAnAnchor;
-- (CAMPreviewView)initWithFrame:(CGRect)a3 initialPreviewAspectMode:(int64_t)a4 initialWindowedPreviewAspectMode:(int64_t)a5;
-- (CGPoint)_pipAnchorPointForPIPSize:(CGSize)a3;
-- (CGPoint)captureDevicePointOfInterestForPoint:(CGPoint)a3;
-- (CGPoint)pointForCaptureDevicePointOfInterest:(CGPoint)a3;
-- (CGRect)_aspectFaceRectFromSquareFaceRect:(CGRect)a3 angle:(double)a4;
-- (CGRect)_frameClampedToBounds:(CGRect)a3;
-- (CGRect)_frameForAVMetadataObject:(id)a3;
-- (CGRect)faceIndicatorFrameForFaceResult:(id)a3;
-- (CGRect)fixedSizeSubjectIndicatorFrameForBodyResult:(id)a3;
-- (CGRect)fixedSizeSubjectIndicatorFrameForFaceResult:(id)a3;
-- (CGRect)frameForMetadataObjectResult:(id)a3;
-- (CGRect)frameForMetadataObjectResult:(id)a3 fixedSize:(CGSize)a4;
-- (CGRect)frameForSubjectGroupResult:(id)a3 minimumSize:(CGSize)a4;
-- (CGRect)frameForTextRegionResult:(id)a3;
+- (CAMPreviewView)initWithFrame:(CGRect)frame initialPreviewAspectMode:(int64_t)mode initialWindowedPreviewAspectMode:(int64_t)aspectMode;
+- (CGPoint)_pipAnchorPointForPIPSize:(CGSize)size;
+- (CGPoint)captureDevicePointOfInterestForPoint:(CGPoint)point;
+- (CGPoint)pointForCaptureDevicePointOfInterest:(CGPoint)interest;
+- (CGRect)_aspectFaceRectFromSquareFaceRect:(CGRect)rect angle:(double)angle;
+- (CGRect)_frameClampedToBounds:(CGRect)bounds;
+- (CGRect)_frameForAVMetadataObject:(id)object;
+- (CGRect)faceIndicatorFrameForFaceResult:(id)result;
+- (CGRect)fixedSizeSubjectIndicatorFrameForBodyResult:(id)result;
+- (CGRect)fixedSizeSubjectIndicatorFrameForFaceResult:(id)result;
+- (CGRect)frameForMetadataObjectResult:(id)result;
+- (CGRect)frameForMetadataObjectResult:(id)result fixedSize:(CGSize)size;
+- (CGRect)frameForSubjectGroupResult:(id)result minimumSize:(CGSize)size;
+- (CGRect)frameForTextRegionResult:(id)result;
 - (CGRect)normalizedZoomPIPRect;
 - (CGRect)overlayFrame;
 - (CGRect)viewportFrame;
-- (int)_faceOrientationForRollAngle:(double)a3;
+- (int)_faceOrientationForRollAngle:(double)angle;
 - (void)_drawZoomPIP;
 - (void)_updateOverlayContainerMask;
 - (void)dealloc;
-- (void)indicatePointOfInterest:(CGPoint)a3 animated:(BOOL)a4;
+- (void)indicatePointOfInterest:(CGPoint)interest animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setBottomContentInset:(double)a3;
-- (void)setCenteredSubjectIndicatorView:(id)a3;
-- (void)setContinuousIndicator:(id)a3;
-- (void)setExternalFocusLockIndicator:(id)a3;
-- (void)setGridView:(id)a3;
-- (void)setHideAllIndicators:(BOOL)a3;
-- (void)setHorizonLevelView:(id)a3;
-- (void)setIndicatorClippingStyle:(int64_t)a3;
-- (void)setLevelView:(id)a3;
-- (void)setNormalizedZoomPIPRect:(CGRect)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setOverlayFrame:(CGRect)a3;
-- (void)setPointIndicator:(id)a3;
-- (void)setStageLightOverlayView:(id)a3;
-- (void)setViewportFrame:(CGRect)a3;
+- (void)setBottomContentInset:(double)inset;
+- (void)setCenteredSubjectIndicatorView:(id)view;
+- (void)setContinuousIndicator:(id)indicator;
+- (void)setExternalFocusLockIndicator:(id)indicator;
+- (void)setGridView:(id)view;
+- (void)setHideAllIndicators:(BOOL)indicators;
+- (void)setHorizonLevelView:(id)view;
+- (void)setIndicatorClippingStyle:(int64_t)style;
+- (void)setLevelView:(id)view;
+- (void)setNormalizedZoomPIPRect:(CGRect)rect;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setOverlayFrame:(CGRect)frame;
+- (void)setPointIndicator:(id)indicator;
+- (void)setStageLightOverlayView:(id)view;
+- (void)setViewportFrame:(CGRect)frame;
 @end
 
 @implementation CAMPreviewView
@@ -54,8 +54,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMPreviewView *)self overlayContainerView];
-  v12 = [(CAMPreviewView *)self indicatorContainerView];
+  overlayContainerView = [(CAMPreviewView *)self overlayContainerView];
+  indicatorContainerView = [(CAMPreviewView *)self indicatorContainerView];
   v13 = v10;
   v14 = v8;
   v15 = v6;
@@ -69,20 +69,20 @@
     v13 = v20;
   }
 
-  v21 = [(CAMPreviewView *)self videoPreviewView];
-  [v21 setFrame:{v4, v6, v8, v10}];
+  videoPreviewView = [(CAMPreviewView *)self videoPreviewView];
+  [videoPreviewView setFrame:{v4, v6, v8, v10}];
 
-  v22 = [(CAMPreviewView *)self frontPIPVideoPreviewView];
+  frontPIPVideoPreviewView = [(CAMPreviewView *)self frontPIPVideoPreviewView];
   v104 = v6;
   v106 = v4;
   v100 = v10;
   v102 = v8;
-  if (v22)
+  if (frontPIPVideoPreviewView)
   {
-    v23 = v22;
-    v24 = [(CAMPreviewView *)self _isFrontPIPAtAnAnchor];
+    v23 = frontPIPVideoPreviewView;
+    _isFrontPIPAtAnAnchor = [(CAMPreviewView *)self _isFrontPIPAtAnAnchor];
 
-    if (!v24)
+    if (!_isFrontPIPAtAnAnchor)
     {
       [(CAMPreviewView *)self viewportFrame];
       [CAMPIPVideoPreviewView sizeForViewportSize:v25, v26];
@@ -91,84 +91,84 @@
       [(CAMPreviewView *)self _pipAnchorPointForPIPSize:?];
       v32 = v31;
       v34 = v33;
-      v35 = [(CAMPreviewView *)self frontPIPVideoPreviewView];
-      [v35 setFrame:{v32, v34, v28, v30}];
+      frontPIPVideoPreviewView2 = [(CAMPreviewView *)self frontPIPVideoPreviewView];
+      [frontPIPVideoPreviewView2 setFrame:{v32, v34, v28, v30}];
     }
   }
 
-  [v11 setFrame:{v16, v15, v14, v13, *&v100, *&v102, *&v104, *&v106}];
-  [v11 bounds];
-  [v12 setFrame:?];
-  v36 = [(CAMPreviewView *)self _overlayContainerMask];
-  if (v36)
+  [overlayContainerView setFrame:{v16, v15, v14, v13, *&v100, *&v102, *&v104, *&v106}];
+  [overlayContainerView bounds];
+  [indicatorContainerView setFrame:?];
+  _overlayContainerMask = [(CAMPreviewView *)self _overlayContainerMask];
+  if (_overlayContainerMask)
   {
-    [v11 bounds];
+    [overlayContainerView bounds];
     v38 = v37;
     v40 = v39;
     v42 = v41;
     v44 = v43;
-    [v36 frame];
+    [_overlayContainerMask frame];
     v110.origin.x = v38;
     v110.origin.y = v40;
     v110.size.width = v42;
     v110.size.height = v44;
     if (!CGRectEqualToRect(v109, v110))
     {
-      [v36 setFrame:{v38, v40, v42, v44}];
+      [_overlayContainerMask setFrame:{v38, v40, v42, v44}];
       [(CAMPreviewView *)self _updateOverlayContainerMask];
     }
   }
 
   [(CAMPreviewView *)self viewportFrame];
   UIRectGetCenter();
-  [(CAMPreviewView *)self convertPoint:v12 toView:?];
-  v45 = [(CAMPreviewView *)self continuousIndicator];
-  v46 = [(CAMPreviewView *)self traitCollection];
-  [v46 displayScale];
+  [(CAMPreviewView *)self convertPoint:indicatorContainerView toView:?];
+  continuousIndicator = [(CAMPreviewView *)self continuousIndicator];
+  traitCollection = [(CAMPreviewView *)self traitCollection];
+  [traitCollection displayScale];
   v48 = v47;
 
-  [v45 intrinsicContentSize];
+  [continuousIndicator intrinsicContentSize];
   UIRectCenteredAboutPointScale();
-  [v45 setFrame:?];
-  v49 = [(CAMPreviewView *)self pointIndicator];
-  [v49 intrinsicContentSize];
-  [v49 setBounds:{0.0, 0.0, v50, v51}];
-  v52 = [(CAMPreviewView *)self externalFocusLockIndicator];
-  [v52 intrinsicContentSize];
+  [continuousIndicator setFrame:?];
+  pointIndicator = [(CAMPreviewView *)self pointIndicator];
+  [pointIndicator intrinsicContentSize];
+  [pointIndicator setBounds:{0.0, 0.0, v50, v51}];
+  externalFocusLockIndicator = [(CAMPreviewView *)self externalFocusLockIndicator];
+  [externalFocusLockIndicator intrinsicContentSize];
   UIRectCenteredAboutPointScale();
-  [v52 setFrame:?];
+  [externalFocusLockIndicator setFrame:?];
   [(CAMPreviewView *)self viewportFrame];
-  [(CAMPreviewView *)self convertRect:v12 toView:?];
+  [(CAMPreviewView *)self convertRect:indicatorContainerView toView:?];
   v54 = v53;
   v56 = v55;
   v58 = v57;
   v60 = v59;
-  v61 = [(CAMPreviewView *)self gridView];
-  CAMViewSetBoundsAndCenterForFrame(v61, v54, v56, v58, v60);
+  gridView = [(CAMPreviewView *)self gridView];
+  CAMViewSetBoundsAndCenterForFrame(gridView, v54, v56, v58, v60);
 
-  v62 = [(CAMPreviewView *)self levelView];
-  CAMViewSetBoundsAndCenterForFrame(v62, v54, v56, v58, v60);
+  levelView = [(CAMPreviewView *)self levelView];
+  CAMViewSetBoundsAndCenterForFrame(levelView, v54, v56, v58, v60);
 
-  v63 = [(CAMPreviewView *)self horizonLevelView];
-  CAMViewSetBoundsAndCenterForFrame(v63, v54, v56, v58, v60);
+  horizonLevelView = [(CAMPreviewView *)self horizonLevelView];
+  CAMViewSetBoundsAndCenterForFrame(horizonLevelView, v54, v56, v58, v60);
 
   [(CAMPreviewView *)self viewportFrame];
   v65 = v64;
   v67 = v66;
   v69 = v68;
   v71 = v70;
-  v72 = [(CAMPreviewView *)self orientation];
+  orientation = [(CAMPreviewView *)self orientation];
   [(CAMPreviewView *)self bottomContentInset];
-  [CAMStageLightOverlayView circleFrameForViewport:v72 orientation:v65 bottomContentInset:v67 screenScale:v69, v71, v73, v48];
+  [CAMStageLightOverlayView circleFrameForViewport:orientation orientation:v65 bottomContentInset:v67 screenScale:v69, v71, v73, v48];
   UIRectGetCenter();
   v75 = v74;
   v77 = v76;
-  v78 = [(CAMPreviewView *)self centeredSubjectIndicatorView];
-  [v78 intrinsicContentSize];
+  centeredSubjectIndicatorView = [(CAMPreviewView *)self centeredSubjectIndicatorView];
+  [centeredSubjectIndicatorView intrinsicContentSize];
   v80 = v79;
   v82 = v81;
-  v83 = [(CAMPreviewView *)self orientation];
-  if ((v83 - 3) >= 2)
+  orientation2 = [(CAMPreviewView *)self orientation];
+  if ((orientation2 - 3) >= 2)
   {
     v84 = v80;
   }
@@ -178,45 +178,45 @@
     v84 = v82;
   }
 
-  if ((v83 - 3) >= 2)
+  if ((orientation2 - 3) >= 2)
   {
     v80 = v82;
   }
 
   v85 = *MEMORY[0x1E695EFF8];
   v86 = *(MEMORY[0x1E695EFF8] + 8);
-  [(CAMPreviewView *)self convertPoint:v12 toView:v75, v77];
-  [v78 setCenter:?];
-  [v78 setBounds:{v85, v86, v84, v80}];
-  v87 = [(CAMPreviewView *)self stageLightOverlayView];
-  [v87 setFrame:{v107, v105, v103, v101}];
+  [(CAMPreviewView *)self convertPoint:indicatorContainerView toView:v75, v77];
+  [centeredSubjectIndicatorView setCenter:?];
+  [centeredSubjectIndicatorView setBounds:{v85, v86, v84, v80}];
+  stageLightOverlayView = [(CAMPreviewView *)self stageLightOverlayView];
+  [stageLightOverlayView setFrame:{v107, v105, v103, v101}];
 
   [(CAMPreviewView *)self overlayFrame];
   v89 = v88;
   v91 = v90;
   v93 = v92;
   v95 = v94;
-  v96 = [(CAMPreviewView *)self stageLightOverlayView];
-  [v96 setViewportFrame:{v89, v91, v93, v95}];
+  stageLightOverlayView2 = [(CAMPreviewView *)self stageLightOverlayView];
+  [stageLightOverlayView2 setViewportFrame:{v89, v91, v93, v95}];
 
   [(CAMPreviewView *)self bottomContentInset];
   v98 = v97;
-  v99 = [(CAMPreviewView *)self stageLightOverlayView];
-  [v99 setBottomContentInset:v98];
+  stageLightOverlayView3 = [(CAMPreviewView *)self stageLightOverlayView];
+  [stageLightOverlayView3 setBottomContentInset:v98];
 }
 
-- (CAMPreviewView)initWithFrame:(CGRect)a3 initialPreviewAspectMode:(int64_t)a4 initialWindowedPreviewAspectMode:(int64_t)a5
+- (CAMPreviewView)initWithFrame:(CGRect)frame initialPreviewAspectMode:(int64_t)mode initialWindowedPreviewAspectMode:(int64_t)aspectMode
 {
   v34.receiver = self;
   v34.super_class = CAMPreviewView;
-  v7 = [(CAMPreviewView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(CAMPreviewView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v7)
   {
-    v8 = [MEMORY[0x1E69DC888] blackColor];
-    [(CAMPreviewView *)v7 setBackgroundColor:v8];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(CAMPreviewView *)v7 setBackgroundColor:blackColor];
 
-    v9 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [(CAMPreviewView *)v7 setTintColor:v9];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [(CAMPreviewView *)v7 setTintColor:systemYellowColor];
 
     [(CAMPreviewView *)v7 setOrientation:1];
     v10 = [CAMVideoPreviewView alloc];
@@ -228,8 +228,8 @@
     videoPreviewView = v7->_videoPreviewView;
     v7->_videoPreviewView = v15;
 
-    [(CAMVideoPreviewView *)v7->_videoPreviewView setPreviewViewAspectMode:a4];
-    [(CAMVideoPreviewView *)v7->_videoPreviewView setPreviewViewAspectModeWindowed:a5];
+    [(CAMVideoPreviewView *)v7->_videoPreviewView setPreviewViewAspectMode:mode];
+    [(CAMVideoPreviewView *)v7->_videoPreviewView setPreviewViewAspectModeWindowed:aspectMode];
     [(CAMVideoPreviewView *)v7->_videoPreviewView setClipsToBounds:1];
     [(CAMPreviewView *)v7 addSubview:v7->_videoPreviewView];
     v17 = +[CAMCaptureCapabilities capabilities];
@@ -242,20 +242,20 @@
       [(CAMPIPVideoPreviewView *)v7->_frontPIPVideoPreviewView setHidden:1];
       [(CAMPIPVideoPreviewView *)v7->_frontPIPVideoPreviewView setClipsToBounds:1];
       v20 = v7->_frontPIPVideoPreviewView;
-      v21 = [MEMORY[0x1E69DC888] blackColor];
-      [(CAMPIPVideoPreviewView *)v20 setBackgroundColor:v21];
+      blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+      [(CAMPIPVideoPreviewView *)v20 setBackgroundColor:blackColor2];
 
-      v22 = [MEMORY[0x1E69DC888] blackColor];
-      v23 = [v22 colorWithAlphaComponent:0.15];
-      v24 = [v23 CGColor];
-      v25 = [(CAMPIPVideoPreviewView *)v7->_frontPIPVideoPreviewView layer];
-      [v25 setBorderColor:v24];
+      blackColor3 = [MEMORY[0x1E69DC888] blackColor];
+      v23 = [blackColor3 colorWithAlphaComponent:0.15];
+      cGColor = [v23 CGColor];
+      layer = [(CAMPIPVideoPreviewView *)v7->_frontPIPVideoPreviewView layer];
+      [layer setBorderColor:cGColor];
 
-      v26 = [(CAMPIPVideoPreviewView *)v7->_frontPIPVideoPreviewView layer];
-      [v26 setBorderWidth:1.0];
+      layer2 = [(CAMPIPVideoPreviewView *)v7->_frontPIPVideoPreviewView layer];
+      [layer2 setBorderWidth:1.0];
 
-      v27 = [(CAMPIPVideoPreviewView *)v7->_frontPIPVideoPreviewView layer];
-      [v27 setMasksToBounds:1];
+      layer3 = [(CAMPIPVideoPreviewView *)v7->_frontPIPVideoPreviewView layer];
+      [layer3 setMasksToBounds:1];
 
       v7->_frontPIPAnchor = +[CAMPIPVideoPreviewView defaultAnchor];
       [(CAMPreviewView *)v7 addSubview:v7->_frontPIPVideoPreviewView];
@@ -281,22 +281,22 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CAMPreviewView;
   [(CAMPreviewView *)&v4 dealloc];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    if (a4)
+    if (animated)
     {
       [(CAMPreviewView *)self layoutIfNeeded];
-      self->_orientation = a3;
+      self->_orientation = orientation;
       [(CAMPreviewView *)self setNeedsLayout];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -308,21 +308,21 @@
 
     else
     {
-      self->_orientation = a3;
+      self->_orientation = orientation;
 
       [(CAMPreviewView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setViewportFrame:(CGRect)a3
+- (void)setViewportFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_viewportFrame = &self->_viewportFrame;
-  if (!CGRectEqualToRect(a3, self->_viewportFrame))
+  if (!CGRectEqualToRect(frame, self->_viewportFrame))
   {
     p_viewportFrame->origin.x = x;
     p_viewportFrame->origin.y = y;
@@ -333,14 +333,14 @@
   }
 }
 
-- (void)setOverlayFrame:(CGRect)a3
+- (void)setOverlayFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_overlayFrame = &self->_overlayFrame;
-  if (!CGRectEqualToRect(a3, self->_overlayFrame))
+  if (!CGRectEqualToRect(frame, self->_overlayFrame))
   {
     p_overlayFrame->origin.x = x;
     p_overlayFrame->origin.y = y;
@@ -351,12 +351,12 @@
   }
 }
 
-- (void)setHideAllIndicators:(BOOL)a3
+- (void)setHideAllIndicators:(BOOL)indicators
 {
-  if (self->_hideAllIndicators != a3)
+  if (self->_hideAllIndicators != indicators)
   {
-    self->_hideAllIndicators = a3;
-    if (a3)
+    self->_hideAllIndicators = indicators;
+    if (indicators)
     {
       v4 = 0.0;
     }
@@ -366,65 +366,65 @@
       v4 = 1.0;
     }
 
-    v5 = [(CAMPreviewView *)self indicatorContainerView];
-    [v5 setAlpha:v4];
+    indicatorContainerView = [(CAMPreviewView *)self indicatorContainerView];
+    [indicatorContainerView setAlpha:v4];
   }
 }
 
-- (void)setIndicatorClippingStyle:(int64_t)a3
+- (void)setIndicatorClippingStyle:(int64_t)style
 {
-  if (self->_indicatorClippingStyle != a3)
+  if (self->_indicatorClippingStyle != style)
   {
-    self->_indicatorClippingStyle = a3;
+    self->_indicatorClippingStyle = style;
     [(CAMPreviewView *)self setNeedsLayout];
   }
 }
 
-- (void)setContinuousIndicator:(id)a3
+- (void)setContinuousIndicator:(id)indicator
 {
-  v5 = a3;
-  if (self->_continuousIndicator != v5)
+  indicatorCopy = indicator;
+  if (self->_continuousIndicator != indicatorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_continuousIndicator, a3);
+    v6 = indicatorCopy;
+    objc_storeStrong(&self->_continuousIndicator, indicator);
     [(UIView *)self->_indicatorContainerView addSubview:v6];
     [(CAMPreviewView *)self setNeedsLayout];
-    v5 = v6;
+    indicatorCopy = v6;
   }
 }
 
-- (void)setPointIndicator:(id)a3
+- (void)setPointIndicator:(id)indicator
 {
-  v5 = a3;
-  if (self->_pointIndicator != v5)
+  indicatorCopy = indicator;
+  if (self->_pointIndicator != indicatorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pointIndicator, a3);
+    v6 = indicatorCopy;
+    objc_storeStrong(&self->_pointIndicator, indicator);
     [(UIView *)self->_indicatorContainerView addSubview:v6];
     [(CAMPreviewView *)self setNeedsLayout];
-    v5 = v6;
+    indicatorCopy = v6;
   }
 }
 
-- (void)setExternalFocusLockIndicator:(id)a3
+- (void)setExternalFocusLockIndicator:(id)indicator
 {
-  v5 = a3;
-  if (self->_externalFocusLockIndicator != v5)
+  indicatorCopy = indicator;
+  if (self->_externalFocusLockIndicator != indicatorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_externalFocusLockIndicator, a3);
+    v6 = indicatorCopy;
+    objc_storeStrong(&self->_externalFocusLockIndicator, indicator);
     [(UIView *)self->_indicatorContainerView addSubview:v6];
     [(CAMPreviewView *)self setNeedsLayout];
-    v5 = v6;
+    indicatorCopy = v6;
   }
 }
 
-- (void)indicatePointOfInterest:(CGPoint)a3 animated:(BOOL)a4
+- (void)indicatePointOfInterest:(CGPoint)interest animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(CAMPreviewView *)self pointIndicator];
+  animatedCopy = animated;
+  y = interest.y;
+  x = interest.x;
+  pointIndicator = [(CAMPreviewView *)self pointIndicator];
   [(CAMPreviewView *)self pointForCaptureDevicePointOfInterest:x, y];
   v10 = v9;
   v12 = v11;
@@ -432,13 +432,13 @@
   v16 = 3221225472;
   v17 = __51__CAMPreviewView_indicatePointOfInterest_animated___block_invoke;
   v18 = &unk_1E76F9C08;
-  v13 = v8;
+  v13 = pointIndicator;
   v21 = v10;
   v22 = v12;
   v19 = v13;
-  v20 = self;
+  selfCopy = self;
   v14 = _Block_copy(&v15);
-  if (v4)
+  if (animatedCopy)
   {
     [CAMView animateIfNeededWithDuration:2 usingSpringWithDamping:v14 initialSpringVelocity:0 options:0.25 animations:1.0 completion:1.0, v15, v16, v17, v18];
   }
@@ -470,132 +470,132 @@ uint64_t __51__CAMPreviewView_indicatePointOfInterest_animated___block_invoke(ui
   return [v17 setCenter:{v14, v16}];
 }
 
-- (void)setGridView:(id)a3
+- (void)setGridView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   gridView = self->_gridView;
-  if (gridView != v4)
+  if (gridView != viewCopy)
   {
-    v9 = v4;
-    v6 = [(CAMGridView *)gridView superview];
-    v7 = [(CAMPreviewView *)self overlayContainerView];
+    v9 = viewCopy;
+    superview = [(CAMGridView *)gridView superview];
+    overlayContainerView = [(CAMPreviewView *)self overlayContainerView];
 
-    if (v6 == v7)
+    if (superview == overlayContainerView)
     {
       [(CAMGridView *)self->_gridView removeFromSuperview];
     }
 
     self->_gridView = v9;
-    v8 = [(CAMPreviewView *)self overlayContainerView];
-    [v8 addSubview:v9];
+    overlayContainerView2 = [(CAMPreviewView *)self overlayContainerView];
+    [overlayContainerView2 addSubview:v9];
 
-    v4 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](gridView, v4);
+  MEMORY[0x1EEE66BB8](gridView, viewCopy);
 }
 
-- (void)setLevelView:(id)a3
+- (void)setLevelView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   levelView = self->_levelView;
-  if (levelView != v4)
+  if (levelView != viewCopy)
   {
-    v9 = v4;
-    v6 = [(CAMLevelIndicatorView *)levelView superview];
-    v7 = [(CAMPreviewView *)self overlayContainerView];
+    v9 = viewCopy;
+    superview = [(CAMLevelIndicatorView *)levelView superview];
+    overlayContainerView = [(CAMPreviewView *)self overlayContainerView];
 
-    if (v6 == v7)
+    if (superview == overlayContainerView)
     {
       [(CAMLevelIndicatorView *)self->_levelView removeFromSuperview];
     }
 
     self->_levelView = v9;
-    v8 = [(CAMPreviewView *)self overlayContainerView];
-    [v8 addSubview:v9];
+    overlayContainerView2 = [(CAMPreviewView *)self overlayContainerView];
+    [overlayContainerView2 addSubview:v9];
 
-    v4 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](levelView, v4);
+  MEMORY[0x1EEE66BB8](levelView, viewCopy);
 }
 
-- (void)setHorizonLevelView:(id)a3
+- (void)setHorizonLevelView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   horizonLevelView = self->_horizonLevelView;
-  if (horizonLevelView != v4)
+  if (horizonLevelView != viewCopy)
   {
-    v9 = v4;
-    v6 = [(CAMHorizonLevelView *)horizonLevelView superview];
-    v7 = [(CAMPreviewView *)self overlayContainerView];
+    v9 = viewCopy;
+    superview = [(CAMHorizonLevelView *)horizonLevelView superview];
+    overlayContainerView = [(CAMPreviewView *)self overlayContainerView];
 
-    if (v6 == v7)
+    if (superview == overlayContainerView)
     {
       [(CAMHorizonLevelView *)self->_horizonLevelView removeFromSuperview];
     }
 
     self->_horizonLevelView = v9;
-    v8 = [(CAMPreviewView *)self overlayContainerView];
-    [v8 addSubview:v9];
+    overlayContainerView2 = [(CAMPreviewView *)self overlayContainerView];
+    [overlayContainerView2 addSubview:v9];
 
-    v4 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](horizonLevelView, v4);
+  MEMORY[0x1EEE66BB8](horizonLevelView, viewCopy);
 }
 
-- (void)setStageLightOverlayView:(id)a3
+- (void)setStageLightOverlayView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   stageLightOverlayView = self->_stageLightOverlayView;
-  if (stageLightOverlayView != v5)
+  if (stageLightOverlayView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(CAMStageLightOverlayView *)stageLightOverlayView removeFromSuperview];
-    objc_storeStrong(&self->_stageLightOverlayView, a3);
-    v7 = [(CAMPreviewView *)self videoPreviewView];
-    [(CAMPreviewView *)self insertSubview:v8 aboveSubview:v7];
+    objc_storeStrong(&self->_stageLightOverlayView, view);
+    videoPreviewView = [(CAMPreviewView *)self videoPreviewView];
+    [(CAMPreviewView *)self insertSubview:v8 aboveSubview:videoPreviewView];
 
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](stageLightOverlayView, v5);
+  MEMORY[0x1EEE66BB8](stageLightOverlayView, viewCopy);
 }
 
-- (void)setBottomContentInset:(double)a3
+- (void)setBottomContentInset:(double)inset
 {
-  if (self->_bottomContentInset != a3)
+  if (self->_bottomContentInset != inset)
   {
-    self->_bottomContentInset = a3;
-    v4 = [(CAMPreviewView *)self stageLightOverlayView];
-    [v4 setBottomContentInset:a3];
+    self->_bottomContentInset = inset;
+    stageLightOverlayView = [(CAMPreviewView *)self stageLightOverlayView];
+    [stageLightOverlayView setBottomContentInset:inset];
   }
 }
 
-- (void)setCenteredSubjectIndicatorView:(id)a3
+- (void)setCenteredSubjectIndicatorView:(id)view
 {
-  v5 = a3;
-  if (self->_centeredSubjectIndicatorView != v5)
+  viewCopy = view;
+  if (self->_centeredSubjectIndicatorView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_centeredSubjectIndicatorView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_centeredSubjectIndicatorView, view);
     [(UIView *)self->_indicatorContainerView addSubview:self->_centeredSubjectIndicatorView];
     [(CAMPreviewView *)self setNeedsLayout];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (CGRect)fixedSizeSubjectIndicatorFrameForFaceResult:(id)a3
+- (CGRect)fixedSizeSubjectIndicatorFrameForFaceResult:(id)result
 {
-  v4 = a3;
-  v5 = [(CAMPreviewView *)self videoPreviewLayer];
-  v6 = [v4 underlyingMetadataObject];
-  v7 = [v5 transformedMetadataObjectForMetadataObject:v6];
+  resultCopy = result;
+  videoPreviewLayer = [(CAMPreviewView *)self videoPreviewLayer];
+  underlyingMetadataObject = [resultCopy underlyingMetadataObject];
+  v7 = [videoPreviewLayer transformedMetadataObjectForMetadataObject:underlyingMetadataObject];
 
   [v7 rollAngle];
   v8 = [(CAMPreviewView *)self _faceOrientationForRollAngle:?];
-  [(CAMPreviewView *)self faceIndicatorFrameForFaceResult:v4];
+  [(CAMPreviewView *)self faceIndicatorFrameForFaceResult:resultCopy];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -612,9 +612,9 @@ uint64_t __51__CAMPreviewView_indicatePointOfInterest_animated___block_invoke(ui
   v46.size.height = v16;
   MidY = CGRectGetMidY(v46);
   v17 = MEMORY[0x1E6993898];
-  v18 = [(CAMPreviewView *)self window];
-  v19 = [v18 screen];
-  [v19 scale];
+  window = [(CAMPreviewView *)self window];
+  screen = [window screen];
+  [screen scale];
   [v17 fixedSizeWithScale:?];
   v21 = v20;
   v23 = v22;
@@ -737,16 +737,16 @@ LABEL_26:
   return result;
 }
 
-- (CGRect)fixedSizeSubjectIndicatorFrameForBodyResult:(id)a3
+- (CGRect)fixedSizeSubjectIndicatorFrameForBodyResult:(id)result
 {
-  v4 = a3;
-  v5 = [(CAMPreviewView *)self window];
-  v6 = [v5 screen];
-  [v6 scale];
+  resultCopy = result;
+  window = [(CAMPreviewView *)self window];
+  screen = [window screen];
+  [screen scale];
   v8 = v7;
 
   [MEMORY[0x1E6993898] fixedSizeWithScale:v8];
-  [(CAMPreviewView *)self frameForMetadataObjectResult:v4 fixedSize:?];
+  [(CAMPreviewView *)self frameForMetadataObjectResult:resultCopy fixedSize:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -763,10 +763,10 @@ LABEL_26:
   return result;
 }
 
-- (CGRect)frameForMetadataObjectResult:(id)a3
+- (CGRect)frameForMetadataObjectResult:(id)result
 {
-  v4 = [a3 underlyingMetadataObject];
-  [(CAMPreviewView *)self _frameForAVMetadataObject:v4];
+  underlyingMetadataObject = [result underlyingMetadataObject];
+  [(CAMPreviewView *)self _frameForAVMetadataObject:underlyingMetadataObject];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -780,10 +780,10 @@ LABEL_26:
   return result;
 }
 
-- (CGRect)frameForMetadataObjectResult:(id)a3 fixedSize:(CGSize)a4
+- (CGRect)frameForMetadataObjectResult:(id)result fixedSize:(CGSize)size
 {
-  v5 = [a3 underlyingMetadataObject];
-  [(CAMPreviewView *)self _frameForAVMetadataObject:v5];
+  underlyingMetadataObject = [result underlyingMetadataObject];
+  [(CAMPreviewView *)self _frameForAVMetadataObject:underlyingMetadataObject];
 
   UIRectGetCenter();
 
@@ -795,19 +795,19 @@ LABEL_26:
   return result;
 }
 
-- (CGRect)_frameForAVMetadataObject:(id)a3
+- (CGRect)_frameForAVMetadataObject:(id)object
 {
-  v4 = a3;
-  v5 = [(CAMPreviewView *)self videoPreviewLayer];
-  v6 = [v5 transformedMetadataObjectForMetadataObject:v4];
+  objectCopy = object;
+  videoPreviewLayer = [(CAMPreviewView *)self videoPreviewLayer];
+  v6 = [videoPreviewLayer transformedMetadataObjectForMetadataObject:objectCopy];
 
   [v6 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CAMPreviewView *)self layer];
-  [v5 convertRect:v15 toLayer:{v8, v10, v12, v14}];
+  layer = [(CAMPreviewView *)self layer];
+  [videoPreviewLayer convertRect:layer toLayer:{v8, v10, v12, v14}];
 
   UIRectIntegralWithScale();
   v17 = v16;
@@ -826,16 +826,16 @@ LABEL_26:
   return result;
 }
 
-- (CGRect)_frameClampedToBounds:(CGRect)a3
+- (CGRect)_frameClampedToBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CAMPreviewView *)self indicatorContainerView];
-  v9 = [(CAMPreviewView *)self indicatorContainerView];
-  [v9 bounds];
-  [v8 convertRect:self toView:?];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  indicatorContainerView = [(CAMPreviewView *)self indicatorContainerView];
+  indicatorContainerView2 = [(CAMPreviewView *)self indicatorContainerView];
+  [indicatorContainerView2 bounds];
+  [indicatorContainerView convertRect:self toView:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -854,22 +854,22 @@ LABEL_26:
   return CGRectIntersection(v24, *&v18);
 }
 
-- (CGRect)frameForTextRegionResult:(id)a3
+- (CGRect)frameForTextRegionResult:(id)result
 {
-  v4 = a3;
-  v5 = [(CAMPreviewView *)self videoPreviewLayer];
-  v6 = [v4 underlyingMetadataObject];
+  resultCopy = result;
+  videoPreviewLayer = [(CAMPreviewView *)self videoPreviewLayer];
+  underlyingMetadataObject = [resultCopy underlyingMetadataObject];
 
-  v7 = [v5 transformedMetadataObjectForMetadataObject:v6];
+  v7 = [videoPreviewLayer transformedMetadataObjectForMetadataObject:underlyingMetadataObject];
 
-  v8 = [v7 type];
+  type = [v7 type];
   [v7 angularOffsetBounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(CAMPreviewView *)self layer];
-  [v5 convertRect:v17 toLayer:{v10, v12, v14, v16}];
+  layer = [(CAMPreviewView *)self layer];
+  [videoPreviewLayer convertRect:layer toLayer:{v10, v12, v14, v16}];
 
   UIRectIntegralWithScale();
   v19 = v18;
@@ -888,12 +888,12 @@ LABEL_26:
   return result;
 }
 
-- (CGPoint)captureDevicePointOfInterestForPoint:(CGPoint)a3
+- (CGPoint)captureDevicePointOfInterestForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CAMPreviewView *)self videoPreviewLayer];
-  [v5 captureDevicePointOfInterestForPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  videoPreviewLayer = [(CAMPreviewView *)self videoPreviewLayer];
+  [videoPreviewLayer captureDevicePointOfInterestForPoint:{x, y}];
   v7 = v6;
   v9 = v8;
 
@@ -904,12 +904,12 @@ LABEL_26:
   return result;
 }
 
-- (CGPoint)pointForCaptureDevicePointOfInterest:(CGPoint)a3
+- (CGPoint)pointForCaptureDevicePointOfInterest:(CGPoint)interest
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CAMPreviewView *)self videoPreviewLayer];
-  [v5 pointForCaptureDevicePointOfInterest:{x, y}];
+  y = interest.y;
+  x = interest.x;
+  videoPreviewLayer = [(CAMPreviewView *)self videoPreviewLayer];
+  [videoPreviewLayer pointForCaptureDevicePointOfInterest:{x, y}];
   v7 = v6;
   v9 = v8;
 
@@ -920,20 +920,20 @@ LABEL_26:
   return result;
 }
 
-- (CGRect)faceIndicatorFrameForFaceResult:(id)a3
+- (CGRect)faceIndicatorFrameForFaceResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 underlyingMetadataObject];
-  [(CAMPreviewView *)self _frameForAVMetadataObject:v5];
+  resultCopy = result;
+  underlyingMetadataObject = [resultCopy underlyingMetadataObject];
+  [(CAMPreviewView *)self _frameForAVMetadataObject:underlyingMetadataObject];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(CAMPreviewView *)self videoPreviewLayer];
-  v15 = [v4 underlyingMetadataObject];
+  videoPreviewLayer = [(CAMPreviewView *)self videoPreviewLayer];
+  underlyingMetadataObject2 = [resultCopy underlyingMetadataObject];
 
-  v16 = [v14 transformedMetadataObjectForMetadataObject:v15];
+  v16 = [videoPreviewLayer transformedMetadataObjectForMetadataObject:underlyingMetadataObject2];
 
   [v16 rollAngle];
   [(CAMPreviewView *)self _aspectFaceRectFromSquareFaceRect:v7 angle:v9, v11, v13, v17];
@@ -955,12 +955,12 @@ LABEL_26:
   return result;
 }
 
-- (CGRect)frameForSubjectGroupResult:(id)a3 minimumSize:(CGSize)a4
+- (CGRect)frameForSubjectGroupResult:(id)result minimumSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v53 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultCopy = result;
   v6 = *MEMORY[0x1E695F050];
   v7 = *(MEMORY[0x1E695F050] + 8);
   v8 = *(MEMORY[0x1E695F050] + 16);
@@ -969,8 +969,8 @@ LABEL_26:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v10 = [v5 metadataObjects];
-  v11 = [v10 countByEnumeratingWithState:&v48 objects:v52 count:16];
+  metadataObjects = [resultCopy metadataObjects];
+  v11 = [metadataObjects countByEnumeratingWithState:&v48 objects:v52 count:16];
   v12 = v9;
   v13 = v8;
   v14 = v7;
@@ -989,7 +989,7 @@ LABEL_26:
       {
         if (*v49 != v17)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(metadataObjects);
         }
 
         v19 = *(*(&v48 + 1) + 8 * i);
@@ -1014,7 +1014,7 @@ LABEL_26:
         }
       }
 
-      v16 = [v10 countByEnumeratingWithState:&v48 objects:v52 count:16];
+      v16 = [metadataObjects countByEnumeratingWithState:&v48 objects:v52 count:16];
       if (v16)
       {
         continue;
@@ -1036,9 +1036,9 @@ LABEL_14:
   v56.size.height = v9;
   if (CGRectEqualToRect(v54, v56))
   {
-    v28 = [v5 metadataObjects];
-    v29 = [v28 firstObject];
-    [(CAMPreviewView *)self frameForMetadataObjectResult:v29];
+    metadataObjects2 = [resultCopy metadataObjects];
+    firstObject = [metadataObjects2 firstObject];
+    [(CAMPreviewView *)self frameForMetadataObjectResult:firstObject];
     v15 = v30;
     v14 = v31;
     v13 = v32;
@@ -1078,14 +1078,14 @@ LABEL_14:
   return result;
 }
 
-- (int)_faceOrientationForRollAngle:(double)a3
+- (int)_faceOrientationForRollAngle:(double)angle
 {
-  if (a3 == 3.40282347e38)
+  if (angle == 3.40282347e38)
   {
-    a3 = 0.0;
+    angle = 0.0;
   }
 
-  v3 = _nearestRoundedAngleForAngle(a3);
+  v3 = _nearestRoundedAngleForAngle(angle);
   if (v3 == 90.0)
   {
     return 3;
@@ -1104,21 +1104,21 @@ LABEL_14:
   return 0;
 }
 
-- (CGRect)_aspectFaceRectFromSquareFaceRect:(CGRect)a3 angle:(double)a4
+- (CGRect)_aspectFaceRectFromSquareFaceRect:(CGRect)rect angle:(double)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(CAMPreviewView *)self _faceOrientationForRollAngle:a4];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = [(CAMPreviewView *)self _faceOrientationForRollAngle:angle];
   v10 = v9;
   if (v9 - 2 < 2)
   {
     v16 = width * 1.6;
     [(CAMPreviewView *)self frame];
     v19 = v18;
-    v20 = [(CAMPreviewView *)self traitCollection];
-    [v20 displayScale];
+    traitCollection = [(CAMPreviewView *)self traitCollection];
+    [traitCollection displayScale];
     v22 = v19 * v21;
 
     if (width * 1.6 >= v22)
@@ -1128,11 +1128,11 @@ LABEL_14:
 
     v15 = v16 * 0.8;
     v23 = (v16 - width) / 1.6;
-    v24 = [(CAMPreviewView *)self videoPreviewLayer];
-    v25 = [v24 connection];
-    v26 = [v25 isVideoMirrored];
+    videoPreviewLayer = [(CAMPreviewView *)self videoPreviewLayer];
+    connection = [videoPreviewLayer connection];
+    isVideoMirrored = [connection isVideoMirrored];
 
-    if (v26)
+    if (isVideoMirrored)
     {
       if (v10 == 3)
       {
@@ -1162,8 +1162,8 @@ LABEL_15:
   {
     [(CAMPreviewView *)self frame];
     v12 = v11;
-    v13 = [(CAMPreviewView *)self traitCollection];
-    [v13 displayScale];
+    traitCollection2 = [(CAMPreviewView *)self traitCollection];
+    [traitCollection2 displayScale];
     v15 = v12 * v14;
 
     if (height * 1.6 < v15)
@@ -1194,15 +1194,15 @@ LABEL_17:
   return result;
 }
 
-- (void)setNormalizedZoomPIPRect:(CGRect)a3
+- (void)setNormalizedZoomPIPRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21 = *MEMORY[0x1E69E9840];
   p_normalizedZoomPIPRect = &self->_normalizedZoomPIPRect;
-  if (!CGRectEqualToRect(self->_normalizedZoomPIPRect, a3))
+  if (!CGRectEqualToRect(self->_normalizedZoomPIPRect, rect))
   {
     p_normalizedZoomPIPRect->origin.x = x;
     p_normalizedZoomPIPRect->origin.y = y;
@@ -1210,9 +1210,9 @@ LABEL_17:
     p_normalizedZoomPIPRect->size.height = height;
     if ([(CAMPreviewView *)self _isZoomPIPRectValid])
     {
-      v9 = [(CAMPreviewView *)self _overlayContainerMask];
+      _overlayContainerMask = [(CAMPreviewView *)self _overlayContainerMask];
 
-      if (v9)
+      if (_overlayContainerMask)
       {
         [(CAMPreviewView *)self _updateOverlayContainerMask];
       }
@@ -1221,13 +1221,13 @@ LABEL_17:
       {
         v13 = objc_alloc_init(MEMORY[0x1E69794A0]);
         [v13 setFillRule:*MEMORY[0x1E69797F8]];
-        v14 = [MEMORY[0x1E69DC888] whiteColor];
-        [v13 setFillColor:{objc_msgSend(v14, "CGColor")}];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [v13 setFillColor:{objc_msgSend(whiteColor, "CGColor")}];
 
         [(CAMPreviewView *)self _setOverlayContainerMask:v13];
-        v15 = [(CAMPreviewView *)self overlayContainerView];
-        v16 = [v15 layer];
-        [v16 setMask:v13];
+        overlayContainerView = [(CAMPreviewView *)self overlayContainerView];
+        layer = [overlayContainerView layer];
+        [layer setMask:v13];
 
         [(CAMPreviewView *)self setNeedsLayout];
       }
@@ -1235,9 +1235,9 @@ LABEL_17:
 
     else if (self->__overlayContainerMask)
     {
-      v10 = [(CAMPreviewView *)self overlayContainerView];
-      v11 = [v10 layer];
-      [v11 setMask:0];
+      overlayContainerView2 = [(CAMPreviewView *)self overlayContainerView];
+      layer2 = [overlayContainerView2 layer];
+      [layer2 setMask:0];
 
       overlayContainerMask = self->__overlayContainerMask;
       self->__overlayContainerMask = 0;
@@ -1265,14 +1265,14 @@ LABEL_17:
 
 - (void)_updateOverlayContainerMask
 {
-  v3 = [(CAMPreviewView *)self _overlayContainerMask];
-  if (v3)
+  _overlayContainerMask = [(CAMPreviewView *)self _overlayContainerMask];
+  if (_overlayContainerMask)
   {
-    v14 = v3;
-    v4 = [(CAMPreviewView *)self videoPreviewLayer];
+    v14 = _overlayContainerMask;
+    videoPreviewLayer = [(CAMPreviewView *)self videoPreviewLayer];
     [(CAMPreviewView *)self normalizedZoomPIPRect];
-    [v4 rectForMetadataOutputRectOfInterest:?];
-    [v4 convertRect:v14 toLayer:?];
+    [videoPreviewLayer rectForMetadataOutputRectOfInterest:?];
+    [videoPreviewLayer convertRect:v14 toLayer:?];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -1288,7 +1288,7 @@ LABEL_17:
     [v14 setPath:Mutable];
     CGPathRelease(Mutable);
 
-    v3 = v14;
+    _overlayContainerMask = v14;
   }
 }
 
@@ -1297,16 +1297,16 @@ LABEL_17:
   v26 = [(CAMPreviewView *)self viewWithTag:86832];
   if ([(CAMPreviewView *)self _isZoomPIPRectValid])
   {
-    v3 = [(CAMPreviewView *)self videoPreviewLayer];
-    v4 = [(CAMPreviewView *)self indicatorContainerView];
+    videoPreviewLayer = [(CAMPreviewView *)self videoPreviewLayer];
+    indicatorContainerView = [(CAMPreviewView *)self indicatorContainerView];
     [(CAMPreviewView *)self normalizedZoomPIPRect];
-    [v3 rectForMetadataOutputRectOfInterest:?];
+    [videoPreviewLayer rectForMetadataOutputRectOfInterest:?];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [v4 layer];
-    [v3 convertRect:v13 toLayer:{v6, v8, v10, v12}];
+    layer = [indicatorContainerView layer];
+    [videoPreviewLayer convertRect:layer toLayer:{v6, v8, v10, v12}];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -1326,15 +1326,15 @@ LABEL_17:
     {
       v26 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v29.origin.x, v29.origin.y, v29.size.width, v29.size.height}];
       [v26 setTag:86832];
-      v22 = [MEMORY[0x1E69DC888] redColor];
-      v23 = [v22 CGColor];
-      v24 = [v26 layer];
-      [v24 setBorderColor:v23];
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      cGColor = [redColor CGColor];
+      layer2 = [v26 layer];
+      [layer2 setBorderColor:cGColor];
 
-      v25 = [v26 layer];
-      [v25 setBorderWidth:1.0];
+      layer3 = [v26 layer];
+      [layer3 setBorderWidth:1.0];
 
-      [v4 addSubview:v26];
+      [indicatorContainerView addSubview:v26];
     }
   }
 
@@ -1368,7 +1368,7 @@ LABEL_17:
   return result;
 }
 
-- ($C2CB173DCCDA0DFA06C09C718FD45322)viewportAnchorsForFrontPIPOriginWithSize:(SEL)a3
+- ($C2CB173DCCDA0DFA06C09C718FD45322)viewportAnchorsForFrontPIPOriginWithSize:(SEL)size
 {
   width = a4.width;
   height = a4.height;
@@ -1384,30 +1384,30 @@ LABEL_17:
   return result;
 }
 
-- (CGPoint)_pipAnchorPointForPIPSize:(CGSize)a3
+- (CGPoint)_pipAnchorPointForPIPSize:(CGSize)size
 {
-  [(CAMPreviewView *)self viewportAnchorsForFrontPIPOriginWithSize:a3.width, a3.height];
+  [(CAMPreviewView *)self viewportAnchorsForFrontPIPOriginWithSize:size.width, size.height];
   v4 = *MEMORY[0x1E695EFF8];
   v5 = *(MEMORY[0x1E695EFF8] + 8);
-  v6 = [(CAMPreviewView *)self frontPIPAnchor];
-  if (v6 > 1)
+  frontPIPAnchor = [(CAMPreviewView *)self frontPIPAnchor];
+  if (frontPIPAnchor > 1)
   {
-    if (v6 == 2)
+    if (frontPIPAnchor == 2)
     {
       v5 = 0.0;
       v4 = 0.0;
     }
 
-    else if (v6 == 3)
+    else if (frontPIPAnchor == 3)
     {
       v5 = 0.0;
       v4 = 0.0;
     }
   }
 
-  else if (v6)
+  else if (frontPIPAnchor)
   {
-    if (v6 == 1)
+    if (frontPIPAnchor == 1)
     {
       v5 = 0.0;
       v4 = 0.0;
@@ -1429,25 +1429,25 @@ LABEL_17:
 
 - (BOOL)_isFrontPIPAtAnAnchor
 {
-  v3 = [(CAMPreviewView *)self frontPIPVideoPreviewView];
+  frontPIPVideoPreviewView = [(CAMPreviewView *)self frontPIPVideoPreviewView];
 
-  if (!v3)
+  if (!frontPIPVideoPreviewView)
   {
     return 0;
   }
 
-  v4 = [(CAMPreviewView *)self frontPIPVideoPreviewView];
-  [v4 frame];
+  frontPIPVideoPreviewView2 = [(CAMPreviewView *)self frontPIPVideoPreviewView];
+  [frontPIPVideoPreviewView2 frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
   [(CAMPreviewView *)self viewportAnchorsForFrontPIPOriginWithSize:v10, v12];
-  v13 = [(CAMPreviewView *)self frontPIPAnchor];
-  if (v13 > 1)
+  frontPIPAnchor = [(CAMPreviewView *)self frontPIPAnchor];
+  if (frontPIPAnchor > 1)
   {
-    if (v13 == 2)
+    if (frontPIPAnchor == 2)
     {
       v14 = 0u;
     }
@@ -1455,17 +1455,17 @@ LABEL_17:
     else
     {
       v14 = 0uLL;
-      if (v13 == 3)
+      if (frontPIPAnchor == 3)
       {
         v14 = 0u;
       }
     }
   }
 
-  else if (v13)
+  else if (frontPIPAnchor)
   {
     v14 = 0uLL;
-    if (v13 == 1)
+    if (frontPIPAnchor == 1)
     {
       v14 = 0u;
     }

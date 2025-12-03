@@ -1,5 +1,5 @@
 @interface GDKTSData
-- (GDKTSData)initWithIdentifier:(id)a3 context:(id)a4 data:(id)a5 metadata:(id)a6;
+- (GDKTSData)initWithIdentifier:(id)identifier context:(id)context data:(id)data metadata:(id)metadata;
 - (NSString)description;
 @end
 
@@ -8,38 +8,38 @@
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(GDKTSData *)self tripEntityId];
-  v5 = [(GDKTSData *)self identifier];
-  v6 = [(GDKTSData *)self data];
-  v7 = [(GDKTSData *)self context];
-  v8 = [v3 initWithFormat:@"GDKTSData<tripEntityId: %@, identifier: %@, data: %@, context: %@>", v4, v5, v6, v7];
+  tripEntityId = [(GDKTSData *)self tripEntityId];
+  identifier = [(GDKTSData *)self identifier];
+  data = [(GDKTSData *)self data];
+  context = [(GDKTSData *)self context];
+  v8 = [v3 initWithFormat:@"GDKTSData<tripEntityId: %@, identifier: %@, data: %@, context: %@>", tripEntityId, identifier, data, context];
 
   return v8;
 }
 
-- (GDKTSData)initWithIdentifier:(id)a3 context:(id)a4 data:(id)a5 metadata:(id)a6
+- (GDKTSData)initWithIdentifier:(id)identifier context:(id)context data:(id)data metadata:(id)metadata
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
+  dataCopy = data;
   v22.receiver = self;
   v22.super_class = GDKTSData;
   v12 = [(GDKTSData *)&v22 init];
   if (v12)
   {
-    v13 = [[GDEntityIdentifier alloc] initWithString:v9];
+    v13 = [[GDEntityIdentifier alloc] initWithString:identifierCopy];
     tripEntityId = v12->_tripEntityId;
     v12->_tripEntityId = v13;
 
-    v15 = [v9 copy];
+    v15 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [dataCopy copy];
     data = v12->_data;
     v12->_data = v17;
 
-    v19 = [v10 copy];
+    v19 = [contextCopy copy];
     context = v12->_context;
     v12->_context = v19;
   }

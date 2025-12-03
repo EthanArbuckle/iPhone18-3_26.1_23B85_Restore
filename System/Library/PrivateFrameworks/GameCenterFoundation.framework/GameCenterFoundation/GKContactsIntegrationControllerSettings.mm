@@ -1,40 +1,40 @@
 @interface GKContactsIntegrationControllerSettings
 + (id)allBagKeys;
 + (id)secureCodedPropertyKeys;
-- (GKContactsIntegrationControllerSettings)initWithBagValues:(id)a3;
-- (double)expirationTimeForCohort:(int)a3;
+- (GKContactsIntegrationControllerSettings)initWithBagValues:(id)values;
+- (double)expirationTimeForCohort:(int)cohort;
 @end
 
 @implementation GKContactsIntegrationControllerSettings
 
-- (GKContactsIntegrationControllerSettings)initWithBagValues:(id)a3
+- (GKContactsIntegrationControllerSettings)initWithBagValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v14.receiver = self;
   v14.super_class = GKContactsIntegrationControllerSettings;
   v5 = [(GKContactsIntegrationControllerSettings *)&v14 init];
   if (v5)
   {
-    v5->_localSyncLimit = [v4 unsignedIntegerValueFromKey:@"gk-contactid-local-sync-limit" defaultValue:1000];
-    v5->_localBatchFetchSize = [v4 unsignedIntegerValueFromKey:@"gk-contactid-local-batch-fetch-size" defaultValue:100];
-    v5->_idsV2BatchFetchSize = [v4 unsignedIntegerValueFromKey:@"gk-contactid-ids-v2-batch-fetch-size" defaultValue:20];
-    v5->_idsV2FetchSize = [v4 unsignedIntegerValueFromKey:@"gk-contactid-ids-v2-fetch-size" defaultValue:20];
-    [v4 doubleValueFromKey:@"gk-contactid-ids-update-interval-sec" defaultValue:18030.0];
+    v5->_localSyncLimit = [valuesCopy unsignedIntegerValueFromKey:@"gk-contactid-local-sync-limit" defaultValue:1000];
+    v5->_localBatchFetchSize = [valuesCopy unsignedIntegerValueFromKey:@"gk-contactid-local-batch-fetch-size" defaultValue:100];
+    v5->_idsV2BatchFetchSize = [valuesCopy unsignedIntegerValueFromKey:@"gk-contactid-ids-v2-batch-fetch-size" defaultValue:20];
+    v5->_idsV2FetchSize = [valuesCopy unsignedIntegerValueFromKey:@"gk-contactid-ids-v2-fetch-size" defaultValue:20];
+    [valuesCopy doubleValueFromKey:@"gk-contactid-ids-update-interval-sec" defaultValue:18030.0];
     v5->_idsUpdateInterval = v6;
-    [v4 doubleValueFromKey:@"gk-contactid-ids-expiration-opted-in-sec" defaultValue:604800.0];
+    [valuesCopy doubleValueFromKey:@"gk-contactid-ids-expiration-opted-in-sec" defaultValue:604800.0];
     v5->_idsExpirationTimeOptedIn = v7;
-    [v4 doubleValueFromKey:@"gk-contactid-ids-expiration-opted-out-sec" defaultValue:604800.0];
+    [valuesCopy doubleValueFromKey:@"gk-contactid-ids-expiration-opted-out-sec" defaultValue:604800.0];
     v5->_idsExpirationTimeOptedOut = v8;
-    [v4 doubleValueFromKey:@"gk-contactid-ids-expiration-not-set-sec" defaultValue:86400.0];
+    [valuesCopy doubleValueFromKey:@"gk-contactid-ids-expiration-not-set-sec" defaultValue:86400.0];
     v5->_idsExpirationTimeNotSet = v9;
-    [v4 doubleValueFromKey:@"gk-contactid-ids-expiration-unknown-sec" defaultValue:86400.0];
+    [valuesCopy doubleValueFromKey:@"gk-contactid-ids-expiration-unknown-sec" defaultValue:86400.0];
     v5->_idsExpirationTimeUnknown = v10;
-    v5->_allowUpdates = [v4 unsignedIntegerValueFromKey:@"gk-contactid-allow-updates" defaultValue:1] == 1;
-    v5->_allowUpdatesWithoutFriends = [v4 unsignedIntegerValueFromKey:@"gk-contactid-allow-updates-without-friends" defaultValue:1] == 1;
+    v5->_allowUpdates = [valuesCopy unsignedIntegerValueFromKey:@"gk-contactid-allow-updates" defaultValue:1] == 1;
+    v5->_allowUpdatesWithoutFriends = [valuesCopy unsignedIntegerValueFromKey:@"gk-contactid-allow-updates-without-friends" defaultValue:1] == 1;
     v5->_notificationCoalescingWaitTime = 7.0;
-    [v4 doubleValueFromKey:@"gk-contactid-ids-v2-batch-fetch-delay-sec" defaultValue:3.0];
+    [valuesCopy doubleValueFromKey:@"gk-contactid-ids-v2-batch-fetch-delay-sec" defaultValue:3.0];
     v5->_idsBatchFetchDelayInterval = v11;
-    [v4 doubleValueFromKey:@"gk-contactid-ids-v2-batch-fetch-jitter-sec" defaultValue:0.0];
+    [valuesCopy doubleValueFromKey:@"gk-contactid-ids-v2-batch-fetch-jitter-sec" defaultValue:0.0];
     v5->_idsBatchFetchJitterInterval = v12;
   }
 
@@ -76,13 +76,13 @@ void __53__GKContactsIntegrationControllerSettings_allBagKeys__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (double)expirationTimeForCohort:(int)a3
+- (double)expirationTimeForCohort:(int)cohort
 {
-  if (a3 > 1)
+  if (cohort > 1)
   {
-    if (a3 != 2)
+    if (cohort != 2)
     {
-      if (a3 == 3)
+      if (cohort == 3)
       {
         [(GKContactsIntegrationControllerSettings *)self idsExpirationTimeOptedOut];
         return result;
@@ -96,9 +96,9 @@ void __53__GKContactsIntegrationControllerSettings_allBagKeys__block_invoke()
 
   else
   {
-    if (a3 != -1)
+    if (cohort != -1)
     {
-      if (a3 == 1)
+      if (cohort == 1)
       {
         [(GKContactsIntegrationControllerSettings *)self idsExpirationTimeNotSet];
         return result;

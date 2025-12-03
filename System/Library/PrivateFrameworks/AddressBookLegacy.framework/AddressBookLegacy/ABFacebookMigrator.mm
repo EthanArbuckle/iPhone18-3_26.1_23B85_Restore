@@ -1,42 +1,42 @@
 @interface ABFacebookMigrator
-+ (BOOL)_performQuery:(id)a3 withStoreID:(int)a4 connection:(CPSqliteConnection *)a5;
-+ (BOOL)isSourceFacebook:(void *)a3;
-+ (BOOL)mayHaveFacebookContacts:(void *)a3;
-+ (BOOL)removeFacebookSensitiveInformation:(CPSqliteConnection *)a3;
-+ (int)_findFacebookStoreID:(CPSqliteConnection *)a3;
-- (ABFacebookMigrator)initWithAddressBook:(void *)a3;
-- (ABFacebookMigrator)initWithAddressBook:(void *)a3 accountStore:(id)a4;
-- (BOOL)_mergeContactsFromAccount:(void *)a3 toDestinationSourceID:(int)a4;
++ (BOOL)_performQuery:(id)query withStoreID:(int)d connection:(CPSqliteConnection *)connection;
++ (BOOL)isSourceFacebook:(void *)facebook;
++ (BOOL)mayHaveFacebookContacts:(void *)contacts;
++ (BOOL)removeFacebookSensitiveInformation:(CPSqliteConnection *)information;
++ (int)_findFacebookStoreID:(CPSqliteConnection *)d;
+- (ABFacebookMigrator)initWithAddressBook:(void *)book;
+- (ABFacebookMigrator)initWithAddressBook:(void *)book accountStore:(id)store;
+- (BOOL)_mergeContactsFromAccount:(void *)account toDestinationSourceID:(int)d;
 - (BOOL)canMergeFacebookContacts;
 - (int)findBestMergeDestinationSourceID;
 - (void)_detectFacebookSource;
-- (void)_startDatabaseDoctorToPerformAction:(id)a3;
+- (void)_startDatabaseDoctorToPerformAction:(id)action;
 - (void)dealloc;
 - (void)performPendingMergeOrDeleteAction;
-- (void)setCheckDone:(BOOL)a3;
+- (void)setCheckDone:(BOOL)done;
 @end
 
 @implementation ABFacebookMigrator
 
-- (ABFacebookMigrator)initWithAddressBook:(void *)a3
+- (ABFacebookMigrator)initWithAddressBook:(void *)book
 {
-  v5 = [MEMORY[0x1E6959A48] defaultStore];
-  v6 = [(ABFacebookMigrator *)self initWithAddressBook:a3 accountStore:v5];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  v6 = [(ABFacebookMigrator *)self initWithAddressBook:book accountStore:defaultStore];
 
   return v6;
 }
 
-- (ABFacebookMigrator)initWithAddressBook:(void *)a3 accountStore:(id)a4
+- (ABFacebookMigrator)initWithAddressBook:(void *)book accountStore:(id)store
 {
-  v7 = a4;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = ABFacebookMigrator;
   v8 = [(ABFacebookMigrator *)&v12 init];
   if (v8)
   {
-    if (a3)
+    if (book)
     {
-      v9 = CFRetain(a3);
+      v9 = CFRetain(book);
     }
 
     else
@@ -45,7 +45,7 @@
     }
 
     v8->_addressBook = v9;
-    objc_storeStrong(&v8->_accountStore, a4);
+    objc_storeStrong(&v8->_accountStore, store);
     v8->_facebookSource = 0;
     v8->_mayHaveFacebookSource = 0;
     v10 = v8;
@@ -73,36 +73,36 @@
   [(ABFacebookMigrator *)&v5 dealloc];
 }
 
-+ (BOOL)isSourceFacebook:(void *)a3
++ (BOOL)isSourceFacebook:(void *)facebook
 {
-  v4 = ABAccountStoreGetAccountTypeForSource(0, a3);
-  LOBYTE(a1) = [a1 isAccountTypeFacebook:v4];
+  v4 = ABAccountStoreGetAccountTypeForSource(0, facebook);
+  LOBYTE(self) = [self isAccountTypeFacebook:v4];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)mayHaveFacebookContacts:(void *)a3
++ (BOOL)mayHaveFacebookContacts:(void *)contacts
 {
-  v3 = [[ABFacebookMigrator alloc] initWithAddressBook:a3];
+  v3 = [[ABFacebookMigrator alloc] initWithAddressBook:contacts];
   [(ABFacebookMigrator *)v3 _detectFacebookSource];
   if ([(ABFacebookMigrator *)v3 facebookSource])
   {
-    v4 = 1;
+    mayHaveFacebookSource = 1;
   }
 
   else
   {
-    v4 = [(ABFacebookMigrator *)v3 mayHaveFacebookSource];
+    mayHaveFacebookSource = [(ABFacebookMigrator *)v3 mayHaveFacebookSource];
   }
 
-  return v4;
+  return mayHaveFacebookSource;
 }
 
-- (void)setCheckDone:(BOOL)a3
+- (void)setCheckDone:(BOOL)done
 {
-  v3 = [(ABFacebookMigrator *)self addressBook];
+  addressBook = [(ABFacebookMigrator *)self addressBook];
 
-  ABAddressBookSetIntegerProperty(v3, @"FacebookCheckDone", 1, v4, v5, v6, v7, v8, v10);
+  ABAddressBookSetIntegerProperty(addressBook, @"FacebookCheckDone", 1, v4, v5, v6, v7, v8, v10);
 }
 
 - (BOOL)canMergeFacebookContacts
@@ -161,8 +161,8 @@
           v8 = *(*(&v12 + 1) + 8 * i);
           if (ABRecordGetIntValue(v8, kABSourceTypeProperty))
           {
-            v9 = [(ABFacebookMigrator *)self accountStore];
-            v10 = ABAccountStoreGetAccountTypeForSource(v9, v8);
+            accountStore = [(ABFacebookMigrator *)self accountStore];
+            v10 = ABAccountStoreGetAccountTypeForSource(accountStore, v8);
 
             if (v10)
             {
@@ -241,9 +241,9 @@ LABEL_17:
 
       v11 = *(*(&v37 + 1) + 8 * i);
       v12 = [ABAccountScorer alloc];
-      v13 = [(ABFacebookMigrator *)self addressBook];
-      v14 = [(ABFacebookMigrator *)self accountStore];
-      v15 = [(ABAccountScorer *)v12 initWithAddressBook:v13 accountStore:v14 account:v11 defaultSourceID:RecordID];
+      addressBook = [(ABFacebookMigrator *)self addressBook];
+      accountStore = [(ABFacebookMigrator *)self accountStore];
+      v15 = [(ABAccountScorer *)v12 initWithAddressBook:addressBook accountStore:accountStore account:v11 defaultSourceID:RecordID];
 
       [(ABAccountScorer *)v15 calculateScore];
       [(ABAccountScorer *)v15 score];
@@ -285,40 +285,40 @@ LABEL_10:
   {
 LABEL_16:
     v32 = ABAddressBookCopyLocalSource([(ABFacebookMigrator *)self addressBook]);
-    v24 = ABRecordGetRecordID(v32);
+    sourceID = ABRecordGetRecordID(v32);
     CFRelease(v32);
     v8 = 0;
     goto LABEL_18;
   }
 
-  v24 = [(ABAccountScorer *)v8 sourceID];
-  v25 = [(ABAccountScorer *)v8 accountType];
-  v26 = [(ABAccountScorer *)v7 accountType];
-  v27 = [v25 isEqualToString:v26];
+  sourceID = [(ABAccountScorer *)v8 sourceID];
+  accountType = [(ABAccountScorer *)v8 accountType];
+  accountType2 = [(ABAccountScorer *)v7 accountType];
+  v27 = [accountType isEqualToString:accountType2];
 
   if (v27)
   {
     v28 = MEMORY[0x1E696AEC0];
-    v29 = [(ABAccountScorer *)v8 accountTypeDescription];
-    v30 = [(ABAccountScorer *)v8 accountDisambiguationDescription];
-    v31 = [v28 stringWithFormat:@"%@ - %@", v29, v30];
+    accountTypeDescription = [(ABAccountScorer *)v8 accountTypeDescription];
+    accountDisambiguationDescription = [(ABAccountScorer *)v8 accountDisambiguationDescription];
+    v31 = [v28 stringWithFormat:@"%@ - %@", accountTypeDescription, accountDisambiguationDescription];
     [(ABFacebookMigrator *)self setDestinationDescription:v31];
   }
 
   else
   {
-    v33 = [(ABAccountScorer *)v8 accountTypeDescription];
-    [(ABFacebookMigrator *)self setDestinationDescription:v33];
+    accountTypeDescription2 = [(ABAccountScorer *)v8 accountTypeDescription];
+    [(ABFacebookMigrator *)self setDestinationDescription:accountTypeDescription2];
   }
 
 LABEL_18:
 
-  return v24;
+  return sourceID;
 }
 
-- (void)_startDatabaseDoctorToPerformAction:(id)a3
+- (void)_startDatabaseDoctorToPerformAction:(id)action
 {
-  v22 = a3;
+  actionCopy = action;
   AccountForSource = ABAddressBookGetAccountForSource([(ABFacebookMigrator *)self addressBook], [(ABFacebookMigrator *)self facebookSource]);
   if (AccountForSource)
   {
@@ -326,14 +326,14 @@ LABEL_18:
     if (v5)
     {
       v6 = v5;
-      v7 = [(ABFacebookMigrator *)self addressBook];
-      ABAddressBookSetValueForProperty(v7, v22, v6, v8, v9, v10, v11, v12, v20);
+      addressBook = [(ABFacebookMigrator *)self addressBook];
+      ABAddressBookSetValueForProperty(addressBook, actionCopy, v6, v8, v9, v10, v11, v12, v20);
       CFRelease(v6);
-      if ([v22 isEqualToString:@"MergeFacebookContacts"])
+      if ([actionCopy isEqualToString:@"MergeFacebookContacts"])
       {
-        v13 = [(ABFacebookMigrator *)self addressBook];
-        v14 = [(ABFacebookMigrator *)self mergeDestinationSourceID];
-        ABAddressBookSetIntegerProperty(v13, @"MergeFacebookContactsToSourceID", v14, v15, v16, v17, v18, v19, v21);
+        addressBook2 = [(ABFacebookMigrator *)self addressBook];
+        mergeDestinationSourceID = [(ABFacebookMigrator *)self mergeDestinationSourceID];
+        ABAddressBookSetIntegerProperty(addressBook2, @"MergeFacebookContactsToSourceID", mergeDestinationSourceID, v15, v16, v17, v18, v19, v21);
       }
 
       ABStartDatabaseDoctor([(ABFacebookMigrator *)self addressBook]);
@@ -360,8 +360,8 @@ LABEL_18:
           CFRelease(v5);
           if (v7)
           {
-            v8 = [(ABFacebookMigrator *)self addressBook];
-            ABAddressBookSetValueForProperty(v8, @"MergeFacebookContacts", 0, v9, v10, v11, v12, v13, v24);
+            addressBook = [(ABFacebookMigrator *)self addressBook];
+            ABAddressBookSetValueForProperty(addressBook, @"MergeFacebookContacts", 0, v9, v10, v11, v12, v13, v24);
             [(ABFacebookMigrator *)self setCheckDone:1];
           }
         }
@@ -385,8 +385,8 @@ LABEL_18:
         CFRelease(v16);
         if (v17)
         {
-          v18 = [(ABFacebookMigrator *)self addressBook];
-          ABAddressBookSetValueForProperty(v18, @"DeleteFacebookContacts", 0, v19, v20, v21, v22, v23, v24);
+          addressBook2 = [(ABFacebookMigrator *)self addressBook];
+          ABAddressBookSetValueForProperty(addressBook2, @"DeleteFacebookContacts", 0, v19, v20, v21, v22, v23, v24);
 
           [(ABFacebookMigrator *)self setCheckDone:1];
         }
@@ -395,10 +395,10 @@ LABEL_18:
   }
 }
 
-- (BOOL)_mergeContactsFromAccount:(void *)a3 toDestinationSourceID:(int)a4
+- (BOOL)_mergeContactsFromAccount:(void *)account toDestinationSourceID:(int)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  SourceWithRecordID = ABAddressBookGetSourceWithRecordID([(ABFacebookMigrator *)self addressBook], a4);
+  SourceWithRecordID = ABAddressBookGetSourceWithRecordID([(ABFacebookMigrator *)self addressBook], d);
   if (SourceWithRecordID)
   {
     v7 = SourceWithRecordID;
@@ -415,7 +415,7 @@ LABEL_18:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = ABAddressBookCopyArrayOfAllSourcesInAccount([(ABFacebookMigrator *)self addressBook], a3);
+    v9 = ABAddressBookCopyArrayOfAllSourcesInAccount([(ABFacebookMigrator *)self addressBook], account);
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
@@ -454,23 +454,23 @@ LABEL_18:
   return v12 & 1;
 }
 
-+ (BOOL)removeFacebookSensitiveInformation:(CPSqliteConnection *)a3
++ (BOOL)removeFacebookSensitiveInformation:(CPSqliteConnection *)information
 {
-  v5 = [a1 _findFacebookStoreID:?];
+  v5 = [self _findFacebookStoreID:?];
   if (v5 == -1)
   {
     return 1;
   }
 
   v6 = v5;
-  v7 = [a1 _performQuery:@"delete from ABMultiValue where     record_id in (select ROWID from ABPerson where storeid = ?)     and property = 22     and value like %.facebook.com%;" withStoreID:v5 connection:a3];
-  v8 = v7 & [a1 _performQuery:@"delete from ABMultiValueEntry where parent_id in     (select abmv.UID from ABMultiValue as abmv join ABMultiValueEntry as abmve on abmv.UID = abmve.parent_id where         abmv.record_id in (select ROWID from ABPerson where StoreID = ?)         and abmv.property = 46         and abmve.key in (select ROWID from ABMultiValueEntryKey where value like \"service\"" withStoreID:v6 connection:a3];
-  return v8 & [a1 _performQuery:@"delete from ABMultiValue where     record_id in (select ROWID from ABPerson where storeid = ?)     and property = 46     and UID not in (select parent_id from ABMultiValueEntry);" withStoreID:v6 connection:a3];
+  v7 = [self _performQuery:@"delete from ABMultiValue where     record_id in (select ROWID from ABPerson where storeid = ?)     and property = 22     and value like %.facebook.com%;" withStoreID:v5 connection:information];
+  v8 = v7 & [self _performQuery:@"delete from ABMultiValueEntry where parent_id in     (select abmv.UID from ABMultiValue as abmv join ABMultiValueEntry as abmve on abmv.UID = abmve.parent_id where         abmv.record_id in (select ROWID from ABPerson where StoreID = ?)         and abmv.property = 46         and abmve.key in (select ROWID from ABMultiValueEntryKey where value like \"service\"" withStoreID:v6 connection:information];
+  return v8 & [self _performQuery:@"delete from ABMultiValue where     record_id in (select ROWID from ABPerson where storeid = ?)     and property = 46     and UID not in (select parent_id from ABMultiValueEntry);" withStoreID:v6 connection:information];
 }
 
-+ (int)_findFacebookStoreID:(CPSqliteConnection *)a3
++ (int)_findFacebookStoreID:(CPSqliteConnection *)d
 {
-  v3 = [MEMORY[0x1E6959A48] defaultStore];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
   if (CPSqliteConnectionStatementForSQL())
   {
     CPSqliteStatementSendResults();
@@ -480,12 +480,12 @@ LABEL_18:
   return -1;
 }
 
-+ (BOOL)_performQuery:(id)a3 withStoreID:(int)a4 connection:(CPSqliteConnection *)a5
++ (BOOL)_performQuery:(id)query withStoreID:(int)d connection:(CPSqliteConnection *)connection
 {
   v6 = CPSqliteConnectionStatementForSQL();
   if (v6)
   {
-    sqlite3_bind_int(*(v6 + 8), 1, a4);
+    sqlite3_bind_int(*(v6 + 8), 1, d);
     v7 = CPSqliteStatementPerform();
     CPSqliteStatementReset();
     LOBYTE(v6) = v7 == 101;

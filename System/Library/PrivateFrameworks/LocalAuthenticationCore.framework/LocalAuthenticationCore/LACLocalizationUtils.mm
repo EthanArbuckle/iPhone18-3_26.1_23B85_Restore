@@ -1,37 +1,37 @@
 @interface LACLocalizationUtils
-+ (id)decodeLocalizationKeyFromString:(id)a3 shouldUseDeviceVariant:(BOOL *)a4;
-+ (id)encodeLocalizationKey:(id)a3 shouldUseDeviceVariant:(BOOL)a4;
++ (id)decodeLocalizationKeyFromString:(id)string shouldUseDeviceVariant:(BOOL *)variant;
++ (id)encodeLocalizationKey:(id)key shouldUseDeviceVariant:(BOOL)variant;
 @end
 
 @implementation LACLocalizationUtils
 
-+ (id)encodeLocalizationKey:(id)a3 shouldUseDeviceVariant:(BOOL)a4
++ (id)encodeLocalizationKey:(id)key shouldUseDeviceVariant:(BOOL)variant
 {
   v4 = &stru_1F2652748;
-  if (a4)
+  if (variant)
   {
     v4 = @"__LAC_LOCALIZATION_DEVICE_VARIANT__";
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"__LAC_LOCALIZATION_KEY__", v4, a3];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"__LAC_LOCALIZATION_KEY__", v4, key];
 }
 
-+ (id)decodeLocalizationKeyFromString:(id)a3 shouldUseDeviceVariant:(BOOL *)a4
++ (id)decodeLocalizationKeyFromString:(id)string shouldUseDeviceVariant:(BOOL *)variant
 {
-  v6 = a3;
-  if ([a1 isLocalizationKey:v6])
+  stringCopy = string;
+  if ([self isLocalizationKey:stringCopy])
   {
-    if (a4)
+    if (variant)
     {
-      *a4 = 0;
+      *variant = 0;
     }
 
-    v7 = [v6 substringFromIndex:{objc_msgSend(@"__LAC_LOCALIZATION_KEY__", "length")}];
-    if ([a1 _shouldUseDeviceVariantForKey:v7])
+    v7 = [stringCopy substringFromIndex:{objc_msgSend(@"__LAC_LOCALIZATION_KEY__", "length")}];
+    if ([self _shouldUseDeviceVariantForKey:v7])
     {
-      if (a4)
+      if (variant)
       {
-        *a4 = 1;
+        *variant = 1;
       }
 
       v8 = [v7 substringFromIndex:{objc_msgSend(@"__LAC_LOCALIZATION_DEVICE_VARIANT__", "length")}];

@@ -10,28 +10,28 @@
 - (BOOL)_hasTextFields;
 - (BOOL)_hasTitle;
 - (BOOL)_horizontalLayoutCanUseFullWidth;
-- (BOOL)_shouldAllowPassthroughToLayersBehindUsForTouches:(id)a3;
+- (BOOL)_shouldAllowPassthroughToLayersBehindUsForTouches:(id)touches;
 - (BOOL)_shouldHaveCancelActionInMainActionButtonSequenceView;
 - (BOOL)_titleAndMessageLabelUseVibrancy;
 - (BOOL)cancelActionIsDiscrete;
 - (BOOL)hasDiscreteHorizontalCancelAction;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (BOOL)showsCancelAction;
 - (CGSize)_contentViewControllerSize;
-- (CGSize)_itemSizeForHorizontalLayout:(BOOL)a3;
-- (CGSize)_itemSizeForHorizontalLayout:(BOOL)a3 visualStyleRequiresActionRepresentationToFitItemSize:(BOOL *)a4;
+- (CGSize)_itemSizeForHorizontalLayout:(BOOL)layout;
+- (CGSize)_itemSizeForHorizontalLayout:(BOOL)layout visualStyleRequiresActionRepresentationToFitItemSize:(BOOL *)size;
 - (CGSize)_layoutSize;
-- (CGSize)_mainActionButtonSequenceViewSizeForHorizontalLayout:(BOOL)a3 itemSize:(CGSize)a4;
+- (CGSize)_mainActionButtonSequenceViewSizeForHorizontalLayout:(BOOL)layout itemSize:(CGSize)size;
 - (CGSize)_minimumSizeForAllActions;
 - (CGSize)_sizeForLayoutWidthDetermination;
 - (UIEdgeInsets)_contentInsets;
-- (_UIAlertControllerPhoneTVMacView)initWithFrame:(CGRect)a3;
-- (double)_availableWidthForHorizontalLayout:(BOOL)a3;
+- (_UIAlertControllerPhoneTVMacView)initWithFrame:(CGRect)frame;
+- (double)_availableWidthForHorizontalLayout:(BOOL)layout;
 - (double)_idealLayoutWidth;
 - (double)_labelHorizontalInsets;
-- (double)_layoutWidthForHorizontalLayout:(BOOL)a3;
+- (double)_layoutWidthForHorizontalLayout:(BOOL)layout;
 - (double)_marginBetweenInterfaceActionGroups;
-- (double)_maximumWidthUsingAccessibilityWidthIfActionsAreTruncated:(double)a3;
+- (double)_maximumWidthUsingAccessibilityWidthIfActionsAreTruncated:(double)truncated;
 - (double)_minimumWidthFittingAlertContents;
 - (double)_spaceRequiredForActionSectionsSpacing;
 - (double)_verticalLayoutWidth;
@@ -42,7 +42,7 @@
 - (id)_discreteCancelActionView;
 - (id)_focusedAction;
 - (id)_indexesOfActionSectionSeparators;
-- (id)_interfaceActionForAlertAction:(id)a3 inActionGroupView:(id)a4;
+- (id)_interfaceActionForAlertAction:(id)action inActionGroupView:(id)view;
 - (id)_preferredActionView;
 - (id)_presentableAlertActions;
 - (id)_textFieldViewController;
@@ -69,7 +69,7 @@
 - (void)_applyContentViewControllerLayoutGuideConstraints;
 - (void)_applyDetailMessageConstraints;
 - (void)_applyHeaderContentViewControllerContainerViewConstraints;
-- (void)_applyISEngineLayoutValuesToBoundsOnly:(BOOL)a3;
+- (void)_applyISEngineLayoutValuesToBoundsOnly:(BOOL)only;
 - (void)_applyKeyboardAlignmentViewsConstraints;
 - (void)_applyMessageConstraints;
 - (void)_applySeparatedContentViewControllerContainerViewContraints;
@@ -78,12 +78,12 @@
 - (void)_applyTitleConstraints;
 - (void)_applyViewConstraints;
 - (void)_associateActionsWithActionViews;
-- (void)_configureActionGroupViewToAllowHorizontalLayout:(BOOL)a3;
+- (void)_configureActionGroupViewToAllowHorizontalLayout:(BOOL)layout;
 - (void)_contentSizeChanged;
-- (void)_disableAllowGroupOpacitiyIfNecessaryAlongsideTransitionCoordinator:(id)a3;
+- (void)_disableAllowGroupOpacitiyIfNecessaryAlongsideTransitionCoordinator:(id)coordinator;
 - (void)_ensureActionViewRepresentationsHaveMetrics;
 - (void)_layoutAndPositionInParentIfNeeded;
-- (void)_performBatchActionChangesWithBlock:(id)a3;
+- (void)_performBatchActionChangesWithBlock:(id)block;
 - (void)_prepareContentView;
 - (void)_prepareContentViewControllerContainerView;
 - (void)_prepareContentViewControllerLayoutGuide;
@@ -112,22 +112,22 @@
 - (void)_removeHeaderContentViewControllerViewFromHierarchy;
 - (void)_removeSeparatedHeaderContentViewControllerFromHierarchy;
 - (void)_scrollInitialActionToVisibleForPresentation;
-- (void)_setActionsReversed:(BOOL)a3;
-- (void)_setAttributedDetailMessage:(id)a3;
-- (void)_setAttributedMessage:(id)a3;
-- (void)_setAttributedTitle:(id)a3;
-- (void)_setMessage:(id)a3;
-- (void)_setTitle:(id)a3;
-- (void)_setVisualStyle:(id)a3;
-- (void)_setupHorizontalConstraintsForLabelView:(id)a3;
+- (void)_setActionsReversed:(BOOL)reversed;
+- (void)_setAttributedDetailMessage:(id)message;
+- (void)_setAttributedMessage:(id)message;
+- (void)_setAttributedTitle:(id)title;
+- (void)_setMessage:(id)message;
+- (void)_setTitle:(id)title;
+- (void)_setVisualStyle:(id)style;
+- (void)_setupHorizontalConstraintsForLabelView:(id)view;
 - (void)_sizeOfContentViewControllerChanged;
 - (void)_sizeOfHeaderContentViewControllerChanged;
 - (void)_sizeOfTextFieldViewControllerChanged;
 - (void)_textFieldsChanged;
 - (void)_updateActionViewHeight;
-- (void)_updateActionViewVisualStyle:(id)a3;
+- (void)_updateActionViewVisualStyle:(id)style;
 - (void)_updateActionsGroupPresentationStyles;
-- (void)_updateBackdropView:(BOOL)a3;
+- (void)_updateBackdropView:(BOOL)view;
 - (void)_updateCancelActionBeingDiscrete;
 - (void)_updateConstraintConstants;
 - (void)_updateConstraintSpacingForExternalOffset;
@@ -145,44 +145,44 @@
 - (void)_updateMessageLabelContents;
 - (void)_updateMessageLabelFontSize;
 - (void)_updatePreferredAction;
-- (void)_updateStyleForIdiomChange:(BOOL)a3;
+- (void)_updateStyleForIdiomChange:(BOOL)change;
 - (void)_updateTextAlignmentAfterLayout;
 - (void)_updateTintColor;
 - (void)_updateTitleLabelContents;
 - (void)_updateTitleLabelFontSize;
-- (void)_willMoveToWindow:(id)a3;
-- (void)beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:(id)a3;
-- (void)configureForDismissAlongsideTransitionCoordinator:(id)a3;
-- (void)configureForPresentAlongsideTransitionCoordinator:(id)a3;
+- (void)_willMoveToWindow:(id)window;
+- (void)beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:(id)recognizer;
+- (void)configureForDismissAlongsideTransitionCoordinator:(id)coordinator;
+- (void)configureForPresentAlongsideTransitionCoordinator:(id)coordinator;
 - (void)dealloc;
 - (void)deselectAllActions;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)interfaceAction:(id)a3 invokeActionHandler:(id)a4 completion:(id)a5;
-- (void)setActionScrubbingEnabled:(BOOL)a3;
-- (void)setAlertController:(id)a3;
-- (void)setAlignsToKeyboard:(BOOL)a3;
-- (void)setCancelActionIsDiscrete:(BOOL)a3;
-- (void)setHasDimmingView:(BOOL)a3;
-- (void)setPresentationContextPrefersCancelActionShown:(BOOL)a3;
-- (void)setPresentedAsPopover:(BOOL)a3;
-- (void)setShouldHaveBackdropView:(BOOL)a3;
-- (void)setSpringLoaded:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)interfaceAction:(id)action invokeActionHandler:(id)handler completion:(id)completion;
+- (void)setActionScrubbingEnabled:(BOOL)enabled;
+- (void)setAlertController:(id)controller;
+- (void)setAlignsToKeyboard:(BOOL)keyboard;
+- (void)setCancelActionIsDiscrete:(BOOL)discrete;
+- (void)setHasDimmingView:(BOOL)view;
+- (void)setPresentationContextPrefersCancelActionShown:(BOOL)shown;
+- (void)setPresentedAsPopover:(BOOL)popover;
+- (void)setShouldHaveBackdropView:(BOOL)view;
+- (void)setSpringLoaded:(BOOL)loaded;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateConstraints;
-- (void)updateObservations:(id)a3;
+- (void)updateObservations:(id)observations;
 @end
 
 @implementation _UIAlertControllerPhoneTVMacView
 
-- (_UIAlertControllerPhoneTVMacView)initWithFrame:(CGRect)a3
+- (_UIAlertControllerPhoneTVMacView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UIAlertControllerPhoneTVMacView;
-  v3 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -214,11 +214,11 @@
 - (void)dealloc
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIContentSizeCategoryDidChangeNotification";
   v6[1] = @"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   [(_UIAlertControllerPhoneTVMacView *)self _updateActionViewVisualStyle:0];
   v5.receiver = self;
@@ -261,11 +261,11 @@
   [v12 setShouldHaveBackdropView:1];
 }
 
-- (void)updateObservations:(id)a3
+- (void)updateObservations:(id)observations
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  if (a3)
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  if (observations)
   {
     v10[0] = objc_opt_class();
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -273,7 +273,7 @@
     contentSizeCategoryTraitRegistration = self->_contentSizeCategoryTraitRegistration;
     self->_contentSizeCategoryTraitRegistration = v7;
 
-    [v5 addObserver:self selector:sel__accessibilityColorsChanged name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__accessibilityColorsChanged name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
   }
 
   else
@@ -282,13 +282,13 @@
     v9 = self->_contentSizeCategoryTraitRegistration;
     self->_contentSizeCategoryTraitRegistration = 0;
 
-    [v5 removeObserver:self name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
   }
 }
 
-- (void)setAlertController:(id)a3
+- (void)setAlertController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_alertController);
 
   v5 = obj;
@@ -421,8 +421,8 @@
 
 - (void)_prepareSeparateContentViewControllerContainerView
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewController];
-  if (v3)
+  separatedHeaderContentViewController = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewController];
+  if (separatedHeaderContentViewController)
   {
     separatedHeaderContentViewControllerContainerView = self->_separatedHeaderContentViewControllerContainerView;
 
@@ -434,13 +434,13 @@
 
       [(UIView *)self->_separatedHeaderContentViewControllerContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)self->_separatedHeaderContentViewControllerContainerView setClipsToBounds:1];
-      v7 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionGroup];
-      v8 = [v7 _visualStyle];
-      [v8 contentCornerRadius];
+      actionGroup = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionGroup];
+      _visualStyle = [actionGroup _visualStyle];
+      [_visualStyle contentCornerRadius];
       v10 = v9;
 
-      v11 = [(UIView *)self->_separatedHeaderContentViewControllerContainerView layer];
-      [v11 setCornerRadius:v10];
+      layer = [(UIView *)self->_separatedHeaderContentViewControllerContainerView layer];
+      [layer setCornerRadius:v10];
 
       [(UIView *)self->_separatedHeaderContentViewControllerContainerView setOpaque:0];
       v12 = self->_separatedHeaderContentViewControllerContainerView;
@@ -459,13 +459,13 @@
 {
   if (!self->_titleAndMessageLabelVibrantContainerView && [(_UIAlertControllerPhoneTVMacView *)self _titleAndMessageLabelUseVibrancy])
   {
-    v6 = [(_UIAlertControllerPhoneTVMacView *)self _vibrancyEffectForTitleAndMessageLabel];
-    v3 = [[UIVisualEffectView alloc] initWithEffect:v6];
+    _vibrancyEffectForTitleAndMessageLabel = [(_UIAlertControllerPhoneTVMacView *)self _vibrancyEffectForTitleAndMessageLabel];
+    v3 = [[UIVisualEffectView alloc] initWithEffect:_vibrancyEffectForTitleAndMessageLabel];
     titleAndMessageLabelVibrantContainerView = self->_titleAndMessageLabelVibrantContainerView;
     self->_titleAndMessageLabelVibrantContainerView = v3;
 
-    v5 = [(UIVisualEffectView *)self->_titleAndMessageLabelVibrantContainerView contentView];
-    [v5 setClipsToBounds:0];
+    contentView = [(UIVisualEffectView *)self->_titleAndMessageLabelVibrantContainerView contentView];
+    [contentView setClipsToBounds:0];
 
     [(UIVisualEffectView *)self->_titleAndMessageLabelVibrantContainerView _setAllowsGroupFiltering:0];
     [(UIView *)self->_titleAndMessageLabelVibrantContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -502,8 +502,8 @@
     if ([(_UIAlertControllerPhoneTVMacView *)self _titleAndMessageLabelUseVibrancy])
     {
       [(_UIAlertControllerPhoneTVMacView *)self _prepareTitleAndMessageLabelVibrantContainer];
-      v12 = [(UIVisualEffectView *)self->_titleAndMessageLabelVibrantContainerView contentView];
-      [v12 addSubview:self->_titleLabel];
+      contentView = [(UIVisualEffectView *)self->_titleAndMessageLabelVibrantContainerView contentView];
+      [contentView addSubview:self->_titleLabel];
     }
 
     else
@@ -545,8 +545,8 @@
     if ([(_UIAlertControllerPhoneTVMacView *)self _titleAndMessageLabelUseVibrancy])
     {
       [(_UIAlertControllerPhoneTVMacView *)self _prepareTitleAndMessageLabelVibrantContainer];
-      v12 = [(UIVisualEffectView *)self->_titleAndMessageLabelVibrantContainerView contentView];
-      [v12 addSubview:self->_messageLabel];
+      contentView = [(UIVisualEffectView *)self->_titleAndMessageLabelVibrantContainerView contentView];
+      [contentView addSubview:self->_messageLabel];
     }
 
     else
@@ -638,8 +638,8 @@
   {
     v3 = [UIInterfaceActionGroup actionGroupWithActionsBySection:MEMORY[0x1E695E0F0]];
     v4 = [_UIAlertControllerInterfaceActionGroupView alloc];
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-    v6 = [(_UIAlertControllerInterfaceActionGroupView *)v4 initWithAlertController:v5 actionGroup:v3 actionHandlerInvocationDelegate:self];
+    alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+    v6 = [(_UIAlertControllerInterfaceActionGroupView *)v4 initWithAlertController:alertController actionGroup:v3 actionHandlerInvocationDelegate:self];
     mainInterfaceActionsGroupView = self->_mainInterfaceActionsGroupView;
     self->_mainInterfaceActionsGroupView = v6;
 
@@ -648,9 +648,9 @@
     [(UIView *)self->_contentView addSubview:self->_mainInterfaceActionsGroupView];
   }
 
-  v8 = [(_UIAlertControllerPhoneTVMacView *)self actionScrubbingEnabled];
-  v9 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionSelectionController];
-  [v9 setScrubbingEnabled:v8];
+  actionScrubbingEnabled = [(_UIAlertControllerPhoneTVMacView *)self actionScrubbingEnabled];
+  actionSelectionController = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionSelectionController];
+  [actionSelectionController setScrubbingEnabled:actionScrubbingEnabled];
 
   [(UIView *)self->_mainInterfaceActionsGroupView setSemanticContentAttribute:3];
 
@@ -663,69 +663,69 @@
   {
     v3 = [UIInterfaceActionGroup actionGroupWithActionsBySection:MEMORY[0x1E695E0F0]];
     v4 = [_UIAlertControllerInterfaceActionGroupView alloc];
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-    v6 = [(_UIAlertControllerInterfaceActionGroupView *)v4 initWithAlertController:v5 actionGroup:v3 actionHandlerInvocationDelegate:self];
+    alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+    v6 = [(_UIAlertControllerInterfaceActionGroupView *)v4 initWithAlertController:alertController actionGroup:v3 actionHandlerInvocationDelegate:self];
     discreteCancelActionGroupView = self->_discreteCancelActionGroupView;
     self->_discreteCancelActionGroupView = v6;
 
-    v8 = [(UIView *)self->_mainInterfaceActionsGroupView focusGroupIdentifier];
-    [(UIView *)self->_discreteCancelActionGroupView setFocusGroupIdentifier:v8];
+    focusGroupIdentifier = [(UIView *)self->_mainInterfaceActionsGroupView focusGroupIdentifier];
+    [(UIView *)self->_discreteCancelActionGroupView setFocusGroupIdentifier:focusGroupIdentifier];
 
     [(UIInterfaceActionGroupView *)self->_discreteCancelActionGroupView setSpringLoaded:[(_UIAlertControllerPhoneTVMacView *)self isSpringLoaded]];
     [(UIView *)self->_discreteCancelActionGroupView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(UIView *)self->_discreteCancelActionGroupView widthAnchor];
-    v10 = [v9 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIView *)self->_discreteCancelActionGroupView widthAnchor];
+    v10 = [widthAnchor constraintEqualToConstant:0.0];
     [(_UIAlertControllerPhoneTVMacView *)self setDiscreteCancelActionViewWidthConstraint:v10];
 
-    v11 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewWidthConstraint];
+    discreteCancelActionViewWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewWidthConstraint];
     LODWORD(v12) = 1148829696;
-    [v11 setPriority:v12];
+    [discreteCancelActionViewWidthConstraint setPriority:v12];
 
     v13 = self->_discreteCancelActionGroupView;
-    v14 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewWidthConstraint];
-    [(UIView *)v13 addConstraint:v14];
+    discreteCancelActionViewWidthConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewWidthConstraint];
+    [(UIView *)v13 addConstraint:discreteCancelActionViewWidthConstraint2];
 
-    v15 = [(UIView *)self->_discreteCancelActionGroupView heightAnchor];
-    v16 = [v15 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIView *)self->_discreteCancelActionGroupView heightAnchor];
+    v16 = [heightAnchor constraintEqualToConstant:0.0];
     [(_UIAlertControllerPhoneTVMacView *)self setDiscreteCancelActionViewHeightConstraint:v16];
 
-    v17 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewHeightConstraint];
+    discreteCancelActionViewHeightConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewHeightConstraint];
     LODWORD(v18) = 1144750080;
-    [v17 setPriority:v18];
+    [discreteCancelActionViewHeightConstraint setPriority:v18];
 
     v19 = self->_discreteCancelActionGroupView;
-    v20 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewHeightConstraint];
-    [(UIView *)v19 addConstraint:v20];
+    discreteCancelActionViewHeightConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewHeightConstraint];
+    [(UIView *)v19 addConstraint:discreteCancelActionViewHeightConstraint2];
   }
 
-  v21 = [(_UIAlertControllerPhoneTVMacView *)self actionScrubbingEnabled];
-  v22 = [(UIInterfaceActionGroupView *)self->_discreteCancelActionGroupView actionSelectionController];
-  [v22 setScrubbingEnabled:v21];
+  actionScrubbingEnabled = [(_UIAlertControllerPhoneTVMacView *)self actionScrubbingEnabled];
+  actionSelectionController = [(UIInterfaceActionGroupView *)self->_discreteCancelActionGroupView actionSelectionController];
+  [actionSelectionController setScrubbingEnabled:actionScrubbingEnabled];
 }
 
-- (void)setActionScrubbingEnabled:(BOOL)a3
+- (void)setActionScrubbingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_actionScrubbingEnabled = a3;
-  v5 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionSelectionController];
-  [v5 setScrubbingEnabled:v3];
+  enabledCopy = enabled;
+  self->_actionScrubbingEnabled = enabled;
+  actionSelectionController = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionSelectionController];
+  [actionSelectionController setScrubbingEnabled:enabledCopy];
 
-  v6 = [(UIInterfaceActionGroupView *)self->_discreteCancelActionGroupView actionSelectionController];
-  [v6 setScrubbingEnabled:v3];
+  actionSelectionController2 = [(UIInterfaceActionGroupView *)self->_discreteCancelActionGroupView actionSelectionController];
+  [actionSelectionController2 setScrubbingEnabled:enabledCopy];
 }
 
 - (void)_updateActionsGroupPresentationStyles
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v4 = [v3 _resolvedStyle];
-  if (v4 == 1000)
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _resolvedStyle = [alertController _resolvedStyle];
+  if (_resolvedStyle == 1000)
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = v4 == 0;
+    v5 = _resolvedStyle == 0;
   }
 
   [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView setPresentationStyle:v5];
@@ -748,9 +748,9 @@
     [(UIView *)v5 setBackgroundColor:v6];
 
     v7 = self->_dimmingView;
-    v9 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-    v8 = [v9 _dismissGestureRecognizer];
-    [(UIView *)v7 addGestureRecognizer:v8];
+    alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+    _dismissGestureRecognizer = [alertController _dismissGestureRecognizer];
+    [(UIView *)v7 addGestureRecognizer:_dismissGestureRecognizer];
   }
 }
 
@@ -775,58 +775,58 @@
 
 - (void)_applyViewConstraints
 {
-  v3 = [(UIView *)self->_contentView centerXAnchor];
-  v4 = [(UIView *)self centerXAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  centerXAnchor = [(UIView *)self->_contentView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self centerXAnchor];
+  v5 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [(UIView *)self addConstraint:v5];
 
   if (+[UIAlertController _shouldUsePresentationController])
   {
-    v6 = [(UIView *)self->_contentView centerYAnchor];
-    v7 = [(UIView *)self centerYAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    centerYAnchor = [(UIView *)self->_contentView centerYAnchor];
+    centerYAnchor2 = [(UIView *)self centerYAnchor];
+    v8 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
     [(UIView *)self addConstraint:v8];
   }
 
-  v9 = [(UIView *)self->_mainInterfaceActionsGroupView widthAnchor];
-  v10 = [(UIView *)self->_contentView widthAnchor];
-  v28 = [v9 constraintEqualToAnchor:v10];
+  widthAnchor = [(UIView *)self->_mainInterfaceActionsGroupView widthAnchor];
+  widthAnchor2 = [(UIView *)self->_contentView widthAnchor];
+  v28 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
 
   LODWORD(v11) = 1148829696;
   [v28 setPriority:v11];
   [(UIView *)self->_contentView addConstraint:v28];
   [(_UIAlertControllerPhoneTVMacView *)self setActionGroupEqualsContentViewWidthConstraint:v28];
   contentView = self->_contentView;
-  v13 = [(UIView *)contentView heightAnchor];
-  v14 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v14 minimumContentHeight];
-  v15 = [v13 constraintGreaterThanOrEqualToConstant:?];
+  heightAnchor = [(UIView *)contentView heightAnchor];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle minimumContentHeight];
+  v15 = [heightAnchor constraintGreaterThanOrEqualToConstant:?];
   [(UIView *)contentView addConstraint:v15];
 
-  v16 = [(UIView *)self->_contentViewControllerContainerView widthAnchor];
-  v17 = [v16 constraintLessThanOrEqualToConstant:0.0];
+  widthAnchor3 = [(UIView *)self->_contentViewControllerContainerView widthAnchor];
+  v17 = [widthAnchor3 constraintLessThanOrEqualToConstant:0.0];
   [(_UIAlertControllerPhoneTVMacView *)self setContentScrollViewMaximumWidthConstraint:v17];
 
-  v18 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumWidthConstraint];
+  contentScrollViewMaximumWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumWidthConstraint];
   LODWORD(v19) = 1148846080;
-  [v18 setPriority:v19];
+  [contentScrollViewMaximumWidthConstraint setPriority:v19];
 
-  v20 = [(UIView *)self->_contentView heightAnchor];
-  v21 = [v20 constraintLessThanOrEqualToConstant:0.0];
+  heightAnchor2 = [(UIView *)self->_contentView heightAnchor];
+  v21 = [heightAnchor2 constraintLessThanOrEqualToConstant:0.0];
   [(_UIAlertControllerPhoneTVMacView *)self setContentViewMaxHeightConstraint:v21];
 
-  v22 = [(UIView *)self->_contentViewTopItemsView heightAnchor];
-  v23 = [v22 constraintLessThanOrEqualToConstant:0.0];
+  heightAnchor3 = [(UIView *)self->_contentViewTopItemsView heightAnchor];
+  v23 = [heightAnchor3 constraintLessThanOrEqualToConstant:0.0];
   [(_UIAlertControllerPhoneTVMacView *)self setContentScrollViewMaximumHeightConstraint:v23];
 
-  v24 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
+  contentScrollViewMaximumHeightConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
   LODWORD(v25) = 1148846080;
-  [v24 setPriority:v25];
+  [contentScrollViewMaximumHeightConstraint setPriority:v25];
 
   contentViewTopItemsView = self->_contentViewTopItemsView;
-  v27 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
-  [(UIView *)contentViewTopItemsView addConstraint:v27];
+  contentScrollViewMaximumHeightConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
+  [(UIView *)contentViewTopItemsView addConstraint:contentScrollViewMaximumHeightConstraint2];
 }
 
 - (void)_prepareDimmingViewConstraints
@@ -834,112 +834,112 @@
   v64 = _NSDictionaryOfVariableBindings(&cfstr_DimmingviewSel.isa, self->_dimmingView, self, self->_contentView, 0);
   if (!self->_dimmingViewConstraints)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = [(UIView *)self->_dimmingView centerXAnchor];
-    v5 = [(UIView *)self centerXAnchor];
-    v6 = [v4 constraintEqualToAnchor:v5];
-    [v3 addObject:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    centerXAnchor = [(UIView *)self->_dimmingView centerXAnchor];
+    centerXAnchor2 = [(UIView *)self centerXAnchor];
+    v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v6];
 
-    v7 = [(UIView *)self->_dimmingView centerYAnchor];
-    v8 = [(UIView *)self centerYAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
-    [v3 addObject:v9];
+    centerYAnchor = [(UIView *)self->_dimmingView centerYAnchor];
+    centerYAnchor2 = [(UIView *)self centerYAnchor];
+    v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v9];
 
-    v10 = [(UIView *)self->_dimmingView widthAnchor];
-    v11 = [(UIView *)self widthAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
-    [v3 addObject:v12];
+    widthAnchor = [(UIView *)self->_dimmingView widthAnchor];
+    widthAnchor2 = [(UIView *)self widthAnchor];
+    v12 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+    [array addObject:v12];
 
-    v13 = [(UIView *)self->_dimmingView heightAnchor];
-    v14 = [(UIView *)self heightAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
-    [v3 addObject:v15];
+    heightAnchor = [(UIView *)self->_dimmingView heightAnchor];
+    heightAnchor2 = [(UIView *)self heightAnchor];
+    v15 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
+    [array addObject:v15];
 
-    v17 = _UIConstraintsBySortingConstraintsForInsertionPerformance(v3, v16);
+    v17 = _UIConstraintsBySortingConstraintsForInsertionPerformance(array, v16);
     dimmingViewConstraints = self->_dimmingViewConstraints;
     self->_dimmingViewConstraints = v17;
   }
 
   if (!self->_dimmingViewConstraintsForActionSheetStyle)
   {
-    v19 = [MEMORY[0x1E695DF70] array];
-    v20 = [MEMORY[0x1E695DF70] array];
-    v21 = [MEMORY[0x1E695DF70] array];
-    v22 = [(UIView *)self->_contentView topAnchor];
-    v23 = [(UIView *)self topAnchor];
-    v24 = [v22 constraintGreaterThanOrEqualToAnchor:v23];
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
+    topAnchor = [(UIView *)self->_contentView topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v24 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
 
-    v25 = [(UIView *)self->_contentView bottomAnchor];
-    v26 = [(UIView *)self bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    bottomAnchor = [(UIView *)self->_contentView bottomAnchor];
+    bottomAnchor2 = [(UIView *)self bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-    [v19 addObject:v24];
-    [v19 addObject:v27];
-    [v20 addObject:v24];
-    [v21 addObject:v27];
-    v29 = _UIConstraintsBySortingConstraintsForInsertionPerformance(v19, v28);
+    [array2 addObject:v24];
+    [array2 addObject:v27];
+    [array3 addObject:v24];
+    [array4 addObject:v27];
+    v29 = _UIConstraintsBySortingConstraintsForInsertionPerformance(array2, v28);
     dimmingViewConstraintsForActionSheetStyle = self->_dimmingViewConstraintsForActionSheetStyle;
     self->_dimmingViewConstraintsForActionSheetStyle = v29;
 
-    v32 = _UIConstraintsBySortingConstraintsForInsertionPerformance(v20, v31);
+    v32 = _UIConstraintsBySortingConstraintsForInsertionPerformance(array3, v31);
     dimmingViewForegroundViewTopConstraints = self->_dimmingViewForegroundViewTopConstraints;
     self->_dimmingViewForegroundViewTopConstraints = v32;
 
-    v35 = _UIConstraintsBySortingConstraintsForInsertionPerformance(v21, v34);
+    v35 = _UIConstraintsBySortingConstraintsForInsertionPerformance(array4, v34);
     dimmingViewForegroundViewBottomConstraints = self->_dimmingViewForegroundViewBottomConstraints;
     self->_dimmingViewForegroundViewBottomConstraints = v35;
   }
 
   if (!self->_dimmingViewConstraintsForAlertStyle)
   {
-    v37 = [MEMORY[0x1E695DF70] array];
-    v38 = [(UIView *)self->_contentView centerYAnchor];
-    v39 = [(UIView *)self centerYAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    array5 = [MEMORY[0x1E695DF70] array];
+    centerYAnchor3 = [(UIView *)self->_contentView centerYAnchor];
+    centerYAnchor4 = [(UIView *)self centerYAnchor];
+    v40 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
 
     LODWORD(v41) = 1144750080;
     [v40 setPriority:v41];
-    [v37 addObject:v40];
-    v42 = [(UIView *)self->_contentView topAnchor];
-    v43 = [(UIView *)self topAnchor];
-    v44 = [v42 constraintGreaterThanOrEqualToAnchor:v43];
-    [v37 addObject:v44];
+    [array5 addObject:v40];
+    topAnchor3 = [(UIView *)self->_contentView topAnchor];
+    topAnchor4 = [(UIView *)self topAnchor];
+    v44 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
+    [array5 addObject:v44];
 
-    v45 = [(UIView *)self->_contentView bottomAnchor];
-    v46 = [(UIView *)self bottomAnchor];
-    v47 = [v45 constraintLessThanOrEqualToAnchor:v46];
-    [v37 addObject:v47];
+    bottomAnchor3 = [(UIView *)self->_contentView bottomAnchor];
+    bottomAnchor4 = [(UIView *)self bottomAnchor];
+    v47 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
+    [array5 addObject:v47];
 
-    v49 = _UIConstraintsBySortingConstraintsForInsertionPerformance(v37, v48);
+    v49 = _UIConstraintsBySortingConstraintsForInsertionPerformance(array5, v48);
     dimmingViewConstraintsForAlertStyle = self->_dimmingViewConstraintsForAlertStyle;
     self->_dimmingViewConstraintsForAlertStyle = v49;
   }
 
   if (!self->_noDimmingViewConstraints)
   {
-    v51 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v52 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"H:[self(>=_contentView)]" options:0 metrics:0 views:v64];
-    [v51 addObjectsFromArray:v52];
+    [array6 addObjectsFromArray:v52];
 
     v53 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"V:[self(==_contentView)]" options:0 metrics:0 views:v64];
-    [v51 addObjectsFromArray:v53];
+    [array6 addObjectsFromArray:v53];
 
     if (!+[UIAlertController _shouldUsePresentationController])
     {
-      v54 = [(UIView *)self->_contentView centerYAnchor];
-      v55 = [(UIView *)self centerYAnchor];
-      v56 = [v54 constraintEqualToAnchor:v55];
-      [v51 addObject:v56];
+      centerYAnchor5 = [(UIView *)self->_contentView centerYAnchor];
+      centerYAnchor6 = [(UIView *)self centerYAnchor];
+      v56 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
+      [array6 addObject:v56];
     }
 
-    v57 = [(UIView *)self widthAnchor];
-    v58 = [(UIView *)self->_contentView widthAnchor];
-    v59 = [v57 constraintEqualToAnchor:v58];
+    widthAnchor3 = [(UIView *)self widthAnchor];
+    widthAnchor4 = [(UIView *)self->_contentView widthAnchor];
+    v59 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
 
     LODWORD(v60) = 1111752704;
     [v59 setPriority:v60];
-    [v51 addObject:v59];
-    v62 = _UIConstraintsBySortingConstraintsForInsertionPerformance(v51, v61);
+    [array6 addObject:v59];
+    v62 = _UIConstraintsBySortingConstraintsForInsertionPerformance(array6, v61);
     noDimmingViewConstraints = self->_noDimmingViewConstraints;
     self->_noDimmingViewConstraints = v62;
   }
@@ -954,95 +954,95 @@
 {
   if (!+[UIAlertController _shouldUsePresentationController])
   {
-    v23 = [MEMORY[0x1E695DF70] array];
-    v3 = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView leftAnchor];
-    v4 = [(UIView *)self leftAnchor];
-    v5 = [v3 constraintEqualToAnchor:v4];
+    array = [MEMORY[0x1E695DF70] array];
+    leftAnchor = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView leftAnchor];
+    leftAnchor2 = [(UIView *)self leftAnchor];
+    v5 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
 
-    v6 = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView rightAnchor];
-    v7 = [(UIView *)self rightAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    rightAnchor = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView rightAnchor];
+    rightAnchor2 = [(UIView *)self rightAnchor];
+    v8 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
 
-    v9 = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView topAnchor];
-    v10 = [(UIView *)self topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-    v12 = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView bottomAnchor];
-    v13 = [(UIView *)self->_keyboardLayoutAlignmentView topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView bottomAnchor];
+    topAnchor3 = [(UIView *)self->_keyboardLayoutAlignmentView topAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
 
-    v15 = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView bottomAnchor];
-    v16 = [(UIView *)self bottomAnchor];
-    v17 = [v15 constraintLessThanOrEqualToAnchor:v16];
+    bottomAnchor2 = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView bottomAnchor];
+    bottomAnchor3 = [(UIView *)self bottomAnchor];
+    v17 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
 
-    [v23 addObject:v5];
-    [v23 addObject:v8];
-    [v23 addObject:v11];
-    [v23 addObject:v14];
-    [v23 addObject:v17];
-    v18 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-    v19 = [v18 _resolvedStyle];
+    [array addObject:v5];
+    [array addObject:v8];
+    [array addObject:v11];
+    [array addObject:v14];
+    [array addObject:v17];
+    alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+    _resolvedStyle = [alertController _resolvedStyle];
 
-    if (v19 == 1)
+    if (_resolvedStyle == 1)
     {
-      v20 = [(UIView *)self->_contentView centerYAnchor];
-      v21 = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView centerYAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      centerYAnchor = [(UIView *)self->_contentView centerYAnchor];
+      centerYAnchor2 = [(UIView *)self->_keyboardLayoutAlignmentAvailableSpaceView centerYAnchor];
+      v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
-      [v23 addObject:v22];
+      [array addObject:v22];
     }
 
-    [(UIView *)self addConstraints:v23];
+    [(UIView *)self addConstraints:array];
   }
 }
 
 - (void)_applySeparatedContentViewControllerContainerViewContraints
 {
-  v3 = [(UIView *)self->_separatedHeaderContentViewControllerContainerView centerXAnchor];
-  v4 = [(UIView *)self->_contentView centerXAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  centerXAnchor = [(UIView *)self->_separatedHeaderContentViewControllerContainerView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_contentView centerXAnchor];
+  v5 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v5 setActive:1];
 
-  v8 = [(UIView *)self->_separatedHeaderContentViewControllerContainerView widthAnchor];
-  v6 = [(UIView *)self->_contentView widthAnchor];
-  v7 = [v8 constraintLessThanOrEqualToAnchor:v6];
+  widthAnchor = [(UIView *)self->_separatedHeaderContentViewControllerContainerView widthAnchor];
+  widthAnchor2 = [(UIView *)self->_contentView widthAnchor];
+  v7 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
   [v7 setActive:1];
 }
 
 - (void)_applyHeaderContentViewControllerContainerViewConstraints
 {
-  v3 = [(UIView *)self->_headerContentViewControllerContainerView centerXAnchor];
-  v4 = [(UIView *)self->_contentView centerXAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  centerXAnchor = [(UIView *)self->_headerContentViewControllerContainerView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_contentView centerXAnchor];
+  v5 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v5 setActive:1];
 
-  v6 = [(UIView *)self->_headerContentViewControllerContainerView widthAnchor];
-  v7 = [(UIView *)self->_contentView widthAnchor];
-  v8 = [v6 constraintLessThanOrEqualToAnchor:v7];
+  widthAnchor = [(UIView *)self->_headerContentViewControllerContainerView widthAnchor];
+  widthAnchor2 = [(UIView *)self->_contentView widthAnchor];
+  v8 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
   [v8 setActive:1];
 
-  v9 = [(UIView *)self->_contentView widthAnchor];
-  v10 = [(UIView *)self->_headerContentViewControllerContainerView widthAnchor];
-  v12 = [v9 constraintEqualToAnchor:v10];
+  widthAnchor3 = [(UIView *)self->_contentView widthAnchor];
+  widthAnchor4 = [(UIView *)self->_headerContentViewControllerContainerView widthAnchor];
+  v12 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
 
   LODWORD(v11) = 1144733696;
   [v12 setPriority:v11];
   [v12 setActive:1];
 }
 
-- (void)_setupHorizontalConstraintsForLabelView:(id)a3
+- (void)_setupHorizontalConstraintsForLabelView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 centerXAnchor];
-  v6 = [(UIView *)self->_contentViewTopItemsView centerXAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  viewCopy = view;
+  centerXAnchor = [viewCopy centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_contentViewTopItemsView centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v7 setActive:1];
 
-  v11 = [v4 widthAnchor];
+  widthAnchor = [viewCopy widthAnchor];
 
-  v8 = [(UIView *)self->_contentViewTopItemsView widthAnchor];
+  widthAnchor2 = [(UIView *)self->_contentViewTopItemsView widthAnchor];
   [(_UIAlertControllerPhoneTVMacView *)self _labelHorizontalInsets];
-  v10 = [v11 constraintEqualToAnchor:v8 multiplier:1.0 constant:v9 * -2.0];
+  v10 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0 constant:v9 * -2.0];
   [v10 setActive:1];
 }
 
@@ -1102,15 +1102,15 @@
     if ((alertControllerViewFlags & 8) == 0)
     {
       *&self->_alertControllerViewFlags = alertControllerViewFlags | 8;
-      v4 = [(UIView *)self->_detailMessageLabel centerXAnchor];
-      v5 = [(UIView *)self->_contentView centerXAnchor];
-      v6 = [v4 constraintEqualToAnchor:v5];
+      centerXAnchor = [(UIView *)self->_detailMessageLabel centerXAnchor];
+      centerXAnchor2 = [(UIView *)self->_contentView centerXAnchor];
+      v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [v6 setActive:1];
 
-      v10 = [(UIView *)self->_detailMessageLabel widthAnchor];
-      v7 = [(UIView *)self->_contentView widthAnchor];
+      widthAnchor = [(UIView *)self->_detailMessageLabel widthAnchor];
+      widthAnchor2 = [(UIView *)self->_contentView widthAnchor];
       [(_UIAlertControllerPhoneTVMacView *)self _labelHorizontalInsets];
-      v9 = [v10 constraintEqualToAnchor:v7 multiplier:1.0 constant:v8 * -2.0];
+      v9 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0 constant:v8 * -2.0];
       [v9 setActive:1];
     }
   }
@@ -1119,77 +1119,77 @@
 - (void)_applyContentViewControllerContainerViewConstraints
 {
   contentView = self->_contentView;
-  v4 = [(UIView *)self->_contentViewControllerContainerView centerXAnchor];
-  v5 = [(UIView *)self->_contentView centerXAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  centerXAnchor = [(UIView *)self->_contentViewControllerContainerView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_contentView centerXAnchor];
+  v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [(UIView *)contentView addConstraint:v6];
 
   v7 = self->_contentView;
-  v8 = [(UIView *)self->_contentViewControllerContainerView widthAnchor];
-  v9 = [(UIView *)self->_contentView widthAnchor];
-  v10 = [v8 constraintLessThanOrEqualToAnchor:v9];
+  widthAnchor = [(UIView *)self->_contentViewControllerContainerView widthAnchor];
+  widthAnchor2 = [(UIView *)self->_contentView widthAnchor];
+  v10 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
   [(UIView *)v7 addConstraint:v10];
 
   v11 = self->_contentView;
-  v13 = [(UIView *)self->_contentViewControllerContainerView widthAnchor];
-  v12 = [v13 constraintGreaterThanOrEqualToConstant:0.0];
+  widthAnchor3 = [(UIView *)self->_contentViewControllerContainerView widthAnchor];
+  v12 = [widthAnchor3 constraintGreaterThanOrEqualToConstant:0.0];
   [(UIView *)v11 addConstraint:v12];
 }
 
 - (void)_applyContentViewControllerLayoutGuideConstraints
 {
   contentView = self->_contentView;
-  v4 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionSequenceViewLayoutGuide];
-  v5 = [v4 leadingAnchor];
-  v6 = [(UILayoutGuide *)self->_contentViewControllerLayoutGuide leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  actionSequenceViewLayoutGuide = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionSequenceViewLayoutGuide];
+  leadingAnchor = [actionSequenceViewLayoutGuide leadingAnchor];
+  leadingAnchor2 = [(UILayoutGuide *)self->_contentViewControllerLayoutGuide leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [(UIView *)contentView addConstraint:v7];
 
   v8 = self->_contentView;
-  v9 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionSequenceViewLayoutGuide];
-  v10 = [v9 trailingAnchor];
-  v11 = [(UILayoutGuide *)self->_contentViewControllerLayoutGuide trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  actionSequenceViewLayoutGuide2 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionSequenceViewLayoutGuide];
+  trailingAnchor = [actionSequenceViewLayoutGuide2 trailingAnchor];
+  trailingAnchor2 = [(UILayoutGuide *)self->_contentViewControllerLayoutGuide trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [(UIView *)v8 addConstraint:v12];
 
   v13 = self->_contentView;
-  v14 = [(UIView *)self->_contentViewControllerContainerView topAnchor];
-  v15 = [(UILayoutGuide *)self->_contentViewControllerLayoutGuide topAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  topAnchor = [(UIView *)self->_contentViewControllerContainerView topAnchor];
+  topAnchor2 = [(UILayoutGuide *)self->_contentViewControllerLayoutGuide topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [(UIView *)v13 addConstraint:v16];
 
   v17 = self->_contentView;
-  v20 = [(UIView *)self->_contentViewControllerContainerView bottomAnchor];
-  v18 = [(UILayoutGuide *)self->_contentViewControllerLayoutGuide bottomAnchor];
-  v19 = [v20 constraintEqualToAnchor:v18];
+  bottomAnchor = [(UIView *)self->_contentViewControllerContainerView bottomAnchor];
+  bottomAnchor2 = [(UILayoutGuide *)self->_contentViewControllerLayoutGuide bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [(UIView *)v17 addConstraint:v19];
 }
 
 - (void)_applyTextFieldViewControllerContainerViewConstraints
 {
-  v3 = [(UIView *)self->_textFieldViewControllerContainerView widthAnchor];
-  v4 = [(UIView *)self->_contentViewTopItemsView widthAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  widthAnchor = [(UIView *)self->_textFieldViewControllerContainerView widthAnchor];
+  widthAnchor2 = [(UIView *)self->_contentViewTopItemsView widthAnchor];
+  v5 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   textFieldViewControllerContainerViewWidthConstraint = self->_textFieldViewControllerContainerViewWidthConstraint;
   self->_textFieldViewControllerContainerViewWidthConstraint = v5;
 
-  v7 = [(UIView *)self->_textFieldViewControllerContainerView heightAnchor];
-  v8 = [v7 constraintEqualToConstant:0.0];
+  heightAnchor = [(UIView *)self->_textFieldViewControllerContainerView heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:0.0];
   textFieldViewControllerContainerViewHeightConstraint = self->_textFieldViewControllerContainerViewHeightConstraint;
   self->_textFieldViewControllerContainerViewHeightConstraint = v8;
 
   contentView = self->_contentView;
-  v11 = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewWidthConstraint];
-  [(UIView *)contentView addConstraint:v11];
+  textFieldViewControllerContainerViewWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewWidthConstraint];
+  [(UIView *)contentView addConstraint:textFieldViewControllerContainerViewWidthConstraint];
 
   v12 = self->_contentView;
-  v13 = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewHeightConstraint];
-  [(UIView *)v12 addConstraint:v13];
+  textFieldViewControllerContainerViewHeightConstraint = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewHeightConstraint];
+  [(UIView *)v12 addConstraint:textFieldViewControllerContainerViewHeightConstraint];
 
   v14 = self->_contentView;
-  v17 = [(UIView *)self->_textFieldViewControllerContainerView centerXAnchor];
-  v15 = [(UIView *)self->_contentView centerXAnchor];
-  v16 = [v17 constraintEqualToAnchor:v15];
+  centerXAnchor = [(UIView *)self->_textFieldViewControllerContainerView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_contentView centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [(UIView *)v14 addConstraint:v16];
 }
 
@@ -1200,21 +1200,21 @@
     return 0;
   }
 
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
-  v3 = v4 == 0;
+  contentViewController = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
+  v3 = contentViewController == 0;
 
   return v3;
 }
 
 - (CGSize)_sizeForLayoutWidthDetermination
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self presentedAsPopover];
+  presentedAsPopover = [(_UIAlertControllerPhoneTVMacView *)self presentedAsPopover];
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    if ((_UISolariumEnabled() & v3 & 1) == 0)
+    if ((_UISolariumEnabled() & presentedAsPopover & 1) == 0)
     {
       goto LABEL_3;
     }
@@ -1225,20 +1225,20 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (v3)
+  if (presentedAsPopover)
   {
     goto LABEL_9;
   }
 
 LABEL_3:
-  v6 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v7 = [v6 _existingPresentationControllerImmediate:0 effective:1];
-  v8 = [v7 containerView];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  v7 = [alertController _existingPresentationControllerImmediate:0 effective:1];
+  containerView = [v7 containerView];
 
   [(_UIAlertControllerPhoneTVMacView *)self _layoutSize];
   if (v10 == *MEMORY[0x1E695F060] && v9 == *(MEMORY[0x1E695F060] + 8))
   {
-    [v8 bounds];
+    [containerView bounds];
     v13 = v16;
     v15 = v17;
   }
@@ -1263,16 +1263,16 @@ LABEL_12:
   [(_UIAlertControllerPhoneTVMacView *)self _sizeForLayoutWidthDetermination];
   v4 = v3;
   v6 = v5;
-  v7 = [(UIView *)self traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 < v6 || v8 == 3)
+  if (v4 < v6 || userInterfaceIdiom == 3)
   {
     v6 = v4;
   }
 
-  v10 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v10 minimumWidth];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle minimumWidth];
   v12 = v11;
 
   if (v12 > 0.0)
@@ -1299,16 +1299,16 @@ LABEL_12:
 
 - (BOOL)_horizontalLayoutCanUseFullWidth
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  if ([v3 _resolvedStyle])
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  if ([alertController _resolvedStyle])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self actions];
-    v4 = [v5 count] > 2;
+    actions = [(_UIAlertControllerPhoneTVMacView *)self actions];
+    v4 = [actions count] > 2;
   }
 
   return v4;
@@ -1324,14 +1324,14 @@ LABEL_12:
   [(_UIAlertControllerPhoneTVMacView *)self _applyDetailMessageConstraints];
   [(_UIAlertControllerPhoneTVMacView *)self _updateConstraintSpacingForExternalOffset];
   [(_UIAlertControllerPhoneTVMacView *)self _updateForPropertyChangeIfNeeded];
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
-  [v5 setActive:0];
+  contentScrollViewMaximumHeightConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
+  [contentScrollViewMaximumHeightConstraint setActive:0];
 
   [(_UIAlertControllerPhoneTVMacView *)self _contentViewControllerSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
-  [v10 preferredContentSize];
+  headerContentViewController = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
+  [headerContentViewController preferredContentSize];
   v12 = v11;
   v14 = v13;
 
@@ -1340,34 +1340,34 @@ LABEL_12:
     v7 = v12;
   }
 
-  v15 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v15 minimumWidthFittingContentView:self->_contentViewTopItemsView titleLabel:self->_titleLabel minimumWidthForAllActions:v4 preferredSizeForContentContainers:{v7, v9 + v14}];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle minimumWidthFittingContentView:self->_contentViewTopItemsView titleLabel:self->_titleLabel minimumWidthForAllActions:v4 preferredSizeForContentContainers:{v7, v9 + v14}];
   v17 = v16;
 
-  v18 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
-  [v18 setActive:1];
+  contentScrollViewMaximumHeightConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
+  [contentScrollViewMaximumHeightConstraint2 setActive:1];
 
   return v17;
 }
 
-- (double)_availableWidthForHorizontalLayout:(BOOL)a3
+- (double)_availableWidthForHorizontalLayout:(BOOL)layout
 {
-  v3 = a3;
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  v6 = [v5 definesWidthByContentFitting];
+  layoutCopy = layout;
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  definesWidthByContentFitting = [_visualStyle definesWidthByContentFitting];
 
-  v7 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v7 maximumWidth];
+  _visualStyle2 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle2 maximumWidth];
   v9 = v8;
 
-  if (v6)
+  if (definesWidthByContentFitting)
   {
     [(_UIAlertControllerPhoneTVMacView *)self _minimumWidthFittingAlertContents];
   }
 
   else if (v9 <= 0.0)
   {
-    if (v3 && [(_UIAlertControllerPhoneTVMacView *)self _horizontalLayoutCanUseFullWidth])
+    if (layoutCopy && [(_UIAlertControllerPhoneTVMacView *)self _horizontalLayoutCanUseFullWidth])
     {
       [(_UIAlertControllerPhoneTVMacView *)self _sizeForLayoutWidthDetermination];
     }
@@ -1397,9 +1397,9 @@ LABEL_12:
 
 - (UIEdgeInsets)_contentInsets
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  v4 = [(UIView *)self superview];
-  [v3 contentInsetsForContainerView:v4];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  superview = [(UIView *)self superview];
+  [_visualStyle contentInsetsForContainerView:superview];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1416,44 +1416,44 @@ LABEL_12:
   return result;
 }
 
-- (double)_layoutWidthForHorizontalLayout:(BOOL)a3
+- (double)_layoutWidthForHorizontalLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   [(_UIAlertControllerPhoneTVMacView *)self _contentViewControllerSize];
   v6 = v5;
-  v7 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v8 = [v7 _shouldFitWidthToContentViewControllerWidth];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _shouldFitWidthToContentViewControllerWidth = [alertController _shouldFitWidthToContentViewControllerWidth];
 
-  if (v8)
+  if (_shouldFitWidthToContentViewControllerWidth)
   {
     return v6;
   }
 
-  [(_UIAlertControllerPhoneTVMacView *)self _availableWidthForHorizontalLayout:v3];
+  [(_UIAlertControllerPhoneTVMacView *)self _availableWidthForHorizontalLayout:layoutCopy];
   return result;
 }
 
 - (double)_idealLayoutWidth
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  v4 = ([v3 permittedActionLayoutDirection] >> 1) & 1;
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  v4 = ([_visualStyle permittedActionLayoutDirection] >> 1) & 1;
 
   [(_UIAlertControllerPhoneTVMacView *)self _availableWidthForHorizontalLayout:v4];
   return result;
 }
 
-- (CGSize)_itemSizeForHorizontalLayout:(BOOL)a3 visualStyleRequiresActionRepresentationToFitItemSize:(BOOL *)a4
+- (CGSize)_itemSizeForHorizontalLayout:(BOOL)layout visualStyleRequiresActionRepresentationToFitItemSize:(BOOL *)size
 {
-  v5 = a3;
+  layoutCopy = layout;
   [(_UIAlertControllerPhoneTVMacView *)self _minimumSizeForAllActions];
   v8 = v7;
   v10 = v9;
   [(_UIAlertControllerPhoneTVMacView *)self _idealLayoutWidth];
   v12 = v11;
-  if (!v5)
+  if (!layoutCopy)
   {
-    v27 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    [v27 actionWidthForMinimumActionWidth:v8 availableWidth:v12];
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    [_visualStyle actionWidthForMinimumActionWidth:v8 availableWidth:v12];
     v26 = v28;
 
     if (v26 <= 0.0)
@@ -1464,7 +1464,7 @@ LABEL_12:
       [(_UIAlertControllerPhoneTVMacView *)self _verticalLayoutWidth];
       v25 = 0;
       v26 = v33 - (v30 + v32);
-      if (!a4)
+      if (!size)
       {
         goto LABEL_13;
       }
@@ -1473,28 +1473,28 @@ LABEL_12:
     else
     {
       v25 = 1;
-      if (!a4)
+      if (!size)
       {
         goto LABEL_13;
       }
     }
 
 LABEL_12:
-    *a4 = v25;
+    *size = v25;
     goto LABEL_13;
   }
 
-  v13 = [(_UIAlertControllerPhoneTVMacView *)self _numberOfActionsForMainActionButtonSequenceView];
-  v14 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v14 actionSequenceEdgeInsets];
+  _numberOfActionsForMainActionButtonSequenceView = [(_UIAlertControllerPhoneTVMacView *)self _numberOfActionsForMainActionButtonSequenceView];
+  _visualStyle2 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle2 actionSequenceEdgeInsets];
   v16 = v15;
-  v17 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v17 actionSequenceEdgeInsets];
+  _visualStyle3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle3 actionSequenceEdgeInsets];
   v19 = v12 - (v16 + v18);
 
-  v20 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v20 actionSpacingForHorizontalLayout:1];
-  v22 = (v13 - 1);
+  _visualStyle4 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle4 actionSpacingForHorizontalLayout:1];
+  v22 = (_numberOfActionsForMainActionButtonSequenceView - 1);
   if (v22 < 0.0)
   {
     v22 = 0.0;
@@ -1504,14 +1504,14 @@ LABEL_12:
 
   if ([(_UIAlertControllerPhoneTVMacView *)self hasDiscreteHorizontalCancelAction])
   {
-    ++v13;
+    ++_numberOfActionsForMainActionButtonSequenceView;
     [(_UIAlertControllerPhoneTVMacView *)self _contentInsets];
     v23 = v23 - v24;
   }
 
   v25 = 0;
-  v26 = v23 / v13;
-  if (a4)
+  v26 = v23 / _numberOfActionsForMainActionButtonSequenceView;
+  if (size)
   {
     goto LABEL_12;
   }
@@ -1524,22 +1524,22 @@ LABEL_13:
   return result;
 }
 
-- (CGSize)_itemSizeForHorizontalLayout:(BOOL)a3
+- (CGSize)_itemSizeForHorizontalLayout:(BOOL)layout
 {
-  [(_UIAlertControllerPhoneTVMacView *)self _itemSizeForHorizontalLayout:a3 visualStyleRequiresActionRepresentationToFitItemSize:0];
+  [(_UIAlertControllerPhoneTVMacView *)self _itemSizeForHorizontalLayout:layout visualStyleRequiresActionRepresentationToFitItemSize:0];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_mainActionButtonSequenceViewSizeForHorizontalLayout:(BOOL)a3 itemSize:(CGSize)a4
+- (CGSize)_mainActionButtonSequenceViewSizeForHorizontalLayout:(BOOL)layout itemSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  v8 = [(_UIAlertControllerPhoneTVMacView *)self _numberOfActionsForMainActionButtonSequenceView];
-  v9 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v9 actionSequenceEdgeInsets];
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
+  _numberOfActionsForMainActionButtonSequenceView = [(_UIAlertControllerPhoneTVMacView *)self _numberOfActionsForMainActionButtonSequenceView];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle actionSequenceEdgeInsets];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1549,9 +1549,9 @@ LABEL_13:
   v19 = v11 + v15;
   [(_UIAlertControllerPhoneTVMacView *)self _spaceRequiredForActionSectionsSpacing];
   v21 = v20;
-  v22 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v22 actionSpacingForHorizontalLayout:v6];
-  v24 = (v8 - 1);
+  _visualStyle2 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle2 actionSpacingForHorizontalLayout:layoutCopy];
+  v24 = (_numberOfActionsForMainActionButtonSequenceView - 1);
   if (v24 < 0.0)
   {
     v24 = 0.0;
@@ -1560,15 +1560,15 @@ LABEL_13:
   v25 = v24 * v23;
 
   v26 = width + v18;
-  if (v6)
+  if (layoutCopy)
   {
-    v26 = v21 + width * v8 + v18 + v25;
+    v26 = v21 + width * _numberOfActionsForMainActionButtonSequenceView + v18 + v25;
     v27 = height + v19;
   }
 
   else
   {
-    v27 = v21 + height * v8 + v19 + v25;
+    v27 = v21 + height * _numberOfActionsForMainActionButtonSequenceView + v19 + v25;
   }
 
   result.height = v27;
@@ -1578,10 +1578,10 @@ LABEL_13:
 
 - (BOOL)_canLayOutActionsHorizontally
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  v4 = [v3 permittedActionLayoutDirection];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  permittedActionLayoutDirection = [_visualStyle permittedActionLayoutDirection];
 
-  result = (v4 & 2) != 0 && ([(_UIAlertControllerPhoneTVMacView *)self _itemSizeForHorizontalLayout:1], v6 = v5, [(_UIAlertControllerPhoneTVMacView *)self _minimumSizeForAllActions], v6 >= v7) && [(_UIAlertControllerPhoneTVMacView *)self _numberOfActionsForMainActionButtonSequenceView]> 0;
+  result = (permittedActionLayoutDirection & 2) != 0 && ([(_UIAlertControllerPhoneTVMacView *)self _itemSizeForHorizontalLayout:1], v6 = v5, [(_UIAlertControllerPhoneTVMacView *)self _minimumSizeForAllActions], v6 >= v7) && [(_UIAlertControllerPhoneTVMacView *)self _numberOfActionsForMainActionButtonSequenceView]> 0;
   return result;
 }
 
@@ -1589,31 +1589,31 @@ LABEL_13:
 {
   if ([(_UIAlertControllerPhoneTVMacView *)self cancelActionIsDiscrete])
   {
-    v3 = [(_UIAlertControllerPhoneTVMacView *)self __cancelActionView];
+    __cancelActionView = [(_UIAlertControllerPhoneTVMacView *)self __cancelActionView];
   }
 
   else
   {
-    v3 = 0;
+    __cancelActionView = 0;
   }
 
-  return v3;
+  return __cancelActionView;
 }
 
 - (BOOL)_hasDiscreteCancelAction
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
-  v4 = v3 && [(_UIAlertControllerPhoneTVMacView *)self showsCancelAction]&& [(_UIAlertControllerPhoneTVMacView *)self cancelActionIsDiscrete];
+  cancelAction = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
+  v4 = cancelAction && [(_UIAlertControllerPhoneTVMacView *)self showsCancelAction]&& [(_UIAlertControllerPhoneTVMacView *)self cancelActionIsDiscrete];
 
   return v4;
 }
 
 - (void)_updateConstraintSpacingForExternalOffset
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v4 = [v3 _resolvedStyle];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _resolvedStyle = [alertController _resolvedStyle];
 
-  if (!v4)
+  if (!_resolvedStyle)
   {
     [(_UIAlertControllerPhoneTVMacView *)self offset];
     v6 = v5;
@@ -1626,44 +1626,44 @@ LABEL_13:
       v8 = v6 * -0.5 + v9;
     }
 
-    v10 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewTopConstraint];
-    [v10 setConstant:v8];
+    discreteCancelActionViewTopConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewTopConstraint];
+    [discreteCancelActionViewTopConstraint setConstant:v8];
 
-    v11 = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
-    [v11 setConstant:v7];
+    contentViewBottomConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
+    [contentViewBottomConstraint setConstant:v7];
   }
 }
 
 - (void)_recomputeAlertControllerWidth
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(_UIAlertControllerPhoneTVMacView *)self _canLayOutActionsHorizontally];
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self foregroundViewWidthConstraint];
+    _canLayOutActionsHorizontally = [(_UIAlertControllerPhoneTVMacView *)self _canLayOutActionsHorizontally];
+    foregroundViewWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self foregroundViewWidthConstraint];
 
-    if (!v5)
+    if (!foregroundViewWidthConstraint)
     {
-      v6 = [(UIView *)self->_contentView widthAnchor];
-      [(_UIAlertControllerPhoneTVMacView *)self _layoutWidthForHorizontalLayout:v4];
-      v7 = [v6 constraintEqualToConstant:?];
+      widthAnchor = [(UIView *)self->_contentView widthAnchor];
+      [(_UIAlertControllerPhoneTVMacView *)self _layoutWidthForHorizontalLayout:_canLayOutActionsHorizontally];
+      v7 = [widthAnchor constraintEqualToConstant:?];
       [(_UIAlertControllerPhoneTVMacView *)self setForegroundViewWidthConstraint:v7];
 
       contentView = self->_contentView;
-      v9 = [(_UIAlertControllerPhoneTVMacView *)self foregroundViewWidthConstraint];
-      [(UIView *)contentView addConstraint:v9];
+      foregroundViewWidthConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self foregroundViewWidthConstraint];
+      [(UIView *)contentView addConstraint:foregroundViewWidthConstraint2];
     }
 
-    v10 = [(_UIAlertControllerPhoneTVMacView *)self foregroundViewWidthConstraint];
-    [(_UIAlertControllerPhoneTVMacView *)self _layoutWidthForHorizontalLayout:v4];
-    [v10 setConstant:?];
+    foregroundViewWidthConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self foregroundViewWidthConstraint];
+    [(_UIAlertControllerPhoneTVMacView *)self _layoutWidthForHorizontalLayout:_canLayOutActionsHorizontally];
+    [foregroundViewWidthConstraint3 setConstant:?];
   }
 }
 
-- (void)_configureActionGroupViewToAllowHorizontalLayout:(BOOL)a3
+- (void)_configureActionGroupViewToAllowHorizontalLayout:(BOOL)layout
 {
-  if (a3)
+  if (layout)
   {
     v3 = &unk_1EFE2BDA0;
   }
@@ -1679,56 +1679,56 @@ LABEL_13:
 - (void)_actionLayoutDirectionChanged
 {
   v73[2] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _canLayOutActionsHorizontally];
+  _canLayOutActionsHorizontally = [(_UIAlertControllerPhoneTVMacView *)self _canLayOutActionsHorizontally];
   [(_UIAlertControllerPhoneTVMacView *)self _recomputeAlertControllerWidth];
-  [(_UIAlertControllerPhoneTVMacView *)self _configureActionGroupViewToAllowHorizontalLayout:v3];
+  [(_UIAlertControllerPhoneTVMacView *)self _configureActionGroupViewToAllowHorizontalLayout:_canLayOutActionsHorizontally];
   v72 = 0;
-  [(_UIAlertControllerPhoneTVMacView *)self _itemSizeForHorizontalLayout:v3 visualStyleRequiresActionRepresentationToFitItemSize:&v72];
+  [(_UIAlertControllerPhoneTVMacView *)self _itemSizeForHorizontalLayout:_canLayOutActionsHorizontally visualStyleRequiresActionRepresentationToFitItemSize:&v72];
   v5 = v4;
-  [(_UIAlertControllerPhoneTVMacView *)self _mainActionButtonSequenceViewSizeForHorizontalLayout:v3 itemSize:?];
+  [(_UIAlertControllerPhoneTVMacView *)self _mainActionButtonSequenceViewSizeForHorizontalLayout:_canLayOutActionsHorizontally itemSize:?];
   v7 = v6;
   v9 = v8;
-  v10 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewWidthConstraint];
+  mainActionButtonSequenceViewWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewWidthConstraint];
 
-  if (!v10)
+  if (!mainActionButtonSequenceViewWidthConstraint)
   {
-    v11 = [(UIView *)self->_mainInterfaceActionsGroupView widthAnchor];
-    v12 = [v11 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIView *)self->_mainInterfaceActionsGroupView widthAnchor];
+    v12 = [widthAnchor constraintEqualToConstant:0.0];
     [(_UIAlertControllerPhoneTVMacView *)self setMainActionButtonSequenceViewWidthConstraint:v12];
 
-    v13 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewWidthConstraint];
+    mainActionButtonSequenceViewWidthConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewWidthConstraint];
     LODWORD(v14) = 1148813312;
-    [v13 setPriority:v14];
+    [mainActionButtonSequenceViewWidthConstraint2 setPriority:v14];
 
     mainInterfaceActionsGroupView = self->_mainInterfaceActionsGroupView;
-    v16 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewWidthConstraint];
-    [(UIView *)mainInterfaceActionsGroupView addConstraint:v16];
+    mainActionButtonSequenceViewWidthConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewWidthConstraint];
+    [(UIView *)mainInterfaceActionsGroupView addConstraint:mainActionButtonSequenceViewWidthConstraint3];
   }
 
-  v17 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewWidthConstraint];
-  [v17 setConstant:v7];
+  mainActionButtonSequenceViewWidthConstraint4 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewWidthConstraint];
+  [mainActionButtonSequenceViewWidthConstraint4 setConstant:v7];
 
-  v18 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHeightConstraint];
+  mainActionButtonSequenceViewHeightConstraint = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHeightConstraint];
 
-  if (!v18)
+  if (!mainActionButtonSequenceViewHeightConstraint)
   {
-    v19 = [(UIView *)self->_mainInterfaceActionsGroupView heightAnchor];
-    v20 = [v19 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIView *)self->_mainInterfaceActionsGroupView heightAnchor];
+    v20 = [heightAnchor constraintEqualToConstant:0.0];
     [(_UIAlertControllerPhoneTVMacView *)self setMainActionButtonSequenceViewHeightConstraint:v20];
 
-    v21 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHeightConstraint];
+    mainActionButtonSequenceViewHeightConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHeightConstraint];
     LODWORD(v22) = 1132003328;
-    [v21 setPriority:v22];
+    [mainActionButtonSequenceViewHeightConstraint2 setPriority:v22];
 
     v23 = self->_mainInterfaceActionsGroupView;
-    v24 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHeightConstraint];
-    [(UIView *)v23 addConstraint:v24];
+    mainActionButtonSequenceViewHeightConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHeightConstraint];
+    [(UIView *)v23 addConstraint:mainActionButtonSequenceViewHeightConstraint3];
   }
 
-  v25 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHeightConstraint];
-  [v25 setConstant:v9];
+  mainActionButtonSequenceViewHeightConstraint4 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHeightConstraint];
+  [mainActionButtonSequenceViewHeightConstraint4 setConstant:v9];
 
-  if (v3)
+  if (_canLayOutActionsHorizontally)
   {
     v26 = 5;
   }
@@ -1738,123 +1738,123 @@ LABEL_13:
     v26 = 9;
   }
 
-  v27 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHorizontalAlignmentConstraint];
-  if (v27)
+  mainActionButtonSequenceViewHorizontalAlignmentConstraint = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHorizontalAlignmentConstraint];
+  if (mainActionButtonSequenceViewHorizontalAlignmentConstraint)
   {
-    v28 = v27;
-    v29 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHorizontalAlignmentConstraint];
-    v30 = [v29 firstAttribute];
+    v28 = mainActionButtonSequenceViewHorizontalAlignmentConstraint;
+    mainActionButtonSequenceViewHorizontalAlignmentConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHorizontalAlignmentConstraint];
+    firstAttribute = [mainActionButtonSequenceViewHorizontalAlignmentConstraint2 firstAttribute];
 
-    if (v30 != v26)
+    if (firstAttribute != v26)
     {
       contentView = self->_contentView;
-      v32 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHorizontalAlignmentConstraint];
-      [(UIView *)contentView removeConstraint:v32];
+      mainActionButtonSequenceViewHorizontalAlignmentConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHorizontalAlignmentConstraint];
+      [(UIView *)contentView removeConstraint:mainActionButtonSequenceViewHorizontalAlignmentConstraint3];
 
       [(_UIAlertControllerPhoneTVMacView *)self setMainActionButtonSequenceViewHorizontalAlignmentConstraint:0];
     }
   }
 
-  v33 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHorizontalAlignmentConstraint];
+  mainActionButtonSequenceViewHorizontalAlignmentConstraint4 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHorizontalAlignmentConstraint];
 
-  if (!v33)
+  if (!mainActionButtonSequenceViewHorizontalAlignmentConstraint4)
   {
     v34 = [MEMORY[0x1E69977A0] constraintWithItem:self->_mainInterfaceActionsGroupView attribute:v26 relatedBy:0 toItem:self->_contentView attribute:v26];
     [(_UIAlertControllerPhoneTVMacView *)self setMainActionButtonSequenceViewHorizontalAlignmentConstraint:v34];
 
     v35 = self->_contentView;
-    v36 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHorizontalAlignmentConstraint];
-    [(UIView *)v35 addConstraint:v36];
+    mainActionButtonSequenceViewHorizontalAlignmentConstraint5 = [(_UIAlertControllerPhoneTVMacView *)self mainActionButtonSequenceViewHorizontalAlignmentConstraint];
+    [(UIView *)v35 addConstraint:mainActionButtonSequenceViewHorizontalAlignmentConstraint5];
   }
 
-  v37 = [(_UIAlertControllerPhoneTVMacView *)self discreteActionGroupViewHorizontalLayoutTrailingConstraint];
+  discreteActionGroupViewHorizontalLayoutTrailingConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteActionGroupViewHorizontalLayoutTrailingConstraint];
 
-  if (!v37)
+  if (!discreteActionGroupViewHorizontalLayoutTrailingConstraint)
   {
-    v38 = [(UIView *)self->_discreteCancelActionGroupView trailingAnchor];
-    v39 = [(UIView *)self->_contentView trailingAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    trailingAnchor = [(UIView *)self->_discreteCancelActionGroupView trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_contentView trailingAnchor];
+    v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(_UIAlertControllerPhoneTVMacView *)self setDiscreteActionGroupViewHorizontalLayoutTrailingConstraint:v40];
   }
 
-  v41 = [(_UIAlertControllerPhoneTVMacView *)self _discreteCancelActionView];
+  _discreteCancelActionView = [(_UIAlertControllerPhoneTVMacView *)self _discreteCancelActionView];
 
-  v42 = [(_UIAlertControllerPhoneTVMacView *)self discreteActionGroupViewHorizontalLayoutTrailingConstraint];
-  [v42 setActive:(v41 != 0) & v3];
+  discreteActionGroupViewHorizontalLayoutTrailingConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self discreteActionGroupViewHorizontalLayoutTrailingConstraint];
+  [discreteActionGroupViewHorizontalLayoutTrailingConstraint2 setActive:(_discreteCancelActionView != 0) & _canLayOutActionsHorizontally];
 
-  v43 = [(_UIAlertControllerPhoneTVMacView *)self actionGroupEqualsContentViewWidthConstraint];
-  [v43 setActive:v3 ^ 1];
+  actionGroupEqualsContentViewWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self actionGroupEqualsContentViewWidthConstraint];
+  [actionGroupEqualsContentViewWidthConstraint setActive:_canLayOutActionsHorizontally ^ 1];
 
-  if (v41)
+  if (_discreteCancelActionView)
   {
-    v44 = [(_UIAlertControllerPhoneTVMacView *)self _canLayOutActionsHorizontally];
+    _canLayOutActionsHorizontally2 = [(_UIAlertControllerPhoneTVMacView *)self _canLayOutActionsHorizontally];
     v45 = MEMORY[0x1E69977A0];
     v46 = MEMORY[0x1E695DEC8];
-    v47 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewTopConstraint];
-    v48 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewLeadingConstraint];
-    v49 = [v46 arrayWithObjects:{v47, v48, 0}];
+    discreteCancelActionViewTopConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewTopConstraint];
+    discreteCancelActionViewLeadingConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewLeadingConstraint];
+    v49 = [v46 arrayWithObjects:{discreteCancelActionViewTopConstraint, discreteCancelActionViewLeadingConstraint, 0}];
     [v45 deactivateConstraints:v49];
 
-    v50 = [(UIView *)self->_discreteCancelActionGroupView topAnchor];
+    topAnchor = [(UIView *)self->_discreteCancelActionGroupView topAnchor];
     v51 = self->_mainInterfaceActionsGroupView;
-    if (v44)
+    if (_canLayOutActionsHorizontally2)
     {
-      v52 = [(UIView *)v51 topAnchor];
-      v53 = [v50 constraintEqualToAnchor:v52 constant:0.0];
+      topAnchor2 = [(UIView *)v51 topAnchor];
+      v53 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
       [(_UIAlertControllerPhoneTVMacView *)self setDiscreteCancelActionViewTopConstraint:v53];
 
-      v54 = [(UIView *)self->_discreteCancelActionGroupView leadingAnchor];
-      v55 = [(UIView *)self->_mainInterfaceActionsGroupView trailingAnchor];
+      leadingAnchor = [(UIView *)self->_discreteCancelActionGroupView leadingAnchor];
+      trailingAnchor3 = [(UIView *)self->_mainInterfaceActionsGroupView trailingAnchor];
       [(_UIAlertControllerPhoneTVMacView *)self _marginBetweenInterfaceActionGroups];
-      v56 = [v54 constraintEqualToAnchor:v55 constant:?];
+      v56 = [leadingAnchor constraintEqualToAnchor:trailingAnchor3 constant:?];
       v7 = v5;
     }
 
     else
     {
-      v57 = [(UIView *)v51 bottomAnchor];
+      bottomAnchor = [(UIView *)v51 bottomAnchor];
       [(_UIAlertControllerPhoneTVMacView *)self _marginBetweenInterfaceActionGroups];
-      v58 = [v50 constraintEqualToAnchor:v57 constant:?];
+      v58 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
       [(_UIAlertControllerPhoneTVMacView *)self setDiscreteCancelActionViewTopConstraint:v58];
 
-      v54 = [(UIView *)self->_discreteCancelActionGroupView leadingAnchor];
-      v55 = [(UIView *)self->_mainInterfaceActionsGroupView leadingAnchor];
-      v56 = [v54 constraintEqualToAnchor:v55 constant:0.0];
+      leadingAnchor = [(UIView *)self->_discreteCancelActionGroupView leadingAnchor];
+      trailingAnchor3 = [(UIView *)self->_mainInterfaceActionsGroupView leadingAnchor];
+      v56 = [leadingAnchor constraintEqualToAnchor:trailingAnchor3 constant:0.0];
     }
 
     [(_UIAlertControllerPhoneTVMacView *)self setDiscreteCancelActionViewLeadingConstraint:v56];
 
     [(_UIAlertControllerPhoneTVMacView *)self _updateConstraintSpacingForExternalOffset];
     v59 = MEMORY[0x1E69977A0];
-    v60 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewTopConstraint];
-    v73[0] = v60;
-    v61 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewLeadingConstraint];
-    v73[1] = v61;
+    discreteCancelActionViewTopConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewTopConstraint];
+    v73[0] = discreteCancelActionViewTopConstraint2;
+    discreteCancelActionViewLeadingConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewLeadingConstraint];
+    v73[1] = discreteCancelActionViewLeadingConstraint2;
     v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:2];
     [v59 activateConstraints:v62];
 
-    v63 = [(_UIAlertControllerPhoneTVMacView *)self _discreteCancelActionView];
-    v64 = [v63 action];
-    v65 = [v64 _contentViewController];
+    _discreteCancelActionView2 = [(_UIAlertControllerPhoneTVMacView *)self _discreteCancelActionView];
+    action = [_discreteCancelActionView2 action];
+    _contentViewController = [action _contentViewController];
 
-    if (v65)
+    if (_contentViewController)
     {
-      [v65 preferredContentSize];
+      [_contentViewController preferredContentSize];
       v67 = v66;
     }
 
     else
     {
-      v68 = [(_UIAlertControllerPhoneTVMacView *)self _discreteCancelActionView];
-      [v68 systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+      _discreteCancelActionView3 = [(_UIAlertControllerPhoneTVMacView *)self _discreteCancelActionView];
+      [_discreteCancelActionView3 systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
       v67 = v69;
     }
 
-    v70 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewWidthConstraint];
-    [v70 setConstant:v7];
+    discreteCancelActionViewWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewWidthConstraint];
+    [discreteCancelActionViewWidthConstraint setConstant:v7];
 
-    v71 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewHeightConstraint];
-    [v71 setConstant:v67];
+    discreteCancelActionViewHeightConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewHeightConstraint];
+    [discreteCancelActionViewHeightConstraint setConstant:v67];
   }
 
   if (!v72)
@@ -1884,103 +1884,103 @@ LABEL_13:
   }
 
   *&self->_alertControllerViewFlags &= ~0x800u;
-  v106 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(_UIAlertControllerPhoneTVMacView *)self _updateMainScrollableHeaderViewHasRealContent];
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewControllerContainerViewTopAlignmentConstraint];
+  headerContentViewControllerContainerViewTopAlignmentConstraint = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewControllerContainerViewTopAlignmentConstraint];
 
-  if (v3)
+  if (headerContentViewControllerContainerViewTopAlignmentConstraint)
   {
-    v4 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewControllerContainerViewTopAlignmentConstraint];
-    [v106 addObject:v4];
+    headerContentViewControllerContainerViewTopAlignmentConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewControllerContainerViewTopAlignmentConstraint];
+    [array addObject:headerContentViewControllerContainerViewTopAlignmentConstraint2];
   }
 
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self titleAndMessageLabelVibrantContainerViewVerticalConstraints];
+  titleAndMessageLabelVibrantContainerViewVerticalConstraints = [(_UIAlertControllerPhoneTVMacView *)self titleAndMessageLabelVibrantContainerViewVerticalConstraints];
 
-  if (v5)
+  if (titleAndMessageLabelVibrantContainerViewVerticalConstraints)
   {
-    v6 = [(_UIAlertControllerPhoneTVMacView *)self titleAndMessageLabelVibrantContainerViewVerticalConstraints];
-    [v106 addObjectsFromArray:v6];
+    titleAndMessageLabelVibrantContainerViewVerticalConstraints2 = [(_UIAlertControllerPhoneTVMacView *)self titleAndMessageLabelVibrantContainerViewVerticalConstraints];
+    [array addObjectsFromArray:titleAndMessageLabelVibrantContainerViewVerticalConstraints2];
   }
 
-  v7 = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
+  titleLabelTopAlignmentConstraints = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
 
-  if (v7)
+  if (titleLabelTopAlignmentConstraints)
   {
-    v8 = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
-    v9 = [v8 constraints];
-    [v106 addObjectsFromArray:v9];
+    titleLabelTopAlignmentConstraints2 = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
+    constraints = [titleLabelTopAlignmentConstraints2 constraints];
+    [array addObjectsFromArray:constraints];
   }
 
-  v10 = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
+  messageLabelTopAlignmentConstraints = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
 
-  if (v10)
+  if (messageLabelTopAlignmentConstraints)
   {
-    v11 = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
-    v12 = [v11 constraints];
-    [v106 addObjectsFromArray:v12];
+    messageLabelTopAlignmentConstraints2 = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
+    constraints2 = [messageLabelTopAlignmentConstraints2 constraints];
+    [array addObjectsFromArray:constraints2];
   }
 
-  v13 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewTopAlignmentConstraint];
+  contentViewControllerContainerViewTopAlignmentConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewTopAlignmentConstraint];
 
-  if (v13)
+  if (contentViewControllerContainerViewTopAlignmentConstraint)
   {
-    v14 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewTopAlignmentConstraint];
-    [v106 addObject:v14];
+    contentViewControllerContainerViewTopAlignmentConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewTopAlignmentConstraint];
+    [array addObject:contentViewControllerContainerViewTopAlignmentConstraint2];
   }
 
-  v15 = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewTopAlignmentConstraints];
+  textFieldViewControllerContainerViewTopAlignmentConstraints = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewTopAlignmentConstraints];
 
-  if (v15)
+  if (textFieldViewControllerContainerViewTopAlignmentConstraints)
   {
-    v16 = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewTopAlignmentConstraints];
-    v17 = [v16 constraints];
-    [v106 addObjectsFromArray:v17];
+    textFieldViewControllerContainerViewTopAlignmentConstraints2 = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewTopAlignmentConstraints];
+    constraints3 = [textFieldViewControllerContainerViewTopAlignmentConstraints2 constraints];
+    [array addObjectsFromArray:constraints3];
   }
 
-  v18 = [(_UIAlertControllerPhoneTVMacView *)self detailMessageLabelTopAlignmentConstraint];
+  detailMessageLabelTopAlignmentConstraint = [(_UIAlertControllerPhoneTVMacView *)self detailMessageLabelTopAlignmentConstraint];
 
-  if (v18)
+  if (detailMessageLabelTopAlignmentConstraint)
   {
-    v19 = [(_UIAlertControllerPhoneTVMacView *)self detailMessageLabelTopAlignmentConstraint];
-    [v106 addObject:v19];
+    detailMessageLabelTopAlignmentConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self detailMessageLabelTopAlignmentConstraint];
+    [array addObject:detailMessageLabelTopAlignmentConstraint2];
   }
 
-  v20 = [(_UIAlertControllerPhoneTVMacView *)self contentViewTopConstraint];
+  contentViewTopConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewTopConstraint];
 
-  if (v20)
+  if (contentViewTopConstraint)
   {
-    v21 = [(_UIAlertControllerPhoneTVMacView *)self contentViewTopConstraint];
-    [v106 addObject:v21];
+    contentViewTopConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewTopConstraint];
+    [array addObject:contentViewTopConstraint2];
   }
 
-  v22 = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
+  contentViewBottomConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
 
-  if (v22)
+  if (contentViewBottomConstraint)
   {
-    v23 = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
-    [v106 addObject:v23];
+    contentViewBottomConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
+    [array addObject:contentViewBottomConstraint2];
   }
 
-  v24 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewBottomConstraint];
+  contentScrollViewBottomConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewBottomConstraint];
 
-  if (v24)
+  if (contentScrollViewBottomConstraint)
   {
-    v25 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewBottomConstraint];
-    [v106 addObject:v25];
+    contentScrollViewBottomConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewBottomConstraint];
+    [array addObject:contentScrollViewBottomConstraint2];
   }
 
-  [MEMORY[0x1E69977A0] deactivateConstraints:v106];
+  [MEMORY[0x1E69977A0] deactivateConstraints:array];
   v26 = self->_contentViewTopItemsView;
-  v27 = [MEMORY[0x1E695DF70] array];
-  v28 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
+  array2 = [MEMORY[0x1E695DF70] array];
+  headerContentViewController = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
 
-  if (v28)
+  if (headerContentViewController)
   {
     v29 = [MEMORY[0x1E69977A0] constraintWithItem:self->_headerContentViewControllerContainerView attribute:3 relatedBy:0 toItem:v26 attribute:3];
     [(_UIAlertControllerPhoneTVMacView *)self setHeaderContentViewControllerContainerViewTopAlignmentConstraint:v29];
 
-    v30 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewControllerContainerViewTopAlignmentConstraint];
-    [v27 addObject:v30];
+    headerContentViewControllerContainerViewTopAlignmentConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewControllerContainerViewTopAlignmentConstraint];
+    [array2 addObject:headerContentViewControllerContainerViewTopAlignmentConstraint3];
 
     v31 = self->_headerContentViewControllerContainerView;
     v32 = 4;
@@ -1992,14 +1992,14 @@ LABEL_13:
     v32 = 3;
   }
 
-  v33 = [(_UIAlertControllerPhoneTVMacView *)self _hasTitle];
-  v34 = [(_UIAlertControllerPhoneTVMacView *)self _hasMessage];
-  v35 = v34;
-  v105 = v27;
-  if ((v33 || v34) && self->_titleAndMessageLabelVibrantContainerView)
+  _hasTitle = [(_UIAlertControllerPhoneTVMacView *)self _hasTitle];
+  _hasMessage = [(_UIAlertControllerPhoneTVMacView *)self _hasMessage];
+  v35 = _hasMessage;
+  v105 = array2;
+  if ((_hasTitle || _hasMessage) && self->_titleAndMessageLabelVibrantContainerView)
   {
     v36 = 13;
-    if (v33)
+    if (_hasTitle)
     {
       v37 = 12;
     }
@@ -2010,31 +2010,31 @@ LABEL_13:
     }
 
     v38 = *(&self->super.super.super.super.isa + OBJC_IVAR____UIAlertControllerPhoneTVMacView__alertControllerViewFlags[v37]);
-    if (!v34)
+    if (!_hasMessage)
     {
       v36 = 12;
     }
 
     v103 = *(&self->super.super.super.super.isa + OBJC_IVAR____UIAlertControllerPhoneTVMacView__alertControllerViewFlags[v36]);
     v104 = v38;
-    v102 = [v104 topAnchor];
-    v101 = [(UIView *)self->_titleAndMessageLabelVibrantContainerView topAnchor];
-    v39 = [v102 constraintEqualToAnchor:v101];
+    topAnchor = [v104 topAnchor];
+    topAnchor2 = [(UIView *)self->_titleAndMessageLabelVibrantContainerView topAnchor];
+    v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v107[0] = v39;
-    v40 = [v103 bottomAnchor];
-    v41 = [(UIView *)self->_titleAndMessageLabelVibrantContainerView bottomAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    bottomAnchor = [v103 bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_titleAndMessageLabelVibrantContainerView bottomAnchor];
+    v42 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v107[1] = v42;
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v107 count:2];
     [(_UIAlertControllerPhoneTVMacView *)self setTitleAndMessageLabelVibrantContainerViewVerticalConstraints:v43];
 
-    v27 = v105;
-    v44 = [(_UIAlertControllerPhoneTVMacView *)self titleAndMessageLabelVibrantContainerViewVerticalConstraints];
+    array2 = v105;
+    titleAndMessageLabelVibrantContainerViewVerticalConstraints3 = [(_UIAlertControllerPhoneTVMacView *)self titleAndMessageLabelVibrantContainerViewVerticalConstraints];
 
-    [v105 addObjectsFromArray:v44];
+    [v105 addObjectsFromArray:titleAndMessageLabelVibrantContainerViewVerticalConstraints3];
   }
 
-  if (!v33)
+  if (!_hasTitle)
   {
     if (!v35)
     {
@@ -2044,7 +2044,7 @@ LABEL_13:
 LABEL_38:
     v51 = 0x1E6997000uLL;
     v52 = [MEMORY[0x1E69977A0] constraintWithItem:self->_messageLabel attribute:12 relatedBy:0 toItem:v26 attribute:v32];
-    if (v33)
+    if (_hasTitle)
     {
       v53 = 746;
     }
@@ -2057,10 +2057,10 @@ LABEL_38:
     v54 = [_UIFlexibleConstantConstraintSet constraintSetWithCollapsableConstantPreferredEqualityConstraint:v52 equalityPriority:v53];
     [(_UIAlertControllerPhoneTVMacView *)self setMessageLabelTopAlignmentConstraints:v54];
 
-    v55 = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
-    v56 = [v55 constraints];
+    messageLabelTopAlignmentConstraints3 = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
+    constraints4 = [messageLabelTopAlignmentConstraints3 constraints];
     v50 = v105;
-    [v105 addObjectsFromArray:v56];
+    [v105 addObjectsFromArray:constraints4];
 
     v57 = self->_messageLabel;
     v32 = 11;
@@ -2072,9 +2072,9 @@ LABEL_38:
   v46 = [_UIFlexibleConstantConstraintSet constraintSetWithCollapsableConstantPreferredEqualityConstraint:v45 equalityPriority:748];
   [(_UIAlertControllerPhoneTVMacView *)self setTitleLabelTopAlignmentConstraints:v46];
 
-  v47 = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
-  v48 = [v47 constraints];
-  [v27 addObjectsFromArray:v48];
+  titleLabelTopAlignmentConstraints3 = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
+  constraints5 = [titleLabelTopAlignmentConstraints3 constraints];
+  [array2 addObjectsFromArray:constraints5];
 
   v49 = self->_titleLabel;
   v32 = 11;
@@ -2088,15 +2088,15 @@ LABEL_36:
   v50 = v105;
   v51 = 0x1E6997000;
 LABEL_42:
-  v58 = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
+  contentViewController = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
 
-  if (v58)
+  if (contentViewController)
   {
     v59 = [*(v51 + 1952) constraintWithItem:self->_contentViewControllerContainerView attribute:3 relatedBy:0 toItem:v26 attribute:v32];
     [(_UIAlertControllerPhoneTVMacView *)self setContentViewControllerContainerViewTopAlignmentConstraint:v59];
 
-    v60 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewTopAlignmentConstraint];
-    [v50 addObject:v60];
+    contentViewControllerContainerViewTopAlignmentConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewTopAlignmentConstraint];
+    [v50 addObject:contentViewControllerContainerViewTopAlignmentConstraint3];
 
     v61 = self->_contentViewControllerContainerView;
     v32 = 4;
@@ -2109,9 +2109,9 @@ LABEL_42:
     v63 = [_UIFlexibleConstantConstraintSet constraintSetWithCollapsableConstantPreferredEqualityConstraint:v62 equalityPriority:745];
     [(_UIAlertControllerPhoneTVMacView *)self setTextFieldViewControllerContainerViewTopAlignmentConstraints:v63];
 
-    v64 = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewTopAlignmentConstraints];
-    v65 = [v64 constraints];
-    [v50 addObjectsFromArray:v65];
+    textFieldViewControllerContainerViewTopAlignmentConstraints3 = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewTopAlignmentConstraints];
+    constraints6 = [textFieldViewControllerContainerViewTopAlignmentConstraints3 constraints];
+    [v50 addObjectsFromArray:constraints6];
 
     v66 = self->_textFieldViewControllerContainerView;
     v32 = 4;
@@ -2121,21 +2121,21 @@ LABEL_42:
   v67 = [*(v51 + 1952) constraintWithItem:self->_contentViewTopItemsView attribute:4 relatedBy:0 toItem:v26 attribute:v32];
   [(_UIAlertControllerPhoneTVMacView *)self setContentScrollViewBottomConstraint:v67];
 
-  v68 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewBottomConstraint];
-  [v50 addObject:v68];
+  contentScrollViewBottomConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewBottomConstraint];
+  [v50 addObject:contentScrollViewBottomConstraint3];
 
-  v69 = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewController];
+  separatedHeaderContentViewController = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewController];
   v70 = 10;
-  if (!v69)
+  if (!separatedHeaderContentViewController)
   {
     v70 = 8;
   }
 
   v71 = *(&self->super.super.super.super.isa + OBJC_IVAR____UIAlertControllerPhoneTVMacView__alertControllerViewFlags[v70]);
 
-  v72 = [(_UIAlertControllerPhoneTVMacView *)self hasDiscreteHorizontalCancelAction];
+  hasDiscreteHorizontalCancelAction = [(_UIAlertControllerPhoneTVMacView *)self hasDiscreteHorizontalCancelAction];
   v73 = 18;
-  if (!v72)
+  if (!hasDiscreteHorizontalCancelAction)
   {
     v73 = 8;
   }
@@ -2143,13 +2143,13 @@ LABEL_42:
   v74 = *(&self->super.super.super.super.isa + OBJC_IVAR____UIAlertControllerPhoneTVMacView__alertControllerViewFlags[v73]);
   if ([(_UIAlertControllerPhoneTVMacView *)self _hasDetailMessage])
   {
-    v75 = [(UIView *)self->_detailMessageLabel firstBaselineAnchor];
-    v76 = [(UIView *)self->_mainInterfaceActionsGroupView bottomAnchor];
-    v77 = [v75 constraintEqualToAnchor:v76];
+    firstBaselineAnchor = [(UIView *)self->_detailMessageLabel firstBaselineAnchor];
+    bottomAnchor3 = [(UIView *)self->_mainInterfaceActionsGroupView bottomAnchor];
+    v77 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor3];
     [(_UIAlertControllerPhoneTVMacView *)self setDetailMessageLabelTopAlignmentConstraint:v77];
 
-    v78 = [(_UIAlertControllerPhoneTVMacView *)self detailMessageLabelTopAlignmentConstraint];
-    [v50 addObject:v78];
+    detailMessageLabelTopAlignmentConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self detailMessageLabelTopAlignmentConstraint];
+    [v50 addObject:detailMessageLabelTopAlignmentConstraint3];
 
     v79 = self->_detailMessageLabel;
     v74 = v79;
@@ -2162,28 +2162,28 @@ LABEL_42:
     v74 = v80;
   }
 
-  v81 = [(UIView *)self->_contentView topAnchor];
-  v82 = [v71 topAnchor];
-  v83 = [v81 constraintEqualToAnchor:v82];
+  topAnchor3 = [(UIView *)self->_contentView topAnchor];
+  topAnchor4 = [v71 topAnchor];
+  v83 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [(_UIAlertControllerPhoneTVMacView *)self setContentViewTopConstraint:v83];
 
-  v84 = [(_UIAlertControllerPhoneTVMacView *)self contentViewTopConstraint];
-  [v50 addObject:v84];
+  contentViewTopConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self contentViewTopConstraint];
+  [v50 addObject:contentViewTopConstraint3];
 
-  v85 = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewController];
+  separatedHeaderContentViewController2 = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewController];
 
-  if (v85)
+  if (separatedHeaderContentViewController2)
   {
     v86 = [MEMORY[0x1E69977A0] constraintWithItem:v71 attribute:7 relatedBy:0 toItem:self->_contentView attribute:7];
     [(_UIAlertControllerPhoneTVMacView *)self setSeparatedHeaderContentViewControllerContainerViewWidthConstraint:v86];
 
-    v87 = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewControllerContainerViewWidthConstraint];
-    [v50 addObject:v87];
+    separatedHeaderContentViewControllerContainerViewWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewControllerContainerViewWidthConstraint];
+    [v50 addObject:separatedHeaderContentViewControllerContainerViewWidthConstraint];
 
     v88 = [MEMORY[0x1E69977A0] constraintWithItem:v71 attribute:4 relatedBy:0 toItem:self->_mainInterfaceActionsGroupView attribute:3];
     [(_UIAlertControllerPhoneTVMacView *)self setSeparatedHeaderContentViewControllerContainerViewBottomConstraint:v88];
 
-    v89 = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewControllerContainerViewBottomConstraint];
+    separatedHeaderContentViewControllerContainerViewBottomConstraint = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewControllerContainerViewBottomConstraint];
     v90 = 0.0;
     if ((*&self->_alertControllerViewFlags & 0x10) == 0)
     {
@@ -2191,20 +2191,20 @@ LABEL_42:
       v90 = v91;
     }
 
-    [v89 constant];
-    [v89 setConstant:v92 - v90];
+    [separatedHeaderContentViewControllerContainerViewBottomConstraint constant];
+    [separatedHeaderContentViewControllerContainerViewBottomConstraint setConstant:v92 - v90];
 
-    v93 = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewControllerContainerViewBottomConstraint];
-    [v50 addObject:v93];
+    separatedHeaderContentViewControllerContainerViewBottomConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewControllerContainerViewBottomConstraint];
+    [v50 addObject:separatedHeaderContentViewControllerContainerViewBottomConstraint2];
   }
 
-  v94 = [(UIView *)self->_contentView bottomAnchor];
-  v95 = [v74 bottomAnchor];
-  v96 = [v94 constraintEqualToAnchor:v95];
+  bottomAnchor4 = [(UIView *)self->_contentView bottomAnchor];
+  bottomAnchor5 = [v74 bottomAnchor];
+  v96 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   [(_UIAlertControllerPhoneTVMacView *)self setContentViewBottomConstraint:v96];
 
-  v97 = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
-  [v50 addObject:v97];
+  contentViewBottomConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
+  [v50 addObject:contentViewBottomConstraint3];
 
   [(_UIAlertControllerPhoneTVMacView *)self _updateConstraintConstants];
   v98 = MEMORY[0x1E69977A0];
@@ -2212,18 +2212,18 @@ LABEL_42:
   [v98 activateConstraints:v100];
 }
 
-- (void)_performBatchActionChangesWithBlock:(id)a3
+- (void)_performBatchActionChangesWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self actions];
-  v6 = [v5 count];
+  blockCopy = block;
+  actions = [(_UIAlertControllerPhoneTVMacView *)self actions];
+  v6 = [actions count];
 
   ++self->_batchActionChangesInProgressCount;
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   --self->_batchActionChangesInProgressCount;
-  v7 = [(_UIAlertControllerPhoneTVMacView *)self actions];
-  v8 = [v7 count];
+  actions2 = [(_UIAlertControllerPhoneTVMacView *)self actions];
+  v8 = [actions2 count];
 
   [(_UIAlertControllerPhoneTVMacView *)self _propertiesChanged];
   if ((*&self->_alertControllerViewFlags & 0x400) != 0 || v6 != v8)
@@ -2239,15 +2239,15 @@ LABEL_42:
   *&self->_alertControllerViewFlags = alertControllerViewFlags & 0xFBFF;
   if (self->_batchActionChangesInProgressCount < 1)
   {
-    v4 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
     [(_UIAlertControllerPhoneTVMacView *)self _updateActionViewVisualStyle:0];
     [(_UIAlertControllerPhoneTVMacView *)self _associateActionsWithActionViews];
-    [(_UIAlertControllerPhoneTVMacView *)self _updateActionViewVisualStyle:v4];
+    [(_UIAlertControllerPhoneTVMacView *)self _updateActionViewVisualStyle:_visualStyle];
     [(_UIAlertControllerPhoneTVMacView *)self _updateActionViewHeight];
     *&self->_alertControllerViewFlags &= ~0x200u;
     [(_UIAlertControllerPhoneTVMacView *)self _reloadInterfaceActionViewRepresentations];
     [(_UIAlertControllerPhoneTVMacView *)self _updatePreferredAction];
-    if (v4)
+    if (_visualStyle)
     {
       [(_UIAlertControllerPhoneTVMacView *)self _actionLayoutDirectionChanged];
     }
@@ -2262,9 +2262,9 @@ LABEL_42:
 - (void)_associateActionsWithActionViews
 {
   v68 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self actions];
-  v5 = [v4 count];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  actions = [(_UIAlertControllerPhoneTVMacView *)self actions];
+  v5 = [actions count];
   v6 = v5 - [(NSMutableArray *)self->_actionViews count];
   if (v6 >= 1)
   {
@@ -2279,8 +2279,8 @@ LABEL_42:
     while (v6);
   }
 
-  v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v47 = [MEMORY[0x1E695DF70] array];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  array = [MEMORY[0x1E695DF70] array];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
@@ -2301,17 +2301,17 @@ LABEL_42:
         }
 
         v14 = *(*(&v60 + 1) + 8 * i);
-        v15 = [v14 action];
+        action = [v14 action];
 
-        if (v15)
+        if (action)
         {
-          v16 = [v14 action];
-          [v8 setObject:v14 forKey:v16];
+          action2 = [v14 action];
+          [strongToStrongObjectsMapTable2 setObject:v14 forKey:action2];
         }
 
         else
         {
-          [v47 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -2321,12 +2321,12 @@ LABEL_42:
     while (v11);
   }
 
-  v17 = [v4 mutableCopy];
+  v17 = [actions mutableCopy];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v18 = v4;
+  v18 = actions;
   v19 = [v18 countByEnumeratingWithState:&v56 objects:v66 count:16];
   if (v19)
   {
@@ -2342,12 +2342,12 @@ LABEL_42:
         }
 
         v23 = *(*(&v56 + 1) + 8 * j);
-        v24 = [v8 objectForKey:v23];
+        v24 = [strongToStrongObjectsMapTable2 objectForKey:v23];
         if (v24)
         {
-          [v8 removeObjectForKey:v23];
+          [strongToStrongObjectsMapTable2 removeObjectForKey:v23];
           [v17 removeObject:v23];
-          [v3 setObject:v24 forKey:v23];
+          [strongToStrongObjectsMapTable setObject:v24 forKey:v23];
         }
       }
 
@@ -2379,31 +2379,31 @@ LABEL_42:
         }
 
         v29 = *(*(&v52 + 1) + 8 * k);
-        v30 = [v47 firstObject];
-        if (v30)
+        firstObject = [array firstObject];
+        if (firstObject)
         {
-          v31 = v30;
-          [v47 removeObjectAtIndex:0];
+          nextObject = firstObject;
+          [array removeObjectAtIndex:0];
         }
 
         else
         {
-          v32 = [v8 objectEnumerator];
-          v31 = [v32 nextObject];
+          objectEnumerator = [strongToStrongObjectsMapTable2 objectEnumerator];
+          nextObject = [objectEnumerator nextObject];
 
-          v33 = [v31 action];
-          v34 = [(_UIAlertControllerPhoneTVMacView *)self _interfaceActionRepresentationForAlertAlertAction:v33];
+          action3 = [nextObject action];
+          v34 = [(_UIAlertControllerPhoneTVMacView *)self _interfaceActionRepresentationForAlertAlertAction:action3];
           [v34 invalidate];
 
-          v35 = [v31 action];
-          [v8 removeObjectForKey:v35];
+          action4 = [nextObject action];
+          [strongToStrongObjectsMapTable2 removeObjectForKey:action4];
         }
 
-        v36 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-        [v31 setAlertController:v36];
+        alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+        [nextObject setAlertController:alertController];
 
-        [v31 setAction:v29];
-        [v3 setObject:v31 forKey:v29];
+        [nextObject setAction:v29];
+        [strongToStrongObjectsMapTable setObject:nextObject forKey:v29];
       }
 
       v26 = [obj countByEnumeratingWithState:&v52 objects:v65 count:16];
@@ -2420,8 +2420,8 @@ LABEL_42:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v39 = [(_UIAlertControllerPhoneTVMacView *)self actions];
-  v40 = [v39 countByEnumeratingWithState:&v48 objects:v64 count:16];
+  actions2 = [(_UIAlertControllerPhoneTVMacView *)self actions];
+  v40 = [actions2 countByEnumeratingWithState:&v48 objects:v64 count:16];
   if (v40)
   {
     v41 = v40;
@@ -2432,14 +2432,14 @@ LABEL_42:
       {
         if (*v49 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(actions2);
         }
 
-        v44 = [v3 objectForKey:{*(*(&v48 + 1) + 8 * m), v45}];
+        v44 = [strongToStrongObjectsMapTable objectForKey:{*(*(&v48 + 1) + 8 * m), v45}];
         [(NSMutableArray *)self->_actionViews addObject:v44];
       }
 
-      v41 = [v39 countByEnumeratingWithState:&v48 objects:v64 count:16];
+      v41 = [actions2 countByEnumeratingWithState:&v48 objects:v64 count:16];
     }
 
     while (v41);
@@ -2448,70 +2448,70 @@ LABEL_42:
 
 - (void)_textFieldsChanged
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self textFields];
-  v4 = [v3 count];
+  textFields = [(_UIAlertControllerPhoneTVMacView *)self textFields];
+  v4 = [textFields count];
 
   if (v4)
   {
-    v28 = [(_UIAlertControllerPhoneTVMacView *)self _textFieldViewController];
-    v5 = [v28 parentViewController];
-    v6 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+    _textFieldViewController = [(_UIAlertControllerPhoneTVMacView *)self _textFieldViewController];
+    parentViewController = [_textFieldViewController parentViewController];
+    alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
 
-    if (v5 != v6)
+    if (parentViewController != alertController)
     {
-      v7 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-      [v7 _willParentTextFieldViewController];
+      alertController2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+      [alertController2 _willParentTextFieldViewController];
 
       textFieldViewControllerContainerView = self->_textFieldViewControllerContainerView;
-      v9 = [v28 view];
-      [(UIView *)textFieldViewControllerContainerView addSubview:v9];
+      view = [_textFieldViewController view];
+      [(UIView *)textFieldViewControllerContainerView addSubview:view];
 
-      v10 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-      [v10 _didParentTextFieldViewController];
+      alertController3 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+      [alertController3 _didParentTextFieldViewController];
     }
 
-    v11 = [MEMORY[0x1E695DF70] array];
-    v12 = [v28 view];
-    v13 = [v12 leftAnchor];
-    v14 = [(UIView *)self->_textFieldViewControllerContainerView leftAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
-    [v11 addObject:v15];
+    array = [MEMORY[0x1E695DF70] array];
+    view2 = [_textFieldViewController view];
+    leftAnchor = [view2 leftAnchor];
+    leftAnchor2 = [(UIView *)self->_textFieldViewControllerContainerView leftAnchor];
+    v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
+    [array addObject:v15];
 
-    v16 = [v28 view];
-    v17 = [v16 rightAnchor];
-    v18 = [(UIView *)self->_textFieldViewControllerContainerView rightAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
-    [v11 addObject:v19];
+    view3 = [_textFieldViewController view];
+    rightAnchor = [view3 rightAnchor];
+    rightAnchor2 = [(UIView *)self->_textFieldViewControllerContainerView rightAnchor];
+    v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
+    [array addObject:v19];
 
-    v20 = [v28 view];
-    v21 = [v20 topAnchor];
-    v22 = [(UIView *)self->_textFieldViewControllerContainerView topAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
-    [v11 addObject:v23];
+    view4 = [_textFieldViewController view];
+    topAnchor = [view4 topAnchor];
+    topAnchor2 = [(UIView *)self->_textFieldViewControllerContainerView topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v23];
 
-    v24 = [v28 view];
-    v25 = [v24 bottomAnchor];
-    v26 = [(UIView *)self->_textFieldViewControllerContainerView bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
-    [v11 addObject:v27];
+    view5 = [_textFieldViewController view];
+    bottomAnchor = [view5 bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_textFieldViewControllerContainerView bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v27];
 
-    [MEMORY[0x1E69977A0] activateConstraints:v11];
+    [MEMORY[0x1E69977A0] activateConstraints:array];
     [(_UIAlertControllerPhoneTVMacView *)self _sizeOfTextFieldViewControllerChanged];
   }
 }
 
-- (id)_interfaceActionForAlertAction:(id)a3 inActionGroupView:(id)a4
+- (id)_interfaceActionForAlertAction:(id)action inActionGroupView:(id)view
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  actionCopy = action;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a4 actionGroup];
-  v7 = [v6 actions];
+  actionGroup = [view actionGroup];
+  actions = [actionGroup actions];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [actions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = *v16;
@@ -2521,12 +2521,12 @@ LABEL_42:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(actions);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 underlyingAlertAction];
-        v13 = [v12 isEqual:v5];
+        underlyingAlertAction = [v11 underlyingAlertAction];
+        v13 = [underlyingAlertAction isEqual:actionCopy];
 
         if (v13)
         {
@@ -2535,7 +2535,7 @@ LABEL_42:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [actions countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -2553,9 +2553,9 @@ LABEL_11:
 - (void)_reloadInterfaceActionViewRepresentations
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _unlocalizedOrderedPresentableAlertActionViewRepresentations];
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self _indexesOfActionSectionSeparators];
-  v5 = _newInterfaceActionSectionsForAlertActionViewRepresentations(v3, v4);
+  _unlocalizedOrderedPresentableAlertActionViewRepresentations = [(_UIAlertControllerPhoneTVMacView *)self _unlocalizedOrderedPresentableAlertActionViewRepresentations];
+  _indexesOfActionSectionSeparators = [(_UIAlertControllerPhoneTVMacView *)self _indexesOfActionSectionSeparators];
+  v5 = _newInterfaceActionSectionsForAlertActionViewRepresentations(_unlocalizedOrderedPresentableAlertActionViewRepresentations, _indexesOfActionSectionSeparators);
 
   mainInterfaceActionsGroupView = self->_mainInterfaceActionsGroupView;
   v7 = [UIInterfaceActionGroup actionGroupWithActionsBySection:v5];
@@ -2563,11 +2563,11 @@ LABEL_11:
 
   if ([(_UIAlertControllerPhoneTVMacView *)self _hasDiscreteCancelAction])
   {
-    v8 = [(_UIAlertControllerPhoneTVMacView *)self _discreteCancelActionView];
-    v14[0] = v8;
+    _discreteCancelActionView = [(_UIAlertControllerPhoneTVMacView *)self _discreteCancelActionView];
+    v14[0] = _discreteCancelActionView;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    v10 = [MEMORY[0x1E696AC90] indexSet];
-    v11 = _newInterfaceActionSectionsForAlertActionViewRepresentations(v9, v10);
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
+    v11 = _newInterfaceActionSectionsForAlertActionViewRepresentations(v9, indexSet);
 
     discreteCancelActionGroupView = self->_discreteCancelActionGroupView;
     v13 = [UIInterfaceActionGroup actionGroupWithActionsBySection:v11];
@@ -2580,62 +2580,62 @@ LABEL_11:
 
 - (void)_reloadInterfaceActionsGroupViewPreferredAction
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _effectivePreferredAction];
-  v8 = [(_UIAlertControllerPhoneTVMacView *)self _interfaceActionForAlertAction:v3 inActionGroupView:self->_mainInterfaceActionsGroupView];
+  _effectivePreferredAction = [(_UIAlertControllerPhoneTVMacView *)self _effectivePreferredAction];
+  v8 = [(_UIAlertControllerPhoneTVMacView *)self _interfaceActionForAlertAction:_effectivePreferredAction inActionGroupView:self->_mainInterfaceActionsGroupView];
 
-  v4 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionGroup];
-  [v4 setPreferredAction:v8];
+  actionGroup = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionGroup];
+  [actionGroup setPreferredAction:v8];
 
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self _effectivePreferredAction];
-  v6 = [(_UIAlertControllerPhoneTVMacView *)self _interfaceActionForAlertAction:v5 inActionGroupView:self->_discreteCancelActionGroupView];
+  _effectivePreferredAction2 = [(_UIAlertControllerPhoneTVMacView *)self _effectivePreferredAction];
+  v6 = [(_UIAlertControllerPhoneTVMacView *)self _interfaceActionForAlertAction:_effectivePreferredAction2 inActionGroupView:self->_discreteCancelActionGroupView];
 
-  v7 = [(UIInterfaceActionGroupView *)self->_discreteCancelActionGroupView actionGroup];
-  [v7 setPreferredAction:v6];
+  actionGroup2 = [(UIInterfaceActionGroupView *)self->_discreteCancelActionGroupView actionGroup];
+  [actionGroup2 setPreferredAction:v6];
 }
 
 - (void)_scrollInitialActionToVisibleForPresentation
 {
-  v3 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionGroup];
-  v4 = [v3 preferredAction];
+  actionGroup = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionGroup];
+  preferredAction = [actionGroup preferredAction];
 
-  if (!v4)
+  if (!preferredAction)
   {
     mainInterfaceActionsGroupView = self->_mainInterfaceActionsGroupView;
-    v8 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-    v6 = [v8 preferredAction];
-    v7 = [(_UIAlertControllerPhoneTVMacView *)self _interfaceActionForAlertAction:v6 inActionGroupView:self->_mainInterfaceActionsGroupView];
+    alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+    preferredAction2 = [alertController preferredAction];
+    v7 = [(_UIAlertControllerPhoneTVMacView *)self _interfaceActionForAlertAction:preferredAction2 inActionGroupView:self->_mainInterfaceActionsGroupView];
     [(UIInterfaceActionGroupView *)mainInterfaceActionsGroupView scrollToCenterForInterfaceAction:v7];
   }
 }
 
-- (void)interfaceAction:(id)a3 invokeActionHandler:(id)a4 completion:(id)a5
+- (void)interfaceAction:(id)action invokeActionHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  actionCopy = action;
+  completionCopy = completion;
   v10 = objc_opt_class();
   if (v10 != objc_opt_class())
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIAlertControllerPhoneTVMacView.m" lineNumber:1660 description:{@"unexpected class %@ for interface action", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIAlertControllerPhoneTVMacView.m" lineNumber:1660 description:{@"unexpected class %@ for interface action", objc_opt_class()}];
   }
 
-  v11 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v12 = [v8 underlyingAlertAction];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  underlyingAlertAction = [actionCopy underlyingAlertAction];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83___UIAlertControllerPhoneTVMacView_interfaceAction_invokeActionHandler_completion___block_invoke;
   v15[3] = &unk_1E70F3608;
-  v16 = v9;
-  v13 = v9;
-  [v11 _dismissWithAction:v12 dismissCompletion:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [alertController _dismissWithAction:underlyingAlertAction dismissCompletion:v15];
 }
 
 - (BOOL)_shouldHaveCancelActionInMainActionButtonSequenceView
 {
   if ([(_UIAlertControllerPhoneTVMacView *)self showsCancelAction])
   {
-    v3 = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
-    if (v3)
+    cancelAction = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
+    if (cancelAction)
     {
       v4 = ![(_UIAlertControllerPhoneTVMacView *)self cancelActionIsDiscrete];
     }
@@ -2656,19 +2656,19 @@ LABEL_11:
 
 - (id)_unlocalizedOrderedPresentableAlertActionViewRepresentations
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self actions];
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self _unlocalizedOrderedPresentableAlertActions];
+  array = [MEMORY[0x1E695DF70] array];
+  actions = [(_UIAlertControllerPhoneTVMacView *)self actions];
+  _unlocalizedOrderedPresentableAlertActions = [(_UIAlertControllerPhoneTVMacView *)self _unlocalizedOrderedPresentableAlertActions];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __96___UIAlertControllerPhoneTVMacView__unlocalizedOrderedPresentableAlertActionViewRepresentations__block_invoke;
   v11[3] = &unk_1E7107108;
-  v12 = v4;
-  v13 = self;
-  v6 = v3;
+  v12 = actions;
+  selfCopy = self;
+  v6 = array;
   v14 = v6;
-  v7 = v4;
-  [v5 enumerateObjectsUsingBlock:v11];
+  v7 = actions;
+  [_unlocalizedOrderedPresentableAlertActions enumerateObjectsUsingBlock:v11];
   v8 = v14;
   v9 = v6;
 
@@ -2677,31 +2677,31 @@ LABEL_11:
 
 - (id)_unlocalizedOrderedPresentableAlertActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self _canLayOutActionsHorizontally];
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self _shouldHaveCancelActionInMainActionButtonSequenceView];
-  v6 = [(_UIAlertControllerPhoneTVMacView *)self _actionsReversed];
-  v7 = [(_UIAlertControllerPhoneTVMacView *)self _presentableAlertActions];
-  if (!v6)
+  array = [MEMORY[0x1E695DF70] array];
+  _canLayOutActionsHorizontally = [(_UIAlertControllerPhoneTVMacView *)self _canLayOutActionsHorizontally];
+  _shouldHaveCancelActionInMainActionButtonSequenceView = [(_UIAlertControllerPhoneTVMacView *)self _shouldHaveCancelActionInMainActionButtonSequenceView];
+  _actionsReversed = [(_UIAlertControllerPhoneTVMacView *)self _actionsReversed];
+  _presentableAlertActions = [(_UIAlertControllerPhoneTVMacView *)self _presentableAlertActions];
+  if (!_actionsReversed)
   {
-    [v3 addObjectsFromArray:v7];
+    [array addObjectsFromArray:_presentableAlertActions];
 
-    if (!v5)
+    if (!_shouldHaveCancelActionInMainActionButtonSequenceView)
     {
       goto LABEL_9;
     }
 
 LABEL_5:
-    v8 = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
-    [v3 removeObject:v8];
-    if (v4)
+    cancelAction = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
+    [array removeObject:cancelAction];
+    if (_canLayOutActionsHorizontally)
     {
-      [v3 insertObject:v8 atIndex:0];
+      [array insertObject:cancelAction atIndex:0];
     }
 
     else
     {
-      [v3 addObject:v8];
+      [array addObject:cancelAction];
     }
 
     goto LABEL_9;
@@ -2711,44 +2711,44 @@ LABEL_5:
   v10[1] = 3221225472;
   v10[2] = __78___UIAlertControllerPhoneTVMacView__unlocalizedOrderedPresentableAlertActions__block_invoke;
   v10[3] = &unk_1E70F48F8;
-  v11 = v3;
-  [v7 enumerateObjectsUsingBlock:v10];
+  v11 = array;
+  [_presentableAlertActions enumerateObjectsUsingBlock:v10];
 
-  if (v5)
+  if (_shouldHaveCancelActionInMainActionButtonSequenceView)
   {
     goto LABEL_5;
   }
 
 LABEL_9:
 
-  return v3;
+  return array;
 }
 
 - (id)_presentableAlertActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self _shouldHaveCancelActionInMainActionButtonSequenceView];
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self actions];
-  [v3 addObjectsFromArray:v5];
+  array = [MEMORY[0x1E695DF70] array];
+  _shouldHaveCancelActionInMainActionButtonSequenceView = [(_UIAlertControllerPhoneTVMacView *)self _shouldHaveCancelActionInMainActionButtonSequenceView];
+  actions = [(_UIAlertControllerPhoneTVMacView *)self actions];
+  [array addObjectsFromArray:actions];
 
-  if (!v4)
+  if (!_shouldHaveCancelActionInMainActionButtonSequenceView)
   {
-    v6 = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
-    [v3 removeObject:v6];
+    cancelAction = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
+    [array removeObject:cancelAction];
   }
 
-  return v3;
+  return array;
 }
 
 - (int64_t)_numberOfActionsForMainActionButtonSequenceView
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self actions];
-  v4 = [v3 count];
+  actions = [(_UIAlertControllerPhoneTVMacView *)self actions];
+  v4 = [actions count];
 
   if (![(_UIAlertControllerPhoneTVMacView *)self _shouldHaveCancelActionInMainActionButtonSequenceView])
   {
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
-    v6 = v5 != 0;
+    cancelAction = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
+    v6 = cancelAction != 0;
 
     v4 -= v6;
   }
@@ -2759,15 +2759,15 @@ LABEL_9:
 - (void)_updatePreferredAction
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self actions];
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v6 = [v5 preferredAction];
-  v7 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v8 = [v7 _resolvedStyle];
-  v9 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v10 = [v9 _visualStyle];
-  v11 = _UIAlertControllerEffectivePreferredActionGivenActions(v3, v4, v6, v8, v10);
+  actions = [(_UIAlertControllerPhoneTVMacView *)self actions];
+  cancelAction = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  preferredAction = [alertController preferredAction];
+  alertController2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _resolvedStyle = [alertController2 _resolvedStyle];
+  alertController3 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _visualStyle = [alertController3 _visualStyle];
+  v11 = _UIAlertControllerEffectivePreferredActionGivenActions(actions, cancelAction, preferredAction, _resolvedStyle, _visualStyle);
 
   v12 = self->_effectivePreferredAction;
   if (v12 != v11 || ![(UIAlertAction *)v11 _isPreferred])
@@ -2776,7 +2776,7 @@ LABEL_9:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v13 = v3;
+    v13 = actions;
     v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v14)
     {
@@ -2811,23 +2811,23 @@ LABEL_9:
 
 - (BOOL)hasDiscreteHorizontalCancelAction
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _hasDiscreteCancelAction];
-  if (v3)
+  _hasDiscreteCancelAction = [(_UIAlertControllerPhoneTVMacView *)self _hasDiscreteCancelAction];
+  if (_hasDiscreteCancelAction)
   {
-    v3 = [(_UIAlertControllerPhoneTVMacView *)self _buttonsAreTopMost];
-    if (v3)
+    _hasDiscreteCancelAction = [(_UIAlertControllerPhoneTVMacView *)self _buttonsAreTopMost];
+    if (_hasDiscreteCancelAction)
     {
-      LOBYTE(v3) = [(_UIAlertControllerPhoneTVMacView *)self _numberOfActionsForMainActionButtonSequenceView]> 0;
+      LOBYTE(_hasDiscreteCancelAction) = [(_UIAlertControllerPhoneTVMacView *)self _numberOfActionsForMainActionButtonSequenceView]> 0;
     }
   }
 
-  return v3;
+  return _hasDiscreteCancelAction;
 }
 
 - (double)_marginBetweenInterfaceActionGroups
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v2 _spacingBetweenDismissButtonAndContent];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle _spacingBetweenDismissButtonAndContent];
   v4 = v3;
 
   return v4;
@@ -2835,8 +2835,8 @@ LABEL_9:
 
 - (CGSize)_contentViewControllerSize
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
-  [v2 preferredContentSize];
+  contentViewController = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
+  [contentViewController preferredContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -2849,8 +2849,8 @@ LABEL_9:
 
 - (double)_labelHorizontalInsets
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v2 _labelHorizontalInsets];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle _labelHorizontalInsets];
   v4 = v3;
 
   return v4;
@@ -2861,11 +2861,11 @@ LABEL_9:
   v28 = *MEMORY[0x1E69E9840];
   if ((*&self->_alertControllerViewFlags & 0x200) == 0)
   {
-    v3 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewWidthConstraint];
-    [v3 setActive:0];
+    discreteCancelActionViewWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewWidthConstraint];
+    [discreteCancelActionViewWidthConstraint setActive:0];
 
-    v4 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewHeightConstraint];
-    [v4 setActive:0];
+    discreteCancelActionViewHeightConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewHeightConstraint];
+    [discreteCancelActionViewHeightConstraint setActive:0];
 
     [(_UIAlertControllerPhoneTVMacView *)self _ensureActionViewRepresentationsHaveMetrics];
     p_largestActionDimension = &self->_largestActionDimension;
@@ -2893,12 +2893,12 @@ LABEL_9:
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [v14 action];
-          v16 = [v15 _contentViewController];
+          action = [v14 action];
+          _contentViewController = [action _contentViewController];
 
-          if (v16)
+          if (_contentViewController)
           {
-            [v16 preferredContentSize];
+            [_contentViewController preferredContentSize];
           }
 
           else
@@ -2923,11 +2923,11 @@ LABEL_9:
       while (v9);
     }
 
-    v19 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewWidthConstraint];
-    [v19 setActive:1];
+    discreteCancelActionViewWidthConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewWidthConstraint];
+    [discreteCancelActionViewWidthConstraint2 setActive:1];
 
-    v20 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewHeightConstraint];
-    [v20 setActive:1];
+    discreteCancelActionViewHeightConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewHeightConstraint];
+    [discreteCancelActionViewHeightConstraint2 setActive:1];
 
     *&self->_alertControllerViewFlags |= 0x200u;
   }
@@ -2939,105 +2939,105 @@ LABEL_9:
   return result;
 }
 
-- (void)beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:(id)a3
+- (void)beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:(id)recognizer
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:a3];
+  [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView beginTrackingSessionByTakingOverForSystemProvidedGestureRecognizer:recognizer];
   mainInterfaceActionsGroupView = self->_mainInterfaceActionsGroupView;
   v6[0] = self->_discreteCancelActionGroupView;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   [(UIInterfaceActionGroupView *)mainInterfaceActionsGroupView setSimultaneouslyPresentedGroupViews:v5];
 }
 
-- (void)setSpringLoaded:(BOOL)a3
+- (void)setSpringLoaded:(BOOL)loaded
 {
-  if (self->_springLoaded != a3)
+  if (self->_springLoaded != loaded)
   {
-    v4 = a3;
-    self->_springLoaded = a3;
+    loadedCopy = loaded;
+    self->_springLoaded = loaded;
     [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView setSpringLoaded:?];
     discreteCancelActionGroupView = self->_discreteCancelActionGroupView;
 
-    [(UIInterfaceActionGroupView *)discreteCancelActionGroupView setSpringLoaded:v4];
+    [(UIInterfaceActionGroupView *)discreteCancelActionGroupView setSpringLoaded:loadedCopy];
   }
 }
 
-- (BOOL)_shouldAllowPassthroughToLayersBehindUsForTouches:(id)a3
+- (BOOL)_shouldAllowPassthroughToLayersBehindUsForTouches:(id)touches
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __86___UIAlertControllerPhoneTVMacView__shouldAllowPassthroughToLayersBehindUsForTouches___block_invoke;
   v6[3] = &unk_1E70F3A88;
   v6[4] = self;
-  v3 = [a3 objectsPassingTest:v6];
+  v3 = [touches objectsPassingTest:v6];
   v4 = [v3 count] == 0;
 
   return v4;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(_UIAlertControllerPhoneTVMacView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:v6])
+  beganCopy = began;
+  eventCopy = event;
+  if ([(_UIAlertControllerPhoneTVMacView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:beganCopy])
   {
     v8.receiver = self;
     v8.super_class = _UIAlertControllerPhoneTVMacView;
-    [(UIResponder *)&v8 touchesBegan:v6 withEvent:v7];
+    [(UIResponder *)&v8 touchesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(_UIAlertControllerPhoneTVMacView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:v6])
+  movedCopy = moved;
+  eventCopy = event;
+  if ([(_UIAlertControllerPhoneTVMacView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:movedCopy])
   {
     v8.receiver = self;
     v8.super_class = _UIAlertControllerPhoneTVMacView;
-    [(UIResponder *)&v8 touchesMoved:v6 withEvent:v7];
+    [(UIResponder *)&v8 touchesMoved:movedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(_UIAlertControllerPhoneTVMacView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:v6])
+  endedCopy = ended;
+  eventCopy = event;
+  if ([(_UIAlertControllerPhoneTVMacView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:endedCopy])
   {
     v8.receiver = self;
     v8.super_class = _UIAlertControllerPhoneTVMacView;
-    [(UIResponder *)&v8 touchesEnded:v6 withEvent:v7];
+    [(UIResponder *)&v8 touchesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(_UIAlertControllerPhoneTVMacView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:v6])
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  if ([(_UIAlertControllerPhoneTVMacView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:cancelledCopy])
   {
     v8.receiver = self;
     v8.super_class = _UIAlertControllerPhoneTVMacView;
-    [(UIResponder *)&v8 touchesCancelled:v6 withEvent:v7];
+    [(UIResponder *)&v8 touchesCancelled:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (void)_setVisualStyle:(id)a3
+- (void)_setVisualStyle:(id)style
 {
-  v4 = a3;
-  v14 = [(_UIAlertControllerPhoneTVMacView *)self _unlocalizedOrderedPresentableAlertActions];
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  styleCopy = style;
+  _unlocalizedOrderedPresentableAlertActions = [(_UIAlertControllerPhoneTVMacView *)self _unlocalizedOrderedPresentableAlertActions];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  traitCollection = [_visualStyle traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v8 = [(UIAlertControllerVisualStyle *)v4 traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  traitCollection2 = [(UIAlertControllerVisualStyle *)styleCopy traitCollection];
+  userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-  if (v7 == v9)
+  if (userInterfaceIdiom == userInterfaceIdiom2)
   {
-    v10 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    v11 = v10 == 0;
+    _visualStyle2 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    v11 = _visualStyle2 == 0;
   }
 
   else
@@ -3046,12 +3046,12 @@ LABEL_9:
   }
 
   visualStyle = self->_visualStyle;
-  self->_visualStyle = v4;
+  self->_visualStyle = styleCopy;
 
   [(_UIAlertControllerPhoneTVMacView *)self _updateStyleForIdiomChange:v11];
   [(_UIAlertControllerPhoneTVMacView *)self _updateActionsGroupPresentationStyles];
-  v13 = [(_UIAlertControllerPhoneTVMacView *)self _unlocalizedOrderedPresentableAlertActions];
-  if (([v14 isEqual:v13] & 1) == 0)
+  _unlocalizedOrderedPresentableAlertActions2 = [(_UIAlertControllerPhoneTVMacView *)self _unlocalizedOrderedPresentableAlertActions];
+  if (([_unlocalizedOrderedPresentableAlertActions isEqual:_unlocalizedOrderedPresentableAlertActions2] & 1) == 0)
   {
     [(_UIAlertControllerPhoneTVMacView *)self _reloadInterfaceActionViewRepresentations];
   }
@@ -3061,18 +3061,18 @@ LABEL_9:
   [(_UIAlertControllerPhoneTVMacView *)self _updateCancelActionBeingDiscrete];
 }
 
-- (void)_updateStyleForIdiomChange:(BOOL)a3
+- (void)_updateStyleForIdiomChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  changeCopy = change;
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
   *&self->_alertControllerViewFlags &= ~0x200u;
   [(_UIAlertControllerPhoneTVMacView *)self _updateLabelFontSizes];
   [(_UIAlertControllerPhoneTVMacView *)self _updateLabelTextColor];
   [(_UIAlertControllerPhoneTVMacView *)self _updateLabelProperties];
   [(_UIAlertControllerPhoneTVMacView *)self _updateMainGroupViewProperties];
-  [(_UIAlertControllerPhoneTVMacView *)self _updateActionViewVisualStyle:v5];
+  [(_UIAlertControllerPhoneTVMacView *)self _updateActionViewVisualStyle:_visualStyle];
   [(_UIAlertControllerPhoneTVMacView *)self _updateActionViewHeight];
-  if (v3)
+  if (changeCopy)
   {
     [(_UIAlertControllerPhoneTVMacView *)self _propertiesChanged];
   }
@@ -3087,17 +3087,17 @@ LABEL_9:
 
 - (void)_updateTitleLabelContents
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _hasAttributedTitle];
+  _hasAttributedTitle = [(_UIAlertControllerPhoneTVMacView *)self _hasAttributedTitle];
   titleLabel = self->_titleLabel;
-  if (v3)
+  if (_hasAttributedTitle)
   {
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self _attributedTitle];
+    _attributedTitle = [(_UIAlertControllerPhoneTVMacView *)self _attributedTitle];
     [(UILabel *)titleLabel setAttributedText:?];
   }
 
   else
   {
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self title];
+    _attributedTitle = [(_UIAlertControllerPhoneTVMacView *)self title];
     [(UILabel *)titleLabel setText:?];
   }
 }
@@ -3107,24 +3107,24 @@ LABEL_9:
   if ([(_UIAlertControllerPhoneTVMacView *)self _hasDetailMessage])
   {
     detailMessageLabel = self->_detailMessageLabel;
-    v4 = [(_UIAlertControllerPhoneTVMacView *)self _attributedDetailMessage];
-    [(UILabel *)detailMessageLabel setAttributedText:v4];
+    _attributedDetailMessage = [(_UIAlertControllerPhoneTVMacView *)self _attributedDetailMessage];
+    [(UILabel *)detailMessageLabel setAttributedText:_attributedDetailMessage];
   }
 }
 
 - (void)_updateMessageLabelContents
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _hasAttributedMessage];
+  _hasAttributedMessage = [(_UIAlertControllerPhoneTVMacView *)self _hasAttributedMessage];
   messageLabel = self->_messageLabel;
-  if (v3)
+  if (_hasAttributedMessage)
   {
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self _attributedMessage];
+    _attributedMessage = [(_UIAlertControllerPhoneTVMacView *)self _attributedMessage];
     [(UILabel *)messageLabel setAttributedText:?];
   }
 
   else
   {
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self message];
+    _attributedMessage = [(_UIAlertControllerPhoneTVMacView *)self message];
     [(UILabel *)messageLabel setText:?];
   }
 }
@@ -3134,18 +3134,18 @@ LABEL_9:
   if (![(_UIAlertControllerPhoneTVMacView *)self _hasAttributedTitle])
   {
     titleLabel = self->_titleLabel;
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    v4 = [v5 titleLabelFont];
-    [(UILabel *)titleLabel setFont:v4];
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    titleLabelFont = [_visualStyle titleLabelFont];
+    [(UILabel *)titleLabel setFont:titleLabelFont];
   }
 }
 
 - (void)_updateDetailLabelFontSize
 {
   detailMessageLabel = self->_detailMessageLabel;
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  v3 = [v4 _detailMessageFont];
-  [(UILabel *)detailMessageLabel setFont:v3];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  _detailMessageFont = [_visualStyle _detailMessageFont];
+  [(UILabel *)detailMessageLabel setFont:_detailMessageFont];
 }
 
 - (void)_updateMessageLabelFontSize
@@ -3153,9 +3153,9 @@ LABEL_9:
   if (![(_UIAlertControllerPhoneTVMacView *)self _hasAttributedMessage])
   {
     messageLabel = self->_messageLabel;
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    v4 = [v5 messageLabelFont];
-    [(UILabel *)messageLabel setFont:v4];
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    messageLabelFont = [_visualStyle messageLabelFont];
+    [(UILabel *)messageLabel setFont:messageLabelFont];
   }
 }
 
@@ -3172,25 +3172,25 @@ LABEL_9:
   if (![(_UIAlertControllerPhoneTVMacView *)self _hasAttributedTitle])
   {
     titleLabel = self->_titleLabel;
-    v4 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    v5 = [v4 titleLabelColor];
-    [(UILabel *)titleLabel setTextColor:v5];
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    titleLabelColor = [_visualStyle titleLabelColor];
+    [(UILabel *)titleLabel setTextColor:titleLabelColor];
   }
 
   if (![(_UIAlertControllerPhoneTVMacView *)self _hasAttributedMessage])
   {
     messageLabel = self->_messageLabel;
-    v7 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    v8 = [v7 messageLabelColor];
-    [(UILabel *)messageLabel setTextColor:v8];
+    _visualStyle2 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    messageLabelColor = [_visualStyle2 messageLabelColor];
+    [(UILabel *)messageLabel setTextColor:messageLabelColor];
 
-    v9 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    v15 = [v9 messageCompositingFilter];
+    _visualStyle3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    messageCompositingFilter = [_visualStyle3 messageCompositingFilter];
 
-    v10 = [(_UIAlertControllerPhoneTVMacView *)self _titleAndMessageLabelUseVibrancy];
-    if (v15)
+    _titleAndMessageLabelUseVibrancy = [(_UIAlertControllerPhoneTVMacView *)self _titleAndMessageLabelUseVibrancy];
+    if (messageCompositingFilter)
     {
-      v11 = v10;
+      v11 = _titleAndMessageLabelUseVibrancy;
     }
 
     else
@@ -3200,15 +3200,15 @@ LABEL_9:
 
     if ((v11 & 1) == 0)
     {
-      v12 = [(UIView *)self->_messageLabel layer];
-      [v12 setCompositingFilter:v15];
+      layer = [(UIView *)self->_messageLabel layer];
+      [layer setCompositingFilter:messageCompositingFilter];
     }
 
-    v13 = [(UIView *)self->_contentViewTopItemsView layer];
-    [v13 setAllowsGroupBlending:v11];
+    layer2 = [(UIView *)self->_contentViewTopItemsView layer];
+    [layer2 setAllowsGroupBlending:v11];
 
-    v14 = [(UIView *)self->_contentViewTopItemsView layer];
-    [v14 setAllowsGroupOpacity:v11];
+    layer3 = [(UIView *)self->_contentViewTopItemsView layer];
+    [layer3 setAllowsGroupOpacity:v11];
   }
 }
 
@@ -3217,17 +3217,17 @@ LABEL_9:
   WeakRetained = objc_loadWeakRetained(&self->_alertController);
   if ([WeakRetained _titleMaximumLineCount] < 0)
   {
-    v4 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    v5 = [v4 maximumNumberOfLinesInTitleLabel];
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    maximumNumberOfLinesInTitleLabel = [_visualStyle maximumNumberOfLinesInTitleLabel];
   }
 
   else
   {
-    v4 = objc_loadWeakRetained(&self->_alertController);
-    v5 = [v4 _titleMaximumLineCount];
+    _visualStyle = objc_loadWeakRetained(&self->_alertController);
+    maximumNumberOfLinesInTitleLabel = [_visualStyle _titleMaximumLineCount];
   }
 
-  v6 = v5;
+  v6 = maximumNumberOfLinesInTitleLabel;
 
   [(UILabel *)self->_titleLabel setNumberOfLines:v6];
   titleLabel = self->_titleLabel;
@@ -3235,8 +3235,8 @@ LABEL_9:
   -[UILabel setLineBreakMode:](titleLabel, "setLineBreakMode:", [v8 _titleLineBreakMode]);
 
   messageLabel = self->_messageLabel;
-  v10 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  -[UILabel setNumberOfLines:](messageLabel, "setNumberOfLines:", [v10 maximumNumberOfLinesInMessageLabel]);
+  _visualStyle2 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  -[UILabel setNumberOfLines:](messageLabel, "setNumberOfLines:", [_visualStyle2 maximumNumberOfLinesInMessageLabel]);
 }
 
 - (void)_updateInsets
@@ -3307,28 +3307,28 @@ LABEL_9:
   }
 }
 
-- (double)_maximumWidthUsingAccessibilityWidthIfActionsAreTruncated:(double)a3
+- (double)_maximumWidthUsingAccessibilityWidthIfActionsAreTruncated:(double)truncated
 {
   [(_UIAlertControllerPhoneTVMacView *)self _minimumSizeForAllActions];
-  if (v5 > a3 && ([UIApp _isSpringBoard] & 1) == 0)
+  if (v5 > truncated && ([UIApp _isSpringBoard] & 1) == 0)
   {
-    v6 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    [v6 accessibilityWidth];
-    a3 = v7;
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    [_visualStyle accessibilityWidth];
+    truncated = v7;
   }
 
-  return a3;
+  return truncated;
 }
 
 - (void)_updateContentView
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v3 maximumWidthForTitleAndMessageContentView];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle maximumWidthForTitleAndMessageContentView];
   [(_UIAlertControllerPhoneTVMacView *)self _maximumWidthUsingAccessibilityWidthIfActionsAreTruncated:?];
   v5 = v4;
 
-  v6 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumWidthConstraint];
-  v7 = v6;
+  contentScrollViewMaximumWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumWidthConstraint];
+  v7 = contentScrollViewMaximumWidthConstraint;
   if (v5 == 0.0)
   {
     v8 = 0;
@@ -3336,59 +3336,59 @@ LABEL_9:
 
   else
   {
-    [v6 setConstant:v5];
+    [contentScrollViewMaximumWidthConstraint setConstant:v5];
 
-    v6 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumWidthConstraint];
-    v7 = v6;
+    contentScrollViewMaximumWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumWidthConstraint];
+    v7 = contentScrollViewMaximumWidthConstraint;
     v8 = 1;
   }
 
-  [v6 setActive:v8];
+  [contentScrollViewMaximumWidthConstraint setActive:v8];
 
-  v9 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  [v9 maximumContentHeight];
+  _visualStyle2 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  [_visualStyle2 maximumContentHeight];
   v11 = v10;
 
   if (v11 > 0.0)
   {
-    v12 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
-    [v12 setConstant:v11];
+    contentScrollViewMaximumHeightConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
+    [contentScrollViewMaximumHeightConstraint setConstant:v11];
   }
 
-  v13 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
-  [v13 setActive:v11 > 0.0];
+  contentScrollViewMaximumHeightConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewMaximumHeightConstraint];
+  [contentScrollViewMaximumHeightConstraint2 setActive:v11 > 0.0];
 
   WeakRetained = objc_loadWeakRetained(&self->_alertController);
-  v15 = [WeakRetained _window];
-  v16 = v15;
-  if (v15)
+  _window = [WeakRetained _window];
+  v16 = _window;
+  if (_window)
   {
-    v17 = v15;
+    window = _window;
   }
 
   else
   {
-    v17 = [(UIView *)self window];
+    window = [(UIView *)self window];
   }
 
-  v62 = v17;
+  v62 = window;
 
-  v18 = [v62 _toWindowOrientation];
-  if (!v18)
+  _toWindowOrientation = [v62 _toWindowOrientation];
+  if (!_toWindowOrientation)
   {
-    v18 = [v62 interfaceOrientation];
+    _toWindowOrientation = [v62 interfaceOrientation];
   }
 
-  v19 = [v62 screen];
-  if (!v19)
+  screen = [v62 screen];
+  if (!screen)
   {
     goto LABEL_20;
   }
 
   v20 = __UIStatusBarManagerForWindow(v62);
-  v21 = [v20 isStatusBarHidden];
+  isStatusBarHidden = [v20 isStatusBarHidden];
 
-  if (v21)
+  if (isStatusBarHidden)
   {
     v22 = 1;
   }
@@ -3396,7 +3396,7 @@ LABEL_9:
   else
   {
     v23 = __UIStatusBarManagerForWindow(v62);
-    [v23 defaultStatusBarHeightInOrientation:v18];
+    [v23 defaultStatusBarHeightInOrientation:_toWindowOrientation];
     v25 = v24;
 
     v22 = v25 == 0.0;
@@ -3409,7 +3409,7 @@ LABEL_9:
 
   else
   {
-    [v19 _applicationFrameForInterfaceOrientation:v18 usingStatusbarHeight:v22 ignoreStatusBar:0.0];
+    [screen _applicationFrameForInterfaceOrientation:_toWindowOrientation usingStatusbarHeight:v22 ignoreStatusBar:0.0];
   }
 
   v27 = v26;
@@ -3417,8 +3417,8 @@ LABEL_9:
   v30 = v27 - (v28 + v29);
   if (v30 > 0.0)
   {
-    v31 = [(_UIAlertControllerPhoneTVMacView *)self contentViewMaxHeightConstraint];
-    [v31 setConstant:v30];
+    contentViewMaxHeightConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewMaxHeightConstraint];
+    [contentViewMaxHeightConstraint setConstant:v30];
 
     v32 = 1;
   }
@@ -3429,103 +3429,103 @@ LABEL_20:
     v32 = 0;
   }
 
-  v33 = [(_UIAlertControllerPhoneTVMacView *)self contentViewMaxHeightConstraint];
-  [v33 setActive:v32];
+  contentViewMaxHeightConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewMaxHeightConstraint];
+  [contentViewMaxHeightConstraint2 setActive:v32];
 
-  v34 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  v35 = [v34 contentClipsToBounds];
+  _visualStyle3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  contentClipsToBounds = [_visualStyle3 contentClipsToBounds];
   contentView = self->_contentView;
-  if (v35)
+  if (contentClipsToBounds)
   {
     [(UIView *)contentView setClipsToBounds:1];
-    [v34 contentCornerRadius];
+    [_visualStyle3 contentCornerRadius];
     v38 = v37;
-    v39 = [(UIView *)self->_contentView layer];
-    [v39 setCornerRadius:v38];
+    layer = [(UIView *)self->_contentView layer];
+    [layer setCornerRadius:v38];
 
-    v40 = [v34 contentCornerCurve];
-    v41 = [(UIView *)self->_contentView layer];
-    [v41 setCornerCurve:v40];
+    contentCornerCurve = [_visualStyle3 contentCornerCurve];
+    layer2 = [(UIView *)self->_contentView layer];
+    [layer2 setCornerCurve:contentCornerCurve];
   }
 
   else
   {
     [(UIView *)contentView setClipsToBounds:0];
-    v40 = [(UIView *)self->_contentView layer];
-    [v40 setCornerRadius:0.0];
+    contentCornerCurve = [(UIView *)self->_contentView layer];
+    [contentCornerCurve setCornerRadius:0.0];
   }
 
-  if ([v34 contentHasShadow])
+  if ([_visualStyle3 contentHasShadow])
   {
-    [v34 contentShadowRadius];
+    [_visualStyle3 contentShadowRadius];
     v43 = v42;
-    v44 = [(UIView *)self layer];
-    [v44 setShadowRadius:v43];
+    layer3 = [(UIView *)self layer];
+    [layer3 setShadowRadius:v43];
 
-    v45 = [v34 contentShadowColor];
-    v46 = [v45 cgColor];
-    v47 = [(UIView *)self layer];
-    [v47 setShadowColor:v46];
+    contentShadowColor = [_visualStyle3 contentShadowColor];
+    cgColor = [contentShadowColor cgColor];
+    layer4 = [(UIView *)self layer];
+    [layer4 setShadowColor:cgColor];
 
-    [v34 contentShadowOffset];
+    [_visualStyle3 contentShadowOffset];
     v49 = v48;
     v51 = v50;
-    v52 = [(UIView *)self layer];
-    [v52 setShadowOffset:{v49, v51}];
+    layer5 = [(UIView *)self layer];
+    [layer5 setShadowOffset:{v49, v51}];
 
-    [v34 contentShadowOpacity];
+    [_visualStyle3 contentShadowOpacity];
     v54 = v53;
   }
 
   else
   {
-    v55 = [(UIView *)self layer];
-    [v55 setShadowRadius:0.0];
+    layer6 = [(UIView *)self layer];
+    [layer6 setShadowRadius:0.0];
 
-    v56 = [(UIView *)self layer];
-    [v56 setShadowColor:0];
+    layer7 = [(UIView *)self layer];
+    [layer7 setShadowColor:0];
 
     v57 = *MEMORY[0x1E695F060];
     v58 = *(MEMORY[0x1E695F060] + 8);
-    v59 = [(UIView *)self layer];
-    [v59 setShadowOffset:{v57, v58}];
+    layer8 = [(UIView *)self layer];
+    [layer8 setShadowOffset:{v57, v58}];
 
     v54 = 0.0;
   }
 
-  v60 = [(UIView *)self layer];
+  layer9 = [(UIView *)self layer];
   *&v61 = v54;
-  [v60 setShadowOpacity:v61];
+  [layer9 setShadowOpacity:v61];
 }
 
 - (void)_updateMainGroupViewProperties
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  -[UIInterfaceActionGroupView setFocusAvoidsNonDefaultActionsIfPossible:](self->_mainInterfaceActionsGroupView, "setFocusAvoidsNonDefaultActionsIfPossible:", [v3 focusAvoidsNonDefaultActionsIfPossible]);
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  -[UIInterfaceActionGroupView setFocusAvoidsNonDefaultActionsIfPossible:](self->_mainInterfaceActionsGroupView, "setFocusAvoidsNonDefaultActionsIfPossible:", [_visualStyle focusAvoidsNonDefaultActionsIfPossible]);
 }
 
-- (void)_updateActionViewVisualStyle:(id)a3
+- (void)_updateActionViewVisualStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   actionViews = self->_actionViews;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65___UIAlertControllerPhoneTVMacView__updateActionViewVisualStyle___block_invoke;
   v7[3] = &unk_1E7107130;
-  v8 = v4;
-  v6 = v4;
+  v8 = styleCopy;
+  v6 = styleCopy;
   [(NSMutableArray *)actionViews enumerateObjectsUsingBlock:v7];
 }
 
 - (void)_updateActionViewHeight
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    if (v5)
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    if (_visualStyle)
     {
       [(_UIAlertControllerPhoneTVMacView *)self _idealLayoutWidth];
       v7 = v6;
@@ -3537,15 +3537,15 @@ LABEL_20:
       *&v15[4] = v6;
       [(NSMutableArray *)actionViews enumerateObjectsUsingBlock:v15];
       *&self->_alertControllerViewFlags &= ~0x200u;
-      v9 = [(_UIAlertControllerPhoneTVMacView *)self _canLayOutActionsHorizontally];
-      if (!_UISolariumEnabled() || v9)
+      _canLayOutActionsHorizontally = [(_UIAlertControllerPhoneTVMacView *)self _canLayOutActionsHorizontally];
+      if (!_UISolariumEnabled() || _canLayOutActionsHorizontally)
       {
-        [(_UIAlertControllerPhoneTVMacView *)self _itemSizeForHorizontalLayout:v9];
+        [(_UIAlertControllerPhoneTVMacView *)self _itemSizeForHorizontalLayout:_canLayOutActionsHorizontally];
       }
 
       else
       {
-        [v5 actionSequenceEdgeInsets];
+        [_visualStyle actionSequenceEdgeInsets];
         v12 = v7 - (v10 + v11);
       }
 
@@ -3562,7 +3562,7 @@ LABEL_20:
 
 - (void)_updateConstraintConstants
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -3574,31 +3574,31 @@ LABEL_20:
   v49[4] = self;
   v49[5] = &v50;
   v4 = _Block_copy(v49);
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
+  headerContentViewController = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
 
-  if (v5)
+  if (headerContentViewController)
   {
-    v6 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewControllerContainerViewTopAlignmentConstraint];
-    [v6 setConstant:0.0];
+    headerContentViewControllerContainerViewTopAlignmentConstraint = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewControllerContainerViewTopAlignmentConstraint];
+    [headerContentViewControllerContainerViewTopAlignmentConstraint setConstant:0.0];
   }
 
   v7 = 0.0;
   if ([(_UIAlertControllerPhoneTVMacView *)self _hasTitle])
   {
-    v8 = [(_UIAlertControllerPhoneTVMacView *)self title];
-    [v3 _scaledMarginAboveTitleLabelFirstBaselineInAlertControllerView:self titleText:v8];
+    title = [(_UIAlertControllerPhoneTVMacView *)self title];
+    [_visualStyle _scaledMarginAboveTitleLabelFirstBaselineInAlertControllerView:self titleText:title];
     v10 = v9;
 
-    v11 = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
-    [v11 setEqualityConstant:v10];
+    titleLabelTopAlignmentConstraints = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
+    [titleLabelTopAlignmentConstraints setEqualityConstant:v10];
 
-    v12 = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
-    [v3 _scaledTitleLabelSafeBaselineHeightInAlertControllerView:self];
+    titleLabelTopAlignmentConstraints2 = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
+    [_visualStyle _scaledTitleLabelSafeBaselineHeightInAlertControllerView:self];
     v14 = v13;
-    [v3 _minimumSpacingAboveTopmostLabelSafeAscender];
+    [_visualStyle _minimumSpacingAboveTopmostLabelSafeAscender];
     v16 = v15;
-    v17 = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
-    [v17 equalityConstant];
+    titleLabelTopAlignmentConstraints3 = [(_UIAlertControllerPhoneTVMacView *)self titleLabelTopAlignmentConstraints];
+    [titleLabelTopAlignmentConstraints3 equalityConstant];
     v19 = v18;
     v20 = v14 + v16;
 
@@ -3612,26 +3612,26 @@ LABEL_20:
       v21 = v20;
     }
 
-    [v12 setMinConstant:v21];
+    [titleLabelTopAlignmentConstraints2 setMinConstant:v21];
 
-    [v3 _scaledMarginBelowTitleLabelLastBaseline];
+    [_visualStyle _scaledMarginBelowTitleLabelLastBaseline];
     v7 = v22;
     v4[2](v4, self->_titleLabel, v10);
   }
 
   if ([(_UIAlertControllerPhoneTVMacView *)self _hasMessage])
   {
-    v23 = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
-    [v3 _scaledMarginAboveMessageLabelFirstBaseline];
-    [v23 setEqualityConstant:?];
+    messageLabelTopAlignmentConstraints = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
+    [_visualStyle _scaledMarginAboveMessageLabelFirstBaseline];
+    [messageLabelTopAlignmentConstraints setEqualityConstant:?];
 
-    v24 = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
-    [v3 _scaledMessageSafeBaselineHeightInAlertControllerView:self];
+    messageLabelTopAlignmentConstraints2 = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
+    [_visualStyle _scaledMessageSafeBaselineHeightInAlertControllerView:self];
     v26 = v25;
-    [v3 _minimumSpacingAboveTopmostLabelSafeAscender];
+    [_visualStyle _minimumSpacingAboveTopmostLabelSafeAscender];
     v28 = v27;
-    v29 = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
-    [v29 equalityConstant];
+    messageLabelTopAlignmentConstraints3 = [(_UIAlertControllerPhoneTVMacView *)self messageLabelTopAlignmentConstraints];
+    [messageLabelTopAlignmentConstraints3 equalityConstant];
     v31 = v30;
     v32 = v26 + v28;
 
@@ -3645,44 +3645,44 @@ LABEL_20:
       v33 = v32;
     }
 
-    [v24 setMinConstant:v33];
+    [messageLabelTopAlignmentConstraints2 setMinConstant:v33];
 
-    [v3 _scaledMarginBelowMessageLabelLastBaseline];
+    [_visualStyle _scaledMarginBelowMessageLabelLastBaseline];
     v7 = v34;
     messageLabel = self->_messageLabel;
-    [v3 _scaledMarginAboveMessageLabelFirstBaseline];
+    [_visualStyle _scaledMarginAboveMessageLabelFirstBaseline];
     (v4[2])(v4, messageLabel);
   }
 
-  v36 = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
+  contentViewController = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
 
-  if (v36)
+  if (contentViewController)
   {
-    v37 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewTopAlignmentConstraint];
-    [v37 setConstant:v7];
+    contentViewControllerContainerViewTopAlignmentConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewTopAlignmentConstraint];
+    [contentViewControllerContainerViewTopAlignmentConstraint setConstant:v7];
 
     v7 = 0.0;
     if (_UISolariumEnabled())
     {
-      [v3 _topItemsViewBottomMargin];
+      [_visualStyle _topItemsViewBottomMargin];
       v7 = v38;
     }
   }
 
   if ([(_UIAlertControllerPhoneTVMacView *)self _hasTextFields])
   {
-    v39 = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewTopAlignmentConstraints];
-    [v39 setEqualityConstant:v7];
+    textFieldViewControllerContainerViewTopAlignmentConstraints = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewTopAlignmentConstraints];
+    [textFieldViewControllerContainerViewTopAlignmentConstraints setEqualityConstant:v7];
 
-    v40 = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewTopAlignmentConstraints];
-    v41 = v40;
+    textFieldViewControllerContainerViewTopAlignmentConstraints2 = [(_UIAlertControllerPhoneTVMacView *)self textFieldViewControllerContainerViewTopAlignmentConstraints];
+    v41 = textFieldViewControllerContainerViewTopAlignmentConstraints2;
     v42 = 8.0;
     if (v7 <= 8.0)
     {
       v42 = v7;
     }
 
-    [v40 setMinConstant:v42];
+    [textFieldViewControllerContainerViewTopAlignmentConstraints2 setMinConstant:v42];
 
     v7 = 0.0;
   }
@@ -3693,20 +3693,20 @@ LABEL_20:
     v7 = v51[3];
   }
 
-  v43 = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewBottomConstraint];
-  [v43 setConstant:v7];
+  contentScrollViewBottomConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentScrollViewBottomConstraint];
+  [contentScrollViewBottomConstraint setConstant:v7];
 
-  v44 = [(_UIAlertControllerPhoneTVMacView *)self detailMessageLabelTopAlignmentConstraint];
-  [v3 _scaledMarginAboveDetailMessageFirstBaseline];
-  [v44 setConstant:?];
+  detailMessageLabelTopAlignmentConstraint = [(_UIAlertControllerPhoneTVMacView *)self detailMessageLabelTopAlignmentConstraint];
+  [_visualStyle _scaledMarginAboveDetailMessageFirstBaseline];
+  [detailMessageLabelTopAlignmentConstraint setConstant:?];
 
   if ([(_UIAlertControllerPhoneTVMacView *)self _hasDetailMessage])
   {
-    v45 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    [v45 _scaledMarginBelowDetailMessage];
+    _visualStyle2 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    [_visualStyle2 _scaledMarginBelowDetailMessage];
     v47 = v46;
-    v48 = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
-    [v48 setConstant:v47];
+    contentViewBottomConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
+    [contentViewBottomConstraint setConstant:v47];
   }
 
   _Block_object_dispose(&v50, 8);
@@ -3714,9 +3714,9 @@ LABEL_20:
 
 - (void)_updateTintColor
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v6 = [v3 tintColorForAlertController:v4];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  v6 = [_visualStyle tintColorForAlertController:alertController];
 
   v5 = v6;
   if (v6)
@@ -3726,22 +3726,22 @@ LABEL_20:
   }
 }
 
-- (void)_setActionsReversed:(BOOL)a3
+- (void)_setActionsReversed:(BOOL)reversed
 {
-  if (self->_actionsReversed != a3)
+  if (self->_actionsReversed != reversed)
   {
-    self->_actionsReversed = a3;
+    self->_actionsReversed = reversed;
     [(_UIAlertControllerPhoneTVMacView *)self _reloadInterfaceActionViewRepresentations];
   }
 }
 
 - (void)deselectAllActions
 {
-  v3 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionSelectionController];
-  [v3 deselectAllActions];
+  actionSelectionController = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionSelectionController];
+  [actionSelectionController deselectAllActions];
 
-  v4 = [(UIInterfaceActionGroupView *)self->_discreteCancelActionGroupView actionSelectionController];
-  [v4 deselectAllActions];
+  actionSelectionController2 = [(UIInterfaceActionGroupView *)self->_discreteCancelActionGroupView actionSelectionController];
+  [actionSelectionController2 deselectAllActions];
 }
 
 - (void)_contentSizeChanged
@@ -3751,12 +3751,12 @@ LABEL_20:
   [(_UIAlertControllerPhoneTVMacView *)self _actionsChanged];
 }
 
-- (void)_setTitle:(id)a3
+- (void)_setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_titleLabel text];
-  v9 = v4;
-  v6 = v5;
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  v9 = titleCopy;
+  v6 = text;
   v7 = v6;
   if (v6 == v9)
   {
@@ -3784,12 +3784,12 @@ LABEL_20:
   }
 }
 
-- (void)_setMessage:(id)a3
+- (void)_setMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_messageLabel text];
-  v9 = v4;
-  v6 = v5;
+  messageCopy = message;
+  text = [(UILabel *)self->_messageLabel text];
+  v9 = messageCopy;
+  v6 = text;
   v7 = v6;
   if (v6 == v9)
   {
@@ -3817,12 +3817,12 @@ LABEL_20:
   }
 }
 
-- (void)_setAttributedTitle:(id)a3
+- (void)_setAttributedTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_titleLabel attributedText];
-  v9 = v4;
-  v6 = v5;
+  titleCopy = title;
+  attributedText = [(UILabel *)self->_titleLabel attributedText];
+  v9 = titleCopy;
+  v6 = attributedText;
   v7 = v6;
   if (v6 == v9)
   {
@@ -3850,12 +3850,12 @@ LABEL_20:
   }
 }
 
-- (void)_setAttributedMessage:(id)a3
+- (void)_setAttributedMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_messageLabel attributedText];
-  v9 = v4;
-  v6 = v5;
+  messageCopy = message;
+  attributedText = [(UILabel *)self->_messageLabel attributedText];
+  v9 = messageCopy;
+  v6 = attributedText;
   v7 = v6;
   if (v6 == v9)
   {
@@ -3883,12 +3883,12 @@ LABEL_20:
   }
 }
 
-- (void)_setAttributedDetailMessage:(id)a3
+- (void)_setAttributedDetailMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_detailMessageLabel attributedText];
-  v9 = v4;
-  v6 = v5;
+  messageCopy = message;
+  attributedText = [(UILabel *)self->_detailMessageLabel attributedText];
+  v9 = messageCopy;
+  v6 = attributedText;
   v7 = v6;
   if (v6 == v9)
   {
@@ -3918,62 +3918,62 @@ LABEL_20:
 
 - (id)title
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 title];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  title = [alertController title];
 
-  return v3;
+  return title;
 }
 
 - (id)message
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 message];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  message = [alertController message];
 
-  return v3;
+  return message;
 }
 
 - (id)_attributedTitle
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _attributedTitle];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _attributedTitle = [alertController _attributedTitle];
 
-  return v3;
+  return _attributedTitle;
 }
 
 - (id)_attributedMessage
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _attributedMessage];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _attributedMessage = [alertController _attributedMessage];
 
-  return v3;
+  return _attributedMessage;
 }
 
 - (id)_attributedDetailMessage
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _attributedDetailMessage];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _attributedDetailMessage = [alertController _attributedDetailMessage];
 
-  return v3;
+  return _attributedDetailMessage;
 }
 
 - (id)_vibrancyEffectForTitleAndMessageLabel
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  v4 = v3;
-  if (v3)
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  v4 = _visualStyle;
+  if (_visualStyle)
   {
-    v5 = v3;
+    _visualStyle2 = _visualStyle;
   }
 
   else
   {
-    v6 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-    v5 = [v6 _visualStyle];
+    alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+    _visualStyle2 = [alertController _visualStyle];
   }
 
   if (os_variant_has_internal_diagnostics())
   {
-    if (!v5)
+    if (!_visualStyle2)
     {
       v9 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -3984,7 +3984,7 @@ LABEL_20:
     }
   }
 
-  else if (!v5)
+  else if (!_visualStyle2)
   {
     v10 = *(__UILogGetCategoryCachedImpl("Assert", &_vibrancyEffectForTitleAndMessageLabel___s_category) + 8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -3994,126 +3994,126 @@ LABEL_20:
     }
   }
 
-  v7 = [v5 vibrancyEffectForTitleAndMessageLabel];
+  vibrancyEffectForTitleAndMessageLabel = [_visualStyle2 vibrancyEffectForTitleAndMessageLabel];
 
-  return v7;
+  return vibrancyEffectForTitleAndMessageLabel;
 }
 
 - (BOOL)_titleAndMessageLabelUseVibrancy
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self _vibrancyEffectForTitleAndMessageLabel];
-  v3 = v2 != 0;
+  _vibrancyEffectForTitleAndMessageLabel = [(_UIAlertControllerPhoneTVMacView *)self _vibrancyEffectForTitleAndMessageLabel];
+  v3 = _vibrancyEffectForTitleAndMessageLabel != 0;
 
   return v3;
 }
 
 - (BOOL)_hasTitle
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _hasTitle];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _hasTitle = [alertController _hasTitle];
 
-  return v3;
+  return _hasTitle;
 }
 
 - (BOOL)_hasAttributedTitle
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _hasAttributedTitle];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _hasAttributedTitle = [alertController _hasAttributedTitle];
 
-  return v3;
+  return _hasAttributedTitle;
 }
 
 - (BOOL)_hasMessage
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _hasMessage];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _hasMessage = [alertController _hasMessage];
 
-  return v3;
+  return _hasMessage;
 }
 
 - (BOOL)_hasAttributedMessage
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _hasAttributedMessage];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _hasAttributedMessage = [alertController _hasAttributedMessage];
 
-  return v3;
+  return _hasAttributedMessage;
 }
 
 - (BOOL)_hasDetailMessage
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _hasDetailMessage];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _hasDetailMessage = [alertController _hasDetailMessage];
 
-  return v3;
+  return _hasDetailMessage;
 }
 
 - (BOOL)_hasTextFields
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self textFields];
-  v3 = [v2 count] != 0;
+  textFields = [(_UIAlertControllerPhoneTVMacView *)self textFields];
+  v3 = [textFields count] != 0;
 
   return v3;
 }
 
 - (id)_textFieldViewController
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _textFieldViewController];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _textFieldViewController = [alertController _textFieldViewController];
 
-  return v3;
+  return _textFieldViewController;
 }
 
 - (id)headerContentViewController
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _headerContentViewController];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _headerContentViewController = [alertController _headerContentViewController];
 
-  return v3;
+  return _headerContentViewController;
 }
 
 - (id)contentViewController
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 contentViewController];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  contentViewController = [alertController contentViewController];
 
-  return v3;
+  return contentViewController;
 }
 
 - (id)separatedHeaderContentViewController
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _separatedHeaderContentViewController];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _separatedHeaderContentViewController = [alertController _separatedHeaderContentViewController];
 
-  return v3;
+  return _separatedHeaderContentViewController;
 }
 
 - (id)actions
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _actions];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _actions = [alertController _actions];
 
-  return v3;
+  return _actions;
 }
 
 - (id)cancelAction
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _cancelAction];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _cancelAction = [alertController _cancelAction];
 
-  return v3;
+  return _cancelAction;
 }
 
 - (id)_focusedAction
 {
-  v3 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView _interfaceActionOfFocusedRepresentationView];
-  if (!v3)
+  _interfaceActionOfFocusedRepresentationView = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView _interfaceActionOfFocusedRepresentationView];
+  if (!_interfaceActionOfFocusedRepresentationView)
   {
-    v3 = [(UIInterfaceActionGroupView *)self->_discreteCancelActionGroupView _interfaceActionOfFocusedRepresentationView];
+    _interfaceActionOfFocusedRepresentationView = [(UIInterfaceActionGroupView *)self->_discreteCancelActionGroupView _interfaceActionOfFocusedRepresentationView];
   }
 
-  v4 = [v3 underlyingAlertAction];
+  underlyingAlertAction = [_interfaceActionOfFocusedRepresentationView underlyingAlertAction];
 
-  return v4;
+  return underlyingAlertAction;
 }
 
 - (id)_preferredActionView
@@ -4121,40 +4121,40 @@ LABEL_20:
   mainInterfaceActionsGroupView = self->_mainInterfaceActionsGroupView;
   v4 = __UIFocusEnvironmentPreferredFocusedView(self, 0);
 
-  v5 = 0;
+  alertControllerActionView = 0;
   if (mainInterfaceActionsGroupView == v4)
   {
-    v6 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView preferredActionRepresentation];
-    v7 = [v6 action];
+    preferredActionRepresentation = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView preferredActionRepresentation];
+    action = [preferredActionRepresentation action];
 
-    v5 = [v7 alertControllerActionView];
+    alertControllerActionView = [action alertControllerActionView];
   }
 
-  return v5;
+  return alertControllerActionView;
 }
 
 - (id)_indexesOfActionSectionSeparators
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 _indexesOfActionSectionSeparators];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _indexesOfActionSectionSeparators = [alertController _indexesOfActionSectionSeparators];
 
-  return v3;
+  return _indexesOfActionSectionSeparators;
 }
 
 - (double)_spaceRequiredForActionSectionsSpacing
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self _indexesOfActionSectionSeparators];
-  v4 = [v3 count];
+  _indexesOfActionSectionSeparators = [(_UIAlertControllerPhoneTVMacView *)self _indexesOfActionSectionSeparators];
+  v4 = [_indexesOfActionSectionSeparators count];
 
   if (!v4)
   {
     return 0.0;
   }
 
-  v5 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
   v6 = v4;
-  v7 = [v5 interfaceActionVisualStyle];
-  [v7 actionSectionSpacing];
+  interfaceActionVisualStyle = [_visualStyle interfaceActionVisualStyle];
+  [interfaceActionVisualStyle actionSectionSpacing];
   v9 = v8 * v6;
 
   return v9;
@@ -4162,18 +4162,18 @@ LABEL_20:
 
 - (id)textFields
 {
-  v2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v3 = [v2 textFields];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  textFields = [alertController textFields];
 
-  return v3;
+  return textFields;
 }
 
-- (void)setPresentedAsPopover:(BOOL)a3
+- (void)setPresentedAsPopover:(BOOL)popover
 {
-  v3 = a3;
-  if ([(_UIAlertControllerPhoneTVMacView *)self presentedAsPopover]!= a3)
+  popoverCopy = popover;
+  if ([(_UIAlertControllerPhoneTVMacView *)self presentedAsPopover]!= popover)
   {
-    if (v3)
+    if (popoverCopy)
     {
       v5 = 16;
     }
@@ -4196,12 +4196,12 @@ LABEL_20:
   }
 }
 
-- (void)setHasDimmingView:(BOOL)a3
+- (void)setHasDimmingView:(BOOL)view
 {
-  v3 = a3;
-  if ([(_UIAlertControllerPhoneTVMacView *)self hasDimmingView]!= a3)
+  viewCopy = view;
+  if ([(_UIAlertControllerPhoneTVMacView *)self hasDimmingView]!= view)
   {
-    if (v3)
+    if (viewCopy)
     {
       v5 = 32;
     }
@@ -4218,10 +4218,10 @@ LABEL_20:
       [(UIView *)self insertSubview:self->_dimmingView atIndex:0];
       [(UIView *)self removeConstraints:self->_noDimmingViewConstraints];
       [(UIView *)self addConstraints:self->_dimmingViewConstraints];
-      v6 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-      v7 = [v6 _resolvedStyle];
+      alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+      _resolvedStyle = [alertController _resolvedStyle];
 
-      if (v7)
+      if (_resolvedStyle)
       {
         v8 = &OBJC_IVAR____UIAlertControllerPhoneTVMacView__dimmingViewConstraintsForActionSheetStyle;
       }
@@ -4231,7 +4231,7 @@ LABEL_20:
         v8 = &OBJC_IVAR____UIAlertControllerPhoneTVMacView__dimmingViewConstraintsForAlertStyle;
       }
 
-      if (v7)
+      if (_resolvedStyle)
       {
         v9 = &OBJC_IVAR____UIAlertControllerPhoneTVMacView__dimmingViewConstraintsForAlertStyle;
       }
@@ -4258,11 +4258,11 @@ LABEL_20:
   }
 }
 
-- (void)setPresentationContextPrefersCancelActionShown:(BOOL)a3
+- (void)setPresentationContextPrefersCancelActionShown:(BOOL)shown
 {
-  if (self->_presentationContextPrefersCancelActionShown != a3)
+  if (self->_presentationContextPrefersCancelActionShown != shown)
   {
-    self->_presentationContextPrefersCancelActionShown = a3;
+    self->_presentationContextPrefersCancelActionShown = shown;
     [(_UIAlertControllerPhoneTVMacView *)self _propertiesChanged];
     [(_UIAlertControllerPhoneTVMacView *)self _actionLayoutDirectionChanged];
     [(_UIAlertControllerPhoneTVMacView *)self _actionsChanged];
@@ -4275,10 +4275,10 @@ LABEL_20:
 {
   if ([(_UIAlertControllerPhoneTVMacView *)self presentationContextPrefersCancelActionShown])
   {
-    v3 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    v4 = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-    v6 = [v3 hideCancelAction:v4 inAlertController:v5] ^ 1;
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    cancelAction = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
+    alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+    v6 = [_visualStyle hideCancelAction:cancelAction inAlertController:alertController] ^ 1;
   }
 
   else
@@ -4291,9 +4291,9 @@ LABEL_20:
 
 - (id)__cancelActionView
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self actions];
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
-  v5 = [v3 indexOfObject:v4];
+  actions = [(_UIAlertControllerPhoneTVMacView *)self actions];
+  cancelAction = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
+  v5 = [actions indexOfObject:cancelAction];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4310,35 +4310,35 @@ LABEL_20:
 
 - (void)_updateCancelActionBeingDiscrete
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  if ([v3 _resolvedStyle])
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  if ([alertController _resolvedStyle])
   {
-    v4 = 0;
+    showsCancelAction = 0;
   }
 
   else
   {
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
-    if (v5)
+    cancelAction = [(_UIAlertControllerPhoneTVMacView *)self cancelAction];
+    if (cancelAction)
     {
-      v4 = [(_UIAlertControllerPhoneTVMacView *)self showsCancelAction];
+      showsCancelAction = [(_UIAlertControllerPhoneTVMacView *)self showsCancelAction];
     }
 
     else
     {
-      v4 = 0;
+      showsCancelAction = 0;
     }
   }
 
-  [(_UIAlertControllerPhoneTVMacView *)self setCancelActionIsDiscrete:v4];
+  [(_UIAlertControllerPhoneTVMacView *)self setCancelActionIsDiscrete:showsCancelAction];
 }
 
-- (void)setCancelActionIsDiscrete:(BOOL)a3
+- (void)setCancelActionIsDiscrete:(BOOL)discrete
 {
-  v3 = a3;
-  if ([(_UIAlertControllerPhoneTVMacView *)self cancelActionIsDiscrete]!= a3)
+  discreteCopy = discrete;
+  if ([(_UIAlertControllerPhoneTVMacView *)self cancelActionIsDiscrete]!= discrete)
   {
-    if (v3)
+    if (discreteCopy)
     {
       v5 = 64;
     }
@@ -4349,23 +4349,23 @@ LABEL_20:
     }
 
     *&self->_alertControllerViewFlags = *&self->_alertControllerViewFlags & 0xFFBF | v5;
-    if (v3)
+    if (discreteCopy)
     {
       [(UIView *)self->_contentView addSubview:self->_discreteCancelActionGroupView];
     }
 
     else
     {
-      v6 = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
-      [v6 setActive:0];
+      contentViewBottomConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewBottomConstraint];
+      [contentViewBottomConstraint setActive:0];
 
       [(_UIAlertControllerPhoneTVMacView *)self setContentViewBottomConstraint:0];
-      v7 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewTopConstraint];
-      [v7 setActive:0];
+      discreteCancelActionViewTopConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewTopConstraint];
+      [discreteCancelActionViewTopConstraint setActive:0];
 
       [(_UIAlertControllerPhoneTVMacView *)self setDiscreteCancelActionViewTopConstraint:0];
-      v8 = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewLeadingConstraint];
-      [v8 setActive:0];
+      discreteCancelActionViewLeadingConstraint = [(_UIAlertControllerPhoneTVMacView *)self discreteCancelActionViewLeadingConstraint];
+      [discreteCancelActionViewLeadingConstraint setActive:0];
 
       [(_UIAlertControllerPhoneTVMacView *)self setDiscreteCancelActionViewLeadingConstraint:0];
       [(UIView *)self->_discreteCancelActionGroupView removeFromSuperview];
@@ -4395,30 +4395,30 @@ LABEL_20:
 
 - (void)_updateGlassBackground
 {
-  v12 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-  v3 = [v12 _shouldApplyGlassToAlertView];
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  v5 = [v4 _isPresentedAsPopover];
+  _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+  _shouldApplyGlassToAlertView = [_visualStyle _shouldApplyGlassToAlertView];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  _isPresentedAsPopover = [alertController _isPresentedAsPopover];
 
-  if (v3 && (v5 & 1) == 0)
+  if (_shouldApplyGlassToAlertView && (_isPresentedAsPopover & 1) == 0)
   {
     v6 = [[_UIViewGlass alloc] initWithVariant:0];
     [(_UIViewGlass *)v6 setFlexible:1];
     [(UIView *)self _setBackground:v6];
-    v7 = [v12 contentCornerCurve];
-    v8 = [(UIView *)self layer];
-    [v8 setCornerCurve:v7];
+    contentCornerCurve = [_visualStyle contentCornerCurve];
+    layer = [(UIView *)self layer];
+    [layer setCornerCurve:contentCornerCurve];
 
-    [v12 contentCornerRadius];
+    [_visualStyle contentCornerRadius];
     v10 = v9;
-    v11 = [(UIView *)self layer];
-    [v11 setCornerRadius:v10];
+    layer2 = [(UIView *)self layer];
+    [layer2 setCornerRadius:v10];
   }
 }
 
-- (void)_updateBackdropView:(BOOL)a3
+- (void)_updateBackdropView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   backdropView = self->_backdropView;
   if (backdropView)
   {
@@ -4427,50 +4427,50 @@ LABEL_20:
     self->_backdropView = 0;
   }
 
-  if (v3)
+  if (viewCopy)
   {
-    v7 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    v8 = [v7 contentBackdropView];
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    contentBackdropView = [_visualStyle contentBackdropView];
     v9 = self->_backdropView;
-    self->_backdropView = v8;
+    self->_backdropView = contentBackdropView;
 
     v10 = self->_backdropView;
     if (v10)
     {
       [(UIView *)self->_contentView insertSubview:v10 atIndex:0];
       [(UIView *)self->_backdropView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v11 = [(UIView *)self->_backdropView leadingAnchor];
-      v12 = [(UIView *)self->_contentView leadingAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      leadingAnchor = [(UIView *)self->_backdropView leadingAnchor];
+      leadingAnchor2 = [(UIView *)self->_contentView leadingAnchor];
+      v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v13 setActive:1];
 
-      v14 = [(UIView *)self->_backdropView trailingAnchor];
-      v15 = [(UIView *)self->_contentView trailingAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15];
+      trailingAnchor = [(UIView *)self->_backdropView trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_contentView trailingAnchor];
+      v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v16 setActive:1];
 
-      v17 = [(UIView *)self->_backdropView topAnchor];
-      v18 = [(UIView *)self->_contentView topAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18];
+      topAnchor = [(UIView *)self->_backdropView topAnchor];
+      topAnchor2 = [(UIView *)self->_contentView topAnchor];
+      v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v19 setActive:1];
 
-      v22 = [(UIView *)self->_backdropView bottomAnchor];
-      v20 = [(UIView *)self->_contentView bottomAnchor];
-      v21 = [v22 constraintEqualToAnchor:v20];
+      bottomAnchor = [(UIView *)self->_backdropView bottomAnchor];
+      bottomAnchor2 = [(UIView *)self->_contentView bottomAnchor];
+      v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v21 setActive:1];
     }
   }
 }
 
-- (void)setShouldHaveBackdropView:(BOOL)a3
+- (void)setShouldHaveBackdropView:(BOOL)view
 {
   alertControllerViewFlags = self->_alertControllerViewFlags;
-  if (((((alertControllerViewFlags & 0x80) == 0) ^ a3) & 1) == 0)
+  if (((((alertControllerViewFlags & 0x80) == 0) ^ view) & 1) == 0)
   {
     v11 = v4;
     v12 = v3;
-    v8 = a3;
-    if (a3)
+    viewCopy = view;
+    if (view)
     {
       v10 = 128;
     }
@@ -4483,16 +4483,16 @@ LABEL_20:
     *&self->_alertControllerViewFlags = alertControllerViewFlags & 0xFF7F | v10;
     [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView _setDrawsBackground:v11, v12, v5];
 
-    [(_UIAlertControllerPhoneTVMacView *)self _updateBackdropView:v8];
+    [(_UIAlertControllerPhoneTVMacView *)self _updateBackdropView:viewCopy];
   }
 }
 
-- (void)setAlignsToKeyboard:(BOOL)a3
+- (void)setAlignsToKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
-  if ([(_UIAlertControllerPhoneTVMacView *)self alignsToKeyboard]!= a3)
+  keyboardCopy = keyboard;
+  if ([(_UIAlertControllerPhoneTVMacView *)self alignsToKeyboard]!= keyboard)
   {
-    if (v3)
+    if (keyboardCopy)
     {
       v5 = 256;
     }
@@ -4524,40 +4524,40 @@ LABEL_20:
 - (void)_addHeaderContentViewControllerToViewHierarchyIfNecessary
 {
   v24[4] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
-  v4 = [v3 view];
+  headerContentViewController = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
+  view = [headerContentViewController view];
 
-  v5 = [v4 superview];
+  superview = [view superview];
   headerContentViewControllerContainerView = self->_headerContentViewControllerContainerView;
 
-  if (v5 != headerContentViewControllerContainerView)
+  if (superview != headerContentViewControllerContainerView)
   {
-    [(UIView *)self->_headerContentViewControllerContainerView addSubview:v4];
-    v7 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    v8 = [v7 shouldRespectContentViewControllerClippingPreference];
+    [(UIView *)self->_headerContentViewControllerContainerView addSubview:view];
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    shouldRespectContentViewControllerClippingPreference = [_visualStyle shouldRespectContentViewControllerClippingPreference];
 
-    if (v8)
+    if (shouldRespectContentViewControllerClippingPreference)
     {
-      v9 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-      -[UIView setClipsToBounds:](self->_headerContentViewControllerContainerView, "setClipsToBounds:", [v9 _wantsUnclippedHeaderContentViewControllerContainer] ^ 1);
+      alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+      -[UIView setClipsToBounds:](self->_headerContentViewControllerContainerView, "setClipsToBounds:", [alertController _wantsUnclippedHeaderContentViewControllerContainer] ^ 1);
     }
 
     v18 = MEMORY[0x1E69977A0];
-    v23 = [v4 leftAnchor];
-    v22 = [(UIView *)self->_headerContentViewControllerContainerView leftAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    leftAnchor = [view leftAnchor];
+    leftAnchor2 = [(UIView *)self->_headerContentViewControllerContainerView leftAnchor];
+    v21 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v24[0] = v21;
-    v20 = [v4 rightAnchor];
-    v19 = [(UIView *)self->_headerContentViewControllerContainerView rightAnchor];
-    v10 = [v20 constraintEqualToAnchor:v19];
+    rightAnchor = [view rightAnchor];
+    rightAnchor2 = [(UIView *)self->_headerContentViewControllerContainerView rightAnchor];
+    v10 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v24[1] = v10;
-    v11 = [v4 topAnchor];
-    v12 = [(UIView *)self->_headerContentViewControllerContainerView topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    topAnchor = [view topAnchor];
+    topAnchor2 = [(UIView *)self->_headerContentViewControllerContainerView topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v24[2] = v13;
-    v14 = [v4 bottomAnchor];
-    v15 = [(UIView *)self->_headerContentViewControllerContainerView bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    bottomAnchor = [view bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_headerContentViewControllerContainerView bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v24[3] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
     [v18 activateConstraints:v17];
@@ -4568,98 +4568,98 @@ LABEL_20:
 
 - (void)_addContentViewControllerToViewHierarchyIfNecessary
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
-  v4 = [v3 view];
-  v5 = [v4 superview];
+  contentViewController = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
+  view = [contentViewController view];
+  superview = [view superview];
   contentViewControllerContainerView = self->_contentViewControllerContainerView;
 
-  if (v5 != contentViewControllerContainerView)
+  if (superview != contentViewControllerContainerView)
   {
-    v49 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-    v7 = [v49 isBeingPresented];
-    v8 = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
-    v9 = [v8 appearanceTransitionsAreDisabled];
-    if (v7)
+    alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+    isBeingPresented = [alertController isBeingPresented];
+    contentViewController2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
+    appearanceTransitionsAreDisabled = [contentViewController2 appearanceTransitionsAreDisabled];
+    if (isBeingPresented)
     {
-      v10 = v9;
-      [v8 setAppearanceTransitionsAreDisabled:1];
+      v10 = appearanceTransitionsAreDisabled;
+      [contentViewController2 setAppearanceTransitionsAreDisabled:1];
       v11 = self->_contentViewControllerContainerView;
-      v12 = [v8 view];
-      [(UIView *)v11 addSubview:v12];
+      view2 = [contentViewController2 view];
+      [(UIView *)v11 addSubview:view2];
 
-      [v8 setAppearanceTransitionsAreDisabled:v10];
+      [contentViewController2 setAppearanceTransitionsAreDisabled:v10];
     }
 
     else
     {
       v13 = self->_contentViewControllerContainerView;
-      v14 = [v8 view];
-      [(UIView *)v13 addSubview:v14];
+      view3 = [contentViewController2 view];
+      [(UIView *)v13 addSubview:view3];
     }
 
-    v15 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    v16 = [v15 shouldRespectContentViewControllerClippingPreference];
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    shouldRespectContentViewControllerClippingPreference = [_visualStyle shouldRespectContentViewControllerClippingPreference];
 
-    if (v16)
+    if (shouldRespectContentViewControllerClippingPreference)
     {
-      -[UIView setClipsToBounds:](self->_contentViewControllerContainerView, "setClipsToBounds:", [v49 _wantsUnclippedContentViewControllerContainer] ^ 1);
+      -[UIView setClipsToBounds:](self->_contentViewControllerContainerView, "setClipsToBounds:", [alertController _wantsUnclippedContentViewControllerContainer] ^ 1);
     }
 
     contentView = self->_contentView;
-    v18 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewLeftConstraint];
-    [(UIView *)contentView removeConstraint:v18];
+    contentViewControllerViewLeftConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewLeftConstraint];
+    [(UIView *)contentView removeConstraint:contentViewControllerViewLeftConstraint];
 
     v19 = self->_contentView;
-    v20 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewRightConstraint];
-    [(UIView *)v19 removeConstraint:v20];
+    contentViewControllerViewRightConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewRightConstraint];
+    [(UIView *)v19 removeConstraint:contentViewControllerViewRightConstraint];
 
-    v21 = [v8 view];
-    v22 = [v21 leftAnchor];
-    v23 = [(UIView *)self->_contentViewControllerContainerView leftAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    view4 = [contentViewController2 view];
+    leftAnchor = [view4 leftAnchor];
+    leftAnchor2 = [(UIView *)self->_contentViewControllerContainerView leftAnchor];
+    v24 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [(_UIAlertControllerPhoneTVMacView *)self setContentViewControllerViewLeftConstraint:v24];
 
-    v25 = [v8 view];
-    v26 = [v25 rightAnchor];
-    v27 = [(UIView *)self->_contentViewControllerContainerView rightAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    view5 = [contentViewController2 view];
+    rightAnchor = [view5 rightAnchor];
+    rightAnchor2 = [(UIView *)self->_contentViewControllerContainerView rightAnchor];
+    v28 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [(_UIAlertControllerPhoneTVMacView *)self setContentViewControllerViewRightConstraint:v28];
 
     v29 = self->_contentView;
-    v30 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewLeftConstraint];
-    [(UIView *)v29 addConstraint:v30];
+    contentViewControllerViewLeftConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewLeftConstraint];
+    [(UIView *)v29 addConstraint:contentViewControllerViewLeftConstraint2];
 
     v31 = self->_contentView;
-    v32 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewRightConstraint];
-    [(UIView *)v31 addConstraint:v32];
+    contentViewControllerViewRightConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewRightConstraint];
+    [(UIView *)v31 addConstraint:contentViewControllerViewRightConstraint2];
 
     v33 = self->_contentView;
-    v34 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewTopConstraint];
-    [(UIView *)v33 removeConstraint:v34];
+    contentViewControllerViewTopConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewTopConstraint];
+    [(UIView *)v33 removeConstraint:contentViewControllerViewTopConstraint];
 
     v35 = self->_contentView;
-    v36 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewBottomConstraint];
-    [(UIView *)v35 removeConstraint:v36];
+    contentViewControllerViewBottomConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewBottomConstraint];
+    [(UIView *)v35 removeConstraint:contentViewControllerViewBottomConstraint];
 
-    v37 = [v8 view];
-    v38 = [v37 topAnchor];
-    v39 = [(UIView *)self->_contentViewControllerContainerView topAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    view6 = [contentViewController2 view];
+    topAnchor = [view6 topAnchor];
+    topAnchor2 = [(UIView *)self->_contentViewControllerContainerView topAnchor];
+    v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(_UIAlertControllerPhoneTVMacView *)self setContentViewControllerViewTopConstraint:v40];
 
-    v41 = [v8 view];
-    v42 = [v41 bottomAnchor];
-    v43 = [(UIView *)self->_contentViewControllerContainerView bottomAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    view7 = [contentViewController2 view];
+    bottomAnchor = [view7 bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_contentViewControllerContainerView bottomAnchor];
+    v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(_UIAlertControllerPhoneTVMacView *)self setContentViewControllerViewBottomConstraint:v44];
 
     v45 = self->_contentView;
-    v46 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewTopConstraint];
-    [(UIView *)v45 addConstraint:v46];
+    contentViewControllerViewTopConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewTopConstraint];
+    [(UIView *)v45 addConstraint:contentViewControllerViewTopConstraint2];
 
     v47 = self->_contentView;
-    v48 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewBottomConstraint];
-    [(UIView *)v47 addConstraint:v48];
+    contentViewControllerViewBottomConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerViewBottomConstraint];
+    [(UIView *)v47 addConstraint:contentViewControllerViewBottomConstraint2];
 
     [(_UIAlertControllerPhoneTVMacView *)self _sizeOfContentViewControllerChanged];
   }
@@ -4668,31 +4668,31 @@ LABEL_20:
 - (void)_addSeparatedHeaderContentViewControllerToViewHierarchyIfNecessary
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewController];
-  v4 = [v3 view];
+  separatedHeaderContentViewController = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewController];
+  view = [separatedHeaderContentViewController view];
 
-  v5 = [v4 superview];
+  superview = [view superview];
   separatedHeaderContentViewControllerContainerView = self->_separatedHeaderContentViewControllerContainerView;
 
-  if (v5 != separatedHeaderContentViewControllerContainerView)
+  if (superview != separatedHeaderContentViewControllerContainerView)
   {
-    [(UIView *)self->_separatedHeaderContentViewControllerContainerView addSubview:v4];
+    [(UIView *)self->_separatedHeaderContentViewControllerContainerView addSubview:view];
     v16 = MEMORY[0x1E69977A0];
-    v20 = [v4 leftAnchor];
-    v19 = [(UIView *)self->_separatedHeaderContentViewControllerContainerView leftAnchor];
-    v18 = [v20 constraintEqualToAnchor:v19];
+    leftAnchor = [view leftAnchor];
+    leftAnchor2 = [(UIView *)self->_separatedHeaderContentViewControllerContainerView leftAnchor];
+    v18 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v21[0] = v18;
-    v17 = [v4 rightAnchor];
-    v7 = [(UIView *)self->_separatedHeaderContentViewControllerContainerView rightAnchor];
-    v8 = [v17 constraintEqualToAnchor:v7];
+    rightAnchor = [view rightAnchor];
+    rightAnchor2 = [(UIView *)self->_separatedHeaderContentViewControllerContainerView rightAnchor];
+    v8 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v21[1] = v8;
-    v9 = [v4 topAnchor];
-    v10 = [(UIView *)self->_separatedHeaderContentViewControllerContainerView topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [view topAnchor];
+    topAnchor2 = [(UIView *)self->_separatedHeaderContentViewControllerContainerView topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v21[2] = v11;
-    v12 = [v4 bottomAnchor];
-    v13 = [(UIView *)self->_separatedHeaderContentViewControllerContainerView bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [view bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_separatedHeaderContentViewControllerContainerView bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v21[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
     [v16 activateConstraints:v15];
@@ -4701,16 +4701,16 @@ LABEL_20:
 
 - (void)_removeHeaderContentViewControllerViewFromHierarchy
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
-  v2 = [v3 view];
-  [v2 removeFromSuperview];
+  headerContentViewController = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
+  view = [headerContentViewController view];
+  [view removeFromSuperview];
 }
 
 - (void)_removeContentViewControllerViewFromHierarchy
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
-  v4 = [v3 view];
-  [v4 removeFromSuperview];
+  contentViewController = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
+  view = [contentViewController view];
+  [view removeFromSuperview];
 
   [(_UIAlertControllerPhoneTVMacView *)self setContentViewControllerViewLeftConstraint:0];
   [(_UIAlertControllerPhoneTVMacView *)self setContentViewControllerViewRightConstraint:0];
@@ -4721,9 +4721,9 @@ LABEL_20:
 
 - (void)_removeSeparatedHeaderContentViewControllerFromHierarchy
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewController];
-  v4 = [v3 view];
-  [v4 removeFromSuperview];
+  separatedHeaderContentViewController = [(_UIAlertControllerPhoneTVMacView *)self separatedHeaderContentViewController];
+  view = [separatedHeaderContentViewController view];
+  [view removeFromSuperview];
 
   [(_UIAlertControllerPhoneTVMacView *)self setSeparatedHeaderContentViewControllerContainerViewWidthConstraint:0];
 
@@ -4732,16 +4732,16 @@ LABEL_20:
 
 - (void)_sizeOfHeaderContentViewControllerChanged
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
+  headerContentViewController = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
 
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
-  [v4 preferredContentSize];
+  headerContentViewController2 = [(_UIAlertControllerPhoneTVMacView *)self headerContentViewController];
+  [headerContentViewController2 preferredContentSize];
   v6 = v5;
   v8 = v7;
 
-  v10 = v8 > 0.0 && v3 != 0;
+  v10 = v8 > 0.0 && headerContentViewController != 0;
   headerContentViewControllerPreferredWidthConstraint = self->_headerContentViewControllerPreferredWidthConstraint;
-  if (v3 && v6 > 0.0)
+  if (headerContentViewController && v6 > 0.0)
   {
     if (headerContentViewControllerPreferredWidthConstraint)
     {
@@ -4750,8 +4750,8 @@ LABEL_20:
 
     else
     {
-      v13 = [(UIView *)self->_headerContentViewControllerContainerView widthAnchor];
-      v14 = [v13 constraintEqualToConstant:v6];
+      widthAnchor = [(UIView *)self->_headerContentViewControllerContainerView widthAnchor];
+      v14 = [widthAnchor constraintEqualToConstant:v6];
       v15 = self->_headerContentViewControllerPreferredWidthConstraint;
       self->_headerContentViewControllerPreferredWidthConstraint = v14;
 
@@ -4778,8 +4778,8 @@ LABEL_20:
 
     else
     {
-      v19 = [(UIView *)self->_headerContentViewControllerContainerView heightAnchor];
-      v20 = [v19 constraintEqualToConstant:v8];
+      heightAnchor = [(UIView *)self->_headerContentViewControllerContainerView heightAnchor];
+      v20 = [heightAnchor constraintEqualToConstant:v8];
       v21 = self->_headerContentViewControllerPreferredHeightConstraint;
       self->_headerContentViewControllerPreferredHeightConstraint = v20;
 
@@ -4796,18 +4796,18 @@ LABEL_20:
     self->_headerContentViewControllerPreferredHeightConstraint = 0;
   }
 
-  v23 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __77___UIAlertControllerPhoneTVMacView__sizeOfHeaderContentViewControllerChanged__block_invoke;
   v24[3] = &unk_1E70F3590;
   v24[4] = self;
-  [v23 _headerContentViewControllerWillTransitionToSize:v24 withAnimations:{v6, v8}];
+  [alertController _headerContentViewControllerWillTransitionToSize:v24 withAnimations:{v6, v8}];
 }
 
 - (void)_sizeOfContentViewControllerChanged
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
+  contentViewController = [(_UIAlertControllerPhoneTVMacView *)self contentViewController];
 
   [(_UIAlertControllerPhoneTVMacView *)self _contentViewControllerSize];
   v6 = v5;
@@ -4817,8 +4817,8 @@ LABEL_20:
   }
 
   v7 = v4;
-  v8 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-  if (![v8 _resolvedStyle])
+  alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  if (![alertController _resolvedStyle])
   {
     alertControllerViewFlags = self->_alertControllerViewFlags;
 
@@ -4837,13 +4837,13 @@ LABEL_6:
   v10 = 0;
 LABEL_7:
   v11 = 748.0;
-  if (!v3)
+  if (!contentViewController)
   {
     v11 = 751.0;
   }
 
   v12 = 100.0;
-  if (!v3)
+  if (!contentViewController)
   {
     v12 = v6;
   }
@@ -4863,60 +4863,60 @@ LABEL_7:
     v6 = v12;
   }
 
-  v14 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewWidthConstraint];
-  v15 = v14;
-  if (v14)
+  contentViewControllerContainerViewWidthConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewWidthConstraint];
+  v15 = contentViewControllerContainerViewWidthConstraint;
+  if (contentViewControllerContainerViewWidthConstraint)
   {
-    v14 = [objc_msgSend(v14 "secondItem")];
+    contentViewControllerContainerViewWidthConstraint = [objc_msgSend(contentViewControllerContainerViewWidthConstraint "secondItem")];
   }
 
-  v16 = v14;
+  v16 = contentViewControllerContainerViewWidthConstraint;
 
   if (v16 != v10)
   {
     contentView = self->_contentView;
-    v18 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewWidthConstraint];
-    [(UIView *)contentView removeConstraint:v18];
+    contentViewControllerContainerViewWidthConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewWidthConstraint];
+    [(UIView *)contentView removeConstraint:contentViewControllerContainerViewWidthConstraint2];
 
     [(_UIAlertControllerPhoneTVMacView *)self setContentViewControllerContainerViewWidthConstraint:0];
   }
 
-  v19 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewWidthConstraint];
+  contentViewControllerContainerViewWidthConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewWidthConstraint];
 
-  if (!v19)
+  if (!contentViewControllerContainerViewWidthConstraint3)
   {
-    v20 = [(UIView *)self->_contentViewControllerContainerView widthAnchor];
-    v21 = [(UIView *)v10 widthAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:v7];
+    widthAnchor = [(UIView *)self->_contentViewControllerContainerView widthAnchor];
+    widthAnchor2 = [(UIView *)v10 widthAnchor];
+    v22 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:v7];
     [(_UIAlertControllerPhoneTVMacView *)self setContentViewControllerContainerViewWidthConstraint:v22];
 
-    v23 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewWidthConstraint];
+    contentViewControllerContainerViewWidthConstraint4 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewWidthConstraint];
     LODWORD(v24) = 1132068864;
-    [v23 setPriority:v24];
+    [contentViewControllerContainerViewWidthConstraint4 setPriority:v24];
 
     v25 = self->_contentView;
-    v26 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewWidthConstraint];
-    [(UIView *)v25 addConstraint:v26];
+    contentViewControllerContainerViewWidthConstraint5 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewWidthConstraint];
+    [(UIView *)v25 addConstraint:contentViewControllerContainerViewWidthConstraint5];
   }
 
-  v27 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewHeightConstraint];
+  contentViewControllerContainerViewHeightConstraint = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewHeightConstraint];
 
-  if (!v27)
+  if (!contentViewControllerContainerViewHeightConstraint)
   {
-    v28 = [(UIView *)self->_contentViewControllerContainerView heightAnchor];
-    v29 = [v28 constraintEqualToConstant:v6];
+    heightAnchor = [(UIView *)self->_contentViewControllerContainerView heightAnchor];
+    v29 = [heightAnchor constraintEqualToConstant:v6];
     [(_UIAlertControllerPhoneTVMacView *)self setContentViewControllerContainerViewHeightConstraint:v29];
 
-    v30 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewHeightConstraint];
+    contentViewControllerContainerViewHeightConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewHeightConstraint];
     *&v31 = v13;
-    [v30 setPriority:v31];
+    [contentViewControllerContainerViewHeightConstraint2 setPriority:v31];
 
     v32 = self->_contentView;
-    v33 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewHeightConstraint];
-    [(UIView *)v32 addConstraint:v33];
+    contentViewControllerContainerViewHeightConstraint3 = [(_UIAlertControllerPhoneTVMacView *)self contentViewControllerContainerViewHeightConstraint];
+    [(UIView *)v32 addConstraint:contentViewControllerContainerViewHeightConstraint3];
   }
 
-  v34 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+  alertController2 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __71___UIAlertControllerPhoneTVMacView__sizeOfContentViewControllerChanged__block_invoke;
@@ -4924,7 +4924,7 @@ LABEL_7:
   v35[4] = self;
   *&v35[5] = v7;
   *&v35[6] = v6;
-  [v34 _contentViewControllerWillTransitionToSize:v35 withAnimations:{v7, v6}];
+  [alertController2 _contentViewControllerWillTransitionToSize:v35 withAnimations:{v7, v6}];
 }
 
 - (void)_layoutAndPositionInParentIfNeeded
@@ -4934,19 +4934,19 @@ LABEL_7:
   --self->_layoutRequiresPositionUpdateCount;
 }
 
-- (void)_applyISEngineLayoutValuesToBoundsOnly:(BOOL)a3
+- (void)_applyISEngineLayoutValuesToBoundsOnly:(BOOL)only
 {
-  *&a3 = self->_layoutRequiresPositionUpdateCount < 1 && a3;
+  *&only = self->_layoutRequiresPositionUpdateCount < 1 && only;
   v3.receiver = self;
   v3.super_class = _UIAlertControllerPhoneTVMacView;
-  [(UIView *)&v3 _applyISEngineLayoutValuesToBoundsOnly:a3];
+  [(UIView *)&v3 _applyISEngineLayoutValuesToBoundsOnly:only];
 }
 
 - (void)_sizeOfTextFieldViewControllerChanged
 {
   textFieldViewControllerContainerViewHeightConstraint = self->_textFieldViewControllerContainerViewHeightConstraint;
-  v4 = [(_UIAlertControllerPhoneTVMacView *)self _textFieldViewController];
-  [v4 preferredContentSize];
+  _textFieldViewController = [(_UIAlertControllerPhoneTVMacView *)self _textFieldViewController];
+  [_textFieldViewController preferredContentSize];
   [(NSLayoutConstraint *)textFieldViewControllerContainerViewHeightConstraint setConstant:v3];
 }
 
@@ -4959,7 +4959,7 @@ LABEL_7:
   v35 = 0u;
   v36 = 0u;
   v27 = 648;
-  v28 = self;
+  selfCopy = self;
   v4 = self->_actionViews;
   v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v5)
@@ -4978,10 +4978,10 @@ LABEL_7:
         }
 
         v11 = *(*(&v33 + 1) + 8 * i);
-        v12 = [v11 action];
-        v13 = [v12 _descriptiveText];
+        action = [v11 action];
+        _descriptiveText = [action _descriptiveText];
 
-        if (v13)
+        if (_descriptiveText)
         {
           [v11 currentDescriptiveLabelTextWidth];
           if (v14 > v9)
@@ -4990,15 +4990,15 @@ LABEL_7:
           }
         }
 
-        v15 = [v11 action];
-        v16 = [v15 title];
-        if (v16)
+        action2 = [v11 action];
+        title = [action2 title];
+        if (title)
         {
-          v17 = v16;
-          v18 = [v11 action];
-          v19 = [v18 _descriptiveText];
+          v17 = title;
+          action3 = [v11 action];
+          _descriptiveText2 = [action3 _descriptiveText];
 
-          if (v19)
+          if (_descriptiveText2)
           {
             [v11 currentLabelTextWidth];
             if (v20 > v8)
@@ -5031,8 +5031,8 @@ LABEL_7:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v21 = v28;
-  v22 = *(&v28->super.super.super.super.isa + v27);
+  v21 = selfCopy;
+  v22 = *(&selfCopy->super.super.super.super.isa + v27);
   v23 = [v22 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v23)
   {
@@ -5047,7 +5047,7 @@ LABEL_7:
           objc_enumerationMutation(v22);
         }
 
-        [*(*(&v29 + 1) + 8 * j) applyMetrics:{v3, v27, v28, v29}];
+        [*(*(&v29 + 1) + 8 * j) applyMetrics:{v3, v27, selfCopy, v29}];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -5061,17 +5061,17 @@ LABEL_7:
 
 - (void)_updateTextAlignmentAfterLayout
 {
-  v3 = [(UIView *)self->_titleLabel layer];
-  if (([v3 hasBeenCommitted] & 1) == 0)
+  layer = [(UIView *)self->_titleLabel layer];
+  if (([layer hasBeenCommitted] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v4 = [(UIView *)self->_messageLabel layer];
-  v5 = [v4 hasBeenCommitted];
+  layer2 = [(UIView *)self->_messageLabel layer];
+  hasBeenCommitted = [layer2 hasBeenCommitted];
 
-  if ((v5 & 1) == 0)
+  if ((hasBeenCommitted & 1) == 0)
   {
 LABEL_5:
     [(UIView *)self layoutIfNeeded];
@@ -5079,25 +5079,25 @@ LABEL_5:
 
   if ([(_UIAlertControllerPhoneTVMacView *)self _hasMessage])
   {
-    v6 = [(UILabel *)self->_messageLabel _measuredNumberOfLines];
+    _measuredNumberOfLines = [(UILabel *)self->_messageLabel _measuredNumberOfLines];
   }
 
   else
   {
-    v6 = 0;
+    _measuredNumberOfLines = 0;
   }
 
   if ([(_UIAlertControllerPhoneTVMacView *)self _hasTitle])
   {
-    v7 = [(UILabel *)self->_titleLabel _measuredNumberOfLines];
+    _measuredNumberOfLines2 = [(UILabel *)self->_titleLabel _measuredNumberOfLines];
   }
 
   else
   {
-    v7 = 0;
+    _measuredNumberOfLines2 = 0;
   }
 
-  if ((v7 <= 0 || v6 <= 0) && v6 <= 1 && v7 <= 1)
+  if ((_measuredNumberOfLines2 <= 0 || _measuredNumberOfLines <= 0) && _measuredNumberOfLines <= 1 && _measuredNumberOfLines2 <= 1)
   {
     v11 = 1;
   }
@@ -5121,7 +5121,7 @@ LABEL_5:
     [(_UIAlertControllerPhoneTVMacView *)self _recomputeActionMetrics];
   }
 
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self actionViewMetrics];
+  actionViewMetrics = [(_UIAlertControllerPhoneTVMacView *)self actionViewMetrics];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -5142,7 +5142,7 @@ LABEL_5:
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) applyMetrics:{v3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) applyMetrics:{actionViewMetrics, v9}];
       }
 
       while (v6 != v8);
@@ -5157,61 +5157,61 @@ LABEL_5:
 {
   if (![(UIView *)self translatesAutoresizingMaskIntoConstraints])
   {
-    v25 = [(UIView *)self superview];
-    if (v25)
+    superview = [(UIView *)self superview];
+    if (superview)
     {
-      v3 = [(_UIAlertControllerPhoneTVMacView *)self centerXConstraint];
-      [v25 removeConstraint:v3];
+      centerXConstraint = [(_UIAlertControllerPhoneTVMacView *)self centerXConstraint];
+      [superview removeConstraint:centerXConstraint];
 
-      v4 = [(_UIAlertControllerPhoneTVMacView *)self centerYConstraint];
-      [v25 removeConstraint:v4];
+      centerYConstraint = [(_UIAlertControllerPhoneTVMacView *)self centerYConstraint];
+      [superview removeConstraint:centerYConstraint];
 
-      v5 = [(_UIAlertControllerPhoneTVMacView *)self widthConstraint];
-      [v25 removeConstraint:v5];
+      widthConstraint = [(_UIAlertControllerPhoneTVMacView *)self widthConstraint];
+      [superview removeConstraint:widthConstraint];
 
-      v6 = [(_UIAlertControllerPhoneTVMacView *)self heightConstraint];
-      [v25 removeConstraint:v6];
+      heightConstraint = [(_UIAlertControllerPhoneTVMacView *)self heightConstraint];
+      [superview removeConstraint:heightConstraint];
 
       [(_UIAlertControllerPhoneTVMacView *)self setCenterXConstraint:0];
       [(_UIAlertControllerPhoneTVMacView *)self setCenterYConstraint:0];
       [(_UIAlertControllerPhoneTVMacView *)self setWidthConstraint:0];
       [(_UIAlertControllerPhoneTVMacView *)self setHeightConstraint:0];
-      v7 = [(_UIAlertControllerPhoneTVMacView *)self alertController];
-      v8 = [v7 _shouldSizeToFillSuperview];
+      alertController = [(_UIAlertControllerPhoneTVMacView *)self alertController];
+      _shouldSizeToFillSuperview = [alertController _shouldSizeToFillSuperview];
 
-      if (v8)
+      if (_shouldSizeToFillSuperview)
       {
-        v9 = [(UIView *)self centerXAnchor];
-        v10 = [v25 centerXAnchor];
-        v11 = [v9 constraintEqualToAnchor:v10];
+        centerXAnchor = [(UIView *)self centerXAnchor];
+        centerXAnchor2 = [superview centerXAnchor];
+        v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         [(_UIAlertControllerPhoneTVMacView *)self setCenterXConstraint:v11];
 
-        v12 = [(UIView *)self centerYAnchor];
-        v13 = [v25 centerYAnchor];
-        v14 = [v12 constraintEqualToAnchor:v13];
+        centerYAnchor = [(UIView *)self centerYAnchor];
+        centerYAnchor2 = [superview centerYAnchor];
+        v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         [(_UIAlertControllerPhoneTVMacView *)self setCenterYConstraint:v14];
 
-        v15 = [(UIView *)self widthAnchor];
-        v16 = [v25 widthAnchor];
-        v17 = [v15 constraintEqualToAnchor:v16];
+        widthAnchor = [(UIView *)self widthAnchor];
+        widthAnchor2 = [superview widthAnchor];
+        v17 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
         [(_UIAlertControllerPhoneTVMacView *)self setWidthConstraint:v17];
 
-        v18 = [(UIView *)self heightAnchor];
-        v19 = [v25 heightAnchor];
-        v20 = [v18 constraintEqualToAnchor:v19];
+        heightAnchor = [(UIView *)self heightAnchor];
+        heightAnchor2 = [superview heightAnchor];
+        v20 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
         [(_UIAlertControllerPhoneTVMacView *)self setHeightConstraint:v20];
 
-        v21 = [(_UIAlertControllerPhoneTVMacView *)self centerXConstraint];
-        [v25 addConstraint:v21];
+        centerXConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self centerXConstraint];
+        [superview addConstraint:centerXConstraint2];
 
-        v22 = [(_UIAlertControllerPhoneTVMacView *)self centerYConstraint];
-        [v25 addConstraint:v22];
+        centerYConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self centerYConstraint];
+        [superview addConstraint:centerYConstraint2];
 
-        v23 = [(_UIAlertControllerPhoneTVMacView *)self widthConstraint];
-        [v25 addConstraint:v23];
+        widthConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self widthConstraint];
+        [superview addConstraint:widthConstraint2];
 
-        v24 = [(_UIAlertControllerPhoneTVMacView *)self heightConstraint];
-        [v25 addConstraint:v24];
+        heightConstraint2 = [(_UIAlertControllerPhoneTVMacView *)self heightConstraint];
+        [superview addConstraint:heightConstraint2];
       }
     }
   }
@@ -5227,36 +5227,36 @@ LABEL_5:
   [(_UIAlertControllerPhoneTVMacView *)self _reevaluateSuperviewSizingConstraints];
 }
 
-- (void)_willMoveToWindow:(id)a3
+- (void)_willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v7.receiver = self;
   v7.super_class = _UIAlertControllerPhoneTVMacView;
-  [(UIView *)&v7 _willMoveToWindow:v4];
-  if (v4)
+  [(UIView *)&v7 _willMoveToWindow:windowCopy];
+  if (windowCopy)
   {
-    v5 = [v4 windowScene];
-    _UIFocusBehaviorSetOverrideFocusSystemEnabled(1, v5, self);
-    _UIGameControllerNotifyRelevantSystemUIWillShow(v5, self);
+    windowScene = [windowCopy windowScene];
+    _UIFocusBehaviorSetOverrideFocusSystemEnabled(1, windowScene, self);
+    _UIGameControllerNotifyRelevantSystemUIWillShow(windowScene, self);
   }
 
   else
   {
-    v5 = [(UIView *)self _window];
-    v6 = [v5 windowScene];
-    _UIFocusBehaviorSetOverrideFocusSystemEnabled(0, v6, self);
+    windowScene = [(UIView *)self _window];
+    v5WindowScene = [windowScene windowScene];
+    _UIFocusBehaviorSetOverrideFocusSystemEnabled(0, v5WindowScene, self);
   }
 }
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(UIView *)self window];
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
-    [v5 setWindow:v4];
+    window2 = [(UIView *)self window];
+    _visualStyle = [(_UIAlertControllerPhoneTVMacView *)self _visualStyle];
+    [_visualStyle setWindow:window2];
 
     [(_UIAlertControllerPhoneTVMacView *)self _updateContentView];
     [(_UIAlertControllerPhoneTVMacView *)self _updateActionViewHeight];
@@ -5267,9 +5267,9 @@ LABEL_5:
 
 - (void)_prepareForWindowDealloc
 {
-  v3 = [(UIView *)self _window];
-  v4 = [v3 windowScene];
-  _UIFocusBehaviorSetOverrideFocusSystemEnabled(0, v4, self);
+  _window = [(UIView *)self _window];
+  windowScene = [_window windowScene];
+  _UIFocusBehaviorSetOverrideFocusSystemEnabled(0, windowScene, self);
 
   v5.receiver = self;
   v5.super_class = _UIAlertControllerPhoneTVMacView;
@@ -5278,70 +5278,70 @@ LABEL_5:
 
 - (void)_prepareForWindowHostingSceneRemoval
 {
-  v3 = [(UIView *)self _window];
-  v4 = [v3 windowScene];
-  _UIFocusBehaviorSetOverrideFocusSystemEnabled(0, v4, self);
+  _window = [(UIView *)self _window];
+  windowScene = [_window windowScene];
+  _UIFocusBehaviorSetOverrideFocusSystemEnabled(0, windowScene, self);
 
   v5.receiver = self;
   v5.super_class = _UIAlertControllerPhoneTVMacView;
   [(UIView *)&v5 _prepareForWindowHostingSceneRemoval];
 }
 
-- (void)_disableAllowGroupOpacitiyIfNecessaryAlongsideTransitionCoordinator:(id)a3
+- (void)_disableAllowGroupOpacitiyIfNecessaryAlongsideTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  if (v4)
+  coordinatorCopy = coordinator;
+  if (coordinatorCopy)
   {
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self shouldHaveBackdropView];
-    v6 = [(UIView *)self layer];
-    v7 = [v6 allowsGroupOpacity];
+    shouldHaveBackdropView = [(_UIAlertControllerPhoneTVMacView *)self shouldHaveBackdropView];
+    layer = [(UIView *)self layer];
+    allowsGroupOpacity = [layer allowsGroupOpacity];
 
-    if (v5)
+    if (shouldHaveBackdropView)
     {
-      v8 = [(UIView *)self layer];
-      [v8 setAllowsGroupOpacity:0];
+      layer2 = [(UIView *)self layer];
+      [layer2 setAllowsGroupOpacity:0];
     }
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __104___UIAlertControllerPhoneTVMacView__disableAllowGroupOpacitiyIfNecessaryAlongsideTransitionCoordinator___block_invoke;
     v9[3] = &unk_1E71071A0;
-    v10 = v5;
+    v10 = shouldHaveBackdropView;
     v9[4] = self;
-    v11 = v7;
-    [v4 animateAlongsideTransition:0 completion:v9];
+    v11 = allowsGroupOpacity;
+    [coordinatorCopy animateAlongsideTransition:0 completion:v9];
   }
 }
 
-- (void)configureForPresentAlongsideTransitionCoordinator:(id)a3
+- (void)configureForPresentAlongsideTransitionCoordinator:(id)coordinator
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __86___UIAlertControllerPhoneTVMacView_configureForPresentAlongsideTransitionCoordinator___block_invoke;
   v5[3] = &unk_1E70F3590;
   v5[4] = self;
-  v4 = a3;
+  coordinatorCopy = coordinator;
   [UIView performWithoutAnimation:v5];
-  [(_UIAlertControllerPhoneTVMacView *)self _disableAllowGroupOpacitiyIfNecessaryAlongsideTransitionCoordinator:v4];
-  [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView configureForPresentAlongsideTransitionCoordinator:v4];
+  [(_UIAlertControllerPhoneTVMacView *)self _disableAllowGroupOpacitiyIfNecessaryAlongsideTransitionCoordinator:coordinatorCopy];
+  [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView configureForPresentAlongsideTransitionCoordinator:coordinatorCopy];
 }
 
-- (void)configureForDismissAlongsideTransitionCoordinator:(id)a3
+- (void)configureForDismissAlongsideTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  [(_UIAlertControllerPhoneTVMacView *)self _disableAllowGroupOpacitiyIfNecessaryAlongsideTransitionCoordinator:v4];
-  [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView configureForDismissAlongsideTransitionCoordinator:v4];
+  coordinatorCopy = coordinator;
+  [(_UIAlertControllerPhoneTVMacView *)self _disableAllowGroupOpacitiyIfNecessaryAlongsideTransitionCoordinator:coordinatorCopy];
+  [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView configureForDismissAlongsideTransitionCoordinator:coordinatorCopy];
 }
 
 - (id)preferredFocusedView
 {
-  v3 = [(_UIAlertControllerPhoneTVMacView *)self textFields];
-  v4 = [v3 count];
+  textFields = [(_UIAlertControllerPhoneTVMacView *)self textFields];
+  v4 = [textFields count];
 
   if (v4)
   {
-    v5 = [(_UIAlertControllerPhoneTVMacView *)self _textFieldViewController];
-    v6 = [v5 preferredFocusedView];
+    _textFieldViewController = [(_UIAlertControllerPhoneTVMacView *)self _textFieldViewController];
+    preferredFocusedView = [_textFieldViewController preferredFocusedView];
 
     goto LABEL_9;
   }
@@ -5353,33 +5353,33 @@ LABEL_5:
 
   else
   {
-    v8 = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionGroup];
-    v9 = [v8 actions];
-    v10 = [v9 count];
+    actionGroup = [(UIInterfaceActionGroupView *)self->_mainInterfaceActionsGroupView actionGroup];
+    actions = [actionGroup actions];
+    v10 = [actions count];
 
     if (!v10)
     {
       v13.receiver = self;
       v13.super_class = _UIAlertControllerPhoneTVMacView;
-      v11 = [(UIView *)&v13 preferredFocusedView];
+      preferredFocusedView2 = [(UIView *)&v13 preferredFocusedView];
       goto LABEL_8;
     }
 
     discreteCancelActionGroupView = self->_mainInterfaceActionsGroupView;
   }
 
-  v11 = discreteCancelActionGroupView;
+  preferredFocusedView2 = discreteCancelActionGroupView;
 LABEL_8:
-  v6 = v11;
+  preferredFocusedView = preferredFocusedView2;
 LABEL_9:
 
-  return v6;
+  return preferredFocusedView;
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = [a3 nextFocusedView];
-  LOBYTE(self) = [(UIView *)self containsView:v4];
+  nextFocusedView = [context nextFocusedView];
+  LOBYTE(self) = [(UIView *)self containsView:nextFocusedView];
 
   return self;
 }

@@ -11,29 +11,29 @@
   v11 = a4;
   v12 = a5;
   v13 = a6;
-  v14 = [a1 contentMessage];
-  v15 = [v14 objectID];
-  v16 = [v10 isEqual:v15];
+  contentMessage = [self contentMessage];
+  objectID = [contentMessage objectID];
+  v16 = [v10 isEqual:objectID];
 
   if (v16)
   {
-    v17 = [a1 contentMessage];
-    if (v17)
+    contentMessage2 = [self contentMessage];
+    if (contentMessage2)
     {
       goto LABEL_4;
     }
   }
 
-  v18 = [a1 relatedContentItems];
+  relatedContentItems = [self relatedContentItems];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __125__EMContentRepresentation_EDMessagePersistence__requestRepresentationForItemWithObjectID_options_delegate_completionHandler___block_invoke;
   v25[3] = &unk_1E8252200;
   v19 = v10;
   v26 = v19;
-  v17 = [v18 ef_firstObjectPassingTest:v25];
+  contentMessage2 = [relatedContentItems ef_firstObjectPassingTest:v25];
 
-  if (v17)
+  if (contentMessage2)
   {
 LABEL_4:
     v23[0] = MEMORY[0x1E69E9820];
@@ -41,7 +41,7 @@ LABEL_4:
     v23[2] = __125__EMContentRepresentation_EDMessagePersistence__requestRepresentationForItemWithObjectID_options_delegate_completionHandler___block_invoke_1;
     v23[3] = &unk_1E8252228;
     v24 = v13;
-    v20 = [v17 requestRepresentationWithOptions:v11 delegate:v12 completionHandler:v23];
+    v20 = [contentMessage2 requestRepresentationWithOptions:v11 delegate:v12 completionHandler:v23];
   }
 
   else
@@ -49,10 +49,10 @@ LABEL_4:
     v21 = [MEMORY[0x1E696ABC0] em_itemNotFoundErrorWithItemID:v19];
     (*(v13 + 2))(v13, 0, 0, v21);
 
-    v17 = EMLogCategoryMessageLoading();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    contentMessage2 = EMLogCategoryMessageLoading();
+    if (os_log_type_enabled(contentMessage2, OS_LOG_TYPE_ERROR))
     {
-      [EMContentRepresentation(EDMessagePersistence) requestRepresentationForItemWithObjectID:v19 options:v17 delegate:? completionHandler:?];
+      [EMContentRepresentation(EDMessagePersistence) requestRepresentationForItemWithObjectID:v19 options:contentMessage2 delegate:? completionHandler:?];
     }
 
     v20 = 0;
@@ -64,8 +64,8 @@ LABEL_4:
 - (id)requestUpdatedRepresentationWithCompletion:()EDMessagePersistence
 {
   v4 = a3;
-  v5 = [a1 requestMoreContentBlock];
-  v6 = (v5)[2](v5, v4);
+  requestMoreContentBlock = [self requestMoreContentBlock];
+  v6 = (requestMoreContentBlock)[2](requestMoreContentBlock, v4);
 
   return v6;
 }

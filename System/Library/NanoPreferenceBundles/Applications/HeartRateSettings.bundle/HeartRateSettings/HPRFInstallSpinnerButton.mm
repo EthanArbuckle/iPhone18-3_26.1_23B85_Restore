@@ -1,6 +1,6 @@
 @interface HPRFInstallSpinnerButton
 + (id)applicationSpinnerView;
-- (HPRFInstallSpinnerButton)initWithFrame:(CGRect)a3 showSquare:(BOOL)a4;
+- (HPRFInstallSpinnerButton)initWithFrame:(CGRect)frame showSquare:(BOOL)square;
 - (void)layoutSubviews;
 - (void)prepareProgressIndicatorIfNeeded;
 - (void)showProgressAnimation;
@@ -21,12 +21,12 @@
   return v3;
 }
 
-- (HPRFInstallSpinnerButton)initWithFrame:(CGRect)a3 showSquare:(BOOL)a4
+- (HPRFInstallSpinnerButton)initWithFrame:(CGRect)frame showSquare:(BOOL)square
 {
-  v4 = a4;
+  squareCopy = square;
   v15.receiver = self;
   v15.super_class = HPRFInstallSpinnerButton;
-  v5 = [(HPRFInstallSpinnerButton *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(HPRFInstallSpinnerButton *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = [UIImageView alloc];
@@ -36,7 +36,7 @@
     v5->_spinnerView = v8;
 
     [(HPRFInstallSpinnerButton *)v5 addSubview:v5->_spinnerView];
-    if (v4)
+    if (squareCopy)
     {
       v10 = objc_alloc_init(UIView);
       squareView = v5->_squareView;
@@ -116,8 +116,8 @@
   if (v3 == 0.0)
   {
     [(SUUICircleProgressIndicator *)self->_progressIndicator setHidden:1];
-    v4 = [(UIImageView *)self->_spinnerView layer];
-    v5 = [v4 animationForKey:@"HPRFRotationAnimationKey"];
+    layer = [(UIImageView *)self->_spinnerView layer];
+    v5 = [layer animationForKey:@"HPRFRotationAnimationKey"];
 
     if (!v5)
     {
@@ -132,8 +132,8 @@
       [v6 setRepeatCount:v9];
       [v6 setRemovedOnCompletion:0];
       [v6 setFrameInterval:0.0333333333];
-      v10 = [(UIImageView *)self->_spinnerView layer];
-      [v10 addAnimation:v6 forKey:@"HPRFRotationAnimationKey"];
+      layer2 = [(UIImageView *)self->_spinnerView layer];
+      [layer2 addAnimation:v6 forKey:@"HPRFRotationAnimationKey"];
     }
 
     [(UIImageView *)self->_spinnerView setHidden:0];
@@ -152,8 +152,8 @@
   if (self->_showingSpinner)
   {
     self->_showingSpinner = 0;
-    v3 = [(UIImageView *)self->_spinnerView layer];
-    [v3 removeAnimationForKey:@"HPRFRotationAnimationKey"];
+    layer = [(UIImageView *)self->_spinnerView layer];
+    [layer removeAnimationForKey:@"HPRFRotationAnimationKey"];
   }
 
   [(UIImageView *)self->_spinnerView setHidden:1];

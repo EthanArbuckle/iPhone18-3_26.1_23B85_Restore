@@ -1,16 +1,16 @@
 @interface DMDSSAuthenticationRequestDelegate
-+ (id)delegateWithAuthenticationContext:(id)a3;
++ (id)delegateWithAuthenticationContext:(id)context;
 - (id)_storeLoginFailedError;
-- (void)authenticateRequest:(id)a3 didReceiveResponse:(id)a4;
-- (void)startWithCompletionBlock:(id)a3;
+- (void)authenticateRequest:(id)request didReceiveResponse:(id)response;
+- (void)startWithCompletionBlock:(id)block;
 @end
 
 @implementation DMDSSAuthenticationRequestDelegate
 
-+ (id)delegateWithAuthenticationContext:(id)a3
++ (id)delegateWithAuthenticationContext:(id)context
 {
-  v3 = a3;
-  v4 = [[SSAuthenticateRequest alloc] initWithAuthenticationContext:v3];
+  contextCopy = context;
+  v4 = [[SSAuthenticateRequest alloc] initWithAuthenticationContext:contextCopy];
 
   v5 = [(DMDSSRequestDelegate *)[DMDSSAuthenticationRequestDelegate alloc] initWithRequest:v4];
 
@@ -29,21 +29,21 @@
   return v3;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10006EE54;
   v16[3] = &unk_1000CF4C8;
-  v4 = a3;
-  v17 = v4;
+  blockCopy = block;
+  v17 = blockCopy;
   v5 = objc_retainBlock(v16);
   v6 = +[MCProfileConnection sharedConnection];
-  v7 = [v6 appWhitelistState];
+  appWhitelistState = [v6 appWhitelistState];
 
-  if (v7)
+  if (appWhitelistState)
   {
-    v8 = v7 == 6;
+    v8 = appWhitelistState == 6;
   }
 
   else
@@ -81,15 +81,15 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Not prompting for iTunes account in limited apps mode.", buf, 2u);
     }
 
-    v12 = [(DMDSSAuthenticationRequestDelegate *)self _storeLoginFailedError];
-    (v5[2])(v5, v12, 0);
+    _storeLoginFailedError = [(DMDSSAuthenticationRequestDelegate *)self _storeLoginFailedError];
+    (v5[2])(v5, _storeLoginFailedError, 0);
   }
 }
 
-- (void)authenticateRequest:(id)a3 didReceiveResponse:(id)a4
+- (void)authenticateRequest:(id)request didReceiveResponse:(id)response
 {
-  v5 = a4;
-  if ([v5 authenticateResponseType] == 4)
+  responseCopy = response;
+  if ([responseCopy authenticateResponseType] == 4)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -97,13 +97,13 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "User successfully logged into iTunes account.", v7, 2u);
     }
 
-    v6 = [v5 authenticatedAccount];
-    [(DMDSSAuthenticationRequestDelegate *)self setAuthenticatedAccount:v6];
+    authenticatedAccount = [responseCopy authenticatedAccount];
+    [(DMDSSAuthenticationRequestDelegate *)self setAuthenticatedAccount:authenticatedAccount];
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    sub_100087640(v5);
+    sub_100087640(responseCopy);
   }
 }
 

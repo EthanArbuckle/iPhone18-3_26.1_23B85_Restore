@@ -1,55 +1,55 @@
 @interface BMStreamConfiguration
 - (NSString)syncIdentifier;
-- (id)syncIdentifierForTransport:(unint64_t)a3;
+- (id)syncIdentifierForTransport:(unint64_t)transport;
 @end
 
 @implementation BMStreamConfiguration
 
 - (NSString)syncIdentifier
 {
-  v3 = [(BMStreamConfiguration *)self syncPolicy];
-  v4 = [v3 legacyDescriptor];
-  v5 = [v4 lastPathComponent];
-  v6 = v5;
-  if (v5)
+  syncPolicy = [(BMStreamConfiguration *)self syncPolicy];
+  legacyDescriptor = [syncPolicy legacyDescriptor];
+  lastPathComponent = [legacyDescriptor lastPathComponent];
+  v6 = lastPathComponent;
+  if (lastPathComponent)
   {
-    v7 = v5;
+    uUIDString = lastPathComponent;
   }
 
   else
   {
-    v8 = [(BMStreamConfiguration *)self streamUUID];
-    v7 = [v8 UUIDString];
+    streamUUID = [(BMStreamConfiguration *)self streamUUID];
+    uUIDString = [streamUUID UUIDString];
   }
 
-  return v7;
+  return uUIDString;
 }
 
-- (id)syncIdentifierForTransport:(unint64_t)a3
+- (id)syncIdentifierForTransport:(unint64_t)transport
 {
-  if (a3 == 2)
+  if (transport == 2)
   {
-    v4 = [(BMStreamConfiguration *)self syncPolicy];
-    v5 = [v4 legacyDescriptor];
-    v6 = v5;
-    if (v5)
+    syncPolicy = [(BMStreamConfiguration *)self syncPolicy];
+    legacyDescriptor = [syncPolicy legacyDescriptor];
+    v6 = legacyDescriptor;
+    if (legacyDescriptor)
     {
-      v7 = v5;
+      uUIDString = legacyDescriptor;
     }
 
     else
     {
-      v8 = [(BMStreamConfiguration *)self streamUUID];
-      v7 = [v8 UUIDString];
+      streamUUID = [(BMStreamConfiguration *)self streamUUID];
+      uUIDString = [streamUUID UUIDString];
     }
   }
 
   else
   {
-    v7 = [(BMStreamConfiguration *)self syncIdentifier];
+    uUIDString = [(BMStreamConfiguration *)self syncIdentifier];
   }
 
-  return v7;
+  return uUIDString;
 }
 
 @end

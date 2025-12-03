@@ -8,21 +8,21 @@
 
 - (id)pbData
 {
-  v1 = [a1 protoPayload];
-  v2 = [v1 data];
+  protoPayload = [self protoPayload];
+  data = [protoPayload data];
 
-  return v2;
+  return data;
 }
 
 - (id)protoPayload
 {
   v2 = objc_alloc_init(MEMORY[0x277CD1728]);
-  v3 = [a1 identifier];
-  [v2 setIdentifier:v3];
+  identifier = [self identifier];
+  [v2 setIdentifier:identifier];
 
-  v4 = [a1 publicKey];
-  v5 = [v4 data];
-  [v2 setPublicPairingKeyData:v5];
+  publicKey = [self publicKey];
+  data = [publicKey data];
+  [v2 setPublicPairingKeyData:data];
 
   return v2;
 }
@@ -38,31 +38,31 @@
     goto LABEL_5;
   }
 
-  v7 = [v6 identifier];
-  if (v7)
+  selfCopy = [v6 identifier];
+  if (selfCopy)
   {
-    v8 = [v6 publicPairingKeyData];
+    publicPairingKeyData = [v6 publicPairingKeyData];
 
-    if (v8)
+    if (publicPairingKeyData)
     {
       v9 = objc_alloc(MEMORY[0x277D0F8B0]);
-      v10 = [v6 publicPairingKeyData];
-      v11 = [v9 initWithPairingKeyData:v10];
+      publicPairingKeyData2 = [v6 publicPairingKeyData];
+      v11 = [v9 initWithPairingKeyData:publicPairingKeyData2];
 
-      v12 = [v6 identifier];
-      a1 = [a1 initWithIdentifier:v12 publicKey:v11 privateKey:0];
+      identifier = [v6 identifier];
+      self = [self initWithIdentifier:identifier publicKey:v11 privateKey:0];
 
-      v7 = a1;
+      selfCopy = self;
       goto LABEL_6;
     }
 
 LABEL_5:
-    v7 = 0;
+    selfCopy = 0;
   }
 
 LABEL_6:
 
-  return v7;
+  return selfCopy;
 }
 
 @end

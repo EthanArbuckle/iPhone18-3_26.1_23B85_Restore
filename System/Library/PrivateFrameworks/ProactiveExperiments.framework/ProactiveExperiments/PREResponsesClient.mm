@@ -1,22 +1,22 @@
 @interface PREResponsesClient
 + (id)sharedInstance;
 - (PREResponsesClient)init;
-- (void)preResponseItemsForMessage:(id)a3 maximumResponses:(unint64_t)a4 conversationTurns:(id)a5 context:(id)a6 time:(id)a7 language:(id)a8 recipientHandles:(id)a9 modelFilePath:(id)a10 modelConfigPath:(id)a11 espressoBinFilePath:(id)a12 vocabFilePath:(id)a13 registerDisplayed:(BOOL)a14 includeCustomResponses:(BOOL)a15 includeResponsesToRobots:(BOOL)a16 completion:(id)a17;
-- (void)predictForMessage:(id)a3 conversationTurns:(id)a4 language:(id)a5 plistPath:(id)a6 espressoBinPath:(id)a7 vocabPath:(id)a8 heads:(id)a9 completion:(id)a10;
+- (void)preResponseItemsForMessage:(id)message maximumResponses:(unint64_t)responses conversationTurns:(id)turns context:(id)context time:(id)time language:(id)language recipientHandles:(id)handles modelFilePath:(id)self0 modelConfigPath:(id)self1 espressoBinFilePath:(id)self2 vocabFilePath:(id)self3 registerDisplayed:(BOOL)self4 includeCustomResponses:(BOOL)self5 includeResponsesToRobots:(BOOL)self6 completion:(id)self7;
+- (void)predictForMessage:(id)message conversationTurns:(id)turns language:(id)language plistPath:(id)path espressoBinPath:(id)binPath vocabPath:(id)vocabPath heads:(id)heads completion:(id)self0;
 @end
 
 @implementation PREResponsesClient
 
-- (void)predictForMessage:(id)a3 conversationTurns:(id)a4 language:(id)a5 plistPath:(id)a6 espressoBinPath:(id)a7 vocabPath:(id)a8 heads:(id)a9 completion:(id)a10
+- (void)predictForMessage:(id)message conversationTurns:(id)turns language:(id)language plistPath:(id)path espressoBinPath:(id)binPath vocabPath:(id)vocabPath heads:(id)heads completion:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  completionCopy = completion;
+  headsCopy = heads;
+  vocabPathCopy = vocabPath;
+  binPathCopy = binPath;
+  pathCopy = path;
+  languageCopy = language;
+  turnsCopy = turns;
+  messageCopy = message;
   v25 = pre_responses_handle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -24,23 +24,23 @@
     _os_log_impl(&dword_260CE3000, v25, OS_LOG_TYPE_DEFAULT, "PREResponsesClient initiating call to suggestd - predictForMessage", buf, 2u);
   }
 
-  v26 = [(PREResponsesClient *)self _remoteObjectProxy];
-  [v26 predictForMessage:v24 conversationTurns:v23 language:v22 plistPath:v21 espressoBinPath:v20 vocabPath:v19 heads:v18 completion:v17];
+  _remoteObjectProxy = [(PREResponsesClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy predictForMessage:messageCopy conversationTurns:turnsCopy language:languageCopy plistPath:pathCopy espressoBinPath:binPathCopy vocabPath:vocabPathCopy heads:headsCopy completion:completionCopy];
 }
 
-- (void)preResponseItemsForMessage:(id)a3 maximumResponses:(unint64_t)a4 conversationTurns:(id)a5 context:(id)a6 time:(id)a7 language:(id)a8 recipientHandles:(id)a9 modelFilePath:(id)a10 modelConfigPath:(id)a11 espressoBinFilePath:(id)a12 vocabFilePath:(id)a13 registerDisplayed:(BOOL)a14 includeCustomResponses:(BOOL)a15 includeResponsesToRobots:(BOOL)a16 completion:(id)a17
+- (void)preResponseItemsForMessage:(id)message maximumResponses:(unint64_t)responses conversationTurns:(id)turns context:(id)context time:(id)time language:(id)language recipientHandles:(id)handles modelFilePath:(id)self0 modelConfigPath:(id)self1 espressoBinFilePath:(id)self2 vocabFilePath:(id)self3 registerDisplayed:(BOOL)self4 includeCustomResponses:(BOOL)self5 includeResponsesToRobots:(BOOL)self6 completion:(id)self7
 {
-  v36 = a17;
-  v35 = a13;
-  v34 = a12;
-  v33 = a11;
-  v32 = a10;
-  v31 = a9;
-  v29 = a8;
-  v28 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a3;
+  completionCopy = completion;
+  vocabFilePathCopy = vocabFilePath;
+  filePathCopy = filePath;
+  configPathCopy = configPath;
+  pathCopy = path;
+  handlesCopy = handles;
+  languageCopy = language;
+  timeCopy = time;
+  contextCopy = context;
+  turnsCopy = turns;
+  messageCopy = message;
   v25 = pre_responses_handle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -48,10 +48,10 @@
     _os_log_impl(&dword_260CE3000, v25, OS_LOG_TYPE_DEFAULT, "PREResponsesClient initiating call to suggestd - preResponseItemsForMessage", buf, 2u);
   }
 
-  v26 = [(PREResponsesClient *)self _remoteObjectProxy];
-  BYTE2(v27) = a16;
-  LOWORD(v27) = __PAIR16__(a15, a14);
-  [v26 preResponseItemsForMessage:v24 maximumResponses:a4 conversationTurns:v23 context:v22 time:v28 language:v29 recipientHandles:v31 modelFilePath:v32 modelConfigPath:v33 espressoBinFilePath:v34 vocabFilePath:v35 registerDisplayed:v27 includeCustomResponses:v36 includeResponsesToRobots:? completion:?];
+  _remoteObjectProxy = [(PREResponsesClient *)self _remoteObjectProxy];
+  BYTE2(v27) = robots;
+  LOWORD(v27) = __PAIR16__(customResponses, displayed);
+  [_remoteObjectProxy preResponseItemsForMessage:messageCopy maximumResponses:responses conversationTurns:turnsCopy context:contextCopy time:timeCopy language:languageCopy recipientHandles:handlesCopy modelFilePath:pathCopy modelConfigPath:configPathCopy espressoBinFilePath:filePathCopy vocabFilePath:vocabFilePathCopy registerDisplayed:v27 includeCustomResponses:completionCopy includeResponsesToRobots:? completion:?];
 }
 
 - (PREResponsesClient)init
@@ -120,7 +120,7 @@ void __26__PREResponsesClient_init__block_invoke()
   block[1] = 3221225472;
   block[2] = __36__PREResponsesClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken8 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken8, block);

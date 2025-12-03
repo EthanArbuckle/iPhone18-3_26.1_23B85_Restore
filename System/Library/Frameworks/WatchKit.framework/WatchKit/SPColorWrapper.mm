@@ -1,37 +1,37 @@
 @interface SPColorWrapper
-+ (id)wrapperForColor:(id)a3;
-- (SPColorWrapper)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)wrapperForColor:(id)color;
+- (SPColorWrapper)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPColorWrapper
 
-+ (id)wrapperForColor:(id)a3
++ (id)wrapperForColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = objc_alloc_init(SPColorWrapper);
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_color, a3);
+    objc_storeStrong(&v5->_color, color);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (SPColorWrapper)initWithCoder:(id)a3
+- (SPColorWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = SPColorWrapper;
   v5 = [(SPColorWrapper *)&v32 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"c"])
+    if ([coderCopy containsValueForKey:@"c"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"c"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"c"];
       color = v5->_color;
       v5->_color = v6;
 
@@ -41,7 +41,7 @@ LABEL_19:
     }
 
     v31 = 0;
-    v8 = [v4 decodeBytesWithReturnedLength:&v31];
+    v8 = [coderCopy decodeBytesWithReturnedLength:&v31];
     if (v31 <= 2)
     {
       if (v31 == 1)
@@ -119,22 +119,22 @@ LABEL_20:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UIColor *)self->_color CGColor];
-  ColorSpace = CGColorGetColorSpace(v5);
+  coderCopy = coder;
+  cGColor = [(UIColor *)self->_color CGColor];
+  ColorSpace = CGColorGetColorSpace(cGColor);
   Model = CGColorSpaceGetModel(ColorSpace);
   if (Model > kCGColorSpaceModelRGB)
   {
-    [v4 encodeObject:self->_color forKey:@"c"];
+    [coderCopy encodeObject:self->_color forKey:@"c"];
   }
 
   else
   {
     v8 = Model;
-    NumberOfComponents = CGColorGetNumberOfComponents(v5);
+    NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
     v10 = NumberOfComponents;
     v11 = 4;
     if (v8 == kCGColorSpaceModelMonochrome)
@@ -152,7 +152,7 @@ LABEL_20:
     }
 
     v19 = &buf[-((v10 + 15) & 0xFFFFFFFFFFFFFFF0) - 16];
-    Components = CGColorGetComponents(v5);
+    Components = CGColorGetComponents(cGColor);
     v22 = Components;
     v23 = v10 - 1;
     if (v10 != 1)
@@ -214,15 +214,15 @@ LABEL_20:
       v19[v23] = (v32 * 255.0);
     }
 
-    [v4 encodeBytes:v19 length:{v10, v36}];
+    [coderCopy encodeBytes:v19 length:{v10, v36}];
   }
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_color);
   return v4;
 }

@@ -1,12 +1,12 @@
 @interface HMDMediaPropertyResponse
-+ (id)groupedProfileResponses:(id)a3;
-+ (id)propertyResponsesFromRequests:(id)a3 error:(id)a4;
-+ (id)responseWithRequest:(id)a3 error:(id)a4;
-+ (id)responseWithRequest:(id)a3 value:(id)a4 updatedTime:(id)a5;
-+ (id)responsesFromSerializedResponse:(id)a3 requests:(id)a4 home:(id)a5;
-+ (id)serializeResponses:(id)a3;
-- (HMDMediaPropertyResponse)initWithRequest:(id)a3 error:(id)a4;
-- (HMDMediaPropertyResponse)initWithRequest:(id)a3 value:(id)a4 updatedTime:(id)a5;
++ (id)groupedProfileResponses:(id)responses;
++ (id)propertyResponsesFromRequests:(id)requests error:(id)error;
++ (id)responseWithRequest:(id)request error:(id)error;
++ (id)responseWithRequest:(id)request value:(id)value updatedTime:(id)time;
++ (id)responsesFromSerializedResponse:(id)response requests:(id)requests home:(id)home;
++ (id)serializeResponses:(id)responses;
+- (HMDMediaPropertyResponse)initWithRequest:(id)request error:(id)error;
+- (HMDMediaPropertyResponse)initWithRequest:(id)request value:(id)value updatedTime:(id)time;
 - (id)description;
 @end
 
@@ -15,93 +15,93 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDMediaPropertyResponse *)self request];
-  v5 = [(HMDMediaPropertyResponse *)self value];
-  v6 = [(HMDMediaPropertyResponse *)self error];
-  v7 = [v3 stringWithFormat:@"<MPRes: %@ (val: %@, err: %@)>", v4, v5, v6];
+  request = [(HMDMediaPropertyResponse *)self request];
+  value = [(HMDMediaPropertyResponse *)self value];
+  error = [(HMDMediaPropertyResponse *)self error];
+  v7 = [v3 stringWithFormat:@"<MPRes: %@ (val: %@, err: %@)>", request, value, error];
 
   return v7;
 }
 
-- (HMDMediaPropertyResponse)initWithRequest:(id)a3 value:(id)a4 updatedTime:(id)a5
+- (HMDMediaPropertyResponse)initWithRequest:(id)request value:(id)value updatedTime:(id)time
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = HMDMediaPropertyResponse;
   v10 = [(HMDMediaPropertyResponse *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_request, a3);
-    objc_storeStrong(&v11->_value, a4);
+    objc_storeStrong(&v10->_request, request);
+    objc_storeStrong(&v11->_value, value);
     valueUpdatedTime = v11->_valueUpdatedTime;
     if (valueUpdatedTime)
     {
-      v13 = valueUpdatedTime;
+      date = valueUpdatedTime;
     }
 
     else
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     v14 = v11->_valueUpdatedTime;
-    v11->_valueUpdatedTime = v13;
+    v11->_valueUpdatedTime = date;
   }
 
   return v11;
 }
 
-- (HMDMediaPropertyResponse)initWithRequest:(id)a3 error:(id)a4
+- (HMDMediaPropertyResponse)initWithRequest:(id)request error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = HMDMediaPropertyResponse;
   v9 = [(HMDMediaPropertyResponse *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_error, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_error, error);
   }
 
   return v10;
 }
 
-+ (id)responseWithRequest:(id)a3 value:(id)a4 updatedTime:(id)a5
++ (id)responseWithRequest:(id)request value:(id)value updatedTime:(id)time
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithRequest:v10 value:v9 updatedTime:v8];
+  timeCopy = time;
+  valueCopy = value;
+  requestCopy = request;
+  v11 = [[self alloc] initWithRequest:requestCopy value:valueCopy updatedTime:timeCopy];
 
   return v11;
 }
 
-+ (id)responseWithRequest:(id)a3 error:(id)a4
++ (id)responseWithRequest:(id)request error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRequest:v7 error:v6];
+  errorCopy = error;
+  requestCopy = request;
+  v8 = [[self alloc] initWithRequest:requestCopy error:errorCopy];
 
   return v8;
 }
 
-+ (id)responsesFromSerializedResponse:(id)a3 requests:(id)a4 home:(id)a5
++ (id)responsesFromSerializedResponse:(id)response requests:(id)requests home:(id)home
 {
   v70 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v45 = a4;
-  v39 = a5;
-  v44 = [MEMORY[0x277CBEB18] array];
+  responseCopy = response;
+  requestsCopy = requests;
+  homeCopy = home;
+  array = [MEMORY[0x277CBEB18] array];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v37 = v7;
-  obj = [v7 allKeys];
+  v37 = responseCopy;
+  obj = [responseCopy allKeys];
   v40 = [obj countByEnumeratingWithState:&v59 objects:v69 count:16];
   if (v40)
   {
@@ -119,7 +119,7 @@
 
         v10 = *(*(&v59 + 1) + 8 * i);
         v50 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v10];
-        v43 = [v39 mediaProfileWithUUID:?];
+        v43 = [homeCopy mediaProfileWithUUID:?];
         if (v43)
         {
           v41 = i;
@@ -128,8 +128,8 @@
           v56 = 0u;
           v57 = 0u;
           v58 = 0u;
-          v42 = [v11 allKeys];
-          v48 = [v42 countByEnumeratingWithState:&v55 objects:v64 count:16];
+          allKeys = [v11 allKeys];
+          v48 = [allKeys countByEnumeratingWithState:&v55 objects:v64 count:16];
           if (v48)
           {
             v46 = *v56;
@@ -141,7 +141,7 @@
               {
                 if (*v56 != v46)
                 {
-                  objc_enumerationMutation(v42);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v49 = v12;
@@ -150,7 +150,7 @@
                 v52 = 0u;
                 v53 = 0u;
                 v54 = 0u;
-                v14 = v45;
+                v14 = requestsCopy;
                 v15 = [v14 countByEnumeratingWithState:&v51 objects:v63 count:16];
                 if (v15)
                 {
@@ -166,12 +166,12 @@ LABEL_14:
                     }
 
                     v19 = *(*(&v51 + 1) + 8 * v18);
-                    v20 = [v19 mediaProfile];
-                    v21 = [v20 uniqueIdentifier];
-                    if ([v21 isEqual:v50])
+                    mediaProfile = [v19 mediaProfile];
+                    uniqueIdentifier = [mediaProfile uniqueIdentifier];
+                    if ([uniqueIdentifier isEqual:v50])
                     {
-                      v22 = [v19 property];
-                      v23 = [v13 isEqual:v22];
+                      property = [v19 property];
+                      v23 = [v13 isEqual:property];
 
                       if (v23)
                       {
@@ -216,17 +216,17 @@ LABEL_26:
                 else
                 {
                   v27 = [v47 objectForKeyedSubscript:v13];
-                  v28 = [MEMORY[0x277CBEAA8] date];
-                  v26 = [HMDMediaPropertyResponse responseWithRequest:v24 value:v27 updatedTime:v28];
+                  date = [MEMORY[0x277CBEAA8] date];
+                  v26 = [HMDMediaPropertyResponse responseWithRequest:v24 value:v27 updatedTime:date];
                 }
 
-                [v44 addObject:v26];
+                [array addObject:v26];
 
                 v12 = v49 + 1;
               }
 
               while (v49 + 1 != v48);
-              v48 = [v42 countByEnumeratingWithState:&v55 objects:v64 count:16];
+              v48 = [allKeys countByEnumeratingWithState:&v55 objects:v64 count:16];
             }
 
             while (v48);
@@ -259,20 +259,20 @@ LABEL_26:
     while (v40);
   }
 
-  v32 = [HMDMediaPropertyResponse groupedProfileResponses:v44];
+  v32 = [HMDMediaPropertyResponse groupedProfileResponses:array];
 
   v33 = *MEMORY[0x277D85DE8];
 
   return v32;
 }
 
-+ (id)serializeResponses:(id)a3
++ (id)serializeResponses:(id)responses
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v34 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
-  v37 = v3;
-  [HMDMediaPropertyResponse groupedProfileResponses:v3];
+  responsesCopy = responses;
+  v34 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(responsesCopy, "count")}];
+  v37 = responsesCopy;
+  [HMDMediaPropertyResponse groupedProfileResponses:responsesCopy];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -304,7 +304,7 @@ LABEL_26:
         if (v8)
         {
           v9 = v8;
-          v10 = 0;
+          mediaProfile = 0;
           v11 = *v41;
           do
           {
@@ -316,29 +316,29 @@ LABEL_26:
               }
 
               v13 = *(*(&v40 + 1) + 8 * i);
-              v14 = [v13 request];
-              v15 = v14;
-              if (!v10)
+              request = [v13 request];
+              v15 = request;
+              if (!mediaProfile)
               {
-                v10 = [v14 mediaProfile];
+                mediaProfile = [request mediaProfile];
               }
 
-              v16 = [v13 error];
+              error = [v13 error];
 
-              if (v16)
+              if (error)
               {
                 v17 = MEMORY[0x277CCAAB0];
-                v18 = [v13 error];
-                v19 = [v17 archivedDataWithRootObject:v18 requiringSecureCoding:1 error:0];
+                error2 = [v13 error];
+                value = [v17 archivedDataWithRootObject:error2 requiringSecureCoding:1 error:0];
               }
 
               else
               {
-                v19 = [v13 value];
+                value = [v13 value];
               }
 
-              v20 = [v15 property];
-              [v6 setObject:v19 forKeyedSubscript:v20];
+              property = [v15 property];
+              [v6 setObject:value forKeyedSubscript:property];
             }
 
             v9 = [v7 countByEnumeratingWithState:&v40 objects:v48 count:16];
@@ -349,12 +349,12 @@ LABEL_26:
 
         else
         {
-          v10 = 0;
+          mediaProfile = 0;
         }
 
         if ([v6 count])
         {
-          v21 = v10 == 0;
+          v21 = mediaProfile == 0;
         }
 
         else
@@ -364,29 +364,29 @@ LABEL_26:
 
         if (!v21)
         {
-          v22 = [v10 uniqueIdentifier];
-          v23 = [v22 UUIDString];
+          uniqueIdentifier = [mediaProfile uniqueIdentifier];
+          uUIDString = [uniqueIdentifier UUIDString];
 
-          if (v23)
+          if (uUIDString)
           {
-            v24 = [v10 mediaSession];
-            v25 = [v24 sessionIdentifier];
-            v26 = v25;
-            if (v25)
+            mediaSession = [mediaProfile mediaSession];
+            sessionIdentifier = [mediaSession sessionIdentifier];
+            v26 = sessionIdentifier;
+            if (sessionIdentifier)
             {
-              v27 = v25;
+              v27 = sessionIdentifier;
             }
 
             else
             {
-              v27 = v23;
+              v27 = uUIDString;
             }
 
             v28 = v27;
 
             [v6 setObject:v28 forKeyedSubscript:v33];
             v29 = [v6 copy];
-            [v34 setObject:v29 forKeyedSubscript:v23];
+            [v34 setObject:v29 forKeyedSubscript:uUIDString];
           }
         }
 
@@ -407,16 +407,16 @@ LABEL_26:
   return v30;
 }
 
-+ (id)groupedProfileResponses:(id)a3
++ (id)groupedProfileResponses:(id)responses
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v20 = [MEMORY[0x277CBEB18] array];
+  responsesCopy = responses;
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v3;
+  obj = responsesCopy;
   v4 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
@@ -434,20 +434,20 @@ LABEL_26:
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 request];
-        v12 = [v11 mediaProfile];
-        v13 = [v12 uniqueIdentifier];
-        v14 = [v13 isEqual:v7];
+        request = [v10 request];
+        mediaProfile = [request mediaProfile];
+        uniqueIdentifier = [mediaProfile uniqueIdentifier];
+        v14 = [uniqueIdentifier isEqual:v7];
 
         if ((v14 & 1) == 0)
         {
-          v15 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
 
-          [v20 addObject:v15];
-          v16 = [v12 uniqueIdentifier];
+          [array addObject:array2];
+          uniqueIdentifier2 = [mediaProfile uniqueIdentifier];
 
-          v6 = v15;
-          v7 = v16;
+          v6 = array2;
+          v7 = uniqueIdentifier2;
         }
 
         [v6 addObject:v10];
@@ -465,23 +465,23 @@ LABEL_26:
     v7 = 0;
   }
 
-  v17 = [v20 copy];
+  v17 = [array copy];
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-+ (id)propertyResponsesFromRequests:(id)a3 error:(id)a4
++ (id)propertyResponsesFromRequests:(id)requests error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  requestsCopy = requests;
+  errorCopy = error;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = requestsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -496,7 +496,7 @@ LABEL_26:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [HMDMediaPropertyResponse responseWithRequest:*(*(&v17 + 1) + 8 * i) error:v6, v17];
+        v13 = [HMDMediaPropertyResponse responseWithRequest:*(*(&v17 + 1) + 8 * i) error:errorCopy, v17];
         [v7 addObject:v13];
       }
 

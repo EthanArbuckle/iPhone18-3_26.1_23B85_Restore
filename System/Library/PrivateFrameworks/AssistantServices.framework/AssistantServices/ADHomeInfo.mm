@@ -1,19 +1,19 @@
 @interface ADHomeInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation ADHomeInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ADHomeInfo);
   [(ADHomeInfo *)v4 setPersonalDomainsIsEnabled:[(ADHomeInfo *)self personalDomainsIsEnabled]];
   [(ADHomeInfo *)v4 setSecurePersonalDomainsRequireAuth:[(ADHomeInfo *)self securePersonalDomainsRequireAuth]];
-  v5 = [(ADHomeInfo *)self currentHomeIdentifier];
-  [(ADHomeInfo *)v4 setCurrentHomeIdentifier:v5];
+  currentHomeIdentifier = [(ADHomeInfo *)self currentHomeIdentifier];
+  [(ADHomeInfo *)v4 setCurrentHomeIdentifier:currentHomeIdentifier];
 
   return v4;
 }
@@ -29,13 +29,13 @@
   return v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self->_personalDomainsIsEnabled == *(v5 + 8) && self->_securePersonalDomainsRequireAuth == *(v5 + 9))
     {
@@ -71,10 +71,10 @@
   v10.receiver = self;
   v10.super_class = ADHomeInfo;
   v4 = [(ADHomeInfo *)&v10 description];
-  v5 = [(ADHomeInfo *)self personalDomainsIsEnabled];
-  v6 = [(ADHomeInfo *)self securePersonalDomainsRequireAuth];
-  v7 = [(ADHomeInfo *)self currentHomeIdentifier];
-  v8 = [v3 initWithFormat:@"%@ Personal Domains Enabled: %d Auth Required: %d, currentHomeIdentifier: %@", v4, v5, v6, v7];
+  personalDomainsIsEnabled = [(ADHomeInfo *)self personalDomainsIsEnabled];
+  securePersonalDomainsRequireAuth = [(ADHomeInfo *)self securePersonalDomainsRequireAuth];
+  currentHomeIdentifier = [(ADHomeInfo *)self currentHomeIdentifier];
+  v8 = [v3 initWithFormat:@"%@ Personal Domains Enabled: %d Auth Required: %d, currentHomeIdentifier: %@", v4, personalDomainsIsEnabled, securePersonalDomainsRequireAuth, currentHomeIdentifier];
 
   return v8;
 }

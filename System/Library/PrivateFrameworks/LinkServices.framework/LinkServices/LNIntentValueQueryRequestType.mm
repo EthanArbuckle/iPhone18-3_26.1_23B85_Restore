@@ -1,31 +1,31 @@
 @interface LNIntentValueQueryRequestType
-- (BOOL)isEqual:(id)a3;
-- (LNIntentValueQueryRequestType)initWithCoder:(id)a3;
-- (LNIntentValueQueryRequestType)initWithValue:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNIntentValueQueryRequestType)initWithCoder:(id)coder;
+- (LNIntentValueQueryRequestType)initWithValue:(id)value;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNIntentValueQueryRequestType
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNIntentValueQueryRequestType *)self value];
-      v8 = [(LNIntentValueQueryRequestType *)v6 value];
-      v9 = v7;
-      v10 = v8;
+      value = [(LNIntentValueQueryRequestType *)self value];
+      value2 = [(LNIntentValueQueryRequestType *)v6 value];
+      v9 = value;
+      v10 = value2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -53,56 +53,56 @@
 
 - (unint64_t)hash
 {
-  v2 = [(LNIntentValueQueryRequestType *)self value];
-  v3 = [v2 hash];
+  value = [(LNIntentValueQueryRequestType *)self value];
+  v3 = [value hash];
 
   return v3;
 }
 
-- (LNIntentValueQueryRequestType)initWithCoder:(id)a3
+- (LNIntentValueQueryRequestType)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 setWithObjects:{objc_opt_class(), 0}];
-  v7 = [v5 decodeObjectOfClasses:v6 forKey:@"value"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"value"];
 
   if (v7)
   {
     self = [(LNIntentValueQueryRequestType *)self initWithValue:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNIntentValueQueryRequestType *)self value];
-  [v4 encodeObject:v5 forKey:@"value"];
+  coderCopy = coder;
+  value = [(LNIntentValueQueryRequestType *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 }
 
-- (LNIntentValueQueryRequestType)initWithValue:(id)a3
+- (LNIntentValueQueryRequestType)initWithValue:(id)value
 {
-  v6 = a3;
-  if (!v6)
+  valueCopy = value;
+  if (!valueCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNQueryRequestConfiguration.m" lineNumber:353 description:{@"Invalid parameter not satisfying: %@", @"value"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNQueryRequestConfiguration.m" lineNumber:353 description:{@"Invalid parameter not satisfying: %@", @"value"}];
   }
 
   v12.receiver = self;
   v12.super_class = LNIntentValueQueryRequestType;
-  v7 = [(LNQueryRequestTypeBase *)&v12 _init];
-  v8 = v7;
-  if (v7)
+  _init = [(LNQueryRequestTypeBase *)&v12 _init];
+  v8 = _init;
+  if (_init)
   {
-    objc_storeStrong(v7 + 1, a3);
+    objc_storeStrong(_init + 1, value);
     v9 = v8;
   }
 

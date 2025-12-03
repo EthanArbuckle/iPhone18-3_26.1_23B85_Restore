@@ -3,7 +3,7 @@
 - (BOOL)isTiled;
 - (double)alphaCroppedRect;
 - (double)originalUncroppedSize;
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (id)data;
 - (id)metrics;
 - (id)properties;
@@ -21,16 +21,16 @@
   [(CUIPlaceholderCUIThemeRendition *)&v3 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v30 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = CUIPlaceholder_CUIInternalLinkRendition;
-  v5 = [(CUIPlaceholderCUIThemeRendition *)&v24 _initWithCSIHeader:a3 version:*&a4];
-  var0 = a3->var11.var0;
+  v5 = [(CUIPlaceholderCUIThemeRendition *)&v24 _initWithCSIHeader:header version:*&version];
+  var0 = header->var11.var0;
   if (var0)
   {
-    var10 = a3->var10;
+    var10 = header->var10;
     v28 = 0u;
     memset(v29, 0, sizeof(v29));
     v26 = 0u;
@@ -39,8 +39,8 @@
     if (var10)
     {
       v8 = 0;
-      v9 = &a3->var11.var1[var0 + 1] + var10;
-      v23 = a3;
+      v9 = &header->var11.var1[var0 + 1] + var10;
+      headerCopy = header;
       do
       {
         v10 = 0;
@@ -104,12 +104,12 @@
           break;
         }
 
-        if (++v8 >= v23->var11.var0)
+        if (++v8 >= headerCopy->var11.var0)
         {
           return v5;
         }
 
-        var10 = v23->var10;
+        var10 = headerCopy->var10;
         v28 = 0u;
         memset(v29, 0, sizeof(v29));
         v26 = 0u;
@@ -128,23 +128,23 @@
 
 - (int)bitmapEncoding
 {
-  v2 = [(CUIPlaceholderCUIThemeRendition *)self _sourceRendition];
+  _sourceRendition = [(CUIPlaceholderCUIThemeRendition *)self _sourceRendition];
 
-  return [v2 bitmapEncoding];
+  return [_sourceRendition bitmapEncoding];
 }
 
 - (BOOL)isOpaque
 {
-  v2 = [(CUIPlaceholderCUIThemeRendition *)self _sourceRendition];
+  _sourceRendition = [(CUIPlaceholderCUIThemeRendition *)self _sourceRendition];
 
-  return [v2 isOpaque];
+  return [_sourceRendition isOpaque];
 }
 
 - (int)pixelFormat
 {
-  v2 = [(CUIPlaceholderCUIThemeRendition *)self _sourceRendition];
+  _sourceRendition = [(CUIPlaceholderCUIThemeRendition *)self _sourceRendition];
 
-  return [v2 pixelFormat];
+  return [_sourceRendition pixelFormat];
 }
 
 - (id)metrics
@@ -156,29 +156,29 @@
 
 - (id)data
 {
-  v2 = [(CUIPlaceholderCUIThemeRendition *)self _sourceRendition];
+  _sourceRendition = [(CUIPlaceholderCUIThemeRendition *)self _sourceRendition];
 
-  return [v2 data];
+  return [_sourceRendition data];
 }
 
 - (id)properties
 {
   v8.receiver = self;
   v8.super_class = CUIPlaceholder_CUIInternalLinkRendition;
-  v3 = [(CUIPlaceholderCUIThemeRendition *)&v8 properties];
+  properties = [(CUIPlaceholderCUIThemeRendition *)&v8 properties];
   v4 = [-[CUIPlaceholderCUIThemeRendition _sourceRendition](self "_sourceRendition")];
   v5 = v4;
-  if (v3)
+  if (properties)
   {
     if ([v4 count])
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v3];
+      v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:properties];
       [v6 addEntriesFromDictionary:v5];
     }
 
     else
     {
-      v6 = [v3 copy];
+      v6 = [properties copy];
     }
 
     return v6;
@@ -194,16 +194,16 @@
     return [(CUIPlaceholderCUIThemeRendition *)self subtype]== 30 || [(CUIPlaceholderCUIThemeRendition *)self subtype]== 11;
   }
 
-  v4 = [(CUIPlaceholderCUIThemeRendition *)self name];
-  _CUILog(1, "WARNING: -isTiled called on rendition named: %@, which is not a one-part or nine-part image, but the method is only meaningful for one-part and nine-part images. Returning NO.", v5, v6, v7, v8, v9, v10, v4);
+  name = [(CUIPlaceholderCUIThemeRendition *)self name];
+  _CUILog(1, "WARNING: -isTiled called on rendition named: %@, which is not a one-part or nine-part image, but the method is only meaningful for one-part and nine-part images. Returning NO.", v5, v6, v7, v8, v9, v10, name);
   return 0;
 }
 
 - (double)originalUncroppedSize
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 936);
+    return *(self + 936);
   }
 
   else
@@ -214,9 +214,9 @@
 
 - (double)alphaCroppedRect
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 952);
+    return *(self + 952);
   }
 
   else

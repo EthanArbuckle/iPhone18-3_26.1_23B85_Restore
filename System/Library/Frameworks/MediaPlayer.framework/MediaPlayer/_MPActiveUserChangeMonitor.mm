@@ -1,9 +1,9 @@
 @interface _MPActiveUserChangeMonitor
-- (_MPActiveUserChangeMonitor)initWithDelegate:(id)a3;
+- (_MPActiveUserChangeMonitor)initWithDelegate:(id)delegate;
 - (_MPActiveUserChangeMonitorDelegate)delegate;
-- (void)_cancelNotificationTimerWithReason:(id)a3;
-- (void)_startNotificationTimerWithEventHandler:(id)a3;
-- (void)ingestNotificationName:(id)a3;
+- (void)_cancelNotificationTimerWithReason:(id)reason;
+- (void)_startNotificationTimerWithEventHandler:(id)handler;
+- (void)ingestNotificationName:(id)name;
 @end
 
 @implementation _MPActiveUserChangeMonitor
@@ -15,122 +15,122 @@
   return WeakRetained;
 }
 
-- (void)_cancelNotificationTimerWithReason:(id)a3
+- (void)_cancelNotificationTimerWithReason:(id)reason
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![v5 length])
+  reasonCopy = reason;
+  if (![reasonCopy length])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_MPActiveUserChangeMonitor.m" lineNumber:87 description:@"Must provide a reason for logging."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_MPActiveUserChangeMonitor.m" lineNumber:87 description:@"Must provide a reason for logging."];
   }
 
-  v6 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
+  notificationTimer = [(_MPActiveUserChangeMonitor *)self notificationTimer];
 
-  if (v6)
+  if (notificationTimer)
   {
     v7 = os_log_create("com.apple.amp.mediaplayer", "Library");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
+      notificationTimer2 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
       v11 = 134218498;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
-      v14 = v8;
+      v14 = notificationTimer2;
       v15 = 2114;
-      v16 = v5;
+      v16 = reasonCopy;
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_INFO, "<_MPActiveUserChangeMonitor %p> - Canceled notification timer %p [%{public}@]", &v11, 0x20u);
     }
 
-    v9 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
-    dispatch_source_cancel(v9);
+    notificationTimer3 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
+    dispatch_source_cancel(notificationTimer3);
 
     [(_MPActiveUserChangeMonitor *)self setNotificationTimer:0];
   }
 }
 
-- (void)_startNotificationTimerWithEventHandler:(id)a3
+- (void)_startNotificationTimerWithEventHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
+  handlerCopy = handler;
+  notificationTimer = [(_MPActiveUserChangeMonitor *)self notificationTimer];
 
-  if (v6)
+  if (notificationTimer)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_MPActiveUserChangeMonitor.m" lineNumber:77 description:@"Cancel existing timer before starting a new one."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_MPActiveUserChangeMonitor.m" lineNumber:77 description:@"Cancel existing timer before starting a new one."];
   }
 
   v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
   [(_MPActiveUserChangeMonitor *)self setNotificationTimer:v7];
 
-  v8 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
+  notificationTimer2 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
   v9 = dispatch_time(0, 4000000000);
-  dispatch_source_set_timer(v8, v9, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+  dispatch_source_set_timer(notificationTimer2, v9, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 
-  v10 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
-  dispatch_source_set_event_handler(v10, v5);
+  notificationTimer3 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
+  dispatch_source_set_event_handler(notificationTimer3, handlerCopy);
 
-  v11 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
-  dispatch_resume(v11);
+  notificationTimer4 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
+  dispatch_resume(notificationTimer4);
 
   v12 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
+    notificationTimer5 = [(_MPActiveUserChangeMonitor *)self notificationTimer];
     v15 = 134218240;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = v13;
+    v18 = notificationTimer5;
     _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_INFO, "<_MPActiveUserChangeMonitor %p> - Started notification timer %p", &v15, 0x16u);
   }
 }
 
-- (void)ingestNotificationName:(id)a3
+- (void)ingestNotificationName:(id)name
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_stateLock);
-  v5 = [(_MPActiveUserChangeMonitor *)self expectedNotifications];
-  if ([v5 containsObject:v4])
+  expectedNotifications = [(_MPActiveUserChangeMonitor *)self expectedNotifications];
+  if ([expectedNotifications containsObject:nameCopy])
   {
-    v6 = [(_MPActiveUserChangeMonitor *)self receivedNotifications];
-    v7 = [v6 containsObject:v4];
+    receivedNotifications = [(_MPActiveUserChangeMonitor *)self receivedNotifications];
+    v7 = [receivedNotifications containsObject:nameCopy];
 
     if (!v7)
     {
-      v8 = [(_MPActiveUserChangeMonitor *)self receivedNotifications];
-      [v8 addObject:v4];
+      receivedNotifications2 = [(_MPActiveUserChangeMonitor *)self receivedNotifications];
+      [receivedNotifications2 addObject:nameCopy];
 
       v9 = os_log_create("com.apple.amp.mediaplayer", "Library");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(_MPActiveUserChangeMonitor *)self receivedNotifications];
-        v11 = [v10 count];
-        v12 = [(_MPActiveUserChangeMonitor *)self expectedNotifications];
+        receivedNotifications3 = [(_MPActiveUserChangeMonitor *)self receivedNotifications];
+        v11 = [receivedNotifications3 count];
+        expectedNotifications2 = [(_MPActiveUserChangeMonitor *)self expectedNotifications];
         *buf = 134218754;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
-        v25 = v4;
+        v25 = nameCopy;
         v26 = 2048;
         v27 = v11;
         v28 = 2048;
-        v29 = [v12 count];
+        v29 = [expectedNotifications2 count];
         _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEFAULT, "<_MPActiveUserChangeMonitor %p> - Ingesting notification %{public}@ [%ld of %ld]", buf, 0x2Au);
       }
 
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Received %@", v4];
-      [(_MPActiveUserChangeMonitor *)self _cancelNotificationTimerWithReason:v13];
+      nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Received %@", nameCopy];
+      [(_MPActiveUserChangeMonitor *)self _cancelNotificationTimerWithReason:nameCopy];
 
-      v14 = [(_MPActiveUserChangeMonitor *)self receivedNotifications];
-      v15 = [(_MPActiveUserChangeMonitor *)self expectedNotifications];
-      v16 = [v14 isEqualToSet:v15];
+      receivedNotifications4 = [(_MPActiveUserChangeMonitor *)self receivedNotifications];
+      expectedNotifications3 = [(_MPActiveUserChangeMonitor *)self expectedNotifications];
+      v16 = [receivedNotifications4 isEqualToSet:expectedNotifications3];
 
-      v17 = [(_MPActiveUserChangeMonitor *)self receivedNotifications];
-      v18 = v17;
+      receivedNotifications5 = [(_MPActiveUserChangeMonitor *)self receivedNotifications];
+      v18 = receivedNotifications5;
       if (v16)
       {
-        [v17 removeAllObjects];
+        [receivedNotifications5 removeAllObjects];
 
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -142,7 +142,7 @@
 
       else
       {
-        v19 = [v17 containsObject:@"MPMediaLibraryPathDidChangeNotification"];
+        v19 = [receivedNotifications5 containsObject:@"MPMediaLibraryPathDidChangeNotification"];
 
         if (v19)
         {
@@ -164,17 +164,17 @@
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (_MPActiveUserChangeMonitor)initWithDelegate:(id)a3
+- (_MPActiveUserChangeMonitor)initWithDelegate:(id)delegate
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = _MPActiveUserChangeMonitor;
   v5 = [(_MPActiveUserChangeMonitor *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = MEMORY[0x1E695DFD8];
     v15[0] = @"MPMediaLibraryPathDidChangeNotification";
     v15[1] = @"MPMediaLibraryDidChangeNotification";

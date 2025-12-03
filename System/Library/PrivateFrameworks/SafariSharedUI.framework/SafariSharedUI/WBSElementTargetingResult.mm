@@ -1,30 +1,30 @@
 @interface WBSElementTargetingResult
-- (BOOL)hasSimilarGeometryInView:(id)a3;
-- (WBSElementTargetingResult)initWithTarget:(id)a3 element:(id)a4;
-- (int64_t)computeURLSimilarity:(id *)a3;
-- (void)_forEachPotentiallySimilarElement:(id)a3;
-- (void)addElement:(id)a3;
-- (void)checkForSimilarRenderedText:(id)a3;
+- (BOOL)hasSimilarGeometryInView:(id)view;
+- (WBSElementTargetingResult)initWithTarget:(id)target element:(id)element;
+- (int64_t)computeURLSimilarity:(id *)similarity;
+- (void)_forEachPotentiallySimilarElement:(id)element;
+- (void)addElement:(id)element;
+- (void)checkForSimilarRenderedText:(id)text;
 @end
 
 @implementation WBSElementTargetingResult
 
-- (WBSElementTargetingResult)initWithTarget:(id)a3 element:(id)a4
+- (WBSElementTargetingResult)initWithTarget:(id)target element:(id)element
 {
-  v7 = a3;
-  v8 = a4;
+  targetCopy = target;
+  elementCopy = element;
   v17.receiver = self;
   v17.super_class = WBSElementTargetingResult;
   v9 = [(WBSElementTargetingResult *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_target, a3);
-    v11 = [MEMORY[0x1E695DFA8] setWithObject:v8];
+    objc_storeStrong(&v9->_target, target);
+    v11 = [MEMORY[0x1E695DFA8] setWithObject:elementCopy];
     globalElements = v10->_globalElements;
     v10->_globalElements = v11;
 
-    v13 = [MEMORY[0x1E695DFA8] setWithObject:v8];
+    v13 = [MEMORY[0x1E695DFA8] setWithObject:elementCopy];
     perSiteElements = v10->_perSiteElements;
     v10->_perSiteElements = v13;
 
@@ -34,23 +34,23 @@
   return v10;
 }
 
-- (void)addElement:(id)a3
+- (void)addElement:(id)element
 {
-  v6 = a3;
-  v4 = [v6 isBackedByGlobalAction];
+  elementCopy = element;
+  isBackedByGlobalAction = [elementCopy isBackedByGlobalAction];
   v5 = 16;
-  if (v4)
+  if (isBackedByGlobalAction)
   {
     v5 = 8;
   }
 
-  [*(&self->super.isa + v5) addObject:v6];
+  [*(&self->super.isa + v5) addObject:elementCopy];
 }
 
-- (void)_forEachPotentiallySimilarElement:(id)a3
+- (void)_forEachPotentiallySimilarElement:(id)element
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  elementCopy = element;
   v25 = 0;
   v21 = 0u;
   v22 = 0u;
@@ -94,7 +94,7 @@
                 objc_enumerationMutation(v12);
               }
 
-              v4[2](v4, *(*(&v17 + 1) + 8 * j), &v25);
+              elementCopy[2](elementCopy, *(*(&v17 + 1) + 8 * j), &v25);
               if (v25)
               {
 
@@ -122,11 +122,11 @@
 LABEL_18:
 }
 
-- (int64_t)computeURLSimilarity:(id *)a3
+- (int64_t)computeURLSimilarity:(id *)similarity
 {
-  if (a3)
+  if (similarity)
   {
-    *a3 = 0;
+    *similarity = 0;
   }
 
   v26 = 0;
@@ -143,8 +143,8 @@ LABEL_18:
   v19 = __Block_byref_object_copy__6;
   v20 = __Block_byref_object_dispose__6;
   v21 = 0;
-  v5 = [(_WKTargetedElementInfo *)self->_target mediaAndLinkURLs];
-  v6 = __50__WBSElementTargetingResult_computeURLSimilarity___block_invoke(v5, v5);
+  mediaAndLinkURLs = [(_WKTargetedElementInfo *)self->_target mediaAndLinkURLs];
+  v6 = __50__WBSElementTargetingResult_computeURLSimilarity___block_invoke(mediaAndLinkURLs, mediaAndLinkURLs);
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -157,9 +157,9 @@ LABEL_18:
   v14 = &v22;
   v15 = &v26;
   [(WBSElementTargetingResult *)self _forEachPotentiallySimilarElement:v10];
-  if (a3)
+  if (similarity)
   {
-    *a3 = v17[5];
+    *similarity = v17[5];
   }
 
   if (*(v23 + 24) == 1)
@@ -249,10 +249,10 @@ void __50__WBSElementTargetingResult_computeURLSimilarity___block_invoke_2(uint6
   }
 }
 
-- (BOOL)hasSimilarGeometryInView:(id)a3
+- (BOOL)hasSimilarGeometryInView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __54__WBSElementTargetingResult_hasSimilarGeometryInView___block_invoke;
@@ -338,9 +338,9 @@ void __54__WBSElementTargetingResult_hasSimilarGeometryInView___block_invoke_2(u
   }
 }
 
-- (void)checkForSimilarRenderedText:(id)a3
+- (void)checkForSimilarRenderedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   objc_initWeak(&location, self);
   target = self->_target;
   v7[0] = MEMORY[0x1E69E9820];
@@ -348,7 +348,7 @@ void __54__WBSElementTargetingResult_hasSimilarGeometryInView___block_invoke_2(u
   v7[2] = __57__WBSElementTargetingResult_checkForSimilarRenderedText___block_invoke;
   v7[3] = &unk_1E8284F20;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = textCopy;
   v8 = v6;
   [(_WKTargetedElementInfo *)target safari_renderedTextForCheckingSimilarityWithCompletion:v7];
 

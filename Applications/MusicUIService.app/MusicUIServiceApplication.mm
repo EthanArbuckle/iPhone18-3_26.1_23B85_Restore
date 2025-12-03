@@ -1,23 +1,23 @@
 @interface MusicUIServiceApplication
-- (id)_keyWindowForScreen:(id)a3;
+- (id)_keyWindowForScreen:(id)screen;
 @end
 
 @implementation MusicUIServiceApplication
 
-- (id)_keyWindowForScreen:(id)a3
+- (id)_keyWindowForScreen:(id)screen
 {
-  v4 = a3;
-  if ([v4 _userInterfaceIdiom] == 3)
+  screenCopy = screen;
+  if ([screenCopy _userInterfaceIdiom] == 3)
   {
-    v5 = [(MusicUIServiceApplication *)self delegate];
-    v6 = [v5 _keyWindowForScreen:v4];
+    delegate = [(MusicUIServiceApplication *)self delegate];
+    v6 = [delegate _keyWindowForScreen:screenCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MusicUIServiceApplication;
-    v6 = [(MusicUIServiceApplication *)&v8 _keyWindowForScreen:v4];
+    v6 = [(MusicUIServiceApplication *)&v8 _keyWindowForScreen:screenCopy];
   }
 
   return v6;

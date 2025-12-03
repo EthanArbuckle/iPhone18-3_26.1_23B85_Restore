@@ -42,8 +42,8 @@
     goto LABEL_12;
   }
 
-  v9 = [(NSArray *)bodies firstObject];
-  v5 = [NSString stringWithFormat:@"%s%d %@ (x%lu) [0x%llx] (%@)", v7, count, v9, [(NSArray *)self->_bodies count], self->_address, self->_stateInfo];
+  firstObject = [(NSArray *)bodies firstObject];
+  v5 = [NSString stringWithFormat:@"%s%d %@ (x%lu) [0x%llx] (%@)", v7, count, firstObject, [(NSArray *)self->_bodies count], self->_address, self->_stateInfo];
 
 LABEL_12:
 

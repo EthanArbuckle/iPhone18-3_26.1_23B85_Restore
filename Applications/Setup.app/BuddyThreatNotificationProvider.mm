@@ -2,8 +2,8 @@
 + (BuddyThreatNotificationProvider)sharedInstance;
 - (BOOL)isRequired;
 - (BuddyThreatNotificationProvider)init;
-- (id)threatNotificationFlowWithCompletion:(id)a3;
-- (void)tnuiOnBoardingViewControllerDidComplete:(id)a3;
+- (id)threatNotificationFlowWithCompletion:(id)completion;
+- (void)tnuiOnBoardingViewControllerDidComplete:(id)complete;
 @end
 
 @implementation BuddyThreatNotificationProvider
@@ -46,7 +46,7 @@
 
 - (BOOL)isRequired
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   if (+[NSThread isMainThread])
   {
@@ -76,38 +76,38 @@
   return v17 & 1;
 }
 
-- (id)threatNotificationFlowWithCompletion:(id)a3
+- (id)threatNotificationFlowWithCompletion:(id)completion
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v7 = +[TNUIOnBoardingFlow makeLDMEnabledOnBoardingViewController];
-  v3 = [(BuddyThreatNotificationProvider *)v9 completionHandlers];
+  completionHandlers = [(BuddyThreatNotificationProvider *)selfCopy completionHandlers];
   v4 = objc_retainBlock(location[0]);
-  [(NSMapTable *)v3 setObject:v4 forKey:v7];
+  [(NSMapTable *)completionHandlers setObject:v4 forKey:v7];
 
-  [v7 setOnBoardingDelegate:v9];
+  [v7 setOnBoardingDelegate:selfCopy];
   v5 = v7;
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   return v5;
 }
 
-- (void)tnuiOnBoardingViewControllerDidComplete:(id)a3
+- (void)tnuiOnBoardingViewControllerDidComplete:(id)complete
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyThreatNotificationProvider *)v7 completionHandlers];
-  v5 = [(NSMapTable *)v3 objectForKey:location[0]];
+  objc_storeStrong(location, complete);
+  completionHandlers = [(BuddyThreatNotificationProvider *)selfCopy completionHandlers];
+  v5 = [(NSMapTable *)completionHandlers objectForKey:location[0]];
 
   if (v5)
   {
     v5[2]();
-    v4 = [(BuddyThreatNotificationProvider *)v7 completionHandlers];
-    [(NSMapTable *)v4 removeObjectForKey:location[0]];
+    completionHandlers2 = [(BuddyThreatNotificationProvider *)selfCopy completionHandlers];
+    [(NSMapTable *)completionHandlers2 removeObjectForKey:location[0]];
   }
 
   objc_storeStrong(&v5, 0);

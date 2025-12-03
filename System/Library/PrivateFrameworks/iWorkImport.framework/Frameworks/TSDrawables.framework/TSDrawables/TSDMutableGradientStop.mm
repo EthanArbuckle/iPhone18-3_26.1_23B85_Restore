@@ -1,12 +1,12 @@
 @interface TSDMutableGradientStop
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSDMutableGradientStop
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDGradientStop, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDGradientStop, a2, zone);
   v7 = objc_msgSend_color(self, v5, v6);
   objc_msgSend_fraction(self, v8, v9);
   v11 = v10;

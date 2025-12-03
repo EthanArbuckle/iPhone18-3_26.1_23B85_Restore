@@ -26,9 +26,9 @@
 
 - (void)_gkResetContents
 {
-  [a1 _gkForceNextContentUpdate];
-  v2 = [a1 presentedViewController];
-  [v2 _gkResetContents];
+  [self _gkForceNextContentUpdate];
+  presentedViewController = [self presentedViewController];
+  [presentedViewController _gkResetContents];
 }
 
 - (void)_gkForceNextContentUpdate
@@ -41,18 +41,18 @@
     label = dispatch_queue_get_label(v2);
     v6 = MEMORY[0x277D85CD0];
     v7 = dispatch_queue_get_label(MEMORY[0x277D85CD0]);
-    v8 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v9 = [v4 stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "-[UIViewController(GKAdditions) _gkForceNextContentUpdate]", label, v7, v8];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v9 = [v4 stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "-[UIViewController(GKAdditions) _gkForceNextContentUpdate]", label, v7, callStackSymbols];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKUIKitAdditions.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = [v4 stringWithFormat:@"%@ (_actualCurrentQueue == dispatch_get_main_queue())\n[%s (%s:%d)]", v9, "-[UIViewController(GKAdditions) _gkForceNextContentUpdate]", objc_msgSend(v11, "UTF8String"), 87];
+    lastPathComponent = [v10 lastPathComponent];
+    v12 = [v4 stringWithFormat:@"%@ (_actualCurrentQueue == dispatch_get_main_queue())\n[%s (%s:%d)]", v9, "-[UIViewController(GKAdditions) _gkForceNextContentUpdate]", objc_msgSend(lastPathComponent, "UTF8String"), 87];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v12}];
   }
 
-  objc_setAssociatedObject(a1, @"_gkContentUpdateHandlers", 0, 0x301);
+  objc_setAssociatedObject(self, @"_gkContentUpdateHandlers", 0, 0x301);
 
-  objc_setAssociatedObject(a1, @"_gkContentRecentlyUpdated", 0, 0x301);
+  objc_setAssociatedObject(self, @"_gkContentRecentlyUpdated", 0, 0x301);
 }
 
 - (void)_gkSetContentsNeedUpdateWithHandler:()GKAdditions
@@ -68,13 +68,13 @@
 {
   v14 = a3;
   v6 = a4;
-  v7 = [a1 childViewControllers];
-  v8 = [v7 count];
+  childViewControllers = [self childViewControllers];
+  v8 = [childViewControllers count];
 
   if (v8)
   {
-    v9 = [a1 childViewControllers];
-    v10 = [v9 objectAtIndex:0];
+    childViewControllers2 = [self childViewControllers];
+    presentedViewController3 = [childViewControllers2 objectAtIndex:0];
 
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -84,18 +84,18 @@
     goto LABEL_7;
   }
 
-  v11 = [a1 presentedViewController];
+  presentedViewController = [self presentedViewController];
 
-  if (v11)
+  if (presentedViewController)
   {
-    v12 = [a1 presentedViewController];
+    presentedViewController2 = [self presentedViewController];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v10 = [a1 presentedViewController];
+      presentedViewController3 = [self presentedViewController];
 LABEL_7:
-      [v10 _gkHandleURLPathComponents:v14 query:v6];
+      [presentedViewController3 _gkHandleURLPathComponents:v14 query:v6];
 LABEL_8:
     }
   }
@@ -103,19 +103,19 @@ LABEL_8:
 
 - (void)_gkDismissActivityViewControllerAnimated:()GKAdditions
 {
-  v4 = [a1 navigationController];
-  [v4 dismissViewControllerAnimated:a3 completion:0];
+  navigationController = [self navigationController];
+  [navigationController dismissViewControllerAnimated:a3 completion:0];
 }
 
 - (void)_gkPresentActivityViewController:()GKAdditions fromView:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [v7 popoverPresentationController];
-  [v8 setSourceView:v6];
+  popoverPresentationController = [v7 popoverPresentationController];
+  [popoverPresentationController setSourceView:v6];
 
-  v9 = [a1 navigationController];
-  [v9 presentViewController:v7 animated:1 completion:0];
+  navigationController = [self navigationController];
+  [navigationController presentViewController:v7 animated:1 completion:0];
 }
 
 - (id)_gkPresentActivityViewControllerForActivityItems:()GKAdditions fromView:withCompletionHandler:
@@ -126,14 +126,14 @@ LABEL_8:
   v19 = 3221225472;
   v20 = __113__UIViewController_GKAdditions___gkPresentActivityViewControllerForActivityItems_fromView_withCompletionHandler___block_invoke;
   v21 = &unk_27967F000;
-  v22 = a1;
+  selfCopy = self;
   v23 = v8;
   v9 = v8;
   v10 = a4;
   v11 = a3;
   v12 = MEMORY[0x253041B30](&v18);
   v13 = objc_alloc(objc_opt_class());
-  v14 = [v13 initWithActivityItems:v11 applicationActivities:{0, v18, v19, v20, v21, v22}];
+  v14 = [v13 initWithActivityItems:v11 applicationActivities:{0, v18, v19, v20, v21, selfCopy}];
 
   [v14 setCompletionWithItemsHandler:v12];
   v15 = *MEMORY[0x277D54708];
@@ -143,7 +143,7 @@ LABEL_8:
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:3];
   [v14 setExcludedActivityTypes:v16];
 
-  [a1 _gkPresentActivityViewController:v14 fromView:v10];
+  [self _gkPresentActivityViewController:v14 fromView:v10];
 
   return v14;
 }
@@ -151,14 +151,14 @@ LABEL_8:
 - (void)_gkRefreshContentsForDataType:()GKAdditions userInfo:
 {
   v8 = a4;
-  v6 = [a1 presentedViewController];
-  v7 = v6;
-  if (v6 && [v6 _gkShouldRefreshContentsForDataType:a3 userInfo:v8])
+  presentedViewController = [self presentedViewController];
+  v7 = presentedViewController;
+  if (presentedViewController && [presentedViewController _gkShouldRefreshContentsForDataType:a3 userInfo:v8])
   {
     [v7 _gkRefreshContentsForDataType:a3 userInfo:v8];
   }
 
-  if ([a1 _gkShouldRefreshContentsForDataType:a3 userInfo:v8])
+  if ([self _gkShouldRefreshContentsForDataType:a3 userInfo:v8])
   {
     [v7 _gkRefreshContentsForDataType:a3 userInfo:v8];
   }
@@ -167,11 +167,11 @@ LABEL_8:
 - (uint64_t)_gkShouldRefreshContentsForDataType:()GKAdditions userInfo:
 {
   v6 = a4;
-  v7 = [a1 presentedViewController];
-  v8 = v7;
-  if (v7)
+  presentedViewController = [self presentedViewController];
+  v8 = presentedViewController;
+  if (presentedViewController)
   {
-    v9 = [v7 _gkShouldRefreshContentsForDataType:a3 userInfo:v6];
+    v9 = [presentedViewController _gkShouldRefreshContentsForDataType:a3 userInfo:v6];
   }
 
   else
@@ -194,8 +194,8 @@ LABEL_8:
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
     [v6 setPreferredFocusEnvironments:v7];
 
-    v8 = [a1 view];
-    [v8 addLayoutGuide:v6];
+    view = [self view];
+    [view addLayoutGuide:v6];
 
     v9 = objc_alloc_init(MEMORY[0x277D75500]);
     v51 = v5;
@@ -203,52 +203,52 @@ LABEL_8:
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
     [v9 setPreferredFocusEnvironments:v10];
 
-    v11 = [a1 view];
-    [v11 addLayoutGuide:v9];
+    view2 = [self view];
+    [view2 addLayoutGuide:v9];
 
     v34 = MEMORY[0x277CCAAD0];
-    v48 = [v6 leadingAnchor];
-    v49 = [a1 view];
-    v47 = [v49 leadingAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    leadingAnchor = [v6 leadingAnchor];
+    view3 = [self view];
+    leadingAnchor2 = [view3 leadingAnchor];
+    v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v50[0] = v46;
-    v44 = [v6 trailingAnchor];
-    v45 = [a1 view];
-    v42 = [v45 trailingAnchor];
-    v41 = [v44 constraintEqualToAnchor:v42];
+    trailingAnchor = [v6 trailingAnchor];
+    view4 = [self view];
+    trailingAnchor2 = [view4 trailingAnchor];
+    v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v50[1] = v41;
     v43 = v6;
-    v39 = [v6 topAnchor];
-    v40 = [a1 view];
-    v38 = [v40 topAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    topAnchor = [v6 topAnchor];
+    view5 = [self view];
+    topAnchor2 = [view5 topAnchor];
+    v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v50[2] = v37;
-    v35 = [v6 bottomAnchor];
-    v36 = [a1 view];
-    v33 = [v36 topAnchor];
+    bottomAnchor = [v6 bottomAnchor];
+    view6 = [self view];
+    topAnchor3 = [view6 topAnchor];
     [v5 frame];
-    v32 = [v35 constraintEqualToAnchor:v33 constant:v12];
+    v32 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:v12];
     v50[3] = v32;
-    v29 = [v9 leadingAnchor];
-    v30 = [a1 view];
-    v28 = [v30 leadingAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    leadingAnchor3 = [v9 leadingAnchor];
+    view7 = [self view];
+    leadingAnchor4 = [view7 leadingAnchor];
+    v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v50[4] = v27;
-    v25 = [v9 trailingAnchor];
-    v26 = [a1 view];
-    v23 = [v26 trailingAnchor];
-    v13 = [v25 constraintEqualToAnchor:v23];
+    trailingAnchor3 = [v9 trailingAnchor];
+    view8 = [self view];
+    trailingAnchor4 = [view8 trailingAnchor];
+    v13 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v50[5] = v13;
     v31 = v9;
-    v14 = [v9 topAnchor];
-    v15 = [a1 view];
-    v16 = [v15 topAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    topAnchor4 = [v9 topAnchor];
+    view9 = [self view];
+    topAnchor5 = [view9 topAnchor];
+    v17 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v50[6] = v17;
-    v18 = [v9 bottomAnchor];
-    v19 = [a1 view];
-    v20 = [v19 topAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20 constant:1.0];
+    bottomAnchor2 = [v9 bottomAnchor];
+    view10 = [self view];
+    topAnchor6 = [view10 topAnchor];
+    v21 = [bottomAnchor2 constraintEqualToAnchor:topAnchor6 constant:1.0];
     v50[7] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:8];
     [v34 activateConstraints:v22];

@@ -1,14 +1,14 @@
 @interface PXCuratedLibraryAssetCollectionSkimmingInfo
 - (PXSimpleIndexPath)currentChildCollectionIndexPath;
-- (void)setCurrentChildCollectionIndexPath:(PXSimpleIndexPath *)a3;
+- (void)setCurrentChildCollectionIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation PXCuratedLibraryAssetCollectionSkimmingInfo
 
-- (void)setCurrentChildCollectionIndexPath:(PXSimpleIndexPath *)a3
+- (void)setCurrentChildCollectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->dataSourceIdentifier;
-  *&self->_currentChildCollectionIndexPath.item = *&a3->item;
+  v3 = *&path->dataSourceIdentifier;
+  *&self->_currentChildCollectionIndexPath.item = *&path->item;
   *&self->_currentChildCollectionIndexPath.dataSourceIdentifier = v3;
 }
 

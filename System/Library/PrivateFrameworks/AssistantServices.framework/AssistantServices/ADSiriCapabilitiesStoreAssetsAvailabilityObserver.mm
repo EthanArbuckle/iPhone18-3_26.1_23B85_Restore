@@ -1,35 +1,35 @@
 @interface ADSiriCapabilitiesStoreAssetsAvailabilityObserver
-- (ADSiriCapabilitiesStoreAssetsAvailabilityObserver)initWithSiriConfiguration:(id)a3;
-- (void)assetManager:(id)a3 didChangeLanguageCode:(id)a4;
-- (void)assetManagerDidChangeAssetAvailability:(id)a3;
+- (ADSiriCapabilitiesStoreAssetsAvailabilityObserver)initWithSiriConfiguration:(id)configuration;
+- (void)assetManager:(id)manager didChangeLanguageCode:(id)code;
+- (void)assetManagerDidChangeAssetAvailability:(id)availability;
 @end
 
 @implementation ADSiriCapabilitiesStoreAssetsAvailabilityObserver
 
-- (void)assetManager:(id)a3 didChangeLanguageCode:(id)a4
+- (void)assetManager:(id)manager didChangeLanguageCode:(id)code
 {
-  v5 = a3;
-  v6 = [(ADSiriCapabilitiesStoreAssetsAvailabilityObserver *)self siriCapabilitiesStore];
-  [v6 updateCapabilitiesWithAssetManager:v5];
+  managerCopy = manager;
+  siriCapabilitiesStore = [(ADSiriCapabilitiesStoreAssetsAvailabilityObserver *)self siriCapabilitiesStore];
+  [siriCapabilitiesStore updateCapabilitiesWithAssetManager:managerCopy];
 }
 
-- (void)assetManagerDidChangeAssetAvailability:(id)a3
+- (void)assetManagerDidChangeAssetAvailability:(id)availability
 {
-  v4 = a3;
-  v5 = [(ADSiriCapabilitiesStoreAssetsAvailabilityObserver *)self siriCapabilitiesStore];
-  [v5 updateCapabilitiesWithAssetManager:v4];
+  availabilityCopy = availability;
+  siriCapabilitiesStore = [(ADSiriCapabilitiesStoreAssetsAvailabilityObserver *)self siriCapabilitiesStore];
+  [siriCapabilitiesStore updateCapabilitiesWithAssetManager:availabilityCopy];
 }
 
-- (ADSiriCapabilitiesStoreAssetsAvailabilityObserver)initWithSiriConfiguration:(id)a3
+- (ADSiriCapabilitiesStoreAssetsAvailabilityObserver)initWithSiriConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = ADSiriCapabilitiesStoreAssetsAvailabilityObserver;
   v6 = [(ADSiriCapabilitiesStoreAssetsAvailabilityObserver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_siriCapabilitiesStore, a3);
+    objc_storeStrong(&v6->_siriCapabilitiesStore, configuration);
   }
 
   return v7;

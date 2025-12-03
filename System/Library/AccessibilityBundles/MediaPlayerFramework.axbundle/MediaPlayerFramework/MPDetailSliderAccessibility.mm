@@ -1,6 +1,6 @@
 @interface MPDetailSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -14,14 +14,14 @@
 
 @implementation MPDetailSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MPDetailSlider" hasInstanceMethod:@"timeLabelStyle" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MPDetailSlider" hasInstanceVariable:@"_downloadingTrackOverlay" withType:"UIView"];
-  [v3 validateClass:@"MPDetailSlider" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MPDetailSlider" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"UISlider" hasInstanceMethod:@"_maxTrackView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MPDetailSlider" hasInstanceMethod:@"timeLabelStyle" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MPDetailSlider" hasInstanceVariable:@"_downloadingTrackOverlay" withType:"UIView"];
+  [validationsCopy validateClass:@"MPDetailSlider" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MPDetailSlider" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"UISlider" hasInstanceMethod:@"_maxTrackView" withFullSignature:{"@", 0}];
 }
 
 - (void)layoutSubviews
@@ -51,10 +51,10 @@
 {
   v5.receiver = self;
   v5.super_class = MPDetailSliderAccessibility;
-  v3 = [(MPDetailSliderAccessibility *)&v5 accessibilityTraits];
+  accessibilityTraits = [(MPDetailSliderAccessibility *)&v5 accessibilityTraits];
   if (([(MPDetailSliderAccessibility *)self safeBoolForKey:@"isUserInteractionEnabled"]& 1) != 0)
   {
-    return *MEMORY[0x29EDC7F60] | v3;
+    return *MEMORY[0x29EDC7F60] | accessibilityTraits;
   }
 
   else
@@ -163,15 +163,15 @@
 - (void)_axPostUpdate
 {
   v2 = *MEMORY[0x29EDC7EA8];
-  v3 = [(MPDetailSliderAccessibility *)self accessibilityValue];
-  UIAccessibilityPostNotification(v2, v3);
+  accessibilityValue = [(MPDetailSliderAccessibility *)self accessibilityValue];
+  UIAccessibilityPostNotification(v2, accessibilityValue);
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = MPDetailSliderAccessibility;
-  v5 = [(MPDetailSliderAccessibility *)&v10 continueTrackingWithTouch:a3 withEvent:a4];
+  v5 = [(MPDetailSliderAccessibility *)&v10 continueTrackingWithTouch:touch withEvent:event];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v6 = [(MPDetailSliderAccessibility *)self safeValueForKey:@"value"];
@@ -198,11 +198,11 @@
   v4 = UIAXTimeStringForDuration();
   v5 = UIAXTimeStringForDuration();
   v6 = [(MPDetailSliderAccessibility *)self safeValueForKey:@"isTracking"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = objc_allocWithZone(MEMORY[0x29EDBA050]);
   v9 = v8;
-  if (v7)
+  if (bOOLValue)
   {
     v10 = [v8 initWithFormat:@"%@", @"__1__"];
   }

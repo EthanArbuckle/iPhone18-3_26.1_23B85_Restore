@@ -1,11 +1,11 @@
 @interface RBSProcessHandlePredicateImpl
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesProcess:(id)a3;
-- (RBSProcessHandlePredicateImpl)initWithHandle:(id)a3;
-- (RBSProcessHandlePredicateImpl)initWithRBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesProcess:(id)process;
+- (RBSProcessHandlePredicateImpl)initWithHandle:(id)handle;
+- (RBSProcessHandlePredicateImpl)initWithRBSXPCCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessHandlePredicateImpl
@@ -32,10 +32,10 @@
   }
 }
 
-- (RBSProcessHandlePredicateImpl)initWithHandle:(id)a3
+- (RBSProcessHandlePredicateImpl)initWithHandle:(id)handle
 {
-  v5 = a3;
-  if (!v5)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     [(RBSProcessHandlePredicateImpl *)a2 initWithHandle:?];
   }
@@ -45,28 +45,28 @@
   v6 = [(RBSProcessHandlePredicateImpl *)&v10 init];
   if (v6)
   {
-    v7 = [v5 identity];
+    identity = [handleCopy identity];
     identity = v6->_identity;
-    v6->_identity = v7;
+    v6->_identity = identity;
 
-    v6->_pid = [v5 pid];
+    v6->_pid = [handleCopy pid];
   }
 
   return v6;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
   pid = self->_pid;
   if (pid != -1)
   {
-    return pid == [a3 pid];
+    return pid == [process pid];
   }
 
   identity = self->_identity;
-  v6 = [a3 identity];
-  v7 = v6;
-  if (identity == v6)
+  identity = [process identity];
+  v7 = identity;
+  if (identity == identity)
   {
     v4 = 1;
   }
@@ -75,7 +75,7 @@
   {
     if (identity)
     {
-      v8 = v6 == 0;
+      v8 = identity == 0;
     }
 
     else
@@ -90,23 +90,23 @@
 
     else
     {
-      v4 = [(RBSProcessIdentity *)identity isEqual:v6];
+      v4 = [(RBSProcessIdentity *)identity isEqual:identity];
     }
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_11;
   }
 
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || self->_pid != v4->_pid)
+  if (v5 != objc_opt_class() || self->_pid != equalCopy->_pid)
   {
 LABEL_10:
     v10 = 0;
@@ -114,7 +114,7 @@ LABEL_10:
   }
 
   identity = self->_identity;
-  v7 = v4->_identity;
+  v7 = equalCopy->_identity;
   if (identity == v7)
   {
 LABEL_11:
@@ -143,27 +143,27 @@ LABEL_12:
   return v10;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   identity = self->_identity;
-  v5 = a3;
-  [v5 encodeObject:identity forKey:@"_identity"];
-  [v5 encodeInt64:self->_pid forKey:@"_pid"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identity forKey:@"_identity"];
+  [coderCopy encodeInt64:self->_pid forKey:@"_pid"];
 }
 
-- (RBSProcessHandlePredicateImpl)initWithRBSXPCCoder:(id)a3
+- (RBSProcessHandlePredicateImpl)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RBSProcessHandlePredicateImpl;
   v5 = [(RBSProcessHandlePredicateImpl *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identity"];
     identity = v5->_identity;
     v5->_identity = v6;
 
-    v5->_pid = [v4 decodeInt64ForKey:@"_pid"];
+    v5->_pid = [coderCopy decodeInt64ForKey:@"_pid"];
   }
 
   return v5;

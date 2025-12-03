@@ -1,6 +1,6 @@
 @interface FigCaptureMicSourcePipelineOutput
 - (id)description;
-- (id)initWithOutput:(int)a3 forAudioChannelLayoutTag:;
+- (id)initWithOutput:(int)output forAudioChannelLayoutTag:;
 @end
 
 @implementation FigCaptureMicSourcePipelineOutput
@@ -15,21 +15,21 @@
   return [v2 stringWithFormat:@"Pipeline output: %@, audioChannelLayout: %@", v3, v4, *v6, *&v6[16]];
 }
 
-- (id)initWithOutput:(int)a3 forAudioChannelLayoutTag:
+- (id)initWithOutput:(int)output forAudioChannelLayoutTag:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = FigCaptureMicSourcePipelineOutput;
   v5 = objc_msgSendSuper2(&v8, sel_init);
   v6 = v5;
   if (v5)
   {
     objc_storeWeak(v5 + 1, a2);
-    *(v6 + 4) = a3;
+    *(v6 + 4) = output;
   }
 
   return v6;

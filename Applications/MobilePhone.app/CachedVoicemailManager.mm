@@ -1,9 +1,9 @@
 @interface CachedVoicemailManager
 - (_TtC11MobilePhone22CachedVoicemailManager)init;
 - (int64_t)estimatedCount;
-- (void)fetchMessagesWithCompletion:(id)a3;
-- (void)setEstimatedCount:(int64_t)a3;
-- (void)voicemailWithIdentifier:(MPMessageID *)a3 completion:(id)a4;
+- (void)fetchMessagesWithCompletion:(id)completion;
+- (void)setEstimatedCount:(int64_t)count;
+- (void)voicemailWithIdentifier:(MPMessageID *)identifier completion:(id)completion;
 @end
 
 @implementation CachedVoicemailManager
@@ -11,7 +11,7 @@
 - (int64_t)estimatedCount
 {
   v2 = self + OBJC_IVAR____TtC11MobilePhone22CachedVoicemailManager__estimatedCount;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   v4 = *(v2 + 1);
   os_unfair_lock_unlock(v2);
@@ -19,18 +19,18 @@
   return v4;
 }
 
-- (void)setEstimatedCount:(int64_t)a3
+- (void)setEstimatedCount:(int64_t)count
 {
-  v4 = self;
-  CachedVoicemailManager.estimatedCount.setter(a3);
+  selfCopy = self;
+  CachedVoicemailManager.estimatedCount.setter(count);
 }
 
-- (void)fetchMessagesWithCompletion:(id)a3
+- (void)fetchMessagesWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -46,18 +46,18 @@
   v12[3] = 0;
   v12[4] = &_sIeghH_IeAgH_TRTA_71Tu;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v7, &_sIeAgH_ytIeAgHr_TRTA_76Tu, v12);
 }
 
-- (void)voicemailWithIdentifier:(MPMessageID *)a3 completion:(id)a4
+- (void)voicemailWithIdentifier:(MPMessageID *)identifier completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = identifier;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -72,8 +72,8 @@
   v14[3] = 0;
   v14[4] = &_sIeghH_IeAgH_TRTATu;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v9, &_sIeAgH_ytIeAgHr_TRTATu, v14);
 }
 

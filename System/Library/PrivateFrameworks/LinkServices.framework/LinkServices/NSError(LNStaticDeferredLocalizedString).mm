@@ -7,15 +7,15 @@
 - (id)ln_staticDeferredLocalizedString
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"LNPerformActionErrorLocalizedStringResourceData"];
+  userInfo = [self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"LNPerformActionErrorLocalizedStringResourceData"];
 
   if (v3)
   {
     v4 = MEMORY[0x1E696ACD0];
     v5 = objc_opt_class();
-    v6 = [a1 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"LNPerformActionErrorLocalizedStringResourceData"];
+    userInfo2 = [self userInfo];
+    v7 = [userInfo2 objectForKeyedSubscript:@"LNPerformActionErrorLocalizedStringResourceData"];
     v13 = 0;
     v8 = [v4 unarchivedObjectOfClass:v5 fromData:v7 error:&v13];
     v9 = v13;

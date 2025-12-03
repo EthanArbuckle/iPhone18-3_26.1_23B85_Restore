@@ -1,18 +1,18 @@
 @interface MKPlaceHoursViewController
-+ (id)placeHoursWithMapItem:(id)a3;
++ (id)placeHoursWithMapItem:(id)item;
 - (BOOL)_shouldOnlyShowExpanded;
-- (MKPlaceHoursViewController)initWithMapItem:(id)a3;
+- (MKPlaceHoursViewController)initWithMapItem:(id)item;
 - (_MKInfoCardAnalyticsDelegate)analyticsDelegate;
-- (id)hoursBuilderWithHours:(id)a3;
+- (id)hoursBuilderWithHours:(id)hours;
 - (id)infoCardChildPossibleActions;
-- (void)_setExpanded:(BOOL)a3;
+- (void)_setExpanded:(BOOL)expanded;
 - (void)_toggleShowAllHours;
-- (void)_updateHoursAnimated:(BOOL)a3;
+- (void)_updateHoursAnimated:(BOOL)animated;
 - (void)infoCardThemeChanged;
-- (void)setMapItem:(id)a3;
-- (void)setResizableViewsDisabled:(BOOL)a3;
+- (void)setMapItem:(id)item;
+- (void)setResizableViewsDisabled:(BOOL)disabled;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MKPlaceHoursViewController
@@ -26,7 +26,7 @@
 
 - (id)infoCardChildPossibleActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(MKPlaceSectionHeaderView *)self->_headerView showSeeMoreButton])
   {
     if (self->_isExpanded)
@@ -40,10 +40,10 @@
     }
 
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
-  return v3;
+  return array;
 }
 
 - (void)infoCardThemeChanged
@@ -56,10 +56,10 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(MKPlaceSectionViewController *)self sectionView];
-  v4 = [v3 rowViews];
+  sectionView = [(MKPlaceSectionViewController *)self sectionView];
+  rowViews = [sectionView rowViews];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  v5 = [rowViews countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -71,32 +71,32 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(rowViews);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) hoursView];
-        v10 = [v9 hoursBuilder];
-        [v10 updateHoursLabelColor];
+        hoursView = [*(*(&v11 + 1) + 8 * v8) hoursView];
+        hoursBuilder = [hoursView hoursBuilder];
+        [hoursBuilder updateHoursLabelColor];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v6 = [rowViews countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_updateHoursAnimated:(BOOL)a3
+- (void)_updateHoursAnimated:(BOOL)animated
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (animated)
   {
-    v4 = [(MKPlaceHoursViewController *)self view];
-    v5 = [v4 window];
-    v32 = v5 != 0;
+    view = [(MKPlaceHoursViewController *)self view];
+    window = [view window];
+    v32 = window != 0;
   }
 
   else
@@ -110,8 +110,8 @@
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v7 = [(MKPlaceHoursViewController *)self businessHours];
-  v8 = [v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  businessHours = [(MKPlaceHoursViewController *)self businessHours];
+  v8 = [businessHours countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v8)
   {
     v9 = v8;
@@ -123,36 +123,36 @@
       {
         if (*v39 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(businessHours);
         }
 
         v12 = *(*(&v38 + 1) + 8 * v11);
         v13 = [MKPlaceHoursDayRow alloc];
-        v14 = [(MKPlaceHoursViewController *)self view];
-        [v14 bounds];
+        view2 = [(MKPlaceHoursViewController *)self view];
+        [view2 bounds];
         v15 = [(MKPlaceHoursDayRow *)v13 initWithBusinessHours:v12 frame:?];
 
         v16 = [(MKPlaceHoursViewController *)self hoursBuilderWithHours:v12];
-        v17 = [(MKPlaceHoursDayRow *)v15 hoursView];
-        [v17 setHoursBuilder:v16];
+        hoursView = [(MKPlaceHoursDayRow *)v15 hoursView];
+        [hoursView setHoursBuilder:v16];
 
         [(MKViewWithHairline *)v15 setBottomHairlineHidden:1];
         [v6 addObject:v15];
-        v18 = [(MKPlaceHoursDayRow *)v15 hoursView];
-        [v33 addObject:v18];
+        hoursView2 = [(MKPlaceHoursDayRow *)v15 hoursView];
+        [v33 addObject:hoursView2];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v9 = [businessHours countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v9);
   }
 
-  v19 = [(MKPlaceHoursViewController *)self businessHours];
-  [MKPlaceHoursViewHelper determineExtraRulesForPlaceHoursViews:v33 withBusinessHours:v19];
+  businessHours2 = [(MKPlaceHoursViewController *)self businessHours];
+  [MKPlaceHoursViewHelper determineExtraRulesForPlaceHoursViews:v33 withBusinessHours:businessHours2];
 
   v36 = 0u;
   v37 = 0u;
@@ -175,8 +175,8 @@
         }
 
         isExpanded = self->_isExpanded;
-        v26 = [*(*(&v34 + 1) + 8 * v24) hoursView];
-        v27 = [v26 placeHoursViewOptions];
+        hoursView3 = [*(*(&v34 + 1) + 8 * v24) hoursView];
+        placeHoursViewOptions = [hoursView3 placeHoursViewOptions];
         if (isExpanded)
         {
           v28 = 8;
@@ -187,7 +187,7 @@
           v28 = 1;
         }
 
-        [v26 setPlaceHoursViewOptions:v27 | v28];
+        [hoursView3 setPlaceHoursViewOptions:placeHoursViewOptions | v28];
 
         ++v24;
       }
@@ -199,24 +199,24 @@
     while (v22);
   }
 
-  v29 = [v20 lastObject];
-  [v29 setBottomHairlineHidden:1];
+  lastObject = [v20 lastObject];
+  [lastObject setBottomHairlineHidden:1];
 
-  v30 = [(MKPlaceSectionViewController *)self sectionView];
+  sectionView = [(MKPlaceSectionViewController *)self sectionView];
   v31 = [v20 copy];
-  [v30 setRowViews:v31 animated:v32 isNeedLayout:0];
+  [sectionView setRowViews:v31 animated:v32 isNeedLayout:0];
 }
 
 - (void)_toggleShowAllHours
 {
   [(MKPlaceHoursViewController *)self _setExpanded:!self->_isExpanded];
-  v3 = [(MKPlaceHoursViewController *)self analyticsDelegate];
+  analyticsDelegate = [(MKPlaceHoursViewController *)self analyticsDelegate];
 
-  if (v3)
+  if (analyticsDelegate)
   {
     isExpanded = self->_isExpanded;
-    v5 = [(MKPlaceHoursViewController *)self analyticsDelegate];
-    v6 = v5;
+    analyticsDelegate2 = [(MKPlaceHoursViewController *)self analyticsDelegate];
+    v6 = analyticsDelegate2;
     if (isExpanded)
     {
       v7 = 6012;
@@ -227,7 +227,7 @@
       v7 = 6011;
     }
 
-    [v5 infoCardAnalyticsDidSelectAction:v7 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
+    [analyticsDelegate2 infoCardAnalyticsDidSelectAction:v7 eventValue:0 feedbackDelegateSelector:0 actionRichProviderId:0 classification:0];
   }
 
   [(UIView *)self->_headerView _mapkit_layoutIfNeeded];
@@ -235,10 +235,10 @@
   [(MKPlaceHoursViewController *)self _updateHoursAnimated:1];
 }
 
-- (void)_setExpanded:(BOOL)a3
+- (void)_setExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  self->_isExpanded = a3;
+  expandedCopy = expanded;
+  self->_isExpanded = expanded;
   if ([(MKPlaceHoursViewController *)self _shouldOnlyShowExpanded])
   {
     self->_isExpanded = 1;
@@ -250,7 +250,7 @@
   else
   {
     [(MKPlaceSectionHeaderView *)self->_headerView setShowSeeMoreButton:1];
-    if (v3)
+    if (expandedCopy)
     {
       v6 = @"Placecard Show operating hours today";
     }
@@ -267,24 +267,24 @@
 
 - (BOOL)_shouldOnlyShowExpanded
 {
-  v3 = [(MKPlaceHoursViewController *)self businessHours];
-  v4 = [v3 count];
+  businessHours = [(MKPlaceHoursViewController *)self businessHours];
+  v4 = [businessHours count];
 
   if (v4)
   {
-    v5 = [(MKPlaceHoursViewController *)self businessHours];
-    v6 = [v5 count];
+    businessHours2 = [(MKPlaceHoursViewController *)self businessHours];
+    v6 = [businessHours2 count];
 
-    v7 = [(MKPlaceHoursViewController *)self businessHours];
-    v8 = [v7 objectAtIndexedSubscript:0];
-    v9 = [v8 placeDailyHours];
-    v10 = [v9 count];
+    businessHours3 = [(MKPlaceHoursViewController *)self businessHours];
+    v8 = [businessHours3 objectAtIndexedSubscript:0];
+    placeDailyHours = [v8 placeDailyHours];
+    v10 = [placeDailyHours count];
 
-    v11 = [(MKPlaceHoursViewController *)self businessHours];
-    v12 = [v11 objectAtIndex:0];
-    v13 = [v12 hoursType];
+    businessHours4 = [(MKPlaceHoursViewController *)self businessHours];
+    v12 = [businessHours4 objectAtIndex:0];
+    hoursType = [v12 hoursType];
 
-    v16 = (v10 == 1 || v13 == 4) && v6 == 1;
+    v16 = (v10 == 1 || hoursType == 4) && v6 == 1;
   }
 
   else
@@ -295,20 +295,20 @@
   return self->_resizableViewsDisabled || v16;
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_mapItem != v5)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (self->_mapItem != itemCopy)
   {
     businessHours = self->_businessHours;
     self->_businessHours = 0;
-    v9 = v5;
+    v9 = itemCopy;
 
-    objc_storeStrong(&self->_mapItem, a3);
-    v8 = [(MKPlaceHoursViewController *)self isViewLoaded];
+    objc_storeStrong(&self->_mapItem, item);
+    isViewLoaded = [(MKPlaceHoursViewController *)self isViewLoaded];
     v6 = v9;
-    if (v8)
+    if (isViewLoaded)
     {
       [(MKPlaceHoursViewController *)self _setExpanded:[(MKPlaceHoursViewController *)self _shouldOnlyShowExpanded]];
       [(MKPlaceHoursViewController *)self _updateHoursAnimated:0];
@@ -317,22 +317,22 @@
   }
 }
 
-- (id)hoursBuilderWithHours:(id)a3
+- (id)hoursBuilderWithHours:(id)hours
 {
-  v4 = a3;
+  hoursCopy = hours;
   v5 = [_MKLocalizedHoursBuilder alloc];
-  v6 = [(MKPlaceHoursViewController *)self timeZone];
-  v7 = [(_MKLocalizedHoursBuilder *)v5 initWithBusinessHours:v4 timeZone:v6 localizedHoursStringOptions:0 conciseStyle:0 openAt:0];
+  timeZone = [(MKPlaceHoursViewController *)self timeZone];
+  v7 = [(_MKLocalizedHoursBuilder *)v5 initWithBusinessHours:hoursCopy timeZone:timeZone localizedHoursStringOptions:0 conciseStyle:0 openAt:0];
 
   return v7;
 }
 
-- (void)setResizableViewsDisabled:(BOOL)a3
+- (void)setResizableViewsDisabled:(BOOL)disabled
 {
-  if (self->_resizableViewsDisabled != a3)
+  if (self->_resizableViewsDisabled != disabled)
   {
-    self->_resizableViewsDisabled = a3;
-    if (a3)
+    self->_resizableViewsDisabled = disabled;
+    if (disabled)
     {
       [(MKPlaceHoursViewController *)self _setExpanded:1];
       if ([(MKPlaceHoursViewController *)self isViewLoaded])
@@ -351,14 +351,14 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = MKPlaceHoursViewController;
-  [(MKPlaceHoursViewController *)&v7 viewWillAppear:a3];
-  v4 = [(MKPlaceSectionViewController *)self sectionView];
-  v5 = [v4 rowViews];
-  v6 = [v5 count];
+  [(MKPlaceHoursViewController *)&v7 viewWillAppear:appear];
+  sectionView = [(MKPlaceSectionViewController *)self sectionView];
+  rowViews = [sectionView rowViews];
+  v6 = [rowViews count];
 
   if (!v6)
   {
@@ -371,8 +371,8 @@
   v11.receiver = self;
   v11.super_class = MKPlaceHoursViewController;
   [(MKPlaceHoursViewController *)&v11 viewDidLoad];
-  v3 = [(MKPlaceSectionViewController *)self sectionView];
-  [v3 setPreservesSuperviewLayoutMargins:1];
+  sectionView = [(MKPlaceSectionViewController *)self sectionView];
+  [sectionView setPreservesSuperviewLayoutMargins:1];
 
   v4 = [MKPlaceSectionHeaderView alloc];
   v5 = [(MKPlaceSectionHeaderView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -381,45 +381,45 @@
 
   [(MKPlaceSectionHeaderView *)self->_headerView setShowSeeMoreButton:1];
   [(MKViewWithHairline *)self->_headerView setBottomHairlineHidden:1];
-  v7 = [(MKPlaceHoursViewController *)self titleString];
-  [(MKPlaceSectionHeaderView *)self->_headerView setTitle:v7];
+  titleString = [(MKPlaceHoursViewController *)self titleString];
+  [(MKPlaceSectionHeaderView *)self->_headerView setTitle:titleString];
 
   [(MKPlaceSectionHeaderView *)self->_headerView setTarget:self action:sel__toggleShowAllHours];
   v8 = self->_headerView;
-  v9 = [(MKPlaceSectionViewController *)self sectionView];
-  [v9 setHeaderView:v8];
+  sectionView2 = [(MKPlaceSectionViewController *)self sectionView];
+  [sectionView2 setHeaderView:v8];
 
   [(MKPlaceHoursViewController *)self _setExpanded:self->_isExpanded];
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 }
 
-- (MKPlaceHoursViewController)initWithMapItem:(id)a3
+- (MKPlaceHoursViewController)initWithMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = MKPlaceHoursViewController;
   v5 = [(MKPlaceHoursViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(MKPlaceHoursViewController *)v5 setMapItem:v4];
+    [(MKPlaceHoursViewController *)v5 setMapItem:itemCopy];
   }
 
   return v6;
 }
 
-+ (id)placeHoursWithMapItem:(id)a3
++ (id)placeHoursWithMapItem:(id)item
 {
-  v3 = a3;
-  if (([v3 _isMapItemTypeBrand] & 1) != 0 || (objc_msgSend(v3, "_businessHours"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, !v5))
+  itemCopy = item;
+  if (([itemCopy _isMapItemTypeBrand] & 1) != 0 || (objc_msgSend(itemCopy, "_businessHours"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, !v5))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [[MKPlaceHoursViewController alloc] initWithMapItem:v3];
+    v6 = [[MKPlaceHoursViewController alloc] initWithMapItem:itemCopy];
   }
 
   return v6;

@@ -2,10 +2,10 @@
 - (AKBiometricRatchetController)init;
 - (BOOL)isDTOEnabled;
 - (id)currentRachetState;
-- (void)armWithContext:(id)a3 completion:(id)a4;
-- (void)cancelWithReason:(id)a3 completion:(id)a4;
-- (void)isCriticalEditAllowedForAltDSID:(id)a3 completion:(id)a4;
-- (void)stateWithCompletion:(id)a3;
+- (void)armWithContext:(id)context completion:(id)completion;
+- (void)cancelWithReason:(id)reason completion:(id)completion;
+- (void)isCriticalEditAllowedForAltDSID:(id)d completion:(id)completion;
+- (void)stateWithCompletion:(id)completion;
 @end
 
 @implementation AKBiometricRatchetController
@@ -28,12 +28,12 @@
   return v3;
 }
 
-- (void)stateWithCompletion:(id)a3
+- (void)stateWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = objc_alloc(MEMORY[0x1E696EE68]);
   v4 = +[AKBiometricRatchetUtility ratchetIdentifier];
   v12 = [v3 initWithIdentifier:?];
@@ -93,16 +93,16 @@ void __52__AKBiometricRatchetController_stateWithCompletion___block_invoke(NSObj
   *MEMORY[0x1E69E9840];
 }
 
-- (void)armWithContext:(id)a3 completion:(id)a4
+- (void)armWithContext:(id)context completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
-  objc_storeStrong(&v20->_context, location[0]);
-  context = v20->_context;
+  objc_storeStrong(&v18, completion);
+  objc_storeStrong(&selfCopy->_context, location[0]);
+  context = selfCopy->_context;
   if (objc_opt_respondsToSelector())
   {
     v14 = _AKLogSystem();
@@ -116,7 +116,7 @@ void __52__AKBiometricRatchetController_stateWithCompletion___block_invoke(NSObj
     }
 
     objc_storeStrong(&v14, 0);
-    [(AKBiometricRatchetContext *)v20->_context presentRatchetUIWithCompletion:v18];
+    [(AKBiometricRatchetContext *)selfCopy->_context presentRatchetUIWithCompletion:v18];
   }
 
   else
@@ -142,14 +142,14 @@ void __52__AKBiometricRatchetController_stateWithCompletion___block_invoke(NSObj
   objc_storeStrong(location, 0);
 }
 
-- (void)cancelWithReason:(id)a3 completion:(id)a4
+- (void)cancelWithReason:(id)reason completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reason);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v4 = objc_alloc(MEMORY[0x1E696EE68]);
   v5 = +[AKBiometricRatchetUtility ratchetIdentifier];
   v15 = [v4 initWithIdentifier:?];
@@ -185,39 +185,39 @@ void __60__AKBiometricRatchetController_cancelWithReason_completion___block_invo
 - (BOOL)isDTOEnabled
 {
   v15 = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   os_unfair_lock_lock(&self->_dtoLock);
-  v4 = [MEMORY[0x1E696EE78] sharedInstance];
+  mEMORY[0x1E696EE78] = [MEMORY[0x1E696EE78] sharedInstance];
   v9 = 0;
   v7 = 0;
-  v5 = 0;
-  if ([v4 isFeatureSupported])
+  isFeatureEnabled = 0;
+  if ([mEMORY[0x1E696EE78] isFeatureSupported])
   {
-    v10 = [MEMORY[0x1E696EE78] sharedInstance];
+    mEMORY[0x1E696EE78]2 = [MEMORY[0x1E696EE78] sharedInstance];
     v9 = 1;
-    v5 = 0;
-    if ([v10 isFeatureAvailable])
+    isFeatureEnabled = 0;
+    if ([mEMORY[0x1E696EE78]2 isFeatureAvailable])
     {
-      v8 = [MEMORY[0x1E696EE78] sharedInstance];
+      mEMORY[0x1E696EE78]3 = [MEMORY[0x1E696EE78] sharedInstance];
       v7 = 1;
-      v5 = [v8 isFeatureEnabled];
+      isFeatureEnabled = [mEMORY[0x1E696EE78]3 isFeatureEnabled];
     }
   }
 
   if (v7)
   {
-    MEMORY[0x1E69E5920](v8);
+    MEMORY[0x1E69E5920](mEMORY[0x1E696EE78]3);
   }
 
   if (v9)
   {
-    MEMORY[0x1E69E5920](v10);
+    MEMORY[0x1E69E5920](mEMORY[0x1E696EE78]2);
   }
 
-  MEMORY[0x1E69E5920](v4);
-  v11 = v5 & 1;
-  os_unfair_lock_unlock(&v13->_dtoLock);
+  MEMORY[0x1E69E5920](mEMORY[0x1E696EE78]);
+  v11 = isFeatureEnabled & 1;
+  os_unfair_lock_unlock(&selfCopy->_dtoLock);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -240,14 +240,14 @@ void __60__AKBiometricRatchetController_cancelWithReason_completion___block_invo
   return v11 & 1;
 }
 
-- (void)isCriticalEditAllowedForAltDSID:(id)a3 completion:(id)a4
+- (void)isCriticalEditAllowedForAltDSID:(id)d completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   v14 = objc_alloc_init(AKAppleIDAuthenticationController);
   v6 = v14;
   v5 = location[0];
@@ -325,7 +325,7 @@ void __75__AKBiometricRatchetController_isCriticalEditAllowedForAltDSID_completi
 - (id)currentRachetState
 {
   v39 = *MEMORY[0x1E69E9840];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
   v32 = 0uLL;
   v12 = _AKSignpostLogSystem();
@@ -355,9 +355,9 @@ void __75__AKBiometricRatchetController_isCriticalEditAllowedForAltDSID_completi
 
   objc_storeStrong(&v26, 0);
   v32 = v31;
-  v8 = [MEMORY[0x1E696EE78] sharedInstance];
-  v24 = [v8 ratchetState];
-  MEMORY[0x1E69E5920](v8);
+  mEMORY[0x1E696EE78] = [MEMORY[0x1E696EE78] sharedInstance];
+  ratchetState = [mEMORY[0x1E696EE78] ratchetState];
+  MEMORY[0x1E69E5920](mEMORY[0x1E696EE78]);
   v23 = _AKSignpostGetNanoseconds(v32, *(&v32 + 1)) / 1000000000.0;
   v22 = _AKSignpostLogSystem();
   v21 = 2;
@@ -385,12 +385,12 @@ void __75__AKBiometricRatchetController_isCriticalEditAllowedForAltDSID_completi
   v15 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_0_1_8_0(v36, [v24 rawValue]);
+    __os_log_helper_16_0_1_8_0(v36, [ratchetState rawValue]);
     _os_log_debug_impl(&dword_193225000, v16, v15, "LARatchet state: %lu", v36, 0xCu);
   }
 
   objc_storeStrong(&v16, 0);
-  v14 = [AKBiometricRatchetUtility stateFromLARatchetState:v24];
+  v14 = [AKBiometricRatchetUtility stateFromLARatchetState:ratchetState];
   v13 = _AKLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -401,7 +401,7 @@ void __75__AKBiometricRatchetController_isCriticalEditAllowedForAltDSID_completi
   objc_storeStrong(&v13, 0);
   v4 = MEMORY[0x1E69E5928](v14);
   objc_storeStrong(&v14, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&ratchetState, 0);
   *MEMORY[0x1E69E9840];
 
   return v4;

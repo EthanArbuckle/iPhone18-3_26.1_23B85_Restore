@@ -1,12 +1,12 @@
 @interface RSDRemoteDisplayDeviceDevice
 - (BOOL)connectable;
 - (RSDRemoteDisplayDeviceDevice)initWithGeneratedName;
-- (RSDRemoteDisplayDeviceDevice)initWithInterface:(id)a3;
+- (RSDRemoteDisplayDeviceDevice)initWithInterface:(id)interface;
 - (void)attach;
 - (void)createPortListener;
 - (void)disconnect;
 - (void)needsConnect;
-- (void)setSuspended:(BOOL)a3;
+- (void)setSuspended:(BOOL)suspended;
 @end
 
 @implementation RSDRemoteDisplayDeviceDevice
@@ -24,14 +24,14 @@
   return [(RSDRemoteDevice *)&v6 initWithName:__str];
 }
 
-- (RSDRemoteDisplayDeviceDevice)initWithInterface:(id)a3
+- (RSDRemoteDisplayDeviceDevice)initWithInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(RSDRemoteDisplayDeviceDevice *)self initWithGeneratedName];
-  v6 = v5;
-  if (v5)
+  interfaceCopy = interface;
+  initWithGeneratedName = [(RSDRemoteDisplayDeviceDevice *)self initWithGeneratedName];
+  v6 = initWithGeneratedName;
+  if (initWithGeneratedName)
   {
-    [(RSDRemoteNCMDevice *)v5 setInterface:v4];
+    [(RSDRemoteNCMDevice *)initWithGeneratedName setInterface:interfaceCopy];
     v7 = v6;
   }
 
@@ -52,7 +52,7 @@
   if (os_log_type_enabled(qword_100064588, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> disconnect", buf, 0xCu);
   }
 
@@ -62,7 +62,7 @@
     if (os_log_type_enabled(qword_100064588, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v7 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@> cancelling port listener", buf, 0xCu);
     }
 
@@ -85,22 +85,22 @@
   if (os_log_type_enabled(qword_100064588, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> needsConnect", &v9, 0xCu);
   }
 
   if (self->reestablished_connection)
   {
-    v4 = [(RSDRemoteDevice *)self connection];
+    connection = [(RSDRemoteDevice *)self connection];
 
     v5 = qword_100064588;
     v6 = os_log_type_enabled(qword_100064588, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (connection)
     {
       if (v6)
       {
         v9 = 138543362;
-        v10 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@> wait for current connection to invalidate before applying reestablished connection", &v9, 0xCu);
       }
     }
@@ -110,7 +110,7 @@
       if (v6)
       {
         v9 = 138543362;
-        v10 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@> Applying re-established connection", &v9, 0xCu);
       }
 
@@ -129,15 +129,15 @@
   if (os_log_type_enabled(qword_100064588, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> create port listener start", buf, 0xCu);
   }
 
   v18 = -6753;
   v17 = -1;
-  v4 = [(RSDRemoteNCMDevice *)self local_address];
-  v5 = [(RSDRemoteNCMDevice *)self interface];
-  v6 = sub_1000240DC(&v17, v4, &v18, [v5 index], &unk_100049E6C);
+  local_address = [(RSDRemoteNCMDevice *)self local_address];
+  interface = [(RSDRemoteNCMDevice *)self interface];
+  v6 = sub_1000240DC(&v17, local_address, &v18, [interface index], &unk_100049E6C);
 
   if (v6)
   {
@@ -177,7 +177,7 @@
     if (os_log_type_enabled(qword_100064588, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@> create port listener done", buf, 0xCu);
     }
   }
@@ -197,19 +197,19 @@
   return [(RSDRemoteDevice *)&v5 connectable];
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  if (self->_suspended != a3)
+  if (self->_suspended != suspended)
   {
-    v3 = a3;
+    suspendedCopy = suspended;
     v5 = qword_100064588;
     v6 = os_log_type_enabled(qword_100064588, OS_LOG_TYPE_INFO);
-    if (v3)
+    if (suspendedCopy)
     {
       if (v6)
       {
         v7 = 138543362;
-        v8 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%{public}@> Suspending", &v7, 0xCu);
       }
     }
@@ -219,14 +219,14 @@
       if (v6)
       {
         v7 = 138543362;
-        v8 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%{public}@> Resuming", &v7, 0xCu);
       }
 
       [(RSDRemoteDevice *)self drainPendedRequests];
     }
 
-    self->_suspended = v3;
+    self->_suspended = suspendedCopy;
   }
 }
 

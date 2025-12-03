@@ -1,6 +1,6 @@
 @interface MTRWebRTCTransportProviderClusterSFrameStruct
 - (MTRWebRTCTransportProviderClusterSFrameStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -17,26 +17,26 @@
     cipherSuite = v2->_cipherSuite;
     v2->_cipherSuite = &unk_284C3E588;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     baseKey = v3->_baseKey;
-    v3->_baseKey = v5;
+    v3->_baseKey = data;
 
-    v7 = [MEMORY[0x277CBEA90] data];
+    data2 = [MEMORY[0x277CBEA90] data];
     kid = v3->_kid;
-    v3->_kid = v7;
+    v3->_kid = data2;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWebRTCTransportProviderClusterSFrameStruct);
-  v5 = [(MTRWebRTCTransportProviderClusterSFrameStruct *)self cipherSuite];
-  [(MTRWebRTCTransportProviderClusterSFrameStruct *)v4 setCipherSuite:v5];
+  cipherSuite = [(MTRWebRTCTransportProviderClusterSFrameStruct *)self cipherSuite];
+  [(MTRWebRTCTransportProviderClusterSFrameStruct *)v4 setCipherSuite:cipherSuite];
 
-  v6 = [(MTRWebRTCTransportProviderClusterSFrameStruct *)self baseKey];
-  [(MTRWebRTCTransportProviderClusterSFrameStruct *)v4 setBaseKey:v6];
+  baseKey = [(MTRWebRTCTransportProviderClusterSFrameStruct *)self baseKey];
+  [(MTRWebRTCTransportProviderClusterSFrameStruct *)v4 setBaseKey:baseKey];
 
   v7 = [(MTRWebRTCTransportProviderClusterSFrameStruct *)self kid];
   [(MTRWebRTCTransportProviderClusterSFrameStruct *)v4 setKid:v7];

@@ -1,22 +1,22 @@
 @interface GroupParticipantConvergenceResult
-+ (id)groupParticipantConvergenceResultForUpdateType:(unint64_t)a3 context:(id)a4;
-- (GroupParticipantConvergenceResult)initWithMemberStatusChanges:(id)a3 chatStatusChanges:(id)a4;
++ (id)groupParticipantConvergenceResultForUpdateType:(unint64_t)type context:(id)context;
+- (GroupParticipantConvergenceResult)initWithMemberStatusChanges:(id)changes chatStatusChanges:(id)statusChanges;
 @end
 
 @implementation GroupParticipantConvergenceResult
 
-+ (id)groupParticipantConvergenceResultForUpdateType:(unint64_t)a3 context:(id)a4
++ (id)groupParticipantConvergenceResultForUpdateType:(unint64_t)type context:(id)context
 {
-  v64 = a3;
-  v4 = a4;
+  typeCopy = type;
+  contextCopy = context;
   v5 = objc_alloc_init(NSMutableArray);
   v69 = objc_alloc_init(NSMutableArray);
-  v6 = [v4 toIdentifier];
-  v7 = [v6 _stripFZIDPrefix];
+  toIdentifier = [contextCopy toIdentifier];
+  _stripFZIDPrefix = [toIdentifier _stripFZIDPrefix];
 
-  v66 = [v4 currentParticipants];
-  v68 = [NSSet setWithArray:v66];
-  switch(v64)
+  currentParticipants = [contextCopy currentParticipants];
+  v68 = [NSSet setWithArray:currentParticipants];
+  switch(typeCopy)
   {
     case 2uLL:
       if (IMOSLoggingEnabled())
@@ -24,21 +24,21 @@
         v36 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
         {
-          v37 = [v4 toParticipants];
-          v38 = [v4 fromIdentifier];
-          v39 = [v4 allowSelfRemoval];
+          toParticipants = [contextCopy toParticipants];
+          fromIdentifier = [contextCopy fromIdentifier];
+          allowSelfRemoval = [contextCopy allowSelfRemoval];
           v40 = @"NO";
           *buf = 138413314;
-          v91 = v37;
+          v91 = toParticipants;
           v92 = 2112;
-          if (v39)
+          if (allowSelfRemoval)
           {
             v40 = @"YES";
           }
 
-          v93 = v7;
+          v93 = _stripFZIDPrefix;
           v94 = 2112;
-          v95 = v38;
+          v95 = fromIdentifier;
           v96 = 2048;
           v97 = 2;
           v98 = 2112;
@@ -47,13 +47,13 @@
         }
       }
 
-      v41 = [v66 mutableCopy];
+      v41 = [currentParticipants mutableCopy];
       v76 = 0u;
       v77 = 0u;
       v74 = 0u;
       v75 = 0u;
-      v42 = [v4 toParticipants];
-      v43 = [v42 countByEnumeratingWithState:&v74 objects:v87 count:16];
+      toParticipants2 = [contextCopy toParticipants];
+      v43 = [toParticipants2 countByEnumeratingWithState:&v74 objects:v87 count:16];
       if (v43)
       {
         v44 = *v75;
@@ -64,11 +64,11 @@
           {
             if (*v75 != v44)
             {
-              objc_enumerationMutation(v42);
+              objc_enumerationMutation(toParticipants2);
             }
 
             v46 = *(*(&v74 + 1) + 8 * i);
-            if ([v46 isEqualToIgnoringCase:v7])
+            if ([v46 isEqualToIgnoringCase:_stripFZIDPrefix])
             {
               v67 = 0;
             }
@@ -88,7 +88,7 @@
                   }
                 }
 
-                v48 = [v4 memberStatusChangeContextForUpdateType:2 participant:v46];
+                v48 = [contextCopy memberStatusChangeContextForUpdateType:2 participant:v46];
                 [v48 setStatus:2];
                 [v5 addObject:v48];
               }
@@ -97,7 +97,7 @@
             }
           }
 
-          v43 = [v42 countByEnumeratingWithState:&v74 objects:v87 count:16];
+          v43 = [toParticipants2 countByEnumeratingWithState:&v74 objects:v87 count:16];
         }
 
         while (v43);
@@ -138,7 +138,7 @@
             }
 
             v54 = *(*(&v70 + 1) + 8 * j);
-            if (![v54 isEqualToIgnoringCase:v7] || objc_msgSend(v4, "allowSelfRemoval"))
+            if (![v54 isEqualToIgnoringCase:_stripFZIDPrefix] || objc_msgSend(contextCopy, "allowSelfRemoval"))
             {
               if (IMOSLoggingEnabled())
               {
@@ -151,7 +151,7 @@
                 }
               }
 
-              v56 = [v4 memberStatusChangeContextForUpdateType:2 participant:v54];
+              v56 = [contextCopy memberStatusChangeContextForUpdateType:2 participant:v54];
               [v56 setStatus:3];
               [v5 addObject:v56];
             }
@@ -175,21 +175,21 @@
         v23 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
-          v24 = [v4 participantsToRemove];
-          v25 = [v4 fromIdentifier];
-          v26 = [v4 allowSelfRemoval];
+          participantsToRemove = [contextCopy participantsToRemove];
+          fromIdentifier2 = [contextCopy fromIdentifier];
+          allowSelfRemoval2 = [contextCopy allowSelfRemoval];
           v27 = @"NO";
           *buf = 138413314;
-          v91 = v24;
+          v91 = participantsToRemove;
           v92 = 2112;
-          if (v26)
+          if (allowSelfRemoval2)
           {
             v27 = @"YES";
           }
 
-          v93 = v7;
+          v93 = _stripFZIDPrefix;
           v94 = 2112;
-          v95 = v25;
+          v95 = fromIdentifier2;
           v96 = 2048;
           v97 = 1;
           v98 = 2112;
@@ -202,8 +202,8 @@
       v81 = 0u;
       v78 = 0u;
       v79 = 0u;
-      v13 = [v4 participantsToRemove];
-      v28 = [v13 countByEnumeratingWithState:&v78 objects:v88 count:16];
+      participantsToRemove2 = [contextCopy participantsToRemove];
+      v28 = [participantsToRemove2 countByEnumeratingWithState:&v78 objects:v88 count:16];
       if (!v28)
       {
         goto LABEL_97;
@@ -217,7 +217,7 @@
         {
           if (*v79 != v30)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(participantsToRemove2);
           }
 
           v32 = *(*(&v78 + 1) + 8 * k);
@@ -232,15 +232,15 @@
             }
           }
 
-          v34 = [v4 memberStatusChangeContextForUpdateType:1 participant:v32];
+          v34 = [contextCopy memberStatusChangeContextForUpdateType:1 participant:v32];
           [v34 setStatus:3];
           [v5 addObject:v34];
-          v35 = [v32 isEqualToIgnoringCase:v7];
+          v35 = [v32 isEqualToIgnoringCase:_stripFZIDPrefix];
 
           v29 |= v35;
         }
 
-        v28 = [v13 countByEnumeratingWithState:&v78 objects:v88 count:16];
+        v28 = [participantsToRemove2 countByEnumeratingWithState:&v78 objects:v88 count:16];
       }
 
       while (v28);
@@ -257,21 +257,21 @@
         v8 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
-          v9 = [v4 participantsToAdd];
-          v10 = [v4 fromIdentifier];
-          v11 = [v4 allowSelfRemoval];
+          participantsToAdd = [contextCopy participantsToAdd];
+          fromIdentifier3 = [contextCopy fromIdentifier];
+          allowSelfRemoval3 = [contextCopy allowSelfRemoval];
           v12 = @"NO";
           *buf = 138413314;
-          v91 = v9;
+          v91 = participantsToAdd;
           v92 = 2112;
-          if (v11)
+          if (allowSelfRemoval3)
           {
             v12 = @"YES";
           }
 
-          v93 = v7;
+          v93 = _stripFZIDPrefix;
           v94 = 2112;
-          v95 = v10;
+          v95 = fromIdentifier3;
           v96 = 2048;
           v97 = 0;
           v98 = 2112;
@@ -284,8 +284,8 @@
       v85 = 0u;
       v82 = 0u;
       v83 = 0u;
-      v13 = [v4 participantsToAdd];
-      v14 = [v13 countByEnumeratingWithState:&v82 objects:v89 count:16];
+      participantsToRemove2 = [contextCopy participantsToAdd];
+      v14 = [participantsToRemove2 countByEnumeratingWithState:&v82 objects:v89 count:16];
       if (v14)
       {
         v15 = *v83;
@@ -295,11 +295,11 @@
           {
             if (*v83 != v15)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(participantsToRemove2);
             }
 
             v17 = *(*(&v82 + 1) + 8 * m);
-            v18 = [v17 isEqualToIgnoringCase:v7];
+            v18 = [v17 isEqualToIgnoringCase:_stripFZIDPrefix];
             v19 = IMOSLoggingEnabled();
             if (v18)
             {
@@ -313,7 +313,7 @@
                 }
               }
 
-              v21 = [v4 chatStatusChangeContextForUpdateType:0 participant:v17];
+              v21 = [contextCopy chatStatusChangeContextForUpdateType:0 participant:v17];
               [v21 setChatStatus:2];
               [v69 addObject:v21];
             }
@@ -331,13 +331,13 @@
                 }
               }
 
-              v21 = [v4 memberStatusChangeContextForUpdateType:0 participant:v17];
+              v21 = [contextCopy memberStatusChangeContextForUpdateType:0 participant:v17];
               [v21 setStatus:2];
               [v5 addObject:v21];
             }
           }
 
-          v14 = [v13 countByEnumeratingWithState:&v82 objects:v89 count:16];
+          v14 = [participantsToRemove2 countByEnumeratingWithState:&v82 objects:v89 count:16];
         }
 
         while (v14);
@@ -348,7 +348,7 @@ LABEL_97:
       goto LABEL_98;
   }
 
-  if ([v4 allowSelfRemoval])
+  if ([contextCopy allowSelfRemoval])
   {
     if (IMOSLoggingEnabled())
     {
@@ -360,11 +360,11 @@ LABEL_97:
       }
     }
 
-    v58 = [v4 toIdentifier];
-    v13 = [v4 chatStatusChangeContextForUpdateType:v65 participant:v58];
+    toIdentifier2 = [contextCopy toIdentifier];
+    participantsToRemove2 = [contextCopy chatStatusChangeContextForUpdateType:v65 participant:toIdentifier2];
 
-    [v13 setChatStatus:3];
-    [v69 addObject:v13];
+    [participantsToRemove2 setChatStatus:3];
+    [v69 addObject:participantsToRemove2];
     goto LABEL_97;
   }
 
@@ -385,18 +385,18 @@ LABEL_98:
   return v62;
 }
 
-- (GroupParticipantConvergenceResult)initWithMemberStatusChanges:(id)a3 chatStatusChanges:(id)a4
+- (GroupParticipantConvergenceResult)initWithMemberStatusChanges:(id)changes chatStatusChanges:(id)statusChanges
 {
-  v7 = a3;
-  v8 = a4;
+  changesCopy = changes;
+  statusChangesCopy = statusChanges;
   v12.receiver = self;
   v12.super_class = GroupParticipantConvergenceResult;
   v9 = [(GroupParticipantConvergenceResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_memberStatusChanges, a3);
-    objc_storeStrong(&v10->_chatStatusChanges, a4);
+    objc_storeStrong(&v9->_memberStatusChanges, changes);
+    objc_storeStrong(&v10->_chatStatusChanges, statusChanges);
   }
 
   return v10;

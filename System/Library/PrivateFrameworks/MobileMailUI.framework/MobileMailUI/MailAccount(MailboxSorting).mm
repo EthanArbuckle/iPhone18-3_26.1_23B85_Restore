@@ -15,40 +15,40 @@
 {
   v15 = a3;
   v8 = a4;
-  v9 = [v15 childEnumerator];
+  childEnumerator = [v15 childEnumerator];
   v10 = 0;
   while (1)
   {
-    v11 = [v9 nextObject];
+    nextObject = [childEnumerator nextObject];
 
-    if (!v11)
+    if (!nextObject)
     {
       break;
     }
 
-    v12 = [v11 type];
-    if (v12 || !a5)
+    type = [nextObject type];
+    if (type || !a5)
     {
-      v10 = v11;
-      if (!v12)
+      v10 = nextObject;
+      if (!type)
       {
 LABEL_8:
-        [v8 addObject:v11];
-        v10 = v11;
-        if ([v11 hasChildren])
+        [v8 addObject:nextObject];
+        v10 = nextObject;
+        if ([nextObject hasChildren])
         {
-          v10 = v11;
-          [a1 _putMailboxesRootedAt:v11 intoArray:v8 hideNotes:0];
+          v10 = nextObject;
+          [self _putMailboxesRootedAt:nextObject intoArray:v8 hideNotes:0];
         }
       }
     }
 
     else
     {
-      v13 = [v11 name];
-      v14 = [v13 isEqualToString:@"Notes"];
+      name = [nextObject name];
+      v14 = [name isEqualToString:@"Notes"];
 
-      v10 = v11;
+      v10 = nextObject;
       if ((v14 & 1) == 0)
       {
         goto LABEL_8;
@@ -61,11 +61,11 @@ LABEL_8:
 {
   v18 = a3;
   v8 = a4;
-  v9 = [v8 mailbox];
-  if (v9)
+  mailbox = [v8 mailbox];
+  if (mailbox)
   {
-    v17 = v9;
-    v10 = [v9 childEnumerator];
+    v17 = mailbox;
+    childEnumerator = [mailbox childEnumerator];
     v11 = 0;
     while (1)
     {
@@ -73,22 +73,22 @@ LABEL_8:
       {
         do
         {
-          v12 = [v10 nextObject];
+          nextObject = [childEnumerator nextObject];
 
-          if (!v12)
+          if (!nextObject)
           {
 
-            v9 = v17;
+            mailbox = v17;
             goto LABEL_14;
           }
 
           objc_opt_class();
-          v11 = v12;
+          v11 = nextObject;
         }
 
         while ((objc_opt_isKindOfClass() & 1) == 0);
-        v13 = [v12 type];
-        if (!v13)
+        type = [nextObject type];
+        if (!type)
         {
           if (a5)
           {
@@ -96,27 +96,27 @@ LABEL_8:
           }
         }
 
-        v11 = v12;
-        if (!v13)
+        v11 = nextObject;
+        if (!type)
         {
           goto LABEL_10;
         }
       }
 
-      v14 = [v12 name];
-      v15 = [v14 isEqualToString:@"Notes"];
+      name = [nextObject name];
+      v15 = [name isEqualToString:@"Notes"];
 
-      v11 = v12;
+      v11 = nextObject;
       if ((v15 & 1) == 0)
       {
 LABEL_10:
-        v16 = [v18 addChildMailbox:v12 forMailboxNode:v8];
-        if ([v12 hasChildren])
+        v16 = [v18 addChildMailbox:nextObject forMailboxNode:v8];
+        if ([nextObject hasChildren])
         {
-          [a1 _addGenericChildrenToMailboxTree:v18 forNode:v16 hideNotes:0];
+          [self _addGenericChildrenToMailboxTree:v18 forNode:v16 hideNotes:0];
         }
 
-        v11 = v12;
+        v11 = nextObject;
       }
     }
   }
@@ -133,7 +133,7 @@ LABEL_14:
     [v6 addObject:v7];
     if ([v7 hasChildren])
     {
-      [a1 _putMailboxesRootedAt:v7 intoArray:v6 hideNotes:0];
+      [self _putMailboxesRootedAt:v7 intoArray:v6 hideNotes:0];
     }
   }
 }
@@ -144,12 +144,12 @@ LABEL_14:
   v6 = a4;
   if (v9)
   {
-    v7 = [v6 rootMailboxNode];
-    v8 = [v6 addChildMailbox:v9 forMailboxNode:v7];
+    rootMailboxNode = [v6 rootMailboxNode];
+    v8 = [v6 addChildMailbox:v9 forMailboxNode:rootMailboxNode];
 
     if ([v9 hasChildren])
     {
-      [a1 _addGenericChildrenToMailboxTree:v6 forNode:v8 hideNotes:0];
+      [self _addGenericChildrenToMailboxTree:v6 forNode:v8 hideNotes:0];
     }
   }
 }
@@ -158,63 +158,63 @@ LABEL_14:
 {
   v26 = a4;
   v10 = [MailboxHierarchyTree alloc];
-  v11 = [a1 rootMailbox];
-  v12 = [(MailboxHierarchyTree *)v10 initWithRootMailbox:v11];
+  rootMailbox = [self rootMailbox];
+  v12 = [(MailboxHierarchyTree *)v10 initWithRootMailbox:rootMailbox];
 
-  v24 = [(MailboxHierarchyTree *)v12 rootMailboxNode];
+  rootMailboxNode = [(MailboxHierarchyTree *)v12 rootMailboxNode];
   v23 = a6;
   if (a3)
   {
-    v13 = 0;
+    localAccount = 0;
   }
 
   else
   {
-    v13 = [MEMORY[0x277D281E0] localAccount];
+    localAccount = [MEMORY[0x277D281E0] localAccount];
   }
 
-  v25 = [a1 primaryMailboxUid];
-  v14 = [a1 mailboxUidOfType:5 createIfNeeded:0];
-  v15 = [a1 mailboxUidOfType:4 createIfNeeded:0];
-  v16 = [a1 mailboxUidOfType:3 createIfNeeded:0];
-  v17 = [a1 mailboxUidOfType:2 createIfNeeded:0];
-  v18 = [a1 mailboxUidOfType:1 createIfNeeded:0];
-  if (!a5 || [v25 hasChildren])
+  primaryMailboxUid = [self primaryMailboxUid];
+  v14 = [self mailboxUidOfType:5 createIfNeeded:0];
+  v15 = [self mailboxUidOfType:4 createIfNeeded:0];
+  v16 = [self mailboxUidOfType:3 createIfNeeded:0];
+  v17 = [self mailboxUidOfType:2 createIfNeeded:0];
+  v18 = [self mailboxUidOfType:1 createIfNeeded:0];
+  if (!a5 || [primaryMailboxUid hasChildren])
   {
-    [a1 _addSpecialMailbox:v25 toTree:v12];
+    [self _addSpecialMailbox:primaryMailboxUid toTree:v12];
   }
 
-  if ((a3 & 1) != 0 || v13 && ([v14 account], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != v13))
+  if ((a3 & 1) != 0 || localAccount && ([v14 account], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != localAccount))
   {
-    [a1 _addSpecialMailbox:v14 toTree:v12];
+    [self _addSpecialMailbox:v14 toTree:v12];
   }
 
   if (v26)
   {
-    [a1 _addSpecialMailbox:v26 toTree:v12];
+    [self _addSpecialMailbox:v26 toTree:v12];
   }
 
-  if ((a3 & 1) != 0 || v13 && ([v15 account], v20 = objc_claimAutoreleasedReturnValue(), v20, v20 != v13))
+  if ((a3 & 1) != 0 || localAccount && ([v15 account], v20 = objc_claimAutoreleasedReturnValue(), v20, v20 != localAccount))
   {
-    [a1 _addSpecialMailbox:v15 toTree:v12];
+    [self _addSpecialMailbox:v15 toTree:v12];
   }
 
   if (v18)
   {
-    [a1 _addSpecialMailbox:v18 toTree:v12];
+    [self _addSpecialMailbox:v18 toTree:v12];
   }
 
-  if ((a3 & 1) != 0 || v13 && ([v16 account], v21 = objc_claimAutoreleasedReturnValue(), v21, v21 != v13))
+  if ((a3 & 1) != 0 || localAccount && ([v16 account], v21 = objc_claimAutoreleasedReturnValue(), v21, v21 != localAccount))
   {
-    [a1 _addSpecialMailbox:v16 toTree:v12];
+    [self _addSpecialMailbox:v16 toTree:v12];
   }
 
   if (v17)
   {
-    [a1 _addSpecialMailbox:v17 toTree:v12];
+    [self _addSpecialMailbox:v17 toTree:v12];
   }
 
-  [a1 _addGenericChildrenToMailboxTree:v12 forNode:v24 hideNotes:v23];
+  [self _addGenericChildrenToMailboxTree:v12 forNode:rootMailboxNode hideNotes:v23];
 
   return v12;
 }
@@ -226,28 +226,28 @@ LABEL_14:
   v22 = a6;
   if (a3)
   {
-    v11 = 0;
+    localAccount = 0;
   }
 
   else
   {
-    v11 = [MEMORY[0x277D281E0] localAccount];
+    localAccount = [MEMORY[0x277D281E0] localAccount];
   }
 
-  v23 = [a1 primaryMailboxUid];
-  v12 = [a1 mailboxUidOfType:5 createIfNeeded:0];
-  v13 = [a1 mailboxUidOfType:4 createIfNeeded:0];
-  v14 = [a1 mailboxUidOfType:3 createIfNeeded:0];
-  v15 = [a1 mailboxUidOfType:2 createIfNeeded:0];
-  v16 = [a1 mailboxUidOfType:1 createIfNeeded:0];
-  if (!a5 || [v23 hasChildren])
+  primaryMailboxUid = [self primaryMailboxUid];
+  v12 = [self mailboxUidOfType:5 createIfNeeded:0];
+  v13 = [self mailboxUidOfType:4 createIfNeeded:0];
+  v14 = [self mailboxUidOfType:3 createIfNeeded:0];
+  v15 = [self mailboxUidOfType:2 createIfNeeded:0];
+  v16 = [self mailboxUidOfType:1 createIfNeeded:0];
+  if (!a5 || [primaryMailboxUid hasChildren])
   {
-    [a1 addSpecialMailbox:v23 toArray:v10];
+    [self addSpecialMailbox:primaryMailboxUid toArray:v10];
   }
 
-  if ((a3 & 1) != 0 || v11 && ([v12 account], v17 = objc_claimAutoreleasedReturnValue(), v17, v17 != v11))
+  if ((a3 & 1) != 0 || localAccount && ([v12 account], v17 = objc_claimAutoreleasedReturnValue(), v17, v17 != localAccount))
   {
-    [a1 addSpecialMailbox:v12 toArray:v10];
+    [self addSpecialMailbox:v12 toArray:v10];
   }
 
   if (v24)
@@ -257,50 +257,50 @@ LABEL_14:
 
   if ((a3 & 1) == 0)
   {
-    if (!v11)
+    if (!localAccount)
     {
       goto LABEL_20;
     }
 
-    v18 = [v13 account];
+    account = [v13 account];
 
-    if (v18 == v11)
+    if (account == localAccount)
     {
       goto LABEL_18;
     }
   }
 
-  [a1 addSpecialMailbox:v13 toArray:v10];
+  [self addSpecialMailbox:v13 toArray:v10];
   if ((a3 & 1) == 0)
   {
-    if (!v11)
+    if (!localAccount)
     {
       goto LABEL_20;
     }
 
 LABEL_18:
-    v19 = [v14 account];
+    account2 = [v14 account];
 
-    if (v19 == v11)
+    if (account2 == localAccount)
     {
       goto LABEL_20;
     }
   }
 
-  [a1 addSpecialMailbox:v14 toArray:v10];
+  [self addSpecialMailbox:v14 toArray:v10];
 LABEL_20:
   if (v15)
   {
-    [a1 addSpecialMailbox:v15 toArray:v10];
+    [self addSpecialMailbox:v15 toArray:v10];
   }
 
   if (v16)
   {
-    [a1 addSpecialMailbox:v16 toArray:v10];
+    [self addSpecialMailbox:v16 toArray:v10];
   }
 
-  v20 = [a1 rootMailbox];
-  [a1 _putMailboxesRootedAt:v20 intoArray:v10 hideNotes:v22];
+  rootMailbox = [self rootMailbox];
+  [self _putMailboxesRootedAt:rootMailbox intoArray:v10 hideNotes:v22];
 
   return v10;
 }
@@ -313,15 +313,15 @@ LABEL_20:
   v10 = [MEMORY[0x277D28280] log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [a1 ef_publicDescription];
+    ef_publicDescription = [self ef_publicDescription];
     v15 = 138543618;
-    v16 = v11;
+    v16 = ef_publicDescription;
     v17 = 2114;
     v18 = v8;
     _os_log_impl(&dword_2149C9000, v10, OS_LOG_TYPE_DEFAULT, "<%{public}@> client:%{public}@", &v15, 0x16u);
   }
 
-  v12 = [a1 _treeOfAllMailboxesIncludingLocals:a3 withOutbox:v9 hideInbox:objc_msgSend(v8 hideNotes:{"shouldHideInbox"), objc_msgSend(v8, "shouldHideNotesForAccount:", a1)}];
+  v12 = [self _treeOfAllMailboxesIncludingLocals:a3 withOutbox:v9 hideInbox:objc_msgSend(v8 hideNotes:{"shouldHideInbox"), objc_msgSend(v8, "shouldHideNotesForAccount:", self)}];
 
   v13 = *MEMORY[0x277D85DE8];
 
@@ -331,11 +331,11 @@ LABEL_20:
 - (MailboxHierarchyTree)treeOfAllGenericMailboxes
 {
   v2 = [MailboxHierarchyTree alloc];
-  v3 = [a1 rootMailbox];
-  v4 = [(MailboxHierarchyTree *)v2 initWithRootMailbox:v3];
+  rootMailbox = [self rootMailbox];
+  v4 = [(MailboxHierarchyTree *)v2 initWithRootMailbox:rootMailbox];
 
-  v5 = [(MailboxHierarchyTree *)v4 rootMailboxNode];
-  [a1 _addGenericChildrenToMailboxTree:v4 forNode:v5 hideNotes:{objc_msgSend(a1, "isSyncingNotes")}];
+  rootMailboxNode = [(MailboxHierarchyTree *)v4 rootMailboxNode];
+  [self _addGenericChildrenToMailboxTree:v4 forNode:rootMailboxNode hideNotes:{objc_msgSend(self, "isSyncingNotes")}];
 
   return v4;
 }

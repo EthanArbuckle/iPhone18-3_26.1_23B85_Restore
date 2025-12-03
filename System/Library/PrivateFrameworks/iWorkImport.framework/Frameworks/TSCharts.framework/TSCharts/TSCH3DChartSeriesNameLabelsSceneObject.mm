@@ -1,24 +1,24 @@
 @interface TSCH3DChartSeriesNameLabelsSceneObject
-- (id)p_axisLabelsFromScene:(id)a3;
-- (id)selectionPathForInfo:(id)a3 scene:(id)a4 pickedPoint:(id)a5;
-- (int)knobsModeForLabelType:(int)a3 scene:(id)a4;
-- (void)renderAnnotatedLabels:(id)a3;
+- (id)p_axisLabelsFromScene:(id)scene;
+- (id)selectionPathForInfo:(id)info scene:(id)scene pickedPoint:(id)point;
+- (int)knobsModeForLabelType:(int)type scene:(id)scene;
+- (void)renderAnnotatedLabels:(id)labels;
 @end
 
 @implementation TSCH3DChartSeriesNameLabelsSceneObject
 
-- (void)renderAnnotatedLabels:(id)a3
+- (void)renderAnnotatedLabels:(id)labels
 {
-  v18 = a3;
-  v8 = objc_msgSend_scene(v18, v4, v5, v6, v7);
+  labelsCopy = labels;
+  v8 = objc_msgSend_scene(labelsCopy, v4, v5, v6, v7);
   v13 = objc_msgSend_main(v8, v9, v10, v11, v12);
 
-  objc_msgSend_renderSeriesLabelsSceneObject_pipeline_(v13, v14, v15, v16, v17, self, v18);
+  objc_msgSend_renderSeriesLabelsSceneObject_pipeline_(v13, v14, v15, v16, v17, self, labelsCopy);
 }
 
-- (id)p_axisLabelsFromScene:(id)a3
+- (id)p_axisLabelsFromScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -30,7 +30,7 @@
   v29[2] = sub_276363A0C;
   v29[3] = &unk_27A6B9E18;
   v29[4] = &v30;
-  objc_msgSend_enumerateAllObjectsUsingBlock_(v3, v4, COERCE_DOUBLE(3221225472), v5, v6, v29);
+  objc_msgSend_enumerateAllObjectsUsingBlock_(sceneCopy, v4, COERCE_DOUBLE(3221225472), v5, v6, v29);
   v11 = v31[5];
   if (!v11)
   {
@@ -49,31 +49,31 @@
   return v27;
 }
 
-- (int)knobsModeForLabelType:(int)a3 scene:(id)a4
+- (int)knobsModeForLabelType:(int)type scene:(id)scene
 {
-  v6 = a4;
-  v12 = objc_msgSend_p_axisLabelsFromScene_(self, v7, v8, v9, v10, v6);
-  if (a3 != 6)
+  sceneCopy = scene;
+  v12 = objc_msgSend_p_axisLabelsFromScene_(self, v7, v8, v9, v10, sceneCopy);
+  if (type != 6)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v13, v14, v15, "[TSCH3DChartSeriesNameLabelsSceneObject knobsModeForLabelType:scene:]");
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, v19, v20, v21, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartSeriesNameLabelsSceneObject.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v23, v24, v25, v26, v17, v22, 54, 0, "invalid label type %lu should be %lu", a3, 6);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v23, v24, v25, v26, v17, v22, 54, 0, "invalid label type %lu should be %lu", type, 6);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
   }
 
-  v31 = objc_msgSend_knobsModeForLabelType_scene_(v12, v11, v13, v14, v15, 3, v6);
+  v31 = objc_msgSend_knobsModeForLabelType_scene_(v12, v11, v13, v14, v15, 3, sceneCopy);
 
   return v31;
 }
 
-- (id)selectionPathForInfo:(id)a3 scene:(id)a4 pickedPoint:(id)a5
+- (id)selectionPathForInfo:(id)info scene:(id)scene pickedPoint:(id)point
 {
-  v7 = a3;
-  v12 = objc_msgSend_p_axisLabelsFromScene_(self, v8, v9, v10, v11, a4);
-  v17 = objc_msgSend_axisForInfo_(TSCHChartCategoryAxis, v13, v14, v15, v16, v7);
-  v22 = objc_msgSend_selectionPathForInfo_axis_selectionPathLabelIndex_(v12, v18, v19, v20, v21, v7, v17, 0x7FFFFFFFFFFFFFFFLL);
+  infoCopy = info;
+  v12 = objc_msgSend_p_axisLabelsFromScene_(self, v8, v9, v10, v11, scene);
+  v17 = objc_msgSend_axisForInfo_(TSCHChartCategoryAxis, v13, v14, v15, v16, infoCopy);
+  v22 = objc_msgSend_selectionPathForInfo_axis_selectionPathLabelIndex_(v12, v18, v19, v20, v21, infoCopy, v17, 0x7FFFFFFFFFFFFFFFLL);
 
   return v22;
 }

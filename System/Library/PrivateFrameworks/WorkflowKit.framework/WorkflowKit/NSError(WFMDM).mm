@@ -20,7 +20,7 @@
     [v7 setObject:v10 forKey:*MEMORY[0x1E696A588]];
   }
 
-  v11 = [a1 errorWithDomain:@"WFActionErrorDomain" code:8 userInfo:v7];
+  v11 = [self errorWithDomain:@"WFActionErrorDomain" code:8 userInfo:v7];
 
   return v11;
 }

@@ -1,45 +1,45 @@
 @interface LPCollaborationFooterView
-- (CGSize)_layoutFooterForSize:(CGSize)a3 applyingLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPCollaborationFooterView)initWithHost:(id)a3 properties:(id)a4 style:(id)a5;
+- (CGSize)_layoutFooterForSize:(CGSize)size applyingLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPCollaborationFooterView)initWithHost:(id)host properties:(id)properties style:(id)style;
 - (UIEdgeInsets)additionalPadding;
-- (void)_footerTapRecognized:(id)a3;
+- (void)_footerTapRecognized:(id)recognized;
 - (void)layoutComponentView;
 - (void)updateIndicator;
 @end
 
 @implementation LPCollaborationFooterView
 
-- (LPCollaborationFooterView)initWithHost:(id)a3 properties:(id)a4 style:(id)a5
+- (LPCollaborationFooterView)initWithHost:(id)host properties:(id)properties style:(id)style
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hostCopy = host;
+  propertiesCopy = properties;
+  styleCopy = style;
   v71.receiver = self;
   v71.super_class = LPCollaborationFooterView;
-  v11 = [(LPComponentView *)&v71 initWithHost:v8];
+  v11 = [(LPComponentView *)&v71 initWithHost:hostCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_style, a5);
-    v13 = [v9 action];
+    objc_storeStrong(&v11->_style, style);
+    action = [propertiesCopy action];
     action = v12->_action;
-    v12->_action = v13;
+    v12->_action = action;
 
-    v66 = v8;
-    v67 = v10;
-    v15 = [v9 title];
-    v65 = v15;
-    if (v15)
+    v66 = hostCopy;
+    v67 = styleCopy;
+    title = [propertiesCopy title];
+    v65 = title;
+    if (title)
     {
       v16 = objc_alloc_init(MEMORY[0x1E696AD40]);
-      v17 = [v9 glyphAttachmentImage];
+      glyphAttachmentImage = [propertiesCopy glyphAttachmentImage];
 
-      if (v17)
+      if (glyphAttachmentImage)
       {
         v18 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
-        v19 = [v9 glyphAttachmentImage];
-        v20 = [(LPCollaborationFooterView *)v12 _resolvedGlyphAttachmentImageFromImage:v19];
+        glyphAttachmentImage2 = [propertiesCopy glyphAttachmentImage];
+        v20 = [(LPCollaborationFooterView *)v12 _resolvedGlyphAttachmentImageFromImage:glyphAttachmentImage2];
         [v18 setImage:v20];
 
         v21 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v18];
@@ -48,78 +48,78 @@
         v22 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" "];
         [v16 appendAttributedString:v22];
 
-        v15 = v65;
+        title = v65;
       }
 
-      v23 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v15];
+      v23 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:title];
       [v16 appendAttributedString:v23];
 
-      v24 = [v10 options];
-      if ([v10 useInlineIndicator] && v12->_action)
+      options = [styleCopy options];
+      if ([styleCopy useInlineIndicator] && v12->_action)
       {
-        v64 = [v24 copy];
+        v64 = [options copy];
 
         v25 = objc_alloc_init(LPGlyphStyle);
         v26 = [MEMORY[0x1E69DCAD8] _lp_configurationWithTextStyle:*MEMORY[0x1E69DDD28] weight:7 scale:1];
         v27 = +[LPResources chevron];
-        v28 = [v27 platformImage];
-        v29 = [v28 _lp_imageByApplyingSymbolConfiguration:v26];
+        platformImage = [v27 platformImage];
+        v29 = [platformImage _lp_imageByApplyingSymbolConfiguration:v26];
 
-        v15 = v65;
+        title = v65;
         v30 = [[LPImage alloc] initWithPlatformImage:v29];
         [(LPGlyphStyle *)v25 setImage:v30];
 
-        v31 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-        [(LPGlyphStyle *)v25 setColor:v31];
+        tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+        [(LPGlyphStyle *)v25 setColor:tertiaryLabelColor];
 
         [v64 setTrailingGlyph:v25];
-        v24 = v64;
-        v8 = v66;
-        v10 = v67;
+        options = v64;
+        hostCopy = v66;
+        styleCopy = v67;
       }
 
-      v32 = [[LPTextView alloc] initWithHost:v8 text:v16 style:v24];
+      v32 = [[LPTextView alloc] initWithHost:hostCopy text:v16 style:options];
       optionsView = v12->_optionsView;
       v12->_optionsView = v32;
 
       [(LPCollaborationFooterView *)v12 addSubview:v12->_optionsView];
     }
 
-    v34 = [v9 subtitle];
-    if (v34 || ([v9 initiatorNameComponents], (v34 = objc_claimAutoreleasedReturnValue()) != 0))
+    subtitle = [propertiesCopy subtitle];
+    if (subtitle || ([propertiesCopy initiatorNameComponents], (subtitle = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v63 = [v9 initiatorName];
+      initiatorName = [propertiesCopy initiatorName];
 
-      if (!v63)
+      if (!initiatorName)
       {
         goto LABEL_19;
       }
     }
 
-    v35 = [v9 subtitle];
-    v36 = v35;
-    if (v35)
+    subtitle2 = [propertiesCopy subtitle];
+    v36 = subtitle2;
+    if (subtitle2)
     {
-      v37 = v35;
+      initiatorName2 = subtitle2;
     }
 
     else
     {
-      v37 = [v9 initiatorName];
+      initiatorName2 = [propertiesCopy initiatorName];
     }
 
-    v39 = v37;
+    v39 = initiatorName2;
 
-    v40 = [v9 initiatorNameComponents];
+    initiatorNameComponents = [propertiesCopy initiatorNameComponents];
     v68[0] = MEMORY[0x1E69E9820];
     v68[1] = 3221225472;
     v68[2] = __59__LPCollaborationFooterView_initWithHost_properties_style___block_invoke;
     v68[3] = &unk_1E7A35A40;
-    v41 = v40;
+    v41 = initiatorNameComponents;
     v69 = v41;
     v42 = v39;
     v70 = v42;
@@ -128,17 +128,17 @@
     {
       v44 = [LPTextView alloc];
       v45 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v43];
-      v46 = [v67 handle];
-      v47 = [(LPTextView *)v44 initWithHost:v66 text:v45 style:v46];
+      handle = [v67 handle];
+      v47 = [(LPTextView *)v44 initWithHost:v66 text:v45 style:handle];
       subtitleView = v12->_subtitleView;
       v12->_subtitleView = v47;
 
       [(LPCollaborationFooterView *)v12 addSubview:v12->_subtitleView];
     }
 
-    v8 = v66;
-    v10 = v67;
-    v15 = v65;
+    hostCopy = v66;
+    styleCopy = v67;
+    title = v65;
 LABEL_19:
     v49 = v12->_optionsView;
     if (v12->_subtitleView)
@@ -163,21 +163,21 @@ LABEL_26:
           [(UIView *)v12 _lp_setHoverEffectEnabled:1];
         }
 
-        v58 = [(LPCollaborationFooterStyle *)v12->_style cornerRadius];
+        cornerRadius = [(LPCollaborationFooterStyle *)v12->_style cornerRadius];
 
-        if (v58)
+        if (cornerRadius)
         {
-          v59 = [(LPCollaborationFooterStyle *)v12->_style cornerRadius];
-          [v59 value];
+          cornerRadius2 = [(LPCollaborationFooterStyle *)v12->_style cornerRadius];
+          [cornerRadius2 value];
           [(UIView *)v12 _lp_setCornerRadius:?];
         }
 
-        v60 = [(LPCollaborationFooterStyle *)v12->_style backgroundColor];
+        backgroundColor = [(LPCollaborationFooterStyle *)v12->_style backgroundColor];
 
-        if (v60)
+        if (backgroundColor)
         {
-          v61 = [(LPCollaborationFooterStyle *)v12->_style backgroundColor];
-          [(UIView *)v12 _lp_setBackgroundColor:v61];
+          backgroundColor2 = [(LPCollaborationFooterStyle *)v12->_style backgroundColor];
+          [(UIView *)v12 _lp_setBackgroundColor:backgroundColor2];
         }
 
         v38 = v12;
@@ -193,7 +193,7 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    if (([v10 useInlineIndicator] & 1) == 0 && v12->_action)
+    if (([styleCopy useInlineIndicator] & 1) == 0 && v12->_action)
     {
       v50 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
       indicatorView = v12->_indicatorView;
@@ -201,8 +201,8 @@ LABEL_35:
 
       [(LPCollaborationFooterView *)v12 updateIndicator];
       v52 = v12->_indicatorView;
-      v53 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-      [(UIImageView *)v52 _lp_setTintColor:v53];
+      tertiaryLabelColor2 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+      [(UIImageView *)v52 _lp_setTintColor:tertiaryLabelColor2];
 
       [(UIImageView *)v12->_indicatorView setContentMode:4];
       [(LPCollaborationFooterView *)v12 addSubview:v12->_indicatorView];
@@ -269,21 +269,21 @@ id __59__LPCollaborationFooterView_initWithHost_properties_style___block_invoke_
   [(LPCollaborationFooterView *)self _layoutFooterForSize:1 applyingLayout:v3, v4];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(LPCollaborationFooterView *)self _layoutFooterForSize:0 applyingLayout:a3.width, a3.height];
+  [(LPCollaborationFooterView *)self _layoutFooterForSize:0 applyingLayout:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutFooterForSize:(CGSize)a3 applyingLayout:(BOOL)a4
+- (CGSize)_layoutFooterForSize:(CGSize)size applyingLayout:(BOOL)layout
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  v8 = [(LPCollaborationFooterStyle *)self->_style padding];
-  [v8 asInsetsForLTR:{-[UIView _lp_isLTR](self, "_lp_isLTR")}];
+  layoutCopy = layout;
+  height = size.height;
+  width = size.width;
+  padding = [(LPCollaborationFooterStyle *)self->_style padding];
+  [padding asInsetsForLTR:{-[UIView _lp_isLTR](self, "_lp_isLTR")}];
   v10 = v9;
   v12 = v11;
   v49 = v14;
@@ -296,8 +296,8 @@ id __59__LPCollaborationFooterView_initWithHost_properties_style___block_invoke_
   v47 = height;
   if (self->_indicatorView)
   {
-    v18 = [(LPCollaborationFooterStyle *)self->_style indicatorSpacing];
-    [v18 value];
+    indicatorSpacing = [(LPCollaborationFooterStyle *)self->_style indicatorSpacing];
+    [indicatorSpacing value];
     v20 = v19;
 
     indicatorView = self->_indicatorView;
@@ -309,8 +309,8 @@ id __59__LPCollaborationFooterView_initWithHost_properties_style___block_invoke_
     v20 = 0.0;
   }
 
-  v22 = [(UIImageView *)indicatorView image];
-  [v22 size];
+  image = [(UIImageView *)indicatorView image];
+  [image size];
   v24 = v23;
   v25 = v10 + left;
   v26 = v12 + right;
@@ -326,15 +326,15 @@ id __59__LPCollaborationFooterView_initWithHost_properties_style___block_invoke_
   v33 = 0.0;
   if ([(LPCollaborationFooterStyle *)self->_style showSeparator])
   {
-    v34 = [(LPCollaborationFooterStyle *)self->_style separatorMargin];
-    v35 = [v34 bottom];
-    [v35 value];
+    separatorMargin = [(LPCollaborationFooterStyle *)self->_style separatorMargin];
+    bottom = [separatorMargin bottom];
+    [bottom value];
     v33 = v36;
   }
 
   v37 = v49 + bottom;
   v38 = v50 + top + v33;
-  if (v4)
+  if (layoutCopy)
   {
     v51 = v37;
     v39 = v47 - v38 - v37;
@@ -404,9 +404,9 @@ id __59__LPCollaborationFooterView_initWithHost_properties_style___block_invoke_
     v7 = [v5 _lp_imageByApplyingSymbolConfiguration:v6];
     [(UIImageView *)self->_indicatorView setImage:v7];
 
-    v8 = [(LPCollaborationFooterView *)self window];
+    window = [(LPCollaborationFooterView *)self window];
 
-    if (v8)
+    if (window)
     {
       [(UIView *)self _lp_setNeedsLayout];
     }
@@ -431,7 +431,7 @@ __CFString *__44__LPCollaborationFooterView_updateIndicator__block_invoke(uint64
   return @"chevron.left";
 }
 
-- (void)_footerTapRecognized:(id)a3
+- (void)_footerTapRecognized:(id)recognized
 {
   action = self->_action;
   if (action)

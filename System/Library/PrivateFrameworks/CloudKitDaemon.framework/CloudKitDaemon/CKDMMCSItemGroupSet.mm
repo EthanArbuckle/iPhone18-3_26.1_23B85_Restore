@@ -1,47 +1,47 @@
 @interface CKDMMCSItemGroupSet
-+ (BOOL)item:(id)a3 matchesItem:(id)a4;
-+ (unint64_t)hashOfItem:(id)a3;
++ (BOOL)item:(id)item matchesItem:(id)matchesItem;
++ (unint64_t)hashOfItem:(id)item;
 - (CKDMMCSItemGroupSet)init;
-- (CKDMMCSItemGroupSet)initWithItems:(id)a3;
+- (CKDMMCSItemGroupSet)initWithItems:(id)items;
 - (NSError)error;
 - (id)CKPropertiesDescription;
-- (void)addItem:(id)a3;
-- (void)setCloneContext:(id)a3;
+- (void)addItem:(id)item;
+- (void)setCloneContext:(id)context;
 @end
 
 @implementation CKDMMCSItemGroupSet
 
-+ (unint64_t)hashOfItem:(id)a3
++ (unint64_t)hashOfItem:(id)item
 {
-  v3 = a3;
-  v6 = objc_msgSend_contentBaseURL(v3, v4, v5);
+  itemCopy = item;
+  v6 = objc_msgSend_contentBaseURL(itemCopy, v4, v5);
   v9 = objc_msgSend_hash(v6, v7, v8);
-  v12 = objc_msgSend_owner(v3, v10, v11);
+  v12 = objc_msgSend_owner(itemCopy, v10, v11);
   v15 = objc_msgSend_hash(v12, v13, v14) ^ v9;
-  v18 = objc_msgSend_requestor(v3, v16, v17);
+  v18 = objc_msgSend_requestor(itemCopy, v16, v17);
 
   v21 = objc_msgSend_hash(v18, v19, v20);
   return v15 ^ v21;
 }
 
-+ (BOOL)item:(id)a3 matchesItem:(id)a4
++ (BOOL)item:(id)item matchesItem:(id)matchesItem
 {
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_contentBaseURL(v5, v7, v8);
-  v12 = objc_msgSend_contentBaseURL(v6, v10, v11);
+  itemCopy = item;
+  matchesItemCopy = matchesItem;
+  v9 = objc_msgSend_contentBaseURL(itemCopy, v7, v8);
+  v12 = objc_msgSend_contentBaseURL(matchesItemCopy, v10, v11);
   if (CKObjectsAreBothNilOrEqual())
   {
-    v15 = objc_msgSend_owner(v5, v13, v14);
-    v18 = objc_msgSend_owner(v6, v16, v17);
+    v15 = objc_msgSend_owner(itemCopy, v13, v14);
+    v18 = objc_msgSend_owner(matchesItemCopy, v16, v17);
     if (CKObjectsAreBothNilOrEqual())
     {
-      v21 = objc_msgSend_requestor(v5, v19, v20);
-      v24 = objc_msgSend_requestor(v6, v22, v23);
+      v21 = objc_msgSend_requestor(itemCopy, v19, v20);
+      v24 = objc_msgSend_requestor(matchesItemCopy, v22, v23);
       if (CKObjectsAreBothNilOrEqual())
       {
-        v32 = objc_msgSend_downloadPreauthorization(v5, v25, v26);
-        v29 = objc_msgSend_downloadPreauthorization(v6, v27, v28);
+        v32 = objc_msgSend_downloadPreauthorization(itemCopy, v25, v26);
+        v29 = objc_msgSend_downloadPreauthorization(matchesItemCopy, v27, v28);
         v30 = CKObjectsAreBothNilOrEqual();
       }
 
@@ -80,10 +80,10 @@
   return v2;
 }
 
-- (CKDMMCSItemGroupSet)initWithItems:(id)a3
+- (CKDMMCSItemGroupSet)initWithItems:(id)items
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v7 = objc_msgSend_init(self, v5, v6);
   if (v7)
   {
@@ -91,7 +91,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v4;
+    v8 = itemsCopy;
     v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v17, v21, 16);
     if (v10)
     {
@@ -185,14 +185,14 @@
   return v22;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v16 = a3;
+  itemCopy = item;
   v5 = self->_lastGroup;
-  if (!v5 || (objc_msgSend_item_matchesItem_(CKDMMCSItemGroupSet, v4, v16, v5) & 1) == 0)
+  if (!v5 || (objc_msgSend_item_matchesItem_(CKDMMCSItemGroupSet, v4, itemCopy, v5) & 1) == 0)
   {
     v7 = [CKDMMCSItemGroup alloc];
-    v9 = objc_msgSend_initWithItem_(v7, v8, v16);
+    v9 = objc_msgSend_initWithItem_(v7, v8, itemCopy);
 
     v11 = objc_msgSend_member_(self->_itemsGroups, v10, v9);
     v13 = v11;
@@ -211,23 +211,23 @@
     v5 = v9;
   }
 
-  objc_msgSend_addItem_(v5, v6, v16);
+  objc_msgSend_addItem_(v5, v6, itemCopy);
   lastGroup = self->_lastGroup;
   self->_lastGroup = v5;
 }
 
-- (void)setCloneContext:(id)a3
+- (void)setCloneContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
     itemsGroups = self->_itemsGroups;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_22513F6D0;
     v8[3] = &unk_2785466B8;
-    v9 = v4;
+    v9 = contextCopy;
     objc_msgSend_enumerateObjectsUsingBlock_(itemsGroups, v7, v8);
   }
 }

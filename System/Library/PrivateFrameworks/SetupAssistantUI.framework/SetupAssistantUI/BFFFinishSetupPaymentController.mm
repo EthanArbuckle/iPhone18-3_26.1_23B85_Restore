@@ -1,37 +1,37 @@
 @interface BFFFinishSetupPaymentController
 + (BOOL)hasPrimaryiCloudAccount;
-+ (id)finishSetupPaymentControllerWithHost:(id)a3;
++ (id)finishSetupPaymentControllerWithHost:(id)host;
 + (unint64_t)registrationViewControllerOutstandingRequirements;
-- (BFFFinishSetupPaymentController)initWithHost:(id)a3;
+- (BFFFinishSetupPaymentController)initWithHost:(id)host;
 - (BOOL)controllerNeedsToRun;
 - (id)prerequisiteFlowIdentifier;
-- (id)viewControllerWithCompletion:(id)a3;
-- (void)_completeWithResult:(unint64_t)a3 didSetUp:(BOOL)a4;
-- (void)_userDidTapCancelButton:(id)a3;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
+- (id)viewControllerWithCompletion:(id)completion;
+- (void)_completeWithResult:(unint64_t)result didSetUp:(BOOL)up;
+- (void)_userDidTapCancelButton:(id)button;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
 @end
 
 @implementation BFFFinishSetupPaymentController
 
-+ (id)finishSetupPaymentControllerWithHost:(id)a3
++ (id)finishSetupPaymentControllerWithHost:(id)host
 {
-  v3 = a3;
-  v4 = [[BFFFinishSetupPaymentController alloc] initWithHost:v3];
+  hostCopy = host;
+  v4 = [[BFFFinishSetupPaymentController alloc] initWithHost:hostCopy];
 
   return v4;
 }
 
-- (BFFFinishSetupPaymentController)initWithHost:(id)a3
+- (BFFFinishSetupPaymentController)initWithHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   v8.receiver = self;
   v8.super_class = BFFFinishSetupPaymentController;
   v5 = [(BFFFinishSetupPaymentController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_host, v4);
+    objc_storeWeak(&v5->_host, hostCopy);
   }
 
   return v6;
@@ -92,10 +92,10 @@ LABEL_10:
 
 + (BOOL)hasPrimaryiCloudAccount
 {
-  v2 = [MEMORY[0x277CB8F48] defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  return v3 != 0;
+  return aa_primaryAppleAccount != 0;
 }
 
 - (BOOL)controllerNeedsToRun
@@ -137,12 +137,12 @@ LABEL_10:
   return v7;
 }
 
-- (id)viewControllerWithCompletion:(id)a3
+- (id)viewControllerWithCompletion:(id)completion
 {
-  [(BFFFinishSetupPaymentController *)self setCompletion:a3];
+  [(BFFFinishSetupPaymentController *)self setCompletion:completion];
   v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__userDidTapCancelButton_];
-  v5 = [(UIViewController *)self->_registrationViewController navigationItem];
-  [v5 setLeftBarButtonItem:v4 animated:0];
+  navigationItem = [(UIViewController *)self->_registrationViewController navigationItem];
+  [navigationItem setLeftBarButtonItem:v4 animated:0];
 
   registrationViewController = self->_registrationViewController;
   v7 = registrationViewController;
@@ -150,9 +150,9 @@ LABEL_10:
   return registrationViewController;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _BYLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -172,8 +172,8 @@ LABEL_10:
   v11[2] = __79__BFFFinishSetupPaymentController_performExtendedInitializationWithCompletion___block_invoke;
   v11[3] = &unk_279BB4A30;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(PKPaymentSetupAssistantController *)v9 setupAssistantViewControllerWithCompletion:v11];
 }
 
@@ -199,7 +199,7 @@ void __79__BFFFinishSetupPaymentController_performExtendedInitializationWithComp
   }
 }
 
-- (void)_userDidTapCancelButton:(id)a3
+- (void)_userDidTapCancelButton:(id)button
 {
   v4 = _BYLoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -211,25 +211,25 @@ void __79__BFFFinishSetupPaymentController_performExtendedInitializationWithComp
   [(BFFFinishSetupPaymentController *)self _completeWithResult:2 didSetUp:0];
 }
 
-- (void)_completeWithResult:(unint64_t)a3 didSetUp:(BOOL)a4
+- (void)_completeWithResult:(unint64_t)result didSetUp:(BOOL)up
 {
-  v4 = a4;
+  upCopy = up;
   v14[1] = *MEMORY[0x277D85DE8];
-  v7 = [(BFFFinishSetupPaymentController *)self flowSkipController];
+  flowSkipController = [(BFFFinishSetupPaymentController *)self flowSkipController];
   v8 = *MEMORY[0x277D4D9A8];
-  [v7 didCompleteFlow:*MEMORY[0x277D4D9A8]];
+  [flowSkipController didCompleteFlow:*MEMORY[0x277D4D9A8]];
 
   CFPreferencesSetValue(@"Payment2Presented", *MEMORY[0x277CBED28], *MEMORY[0x277D4D9E0], *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
-  v9 = [(BFFFinishSetupPaymentController *)self paneFeatureAnalyticsManager];
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:v4];
-  [v9 recordActionWithValue:v10 forFeature:15];
+  paneFeatureAnalyticsManager = [(BFFFinishSetupPaymentController *)self paneFeatureAnalyticsManager];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:upCopy];
+  [paneFeatureAnalyticsManager recordActionWithValue:v10 forFeature:15];
 
   completion = self->_completion;
   if (completion)
   {
     v14[0] = v8;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-    completion[2](completion, a3, v12);
+    completion[2](completion, result, v12);
 
     v13 = self->_completion;
   }
@@ -242,7 +242,7 @@ void __79__BFFFinishSetupPaymentController_performExtendedInitializationWithComp
   self->_completion = 0;
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = [(PKPaymentSetupAssistantController *)self->_paymentController isFollowupNeededReturningRequirements:0];

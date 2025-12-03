@@ -1,40 +1,40 @@
 @interface NRDevicePropertyDiffType
-- (BOOL)isEqual:(id)a3;
-- (NRDevicePropertyDiffType)initWithCoder:(id)a3;
-- (NRDevicePropertyDiffType)initWithDiff:(id)a3 andChangeType:(unint64_t)a4;
-- (NRDevicePropertyDiffType)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NRDevicePropertyDiffType)initWithCoder:(id)coder;
+- (NRDevicePropertyDiffType)initWithDiff:(id)diff andChangeType:(unint64_t)type;
+- (NRDevicePropertyDiffType)initWithProtobuf:(id)protobuf;
 - (NRPBDevicePropertyDiffType)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDevicePropertyDiffType
 
-- (NRDevicePropertyDiffType)initWithDiff:(id)a3 andChangeType:(unint64_t)a4
+- (NRDevicePropertyDiffType)initWithDiff:(id)diff andChangeType:(unint64_t)type
 {
-  v7 = a3;
+  diffCopy = diff;
   v8 = [(NRDevicePropertyDiffType *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_diff, a3);
-    v9->_changeType = a4;
+    objc_storeStrong(&v8->_diff, diff);
+    v9->_changeType = type;
   }
 
   return v9;
 }
 
-- (NRDevicePropertyDiffType)initWithProtobuf:(id)a3
+- (NRDevicePropertyDiffType)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v14.receiver = self;
   v14.super_class = NRDevicePropertyDiffType;
   v5 = [(NRDevicePropertyDiffType *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    if (!v4)
+    if (!protobufCopy)
     {
       v5->_changeType = 0;
       v8 = [NRDevicePropertyDiff alloc];
@@ -42,12 +42,12 @@
       goto LABEL_7;
     }
 
-    if ((v4[6] & 1) == 0)
+    if ((protobufCopy[6] & 1) == 0)
     {
       v5->_changeType = 0;
 LABEL_6:
       v8 = [NRDevicePropertyDiff alloc];
-      v9 = *(v4 + 2);
+      v9 = *(protobufCopy + 2);
 LABEL_7:
       v10 = v9;
       v11 = [(NRDevicePropertyDiff *)v8 initWithProtobuf:v10];
@@ -57,7 +57,7 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v7 = v4[2];
+    v7 = protobufCopy[2];
     v5->_changeType = v7;
     if (v7 != 2)
     {
@@ -73,8 +73,8 @@ LABEL_8:
 - (NRPBDevicePropertyDiffType)protobuf
 {
   v3 = objc_opt_new();
-  v4 = [(NRDevicePropertyDiff *)self->_diff protobuf];
-  [(NRPBDevicePropertyDiffType *)v3 setDiff:v4];
+  protobuf = [(NRDevicePropertyDiff *)self->_diff protobuf];
+  [(NRPBDevicePropertyDiffType *)v3 setDiff:protobuf];
 
   if (v3)
   {
@@ -86,9 +86,9 @@ LABEL_8:
   return v3;
 }
 
-- (NRDevicePropertyDiffType)initWithCoder:(id)a3
+- (NRDevicePropertyDiffType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NRDevicePropertyDiffType;
   v5 = [(NRDevicePropertyDiffType *)&v13 init];
@@ -97,14 +97,14 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (!v6)
   {
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"propertyDiff"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"propertyDiff"];
     diff = v5->_diff;
     v5->_diff = v10;
 
-    v5->_changeType = [v4 decodeIntegerForKey:@"changeType"];
+    v5->_changeType = [coderCopy decodeIntegerForKey:@"changeType"];
 LABEL_5:
     v9 = v5;
     goto LABEL_6;
@@ -118,15 +118,15 @@ LABEL_6:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(NRDevicePropertyDiffType *)self protobuf];
-  v5 = [v6 data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  protobuf = [(NRDevicePropertyDiffType *)self protobuf];
+  data = [protobuf data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NRDevicePropertyDiffType allocWithZone:?]];
   objc_storeStrong(&v4->_diff, self->_diff);
@@ -162,24 +162,24 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v7 = 1;
     goto LABEL_12;
   }
 
-  if (v4)
+  if (equalCopy)
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->_changeType == v5->_changeType)
     {
       diff = self->_diff;

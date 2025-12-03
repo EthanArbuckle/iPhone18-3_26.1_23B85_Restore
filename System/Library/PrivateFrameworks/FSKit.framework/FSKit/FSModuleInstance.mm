@@ -1,28 +1,28 @@
 @interface FSModuleInstance
-+ (id)instanceWithExtensionIdentity:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (FSModuleInstance)initWithExtensionIdentity:(id)a3;
++ (id)instanceWithExtensionIdentity:(id)identity;
+- (BOOL)isEqual:(id)equal;
+- (FSModuleInstance)initWithExtensionIdentity:(id)identity;
 - (NSDictionary)entitlements;
 - (NSDictionary)extensionDictionary;
 - (NSDictionary)sdkDictionary;
 - (NSString)extensionPointIdentifier;
 - (NSURL)containingURL;
-- (id)entitlementNamed:(id)a3 ofClass:(Class)a4;
+- (id)entitlementNamed:(id)named ofClass:(Class)class;
 @end
 
 @implementation FSModuleInstance
 
-- (FSModuleInstance)initWithExtensionIdentity:(id)a3
+- (FSModuleInstance)initWithExtensionIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v13.receiver = self;
   v13.super_class = FSModuleInstance;
   v5 = [(FSModuleInstance *)&v13 init];
   if (v5)
   {
-    v6 = [v4 applicationExtensionRecord];
+    applicationExtensionRecord = [identityCopy applicationExtensionRecord];
     record = v5->_record;
-    v5->_record = v6;
+    v5->_record = applicationExtensionRecord;
 
     v8 = [FSModuleIdentity alloc];
     identity = v5->_identity;
@@ -36,18 +36,18 @@
   return v5;
 }
 
-+ (id)instanceWithExtensionIdentity:(id)a3
++ (id)instanceWithExtensionIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithExtensionIdentity:v4];
+  identityCopy = identity;
+  v5 = [[self alloc] initWithExtensionIdentity:identityCopy];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -57,11 +57,11 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = [(FSModuleInstance *)self identity];
-      v8 = [v7 attributes];
-      v9 = [(FSModuleInstance *)v4 identity];
-      v10 = [v9 attributes];
-      v6 = [v8 isEqual:v10];
+      identity = [(FSModuleInstance *)self identity];
+      attributes = [identity attributes];
+      identity2 = [(FSModuleInstance *)equalCopy identity];
+      attributes2 = [identity2 attributes];
+      v6 = [attributes isEqual:attributes2];
     }
 
     else
@@ -75,68 +75,68 @@
 
 - (NSString)extensionPointIdentifier
 {
-  v2 = [(LSApplicationExtensionRecord *)self->_record extensionPointRecord];
-  v3 = [v2 identifier];
+  extensionPointRecord = [(LSApplicationExtensionRecord *)self->_record extensionPointRecord];
+  identifier = [extensionPointRecord identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSURL)containingURL
 {
-  v2 = [(LSApplicationExtensionRecord *)self->_record containingBundleRecord];
-  v3 = [v2 URL];
+  containingBundleRecord = [(LSApplicationExtensionRecord *)self->_record containingBundleRecord];
+  v3 = [containingBundleRecord URL];
 
   return v3;
 }
 
 - (NSDictionary)sdkDictionary
 {
-  v2 = [(LSApplicationExtensionRecord *)self->_record extensionPointRecord];
-  v3 = [v2 SDKDictionary];
+  extensionPointRecord = [(LSApplicationExtensionRecord *)self->_record extensionPointRecord];
+  sDKDictionary = [extensionPointRecord SDKDictionary];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _expensiveDictionaryRepresentation];
+    _expensiveDictionaryRepresentation = [sDKDictionary _expensiveDictionaryRepresentation];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEC10];
+    _expensiveDictionaryRepresentation = MEMORY[0x277CBEC10];
   }
 
-  return v4;
+  return _expensiveDictionaryRepresentation;
 }
 
 - (NSDictionary)extensionDictionary
 {
-  v2 = [(LSApplicationExtensionRecord *)self->_record infoDictionary];
-  v3 = [v2 objectForKey:@"NSExtension" ofClass:objc_opt_class()];
+  infoDictionary = [(LSApplicationExtensionRecord *)self->_record infoDictionary];
+  v3 = [infoDictionary objectForKey:@"NSExtension" ofClass:objc_opt_class()];
 
   return v3;
 }
 
 - (NSDictionary)entitlements
 {
-  v2 = [(LSApplicationExtensionRecord *)self->_record entitlements];
+  entitlements = [(LSApplicationExtensionRecord *)self->_record entitlements];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 _expensiveDictionaryRepresentation];
+    _expensiveDictionaryRepresentation = [entitlements _expensiveDictionaryRepresentation];
   }
 
   else
   {
-    v3 = MEMORY[0x277CBEC10];
+    _expensiveDictionaryRepresentation = MEMORY[0x277CBEC10];
   }
 
-  return v3;
+  return _expensiveDictionaryRepresentation;
 }
 
-- (id)entitlementNamed:(id)a3 ofClass:(Class)a4
+- (id)entitlementNamed:(id)named ofClass:(Class)class
 {
-  v6 = a3;
-  v7 = [(FSModuleInstance *)self record];
-  v8 = [v7 entitlements];
-  v9 = [v8 objectForKey:v6 ofClass:a4];
+  namedCopy = named;
+  record = [(FSModuleInstance *)self record];
+  entitlements = [record entitlements];
+  v9 = [entitlements objectForKey:namedCopy ofClass:class];
 
   return v9;
 }

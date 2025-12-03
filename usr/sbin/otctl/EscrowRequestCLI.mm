@@ -1,5 +1,5 @@
 @interface EscrowRequestCLI
-- (EscrowRequestCLI)initWithEscrowRequest:(id)a3;
+- (EscrowRequestCLI)initWithEscrowRequest:(id)request;
 - (int)reset;
 - (int)status;
 - (int)storePrerecordsInEscrow;
@@ -10,9 +10,9 @@
 
 - (int)storePrerecordsInEscrow
 {
-  v2 = [(EscrowRequestCLI *)self escrowRequest];
+  escrowRequest = [(EscrowRequestCLI *)self escrowRequest];
   v8 = 0;
-  v3 = [v2 storePrerecordsInEscrow:&v8];
+  v3 = [escrowRequest storePrerecordsInEscrow:&v8];
   v4 = v8;
 
   if (v4)
@@ -34,9 +34,9 @@
 
 - (int)reset
 {
-  v2 = [(EscrowRequestCLI *)self escrowRequest];
+  escrowRequest = [(EscrowRequestCLI *)self escrowRequest];
   v7 = 0;
-  [v2 resetAllRequests:&v7];
+  [escrowRequest resetAllRequests:&v7];
   v3 = v7;
 
   if (v3)
@@ -58,9 +58,9 @@
 
 - (int)status
 {
-  v2 = [(EscrowRequestCLI *)self escrowRequest];
+  escrowRequest = [(EscrowRequestCLI *)self escrowRequest];
   v21 = 0;
-  v3 = [v2 fetchStatuses:&v21];
+  v3 = [escrowRequest fetchStatuses:&v21];
   v4 = v21;
 
   if (v4)
@@ -79,8 +79,8 @@
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v7 = [v3 allKeys];
-      v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      allKeys = [v3 allKeys];
+      v8 = [allKeys countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v8)
       {
         v9 = v8;
@@ -91,17 +91,17 @@
           {
             if (*v18 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(allKeys);
             }
 
             v12 = *(*(&v17 + 1) + 8 * i);
-            v13 = [v12 UTF8String];
+            uTF8String = [v12 UTF8String];
             v14 = [v3 objectForKeyedSubscript:v12];
             v15 = [v14 description];
-            printf("Request %s: %s\n", v13, [v15 UTF8String]);
+            printf("Request %s: %s\n", uTF8String, [v15 UTF8String]);
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+          v9 = [allKeys countByEnumeratingWithState:&v17 objects:v22 count:16];
         }
 
         while (v9);
@@ -121,9 +121,9 @@
 
 - (int)trigger
 {
-  v2 = [(EscrowRequestCLI *)self escrowRequest];
+  escrowRequest = [(EscrowRequestCLI *)self escrowRequest];
   v7 = 0;
-  [v2 triggerEscrowUpdate:@"cli" error:&v7];
+  [escrowRequest triggerEscrowUpdate:@"cli" error:&v7];
   v3 = v7;
 
   if (v3)
@@ -143,16 +143,16 @@
   return v5;
 }
 
-- (EscrowRequestCLI)initWithEscrowRequest:(id)a3
+- (EscrowRequestCLI)initWithEscrowRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = EscrowRequestCLI;
   v6 = [(EscrowRequestCLI *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_escrowRequest, a3);
+    objc_storeStrong(&v6->_escrowRequest, request);
   }
 
   return v7;

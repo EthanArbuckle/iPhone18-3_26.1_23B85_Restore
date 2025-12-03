@@ -1,23 +1,23 @@
 @interface MTLGPUDebugTextureViewPool
-- (MTLGPUDebugTextureViewPool)initWithTextureViewPool:(id)a3 device:(id)a4;
-- (MTLResourceID)copyResourceViewsFromPool:(id)a3 sourceRange:(_NSRange)a4 destinationIndex:(unint64_t)a5;
-- (MTLResourceID)setTextureView:(id)a3 atIndex:(unint64_t)a4;
-- (MTLResourceID)setTextureView:(id)a3 descriptor:(id)a4 atIndex:(unint64_t)a5;
-- (MTLResourceID)setTextureViewFromBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 bytesPerRow:(unint64_t)a6 atIndex:(unint64_t)a7;
+- (MTLGPUDebugTextureViewPool)initWithTextureViewPool:(id)pool device:(id)device;
+- (MTLResourceID)copyResourceViewsFromPool:(id)pool sourceRange:(_NSRange)range destinationIndex:(unint64_t)index;
+- (MTLResourceID)setTextureView:(id)view atIndex:(unint64_t)index;
+- (MTLResourceID)setTextureView:(id)view descriptor:(id)descriptor atIndex:(unint64_t)index;
+- (MTLResourceID)setTextureViewFromBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row atIndex:(unint64_t)index;
 - (id).cxx_construct;
-- (void)copyResourceStatesFromPool:(id)a3 sourceRange:(_NSRange)a4 destinationLocation:(unint64_t)a5;
+- (void)copyResourceStatesFromPool:(id)pool sourceRange:(_NSRange)range destinationLocation:(unint64_t)location;
 - (void)dealloc;
-- (void)setView:(id)a3 resourceID:(unint64_t)a4 type:(unint64_t)a5 index:(unint64_t)a6;
+- (void)setView:(id)view resourceID:(unint64_t)d type:(unint64_t)type index:(unint64_t)index;
 @end
 
 @implementation MTLGPUDebugTextureViewPool
 
-- (MTLGPUDebugTextureViewPool)initWithTextureViewPool:(id)a3 device:(id)a4
+- (MTLGPUDebugTextureViewPool)initWithTextureViewPool:(id)pool device:(id)device
 {
   v10.receiver = self;
   v10.super_class = MTLGPUDebugTextureViewPool;
-  v5 = [(MTLToolsTextureViewPool *)&v10 initWithBaseObject:a3 parent:a4];
-  std::vector<objc_object  {objcproto19MTLGPUDebugViewable}*>::vector[abi:ne200100](&v8, [a3 resourceViewCount]);
+  v5 = [(MTLToolsTextureViewPool *)&v10 initWithBaseObject:pool parent:device];
+  std::vector<objc_object  {objcproto19MTLGPUDebugViewable}*>::vector[abi:ne200100](&v8, [pool resourceViewCount]);
   begin = v5->viewables.__begin_;
   if (begin)
   {
@@ -58,70 +58,70 @@
   [(MTLToolsTextureViewPool *)&v7 dealloc];
 }
 
-- (MTLResourceID)copyResourceViewsFromPool:(id)a3 sourceRange:(_NSRange)a4 destinationIndex:(unint64_t)a5
+- (MTLResourceID)copyResourceViewsFromPool:(id)pool sourceRange:(_NSRange)range destinationIndex:(unint64_t)index
 {
-  v5 = a5;
-  length = a4.length;
-  location = a4.location;
+  indexCopy = index;
+  length = range.length;
+  location = range.location;
   for (v10._impl = [-[MTLToolsObject baseObject](self "baseObject")]; length; --length)
   {
-    -[MTLGPUDebugTextureViewPool setView:resourceID:type:index:](self, "setView:resourceID:type:index:", [a3 getViewableAt:location], -[MTLToolsTextureViewPool baseResourceID](self, "baseResourceID") + v5, TextureTypeTable::getType(&self->super.super._device[3]._integrated, objc_msgSend(a3, "baseResourceID") + location), v5);
-    ++v5;
+    -[MTLGPUDebugTextureViewPool setView:resourceID:type:index:](self, "setView:resourceID:type:index:", [pool getViewableAt:location], -[MTLToolsTextureViewPool baseResourceID](self, "baseResourceID") + indexCopy, TextureTypeTable::getType(&self->super.super._device[3]._integrated, objc_msgSend(pool, "baseResourceID") + location), indexCopy);
+    ++indexCopy;
     ++location;
   }
 
   return v10;
 }
 
-- (void)copyResourceStatesFromPool:(id)a3 sourceRange:(_NSRange)a4 destinationLocation:(unint64_t)a5
+- (void)copyResourceStatesFromPool:(id)pool sourceRange:(_NSRange)range destinationLocation:(unint64_t)location
 {
-  v5 = a5;
-  length = a4.length;
-  location = a4.location;
+  locationCopy = location;
+  length = range.length;
+  location = range.location;
   [-[MTLToolsObject baseObject](self "baseObject")];
   for (; length; --length)
   {
-    -[MTLGPUDebugTextureViewPool setView:resourceID:type:index:](self, "setView:resourceID:type:index:", [a3 getViewableAt:location], -[MTLToolsTextureViewPool baseResourceID](self, "baseResourceID") + v5, TextureTypeTable::getType(&self->super.super._device[3]._integrated, objc_msgSend(a3, "baseResourceID") + location), v5);
-    ++v5;
+    -[MTLGPUDebugTextureViewPool setView:resourceID:type:index:](self, "setView:resourceID:type:index:", [pool getViewableAt:location], -[MTLToolsTextureViewPool baseResourceID](self, "baseResourceID") + locationCopy, TextureTypeTable::getType(&self->super.super._device[3]._integrated, objc_msgSend(pool, "baseResourceID") + location), locationCopy);
+    ++locationCopy;
     ++location;
   }
 }
 
-- (void)setView:(id)a3 resourceID:(unint64_t)a4 type:(unint64_t)a5 index:(unint64_t)a6
+- (void)setView:(id)view resourceID:(unint64_t)d type:(unint64_t)type index:(unint64_t)index
 {
   begin = self->viewables.__begin_;
-  v12 = begin[a6];
+  v12 = begin[index];
   if (v12)
   {
-    [(__end_ *)v12 removeView:a4];
+    [(__end_ *)v12 removeView:d];
     begin = self->viewables.__begin_;
   }
 
-  begin[a6] = a3;
-  [a3 addView:a4];
+  begin[index] = view;
+  [view addView:d];
   p_integrated = &self->super.super._device[3]._integrated;
 
-  TextureTypeTable::setType(p_integrated, a4, a5);
+  TextureTypeTable::setType(p_integrated, d, type);
 }
 
-- (MTLResourceID)setTextureView:(id)a3 descriptor:(id)a4 atIndex:(unint64_t)a5
+- (MTLResourceID)setTextureView:(id)view descriptor:(id)descriptor atIndex:(unint64_t)index
 {
   v9._impl = [-[MTLToolsObject baseObject](self "baseObject")];
-  -[MTLGPUDebugTextureViewPool setView:resourceID:type:index:](self, "setView:resourceID:type:index:", a3, v9._impl, [a4 textureType], a5);
+  -[MTLGPUDebugTextureViewPool setView:resourceID:type:index:](self, "setView:resourceID:type:index:", view, v9._impl, [descriptor textureType], index);
   return v9;
 }
 
-- (MTLResourceID)setTextureViewFromBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 bytesPerRow:(unint64_t)a6 atIndex:(unint64_t)a7
+- (MTLResourceID)setTextureViewFromBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row atIndex:(unint64_t)index
 {
   v11._impl = [-[MTLToolsObject baseObject](self "baseObject")];
-  -[MTLGPUDebugTextureViewPool setView:resourceID:type:index:](self, "setView:resourceID:type:index:", a3, v11._impl, [a4 textureType], a7);
+  -[MTLGPUDebugTextureViewPool setView:resourceID:type:index:](self, "setView:resourceID:type:index:", buffer, v11._impl, [descriptor textureType], index);
   return v11;
 }
 
-- (MTLResourceID)setTextureView:(id)a3 atIndex:(unint64_t)a4
+- (MTLResourceID)setTextureView:(id)view atIndex:(unint64_t)index
 {
   v7._impl = [-[MTLToolsObject baseObject](self "baseObject")];
-  -[MTLGPUDebugTextureViewPool setView:resourceID:type:index:](self, "setView:resourceID:type:index:", a3, v7._impl, [a3 textureType], a4);
+  -[MTLGPUDebugTextureViewPool setView:resourceID:type:index:](self, "setView:resourceID:type:index:", view, v7._impl, [view textureType], index);
   return v7;
 }
 

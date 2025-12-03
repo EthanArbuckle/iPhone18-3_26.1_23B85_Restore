@@ -1,14 +1,14 @@
 @interface LSRecordBuilder
-+ (id)recordBuilderForType:(unint64_t)a3;
++ (id)recordBuilderForType:(unint64_t)type;
 @end
 
 @implementation LSRecordBuilder
 
-+ (id)recordBuilderForType:(unint64_t)a3
++ (id)recordBuilderForType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 - 1 < 2)
+    if (type - 1 < 2)
     {
       abort();
     }
@@ -16,10 +16,10 @@
 
   else
   {
-    a1 = objc_alloc_init(LSBundleRecordBuilder);
+    self = objc_alloc_init(LSBundleRecordBuilder);
   }
 
-  return a1;
+  return self;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface FCChannelMembershipController
-- (FCChannelMembershipController)initWithChannelMembershipRecordSource:(id)a3;
-- (id)cachedChannelMembershipsForIDs:(id)a3;
-- (id)channelMembershipsFromHeldRecords:(id)a3;
-- (void)fetchChannelMembershipsForIDs:(id)a3 maximumCachedAge:(double)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
+- (FCChannelMembershipController)initWithChannelMembershipRecordSource:(id)source;
+- (id)cachedChannelMembershipsForIDs:(id)ds;
+- (id)channelMembershipsFromHeldRecords:(id)records;
+- (void)fetchChannelMembershipsForIDs:(id)ds maximumCachedAge:(double)age callbackQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation FCChannelMembershipController
 
-- (FCChannelMembershipController)initWithChannelMembershipRecordSource:(id)a3
+- (FCChannelMembershipController)initWithChannelMembershipRecordSource:(id)source
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  sourceCopy = source;
+  if (!sourceCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "recordSource"];
     *buf = 136315906;
@@ -31,9 +31,9 @@
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (sourceCopy)
     {
-      objc_storeStrong(&v6->_recordSource, a3);
+      objc_storeStrong(&v6->_recordSource, source);
     }
 
     else
@@ -47,13 +47,13 @@
   return v7;
 }
 
-- (void)fetchChannelMembershipsForIDs:(id)a3 maximumCachedAge:(double)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (void)fetchChannelMembershipsForIDs:(id)ds maximumCachedAge:(double)age callbackQueue:(id)queue completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "channelMembershipIDs != nil"];
     *buf = 136315906;
@@ -66,13 +66,13 @@
     v35 = v21;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v10)
+    if (queueCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (queueCopy)
   {
     goto LABEL_6;
   }
@@ -92,38 +92,38 @@
   }
 
 LABEL_6:
-  if (v11)
+  if (handlerCopy)
   {
-    if (v9 && v10)
+    if (dsCopy && queueCopy)
     {
-      if ([v9 count])
+      if ([dsCopy count])
       {
-        v12 = [(FCChannelMembershipController *)self recordSource];
-        v13 = [v12 fetchOperationForRecordsWithIDs:v9];
+        recordSource = [(FCChannelMembershipController *)self recordSource];
+        v13 = [recordSource fetchOperationForRecordsWithIDs:dsCopy];
 
         [v13 setQualityOfService:9];
         [v13 setCachePolicy:1];
-        [v13 setFetchCompletionQueue:v10];
+        [v13 setFetchCompletionQueue:queueCopy];
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __112__FCChannelMembershipController_fetchChannelMembershipsForIDs_maximumCachedAge_callbackQueue_completionHandler___block_invoke;
         v25[3] = &unk_1E7C37CB0;
         v25[4] = self;
-        v26 = v9;
-        v27 = v11;
+        v26 = dsCopy;
+        v27 = handlerCopy;
         [v13 setFetchCompletionBlock:v25];
         v14 = FCChannelMembershipLog;
         if (os_log_type_enabled(FCChannelMembershipLog, OS_LOG_TYPE_DEFAULT))
         {
           v15 = v14;
-          v16 = [v13 shortOperationDescription];
+          shortOperationDescription = [v13 shortOperationDescription];
           *buf = 138543362;
-          v29 = v16;
+          v29 = shortOperationDescription;
           _os_log_impl(&dword_1B63EF000, v15, OS_LOG_TYPE_DEFAULT, "refreshing channel memberships, operation=%{public}@", buf, 0xCu);
         }
 
-        v17 = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
-        [v17 addOperation:v13];
+        fc_sharedConcurrentQueue = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
+        [fc_sharedConcurrentQueue addOperation:v13];
       }
 
       else
@@ -139,8 +139,8 @@ LABEL_6:
         block[1] = 3221225472;
         block[2] = __112__FCChannelMembershipController_fetchChannelMembershipsForIDs_maximumCachedAge_callbackQueue_completionHandler___block_invoke_9;
         block[3] = &unk_1E7C379C8;
-        v24 = v11;
-        dispatch_async(v10, block);
+        v24 = handlerCopy;
+        dispatch_async(queueCopy, block);
       }
     }
   }
@@ -201,18 +201,18 @@ void __112__FCChannelMembershipController_fetchChannelMembershipsForIDs_maximumC
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)channelMembershipsFromHeldRecords:(id)a3
+- (id)channelMembershipsFromHeldRecords:(id)records
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  recordsCopy = records;
+  dictionary = [v3 dictionary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__FCChannelMembershipController_channelMembershipsFromHeldRecords___block_invoke;
   v8[3] = &unk_1E7C38AD0;
-  v6 = v5;
+  v6 = dictionary;
   v9 = v6;
-  [v4 enumerateRecordsAndInterestTokensWithBlock:v8];
+  [recordsCopy enumerateRecordsAndInterestTokensWithBlock:v8];
 
   return v6;
 }
@@ -239,13 +239,13 @@ void __67__FCChannelMembershipController_channelMembershipsFromHeldRecords___blo
   }
 }
 
-- (id)cachedChannelMembershipsForIDs:(id)a3
+- (id)cachedChannelMembershipsForIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v5 = [(FCChannelMembershipController *)self recordSource];
-    v6 = [v5 cachedRecordsWithIDs:v4];
+    recordSource = [(FCChannelMembershipController *)self recordSource];
+    v6 = [recordSource cachedRecordsWithIDs:dsCopy];
 
     v7 = [(FCChannelMembershipController *)self channelMembershipsFromHeldRecords:v6];
   }

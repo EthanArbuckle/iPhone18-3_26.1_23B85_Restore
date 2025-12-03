@@ -1,17 +1,17 @@
 @interface JavaUtilFormatter
 + (void)initialize;
 - (JavaUtilFormatter)init;
-- (JavaUtilFormatter)initWithJavaIoFile:(id)a3;
-- (JavaUtilFormatter)initWithJavaIoFile:(id)a3 withNSString:(id)a4;
-- (JavaUtilFormatter)initWithJavaIoOutputStream:(id)a3 withNSString:(id)a4;
-- (JavaUtilFormatter)initWithJavaLangAppendable:(id)a3;
-- (JavaUtilFormatter)initWithJavaUtilLocale:(id)a3;
-- (JavaUtilFormatter)initWithNSString:(id)a3 withNSString:(id)a4 withJavaUtilLocale:(id)a5;
+- (JavaUtilFormatter)initWithJavaIoFile:(id)file;
+- (JavaUtilFormatter)initWithJavaIoFile:(id)file withNSString:(id)string;
+- (JavaUtilFormatter)initWithJavaIoOutputStream:(id)stream withNSString:(id)string;
+- (JavaUtilFormatter)initWithJavaLangAppendable:(id)appendable;
+- (JavaUtilFormatter)initWithJavaUtilLocale:(id)locale;
+- (JavaUtilFormatter)initWithNSString:(id)string withNSString:(id)sString withJavaUtilLocale:(id)locale;
 - (NSString)description;
-- (id)formatWithJavaUtilLocale:(id)a3 withNSString:(id)a4 withNSObjectArray:(id)a5;
-- (id)getDecimalFormatWithNSString:(id)a3;
+- (id)formatWithJavaUtilLocale:(id)locale withNSString:(id)string withNSObjectArray:(id)array;
+- (id)getDecimalFormatWithNSString:(id)string;
 - (id)transformFromNull;
-- (int)to12HourWithInt:(int)a3;
+- (int)to12HourWithInt:(int)int;
 - (void)close;
 - (void)dealloc;
 - (void)flush;
@@ -19,7 +19,7 @@
 
 @implementation JavaUtilFormatter
 
-- (id)getDecimalFormatWithNSString:(id)a3
+- (id)getDecimalFormatWithNSString:(id)string
 {
   if (!qword_100554910 || (v5 = [qword_100554910 get]) == 0)
   {
@@ -28,7 +28,7 @@
 
   localeData = self->localeData_;
 
-  return [v5 updateWithLibcoreIcuLocaleData:localeData withNSString:a3];
+  return [v5 updateWithLibcoreIcuLocaleData:localeData withNSString:string];
 }
 
 - (JavaUtilFormatter)init
@@ -39,45 +39,45 @@
   return self;
 }
 
-- (JavaUtilFormatter)initWithJavaLangAppendable:(id)a3
+- (JavaUtilFormatter)initWithJavaLangAppendable:(id)appendable
 {
   Default = JavaUtilLocale_getDefault();
-  JavaUtilFormatter_initWithJavaLangAppendable_withJavaUtilLocale_(self, a3, Default);
+  JavaUtilFormatter_initWithJavaLangAppendable_withJavaUtilLocale_(self, appendable, Default);
   return self;
 }
 
-- (JavaUtilFormatter)initWithJavaUtilLocale:(id)a3
+- (JavaUtilFormatter)initWithJavaUtilLocale:(id)locale
 {
   v5 = new_JavaLangStringBuilder_init();
-  JavaUtilFormatter_initWithJavaLangAppendable_withJavaUtilLocale_(self, v5, a3);
+  JavaUtilFormatter_initWithJavaLangAppendable_withJavaUtilLocale_(self, v5, locale);
   return self;
 }
 
-- (JavaUtilFormatter)initWithNSString:(id)a3 withNSString:(id)a4 withJavaUtilLocale:(id)a5
+- (JavaUtilFormatter)initWithNSString:(id)string withNSString:(id)sString withJavaUtilLocale:(id)locale
 {
-  v8 = new_JavaIoFile_initWithNSString_(a3);
-  JavaUtilFormatter_initWithJavaIoFile_withNSString_withJavaUtilLocale_(self, v8, a4, a5);
+  v8 = new_JavaIoFile_initWithNSString_(string);
+  JavaUtilFormatter_initWithJavaIoFile_withNSString_withJavaUtilLocale_(self, v8, sString, locale);
   return self;
 }
 
-- (JavaUtilFormatter)initWithJavaIoFile:(id)a3
+- (JavaUtilFormatter)initWithJavaIoFile:(id)file
 {
-  v4 = new_JavaIoFileOutputStream_initWithJavaIoFile_(a3);
+  v4 = new_JavaIoFileOutputStream_initWithJavaIoFile_(file);
   JavaUtilFormatter_initWithJavaIoOutputStream_(self, v4);
   return self;
 }
 
-- (JavaUtilFormatter)initWithJavaIoFile:(id)a3 withNSString:(id)a4
+- (JavaUtilFormatter)initWithJavaIoFile:(id)file withNSString:(id)string
 {
   Default = JavaUtilLocale_getDefault();
-  JavaUtilFormatter_initWithJavaIoFile_withNSString_withJavaUtilLocale_(self, a3, a4, Default);
+  JavaUtilFormatter_initWithJavaIoFile_withNSString_withJavaUtilLocale_(self, file, string, Default);
   return self;
 }
 
-- (JavaUtilFormatter)initWithJavaIoOutputStream:(id)a3 withNSString:(id)a4
+- (JavaUtilFormatter)initWithJavaIoOutputStream:(id)stream withNSString:(id)string
 {
   Default = JavaUtilLocale_getDefault();
-  JavaUtilFormatter_initWithJavaIoOutputStream_withNSString_withJavaUtilLocale_(self, a3, a4, Default);
+  JavaUtilFormatter_initWithJavaIoOutputStream_withNSString_withJavaUtilLocale_(self, stream, string, Default);
   return self;
 }
 
@@ -138,25 +138,25 @@
   }
 }
 
-- (id)formatWithJavaUtilLocale:(id)a3 withNSString:(id)a4 withNSObjectArray:(id)a5
+- (id)formatWithJavaUtilLocale:(id)locale withNSString:(id)string withNSObjectArray:(id)array
 {
-  v7 = a3;
+  localeCopy = locale;
   p_locale = &self->locale_;
   locale = self->locale_;
-  if (!a3)
+  if (!locale)
   {
     if ((atomic_load_explicit(JavaUtilLocale__initialized, memory_order_acquire) & 1) == 0)
     {
       objc_opt_class();
     }
 
-    v7 = JavaUtilLocale_US_;
+    localeCopy = JavaUtilLocale_US_;
   }
 
-  JreStrongAssign(p_locale, v7);
+  JreStrongAssign(p_locale, localeCopy);
   v11 = LibcoreIcuLocaleData_getWithJavaUtilLocale_(*p_locale);
   JreStrongAssign(&self->localeData_, v11);
-  sub_100143280(self, a4, a5);
+  sub_100143280(self, string, array);
   JreStrongAssign(p_locale, locale);
   return self;
 }
@@ -174,11 +174,11 @@
   return sub_100144084(self, @"null", 0);
 }
 
-- (int)to12HourWithInt:(int)a3
+- (int)to12HourWithInt:(int)int
 {
-  if (a3)
+  if (int)
   {
-    return a3;
+    return int;
   }
 
   else
@@ -196,7 +196,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v4 = 48;
     v3 = *L"000000000";

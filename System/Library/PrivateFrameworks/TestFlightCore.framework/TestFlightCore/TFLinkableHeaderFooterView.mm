@@ -1,22 +1,22 @@
 @interface TFLinkableHeaderFooterView
-+ (CGSize)itemSizeWithText:(id)a3 isHeader:(BOOL)a4 fittingSize:(CGSize)a5 inTraitEnvironment:(id)a6;
-+ (double)_heightForTextViewWithText:(id)a3 font:(id)a4 isHeader:(BOOL)a5 fittingWidth:(double)a6 inTraitEnvironment:(id)a7;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TFLinkableHeaderFooterView)initWithReuseIdentifier:(id)a3;
-- (void)_prepareForDisplayWithTraitCollection:(id)a3;
-- (void)_updateTextViewWithLinkMap:(id)a3;
-- (void)applyText:(id)a3 withTextLinkMap:(id)a4 isHeader:(BOOL)a5;
++ (CGSize)itemSizeWithText:(id)text isHeader:(BOOL)header fittingSize:(CGSize)size inTraitEnvironment:(id)environment;
++ (double)_heightForTextViewWithText:(id)text font:(id)font isHeader:(BOOL)header fittingWidth:(double)width inTraitEnvironment:(id)environment;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TFLinkableHeaderFooterView)initWithReuseIdentifier:(id)identifier;
+- (void)_prepareForDisplayWithTraitCollection:(id)collection;
+- (void)_updateTextViewWithLinkMap:(id)map;
+- (void)applyText:(id)text withTextLinkMap:(id)map isHeader:(BOOL)header;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TFLinkableHeaderFooterView
 
-- (TFLinkableHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (TFLinkableHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
   v19.receiver = self;
   v19.super_class = TFLinkableHeaderFooterView;
-  v3 = [(TFLinkableHeaderFooterView *)&v19 initWithReuseIdentifier:a3];
+  v3 = [(TFLinkableHeaderFooterView *)&v19 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75C40]);
@@ -26,35 +26,35 @@
 
     [(UITextView *)v3->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
     v7 = v3->_textView;
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(UITextView *)v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UITextView *)v7 setBackgroundColor:clearColor];
 
     [(UITextView *)v3->_textView setEditable:0];
     [(UITextView *)v3->_textView setSelectable:1];
     [(UITextView *)v3->_textView setScrollEnabled:0];
     [(UITextView *)v3->_textView setTextContainerInset:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
-    v9 = [(UITextView *)v3->_textView textContainer];
-    [v9 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)v3->_textView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     [(UITextView *)v3->_textView setInsetsLayoutMarginsFromSafeArea:0];
-    v10 = [(UITextView *)v3->_textView textContainer];
-    [v10 setLineBreakMode:0];
+    textContainer2 = [(UITextView *)v3->_textView textContainer];
+    [textContainer2 setLineBreakMode:0];
 
     v11 = v3->_textView;
     v12 = +[TFLinkableHeaderFooterViewSpecification textViewFontColor];
     [(UITextView *)v11 setTextColor:v12];
 
     v13 = v3->_textView;
-    v14 = [(TFLinkableHeaderFooterView *)v3 traitCollection];
-    v15 = [TFLinkableHeaderFooterViewSpecification createTextViewFontForTraitCollection:v14];
+    traitCollection = [(TFLinkableHeaderFooterView *)v3 traitCollection];
+    v15 = [TFLinkableHeaderFooterViewSpecification createTextViewFontForTraitCollection:traitCollection];
     [(UITextView *)v13 setFont:v15];
 
     [(UITextView *)v3->_textView _setInteractiveTextSelectionDisabled:1];
-    v16 = [(UITextView *)v3->_textView textDragInteraction];
-    [v16 setEnabled:0];
+    textDragInteraction = [(UITextView *)v3->_textView textDragInteraction];
+    [textDragInteraction setEnabled:0];
 
-    v17 = [(TFLinkableHeaderFooterView *)v3 contentView];
-    [v17 addSubview:v3->_textView];
+    contentView = [(TFLinkableHeaderFooterView *)v3 contentView];
+    [contentView addSubview:v3->_textView];
   }
 
   return v3;
@@ -70,21 +70,21 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TFLinkableHeaderFooterView *)self contentView];
-  [v11 bounds];
+  contentView = [(TFLinkableHeaderFooterView *)self contentView];
+  [contentView bounds];
   v13 = v6 + v12;
   v15 = v4 + v14;
   v17 = v16 - (v6 + v10);
   v19 = v18 - (v4 + v8);
 
-  v20 = [(TFLinkableHeaderFooterView *)self textView];
-  v21 = [v20 font];
+  textView = [(TFLinkableHeaderFooterView *)self textView];
+  font = [textView font];
   [TFLinkableHeaderFooterViewSpecification topPaddingFromFirstBaselineForShowingHeader:[(TFLinkableHeaderFooterView *)self isHeader]];
-  [v21 _scaledValueForValue:?];
+  [font _scaledValueForValue:?];
   v23 = v22;
 
-  v24 = [(TFLinkableHeaderFooterView *)self textView];
-  [v24 tf_estimatedFirstBaseline];
+  textView2 = [(TFLinkableHeaderFooterView *)self textView];
+  [textView2 tf_estimatedFirstBaseline];
   v26 = v25;
 
   v35.origin.x = v13;
@@ -92,8 +92,8 @@
   v35.size.width = v17;
   v35.size.height = v19;
   v27 = v23 - v26 + CGRectGetMinY(v35);
-  v28 = [(TFLinkableHeaderFooterView *)self textView];
-  [v28 sizeThatFits:{v17, v19}];
+  textView3 = [(TFLinkableHeaderFooterView *)self textView];
+  [textView3 sizeThatFits:{v17, v19}];
   v30 = v29;
 
   v36.origin.x = v13;
@@ -106,17 +106,17 @@
   v37.size.width = v17;
   v37.size.height = v19;
   Width = CGRectGetWidth(v37);
-  v33 = [(TFLinkableHeaderFooterView *)self textView];
-  [v33 setFrame:{MinX, v27, Width, v30}];
+  textView4 = [(TFLinkableHeaderFooterView *)self textView];
+  [textView4 setFrame:{MinX, v27, Width, v30}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TFLinkableHeaderFooterView *)self textView];
-  v7 = [v6 text];
-  [TFLinkableHeaderFooterView itemSizeWithText:v7 isHeader:[(TFLinkableHeaderFooterView *)self isHeader] fittingSize:self inTraitEnvironment:width, height];
+  height = fits.height;
+  width = fits.width;
+  textView = [(TFLinkableHeaderFooterView *)self textView];
+  text = [textView text];
+  [TFLinkableHeaderFooterView itemSizeWithText:text isHeader:[(TFLinkableHeaderFooterView *)self isHeader] fittingSize:self inTraitEnvironment:width, height];
   v9 = v8;
   v11 = v10;
 
@@ -127,49 +127,49 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = TFLinkableHeaderFooterView;
-  [(TFLinkableHeaderFooterView *)&v5 traitCollectionDidChange:a3];
-  v4 = [(TFLinkableHeaderFooterView *)self traitCollection];
-  [(TFLinkableHeaderFooterView *)self _prepareForDisplayWithTraitCollection:v4];
+  [(TFLinkableHeaderFooterView *)&v5 traitCollectionDidChange:change];
+  traitCollection = [(TFLinkableHeaderFooterView *)self traitCollection];
+  [(TFLinkableHeaderFooterView *)self _prepareForDisplayWithTraitCollection:traitCollection];
 
   [(TFLinkableHeaderFooterView *)self setNeedsLayout];
 }
 
-- (void)applyText:(id)a3 withTextLinkMap:(id)a4 isHeader:(BOOL)a5
+- (void)applyText:(id)text withTextLinkMap:(id)map isHeader:(BOOL)header
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TFLinkableHeaderFooterView *)self textView];
-  [v10 setText:v9];
+  headerCopy = header;
+  mapCopy = map;
+  textCopy = text;
+  textView = [(TFLinkableHeaderFooterView *)self textView];
+  [textView setText:textCopy];
 
-  [(TFLinkableHeaderFooterView *)self _updateTextViewWithLinkMap:v8];
-  [(TFLinkableHeaderFooterView *)self setIsHeader:v5];
+  [(TFLinkableHeaderFooterView *)self _updateTextViewWithLinkMap:mapCopy];
+  [(TFLinkableHeaderFooterView *)self setIsHeader:headerCopy];
 
   [(TFLinkableHeaderFooterView *)self setNeedsLayout];
 }
 
-+ (CGSize)itemSizeWithText:(id)a3 isHeader:(BOOL)a4 fittingSize:(CGSize)a5 inTraitEnvironment:(id)a6
++ (CGSize)itemSizeWithText:(id)text isHeader:(BOOL)header fittingSize:(CGSize)size inTraitEnvironment:(id)environment
 {
-  width = a5.width;
-  v7 = a4;
-  v10 = a6;
-  v11 = a3;
-  [TFFeedbackFormViewSpecification formCellInsetsInTraitEnvironment:v10];
+  width = size.width;
+  headerCopy = header;
+  environmentCopy = environment;
+  textCopy = text;
+  [TFFeedbackFormViewSpecification formCellInsetsInTraitEnvironment:environmentCopy];
   v14 = width - v12 - v13;
-  v15 = [v10 traitCollection];
-  v16 = [TFLinkableHeaderFooterViewSpecification createTextViewFontForTraitCollection:v15];
+  traitCollection = [environmentCopy traitCollection];
+  v16 = [TFLinkableHeaderFooterViewSpecification createTextViewFontForTraitCollection:traitCollection];
 
-  [a1 _heightForTextViewWithText:v11 font:v16 isHeader:v7 fittingWidth:v10 inTraitEnvironment:v14];
+  [self _heightForTextViewWithText:textCopy font:v16 isHeader:headerCopy fittingWidth:environmentCopy inTraitEnvironment:v14];
   v18 = v17;
 
-  [TFLinkableHeaderFooterViewSpecification topPaddingFromFirstBaselineForShowingHeader:v7];
+  [TFLinkableHeaderFooterViewSpecification topPaddingFromFirstBaselineForShowingHeader:headerCopy];
   [v16 _scaledValueForValue:?];
   v20 = v19;
-  [TFLinkableHeaderFooterViewSpecification bottomPaddingForShowingHeader:v7];
+  [TFLinkableHeaderFooterViewSpecification bottomPaddingForShowingHeader:headerCopy];
   [v16 _scaledValueForValue:?];
   v22 = v21;
   [v16 tf_estimatedFirstBaseline];
@@ -182,17 +182,17 @@
   return result;
 }
 
-+ (double)_heightForTextViewWithText:(id)a3 font:(id)a4 isHeader:(BOOL)a5 fittingWidth:(double)a6 inTraitEnvironment:(id)a7
++ (double)_heightForTextViewWithText:(id)text font:(id)font isHeader:(BOOL)header fittingWidth:(double)width inTraitEnvironment:(id)environment
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v22 = *MEMORY[0x277D740A8];
-  v23[0] = a4;
+  v23[0] = font;
   v9 = MEMORY[0x277CBEAC0];
-  v10 = a4;
-  v11 = a3;
+  fontCopy = font;
+  textCopy = text;
   v12 = [v9 dictionaryWithObjects:v23 forKeys:&v22 count:1];
 
-  [v11 boundingRectWithSize:3 options:v12 attributes:0 context:{a6, 1.79769313e308}];
+  [textCopy boundingRectWithSize:3 options:v12 attributes:0 context:{width, 1.79769313e308}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -205,38 +205,38 @@
   return CGRectGetHeight(v24);
 }
 
-- (void)_updateTextViewWithLinkMap:(id)a3
+- (void)_updateTextViewWithLinkMap:(id)map
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  mapCopy = map;
+  if (mapCopy)
   {
-    v5 = [(TFLinkableHeaderFooterView *)self textView];
-    v6 = [v5 text];
+    textView = [(TFLinkableHeaderFooterView *)self textView];
+    text = [textView text];
 
-    if (v6)
+    if (text)
     {
       v33[0] = *MEMORY[0x277D740A8];
-      v7 = [(TFLinkableHeaderFooterView *)self textView];
-      v8 = [v7 font];
-      v34[0] = v8;
+      textView2 = [(TFLinkableHeaderFooterView *)self textView];
+      font = [textView2 font];
+      v34[0] = font;
       v33[1] = *MEMORY[0x277D740C0];
-      v9 = [(TFLinkableHeaderFooterView *)self textView];
-      v10 = [v9 textColor];
-      v34[1] = v10;
+      textView3 = [(TFLinkableHeaderFooterView *)self textView];
+      textColor = [textView3 textColor];
+      v34[1] = textColor;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
 
       v12 = objc_alloc(MEMORY[0x277CCAB48]);
-      v13 = [(TFLinkableHeaderFooterView *)self textView];
-      v14 = [v13 text];
+      textView4 = [(TFLinkableHeaderFooterView *)self textView];
+      text2 = [textView4 text];
       v27 = v11;
-      v15 = [v12 initWithString:v14 attributes:v11];
+      v15 = [v12 initWithString:text2 attributes:v11];
 
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v16 = v4;
+      v16 = mapCopy;
       v17 = [v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v17)
       {
@@ -254,8 +254,8 @@
 
             v22 = *(*(&v28 + 1) + 8 * i);
             v23 = [v16 objectForKeyedSubscript:v22];
-            v24 = [v22 rangeValue];
-            [v15 addAttribute:v20 value:v23 range:{v24, v25}];
+            rangeValue = [v22 rangeValue];
+            [v15 addAttribute:v20 value:v23 range:{rangeValue, v25}];
           }
 
           v18 = [v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -264,21 +264,21 @@
         while (v18);
       }
 
-      v26 = [(TFLinkableHeaderFooterView *)self textView];
-      [v26 setAttributedText:v15];
+      textView5 = [(TFLinkableHeaderFooterView *)self textView];
+      [textView5 setAttributedText:v15];
 
       [(TFLinkableHeaderFooterView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)_prepareForDisplayWithTraitCollection:(id)a3
+- (void)_prepareForDisplayWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v6 = [(TFLinkableHeaderFooterView *)self textView];
-  v5 = [TFLinkableHeaderFooterViewSpecification createTextViewFontForTraitCollection:v4];
+  collectionCopy = collection;
+  textView = [(TFLinkableHeaderFooterView *)self textView];
+  v5 = [TFLinkableHeaderFooterViewSpecification createTextViewFontForTraitCollection:collectionCopy];
 
-  [v6 setFont:v5];
+  [textView setFont:v5];
 }
 
 @end

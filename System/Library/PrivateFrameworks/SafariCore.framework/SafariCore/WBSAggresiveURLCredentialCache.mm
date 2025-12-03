@@ -1,17 +1,17 @@
 @interface WBSAggresiveURLCredentialCache
-- (WBSAggresiveURLCredentialCache)initWithCredentialFetchBlock:(id)a3;
+- (WBSAggresiveURLCredentialCache)initWithCredentialFetchBlock:(id)block;
 - (id)credentials;
-- (void)getCredentialsWithCompletionHandler:(id)a3;
+- (void)getCredentialsWithCompletionHandler:(id)handler;
 - (void)invalidate;
 @end
 
 @implementation WBSAggresiveURLCredentialCache
 
-- (WBSAggresiveURLCredentialCache)initWithCredentialFetchBlock:(id)a3
+- (WBSAggresiveURLCredentialCache)initWithCredentialFetchBlock:(id)block
 {
   v7.receiver = self;
   v7.super_class = WBSAggresiveURLCredentialCache;
-  v3 = [(WBSURLCredentialCache *)&v7 initWithCredentialFetchBlock:a3];
+  v3 = [(WBSURLCredentialCache *)&v7 initWithCredentialFetchBlock:block];
   v4 = v3;
   if (v3)
   {
@@ -29,7 +29,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B8447000, v3, OS_LOG_TYPE_INFO, "Invalidating aggressive credential cache <%p>", buf, 0xCu);
   }
 
@@ -97,17 +97,17 @@ void __45__WBSAggresiveURLCredentialCache_credentials__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getCredentialsWithCompletionHandler:(id)a3
+- (void)getCredentialsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internalQueue = self->super._internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__WBSAggresiveURLCredentialCache_getCredentialsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF16B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(internalQueue, v7);
 }
 

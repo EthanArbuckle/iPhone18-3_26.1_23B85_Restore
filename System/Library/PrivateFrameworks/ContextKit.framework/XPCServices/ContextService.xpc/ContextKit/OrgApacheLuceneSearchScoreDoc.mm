@@ -1,24 +1,24 @@
 @interface OrgApacheLuceneSearchScoreDoc
-- (OrgApacheLuceneSearchScoreDoc)initWithInt:(int)a3 withFloat:(float)a4;
-- (OrgApacheLuceneSearchScoreDoc)initWithInt:(int)a3 withFloat:(float)a4 withInt:(int)a5;
+- (OrgApacheLuceneSearchScoreDoc)initWithInt:(int)int withFloat:(float)float;
+- (OrgApacheLuceneSearchScoreDoc)initWithInt:(int)int withFloat:(float)float withInt:(int)withInt;
 - (id)description;
 @end
 
 @implementation OrgApacheLuceneSearchScoreDoc
 
-- (OrgApacheLuceneSearchScoreDoc)initWithInt:(int)a3 withFloat:(float)a4
+- (OrgApacheLuceneSearchScoreDoc)initWithInt:(int)int withFloat:(float)float
 {
-  self->score_ = a4;
-  self->doc_ = a3;
+  self->score_ = float;
+  self->doc_ = int;
   self->shardIndex_ = -1;
   return self;
 }
 
-- (OrgApacheLuceneSearchScoreDoc)initWithInt:(int)a3 withFloat:(float)a4 withInt:(int)a5
+- (OrgApacheLuceneSearchScoreDoc)initWithInt:(int)int withFloat:(float)float withInt:(int)withInt
 {
-  self->score_ = a4;
-  self->doc_ = a3;
-  self->shardIndex_ = a5;
+  self->score_ = float;
+  self->doc_ = int;
+  self->shardIndex_ = withInt;
   return self;
 }
 

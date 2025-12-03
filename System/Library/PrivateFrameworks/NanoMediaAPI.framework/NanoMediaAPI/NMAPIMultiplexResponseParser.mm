@@ -1,23 +1,23 @@
 @interface NMAPIMultiplexResponseParser
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4;
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation NMAPIMultiplexResponseParser
 
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEB18];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = objc_alloc_init(v5);
-  v8 = [v6 valueForKeyPath:@"results.target"];
+  v8 = [dictionaryCopy valueForKeyPath:@"results.target"];
 
-  v9 = NMAPIDictionaryWithObject(v8, @"target", a4);
+  v9 = NMAPIDictionaryWithObject(v8, @"target", error);
 
   if (v9)
   {
     v10 = [v9 objectForKey:@"type"];
-    v11 = NMAPIStringWithObject(v10, @"type", a4);
+    v11 = NMAPIStringWithObject(v10, @"type", error);
 
     if (v11)
     {

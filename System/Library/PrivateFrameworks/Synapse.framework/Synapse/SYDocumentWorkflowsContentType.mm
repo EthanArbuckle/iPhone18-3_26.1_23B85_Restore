@@ -1,25 +1,25 @@
 @interface SYDocumentWorkflowsContentType
-+ (BOOL)isImageContentType:(id)a3;
-+ (BOOL)isMSWordContentType:(id)a3;
-+ (BOOL)isPagesContentType:(id)a3;
++ (BOOL)isImageContentType:(id)type;
++ (BOOL)isMSWordContentType:(id)type;
++ (BOOL)isPagesContentType:(id)type;
 @end
 
 @implementation SYDocumentWorkflowsContentType
 
-+ (BOOL)isPagesContentType:(id)a3
++ (BOOL)isPagesContentType:(id)type
 {
-  v3 = a3;
-  v4 = ![v3 caseInsensitiveCompare:@"com.apple.iwork.pages.pages"] || !objc_msgSend(v3, "caseInsensitiveCompare:", @"com.apple.iwork.pages.sffpages") || !objc_msgSend(v3, "caseInsensitiveCompare:", @"com.apple.iwork.pages.template") || objc_msgSend(v3, "caseInsensitiveCompare:", @"com.apple.iwork.pages.sfftemplate") == 0;
+  typeCopy = type;
+  v4 = ![typeCopy caseInsensitiveCompare:@"com.apple.iwork.pages.pages"] || !objc_msgSend(typeCopy, "caseInsensitiveCompare:", @"com.apple.iwork.pages.sffpages") || !objc_msgSend(typeCopy, "caseInsensitiveCompare:", @"com.apple.iwork.pages.template") || objc_msgSend(typeCopy, "caseInsensitiveCompare:", @"com.apple.iwork.pages.sfftemplate") == 0;
 
   return v4;
 }
 
-+ (BOOL)isMSWordContentType:(id)a3
++ (BOOL)isMSWordContentType:(id)type
 {
-  v3 = a3;
-  if ([v3 caseInsensitiveCompare:@"com.microsoft.word.doc"])
+  typeCopy = type;
+  if ([typeCopy caseInsensitiveCompare:@"com.microsoft.word.doc"])
   {
-    v4 = [v3 caseInsensitiveCompare:@"com.microsoft.word.docx"] == 0;
+    v4 = [typeCopy caseInsensitiveCompare:@"com.microsoft.word.docx"] == 0;
   }
 
   else
@@ -30,11 +30,11 @@
   return v4;
 }
 
-+ (BOOL)isImageContentType:(id)a3
++ (BOOL)isImageContentType:(id)type
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v3];
+  typeCopy = type;
+  v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:typeCopy];
   v5 = v4;
   if (v4)
   {
@@ -47,7 +47,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = typeCopy;
       _os_log_impl(&dword_225901000, v7, OS_LOG_TYPE_DEFAULT, "Unknown content type: %@", &v10, 0xCu);
     }
 

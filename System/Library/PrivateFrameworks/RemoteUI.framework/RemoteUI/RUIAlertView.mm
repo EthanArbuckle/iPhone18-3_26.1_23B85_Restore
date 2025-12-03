@@ -1,30 +1,30 @@
 @interface RUIAlertView
-- (RUIAlertView)initWithAttributes:(id)a3 parent:(id)a4;
+- (RUIAlertView)initWithAttributes:(id)attributes parent:(id)parent;
 - (RUIAlertViewDelegate)objectModel;
 - (id)alertController;
 - (void)_dismissAlertController;
 - (void)_setupSourceItem;
-- (void)addButtonWithTitle:(id)a3 URL:(id)a4 style:(int64_t)a5 attributes:(id)a6 xmlElement:(id)a7;
+- (void)addButtonWithTitle:(id)title URL:(id)l style:(int64_t)style attributes:(id)attributes xmlElement:(id)element;
 - (void)dealloc;
-- (void)runAlertInController:(id)a3 completion:(id)a4;
-- (void)setMessage:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)runAlertInController:(id)controller completion:(id)completion;
+- (void)setMessage:(id)message;
+- (void)setTintColor:(id)color;
+- (void)setTitle:(id)title;
 @end
 
 @implementation RUIAlertView
 
-- (RUIAlertView)initWithAttributes:(id)a3 parent:(id)a4
+- (RUIAlertView)initWithAttributes:(id)attributes parent:(id)parent
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v12.receiver = self;
   v12.super_class = RUIAlertView;
-  v7 = [(RUIElement *)&v12 initWithAttributes:v6 parent:a4];
+  v7 = [(RUIElement *)&v12 initWithAttributes:attributesCopy parent:parent];
   v8 = v7;
   if (v7)
   {
     v7->_buttonIndex = 0;
-    v9 = [v6 objectForKey:@"tintColor"];
+    v9 = [attributesCopy objectForKey:@"tintColor"];
     if (v9)
     {
       v10 = [MEMORY[0x277D75348] _remoteUI_colorWithString:v9];
@@ -43,39 +43,39 @@
   [(RUIElement *)&v3 dealloc];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  [(UIAlertController *)self->_alertController setTitle:v4];
+  titleCopy = title;
+  [(UIAlertController *)self->_alertController setTitle:titleCopy];
   title = self->_title;
-  self->_title = v4;
+  self->_title = titleCopy;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
-  [(UIAlertController *)self->_alertController setMessage:v4];
+  messageCopy = message;
+  [(UIAlertController *)self->_alertController setMessage:messageCopy];
   message = self->_message;
-  self->_message = v4;
+  self->_message = messageCopy;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UIAlertController *)self->_alertController view];
-  [v5 setTintColor:v4];
+  colorCopy = color;
+  view = [(UIAlertController *)self->_alertController view];
+  [view setTintColor:colorCopy];
 
   tintColor = self->_tintColor;
-  self->_tintColor = v4;
+  self->_tintColor = colorCopy;
 }
 
-- (void)addButtonWithTitle:(id)a3 URL:(id)a4 style:(int64_t)a5 attributes:(id)a6 xmlElement:(id)a7
+- (void)addButtonWithTitle:(id)title URL:(id)l style:(int64_t)style attributes:(id)attributes xmlElement:(id)element
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (a5 == 1)
+  titleCopy = title;
+  lCopy = l;
+  attributesCopy = attributes;
+  elementCopy = element;
+  if (style == 1)
   {
     buttonIndex = -1;
   }
@@ -87,7 +87,7 @@
   }
 
   objc_initWeak(&location, self);
-  v17 = [(RUIAlertView *)self alertController];
+  alertController = [(RUIAlertView *)self alertController];
   v18 = MEMORY[0x277D750F8];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -95,25 +95,25 @@
   v30[3] = &unk_2782E8CA8;
   objc_copyWeak(v33, &location);
   v33[1] = buttonIndex;
-  v19 = v14;
+  v19 = attributesCopy;
   v31 = v19;
-  v20 = v15;
+  v20 = elementCopy;
   v32 = v20;
-  v21 = [v18 actionWithTitle:v12 style:a5 handler:v30];
-  [v17 addAction:v21];
+  v21 = [v18 actionWithTitle:titleCopy style:style handler:v30];
+  [alertController addAction:v21];
 
-  v22 = [(RUIElement *)self attributes];
-  v23 = [v22 objectForKeyedSubscript:@"preferredButton"];
+  attributes = [(RUIElement *)self attributes];
+  v23 = [attributes objectForKeyedSubscript:@"preferredButton"];
   v24 = [v19 objectForKeyedSubscript:@"id"];
   v25 = [v23 isEqualToString:v24];
 
   if (v25)
   {
-    v26 = [(RUIAlertView *)self alertController];
-    v27 = [(RUIAlertView *)self alertController];
-    v28 = [v27 actions];
-    v29 = [v28 lastObject];
-    [v26 setPreferredAction:v29];
+    alertController2 = [(RUIAlertView *)self alertController];
+    alertController3 = [(RUIAlertView *)self alertController];
+    actions = [alertController3 actions];
+    lastObject = [actions lastObject];
+    [alertController2 setPreferredAction:lastObject];
   }
 
   objc_destroyWeak(v33);
@@ -158,15 +158,15 @@ void __67__RUIAlertView_addButtonWithTitle_URL_style_attributes_xmlElement___blo
   alertController = self->_alertController;
   if (!alertController)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 keyWindow];
-    v6 = [v5 rootViewController];
-    v7 = [v6 traitCollection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    rootViewController = [keyWindow rootViewController];
+    traitCollection = [rootViewController traitCollection];
 
-    v8 = [v7 horizontalSizeClass];
-    if (v7)
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
+    if (traitCollection)
     {
-      v9 = v8 == 1;
+      v9 = horizontalSizeClass == 1;
     }
 
     else
@@ -176,8 +176,8 @@ void __67__RUIAlertView_addButtonWithTitle_URL_style_attributes_xmlElement___blo
 
     if (v9)
     {
-      v10 = [(RUIElement *)self attributes];
-      v11 = [v10 objectForKeyedSubscript:@"style"];
+      attributes = [(RUIElement *)self attributes];
+      v11 = [attributes objectForKeyedSubscript:@"style"];
       v12 = [v11 isEqualToString:@"sheet"] ^ 1;
     }
 
@@ -187,15 +187,15 @@ void __67__RUIAlertView_addButtonWithTitle_URL_style_attributes_xmlElement___blo
     }
 
     v13 = MEMORY[0x277D75110];
-    v14 = [(RUIAlertView *)self title];
-    v15 = [(RUIAlertView *)self message];
-    v16 = [v13 alertControllerWithTitle:v14 message:v15 preferredStyle:v12];
+    title = [(RUIAlertView *)self title];
+    message = [(RUIAlertView *)self message];
+    v16 = [v13 alertControllerWithTitle:title message:message preferredStyle:v12];
     v17 = self->_alertController;
     self->_alertController = v16;
 
-    v18 = [(RUIAlertView *)self tintColor];
-    v19 = [(UIAlertController *)self->_alertController view];
-    [v19 setTintColor:v18];
+    tintColor = [(RUIAlertView *)self tintColor];
+    view = [(UIAlertController *)self->_alertController view];
+    [view setTintColor:tintColor];
 
     alertController = self->_alertController;
   }
@@ -242,10 +242,10 @@ uint64_t __39__RUIAlertView__dismissAlertController__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)runAlertInController:(id)a3 completion:(id)a4
+- (void)runAlertInController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -258,46 +258,46 @@ uint64_t __39__RUIAlertView__dismissAlertController__block_invoke(uint64_t a1)
   v22[3] = __Block_byref_object_copy__2;
   v22[4] = __Block_byref_object_dispose__2;
   v8 = WeakRetained;
-  v23 = [v8 delegate];
+  delegate = [v8 delegate];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __48__RUIAlertView_runAlertInController_completion___block_invoke;
   v18[3] = &unk_2782E8CD0;
-  v9 = v7;
+  v9 = completionCopy;
   v19 = v9;
   v20 = &v24;
   v21 = v22;
   [(RUIAlertView *)self setCompletion:v18];
-  v10 = [v25[5] telemetryDelegate];
+  telemetryDelegate = [v25[5] telemetryDelegate];
   v11 = [RUITelemetryElement alloc];
-  v12 = [(RUIElement *)self sourceXMLElement];
-  v13 = [v25[5] sourceURL];
-  v14 = [(RUITelemetryElement *)v11 initWithXMLElement:v12 url:v13];
-  [v10 willDisplayUI:v14];
+  sourceXMLElement = [(RUIElement *)self sourceXMLElement];
+  sourceURL = [v25[5] sourceURL];
+  v14 = [(RUITelemetryElement *)v11 initWithXMLElement:sourceXMLElement url:sourceURL];
+  [telemetryDelegate willDisplayUI:v14];
 
   [(RUIAlertView *)self _setupSourceItem];
-  if ([v6 conformsToProtocol:&unk_282DBDDE8])
+  if ([controllerCopy conformsToProtocol:&unk_282DBDDE8])
   {
-    v15 = v6;
+    alertController3 = controllerCopy;
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(RUIAlertView *)self alertController];
-      [v15 ruiPresentAlertController:v16];
+      alertController = [(RUIAlertView *)self alertController];
+      [alertController3 ruiPresentAlertController:alertController];
     }
 
-    objc_storeWeak(&self->_presentationContext, v15);
+    objc_storeWeak(&self->_presentationContext, alertController3);
   }
 
   else
   {
-    v17 = [(RUIAlertView *)self alertController];
-    [v17 dismissViewControllerAnimated:0 completion:0];
+    alertController2 = [(RUIAlertView *)self alertController];
+    [alertController2 dismissViewControllerAnimated:0 completion:0];
 
     objc_storeWeak(&self->_presentationContext, 0);
     [(RUIAlertView *)self _setupSourceItem];
-    v15 = [(RUIAlertView *)self alertController];
-    [v6 presentViewController:v15 animated:(_testMode & 1) == 0 completion:0];
+    alertController3 = [(RUIAlertView *)self alertController];
+    [controllerCopy presentViewController:alertController3 animated:(_testMode & 1) == 0 completion:0];
   }
 
   _Block_object_dispose(v22, 8);
@@ -324,23 +324,23 @@ void __48__RUIAlertView_runAlertInController_completion___block_invoke(void *a1)
 - (void)_setupSourceItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-  v4 = [WeakRetained popoverSourceItem];
+  popoverSourceItem = [WeakRetained popoverSourceItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   v10 = objc_loadWeakRetained(&self->_objectModel);
-  v6 = [v10 popoverSourceItem];
-  v7 = [(RUIAlertView *)self alertController];
-  v8 = [v7 popoverPresentationController];
-  v9 = v8;
+  popoverSourceItem2 = [v10 popoverSourceItem];
+  alertController = [(RUIAlertView *)self alertController];
+  popoverPresentationController = [alertController popoverPresentationController];
+  v9 = popoverPresentationController;
   if (isKindOfClass)
   {
-    [v8 setSourceView:v6];
+    [popoverPresentationController setSourceView:popoverSourceItem2];
   }
 
   else
   {
-    [v8 setSourceItem:v6];
+    [popoverPresentationController setSourceItem:popoverSourceItem2];
   }
 }
 

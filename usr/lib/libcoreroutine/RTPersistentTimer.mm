@@ -1,7 +1,7 @@
 @interface RTPersistentTimer
-- (RTPersistentTimer)initWithFireDate:(id)a3 interval:(double)a4 serviceIdentifier:(id)a5 queue:(id)a6 handler:(id)a7;
+- (RTPersistentTimer)initWithFireDate:(id)date interval:(double)interval serviceIdentifier:(id)identifier queue:(id)queue handler:(id)handler;
 - (void)_invalidateTimer;
-- (void)_onTimerFired:(id)a3;
+- (void)_onTimerFired:(id)fired;
 - (void)_setupNextTimer;
 - (void)_startTimer;
 - (void)invalidate;
@@ -9,16 +9,16 @@
 
 @implementation RTPersistentTimer
 
-- (RTPersistentTimer)initWithFireDate:(id)a3 interval:(double)a4 serviceIdentifier:(id)a5 queue:(id)a6 handler:(id)a7
+- (RTPersistentTimer)initWithFireDate:(id)date interval:(double)interval serviceIdentifier:(id)identifier queue:(id)queue handler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v13)
+  dateCopy = date;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (dateCopy)
   {
-    if (v14)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -36,10 +36,10 @@
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fireDate (in %s:%d)", buf, 0x12u);
     }
 
-    if (v14)
+    if (identifierCopy)
     {
 LABEL_3:
-      if (v16)
+      if (handlerCopy)
       {
         goto LABEL_14;
       }
@@ -58,7 +58,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: serviceIdentifer (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v16)
+  if (!handlerCopy)
   {
 LABEL_11:
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -79,14 +79,14 @@ LABEL_14:
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_fireDate, a3);
-    objc_storeStrong(&v21->_queue, a6);
-    v21->_interval = a4;
-    v22 = [v14 copy];
+    objc_storeStrong(&v20->_fireDate, date);
+    objc_storeStrong(&v21->_queue, queue);
+    v21->_interval = interval;
+    v22 = [identifierCopy copy];
     serviceIdentifier = v21->_serviceIdentifier;
     v21->_serviceIdentifier = v22;
 
-    v24 = [v16 copy];
+    v24 = [handlerCopy copy];
     handler = v21->_handler;
     v21->_handler = v24;
 
@@ -99,33 +99,33 @@ LABEL_14:
 - (void)_startTimer
 {
   [(RTPersistentTimer *)self _invalidateTimer];
-  v3 = [(RTPersistentTimer *)self fireDate];
+  fireDate = [(RTPersistentTimer *)self fireDate];
 
-  if (v3)
+  if (fireDate)
   {
     v4 = objc_alloc(MEMORY[0x277D3A180]);
-    v5 = [(RTPersistentTimer *)self fireDate];
-    v6 = [(RTPersistentTimer *)self serviceIdentifier];
-    v7 = [v4 initWithFireDate:v5 serviceIdentifier:v6 target:self selector:sel__onTimerFired_ userInfo:0];
+    fireDate2 = [(RTPersistentTimer *)self fireDate];
+    serviceIdentifier = [(RTPersistentTimer *)self serviceIdentifier];
+    v7 = [v4 initWithFireDate:fireDate2 serviceIdentifier:serviceIdentifier target:self selector:sel__onTimerFired_ userInfo:0];
     [(RTPersistentTimer *)self setTimer:v7];
 
-    v8 = [(RTPersistentTimer *)self timer];
-    [v8 setMinimumEarlyFireProportion:0.9];
+    timer = [(RTPersistentTimer *)self timer];
+    [timer setMinimumEarlyFireProportion:0.9];
 
-    v10 = [(RTPersistentTimer *)self timer];
-    v9 = [(RTPersistentTimer *)self queue];
-    [v10 scheduleInQueue:v9];
+    timer2 = [(RTPersistentTimer *)self timer];
+    queue = [(RTPersistentTimer *)self queue];
+    [timer2 scheduleInQueue:queue];
   }
 }
 
-- (void)_onTimerFired:(id)a3
+- (void)_onTimerFired:(id)fired
 {
-  v4 = [(RTPersistentTimer *)self handler];
+  handler = [(RTPersistentTimer *)self handler];
 
-  if (v4)
+  if (handler)
   {
-    v5 = [(RTPersistentTimer *)self handler];
-    v5[2]();
+    handler2 = [(RTPersistentTimer *)self handler];
+    handler2[2]();
   }
 
   [(RTPersistentTimer *)self _setupNextTimer];
@@ -152,8 +152,8 @@ LABEL_14:
 
 - (void)_invalidateTimer
 {
-  v3 = [(RTPersistentTimer *)self timer];
-  [v3 invalidate];
+  timer = [(RTPersistentTimer *)self timer];
+  [timer invalidate];
 
   [(RTPersistentTimer *)self setTimer:0];
 }

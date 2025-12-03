@@ -1,32 +1,32 @@
 @interface PTPStorage
-- (id)addAssets:(id)a3 createdObjects:(id)a4;
-- (id)cameraFileWithObjectID:(unint64_t)a3;
-- (id)cameraFolderWithObjectID:(unint64_t)a3;
-- (id)createDedupedAssetDirectoryWithBaseName:(id)a3;
-- (id)deleteAssets:(id)a3;
+- (id)addAssets:(id)assets createdObjects:(id)objects;
+- (id)cameraFileWithObjectID:(unint64_t)d;
+- (id)cameraFolderWithObjectID:(unint64_t)d;
+- (id)createDedupedAssetDirectoryWithBaseName:(id)name;
+- (id)deleteAssets:(id)assets;
 - (id)dequeueGroup;
-- (id)directoryForAsset:(id)a3;
-- (id)directoryWithBaseName:(id)a3 andDedupCount:(unsigned int)a4;
+- (id)directoryForAsset:(id)asset;
+- (id)directoryWithBaseName:(id)name andDedupCount:(unsigned int)count;
 - (id)parent;
-- (id)virtualDirectoryName:(id)a3;
-- (timespec)virtualDirectoryDate:(id)a3;
-- (unsigned)addGroup:(id)a3;
-- (void)addCameraFileToIndex:(id)a3;
-- (void)addCameraFolderToIndex:(id)a3;
+- (id)virtualDirectoryName:(id)name;
+- (timespec)virtualDirectoryDate:(id)date;
+- (unsigned)addGroup:(id)group;
+- (void)addCameraFileToIndex:(id)index;
+- (void)addCameraFolderToIndex:(id)index;
 - (void)addContent;
 - (void)customUpdateToStoreInfoDataset;
 - (void)dealloc;
-- (void)removeCameraFileFromIndex:(unint64_t)a3;
-- (void)removeCameraFolderFromIndex:(unint64_t)a3;
+- (void)removeCameraFileFromIndex:(unint64_t)index;
+- (void)removeCameraFolderFromIndex:(unint64_t)index;
 - (void)startGroupNotifications;
 @end
 
 @implementation PTPStorage
 
-- (id)createDedupedAssetDirectoryWithBaseName:(id)a3
+- (id)createDedupedAssetDirectoryWithBaseName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     v5 = *&self->_assetGroupIndex;
     if (!v5)
@@ -48,13 +48,13 @@
       v5 = *&self->_assetGroupIndex;
     }
 
-    v11 = [v5 objectForKeyedSubscript:v4];
-    v12 = [v11 intValue];
+    v11 = [v5 objectForKeyedSubscript:nameCopy];
+    intValue = [v11 intValue];
 
-    v13 = [NSNumber numberWithUnsignedInt:v12 + 1];
-    [*&self->_assetGroupIndex setObject:v13 forKeyedSubscript:v4];
+    v13 = [NSNumber numberWithUnsignedInt:intValue + 1];
+    [*&self->_assetGroupIndex setObject:v13 forKeyedSubscript:nameCopy];
 
-    v14 = [(PTPStorage *)self directoryWithBaseName:v4 andDedupCount:v12 + 1];
+    v14 = [(PTPStorage *)self directoryWithBaseName:nameCopy andDedupCount:intValue + 1];
   }
 
   else
@@ -65,22 +65,22 @@
   return v14;
 }
 
-- (id)directoryWithBaseName:(id)a3 andDedupCount:(unsigned int)a4
+- (id)directoryWithBaseName:(id)name andDedupCount:(unsigned int)count
 {
-  v5 = a3;
-  if (a4)
+  nameCopy = name;
+  if (count)
   {
-    if (a4 > 702)
+    if (count > 702)
     {
-      v6 = 1;
+      countCopy = 1;
     }
 
     else
     {
-      v6 = a4;
+      countCopy = count;
     }
 
-    if (v6 < 1)
+    if (countCopy < 1)
     {
       v9 = &stru_100038B48;
     }
@@ -90,8 +90,8 @@
       v7 = &stru_100038B48;
       do
       {
-        v8 = v6 - 1;
-        v6 = (v6 - 1) / 0x1Au;
+        v8 = countCopy - 1;
+        countCopy = (countCopy - 1) / 0x1Au;
         v9 = [NSString stringWithFormat:@"%@%c", v7, v8 % 0x1A + 97];
 
         v7 = v9;
@@ -113,30 +113,30 @@
     v9 = @"__";
   }
 
-  v11 = [v5 stringByReplacingCharactersInRange:6 withString:{2, v9}];
+  v11 = [nameCopy stringByReplacingCharactersInRange:6 withString:{2, v9}];
 
   return v11;
 }
 
-- (id)directoryForAsset:(id)a3
+- (id)directoryForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PTPStorage *)self dcimFolder];
-  if (qword_1000403B8 == 1 && [v4 conversionGroup] == 1)
+  assetCopy = asset;
+  dcimFolder = [(PTPStorage *)self dcimFolder];
+  if (qword_1000403B8 == 1 && [assetCopy conversionGroup] == 1)
   {
-    v6 = 0;
+    conversionGroup = 0;
   }
 
   else
   {
-    v6 = [v4 conversionGroup];
+    conversionGroup = [assetCopy conversionGroup];
   }
 
-  v7 = [v4 filename];
-  v8 = [NSString stringWithFormat:@"%@.%d", v7, v6];
+  filename = [assetCopy filename];
+  v8 = [NSString stringWithFormat:@"%@.%d", filename, conversionGroup];
 
-  v9 = [v4 captureDateString];
-  v10 = [(PTPStorage *)self virtualDirectoryName:v9];
+  captureDateString = [assetCopy captureDateString];
+  v10 = [(PTPStorage *)self virtualDirectoryName:captureDateString];
 
   v11 = [*&self->_assetGroupIndex objectForKeyedSubscript:v10];
   if ([v11 intValue] < 1)
@@ -152,7 +152,7 @@ LABEL_10:
     {
       v12 = (v12 + 1);
       v13 = [(PTPStorage *)self directoryWithBaseName:v10 andDedupCount:v12];
-      v14 = [v5 folderMatchingName:v13];
+      v14 = [dcimFolder folderMatchingName:v13];
       v15 = v14;
       if (v14)
       {
@@ -172,14 +172,14 @@ LABEL_10:
   return v15;
 }
 
-- (id)virtualDirectoryName:(id)a3
+- (id)virtualDirectoryName:(id)name
 {
   v13 = 0;
   v14 = 0;
   v12 = 0;
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  if (!v6 || (v7 = v6, strlen(v6) < 0xF) || (sscanf(v7, "%04d%02d%02dT%02d%02d%02d", &v14 + 4, &v14, &v13 + 4, &v13, &v12 + 4, &v12), currentMonth = HIDWORD(v14), !HIDWORD(v14)) || (v9 = v14, !v14))
+  nameCopy = name;
+  uTF8String = [name UTF8String];
+  if (!uTF8String || (v7 = uTF8String, strlen(uTF8String) < 0xF) || (sscanf(v7, "%04d%02d%02dT%02d%02d%02d", &v14 + 4, &v14, &v13 + 4, &v13, &v12 + 4, &v12), currentMonth = HIDWORD(v14), !HIDWORD(v14)) || (v9 = v14, !v14))
   {
     v9 = *(&self->super._objectHandle + 1);
     currentMonth = self->_currentMonth;
@@ -192,15 +192,15 @@ LABEL_10:
   return v10;
 }
 
-- (timespec)virtualDirectoryDate:(id)a3
+- (timespec)virtualDirectoryDate:(id)date
 {
   v18 = 0;
   v19 = 0;
   v17 = 0;
   v16 = 0;
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  if (!v6 || (v7 = v6, strlen(v6) < 0xF) || (sscanf(v7, "%04d%02d%02dT%02d%02d%02d", &v19 + 4, &v19, &v18 + 4, &v18, &v17, &v16), !HIDWORD(v19)) || !v19)
+  dateCopy = date;
+  uTF8String = [date UTF8String];
+  if (!uTF8String || (v7 = uTF8String, strlen(uTF8String) < 0xF) || (sscanf(v7, "%04d%02d%02dT%02d%02d%02d", &v19 + 4, &v19, &v18 + 4, &v18, &v17, &v16), !HIDWORD(v19)) || !v19)
   {
     currentMonth = self->_currentMonth;
     LODWORD(v19) = *(&self->super._objectHandle + 1);
@@ -229,7 +229,7 @@ LABEL_10:
   if (v3)
   {
     v5 = [v3 objectForKey:kMGQDiskUsageAmountDataAvailable];
-    v6 = [v5 longLongValue];
+    longLongValue = [v5 longLongValue];
 
     __ICOSLogCreate();
     v7 = &stru_100038B48;
@@ -239,23 +239,23 @@ LABEL_10:
       v7 = [v8 stringByAppendingString:@".."];
     }
 
-    v9 = [NSString stringWithFormat:@"Available Storage: %.2f GB", vcvtd_n_f64_u64(v6, 0x1EuLL)];
+    v9 = [NSString stringWithFormat:@"Available Storage: %.2f GB", vcvtd_n_f64_u64(longLongValue, 0x1EuLL)];
     v10 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v7;
       v12 = v10;
       *buf = 136446466;
-      v23 = [(__CFString *)v7 UTF8String];
+      uTF8String = [(__CFString *)v7 UTF8String];
       v24 = 2114;
       v25 = v9;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    [*(&self->_duplicateAssetIdentifiers + 4) setFreeSpaceInBytes:v6];
-    [*(&self->_duplicateAssetIdentifiers + 4) setFreeSpaceInImages:v6 / 0x16E360];
+    [*(&self->_duplicateAssetIdentifiers + 4) setFreeSpaceInBytes:longLongValue];
+    [*(&self->_duplicateAssetIdentifiers + 4) setFreeSpaceInImages:longLongValue / 0x16E360];
     v13 = [v4 objectForKey:kMGQDiskUsageTotalDiskCapacity];
-    v14 = [v13 longLongValue];
+    longLongValue2 = [v13 longLongValue];
 
     __ICOSLogCreate();
     v15 = &stru_100038B48;
@@ -265,31 +265,31 @@ LABEL_10:
       v15 = [v16 stringByAppendingString:@".."];
     }
 
-    v17 = [NSString stringWithFormat:@"Storage  Capacity: %.2f GB", vcvtd_n_f64_u64(v14, 0x1EuLL)];
+    v17 = [NSString stringWithFormat:@"Storage  Capacity: %.2f GB", vcvtd_n_f64_u64(longLongValue2, 0x1EuLL)];
     v18 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v15;
       v20 = v18;
-      v21 = [(__CFString *)v15 UTF8String];
+      uTF8String2 = [(__CFString *)v15 UTF8String];
       *buf = 136446466;
-      v23 = v21;
+      uTF8String = uTF8String2;
       v24 = 2114;
       v25 = v17;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    [*(&self->_duplicateAssetIdentifiers + 4) setMaxCapacity:v14];
+    [*(&self->_duplicateAssetIdentifiers + 4) setMaxCapacity:longLongValue2];
   }
 }
 
 - (void)addContent
 {
-  v3 = [(PTPStorage *)self dcimFolder];
-  if (v3)
+  dcimFolder = [(PTPStorage *)self dcimFolder];
+  if (dcimFolder)
   {
     v4 = sub_10000C470();
-    v5 = [(PTPStorage *)self storageID];
+    storageID = [(PTPStorage *)self storageID];
     v19[0] = 0;
     v19[1] = v19;
     v19[2] = 0x2020000000;
@@ -318,14 +318,14 @@ LABEL_10:
       v7 = [v6 stringByAppendingString:@".."];
     }
 
-    v8 = [NSString stringWithFormat:@"[PTPFolder addContent] PTPStorageID: 0x%x \n", v5];
+    v8 = [NSString stringWithFormat:@"[PTPFolder addContent] PTPStorageID: 0x%x \n", storageID];
     v9 = _gICOSLog;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v7;
-      v11 = [(__CFString *)v7 UTF8String];
+      uTF8String = [(__CFString *)v7 UTF8String];
       *buf = 136446466;
-      *&buf[4] = v11;
+      *&buf[4] = uTF8String;
       *&buf[12] = 2114;
       *&buf[14] = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -343,12 +343,12 @@ LABEL_10:
       *&buf[16] = 0x3032000000;
       v22 = sub_100016D34;
       v23 = sub_100016D44;
-      v24 = self;
+      selfCopy = self;
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_100016D4C;
       v14[3] = &unk_100038980;
-      v14[4] = v24;
+      v14[4] = selfCopy;
       v14[5] = buf;
       v14[6] = v19;
       v14[7] = v18;
@@ -366,7 +366,7 @@ LABEL_10:
     block[7] = v17;
     block[8] = v16;
     block[9] = info;
-    v13 = v5;
+    v13 = storageID;
     block[4] = self;
     block[5] = v19;
     dispatch_async(&_dispatch_main_q, block);
@@ -378,11 +378,11 @@ LABEL_10:
   }
 }
 
-- (id)addAssets:(id)a3 createdObjects:(id)a4
+- (id)addAssets:(id)assets createdObjects:(id)objects
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PTPStorage *)self dcimFolder];
+  assetsCopy = assets;
+  objectsCopy = objects;
+  dcimFolder = [(PTPStorage *)self dcimFolder];
   v9 = +[NSMutableArray array];
   v10 = +[NSMutableDictionary dictionary];
   v37 = 0;
@@ -397,10 +397,10 @@ LABEL_10:
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  if (v7)
+  if (objectsCopy)
   {
     v11 = +[NSMutableArray array];
-    if (!v8)
+    if (!dcimFolder)
     {
       goto LABEL_8;
     }
@@ -409,7 +409,7 @@ LABEL_10:
   else
   {
     v11 = 0;
-    if (!v8)
+    if (!dcimFolder)
     {
       goto LABEL_8;
     }
@@ -427,8 +427,8 @@ LABEL_10:
   v18[3] = &unk_1000389D0;
   v22 = v27;
   v18[4] = self;
-  v19 = v8;
-  v26 = v7 != 0;
+  v19 = dcimFolder;
+  v26 = objectsCopy != 0;
   v12 = v11;
   v20 = v12;
   v23 = &v29;
@@ -436,12 +436,12 @@ LABEL_10:
   v13 = v9;
   v21 = v13;
   v25 = &v33;
-  [v6 enumerateObjectsUsingBlock:v18];
+  [assetsCopy enumerateObjectsUsingBlock:v18];
   [(PTPStorage *)self addGroup:v13];
-  if (v7)
+  if (objectsCopy)
   {
-    [v7 setObject:v13 forKey:@"addedFiles"];
-    [v7 setObject:v12 forKey:@"addedFolders"];
+    [objectsCopy setObject:v13 forKey:@"addedFiles"];
+    [objectsCopy setObject:v12 forKey:@"addedFolders"];
   }
 
   v14 = [NSNumber numberWithUnsignedLongLong:v38[3]];
@@ -462,22 +462,22 @@ LABEL_8:
   return v10;
 }
 
-- (id)deleteAssets:(id)a3
+- (id)deleteAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PTPStorage *)self dcimFolder];
+  assetsCopy = assets;
+  dcimFolder = [(PTPStorage *)self dcimFolder];
   v6 = objc_alloc_init(NSMutableDictionary);
   v7 = objc_alloc_init(NSMutableArray);
   v8 = objc_alloc_init(NSMutableArray);
-  if (v5)
+  if (dcimFolder)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100017DD8;
     v10[3] = &unk_1000389F8;
-    v11 = v5;
+    v11 = dcimFolder;
     v12 = v7;
-    [v4 enumerateObjectsUsingBlock:v10];
+    [assetsCopy enumerateObjectsUsingBlock:v10];
   }
 
   if (v7)
@@ -514,57 +514,57 @@ LABEL_8:
   [(PTPStorage *)&v7 dealloc];
 }
 
-- (void)addCameraFileToIndex:(id)a3
+- (void)addCameraFileToIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(PTPStorage *)self indexedMediaSet];
-  [v5 addMediaItemToIndex:v4];
+  indexCopy = index;
+  indexedMediaSet = [(PTPStorage *)self indexedMediaSet];
+  [indexedMediaSet addMediaItemToIndex:indexCopy];
 }
 
-- (void)addCameraFolderToIndex:(id)a3
+- (void)addCameraFolderToIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(PTPStorage *)self indexedMediaSet];
-  [v5 addMediaItemToIndex:v4];
+  indexCopy = index;
+  indexedMediaSet = [(PTPStorage *)self indexedMediaSet];
+  [indexedMediaSet addMediaItemToIndex:indexCopy];
 
-  v6 = [v4 objectHandle];
-  v7 = [NSNumber numberWithUnsignedInt:v6];
+  objectHandle = [indexCopy objectHandle];
+  v7 = [NSNumber numberWithUnsignedInt:objectHandle];
   v9 = v7;
   v8 = [NSArray arrayWithObjects:&v9 count:1];
   [(PTPStorage *)self addGroup:v8];
 }
 
-- (id)cameraFileWithObjectID:(unint64_t)a3
+- (id)cameraFileWithObjectID:(unint64_t)d
 {
-  v4 = [(PTPStorage *)self indexedMediaSet];
-  v5 = [v4 mediaItemWithHandle:a3 inTypes:&off_10003BF60];
+  indexedMediaSet = [(PTPStorage *)self indexedMediaSet];
+  v5 = [indexedMediaSet mediaItemWithHandle:d inTypes:&off_10003BF60];
 
   return v5;
 }
 
-- (id)cameraFolderWithObjectID:(unint64_t)a3
+- (id)cameraFolderWithObjectID:(unint64_t)d
 {
-  v4 = [(PTPStorage *)self indexedMediaSet];
-  v5 = [v4 mediaItemWithHandle:a3 inTypes:&off_10003BF78];
+  indexedMediaSet = [(PTPStorage *)self indexedMediaSet];
+  v5 = [indexedMediaSet mediaItemWithHandle:d inTypes:&off_10003BF78];
 
   return v5;
 }
 
-- (void)removeCameraFileFromIndex:(unint64_t)a3
+- (void)removeCameraFileFromIndex:(unint64_t)index
 {
-  v4 = [(PTPStorage *)self indexedMediaSet];
-  [v4 removeMediaItemWithHandleFromIndex:a3];
+  indexedMediaSet = [(PTPStorage *)self indexedMediaSet];
+  [indexedMediaSet removeMediaItemWithHandleFromIndex:index];
 }
 
-- (void)removeCameraFolderFromIndex:(unint64_t)a3
+- (void)removeCameraFolderFromIndex:(unint64_t)index
 {
-  v4 = [(PTPStorage *)self indexedMediaSet];
-  [v4 removeMediaItemWithHandleFromIndex:a3];
+  indexedMediaSet = [(PTPStorage *)self indexedMediaSet];
+  [indexedMediaSet removeMediaItemWithHandleFromIndex:index];
 }
 
-- (unsigned)addGroup:(id)a3
+- (unsigned)addGroup:(id)group
 {
-  if (a3)
+  if (group)
   {
     [*(&self->_parent + 4) addObject:?];
   }
@@ -607,13 +607,13 @@ LABEL_8:
 
 - (void)startGroupNotifications
 {
-  v3 = [(PTPStorage *)self groupNotificationTimerQueue];
+  groupNotificationTimerQueue = [(PTPStorage *)self groupNotificationTimerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100018480;
   block[3] = &unk_100038770;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(groupNotificationTimerQueue, block);
 }
 
 - (id)parent

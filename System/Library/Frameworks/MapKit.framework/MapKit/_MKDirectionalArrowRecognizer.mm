@@ -1,31 +1,31 @@
 @interface _MKDirectionalArrowRecognizer
-- (_MKDirectionalArrowRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)handleArrowMask:(int64_t)a3;
-- (void)keyDown:(id)a3;
-- (void)keyUp:(id)a3;
-- (void)setState:(int64_t)a3;
+- (_MKDirectionalArrowRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)handleArrowMask:(int64_t)mask;
+- (void)keyDown:(id)down;
+- (void)keyUp:(id)up;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation _MKDirectionalArrowRecognizer
 
-- (void)keyUp:(id)a3
+- (void)keyUp:(id)up
 {
   self->_modifierFlags = 0;
-  v4 = [a3 key];
+  v4 = [up key];
   arrows = self->_arrows;
   v7 = v4;
-  v6 = [v4 keyCode];
-  if (v6 > 79)
+  keyCode = [v4 keyCode];
+  if (keyCode > 79)
   {
-    if (v6 == 80)
+    if (keyCode == 80)
     {
       arrows &= ~8uLL;
       goto LABEL_13;
     }
 
-    if (v6 != 81)
+    if (keyCode != 81)
     {
-      if (v6 != 82)
+      if (keyCode != 82)
       {
         goto LABEL_13;
       }
@@ -38,7 +38,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  switch(v6)
+  switch(keyCode)
   {
     case '-':
       goto LABEL_11;
@@ -55,23 +55,23 @@ LABEL_13:
   [(_MKDirectionalArrowRecognizer *)self handleArrowMask:arrows];
 }
 
-- (void)keyDown:(id)a3
+- (void)keyDown:(id)down
 {
-  v6 = [a3 key];
+  v6 = [down key];
   self->_modifierFlags = [v6 modifierFlags];
   arrows = self->_arrows;
-  v5 = [v6 keyCode];
-  if (v5 > 79)
+  keyCode = [v6 keyCode];
+  if (keyCode > 79)
   {
-    if (v5 == 80)
+    if (keyCode == 80)
     {
       arrows |= 8uLL;
       goto LABEL_13;
     }
 
-    if (v5 != 81)
+    if (keyCode != 81)
     {
-      if (v5 != 82)
+      if (keyCode != 82)
       {
         goto LABEL_13;
       }
@@ -84,7 +84,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  switch(v5)
+  switch(keyCode)
   {
     case '-':
       goto LABEL_11;
@@ -101,15 +101,15 @@ LABEL_13:
   [(_MKDirectionalArrowRecognizer *)self handleArrowMask:arrows];
 }
 
-- (void)handleArrowMask:(int64_t)a3
+- (void)handleArrowMask:(int64_t)mask
 {
   arrows = self->_arrows;
-  self->_arrows = a3;
+  self->_arrows = mask;
   self->_lastArrows = arrows;
-  v6 = [(_MKDirectionalArrowRecognizer *)self state];
-  if (a3)
+  state = [(_MKDirectionalArrowRecognizer *)self state];
+  if (mask)
   {
-    if (v6 != 1 && [(_MKDirectionalArrowRecognizer *)self state]!= 2)
+    if (state != 1 && [(_MKDirectionalArrowRecognizer *)self state]!= 2)
     {
       [(_MKDirectionalArrowRecognizer *)self setState:1];
     }
@@ -117,16 +117,16 @@ LABEL_13:
     [(_MKDirectionalArrowRecognizer *)self setState:2];
   }
 
-  else if (v6 == 1 || [(_MKDirectionalArrowRecognizer *)self state]== 2)
+  else if (state == 1 || [(_MKDirectionalArrowRecognizer *)self state]== 2)
   {
     [(_MKDirectionalArrowRecognizer *)self setState:3];
     self->_lastArrows = 0;
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  self->_state = a3;
+  self->_state = state;
   WeakRetained = objc_loadWeakRetained(&self->_target);
   if (self->_action)
   {
@@ -142,27 +142,27 @@ LABEL_13:
   [WeakRetained performSelector:action withObject:self];
 }
 
-- (_MKDirectionalArrowRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_MKDirectionalArrowRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v12.receiver = self;
   v12.super_class = _MKDirectionalArrowRecognizer;
   v7 = [(_MKDirectionalArrowRecognizer *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_target, v6);
-    if (a4)
+    objc_storeWeak(&v7->_target, targetCopy);
+    if (action)
     {
-      v9 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v9 = 0;
+      actionCopy = 0;
     }
 
-    v8->_action = v9;
+    v8->_action = actionCopy;
     v10 = v8;
   }
 

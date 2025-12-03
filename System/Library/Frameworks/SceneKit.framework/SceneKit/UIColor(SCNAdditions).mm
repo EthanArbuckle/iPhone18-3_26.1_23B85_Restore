@@ -12,7 +12,7 @@
 + (uint64_t)scn_colorWithLinearSRGBRed:()SCNAdditions green:blue:alpha:
 {
   components[4] = *MEMORY[0x277D85DE8];
-  components[0] = a1;
+  components[0] = self;
   components[1] = a2;
   components[2] = a3;
   components[3] = a4;
@@ -26,7 +26,7 @@
 + (uint64_t)scn_colorWithLinearDisplayP3Red:()SCNAdditions green:blue:alpha:
 {
   components[4] = *MEMORY[0x277D85DE8];
-  components[0] = a1;
+  components[0] = self;
   components[1] = a2;
   components[2] = a3;
   components[3] = a4;
@@ -40,7 +40,7 @@
 + (uint64_t)scn_colorWithModelIORed:()SCNAdditions green:blue:alpha:options:
 {
   components[4] = *MEMORY[0x277D85DE8];
-  components[0] = a1;
+  components[0] = self;
   components[1] = a2;
   components[2] = a3;
   components[3] = a4;
@@ -55,9 +55,9 @@
 
 - (double)scn_colorComponentsForModelIO
 {
-  v1 = [a1 CGColor];
+  cGColor = [self CGColor];
 
-  return C3DCGColorGetITUR_709Components(v1);
+  return C3DCGColorGetITUR_709Components(cGColor);
 }
 
 + (uint64_t)scn_colorWithC3DColor:()SCNAdditions
@@ -75,7 +75,7 @@
 
 - (CGColor)scn_C3DColorIgnoringColorSpace:()SCNAdditions success:
 {
-  result = [a1 CGColor];
+  result = [self CGColor];
   v7 = result;
   if (result)
   {

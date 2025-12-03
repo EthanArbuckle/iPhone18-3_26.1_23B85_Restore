@@ -1,31 +1,31 @@
 @interface SWCollaborationOption
-+ (SWCollaborationOption)allocWithZone:(_NSZone *)a3;
++ (SWCollaborationOption)allocWithZone:(_NSZone *)zone;
 + (SWCollaborationOption)optionWithTitle:(NSString *)title identifier:(NSString *)identifier;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCollaborationOption:(id)a3;
-- (SWCollaborationOption)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCollaborationOption:(id)option;
+- (SWCollaborationOption)initWithCoder:(id)coder;
 - (SWCollaborationOption)initWithTitle:(NSString *)title identifier:(NSString *)identifier;
-- (SWCollaborationOption)initWithTitle:(id)a3 identifier:(id)a4 subtitle:(id)a5 selected:(BOOL)a6 requiredOptionsIdentifiers:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SWCollaborationOption)initWithTitle:(id)title identifier:(id)identifier subtitle:(id)subtitle selected:(BOOL)selected requiredOptionsIdentifiers:(id)identifiers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWCollaborationOption
 
-+ (SWCollaborationOption)allocWithZone:(_NSZone *)a3
++ (SWCollaborationOption)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [_SWCollaborationOption allocWithZone:a3];
+    return [_SWCollaborationOption allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SWCollaborationOption;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
@@ -57,7 +57,7 @@
 {
   v6 = identifier;
   v7 = title;
-  v8 = [[a1 alloc] initWithTitle:v7 identifier:v6];
+  v8 = [[self alloc] initWithTitle:v7 identifier:v6];
 
   return v8;
 }
@@ -65,8 +65,8 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SWCollaborationOption *)self title];
-  v5 = [(SWCollaborationOption *)self identifier];
+  title = [(SWCollaborationOption *)self title];
+  identifier = [(SWCollaborationOption *)self identifier];
   if ([(SWCollaborationOption *)self isSelected])
   {
     v6 = @" ✓";
@@ -77,89 +77,89 @@
     v6 = &stru_1F4E16F00;
   }
 
-  v7 = [(SWCollaborationOption *)self requiredOptionsIdentifiers];
-  v8 = [v3 stringWithFormat:@"title: %@ identifier: %@ isSelected: %@ requiredOptions: %@", v4, v5, v6, v7];
+  requiredOptionsIdentifiers = [(SWCollaborationOption *)self requiredOptionsIdentifiers];
+  v8 = [v3 stringWithFormat:@"title: %@ identifier: %@ isSelected: %@ requiredOptions: %@", title, identifier, v6, requiredOptionsIdentifiers];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = self;
-  v5 = [(SWCollaborationOption *)v4 title];
-  v6 = [v5 copyWithZone:a3];
-  v7 = [(SWCollaborationOption *)v4 identifier];
-  v8 = [v7 copyWithZone:a3];
-  v9 = [(SWCollaborationOption *)v4 initWithTitle:v6 identifier:v8];
+  selfCopy = self;
+  title = [(SWCollaborationOption *)selfCopy title];
+  v6 = [title copyWithZone:zone];
+  identifier = [(SWCollaborationOption *)selfCopy identifier];
+  v8 = [identifier copyWithZone:zone];
+  v9 = [(SWCollaborationOption *)selfCopy initWithTitle:v6 identifier:v8];
 
   if (v9)
   {
-    v10 = [(SWCollaborationOption *)v4 subtitle];
-    v11 = [v10 copyWithZone:a3];
+    subtitle = [(SWCollaborationOption *)selfCopy subtitle];
+    v11 = [subtitle copyWithZone:zone];
     [(SWCollaborationOption *)v9 setSubtitle:v11];
 
-    [(SWCollaborationOption *)v9 setSelected:[(SWCollaborationOption *)v4 isSelected]];
-    v12 = [(SWCollaborationOption *)v4 requiredOptionsIdentifiers];
-    [(SWCollaborationOption *)v9 setRequiredOptionsIdentifiers:v12];
+    [(SWCollaborationOption *)v9 setSelected:[(SWCollaborationOption *)selfCopy isSelected]];
+    requiredOptionsIdentifiers = [(SWCollaborationOption *)selfCopy requiredOptionsIdentifiers];
+    [(SWCollaborationOption *)v9 setRequiredOptionsIdentifiers:requiredOptionsIdentifiers];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SWCollaborationOption *)self isEqualToCollaborationOption:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SWCollaborationOption *)self isEqualToCollaborationOption:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCollaborationOption:(id)a3
+- (BOOL)isEqualToCollaborationOption:(id)option
 {
-  v8 = a3;
-  if (v8 == self)
+  optionCopy = option;
+  if (optionCopy == self)
   {
     v10 = 1;
     goto LABEL_45;
   }
 
-  v9 = [(SWCollaborationOption *)self isSelected];
-  if (v9 != [(SWCollaborationOption *)v8 isSelected])
+  isSelected = [(SWCollaborationOption *)self isSelected];
+  if (isSelected != [(SWCollaborationOption *)optionCopy isSelected])
   {
     v10 = 0;
     goto LABEL_45;
   }
 
-  v11 = [(SWCollaborationOption *)self title];
-  if (!v11)
+  title = [(SWCollaborationOption *)self title];
+  if (!title)
   {
-    v6 = [(SWCollaborationOption *)v8 title];
-    if (!v6)
+    title2 = [(SWCollaborationOption *)optionCopy title];
+    if (!title2)
     {
       v31 = 0;
       goto LABEL_11;
     }
   }
 
-  v4 = [(SWCollaborationOption *)self title];
-  v5 = [(SWCollaborationOption *)v8 title];
-  if ([v4 isEqual:v5])
+  title3 = [(SWCollaborationOption *)self title];
+  title4 = [(SWCollaborationOption *)optionCopy title];
+  if ([title3 isEqual:title4])
   {
     v31 = 1;
 LABEL_11:
-    v12 = [(SWCollaborationOption *)self identifier];
-    if (v12 || ([(SWCollaborationOption *)v8 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    identifier = [(SWCollaborationOption *)self identifier];
+    if (identifier || ([(SWCollaborationOption *)optionCopy identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v13 = [(SWCollaborationOption *)self identifier];
-      v30 = [(SWCollaborationOption *)v8 identifier];
-      if (![v13 isEqual:?])
+      identifier2 = [(SWCollaborationOption *)self identifier];
+      identifier3 = [(SWCollaborationOption *)optionCopy identifier];
+      if (![identifier2 isEqual:?])
       {
         v10 = 0;
         goto LABEL_37;
       }
 
-      v26 = v13;
+      v26 = identifier2;
       v29 = 1;
     }
 
@@ -168,13 +168,13 @@ LABEL_11:
       v29 = 0;
     }
 
-    v14 = [(SWCollaborationOption *)self subtitle];
-    if (v14 || ([(SWCollaborationOption *)v8 subtitle], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+    subtitle = [(SWCollaborationOption *)self subtitle];
+    if (subtitle || ([(SWCollaborationOption *)optionCopy subtitle], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v15 = [(SWCollaborationOption *)self subtitle];
-      v27 = [(SWCollaborationOption *)v8 subtitle];
-      v28 = v15;
-      if (![v15 isEqual:?])
+      subtitle2 = [(SWCollaborationOption *)self subtitle];
+      subtitle3 = [(SWCollaborationOption *)optionCopy subtitle];
+      v28 = subtitle2;
+      if (![subtitle2 isEqual:?])
       {
         v10 = 0;
 LABEL_32:
@@ -193,28 +193,28 @@ LABEL_32:
       v24 = 0;
     }
 
-    v16 = [(SWCollaborationOption *)self requiredOptionsIdentifiers];
-    if (v16 || ([(SWCollaborationOption *)v8 requiredOptionsIdentifiers], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+    requiredOptionsIdentifiers = [(SWCollaborationOption *)self requiredOptionsIdentifiers];
+    if (requiredOptionsIdentifiers || ([(SWCollaborationOption *)optionCopy requiredOptionsIdentifiers], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v23 = v6;
-      v17 = [(SWCollaborationOption *)self requiredOptionsIdentifiers];
-      v18 = [(SWCollaborationOption *)v8 requiredOptionsIdentifiers];
-      v10 = [v17 isEqual:v18];
+      v23 = title2;
+      requiredOptionsIdentifiers2 = [(SWCollaborationOption *)self requiredOptionsIdentifiers];
+      requiredOptionsIdentifiers3 = [(SWCollaborationOption *)optionCopy requiredOptionsIdentifiers];
+      v10 = [requiredOptionsIdentifiers2 isEqual:requiredOptionsIdentifiers3];
 
-      if (v16)
+      if (requiredOptionsIdentifiers)
       {
 
         if (v24)
         {
-          v6 = v23;
+          title2 = v23;
           v3 = v25;
           goto LABEL_32;
         }
 
-        v6 = v23;
+        title2 = v23;
         v3 = v25;
 LABEL_33:
-        if (!v14)
+        if (!subtitle)
         {
         }
 
@@ -223,11 +223,11 @@ LABEL_33:
           goto LABEL_38;
         }
 
-        v13 = v26;
+        identifier2 = v26;
 LABEL_37:
 
 LABEL_38:
-        if (!v12)
+        if (!identifier)
         {
         }
 
@@ -238,7 +238,7 @@ LABEL_38:
         goto LABEL_42;
       }
 
-      v6 = v23;
+      title2 = v23;
       v19 = v21;
     }
 
@@ -259,7 +259,7 @@ LABEL_38:
 
   v10 = 0;
 LABEL_42:
-  if (!v11)
+  if (!title)
   {
   }
 
@@ -267,10 +267,10 @@ LABEL_45:
   return v10;
 }
 
-- (SWCollaborationOption)initWithCoder:(id)a3
+- (SWCollaborationOption)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
   v6 = v5;
   if (v5)
   {
@@ -284,7 +284,7 @@ LABEL_45:
 
   v8 = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v10 = v9;
   if (v9)
   {
@@ -301,15 +301,15 @@ LABEL_45:
   v13 = [(SWCollaborationOption *)self initWithTitle:v8 identifier:v12];
   if (v13)
   {
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v13->_subtitle;
     v13->_subtitle = v14;
 
-    v13->_selected = [v4 decodeBoolForKey:@"selected"];
+    v13->_selected = [coderCopy decodeBoolForKey:@"selected"];
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"requiredOptionsIdentifiers"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"requiredOptionsIdentifiers"];
     requiredOptionsIdentifiers = v13->_requiredOptionsIdentifiers;
     v13->_requiredOptionsIdentifiers = v19;
   }
@@ -317,34 +317,34 @@ LABEL_45:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SWCollaborationOption *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(SWCollaborationOption *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(SWCollaborationOption *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(SWCollaborationOption *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v7 = [(SWCollaborationOption *)self subtitle];
-  [v4 encodeObject:v7 forKey:@"subtitle"];
+  subtitle = [(SWCollaborationOption *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  [v4 encodeBool:-[SWCollaborationOption isSelected](self forKey:{"isSelected"), @"selected"}];
-  v8 = [(SWCollaborationOption *)self requiredOptionsIdentifiers];
-  [v4 encodeObject:v8 forKey:@"requiredOptionsIdentifiers"];
+  [coderCopy encodeBool:-[SWCollaborationOption isSelected](self forKey:{"isSelected"), @"selected"}];
+  requiredOptionsIdentifiers = [(SWCollaborationOption *)self requiredOptionsIdentifiers];
+  [coderCopy encodeObject:requiredOptionsIdentifiers forKey:@"requiredOptionsIdentifiers"];
 }
 
-- (SWCollaborationOption)initWithTitle:(id)a3 identifier:(id)a4 subtitle:(id)a5 selected:(BOOL)a6 requiredOptionsIdentifiers:(id)a7
+- (SWCollaborationOption)initWithTitle:(id)title identifier:(id)identifier subtitle:(id)subtitle selected:(BOOL)selected requiredOptionsIdentifiers:(id)identifiers
 {
-  v13 = a5;
-  v14 = a7;
-  v15 = [(SWCollaborationOption *)self initWithTitle:a3 identifier:a4];
+  subtitleCopy = subtitle;
+  identifiersCopy = identifiers;
+  v15 = [(SWCollaborationOption *)self initWithTitle:title identifier:identifier];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_subtitle, a5);
-    v16->_selected = a6;
-    objc_storeStrong(&v16->_requiredOptionsIdentifiers, a7);
+    objc_storeStrong(&v15->_subtitle, subtitle);
+    v16->_selected = selected;
+    objc_storeStrong(&v16->_requiredOptionsIdentifiers, identifiers);
   }
 
   return v16;

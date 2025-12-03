@@ -1,29 +1,29 @@
 @interface PXCuratedLibraryFooterControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_shouldRevealPhotosFooterView;
-- (void)scrollViewControllerDidScroll:(id)a3;
+- (void)scrollViewControllerDidScroll:(id)scroll;
 @end
 
 @implementation PXCuratedLibraryFooterControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXCuratedLibraryFooterController" hasInstanceMethod:@"_shouldRevealPhotosFooterView" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXCuratedLibraryFooterController" hasInstanceMethod:@"gridView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGView" hasInstanceMethod:@"scrollViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXUIScrollViewController"];
-  [v3 validateClass:@"PXUIScrollViewController" hasInstanceMethod:@"isScrolledAtEdge:tolerance:" withFullSignature:{"B", "I", "d", 0}];
-  [v3 validateProtocol:@"PXScrollViewControllerObserver" hasMethod:@"scrollViewControllerDidScroll:" isInstanceMethod:1 isRequired:0];
-  [v3 validateClass:@"PXCuratedLibraryFooterController" conformsToProtocol:@"PXScrollViewControllerObserver"];
-  [v3 validateClass:@"PXCuratedLibraryFooterController" hasInstanceMethod:@"_conditionallyRevealPhotosFooterView" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXCuratedLibraryFooterController" hasInstanceMethod:@"_shouldRevealPhotosFooterView" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryFooterController" hasInstanceMethod:@"gridView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGView" hasInstanceMethod:@"scrollViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXUIScrollViewController"];
+  [validationsCopy validateClass:@"PXUIScrollViewController" hasInstanceMethod:@"isScrolledAtEdge:tolerance:" withFullSignature:{"B", "I", "d", 0}];
+  [validationsCopy validateProtocol:@"PXScrollViewControllerObserver" hasMethod:@"scrollViewControllerDidScroll:" isInstanceMethod:1 isRequired:0];
+  [validationsCopy validateClass:@"PXCuratedLibraryFooterController" conformsToProtocol:@"PXScrollViewControllerObserver"];
+  [validationsCopy validateClass:@"PXCuratedLibraryFooterController" hasInstanceMethod:@"_conditionallyRevealPhotosFooterView" withFullSignature:{"v", 0}];
 }
 
 - (BOOL)_shouldRevealPhotosFooterView
 {
   v12.receiver = self;
   v12.super_class = PXCuratedLibraryFooterControllerAccessibility;
-  v3 = [(PXCuratedLibraryFooterControllerAccessibility *)&v12 _shouldRevealPhotosFooterView];
+  _shouldRevealPhotosFooterView = [(PXCuratedLibraryFooterControllerAccessibility *)&v12 _shouldRevealPhotosFooterView];
   if (UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning())
   {
     v4 = [(PXCuratedLibraryFooterControllerAccessibility *)self safeValueForKey:@"gridView"];
@@ -38,13 +38,13 @@
       v11 = 0;
       v7 = v5;
       AXPerformSafeBlock();
-      v3 = *(v9 + 24);
+      _shouldRevealPhotosFooterView = *(v9 + 24);
 
       _Block_object_dispose(&v8, 8);
     }
   }
 
-  return v3 & 1;
+  return _shouldRevealPhotosFooterView & 1;
 }
 
 uint64_t __78__PXCuratedLibraryFooterControllerAccessibility__shouldRevealPhotosFooterView__block_invoke(uint64_t a1)
@@ -54,11 +54,11 @@ uint64_t __78__PXCuratedLibraryFooterControllerAccessibility__shouldRevealPhotos
   return result;
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
   v3.receiver = self;
   v3.super_class = PXCuratedLibraryFooterControllerAccessibility;
-  [(PXCuratedLibraryFooterControllerAccessibility *)&v3 scrollViewControllerDidScroll:a3];
+  [(PXCuratedLibraryFooterControllerAccessibility *)&v3 scrollViewControllerDidScroll:scroll];
   if (UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning())
   {
     AXPerformSafeBlock();

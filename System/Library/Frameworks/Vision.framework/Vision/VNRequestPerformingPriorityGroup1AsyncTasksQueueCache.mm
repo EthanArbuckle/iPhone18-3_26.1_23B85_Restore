@@ -1,16 +1,16 @@
 @interface VNRequestPerformingPriorityGroup1AsyncTasksQueueCache
-+ (id)queueLabelWithUniqueAppendix:(id)a3;
++ (id)queueLabelWithUniqueAppendix:(id)appendix;
 + (id)sharedCache;
 @end
 
 @implementation VNRequestPerformingPriorityGroup1AsyncTasksQueueCache
 
-+ (id)queueLabelWithUniqueAppendix:(id)a3
++ (id)queueLabelWithUniqueAppendix:(id)appendix
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.VN.VNRequestPerformingPriorityGroup1AsyncTasksQueue.%@", v3];
+  appendixCopy = appendix;
+  appendixCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.VN.VNRequestPerformingPriorityGroup1AsyncTasksQueue.%@", appendixCopy];
 
-  return v4;
+  return appendixCopy;
 }
 
 + (id)sharedCache

@@ -3,36 +3,36 @@
 - (BOOL)needsAdditionalNavData;
 - (BOOL)shouldOfferAlternateChargersAtArrival;
 - (CNContact)contact;
-- (GEOComposedWaypoint)initWithSearchResult:(id)a3;
+- (GEOComposedWaypoint)initWithSearchResult:(id)result;
 - (MKMapItem)mkMapItem;
 - (NSString)arrivingDisplayName;
 - (NSString)parkingDisplayName;
 - (_TtC4Maps16MapsFindMyHandle)findMyHandle;
 - (id)_addressBookAttributes;
-- (id)_maps_waypointImageWithScale:(double)a3;
+- (id)_maps_waypointImageWithScale:(double)scale;
 - (id)_maps_waypointName;
 - (id)hawkQueryRepresentation;
 - (id)shortDescription;
 - (void)clearFindMyData;
-- (void)setAddressBookContactName:(id)a3;
-- (void)setAddressBookContactSpokenName:(id)a3;
-- (void)setUserValuesName:(id)a3;
+- (void)setAddressBookContactName:(id)name;
+- (void)setAddressBookContactSpokenName:(id)name;
+- (void)setUserValuesName:(id)name;
 @end
 
 @implementation GEOComposedWaypoint
 
 - (_TtC4Maps16MapsFindMyHandle)findMyHandle
 {
-  v4 = [(GEOComposedWaypoint *)self findMyHandleID];
+  findMyHandleID = [(GEOComposedWaypoint *)self findMyHandleID];
 
-  if (v4)
+  if (findMyHandleID)
   {
     v5 = objc_getAssociatedObject(self, a2);
     if (!v5)
     {
       v6 = [_TtC4Maps16MapsFindMyHandle alloc];
-      v7 = [(GEOComposedWaypoint *)self findMyHandleID];
-      v5 = [(MapsFindMyHandle *)v6 initWithIdentifier:v7];
+      findMyHandleID2 = [(GEOComposedWaypoint *)self findMyHandleID];
+      v5 = [(MapsFindMyHandle *)v6 initWithIdentifier:findMyHandleID2];
 
       objc_setAssociatedObject(self, a2, v5, 1);
     }
@@ -50,23 +50,23 @@
 
 - (AddressBookAddress)addressBookAddress
 {
-  v4 = [(GEOComposedWaypoint *)self mapItemStorage];
-  v5 = [v4 clientAttributes];
-  v6 = [v5 addressBookAttributes];
-  v7 = [v6 contactIdentifier];
+  mapItemStorage = [(GEOComposedWaypoint *)self mapItemStorage];
+  clientAttributes = [mapItemStorage clientAttributes];
+  addressBookAttributes = [clientAttributes addressBookAttributes];
+  contactIdentifier = [addressBookAttributes contactIdentifier];
 
-  v8 = [(GEOComposedWaypoint *)self mapItemStorage];
-  v9 = [v8 clientAttributes];
-  v10 = [v9 addressBookAttributes];
-  v11 = [v10 addressIdentifier];
+  mapItemStorage2 = [(GEOComposedWaypoint *)self mapItemStorage];
+  clientAttributes2 = [mapItemStorage2 clientAttributes];
+  addressBookAttributes2 = [clientAttributes2 addressBookAttributes];
+  addressIdentifier = [addressBookAttributes2 addressIdentifier];
 
   v12 = 0;
-  if (v7 && v11)
+  if (contactIdentifier && addressIdentifier)
   {
     v13 = objc_getAssociatedObject(self, a2);
     if (!v13)
     {
-      v13 = [[AddressBookAddress alloc] initWithCNContactIdentifier:v7 addressIdentifier:v11];
+      v13 = [[AddressBookAddress alloc] initWithCNContactIdentifier:contactIdentifier addressIdentifier:addressIdentifier];
       objc_setAssociatedObject(self, a2, v13, 1);
     }
 
@@ -76,83 +76,83 @@
   return v12;
 }
 
-- (GEOComposedWaypoint)initWithSearchResult:(id)a3
+- (GEOComposedWaypoint)initWithSearchResult:(id)result
 {
-  v4 = a3;
-  if ([v4 hasExplicitlyProvidedComposedWaypoint])
+  resultCopy = result;
+  if ([resultCopy hasExplicitlyProvidedComposedWaypoint])
   {
-    v5 = [v4 composedWaypoint];
-    v6 = [v5 copy];
+    composedWaypoint = [resultCopy composedWaypoint];
+    v6 = [composedWaypoint copy];
 
     self = v6;
   }
 
-  else if ([v4 type] == 3)
+  else if ([resultCopy type] == 3)
   {
-    [v4 coordinate];
+    [resultCopy coordinate];
     v8 = v7;
-    [v4 coordinate];
-    v5 = [[GEOLocation alloc] initWithGEOCoordinate:{v8, v9}];
-    v10 = [v4 mapItem];
+    [resultCopy coordinate];
+    composedWaypoint = [[GEOLocation alloc] initWithGEOCoordinate:{v8, v9}];
+    mapItem = [resultCopy mapItem];
 
-    if (v10)
+    if (mapItem)
     {
-      v11 = [v4 mapItem];
-      v12 = [v11 _geoMapItemStorageForPersistence];
-      self = [(GEOComposedWaypoint *)self initWithMapItem:v12];
+      mapItem2 = [resultCopy mapItem];
+      _geoMapItemStorageForPersistence = [mapItem2 _geoMapItemStorageForPersistence];
+      self = [(GEOComposedWaypoint *)self initWithMapItem:_geoMapItemStorageForPersistence];
     }
 
     else
     {
-      self = [(GEOComposedWaypoint *)self initWithLocation:v5 isCurrentLocation:0];
+      self = [(GEOComposedWaypoint *)self initWithLocation:composedWaypoint isCurrentLocation:0];
     }
 
     [(GEOComposedWaypoint *)self setType:1];
-    [(GEOComposedWaypoint *)self setLocation:v5];
-    v16 = [v5 latLng];
-    [(GEOComposedWaypoint *)self setLatLng:v16];
+    [(GEOComposedWaypoint *)self setLocation:composedWaypoint];
+    latLng = [composedWaypoint latLng];
+    [(GEOComposedWaypoint *)self setLatLng:latLng];
 
     v17 = objc_alloc_init(GEOWaypointTyped);
     [v17 setWaypointType:4];
     v18 = objc_alloc_init(GEOWaypointLocation);
     [v17 setWaypointLocation:v18];
 
-    v19 = [v17 waypointLocation];
-    [v19 setLocation:v5];
+    waypointLocation = [v17 waypointLocation];
+    [waypointLocation setLocation:composedWaypoint];
 
     [(GEOComposedWaypoint *)self setWaypoint:v17];
   }
 
   else
   {
-    v13 = [v4 mapItem];
+    mapItem3 = [resultCopy mapItem];
 
-    if (v13)
+    if (mapItem3)
     {
-      v14 = [v4 mapItem];
-      v15 = [v14 _geoMapItemStorageForPersistence];
+      mapItem4 = [resultCopy mapItem];
+      _geoMapItemStorageForPersistence2 = [mapItem4 _geoMapItemStorageForPersistence];
     }
 
     else
     {
-      v20 = [v4 place];
+      place = [resultCopy place];
 
-      if (!v20)
+      if (!place)
       {
         goto LABEL_14;
       }
 
-      v14 = [v4 place];
-      v15 = [GEOMapItemStorage mapItemStorageForPlace:v14];
+      mapItem4 = [resultCopy place];
+      _geoMapItemStorageForPersistence2 = [GEOMapItemStorage mapItemStorageForPlace:mapItem4];
     }
 
-    v5 = v15;
+    composedWaypoint = _geoMapItemStorageForPersistence2;
 
-    self = [(GEOComposedWaypoint *)self initWithMapItem:v5];
+    self = [(GEOComposedWaypoint *)self initWithMapItem:composedWaypoint];
   }
 
 LABEL_14:
-  if ([v4 type] == 4)
+  if ([resultCopy type] == 4)
   {
     [(GEOComposedWaypoint *)self setIsCurrentLocation:1];
     [(GEOComposedWaypoint *)self recomputeGeoWaypointTyped];
@@ -163,17 +163,17 @@ LABEL_14:
 
 - (BOOL)shouldOfferAlternateChargersAtArrival
 {
-  v3 = [(GEOComposedWaypoint *)self chargingInfo];
-  if (v3)
+  chargingInfo = [(GEOComposedWaypoint *)self chargingInfo];
+  if (chargingInfo)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(GEOComposedWaypoint *)self geoMapItem];
-    v6 = [v5 _poiCategory];
-    v4 = v6 == GEOPOICategoryEVCharger;
+    geoMapItem = [(GEOComposedWaypoint *)self geoMapItem];
+    _poiCategory = [geoMapItem _poiCategory];
+    v4 = _poiCategory == GEOPOICategoryEVCharger;
   }
 
   return v4;
@@ -181,20 +181,20 @@ LABEL_14:
 
 - (id)hawkQueryRepresentation
 {
-  v3 = [(GEOComposedWaypoint *)self navDisplayAddress];
-  v4 = v3;
-  if (v3)
+  navDisplayAddress = [(GEOComposedWaypoint *)self navDisplayAddress];
+  v4 = navDisplayAddress;
+  if (navDisplayAddress)
   {
-    v5 = v3;
+    v5 = navDisplayAddress;
   }
 
   else
   {
-    v6 = [(GEOComposedWaypoint *)self bestLatLng];
-    v7 = v6;
-    if (v6)
+    bestLatLng = [(GEOComposedWaypoint *)self bestLatLng];
+    v7 = bestLatLng;
+    if (bestLatLng)
     {
-      [v6 coordinate];
+      [bestLatLng coordinate];
       v9 = v8;
       v10 = [NSNumber numberWithDouble:?];
       v11 = [NSNumber numberWithDouble:v9];
@@ -210,87 +210,87 @@ LABEL_14:
 - (id)shortDescription
 {
   v16 = objc_opt_class();
-  v15 = [(GEOComposedWaypoint *)self muid];
-  v3 = [(GEOComposedWaypoint *)self timezone];
-  v4 = [(GEOComposedWaypoint *)self location];
-  v5 = [(GEOComposedWaypoint *)self name];
-  v6 = [(GEOComposedWaypoint *)self navDisplayName];
-  v7 = [(GEOComposedWaypoint *)self navDisplayAddress];
-  v8 = [(GEOComposedWaypoint *)self directionsListAddress];
-  v9 = [(GEOComposedWaypoint *)self waypointCategory];
-  if (v9 >= 0xE)
+  muid = [(GEOComposedWaypoint *)self muid];
+  timezone = [(GEOComposedWaypoint *)self timezone];
+  location = [(GEOComposedWaypoint *)self location];
+  name = [(GEOComposedWaypoint *)self name];
+  navDisplayName = [(GEOComposedWaypoint *)self navDisplayName];
+  navDisplayAddress = [(GEOComposedWaypoint *)self navDisplayAddress];
+  directionsListAddress = [(GEOComposedWaypoint *)self directionsListAddress];
+  waypointCategory = [(GEOComposedWaypoint *)self waypointCategory];
+  if (waypointCategory >= 0xE)
   {
-    v10 = [NSString stringWithFormat:@"(unknown: %i)", v9];
+    v10 = [NSString stringWithFormat:@"(unknown: %i)", waypointCategory];
   }
 
   else
   {
-    v10 = *(&off_101630940 + v9);
+    v10 = *(&off_101630940 + waypointCategory);
   }
 
-  v11 = [(GEOComposedWaypoint *)self type];
-  if (v11 >= 4)
+  type = [(GEOComposedWaypoint *)self type];
+  if (type >= 4)
   {
-    v12 = [NSString stringWithFormat:@"(unknown: %i)", v11];
+    v12 = [NSString stringWithFormat:@"(unknown: %i)", type];
   }
 
   else
   {
-    v12 = *(&off_1016309B0 + v11);
+    v12 = *(&off_1016309B0 + type);
   }
 
-  v13 = [NSString stringWithFormat:@"<%@:%p, muid: %llu, timezone: %@, location: %@, name: %@, navDisplayName: %@, navDisplayAddress: %@, directionsListAddress: %@, waypointCategory: %@, waypointType: %@, isCurrentLocation: %d, isServerProvidedWaypoint: %d>", v16, self, v15, v3, v4, v5, v6, v7, v8, v10, v12, [(GEOComposedWaypoint *)self isCurrentLocation], [(GEOComposedWaypoint *)self isServerProvidedWaypoint]];
+  v13 = [NSString stringWithFormat:@"<%@:%p, muid: %llu, timezone: %@, location: %@, name: %@, navDisplayName: %@, navDisplayAddress: %@, directionsListAddress: %@, waypointCategory: %@, waypointType: %@, isCurrentLocation: %d, isServerProvidedWaypoint: %d>", v16, self, muid, timezone, location, name, navDisplayName, navDisplayAddress, directionsListAddress, v10, v12, [(GEOComposedWaypoint *)self isCurrentLocation], [(GEOComposedWaypoint *)self isServerProvidedWaypoint]];
 
   return v13;
 }
 
-- (id)_maps_waypointImageWithScale:(double)a3
+- (id)_maps_waypointImageWithScale:(double)scale
 {
-  v5 = [(GEOComposedWaypoint *)self findMyHandleID];
+  findMyHandleID = [(GEOComposedWaypoint *)self findMyHandleID];
 
-  if (v5)
+  if (findMyHandleID)
   {
-    v6 = [(GEOComposedWaypoint *)self findMyHandle];
-    v7 = [v6 thumbnailIconWithScale:a3 size:{44.0, 44.0}];
+    findMyHandle = [(GEOComposedWaypoint *)self findMyHandle];
+    v7 = [findMyHandle thumbnailIconWithScale:scale size:{44.0, 44.0}];
     goto LABEL_12;
   }
 
-  v8 = [(GEOComposedWaypoint *)self addressBookAddress];
+  addressBookAddress = [(GEOComposedWaypoint *)self addressBookAddress];
 
-  if (v8)
+  if (addressBookAddress)
   {
-    v6 = [(GEOComposedWaypoint *)self addressBookAddress];
-    v7 = [v6 thumbnailIconWithScale:3 size:a3];
+    findMyHandle = [(GEOComposedWaypoint *)self addressBookAddress];
+    v7 = [findMyHandle thumbnailIconWithScale:3 size:scale];
     goto LABEL_12;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = +[GEOFeatureStyleAttributes customSavedRouteStyleAttributes];
+    styleAttributes2 = +[GEOFeatureStyleAttributes customSavedRouteStyleAttributes];
 LABEL_11:
-    v6 = v9;
-    v7 = [MKIconManager imageForStyle:v9 size:3 forScale:0 format:a3];
+    findMyHandle = styleAttributes2;
+    v7 = [MKIconManager imageForStyle:styleAttributes2 size:3 forScale:0 format:scale];
     goto LABEL_12;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = +[GEOFeatureStyleAttributes evChargerStyleAttributes];
+    styleAttributes2 = +[GEOFeatureStyleAttributes evChargerStyleAttributes];
     goto LABEL_11;
   }
 
-  v10 = [(GEOComposedWaypoint *)self styleAttributes];
+  styleAttributes = [(GEOComposedWaypoint *)self styleAttributes];
 
-  if (v10)
+  if (styleAttributes)
   {
-    v9 = [(GEOComposedWaypoint *)self styleAttributes];
+    styleAttributes2 = [(GEOComposedWaypoint *)self styleAttributes];
     goto LABEL_11;
   }
 
-  v6 = [(GEOComposedWaypoint *)self mkMapItem];
-  v7 = [MKMapItem _maps_markerImageForMapItem:v6 scale:3 size:1 useMarkerFallback:a3];
+  findMyHandle = [(GEOComposedWaypoint *)self mkMapItem];
+  v7 = [MKMapItem _maps_markerImageForMapItem:findMyHandle scale:3 size:1 useMarkerFallback:scale];
 LABEL_12:
   v11 = v7;
 
@@ -299,36 +299,36 @@ LABEL_12:
 
 - (id)_maps_waypointName
 {
-  v3 = [(GEOComposedWaypoint *)self findMyHandleID];
+  findMyHandleID = [(GEOComposedWaypoint *)self findMyHandleID];
 
-  if (v3)
+  if (findMyHandleID)
   {
-    v4 = [(GEOComposedWaypoint *)self findMyHandle];
-    v5 = [v4 displayName];
+    findMyHandle = [(GEOComposedWaypoint *)self findMyHandle];
+    displayName = [findMyHandle displayName];
 LABEL_7:
-    v8 = v5;
+    v8 = displayName;
     goto LABEL_8;
   }
 
-  v6 = [(GEOComposedWaypoint *)self addressBookAddress];
+  addressBookAddress = [(GEOComposedWaypoint *)self addressBookAddress];
 
-  if (v6)
+  if (addressBookAddress)
   {
-    v4 = [(GEOComposedWaypoint *)self addressBookAddress];
-    v5 = [v4 waypointCompositeName];
+    findMyHandle = [(GEOComposedWaypoint *)self addressBookAddress];
+    displayName = [findMyHandle waypointCompositeName];
     goto LABEL_7;
   }
 
-  v7 = [(GEOComposedWaypoint *)self name];
-  if (v7)
+  name = [(GEOComposedWaypoint *)self name];
+  if (name)
   {
-    v5 = v7;
-    v4 = v5;
+    displayName = name;
+    findMyHandle = displayName;
     goto LABEL_7;
   }
 
   v8 = MKLocalizedStringForUnknownLocation();
-  v4 = 0;
+  findMyHandle = 0;
 LABEL_8:
 
   return v8;
@@ -336,26 +336,26 @@ LABEL_8:
 
 - (BOOL)needsAdditionalNavData
 {
-  v3 = [(GEOComposedWaypoint *)self geoMapItem];
-  v4 = [v3 _place];
+  geoMapItem = [(GEOComposedWaypoint *)self geoMapItem];
+  _place = [geoMapItem _place];
 
-  v5 = [v4 address];
-  v6 = [v5 structuredAddress];
+  address = [_place address];
+  structuredAddress = [address structuredAddress];
 
-  if ([v6 hasSubThoroughfare])
+  if ([structuredAddress hasSubThoroughfare])
   {
-    v7 = 1;
+    hasFullThoroughfare = 1;
   }
 
   else
   {
-    v7 = [v6 hasFullThoroughfare];
+    hasFullThoroughfare = [structuredAddress hasFullThoroughfare];
   }
 
-  v8 = [(GEOComposedWaypoint *)self geoMapItem];
-  if ([v8 _hasMUID])
+  geoMapItem2 = [(GEOComposedWaypoint *)self geoMapItem];
+  if ([geoMapItem2 _hasMUID])
   {
-    v9 = [v4 hasSpokenName] ^ 1;
+    v9 = [_place hasSpokenName] ^ 1;
   }
 
   else
@@ -363,16 +363,16 @@ LABEL_8:
     LOBYTE(v9) = 0;
   }
 
-  v10 = [(GEOComposedWaypoint *)self geoMapItem];
-  [v10 coordinate];
+  geoMapItem3 = [(GEOComposedWaypoint *)self geoMapItem];
+  [geoMapItem3 coordinate];
   v12 = v11;
   v14 = v13;
 
-  if (v7)
+  if (hasFullThoroughfare)
   {
-    v15 = [v4 hasSpokenAddress] ^ 1;
-    v16 = [v4 entryPoints];
-    v17 = [v16 count];
+    v15 = [_place hasSpokenAddress] ^ 1;
+    entryPoints = [_place entryPoints];
+    v17 = [entryPoints count];
 
     if (v17)
     {
@@ -397,15 +397,15 @@ LABEL_8:
 
 - (id)_addressBookAttributes
 {
-  v2 = [(GEOComposedWaypoint *)self mapItemStorage];
-  v3 = v2;
-  if (v2)
+  mapItemStorage = [(GEOComposedWaypoint *)self mapItemStorage];
+  v3 = mapItemStorage;
+  if (mapItemStorage)
   {
-    v4 = [v2 clientAttributes];
-    v5 = v4;
-    if (v4)
+    clientAttributes = [mapItemStorage clientAttributes];
+    v5 = clientAttributes;
+    if (clientAttributes)
     {
-      v6 = v4;
+      v6 = clientAttributes;
     }
 
     else
@@ -415,11 +415,11 @@ LABEL_8:
 
     v8 = v6;
 
-    v9 = [v8 addressBookAttributes];
-    v10 = v9;
-    if (v9)
+    addressBookAttributes = [v8 addressBookAttributes];
+    v10 = addressBookAttributes;
+    if (addressBookAttributes)
     {
-      v11 = v9;
+      v11 = addressBookAttributes;
     }
 
     else
@@ -441,32 +441,32 @@ LABEL_8:
   return v7;
 }
 
-- (void)setAddressBookContactSpokenName:(id)a3
+- (void)setAddressBookContactSpokenName:(id)name
 {
-  v5 = [a3 copy];
-  v4 = [(GEOComposedWaypoint *)self _addressBookAttributes];
-  [v4 setSpokenName:v5];
+  v5 = [name copy];
+  _addressBookAttributes = [(GEOComposedWaypoint *)self _addressBookAttributes];
+  [_addressBookAttributes setSpokenName:v5];
 }
 
-- (void)setAddressBookContactName:(id)a3
+- (void)setAddressBookContactName:(id)name
 {
-  v5 = [a3 copy];
-  v4 = [(GEOComposedWaypoint *)self _addressBookAttributes];
-  [v4 setName:v5];
+  v5 = [name copy];
+  _addressBookAttributes = [(GEOComposedWaypoint *)self _addressBookAttributes];
+  [_addressBookAttributes setName:v5];
 }
 
-- (void)setUserValuesName:(id)a3
+- (void)setUserValuesName:(id)name
 {
-  v11 = a3;
-  v4 = [(GEOComposedWaypoint *)self mapItemStorage];
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  mapItemStorage = [(GEOComposedWaypoint *)self mapItemStorage];
+  v5 = mapItemStorage;
+  if (mapItemStorage)
   {
-    v6 = [v4 userValues];
-    v7 = v6;
-    if (v6)
+    userValues = [mapItemStorage userValues];
+    v7 = userValues;
+    if (userValues)
     {
-      v8 = v6;
+      v8 = userValues;
     }
 
     else
@@ -476,7 +476,7 @@ LABEL_8:
 
     v9 = v8;
 
-    v10 = [v11 copy];
+    v10 = [nameCopy copy];
     [v9 setName:v10];
 
     [v5 setUserValues:v9];
@@ -487,13 +487,13 @@ LABEL_8:
 {
   [(GEOComposedWaypoint *)self setFindMyHandleID:0];
   [(GEOComposedWaypoint *)self setStyleAttributes:0];
-  v3 = [(GEOComposedWaypoint *)self mapItemStorage];
-  v4 = [v3 userValues];
-  [v4 setName:0];
+  mapItemStorage = [(GEOComposedWaypoint *)self mapItemStorage];
+  userValues = [mapItemStorage userValues];
+  [userValues setName:0];
 
-  v5 = [(GEOComposedWaypoint *)self mapItemStorage];
-  v6 = [v5 clientAttributes];
-  [v6 setAddressBookAttributes:0];
+  mapItemStorage2 = [(GEOComposedWaypoint *)self mapItemStorage];
+  clientAttributes = [mapItemStorage2 clientAttributes];
+  [clientAttributes setAddressBookAttributes:0];
 
   [(GEOComposedWaypoint *)self recomputeGeoWaypointTyped];
 
@@ -502,16 +502,16 @@ LABEL_8:
 
 - (CNContact)contact
 {
-  v3 = [(GEOComposedWaypoint *)self addressBookAddress];
-  v4 = [v3 contact];
+  addressBookAddress = [(GEOComposedWaypoint *)self addressBookAddress];
+  contact = [addressBookAddress contact];
 
-  if (!v4)
+  if (!contact)
   {
-    v5 = [(GEOComposedWaypoint *)self findMyHandle];
-    v4 = [v5 contact];
+    findMyHandle = [(GEOComposedWaypoint *)self findMyHandle];
+    contact = [findMyHandle contact];
   }
 
-  return v4;
+  return contact;
 }
 
 - (MKMapItem)mkMapItem
@@ -519,17 +519,17 @@ LABEL_8:
   v4 = objc_getAssociatedObject(self, a2);
   if (!v4)
   {
-    v5 = [(GEOComposedWaypoint *)self isCurrentLocation];
+    isCurrentLocation = [(GEOComposedWaypoint *)self isCurrentLocation];
     v6 = [MKMapItem alloc];
-    v7 = [(GEOComposedWaypoint *)self geoMapItem];
-    if (v5)
+    geoMapItem = [(GEOComposedWaypoint *)self geoMapItem];
+    if (isCurrentLocation)
     {
-      v8 = [v6 initWithGeoMapItemAsCurrentLocation:v7];
+      v8 = [v6 initWithGeoMapItemAsCurrentLocation:geoMapItem];
     }
 
     else
     {
-      v8 = [v6 initWithGeoMapItem:v7 isPlaceHolderPlace:0];
+      v8 = [v6 initWithGeoMapItem:geoMapItem isPlaceHolderPlace:0];
     }
 
     v4 = v8;
@@ -544,24 +544,24 @@ LABEL_8:
 
 - (NSString)parkingDisplayName
 {
-  v3 = [(GEOComposedWaypoint *)self arrivingDisplayName];
+  arrivingDisplayName = [(GEOComposedWaypoint *)self arrivingDisplayName];
   v4 = +[MNNavigationService sharedService];
-  v5 = [v4 lastLocation];
+  lastLocation = [v4 lastLocation];
 
-  if (v5)
+  if (lastLocation)
   {
-    [v5 coordinate];
+    [lastLocation coordinate];
     [(GEOComposedWaypoint *)self coordinate];
     GEOCalculateDistance();
     v6 = [NSString _navigation_localizedStringForDistance:1 context:0 extraDetail:?];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Parking Display Address [Nav Tray Header]" value:@"localized string not found" table:0];
-    v9 = [NSString stringWithFormat:v8, v6, v3];
+    v9 = [NSString stringWithFormat:v8, v6, arrivingDisplayName];
   }
 
   else
   {
-    v9 = v3;
+    v9 = arrivingDisplayName;
   }
 
   return v9;
@@ -569,43 +569,43 @@ LABEL_8:
 
 - (NSString)arrivingDisplayName
 {
-  v3 = [(GEOComposedWaypoint *)self navDisplayName];
-  v4 = [(GEOComposedWaypoint *)self findMyHandleID];
+  navDisplayName = [(GEOComposedWaypoint *)self navDisplayName];
+  findMyHandleID = [(GEOComposedWaypoint *)self findMyHandleID];
 
-  if (v4)
+  if (findMyHandleID)
   {
-    v5 = [(GEOComposedWaypoint *)self findMyHandle];
-    v6 = [v5 displayName];
+    findMyHandle = [(GEOComposedWaypoint *)self findMyHandle];
+    displayName = [findMyHandle displayName];
 LABEL_5:
-    v8 = v6;
-    if (v6)
+    v8 = displayName;
+    if (displayName)
     {
-      v9 = v6;
+      v9 = displayName;
     }
 
     else
     {
-      v9 = v3;
+      v9 = navDisplayName;
     }
 
     v10 = v9;
 
-    v3 = v10;
+    navDisplayName = v10;
     goto LABEL_9;
   }
 
-  v7 = [(GEOComposedWaypoint *)self addressBookAddress];
+  addressBookAddress = [(GEOComposedWaypoint *)self addressBookAddress];
 
-  if (v7)
+  if (addressBookAddress)
   {
-    v5 = [(GEOComposedWaypoint *)self addressBookAddress];
-    v6 = [v5 waypointCompositeName];
+    findMyHandle = [(GEOComposedWaypoint *)self addressBookAddress];
+    displayName = [findMyHandle waypointCompositeName];
     goto LABEL_5;
   }
 
 LABEL_9:
 
-  return v3;
+  return navDisplayName;
 }
 
 @end

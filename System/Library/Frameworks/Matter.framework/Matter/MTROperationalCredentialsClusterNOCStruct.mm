@@ -1,6 +1,6 @@
 @interface MTROperationalCredentialsClusterNOCStruct
 - (MTROperationalCredentialsClusterNOCStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,9 +13,9 @@
   v2 = [(MTROperationalCredentialsClusterNOCStruct *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     noc = v2->_noc;
-    v2->_noc = v3;
+    v2->_noc = data;
 
     icac = v2->_icac;
     v2->_icac = 0;
@@ -30,20 +30,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalCredentialsClusterNOCStruct);
   v5 = [(MTROperationalCredentialsClusterNOCStruct *)self noc];
   [(MTROperationalCredentialsClusterNOCStruct *)v4 setNoc:v5];
 
-  v6 = [(MTROperationalCredentialsClusterNOCStruct *)self icac];
-  [(MTROperationalCredentialsClusterNOCStruct *)v4 setIcac:v6];
+  icac = [(MTROperationalCredentialsClusterNOCStruct *)self icac];
+  [(MTROperationalCredentialsClusterNOCStruct *)v4 setIcac:icac];
 
-  v7 = [(MTROperationalCredentialsClusterNOCStruct *)self vvsc];
-  [(MTROperationalCredentialsClusterNOCStruct *)v4 setVvsc:v7];
+  vvsc = [(MTROperationalCredentialsClusterNOCStruct *)self vvsc];
+  [(MTROperationalCredentialsClusterNOCStruct *)v4 setVvsc:vvsc];
 
-  v8 = [(MTROperationalCredentialsClusterNOCStruct *)self fabricIndex];
-  [(MTROperationalCredentialsClusterNOCStruct *)v4 setFabricIndex:v8];
+  fabricIndex = [(MTROperationalCredentialsClusterNOCStruct *)self fabricIndex];
+  [(MTROperationalCredentialsClusterNOCStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

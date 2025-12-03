@@ -1,10 +1,10 @@
 @interface FIFitnessIntelligencePlugin
 - (NSString)schemaName;
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3;
+- (id)databaseEntitiesForProtectionClass:(int64_t)class;
 - (id)orderedSyncEntities;
 - (id)taskServerClasses;
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3;
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4;
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class;
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator;
 @end
 
 @implementation FIFitnessIntelligencePlugin
@@ -31,15 +31,15 @@
   return v2;
 }
 
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class
 {
   v3 = 6;
-  if (a3 != 1)
+  if (class != 1)
   {
     v3 = 0;
   }
 
-  if (a3 == 2)
+  if (class == 2)
   {
     return 9;
   }
@@ -50,20 +50,20 @@
   }
 }
 
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3
+- (id)databaseEntitiesForProtectionClass:(int64_t)class
 {
-  _s25FitnessIntelligencePluginAAC16databaseEntities3forSayyXlXpGSo29HDSQLiteEntityProtectionClassV_tF_0(a3);
+  _s25FitnessIntelligencePluginAAC16databaseEntities3forSayyXlXpGSo29HDSQLiteEntityProtectionClassV_tF_0(class);
   sub_38F8(qword_8ED08, &unk_79BE0);
   v3.super.isa = sub_75678().super.isa;
 
   return v3.super.isa;
 }
 
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator
 {
-  v7 = a4;
-  v6 = self;
-  _s25FitnessIntelligencePluginAAC22registerMigrationSteps3for8migratorySo29HDSQLiteEntityProtectionClassV_So18HDDatabaseMigratorCtF_0(a3, v7);
+  migratorCopy = migrator;
+  selfCopy = self;
+  _s25FitnessIntelligencePluginAAC22registerMigrationSteps3for8migratorySo29HDSQLiteEntityProtectionClassV_So18HDDatabaseMigratorCtF_0(class, migratorCopy);
 }
 
 - (id)orderedSyncEntities

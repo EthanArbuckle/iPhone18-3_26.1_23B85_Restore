@@ -1,12 +1,12 @@
 @interface SASButtonIdentifierTransport
-- (BOOL)_identifierMatchesSiriButtonIdentifier:(int64_t)a3;
-- (SASButtonIdentifierTransport)initWithCoder:(id)a3;
-- (SASButtonIdentifierTransport)initWithSiriButtonIdentifier:(int64_t)a3;
-- (SASButtonIdentifierTransport)initWithString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_identifierMatchesSiriButtonIdentifier:(int64_t)identifier;
+- (SASButtonIdentifierTransport)initWithCoder:(id)coder;
+- (SASButtonIdentifierTransport)initWithSiriButtonIdentifier:(int64_t)identifier;
+- (SASButtonIdentifierTransport)initWithString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)siriButtonIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)siriButtonIdentifier;
 @end
 
@@ -15,8 +15,8 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(SASButtonIdentifierTransport *)self identifier];
-  v4 = [v2 stringWithFormat:@"SASButtonIdentifierTransport:%@", v3];
+  identifier = [(SASButtonIdentifierTransport *)self identifier];
+  v4 = [v2 stringWithFormat:@"SASButtonIdentifierTransport:%@", identifier];
 
   return v4;
 }
@@ -86,61 +86,61 @@
   return v3;
 }
 
-- (SASButtonIdentifierTransport)initWithSiriButtonIdentifier:(int64_t)a3
+- (SASButtonIdentifierTransport)initWithSiriButtonIdentifier:(int64_t)identifier
 {
   v7.receiver = self;
   v7.super_class = SASButtonIdentifierTransport;
   v4 = [(SASButtonIdentifierTransport *)&v7 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:a3];
+    v5 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:identifier];
     [(SASButtonIdentifierTransport *)v4 setIdentifier:v5];
   }
 
   return v4;
 }
 
-- (SASButtonIdentifierTransport)initWithString:(id)a3
+- (SASButtonIdentifierTransport)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v8.receiver = self;
   v8.super_class = SASButtonIdentifierTransport;
   v5 = [(SASButtonIdentifierTransport *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SASButtonIdentifierTransport *)v5 setIdentifier:v4];
+    [(SASButtonIdentifierTransport *)v5 setIdentifier:stringCopy];
   }
 
   return v6;
 }
 
-- (BOOL)_identifierMatchesSiriButtonIdentifier:(int64_t)a3
+- (BOOL)_identifierMatchesSiriButtonIdentifier:(int64_t)identifier
 {
-  v4 = [(SASButtonIdentifierTransport *)self identifier];
-  v5 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:a3];
-  v6 = [v4 isEqualToString:v5];
+  identifier = [(SASButtonIdentifierTransport *)self identifier];
+  v5 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:identifier];
+  v6 = [identifier isEqualToString:v5];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(SASButtonIdentifierTransport *)self siriButtonIdentifier];
+  siriButtonIdentifier = [(SASButtonIdentifierTransport *)self siriButtonIdentifier];
 
-  return [v4 initWithSiriButtonIdentifier:v5];
+  return [v4 initWithSiriButtonIdentifier:siriButtonIdentifier];
 }
 
-- (SASButtonIdentifierTransport)initWithCoder:(id)a3
+- (SASButtonIdentifierTransport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SASButtonIdentifierTransport;
   v5 = [(SASButtonIdentifierTransport *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -148,23 +148,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SASButtonIdentifierTransport *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(SASButtonIdentifierTransport *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
 - (void)siriButtonIdentifier
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 identifier];
+  selfCopy = self;
+  identifier = [a2 identifier];
   v6 = 136315394;
   v7 = "[SASButtonIdentifierTransport siriButtonIdentifier]";
   v8 = 2112;
-  v9 = v4;
-  _os_log_error_impl(&dword_1C8137000, v3, OS_LOG_TYPE_ERROR, "%s ERROR: attempted to create SiriButtonIdentifier from '%@'.", &v6, 0x16u);
+  v9 = identifier;
+  _os_log_error_impl(&dword_1C8137000, selfCopy, OS_LOG_TYPE_ERROR, "%s ERROR: attempted to create SiriButtonIdentifier from '%@'.", &v6, 0x16u);
 
   v5 = *MEMORY[0x1E69E9840];
 }

@@ -1,6 +1,6 @@
 @interface TSPDocumentSaveOperationState
 - (TSPDocumentSaveOperationState)init;
-- (TSPDocumentSaveOperationState)initWithURL:(id)a3 updateType:(int64_t)a4 packageType:(int64_t)a5;
+- (TSPDocumentSaveOperationState)initWithURL:(id)l updateType:(int64_t)type packageType:(int64_t)packageType;
 @end
 
 @implementation TSPDocumentSaveOperationState
@@ -21,19 +21,19 @@
   objc_exception_throw(v13);
 }
 
-- (TSPDocumentSaveOperationState)initWithURL:(id)a3 updateType:(int64_t)a4 packageType:(int64_t)a5
+- (TSPDocumentSaveOperationState)initWithURL:(id)l updateType:(int64_t)type packageType:(int64_t)packageType
 {
-  v8 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = TSPDocumentSaveOperationState;
-  v11 = [(TSPSaveOperationState *)&v15 initWithUpdateType:a4];
+  v11 = [(TSPSaveOperationState *)&v15 initWithUpdateType:type];
   if (v11)
   {
-    v12 = objc_msgSend_copy(v8, v9, v10);
+    v12 = objc_msgSend_copy(lCopy, v9, v10);
     URL = v11->_URL;
     v11->_URL = v12;
 
-    v11->_packageType = a5;
+    v11->_packageType = packageType;
   }
 
   return v11;

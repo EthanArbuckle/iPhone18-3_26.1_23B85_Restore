@@ -1,17 +1,17 @@
 @interface SKDRecordProcessor
-- (BOOL)willProcessRecord:(id)a3 bundleID:(id)a4;
+- (BOOL)willProcessRecord:(id)record bundleID:(id)d;
 - (SKDEventLogger)logger;
-- (SKDRecordProcessor)initWithName:(id)a3;
+- (SKDRecordProcessor)initWithName:(id)name;
 - (id)fetchedAttributes;
-- (id)processRecord:(id)a3 bundleID:(id)a4;
-- (void)setLogger:(id)a3;
+- (id)processRecord:(id)record bundleID:(id)d;
+- (void)setLogger:(id)logger;
 @end
 
 @implementation SKDRecordProcessor
 
-- (SKDRecordProcessor)initWithName:(id)a3
+- (SKDRecordProcessor)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = SKDRecordProcessor;
   v5 = [(SKDRecordProcessor *)&v17 init];
@@ -20,7 +20,7 @@
   {
     atomic_store(0, &v5->_is_suspended);
     atomic_store(1u, &v5->_is_enabled);
-    v7 = [v4 copy];
+    v7 = [nameCopy copy];
     name = v6->_name;
     v6->_name = v7;
 
@@ -29,9 +29,9 @@
     v6->_marker = v9;
 
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.spotlightknowledge.processor.%@", v6->_name];
-    v12 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v14 = dispatch_queue_create(v12, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
     queue = v6->_queue;
     v6->_queue = v14;
   }
@@ -41,28 +41,28 @@
 
 - (id)fetchedAttributes
 {
-  v3 = [(SKDRecordProcessor *)self requiredAttributes];
-  v4 = v3;
+  requiredAttributes = [(SKDRecordProcessor *)self requiredAttributes];
+  v4 = requiredAttributes;
   v5 = MEMORY[0x277CBEBF8];
-  if (v3)
+  if (requiredAttributes)
   {
-    v5 = v3;
+    v5 = requiredAttributes;
   }
 
   v6 = v5;
 
-  v7 = [(SKDRecordProcessor *)self processedAttributes];
-  v8 = [v6 arrayByAddingObjectsFromArray:v7];
+  processedAttributes = [(SKDRecordProcessor *)self processedAttributes];
+  v8 = [v6 arrayByAddingObjectsFromArray:processedAttributes];
 
   return v8;
 }
 
-- (BOOL)willProcessRecord:(id)a3 bundleID:(id)a4
+- (BOOL)willProcessRecord:(id)record bundleID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SKDRecordProcessor *)self marker];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  recordCopy = record;
+  marker = [(SKDRecordProcessor *)self marker];
+  v7 = [recordCopy objectForKeyedSubscript:marker];
 
   if (v7)
   {
@@ -71,15 +71,15 @@
 
   else
   {
-    v9 = [(SKDRecordProcessor *)self requiredAttributes];
-    v10 = v9;
-    if (v9)
+    requiredAttributes = [(SKDRecordProcessor *)self requiredAttributes];
+    v10 = requiredAttributes;
+    if (requiredAttributes)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v11 = v9;
+      v11 = requiredAttributes;
       v8 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
@@ -93,7 +93,7 @@
               objc_enumerationMutation(v11);
             }
 
-            v14 = [v5 objectForKeyedSubscript:{*(*(&v17 + 1) + 8 * i), v17}];
+            v14 = [recordCopy objectForKeyedSubscript:{*(*(&v17 + 1) + 8 * i), v17}];
 
             if (v14)
             {
@@ -125,15 +125,15 @@ LABEL_14:
   return v8;
 }
 
-- (id)processRecord:(id)a3 bundleID:(id)a4
+- (id)processRecord:(id)record bundleID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = [SKDRecordUpdate alloc];
-  v7 = [(SKDRecordProcessor *)self name];
-  v8 = [(SKDRecordUpdate *)v6 initWithStatus:2 identifier:v7 bundleID:v5];
+  name = [(SKDRecordProcessor *)self name];
+  v8 = [(SKDRecordUpdate *)v6 initWithStatus:2 identifier:name bundleID:dCopy];
 
-  v9 = [(SKDRecordProcessor *)self name];
-  [(SKDItemUpdate *)v8 setPipeline:v9];
+  name2 = [(SKDRecordProcessor *)self name];
+  [(SKDItemUpdate *)v8 setPipeline:name2];
 
   return v8;
 }
@@ -154,10 +154,10 @@ LABEL_14:
   return logger;
 }
 
-- (void)setLogger:(id)a3
+- (void)setLogger:(id)logger
 {
-  v9 = a3;
-  objc_storeStrong(&self->_logger, a3);
+  loggerCopy = logger;
+  objc_storeStrong(&self->_logger, logger);
   logger = self->_logger;
   if ([(SKDRecordProcessor *)self enabled])
   {

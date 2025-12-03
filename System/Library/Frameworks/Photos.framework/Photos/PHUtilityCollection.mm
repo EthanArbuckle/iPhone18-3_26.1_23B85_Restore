@@ -1,6 +1,6 @@
 @interface PHUtilityCollection
-+ (id)fetchUtilityCollectionsForReferences:(id)a3 photoLibrary:(id)a4;
-- (PHUtilityCollection)initWithType:(unsigned __int16)a3 fetchOptions:(id)a4;
++ (id)fetchUtilityCollectionsForReferences:(id)references photoLibrary:(id)library;
+- (PHUtilityCollection)initWithType:(unsigned __int16)type fetchOptions:(id)options;
 - (id)description;
 - (id)localizedTitle;
 @end
@@ -43,43 +43,43 @@
   }
 }
 
-- (PHUtilityCollection)initWithType:(unsigned __int16)a3 fetchOptions:(id)a4
+- (PHUtilityCollection)initWithType:(unsigned __int16)type fetchOptions:(id)options
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [PHQuery queryForAssetsInUtilityCollectionWithType:v4 options:v6];
+  typeCopy = type;
+  optionsCopy = options;
+  v7 = [PHQuery queryForAssetsInUtilityCollectionWithType:typeCopy options:optionsCopy];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"utility-%d", v4];
-    v9 = [v6 photoLibrary];
+    typeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"utility-%d", typeCopy];
+    photoLibrary = [optionsCopy photoLibrary];
     v12.receiver = self;
     v12.super_class = PHUtilityCollection;
     v11 = 0;
-    self = [(PHAssetCollection *)&v12 initTransientWithAssets:0 orFetchResult:0 orQuery:v7 title:0 subtitle:0 titleFontName:0 identifier:v8 albumKind:v11 subtype:0 photoLibrary:v9];
+    self = [(PHAssetCollection *)&v12 initTransientWithAssets:0 orFetchResult:0 orQuery:v7 title:0 subtitle:0 titleFontName:0 identifier:typeCopy albumKind:v11 subtype:0 photoLibrary:photoLibrary];
 
     if (self)
     {
-      self->_type = v4;
+      self->_type = typeCopy;
     }
   }
 
   return self;
 }
 
-+ (id)fetchUtilityCollectionsForReferences:(id)a3 photoLibrary:(id)a4
++ (id)fetchUtilityCollectionsForReferences:(id)references photoLibrary:(id)library
 {
-  v5 = a4;
-  v6 = a3;
+  libraryCopy = library;
+  referencesCopy = references;
   v7 = +[(PHAssetCollection *)PHUtilityCollection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __92__PHUtilityCollection_PHObjectReference__fetchUtilityCollectionsForReferences_photoLibrary___block_invoke;
   v12[3] = &unk_1E75A8B70;
-  v13 = v5;
+  v13 = libraryCopy;
   v14 = v7;
   v8 = v7;
-  v9 = v5;
-  v10 = PHCollectionReferenceFetchCollectionsForReferences(v6, v9, v8, v12);
+  v9 = libraryCopy;
+  v10 = PHCollectionReferenceFetchCollectionsForReferences(referencesCopy, v9, v8, v12);
 
   return v10;
 }

@@ -1,29 +1,29 @@
 @interface CSComplicationManager
-- (BOOL)_bundleHasOpenURLEntitlement:(id)a3;
-- (BOOL)_widgetHasMatchingSystemDescriptor:(id)a3;
-- (CSComplicationManager)initWithApplicationInformer:(id)a3 urlHandler:(id)a4;
-- (id)_widgetMetricsForBounds:(CGRect)a3 fromMetrics:(id)a4;
-- (void)_complicationDescriptorsForWidgets:(id)a3 completion:(id)a4;
-- (void)_createComplicationDescriptorForWidget:(id)a3 withMetrics:(id)a4 completion:(id)a5;
-- (void)_openApplicationWithBundleIdentifier:(id)a3 action:(id)a4;
+- (BOOL)_bundleHasOpenURLEntitlement:(id)entitlement;
+- (BOOL)_widgetHasMatchingSystemDescriptor:(id)descriptor;
+- (CSComplicationManager)initWithApplicationInformer:(id)informer urlHandler:(id)handler;
+- (id)_widgetMetricsForBounds:(CGRect)bounds fromMetrics:(id)metrics;
+- (void)_complicationDescriptorsForWidgets:(id)widgets completion:(id)completion;
+- (void)_createComplicationDescriptorForWidget:(id)widget withMetrics:(id)metrics completion:(id)completion;
+- (void)_openApplicationWithBundleIdentifier:(id)identifier action:(id)action;
 - (void)_updateComplicationsForActivePosterConfiguration;
 - (void)_updateWidgetHostConfiguration;
-- (void)applicationInformer:(id)a3 updatedApplications:(id)a4;
+- (void)applicationInformer:(id)informer updatedApplications:(id)applications;
 - (void)dealloc;
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3;
-- (void)handleLaunchRequestForWidget:(id)a3 withAction:(id)a4;
-- (void)setOnInlineComplicationUpdate:(id)a3;
-- (void)setOnSidebarWidgetUpdate:(id)a3;
-- (void)setOnTintColorUpdate:(id)a3;
-- (void)setOnWidgetUpdate:(id)a3;
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider;
+- (void)handleLaunchRequestForWidget:(id)widget withAction:(id)action;
+- (void)setOnInlineComplicationUpdate:(id)update;
+- (void)setOnSidebarWidgetUpdate:(id)update;
+- (void)setOnTintColorUpdate:(id)update;
+- (void)setOnWidgetUpdate:(id)update;
 @end
 
 @implementation CSComplicationManager
 
-- (CSComplicationManager)initWithApplicationInformer:(id)a3 urlHandler:(id)a4
+- (CSComplicationManager)initWithApplicationInformer:(id)informer urlHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  informerCopy = informer;
+  handlerCopy = handler;
   v28.receiver = self;
   v28.super_class = CSComplicationManager;
   v9 = [(CSComplicationManager *)&v28 init];
@@ -40,8 +40,8 @@
     sidebarComplicationDescriptors = v9->_sidebarComplicationDescriptors;
     v9->_sidebarComplicationDescriptors = v13;
 
-    objc_storeStrong(&v9->_applicationInformer, a3);
-    objc_storeStrong(&v9->_urlHandler, a4);
+    objc_storeStrong(&v9->_applicationInformer, informer);
+    objc_storeStrong(&v9->_urlHandler, handler);
     v15 = objc_alloc_init(MEMORY[0x277CFA380]);
     widgetDescriptorProvider = v9->_widgetDescriptorProvider;
     v9->_widgetDescriptorProvider = v15;
@@ -108,21 +108,21 @@ void __64__CSComplicationManager_initWithApplicationInformer_urlHandler___block_
   [(CSComplicationManager *)&v3 dealloc];
 }
 
-- (id)_widgetMetricsForBounds:(CGRect)a3 fromMetrics:(id)a4
+- (id)_widgetMetricsForBounds:(CGRect)bounds fromMetrics:(id)metrics
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = MEMORY[0x277D02CF0];
-  v9 = a4;
+  metricsCopy = metrics;
   v10 = [v8 alloc];
-  v11 = [MEMORY[0x277D759A0] mainScreen];
-  v12 = [v10 initWithTraitEnvironment:v11];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  v12 = [v10 initWithTraitEnvironment:mainScreen];
 
   [v12 frameForElements:4 withBoundingRect:{x, y, width, height}];
   v14 = v13;
-  [v9 size];
+  [metricsCopy size];
   v16 = v15;
 
   v17 = [objc_alloc(MEMORY[0x277CFA3F0]) initWithSize:v14 cornerRadius:{v16, 0.0}];
@@ -133,7 +133,7 @@ void __64__CSComplicationManager_initWithApplicationInformer_urlHandler___block_
 - (void)_updateComplicationsForActivePosterConfiguration
 {
   *v3 = 138412546;
-  *&v3[4] = a1;
+  *&v3[4] = self;
   *&v3[12] = 2112;
   *&v3[14] = a2;
   OUTLINED_FUNCTION_0_1(&dword_21EB05000, a2, a3, "Failed to load complication layout from %@: %@", *v3, *&v3[8], *&v3[16], *MEMORY[0x277D85DE8]);
@@ -215,15 +215,15 @@ uint64_t __73__CSComplicationManager__updateComplicationsForActivePosterConfigur
   return result;
 }
 
-- (void)_complicationDescriptorsForWidgets:(id)a3 completion:(id)a4
+- (void)_complicationDescriptorsForWidgets:(id)widgets completion:(id)completion
 {
-  v23 = a4;
+  completionCopy = completion;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __71__CSComplicationManager__complicationDescriptorsForWidgets_completion___block_invoke;
   v33[3] = &unk_27838C710;
   v33[4] = self;
-  v6 = [a3 bs_filter:v33];
+  v6 = [widgets bs_filter:v33];
   v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
   v8 = dispatch_group_create();
   if ([v6 count])
@@ -233,19 +233,19 @@ uint64_t __73__CSComplicationManager__updateComplicationsForActivePosterConfigur
     v25 = v6;
     do
     {
-      v10 = [MEMORY[0x277CBEB68] null];
-      [v7 addObject:v10];
+      null = [MEMORY[0x277CBEB68] null];
+      [v7 addObject:null];
 
       dispatch_group_enter(v8);
       v11 = [v6 objectAtIndexedSubscript:v9];
       v12 = objc_alloc(MEMORY[0x277CFA358]);
-      v13 = [v11 extensionBundleIdentifier];
-      v14 = [v11 containerBundleIdentifier];
-      v15 = [v11 kind];
-      v16 = [v11 family];
+      extensionBundleIdentifier = [v11 extensionBundleIdentifier];
+      containerBundleIdentifier = [v11 containerBundleIdentifier];
+      kind = [v11 kind];
+      family = [v11 family];
       [v11 intent];
       v18 = v17 = v7;
-      v19 = [v12 initWithExtensionBundleIdentifier:v13 containerBundleIdentifier:v14 kind:v15 family:v16 intent:v18];
+      v19 = [v12 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier kind:kind family:family intent:v18];
 
       v7 = v17;
       v8 = v24;
@@ -272,9 +272,9 @@ uint64_t __73__CSComplicationManager__updateComplicationsForActivePosterConfigur
   block[2] = __71__CSComplicationManager__complicationDescriptorsForWidgets_completion___block_invoke_3;
   block[3] = &unk_27838C038;
   v27 = v7;
-  v28 = v23;
+  v28 = completionCopy;
   v21 = v7;
-  v22 = v23;
+  v22 = completionCopy;
   dispatch_group_notify(v8, MEMORY[0x277D85CD0], block);
 }
 
@@ -293,12 +293,12 @@ void __71__CSComplicationManager__complicationDescriptorsForWidgets_completion__
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)_widgetHasMatchingSystemDescriptor:(id)a3
+- (BOOL)_widgetHasMatchingSystemDescriptor:(id)descriptor
 {
   widgetDescriptorProvider = self->_widgetDescriptorProvider;
-  v4 = a3;
-  v5 = [(CHSWidgetDescriptorProvider *)widgetDescriptorProvider descriptorForPersonality:v4];
-  [v4 family];
+  descriptorCopy = descriptor;
+  v5 = [(CHSWidgetDescriptorProvider *)widgetDescriptorProvider descriptorForPersonality:descriptorCopy];
+  [descriptorCopy family];
 
   v6 = CHSWidgetFamilyMaskFromWidgetFamily();
   if (v5)
@@ -320,10 +320,10 @@ void __71__CSComplicationManager__complicationDescriptorsForWidgets_completion__
   v3 = objc_alloc_init(MEMORY[0x277CBEA60]);
   v4 = [v3 arrayByAddingObjectsFromArray:self->_graphicComplicationDescriptors];
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = [v4 arrayByAddingObjectsFromArray:self->_sidebarComplicationDescriptors];
 
@@ -345,8 +345,8 @@ void __71__CSComplicationManager__complicationDescriptorsForWidgets_completion__
   }
 
   v11 = [v4 bs_map:&__block_literal_global_3];
-  v12 = [(PRWidgetMetricsProvider *)self->_widgetMetricsProvider lockScreenWidgetMetricsSpecifications];
-  v13 = [objc_alloc(MEMORY[0x277CFA360]) initWithContainerDescriptors:v11 metricsSpecification:v12];
+  lockScreenWidgetMetricsSpecifications = [(PRWidgetMetricsProvider *)self->_widgetMetricsProvider lockScreenWidgetMetricsSpecifications];
+  v13 = [objc_alloc(MEMORY[0x277CFA360]) initWithContainerDescriptors:v11 metricsSpecification:lockScreenWidgetMetricsSpecifications];
   widgetHost = self->_widgetHost;
   if (widgetHost)
   {
@@ -413,44 +413,44 @@ id __55__CSComplicationManager__updateWidgetHostConfiguration__block_invoke_2(ui
   return v3;
 }
 
-- (void)_createComplicationDescriptorForWidget:(id)a3 withMetrics:(id)a4 completion:(id)a5
+- (void)_createComplicationDescriptorForWidget:(id)widget withMetrics:(id)metrics completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  widgetCopy = widget;
+  metricsCopy = metrics;
+  completionCopy = completion;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__0;
   v39 = __Block_byref_object_dispose__0;
   v11 = objc_alloc(MEMORY[0x277CFA358]);
-  v12 = [v8 extensionBundleIdentifier];
-  v13 = [v8 containerBundleIdentifier];
-  v14 = [v8 kind];
-  v15 = [v8 family];
-  v16 = [v8 intent];
-  v40 = [v11 initWithExtensionBundleIdentifier:v12 containerBundleIdentifier:v13 kind:v14 family:v15 intent:v16];
+  extensionBundleIdentifier = [widgetCopy extensionBundleIdentifier];
+  containerBundleIdentifier = [widgetCopy containerBundleIdentifier];
+  kind = [widgetCopy kind];
+  family = [widgetCopy family];
+  intent = [widgetCopy intent];
+  v40 = [v11 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier kind:kind family:family intent:intent];
 
   applicationInformer = self->_applicationInformer;
-  v18 = [v36[5] containerBundleIdentifier];
-  LOBYTE(applicationInformer) = [(CSApplicationInforming *)applicationInformer isBundleIdentifierBlockedForScreenTimeExpiration:v18];
+  containerBundleIdentifier2 = [v36[5] containerBundleIdentifier];
+  LOBYTE(applicationInformer) = [(CSApplicationInforming *)applicationInformer isBundleIdentifierBlockedForScreenTimeExpiration:containerBundleIdentifier2];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __87__CSComplicationManager__createComplicationDescriptorForWidget_withMetrics_completion___block_invoke;
   v29[3] = &unk_27838C7A0;
   v33 = &v35;
-  v19 = v8;
+  v19 = widgetCopy;
   v30 = v19;
-  v20 = v9;
+  v20 = metricsCopy;
   v31 = v20;
   v34 = applicationInformer;
-  v21 = v10;
+  v21 = completionCopy;
   v32 = v21;
   v22 = MEMORY[0x223D698D0](v29);
   v23 = [(CHSWidgetDescriptorProvider *)self->_widgetDescriptorProvider descriptorForPersonality:v36[5]];
-  v24 = [v23 intentType];
-  if (v24 && ([v36[5] intent], v25 = objc_claimAutoreleasedReturnValue(), v25, v24, !v25))
+  intentType = [v23 intentType];
+  if (intentType && ([v36[5] intent], v25 = objc_claimAutoreleasedReturnValue(), v25, intentType, !v25))
   {
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -458,13 +458,13 @@ id __55__CSComplicationManager__updateWidgetHostConfiguration__block_invoke_2(ui
     v27[3] = &unk_27838C7C8;
     v28 = v22;
     [v23 loadDefaultIntent:v27];
-    v26 = v28;
+    intent2 = v28;
   }
 
   else
   {
-    v26 = [v36[5] intent];
-    (v22)[2](v22, v26);
+    intent2 = [v36[5] intent];
+    (v22)[2](v22, intent2);
   }
 
   _Block_object_dispose(&v35, 8);
@@ -484,9 +484,9 @@ void __87__CSComplicationManager__createComplicationDescriptorForWidget_withMetr
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)setOnInlineComplicationUpdate:(id)a3
+- (void)setOnInlineComplicationUpdate:(id)update
 {
-  v4 = MEMORY[0x223D698D0](a3, a2);
+  v4 = MEMORY[0x223D698D0](update, a2);
   onInlineComplicationUpdate = self->_onInlineComplicationUpdate;
   self->_onInlineComplicationUpdate = v4;
 
@@ -499,9 +499,9 @@ void __87__CSComplicationManager__createComplicationDescriptorForWidget_withMetr
   }
 }
 
-- (void)setOnWidgetUpdate:(id)a3
+- (void)setOnWidgetUpdate:(id)update
 {
-  v4 = MEMORY[0x223D698D0](a3, a2);
+  v4 = MEMORY[0x223D698D0](update, a2);
   onWidgetUpdate = self->_onWidgetUpdate;
   self->_onWidgetUpdate = v4;
 
@@ -514,9 +514,9 @@ void __87__CSComplicationManager__createComplicationDescriptorForWidget_withMetr
   }
 }
 
-- (void)setOnSidebarWidgetUpdate:(id)a3
+- (void)setOnSidebarWidgetUpdate:(id)update
 {
-  v4 = MEMORY[0x223D698D0](a3, a2);
+  v4 = MEMORY[0x223D698D0](update, a2);
   onSidebarWidgetUpdate = self->_onSidebarWidgetUpdate;
   self->_onSidebarWidgetUpdate = v4;
 
@@ -529,9 +529,9 @@ void __87__CSComplicationManager__createComplicationDescriptorForWidget_withMetr
   }
 }
 
-- (void)setOnTintColorUpdate:(id)a3
+- (void)setOnTintColorUpdate:(id)update
 {
-  v4 = MEMORY[0x223D698D0](a3, a2);
+  v4 = MEMORY[0x223D698D0](update, a2);
   onTintColorUpdate = self->_onTintColorUpdate;
   self->_onTintColorUpdate = v4;
 
@@ -544,23 +544,23 @@ void __87__CSComplicationManager__createComplicationDescriptorForWidget_withMetr
   }
 }
 
-- (void)handleLaunchRequestForWidget:(id)a3 withAction:(id)a4
+- (void)handleLaunchRequestForWidget:(id)widget withAction:(id)action
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 extensionBundleIdentifier];
-  v8 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v7 error:0];
-  v9 = [v8 containingBundleRecord];
-  v10 = [v9 bundleIdentifier];
+  actionCopy = action;
+  extensionBundleIdentifier = [widget extensionBundleIdentifier];
+  v8 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:extensionBundleIdentifier error:0];
+  containingBundleRecord = [v8 containingBundleRecord];
+  bundleIdentifier = [containingBundleRecord bundleIdentifier];
 
-  v11 = [(CSApplicationInforming *)self->_applicationInformer isBundleIdentifierUserVisible:v10];
+  v11 = [(CSApplicationInforming *)self->_applicationInformer isBundleIdentifierUserVisible:bundleIdentifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v13 = [(CSComplicationManager *)self _bundleHasOpenURLEntitlement:v7];
+  v13 = [(CSComplicationManager *)self _bundleHasOpenURLEntitlement:extensionBundleIdentifier];
   if ((v11 & 1) == 0 && (isKindOfClass & 1) != 0 && v13)
   {
     v14 = objc_opt_class();
-    v15 = v6;
+    v15 = actionCopy;
     if (v14)
     {
       if (objc_opt_isKindOfClass())
@@ -586,7 +586,7 @@ void __87__CSComplicationManager__createComplicationDescriptorForWidget_withMetr
     {
       v20 = [v18 url];
       v23 = 138543618;
-      v24 = v10;
+      v24 = bundleIdentifier;
       v25 = 2114;
       v26 = v20;
       _os_log_impl(&dword_21EB05000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Opening URL from complication tap: %{public}@", &v23, 0x16u);
@@ -599,7 +599,7 @@ void __87__CSComplicationManager__createComplicationDescriptorForWidget_withMetr
 
   else if (v11)
   {
-    [(CSComplicationManager *)self _openApplicationWithBundleIdentifier:v10 action:v6];
+    [(CSComplicationManager *)self _openApplicationWithBundleIdentifier:bundleIdentifier action:actionCopy];
   }
 
   else
@@ -608,35 +608,35 @@ void __87__CSComplicationManager__createComplicationDescriptorForWidget_withMetr
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138543362;
-      v24 = v10;
+      v24 = bundleIdentifier;
       _os_log_impl(&dword_21EB05000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] Ignored application launch from complication because application is not user visible", &v23, 0xCu);
     }
   }
 }
 
-- (void)_openApplicationWithBundleIdentifier:(id)a3 action:(id)a4
+- (void)_openApplicationWithBundleIdentifier:(id)identifier action:(id)action
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = [v6 dictionary];
-  v16[0] = v7;
+  actionCopy = action;
+  dictionary = [v6 dictionary];
+  v16[0] = actionCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  [v8 bs_setSafeObject:v9 forKey:*MEMORY[0x277D0ABD0]];
+  [dictionary bs_setSafeObject:v9 forKey:*MEMORY[0x277D0ABD0]];
 
   v10 = MEMORY[0x277CBEC38];
-  [v8 bs_setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D0AC58]];
-  [v8 bs_setSafeObject:v10 forKey:*MEMORY[0x277D0AC70]];
-  v11 = [MEMORY[0x277D0AD60] optionsWithDictionary:v8];
-  v12 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  [dictionary bs_setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D0AC58]];
+  [dictionary bs_setSafeObject:v10 forKey:*MEMORY[0x277D0AC70]];
+  v11 = [MEMORY[0x277D0AD60] optionsWithDictionary:dictionary];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__CSComplicationManager__openApplicationWithBundleIdentifier_action___block_invoke;
   v14[3] = &unk_27838C7F0;
-  v15 = v5;
-  v13 = v5;
-  [v12 openApplication:v13 withOptions:v11 completion:v14];
+  v15 = identifierCopy;
+  v13 = identifierCopy;
+  [serviceWithDefaultShellEndpoint openApplication:v13 withOptions:v11 completion:v14];
 }
 
 void __69__CSComplicationManager__openApplicationWithBundleIdentifier_action___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -662,19 +662,19 @@ void __69__CSComplicationManager__openApplicationWithBundleIdentifier_action___b
   }
 }
 
-- (BOOL)_bundleHasOpenURLEntitlement:(id)a3
+- (BOOL)_bundleHasOpenURLEntitlement:(id)entitlement
 {
-  v3 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:a3 allowPlaceholder:1 error:0];
-  v4 = [v3 entitlements];
+  v3 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:entitlement allowPlaceholder:1 error:0];
+  entitlements = [v3 entitlements];
   v5 = *MEMORY[0x277CFA518];
   v6 = objc_opt_self();
-  v7 = [v4 objectForKey:v5 ofClass:v6];
-  v8 = [v7 BOOLValue];
+  v7 = [entitlements objectForKey:v5 ofClass:v6];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -684,14 +684,14 @@ void __69__CSComplicationManager__openApplicationWithBundleIdentifier_action___b
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)applicationInformer:(id)a3 updatedApplications:(id)a4
+- (void)applicationInformer:(id)informer updatedApplications:(id)applications
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHSWidgetHost *)self->_widgetHost configuration];
-  v9 = [v8 containerDescriptors];
-  v10 = [v9 bs_map:&__block_literal_global_47];
+  informerCopy = informer;
+  applicationsCopy = applications;
+  configuration = [(CHSWidgetHost *)self->_widgetHost configuration];
+  containerDescriptors = [configuration containerDescriptors];
+  v10 = [containerDescriptors bs_map:&__block_literal_global_47];
 
   v26 = 0u;
   v27 = 0u;
@@ -713,9 +713,9 @@ void __69__CSComplicationManager__openApplicationWithBundleIdentifier_action___b
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        if ([v7 containsObject:v16])
+        if ([applicationsCopy containsObject:v16])
         {
-          v17 = [v6 isBundleIdentifierBlockedForScreenTimeExpiration:v16];
+          v17 = [informerCopy isBundleIdentifierBlockedForScreenTimeExpiration:v16];
           graphicComplicationDescriptors = self->_graphicComplicationDescriptors;
           v22[0] = MEMORY[0x277D85DD0];
           v22[1] = 3221225472;

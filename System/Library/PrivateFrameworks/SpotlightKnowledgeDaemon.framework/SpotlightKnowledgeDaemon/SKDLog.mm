@@ -1,22 +1,22 @@
 @interface SKDLog
-- (SKDLog)initWithCategory:(id)a3;
+- (SKDLog)initWithCategory:(id)category;
 @end
 
 @implementation SKDLog
 
-- (SKDLog)initWithCategory:(id)a3
+- (SKDLog)initWithCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v11.receiver = self;
   v11.super_class = SKDLog;
   v5 = [(SKDLog *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [categoryCopy copy];
     category = v5->_category;
     v5->_category = v6;
 
-    v8 = os_log_create([@"com.apple.spotlightknowledged.pipeline" UTF8String], objc_msgSend(v4, "UTF8String"));
+    v8 = os_log_create([@"com.apple.spotlightknowledged.pipeline" UTF8String], objc_msgSend(categoryCopy, "UTF8String"));
     log = v5->_log;
     v5->_log = v8;
   }

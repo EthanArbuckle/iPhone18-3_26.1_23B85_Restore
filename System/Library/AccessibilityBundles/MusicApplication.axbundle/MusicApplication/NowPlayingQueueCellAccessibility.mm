@@ -1,17 +1,17 @@
 @interface NowPlayingQueueCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation NowPlayingQueueCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.NowPlayingQueueCell" hasSwiftField:@"title" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"MusicApplication.NowPlayingQueueCell" hasSwiftField:@"subtitle" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"MusicApplication.NowPlayingQueueCell" hasSwiftField:@"explicitBadgeLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"MusicApplication.NowPlayingQueueCell" hasSwiftField:@"isExplicit" withSwiftType:"Bool"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.NowPlayingQueueCell" hasSwiftField:@"title" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"MusicApplication.NowPlayingQueueCell" hasSwiftField:@"subtitle" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"MusicApplication.NowPlayingQueueCell" hasSwiftField:@"explicitBadgeLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"MusicApplication.NowPlayingQueueCell" hasSwiftField:@"isExplicit" withSwiftType:"Bool"];
 }
 
 - (id)accessibilityLabel
@@ -24,7 +24,7 @@
   v6 = [(NowPlayingQueueCellAccessibility *)self safeSwiftStringForKey:@"subtitle"];
   if (([(NowPlayingQueueCellAccessibility *)self safeSwiftBoolForKey:@"isExplicit"]& 1) != 0)
   {
-    v9 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
     v7 = __AXStringForVariables();
   }
 

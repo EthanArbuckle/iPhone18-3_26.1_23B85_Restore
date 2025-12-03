@@ -1,115 +1,115 @@
 @interface PUImportOneUpViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)pu_wantsToolbarVisible;
-- (CGRect)imageRectFromPhotoView:(id)a3;
-- (CGRect)layout:(id)a3 collectionView:(id)a4 selectionBadgeFrameForItemFrame:(CGRect)a5 atIndexPath:(id)a6;
-- (CGRect)selectionBadgeFrameForItemFrame:(CGRect)a3 atIndexPath:(id)a4;
-- (CGSize)layout:(id)a3 collectionView:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (CGSize)sizeForItemAtIndexPath:(id)a3;
-- (PUImportOneUpViewController)initWithImportController:(id)a3 mediaProvider:(id)a4 startingAssetReference:(id)a5 presentationFilter:(unint64_t)a6;
-- (double)_horizontalOffsetInCollectionView:(id)a3 forCenteringOnItemAtIndexPath:(id)a4;
+- (CGRect)imageRectFromPhotoView:(id)view;
+- (CGRect)layout:(id)layout collectionView:(id)view selectionBadgeFrameForItemFrame:(CGRect)frame atIndexPath:(id)path;
+- (CGRect)selectionBadgeFrameForItemFrame:(CGRect)frame atIndexPath:(id)path;
+- (CGSize)layout:(id)layout collectionView:(id)view sizeForItemAtIndexPath:(id)path;
+- (CGSize)sizeForItemAtIndexPath:(id)path;
+- (PUImportOneUpViewController)initWithImportController:(id)controller mediaProvider:(id)provider startingAssetReference:(id)reference presentationFilter:(unint64_t)filter;
+- (double)_horizontalOffsetInCollectionView:(id)view forCenteringOnItemAtIndexPath:(id)path;
 - (double)absoluteProgressFromCurrentContentOffset;
 - (id)_currentAsset;
-- (id)_indexPathInCollectionView:(id)a3 closestToPoint:(CGPoint)a4 excludingIndexPath:(id)a5;
-- (id)assetAtIndexPath:(id)a3;
-- (id)badgeViewAtIndexPath:(id)a3 forCollectionView:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)importAssetAtIndexPath:(id)a3;
-- (id)importDestinationForActionCoordinator:(id)a3;
-- (id)indexPathOfCenterVisibleItemInCollectionView:(id)a3;
-- (id)nextIndexPath:(id)a3;
-- (id)previousIndexPath:(id)a3;
-- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)importOneUpCell:(id)a3 requestedThumbnailForImportItem:(id)a4 completion:(id)a5;
-- (int64_t)importOneUpScrubberCell:(id)a3 requestedThumbnailForImportItem:(id)a4 completion:(id)a5;
-- (int64_t)nextSectionWithItems:(int64_t)a3;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (int64_t)previousSectionWithItems:(int64_t)a3;
-- (unint64_t)numberOfSectionsInReviewScrubber:(id)a3;
-- (unint64_t)reviewScrubber:(id)a3 numberOfItemsInSection:(unint64_t)a4;
+- (id)_indexPathInCollectionView:(id)view closestToPoint:(CGPoint)point excludingIndexPath:(id)path;
+- (id)assetAtIndexPath:(id)path;
+- (id)badgeViewAtIndexPath:(id)path forCollectionView:(id)view;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)importAssetAtIndexPath:(id)path;
+- (id)importDestinationForActionCoordinator:(id)coordinator;
+- (id)indexPathOfCenterVisibleItemInCollectionView:(id)view;
+- (id)nextIndexPath:(id)path;
+- (id)previousIndexPath:(id)path;
+- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)collection;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)importOneUpCell:(id)cell requestedThumbnailForImportItem:(id)item completion:(id)completion;
+- (int64_t)importOneUpScrubberCell:(id)cell requestedThumbnailForImportItem:(id)item completion:(id)completion;
+- (int64_t)nextSectionWithItems:(int64_t)items;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (int64_t)previousSectionWithItems:(int64_t)items;
+- (unint64_t)numberOfSectionsInReviewScrubber:(id)scrubber;
+- (unint64_t)reviewScrubber:(id)scrubber numberOfItemsInSection:(unint64_t)section;
 - (unsigned)reviewScrubberImageFormat;
 - (void)_cancelAlerts;
 - (void)_cancelOneUpView;
-- (void)_deleteAction:(id)a3;
-- (void)_handleTapAtIndexPath:(id)a3;
-- (void)_handleTapInMainCollectionView:(id)a3;
+- (void)_deleteAction:(id)action;
+- (void)_handleTapAtIndexPath:(id)path;
+- (void)_handleTapInMainCollectionView:(id)view;
 - (void)_importControllerDidEndAction;
-- (void)_reallyToggleCurrentPickStatusAtIndexPath:(id)a3;
-- (void)_stopImportAction:(id)a3;
-- (void)_toggleCurrentPickStatusAtIndexPath:(id)a3;
-- (void)_updateBarItemsAnimated:(BOOL)a3;
+- (void)_reallyToggleCurrentPickStatusAtIndexPath:(id)path;
+- (void)_stopImportAction:(id)action;
+- (void)_toggleCurrentPickStatusAtIndexPath:(id)path;
+- (void)_updateBarItemsAnimated:(BOOL)animated;
 - (void)_updateMainView;
 - (void)_updateReviewScrubberFromContentOffset;
 - (void)_updateReviewScrubberHeightIfNeeded;
-- (void)actionCoordinatorDidBeginDelete:(id)a3;
-- (void)actionCoordinatorDidBeginImport:(id)a3;
+- (void)actionCoordinatorDidBeginDelete:(id)delete;
+- (void)actionCoordinatorDidBeginImport:(id)import;
 - (void)beginCenterPrioritizedThumbnailLoading;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)deleteItems:(id)a3;
-- (void)getFirstValidIndexPath:(id *)a3 lastValidIndexPath:(id *)a4;
-- (void)getMainCollectionViewFrame:(CGRect *)a3 collectionViewLayoutInsets:(UIEdgeInsets *)a4;
-- (void)handleNewDataSource:(id)a3;
-- (void)importControllerProgressDidChange:(id)a3;
-- (void)importOneUpCell:(id)a3 didRequestCancellationOfThumbnailRequestWithID:(int64_t)a4;
-- (void)importOneUpCell:(id)a3 requestedBadgeUpdateForImportItem:(id)a4;
-- (void)importOneUpScrubberCell:(id)a3 didRequestCancellationOfThumbnailRequestWithID:(int64_t)a4;
-- (void)invalidateLayoutIfNeededForImportItem:(id)a3;
+- (void)deleteItems:(id)items;
+- (void)getFirstValidIndexPath:(id *)path lastValidIndexPath:(id *)indexPath;
+- (void)getMainCollectionViewFrame:(CGRect *)frame collectionViewLayoutInsets:(UIEdgeInsets *)insets;
+- (void)handleNewDataSource:(id)source;
+- (void)importControllerProgressDidChange:(id)change;
+- (void)importOneUpCell:(id)cell didRequestCancellationOfThumbnailRequestWithID:(int64_t)d;
+- (void)importOneUpCell:(id)cell requestedBadgeUpdateForImportItem:(id)item;
+- (void)importOneUpScrubberCell:(id)cell didRequestCancellationOfThumbnailRequestWithID:(int64_t)d;
+- (void)invalidateLayoutIfNeededForImportItem:(id)item;
 - (void)loadCenterPrioritizedVisibleThumbnails;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)pageToIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)pageToItemOrNearestIndexPath:(id)a3 animated:(BOOL)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)pageToIndexPath:(id)path animated:(BOOL)animated;
+- (void)pageToItemOrNearestIndexPath:(id)path animated:(BOOL)animated;
 - (void)relayoutCollectionView;
-- (void)reviewScrubber:(id)a3 willDisplayCell:(id)a4 atIndexPath:(id)a5;
-- (void)reviewScrubberDidScrub:(id)a3;
-- (void)reviewScrubberDidSelectItemAtIndexPath:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setImportController:(id)a3;
-- (void)setImportDataSourceManager:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)transitionFromDataSource:(id)a3 toDataSource:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
+- (void)reviewScrubber:(id)scrubber willDisplayCell:(id)cell atIndexPath:(id)path;
+- (void)reviewScrubberDidScrub:(id)scrub;
+- (void)reviewScrubberDidSelectItemAtIndexPath:(id)path;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setImportController:(id)controller;
+- (void)setImportDataSourceManager:(id)manager;
+- (void)traitCollectionDidChange:(id)change;
+- (void)transitionFromDataSource:(id)source toDataSource:(id)dataSource animated:(BOOL)animated completionHandler:(id)handler;
 - (void)updateCollectionViewLayoutInsets;
 - (void)updateNavigationItemTitle;
 - (void)updateToolbarItems;
 - (void)updateVisibleCellBadgesAndSelectability;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUImportOneUpViewController
 
-- (id)nextIndexPath:(id)a3
+- (id)nextIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUImportOneUpViewController *)self importDataSource];
-  v6 = [v4 item];
-  if (v6 < [v5 numberOfItemsInSection:{objc_msgSend(v4, "section")}] - 1)
+  pathCopy = path;
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  item = [pathCopy item];
+  if (item < [importDataSource numberOfItemsInSection:{objc_msgSend(pathCopy, "section")}] - 1)
   {
     v7 = MEMORY[0x1E696AC88];
-    v8 = [v4 item];
-    v9 = [v4 section];
-    v10 = v8 + 1;
+    item2 = [pathCopy item];
+    section = [pathCopy section];
+    v10 = item2 + 1;
     v11 = v7;
 LABEL_5:
-    v13 = [v11 indexPathForItem:v10 inSection:v9];
+    v13 = [v11 indexPathForItem:v10 inSection:section];
     goto LABEL_6;
   }
 
-  v12 = -[PUImportOneUpViewController nextSectionWithItems:](self, "nextSectionWithItems:", [v4 section]);
+  v12 = -[PUImportOneUpViewController nextSectionWithItems:](self, "nextSectionWithItems:", [pathCopy section]);
   if ((v12 & 0x8000000000000000) == 0)
   {
-    v9 = v12;
+    section = v12;
     v11 = MEMORY[0x1E696AC88];
     v10 = 0;
     goto LABEL_5;
@@ -121,12 +121,12 @@ LABEL_6:
   return v13;
 }
 
-- (id)previousIndexPath:(id)a3
+- (id)previousIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 item] < 1)
+  pathCopy = path;
+  if ([pathCopy item] < 1)
   {
-    v6 = -[PUImportOneUpViewController previousSectionWithItems:](self, "previousSectionWithItems:", [v4 section]);
+    v6 = -[PUImportOneUpViewController previousSectionWithItems:](self, "previousSectionWithItems:", [pathCopy section]);
     if (v6 < 0)
     {
       v5 = 0;
@@ -135,95 +135,95 @@ LABEL_6:
     else
     {
       v7 = v6;
-      v8 = [(PUImportOneUpViewController *)self importDataSource];
-      v5 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v8 inSection:{"numberOfItemsInSection:", v7) - 1, v7}];
+      importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+      v5 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(importDataSource inSection:{"numberOfItemsInSection:", v7) - 1, v7}];
     }
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v4 inSection:{"item") - 1, objc_msgSend(v4, "section")}];
+    v5 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(pathCopy inSection:{"item") - 1, objc_msgSend(pathCopy, "section")}];
   }
 
   return v5;
 }
 
-- (int64_t)nextSectionWithItems:(int64_t)a3
+- (int64_t)nextSectionWithItems:(int64_t)items
 {
-  v4 = [(PUImportOneUpViewController *)self importDataSource];
-  v5 = [v4 numberOfSections];
-  while (++a3 < v5)
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  numberOfSections = [importDataSource numberOfSections];
+  while (++items < numberOfSections)
   {
-    if ([v4 numberOfItemsInSection:a3])
+    if ([importDataSource numberOfItemsInSection:items])
     {
       goto LABEL_6;
     }
   }
 
-  a3 = -1;
+  items = -1;
 LABEL_6:
 
-  return a3;
+  return items;
 }
 
-- (int64_t)previousSectionWithItems:(int64_t)a3
+- (int64_t)previousSectionWithItems:(int64_t)items
 {
-  v4 = [(PUImportOneUpViewController *)self importDataSource];
-  while (a3-- >= 1)
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  while (items-- >= 1)
   {
-    if ([v4 numberOfItemsInSection:a3])
+    if ([importDataSource numberOfItemsInSection:items])
     {
       goto LABEL_6;
     }
   }
 
-  a3 = -1;
+  items = -1;
 LABEL_6:
 
-  return a3;
+  return items;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUImportOneUpViewController *)self collectionView];
-  v9 = [(PUImportOneUpViewController *)self tapGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  tapGestureRecognizer = [(PUImportOneUpViewController *)self tapGestureRecognizer];
 
-  if (v9 == v7)
+  if (tapGestureRecognizer == recognizerCopy)
   {
-    v11 = [v8 panGestureRecognizer];
-    if (v11 == v6)
+    panGestureRecognizer = [collectionView panGestureRecognizer];
+    if (panGestureRecognizer == gestureRecognizerCopy)
     {
-      v10 = [v8 isDecelerating];
+      isDecelerating = [collectionView isDecelerating];
     }
 
     else
     {
-      v10 = 0;
+      isDecelerating = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    isDecelerating = 0;
   }
 
-  return v10;
+  return isDecelerating;
 }
 
-- (CGRect)imageRectFromPhotoView:(id)a3
+- (CGRect)imageRectFromPhotoView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 contentHelper];
-  [v3 bounds];
-  [v4 imageContentFrameForBounds:?];
+  viewCopy = view;
+  contentHelper = [viewCopy contentHelper];
+  [viewCopy bounds];
+  [contentHelper imageContentFrameForBounds:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  [v3 convertRect:0 toView:{v6, v8, v10, v12}];
+  [viewCopy convertRect:0 toView:{v6, v8, v10, v12}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -240,74 +240,74 @@ LABEL_6:
   return result;
 }
 
-- (unint64_t)reviewScrubber:(id)a3 numberOfItemsInSection:(unint64_t)a4
+- (unint64_t)reviewScrubber:(id)scrubber numberOfItemsInSection:(unint64_t)section
 {
-  v5 = [(PUImportOneUpViewController *)self importDataSource];
-  v6 = [v5 numberOfItemsInSection:a4];
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  v6 = [importDataSource numberOfItemsInSection:section];
 
   return v6;
 }
 
-- (unint64_t)numberOfSectionsInReviewScrubber:(id)a3
+- (unint64_t)numberOfSectionsInReviewScrubber:(id)scrubber
 {
-  v3 = [(PUImportOneUpViewController *)self importDataSource];
-  v4 = [v3 numberOfSections];
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  numberOfSections = [importDataSource numberOfSections];
 
-  return v4;
+  return numberOfSections;
 }
 
-- (void)reviewScrubberDidSelectItemAtIndexPath:(id)a3
+- (void)reviewScrubberDidSelectItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  v4 = [(PUImportOneUpViewController *)self collectionView];
-  [v4 stopScrollingAndZooming];
+  pathCopy = path;
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  [collectionView stopScrollingAndZooming];
 
-  [(PUImportOneUpViewController *)self pageToIndexPath:v5 animated:1];
+  [(PUImportOneUpViewController *)self pageToIndexPath:pathCopy animated:1];
 }
 
-- (void)reviewScrubberDidScrub:(id)a3
+- (void)reviewScrubberDidScrub:(id)scrub
 {
-  v4 = a3;
-  v5 = [(PUImportOneUpViewController *)self collectionView];
-  [v5 stopScrollingAndZooming];
+  scrubCopy = scrub;
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  [collectionView stopScrollingAndZooming];
 
   self->_updatingContentOffsetFromScrubbing = 1;
-  v6 = [v4 selectedIndexPath];
+  selectedIndexPath = [scrubCopy selectedIndexPath];
 
-  [(PUImportOneUpViewController *)self pageToIndexPath:v6 animated:0];
+  [(PUImportOneUpViewController *)self pageToIndexPath:selectedIndexPath animated:0];
   self->_updatingContentOffsetFromScrubbing = 0;
 }
 
-- (void)reviewScrubber:(id)a3 willDisplayCell:(id)a4 atIndexPath:(id)a5
+- (void)reviewScrubber:(id)scrubber willDisplayCell:(id)cell atIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(PUImportOneUpViewController *)self importAssetAtIndexPath:a5];
-  v9 = v7;
+  cellCopy = cell;
+  v8 = [(PUImportOneUpViewController *)self importAssetAtIndexPath:path];
+  v9 = cellCopy;
   [v9 setDisplayDelegate:self];
   [v9 setImportItem:v8];
   [v9 refreshThumbnail];
 }
 
-- (void)importOneUpScrubberCell:(id)a3 didRequestCancellationOfThumbnailRequestWithID:(int64_t)a4
+- (void)importOneUpScrubberCell:(id)cell didRequestCancellationOfThumbnailRequestWithID:(int64_t)d
 {
-  v6 = [(PUImportOneUpViewController *)self importController];
-  v5 = [v6 importMediaProvider];
-  [v5 cancelImageRequest:a4];
+  importController = [(PUImportOneUpViewController *)self importController];
+  importMediaProvider = [importController importMediaProvider];
+  [importMediaProvider cancelImageRequest:d];
 }
 
-- (int64_t)importOneUpScrubberCell:(id)a3 requestedThumbnailForImportItem:(id)a4 completion:(id)a5
+- (int64_t)importOneUpScrubberCell:(id)cell requestedThumbnailForImportItem:(id)item completion:(id)completion
 {
-  v7 = a5;
-  v8 = [a3 importItem];
-  v9 = [(PUImportOneUpViewController *)self importController];
-  v10 = [v9 importMediaProvider];
+  completionCopy = completion;
+  importItem = [cell importItem];
+  importController = [(PUImportOneUpViewController *)self importController];
+  importMediaProvider = [importController importMediaProvider];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __98__PUImportOneUpViewController_importOneUpScrubberCell_requestedThumbnailForImportItem_completion___block_invoke;
   v14[3] = &unk_1E7B780D8;
-  v15 = v7;
-  v11 = v7;
-  v12 = [v10 requestImageForImportItem:v8 ofSize:0 completion:v14];
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = [importMediaProvider requestImageForImportItem:importItem ofSize:0 completion:v14];
 
   return v12;
 }
@@ -325,33 +325,33 @@ uint64_t __98__PUImportOneUpViewController_importOneUpScrubberCell_requestedThum
 
 - (void)relayoutCollectionView
 {
-  v3 = [(PUImportOneUpViewController *)self collectionView];
-  if ([v3 isDecelerating])
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  if ([collectionView isDecelerating])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(PUImportOneUpViewController *)self collectionView];
-    v6 = [v5 isDragging];
+    collectionView2 = [(PUImportOneUpViewController *)self collectionView];
+    isDragging = [collectionView2 isDragging];
 
-    if (v6)
+    if (isDragging)
     {
       v4 = 0;
       goto LABEL_7;
     }
 
-    v3 = [(PUImportOneUpViewController *)self collectionView];
-    v4 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:v3];
+    collectionView = [(PUImportOneUpViewController *)self collectionView];
+    v4 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:collectionView];
   }
 
 LABEL_7:
-  v7 = [(PUImportOneUpViewController *)self importDataSource];
-  v8 = [(PUImportOneUpViewController *)self importDataSource];
-  if (v7)
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  importDataSource2 = [(PUImportOneUpViewController *)self importDataSource];
+  if (importDataSource)
   {
-    [v7 firstItemIndexPath];
+    [importDataSource firstItemIndexPath];
   }
 
   else
@@ -360,12 +360,12 @@ LABEL_7:
     v25 = 0u;
   }
 
-  v9 = [v8 assetAtItemIndexPath:&v24];
+  v9 = [importDataSource2 assetAtItemIndexPath:&v24];
 
-  v10 = [(PUImportOneUpViewController *)self importDataSource];
-  if (v7)
+  importDataSource3 = [(PUImportOneUpViewController *)self importDataSource];
+  if (importDataSource)
   {
-    [v7 lastItemIndexPath];
+    [importDataSource lastItemIndexPath];
   }
 
   else
@@ -374,17 +374,17 @@ LABEL_7:
     v25 = 0u;
   }
 
-  v11 = [v10 assetAtItemIndexPath:&v24];
+  v11 = [importDataSource3 assetAtItemIndexPath:&v24];
 
-  v12 = [(PUImportOneUpViewController *)self itemsNeedingRelayout];
-  if ([v12 containsObject:v9])
+  itemsNeedingRelayout = [(PUImportOneUpViewController *)self itemsNeedingRelayout];
+  if ([itemsNeedingRelayout containsObject:v9])
   {
   }
 
   else
   {
-    v13 = [(PUImportOneUpViewController *)self itemsNeedingRelayout];
-    v14 = [v13 containsObject:v11];
+    itemsNeedingRelayout2 = [(PUImportOneUpViewController *)self itemsNeedingRelayout];
+    v14 = [itemsNeedingRelayout2 containsObject:v11];
 
     if (!v14)
     {
@@ -400,97 +400,97 @@ LABEL_17:
   [(PUImportOneUpViewController *)self updateCollectionViewLayoutInsets];
   if (v4)
   {
-    v16 = [(PUImportOneUpViewController *)self collectionView];
-    [v16 contentOffset];
+    collectionView3 = [(PUImportOneUpViewController *)self collectionView];
+    [collectionView3 contentOffset];
     v18 = v17;
 
-    v19 = [(PUImportOneUpViewController *)self collectionView];
-    [(PUImportOneUpViewController *)self _horizontalOffsetInCollectionView:v19 forCenteringOnItemAtIndexPath:v4];
+    collectionView4 = [(PUImportOneUpViewController *)self collectionView];
+    [(PUImportOneUpViewController *)self _horizontalOffsetInCollectionView:collectionView4 forCenteringOnItemAtIndexPath:v4];
     v21 = v20;
 
-    v22 = [(PUImportOneUpViewController *)self collectionView];
-    [v22 setContentOffset:{v21, v18}];
+    collectionView5 = [(PUImportOneUpViewController *)self collectionView];
+    [collectionView5 setContentOffset:{v21, v18}];
   }
 
-  v23 = [(PUImportOneUpViewController *)self itemsNeedingRelayout];
-  [v23 removeAllObjects];
+  itemsNeedingRelayout3 = [(PUImportOneUpViewController *)self itemsNeedingRelayout];
+  [itemsNeedingRelayout3 removeAllObjects];
 }
 
-- (void)invalidateLayoutIfNeededForImportItem:(id)a3
+- (void)invalidateLayoutIfNeededForImportItem:(id)item
 {
-  v29 = a3;
-  v4 = [MEMORY[0x1E69C3620] sharedInstance];
-  v5 = [v4 useThumbnailSizesAsImageSizeHints];
+  itemCopy = item;
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  useThumbnailSizesAsImageSizeHints = [mEMORY[0x1E69C3620] useThumbnailSizesAsImageSizeHints];
 
-  v6 = [(PUImportOneUpViewController *)self itemsWithInvalidImageSizes];
-  v7 = [v6 member:v29];
+  itemsWithInvalidImageSizes = [(PUImportOneUpViewController *)self itemsWithInvalidImageSizes];
+  v7 = [itemsWithInvalidImageSizes member:itemCopy];
 
-  v8 = v29;
-  if (v7 && v5)
+  v8 = itemCopy;
+  if (v7 && useThumbnailSizesAsImageSizeHints)
   {
-    v9 = [v29 importAsset];
-    [v9 orientedPixelSize];
+    importAsset = [itemCopy importAsset];
+    [importAsset orientedPixelSize];
     v11 = v10;
     v13 = v12;
 
-    [v29 thumbnailSize];
+    [itemCopy thumbnailSize];
     v15 = v14;
     v17 = v16;
-    [v29 largeThumbnailSize];
+    [itemCopy largeThumbnailSize];
     v19 = *MEMORY[0x1E695F060];
     v20 = *(MEMORY[0x1E695F060] + 8);
     if (v21 != *MEMORY[0x1E695F060] || v18 != v20)
     {
-      [v29 largeThumbnailSize];
+      [itemCopy largeThumbnailSize];
       v15 = v23;
       v17 = v24;
     }
 
     v25 = v11 == v19 && v13 == v20;
-    v8 = v29;
+    v8 = itemCopy;
     if (v25 && (v15 != v19 || v17 != v20))
     {
-      v27 = [(PUImportOneUpViewController *)self itemsNeedingRelayout];
-      [v27 addObject:v29];
+      itemsNeedingRelayout = [(PUImportOneUpViewController *)self itemsNeedingRelayout];
+      [itemsNeedingRelayout addObject:itemCopy];
 
-      v28 = [(PUImportOneUpViewController *)self collectionViewLayout];
-      [v28 invalidateLayout];
+      collectionViewLayout = [(PUImportOneUpViewController *)self collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
 
-      v8 = v29;
+      v8 = itemCopy;
     }
   }
 }
 
-- (void)importOneUpCell:(id)a3 didRequestCancellationOfThumbnailRequestWithID:(int64_t)a4
+- (void)importOneUpCell:(id)cell didRequestCancellationOfThumbnailRequestWithID:(int64_t)d
 {
-  v6 = [(PUImportOneUpViewController *)self importController];
-  v5 = [v6 importMediaProvider];
-  [v5 cancelImageRequest:a4];
+  importController = [(PUImportOneUpViewController *)self importController];
+  importMediaProvider = [importController importMediaProvider];
+  [importMediaProvider cancelImageRequest:d];
 }
 
-- (int64_t)importOneUpCell:(id)a3 requestedThumbnailForImportItem:(id)a4 completion:(id)a5
+- (int64_t)importOneUpCell:(id)cell requestedThumbnailForImportItem:(id)item completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (-[PUImportOneUpViewController loadLargeThumbnailsInCustomOrder](self, "loadLargeThumbnailsInCustomOrder") && (-[PUImportOneUpViewController thumbnailLoadableItemWhitelist](self, "thumbnailLoadableItemWhitelist"), v11 = objc_claimAutoreleasedReturnValue(), [v11 member:v9], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, !v12))
+  cellCopy = cell;
+  itemCopy = item;
+  completionCopy = completion;
+  if (-[PUImportOneUpViewController loadLargeThumbnailsInCustomOrder](self, "loadLargeThumbnailsInCustomOrder") && (-[PUImportOneUpViewController thumbnailLoadableItemWhitelist](self, "thumbnailLoadableItemWhitelist"), v11 = objc_claimAutoreleasedReturnValue(), [v11 member:itemCopy], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, !v12))
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v13 = [(PUImportOneUpViewController *)self importController];
-    v14 = [v13 importMediaProvider];
+    importController = [(PUImportOneUpViewController *)self importController];
+    importMediaProvider = [importController importMediaProvider];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __90__PUImportOneUpViewController_importOneUpCell_requestedThumbnailForImportItem_completion___block_invoke;
     v16[3] = &unk_1E7B77950;
-    v18 = v10;
+    v18 = completionCopy;
     objc_copyWeak(&v19, &location);
-    v17 = v9;
-    v12 = [v14 requestImageForImportItem:v17 ofSize:3 priority:1 completion:v16];
+    v17 = itemCopy;
+    v12 = [importMediaProvider requestImageForImportItem:v17 ofSize:3 priority:1 completion:v16];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -521,19 +521,19 @@ uint64_t __90__PUImportOneUpViewController_importOneUpCell_requestedThumbnailFor
   return MEMORY[0x1EEE66BB8](v7, v6);
 }
 
-- (void)importOneUpCell:(id)a3 requestedBadgeUpdateForImportItem:(id)a4
+- (void)importOneUpCell:(id)cell requestedBadgeUpdateForImportItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 isDeleted] & 1) == 0)
+  cellCopy = cell;
+  itemCopy = item;
+  if (([itemCopy isDeleted] & 1) == 0)
   {
-    v8 = [(PUImportOneUpViewController *)self collectionView];
-    v9 = [v8 indexPathForCell:v6];
+    collectionView = [(PUImportOneUpViewController *)self collectionView];
+    v9 = [collectionView indexPathForCell:cellCopy];
 
     if (v9)
     {
-      v10 = [(PUImportOneUpViewController *)self collectionView];
-      v11 = [v10 supplementaryViewForElementKind:@"PUSelectableAssetBadgeKind" atIndexPath:v9];
+      collectionView2 = [(PUImportOneUpViewController *)self collectionView];
+      v11 = [collectionView2 supplementaryViewForElementKind:@"PUSelectableAssetBadgeKind" atIndexPath:v9];
 
       if (v11)
       {
@@ -542,7 +542,7 @@ uint64_t __90__PUImportOneUpViewController_importOneUpCell_requestedThumbnailFor
         v12[2] = __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateForImportItem___block_invoke;
         v12[3] = &unk_1E7B80C38;
         v13 = v11;
-        v14 = v7;
+        v14 = itemCopy;
         [v13 performBadgeUpdates:v12];
       }
     }
@@ -558,9 +558,9 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
   return [v3 setSelectable:v2];
 }
 
-- (CGRect)layout:(id)a3 collectionView:(id)a4 selectionBadgeFrameForItemFrame:(CGRect)a5 atIndexPath:(id)a6
+- (CGRect)layout:(id)layout collectionView:(id)view selectionBadgeFrameForItemFrame:(CGRect)frame atIndexPath:(id)path
 {
-  [(PUImportOneUpViewController *)self selectionBadgeFrameForItemFrame:a6 atIndexPath:a4, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(PUImportOneUpViewController *)self selectionBadgeFrameForItemFrame:path atIndexPath:view, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -568,38 +568,38 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
   return result;
 }
 
-- (CGSize)layout:(id)a3 collectionView:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)layout:(id)layout collectionView:(id)view sizeForItemAtIndexPath:(id)path
 {
-  [(PUImportOneUpViewController *)self sizeForItemAtIndexPath:a5, a4];
+  [(PUImportOneUpViewController *)self sizeForItemAtIndexPath:path, view];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v7;
+  cellCopy = cell;
+  pathCopy = path;
+  v9 = cellCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [MEMORY[0x1E69C3620] sharedInstance];
-    v11 = [v10 showImportItemFilenames];
+    mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+    showImportItemFilenames = [mEMORY[0x1E69C3620] showImportItemFilenames];
 
-    if (v11)
+    if (showImportItemFilenames)
     {
-      v12 = [(PUImportOneUpViewController *)self importDataSource];
-      [v12 identifier];
+      importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+      [importDataSource identifier];
       PXSimpleIndexPathFromIndexPath();
 
-      v13 = [(PUImportOneUpViewController *)self importDataSource];
+      importDataSource2 = [(PUImportOneUpViewController *)self importDataSource];
       memset(v18, 0, sizeof(v18));
-      v14 = [v13 assetAtItemIndexPath:v18];
+      v14 = [importDataSource2 assetAtItemIndexPath:v18];
 
       v15 = MEMORY[0x1E696AEC0];
-      v16 = [v14 debugDisplayName];
-      v17 = [v15 stringWithFormat:@"%@ [%lu]", v16, objc_msgSend(v8, "item")];
+      debugDisplayName = [v14 debugDisplayName];
+      v17 = [v15 stringWithFormat:@"%@ [%lu]", debugDisplayName, objc_msgSend(pathCopy, "item")];
       [v9 updateDebugLabel:v17];
     }
 
@@ -610,30 +610,30 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
   }
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (![v10 isEqualToString:@"PUSelectableAssetBadgeKind"])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if (![kindCopy isEqualToString:@"PUSelectableAssetBadgeKind"])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUImportOneUpViewController.m" lineNumber:1527 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImportOneUpViewController.m" lineNumber:1527 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v12 = [(PUImportOneUpViewController *)self badgeViewAtIndexPath:v11 forCollectionView:v9];
+  v12 = [(PUImportOneUpViewController *)self badgeViewAtIndexPath:pathCopy forCollectionView:viewCopy];
 
   return v12;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"PUImportOneUpCellIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"PUImportOneUpCellIdentifier" forIndexPath:pathCopy];
   [v7 setDisplayDelegate:self];
-  v8 = [(PUImportOneUpViewController *)self importAssetAtIndexPath:v6];
+  v8 = [(PUImportOneUpViewController *)self importAssetAtIndexPath:pathCopy];
 
   [v7 setImportItem:v8];
   [v7 setSelected:{objc_msgSend(v8, "isSelected")}];
@@ -642,37 +642,37 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
   return v7;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(PUImportOneUpViewController *)self importDataSource];
-  v6 = [v5 numberOfItemsInSection:a4];
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  v6 = [importDataSource numberOfItemsInSection:section];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(PUImportOneUpViewController *)self importDataSource];
-  v4 = [v3 numberOfSections];
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  numberOfSections = [importDataSource numberOfSections];
 
-  return v4;
+  return numberOfSections;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
+  x = velocity.x;
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  [v8 bounds];
+  draggingCopy = dragging;
+  [draggingCopy bounds];
   width = v36.size.width;
   height = v36.size.height;
-  v11 = a5->x;
-  y = a5->y;
-  v36.origin.x = a5->x;
+  v11 = offset->x;
+  y = offset->y;
+  v36.origin.x = offset->x;
   v36.origin.y = y;
   MidX = CGRectGetMidX(v36);
-  v14 = [v8 collectionViewLayout];
-  v15 = [v14 layoutAttributesForElementsInRect:{v11, y, width, height}];
+  collectionViewLayout = [draggingCopy collectionViewLayout];
+  v15 = [collectionViewLayout layoutAttributesForElementsInRect:{v11, y, width, height}];
 
   v32 = 0u;
   v33 = 0u;
@@ -697,10 +697,10 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
         }
 
         v23 = *(*(&v30 + 1) + 8 * v22);
-        v24 = [v23 indexPath];
+        indexPath = [v23 indexPath];
         if (![v23 representedElementCategory])
         {
-          if (([(PUImportOneUpViewController *)self _horizontalOffsetInCollectionView:v8 forCenteringOnItemAtIndexPath:v24], v26 = v25, x == 0.0) || x > 0.0 && v25 > a5->x || x < 0.0 && v25 < a5->x)
+          if (([(PUImportOneUpViewController *)self _horizontalOffsetInCollectionView:draggingCopy forCenteringOnItemAtIndexPath:indexPath], v26 = v25, x == 0.0) || x > 0.0 && v25 > offset->x || x < 0.0 && v25 < offset->x)
           {
             [v23 center];
             v28 = vabdd_f64(v27, MidX);
@@ -724,8 +724,8 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
 
     if (v21 != 1.79769313e308)
     {
-      a5->x = v21;
-      a5->y = 0.0;
+      offset->x = v21;
+      offset->y = 0.0;
     }
   }
 
@@ -734,22 +734,22 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v3 = [(PUImportOneUpViewController *)self reviewScrubber];
-  [v3 finishInteractiveUpdate];
+  reviewScrubber = [(PUImportOneUpViewController *)self reviewScrubber];
+  [reviewScrubber finishInteractiveUpdate];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    v5 = [(PUImportOneUpViewController *)self reviewScrubber];
-    [v5 finishInteractiveUpdate];
+    reviewScrubber = [(PUImportOneUpViewController *)self reviewScrubber];
+    [reviewScrubber finishInteractiveUpdate];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(PUImportOneUpViewController *)self updateNavigationItemTitle];
   if (![(PUImportOneUpViewController *)self updatingContentOffsetFromScrubbing])
@@ -759,80 +759,80 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v3 = [(PUImportOneUpViewController *)self reviewScrubber];
-  [v3 beginInteractiveUpdate];
+  reviewScrubber = [(PUImportOneUpViewController *)self reviewScrubber];
+  [reviewScrubber beginInteractiveUpdate];
 }
 
 - (void)_importControllerDidEndAction
 {
   [(PUImportOneUpViewController *)self setAllowsSelection:1];
   [(PUImportOneUpViewController *)self updateToolbarItems];
-  v3 = [MEMORY[0x1E69C3620] sharedInstance];
-  v4 = [v3 showProgressTitles];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  showProgressTitles = [mEMORY[0x1E69C3620] showProgressTitles];
 
-  if (v4)
+  if (showProgressTitles)
   {
 
     [(PUImportOneUpViewController *)self updateNavigationItemTitle];
   }
 }
 
-- (id)importDestinationForActionCoordinator:(id)a3
+- (id)importDestinationForActionCoordinator:(id)coordinator
 {
-  v3 = [(PUImportOneUpViewController *)self importController];
-  v4 = [v3 importDestinationAlbum];
+  importController = [(PUImportOneUpViewController *)self importController];
+  importDestinationAlbum = [importController importDestinationAlbum];
 
-  return v4;
+  return importDestinationAlbum;
 }
 
-- (void)actionCoordinatorDidBeginDelete:(id)a3
+- (void)actionCoordinatorDidBeginDelete:(id)delete
 {
   [(PUImportOneUpViewController *)self updateToolbarItems];
-  v4 = [MEMORY[0x1E69C3620] sharedInstance];
-  v5 = [v4 showProgressTitles];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  showProgressTitles = [mEMORY[0x1E69C3620] showProgressTitles];
 
-  if (v5)
+  if (showProgressTitles)
   {
 
     [(PUImportOneUpViewController *)self updateNavigationItemTitle];
   }
 }
 
-- (void)actionCoordinatorDidBeginImport:(id)a3
+- (void)actionCoordinatorDidBeginImport:(id)import
 {
   [(PUImportOneUpViewController *)self updateToolbarItems];
-  v4 = [MEMORY[0x1E69C3620] sharedInstance];
-  v5 = [v4 showProgressTitles];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  showProgressTitles = [mEMORY[0x1E69C3620] showProgressTitles];
 
-  if (v5)
+  if (showProgressTitles)
   {
 
     [(PUImportOneUpViewController *)self updateNavigationItemTitle];
   }
 }
 
-- (void)deleteItems:(id)a3
+- (void)deleteItems:(id)items
 {
-  v4 = a3;
-  v5 = [(PUImportOneUpViewController *)self actionCoordinator];
-  [v5 deleteItemsWithoutConfirmation:v4];
+  itemsCopy = items;
+  actionCoordinator = [(PUImportOneUpViewController *)self actionCoordinator];
+  [actionCoordinator deleteItemsWithoutConfirmation:itemsCopy];
 }
 
-- (void)importControllerProgressDidChange:(id)a3
+- (void)importControllerProgressDidChange:(id)change
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69C4068]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69C4068]];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69C4060]];
+  userInfo2 = [changeCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69C4060]];
 
-  v9 = [v4 userInfo];
+  userInfo3 = [changeCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69C4078]];
+  v10 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E69C4078]];
 
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
@@ -853,12 +853,12 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
 
   if (v12 == 0.0)
   {
-    v14 = [(PUImportOneUpViewController *)self roundProgressView];
-    [v14 resetProgress];
+    roundProgressView = [(PUImportOneUpViewController *)self roundProgressView];
+    [roundProgressView resetProgress];
   }
 
-  v15 = [(PUImportOneUpViewController *)self importController];
-  [v15 isDeletingAssets];
+  importController = [(PUImportOneUpViewController *)self importController];
+  [importController isDeletingAssets];
 
   v16 = PLLocalizedFrameworkString();
   v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "integerValue")}];
@@ -875,37 +875,37 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
     [(UIBarButtonItem *)self->_progressButtonItem setAccessibilityLabel:v20];
   }
 
-  v21 = [MEMORY[0x1E69C3620] sharedInstance];
-  v22 = [v21 showProgressTitles];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  showProgressTitles = [mEMORY[0x1E69C3620] showProgressTitles];
 
-  if (v22)
+  if (showProgressTitles)
   {
     [(PUImportOneUpViewController *)self updateNavigationItemTitle];
   }
 }
 
-- (void)_stopImportAction:(id)a3
+- (void)_stopImportAction:(id)action
 {
-  v3 = [(PUImportOneUpViewController *)self actionCoordinator];
-  [v3 stopImport];
+  actionCoordinator = [(PUImportOneUpViewController *)self actionCoordinator];
+  [actionCoordinator stopImport];
 }
 
-- (void)_deleteAction:(id)a3
+- (void)_deleteAction:(id)action
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUImportOneUpViewController *)self importController];
-  v6 = [v5 selectedItems];
+  actionCopy = action;
+  importController = [(PUImportOneUpViewController *)self importController];
+  selectedItems = [importController selectedItems];
 
-  if ([v6 count])
+  if ([selectedItems count])
   {
     v7 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v8 = [(PUImportOneUpViewController *)self collectionView];
-    v9 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:v8];
+    collectionView = [(PUImportOneUpViewController *)self collectionView];
+    v9 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:collectionView];
 
     v10 = [(PUImportOneUpViewController *)self importAssetAtIndexPath:v9];
     v11 = v10;
@@ -921,33 +921,33 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
     }
   }
 
-  v12 = [(PUImportOneUpViewController *)self actionCoordinator];
-  [v12 deleteItemsFromBarButtonItem:v4 withOneUpHintItems:v7];
+  actionCoordinator = [(PUImportOneUpViewController *)self actionCoordinator];
+  [actionCoordinator deleteItemsFromBarButtonItem:actionCopy withOneUpHintItems:v7];
 }
 
 - (void)_cancelOneUpView
 {
   [(PUImportOneUpViewController *)self _updateBarItemsAnimated:1];
-  v3 = [(PUImportOneUpViewController *)self _currentAsset];
-  [(PUImportOneUpViewController *)self _dismissReviewControllerWithAsset:v3];
+  _currentAsset = [(PUImportOneUpViewController *)self _currentAsset];
+  [(PUImportOneUpViewController *)self _dismissReviewControllerWithAsset:_currentAsset];
 }
 
-- (void)_reallyToggleCurrentPickStatusAtIndexPath:(id)a3
+- (void)_reallyToggleCurrentPickStatusAtIndexPath:(id)path
 {
-  v7 = [(PUImportOneUpViewController *)self importAssetAtIndexPath:a3];
+  v7 = [(PUImportOneUpViewController *)self importAssetAtIndexPath:path];
   if ([v7 isSelectable])
   {
-    v4 = [v7 isSelected];
-    v5 = [(PUImportOneUpViewController *)self importController];
-    v6 = v5;
-    if (v4)
+    isSelected = [v7 isSelected];
+    importController = [(PUImportOneUpViewController *)self importController];
+    v6 = importController;
+    if (isSelected)
     {
-      [v5 deselectItem:v7];
+      [importController deselectItem:v7];
     }
 
     else
     {
-      [v5 selectItem:v7];
+      [importController selectItem:v7];
     }
 
     [(PUImportOneUpViewController *)self updateNavigationItemTitle];
@@ -955,48 +955,48 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
   }
 }
 
-- (void)_toggleCurrentPickStatusAtIndexPath:(id)a3
+- (void)_toggleCurrentPickStatusAtIndexPath:(id)path
 {
   if (self->_allowsSelection)
   {
-    [(PUImportOneUpViewController *)self _reallyToggleCurrentPickStatusAtIndexPath:a3];
+    [(PUImportOneUpViewController *)self _reallyToggleCurrentPickStatusAtIndexPath:path];
   }
 }
 
 - (void)_updateReviewScrubberFromContentOffset
 {
-  v6 = [(PUImportOneUpViewController *)self importDataSource];
-  if ([v6 containsAnyItems])
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  if ([importDataSource containsAnyItems])
   {
     [(PUImportOneUpViewController *)self absoluteProgressFromCurrentContentOffset];
     v4 = v3;
-    v5 = [(PUImportOneUpViewController *)self reviewScrubber];
-    [v5 updateWithAbsoluteProgress:v4];
+    reviewScrubber = [(PUImportOneUpViewController *)self reviewScrubber];
+    [reviewScrubber updateWithAbsoluteProgress:v4];
   }
 }
 
 - (double)absoluteProgressFromCurrentContentOffset
 {
-  v3 = [(PUImportOneUpViewController *)self importDataSource];
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
   v4 = 0.0;
-  if ([v3 containsAnyItems])
+  if ([importDataSource containsAnyItems])
   {
-    v5 = [(PUImportOneUpViewController *)self collectionView];
-    v6 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:v5];
+    collectionView = [(PUImportOneUpViewController *)self collectionView];
+    v6 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:collectionView];
 
     v7 = [(PUImportOneUpViewController *)self assetAtIndexPath:v6];
-    v8 = [(PUImportOneUpViewController *)self importDataSource];
-    v9 = [v8 allItems];
+    importDataSource2 = [(PUImportOneUpViewController *)self importDataSource];
+    allItems = [importDataSource2 allItems];
 
-    v10 = [v9 indexOfObject:v7];
+    v10 = [allItems indexOfObject:v7];
     [(PUImportOneUpViewController *)self sizeForItemAtIndexPath:v6];
     v12 = v11;
-    v13 = [(PUImportOneUpViewController *)self collectionView];
-    [v13 contentOffset];
+    collectionView2 = [(PUImportOneUpViewController *)self collectionView];
+    [collectionView2 contentOffset];
     v15 = v14;
 
-    v16 = [(PUImportOneUpViewController *)self collectionView];
-    [(PUImportOneUpViewController *)self _horizontalOffsetInCollectionView:v16 forCenteringOnItemAtIndexPath:v6];
+    collectionView3 = [(PUImportOneUpViewController *)self collectionView];
+    [(PUImportOneUpViewController *)self _horizontalOffsetInCollectionView:collectionView3 forCenteringOnItemAtIndexPath:v6];
     v18 = v17;
 
     if (v15 >= v18)
@@ -1009,9 +1009,9 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
         v28 = v29;
       }
 
-      v30 = [(PUImportOneUpViewController *)self specManager];
-      v31 = [v30 spec];
-      [v31 interItemSpacing];
+      specManager = [(PUImportOneUpViewController *)self specManager];
+      spec = [specManager spec];
+      [spec interItemSpacing];
       v33 = round(v28 * 0.5 + v12 * 0.5 + v18 + v32);
 
       v27 = (v15 - v18) / (v33 - v18);
@@ -1028,9 +1028,9 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
         v20 = v21;
       }
 
-      v22 = [(PUImportOneUpViewController *)self specManager];
-      v23 = [v22 spec];
-      [v23 interItemSpacing];
+      specManager2 = [(PUImportOneUpViewController *)self specManager];
+      spec2 = [specManager2 spec];
+      [spec2 interItemSpacing];
       v25 = round(v18 - v12 * 0.5 - v24 - v20 * 0.5);
 
       v26 = v10;
@@ -1045,11 +1045,11 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
 
 - (unsigned)reviewScrubberImageFormat
 {
-  v2 = [MEMORY[0x1E69BF248] defaultFormatChooser];
-  v3 = [v2 largestUncroppedNonJPEGThumbnailFormat];
-  v4 = [v3 formatID];
+  defaultFormatChooser = [MEMORY[0x1E69BF248] defaultFormatChooser];
+  largestUncroppedNonJPEGThumbnailFormat = [defaultFormatChooser largestUncroppedNonJPEGThumbnailFormat];
+  formatID = [largestUncroppedNonJPEGThumbnailFormat formatID];
 
-  return v4;
+  return formatID;
 }
 
 - (void)_updateReviewScrubberHeightIfNeeded
@@ -1057,11 +1057,11 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
   if ([(PUImportOneUpViewController *)self _needsUpdateReviewScrubberHeight])
   {
     [(PUImportOneUpViewController *)self _setNeedsUpdateReviewScrubberHeight:0];
-    v3 = [(PUImportOneUpViewController *)self reviewScrubberHeightConstraint];
-    v7 = v3;
-    v4 = [(PUImportOneUpViewController *)self reviewScrubber];
-    v5 = [(PUImportOneUpViewController *)self traitCollection];
-    [PUReviewScrubberSetupHelper configureHeightConstraint:&v7 forReviewScrubber:v4 withTraitCollection:v5];
+    reviewScrubberHeightConstraint = [(PUImportOneUpViewController *)self reviewScrubberHeightConstraint];
+    v7 = reviewScrubberHeightConstraint;
+    reviewScrubber = [(PUImportOneUpViewController *)self reviewScrubber];
+    traitCollection = [(PUImportOneUpViewController *)self traitCollection];
+    [PUReviewScrubberSetupHelper configureHeightConstraint:&v7 forReviewScrubber:reviewScrubber withTraitCollection:traitCollection];
     v6 = v7;
 
     [(PUImportOneUpViewController *)self setReviewScrubberHeightConstraint:v6];
@@ -1110,26 +1110,26 @@ uint64_t __81__PUImportOneUpViewController_importOneUpCell_requestedBadgeUpdateF
 
   v12 = *&v17;
   v13 = *&v18;
-  v14 = [(PUImportOneUpViewController *)self collectionViewLayout];
-  [v14 setItemsContentInset:{v12, v9, v13, v11}];
+  collectionViewLayout = [(PUImportOneUpViewController *)self collectionViewLayout];
+  [collectionViewLayout setItemsContentInset:{v12, v9, v13, v11}];
 }
 
-- (id)badgeViewAtIndexPath:(id)a3 forCollectionView:(id)a4
+- (id)badgeViewAtIndexPath:(id)path forCollectionView:(id)view
 {
-  if (a4)
+  if (view)
   {
-    v6 = [a4 dequeueReusableSupplementaryViewOfKind:@"PUSelectableAssetBadgeKind" withReuseIdentifier:@"PUImportOneUpBadgeIdentifier" forIndexPath:a3];
+    v6 = [view dequeueReusableSupplementaryViewOfKind:@"PUSelectableAssetBadgeKind" withReuseIdentifier:@"PUImportOneUpBadgeIdentifier" forIndexPath:path];
   }
 
   else
   {
-    v7 = a3;
+    pathCopy = path;
     v8 = [PUImportOneUpCellBadgeView alloc];
     v6 = [(PUImportOneUpCellBadgeView *)v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
 
   v9 = v6;
-  v10 = [(PUImportOneUpViewController *)self importAssetAtIndexPath:a3];
+  v10 = [(PUImportOneUpViewController *)self importAssetAtIndexPath:path];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -1155,22 +1155,22 @@ uint64_t __70__PUImportOneUpViewController_badgeViewAtIndexPath_forCollectionVie
   return [v3 setSelectable:v2];
 }
 
-- (id)_indexPathInCollectionView:(id)a3 closestToPoint:(CGPoint)a4 excludingIndexPath:(id)a5
+- (id)_indexPathInCollectionView:(id)view closestToPoint:(CGPoint)point excludingIndexPath:(id)path
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 indexPathForItemAtPoint:{x, y}];
+  viewCopy = view;
+  pathCopy = path;
+  v10 = [viewCopy indexPathForItemAtPoint:{x, y}];
   if (!v10)
   {
-    v11 = [v8 visibleCells];
+    visibleCells = [viewCopy visibleCells];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v12 = [visibleCells countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1183,12 +1183,12 @@ uint64_t __70__PUImportOneUpViewController_badgeViewAtIndexPath_forCollectionVie
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(visibleCells);
           }
 
           v17 = *(*(&v24 + 1) + 8 * i);
-          v18 = [v8 indexPathForCell:v17];
-          if (([v9 isEqual:v18] & 1) == 0)
+          v18 = [viewCopy indexPathForCell:v17];
+          if (([pathCopy isEqual:v18] & 1) == 0)
           {
             [v17 center];
             v21 = (v20 - y) * (v20 - y) + (v19 - x) * (v19 - x);
@@ -1202,7 +1202,7 @@ uint64_t __70__PUImportOneUpViewController_badgeViewAtIndexPath_forCollectionVie
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [visibleCells countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v13);
@@ -1217,22 +1217,22 @@ uint64_t __70__PUImportOneUpViewController_badgeViewAtIndexPath_forCollectionVie
   return v10;
 }
 
-- (double)_horizontalOffsetInCollectionView:(id)a3 forCenteringOnItemAtIndexPath:(id)a4
+- (double)_horizontalOffsetInCollectionView:(id)view forCenteringOnItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 layoutAttributesForItemAtIndexPath:a4];
+  viewCopy = view;
+  v6 = [viewCopy layoutAttributesForItemAtIndexPath:path];
   [v6 center];
   v8 = v7;
-  [v5 bounds];
+  [viewCopy bounds];
   v10 = v9;
 
   return round(v8 + v10 * -0.5);
 }
 
-- (id)indexPathOfCenterVisibleItemInCollectionView:(id)a3
+- (id)indexPathOfCenterVisibleItemInCollectionView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -1242,36 +1242,36 @@ uint64_t __70__PUImportOneUpViewController_badgeViewAtIndexPath_forCollectionVie
   v14.origin.y = y;
   v14.size.width = width;
   v14.size.height = height;
-  v10 = [(PUImportOneUpViewController *)self _indexPathInCollectionView:v4 closestToPoint:0 excludingIndexPath:MidX, CGRectGetMidY(v14)];
+  v10 = [(PUImportOneUpViewController *)self _indexPathInCollectionView:viewCopy closestToPoint:0 excludingIndexPath:MidX, CGRectGetMidY(v14)];
 
   return v10;
 }
 
-- (void)pageToIndexPath:(id)a3 animated:(BOOL)a4
+- (void)pageToIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v11 = [(PUImportOneUpViewController *)self collectionView];
-  [v11 contentOffset];
+  animatedCopy = animated;
+  pathCopy = path;
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  [collectionView contentOffset];
   v8 = v7;
-  [(PUImportOneUpViewController *)self _horizontalOffsetInCollectionView:v11 forCenteringOnItemAtIndexPath:v6];
+  [(PUImportOneUpViewController *)self _horizontalOffsetInCollectionView:collectionView forCenteringOnItemAtIndexPath:pathCopy];
   v10 = v9;
 
-  [v11 setContentOffset:v4 animated:{v10, v8}];
+  [collectionView setContentOffset:animatedCopy animated:{v10, v8}];
   [(PUImportOneUpViewController *)self updateNavigationItemTitle];
 }
 
-- (void)pageToItemOrNearestIndexPath:(id)a3 animated:(BOOL)a4
+- (void)pageToItemOrNearestIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  pathCopy = path;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(PUImportOneUpViewController *)self importDataSource];
-  v8 = v7;
-  if (v7)
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  v8 = importDataSource;
+  if (importDataSource)
   {
-    [v7 itemIndexPathForItem:v6];
+    [importDataSource itemIndexPathForItem:pathCopy];
   }
 
   else
@@ -1282,8 +1282,8 @@ uint64_t __70__PUImportOneUpViewController_badgeViewAtIndexPath_forCollectionVie
 
   if (v14 == *MEMORY[0x1E69C4880])
   {
-    v9 = [(PUImportOneUpViewController *)self collectionView];
-    v10 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:v9];
+    collectionView = [(PUImportOneUpViewController *)self collectionView];
+    v10 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:collectionView];
 
     if (!v10)
     {
@@ -1302,16 +1302,16 @@ LABEL_8:
     v11 = [(PUImportOneUpViewController *)self reviewScrubber:v12];
     [v11 setSelectedIndexPath:v10];
 
-    [(PUImportOneUpViewController *)self pageToIndexPath:v10 animated:v4];
+    [(PUImportOneUpViewController *)self pageToIndexPath:v10 animated:animatedCopy];
   }
 
 LABEL_9:
 }
 
-- (CGSize)sizeForItemAtIndexPath:(id)a3
+- (CGSize)sizeForItemAtIndexPath:(id)path
 {
-  v4 = [(PUImportOneUpViewController *)self importAssetAtIndexPath:a3];
-  v5 = [v4 importAsset];
+  v4 = [(PUImportOneUpViewController *)self importAssetAtIndexPath:path];
+  importAsset = [v4 importAsset];
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
@@ -1319,15 +1319,15 @@ LABEL_9:
   [(PUImportOneUpViewController *)self getMainCollectionViewFrame:&v52 collectionViewLayoutInsets:&v50];
   v6 = *&v53 - (*(&v50 + 1) + *(&v51 + 1));
   v7 = *(&v53 + 1) - (*&v50 + *&v51);
-  [v5 orientedPixelSize];
+  [importAsset orientedPixelSize];
   v9 = v8;
   v11 = v10;
-  v12 = [MEMORY[0x1E69C3620] sharedInstance];
-  v13 = [v12 useThumbnailSizesAsImageSizeHints];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  useThumbnailSizesAsImageSizeHints = [mEMORY[0x1E69C3620] useThumbnailSizesAsImageSizeHints];
 
   v14 = *MEMORY[0x1E695F060];
   v15 = *(MEMORY[0x1E695F060] + 8);
-  if (v9 != *MEMORY[0x1E695F060] || v11 != v15 || v13 == 0)
+  if (v9 != *MEMORY[0x1E695F060] || v11 != v15 || useThumbnailSizesAsImageSizeHints == 0)
   {
     goto LABEL_27;
   }
@@ -1338,16 +1338,16 @@ LABEL_9:
     [v4 thumbnailSize];
     if (v24 == v14 && v23 == v15)
     {
-      v26 = [(PUImportOneUpViewController *)self itemsWithInvalidImageSizes];
+      itemsWithInvalidImageSizes = [(PUImportOneUpViewController *)self itemsWithInvalidImageSizes];
 
-      if (!v26)
+      if (!itemsWithInvalidImageSizes)
       {
         v27 = [MEMORY[0x1E695DFA8] set];
         [(PUImportOneUpViewController *)self setItemsWithInvalidImageSizes:v27];
       }
 
-      v28 = [(PUImportOneUpViewController *)self itemsWithInvalidImageSizes];
-      [v28 addObject:v4];
+      itemsWithInvalidImageSizes2 = [(PUImportOneUpViewController *)self itemsWithInvalidImageSizes];
+      [itemsWithInvalidImageSizes2 addObject:v4];
 
       goto LABEL_22;
     }
@@ -1365,20 +1365,20 @@ LABEL_9:
 LABEL_22:
   if (v9 != v14 || v11 != v15)
   {
-    v30 = [(PUImportOneUpViewController *)self itemsWithInvalidImageSizes];
-    [v30 removeObject:v4];
+    itemsWithInvalidImageSizes3 = [(PUImportOneUpViewController *)self itemsWithInvalidImageSizes];
+    [itemsWithInvalidImageSizes3 removeObject:v4];
   }
 
 LABEL_27:
-  v31 = [(PUImportOneUpViewController *)self specManager];
-  v32 = [v31 spec];
+  specManager = [(PUImportOneUpViewController *)self specManager];
+  spec = [specManager spec];
 
-  [v32 interItemSpacing];
+  [spec interItemSpacing];
   v34 = v6 + v33 * -4.0;
   v35 = v7 + v33 * -2.0;
-  [v32 selectionBadgeSize];
+  [spec selectionBadgeSize];
   v37 = v36;
-  [v32 selectionBadgeOffset];
+  [spec selectionBadgeOffset];
   v39 = v37 + v38 * 2.0;
   PURectWithSizeThatFitsInRect(v9, v11, 0.0, 0.0, v34, v35);
   if (v41 < v39 && v11 < v9)
@@ -1433,9 +1433,9 @@ LABEL_27:
   return result;
 }
 
-- (id)importAssetAtIndexPath:(id)a3
+- (id)importAssetAtIndexPath:(id)path
 {
-  v3 = [(PUImportOneUpViewController *)self assetAtIndexPath:a3];
+  v3 = [(PUImportOneUpViewController *)self assetAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1450,46 +1450,46 @@ LABEL_27:
   return v4;
 }
 
-- (id)assetAtIndexPath:(id)a3
+- (id)assetAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUImportOneUpViewController *)self importDataSource];
-  [v5 identifier];
+  pathCopy = path;
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  [importDataSource identifier];
   PXSimpleIndexPathFromIndexPath();
 
-  v6 = [(PUImportOneUpViewController *)self importDataSource];
+  importDataSource2 = [(PUImportOneUpViewController *)self importDataSource];
   memset(v9, 0, sizeof(v9));
-  v7 = [v6 assetAtItemIndexPath:v9];
+  v7 = [importDataSource2 assetAtItemIndexPath:v9];
 
   return v7;
 }
 
 - (id)_currentAsset
 {
-  v3 = [(PUImportOneUpViewController *)self collectionView];
-  v4 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:v3];
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  v4 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:collectionView];
 
   v5 = [(PUImportOneUpViewController *)self assetAtIndexPath:v4];
 
   return v5;
 }
 
-- (void)_handleTapInMainCollectionView:(id)a3
+- (void)_handleTapInMainCollectionView:(id)view
 {
-  v4 = a3;
-  v17 = [(PUImportOneUpViewController *)self collectionView];
-  [v4 locationInView:v17];
+  viewCopy = view;
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  [viewCopy locationInView:collectionView];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(PUImportOneUpViewController *)self collectionViewLayout];
-  [v17 contentSize];
+  collectionViewLayout = [(PUImportOneUpViewController *)self collectionViewLayout];
+  [collectionView contentSize];
   v11 = v10;
-  [v9 itemsContentInset];
+  [collectionViewLayout itemsContentInset];
   v14 = v11 - fabs(v13);
   if (v6 > fabs(v12) && v6 < v14)
   {
-    v16 = [(PUImportOneUpViewController *)self _indexPathInCollectionView:v17 closestToPoint:0 excludingIndexPath:v6, v8];
+    v16 = [(PUImportOneUpViewController *)self _indexPathInCollectionView:collectionView closestToPoint:0 excludingIndexPath:v6, v8];
     if (v16)
     {
       [(PUImportOneUpViewController *)self _handleTapAtIndexPath:v16];
@@ -1497,16 +1497,16 @@ LABEL_27:
   }
 }
 
-- (void)_handleTapAtIndexPath:(id)a3
+- (void)_handleTapAtIndexPath:(id)path
 {
-  v6 = a3;
-  v4 = [(PUImportOneUpViewController *)self collectionView];
-  [(PUImportOneUpViewController *)self _toggleCurrentPickStatusAtIndexPath:v6];
-  if (([v4 isDragging] & 1) == 0 && (objc_msgSend(v4, "isDecelerating") & 1) == 0 && objc_msgSend(v4, "isTracking"))
+  pathCopy = path;
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  [(PUImportOneUpViewController *)self _toggleCurrentPickStatusAtIndexPath:pathCopy];
+  if (([collectionView isDragging] & 1) == 0 && (objc_msgSend(collectionView, "isDecelerating") & 1) == 0 && objc_msgSend(collectionView, "isTracking"))
   {
-    v5 = [(PUImportOneUpViewController *)self reviewScrubber];
-    [v5 beginInteractiveUpdate];
-    [(PUImportOneUpViewController *)self pageToIndexPath:v6 animated:1];
+    reviewScrubber = [(PUImportOneUpViewController *)self reviewScrubber];
+    [reviewScrubber beginInteractiveUpdate];
+    [(PUImportOneUpViewController *)self pageToIndexPath:pathCopy animated:1];
   }
 }
 
@@ -1515,26 +1515,26 @@ LABEL_27:
   v26 = *MEMORY[0x1E69E9840];
   if ([(PUImportOneUpViewController *)self loadLargeThumbnailsInCustomOrder])
   {
-    v3 = [(PUImportOneUpViewController *)self collectionView];
-    v4 = [v3 indexPathsForVisibleItems];
+    collectionView = [(PUImportOneUpViewController *)self collectionView];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-    if ([v4 count])
+    if ([indexPathsForVisibleItems count])
     {
-      v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_311_31467];
+      v5 = [indexPathsForVisibleItems sortedArrayUsingComparator:&__block_literal_global_311_31467];
 
-      v6 = [(PUImportOneUpViewController *)self collectionView];
-      v7 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:v6];
+      collectionView2 = [(PUImportOneUpViewController *)self collectionView];
+      v7 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:collectionView2];
 
       if (v7)
       {
-        v8 = [(PUImportOneUpViewController *)self collectionView];
-        v9 = [v8 cellForItemAtIndexPath:v7];
+        collectionView3 = [(PUImportOneUpViewController *)self collectionView];
+        v9 = [collectionView3 cellForItemAtIndexPath:v7];
 
         if (v9)
         {
-          v10 = [v9 importItem];
-          v11 = [(PUImportOneUpViewController *)self thumbnailLoadableItemWhitelist];
-          [v11 addObject:v10];
+          importItem = [v9 importItem];
+          thumbnailLoadableItemWhitelist = [(PUImportOneUpViewController *)self thumbnailLoadableItemWhitelist];
+          [thumbnailLoadableItemWhitelist addObject:importItem];
 
           [v9 refreshThumbnail];
         }
@@ -1544,8 +1544,8 @@ LABEL_27:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v4 = v5;
-      v12 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      indexPathsForVisibleItems = v5;
+      v12 = [indexPathsForVisibleItems countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1556,27 +1556,27 @@ LABEL_27:
           {
             if (*v22 != v14)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(indexPathsForVisibleItems);
             }
 
             v16 = *(*(&v21 + 1) + 8 * i);
             if (([v16 isEqual:{v7, v21}] & 1) == 0)
             {
-              v17 = [(PUImportOneUpViewController *)self collectionView];
-              v18 = [v17 cellForItemAtIndexPath:v16];
+              collectionView4 = [(PUImportOneUpViewController *)self collectionView];
+              v18 = [collectionView4 cellForItemAtIndexPath:v16];
 
               if (v18)
               {
-                v19 = [v18 importItem];
-                v20 = [(PUImportOneUpViewController *)self thumbnailLoadableItemWhitelist];
-                [v20 addObject:v19];
+                importItem2 = [v18 importItem];
+                thumbnailLoadableItemWhitelist2 = [(PUImportOneUpViewController *)self thumbnailLoadableItemWhitelist];
+                [thumbnailLoadableItemWhitelist2 addObject:importItem2];
 
                 [v18 refreshThumbnail];
               }
             }
           }
 
-          v13 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v13 = [indexPathsForVisibleItems countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v13);
@@ -1595,27 +1595,27 @@ LABEL_27:
   [(PUImportOneUpViewController *)self setThumbnailLoadableItemWhitelist:v3];
 }
 
-- (CGRect)selectionBadgeFrameForItemFrame:(CGRect)a3 atIndexPath:(id)a4
+- (CGRect)selectionBadgeFrameForItemFrame:(CGRect)frame atIndexPath:(id)path
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PUImportOneUpViewController *)self specManager];
-  v9 = [v8 spec];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  specManager = [(PUImportOneUpViewController *)self specManager];
+  spec = [specManager spec];
 
-  [v9 selectionBadgeSize];
+  [spec selectionBadgeSize];
   v11 = v10;
   v13 = v12;
-  [v9 selectionBadgeOffset];
+  [spec selectionBadgeOffset];
   v15 = v14;
   v17 = v16;
-  v18 = [v9 selectionBadgeCorner];
-  if (v18 != 1)
+  selectionBadgeCorner = [spec selectionBadgeCorner];
+  if (selectionBadgeCorner != 1)
   {
     v19 = width;
     v20 = *(MEMORY[0x1E695F058] + 8);
-    if (v18 == 4)
+    if (selectionBadgeCorner == 4)
     {
       v26 = x;
       v27 = y;
@@ -1626,7 +1626,7 @@ LABEL_27:
     {
       v21 = height;
       v22 = *MEMORY[0x1E695F058];
-      if (v18 == 2)
+      if (selectionBadgeCorner == 2)
       {
         v23 = x;
         v24 = y;
@@ -1677,17 +1677,17 @@ LABEL_8:
   return result;
 }
 
-- (void)getFirstValidIndexPath:(id *)a3 lastValidIndexPath:(id *)a4
+- (void)getFirstValidIndexPath:(id *)path lastValidIndexPath:(id *)indexPath
 {
-  v6 = [(PUImportOneUpViewController *)self importDataSource];
-  v7 = v6;
-  if (v6)
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  v7 = importDataSource;
+  if (importDataSource)
   {
-    [v6 firstItemIndexPath];
+    [importDataSource firstItemIndexPath];
     [v7 lastItemIndexPath];
     v8 = PXIndexPathFromSimpleIndexPath();
     v9 = PXIndexPathFromSimpleIndexPath();
-    if (!a3)
+    if (!path)
     {
       goto LABEL_4;
     }
@@ -1697,32 +1697,32 @@ LABEL_8:
 
   v9 = 0;
   v8 = 0;
-  if (a3)
+  if (path)
   {
 LABEL_3:
     v10 = v8;
-    *a3 = v8;
+    *path = v8;
   }
 
 LABEL_4:
-  if (a4)
+  if (indexPath)
   {
     v11 = v9;
-    *a4 = v9;
+    *indexPath = v9;
   }
 }
 
-- (void)getMainCollectionViewFrame:(CGRect *)a3 collectionViewLayoutInsets:(UIEdgeInsets *)a4
+- (void)getMainCollectionViewFrame:(CGRect *)frame collectionViewLayoutInsets:(UIEdgeInsets *)insets
 {
-  v7 = [(PUImportOneUpViewController *)self view];
-  [v7 bounds];
+  view = [(PUImportOneUpViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(PUImportOneUpViewController *)self collectionViewLayout];
-  [v16 layoutReferenceSize];
+  collectionViewLayout = [(PUImportOneUpViewController *)self collectionViewLayout];
+  [collectionViewLayout layoutReferenceSize];
   v18 = v17;
   v20 = v19;
   v21 = *MEMORY[0x1E695F060];
@@ -1730,31 +1730,31 @@ LABEL_4:
 
   if (v18 != v21 || v20 != v22)
   {
-    v24 = [(PUImportOneUpViewController *)self collectionViewLayout];
-    [v24 layoutReferenceSize];
+    collectionViewLayout2 = [(PUImportOneUpViewController *)self collectionViewLayout];
+    [collectionViewLayout2 layoutReferenceSize];
     v13 = v25;
     v15 = v26;
   }
 
-  if (a3)
+  if (frame)
   {
-    a3->origin.x = v9;
-    a3->origin.y = v11;
-    a3->size.width = v13;
-    a3->size.height = v15;
+    frame->origin.x = v9;
+    frame->origin.y = v11;
+    frame->size.width = v13;
+    frame->size.height = v15;
   }
 
-  if (a4)
+  if (insets)
   {
     [(PUImportOneUpViewController *)self px_safeAreaInsets];
-    v27 = [(PUImportOneUpViewController *)self reviewScrubberHeightConstraint];
-    [v27 constant];
+    reviewScrubberHeightConstraint = [(PUImportOneUpViewController *)self reviewScrubberHeightConstraint];
+    [reviewScrubberHeightConstraint constant];
 
     UIEdgeInsetsMax();
-    a4->top = v28;
-    a4->left = v29;
-    a4->bottom = v30;
-    a4->right = v31;
+    insets->top = v28;
+    insets->left = v29;
+    insets->bottom = v30;
+    insets->right = v31;
   }
 }
 
@@ -1765,80 +1765,80 @@ LABEL_4:
     return;
   }
 
-  v3 = [(PUImportOneUpViewController *)self specManager];
-  v4 = [v3 spec];
+  specManager = [(PUImportOneUpViewController *)self specManager];
+  spec = [specManager spec];
 
   v25 = 0u;
   v26 = 0u;
   memset(v24, 0, sizeof(v24));
   [(PUImportOneUpViewController *)self getMainCollectionViewFrame:&v25 collectionViewLayoutInsets:v24];
   v5 = +[PUInterfaceManager currentTheme];
-  v6 = [v5 photoCollectionViewBackgroundColor];
+  photoCollectionViewBackgroundColor = [v5 photoCollectionViewBackgroundColor];
 
-  v7 = [(PUImportOneUpViewController *)self collectionView];
-  v8 = [(PUImportOneUpViewController *)self collectionViewLayout];
-  [v4 interItemSpacing];
-  if (!v8)
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  collectionViewLayout = [(PUImportOneUpViewController *)self collectionViewLayout];
+  [spec interItemSpacing];
+  if (!collectionViewLayout)
   {
     v14 = v9;
-    v8 = objc_alloc_init(PUSelectableAssetCollectionViewLayout);
-    [(PUHorizontalCollectionViewLayout *)v8 setInteritemSpacing:v14];
-    [v4 selectionBadgeOffset];
-    [(PUSelectableAssetCollectionViewLayout *)v8 setSharingBadgeOffset:?];
-    [(PUHorizontalCollectionViewLayout *)v8 setDelegate:self];
-    objc_storeStrong(&self->_collectionViewLayout, v8);
-    if (v7)
+    collectionViewLayout = objc_alloc_init(PUSelectableAssetCollectionViewLayout);
+    [(PUHorizontalCollectionViewLayout *)collectionViewLayout setInteritemSpacing:v14];
+    [spec selectionBadgeOffset];
+    [(PUSelectableAssetCollectionViewLayout *)collectionViewLayout setSharingBadgeOffset:?];
+    [(PUHorizontalCollectionViewLayout *)collectionViewLayout setDelegate:self];
+    objc_storeStrong(&self->_collectionViewLayout, collectionViewLayout);
+    if (collectionView)
     {
       goto LABEL_4;
     }
 
 LABEL_9:
     v15 = objc_alloc(MEMORY[0x1E69DC7F0]);
-    v7 = [v15 initWithFrame:v8 collectionViewLayout:{v25, v26}];
-    [v7 setAutoresizingMask:18];
-    [v7 setAlwaysBounceVertical:0];
-    [v7 setAlwaysBounceHorizontal:1];
-    [v7 setPagingEnabled:0];
-    [v7 setDecelerationRate:*MEMORY[0x1E69DE3A0]];
-    [v7 setDataSource:self];
-    [v7 setDelegate:self];
-    [v7 setShowsHorizontalScrollIndicator:0];
-    [v7 setBackgroundColor:v6];
-    [v7 setDelaysContentTouches:0];
-    [v7 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUImportOneUpCellIdentifier"];
-    [v7 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUSelectableAssetBadgeKind" withReuseIdentifier:@"PUImportOneUpBadgeIdentifier"];
-    [v7 setContentInsetAdjustmentBehavior:2];
+    collectionView = [v15 initWithFrame:collectionViewLayout collectionViewLayout:{v25, v26}];
+    [collectionView setAutoresizingMask:18];
+    [collectionView setAlwaysBounceVertical:0];
+    [collectionView setAlwaysBounceHorizontal:1];
+    [collectionView setPagingEnabled:0];
+    [collectionView setDecelerationRate:*MEMORY[0x1E69DE3A0]];
+    [collectionView setDataSource:self];
+    [collectionView setDelegate:self];
+    [collectionView setShowsHorizontalScrollIndicator:0];
+    [collectionView setBackgroundColor:photoCollectionViewBackgroundColor];
+    [collectionView setDelaysContentTouches:0];
+    [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUImportOneUpCellIdentifier"];
+    [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUSelectableAssetBadgeKind" withReuseIdentifier:@"PUImportOneUpBadgeIdentifier"];
+    [collectionView setContentInsetAdjustmentBehavior:2];
     v16 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapInMainCollectionView_];
     tapGestureRecognizer = self->_tapGestureRecognizer;
     self->_tapGestureRecognizer = v16;
 
-    v18 = [(PUImportOneUpViewController *)self tapGestureRecognizer];
-    [v18 setNumberOfTapsRequired:1];
+    tapGestureRecognizer = [(PUImportOneUpViewController *)self tapGestureRecognizer];
+    [tapGestureRecognizer setNumberOfTapsRequired:1];
 
-    v19 = [(PUImportOneUpViewController *)self tapGestureRecognizer];
-    [v19 setNumberOfTouchesRequired:1];
+    tapGestureRecognizer2 = [(PUImportOneUpViewController *)self tapGestureRecognizer];
+    [tapGestureRecognizer2 setNumberOfTouchesRequired:1];
 
-    v20 = [(PUImportOneUpViewController *)self tapGestureRecognizer];
-    [v20 setDelegate:self];
+    tapGestureRecognizer3 = [(PUImportOneUpViewController *)self tapGestureRecognizer];
+    [tapGestureRecognizer3 setDelegate:self];
 
-    v21 = [(PUImportOneUpViewController *)self tapGestureRecognizer];
-    [v7 addGestureRecognizer:v21];
+    tapGestureRecognizer4 = [(PUImportOneUpViewController *)self tapGestureRecognizer];
+    [collectionView addGestureRecognizer:tapGestureRecognizer4];
 
-    objc_storeStrong(&self->_collectionView, v7);
-    v22 = [(PUImportOneUpViewController *)self view];
-    v23 = [(PUImportOneUpViewController *)self collectionView];
-    [v22 addSubview:v23];
+    objc_storeStrong(&self->_collectionView, collectionView);
+    view = [(PUImportOneUpViewController *)self view];
+    collectionView2 = [(PUImportOneUpViewController *)self collectionView];
+    [view addSubview:collectionView2];
 
     goto LABEL_4;
   }
 
-  if (!v7)
+  if (!collectionView)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  [v7 setFrame:{v25, v26}];
+  [collectionView setFrame:{v25, v26}];
   [(PUImportOneUpViewController *)self updateCollectionViewLayoutInsets];
   if (!self->_reviewScrubber)
   {
@@ -1848,8 +1848,8 @@ LABEL_4:
 
     [(PUReviewScrubber *)self->_reviewScrubber setScrubberCellClass:objc_opt_class()];
     v12 = self->_reviewScrubber;
-    v13 = [(PUImportOneUpViewController *)self view];
-    [PUReviewScrubberSetupHelper setupBaseConstraintsForReviewScrubber:v12 inView:v13];
+    view2 = [(PUImportOneUpViewController *)self view];
+    [PUReviewScrubberSetupHelper setupBaseConstraintsForReviewScrubber:v12 inView:view2];
 
     [(PUImportOneUpViewController *)self _invalidateReviewScrubberHeight];
   }
@@ -1857,21 +1857,21 @@ LABEL_4:
   [(PUImportOneUpViewController *)self _updateReviewScrubberHeightIfNeeded];
 }
 
-- (void)_updateBarItemsAnimated:(BOOL)a3
+- (void)_updateBarItemsAnimated:(BOOL)animated
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PUImportOneUpViewController *)self navigationTitleView];
+  navigationTitleView = [(PUImportOneUpViewController *)self navigationTitleView];
 
-  if (!v4)
+  if (!navigationTitleView)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69C3720]);
     navigationTitleView = self->_navigationTitleView;
     self->_navigationTitleView = v5;
   }
 
-  v7 = [(PUImportOneUpViewController *)self cancelBarButtonItem];
+  cancelBarButtonItem = [(PUImportOneUpViewController *)self cancelBarButtonItem];
 
-  if (!v7)
+  if (!cancelBarButtonItem)
   {
     v8 = MEMORY[0x1B8C6D660]();
     v9 = objc_alloc(MEMORY[0x1E69DC708]);
@@ -1892,9 +1892,9 @@ LABEL_4:
     }
   }
 
-  v14 = [(PUImportOneUpViewController *)self importBarButtonItem];
+  importBarButtonItem = [(PUImportOneUpViewController *)self importBarButtonItem];
 
-  if (!v14)
+  if (!importBarButtonItem)
   {
     v15 = objc_alloc(MEMORY[0x1E69DC708]);
     v16 = PLLocalizedFrameworkString();
@@ -1903,9 +1903,9 @@ LABEL_4:
     self->_importBarButtonItem = v17;
   }
 
-  v19 = [(PUImportOneUpViewController *)self stopImportBarButtonItem];
+  stopImportBarButtonItem = [(PUImportOneUpViewController *)self stopImportBarButtonItem];
 
-  if (!v19)
+  if (!stopImportBarButtonItem)
   {
     v20 = objc_alloc(MEMORY[0x1E69DC708]);
     v21 = PLLocalizedFrameworkString();
@@ -1914,76 +1914,76 @@ LABEL_4:
     self->_stopImportBarButtonItem = v22;
   }
 
-  v24 = [(PUImportOneUpViewController *)self deleteBarButtonItem];
+  deleteBarButtonItem = [(PUImportOneUpViewController *)self deleteBarButtonItem];
 
-  if (!v24)
+  if (!deleteBarButtonItem)
   {
     v25 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:16 target:self action:sel__deleteAction_];
     deleteBarButtonItem = self->_deleteBarButtonItem;
     self->_deleteBarButtonItem = v25;
   }
 
-  v27 = [(PUImportOneUpViewController *)self progressButtonItem];
+  progressButtonItem = [(PUImportOneUpViewController *)self progressButtonItem];
 
-  if (!v27)
+  if (!progressButtonItem)
   {
     v28 = [objc_alloc(MEMORY[0x1E69BE1C8]) initWithFrame:3 style:{0.0, 0.0, 28.0, 28.0}];
     [(PUImportOneUpViewController *)self setRoundProgressView:v28];
 
-    v29 = [(PUImportOneUpViewController *)self roundProgressView];
-    [v29 setUserInteractionEnabled:0];
+    roundProgressView = [(PUImportOneUpViewController *)self roundProgressView];
+    [roundProgressView setUserInteractionEnabled:0];
 
     v30 = objc_alloc(MEMORY[0x1E69DC708]);
-    v31 = [(PUImportOneUpViewController *)self roundProgressView];
-    v32 = [v30 initWithCustomView:v31];
+    roundProgressView2 = [(PUImportOneUpViewController *)self roundProgressView];
+    v32 = [v30 initWithCustomView:roundProgressView2];
     progressButtonItem = self->_progressButtonItem;
     self->_progressButtonItem = v32;
 
     [(UIBarButtonItem *)self->_progressButtonItem setIsAccessibilityElement:1];
     [(UIBarButtonItem *)self->_progressButtonItem setAccessibilityTraits:*MEMORY[0x1E69DDA18] | *MEMORY[0x1E69DDA38]];
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v34 addObserver:self selector:sel_importControllerProgressDidChange_ name:*MEMORY[0x1E69C4070] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_importControllerProgressDidChange_ name:*MEMORY[0x1E69C4070] object:0];
   }
 
-  v35 = [(PUImportOneUpViewController *)self cancelBarButtonItem];
-  v39[0] = v35;
+  cancelBarButtonItem2 = [(PUImportOneUpViewController *)self cancelBarButtonItem];
+  v39[0] = cancelBarButtonItem2;
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
 
-  v37 = [(PUImportOneUpViewController *)self navigationItem];
-  [v37 setLeftBarButtonItems:v36];
-  v38 = [(PUImportOneUpViewController *)self navigationTitleView];
-  [v37 setTitleView:v38];
+  navigationItem = [(PUImportOneUpViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItems:v36];
+  navigationTitleView2 = [(PUImportOneUpViewController *)self navigationTitleView];
+  [navigationItem setTitleView:navigationTitleView2];
 
   [(PUImportOneUpViewController *)self updateToolbarItems];
   [(PUImportOneUpViewController *)self updateNavigationItemTitle];
 }
 
-- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)a3
+- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 layoutSizeClass] == 1 && objc_msgSend(v3, "layoutOrientation") == 2;
+  collectionCopy = collection;
+  v4 = [collectionCopy layoutSizeClass] == 1 && objc_msgSend(collectionCopy, "layoutOrientation") == 2;
 
   return v4;
 }
 
 - (void)updateNavigationItemTitle
 {
-  v3 = [(PUImportOneUpViewController *)self collectionView];
-  v4 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:v3];
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  v4 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:collectionView];
 
-  v5 = [(PUImportOneUpViewController *)self importController];
-  v6 = [v5 selectedItems];
+  importController = [(PUImportOneUpViewController *)self importController];
+  selectedItems = [importController selectedItems];
 
-  v7 = [(PUImportOneUpViewController *)self importController];
-  v8 = [v7 isImportingAssets];
+  importController2 = [(PUImportOneUpViewController *)self importController];
+  isImportingAssets = [importController2 isImportingAssets];
 
-  v9 = [(PUImportOneUpViewController *)self importController];
-  v10 = [v9 isDeletingAssets];
+  importController3 = [(PUImportOneUpViewController *)self importController];
+  isDeletingAssets = [importController3 isDeletingAssets];
 
-  v11 = [MEMORY[0x1E69C3620] sharedInstance];
-  v12 = [v11 showProgressTitles];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  showProgressTitles = [mEMORY[0x1E69C3620] showProgressTitles];
 
-  if (![v6 count] || ((v8 | v10) & v12 & 1) != 0)
+  if (![selectedItems count] || ((isImportingAssets | isDeletingAssets) & showProgressTitles & 1) != 0)
   {
     v13 = PLLocalizedFrameworkString();
   }
@@ -1997,14 +1997,14 @@ LABEL_4:
   if (v4)
   {
     v15 = [(PUImportOneUpViewController *)self assetAtIndexPath:v4];
-    v16 = [v15 creationDate];
-    if (v16)
+    creationDate = [v15 creationDate];
+    if (creationDate)
     {
-      v17 = [(PUImportOneUpViewController *)self dayFormatter];
-      v18 = [v17 stringFromDate:v16];
+      dayFormatter = [(PUImportOneUpViewController *)self dayFormatter];
+      v18 = [dayFormatter stringFromDate:creationDate];
 
-      v19 = [(PUImportOneUpViewController *)self timeFormatter];
-      v20 = [v19 stringFromDate:v16];
+      timeFormatter = [(PUImportOneUpViewController *)self timeFormatter];
+      v20 = [timeFormatter stringFromDate:creationDate];
     }
 
     else
@@ -2041,8 +2041,8 @@ LABEL_16:
   v21 = 0;
 LABEL_17:
   v24 = [(PUImportOneUpViewController *)self navigationTitleView:v34];
-  v25 = [(PUImportOneUpViewController *)self px_extendedTraitCollection];
-  v26 = [(PUImportOneUpViewController *)self _titleViewVerticalSizeClassForExtendedTraitCollection:v25];
+  px_extendedTraitCollection = [(PUImportOneUpViewController *)self px_extendedTraitCollection];
+  v26 = [(PUImportOneUpViewController *)self _titleViewVerticalSizeClassForExtendedTraitCollection:px_extendedTraitCollection];
   v27 = [MEMORY[0x1E69DB878] defaultFontForTextStyle:*MEMORY[0x1E69DDD10]];
   v28 = MEMORY[0x1E69DB878];
   [v27 pointSize];
@@ -2081,102 +2081,102 @@ uint64_t __56__PUImportOneUpViewController_updateNavigationItemTitle__block_invo
 {
   v39 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-  v4 = [(PUImportOneUpViewController *)self importController];
-  v5 = [v4 selectedItems];
+  importController = [(PUImportOneUpViewController *)self importController];
+  selectedItems = [importController selectedItems];
 
-  v6 = [(PUImportOneUpViewController *)self importController];
-  v7 = [v6 isImportingAssets];
+  importController2 = [(PUImportOneUpViewController *)self importController];
+  isImportingAssets = [importController2 isImportingAssets];
 
-  if (v7)
+  if (isImportingAssets)
   {
-    v8 = [(PUImportOneUpViewController *)self stopImportBarButtonItem];
-    [v39 addObject:v8];
+    stopImportBarButtonItem = [(PUImportOneUpViewController *)self stopImportBarButtonItem];
+    [v39 addObject:stopImportBarButtonItem];
   }
 
   else
   {
-    v9 = [(PUImportOneUpViewController *)self importDataSource];
-    v10 = [v9 numberOfSelectableItems];
+    importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+    numberOfSelectableItems = [importDataSource numberOfSelectableItems];
 
-    if (!v10)
+    if (!numberOfSelectableItems)
     {
       goto LABEL_6;
     }
 
-    v11 = [(PUImportOneUpViewController *)self importBarButtonItem];
-    [v39 addObject:v11];
+    importBarButtonItem = [(PUImportOneUpViewController *)self importBarButtonItem];
+    [v39 addObject:importBarButtonItem];
 
-    v8 = [(PUImportOneUpViewController *)self actionCoordinator];
-    v12 = [(PUImportOneUpViewController *)self importBarButtonItem];
-    [v8 configureImportActionsForBarButtonItem:v12];
+    stopImportBarButtonItem = [(PUImportOneUpViewController *)self actionCoordinator];
+    importBarButtonItem2 = [(PUImportOneUpViewController *)self importBarButtonItem];
+    [stopImportBarButtonItem configureImportActionsForBarButtonItem:importBarButtonItem2];
   }
 
 LABEL_6:
-  [v5 count];
+  [selectedItems count];
   v13 = PLLocalizedFrameworkString();
-  v14 = [(PUImportOneUpViewController *)self deleteBarButtonItem];
-  [v14 setAccessibilityLabel:v13];
+  deleteBarButtonItem = [(PUImportOneUpViewController *)self deleteBarButtonItem];
+  [deleteBarButtonItem setAccessibilityLabel:v13];
 
-  v15 = [(PUImportOneUpViewController *)self importController];
-  v16 = [v15 importSource];
-  v17 = [v16 canDeleteContent];
+  importController3 = [(PUImportOneUpViewController *)self importController];
+  importSource = [importController3 importSource];
+  canDeleteContent = [importSource canDeleteContent];
 
-  if (v17)
+  if (canDeleteContent)
   {
-    v18 = [(PUImportOneUpViewController *)self traitCollection];
-    v19 = [v18 horizontalSizeClass];
+    traitCollection = [(PUImportOneUpViewController *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    v20 = [(PUImportOneUpViewController *)self deleteBarButtonItem];
+    deleteBarButtonItem2 = [(PUImportOneUpViewController *)self deleteBarButtonItem];
     v21 = v39;
-    if (v19 == 1)
+    if (horizontalSizeClass == 1)
     {
       v21 = v3;
     }
 
-    [v21 addObject:v20];
+    [v21 addObject:deleteBarButtonItem2];
   }
 
-  v22 = [(PUImportOneUpViewController *)self importController];
-  if ([v22 isImportingAssets])
+  importController4 = [(PUImportOneUpViewController *)self importController];
+  if ([importController4 isImportingAssets])
   {
   }
 
   else
   {
-    v23 = [(PUImportOneUpViewController *)self importController];
-    v24 = [v23 isDeletingAssets];
+    importController5 = [(PUImportOneUpViewController *)self importController];
+    isDeletingAssets = [importController5 isDeletingAssets];
 
-    if (!v24)
+    if (!isDeletingAssets)
     {
       goto LABEL_14;
     }
   }
 
-  v25 = [(PUImportOneUpViewController *)self progressButtonItem];
-  [v39 addObject:v25];
+  progressButtonItem = [(PUImportOneUpViewController *)self progressButtonItem];
+  [v39 addObject:progressButtonItem];
 
 LABEL_14:
-  v26 = [(PUImportOneUpViewController *)self importController];
-  if ([v26 hasLoadedInitialBatchOfAssets])
+  importController6 = [(PUImportOneUpViewController *)self importController];
+  if ([importController6 hasLoadedInitialBatchOfAssets])
   {
-    v27 = [(PUImportOneUpViewController *)self importController];
-    if ([v27 isLoadingInitialBatchOfAssets])
+    importController7 = [(PUImportOneUpViewController *)self importController];
+    if ([importController7 isLoadingInitialBatchOfAssets])
     {
       v28 = 0;
     }
 
     else
     {
-      v29 = [(PUImportOneUpViewController *)self importController];
-      if ([v29 isImportingAssets])
+      importController8 = [(PUImportOneUpViewController *)self importController];
+      if ([importController8 isImportingAssets])
       {
         v28 = 0;
       }
 
       else
       {
-        v30 = [(PUImportOneUpViewController *)self importController];
-        v28 = [v30 isDeletingAssets] ^ 1;
+        importController9 = [(PUImportOneUpViewController *)self importController];
+        v28 = [importController9 isDeletingAssets] ^ 1;
       }
     }
   }
@@ -2186,72 +2186,72 @@ LABEL_14:
     v28 = 0;
   }
 
-  v31 = [(PUImportOneUpViewController *)self importBarButtonItem];
-  [v31 setEnabled:v28];
+  importBarButtonItem3 = [(PUImportOneUpViewController *)self importBarButtonItem];
+  [importBarButtonItem3 setEnabled:v28];
 
-  v32 = [(PUImportOneUpViewController *)self deleteBarButtonItem];
-  [v32 setEnabled:v28];
+  deleteBarButtonItem3 = [(PUImportOneUpViewController *)self deleteBarButtonItem];
+  [deleteBarButtonItem3 setEnabled:v28];
 
-  v33 = [(PUImportOneUpViewController *)self navigationItem];
-  [v33 setRightBarButtonItems:v39];
+  navigationItem = [(PUImportOneUpViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:v39];
 
-  v34 = [(PUImportOneUpViewController *)self toolbarItems];
+  toolbarItems = [(PUImportOneUpViewController *)self toolbarItems];
   if ([v3 count])
   {
-    v35 = [(PUImportOneUpViewController *)self bottomSpacerBarButtonItem];
+    bottomSpacerBarButtonItem = [(PUImportOneUpViewController *)self bottomSpacerBarButtonItem];
 
-    if (!v35)
+    if (!bottomSpacerBarButtonItem)
     {
       v36 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
       bottomSpacerBarButtonItem = self->_bottomSpacerBarButtonItem;
       self->_bottomSpacerBarButtonItem = v36;
     }
 
-    v38 = [(PUImportOneUpViewController *)self bottomSpacerBarButtonItem];
-    [v3 insertObject:v38 atIndex:0];
+    bottomSpacerBarButtonItem2 = [(PUImportOneUpViewController *)self bottomSpacerBarButtonItem];
+    [v3 insertObject:bottomSpacerBarButtonItem2 atIndex:0];
   }
 
-  if (([v34 isEqualToArray:v3] & 1) == 0)
+  if (([toolbarItems isEqualToArray:v3] & 1) == 0)
   {
     [(PUImportOneUpViewController *)self setToolbarItems:v3];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v29.receiver = self;
   v29.super_class = PUImportOneUpViewController;
-  v7 = a4;
-  [(PUImportOneUpViewController *)&v29 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(PUImportOneUpViewController *)self collectionView];
-  v9 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:v8];
+  coordinatorCopy = coordinator;
+  [(PUImportOneUpViewController *)&v29 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  v9 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:collectionView];
 
   inFlightReferenceIndexPath = self->_inFlightReferenceIndexPath;
   self->_inFlightReferenceIndexPath = v9;
   v11 = v9;
 
-  v12 = [(PUImportOneUpViewController *)self collectionViewLayout];
-  [v12 setLayoutReferenceSize:{width, height}];
+  collectionViewLayout = [(PUImportOneUpViewController *)self collectionViewLayout];
+  [collectionViewLayout setLayoutReferenceSize:{width, height}];
 
   [(PUImportOneUpViewController *)self updateCollectionViewLayoutInsets];
-  v13 = [(PUImportOneUpViewController *)self collectionView];
-  [v13 _contentScrollInset];
+  collectionView2 = [(PUImportOneUpViewController *)self collectionView];
+  [collectionView2 _contentScrollInset];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(PUImportOneUpViewController *)self collectionView];
-  [v22 contentSize];
+  collectionView3 = [(PUImportOneUpViewController *)self collectionView];
+  [collectionView3 contentSize];
   v24 = v21 + v23;
 
-  v25 = [(PUImportOneUpViewController *)self collectionView];
-  [v25 _setContentScrollInset:{v15, v17, v19, v24}];
+  collectionView4 = [(PUImportOneUpViewController *)self collectionView];
+  [collectionView4 _setContentScrollInset:{v15, v17, v19, v24}];
 
-  v26 = [(PUImportOneUpViewController *)self inFlightReferenceIndexPath];
-  [(PUImportOneUpViewController *)self pageToIndexPath:v26 animated:0];
+  inFlightReferenceIndexPath = [(PUImportOneUpViewController *)self inFlightReferenceIndexPath];
+  [(PUImportOneUpViewController *)self pageToIndexPath:inFlightReferenceIndexPath animated:0];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -2267,7 +2267,7 @@ LABEL_14:
   *&v27[6] = v17;
   *&v27[7] = v19;
   *&v27[8] = v21;
-  [v7 animateAlongsideTransition:v28 completion:v27];
+  [coordinatorCopy animateAlongsideTransition:v28 completion:v27];
 }
 
 void __82__PUImportOneUpViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -2302,27 +2302,27 @@ void __82__PUImportOneUpViewController_viewWillTransitionToSize_withTransitionCo
   [v9 setLayoutReferenceSize:{v7, v8}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PUImportOneUpViewController;
-  [(PUImportOneUpViewController *)&v4 traitCollectionDidChange:a3];
+  [(PUImportOneUpViewController *)&v4 traitCollectionDidChange:change];
   [(PUImportOneUpViewController *)self updateToolbarItems];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v4.receiver = self;
   v4.super_class = PUImportOneUpViewController;
-  [(PUImportOneUpViewController *)&v4 willTransitionToTraitCollection:a3 withTransitionCoordinator:a4];
+  [(PUImportOneUpViewController *)&v4 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinator];
 }
 
 - (BOOL)pu_wantsToolbarVisible
 {
-  v3 = [MEMORY[0x1E69C3620] sharedInstance];
-  v4 = [v3 hide1UpToolbarAndMarginsForCollapsedAlreadyImportedItem];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  hide1UpToolbarAndMarginsForCollapsedAlreadyImportedItem = [mEMORY[0x1E69C3620] hide1UpToolbarAndMarginsForCollapsedAlreadyImportedItem];
 
-  return !v4 || [(PUImportOneUpViewController *)self presentationFilter]!= 3;
+  return !hide1UpToolbarAndMarginsForCollapsedAlreadyImportedItem || [(PUImportOneUpViewController *)self presentationFilter]!= 3;
 }
 
 - (void)viewWillLayoutSubviews
@@ -2336,12 +2336,12 @@ void __82__PUImportOneUpViewController_viewWillTransitionToSize_withTransitionCo
     [(PUImportOneUpViewController *)self setHasPerformedNavigationToStartingAsset:1];
     v9 = 0u;
     v10 = 0u;
-    v3 = [(PUImportOneUpViewController *)self importDataSource];
-    v4 = [(PUImportOneUpViewController *)self startingAssetReference];
-    v5 = [v4 asset];
-    if (v3)
+    importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+    startingAssetReference = [(PUImportOneUpViewController *)self startingAssetReference];
+    asset = [startingAssetReference asset];
+    if (importDataSource)
     {
-      [v3 itemIndexPathForItem:v5];
+      [importDataSource itemIndexPathForItem:asset];
     }
 
     else
@@ -2357,34 +2357,34 @@ void __82__PUImportOneUpViewController_viewWillTransitionToSize_withTransitionCo
       [v7 setSelectedIndexPath:v6];
 
       [(PUImportOneUpViewController *)self pageToIndexPath:v6 animated:0];
-      v8 = [(PUImportOneUpViewController *)self reviewScrubber];
-      [v8 reloadData];
+      reviewScrubber = [(PUImportOneUpViewController *)self reviewScrubber];
+      [reviewScrubber reloadData];
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PUImportOneUpViewController;
-  [(PUImportOneUpViewController *)&v4 viewWillDisappear:a3];
+  [(PUImportOneUpViewController *)&v4 viewWillDisappear:disappear];
   [(PUImportOneUpViewController *)self _cancelAlerts];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PUImportOneUpViewController;
-  [(PUImportOneUpViewController *)&v3 viewDidAppear:a3];
+  [(PUImportOneUpViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = PUImportOneUpViewController;
   [(PUImportOneUpViewController *)&v6 viewWillAppear:?];
-  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:v3];
+  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:appearCopy];
   [(PUImportOneUpViewController *)self beginCenterPrioritizedThumbnailLoading];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2426,8 +2426,8 @@ void __42__PUImportOneUpViewController_viewDidLoad__block_invoke(uint64_t a1)
 
 - (void)updateVisibleCellBadgesAndSelectability
 {
-  v3 = [(PUImportOneUpViewController *)self collectionView];
-  v4 = [v3 indexPathsForVisibleSupplementaryElementsOfKind:@"PUSelectableAssetBadgeKind"];
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  v4 = [collectionView indexPathsForVisibleSupplementaryElementsOfKind:@"PUSelectableAssetBadgeKind"];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -2473,14 +2473,14 @@ uint64_t __70__PUImportOneUpViewController_updateVisibleCellBadgesAndSelectabili
   return [v3 setSelectable:v2];
 }
 
-- (void)transitionFromDataSource:(id)a3 toDataSource:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)transitionFromDataSource:(id)source toDataSource:(id)dataSource animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(PUImportOneUpViewController *)self collectionView];
-  v14 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:v13];
+  animatedCopy = animated;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  handlerCopy = handler;
+  collectionView = [(PUImportOneUpViewController *)self collectionView];
+  v14 = [(PUImportOneUpViewController *)self indexPathOfCenterVisibleItemInCollectionView:collectionView];
 
   if (v14)
   {
@@ -2494,23 +2494,23 @@ uint64_t __70__PUImportOneUpViewController_updateVisibleCellBadgesAndSelectabili
 
   if (([(PUImportOneUpViewController *)self isViewLoaded]& 1) != 0)
   {
-    v16 = [(PUImportOneUpViewController *)self importDataSourceManager];
-    v17 = [v16 changeHistory];
+    importDataSourceManager = [(PUImportOneUpViewController *)self importDataSourceManager];
+    changeHistory = [importDataSourceManager changeHistory];
 
-    v18 = [(PUImportOneUpViewController *)self changeDetailsHelper];
+    changeDetailsHelper = [(PUImportOneUpViewController *)self changeDetailsHelper];
 
     v19 = &unk_1B3D0C000;
-    if (!v18)
+    if (!changeDetailsHelper)
     {
       objc_initWeak(&location, self);
       v20 = [PUImportChangeDetailsCollectionViewHelper alloc];
-      v21 = [(PUImportOneUpViewController *)self collectionView];
+      collectionView2 = [(PUImportOneUpViewController *)self collectionView];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __96__PUImportOneUpViewController_transitionFromDataSource_toDataSource_animated_completionHandler___block_invoke;
       v27[3] = &unk_1E7B78088;
       objc_copyWeak(&v28, &location);
-      v22 = [(PUImportChangeDetailsCollectionViewHelper *)v20 initWithCollectionView:v21 dataSourceSettingHandler:v27];
+      v22 = [(PUImportChangeDetailsCollectionViewHelper *)v20 initWithCollectionView:collectionView2 dataSourceSettingHandler:v27];
       [(PUImportOneUpViewController *)self setChangeDetailsHelper:v22];
 
       objc_destroyWeak(&v28);
@@ -2518,23 +2518,23 @@ uint64_t __70__PUImportOneUpViewController_updateVisibleCellBadgesAndSelectabili
       v19 = &unk_1B3D0C000;
     }
 
-    v23 = [(PUImportOneUpViewController *)self changeDetailsHelper];
+    changeDetailsHelper2 = [(PUImportOneUpViewController *)self changeDetailsHelper];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = v19[211];
     v24[2] = __96__PUImportOneUpViewController_transitionFromDataSource_toDataSource_animated_completionHandler___block_invoke_2;
     v24[3] = &unk_1E7B77890;
     v24[4] = self;
     v25 = v15;
-    v26 = v12;
-    [v23 transitionFromDataSource:v10 toDataSource:v11 changeHistory:v17 animated:v7 completionHandler:v24];
+    v26 = handlerCopy;
+    [changeDetailsHelper2 transitionFromDataSource:sourceCopy toDataSource:dataSourceCopy changeHistory:changeHistory animated:animatedCopy completionHandler:v24];
   }
 
   else
   {
-    [(PUImportOneUpViewController *)self setImportDataSource:v11];
-    if (v12)
+    [(PUImportOneUpViewController *)self setImportDataSource:dataSourceCopy];
+    if (handlerCopy)
     {
-      v12[2](v12);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
@@ -2570,13 +2570,13 @@ uint64_t __96__PUImportOneUpViewController_transitionFromDataSource_toDataSource
   return result;
 }
 
-- (void)handleNewDataSource:(id)a3
+- (void)handleNewDataSource:(id)source
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUImportOneUpViewController *)self importDataSource];
-  v6 = [v5 identifier];
-  if (v6 != [v4 identifier])
+  sourceCopy = source;
+  importDataSource = [(PUImportOneUpViewController *)self importDataSource];
+  identifier = [importDataSource identifier];
+  if (identifier != [sourceCopy identifier])
   {
     if ([(PUImportOneUpViewController *)self performingDataSourceChange])
     {
@@ -2584,22 +2584,22 @@ uint64_t __96__PUImportOneUpViewController_transitionFromDataSource_toDataSource
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v15 = [v4 identifier];
+        identifier2 = [sourceCopy identifier];
         _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "Collection view is performing changes, making pending data source: %ti", buf, 0xCu);
       }
 
-      [(PUImportOneUpViewController *)self setPendingDataSource:v4];
+      [(PUImportOneUpViewController *)self setPendingDataSource:sourceCopy];
     }
 
     else
     {
       if ([(PUImportOneUpViewController *)self px_isVisible])
       {
-        v8 = [(PUImportOneUpViewController *)self importController];
-        v9 = [v8 isLoadingInitialBatchOfAssets];
-        if (v4)
+        importController = [(PUImportOneUpViewController *)self importController];
+        isLoadingInitialBatchOfAssets = [importController isLoadingInitialBatchOfAssets];
+        if (sourceCopy)
         {
-          v10 = v5 == 0;
+          v10 = importDataSource == 0;
         }
 
         else
@@ -2608,7 +2608,7 @@ uint64_t __96__PUImportOneUpViewController_transitionFromDataSource_toDataSource
         }
 
         v11 = !v10;
-        if (v9)
+        if (isLoadingInitialBatchOfAssets)
         {
           v12 = 0;
         }
@@ -2630,7 +2630,7 @@ uint64_t __96__PUImportOneUpViewController_transitionFromDataSource_toDataSource
       v13[2] = __51__PUImportOneUpViewController_handleNewDataSource___block_invoke;
       v13[3] = &unk_1E7B80DD0;
       v13[4] = self;
-      [(PUImportOneUpViewController *)self transitionFromDataSource:v5 toDataSource:v4 animated:v12 completionHandler:v13];
+      [(PUImportOneUpViewController *)self transitionFromDataSource:importDataSource toDataSource:sourceCopy animated:v12 completionHandler:v13];
     }
   }
 }
@@ -2677,37 +2677,37 @@ void __51__PUImportOneUpViewController_handleNewDataSource___block_invoke_2(uint
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXImportControllerObserverContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXImportControllerObserverContext == context)
   {
-    if ((v6 & 2) != 0 || (v6 & 4) != 0 || (v6 & 0x10) != 0)
+    if ((changeCopy & 2) != 0 || (changeCopy & 4) != 0 || (changeCopy & 0x10) != 0)
     {
       [(PUImportOneUpViewController *)self updateToolbarItems];
     }
   }
 
-  else if (PXImportAssetsDataSourceManagerObserverContext == a5)
+  else if (PXImportAssetsDataSourceManagerObserverContext == context)
   {
-    if (v6)
+    if (changeCopy)
     {
-      v9 = [(PUImportOneUpViewController *)self importDataSourceManager];
-      v10 = [v9 dataSource];
+      importDataSourceManager = [(PUImportOneUpViewController *)self importDataSourceManager];
+      dataSource = [importDataSourceManager dataSource];
 
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __60__PUImportOneUpViewController_observable_didChange_context___block_invoke;
       v13[3] = &unk_1E7B80C38;
-      v14 = v10;
-      v15 = self;
-      v11 = v10;
+      v14 = dataSource;
+      selfCopy = self;
+      v11 = dataSource;
       dispatch_async(MEMORY[0x1E69E96A0], v13);
     }
   }
 
-  else if ((v6 & 1) != 0 && PUImportSelectionManagerObserverContext == a5)
+  else if ((changeCopy & 1) != 0 && PUImportSelectionManagerObserverContext == context)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -2736,15 +2736,15 @@ uint64_t __60__PUImportOneUpViewController_observable_didChange_context___block_
   }
 }
 
-- (void)setImportDataSourceManager:(id)a3
+- (void)setImportDataSourceManager:(id)manager
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  managerCopy = manager;
   importDataSourceManager = self->_importDataSourceManager;
-  if (importDataSourceManager != v5)
+  if (importDataSourceManager != managerCopy)
   {
     [(PXImportAssetsDataSourceManager *)importDataSourceManager unregisterChangeObserver:self context:PXImportAssetsDataSourceManagerObserverContext];
-    objc_storeStrong(&self->_importDataSourceManager, a3);
+    objc_storeStrong(&self->_importDataSourceManager, manager);
     [(PXImportAssetsDataSourceManager *)self->_importDataSourceManager registerChangeObserver:self context:PXImportAssetsDataSourceManagerObserverContext];
     if ([(PUImportOneUpViewController *)self presentationFilter]== 1)
     {
@@ -2761,12 +2761,12 @@ uint64_t __60__PUImportOneUpViewController_observable_didChange_context___block_
         {
           [(PXImportAssetsDataSourceManager *)self->_importDataSourceManager setShowAlreadyImportedItems:1];
           [(PXImportAssetsDataSourceManager *)self->_importDataSourceManager setShowNotYetImportedItems:1];
-          v12 = [(PUImportOneUpViewController *)self startingAssetReference];
-          v13 = [v12 asset];
+          startingAssetReference = [(PUImportOneUpViewController *)self startingAssetReference];
+          asset = [startingAssetReference asset];
 
-          v14 = [v13 uuid];
+          uuid = [asset uuid];
           v15 = MEMORY[0x1E695DFD8];
-          v18[0] = v14;
+          v18[0] = uuid;
           v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
           v17 = [v15 setWithArray:v16];
           [(PXImportAssetsDataSourceManager *)self->_importDataSourceManager setVisibleImportAssetIdentifiers:v17];
@@ -2783,45 +2783,45 @@ uint64_t __60__PUImportOneUpViewController_observable_didChange_context___block_
     [(PXImportAssetsDataSourceManager *)v7 setShowNotYetImportedItems:v8];
     [(PXImportAssetsDataSourceManager *)self->_importDataSourceManager setVisibleImportAssetIdentifiers:0];
 LABEL_7:
-    v9 = [(PUImportOneUpViewController *)self importDataSourceManager];
-    [v9 updateFilteredAssetsIfNeeded];
+    importDataSourceManager = [(PUImportOneUpViewController *)self importDataSourceManager];
+    [importDataSourceManager updateFilteredAssetsIfNeeded];
 
-    v10 = [(PUImportOneUpViewController *)self importDataSourceManager];
-    v11 = [v10 dataSource];
+    importDataSourceManager2 = [(PUImportOneUpViewController *)self importDataSourceManager];
+    dataSource = [importDataSourceManager2 dataSource];
 
-    [(PUImportOneUpViewController *)self handleNewDataSource:v11];
+    [(PUImportOneUpViewController *)self handleNewDataSource:dataSource];
   }
 }
 
-- (void)setImportController:(id)a3
+- (void)setImportController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   importController = self->_importController;
-  if (importController != v5)
+  if (importController != controllerCopy)
   {
-    v9 = v5;
-    v7 = [(PXImportController *)importController selectionManager];
-    [v7 unregisterChangeObserver:self context:PUImportSelectionManagerObserverContext];
+    v9 = controllerCopy;
+    selectionManager = [(PXImportController *)importController selectionManager];
+    [selectionManager unregisterChangeObserver:self context:PUImportSelectionManagerObserverContext];
 
     [(PXImportController *)self->_importController unregisterChangeObserver:self context:PXImportControllerObserverContext];
-    objc_storeStrong(&self->_importController, a3);
+    objc_storeStrong(&self->_importController, controller);
     [(PXImportController *)self->_importController registerChangeObserver:self context:PXImportControllerObserverContext];
-    v8 = [(PXImportController *)self->_importController selectionManager];
-    [v8 registerChangeObserver:self context:PUImportSelectionManagerObserverContext];
+    selectionManager2 = [(PXImportController *)self->_importController selectionManager];
+    [selectionManager2 registerChangeObserver:self context:PUImportSelectionManagerObserverContext];
 
-    v5 = v9;
+    controllerCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](importController, v5);
+  MEMORY[0x1EEE66BB8](importController, controllerCopy);
 }
 
 - (void)_cancelAlerts
 {
-  v3 = [(PUImportOneUpViewController *)self presentedViewController];
+  presentedViewController = [(PUImportOneUpViewController *)self presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
-    v4 = [(PUImportOneUpViewController *)self presentedViewController];
+    presentedViewController2 = [(PUImportOneUpViewController *)self presentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2831,42 +2831,42 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v3 = [(PUImportOneUpViewController *)self relayoutCoalescer];
-  [v3 reset];
+  relayoutCoalescer = [(PUImportOneUpViewController *)self relayoutCoalescer];
+  [relayoutCoalescer reset];
 
   [(PUImportOneUpViewController *)self setRelayoutCoalescer:0];
   [(PUImportOneUpViewController *)self _cancelAlerts];
-  v4 = [(PUImportOneUpViewController *)self importController];
-  v5 = [(PUImportOneUpViewController *)self importDataSourceManager];
-  [v4 removeDataSourceManager:v5];
+  importController = [(PUImportOneUpViewController *)self importController];
+  importDataSourceManager = [(PUImportOneUpViewController *)self importDataSourceManager];
+  [importController removeDataSourceManager:importDataSourceManager];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v7 = [(PUImportOneUpViewController *)self tapGestureRecognizer];
-  [v7 setDelegate:0];
+  tapGestureRecognizer = [(PUImportOneUpViewController *)self tapGestureRecognizer];
+  [tapGestureRecognizer setDelegate:0];
 
   v8.receiver = self;
   v8.super_class = PUImportOneUpViewController;
   [(PUImportOneUpViewController *)&v8 dealloc];
 }
 
-- (PUImportOneUpViewController)initWithImportController:(id)a3 mediaProvider:(id)a4 startingAssetReference:(id)a5 presentationFilter:(unint64_t)a6
+- (PUImportOneUpViewController)initWithImportController:(id)controller mediaProvider:(id)provider startingAssetReference:(id)reference presentationFilter:(unint64_t)filter
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  controllerCopy = controller;
+  providerCopy = provider;
+  referenceCopy = reference;
   v33.receiver = self;
   v33.super_class = PUImportOneUpViewController;
   v13 = [(PUImportOneUpViewController *)&v33 initWithNibName:0 bundle:0];
   if (v13)
   {
-    v14 = [MEMORY[0x1E69C3620] sharedInstance];
-    v15 = [v14 hide1UpToolbarAndMarginsForCollapsedAlreadyImportedItem];
+    mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+    hide1UpToolbarAndMarginsForCollapsedAlreadyImportedItem = [mEMORY[0x1E69C3620] hide1UpToolbarAndMarginsForCollapsedAlreadyImportedItem];
 
-    if (a6 == 3)
+    if (filter == 3)
     {
-      v16 = v15;
+      v16 = hide1UpToolbarAndMarginsForCollapsedAlreadyImportedItem;
     }
 
     else
@@ -2878,9 +2878,9 @@ LABEL_7:
     specManager = v13->_specManager;
     v13->_specManager = v17;
 
-    objc_storeStrong(&v13->_mediaProvider, a4);
-    objc_storeStrong(&v13->_startingAssetReference, a5);
-    v13->_presentationFilter = a6;
+    objc_storeStrong(&v13->_mediaProvider, provider);
+    objc_storeStrong(&v13->_startingAssetReference, reference);
+    v13->_presentationFilter = filter;
     v19 = [MEMORY[0x1E69BE3B8] autoupdatingFormatterWithPreset:2];
     dayFormatter = v13->_dayFormatter;
     v13->_dayFormatter = v19;
@@ -2890,27 +2890,27 @@ LABEL_7:
     v13->_timeFormatter = v21;
 
     v13->_allowsSelection = 1;
-    [(PUImportOneUpViewController *)v13 setImportController:v10];
-    v23 = [v10 createDataSourceManagerWithLogIdentifier:@"1up"];
+    [(PUImportOneUpViewController *)v13 setImportController:controllerCopy];
+    v23 = [controllerCopy createDataSourceManagerWithLogIdentifier:@"1up"];
     [(PUImportOneUpViewController *)v13 setImportDataSourceManager:v23];
 
     v24 = [[PUImportActionCoordinator alloc] initWithViewController:v13 importController:v13->_importController loggingSource:1];
     actionCoordinator = v13->_actionCoordinator;
     v13->_actionCoordinator = v24;
 
-    v26 = [(PUImportOneUpViewController *)v13 actionCoordinator];
-    [v26 setDelegate:v13];
+    actionCoordinator = [(PUImportOneUpViewController *)v13 actionCoordinator];
+    [actionCoordinator setDelegate:v13];
 
-    v27 = [(PUImportOneUpViewController *)v13 actionCoordinator];
-    [v27 setPresentsAdditionalDeleteAllConfirmation:1];
+    actionCoordinator2 = [(PUImportOneUpViewController *)v13 actionCoordinator];
+    [actionCoordinator2 setPresentsAdditionalDeleteAllConfirmation:1];
 
     v28 = [MEMORY[0x1E69BDD68] coalescerWithLabel:@"Import 1-up re-layout coalescer" target:v13 queue:MEMORY[0x1E69E96A0] action:&__block_literal_global_31539];
     relayoutCoalescer = v13->_relayoutCoalescer;
     v13->_relayoutCoalescer = v28;
 
-    v30 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     itemsNeedingRelayout = v13->_itemsNeedingRelayout;
-    v13->_itemsNeedingRelayout = v30;
+    v13->_itemsNeedingRelayout = array;
   }
 
   return v13;

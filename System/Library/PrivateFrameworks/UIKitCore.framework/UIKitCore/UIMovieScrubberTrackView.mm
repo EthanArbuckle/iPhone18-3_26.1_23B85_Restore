@@ -1,34 +1,34 @@
 @interface UIMovieScrubberTrackView
-- (BOOL)zoomAtPoint:(CGPoint)a3;
-- (UIMovieScrubberTrackView)initWithFrame:(CGRect)a3;
+- (BOOL)zoomAtPoint:(CGPoint)point;
+- (UIMovieScrubberTrackView)initWithFrame:(CGRect)frame;
 - (UIMovieScrubberTrackViewDataSource)dataSource;
 - (UIMovieScrubberTrackViewDelegate)delegate;
-- (id)_createImageViewForTimestamp:(id)a3 isSummaryThumbnail:(BOOL)a4;
+- (id)_createImageViewForTimestamp:(id)timestamp isSummaryThumbnail:(BOOL)thumbnail;
 - (void)_reallyReloadData;
-- (void)_setOverlayViewIsZoomed:(BOOL)a3 minValue:(float)a4 maxValue:(float)a5;
+- (void)_setOverlayViewIsZoomed:(BOOL)zoomed minValue:(float)value maxValue:(float)maxValue;
 - (void)_unzoomAnimationDidFinish;
 - (void)_zoomAnimationDidFinish;
 - (void)clear;
 - (void)layoutSubviews;
-- (void)setDataSource:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setEndValue:(double)a3;
-- (void)setStartValue:(double)a3;
-- (void)setThumbnailImage:(CGImage *)a3 forTimestamp:(id)a4;
-- (void)setValue:(double)a3;
+- (void)setDataSource:(id)source;
+- (void)setDelegate:(id)delegate;
+- (void)setEditing:(BOOL)editing;
+- (void)setEndValue:(double)value;
+- (void)setStartValue:(double)value;
+- (void)setThumbnailImage:(CGImage *)image forTimestamp:(id)timestamp;
+- (void)setValue:(double)value;
 - (void)unzoom;
 @end
 
 @implementation UIMovieScrubberTrackView
 
-- (UIMovieScrubberTrackView)initWithFrame:(CGRect)a3
+- (UIMovieScrubberTrackView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v15.receiver = self;
   v15.super_class = UIMovieScrubberTrackView;
-  v5 = [(UIView *)&v15 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(UIView *)&v15 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v6 = [UIColor colorWithWhite:0.0 alpha:1.0];
@@ -52,9 +52,9 @@
     [(UIView *)v5->_maskContainerView setAutoresizingMask:2];
     [(UIView *)v5->_maskContainerView setUserInteractionEnabled:0];
     [(UIView *)v5->_maskContainerView setOpaque:0];
-    v12 = [[UIMovieScrubberTrackOverlayView alloc] initWithFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height];
+    height = [[UIMovieScrubberTrackOverlayView alloc] initWithFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height];
     overlayView = v5->_overlayView;
-    v5->_overlayView = v12;
+    v5->_overlayView = height;
 
     [(UIView *)v5->_overlayView setAutoresizingMask:2];
     [(UIView *)v5->_maskContainerView addSubview:v5->_overlayView];
@@ -64,9 +64,9 @@
   return v5;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -78,9 +78,9 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -159,11 +159,11 @@
   }
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     if ((*&self->_trackFlags & 0x100) != 0)
     {
       self->_trackFlags.editingHandle = 0;
@@ -176,12 +176,12 @@
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   trackFlags = self->_trackFlags;
-  if (((((trackFlags & 0x100) == 0) ^ a3) & 1) == 0)
+  if (((((trackFlags & 0x100) == 0) ^ editing) & 1) == 0)
   {
-    if (a3)
+    if (editing)
     {
       v5 = 256;
     }
@@ -210,11 +210,11 @@
   }
 }
 
-- (void)setStartValue:(double)a3
+- (void)setStartValue:(double)value
 {
-  if (self->_startValue != a3)
+  if (self->_startValue != value)
   {
-    self->_startValue = a3;
+    self->_startValue = value;
     [(UIMovieScrubberTrackOverlayView *)self->_overlayView setStartValue:?];
   }
 
@@ -227,11 +227,11 @@
   }
 }
 
-- (void)setEndValue:(double)a3
+- (void)setEndValue:(double)value
 {
-  if (self->_endValue != a3)
+  if (self->_endValue != value)
   {
-    self->_endValue = a3;
+    self->_endValue = value;
     [(UIMovieScrubberTrackOverlayView *)self->_overlayView setEndValue:?];
   }
 
@@ -244,16 +244,16 @@
   }
 }
 
-- (void)setThumbnailImage:(CGImage *)a3 forTimestamp:(id)a4
+- (void)setThumbnailImage:(CGImage *)image forTimestamp:(id)timestamp
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v45 = self;
-  v7 = [(NSMutableDictionary *)self->_thumbnailViews objectForKey:v6];
+  timestampCopy = timestamp;
+  selfCopy = self;
+  v7 = [(NSMutableDictionary *)self->_thumbnailViews objectForKey:timestampCopy];
   v8 = [v7 count];
-  if (a3 && v8)
+  if (image && v8)
   {
-    v9 = [[UIImage alloc] initWithCGImage:a3];
+    v9 = [[UIImage alloc] initWithCGImage:image];
     v10 = *MEMORY[0x1E695EFF8];
     v11 = *(MEMORY[0x1E695EFF8] + 8);
     [(UIImage *)v9 size];
@@ -307,7 +307,7 @@
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    obj = [(NSMutableDictionary *)v45->_thumbnailViews allKeys];
+    obj = [(NSMutableDictionary *)selfCopy->_thumbnailViews allKeys];
     v24 = [obj countByEnumeratingWithState:&v52 objects:v61 count:16];
     if (v24)
     {
@@ -328,11 +328,11 @@
           v28 = *(*(&v52 + 1) + 8 * v27);
           [v28 doubleValue];
           v30 = v29;
-          [v6 doubleValue];
+          [timestampCopy doubleValue];
           if (v30 >= v31)
           {
-            v32 = v6;
-            v33 = [(NSMutableDictionary *)v45->_thumbnailViews objectForKey:v28];
+            v32 = timestampCopy;
+            v33 = [(NSMutableDictionary *)selfCopy->_thumbnailViews objectForKey:v28];
             v34 = v33;
             v35 = v18;
             if (v33 != v18)
@@ -356,9 +356,9 @@
                     }
 
                     v40 = *(*(&v48 + 1) + 8 * j);
-                    v41 = [v40 image];
+                    image = [v40 image];
 
-                    if (!v41)
+                    if (!image)
                     {
                       [v40 setImage:v17];
                       [v40 setHasPlaceholderImage:1];
@@ -372,7 +372,7 @@
               }
             }
 
-            v6 = v32;
+            timestampCopy = v32;
             v18 = v35;
             v26 = v44;
             v25 = v46;
@@ -392,24 +392,24 @@
   }
 }
 
-- (id)_createImageViewForTimestamp:(id)a3 isSummaryThumbnail:(BOOL)a4
+- (id)_createImageViewForTimestamp:(id)timestamp isSummaryThumbnail:(BOOL)thumbnail
 {
-  v4 = a4;
-  v6 = a3;
+  thumbnailCopy = thumbnail;
+  timestampCopy = timestamp;
   v7 = [(UIImageView *)[UIMovieScrubberThumbnailView alloc] initWithFrame:0.0, 0.0, self->_thumbnailSize.width, self->_thumbnailSize.height];
   [(UIView *)v7 setUserInteractionEnabled:1];
-  v8 = [(NSMutableDictionary *)self->_thumbnailViews objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_thumbnailViews objectForKey:timestampCopy];
   if (v8)
   {
     v9 = v8;
     if ([v8 count])
     {
       v10 = [v9 objectAtIndex:0];
-      v11 = [v10 image];
+      image = [v10 image];
 
-      if (v11)
+      if (image)
       {
-        [(UIImageView *)v7 setImage:v11];
+        [(UIImageView *)v7 setImage:image];
       }
     }
 
@@ -419,9 +419,9 @@
   else
   {
     v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v7, 0}];
-    [(NSMutableDictionary *)self->_thumbnailViews setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)self->_thumbnailViews setObject:v9 forKey:timestampCopy];
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    [WeakRetained movieScrubberTrackView:self requestThumbnailImageForTimestamp:v6 isSummaryThumbnail:v4];
+    [WeakRetained movieScrubberTrackView:self requestThumbnailImageForTimestamp:timestampCopy isSummaryThumbnail:thumbnailCopy];
   }
 
   return v7;
@@ -429,8 +429,8 @@
 
 - (void)clear
 {
-  v3 = [(NSMutableDictionary *)self->_thumbnailViews allValues];
-  [v3 makeObjectsPerformSelector:sel_removeViewsFromSuperview];
+  allValues = [(NSMutableDictionary *)self->_thumbnailViews allValues];
+  [allValues makeObjectsPerformSelector:sel_removeViewsFromSuperview];
 
   [(NSMutableDictionary *)self->_thumbnailViews removeAllObjects];
   thumbnailStartXValues = self->_thumbnailStartXValues;
@@ -643,7 +643,7 @@
   [(UIView *)&v3 layoutSubviews];
 }
 
-- (BOOL)zoomAtPoint:(CGPoint)a3
+- (BOOL)zoomAtPoint:(CGPoint)point
 {
   p_trackFlags = &self->_trackFlags;
   if (*(&self->_trackFlags + 8))
@@ -653,32 +653,32 @@
 
   else
   {
-    y = a3.y;
-    x = a3.x;
-    v6 = self;
+    y = point.y;
+    x = point.x;
+    selfCopy = self;
     v7 = [(NSArray *)self->_summaryThumbnailViews count];
     v8 = v7;
     v9 = 480;
     v10 = 0.0;
-    if (x >= v6->_thumbnailSize.width * v7 + 0.0 + -1.0)
+    if (x >= selfCopy->_thumbnailSize.width * v7 + 0.0 + -1.0)
     {
-      x = v6->_thumbnailSize.width * v7 + 0.0 + -1.0;
+      x = selfCopy->_thumbnailSize.width * v7 + 0.0 + -1.0;
     }
 
-    [(UIView *)v6->_maskContainerView setUserInteractionEnabled:1];
-    v11 = [(UIView *)v6->_maskContainerView hitTest:0 withEvent:x, y];
-    [(UIView *)v6->_maskContainerView setUserInteractionEnabled:0];
-    v12 = [(NSArray *)v6->_summaryThumbnailViews indexOfObject:v11];
+    [(UIView *)selfCopy->_maskContainerView setUserInteractionEnabled:1];
+    v11 = [(UIView *)selfCopy->_maskContainerView hitTest:0 withEvent:x, y];
+    [(UIView *)selfCopy->_maskContainerView setUserInteractionEnabled:0];
+    v12 = [(NSArray *)selfCopy->_summaryThumbnailViews indexOfObject:v11];
     v13 = v12;
     LODWORD(v15) = v12 >= 0 && v12 < v8;
     if (v15 == 1)
     {
       v116 = v11;
-      childThumbnailViews = v6->_childThumbnailViews;
-      v6->_childThumbnailViews = 0;
+      childThumbnailViews = selfCopy->_childThumbnailViews;
+      selfCopy->_childThumbnailViews = 0;
 
-      thumbnailStartXValues = v6->_thumbnailStartXValues;
-      v6->_thumbnailStartXValues = 0;
+      thumbnailStartXValues = selfCopy->_thumbnailStartXValues;
+      selfCopy->_thumbnailStartXValues = 0;
 
       v126 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v127 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -692,7 +692,7 @@
         v21 = v13 & 0x7FFFFFFF;
         do
         {
-          v22 = [(NSArray *)v6->_summaryThumbnailChildTimestamps objectAtIndex:v19];
+          v22 = [(NSArray *)selfCopy->_summaryThumbnailChildTimestamps objectAtIndex:v19];
           v20 += [v22 count];
 
           ++v19;
@@ -703,15 +703,15 @@
         p_trackFlags = v18;
       }
 
-      v23 = [(UIView *)v6 superview];
-      if ([v23 isInsideNavigationBar])
+      superview = [(UIView *)selfCopy superview];
+      if ([superview isInsideNavigationBar])
       {
-        EnclosingNavigationBar(v23);
+        EnclosingNavigationBar(superview);
       }
 
       else
       {
-        [v23 superview];
+        [superview superview];
       }
       v24 = ;
       [v24 bounds];
@@ -719,19 +719,19 @@
       v133 = v25;
       v130 = v28;
       v131 = v27;
-      [(UIView *)v6 bounds];
-      [v24 convertRect:v6 fromView:?];
+      [(UIView *)selfCopy bounds];
+      [v24 convertRect:selfCopy fromView:?];
       v140 = v29;
       v142 = v30;
-      v31 = [(NSArray *)v6->_timestamps count];
-      width = v6->_thumbnailSize.width;
+      v31 = [(NSArray *)selfCopy->_timestamps count];
+      width = selfCopy->_thumbnailSize.width;
       v33 = width * (v31 - v8);
       v138 = rintf(v33);
       v34 = v138;
       v35 = -(width * v10);
       v36 = v35 + v138;
-      v6->_unclampedZoomWidthDelta = v36;
-      [(UIView *)v6 bounds];
+      selfCopy->_unclampedZoomWidthDelta = v36;
+      [(UIView *)selfCopy bounds];
       v39 = &OBJC_IVAR___UIMovieScrubberTrackView__value;
       if ((*p_trackFlags & 0x100) != 0)
       {
@@ -747,13 +747,13 @@
         }
       }
 
-      v41 = *(&v6->super.super.super.isa + *v39);
+      v41 = *(&selfCopy->super.super.super.isa + *v39);
       v42 = v38 + v34;
-      v43 = v35 - (v35 + v37 + (v38 + v34) * (v41 / v6->_duration) - (v37 + v38 * (v41 / v6->_duration)));
+      v43 = v35 - (v35 + v37 + (v38 + v34) * (v41 / selfCopy->_duration) - (v37 + v38 * (v41 / selfCopy->_duration)));
       v44 = rintf(v43);
       v45 = v44;
-      [(UIView *)v6 bounds];
-      [v24 convertRect:v6 fromView:?];
+      [(UIView *)selfCopy bounds];
+      [v24 convertRect:selfCopy fromView:?];
       v47 = v46;
       v49 = v48;
       v144 = v50 + v44;
@@ -772,15 +772,15 @@
       MaxX = CGRectGetMaxX(v159);
       v53.f64[0] = v136;
       v53.f64[1] = MaxX;
-      v147 = vmulq_n_f64(vcvtq_f64_f32(vcvt_f32_f64(vdivq_f64(vsubq_f64(v53, vdupq_lane_s64(*&v144, 0)), vdupq_lane_s64(*&v146, 0)))), v6->_duration);
-      [v23 frame];
+      v147 = vmulq_n_f64(vcvtq_f64_f32(vcvt_f32_f64(vdivq_f64(vsubq_f64(v53, vdupq_lane_s64(*&v144, 0)), vdupq_lane_s64(*&v146, 0)))), selfCopy->_duration);
+      [superview frame];
       v112 = v55;
       v113 = v54;
       v110 = v57;
       v111 = v56;
-      v115 = v23;
-      [v23 setFrame:v54 + v44];
-      duration = v6->_duration;
+      v115 = superview;
+      [superview setFrame:v54 + v44];
+      duration = selfCopy->_duration;
       v59 = duration / v42;
       *&duration = duration;
       if (vabds_f32(v41, *&duration) >= v59)
@@ -804,7 +804,7 @@
         v62 = v44;
       }
 
-      v6->_zoomOriginXDelta = v62;
+      selfCopy->_zoomOriginXDelta = v62;
       v64 = v138;
       if (v131 - v142 < v34)
       {
@@ -812,13 +812,13 @@
         v64 = v63;
       }
 
-      v6->_zoomWidthDelta = v64;
-      zoomOriginXDelta = v6->_zoomOriginXDelta;
-      WeakRetained = objc_loadWeakRetained(&v6->_delegate);
+      selfCopy->_zoomWidthDelta = v64;
+      zoomOriginXDelta = selfCopy->_zoomOriginXDelta;
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
       v114 = p_trackFlags;
       if ((*p_trackFlags & 8) != 0)
       {
-        [WeakRetained movieScrubberTrackViewWillBeginRequestingThumbnails:v6];
+        [WeakRetained movieScrubberTrackViewWillBeginRequestingThumbnails:selfCopy];
       }
 
       v66 = 0;
@@ -828,18 +828,18 @@
       v119 = v8;
       do
       {
-        v68 = [(NSArray *)v6->_summaryThumbnailViews objectAtIndex:v66];
-        v69 = [v68 superview];
+        v68 = [(NSArray *)selfCopy->_summaryThumbnailViews objectAtIndex:v66];
+        superview2 = [v68 superview];
         [v68 frame];
         v71 = v70;
         v141 = v72;
         v143 = v73;
         v139 = v74;
         v123 = v66;
-        v128 = [(NSArray *)v6->_summaryThumbnailChildTimestamps objectAtIndex:v66];
+        v128 = [(NSArray *)selfCopy->_summaryThumbnailChildTimestamps objectAtIndex:v66];
         v75 = [v128 count];
         v121 = v67;
-        v76 = v71 + *(&v6->super.super.super.isa + v9) * v67;
+        v76 = v71 + *(&selfCopy->super.super.super.isa + v9) * v67;
         v129 = v68;
         v77 = [MEMORY[0x1E696B098] valueWithPointer:v68];
         v125 = v71;
@@ -866,8 +866,8 @@
           do
           {
             v84 = v83 - 1;
-            v137 = v135 + *(&v6->super.super.super.isa + v9) * v83;
-            [v24 convertRect:v69 fromView:?];
+            v137 = v135 + *(&selfCopy->super.super.super.isa + v9) * v83;
+            [v24 convertRect:superview2 fromView:?];
             v85 = v160.origin.x;
             v86 = v160.origin.y;
             v87 = v160.size.width;
@@ -891,21 +891,21 @@
             {
               [v128 objectAtIndex:v84];
               v92 = v91 = v24;
-              v93 = [(UIMovieScrubberTrackView *)v6 _createImageViewForTimestamp:v92 isSummaryThumbnail:0];
+              v93 = [(UIMovieScrubberTrackView *)selfCopy _createImageViewForTimestamp:v92 isSummaryThumbnail:0];
               [(NSDictionary *)v124 setObject:v93 forKey:v92];
-              [(UIView *)v6->_maskContainerView insertSubview:v93 belowSubview:v129];
+              [(UIView *)selfCopy->_maskContainerView insertSubview:v93 belowSubview:v129];
               [v93 setFrame:{v125, v141, v143, v139}];
               v94 = [MEMORY[0x1E696B098] valueWithPointer:v93];
               [(NSDictionary *)v127 setObject:v79 forKey:v94];
               HIDWORD(v95) = HIDWORD(v137);
               *&v95 = v137;
               [MEMORY[0x1E696AD98] numberWithFloat:v95];
-              v96 = v6;
+              v96 = selfCopy;
               v98 = v97 = v9;
               [v126 setObject:v98 forKey:v94];
 
               v9 = v97;
-              v6 = v96;
+              selfCopy = v96;
 
               v24 = v91;
             }
@@ -924,42 +924,42 @@
       while (v123 + 1 != v119);
       if ((*v114 & 0x10) != 0)
       {
-        [WeakRetained movieScrubberTrackViewDidFinishRequestingThumbnails:v6];
+        [WeakRetained movieScrubberTrackViewDidFinishRequestingThumbnails:selfCopy];
       }
 
-      v99 = [(UIView *)v6 window];
-      [v99 beginDisablingInterfaceAutorotation];
+      window = [(UIView *)selfCopy window];
+      [window beginDisablingInterfaceAutorotation];
 
-      zoomAnimationDuration = v6->_zoomAnimationDuration;
+      zoomAnimationDuration = selfCopy->_zoomAnimationDuration;
       v153[0] = MEMORY[0x1E69E9820];
       v153[1] = 3221225472;
       v153[2] = __40__UIMovieScrubberTrackView_zoomAtPoint___block_invoke;
       v153[3] = &unk_1E70F36D0;
       v154 = v126;
-      v155 = v6;
+      v155 = selfCopy;
       v156 = v108;
       v152[0] = MEMORY[0x1E69E9820];
       v152[1] = 3221225472;
       v152[2] = __40__UIMovieScrubberTrackView_zoomAtPoint___block_invoke_2;
       v152[3] = &unk_1E70F5AC0;
-      v152[4] = v6;
+      v152[4] = selfCopy;
       v101 = v126;
       [UIView animateWithDuration:4 delay:v153 options:v152 animations:zoomAnimationDuration completion:0.0];
-      v102 = v6->_childThumbnailViews;
-      v6->_childThumbnailViews = v124;
+      v102 = selfCopy->_childThumbnailViews;
+      selfCopy->_childThumbnailViews = v124;
       v103 = v124;
 
-      v15 = v6->_thumbnailStartXValues;
-      v6->_thumbnailStartXValues = v127;
+      v15 = selfCopy->_thumbnailStartXValues;
+      selfCopy->_thumbnailStartXValues = v127;
       v104 = v127;
 
       [v115 setFrame:{v113, v112, v111, v110}];
-      v105 = v6->_zoomAnimationDuration;
+      v105 = selfCopy->_zoomAnimationDuration;
       v149[0] = MEMORY[0x1E69E9820];
       v149[1] = 3221225472;
       v149[2] = __40__UIMovieScrubberTrackView_zoomAtPoint___block_invoke_3;
       v149[3] = &unk_1E70F36D0;
-      v149[4] = v6;
+      v149[4] = selfCopy;
       v150 = WeakRetained;
       v151 = v109;
       v106 = WeakRetained;
@@ -1029,7 +1029,7 @@ uint64_t __40__UIMovieScrubberTrackView_zoomAtPoint___block_invoke_3(uint64_t a1
   return [v4 _setOverlayViewIsZoomed:1 minValue:a2 maxValue:a3];
 }
 
-- (void)_setOverlayViewIsZoomed:(BOOL)a3 minValue:(float)a4 maxValue:(float)a5
+- (void)_setOverlayViewIsZoomed:(BOOL)zoomed minValue:(float)value maxValue:(float)maxValue
 {
   zoomAnimationDuration = self->_zoomAnimationDuration;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1059,9 +1059,9 @@ uint64_t __40__UIMovieScrubberTrackView_zoomAtPoint___block_invoke_3(uint64_t a1
   v17[2] = __70__UIMovieScrubberTrackView__setOverlayViewIsZoomed_minValue_maxValue___block_invoke;
   v17[3] = &unk_1E7101F90;
   v17[4] = self;
-  v20 = a3;
-  v18 = a4;
-  v19 = a5;
+  zoomedCopy = zoomed;
+  valueCopy = value;
+  maxValueCopy = maxValue;
   [UIView animateWithDuration:4 delay:v17 options:0 animations:v13 completion:v15];
 }
 
@@ -1161,8 +1161,8 @@ uint64_t __34__UIMovieScrubberTrackView_unzoom__block_invoke(uint64_t a1)
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSDictionary *)self->_childThumbnailViews allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSDictionary *)self->_childThumbnailViews allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1174,21 +1174,21 @@ uint64_t __34__UIMovieScrubberTrackView_unzoom__block_invoke(uint64_t a1)
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(NSMutableDictionary *)self->_thumbnailViews removeObjectForKey:*(*(&v13 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(NSDictionary *)self->_childThumbnailViews allValues];
-  [v8 makeObjectsPerformSelector:sel_removeFromSuperview];
+  allValues = [(NSDictionary *)self->_childThumbnailViews allValues];
+  [allValues makeObjectsPerformSelector:sel_removeFromSuperview];
 
   childThumbnailViews = self->_childThumbnailViews;
   self->_childThumbnailViews = 0;
@@ -1196,8 +1196,8 @@ uint64_t __34__UIMovieScrubberTrackView_unzoom__block_invoke(uint64_t a1)
   thumbnailStartXValues = self->_thumbnailStartXValues;
   self->_thumbnailStartXValues = 0;
 
-  v11 = [(UIView *)self window];
-  [v11 endDisablingInterfaceAutorotation];
+  window = [(UIView *)self window];
+  [window endDisablingInterfaceAutorotation];
 
   if ((*&self->_trackFlags & 4) != 0)
   {

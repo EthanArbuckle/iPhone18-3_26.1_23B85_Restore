@@ -1,8 +1,8 @@
 @interface IMDChatRecord
-+ (IMDChatRecord)allocWithZone:(_NSZone *)a3;
++ (IMDChatRecord)allocWithZone:(_NSZone *)zone;
 + (id)keyPathsToColumns;
-+ (id)transcriptBackgroundFileURLFromProperties:(id)a3;
-- (IMDChatRecord)initWithRecordRef:(_IMDChatRecordStruct *)a3;
++ (id)transcriptBackgroundFileURLFromProperties:(id)properties;
+- (IMDChatRecord)initWithRecordRef:(_IMDChatRecordStruct *)ref;
 - (IMDMessageRecord)lastMessageRecord;
 - (NSArray)handleRecords;
 - (NSDictionary)domainIdentifiers;
@@ -47,14 +47,14 @@
   return IMDChatRecordCopyChatRecordUnlocked(v3);
 }
 
-- (IMDChatRecord)initWithRecordRef:(_IMDChatRecordStruct *)a3
+- (IMDChatRecord)initWithRecordRef:(_IMDChatRecordStruct *)ref
 {
-  v4 = a3;
+  refCopy = ref;
 
-  return v4;
+  return refCopy;
 }
 
-+ (IMDChatRecord)allocWithZone:(_NSZone *)a3
++ (IMDChatRecord)allocWithZone:(_NSZone *)zone
 {
   v3 = *MEMORY[0x1E695E480];
   IMDChatRecordGetTypeID();
@@ -110,9 +110,9 @@
   return v5;
 }
 
-+ (id)transcriptBackgroundFileURLFromProperties:(id)a3
++ (id)transcriptBackgroundFileURLFromProperties:(id)properties
 {
-  v3 = objc_msgSend_objectForKey_(a3, a2, *MEMORY[0x1E69A6CC8]);
+  v3 = objc_msgSend_objectForKey_(properties, a2, *MEMORY[0x1E69A6CC8]);
   v5 = v3;
   if (v3)
   {

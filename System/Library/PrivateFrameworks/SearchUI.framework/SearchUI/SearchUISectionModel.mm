@@ -1,93 +1,93 @@
 @interface SearchUISectionModel
-+ (SearchUISectionModel)sectionModelWithGridRowModels:(id)a3 numberOfColumns:(int64_t)a4 gridStyle:(int)a5 section:(id)a6 expandedCollectionSections:(id)a7;
-+ (SearchUISectionModel)sectionModelWithRows:(id)a3 drawPlattersIfNecessary:(BOOL)a4 section:(id)a5 expandedCollectionSections:(id)a6;
-+ (SearchUISectionModel)sectionModelWithScrollingRowModels:(id)a3 numberOfRows:(int64_t)a4 section:(id)a5;
++ (SearchUISectionModel)sectionModelWithGridRowModels:(id)models numberOfColumns:(int64_t)columns gridStyle:(int)style section:(id)section expandedCollectionSections:(id)sections;
++ (SearchUISectionModel)sectionModelWithRows:(id)rows drawPlattersIfNecessary:(BOOL)necessary section:(id)section expandedCollectionSections:(id)sections;
++ (SearchUISectionModel)sectionModelWithScrollingRowModels:(id)models numberOfRows:(int64_t)rows section:(id)section;
 - (BOOL)isCollectionStyleRow;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsHeader;
 - (BOOL)needsHeaderSeparator;
 - (BOOL)shouldInsetGroupedCollectionStyle;
-- (BOOL)shouldInsetGroupedCollectionStyleWithAttributes:(id)a3;
-- (NSDirectionalEdgeInsets)headerInsetsWithAttributes:(id)a3;
-- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)a3 sectionIndex:(unint64_t)a4;
-- (SearchUISectionModel)initWithRowModels:(id)a3 section:(id)a4;
-- (double)horizontalInsetWithAttributes:(id)a3 forSupplementary:(BOOL)a4;
+- (BOOL)shouldInsetGroupedCollectionStyleWithAttributes:(id)attributes;
+- (NSDirectionalEdgeInsets)headerInsetsWithAttributes:(id)attributes;
+- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)attributes sectionIndex:(unint64_t)index;
+- (SearchUISectionModel)initWithRowModels:(id)models section:(id)section;
+- (double)horizontalInsetWithAttributes:(id)attributes forSupplementary:(BOOL)supplementary;
 - (id)backgroundColor;
 - (id)collectionStyleRow;
-- (id)copyWithRowModels:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithRowModels:(id)models;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)layoutSectionForEnvironment:(id)a3 attributes:(id)a4 dataSource:(id)a5;
-- (int)separatorStyleForIndex:(unint64_t)a3 shouldDrawTopAndBottomSeparators:(BOOL)a4;
-- (int64_t)sectionBackgroundStyleWithAttributes:(id)a3;
+- (id)layoutSectionForEnvironment:(id)environment attributes:(id)attributes dataSource:(id)source;
+- (int)separatorStyleForIndex:(unint64_t)index shouldDrawTopAndBottomSeparators:(BOOL)separators;
+- (int64_t)sectionBackgroundStyleWithAttributes:(id)attributes;
 - (unint64_t)hash;
 - (void)prepareForSnapshot;
-- (void)reloadCornerMaskingOverrideWithAttributes:(id)a3;
+- (void)reloadCornerMaskingOverrideWithAttributes:(id)attributes;
 @end
 
 @implementation SearchUISectionModel
 
 - (id)backgroundColor
 {
-  v3 = [(SearchUISectionModel *)self asyncLoader];
-  if (v3)
+  asyncLoader = [(SearchUISectionModel *)self asyncLoader];
+  if (asyncLoader)
   {
-    v4 = [(SearchUISectionModel *)self asyncLoader];
-    v5 = [v4 backgroundColor];
+    asyncLoader2 = [(SearchUISectionModel *)self asyncLoader];
+    backgroundColor = [asyncLoader2 backgroundColor];
   }
 
   else
   {
-    v4 = [(SearchUISectionModel *)self section];
-    v6 = [v4 collectionSection];
-    v5 = [v6 backgroundColor];
+    asyncLoader2 = [(SearchUISectionModel *)self section];
+    collectionSection = [asyncLoader2 collectionSection];
+    backgroundColor = [collectionSection backgroundColor];
   }
 
-  v7 = [(SearchUISectionModel *)self rowModels];
-  v8 = [v7 firstObject];
-  v9 = [v8 identifyingResult];
-  v10 = [v9 sectionBundleIdentifier];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  firstObject = [rowModels firstObject];
+  identifyingResult = [firstObject identifyingResult];
+  sectionBundleIdentifier = [identifyingResult sectionBundleIdentifier];
 
   if (backgroundColor_onceToken != -1)
   {
     [SearchUISectionModel backgroundColor];
   }
 
-  if ([backgroundColor_legacyAllowList containsObject:v10] && !v5)
+  if ([backgroundColor_legacyAllowList containsObject:sectionBundleIdentifier] && !backgroundColor)
   {
-    if ([v7 count] < 2)
+    if ([rowModels count] < 2)
     {
       goto LABEL_12;
     }
 
-    v11 = [v8 backgroundColor];
+    backgroundColor2 = [firstObject backgroundColor];
 
-    if (!v11)
+    if (!backgroundColor2)
     {
       goto LABEL_12;
     }
 
-    v5 = [v8 backgroundColor];
+    backgroundColor = [firstObject backgroundColor];
   }
 
-  if (v5)
+  if (backgroundColor)
   {
     goto LABEL_21;
   }
 
 LABEL_12:
-  v12 = [(SearchUISectionModel *)self section];
-  v13 = [v12 resultSection];
-  v14 = [v13 results];
+  section = [(SearchUISectionModel *)self section];
+  resultSection = [section resultSection];
+  results = [resultSection results];
 
-  v15 = [v14 firstObject];
-  v16 = [SearchUIUtilities cardForRenderingResult:v15];
+  firstObject2 = [results firstObject];
+  v16 = [SearchUIUtilities cardForRenderingResult:firstObject2];
 
-  if ([v7 count] >= 2 && objc_msgSend(v14, "count") == 1 && (objc_msgSend(v8, "isTopHit") & 1) != 0)
+  if ([rowModels count] >= 2 && objc_msgSend(results, "count") == 1 && (objc_msgSend(firstObject, "isTopHit") & 1) != 0)
   {
-    v5 = [v16 backgroundColor];
+    backgroundColor = [v16 backgroundColor];
 
-    if (v5)
+    if (backgroundColor)
     {
       goto LABEL_21;
     }
@@ -99,34 +99,34 @@ LABEL_12:
 
   if ([(SearchUISectionModel *)self shouldInsetGroupedCollectionStyle])
   {
-    v5 = +[SearchUIBackgroundColorUtilities disambiguationInnerPlatterColor];
+    backgroundColor = +[SearchUIBackgroundColorUtilities disambiguationInnerPlatterColor];
   }
 
   else
   {
-    v5 = 0;
+    backgroundColor = 0;
   }
 
 LABEL_21:
 
-  return v5;
+  return backgroundColor;
 }
 
 - (BOOL)shouldInsetGroupedCollectionStyle
 {
-  v2 = [(SearchUISectionModel *)self collectionStyleRow];
-  v3 = v2;
-  if (v2)
+  collectionStyleRow = [(SearchUISectionModel *)self collectionStyleRow];
+  v3 = collectionStyleRow;
+  if (collectionStyleRow)
   {
-    v4 = [v2 isInsetGrouped];
+    isInsetGrouped = [collectionStyleRow isInsetGrouped];
   }
 
   else
   {
-    v4 = 0;
+    isInsetGrouped = 0;
   }
 
-  return v4;
+  return isInsetGrouped;
 }
 
 void __39__SearchUISectionModel_backgroundColor__block_invoke()
@@ -137,43 +137,43 @@ void __39__SearchUISectionModel_backgroundColor__block_invoke()
 
 - (void)prepareForSnapshot
 {
-  v3 = [(SearchUISectionModel *)self asyncLoader];
+  asyncLoader = [(SearchUISectionModel *)self asyncLoader];
 
-  if (!v3)
+  if (!asyncLoader)
   {
-    v4 = [(SearchUISectionModel *)self rowModels];
-    v5 = [v4 firstObject];
-    v6 = [v5 results];
-    v7 = [v6 firstObject];
-    v8 = [(SearchUISectionModel *)self rowModels];
-    v9 = [v8 firstObject];
-    v10 = +[SearchUIAsyncSectionLoader asyncLoaderSupportingSectionModel:result:queryId:](SearchUIAsyncSectionLoader, "asyncLoaderSupportingSectionModel:result:queryId:", self, v7, [v9 queryId]);
+    rowModels = [(SearchUISectionModel *)self rowModels];
+    firstObject = [rowModels firstObject];
+    results = [firstObject results];
+    firstObject2 = [results firstObject];
+    rowModels2 = [(SearchUISectionModel *)self rowModels];
+    firstObject3 = [rowModels2 firstObject];
+    v10 = +[SearchUIAsyncSectionLoader asyncLoaderSupportingSectionModel:result:queryId:](SearchUIAsyncSectionLoader, "asyncLoaderSupportingSectionModel:result:queryId:", self, firstObject2, [firstObject3 queryId]);
     asyncLoader = self->_asyncLoader;
     self->_asyncLoader = v10;
 
-    v12 = [(SearchUISectionModel *)self asyncLoader];
+    asyncLoader2 = [(SearchUISectionModel *)self asyncLoader];
 
-    if (v12)
+    if (asyncLoader2)
     {
-      v13 = [(SearchUISectionModel *)self asyncLoader];
-      [v13 preloadIfNecessary];
+      asyncLoader3 = [(SearchUISectionModel *)self asyncLoader];
+      [asyncLoader3 preloadIfNecessary];
     }
   }
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SearchUISectionModel *)self section];
-  v3 = [v2 sectionIdentifier];
-  v4 = [v3 hash];
+  section = [(SearchUISectionModel *)self section];
+  sectionIdentifier = [section sectionIdentifier];
+  v4 = [sectionIdentifier hash];
 
   return v4;
 }
 
 - (BOOL)needsHeaderSeparator
 {
-  v3 = [(SearchUISectionModel *)self rowModels];
-  v4 = [v3 searchui_safeObjectAtIndex:0];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  v4 = [rowModels searchui_safeObjectAtIndex:0];
 
   if ([v4 isTopHit] & 1) != 0 || TLKSpotlightPlusUIEnabled() && (!-[SearchUISectionModel needsHeader](self, "needsHeader") || !-[SearchUISectionModel forceTopSeparatorForBrowseMode](self, "forceTopSeparatorForBrowseMode") && (-[SearchUISectionModel section](self, "section"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isBrowseSection"), v6, (v7)))
   {
@@ -190,36 +190,36 @@ void __39__SearchUISectionModel_backgroundColor__block_invoke()
 
 - (BOOL)needsHeader
 {
-  v2 = [(SearchUISectionModel *)self section];
-  v3 = v2;
-  if (v2)
+  section = [(SearchUISectionModel *)self section];
+  v3 = section;
+  if (section)
   {
-    v4 = [v2 collectionSection];
-    v5 = [v3 resultSection];
-    v6 = [v5 title];
+    collectionSection = [section collectionSection];
+    resultSection = [v3 resultSection];
+    title = [resultSection title];
 
-    v7 = [v3 resultSection];
-    v8 = [v7 subtitle];
+    resultSection2 = [v3 resultSection];
+    subtitle = [resultSection2 subtitle];
 
-    if (v4)
+    if (collectionSection)
     {
-      v9 = [v4 title];
-      v10 = [v9 text];
+      title2 = [collectionSection title];
+      text = [title2 text];
     }
 
     else
     {
-      v10 = v6;
+      text = title;
     }
 
-    if ([v10 length])
+    if ([text length])
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = [v8 length] != 0;
+      v11 = [subtitle length] != 0;
     }
   }
 
@@ -231,28 +231,28 @@ void __39__SearchUISectionModel_backgroundColor__block_invoke()
   return v11;
 }
 
-- (SearchUISectionModel)initWithRowModels:(id)a3 section:(id)a4
+- (SearchUISectionModel)initWithRowModels:(id)models section:(id)section
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  modelsCopy = models;
+  sectionCopy = section;
   v24.receiver = self;
   v24.super_class = SearchUISectionModel;
   v9 = [(SearchUISectionModel *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rowModels, a3);
-    objc_storeStrong(&v10->_section, a4);
+    objc_storeStrong(&v9->_rowModels, models);
+    objc_storeStrong(&v10->_section, section);
     v10->_drawPlattersIfNecessary = 1;
-    v11 = [(SearchUISectionModel *)v10 backgroundColor];
-    if (v11)
+    backgroundColor = [(SearchUISectionModel *)v10 backgroundColor];
+    if (backgroundColor)
     {
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v12 = v7;
+      v12 = modelsCopy;
       v13 = [v12 countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v13)
       {
@@ -269,8 +269,8 @@ void __39__SearchUISectionModel_backgroundColor__block_invoke()
             }
 
             v17 = *(*(&v20 + 1) + 8 * v16);
-            v18 = [(SearchUISectionModel *)v10 backgroundColor];
-            [v17 setBackgroundColor:v18];
+            backgroundColor2 = [(SearchUISectionModel *)v10 backgroundColor];
+            [v17 setBackgroundColor:backgroundColor2];
 
             ++v16;
           }
@@ -287,65 +287,65 @@ void __39__SearchUISectionModel_backgroundColor__block_invoke()
   return v10;
 }
 
-+ (SearchUISectionModel)sectionModelWithRows:(id)a3 drawPlattersIfNecessary:(BOOL)a4 section:(id)a5 expandedCollectionSections:(id)a6
++ (SearchUISectionModel)sectionModelWithRows:(id)rows drawPlattersIfNecessary:(BOOL)necessary section:(id)section expandedCollectionSections:(id)sections
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = [v11 collectionSection];
-  v13 = [v12 collectionStyle];
-  v14 = [v13 initiallyVisibleCardSectionCount];
+  necessaryCopy = necessary;
+  rowsCopy = rows;
+  sectionsCopy = sections;
+  sectionCopy = section;
+  collectionSection = [sectionCopy collectionSection];
+  collectionStyle = [collectionSection collectionStyle];
+  initiallyVisibleCardSectionCount = [collectionStyle initiallyVisibleCardSectionCount];
 
-  LOBYTE(v13) = [v10 containsObject:v12];
-  if ((v13 & 1) == 0 && v14 && [v9 count] > v14)
+  LOBYTE(collectionStyle) = [sectionsCopy containsObject:collectionSection];
+  if ((collectionStyle & 1) == 0 && initiallyVisibleCardSectionCount && [rowsCopy count] > initiallyVisibleCardSectionCount)
   {
-    v15 = [v9 subarrayWithRange:{0, v14}];
+    v15 = [rowsCopy subarrayWithRange:{0, initiallyVisibleCardSectionCount}];
 
-    v9 = v15;
+    rowsCopy = v15;
   }
 
-  v16 = [[SearchUISectionModel alloc] initWithRowModels:v9 section:v11];
+  v16 = [[SearchUISectionModel alloc] initWithRowModels:rowsCopy section:sectionCopy];
 
-  [(SearchUISectionModel *)v16 setDrawPlattersIfNecessary:v8];
+  [(SearchUISectionModel *)v16 setDrawPlattersIfNecessary:necessaryCopy];
 
   return v16;
 }
 
-+ (SearchUISectionModel)sectionModelWithGridRowModels:(id)a3 numberOfColumns:(int64_t)a4 gridStyle:(int)a5 section:(id)a6 expandedCollectionSections:(id)a7
++ (SearchUISectionModel)sectionModelWithGridRowModels:(id)models numberOfColumns:(int64_t)columns gridStyle:(int)style section:(id)section expandedCollectionSections:(id)sections
 {
-  v9 = *&a5;
-  v11 = a3;
-  v12 = a7;
-  v13 = a6;
-  v14 = [v13 collectionSection];
-  v15 = [v14 collectionStyle];
-  v16 = [v15 initiallyVisibleCardSectionCount];
+  v9 = *&style;
+  modelsCopy = models;
+  sectionsCopy = sections;
+  sectionCopy = section;
+  collectionSection = [sectionCopy collectionSection];
+  collectionStyle = [collectionSection collectionStyle];
+  initiallyVisibleCardSectionCount = [collectionStyle initiallyVisibleCardSectionCount];
 
-  LOBYTE(v15) = [v12 containsObject:v14];
-  if ((v15 & 1) == 0 && v16 && [v11 count] > v16)
+  LOBYTE(collectionStyle) = [sectionsCopy containsObject:collectionSection];
+  if ((collectionStyle & 1) == 0 && initiallyVisibleCardSectionCount && [modelsCopy count] > initiallyVisibleCardSectionCount)
   {
-    v17 = [v11 subarrayWithRange:{0, v16}];
+    v17 = [modelsCopy subarrayWithRange:{0, initiallyVisibleCardSectionCount}];
 
-    v11 = v17;
+    modelsCopy = v17;
   }
 
-  v18 = [[SearchUIGridSectionModel alloc] initWithRowModels:v11 numberOfColumns:a4 gridStyle:v9 section:v13];
+  v18 = [[SearchUIGridSectionModel alloc] initWithRowModels:modelsCopy numberOfColumns:columns gridStyle:v9 section:sectionCopy];
 
   return v18;
 }
 
-+ (SearchUISectionModel)sectionModelWithScrollingRowModels:(id)a3 numberOfRows:(int64_t)a4 section:(id)a5
++ (SearchUISectionModel)sectionModelWithScrollingRowModels:(id)models numberOfRows:(int64_t)rows section:(id)section
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  modelsCopy = models;
+  sectionCopy = section;
   v9 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v7;
+  v10 = modelsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -369,8 +369,8 @@ void __39__SearchUISectionModel_backgroundColor__block_invoke()
 
         else
         {
-          v16 = [v15 horizontalRowModel];
-          [v9 addObject:v16];
+          horizontalRowModel = [v15 horizontalRowModel];
+          [v9 addObject:horizontalRowModel];
         }
       }
 
@@ -380,33 +380,33 @@ void __39__SearchUISectionModel_backgroundColor__block_invoke()
     while (v12);
   }
 
-  v17 = [[SearchUIHorizontallyScrollingSectionModel alloc] initWithRowModels:v9 section:v8 numberOfRows:a4];
+  v17 = [[SearchUIHorizontallyScrollingSectionModel alloc] initWithRowModels:v9 section:sectionCopy numberOfRows:rows];
 
   return v17;
 }
 
-- (id)layoutSectionForEnvironment:(id)a3 attributes:(id)a4 dataSource:(id)a5
+- (id)layoutSectionForEnvironment:(id)environment attributes:(id)attributes dataSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 snapshot];
-  -[SearchUISectionModel setNumberOfSections:](self, "setNumberOfSections:", [v11 numberOfSections]);
+  environmentCopy = environment;
+  attributesCopy = attributes;
+  sourceCopy = source;
+  snapshot = [sourceCopy snapshot];
+  -[SearchUISectionModel setNumberOfSections:](self, "setNumberOfSections:", [snapshot numberOfSections]);
 
-  v12 = [v9 shouldUseInsetRoundedSections];
-  v13 = [(SearchUISectionModel *)self rowModels];
-  v14 = [v13 firstObject];
+  shouldUseInsetRoundedSections = [attributesCopy shouldUseInsetRoundedSections];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  firstObject = [rowModels firstObject];
 
-  v36 = v14;
-  v15 = [v14 cardSection];
+  v36 = firstObject;
+  cardSection = [firstObject cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
   v17 = objc_opt_isKindOfClass();
-  v18 = [v8 traitCollection];
-  [v18 userInterfaceIdiom];
+  traitCollection = [environmentCopy traitCollection];
+  [traitCollection userInterfaceIdiom];
 
-  if (v12 && [(SearchUISectionModel *)self drawPlattersIfNecessary])
+  if (shouldUseInsetRoundedSections && [(SearchUISectionModel *)self drawPlattersIfNecessary])
   {
     v19 = 2;
   }
@@ -425,8 +425,8 @@ void __39__SearchUISectionModel_backgroundColor__block_invoke()
   +[SearchUIAutoLayout sectionCornerRadius];
   [v20 _setCornerRadius:?];
   v21 = [objc_alloc(MEMORY[0x1E69DCC38]) initWithListAppearance:v19];
-  v22 = [v9 appearance];
-  v23 = [SearchUISeparatorView separatorColorForAppearance:v22];
+  appearance = [attributesCopy appearance];
+  v23 = [SearchUISeparatorView separatorColorForAppearance:appearance];
   [v21 setColor:v23];
 
   [v20 setSeparatorConfiguration:v21];
@@ -434,9 +434,9 @@ void __39__SearchUISectionModel_backgroundColor__block_invoke()
   v49[1] = 3221225472;
   v49[2] = __74__SearchUISectionModel_layoutSectionForEnvironment_attributes_dataSource___block_invoke;
   v49[3] = &unk_1E85B35F8;
-  v24 = v10;
+  v24 = sourceCopy;
   v50 = v24;
-  v25 = v9;
+  v25 = attributesCopy;
   v51 = v25;
   [v20 setLeadingSwipeActionsConfigurationProvider:v49];
   v46[0] = MEMORY[0x1E69E9820];
@@ -465,13 +465,13 @@ void __39__SearchUISectionModel_backgroundColor__block_invoke()
   v37[3] = &unk_1E85B3620;
   v32 = v26;
   v38 = v32;
-  v42 = v12;
+  v42 = shouldUseInsetRoundedSections;
   v33 = v27;
   v39 = v33;
-  v40 = self;
+  selfCopy = self;
   v41 = v43;
   [v20 setItemSeparatorHandler:v37];
-  v34 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v20 layoutEnvironment:v8];
+  v34 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v20 layoutEnvironment:environmentCopy];
   [v34 setDecorationItems:MEMORY[0x1E695E0F0]];
   [(SearchUISectionModel *)self reloadCornerMaskingOverrideWithAttributes:v33];
 
@@ -624,24 +624,24 @@ LABEL_40:
   return v6;
 }
 
-- (void)reloadCornerMaskingOverrideWithAttributes:(id)a3
+- (void)reloadCornerMaskingOverrideWithAttributes:(id)attributes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SearchUISectionModel *)self rowModels];
-  v6 = [v5 firstObject];
+  attributesCopy = attributes;
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  firstObject = [rowModels firstObject];
 
-  v7 = [(SearchUISectionModel *)self rowModels];
-  v8 = [v7 lastObject];
+  rowModels2 = [(SearchUISectionModel *)self rowModels];
+  lastObject = [rowModels2 lastObject];
 
-  if (v6 && ([v6 isEqual:v8] & 1) == 0 && +[SearchUISectionBackgroundStyleUtilities backgroundStyleNeedsInset:](SearchUISectionBackgroundStyleUtilities, "backgroundStyleNeedsInset:", -[SearchUISectionModel sectionBackgroundStyleWithAttributes:](self, "sectionBackgroundStyleWithAttributes:", v4)))
+  if (firstObject && ([firstObject isEqual:lastObject] & 1) == 0 && +[SearchUISectionBackgroundStyleUtilities backgroundStyleNeedsInset:](SearchUISectionBackgroundStyleUtilities, "backgroundStyleNeedsInset:", -[SearchUISectionModel sectionBackgroundStyleWithAttributes:](self, "sectionBackgroundStyleWithAttributes:", attributesCopy)))
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = [(SearchUISectionModel *)self rowModels];
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    rowModels3 = [(SearchUISectionModel *)self rowModels];
+    v10 = [rowModels3 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -652,7 +652,7 @@ LABEL_40:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(rowModels3);
           }
 
           v14 = *(*(&v15 + 1) + 8 * i);
@@ -660,33 +660,33 @@ LABEL_40:
           [v14 setHasCustomCornerRounding:1];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [rowModels3 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
     }
 
-    [v6 setCornerMask:{objc_msgSend(v6, "cornerMask") | 3}];
-    [v6 setHasCustomCornerRounding:1];
-    [v8 setCornerMask:{objc_msgSend(v8, "cornerMask") | 0xC}];
-    [v8 setHasCustomCornerRounding:1];
+    [firstObject setCornerMask:{objc_msgSend(firstObject, "cornerMask") | 3}];
+    [firstObject setHasCustomCornerRounding:1];
+    [lastObject setCornerMask:{objc_msgSend(lastObject, "cornerMask") | 0xC}];
+    [lastObject setHasCustomCornerRounding:1];
   }
 }
 
-- (int64_t)sectionBackgroundStyleWithAttributes:(id)a3
+- (int64_t)sectionBackgroundStyleWithAttributes:(id)attributes
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SearchUISectionModel *)self section];
-  v6 = [v5 sectionIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.spotlight.tophits"];
+  attributesCopy = attributes;
+  section = [(SearchUISectionModel *)self section];
+  sectionIdentifier = [section sectionIdentifier];
+  v7 = [sectionIdentifier isEqualToString:@"com.apple.spotlight.tophits"];
 
-  v8 = [(SearchUISectionModel *)self section];
-  v9 = [v8 sectionIdentifier];
-  v10 = [v9 isEqualToString:@"com.apple.other:show_more"];
+  section2 = [(SearchUISectionModel *)self section];
+  sectionIdentifier2 = [section2 sectionIdentifier];
+  v10 = [sectionIdentifier2 isEqualToString:@"com.apple.other:show_more"];
 
-  v11 = [(SearchUISectionModel *)self rowModels];
-  v12 = [v11 firstObject];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  firstObject = [rowModels firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -704,8 +704,8 @@ LABEL_3:
   {
   }
 
-  v15 = [(SearchUISectionModel *)self rowModels];
-  v16 = [v15 firstObject];
+  rowModels2 = [(SearchUISectionModel *)self rowModels];
+  firstObject2 = [rowModels2 firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -731,9 +731,9 @@ LABEL_10:
     goto LABEL_54;
   }
 
-  if ([(SearchUISectionModel *)self shouldInsetGroupedCollectionStyleWithAttributes:v4])
+  if ([(SearchUISectionModel *)self shouldInsetGroupedCollectionStyleWithAttributes:attributesCopy])
   {
-    if ([v4 isInCarPlay] && (_UISolariumEnabled() & 1) != 0)
+    if ([attributesCopy isInCarPlay] && (_UISolariumEnabled() & 1) != 0)
     {
       goto LABEL_3;
     }
@@ -742,20 +742,20 @@ LABEL_10:
   }
 
   v52 = v7;
-  v18 = [(SearchUISectionModel *)self rowModels];
-  v19 = [v18 firstObject];
-  v56 = [v19 backgroundColor];
+  rowModels3 = [(SearchUISectionModel *)self rowModels];
+  firstObject3 = [rowModels3 firstObject];
+  backgroundColor = [firstObject3 backgroundColor];
 
-  v20 = [(SearchUISectionModel *)self rowModels];
-  v21 = [v20 firstObject];
-  v55 = [v21 identifyingResult];
+  rowModels4 = [(SearchUISectionModel *)self rowModels];
+  firstObject4 = [rowModels4 firstObject];
+  identifyingResult = [firstObject4 identifyingResult];
 
-  v22 = [(SearchUISectionModel *)self rowModels];
-  v23 = [v22 firstObject];
-  v24 = [v23 fillsBackgroundWithContent];
+  rowModels5 = [(SearchUISectionModel *)self rowModels];
+  firstObject5 = [rowModels5 firstObject];
+  fillsBackgroundWithContent = [firstObject5 fillsBackgroundWithContent];
 
-  v53 = v4;
-  v51 = [v4 isAboveFilterBar];
+  v53 = attributesCopy;
+  isAboveFilterBar = [attributesCopy isAboveFilterBar];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -781,14 +781,14 @@ LABEL_10:
       }
 
       v29 = *(*(&v59 + 1) + 8 * i);
-      v30 = self;
-      v31 = [(SearchUISectionModel *)self rowModels];
-      v32 = [v31 firstObject];
-      v33 = [v29 isEqual:v32];
+      selfCopy = self;
+      rowModels6 = [(SearchUISectionModel *)self rowModels];
+      firstObject6 = [rowModels6 firstObject];
+      v33 = [v29 isEqual:firstObject6];
 
       if ((v33 & 1) == 0)
       {
-        v34 = [v29 fillsBackgroundWithContent];
+        fillsBackgroundWithContent2 = [v29 fillsBackgroundWithContent];
         v35 = HIDWORD(v58);
         if ((v58 & 0x100000000) != 0)
         {
@@ -796,19 +796,19 @@ LABEL_10:
           goto LABEL_29;
         }
 
-        if (v56 || ([v29 backgroundColor], (v54 = objc_claimAutoreleasedReturnValue()) != 0))
+        if (backgroundColor || ([v29 backgroundColor], (v54 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v37 = [v29 backgroundColor];
-          v36 = [v56 isEqual:v37] ^ 1;
+          backgroundColor2 = [v29 backgroundColor];
+          v36 = [backgroundColor isEqual:backgroundColor2] ^ 1;
 
           v35 = HIDWORD(v58);
-          if (!v56)
+          if (!backgroundColor)
           {
 LABEL_28:
           }
 
 LABEL_29:
-          v24 &= v34;
+          fillsBackgroundWithContent &= fillsBackgroundWithContent2;
           HIDWORD(v58) = v36 | v35;
           if (v58)
           {
@@ -817,8 +817,8 @@ LABEL_29:
 
           else
           {
-            v38 = [v29 identifyingResult];
-            LODWORD(v58) = [v55 isEqual:v38] ^ 1;
+            identifyingResult2 = [v29 identifyingResult];
+            LODWORD(v58) = [identifyingResult isEqual:identifyingResult2] ^ 1;
           }
 
           goto LABEL_32;
@@ -830,7 +830,7 @@ LABEL_29:
       }
 
 LABEL_32:
-      self = v30;
+      self = selfCopy;
     }
 
     v26 = [obj countByEnumeratingWithState:&v59 objects:v63 count:16];
@@ -839,39 +839,39 @@ LABEL_32:
   while (v26);
 LABEL_36:
 
-  v39 = [(SearchUISectionModel *)self rowModels];
-  v40 = [v39 firstObject];
+  rowModels7 = [(SearchUISectionModel *)self rowModels];
+  firstObject7 = [rowModels7 firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SearchUISectionModel *)self rowModels];
     v42 = v41 = self;
-    v43 = [v42 firstObject];
-    v44 = [v43 useCompactVersionOfUI];
+    firstObject8 = [v42 firstObject];
+    useCompactVersionOfUI = [firstObject8 useCompactVersionOfUI];
 
     self = v41;
   }
 
   else
   {
-    v44 = 0;
+    useCompactVersionOfUI = 0;
   }
 
-  v45 = v56;
+  v45 = backgroundColor;
 
   if (v52)
   {
-    v46 = !+[SearchUIUtilities isSpotlightPlusEnabled]| v24 | v51;
+    v46 = !+[SearchUIUtilities isSpotlightPlusEnabled]| fillsBackgroundWithContent | isAboveFilterBar;
   }
 
   else
   {
-    LOBYTE(v46) = v24 | v51;
+    LOBYTE(v46) = fillsBackgroundWithContent | isAboveFilterBar;
   }
 
-  if (v44 & 1 | ((v46 & 1) == 0) | v58 & 1)
+  if (useCompactVersionOfUI & 1 | ((v46 & 1) == 0) | v58 & 1)
   {
-    v4 = v53;
+    attributesCopy = v53;
     if (!-[SearchUISectionModel drawPlattersIfNecessary](self, "drawPlattersIfNecessary") && ([v53 shouldUseInsetRoundedSections] & 1) != 0)
     {
       v14 = 5;
@@ -884,20 +884,20 @@ LABEL_36:
       goto LABEL_53;
     }
 
-    v47 = [(SearchUISectionModel *)self rowModels];
-    v48 = [v47 firstObject];
-    v49 = [v48 cardSection];
+    rowModels8 = [(SearchUISectionModel *)self rowModels];
+    firstObject9 = [rowModels8 firstObject];
+    cardSection = [firstObject9 cardSection];
     objc_opt_class();
     v14 = objc_opt_isKindOfClass() & 1;
 
-    v45 = v56;
+    v45 = backgroundColor;
   }
 
   else
   {
-    v47 = [(SearchUISectionModel *)self rowModels];
-    v4 = v53;
-    if (([v47 count] < 2) | BYTE4(v58) & 1)
+    rowModels8 = [(SearchUISectionModel *)self rowModels];
+    attributesCopy = v53;
+    if (([rowModels8 count] < 2) | BYTE4(v58) & 1)
     {
       v14 = [v53 inPreviewPlatter] ^ 1;
     }
@@ -914,9 +914,9 @@ LABEL_54:
   return v14;
 }
 
-- (NSDirectionalEdgeInsets)headerInsetsWithAttributes:(id)a3
+- (NSDirectionalEdgeInsets)headerInsetsWithAttributes:(id)attributes
 {
-  [(SearchUISectionModel *)self horizontalInsetWithAttributes:a3 forSupplementary:1];
+  [(SearchUISectionModel *)self horizontalInsetWithAttributes:attributes forSupplementary:1];
   v5 = v4;
   v6 = 6.0;
   if (([MEMORY[0x1E69D9240] isMacOS] & 1) == 0)
@@ -932,14 +932,14 @@ LABEL_54:
     }
   }
 
-  v7 = [(SearchUISectionModel *)self section];
-  v8 = [v7 resultSection];
+  section = [(SearchUISectionModel *)self section];
+  resultSection = [section resultSection];
 
-  v9 = [v8 subtitle];
-  if (v9)
+  subtitle = [resultSection subtitle];
+  if (subtitle)
   {
-    v10 = [v8 title];
-    if (v10)
+    title = [resultSection title];
+    if (title)
     {
       v11 = 0.0;
     }
@@ -966,12 +966,12 @@ LABEL_54:
   return result;
 }
 
-- (double)horizontalInsetWithAttributes:(id)a3 forSupplementary:(BOOL)a4
+- (double)horizontalInsetWithAttributes:(id)attributes forSupplementary:(BOOL)supplementary
 {
-  v4 = a4;
-  v6 = a3;
+  supplementaryCopy = supplementary;
+  attributesCopy = attributes;
   [(SearchUISectionModel *)self numberOfSections];
-  if ([(SearchUISectionModel *)self shouldInsetGroupedCollectionStyleWithAttributes:v6])
+  if ([(SearchUISectionModel *)self shouldInsetGroupedCollectionStyleWithAttributes:attributesCopy])
   {
     +[SearchUIUtilities disambiguationTableCellContentInset];
   }
@@ -982,17 +982,17 @@ LABEL_54:
   }
 
   v8 = v7;
-  if ([v6 shouldUseInsetRoundedSections])
+  if ([attributesCopy shouldUseInsetRoundedSections])
   {
-    v9 = [v6 commandEnvironment];
-    v10 = [v9 shouldUseStandardSectionInsets];
+    commandEnvironment = [attributesCopy commandEnvironment];
+    shouldUseStandardSectionInsets = [commandEnvironment shouldUseStandardSectionInsets];
 
-    if ((v10 & 1) == 0)
+    if ((shouldUseStandardSectionInsets & 1) == 0)
     {
-      v11 = [v6 commandEnvironment];
-      v12 = [v11 presentingViewController];
-      v13 = [v12 view];
-      [v13 frame];
+      commandEnvironment2 = [attributesCopy commandEnvironment];
+      presentingViewController = [commandEnvironment2 presentingViewController];
+      view = [presentingViewController view];
+      [view frame];
       Width = CGRectGetWidth(v19);
       +[SearchUI idealPlatterWidth];
       v8 = (Width - v15) * 0.5;
@@ -1004,12 +1004,12 @@ LABEL_54:
     }
 
     v16 = v8 + 8.0;
-    v17 = !v4;
+    v17 = !supplementaryCopy;
   }
 
   else
   {
-    if (v4 || [SearchUISectionBackgroundStyleUtilities backgroundStyleNeedsInset:[(SearchUISectionModel *)self sectionBackgroundStyleWithAttributes:v6]])
+    if (supplementaryCopy || [SearchUISectionBackgroundStyleUtilities backgroundStyleNeedsInset:[(SearchUISectionModel *)self sectionBackgroundStyleWithAttributes:attributesCopy]])
     {
       goto LABEL_14;
     }
@@ -1028,10 +1028,10 @@ LABEL_14:
   return v8;
 }
 
-- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)a3 sectionIndex:(unint64_t)a4
+- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)attributes sectionIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(SearchUISectionModel *)self shouldInsetGroupedCollectionStyleWithAttributes:v6];
+  attributesCopy = attributes;
+  v7 = [(SearchUISectionModel *)self shouldInsetGroupedCollectionStyleWithAttributes:attributesCopy];
   if ([(SearchUISectionModel *)self needsHeader])
   {
     v8 = 1;
@@ -1042,12 +1042,12 @@ LABEL_14:
     v8 = [(SearchUISectionModel *)self needsHeaderSeparator]|| v7;
   }
 
-  [(SearchUISectionModel *)self horizontalInsetWithAttributes:v6 forSupplementary:0];
+  [(SearchUISectionModel *)self horizontalInsetWithAttributes:attributesCopy forSupplementary:0];
   v10 = v9;
-  v11 = [(SearchUISectionModel *)self rowModels];
-  v12 = [v11 firstObject];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  firstObject = [rowModels firstObject];
 
-  if ([v6 shouldUseInsetRoundedSections])
+  if ([attributesCopy shouldUseInsetRoundedSections])
   {
     v13 = 0.0;
     if (v8)
@@ -1063,17 +1063,17 @@ LABEL_14:
 
   else
   {
-    v15 = [(SearchUISectionModel *)self sectionBackgroundStyleWithAttributes:v6];
+    v15 = [(SearchUISectionModel *)self sectionBackgroundStyleWithAttributes:attributesCopy];
     if ([SearchUISectionBackgroundStyleUtilities backgroundStyleNeedsInset:v15])
     {
-      v16 = [(SearchUISectionModel *)self section];
-      v17 = [v16 sectionIdentifier];
-      v18 = [v17 isEqualToString:@"com.apple.spotlight.tophits"];
+      section = [(SearchUISectionModel *)self section];
+      sectionIdentifier = [section sectionIdentifier];
+      v18 = [sectionIdentifier isEqualToString:@"com.apple.spotlight.tophits"];
 
       v14 = 12.0;
       if (v7 | (([MEMORY[0x1E69D9240] isMacOS] & 1) == 0))
       {
-        v19 = [v12 cardSection];
+        cardSection = [firstObject cardSection];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -1086,7 +1086,7 @@ LABEL_14:
         }
       }
 
-      v20 = [MEMORY[0x1E69D9240] isMacOS];
+      isMacOS = [MEMORY[0x1E69D9240] isMacOS];
       if (v18)
       {
         v21 = 8;
@@ -1107,7 +1107,7 @@ LABEL_14:
         v22 = 8;
       }
 
-      if (!v20)
+      if (!isMacOS)
       {
         v21 = v22;
       }
@@ -1133,8 +1133,8 @@ LABEL_14:
       v23 = 4.0;
       if ([MEMORY[0x1E69D9240] isMacOS])
       {
-        v24 = [(SearchUISectionModel *)self section];
-        if ([v24 isBrowseSection])
+        section2 = [(SearchUISectionModel *)self section];
+        if ([section2 isBrowseSection])
         {
           v23 = 25.0;
         }
@@ -1155,14 +1155,14 @@ LABEL_14:
         v25 = 8.0;
       }
 
-      v26 = [v12 fillsBackgroundWithContent];
+      fillsBackgroundWithContent = [firstObject fillsBackgroundWithContent];
       v27 = v25 + 8.0;
-      if (!a4)
+      if (!index)
       {
         v27 = 0.0;
       }
 
-      if (((a4 == 0) & v26) != 0)
+      if (((index == 0) & fillsBackgroundWithContent) != 0)
       {
         v13 = 0.0;
       }
@@ -1172,7 +1172,7 @@ LABEL_14:
         v13 = v23;
       }
 
-      if (v26)
+      if (fillsBackgroundWithContent)
       {
         v14 = v27;
       }
@@ -1197,33 +1197,33 @@ LABEL_14:
 
 - (id)collectionStyleRow
 {
-  v2 = [(SearchUISectionModel *)self section];
-  v3 = v2;
-  if (v2 && ([v2 collectionSection], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "collectionStyle"), v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) != 0))
+  section = [(SearchUISectionModel *)self section];
+  v3 = section;
+  if (section && ([section collectionSection], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "collectionStyle"), v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) != 0))
   {
-    v7 = [v3 collectionSection];
-    v8 = [v7 collectionStyle];
+    collectionSection = [v3 collectionSection];
+    collectionStyle = [collectionSection collectionStyle];
   }
 
   else
   {
-    v8 = 0;
+    collectionStyle = 0;
   }
 
-  return v8;
+  return collectionStyle;
 }
 
 - (BOOL)isCollectionStyleRow
 {
-  v2 = [(SearchUISectionModel *)self collectionStyleRow];
-  v3 = v2 != 0;
+  collectionStyleRow = [(SearchUISectionModel *)self collectionStyleRow];
+  v3 = collectionStyleRow != 0;
 
   return v3;
 }
 
-- (BOOL)shouldInsetGroupedCollectionStyleWithAttributes:(id)a3
+- (BOOL)shouldInsetGroupedCollectionStyleWithAttributes:(id)attributes
 {
-  if ([a3 isInCarPlay] && -[SearchUISectionModel isCollectionStyleRow](self, "isCollectionStyleRow"))
+  if ([attributes isInCarPlay] && -[SearchUISectionModel isCollectionStyleRow](self, "isCollectionStyleRow"))
   {
     return 1;
   }
@@ -1231,27 +1231,27 @@ LABEL_14:
   return [(SearchUISectionModel *)self shouldInsetGroupedCollectionStyle];
 }
 
-- (int)separatorStyleForIndex:(unint64_t)a3 shouldDrawTopAndBottomSeparators:(BOOL)a4
+- (int)separatorStyleForIndex:(unint64_t)index shouldDrawTopAndBottomSeparators:(BOOL)separators
 {
-  v4 = a4;
-  v7 = [(SearchUISectionModel *)self rowModels];
-  v8 = [v7 searchui_safeObjectAtIndex:a3];
+  separatorsCopy = separators;
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  v8 = [rowModels searchui_safeObjectAtIndex:index];
 
-  v9 = [(SearchUISectionModel *)self rowModels];
-  v10 = [v9 searchui_safeObjectAtIndex:a3 + 1];
+  rowModels2 = [(SearchUISectionModel *)self rowModels];
+  v10 = [rowModels2 searchui_safeObjectAtIndex:index + 1];
 
-  v11 = [v8 separatorStyle];
-  if (!v10 && !v4 || [v8 fillsBackgroundWithContent] && !-[SearchUISectionModel shouldInsetGroupedCollectionStyle](self, "shouldInsetGroupedCollectionStyle"))
+  separatorStyle = [v8 separatorStyle];
+  if (!v10 && !separatorsCopy || [v8 fillsBackgroundWithContent] && !-[SearchUISectionModel shouldInsetGroupedCollectionStyle](self, "shouldInsetGroupedCollectionStyle"))
   {
     goto LABEL_3;
   }
 
-  if (v11 == 3)
+  if (separatorStyle == 3)
   {
     goto LABEL_16;
   }
 
-  if (v11)
+  if (separatorStyle)
   {
     goto LABEL_4;
   }
@@ -1261,39 +1261,39 @@ LABEL_14:
 LABEL_16:
     if ([v10 hasLeadingImage])
     {
-      v11 = 3;
+      separatorStyle = 3;
     }
 
     else
     {
-      v11 = 2;
+      separatorStyle = 2;
     }
   }
 
   else
   {
 LABEL_3:
-    v11 = 1;
+    separatorStyle = 1;
   }
 
 LABEL_4:
 
-  return v11;
+  return separatorStyle;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SearchUISectionModel *)self section];
-    v7 = [v6 sectionIdentifier];
-    v8 = [v5 section];
+    v5 = equalCopy;
+    section = [(SearchUISectionModel *)self section];
+    sectionIdentifier = [section sectionIdentifier];
+    section2 = [v5 section];
 
-    v9 = [v8 sectionIdentifier];
-    v10 = [v7 isEqualToString:v9];
+    sectionIdentifier2 = [section2 sectionIdentifier];
+    v10 = [sectionIdentifier isEqualToString:sectionIdentifier2];
   }
 
   else
@@ -1308,27 +1308,27 @@ LABEL_4:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(SearchUISectionModel *)self section];
-  v6 = [v5 sectionIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@ | identifier: %@>", v4, v6];
+  section = [(SearchUISectionModel *)self section];
+  sectionIdentifier = [section sectionIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@ | identifier: %@>", v4, sectionIdentifier];
 
   return v7;
 }
 
-- (id)copyWithRowModels:(id)a3
+- (id)copyWithRowModels:(id)models
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelsCopy = models;
   v5 = [(SearchUISectionModel *)self copy];
-  [v5 setRowModels:v4];
-  v6 = [(SearchUISectionModel *)self backgroundColor];
-  if (v6)
+  [v5 setRowModels:modelsCopy];
+  backgroundColor = [(SearchUISectionModel *)self backgroundColor];
+  if (backgroundColor)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v4;
+    v7 = modelsCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -1345,8 +1345,8 @@ LABEL_4:
           }
 
           v12 = *(*(&v15 + 1) + 8 * v11);
-          v13 = [(SearchUISectionModel *)self backgroundColor];
-          [v12 setBackgroundColor:v13];
+          backgroundColor2 = [(SearchUISectionModel *)self backgroundColor];
+          [v12 setBackgroundColor:backgroundColor2];
 
           ++v11;
         }
@@ -1362,19 +1362,19 @@ LABEL_4:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setDrawPlattersIfNecessary:{-[SearchUISectionModel drawPlattersIfNecessary](self, "drawPlattersIfNecessary")}];
-  v5 = [(SearchUISectionModel *)self section];
-  [v4 setSection:v5];
+  section = [(SearchUISectionModel *)self section];
+  [v4 setSection:section];
 
-  v6 = [(SearchUISectionModel *)self rowModels];
-  v7 = [v6 copy];
+  rowModels = [(SearchUISectionModel *)self rowModels];
+  v7 = [rowModels copy];
   [v4 setRowModels:v7];
 
-  v8 = [(SearchUISectionModel *)self asyncLoader];
-  [v4 setAsyncLoader:v8];
+  asyncLoader = [(SearchUISectionModel *)self asyncLoader];
+  [v4 setAsyncLoader:asyncLoader];
 
   return v4;
 }

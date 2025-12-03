@@ -1,9 +1,9 @@
 @interface AGXG18PFamilyTextureViewPool
-- (AGXG18PFamilyTextureViewPool)initWithDevice:(id)a3 descriptor:(id)a4 error:(id *)a5;
-- (MTLResourceID)copyResourceViewsFromPool:(id)a3 sourceRange:(_NSRange)a4 destinationIndex:(unint64_t)a5;
-- (MTLResourceID)setTextureView:(id)a3 atIndex:(unint64_t)a4;
-- (MTLResourceID)setTextureView:(id)a3 descriptor:(id)a4 atIndex:(unint64_t)a5;
-- (MTLResourceID)setTextureViewFromBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 bytesPerRow:(unint64_t)a6 atIndex:(unint64_t)a7;
+- (AGXG18PFamilyTextureViewPool)initWithDevice:(id)device descriptor:(id)descriptor error:(id *)error;
+- (MTLResourceID)copyResourceViewsFromPool:(id)pool sourceRange:(_NSRange)range destinationIndex:(unint64_t)index;
+- (MTLResourceID)setTextureView:(id)view atIndex:(unint64_t)index;
+- (MTLResourceID)setTextureView:(id)view descriptor:(id)descriptor atIndex:(unint64_t)index;
+- (MTLResourceID)setTextureViewFromBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row atIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
@@ -57,11 +57,11 @@
   [(_MTLResourceViewPool *)&v9 dealloc];
 }
 
-- (MTLResourceID)setTextureViewFromBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 bytesPerRow:(unint64_t)a6 atIndex:(unint64_t)a7
+- (MTLResourceID)setTextureViewFromBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row atIndex:(unint64_t)index
 {
-  v8 = self;
+  selfCopy = self;
   impl = self->_impl;
-  if (!a3 || ([a4 validateWithDevice:{objc_msgSend(a3, "device")}] & 1) == 0)
+  if (!buffer || ([descriptor validateWithDevice:{objc_msgSend(buffer, "device")}] & 1) == 0)
   {
     v18 = *&(*impl)[212]._os_unfair_lock_opaque;
     v19 = v18[1031];
@@ -73,7 +73,7 @@
     v21 = impl[2];
     os_unfair_lock_lock(v21 + 336);
     v22 = impl[2];
-    v23 = *(impl + 2) + a7;
+    v23 = *(impl + 2) + index;
     if (atomic_load_explicit(&v22[293], memory_order_acquire))
     {
       v24 = (*&v22[316]._os_unfair_lock_opaque + 24 * (v23 >> 15));
@@ -105,24 +105,24 @@
     goto LABEL_9;
   }
 
-  v164 = a7;
-  v14 = [a4 descriptorPrivate];
-  isTwiddledOnlyFormat = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::isTwiddledOnlyFormat(v14->i64[1]);
-  v16 = [a3 iosurface];
-  v17 = [a3 placementSparsePageSize];
-  if ((v17 - 101) > 2)
+  indexCopy = index;
+  descriptorPrivate = [descriptor descriptorPrivate];
+  isTwiddledOnlyFormat = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::isTwiddledOnlyFormat(descriptorPrivate->i64[1]);
+  iosurface = [buffer iosurface];
+  placementSparsePageSize = [buffer placementSparsePageSize];
+  if ((placementSparsePageSize - 101) > 2)
   {
     v163 = 0;
   }
 
   else
   {
-    v163 = dword_29D2F7A60[v17 - 101];
+    v163 = dword_29D2F7A60[placementSparsePageSize - 101];
   }
 
   v36 = 0;
-  v37 = v14[6].i64[0];
-  v162 = v8;
+  v37 = descriptorPrivate[6].i64[0];
+  v162 = selfCopy;
   if (v37 == 2)
   {
     LODWORD(v38) = 0;
@@ -136,7 +136,7 @@
       v36 = 9;
     }
 
-    v38 = v14[9].i64[1];
+    v38 = descriptorPrivate[9].i64[1];
     if (v38 != 3 && v38 != 2 && v38 != 1)
     {
       LODWORD(v38) = 0;
@@ -144,12 +144,12 @@
   }
 
   v39 = v36 & 0xFB;
-  if (!v14[8].i8[0])
+  if (!descriptorPrivate[8].i8[0])
   {
     v39 = 2;
   }
 
-  v40 = v14->u64[1];
+  v40 = descriptorPrivate->u64[1];
   v41 = v40 - 1;
   if ((v40 - 1) > 0x289)
   {
@@ -163,7 +163,7 @@
 
   v43 = v39 | ((*(v42 + 60) & 0xC) != 0);
   v44 = v39 & 0xEB | ((*(v42 + 60) & 0xC) != 0);
-  v45 = v14[11].u32[0];
+  v45 = descriptorPrivate[11].u32[0];
   if (v45 == 2)
   {
     v46 = v43 | 0x10;
@@ -174,8 +174,8 @@
   }
 
   v47 = (v38 << 8) | (v45 << 32);
-  v48 = v14[10].i64[1] - 1;
-  v165 = a5;
+  v48 = descriptorPrivate[10].i64[1] - 1;
+  offsetCopy = offset;
   if (v48 > 9)
   {
     v161 = 0;
@@ -188,11 +188,11 @@
 
   v49 = v47 & 0xFFFFFFFFFFFFFF00 | v44;
   v50 = *&(*impl)[212]._os_unfair_lock_opaque;
-  v51 = v14->i64[0];
-  v52 = v14[13].i64[0];
-  if ((v14[4].i64[1] - 1) < 4)
+  v51 = descriptorPrivate->i64[0];
+  v52 = descriptorPrivate[13].i64[0];
+  if ((descriptorPrivate[4].i64[1] - 1) < 4)
   {
-    v53 = v14[4].i32[2];
+    v53 = descriptorPrivate[4].i32[2];
   }
 
   else
@@ -200,14 +200,14 @@
     v53 = 0;
   }
 
-  v54 = v14[5].i32[1];
-  v55 = vmovn_s64(v14[1]);
-  v56 = v14[2].u32[0];
-  v57 = v14[2].u32[2];
-  v58 = v14[3].i32[0];
-  v59 = v14[3].i32[2];
-  v60 = v14[6].i64[1];
-  v61 = v14[7].i64[0] & 0xF;
+  v54 = descriptorPrivate[5].i32[1];
+  v55 = vmovn_s64(descriptorPrivate[1]);
+  v56 = descriptorPrivate[2].u32[0];
+  v57 = descriptorPrivate[2].u32[2];
+  v58 = descriptorPrivate[3].i32[0];
+  v59 = descriptorPrivate[3].i32[2];
+  v60 = descriptorPrivate[6].i64[1];
+  v61 = descriptorPrivate[7].i64[0] & 0xF;
   v62 = &texFormatUnsupported;
   if (v41 <= 0x289)
   {
@@ -215,7 +215,7 @@
   }
 
   v63 = *(v62 + 16);
-  v64 = v14[11].i64[1] != 0;
+  v64 = descriptorPrivate[11].i64[1] != 0;
   v65 = v62[2];
   v66 = *(v62 + 10);
   *&v166 = &unk_2A23FA388;
@@ -263,11 +263,11 @@
   v183 = v56;
   v184 = v57;
   v185 = 0;
-  v186 = a6;
+  rowCopy = row;
   v187 = v61;
   v188 = 0;
   v189 = 0;
-  v190 = v16;
+  v190 = iosurface;
   v191 = v53;
   v192 = v54;
   v193 = 0;
@@ -355,7 +355,7 @@ LABEL_47:
   }
 
 LABEL_57:
-  v77 = v165;
+  v77 = offsetCopy;
   v170 = v75;
   AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::initTextureLayout(&v166, v71);
   if (v216 == 3)
@@ -392,7 +392,7 @@ LABEL_83:
   {
 LABEL_84:
     v194 = &texFormatUnsupported;
-    LODWORD(a7) = v164;
+    LODWORD(index) = indexCopy;
     goto LABEL_85;
   }
 
@@ -401,7 +401,7 @@ LABEL_84:
   v195 = *&dword_29D2FEEF0[2 * *(v194 + 14)];
   v207 = v168[0] - 40 < 5;
   v83 = v216;
-  LODWORD(a7) = v164;
+  LODWORD(index) = indexCopy;
   if ((v216 & 0x40000) != 0 || v168[0] - 586 <= 0x2B && ((1 << (LOBYTE(v168[0]) - 74)) & 0xC0000000003) != 0)
   {
     inited = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::initColorSpaceConversionType(&v166);
@@ -452,22 +452,22 @@ LABEL_84:
 
   if (!v83)
   {
-    v148 = v186;
-    if ((v40 & 0xFFFFFFFFFFFFFFFELL) == 0xF0 && !v186)
+    v148 = rowCopy;
+    if ((v40 & 0xFFFFFFFFFFFFFFFELL) == 0xF0 && !rowCopy)
     {
       v148 = (*(v194 + 49) * v182.u32[0] + 15) & 0x1FFFFFFFFF0;
-      v186 = v148;
+      rowCopy = v148;
     }
 
     if (!v148)
     {
-      v186 = *(v194 + 49) * v182.u32[0];
+      rowCopy = *(v194 + 49) * v182.u32[0];
     }
   }
 
   if (*(&v167 + 1) == 9)
   {
-    v186 = (v186 + 15) & 0xFFFFFFFFFFFFFFF0;
+    rowCopy = (rowCopy + 15) & 0xFFFFFFFFFFFFFFF0;
   }
 
   if ((v83 & 0xFF00) == 0x400)
@@ -613,8 +613,8 @@ LABEL_85:
       }
 
       while (v94 < *(v194 + 6));
-      LODWORD(a7) = v164;
-      v77 = v165;
+      LODWORD(index) = indexCopy;
+      v77 = offsetCopy;
     }
 
     v95 = v232;
@@ -645,7 +645,7 @@ LABEL_85:
 
       *(v95 + 1336) = v97 - v100;
       v89 = v194;
-      v77 = v165;
+      v77 = offsetCopy;
     }
 
     if (*(v89 + 6))
@@ -690,10 +690,10 @@ LABEL_85:
 
   v106 = MEMORY[0x29EDC5638];
   *&v166 = off_2A23FA3D8;
-  v107 = a3 + *MEMORY[0x29EDC5638];
+  v107 = buffer + *MEMORY[0x29EDC5638];
   if (*(*(v107 + 14) + 52) == 64)
   {
-    v108 = [a3 length];
+    v108 = [buffer length];
   }
 
   else
@@ -714,15 +714,15 @@ LABEL_85:
 
   if (v214 <= v109)
   {
-    v126 = *(a3 + *v106 + 72);
-    if ([a3 iosurface])
+    v126 = *(buffer + *v106 + 72);
+    if ([buffer iosurface])
     {
-      BaseAddressOfPlane = IOSurfaceGetBaseAddressOfPlane([a3 iosurface], 0);
+      BaseAddressOfPlane = IOSurfaceGetBaseAddressOfPlane([buffer iosurface], 0);
     }
 
     else
     {
-      BaseAddressOfPlane = *(a3 + *v106 + 128);
+      BaseAddressOfPlane = *(buffer + *v106 + 128);
     }
 
     v128 = v126 + v77;
@@ -769,7 +769,7 @@ LABEL_85:
     if (v198 && v201 == 1)
     {
       v138 = v237;
-      v139 = *(a3 + *v106 + 72) + v108 + v165 / v163;
+      v139 = *(buffer + *v106 + 72) + v108 + offsetCopy / v163;
       *(v237 + 312) = 0;
       v138[9] = v139;
       (*(*v138 + 16))(v138);
@@ -778,8 +778,8 @@ LABEL_85:
     v206 = v129;
     v171 = v128;
     (*(v166 + 16))(&v166);
-    LODWORD(a7) = v164;
-    v140 = a3 + *v106;
+    LODWORD(index) = indexCopy;
+    v140 = buffer + *v106;
     v141 = *(v140 + 23) != 0;
     v142 = *(v140 + 12);
     v240 = 0;
@@ -795,8 +795,8 @@ LABEL_85:
     v143 = &(*impl)[214];
     atomic_fetch_or(v143, 0x80000uLL);
     atomic_fetch_or(v143 + 1, 0);
-    AGX::TextureViewPool<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setTexture(impl, v164, &v166);
-    v8 = v162;
+    AGX::TextureViewPool<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setTexture(impl, indexCopy, &v166);
+    selfCopy = v162;
   }
 
   else
@@ -812,7 +812,7 @@ LABEL_121:
     v113 = impl[2];
     os_unfair_lock_lock(v113 + 336);
     v114 = impl[2];
-    v115 = *(impl + 2) + a7;
+    v115 = *(impl + 2) + index;
     if (atomic_load_explicit(&v114[293], memory_order_acquire))
     {
       v116 = (*&v114[316]._os_unfair_lock_opaque + 24 * (v115 >> 15));
@@ -835,7 +835,7 @@ LABEL_121:
       v122 = (*(*&v123[8]._os_unfair_lock_opaque + v124 + 24) + 8 * v115);
     }
 
-    v8 = v162;
+    selfCopy = v162;
     *v120 = v241;
     v120[1] = v242;
     *v121 = v243;
@@ -884,14 +884,14 @@ LABEL_9:
     os_unfair_lock_unlock(v34);
   }
 
-  return (*(v8->_impl + 2) + a7);
+  return (*(selfCopy->_impl + 2) + index);
 }
 
-- (MTLResourceID)setTextureView:(id)a3 descriptor:(id)a4 atIndex:(unint64_t)a5
+- (MTLResourceID)setTextureView:(id)view descriptor:(id)descriptor atIndex:(unint64_t)index
 {
-  LODWORD(v5) = a5;
+  LODWORD(indexCopy3) = index;
   impl = self->_impl;
-  if (!a3 || !a4)
+  if (!view || !descriptor)
   {
     v22 = *&(*impl)[212]._os_unfair_lock_opaque;
     v23 = v22[1031];
@@ -903,7 +903,7 @@ LABEL_9:
     v25 = impl[2];
     os_unfair_lock_lock(v25 + 336);
     v26 = impl[2];
-    v27 = *(impl + 2) + v5;
+    v27 = *(impl + 2) + indexCopy3;
     if (atomic_load_explicit(&v26[293], memory_order_acquire))
     {
       v28 = (*&v26[316]._os_unfair_lock_opaque + 24 * (v27 >> 15));
@@ -935,7 +935,7 @@ LABEL_9:
     goto LABEL_152;
   }
 
-  v8 = *(a3 + 74);
+  v8 = *(view + 74);
   if (*(v8 + 48) == 3)
   {
     v9 = *&(*impl)[212]._os_unfair_lock_opaque;
@@ -948,7 +948,7 @@ LABEL_9:
     v12 = impl[2];
     os_unfair_lock_lock(v12 + 336);
     v13 = impl[2];
-    v14 = *(impl + 2) + v5;
+    v14 = *(impl + 2) + indexCopy3;
     if (atomic_load_explicit(&v13[293], memory_order_acquire))
     {
       v15 = (*&v13[316]._os_unfair_lock_opaque + 24 * (v14 >> 15));
@@ -980,9 +980,9 @@ LABEL_9:
   }
 
   v39 = 6;
-  if ([a4 textureType] != 5)
+  if ([descriptor textureType] != 5)
   {
-    if ([a4 textureType] == 6)
+    if ([descriptor textureType] == 6)
     {
       v39 = 6;
     }
@@ -993,30 +993,30 @@ LABEL_9:
     }
   }
 
-  [a4 sliceRange];
+  [descriptor sliceRange];
   v41 = v40;
-  v43 = [a4 pixelFormat] == 261 && *(v8 + 32) != 261;
+  v43 = [descriptor pixelFormat] == 261 && *(v8 + 32) != 261;
   v181 = v43;
   v44 = *(v8 + 56);
-  v45 = [a4 writeAccessPattern];
-  if ([a4 writeAccessPattern] == 2)
+  writeAccessPattern = [descriptor writeAccessPattern];
+  if ([descriptor writeAccessPattern] == 2)
   {
     LODWORD(v44) = v44 | 0x10;
   }
 
-  else if ([a4 writeAccessPattern] == 1)
+  else if ([descriptor writeAccessPattern] == 1)
   {
     LODWORD(v44) = v44 & 0xFFFFFFEF;
   }
 
   v49 = v41 / v39;
-  v50 = [a4 pixelFormat];
-  v51 = [a4 textureType];
-  [a4 sliceRange];
-  v52 = [a4 levelRange];
-  [a4 levelRange];
+  pixelFormat = [descriptor pixelFormat];
+  textureType = [descriptor textureType];
+  [descriptor sliceRange];
+  levelRange = [descriptor levelRange];
+  [descriptor levelRange];
   v182 = v53;
-  [a4 swizzle];
+  [descriptor swizzle];
   v54 = MTLTextureSwizzleChannelsToKey();
   v55 = *(v8 + 236);
   if (v55)
@@ -1029,9 +1029,9 @@ LABEL_9:
     v56 = 2;
   }
 
-  v185 = v50;
-  v57 = v50 - 1;
-  if ((v50 - 1) > 0x289)
+  v185 = pixelFormat;
+  v57 = pixelFormat - 1;
+  if ((pixelFormat - 1) > 0x289)
   {
     v58 = &texFormatUnsupported;
   }
@@ -1041,7 +1041,7 @@ LABEL_9:
     v58 = *(&off_29F342380 + v57);
   }
 
-  v59 = v44 | (v45 << 32);
+  v59 = v44 | (writeAccessPattern << 32);
   v60 = *(v8 + 8);
   v61 = *(v8 + 40);
   v62 = *(v8 + 192);
@@ -1079,15 +1079,15 @@ LABEL_9:
 
   v74 = *(v8 + 184);
   v75 = v73 | (v71 << 31);
-  v76 = *(v8 + 144) + v52;
+  v76 = *(v8 + 144) + levelRange;
   v77 = *(v8 + 148);
   v78 = *(v8 + 232);
   v79 = *(v8 + 408);
   *&v188 = &unk_2A23FA388;
   *(&v188 + 1) = v60;
   LODWORD(v189) = 0;
-  *(&v189 + 1) = v51;
-  *v190 = v50;
+  *(&v189 + 1) = textureType;
+  *v190 = pixelFormat;
   *&v190[8] = v61;
   v80 = 1 << -__clz(v66 - 1);
   *&v190[24] = v59;
@@ -1153,7 +1153,7 @@ LABEL_9:
     AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::Texture(AGX::HAL300::Device *,eAGXTextureMetadataType,AGXHardwareTextureMemoryOrder,AGX::TextureFormat const*,MTLTextureType,MTLPixelFormat,unsigned long,MTLStorageMode,AGXTextureCompressionSettings,eAGXColorSpaceConversion,eAGXTextureRotation,unsigned int,unsigned int,unsigned int,unsigned int,unsigned int,unsigned int,unsigned int,unsigned long,unsigned int,BOOL,MTLCPUCacheMode,unsigned int,eAGXTextureCoordType,__IOSurface *,unsigned int,unsigned int,__IOSurface *,unsigned int,unsigned int,float,BOOL,BOOL,BOOL)::iosurface_alignment = v83;
   }
 
-  v5 = a5;
+  indexCopy3 = index;
   if (v65 < 2)
   {
     v87 = 1;
@@ -1445,7 +1445,7 @@ LABEL_134:
     v148 = *(v92 + 16);
     os_unfair_lock_lock(v148 + 336);
     v149 = *(v92 + 16);
-    v150 = *(v92 + 8) + v5;
+    v150 = *(v92 + 8) + indexCopy3;
     if (atomic_load_explicit((v149 + 1172), memory_order_acquire))
     {
       v151 = (*(v149 + 1264) + 24 * (v150 >> 15));
@@ -1501,7 +1501,7 @@ LABEL_134:
     }
 
     while (v105 < *(v215 + 6));
-    v5 = a5;
+    indexCopy3 = index;
   }
 
   v106 = v252;
@@ -1595,14 +1595,14 @@ LABEL_134:
   {
     if (*(v215 + 6) >= 2u && v236 * DWORD2(v235) != *(v8 + 392) * *(v8 + 384))
     {
-      GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(*(v8 + 584) + 648, [a4 sliceRange], 0, 0, 0);
-      v122 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(*(v8 + 584), [a4 sliceRange], 0, 0, 0);
+      GPUVirtualAddress = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(*(v8 + 584) + 648, [descriptor sliceRange], 0, 0, 0);
+      v122 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(*(v8 + 584), [descriptor sliceRange], 0, 0, 0);
       v120 = v252;
       *(v252 + 1336) = GPUVirtualAddress - v122;
     }
 
-    CPUPtr = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(*(v8 + 584) + 648 * v181, [a4 sliceRange], 0, 0);
-    v124 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(*(v8 + 584) + 648 * v181, [a4 sliceRange], 0, 0, 0);
+    CPUPtr = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(*(v8 + 584) + 648 * v181, [descriptor sliceRange], 0, 0);
+    v124 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(*(v8 + 584) + 648 * v181, [descriptor sliceRange], 0, 0, 0);
     v120[39] = CPUPtr;
     v120[9] = v124;
     (*(*v120 + 16))(v120);
@@ -1615,10 +1615,10 @@ LABEL_134:
     }
   }
 
-  v126 = a3;
+  viewCopy2 = view;
   if (*(v8 + 236) && *(v8 + 248) == 1)
   {
-    v127 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(*(v8 + 632), [a4 sliceRange], 0, 0, v181);
+    v127 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(*(v8 + 632), [descriptor sliceRange], 0, 0, v181);
     v128 = v257;
     *(v257 + 312) = 0;
     v128[9] = v127;
@@ -1633,14 +1633,14 @@ LABEL_134:
     v132 = 1;
     do
     {
-      v133 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(v8, [a4 sliceRange], 0, v132);
+      v133 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(v8, [descriptor sliceRange], 0, v132);
       v134 = v132 - 1;
-      v135 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(v8, [a4 sliceRange], 0, v132 - 1);
+      v135 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(v8, [descriptor sliceRange], 0, v132 - 1);
       v136 = v134 + 1;
-      v137 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v8, [a4 sliceRange], 0, 0, v134 + 1);
+      v137 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v8, [descriptor sliceRange], 0, 0, v134 + 1);
       --v136;
       v129 += v133 - v135;
-      v130 += v137 - AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v8, [a4 sliceRange], 0, 0, v136);
+      v130 += v137 - AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v8, [descriptor sliceRange], 0, 0, v136);
       v138 = *(v215 + 6);
       v132 = v136 + 2;
     }
@@ -1661,16 +1661,16 @@ LABEL_134:
     }
 
     (*(v188 + 16))(&v188);
-    v5 = a5;
-    v126 = a3;
+    indexCopy3 = index;
+    viewCopy2 = view;
   }
 
-  v140 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(v8, [a4 sliceRange], 0, v181);
-  v141 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v8, [a4 sliceRange], 0, 0, v181);
+  v140 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(v8, [descriptor sliceRange], 0, v181);
+  v141 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getGPUVirtualAddress(v8, [descriptor sliceRange], 0, 0, v181);
   v227 = v140;
   v192 = v141;
   (*(v188 + 16))(&v188);
-  v142 = &v126[*MEMORY[0x29EDC5638]];
+  v142 = &viewCopy2[*MEMORY[0x29EDC5638]];
   v143 = *(v142 + 23) != 0;
   v144 = *(v142 + 12);
   v260 = 0;
@@ -1683,7 +1683,7 @@ LABEL_134:
     IOGPUDeviceTraceEvent();
   }
 
-  AGX::TextureViewPool<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setTexture(v92, v5, &v188);
+  AGX::TextureViewPool<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setTexture(v92, indexCopy3, &v188);
 LABEL_138:
   *&v188 = &unk_2A23FA3B0;
   if (v257)
@@ -1726,34 +1726,34 @@ LABEL_152:
     os_unfair_lock_unlock(v38);
   }
 
-  return (*(self->_impl + 2) + v5);
+  return (*(self->_impl + 2) + indexCopy3);
 }
 
-- (MTLResourceID)setTextureView:(id)a3 atIndex:(unint64_t)a4
+- (MTLResourceID)setTextureView:(id)view atIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   impl = self->_impl;
-  if (a3)
+  if (view)
   {
-    a3 = *(a3 + 74);
+    view = *(view + 74);
   }
 
-  AGX::TextureViewPool<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setTexture(impl, a4, a3);
-  return (*(self->_impl + 2) + v4);
+  AGX::TextureViewPool<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setTexture(impl, index, view);
+  return (*(self->_impl + 2) + indexCopy);
 }
 
-- (MTLResourceID)copyResourceViewsFromPool:(id)a3 sourceRange:(_NSRange)a4 destinationIndex:(unint64_t)a5
+- (MTLResourceID)copyResourceViewsFromPool:(id)pool sourceRange:(_NSRange)range destinationIndex:(unint64_t)index
 {
-  v5 = a5;
-  location = a4.location;
+  indexCopy = index;
+  location = range.location;
   impl = self->_impl;
-  v8 = *(a3 + 6);
-  if (LODWORD(a4.length))
+  v8 = *(pool + 6);
+  if (LODWORD(range.length))
   {
-    v9 = *(v8 + 8) + LODWORD(a4.location);
-    v10 = *(impl + 2) + a5;
+    v9 = *(v8 + 8) + LODWORD(range.location);
+    v10 = *(impl + 2) + index;
     v11 = *(impl + 2);
-    length = a4.length;
+    length = range.length;
     v13 = v10;
     v14 = v9;
     do
@@ -1773,7 +1773,7 @@ LABEL_152:
     }
 
     while (length);
-    v23 = a4.length;
+    v23 = range.length;
     v24 = v10;
     v25 = v9;
     do
@@ -1794,7 +1794,7 @@ LABEL_152:
 
     while (v23);
     v34 = *(v11 + 1264) + 16;
-    v35 = a4.length;
+    v35 = range.length;
     do
     {
       v36 = *(*(v34 + 24 * (v9 >> 15)) + 8 * (v9 & 0x7FFF));
@@ -1816,22 +1816,22 @@ LABEL_152:
     v42 = *(impl + 4);
     v43 = *(impl + 5);
     v44 = (impl + 32);
-    v45 = (LODWORD(a4.length) + a5 + 1);
+    v45 = (LODWORD(range.length) + index + 1);
     v46 = (v43 - v42) >> 4;
     v47 = v45 - v46;
     if (v45 > v46)
     {
-      v48 = a4.length;
+      v48 = range.length;
       std::vector<std::shared_ptr<AGX::Mempool<16u,0u,true,0u,268435456u,AGX::HAL300::TextureHeapElem,AGX::HAL300::TextureHeapElem,unsigned long long>::RangeAllocation>>::__append(v44, v47);
-      LODWORD(a4.length) = v48;
+      LODWORD(range.length) = v48;
     }
 
-    if (LODWORD(a4.length) && v41 >> 4 != location)
+    if (LODWORD(range.length) && v41 >> 4 != location)
     {
       length_low = (v41 >> 4) - location;
-      if (LODWORD(a4.length) < length_low)
+      if (LODWORD(range.length) < length_low)
       {
-        length_low = LODWORD(a4.length);
+        length_low = LODWORD(range.length);
       }
 
       if (length_low <= 1)
@@ -1844,7 +1844,7 @@ LABEL_152:
         v50 = length_low;
       }
 
-      v51 = v5;
+      v51 = indexCopy;
       do
       {
         v52 = *v44;
@@ -1873,10 +1873,10 @@ LABEL_152:
     }
   }
 
-  return (*(self->_impl + 2) + v5);
+  return (*(self->_impl + 2) + indexCopy);
 }
 
-- (AGXG18PFamilyTextureViewPool)initWithDevice:(id)a3 descriptor:(id)a4 error:(id *)a5
+- (AGXG18PFamilyTextureViewPool)initWithDevice:(id)device descriptor:(id)descriptor error:(id *)error
 {
   v46.receiver = self;
   v46.super_class = AGXG18PFamilyTextureViewPool;
@@ -1886,13 +1886,13 @@ LABEL_152:
     return v8;
   }
 
-  if ([a4 forceBaseResourceID])
+  if ([descriptor forceBaseResourceID])
   {
-    [a4 baseResourceID];
+    [descriptor baseResourceID];
   }
 
-  v8->_device = a3;
-  v9 = *(a3 + 106);
+  v8->_device = device;
+  v9 = *(device + 106);
   v10 = *(v9 + 7224);
   if (!v10)
   {
@@ -1900,8 +1900,8 @@ LABEL_152:
     v10 = *(v9 + 7224);
     if (!v10)
     {
-      [[AGXG18PFamilyCommandQueue_mtlnext alloc] initWithDevice:a3 descriptor:0 isDriverInternal:1];
-      [a3 newSharedEvent];
+      [[AGXG18PFamilyCommandQueue_mtlnext alloc] initWithDevice:device descriptor:0 isDriverInternal:1];
+      [device newSharedEvent];
       operator new();
     }
 
@@ -2027,7 +2027,7 @@ LABEL_152:
     os_unfair_lock_unlock((v9 + 8584));
   }
 
-  if ([a4 resourceViewCount])
+  if ([descriptor resourceViewCount])
   {
     operator new();
   }
@@ -2038,7 +2038,7 @@ LABEL_152:
 LABEL_55:
     v8->_impl = 0;
 
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
@@ -2089,11 +2089,11 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  if (a5)
+  if (error)
   {
     v38 = 0;
 LABEL_57:
-    *a5 = v38;
+    *error = v38;
   }
 
   return v8;

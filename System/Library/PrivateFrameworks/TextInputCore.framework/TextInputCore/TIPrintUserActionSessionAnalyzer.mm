@@ -1,21 +1,21 @@
 @interface TIPrintUserActionSessionAnalyzer
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5;
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence;
 @end
 
 @implementation TIPrintUserActionSessionAnalyzer
 
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v31 = a4;
-  v32 = v6;
+  sessionCopy = session;
+  alignedSessionCopy = alignedSession;
+  v32 = sessionCopy;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = [v6 userActionHistory];
-  v8 = [v7 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  userActionHistory = [sessionCopy userActionHistory];
+  v8 = [userActionHistory countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (!v8)
   {
     v10 = 0;
@@ -32,25 +32,25 @@
     {
       if (*v34 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(userActionHistory);
       }
 
       v13 = *(*(&v33 + 1) + 8 * v12);
-      v14 = [v13 documentState];
-      v15 = [v14 contextBeforeInput];
-      printf("%s: ", [v15 UTF8String]);
+      documentState = [v13 documentState];
+      contextBeforeInput = [documentState contextBeforeInput];
+      printf("%s: ", [contextBeforeInput UTF8String]);
 
-      v16 = [v13 actionType];
-      if (v16 > 1)
+      actionType = [v13 actionType];
+      if (actionType > 1)
       {
-        switch(v16)
+        switch(actionType)
         {
           case 2:
             puts("CM");
-            v18 = [v13 documentState];
-            v19 = [v18 contextAfterInput];
+            documentState2 = [v13 documentState];
+            contextAfterInput = [documentState2 contextAfterInput];
 
-            if (!v19)
+            if (!contextAfterInput)
             {
               goto LABEL_22;
             }
@@ -70,9 +70,9 @@ LABEL_21:
         goto LABEL_20;
       }
 
-      if (v16)
+      if (actionType)
       {
-        if (v16 == 1)
+        if (actionType == 1)
         {
           v17 = "<-DEL-";
           goto LABEL_21;
@@ -85,18 +85,18 @@ LABEL_20:
 
       v20 = v13;
 
-      v21 = [v20 originalCandidate];
+      originalCandidate = [v20 originalCandidate];
 
-      if (v21)
+      if (originalCandidate)
       {
-        v22 = [v20 originalCandidate];
-        v23 = [v22 isContinuousPathConversion];
+        originalCandidate2 = [v20 originalCandidate];
+        isContinuousPathConversion = [originalCandidate2 isContinuousPathConversion];
 
-        v24 = [v20 originalAcceptedString];
-        [v24 UTF8String];
-        v25 = [v20 acceptedString];
-        [v25 UTF8String];
-        if (v23)
+        originalAcceptedString = [v20 originalAcceptedString];
+        [originalAcceptedString UTF8String];
+        acceptedString = [v20 acceptedString];
+        [acceptedString UTF8String];
+        if (isContinuousPathConversion)
         {
           printf("{%s}<-PB-%s-\n");
         }
@@ -109,12 +109,12 @@ LABEL_20:
 
       else
       {
-        v26 = [v20 acceptedCandidate];
-        v27 = [v26 isContinuousPathConversion];
+        acceptedCandidate = [v20 acceptedCandidate];
+        isContinuousPathConversion2 = [acceptedCandidate isContinuousPathConversion];
 
-        v24 = [v20 acceptedString];
-        [v24 UTF8String];
-        if (v27)
+        originalAcceptedString = [v20 acceptedString];
+        [originalAcceptedString UTF8String];
+        if (isContinuousPathConversion2)
         {
           printf("{%s}\n");
         }
@@ -131,7 +131,7 @@ LABEL_22:
     }
 
     while (v9 != v12);
-    v28 = [v7 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    v28 = [userActionHistory countByEnumeratingWithState:&v33 objects:v37 count:16];
     v9 = v28;
   }
 

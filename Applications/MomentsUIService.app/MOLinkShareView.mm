@@ -1,7 +1,7 @@
 @interface MOLinkShareView
 - (CGSize)intrinsicContentSize;
-- (_TtC16MomentsUIService15MOLinkShareView)initWithFrame:(CGRect)a3;
-- (_TtC16MomentsUIService15MOLinkShareView)initWithPresentationProperties:(id)a3 URL:(id)a4;
+- (_TtC16MomentsUIService15MOLinkShareView)initWithFrame:(CGRect)frame;
+- (_TtC16MomentsUIService15MOLinkShareView)initWithPresentationProperties:(id)properties URL:(id)l;
 @end
 
 @implementation MOLinkShareView
@@ -17,25 +17,25 @@
   return result;
 }
 
-- (_TtC16MomentsUIService15MOLinkShareView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService15MOLinkShareView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for MOLinkShareView();
   return [(MOLinkShareView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC16MomentsUIService15MOLinkShareView)initWithPresentationProperties:(id)a3 URL:(id)a4
+- (_TtC16MomentsUIService15MOLinkShareView)initWithPresentationProperties:(id)properties URL:(id)l
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation3URLVSgMd);
   v8 = __chkstk_darwin(v7 - 8);
   v10 = &v22 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v8);
   v12 = &v22 - v11;
-  if (a4)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = type metadata accessor for URL();
@@ -64,7 +64,7 @@
   v19 = type metadata accessor for MOLinkShareView();
   v22.receiver = self;
   v22.super_class = v19;
-  v20 = [(MOLinkShareView *)&v22 initWithPresentationProperties:a3 URL:v17];
+  v20 = [(MOLinkShareView *)&v22 initWithPresentationProperties:properties URL:v17];
   swift_unknownObjectRelease();
 
   outlined destroy of (key: AnyHashable, value: Swift.AnyObject)(v12, &_s10Foundation3URLVSgMd);

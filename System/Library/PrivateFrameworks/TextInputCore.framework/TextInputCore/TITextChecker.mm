@@ -1,5 +1,5 @@
 @interface TITextChecker
-+ (id)_UITextCheckerWithAsynchronousLoading:(BOOL)a3;
++ (id)_UITextCheckerWithAsynchronousLoading:(BOOL)loading;
 - (BOOL)doneLoading;
 @end
 
@@ -7,28 +7,28 @@
 
 - (BOOL)doneLoading
 {
-  v3 = [(TITextChecker *)self checker];
-  if (v3)
+  checker = [(TITextChecker *)self checker];
+  if (checker)
   {
-    v4 = [(TITextChecker *)self checker];
-    v5 = [v4 _doneLoading];
+    checker2 = [(TITextChecker *)self checker];
+    _doneLoading = [checker2 _doneLoading];
   }
 
   else
   {
-    v5 = 1;
+    _doneLoading = 1;
   }
 
-  return v5;
+  return _doneLoading;
 }
 
-+ (id)_UITextCheckerWithAsynchronousLoading:(BOOL)a3
++ (id)_UITextCheckerWithAsynchronousLoading:(BOOL)loading
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__TITextChecker__UITextCheckerWithAsynchronousLoading___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v6 = a3;
+  loadingCopy = loading;
   if (_UITextCheckerWithAsynchronousLoading__onceToken != -1)
   {
     dispatch_once(&_UITextCheckerWithAsynchronousLoading__onceToken, block);

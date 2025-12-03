@@ -1,29 +1,29 @@
 @interface HIDKeyholeUserDevice
 - (HIDBluetoothDevice)delegate;
-- (HIDKeyholeUserDevice)initWithProperties:(id)a3 hidDescriptor:(id)a4 keyholeID:(unsigned __int8)a5 delegate:(id)a6;
+- (HIDKeyholeUserDevice)initWithProperties:(id)properties hidDescriptor:(id)descriptor keyholeID:(unsigned __int8)d delegate:(id)delegate;
 - (OS_dispatch_queue)queue;
 - (void)dealloc;
-- (void)start:(id)a3;
+- (void)start:(id)start;
 - (void)stop;
 @end
 
 @implementation HIDKeyholeUserDevice
 
-- (HIDKeyholeUserDevice)initWithProperties:(id)a3 hidDescriptor:(id)a4 keyholeID:(unsigned __int8)a5 delegate:(id)a6
+- (HIDKeyholeUserDevice)initWithProperties:(id)properties hidDescriptor:(id)descriptor keyholeID:(unsigned __int8)d delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  propertiesCopy = properties;
+  descriptorCopy = descriptor;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = HIDKeyholeUserDevice;
   v13 = [(HIDKeyholeUserDevice *)&v22 init];
   if (v13)
   {
-    v14 = [v10 mutableCopy];
-    [v14 setObject:v11 forKeyedSubscript:@"ReportDescriptor"];
+    v14 = [propertiesCopy mutableCopy];
+    [v14 setObject:descriptorCopy forKeyedSubscript:@"ReportDescriptor"];
     *(v13 + 9) = 1023;
-    v13[8] = a5;
-    objc_storeWeak(v13 + 3, v12);
+    v13[8] = d;
+    objc_storeWeak(v13 + 3, delegateCopy);
     v15 = IOHIDUserDeviceCreateWithOptions();
     v16 = *(v13 + 2);
     *(v13 + 2) = v15;
@@ -59,10 +59,10 @@
   return v20;
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
-  v7 = a3;
-  v4 = objc_storeWeak(&self->_queue, v7);
+  startCopy = start;
+  v4 = objc_storeWeak(&self->_queue, startCopy);
   device = self->_device;
   v6 = v4;
   IOHIDUserDeviceScheduleWithDispatchQueue();
@@ -87,7 +87,7 @@
   {
     v4 = v3;
     *buf = 67109120;
-    v7 = [(HIDKeyholeUserDevice *)self keyholeID];
+    keyholeID = [(HIDKeyholeUserDevice *)self keyholeID];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Deallocating HIDKeyholeUserDevice with keyholeID %02X", buf, 8u);
   }
 

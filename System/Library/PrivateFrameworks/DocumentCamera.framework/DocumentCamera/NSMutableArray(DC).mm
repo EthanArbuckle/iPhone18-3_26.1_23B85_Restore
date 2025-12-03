@@ -9,10 +9,10 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dc_insertNonNilObject:()DC atIndex:
@@ -27,11 +27,11 @@
     }
   }
 
-  else if ([a1 count] >= a4)
+  else if ([self count] >= a4)
   {
     if (v6)
     {
-      [a1 insertObject:v6 atIndex:a4];
+      [self insertObject:v6 atIndex:a4];
     }
   }
 
@@ -40,7 +40,7 @@
     v7 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(NSMutableArray(DC) *)a1 dc_insertNonNilObject:a4 atIndex:v7];
+      [(NSMutableArray(DC) *)self dc_insertNonNilObject:a4 atIndex:v7];
     }
   }
 }

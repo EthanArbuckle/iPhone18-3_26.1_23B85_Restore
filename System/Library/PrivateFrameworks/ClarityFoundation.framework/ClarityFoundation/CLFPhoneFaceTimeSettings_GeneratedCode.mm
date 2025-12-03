@@ -26,21 +26,21 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CLFBaseSettings *)v2 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName = [(CLFBaseSettings *)v2 preferenceKeysBySelectorName];
     v5 = NSStringFromSelector(sel_inCallKeypadEnabled);
-    [v4 setObject:@"InCallKeypadEnabled" forKeyedSubscript:v5];
+    [preferenceKeysBySelectorName setObject:@"InCallKeypadEnabled" forKeyedSubscript:v5];
 
-    v6 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName2 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v7 = NSStringFromSelector(sel_muteEnabled);
-    [v6 setObject:@"MuteEnabled" forKeyedSubscript:v7];
+    [preferenceKeysBySelectorName2 setObject:@"MuteEnabled" forKeyedSubscript:v7];
 
-    v8 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName3 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v9 = NSStringFromSelector(sel_recentsEnabled);
-    [v8 setObject:@"RecentsEnabled" forKeyedSubscript:v9];
+    [preferenceKeysBySelectorName3 setObject:@"RecentsEnabled" forKeyedSubscript:v9];
 
-    v10 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName4 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v11 = NSStringFromSelector(sel_speakerOptionEnabled);
-    [v10 setObject:@"SpeakerOptionEnabled" forKeyedSubscript:v11];
+    [preferenceKeysBySelectorName4 setObject:@"SpeakerOptionEnabled" forKeyedSubscript:v11];
   }
 
   return v3;
@@ -49,7 +49,7 @@
 + (id)allPreferenceSelectorsAsStrings
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___CLFPhoneFaceTimeSettings_GeneratedCode;
   v2 = objc_msgSendSuper2(&v11, sel_allPreferenceSelectorsAsStrings);
   v3 = NSStringFromSelector(sel_inCallKeypadEnabled);

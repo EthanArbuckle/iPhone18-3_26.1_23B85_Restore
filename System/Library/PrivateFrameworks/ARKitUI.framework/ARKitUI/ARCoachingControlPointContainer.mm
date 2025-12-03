@@ -1,7 +1,7 @@
 @interface ARCoachingControlPointContainer
 - ($3BA783FF50B239963188BE194EBFFEBA)controlPoints;
 - (id).cxx_construct;
-- (void)overwriteWithControlPoints:(id *)a3 numControlPoints:(int)a4;
+- (void)overwriteWithControlPoints:(id *)points numControlPoints:(int)controlPoints;
 @end
 
 @implementation ARCoachingControlPointContainer
@@ -19,12 +19,12 @@
   }
 }
 
-- (void)overwriteWithControlPoints:(id *)a3 numControlPoints:(int)a4
+- (void)overwriteWithControlPoints:(id *)points numControlPoints:(int)controlPoints
 {
   begin = self->_controlPoints.__begin_;
   p_controlPoints = &self->_controlPoints;
   p_controlPoints->__end_ = begin;
-  std::vector<ARCoachingControlPoint>::__assign_with_size[abi:ne200100]<ARCoachingControlPoint*,ARCoachingControlPoint*>(p_controlPoints, a3, &a3[8 * a4], a4);
+  std::vector<ARCoachingControlPoint>::__assign_with_size[abi:ne200100]<ARCoachingControlPoint*,ARCoachingControlPoint*>(p_controlPoints, points, &points[8 * controlPoints], controlPoints);
 }
 
 - (id).cxx_construct

@@ -8,10 +8,10 @@
 - (id)endpointComponents
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKPaymentRewrapRequestBase *)self type];
-  if (v4 > 2)
+  type = [(PKPaymentRewrapRequestBase *)self type];
+  if (type > 2)
   {
-    if (v4 == 3)
+    if (type == 3)
     {
       [v3 addObject:@"completeSession"];
       v5 = @"issuerInstallment";
@@ -19,7 +19,7 @@
 
     else
     {
-      if (v4 != 4)
+      if (type != 4)
       {
         goto LABEL_11;
       }
@@ -29,9 +29,9 @@
     }
   }
 
-  else if (v4)
+  else if (type)
   {
-    if (v4 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
@@ -53,56 +53,56 @@ LABEL_11:
 
 - (id)bodyDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PKPaymentMerchantSession *)self->_merchantSession merchantSessionIdentifier];
-  [v3 setObject:v4 forKey:@"merchantSessionId"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  merchantSessionIdentifier = [(PKPaymentMerchantSession *)self->_merchantSession merchantSessionIdentifier];
+  [dictionary setObject:merchantSessionIdentifier forKey:@"merchantSessionId"];
 
-  v5 = [(PKPaymentMerchantSession *)self->_merchantSession merchantIdentifier];
-  [v3 setObject:v5 forKey:@"merchantId"];
+  merchantIdentifier = [(PKPaymentMerchantSession *)self->_merchantSession merchantIdentifier];
+  [dictionary setObject:merchantIdentifier forKey:@"merchantId"];
 
-  v6 = [(PKPaymentMerchantSession *)self->_merchantSession initiative];
+  initiative = [(PKPaymentMerchantSession *)self->_merchantSession initiative];
 
   merchantSession = self->_merchantSession;
-  if (v6)
+  if (initiative)
   {
-    v8 = [(PKPaymentMerchantSession *)merchantSession initiative];
-    [v3 setObject:v8 forKey:@"initiative"];
+    initiative2 = [(PKPaymentMerchantSession *)merchantSession initiative];
+    [dictionary setObject:initiative2 forKey:@"initiative"];
 
-    v9 = [(PKPaymentMerchantSession *)self->_merchantSession initiativeContext];
+    initiativeContext = [(PKPaymentMerchantSession *)self->_merchantSession initiativeContext];
 
-    if (!v9)
+    if (!initiativeContext)
     {
       goto LABEL_6;
     }
 
-    v10 = [(PKPaymentMerchantSession *)self->_merchantSession initiativeContext];
+    initiativeContext2 = [(PKPaymentMerchantSession *)self->_merchantSession initiativeContext];
     v11 = @"initiativeContext";
   }
 
   else
   {
-    v10 = [(PKPaymentMerchantSession *)merchantSession domain];
+    initiativeContext2 = [(PKPaymentMerchantSession *)merchantSession domain];
     v11 = @"domainName";
   }
 
-  [v3 setObject:v10 forKey:v11];
+  [dictionary setObject:initiativeContext2 forKey:v11];
 
 LABEL_6:
-  v12 = [(PKPaymentRewrapRequestBase *)self wrappedPayment];
-  v13 = [v12 enrollmentSignature];
+  wrappedPayment = [(PKPaymentRewrapRequestBase *)self wrappedPayment];
+  enrollmentSignature = [wrappedPayment enrollmentSignature];
 
-  if (v13)
+  if (enrollmentSignature)
   {
-    v14 = [v13 hexEncoding];
-    [v3 setObject:v14 forKey:@"enrollmentSignature"];
+    hexEncoding = [enrollmentSignature hexEncoding];
+    [dictionary setObject:hexEncoding forKey:@"enrollmentSignature"];
   }
 
   v18.receiver = self;
   v18.super_class = PKPaymentCompleteSessionRequest;
-  v15 = [(PKPaymentRewrapRequestBase *)&v18 bodyDictionary];
-  [v3 addEntriesFromDictionary:v15];
+  bodyDictionary = [(PKPaymentRewrapRequestBase *)&v18 bodyDictionary];
+  [dictionary addEntriesFromDictionary:bodyDictionary];
 
-  v16 = [v3 copy];
+  v16 = [dictionary copy];
 
   return v16;
 }

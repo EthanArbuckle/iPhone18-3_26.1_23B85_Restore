@@ -1,35 +1,35 @@
 @interface MOBundleQualityManager
-- (BOOL)_isInterestingLocationBasedOnBasedOnMUIDCategory:(id)a3;
-- (BOOL)_isInterestingLocationBasedOnPOICategory:(id)a3;
-- (BOOL)_isSensitiveLocationBasedOnMUIDCategory:(id)a3;
-- (BOOL)_isSensitiveLocationBasedOnPOICategory:(id)a3;
-- (BOOL)_isSingleBundleSensitive:(id)a3;
-- (BOOL)_isUninterestingLocationBasedOnBasedOnMUIDCategory:(id)a3;
-- (BOOL)_isUninterestingLocationBasedOnPOICategory:(id)a3;
-- (MOBundleQualityManager)initWithUniverse:(id)a3;
+- (BOOL)_isInterestingLocationBasedOnBasedOnMUIDCategory:(id)category;
+- (BOOL)_isInterestingLocationBasedOnPOICategory:(id)category;
+- (BOOL)_isSensitiveLocationBasedOnMUIDCategory:(id)category;
+- (BOOL)_isSensitiveLocationBasedOnPOICategory:(id)category;
+- (BOOL)_isSingleBundleSensitive:(id)sensitive;
+- (BOOL)_isUninterestingLocationBasedOnBasedOnMUIDCategory:(id)category;
+- (BOOL)_isUninterestingLocationBasedOnPOICategory:(id)category;
+- (MOBundleQualityManager)initWithUniverse:(id)universe;
 - (id)loadMapCategoryJSONFromFilePath;
-- (void)_InterestingLocationForBundle:(id)a3 handler:(id)a4;
-- (void)_applyQualityChecksForBundle:(id)a3 handler:(id)a4;
-- (void)_applyQualityChecksForBundles:(id)a3 handler:(id)a4;
-- (void)_sensitiveLocationForBundle:(id)a3 handler:(id)a4;
-- (void)_uninterestingLocationForBundle:(id)a3 handler:(id)a4;
-- (void)applyQualityChecksForBundles:(id)a3 handler:(id)a4;
+- (void)_InterestingLocationForBundle:(id)bundle handler:(id)handler;
+- (void)_applyQualityChecksForBundle:(id)bundle handler:(id)handler;
+- (void)_applyQualityChecksForBundles:(id)bundles handler:(id)handler;
+- (void)_sensitiveLocationForBundle:(id)bundle handler:(id)handler;
+- (void)_uninterestingLocationForBundle:(id)bundle handler:(id)handler;
+- (void)applyQualityChecksForBundles:(id)bundles handler:(id)handler;
 - (void)loadMapCategoryJSONFromFilePath;
 - (void)setMUIDLists;
 @end
 
 @implementation MOBundleQualityManager
 
-- (MOBundleQualityManager)initWithUniverse:(id)a3
+- (MOBundleQualityManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v19.receiver = self;
   v19.super_class = MOBundleQualityManager;
   v6 = [(MOBundleQualityManager *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fUniverse, a3);
+    objc_storeStrong(&v6->_fUniverse, universe);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("MOBundleQualityManager", v8);
     queue = v7->_queue;
@@ -54,20 +54,20 @@
 
 - (void)setMUIDLists
 {
-  v6 = [(MOBundleQualityManager *)self loadMapCategoryJSONFromFilePath];
-  v3 = [v6 objectForKeyedSubscript:@"sensitive"];
+  loadMapCategoryJSONFromFilePath = [(MOBundleQualityManager *)self loadMapCategoryJSONFromFilePath];
+  v3 = [loadMapCategoryJSONFromFilePath objectForKeyedSubscript:@"sensitive"];
   [(MOBundleQualityManager *)self setSensitiveMUIDList:v3];
 
-  v4 = [v6 objectForKeyedSubscript:@"uninteresting"];
+  v4 = [loadMapCategoryJSONFromFilePath objectForKeyedSubscript:@"uninteresting"];
   [(MOBundleQualityManager *)self setUninterestingMUIDList:v4];
 
-  v5 = [v6 objectForKeyedSubscript:@"interesting"];
+  v5 = [loadMapCategoryJSONFromFilePath objectForKeyedSubscript:@"interesting"];
   [(MOBundleQualityManager *)self setInterestingMUIDList:v5];
 }
 
-- (BOOL)_isSensitiveLocationBasedOnPOICategory:(id)a3
+- (BOOL)_isSensitiveLocationBasedOnPOICategory:(id)category
 {
-  if (a3)
+  if (category)
   {
     return [sensitivePOICategories containsObject:?];
   }
@@ -78,9 +78,9 @@
   }
 }
 
-- (BOOL)_isSensitiveLocationBasedOnMUIDCategory:(id)a3
+- (BOOL)_isSensitiveLocationBasedOnMUIDCategory:(id)category
 {
-  if (a3)
+  if (category)
   {
     return [(NSArray *)self->_sensitiveMUIDList containsObject:?];
   }
@@ -91,35 +91,35 @@
   }
 }
 
-- (void)_sensitiveLocationForBundle:(id)a3 handler:(id)a4
+- (void)_sensitiveLocationForBundle:(id)bundle handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 place];
-  if (!v8)
+  bundleCopy = bundle;
+  handlerCopy = handler;
+  place = [bundleCopy place];
+  if (!place)
   {
     goto LABEL_5;
   }
 
-  v9 = v8;
-  v10 = [v6 place];
-  v11 = [v10 placeName];
+  v9 = place;
+  place2 = [bundleCopy place];
+  placeName = [place2 placeName];
 
-  if (!v11)
+  if (!placeName)
   {
     goto LABEL_5;
   }
 
-  v12 = [v6 place];
-  if ([v12 placeUserType])
+  place3 = [bundleCopy place];
+  if ([place3 placeUserType])
   {
-    v13 = [v6 place];
-    v14 = [v13 placeUserType];
+    place4 = [bundleCopy place];
+    placeUserType = [place4 placeUserType];
 
-    if (v14 != 100)
+    if (placeUserType != 100)
     {
 LABEL_5:
-      v7[2](v7, 4, 0);
+      handlerCopy[2](handlerCopy, 4, 0);
       goto LABEL_6;
     }
   }
@@ -128,14 +128,14 @@ LABEL_5:
   {
   }
 
-  if ([v6 interfaceType] == 13)
+  if ([bundleCopy interfaceType] == 13)
   {
-    v59 = v7;
+    v59 = handlerCopy;
     v15 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v67 = v6;
+      v67 = bundleCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "sensitiveLocationforSubBundle, testing sensitivity of trip %@", buf, 0xCu);
     }
 
@@ -143,8 +143,8 @@ LABEL_5:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v16 = [v6 subSuggestionIDs];
-    v17 = [v16 countByEnumeratingWithState:&v62 objects:v72 count:16];
+    subSuggestionIDs = [bundleCopy subSuggestionIDs];
+    v17 = [subSuggestionIDs countByEnumeratingWithState:&v62 objects:v72 count:16];
     if (!v17)
     {
       goto LABEL_26;
@@ -153,24 +153,24 @@ LABEL_5:
     v18 = v17;
     v19 = *v63;
     v20 = @"SensitiveLocation";
-    v60 = v16;
+    v60 = subSuggestionIDs;
 LABEL_13:
     v21 = 0;
     while (1)
     {
       if (*v63 != v19)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(subSuggestionIDs);
       }
 
       v22 = *(*(&v62 + 1) + 8 * v21);
-      v23 = [(MOBundleQualityManager *)self cachedBundles];
-      v24 = [v23 objectForKey:v22];
+      cachedBundles = [(MOBundleQualityManager *)self cachedBundles];
+      v24 = [cachedBundles objectForKey:v22];
 
       if ([v24 interfaceType] == 2)
       {
-        v25 = [v6 metaDataForRank];
-        v26 = [v25 objectForKey:v20];
+        metaDataForRank = [bundleCopy metaDataForRank];
+        v26 = [metaDataForRank objectForKey:v20];
 
         if ([v26 isEqualToNumber:&off_1003690D0])
         {
@@ -183,16 +183,16 @@ LABEL_13:
               goto LABEL_49;
             }
 
-            v51 = [v24 place];
-            v52 = [v51 categoryMuid];
-            v53 = [v24 suggestionID];
+            place5 = [v24 place];
+            categoryMuid = [place5 categoryMuid];
+            suggestionID = [v24 suggestionID];
             *buf = 134218498;
             v57 = 6;
             v67 = 6;
             v68 = 2112;
-            v69 = v52;
+            v69 = categoryMuid;
             v70 = 2112;
-            v71 = v53;
+            v71 = suggestionID;
             _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "sensitiveLocationforSubBundle, sensitive location type, %lu, muid: %@, for input subBundleID, %@", buf, 0x20u);
 
             goto LABEL_47;
@@ -207,12 +207,12 @@ LABEL_13:
               goto LABEL_49;
             }
 
-            v51 = [v24 suggestionID];
+            place5 = [v24 suggestionID];
             *buf = 134218242;
             v57 = 1;
             v67 = 1;
             v68 = 2112;
-            v69 = v51;
+            v69 = place5;
             _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "sensitiveLocationforSubBundle, sensitive location type, %lu, for input subBundleID, %@", buf, 0x16u);
 LABEL_47:
 
@@ -222,24 +222,24 @@ LABEL_47:
 
         else
         {
-          v27 = v6;
+          v27 = bundleCopy;
           v28 = v18;
           v29 = v20;
           v61 = v26;
           v30 = v27;
-          v31 = [v24 place];
-          v32 = [v31 categoryMuid];
-          v33 = [(MOBundleQualityManager *)self _isSensitiveLocationBasedOnMUIDCategory:v32];
+          place6 = [v24 place];
+          categoryMuid2 = [place6 categoryMuid];
+          v33 = [(MOBundleQualityManager *)self _isSensitiveLocationBasedOnMUIDCategory:categoryMuid2];
 
           if (v33)
           {
             v56 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
             if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
             {
-              v54 = [v24 place];
-              v55 = [v54 categoryMuid];
+              place7 = [v24 place];
+              categoryMuid3 = [place7 categoryMuid];
               *buf = 138412802;
-              v67 = v55;
+              v67 = categoryMuid3;
               v68 = 2048;
               v57 = 6;
               v69 = 6;
@@ -253,23 +253,23 @@ LABEL_47:
               v57 = 6;
             }
 
-            v6 = v30;
-            v7 = v59;
-            v16 = v60;
+            bundleCopy = v30;
+            handlerCopy = v59;
+            subSuggestionIDs = v60;
             v26 = v61;
             goto LABEL_52;
           }
 
-          v34 = [v24 place];
-          v35 = [v34 poiCategory];
-          v36 = [(MOBundleQualityManager *)self _isSensitiveLocationBasedOnPOICategory:v35];
+          place8 = [v24 place];
+          poiCategory = [place8 poiCategory];
+          v36 = [(MOBundleQualityManager *)self _isSensitiveLocationBasedOnPOICategory:poiCategory];
 
           v37 = v30;
-          v16 = v60;
+          subSuggestionIDs = v60;
           v26 = v61;
           v20 = v29;
           v18 = v28;
-          v6 = v37;
+          bundleCopy = v37;
           if (v36)
           {
             v56 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
@@ -285,10 +285,10 @@ LABEL_47:
             }
 
 LABEL_49:
-            v7 = v59;
+            handlerCopy = v59;
 LABEL_52:
 
-            v7[2](v7, v57, 0);
+            handlerCopy[2](handlerCopy, v57, 0);
             goto LABEL_6;
           }
         }
@@ -296,7 +296,7 @@ LABEL_52:
 
       if (v18 == ++v21)
       {
-        v18 = [v16 countByEnumeratingWithState:&v62 objects:v72 count:16];
+        v18 = [subSuggestionIDs countByEnumeratingWithState:&v62 objects:v72 count:16];
         if (v18)
         {
           goto LABEL_13;
@@ -304,42 +304,42 @@ LABEL_52:
 
 LABEL_26:
 
-        v7 = v59;
+        handlerCopy = v59;
 LABEL_38:
-        v7[2](v7, 5, 0);
+        handlerCopy[2](handlerCopy, 5, 0);
         goto LABEL_6;
       }
     }
   }
 
-  v38 = [v6 place];
-  v39 = [v38 categoryMuid];
-  v40 = [(MOBundleQualityManager *)self _isSensitiveLocationBasedOnMUIDCategory:v39];
+  place9 = [bundleCopy place];
+  categoryMuid4 = [place9 categoryMuid];
+  v40 = [(MOBundleQualityManager *)self _isSensitiveLocationBasedOnMUIDCategory:categoryMuid4];
 
   if (v40)
   {
     v41 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
     {
-      v42 = [v6 place];
-      v43 = [v42 categoryMuid];
+      place10 = [bundleCopy place];
+      categoryMuid5 = [place10 categoryMuid];
       *buf = 138412802;
-      v67 = v43;
+      v67 = categoryMuid5;
       v68 = 2048;
       v69 = 6;
       v70 = 2112;
-      v71 = v6;
+      v71 = bundleCopy;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "sensitiveLocationforBundle, sensitive location type found from MUID: %@, %lu, for input subBundle, %@", buf, 0x20u);
     }
 
-    v7[2](v7, 6, 0);
+    handlerCopy[2](handlerCopy, 6, 0);
   }
 
   else
   {
-    v44 = [v6 place];
-    v45 = [v44 poiCategory];
-    v46 = [(MOBundleQualityManager *)self _isSensitiveLocationBasedOnPOICategory:v45];
+    place11 = [bundleCopy place];
+    poiCategory2 = [place11 poiCategory];
+    v46 = [(MOBundleQualityManager *)self _isSensitiveLocationBasedOnPOICategory:poiCategory2];
 
     v47 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
     v48 = os_log_type_enabled(v47, OS_LOG_TYPE_INFO);
@@ -350,7 +350,7 @@ LABEL_38:
         *buf = 134218242;
         v67 = 5;
         v68 = 2112;
-        v69 = v6;
+        v69 = bundleCopy;
         _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "sensitiveLocationforBundle, not sensitive location type, %lu, for input bundle, %@", buf, 0x16u);
       }
 
@@ -359,52 +359,52 @@ LABEL_38:
 
     if (v48)
     {
-      v49 = [v6 place];
-      v50 = [v49 poiCategory];
+      place12 = [bundleCopy place];
+      poiCategory3 = [place12 poiCategory];
       *buf = 134218498;
       v67 = 1;
       v68 = 2112;
-      v69 = v50;
+      v69 = poiCategory3;
       v70 = 2112;
-      v71 = v6;
+      v71 = bundleCopy;
       _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "sensitiveLocationforBundle, sensitive location type, %lu, poiCategory: %@, for input bundle, %@", buf, 0x20u);
     }
 
-    v7[2](v7, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
 LABEL_6:
 }
 
-- (BOOL)_isSingleBundleSensitive:(id)a3
+- (BOOL)_isSingleBundleSensitive:(id)sensitive
 {
-  v3 = a3;
-  v4 = [v3 metaDataForRank];
-  if (v4)
+  sensitiveCopy = sensitive;
+  metaDataForRank = [sensitiveCopy metaDataForRank];
+  if (metaDataForRank)
   {
-    v5 = [v3 metaDataForRank];
-    v6 = [v5 objectForKey:@"SensitiveLocation"];
+    metaDataForRank2 = [sensitiveCopy metaDataForRank];
+    v6 = [metaDataForRank2 objectForKey:@"SensitiveLocation"];
 
     if (v6)
     {
-      v7 = [v3 metaDataForRank];
-      v8 = [v7 objectForKey:@"SensitiveLocation"];
+      metaDataForRank3 = [sensitiveCopy metaDataForRank];
+      v8 = [metaDataForRank3 objectForKey:@"SensitiveLocation"];
 
-      LOBYTE(v4) = ([v8 isEqualToNumber:&off_100369100] & 1) != 0 || objc_msgSend(v8, "isEqualToNumber:", &off_1003690E8);
+      LOBYTE(metaDataForRank) = ([v8 isEqualToNumber:&off_100369100] & 1) != 0 || objc_msgSend(v8, "isEqualToNumber:", &off_1003690E8);
     }
 
     else
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(metaDataForRank) = 0;
     }
   }
 
-  return v4;
+  return metaDataForRank;
 }
 
-- (BOOL)_isUninterestingLocationBasedOnPOICategory:(id)a3
+- (BOOL)_isUninterestingLocationBasedOnPOICategory:(id)category
 {
-  if (a3)
+  if (category)
   {
     return [nonInterestingPOIcategories containsObject:?];
   }
@@ -415,9 +415,9 @@ LABEL_6:
   }
 }
 
-- (BOOL)_isUninterestingLocationBasedOnBasedOnMUIDCategory:(id)a3
+- (BOOL)_isUninterestingLocationBasedOnBasedOnMUIDCategory:(id)category
 {
-  if (a3)
+  if (category)
   {
     return [(NSArray *)self->_uninterestingMUIDList containsObject:?];
   }
@@ -428,35 +428,35 @@ LABEL_6:
   }
 }
 
-- (void)_uninterestingLocationForBundle:(id)a3 handler:(id)a4
+- (void)_uninterestingLocationForBundle:(id)bundle handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 place];
-  if (!v8)
+  bundleCopy = bundle;
+  handlerCopy = handler;
+  place = [bundleCopy place];
+  if (!place)
   {
     goto LABEL_5;
   }
 
-  v9 = v8;
-  v10 = [v6 place];
-  v11 = [v10 placeName];
+  v9 = place;
+  place2 = [bundleCopy place];
+  placeName = [place2 placeName];
 
-  if (!v11)
+  if (!placeName)
   {
     goto LABEL_5;
   }
 
-  v12 = [v6 place];
-  if ([v12 placeUserType])
+  place3 = [bundleCopy place];
+  if ([place3 placeUserType])
   {
-    v13 = [v6 place];
-    v14 = [v13 placeUserType];
+    place4 = [bundleCopy place];
+    placeUserType = [place4 placeUserType];
 
-    if (v14 != 100)
+    if (placeUserType != 100)
     {
 LABEL_5:
-      v7[2](v7, 4, 0);
+      handlerCopy[2](handlerCopy, 4, 0);
       goto LABEL_6;
     }
   }
@@ -465,36 +465,36 @@ LABEL_5:
   {
   }
 
-  v15 = [v6 place];
-  [v15 placeNameConfidence];
+  place5 = [bundleCopy place];
+  [place5 placeNameConfidence];
   if (v16 >= 0.75)
   {
-    v17 = [v6 place];
-    v18 = [v17 categoryMuid];
-    v19 = [(MOBundleQualityManager *)self _isUninterestingLocationBasedOnBasedOnMUIDCategory:v18];
+    place6 = [bundleCopy place];
+    categoryMuid = [place6 categoryMuid];
+    v19 = [(MOBundleQualityManager *)self _isUninterestingLocationBasedOnBasedOnMUIDCategory:categoryMuid];
 
     if (v19)
     {
       v20 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = [v6 place];
-        v22 = [v21 categoryMuid];
-        v23 = [v6 bundleIdentifier];
-        v24 = [v6 place];
-        [v24 placeNameConfidence];
+        place7 = [bundleCopy place];
+        categoryMuid2 = [place7 categoryMuid];
+        bundleIdentifier = [bundleCopy bundleIdentifier];
+        place8 = [bundleCopy place];
+        [place8 placeNameConfidence];
         v43 = 134218754;
         v44 = 6;
         v45 = 2112;
-        v46 = v22;
+        v46 = categoryMuid2;
         v47 = 2112;
-        v48 = v23;
+        v48 = bundleIdentifier;
         v49 = 2048;
         v50 = v25;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "uninterestingLocationforBundle, uninteresting location type, %lu, muid: %@, for input bundleID, %@, placeNameConfidence: %f", &v43, 0x2Au);
       }
 
-      v7[2](v7, 6, 0);
+      handlerCopy[2](handlerCopy, 6, 0);
       goto LABEL_6;
     }
   }
@@ -503,8 +503,8 @@ LABEL_5:
   {
   }
 
-  v26 = [v6 place];
-  [v26 placeNameConfidence];
+  place9 = [bundleCopy place];
+  [place9 placeNameConfidence];
   if (v27 < 0.75)
   {
 LABEL_17:
@@ -513,33 +513,33 @@ LABEL_18:
     v30 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
-      v31 = [v6 bundleIdentifier];
-      v32 = [v6 place];
-      [v32 placeNameConfidence];
+      bundleIdentifier2 = [bundleCopy bundleIdentifier];
+      place10 = [bundleCopy place];
+      [place10 placeNameConfidence];
       v43 = 134218498;
       v44 = 5;
       v45 = 2112;
-      v46 = v31;
+      v46 = bundleIdentifier2;
       v47 = 2048;
       v48 = v33;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "uninterestingLocationforBundle, no uninteresting GEOPOICategory or MUID found. location type, %lu, for input bundleID: %@, placeNameConfidence: %f", &v43, 0x20u);
     }
 
-    v7[2](v7, 5, 0);
+    handlerCopy[2](handlerCopy, 5, 0);
     goto LABEL_6;
   }
 
-  v28 = [v6 place];
-  [v28 placeNameConfidence];
+  place11 = [bundleCopy place];
+  [place11 placeNameConfidence];
   if (v29 < 0.75)
   {
 
     goto LABEL_17;
   }
 
-  v34 = [v6 place];
-  v35 = [v34 poiCategory];
-  v36 = [(MOBundleQualityManager *)self _isUninterestingLocationBasedOnPOICategory:v35];
+  place12 = [bundleCopy place];
+  poiCategory = [place12 poiCategory];
+  v36 = [(MOBundleQualityManager *)self _isUninterestingLocationBasedOnPOICategory:poiCategory];
 
   if (!v36)
   {
@@ -549,29 +549,29 @@ LABEL_18:
   v37 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
   {
-    v38 = [v6 place];
-    v39 = [v38 poiCategory];
-    v40 = [v6 bundleIdentifier];
-    v41 = [v6 place];
-    [v41 placeNameConfidence];
+    place13 = [bundleCopy place];
+    poiCategory2 = [place13 poiCategory];
+    bundleIdentifier3 = [bundleCopy bundleIdentifier];
+    place14 = [bundleCopy place];
+    [place14 placeNameConfidence];
     v43 = 134218754;
     v44 = 1;
     v45 = 2112;
-    v46 = v39;
+    v46 = poiCategory2;
     v47 = 2112;
-    v48 = v40;
+    v48 = bundleIdentifier3;
     v49 = 2048;
     v50 = v42;
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "uninterestingLocationforBundle, uninteresting location type, %lu, POICategory: %@, for input bundleID: %@, placeNameConfidence: %f", &v43, 0x2Au);
   }
 
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 LABEL_6:
 }
 
-- (BOOL)_isInterestingLocationBasedOnPOICategory:(id)a3
+- (BOOL)_isInterestingLocationBasedOnPOICategory:(id)category
 {
-  if (a3)
+  if (category)
   {
     return [interestingPOIcategories containsObject:?];
   }
@@ -582,9 +582,9 @@ LABEL_6:
   }
 }
 
-- (BOOL)_isInterestingLocationBasedOnBasedOnMUIDCategory:(id)a3
+- (BOOL)_isInterestingLocationBasedOnBasedOnMUIDCategory:(id)category
 {
-  if (a3)
+  if (category)
   {
     return [(NSArray *)self->_interestingMUIDList containsObject:?];
   }
@@ -595,35 +595,35 @@ LABEL_6:
   }
 }
 
-- (void)_InterestingLocationForBundle:(id)a3 handler:(id)a4
+- (void)_InterestingLocationForBundle:(id)bundle handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 place];
-  if (!v8)
+  bundleCopy = bundle;
+  handlerCopy = handler;
+  place = [bundleCopy place];
+  if (!place)
   {
     goto LABEL_5;
   }
 
-  v9 = v8;
-  v10 = [v6 place];
-  v11 = [v10 placeName];
+  v9 = place;
+  place2 = [bundleCopy place];
+  placeName = [place2 placeName];
 
-  if (!v11)
+  if (!placeName)
   {
     goto LABEL_5;
   }
 
-  v12 = [v6 place];
-  if ([v12 placeUserType])
+  place3 = [bundleCopy place];
+  if ([place3 placeUserType])
   {
-    v13 = [v6 place];
-    v14 = [v13 placeUserType];
+    place4 = [bundleCopy place];
+    placeUserType = [place4 placeUserType];
 
-    if (v14 != 100)
+    if (placeUserType != 100)
     {
 LABEL_5:
-      v7[2](v7, 4, 0);
+      handlerCopy[2](handlerCopy, 4, 0);
       goto LABEL_6;
     }
   }
@@ -632,36 +632,36 @@ LABEL_5:
   {
   }
 
-  v15 = [v6 place];
-  [v15 placeNameConfidence];
+  place5 = [bundleCopy place];
+  [place5 placeNameConfidence];
   if (v16 >= 0.75)
   {
-    v17 = [v6 place];
-    v18 = [v17 categoryMuid];
-    v19 = [(MOBundleQualityManager *)self _isInterestingLocationBasedOnBasedOnMUIDCategory:v18];
+    place6 = [bundleCopy place];
+    categoryMuid = [place6 categoryMuid];
+    v19 = [(MOBundleQualityManager *)self _isInterestingLocationBasedOnBasedOnMUIDCategory:categoryMuid];
 
     if (v19)
     {
       v20 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = [v6 place];
-        v22 = [v21 categoryMuid];
-        v23 = [v6 bundleIdentifier];
-        v24 = [v6 place];
-        [v24 placeNameConfidence];
+        place7 = [bundleCopy place];
+        categoryMuid2 = [place7 categoryMuid];
+        bundleIdentifier = [bundleCopy bundleIdentifier];
+        place8 = [bundleCopy place];
+        [place8 placeNameConfidence];
         v41 = 134218754;
         v42 = 6;
         v43 = 2112;
-        v44 = v22;
+        v44 = categoryMuid2;
         v45 = 2112;
-        v46 = v23;
+        v46 = bundleIdentifier;
         v47 = 2048;
         v48 = v25;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "interestingLocationforBundle, interesting location type, %lu, muid: %@, for input bundleID, %@, placeNameConfidence: %f", &v41, 0x2Au);
       }
 
-      v7[2](v7, 6, 0);
+      handlerCopy[2](handlerCopy, 6, 0);
       goto LABEL_6;
     }
   }
@@ -670,8 +670,8 @@ LABEL_5:
   {
   }
 
-  v26 = [v6 place];
-  [v26 placeNameConfidence];
+  place9 = [bundleCopy place];
+  [place9 placeNameConfidence];
   if (v27 < 0.75)
   {
 
@@ -679,25 +679,25 @@ LABEL_20:
     v37 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
-      v38 = [v6 bundleIdentifier];
-      v39 = [v6 place];
-      [v39 placeNameConfidence];
+      bundleIdentifier2 = [bundleCopy bundleIdentifier];
+      place10 = [bundleCopy place];
+      [place10 placeNameConfidence];
       v41 = 134218498;
       v42 = 5;
       v43 = 2112;
-      v44 = v38;
+      v44 = bundleIdentifier2;
       v45 = 2048;
       v46 = v40;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "interestingLocationforBundle, no interesting GEOPOICategory or MUID found. location type, %lu, for input bundleID, %@, placeNameConfidence: %f", &v41, 0x20u);
     }
 
-    v7[2](v7, 5, 0);
+    handlerCopy[2](handlerCopy, 5, 0);
     goto LABEL_6;
   }
 
-  v28 = [v6 place];
-  v29 = [v28 poiCategory];
-  v30 = [(MOBundleQualityManager *)self _isInterestingLocationBasedOnPOICategory:v29];
+  place11 = [bundleCopy place];
+  poiCategory = [place11 poiCategory];
+  v30 = [(MOBundleQualityManager *)self _isInterestingLocationBasedOnPOICategory:poiCategory];
 
   if (!v30)
   {
@@ -707,33 +707,33 @@ LABEL_20:
   v31 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
-    v32 = [v6 place];
-    v33 = [v32 categoryMuid];
-    v34 = [v6 bundleIdentifier];
-    v35 = [v6 place];
-    [v35 placeNameConfidence];
+    place12 = [bundleCopy place];
+    categoryMuid3 = [place12 categoryMuid];
+    bundleIdentifier3 = [bundleCopy bundleIdentifier];
+    place13 = [bundleCopy place];
+    [place13 placeNameConfidence];
     v41 = 134218754;
     v42 = 1;
     v43 = 2112;
-    v44 = v33;
+    v44 = categoryMuid3;
     v45 = 2112;
-    v46 = v34;
+    v46 = bundleIdentifier3;
     v47 = 2048;
     v48 = v36;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "interestingLocationforBundle, interesting location type, %lu, POICategory: %@,for input bundleID, %@, placeNameConfidence: %f", &v41, 0x2Au);
   }
 
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 LABEL_6:
 }
 
-- (void)_applyQualityChecksForBundle:(id)a3 handler:(id)a4
+- (void)_applyQualityChecksForBundle:(id)bundle handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 interfaceType] == 1)
+  bundleCopy = bundle;
+  handlerCopy = handler;
+  if ([bundleCopy interfaceType] == 1)
   {
-    v7[2](v7, v6, 0);
+    handlerCopy[2](handlerCopy, bundleCopy, 0);
   }
 
   else
@@ -749,7 +749,7 @@ LABEL_6:
     v33[2] = __63__MOBundleQualityManager__applyQualityChecksForBundle_handler___block_invoke;
     v33[3] = &unk_100336A08;
     v36 = v37;
-    v9 = v6;
+    v9 = bundleCopy;
     v34 = v9;
     v10 = v8;
     v35 = v10;
@@ -784,7 +784,7 @@ LABEL_6:
     v14 = v12;
     v25 = v14;
     [(MOBundleQualityManager *)self _InterestingLocationForBundle:v13 handler:v23];
-    v15 = [(MOBundleQualityManager *)self queue];
+    queue = [(MOBundleQualityManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __63__MOBundleQualityManager__applyQualityChecksForBundle_handler___block_invoke_137;
@@ -793,9 +793,9 @@ LABEL_6:
     v21 = v32;
     v22 = v27;
     v17 = v13;
-    v18 = self;
-    v19 = v7;
-    dispatch_group_notify(v14, v15, block);
+    selfCopy = self;
+    v19 = handlerCopy;
+    dispatch_group_notify(v14, queue, block);
 
     _Block_object_dispose(v27, 8);
     _Block_object_dispose(v32, 8);
@@ -916,42 +916,42 @@ LABEL_10:
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)applyQualityChecksForBundles:(id)a3 handler:(id)a4
+- (void)applyQualityChecksForBundles:(id)bundles handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOBundleQualityManager *)self queue];
+  bundlesCopy = bundles;
+  handlerCopy = handler;
+  queue = [(MOBundleQualityManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __63__MOBundleQualityManager_applyQualityChecksForBundles_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = bundlesCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = bundlesCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_applyQualityChecksForBundles:(id)a3 handler:(id)a4
+- (void)_applyQualityChecksForBundles:(id)bundles handler:(id)handler
 {
-  v25 = a3;
-  v24 = a4;
+  bundlesCopy = bundles;
+  handlerCopy = handler;
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v25 count];
+    *(&buf + 4) = [bundlesCopy count];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "applyQualityChecksForBundles, input bundles count,  %lu", &buf, 0xCu);
   }
 
-  if ([v25 count])
+  if ([bundlesCopy count])
   {
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v7 = v25;
+    v7 = bundlesCopy;
     v8 = [v7 countByEnumeratingWithState:&v39 objects:v49 count:16];
     if (v8)
     {
@@ -966,11 +966,11 @@ LABEL_10:
           }
 
           v11 = *(*(&v39 + 1) + 8 * i);
-          v12 = [v11 suggestionID];
-          v13 = [v12 UUIDString];
+          suggestionID = [v11 suggestionID];
+          uUIDString = [suggestionID UUIDString];
 
-          v14 = [(MOBundleQualityManager *)self cachedBundles];
-          [v14 setObject:v11 forKey:v13];
+          cachedBundles = [(MOBundleQualityManager *)self cachedBundles];
+          [cachedBundles setObject:v11 forKey:uUIDString];
         }
 
         v8 = [v7 countByEnumeratingWithState:&v39 objects:v49 count:16];
@@ -1027,22 +1027,22 @@ LABEL_10:
       while (v18);
     }
 
-    v23 = [(MOBundleQualityManager *)self queue];
+    queue = [(MOBundleQualityManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __64__MOBundleQualityManager__applyQualityChecksForBundles_handler___block_invoke_145;
     block[3] = &unk_100336AD0;
     v29 = &buf;
     block[4] = self;
-    v28 = v24;
-    dispatch_group_notify(v15, v23, block);
+    v28 = handlerCopy;
+    dispatch_group_notify(v15, queue, block);
 
     _Block_object_dispose(&buf, 8);
   }
 
   else
   {
-    (*(v24 + 2))(v24, v25, 0);
+    (*(handlerCopy + 2))(handlerCopy, bundlesCopy, 0);
   }
 }
 
@@ -1175,7 +1175,7 @@ void __64__MOBundleQualityManager__applyQualityChecksForBundles_handler___block_
 - (void)loadMapCategoryJSONFromFilePath
 {
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&_mh_execute_header, a2, OS_LOG_TYPE_ERROR, "Could not read the MUID JSON file, error: %@", &v2, 0xCu);
 }
 

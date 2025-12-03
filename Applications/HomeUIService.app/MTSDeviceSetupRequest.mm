@@ -1,21 +1,21 @@
 @interface MTSDeviceSetupRequest
-- (BOOL)hs_shouldShowAccessory:(id)a3;
+- (BOOL)hs_shouldShowAccessory:(id)accessory;
 @end
 
 @implementation MTSDeviceSetupRequest
 
-- (BOOL)hs_shouldShowAccessory:(id)a3
+- (BOOL)hs_shouldShowAccessory:(id)accessory
 {
-  v4 = a3;
-  if ([v4 supportsCHIP] && objc_msgSend(v4, "knownToSystemCommissioner"))
+  accessoryCopy = accessory;
+  if ([accessoryCopy supportsCHIP] && objc_msgSend(accessoryCopy, "knownToSystemCommissioner"))
   {
-    v5 = [v4 commissioningID];
-    v6 = [v4 vendorID];
-    v7 = [v4 productID];
-    v8 = [v4 serialNumber];
-    v9 = [v4 rootPublicKey];
-    v10 = [v4 nodeID];
-    v11 = [(MTSDeviceSetupRequest *)self shouldShowDeviceWithUUID:v5 vendorID:v6 productID:v7 serialNumber:v8 rootPublicKey:v9 nodeID:v10];
+    commissioningID = [accessoryCopy commissioningID];
+    vendorID = [accessoryCopy vendorID];
+    productID = [accessoryCopy productID];
+    serialNumber = [accessoryCopy serialNumber];
+    rootPublicKey = [accessoryCopy rootPublicKey];
+    nodeID = [accessoryCopy nodeID];
+    v11 = [(MTSDeviceSetupRequest *)self shouldShowDeviceWithUUID:commissioningID vendorID:vendorID productID:productID serialNumber:serialNumber rootPublicKey:rootPublicKey nodeID:nodeID];
   }
 
   else

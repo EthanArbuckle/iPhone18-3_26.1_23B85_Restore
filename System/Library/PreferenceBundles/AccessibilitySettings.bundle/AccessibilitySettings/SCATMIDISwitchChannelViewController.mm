@@ -1,20 +1,20 @@
 @interface SCATMIDISwitchChannelViewController
-+ (id)channelViewControllerWithSwitch:(id)a3 parentController:(id)a4;
++ (id)channelViewControllerWithSwitch:(id)switch parentController:(id)controller;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATMIDISwitchChannelViewController
 
-+ (id)channelViewControllerWithSwitch:(id)a3 parentController:(id)a4
++ (id)channelViewControllerWithSwitch:(id)switch parentController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  switchCopy = switch;
+  controllerCopy = controller;
+  v8 = controllerCopy;
+  if (switchCopy)
   {
-    if (v7)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -32,13 +32,13 @@
   _AXAssert();
 LABEL_3:
   v9 = objc_alloc_init(SCATMIDISwitchChannelViewController);
-  [(SCATMIDISwitchChannelViewController *)v9 setModelSwitch:v6];
+  [(SCATMIDISwitchChannelViewController *)v9 setModelSwitch:switchCopy];
   [(SCATMIDISwitchChannelViewController *)v9 setParentController:v8];
-  v10 = [v8 rootController];
-  [(SCATMIDISwitchChannelViewController *)v9 setRootController:v10];
+  rootController = [v8 rootController];
+  [(SCATMIDISwitchChannelViewController *)v9 setRootController:rootController];
 
   v11 = AXParameterizedLocalizedString();
-  v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:a1 set:0 get:0 detail:0 cell:-1 edit:0];
+  v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:-1 edit:0];
   [(SCATMIDISwitchChannelViewController *)v9 setSpecifier:v12];
 
   return v9;
@@ -84,20 +84,20 @@ LABEL_3:
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = SCATMIDISwitchChannelViewController;
-  v5 = [(SCATMIDISwitchChannelViewController *)&v14 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  v7 = [(SCATMIDISwitchChannelViewController *)self modelSwitch];
-  v8 = [v7 midiEvent];
-  v9 = [v8 channel];
+  v5 = [(SCATMIDISwitchChannelViewController *)&v14 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  modelSwitch = [(SCATMIDISwitchChannelViewController *)self modelSwitch];
+  midiEvent = [modelSwitch midiEvent];
+  channel = [midiEvent channel];
 
-  v10 = [v6 propertyForKey:@"MIDIChannel"];
-  v11 = [v10 unsignedIntegerValue];
+  v10 = [specifier propertyForKey:@"MIDIChannel"];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  if (v11 == v9)
+  if (unsignedIntegerValue == channel)
   {
     v12 = 3;
   }
@@ -112,26 +112,26 @@ LABEL_3:
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = SCATMIDISwitchChannelViewController;
-  v5 = [(SCATMIDISwitchChannelViewController *)&v14 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [(SCATMIDISwitchChannelViewController *)self modelSwitch];
-  v7 = [v5 specifier];
-  v8 = [v7 propertyForKey:@"MIDIChannel"];
-  v9 = [v8 unsignedIntegerValue];
+  v5 = [(SCATMIDISwitchChannelViewController *)&v14 tableView:view cellForRowAtIndexPath:path];
+  modelSwitch = [(SCATMIDISwitchChannelViewController *)self modelSwitch];
+  specifier = [v5 specifier];
+  v8 = [specifier propertyForKey:@"MIDIChannel"];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v10 = [v6 midiEvent];
-  [v10 setChannel:v9];
+  midiEvent = [modelSwitch midiEvent];
+  [midiEvent setChannel:unsignedIntegerValue];
 
   SCATAddOrUpdateSwitchToSettings();
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __73__SCATMIDISwitchChannelViewController_tableView_didSelectRowAtIndexPath___block_invoke;
   v12[3] = &unk_256BB8;
-  v13 = v6;
-  v11 = v6;
+  v13 = modelSwitch;
+  v11 = modelSwitch;
   [(SCATMIDISwitchChannelViewController *)self updateCellAccessories:v12];
 }
 

@@ -1,50 +1,50 @@
 @interface TSWPFloatingCommentInfo
-+ (CGSize)commentInitialSizeWithContext:(id)a3;
++ (CGSize)commentInitialSizeWithContext:(id)context;
 + (id)bezierPathForExportCommentOutline;
-+ (id)commentInfoWithContext:(id)a3 size:(CGSize)a4 storage:(id)a5;
-+ (id)commentParagraphStyleForStylesheet:(id)a3;
-+ (id)commentParagraphStyleForStylesheet:(id)a3 scalingMultiplier:(double)a4;
-+ (id)p_commentInfoWithContext:(id)a3 geometry:(id)a4 storage:(id)a5;
-+ (id)p_commentParagraphStyleForStylesheet:(id)a3 fontSize:(unint64_t)a4;
-+ (id)p_defaultCommentInfoStyleInStylesheet:(id)a3;
-+ (void)createCommentInfoStyleInStylesheetIfNeeded:(id)a3;
-+ (void)upgradeCommentInfoStorage:(id)a3;
-+ (void)upgradeCommentInfoStyle:(id)a3;
-+ (void)upgradeCommentParagraphStylesForStylesheet:(id)a3 withCommentScale:(double)a4;
++ (id)commentInfoWithContext:(id)context size:(CGSize)size storage:(id)storage;
++ (id)commentParagraphStyleForStylesheet:(id)stylesheet;
++ (id)commentParagraphStyleForStylesheet:(id)stylesheet scalingMultiplier:(double)multiplier;
++ (id)p_commentInfoWithContext:(id)context geometry:(id)geometry storage:(id)storage;
++ (id)p_commentParagraphStyleForStylesheet:(id)stylesheet fontSize:(unint64_t)size;
++ (id)p_defaultCommentInfoStyleInStylesheet:(id)stylesheet;
++ (void)createCommentInfoStyleInStylesheetIfNeeded:(id)needed;
++ (void)upgradeCommentInfoStorage:(id)storage;
++ (void)upgradeCommentInfoStyle:(id)style;
++ (void)upgradeCommentParagraphStylesForStylesheet:(id)stylesheet withCommentScale:(double)scale;
 - (BOOL)isHighlight;
 - (NSDate)date;
 - (NSString)annotationUUID;
 - (NSString)parentUUID;
 - (TSKAnnotationAuthor)author;
-- (TSWPFloatingCommentInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6 commentStorage:(id)a7;
-- (TSWPFloatingCommentInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6 wpStorage:(id)a7;
-- (TSWPFloatingCommentInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6 wpStorage:(id)a7 commentStorage:(id)a8;
+- (TSWPFloatingCommentInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source commentStorage:(id)storage;
+- (TSWPFloatingCommentInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source wpStorage:(id)storage;
+- (TSWPFloatingCommentInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source wpStorage:(id)storage commentStorage:(id)commentStorage;
 - (double)commentScalingMultiplier;
-- (id)annotationWithUUID:(id)a3;
+- (id)annotationWithUUID:(id)d;
 - (id)creationDateString;
 - (id)pathSourceForExportCommentOutline;
 - (id)typeName;
 - (void)commentWillBeAddedToDocumentRoot;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setAuthor:(id)a3;
-- (void)setCommentStorage:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setAuthor:(id)author;
+- (void)setCommentStorage:(id)storage;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
 @end
 
 @implementation TSWPFloatingCommentInfo
 
-- (void)setCommentStorage:(id)a3
+- (void)setCommentStorage:(id)storage
 {
-  v7 = a3;
-  if (self->_commentStorage != v7)
+  storageCopy = storage;
+  if (self->_commentStorage != storageCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_commentStorage, a3);
+    objc_storeStrong(&self->_commentStorage, storage);
   }
 }
 
@@ -82,11 +82,11 @@
   return v6;
 }
 
-+ (id)p_defaultCommentInfoStyleInStylesheet:(id)a3
++ (id)p_defaultCommentInfoStyleInStylesheet:(id)stylesheet
 {
-  v4 = a3;
-  v7 = objc_msgSend_commentStyleIdentifier(a1, v5, v6);
-  v10 = objc_msgSend_cascadedStyleWithIdentifier_(v4, v8, v7);
+  stylesheetCopy = stylesheet;
+  v7 = objc_msgSend_commentStyleIdentifier(self, v5, v6);
+  v10 = objc_msgSend_cascadedStyleWithIdentifier_(stylesheetCopy, v8, v7);
   if (!v10)
   {
     v11 = MEMORY[0x277D81150];
@@ -100,79 +100,79 @@
   return v10;
 }
 
-+ (id)commentParagraphStyleForStylesheet:(id)a3
++ (id)commentParagraphStyleForStylesheet:(id)stylesheet
 {
-  v3 = a3;
+  stylesheetCopy = stylesheet;
   objc_msgSend_commentFontSize(MEMORY[0x277D801B8], v4, v5);
   v7 = v6;
   v8 = objc_opt_class();
-  v10 = objc_msgSend_p_commentParagraphStyleForStylesheet_fontSize_(v8, v9, v3, vcvtad_u64_f64(v7));
+  v10 = objc_msgSend_p_commentParagraphStyleForStylesheet_fontSize_(v8, v9, stylesheetCopy, vcvtad_u64_f64(v7));
 
   return v10;
 }
 
-+ (id)commentParagraphStyleForStylesheet:(id)a3 scalingMultiplier:(double)a4
++ (id)commentParagraphStyleForStylesheet:(id)stylesheet scalingMultiplier:(double)multiplier
 {
-  v5 = a3;
+  stylesheetCopy = stylesheet;
   objc_msgSend_commentFontSize(MEMORY[0x277D801B8], v6, v7);
   v9 = v8;
   v10 = objc_opt_class();
-  v12 = 1.0;
-  if (a4 >= 1.0)
+  multiplierCopy = 1.0;
+  if (multiplier >= 1.0)
   {
-    v12 = a4;
+    multiplierCopy = multiplier;
   }
 
-  v13 = objc_msgSend_p_commentParagraphStyleForStylesheet_fontSize_(v10, v11, v5, vcvtad_u64_f64(v12 * v9));
+  v13 = objc_msgSend_p_commentParagraphStyleForStylesheet_fontSize_(v10, v11, stylesheetCopy, vcvtad_u64_f64(multiplierCopy * v9));
 
   return v13;
 }
 
-+ (id)p_commentParagraphStyleForStylesheet:(id)a3 fontSize:(unint64_t)a4
++ (id)p_commentParagraphStyleForStylesheet:(id)stylesheet fontSize:(unint64_t)size
 {
-  v5 = a3;
-  v7 = objc_msgSend_commentParagraphStyleIdentifierForFontSize_(TSWPFloatingCommentInfo, v6, a4);
-  isVariation = objc_msgSend_cascadedStyleWithIdentifier_(v5, v8, v7);
-  isLocked = objc_msgSend_isLocked(v5, v10, v11);
+  stylesheetCopy = stylesheet;
+  v7 = objc_msgSend_commentParagraphStyleIdentifierForFontSize_(TSWPFloatingCommentInfo, v6, size);
+  isVariation = objc_msgSend_cascadedStyleWithIdentifier_(stylesheetCopy, v8, v7);
+  isLocked = objc_msgSend_isLocked(stylesheetCopy, v10, v11);
   if (!isVariation)
   {
     v14 = isLocked;
-    objc_msgSend_setIsLocked_(v5, v13, 0);
+    objc_msgSend_setIsLocked_(stylesheetCopy, v13, 0);
     v17 = objc_msgSend_defaultPropertyMap(TSWPParagraphStyle, v15, v16);
     objc_msgSend_setObject_forProperty_(v17, v18, @"HelveticaNeue", 16);
-    v19 = a4;
-    *&v19 = a4;
-    objc_msgSend_setFloatValue_forProperty_(v17, v20, 17, v19);
-    v23 = objc_msgSend_defaultListStyle(v5, v21, v22);
+    sizeCopy = size;
+    *&sizeCopy = size;
+    objc_msgSend_setFloatValue_forProperty_(v17, v20, 17, sizeCopy);
+    v23 = objc_msgSend_defaultListStyle(stylesheetCopy, v21, v22);
     objc_msgSend_setObject_forProperty_(v17, v24, v23, 103);
 
     objc_msgSend_setIntValue_forProperty_(v17, v25, 0xFFFFFFFFLL, 44);
     v26 = [TSWPParagraphStyle alloc];
-    v29 = objc_msgSend_context(v5, v27, v28);
+    v29 = objc_msgSend_context(stylesheetCopy, v27, v28);
     isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v26, v30, v29, 0, v17, 0);
 
-    objc_msgSend_addStyle_withIdentifier_(v5, v31, isVariation, v7);
-    objc_msgSend_setIsLocked_(v5, v32, v14);
+    objc_msgSend_addStyle_withIdentifier_(stylesheetCopy, v31, isVariation, v7);
+    objc_msgSend_setIsLocked_(stylesheetCopy, v32, v14);
   }
 
   return isVariation;
 }
 
-+ (void)createCommentInfoStyleInStylesheetIfNeeded:(id)a3
++ (void)createCommentInfoStyleInStylesheetIfNeeded:(id)needed
 {
-  v49 = a3;
-  v5 = objc_msgSend_commentParagraphStyleForStylesheet_(TSWPFloatingCommentInfo, v4, v49);
-  isLocked = objc_msgSend_isLocked(v49, v6, v7);
-  isVariation = objc_msgSend_cascadedStyleWithIdentifier_(v49, v9, @"stickyComment-0-shapeStyle");
+  neededCopy = needed;
+  v5 = objc_msgSend_commentParagraphStyleForStylesheet_(TSWPFloatingCommentInfo, v4, neededCopy);
+  isLocked = objc_msgSend_isLocked(neededCopy, v6, v7);
+  isVariation = objc_msgSend_cascadedStyleWithIdentifier_(neededCopy, v9, @"stickyComment-0-shapeStyle");
   if (!isVariation)
   {
-    objc_msgSend_setIsLocked_(v49, v10, 0);
+    objc_msgSend_setIsLocked_(neededCopy, v10, 0);
     v14 = objc_msgSend_defaultPropertyMap(TSWPShapeStyle, v12, v13);
     objc_msgSend_setIntValue_forProperty_(v14, v15, 0, 149);
     v18 = objc_msgSend_p_defaultPadding(TSWPFloatingCommentInfo, v16, v17);
     objc_msgSend_setObject_forProperty_(v14, v19, v18, 146);
 
-    v21 = objc_msgSend_commentParagraphStyleForStylesheet_(a1, v20, v49);
+    v21 = objc_msgSend_commentParagraphStyleForStylesheet_(self, v20, neededCopy);
     objc_msgSend_setObject_forProperty_(v14, v22, v21, 189);
 
     v25 = objc_msgSend_p_defaultFill(TSWPFloatingCommentInfo, v23, v24);
@@ -185,7 +185,7 @@
     objc_msgSend_setObject_forProperty_(v14, v34, v33, 520);
 
     v35 = [TSWPShapeStyle alloc];
-    v38 = objc_msgSend_context(v49, v36, v37);
+    v38 = objc_msgSend_context(neededCopy, v36, v37);
     isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v35, v39, v38, 0, v14, 0);
 
     if (!isVariation)
@@ -198,35 +198,35 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v46, v47);
     }
 
-    objc_msgSend_addStyle_withIdentifier_(v49, v40, isVariation, @"stickyComment-0-shapeStyle");
-    objc_msgSend_setIsLocked_(v49, v48, isLocked);
+    objc_msgSend_addStyle_withIdentifier_(neededCopy, v40, isVariation, @"stickyComment-0-shapeStyle");
+    objc_msgSend_setIsLocked_(neededCopy, v48, isLocked);
   }
 }
 
-+ (void)upgradeCommentInfoStyle:(id)a3
++ (void)upgradeCommentInfoStyle:(id)style
 {
-  v26 = a3;
+  styleCopy = style;
   v6 = objc_msgSend_p_defaultPadding(TSWPFloatingCommentInfo, v4, v5);
-  objc_msgSend_setValue_forProperty_(v26, v7, v6, 146);
+  objc_msgSend_setValue_forProperty_(styleCopy, v7, v6, 146);
 
-  v10 = objc_msgSend_stylesheet(v26, v8, v9);
-  v12 = objc_msgSend_commentParagraphStyleForStylesheet_(a1, v11, v10);
-  objc_msgSend_setValue_forProperty_(v26, v13, v12, 189);
+  v10 = objc_msgSend_stylesheet(styleCopy, v8, v9);
+  v12 = objc_msgSend_commentParagraphStyleForStylesheet_(self, v11, v10);
+  objc_msgSend_setValue_forProperty_(styleCopy, v13, v12, 189);
 
   v16 = objc_msgSend_p_defaultFill(TSWPFloatingCommentInfo, v14, v15);
-  objc_msgSend_setValue_forProperty_(v26, v17, v16, 516);
+  objc_msgSend_setValue_forProperty_(styleCopy, v17, v16, 516);
 
   v20 = objc_msgSend_p_defaultStroke(TSWPFloatingCommentInfo, v18, v19);
-  objc_msgSend_setValue_forProperty_(v26, v21, v20, 517);
+  objc_msgSend_setValue_forProperty_(styleCopy, v21, v20, 517);
 
   v24 = objc_msgSend_p_defaultShadow(TSWPFloatingCommentInfo, v22, v23);
-  objc_msgSend_setValue_forProperty_(v26, v25, v24, 520);
+  objc_msgSend_setValue_forProperty_(styleCopy, v25, v24, 520);
 }
 
-+ (void)upgradeCommentParagraphStylesForStylesheet:(id)a3 withCommentScale:(double)a4
++ (void)upgradeCommentParagraphStylesForStylesheet:(id)stylesheet withCommentScale:(double)scale
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stylesheetCopy = stylesheet;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -249,12 +249,12 @@
         v13 = *(*(&v27 + 1) + 8 * v12);
         v14 = objc_opt_class();
         v17 = objc_msgSend_integerValue(v13, v15, v16);
-        v19 = objc_msgSend_p_commentParagraphStyleForStylesheet_fontSize_(v14, v18, v5, v17);
-        if (a4 != 1.0)
+        v19 = objc_msgSend_p_commentParagraphStyleForStylesheet_fontSize_(v14, v18, stylesheetCopy, v17);
+        if (scale != 1.0)
         {
           v21 = objc_opt_class();
           v24 = objc_msgSend_integerValue(v13, v22, v23);
-          v26 = objc_msgSend_p_commentParagraphStyleForStylesheet_fontSize_(v21, v25, v5, vcvtad_u64_f64(v24 * a4));
+          v26 = objc_msgSend_p_commentParagraphStyleForStylesheet_fontSize_(v21, v25, stylesheetCopy, vcvtad_u64_f64(v24 * scale));
         }
 
         ++v12;
@@ -268,22 +268,22 @@
   }
 }
 
-+ (void)upgradeCommentInfoStorage:(id)a3
++ (void)upgradeCommentInfoStorage:(id)storage
 {
-  v32 = a3;
+  storageCopy = storage;
   objc_opt_class();
-  v6 = objc_msgSend_textStorage(v32, v4, v5);
+  v6 = objc_msgSend_textStorage(storageCopy, v4, v5);
   v7 = TSUDynamicCast();
 
   if (v7)
   {
     objc_opt_class();
-    v11 = objc_msgSend_context(v32, v9, v10);
+    v11 = objc_msgSend_context(storageCopy, v9, v10);
     v14 = objc_msgSend_documentObject(v11, v12, v13);
     v15 = TSUDynamicCast();
 
     v18 = objc_msgSend_stylesheet(v15, v16, v17);
-    v20 = objc_msgSend_commentParagraphStyleForStylesheet_(a1, v19, v18);
+    v20 = objc_msgSend_commentParagraphStyleForStylesheet_(self, v19, v18);
     v23 = objc_msgSend_range(v7, v21, v22);
     objc_msgSend_setParagraphStyle_forCharRange_undoTransaction_(v7, v24, v20, v23, v24, 0);
   }
@@ -299,11 +299,11 @@
   }
 }
 
-+ (CGSize)commentInitialSizeWithContext:(id)a3
++ (CGSize)commentInitialSizeWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   objc_opt_class();
-  v6 = objc_msgSend_documentObject(v3, v4, v5);
+  v6 = objc_msgSend_documentObject(contextCopy, v4, v5);
   v7 = TSUDynamicCast();
 
   objc_msgSend_stickyCommentScaleMultiplier(v7, v8, v9);
@@ -317,17 +317,17 @@
   return result;
 }
 
-+ (id)p_commentInfoWithContext:(id)a3 geometry:(id)a4 storage:(id)a5
++ (id)p_commentInfoWithContext:(id)context geometry:(id)geometry storage:(id)storage
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  geometryCopy = geometry;
+  storageCopy = storage;
   objc_opt_class();
-  v13 = objc_msgSend_documentObject(v8, v11, v12);
+  v13 = objc_msgSend_documentObject(contextCopy, v11, v12);
   v14 = TSUDynamicCast();
 
   v17 = objc_msgSend_stylesheet(v14, v15, v16);
-  v19 = objc_msgSend_p_defaultCommentInfoStyleInStylesheet_(a1, v18, v17);
+  v19 = objc_msgSend_p_defaultCommentInfoStyleInStylesheet_(self, v18, v17);
 
   if (!v19)
   {
@@ -340,36 +340,36 @@
   }
 
   v28 = objc_alloc(MEMORY[0x277D801C8]);
-  objc_msgSend_size(v9, v29, v30);
+  objc_msgSend_size(geometryCopy, v29, v30);
   v33 = objc_msgSend_initWithNaturalSize_(v28, v31, v32);
   v34 = [TSWPFloatingCommentInfo alloc];
-  v36 = objc_msgSend_initWithContext_geometry_style_pathSource_commentStorage_(v34, v35, v8, v9, v19, v33, v10);
+  v36 = objc_msgSend_initWithContext_geometry_style_pathSource_commentStorage_(v34, v35, contextCopy, geometryCopy, v19, v33, storageCopy);
 
   return v36;
 }
 
-+ (id)commentInfoWithContext:(id)a3 size:(CGSize)a4 storage:(id)a5
++ (id)commentInfoWithContext:(id)context size:(CGSize)size storage:(id)storage
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  contextCopy = context;
+  storageCopy = storage;
   v11 = objc_alloc(MEMORY[0x277D80358]);
   v14 = objc_msgSend_initWithSize_(v11, v12, v13, width, height);
-  v16 = objc_msgSend_p_commentInfoWithContext_geometry_storage_(a1, v15, v9, v14, v10);
+  v16 = objc_msgSend_p_commentInfoWithContext_geometry_storage_(self, v15, contextCopy, v14, storageCopy);
 
   return v16;
 }
 
-- (TSWPFloatingCommentInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6 commentStorage:(id)a7
+- (TSWPFloatingCommentInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source commentStorage:(id)storage
 {
-  v12 = a3;
-  v52 = a4;
-  v13 = a5;
-  obj = a7;
-  v51 = a6;
-  v53 = a7;
-  if (!v53)
+  contextCopy = context;
+  geometryCopy = geometry;
+  styleCopy = style;
+  obj = storage;
+  sourceCopy = source;
+  storageCopy = storage;
+  if (!storageCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSWPFloatingCommentInfo initWithContext:geometry:style:pathSource:commentStorage:]");
@@ -380,23 +380,23 @@
   }
 
   objc_opt_class();
-  v24 = objc_msgSend_documentObject(v12, v22, v23);
-  v25 = self;
+  v24 = objc_msgSend_documentObject(contextCopy, v22, v23);
+  selfCopy = self;
   v26 = TSUDynamicCast();
 
-  v27 = v13;
+  v27 = styleCopy;
   v28 = [TSWPStorage alloc];
-  v31 = objc_msgSend_text(v53, v29, v30);
+  v31 = objc_msgSend_text(storageCopy, v29, v30);
   v34 = objc_msgSend_stylesheet(v26, v32, v33);
   v37 = objc_msgSend_defaultParagraphStyle(v27, v35, v36);
   v40 = objc_msgSend_defaultParagraphStyle(v27, v38, v39);
   v43 = objc_msgSend_initialListStyle(v40, v41, v42);
-  v45 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_(v28, v44, v12, v31, 3, v34, v37, v43, 0, 0);
+  v45 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_(v28, v44, contextCopy, v31, 3, v34, v37, v43, 0, 0);
 
   objc_msgSend_addDisallowedElementKind_(v45, v46, 784399);
-  v54.receiver = v25;
+  v54.receiver = selfCopy;
   v54.super_class = TSWPFloatingCommentInfo;
-  v47 = [(TSWPShapeInfo *)&v54 initWithContext:v12 geometry:v52 style:v27 pathSource:v51 wpStorage:v45];
+  v47 = [(TSWPShapeInfo *)&v54 initWithContext:contextCopy geometry:geometryCopy style:v27 pathSource:sourceCopy wpStorage:v45];
   v48 = v47;
   if (v47)
   {
@@ -406,45 +406,45 @@
   return v48;
 }
 
-- (TSWPFloatingCommentInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6 wpStorage:(id)a7 commentStorage:(id)a8
+- (TSWPFloatingCommentInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source wpStorage:(id)storage commentStorage:(id)commentStorage
 {
-  v14 = a3;
-  v15 = a4;
-  v32 = a5;
-  v16 = a6;
-  v17 = a7;
-  v19 = a8;
-  if (!v19)
+  contextCopy = context;
+  geometryCopy = geometry;
+  styleCopy = style;
+  sourceCopy = source;
+  storageCopy = storage;
+  commentStorageCopy = commentStorage;
+  if (!commentStorageCopy)
   {
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSWPFloatingCommentInfo initWithContext:geometry:style:pathSource:wpStorage:commentStorage:]");
     v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFloatingCommentInfo.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v24, v21, v23, 315, 0, "Invalid parameter not satisfying: %{public}s", "commentStorage != nil", v32);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v24, v21, v23, 315, 0, "Invalid parameter not satisfying: %{public}s", "commentStorage != nil", styleCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26);
   }
 
-  v27 = v32;
+  v27 = styleCopy;
   v33.receiver = self;
   v33.super_class = TSWPFloatingCommentInfo;
-  v28 = [(TSWPShapeInfo *)&v33 initWithContext:v14 geometry:v15 style:v27 pathSource:v16 wpStorage:v17];
+  v28 = [(TSWPShapeInfo *)&v33 initWithContext:contextCopy geometry:geometryCopy style:v27 pathSource:sourceCopy wpStorage:storageCopy];
   v29 = v28;
   if (v28)
   {
-    objc_storeStrong(&v28->_commentStorage, a8);
-    objc_msgSend_addDisallowedElementKind_(v17, v30, 784399);
+    objc_storeStrong(&v28->_commentStorage, commentStorage);
+    objc_msgSend_addDisallowedElementKind_(storageCopy, v30, 784399);
   }
 
   return v29;
 }
 
-- (TSWPFloatingCommentInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6 wpStorage:(id)a7
+- (TSWPFloatingCommentInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source wpStorage:(id)storage
 {
-  v29 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  contextCopy = context;
+  geometryCopy = geometry;
+  styleCopy = style;
+  sourceCopy = source;
+  storageCopy = storage;
   v15 = MEMORY[0x277D81150];
   v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSWPFloatingCommentInfo initWithContext:geometry:style:pathSource:wpStorage:]");
   v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFloatingCommentInfo.mm");
@@ -452,7 +452,7 @@
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
   v23 = MEMORY[0x277CBEAD8];
-  v25 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v24, @"%s: %s", "Do not call method", "[TSWPFloatingCommentInfo initWithContext:geometry:style:pathSource:wpStorage:]", v29, self);
+  v25 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v24, @"%s: %s", "Do not call method", "[TSWPFloatingCommentInfo initWithContext:geometry:style:pathSource:wpStorage:]", contextCopy, self);
   v27 = objc_msgSend_exceptionWithName_reason_userInfo_(v23, v26, *MEMORY[0x277CBE658], v25, 0);
   v28 = v27;
 
@@ -468,21 +468,21 @@
   return v9;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812DC408[114]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[114]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 3))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -492,28 +492,28 @@
 
   v18.receiver = self;
   v18.super_class = TSWPFloatingCommentInfo;
-  [(TSWPShapeInfo *)&v18 loadFromArchive:v7 unarchiver:v6];
-  if ((*(a3 + 16) & 2) != 0)
+  [(TSWPShapeInfo *)&v18 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  if ((*(archive + 16) & 2) != 0)
   {
-    v10 = *(a3 + 4);
+    v10 = *(archive + 4);
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = sub_276F3EE94;
     v17[3] = &unk_27A6F5AD8;
     v17[4] = self;
-    v11 = v6;
+    v11 = unarchiverCopy;
     v12 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v11, v13, v10, v12, 0, v17);
   }
 
-  if (objc_msgSend_fileFormatVersion(v6, v8, v9) < *MEMORY[0x277D80988])
+  if (objc_msgSend_fileFormatVersion(unarchiverCopy, v8, v9) < *MEMORY[0x277D80988])
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = sub_276F3EEA0;
     v16[3] = &unk_27A6F46E8;
     v16[4] = self;
-    objc_msgSend_addFinalizeHandler_(v6, v14, v16);
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v14, v16);
   }
 
   v15[0] = MEMORY[0x277D85DD0];
@@ -521,7 +521,7 @@
   v15[2] = sub_276F3F0A8;
   v15[3] = &unk_27A6F46E8;
   v15[4] = self;
-  objc_msgSend_addFinalizeHandler_(v6, v14, v15);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v14, v15);
 }
 
 - (double)commentScalingMultiplier
@@ -547,44 +547,44 @@
   return v20;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276F3FC60, off_2812DC408[114]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276F3FC60, off_2812DC408[114]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_276F3F460;
   v18[3] = &unk_27A6F3E30;
-  v21 = a3;
-  v7 = v6;
+  archiveCopy = archive;
+  v7 = archiverCopy;
   v19 = v7;
-  v20 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, v18);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, archive, v18);
   v11 = objc_msgSend_commentStorage(self, v9, v10);
 
   if (v11)
   {
     v15 = objc_msgSend_commentStorage(self, v12, v13);
-    *(a3 + 4) |= 2u;
-    v16 = *(a3 + 4);
+    *(archive + 4) |= 2u;
+    v16 = *(archive + 4);
     if (!v16)
     {
-      v17 = *(a3 + 1);
+      v17 = *(archive + 1);
       if (v17)
       {
         v17 = *(v17 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v16 = MEMORY[0x277CA3250](v17);
-      *(a3 + 4) = v16;
+      *(archive + 4) = v16;
     }
 
     objc_msgSend_setStrongReference_message_(v7, v14, v15, v16);
@@ -607,11 +607,11 @@
   return v6;
 }
 
-- (void)setAuthor:(id)a3
+- (void)setAuthor:(id)author
 {
-  v10 = a3;
+  authorCopy = author;
   v6 = objc_msgSend_commentStorage(self, v4, v5);
-  v8 = objc_msgSend_copyWithAuthor_(v6, v7, v10);
+  v8 = objc_msgSend_copyWithAuthor_(v6, v7, authorCopy);
   objc_msgSend_setCommentStorage_(self, v9, v8);
 }
 
@@ -629,61 +629,61 @@
   objc_msgSend_commentWillBeAddedToDocumentRoot(v5, v3, v4);
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = TSWPFloatingCommentInfo;
-  [(TSWPShapeInfo *)&v10 willBeAddedToDocumentRoot:v6 dolcContext:v7];
+  [(TSWPShapeInfo *)&v10 willBeAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
   objc_msgSend_commentWillBeAddedToDocumentRoot(self, v8, v9);
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  rootCopy = root;
   v16.receiver = self;
   v16.super_class = TSWPFloatingCommentInfo;
-  [(TSWPShapeInfo *)&v16 wasAddedToDocumentRoot:v6 dolcContext:a4];
+  [(TSWPShapeInfo *)&v16 wasAddedToDocumentRoot:rootCopy dolcContext:context];
   v7 = *MEMORY[0x277D805B8];
-  v17 = self;
+  selfCopy = self;
   v18 = v7;
-  v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, &v17, 1);
+  v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, &selfCopy, 1);
   v19[0] = v9;
   v11 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v10, v19, &v18, 1);
 
   v14 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v12, v13);
-  objc_msgSend_postNotificationName_object_userInfo_(v14, v15, *MEMORY[0x277D805B0], v6, v11);
+  objc_msgSend_postNotificationName_object_userInfo_(v14, v15, *MEMORY[0x277D805B0], rootCopy, v11);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   v14.receiver = self;
   v14.super_class = TSWPFloatingCommentInfo;
-  [(TSWPShapeInfo *)&v14 wasRemovedFromDocumentRoot:v4];
+  [(TSWPShapeInfo *)&v14 wasRemovedFromDocumentRoot:rootCopy];
   v5 = *MEMORY[0x277D805C8];
-  v15 = self;
+  selfCopy = self;
   v16 = v5;
-  v7 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v6, &v15, 1);
+  v7 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v6, &selfCopy, 1);
   v17[0] = v7;
   v9 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v8, v17, &v16, 1);
 
   v12 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v10, v11);
-  objc_msgSend_postNotificationName_object_userInfo_(v12, v13, *MEMORY[0x277D805B0], v4, v9);
+  objc_msgSend_postNotificationName_object_userInfo_(v12, v13, *MEMORY[0x277D805B0], rootCopy, v9);
 }
 
-- (id)annotationWithUUID:(id)a3
+- (id)annotationWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_annotationUUID(self, v5, v6);
-  isEqual = objc_msgSend_isEqual_(v7, v8, v4);
+  isEqual = objc_msgSend_isEqual_(v7, v8, dCopy);
 
   if (isEqual)
   {
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -694,10 +694,10 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 554, 0, "The only child annotation of a floating comment is itself.");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (NSString)annotationUUID

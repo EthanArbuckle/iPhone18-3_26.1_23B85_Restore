@@ -1,14 +1,14 @@
 @interface UIKeyboardCandidateViewStyle
 + (id)darkKeyboardStyle;
 + (id)darkKeyboardStyleForDisambiguation;
-+ (id)disambiguationStyleForDarkKeyboard:(BOOL)a3;
++ (id)disambiguationStyleForDarkKeyboard:(BOOL)keyboard;
 + (id)lightKeyboardStyle;
 + (id)lightKeyboardStyleForDisambiguation;
-+ (id)styleForDarkKeyboard:(BOOL)a3;
-+ (id)tvGridStyleForDarkKeyboard:(BOOL)a3;
-+ (id)tvLinearStyleForDarkKeyboard:(BOOL)a3;
++ (id)styleForDarkKeyboard:(BOOL)keyboard;
++ (id)tvGridStyleForDarkKeyboard:(BOOL)keyboard;
++ (id)tvLinearStyleForDarkKeyboard:(BOOL)keyboard;
 + (id)visionInlineStyle;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)gridLineOffset;
 - (UIEdgeInsets)arrowButtonPadding;
 - (UIEdgeInsets)extraCellPadding;
@@ -17,12 +17,12 @@
 - (UIEdgeInsets)groupHeaderPadding;
 - (UIEdgeInsets)outerGridPadding;
 - (UIEdgeInsets)sortControlPadding;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIKeyboardCandidateViewStyle
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 5, self->_candidateFont);
@@ -129,16 +129,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     candidateFont = self->_candidateFont;
@@ -883,10 +883,10 @@
   if (v5)
   {
     v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v3 = [v2 preferencesActions];
-    v6 = [v3 colorAdaptiveKeyboardEnabled];
+    preferencesActions = [v2 preferencesActions];
+    colorAdaptiveKeyboardEnabled = [preferencesActions colorAdaptiveKeyboardEnabled];
     v7 = 20.0;
-    if (v6)
+    if (colorAdaptiveKeyboardEnabled)
     {
       v7 = 17.0;
     }
@@ -925,25 +925,25 @@
   textColor = v4->_textColor;
   v4->_textColor = v18;
 
-  v20 = [(UIKeyboardCandidateViewStyle *)v4 textColor];
+  textColor = [(UIKeyboardCandidateViewStyle *)v4 textColor];
   highlightedTextColor = v4->_highlightedTextColor;
-  v4->_highlightedTextColor = v20;
+  v4->_highlightedTextColor = textColor;
 
   v22 = [UIColor colorWithCGColor:UIKBGetNamedColor(@"UIKBColorBlack_Alpha35")];
   alternativeTextColor = v4->_alternativeTextColor;
   v4->_alternativeTextColor = v22;
 
-  v24 = [(UIKeyboardCandidateViewStyle *)v4 alternativeTextColor];
+  alternativeTextColor = [(UIKeyboardCandidateViewStyle *)v4 alternativeTextColor];
   highlightedAlternativeTextColor = v4->_highlightedAlternativeTextColor;
-  v4->_highlightedAlternativeTextColor = v24;
+  v4->_highlightedAlternativeTextColor = alternativeTextColor;
 
   v26 = [UIColor colorWithCGColor:UIKBGetNamedColor(@"UIKBLegacyCandidateGridPadCellCandidateNumber")];
   candidateNumberColor = v4->_candidateNumberColor;
   v4->_candidateNumberColor = v26;
 
-  v28 = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
+  candidateNumberColor = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
   highlightedCandidateNumberColor = v4->_highlightedCandidateNumberColor;
-  v4->_highlightedCandidateNumberColor = v28;
+  v4->_highlightedCandidateNumberColor = candidateNumberColor;
 
   v30 = +[UIColor clearColor];
   backgroundColor = v4->_backgroundColor;
@@ -1009,10 +1009,10 @@
   if (v5)
   {
     v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v3 = [v2 preferencesActions];
-    v6 = [v3 colorAdaptiveKeyboardEnabled];
+    preferencesActions = [v2 preferencesActions];
+    colorAdaptiveKeyboardEnabled = [preferencesActions colorAdaptiveKeyboardEnabled];
     v7 = 20.0;
-    if (v6)
+    if (colorAdaptiveKeyboardEnabled)
     {
       v7 = 17.0;
     }
@@ -1051,25 +1051,25 @@
   textColor = v4->_textColor;
   v4->_textColor = v18;
 
-  v20 = [(UIKeyboardCandidateViewStyle *)v4 textColor];
+  textColor = [(UIKeyboardCandidateViewStyle *)v4 textColor];
   highlightedTextColor = v4->_highlightedTextColor;
-  v4->_highlightedTextColor = v20;
+  v4->_highlightedTextColor = textColor;
 
   v22 = [UIColor colorWithCGColor:UIKBGetNamedColor(@"UIKBColorWhite_Alpha35")];
   alternativeTextColor = v4->_alternativeTextColor;
   v4->_alternativeTextColor = v22;
 
-  v24 = [(UIKeyboardCandidateViewStyle *)v4 alternativeTextColor];
+  alternativeTextColor = [(UIKeyboardCandidateViewStyle *)v4 alternativeTextColor];
   highlightedAlternativeTextColor = v4->_highlightedAlternativeTextColor;
-  v4->_highlightedAlternativeTextColor = v24;
+  v4->_highlightedAlternativeTextColor = alternativeTextColor;
 
   v26 = [UIColor colorWithCGColor:UIKBGetNamedColor(@"UIKBLegacyCandidateGridPadCellCandidateNumber")];
   candidateNumberColor = v4->_candidateNumberColor;
   v4->_candidateNumberColor = v26;
 
-  v28 = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
+  candidateNumberColor = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
   highlightedCandidateNumberColor = v4->_highlightedCandidateNumberColor;
-  v4->_highlightedCandidateNumberColor = v28;
+  v4->_highlightedCandidateNumberColor = candidateNumberColor;
 
   v30 = +[UIColor clearColor];
   backgroundColor = v4->_backgroundColor;
@@ -1250,10 +1250,10 @@
   if (v5)
   {
     v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v3 = [v2 preferencesActions];
-    v6 = [v3 colorAdaptiveKeyboardEnabled];
+    preferencesActions = [v2 preferencesActions];
+    colorAdaptiveKeyboardEnabled = [preferencesActions colorAdaptiveKeyboardEnabled];
     v7 = 16.0;
-    if (v6)
+    if (colorAdaptiveKeyboardEnabled)
     {
       v7 = 17.0;
     }
@@ -1281,17 +1281,17 @@
   alternativeTextColor = v4->_alternativeTextColor;
   v4->_alternativeTextColor = v12;
 
-  v14 = [(UIKeyboardCandidateViewStyle *)v4 alternativeTextColor];
+  alternativeTextColor = [(UIKeyboardCandidateViewStyle *)v4 alternativeTextColor];
   highlightedAlternativeTextColor = v4->_highlightedAlternativeTextColor;
-  v4->_highlightedAlternativeTextColor = v14;
+  v4->_highlightedAlternativeTextColor = alternativeTextColor;
 
   v16 = [UIColor colorWithCGColor:UIKBGetNamedColor(@"UIKBLegacyCandidateGridPadCellCandidateNumber")];
   candidateNumberColor = v4->_candidateNumberColor;
   v4->_candidateNumberColor = v16;
 
-  v18 = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
+  candidateNumberColor = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
   highlightedCandidateNumberColor = v4->_highlightedCandidateNumberColor;
-  v4->_highlightedCandidateNumberColor = v18;
+  v4->_highlightedCandidateNumberColor = candidateNumberColor;
 
   v20 = +[UIColor clearColor];
   backgroundColor = v4->_backgroundColor;
@@ -1311,10 +1311,10 @@
   if (_UISolariumEnabled())
   {
     v27 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v28 = [v27 preferencesActions];
-    v29 = [v28 colorAdaptiveKeyboardEnabled];
+    preferencesActions2 = [v27 preferencesActions];
+    colorAdaptiveKeyboardEnabled2 = [preferencesActions2 colorAdaptiveKeyboardEnabled];
     v30 = 32.0;
-    if (v29)
+    if (colorAdaptiveKeyboardEnabled2)
     {
       v30 = 38.0;
     }
@@ -1346,10 +1346,10 @@
   if (v5)
   {
     v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v3 = [v2 preferencesActions];
-    v6 = [v3 colorAdaptiveKeyboardEnabled];
+    preferencesActions = [v2 preferencesActions];
+    colorAdaptiveKeyboardEnabled = [preferencesActions colorAdaptiveKeyboardEnabled];
     v7 = 16.0;
-    if (v6)
+    if (colorAdaptiveKeyboardEnabled)
     {
       v7 = 17.0;
     }
@@ -1380,17 +1380,17 @@
   alternativeTextColor = v4->_alternativeTextColor;
   v4->_alternativeTextColor = v14;
 
-  v16 = [(UIKeyboardCandidateViewStyle *)v4 alternativeTextColor];
+  alternativeTextColor = [(UIKeyboardCandidateViewStyle *)v4 alternativeTextColor];
   highlightedAlternativeTextColor = v4->_highlightedAlternativeTextColor;
-  v4->_highlightedAlternativeTextColor = v16;
+  v4->_highlightedAlternativeTextColor = alternativeTextColor;
 
   v18 = [UIColor colorWithCGColor:UIKBGetNamedColor(@"UIKBLegacyCandidateGridPadCellCandidateNumber")];
   candidateNumberColor = v4->_candidateNumberColor;
   v4->_candidateNumberColor = v18;
 
-  v20 = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
+  candidateNumberColor = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
   highlightedCandidateNumberColor = v4->_highlightedCandidateNumberColor;
-  v4->_highlightedCandidateNumberColor = v20;
+  v4->_highlightedCandidateNumberColor = candidateNumberColor;
 
   v22 = +[UIColor clearColor];
   backgroundColor = v4->_backgroundColor;
@@ -1414,10 +1414,10 @@
   if (_UISolariumEnabled())
   {
     v31 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v32 = [v31 preferencesActions];
-    v33 = [v32 colorAdaptiveKeyboardEnabled];
+    preferencesActions2 = [v31 preferencesActions];
+    colorAdaptiveKeyboardEnabled2 = [preferencesActions2 colorAdaptiveKeyboardEnabled];
     v34 = 32.0;
-    if (v33)
+    if (colorAdaptiveKeyboardEnabled2)
     {
       v34 = 38.0;
     }
@@ -1442,39 +1442,39 @@
   return v4;
 }
 
-+ (id)styleForDarkKeyboard:(BOOL)a3
++ (id)styleForDarkKeyboard:(BOOL)keyboard
 {
-  if (a3)
+  if (keyboard)
   {
-    [a1 darkKeyboardStyle];
+    [self darkKeyboardStyle];
   }
 
   else
   {
-    [a1 lightKeyboardStyle];
+    [self lightKeyboardStyle];
   }
   v3 = ;
 
   return v3;
 }
 
-+ (id)disambiguationStyleForDarkKeyboard:(BOOL)a3
++ (id)disambiguationStyleForDarkKeyboard:(BOOL)keyboard
 {
-  if (a3)
+  if (keyboard)
   {
-    [a1 darkKeyboardStyleForDisambiguation];
+    [self darkKeyboardStyleForDisambiguation];
   }
 
   else
   {
-    [a1 lightKeyboardStyleForDisambiguation];
+    [self lightKeyboardStyleForDisambiguation];
   }
   v3 = ;
 
   return v3;
 }
 
-+ (id)tvLinearStyleForDarkKeyboard:(BOOL)a3
++ (id)tvLinearStyleForDarkKeyboard:(BOOL)keyboard
 {
   v4 = objc_alloc_init(UIKeyboardCandidateViewStyle);
   v5 = [off_1E70ECC18 systemFontOfSize:36.0];
@@ -1497,7 +1497,7 @@
   sortControlFont = v4->_sortControlFont;
   v4->_sortControlFont = v13;
 
-  if (a3)
+  if (keyboard)
   {
     +[UIColor whiteColor];
   }
@@ -1514,13 +1514,13 @@
   highlightedTextColor = v4->_highlightedTextColor;
   v4->_highlightedTextColor = v17;
 
-  v19 = [(UIKeyboardCandidateViewStyle *)v4 textColor];
-  v20 = [v19 colorWithAlphaComponent:0.4];
+  textColor = [(UIKeyboardCandidateViewStyle *)v4 textColor];
+  v20 = [textColor colorWithAlphaComponent:0.4];
   alternativeTextColor = v4->_alternativeTextColor;
   v4->_alternativeTextColor = v20;
 
-  v22 = [(UIKeyboardCandidateViewStyle *)v4 highlightedTextColor];
-  v23 = [v22 colorWithAlphaComponent:0.4];
+  highlightedTextColor = [(UIKeyboardCandidateViewStyle *)v4 highlightedTextColor];
+  v23 = [highlightedTextColor colorWithAlphaComponent:0.4];
   highlightedAlternativeTextColor = v4->_highlightedAlternativeTextColor;
   v4->_highlightedAlternativeTextColor = v23;
 
@@ -1528,9 +1528,9 @@
   candidateNumberColor = v4->_candidateNumberColor;
   v4->_candidateNumberColor = v25;
 
-  v27 = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
+  candidateNumberColor = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
   highlightedCandidateNumberColor = v4->_highlightedCandidateNumberColor;
-  v4->_highlightedCandidateNumberColor = v27;
+  v4->_highlightedCandidateNumberColor = candidateNumberColor;
 
   v29 = +[UIColor clearColor];
   backgroundColor = v4->_backgroundColor;
@@ -1571,7 +1571,7 @@
   return v4;
 }
 
-+ (id)tvGridStyleForDarkKeyboard:(BOOL)a3
++ (id)tvGridStyleForDarkKeyboard:(BOOL)keyboard
 {
   v4 = objc_alloc_init(UIKeyboardCandidateViewStyle);
   v5 = [off_1E70ECC18 systemFontOfSize:34.0];
@@ -1594,7 +1594,7 @@
   sortControlFont = v4->_sortControlFont;
   v4->_sortControlFont = v13;
 
-  if (a3)
+  if (keyboard)
   {
     +[UIColor whiteColor];
   }
@@ -1611,13 +1611,13 @@
   highlightedTextColor = v4->_highlightedTextColor;
   v4->_highlightedTextColor = v17;
 
-  v19 = [(UIKeyboardCandidateViewStyle *)v4 textColor];
-  v20 = [v19 colorWithAlphaComponent:0.4];
+  textColor = [(UIKeyboardCandidateViewStyle *)v4 textColor];
+  v20 = [textColor colorWithAlphaComponent:0.4];
   alternativeTextColor = v4->_alternativeTextColor;
   v4->_alternativeTextColor = v20;
 
-  v22 = [(UIKeyboardCandidateViewStyle *)v4 highlightedTextColor];
-  v23 = [v22 colorWithAlphaComponent:0.4];
+  highlightedTextColor = [(UIKeyboardCandidateViewStyle *)v4 highlightedTextColor];
+  v23 = [highlightedTextColor colorWithAlphaComponent:0.4];
   highlightedAlternativeTextColor = v4->_highlightedAlternativeTextColor;
   v4->_highlightedAlternativeTextColor = v23;
 
@@ -1625,9 +1625,9 @@
   candidateNumberColor = v4->_candidateNumberColor;
   v4->_candidateNumberColor = v25;
 
-  v27 = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
+  candidateNumberColor = [(UIKeyboardCandidateViewStyle *)v4 candidateNumberColor];
   highlightedCandidateNumberColor = v4->_highlightedCandidateNumberColor;
-  v4->_highlightedCandidateNumberColor = v27;
+  v4->_highlightedCandidateNumberColor = candidateNumberColor;
 
   v29 = +[UIColor clearColor];
   backgroundColor = v4->_backgroundColor;

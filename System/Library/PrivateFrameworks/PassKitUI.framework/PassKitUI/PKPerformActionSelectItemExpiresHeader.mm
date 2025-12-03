@@ -1,8 +1,8 @@
 @interface PKPerformActionSelectItemExpiresHeader
 - (PKPerformActionSelectItemExpiresHeader)init;
 - (void)layoutSubviews;
-- (void)setLeadingString:(id)a3;
-- (void)setTrailingString:(id)a3;
+- (void)setLeadingString:(id)string;
+- (void)setTrailingString:(id)string;
 @end
 
 @implementation PKPerformActionSelectItemExpiresHeader
@@ -19,8 +19,8 @@
     v2->_leadingLabel = v3;
 
     v5 = v2->_leadingLabel;
-    v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v5 setTextColor:v6];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v5 setTextColor:secondaryLabelColor];
 
     v7 = v2->_leadingLabel;
     v8 = *MEMORY[0x1E69DDD28];
@@ -33,8 +33,8 @@
     v2->_trailingLabel = v10;
 
     v12 = v2->_trailingLabel;
-    v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v12 setTextColor:v13];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v12 setTextColor:secondaryLabelColor2];
 
     v14 = v2->_trailingLabel;
     v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v8];
@@ -64,12 +64,12 @@
   [(UILabel *)self->_trailingLabel setFrame:v7 - v8, 22.0, v5, 22.0];
 }
 
-- (void)setLeadingString:(id)a3
+- (void)setLeadingString:(id)string
 {
-  v4 = [a3 pk_uppercaseStringForPreferredLocale];
-  v5 = [(UILabel *)self->_leadingLabel text];
-  v6 = v4;
-  v7 = v5;
+  pk_uppercaseStringForPreferredLocale = [string pk_uppercaseStringForPreferredLocale];
+  text = [(UILabel *)self->_leadingLabel text];
+  v6 = pk_uppercaseStringForPreferredLocale;
+  v7 = text;
   v8 = v7;
   if (v6 == v7)
   {
@@ -104,12 +104,12 @@
 LABEL_9:
 }
 
-- (void)setTrailingString:(id)a3
+- (void)setTrailingString:(id)string
 {
-  v4 = [a3 pk_uppercaseStringForPreferredLocale];
-  v5 = [(UILabel *)self->_trailingLabel text];
-  v6 = v4;
-  v7 = v5;
+  pk_uppercaseStringForPreferredLocale = [string pk_uppercaseStringForPreferredLocale];
+  text = [(UILabel *)self->_trailingLabel text];
+  v6 = pk_uppercaseStringForPreferredLocale;
+  v7 = text;
   v8 = v7;
   if (v6 == v7)
   {

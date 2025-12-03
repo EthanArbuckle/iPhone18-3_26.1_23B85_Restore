@@ -8,15 +8,15 @@
 - (Class)placeholderBalloonViewClass;
 - (Class)previewBalloonViewClass;
 - (NSDictionary)contactMediaInfo;
-- (id)attachmentSummary:(unint64_t)a3;
-- (id)contactCardPayloadFileURL:(id)a3;
-- (id)generateThumbnailForWidth:(double)a3 orientation:(char)a4;
+- (id)attachmentSummary:(unint64_t)summary;
+- (id)contactCardPayloadFileURL:(id)l;
+- (id)generateThumbnailForWidth:(double)width orientation:(char)orientation;
 - (id)icon;
 - (id)previewItemTitle;
 - (id)previewItemURL;
 - (id)subtitle;
 - (id)title;
-- (id)vCardImageOfSize:(CGSize)a3;
+- (id)vCardImageOfSize:(CGSize)size;
 - (void)generateOOPPreview;
 @end
 
@@ -31,51 +31,51 @@
   return v2;
 }
 
-- (id)attachmentSummary:(unint64_t)a3
+- (id)attachmentSummary:(unint64_t)summary
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = IMSharedUtilitiesFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"%lu Contacts" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
+  summary = [v4 localizedStringWithFormat:v6, summary];
 
-  return v7;
+  return summary;
 }
 
 - (BOOL)generatePreviewOutOfProcess
 {
   if ([(CKMediaObject *)self isFromMe])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(generatePreviewOutOfProcess) = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CKContactMediaObject;
-    v3 = [(CKMediaObject *)&v5 generatePreviewOutOfProcess];
-    if (v3)
+    generatePreviewOutOfProcess = [(CKMediaObject *)&v5 generatePreviewOutOfProcess];
+    if (generatePreviewOutOfProcess)
     {
-      LOBYTE(v3) = [(CKContactMediaObject *)self supportsBlastDoor];
+      LOBYTE(generatePreviewOutOfProcess) = [(CKContactMediaObject *)self supportsBlastDoor];
     }
   }
 
-  return v3;
+  return generatePreviewOutOfProcess;
 }
 
 - (Class)balloonViewClass
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 contactBalloonViewClass];
+  contactBalloonViewClass = [v2 contactBalloonViewClass];
 
-  return v3;
+  return contactBalloonViewClass;
 }
 
 - (Class)previewBalloonViewClass
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 contactBalloonViewClass];
+  contactBalloonViewClass = [v2 contactBalloonViewClass];
 
-  return v3;
+  return contactBalloonViewClass;
 }
 
 - (Class)placeholderBalloonViewClass
@@ -83,15 +83,15 @@
   if ([(CKMediaObject *)self isFromMe])
   {
     v2 = +[CKUIBehavior sharedBehaviors];
-    v3 = [v2 contactBalloonViewClass];
+    contactBalloonViewClass = [v2 contactBalloonViewClass];
   }
 
   else
   {
-    v3 = objc_opt_class();
+    contactBalloonViewClass = objc_opt_class();
   }
 
-  return v3;
+  return contactBalloonViewClass;
 }
 
 - (BOOL)supportsBlastDoor
@@ -113,61 +113,61 @@
 {
   if (![(CKContactMediaObject *)self generatePreviewOutOfProcess])
   {
-    v10 = [(CKContactMediaObject *)self vCardSummary];
-    v3 = v10;
-    if (v10 && [v10 contactCount])
+    vCardSummary = [(CKContactMediaObject *)self vCardSummary];
+    contactMediaInfo = vCardSummary;
+    if (vCardSummary && [vCardSummary contactCount])
     {
-      v11 = [v3 avatarContacts];
-      v7 = [v11 firstObject];
+      avatarContacts = [contactMediaInfo avatarContacts];
+      firstObject = [avatarContacts firstObject];
 
       v12 = +[CKUIBehavior sharedBehaviors];
-      v13 = [v12 useSingleLineForContactVCardNames];
+      useSingleLineForContactVCardNames = [v12 useSingleLineForContactVCardNames];
 
-      if (v13)
+      if (useSingleLineForContactVCardNames)
       {
-        v14 = [MEMORY[0x1E695CD80] stringFromContact:v7 style:0];
+        v14 = [MEMORY[0x1E695CD80] stringFromContact:firstObject style:0];
       }
 
       else
       {
-        if ([MEMORY[0x1E695CD80] nameOrderForContact:v7] == 1)
+        if ([MEMORY[0x1E695CD80] nameOrderForContact:firstObject] == 1)
         {
-          [v7 givenName];
+          [firstObject givenName];
         }
 
         else
         {
-          [v7 familyName];
+          [firstObject familyName];
         }
         v14 = ;
       }
 
       v9 = v14;
-      if ([v7 contactType] == 1)
+      if ([firstObject contactType] == 1)
       {
-        v15 = [v7 organizationName];
+        organizationName = [firstObject organizationName];
 
-        v9 = v15;
+        v9 = organizationName;
       }
 
       goto LABEL_19;
     }
 
 LABEL_12:
-    v7 = 0;
+    firstObject = 0;
     goto LABEL_20;
   }
 
-  v3 = [(CKContactMediaObject *)self contactMediaInfo];
-  if (!v3)
+  contactMediaInfo = [(CKContactMediaObject *)self contactMediaInfo];
+  if (!contactMediaInfo)
   {
     goto LABEL_12;
   }
 
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 useSingleLineForContactVCardNames];
+  useSingleLineForContactVCardNames2 = [v4 useSingleLineForContactVCardNames];
 
-  if (v5)
+  if (useSingleLineForContactVCardNames2)
   {
     v6 = @"contactFormatterTitle";
   }
@@ -177,52 +177,52 @@ LABEL_12:
     v6 = @"contactNameTitle";
   }
 
-  v7 = [v3 objectForKeyedSubscript:v6];
-  v8 = [v3 objectForKeyedSubscript:@"organizationNameTitle"];
+  firstObject = [contactMediaInfo objectForKeyedSubscript:v6];
+  v8 = [contactMediaInfo objectForKeyedSubscript:@"organizationNameTitle"];
 
   if (v8)
   {
-    v9 = [v3 objectForKeyedSubscript:@"organizationNameTitle"];
+    v9 = [contactMediaInfo objectForKeyedSubscript:@"organizationNameTitle"];
 LABEL_19:
 
-    v7 = v9;
+    firstObject = v9;
   }
 
 LABEL_20:
 
-  if (!v7)
+  if (!firstObject)
   {
     v17.receiver = self;
     v17.super_class = CKContactMediaObject;
-    v7 = [(CKMediaObject *)&v17 title];
+    firstObject = [(CKMediaObject *)&v17 title];
   }
 
-  return v7;
+  return firstObject;
 }
 
 - (id)icon
 {
-  if (-[CKMediaObject shouldSuppressPreview](self, "shouldSuppressPreview") || (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v3 = objc_claimAutoreleasedReturnValue(), [v3 contactImageSize], -[CKContactMediaObject vCardImageOfSize:](self, "vCardImageOfSize:"), v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+  if (-[CKMediaObject shouldSuppressPreview](self, "shouldSuppressPreview") || (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v3 = objc_claimAutoreleasedReturnValue(), [v3 contactImageSize], -[CKContactMediaObject vCardImageOfSize:](self, "vCardImageOfSize:"), icon = objc_claimAutoreleasedReturnValue(), v3, !icon))
   {
     v6.receiver = self;
     v6.super_class = CKContactMediaObject;
-    v4 = [(CKMediaObject *)&v6 icon];
+    icon = [(CKMediaObject *)&v6 icon];
   }
 
-  return v4;
+  return icon;
 }
 
 - (id)subtitle
 {
   if ([(CKContactMediaObject *)self generatePreviewOutOfProcess])
   {
-    v3 = [(CKContactMediaObject *)self contactMediaInfo];
-    if (v3)
+    contactMediaInfo = [(CKContactMediaObject *)self contactMediaInfo];
+    if (contactMediaInfo)
     {
       v4 = +[CKUIBehavior sharedBehaviors];
-      v5 = [v4 useSingleLineForContactVCardNames];
+      useSingleLineForContactVCardNames = [v4 useSingleLineForContactVCardNames];
 
-      if (v5)
+      if (useSingleLineForContactVCardNames)
       {
         v6 = @"organizationNameSubtitle";
       }
@@ -232,7 +232,7 @@ LABEL_20:
         v6 = @"contactNameSubtitle";
       }
 
-      v7 = [v3 objectForKeyedSubscript:v6];
+      v7 = [contactMediaInfo objectForKeyedSubscript:v6];
       goto LABEL_17;
     }
 
@@ -241,45 +241,45 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  v8 = [(CKContactMediaObject *)self vCardSummary];
-  v3 = v8;
-  if (!v8 || ![v8 contactCount])
+  vCardSummary = [(CKContactMediaObject *)self vCardSummary];
+  contactMediaInfo = vCardSummary;
+  if (!vCardSummary || ![vCardSummary contactCount])
   {
     goto LABEL_11;
   }
 
-  v9 = [v3 avatarContacts];
-  v10 = [v9 firstObject];
+  avatarContacts = [contactMediaInfo avatarContacts];
+  firstObject = [avatarContacts firstObject];
 
   v11 = +[CKUIBehavior sharedBehaviors];
-  v12 = [v11 useSingleLineForContactVCardNames];
+  useSingleLineForContactVCardNames2 = [v11 useSingleLineForContactVCardNames];
 
-  if (v12)
+  if (useSingleLineForContactVCardNames2)
   {
-    v13 = [v10 organizationName];
+    organizationName = [firstObject organizationName];
   }
 
   else
   {
-    if ([MEMORY[0x1E695CD80] nameOrderForContact:v10] == 1)
+    if ([MEMORY[0x1E695CD80] nameOrderForContact:firstObject] == 1)
     {
-      [v10 familyName];
+      [firstObject familyName];
     }
 
     else
     {
-      [v10 givenName];
+      [firstObject givenName];
     }
-    v13 = ;
+    organizationName = ;
   }
 
-  v7 = v13;
+  v7 = organizationName;
 
 LABEL_17:
   if (v7)
   {
-    v14 = [(CKContactMediaObject *)self title];
-    v15 = [v14 isEqualToString:v7];
+    title = [(CKContactMediaObject *)self title];
+    v15 = [title isEqualToString:v7];
 
     if (v15)
     {
@@ -305,16 +305,16 @@ LABEL_17:
   return result;
 }
 
-- (id)generateThumbnailForWidth:(double)a3 orientation:(char)a4
+- (id)generateThumbnailForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   if ([(CKContactMediaObject *)self mediaType]== 4)
   {
     v7 = +[CKUIBehavior sharedBehaviors];
     [v7 contactImageSize];
     v9 = v8;
 
-    v10 = fmin(v9, a3);
+    v10 = fmin(v9, width);
     v11 = [(CKContactMediaObject *)self vCardImageOfSize:v10, v10];
   }
 
@@ -322,7 +322,7 @@ LABEL_17:
   {
     v13.receiver = self;
     v13.super_class = CKContactMediaObject;
-    v11 = [(CKMediaObject *)&v13 generateThumbnailForWidth:v4 orientation:a3];
+    v11 = [(CKMediaObject *)&v13 generateThumbnailForWidth:orientationCopy orientation:width];
   }
 
   return v11;
@@ -332,15 +332,15 @@ LABEL_17:
 {
   if (CKIsRunningInMacCatalyst())
   {
-    v3 = [(CKMediaObject *)self fileURL];
+    fileURL = [(CKMediaObject *)self fileURL];
   }
 
   else
   {
-    v3 = 0;
+    fileURL = 0;
   }
 
-  return v3;
+  return fileURL;
 }
 
 - (id)previewItemTitle
@@ -351,17 +351,17 @@ LABEL_17:
   return v3;
 }
 
-- (id)contactCardPayloadFileURL:(id)a3
+- (id)contactCardPayloadFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CKMediaObject *)self fileURL];
+  lCopy = l;
+  fileURL = [(CKMediaObject *)self fileURL];
   v6 = IMPreviewCachesDirectoryWithAttachmentURL();
 
-  v7 = [(CKMediaObject *)self fileURL];
-  v8 = [v7 lastPathComponent];
+  fileURL2 = [(CKMediaObject *)self fileURL];
+  lastPathComponent = [fileURL2 lastPathComponent];
 
-  v9 = [v6 URLByAppendingPathComponent:v8 isDirectory:0];
-  v10 = [v9 URLByAppendingPathExtension:v4];
+  v9 = [v6 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
+  v10 = [v9 URLByAppendingPathExtension:lCopy];
 
   return v10;
 }
@@ -369,20 +369,20 @@ LABEL_17:
 - (void)generateOOPPreview
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(CKContactMediaObject *)self previewCacheKey];
+  previewCacheKey = [(CKContactMediaObject *)self previewCacheKey];
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = v3;
+      *&buf[4] = previewCacheKey;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "Request to generate OOP preview with key %@", buf, 0xCu);
     }
   }
 
-  v5 = [(CKContactMediaObject *)self previewDispatchCache];
-  if ([v5 isGeneratingPreviewForKey:v3])
+  previewDispatchCache = [(CKContactMediaObject *)self previewDispatchCache];
+  if ([previewDispatchCache isGeneratingPreviewForKey:previewCacheKey])
   {
     if (IMOSLoggingEnabled())
     {
@@ -390,7 +390,7 @@ LABEL_17:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = v3;
+        *&buf[4] = previewCacheKey;
         _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Already generating OOP preview for key %@", buf, 0xCu);
       }
     }
@@ -404,11 +404,11 @@ LABEL_17:
   *buf = 0u;
   v28 = 0u;
   IMClientPreviewConstraints();
-  v8 = [(CKMediaObject *)self fileURL];
-  v9 = [(CKMediaObject *)self previewFilenameExtension];
+  fileURL = [(CKMediaObject *)self fileURL];
+  previewFilenameExtension = [(CKMediaObject *)self previewFilenameExtension];
   v10 = IMAttachmentPreviewFileURL();
 
-  v11 = [(CKMediaObject *)self transferGUID];
+  transferGUID = [(CKMediaObject *)self transferGUID];
   if (!v10)
   {
 LABEL_13:
@@ -417,8 +417,8 @@ LABEL_13:
   }
 
   [(CKContactMediaObject *)self setOopPreviewRequestCount:[(CKContactMediaObject *)self oopPreviewRequestCount]+ 1];
-  v12 = [(CKContactMediaObject *)self oopPreviewRequestCount];
-  if (v12 < [(CKContactMediaObject *)self oopPreviewRequestBudget])
+  oopPreviewRequestCount = [(CKContactMediaObject *)self oopPreviewRequestCount];
+  if (oopPreviewRequestCount < [(CKContactMediaObject *)self oopPreviewRequestBudget])
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -429,14 +429,14 @@ LABEL_13:
     v20 = *buf;
     v21 = v28;
     v22 = v29;
-    v18 = v11;
+    v18 = transferGUID;
     v19 = v7;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __42__CKContactMediaObject_generateOOPPreview__block_invoke_245;
     v15[3] = &unk_1E72EBA18;
     v15[4] = self;
-    [v5 enqueueGenerationBlock:v16 completion:v15 withPriority:0 forKey:v3];
+    [previewDispatchCache enqueueGenerationBlock:v16 completion:v15 withPriority:0 forKey:previewCacheKey];
 
     goto LABEL_13;
   }
@@ -446,11 +446,11 @@ LABEL_13:
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(CKMediaObject *)self transferGUID];
+      transferGUID2 = [(CKMediaObject *)self transferGUID];
       *v23 = 136315394;
       v24 = "[CKContactMediaObject generateOOPPreview]";
       v25 = 2112;
-      v26 = v14;
+      v26 = transferGUID2;
       _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "%s request budget exhausted for %@", v23, 0x16u);
     }
   }
@@ -570,9 +570,9 @@ uint64_t __42__CKContactMediaObject_generateOOPPreview__block_invoke_2_246(uint6
         v12 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [v4 path];
+          path = [v4 path];
           *buf = 138412290;
-          v17 = v13;
+          v17 = path;
           _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Successfully loaded contactMediaInfo at: %@", buf, 0xCu);
         }
       }
@@ -587,9 +587,9 @@ uint64_t __42__CKContactMediaObject_generateOOPPreview__block_invoke_2_246(uint6
         v10 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [v4 path];
+          path2 = [v4 path];
           *buf = 138412290;
-          v17 = v11;
+          v17 = path2;
           _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Failed to load contactMediaInfo at: %@", buf, 0xCu);
         }
       }
@@ -621,8 +621,8 @@ uint64_t __42__CKContactMediaObject_generateOOPPreview__block_invoke_2_246(uint6
       v19 = __Block_byref_object_copy__19;
       v20 = __Block_byref_object_dispose__19;
       v21 = 0;
-      v4 = [(CKMediaObject *)self data];
-      if (v4)
+      data = [(CKMediaObject *)self data];
+      if (data)
       {
         v5 = dispatch_group_create();
         dispatch_group_enter(v5);
@@ -632,7 +632,7 @@ uint64_t __42__CKContactMediaObject_generateOOPPreview__block_invoke_2_246(uint6
         block[2] = __36__CKContactMediaObject_vCardSummary__block_invoke;
         block[3] = &unk_1E72EB858;
         v15 = &v16;
-        v13 = v4;
+        v13 = data;
         v7 = v5;
         v14 = v7;
         dispatch_async(v6, block);
@@ -679,11 +679,11 @@ void __36__CKContactMediaObject_vCardSummary__block_invoke(uint64_t a1)
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (id)vCardImageOfSize:(CGSize)a3
+- (id)vCardImageOfSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [(CKContactMediaObject *)self generatePreviewOutOfProcess:a3.width];
+  v5 = [(CKContactMediaObject *)self generatePreviewOutOfProcess:size.width];
   vCardImage = self->_vCardImage;
   if (v5)
   {
@@ -693,9 +693,9 @@ void __36__CKContactMediaObject_vCardSummary__block_invoke(uint64_t a1)
     }
 
     v7 = [(CKContactMediaObject *)self contactCardPayloadFileURL:@"ktx"];
-    v8 = [v7 path];
+    path = [v7 path];
 
-    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v8];
+    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:path];
     v10 = [MEMORY[0x1E69DCAB8] imageWithData:v9 scale:width / 10.0];
     v11 = self->_vCardImage;
     self->_vCardImage = v10;
@@ -710,7 +710,7 @@ void __36__CKContactMediaObject_vCardSummary__block_invoke(uint64_t a1)
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           v28 = 138412290;
-          v29 = v8;
+          v29 = path;
           _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Successfully loaded avatar image at: %@", &v28, 0xCu);
         }
       }
@@ -724,7 +724,7 @@ void __36__CKContactMediaObject_vCardSummary__block_invoke(uint64_t a1)
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
           v28 = 138412290;
-          v29 = v8;
+          v29 = path;
           _os_log_impl(&dword_19020E000, v26, OS_LOG_TYPE_INFO, "Failed to load preview avatar image at: %@", &v28, 0xCu);
         }
       }
@@ -735,22 +735,22 @@ void __36__CKContactMediaObject_vCardSummary__block_invoke(uint64_t a1)
 
   else if (!vCardImage)
   {
-    v15 = [(CKContactMediaObject *)self vCardSummary];
-    if (v15)
+    vCardSummary = [(CKContactMediaObject *)self vCardSummary];
+    if (vCardSummary)
     {
-      v16 = [(CKContactMediaObject *)self vCardSummary];
-      v17 = [v16 contactCount];
+      vCardSummary2 = [(CKContactMediaObject *)self vCardSummary];
+      contactCount = [vCardSummary2 contactCount];
 
-      if (v17)
+      if (contactCount)
       {
-        v18 = [(CKContactMediaObject *)self vCardSummary];
-        v19 = [v18 avatarContacts];
-        v20 = [v19 firstObject];
+        vCardSummary3 = [(CKContactMediaObject *)self vCardSummary];
+        avatarContacts = [vCardSummary3 avatarContacts];
+        firstObject = [avatarContacts firstObject];
 
         v21 = [CKAddressBook monogrammerWithDiameter:1 style:0 useAppTintColor:0 customFont:width];
-        v22 = [v20 givenName];
-        v23 = [v20 familyName];
-        v24 = [v21 monogramForPersonWithFirstName:v22 lastName:v23];
+        givenName = [firstObject givenName];
+        familyName = [firstObject familyName];
+        v24 = [v21 monogramForPersonWithFirstName:givenName lastName:familyName];
         v25 = self->_vCardImage;
         self->_vCardImage = v24;
       }

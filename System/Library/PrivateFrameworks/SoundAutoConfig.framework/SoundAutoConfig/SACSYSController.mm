@@ -1,7 +1,7 @@
 @interface SACSYSController
 - (SACSYSController)init;
 - (void)handleServiceCrash;
-- (void)setSYSConfig:(id)a3;
+- (void)setSYSConfig:(id)config;
 - (void)startServiceConnection;
 @end
 
@@ -71,10 +71,10 @@
 
   [(NSXPCConnection *)self->mServiceConnection setExportedObject:self];
   [(NSXPCConnection *)self->mServiceConnection resume];
-  v9 = [(NSXPCConnection *)self->mServiceConnection remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->mServiceConnection remoteObjectProxy];
   mProxyInterface = self->mProxyInterface;
   p_mProxyInterface = &self->mProxyInterface;
-  *p_mProxyInterface = v9;
+  *p_mProxyInterface = remoteObjectProxy;
 
   [*p_mProxyInterface registerAsClientWithConnectionType:1];
   _Block_object_dispose(buf, 8);
@@ -110,16 +110,16 @@
   dispatch_after(v5, MEMORY[0x277D85CD0], block);
 }
 
-- (void)setSYSConfig:(id)a3
+- (void)setSYSConfig:(id)config
 {
-  v7 = a3;
-  v4 = [(SACSYSController *)self delegate];
+  configCopy = config;
+  delegate = [(SACSYSController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SACSYSController *)self delegate];
-    [v6 setSYSConfig:v7];
+    delegate2 = [(SACSYSController *)self delegate];
+    [delegate2 setSYSConfig:configCopy];
   }
 }
 

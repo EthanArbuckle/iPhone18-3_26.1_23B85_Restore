@@ -1,41 +1,41 @@
 @interface HUPresenceUserOptionItem
-- (HUPresenceUserOptionItem)initWithUserItem:(id)a3 selectedLocationDevice:(id)a4 locationDeviceManager:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUPresenceUserOptionItem)initWithUserItem:(id)item selectedLocationDevice:(id)device locationDeviceManager:(id)manager;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUPresenceUserOptionItem
 
-- (HUPresenceUserOptionItem)initWithUserItem:(id)a3 selectedLocationDevice:(id)a4 locationDeviceManager:(id)a5
+- (HUPresenceUserOptionItem)initWithUserItem:(id)item selectedLocationDevice:(id)device locationDeviceManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  deviceCopy = device;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = HUPresenceUserOptionItem;
   v12 = [(HUPresenceUserOptionItem *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_userItem, a3);
-    objc_storeStrong(&v13->_selectedLocationDevice, a4);
-    objc_storeStrong(&v13->_locationDeviceManager, a5);
+    objc_storeStrong(&v12->_userItem, item);
+    objc_storeStrong(&v13->_selectedLocationDevice, device);
+    objc_storeStrong(&v13->_locationDeviceManager, manager);
   }
 
   return v13;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HUPresenceUserOptionItem *)self userItem];
-  v6 = [v5 updateWithOptions:v4];
+  optionsCopy = options;
+  userItem = [(HUPresenceUserOptionItem *)self userItem];
+  v6 = [userItem updateWithOptions:optionsCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__HUPresenceUserOptionItem__subclass_updateWithOptions___block_invoke;
   v10[3] = &unk_277DBF558;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = optionsCopy;
+  selfCopy = self;
+  v7 = optionsCopy;
   v8 = [v6 flatMap:v10];
 
   return v8;

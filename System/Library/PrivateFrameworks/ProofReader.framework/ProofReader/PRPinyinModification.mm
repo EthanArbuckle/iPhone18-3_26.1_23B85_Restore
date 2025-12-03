@@ -1,10 +1,10 @@
 @interface PRPinyinModification
-+ (id)finalModificationsForInputString:(id)a3;
-+ (id)modificationsForInputString:(id)a3;
-- (BOOL)_shouldAppendLetter:(unsigned __int8)a3 romanization:(int)a4;
-- (BOOL)isEqual:(id)a3;
-- (PRPinyinModification)initWithRange:(_NSRange)a3 replacementString:(id)a4 modificationType:(unint64_t)a5 syllableRange:(_NSRange)a6 additionalSyllableRange:(_NSRange)a7 modificationScore:(double)a8 syllableCountScore:(unint64_t)a9 syllableLetters:(const char *)a10 producesPartialSyllable:(BOOL)a11 isTemporary:(BOOL)a12;
-- (PRPinyinModification)initWithRange:(_NSRange)a3 replacementString:(id)a4 modificationType:(unint64_t)a5 syllableRange:(_NSRange)a6 modificationScore:(double)a7 isTemporary:(BOOL)a8;
++ (id)finalModificationsForInputString:(id)string;
++ (id)modificationsForInputString:(id)string;
+- (BOOL)_shouldAppendLetter:(unsigned __int8)letter romanization:(int)romanization;
+- (BOOL)isEqual:(id)equal;
+- (PRPinyinModification)initWithRange:(_NSRange)range replacementString:(id)string modificationType:(unint64_t)type syllableRange:(_NSRange)syllableRange additionalSyllableRange:(_NSRange)additionalSyllableRange modificationScore:(double)score syllableCountScore:(unint64_t)countScore syllableLetters:(const char *)self0 producesPartialSyllable:(BOOL)self1 isTemporary:(BOOL)self2;
+- (PRPinyinModification)initWithRange:(_NSRange)range replacementString:(id)string modificationType:(unint64_t)type syllableRange:(_NSRange)syllableRange modificationScore:(double)score isTemporary:(BOOL)temporary;
 - (_NSRange)additionalSyllableRange;
 - (_NSRange)range;
 - (_NSRange)syllableRange;
@@ -14,7 +14,7 @@
 
 @implementation PRPinyinModification
 
-+ (id)modificationsForInputString:(id)a3
++ (id)modificationsForInputString:(id)string
 {
   v4 = _sharedChecker;
   if (!_sharedChecker)
@@ -23,10 +23,10 @@
     _sharedChecker = v4;
   }
 
-  return [(AppleSpell *)v4 spellServer:0 modificationsForPinyinInputString:a3];
+  return [(AppleSpell *)v4 spellServer:0 modificationsForPinyinInputString:string];
 }
 
-+ (id)finalModificationsForInputString:(id)a3
++ (id)finalModificationsForInputString:(id)string
 {
   v4 = _sharedChecker;
   if (!_sharedChecker)
@@ -35,53 +35,53 @@
     _sharedChecker = v4;
   }
 
-  return [(AppleSpell *)v4 spellServer:0 finalModificationsForPinyinInputString:a3];
+  return [(AppleSpell *)v4 spellServer:0 finalModificationsForPinyinInputString:string];
 }
 
-- (PRPinyinModification)initWithRange:(_NSRange)a3 replacementString:(id)a4 modificationType:(unint64_t)a5 syllableRange:(_NSRange)a6 additionalSyllableRange:(_NSRange)a7 modificationScore:(double)a8 syllableCountScore:(unint64_t)a9 syllableLetters:(const char *)a10 producesPartialSyllable:(BOOL)a11 isTemporary:(BOOL)a12
+- (PRPinyinModification)initWithRange:(_NSRange)range replacementString:(id)string modificationType:(unint64_t)type syllableRange:(_NSRange)syllableRange additionalSyllableRange:(_NSRange)additionalSyllableRange modificationScore:(double)score syllableCountScore:(unint64_t)countScore syllableLetters:(const char *)self0 producesPartialSyllable:(BOOL)self1 isTemporary:(BOOL)self2
 {
-  length = a6.length;
-  location = a6.location;
-  v17 = a3.length;
-  v18 = a3.location;
-  v24 = [a4 length];
+  length = syllableRange.length;
+  location = syllableRange.location;
+  v17 = range.length;
+  v18 = range.location;
+  v24 = [string length];
   v25.receiver = self;
   v25.super_class = PRPinyinModification;
   v20 = [(PRPinyinModification *)&v25 init];
   v20->_range.location = v18;
   v20->_range.length = v17;
-  v20->_replacementString = [a4 copy];
-  v20->_modificationType = a5;
+  v20->_replacementString = [string copy];
+  v20->_modificationType = type;
   v20->_syllableRange.location = location;
   v20->_syllableRange.length = length;
-  v20->_additionalSyllableRange = a7;
-  v20->_modificationScore = a8;
+  v20->_additionalSyllableRange = additionalSyllableRange;
+  v20->_modificationScore = score;
   letters = v20->_letters;
-  v20->_syllableCountScore = a9;
-  if (a5 != 5)
+  v20->_syllableCountScore = countScore;
+  if (type != 5)
   {
-    if (a10)
+    if (letters)
     {
       v22 = length - v17 + v24;
       if (v22 <= 6)
       {
-        memmove(v20->_letters, a10, v22);
+        memmove(v20->_letters, letters, v22);
         letters += v22;
       }
     }
   }
 
   *letters = 0;
-  v20->_producesPartialSyllable = a11;
-  v20->_isTemporary = a12;
+  v20->_producesPartialSyllable = syllable;
+  v20->_isTemporary = temporary;
   return v20;
 }
 
-- (PRPinyinModification)initWithRange:(_NSRange)a3 replacementString:(id)a4 modificationType:(unint64_t)a5 syllableRange:(_NSRange)a6 modificationScore:(double)a7 isTemporary:(BOOL)a8
+- (PRPinyinModification)initWithRange:(_NSRange)range replacementString:(id)string modificationType:(unint64_t)type syllableRange:(_NSRange)syllableRange modificationScore:(double)score isTemporary:(BOOL)temporary
 {
-  BYTE1(v9) = a8;
+  BYTE1(v9) = temporary;
   LOBYTE(v9) = 0;
-  return [(PRPinyinModification *)self initWithRange:a3.location replacementString:a3.length modificationType:a4 syllableRange:a5 additionalSyllableRange:a6.location modificationScore:a6.length syllableCountScore:a7 syllableLetters:0x7FFFFFFFFFFFFFFFLL producesPartialSyllable:0 isTemporary:0, 0, v9];
+  return [(PRPinyinModification *)self initWithRange:range.location replacementString:range.length modificationType:string syllableRange:type additionalSyllableRange:syllableRange.location modificationScore:syllableRange.length syllableCountScore:score syllableLetters:0x7FFFFFFFFFFFFFFFLL producesPartialSyllable:0 isTemporary:0, 0, v9];
 }
 
 - (void)dealloc
@@ -91,11 +91,11 @@
   [(PRPinyinModification *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
-    LOBYTE(v13) = 1;
+    LOBYTE(isTemporary) = 1;
   }
 
   else
@@ -108,124 +108,124 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_20:
-      LOBYTE(v13) = 0;
-      return v13;
+      LOBYTE(isTemporary) = 0;
+      return isTemporary;
     }
 
-    v13 = -[NSString isEqualToString:](self->_replacementString, "isEqualToString:", [a3 replacementString]);
-    if (v13)
+    isTemporary = -[NSString isEqualToString:](self->_replacementString, "isEqualToString:", [equal replacementString]);
+    if (isTemporary)
     {
-      if (self->_range.location != [a3 range] || self->_range.length != v14)
+      if (self->_range.location != [equal range] || self->_range.length != v14)
       {
         goto LABEL_20;
       }
 
       modificationType = self->_modificationType;
-      if (modificationType != [a3 modificationType])
+      if (modificationType != [equal modificationType])
       {
         goto LABEL_20;
       }
 
       modificationScore = self->_modificationScore;
-      [a3 modificationScore];
+      [equal modificationScore];
       if (modificationScore != v18)
       {
         goto LABEL_20;
       }
 
       syllableCountScore = self->_syllableCountScore;
-      if (syllableCountScore != [a3 syllableCountScore])
+      if (syllableCountScore != [equal syllableCountScore])
       {
         goto LABEL_20;
       }
 
-      v21 = [a3 syllableRange];
-      LOBYTE(v13) = 0;
-      if (self->_syllableRange.location == v21 && self->_syllableRange.length == v20)
+      syllableRange = [equal syllableRange];
+      LOBYTE(isTemporary) = 0;
+      if (self->_syllableRange.location == syllableRange && self->_syllableRange.length == v20)
       {
-        v23 = [a3 additionalSyllableRange];
-        LOBYTE(v13) = 0;
-        if (self->_additionalSyllableRange.location == v23 && self->_additionalSyllableRange.length == v22)
+        additionalSyllableRange = [equal additionalSyllableRange];
+        LOBYTE(isTemporary) = 0;
+        if (self->_additionalSyllableRange.location == additionalSyllableRange && self->_additionalSyllableRange.length == v22)
         {
           if (!self->_isTemporary)
           {
             goto LABEL_19;
           }
 
-          v13 = [a3 isTemporary];
-          if (!v13)
+          isTemporary = [equal isTemporary];
+          if (!isTemporary)
           {
-            return v13;
+            return isTemporary;
           }
 
           if (!self->_isTemporary)
           {
 LABEL_19:
-            if ([a3 isTemporary])
+            if ([equal isTemporary])
             {
               goto LABEL_20;
             }
           }
 
-          LOBYTE(v13) = 1;
+          LOBYTE(isTemporary) = 1;
         }
       }
     }
   }
 
-  return v13;
+  return isTemporary;
 }
 
 - (id)description
 {
-  v30 = [(PRPinyinModification *)self replacementString];
-  v29 = [(PRPinyinModification *)self modificationType];
-  v3 = [(PRPinyinModification *)self range];
+  replacementString = [(PRPinyinModification *)self replacementString];
+  modificationType = [(PRPinyinModification *)self modificationType];
+  range = [(PRPinyinModification *)self range];
   v5 = v4;
-  v6 = [(PRPinyinModification *)self syllableRange];
+  syllableRange = [(PRPinyinModification *)self syllableRange];
   v8 = v7;
-  v9 = [(PRPinyinModification *)self additionalSyllableRange];
+  additionalSyllableRange = [(PRPinyinModification *)self additionalSyllableRange];
   v11 = v10;
   [(PRPinyinModification *)self modificationScore];
   v13 = v12;
-  v14 = [(PRPinyinModification *)self syllableCountScore];
-  v15 = [(PRPinyinModification *)self producesPartialSyllable];
-  v16 = [(PRPinyinModification *)self isTemporary];
+  syllableCountScore = [(PRPinyinModification *)self syllableCountScore];
+  producesPartialSyllable = [(PRPinyinModification *)self producesPartialSyllable];
+  isTemporary = [(PRPinyinModification *)self isTemporary];
   v17 = MEMORY[0x1E696AEC0];
-  v31.location = v3;
+  v31.location = range;
   v31.length = v5;
   v18 = NSStringFromRange(v31);
-  if (v9 != 0x7FFFFFFFFFFFFFFFLL || v11)
+  if (additionalSyllableRange != 0x7FFFFFFFFFFFFFFFLL || v11)
   {
-    v33.location = v9;
+    v33.location = additionalSyllableRange;
     v33.length = v11;
     v20 = NSStringFromRange(v33);
-    v34.location = v6;
+    v34.location = syllableRange;
     v34.length = v8;
-    v27 = v15;
-    v28 = v16;
-    v26 = v14;
+    v27 = producesPartialSyllable;
+    v28 = isTemporary;
+    v26 = syllableCountScore;
     v25 = v13;
     v23 = v20;
     v24 = NSStringFromRange(v34);
-    v22 = v29;
+    v22 = modificationType;
     v19 = @"range %@ -> <%@>, type %lu, syllables %@ %@, score %g, scs %lu, pps %d temp %d";
   }
 
   else
   {
-    v32.location = v6;
+    v32.location = syllableRange;
     v32.length = v8;
-    v26 = v15;
-    v27 = v16;
-    v25 = v14;
+    v26 = producesPartialSyllable;
+    v27 = isTemporary;
+    v25 = syllableCountScore;
     v24 = v13;
-    v22 = v29;
+    v22 = modificationType;
     v23 = NSStringFromRange(v32);
     v19 = @"range %@ -> <%@>, type %lu, syllable %@, score %g, scs %lu, pps %d temp %d";
   }
 
-  return [v17 stringWithFormat:v19, v18, v30, v22, v23, v24, v25, v26, v27, v28];
+  return [v17 stringWithFormat:v19, v18, replacementString, v22, v23, v24, v25, v26, v27, v28];
 }
 
 - (_NSRange)range
@@ -258,19 +258,19 @@ LABEL_19:
   return result;
 }
 
-- (BOOL)_shouldAppendLetter:(unsigned __int8)a3 romanization:(int)a4
+- (BOOL)_shouldAppendLetter:(unsigned __int8)letter romanization:(int)romanization
 {
-  v5 = a3;
+  letterCopy = letter;
   letters = self->_letters;
   v8 = strnlen(self->_letters, 6uLL);
   v13 = 0;
-  if (v5 == 39)
+  if (letterCopy == 39)
   {
     return 1;
   }
 
   v10 = v8;
-  if (v5 > 0xF7 || v5 - 97 < 0x1A || v5 - 223 < 0x18 || (result = 0, v5 - 154 <= 4) && ((1 << (v5 + 102)) & 0x15) != 0)
+  if (letterCopy > 0xF7 || letterCopy - 97 < 0x1A || letterCopy - 223 < 0x18 || (result = 0, letterCopy - 154 <= 4) && ((1 << (letterCopy + 102)) & 0x15) != 0)
   {
     if (v10 > 5 || self->_modificationType == 5)
     {
@@ -279,8 +279,8 @@ LABEL_19:
 
     else
     {
-      letters[v10] = v5;
-      v11 = next_pinyin(letters, v10 + 1, a4, 0, &v13, 0);
+      letters[v10] = letterCopy;
+      v11 = next_pinyin(letters, v10 + 1, romanization, 0, &v13, 0);
       if (v11)
       {
         v12 = v13 == &v11[v10 + 1];

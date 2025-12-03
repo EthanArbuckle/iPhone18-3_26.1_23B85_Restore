@@ -1,25 +1,25 @@
 @interface PLUIEditVideoViewController
 - (CGRect)previewFrame;
-- (PLUIEditVideoViewController)initWithPhoto:(id)a3 trimTitle:(id)a4;
-- (PLUIEditVideoViewController)initWithProperties:(id)a3;
-- (PLUIEditVideoViewController)initWithVideoURL:(id)a3 trimTitle:(id)a4;
+- (PLUIEditVideoViewController)initWithPhoto:(id)photo trimTitle:(id)title;
+- (PLUIEditVideoViewController)initWithProperties:(id)properties;
+- (PLUIEditVideoViewController)initWithVideoURL:(id)l trimTitle:(id)title;
 - (id)_trimMessage;
 - (id)navigationItem;
-- (void)_cancelTrim:(id)a3;
-- (void)_trimVideo:(id)a3;
+- (void)_cancelTrim:(id)trim;
+- (void)_trimVideo:(id)video;
 - (void)dealloc;
-- (void)didChooseVideoAtURL:(id)a3 options:(id)a4;
+- (void)didChooseVideoAtURL:(id)l options:(id)options;
 - (void)loadView;
-- (void)setImagePickerOptions:(id)a3;
+- (void)setImagePickerOptions:(id)options;
 - (void)setupNavigationItem;
-- (void)videoRemakerDidEndRemaking:(id)a3 temporaryPath:(id)a4;
-- (void)videoViewPlaybackDidFail:(id)a3;
+- (void)videoRemakerDidEndRemaking:(id)remaking temporaryPath:(id)path;
+- (void)videoViewPlaybackDidFail:(id)fail;
 - (void)viewDidLoad;
 @end
 
 @implementation PLUIEditVideoViewController
 
-- (void)videoViewPlaybackDidFail:(id)a3
+- (void)videoViewPlaybackDidFail:(id)fail
 {
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -33,7 +33,7 @@
   }
 }
 
-- (void)_trimVideo:(id)a3
+- (void)_trimVideo:(id)video
 {
   v3.receiver = self;
   v3.super_class = PLUIEditVideoViewController;
@@ -53,7 +53,7 @@
   return result;
 }
 
-- (void)_cancelTrim:(id)a3
+- (void)_cancelTrim:(id)trim
 {
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -63,16 +63,16 @@
   }
 }
 
-- (void)videoRemakerDidEndRemaking:(id)a3 temporaryPath:(id)a4
+- (void)videoRemakerDidEndRemaking:(id)remaking temporaryPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = PLUIEditVideoViewController;
-  [(PLUIImageViewController *)&v8 videoRemakerDidEndRemaking:a3 temporaryPath:?];
+  [(PLUIImageViewController *)&v8 videoRemakerDidEndRemaking:remaking temporaryPath:?];
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    if (a4)
+    if (path)
     {
-      v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:a4 isDirectory:0];
+      v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:path isDirectory:0];
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v6 forKey:*MEMORY[0x277D76A78]];
     }
 
@@ -85,13 +85,13 @@
   }
 }
 
-- (void)didChooseVideoAtURL:(id)a3 options:(id)a4
+- (void)didChooseVideoAtURL:(id)l options:(id)options
 {
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a4];
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:options];
   v7 = v6;
-  if (a3)
+  if (l)
   {
-    [v6 setObject:a3 forKey:*MEMORY[0x277D76A78]];
+    [v6 setObject:l forKey:*MEMORY[0x277D76A78]];
   }
 
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
@@ -118,10 +118,10 @@
   v5.receiver = self;
   v5.super_class = PLUIEditVideoViewController;
   [(PLUIImageViewController *)&v5 loadView];
-  v3 = [(PLUIEditVideoViewController *)self view];
-  if (v3)
+  view = [(PLUIEditVideoViewController *)self view];
+  if (view)
   {
-    v4 = v3;
+    v4 = view;
     if (objc_opt_respondsToSelector())
     {
       [v4 setDisableViewInPopoverRule:{-[PLUIEditVideoViewController parentInPopoverException](self, "parentInPopoverException")}];
@@ -136,13 +136,13 @@
   return PLLocalizedFrameworkString();
 }
 
-- (void)setImagePickerOptions:(id)a3
+- (void)setImagePickerOptions:(id)options
 {
   options = self->_options;
-  if (options != a3)
+  if (options != options)
   {
 
-    self->_options = [a3 copy];
+    self->_options = [options copy];
   }
 }
 
@@ -165,15 +165,15 @@
   return result;
 }
 
-- (PLUIEditVideoViewController)initWithVideoURL:(id)a3 trimTitle:(id)a4
+- (PLUIEditVideoViewController)initWithVideoURL:(id)l trimTitle:(id)title
 {
   v7.receiver = self;
   v7.super_class = PLUIEditVideoViewController;
-  v4 = [(PLUIImageViewController *)&v7 initWithVideoURL:a3, a4];
-  v5 = v4;
-  if (v4)
+  title = [(PLUIImageViewController *)&v7 initWithVideoURL:l, title];
+  v5 = title;
+  if (title)
   {
-    [(PLUIImageViewController *)v4 setAllowsEditing:1];
+    [(PLUIImageViewController *)title setAllowsEditing:1];
     v5->_canCreateMetadata = 0;
     v5->_viewClass = objc_opt_class();
   }
@@ -181,16 +181,16 @@
   return v5;
 }
 
-- (PLUIEditVideoViewController)initWithProperties:(id)a3
+- (PLUIEditVideoViewController)initWithProperties:(id)properties
 {
-  v5 = [a3 objectForKey:*MEMORY[0x277D77610]];
+  v5 = [properties objectForKey:*MEMORY[0x277D77610]];
   v9.receiver = self;
   v9.super_class = PLUIEditVideoViewController;
   v6 = [(PLUIImageViewController *)&v9 initWithVideoURL:v5];
   v7 = v6;
   if (v6)
   {
-    [(PLUIEditVideoViewController *)v6 setImagePickerOptions:a3];
+    [(PLUIEditVideoViewController *)v6 setImagePickerOptions:properties];
     [(PLUIImageViewController *)v7 setAllowsEditing:1];
     v7->_canCreateMetadata = 0;
     v7->_viewClass = objc_opt_class();
@@ -199,15 +199,15 @@
   return v7;
 }
 
-- (PLUIEditVideoViewController)initWithPhoto:(id)a3 trimTitle:(id)a4
+- (PLUIEditVideoViewController)initWithPhoto:(id)photo trimTitle:(id)title
 {
   v7.receiver = self;
   v7.super_class = PLUIEditVideoViewController;
-  v4 = [(PLUIImageViewController *)&v7 initWithPhoto:a3, a4];
-  v5 = v4;
-  if (v4)
+  title = [(PLUIImageViewController *)&v7 initWithPhoto:photo, title];
+  v5 = title;
+  if (title)
   {
-    [(PLUIImageViewController *)v4 setAllowsEditing:1];
+    [(PLUIImageViewController *)title setAllowsEditing:1];
     [(PLUIEditVideoViewController *)v5 setParentInPopoverException:0];
     v5->_canCreateMetadata = PLIsAssetsd();
     v5->_viewClass = objc_opt_class();
@@ -219,14 +219,14 @@
 - (void)setupNavigationItem
 {
   [(PLUIEditVideoViewController *)self setExtendedLayoutIncludesOpaqueBars:1];
-  v3 = [(PLUIEditVideoViewController *)self navigationItem];
+  navigationItem = [(PLUIEditVideoViewController *)self navigationItem];
   [(PLUIEditVideoViewController *)self _editingForThirdParty];
-  [v3 setTitle:PLLocalizedFrameworkString()];
+  [navigationItem setTitle:PLLocalizedFrameworkString()];
   v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelTrim_];
-  [v3 setLeftBarButtonItem:v4];
+  [navigationItem setLeftBarButtonItem:v4];
 
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:3 target:self action:sel__trimVideo_];
-  [v3 setRightBarButtonItem:v5];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
 @end

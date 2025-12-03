@@ -1,6 +1,6 @@
 @interface NLActivityUpNextRelevanceEngineSampleDataSource
 - (id)supportedSections;
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4;
+- (void)getElementsInSection:(id)section withHandler:(id)handler;
 @end
 
 @implementation NLActivityUpNextRelevanceEngineSampleDataSource
@@ -13,9 +13,9 @@
   return v2;
 }
 
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4
+- (void)getElementsInSection:(id)section withHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = NLActivityUpNextRelevanceEngineSampleRelevanceProviderForPosition(10.0);
   v6 = NLActivityUpNextRelevanceEngineContent(0xFuLL);
   v7 = [REElement alloc];
@@ -25,7 +25,7 @@
 
   v11 = v9;
   v10 = [NSArray arrayWithObjects:&v11 count:1];
-  v4[2](v4, v10);
+  handlerCopy[2](handlerCopy, v10);
 }
 
 @end

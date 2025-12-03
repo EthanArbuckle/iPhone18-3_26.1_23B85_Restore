@@ -13,8 +13,8 @@
 
 - (BOOL)ACX_isBuiltIn
 {
-  v2 = [(LSApplicationRecord *)self typeForInstallMachinery];
-  v3 = [v2 isEqualToString:LSUserApplicationType];
+  typeForInstallMachinery = [(LSApplicationRecord *)self typeForInstallMachinery];
+  v3 = [typeForInstallMachinery isEqualToString:LSUserApplicationType];
 
   return v3 ^ 1;
 }
@@ -22,8 +22,8 @@
 - (BOOL)ACX_shouldBeTrackedByAppConduit
 {
   v3 = [LSApplicationRecord alloc];
-  v4 = [(LSApplicationRecord *)self bundleIdentifier];
-  v5 = [v3 initWithBundleIdentifierOfSystemPlaceholder:v4 error:0];
+  bundleIdentifier = [(LSApplicationRecord *)self bundleIdentifier];
+  v5 = [v3 initWithBundleIdentifierOfSystemPlaceholder:bundleIdentifier error:0];
 
   if (!v5)
   {
@@ -34,8 +34,8 @@
 
     if (([(LSApplicationRecord *)self isDeletable]& 1) == 0)
     {
-      v8 = [(LSApplicationRecord *)self ACX_watchKitAppExtensionBundleID];
-      v6 = v8 != 0;
+      aCX_watchKitAppExtensionBundleID = [(LSApplicationRecord *)self ACX_watchKitAppExtensionBundleID];
+      v6 = aCX_watchKitAppExtensionBundleID != 0;
 
       return v6;
     }
@@ -47,28 +47,28 @@
 - (BOOL)ACX_shouldBeTrackedByLaunchServicesWatcher
 {
   v3 = [LSApplicationRecord alloc];
-  v4 = [(LSApplicationRecord *)self bundleIdentifier];
-  v5 = [v3 initWithBundleIdentifierOfSystemPlaceholder:v4 error:0];
+  bundleIdentifier = [(LSApplicationRecord *)self bundleIdentifier];
+  v5 = [v3 initWithBundleIdentifierOfSystemPlaceholder:bundleIdentifier error:0];
 
   if (v5)
   {
     return 1;
   }
 
-  v7 = [(LSApplicationRecord *)self typeForInstallMachinery];
+  typeForInstallMachinery = [(LSApplicationRecord *)self typeForInstallMachinery];
   if ([(LSApplicationRecord *)self ACX_isHidden])
   {
     v6 = 0;
   }
 
-  else if ([v7 isEqualToString:LSSystemApplicationType])
+  else if ([typeForInstallMachinery isEqualToString:LSSystemApplicationType])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v7 isEqualToString:LSUserApplicationType];
+    v6 = [typeForInstallMachinery isEqualToString:LSUserApplicationType];
   }
 
   return v6;
@@ -76,16 +76,16 @@
 
 - (BOOL)ACX_isHidden
 {
-  v2 = [(LSApplicationRecord *)self appTags];
-  v3 = [v2 containsObject:@"hidden"];
+  appTags = [(LSApplicationRecord *)self appTags];
+  v3 = [appTags containsObject:@"hidden"];
 
   return v3;
 }
 
 - (NSString)ACX_watchKitAppExtensionBundleID
 {
-  v2 = [(LSApplicationRecord *)self infoDictionary];
-  v3 = [v2 objectForKey:@"WKPluginBundleIdKey" ofClass:objc_opt_class()];
+  infoDictionary = [(LSApplicationRecord *)self infoDictionary];
+  v3 = [infoDictionary objectForKey:@"WKPluginBundleIdKey" ofClass:objc_opt_class()];
 
   return v3;
 }
@@ -96,8 +96,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(LSApplicationRecord *)self applicationExtensionRecords];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  applicationExtensionRecords = [(LSApplicationRecord *)self applicationExtensionRecords];
+  v3 = [applicationExtensionRecords countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -108,13 +108,13 @@
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(applicationExtensionRecords);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 extensionPointRecord];
-        v9 = [v8 name];
-        v10 = [v9 isEqualToString:@"com.apple.watchkit"];
+        extensionPointRecord = [v7 extensionPointRecord];
+        name = [extensionPointRecord name];
+        v10 = [name isEqualToString:@"com.apple.watchkit"];
 
         if (v10)
         {
@@ -123,7 +123,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [applicationExtensionRecords countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -141,9 +141,9 @@ LABEL_11:
 
 - (NSString)ACX_wkTeamID
 {
-  v2 = [(LSApplicationRecord *)self teamIdentifier];
-  v3 = v2;
-  if (v2 && ([v2 isEqualToString:@"0000000000"] & 1) == 0)
+  teamIdentifier = [(LSApplicationRecord *)self teamIdentifier];
+  v3 = teamIdentifier;
+  if (teamIdentifier && ([teamIdentifier isEqualToString:@"0000000000"] & 1) == 0)
   {
     v4 = v3;
   }
@@ -158,12 +158,12 @@ LABEL_11:
 
 - (NSNumber)ACX_externalVersionIdentifier
 {
-  v2 = [(LSApplicationRecord *)self iTunesMetadata];
-  v3 = [v2 versionIdentifier];
+  iTunesMetadata = [(LSApplicationRecord *)self iTunesMetadata];
+  versionIdentifier = [iTunesMetadata versionIdentifier];
 
-  if (v3)
+  if (versionIdentifier)
   {
-    v4 = [NSNumber numberWithUnsignedLongLong:v3];
+    v4 = [NSNumber numberWithUnsignedLongLong:versionIdentifier];
   }
 
   else

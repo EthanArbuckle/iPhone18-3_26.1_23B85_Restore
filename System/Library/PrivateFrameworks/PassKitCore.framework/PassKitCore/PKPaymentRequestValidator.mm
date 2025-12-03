@@ -1,68 +1,68 @@
 @interface PKPaymentRequestValidator
-+ (id)validatorWithObject:(id)a3;
-- (BOOL)_checkMultiTokenTotal:(id)a3 withAPIType:(int64_t)a4 error:(id *)a5;
-- (BOOL)_checkTotal:(id)a3 withAPIType:(int64_t)a4 error:(id *)a5;
-- (BOOL)isValidWithAPIType:(int64_t)a3 withError:(id *)a4;
-- (BOOL)isValidWithError:(id *)a3;
-- (PKPaymentRequestValidator)initWithPaymentRequest:(id)a3;
-- (id)_errorDescriptionFromMultiTokenContextAmountValidationResult:(unint64_t)a3 withAPIType:(int64_t)a4;
-- (id)_errorDescriptionFromPaymentTotalAmountValidationResult:(unint64_t)a3 withAPIType:(int64_t)a4;
-- (id)_errorDescriptionFromTotalAmountValidationResult:(unint64_t)a3 prefix:(id)a4;
-- (unint64_t)_checkTotalAmount:(id)a3;
++ (id)validatorWithObject:(id)object;
+- (BOOL)_checkMultiTokenTotal:(id)total withAPIType:(int64_t)type error:(id *)error;
+- (BOOL)_checkTotal:(id)total withAPIType:(int64_t)type error:(id *)error;
+- (BOOL)isValidWithAPIType:(int64_t)type withError:(id *)error;
+- (BOOL)isValidWithError:(id *)error;
+- (PKPaymentRequestValidator)initWithPaymentRequest:(id)request;
+- (id)_errorDescriptionFromMultiTokenContextAmountValidationResult:(unint64_t)result withAPIType:(int64_t)type;
+- (id)_errorDescriptionFromPaymentTotalAmountValidationResult:(unint64_t)result withAPIType:(int64_t)type;
+- (id)_errorDescriptionFromTotalAmountValidationResult:(unint64_t)result prefix:(id)prefix;
+- (unint64_t)_checkTotalAmount:(id)amount;
 @end
 
 @implementation PKPaymentRequestValidator
 
-+ (id)validatorWithObject:(id)a3
++ (id)validatorWithObject:(id)object
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPaymentRequest:v3];
+  objectCopy = object;
+  v4 = [objc_alloc(objc_opt_class()) initWithPaymentRequest:objectCopy];
 
   return v4;
 }
 
-- (PKPaymentRequestValidator)initWithPaymentRequest:(id)a3
+- (PKPaymentRequestValidator)initWithPaymentRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = PKPaymentRequestValidator;
   v6 = [(PKPaymentRequestValidator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v7;
 }
 
-- (BOOL)_checkTotal:(id)a3 withAPIType:(int64_t)a4 error:(id *)a5
+- (BOOL)_checkTotal:(id)total withAPIType:(int64_t)type error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = [(PKPaymentRequestValidator *)self _checkTotalAmount:a3];
+  v8 = [(PKPaymentRequestValidator *)self _checkTotalAmount:total];
   v9 = v8;
-  if (a5 && v8)
+  if (error && v8)
   {
-    v10 = [(PKPaymentRequestValidator *)self _errorDescriptionFromPaymentTotalAmountValidationResult:v8 withAPIType:a4];
+    v10 = [(PKPaymentRequestValidator *)self _errorDescriptionFromPaymentTotalAmountValidationResult:v8 withAPIType:type];
     v11 = MEMORY[0x1E696ABC0];
     v14 = *MEMORY[0x1E696A578];
     v15[0] = v10;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    *a5 = [v11 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v12];
+    *error = [v11 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v12];
   }
 
   return v9 == 0;
 }
 
-- (unint64_t)_checkTotalAmount:(id)a3
+- (unint64_t)_checkTotalAmount:(id)amount
 {
-  v3 = a3;
-  if ([v3 pk_isNegativeNumber])
+  amountCopy = amount;
+  if ([amountCopy pk_isNegativeNumber])
   {
     v4 = 1;
   }
 
-  else if (PKIsCurrencyDecimalTooLarge(v3))
+  else if (PKIsCurrencyDecimalTooLarge(amountCopy))
   {
     v4 = 2;
   }
@@ -75,9 +75,9 @@
   return v4;
 }
 
-- (id)_errorDescriptionFromPaymentTotalAmountValidationResult:(unint64_t)a3 withAPIType:(int64_t)a4
+- (id)_errorDescriptionFromPaymentTotalAmountValidationResult:(unint64_t)result withAPIType:(int64_t)type
 {
-  if ((a4 - 1) >= 2)
+  if ((type - 1) >= 2)
   {
     v4 = @"PKPaymentRequest total";
   }
@@ -87,42 +87,42 @@
     v4 = @"Total amount";
   }
 
-  return [(PKPaymentRequestValidator *)self _errorDescriptionFromTotalAmountValidationResult:a3 prefix:v4];
+  return [(PKPaymentRequestValidator *)self _errorDescriptionFromTotalAmountValidationResult:result prefix:v4];
 }
 
-- (id)_errorDescriptionFromTotalAmountValidationResult:(unint64_t)a3 prefix:(id)a4
+- (id)_errorDescriptionFromTotalAmountValidationResult:(unint64_t)result prefix:(id)prefix
 {
-  v5 = a4;
-  if (a3 == 1)
+  prefixCopy = prefix;
+  if (result == 1)
   {
     v6 = @"%@ must be greater than or equal to zero";
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (result == 2)
   {
     v6 = @"%@ is too large";
 LABEL_5:
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:v6, v5];
+    prefixCopy = [MEMORY[0x1E696AEC0] stringWithFormat:v6, prefixCopy];
     goto LABEL_7;
   }
 
-  v7 = 0;
+  prefixCopy = 0;
 LABEL_7:
 
-  return v7;
+  return prefixCopy;
 }
 
-- (BOOL)_checkMultiTokenTotal:(id)a3 withAPIType:(int64_t)a4 error:(id *)a5
+- (BOOL)_checkMultiTokenTotal:(id)total withAPIType:(int64_t)type error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  totalCopy = total;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = [(PKPaymentRequest *)self->_request multiTokenContexts];
-  v10 = [v9 countByEnumeratingWithState:&v36 objects:v45 count:16];
+  multiTokenContexts = [(PKPaymentRequest *)self->_request multiTokenContexts];
+  v10 = [multiTokenContexts countByEnumeratingWithState:&v36 objects:v45 count:16];
   if (v10)
   {
     v11 = v10;
@@ -133,11 +133,11 @@ LABEL_3:
     {
       if (*v37 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(multiTokenContexts);
       }
 
-      v14 = [*(*(&v36 + 1) + 8 * v13) amount];
-      v15 = [(PKPaymentRequestValidator *)self _checkTotalAmount:v14];
+      amount = [*(*(&v36 + 1) + 8 * v13) amount];
+      v15 = [(PKPaymentRequestValidator *)self _checkTotalAmount:amount];
 
       if (v15)
       {
@@ -146,7 +146,7 @@ LABEL_3:
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v36 objects:v45 count:16];
+        v11 = [multiTokenContexts countByEnumeratingWithState:&v36 objects:v45 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -156,12 +156,12 @@ LABEL_3:
       }
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_27;
     }
 
-    v24 = [(PKPaymentRequestValidator *)self _errorDescriptionFromMultiTokenContextAmountValidationResult:v15 withAPIType:a4];
+    v24 = [(PKPaymentRequestValidator *)self _errorDescriptionFromMultiTokenContextAmountValidationResult:v15 withAPIType:type];
     v25 = MEMORY[0x1E696ABC0];
     v43 = *MEMORY[0x1E696A578];
     v44 = v24;
@@ -173,15 +173,15 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v31 = v8;
+    v31 = totalCopy;
 
-    v9 = [MEMORY[0x1E696AB90] zero];
+    multiTokenContexts = [MEMORY[0x1E696AB90] zero];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v16 = [(PKPaymentRequest *)self->_request multiTokenContexts];
-    v17 = [v16 countByEnumeratingWithState:&v32 objects:v42 count:16];
+    multiTokenContexts2 = [(PKPaymentRequest *)self->_request multiTokenContexts];
+    v17 = [multiTokenContexts2 countByEnumeratingWithState:&v32 objects:v42 count:16];
     if (v17)
     {
       v18 = v17;
@@ -189,23 +189,23 @@ LABEL_9:
       do
       {
         v20 = 0;
-        v21 = v9;
+        v21 = multiTokenContexts;
         do
         {
           if (*v33 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(multiTokenContexts2);
           }
 
-          v22 = [*(*(&v32 + 1) + 8 * v20) amount];
-          v9 = [v21 decimalNumberByAdding:v22];
+          amount2 = [*(*(&v32 + 1) + 8 * v20) amount];
+          multiTokenContexts = [v21 decimalNumberByAdding:amount2];
 
           ++v20;
-          v21 = v9;
+          v21 = multiTokenContexts;
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v32 objects:v42 count:16];
+        v18 = [multiTokenContexts2 countByEnumeratingWithState:&v32 objects:v42 count:16];
       }
 
       while (v18);
@@ -213,19 +213,19 @@ LABEL_9:
 
     if (![(PKPaymentRequest *)self->_request isMultiTokenRequest])
     {
-      LOBYTE(a5) = 1;
-      v8 = v31;
+      LOBYTE(error) = 1;
+      totalCopy = v31;
       goto LABEL_27;
     }
 
-    v8 = v31;
-    if (![v9 compare:v31])
+    totalCopy = v31;
+    if (![multiTokenContexts compare:v31])
     {
-      LOBYTE(a5) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_27;
     }
 
-    if ((a4 - 1) >= 2)
+    if ((type - 1) >= 2)
     {
       v23 = @"PKPaymentRequest total";
     }
@@ -245,17 +245,17 @@ LABEL_9:
   }
 
   v29 = [v26 dictionaryWithObjects:v27 forKeys:v28 count:1];
-  *a5 = [v25 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v29];
+  *error = [v25 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v29];
 
-  LOBYTE(a5) = 0;
+  LOBYTE(error) = 0;
 LABEL_27:
 
-  return a5;
+  return error;
 }
 
-- (id)_errorDescriptionFromMultiTokenContextAmountValidationResult:(unint64_t)a3 withAPIType:(int64_t)a4
+- (id)_errorDescriptionFromMultiTokenContextAmountValidationResult:(unint64_t)result withAPIType:(int64_t)type
 {
-  if ((a4 - 1) >= 2)
+  if ((type - 1) >= 2)
   {
     v4 = @"PKPaymentTokenContext amount";
   }
@@ -265,32 +265,32 @@ LABEL_27:
     v4 = @"Payment token context amount";
   }
 
-  return [(PKPaymentRequestValidator *)self _errorDescriptionFromTotalAmountValidationResult:a3 prefix:v4];
+  return [(PKPaymentRequestValidator *)self _errorDescriptionFromTotalAmountValidationResult:result prefix:v4];
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
-  v5 = [(PKPaymentRequest *)self->_request APIType];
+  aPIType = [(PKPaymentRequest *)self->_request APIType];
 
-  return [(PKPaymentRequestValidator *)self isValidWithAPIType:v5 withError:a3];
+  return [(PKPaymentRequestValidator *)self isValidWithAPIType:aPIType withError:error];
 }
 
-- (BOOL)isValidWithAPIType:(int64_t)a3 withError:(id *)a4
+- (BOOL)isValidWithAPIType:(int64_t)type withError:(id *)error
 {
-  v5 = self;
+  selfCopy = self;
   v362[1] = *MEMORY[0x1E69E9840];
-  v6 = [(PKPaymentRequest *)self->_request requestType];
-  v7 = [(PKPaymentRequest *)v5->_request isPeerPaymentRequest];
-  v8 = [(PKPaymentRequest *)v5->_request requestType];
-  if (v6 == 3)
+  requestType = [(PKPaymentRequest *)self->_request requestType];
+  isPeerPaymentRequest = [(PKPaymentRequest *)selfCopy->_request isPeerPaymentRequest];
+  requestType2 = [(PKPaymentRequest *)selfCopy->_request requestType];
+  if (requestType == 3)
   {
     v260 = 1;
   }
 
-  else if (v6 == 1)
+  else if (requestType == 1)
   {
-    v9 = [(PKPaymentRequest *)v5->_request merchantSession];
-    v260 = v9 != 0;
+    merchantSession = [(PKPaymentRequest *)selfCopy->_request merchantSession];
+    v260 = merchantSession != 0;
   }
 
   else
@@ -301,45 +301,45 @@ LABEL_27:
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v11 = 0;
-  v12 = v6 & 0xFFFFFFFFFFFFFFFELL;
-  v264 = v5;
-  v265 = v6;
-  if (!v7 && (isKindOfClass & 1) != 0 && v6 != 2 && v6 != 4 && v12 != 6 && (v6 & 0xFFFFFFFFFFFFFFFDLL) != 0xD)
+  v12 = requestType & 0xFFFFFFFFFFFFFFFELL;
+  v264 = selfCopy;
+  v265 = requestType;
+  if (!isPeerPaymentRequest && (isKindOfClass & 1) != 0 && requestType != 2 && requestType != 4 && v12 != 6 && (requestType & 0xFFFFFFFFFFFFFFFDLL) != 0xD)
   {
-    v263 = v8;
-    v261 = v7;
-    v257 = v6 & 0xFFFFFFFFFFFFFFFELL;
-    v258 = a4;
-    request = v5->_request;
+    v263 = requestType2;
+    v261 = isPeerPaymentRequest;
+    v257 = requestType & 0xFFFFFFFFFFFFFFFELL;
+    errorCopy = error;
+    request = selfCopy->_request;
     v14 = objc_opt_class();
-    v15 = [MEMORY[0x1E695DF58] ISOCountryCodes];
+    iSOCountryCodes = [MEMORY[0x1E695DF58] ISOCountryCodes];
     v323 = 0;
-    v16 = a3;
-    v17 = _PKPaymentValidatePropertyMembership(request, @"countryCode", v14, v15, a3, &v323);
+    typeCopy2 = type;
+    v17 = _PKPaymentValidatePropertyMembership(request, @"countryCode", v14, iSOCountryCodes, type, &v323);
     v18 = v323;
     if (v17)
     {
-      v19 = v5->_request;
+      v19 = selfCopy->_request;
       v20 = objc_opt_class();
-      v21 = [MEMORY[0x1E695DF58] ISOCurrencyCodes];
+      iSOCurrencyCodes = [MEMORY[0x1E695DF58] ISOCurrencyCodes];
       v322 = v18;
-      LODWORD(v20) = _PKPaymentValidatePropertyMembership(v19, @"currencyCode", v20, v21, a3, &v322);
+      LODWORD(v20) = _PKPaymentValidatePropertyMembership(v19, @"currencyCode", v20, iSOCurrencyCodes, type, &v322);
       v22 = v322;
 
       if (v20)
       {
-        v23 = v5->_request;
+        v23 = selfCopy->_request;
         v24 = objc_opt_class();
         v321 = v22;
-        v25 = _PKPaymentValidateProperty(v23, @"applicationData", v24, 0, a3, &v321);
+        v25 = _PKPaymentValidateProperty(v23, @"applicationData", v24, 0, type, &v321);
         v26 = v321;
 
         if (v25)
         {
-          v27 = v5->_request;
+          v27 = selfCopy->_request;
           v28 = objc_opt_class();
           v320 = v26;
-          LODWORD(v27) = _PKPaymentValidatePropertyArray(v27, @"shippingMethods", v28, 0, 0, a3, &v320);
+          LODWORD(v27) = _PKPaymentValidatePropertyArray(v27, @"shippingMethods", v28, 0, 0, type, &v320);
           v18 = v320;
 
           if (v27)
@@ -348,22 +348,22 @@ LABEL_27:
             aBlock[1] = 3221225472;
             aBlock[2] = __58__PKPaymentRequestValidator_isValidWithAPIType_withError___block_invoke;
             aBlock[3] = &unk_1E79DA3F0;
-            aBlock[4] = v5;
+            aBlock[4] = selfCopy;
             v29 = _Block_copy(aBlock);
-            v30 = v5->_request;
+            v30 = selfCopy->_request;
             v31 = objc_opt_class();
             v318 = v18;
-            v32 = _PKPaymentValidatePropertyArray(v30, @"paymentSummaryItems", v31, v29, 1, a3, &v318);
-            v15 = v318;
+            v32 = _PKPaymentValidatePropertyArray(v30, @"paymentSummaryItems", v31, v29, 1, type, &v318);
+            iSOCountryCodes = v318;
 
             if (v32)
             {
-              if ([(PKPaymentRequest *)v5->_request supportsCouponCode])
+              if ([(PKPaymentRequest *)selfCopy->_request supportsCouponCode])
               {
-                v33 = v5->_request;
+                v33 = selfCopy->_request;
                 v34 = objc_opt_class();
-                v317 = v15;
-                v17 = _PKPaymentValidateProperty(v33, @"couponCode", v34, 0, a3, &v317);
+                v317 = iSOCountryCodes;
+                v17 = _PKPaymentValidateProperty(v33, @"couponCode", v34, 0, type, &v317);
                 v18 = v317;
                 goto LABEL_20;
               }
@@ -376,7 +376,7 @@ LABEL_27:
               v17 = 0;
             }
 
-            v18 = v15;
+            v18 = iSOCountryCodes;
           }
 
           else
@@ -385,17 +385,17 @@ LABEL_27:
           }
 
 LABEL_21:
-          v35 = [(PKPaymentRequest *)v5->_request recurringPaymentRequest];
+          recurringPaymentRequest = [(PKPaymentRequest *)selfCopy->_request recurringPaymentRequest];
 
-          v36 = [(PKPaymentRequest *)v5->_request automaticReloadPaymentRequest];
+          automaticReloadPaymentRequest = [(PKPaymentRequest *)selfCopy->_request automaticReloadPaymentRequest];
 
-          v37 = [(PKPaymentRequest *)v5->_request multiTokenContexts];
-          v38 = [v37 count];
+          multiTokenContexts = [(PKPaymentRequest *)selfCopy->_request multiTokenContexts];
+          v38 = [multiTokenContexts count];
 
           if (v17)
           {
             v39 = 1;
-            if (v35 | v36 && v38)
+            if (recurringPaymentRequest | automaticReloadPaymentRequest && v38)
             {
               v361 = *MEMORY[0x1E696A578];
               v362[0] = @"Recurring or automatic reload payment requests and multi-token contexts cannot be used together on the same payment request";
@@ -412,9 +412,9 @@ LABEL_21:
             v39 = 0;
           }
 
-          v42 = [(PKPaymentRequest *)v5->_request deferredPaymentRequest];
+          deferredPaymentRequest = [(PKPaymentRequest *)selfCopy->_request deferredPaymentRequest];
 
-          if (v39 && v42 && v38)
+          if (v39 && deferredPaymentRequest && v38)
           {
             v359 = *MEMORY[0x1E696A578];
             v360 = @"Deferred payment requests and multi-token contexts cannot be used together on the same payment request";
@@ -430,9 +430,9 @@ LABEL_30:
 
           if (v39)
           {
-            v47 = [(PKPaymentRequest *)v5->_request multiTokenContexts];
+            multiTokenContexts2 = [(PKPaymentRequest *)selfCopy->_request multiTokenContexts];
 
-            if (!v47)
+            if (!multiTokenContexts2)
             {
               v127 = MEMORY[0x1E696ABC0];
               v357 = *MEMORY[0x1E696A578];
@@ -455,24 +455,24 @@ LABEL_35:
           v316[1] = 3221225472;
           v316[2] = __58__PKPaymentRequestValidator_isValidWithAPIType_withError___block_invoke_2;
           v316[3] = &unk_1E79DA3F0;
-          v316[4] = v5;
+          v316[4] = selfCopy;
           v48 = _Block_copy(v316);
           if (v46)
           {
-            v49 = v5->_request;
+            v49 = selfCopy->_request;
             v50 = objc_opt_class();
             v315 = v18;
-            isKindOfClass = _PKPaymentValidatePropertyArray(v49, @"multiTokenContexts", v50, v48, 0, a3, &v315);
+            isKindOfClass = _PKPaymentValidatePropertyArray(v49, @"multiTokenContexts", v50, v48, 0, type, &v315);
             v51 = v315;
 
             if (isKindOfClass)
             {
-              v52 = [(PKPaymentRequest *)v5->_request paymentSummaryItems];
-              v53 = [v52 lastObject];
-              v54 = [v53 amount];
+              paymentSummaryItems = [(PKPaymentRequest *)selfCopy->_request paymentSummaryItems];
+              lastObject = [paymentSummaryItems lastObject];
+              amount = [lastObject amount];
 
               v314 = v51;
-              isKindOfClass = [(PKPaymentRequestValidator *)v5 _checkMultiTokenTotal:v54 withAPIType:a3 error:&v314];
+              isKindOfClass = [(PKPaymentRequestValidator *)selfCopy _checkMultiTokenTotal:amount withAPIType:type error:&v314];
               v18 = v314;
             }
 
@@ -487,23 +487,23 @@ LABEL_35:
             isKindOfClass = 0;
           }
 
-          v55 = [(PKPaymentRequest *)v5->_request recurringPaymentRequest];
-          v56 = [(PKPaymentRequest *)v5->_request automaticReloadPaymentRequest];
-          v57 = [(PKPaymentRequest *)v5->_request deferredPaymentRequest];
-          v58 = v57;
-          v59 = v55 != 0;
+          recurringPaymentRequest2 = [(PKPaymentRequest *)selfCopy->_request recurringPaymentRequest];
+          automaticReloadPaymentRequest2 = [(PKPaymentRequest *)selfCopy->_request automaticReloadPaymentRequest];
+          deferredPaymentRequest2 = [(PKPaymentRequest *)selfCopy->_request deferredPaymentRequest];
+          v58 = deferredPaymentRequest2;
+          v59 = recurringPaymentRequest2 != 0;
           v60 = 1;
-          if (v55)
+          if (recurringPaymentRequest2)
           {
             v60 = 2;
           }
 
-          if (v56)
+          if (automaticReloadPaymentRequest2)
           {
             v59 = v60;
           }
 
-          if (v57)
+          if (deferredPaymentRequest2)
           {
             ++v59;
           }
@@ -512,54 +512,54 @@ LABEL_35:
           {
             v355 = *MEMORY[0x1E696A578];
             v356 = @"A payment request can only have one of recurring, automatic reload, or deferred payment request set.";
-            v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v356 forKeys:&v355 count:1];
-            v62 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v61];
+            merchantSession3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v356 forKeys:&v355 count:1];
+            v62 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:merchantSession3];
 
             isKindOfClass = 0;
-            a4 = v258;
+            error = errorCopy;
 LABEL_48:
 
 LABEL_49:
             v11 = v62;
 LABEL_69:
-            v6 = v265;
+            requestType = v265;
 LABEL_70:
 
             v12 = v257;
-            v7 = v261;
-            v8 = v263;
+            isPeerPaymentRequest = v261;
+            requestType2 = v263;
             goto LABEL_71;
           }
 
           v63 = isKindOfClass ^ 1;
-          if (!v55)
+          if (!recurringPaymentRequest2)
           {
             v63 = 1;
           }
 
           if ((v63 & 1) == 0)
           {
-            v64 = [[PKRecurringPaymentRequestValidator alloc] initWithRecurringPaymentRequest:v55];
-            v65 = [(PKPaymentRequest *)v5->_request currencyCode];
-            [(PKRecurringPaymentRequestValidator *)v64 setCurrencyCode:v65];
+            v64 = [[PKRecurringPaymentRequestValidator alloc] initWithRecurringPaymentRequest:recurringPaymentRequest2];
+            currencyCode = [(PKPaymentRequest *)selfCopy->_request currencyCode];
+            [(PKRecurringPaymentRequestValidator *)v64 setCurrencyCode:currencyCode];
 
             v313 = v18;
-            isKindOfClass = [(PKRecurringPaymentRequestValidator *)v64 isValidWithAPIType:a3 withError:&v313];
+            isKindOfClass = [(PKRecurringPaymentRequestValidator *)v64 isValidWithAPIType:type withError:&v313];
             v66 = v313;
 
             v18 = v66;
-            v16 = a3;
+            typeCopy2 = type;
           }
 
-          if (v56 && isKindOfClass)
+          if (automaticReloadPaymentRequest2 && isKindOfClass)
           {
-            v67 = [[PKAutomaticReloadPaymentRequestValidator alloc] initWithAutomaticReloadPaymentRequest:v56];
-            v68 = [(PKPaymentRequest *)v5->_request currencyCode];
-            [(PKAutomaticReloadPaymentRequestValidator *)v67 setCurrencyCode:v68];
+            v67 = [[PKAutomaticReloadPaymentRequestValidator alloc] initWithAutomaticReloadPaymentRequest:automaticReloadPaymentRequest2];
+            currencyCode2 = [(PKPaymentRequest *)selfCopy->_request currencyCode];
+            [(PKAutomaticReloadPaymentRequestValidator *)v67 setCurrencyCode:currencyCode2];
 
-            [(PKAutomaticReloadPaymentRequestValidator *)v67 setRequestType:[(PKPaymentRequest *)v5->_request requestType]];
+            [(PKAutomaticReloadPaymentRequestValidator *)v67 setRequestType:[(PKPaymentRequest *)selfCopy->_request requestType]];
             v312 = v18;
-            isKindOfClass = [(PKAutomaticReloadPaymentRequestValidator *)v67 isValidWithAPIType:v16 withError:&v312];
+            isKindOfClass = [(PKAutomaticReloadPaymentRequestValidator *)v67 isValidWithAPIType:typeCopy2 withError:&v312];
             v69 = v312;
 
             v18 = v69;
@@ -568,37 +568,37 @@ LABEL_70:
           if (v58 && isKindOfClass)
           {
             v70 = [[PKDeferredPaymentRequestValidator alloc] initWithDeferredPaymentRequest:v58];
-            v71 = [(PKPaymentRequest *)v5->_request currencyCode];
-            [(PKDeferredPaymentRequestValidator *)v70 setCurrencyCode:v71];
+            currencyCode3 = [(PKPaymentRequest *)selfCopy->_request currencyCode];
+            [(PKDeferredPaymentRequestValidator *)v70 setCurrencyCode:currencyCode3];
 
             v311 = v18;
-            LOBYTE(v71) = [(PKDeferredPaymentRequestValidator *)v70 isValidWithAPIType:a3 withError:&v311];
+            LOBYTE(currencyCode3) = [(PKDeferredPaymentRequestValidator *)v70 isValidWithAPIType:type withError:&v311];
             v11 = v311;
 
-            if ((v71 & 1) == 0)
+            if ((currencyCode3 & 1) == 0)
             {
               goto LABEL_68;
             }
 
             v18 = v11;
-            v6 = v265;
+            requestType = v265;
           }
 
           else
           {
-            v6 = v265;
+            requestType = v265;
             if (!isKindOfClass)
             {
               v11 = v18;
-              a4 = v258;
+              error = errorCopy;
               goto LABEL_70;
             }
           }
 
-          if (v6 != 10 && v6)
+          if (requestType != 10 && requestType)
           {
             v11 = v18;
-            a4 = v258;
+            error = errorCopy;
             goto LABEL_113;
           }
 
@@ -611,27 +611,27 @@ LABEL_70:
             v73 = v74;
           }
 
-          v75 = v5->_request;
+          v75 = selfCopy->_request;
           v76 = objc_opt_class();
           v77 = objc_opt_class();
           v310 = v18;
-          LODWORD(v75) = _PKPaymentValidatePropertyUnion(v75, @"supportedNetworks", v76, v77, v73, 1, a3, &v310);
+          LODWORD(v75) = _PKPaymentValidatePropertyUnion(v75, @"supportedNetworks", v76, v77, v73, 1, type, &v310);
           v11 = v310;
 
           if (v75)
           {
-            a4 = v258;
-            v6 = v265;
+            error = errorCopy;
+            requestType = v265;
 LABEL_113:
-            if (!v260 && v6 != 10 && v6)
+            if (!v260 && requestType != 10 && requestType)
             {
               isKindOfClass = 1;
               goto LABEL_70;
             }
 
-            v137 = v5->_request;
+            v137 = selfCopy->_request;
             v309 = v11;
-            isKindOfClass = _PKPaymentValidateMerchantCapabilities(v137, a3, v6, &v309);
+            isKindOfClass = _PKPaymentValidateMerchantCapabilities(v137, type, requestType, &v309);
             v62 = v309;
 
             if (!isKindOfClass)
@@ -639,27 +639,27 @@ LABEL_113:
               goto LABEL_49;
             }
 
-            v138 = [(PKPaymentRequest *)v5->_request merchantSession];
+            merchantSession2 = [(PKPaymentRequest *)selfCopy->_request merchantSession];
 
-            if (v138)
+            if (merchantSession2)
             {
               if ((PKBypassCertValidation() & 1) == 0)
               {
-                v61 = [(PKPaymentRequest *)v5->_request merchantSession];
-                v139 = PKValidatePaymentMerchantSession(v61);
+                merchantSession3 = [(PKPaymentRequest *)selfCopy->_request merchantSession];
+                v139 = PKValidatePaymentMerchantSession(merchantSession3);
                 isKindOfClass = v139 == 0;
 
                 goto LABEL_48;
               }
             }
 
-            else if (![(PKPaymentRequest *)v5->_request shouldUseMerchantSession])
+            else if (![(PKPaymentRequest *)selfCopy->_request shouldUseMerchantSession])
             {
-              v144 = v5->_request;
+              v144 = selfCopy->_request;
               v145 = objc_opt_class();
               v308 = v62;
-              isKindOfClass = _PKPaymentValidateProperty(v144, @"merchantIdentifier", v145, 1, a3, &v308);
-              v61 = v62;
+              isKindOfClass = _PKPaymentValidateProperty(v144, @"merchantIdentifier", v145, 1, type, &v308);
+              merchantSession3 = v62;
               v62 = v308;
               goto LABEL_48;
             }
@@ -670,7 +670,7 @@ LABEL_113:
 
 LABEL_68:
           isKindOfClass = 0;
-          a4 = v258;
+          error = errorCopy;
           goto LABEL_69;
         }
 
@@ -687,13 +687,13 @@ LABEL_20:
   }
 
 LABEL_71:
-  if ((isKindOfClass & 1) != 0 && v8 == 8)
+  if ((isKindOfClass & 1) != 0 && requestType2 == 8)
   {
-    v78 = v5->_request;
+    v78 = selfCopy->_request;
     v79 = objc_opt_class();
     v307 = v11;
-    v80 = a3;
-    LODWORD(v78) = _PKPaymentValidateProperty(v78, @"serviceProviderOrder", v79, 1, a3, &v307);
+    typeCopy16 = type;
+    LODWORD(v78) = _PKPaymentValidateProperty(v78, @"serviceProviderOrder", v79, 1, type, &v307);
     v81 = v307;
 
     if (!v78)
@@ -703,12 +703,12 @@ LABEL_147:
       goto LABEL_155;
     }
 
-    v82 = [(PKPaymentRequest *)v5->_request serviceProviderPaymentRequest];
-    v83 = [v82 serviceProviderOrder];
+    serviceProviderPaymentRequest = [(PKPaymentRequest *)selfCopy->_request serviceProviderPaymentRequest];
+    serviceProviderOrder = [serviceProviderPaymentRequest serviceProviderOrder];
 
     v84 = objc_opt_class();
     v306 = v81;
-    isKindOfClass = _PKPaymentValidateProperty(v83, @"identifier", v84, 1, a3, &v306);
+    isKindOfClass = _PKPaymentValidateProperty(serviceProviderOrder, @"identifier", v84, 1, type, &v306);
     v11 = v306;
 
     if (!isKindOfClass)
@@ -716,32 +716,32 @@ LABEL_147:
       goto LABEL_80;
     }
 
-    v85 = v7;
+    v85 = isPeerPaymentRequest;
     v86 = objc_opt_class();
     v305 = v11;
-    isKindOfClass = _PKPaymentValidateProperty(v83, @"itemDescription", v86, 0, a3, &v305);
+    isKindOfClass = _PKPaymentValidateProperty(serviceProviderOrder, @"itemDescription", v86, 0, type, &v305);
     v87 = v305;
 
     if (isKindOfClass)
     {
       v88 = objc_opt_class();
       v304 = v87;
-      isKindOfClass = _PKPaymentValidateProperty(v83, @"serviceProviderIdentifier", v88, 1, a3, &v304);
+      isKindOfClass = _PKPaymentValidateProperty(serviceProviderOrder, @"serviceProviderIdentifier", v88, 1, type, &v304);
       v11 = v304;
 
       if (!isKindOfClass)
       {
 LABEL_79:
-        v7 = v85;
+        isPeerPaymentRequest = v85;
 LABEL_80:
 
-        v6 = v265;
+        requestType = v265;
         goto LABEL_81;
       }
 
       v89 = objc_opt_class();
       v303 = v11;
-      isKindOfClass = _PKPaymentValidateProperty(v83, @"serviceProviderData", v89, 0, a3, &v303);
+      isKindOfClass = _PKPaymentValidateProperty(serviceProviderOrder, @"serviceProviderData", v89, 0, type, &v303);
       v87 = v303;
     }
 
@@ -750,41 +750,41 @@ LABEL_80:
   }
 
 LABEL_81:
-  if ((isKindOfClass & v7 & 1) == 0)
+  if ((isKindOfClass & isPeerPaymentRequest & 1) == 0)
   {
     if ((isKindOfClass & 1) == 0)
     {
       v126 = 0;
       v81 = v11;
 LABEL_101:
-      v80 = a3;
+      typeCopy16 = type;
       goto LABEL_155;
     }
 
 LABEL_94:
-    if (v6 == 1 || [(PKPaymentRequest *)v5->_request _isPSD2StyleRequest]|| [(PKPaymentRequest *)v5->_request _isAMPApplePayClassicRequest])
+    if (requestType == 1 || [(PKPaymentRequest *)selfCopy->_request _isPSD2StyleRequest]|| [(PKPaymentRequest *)selfCopy->_request _isAMPApplePayClassicRequest])
     {
-      v118 = v5->_request;
+      v118 = selfCopy->_request;
       v119 = objc_opt_class();
       v277 = v11;
-      v80 = a3;
-      v120 = _PKPaymentValidateProperty(v118, @"externalizedContext", v119, 0, a3, &v277);
+      typeCopy16 = type;
+      v120 = _PKPaymentValidateProperty(v118, @"externalizedContext", v119, 0, type, &v277);
       v81 = v277;
 
       if (v120)
       {
-        v121 = v5->_request;
+        v121 = selfCopy->_request;
         v122 = objc_opt_class();
         v276 = v81;
-        v120 = _PKPaymentValidatePropertyArray(v121, @"paymentContentItems", v122, 0, 1, a3, &v276);
+        v120 = _PKPaymentValidatePropertyArray(v121, @"paymentContentItems", v122, 0, 1, type, &v276);
         v123 = v276;
 
         if (v120)
         {
-          v124 = v5->_request;
+          v124 = selfCopy->_request;
           v125 = objc_opt_class();
           v275 = v123;
-          v120 = _PKPaymentValidateProperty(v124, @"appleIDAuthenticationContext", v125, 0, a3, &v275);
+          v120 = _PKPaymentValidateProperty(v124, @"appleIDAuthenticationContext", v125, 0, type, &v275);
           v81 = v275;
         }
 
@@ -794,13 +794,13 @@ LABEL_94:
         }
       }
 
-      v128 = [(PKPaymentRequest *)v5->_request externalizedContext];
-      if (v128)
+      externalizedContext = [(PKPaymentRequest *)selfCopy->_request externalizedContext];
+      if (externalizedContext)
       {
-        v129 = v128;
-        v130 = [(PKPaymentRequest *)v5->_request appleIDAuthenticationContext];
+        v129 = externalizedContext;
+        appleIDAuthenticationContext = [(PKPaymentRequest *)selfCopy->_request appleIDAuthenticationContext];
 
-        if (!v130)
+        if (!appleIDAuthenticationContext)
         {
           v133 = MEMORY[0x1E696ABC0];
           v346 = *MEMORY[0x1E696A578];
@@ -822,8 +822,8 @@ LABEL_94:
         goto LABEL_147;
       }
 
-      v131 = [(PKPaymentRequest *)v5->_request paymentContentItems];
-      v132 = [v131 count];
+      paymentContentItems = [(PKPaymentRequest *)selfCopy->_request paymentContentItems];
+      v132 = [paymentContentItems count];
 
       if (v132 >= 0x65)
       {
@@ -834,53 +834,53 @@ LABEL_94:
         v135 = &v345;
         v136 = &v344;
 LABEL_152:
-        v94 = [v134 dictionaryWithObjects:v135 forKeys:v136 count:1];
-        v95 = [v133 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v94];
+        lastObject2 = [v134 dictionaryWithObjects:v135 forKeys:v136 count:1];
+        v95 = [v133 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:lastObject2];
 
         goto LABEL_153;
       }
 
       v11 = v81;
-      v6 = v265;
+      requestType = v265;
     }
 
     if (v12 == 6)
     {
-      v140 = v5->_request;
+      v140 = selfCopy->_request;
       v141 = objc_opt_class();
       v274 = v11;
-      v142 = _PKPaymentValidateProperty(v140, @"externalizedContext", v141, 0, a3, &v274);
+      v142 = _PKPaymentValidateProperty(v140, @"externalizedContext", v141, 0, type, &v274);
       v81 = v274;
 
-      if (!v142 || v6 == 6)
+      if (!v142 || requestType == 6)
       {
-        v80 = a3;
+        typeCopy16 = type;
       }
 
       else
       {
-        v143 = [(PKPaymentRequest *)v5->_request clientViewSourceIdentifier];
-        v80 = a3;
-        if (v143)
+        clientViewSourceIdentifier = [(PKPaymentRequest *)selfCopy->_request clientViewSourceIdentifier];
+        typeCopy16 = type;
+        if (clientViewSourceIdentifier)
         {
           v142 = 1;
         }
 
         else
         {
-          v146 = v5->_request;
+          v146 = selfCopy->_request;
           v147 = objc_opt_class();
           v273 = v81;
-          v142 = _PKPaymentValidatePropertyArray(v146, @"paymentContentItems", v147, 0, 1, a3, &v273);
+          v142 = _PKPaymentValidatePropertyArray(v146, @"paymentContentItems", v147, 0, 1, type, &v273);
           v148 = v273;
 
           v81 = v148;
         }
       }
 
-      v149 = [(PKPaymentRequest *)v5->_request externalizedContext];
+      externalizedContext2 = [(PKPaymentRequest *)selfCopy->_request externalizedContext];
 
-      if (!v149)
+      if (!externalizedContext2)
       {
         v133 = MEMORY[0x1E696ABC0];
         v342 = *MEMORY[0x1E696A578];
@@ -897,19 +897,19 @@ LABEL_152:
       }
 
       v11 = v81;
-      v6 = v265;
+      requestType = v265;
     }
 
-    if (v6 > 0xF || ((1 << v6) & 0xA0C0) == 0)
+    if (requestType > 0xF || ((1 << requestType) & 0xA0C0) == 0)
     {
-      v180 = [(PKPaymentRequest *)v5->_request paymentSummaryItems];
-      v94 = [v180 lastObject];
+      paymentSummaryItems2 = [(PKPaymentRequest *)selfCopy->_request paymentSummaryItems];
+      lastObject2 = [paymentSummaryItems2 lastObject];
 
       v181 = objc_opt_class();
-      if (!_PKPaymentValidateProperty(v94, @"amount", v181, 1, a3, 0) || ([v94 amount], v182 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AB90], "notANumber"), v183 = objc_claimAutoreleasedReturnValue(), v184 = objc_msgSend(v182, "isEqualToNumber:", v183), v183, v182, v184))
+      if (!_PKPaymentValidateProperty(lastObject2, @"amount", v181, 1, type, 0) || ([lastObject2 amount], v182 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AB90], "notANumber"), v183 = objc_claimAutoreleasedReturnValue(), v184 = objc_msgSend(v182, "isEqualToNumber:", v183), v183, v182, v184))
       {
-        v80 = a3;
-        if ((a3 - 1) >= 2)
+        typeCopy16 = type;
+        if ((type - 1) >= 2)
         {
           v185 = @"You must provide a total amount to be charged in the final payment summary item, even if the total item is pending.";
         }
@@ -926,26 +926,26 @@ LABEL_152:
         v95 = [v186 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v187];
 
         v126 = 0;
-        v5 = v264;
+        selfCopy = v264;
         goto LABEL_154;
       }
 
-      v5 = v264;
+      selfCopy = v264;
     }
 
-    v150 = [(PKPaymentRequest *)v5->_request paymentSummaryItems];
-    v151 = [v150 count];
+    paymentSummaryItems3 = [(PKPaymentRequest *)selfCopy->_request paymentSummaryItems];
+    v151 = [paymentSummaryItems3 count];
 
     if (v151 >= 0x65)
     {
       v152 = MEMORY[0x1E696AEC0];
-      v80 = a3;
-      v153 = _PKPaymentRequestGetDescriptivePropertyName(@"paymentSummaryItems", a3, (a3 - 1) < 2);
-      v94 = [v152 stringWithFormat:@"%@ may not contain more than 100 items", v153];
+      typeCopy16 = type;
+      v153 = _PKPaymentRequestGetDescriptivePropertyName(@"paymentSummaryItems", type, (type - 1) < 2);
+      lastObject2 = [v152 stringWithFormat:@"%@ may not contain more than 100 items", v153];
 
       v154 = MEMORY[0x1E696ABC0];
       v338 = *MEMORY[0x1E696A578];
-      v339 = v94;
+      v339 = lastObject2;
       v155 = MEMORY[0x1E695DF20];
       v156 = &v339;
       v157 = &v338;
@@ -956,63 +956,63 @@ LABEL_150:
       goto LABEL_153;
     }
 
-    v158 = [(PKPaymentRequest *)v5->_request availableShippingMethods];
-    v159 = [v158 methods];
-    v160 = [v159 count];
+    availableShippingMethods = [(PKPaymentRequest *)selfCopy->_request availableShippingMethods];
+    methods = [availableShippingMethods methods];
+    v160 = [methods count];
 
     if (v160 >= 0x65)
     {
       v161 = MEMORY[0x1E696AEC0];
-      v80 = a3;
-      v162 = _PKPaymentRequestGetDescriptivePropertyName(@"shippingMethods", a3, (a3 - 1) < 2);
-      v94 = [v161 stringWithFormat:@"%@ may not contain more than 100 items", v162];
+      typeCopy16 = type;
+      v162 = _PKPaymentRequestGetDescriptivePropertyName(@"shippingMethods", type, (type - 1) < 2);
+      lastObject2 = [v161 stringWithFormat:@"%@ may not contain more than 100 items", v162];
 
       v154 = MEMORY[0x1E696ABC0];
       v336 = *MEMORY[0x1E696A578];
-      v337 = v94;
+      v337 = lastObject2;
       v155 = MEMORY[0x1E695DF20];
       v156 = &v337;
       v157 = &v336;
       goto LABEL_150;
     }
 
-    v175 = [(PKPaymentRequest *)v5->_request applicationData];
-    p_isa = &v5->super.isa;
-    v177 = [v175 length] < 0x401 || v260;
+    applicationData = [(PKPaymentRequest *)selfCopy->_request applicationData];
+    p_isa = &selfCopy->super.isa;
+    v177 = [applicationData length] < 0x401 || v260;
 
     if ((v177 & 1) == 0)
     {
       v188 = MEMORY[0x1E696AEC0];
-      v80 = a3;
-      v189 = _PKPaymentRequestGetDescriptivePropertyName(@"applicationData", a3, (a3 - 1) < 2);
-      v94 = [v188 stringWithFormat:@"%@ may not be more than 1024 bytes", v189];
+      typeCopy16 = type;
+      v189 = _PKPaymentRequestGetDescriptivePropertyName(@"applicationData", type, (type - 1) < 2);
+      lastObject2 = [v188 stringWithFormat:@"%@ may not be more than 1024 bytes", v189];
 
       v190 = MEMORY[0x1E696ABC0];
       v334 = *MEMORY[0x1E696A578];
-      v335 = v94;
+      v335 = lastObject2;
       v191 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v335 forKeys:&v334 count:1];
       v95 = [v190 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v191];
 
       v126 = 0;
-      v5 = p_isa;
+      selfCopy = p_isa;
       goto LABEL_154;
     }
 
-    v5 = p_isa;
+    selfCopy = p_isa;
     if (([p_isa[1] isShippingEditable] & 1) == 0)
     {
-      v178 = [p_isa[1] shippingContact];
+      shippingContact = [p_isa[1] shippingContact];
 
-      if (!v178)
+      if (!shippingContact)
       {
         v198 = MEMORY[0x1E696AEC0];
-        v80 = a3;
-        v199 = _PKPaymentRequestGetDescriptivePropertyName(@"shippingEditable", a3, 0);
-        v94 = [v198 stringWithFormat:@"When %@ is set to NO a shipping contact must be provided", v199];
+        typeCopy16 = type;
+        v199 = _PKPaymentRequestGetDescriptivePropertyName(@"shippingEditable", type, 0);
+        lastObject2 = [v198 stringWithFormat:@"When %@ is set to NO a shipping contact must be provided", v199];
 
         v154 = MEMORY[0x1E696ABC0];
         v332 = *MEMORY[0x1E696A578];
-        v333 = v94;
+        v333 = lastObject2;
         v155 = MEMORY[0x1E695DF20];
         v156 = &v333;
         v157 = &v332;
@@ -1025,25 +1025,25 @@ LABEL_150:
       v179 = MEMORY[0x1E696ABC0];
       v330 = *MEMORY[0x1E696A578];
       v331 = @"The API type is not valid";
-      v94 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v331 forKeys:&v330 count:1];
-      v95 = [v179 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v94];
+      lastObject2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v331 forKeys:&v330 count:1];
+      v95 = [v179 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:lastObject2];
 
       v126 = 0;
-      v80 = a3;
+      typeCopy16 = type;
       goto LABEL_154;
     }
 
-    if (v6 > 0xD || ((1 << v6) & 0x20C0) == 0)
+    if (requestType > 0xD || ((1 << requestType) & 0x20C0) == 0)
     {
-      v207 = [p_isa[1] paymentSummaryItems];
-      v208 = [v207 lastObject];
-      v209 = [v208 amount];
+      paymentSummaryItems4 = [p_isa[1] paymentSummaryItems];
+      lastObject3 = [paymentSummaryItems4 lastObject];
+      amount2 = [lastObject3 amount];
 
       v272 = v11;
-      LODWORD(v207) = [p_isa _checkTotal:v209 withAPIType:a3 error:&v272];
+      LODWORD(paymentSummaryItems4) = [p_isa _checkTotal:amount2 withAPIType:type error:&v272];
       v81 = v272;
 
-      if (!v207)
+      if (!paymentSummaryItems4)
       {
 LABEL_211:
         v126 = 0;
@@ -1053,17 +1053,17 @@ LABEL_211:
       v11 = v81;
     }
 
-    v192 = [p_isa[1] supportedCountries];
-    v193 = [v192 count];
+    supportedCountries = [p_isa[1] supportedCountries];
+    v193 = [supportedCountries count];
 
     if (v193)
     {
       v194 = p_isa[1];
       v195 = objc_opt_class();
       v196 = objc_opt_class();
-      v197 = [MEMORY[0x1E695DF58] ISOCountryCodes];
+      iSOCountryCodes2 = [MEMORY[0x1E695DF58] ISOCountryCodes];
       v271 = v11;
-      LODWORD(v194) = _PKPaymentValidatePropertyUnion(v194, @"supportedCountries", v195, v196, v197, 0, a3, &v271);
+      LODWORD(v194) = _PKPaymentValidatePropertyUnion(v194, @"supportedCountries", v195, v196, iSOCountryCodes2, 0, type, &v271);
       v81 = v271;
 
       if (!v194)
@@ -1077,33 +1077,33 @@ LABEL_211:
       v81 = v11;
     }
 
-    v80 = a3;
+    typeCopy16 = type;
     if (v260)
     {
       if (v265 == 3)
       {
-        v200 = [p_isa[1] merchantSession];
+        merchantSession4 = [p_isa[1] merchantSession];
 
-        if (v200)
+        if (merchantSession4)
         {
           v201 = p_isa[1];
           v202 = objc_opt_class();
           v270 = v81;
-          v203 = _PKPaymentValidateProperty(v201, @"passTypeIdentifier", v202, 1, a3, &v270);
-          v94 = v270;
+          v203 = _PKPaymentValidateProperty(v201, @"passTypeIdentifier", v202, 1, type, &v270);
+          lastObject2 = v270;
 
           if (!v203)
           {
             v126 = 0;
-            v81 = v94;
+            v81 = lastObject2;
             goto LABEL_249;
           }
 
           v204 = v264->_request;
-          v5 = v264;
+          selfCopy = v264;
           v205 = objc_opt_class();
-          v269 = v94;
-          v126 = _PKPaymentValidateProperty(v204, @"passSerialNumber", v205, 1, a3, &v269);
+          v269 = lastObject2;
+          v126 = _PKPaymentValidateProperty(v204, @"passSerialNumber", v205, 1, type, &v269);
           v95 = v269;
           goto LABEL_154;
         }
@@ -1114,16 +1114,16 @@ LABEL_211:
     {
       if (([p_isa[1] isVirtualCardRequest] & 1) == 0)
       {
-        v206 = [p_isa[1] peerPaymentRequest];
-        if (v206)
+        peerPaymentRequest = [p_isa[1] peerPaymentRequest];
+        if (peerPaymentRequest)
         {
         }
 
         else
         {
-          v254 = [p_isa[1] passTypeIdentifier];
+          passTypeIdentifier = [p_isa[1] passTypeIdentifier];
 
-          if (v254)
+          if (passTypeIdentifier)
           {
             v133 = MEMORY[0x1E696ABC0];
             v328 = *MEMORY[0x1E696A578];
@@ -1138,18 +1138,18 @@ LABEL_211:
 
       if (([p_isa[1] isVirtualCardRequest] & 1) == 0)
       {
-        v253 = [p_isa[1] peerPaymentRequest];
-        if (v253)
+        peerPaymentRequest2 = [p_isa[1] peerPaymentRequest];
+        if (peerPaymentRequest2)
         {
-          v94 = v253;
+          lastObject2 = peerPaymentRequest2;
           v126 = 1;
           v95 = v81;
           goto LABEL_154;
         }
 
-        v255 = [p_isa[1] passSerialNumber];
+        passSerialNumber = [p_isa[1] passSerialNumber];
 
-        if (v255)
+        if (passSerialNumber)
         {
           v133 = MEMORY[0x1E696ABC0];
           v326 = *MEMORY[0x1E696A578];
@@ -1166,11 +1166,11 @@ LABEL_211:
     goto LABEL_155;
   }
 
-  v90 = v5->_request;
+  v90 = selfCopy->_request;
   v91 = objc_opt_class();
   v302 = v11;
-  v80 = a3;
-  LODWORD(v90) = _PKPaymentValidateProperty(v90, @"peerPaymentQuote", v91, 1, a3, &v302);
+  typeCopy16 = type;
+  LODWORD(v90) = _PKPaymentValidateProperty(v90, @"peerPaymentQuote", v91, 1, type, &v302);
   v81 = v302;
 
   if (!v90)
@@ -1178,11 +1178,11 @@ LABEL_211:
     goto LABEL_147;
   }
 
-  v92 = v5->_request;
+  v92 = selfCopy->_request;
   v93 = objc_opt_class();
-  v94 = [MEMORY[0x1E695DF58] ISOCurrencyCodes];
+  lastObject2 = [MEMORY[0x1E695DF58] ISOCurrencyCodes];
   v301 = v81;
-  LODWORD(v93) = _PKPaymentValidatePropertyMembership(v92, @"currencyCode", v93, v94, a3, &v301);
+  LODWORD(v93) = _PKPaymentValidatePropertyMembership(v92, @"currencyCode", v93, lastObject2, type, &v301);
   v95 = v301;
 
   if (!v93)
@@ -1195,10 +1195,10 @@ LABEL_154:
     goto LABEL_155;
   }
 
-  v96 = v5->_request;
+  v96 = selfCopy->_request;
   v97 = objc_opt_class();
   v300 = v95;
-  LODWORD(v96) = _PKPaymentValidatePropertyArray(v96, @"shippingMethods", v97, 0, 0, a3, &v300);
+  LODWORD(v96) = _PKPaymentValidatePropertyArray(v96, @"shippingMethods", v97, 0, 0, type, &v300);
   v81 = v300;
 
   if (!v96)
@@ -1210,12 +1210,12 @@ LABEL_154:
   v299[1] = 3221225472;
   v299[2] = __58__PKPaymentRequestValidator_isValidWithAPIType_withError___block_invoke_3;
   v299[3] = &unk_1E79DA3F0;
-  v299[4] = v5;
+  v299[4] = selfCopy;
   v98 = _Block_copy(v299);
-  v99 = v5->_request;
+  v99 = selfCopy->_request;
   v100 = objc_opt_class();
   v298 = v81;
-  v101 = _PKPaymentValidatePropertyArray(v99, @"paymentSummaryItems", v100, v98, 1, a3, &v298);
+  v101 = _PKPaymentValidatePropertyArray(v99, @"paymentSummaryItems", v100, v98, 1, type, &v298);
   v102 = v298;
 
   if (!v101)
@@ -1225,24 +1225,24 @@ LABEL_154:
     goto LABEL_155;
   }
 
-  v103 = [(PKPaymentRequest *)v5->_request peerPaymentRequest];
-  v104 = [v103 peerPaymentQuote];
+  peerPaymentRequest3 = [(PKPaymentRequest *)selfCopy->_request peerPaymentRequest];
+  peerPaymentQuote = [peerPaymentRequest3 peerPaymentQuote];
 
   v105 = objc_opt_class();
   v297 = v102;
-  LODWORD(v103) = _PKPaymentValidateProperty(v104, @"appleHash", v105, 1, a3, &v297);
+  LODWORD(peerPaymentRequest3) = _PKPaymentValidateProperty(peerPaymentQuote, @"appleHash", v105, 1, type, &v297);
   v81 = v297;
 
-  v259 = a4;
-  v256 = v104;
-  if (!v103)
+  errorCopy2 = error;
+  v256 = peerPaymentQuote;
+  if (!peerPaymentRequest3)
   {
     goto LABEL_130;
   }
 
   v106 = objc_opt_class();
   v296 = v81;
-  v107 = _PKPaymentValidateProperty(v104, @"externalHash", v106, 1, a3, &v296);
+  v107 = _PKPaymentValidateProperty(peerPaymentQuote, @"externalHash", v106, 1, type, &v296);
   v108 = v296;
 
   if (!v107)
@@ -1252,7 +1252,7 @@ LABEL_154:
 
   v109 = objc_opt_class();
   v295 = v108;
-  v110 = _PKPaymentValidateProperty(v104, @"totalReceiveAmount", v109, 1, a3, &v295);
+  v110 = _PKPaymentValidateProperty(peerPaymentQuote, @"totalReceiveAmount", v109, 1, type, &v295);
   v81 = v295;
 
   if (!v110)
@@ -1264,7 +1264,7 @@ LABEL_130:
 
   v111 = objc_opt_class();
   v294 = v81;
-  v112 = _PKPaymentValidateProperty(v104, @"totalReceiveAmountCurrency", v111, 1, a3, &v294);
+  v112 = _PKPaymentValidateProperty(peerPaymentQuote, @"totalReceiveAmountCurrency", v111, 1, type, &v294);
   v108 = v294;
 
   if (!v112)
@@ -1277,7 +1277,7 @@ LABEL_213:
 
   v113 = objc_opt_class();
   v293 = v108;
-  v114 = _PKPaymentValidateProperty(v104, @"items", v113, 1, a3, &v293);
+  v114 = _PKPaymentValidateProperty(peerPaymentQuote, @"items", v113, 1, type, &v293);
   v81 = v293;
 
   if (!v114)
@@ -1285,8 +1285,8 @@ LABEL_213:
     goto LABEL_130;
   }
 
-  v115 = [v104 items];
-  v116 = [v115 count];
+  items = [peerPaymentQuote items];
+  v116 = [items count];
 
   if (!v116)
   {
@@ -1305,8 +1305,8 @@ LABEL_214:
   v292 = 0u;
   v289 = 0u;
   v290 = 0u;
-  v212 = [v256 items];
-  v213 = [v212 countByEnumeratingWithState:&v289 objects:v352 count:16];
+  items2 = [v256 items];
+  v213 = [items2 countByEnumeratingWithState:&v289 objects:v352 count:16];
   if (!v213)
   {
     goto LABEL_246;
@@ -1322,7 +1322,7 @@ LABEL_214:
     {
       if (*v290 != v215)
       {
-        objc_enumerationMutation(v212);
+        objc_enumerationMutation(items2);
       }
 
       if ((v117 & 1) == 0)
@@ -1333,10 +1333,10 @@ LABEL_235:
       }
 
       v217 = *(*(&v289 + 1) + 8 * v216);
-      v218 = [v217 type];
-      if ((v218 - 2) >= 3)
+      type = [v217 type];
+      if ((type - 2) >= 3)
       {
-        if (v218 != 1)
+        if (type != 1)
         {
           v231 = MEMORY[0x1E696ABC0];
           v350 = v262;
@@ -1349,7 +1349,7 @@ LABEL_235:
 
         v235 = objc_opt_class();
         v288 = v81;
-        v236 = _PKPaymentValidateProperty(v217, @"totalAmount", v235, 1, a3, &v288);
+        v236 = _PKPaymentValidateProperty(v217, @"totalAmount", v235, 1, type, &v288);
         v221 = v288;
 
         if (!v236)
@@ -1359,7 +1359,7 @@ LABEL_235:
 
         v237 = objc_opt_class();
         v287 = v221;
-        v238 = _PKPaymentValidateProperty(v217, @"totalAmountCurrency", v237, 1, a3, &v287);
+        v238 = _PKPaymentValidateProperty(v217, @"totalAmountCurrency", v237, 1, type, &v287);
         v81 = v287;
 
         if (!v238)
@@ -1371,7 +1371,7 @@ LABEL_235:
         v240 = objc_opt_class();
         v241 = _PKAllNetworks();
         v286 = v81;
-        LODWORD(v240) = _PKPaymentValidatePropertyUnion(v217, @"supportedNetworks", v239, v240, v241, 1, a3, &v286);
+        LODWORD(v240) = _PKPaymentValidatePropertyUnion(v217, @"supportedNetworks", v239, v240, v241, 1, type, &v286);
         v242 = v286;
 
         if (!v240)
@@ -1381,7 +1381,7 @@ LABEL_235:
 
         v243 = objc_opt_class();
         v285 = v242;
-        v244 = _PKPaymentValidateProperty(v217, @"merchantIdentifier", v243, 1, a3, &v285);
+        v244 = _PKPaymentValidateProperty(v217, @"merchantIdentifier", v243, 1, type, &v285);
         v245 = v285;
 
         if (!v244)
@@ -1392,7 +1392,7 @@ LABEL_235:
 
         v246 = objc_opt_class();
         v284 = v245;
-        v247 = _PKPaymentValidateProperty(v217, @"countryCode", v246, 1, a3, &v284);
+        v247 = _PKPaymentValidateProperty(v217, @"countryCode", v246, 1, type, &v284);
         v242 = v284;
 
         if (!v247)
@@ -1401,7 +1401,7 @@ LABEL_235:
         }
 
         v283 = v242;
-        v248 = _PKPaymentValidateMerchantCapabilities(v217, a3, v265, &v283);
+        v248 = _PKPaymentValidateMerchantCapabilities(v217, type, v265, &v283);
         v249 = v283;
 
         if (!v248)
@@ -1412,7 +1412,7 @@ LABEL_235:
 
         v250 = objc_opt_class();
         v282 = v249;
-        v251 = _PKPaymentValidateProperty(v217, @"nonce", v250, 1, a3, &v282);
+        v251 = _PKPaymentValidateProperty(v217, @"nonce", v250, 1, type, &v282);
         v81 = v282;
 
         if ((v251 & 1) == 0)
@@ -1425,7 +1425,7 @@ LABEL_235:
       {
         v219 = objc_opt_class();
         v281 = v81;
-        v220 = _PKPaymentValidateProperty(v217, @"totalAmount", v219, 1, a3, &v281);
+        v220 = _PKPaymentValidateProperty(v217, @"totalAmount", v219, 1, type, &v281);
         v221 = v281;
 
         if (!v220)
@@ -1435,7 +1435,7 @@ LABEL_235:
 
         v222 = objc_opt_class();
         v280 = v221;
-        v223 = _PKPaymentValidateProperty(v217, @"totalAmountCurrency", v222, 1, a3, &v280);
+        v223 = _PKPaymentValidateProperty(v217, @"totalAmountCurrency", v222, 1, type, &v280);
         v81 = v280;
 
         if (!v223)
@@ -1445,7 +1445,7 @@ LABEL_235:
 
         v224 = objc_opt_class();
         v279 = v81;
-        v225 = _PKPaymentValidateProperty(v217, @"countryCode", v224, 1, a3, &v279);
+        v225 = _PKPaymentValidateProperty(v217, @"countryCode", v224, 1, type, &v279);
         v221 = v279;
 
         if ((v225 & 1) == 0)
@@ -1458,7 +1458,7 @@ LABEL_236:
 
         v226 = objc_opt_class();
         v278 = v221;
-        v227 = _PKPaymentValidateProperty(v217, @"nonce", v226, 1, a3, &v278);
+        v227 = _PKPaymentValidateProperty(v217, @"nonce", v226, 1, type, &v278);
         v81 = v278;
 
         if (!v227)
@@ -1467,9 +1467,9 @@ LABEL_236:
         }
       }
 
-      v228 = [v217 totalAmount];
-      v229 = [MEMORY[0x1E696AB90] notANumber];
-      v230 = [v228 isEqualToNumber:v229];
+      totalAmount = [v217 totalAmount];
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      v230 = [totalAmount isEqualToNumber:notANumber];
 
       if (v230)
       {
@@ -1495,7 +1495,7 @@ LABEL_240:
     }
 
     while (v214 != v216);
-    v252 = [v212 countByEnumeratingWithState:&v289 objects:v352 count:16];
+    v252 = [items2 countByEnumeratingWithState:&v289 objects:v352 count:16];
     v214 = v252;
   }
 
@@ -1505,20 +1505,20 @@ LABEL_246:
   if (v117)
   {
     v11 = v81;
-    a4 = v259;
-    v5 = v264;
-    v6 = v265;
+    error = errorCopy2;
+    selfCopy = v264;
+    requestType = v265;
     goto LABEL_94;
   }
 
   v126 = 0;
-  a4 = v259;
-  v80 = a3;
+  error = errorCopy2;
+  typeCopy16 = type;
 LABEL_249:
-  v5 = v264;
+  selfCopy = v264;
 LABEL_155:
-  v164 = [(PKPaymentRequest *)v5->_request paymentSummaryItems];
-  v165 = [v164 pk_containsObjectPassingTest:&__block_literal_global_619];
+  paymentSummaryItems5 = [(PKPaymentRequest *)selfCopy->_request paymentSummaryItems];
+  v165 = [paymentSummaryItems5 pk_containsObjectPassingTest:&__block_literal_global_619];
 
   if (v126 && v265 != 10 && v165)
   {
@@ -1529,7 +1529,7 @@ LABEL_155:
       _os_log_error_impl(&dword_1AD337000, v166, OS_LOG_TYPE_ERROR, "PKPaymentRequests cannot contain disbursement specific summary items", buf, 2u);
     }
 
-    if (!a4)
+    if (!error)
     {
 LABEL_174:
       LOBYTE(v126) = 0;
@@ -1552,7 +1552,7 @@ LABEL_170:
       v173 = 0;
     }
 
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v173];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v173];
 
     goto LABEL_174;
   }
@@ -1569,26 +1569,26 @@ LABEL_170:
 
   if (v167 == 1)
   {
-    v168 = [(PKPaymentRequest *)v5->_request disbursementPaymentRequest];
-    v169 = [[PKDisbursementPaymentRequestValidator alloc] initWithDisbursementPaymentRequest:v168];
-    v170 = [(PKPaymentRequest *)v5->_request currencyCode];
-    [(PKDisbursementPaymentRequestValidator *)v169 setCurrencyCode:v170];
+    disbursementPaymentRequest = [(PKPaymentRequest *)selfCopy->_request disbursementPaymentRequest];
+    v169 = [[PKDisbursementPaymentRequestValidator alloc] initWithDisbursementPaymentRequest:disbursementPaymentRequest];
+    currencyCode4 = [(PKPaymentRequest *)selfCopy->_request currencyCode];
+    [(PKDisbursementPaymentRequestValidator *)v169 setCurrencyCode:currencyCode4];
 
     v267 = v81;
-    v126 = [(PKDisbursementPaymentRequestValidator *)v169 isValidWithAPIType:v80 withError:&v267];
+    v126 = [(PKDisbursementPaymentRequestValidator *)v169 isValidWithAPIType:typeCopy16 withError:&v267];
     v171 = v267;
 
     v81 = v171;
   }
 
-  if (a4)
+  if (error)
   {
     if (!v126)
     {
       goto LABEL_170;
     }
 
-    *a4 = 0;
+    *error = 0;
     LOBYTE(v126) = 1;
   }
 

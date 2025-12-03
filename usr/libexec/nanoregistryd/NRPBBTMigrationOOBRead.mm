@@ -1,10 +1,10 @@
 @interface NRPBBTMigrationOOBRead
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBBTMigrationOOBRead
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = NRPBBTMigrationOOBRead;
   v3 = [(NRPBBTMigrationOOBRead *)&v7 description];
-  v4 = [(NRPBBTMigrationOOBRead *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRPBBTMigrationOOBRead *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -54,20 +54,20 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_oobKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_challenge)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -75,7 +75,7 @@
   {
     errorCode = self->_errorCode;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -83,18 +83,18 @@
   {
     errorIsFatal = self->_errorIsFatal;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_oobKey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_oobKey copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSData *)self->_challenge copyWithZone:a3];
+  v8 = [(NSData *)self->_challenge copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -115,16 +115,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   oobKey = self->_oobKey;
-  if (oobKey | *(v4 + 3))
+  if (oobKey | *(equalCopy + 3))
   {
     if (![(NSData *)oobKey isEqual:?])
     {
@@ -133,7 +133,7 @@
   }
 
   challenge = self->_challenge;
-  if (challenge | *(v4 + 1))
+  if (challenge | *(equalCopy + 1))
   {
     if (![(NSData *)challenge isEqual:?])
     {
@@ -143,21 +143,21 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_errorCode != *(v4 + 4))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_errorCode != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_13;
   }
 
-  v7 = (*(v4 + 36) & 2) == 0;
+  v7 = (*(equalCopy + 36) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
 LABEL_13:
       v7 = 0;
@@ -166,13 +166,13 @@ LABEL_13:
 
     if (self->_errorIsFatal)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_13;
     }

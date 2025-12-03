@@ -1,7 +1,7 @@
 @interface NDDownloadServiceListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NDDownloadServiceListenerDelegate)init;
-- (NDDownloadServiceListenerDelegate)initWithContentContext:(id)a3 ANFHelper:(id)a4;
+- (NDDownloadServiceListenerDelegate)initWithContentContext:(id)context ANFHelper:(id)helper;
 @end
 
 @implementation NDDownloadServiceListenerDelegate
@@ -29,20 +29,20 @@
   objc_exception_throw(v4);
 }
 
-- (NDDownloadServiceListenerDelegate)initWithContentContext:(id)a3 ANFHelper:(id)a4
+- (NDDownloadServiceListenerDelegate)initWithContentContext:(id)context ANFHelper:(id)helper
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  helperCopy = helper;
   v16.receiver = self;
   v16.super_class = NDDownloadServiceListenerDelegate;
   v9 = [(NDDownloadServiceListenerDelegate *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contentContext, a3);
+    objc_storeStrong(&v9->_contentContext, context);
     v11 = [NDContentDownloadService alloc];
-    v12 = [(NDDownloadServiceListenerDelegate *)v10 contentContext];
-    v13 = [(NDContentDownloadService *)v11 initWithContentContext:v12 ANFHelper:v8];
+    contentContext = [(NDDownloadServiceListenerDelegate *)v10 contentContext];
+    v13 = [(NDContentDownloadService *)v11 initWithContentContext:contentContext ANFHelper:helperCopy];
     downloadService = v10->_downloadService;
     v10->_downloadService = v13;
   }
@@ -50,19 +50,19 @@
   return v10;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [NSString stringWithFormat:@"%p", v5];
+  connectionCopy = connection;
+  connectionCopy = [NSString stringWithFormat:@"%p", connectionCopy];
   v7 = FCOfflineDownloadsLog;
   if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v5 serviceName];
+    serviceName = [connectionCopy serviceName];
     *buf = 138543618;
-    v23 = v6;
+    v23 = connectionCopy;
     v24 = 2114;
-    v25 = v9;
+    v25 = serviceName;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "will accept new XPC connection, connection=%{public}@, serviceName=%{public}@", buf, 0x16u);
   }
 
@@ -70,30 +70,30 @@
   v20[1] = 3221225472;
   v20[2] = sub_10000EA84;
   v20[3] = &unk_100071D20;
-  v10 = v6;
+  v10 = connectionCopy;
   v21 = v10;
-  [v5 setInvalidationHandler:v20];
+  [connectionCopy setInvalidationHandler:v20];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000EB2C;
   v18[3] = &unk_100071D20;
   v19 = v10;
   v11 = v10;
-  [v5 setInterruptionHandler:v18];
+  [connectionCopy setInterruptionHandler:v18];
   v12 = NDDownloadServiceXPCInterface();
-  [v5 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
 
-  v13 = [(NDDownloadServiceListenerDelegate *)self downloadService];
-  [v5 setExportedObject:v13];
+  downloadService = [(NDDownloadServiceListenerDelegate *)self downloadService];
+  [connectionCopy setExportedObject:downloadService];
 
-  v14 = [(NDDownloadServiceListenerDelegate *)self downloadService];
-  v15 = [v14 xpcMessageQueue];
-  [v5 _setQueue:v15];
+  downloadService2 = [(NDDownloadServiceListenerDelegate *)self downloadService];
+  xpcMessageQueue = [downloadService2 xpcMessageQueue];
+  [connectionCopy _setQueue:xpcMessageQueue];
 
-  v16 = [(NDDownloadServiceListenerDelegate *)self downloadService];
-  [v16 setCurrentConnection:v5];
+  downloadService3 = [(NDDownloadServiceListenerDelegate *)self downloadService];
+  [downloadService3 setCurrentConnection:connectionCopy];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 

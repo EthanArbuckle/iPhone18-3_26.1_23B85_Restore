@@ -1,24 +1,24 @@
 @interface DYPlaybackViewController
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DYPlaybackViewController
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = DYPlaybackViewController;
-  [(DYPlaybackViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(DYPlaybackViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__DYPlaybackViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_279665010;
   v9[4] = self;
   v8 = MEMORY[0x2530352B0](v9);
-  [v7 animateAlongsideTransition:v8 completion:&__block_literal_global];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:&__block_literal_global];
 }
 
 void __79__DYPlaybackViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)

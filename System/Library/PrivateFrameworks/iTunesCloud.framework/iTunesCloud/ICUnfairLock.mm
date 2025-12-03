@@ -1,15 +1,15 @@
 @interface ICUnfairLock
 - (ICUnfairLock)init;
-- (ICUnfairLock)lockWithBlock:(id)a3;
+- (ICUnfairLock)lockWithBlock:(id)block;
 @end
 
 @implementation ICUnfairLock
 
-- (ICUnfairLock)lockWithBlock:(id)a3
+- (ICUnfairLock)lockWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
   return result;

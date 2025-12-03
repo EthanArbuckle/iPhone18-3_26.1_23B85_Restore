@@ -1,59 +1,59 @@
 @interface SBPIPStashTabSuppressionPolicyProvider
 - (SBBannerManager)bannerManager;
 - (SBDeviceApplicationSceneHandle)sceneHandleToObserve;
-- (SBPIPStashTabSuppressionPolicyProvider)initWithObserver:(id)a3 bannerManager:(id)a4 windowScene:(id)a5 pipManager:(id)a6;
+- (SBPIPStashTabSuppressionPolicyProvider)initWithObserver:(id)observer bannerManager:(id)manager windowScene:(id)scene pipManager:(id)pipManager;
 - (SBPIPStashTabSuppressionPolicyProviderObserver)observer;
 - (SBSwitcherController)switcherController;
 - (SBWindowScene)sbWindowScene;
 - (SBWindowScenePIPManager)pipManager;
 - (void)_reevaluatePolicy;
 - (void)_resetReevaluatePolicyTimer;
-- (void)_startTrackingPresentable:(id)a3;
-- (void)_stopTrackingPresentable:(id)a3;
-- (void)_tapRecognized:(id)a3;
-- (void)_updateSceneHandleToObserveForLayoutState:(id)a3;
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5;
-- (void)bannerManager:(id)a3 willDismissPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6;
-- (void)bannerManager:(id)a3 willPresentPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6;
+- (void)_startTrackingPresentable:(id)presentable;
+- (void)_stopTrackingPresentable:(id)presentable;
+- (void)_tapRecognized:(id)recognized;
+- (void)_updateSceneHandleToObserveForLayoutState:(id)state;
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation;
+- (void)bannerManager:(id)manager willDismissPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info;
+- (void)bannerManager:(id)manager willPresentPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info;
 - (void)dealloc;
 - (void)invalidate;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4;
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setSceneHandleToObserve:(id)a3;
-- (void)setStashTabCanBeHidden:(BOOL)a3;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context;
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings;
+- (void)setSceneHandleToObserve:(id)observe;
+- (void)setStashTabCanBeHidden:(BOOL)hidden;
 @end
 
 @implementation SBPIPStashTabSuppressionPolicyProvider
 
-- (SBPIPStashTabSuppressionPolicyProvider)initWithObserver:(id)a3 bannerManager:(id)a4 windowScene:(id)a5 pipManager:(id)a6
+- (SBPIPStashTabSuppressionPolicyProvider)initWithObserver:(id)observer bannerManager:(id)manager windowScene:(id)scene pipManager:(id)pipManager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  observerCopy = observer;
+  managerCopy = manager;
+  sceneCopy = scene;
+  pipManagerCopy = pipManager;
   v20.receiver = self;
   v20.super_class = SBPIPStashTabSuppressionPolicyProvider;
   v15 = [(SBPIPStashTabSuppressionPolicyProvider *)&v20 init];
   if (v15)
   {
-    if (v13)
+    if (sceneCopy)
     {
-      if (v14)
+      if (pipManagerCopy)
       {
 LABEL_4:
-        objc_storeWeak(&v15->_observer, v11);
-        objc_storeWeak(&v15->_bannerManager, v12);
-        objc_storeWeak(&v15->_sbWindowScene, v13);
-        objc_storeWeak(&v15->_pipManager, v14);
-        [v12 addTransitionObserver:v15];
-        v16 = [v13 layoutStateTransitionCoordinator];
-        [v16 addObserver:v15];
+        objc_storeWeak(&v15->_observer, observerCopy);
+        objc_storeWeak(&v15->_bannerManager, managerCopy);
+        objc_storeWeak(&v15->_sbWindowScene, sceneCopy);
+        objc_storeWeak(&v15->_pipManager, pipManagerCopy);
+        [managerCopy addTransitionObserver:v15];
+        layoutStateTransitionCoordinator = [sceneCopy layoutStateTransitionCoordinator];
+        [layoutStateTransitionCoordinator addObserver:v15];
 
         [(SBPIPStashTabSuppressionPolicyProvider *)v15 _resetReevaluatePolicyTimer];
-        v17 = [v13 layoutStateProvider];
-        v18 = [v17 layoutState];
+        layoutStateProvider = [sceneCopy layoutStateProvider];
+        layoutState = [layoutStateProvider layoutState];
 
-        [(SBPIPStashTabSuppressionPolicyProvider *)v15 _updateSceneHandleToObserveForLayoutState:v18];
+        [(SBPIPStashTabSuppressionPolicyProvider *)v15 _updateSceneHandleToObserveForLayoutState:layoutState];
         goto LABEL_5;
       }
     }
@@ -61,7 +61,7 @@ LABEL_4:
     else
     {
       [SBPIPStashTabSuppressionPolicyProvider initWithObserver:a2 bannerManager:v15 windowScene:? pipManager:?];
-      if (v14)
+      if (pipManagerCopy)
       {
         goto LABEL_4;
       }
@@ -88,8 +88,8 @@ LABEL_5:
   [v4 removeObserver:self];
 
   v5 = objc_loadWeakRetained(&self->_sbWindowScene);
-  v6 = [v5 layoutStateTransitionCoordinator];
-  [v6 removeObserver:self];
+  layoutStateTransitionCoordinator = [v5 layoutStateTransitionCoordinator];
+  [layoutStateTransitionCoordinator removeObserver:self];
 
   [(SBPIPStashTabSuppressionPolicyProvider *)self setSceneHandleToObserve:0];
 
@@ -98,25 +98,25 @@ LABEL_5:
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBPIPStashTabSuppressionPolicyProvider.m" lineNumber:78 description:{@"Released %@ without invalidating", a2}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBPIPStashTabSuppressionPolicyProvider.m" lineNumber:78 description:{@"Released %@ without invalidating", a2}];
 }
 
 - (void)_reevaluatePolicy
 {
   if (self->_invalidated || [(NSMutableSet *)self->_requestIdentifiersForPresentedExpanseBanners count]|| self->_reevaluatePolicyTimer)
   {
-    v3 = 0;
+    homeIndicatorAutoHidden = 0;
   }
 
   else
   {
-    v4 = [(SBPIPStashTabSuppressionPolicyProvider *)self sceneHandleToObserve];
-    v5 = [v4 sceneIfExists];
+    sceneHandleToObserve = [(SBPIPStashTabSuppressionPolicyProvider *)self sceneHandleToObserve];
+    sceneIfExists = [sceneHandleToObserve sceneIfExists];
 
-    v6 = [v5 clientSettings];
+    clientSettings = [sceneIfExists clientSettings];
     v7 = objc_opt_class();
-    v8 = v6;
+    v8 = clientSettings;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -137,20 +137,20 @@ LABEL_5:
 
     v10 = v9;
 
-    v3 = [v10 homeIndicatorAutoHidden];
+    homeIndicatorAutoHidden = [v10 homeIndicatorAutoHidden];
   }
 
-  [(SBPIPStashTabSuppressionPolicyProvider *)self setStashTabCanBeHidden:v3];
+  [(SBPIPStashTabSuppressionPolicyProvider *)self setStashTabCanBeHidden:homeIndicatorAutoHidden];
 }
 
-- (void)_updateSceneHandleToObserveForLayoutState:(id)a3
+- (void)_updateSceneHandleToObserveForLayoutState:(id)state
 {
-  v14 = a3;
-  if ([v14 unlockedEnvironmentMode] == 3 && (objc_msgSend(v14, "elements"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v5 == 1))
+  stateCopy = state;
+  if ([stateCopy unlockedEnvironmentMode] == 3 && (objc_msgSend(stateCopy, "elements"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v5 == 1))
   {
-    v6 = [v14 elementWithRole:1];
-    v7 = [v6 entityGenerator];
-    v8 = v7[2]();
+    v6 = [stateCopy elementWithRole:1];
+    entityGenerator = [v6 entityGenerator];
+    v8 = entityGenerator[2]();
 
     v9 = objc_opt_class();
     v10 = v8;
@@ -174,43 +174,43 @@ LABEL_5:
 
     v13 = v11;
 
-    v12 = [v13 sceneHandle];
+    sceneHandle = [v13 sceneHandle];
   }
 
   else
   {
-    v12 = 0;
+    sceneHandle = 0;
   }
 
-  [(SBPIPStashTabSuppressionPolicyProvider *)self setSceneHandleToObserve:v12];
+  [(SBPIPStashTabSuppressionPolicyProvider *)self setSceneHandleToObserve:sceneHandle];
 }
 
-- (void)_startTrackingPresentable:(id)a3
+- (void)_startTrackingPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   requestIdentifiersForPresentedExpanseBanners = self->_requestIdentifiersForPresentedExpanseBanners;
-  v9 = v4;
+  v9 = presentableCopy;
   if (!requestIdentifiersForPresentedExpanseBanners)
   {
     v6 = [MEMORY[0x277CBEB58] setWithCapacity:1];
     v7 = self->_requestIdentifiersForPresentedExpanseBanners;
     self->_requestIdentifiersForPresentedExpanseBanners = v6;
 
-    v4 = v9;
+    presentableCopy = v9;
     requestIdentifiersForPresentedExpanseBanners = self->_requestIdentifiersForPresentedExpanseBanners;
   }
 
-  v8 = [v4 requestIdentifier];
-  [(NSMutableSet *)requestIdentifiersForPresentedExpanseBanners addObject:v8];
+  requestIdentifier = [presentableCopy requestIdentifier];
+  [(NSMutableSet *)requestIdentifiersForPresentedExpanseBanners addObject:requestIdentifier];
 
   [(SBPIPStashTabSuppressionPolicyProvider *)self _reevaluatePolicy];
 }
 
-- (void)_stopTrackingPresentable:(id)a3
+- (void)_stopTrackingPresentable:(id)presentable
 {
   requestIdentifiersForPresentedExpanseBanners = self->_requestIdentifiersForPresentedExpanseBanners;
-  v5 = [a3 requestIdentifier];
-  [(NSMutableSet *)requestIdentifiersForPresentedExpanseBanners removeObject:v5];
+  requestIdentifier = [presentable requestIdentifier];
+  [(NSMutableSet *)requestIdentifiersForPresentedExpanseBanners removeObject:requestIdentifier];
 
   if (![(NSMutableSet *)self->_requestIdentifiersForPresentedExpanseBanners count])
   {
@@ -221,9 +221,9 @@ LABEL_5:
   [(SBPIPStashTabSuppressionPolicyProvider *)self _reevaluatePolicy];
 }
 
-- (void)setSceneHandleToObserve:(id)a3
+- (void)setSceneHandleToObserve:(id)observe
 {
-  obj = a3;
+  obj = observe;
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandleToObserve);
   if (WeakRetained != obj)
   {
@@ -234,19 +234,19 @@ LABEL_5:
   }
 }
 
-- (void)setStashTabCanBeHidden:(BOOL)a3
+- (void)setStashTabCanBeHidden:(BOOL)hidden
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_stashTabCanBeHidden != a3)
+  if (self->_stashTabCanBeHidden != hidden)
   {
-    v3 = a3;
-    self->_stashTabCanBeHidden = a3;
+    hiddenCopy = hidden;
+    self->_stashTabCanBeHidden = hidden;
     WeakRetained = objc_loadWeakRetained(&self->_pipManager);
     v6 = SBLogPIP();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8[0] = 67109378;
-      v8[1] = v3;
+      v8[1] = hiddenCopy;
       v9 = 2112;
       v10 = WeakRetained;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[SBPIPStashTabSuppressionPolicyProvider] setStashTabCanBeHidden %{BOOL}u %@", v8, 0x12u);
@@ -255,7 +255,7 @@ LABEL_5:
     v7 = objc_loadWeakRetained(&self->_observer);
     [v7 stashTabVisibilityPolicyProviderDidUpdatePolicy:self];
 
-    if (v3)
+    if (hiddenCopy)
     {
       [WeakRetained addStashTabSuppressionTarget:self action:sel__tapRecognized_];
       [SBApp addActiveOrientationObserver:self];
@@ -269,7 +269,7 @@ LABEL_5:
   }
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
   [(SBPIPStashTabSuppressionPolicyProvider *)self setStashTabCanBeHidden:0];
 
@@ -279,13 +279,13 @@ LABEL_5:
 - (void)_resetReevaluatePolicyTimer
 {
   reevaluatePolicyTimer = self->_reevaluatePolicyTimer;
-  v4 = self;
+  selfCopy = self;
   [(NSTimer *)reevaluatePolicyTimer invalidate];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__SBPIPStashTabSuppressionPolicyProvider__resetReevaluatePolicyTimer__block_invoke;
   v7[3] = &unk_2783AD1F0;
-  v7[4] = v4;
+  v7[4] = selfCopy;
   v5 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:0 repeats:v7 block:4.0];
   v6 = self->_reevaluatePolicyTimer;
   self->_reevaluatePolicyTimer = v5;
@@ -308,41 +308,41 @@ void __69__SBPIPStashTabSuppressionPolicyProvider__resetReevaluatePolicyTimer__b
   }
 }
 
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation
 {
-  [(SBPIPStashTabSuppressionPolicyProvider *)self setStashTabCanBeHidden:0, a5, a4];
+  [(SBPIPStashTabSuppressionPolicyProvider *)self setStashTabCanBeHidden:0, fromOrientation, duration];
 
   [(SBPIPStashTabSuppressionPolicyProvider *)self _resetReevaluatePolicyTimer];
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   v6 = objc_opt_class();
-  v7 = [v5 toLayoutState];
+  toLayoutState = [contextCopy toLayoutState];
 
-  v8 = SBSafeCast(v6, v7);
+  v8 = SBSafeCast(v6, toLayoutState);
 
   [(SBPIPStashTabSuppressionPolicyProvider *)self _updateSceneHandleToObserveForLayoutState:v8];
 }
 
-- (void)bannerManager:(id)a3 willPresentPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6
+- (void)bannerManager:(id)manager willPresentPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 requestIdentifier];
-  v11 = [v10 hasPrefix:@"com.apple.conversationController.HUD"];
+  presentableCopy = presentable;
+  coordinatorCopy = coordinator;
+  requestIdentifier = [presentableCopy requestIdentifier];
+  v11 = [requestIdentifier hasPrefix:@"com.apple.conversationController.HUD"];
 
   if (v11)
   {
-    [(SBPIPStashTabSuppressionPolicyProvider *)self _startTrackingPresentable:v8];
+    [(SBPIPStashTabSuppressionPolicyProvider *)self _startTrackingPresentable:presentableCopy];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __114__SBPIPStashTabSuppressionPolicyProvider_bannerManager_willPresentPresentable_withTransitionCoordinator_userInfo___block_invoke;
     v12[3] = &unk_2783B6F60;
     v12[4] = self;
-    v13 = v8;
-    [v9 animateAlongsideTransition:0 completion:v12];
+    v13 = presentableCopy;
+    [coordinatorCopy animateAlongsideTransition:0 completion:v12];
   }
 }
 
@@ -360,23 +360,23 @@ uint64_t __114__SBPIPStashTabSuppressionPolicyProvider_bannerManager_willPresent
   return result;
 }
 
-- (void)bannerManager:(id)a3 willDismissPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6
+- (void)bannerManager:(id)manager willDismissPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 requestIdentifier];
-  v11 = [v10 hasPrefix:@"com.apple.conversationController.HUD"];
+  presentableCopy = presentable;
+  coordinatorCopy = coordinator;
+  requestIdentifier = [presentableCopy requestIdentifier];
+  v11 = [requestIdentifier hasPrefix:@"com.apple.conversationController.HUD"];
 
   if (v11)
   {
-    [(SBPIPStashTabSuppressionPolicyProvider *)self _stopTrackingPresentable:v8];
+    [(SBPIPStashTabSuppressionPolicyProvider *)self _stopTrackingPresentable:presentableCopy];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __114__SBPIPStashTabSuppressionPolicyProvider_bannerManager_willDismissPresentable_withTransitionCoordinator_userInfo___block_invoke;
     v12[3] = &unk_2783B6F60;
     v12[4] = self;
-    v13 = v8;
-    [v9 animateAlongsideTransition:0 completion:v12];
+    v13 = presentableCopy;
+    [coordinatorCopy animateAlongsideTransition:0 completion:v12];
   }
 }
 
@@ -394,12 +394,12 @@ uint64_t __114__SBPIPStashTabSuppressionPolicyProvider_bannerManager_willDismiss
   return result;
 }
 
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settingsDiff];
-  v9 = [v7 transitionContext];
+  handleCopy = handle;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  transitionContext = [settingsCopy transitionContext];
   clientSettingsInspector = self->_clientSettingsInspector;
   if (!clientSettingsInspector)
   {
@@ -420,7 +420,7 @@ uint64_t __114__SBPIPStashTabSuppressionPolicyProvider_bannerManager_willDismiss
     clientSettingsInspector = self->_clientSettingsInspector;
   }
 
-  [(UIApplicationSceneClientSettingsDiffInspector *)clientSettingsInspector inspectDiff:v8 withContext:v9, v14, v15, v16, v17];
+  [(UIApplicationSceneClientSettingsDiffInspector *)clientSettingsInspector inspectDiff:settingsDiff withContext:transitionContext, v14, v15, v16, v17];
 }
 
 void __78__SBPIPStashTabSuppressionPolicyProvider_sceneHandle_didUpdateClientSettings___block_invoke(uint64_t a1)

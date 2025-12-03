@@ -2,29 +2,29 @@
 - (BOOL)shouldCategorizeGroceryItems;
 - (BOOL)shouldSuggestConversionToGroceryList;
 - (NSString)groceryLocaleID;
-- (REMListGroceryContext)initWithList:(id)a3;
+- (REMListGroceryContext)initWithList:(id)list;
 @end
 
 @implementation REMListGroceryContext
 
 - (BOOL)shouldCategorizeGroceryItems
 {
-  v2 = [(REMListGroceryContext *)self list];
-  v3 = [v2 shouldCategorizeGroceryItems];
+  list = [(REMListGroceryContext *)self list];
+  shouldCategorizeGroceryItems = [list shouldCategorizeGroceryItems];
 
-  return v3;
+  return shouldCategorizeGroceryItems;
 }
 
-- (REMListGroceryContext)initWithList:(id)a3
+- (REMListGroceryContext)initWithList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v9.receiver = self;
   v9.super_class = REMListGroceryContext;
   v6 = [(REMListGroceryContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_list, a3);
+    objc_storeStrong(&v6->_list, list);
   }
 
   return v7;
@@ -32,18 +32,18 @@
 
 - (BOOL)shouldSuggestConversionToGroceryList
 {
-  v2 = [(REMListGroceryContext *)self list];
-  v3 = [v2 shouldSuggestConversionToGroceryList];
+  list = [(REMListGroceryContext *)self list];
+  shouldSuggestConversionToGroceryList = [list shouldSuggestConversionToGroceryList];
 
-  return v3;
+  return shouldSuggestConversionToGroceryList;
 }
 
 - (NSString)groceryLocaleID
 {
-  v2 = [(REMListGroceryContext *)self list];
-  v3 = [v2 groceryLocaleID];
+  list = [(REMListGroceryContext *)self list];
+  groceryLocaleID = [list groceryLocaleID];
 
-  return v3;
+  return groceryLocaleID;
 }
 
 @end

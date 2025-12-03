@@ -8,9 +8,9 @@
 - (BOOL)isSharingSingleScreenScreenshot;
 - (BOOL)screenshotItemProvidersContainsPDF;
 - (BOOL)screenshotItemProvidersContainsPDFAsImage;
-- (SSSActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 editMode:(int64_t)a5;
-- (id)_bestFormatForScreenshotItemProvider:(id)a3;
-- (id)_customizationGroupsForActivityViewController:(id)a3;
+- (SSSActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities editMode:(int64_t)mode;
+- (id)_bestFormatForScreenshotItemProvider:(id)provider;
+- (id)_customizationGroupsForActivityViewController:(id)controller;
 - (id)_updateItemProvidersWithOptions;
 - (id)imageFormatGroup;
 - (id)renameGroup;
@@ -20,7 +20,7 @@
 - (void)didChangeRenameOption;
 - (void)didChangeShareOptions;
 - (void)reportStatistics;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SSSActivityViewController
@@ -32,8 +32,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SSSActivityViewController *)self activityItemProviders];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  activityItemProviders = [(SSSActivityViewController *)self activityItemProviders];
+  v5 = [activityItemProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -44,7 +44,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activityItemProviders);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -55,7 +55,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [activityItemProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -73,8 +73,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(SSSActivityViewController *)self screenshotItemProviders];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  screenshotItemProviders = [(SSSActivityViewController *)self screenshotItemProviders];
+  v5 = [screenshotItemProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -85,20 +85,20 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(screenshotItemProviders);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 screenshot];
+        screenshot = [v9 screenshot];
 
-        if (v10)
+        if (screenshot)
         {
-          v11 = [v9 screenshot];
-          [v3 addObject:v11];
+          screenshot2 = [v9 screenshot];
+          [v3 addObject:screenshot2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [screenshotItemProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -111,8 +111,8 @@
 
 - (BOOL)didRenameScreenshot
 {
-  v2 = [(SSSActivityViewController *)self renameOption];
-  v3 = [v2 length] != 0;
+  renameOption = [(SSSActivityViewController *)self renameOption];
+  v3 = [renameOption length] != 0;
 
   return v3;
 }
@@ -208,8 +208,8 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(SSSActivityViewController *)self screenshots];
-  v4 = [v3 count] == 1;
+  screenshots = [(SSSActivityViewController *)self screenshots];
+  v4 = [screenshots count] == 1;
 
   return v4;
 }
@@ -241,8 +241,8 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(SSSActivityViewController *)self screenshots];
-  v3 = [v4 count] == 1;
+  screenshots = [(SSSActivityViewController *)self screenshots];
+  v3 = [screenshots count] == 1;
 
   return v3;
 }
@@ -254,8 +254,8 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(SSSActivityViewController *)self screenshots];
-  v3 = [v4 count] > 1;
+  screenshots = [(SSSActivityViewController *)self screenshots];
+  v3 = [screenshots count] > 1;
 
   return v3;
 }
@@ -267,32 +267,32 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(SSSActivityViewController *)self screenshots];
-  v4 = [v3 count] > 1;
+  screenshots = [(SSSActivityViewController *)self screenshots];
+  v4 = [screenshots count] > 1;
 
   return v4;
 }
 
-- (SSSActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 editMode:(int64_t)a5
+- (SSSActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities editMode:(int64_t)mode
 {
-  v8 = a3;
+  itemsCopy = items;
   v16.receiver = self;
   v16.super_class = SSSActivityViewController;
-  v9 = [(SSSActivityViewController *)&v16 initWithActivityItems:v8 applicationActivities:a4];
+  v9 = [(SSSActivityViewController *)&v16 initWithActivityItems:itemsCopy applicationActivities:activities];
   v10 = v9;
   if (v9)
   {
-    [(SSSActivityViewController *)v9 setActivityItemProviders:v8];
+    [(SSSActivityViewController *)v9 setActivityItemProviders:itemsCopy];
     [(SSSActivityViewController *)v10 setObjectManipulationDelegate:v10];
-    v10->_editMode = a5;
+    v10->_editMode = mode;
     renameOption = v10->_renameOption;
     v10->_renameOption = 0;
 
     if ([(SSSActivityViewController *)v10 isSharingSingleFullPageScreenshot])
     {
-      v12 = [(SSSActivityViewController *)v10 screenshots];
-      v13 = [v12 firstObject];
-      v10->_pdfCanBeConvertedToImage = [v13 pdfCanBeConvertedToImage];
+      screenshots = [(SSSActivityViewController *)v10 screenshots];
+      firstObject = [screenshots firstObject];
+      v10->_pdfCanBeConvertedToImage = [firstObject pdfCanBeConvertedToImage];
     }
 
     else
@@ -318,16 +318,16 @@ LABEL_11:
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = SSSActivityViewController;
-  [(SSSActivityViewController *)&v9 viewWillAppear:a3];
+  [(SSSActivityViewController *)&v9 viewWillAppear:appear];
   if (_UISolariumEnabled())
   {
-    v4 = [(SSSActivityViewController *)self view];
+    view = [(SSSActivityViewController *)self view];
     v5 = +[UIColor systemBackgroundColor];
-    [v4 setBackgroundColor:v5];
+    [view setBackgroundColor:v5];
   }
 
   objc_initWeak(&location, self);
@@ -343,10 +343,10 @@ LABEL_11:
 
 - (void)reportStatistics
 {
-  v3 = [(SSSActivityViewController *)self shareAsOption];
-  if (v3)
+  shareAsOption = [(SSSActivityViewController *)self shareAsOption];
+  if (shareAsOption)
   {
-    if (v3 == 2)
+    if (shareAsOption == 2)
     {
       v4 = +[SSStatisticsManager sharedStatisticsManager];
       [v4 didShareFullPageScreenshotAsPDF];
@@ -354,7 +354,7 @@ LABEL_11:
 
     else
     {
-      if (v3 != 1)
+      if (shareAsOption != 1)
       {
         goto LABEL_17;
       }
@@ -407,7 +407,7 @@ LABEL_17:
   }
 }
 
-- (id)_customizationGroupsForActivityViewController:(id)a3
+- (id)_customizationGroupsForActivityViewController:(id)controller
 {
   v4 = +[NSMutableArray array];
   if ([(SSSActivityViewController *)self pdfCanBeConvertedToImage])
@@ -422,8 +422,8 @@ LABEL_17:
   v5 = ;
   [v4 addObject:v5];
 
-  v6 = [(SSSActivityViewController *)self renameGroup];
-  [v4 addObject:v6];
+  renameGroup = [(SSSActivityViewController *)self renameGroup];
+  [v4 addObject:renameGroup];
 
   return v4;
 }
@@ -447,13 +447,13 @@ LABEL_17:
   v11 = [v10 localizedStringForKey:@"SHARING_OPTIONS_FORMAT_FOOTER_TEXT" value:@"Choose Automatic for the best format for the destination or Current to prevent image conversions. Screenshots may be converted to PNG if you choose Most Compatible." table:0];
 
   objc_initWeak(&location, self);
-  v12 = [(SSSActivityViewController *)self shareFormatOption];
+  shareFormatOption = [(SSSActivityViewController *)self shareFormatOption];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100019D00;
   v20[3] = &unk_1000BA640;
   objc_copyWeak(&v21, &location);
-  v13 = [_UIActivityItemCustomization pickerCustomizationWithIdentifier:@"SHARING_OPTIONS_SEND_AS_PICKER" options:v9 selectedOptionIndex:v12 footerText:v11 valueChangedHandler:v20];
+  v13 = [_UIActivityItemCustomization pickerCustomizationWithIdentifier:@"SHARING_OPTIONS_SEND_AS_PICKER" options:v9 selectedOptionIndex:shareFormatOption footerText:v11 valueChangedHandler:v20];
   v14 = +[NSBundle mainBundle];
   v15 = [v14 localizedStringForKey:@"SHARING_OPTIONS_FORMAT_GROUP_TITLE" value:@"Format" table:0];
 
@@ -487,13 +487,13 @@ LABEL_17:
   v11 = [v10 localizedStringForKey:@"SHARING_OPTIONS_SEND_AS_GROUP_FOOTER_TEXT" value:@"Automatic selects the best format based on the screenshot being shared." table:0];
 
   objc_initWeak(&location, self);
-  v12 = [(SSSActivityViewController *)self shareAsOption];
+  shareAsOption = [(SSSActivityViewController *)self shareAsOption];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10001A098;
   v20[3] = &unk_1000BA640;
   objc_copyWeak(&v21, &location);
-  v13 = [_UIActivityItemCustomization pickerCustomizationWithIdentifier:@"SHARING_OPTIONS_SEND_AS_PICKER" options:v9 selectedOptionIndex:v12 footerText:v11 valueChangedHandler:v20];
+  v13 = [_UIActivityItemCustomization pickerCustomizationWithIdentifier:@"SHARING_OPTIONS_SEND_AS_PICKER" options:v9 selectedOptionIndex:shareAsOption footerText:v11 valueChangedHandler:v20];
   v14 = +[NSBundle mainBundle];
   v15 = [v14 localizedStringForKey:@"SHARING_OPTIONS_SEND_AS_GROUP_TITLE" value:@"Send as" table:0];
 
@@ -510,42 +510,42 @@ LABEL_17:
 
 - (id)renameGroup
 {
-  v3 = [(SSSActivityViewController *)self screenshots];
-  v4 = [v3 count] == 1;
+  screenshots = [(SSSActivityViewController *)self screenshots];
+  v4 = [screenshots count] == 1;
 
-  v5 = [(SSSActivityViewController *)self renameOption];
-  v6 = v5;
+  renameOption = [(SSSActivityViewController *)self renameOption];
+  v6 = renameOption;
   if (v4)
   {
-    if (v5)
+    if (renameOption)
     {
-      v7 = v5;
+      filename = renameOption;
     }
 
     else
     {
-      v11 = [(SSSActivityViewController *)self screenshots];
-      v12 = [v11 firstObject];
-      v7 = [v12 filename];
+      screenshots2 = [(SSSActivityViewController *)self screenshots];
+      firstObject = [screenshots2 firstObject];
+      filename = [firstObject filename];
     }
 
-    v9 = [(SSSActivityViewController *)self screenshots];
-    v13 = [v9 firstObject];
-    v10 = [v13 filename];
+    screenshots3 = [(SSSActivityViewController *)self screenshots];
+    firstObject2 = [screenshots3 firstObject];
+    filename2 = [firstObject2 filename];
   }
 
   else
   {
     v8 = &stru_1000BC350;
-    if (v5)
+    if (renameOption)
     {
-      v8 = v5;
+      v8 = renameOption;
     }
 
-    v7 = v8;
+    filename = v8;
 
-    v9 = +[NSBundle mainBundle];
-    v10 = [v9 localizedStringForKey:@"SHARING_OPTIONS_RENAME_MULTIPLE_PLACEHOLDER" value:@"Multiple names" table:0];
+    screenshots3 = +[NSBundle mainBundle];
+    filename2 = [screenshots3 localizedStringForKey:@"SHARING_OPTIONS_RENAME_MULTIPLE_PLACEHOLDER" value:@"Multiple names" table:0];
   }
 
   objc_initWeak(&location, self);
@@ -554,7 +554,7 @@ LABEL_17:
   v23 = sub_10001A400;
   v24 = &unk_1000BA668;
   objc_copyWeak(&v25, &location);
-  v14 = [_UIActivityItemCustomization textFieldCustomizationWithText:v7 placeholder:v10 identifier:@"SHARING_OPTIONS_RENAME_GROUP" footerText:0 textChangedHandler:&v21];
+  v14 = [_UIActivityItemCustomization textFieldCustomizationWithText:filename placeholder:filename2 identifier:@"SHARING_OPTIONS_RENAME_GROUP" footerText:0 textChangedHandler:&v21];
   v15 = [NSBundle mainBundle:v21];
   v16 = [v15 localizedStringForKey:@"SHARING_OPTIONS_RENAME_GROUP_TITLE" value:@"File Name" table:0];
 
@@ -571,13 +571,13 @@ LABEL_17:
 
 - (void)didChangeRenameOption
 {
-  v3 = [(SSSActivityViewController *)self renameOption];
+  renameOption = [(SSSActivityViewController *)self renameOption];
 
-  if (v3)
+  if (renameOption)
   {
-    v4 = [(SSSActivityViewController *)self renameOption];
+    renameOption2 = [(SSSActivityViewController *)self renameOption];
     v5 = +[NSCharacterSet whitespaceCharacterSet];
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
+    v6 = [renameOption2 stringByTrimmingCharactersInSet:v5];
 
     if (![v6 length] || -[SSSActivityViewController isSharingSingleFullPageScreenshot](self, "isSharingSingleFullPageScreenshot") && (-[SSSActivityViewController screenshots](self, "screenshots"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "filename"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v6, "isEqualToString:", v9), v9, v8, v7, (v10 & 1) != 0))
     {
@@ -597,8 +597,8 @@ LABEL_17:
 
 - (void)didChangeShareOptions
 {
-  v4 = [(SSSActivityViewController *)self _updateItemProvidersWithOptions];
-  [(SSSActivityViewController *)self setActivityItemProviders:v4];
+  _updateItemProvidersWithOptions = [(SSSActivityViewController *)self _updateItemProvidersWithOptions];
+  [(SSSActivityViewController *)self setActivityItemProviders:_updateItemProvidersWithOptions];
   v3 = +[NSArray array];
   [(SSSActivityViewController *)self _updateActivityItems:v3];
 
@@ -608,8 +608,8 @@ LABEL_17:
 - (id)_updateItemProvidersWithOptions
 {
   v3 = +[NSMutableArray array];
-  v4 = [(SSSActivityViewController *)self activityItemProviders];
-  v5 = [v4 count];
+  activityItemProviders = [(SSSActivityViewController *)self activityItemProviders];
+  v5 = [activityItemProviders count];
 
   if (v5)
   {
@@ -617,8 +617,8 @@ LABEL_17:
     v7 = 0;
     while (1)
     {
-      v8 = [(SSSActivityViewController *)self activityItemProviders];
-      v9 = [v8 objectAtIndex:v7];
+      activityItemProviders2 = [(SSSActivityViewController *)self activityItemProviders];
+      v9 = [activityItemProviders2 objectAtIndex:v7];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -630,8 +630,8 @@ LABEL_17:
 LABEL_19:
 
       ++v7;
-      v18 = [(SSSActivityViewController *)self activityItemProviders];
-      v19 = [v18 count];
+      activityItemProviders3 = [(SSSActivityViewController *)self activityItemProviders];
+      v19 = [activityItemProviders3 count];
 
       if (v7 >= v19)
       {
@@ -640,17 +640,17 @@ LABEL_19:
     }
 
     v10 = v9;
-    v11 = [(SSSActivityViewController *)self shareAsOption];
-    if (v11 == 2)
+    shareAsOption = [(SSSActivityViewController *)self shareAsOption];
+    if (shareAsOption == 2)
     {
       v13 = SSSScreenshotItemProviderPDF;
     }
 
     else
     {
-      if (v11 != 1)
+      if (shareAsOption != 1)
       {
-        if (v11)
+        if (shareAsOption)
         {
           v12 = 0;
         }
@@ -667,22 +667,22 @@ LABEL_19:
     }
 
     v14 = [v13 alloc];
-    v15 = [v10 screenshot];
-    v12 = [v14 initWithScreenshot:v15];
+    screenshot = [v10 screenshot];
+    v12 = [v14 initWithScreenshot:screenshot];
 
 LABEL_13:
     if ([(SSSActivityViewController *)self didRenameScreenshot])
     {
-      v16 = [(SSSActivityViewController *)self renameOption];
+      renameOption = [(SSSActivityViewController *)self renameOption];
       if (v6)
       {
-        v17 = [NSString stringWithFormat:@"%@ %li", v16, v6];
+        v17 = [NSString stringWithFormat:@"%@ %li", renameOption, v6];
         [v12 setOverrideName:v17];
       }
 
       else
       {
-        [v12 setOverrideName:v16];
+        [v12 setOverrideName:renameOption];
       }
     }
 
@@ -697,20 +697,20 @@ LABEL_20:
   return v3;
 }
 
-- (id)_bestFormatForScreenshotItemProvider:(id)a3
+- (id)_bestFormatForScreenshotItemProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if ([(SSSActivityViewController *)self isSharingSingleFullPageScreenshot]&& [(SSSActivityViewController *)self pdfCanBeConvertedToImage])
   {
-    v5 = [(SSSActivityViewController *)self screenshots];
-    v6 = [v5 firstObject];
-    v7 = [v6 PDFDocument];
-    [v7 pageCount];
+    screenshots = [(SSSActivityViewController *)self screenshots];
+    firstObject = [screenshots firstObject];
+    pDFDocument = [firstObject PDFDocument];
+    [pDFDocument pageCount];
   }
 
   v8 = objc_alloc(objc_opt_class());
-  v9 = [v4 screenshot];
-  v10 = [v8 initWithScreenshot:v9];
+  screenshot = [providerCopy screenshot];
+  v10 = [v8 initWithScreenshot:screenshot];
 
   return v10;
 }

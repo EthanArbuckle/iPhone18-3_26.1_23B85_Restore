@@ -1,29 +1,29 @@
 @interface BWSmartStyleApplyNode
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getSampleBufferPresentationTimeStamp:(SEL)a3;
-- (BOOL)_canRenderWithStyleEngineApplyForInput:(opaqueCMSampleBuffer *)a3;
-- (BOOL)_updateCurrentStyle:(opaqueCMSampleBuffer *)a3;
-- (BWSmartStyleApplyNode)initWithMetalCommandQueue:(id)a3 renderingMethod:(int)a4 squareAspectRatioConfigEnabled:(BOOL)a5;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getSampleBufferPresentationTimeStamp:(SEL)stamp;
+- (BOOL)_canRenderWithStyleEngineApplyForInput:(opaqueCMSampleBuffer *)input;
+- (BOOL)_updateCurrentStyle:(opaqueCMSampleBuffer *)style;
+- (BWSmartStyleApplyNode)initWithMetalCommandQueue:(id)queue renderingMethod:(int)method squareAspectRatioConfigEnabled:(BOOL)enabled;
 - (id)_updateSupportedPixelFormats;
-- (int)_applySmartStyleFromSampleBuffer:(opaqueCMSampleBuffer *)a3 to:(opaqueCMSampleBuffer *)a4;
-- (int)_applySmartStyleProxyRenderingWithMethod:(int)a3 fromSampleBuffer:(opaqueCMSampleBuffer *)a4 to:(opaqueCMSampleBuffer *)a5;
-- (int)_loadAndConfigureSmartStyleBundle:(BOOL)a3;
+- (int)_applySmartStyleFromSampleBuffer:(opaqueCMSampleBuffer *)buffer to:(opaqueCMSampleBuffer *)to;
+- (int)_applySmartStyleProxyRenderingWithMethod:(int)method fromSampleBuffer:(opaqueCMSampleBuffer *)buffer to:(opaqueCMSampleBuffer *)to;
+- (int)_loadAndConfigureSmartStyleBundle:(BOOL)bundle;
 - (int)_loadAndConfigureSmartStyleProxyRenderer;
 - (uint64_t)_loadAndConfigureSmartStyleProxyRenderer;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
-- (void)_consumeSampleBufferAttachments:(opaqueCMSampleBuffer *)a3;
+- (void)_consumeSampleBufferAttachments:(opaqueCMSampleBuffer *)attachments;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setMaxLossyCompressionLevel:(int)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setMaxLossyCompressionLevel:(int)level;
 @end
 
 @implementation BWSmartStyleApplyNode
 
-- (BWSmartStyleApplyNode)initWithMetalCommandQueue:(id)a3 renderingMethod:(int)a4 squareAspectRatioConfigEnabled:(BOOL)a5
+- (BWSmartStyleApplyNode)initWithMetalCommandQueue:(id)queue renderingMethod:(int)method squareAspectRatioConfigEnabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v34.receiver = self;
   v34.super_class = BWSmartStyleApplyNode;
   v8 = [(BWNode *)&v34 init];
@@ -33,18 +33,18 @@
   }
 
   v9 = v8;
-  v8->_renderingMethod = a4;
+  v8->_renderingMethod = method;
   v8->_maxLossyCompressionLevel = 0;
-  v8->_metalCommandQueue = a3;
+  v8->_metalCommandQueue = queue;
   v9->_firstFrame = 1;
-  v10 = [(BWSmartStyleApplyNode *)v9 _updateSupportedPixelFormats];
-  if (!v10)
+  _updateSupportedPixelFormats = [(BWSmartStyleApplyNode *)v9 _updateSupportedPixelFormats];
+  if (!_updateSupportedPixelFormats)
   {
     [BWSmartStyleApplyNode initWithMetalCommandQueue:renderingMethod:squareAspectRatioConfigEnabled:];
     return 0;
   }
 
-  v11 = v10;
+  v11 = _updateSupportedPixelFormats;
   v12 = objc_alloc_init(BWVideoFormatRequirements);
   if (!v12)
   {
@@ -53,13 +53,13 @@
   }
 
   v13 = v12;
-  v27 = v5;
+  v27 = enabledCopy;
   [(BWVideoFormatRequirements *)v12 setSupportedPixelFormats:v11];
   v28 = v9;
   v14 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v9];
   [(BWNodeInput *)v14 setFormatRequirements:v13];
   [(BWNodeInput *)v14 setPassthroughMode:2];
-  if (a4 == 1)
+  if (method == 1)
   {
     v32 = 0u;
     v33 = 0u;
@@ -126,19 +126,19 @@
   return v22;
 }
 
-- (void)setMaxLossyCompressionLevel:(int)a3
+- (void)setMaxLossyCompressionLevel:(int)level
 {
-  if (self->_maxLossyCompressionLevel != a3)
+  if (self->_maxLossyCompressionLevel != level)
   {
-    v4 = [(BWNodeInput *)self->super._input formatRequirements];
-    v5 = [(BWNodeOutput *)self->super._output formatRequirements];
-    v6 = [(BWSmartStyleApplyNode *)self _updateSupportedPixelFormats];
-    if (v6)
+    formatRequirements = [(BWNodeInput *)self->super._input formatRequirements];
+    formatRequirements2 = [(BWNodeOutput *)self->super._output formatRequirements];
+    _updateSupportedPixelFormats = [(BWSmartStyleApplyNode *)self _updateSupportedPixelFormats];
+    if (_updateSupportedPixelFormats)
     {
-      v7 = v6;
-      [(BWFormatRequirements *)v4 setSupportedPixelFormats:v6];
+      v7 = _updateSupportedPixelFormats;
+      [(BWFormatRequirements *)formatRequirements setSupportedPixelFormats:_updateSupportedPixelFormats];
 
-      [(BWFormatRequirements *)v5 setSupportedPixelFormats:v7];
+      [(BWFormatRequirements *)formatRequirements2 setSupportedPixelFormats:v7];
     }
 
     else
@@ -163,28 +163,28 @@
   [(BWNode *)&v4 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if (a3)
+  if (format)
   {
-    if (a4)
+    if (input)
     {
-      if ([a5 isEqualToString:@"PrimaryFormat"])
+      if ([key isEqualToString:@"PrimaryFormat"])
       {
-        v9 = [(BWNodeOutput *)self->super._output formatRequirements];
-        -[BWFormatRequirements setWidth:](v9, "setWidth:", [a3 width]);
-        -[BWFormatRequirements setHeight:](v9, "setHeight:", [a3 height]);
-        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "pixelFormat")}];
-        -[BWFormatRequirements setSupportedPixelFormats:](v9, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1]);
-        v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a3, "colorSpaceProperties")}];
-        -[BWFormatRequirements setSupportedColorSpaceProperties:](v9, "setSupportedColorSpaceProperties:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1]);
-        [(BWNodeOutput *)self->super._output setFormat:a3];
+        formatRequirements = [(BWNodeOutput *)self->super._output formatRequirements];
+        -[BWFormatRequirements setWidth:](formatRequirements, "setWidth:", [format width]);
+        -[BWFormatRequirements setHeight:](formatRequirements, "setHeight:", [format height]);
+        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(format, "pixelFormat")}];
+        -[BWFormatRequirements setSupportedPixelFormats:](formatRequirements, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1]);
+        v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(format, "colorSpaceProperties")}];
+        -[BWFormatRequirements setSupportedColorSpaceProperties:](formatRequirements, "setSupportedColorSpaceProperties:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1]);
+        [(BWNodeOutput *)self->super._output setFormat:format];
       }
 
-      else if ([a5 isEqual:0x1F21AB070])
+      else if ([key isEqual:0x1F21AB070])
       {
         v10 = [BWPixelBufferPool alloc];
-        v11 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:](v10, "initWithVideoFormat:capacity:name:memoryPool:", a3, self->_filteredCoefficientsPixelBufferPoolSize, [MEMORY[0x1E696AEC0] stringWithFormat:@"ApplyNode filtered coefficients buffer pool"], -[BWNodeOutput memoryPool](self->super._output, "memoryPool"));
+        v11 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:](v10, "initWithVideoFormat:capacity:name:memoryPool:", format, self->_filteredCoefficientsPixelBufferPoolSize, [MEMORY[0x1E696AEC0] stringWithFormat:@"ApplyNode filtered coefficients buffer pool"], -[BWNodeOutput memoryPool](self->super._output, "memoryPool"));
         self->_filteredCoefficientsPixelBufferPool = v11;
         if (!v11)
         {
@@ -196,7 +196,7 @@
       {
         v12.receiver = self;
         v12.super_class = BWSmartStyleApplyNode;
-        [(BWNode *)&v12 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+        [(BWNode *)&v12 didSelectFormat:format forInput:input forAttachedMediaKey:key];
       }
     }
 
@@ -238,44 +238,44 @@
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   v3.receiver = self;
   v3.super_class = BWSmartStyleApplyNode;
-  [(BWNode *)&v3 didReachEndOfDataForInput:a3];
+  [(BWNode *)&v3 didReachEndOfDataForInput:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   target = 0;
-  if (!a3)
+  if (!buffer)
   {
     [BWSmartStyleApplyNode renderSampleBuffer:? forInput:?];
     goto LABEL_26;
   }
 
-  if (!a4)
+  if (!input)
   {
     [BWSmartStyleApplyNode renderSampleBuffer:forInput:];
     goto LABEL_29;
   }
 
-  if (!BWSampleBufferIsMarkerBuffer(a3))
+  if (!BWSampleBufferIsMarkerBuffer(buffer))
   {
-    if ([(BWSmartStyleApplyNode *)self _updateCurrentStyle:a3])
+    if ([(BWSmartStyleApplyNode *)self _updateCurrentStyle:buffer])
     {
       renderingMethod = self->_renderingMethod;
       if (renderingMethod)
       {
         v8 = *off_1E798A3C8;
-        v9 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+        v9 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
         if (v9)
         {
           v10 = *off_1E798B710;
-          if (([objc_msgSend(v9 objectForKeyedSubscript:{*off_1E798B710), "BOOLValue"}] & 1) != 0 || (AttachedMedia = BWSampleBufferGetAttachedMedia(a3, @"SynchronizedSlaveFrame")) == 0)
+          if (([objc_msgSend(v9 objectForKeyedSubscript:{*off_1E798B710), "BOOLValue"}] & 1) != 0 || (AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, @"SynchronizedSlaveFrame")) == 0)
           {
             v12 = 0;
-            v13 = a3;
+            bufferCopy2 = buffer;
             goto LABEL_17;
           }
 
@@ -287,19 +287,19 @@
             v12 = v16;
             if (v16)
             {
-              v13 = v14;
+              bufferCopy2 = v14;
             }
 
             else
             {
-              v13 = a3;
+              bufferCopy2 = buffer;
             }
 
 LABEL_17:
-            if (BWSmartStyleRenderingShouldBeBypassed(v13))
+            if (BWSmartStyleRenderingShouldBeBypassed(bufferCopy2))
             {
 LABEL_25:
-              [(BWSmartStyleApplyNode *)&self->super.super.isa renderSampleBuffer:a3 forInput:v12, &target];
+              [(BWSmartStyleApplyNode *)&self->super.super.isa renderSampleBuffer:buffer forInput:v12, &target];
 LABEL_26:
               self->_firstFrame = 0;
               return;
@@ -307,9 +307,9 @@ LABEL_26:
 
             if (renderingMethod == 1)
             {
-              if ([(BWSmartStyleApplyNode *)self _canRenderWithStyleEngineApplyForInput:v13])
+              if ([(BWSmartStyleApplyNode *)self _canRenderWithStyleEngineApplyForInput:bufferCopy2])
               {
-                if ([(BWSmartStyleApplyNode *)self _applySmartStyleFromSampleBuffer:v13 to:&target])
+                if ([(BWSmartStyleApplyNode *)self _applySmartStyleFromSampleBuffer:bufferCopy2 to:&target])
                 {
                   [BWSmartStyleApplyNode renderSampleBuffer:forInput:];
                   goto LABEL_25;
@@ -323,7 +323,7 @@ LABEL_24:
               renderingMethod = 3;
             }
 
-            if ([(BWSmartStyleApplyNode *)self _applySmartStyleProxyRenderingWithMethod:renderingMethod fromSampleBuffer:v13 to:&target])
+            if ([(BWSmartStyleApplyNode *)self _applySmartStyleProxyRenderingWithMethod:renderingMethod fromSampleBuffer:bufferCopy2 to:&target])
             {
               [BWSmartStyleApplyNode renderSampleBuffer:forInput:];
               goto LABEL_25;
@@ -349,13 +349,13 @@ LABEL_29:
 
   output = self->super._output;
 
-  [(BWNodeOutput *)output emitSampleBuffer:a3];
+  [(BWNodeOutput *)output emitSampleBuffer:buffer];
 }
 
-- (BOOL)_canRenderWithStyleEngineApplyForInput:(opaqueCMSampleBuffer *)a3
+- (BOOL)_canRenderWithStyleEngineApplyForInput:(opaqueCMSampleBuffer *)input
 {
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F21AB0D0);
-  v5 = BWSampleBufferGetAttachedMedia(a3, 0x1F21AB070);
+  AttachedMedia = BWSampleBufferGetAttachedMedia(input, 0x1F21AB0D0);
+  v5 = BWSampleBufferGetAttachedMedia(input, 0x1F21AB070);
   if (AttachedMedia)
   {
     v6 = v5 == 0;
@@ -369,9 +369,9 @@ LABEL_29:
   return !v6;
 }
 
-- (int)_loadAndConfigureSmartStyleBundle:(BOOL)a3
+- (int)_loadAndConfigureSmartStyleBundle:(BOOL)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v5 = BWLoadProcessorBundle(@"SmartStyle", 1);
   if (v5)
   {
@@ -384,7 +384,7 @@ LABEL_29:
       [(CMISmartStyleProcessor *)self->_smartStyleProcessor setUseLiveMetalAllocations:1];
       v8 = [(objc_class *)v6 getSmartStyleCoefficientsFilterType:@"iir"];
       self->_filterType = v8;
-      v9 = v3 ? [(objc_class *)v6 getDefaultProcessorConfigurationForStreamingSquareAspectRatioWithFilterType:v8]: [(objc_class *)v6 getDefaultProcessorConfigurationForStreamingWithFilterType:v8];
+      v9 = bundleCopy ? [(objc_class *)v6 getDefaultProcessorConfigurationForStreamingSquareAspectRatioWithFilterType:v8]: [(objc_class *)v6 getDefaultProcessorConfigurationForStreamingWithFilterType:v8];
       [(CMISmartStyleProcessor *)self->_smartStyleProcessor setConfiguration:v9];
       if ([(CMISmartStyleProcessor *)self->_smartStyleProcessor configuration])
       {
@@ -411,11 +411,11 @@ LABEL_29:
   self->_smartStyleClass = v3;
   if (!v3 || (v4 = NSClassFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"CMISmartStyleProxyRendererV%d", 1]), !self->_smartStyleClass) || (v5 = objc_msgSend([v4 alloc], "initWithOptionalMetalCommandQueue:", self->_metalCommandQueue), (self->_smartStyleProxyRenderer = v5) == 0))
   {
-    v13 = -12786;
+    prewarm = -12786;
 LABEL_22:
 
     self->_smartStyleProxyRenderer = 0;
-    return v13;
+    return prewarm;
   }
 
   [(CMISmartStyleProxyRenderer *)v5 setMaxInputStylesCount:1];
@@ -442,7 +442,7 @@ LABEL_16:
 LABEL_17:
     v12 = 0;
 LABEL_18:
-    v13 = -12786;
+    prewarm = -12786;
     goto LABEL_10;
   }
 
@@ -459,39 +459,39 @@ LABEL_18:
     {
       [v11 setAllocatorBackend:v8];
       [(CMISmartStyleProxyRenderer *)smartStyleProxyRenderer setExternalMemoryResource:v12];
-      v13 = 0;
+      prewarm = 0;
       goto LABEL_10;
     }
 
     goto LABEL_18;
   }
 
-  v13 = v10;
+  prewarm = v10;
   v12 = 0;
 LABEL_10:
 
-  if (v13)
+  if (prewarm)
   {
     [BWSmartStyleApplyNode _loadAndConfigureSmartStyleProxyRenderer];
     goto LABEL_22;
   }
 
-  v14 = [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer setup];
-  if (v14)
+  setup = [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer setup];
+  if (setup)
   {
-    v13 = v14;
+    prewarm = setup;
     [BWSmartStyleApplyNode _loadAndConfigureSmartStyleProxyRenderer];
     goto LABEL_22;
   }
 
-  v13 = [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer prewarm];
-  if (v13)
+  prewarm = [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer prewarm];
+  if (prewarm)
   {
     [BWSmartStyleApplyNode _loadAndConfigureSmartStyleProxyRenderer];
     goto LABEL_22;
   }
 
-  return v13;
+  return prewarm;
 }
 
 - (id)_updateSupportedPixelFormats
@@ -507,7 +507,7 @@ LABEL_10:
   return v3;
 }
 
-- (void)_consumeSampleBufferAttachments:(opaqueCMSampleBuffer *)a3
+- (void)_consumeSampleBufferAttachments:(opaqueCMSampleBuffer *)attachments
 {
   v13 = 0u;
   v14 = 0u;
@@ -529,7 +529,7 @@ LABEL_10:
           objc_enumerationMutation(v4);
         }
 
-        BWSampleBufferRemoveAttachedMedia(a3, *(*(&v11 + 1) + 8 * v8++));
+        BWSampleBufferRemoveAttachedMedia(attachments, *(*(&v11 + 1) + 8 * v8++));
       }
 
       while (v6 != v8);
@@ -539,15 +539,15 @@ LABEL_10:
     while (v6);
   }
 
-  CMRemoveAttachment(a3, *off_1E798A4C0);
-  v9 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  CMRemoveAttachment(attachments, *off_1E798A4C0);
+  v9 = CMGetAttachment(attachments, *off_1E798A3C8, 0);
   [v9 setObject:0 forKeyedSubscript:*off_1E798A8F8];
   [v9 setObject:0 forKeyedSubscript:*off_1E798A920];
   [v9 setObject:0 forKeyedSubscript:*off_1E798A928];
   [v9 setObject:0 forKeyedSubscript:*off_1E798A8E8];
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getSampleBufferPresentationTimeStamp:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getSampleBufferPresentationTimeStamp:(SEL)stamp
 {
   *retstr = **&MEMORY[0x1E6960C70];
   if (!a4)
@@ -570,14 +570,14 @@ LABEL_10:
   }
 }
 
-- (BOOL)_updateCurrentStyle:(opaqueCMSampleBuffer *)a3
+- (BOOL)_updateCurrentStyle:(opaqueCMSampleBuffer *)style
 {
-  if (!a3)
+  if (!style)
   {
     return 0;
   }
 
-  v4 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v4 = CMGetAttachment(style, *off_1E798A3C8, 0);
   if (!v4)
   {
     goto LABEL_10;
@@ -623,7 +623,7 @@ LABEL_10:
   }
 }
 
-- (int)_applySmartStyleFromSampleBuffer:(opaqueCMSampleBuffer *)a3 to:(opaqueCMSampleBuffer *)a4
+- (int)_applySmartStyleFromSampleBuffer:(opaqueCMSampleBuffer *)buffer to:(opaqueCMSampleBuffer *)to
 {
   v66 = 0;
   v67 = 0;
@@ -633,7 +633,7 @@ LABEL_10:
   rect.origin = *MEMORY[0x1E695F050];
   rect.size = v7;
   v8 = MEMORY[0x1E695FF58];
-  if (!a3)
+  if (!buffer)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0();
@@ -641,8 +641,8 @@ LABEL_10:
     goto LABEL_51;
   }
 
-  v9 = a4;
-  if (!a4)
+  toCopy = to;
+  if (!to)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0();
@@ -650,10 +650,10 @@ LABEL_10:
     goto LABEL_53;
   }
 
-  *a4 = 0;
+  *to = 0;
   if (!self)
   {
-    v9 = 0;
+    toCopy = 0;
     OUTLINED_FUNCTION_9_61();
     v65 = 0;
     v64 = 0;
@@ -669,7 +669,7 @@ LABEL_18:
   if ((v60 & 1) == 0)
   {
 LABEL_51:
-    v9 = 0;
+    toCopy = 0;
 LABEL_53:
     OUTLINED_FUNCTION_9_61();
     goto LABEL_18;
@@ -681,45 +681,45 @@ LABEL_53:
     OUTLINED_FUNCTION_5_7();
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (!ImageBuffer)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0();
     AttachedMedia = FigDebugAssert3();
-    v9 = 0;
+    toCopy = 0;
     v4 = 0;
     goto LABEL_18;
   }
 
   v21 = *off_1E798A3C8;
-  v22 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v22 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v22)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0();
     FigDebugAssert3();
-    v9 = 0;
+    toCopy = 0;
     OUTLINED_FUNCTION_9_61();
     v37 = -12780;
     goto LABEL_39;
   }
 
   v23 = v22;
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F21AB0D0);
+  AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AB0D0);
   v4 = AttachedMedia;
   if (!AttachedMedia)
   {
-    v9 = 0;
+    toCopy = 0;
 LABEL_58:
     ImageBuffer = 0;
     v37 = -12783;
     goto LABEL_39;
   }
 
-  v55 = v9;
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F21AB070);
-  v9 = AttachedMedia;
+  v55 = toCopy;
+  AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AB070);
+  toCopy = AttachedMedia;
   if (!AttachedMedia)
   {
     v4 = 0;
@@ -740,7 +740,7 @@ LABEL_58:
       self->_mostRecentCoefficients = 0;
     }
 
-    self->_mostRecentCoefficients = CFRetain(v9);
+    self->_mostRecentCoefficients = CFRetain(toCopy);
     self->_applyGlobalMostRecentCoefficients = 0;
     v35 = self->_currentGlobalLocalMixFactor - self->_globalLocalSystemMixFactorDecayRate;
     [objc_msgSend(-[CMISmartStyleProcessor configuration](self->_smartStyleProcessor "configuration")];
@@ -756,18 +756,18 @@ LABEL_58:
   {
     self->_applyGlobalMostRecentCoefficients = 1;
     self->_currentGlobalLocalMixFactor = 1.0;
-    v9 = mostRecentCoefficients;
+    toCopy = mostRecentCoefficients;
   }
 
   self->_mostRecentQuadraBinningFactor = [objc_msgSend(v23 objectForKeyedSubscript:{v32), "intValue"}];
   v38 = [v23 objectForKeyedSubscript:*off_1E798A8F0];
-  if (v38 && !CGRectMakeWithDictionaryRepresentation(v38, &rect) || (v39 = CMSampleBufferGetImageBuffer(v4)) == 0 || (v40 = v39, (v41 = CMSampleBufferGetImageBuffer(v9)) == 0))
+  if (v38 && !CGRectMakeWithDictionaryRepresentation(v38, &rect) || (v39 = CMSampleBufferGetImageBuffer(v4)) == 0 || (v40 = v39, (v41 = CMSampleBufferGetImageBuffer(toCopy)) == 0))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_3_47();
     LODWORD(v51) = 0;
     FigDebugAssert3();
-    v9 = 0;
+    toCopy = 0;
     OUTLINED_FUNCTION_9_61();
     v37 = -12780;
 LABEL_71:
@@ -780,7 +780,7 @@ LABEL_71:
   v4 = AttachedMedia;
   if (!AttachedMedia)
   {
-    v9 = 0;
+    toCopy = 0;
 LABEL_63:
     ImageBuffer = 0;
 LABEL_70:
@@ -789,8 +789,8 @@ LABEL_70:
   }
 
   CVBufferPropagateAttachments(ImageBuffer, AttachedMedia);
-  v9 = objc_alloc_init(self->_smartStyleProcessorInputOutputClass);
-  if (!v9)
+  toCopy = objc_alloc_init(self->_smartStyleProcessorInputOutputClass);
+  if (!toCopy)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_3_47();
@@ -799,18 +799,18 @@ LABEL_70:
     goto LABEL_63;
   }
 
-  [v9 setMetalSharedEvent:{CMGetAttachment(a3, *off_1E798A4C0, 0)}];
-  [v9 setInputUnstyledPixelBuffer:ImageBuffer];
-  [v9 setInputMetadataDict:v23];
-  [v9 setInputUnstyledThumbnailPixelBuffer:v40];
-  [v9 setOutputStyledPixelBuffer:v4];
-  [v9 setPrimaryCaptureRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
+  [toCopy setMetalSharedEvent:{CMGetAttachment(buffer, *off_1E798A4C0, 0)}];
+  [toCopy setInputUnstyledPixelBuffer:ImageBuffer];
+  [toCopy setInputMetadataDict:v23];
+  [toCopy setInputUnstyledThumbnailPixelBuffer:v40];
+  [toCopy setOutputStyledPixelBuffer:v4];
+  [toCopy setPrimaryCaptureRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   *&v43 = self->_currentGlobalLocalMixFactor;
-  [v9 setGlobalLinearSystemMixFactor:v43];
-  [v9 setApplyDither:self->_applyDither];
+  [toCopy setGlobalLinearSystemMixFactor:v43];
+  [toCopy setApplyDither:self->_applyDither];
   if (!self->_filterType)
   {
-    [v9 setInputStyleCoefficientsPixelBuffer:v42];
+    [toCopy setInputStyleCoefficientsPixelBuffer:v42];
     ImageBuffer = 0;
     goto LABEL_32;
   }
@@ -842,13 +842,13 @@ LABEL_70:
   [(CMISmartStyleProcessor *)self->_smartStyleProcessor utilities];
   OUTLINED_FUNCTION_5_83();
   [v46 filterCoefficientsForFrameWithMetadata:v23 pts:&v58 filterType:? toPixelBuffer:?];
-  [v9 setInputStyleCoefficientsPixelBuffer:ImageBuffer];
+  [toCopy setInputStyleCoefficientsPixelBuffer:ImageBuffer];
 LABEL_32:
-  [(CMISmartStyleProcessor *)self->_smartStyleProcessor setInputOutput:v9];
-  v47 = [(CMISmartStyleProcessor *)self->_smartStyleProcessor process];
-  if (v47 || (v47 = [(CMISmartStyleProcessor *)self->_smartStyleProcessor finishProcessing]) != 0)
+  [(CMISmartStyleProcessor *)self->_smartStyleProcessor setInputOutput:toCopy];
+  process = [(CMISmartStyleProcessor *)self->_smartStyleProcessor process];
+  if (process || (process = [(CMISmartStyleProcessor *)self->_smartStyleProcessor finishProcessing]) != 0)
   {
-    v37 = v47;
+    v37 = process;
     fig_log_get_emitter();
     OUTLINED_FUNCTION_3_47();
     LODWORD(v51) = v37;
@@ -857,7 +857,7 @@ LABEL_32:
     goto LABEL_39;
   }
 
-  v48 = BWCMSampleBufferCreateCopyWithNewPixelBuffer(a3, v4, &v66, &v67);
+  v48 = BWCMSampleBufferCreateCopyWithNewPixelBuffer(buffer, v4, &v66, &v67);
   v8 = MEMORY[0x1E695FF58];
   if (v48)
   {
@@ -869,7 +869,7 @@ LABEL_32:
     goto LABEL_39;
   }
 
-  v49 = CMGetAttachment(a3, v21, 0);
+  v49 = CMGetAttachment(buffer, v21, 0);
   if (!v49)
   {
     fig_log_get_emitter();
@@ -918,27 +918,27 @@ LABEL_39:
   return v37;
 }
 
-- (int)_applySmartStyleProxyRenderingWithMethod:(int)a3 fromSampleBuffer:(opaqueCMSampleBuffer *)a4 to:(opaqueCMSampleBuffer *)a5
+- (int)_applySmartStyleProxyRenderingWithMethod:(int)method fromSampleBuffer:(opaqueCMSampleBuffer *)buffer to:(opaqueCMSampleBuffer *)to
 {
-  v11 = self;
+  selfCopy = self;
   v41 = 0;
   cf = 0;
   v38 = *MEMORY[0x1E6960CC0];
   v39 = *(MEMORY[0x1E6960CC0] + 8);
   v12 = MEMORY[0x1E695FF58];
-  if (a3 == 2)
+  if (method == 2)
   {
     v13 = 1;
   }
 
   else
   {
-    if (a3 != 3)
+    if (method != 3)
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_1_11();
       self = FigDebugAssert3();
-      v20 = 0;
+      selfCopy2 = 0;
       v24 = 0;
       goto LABEL_26;
     }
@@ -946,15 +946,15 @@ LABEL_39:
     v13 = 2;
   }
 
-  if (!a4 || !a5)
+  if (!buffer || !to)
   {
     goto LABEL_35;
   }
 
-  *a5 = 0;
+  *to = 0;
   if (!self)
   {
-    v20 = 0;
+    selfCopy2 = 0;
     v39 = 0;
     v38 = 0;
 LABEL_18:
@@ -962,7 +962,7 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  self = [(BWSmartStyleApplyNode *)self _getSampleBufferPresentationTimeStamp:a4];
+  self = [(BWSmartStyleApplyNode *)self _getSampleBufferPresentationTimeStamp:buffer];
   v14 = v37;
   v38 = v34;
   v15 = v36;
@@ -970,18 +970,18 @@ LABEL_18:
   if ((v36 & 1) == 0)
   {
 LABEL_36:
-    v20 = 0;
+    selfCopy2 = 0;
     goto LABEL_18;
   }
 
   if (*v12 == 1)
   {
-    OUTLINED_FUNCTION_7_73(self, a2, *&a3, a4, a5, v5, v6, v7, v27, v28, v29, v30, v31, v32, currentStyle, v34, v35, v36, v37, v38, v39);
+    OUTLINED_FUNCTION_7_73(self, a2, *&method, buffer, to, v5, v6, v7, v27, v28, v29, v30, v31, v32, currentStyle, v34, v35, v36, v37, v38, v39);
     OUTLINED_FUNCTION_5_7();
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a4);
-  if (!ImageBuffer || (v17 = ImageBuffer, (v18 = CMGetAttachment(a4, *off_1E798A3C8, 0)) == 0))
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
+  if (!ImageBuffer || (v17 = ImageBuffer, (v18 = CMGetAttachment(buffer, *off_1E798A3C8, 0)) == 0))
   {
 LABEL_35:
     fig_log_get_emitter();
@@ -992,15 +992,15 @@ LABEL_35:
 
   v19 = v18;
   v30 = v8;
-  self = [(BWPixelBufferPool *)[(BWNodeOutput *)v11->super._output livePixelBufferPool] newPixelBuffer];
-  v20 = self;
+  self = [(BWPixelBufferPool *)[(BWNodeOutput *)selfCopy->super._output livePixelBufferPool] newPixelBuffer];
+  selfCopy2 = self;
   if (self)
   {
     v31 = v14;
     HIDWORD(v32) = v15;
     CVBufferPropagateAttachments(v17, self);
     v21 = [v19 objectForKeyedSubscript:*off_1E798A8D0];
-    AttachedMedia = BWSampleBufferGetAttachedMedia(a4, 0x1F21AAED0);
+    AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AAED0);
     if (AttachedMedia)
     {
       v23 = CMSampleBufferGetImageBuffer(AttachedMedia);
@@ -1011,14 +1011,14 @@ LABEL_35:
       v23 = 0;
     }
 
-    currentStyle = v11->_currentStyle;
-    -[CMISmartStyleProxyRenderer setInputStyles:](v11->_smartStyleProxyRenderer, "setInputStyles:", [MEMORY[0x1E695DEC8] arrayWithObjects:&currentStyle count:1]);
-    [(CMISmartStyleProxyRenderer *)v11->_smartStyleProxyRenderer setInputPixelBuffer:v17];
-    [(CMISmartStyleProxyRenderer *)v11->_smartStyleProxyRenderer setInputMaskPixelBuffer:v23];
-    [(CMISmartStyleProxyRenderer *)v11->_smartStyleProxyRenderer setInputImageStatistics:v21];
-    [(CMISmartStyleProxyRenderer *)v11->_smartStyleProxyRenderer setOutputPixelBuffer:v20];
-    v25 = [(CMISmartStyleProxyRenderer *)v11->_smartStyleProxyRenderer prepareToProcess:v13];
-    if (v25 || (v25 = [(CMISmartStyleProxyRenderer *)v11->_smartStyleProxyRenderer process]) != 0 || (v25 = BWCMSampleBufferCreateCopyWithNewPixelBuffer(a4, v20, &cf, &v41)) != 0)
+    currentStyle = selfCopy->_currentStyle;
+    -[CMISmartStyleProxyRenderer setInputStyles:](selfCopy->_smartStyleProxyRenderer, "setInputStyles:", [MEMORY[0x1E695DEC8] arrayWithObjects:&currentStyle count:1]);
+    [(CMISmartStyleProxyRenderer *)selfCopy->_smartStyleProxyRenderer setInputPixelBuffer:v17];
+    [(CMISmartStyleProxyRenderer *)selfCopy->_smartStyleProxyRenderer setInputMaskPixelBuffer:v23];
+    [(CMISmartStyleProxyRenderer *)selfCopy->_smartStyleProxyRenderer setInputImageStatistics:v21];
+    [(CMISmartStyleProxyRenderer *)selfCopy->_smartStyleProxyRenderer setOutputPixelBuffer:selfCopy2];
+    v25 = [(CMISmartStyleProxyRenderer *)selfCopy->_smartStyleProxyRenderer prepareToProcess:v13];
+    if (v25 || (v25 = [(CMISmartStyleProxyRenderer *)selfCopy->_smartStyleProxyRenderer process]) != 0 || (v25 = BWCMSampleBufferCreateCopyWithNewPixelBuffer(buffer, selfCopy2, &cf, &v41)) != 0)
     {
       v24 = v25;
       fig_log_get_emitter();
@@ -1035,7 +1035,7 @@ LABEL_35:
       }
 
       v24 = 0;
-      *a5 = self;
+      *to = self;
     }
   }
 
@@ -1047,7 +1047,7 @@ LABEL_35:
 LABEL_26:
   if (*v12 == 1)
   {
-    OUTLINED_FUNCTION_7_73(self, a2, *&a3, a4, a5, v5, v6, v7, v27, v28, v29, v30, v31, v32, currentStyle, v34, v35, v36, v37, v38, v39);
+    OUTLINED_FUNCTION_7_73(self, a2, *&method, buffer, to, v5, v6, v7, v27, v28, v29, v30, v31, v32, currentStyle, v34, v35, v36, v37, v38, v39);
     OUTLINED_FUNCTION_5_7();
   }
 
@@ -1056,9 +1056,9 @@ LABEL_26:
     CFRelease(v41);
   }
 
-  if (v20)
+  if (selfCopy2)
   {
-    CFRelease(v20);
+    CFRelease(selfCopy2);
   }
 
   if (cf)

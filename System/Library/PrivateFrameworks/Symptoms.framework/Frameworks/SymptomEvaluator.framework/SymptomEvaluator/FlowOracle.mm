@@ -1,8 +1,8 @@
 @interface FlowOracle
 + (FlowOracle)sharedInstance;
-- (BOOL)flowQualfiesForAVHeuristics:(id)a3;
-- (BOOL)hadZeroCellInterfaceTrafficForLast:(double)a3;
-- (BOOL)hadZeroWiFiInterfaceTrafficForLast:(double)a3;
+- (BOOL)flowQualfiesForAVHeuristics:(id)heuristics;
+- (BOOL)hadZeroCellInterfaceTrafficForLast:(double)last;
+- (BOOL)hadZeroWiFiInterfaceTrafficForLast:(double)last;
 - (BOOL)hasSustainedConservativeHighCellInterfaceThroughput;
 - (BOOL)hasSustainedConservativeHighWiFiInterfaceThroughput;
 - (BOOL)hasSustainedHighCellInterfaceRxThroughput;
@@ -16,10 +16,10 @@
 - (NSSet)coreMediaAssetDownloadContributors;
 - (NSSet)transferContributors;
 - (double)coreMediaAssetDownloadRelatedRecentThroughput;
-- (id)getState:(BOOL)a3;
+- (id)getState:(BOOL)state;
 - (int)activeHighThroughputAudioVideoTrafficForegroundFlowScore;
 - (int)activeLimitedThroughputAudioVideoTrafficForegroundFlowScore;
-- (int)setConfiguration:(id)a3;
+- (int)setConfiguration:(id)configuration;
 - (unint64_t)numActiveCoreMediaAssetDownloads;
 - (unint64_t)numActiveTransferSizes;
 - (unint64_t)numCandidateCoreMediaAssetDownloads;
@@ -27,30 +27,30 @@
 - (unint64_t)numLowerThresholdTransferSizes;
 - (unint64_t)numUpperThresholdTransferSizes;
 - (void)_clearState;
-- (void)applyFlowHeuristics:(id)a3 onBehalfOf:(id)a4;
-- (void)didPollFlowsAt:(double)a3 periodic:(BOOL)a4;
-- (void)evaluatePossibleAVFlows:(id)a3 currentFlowCount:(unint64_t)a4 activeFlowCount:(unint64_t)a5;
-- (void)logCellInterfaceUseContributors:(unint64_t)a3;
-- (void)logCoreMediaAssetDownloadContributors:(unint64_t)a3;
-- (void)logTransferContributors:(unint64_t)a3;
+- (void)applyFlowHeuristics:(id)heuristics onBehalfOf:(id)of;
+- (void)didPollFlowsAt:(double)at periodic:(BOOL)periodic;
+- (void)evaluatePossibleAVFlows:(id)flows currentFlowCount:(unint64_t)count activeFlowCount:(unint64_t)flowCount;
+- (void)logCellInterfaceUseContributors:(unint64_t)contributors;
+- (void)logCoreMediaAssetDownloadContributors:(unint64_t)contributors;
+- (void)logTransferContributors:(unint64_t)contributors;
 - (void)markCoreMediaAssetDownloadsAsActive;
-- (void)markCoreMediaAssetDownloadsAsInactiveAt:(double)a3;
+- (void)markCoreMediaAssetDownloadsAsInactiveAt:(double)at;
 - (void)markTransferSizeFlowsAsActive;
 - (void)markTransferSizeFlowsAsInactive;
-- (void)refreshState:(id)a3;
+- (void)refreshState:(id)state;
 - (void)refreshTransferSizeState;
 - (void)restoreDefaults;
-- (void)startSamplingPeriod:(id)a3;
+- (void)startSamplingPeriod:(id)period;
 @end
 
 @implementation FlowOracle
 
 - (BOOL)hasSustainedConservativeHighCellInterfaceThroughput
 {
-  v2 = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
-  v3 = [v2 hasSustainedConservativeHighInterfaceThroughput];
+  cellInterfaceSampler = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
+  hasSustainedConservativeHighInterfaceThroughput = [cellInterfaceSampler hasSustainedConservativeHighInterfaceThroughput];
 
-  return v3;
+  return hasSustainedConservativeHighInterfaceThroughput;
 }
 
 - (void)refreshTransferSizeState
@@ -61,8 +61,8 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v3 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-  v4 = [v3 countByEnumeratingWithState:&v41 objects:v47 count:16];
+  transferSizeFlows = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+  v4 = [transferSizeFlows countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v4)
   {
     v5 = v4;
@@ -74,24 +74,24 @@
       {
         if (*v42 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(transferSizeFlows);
         }
 
         v8 = *(*(&v41 + 1) + 8 * v7);
-        v9 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        transferSizeFlows2 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+        v10 = [transferSizeFlows2 objectForKeyedSubscript:v8];
 
-        v11 = [v10 creatorLedger];
-        if (v11 && [v10 expectedTransferState] != 6)
+        creatorLedger = [v10 creatorLedger];
+        if (creatorLedger && [v10 expectedTransferState] != 6)
         {
-          [(NSMutableSet *)self->_expectedTransferOrigins addObject:v11];
+          [(NSMutableSet *)self->_expectedTransferOrigins addObject:creatorLedger];
         }
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      v5 = [transferSizeFlows countByEnumeratingWithState:&v41 objects:v47 count:16];
     }
 
     while (v5);
@@ -128,8 +128,8 @@
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v16 = [v15 currentFlows];
-        v17 = [v16 countByEnumeratingWithState:&v33 objects:v45 count:16];
+        currentFlows = [v15 currentFlows];
+        v17 = [currentFlows countByEnumeratingWithState:&v33 objects:v45 count:16];
         if (v17)
         {
           v18 = v17;
@@ -141,12 +141,12 @@
             {
               if (*v34 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(currentFlows);
               }
 
               v21 = *(*(&v33 + 1) + 8 * v20);
-              v22 = [v15 currentFlows];
-              v23 = [v22 objectForKeyedSubscript:v21];
+              currentFlows2 = [v15 currentFlows];
+              v23 = [currentFlows2 objectForKeyedSubscript:v21];
 
               [v23 recentRxThroughput];
               self->_transferSizeRelatedRecentTotalRxThroughput = v24 + self->_transferSizeRelatedRecentTotalRxThroughput;
@@ -165,7 +165,7 @@
             }
 
             while (v18 != v20);
-            v18 = [v16 countByEnumeratingWithState:&v33 objects:v45 count:16];
+            v18 = [currentFlows countByEnumeratingWithState:&v33 objects:v45 count:16];
           }
 
           while (v18);
@@ -215,8 +215,8 @@
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v7 = [v6 currentAssetDownloads];
-        v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        currentAssetDownloads = [v6 currentAssetDownloads];
+        v8 = [currentAssetDownloads countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v8)
         {
           v9 = v8;
@@ -227,12 +227,12 @@
             {
               if (*v20 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(currentAssetDownloads);
               }
 
               v12 = *(*(&v19 + 1) + 8 * j);
-              v13 = [v6 currentAssetDownloads];
-              v14 = [v13 objectForKeyedSubscript:v12];
+              currentAssetDownloads2 = [v6 currentAssetDownloads];
+              v14 = [currentAssetDownloads2 objectForKeyedSubscript:v12];
 
               if ([v14 downloadState] == 2)
               {
@@ -240,7 +240,7 @@
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v9 = [currentAssetDownloads countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v9);
@@ -290,8 +290,8 @@
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v7 = [v6 currentAssetDownloads];
-        v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        currentAssetDownloads = [v6 currentAssetDownloads];
+        v8 = [currentAssetDownloads countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v8)
         {
           v9 = v8;
@@ -302,12 +302,12 @@
             {
               if (*v20 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(currentAssetDownloads);
               }
 
               v12 = *(*(&v19 + 1) + 8 * j);
-              v13 = [v6 currentAssetDownloads];
-              v14 = [v13 objectForKeyedSubscript:v12];
+              currentAssetDownloads2 = [v6 currentAssetDownloads];
+              v14 = [currentAssetDownloads2 objectForKeyedSubscript:v12];
 
               if ([v14 downloadState] == 1)
               {
@@ -315,7 +315,7 @@
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v9 = [currentAssetDownloads countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v9);
@@ -344,8 +344,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  transferSizeFlows = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+  v4 = [transferSizeFlows countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -357,12 +357,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(transferSizeFlows);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        transferSizeFlows2 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+        v11 = [transferSizeFlows2 objectForKeyedSubscript:v9];
 
         if ([v11 expectedTransferState] == 6)
         {
@@ -370,7 +370,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [transferSizeFlows countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -392,8 +392,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  transferSizeFlows = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+  v4 = [transferSizeFlows countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -405,12 +405,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(transferSizeFlows);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        transferSizeFlows2 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+        v11 = [transferSizeFlows2 objectForKeyedSubscript:v9];
 
         if ([v11 expectedTransferState] == 4)
         {
@@ -418,7 +418,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [transferSizeFlows countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -440,8 +440,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  transferSizeFlows = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+  v4 = [transferSizeFlows countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -453,12 +453,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(transferSizeFlows);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        transferSizeFlows2 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+        v11 = [transferSizeFlows2 objectForKeyedSubscript:v9];
 
         if ([v11 expectedTransferState] - 2 <= 2 && ((objc_msgSend(v11, "rxTransferSizeUpperThreshold") & 1) != 0 || objc_msgSend(v11, "txTransferSizeUpperThreshold")))
         {
@@ -466,7 +466,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [transferSizeFlows countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -488,8 +488,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  transferSizeFlows = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+  v4 = [transferSizeFlows countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -501,12 +501,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(transferSizeFlows);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        transferSizeFlows2 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+        v11 = [transferSizeFlows2 objectForKeyedSubscript:v9];
 
         if ([v11 expectedTransferState] - 2 <= 2 && ((objc_msgSend(v11, "rxTransferSizeLowerThreshold") & 1) != 0 || objc_msgSend(v11, "txTransferSizeLowerThreshold")) && (objc_msgSend(v11, "rxTransferSizeUpperThreshold") & 1) == 0)
         {
@@ -514,7 +514,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [transferSizeFlows countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -531,10 +531,10 @@
 
 - (BOOL)hasSustainedResponsiveHighCellInterfaceThroughput
 {
-  v2 = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
-  v3 = [v2 hasSustainedResponsiveHighInterfaceThroughput];
+  cellInterfaceSampler = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
+  hasSustainedResponsiveHighInterfaceThroughput = [cellInterfaceSampler hasSustainedResponsiveHighInterfaceThroughput];
 
-  return v3;
+  return hasSustainedResponsiveHighInterfaceThroughput;
 }
 
 - (NSSet)allContributors
@@ -585,8 +585,8 @@
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v8 = [v7 currentFlows];
-        v9 = [v8 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        currentFlows = [v7 currentFlows];
+        v9 = [currentFlows countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v9)
         {
           v10 = v9;
@@ -597,12 +597,12 @@
             {
               if (*v23 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(currentFlows);
               }
 
               v13 = *(*(&v22 + 1) + 8 * j);
-              v14 = [v7 currentFlows];
-              v15 = [v14 objectForKeyedSubscript:v13];
+              currentFlows2 = [v7 currentFlows];
+              v15 = [currentFlows2 objectForKeyedSubscript:v13];
 
               [v15 recentRxThroughput];
               v17 = v16;
@@ -610,7 +610,7 @@
               v5 = v5 + v17 + v18;
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v10 = [currentFlows countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v10);
@@ -664,7 +664,7 @@
   block[1] = 3221225472;
   block[2] = __28__FlowOracle_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_39 != -1)
   {
     dispatch_once(&sharedInstance_pred_39, block);
@@ -744,11 +744,11 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)flowQualfiesForAVHeuristics:(id)a3
+- (BOOL)flowQualfiesForAVHeuristics:(id)heuristics
 {
   if (self->_avUseCasesSupported)
   {
-    return [a3 flowLastSeenAsForeground];
+    return [heuristics flowLastSeenAsForeground];
   }
 
   else
@@ -757,19 +757,19 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (void)applyFlowHeuristics:(id)a3 onBehalfOf:(id)a4
+- (void)applyFlowHeuristics:(id)heuristics onBehalfOf:(id)of
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(FlowOracle *)self flowQualfiesForAVHeuristics:v6])
+  heuristicsCopy = heuristics;
+  ofCopy = of;
+  if ([(FlowOracle *)self flowQualfiesForAVHeuristics:heuristicsCopy])
   {
     v16 = 0;
     v17 = 0.0;
     v18 = @"noAVFlowDetection";
-    [(ContinuousAVFlowDetector *)self->_continuousAVDetector possibleAVFlowScore:v6 result:&v16];
-    [(StrictlyPeriodicAVFlowDetector *)self->_strictlyPeriodicAVDetector possibleAVFlowScore:v6 result:&v16];
-    [v6 setLatestClassification:v18];
+    [(ContinuousAVFlowDetector *)self->_continuousAVDetector possibleAVFlowScore:heuristicsCopy result:&v16];
+    [(StrictlyPeriodicAVFlowDetector *)self->_strictlyPeriodicAVDetector possibleAVFlowScore:heuristicsCopy result:&v16];
+    [heuristicsCopy setLatestClassification:v18];
     if (v16 >= 21)
     {
       v8 = flowScrutinyLogHandle;
@@ -784,42 +784,42 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
         _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEFAULT, "FlowOracle applyFlowHeuristics score %d from %@ with tput %.6f Mbps", buf, 0x1Cu);
       }
 
-      v9 = [v7 possibleAVFlows];
-      v10 = v9 == 0;
+      possibleAVFlows = [ofCopy possibleAVFlows];
+      v10 = possibleAVFlows == 0;
 
       if (v10)
       {
         v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        [v7 setPossibleAVFlows:v11];
+        [ofCopy setPossibleAVFlows:v11];
       }
 
       v12 = objc_alloc_init(LikelyAVFlowDetails);
-      v13 = [v6 createdBy];
-      [(LikelyAVFlowDetails *)v12 setOwner:v13];
+      createdBy = [heuristicsCopy createdBy];
+      [(LikelyAVFlowDetails *)v12 setOwner:createdBy];
 
       [(LikelyAVFlowDetails *)v12 setMatchScore:v16];
       [(LikelyAVFlowDetails *)v12 setRelevantThroughput:v17];
-      v14 = [v7 possibleAVFlows];
-      [v14 addObject:v12];
+      possibleAVFlows2 = [ofCopy possibleAVFlows];
+      [possibleAVFlows2 addObject:v12];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)evaluatePossibleAVFlows:(id)a3 currentFlowCount:(unint64_t)a4 activeFlowCount:(unint64_t)a5
+- (void)evaluatePossibleAVFlows:(id)flows currentFlowCount:(unint64_t)count activeFlowCount:(unint64_t)flowCount
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (3 * a5 + a4 <= self->_maxAppFlowMetricForAVDetermination)
+  flowsCopy = flows;
+  v9 = flowsCopy;
+  if (3 * flowCount + count <= self->_maxAppFlowMetricForAVDetermination)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [v8 possibleAVFlows];
-    v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    possibleAVFlows = [flowsCopy possibleAVFlows];
+    v12 = [possibleAVFlows countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
@@ -830,7 +830,7 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
         {
           if (*v22 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(possibleAVFlows);
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
@@ -848,7 +848,7 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
           [*(&self->super.isa + v18) addObject:v16];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v13 = [possibleAVFlows countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v13);
@@ -858,20 +858,20 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
   else
   {
     suppressedAVFlows = self->_suppressedAVFlows;
-    v11 = [v8 possibleAVFlows];
-    [(NSMutableSet *)suppressedAVFlows addObjectsFromArray:v11];
+    possibleAVFlows = [flowsCopy possibleAVFlows];
+    [(NSMutableSet *)suppressedAVFlows addObjectsFromArray:possibleAVFlows];
   }
 
-  v19 = [v9 possibleAVFlows];
-  [v19 removeAllObjects];
+  possibleAVFlows2 = [v9 possibleAVFlows];
+  [possibleAVFlows2 removeAllObjects];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSamplingPeriod:(id)a3
+- (void)startSamplingPeriod:(id)period
 {
   v34 = *MEMORY[0x277D85DE8];
-  v22 = a3;
+  periodCopy = period;
   v4 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
   {
@@ -886,7 +886,7 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = [v22 originLedgers];
+  obj = [periodCopy originLedgers];
   v5 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v5)
   {
@@ -903,16 +903,16 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
         }
 
         v9 = *(*(&v27 + 1) + 8 * v8);
-        v10 = [v22 originLedgers];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        originLedgers = [periodCopy originLedgers];
+        v11 = [originLedgers objectForKeyedSubscript:v9];
 
         [v11 startSamplingPeriod];
         v25 = 0u;
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v12 = [v11 delegates];
-        v13 = [v12 countByEnumeratingWithState:&v23 objects:v32 count:16];
+        delegates = [v11 delegates];
+        v13 = [delegates countByEnumeratingWithState:&v23 objects:v32 count:16];
         if (v13)
         {
           v14 = v13;
@@ -924,19 +924,19 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
             {
               if (*v24 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(delegates);
               }
 
               v17 = *(*(&v23 + 1) + 8 * v16);
-              v18 = [v11 delegates];
-              v19 = [v18 objectForKeyedSubscript:v17];
+              delegates2 = [v11 delegates];
+              v19 = [delegates2 objectForKeyedSubscript:v17];
 
               [v19 startSamplingPeriod];
               ++v16;
             }
 
             while (v14 != v16);
-            v14 = [v12 countByEnumeratingWithState:&v23 objects:v32 count:16];
+            v14 = [delegates countByEnumeratingWithState:&v23 objects:v32 count:16];
           }
 
           while (v14);
@@ -955,7 +955,7 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logTransferContributors:(unint64_t)a3
+- (void)logTransferContributors:(unint64_t)contributors
 {
   v36 = *MEMORY[0x277D85DE8];
   v25 = 0u;
@@ -993,32 +993,32 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
             if (os_log_type_enabled(*v8, OS_LOG_TYPE_INFO))
             {
               v13 = v12;
-              v14 = [v10 name];
-              v15 = [v10 sampleStartedInForegroundState];
+              name = [v10 name];
+              sampleStartedInForegroundState = [v10 sampleStartedInForegroundState];
               [v10 sampleStartTime];
               dateStringMillisecondsFromReferenceInterval(v16);
               v17 = v7;
-              v18 = a3;
+              contributorsCopy = contributors;
               v19 = v4;
               v21 = v20 = v8;
               *buf = 138412802;
-              v30 = v14;
+              v30 = name;
               v31 = 1024;
-              v32 = v15;
+              v32 = sampleStartedInForegroundState;
               v33 = 2112;
               v34 = v21;
               _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_INFO, "FlowOracle logTransferContributors %@ fg %d at %@", buf, 0x1Cu);
 
               v8 = v20;
               v4 = v19;
-              a3 = v18;
+              contributors = contributorsCopy;
               v7 = v17;
               v6 = v24;
             }
           }
         }
 
-        [v10 setSampleAdditionalFlags:{objc_msgSend(v10, "sampleAdditionalFlags") | a3}];
+        [v10 setSampleAdditionalFlags:{objc_msgSend(v10, "sampleAdditionalFlags") | contributors}];
         ++v9;
       }
 
@@ -1033,7 +1033,7 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCoreMediaAssetDownloadContributors:(unint64_t)a3
+- (void)logCoreMediaAssetDownloadContributors:(unint64_t)contributors
 {
   v43 = *MEMORY[0x277D85DE8];
   v31 = 0u;
@@ -1060,8 +1060,8 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v8 = [v7 currentAssetDownloads];
-        v9 = [v8 countByEnumeratingWithState:&v27 objects:v41 count:16];
+        currentAssetDownloads = [v7 currentAssetDownloads];
+        v9 = [currentAssetDownloads countByEnumeratingWithState:&v27 objects:v41 count:16];
         if (v9)
         {
           v10 = v9;
@@ -1072,12 +1072,12 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
             {
               if (*v28 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(currentAssetDownloads);
               }
 
               v13 = *(*(&v27 + 1) + 8 * j);
-              v14 = [v7 currentAssetDownloads];
-              v15 = [v14 objectForKeyedSubscript:v13];
+              currentAssetDownloads2 = [v7 currentAssetDownloads];
+              v15 = [currentAssetDownloads2 objectForKeyedSubscript:v13];
 
               if ([v15 downloadState] == 1 || objc_msgSend(v15, "downloadState") == 2 || objc_msgSend(v15, "downloadState") == 4)
               {
@@ -1093,14 +1093,14 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
                     if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
                     {
                       v18 = v17;
-                      v19 = [v7 name];
-                      v20 = [v7 sampleStartedInForegroundState];
+                      name = [v7 name];
+                      sampleStartedInForegroundState = [v7 sampleStartedInForegroundState];
                       [v7 sampleStartTime];
                       v22 = dateStringMillisecondsFromReferenceInterval(v21);
                       *buf = 138412802;
-                      v36 = v19;
+                      v36 = name;
                       v37 = 1024;
-                      v38 = v20;
+                      v38 = sampleStartedInForegroundState;
                       v39 = 2112;
                       v40 = v22;
                       _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_INFO, "FlowOracle logCoreMediaAssetDownloadContributors %@ fg %d at %@", buf, 0x1Cu);
@@ -1108,13 +1108,13 @@ uint64_t __28__FlowOracle_sharedInstance__block_invoke(uint64_t a1)
                   }
                 }
 
-                [v7 setSampleAdditionalFlags:{objc_msgSend(v7, "sampleAdditionalFlags") | a3}];
+                [v7 setSampleAdditionalFlags:{objc_msgSend(v7, "sampleAdditionalFlags") | contributors}];
 
                 goto LABEL_22;
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v27 objects:v41 count:16];
+            v10 = [currentAssetDownloads countByEnumeratingWithState:&v27 objects:v41 count:16];
             if (v10)
             {
               continue;
@@ -1137,24 +1137,24 @@ LABEL_22:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCellInterfaceUseContributors:(unint64_t)a3
+- (void)logCellInterfaceUseContributors:(unint64_t)contributors
 {
   *&v32[13] = *MEMORY[0x277D85DE8];
   if (self->_busiestCellOrigin)
   {
-    v5 = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
-    v6 = [v5 hasSustainedResponsiveHighInterfaceThroughput];
+    cellInterfaceSampler = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
+    hasSustainedResponsiveHighInterfaceThroughput = [cellInterfaceSampler hasSustainedResponsiveHighInterfaceThroughput];
 
-    if (v6)
+    if (hasSustainedResponsiveHighInterfaceThroughput)
     {
       v7 = flowScrutinyLogHandle;
       if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
       {
         busiestCellOrigin = self->_busiestCellOrigin;
         v9 = v7;
-        v10 = [(FlowOriginLedger *)busiestCellOrigin name];
+        name = [(FlowOriginLedger *)busiestCellOrigin name];
         v29 = 138412290;
-        v30 = v10;
+        contributorsCopy = name;
         _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEBUG, "FlowOracle logCellInterfaceUseContributors inherit high interface use for %@", &v29, 0xCu);
       }
 
@@ -1172,14 +1172,14 @@ LABEL_22:
           {
             v13 = self->_busiestCellOrigin;
             v14 = v12;
-            v15 = [(FlowOriginLedger *)v13 name];
-            v16 = [(FlowOriginLedger *)self->_busiestCellOrigin sampleStartedInForegroundState];
+            name2 = [(FlowOriginLedger *)v13 name];
+            sampleStartedInForegroundState = [(FlowOriginLedger *)self->_busiestCellOrigin sampleStartedInForegroundState];
             [(FlowOriginLedger *)self->_busiestCellOrigin sampleStartTime];
             v18 = dateStringMillisecondsFromReferenceInterval(v17);
             v29 = 138412802;
-            v30 = v15;
+            contributorsCopy = name2;
             v31 = 1024;
-            *v32 = v16;
+            *v32 = sampleStartedInForegroundState;
             v32[2] = 2112;
             *&v32[3] = v18;
             _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_INFO, "FlowOracle logCellInterfaceUseContributors %@ fg %d at %@", &v29, 0x1Cu);
@@ -1187,22 +1187,22 @@ LABEL_22:
         }
       }
 
-      [(FlowOriginLedger *)self->_busiestCellOrigin setSampleAdditionalFlags:[(FlowOriginLedger *)self->_busiestCellOrigin sampleAdditionalFlags]| a3];
+      [(FlowOriginLedger *)self->_busiestCellOrigin setSampleAdditionalFlags:[(FlowOriginLedger *)self->_busiestCellOrigin sampleAdditionalFlags]| contributors];
     }
 
     else if ([(NSMutableSet *)self->_highCellInterfaceUseContributors containsObject:self->_busiestCellOrigin])
     {
-      [(FlowOriginLedger *)self->_busiestCellOrigin setSampleAdditionalFlags:[(FlowOriginLedger *)self->_busiestCellOrigin sampleAdditionalFlags]| a3];
+      [(FlowOriginLedger *)self->_busiestCellOrigin setSampleAdditionalFlags:[(FlowOriginLedger *)self->_busiestCellOrigin sampleAdditionalFlags]| contributors];
       v20 = flowScrutinyLogHandle;
       if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v21 = self->_busiestCellOrigin;
         v22 = v20;
-        v23 = [(FlowOriginLedger *)v21 name];
+        name3 = [(FlowOriginLedger *)v21 name];
         v29 = 134218242;
-        v30 = a3;
+        contributorsCopy = contributors;
         v31 = 2112;
-        *v32 = v23;
+        *v32 = name3;
         _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_DEBUG, "FlowOracle logCellInterfaceUseContributors when _hasSustainedHighCellInterfaceThroughput false, mark 0x%llx in %@", &v29, 0x16u);
       }
     }
@@ -1214,9 +1214,9 @@ LABEL_22:
       {
         v25 = self->_busiestCellOrigin;
         v26 = v24;
-        v27 = [(FlowOriginLedger *)v25 name];
+        name4 = [(FlowOriginLedger *)v25 name];
         v29 = 138412290;
-        v30 = v27;
+        contributorsCopy = name4;
         _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEBUG, "FlowOracle logCellInterfaceUseContributors when _hasSustainedHighCellInterfaceThroughput false, busiest not already known %@", &v29, 0xCu);
       }
     }
@@ -1235,10 +1235,10 @@ LABEL_22:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshState:(id)a3
+- (void)refreshState:(id)state
 {
   v156 = *MEMORY[0x277D85DE8];
-  v99 = a3;
+  stateCopy = state;
   v3 = flowScrutinyLogHandle;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
@@ -1278,17 +1278,17 @@ LABEL_22:
     v7 = 0.1;
   }
 
-  [v99 updateInterfaceSamplesWithTime:v6 > 1.0 bumpSamples:v4];
-  v10 = [v99 cellAudioVideoSamples];
-  v94 = [v10 count];
+  [stateCopy updateInterfaceSamplesWithTime:v6 > 1.0 bumpSamples:v4];
+  cellAudioVideoSamples = [stateCopy cellAudioVideoSamples];
+  v94 = [cellAudioVideoSamples count];
 
-  [v99 updateAudioVideoSamplesWithTime:v6 > 1.0 bumpSamples:v4];
-  [v99 updateTransferSizeFlowsWithTime:v4];
+  [stateCopy updateAudioVideoSamplesWithTime:v6 > 1.0 bumpSamples:v4];
+  [stateCopy updateTransferSizeFlowsWithTime:v4];
   v145 = 0u;
   v146 = 0u;
   v143 = 0u;
   v144 = 0u;
-  obj = [v99 originLedgers];
+  obj = [stateCopy originLedgers];
   v97 = [obj countByEnumeratingWithState:&v143 objects:v155 count:16];
   if (v97)
   {
@@ -1308,27 +1308,27 @@ LABEL_22:
 
         v95 = v12;
         v14 = *(*(&v143 + 1) + 8 * v12);
-        v15 = [v99 originLedgers];
-        v16 = [v15 objectForKeyedSubscript:v14];
+        originLedgers = [stateCopy originLedgers];
+        v16 = [originLedgers objectForKeyedSubscript:v14];
 
-        v108 = [v16 totalObservedCellRxBytes];
-        v109 = [v16 totalObservedCellTxBytes];
-        v110 = [v16 totalObservedWiFiRxBytes];
-        v111 = [v16 totalObservedWiFiTxBytes];
+        totalObservedCellRxBytes = [v16 totalObservedCellRxBytes];
+        totalObservedCellTxBytes = [v16 totalObservedCellTxBytes];
+        totalObservedWiFiRxBytes = [v16 totalObservedWiFiRxBytes];
+        totalObservedWiFiTxBytes = [v16 totalObservedWiFiTxBytes];
         if (v6 <= 1.0)
         {
-          v17 = [v16 prevPollIntervalCellRxBytes];
-          v18 = [v16 prevPollIntervalCellTxBytes];
-          v19 = [v16 prevPollIntervalWiFiRxBytes];
-          v20 = [v16 prevPollIntervalWiFiTxBytes];
+          prevPollIntervalCellRxBytes = [v16 prevPollIntervalCellRxBytes];
+          prevPollIntervalCellTxBytes = [v16 prevPollIntervalCellTxBytes];
+          prevPollIntervalWiFiRxBytes = [v16 prevPollIntervalWiFiRxBytes];
+          prevPollIntervalWiFiTxBytes = [v16 prevPollIntervalWiFiTxBytes];
         }
 
         else
         {
-          v17 = [v16 pollIntervalCellRxBytes];
-          v18 = [v16 pollIntervalCellTxBytes];
-          v19 = [v16 pollIntervalWiFiRxBytes];
-          v20 = [v16 pollIntervalWiFiTxBytes];
+          prevPollIntervalCellRxBytes = [v16 pollIntervalCellRxBytes];
+          prevPollIntervalCellTxBytes = [v16 pollIntervalCellTxBytes];
+          prevPollIntervalWiFiRxBytes = [v16 pollIntervalWiFiRxBytes];
+          prevPollIntervalWiFiTxBytes = [v16 pollIntervalWiFiTxBytes];
           [v16 setPrevPrevPollCellRxBytes:{objc_msgSend(v16, "prevPollCellRxBytes")}];
           [v16 setPrevPrevPollCellTxBytes:{objc_msgSend(v16, "prevPollCellTxBytes")}];
           [v16 setPrevPrevPollWiFiRxBytes:{objc_msgSend(v16, "prevPollWiFiRxBytes")}];
@@ -1339,14 +1339,14 @@ LABEL_22:
           [v16 setPrevPollWiFiTxBytes:{objc_msgSend(v16, "totalObservedWiFiTxBytes")}];
         }
 
-        v21 = mbpsThroughput(v17 + v18, v7);
-        v22 = mbpsThroughput(v19 + v20, v7);
+        v21 = mbpsThroughput(prevPollIntervalCellRxBytes + prevPollIntervalCellTxBytes, v7);
+        v22 = mbpsThroughput(prevPollIntervalWiFiRxBytes + prevPollIntervalWiFiTxBytes, v7);
         v141 = 0u;
         v142 = 0u;
         v139 = 0u;
         v140 = 0u;
-        v23 = [v16 currentFlows];
-        v24 = [v23 countByEnumeratingWithState:&v139 objects:v154 count:16];
+        currentFlows = [v16 currentFlows];
+        v24 = [currentFlows countByEnumeratingWithState:&v139 objects:v154 count:16];
         if (v24)
         {
           v25 = 0;
@@ -1358,21 +1358,21 @@ LABEL_22:
             {
               if (*v140 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(currentFlows);
               }
 
               v28 = *(*(&v139 + 1) + 8 * i);
-              v29 = [v16 currentFlows];
-              v30 = [v29 objectForKeyedSubscript:v28];
+              currentFlows2 = [v16 currentFlows];
+              v30 = [currentFlows2 objectForKeyedSubscript:v28];
 
               [(FlowOracle *)self applyFlowHeuristics:v30 onBehalfOf:v16];
-              LODWORD(v29) = [v30 lastSampleWasIdle];
+              LODWORD(currentFlows2) = [v30 lastSampleWasIdle];
 
-              v25 += v29 ^ 1;
+              v25 += currentFlows2 ^ 1;
             }
 
             v115 += v24;
-            v24 = [v23 countByEnumeratingWithState:&v139 objects:v154 count:16];
+            v24 = [currentFlows countByEnumeratingWithState:&v139 objects:v154 count:16];
           }
 
           while (v24);
@@ -1391,7 +1391,7 @@ LABEL_22:
           v25 = 0;
         }
 
-        v32 = self;
+        selfCopy2 = self;
         if (v21 > self->_busiestCellOriginRecentThroughput)
         {
           v33 = flowScrutinyLogHandle;
@@ -1401,8 +1401,8 @@ LABEL_22:
             busiestCellOrigin = self->_busiestCellOrigin;
             if (busiestCellOrigin)
             {
-              v93 = [(FlowOriginLedger *)self->_busiestCellOrigin name];
-              v36 = v93;
+              name = [(FlowOriginLedger *)self->_busiestCellOrigin name];
+              v36 = name;
             }
 
             else
@@ -1411,7 +1411,7 @@ LABEL_22:
             }
 
             v37 = busiestCellOrigin == 0;
-            v38 = [v16 name];
+            name2 = [v16 name];
             *buf = 134218754;
             *&buf[4] = busiestCellOriginRecentThroughput;
             *&buf[12] = 2112;
@@ -1419,7 +1419,7 @@ LABEL_22:
             *&buf[22] = 2048;
             v151 = v21;
             v152 = 2112;
-            v153 = v38;
+            v153 = name2;
             _os_log_impl(&dword_23255B000, v33, OS_LOG_TYPE_DEBUG, "FlowOracle recent cell tput was %.3f for %@, change to %.3f %@", buf, 0x2Au);
 
             if (!v37)
@@ -1429,20 +1429,20 @@ LABEL_22:
 
           self->_busiestCellOriginRecentThroughput = v21;
           objc_storeStrong(&self->_busiestCellOrigin, v16);
-          v32 = self;
+          selfCopy2 = self;
         }
 
-        if (v22 > v32->_busiestWiFiOriginRecentThroughput)
+        if (v22 > selfCopy2->_busiestWiFiOriginRecentThroughput)
         {
           v39 = flowScrutinyLogHandle;
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
           {
-            busiestWiFiOriginRecentThroughput = v32->_busiestWiFiOriginRecentThroughput;
-            busiestWiFiOrigin = v32->_busiestWiFiOrigin;
+            busiestWiFiOriginRecentThroughput = selfCopy2->_busiestWiFiOriginRecentThroughput;
+            busiestWiFiOrigin = selfCopy2->_busiestWiFiOrigin;
             if (busiestWiFiOrigin)
             {
-              v92 = [(FlowOriginLedger *)v32->_busiestWiFiOrigin name];
-              v42 = v92;
+              name3 = [(FlowOriginLedger *)selfCopy2->_busiestWiFiOrigin name];
+              v42 = name3;
             }
 
             else
@@ -1451,7 +1451,7 @@ LABEL_22:
             }
 
             v43 = busiestWiFiOrigin == 0;
-            v44 = [v16 name];
+            name4 = [v16 name];
             *buf = 134218754;
             *&buf[4] = busiestWiFiOriginRecentThroughput;
             *&buf[12] = 2112;
@@ -1459,7 +1459,7 @@ LABEL_22:
             *&buf[22] = 2048;
             v151 = v22;
             v152 = 2112;
-            v153 = v44;
+            v153 = name4;
             _os_log_impl(&dword_23255B000, v39, OS_LOG_TYPE_DEBUG, "FlowOracle recent wifi tput was %.3f for %@, change to %.3f %@", buf, 0x2Au);
 
             if (!v43)
@@ -1475,8 +1475,8 @@ LABEL_22:
         v138 = 0u;
         v135 = 0u;
         v136 = 0u;
-        v100 = [v16 delegates];
-        v102 = [v100 countByEnumeratingWithState:&v135 objects:v149 count:16];
+        delegates = [v16 delegates];
+        v102 = [delegates countByEnumeratingWithState:&v135 objects:v149 count:16];
         if (v102)
         {
           v101 = *v136;
@@ -1488,20 +1488,20 @@ LABEL_22:
               if (*v136 != v101)
               {
                 v46 = v45;
-                objc_enumerationMutation(v100);
+                objc_enumerationMutation(delegates);
                 v45 = v46;
               }
 
               v107 = v45;
               v114 = *(*(&v135 + 1) + 8 * v45);
-              v47 = [v16 delegates];
-              v48 = [v47 objectForKeyedSubscript:v114];
+              delegates2 = [v16 delegates];
+              v48 = [delegates2 objectForKeyedSubscript:v114];
 
-              v49 = [v48 currentAssetDownloads];
-              if (v49)
+              currentAssetDownloads = [v48 currentAssetDownloads];
+              if (currentAssetDownloads)
               {
-                v50 = [v48 currentAssetDownloads];
-                v51 = [v50 count] == 0;
+                currentAssetDownloads2 = [v48 currentAssetDownloads];
+                v51 = [currentAssetDownloads2 count] == 0;
 
                 if (!v51)
                 {
@@ -1509,8 +1509,8 @@ LABEL_22:
                   v134 = 0u;
                   v131 = 0u;
                   v132 = 0u;
-                  v52 = [v48 currentAssetDownloads];
-                  v53 = [v52 countByEnumeratingWithState:&v131 objects:v148 count:16];
+                  currentAssetDownloads3 = [v48 currentAssetDownloads];
+                  v53 = [currentAssetDownloads3 countByEnumeratingWithState:&v131 objects:v148 count:16];
                   if (v53)
                   {
                     v54 = *v132;
@@ -1520,12 +1520,12 @@ LABEL_22:
                       {
                         if (*v132 != v54)
                         {
-                          objc_enumerationMutation(v52);
+                          objc_enumerationMutation(currentAssetDownloads3);
                         }
 
                         v56 = *(*(&v131 + 1) + 8 * j);
-                        v57 = [v48 currentAssetDownloads];
-                        v58 = [v57 objectForKeyedSubscript:v56];
+                        currentAssetDownloads4 = [v48 currentAssetDownloads];
+                        v58 = [currentAssetDownloads4 objectForKeyedSubscript:v56];
 
                         if ([v58 downloadState] != 3)
                         {
@@ -1544,7 +1544,7 @@ LABEL_22:
                         }
                       }
 
-                      v53 = [v52 countByEnumeratingWithState:&v131 objects:v148 count:16];
+                      v53 = [currentAssetDownloads3 countByEnumeratingWithState:&v131 objects:v148 count:16];
                       if (v53)
                       {
                         continue;
@@ -1558,24 +1558,24 @@ LABEL_64:
                 }
               }
 
-              v106 = [v48 totalObservedCellRxBytes];
-              v105 = [v48 totalObservedCellTxBytes];
-              v104 = [v48 totalObservedWiFiRxBytes];
-              v103 = [v48 totalObservedWiFiTxBytes];
+              totalObservedCellRxBytes2 = [v48 totalObservedCellRxBytes];
+              totalObservedCellTxBytes2 = [v48 totalObservedCellTxBytes];
+              totalObservedWiFiRxBytes2 = [v48 totalObservedWiFiRxBytes];
+              totalObservedWiFiTxBytes2 = [v48 totalObservedWiFiTxBytes];
               if (v6 <= 1.0)
               {
-                v60 = [v48 prevPollIntervalCellRxBytes];
-                v61 = [v48 prevPollIntervalCellTxBytes];
-                v62 = [v48 prevPollIntervalWiFiRxBytes];
-                v63 = [v48 prevPollIntervalWiFiTxBytes];
+                prevPollIntervalCellRxBytes2 = [v48 prevPollIntervalCellRxBytes];
+                prevPollIntervalCellTxBytes2 = [v48 prevPollIntervalCellTxBytes];
+                prevPollIntervalWiFiRxBytes2 = [v48 prevPollIntervalWiFiRxBytes];
+                prevPollIntervalWiFiTxBytes2 = [v48 prevPollIntervalWiFiTxBytes];
               }
 
               else
               {
-                v60 = [v48 pollIntervalCellRxBytes];
-                v61 = [v48 pollIntervalCellTxBytes];
-                v62 = [v48 pollIntervalWiFiRxBytes];
-                v63 = [v48 pollIntervalWiFiTxBytes];
+                prevPollIntervalCellRxBytes2 = [v48 pollIntervalCellRxBytes];
+                prevPollIntervalCellTxBytes2 = [v48 pollIntervalCellTxBytes];
+                prevPollIntervalWiFiRxBytes2 = [v48 pollIntervalWiFiRxBytes];
+                prevPollIntervalWiFiTxBytes2 = [v48 pollIntervalWiFiTxBytes];
                 [v48 setPrevPrevPollCellRxBytes:{objc_msgSend(v48, "prevPollCellRxBytes")}];
                 [v48 setPrevPrevPollCellTxBytes:{objc_msgSend(v48, "prevPollCellTxBytes")}];
                 [v48 setPrevPrevPollWiFiRxBytes:{objc_msgSend(v48, "prevPollWiFiRxBytes")}];
@@ -1586,10 +1586,10 @@ LABEL_64:
                 [v48 setPrevPollWiFiTxBytes:{objc_msgSend(v48, "totalObservedWiFiTxBytes")}];
               }
 
-              v113 = mbpsThroughput(v60 + v61, v7);
-              v112 = mbpsThroughput(v62 + v63, v7);
-              v64 = [v48 currentFlows];
-              v65 = [v64 count] == 0;
+              v113 = mbpsThroughput(prevPollIntervalCellRxBytes2 + prevPollIntervalCellTxBytes2, v7);
+              v112 = mbpsThroughput(prevPollIntervalWiFiRxBytes2 + prevPollIntervalWiFiTxBytes2, v7);
+              currentFlows3 = [v48 currentFlows];
+              v65 = [currentFlows3 count] == 0;
 
               if (!v65)
               {
@@ -1600,8 +1600,8 @@ LABEL_64:
               v130 = 0u;
               v127 = 0u;
               v128 = 0u;
-              v66 = [v48 currentFlows];
-              v67 = [v66 countByEnumeratingWithState:&v127 objects:v147 count:16];
+              currentFlows4 = [v48 currentFlows];
+              v67 = [currentFlows4 countByEnumeratingWithState:&v127 objects:v147 count:16];
               if (v67)
               {
                 v68 = 0;
@@ -1612,23 +1612,23 @@ LABEL_64:
                   {
                     if (*v128 != v69)
                     {
-                      objc_enumerationMutation(v66);
+                      objc_enumerationMutation(currentFlows4);
                     }
 
                     v71 = *(*(&v127 + 1) + 8 * k);
-                    v72 = [v48 currentFlows];
-                    v73 = [v72 objectForKeyedSubscript:v71];
+                    currentFlows5 = [v48 currentFlows];
+                    v73 = [currentFlows5 objectForKeyedSubscript:v71];
 
                     [(FlowOracle *)self applyFlowHeuristics:v73 onBehalfOf:v16];
-                    LODWORD(v72) = [v73 lastSampleWasIdle];
+                    LODWORD(currentFlows5) = [v73 lastSampleWasIdle];
 
-                    v74 = v72 ^ 1;
+                    v74 = currentFlows5 ^ 1;
                     v25 += v74;
                     v68 += v74;
                   }
 
                   v115 += v67;
-                  v67 = [v66 countByEnumeratingWithState:&v127 objects:v147 count:16];
+                  v67 = [currentFlows4 countByEnumeratingWithState:&v127 objects:v147 count:16];
                 }
 
                 while (v67);
@@ -1644,18 +1644,18 @@ LABEL_64:
               {
               }
 
-              v76 = self;
+              selfCopy4 = self;
               if (v113 > self->_busiestCellOriginRecentThroughput)
               {
                 self->_busiestCellOriginRecentThroughput = v113;
                 objc_storeStrong(&self->_busiestCellOrigin, v48);
-                v76 = self;
+                selfCopy4 = self;
               }
 
-              if (v112 > v76->_busiestWiFiOriginRecentThroughput)
+              if (v112 > selfCopy4->_busiestWiFiOriginRecentThroughput)
               {
-                v76->_busiestWiFiOriginRecentThroughput = v112;
-                objc_storeStrong(&v76->_busiestWiFiOrigin, v48);
+                selfCopy4->_busiestWiFiOriginRecentThroughput = v112;
+                objc_storeStrong(&selfCopy4->_busiestWiFiOrigin, v48);
               }
 
               if ([v114 containsString:@"nsurlsessiond"])
@@ -1665,15 +1665,15 @@ LABEL_64:
                 *&self->_backgroundCellTransferRecentThroughput = vaddq_f64(v77, *&self->_backgroundCellTransferRecentThroughput);
               }
 
-              v108 += v106;
-              v109 += v105;
-              v110 += v104;
-              v111 += v103;
+              totalObservedCellRxBytes += totalObservedCellRxBytes2;
+              totalObservedCellTxBytes += totalObservedCellTxBytes2;
+              totalObservedWiFiRxBytes += totalObservedWiFiRxBytes2;
+              totalObservedWiFiTxBytes += totalObservedWiFiTxBytes2;
               v45 = v107 + 1;
             }
 
             while (v107 + 1 != v102);
-            v102 = [v100 countByEnumeratingWithState:&v135 objects:v149 count:16];
+            v102 = [delegates countByEnumeratingWithState:&v135 objects:v149 count:16];
           }
 
           while (v102);
@@ -1684,12 +1684,12 @@ LABEL_64:
           [v16 setLastUsed:v4];
         }
 
-        [v16 setTotalWithDelegatesCellRxBytes:v108];
-        [v16 setTotalWithDelegatesCellTxBytes:v109];
-        [v16 setTotalWithDelegatesWiFiRxBytes:v110];
-        [v16 setTotalWithDelegatesWiFiTxBytes:v111];
-        v78 = [v16 possibleAVFlows];
-        v79 = [v78 count] == 0;
+        [v16 setTotalWithDelegatesCellRxBytes:totalObservedCellRxBytes];
+        [v16 setTotalWithDelegatesCellTxBytes:totalObservedCellTxBytes];
+        [v16 setTotalWithDelegatesWiFiRxBytes:totalObservedWiFiRxBytes];
+        [v16 setTotalWithDelegatesWiFiTxBytes:totalObservedWiFiTxBytes];
+        possibleAVFlows = [v16 possibleAVFlows];
+        v79 = [possibleAVFlows count] == 0;
 
         if (!v79)
         {
@@ -1706,10 +1706,10 @@ LABEL_64:
     while (v97);
   }
 
-  v80 = [v99 cellInterfaceSampler];
-  v81 = [v80 hasSustainedResponsiveHighInterfaceThroughput];
+  cellInterfaceSampler = [stateCopy cellInterfaceSampler];
+  hasSustainedResponsiveHighInterfaceThroughput = [cellInterfaceSampler hasSustainedResponsiveHighInterfaceThroughput];
 
-  if (v81)
+  if (hasSustainedResponsiveHighInterfaceThroughput)
   {
     if (self->_busiestCellOrigin)
     {
@@ -1724,9 +1724,9 @@ LABEL_64:
       v83 = flowScrutinyLogHandle;
       if (os_log_type_enabled(v83, OS_LOG_TYPE_DEBUG))
       {
-        v84 = [(FlowOriginLedger *)self->_busiestCellOrigin name];
+        name5 = [(FlowOriginLedger *)self->_busiestCellOrigin name];
         *buf = 138412290;
-        *&buf[4] = v84;
+        *&buf[4] = name5;
         _os_log_impl(&dword_23255B000, v83, OS_LOG_TYPE_DEBUG, "FlowOracle refreshState set high cell interface use for %@", buf, 0xCu);
       }
     }
@@ -1742,8 +1742,8 @@ LABEL_64:
     }
   }
 
-  v85 = [v99 cellAudioVideoSamples];
-  v86 = [v85 count];
+  cellAudioVideoSamples2 = [stateCopy cellAudioVideoSamples];
+  v86 = [cellAudioVideoSamples2 count];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -1757,7 +1757,7 @@ LABEL_64:
   v120 = &v119;
   v121 = 0x2020000000;
   v122 = 0;
-  v87 = [v99 cellAudioVideoSamples];
+  cellAudioVideoSamples3 = [stateCopy cellAudioVideoSamples];
   v118[0] = MEMORY[0x277D85DD0];
   v118[1] = 3221225472;
   v118[2] = __27__FlowOracle_refreshState___block_invoke;
@@ -1766,7 +1766,7 @@ LABEL_64:
   v118[5] = &v119;
   v118[6] = buf;
   v118[7] = &v123;
-  [v87 enumerateObjectsUsingBlock:v118];
+  [cellAudioVideoSamples3 enumerateObjectsUsingBlock:v118];
 
   v88 = v120[3];
   if (v88 > 0.0)
@@ -1825,20 +1825,20 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
   }
 }
 
-- (void)didPollFlowsAt:(double)a3 periodic:(BOOL)a4
+- (void)didPollFlowsAt:(double)at periodic:(BOOL)periodic
 {
-  v4 = a4;
+  periodicCopy = periodic;
   v10 = *MEMORY[0x277D85DE8];
   v7 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v9[0] = 67109120;
-    v9[1] = v4;
+    v9[1] = periodicCopy;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "FlowOracle didPollFlowsAt: periodic is %d", v9, 8u);
   }
 
-  setApparentTime(a3);
-  if (v4)
+  setApparentTime(at);
+  if (periodicCopy)
   {
     [(FlowOracle *)self refreshState:self->_flowScrutinizer];
   }
@@ -1853,8 +1853,8 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  transferSizeFlows = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+  v4 = [transferSizeFlows countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1866,12 +1866,12 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(transferSizeFlows);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
-        v9 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        transferSizeFlows2 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+        v10 = [transferSizeFlows2 objectForKeyedSubscript:v8];
 
         if ([v10 expectedTransferState] == 3)
         {
@@ -1882,7 +1882,7 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [transferSizeFlows countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -1898,8 +1898,8 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  transferSizeFlows = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+  v4 = [transferSizeFlows countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1911,12 +1911,12 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(transferSizeFlows);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
-        v9 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        transferSizeFlows2 = [(FlowScrutinizer *)self->_flowScrutinizer transferSizeFlows];
+        v10 = [transferSizeFlows2 objectForKeyedSubscript:v8];
 
         if ([v10 expectedTransferState] == 4)
         {
@@ -1927,7 +1927,7 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [transferSizeFlows countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -1938,53 +1938,53 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
 
 - (BOOL)hasSustainedHighCellInterfaceRxThroughput
 {
-  v2 = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
-  v3 = [v2 hasSustainedHighInterfaceRxThroughput];
+  cellInterfaceSampler = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
+  hasSustainedHighInterfaceRxThroughput = [cellInterfaceSampler hasSustainedHighInterfaceRxThroughput];
 
-  return v3;
+  return hasSustainedHighInterfaceRxThroughput;
 }
 
 - (BOOL)hasSustainedHighCellInterfaceTxThroughput
 {
-  v2 = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
-  v3 = [v2 hasSustainedHighInterfaceTxThroughput];
+  cellInterfaceSampler = [(FlowScrutinizer *)self->_flowScrutinizer cellInterfaceSampler];
+  hasSustainedHighInterfaceTxThroughput = [cellInterfaceSampler hasSustainedHighInterfaceTxThroughput];
 
-  return v3;
+  return hasSustainedHighInterfaceTxThroughput;
 }
 
 - (BOOL)hasSustainedConservativeHighWiFiInterfaceThroughput
 {
-  v2 = [(FlowScrutinizer *)self->_flowScrutinizer wifiInterfaceSampler];
-  v3 = [v2 hasSustainedConservativeHighInterfaceThroughput];
+  wifiInterfaceSampler = [(FlowScrutinizer *)self->_flowScrutinizer wifiInterfaceSampler];
+  hasSustainedConservativeHighInterfaceThroughput = [wifiInterfaceSampler hasSustainedConservativeHighInterfaceThroughput];
 
-  return v3;
+  return hasSustainedConservativeHighInterfaceThroughput;
 }
 
 - (BOOL)hasSustainedResponsiveHighWiFiInterfaceThroughput
 {
-  v2 = [(FlowScrutinizer *)self->_flowScrutinizer wifiInterfaceSampler];
-  v3 = [v2 hasSustainedResponsiveHighInterfaceThroughput];
+  wifiInterfaceSampler = [(FlowScrutinizer *)self->_flowScrutinizer wifiInterfaceSampler];
+  hasSustainedResponsiveHighInterfaceThroughput = [wifiInterfaceSampler hasSustainedResponsiveHighInterfaceThroughput];
 
-  return v3;
+  return hasSustainedResponsiveHighInterfaceThroughput;
 }
 
 - (BOOL)hasSustainedHighWiFiInterfaceRxThroughput
 {
-  v2 = [(FlowScrutinizer *)self->_flowScrutinizer wifiInterfaceSampler];
-  v3 = [v2 hasSustainedHighInterfaceRxThroughput];
+  wifiInterfaceSampler = [(FlowScrutinizer *)self->_flowScrutinizer wifiInterfaceSampler];
+  hasSustainedHighInterfaceRxThroughput = [wifiInterfaceSampler hasSustainedHighInterfaceRxThroughput];
 
-  return v3;
+  return hasSustainedHighInterfaceRxThroughput;
 }
 
 - (BOOL)hasSustainedHighWiFiInterfaceTxThroughput
 {
-  v2 = [(FlowScrutinizer *)self->_flowScrutinizer wifiInterfaceSampler];
-  v3 = [v2 hasSustainedHighInterfaceTxThroughput];
+  wifiInterfaceSampler = [(FlowScrutinizer *)self->_flowScrutinizer wifiInterfaceSampler];
+  hasSustainedHighInterfaceTxThroughput = [wifiInterfaceSampler hasSustainedHighInterfaceTxThroughput];
 
-  return v3;
+  return hasSustainedHighInterfaceTxThroughput;
 }
 
-- (BOOL)hadZeroCellInterfaceTrafficForLast:(double)a3
+- (BOOL)hadZeroCellInterfaceTrafficForLast:(double)last
 {
   [(FlowScrutinizer *)self->_flowScrutinizer lastCellInterfaceTrafficTimestamp];
   if (v5 == 0.0)
@@ -1994,10 +1994,10 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
 
   v6 = apparentTime();
   [(FlowScrutinizer *)self->_flowScrutinizer lastCellInterfaceTrafficTimestamp];
-  return v6 - v7 > a3;
+  return v6 - v7 > last;
 }
 
-- (BOOL)hadZeroWiFiInterfaceTrafficForLast:(double)a3
+- (BOOL)hadZeroWiFiInterfaceTrafficForLast:(double)last
 {
   [(FlowScrutinizer *)self->_flowScrutinizer lastWiFiInterfaceTrafficTimestamp];
   if (v5 == 0.0)
@@ -2007,12 +2007,12 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
 
   v6 = apparentTime();
   [(FlowScrutinizer *)self->_flowScrutinizer lastWiFiInterfaceTrafficTimestamp];
-  return v6 - v7 > a3;
+  return v6 - v7 > last;
 }
 
-- (id)getState:(BOOL)a3
+- (id)getState:(BOOL)state
 {
-  v73 = a3;
+  stateCopy = state;
   v104 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v71 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -2020,22 +2020,22 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
   v69 = [(NSMutableSet *)self->_likelyOverThresholdAVFlows count];
   v68 = [(NSMutableSet *)self->_suppressedAVFlows count];
   v5 = [(NSMutableSet *)self->_expectedTransferOrigins count];
-  v6 = [(FlowOracle *)self numLowerThresholdTransferSizes];
-  v7 = [(FlowOracle *)self numUpperThresholdTransferSizes];
-  v8 = [(FlowOracle *)self numActiveTransferSizes];
+  numLowerThresholdTransferSizes = [(FlowOracle *)self numLowerThresholdTransferSizes];
+  numUpperThresholdTransferSizes = [(FlowOracle *)self numUpperThresholdTransferSizes];
+  numActiveTransferSizes = [(FlowOracle *)self numActiveTransferSizes];
   [(FlowOracle *)self transferSizeRelatedRecentCellThroughput];
   v10 = v9;
   [(FlowOracle *)self transferSizeRelatedRecentWiFiThroughput];
   v12 = v11;
-  v13 = [(FlowOracle *)self numActiveCoreMediaAssetDownloads];
-  v14 = [(FlowOracle *)self numCandidateCoreMediaAssetDownloads];
+  numActiveCoreMediaAssetDownloads = [(FlowOracle *)self numActiveCoreMediaAssetDownloads];
+  numCandidateCoreMediaAssetDownloads = [(FlowOracle *)self numCandidateCoreMediaAssetDownloads];
   v15 = [(NSMutableSet *)self->_coreMediaAssetDownloadOrigins count];
   [(FlowOracle *)self coreMediaAssetDownloadRelatedRecentThroughput];
-  v17 = [v71 initWithFormat:@"FlowOracle state: AV-flows  below %d above %d suppressed %d large-transfer-contributors %d num-lower %zu num-higher %zu num-active %zu cell-xfer-tput %0.6f  wifi-xfer-tput %0.6f asset-dl-active %zu dl-candidate %zu downloaders %d dl-tput %0.6f num-cloaked %zu", v70, v69, v68, v5, v6, v7, v8, v10, v12, v13, v14, v15, v16, -[FlowOracle numCloakedTransferSizes](self, "numCloakedTransferSizes")];
+  v17 = [v71 initWithFormat:@"FlowOracle state: AV-flows  below %d above %d suppressed %d large-transfer-contributors %d num-lower %zu num-higher %zu num-active %zu cell-xfer-tput %0.6f  wifi-xfer-tput %0.6f asset-dl-active %zu dl-candidate %zu downloaders %d dl-tput %0.6f num-cloaked %zu", v70, v69, v68, v5, numLowerThresholdTransferSizes, numUpperThresholdTransferSizes, numActiveTransferSizes, v10, v12, numActiveCoreMediaAssetDownloads, numCandidateCoreMediaAssetDownloads, v15, v16, -[FlowOracle numCloakedTransferSizes](self, "numCloakedTransferSizes")];
   [v4 addObject:v17];
-  if (v73)
+  if (stateCopy)
   {
-    v18 = self;
+    selfCopy2 = self;
     if ([(NSMutableSet *)self->_likelyBelowThresholdAVFlows count])
     {
       v96 = 0u;
@@ -2074,13 +2074,13 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
       }
     }
 
-    if ([(NSMutableSet *)v18->_likelyOverThresholdAVFlows count])
+    if ([(NSMutableSet *)selfCopy2->_likelyOverThresholdAVFlows count])
     {
       v92 = 0u;
       v93 = 0u;
       v90 = 0u;
       v91 = 0u;
-      v25 = v18->_likelyOverThresholdAVFlows;
+      v25 = selfCopy2->_likelyOverThresholdAVFlows;
       v26 = [(NSMutableSet *)v25 countByEnumeratingWithState:&v90 objects:v102 count:16];
       if (v26)
       {
@@ -2112,13 +2112,13 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
       }
     }
 
-    if ([(NSMutableSet *)v18->_suppressedAVFlows count])
+    if ([(NSMutableSet *)selfCopy2->_suppressedAVFlows count])
     {
       v88 = 0u;
       v89 = 0u;
       v86 = 0u;
       v87 = 0u;
-      v31 = v18->_suppressedAVFlows;
+      v31 = selfCopy2->_suppressedAVFlows;
       v32 = [(NSMutableSet *)v31 countByEnumeratingWithState:&v86 objects:v101 count:16];
       if (v32)
       {
@@ -2153,17 +2153,17 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
 
   else
   {
-    v18 = self;
+    selfCopy2 = self;
   }
 
-  v72 = v18;
-  if ([(NSMutableSet *)v18->_accumulatedTransferOrigins count])
+  v72 = selfCopy2;
+  if ([(NSMutableSet *)selfCopy2->_accumulatedTransferOrigins count])
   {
     v84 = 0u;
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v37 = v18->_accumulatedTransferOrigins;
+    v37 = selfCopy2->_accumulatedTransferOrigins;
     v38 = [(NSMutableSet *)v37 countByEnumeratingWithState:&v82 objects:v100 count:16];
     if (v38)
     {
@@ -2182,8 +2182,8 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
 
           v43 = *(*(&v82 + 1) + 8 * v41);
           v44 = objc_alloc(MEMORY[0x277CCACA8]);
-          v45 = [v43 briefDescription];
-          v17 = [v44 initWithFormat:@"       Accumulated transfer origin:   %@", v45];
+          briefDescription = [v43 briefDescription];
+          v17 = [v44 initWithFormat:@"       Accumulated transfer origin:   %@", briefDescription];
 
           [v4 addObject:v17];
           ++v41;
@@ -2197,16 +2197,16 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
       while (v39);
     }
 
-    v18 = v72;
+    selfCopy2 = v72;
   }
 
-  if ([(NSMutableSet *)v18->_accumulatedCoreMediaAssetDownloadOrigins count])
+  if ([(NSMutableSet *)selfCopy2->_accumulatedCoreMediaAssetDownloadOrigins count])
   {
     v80 = 0u;
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v46 = v18->_accumulatedCoreMediaAssetDownloadOrigins;
+    v46 = selfCopy2->_accumulatedCoreMediaAssetDownloadOrigins;
     v47 = [(NSMutableSet *)v46 countByEnumeratingWithState:&v78 objects:v99 count:16];
     if (v47)
     {
@@ -2225,8 +2225,8 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
 
           v52 = *(*(&v78 + 1) + 8 * v50);
           v53 = objc_alloc(MEMORY[0x277CCACA8]);
-          v54 = [v52 briefDescription];
-          v17 = [v53 initWithFormat:@"       Accumulated download origin:   %@", v54];
+          briefDescription2 = [v52 briefDescription];
+          v17 = [v53 initWithFormat:@"       Accumulated download origin:   %@", briefDescription2];
 
           [v4 addObject:v17];
           ++v50;
@@ -2240,16 +2240,16 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
       while (v48);
     }
 
-    v18 = v72;
+    selfCopy2 = v72;
   }
 
-  if ([(NSMutableSet *)v18->_highCellInterfaceUseContributors count])
+  if ([(NSMutableSet *)selfCopy2->_highCellInterfaceUseContributors count])
   {
     v76 = 0u;
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v55 = v18->_highCellInterfaceUseContributors;
+    v55 = selfCopy2->_highCellInterfaceUseContributors;
     v56 = [(NSMutableSet *)v55 countByEnumeratingWithState:&v74 objects:v98 count:16];
     if (v56)
     {
@@ -2268,8 +2268,8 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
 
           v61 = *(*(&v74 + 1) + 8 * v59);
           v62 = objc_alloc(MEMORY[0x277CCACA8]);
-          v63 = [v61 briefDescription];
-          v17 = [v62 initWithFormat:@"       High interface use origin:     %@", v63];
+          briefDescription3 = [v61 briefDescription];
+          v17 = [v62 initWithFormat:@"       High interface use origin:     %@", briefDescription3];
 
           [v4 addObject:v17];
           ++v59;
@@ -2283,18 +2283,18 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
       while (v57);
     }
 
-    v18 = v72;
+    selfCopy2 = v72;
   }
 
-  if (v73)
+  if (stateCopy)
   {
-    v64 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"FlowOracle configuration: max AV thrshld %2.3f Mbps", *&v18->_thresholdAudioVideoFlowsClassifiedIntensive];
+    v64 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"FlowOracle configuration: max AV thrshld %2.3f Mbps", *&selfCopy2->_thresholdAudioVideoFlowsClassifiedIntensive];
 
     [v4 addObject:v64];
     v17 = v64;
   }
 
-  v65 = [(StrictlyPeriodicAVFlowDetector *)v18->_strictlyPeriodicAVDetector getState:v73];
+  v65 = [(StrictlyPeriodicAVFlowDetector *)selfCopy2->_strictlyPeriodicAVDetector getState:stateCopy];
   [v4 addObjectsFromArray:v65];
 
   v66 = *MEMORY[0x277D85DE8];
@@ -2309,10 +2309,10 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
     return 0;
   }
 
-  v4 = [(NSMutableSet *)self->_likelyBelowThresholdAVFlows anyObject];
-  v5 = [v4 matchScore];
+  anyObject = [(NSMutableSet *)self->_likelyBelowThresholdAVFlows anyObject];
+  matchScore = [anyObject matchScore];
 
-  return v5;
+  return matchScore;
 }
 
 - (int)activeHighThroughputAudioVideoTrafficForegroundFlowScore
@@ -2322,10 +2322,10 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
     return 0;
   }
 
-  v4 = [(NSMutableSet *)self->_likelyOverThresholdAVFlows anyObject];
-  v5 = [v4 matchScore];
+  anyObject = [(NSMutableSet *)self->_likelyOverThresholdAVFlows anyObject];
+  matchScore = [anyObject matchScore];
 
-  return v5;
+  return matchScore;
 }
 
 - (void)markCoreMediaAssetDownloadsAsActive
@@ -2356,8 +2356,8 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v7 = [v6 currentAssetDownloads];
-        v8 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        currentAssetDownloads = [v6 currentAssetDownloads];
+        v8 = [currentAssetDownloads countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v8)
         {
           v9 = v8;
@@ -2369,12 +2369,12 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
             {
               if (*v18 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(currentAssetDownloads);
               }
 
               v12 = *(*(&v17 + 1) + 8 * v11);
-              v13 = [v6 currentAssetDownloads];
-              v14 = [v13 objectForKeyedSubscript:v12];
+              currentAssetDownloads2 = [v6 currentAssetDownloads];
+              v14 = [currentAssetDownloads2 objectForKeyedSubscript:v12];
 
               if ([v14 downloadState] != 4)
               {
@@ -2386,7 +2386,7 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
             }
 
             while (v9 != v11);
-            v9 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v9 = [currentAssetDownloads countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v9);
@@ -2405,7 +2405,7 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markCoreMediaAssetDownloadsAsInactiveAt:(double)a3
+- (void)markCoreMediaAssetDownloadsAsInactiveAt:(double)at
 {
   v29 = *MEMORY[0x277D85DE8];
   v23 = 0u;
@@ -2433,8 +2433,8 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v9 = [v8 currentAssetDownloads];
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        currentAssetDownloads = [v8 currentAssetDownloads];
+        v10 = [currentAssetDownloads countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v10)
         {
           v11 = v10;
@@ -2446,17 +2446,17 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
             {
               if (*v20 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(currentAssetDownloads);
               }
 
               v14 = *(*(&v19 + 1) + 8 * v13);
-              v15 = [v8 currentAssetDownloads];
-              v16 = [v15 objectForKeyedSubscript:v14];
+              currentAssetDownloads2 = [v8 currentAssetDownloads];
+              v16 = [currentAssetDownloads2 objectForKeyedSubscript:v14];
 
               if ([v16 downloadState] != 4)
               {
                 [v16 setDownloadState:4];
-                [v16 setQuarantineStartTime:a3];
+                [v16 setQuarantineStartTime:at];
                 [v8 setSampledCoreMediaAssetDownloadInactive:1];
               }
 
@@ -2464,7 +2464,7 @@ void __27__FlowOracle_refreshState___block_invoke(void *a1, void *a2)
             }
 
             while (v11 != v13);
-            v11 = [v9 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v11 = [currentAssetDownloads countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v11);
@@ -2530,26 +2530,26 @@ LABEL_5:
   *&self->_coreMediaAssetDownloadThresholdFailureQuarantineTime = xmmword_232817090;
 }
 
-- (int)setConfiguration:(id)a3
+- (int)setConfiguration:(id)configuration
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = configurationCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "FlowOracle handle new configuration parameters %{public}@", &v9, 0xCu);
   }
 
-  [v4 extractKey:@"ThresholdAVFlowsClassifiedIntensive" toDouble:&self->_thresholdAudioVideoFlowsClassifiedIntensive defaultTo:4.0];
-  [v4 extractKey:@"MinNonCoreMediaThroughputNonIdle" toDouble:&self->_minThroughputForNonIdleNonCoreMedia defaultTo:0.1];
-  [v4 extractKey:@"MaxAppFlowMetricForAVDetermination" toUint64:&self->_maxAppFlowMetricForAVDetermination defaultTo:40];
-  [v4 extractKey:@"AssetDownloadFailedThresholdQuarantineTime" toDouble:&self->_coreMediaAssetDownloadThresholdFailureQuarantineTime defaultTo:600.0];
-  [v4 extractKey:@"AVUseCasesSupported" toBool:&self->_avUseCasesSupported defaultTo:0];
-  [(AVFlowDetector *)self->_continuousAVDetector setConfiguration:v4];
-  [(StrictlyPeriodicAVFlowDetector *)self->_strictlyPeriodicAVDetector setConfiguration:v4];
-  v6 = [v4 objectForKey:@"restoreDefaults"];
+  [configurationCopy extractKey:@"ThresholdAVFlowsClassifiedIntensive" toDouble:&self->_thresholdAudioVideoFlowsClassifiedIntensive defaultTo:4.0];
+  [configurationCopy extractKey:@"MinNonCoreMediaThroughputNonIdle" toDouble:&self->_minThroughputForNonIdleNonCoreMedia defaultTo:0.1];
+  [configurationCopy extractKey:@"MaxAppFlowMetricForAVDetermination" toUint64:&self->_maxAppFlowMetricForAVDetermination defaultTo:40];
+  [configurationCopy extractKey:@"AssetDownloadFailedThresholdQuarantineTime" toDouble:&self->_coreMediaAssetDownloadThresholdFailureQuarantineTime defaultTo:600.0];
+  [configurationCopy extractKey:@"AVUseCasesSupported" toBool:&self->_avUseCasesSupported defaultTo:0];
+  [(AVFlowDetector *)self->_continuousAVDetector setConfiguration:configurationCopy];
+  [(StrictlyPeriodicAVFlowDetector *)self->_strictlyPeriodicAVDetector setConfiguration:configurationCopy];
+  v6 = [configurationCopy objectForKey:@"restoreDefaults"];
   if (v6)
   {
     [(FlowOracle *)self restoreDefaults];

@@ -1,10 +1,10 @@
 @interface CKKeyTransparencyTranscriptCell
-+ (double)heightForChatItem:(id)a3 fittingSize:(CGSize)a4;
++ (double)heightForChatItem:(id)item fittingSize:(CGSize)size;
 + (id)generateActionButton;
 + (id)generateLabel;
 + (id)generateWarningImageView;
 + (id)reuseIdentifier;
-- (CKKeyTransparencyTranscriptCell)initWithFrame:(CGRect)a3;
+- (CKKeyTransparencyTranscriptCell)initWithFrame:(CGRect)frame;
 - (CKKeyTransparencyTranscriptCellDelegate)delegate;
 - (UIButton)actionButton;
 - (UIImageView)warningImageView;
@@ -16,36 +16,36 @@
 - (id)menuForKTStatusUnavailable;
 - (id)reportToAppleAction;
 - (id)verifyConversationAction;
-- (void)_layoutButtonInAlignmentContentRect:(CGRect)a3;
-- (void)_layoutLabelInAlignmentContentRect:(CGRect)a3;
-- (void)_layoutWarningImageInAlignmentContentRect:(CGRect)a3;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (void)_layoutButtonInAlignmentContentRect:(CGRect)rect;
+- (void)_layoutLabelInAlignmentContentRect:(CGRect)rect;
+- (void)_layoutWarningImageInAlignmentContentRect:(CGRect)rect;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
 - (void)prepareForReuse;
-- (void)setAttributedText:(id)a3;
-- (void)setIsGroupChat:(BOOL)a3;
-- (void)setKeyTransparencyStatus:(unint64_t)a3;
+- (void)setAttributedText:(id)text;
+- (void)setIsGroupChat:(BOOL)chat;
+- (void)setKeyTransparencyStatus:(unint64_t)status;
 - (void)setupKeyTransparencyMenu;
 @end
 
 @implementation CKKeyTransparencyTranscriptCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
+  animatedCopy = animated;
   v15.receiver = self;
   v15.super_class = CKKeyTransparencyTranscriptCell;
-  v12 = a3;
-  [(CKTranscriptCell *)&v15 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
-  v13 = [v12 transcriptText];
-  [(CKKeyTransparencyTranscriptCell *)self setAttributedText:v13];
+  itemCopy = item;
+  [(CKTranscriptCell *)&v15 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
+  transcriptText = [itemCopy transcriptText];
+  [(CKKeyTransparencyTranscriptCell *)self setAttributedText:transcriptText];
 
-  v14 = [v12 IMChatItem];
+  iMChatItem = [itemCopy IMChatItem];
 
-  if (v14)
+  if (iMChatItem)
   {
-    -[CKKeyTransparencyTranscriptCell setIsGroupChat:](self, "setIsGroupChat:", [v14 isGroupChat]);
-    -[CKKeyTransparencyTranscriptCell setKeyTransparencyStatus:](self, "setKeyTransparencyStatus:", [v14 status]);
+    -[CKKeyTransparencyTranscriptCell setIsGroupChat:](self, "setIsGroupChat:", [iMChatItem isGroupChat]);
+    -[CKKeyTransparencyTranscriptCell setKeyTransparencyStatus:](self, "setKeyTransparencyStatus:", [iMChatItem status]);
   }
 }
 
@@ -64,9 +64,9 @@
 
   v5 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v4];
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 theme];
-  v8 = [v7 transcriptTextColor];
-  [v5 setTintColor:v8];
+  theme = [v6 theme];
+  transcriptTextColor = [theme transcriptTextColor];
+  [v5 setTintColor:transcriptTextColor];
 
   return v5;
 }
@@ -79,12 +79,12 @@
   [v2 setContentEdgeInsets:?];
 
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 centerTranscriptButtonTextAttributes];
+  centerTranscriptButtonTextAttributes = [v4 centerTranscriptButtonTextAttributes];
 
   v6 = objc_alloc(MEMORY[0x1E696AAB0]);
   v7 = CKFrameworkBundle();
   v8 = [v7 localizedStringForKey:@"KT_MORE_TRANSCRIPT_LINK" value:&stru_1F04268F8 table:@"ChatKit-Key-Transparency"];
-  v9 = [v6 initWithString:v8 attributes:v5];
+  v9 = [v6 initWithString:v8 attributes:centerTranscriptButtonTextAttributes];
 
   [v2 setAttributedTitle:v9 forState:0];
 
@@ -100,24 +100,24 @@
   return v3;
 }
 
-+ (double)heightForChatItem:(id)a3 fittingSize:(CGSize)a4
++ (double)heightForChatItem:(id)item fittingSize:(CGSize)size
 {
-  width = a4.width;
-  v5 = a3;
+  width = size.width;
+  itemCopy = item;
   v6 = +[CKKeyTransparencyTranscriptCell generateLabel];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
-    v8 = [v7 IMChatItem];
+    v7 = itemCopy;
+    iMChatItem = [v7 IMChatItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [v7 IMChatItem];
-      v11 = [v10 affectedHandles];
-      v12 = +[CKKeyTransparencyTranscriptUtilities transcriptStringFromHandles:status:](CKKeyTransparencyTranscriptUtilities, "transcriptStringFromHandles:status:", v11, [v10 status]);
+      iMChatItem2 = [v7 IMChatItem];
+      affectedHandles = [iMChatItem2 affectedHandles];
+      v12 = +[CKKeyTransparencyTranscriptUtilities transcriptStringFromHandles:status:](CKKeyTransparencyTranscriptUtilities, "transcriptStringFromHandles:status:", affectedHandles, [iMChatItem2 status]);
 
       [v6 setAttributedText:v12];
     }
@@ -136,25 +136,25 @@
   return v21;
 }
 
-- (CKKeyTransparencyTranscriptCell)initWithFrame:(CGRect)a3
+- (CKKeyTransparencyTranscriptCell)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = CKKeyTransparencyTranscriptCell;
-  v3 = [(CKTranscriptCell *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptCell *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKEditableCollectionViewCell *)v3 contentView];
-    v6 = [(CKKeyTransparencyTranscriptCell *)v4 warningImageView];
-    [v5 addSubview:v6];
+    contentView = [(CKEditableCollectionViewCell *)v3 contentView];
+    warningImageView = [(CKKeyTransparencyTranscriptCell *)v4 warningImageView];
+    [contentView addSubview:warningImageView];
 
-    v7 = [(CKEditableCollectionViewCell *)v4 contentView];
-    v8 = [(CKKeyTransparencyTranscriptCell *)v4 label];
-    [v7 addSubview:v8];
+    contentView2 = [(CKEditableCollectionViewCell *)v4 contentView];
+    label = [(CKKeyTransparencyTranscriptCell *)v4 label];
+    [contentView2 addSubview:label];
 
-    v9 = [(CKEditableCollectionViewCell *)v4 contentView];
-    v10 = [(CKKeyTransparencyTranscriptCell *)v4 actionButton];
-    [v9 addSubview:v10];
+    contentView3 = [(CKEditableCollectionViewCell *)v4 contentView];
+    actionButton = [(CKKeyTransparencyTranscriptCell *)v4 actionButton];
+    [contentView3 addSubview:actionButton];
   }
 
   return v4;
@@ -181,21 +181,21 @@
   [(CKKeyTransparencyTranscriptCell *)self _layoutButtonInAlignmentContentRect:v7, y, width, height];
 }
 
-- (void)_layoutWarningImageInAlignmentContentRect:(CGRect)a3
+- (void)_layoutWarningImageInAlignmentContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CKKeyTransparencyTranscriptCell *)self warningImageView];
-  v18 = v8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  warningImageView = [(CKKeyTransparencyTranscriptCell *)self warningImageView];
+  v18 = warningImageView;
   v9 = width + -64.0;
   if (width + -64.0 > 420.0)
   {
     v9 = 420.0;
   }
 
-  [v8 sizeThatFits:{v9, 1.79769313e308}];
+  [warningImageView sizeThatFits:{v9, 1.79769313e308}];
   v11 = v10;
   v13 = v12;
   v20.origin.x = x;
@@ -203,21 +203,21 @@
   v20.size.width = width;
   v20.size.height = height;
   MidX = CGRectGetMidX(v20);
-  v15 = [(CKKeyTransparencyTranscriptCell *)self traitCollection];
-  [v15 displayScale];
+  traitCollection = [(CKKeyTransparencyTranscriptCell *)self traitCollection];
+  [traitCollection displayScale];
   v17 = MidX - round(v11 * 0.5 * v16) / v16;
 
   [v18 setFrame:{v17, 8.0, v11, v13}];
 }
 
-- (void)_layoutLabelInAlignmentContentRect:(CGRect)a3
+- (void)_layoutLabelInAlignmentContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = [(CKKeyTransparencyTranscriptCell *)self label];
-  [v18 sizeThatFits:{width, 1.79769313e308}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  label = [(CKKeyTransparencyTranscriptCell *)self label];
+  [label sizeThatFits:{width, 1.79769313e308}];
   v9 = v8;
   v11 = v10;
   v20.origin.x = x;
@@ -225,32 +225,32 @@
   v20.size.width = width;
   v20.size.height = height;
   MidX = CGRectGetMidX(v20);
-  v13 = [(CKKeyTransparencyTranscriptCell *)self traitCollection];
-  [v13 displayScale];
+  traitCollection = [(CKKeyTransparencyTranscriptCell *)self traitCollection];
+  [traitCollection displayScale];
   v15 = MidX - round(v9 * 0.5 * v14) / v14;
 
-  v16 = [(CKKeyTransparencyTranscriptCell *)self warningImageView];
-  [v16 frame];
+  warningImageView = [(CKKeyTransparencyTranscriptCell *)self warningImageView];
+  [warningImageView frame];
   v17 = CGRectGetMaxY(v21) + 8.0;
 
-  [v18 setFrame:{v15, v17, v9, v11}];
+  [label setFrame:{v15, v17, v9, v11}];
 }
 
-- (void)_layoutButtonInAlignmentContentRect:(CGRect)a3
+- (void)_layoutButtonInAlignmentContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CKKeyTransparencyTranscriptCell *)self actionButton];
-  v20 = v8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  actionButton = [(CKKeyTransparencyTranscriptCell *)self actionButton];
+  v20 = actionButton;
   v9 = width + -64.0;
   if (width + -64.0 > 420.0)
   {
     v9 = 420.0;
   }
 
-  [v8 sizeThatFits:{v9, 1.79769313e308}];
+  [actionButton sizeThatFits:{v9, 1.79769313e308}];
   v11 = v10;
   v13 = v12;
   v22.origin.x = x;
@@ -258,42 +258,42 @@
   v22.size.width = width;
   v22.size.height = height;
   MidX = CGRectGetMidX(v22);
-  v15 = [(CKKeyTransparencyTranscriptCell *)self traitCollection];
-  [v15 displayScale];
+  traitCollection = [(CKKeyTransparencyTranscriptCell *)self traitCollection];
+  [traitCollection displayScale];
   v17 = MidX - round(v11 * 0.5 * v16) / v16;
 
-  v18 = [(CKKeyTransparencyTranscriptCell *)self label];
-  [v18 frame];
+  label = [(CKKeyTransparencyTranscriptCell *)self label];
+  [label frame];
   v19 = CGRectGetMaxY(v23) + -2.0;
 
   [v20 setFrame:{v17, v19, v11, v13}];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v5 = a3;
-  if (self->_attributedText != v5)
+  textCopy = text;
+  if (self->_attributedText != textCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_attributedText, a3);
+    v6 = textCopy;
+    objc_storeStrong(&self->_attributedText, text);
     [(UILabel *)self->_label setAttributedText:v6];
-    v5 = v6;
+    textCopy = v6;
   }
 }
 
-- (void)setIsGroupChat:(BOOL)a3
+- (void)setIsGroupChat:(BOOL)chat
 {
-  if (self->_isGroupChat != a3)
+  if (self->_isGroupChat != chat)
   {
-    self->_isGroupChat = a3;
+    self->_isGroupChat = chat;
   }
 }
 
-- (void)setKeyTransparencyStatus:(unint64_t)a3
+- (void)setKeyTransparencyStatus:(unint64_t)status
 {
-  if (self->_keyTransparencyStatus != a3)
+  if (self->_keyTransparencyStatus != status)
   {
-    self->_keyTransparencyStatus = a3;
+    self->_keyTransparencyStatus = status;
     [(CKKeyTransparencyTranscriptCell *)self setupKeyTransparencyMenu];
   }
 }
@@ -358,13 +358,13 @@
   if (keyTransparencyStatus - 5 < 2)
   {
     actionButton = self->_actionButton;
-    v5 = [(CKKeyTransparencyTranscriptCell *)self menuForKTStatusError];
+    menuForKTStatusError = [(CKKeyTransparencyTranscriptCell *)self menuForKTStatusError];
   }
 
   else if (keyTransparencyStatus == 9)
   {
     actionButton = self->_actionButton;
-    v5 = [(CKKeyTransparencyTranscriptCell *)self menuForKTStatusTurnedOff];
+    menuForKTStatusError = [(CKKeyTransparencyTranscriptCell *)self menuForKTStatusTurnedOff];
   }
 
   else
@@ -375,47 +375,47 @@
     }
 
     actionButton = self->_actionButton;
-    v5 = [(CKKeyTransparencyTranscriptCell *)self menuForKTStatusUnavailable];
+    menuForKTStatusError = [(CKKeyTransparencyTranscriptCell *)self menuForKTStatusUnavailable];
   }
 
-  v6 = v5;
+  v6 = menuForKTStatusError;
   [(UIButton *)actionButton setMenu:?];
 }
 
 - (id)menuForKTStatusError
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKKeyTransparencyTranscriptCell *)self learnMoreAction];
-  v5 = [(CKKeyTransparencyTranscriptCell *)self reportToAppleAction];
-  v6 = [(CKKeyTransparencyTranscriptCell *)self verifyConversationAction];
-  v7 = [(CKKeyTransparencyTranscriptCell *)self clearWarningAction];
+  array = [MEMORY[0x1E695DF70] array];
+  learnMoreAction = [(CKKeyTransparencyTranscriptCell *)self learnMoreAction];
+  reportToAppleAction = [(CKKeyTransparencyTranscriptCell *)self reportToAppleAction];
+  verifyConversationAction = [(CKKeyTransparencyTranscriptCell *)self verifyConversationAction];
+  clearWarningAction = [(CKKeyTransparencyTranscriptCell *)self clearWarningAction];
   v8 = MEMORY[0x1E69DCC60];
-  v17[0] = v7;
+  v17[0] = clearWarningAction;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v10 = [v8 menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v9];
 
   v16[0] = v10;
-  v16[1] = v6;
-  v16[2] = v5;
-  v16[3] = v4;
+  v16[1] = verifyConversationAction;
+  v16[2] = reportToAppleAction;
+  v16[3] = learnMoreAction;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:4];
-  [v3 addObjectsFromArray:v11];
+  [array addObjectsFromArray:v11];
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isKeyTransparencyReportToAppleEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isKeyTransparencyReportToAppleEnabled = [mEMORY[0x1E69A8070] isKeyTransparencyReportToAppleEnabled];
 
-  if ((v13 & 1) == 0)
+  if ((isKeyTransparencyReportToAppleEnabled & 1) == 0)
   {
-    [v3 removeObject:v5];
+    [array removeObject:reportToAppleAction];
   }
 
   if (self->_isGroupChat)
   {
-    [v3 removeObject:v6];
+    [array removeObject:verifyConversationAction];
   }
 
-  v14 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:v3];
+  v14 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:array];
 
   return v14;
 }
@@ -423,30 +423,30 @@
 - (id)menuForKTStatusUnavailable
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKKeyTransparencyTranscriptCell *)self learnMoreAction];
-  v5 = [(CKKeyTransparencyTranscriptCell *)self reportToAppleAction];
-  v6 = [(CKKeyTransparencyTranscriptCell *)self clearWarningAction];
+  array = [MEMORY[0x1E695DF70] array];
+  learnMoreAction = [(CKKeyTransparencyTranscriptCell *)self learnMoreAction];
+  reportToAppleAction = [(CKKeyTransparencyTranscriptCell *)self reportToAppleAction];
+  clearWarningAction = [(CKKeyTransparencyTranscriptCell *)self clearWarningAction];
   v7 = MEMORY[0x1E69DCC60];
-  v16[0] = v6;
+  v16[0] = clearWarningAction;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v9 = [v7 menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v8];
 
   v15[0] = v9;
-  v15[1] = v5;
-  v15[2] = v4;
+  v15[1] = reportToAppleAction;
+  v15[2] = learnMoreAction;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:3];
-  [v3 addObjectsFromArray:v10];
+  [array addObjectsFromArray:v10];
 
-  v11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v12 = [v11 isKeyTransparencyReportToAppleEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isKeyTransparencyReportToAppleEnabled = [mEMORY[0x1E69A8070] isKeyTransparencyReportToAppleEnabled];
 
-  if ((v12 & 1) == 0)
+  if ((isKeyTransparencyReportToAppleEnabled & 1) == 0)
   {
-    [v3 removeObject:v5];
+    [array removeObject:reportToAppleAction];
   }
 
-  v13 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:v3];
+  v13 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:array];
 
   return v13;
 }
@@ -454,20 +454,20 @@
 - (id)menuForKTStatusTurnedOff
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKKeyTransparencyTranscriptCell *)self learnMoreAction];
-  v5 = [(CKKeyTransparencyTranscriptCell *)self clearWarningAction];
+  array = [MEMORY[0x1E695DF70] array];
+  learnMoreAction = [(CKKeyTransparencyTranscriptCell *)self learnMoreAction];
+  clearWarningAction = [(CKKeyTransparencyTranscriptCell *)self clearWarningAction];
   v6 = MEMORY[0x1E69DCC60];
-  v13[0] = v5;
+  v13[0] = clearWarningAction;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v8 = [v6 menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v7];
 
   v12[0] = v8;
-  v12[1] = v4;
+  v12[1] = learnMoreAction;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
-  [v3 addObjectsFromArray:v9];
+  [array addObjectsFromArray:v9];
 
-  v10 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:v3];
+  v10 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:array];
 
   return v10;
 }

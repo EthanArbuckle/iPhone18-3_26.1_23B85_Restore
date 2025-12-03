@@ -12,8 +12,8 @@
 - (id)reparentedRootSettings
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() _photosUICoreSettings];
-  v5[0] = v2;
+  _photosUICoreSettings = [objc_opt_class() _photosUICoreSettings];
+  v5[0] = _photosUICoreSettings;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
@@ -29,22 +29,22 @@
 
 - (void)createChildren
 {
-  v3 = [(PTSettings *)[PUPosterHeadroomSettings alloc] initWithDefaultValues];
+  initWithDefaultValues = [(PTSettings *)[PUPosterHeadroomSettings alloc] initWithDefaultValues];
   headroomSettings = self->_headroomSettings;
-  self->_headroomSettings = v3;
+  self->_headroomSettings = initWithDefaultValues;
 
-  MEMORY[0x1EEE66BB8](v3, headroomSettings);
+  MEMORY[0x1EEE66BB8](initWithDefaultValues, headroomSettings);
 }
 
 - (PUPosterSettings)initWithDefaultValues
 {
   v5.receiver = self;
   v5.super_class = PUPosterSettings;
-  v2 = [(PTSettings *)&v5 initWithDefaultValues];
-  v3 = v2;
-  if (v2)
+  initWithDefaultValues = [(PTSettings *)&v5 initWithDefaultValues];
+  v3 = initWithDefaultValues;
+  if (initWithDefaultValues)
   {
-    [(PTSettings *)v2 _setObservationEnabled:1];
+    [(PTSettings *)initWithDefaultValues _setObservationEnabled:1];
   }
 
   return v3;
@@ -87,9 +87,9 @@
   os_unfair_lock_lock(MEMORY[0x1E69C4148]);
   if (!sharedInstance_sharedInstance_90993)
   {
-    v3 = [a1 createSharedInstance];
+    createSharedInstance = [self createSharedInstance];
     v4 = sharedInstance_sharedInstance_90993;
-    sharedInstance_sharedInstance_90993 = v3;
+    sharedInstance_sharedInstance_90993 = createSharedInstance;
   }
 
   os_unfair_lock_unlock(MEMORY[0x1E69C4148]);

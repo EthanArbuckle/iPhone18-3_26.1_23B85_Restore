@@ -1,73 +1,73 @@
 @interface AppLaunchEvent
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation AppLaunchEvent
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_new();
-  v6 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v6 = [(NSString *)self->_bundleID copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_bundleVersion copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleVersion copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSString *)self->_clipBundleID copyWithZone:a3];
+  v10 = [(NSString *)self->_clipBundleID copyWithZone:zone];
   v11 = *(v5 + 80);
   *(v5 + 80) = v10;
 
-  v12 = [(NSString *)self->_clipLaunchReason copyWithZone:a3];
+  v12 = [(NSString *)self->_clipLaunchReason copyWithZone:zone];
   v13 = *(v5 + 96);
   *(v5 + 96) = v12;
 
-  v14 = [(NSURL *)self->_clipFullURL copyWithZone:a3];
+  v14 = [(NSURL *)self->_clipFullURL copyWithZone:zone];
   v15 = *(v5 + 88);
   *(v5 + 88) = v14;
 
-  v16 = [(NSString *)self->_clipReferrerBundleID copyWithZone:a3];
+  v16 = [(NSString *)self->_clipReferrerBundleID copyWithZone:zone];
   v17 = *(v5 + 112);
   *(v5 + 112) = v16;
 
-  v18 = [(NSURL *)self->_clipReferrerURL copyWithZone:a3];
+  v18 = [(NSURL *)self->_clipReferrerURL copyWithZone:zone];
   v19 = *(v5 + 104);
   *(v5 + 104) = v18;
 
-  v20 = [(NSString *)self->_clipWebAppBundleID copyWithZone:a3];
+  v20 = [(NSString *)self->_clipWebAppBundleID copyWithZone:zone];
   v21 = *(v5 + 120);
   *(v5 + 120) = v20;
 
-  v22 = [(NSString *)self->_containingBundleID copyWithZone:a3];
+  v22 = [(NSString *)self->_containingBundleID copyWithZone:zone];
   v23 = *(v5 + 128);
   *(v5 + 128) = v22;
 
-  v24 = [(NSDate *)self->_endDate copyWithZone:a3];
+  v24 = [(NSDate *)self->_endDate copyWithZone:zone];
   v25 = *(v5 + 16);
   *(v5 + 16) = v24;
 
-  v26 = [(NSNumber *)self->_evid copyWithZone:a3];
+  v26 = [(NSNumber *)self->_evid copyWithZone:zone];
   v27 = *(v5 + 56);
   *(v5 + 56) = v26;
 
   *(v5 + 8) = self->_isExtensionUsage;
   *(v5 + 10) = self->_clip;
-  v28 = [(NSNumber *)self->_itemID copyWithZone:a3];
+  v28 = [(NSNumber *)self->_itemID copyWithZone:zone];
   v29 = *(v5 + 64);
   *(v5 + 64) = v28;
 
-  v30 = [(NSString *)self->_itemName copyWithZone:a3];
+  v30 = [(NSString *)self->_itemName copyWithZone:zone];
   v31 = *(v5 + 72);
   *(v5 + 72) = v30;
 
-  v32 = [(NSString *)self->_launchReason copyWithZone:a3];
+  v32 = [(NSString *)self->_launchReason copyWithZone:zone];
   v33 = *(v5 + 32);
   *(v5 + 32) = v32;
 
   *(v5 + 12) = self->_sourceStream;
-  v34 = [(NSDate *)self->_startDate copyWithZone:a3];
+  v34 = [(NSDate *)self->_startDate copyWithZone:zone];
   v35 = *(v5 + 24);
   *(v5 + 24) = v34;
 
@@ -88,8 +88,8 @@
     bundleID = 0;
   }
 
-  v5 = [NSString stringWithFormat:@"bundleID: %@", bundleID];
-  [v3 addObject:v5];
+  bundleID = [NSString stringWithFormat:@"bundleID: %@", bundleID];
+  [v3 addObject:bundleID];
 
   if (self)
   {

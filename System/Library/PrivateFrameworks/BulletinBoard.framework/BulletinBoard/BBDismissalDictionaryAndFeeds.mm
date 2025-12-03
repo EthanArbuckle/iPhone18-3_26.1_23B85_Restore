@@ -1,19 +1,19 @@
 @interface BBDismissalDictionaryAndFeeds
-- (BBDismissalDictionaryAndFeeds)initWithDismissalDictionary:(id)a3 andFeeds:(unint64_t)a4;
+- (BBDismissalDictionaryAndFeeds)initWithDismissalDictionary:(id)dictionary andFeeds:(unint64_t)feeds;
 - (id)description;
 @end
 
 @implementation BBDismissalDictionaryAndFeeds
 
-- (BBDismissalDictionaryAndFeeds)initWithDismissalDictionary:(id)a3 andFeeds:(unint64_t)a4
+- (BBDismissalDictionaryAndFeeds)initWithDismissalDictionary:(id)dictionary andFeeds:(unint64_t)feeds
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = BBDismissalDictionaryAndFeeds;
-  v7 = [(BBDismissalItem *)&v14 initWithFeeds:a4];
+  v7 = [(BBDismissalItem *)&v14 initWithFeeds:feeds];
   if (v7)
   {
-    v8 = [v6 objectForKey:@"d"];
+    v8 = [dictionaryCopy objectForKey:@"d"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -26,7 +26,7 @@
     }
 
     v7->_dismissalTimeInterval = v9;
-    v10 = [v6 objectForKey:@"h"];
+    v10 = [dictionaryCopy objectForKey:@"h"];
     v11 = [v10 copy];
     dismissalHash = v7->_dismissalHash;
     v7->_dismissalHash = v11;

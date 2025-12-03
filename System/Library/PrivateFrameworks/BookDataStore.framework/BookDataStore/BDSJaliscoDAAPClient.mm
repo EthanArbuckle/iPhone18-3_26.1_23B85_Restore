@@ -1,11 +1,11 @@
 @interface BDSJaliscoDAAPClient
 + (BDSJaliscoDAAPClient)sharedClient;
 - (BDSJaliscoDAAPClient)init;
-- (void)deleteItemsWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)a3;
-- (void)hideItemsWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)resetPurchasedTokenForStoreIDs:(id)a3 completion:(id)a4;
-- (void)resetStaleJaliscoDatabaseWithCompletion:(id)a3;
+- (void)deleteItemsWithStoreIDs:(id)ds completion:(id)completion;
+- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)completion;
+- (void)hideItemsWithStoreIDs:(id)ds completion:(id)completion;
+- (void)resetPurchasedTokenForStoreIDs:(id)ds completion:(id)completion;
+- (void)resetStaleJaliscoDatabaseWithCompletion:(id)completion;
 @end
 
 @implementation BDSJaliscoDAAPClient
@@ -39,42 +39,42 @@
   return v2;
 }
 
-- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)a3
+- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSJaliscoDAAPClient *)self serviceProxy];
-  [v5 fetchAllHiddenItemStoreIDsWithCompletion:v4];
+  completionCopy = completion;
+  serviceProxy = [(BDSJaliscoDAAPClient *)self serviceProxy];
+  [serviceProxy fetchAllHiddenItemStoreIDsWithCompletion:completionCopy];
 }
 
-- (void)resetPurchasedTokenForStoreIDs:(id)a3 completion:(id)a4
+- (void)resetPurchasedTokenForStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSJaliscoDAAPClient *)self serviceProxy];
-  [v8 resetPurchasedTokenForStoreIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  serviceProxy = [(BDSJaliscoDAAPClient *)self serviceProxy];
+  [serviceProxy resetPurchasedTokenForStoreIDs:dsCopy completion:completionCopy];
 }
 
-- (void)hideItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)hideItemsWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSJaliscoDAAPClient *)self serviceProxy];
-  [v8 hideItemsWithStoreIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  serviceProxy = [(BDSJaliscoDAAPClient *)self serviceProxy];
+  [serviceProxy hideItemsWithStoreIDs:dsCopy completion:completionCopy];
 }
 
-- (void)deleteItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)deleteItemsWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSJaliscoDAAPClient *)self serviceProxy];
-  [v8 deleteItemsWithStoreIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  serviceProxy = [(BDSJaliscoDAAPClient *)self serviceProxy];
+  [serviceProxy deleteItemsWithStoreIDs:dsCopy completion:completionCopy];
 }
 
-- (void)resetStaleJaliscoDatabaseWithCompletion:(id)a3
+- (void)resetStaleJaliscoDatabaseWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSJaliscoDAAPClient *)self serviceProxy];
-  [v5 resetStaleJaliscoDatabaseWithCompletion:v4];
+  completionCopy = completion;
+  serviceProxy = [(BDSJaliscoDAAPClient *)self serviceProxy];
+  [serviceProxy resetStaleJaliscoDatabaseWithCompletion:completionCopy];
 }
 
 @end

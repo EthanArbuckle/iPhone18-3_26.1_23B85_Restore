@@ -1,8 +1,8 @@
 @interface ATXHeuristicInferredActivityBiomeStream
 - (ATXHeuristicInferredActivityBiomeStream)init;
-- (id)initFromInferredModeStream:(id)a3;
-- (id)sessionPublisherFromStartTime:(double)a3;
-- (id)transitionPublisherFromStartTime:(double)a3;
+- (id)initFromInferredModeStream:(id)stream;
+- (id)sessionPublisherFromStartTime:(double)time;
+- (id)transitionPublisherFromStartTime:(double)time;
 @end
 
 @implementation ATXHeuristicInferredActivityBiomeStream
@@ -10,23 +10,23 @@
 - (ATXHeuristicInferredActivityBiomeStream)init
 {
   v3 = BiomeLibrary();
-  v4 = [v3 UserFocus];
-  v5 = [v4 InferredMode];
-  v6 = [(ATXHeuristicInferredActivityBiomeStream *)self initFromInferredModeStream:v5];
+  userFocus = [v3 UserFocus];
+  inferredMode = [userFocus InferredMode];
+  v6 = [(ATXHeuristicInferredActivityBiomeStream *)self initFromInferredModeStream:inferredMode];
 
   return v6;
 }
 
-- (id)initFromInferredModeStream:(id)a3
+- (id)initFromInferredModeStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = ATXHeuristicInferredActivityBiomeStream;
   v6 = [(ATXHeuristicInferredActivityBiomeStream *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_heuristicEventBiomeStream, a3);
+    objc_storeStrong(&v6->_heuristicEventBiomeStream, stream);
   }
 
   return v7;
@@ -55,18 +55,18 @@ id __89__ATXHeuristicInferredActivityBiomeStream__transitionPublisherFromInferre
   return v8;
 }
 
-- (id)sessionPublisherFromStartTime:(double)a3
+- (id)sessionPublisherFromStartTime:(double)time
 {
-  v3 = [(ATXHeuristicInferredActivityBiomeStream *)self transitionPublisherFromStartTime:a3];
+  v3 = [(ATXHeuristicInferredActivityBiomeStream *)self transitionPublisherFromStartTime:time];
   v4 = [_ATXUnifiedActivityStreamConversions sessionPublisherFromTransitionPublisher:v3];
 
   return v4;
 }
 
-- (id)transitionPublisherFromStartTime:(double)a3
+- (id)transitionPublisherFromStartTime:(double)time
 {
   heuristicEventBiomeStream = self->_heuristicEventBiomeStream;
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:time];
   v6 = [(BMStream *)heuristicEventBiomeStream atx_publisherFromStartTime:v5];
   v7 = [(ATXHeuristicInferredActivityBiomeStream *)self _transitionPublisherFromInferredModePublisher:v6];
 

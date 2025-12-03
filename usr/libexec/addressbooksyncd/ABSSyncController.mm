@@ -1,9 +1,9 @@
 @interface ABSSyncController
 - (ABSSyncController)init;
-- (void)addSyChanges:(id)a3 forSession:(id)a4;
-- (void)deleteSyChange:(id)a3;
+- (void)addSyChanges:(id)changes forSession:(id)session;
+- (void)deleteSyChange:(id)change;
 - (void)resetSyncState;
-- (void)updateSyChange:(id)a3 forSession:(id)a4;
+- (void)updateSyChange:(id)change forSession:(id)session;
 @end
 
 @implementation ABSSyncController
@@ -27,43 +27,43 @@
   return v2;
 }
 
-- (void)addSyChanges:(id)a3 forSession:(id)a4
+- (void)addSyChanges:(id)changes forSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  changesCopy = changes;
+  sessionCopy = session;
+  if ([changesCopy count])
   {
-    v8 = [v6 firstObject];
+    firstObject = [changesCopy firstObject];
     v9 = *(qword_100071D00 + 8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v8 pbObject];
-      v12 = [v11 contactWrapper];
-      v13 = [v12 guid];
+      pbObject = [firstObject pbObject];
+      contactWrapper = [pbObject contactWrapper];
+      guid = [contactWrapper guid];
       v19 = 138543362;
-      v20 = v13;
+      v20 = guid;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "addSyChange for %{public}@", &v19, 0xCu);
     }
 
-    v14 = [v8 pbObject];
-    if ([v14 hasContactWrapper])
+    pbObject2 = [firstObject pbObject];
+    if ([pbObject2 hasContactWrapper])
     {
     }
 
     else
     {
-      v15 = [v8 pbObject];
-      v16 = [v15 hasLmaSyncData];
+      pbObject3 = [firstObject pbObject];
+      hasLmaSyncData = [pbObject3 hasLmaSyncData];
 
-      if (!v16)
+      if (!hasLmaSyncData)
       {
-        v17 = [v8 pbObject];
-        v18 = [v17 hasFavoritesSyncObject];
+        pbObject4 = [firstObject pbObject];
+        hasFavoritesSyncObject = [pbObject4 hasFavoritesSyncObject];
 
-        if (v18)
+        if (hasFavoritesSyncObject)
         {
-          [(ABSFavoritesSyncManager *)self->_favoritesSyncManager replace:v8];
+          [(ABSFavoritesSyncManager *)self->_favoritesSyncManager replace:firstObject];
         }
 
         else if (os_log_type_enabled(*(qword_100071D00 + 8), OS_LOG_TYPE_ERROR))
@@ -75,7 +75,7 @@
       }
     }
 
-    [(ABSContactsSyncManager *)self->_abSyncManager addBatch:v6 forSession:v7];
+    [(ABSContactsSyncManager *)self->_abSyncManager addBatch:changesCopy forSession:sessionCopy];
 LABEL_10:
 
     goto LABEL_11;
@@ -89,36 +89,36 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)updateSyChange:(id)a3 forSession:(id)a4
+- (void)updateSyChange:(id)change forSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 pbObject];
-  v10 = [v9 hasContactWrapper];
+  changeCopy = change;
+  sessionCopy = session;
+  v8 = changeCopy;
+  pbObject = [v8 pbObject];
+  hasContactWrapper = [pbObject hasContactWrapper];
 
-  if (v10)
+  if (hasContactWrapper)
   {
     v11 = *(qword_100071D00 + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v8 pbObject];
-      v14 = [v13 contactWrapper];
-      v15 = [v14 guid];
+      pbObject2 = [v8 pbObject];
+      contactWrapper = [pbObject2 contactWrapper];
+      guid = [contactWrapper guid];
       v34 = 138543362;
-      v35 = v15;
+      v35 = guid;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "updateSyChange for contact %{public}@", &v34, 0xCu);
     }
 
-    [(ABSContactsSyncManager *)self->_abSyncManager addOrUpdateContactIn:v8 forSession:v7];
+    [(ABSContactsSyncManager *)self->_abSyncManager addOrUpdateContactIn:v8 forSession:sessionCopy];
     goto LABEL_24;
   }
 
-  v16 = [v8 pbObject];
-  v17 = [v16 hasFavoritesSyncObject];
+  pbObject3 = [v8 pbObject];
+  hasFavoritesSyncObject = [pbObject3 hasFavoritesSyncObject];
 
-  if (v17)
+  if (hasFavoritesSyncObject)
   {
     v18 = *(qword_100071D00 + 8);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -131,10 +131,10 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  v19 = [v8 pbObject];
-  v20 = [v19 hasCountValidationObject];
+  pbObject4 = [v8 pbObject];
+  hasCountValidationObject = [pbObject4 hasCountValidationObject];
 
-  if (v20)
+  if (hasCountValidationObject)
   {
     v21 = *(qword_100071D00 + 8);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -143,17 +143,17 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "updateSyChange for validation", &v34, 2u);
     }
 
-    v22 = [v8 pbObject];
-    v23 = [v22 countValidationObject];
-    [v7 setValidationMessage:v23];
+    pbObject5 = [v8 pbObject];
+    countValidationObject = [pbObject5 countValidationObject];
+    [sessionCopy setValidationMessage:countValidationObject];
 
     goto LABEL_24;
   }
 
-  v24 = [v8 pbObject];
-  v25 = [v24 hasAccountsSyncObject];
+  pbObject6 = [v8 pbObject];
+  hasAccountsSyncObject = [pbObject6 hasAccountsSyncObject];
 
-  if (v25)
+  if (hasAccountsSyncObject)
   {
     v26 = *(qword_100071D00 + 8);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -162,22 +162,22 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "updateSyChange for accounts", &v34, 2u);
     }
 
-    v27 = [v8 pbObject];
-    v28 = [v27 accountsSyncObject];
-    [v7 setAccountsMessage:v28];
+    pbObject7 = [v8 pbObject];
+    accountsSyncObject = [pbObject7 accountsSyncObject];
+    [sessionCopy setAccountsMessage:accountsSyncObject];
 
-    v29 = [v7 accountsMessage];
-    [ABSAccountsSyncObject processSyncObjASAPPortion:v29];
+    accountsMessage = [sessionCopy accountsMessage];
+    [ABSAccountsSyncObject processSyncObjASAPPortion:accountsMessage];
 LABEL_21:
 
     goto LABEL_24;
   }
 
-  v30 = [v8 pbObject];
-  v31 = [v30 hasContainerSyncObject];
+  pbObject8 = [v8 pbObject];
+  hasContainerSyncObject = [pbObject8 hasContainerSyncObject];
 
   v32 = *(qword_100071D00 + 8);
-  if (v31)
+  if (hasContainerSyncObject)
   {
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
@@ -186,8 +186,8 @@ LABEL_21:
     }
 
     v33 = objc_opt_class();
-    v29 = [v8 pbObject];
-    [v33 applyChange:v29];
+    accountsMessage = [v8 pbObject];
+    [v33 applyChange:accountsMessage];
     goto LABEL_21;
   }
 
@@ -199,27 +199,27 @@ LABEL_21:
 LABEL_24:
 }
 
-- (void)deleteSyChange:(id)a3
+- (void)deleteSyChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = *(qword_100071D00 + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 pbObject];
-    v8 = [v7 deleteWrapper];
-    v9 = [v8 guid];
+    pbObject = [changeCopy pbObject];
+    deleteWrapper = [pbObject deleteWrapper];
+    guid = [deleteWrapper guid];
     v12 = 138543362;
-    v13 = v9;
+    v13 = guid;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "deleteSyChange for %{public}@", &v12, 0xCu);
   }
 
-  v10 = [v4 pbObject];
-  v11 = [v10 hasDeleteWrapper];
+  pbObject2 = [changeCopy pbObject];
+  hasDeleteWrapper = [pbObject2 hasDeleteWrapper];
 
-  if (v11)
+  if (hasDeleteWrapper)
   {
-    [(ABSContactsSyncManager *)self->_abSyncManager remove:v4];
+    [(ABSContactsSyncManager *)self->_abSyncManager remove:changeCopy];
   }
 
   else if (os_log_type_enabled(*(qword_100071D00 + 8), OS_LOG_TYPE_ERROR))

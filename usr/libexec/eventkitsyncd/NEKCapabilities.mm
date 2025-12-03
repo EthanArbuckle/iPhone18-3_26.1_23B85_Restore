@@ -1,10 +1,10 @@
 @interface NEKCapabilities
 + (id)instance;
-- (BOOL)_query:(id)a3;
+- (BOOL)_query:(id)_query;
 - (BOOL)canUseDataTransfer;
 - (BOOL)canUseLzfse;
 - (NEKCapabilities)init;
-- (void)_changed:(id)a3;
+- (void)_changed:(id)_changed;
 - (void)dealloc;
 @end
 
@@ -65,34 +65,34 @@
   return self;
 }
 
-- (BOOL)_query:(id)a3
+- (BOOL)_query:(id)_query
 {
-  v4 = a3;
+  _queryCopy = _query;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NEKCapabilities *)self cache];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  cache = [(NEKCapabilities *)self cache];
+  v6 = [cache objectForKeyedSubscript:_queryCopy];
 
   if (!v6)
   {
     v7 = +[NRPairedDeviceRegistry sharedInstance];
-    v8 = [v7 getActivePairedDevice];
+    getActivePairedDevice = [v7 getActivePairedDevice];
 
-    v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 supportsCapability:v4]);
-    v9 = [(NEKCapabilities *)self cache];
-    [v9 setObject:v6 forKeyedSubscript:v4];
+    v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [getActivePairedDevice supportsCapability:_queryCopy]);
+    cache2 = [(NEKCapabilities *)self cache];
+    [cache2 setObject:v6 forKeyedSubscript:_queryCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v10 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v10;
+  return bOOLValue;
 }
 
-- (void)_changed:(id)a3
+- (void)_changed:(id)_changed
 {
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(NEKCapabilities *)self cache];
-  [v4 removeAllObjects];
+  cache = [(NEKCapabilities *)self cache];
+  [cache removeAllObjects];
 
   os_unfair_lock_unlock(&self->_lock);
 }

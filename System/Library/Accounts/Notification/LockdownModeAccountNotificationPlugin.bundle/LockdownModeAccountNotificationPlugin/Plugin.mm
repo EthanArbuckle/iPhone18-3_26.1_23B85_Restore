@@ -1,17 +1,17 @@
 @interface Plugin
 - (_TtC37LockdownModeAccountNotificationPlugin6Plugin)init;
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 @end
 
 @implementation Plugin
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_29C8E1278(a3, a4, a6);
+  accountCopy = account;
+  storeCopy = store;
+  oldAccountCopy = oldAccount;
+  selfCopy = self;
+  sub_29C8E1278(account, type, oldAccount);
 }
 
 - (_TtC37LockdownModeAccountNotificationPlugin6Plugin)init

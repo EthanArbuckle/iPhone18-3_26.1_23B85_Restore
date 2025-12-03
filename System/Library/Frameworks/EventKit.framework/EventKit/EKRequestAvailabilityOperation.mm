@@ -1,9 +1,9 @@
 @interface EKRequestAvailabilityOperation
 - (EKRequestAvailabilityOperation)init;
-- (EKRequestAvailabilityOperation)initWithSource:(id)a3 startDate:(id)a4 endDate:(id)a5 ignoredEvent:(id)a6 addresses:(id)a7 resultsBlock:(id)a8;
-- (EKRequestAvailabilityOperation)initWithSource:(id)a3 startDate:(id)a4 endDate:(id)a5 ignoredEventID:(id)a6 addresses:(id)a7 resultsBlock:(id)a8;
+- (EKRequestAvailabilityOperation)initWithSource:(id)source startDate:(id)date endDate:(id)endDate ignoredEvent:(id)event addresses:(id)addresses resultsBlock:(id)block;
+- (EKRequestAvailabilityOperation)initWithSource:(id)source startDate:(id)date endDate:(id)endDate ignoredEventID:(id)d addresses:(id)addresses resultsBlock:(id)block;
 - (id)description;
-- (void)_finishWithError:(id)a3;
+- (void)_finishWithError:(id)error;
 - (void)cancel;
 - (void)main;
 - (void)start;
@@ -17,57 +17,57 @@
   objc_exception_throw(v2);
 }
 
-- (EKRequestAvailabilityOperation)initWithSource:(id)a3 startDate:(id)a4 endDate:(id)a5 ignoredEvent:(id)a6 addresses:(id)a7 resultsBlock:(id)a8
+- (EKRequestAvailabilityOperation)initWithSource:(id)source startDate:(id)date endDate:(id)endDate ignoredEvent:(id)event addresses:(id)addresses resultsBlock:(id)block
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  if ([v16 isDetached])
+  blockCopy = block;
+  addressesCopy = addresses;
+  eventCopy = event;
+  endDateCopy = endDate;
+  dateCopy = date;
+  sourceCopy = source;
+  if ([eventCopy isDetached])
   {
-    v20 = [v16 originalItem];
+    originalItem = [eventCopy originalItem];
 
-    v16 = v20;
+    eventCopy = originalItem;
   }
 
-  v21 = [v16 uniqueID];
+  uniqueID = [eventCopy uniqueID];
 
-  v22 = [(EKRequestAvailabilityOperation *)self initWithSource:v19 startDate:v18 endDate:v17 ignoredEventID:v21 addresses:v15 resultsBlock:v14];
+  v22 = [(EKRequestAvailabilityOperation *)self initWithSource:sourceCopy startDate:dateCopy endDate:endDateCopy ignoredEventID:uniqueID addresses:addressesCopy resultsBlock:blockCopy];
   return v22;
 }
 
-- (EKRequestAvailabilityOperation)initWithSource:(id)a3 startDate:(id)a4 endDate:(id)a5 ignoredEventID:(id)a6 addresses:(id)a7 resultsBlock:(id)a8
+- (EKRequestAvailabilityOperation)initWithSource:(id)source startDate:(id)date endDate:(id)endDate ignoredEventID:(id)d addresses:(id)addresses resultsBlock:(id)block
 {
-  v14 = a3;
-  v29 = a4;
-  v28 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  sourceCopy = source;
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
+  addressesCopy = addresses;
+  blockCopy = block;
   v30.receiver = self;
   v30.super_class = EKRequestAvailabilityOperation;
   v18 = [(EKRequestAvailabilityOperation *)&v30 init];
   if (v18)
   {
-    v19 = [v14 availabilityCache];
+    availabilityCache = [sourceCopy availabilityCache];
     availabilityCache = v18->_availabilityCache;
-    v18->_availabilityCache = v19;
+    v18->_availabilityCache = availabilityCache;
 
-    objc_storeStrong(&v18->_startDate, a4);
-    objc_storeStrong(&v18->_endDate, a5);
-    objc_storeStrong(&v18->_ignoredEventID, a6);
-    objc_storeStrong(&v18->_addresses, a7);
-    v21 = [v17 copy];
+    objc_storeStrong(&v18->_startDate, date);
+    objc_storeStrong(&v18->_endDate, endDate);
+    objc_storeStrong(&v18->_ignoredEventID, d);
+    objc_storeStrong(&v18->_addresses, addresses);
+    v21 = [blockCopy copy];
     resultsBlock = v18->_resultsBlock;
     v18->_resultsBlock = v21;
 
     objc_opt_class();
     v23 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v24 = [v23 UTF8String];
+    uTF8String = [v23 UTF8String];
 
-    v25 = dispatch_queue_create(v24, 0);
+    v25 = dispatch_queue_create(uTF8String, 0);
     queue = v18->_queue;
     v18->_queue = v25;
   }
@@ -93,12 +93,12 @@
   [v5 setKey:@"_resultsBlock" withPointerAddress:self->_resultsBlock];
   [v5 setKey:@"_requestID" withObject:self->_requestID];
   [v5 setKey:@"_queue" withPointerAddress:self->_queue];
-  v6 = [(EKRequestAvailabilityOperation *)self error];
-  [v5 setKey:@"error" withObject:v6];
+  error = [(EKRequestAvailabilityOperation *)self error];
+  [v5 setKey:@"error" withObject:error];
 
-  v7 = [v5 build];
+  build = [v5 build];
 
-  return v7;
+  return build;
 }
 
 - (void)start
@@ -245,20 +245,20 @@ uint64_t __40__EKRequestAvailabilityOperation_cancel__block_invoke(uint64_t a1)
   return [v2 _finishWithError:0];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = EKAvailabilityHandle;
   if (os_log_type_enabled(EKAvailabilityHandle, OS_LOG_TYPE_DEBUG))
   {
-    [(EKRequestAvailabilityOperation *)v4 _finishWithError:v5];
+    [(EKRequestAvailabilityOperation *)errorCopy _finishWithError:v5];
   }
 
   if (!self->_isFinished)
   {
     if (([(EKRequestAvailabilityOperation *)self isCancelled]& 1) == 0)
     {
-      [(EKRequestAvailabilityOperation *)self setError:v4];
+      [(EKRequestAvailabilityOperation *)self setError:errorCopy];
     }
 
     resultsBlock = self->_resultsBlock;

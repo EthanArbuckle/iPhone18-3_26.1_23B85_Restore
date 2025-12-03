@@ -1,41 +1,41 @@
 @interface HIDChargerNotifier
-+ (id)stateToStr:(unsigned __int8)a3;
-- (HIDChargerNotifier)initWithQueue:(id)a3;
++ (id)stateToStr:(unsigned __int8)str;
+- (HIDChargerNotifier)initWithQueue:(id)queue;
 - (HIDChargerNotifierDelegate)delegate;
-- (void)blePairing:(id)a3 accessoryAttached:(id)a4 blePairingUUID:(id)a5 accInfoDict:(id)a6 supportedPairTypes:(id)a7;
-- (void)blePairing:(id)a3 accessoryDetached:(id)a4 blePairingUUID:(id)a5;
-- (void)blePairing:(id)a3 pairingFinished:(id)a4 blePairingUUID:(id)a5;
-- (void)blePairingNoAccessories:(id)a3;
-- (void)changeState:(unsigned __int8)a3;
-- (void)setPairingData:(id)a3;
+- (void)blePairing:(id)pairing accessoryAttached:(id)attached blePairingUUID:(id)d accInfoDict:(id)dict supportedPairTypes:(id)types;
+- (void)blePairing:(id)pairing accessoryDetached:(id)detached blePairingUUID:(id)d;
+- (void)blePairing:(id)pairing pairingFinished:(id)finished blePairingUUID:(id)d;
+- (void)blePairingNoAccessories:(id)accessories;
+- (void)changeState:(unsigned __int8)state;
+- (void)setPairingData:(id)data;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation HIDChargerNotifier
 
-+ (id)stateToStr:(unsigned __int8)a3
++ (id)stateToStr:(unsigned __int8)str
 {
-  if (a3 > 3u)
+  if (str > 3u)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_1000BE098 + a3);
+    return *(&off_1000BE098 + str);
   }
 }
 
-- (HIDChargerNotifier)initWithQueue:(id)a3
+- (HIDChargerNotifier)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v38.receiver = self;
   v38.super_class = HIDChargerNotifier;
   v6 = [(HIDChargerNotifier *)&v38 init];
   v7 = v6;
   v8 = 0;
-  if (v5 && v6)
+  if (queueCopy && v6)
   {
     v9 = objc_opt_new();
     lock = v7->_lock;
@@ -43,7 +43,7 @@
 
     if (v7->_lock)
     {
-      objc_storeStrong(&v7->_queue, a3);
+      objc_storeStrong(&v7->_queue, queue);
       v11 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/AccessoryBLEPairing.framework"];
       pairingProviderBundle = v7->_pairingProviderBundle;
       v7->_pairingProviderBundle = v11;
@@ -120,10 +120,10 @@ LABEL_12:
   }
 }
 
-- (void)changeState:(unsigned __int8)a3
+- (void)changeState:(unsigned __int8)state
 {
   [(NSLock *)self->_lock lock];
-  self->_state = a3;
+  self->_state = state;
   self->_pending = 1;
   [(NSLock *)self->_lock unlock];
   objc_initWeak(&location, self);
@@ -139,9 +139,9 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)setPairingData:(id)a3
+- (void)setPairingData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
@@ -150,38 +150,38 @@ LABEL_12:
   }
 
   v6 = +[ACCTransportClient sharedClient];
-  [v6 setProperty:kACCProperties_Endpoint_OOBPairingData value:v4 forConnectionWithUUID:self->_accConnIdentifier];
+  [v6 setProperty:kACCProperties_Endpoint_OOBPairingData value:dataCopy forConnectionWithUUID:self->_accConnIdentifier];
 }
 
-- (void)blePairing:(id)a3 accessoryAttached:(id)a4 blePairingUUID:(id)a5 accInfoDict:(id)a6 supportedPairTypes:(id)a7
+- (void)blePairing:(id)pairing accessoryAttached:(id)attached blePairingUUID:(id)d accInfoDict:(id)dict supportedPairTypes:(id)types
 {
-  v8 = a4;
+  attachedCopy = attached;
   v9 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v8;
+    v11 = attachedCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Accessory %@ attached to charger", &v10, 0xCu);
   }
 
   [(HIDChargerNotifier *)self changeState:1];
 }
 
-- (void)blePairing:(id)a3 accessoryDetached:(id)a4 blePairingUUID:(id)a5
+- (void)blePairing:(id)pairing accessoryDetached:(id)detached blePairingUUID:(id)d
 {
-  v6 = a4;
+  detachedCopy = detached;
   v7 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v6;
+    v9 = detachedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Accessory %@ detached from charger", &v8, 0xCu);
   }
 
   [(HIDChargerNotifier *)self changeState:0];
 }
 
-- (void)blePairingNoAccessories:(id)a3
+- (void)blePairingNoAccessories:(id)accessories
 {
   v4 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -193,7 +193,7 @@ LABEL_12:
   [(HIDChargerNotifier *)self changeState:3];
 }
 
-- (void)blePairing:(id)a3 pairingFinished:(id)a4 blePairingUUID:(id)a5
+- (void)blePairing:(id)pairing pairingFinished:(id)finished blePairingUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;

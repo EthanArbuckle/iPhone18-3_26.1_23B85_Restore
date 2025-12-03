@@ -1,13 +1,13 @@
 @interface PDDPStateChangesIOS134MACOS10154
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPStateChangesIOS134MACOS10154
@@ -17,8 +17,8 @@
   v7.receiver = self;
   v7.super_class = PDDPStateChangesIOS134MACOS10154;
   v3 = [(PDDPStateChangesIOS134MACOS10154 *)&v7 description];
-  v4 = [(PDDPStateChangesIOS134MACOS10154 *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPStateChangesIOS134MACOS10154 *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -29,51 +29,51 @@
   activityState = self->_activityState;
   if (activityState)
   {
-    v5 = [(PDDPStateChangesIOS134MACOS10154ActivityDomainState *)activityState dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"activity_state"];
+    dictionaryRepresentation = [(PDDPStateChangesIOS134MACOS10154ActivityDomainState *)activityState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"activity_state"];
   }
 
   progressState = self->_progressState;
   if (progressState)
   {
-    v7 = [(PDDPStateChangesIOS134MACOS10154ProgressDomainState *)progressState dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"progress_state"];
+    dictionaryRepresentation2 = [(PDDPStateChangesIOS134MACOS10154ProgressDomainState *)progressState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"progress_state"];
   }
 
   personalState = self->_personalState;
   if (personalState)
   {
-    v9 = [(PDDPStateChangesIOS134MACOS10154PersonalDomainState *)personalState dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"personal_state"];
+    dictionaryRepresentation3 = [(PDDPStateChangesIOS134MACOS10154PersonalDomainState *)personalState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"personal_state"];
   }
 
   messageState = self->_messageState;
   if (messageState)
   {
-    v11 = [(PDDPStateChangesIOS134MACOS10154MessageDomainState *)messageState dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"message_state"];
+    dictionaryRepresentation4 = [(PDDPStateChangesIOS134MACOS10154MessageDomainState *)messageState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"message_state"];
   }
 
   handoutState = self->_handoutState;
   if (handoutState)
   {
-    v13 = [(PDDPStateChangesIOS134MACOS10154HandoutDomainState *)handoutState dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"handout_state"];
+    dictionaryRepresentation5 = [(PDDPStateChangesIOS134MACOS10154HandoutDomainState *)handoutState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"handout_state"];
   }
 
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -82,18 +82,18 @@
       while (1)
       {
         LOBYTE(v18) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v18 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v18 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v18 & 0x7F) << v6;
@@ -110,11 +110,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -126,7 +126,7 @@ LABEL_15:
           objc_storeStrong(&self->_activityState, v15);
           v18 = 0;
           v19 = 0;
-          if (!PBReaderPlaceMark() || !sub_100139E0C(v15, a3))
+          if (!PBReaderPlaceMark() || !sub_100139E0C(v15, from))
           {
 LABEL_43:
 
@@ -142,7 +142,7 @@ LABEL_43:
           objc_storeStrong(&self->_progressState, v15);
           v18 = 0;
           v19 = 0;
-          if (!PBReaderPlaceMark() || !sub_10015E7E4(v15, a3))
+          if (!PBReaderPlaceMark() || !sub_10015E7E4(v15, from))
           {
             goto LABEL_43;
           }
@@ -160,7 +160,7 @@ LABEL_43:
             objc_storeStrong(&self->_personalState, v15);
             v18 = 0;
             v19 = 0;
-            if (!PBReaderPlaceMark() || !sub_100172D44(v15, a3))
+            if (!PBReaderPlaceMark() || !sub_100172D44(v15, from))
             {
               goto LABEL_43;
             }
@@ -171,7 +171,7 @@ LABEL_43:
             objc_storeStrong(&self->_messageState, v15);
             v18 = 0;
             v19 = 0;
-            if (!PBReaderPlaceMark() || !sub_10011A690(v15, a3))
+            if (!PBReaderPlaceMark() || !sub_10011A690(v15, from))
             {
               goto LABEL_43;
             }
@@ -182,7 +182,7 @@ LABEL_43:
             objc_storeStrong(&self->_handoutState, v15);
             v18 = 0;
             v19 = 0;
-            if (!PBReaderPlaceMark() || !sub_1000910A8(v15, a3))
+            if (!PBReaderPlaceMark() || !sub_1000910A8(v15, from))
             {
               goto LABEL_43;
             }
@@ -200,118 +200,118 @@ LABEL_37:
       }
 
 LABEL_38:
-      v16 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v16 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_activityState)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_progressState)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personalState)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_messageState)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_handoutState)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_activityState)
   {
-    [v4 setActivityState:?];
-    v4 = v5;
+    [toCopy setActivityState:?];
+    toCopy = v5;
   }
 
   if (self->_progressState)
   {
     [v5 setProgressState:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personalState)
   {
     [v5 setPersonalState:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_messageState)
   {
     [v5 setMessageState:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_handoutState)
   {
     [v5 setHandoutState:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDDPStateChangesIOS134MACOS10154ActivityDomainState *)self->_activityState copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDDPStateChangesIOS134MACOS10154ActivityDomainState *)self->_activityState copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(PDDPStateChangesIOS134MACOS10154ProgressDomainState *)self->_progressState copyWithZone:a3];
+  v8 = [(PDDPStateChangesIOS134MACOS10154ProgressDomainState *)self->_progressState copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
-  v10 = [(PDDPStateChangesIOS134MACOS10154PersonalDomainState *)self->_personalState copyWithZone:a3];
+  v10 = [(PDDPStateChangesIOS134MACOS10154PersonalDomainState *)self->_personalState copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(PDDPStateChangesIOS134MACOS10154MessageDomainState *)self->_messageState copyWithZone:a3];
+  v12 = [(PDDPStateChangesIOS134MACOS10154MessageDomainState *)self->_messageState copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(PDDPStateChangesIOS134MACOS10154HandoutDomainState *)self->_handoutState copyWithZone:a3];
+  v14 = [(PDDPStateChangesIOS134MACOS10154HandoutDomainState *)self->_handoutState copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((activityState = self->_activityState, !(activityState | v4[1])) || -[PDDPStateChangesIOS134MACOS10154ActivityDomainState isEqual:](activityState, "isEqual:")) && ((progressState = self->_progressState, !(progressState | v4[5])) || -[PDDPStateChangesIOS134MACOS10154ProgressDomainState isEqual:](progressState, "isEqual:")) && ((personalState = self->_personalState, !(personalState | v4[4])) || -[PDDPStateChangesIOS134MACOS10154PersonalDomainState isEqual:](personalState, "isEqual:")) && ((messageState = self->_messageState, !(messageState | v4[3])) || -[PDDPStateChangesIOS134MACOS10154MessageDomainState isEqual:](messageState, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((activityState = self->_activityState, !(activityState | equalCopy[1])) || -[PDDPStateChangesIOS134MACOS10154ActivityDomainState isEqual:](activityState, "isEqual:")) && ((progressState = self->_progressState, !(progressState | equalCopy[5])) || -[PDDPStateChangesIOS134MACOS10154ProgressDomainState isEqual:](progressState, "isEqual:")) && ((personalState = self->_personalState, !(personalState | equalCopy[4])) || -[PDDPStateChangesIOS134MACOS10154PersonalDomainState isEqual:](personalState, "isEqual:")) && ((messageState = self->_messageState, !(messageState | equalCopy[3])) || -[PDDPStateChangesIOS134MACOS10154MessageDomainState isEqual:](messageState, "isEqual:")))
   {
     handoutState = self->_handoutState;
-    if (handoutState | v4[2])
+    if (handoutState | equalCopy[2])
     {
       v10 = [(PDDPStateChangesIOS134MACOS10154HandoutDomainState *)handoutState isEqual:?];
     }
@@ -339,12 +339,12 @@ LABEL_38:
   return v6 ^ [(PDDPStateChangesIOS134MACOS10154HandoutDomainState *)self->_handoutState hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   activityState = self->_activityState;
-  v15 = v4;
-  v6 = v4[1];
+  v15 = fromCopy;
+  v6 = fromCopy[1];
   if (activityState)
   {
     if (v6)

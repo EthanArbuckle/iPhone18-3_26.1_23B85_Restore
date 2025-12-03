@@ -1,56 +1,56 @@
 @interface NoBackhaulHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)internalStateDictionary;
 + (id)sharedInstance;
-+ (int64_t)_nwInterfaceTypeFromAPSDQualifier:(unint64_t)a3;
++ (int64_t)_nwInterfaceTypeFromAPSDQualifier:(unint64_t)qualifier;
 - (BOOL)_nudgeState;
-- (BOOL)activeEntryAction:(id)a3;
-- (BOOL)activeExitAction:(id)a3;
-- (BOOL)brokenEntryAction:(id)a3;
-- (BOOL)brokenExitAction:(id)a3;
+- (BOOL)activeEntryAction:(id)action;
+- (BOOL)activeExitAction:(id)action;
+- (BOOL)brokenEntryAction:(id)action;
+- (BOOL)brokenExitAction:(id)action;
 - (BOOL)dampeningCheck;
-- (BOOL)idleEntryAction:(id)a3;
-- (BOOL)idleExitAction:(id)a3;
-- (BOOL)noteSymptom:(id)a3;
-- (BOOL)positiveEntryAction:(id)a3;
-- (BOOL)positiveExitAction:(id)a3;
-- (BOOL)processSymptom:(id)a3;
+- (BOOL)idleEntryAction:(id)action;
+- (BOOL)idleExitAction:(id)action;
+- (BOOL)noteSymptom:(id)symptom;
+- (BOOL)positiveEntryAction:(id)action;
+- (BOOL)positiveExitAction:(id)action;
+- (BOOL)processSymptom:(id)symptom;
 - (BOOL)subscribeCarKitNotifications;
 - (NoBackhaulHandler)init;
-- (id)initTestInstanceWithCellRelay:(id)a3 wifiRelay:(id)a4 rnfRelay:(id)a5 powerRelay:(id)a6 outrankRelay:(id)a7;
+- (id)initTestInstanceWithCellRelay:(id)relay wifiRelay:(id)wifiRelay rnfRelay:(id)rnfRelay powerRelay:(id)powerRelay outrankRelay:(id)outrankRelay;
 - (id)internalStateDictionary;
-- (int)read:(id)a3 returnedValues:(id)a4;
+- (int)read:(id)read returnedValues:(id)values;
 - (void)_administrativeDisable;
 - (void)_administrativeEnable;
-- (void)_assessProgressFromBaseline:(nstat_progress_indicators *)a3 toMetrics:(nstat_progress_indicators *)a4;
+- (void)_assessProgressFromBaseline:(nstat_progress_indicators *)baseline toMetrics:(nstat_progress_indicators *)metrics;
 - (void)_bringStateToIdle;
-- (void)_captureProgressFor:(id)a3 since:(id)a4 interval:(unint64_t)a5 capWindowTo:(unint64_t)a6 iteration:(unint64_t)a7 renewTest:(id)a8;
+- (void)_captureProgressFor:(id)for since:(id)since interval:(unint64_t)interval capWindowTo:(unint64_t)to iteration:(unint64_t)iteration renewTest:(id)test;
 - (void)_completeInitialization;
 - (void)_dumpState;
 - (void)_fetchDampeningHistory;
 - (void)_idempotentInitializationFromIdle;
-- (void)_idempotentInitializationFromIdleWithCellRelay:(id)a3 wifiRelay:(id)a4 rnfRelay:(id)a5 powerRelay:(id)a6 outrankRelay:(id)a7;
-- (void)_performConnectivityTestToDefaultGateways:(id)a3;
-- (void)_postUpwards:(unint64_t)a3;
-- (void)_startMaintenanceTimerFor:(id)a3 delay:(unint64_t)a4 interval:(unint64_t)a5 capWindowTo:(unint64_t)a6;
+- (void)_idempotentInitializationFromIdleWithCellRelay:(id)relay wifiRelay:(id)wifiRelay rnfRelay:(id)rnfRelay powerRelay:(id)powerRelay outrankRelay:(id)outrankRelay;
+- (void)_performConnectivityTestToDefaultGateways:(id)gateways;
+- (void)_postUpwards:(unint64_t)upwards;
+- (void)_startMaintenanceTimerFor:(id)for delay:(unint64_t)delay interval:(unint64_t)interval capWindowTo:(unint64_t)to;
 - (void)_stopMaintenanceTimer;
-- (void)_updateSSID:(id)a3;
-- (void)addPendingEventDescription:(id)a3;
-- (void)apsdFailing:(BOOL)a3 onInterface:(int64_t)a4;
-- (void)changedSSIDto:(id)a3;
-- (void)clientFeedback:(BOOL)a3;
+- (void)_updateSSID:(id)d;
+- (void)addPendingEventDescription:(id)description;
+- (void)apsdFailing:(BOOL)failing onInterface:(int64_t)interface;
+- (void)changedSSIDto:(id)dto;
+- (void)clientFeedback:(BOOL)feedback;
 - (void)configureBrokenBackhaulPolicy;
 - (void)dampeningReset;
 - (void)dampeningSetPrecedent;
 - (void)dealloc;
-- (void)didPollFlowsAt:(double)a3 periodic:(BOOL)a4;
+- (void)didPollFlowsAt:(double)at periodic:(BOOL)periodic;
 - (void)drainPendingEventDescriptions;
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6;
-- (void)handleFlowStuckNotification:(id)a3;
-- (void)icmpPingProbe:(id)a3 completedIterations:(unint64_t)a4 successfulCount:(unint64_t)a5 withError:(id)a6;
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block;
+- (void)handleFlowStuckNotification:(id)notification;
+- (void)icmpPingProbe:(id)probe completedIterations:(unint64_t)iterations successfulCount:(unint64_t)count withError:(id)error;
 - (void)noteSiriConnectionTimeout;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)reportAutoBugCaptureCaseWithDomain:(id)a3 type:(id)a4 subtype:(id)a5 subtypeContext:(id)a6 events:(id)a7;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)reportAutoBugCaptureCaseWithDomain:(id)domain type:(id)type subtype:(id)subtype subtypeContext:(id)context events:(id)events;
 - (void)resumedDefRouteProgress;
 - (void)startPollingKernelForFlowStatistics;
 - (void)willPollFlows;
@@ -104,14 +104,14 @@ void __25__NoBackhaulHandler_init__block_invoke_6(uint64_t a1, void *a2)
     [(NoBackhaulHandler *)v2 configureBrokenBackhaulPolicy];
     if (v3->_ignoreBaseband || (+[SystemProperties sharedInstance](SystemProperties, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 basebandCapability], v4, v5))
     {
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __25__NoBackhaulHandler_init__block_invoke;
       v46[3] = &unk_27898A690;
       v7 = v3;
       v47 = v7;
-      v8 = [v6 addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v46];
+      v8 = [defaultCenter addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v46];
       relayReadyObserver = v7->_relayReadyObserver;
       v7->_relayReadyObserver = v8;
 
@@ -121,7 +121,7 @@ void __25__NoBackhaulHandler_init__block_invoke_6(uint64_t a1, void *a2)
       v44[3] = &unk_27898A690;
       v10 = v7;
       v45 = v10;
-      v11 = [v6 addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v44];
+      v11 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v44];
       wifiEpochObserver = v10->_wifiEpochObserver;
       v10->_wifiEpochObserver = v11;
 
@@ -139,7 +139,7 @@ void __25__NoBackhaulHandler_init__block_invoke_6(uint64_t a1, void *a2)
         v42[3] = &unk_27898A690;
         v15 = v10;
         v43 = v15;
-        v16 = [v6 addObserverForName:@"kAppStateNotificationForegroundActivity" object:0 queue:0 usingBlock:v42];
+        v16 = [defaultCenter addObserverForName:@"kAppStateNotificationForegroundActivity" object:0 queue:0 usingBlock:v42];
         foregroundObserver = v15->_foregroundObserver;
         v15->_foregroundObserver = v16;
 
@@ -149,7 +149,7 @@ void __25__NoBackhaulHandler_init__block_invoke_6(uint64_t a1, void *a2)
         v40[3] = &unk_27898A690;
         v18 = v15;
         v41 = v18;
-        v19 = [v6 addObserverForName:@"kAppStateStatsNotificationAppForegroundStateChanged" object:0 queue:0 usingBlock:v40];
+        v19 = [defaultCenter addObserverForName:@"kAppStateStatsNotificationAppForegroundStateChanged" object:0 queue:0 usingBlock:v40];
         foregroundAppObserver = v18->_foregroundAppObserver;
         v18->_foregroundAppObserver = v19;
       }
@@ -157,13 +157,13 @@ void __25__NoBackhaulHandler_init__block_invoke_6(uint64_t a1, void *a2)
       if (v10->_observeSiriTimeout)
       {
         out_token = 0;
-        v21 = [(ExpertSystemHandlerCore *)v10 queue];
+        queue = [(ExpertSystemHandlerCore *)v10 queue];
         handler[0] = MEMORY[0x277D85DD0];
         handler[1] = 3221225472;
         handler[2] = __25__NoBackhaulHandler_init__block_invoke_8;
         handler[3] = &unk_27898B048;
         v38 = v10;
-        notify_register_dispatch("com.apple.siri.connection.timeout", &out_token, v21, handler);
+        notify_register_dispatch("com.apple.siri.connection.timeout", &out_token, queue, handler);
 
         v22 = bbhLogHandle;
         if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -175,13 +175,13 @@ void __25__NoBackhaulHandler_init__block_invoke_6(uint64_t a1, void *a2)
 
       if (v10->_verifyDefaultGateway)
       {
-        v23 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         activeICMPProbes = v10->_activeICMPProbes;
-        v10->_activeICMPProbes = v23;
+        v10->_activeICMPProbes = dictionary;
 
-        v25 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
         icmpProbeStates = v10->_icmpProbeStates;
-        v10->_icmpProbeStates = v25;
+        v10->_icmpProbeStates = dictionary2;
 
         v10->_pingCount = 5;
         v10->_pingSuccessCount = 3;
@@ -198,8 +198,8 @@ void __25__NoBackhaulHandler_init__block_invoke_6(uint64_t a1, void *a2)
     }
 
     signal(29, 1);
-    v27 = [(ExpertSystemHandlerCore *)v3 queue];
-    v28 = dispatch_source_create(MEMORY[0x277D85D30], 0x1DuLL, 0, v27);
+    queue2 = [(ExpertSystemHandlerCore *)v3 queue];
+    v28 = dispatch_source_create(MEMORY[0x277D85D30], 0x1DuLL, 0, queue2);
     v29 = init_siginfo_2;
     init_siginfo_2 = v28;
 
@@ -215,7 +215,7 @@ void __25__NoBackhaulHandler_init__block_invoke_6(uint64_t a1, void *a2)
       dispatch_resume(init_siginfo_2);
     }
 
-    v31 = [(ExpertSystemHandlerCore *)v3 queue];
+    queue3 = [(ExpertSystemHandlerCore *)v3 queue];
     v33 = v3;
     os_state_add_handler();
   }
@@ -269,13 +269,13 @@ void __25__NoBackhaulHandler_init__block_invoke_4(uint64_t a1, void *a2)
   dispatch_async(v6, v7);
 }
 
-- (id)initTestInstanceWithCellRelay:(id)a3 wifiRelay:(id)a4 rnfRelay:(id)a5 powerRelay:(id)a6 outrankRelay:(id)a7
+- (id)initTestInstanceWithCellRelay:(id)relay wifiRelay:(id)wifiRelay rnfRelay:(id)rnfRelay powerRelay:(id)powerRelay outrankRelay:(id)outrankRelay
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  relayCopy = relay;
+  wifiRelayCopy = wifiRelay;
+  rnfRelayCopy = rnfRelay;
+  powerRelayCopy = powerRelay;
+  outrankRelayCopy = outrankRelay;
   v28.receiver = self;
   v28.super_class = NoBackhaulHandler;
   v17 = [(ExpertSystemHandlerCore *)&v28 initWithQueue:MEMORY[0x277D85CD0]];
@@ -302,7 +302,7 @@ void __25__NoBackhaulHandler_init__block_invoke_4(uint64_t a1, void *a2)
       v18->_refreshScheduler = v25;
     }
 
-    [(NoBackhaulHandler *)v18 _idempotentInitializationFromIdleWithCellRelay:v12 wifiRelay:v13 rnfRelay:v14 powerRelay:v15 outrankRelay:v16];
+    [(NoBackhaulHandler *)v18 _idempotentInitializationFromIdleWithCellRelay:relayCopy wifiRelay:wifiRelayCopy rnfRelay:rnfRelayCopy powerRelay:powerRelayCopy outrankRelay:outrankRelayCopy];
   }
 
   return v18;
@@ -912,31 +912,31 @@ LABEL_16:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_idempotentInitializationFromIdleWithCellRelay:(id)a3 wifiRelay:(id)a4 rnfRelay:(id)a5 powerRelay:(id)a6 outrankRelay:(id)a7
+- (void)_idempotentInitializationFromIdleWithCellRelay:(id)relay wifiRelay:(id)wifiRelay rnfRelay:(id)rnfRelay powerRelay:(id)powerRelay outrankRelay:(id)outrankRelay
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  relayCopy = relay;
+  wifiRelayCopy = wifiRelay;
+  rnfRelayCopy = rnfRelay;
+  powerRelayCopy = powerRelay;
+  outrankRelayCopy = outrankRelay;
   cellRelay = self->_cellRelay;
-  self->_cellRelay = v12;
-  v18 = v12;
+  self->_cellRelay = relayCopy;
+  v18 = relayCopy;
 
   wifiRelay = self->_wifiRelay;
-  self->_wifiRelay = v13;
-  v20 = v13;
+  self->_wifiRelay = wifiRelayCopy;
+  v20 = wifiRelayCopy;
 
   rnfRelay = self->_rnfRelay;
-  self->_rnfRelay = v14;
-  v22 = v14;
+  self->_rnfRelay = rnfRelayCopy;
+  v22 = rnfRelayCopy;
 
   powerRelay = self->_powerRelay;
-  self->_powerRelay = v15;
-  v24 = v15;
+  self->_powerRelay = powerRelayCopy;
+  v24 = powerRelayCopy;
 
   outrankRelay = self->_outrankRelay;
-  self->_outrankRelay = v16;
+  self->_outrankRelay = outrankRelayCopy;
 
   [(NoBackhaulHandler *)self _idempotentInitializationFromIdle];
 }
@@ -948,9 +948,9 @@ LABEL_16:
   if (self->_cellRelay && self->_wifiRelay && self->_rnfRelay && self->_powerRelay && self->_outrankRelay)
   {
     [(NoBackhaulHandler *)self setSystemForeground:+[AppStateMonitor hasAnyForegroundApp]];
-    v3 = [(NoBackhaulHandler *)self subscribeCarKitNotifications];
+    subscribeCarKitNotifications = [(NoBackhaulHandler *)self subscribeCarKitNotifications];
     v4 = bbhLogHandle;
-    if (v3)
+    if (subscribeCarKitNotifications)
     {
       if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
       {
@@ -1202,21 +1202,21 @@ uint64_t __54__NoBackhaulHandler__idempotentInitializationFromIdle__block_invoke
   return v3;
 }
 
-- (BOOL)idleEntryAction:(id)a3
+- (BOOL)idleEntryAction:(id)action
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 label];
-    v8 = [v4 previousState];
-    v9 = [v8 label];
+    label = [actionCopy label];
+    previousState = [actionCopy previousState];
+    label2 = [previousState label];
     *buf = 138412546;
-    v28 = v7;
+    v28 = label;
     v29 = 2112;
-    v30 = v9;
+    v30 = label2;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "\tentry action for: %@, coming from: %@", buf, 0x16u);
   }
 
@@ -1234,8 +1234,8 @@ uint64_t __54__NoBackhaulHandler__idempotentInitializationFromIdle__block_invoke
     self->_tcpProgressProbes = v11;
   }
 
-  v13 = [(NetworkStateRelay *)self->_wifiRelay interfaceName];
-  v14 = [TCPProgressProbe probeForInterface:v13];
+  interfaceName = [(NetworkStateRelay *)self->_wifiRelay interfaceName];
+  v14 = [TCPProgressProbe probeForInterface:interfaceName];
 
   v15 = bbhLogHandle;
   if (v14)
@@ -1273,21 +1273,21 @@ uint64_t __54__NoBackhaulHandler__idempotentInitializationFromIdle__block_invoke
     {
       wifiRelay = self->_wifiRelay;
       v19 = v15;
-      v20 = [(NetworkStateRelay *)wifiRelay interfaceName];
+      interfaceName2 = [(NetworkStateRelay *)wifiRelay interfaceName];
       *buf = 138412290;
-      v28 = v20;
+      v28 = interfaceName2;
       _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEFAULT, "\tno progress probe for: %@, retrying", buf, 0xCu);
     }
 
     v21 = dispatch_time(0, 10000000000);
-    v22 = [(ExpertSystemHandlerCore *)self queue];
+    queue = [(ExpertSystemHandlerCore *)self queue];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __37__NoBackhaulHandler_idleEntryAction___block_invoke;
     v25[3] = &unk_27898A7D0;
     v25[4] = self;
-    v26 = v4;
-    dispatch_after(v21, v22, v25);
+    v26 = actionCopy;
+    dispatch_after(v21, queue, v25);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -1307,10 +1307,10 @@ void __37__NoBackhaulHandler_idleEntryAction___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)idleExitAction:(id)a3
+- (BOOL)idleExitAction:(id)action
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   if (!self->_history)
   {
     v16 = bbhLogHandle;
@@ -1329,11 +1329,11 @@ void __37__NoBackhaulHandler_idleEntryAction___block_invoke(uint64_t a1)
     if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v4 label];
+      label = [actionCopy label];
       clearSSID = self->_clearSSID;
       obscuredSSID = self->_obscuredSSID;
       v28 = 138412803;
-      v29 = v12;
+      v29 = label;
       v30 = 2113;
       v31 = clearSSID;
       v32 = 2112;
@@ -1350,19 +1350,19 @@ LABEL_13:
 
   if (![(NoBackhaulHandler *)self dampeningCheck])
   {
-    v19 = [(NetworkStateRelay *)self->_wifiRelay apsdFailure];
+    apsdFailure = [(NetworkStateRelay *)self->_wifiRelay apsdFailure];
     v20 = bbhLogHandle;
     v21 = os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT);
-    if (v19)
+    if (apsdFailure)
     {
       if (v21)
       {
         v22 = v20;
-        v23 = [v4 label];
+        label2 = [actionCopy label];
         v24 = self->_clearSSID;
         v25 = self->_obscuredSSID;
         v28 = 138412803;
-        v29 = v23;
+        v29 = label2;
         v30 = 2113;
         v31 = v24;
         v32 = 2112;
@@ -1376,11 +1376,11 @@ LABEL_13:
     if (v21)
     {
       v11 = v20;
-      v12 = [v4 label];
+      label = [actionCopy label];
       v26 = self->_clearSSID;
       v27 = self->_obscuredSSID;
       v28 = 138412803;
-      v29 = v12;
+      v29 = label;
       v30 = 2113;
       v31 = v26;
       v32 = 2112;
@@ -1398,10 +1398,10 @@ LABEL_5:
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 label];
+    label3 = [actionCopy label];
     activationIdentifier = self->_activationIdentifier;
     v28 = 138412546;
-    v29 = v7;
+    v29 = label3;
     v30 = 1024;
     LODWORD(v31) = activationIdentifier;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "\texit action for: %@, activation ID: %d", &v28, 0x12u);
@@ -1417,29 +1417,29 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)activeEntryAction:(id)a3
+- (BOOL)activeEntryAction:(id)action
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 label];
-    v8 = [v4 previousState];
-    v9 = [v8 label];
+    label = [actionCopy label];
+    previousState = [actionCopy previousState];
+    label2 = [previousState label];
     v16 = 138412546;
-    v17 = v7;
+    v17 = label;
     v18 = 2112;
-    v19 = v9;
+    v19 = label2;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "\t\tentry action for: %@, coming from: %@", &v16, 0x16u);
   }
 
-  v10 = [(ExpertSystemStateCore *)self->_currentState previousState];
-  v11 = [v10 rank];
-  v12 = [(ExpertSystemStateCore *)self->_currentState rank];
+  previousState2 = [(ExpertSystemStateCore *)self->_currentState previousState];
+  rank = [previousState2 rank];
+  rank2 = [(ExpertSystemStateCore *)self->_currentState rank];
 
-  if (v11 >= v12)
+  if (rank >= rank2)
   {
     [(NoBackhaulHandler *)self _postUpwards:0];
   }
@@ -1447,7 +1447,7 @@ LABEL_14:
   else
   {
     v13 = [[BrokenBackhaulMetric alloc] initWithState:1];
-    [v4 setMetric:v13];
+    [actionCopy setMetric:v13];
 
     [(NoBackhaulHandler *)self _startMaintenanceTimerFor:self->_tcpProgressProbes delay:0 interval:self->_activeProgressTimeout capWindowTo:-1];
   }
@@ -1456,34 +1456,34 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)activeExitAction:(id)a3
+- (BOOL)activeExitAction:(id)action
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 label];
+    label = [actionCopy label];
     v16 = 138412290;
-    v17 = v7;
+    v17 = label;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "\t\texit action for: %@", &v16, 0xCu);
   }
 
-  v8 = [v4 metric];
+  metric = [actionCopy metric];
 
-  if (v8)
+  if (metric)
   {
-    v9 = [v4 sojournTime];
-    [v9 currentRun];
+    sojournTime = [actionCopy sojournTime];
+    [sojournTime currentRun];
     v11 = v10;
-    v12 = [v4 metric];
-    [v12 setStateHeldForSecs:v11];
+    metric2 = [actionCopy metric];
+    [metric2 setStateHeldForSecs:v11];
 
-    v13 = [v4 metric];
-    [v13 postCAEvent];
+    metric3 = [actionCopy metric];
+    [metric3 postCAEvent];
 
-    [v4 setMetric:0];
+    [actionCopy setMetric:0];
   }
 
   [(NoBackhaulHandler *)self _stopMaintenanceTimer];
@@ -1492,43 +1492,43 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)positiveEntryAction:(id)a3
+- (BOOL)positiveEntryAction:(id)action
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 label];
-    v8 = [v4 previousState];
-    v9 = [v8 label];
+    label = [actionCopy label];
+    previousState = [actionCopy previousState];
+    label2 = [previousState label];
     v23 = 138412546;
-    v24 = v7;
+    v24 = label;
     v25 = 2112;
-    v26 = v9;
+    v26 = label2;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "\t\tentry action for: %@, coming from: %@", &v23, 0x16u);
   }
 
-  v10 = [(ExpertSystemStateCore *)self->_currentState previousState];
-  v11 = [v10 rank];
-  v12 = [(ExpertSystemStateCore *)self->_currentState rank];
+  previousState2 = [(ExpertSystemStateCore *)self->_currentState previousState];
+  rank = [previousState2 rank];
+  rank2 = [(ExpertSystemStateCore *)self->_currentState rank];
 
-  if (v11 < v12)
+  if (rank < rank2)
   {
     v13 = [[BrokenBackhaulMetric alloc] initWithState:2];
-    [v4 setMetric:v13];
+    [actionCopy setMetric:v13];
 
     if (self->_verifyDefaultGateway)
     {
       v14 = [NetworkStateRelay getStateRelayFor:3];
-      v15 = [v14 defaultGateways];
-      v16 = [v15 count];
+      defaultGateways = [v14 defaultGateways];
+      v16 = [defaultGateways count];
 
       if (v16)
       {
-        v17 = [v14 defaultGateways];
-        [(NoBackhaulHandler *)self _performConnectivityTestToDefaultGateways:v17];
+        defaultGateways2 = [v14 defaultGateways];
+        [(NoBackhaulHandler *)self _performConnectivityTestToDefaultGateways:defaultGateways2];
       }
 
       else
@@ -1537,9 +1537,9 @@ LABEL_14:
         if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_ERROR))
         {
           v19 = v18;
-          v20 = [v14 defaultGateways];
+          defaultGateways3 = [v14 defaultGateways];
           v23 = 138477827;
-          v24 = v20;
+          v24 = defaultGateways3;
           _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_ERROR, "Wi-Fi gateways = %{private}@, posting upward immediately", &v23, 0xCu);
         }
 
@@ -1559,41 +1559,41 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)positiveExitAction:(id)a3
+- (BOOL)positiveExitAction:(id)action
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 label];
+    label = [actionCopy label];
     *buf = 138412290;
-    v31 = v7;
+    v31 = label;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "\t\texit action for: %@", buf, 0xCu);
   }
 
-  v8 = [v4 sojournTime];
-  [v8 currentRun];
+  sojournTime = [actionCopy sojournTime];
+  [sojournTime currentRun];
   v10 = v9;
 
-  v11 = [v4 metric];
+  metric = [actionCopy metric];
 
-  if (v11)
+  if (metric)
   {
-    v12 = [v4 metric];
-    [v12 setStateHeldForSecs:v10];
+    metric2 = [actionCopy metric];
+    [metric2 setStateHeldForSecs:v10];
 
-    v13 = [v4 metric];
-    [v13 postCAEvent];
+    metric3 = [actionCopy metric];
+    [metric3 postCAEvent];
 
-    [v4 setMetric:0];
+    [actionCopy setMetric:0];
   }
 
   v14 = +[SystemProperties sharedInstance];
-  v15 = [v14 internalBuild];
+  internalBuild = [v14 internalBuild];
 
-  if (v15 && v10 >= 0x3D)
+  if (internalBuild && v10 >= 0x3D)
   {
     v16 = bbhLogHandle;
     if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -1607,8 +1607,8 @@ LABEL_14:
 
     v17 = MEMORY[0x277CBEB38];
     v18 = MEMORY[0x277CCABB0];
-    v19 = [MEMORY[0x277CBEAA8] date];
-    [v19 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v20 = [v18 numberWithDouble:?];
     v21 = *MEMORY[0x277D6B148];
     v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v10];
@@ -1625,42 +1625,42 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)brokenEntryAction:(id)a3
+- (BOOL)brokenEntryAction:(id)action
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   self->_cellUsageAtBrokenEntry = [TrackedFlow cellUsageGrandTallyAfterAdding:0];
   v5 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 label];
-    v8 = [v4 previousState];
-    v9 = [v8 label];
+    label = [actionCopy label];
+    previousState = [actionCopy previousState];
+    label2 = [previousState label];
     cellUsageAtBrokenEntry = self->_cellUsageAtBrokenEntry;
     v24 = 138412802;
-    v25 = v7;
+    v25 = label;
     v26 = 2112;
-    v27 = v9;
+    v27 = label2;
     v28 = 2048;
     v29 = cellUsageAtBrokenEntry;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "\t\t\tentry action for: %@, coming from: %@, grand tally cellular usage is %llu", &v24, 0x20u);
   }
 
-  v11 = [(ExpertSystemStateCore *)self->_currentState previousState];
-  v12 = [v11 rank];
-  v13 = [(ExpertSystemStateCore *)self->_currentState rank];
+  previousState2 = [(ExpertSystemStateCore *)self->_currentState previousState];
+  rank = [previousState2 rank];
+  rank2 = [(ExpertSystemStateCore *)self->_currentState rank];
 
-  if (v12 < v13)
+  if (rank < rank2)
   {
     v14 = [[BrokenBackhaulMetric alloc] initWithState:3];
-    [v4 setMetric:v14];
+    [actionCopy setMetric:v14];
 
-    v15 = [v4 metric];
-    [v15 setIngressTrigger:8];
+    metric = [actionCopy metric];
+    [metric setIngressTrigger:8];
 
-    v16 = [v4 metric];
-    [v16 setIngressTriggerInterfaceType:3];
+    metric2 = [actionCopy metric];
+    [metric2 setIngressTriggerInterfaceType:3];
 
     [(NoBackhaulHandler *)self _postUpwards:2];
     if (self->_observeDefaultRouteSignal)
@@ -1673,9 +1673,9 @@ LABEL_14:
   }
 
   v18 = +[SystemProperties sharedInstance];
-  v19 = [v18 internalBuild];
+  internalBuild = [v18 internalBuild];
 
-  if (v19 && ([(NSString *)self->_clearSSID isEqualToString:@"AppleWiFi"]|| [(NSString *)self->_clearSSID isEqualToString:@"AppleWiFiSecure"]))
+  if (internalBuild && ([(NSString *)self->_clearSSID isEqualToString:@"AppleWiFi"]|| [(NSString *)self->_clearSSID isEqualToString:@"AppleWiFiSecure"]))
   {
     v20 = bbhLogHandle;
     if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -1693,18 +1693,18 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)brokenExitAction:(id)a3
+- (BOOL)brokenExitAction:(id)action
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = [TrackedFlow cellUsageGrandTallyAfterAdding:0];
   v6 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 label];
+    label = [actionCopy label];
     v28 = 138412546;
-    v29 = v8;
+    v29 = label;
     v30 = 2048;
     v31 = v5;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEFAULT, "\t\t\texit action for: %@, grand tally cellular usage is %llu", &v28, 0x16u);
@@ -1718,9 +1718,9 @@ LABEL_14:
     if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v4 label];
+      label2 = [actionCopy label];
       v28 = 138412546;
-      v29 = v17;
+      v29 = label2;
       v30 = 2048;
       v31 = v10;
       _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_DEFAULT, "Cellular usage in %@ is %llu", &v28, 0x16u);
@@ -1734,36 +1734,36 @@ LABEL_14:
     {
       v12 = self->_cellUsageAtBrokenEntry;
       v13 = v11;
-      v14 = [v4 label];
+      label3 = [actionCopy label];
       v28 = 134218498;
       v29 = v5;
       v30 = 2048;
       v31 = v12;
       v32 = 2112;
-      v33 = v14;
+      v33 = label3;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_ERROR, "Cellular usage at exit (%llu) is less than at entry (%llu) to %@", &v28, 0x20u);
     }
 
     v10 = 0;
   }
 
-  v18 = [v4 metric];
+  metric = [actionCopy metric];
 
-  if (v18)
+  if (metric)
   {
-    v19 = [v4 sojournTime];
-    [v19 currentRun];
+    sojournTime = [actionCopy sojournTime];
+    [sojournTime currentRun];
     v21 = v20;
-    v22 = [v4 metric];
-    [v22 setStateHeldForSecs:v21];
+    metric2 = [actionCopy metric];
+    [metric2 setStateHeldForSecs:v21];
 
-    v23 = [v4 metric];
-    [v23 setStateCellUsageBytes:v10];
+    metric3 = [actionCopy metric];
+    [metric3 setStateCellUsageBytes:v10];
 
-    v24 = [v4 metric];
-    [v24 postCAEvent];
+    metric4 = [actionCopy metric];
+    [metric4 postCAEvent];
 
-    [v4 setMetric:0];
+    [actionCopy setMetric:0];
   }
 
   if (self->_observeDefaultRouteSignal)
@@ -1787,11 +1787,11 @@ LABEL_14:
     [v3 removeObserver:self forKeyPath:@"noBackhaulEnabled"];
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  v5 = v4;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v5 = defaultCenter;
   if (self->_relayReadyObserver)
   {
-    [v4 removeObserver:?];
+    [defaultCenter removeObserver:?];
   }
 
   if (self->_wifiEpochObserver)
@@ -1861,13 +1861,13 @@ LABEL_14:
       [(NetworkStateRelay *)self->_wifiRelay addObserver:self forKeyPath:@"appleServicesConnectionFriction" options:7 context:31];
       if (self->_pollFlowsPeriodically)
       {
-        v3 = [MEMORY[0x277CCAB98] defaultCenter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __42__NoBackhaulHandler__administrativeEnable__block_invoke;
         v15[3] = &unk_27898A690;
         v15[4] = self;
-        v4 = [v3 addObserverForName:@"kNotificationFlowScrutinizerPreConnectionStuckFlow" object:0 queue:0 usingBlock:v15];
+        v4 = [defaultCenter addObserverForName:@"kNotificationFlowScrutinizerPreConnectionStuckFlow" object:0 queue:0 usingBlock:v15];
         preConnectionStuckFlowsObserver = self->_preConnectionStuckFlowsObserver;
         self->_preConnectionStuckFlowsObserver = v4;
 
@@ -1876,7 +1876,7 @@ LABEL_14:
         v14[2] = __42__NoBackhaulHandler__administrativeEnable__block_invoke_193;
         v14[3] = &unk_27898A690;
         v14[4] = self;
-        v6 = [v3 addObserverForName:@"kNotificationOfCompletedInitialization" object:0 queue:0 usingBlock:v14];
+        v6 = [defaultCenter addObserverForName:@"kNotificationOfCompletedInitialization" object:0 queue:0 usingBlock:v14];
         faeFullInitializationNotificationObserver = self->_faeFullInitializationNotificationObserver;
         self->_faeFullInitializationNotificationObserver = v6;
 
@@ -1888,7 +1888,7 @@ LABEL_14:
         {
           if (self->_faeFullInitializationNotificationObserver)
           {
-            [v3 removeObserver:?];
+            [defaultCenter removeObserver:?];
             v10 = self->_faeFullInitializationNotificationObserver;
             self->_faeFullInitializationNotificationObserver = 0;
           }
@@ -2087,13 +2087,13 @@ uint64_t __42__NoBackhaulHandler__administrativeEnable__block_invoke_2(uint64_t 
         refreshScheduler = self->_refreshScheduler;
         if (refreshScheduler)
         {
-          v4 = [(FlowRefreshScheduler *)refreshScheduler queue];
+          queue = [(FlowRefreshScheduler *)refreshScheduler queue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __43__NoBackhaulHandler__administrativeDisable__block_invoke;
           block[3] = &unk_27898A0C8;
           block[4] = self;
-          dispatch_async(v4, block);
+          dispatch_async(queue, block);
         }
       }
     }
@@ -2146,9 +2146,9 @@ uint64_t __43__NoBackhaulHandler__administrativeDisable__block_invoke(uint64_t a
     [(NetworkStateRelay *)self->_wifiRelay setAppleServicesConnectionFriction:0];
     objc_sync_exit(v4);
 
-    v5 = [(ExpertSystemStateCore *)self->_currentState label];
-    v6 = [v3 label];
-    v7 = [v5 isEqualToString:v6];
+    label = [(ExpertSystemStateCore *)self->_currentState label];
+    label2 = [v3 label];
+    v7 = [label isEqualToString:label2];
 
     if ((v7 & 1) == 0)
     {
@@ -2157,9 +2157,9 @@ uint64_t __43__NoBackhaulHandler__administrativeDisable__block_invoke(uint64_t a
       {
         currentState = self->_currentState;
         v10 = v8;
-        v11 = [(ExpertSystemStateCore *)currentState label];
+        label3 = [(ExpertSystemStateCore *)currentState label];
         *buf = 138412290;
-        v19 = v11;
+        v19 = label3;
         _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "Idling from %@ state", buf, 0xCu);
       }
 
@@ -2179,8 +2179,8 @@ uint64_t __43__NoBackhaulHandler__administrativeDisable__block_invoke(uint64_t a
     v14 = self->_currentState;
     self->_currentState = v13;
 
-    v15 = [(ExpertSystemStateCore *)self->_currentState entryAction];
-    v15[2]();
+    entryAction = [(ExpertSystemStateCore *)self->_currentState entryAction];
+    entryAction[2]();
   }
 
   [(ExpertSystemStateCore *)self->_currentState setPreviousState:0];
@@ -2219,14 +2219,14 @@ void __38__NoBackhaulHandler__bringStateToIdle__block_invoke(uint64_t a1, void *
 {
   v29 = *MEMORY[0x277D85DE8];
   v3 = self->_currentState;
-  v4 = [(ExpertSystemStateCore *)self->_currentState exitAction];
-  v5 = v4[2]();
+  exitAction = [(ExpertSystemStateCore *)self->_currentState exitAction];
+  v5 = exitAction[2]();
 
   if (v5)
   {
     [(ExpertSystemStateCore *)self->_currentState setPreviousState:0];
-    v6 = [(ExpertSystemStateCore *)self->_currentState sojournTime];
-    [v6 stop];
+    sojournTime = [(ExpertSystemStateCore *)self->_currentState sojournTime];
+    [sojournTime stop];
 
     v7 = [(NSArray *)self->_states indexOfObject:self->_currentState];
     if (v7 + 1 < [(NSArray *)self->_states count])
@@ -2244,26 +2244,26 @@ void __38__NoBackhaulHandler__bringStateToIdle__block_invoke(uint64_t a1, void *
     self->_currentState = v9;
 
     [(ExpertSystemStateCore *)self->_currentState setPreviousState:v3];
-    v11 = [(ExpertSystemStateCore *)self->_currentState sojournTime];
-    [v11 start];
+    sojournTime2 = [(ExpertSystemStateCore *)self->_currentState sojournTime];
+    [sojournTime2 start];
 
-    v12 = [(ExpertSystemStateCore *)self->_currentState entryAction];
-    v12[2]();
+    entryAction = [(ExpertSystemStateCore *)self->_currentState entryAction];
+    entryAction[2]();
 
     v13 = [(NSArray *)self->_states indexOfObject:v3];
-    v14 = [(NoBackhaulHandlerState *)self->_currentState metric];
-    [v14 setPreviousState:v13];
+    metric = [(NoBackhaulHandlerState *)self->_currentState metric];
+    [metric setPreviousState:v13];
 
     v15 = bbhLogHandle;
     if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [(ExpertSystemStateCore *)v3 label];
-      v18 = [(ExpertSystemStateCore *)self->_currentState label];
+      label = [(ExpertSystemStateCore *)v3 label];
+      label2 = [(ExpertSystemStateCore *)self->_currentState label];
       v25 = 138412546;
-      v26 = v17;
+      v26 = label;
       v27 = 2112;
-      v28 = v18;
+      v28 = label2;
       v19 = "forced state nudge, from: %@ to: %@";
       v20 = v16;
       v21 = OS_LOG_TYPE_DEFAULT;
@@ -2278,12 +2278,12 @@ LABEL_9:
     if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_ERROR))
     {
       v16 = v22;
-      v17 = [(ExpertSystemStateCore *)v3 label];
-      v18 = [(ExpertSystemStateCore *)self->_currentState label];
+      label = [(ExpertSystemStateCore *)v3 label];
+      label2 = [(ExpertSystemStateCore *)self->_currentState label];
       v25 = 138412546;
-      v26 = v17;
+      v26 = label;
       v27 = 2112;
-      v28 = v18;
+      v28 = label2;
       v19 = "withheld state nudge, from: %@ to: %@";
       v20 = v16;
       v21 = OS_LOG_TYPE_ERROR;
@@ -2322,9 +2322,9 @@ LABEL_9:
   {
     currentState = self->_currentState;
     v8 = v6;
-    v9 = [(ExpertSystemStateCore *)currentState label];
+    label = [(ExpertSystemStateCore *)currentState label];
     *buf = 138412290;
-    *v56 = v9;
+    *v56 = label;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEFAULT, "Current state: %@", buf, 0xCu);
   }
 
@@ -2361,8 +2361,8 @@ LABEL_9:
             v19 = v18;
             [v16 label];
             v21 = v20 = v3;
-            v22 = [v16 sojournTime];
-            [v22 total];
+            sojournTime = [v16 sojournTime];
+            [sojournTime total];
             *buf = v50;
             *v56 = v21;
             *&v56[8] = 2048;
@@ -2488,9 +2488,9 @@ LABEL_9:
   if (os_log_type_enabled(*v3, OS_LOG_TYPE_DEFAULT))
   {
     v47 = v46;
-    v48 = [(NoBackhaulHandler *)self stepper];
+    stepper = [(NoBackhaulHandler *)self stepper];
     *buf = 134217984;
-    *v56 = v48;
+    *v56 = stepper;
     _os_log_impl(&dword_23255B000, v47, OS_LOG_TYPE_DEFAULT, "External stepper count: %lu", buf, 0xCu);
   }
 
@@ -2516,10 +2516,10 @@ void __31__NoBackhaulHandler__dumpState__block_invoke(uint64_t a1, void *a2)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startMaintenanceTimerFor:(id)a3 delay:(unint64_t)a4 interval:(unint64_t)a5 capWindowTo:(unint64_t)a6
+- (void)_startMaintenanceTimerFor:(id)for delay:(unint64_t)delay interval:(unint64_t)interval capWindowTo:(unint64_t)to
 {
-  v10 = a3;
-  v11 = [MEMORY[0x277CBEAA8] date];
+  forCopy = for;
+  date = [MEMORY[0x277CBEAA8] date];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x2020000000;
@@ -2536,27 +2536,27 @@ void __31__NoBackhaulHandler__dumpState__block_invoke(uint64_t a1, void *a2)
     [(NoBackhaulHandler *)self _stopMaintenanceTimer];
   }
 
-  v13 = [(ExpertSystemHandlerCore *)self queue];
-  v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v13);
+  queue = [(ExpertSystemHandlerCore *)self queue];
+  v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
   maintenanceTimer = self->maintenanceTimer;
   self->maintenanceTimer = v14;
 
   v16 = self->maintenanceTimer;
-  v17 = dispatch_time(0, 1000000000 * a4);
-  dispatch_source_set_timer(v16, v17, 1000000000 * a5, 0);
+  v17 = dispatch_time(0, 1000000000 * delay);
+  dispatch_source_set_timer(v16, v17, 1000000000 * interval, 0);
   v18 = self->maintenanceTimer;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __74__NoBackhaulHandler__startMaintenanceTimerFor_delay_interval_capWindowTo___block_invoke;
   v21[3] = &unk_27898CFA0;
   v21[4] = self;
-  v22 = v10;
-  v25 = a5;
-  v26 = a6;
-  v23 = v11;
+  v22 = forCopy;
+  intervalCopy = interval;
+  toCopy = to;
+  v23 = date;
   v24 = v28;
-  v19 = v11;
-  v20 = v10;
+  v19 = date;
+  v20 = forCopy;
   dispatch_source_set_event_handler(v18, v21);
   dispatch_source_set_cancel_handler(self->maintenanceTimer, &__block_literal_global_230);
   dispatch_resume(self->maintenanceTimer);
@@ -2586,41 +2586,41 @@ uint64_t __74__NoBackhaulHandler__startMaintenanceTimerFor_delay_interval_capWin
   }
 }
 
-- (void)_captureProgressFor:(id)a3 since:(id)a4 interval:(unint64_t)a5 capWindowTo:(unint64_t)a6 iteration:(unint64_t)a7 renewTest:(id)a8
+- (void)_captureProgressFor:(id)for since:(id)since interval:(unint64_t)interval capWindowTo:(unint64_t)to iteration:(unint64_t)iteration renewTest:(id)test
 {
   v51 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  forCopy = for;
+  sinceCopy = since;
+  testCopy = test;
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  [v15 timeIntervalSinceNow];
+  [sinceCopy timeIntervalSinceNow];
   v18 = -v17;
-  if (v18 >= a6)
+  if (v18 >= to)
   {
-    v19 = a6;
+    toCopy = to;
   }
 
   else
   {
-    v19 = v18;
+    toCopy = v18;
   }
 
-  if (!v14)
+  if (!forCopy)
   {
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __88__NoBackhaulHandler__captureProgressFor_since_interval_capWindowTo_iteration_renewTest___block_invoke_233;
     v38[3] = &unk_27898CFF0;
-    *&v38[6] = v19;
+    *&v38[6] = toCopy;
     v38[4] = self;
-    v38[5] = a7;
+    v38[5] = iteration;
     [NetworkAnalyticsEngine performNetAttachmentQueryOn:3 reply:v38];
-    if (!v16)
+    if (!testCopy)
     {
       goto LABEL_19;
     }
@@ -2628,18 +2628,18 @@ uint64_t __74__NoBackhaulHandler__startMaintenanceTimerFor_delay_interval_capWin
     goto LABEL_17;
   }
 
-  v29 = a5;
-  v30 = v16;
-  if ([v14 count] >= 2)
+  intervalCopy = interval;
+  v30 = testCopy;
+  if ([forCopy count] >= 2)
   {
-    [NoBackhaulHandler _captureProgressFor:v14 since:? interval:? capWindowTo:? iteration:? renewTest:?];
+    [NoBackhaulHandler _captureProgressFor:forCopy since:? interval:? capWindowTo:? iteration:? renewTest:?];
   }
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v20 = v14;
+  v20 = forCopy;
   v21 = [v20 countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v21)
   {
@@ -2665,10 +2665,10 @@ uint64_t __74__NoBackhaulHandler__startMaintenanceTimerFor_delay_interval_capWin
         v39[1] = 3221225472;
         v39[2] = __88__NoBackhaulHandler__captureProgressFor_since_interval_capWindowTo_iteration_renewTest___block_invoke;
         v39[3] = &unk_27898CFC8;
-        *&v39[6] = v19;
+        *&v39[6] = toCopy;
         v39[4] = self;
-        v39[5] = a7;
-        [v25 fetchMetricsForFlowsAged:&v44 metrics:0 includeQUICFlows:v39 resultBlock:v19];
+        v39[5] = iteration;
+        [v25 fetchMetricsForFlowsAged:&v44 metrics:0 includeQUICFlows:v39 resultBlock:toCopy];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v40 objects:v50 count:16];
@@ -2677,27 +2677,27 @@ uint64_t __74__NoBackhaulHandler__startMaintenanceTimerFor_delay_interval_capWin
     while (v22);
   }
 
-  v16 = v30;
-  a5 = v29;
+  testCopy = v30;
+  interval = intervalCopy;
   if (v30)
   {
 LABEL_17:
-    if (v16[2](v16))
+    if (testCopy[2](testCopy))
     {
-      v26 = dispatch_time(0, 1000000000 * a5);
-      v27 = [(ExpertSystemHandlerCore *)self queue];
+      v26 = dispatch_time(0, 1000000000 * interval);
+      queue = [(ExpertSystemHandlerCore *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __88__NoBackhaulHandler__captureProgressFor_since_interval_capWindowTo_iteration_renewTest___block_invoke_238;
       block[3] = &unk_27898D018;
-      v35 = a7;
+      iterationCopy = iteration;
       block[4] = self;
-      v32 = v14;
-      v33 = v15;
-      v36 = a5;
-      v37 = a6;
-      v34 = v16;
-      dispatch_after(v26, v27, block);
+      v32 = forCopy;
+      v33 = sinceCopy;
+      intervalCopy2 = interval;
+      toCopy2 = to;
+      v34 = testCopy;
+      dispatch_after(v26, queue, block);
     }
   }
 
@@ -3023,22 +3023,22 @@ BOOL __43__NoBackhaulHandler__fetchDampeningHistory__block_invoke_244(uint64_t a
   return v8;
 }
 
-- (void)_updateSSID:(id)a3
+- (void)_updateSSID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"State"];
-  v6 = [v5 BOOLValue];
+  dCopy = d;
+  v5 = [dCopy objectForKeyedSubscript:@"State"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v25 = 0;
-    v7 = [v4 objectForKeyedSubscript:@"Detail"];
+    v7 = [dCopy objectForKeyedSubscript:@"Detail"];
     v29 = 0u;
     v30 = 0u;
     memset(v28, 0, sizeof(v28));
-    v8 = [v7 UTF8String];
-    if (!v8)
+    uTF8String = [v7 UTF8String];
+    if (!uTF8String)
     {
       [CellOutrankHandler _updateWiFi:buf];
     }
@@ -3046,7 +3046,7 @@ BOOL __43__NoBackhaulHandler__fetchDampeningHistory__block_invoke_244(uint64_t a
     v9 = 0;
     while (1)
     {
-      v10 = *(v8 + v9);
+      v10 = *(uTF8String + v9);
       v28[v9] = v10;
       if (!v10)
       {
@@ -3079,7 +3079,7 @@ BOOL __43__NoBackhaulHandler__fetchDampeningHistory__block_invoke_244(uint64_t a
       v11 = 0;
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"HashedPrimaryKey"];
+    v14 = [dCopy objectForKeyedSubscript:@"HashedPrimaryKey"];
     v15 = [v14 rangeOfString:@"-"];
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -3104,7 +3104,7 @@ BOOL __43__NoBackhaulHandler__fetchDampeningHistory__block_invoke_244(uint64_t a
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *v28 = 67109635;
-    *&v28[4] = v6;
+    *&v28[4] = bOOLValue;
     *&v28[8] = 2113;
     *&v28[10] = v11;
     *&v28[18] = 2112;
@@ -3112,7 +3112,7 @@ BOOL __43__NoBackhaulHandler__fetchDampeningHistory__block_invoke_244(uint64_t a
     _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEFAULT, "WiFi epoch, state: %d, clear SSID: %{private}@, obscured SSID: %@)", v28, 0x1Cu);
   }
 
-  v18 = [(ExpertSystemHandlerCore *)self queue];
+  queue = [(ExpertSystemHandlerCore *)self queue];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __33__NoBackhaulHandler__updateSSID___block_invoke;
@@ -3122,7 +3122,7 @@ BOOL __43__NoBackhaulHandler__fetchDampeningHistory__block_invoke_244(uint64_t a
   v24 = v12;
   v19 = v12;
   v20 = v11;
-  dispatch_async(v18, v22);
+  dispatch_async(queue, v22);
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -3172,11 +3172,11 @@ void __33__NoBackhaulHandler__updateSSID___block_invoke(uint64_t a1)
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = [(NSMutableDictionary *)self->_multiplier objectForKeyedSubscript:self->_obscuredSSID];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (((v4 + 1) & 0x3E) != 0)
+  if (((integerValue + 1) & 0x3E) != 0)
   {
-    v5 = (v4 + 1) & 0x3F;
+    v5 = (integerValue + 1) & 0x3F;
   }
 
   else
@@ -3184,8 +3184,8 @@ void __33__NoBackhaulHandler__updateSSID___block_invoke(uint64_t a1)
     v5 = 1;
   }
 
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v6 dateByAddingTimeInterval:(self->networkBlacklistTime * v5)];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [date dateByAddingTimeInterval:(self->networkBlacklistTime * v5)];
 
   [(NSMutableDictionary *)self->_history setObject:v7 forKeyedSubscript:self->_obscuredSSID];
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
@@ -3254,9 +3254,9 @@ void __33__NoBackhaulHandler__updateSSID___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performConnectivityTestToDefaultGateways:(id)a3
+- (void)_performConnectivityTestToDefaultGateways:(id)gateways
 {
-  v4 = a3;
+  gatewaysCopy = gateways;
   if ([(NSMutableDictionary *)self->_activeICMPProbes count]|| [(NSMutableDictionary *)self->_icmpProbeStates count])
   {
     v5 = bbhLogHandle;
@@ -3275,7 +3275,7 @@ void __33__NoBackhaulHandler__updateSSID___block_invoke(uint64_t a1)
   v6[2] = __63__NoBackhaulHandler__performConnectivityTestToDefaultGateways___block_invoke;
   v6[3] = &unk_27898A140;
   v6[4] = self;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [gatewaysCopy enumerateObjectsUsingBlock:v6];
 }
 
 void __63__NoBackhaulHandler__performConnectivityTestToDefaultGateways___block_invoke(uint64_t a1, void *a2)
@@ -3309,14 +3309,14 @@ void __63__NoBackhaulHandler__performConnectivityTestToDefaultGateways___block_i
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postUpwards:(unint64_t)a3
+- (void)_postUpwards:(unint64_t)upwards
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = a3;
+    upwardsCopy = upwards;
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEFAULT, "posting recommendation code: %llu", buf, 0xCu);
   }
 
@@ -3324,7 +3324,7 @@ void __63__NoBackhaulHandler__performConnectivityTestToDefaultGateways___block_i
   block[1] = 3221225472;
   block[2] = __34__NoBackhaulHandler__postUpwards___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = upwards;
   dispatch_async(MEMORY[0x277D85CD0], block);
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -3349,11 +3349,11 @@ void __34__NoBackhaulHandler__postUpwards___block_invoke(uint64_t a1)
   }
 }
 
-+ (int64_t)_nwInterfaceTypeFromAPSDQualifier:(unint64_t)a3
++ (int64_t)_nwInterfaceTypeFromAPSDQualifier:(unint64_t)qualifier
 {
-  if (a3)
+  if (qualifier)
   {
-    return a3 == 1;
+    return qualifier == 1;
   }
 
   else
@@ -3362,14 +3362,14 @@ void __34__NoBackhaulHandler__postUpwards___block_invoke(uint64_t a1)
   }
 }
 
-- (void)apsdFailing:(BOOL)a3 onInterface:(int64_t)a4
+- (void)apsdFailing:(BOOL)failing onInterface:(int64_t)interface
 {
-  v5 = a3;
+  failingCopy = failing;
   v22 = *MEMORY[0x277D85DE8];
   v7 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5)
+    if (failingCopy)
     {
       v8 = "";
     }
@@ -3380,26 +3380,26 @@ void __34__NoBackhaulHandler__postUpwards___block_invoke(uint64_t a1)
     }
 
     v9 = v7;
-    v10 = [InterfaceUtils stringForInterfaceType:a4];
-    v11 = [(ExpertSystemStateCore *)self->_currentState label];
+    v10 = [InterfaceUtils stringForInterfaceType:interface];
+    label = [(ExpertSystemStateCore *)self->_currentState label];
     *buf = 136315650;
     v17 = v8;
     v18 = 2112;
     v19 = v10;
     v20 = 2112;
-    v21 = v11;
+    v21 = label;
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "received symptom that apsd is%s failing on %@ in state: %@", buf, 0x20u);
   }
 
-  v12 = [(ExpertSystemHandlerCore *)self queue];
+  queue = [(ExpertSystemHandlerCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__NoBackhaulHandler_apsdFailing_onInterface___block_invoke;
   block[3] = &unk_27898A6B8;
   block[4] = self;
-  block[5] = a4;
-  v15 = v5;
-  dispatch_async(v12, block);
+  block[5] = interface;
+  v15 = failingCopy;
+  dispatch_async(queue, block);
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -3473,24 +3473,24 @@ void __45__NoBackhaulHandler_apsdFailing_onInterface___block_invoke(uint64_t a1)
   objc_sync_exit(v4);
 }
 
-- (void)handleFlowStuckNotification:(id)a3
+- (void)handleFlowStuckNotification:(id)notification
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kNotificationFlowScrutinizerAttributedEntity"];
-  v6 = [v4 objectForKeyedSubscript:@"kNotificationFlowScrutinizerFlowDuration"];
+  notificationCopy = notification;
+  v5 = [notificationCopy objectForKeyedSubscript:@"kNotificationFlowScrutinizerAttributedEntity"];
+  v6 = [notificationCopy objectForKeyedSubscript:@"kNotificationFlowScrutinizerFlowDuration"];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = [v4 objectForKeyedSubscript:@"kNotificationFlowScrutinizerIsWiFiFlow"];
-  v10 = [v9 BOOLValue];
+  v9 = [notificationCopy objectForKeyedSubscript:@"kNotificationFlowScrutinizerIsWiFiFlow"];
+  bOOLValue = [v9 BOOLValue];
 
   v11 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_INFO))
   {
     v12 = "non ";
     *v17 = 136315650;
-    if (v10)
+    if (bOOLValue)
     {
       v12 = "";
     }
@@ -3503,7 +3503,7 @@ void __45__NoBackhaulHandler_apsdFailing_onInterface___block_invoke(uint64_t a1)
     _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_INFO, "received notification that a %sWi-Fi flow for %@ is stuck in pre-establishment state for %.2fs", v17, 0x20u);
   }
 
-  if (([(NSSet *)self->_highAvailabilityServicesOfInterest containsObject:v5, *v17]& v10) == 1)
+  if (([(NSSet *)self->_highAvailabilityServicesOfInterest containsObject:v5, *v17]& bOOLValue) == 1)
   {
     v13 = bbhLogHandle;
     if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -3560,17 +3560,17 @@ void __45__NoBackhaulHandler_apsdFailing_onInterface___block_invoke(uint64_t a1)
     refreshScheduler = self->_refreshScheduler;
   }
 
-  v9 = [(FlowRefreshScheduler *)refreshScheduler queue];
+  queue = [(FlowRefreshScheduler *)refreshScheduler queue];
 
-  if (v9)
+  if (queue)
   {
-    v10 = [(FlowRefreshScheduler *)self->_refreshScheduler queue];
+    queue2 = [(FlowRefreshScheduler *)self->_refreshScheduler queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__NoBackhaulHandler_startPollingKernelForFlowStatistics__block_invoke;
     block[3] = &unk_27898A0C8;
     block[4] = self;
-    dispatch_async(v10, block);
+    dispatch_async(queue2, block);
 
     return;
   }
@@ -3594,14 +3594,14 @@ uint64_t __56__NoBackhaulHandler_startPollingKernelForFlowStatistics__block_invo
   return result;
 }
 
-- (void)clientFeedback:(BOOL)a3
+- (void)clientFeedback:(BOOL)feedback
 {
-  v3 = a3;
+  feedbackCopy = feedback;
   v18 = *MEMORY[0x277D85DE8];
   v5 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (feedbackCopy)
     {
       v6 = "";
     }
@@ -3613,22 +3613,22 @@ uint64_t __56__NoBackhaulHandler_startPollingKernelForFlowStatistics__block_invo
 
     currentState = self->_currentState;
     v8 = v5;
-    v9 = [(ExpertSystemStateCore *)currentState label];
+    label = [(ExpertSystemStateCore *)currentState label];
     *buf = 136315394;
     v15 = v6;
     v16 = 2112;
-    v17 = v9;
+    v17 = label;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEFAULT, "received client feedback that it is%s broken in state: %@", buf, 0x16u);
   }
 
-  v10 = [(ExpertSystemHandlerCore *)self queue];
+  queue = [(ExpertSystemHandlerCore *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __36__NoBackhaulHandler_clientFeedback___block_invoke;
   v12[3] = &unk_27898A3A0;
-  v13 = v3;
+  v13 = feedbackCopy;
   v12[4] = self;
-  dispatch_async(v10, v12);
+  dispatch_async(queue, v12);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -3716,19 +3716,19 @@ LABEL_14:
     {
       currentState = self->_currentState;
       v5 = v3;
-      v6 = [(ExpertSystemStateCore *)currentState label];
+      label = [(ExpertSystemStateCore *)currentState label];
       *buf = 138412290;
-      v11 = v6;
+      v11 = label;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "received input that default route progress has resumed in state: %@", buf, 0xCu);
     }
 
-    v7 = [(ExpertSystemHandlerCore *)self queue];
+    queue = [(ExpertSystemHandlerCore *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __44__NoBackhaulHandler_resumedDefRouteProgress__block_invoke;
     block[3] = &unk_27898A0C8;
     block[4] = self;
-    dispatch_async(v7, block);
+    dispatch_async(queue, block);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -3757,32 +3757,32 @@ void __44__NoBackhaulHandler_resumedDefRouteProgress__block_invoke(uint64_t a1)
   }
 }
 
-- (void)changedSSIDto:(id)a3
+- (void)changedSSIDto:(id)dto
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dtoCopy = dto;
   v5 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     currentState = self->_currentState;
     v7 = v5;
-    v8 = [(ExpertSystemStateCore *)currentState label];
+    label = [(ExpertSystemStateCore *)currentState label];
     v16 = 138478083;
-    v17 = v4;
+    v17 = dtoCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = label;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEFAULT, "received SSID change to %{private}@ in state: %@", &v16, 0x16u);
   }
 
-  v9 = [(ExpertSystemStateCore *)self->_currentState label];
-  if ([v9 isEqualToString:@"positive"])
+  label2 = [(ExpertSystemStateCore *)self->_currentState label];
+  if ([label2 isEqualToString:@"positive"])
   {
   }
 
   else
   {
-    v10 = [(ExpertSystemStateCore *)self->_currentState label];
-    v11 = [v10 isEqualToString:@"broken"];
+    label3 = [(ExpertSystemStateCore *)self->_currentState label];
+    v11 = [label3 isEqualToString:@"broken"];
 
     if (!v11)
     {
@@ -3790,11 +3790,11 @@ void __44__NoBackhaulHandler_resumedDefRouteProgress__block_invoke(uint64_t a1)
     }
   }
 
-  v12 = [(NoBackhaulHandlerState *)self->_currentState metric];
-  v13 = v12;
-  if (v12)
+  metric = [(NoBackhaulHandlerState *)self->_currentState metric];
+  v13 = metric;
+  if (metric)
   {
-    [v12 setEgressTrigger:3];
+    [metric setEgressTrigger:3];
     [v13 setEgressTriggerInterfaceType:3];
     [v13 populateNetworkPropertiesOnWiFiRelay:self->_wifiRelay cellRelay:self->_cellRelay isIngress:0];
   }
@@ -3812,9 +3812,9 @@ LABEL_9:
 - (BOOL)subscribeCarKitNotifications
 {
   v3 = +[SystemProperties sharedInstance];
-  v4 = [v3 deviceClass];
+  deviceClass = [v3 deviceClass];
 
-  if (v4 != 1)
+  if (deviceClass != 1)
   {
     v9 = bbhLogHandle;
     v8 = os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT);
@@ -4011,58 +4011,58 @@ LABEL_10:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_assessProgressFromBaseline:(nstat_progress_indicators *)a3 toMetrics:(nstat_progress_indicators *)a4
+- (void)_assessProgressFromBaseline:(nstat_progress_indicators *)baseline toMetrics:(nstat_progress_indicators *)metrics
 {
   v35 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (baseline)
   {
     v6 = bbhLogHandle;
     if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [TCPProgressProbe progressPrettyPrintUtility:a3];
-      v9 = [(NetworkStateRelay *)self->_wifiRelay tcpProgressHintsScore];
+      v8 = [TCPProgressProbe progressPrettyPrintUtility:baseline];
+      tcpProgressHintsScore = [(NetworkStateRelay *)self->_wifiRelay tcpProgressHintsScore];
       v31 = 138412546;
       *v32 = v8;
       *&v32[8] = 1024;
-      *&v32[10] = v9;
+      *&v32[10] = tcpProgressHintsScore;
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEFAULT, "TCP establish new baseline: %@, score: %d", &v31, 0x12u);
     }
 
-    v10 = *&a3->var4;
-    _assessProgressFromBaseline_toMetrics__base = *&a3->var0;
+    v10 = *&baseline->var4;
+    _assessProgressFromBaseline_toMetrics__base = *&baseline->var0;
     unk_2814D45F8 = v10;
-    v11 = *&a3->var7;
-    v12 = *&a3->var9;
-    v13 = *&a3->var13;
-    xmmword_2814D4628 = *&a3->var11;
+    v11 = *&baseline->var7;
+    v12 = *&baseline->var9;
+    v13 = *&baseline->var13;
+    xmmword_2814D4628 = *&baseline->var11;
     unk_2814D4638 = v13;
     xmmword_2814D4608 = v11;
     unk_2814D4618 = v12;
   }
 
-  else if (a4)
+  else if (metrics)
   {
-    if (a4->var0)
+    if (metrics->var0)
     {
-      v15 = powf(a4->var0, self->_problemRatioDenominatorExponent);
-      p_var1 = &a4->var1;
-      p_var2 = &a4->var2;
-      var2 = a4->var2;
-      p_var3 = &a4->var3;
-      if (var2 <= a4->var3)
+      v15 = powf(metrics->var0, self->_problemRatioDenominatorExponent);
+      p_var1 = &metrics->var1;
+      p_var2 = &metrics->var2;
+      var2 = metrics->var2;
+      p_var3 = &metrics->var3;
+      if (var2 <= metrics->var3)
       {
-        var2 = a4->var3;
+        var2 = metrics->var3;
       }
 
-      v20 = (var2 + a4->var1) / v15;
+      v20 = (var2 + metrics->var1) / v15;
     }
 
     else
     {
-      p_var1 = &a4->var1;
-      p_var2 = &a4->var2;
-      p_var3 = &a4->var3;
+      p_var1 = &metrics->var1;
+      p_var2 = &metrics->var2;
+      p_var3 = &metrics->var3;
       v20 = 0.0;
     }
 
@@ -4084,7 +4084,7 @@ LABEL_10:
     }
 
     v25 = v20 < 0.5 || v20 <= v24;
-    if (v25 && (v20 == v24 ? (v26 = v24 < 0.75) : (v26 = 1), v26) || a4->var6)
+    if (v25 && (v20 == v24 ? (v26 = v24 < 0.75) : (v26 = 1), v26) || metrics->var6)
     {
       if (*p_var1 || *p_var2 || *p_var3)
       {
@@ -4133,25 +4133,25 @@ LABEL_10:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"noBackhaulEnabled"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"noBackhaulEnabled"])
   {
-    [NoBackhaulHandler observeValueForKeyPath:v12 ofObject:self change:v34 context:v33];
+    [NoBackhaulHandler observeValueForKeyPath:changeCopy ofObject:self change:v34 context:v33];
   }
 
-  else if ([v10 isEqualToString:@"stepper"])
+  else if ([pathCopy isEqualToString:@"stepper"])
   {
     [NoBackhaulHandler observeValueForKeyPath:v32 ofObject:? change:? context:?];
   }
 
-  else if ([v10 isEqualToString:@"stuckDefRoute"])
+  else if ([pathCopy isEqualToString:@"stuckDefRoute"])
   {
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-    v14 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+    v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     v15 = v14;
     if (v13)
     {
@@ -4175,11 +4175,11 @@ LABEL_10:
     v24 = 3221225472;
     v25 = __68__NoBackhaulHandler_observeValueForKeyPath_ofObject_change_context___block_invoke_4;
     v26 = &unk_27898D090;
-    v31 = a6;
-    v27 = v11;
-    v28 = self;
-    v29 = v10;
-    v17 = v12;
+    contextCopy = context;
+    v27 = objectCopy;
+    selfCopy = self;
+    v29 = pathCopy;
+    v17 = changeCopy;
     v30 = v17;
     v18 = _Block_copy(&v23);
     v19 = [v17 objectForKeyedSubscript:{*MEMORY[0x277CCA2F0], v23, v24, v25, v26}];
@@ -4187,8 +4187,8 @@ LABEL_10:
     v21 = v20;
     if (!v19 || v20)
     {
-      v22 = [(ExpertSystemHandlerCore *)self queue];
-      dispatch_async(v22, v18);
+      queue = [(ExpertSystemHandlerCore *)self queue];
+      dispatch_async(queue, v18);
     }
 
     else
@@ -4722,19 +4722,19 @@ LABEL_95:
   v110 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportAutoBugCaptureCaseWithDomain:(id)a3 type:(id)a4 subtype:(id)a5 subtypeContext:(id)a6 events:(id)a7
+- (void)reportAutoBugCaptureCaseWithDomain:(id)domain type:(id)type subtype:(id)subtype subtypeContext:(id)context events:(id)events
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  domainCopy = domain;
+  typeCopy = type;
+  subtypeCopy = subtype;
+  contextCopy = context;
+  eventsCopy = events;
   v16 = objc_alloc_init(MEMORY[0x277D6AFC8]);
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 signatureWithDomain:v11 type:v12 subType:v13 subtypeContext:v14 detectedProcess:@"symptomsd" triggerThresholdValues:0];
-    [v17 snapshotWithSignature:v18 duration:v15 events:0 payload:0 actions:&__block_literal_global_302 reply:0.0];
+    v18 = [v16 signatureWithDomain:domainCopy type:typeCopy subType:subtypeCopy subtypeContext:contextCopy detectedProcess:@"symptomsd" triggerThresholdValues:0];
+    [v17 snapshotWithSignature:v18 duration:eventsCopy events:0 payload:0 actions:&__block_literal_global_302 reply:0.0];
   }
 
   else
@@ -4773,40 +4773,40 @@ void __91__NoBackhaulHandler_reportAutoBugCaptureCaseWithDomain_type_subtype_sub
   }
 }
 
-- (void)didPollFlowsAt:(double)a3 periodic:(BOOL)a4
+- (void)didPollFlowsAt:(double)at periodic:(BOOL)periodic
 {
-  v4 = a4;
+  periodicCopy = periodic;
   v12 = *MEMORY[0x277D85DE8];
   v6 = bbhLogHandle;
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v8 = 134218240;
-    v9 = a3;
+    atCopy = at;
     v10 = 1024;
-    v11 = v4;
+    v11 = periodicCopy;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEBUG, "BBH didPollFlowsAt: %.2f, Periodic? %d", &v8, 0x12u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)icmpPingProbe:(id)a3 completedIterations:(unint64_t)a4 successfulCount:(unint64_t)a5 withError:(id)a6
+- (void)icmpPingProbe:(id)probe completedIterations:(unint64_t)iterations successfulCount:(unint64_t)count withError:(id)error
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(ExpertSystemHandlerCore *)self queue];
+  probeCopy = probe;
+  errorCopy = error;
+  queue = [(ExpertSystemHandlerCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__NoBackhaulHandler_icmpPingProbe_completedIterations_successfulCount_withError___block_invoke;
   block[3] = &unk_27898D0E0;
-  v16 = v10;
-  v17 = self;
-  v18 = v11;
-  v19 = a5;
-  v20 = a4;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, block);
+  v16 = probeCopy;
+  selfCopy = self;
+  v18 = errorCopy;
+  countCopy = count;
+  iterationsCopy = iterations;
+  v13 = errorCopy;
+  v14 = probeCopy;
+  dispatch_async(queue, block);
 }
 
 void __81__NoBackhaulHandler_icmpPingProbe_completedIterations_successfulCount_withError___block_invoke(uint64_t a1)
@@ -4998,10 +4998,10 @@ void __81__NoBackhaulHandler_icmpPingProbe_completedIterations_successfulCount_w
   }
 }
 
-- (void)addPendingEventDescription:(id)a3
+- (void)addPendingEventDescription:(id)description
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptionCopy = description;
   if (!self->_pendingEventDescriptions)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -5009,13 +5009,13 @@ void __81__NoBackhaulHandler_icmpPingProbe_completedIterations_successfulCount_w
     self->_pendingEventDescriptions = v5;
   }
 
-  v7 = [v4 eventKey];
-  if ([v7 hasPrefix:@"com.apple.apsd.connection-"])
+  eventKey = [descriptionCopy eventKey];
+  if ([eventKey hasPrefix:@"com.apple.apsd.connection-"])
   {
-    v8 = [v4 eventData];
-    if (v8 && (*(v8 + 4) & 1) != 0)
+    eventData = [descriptionCopy eventData];
+    if (eventData && (*(eventData + 4) & 1) != 0)
     {
-      v9 = [NoBackhaulHandler _nwInterfaceTypeFromAPSDQualifier:*(v8 + 24)];
+      v9 = [NoBackhaulHandler _nwInterfaceTypeFromAPSDQualifier:*(eventData + 24)];
     }
 
     else
@@ -5057,11 +5057,11 @@ void __81__NoBackhaulHandler_icmpPingProbe_completedIterations_successfulCount_w
   if (os_log_type_enabled(bbhLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v7;
+    v23 = eventKey;
     _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_DEFAULT, "Appending symptom with key %@ to pending event queue", buf, 0xCu);
   }
 
-  [(NSMutableArray *)self->_pendingEventDescriptions addObject:v4];
+  [(NSMutableArray *)self->_pendingEventDescriptions addObject:descriptionCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -5150,23 +5150,23 @@ void __48__NoBackhaulHandler_addPendingEventDescription___block_invoke(uint64_t 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)processSymptom:(id)a3
+- (BOOL)processSymptom:(id)symptom
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 eventKey];
+  symptomCopy = symptom;
+  eventKey = [symptomCopy eventKey];
   v6 = [SymptomStore keyFromSymptomName:@"com.apple.apsd.connection-failure"];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [eventKey isEqualToString:v6];
 
   v8 = [SymptomStore keyFromSymptomName:@"com.apple.apsd.connection-ok"];
-  v9 = [v5 isEqualToString:v8];
+  v9 = [eventKey isEqualToString:v8];
 
   if ((v7 & 1) != 0 || v9)
   {
-    v13 = [v4 eventData];
-    if (v13 && (*(v13 + 4) & 1) != 0)
+    eventData = [symptomCopy eventData];
+    if (eventData && (*(eventData + 4) & 1) != 0)
     {
-      v19 = *(v13 + 24);
+      v19 = *(eventData + 24);
       v20 = [NoBackhaulHandler _nwInterfaceTypeFromAPSDQualifier:v19];
       if ((v20 - 1) <= 1)
       {
@@ -5194,7 +5194,7 @@ void __48__NoBackhaulHandler_addPendingEventDescription___block_invoke(uint64_t 
       }
 
       v24 = 138412290;
-      v25 = v5;
+      v25 = eventKey;
       v15 = "Missing qualifier for symptom: %@";
     }
 
@@ -5204,14 +5204,14 @@ LABEL_23:
   }
 
   v10 = [SymptomStore keyFromSymptomName:@"SYMPTOM_BACKHAUL_FEEDBACK"];
-  v11 = [v5 isEqualToString:v10];
+  v11 = [eventKey isEqualToString:v10];
 
   if (v11)
   {
-    v12 = [v4 eventData];
-    if (v12 && (~*(v12 + 4) & 3) == 0)
+    eventData2 = [symptomCopy eventData];
+    if (eventData2 && (~*(eventData2 + 4) & 3) == 0)
     {
-      [(NoBackhaulHandler *)self clientFeedback:*(v12 + 32) != 0];
+      [(NoBackhaulHandler *)self clientFeedback:*(eventData2 + 32) != 0];
       goto LABEL_25;
     }
 
@@ -5222,13 +5222,13 @@ LABEL_23:
     }
 
     v24 = 138412290;
-    v25 = v5;
+    v25 = eventKey;
     v15 = "Unable to process symptom: %@";
     goto LABEL_23;
   }
 
   v16 = [SymptomStore keyFromSymptomName:@"com.apple.nbsm.stepper"];
-  v17 = [v5 isEqualToString:v16];
+  v17 = [eventKey isEqualToString:v16];
 
   v18 = bbhLogHandle;
   if (!v17)
@@ -5239,7 +5239,7 @@ LABEL_23:
     }
 
     v24 = 138412290;
-    v25 = v5;
+    v25 = eventKey;
     v15 = "Unable to process symptom: %@";
     v21 = v18;
 LABEL_24:
@@ -5262,14 +5262,14 @@ LABEL_25:
 
 - (id)internalStateDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_administrativeState];
-  [v3 setObject:v4 forKeyedSubscript:@"adminEnabled"];
+  [dictionary setObject:v4 forKeyedSubscript:@"adminEnabled"];
 
-  v5 = [(ExpertSystemStateCore *)self->_currentState label];
-  [v3 setObject:v5 forKeyedSubscript:@"stateMachineState"];
+  label = [(ExpertSystemStateCore *)self->_currentState label];
+  [dictionary setObject:label forKeyedSubscript:@"stateMachineState"];
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   if ([(NoBackhaulHandler *)self systemForeground])
   {
     v7 = @"YES";
@@ -5280,7 +5280,7 @@ LABEL_25:
     v7 = @"NO";
   }
 
-  [v6 setObject:v7 forKeyedSubscript:@"systemForeground"];
+  [dictionary2 setObject:v7 forKeyedSubscript:@"systemForeground"];
   if (self->_verifyDefaultGateway)
   {
     v8 = @"YES";
@@ -5291,10 +5291,10 @@ LABEL_25:
     v8 = @"NO";
   }
 
-  [v6 setObject:v8 forKeyedSubscript:@"verifyDefaultGateway"];
-  [v3 setObject:v6 forKeyedSubscript:@"internalStateVariables"];
+  [dictionary2 setObject:v8 forKeyedSubscript:@"verifyDefaultGateway"];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"internalStateVariables"];
 
-  return v3;
+  return dictionary;
 }
 
 + (id)sharedInstance
@@ -5303,7 +5303,7 @@ LABEL_25:
   block[1] = 3221225472;
   block[2] = __35__NoBackhaulHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_18 != -1)
   {
     dispatch_once(&sharedInstance_pred_18, block);
@@ -5330,11 +5330,11 @@ BOOL __35__NoBackhaulHandler_sharedInstance__block_invoke(uint64_t a1)
   return [ManagedEventTransport setInfoProvider:v6 forId:7];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[NoBackhaulHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
@@ -5342,35 +5342,35 @@ BOOL __35__NoBackhaulHandler_sharedInstance__block_invoke(uint64_t a1)
 + (id)internalStateDictionary
 {
   v2 = +[NoBackhaulHandler sharedInstance];
-  v3 = [v2 internalStateDictionary];
+  internalStateDictionary = [v2 internalStateDictionary];
 
-  return v3;
+  return internalStateDictionary;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }
 
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block
 {
-  v9 = a6;
-  v10 = [(ExpertSystemHandlerCore *)self queue];
+  blockCopy = block;
+  queue = [(ExpertSystemHandlerCore *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__NoBackhaulHandler_generateInfoForId_context_uuid_completionBlock___block_invoke;
   v12[3] = &unk_27898D130;
-  v14 = a3;
-  v15 = a4;
+  idCopy = id;
+  contextCopy = context;
   v12[4] = self;
-  v13 = v9;
-  v11 = v9;
-  dispatch_async(v10, v12);
+  v13 = blockCopy;
+  v11 = blockCopy;
+  dispatch_async(queue, v12);
 }
 
 void __68__NoBackhaulHandler_generateInfoForId_context_uuid_completionBlock___block_invoke(void *a1)
@@ -5426,10 +5426,10 @@ void __68__NoBackhaulHandler_generateInfoForId_context_uuid_completionBlock___bl
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  symptomCopy = symptom;
   administrativeState = self->_administrativeState;
   if (administrativeState == 3)
   {
@@ -5488,7 +5488,7 @@ LABEL_14:
     [(NoBackhaulHandler *)self drainPendingEventDescriptions];
   }
 
-  [(NoBackhaulHandler *)self processSymptom:v4];
+  [(NoBackhaulHandler *)self processSymptom:symptomCopy];
 LABEL_15:
 
   v14 = *MEMORY[0x277D85DE8];

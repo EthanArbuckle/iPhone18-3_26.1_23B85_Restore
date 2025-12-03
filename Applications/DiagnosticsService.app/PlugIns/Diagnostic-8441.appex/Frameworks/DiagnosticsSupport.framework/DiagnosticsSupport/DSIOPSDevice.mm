@@ -1,17 +1,17 @@
 @interface DSIOPSDevice
-+ (id)deviceMatchingAccessories:(id)a3;
-+ (id)deviceWithAccessory:(unint64_t)a3;
-- (DSIOPSDevice)initWithDeviceIdentifiers:(id)a3;
++ (id)deviceMatchingAccessories:(id)accessories;
++ (id)deviceWithAccessory:(unint64_t)accessory;
+- (DSIOPSDevice)initWithDeviceIdentifiers:(id)identifiers;
 - (id)information;
 - (id)serialNumber;
 @end
 
 @implementation DSIOPSDevice
 
-+ (id)deviceWithAccessory:(unint64_t)a3
++ (id)deviceWithAccessory:(unint64_t)accessory
 {
-  v4 = [DSIODeviceIdentifier identifierForAccessoryModel:a3];
-  v5 = [a1 alloc];
+  v4 = [DSIODeviceIdentifier identifierForAccessoryModel:accessory];
+  v5 = [self alloc];
   v9 = v4;
   v6 = [NSArray arrayWithObjects:&v9 count:1];
   v7 = [v5 initWithDeviceIdentifiers:v6];
@@ -19,15 +19,15 @@
   return v7;
 }
 
-+ (id)deviceMatchingAccessories:(id)a3
++ (id)deviceMatchingAccessories:(id)accessories
 {
-  v3 = a3;
+  accessoriesCopy = accessories;
   v4 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = accessoriesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v6)
   {
@@ -67,14 +67,14 @@
     while (v7);
   }
 
-  v13 = [[a1 alloc] initWithDeviceIdentifiers:v4];
+  v13 = [[self alloc] initWithDeviceIdentifiers:v4];
 
   return v13;
 }
 
-- (DSIOPSDevice)initWithDeviceIdentifiers:(id)a3
+- (DSIOPSDevice)initWithDeviceIdentifiers:(id)identifiers
 {
-  v8 = a3;
+  identifiersCopy = identifiers;
   v10.receiver = self;
   v10.super_class = DSIOPSDevice;
   v4 = [(DSIOPSDevice *)&v10 init];
@@ -100,8 +100,8 @@
 
 - (id)serialNumber
 {
-  v2 = [(DSIOPSDevice *)self info];
-  v3 = [v2 objectForKeyedSubscript:@"Accessory Identifier"];
+  info = [(DSIOPSDevice *)self info];
+  v3 = [info objectForKeyedSubscript:@"Accessory Identifier"];
 
   return v3;
 }
@@ -109,8 +109,8 @@
 - (id)information
 {
   v32[0] = @"serialNumber";
-  v31 = [(DSIOPSDevice *)self info];
-  v3 = [v31 objectForKeyedSubscript:@"Accessory Identifier"];
+  info = [(DSIOPSDevice *)self info];
+  v3 = [info objectForKeyedSubscript:@"Accessory Identifier"];
   v4 = v3;
   if (!v3)
   {
@@ -120,8 +120,8 @@
   v23 = v3;
   v33[0] = v3;
   v32[1] = @"fullChargeCapacity";
-  v29 = [(DSIOPSDevice *)self info];
-  v5 = [v29 objectForKeyedSubscript:@"Max Capacity"];
+  info2 = [(DSIOPSDevice *)self info];
+  v5 = [info2 objectForKeyedSubscript:@"Max Capacity"];
   v6 = v5;
   if (!v5)
   {
@@ -132,8 +132,8 @@
   v22 = v5;
   v33[1] = v5;
   v32[2] = @"nominalChargeCapacity";
-  v27 = [(DSIOPSDevice *)self info];
-  v7 = [v27 objectForKeyedSubscript:@"Nominal Capacity"];
+  info3 = [(DSIOPSDevice *)self info];
+  v7 = [info3 objectForKeyedSubscript:@"Nominal Capacity"];
   v8 = v7;
   if (!v7)
   {
@@ -143,8 +143,8 @@
   v21 = v7;
   v33[2] = v7;
   v32[3] = @"cycleCount";
-  v26 = [(DSIOPSDevice *)self info];
-  v9 = [v26 objectForKeyedSubscript:@"CycleCount"];
+  info4 = [(DSIOPSDevice *)self info];
+  v9 = [info4 objectForKeyedSubscript:@"CycleCount"];
   v10 = v9;
   if (!v9)
   {
@@ -154,8 +154,8 @@
   v28 = v6;
   v33[3] = v9;
   v32[4] = @"temperature";
-  v25 = [(DSIOPSDevice *)self info];
-  v11 = [v25 objectForKeyedSubscript:@"Temperature"];
+  info5 = [(DSIOPSDevice *)self info];
+  v11 = [info5 objectForKeyedSubscript:@"Temperature"];
   v12 = v11;
   if (!v11)
   {
@@ -164,8 +164,8 @@
 
   v33[4] = v12;
   v32[5] = @"isCharging";
-  v13 = [(DSIOPSDevice *)self info];
-  v14 = [v13 objectForKeyedSubscript:@"Is Charging"];
+  info6 = [(DSIOPSDevice *)self info];
+  v14 = [info6 objectForKeyedSubscript:@"Is Charging"];
   v15 = v14;
   if (!v14)
   {
@@ -174,8 +174,8 @@
 
   v33[5] = v15;
   v32[6] = @"powerSourceState";
-  v16 = [(DSIOPSDevice *)self info];
-  v17 = [v16 objectForKeyedSubscript:@"Power Source State"];
+  info7 = [(DSIOPSDevice *)self info];
+  v17 = [info7 objectForKeyedSubscript:@"Power Source State"];
   v18 = v17;
   if (!v17)
   {

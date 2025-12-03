@@ -1,57 +1,57 @@
 @interface MTLGPUDebugArgumentEncoder
-- (MTLGPUDebugArgumentEncoder)initWithArgumentEncoder:(id)a3 layout:(const void *)a4 device:(id)a5;
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3;
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4;
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4;
+- (MTLGPUDebugArgumentEncoder)initWithArgumentEncoder:(id)encoder layout:(const void *)layout device:(id)device;
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index;
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index;
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index;
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range;
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range;
 @end
 
 @implementation MTLGPUDebugArgumentEncoder
 
-- (MTLGPUDebugArgumentEncoder)initWithArgumentEncoder:(id)a3 layout:(const void *)a4 device:(id)a5
+- (MTLGPUDebugArgumentEncoder)initWithArgumentEncoder:(id)encoder layout:(const void *)layout device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MTLGPUDebugArgumentEncoder;
-  result = [(MTLToolsObject *)&v7 initWithBaseObject:a3 parent:a5];
+  result = [(MTLToolsObject *)&v7 initWithBaseObject:encoder parent:device];
   if (result)
   {
-    result->_layout = a4;
+    result->_layout = layout;
   }
 
   return result;
 }
 
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index
 {
   baseObject = self->super.super._baseObject;
-  v6 = [a3 debugBuf];
+  debugBuf = [structure debugBuf];
 
-  [(MTLToolsObject *)baseObject setBuffer:v6 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setBuffer:debugBuf offset:0 atIndex:index];
 }
 
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index
 {
   baseObject = self->super.super._baseObject;
-  v6 = [objc_msgSend(a3 "indirectStateBuffer")];
+  v6 = [objc_msgSend(state "indirectStateBuffer")];
 
-  [(MTLToolsObject *)baseObject setBuffer:v6 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setBuffer:v6 offset:0 atIndex:index];
 }
 
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     v8 = 0;
     v9 = 1;
     do
     {
-      [(MTLGPUDebugArgumentEncoder *)self setRenderPipelineState:a3[v8] atIndex:v8 + location];
+      [(MTLGPUDebugArgumentEncoder *)self setRenderPipelineState:states[v8] atIndex:v8 + location];
       v8 = v9;
     }
 
@@ -59,25 +59,25 @@
   }
 }
 
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index
 {
   baseObject = self->super.super._baseObject;
-  v6 = [objc_msgSend(a3 "indirectStateBuffer")];
+  v6 = [objc_msgSend(state "indirectStateBuffer")];
 
-  [(MTLToolsObject *)baseObject setBuffer:v6 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setBuffer:v6 offset:0 atIndex:index];
 }
 
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     v8 = 0;
     v9 = 1;
     do
     {
-      [(MTLGPUDebugArgumentEncoder *)self setComputePipelineState:a3[v8] atIndex:v8 + location];
+      [(MTLGPUDebugArgumentEncoder *)self setComputePipelineState:states[v8] atIndex:v8 + location];
       v8 = v9;
     }
 
@@ -85,25 +85,25 @@
   }
 }
 
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index
 {
   baseObject = self->super.super._baseObject;
-  v6 = [a3 internalICBBuffer];
+  internalICBBuffer = [buffer internalICBBuffer];
 
-  [(MTLToolsObject *)baseObject setBuffer:v6 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setBuffer:internalICBBuffer offset:0 atIndex:index];
 }
 
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     v8 = 0;
     v9 = 1;
     do
     {
-      [(MTLGPUDebugArgumentEncoder *)self setIndirectCommandBuffer:a3[v8] atIndex:v8 + location];
+      [(MTLGPUDebugArgumentEncoder *)self setIndirectCommandBuffer:buffers[v8] atIndex:v8 + location];
       v8 = v9;
     }
 
@@ -111,7 +111,7 @@
   }
 }
 
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index
 {
   layout = self->_layout;
   if (!layout)
@@ -119,7 +119,7 @@
     return 0;
   }
 
-  v5 = GPUDebugArgumentEncoderLayout::sublayout(layout, a3);
+  v5 = GPUDebugArgumentEncoderLayout::sublayout(layout, index);
   if (!v5)
   {
     return 0;

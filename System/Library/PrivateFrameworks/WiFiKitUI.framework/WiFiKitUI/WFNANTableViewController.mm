@@ -2,9 +2,9 @@
 - (BOOL)_isNANEnabled;
 - (WFNANTableViewController)init;
 - (void)_configureDataSource;
-- (void)_handlePublishersChangedNotification:(id)a3;
-- (void)_handleSubscribersChangedNotification:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_handlePublishersChangedNotification:(id)notification;
+- (void)_handleSubscribersChangedNotification:(id)notification;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -20,8 +20,8 @@
   if (v4)
   {
     v5 = MEMORY[0x277CBEB70];
-    v6 = [(WFNANTableViewController *)v4 _defaultSections];
-    v7 = [v5 orderedSetWithArray:v6];
+    _defaultSections = [(WFNANTableViewController *)v4 _defaultSections];
+    v7 = [v5 orderedSetWithArray:_defaultSections];
     sections = v4->_sections;
     v4->_sections = v7;
 
@@ -29,11 +29,11 @@
     context = v4->_context;
     v4->_context = v9;
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v4 selector:sel__handlePublishersChangedNotification_ name:@"WFNANPublishersChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__handlePublishersChangedNotification_ name:@"WFNANPublishersChangedNotification" object:0];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v4 selector:sel__handleSubscribersChangedNotification_ name:@"WFNANSubscribersChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel__handleSubscribersChangedNotification_ name:@"WFNANSubscribersChangedNotification" object:0];
 
     [(WFInsetTableViewController *)v4 setReloadDataOnUpdateSectionContentInset:0];
   }
@@ -70,42 +70,42 @@
 {
   v29[1] = *MEMORY[0x277D85DE8];
   v3 = [WFNANTableViewDataSource alloc];
-  v4 = [(WFNANTableViewController *)self tableView];
-  v5 = [(WFNANTableViewController *)self sections];
+  tableView = [(WFNANTableViewController *)self tableView];
+  sections = [(WFNANTableViewController *)self sections];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __48__WFNANTableViewController__configureDataSource__block_invoke;
   v26[3] = &unk_279EC5440;
   v26[4] = self;
-  v6 = [(WFNANTableViewDataSource *)v3 initWithTableView:v4 sections:v5 cellProvider:v26];
+  v6 = [(WFNANTableViewDataSource *)v3 initWithTableView:tableView sections:sections cellProvider:v26];
   [(WFNANTableViewController *)self setDataSource:v6];
 
   v7 = objc_alloc_init(MEMORY[0x277CFB890]);
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(WFNANTableViewController *)self sections];
-  v10 = [v9 count];
+  array = [MEMORY[0x277CBEB18] array];
+  sections2 = [(WFNANTableViewController *)self sections];
+  v10 = [sections2 count];
 
   if (v10)
   {
     v11 = 0;
     do
     {
-      v12 = [(WFNANTableViewController *)self sections];
-      v13 = [v12 objectAtIndexedSubscript:v11];
-      v14 = [v13 unsignedIntegerValue];
+      sections3 = [(WFNANTableViewController *)self sections];
+      v13 = [sections3 objectAtIndexedSubscript:v11];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-      v15 = [(WFNANTableViewController *)self _identifierForSection:v14];
-      [v8 addObject:v15];
+      v15 = [(WFNANTableViewController *)self _identifierForSection:unsignedIntegerValue];
+      [array addObject:v15];
 
       ++v11;
-      v16 = [(WFNANTableViewController *)self sections];
-      v17 = [v16 count];
+      sections4 = [(WFNANTableViewController *)self sections];
+      v17 = [sections4 count];
     }
 
     while (v17 > v11);
   }
 
-  [v7 appendSectionsWithIdentifiers:v8];
+  [v7 appendSectionsWithIdentifiers:array];
   v29[0] = @"WFNANTableViewControllerNANState";
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
   v19 = [(WFNANTableViewController *)self _identifierForSection:0];
@@ -121,8 +121,8 @@
   v23 = [(WFNANTableViewController *)self _identifierForSection:1];
   [v7 appendItemsWithIdentifiers:v22 intoSectionWithIdentifier:v23];
 
-  v24 = [(WFNANTableViewController *)self dataSource];
-  [v24 applySnapshot:v7 animatingDifferences:1];
+  dataSource = [(WFNANTableViewController *)self dataSource];
+  [dataSource applySnapshot:v7 animatingDifferences:1];
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -238,19 +238,19 @@ LABEL_20:
   return v11;
 }
 
-- (void)_handlePublishersChangedNotification:(id)a3
+- (void)_handlePublishersChangedNotification:(id)notification
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFNANTableViewController *)self dataSource];
-  v6 = [v5 snapshot];
+  notificationCopy = notification;
+  dataSource = [(WFNANTableViewController *)self dataSource];
+  snapshot = [dataSource snapshot];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"WFNANTableViewContextChangedPublisherKey"];
+  userInfo = [notificationCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"WFNANTableViewContextChangedPublisherKey"];
 
-  v9 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:@"WFNANTableViewContextChangedOperationTypeKey"];
+  v10 = [userInfo2 objectForKeyedSubscript:@"WFNANTableViewContextChangedOperationTypeKey"];
 
   if (v10)
   {
@@ -264,26 +264,26 @@ LABEL_20:
 
   if (!v11)
   {
-    v12 = [v10 unsignedIntegerValue];
-    if (v12 == 1)
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
+    if (unsignedIntegerValue == 1)
     {
       v19 = v8;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-      [v6 deleteItemsWithIdentifiers:v13];
+      [snapshot deleteItemsWithIdentifiers:v13];
     }
 
     else
     {
-      if (v12)
+      if (unsignedIntegerValue)
       {
 LABEL_10:
         v18[0] = @"WFNANTableViewControllerNANState";
         v18[1] = @"WFNANTableViewControllerPublishersCount";
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
-        [v6 reconfigureItemsWithIdentifiers:v15];
+        [snapshot reconfigureItemsWithIdentifiers:v15];
 
-        v16 = [(WFNANTableViewController *)self dataSource];
-        [v16 applySnapshot:v6 animatingDifferences:1];
+        dataSource2 = [(WFNANTableViewController *)self dataSource];
+        [dataSource2 applySnapshot:snapshot animatingDifferences:1];
 
         goto LABEL_11;
       }
@@ -291,7 +291,7 @@ LABEL_10:
       v20[0] = v8;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
       v14 = [(WFNANTableViewController *)self _identifierForSection:1];
-      [v6 appendItemsWithIdentifiers:v13 intoSectionWithIdentifier:v14];
+      [snapshot appendItemsWithIdentifiers:v13 intoSectionWithIdentifier:v14];
     }
 
     goto LABEL_10;
@@ -302,19 +302,19 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSubscribersChangedNotification:(id)a3
+- (void)_handleSubscribersChangedNotification:(id)notification
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFNANTableViewController *)self dataSource];
-  v6 = [v5 snapshot];
+  notificationCopy = notification;
+  dataSource = [(WFNANTableViewController *)self dataSource];
+  snapshot = [dataSource snapshot];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"WFNANTableViewContextChangedSubscriberKey"];
+  userInfo = [notificationCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"WFNANTableViewContextChangedSubscriberKey"];
 
-  v9 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:@"WFNANTableViewContextChangedOperationTypeKey"];
+  v10 = [userInfo2 objectForKeyedSubscript:@"WFNANTableViewContextChangedOperationTypeKey"];
 
   if (v10)
   {
@@ -328,26 +328,26 @@ LABEL_11:
 
   if (!v11)
   {
-    v12 = [v10 unsignedIntegerValue];
-    if (v12 == 1)
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
+    if (unsignedIntegerValue == 1)
     {
       v19 = v8;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-      [v6 deleteItemsWithIdentifiers:v13];
+      [snapshot deleteItemsWithIdentifiers:v13];
     }
 
     else
     {
-      if (v12)
+      if (unsignedIntegerValue)
       {
 LABEL_10:
         v18[0] = @"WFNANTableViewControllerNANState";
         v18[1] = @"WFNANTableViewControllerSubscribersCount";
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
-        [v6 reconfigureItemsWithIdentifiers:v15];
+        [snapshot reconfigureItemsWithIdentifiers:v15];
 
-        v16 = [(WFNANTableViewController *)self dataSource];
-        [v16 applySnapshot:v6 animatingDifferences:1];
+        dataSource2 = [(WFNANTableViewController *)self dataSource];
+        [dataSource2 applySnapshot:snapshot animatingDifferences:1];
 
         goto LABEL_11;
       }
@@ -355,7 +355,7 @@ LABEL_10:
       v20[0] = v8;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
       v14 = [(WFNANTableViewController *)self _identifierForSection:2];
-      [v6 appendItemsWithIdentifiers:v13 intoSectionWithIdentifier:v14];
+      [snapshot appendItemsWithIdentifiers:v13 intoSectionWithIdentifier:v14];
     }
 
     goto LABEL_10;
@@ -368,21 +368,21 @@ LABEL_11:
 
 - (BOOL)_isNANEnabled
 {
-  v3 = [(WFNANTableViewContext *)self->_context getPublishersCount];
-  v4 = [(WFNANTableViewContext *)self->_context getSubscribersCount];
-  return !((v4 + v3 < 0) ^ __OFADD__(v4, v3) | (v4 + v3 == 0));
+  getPublishersCount = [(WFNANTableViewContext *)self->_context getPublishersCount];
+  getSubscribersCount = [(WFNANTableViewContext *)self->_context getSubscribersCount];
+  return !((getSubscribersCount + getPublishersCount < 0) ^ __OFADD__(getSubscribersCount, getPublishersCount) | (getSubscribersCount + getPublishersCount == 0));
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  v5 = [(WFNANTableViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v10, "section")}];
-  v7 = [v6 unsignedIntegerValue];
+  pathCopy = path;
+  sections = [(WFNANTableViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v7 == 2)
+  if (unsignedIntegerValue == 2)
   {
-    if ([v10 row])
+    if ([pathCopy row])
     {
       goto LABEL_8;
     }
@@ -391,7 +391,7 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  if (v7 == 1 && ![v10 row])
+  if (unsignedIntegerValue == 1 && ![pathCopy row])
   {
     v8 = off_279EC4A18;
 LABEL_7:

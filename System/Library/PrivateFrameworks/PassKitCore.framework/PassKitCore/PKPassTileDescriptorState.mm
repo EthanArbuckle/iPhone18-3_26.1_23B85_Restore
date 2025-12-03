@@ -1,58 +1,58 @@
 @interface PKPassTileDescriptorState
-- (BOOL)isEqualToUnresolvedState:(id)a3;
-- (id)initForType:(int64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_copyInto:(uint64_t)a1;
+- (BOOL)isEqualToUnresolvedState:(id)state;
+- (id)initForType:(int64_t)type;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_copyInto:(uint64_t)into;
 @end
 
 @implementation PKPassTileDescriptorState
 
-- (id)initForType:(int64_t)a3
+- (id)initForType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = PKPassTileDescriptorState;
   result = [(PKPassTileDescriptorState *)&v5 init];
   if (result)
   {
-    *(result + 8) = a3 != 1;
-    *(result + 2) = a3;
+    *(result + 8) = type != 1;
+    *(result + 2) = type;
     *(result + 3) = 0;
   }
 
   return result;
 }
 
-- (void)_copyInto:(uint64_t)a1
+- (void)_copyInto:(uint64_t)into
 {
-  if (a1)
+  if (into)
   {
-    *(a2 + 8) = *(a1 + 8);
-    *(a2 + 24) = *(a1 + 24);
-    objc_storeStrong((a2 + 32), *(a1 + 32));
+    *(a2 + 8) = *(into + 8);
+    *(a2 + 24) = *(into + 24);
+    objc_storeStrong((a2 + 32), *(into + 32));
     v4 = a2;
-    objc_storeStrong(v4 + 5, *(a1 + 40));
-    *(v4 + 9) = *(a1 + 9);
+    objc_storeStrong(v4 + 5, *(into + 40));
+    *(v4 + 9) = *(into + 9);
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(PKPassTileDescriptorState *)[PKMutablePassTileDescriptorState alloc] initForType:self->_type];
   [(PKPassTileDescriptorState *)self _copyInto:v4];
   return v4;
 }
 
-- (BOOL)isEqualToUnresolvedState:(id)a3
+- (BOOL)isEqualToUnresolvedState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2] != self->_type || *(v4 + 8) != self->_supported || v4[3] != self->_enabled)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy[2] != self->_type || *(stateCopy + 8) != self->_supported || stateCopy[3] != self->_enabled)
   {
     goto LABEL_16;
   }
 
   stateIdentifier = self->_stateIdentifier;
-  v7 = v4[4];
+  v7 = stateCopy[4];
   v8 = stateIdentifier;
   v9 = v8;
   if (v7 == v8)

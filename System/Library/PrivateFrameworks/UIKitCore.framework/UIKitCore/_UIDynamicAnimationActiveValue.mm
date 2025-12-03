@@ -1,43 +1,43 @@
 @interface _UIDynamicAnimationActiveValue
-+ (id)activeValue:(double)a3 ofType:(int)a4;
-+ (id)lowerBoundary:(double)a3 ofType:(int)a4;
-+ (id)upperBoundary:(double)a3 ofType:(int)a4;
++ (id)activeValue:(double)value ofType:(int)type;
++ (id)lowerBoundary:(double)boundary ofType:(int)type;
++ (id)upperBoundary:(double)boundary ofType:(int)type;
 - (_UIDynamicAnimationActiveValue)init;
 - (id)_applier;
 - (id)description;
-- (void)_appendDescriptionToString:(id)a3 atLevel:(int)a4;
+- (void)_appendDescriptionToString:(id)string atLevel:(int)level;
 - (void)dealloc;
-- (void)setMaximumActiveValue:(double)a3;
-- (void)setMinimumActiveValue:(double)a3;
-- (void)setType:(int)a3;
-- (void)setValue:(double)a3;
+- (void)setMaximumActiveValue:(double)value;
+- (void)setMinimumActiveValue:(double)value;
+- (void)setType:(int)type;
+- (void)setValue:(double)value;
 @end
 
 @implementation _UIDynamicAnimationActiveValue
 
-+ (id)lowerBoundary:(double)a3 ofType:(int)a4
++ (id)lowerBoundary:(double)boundary ofType:(int)type
 {
-  result = [objc_opt_class() activeValue:*&a4 ofType:a3];
+  result = [objc_opt_class() activeValue:*&type ofType:boundary];
   *(result + 56) |= 1u;
-  *(result + 3) = a3;
+  *(result + 3) = boundary;
   return result;
 }
 
-+ (id)upperBoundary:(double)a3 ofType:(int)a4
++ (id)upperBoundary:(double)boundary ofType:(int)type
 {
-  result = [objc_opt_class() activeValue:*&a4 ofType:a3];
+  result = [objc_opt_class() activeValue:*&type ofType:boundary];
   *(result + 56) |= 2u;
-  *(result + 2) = a3;
+  *(result + 2) = boundary;
   return result;
 }
 
-+ (id)activeValue:(double)a3 ofType:(int)a4
++ (id)activeValue:(double)value ofType:(int)type
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   if (v6)
   {
-    v6[1] = a3;
-    *(v6 + 8) = a4;
+    v6[1] = value;
+    *(v6 + 8) = type;
   }
 
   return v6;
@@ -86,50 +86,50 @@
   return result;
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     v3 = *(self + 56);
     if ((v3 & 2) != 0)
     {
-      self->_minimumActiveValue = a3;
+      self->_minimumActiveValue = value;
     }
 
     if (v3)
     {
-      self->_maximumActiveValue = a3;
+      self->_maximumActiveValue = value;
     }
   }
 }
 
-- (void)setMinimumActiveValue:(double)a3
+- (void)setMinimumActiveValue:(double)value
 {
   if ((*(self + 56) & 3) != 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"The minimum active value for a boundary is based on the target value and can not be changed"];
   }
 
-  self->_minimumActiveValue = a3;
+  self->_minimumActiveValue = value;
 }
 
-- (void)setMaximumActiveValue:(double)a3
+- (void)setMaximumActiveValue:(double)value
 {
   if ((*(self + 56) & 3) != 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"The maximum active value for a boundary is based on the target value and can not be changed"];
   }
 
-  self->_maximumActiveValue = a3;
+  self->_maximumActiveValue = value;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
     [(_UIDynamicAnimationActiveValue *)self willChangeValueForKey:@"type"];
-    self->_type = a3;
+    self->_type = type;
 
     self->_applier = 0;
 
@@ -137,27 +137,27 @@
   }
 }
 
-- (void)_appendDescriptionToString:(id)a3 atLevel:(int)a4
+- (void)_appendDescriptionToString:(id)string atLevel:(int)level
 {
   v13 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  if ([a3 length])
+  if ([string length])
   {
-    [a3 appendString:@"\n"];
+    [string appendString:@"\n"];
   }
 
-  if (a4)
+  if (level)
   {
     v7 = 1;
     do
     {
-      [a3 appendString:@"    "];
+      [string appendString:@"    "];
       ++v7;
     }
 
-    while (v7 <= a4);
+    while (v7 <= level);
   }
 
-  [a3 appendFormat:@"<%@: %p", objc_opt_class(), self];
+  [string appendFormat:@"<%@: %p", objc_opt_class(), self];
   v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   for (i = objc_opt_class(); [MEMORY[0x1E696AAE8] bundleForClass:i] != v8; i = objc_msgSend(i, "superclass"))
   {
@@ -169,7 +169,7 @@
 
   if (objc_opt_class() != i)
   {
-    [a3 appendFormat:@"; baseClass = %@", NSStringFromClass(i)];
+    [string appendFormat:@"; baseClass = %@", NSStringFromClass(i)];
   }
 
   type = self->_type;
@@ -183,43 +183,43 @@
     v11 = off_1E70F5E40[type];
   }
 
-  [a3 appendFormat:@"; type = %@", v11];
-  [a3 appendFormat:@"; value = %f", *&self->_value];
+  [string appendFormat:@"; type = %@", v11];
+  [string appendFormat:@"; value = %f", *&self->_value];
   v12 = *(self + 56);
   if (v12)
   {
-    [a3 appendString:@"; lower boundary"];
+    [string appendString:@"; lower boundary"];
     v12 = *(self + 56);
   }
 
   if ((v12 & 2) != 0)
   {
-    [a3 appendString:@"; upper boundary"];
+    [string appendString:@"; upper boundary"];
   }
 
   if (self->_minimumActiveValue != -1.79769313e308 && (*(self + 56) & 2) == 0)
   {
-    [a3 appendFormat:@"; min = %f", *&self->_minimumActiveValue];
+    [string appendFormat:@"; min = %f", *&self->_minimumActiveValue];
   }
 
   if (self->_maximumActiveValue != 1.79769313e308 && (*(self + 56) & 1) == 0)
   {
-    [a3 appendFormat:@"; min = %f", *&self->_maximumActiveValue];
+    [string appendFormat:@"; min = %f", *&self->_maximumActiveValue];
   }
 
   if (self->_boundaryPull != 0.12)
   {
-    [a3 appendFormat:@"; pull = %f", *&self->_boundaryPull];
+    [string appendFormat:@"; pull = %f", *&self->_boundaryPull];
   }
 
-  [a3 appendFormat:@">"];
+  [string appendFormat:@">"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(_UIDynamicAnimationActiveValue *)self _appendDescriptionToString:v3 atLevel:0];
-  return v3;
+  string = [MEMORY[0x1E696AD60] string];
+  [(_UIDynamicAnimationActiveValue *)self _appendDescriptionToString:string atLevel:0];
+  return string;
 }
 
 @end

@@ -1,36 +1,36 @@
 @interface ATXTimelineRelevanceFilter
-+ (id)applyLimitsToTimelineSuggestions:(id)a3 forWidget:(id)a4 withTimelineEntryDelegate:(id)a5 abuseControlConfig:(id)a6;
-+ (id)filteredAndSortedTimelineEntriesForWidget:(id)a3 entries:(id)a4 withTimelineEntryDelegate:(id)a5 abuseControlConfig:(id)a6;
++ (id)applyLimitsToTimelineSuggestions:(id)suggestions forWidget:(id)widget withTimelineEntryDelegate:(id)delegate abuseControlConfig:(id)config;
++ (id)filteredAndSortedTimelineEntriesForWidget:(id)widget entries:(id)entries withTimelineEntryDelegate:(id)delegate abuseControlConfig:(id)config;
 @end
 
 @implementation ATXTimelineRelevanceFilter
 
-+ (id)filteredAndSortedTimelineEntriesForWidget:(id)a3 entries:(id)a4 withTimelineEntryDelegate:(id)a5 abuseControlConfig:(id)a6
++ (id)filteredAndSortedTimelineEntriesForWidget:(id)widget entries:(id)entries withTimelineEntryDelegate:(id)delegate abuseControlConfig:(id)config
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  widgetCopy = widget;
+  entriesCopy = entries;
+  delegateCopy = delegate;
+  configCopy = config;
   v13 = objc_opt_new();
-  v14 = [v9 atxTimelineIdentifier];
-  v15 = [v9 extensionIdentity];
-  v16 = [v15 containerBundleIdentifier];
-  v17 = [v11 countOfInfoSuggestionsForBundleId:v16];
+  atxTimelineIdentifier = [widgetCopy atxTimelineIdentifier];
+  extensionIdentity = [widgetCopy extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+  v17 = [delegateCopy countOfInfoSuggestionsForBundleId:containerBundleIdentifier];
 
-  if (v17 > [v12 timelineUpdateLimitPerAppBundleId])
+  if (v17 > [configCopy timelineUpdateLimitPerAppBundleId])
   {
     v18 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v9 extensionIdentity];
-      v20 = [v19 containerBundleIdentifier];
+      extensionIdentity2 = [widgetCopy extensionIdentity];
+      containerBundleIdentifier2 = [extensionIdentity2 containerBundleIdentifier];
       *buf = 138412802;
-      v41 = v20;
+      v41 = containerBundleIdentifier2;
       v42 = 2048;
       v43 = v17;
       v44 = 2048;
-      v45 = [v12 timelineUpdateLimitPerAppBundleId];
+      timelineUpdateLimitPerAppBundleId = [configCopy timelineUpdateLimitPerAppBundleId];
       _os_log_impl(&dword_2263AA000, v18, OS_LOG_TYPE_DEFAULT, "ATXInfoTimelineEntryFilter: Filtering out timeline update since the total number of entries for bundleId %@: %llu has exceeded limit (%lu)", buf, 0x20u);
     }
 
@@ -40,39 +40,39 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v21 = [v11 countOfInfoSuggestionsForSourceId:v14];
-  if (v21 > [v12 timelineUpdateLimitPerSource])
+  v21 = [delegateCopy countOfInfoSuggestionsForSourceId:atxTimelineIdentifier];
+  if (v21 > [configCopy timelineUpdateLimitPerSource])
   {
     v18 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v41 = v14;
+      v41 = atxTimelineIdentifier;
       v42 = 2048;
       v43 = v21;
       v44 = 2048;
-      v45 = [v12 timelineUpdateLimitPerSource];
+      timelineUpdateLimitPerAppBundleId = [configCopy timelineUpdateLimitPerSource];
       _os_log_impl(&dword_2263AA000, v18, OS_LOG_TYPE_DEFAULT, "ATXInfoTimelineEntryFilter: Filtering out timeline update since the total number of entries for sourceId %@: %llu has exceeded limit (%lu)", buf, 0x20u);
     }
 
     goto LABEL_7;
   }
 
-  v23 = [v11 latestUpdateDateForSourceId:v14];
-  if (v23 && ([MEMORY[0x277CBEAA8] now], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "timeIntervalSinceDate:", v23), v26 = v25, v27 = objc_msgSend(v12, "minimumSecondsBetweenMetadataUpdatesPerSource"), v24, v26 < v27))
+  v23 = [delegateCopy latestUpdateDateForSourceId:atxTimelineIdentifier];
+  if (v23 && ([MEMORY[0x277CBEAA8] now], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "timeIntervalSinceDate:", v23), v26 = v25, v27 = objc_msgSend(configCopy, "minimumSecondsBetweenMetadataUpdatesPerSource"), v24, v26 < v27))
   {
     v28 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v12 minimumSecondsBetweenMetadataUpdatesPerSource];
+      minimumSecondsBetweenMetadataUpdatesPerSource = [configCopy minimumSecondsBetweenMetadataUpdatesPerSource];
       v29 = [MEMORY[0x277CBEAA8] now];
       [v29 timeIntervalSinceDate:v23];
       *buf = 134218498;
-      v41 = v36;
+      v41 = minimumSecondsBetweenMetadataUpdatesPerSource;
       v42 = 2112;
-      v43 = v14;
+      v43 = atxTimelineIdentifier;
       v44 = 1024;
-      LODWORD(v45) = v30;
+      LODWORD(timelineUpdateLimitPerAppBundleId) = v30;
       _os_log_impl(&dword_2263AA000, v28, OS_LOG_TYPE_DEFAULT, "ATXInfoTimelineEntryFilter: Rate limiting limits reloads to one per %lu seconds. Filtering out timeline update for source %@ since the last update was %d seconds ago", buf, 0x1Cu);
     }
 
@@ -84,13 +84,13 @@ LABEL_7:
     v31 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"date" ascending:1];
     v39 = v31;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
-    v33 = [v10 sortedArrayUsingDescriptors:v32];
+    v33 = [entriesCopy sortedArrayUsingDescriptors:v32];
 
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __125__ATXTimelineRelevanceFilter_filteredAndSortedTimelineEntriesForWidget_entries_withTimelineEntryDelegate_abuseControlConfig___block_invoke;
     v37[3] = &unk_27859D008;
-    v38 = v9;
+    v38 = widgetCopy;
     v22 = [v33 _pas_filteredArrayWithTest:v37];
   }
 
@@ -127,25 +127,25 @@ BOOL __125__ATXTimelineRelevanceFilter_filteredAndSortedTimelineEntriesForWidget
   return v12 >= 1.0;
 }
 
-+ (id)applyLimitsToTimelineSuggestions:(id)a3 forWidget:(id)a4 withTimelineEntryDelegate:(id)a5 abuseControlConfig:(id)a6
++ (id)applyLimitsToTimelineSuggestions:(id)suggestions forWidget:(id)widget withTimelineEntryDelegate:(id)delegate abuseControlConfig:(id)config
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 atxTimelineIdentifier];
+  suggestionsCopy = suggestions;
+  widgetCopy = widget;
+  delegateCopy = delegate;
+  configCopy = config;
+  atxTimelineIdentifier = [widgetCopy atxTimelineIdentifier];
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x2020000000;
-  v14 = [v10 extensionIdentity];
-  v15 = [v14 containerBundleIdentifier];
-  v16 = [v11 countOfInfoSuggestionsForBundleId:v15];
+  extensionIdentity = [widgetCopy extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+  v16 = [delegateCopy countOfInfoSuggestionsForBundleId:containerBundleIdentifier];
 
   v32[3] = v16;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x2020000000;
-  v31[3] = [v11 countOfInfoSuggestionsForSourceId:v13];
+  v31[3] = [delegateCopy countOfInfoSuggestionsForSourceId:atxTimelineIdentifier];
   v17 = MEMORY[0x277CCAC30];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
@@ -153,12 +153,12 @@ BOOL __125__ATXTimelineRelevanceFilter_filteredAndSortedTimelineEntriesForWidget
   v26 = &unk_27859D030;
   v29 = v32;
   v30 = v31;
-  v18 = v12;
+  v18 = configCopy;
   v27 = v18;
-  v19 = v13;
+  v19 = atxTimelineIdentifier;
   v28 = v19;
   v20 = [v17 predicateWithBlock:&v23];
-  v21 = [v9 filteredArrayUsingPredicate:{v20, v23, v24, v25, v26}];
+  v21 = [suggestionsCopy filteredArrayUsingPredicate:{v20, v23, v24, v25, v26}];
 
   _Block_object_dispose(v31, 8);
   _Block_object_dispose(v32, 8);

@@ -1,13 +1,13 @@
 @interface SiriTTSTrainerDiagnostics
-+ (void)collectTailspin:(id)a3;
-+ (void)collectTailspinToFile:(id)a3 minTimestamp:(unint64_t)a4 completion:(id)a5;
++ (void)collectTailspin:(id)tailspin;
++ (void)collectTailspinToFile:(id)file minTimestamp:(unint64_t)timestamp completion:(id)completion;
 @end
 
 @implementation SiriTTSTrainerDiagnostics
 
-+ (void)collectTailspin:(id)a3
++ (void)collectTailspin:(id)tailspin
 {
-  v4 = a3;
+  tailspinCopy = tailspin;
   objc_opt_self();
   if (qword_100029C90 != -1)
   {
@@ -42,27 +42,27 @@
   v15[2] = sub_10000D2D4;
   v15[3] = &unk_1000252C8;
   v16 = v9;
-  v17 = v4;
-  v13 = v4;
+  v17 = tailspinCopy;
+  v13 = tailspinCopy;
   v14 = v9;
-  [a1 collectTailspinToFile:v11 minTimestamp:v6 + (v8 * -10.0) completion:v15];
+  [self collectTailspinToFile:v11 minTimestamp:v6 + (v8 * -10.0) completion:v15];
 }
 
-+ (void)collectTailspinToFile:(id)a3 minTimestamp:(unint64_t)a4 completion:(id)a5
++ (void)collectTailspinToFile:(id)file minTimestamp:(unint64_t)timestamp completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(9, 0);
   v14[0] = UnsafePointer;
   v14[1] = UnsafePointer;
   v15[0] = &__kCFBooleanTrue;
-  v9 = a3;
-  v10 = [NSNumber numberWithUnsignedLongLong:a4];
+  fileCopy = file;
+  v10 = [NSNumber numberWithUnsignedLongLong:timestamp];
   v15[1] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  [v9 fileDescriptor];
-  v13 = v7;
-  v12 = v7;
+  [fileCopy fileDescriptor];
+  v13 = completionCopy;
+  v12 = completionCopy;
   tailspin_dump_output_with_options();
 }
 

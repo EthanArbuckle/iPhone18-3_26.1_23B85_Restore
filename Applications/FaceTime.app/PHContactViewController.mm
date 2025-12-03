@@ -1,7 +1,7 @@
 @interface PHContactViewController
 - (id)primaryPropertyKey;
-- (void)setHandle:(id)a3;
-- (void)setRecentCall:(id)a3;
+- (void)setHandle:(id)handle;
+- (void)setRecentCall:(id)call;
 @end
 
 @implementation PHContactViewController
@@ -10,27 +10,27 @@
 {
   v15.receiver = self;
   v15.super_class = PHContactViewController;
-  v3 = [(PHContactViewController *)&v15 primaryPropertyKey];
-  v4 = [(PHContactViewController *)self recentCall];
-  v5 = v4;
-  if (v4)
+  primaryPropertyKey = [(PHContactViewController *)&v15 primaryPropertyKey];
+  recentCall = [(PHContactViewController *)self recentCall];
+  v5 = recentCall;
+  if (recentCall)
   {
-    v6 = [v4 handleType];
-    if (v6 < 2)
+    handleType = [recentCall handleType];
+    if (handleType < 2)
     {
       v8 = 0;
     }
 
     else
     {
-      if (v6 == 2)
+      if (handleType == 2)
       {
         v7 = &CNContactPhoneNumbersKey;
       }
 
       else
       {
-        if (v6 != 3)
+        if (handleType != 3)
         {
           goto LABEL_10;
         }
@@ -41,33 +41,33 @@
       v8 = *v7;
     }
 
-    v3 = v8;
+    primaryPropertyKey = v8;
   }
 
 LABEL_10:
-  v9 = [(PHContactViewController *)self handle];
-  v10 = v9;
-  if (!v9)
+  handle = [(PHContactViewController *)self handle];
+  v10 = handle;
+  if (!handle)
   {
     goto LABEL_19;
   }
 
-  v11 = [v9 type];
-  if (v11 < 2)
+  type = [handle type];
+  if (type < 2)
   {
     v13 = 0;
   }
 
   else
   {
-    if (v11 == 2)
+    if (type == 2)
     {
       v12 = &CNContactPhoneNumbersKey;
     }
 
     else
     {
-      if (v11 != 3)
+      if (type != 3)
       {
         goto LABEL_19;
       }
@@ -78,48 +78,48 @@ LABEL_10:
     v13 = *v12;
   }
 
-  v3 = v13;
+  primaryPropertyKey = v13;
 LABEL_19:
 
-  return v3;
+  return primaryPropertyKey;
 }
 
-- (void)setRecentCall:(id)a3
+- (void)setRecentCall:(id)call
 {
-  v5 = a3;
-  if (self->_recentCall != v5)
+  callCopy = call;
+  if (self->_recentCall != callCopy)
   {
-    v18 = v5;
-    objc_storeStrong(&self->_recentCall, a3);
-    v6 = [(CHRecentCall *)v18 callerId];
-    if (![v6 length])
+    v18 = callCopy;
+    objc_storeStrong(&self->_recentCall, call);
+    callerId = [(CHRecentCall *)v18 callerId];
+    if (![callerId length])
     {
 LABEL_15:
 
-      v5 = v18;
+      callCopy = v18;
       goto LABEL_16;
     }
 
-    v7 = [(CHRecentCall *)v18 handleType];
-    if (v7 == 3)
+    handleType = [(CHRecentCall *)v18 handleType];
+    if (handleType == 3)
     {
-      v15 = [(PHContactViewController *)self contact];
-      v9 = [v15 labeledValueForEmailAddress:v6];
+      contact = [(PHContactViewController *)self contact];
+      v9 = [contact labeledValueForEmailAddress:callerId];
 
       v10 = &CNContactEmailAddressesKey;
     }
 
     else
     {
-      if (v7 == 2)
+      if (handleType == 2)
       {
-        v12 = [(CHRecentCall *)v18 isoCountryCode];
-        v13 = [CNPhoneNumber phoneNumberWithDigits:v6 countryCode:v12];
+        isoCountryCode = [(CHRecentCall *)v18 isoCountryCode];
+        v13 = [CNPhoneNumber phoneNumberWithDigits:callerId countryCode:isoCountryCode];
 
         if (v13)
         {
-          v14 = [(PHContactViewController *)self contact];
-          v9 = [v14 labeledValueForPhoneNumber:v13];
+          contact2 = [(PHContactViewController *)self contact];
+          v9 = [contact2 labeledValueForPhoneNumber:v13];
 
           v11 = CNContactPhoneNumbersKey;
         }
@@ -138,15 +138,15 @@ LABEL_15:
         goto LABEL_13;
       }
 
-      if (v7 != 1 || !v6)
+      if (handleType != 1 || !callerId)
       {
         v9 = 0;
         v11 = 0;
         goto LABEL_14;
       }
 
-      v8 = [(PHContactViewController *)self contact];
-      v9 = [v8 labeledValueForSocialProfileWithUsername:v6];
+      contact3 = [(PHContactViewController *)self contact];
+      v9 = [contact3 labeledValueForSocialProfileWithUsername:callerId];
 
       v10 = &CNContactSocialProfilesKey;
     }
@@ -155,9 +155,9 @@ LABEL_15:
     if (v9)
     {
 LABEL_13:
-      v16 = [v9 identifier];
-      v17 = [(CHRecentCall *)v18 callStatus];
-      [(PHContactViewController *)self highlightPropertyWithKey:v11 identifier:v16 important:v17 == kCHCallStatusMissed];
+      identifier = [v9 identifier];
+      callStatus = [(CHRecentCall *)v18 callStatus];
+      [(PHContactViewController *)self highlightPropertyWithKey:v11 identifier:identifier important:callStatus == kCHCallStatusMissed];
     }
 
 LABEL_14:
@@ -168,19 +168,19 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)setHandle:(id)a3
+- (void)setHandle:(id)handle
 {
-  v5 = a3;
-  if (self->_handle != v5)
+  handleCopy = handle;
+  if (self->_handle != handleCopy)
   {
-    v17 = v5;
-    objc_storeStrong(&self->_handle, a3);
-    v6 = [(CHHandle *)v17 type];
-    if (v6 == 3)
+    v17 = handleCopy;
+    objc_storeStrong(&self->_handle, handle);
+    type = [(CHHandle *)v17 type];
+    if (type == 3)
     {
-      v14 = [(PHContactViewController *)self contact];
-      v15 = [(CHHandle *)v17 value];
-      v9 = [v14 labeledValueForEmailAddress:v15];
+      contact = [(PHContactViewController *)self contact];
+      value = [(CHHandle *)v17 value];
+      v9 = [contact labeledValueForEmailAddress:value];
 
       v13 = CNContactEmailAddressesKey;
       if (!v9)
@@ -191,15 +191,15 @@ LABEL_16:
       goto LABEL_15;
     }
 
-    if (v6 == 2)
+    if (type == 2)
     {
-      v11 = [(CHHandle *)v17 value];
-      v7 = [CNPhoneNumber phoneNumberWithStringValue:v11];
+      value2 = [(CHHandle *)v17 value];
+      value3 = [CNPhoneNumber phoneNumberWithStringValue:value2];
 
-      if (v7)
+      if (value3)
       {
-        v12 = [(PHContactViewController *)self contact];
-        v9 = [v12 labeledValueForPhoneNumber:v7];
+        contact2 = [(PHContactViewController *)self contact];
+        v9 = [contact2 labeledValueForPhoneNumber:value3];
 
         v10 = &CNContactPhoneNumbersKey;
         goto LABEL_9;
@@ -208,18 +208,18 @@ LABEL_16:
 
     else
     {
-      if (v6 != 1)
+      if (type != 1)
       {
         v9 = 0;
         v13 = 0;
         goto LABEL_16;
       }
 
-      v7 = [(CHHandle *)v17 value];
-      if (v7)
+      value3 = [(CHHandle *)v17 value];
+      if (value3)
       {
-        v8 = [(PHContactViewController *)self contact];
-        v9 = [v8 labeledValueForSocialProfileWithUsername:v7];
+        contact3 = [(PHContactViewController *)self contact];
+        v9 = [contact3 labeledValueForSocialProfileWithUsername:value3];
 
         v10 = &CNContactSocialProfilesKey;
 LABEL_9:
@@ -235,13 +235,13 @@ LABEL_14:
     if (v9)
     {
 LABEL_15:
-      v16 = [v9 identifier];
-      [(PHContactViewController *)self highlightPropertyWithKey:v13 identifier:v16 important:0];
+      identifier = [v9 identifier];
+      [(PHContactViewController *)self highlightPropertyWithKey:v13 identifier:identifier important:0];
     }
 
 LABEL_16:
 
-    v5 = v17;
+    handleCopy = v17;
   }
 }
 

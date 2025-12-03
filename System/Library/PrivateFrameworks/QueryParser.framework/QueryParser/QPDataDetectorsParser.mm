@@ -1,14 +1,14 @@
 @interface QPDataDetectorsParser
 - (QPDataDetectorsParser)init;
-- (void)_addressFromResult:(id)a3 attributes:(id)a4;
-- (void)_currencyFromResult:(id)a3 attributes:(id)a4;
-- (void)_emailAddressFromResult:(id)a3 attributes:(id)a4;
-- (void)_flightFromResult:(id)a3 attributes:(id)a4;
-- (void)_linkFromResult:(id)a3 attributes:(id)a4;
-- (void)_phoneNumberDigitsFromResult:(id)a3 attributes:(id)a4;
-- (void)_trackingNumberFromResult:(id)a3 attributes:(id)a4;
-- (void)enumerateDatesInString:(id)a3 options:(id)a4 withBlock:(id)a5;
-- (void)enumerateEntitiesInString:(id)a3 options:(id)a4 withBlock:(id)a5;
+- (void)_addressFromResult:(id)result attributes:(id)attributes;
+- (void)_currencyFromResult:(id)result attributes:(id)attributes;
+- (void)_emailAddressFromResult:(id)result attributes:(id)attributes;
+- (void)_flightFromResult:(id)result attributes:(id)attributes;
+- (void)_linkFromResult:(id)result attributes:(id)attributes;
+- (void)_phoneNumberDigitsFromResult:(id)result attributes:(id)attributes;
+- (void)_trackingNumberFromResult:(id)result attributes:(id)attributes;
+- (void)enumerateDatesInString:(id)string options:(id)options withBlock:(id)block;
+- (void)enumerateEntitiesInString:(id)string options:(id)options withBlock:(id)block;
 @end
 
 @implementation QPDataDetectorsParser
@@ -32,15 +32,15 @@
   return v2;
 }
 
-- (void)_addressFromResult:(id)a3 attributes:(id)a4
+- (void)_addressFromResult:(id)result attributes:(id)attributes
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  attributesCopy = attributes;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [a3 subResults];
+  obj = [result subResults];
   v7 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -55,31 +55,31 @@
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 type];
-        v12 = [v11 isEqualToString:@"Street"];
+        type = [v10 type];
+        v12 = [type isEqualToString:@"Street"];
 
         if (v12)
         {
-          v13 = [v10 value];
-          [v6 setObject:v13 forKey:@"Value"];
+          value = [v10 value];
+          [attributesCopy setObject:value forKey:@"Value"];
         }
 
         else
         {
-          v14 = [v10 type];
-          v15 = [v14 isEqualToString:@"ZipCode"];
+          type2 = [v10 type];
+          v15 = [type2 isEqualToString:@"ZipCode"];
 
           if (!v15)
           {
             goto LABEL_11;
           }
 
-          v13 = [v10 value];
-          [v6 setObject:v13 forKey:@"ZipCode"];
+          value = [v10 value];
+          [attributesCopy setObject:value forKey:@"ZipCode"];
         }
 
 LABEL_11:
-        [(QPDataDetectorsParser *)self _addressFromResult:v10 attributes:v6];
+        [(QPDataDetectorsParser *)self _addressFromResult:v10 attributes:attributesCopy];
       }
 
       v7 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -91,34 +91,34 @@ LABEL_11:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_emailAddressFromResult:(id)a3 attributes:(id)a4
+- (void)_emailAddressFromResult:(id)result attributes:(id)attributes
 {
-  v5 = a3;
-  v6 = a4;
+  resultCopy = result;
+  attributesCopy = attributes;
   v12 = 0;
   v13 = 0;
-  v7 = [v5 getMailValue:&v13 label:&v12];
+  v7 = [resultCopy getMailValue:&v13 label:&v12];
   v8 = v13;
   v9 = v12;
   if (v7)
   {
-    [v6 setObject:v8 forKey:@"Value"];
+    [attributesCopy setObject:v8 forKey:@"Value"];
     v10 = [v8 componentsSeparatedByString:@"@"];
-    v11 = [v10 lastObject];
+    lastObject = [v10 lastObject];
 
-    if (v11)
+    if (lastObject)
     {
-      [v6 setObject:v11 forKey:@"Domain"];
+      [attributesCopy setObject:lastObject forKey:@"Domain"];
     }
   }
 }
 
-- (void)_phoneNumberDigitsFromResult:(id)a3 attributes:(id)a4
+- (void)_phoneNumberDigitsFromResult:(id)result attributes:(id)attributes
 {
-  v6 = a4;
+  attributesCopy = attributes;
   v23 = 0;
   v24 = 0;
-  v7 = [a3 getPhoneValue:&v24 label:&v23];
+  v7 = [result getPhoneValue:&v24 label:&v23];
   v8 = v24;
   v9 = v23;
   if (v7)
@@ -127,12 +127,12 @@ LABEL_11:
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 countryCode];
-      if (v12)
+      countryCode = [v10 countryCode];
+      if (countryCode)
       {
         v13 = MEMORY[0x1E695CF50];
-        v14 = [v11 countryCode];
-        v15 = [v13 dialingCodeForISOCountryCode:v14];
+        countryCode2 = [v11 countryCode];
+        v15 = [v13 dialingCodeForISOCountryCode:countryCode2];
       }
 
       else
@@ -140,131 +140,131 @@ LABEL_11:
         v15 = 0;
       }
 
-      v16 = [v11 unformattedInternationalStringValue];
-      v17 = [v16 stringByRemovingCharactersFromSet:self->_punctuation];
+      unformattedInternationalStringValue = [v11 unformattedInternationalStringValue];
+      v17 = [unformattedInternationalStringValue stringByRemovingCharactersFromSet:self->_punctuation];
 
-      v18 = [v17 stringByRemovingWhitespace];
+      stringByRemovingWhitespace = [v17 stringByRemovingWhitespace];
 
       v19 = 0;
       v20 = 0x7FFFFFFFFFFFFFFFLL;
-      if (v15 && v18)
+      if (v15 && stringByRemovingWhitespace)
       {
-        v20 = [v18 rangeOfString:v15];
+        v20 = [stringByRemovingWhitespace rangeOfString:v15];
       }
 
       if (v20 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v21 = v18;
+        v21 = stringByRemovingWhitespace;
       }
 
       else
       {
-        v21 = [v18 stringByReplacingOccurrencesOfString:v15 withString:&stru_1F45E9EA0 options:8 range:{v20, v19}];
+        v21 = [stringByRemovingWhitespace stringByReplacingOccurrencesOfString:v15 withString:&stru_1F45E9EA0 options:8 range:{v20, v19}];
       }
 
       v22 = v21;
-      if (v18)
+      if (stringByRemovingWhitespace)
       {
-        [v6 setObject:v18 forKey:@"Value"];
+        [attributesCopy setObject:stringByRemovingWhitespace forKey:@"Value"];
       }
 
       if (v22)
       {
-        [v6 setObject:v22 forKey:@"PhoneNumber"];
+        [attributesCopy setObject:v22 forKey:@"PhoneNumber"];
       }
     }
   }
 }
 
-- (void)_flightFromResult:(id)a3 attributes:(id)a4
+- (void)_flightFromResult:(id)result attributes:(id)attributes
 {
-  v5 = a3;
-  v6 = a4;
+  resultCopy = result;
+  attributesCopy = attributes;
   v12 = 0;
   v13 = 0;
-  v7 = [v5 getFlightNumber:&v13 airline:&v12];
+  v7 = [resultCopy getFlightNumber:&v13 airline:&v12];
   v8 = v13;
   v9 = v12;
   if (v7)
   {
-    v10 = [v5 value];
-    [v6 setObject:v10 forKey:@"Value"];
+    value = [resultCopy value];
+    [attributesCopy setObject:value forKey:@"Value"];
 
     if (v8)
     {
       if (v9)
       {
         v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v9, v8];
-        [v6 setObject:v11 forKey:@"FlightNumber"];
+        [attributesCopy setObject:v11 forKey:@"FlightNumber"];
       }
     }
   }
 }
 
-- (void)_linkFromResult:(id)a3 attributes:(id)a4
+- (void)_linkFromResult:(id)result attributes:(id)attributes
 {
-  v18 = a3;
-  v5 = a4;
-  v6 = [v18 type];
-  v7 = [&unk_1F45F8C18 containsObject:v6];
+  resultCopy = result;
+  attributesCopy = attributes;
+  type = [resultCopy type];
+  v7 = [&unk_1F45F8C18 containsObject:type];
 
   if (v7)
   {
     v8 = MEMORY[0x1E695DFF8];
-    v9 = [v18 value];
-    v10 = [v8 URLWithString:v9];
+    value = [resultCopy value];
+    v10 = [v8 URLWithString:value];
 
-    v11 = [v10 host];
-    if (v11)
+    host = [v10 host];
+    if (host)
     {
-      v12 = [v10 host];
-      v13 = [v12 containsString:@"."];
+      host2 = [v10 host];
+      v13 = [host2 containsString:@"."];
 
       if (v13)
       {
-        v14 = [v18 value];
+        value2 = [resultCopy value];
 
-        if (v14)
+        if (value2)
         {
-          v15 = [v18 value];
-          [v5 setObject:v15 forKey:@"Value"];
+          value3 = [resultCopy value];
+          [attributesCopy setObject:value3 forKey:@"Value"];
         }
 
-        v16 = [v10 host];
+        host3 = [v10 host];
 
-        if (v16)
+        if (host3)
         {
-          v17 = [v10 host];
-          [v5 setObject:v17 forKey:@"Domain"];
+          host4 = [v10 host];
+          [attributesCopy setObject:host4 forKey:@"Domain"];
         }
       }
     }
   }
 }
 
-- (void)_trackingNumberFromResult:(id)a3 attributes:(id)a4
+- (void)_trackingNumberFromResult:(id)result attributes:(id)attributes
 {
-  v5 = a3;
-  v6 = a4;
+  resultCopy = result;
+  attributesCopy = attributes;
   v11 = 0;
   v12 = 0;
-  v7 = [v5 getTrackingNumber:&v12 carrier:&v11];
+  v7 = [resultCopy getTrackingNumber:&v12 carrier:&v11];
   v8 = v12;
   v9 = v11;
   v10 = v9;
   if (v7 && v8 && v9)
   {
-    [v6 setObject:v8 forKey:@"Value"];
-    [v6 setObject:v10 forKey:@"Carrier"];
+    [attributesCopy setObject:v8 forKey:@"Value"];
+    [attributesCopy setObject:v10 forKey:@"Carrier"];
   }
 }
 
-- (void)_currencyFromResult:(id)a3 attributes:(id)a4
+- (void)_currencyFromResult:(id)result attributes:(id)attributes
 {
-  v5 = a4;
+  attributesCopy = attributes;
   v14 = 0;
   v15 = 0.0;
-  v6 = [a3 getMoneyAmount:&v15 currency:&v14];
+  v6 = [result getMoneyAmount:&v15 currency:&v14];
   v7 = v14;
   if (v7)
   {
@@ -282,24 +282,24 @@ LABEL_11:
     if (CurrencyCode)
     {
       v10 = [MEMORY[0x1E696AD98] numberWithDouble:v15];
-      v11 = [v10 stringValue];
-      [v5 setObject:v11 forKey:@"DECIMAL"];
+      stringValue = [v10 stringValue];
+      [attributesCopy setObject:stringValue forKey:@"DECIMAL"];
 
       v12 = [MEMORY[0x1E696AD98] numberWithLong:CurrencyCode];
-      v13 = [v12 stringValue];
-      [v5 setObject:v13 forKey:@"CurrencyUnit"];
+      stringValue2 = [v12 stringValue];
+      [attributesCopy setObject:stringValue2 forKey:@"CurrencyUnit"];
     }
   }
 }
 
-- (void)enumerateEntitiesInString:(id)a3 options:(id)a4 withBlock:(id)a5
+- (void)enumerateEntitiesInString:(id)string options:(id)options withBlock:(id)block
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v28 = a5;
+  stringCopy = string;
+  blockCopy = block;
   context = objc_autoreleasePoolPush();
-  v24 = v7;
-  [MEMORY[0x1E6999A88] scanString:v7 range:0 configuration:{objc_msgSend(v7, "length"), self->_config}];
+  v24 = stringCopy;
+  [MEMORY[0x1E6999A88] scanString:stringCopy range:0 configuration:{objc_msgSend(stringCopy, "length"), self->_config}];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -321,13 +321,13 @@ LABEL_11:
         }
 
         v11 = *(*(&v30 + 1) + 8 * v10);
-        v12 = [v11 range];
+        range = [v11 range];
         v14 = v13;
         if ([v11 category] == 1)
         {
           v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-          v16 = [v11 type];
-          v17 = [v16 containsString:@"Email"];
+          type = [v11 type];
+          v17 = [type containsString:@"Email"];
 
           if (v17)
           {
@@ -374,7 +374,7 @@ LABEL_11:
             v14 = [v24 length];
             v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
             [(QPDataDetectorsParser *)self _trackingNumberFromResult:v11 attributes:v20];
-            v12 = 0;
+            range = 0;
             v18 = v20;
           }
 
@@ -387,8 +387,8 @@ LABEL_11:
         if ([v18 count])
         {
           v29 = 0;
-          v19 = [v11 type];
-          v28[2](v28, v19, v12, v14, v18, &v29);
+          type2 = [v11 type];
+          blockCopy[2](blockCopy, type2, range, v14, v18, &v29);
 
           if (v29)
           {
@@ -414,40 +414,40 @@ LABEL_29:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateDatesInString:(id)a3 options:(id)a4 withBlock:(id)a5
+- (void)enumerateDatesInString:(id)string options:(id)options withBlock:(id)block
 {
   v126 = *MEMORY[0x1E69E9840];
-  v78 = a3;
-  v7 = a4;
-  v80 = a5;
-  v79 = v7;
-  v8 = [v7 objectForKeyedSubscript:kQPQueryParserOptionReferenceCalendarKey];
+  stringCopy = string;
+  optionsCopy = options;
+  blockCopy = block;
+  v79 = optionsCopy;
+  v8 = [optionsCopy objectForKeyedSubscript:kQPQueryParserOptionReferenceCalendarKey];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    currentCalendar = v8;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   }
 
-  v11 = v10;
+  v11 = currentCalendar;
 
-  v12 = [v7 objectForKeyedSubscript:kQPQueryParserOptionLocaleKey];
+  v12 = [optionsCopy objectForKeyedSubscript:kQPQueryParserOptionLocaleKey];
   v13 = v12;
   if (v12)
   {
-    v77 = v12;
+    currentLocale = v12;
   }
 
   else
   {
-    v77 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   }
 
-  v14 = [v7 objectForKeyedSubscript:kQPQueryParserOptionReferenceDateKey];
+  v14 = [optionsCopy objectForKeyedSubscript:kQPQueryParserOptionReferenceDateKey];
   v15 = v14;
   if (v14)
   {
@@ -459,7 +459,7 @@ LABEL_29:
     v91 = [MEMORY[0x1E695DF00] now];
   }
 
-  v16 = [v7 objectForKeyedSubscript:kQPQueryParserOptionIgnoreFutureDatesKey];
+  v16 = [optionsCopy objectForKeyedSubscript:kQPQueryParserOptionIgnoreFutureDatesKey];
   v17 = v16;
   v18 = MEMORY[0x1E695E110];
   if (v16)
@@ -518,7 +518,7 @@ LABEL_29:
 
   v29 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v29 setCalendar:v11];
-  [v29 setLocale:v77];
+  [v29 setLocale:currentLocale];
   v117 = -1;
   v116 = -1;
   v115 = -1;
@@ -528,7 +528,7 @@ LABEL_29:
   CFCalendarDecomposeAbsoluteTime(v11, v30, "dMyEw", &v117, &v116, &v115, &v114, &v113);
   v112 = 0;
   v84 = v29;
-  v76 = [MEMORY[0x1E6999A88] scanString:v78];
+  v76 = [MEMORY[0x1E6999A88] scanString:stringCopy];
   if ([v76 count])
   {
     v110 = 0u;
@@ -558,10 +558,10 @@ LABEL_29:
 
         v32 = *(*(&v108 + 1) + 8 * i);
         v107 = 0;
-        v33 = [MEMORY[0x1E695DFE8] localTimeZone];
+        localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
         v106 = 0;
         v94 = v32;
-        v95 = [v32 dateFromReferenceDate:v91 referenceTimezone:v33 timezoneRef:&v106 allDayRef:&v107];
+        v95 = [v32 dateFromReferenceDate:v91 referenceTimezone:localTimeZone timezoneRef:&v106 allDayRef:&v107];
         v92 = v106;
 
         if (v95)
@@ -588,8 +588,8 @@ LABEL_29:
           v97 = 0u;
           v98 = 0u;
           v99 = 0u;
-          v35 = [v32 subResults];
-          v36 = [v35 countByEnumeratingWithState:&v96 objects:v124 count:16];
+          subResults = [v32 subResults];
+          v36 = [subResults countByEnumeratingWithState:&v96 objects:v124 count:16];
           if (!v36)
           {
             goto LABEL_44;
@@ -602,12 +602,12 @@ LABEL_29:
             {
               if (*v97 != v37)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(subResults);
               }
 
               v39 = *(*(&v96 + 1) + 8 * j);
-              v40 = [v39 type];
-              v41 = [v40 isEqualToString:@"RelativeDayOfWeek"];
+              type = [v39 type];
+              v41 = [type isEqualToString:@"RelativeDayOfWeek"];
 
               if (v41)
               {
@@ -615,15 +615,15 @@ LABEL_29:
                 continue;
               }
 
-              v42 = [v39 type];
-              if ([v42 isEqualToString:@"RelativeDay"])
+              type2 = [v39 type];
+              if ([type2 isEqualToString:@"RelativeDay"])
               {
               }
 
               else
               {
-                v43 = [v39 type];
-                v44 = [v43 isEqualToString:@"AbsoluteDate"];
+                type3 = [v39 type];
+                v44 = [type3 isEqualToString:@"AbsoluteDate"];
 
                 if (!v44)
                 {
@@ -634,15 +634,15 @@ LABEL_29:
               CFCalendarDecomposeAbsoluteTime(v11, at, "dMy", &v105, &v104, &v103);
             }
 
-            v36 = [v35 countByEnumeratingWithState:&v96 objects:v124 count:16];
+            v36 = [subResults countByEnumeratingWithState:&v96 objects:v124 count:16];
             if (!v36)
             {
 LABEL_44:
 
-              v45 = [v85 BOOLValue];
+              bOOLValue = [v85 BOOLValue];
               if (at > v30)
               {
-                v46 = v45;
+                v46 = bOOLValue;
               }
 
               else
@@ -780,8 +780,8 @@ LABEL_84:
                 -[QPDataDetectorsParser enumerateDatesInString:options:withBlock:].cold.1(buf, [obj count], &v121);
               }
 
-              v61 = [v94 range];
-              v80[2](v80, v60, v61, v62, &v112);
+              range = [v94 range];
+              blockCopy[2](blockCopy, v60, range, v62, &v112);
               v63 = v112;
 
               if ((v63 & 1) == 0)
@@ -809,21 +809,21 @@ LABEL_85:
     }
   }
 
-  if ([v78 length] == 4)
+  if ([stringCopy length] == 4)
   {
-    v64 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-    v65 = [v78 stringByTrimmingCharactersInSet:v64];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    v65 = [stringCopy stringByTrimmingCharactersInSet:decimalDigitCharacterSet];
     v66 = [v65 length] == 0;
 
     if (v66)
     {
-      v67 = [v78 integerValue];
-      if (v67 >= 1971)
+      integerValue = [stringCopy integerValue];
+      if (integerValue >= 1971)
       {
         obj = objc_alloc_init(MEMORY[0x1E695DF10]);
-        [obj setYear:v67];
+        [obj setYear:integerValue];
         v68 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v69 = [MEMORY[0x1E696AD98] numberWithInteger:v67];
+        v69 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
         [v68 setObject:v69 forKey:@"y"];
 
         if ([v68 count])
@@ -849,7 +849,7 @@ LABEL_85:
               -[QPDataDetectorsParser enumerateDatesInString:options:withBlock:].cold.2(buf, [v76 count]);
             }
 
-            v80[2](v80, v73, 0, [v78 length], &v112);
+            blockCopy[2](blockCopy, v73, 0, [stringCopy length], &v112);
           }
         }
 

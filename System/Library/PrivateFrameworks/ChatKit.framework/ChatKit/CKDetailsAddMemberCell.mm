@@ -1,7 +1,7 @@
 @interface CKDetailsAddMemberCell
 + (Class)cellClass;
-- (CKDetailsAddMemberCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setEnabled:(BOOL)a3;
+- (CKDetailsAddMemberCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation CKDetailsAddMemberCell
@@ -15,62 +15,62 @@
   return v3;
 }
 
-- (CKDetailsAddMemberCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsAddMemberCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v24.receiver = self;
   v24.super_class = CKDetailsAddMemberCell;
-  v4 = [(CKDetailsCell *)&v24 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKDetailsCell *)&v24 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69DCC10]);
     v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(CKDetailsAddMemberCell *)v4 setAddLabel:v6];
 
-    v7 = [(CKDetailsAddMemberCell *)v4 addLabel];
-    [v7 setNumberOfLines:0];
+    addLabel = [(CKDetailsAddMemberCell *)v4 addLabel];
+    [addLabel setNumberOfLines:0];
 
-    v8 = [(CKDetailsAddMemberCell *)v4 addLabel];
+    addLabel2 = [(CKDetailsAddMemberCell *)v4 addLabel];
     v9 = CKFrameworkBundle();
     v10 = [v9 localizedStringForKey:@"ADD_CONTACT" value:&stru_1F04268F8 table:@"ChatKit"];
-    [v8 setText:v10];
+    [addLabel2 setText:v10];
 
-    v11 = [(CKDetailsAddMemberCell *)v4 addLabel];
+    addLabel3 = [(CKDetailsAddMemberCell *)v4 addLabel];
     v12 = +[CKUIBehavior sharedBehaviors];
-    v13 = [v12 addContactFont];
-    [v11 setFont:v13];
+    addContactFont = [v12 addContactFont];
+    [addLabel3 setFont:addContactFont];
 
-    v14 = [(CKDetailsAddMemberCell *)v4 addLabel];
+    addLabel4 = [(CKDetailsAddMemberCell *)v4 addLabel];
     v15 = +[CKUIBehavior sharedBehaviors];
-    v16 = [v15 theme];
-    v17 = [v16 detailsTextColor];
-    [v14 setTextColor:v17];
+    theme = [v15 theme];
+    detailsTextColor = [theme detailsTextColor];
+    [addLabel4 setTextColor:detailsTextColor];
 
-    v18 = [(CKDetailsAddMemberCell *)v4 addLabel];
-    [v18 sizeToFit];
+    addLabel5 = [(CKDetailsAddMemberCell *)v4 addLabel];
+    [addLabel5 sizeToFit];
 
-    v19 = [(CKDetailsAddMemberCell *)v4 contentView];
-    v20 = [(CKDetailsAddMemberCell *)v4 addLabel];
-    [v19 addSubview:v20];
+    contentView = [(CKDetailsAddMemberCell *)v4 contentView];
+    addLabel6 = [(CKDetailsAddMemberCell *)v4 addLabel];
+    [contentView addSubview:addLabel6];
 
-    v21 = [(CKDetailsAddMemberCell *)v4 contentView];
-    [v21 setBackgroundColor:0];
+    contentView2 = [(CKDetailsAddMemberCell *)v4 contentView];
+    [contentView2 setBackgroundColor:0];
 
-    v22 = [(CKDetailsCell *)v4 bottomSeperator];
-    [v22 setHidden:1];
+    bottomSeperator = [(CKDetailsCell *)v4 bottomSeperator];
+    [bottomSeperator setHidden:1];
   }
 
   return v4;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(CKDetailsAddMemberCell *)self setUserInteractionEnabled:?];
-  v5 = [(CKDetailsAddMemberCell *)self addLabel];
-  [v5 setEnabled:v3];
+  addLabel = [(CKDetailsAddMemberCell *)self addLabel];
+  [addLabel setEnabled:enabledCopy];
 
-  v6 = [(CKDetailsAddMemberCell *)self addLabel];
-  [v6 setUserInteractionEnabled:v3];
+  addLabel2 = [(CKDetailsAddMemberCell *)self addLabel];
+  [addLabel2 setUserInteractionEnabled:enabledCopy];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface _TUITransactionInstance
-- (_TUITransactionInstance)initWithTransaction:(id)a3;
+- (_TUITransactionInstance)initWithTransaction:(id)transaction;
 - (id)_aq_layoutBlocksToApply;
-- (void)_aq_appendLayoutBlock:(id)a3;
+- (void)_aq_appendLayoutBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation _TUITransactionInstance
 
-- (_TUITransactionInstance)initWithTransaction:(id)a3
+- (_TUITransactionInstance)initWithTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v9.receiver = self;
   v9.super_class = _TUITransactionInstance;
   v6 = [(_TUITransactionInstance *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transaction, a3);
+    objc_storeStrong(&v6->_transaction, transaction);
     [(_TUITransaction *)v7->_transaction addCompletionDeferral];
     [(_TUITransaction *)v7->_transaction addSubTransactionCompletionDeferral];
   }
@@ -32,22 +32,22 @@
   [(_TUITransactionInstance *)&v3 dealloc];
 }
 
-- (void)_aq_appendLayoutBlock:(id)a3
+- (void)_aq_appendLayoutBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   layoutBlocks = self->_layoutBlocks;
-  v10 = v4;
+  v10 = blockCopy;
   if (!layoutBlocks)
   {
     v6 = objc_opt_new();
     v7 = self->_layoutBlocks;
     self->_layoutBlocks = v6;
 
-    v4 = v10;
+    blockCopy = v10;
     layoutBlocks = self->_layoutBlocks;
   }
 
-  v8 = [v4 copy];
+  v8 = [blockCopy copy];
   v9 = objc_retainBlock(v8);
   [(NSMutableArray *)layoutBlocks addObject:v9];
 }

@@ -1,7 +1,7 @@
 @interface APOdmlAllowList
 + (id)sharedInstance;
 - (APOdmlAllowList)init;
-- (BOOL)isAllowed:(id)a3;
+- (BOOL)isAllowed:(id)allowed;
 - (unint64_t)count;
 - (void)reinitializeAllowList;
 @end
@@ -91,11 +91,11 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAllowed:(id)a3
+- (BOOL)isAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   v7 = objc_msgSend_allowList(self, v5, v6);
-  v9 = objc_msgSend_containsObject_(v7, v8, v4);
+  v9 = objc_msgSend_containsObject_(v7, v8, allowedCopy);
 
   return v9;
 }

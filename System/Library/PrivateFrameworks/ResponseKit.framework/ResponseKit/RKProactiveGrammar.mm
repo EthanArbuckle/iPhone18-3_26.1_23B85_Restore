@@ -1,14 +1,14 @@
 @interface RKProactiveGrammar
-+ (id)getEntities:(id)a3;
-+ (id)getOTAPathForRKBundle:(id)a3;
++ (id)getEntities:(id)entities;
++ (id)getOTAPathForRKBundle:(id)bundle;
 + (id)sharedManager;
 - (RKProactiveGrammar)init;
-- (id)copyAttributedTokenForText:(id)a3 forLanguage:(id)a4;
-- (id)copyAttributedTokenForText:(id)a3 forLanguageModel:(void *)a4 withLanguageCode:(id)a5;
-- (id)getEquivalenceClass:(id)a3;
+- (id)copyAttributedTokenForText:(id)text forLanguage:(id)language;
+- (id)copyAttributedTokenForText:(id)text forLanguageModel:(void *)model withLanguageCode:(id)code;
+- (id)getEquivalenceClass:(id)class;
 - (void)chineseTokenizer;
 - (void)dealloc;
-- (void)getLanguageModel:(id)a3;
+- (void)getLanguageModel:(id)model;
 @end
 
 @implementation RKProactiveGrammar
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __35__RKProactiveGrammar_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_1 != -1)
   {
     dispatch_once(&sharedManager_onceToken_1, block);
@@ -106,10 +106,10 @@ uint64_t __35__RKProactiveGrammar_sharedManager__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getOTAPathForRKBundle:(id)a3
++ (id)getOTAPathForRKBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = CFLocaleCreate(0, v3);
+  bundleCopy = bundle;
+  v4 = CFLocaleCreate(0, bundleCopy);
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -119,7 +119,7 @@ uint64_t __35__RKProactiveGrammar_sharedManager__block_invoke(uint64_t a1)
   LDEnumerateAssetDataItems();
   if (!v10[5])
   {
-    v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v3];
+    v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:bundleCopy];
     v6 = [v5 objectForKey:*MEMORY[0x277CBE6C8]];
 
     CFLocaleCreate(0, v6);
@@ -172,26 +172,26 @@ void __44__RKProactiveGrammar_getOTAPathForRKBundle___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)getLanguageModel:(id)a3
+- (void)getLanguageModel:(id)model
 {
   v40[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [_localeLangModel objectForKeyedSubscript:v3];
+  modelCopy = model;
+  v4 = [_localeLangModel objectForKeyedSubscript:modelCopy];
 
   if (v4)
   {
-    v5 = [_localeLangModel objectForKeyedSubscript:v3];
+    v5 = [_localeLangModel objectForKeyedSubscript:modelCopy];
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 URLForResource:@"RK_Bundle" withExtension:0];
-    v8 = [v7 path];
-    [_localeGrammarBundlePath setObject:v8 forKeyedSubscript:v3];
+    path = [v7 path];
+    [_localeGrammarBundlePath setObject:path forKeyedSubscript:modelCopy];
 
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-    v10 = CFLocaleCreate(0, v3);
+    v10 = CFLocaleCreate(0, modelCopy);
     v11 = MEMORY[0x277D230E0];
     cf = v10;
     CFDictionarySetValue(Mutable, *MEMORY[0x277D230E0], v10);
@@ -199,7 +199,7 @@ void __44__RKProactiveGrammar_getOTAPathForRKBundle___block_invoke_2(uint64_t a1
     CFDictionarySetValue(Mutable, *MEMORY[0x277D23078], *MEMORY[0x277CBED10]);
     v13 = MEMORY[0x277D230A0];
     v14 = *MEMORY[0x277D230A0];
-    v15 = [_localeGrammarBundlePath objectForKeyedSubscript:v3];
+    v15 = [_localeGrammarBundlePath objectForKeyedSubscript:modelCopy];
     CFDictionarySetValue(Mutable, v14, v15);
 
     v5 = LMLanguageModelCreate();
@@ -207,7 +207,7 @@ void __44__RKProactiveGrammar_getOTAPathForRKBundle___block_invoke_2(uint64_t a1
     if (v5)
     {
       LMLanguageModelAddTransientVocabulary();
-      [_localeLangModel setObject:v5 forKeyedSubscript:v3];
+      [_localeLangModel setObject:v5 forKeyedSubscript:modelCopy];
       v16 = v12;
     }
 
@@ -215,7 +215,7 @@ void __44__RKProactiveGrammar_getOTAPathForRKBundle___block_invoke_2(uint64_t a1
     {
       v31 = v7;
       v33 = v6;
-      v30 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v3];
+      v30 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:modelCopy];
       v17 = [v30 objectForKey:*MEMORY[0x277CBE6C8]];
       v18 = *v12;
       v39[0] = *v11;
@@ -223,7 +223,7 @@ void __44__RKProactiveGrammar_getOTAPathForRKBundle___block_invoke_2(uint64_t a1
       v40[0] = v17;
       v40[1] = MEMORY[0x277CBEC28];
       v39[2] = *v13;
-      v19 = [_localeGrammarBundlePath objectForKeyedSubscript:v3];
+      v19 = [_localeGrammarBundlePath objectForKeyedSubscript:modelCopy];
       v40[2] = v19;
       [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:3];
       v20 = LMLanguageModelCreate();
@@ -232,30 +232,30 @@ void __44__RKProactiveGrammar_getOTAPathForRKBundle___block_invoke_2(uint64_t a1
       if (v20)
       {
         LMLanguageModelAddTransientVocabulary();
-        [_localeLangModel setObject:v20 forKeyedSubscript:v3];
+        [_localeLangModel setObject:v20 forKeyedSubscript:modelCopy];
       }
 
       v7 = v31;
       v6 = v33;
     }
 
-    v21 = [RKProactiveGrammar getOTAPathForRKBundle:v3];
-    v22 = [_localeLangModel objectForKeyedSubscript:v3];
+    v21 = [RKProactiveGrammar getOTAPathForRKBundle:modelCopy];
+    v22 = [_localeLangModel objectForKeyedSubscript:modelCopy];
 
     if (!v22 && v21)
     {
       v32 = v7;
       v34 = v6;
-      [_localeGrammarBundlePath setObject:v21 forKeyedSubscript:v3];
-      v23 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v3];
-      v24 = [v23 languageCode];
+      [_localeGrammarBundlePath setObject:v21 forKeyedSubscript:modelCopy];
+      v23 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:modelCopy];
+      languageCode = [v23 languageCode];
       v25 = *v16;
       v37[0] = *MEMORY[0x277D230E0];
       v37[1] = v25;
-      v38[0] = v24;
+      v38[0] = languageCode;
       v38[1] = MEMORY[0x277CBEC28];
       v37[2] = *MEMORY[0x277D230A0];
-      v26 = [_localeGrammarBundlePath objectForKeyedSubscript:v3];
+      v26 = [_localeGrammarBundlePath objectForKeyedSubscript:modelCopy];
       v38[2] = v26;
       [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:3];
       v27 = LMLanguageModelCreate();
@@ -269,7 +269,7 @@ void __44__RKProactiveGrammar_getOTAPathForRKBundle___block_invoke_2(uint64_t a1
         }
 
         LMLanguageModelAddTransientVocabulary();
-        [_localeLangModel setObject:v27 forKeyedSubscript:v3];
+        [_localeLangModel setObject:v27 forKeyedSubscript:modelCopy];
       }
 
       v7 = v32;
@@ -315,56 +315,56 @@ BOOL __38__RKProactiveGrammar_chineseTokenizer__block_invoke(uint64_t a1, uint64
   return LMVocabularyContainsLemmaForCharacters() != 0;
 }
 
-- (id)getEquivalenceClass:(id)a3
+- (id)getEquivalenceClass:(id)class
 {
-  v3 = a3;
-  v4 = [_localeEquivalenceClass objectForKeyedSubscript:v3];
+  classCopy = class;
+  v4 = [_localeEquivalenceClass objectForKeyedSubscript:classCopy];
 
   if (!v4)
   {
-    v5 = [_localeGrammarBundlePath objectForKeyedSubscript:v3];
+    v5 = [_localeGrammarBundlePath objectForKeyedSubscript:classCopy];
 
     if (!v5)
     {
-      v6 = [RKProactiveGrammar getOTAPathForRKBundle:v3];
-      [_localeGrammarBundlePath setObject:v6 forKeyedSubscript:v3];
+      v6 = [RKProactiveGrammar getOTAPathForRKBundle:classCopy];
+      [_localeGrammarBundlePath setObject:v6 forKeyedSubscript:classCopy];
     }
 
-    v7 = [_localeGrammarBundlePath objectForKeyedSubscript:v3];
+    v7 = [_localeGrammarBundlePath objectForKeyedSubscript:classCopy];
 
     if (v7)
     {
-      v8 = [_localeGrammarBundlePath objectForKeyedSubscript:v3];
+      v8 = [_localeGrammarBundlePath objectForKeyedSubscript:classCopy];
       v9 = [v8 stringByAppendingString:@"/equivalenceClasses.plist"];
 
-      v10 = [MEMORY[0x277CCAA00] defaultManager];
-      v11 = [v10 fileExistsAtPath:v9];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v11 = [defaultManager fileExistsAtPath:v9];
 
       if (v11)
       {
         v12 = [objc_alloc(MEMORY[0x277CBEB38]) initWithContentsOfFile:v9];
-        [_localeEquivalenceClass setObject:v12 forKeyedSubscript:v3];
+        [_localeEquivalenceClass setObject:v12 forKeyedSubscript:classCopy];
 
         goto LABEL_10;
       }
     }
 
     v13 = objc_alloc_init(MEMORY[0x277CBEAC0]);
-    [_localeEquivalenceClass setObject:v13 forKeyedSubscript:v3];
+    [_localeEquivalenceClass setObject:v13 forKeyedSubscript:classCopy];
   }
 
-  v12 = [_localeEquivalenceClass objectForKeyedSubscript:v3];
+  v12 = [_localeEquivalenceClass objectForKeyedSubscript:classCopy];
 LABEL_10:
 
   return v12;
 }
 
-+ (id)getEntities:(id)a3
++ (id)getEntities:(id)entities
 {
   v22[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
+  entitiesCopy = entities;
+  array = [v3 array];
   v6 = objc_alloc(MEMORY[0x277CCAAE8]);
   v8 = *MEMORY[0x277CCA3D8];
   v22[0] = *MEMORY[0x277CCA3E8];
@@ -373,15 +373,15 @@ LABEL_10:
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
   v10 = [v6 initWithTagSchemes:v9 options:4];
 
-  [v10 setString:v4];
-  v11 = [v10 string];
-  v12 = [v11 length];
+  [v10 setString:entitiesCopy];
+  string = [v10 string];
+  v12 = [string length];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __34__RKProactiveGrammar_getEntities___block_invoke;
   v19[3] = &unk_279B102B0;
   v20 = v10;
-  v13 = v5;
+  v13 = array;
   v21 = v13;
   v14 = v10;
   [v14 enumerateTagsInRange:0 scheme:v12 options:v7 usingBlock:{4, v19}];
@@ -409,16 +409,16 @@ void __34__RKProactiveGrammar_getEntities___block_invoke(uint64_t a1, void *a2, 
   [*(a1 + 40) addObject:v10];
 }
 
-- (id)copyAttributedTokenForText:(id)a3 forLanguage:(id)a4
+- (id)copyAttributedTokenForText:(id)text forLanguage:(id)language
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RKProactiveGrammar *)self getLanguageModel:v7];
-  v48 = self;
-  v49 = v7;
-  v9 = [(RKProactiveGrammar *)self getEquivalenceClass:v7];
-  v10 = [RKProactiveGrammar getEntities:v6];
+  textCopy = text;
+  languageCopy = language;
+  v8 = [(RKProactiveGrammar *)self getLanguageModel:languageCopy];
+  selfCopy = self;
+  v49 = languageCopy;
+  v9 = [(RKProactiveGrammar *)self getEquivalenceClass:languageCopy];
+  v10 = [RKProactiveGrammar getEntities:textCopy];
   v11 = objc_alloc_init(MEMORY[0x277CCAB68]);
   string = objc_alloc_init(MEMORY[0x277CCAB68]);
   v57 = 0u;
@@ -444,34 +444,34 @@ void __34__RKProactiveGrammar_getEntities___block_invoke(uint64_t a1, void *a2, 
         }
 
         v14 = *(*(&v57 + 1) + 8 * i);
-        v15 = [v14 partOfSpeech];
-        if ([v15 isEqualToString:@"Punctuation"])
+        partOfSpeech = [v14 partOfSpeech];
+        if ([partOfSpeech isEqualToString:@"Punctuation"])
         {
           v16 = 1;
         }
 
         else
         {
-          v17 = [v14 partOfSpeech];
-          if ([v17 isEqualToString:@"SentenceTerminator"])
+          partOfSpeech2 = [v14 partOfSpeech];
+          if ([partOfSpeech2 isEqualToString:@"SentenceTerminator"])
           {
             v16 = 1;
           }
 
           else
           {
-            v18 = [v14 string];
-            if ([v18 length] == 1)
+            string = [v14 string];
+            if ([string length] == 1)
             {
               [v14 string];
-              v20 = v19 = v6;
+              v20 = v19 = textCopy;
               [*(v12 + 2304) characterSetWithCharactersInString:@"！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？?＠［＼］＾＿｀｛｜｝～"];
               v22 = v21 = v8;
               [v20 rangeOfCharacterFromSet:v22];
               v16 = v23 != 0;
 
               v8 = v21;
-              v6 = v19;
+              textCopy = v19;
               v9 = v50;
               v11 = v51;
             }
@@ -483,13 +483,13 @@ void __34__RKProactiveGrammar_getEntities___block_invoke(uint64_t a1, void *a2, 
           }
         }
 
-        v24 = [v14 string];
-        v25 = [v9 objectForKeyedSubscript:v24];
+        string2 = [v14 string];
+        v25 = [v9 objectForKeyedSubscript:string2];
 
         if (v25)
         {
-          v26 = [v14 string];
-          v27 = [v9 objectForKeyedSubscript:v26];
+          string3 = [v14 string];
+          v27 = [v9 objectForKeyedSubscript:string3];
           [(__CFString *)string appendString:v27];
 
           v53 = 1;
@@ -497,21 +497,21 @@ void __34__RKProactiveGrammar_getEntities___block_invoke(uint64_t a1, void *a2, 
 
         if (!v16 || ([v14 string], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", v28), v29 = objc_claimAutoreleasedReturnValue(), v29, v28, v29))
         {
-          v30 = [v14 string];
-          v31 = [v9 objectForKeyedSubscript:v30];
+          string4 = [v14 string];
+          v31 = [v9 objectForKeyedSubscript:string4];
 
           if (!v31)
           {
-            v32 = [v14 tokenRange];
-            v34 = [v6 substringWithRange:{v32, v33}];
+            tokenRange = [v14 tokenRange];
+            v34 = [textCopy substringWithRange:{tokenRange, v33}];
             [(__CFString *)string appendString:v34];
           }
 
           [(__CFString *)string appendString:@" "];
           if (!v16)
           {
-            v35 = [v14 tokenRange];
-            v37 = [v6 substringWithRange:{v35, v36}];
+            tokenRange2 = [v14 tokenRange];
+            v37 = [textCopy substringWithRange:{tokenRange2, v36}];
             [(__CFString *)v11 appendString:v37];
             [(__CFString *)v11 appendString:@" "];
           }
@@ -567,7 +567,7 @@ void __34__RKProactiveGrammar_getEntities___block_invoke(uint64_t a1, void *a2, 
     [(__CFString *)string replaceOccurrencesOfString:@"' " withString:@"'" options:1 range:0, [(__CFString *)string length]];
   }
 
-  if ([v49 isEqualToString:@"es"] && objc_msgSend(v6, "containsString:", @" c.p.") && -[__CFString containsString:](v11, "containsString:", @" c.p "))
+  if ([v49 isEqualToString:@"es"] && objc_msgSend(textCopy, "containsString:", @" c.p.") && -[__CFString containsString:](v11, "containsString:", @" c.p "))
   {
     [(__CFString *)v11 replaceOccurrencesOfString:@" c.p " withString:@" c.p. " options:1 range:0, [(__CFString *)v11 length]];
     [(__CFString *)string replaceOccurrencesOfString:@" c.p " withString:@" c.p. " options:1 range:0, [(__CFString *)string length]];
@@ -582,41 +582,41 @@ void __34__RKProactiveGrammar_getEntities___block_invoke(uint64_t a1, void *a2, 
     v40 = [RKUtilities stripDiacritics:string];
   }
 
-  v41 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v42 = [(__CFString *)v11 stringByTrimmingCharactersInSet:v41];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v42 = [(__CFString *)v11 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v43 = [(RKProactiveGrammar *)v48 copyAttributedTokenForText:v42 forLanguageModel:v8 withLanguageCode:v49];
+  v43 = [(RKProactiveGrammar *)selfCopy copyAttributedTokenForText:v42 forLanguageModel:v8 withLanguageCode:v49];
   if (((v43 == 0) & v53) == 1)
   {
-    v44 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v45 = [(__CFString *)string stringByTrimmingCharactersInSet:v44];
+    whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v45 = [(__CFString *)string stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
-    v43 = [(RKProactiveGrammar *)v48 copyAttributedTokenForText:v45 forLanguageModel:v8 withLanguageCode:v49];
+    v43 = [(RKProactiveGrammar *)selfCopy copyAttributedTokenForText:v45 forLanguageModel:v8 withLanguageCode:v49];
   }
 
   v46 = *MEMORY[0x277D85DE8];
   return v43;
 }
 
-- (id)copyAttributedTokenForText:(id)a3 forLanguageModel:(void *)a4 withLanguageCode:(id)a5
+- (id)copyAttributedTokenForText:(id)text forLanguageModel:(void *)model withLanguageCode:(id)code
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  textCopy = text;
+  codeCopy = code;
   LMVocabularyGetSharedVocabulary();
-  v9 = [v7 componentsSeparatedByString:@" "];
+  v9 = [textCopy componentsSeparatedByString:@" "];
   v10 = [v9 count];
 
   if (v10 <= 2)
   {
-    v11 = [@"<s> " stringByAppendingString:v7];
+    v11 = [@"<s> " stringByAppendingString:textCopy];
 
-    v7 = v11;
+    textCopy = v11;
   }
 
-  if ([v8 isEqualToString:@"zh-Hans"])
+  if ([codeCopy isEqualToString:@"zh-Hans"])
   {
-    v12 = [v7 stringByReplacingOccurrencesOfString:@" " withString:&stru_2874A9C90];
+    v12 = [textCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_2874A9C90];
 
     if ([(RKProactiveGrammar *)self chineseTokenizer])
     {
@@ -644,17 +644,17 @@ void __34__RKProactiveGrammar_getEntities___block_invoke(uint64_t a1, void *a2, 
 
   else
   {
-    v17 = [v7 componentsSeparatedByString:@" "];
+    v17 = [textCopy componentsSeparatedByString:@" "];
     v13 = [v17 mutableCopy];
 
-    v12 = v7;
+    v12 = textCopy;
   }
 
   v41 = 0;
   v18 = [v13 count];
   if (v18)
   {
-    v35 = v8;
+    v35 = codeCopy;
     v33 = v18;
     v19 = malloc_type_malloc(4 * v18, 0x100004052888210uLL);
     v37 = 0u;
@@ -681,21 +681,21 @@ void __34__RKProactiveGrammar_getEntities___block_invoke(uint64_t a1, void *a2, 
           }
 
           v25 = *(*(&v37 + 1) + 8 * v24);
-          v26 = [v25 lowercaseString];
+          lowercaseString = [v25 lowercaseString];
           if (!LMVocabularyContainsLemma() && [v25 hasSuffix:@"'s"])
           {
             v27 = [v25 stringByReplacingOccurrencesOfString:@"'s" withString:&stru_2874A9C90];
 
             if (LMVocabularyContainsLemma())
             {
-              v26 = v27;
+              lowercaseString = v27;
             }
 
             else
             {
-              v28 = [v25 lowercaseString];
+              lowercaseString2 = [v25 lowercaseString];
 
-              v26 = v28;
+              lowercaseString = lowercaseString2;
             }
           }
 
@@ -711,7 +711,7 @@ void __34__RKProactiveGrammar_getEntities___block_invoke(uint64_t a1, void *a2, 
       while (v21);
     }
 
-    v8 = v35;
+    codeCopy = v35;
     v13 = v34;
   }
 

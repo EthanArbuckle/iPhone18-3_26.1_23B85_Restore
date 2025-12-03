@@ -1,25 +1,25 @@
 @interface BPSRemoveDuplicates
-- (BPSRemoveDuplicates)initWithUpstream:(id)a3 isDuplicate:(id)a4;
+- (BPSRemoveDuplicates)initWithUpstream:(id)upstream isDuplicate:(id)duplicate;
 - (id)nextEvent;
 - (id)upstreamPublishers;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSRemoveDuplicates
 
-- (BPSRemoveDuplicates)initWithUpstream:(id)a3 isDuplicate:(id)a4
+- (BPSRemoveDuplicates)initWithUpstream:(id)upstream isDuplicate:(id)duplicate
 {
-  v7 = a3;
-  v8 = a4;
+  upstreamCopy = upstream;
+  duplicateCopy = duplicate;
   v14.receiver = self;
   v14.super_class = BPSRemoveDuplicates;
   v9 = [(BPSRemoveDuplicates *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_upstream, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_upstream, upstream);
+    v11 = [duplicateCopy copy];
     isDuplicate = v10->_isDuplicate;
     v10->_isDuplicate = v11;
   }
@@ -27,25 +27,25 @@
   return v10;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [(BPSRemoveDuplicates *)self subscribe:v5];
   }
 
-  v6 = [[_BPSRemoveDuplicatesInner alloc] initWithDownstream:v4 isDuplicate:self->_isDuplicate];
-  v7 = [(BPSRemoveDuplicates *)self upstream];
-  [v7 subscribe:v6];
+  v6 = [[_BPSRemoveDuplicatesInner alloc] initWithDownstream:subscribeCopy isDuplicate:self->_isDuplicate];
+  upstream = [(BPSRemoveDuplicates *)self upstream];
+  [upstream subscribe:v6];
 }
 
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSRemoveDuplicates *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSRemoveDuplicates *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -55,45 +55,45 @@
 
 - (id)nextEvent
 {
-  v3 = [(BPSRemoveDuplicates *)self upstream];
-  v4 = [v3 nextEvent];
+  upstream = [(BPSRemoveDuplicates *)self upstream];
+  nextEvent = [upstream nextEvent];
 
-  if (v4)
+  if (nextEvent)
   {
     while (1)
     {
-      v5 = [(BPSRemoveDuplicates *)self last];
-      if (!v5)
+      last = [(BPSRemoveDuplicates *)self last];
+      if (!last)
       {
         break;
       }
 
-      v6 = v5;
-      v7 = [(BPSRemoveDuplicates *)self isDuplicate];
-      v8 = [(BPSRemoveDuplicates *)self last];
-      v9 = (v7)[2](v7, v8, v4);
+      v6 = last;
+      isDuplicate = [(BPSRemoveDuplicates *)self isDuplicate];
+      last2 = [(BPSRemoveDuplicates *)self last];
+      v9 = (isDuplicate)[2](isDuplicate, last2, nextEvent);
 
       if ((v9 & 1) == 0)
       {
         break;
       }
 
-      v10 = [(BPSRemoveDuplicates *)self upstream];
-      v11 = [v10 nextEvent];
+      upstream2 = [(BPSRemoveDuplicates *)self upstream];
+      nextEvent2 = [upstream2 nextEvent];
 
-      v4 = v11;
-      if (!v11)
+      nextEvent = nextEvent2;
+      if (!nextEvent2)
       {
         goto LABEL_7;
       }
     }
 
-    [(BPSRemoveDuplicates *)self setLast:v4];
+    [(BPSRemoveDuplicates *)self setLast:nextEvent];
   }
 
 LABEL_7:
 
-  return v4;
+  return nextEvent;
 }
 
 - (void)reset

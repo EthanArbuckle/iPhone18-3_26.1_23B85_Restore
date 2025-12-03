@@ -1,15 +1,15 @@
 @interface MSVStreamWriter
-- (BOOL)_processInput:(id)a3 generatingDecompressedData:(id *)a4;
-- (BOOL)writeAllData:(id)a3 error:(id *)a4;
-- (MSVStreamWriter)initWithOutputStream:(id)a3 queue:(id)a4;
-- (MSVStreamWriter)initWithQueue:(id)a3;
+- (BOOL)_processInput:(id)input generatingDecompressedData:(id *)data;
+- (BOOL)writeAllData:(id)data error:(id *)error;
+- (MSVStreamWriter)initWithOutputStream:(id)stream queue:(id)queue;
+- (MSVStreamWriter)initWithQueue:(id)queue;
 - (void)_onQueue_stop;
 - (void)_writeAvailablePendingData;
 - (void)start;
-- (void)stopWithCompletion:(id)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)writeAllData:(id)a3 withCompletion:(id)a4;
-- (void)writeData:(id)a3 withCompletion:(id)a4;
+- (void)stopWithCompletion:(id)completion;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
+- (void)writeAllData:(id)data withCompletion:(id)completion;
+- (void)writeData:(id)data withCompletion:(id)completion;
 @end
 
 @implementation MSVStreamWriter
@@ -26,7 +26,7 @@
     if (v5)
     {
       v15 = 134217984;
-      v16 = self;
+      selfCopy5 = self;
       v6 = "%p - stream writer is already stopped";
       v7 = v4;
       v8 = 12;
@@ -42,7 +42,7 @@ LABEL_18:
   {
     compressed = self->_compressed;
     v15 = 134218240;
-    v16 = self;
+    selfCopy5 = self;
     v17 = 1024;
     v18 = compressed;
     _os_log_impl(&dword_1AC81F000, v4, OS_LOG_TYPE_DEFAULT, "%p - stopping stream writer, isCompressed=%d", &v15, 0x12u);
@@ -57,7 +57,7 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134217984;
-      v16 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_1AC81F000, v10, OS_LOG_TYPE_DEFAULT, "%p - Finishing pending data in _zstreamp", &v15, 0xCu);
     }
 
@@ -72,7 +72,7 @@ LABEL_18:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134217984;
-      v16 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_1AC81F000, v11, OS_LOG_TYPE_DEFAULT, "%p - Closing _outputStream", &v15, 0xCu);
     }
   }
@@ -87,7 +87,7 @@ LABEL_18:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134218240;
-      v16 = self;
+      selfCopy5 = self;
       v17 = 1024;
       v18 = v13;
       v6 = "%p - Releasing _zstreamp finished with code=%d";
@@ -116,41 +116,41 @@ LABEL_19:
         break;
       }
 
-      v4 = [(NSMutableArray *)self->_pendingWriteDataList firstObject];
-      v5 = [v4 data];
-      v6 = [v4 bytesWritten];
+      firstObject = [(NSMutableArray *)self->_pendingWriteDataList firstObject];
+      data = [firstObject data];
+      bytesWritten = [firstObject bytesWritten];
       do
       {
-        if (v6 >= [v5 length] || !-[NSOutputStream hasSpaceAvailable](self->_outputStream, "hasSpaceAvailable"))
+        if (bytesWritten >= [data length] || !-[NSOutputStream hasSpaceAvailable](self->_outputStream, "hasSpaceAvailable"))
         {
           break;
         }
 
-        v7 = -[NSOutputStream write:maxLength:](self->_outputStream, "write:maxLength:", [v5 bytes] + v6, objc_msgSend(v5, "length") - v6);
+        v7 = -[NSOutputStream write:maxLength:](self->_outputStream, "write:maxLength:", [data bytes] + bytesWritten, objc_msgSend(data, "length") - bytesWritten);
         v8 = v7;
         if (v7 < 0)
         {
           v11 = os_log_create("com.apple.amp.MediaServices", "StreamWriter");
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
-            v12 = [(NSOutputStream *)self->_outputStream streamError];
-            v13 = [(NSOutputStream *)self->_outputStream streamStatus];
+            streamError = [(NSOutputStream *)self->_outputStream streamError];
+            streamStatus = [(NSOutputStream *)self->_outputStream streamStatus];
             *buf = v20;
-            v22 = self;
+            selfCopy = self;
             v23 = 2114;
-            v24 = v12;
+            v24 = streamError;
             v25 = 2048;
-            v26 = v13;
+            v26 = streamStatus;
             v27 = 1024;
             v28 = v8;
             _os_log_impl(&dword_1AC81F000, v11, OS_LOG_TYPE_DEFAULT, "%p - error while writing to data stream: err=%{public}@, status=%lu, bytesWritten:%d", buf, 0x26u);
           }
 
-          v14 = [(NSOutputStream *)self->_outputStream streamError];
-          v15 = v14;
-          if (v14)
+          streamError2 = [(NSOutputStream *)self->_outputStream streamError];
+          v15 = streamError2;
+          if (streamError2)
           {
-            v16 = v14;
+            v16 = streamError2;
           }
 
           else
@@ -160,30 +160,30 @@ LABEL_19:
 
           v9 = v16;
 
-          [v5 length];
+          [data length];
           v10 = 0;
           goto LABEL_18;
         }
 
-        v6 += v7;
+        bytesWritten += v7;
       }
 
       while (v7);
-      if (v6 != [v5 length])
+      if (bytesWritten != [data length])
       {
-        [v4 setBytesWritten:v6];
+        [firstObject setBytesWritten:bytesWritten];
         goto LABEL_21;
       }
 
       v9 = 0;
       v10 = 1;
 LABEL_18:
-      [(NSMutableArray *)self->_pendingWriteDataList removeObject:v4];
-      v17 = [v4 completionHandler];
-      v18 = v17;
-      if (v17)
+      [(NSMutableArray *)self->_pendingWriteDataList removeObject:firstObject];
+      completionHandler = [firstObject completionHandler];
+      v18 = completionHandler;
+      if (completionHandler)
       {
-        (*(v17 + 16))(v17, v10, v9);
+        (*(completionHandler + 16))(completionHandler, v10, v9);
       }
 
 LABEL_21:
@@ -195,9 +195,9 @@ LABEL_21:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_processInput:(id)a3 generatingDecompressedData:(id *)a4
+- (BOOL)_processInput:(id)input generatingDecompressedData:(id *)data
 {
-  v4 = MEMORY[0x1EEE9AC00](self, a2, a3);
+  v4 = MEMORY[0x1EEE9AC00](self, a2, input);
   v6 = v5;
   v8 = v7;
   v9 = v4;
@@ -291,8 +291,8 @@ LABEL_14:
     [v12 setLength:0];
     if (v26 == -5 || (*(v9 + 16) & 1) != 0)
     {
-      v27 = os_log_create("com.apple.amp.MediaServices", "StreamWriter");
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+      currentHandler = os_log_create("com.apple.amp.MediaServices", "StreamWriter");
+      if (os_log_type_enabled(currentHandler, OS_LOG_TYPE_DEFAULT))
       {
         v28 = *(v9 + 24);
         v29 = *(v28 + 8);
@@ -307,14 +307,14 @@ LABEL_14:
         v46 = v30;
         v47 = 2048;
         v48 = [v11 length];
-        _os_log_impl(&dword_1AC81F000, v27, OS_LOG_TYPE_DEFAULT, "%p - Inflate failed (ignoring inflate failure). ret=%d, _zstreamp->avail_in=%lu, _zstreamp->avail_out=%lu, in_len=%lu", v39, 0x30u);
+        _os_log_impl(&dword_1AC81F000, currentHandler, OS_LOG_TYPE_DEFAULT, "%p - Inflate failed (ignoring inflate failure). ret=%d, _zstreamp->avail_in=%lu, _zstreamp->avail_out=%lu, in_len=%lu", v39, 0x30u);
       }
     }
 
     else
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      -[NSObject handleFailureInMethod:object:file:lineNumber:description:](v27, "handleFailureInMethod:object:file:lineNumber:description:", v8, v9, @"MSVStreamWriter.m", 339, @"zlib inflate failed. ret=%d. in_len = %lu, _zstreamp->avail_out=%lu", v26, [v11 length], *(*(v9 + 24) + 32));
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      -[NSObject handleFailureInMethod:object:file:lineNumber:description:](currentHandler, "handleFailureInMethod:object:file:lineNumber:description:", v8, v9, @"MSVStreamWriter.m", 339, @"zlib inflate failed. ret=%d. in_len = %lu, _zstreamp->avail_out=%lu", v26, [v11 length], *(*(v9 + 24) + 32));
     }
 
     v24 = *(v9 + 24);
@@ -324,21 +324,21 @@ LABEL_24:
     {
       if (v26 == -5 || (*(v9 + 16) & 1) != 0)
       {
-        v32 = os_log_create("com.apple.amp.MediaServices", "StreamWriter");
-        if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+        currentHandler2 = os_log_create("com.apple.amp.MediaServices", "StreamWriter");
+        if (os_log_type_enabled(currentHandler2, OS_LOG_TYPE_DEFAULT))
         {
           *v39 = 134218240;
           v40 = v9;
           v41 = 1024;
           v42 = v31;
-          _os_log_impl(&dword_1AC81F000, v32, OS_LOG_TYPE_DEFAULT, "%p Ignoring inflate failure, availableInLength=%u", v39, 0x12u);
+          _os_log_impl(&dword_1AC81F000, currentHandler2, OS_LOG_TYPE_DEFAULT, "%p Ignoring inflate failure, availableInLength=%u", v39, 0x12u);
         }
       }
 
       else
       {
-        v32 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v32 handleFailureInMethod:v8 object:v9 file:@"MSVStreamWriter.m" lineNumber:354 description:@"_zstreamp->avail_in = %d", *(*(v9 + 24) + 8)];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:v8 object:v9 file:@"MSVStreamWriter.m" lineNumber:354 description:@"_zstreamp->avail_in = %d", *(*(v9 + 24) + 8)];
       }
     }
 
@@ -375,14 +375,14 @@ LABEL_36:
   return v22;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (self->_outputStream != v7)
+  streamCopy = stream;
+  if (self->_outputStream != streamCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"MSVStreamWriter.m" lineNumber:243 description:@"unexpected stream"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVStreamWriter.m" lineNumber:243 description:@"unexpected stream"];
   }
 
   if (self->_stopped)
@@ -391,16 +391,16 @@ LABEL_36:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134218240;
-      v17 = self;
+      selfCopy = self;
       v18 = 2048;
-      v19 = a4;
+      eventCopy = event;
       _os_log_impl(&dword_1AC81F000, v8, OS_LOG_TYPE_DEFAULT, "%p Writer is already stopped - not handling event %lu", &v16, 0x16u);
     }
   }
 
   else
   {
-    switch(a4)
+    switch(event)
     {
       case 0x10uLL:
         [(MSVStreamWriter *)self _onQueue_stop];
@@ -417,8 +417,8 @@ LABEL_36:
         v11 = self->_didEncounterErrorBlock;
         if (v11)
         {
-          v12 = [(NSOutputStream *)self->_outputStream streamError];
-          v11[2](v11, v12);
+          streamError = [(NSOutputStream *)self->_outputStream streamError];
+          v11[2](v11, streamError);
         }
 
         break;
@@ -437,14 +437,14 @@ LABEL_36:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)writeAllData:(id)a3 error:(id *)a4
+- (BOOL)writeAllData:(id)data error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   if (![(MSVStreamWriter *)self isCompressed])
   {
     v9 = 0;
-    v10 = v6;
+    v10 = dataCopy;
 LABEL_5:
     if (self->_stopped)
     {
@@ -452,17 +452,17 @@ LABEL_5:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v34 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_1AC81F000, v11, OS_LOG_TYPE_DEFAULT, "StreamWriter %p is stopped", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v12 = MEMORY[0x1E696ABC0];
         v13 = @"Stream writer is already stopped";
 LABEL_10:
         [v12 msv_errorWithDomain:@"MSVStreamWriter" code:-1 debugDescription:v13];
-        *a4 = v14 = 0;
+        *error = v14 = 0;
         goto LABEL_48;
       }
 
@@ -484,7 +484,7 @@ LABEL_27:
           {
             v21 = [v10 length];
             *buf = 134218496;
-            v34 = self;
+            selfCopy5 = self;
             v35 = 1024;
             *v36 = v15;
             *&v36[4] = 1024;
@@ -492,7 +492,7 @@ LABEL_27:
             _os_log_impl(&dword_1AC81F000, v20, OS_LOG_TYPE_DEFAULT, "StreamWriter %p is stopped, totalBytesWritten=%d, dataLen=%d", buf, 0x18u);
           }
 
-          if (a4)
+          if (error)
           {
             v12 = MEMORY[0x1E696ABC0];
             v13 = @"Stream writer was stopped before flushing all data";
@@ -538,33 +538,33 @@ LABEL_47:
         v22 = os_log_create("com.apple.amp.MediaServices", "StreamWriter");
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [(NSOutputStream *)self->_outputStream streamError];
-          v24 = [(NSOutputStream *)self->_outputStream streamStatus];
+          streamError = [(NSOutputStream *)self->_outputStream streamError];
+          streamStatus = [(NSOutputStream *)self->_outputStream streamStatus];
           *buf = 134218754;
-          v34 = self;
+          selfCopy5 = self;
           v35 = 2114;
-          *v36 = v23;
+          *v36 = streamError;
           *&v36[8] = 2048;
-          v37 = v24;
+          v37 = streamStatus;
           v38 = 1024;
           v39 = v19;
           _os_log_impl(&dword_1AC81F000, v22, OS_LOG_TYPE_DEFAULT, "%p error while writing to data stream: err=%{public}@, status=%lu, bytesWritten:%d", buf, 0x26u);
         }
 
-        if (a4)
+        if (error)
         {
-          v25 = [(NSOutputStream *)self->_outputStream streamError];
-          v26 = v25;
-          if (v25)
+          streamError2 = [(NSOutputStream *)self->_outputStream streamError];
+          v26 = streamError2;
+          if (streamError2)
           {
-            v27 = v25;
-            *a4 = v26;
+            v27 = streamError2;
+            *error = v26;
           }
 
           else
           {
             v28 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MSVStreamWriter" code:-1 userInfo:0];
-            *a4 = v28;
+            *error = v28;
           }
         }
 
@@ -588,7 +588,7 @@ LABEL_42:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218496;
-      v34 = self;
+      selfCopy5 = self;
       v35 = 2048;
       *v36 = v10;
       *&v36[8] = 1024;
@@ -606,7 +606,7 @@ LABEL_42:
   }
 
   v32 = 0;
-  v7 = [(MSVStreamWriter *)self _processInput:v6 generatingDecompressedData:&v32];
+  v7 = [(MSVStreamWriter *)self _processInput:dataCopy generatingDecompressedData:&v32];
   v8 = v32;
   v9 = v8;
   if (v7)
@@ -621,14 +621,14 @@ LABEL_42:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy5 = self;
     _os_log_impl(&dword_1AC81F000, v16, OS_LOG_TYPE_DEFAULT, "%p Could not decompress input data", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MSVStreamWriter" code:-1 debugDescription:@"Could not decompress input data"];
-    *a4 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -636,21 +636,21 @@ LABEL_42:
     v14 = 0;
   }
 
-  v10 = v6;
+  v10 = dataCopy;
 LABEL_48:
 
   v30 = *MEMORY[0x1E69E9840];
   return v14;
 }
 
-- (void)writeData:(id)a3 withCompletion:(id)a4
+- (void)writeData:(id)data withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   v11 = objc_alloc_init(_MSVStreamWriterPendingData);
-  [(_MSVStreamWriterPendingData *)v11 setData:v7];
+  [(_MSVStreamWriterPendingData *)v11 setData:dataCopy];
 
-  [(_MSVStreamWriterPendingData *)v11 setCompletionHandler:v6];
+  [(_MSVStreamWriterPendingData *)v11 setCompletionHandler:completionCopy];
   pendingWriteDataList = self->_pendingWriteDataList;
   if (!pendingWriteDataList)
   {
@@ -665,17 +665,17 @@ LABEL_48:
   [(MSVStreamWriter *)self _writeAvailablePendingData];
 }
 
-- (void)writeAllData:(id)a3 withCompletion:(id)a4
+- (void)writeAllData:(id)data withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __47__MSVStreamWriter_writeAllData_withCompletion___block_invoke;
   v26[3] = &unk_1E79829B0;
   objc_copyWeak(&v28, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v27 = v8;
   [(MSVStreamWriter *)self setDidFinishWritingBlock:v26];
   v23[0] = MEMORY[0x1E69E9820];
@@ -694,7 +694,7 @@ LABEL_48:
   v20[1] = v20;
   v20[2] = 0x2020000000;
   v21 = 0;
-  v10 = [v6 length];
+  v10 = [dataCopy length];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __47__MSVStreamWriter_writeAllData_withCompletion___block_invoke_4;
@@ -703,7 +703,7 @@ LABEL_48:
   v17 = v20;
   v18 = v22;
   v19[1] = v10;
-  v11 = v6;
+  v11 = dataCopy;
   v16 = v11;
   [(MSVStreamWriter *)self setCanWriteDataBlock:&v12];
   [(MSVStreamWriter *)self start:v12];
@@ -837,17 +837,17 @@ void __47__MSVStreamWriter_writeAllData_withCompletion___block_invoke_5(uint64_t
   v1[2]();
 }
 
-- (void)stopWithCompletion:(id)a3
+- (void)stopWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__MSVStreamWriter_stopWithCompletion___block_invoke;
   v7[3] = &unk_1E7982B00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -874,16 +874,16 @@ void __38__MSVStreamWriter_stopWithCompletion___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AC81F000, v3, OS_LOG_TYPE_DEFAULT, "%p starting stream writer", buf, 0xCu);
   }
 
   MEMORY[0x1B26EB580](self->_outputStream, self->_queue);
   [(NSOutputStream *)self->_outputStream setDelegate:self];
   self->_timestamp = CFAbsoluteTimeGetCurrent();
-  v4 = [(NSOutputStream *)self->_outputStream streamStatus];
+  streamStatus = [(NSOutputStream *)self->_outputStream streamStatus];
   outputStream = self->_outputStream;
-  if (v4)
+  if (streamStatus)
   {
     if ([(NSOutputStream *)outputStream hasSpaceAvailable])
     {
@@ -906,20 +906,20 @@ void __38__MSVStreamWriter_stopWithCompletion___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (MSVStreamWriter)initWithOutputStream:(id)a3 queue:(id)a4
+- (MSVStreamWriter)initWithOutputStream:(id)stream queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  streamCopy = stream;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = MSVStreamWriter;
   v9 = [(MSVStreamWriter *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_outputStream, a3);
-    if (v8)
+    objc_storeStrong(&v9->_outputStream, stream);
+    if (queueCopy)
     {
-      v11 = v8;
+      v11 = queueCopy;
     }
 
     else
@@ -939,9 +939,9 @@ void __38__MSVStreamWriter_stopWithCompletion___block_invoke(uint64_t a1)
   return v10;
 }
 
-- (MSVStreamWriter)initWithQueue:(id)a3
+- (MSVStreamWriter)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = MSVStreamWriter;
   v5 = [(MSVStreamWriter *)&v17 init];
@@ -956,9 +956,9 @@ void __38__MSVStreamWriter_stopWithCompletion___block_invoke(uint64_t a1)
     v9 = v15;
     objc_storeStrong(&v5->_inputStream, v6);
     objc_storeStrong(&v5->_outputStream, v8);
-    if (v4)
+    if (queueCopy)
     {
-      v10 = v4;
+      v10 = queueCopy;
     }
 
     else

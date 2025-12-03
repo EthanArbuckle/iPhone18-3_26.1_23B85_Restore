@@ -1,31 +1,31 @@
 @interface OrgApacheLuceneIndexSegmentInfos
 + (id)getInfoStream;
 + (void)initialize;
-- (BOOL)containsWithOrgApacheLuceneIndexSegmentCommitInfo:(id)a3;
+- (BOOL)containsWithOrgApacheLuceneIndexSegmentCommitInfo:(id)info;
 - (NSString)description;
 - (OrgApacheLuceneIndexSegmentInfos)init;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createBackupSegmentInfos;
-- (id)filesWithBoolean:(BOOL)a3;
+- (id)filesWithBoolean:(BOOL)boolean;
 - (id)getId;
 - (id)iterator;
-- (int)indexOfWithOrgApacheLuceneIndexSegmentCommitInfo:(id)a3;
+- (int)indexOfWithOrgApacheLuceneIndexSegmentCommitInfo:(id)info;
 - (int)size;
 - (int)totalMaxDoc;
 - (int64_t)getNextPendingGeneration;
-- (void)addAllWithJavaLangIterable:(id)a3;
-- (void)addWithOrgApacheLuceneIndexSegmentCommitInfo:(id)a3;
-- (void)applyMergeChangesWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)a3 withBoolean:(BOOL)a4;
+- (void)addAllWithJavaLangIterable:(id)iterable;
+- (void)addWithOrgApacheLuceneIndexSegmentCommitInfo:(id)info;
+- (void)applyMergeChangesWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)merge withBoolean:(BOOL)boolean;
 - (void)clear;
-- (void)commitWithOrgApacheLuceneStoreDirectory:(id)a3;
+- (void)commitWithOrgApacheLuceneStoreDirectory:(id)directory;
 - (void)dealloc;
-- (void)removeWithOrgApacheLuceneIndexSegmentCommitInfo:(id)a3;
-- (void)replaceWithOrgApacheLuceneIndexSegmentInfos:(id)a3;
-- (void)rollbackSegmentInfosWithJavaUtilList:(id)a3;
-- (void)setUserDataWithJavaUtilMap:(id)a3;
-- (void)updateGenerationVersionAndCounterWithOrgApacheLuceneIndexSegmentInfos:(id)a3;
-- (void)updateGenerationWithOrgApacheLuceneIndexSegmentInfos:(id)a3;
+- (void)removeWithOrgApacheLuceneIndexSegmentCommitInfo:(id)info;
+- (void)replaceWithOrgApacheLuceneIndexSegmentInfos:(id)infos;
+- (void)rollbackSegmentInfosWithJavaUtilList:(id)list;
+- (void)setUserDataWithJavaUtilMap:(id)map;
+- (void)updateGenerationVersionAndCounterWithOrgApacheLuceneIndexSegmentInfos:(id)infos;
+- (void)updateGenerationWithOrgApacheLuceneIndexSegmentInfos:(id)infos;
 @end
 
 @implementation OrgApacheLuceneIndexSegmentInfos
@@ -70,9 +70,9 @@
 {
   v14.receiver = self;
   v14.super_class = OrgApacheLuceneIndexSegmentInfos;
-  v3 = [(OrgApacheLuceneIndexSegmentInfos *)&v14 clone];
+  clone = [(OrgApacheLuceneIndexSegmentInfos *)&v14 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     JreThrowNullPointerException();
   }
@@ -83,7 +83,7 @@
   }
 
   v4 = new_JavaUtilArrayList_initWithInt_([(OrgApacheLuceneIndexSegmentInfos *)self size]);
-  JreStrongAssignAndConsume(v3 + 7, v4);
+  JreStrongAssignAndConsume(clone + 7, v4);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -101,7 +101,7 @@
           objc_enumerationMutation(self);
         }
 
-        [v3 addWithOrgApacheLuceneIndexSegmentCommitInfo:{objc_msgSend(*(*(&v10 + 1) + 8 * i), "clone")}];
+        [clone addWithOrgApacheLuceneIndexSegmentCommitInfo:{objc_msgSend(*(*(&v10 + 1) + 8 * i), "clone")}];
       }
 
       v5 = [(OrgApacheLuceneIndexSegmentInfos *)self countByEnumeratingWithState:&v10 objects:v15 count:16];
@@ -111,8 +111,8 @@
   }
 
   v8 = new_JavaUtilHashMap_initWithJavaUtilMap_(self->userData_);
-  JreStrongAssignAndConsume(v3 + 3, v8);
-  return v3;
+  JreStrongAssignAndConsume(clone + 3, v8);
+  return clone;
 }
 
 + (id)getInfoStream
@@ -125,39 +125,39 @@
   return qword_100553E40;
 }
 
-- (void)updateGenerationWithOrgApacheLuceneIndexSegmentInfos:(id)a3
+- (void)updateGenerationWithOrgApacheLuceneIndexSegmentInfos:(id)infos
 {
-  if (!a3)
+  if (!infos)
   {
     JreThrowNullPointerException();
   }
 
-  self->lastGeneration_ = *(a3 + 6);
-  self->generation_ = *(a3 + 5);
+  self->lastGeneration_ = *(infos + 6);
+  self->generation_ = *(infos + 5);
 }
 
-- (void)updateGenerationVersionAndCounterWithOrgApacheLuceneIndexSegmentInfos:(id)a3
+- (void)updateGenerationVersionAndCounterWithOrgApacheLuceneIndexSegmentInfos:(id)infos
 {
   [(OrgApacheLuceneIndexSegmentInfos *)self updateGenerationWithOrgApacheLuceneIndexSegmentInfos:?];
-  if (!a3)
+  if (!infos)
   {
     JreThrowNullPointerException();
   }
 
-  self->version__ = *(a3 + 2);
-  self->counter_ = *(a3 + 2);
+  self->version__ = *(infos + 2);
+  self->counter_ = *(infos + 2);
 }
 
-- (id)filesWithBoolean:(BOOL)a3
+- (id)filesWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   v5 = new_JavaUtilHashSet_init();
-  if (v3)
+  if (booleanCopy)
   {
-    v6 = [(OrgApacheLuceneIndexSegmentInfos *)self getSegmentsFileName];
-    if (v6)
+    getSegmentsFileName = [(OrgApacheLuceneIndexSegmentInfos *)self getSegmentsFileName];
+    if (getSegmentsFileName)
     {
-      [(JavaUtilHashSet *)v5 addWithId:v6];
+      [(JavaUtilHashSet *)v5 addWithId:getSegmentsFileName];
     }
   }
 
@@ -184,11 +184,11 @@
   return v5;
 }
 
-- (void)commitWithOrgApacheLuceneStoreDirectory:(id)a3
+- (void)commitWithOrgApacheLuceneStoreDirectory:(id)directory
 {
-  sub_1000188F4(self, a3);
+  sub_1000188F4(self, directory);
 
-  sub_1000189E0(self, a3);
+  sub_1000189E0(self, directory);
 }
 
 - (NSString)description
@@ -236,34 +236,34 @@ LABEL_8:
   return [(JavaLangStringBuilder *)v3 description];
 }
 
-- (void)setUserDataWithJavaUtilMap:(id)a3
+- (void)setUserDataWithJavaUtilMap:(id)map
 {
-  if (a3)
+  if (map)
   {
     p_userData = &self->userData_;
-    v5 = a3;
+    mapCopy = map;
   }
 
   else
   {
-    v5 = JavaUtilCollections_emptyMap();
+    mapCopy = JavaUtilCollections_emptyMap();
     p_userData = &self->userData_;
   }
 
-  JreStrongAssign(p_userData, v5);
+  JreStrongAssign(p_userData, mapCopy);
 
   [(OrgApacheLuceneIndexSegmentInfos *)self changed];
 }
 
-- (void)replaceWithOrgApacheLuceneIndexSegmentInfos:(id)a3
+- (void)replaceWithOrgApacheLuceneIndexSegmentInfos:(id)infos
 {
-  if (!a3)
+  if (!infos)
   {
     JreThrowNullPointerException();
   }
 
-  -[OrgApacheLuceneIndexSegmentInfos rollbackSegmentInfosWithJavaUtilList:](self, "rollbackSegmentInfosWithJavaUtilList:", [a3 asList]);
-  self->lastGeneration_ = *(a3 + 6);
+  -[OrgApacheLuceneIndexSegmentInfos rollbackSegmentInfosWithJavaUtilList:](self, "rollbackSegmentInfosWithJavaUtilList:", [infos asList]);
+  self->lastGeneration_ = *(infos + 6);
 }
 
 - (int)totalMaxDoc
@@ -306,15 +306,15 @@ LABEL_8:
   return v5;
 }
 
-- (void)applyMergeChangesWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)a3 withBoolean:(BOOL)a4
+- (void)applyMergeChangesWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)merge withBoolean:(BOOL)boolean
 {
-  if (!a3)
+  if (!merge)
   {
     goto LABEL_17;
   }
 
-  v4 = a4;
-  v7 = new_JavaUtilHashSet_initWithJavaUtilCollection_(*(a3 + 8));
+  booleanCopy = boolean;
+  v7 = new_JavaUtilHashSet_initWithJavaUtilCollection_(*(merge + 8));
   segments = self->segments_;
   if (!segments)
   {
@@ -339,9 +339,9 @@ LABEL_8:
       v14 = [(JavaUtilList *)self->segments_ getWithInt:v13];
       if ([(JavaUtilHashSet *)v7 containsWithId:v14])
       {
-        if (((v11 | v4) & 1) == 0)
+        if (((v11 | booleanCopy) & 1) == 0)
         {
-          [(JavaUtilList *)self->segments_ setWithInt:v13 withId:*(a3 + 1)];
+          [(JavaUtilList *)self->segments_ setWithInt:v13 withId:*(merge + 1)];
           v12 = (v12 + 1);
           v11 = 1;
         }
@@ -367,10 +367,10 @@ LABEL_17:
   }
 
   [v15 clear];
-  if (((v11 | v4) & 1) == 0)
+  if (((v11 | booleanCopy) & 1) == 0)
   {
     v16 = self->segments_;
-    v17 = *(a3 + 1);
+    v17 = *(merge + 1);
 
     [(JavaUtilList *)v16 addWithInt:0 withId:v17];
   }
@@ -411,22 +411,22 @@ LABEL_17:
   return v3;
 }
 
-- (void)rollbackSegmentInfosWithJavaUtilList:(id)a3
+- (void)rollbackSegmentInfosWithJavaUtilList:(id)list
 {
   [(OrgApacheLuceneIndexSegmentInfos *)self clear];
 
-  [(OrgApacheLuceneIndexSegmentInfos *)self addAllWithJavaLangIterable:a3];
+  [(OrgApacheLuceneIndexSegmentInfos *)self addAllWithJavaLangIterable:list];
 }
 
 - (id)iterator
 {
-  v2 = [(OrgApacheLuceneIndexSegmentInfos *)self asList];
-  if (!v2)
+  asList = [(OrgApacheLuceneIndexSegmentInfos *)self asList];
+  if (!asList)
   {
     JreThrowNullPointerException();
   }
 
-  return [v2 iterator];
+  return [asList iterator];
 }
 
 - (int)size
@@ -440,7 +440,7 @@ LABEL_17:
   return [(JavaUtilList *)segments size];
 }
 
-- (void)addWithOrgApacheLuceneIndexSegmentCommitInfo:(id)a3
+- (void)addWithOrgApacheLuceneIndexSegmentCommitInfo:(id)info
 {
   segments = self->segments_;
   if (!segments)
@@ -448,21 +448,21 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilList *)segments addWithId:a3];
+  [(JavaUtilList *)segments addWithId:info];
 }
 
-- (void)addAllWithJavaLangIterable:(id)a3
+- (void)addAllWithJavaLangIterable:(id)iterable
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  if (!a3)
+  if (!iterable)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [iterable countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -473,13 +473,13 @@ LABEL_17:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(iterable);
         }
 
         [(OrgApacheLuceneIndexSegmentInfos *)self addWithOrgApacheLuceneIndexSegmentCommitInfo:*(*(&v9 + 1) + 8 * i), v9];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [iterable countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -497,7 +497,7 @@ LABEL_17:
   [(JavaUtilList *)segments clear];
 }
 
-- (void)removeWithOrgApacheLuceneIndexSegmentCommitInfo:(id)a3
+- (void)removeWithOrgApacheLuceneIndexSegmentCommitInfo:(id)info
 {
   segments = self->segments_;
   if (!segments)
@@ -505,10 +505,10 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilList *)segments removeWithId:a3];
+  [(JavaUtilList *)segments removeWithId:info];
 }
 
-- (BOOL)containsWithOrgApacheLuceneIndexSegmentCommitInfo:(id)a3
+- (BOOL)containsWithOrgApacheLuceneIndexSegmentCommitInfo:(id)info
 {
   segments = self->segments_;
   if (!segments)
@@ -516,10 +516,10 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilList *)segments containsWithId:a3];
+  return [(JavaUtilList *)segments containsWithId:info];
 }
 
-- (int)indexOfWithOrgApacheLuceneIndexSegmentCommitInfo:(id)a3
+- (int)indexOfWithOrgApacheLuceneIndexSegmentCommitInfo:(id)info
 {
   segments = self->segments_;
   if (!segments)
@@ -527,7 +527,7 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilList *)segments indexOfWithId:a3];
+  return [(JavaUtilList *)segments indexOfWithId:info];
 }
 
 - (void)dealloc
@@ -537,16 +537,16 @@ LABEL_17:
   [(OrgApacheLuceneIndexSegmentInfos *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneIndexSegmentInfos *)self clone];
+  clone = [(OrgApacheLuceneIndexSegmentInfos *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssign(&qword_100553E40, 0);
     v4 = @"Lucene3x";

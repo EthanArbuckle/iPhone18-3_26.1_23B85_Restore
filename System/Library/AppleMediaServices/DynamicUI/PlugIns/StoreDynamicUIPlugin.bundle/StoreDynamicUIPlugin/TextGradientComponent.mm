@@ -1,24 +1,24 @@
 @interface TextGradientComponent
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TextGradientComponent
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_120BD8();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = self;
-  v9 = sub_120EA8(width, height, a4);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  v9 = sub_120EA8(width, height, priority);
   v11 = v10;
 
   v12 = v9;
@@ -30,15 +30,15 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_121130();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_121294(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_121294(change);
 }
 
 @end

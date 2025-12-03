@@ -1,19 +1,19 @@
 @interface OIPieSliceCGRenderer
-- (OIPieSliceCGRenderer)initWithChart:(__OIChart *)a3;
+- (OIPieSliceCGRenderer)initWithChart:(__OIChart *)chart;
 - (void)dealloc;
-- (void)renderPieSliceFromSeries:(__OISeries *)a3 radius:(double)a4 angle:(double)a5 newAngle:(double)a6 xOffset:(double)a7 yOffset:(double)a8 thickness:(double)a9;
+- (void)renderPieSliceFromSeries:(__OISeries *)series radius:(double)radius angle:(double)angle newAngle:(double)newAngle xOffset:(double)offset yOffset:(double)yOffset thickness:(double)thickness;
 @end
 
 @implementation OIPieSliceCGRenderer
 
-- (OIPieSliceCGRenderer)initWithChart:(__OIChart *)a3
+- (OIPieSliceCGRenderer)initWithChart:(__OIChart *)chart
 {
   v6.receiver = self;
   v6.super_class = OIPieSliceCGRenderer;
   v4 = [(OIPieSliceCGRenderer *)&v6 init];
   if (v4)
   {
-    [(OIPieSliceCGRenderer *)v4 setChart:OILabelRetain(a3)];
+    [(OIPieSliceCGRenderer *)v4 setChart:OILabelRetain(chart)];
   }
 
   return v4;
@@ -27,39 +27,39 @@
   [(OIPieSliceCGRenderer *)&v3 dealloc];
 }
 
-- (void)renderPieSliceFromSeries:(__OISeries *)a3 radius:(double)a4 angle:(double)a5 newAngle:(double)a6 xOffset:(double)a7 yOffset:(double)a8 thickness:(double)a9
+- (void)renderPieSliceFromSeries:(__OISeries *)series radius:(double)radius angle:(double)angle newAngle:(double)newAngle xOffset:(double)offset yOffset:(double)yOffset thickness:(double)thickness
 {
   Type = OIAxisGetType(self->_chart);
-  TextColor = OILabelGetTextColor(a3);
-  StrokeColor = OILabelGetStrokeColor(a3);
-  if (a5 >= -3.14159265 && a9 > 0.0 && (a6 < 0.0 || a5 > 3.14159265 || a5 < 0.0 || a6 > 3.14159265))
+  TextColor = OILabelGetTextColor(series);
+  StrokeColor = OILabelGetStrokeColor(series);
+  if (angle >= -3.14159265 && thickness > 0.0 && (newAngle < 0.0 || angle > 3.14159265 || angle < 0.0 || newAngle > 3.14159265))
   {
-    if (a5 >= 3.14159265 || a5 <= 0.0)
+    if (angle >= 3.14159265 || angle <= 0.0)
     {
-      v20 = a5;
+      angleCopy = angle;
     }
 
     else
     {
-      v20 = 0.0;
+      angleCopy = 0.0;
     }
 
-    if (a6 >= -3.14159265)
+    if (newAngle >= -3.14159265)
     {
-      v21 = a6;
+      newAngleCopy = newAngle;
     }
 
     else
     {
-      v21 = 3.14159265;
+      newAngleCopy = 3.14159265;
     }
 
-    v22 = __sincos_stret(v20);
-    CGContextMoveToPoint(Type, a7 + a4 * v22.__cosval, a8 + a4 * v22.__sinval);
-    CGContextAddArc(Type, a7, a8, a4, v20, v21, 1);
-    v23 = __sincos_stret(v21);
-    CGContextAddLineToPoint(Type, a7 + a4 * v23.__cosval, a8 + a4 * v23.__sinval - a9);
-    CGContextAddArc(Type, a7, a8 - a9, a4, v21, v20, 0);
+    v22 = __sincos_stret(angleCopy);
+    CGContextMoveToPoint(Type, offset + radius * v22.__cosval, yOffset + radius * v22.__sinval);
+    CGContextAddArc(Type, offset, yOffset, radius, angleCopy, newAngleCopy, 1);
+    v23 = __sincos_stret(newAngleCopy);
+    CGContextAddLineToPoint(Type, offset + radius * v23.__cosval, yOffset + radius * v23.__sinval - thickness);
+    CGContextAddArc(Type, offset, yOffset - thickness, radius, newAngleCopy, angleCopy, 0);
     if (TextColor)
     {
       v24 = OICreateDimmedColorFromColor(TextColor, 0.5);
@@ -71,21 +71,21 @@
     if (StrokeColor)
     {
       CGContextSetStrokeColorWithColor(Type, StrokeColor);
-      StrokeWidth = OILabelGetStrokeWidth(a3);
+      StrokeWidth = OILabelGetStrokeWidth(series);
       CGContextSetLineWidth(Type, StrokeWidth);
       CGContextStrokePath(Type);
     }
   }
 
-  if (a5 < -1.57079633 && a9 > 0.0)
+  if (angle < -1.57079633 && thickness > 0.0)
   {
-    v26 = __sincos_stret(a5);
-    v27 = a7 + a4 * v26.__cosval;
-    v28 = a8 + a4 * v26.__sinval;
+    v26 = __sincos_stret(angle);
+    v27 = offset + radius * v26.__cosval;
+    v28 = yOffset + radius * v26.__sinval;
     CGContextMoveToPoint(Type, v27, v28);
-    CGContextAddLineToPoint(Type, v27, v28 - a9);
-    CGContextAddLineToPoint(Type, a7, a8 - a9);
-    CGContextAddLineToPoint(Type, a7, a8);
+    CGContextAddLineToPoint(Type, v27, v28 - thickness);
+    CGContextAddLineToPoint(Type, offset, yOffset - thickness);
+    CGContextAddLineToPoint(Type, offset, yOffset);
     if (TextColor)
     {
       v29 = OICreateDimmedColorFromColor(TextColor, 0.5);
@@ -97,21 +97,21 @@
     if (StrokeColor)
     {
       CGContextSetStrokeColorWithColor(Type, StrokeColor);
-      v30 = OILabelGetStrokeWidth(a3);
+      v30 = OILabelGetStrokeWidth(series);
       CGContextSetLineWidth(Type, v30);
       CGContextStrokePath(Type);
     }
   }
 
-  if (a6 > -1.57079633 && a9 > 0.0)
+  if (newAngle > -1.57079633 && thickness > 0.0)
   {
-    v31 = __sincos_stret(a6);
-    v32 = a7 + a4 * v31.__cosval;
-    v33 = a8 + a4 * v31.__sinval;
+    v31 = __sincos_stret(newAngle);
+    v32 = offset + radius * v31.__cosval;
+    v33 = yOffset + radius * v31.__sinval;
     CGContextMoveToPoint(Type, v32, v33);
-    CGContextAddLineToPoint(Type, v32, v33 - a9);
-    CGContextAddLineToPoint(Type, a7, a8 - a9);
-    CGContextAddLineToPoint(Type, a7, a8);
+    CGContextAddLineToPoint(Type, v32, v33 - thickness);
+    CGContextAddLineToPoint(Type, offset, yOffset - thickness);
+    CGContextAddLineToPoint(Type, offset, yOffset);
     if (TextColor)
     {
       v34 = OICreateDimmedColorFromColor(TextColor, 0.5);
@@ -123,17 +123,17 @@
     if (StrokeColor)
     {
       CGContextSetStrokeColorWithColor(Type, StrokeColor);
-      v35 = OILabelGetStrokeWidth(a3);
+      v35 = OILabelGetStrokeWidth(series);
       CGContextSetLineWidth(Type, v35);
       CGContextStrokePath(Type);
     }
   }
 
-  CGContextMoveToPoint(Type, a7, floor(a8) + 0.5);
-  v36 = __sincos_stret(a5);
-  CGContextAddLineToPoint(Type, a7 + a4 * v36.__cosval, a8 + a4 * v36.__sinval);
-  CGContextAddArc(Type, a7, a8, a4, a5, a6, 1);
-  CGContextAddLineToPoint(Type, a7, a8);
+  CGContextMoveToPoint(Type, offset, floor(yOffset) + 0.5);
+  v36 = __sincos_stret(angle);
+  CGContextAddLineToPoint(Type, offset + radius * v36.__cosval, yOffset + radius * v36.__sinval);
+  CGContextAddArc(Type, offset, yOffset, radius, angle, newAngle, 1);
+  CGContextAddLineToPoint(Type, offset, yOffset);
   if (TextColor)
   {
     CGContextSetFillColorWithColor(Type, TextColor);
@@ -143,7 +143,7 @@
   if (StrokeColor)
   {
     CGContextSetStrokeColorWithColor(Type, StrokeColor);
-    v37 = OILabelGetStrokeWidth(a3);
+    v37 = OILabelGetStrokeWidth(series);
     CGContextSetLineWidth(Type, v37);
 
     CGContextStrokePath(Type);

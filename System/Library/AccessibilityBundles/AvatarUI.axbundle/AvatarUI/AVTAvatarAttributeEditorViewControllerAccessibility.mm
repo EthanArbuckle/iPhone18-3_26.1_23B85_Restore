@@ -1,19 +1,19 @@
 @interface AVTAvatarAttributeEditorViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation AVTAvatarAttributeEditorViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"alphaAssetsLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"avtViewSession" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"attributesCollectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTViewSession" hasInstanceMethod:@"avtView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"alphaAssetsLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"avtViewSession" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"attributesCollectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTViewSession" hasInstanceMethod:@"avtView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -34,8 +34,8 @@
   v7 = [(AVTAvatarAttributeEditorViewControllerAccessibility *)self safeValueForKey:@"attributesCollectionView"];
   v8 = __UIAccessibilityCastAsClass();
 
-  v9 = [v8 indexPathsForVisibleItems];
-  [v8 reloadItemsAtIndexPaths:v9];
+  indexPathsForVisibleItems = [v8 indexPathsForVisibleItems];
+  [v8 reloadItemsAtIndexPaths:indexPathsForVisibleItems];
 }
 
 - (void)viewDidLoad

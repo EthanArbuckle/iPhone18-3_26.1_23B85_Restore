@@ -1,27 +1,27 @@
 @interface CCWalletPaymentsCommerceTrackedOrderMerchant
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCWalletPaymentsCommerceTrackedOrderMerchant)initWithDisplayName:(id)a3 domainName:(id)a4 displayNameUpdateDate:(id)a5 error:(id *)a6;
-- (CCWalletPaymentsCommerceTrackedOrderMerchant)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCWalletPaymentsCommerceTrackedOrderMerchant)initWithDisplayName:(id)name domainName:(id)domainName displayNameUpdateDate:(id)date error:(id *)error;
+- (CCWalletPaymentsCommerceTrackedOrderMerchant)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSDate)displayNameUpdateDate;
 - (NSString)displayName;
 - (NSString)domainName;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletPaymentsCommerceTrackedOrderMerchant
 
-- (CCWalletPaymentsCommerceTrackedOrderMerchant)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletPaymentsCommerceTrackedOrderMerchant)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"displayName"];
-    v10 = [v6 objectForKeyedSubscript:@"domainName"];
-    v11 = [v6 objectForKeyedSubscript:@"displayNameUpdateDate"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"displayName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"domainName"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"displayNameUpdateDate"];
     if (v11)
     {
       objc_opt_class();
@@ -47,7 +47,7 @@
       v13 = v8;
     }
 
-    v16 = [[CCWalletPaymentsCommerceTrackedOrderMerchant alloc] initWithDisplayName:v9 domainName:v10 displayNameUpdateDate:v11 error:a4];
+    v16 = [[CCWalletPaymentsCommerceTrackedOrderMerchant alloc] initWithDisplayName:v9 domainName:v10 displayNameUpdateDate:v11 error:error];
 LABEL_9:
 
     v8 = v13;
@@ -66,14 +66,14 @@ LABEL_10:
   v3 = objc_opt_new();
   if (self->_displayName)
   {
-    v4 = [(CCWalletPaymentsCommerceTrackedOrderMerchant *)self displayName];
-    [v3 setObject:v4 forKeyedSubscript:@"displayName"];
+    displayName = [(CCWalletPaymentsCommerceTrackedOrderMerchant *)self displayName];
+    [v3 setObject:displayName forKeyedSubscript:@"displayName"];
   }
 
   if (self->_domainName)
   {
-    v5 = [(CCWalletPaymentsCommerceTrackedOrderMerchant *)self domainName];
-    [v3 setObject:v5 forKeyedSubscript:@"domainName"];
+    domainName = [(CCWalletPaymentsCommerceTrackedOrderMerchant *)self domainName];
+    [v3 setObject:domainName forKeyedSubscript:@"domainName"];
   }
 
   if (self->_hasRaw_displayNameUpdateDate)
@@ -87,25 +87,25 @@ LABEL_10:
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v8 = a3;
+  blockCopy = block;
   if (self->_displayName)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7971 stringValue:self->_displayName];
-    v8[2](v8, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_domainName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7972 stringValue:self->_domainName];
-    v8[2](v8, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_hasRaw_displayNameUpdateDate)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8035 doubleValue:self->_raw_displayNameUpdateDate];
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
@@ -138,10 +138,10 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -273,11 +273,11 @@ LABEL_30:
 
         v32 = objc_opt_class();
         NSStringFromClass(v32);
-        v34 = v33 = v5;
+        v34 = v33 = dataCopy;
         v35 = *&v6[*v9];
         v10 = CCSkipFieldErrorForMessage();
 
-        v5 = v33;
+        dataCopy = v33;
       }
 
 LABEL_35:
@@ -317,13 +317,13 @@ LABEL_42:
   return v39;
 }
 
-- (CCWalletPaymentsCommerceTrackedOrderMerchant)initWithDisplayName:(id)a3 domainName:(id)a4 displayNameUpdateDate:(id)a5 error:(id *)a6
+- (CCWalletPaymentsCommerceTrackedOrderMerchant)initWithDisplayName:(id)name domainName:(id)domainName displayNameUpdateDate:(id)date error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  domainNameCopy = domainName;
+  dateCopy = date;
   v13 = objc_opt_new();
-  if (v10)
+  if (nameCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -334,11 +334,11 @@ LABEL_42:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!domainNameCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (dateCopy)
       {
         goto LABEL_5;
       }
@@ -352,7 +352,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!domainNameCopy)
     {
       goto LABEL_4;
     }
@@ -365,13 +365,13 @@ LABEL_11:
   if (!v19)
   {
     CCSetError();
-    v18 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
   CCPBDataWriterWriteStringField();
-  if (!v12)
+  if (!dateCopy)
   {
     goto LABEL_11;
   }
@@ -383,22 +383,22 @@ LABEL_5:
 
   if (v17)
   {
-    [v12 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     CCPBDataWriterWriteDoubleField();
 LABEL_12:
-    v20 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v20 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v18 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v18 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v18;
+  return selfCopy;
 }
 
 @end

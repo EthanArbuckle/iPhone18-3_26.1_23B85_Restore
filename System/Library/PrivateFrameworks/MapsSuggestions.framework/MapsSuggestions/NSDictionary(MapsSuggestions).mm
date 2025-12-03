@@ -7,7 +7,7 @@
 
 - (id)MSg_copyIf:()MapsSuggestions
 {
-  v1 = [a1 MSg_mutableCopyIf:?];
+  v1 = [self MSg_mutableCopyIf:?];
   v2 = [v1 copy];
 
   return v2;
@@ -19,7 +19,7 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __51__NSDictionary_MapsSuggestions__MSg_mutableCopyIf___block_invoke;
@@ -27,7 +27,7 @@
     v13 = v4;
     v6 = v5;
     v12 = v6;
-    [a1 enumerateKeysAndObjectsUsingBlock:v11];
+    [self enumerateKeysAndObjectsUsingBlock:v11];
     v7 = v12;
     v8 = v6;
 

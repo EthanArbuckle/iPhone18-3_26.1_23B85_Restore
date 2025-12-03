@@ -1,45 +1,45 @@
 @interface SBHomeHardwareButton
 - (BOOL)_acceleratedSinglePressRecognizerShouldBegin;
-- (BOOL)_isMenuDoublePressAllowed:(id *)a3;
+- (BOOL)_isMenuDoublePressAllowed:(id *)allowed;
 - (BOOL)_isMenuDoublePressDisabled;
-- (BOOL)_longPressGestureRecognizerShouldBegin:(id)a3;
-- (BOOL)emulateHomeButtonEventsIfNeeded:(__IOHIDEvent *)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)_longPressGestureRecognizerShouldBegin:(id)begin;
+- (BOOL)emulateHomeButtonEventsIfNeeded:(__IOHIDEvent *)needed;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)supportsAcceleratedAppDismiss;
-- (SBHomeHardwareButton)initWithScreenshotGestureRecognizer:(id)a3 homeButtonType:(int64_t)a4;
-- (SBHomeHardwareButton)initWithScreenshotGestureRecognizer:(id)a3 homeButtonType:(int64_t)a4 buttonActions:(id)a5 gestureRecognizerConfiguration:(id)a6;
+- (SBHomeHardwareButton)initWithScreenshotGestureRecognizer:(id)recognizer homeButtonType:(int64_t)type;
+- (SBHomeHardwareButton)initWithScreenshotGestureRecognizer:(id)recognizer homeButtonType:(int64_t)type buttonActions:(id)actions gestureRecognizerConfiguration:(id)configuration;
 - (UIGestureRecognizer)screenshotGestureRecognizer;
 - (int64_t)hapticType;
-- (void)_cancelGestureRecognizer:(id)a3;
-- (void)_createGestureRecognizersWithConfiguration:(id)a3;
-- (void)_reconfigureGestureRecognizersForNewMaximumPressCount:(int64_t)a3 oldMaximumPressCount:(int64_t)a4;
-- (void)_reconfigureGestureRecognizersForNewMaximumTapCount:(int64_t)a3 oldMaximumTapCount:(int64_t)a4;
+- (void)_cancelGestureRecognizer:(id)recognizer;
+- (void)_createGestureRecognizersWithConfiguration:(id)configuration;
+- (void)_reconfigureGestureRecognizersForNewMaximumPressCount:(int64_t)count oldMaximumPressCount:(int64_t)pressCount;
+- (void)_reconfigureGestureRecognizersForNewMaximumTapCount:(int64_t)count oldMaximumTapCount:(int64_t)tapCount;
 - (void)_reconfigureHomeButton;
-- (void)_setFingerDetectionEnabled:(BOOL)a3;
-- (void)_singlePressUp:(id)a3;
+- (void)_setFingerDetectionEnabled:(BOOL)enabled;
+- (void)_singlePressUp:(id)up;
 - (void)_startObservingReconfigurationTriggers;
-- (void)_terminateHomeButtonEventAtCount:(int64_t)a3;
-- (void)acceleratedSinglePressUp:(id)a3;
-- (void)addHintSuppressionAssertion:(id)a3;
-- (void)addLongPressDurationAssertion:(id)a3;
+- (void)_terminateHomeButtonEventAtCount:(int64_t)count;
+- (void)acceleratedSinglePressUp:(id)up;
+- (void)addHintSuppressionAssertion:(id)assertion;
+- (void)addLongPressDurationAssertion:(id)assertion;
 - (void)cancelHardwareButtonPress;
 - (void)cancelLongPress;
-- (void)configureForwardingToLockButton:(id)a3;
-- (void)doublePressDown:(id)a3;
-- (void)doublePressUp:(id)a3;
-- (void)doubleTapUp:(id)a3;
-- (void)initialButtonDown:(id)a3;
-- (void)initialButtonUp:(id)a3;
-- (void)longPress:(id)a3;
-- (void)provider:(id)a3 didUpdateButtonGestureParameters:(id)a4;
-- (void)removeHintSuppressionAssertion:(id)a3;
-- (void)removeLongPressDurationAssertion:(id)a3;
-- (void)screenshotRecognizerDidRecognize:(id)a3;
-- (void)setHapticType:(int64_t)a3;
-- (void)singlePressUp:(id)a3;
-- (void)triplePressUp:(id)a3;
+- (void)configureForwardingToLockButton:(id)button;
+- (void)doublePressDown:(id)down;
+- (void)doublePressUp:(id)up;
+- (void)doubleTapUp:(id)up;
+- (void)initialButtonDown:(id)down;
+- (void)initialButtonUp:(id)up;
+- (void)longPress:(id)press;
+- (void)provider:(id)provider didUpdateButtonGestureParameters:(id)parameters;
+- (void)removeHintSuppressionAssertion:(id)assertion;
+- (void)removeLongPressDurationAssertion:(id)assertion;
+- (void)screenshotRecognizerDidRecognize:(id)recognize;
+- (void)setHapticType:(int64_t)type;
+- (void)singlePressUp:(id)up;
+- (void)triplePressUp:(id)up;
 @end
 
 @implementation SBHomeHardwareButton
@@ -48,19 +48,19 @@
 {
   v53 = *MEMORY[0x277D85DE8];
   v3 = +[SBWorkspace mainWorkspace];
-  v4 = [SBApp windowSceneManager];
-  v5 = [v4 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  v6 = [v5 homeScreenController];
-  v7 = [v5 switcherController];
-  v8 = [v6 iconManager];
-  v9 = [(SBHomeHardwareButton *)self buttonDefinition];
+  homeScreenController = [embeddedDisplayWindowScene homeScreenController];
+  switcherController = [embeddedDisplayWindowScene switcherController];
+  iconManager = [homeScreenController iconManager];
+  buttonDefinition = [(SBHomeHardwareButton *)self buttonDefinition];
   if (![(NSMutableSet *)self->_hintSuppressionAssertions count])
   {
-    if ([v8 isEditing])
+    if ([iconManager isEditing])
     {
-      v10 = SBLogButtonsHome();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      modalAlertPresentationCoordinator = SBLogButtonsHome();
+      if (!os_log_type_enabled(modalAlertPresentationCoordinator, OS_LOG_TYPE_INFO))
       {
         goto LABEL_30;
       }
@@ -68,18 +68,18 @@
       *buf = 0;
       v12 = "Accelerated single press recognizer should not begin because currently editing";
 LABEL_28:
-      v13 = v10;
+      v13 = modalAlertPresentationCoordinator;
       v14 = 2;
       goto LABEL_29;
     }
 
-    v15 = [SBApp lockHardwareButton];
-    v16 = [v15 isButtonDown];
+    lockHardwareButton = [SBApp lockHardwareButton];
+    isButtonDown = [lockHardwareButton isButtonDown];
 
-    if (v16)
+    if (isButtonDown)
     {
-      v10 = SBLogButtonsHome();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      modalAlertPresentationCoordinator = SBLogButtonsHome();
+      if (!os_log_type_enabled(modalAlertPresentationCoordinator, OS_LOG_TYPE_INFO))
       {
         goto LABEL_30;
       }
@@ -89,10 +89,10 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    if ([v9 maximumPressCount] >= 3)
+    if ([buttonDefinition maximumPressCount] >= 3)
     {
-      v10 = SBLogButtonsHome();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      modalAlertPresentationCoordinator = SBLogButtonsHome();
+      if (!os_log_type_enabled(modalAlertPresentationCoordinator, OS_LOG_TYPE_INFO))
       {
         goto LABEL_30;
       }
@@ -102,11 +102,11 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    [v9 maximumMultiplePressTimeInterval];
+    [buttonDefinition maximumMultiplePressTimeInterval];
     if (v17 > 0.349999994)
     {
-      v10 = SBLogButtonsHome();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      modalAlertPresentationCoordinator = SBLogButtonsHome();
+      if (!os_log_type_enabled(modalAlertPresentationCoordinator, OS_LOG_TYPE_INFO))
       {
         goto LABEL_30;
       }
@@ -116,13 +116,13 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    v18 = [v3 transientOverlayPresentationManager];
-    v19 = [v18 hasActivePresentation];
+    transientOverlayPresentationManager = [v3 transientOverlayPresentationManager];
+    hasActivePresentation = [transientOverlayPresentationManager hasActivePresentation];
 
-    if (v19)
+    if (hasActivePresentation)
     {
-      v10 = SBLogButtonsHome();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      modalAlertPresentationCoordinator = SBLogButtonsHome();
+      if (!os_log_type_enabled(modalAlertPresentationCoordinator, OS_LOG_TYPE_INFO))
       {
         goto LABEL_30;
       }
@@ -133,12 +133,12 @@ LABEL_28:
     }
 
     v20 = +[SBControlCenterCoordinator sharedInstance];
-    v21 = [v20 isVisible];
+    isVisible = [v20 isVisible];
 
-    if (v21)
+    if (isVisible)
     {
-      v10 = SBLogButtonsHome();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      modalAlertPresentationCoordinator = SBLogButtonsHome();
+      if (!os_log_type_enabled(modalAlertPresentationCoordinator, OS_LOG_TYPE_INFO))
       {
         goto LABEL_30;
       }
@@ -148,14 +148,14 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    v22 = [SBApp notificationDispatcher];
-    v23 = [v22 bannerDestination];
-    v24 = [v23 isPresentingBanner];
+    notificationDispatcher = [SBApp notificationDispatcher];
+    bannerDestination = [notificationDispatcher bannerDestination];
+    isPresentingBanner = [bannerDestination isPresentingBanner];
 
-    if (v24)
+    if (isPresentingBanner)
     {
-      v10 = SBLogButtonsHome();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      modalAlertPresentationCoordinator = SBLogButtonsHome();
+      if (!os_log_type_enabled(modalAlertPresentationCoordinator, OS_LOG_TYPE_INFO))
       {
         goto LABEL_30;
       }
@@ -165,10 +165,10 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    if ([v7 isMainSwitcherVisible])
+    if ([switcherController isMainSwitcherVisible])
     {
-      v10 = SBLogButtonsHome();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      modalAlertPresentationCoordinator = SBLogButtonsHome();
+      if (!os_log_type_enabled(modalAlertPresentationCoordinator, OS_LOG_TYPE_INFO))
       {
         goto LABEL_30;
       }
@@ -178,16 +178,16 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    v10 = [SBApp modalAlertPresentationCoordinator];
-    if ([v10 isShowingSystemModalAlert])
+    modalAlertPresentationCoordinator = [SBApp modalAlertPresentationCoordinator];
+    if ([modalAlertPresentationCoordinator isShowingSystemModalAlert])
     {
-      v27 = SBLogButtonsHome();
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
+      menuButtonInterceptApp = SBLogButtonsHome();
+      if (os_log_type_enabled(menuButtonInterceptApp, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
         v28 = "Accelerated single press recognizer should not begin -- system modal alert";
 LABEL_38:
-        _os_log_impl(&dword_21ED4E000, v27, OS_LOG_TYPE_INFO, v28, buf, 2u);
+        _os_log_impl(&dword_21ED4E000, menuButtonInterceptApp, OS_LOG_TYPE_INFO, v28, buf, 2u);
         goto LABEL_39;
       }
 
@@ -195,12 +195,12 @@ LABEL_38:
     }
 
     v29 = +[SBSetupManager sharedInstance];
-    v30 = [v29 isInSetupMode];
+    isInSetupMode = [v29 isInSetupMode];
 
-    if (v30)
+    if (isInSetupMode)
     {
-      v27 = SBLogButtonsHome();
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
+      menuButtonInterceptApp = SBLogButtonsHome();
+      if (os_log_type_enabled(menuButtonInterceptApp, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
         v28 = "Accelerated single press recognizer should not begin -- in Setup";
@@ -214,15 +214,15 @@ LABEL_48:
       goto LABEL_31;
     }
 
-    v27 = [SBApp menuButtonInterceptApp];
-    if (v27)
+    menuButtonInterceptApp = [SBApp menuButtonInterceptApp];
+    if (menuButtonInterceptApp)
     {
       v31 = SBLogButtonsHome();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
-        v32 = [v27 bundleIdentifier];
+        bundleIdentifier = [menuButtonInterceptApp bundleIdentifier];
         *buf = 138543362;
-        v52 = v32;
+        v52 = bundleIdentifier;
         _os_log_impl(&dword_21ED4E000, v31, OS_LOG_TYPE_INFO, "Accelerated single press recognizer should not begin -- intercept app:%{public}@", buf, 0xCu);
       }
 
@@ -234,9 +234,9 @@ LABEL_47:
     }
 
     v33 = +[SBCoverSheetPresentationManager sharedInstance];
-    v34 = [v33 isVisible];
+    isVisible2 = [v33 isVisible];
 
-    if (v34)
+    if (isVisible2)
     {
       v31 = SBLogButtonsHome();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
@@ -265,13 +265,13 @@ LABEL_47:
     log = +[SBHardwareButtonService sharedInstance];
     if ([log hasConsumersForHomeButtonPresses])
     {
-      v48 = SBLogButtonsHome();
-      if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
+      layoutStatePrimaryElement = SBLogButtonsHome();
+      if (os_log_type_enabled(layoutStatePrimaryElement, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
         v35 = "Accelerated single press recognizer should not begin -- external button consumers exist";
 LABEL_56:
-        v36 = v48;
+        v36 = layoutStatePrimaryElement;
         v37 = 2;
 LABEL_66:
         _os_log_impl(&dword_21ED4E000, v36, OS_LOG_TYPE_INFO, v35, buf, v37);
@@ -283,12 +283,12 @@ LABEL_66:
 
     v45 = +[SBAssistantController isVisible];
     v38 = +[SBVoiceControlController sharedInstance];
-    v49 = [v38 isVisible];
+    isVisible3 = [v38 isVisible];
 
-    if (v45 || v49)
+    if (v45 || isVisible3)
     {
-      v48 = SBLogButtonsHome();
-      if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
+      layoutStatePrimaryElement = SBLogButtonsHome();
+      if (os_log_type_enabled(layoutStatePrimaryElement, OS_LOG_TYPE_INFO))
       {
         v39 = @"Voice Control";
         if (v45)
@@ -299,7 +299,7 @@ LABEL_66:
         *buf = 138543362;
         v52 = v39;
         v35 = "Accelerated single press recognizer should not begin -- %{public}@ is visible";
-        v36 = v48;
+        v36 = layoutStatePrimaryElement;
         v37 = 12;
         goto LABEL_66;
       }
@@ -307,10 +307,10 @@ LABEL_66:
       goto LABEL_67;
     }
 
-    if ([v6 areAnyIconViewContextMenusShowing])
+    if ([homeScreenController areAnyIconViewContextMenusShowing])
     {
-      v48 = SBLogButtonsHome();
-      if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
+      layoutStatePrimaryElement = SBLogButtonsHome();
+      if (os_log_type_enabled(layoutStatePrimaryElement, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
         v35 = "Accelerated single press recognizer should not begin -- icon force touch controller peeking or showing";
@@ -325,11 +325,11 @@ LABEL_69:
       goto LABEL_47;
     }
 
-    if ([v8 isPerformingExpandTransition])
+    if ([iconManager isPerformingExpandTransition])
     {
       SBLogButtonsHome();
-      v48 = v25 = 1;
-      if (!os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
+      layoutStatePrimaryElement = v25 = 1;
+      if (!os_log_type_enabled(layoutStatePrimaryElement, OS_LOG_TYPE_INFO))
       {
         goto LABEL_68;
       }
@@ -337,15 +337,15 @@ LABEL_69:
       *buf = 0;
       v40 = "Accelerated single press recognizer should begin -- cancelling folder open";
 LABEL_76:
-      _os_log_impl(&dword_21ED4E000, v48, OS_LOG_TYPE_INFO, v40, buf, 2u);
+      _os_log_impl(&dword_21ED4E000, layoutStatePrimaryElement, OS_LOG_TYPE_INFO, v40, buf, 2u);
       goto LABEL_68;
     }
 
-    if ([v7 _shouldAcceleratedHomeButtonPressBegin])
+    if ([switcherController _shouldAcceleratedHomeButtonPressBegin])
     {
       SBLogButtonsHome();
-      v48 = v25 = 1;
-      if (!os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
+      layoutStatePrimaryElement = v25 = 1;
+      if (!os_log_type_enabled(layoutStatePrimaryElement, OS_LOG_TYPE_INFO))
       {
         goto LABEL_68;
       }
@@ -355,10 +355,10 @@ LABEL_76:
       goto LABEL_76;
     }
 
-    if ([v8 isTransitioning])
+    if ([iconManager isTransitioning])
     {
-      v48 = SBLogButtonsHome();
-      if (!os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
+      layoutStatePrimaryElement = SBLogButtonsHome();
+      if (!os_log_type_enabled(layoutStatePrimaryElement, OS_LOG_TYPE_INFO))
       {
         goto LABEL_67;
       }
@@ -368,11 +368,11 @@ LABEL_76:
       goto LABEL_56;
     }
 
-    v48 = [v7 layoutStatePrimaryElement];
-    v41 = [v48 workspaceEntity];
-    v46 = [v41 isApplicationSceneEntity];
+    layoutStatePrimaryElement = [switcherController layoutStatePrimaryElement];
+    workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+    isApplicationSceneEntity = [workspaceEntity isApplicationSceneEntity];
 
-    if (v46)
+    if (isApplicationSceneEntity)
     {
       v47 = SBLogButtonsHome();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
@@ -386,10 +386,10 @@ LABEL_88:
 
     else
     {
-      v43 = [v8 hasOpenFolder];
+      hasOpenFolder = [iconManager hasOpenFolder];
       v47 = SBLogButtonsHome();
       v44 = os_log_type_enabled(v47, OS_LOG_TYPE_INFO);
-      if (v43)
+      if (hasOpenFolder)
       {
         if (v44)
         {
@@ -420,14 +420,14 @@ LABEL_90:
     goto LABEL_68;
   }
 
-  v10 = SBLogButtonsHome();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  modalAlertPresentationCoordinator = SBLogButtonsHome();
+  if (os_log_type_enabled(modalAlertPresentationCoordinator, OS_LOG_TYPE_INFO))
   {
     hintSuppressionAssertions = self->_hintSuppressionAssertions;
     *buf = 138543362;
     v52 = hintSuppressionAssertions;
     v12 = "Accelerated single press recognizer should not begin -- 'hint' suppression assertions: %{public}@";
-    v13 = v10;
+    v13 = modalAlertPresentationCoordinator;
     v14 = 12;
 LABEL_29:
     _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_INFO, v12, buf, v14);
@@ -443,10 +443,10 @@ LABEL_31:
 - (BOOL)_isMenuDoublePressDisabled
 {
   v2 = +[SBDefaults localDefaults];
-  v3 = [v2 hardwareDefaults];
-  v4 = [v3 disableHomeButtonDoublePress];
+  hardwareDefaults = [v2 hardwareDefaults];
+  disableHomeButtonDoublePress = [hardwareDefaults disableHomeButtonDoublePress];
 
-  return v4;
+  return disableHomeButtonDoublePress;
 }
 
 - (void)cancelLongPress
@@ -459,17 +459,17 @@ LABEL_31:
   }
 
   self->_longPressDidOccur = 0;
-  v4 = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
-  v5 = [v4 longPressGestureRecognizer];
-  [v5 setEnabled:0];
-  [v5 setEnabled:1];
+  gestureRecognizerConfiguration = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
+  longPressGestureRecognizer = [gestureRecognizerConfiguration longPressGestureRecognizer];
+  [longPressGestureRecognizer setEnabled:0];
+  [longPressGestureRecognizer setEnabled:1];
   [(SBHomeHardwareButtonActions *)self->_buttonActions performLongPressCancelledActions];
 }
 
-- (SBHomeHardwareButton)initWithScreenshotGestureRecognizer:(id)a3 homeButtonType:(int64_t)a4
+- (SBHomeHardwareButton)initWithScreenshotGestureRecognizer:(id)recognizer homeButtonType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[SBHomeHardwareButtonActions alloc] initWitHomeButtonType:a4];
+  recognizerCopy = recognizer;
+  v7 = [[SBHomeHardwareButtonActions alloc] initWitHomeButtonType:type];
   v8 = objc_alloc_init(SBHomeHardwareButtonGestureRecognizerConfiguration);
   v9 = +[SBSystemGestureManager mainDisplayManager];
   [(SBHomeHardwareButtonGestureRecognizerConfiguration *)v8 setSystemGestureManager:v9];
@@ -501,31 +501,31 @@ LABEL_31:
   v18 = [(UIHBClickGestureRecognizer *)[SBHBDoubleTapUpGestureRecognizer alloc] initWithTarget:0 action:0];
   [(SBHomeHardwareButtonGestureRecognizerConfiguration *)v8 setDoubleTapUpGestureRecognizer:v18];
 
-  v19 = [(SBHomeHardwareButton *)self initWithScreenshotGestureRecognizer:v6 homeButtonType:a4 buttonActions:v7 gestureRecognizerConfiguration:v8];
+  v19 = [(SBHomeHardwareButton *)self initWithScreenshotGestureRecognizer:recognizerCopy homeButtonType:type buttonActions:v7 gestureRecognizerConfiguration:v8];
   return v19;
 }
 
-- (SBHomeHardwareButton)initWithScreenshotGestureRecognizer:(id)a3 homeButtonType:(int64_t)a4 buttonActions:(id)a5 gestureRecognizerConfiguration:(id)a6
+- (SBHomeHardwareButton)initWithScreenshotGestureRecognizer:(id)recognizer homeButtonType:(int64_t)type buttonActions:(id)actions gestureRecognizerConfiguration:(id)configuration
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  recognizerCopy = recognizer;
+  actionsCopy = actions;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = SBHomeHardwareButton;
   v13 = [(SBHomeHardwareButton *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_screenshotGestureRecognizer, v10);
-    v14->_homeButtonType = a4;
-    [(SBHomeHardwareButton *)v14 _createGestureRecognizersWithConfiguration:v12];
-    objc_storeStrong(&v14->_buttonActions, a5);
+    objc_storeWeak(&v13->_screenshotGestureRecognizer, recognizerCopy);
+    v14->_homeButtonType = type;
+    [(SBHomeHardwareButton *)v14 _createGestureRecognizersWithConfiguration:configurationCopy];
+    objc_storeStrong(&v14->_buttonActions, actions);
     [(SBHardwareButtonGestureParametersProviderBase *)v14->_buttonActions addHardwareButtonGestureParametersObserver:v14];
-    v15 = [(SBHomeHardwareButtonActions *)v14->_buttonActions hardwareButtonGestureParameters];
+    hardwareButtonGestureParameters = [(SBHomeHardwareButtonActions *)v14->_buttonActions hardwareButtonGestureParameters];
     buttonGestureParameters = v14->_buttonGestureParameters;
-    v14->_buttonGestureParameters = v15;
+    v14->_buttonGestureParameters = hardwareButtonGestureParameters;
 
-    if ([v12 shouldConfigureDependencies])
+    if ([configurationCopy shouldConfigureDependencies])
     {
       [(SBHomeHardwareButton *)v14 _reconfigureHomeButton];
       [(SBHomeHardwareButton *)v14 _startObservingReconfigurationTriggers];
@@ -539,29 +539,29 @@ LABEL_31:
   return v14;
 }
 
-- (void)configureForwardingToLockButton:(id)a3
+- (void)configureForwardingToLockButton:(id)button
 {
-  v4 = a3;
-  v6 = [(SBHomeHardwareButton *)self buttonActions];
-  v5 = [v4 buttonActions];
+  buttonCopy = button;
+  buttonActions = [(SBHomeHardwareButton *)self buttonActions];
+  buttonActions2 = [buttonCopy buttonActions];
 
-  [v6 configureForwardingToLockButtonActions:v5];
+  [buttonActions configureForwardingToLockButtonActions:buttonActions2];
 }
 
-- (void)_setFingerDetectionEnabled:(BOOL)a3
+- (void)_setFingerDetectionEnabled:(BOOL)enabled
 {
   fingerDetectEnabledAssertion = self->_fingerDetectEnabledAssertion;
-  if ((((fingerDetectEnabledAssertion == 0) ^ a3) & 1) == 0)
+  if ((((fingerDetectEnabledAssertion == 0) ^ enabled) & 1) == 0)
   {
     v12 = fingerDetectEnabledAssertion;
-    if (a3)
+    if (enabled)
     {
       v5 = MEMORY[0x277D67C98];
       v6 = fingerDetectEnabledAssertion;
-      v7 = [v5 sharedInstance];
+      sharedInstance = [v5 sharedInstance];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [(BSInvalidatable *)v7 acquireFingerDetectionWantedAssertionForReason:v9 HIDEventsOnly:1];
+      v10 = [(BSInvalidatable *)sharedInstance acquireFingerDetectionWantedAssertionForReason:v9 HIDEventsOnly:1];
       v11 = self->_fingerDetectEnabledAssertion;
       self->_fingerDetectEnabledAssertion = v10;
     }
@@ -569,17 +569,17 @@ LABEL_31:
     else
     {
       self->_fingerDetectEnabledAssertion = 0;
-      v7 = fingerDetectEnabledAssertion;
+      sharedInstance = fingerDetectEnabledAssertion;
     }
 
     [(BSInvalidatable *)v12 invalidate];
   }
 }
 
-- (void)provider:(id)a3 didUpdateButtonGestureParameters:(id)a4
+- (void)provider:(id)provider didUpdateButtonGestureParameters:(id)parameters
 {
-  v7 = a4;
-  v8 = a3;
+  parametersCopy = parameters;
+  providerCopy = provider;
   v9 = SBLogButtonsHome();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -588,9 +588,9 @@ LABEL_31:
   }
 
   buttonActions = self->_buttonActions;
-  if (buttonActions == v8)
+  if (buttonActions == providerCopy)
   {
-    objc_storeStrong(&self->_buttonGestureParameters, a4);
+    objc_storeStrong(&self->_buttonGestureParameters, parameters);
   }
 
   [(SBHomeHardwareButton *)self _reconfigureHomeButton];
@@ -600,13 +600,13 @@ LABEL_31:
 {
   v28[1] = *MEMORY[0x277D85DE8];
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 hardwareDefaults];
+  hardwareDefaults = [v3 hardwareDefaults];
 
   v5 = +[SBDefaults localDefaults];
-  v21 = [v5 accessibilityDefaults];
+  accessibilityDefaults = [v5 accessibilityDefaults];
 
   v6 = +[SBDefaults localDefaults];
-  v7 = [v6 demoDefaults];
+  demoDefaults = [v6 demoDefaults];
 
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"storeDemoApplicationLockEnabled"];
   v28[0] = v8;
@@ -617,7 +617,7 @@ LABEL_31:
   v25[3] = &unk_2783A8C18;
   v25[4] = self;
   v10 = MEMORY[0x277D85CD0];
-  v11 = [v7 observeDefaults:v9 onQueue:MEMORY[0x277D85CD0] withBlock:v25];
+  v11 = [demoDefaults observeDefaults:v9 onQueue:MEMORY[0x277D85CD0] withBlock:v25];
 
   v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"disableHomeButton"];
   v27[0] = v12;
@@ -629,7 +629,7 @@ LABEL_31:
   v24[2] = __62__SBHomeHardwareButton__startObservingReconfigurationTriggers__block_invoke_124;
   v24[3] = &unk_2783A8C18;
   v24[4] = self;
-  v15 = [v4 observeDefaults:v14 onQueue:v10 withBlock:v24];
+  v15 = [hardwareDefaults observeDefaults:v14 onQueue:v10 withBlock:v24];
 
   if (+[SBReachabilityManager reachabilitySupported])
   {
@@ -642,7 +642,7 @@ LABEL_31:
     [(SBHomeHardwareButton *)self _setFingerDetectionEnabled:0];
   }
 
-  v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"allowReachability", v21}];
+  v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"allowReachability", accessibilityDefaults}];
   v26 = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
   v23[0] = MEMORY[0x277D85DD0];
@@ -708,15 +708,15 @@ uint64_t __62__SBHomeHardwareButton__startObservingReconfigurationTriggers__bloc
 {
   v39 = *MEMORY[0x277D85DE8];
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 hardwareDefaults];
+  hardwareDefaults = [v3 hardwareDefaults];
 
   v5 = +[SBDefaults localDefaults];
-  v6 = [v5 demoDefaults];
+  demoDefaults = [v5 demoDefaults];
 
-  v7 = [(SBHardwareButtonGestureParameters *)self->_buttonGestureParameters maximumPressCount];
-  if (([v4 disableHomeButtonDoublePress] & 1) != 0 || (objc_msgSend(v4, "disableHomeButton") & 1) != 0 || objc_msgSend(v6, "isStoreDemoApplicationLockEnabled"))
+  maximumPressCount = [(SBHardwareButtonGestureParameters *)self->_buttonGestureParameters maximumPressCount];
+  if (([hardwareDefaults disableHomeButtonDoublePress] & 1) != 0 || (objc_msgSend(hardwareDefaults, "disableHomeButton") & 1) != 0 || objc_msgSend(demoDefaults, "isStoreDemoApplicationLockEnabled"))
   {
-    v7 = 1;
+    maximumPressCount = 1;
   }
 
   [(SBHardwareButtonGestureParameters *)self->_buttonGestureParameters multiplePressTimeInterval];
@@ -761,10 +761,10 @@ uint64_t __62__SBHomeHardwareButton__startObservingReconfigurationTriggers__bloc
   self->_maximumTapCount = v12;
   [(SBHomeHardwareButton *)self _reconfigureGestureRecognizersForNewMaximumTapCount:v12 oldMaximumTapCount:maximumTapCount];
   maximumPressCount = self->_maximumPressCount;
-  self->_maximumPressCount = v7;
-  [(SBHomeHardwareButton *)self _reconfigureGestureRecognizersForNewMaximumPressCount:v7 oldMaximumPressCount:maximumPressCount];
-  v16 = [(NSMutableOrderedSet *)self->_longPressDurationAssertions lastObject];
-  [v16 duration];
+  self->_maximumPressCount = maximumPressCount;
+  [(SBHomeHardwareButton *)self _reconfigureGestureRecognizersForNewMaximumPressCount:maximumPressCount oldMaximumPressCount:maximumPressCount];
+  lastObject = [(NSMutableOrderedSet *)self->_longPressDurationAssertions lastObject];
+  [lastObject duration];
   v18 = v17;
 
   if (v18 <= 0.0)
@@ -840,21 +840,21 @@ LABEL_24:
   [(SBHomeHardwareButtonActions *)self->_buttonActions setCurrentLongPressDuration:v22];
   [MEMORY[0x277CF05C8] definitionForHomeButton];
   v26 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-  [*&v26 setMaximumPressCount:v7];
+  [*&v26 setMaximumPressCount:maximumPressCount];
   [*&v26 setMaximumTapCount:v12];
   [*&v26 setMinimumLongPressTimeInterval:v24];
   [*&v26 setMaximumLongPressTimeInterval:v22];
   [*&v26 setMinimumMultiplePressTimeInterval:v13];
   [*&v26 setMaximumMultiplePressTimeInterval:v9];
-  v27 = [v4 homeButtonHapticType];
-  if ((v27 - 1) >= 3)
+  homeButtonHapticType = [hardwareDefaults homeButtonHapticType];
+  if ((homeButtonHapticType - 1) >= 3)
   {
     v28 = 0;
   }
 
   else
   {
-    v28 = v27;
+    v28 = homeButtonHapticType;
   }
 
   [*&v26 setClickHapticAssetType:v28];
@@ -867,124 +867,124 @@ LABEL_24:
     _os_log_impl(&dword_21ED4E000, v29, OS_LOG_TYPE_INFO, "new button definition:%{public}@", buf, 0xCu);
   }
 
-  v30 = [MEMORY[0x277CF05C0] sharedInstance];
+  mEMORY[0x277CF05C0] = [MEMORY[0x277CF05C0] sharedInstance];
   v32 = v26;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
-  [v30 applyDefinitions:v31];
+  [mEMORY[0x277CF05C0] applyDefinitions:v31];
 }
 
-- (void)_createGestureRecognizersWithConfiguration:(id)a3
+- (void)_createGestureRecognizersWithConfiguration:(id)configuration
 {
-  v18 = a3;
-  v5 = [v18 systemGestureManager];
-  objc_storeStrong(&self->_gestureRecognizerConfiguration, a3);
-  v6 = [v18 initialButtonDownGestureRecognizer];
-  [v6 addTarget:self action:sel_initialButtonDown_];
-  [v6 setClickCount:1];
-  [v6 setRecognizesOnPressPhaseBegan:1];
-  [v6 setDelegate:self];
-  [v5 addGestureRecognizer:v6 withType:72];
-  v7 = [v18 initialButtonUpGestureRecognizer];
-  [v7 addTarget:self action:sel_initialButtonUp_];
-  [v7 setClickCount:1];
-  [v7 setRecognizesOnPressPhaseBegan:0];
-  [v7 setDelegate:self];
-  v17 = v7;
-  [v5 addGestureRecognizer:v7 withType:73];
-  v8 = [v18 singlePressUpGestureRecognizer];
-  [v8 addTarget:self action:sel_singlePressUp_];
-  [v8 setClickCount:1];
-  [v8 setDelegate:self];
-  [v5 addGestureRecognizer:v8 withType:74];
-  v9 = [v18 acceleratedSinglePressUpGestureRecognizer];
-  [v9 addTarget:self action:sel_acceleratedSinglePressUp_];
-  [v9 setClickCount:1];
-  [v9 setDelegate:self];
-  [v5 addGestureRecognizer:v9 withType:75];
-  v10 = [v18 longPressGestureRecognizer];
-  [v10 addTarget:self action:sel_longPress_];
-  [v10 setDelegate:self];
-  [v5 addGestureRecognizer:v10 withType:76];
-  v11 = [v18 doublePressDownGestureRecognizer];
-  [v11 addTarget:self action:sel_doublePressDown_];
-  [v11 setClickCount:2];
-  [v11 setRecognizesOnPressPhaseBegan:1];
-  [v11 setDelegate:self];
-  [v5 addGestureRecognizer:v11 withType:77];
-  v12 = [v18 doublePressUpGestureRecognizer];
-  [v12 addTarget:self action:sel_doublePressUp_];
-  [v12 setClickCount:2];
-  [v12 setDelegate:self];
-  [v5 addGestureRecognizer:v12 withType:78];
-  v13 = [v18 triplePressUpGestureRecognizer];
-  [v13 addTarget:self action:sel_triplePressUp_];
-  [v13 setClickCount:3];
-  [v13 setDelegate:self];
-  v14 = [v18 doubleTapUpGestureRecognizer];
-  [v14 addTarget:self action:sel_doubleTapUp_];
-  [v14 setClickCount:2];
-  [v14 setDelegate:self];
-  [v14 setAllowedPressTypes:&unk_28336E340];
-  if ([v18 shouldConfigureDependencies])
+  configurationCopy = configuration;
+  systemGestureManager = [configurationCopy systemGestureManager];
+  objc_storeStrong(&self->_gestureRecognizerConfiguration, configuration);
+  initialButtonDownGestureRecognizer = [configurationCopy initialButtonDownGestureRecognizer];
+  [initialButtonDownGestureRecognizer addTarget:self action:sel_initialButtonDown_];
+  [initialButtonDownGestureRecognizer setClickCount:1];
+  [initialButtonDownGestureRecognizer setRecognizesOnPressPhaseBegan:1];
+  [initialButtonDownGestureRecognizer setDelegate:self];
+  [systemGestureManager addGestureRecognizer:initialButtonDownGestureRecognizer withType:72];
+  initialButtonUpGestureRecognizer = [configurationCopy initialButtonUpGestureRecognizer];
+  [initialButtonUpGestureRecognizer addTarget:self action:sel_initialButtonUp_];
+  [initialButtonUpGestureRecognizer setClickCount:1];
+  [initialButtonUpGestureRecognizer setRecognizesOnPressPhaseBegan:0];
+  [initialButtonUpGestureRecognizer setDelegate:self];
+  v17 = initialButtonUpGestureRecognizer;
+  [systemGestureManager addGestureRecognizer:initialButtonUpGestureRecognizer withType:73];
+  singlePressUpGestureRecognizer = [configurationCopy singlePressUpGestureRecognizer];
+  [singlePressUpGestureRecognizer addTarget:self action:sel_singlePressUp_];
+  [singlePressUpGestureRecognizer setClickCount:1];
+  [singlePressUpGestureRecognizer setDelegate:self];
+  [systemGestureManager addGestureRecognizer:singlePressUpGestureRecognizer withType:74];
+  acceleratedSinglePressUpGestureRecognizer = [configurationCopy acceleratedSinglePressUpGestureRecognizer];
+  [acceleratedSinglePressUpGestureRecognizer addTarget:self action:sel_acceleratedSinglePressUp_];
+  [acceleratedSinglePressUpGestureRecognizer setClickCount:1];
+  [acceleratedSinglePressUpGestureRecognizer setDelegate:self];
+  [systemGestureManager addGestureRecognizer:acceleratedSinglePressUpGestureRecognizer withType:75];
+  longPressGestureRecognizer = [configurationCopy longPressGestureRecognizer];
+  [longPressGestureRecognizer addTarget:self action:sel_longPress_];
+  [longPressGestureRecognizer setDelegate:self];
+  [systemGestureManager addGestureRecognizer:longPressGestureRecognizer withType:76];
+  doublePressDownGestureRecognizer = [configurationCopy doublePressDownGestureRecognizer];
+  [doublePressDownGestureRecognizer addTarget:self action:sel_doublePressDown_];
+  [doublePressDownGestureRecognizer setClickCount:2];
+  [doublePressDownGestureRecognizer setRecognizesOnPressPhaseBegan:1];
+  [doublePressDownGestureRecognizer setDelegate:self];
+  [systemGestureManager addGestureRecognizer:doublePressDownGestureRecognizer withType:77];
+  doublePressUpGestureRecognizer = [configurationCopy doublePressUpGestureRecognizer];
+  [doublePressUpGestureRecognizer addTarget:self action:sel_doublePressUp_];
+  [doublePressUpGestureRecognizer setClickCount:2];
+  [doublePressUpGestureRecognizer setDelegate:self];
+  [systemGestureManager addGestureRecognizer:doublePressUpGestureRecognizer withType:78];
+  triplePressUpGestureRecognizer = [configurationCopy triplePressUpGestureRecognizer];
+  [triplePressUpGestureRecognizer addTarget:self action:sel_triplePressUp_];
+  [triplePressUpGestureRecognizer setClickCount:3];
+  [triplePressUpGestureRecognizer setDelegate:self];
+  doubleTapUpGestureRecognizer = [configurationCopy doubleTapUpGestureRecognizer];
+  [doubleTapUpGestureRecognizer addTarget:self action:sel_doubleTapUp_];
+  [doubleTapUpGestureRecognizer setClickCount:2];
+  [doubleTapUpGestureRecognizer setDelegate:self];
+  [doubleTapUpGestureRecognizer setAllowedPressTypes:&unk_28336E340];
+  if ([configurationCopy shouldConfigureDependencies])
   {
     if (self->_homeButtonType != 2)
     {
-      v16 = v6;
+      v16 = initialButtonDownGestureRecognizer;
       WeakRetained = objc_loadWeakRetained(&self->_screenshotGestureRecognizer);
-      [v8 requireGestureRecognizerToFail:WeakRetained];
-      [v9 requireGestureRecognizerToFail:WeakRetained];
-      [v10 requireGestureRecognizerToFail:WeakRetained];
+      [singlePressUpGestureRecognizer requireGestureRecognizerToFail:WeakRetained];
+      [acceleratedSinglePressUpGestureRecognizer requireGestureRecognizerToFail:WeakRetained];
+      [longPressGestureRecognizer requireGestureRecognizerToFail:WeakRetained];
       [WeakRetained addTarget:self action:sel_screenshotRecognizerDidRecognize_];
 
-      v6 = v16;
+      initialButtonDownGestureRecognizer = v16;
     }
 
-    [v8 requireGestureRecognizerToFail:v9];
+    [singlePressUpGestureRecognizer requireGestureRecognizerToFail:acceleratedSinglePressUpGestureRecognizer];
   }
 }
 
-- (void)_reconfigureGestureRecognizersForNewMaximumTapCount:(int64_t)a3 oldMaximumTapCount:(int64_t)a4
+- (void)_reconfigureGestureRecognizersForNewMaximumTapCount:(int64_t)count oldMaximumTapCount:(int64_t)tapCount
 {
-  if (a3 != a4)
+  if (count != tapCount)
   {
-    v8 = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
-    v6 = [v8 systemGestureManager];
-    v7 = [v8 doubleTapUpGestureRecognizer];
-    if (a3 < 2)
+    gestureRecognizerConfiguration = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
+    systemGestureManager = [gestureRecognizerConfiguration systemGestureManager];
+    doubleTapUpGestureRecognizer = [gestureRecognizerConfiguration doubleTapUpGestureRecognizer];
+    if (count < 2)
     {
-      [v6 removeGestureRecognizer:v7];
+      [systemGestureManager removeGestureRecognizer:doubleTapUpGestureRecognizer];
     }
 
     else
     {
-      [v6 addGestureRecognizer:v7 withType:81];
+      [systemGestureManager addGestureRecognizer:doubleTapUpGestureRecognizer withType:81];
     }
   }
 }
 
-- (void)_reconfigureGestureRecognizersForNewMaximumPressCount:(int64_t)a3 oldMaximumPressCount:(int64_t)a4
+- (void)_reconfigureGestureRecognizersForNewMaximumPressCount:(int64_t)count oldMaximumPressCount:(int64_t)pressCount
 {
-  if (a3 != a4)
+  if (count != pressCount)
   {
-    v5 = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
-    v6 = [v5 systemGestureManager];
-    v7 = [v5 singlePressUpGestureRecognizer];
-    v8 = [v5 doublePressDownGestureRecognizer];
-    v9 = [v5 doublePressUpGestureRecognizer];
-    v10 = [v5 triplePressUpGestureRecognizer];
+    gestureRecognizerConfiguration = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
+    systemGestureManager = [gestureRecognizerConfiguration systemGestureManager];
+    singlePressUpGestureRecognizer = [gestureRecognizerConfiguration singlePressUpGestureRecognizer];
+    doublePressDownGestureRecognizer = [gestureRecognizerConfiguration doublePressDownGestureRecognizer];
+    doublePressUpGestureRecognizer = [gestureRecognizerConfiguration doublePressUpGestureRecognizer];
+    triplePressUpGestureRecognizer = [gestureRecognizerConfiguration triplePressUpGestureRecognizer];
     v11 = SBLogButtonsHome();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
-    if (a3 < 3)
+    if (count < 3)
     {
       if (v12)
       {
         [SBHomeHardwareButton _reconfigureGestureRecognizersForNewMaximumPressCount:oldMaximumPressCount:];
       }
 
-      [v8 removeFailureRequirement:v10];
-      [v9 removeFailureRequirement:v10];
-      [v6 removeGestureRecognizer:v10];
-      if (a3 != 2)
+      [doublePressDownGestureRecognizer removeFailureRequirement:triplePressUpGestureRecognizer];
+      [doublePressUpGestureRecognizer removeFailureRequirement:triplePressUpGestureRecognizer];
+      [systemGestureManager removeGestureRecognizer:triplePressUpGestureRecognizer];
+      if (count != 2)
       {
         v14 = SBLogButtonsHome();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -992,8 +992,8 @@ LABEL_24:
           [SBHomeHardwareButton _reconfigureGestureRecognizersForNewMaximumPressCount:oldMaximumPressCount:];
         }
 
-        [v7 removeFailureRequirement:v9];
-        [v7 removeFailureRequirement:v8];
+        [singlePressUpGestureRecognizer removeFailureRequirement:doublePressUpGestureRecognizer];
+        [singlePressUpGestureRecognizer removeFailureRequirement:doublePressDownGestureRecognizer];
         goto LABEL_15;
       }
     }
@@ -1005,9 +1005,9 @@ LABEL_24:
         [SBHomeHardwareButton _reconfigureGestureRecognizersForNewMaximumPressCount:oldMaximumPressCount:];
       }
 
-      [v6 addGestureRecognizer:v10 withType:80];
-      [v8 requireGestureRecognizerToFail:v10];
-      [v9 requireGestureRecognizerToFail:v10];
+      [systemGestureManager addGestureRecognizer:triplePressUpGestureRecognizer withType:80];
+      [doublePressDownGestureRecognizer requireGestureRecognizerToFail:triplePressUpGestureRecognizer];
+      [doublePressUpGestureRecognizer requireGestureRecognizerToFail:triplePressUpGestureRecognizer];
     }
 
     v13 = SBLogButtonsHome();
@@ -1016,15 +1016,15 @@ LABEL_24:
       [SBHomeHardwareButton _reconfigureGestureRecognizersForNewMaximumPressCount:oldMaximumPressCount:];
     }
 
-    [v7 requireGestureRecognizerToFail:v9];
-    [v7 requireGestureRecognizerToFail:v8];
+    [singlePressUpGestureRecognizer requireGestureRecognizerToFail:doublePressUpGestureRecognizer];
+    [singlePressUpGestureRecognizer requireGestureRecognizerToFail:doublePressDownGestureRecognizer];
 LABEL_15:
   }
 }
 
-- (void)screenshotRecognizerDidRecognize:(id)a3
+- (void)screenshotRecognizerDidRecognize:(id)recognize
 {
-  if ([a3 state] == 3)
+  if ([recognize state] == 3)
   {
     if (self->_longPressDidOccur)
     {
@@ -1037,12 +1037,12 @@ LABEL_15:
   }
 }
 
-- (void)addHintSuppressionAssertion:(id)a3
+- (void)addHintSuppressionAssertion:(id)assertion
 {
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
-    v5 = v4;
+    v5 = assertionCopy;
     if (objc_opt_respondsToSelector())
     {
       [(NSMutableSet *)self->_hintSuppressionAssertions addObject:v5];
@@ -1052,12 +1052,12 @@ LABEL_15:
   MEMORY[0x2821F9730]();
 }
 
-- (void)removeHintSuppressionAssertion:(id)a3
+- (void)removeHintSuppressionAssertion:(id)assertion
 {
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
-    v5 = v4;
+    v5 = assertionCopy;
     if (objc_opt_respondsToSelector())
     {
       [(NSMutableSet *)self->_hintSuppressionAssertions removeObject:v5];
@@ -1067,11 +1067,11 @@ LABEL_15:
   MEMORY[0x2821F9730]();
 }
 
-- (void)addLongPressDurationAssertion:(id)a3
+- (void)addLongPressDurationAssertion:(id)assertion
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
     longPressDurationAssertions = self->_longPressDurationAssertions;
     if (!longPressDurationAssertions)
@@ -1083,12 +1083,12 @@ LABEL_15:
       longPressDurationAssertions = self->_longPressDurationAssertions;
     }
 
-    [(NSMutableOrderedSet *)longPressDurationAssertions addObject:v4];
+    [(NSMutableOrderedSet *)longPressDurationAssertions addObject:assertionCopy];
     v8 = SBLogButtonsHome();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = assertionCopy;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "reconfiguring due to long press duration assertion addition: %{public}@", &v9, 0xCu);
     }
 
@@ -1096,13 +1096,13 @@ LABEL_15:
   }
 }
 
-- (void)removeLongPressDurationAssertion:(id)a3
+- (void)removeLongPressDurationAssertion:(id)assertion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
-    [(NSMutableOrderedSet *)self->_longPressDurationAssertions removeObject:v4];
+    [(NSMutableOrderedSet *)self->_longPressDurationAssertions removeObject:assertionCopy];
     if (![(NSMutableOrderedSet *)self->_longPressDurationAssertions count])
     {
       longPressDurationAssertions = self->_longPressDurationAssertions;
@@ -1113,7 +1113,7 @@ LABEL_15:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v4;
+      v8 = assertionCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "reconfiguring due to long press duration assertion removal: %{public}@", &v7, 0xCu);
     }
 
@@ -1124,18 +1124,18 @@ LABEL_15:
 - (int64_t)hapticType
 {
   v2 = +[SBDefaults localDefaults];
-  v3 = [v2 hardwareDefaults];
+  hardwareDefaults = [v2 hardwareDefaults];
 
-  v4 = [v3 homeButtonHapticType];
-  return v4;
+  homeButtonHapticType = [hardwareDefaults homeButtonHapticType];
+  return homeButtonHapticType;
 }
 
-- (void)setHapticType:(int64_t)a3
+- (void)setHapticType:(int64_t)type
 {
   v5 = +[SBDefaults localDefaults];
-  v6 = [v5 hardwareDefaults];
+  hardwareDefaults = [v5 hardwareDefaults];
 
-  [v6 setHomeButtonHapticType:a3];
+  [hardwareDefaults setHomeButtonHapticType:type];
   [(SBHomeHardwareButton *)self _reconfigureHomeButton];
 }
 
@@ -1146,57 +1146,57 @@ LABEL_15:
     return 0;
   }
 
-  v2 = [(SBHomeHardwareButton *)self buttonDefinition];
-  v3 = [v2 maximumPressCount];
-  [v2 maximumMultiplePressTimeInterval];
-  v6 = v4 <= 0.349999994 && v3 < 3;
+  buttonDefinition = [(SBHomeHardwareButton *)self buttonDefinition];
+  maximumPressCount = [buttonDefinition maximumPressCount];
+  [buttonDefinition maximumMultiplePressTimeInterval];
+  v6 = v4 <= 0.349999994 && maximumPressCount < 3;
 
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   v30[6] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  gestureRecognizerConfiguration = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
   WeakRetained = objc_loadWeakRetained(&self->_screenshotGestureRecognizer);
   v10 = WeakRetained;
   v11 = 1;
-  if (WeakRetained != v6 && WeakRetained != v7)
+  if (WeakRetained != recognizerCopy && WeakRetained != gestureRecognizerCopy)
   {
-    v12 = [v8 initialButtonDownGestureRecognizer];
-    v13 = v12;
-    if (v12 != v6 && v12 != v7)
+    initialButtonDownGestureRecognizer = [gestureRecognizerConfiguration initialButtonDownGestureRecognizer];
+    v13 = initialButtonDownGestureRecognizer;
+    if (initialButtonDownGestureRecognizer != recognizerCopy && initialButtonDownGestureRecognizer != gestureRecognizerCopy)
     {
-      v14 = [v8 initialButtonUpGestureRecognizer];
-      v15 = v14;
-      if (v14 != v6 && v14 != v7)
+      initialButtonUpGestureRecognizer = [gestureRecognizerConfiguration initialButtonUpGestureRecognizer];
+      v15 = initialButtonUpGestureRecognizer;
+      if (initialButtonUpGestureRecognizer != recognizerCopy && initialButtonUpGestureRecognizer != gestureRecognizerCopy)
       {
-        v29 = [v8 singlePressUpGestureRecognizer];
-        v16 = [v8 doublePressDownGestureRecognizer];
-        v17 = [v8 doublePressUpGestureRecognizer];
-        v18 = [v8 triplePressUpGestureRecognizer];
-        v19 = [v8 longPressGestureRecognizer];
-        v30[0] = v17;
-        v30[1] = v16;
-        v20 = v29;
+        singlePressUpGestureRecognizer = [gestureRecognizerConfiguration singlePressUpGestureRecognizer];
+        doublePressDownGestureRecognizer = [gestureRecognizerConfiguration doublePressDownGestureRecognizer];
+        doublePressUpGestureRecognizer = [gestureRecognizerConfiguration doublePressUpGestureRecognizer];
+        triplePressUpGestureRecognizer = [gestureRecognizerConfiguration triplePressUpGestureRecognizer];
+        longPressGestureRecognizer = [gestureRecognizerConfiguration longPressGestureRecognizer];
+        v30[0] = doublePressUpGestureRecognizer;
+        v30[1] = doublePressDownGestureRecognizer;
+        v20 = singlePressUpGestureRecognizer;
         v21 = 0;
         v30[2] = v20;
-        v30[3] = v18;
+        v30[3] = triplePressUpGestureRecognizer;
         v30[4] = v20;
-        v30[5] = v19;
+        v30[5] = longPressGestureRecognizer;
         while (1)
         {
           v22 = v30[v21];
           v23 = &v30[v21];
-          if (v22 == v6 && v23[1] == v7)
+          if (v22 == recognizerCopy && v23[1] == gestureRecognizerCopy)
           {
             break;
           }
 
           v24 = v23[1];
-          if (v22 == v7 && v24 == v6)
+          if (v22 == gestureRecognizerCopy && v24 == recognizerCopy)
           {
             break;
           }
@@ -1222,15 +1222,15 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
-  v9 = [v8 doubleTapUpGestureRecognizer];
-  v10 = [v8 initialButtonDownGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  gestureRecognizerConfiguration = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
+  doubleTapUpGestureRecognizer = [gestureRecognizerConfiguration doubleTapUpGestureRecognizer];
+  initialButtonDownGestureRecognizer = [gestureRecognizerConfiguration initialButtonDownGestureRecognizer];
 
-  v12 = v9 == v7 && v10 == v6;
+  v12 = doubleTapUpGestureRecognizer == recognizerCopy && initialButtonDownGestureRecognizer == gestureRecognizerCopy;
   return v12;
 }
 
@@ -1241,8 +1241,8 @@ LABEL_18:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(SBHomeHardwareButtonGestureRecognizerConfiguration *)self->_gestureRecognizerConfiguration allGestureRecognizers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allGestureRecognizers = [(SBHomeHardwareButtonGestureRecognizerConfiguration *)self->_gestureRecognizerConfiguration allGestureRecognizers];
+  v4 = [allGestureRecognizers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1254,35 +1254,35 @@ LABEL_18:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allGestureRecognizers);
         }
 
         [(SBHomeHardwareButton *)self _cancelGestureRecognizer:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allGestureRecognizers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  beginCopy = begin;
   hardwareButtonCoordinator = self->_hardwareButtonCoordinator;
-  v6 = [(SBHomeHardwareButton *)self hardwareButtonIdentifier];
-  LOBYTE(hardwareButtonCoordinator) = [(SBHardwareButtonCoordinator *)hardwareButtonCoordinator buttonShouldStart:v6];
+  hardwareButtonIdentifier = [(SBHomeHardwareButton *)self hardwareButtonIdentifier];
+  LOBYTE(hardwareButtonCoordinator) = [(SBHardwareButtonCoordinator *)hardwareButtonCoordinator buttonShouldStart:hardwareButtonIdentifier];
 
   if (hardwareButtonCoordinator)
   {
     v7 = +[SBDefaults localDefaults];
-    v8 = [v7 hardwareDefaults];
-    v9 = [v8 disableHomeButton];
+    hardwareDefaults = [v7 hardwareDefaults];
+    disableHomeButton = [hardwareDefaults disableHomeButton];
 
-    if (v9)
+    if (disableHomeButton)
     {
       v10 = SBLogButtonsHome();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -1298,10 +1298,10 @@ LABEL_7:
     }
 
     v14 = +[SBDefaults localDefaults];
-    v15 = [v14 demoDefaults];
-    v16 = [v15 isStoreDemoApplicationLockEnabled];
+    demoDefaults = [v14 demoDefaults];
+    isStoreDemoApplicationLockEnabled = [demoDefaults isStoreDemoApplicationLockEnabled];
 
-    if (v16)
+    if (isStoreDemoApplicationLockEnabled)
     {
       v10 = SBLogButtonsHome();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -1314,36 +1314,36 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v17 = [SBApp restartManager];
-    v10 = v17;
-    if (v17 && ([v17 startupTransition], v18 = objc_claimAutoreleasedReturnValue(), v18, !v18))
+    restartManager = [SBApp restartManager];
+    v10 = restartManager;
+    if (restartManager && ([restartManager startupTransition], v18 = objc_claimAutoreleasedReturnValue(), v18, !v18))
     {
       if (![v10 isPendingExit])
       {
-        v19 = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
-        v22 = [v19 acceleratedSinglePressUpGestureRecognizer];
-        if (v22 == v4)
+        gestureRecognizerConfiguration = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
+        acceleratedSinglePressUpGestureRecognizer = [gestureRecognizerConfiguration acceleratedSinglePressUpGestureRecognizer];
+        if (acceleratedSinglePressUpGestureRecognizer == beginCopy)
         {
-          v12 = [(SBHomeHardwareButton *)self _acceleratedSinglePressRecognizerShouldBegin];
+          _acceleratedSinglePressRecognizerShouldBegin = [(SBHomeHardwareButton *)self _acceleratedSinglePressRecognizerShouldBegin];
         }
 
         else
         {
-          v23 = [v19 doublePressDownGestureRecognizer];
-          v24 = [v19 doublePressUpGestureRecognizer];
-          v25 = v24;
-          if (v23 == v4 || v24 == v4)
+          doublePressDownGestureRecognizer = [gestureRecognizerConfiguration doublePressDownGestureRecognizer];
+          doublePressUpGestureRecognizer = [gestureRecognizerConfiguration doublePressUpGestureRecognizer];
+          v25 = doublePressUpGestureRecognizer;
+          if (doublePressDownGestureRecognizer == beginCopy || doublePressUpGestureRecognizer == beginCopy)
           {
             v28 = 0;
-            v12 = [(SBHomeHardwareButton *)self _isMenuDoublePressAllowed:&v28];
-            v26 = v28;
-            if (!v12)
+            _acceleratedSinglePressRecognizerShouldBegin = [(SBHomeHardwareButton *)self _isMenuDoublePressAllowed:&v28];
+            longPressGestureRecognizer = v28;
+            if (!_acceleratedSinglePressRecognizerShouldBegin)
             {
               v27 = SBLogButtonsHome();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
               {
                 *buf = 138543362;
-                v30 = v26;
+                v30 = longPressGestureRecognizer;
                 _os_log_impl(&dword_21ED4E000, v27, OS_LOG_TYPE_INFO, "Preventing double press recognizer for reason: %{public}@", buf, 0xCu);
               }
             }
@@ -1351,20 +1351,20 @@ LABEL_7:
 
           else
           {
-            v26 = [v19 longPressGestureRecognizer];
-            v12 = v26 != v4 || [(SBHomeHardwareButton *)self _longPressGestureRecognizerShouldBegin:v26];
+            longPressGestureRecognizer = [gestureRecognizerConfiguration longPressGestureRecognizer];
+            _acceleratedSinglePressRecognizerShouldBegin = longPressGestureRecognizer != beginCopy || [(SBHomeHardwareButton *)self _longPressGestureRecognizerShouldBegin:longPressGestureRecognizer];
           }
         }
 
         goto LABEL_19;
       }
 
-      v19 = SBLogButtonsHome();
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+      gestureRecognizerConfiguration = SBLogButtonsHome();
+      if (os_log_type_enabled(gestureRecognizerConfiguration, OS_LOG_TYPE_INFO))
       {
-        v20 = [v10 pendingRestartTransitionRequest];
+        pendingRestartTransitionRequest = [v10 pendingRestartTransitionRequest];
         *buf = 138543362;
-        v30 = v20;
+        v30 = pendingRestartTransitionRequest;
         v21 = "Preventing all home recognizers because we have a pending restart transition: %{public}@";
         goto LABEL_17;
       }
@@ -1372,19 +1372,19 @@ LABEL_7:
 
     else
     {
-      v19 = SBLogButtonsHome();
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+      gestureRecognizerConfiguration = SBLogButtonsHome();
+      if (os_log_type_enabled(gestureRecognizerConfiguration, OS_LOG_TYPE_INFO))
       {
-        v20 = [v10 startupTransition];
+        pendingRestartTransitionRequest = [v10 startupTransition];
         *buf = 138543362;
-        v30 = v20;
+        v30 = pendingRestartTransitionRequest;
         v21 = "Preventing all home recognizers because we're in a startup transition: %{public}@";
 LABEL_17:
-        _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_INFO, v21, buf, 0xCu);
+        _os_log_impl(&dword_21ED4E000, gestureRecognizerConfiguration, OS_LOG_TYPE_INFO, v21, buf, 0xCu);
       }
     }
 
-    v12 = 0;
+    _acceleratedSinglePressRecognizerShouldBegin = 0;
 LABEL_19:
 
     goto LABEL_9;
@@ -1399,18 +1399,18 @@ LABEL_19:
   }
 
 LABEL_8:
-  v12 = 0;
+  _acceleratedSinglePressRecognizerShouldBegin = 0;
 LABEL_9:
 
-  return v12;
+  return _acceleratedSinglePressRecognizerShouldBegin;
 }
 
-- (BOOL)_longPressGestureRecognizerShouldBegin:(id)a3
+- (BOOL)_longPressGestureRecognizerShouldBegin:(id)begin
 {
-  v3 = [SBApp lockOutController];
-  v4 = [v3 isBlocked];
+  lockOutController = [SBApp lockOutController];
+  isBlocked = [lockOutController isBlocked];
 
-  if (v4)
+  if (isBlocked)
   {
     v5 = SBLogButtonsHome();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1427,9 +1427,9 @@ LABEL_7:
   }
 
   v8 = +[SBSetupManager sharedInstance];
-  v9 = [v8 isInSetupMode];
+  isInSetupMode = [v8 isInSetupMode];
 
-  if (v9)
+  if (isInSetupMode)
   {
     v5 = SBLogButtonsHome();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1458,8 +1458,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v13 = [v5 isResetting];
-  if (v13)
+  isResetting = [v5 isResetting];
+  if (isResetting)
   {
     v14 = SBLogButtonsHome();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -1469,24 +1469,24 @@ LABEL_12:
     }
   }
 
-  v11 = v13 ^ 1;
+  v11 = isResetting ^ 1;
 LABEL_13:
 
   return v11;
 }
 
-- (void)_terminateHomeButtonEventAtCount:(int64_t)a3
+- (void)_terminateHomeButtonEventAtCount:(int64_t)count
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = SBLogButtonsHome();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10[0] = 67109120;
-    v10[1] = a3;
+    v10[1] = count;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "EMU terminate with count:%d", v10, 8u);
   }
 
-  switch(a3)
+  switch(count)
   {
     case 3:
       buttonActions = self->_buttonActions;
@@ -1510,7 +1510,7 @@ LABEL_13:
   [(SBHomeHardwareButtonActions *)*p_buttonActions performFinalButtonUpActions];
 }
 
-- (BOOL)emulateHomeButtonEventsIfNeeded:(__IOHIDEvent *)a3
+- (BOOL)emulateHomeButtonEventsIfNeeded:(__IOHIDEvent *)needed
 {
   v40 = *MEMORY[0x277D85DE8];
   SenderID = IOHIDEventGetSenderID();
@@ -1521,11 +1521,11 @@ LABEL_13:
       v5 = SBLogButtonsHome();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(BKSButtonHapticsDefinition *)self->_buttonDefinition maximumPressCount];
+        maximumPressCount = [(BKSButtonHapticsDefinition *)self->_buttonDefinition maximumPressCount];
         *buf = 134218240;
         *v39 = SenderID;
         *&v39[8] = 1024;
-        *&v39[10] = v6;
+        *&v39[10] = maximumPressCount;
         _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "SenderID:%llX appears to be synthesizing home button events without press count/terminal support; SpringBoard is providing emulation for max count:%d", buf, 0x12u);
       }
 
@@ -1541,11 +1541,11 @@ LABEL_13:
 
       v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:SenderID];
       v11 = [(NSMutableDictionary *)emulatedPerSenderDownCount objectForKey:v10];
-      v12 = [v11 integerValue];
+      integerValue = [v11 integerValue];
 
-      if (v12 < [(BKSButtonHapticsDefinition *)self->_buttonDefinition maximumPressCount])
+      if (integerValue < [(BKSButtonHapticsDefinition *)self->_buttonDefinition maximumPressCount])
       {
-        v13 = v12 + 1;
+        v13 = integerValue + 1;
       }
 
       else
@@ -1611,9 +1611,9 @@ LABEL_29:
 
   if (v24)
   {
-    v25 = [v24 integerValue];
-    v26 = v25;
-    if ((v25 - 2) < 2)
+    integerValue2 = [v24 integerValue];
+    v26 = integerValue2;
+    if ((integerValue2 - 2) < 2)
     {
 LABEL_25:
       if (v26 == [(BKSButtonHapticsDefinition *)self->_buttonDefinition maximumPressCount])
@@ -1641,7 +1641,7 @@ LABEL_25:
       goto LABEL_33;
     }
 
-    if (!v25)
+    if (!integerValue2)
     {
       v33 = self->_emulatedPerSenderDownCount;
       v34 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:SenderID];
@@ -1666,7 +1666,7 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    if (v25 == 1)
+    if (integerValue2 == 1)
     {
       [(SBHomeHardwareButtonActions *)self->_buttonActions performInitialButtonUpActions];
       [(SBHomeHardwareButtonActions *)self->_buttonActions performLongPressCancelledActions];
@@ -1700,40 +1700,40 @@ void __56__SBHomeHardwareButton_emulateHomeButtonEventsIfNeeded___block_invoke(u
   }
 }
 
-- (void)initialButtonDown:(id)a3
+- (void)initialButtonDown:(id)down
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  downCopy = down;
   v5 = SBLogButtonsHome();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = SBSystemGestureRecognizerStateDescription([v4 state]);
+    v6 = SBSystemGestureRecognizerStateDescription([downCopy state]);
     v7 = 138543362;
     v8 = v6;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Initial button down (state:%{public}@)", &v7, 0xCu);
   }
 
-  if ([v4 state] == 3)
+  if ([downCopy state] == 3)
   {
     self->_longPressDidOccur = 0;
     [(SBHomeHardwareButtonActions *)self->_buttonActions performInitialButtonDownActions];
   }
 }
 
-- (void)initialButtonUp:(id)a3
+- (void)initialButtonUp:(id)up
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  upCopy = up;
   v5 = SBLogButtonsHome();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = SBSystemGestureRecognizerStateDescription([v4 state]);
+    v6 = SBSystemGestureRecognizerStateDescription([upCopy state]);
     v7 = 138543362;
     v8 = v6;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Initial button up (state:%{public}@)", &v7, 0xCu);
   }
 
-  if ([v4 state] == 3)
+  if ([upCopy state] == 3)
   {
     [(SBHomeHardwareButtonActions *)self->_buttonActions performInitialButtonUpActions];
     if (!self->_longPressDidOccur)
@@ -1743,12 +1743,12 @@ void __56__SBHomeHardwareButton_emulateHomeButtonEventsIfNeeded___block_invoke(u
   }
 }
 
-- (void)_singlePressUp:(id)a3
+- (void)_singlePressUp:(id)up
 {
-  if ([a3 state] == 3)
+  if ([up state] == 3)
   {
-    v4 = [SBApp lockHardwareButton];
-    [v4 cancelLongPress];
+    lockHardwareButton = [SBApp lockHardwareButton];
+    [lockHardwareButton cancelLongPress];
 
     if (self->_longPressDidOccur)
     {
@@ -1769,76 +1769,76 @@ void __56__SBHomeHardwareButton_emulateHomeButtonEventsIfNeeded___block_invoke(u
   }
 }
 
-- (void)acceleratedSinglePressUp:(id)a3
+- (void)acceleratedSinglePressUp:(id)up
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  upCopy = up;
   v5 = SBLogButtonsHome();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = SBSystemGestureRecognizerStateDescription([v4 state]);
+    v6 = SBSystemGestureRecognizerStateDescription([upCopy state]);
     v7 = 138543362;
     v8 = v6;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Accelerated single press up (state:%{public}@)", &v7, 0xCu);
   }
 
-  [(SBHomeHardwareButton *)self _singlePressUp:v4];
+  [(SBHomeHardwareButton *)self _singlePressUp:upCopy];
 }
 
-- (void)singlePressUp:(id)a3
+- (void)singlePressUp:(id)up
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  upCopy = up;
   v5 = SBLogButtonsHome();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = SBSystemGestureRecognizerStateDescription([v4 state]);
+    v6 = SBSystemGestureRecognizerStateDescription([upCopy state]);
     v7 = 138543362;
     v8 = v6;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Normal single press up (state:%{public}@)", &v7, 0xCu);
   }
 
-  [(SBHomeHardwareButton *)self _singlePressUp:v4];
+  [(SBHomeHardwareButton *)self _singlePressUp:upCopy];
 }
 
-- (void)longPress:(id)a3
+- (void)longPress:(id)press
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressCopy = press;
   v5 = SBLogButtonsHome();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = SBSystemGestureRecognizerStateDescription([v4 state]);
+    v6 = SBSystemGestureRecognizerStateDescription([pressCopy state]);
     v9 = 138543362;
     v10 = v6;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Long press (state:%{public}@)", &v9, 0xCu);
   }
 
-  if ([v4 state] == 3)
+  if ([pressCopy state] == 3)
   {
     self->_longPressDidOccur = 1;
-    v7 = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
-    v8 = [v7 acceleratedSinglePressUpGestureRecognizer];
-    [(SBHomeHardwareButton *)self _cancelGestureRecognizer:v8];
+    gestureRecognizerConfiguration = [(SBHomeHardwareButton *)self gestureRecognizerConfiguration];
+    acceleratedSinglePressUpGestureRecognizer = [gestureRecognizerConfiguration acceleratedSinglePressUpGestureRecognizer];
+    [(SBHomeHardwareButton *)self _cancelGestureRecognizer:acceleratedSinglePressUpGestureRecognizer];
 
     [(SBHomeHardwareButtonActions *)self->_buttonActions performLongPressActions];
   }
 }
 
-- (void)doublePressDown:(id)a3
+- (void)doublePressDown:(id)down
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  downCopy = down;
   v5 = SBLogButtonsHome();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = SBSystemGestureRecognizerStateDescription([v4 state]);
+    v6 = SBSystemGestureRecognizerStateDescription([downCopy state]);
     v7 = 138543362;
     v8 = v6;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Double press down (state:%{public}@)", &v7, 0xCu);
   }
 
-  if ([v4 state] == 3)
+  if ([downCopy state] == 3)
   {
     [(SBHomeHardwareButtonActions *)self->_buttonActions performDoublePressDownActions];
     if ([(SBHomeHardwareButton *)self _processDoubleDownAndDoubleUpSimultaneously])
@@ -1848,83 +1848,83 @@ void __56__SBHomeHardwareButton_emulateHomeButtonEventsIfNeeded___block_invoke(u
   }
 }
 
-- (void)doublePressUp:(id)a3
+- (void)doublePressUp:(id)up
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  upCopy = up;
   v5 = SBLogButtonsHome();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = SBSystemGestureRecognizerStateDescription([v4 state]);
+    v6 = SBSystemGestureRecognizerStateDescription([upCopy state]);
     v7 = 138543362;
     v8 = v6;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Double press up (state:%{public}@)", &v7, 0xCu);
   }
 
-  if ([v4 state] == 3 && !-[SBHomeHardwareButton _processDoubleDownAndDoubleUpSimultaneously](self, "_processDoubleDownAndDoubleUpSimultaneously"))
+  if ([upCopy state] == 3 && !-[SBHomeHardwareButton _processDoubleDownAndDoubleUpSimultaneously](self, "_processDoubleDownAndDoubleUpSimultaneously"))
   {
     [(SBHomeHardwareButtonActions *)self->_buttonActions performFinalButtonUpActions];
   }
 }
 
-- (void)triplePressUp:(id)a3
+- (void)triplePressUp:(id)up
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  upCopy = up;
   v5 = SBLogButtonsHome();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = SBSystemGestureRecognizerStateDescription([v4 state]);
+    v6 = SBSystemGestureRecognizerStateDescription([upCopy state]);
     v7 = 138543362;
     v8 = v6;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Triple press up (state:%{public}@)", &v7, 0xCu);
   }
 
-  if ([v4 state] == 3)
+  if ([upCopy state] == 3)
   {
     [(SBHomeHardwareButtonActions *)self->_buttonActions performTriplePressUpActions];
     [(SBHomeHardwareButtonActions *)self->_buttonActions performFinalButtonUpActions];
   }
 }
 
-- (void)doubleTapUp:(id)a3
+- (void)doubleTapUp:(id)up
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  upCopy = up;
   v5 = SBLogButtonsHome();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = SBSystemGestureRecognizerStateDescription([v4 state]);
+    v6 = SBSystemGestureRecognizerStateDescription([upCopy state]);
     v7 = 138543362;
     v8 = v6;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Double tap up (state:%{public}@)", &v7, 0xCu);
   }
 
-  if ([v4 state] == 3)
+  if ([upCopy state] == 3)
   {
     [(SBHomeHardwareButtonActions *)self->_buttonActions performDoubleTapUpActions];
   }
 }
 
-- (void)_cancelGestureRecognizer:(id)a3
+- (void)_cancelGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
-  if ([v3 isEnabled])
+  recognizerCopy = recognizer;
+  if ([recognizerCopy isEnabled])
   {
-    [v3 setEnabled:0];
-    [v3 setEnabled:1];
+    [recognizerCopy setEnabled:0];
+    [recognizerCopy setEnabled:1];
   }
 }
 
-- (BOOL)_isMenuDoublePressAllowed:(id *)a3
+- (BOOL)_isMenuDoublePressAllowed:(id *)allowed
 {
-  v5 = [SBApp lockOutController];
+  lockOutController = [SBApp lockOutController];
   v6 = +[SBSyncController sharedInstance];
   if ([v6 isInUse])
   {
     v7 = 0;
     v8 = @"syncing data";
-    if (!a3)
+    if (!allowed)
     {
       goto LABEL_14;
     }
@@ -1932,11 +1932,11 @@ void __56__SBHomeHardwareButton_emulateHomeButtonEventsIfNeeded___block_invoke(u
     goto LABEL_13;
   }
 
-  if ([v5 isBlocked])
+  if ([lockOutController isBlocked])
   {
     v7 = 0;
     v8 = @"blocked";
-    if (!a3)
+    if (!allowed)
     {
       goto LABEL_14;
     }
@@ -1944,14 +1944,14 @@ void __56__SBHomeHardwareButton_emulateHomeButtonEventsIfNeeded___block_invoke(u
     goto LABEL_13;
   }
 
-  v9 = [SBApp remoteTransientOverlaySessionManager];
-  v10 = [v9 hasSessionWithPendingButtonEvents:1 options:0];
+  remoteTransientOverlaySessionManager = [SBApp remoteTransientOverlaySessionManager];
+  v10 = [remoteTransientOverlaySessionManager hasSessionWithPendingButtonEvents:1 options:0];
 
   if (v10)
   {
     v7 = 0;
     v8 = @"has session with pending lock event";
-    if (!a3)
+    if (!allowed)
     {
       goto LABEL_14;
     }
@@ -1959,18 +1959,18 @@ void __56__SBHomeHardwareButton_emulateHomeButtonEventsIfNeeded___block_invoke(u
     goto LABEL_13;
   }
 
-  v11 = [(SBHomeHardwareButton *)self _isMenuDoublePressDisabled];
-  v7 = !v11;
+  _isMenuDoublePressDisabled = [(SBHomeHardwareButton *)self _isMenuDoublePressDisabled];
+  v7 = !_isMenuDoublePressDisabled;
   v8 = @"disabled by user default";
-  if (!v11)
+  if (!_isMenuDoublePressDisabled)
   {
     v8 = 0;
   }
 
-  if (a3)
+  if (allowed)
   {
 LABEL_13:
-    *a3 = v8;
+    *allowed = v8;
   }
 
 LABEL_14:

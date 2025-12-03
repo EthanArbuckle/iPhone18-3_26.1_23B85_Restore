@@ -1,14 +1,14 @@
 @interface HDSQLiteJoinPredicate
-+ (id)predicateWithJoinClauses:(id)a3;
++ (id)predicateWithJoinClauses:(id)clauses;
 @end
 
 @implementation HDSQLiteJoinPredicate
 
-+ (id)predicateWithJoinClauses:(id)a3
++ (id)predicateWithJoinClauses:(id)clauses
 {
-  v3 = a3;
+  clausesCopy = clauses;
   v4 = objc_alloc_init(HDSQLiteJoinPredicate);
-  v5 = [v3 copy];
+  v5 = [clausesCopy copy];
 
   joinClauses = v4->_joinClauses;
   v4->_joinClauses = v5;

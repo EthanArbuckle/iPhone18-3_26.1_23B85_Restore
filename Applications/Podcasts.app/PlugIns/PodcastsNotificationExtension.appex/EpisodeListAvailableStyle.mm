@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000ACA8;
   block[3] = &unk_10002CB38;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000367C8 != -1)
   {
     dispatch_once(&qword_1000367C8, block);
@@ -127,8 +127,8 @@
 {
   v2 = [UIButton buttonWithType:1];
   v3 = [UIFont mt_preferredFontForTextStyle:UIFontTextStyleBody];
-  v4 = [v2 titleLabel];
-  [v4 setFont:v3];
+  titleLabel = [v2 titleLabel];
+  [titleLabel setFont:v3];
 
   [v2 setTitleEdgeInsets:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
   v5 = +[NSBundle mainBundle];

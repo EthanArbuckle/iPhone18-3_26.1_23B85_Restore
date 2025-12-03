@@ -1,7 +1,7 @@
 @interface EMActivityObjectID
 - (EMActivityObjectID)init;
-- (EMActivityObjectID)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (EMActivityObjectID)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMActivityObjectID
@@ -13,10 +13,10 @@
   return [(EMObjectID *)&v3 initAsEphemeralID:1];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v3 = v4;
+  coderCopy = coder;
+  v3 = coderCopy;
   EFEncodeCacheableInstance();
 }
 
@@ -28,12 +28,12 @@ id __38__EMActivityObjectID_encodeWithCoder___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_encodeWithCoder_, v1);
 }
 
-- (EMActivityObjectID)initWithCoder:(id)a3
+- (EMActivityObjectID)initWithCoder:(id)coder
 {
-  v8 = a3;
-  v9 = self;
-  v4 = self;
-  v5 = v8;
+  coderCopy = coder;
+  selfCopy = self;
+  selfCopy2 = self;
+  v5 = coderCopy;
   v6 = EFDecodeCacheableInstance();
 
   return v6;

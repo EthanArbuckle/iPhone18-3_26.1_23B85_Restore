@@ -1,5 +1,5 @@
 @interface MFSearchFetchResponseQueue
-- (BOOL)shouldAddUID:(unsigned int)a3;
+- (BOOL)shouldAddUID:(unsigned int)d;
 - (MFSearchFetchResponseQueue)init;
 @end
 
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (BOOL)shouldAddUID:(unsigned int)a3
+- (BOOL)shouldAddUID:(unsigned int)d
 {
   store = self->super._store;
   v4 = EFStringWithInt();

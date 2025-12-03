@@ -23,13 +23,13 @@
 - (NSArray)embeddedPlanItems;
 - (NSArray)planItems;
 - (NSArray)plansPendingTransfer;
-- (PSUICellularPlanManagerCache)initWithCTClient:(id)a3;
-- (id)danglingPlanFromReference:(id)a3;
-- (id)planFromReference:(id)a3;
-- (id)planFromReferenceSafe:(id)a3;
-- (id)planPendingTransferFromReference:(id)a3;
+- (PSUICellularPlanManagerCache)initWithCTClient:(id)client;
+- (id)danglingPlanFromReference:(id)reference;
+- (id)planFromReference:(id)reference;
+- (id)planFromReferenceSafe:(id)safe;
+- (id)planPendingTransferFromReference:(id)reference;
 - (id)predefinedLabels;
-- (id)subscriptionContextForPlanItem:(id)a3 cachedSubscriptionContexts:(id)a4;
+- (id)subscriptionContextForPlanItem:(id)item cachedSubscriptionContexts:(id)contexts;
 - (void)_carrierInfoDidChange;
 - (void)_fetchPlanItemsIfNeeded;
 - (void)_invalidatePlanItemsCache;
@@ -37,12 +37,12 @@
 - (void)_planInfoDidChange;
 - (void)clearCachedCarrierItemsAndRemotePlans;
 - (void)dealloc;
-- (void)didEnablePlanItems:(id)a3;
-- (void)didSelectDanglingPlan:(id)a3;
-- (void)plansDidUpdate:(id)a3;
-- (void)setLabel:(id)a3 forPlan:(id)a4;
-- (void)setSelectedPlanItem:(id)a3;
-- (void)setSelectedPlanItemForData:(id)a3;
+- (void)didEnablePlanItems:(id)items;
+- (void)didSelectDanglingPlan:(id)plan;
+- (void)plansDidUpdate:(id)update;
+- (void)setLabel:(id)label forPlan:(id)plan;
+- (void)setSelectedPlanItem:(id)item;
+- (void)setSelectedPlanItemForData:(id)data;
 @end
 
 @implementation PSUICellularPlanManagerCache
@@ -70,34 +70,34 @@ void __46__PSUICellularPlanManagerCache_sharedInstance__block_invoke()
   _MergedGlobals_76 = v3;
 }
 
-- (PSUICellularPlanManagerCache)initWithCTClient:(id)a3
+- (PSUICellularPlanManagerCache)initWithCTClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = PSUICellularPlanManagerCache;
   v6 = [(PSUICellularPlanManagerCache *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coreTelephonyClient, a3);
+    objc_storeStrong(&v6->_coreTelephonyClient, client);
     [(CoreTelephonyClient *)v7->_coreTelephonyClient setDelegate:v7];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__planInfoDidChange name:*MEMORY[0x277CF9688] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__planInfoDidChange name:*MEMORY[0x277CF9688] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v7 selector:sel__carrierInfoDidChange name:*MEMORY[0x277CF9678] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__carrierInfoDidChange name:*MEMORY[0x277CF9678] object:0];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v7 selector:sel__mcSettingsDidChange name:*MEMORY[0x277D25CA0] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v7 selector:sel__mcSettingsDidChange name:*MEMORY[0x277D25CA0] object:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v7 selector:sel__mcSettingsDidChange name:*MEMORY[0x277D26148] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v7 selector:sel__mcSettingsDidChange name:*MEMORY[0x277D26148] object:0];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v7 selector:sel__planInfoDidChange name:*MEMORY[0x277CF96B0] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:v7 selector:sel__planInfoDidChange name:*MEMORY[0x277CF96B0] object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v7 selector:sel__fetchPlanItemsIfNeeded name:*MEMORY[0x277CF96A8] object:0];
+    defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter6 addObserver:v7 selector:sel__fetchPlanItemsIfNeeded name:*MEMORY[0x277CF96A8] object:0];
   }
 
   return v7;
@@ -105,8 +105,8 @@ void __46__PSUICellularPlanManagerCache_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSUICellularPlanManagerCache;
@@ -115,11 +115,11 @@ void __46__PSUICellularPlanManagerCache_sharedInstance__block_invoke()
 
 - (void)_mcSettingsDidChange
 {
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Querying due to MCEffectiveSettingsChangedNotification or MCProfileListChangedNotification", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Querying due to MCEffectiveSettingsChangedNotification or MCProfileListChangedNotification", buf, 2u);
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -132,11 +132,11 @@ void __46__PSUICellularPlanManagerCache_sharedInstance__block_invoke()
 
 - (void)_planInfoDidChange
 {
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Querying due to CTCellularPlanInfoDidChangeNotification", v4, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Querying due to CTCellularPlanInfoDidChangeNotification", v4, 2u);
   }
 
   os_unfair_lock_lock(&planCacheLock);
@@ -171,18 +171,18 @@ void __46__PSUICellularPlanManagerCache_sharedInstance__block_invoke()
 
 - (void)_carrierInfoDidChange
 {
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Querying due to CTCarrierInfoDidChangeNotification", v6, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Querying due to CTCarrierInfoDidChangeNotification", v6, 2u);
   }
 
   cachedCarrierItems = self->_cachedCarrierItems;
   self->_cachedCarrierItems = 0;
 
   self->_carrierListFetchInProgress = 0;
-  v5 = [(PSUICellularPlanManagerCache *)self carrierItems];
+  carrierItems = [(PSUICellularPlanManagerCache *)self carrierItems];
 }
 
 - (void)_fetchPlanItemsIfNeeded
@@ -203,52 +203,52 @@ void __46__PSUICellularPlanManagerCache_sharedInstance__block_invoke()
   self->_hasSubscriptions = 0;
   self->_shouldShowOldUI = 1;
   *&self->_isWebUIFlowSupported = 0;
-  v6 = [MEMORY[0x277CF96D8] sharedManager];
-  v7 = [v6 planItemsShouldUpdate:0];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v7 = [mEMORY[0x277CF96D8] planItemsShouldUpdate:0];
   v8 = self->_planItems;
   self->_planItems = v7;
 
-  v9 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v10 = self->_planItems;
     *buf = 138412290;
     v85 = v10;
-    _os_log_impl(&dword_2658DE000, v9, OS_LOG_TYPE_DEFAULT, "fetched cellular plan items: %@", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "fetched cellular plan items: %@", buf, 0xCu);
   }
 
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v12 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v13 = [MEMORY[0x277CF96D8] sharedManager];
-    v14 = [v13 danglingPlanItemsShouldUpdate:0];
+    mEMORY[0x277CF96D8]2 = [MEMORY[0x277CF96D8] sharedManager];
+    v14 = [mEMORY[0x277CF96D8]2 danglingPlanItemsShouldUpdate:0];
     danglingPlanItems = self->_danglingPlanItems;
     self->_danglingPlanItems = v14;
 
-    v16 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       v17 = self->_danglingPlanItems;
       *buf = 138412290;
       v85 = v17;
-      _os_log_impl(&dword_2658DE000, v16, OS_LOG_TYPE_DEFAULT, "fetched dangling plan items: %@", buf, 0xCu);
+      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "fetched dangling plan items: %@", buf, 0xCu);
     }
   }
 
-  v18 = [MEMORY[0x277CF96D8] sharedManager];
+  mEMORY[0x277CF96D8]3 = [MEMORY[0x277CF96D8] sharedManager];
   v83 = 0;
-  v19 = [v18 getPlansPendingTransfer:&v83];
+  v19 = [mEMORY[0x277CF96D8]3 getPlansPendingTransfer:&v83];
   v20 = v83;
   plansPendingTransfer = self->_plansPendingTransfer;
   self->_plansPendingTransfer = v19;
 
-  v22 = [(PSUICellularPlanManagerCache *)self getLogger];
-  v23 = v22;
+  getLogger3 = [(PSUICellularPlanManagerCache *)self getLogger];
+  v23 = getLogger3;
   if (v20)
   {
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v85 = v20;
@@ -256,7 +256,7 @@ void __46__PSUICellularPlanManagerCache_sharedInstance__block_invoke()
     }
   }
 
-  else if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  else if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
   {
     v24 = self->_plansPendingTransfer;
     *buf = 138412290;
@@ -395,20 +395,20 @@ void __46__PSUICellularPlanManagerCache_sharedInstance__block_invoke()
     while (v49);
   }
 
-  v53 = [MEMORY[0x277CF96D8] sharedManager];
-  v54 = [v53 getSupportedFlowTypes];
+  mEMORY[0x277CF96D8]4 = [MEMORY[0x277CF96D8] sharedManager];
+  getSupportedFlowTypes = [mEMORY[0x277CF96D8]4 getSupportedFlowTypes];
 
-  self->_shouldShowOldUI = (v54 & 0x8000) == 0;
-  self->_isWebUIFlowSupported = v54 & 1;
-  self->_isActivationCodeFlowSupported = (v54 & 2) != 0;
-  if (v54 == 2)
+  self->_shouldShowOldUI = (getSupportedFlowTypes & 0x8000) == 0;
+  self->_isWebUIFlowSupported = getSupportedFlowTypes & 1;
+  self->_isActivationCodeFlowSupported = (getSupportedFlowTypes & 2) != 0;
+  if (getSupportedFlowTypes == 2)
   {
-    v55 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
     v56 = v66;
-    if ([v55 sf_isChinaRegionCellularDevice])
+    if ([currentDevice2 sf_isChinaRegionCellularDevice])
     {
-      v57 = [MEMORY[0x277D75418] currentDevice];
-      self->_isSingleActivationCodeFlowSupported = [v57 sf_isiPad];
+      currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+      self->_isSingleActivationCodeFlowSupported = [currentDevice3 sf_isiPad];
     }
 
     else
@@ -431,12 +431,12 @@ LABEL_54:
   }
 
   self->_isSingleActivationCodeFlowSupported = 0;
-  self->_isCarrierItemFlowSupported = (v54 & 0x20) != 0;
+  self->_isCarrierItemFlowSupported = (getSupportedFlowTypes & 0x20) != 0;
   v56 = v66;
-  if ((v54 & 1) == 0)
+  if ((getSupportedFlowTypes & 1) == 0)
   {
-    isActivationCodeFlowSupported = v54 >> 1;
-    v59 = v54 & 0x20;
+    isActivationCodeFlowSupported = getSupportedFlowTypes >> 1;
+    v59 = getSupportedFlowTypes & 0x20;
     goto LABEL_54;
   }
 
@@ -444,28 +444,28 @@ LABEL_52:
   v61 = 1;
 LABEL_55:
   self->_isAnyLocalFlowTypeSupported = v61 & 1;
-  v62 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
+  getLogger4 = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v85 = v54;
-    _os_log_impl(&dword_2658DE000, v62, OS_LOG_TYPE_DEFAULT, "supported flows: 0x%lx", buf, 0xCu);
+    v85 = getSupportedFlowTypes;
+    _os_log_impl(&dword_2658DE000, getLogger4, OS_LOG_TYPE_DEFAULT, "supported flows: 0x%lx", buf, 0xCu);
   }
 
-  self->_isMultipleDataPlanSupportAvailable = (v54 & 0xFFFFFFFFFFFF7FFFLL) != 0;
+  self->_isMultipleDataPlanSupportAvailable = (getSupportedFlowTypes & 0xFFFFFFFFFFFF7FFFLL) != 0;
   self->_cacheIsValid = 1;
-  v63 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
+  getLogger5 = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v85 = "[PSUICellularPlanManagerCache _fetchPlanItemsIfNeeded]";
     v86 = 2112;
     v87 = @"PSUICellularPlanChanged";
-    _os_log_impl(&dword_2658DE000, v63, OS_LOG_TYPE_DEFAULT, "%s posting notification %@", buf, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger5, OS_LOG_TYPE_DEFAULT, "%s posting notification %@", buf, 0x16u);
   }
 
-  v64 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v64 postNotificationName:@"PSUICellularPlanChanged" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"PSUICellularPlanChanged" object:0 userInfo:0];
 
 LABEL_60:
   v65 = *MEMORY[0x277D85DE8];
@@ -475,13 +475,13 @@ LABEL_60:
 {
   v10 = *MEMORY[0x277D85DE8];
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = [(NSArray *)self->_planItems count];
     v8 = 134217984;
     v9 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%lu plan items exist", &v8, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%lu plan items exist", &v8, 0xCu);
   }
 
   planItems = self->_planItems;
@@ -498,8 +498,8 @@ LABEL_60:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PSUICellularPlanManagerCache *)self planItems];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  planItems = [(PSUICellularPlanManagerCache *)self planItems];
+  v5 = [planItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -510,7 +510,7 @@ LABEL_60:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(planItems);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -520,7 +520,7 @@ LABEL_60:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [planItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -547,22 +547,22 @@ LABEL_60:
   return plansPendingTransfer;
 }
 
-- (id)planFromReference:(id)a3
+- (id)planFromReference:(id)reference
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  referenceCopy = reference;
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v5 = [(NSDictionary *)self->_referenceMap objectForKey:v4];
+  v5 = [(NSDictionary *)self->_referenceMap objectForKey:referenceCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(NSDictionary *)self->_referenceMap objectForKey:v4];
+    v6 = [(NSDictionary *)self->_referenceMap objectForKey:referenceCopy];
   }
 
   else
   {
-    v7 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
@@ -572,7 +572,7 @@ LABEL_60:
       v15 = v11;
       v16 = 2114;
       v17 = v13;
-      _os_log_error_impl(&dword_2658DE000, v7, OS_LOG_TYPE_ERROR, "The referenced plan is an object of the class %@, expected an object of the class %{public}@", &v14, 0x16u);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "The referenced plan is an object of the class %@, expected an object of the class %{public}@", &v14, 0x16u);
     }
 
     v6 = 0;
@@ -583,20 +583,20 @@ LABEL_60:
   return v6;
 }
 
-- (id)danglingPlanFromReference:(id)a3
+- (id)danglingPlanFromReference:(id)reference
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  referenceCopy = reference;
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v5 = [(NSDictionary *)self->_referenceMap objectForKey:v4];
+  v5 = [(NSDictionary *)self->_referenceMap objectForKey:referenceCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_6;
   }
 
-  v6 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
@@ -606,14 +606,14 @@ LABEL_60:
     v15 = v11;
     v16 = 2114;
     v17 = v13;
-    _os_log_error_impl(&dword_2658DE000, v6, OS_LOG_TYPE_ERROR, "The referenced plan is an object of the class %@, expected an object of the class %{public}@", &v14, 0x16u);
+    _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "The referenced plan is an object of the class %@, expected an object of the class %{public}@", &v14, 0x16u);
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_6:
-    v7 = [(NSDictionary *)self->_referenceMap objectForKey:v4];
+    v7 = [(NSDictionary *)self->_referenceMap objectForKey:referenceCopy];
   }
 
   else
@@ -626,22 +626,22 @@ LABEL_6:
   return v7;
 }
 
-- (id)planPendingTransferFromReference:(id)a3
+- (id)planPendingTransferFromReference:(id)reference
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  referenceCopy = reference;
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v5 = [(NSDictionary *)self->_referenceMap objectForKey:v4];
+  v5 = [(NSDictionary *)self->_referenceMap objectForKey:referenceCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(NSDictionary *)self->_referenceMap objectForKey:v4];
+    v6 = [(NSDictionary *)self->_referenceMap objectForKey:referenceCopy];
   }
 
   else
   {
-    v7 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
@@ -651,7 +651,7 @@ LABEL_6:
       v15 = v11;
       v16 = 2114;
       v17 = v13;
-      _os_log_error_impl(&dword_2658DE000, v7, OS_LOG_TYPE_ERROR, "The referenced plan is an object of the class %@, expected an object of the class %{public}@", &v14, 0x16u);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "The referenced plan is an object of the class %@, expected an object of the class %{public}@", &v14, 0x16u);
     }
 
     v6 = 0;
@@ -662,22 +662,22 @@ LABEL_6:
   return v6;
 }
 
-- (id)planFromReferenceSafe:(id)a3
+- (id)planFromReferenceSafe:(id)safe
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  safeCopy = safe;
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v5 = [(NSDictionary *)self->_referenceMap objectForKey:v4];
+  v5 = [(NSDictionary *)self->_referenceMap objectForKey:safeCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(NSDictionary *)self->_referenceMap objectForKey:v4];
+    v6 = [(NSDictionary *)self->_referenceMap objectForKey:safeCopy];
   }
 
   else
   {
-    v7 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
@@ -687,7 +687,7 @@ LABEL_6:
       v15 = v11;
       v16 = 2114;
       v17 = v13;
-      _os_log_error_impl(&dword_2658DE000, v7, OS_LOG_TYPE_ERROR, "The referenced plan is an object of the class %@, expected an object of the class %{public}@", &v14, 0x16u);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "The referenced plan is an object of the class %@, expected an object of the class %{public}@", &v14, 0x16u);
     }
 
     v6 = 0;
@@ -706,50 +706,50 @@ LABEL_6:
   return selectedPlanItem;
 }
 
-- (void)setSelectedPlanItem:(id)a3
+- (void)setSelectedPlanItem:(id)item
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
-    v7 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "Can't activate nil plan", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Can't activate nil plan", buf, 2u);
     }
 
     goto LABEL_14;
   }
 
-  if (([v4 isSelected] & 1) == 0)
+  if (([itemCopy isSelected] & 1) == 0)
   {
-    v6 = [MEMORY[0x277CF96D8] sharedManager];
-    v7 = [v6 didSelectPlanItem:v5 isEnable:1];
+    mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+    getLogger = [mEMORY[0x277CF96D8] didSelectPlanItem:v5 isEnable:1];
 
-    if (v7)
+    if (getLogger)
     {
-      v8 = [(PSUICellularPlanManagerCache *)self getLogger];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      getLogger2 = [(PSUICellularPlanManagerCache *)self getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v15 = v7;
-        _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "Failed to select the plan: %@", buf, 0xCu);
+        v15 = getLogger;
+        _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Failed to select the plan: %@", buf, 0xCu);
       }
     }
 
-    v9 = [MEMORY[0x277CF96D8] sharedManager];
-    v10 = [v9 didSelectPlanForData:v5];
+    mEMORY[0x277CF96D8]2 = [MEMORY[0x277CF96D8] sharedManager];
+    v10 = [mEMORY[0x277CF96D8]2 didSelectPlanForData:v5];
 
     if (v10)
     {
-      v11 = [(PSUICellularPlanManagerCache *)self getLogger];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      getLogger3 = [(PSUICellularPlanManagerCache *)self getLogger];
+      if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v15 = v10;
-        _os_log_impl(&dword_2658DE000, v11, OS_LOG_TYPE_DEFAULT, "Failed to make plan active data plan: %@", buf, 0xCu);
+        _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "Failed to make plan active data plan: %@", buf, 0xCu);
       }
     }
 
@@ -774,36 +774,36 @@ uint64_t __52__PSUICellularPlanManagerCache_setSelectedPlanItem___block_invoke(u
   return [v2 _fetchPlanItemsIfNeeded];
 }
 
-- (void)setSelectedPlanItemForData:(id)a3
+- (void)setSelectedPlanItemForData:(id)data
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (!dataCopy)
   {
-    v7 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "Can't set nil plan for data", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Can't set nil plan for data", buf, 2u);
     }
 
     goto LABEL_10;
   }
 
-  if (([v4 isActiveDataPlan] & 1) == 0)
+  if (([dataCopy isActiveDataPlan] & 1) == 0)
   {
-    v6 = [MEMORY[0x277CF96D8] sharedManager];
-    v7 = [v6 didSelectPlanForData:v5];
+    mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+    getLogger = [mEMORY[0x277CF96D8] didSelectPlanForData:v5];
 
-    if (v7)
+    if (getLogger)
     {
-      v8 = [(PSUICellularPlanManagerCache *)self getLogger];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      getLogger2 = [(PSUICellularPlanManagerCache *)self getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v12 = v7;
-        _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "Failed to make plan active data plan: %@", buf, 0xCu);
+        v12 = getLogger;
+        _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Failed to make plan active data plan: %@", buf, 0xCu);
       }
     }
 
@@ -827,31 +827,31 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
   return [v2 _fetchPlanItemsIfNeeded];
 }
 
-- (void)didSelectDanglingPlan:(id)a3
+- (void)didSelectDanglingPlan:(id)plan
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  planCopy = plan;
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Selected dangling plan item: %@", &v10, 0xCu);
+    v11 = planCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Selected dangling plan item: %@", &v10, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CF96D8] sharedManager];
-  v7 = [v6 resolveSimLabel:v4];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v7 = [mEMORY[0x277CF96D8] resolveSimLabel:planCopy];
 
   if (v7)
   {
-    v8 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = v4;
+      v11 = planCopy;
       v12 = 2112;
       v13 = v7;
-      _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "Failed to resolve SIM label for plan: %@ with error:%@", &v10, 0x16u);
+      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Failed to resolve SIM label for plan: %@ with error:%@", &v10, 0x16u);
     }
   }
 
@@ -862,8 +862,8 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
 {
   v9 = *MEMORY[0x277D85DE8];
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     if (self->_isMultipleDataPlanSupportAvailable)
     {
@@ -877,7 +877,7 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
 
     v7 = 138412290;
     v8 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Multiple data plan support %@ available", &v7, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Multiple data plan support %@ available", &v7, 0xCu);
   }
 
   result = self->_isMultipleDataPlanSupportAvailable;
@@ -889,8 +889,8 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
 {
   v9 = *MEMORY[0x277D85DE8];
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     if (self->_hasSubscriptions)
     {
@@ -904,7 +904,7 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
 
     v7 = 138412290;
     v8 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%@", &v7, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%@", &v7, 0xCu);
   }
 
   result = self->_hasSubscriptions;
@@ -915,11 +915,11 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
 - (BOOL)isSelectedPlanActivating
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICellularPlanManagerCache *)self selectedPlanItem];
-  if ([v3 isBackedByCellularPlan])
+  selectedPlanItem = [(PSUICellularPlanManagerCache *)self selectedPlanItem];
+  if ([selectedPlanItem isBackedByCellularPlan])
   {
-    v4 = [v3 plan];
-    v5 = [v4 status] == 2;
+    plan = [selectedPlanItem plan];
+    v5 = [plan status] == 2;
   }
 
   else
@@ -927,8 +927,8 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
     v5 = 0;
   }
 
-  v6 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"is not";
     if (v5)
@@ -938,7 +938,7 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
 
     v10 = 138412290;
     v11 = v7;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "Selected plan item %@ activating", &v10, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Selected plan item %@ activating", &v10, 0xCu);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -952,8 +952,8 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(PSUICellularPlanManagerCache *)self planItems];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  planItems = [(PSUICellularPlanManagerCache *)self planItems];
+  v4 = [planItems countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v4)
   {
     v5 = *v15;
@@ -963,16 +963,16 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(planItems);
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
         if ([v7 isBackedByCellularPlan])
         {
-          v8 = [v7 plan];
-          v9 = [v8 status];
+          plan = [v7 plan];
+          status = [plan status];
 
-          if (v9 == 2)
+          if (status == 2)
           {
             LODWORD(v4) = 1;
             goto LABEL_12;
@@ -980,7 +980,7 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v4 = [planItems countByEnumeratingWithState:&v14 objects:v20 count:16];
       if (v4)
       {
         continue;
@@ -992,8 +992,8 @@ uint64_t __59__PSUICellularPlanManagerCache_setSelectedPlanItemForData___block_i
 
 LABEL_12:
 
-  v10 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"No plan is activating";
     if (v4)
@@ -1003,7 +1003,7 @@ LABEL_12:
 
     *buf = 138412290;
     v19 = v11;
-    _os_log_impl(&dword_2658DE000, v10, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1018,8 +1018,8 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(PSUICellularPlanManagerCache *)self selectedPlanItem];
-  v4 = v3 == 0;
+  selectedPlanItem = [(PSUICellularPlanManagerCache *)self selectedPlanItem];
+  v4 = selectedPlanItem == 0;
 
   return v4;
 }
@@ -1028,8 +1028,8 @@ LABEL_12:
 {
   v11 = *MEMORY[0x277D85DE8];
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = @"NO";
     if (self->_shouldShowOldUI)
@@ -1041,7 +1041,7 @@ LABEL_12:
     v8 = "[PSUICellularPlanManagerCache shouldShowOldUI]";
     v9 = 2112;
     v10 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
   }
 
   result = self->_shouldShowOldUI;
@@ -1053,8 +1053,8 @@ LABEL_12:
 {
   v11 = *MEMORY[0x277D85DE8];
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = @"NO";
     if (self->_isAnyLocalFlowTypeSupported)
@@ -1066,7 +1066,7 @@ LABEL_12:
     v8 = "[PSUICellularPlanManagerCache isAnyLocalFlowTypeSupported]";
     v9 = 2112;
     v10 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
   }
 
   result = self->_isAnyLocalFlowTypeSupported;
@@ -1078,8 +1078,8 @@ LABEL_12:
 {
   v11 = *MEMORY[0x277D85DE8];
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = @"NO";
     if (self->_isWebUIFlowSupported)
@@ -1091,7 +1091,7 @@ LABEL_12:
     v8 = "[PSUICellularPlanManagerCache isWebUIFlowSupported]";
     v9 = 2112;
     v10 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
   }
 
   result = self->_isWebUIFlowSupported;
@@ -1103,8 +1103,8 @@ LABEL_12:
 {
   v11 = *MEMORY[0x277D85DE8];
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = @"NO";
     if (self->_isActivationCodeFlowSupported)
@@ -1116,7 +1116,7 @@ LABEL_12:
     v8 = "[PSUICellularPlanManagerCache isActivationCodeFlowSupported]";
     v9 = 2112;
     v10 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
   }
 
   result = self->_isActivationCodeFlowSupported;
@@ -1128,8 +1128,8 @@ LABEL_12:
 {
   v11 = *MEMORY[0x277D85DE8];
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = @"NO";
     if (self->_isSingleActivationCodeFlowSupported)
@@ -1141,7 +1141,7 @@ LABEL_12:
     v8 = "[PSUICellularPlanManagerCache isSingleActivationCodeFlowSupported]";
     v9 = 2112;
     v10 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
   }
 
   result = self->_isSingleActivationCodeFlowSupported;
@@ -1153,8 +1153,8 @@ LABEL_12:
 {
   v11 = *MEMORY[0x277D85DE8];
   [(PSUICellularPlanManagerCache *)self _fetchPlanItemsIfNeeded];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = @"NO";
     if (self->_isCarrierItemFlowSupported)
@@ -1166,7 +1166,7 @@ LABEL_12:
     v8 = "[PSUICellularPlanManagerCache isCarrierItemFlowSupported]";
     v9 = 2112;
     v10 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
   }
 
   result = self->_isCarrierItemFlowSupported;
@@ -1177,12 +1177,12 @@ LABEL_12:
 - (CTDisplayPlanList)pendingInstallPlans
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v11 = "[PSUICellularPlanManagerCache pendingInstallPlans]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
   cachedPendingInstallPlans = self->_cachedPendingInstallPlans;
@@ -1286,24 +1286,24 @@ void __51__PSUICellularPlanManagerCache_pendingInstallPlans__block_invoke_97(uin
 - (CTDisplayPlanList)remotePlans
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v16 = "[PSUICellularPlanManagerCache remotePlans]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
   if (self->_remoteListFetchCompleted || self->_remoteListFetchInProgress)
   {
-    v4 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(CTDisplayPlanList *)self->_cachedRemotePlans plans];
-      v6 = [v5 count];
+      plans = [(CTDisplayPlanList *)self->_cachedRemotePlans plans];
+      v6 = [plans count];
       *buf = 134217984;
       v16 = v6;
-      _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "%lu remote items exist", buf, 0xCu);
+      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%lu remote items exist", buf, 0xCu);
     }
   }
 
@@ -1311,12 +1311,12 @@ void __51__PSUICellularPlanManagerCache_pendingInstallPlans__block_invoke_97(uin
   {
     objc_initWeak(&location, self);
     self->_remoteListFetchInProgress = 1;
-    v10 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    getLogger3 = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v16 = "[PSUICellularPlanManagerCache remotePlans]";
-      _os_log_impl(&dword_2658DE000, v10, OS_LOG_TYPE_DEFAULT, "%s fetching add on plans", buf, 0xCu);
+      _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "%s fetching add on plans", buf, 0xCu);
     }
 
     coreTelephonyClient = self->_coreTelephonyClient;
@@ -1521,34 +1521,34 @@ void __43__PSUICellularPlanManagerCache_remotePlans__block_invoke_102(uint64_t a
   {
     objc_initWeak(&location, self);
     self->_carrierListFetchInProgress = 1;
-    v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v14 = "[PSUICellularPlanManagerCache carrierItems]";
-      _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s fetching carrier items", buf, 0xCu);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s fetching carrier items", buf, 0xCu);
     }
 
-    v4 = [MEMORY[0x277CF96D8] sharedManager];
+    mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __44__PSUICellularPlanManagerCache_carrierItems__block_invoke;
     v10[3] = &unk_279BAAB90;
     objc_copyWeak(&v11, &location);
     v10[4] = self;
-    [v4 carrierItemsShouldUpdate:0 completion:v10];
+    [mEMORY[0x277CF96D8] carrierItemsShouldUpdate:0 completion:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
 
-  v5 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  getLogger2 = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [(NSArray *)self->_cachedCarrierItems count];
     *buf = 134217984;
     v14 = v6;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "%lu carrier items exist", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%lu carrier items exist", buf, 0xCu);
   }
 
   cachedCarrierItems = self->_cachedCarrierItems;
@@ -1638,10 +1638,10 @@ void __44__PSUICellularPlanManagerCache_carrierItems__block_invoke_104(uint64_t 
 - (id)predefinedLabels
 {
   v13[6] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CF96D8] sharedManager];
-  v3 = [v2 getPredefinedLabels];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  getPredefinedLabels = [mEMORY[0x277CF96D8] getPredefinedLabels];
 
-  if (!v3 || ![v3 count])
+  if (!getPredefinedLabels || ![getPredefinedLabels count])
   {
     v4 = [objc_alloc(MEMORY[0x277CF96F0]) initWithLabel:@"Primary"];
     v13[0] = v4;
@@ -1657,42 +1657,42 @@ void __44__PSUICellularPlanManagerCache_carrierItems__block_invoke_104(uint64_t 
     v13[5] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:6];
 
-    v3 = v10;
+    getPredefinedLabels = v10;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return getPredefinedLabels;
 }
 
-- (void)setLabel:(id)a3 forPlan:(id)a4
+- (void)setLabel:(id)label forPlan:(id)plan
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  labelCopy = label;
+  planCopy = plan;
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v6;
+    v14 = labelCopy;
     v15 = 2112;
-    v16 = v7;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "Setting label: %@ for plan item: %@", &v13, 0x16u);
+    v16 = planCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Setting label: %@ for plan item: %@", &v13, 0x16u);
   }
 
-  v9 = [MEMORY[0x277CF96D8] sharedManager];
-  v10 = [v9 setLabelForPlan:v7 label:v6];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v10 = [mEMORY[0x277CF96D8] setLabelForPlan:planCopy label:labelCopy];
 
   if (v10)
   {
-    v11 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    getLogger2 = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412546;
-      v14 = v7;
+      v14 = planCopy;
       v15 = 2112;
       v16 = v10;
-      _os_log_error_impl(&dword_2658DE000, v11, OS_LOG_TYPE_ERROR, "Failed to set label for plan: %@ with error: %@", &v13, 0x16u);
+      _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "Failed to set label for plan: %@ with error: %@", &v13, 0x16u);
     }
   }
 
@@ -1704,24 +1704,24 @@ void __44__PSUICellularPlanManagerCache_carrierItems__block_invoke_104(uint64_t 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)subscriptionContextForPlanItem:(id)a3 cachedSubscriptionContexts:(id)a4
+- (id)subscriptionContextForPlanItem:(id)item cachedSubscriptionContexts:(id)contexts
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  itemCopy = item;
+  contextsCopy = contexts;
+  if (!contextsCopy)
   {
-    v8 = [MEMORY[0x277D4D868] sharedInstance];
-    v7 = [v8 subscriptionContexts];
+    mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+    contextsCopy = [mEMORY[0x277D4D868] subscriptionContexts];
   }
 
-  v9 = [MEMORY[0x277CF96D8] sharedManager];
-  v10 = [v9 getSubscriptionContextUUIDforPlan:v6];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v10 = [mEMORY[0x277CF96D8] getSubscriptionContextUUIDforPlan:itemCopy];
 
   if (!v10)
   {
-    v11 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (!os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_20:
       v21 = 0;
@@ -1729,22 +1729,22 @@ LABEL_20:
     }
 
     *buf = 138412546;
-    v32 = v6;
+    v32 = itemCopy;
     v33 = 2112;
     v34 = 0;
 LABEL_19:
-    _os_log_impl(&dword_2658DE000, v11, OS_LOG_TYPE_DEFAULT, "plan item: %@, context: %@", buf, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "plan item: %@, context: %@", buf, 0x16u);
     goto LABEL_20;
   }
 
-  v24 = self;
-  v25 = v6;
+  selfCopy = self;
+  v25 = itemCopy;
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = v7;
-  v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  getLogger = contextsCopy;
+  v12 = [getLogger countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1755,25 +1755,25 @@ LABEL_19:
       {
         if (*v27 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(getLogger);
         }
 
         v16 = *(*(&v26 + 1) + 8 * i);
-        v17 = [v16 uuid];
-        v18 = [v17 UUIDString];
-        v19 = [v10 isEqualToString:v18];
+        uuid = [v16 uuid];
+        uUIDString = [uuid UUIDString];
+        v19 = [v10 isEqualToString:uUIDString];
 
         if (v19)
         {
-          v20 = [(PSUICellularPlanManagerCache *)v24 getLogger];
-          v6 = v25;
-          if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+          getLogger2 = [(PSUICellularPlanManagerCache *)selfCopy getLogger];
+          itemCopy = v25;
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
             v32 = v25;
             v33 = 2112;
             v34 = v16;
-            _os_log_impl(&dword_2658DE000, v20, OS_LOG_TYPE_DEFAULT, "plan item: %@, context: %@", buf, 0x16u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "plan item: %@, context: %@", buf, 0x16u);
           }
 
           v21 = v16;
@@ -1781,7 +1781,7 @@ LABEL_19:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v13 = [getLogger countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v13)
       {
         continue;
@@ -1791,11 +1791,11 @@ LABEL_19:
     }
   }
 
-  v11 = [(PSUICellularPlanManagerCache *)v24 getLogger];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)selfCopy getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v6 = v25;
+    itemCopy = v25;
     v32 = v25;
     v33 = 2112;
     v34 = 0;
@@ -1803,7 +1803,7 @@ LABEL_19:
   }
 
   v21 = 0;
-  v6 = v25;
+  itemCopy = v25;
 LABEL_21:
 
   v22 = *MEMORY[0x277D85DE8];
@@ -1811,23 +1811,23 @@ LABEL_21:
   return v21;
 }
 
-- (void)didEnablePlanItems:(id)a3
+- (void)didEnablePlanItems:(id)items
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CF96D8] sharedManager];
-  v6 = [v5 didEnablePlanItems:v4];
+  itemsCopy = items;
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v6 = [mEMORY[0x277CF96D8] didEnablePlanItems:itemsCopy];
 
   if (v6)
   {
-    v7 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412546;
-      v10 = v4;
+      v10 = itemsCopy;
       v11 = 2112;
       v12 = v6;
-      _os_log_error_impl(&dword_2658DE000, v7, OS_LOG_TYPE_ERROR, "Enabling plans: %@, error: %@", &v9, 0x16u);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Enabling plans: %@, error: %@", &v9, 0x16u);
     }
   }
 
@@ -1843,19 +1843,19 @@ LABEL_21:
   v5 = v10;
   if (v5)
   {
-    v6 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v12 = v5;
-      _os_log_error_impl(&dword_2658DE000, v6, OS_LOG_TYPE_ERROR, "usingBootstrapDataService failed:%@", buf, 0xCu);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "usingBootstrapDataService failed:%@", buf, 0xCu);
     }
   }
 
-  v7 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v8 = *MEMORY[0x277D85DE8];
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)isBootstrapRecommended
@@ -1867,12 +1867,12 @@ LABEL_21:
   v5 = v10;
   if (v5)
   {
-    v6 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v12 = v5;
-      _os_log_error_impl(&dword_2658DE000, v6, OS_LOG_TYPE_ERROR, "isBootstrapRecommended failed:%@", buf, 0xCu);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "isBootstrapRecommended failed:%@", buf, 0xCu);
     }
 
     v7 = 0;
@@ -1896,12 +1896,12 @@ LABEL_21:
   v5 = v10;
   if (v5)
   {
-    v6 = [(PSUICellularPlanManagerCache *)self getLogger];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v12 = v5;
-      _os_log_error_impl(&dword_2658DE000, v6, OS_LOG_TYPE_ERROR, "getBootstrapState failed:%@", buf, 0xCu);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "getBootstrapState failed:%@", buf, 0xCu);
     }
 
     v7 = 0;
@@ -1920,8 +1920,8 @@ LABEL_21:
 - (BOOL)isCarrierItemBeingFetched
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     if (self->_carrierListFetchInProgress)
     {
@@ -1935,7 +1935,7 @@ LABEL_21:
 
     v7 = 138412290;
     v8 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "_carrierListFetchInProgress: %@", &v7, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "_carrierListFetchInProgress: %@", &v7, 0xCu);
   }
 
   result = self->_carrierListFetchInProgress;
@@ -1943,28 +1943,28 @@ LABEL_21:
   return result;
 }
 
-- (void)plansDidUpdate:(id)a3
+- (void)plansDidUpdate:(id)update
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(PSUICellularPlanManagerCache *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  updateCopy = update;
+  getLogger = [(PSUICellularPlanManagerCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v5;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "CTDisplayPlanList: %@", &v17, 0xCu);
+    v18 = updateCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "CTDisplayPlanList: %@", &v17, 0xCu);
   }
 
-  v7 = [v5 plans];
-  v8 = [v7 count];
+  plans = [updateCopy plans];
+  v8 = [plans count];
 
-  if (v8 && ([v5 plans], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectAtIndexedSubscript:", 0), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isPendingInstallPlan"), v10, v9, (v11 & 1) == 0))
+  if (v8 && ([updateCopy plans], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectAtIndexedSubscript:", 0), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isPendingInstallPlan"), v10, v9, (v11 & 1) == 0))
   {
-    v14 = [v5 plans];
-    v15 = [v14 objectAtIndexedSubscript:0];
-    v16 = [v15 isAddOnPurchasablePlan];
+    plans2 = [updateCopy plans];
+    v15 = [plans2 objectAtIndexedSubscript:0];
+    isAddOnPurchasablePlan = [v15 isAddOnPurchasablePlan];
 
-    if (!v16)
+    if (!isAddOnPurchasablePlan)
     {
       goto LABEL_7;
     }
@@ -1977,7 +1977,7 @@ LABEL_21:
     v12 = 88;
   }
 
-  objc_storeStrong((&self->super.isa + v12), a3);
+  objc_storeStrong((&self->super.isa + v12), update);
 LABEL_7:
   dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_128);
 

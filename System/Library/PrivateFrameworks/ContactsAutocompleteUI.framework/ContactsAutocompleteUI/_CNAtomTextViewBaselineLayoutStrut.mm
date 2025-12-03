@@ -7,8 +7,8 @@
 - (CGSize)intrinsicContentSize
 {
   v3 = *MEMORY[0x1E695F060];
-  v4 = [(_CNAtomTextViewBaselineLayoutStrut *)self font];
-  [@"X" sizeWithFont:v4 forWidth:-[_CNAtomTextViewBaselineLayoutStrut lineBreakMode](self lineBreakMode:"lineBreakMode") letterSpacing:{3.40282347e38, 0.0}];
+  font = [(_CNAtomTextViewBaselineLayoutStrut *)self font];
+  [@"X" sizeWithFont:font forWidth:-[_CNAtomTextViewBaselineLayoutStrut lineBreakMode](self lineBreakMode:"lineBreakMode") letterSpacing:{3.40282347e38, 0.0}];
   v6 = v5;
 
   v7 = v3;

@@ -1,27 +1,27 @@
 @interface SVSTopAnimator
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)animateTransition:(id)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation SVSTopAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  [(SVSTopAnimator *)self transitionDuration:v4];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  [(SVSTopAnimator *)self transitionDuration:transitionCopy];
   v7 = v6;
-  v8 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v9 = [v8 view];
-  [v9 bounds];
+  v8 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  view = [v8 view];
+  [view bounds];
   CGAffineTransformMakeTranslation(&v20, 0.0, -v10);
-  v11 = [v8 view];
+  view2 = [v8 view];
   v19 = v20;
-  [v11 setTransform:&v19];
+  [view2 setTransform:&v19];
 
-  v12 = [v8 view];
-  [v5 addSubview:v12];
+  view3 = [v8 view];
+  [containerView addSubview:view3];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -32,22 +32,22 @@
   v15[1] = 3221225472;
   v15[2] = sub_100124E78;
   v15[3] = &unk_1001957D0;
-  v16 = v4;
-  v13 = v4;
+  v16 = transitionCopy;
+  v13 = transitionCopy;
   v14 = v8;
   [UIView animateWithDuration:v17 animations:v15 completion:v7];
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PopUpPresentationController alloc] initWithPresentedViewController:v7 presentingViewController:v6];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v8 = [[PopUpPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   return v8;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   dismissAnimator = self->_dismissAnimator;
   if (!dismissAnimator)

@@ -1,94 +1,94 @@
 @interface FUFlightStep
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)taxiing;
-- (FUFlightStep)initWithAirport:(id)a3 gate:(id)a4 terminal:(id)a5 legStatus:(int64_t)a6 delayFromSchedule:(id)a7 scheduledTime:(id)a8 estimatedTime:(id)a9 actualTime:(id)a10 runwayTime:(id)a11 departure:(BOOL)a12;
-- (FUFlightStep)initWithCoder:(id)a3;
+- (FUFlightStep)initWithAirport:(id)airport gate:(id)gate terminal:(id)terminal legStatus:(int64_t)status delayFromSchedule:(id)schedule scheduledTime:(id)time estimatedTime:(id)estimatedTime actualTime:(id)self0 runwayTime:(id)self1 departure:(BOOL)self2;
+- (FUFlightStep)initWithCoder:(id)coder;
 - (FUStepTime)time;
 - (NSNumber)delayFromSchedule;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)status;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDelayFromSchedule:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDelayFromSchedule:(id)schedule;
 @end
 
 @implementation FUFlightStep
 
-- (FUFlightStep)initWithAirport:(id)a3 gate:(id)a4 terminal:(id)a5 legStatus:(int64_t)a6 delayFromSchedule:(id)a7 scheduledTime:(id)a8 estimatedTime:(id)a9 actualTime:(id)a10 runwayTime:(id)a11 departure:(BOOL)a12
+- (FUFlightStep)initWithAirport:(id)airport gate:(id)gate terminal:(id)terminal legStatus:(int64_t)status delayFromSchedule:(id)schedule scheduledTime:(id)time estimatedTime:(id)estimatedTime actualTime:(id)self0 runwayTime:(id)self1 departure:(BOOL)self2
 {
-  v33 = a3;
-  v35 = a4;
-  v34 = a5;
-  v18 = a7;
-  v32 = a8;
-  v31 = a9;
-  v19 = a10;
-  v20 = a11;
+  airportCopy = airport;
+  gateCopy = gate;
+  terminalCopy = terminal;
+  scheduleCopy = schedule;
+  timeCopy = time;
+  estimatedTimeCopy = estimatedTime;
+  actualTimeCopy = actualTime;
+  runwayTimeCopy = runwayTime;
   v36.receiver = self;
   v36.super_class = FUFlightStep;
   v21 = [(FUFlightStep *)&v36 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_airport, a3);
-    v23 = [v35 copy];
+    objc_storeStrong(&v21->_airport, airport);
+    v23 = [gateCopy copy];
     gate = v22->_gate;
     v22->_gate = v23;
 
-    v25 = [v34 copy];
+    v25 = [terminalCopy copy];
     terminal = v22->_terminal;
     v22->_terminal = v25;
 
-    v22->_legStatus = a6;
-    v27 = [v18 copy];
+    v22->_legStatus = status;
+    v27 = [scheduleCopy copy];
     delayFromSchedule = v22->_delayFromSchedule;
     v22->_delayFromSchedule = v27;
 
-    objc_storeStrong(&v22->_scheduledTime, a8);
-    objc_storeStrong(&v22->_estimatedTime, a9);
-    objc_storeStrong(&v22->_actualTime, a10);
-    objc_storeStrong(&v22->_runwayTime, a11);
-    v22->_departure = a12;
+    objc_storeStrong(&v22->_scheduledTime, time);
+    objc_storeStrong(&v22->_estimatedTime, estimatedTime);
+    objc_storeStrong(&v22->_actualTime, actualTime);
+    objc_storeStrong(&v22->_runwayTime, runwayTime);
+    v22->_departure = departure;
   }
 
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(FUFlightStep *)self airport];
-    v7 = [v5 airport];
-    if (v6 != v7)
+    airport = [(FUFlightStep *)self airport];
+    airport2 = [equalCopy airport];
+    if (airport != airport2)
     {
-      v8 = [(FUFlightStep *)self airport];
-      v3 = [v5 airport];
-      if (![v8 isEqual:v3])
+      airport3 = [(FUFlightStep *)self airport];
+      airport4 = [equalCopy airport];
+      if (![airport3 isEqual:airport4])
       {
         LOBYTE(v9) = 0;
         goto LABEL_50;
       }
 
-      v61 = v8;
+      v61 = airport3;
     }
 
-    v10 = [(FUFlightStep *)self gate];
-    v11 = [v5 gate];
-    if (v10 != v11)
+    gate = [(FUFlightStep *)self gate];
+    gate2 = [equalCopy gate];
+    if (gate != gate2)
     {
-      v12 = [(FUFlightStep *)self gate];
-      v13 = [v5 gate];
-      if (![v12 isEqual:v13])
+      gate3 = [(FUFlightStep *)self gate];
+      gate4 = [equalCopy gate];
+      if (![gate3 isEqual:gate4])
       {
         LOBYTE(v9) = 0;
 LABEL_48:
 
 LABEL_49:
-        v8 = v61;
-        if (v6 == v7)
+        airport3 = v61;
+        if (airport == airport2)
         {
 LABEL_51:
 
@@ -100,41 +100,41 @@ LABEL_50:
         goto LABEL_51;
       }
 
-      v59 = v13;
-      v60 = v12;
+      v59 = gate4;
+      v60 = gate3;
     }
 
-    v14 = [(FUFlightStep *)self terminal];
-    v62 = [v5 terminal];
-    if (v14 != v62)
+    terminal = [(FUFlightStep *)self terminal];
+    terminal2 = [equalCopy terminal];
+    if (terminal != terminal2)
     {
-      v15 = [(FUFlightStep *)self terminal];
-      v58 = [v5 terminal];
-      if (![v15 isEqual:?])
+      terminal3 = [(FUFlightStep *)self terminal];
+      terminal4 = [equalCopy terminal];
+      if (![terminal3 isEqual:?])
       {
         LOBYTE(v9) = 0;
         goto LABEL_46;
       }
 
-      v57 = v15;
+      v57 = terminal3;
     }
 
-    v16 = [(FUFlightStep *)self legStatus];
-    if (v16 == [v5 legStatus])
+    legStatus = [(FUFlightStep *)self legStatus];
+    if (legStatus == [equalCopy legStatus])
     {
-      v17 = [(FUFlightStep *)self delayFromSchedule];
-      [v5 delayFromSchedule];
-      v54 = v56 = v17;
-      v18 = v17 == v54;
-      v15 = v57;
-      v55 = v3;
-      v53 = v14;
+      delayFromSchedule = [(FUFlightStep *)self delayFromSchedule];
+      [equalCopy delayFromSchedule];
+      v54 = v56 = delayFromSchedule;
+      v18 = delayFromSchedule == v54;
+      terminal3 = v57;
+      v55 = airport4;
+      v53 = terminal;
       if (!v18)
       {
-        v19 = [(FUFlightStep *)self delayFromSchedule];
-        v49 = [v5 delayFromSchedule];
-        v50 = v19;
-        if (![v19 isEqual:?])
+        delayFromSchedule2 = [(FUFlightStep *)self delayFromSchedule];
+        delayFromSchedule3 = [equalCopy delayFromSchedule];
+        v50 = delayFromSchedule2;
+        if (![delayFromSchedule2 isEqual:?])
         {
           LOBYTE(v9) = 0;
           v23 = v56;
@@ -142,9 +142,9 @@ LABEL_50:
 LABEL_44:
 
 LABEL_45:
-          v14 = v53;
-          v3 = v55;
-          if (v53 == v62)
+          terminal = v53;
+          airport4 = v55;
+          if (v53 == terminal2)
           {
             goto LABEL_47;
           }
@@ -153,15 +153,15 @@ LABEL_45:
         }
       }
 
-      v20 = [(FUFlightStep *)self actualTime];
-      [v5 actualTime];
-      v52 = v51 = v20;
-      if (v20 != v52)
+      actualTime = [(FUFlightStep *)self actualTime];
+      [equalCopy actualTime];
+      v52 = v51 = actualTime;
+      if (actualTime != v52)
       {
-        v21 = [(FUFlightStep *)self actualTime];
-        v44 = [v5 actualTime];
-        v45 = v21;
-        if (![v21 isEqual:v44])
+        actualTime2 = [(FUFlightStep *)self actualTime];
+        actualTime3 = [equalCopy actualTime];
+        v45 = actualTime2;
+        if (![actualTime2 isEqual:actualTime3])
         {
           LOBYTE(v9) = 0;
           v22 = v51;
@@ -179,18 +179,18 @@ LABEL_43:
         }
       }
 
-      v25 = [(FUFlightStep *)self scheduledTime];
-      v46 = [v5 scheduledTime];
-      v48 = v25;
-      if (v25 != v46)
+      scheduledTime = [(FUFlightStep *)self scheduledTime];
+      scheduledTime2 = [equalCopy scheduledTime];
+      v48 = scheduledTime;
+      if (scheduledTime != scheduledTime2)
       {
-        v26 = [(FUFlightStep *)self scheduledTime];
-        v41 = [v5 scheduledTime];
-        v42 = v26;
-        if (![v26 isEqual:?])
+        scheduledTime3 = [(FUFlightStep *)self scheduledTime];
+        scheduledTime4 = [equalCopy scheduledTime];
+        v42 = scheduledTime3;
+        if (![scheduledTime3 isEqual:?])
         {
           LOBYTE(v9) = 0;
-          v27 = v46;
+          v27 = scheduledTime2;
 LABEL_40:
 
 LABEL_41:
@@ -204,51 +204,51 @@ LABEL_41:
         }
       }
 
-      v28 = [(FUFlightStep *)self runwayTime];
-      v43 = [v5 runwayTime];
-      v47 = v28;
-      if (v28 != v43)
+      runwayTime = [(FUFlightStep *)self runwayTime];
+      runwayTime2 = [equalCopy runwayTime];
+      v47 = runwayTime;
+      if (runwayTime != runwayTime2)
       {
-        v29 = [(FUFlightStep *)self runwayTime];
-        v37 = [v5 runwayTime];
-        v38 = v29;
-        if (![v29 isEqual:?])
+        runwayTime3 = [(FUFlightStep *)self runwayTime];
+        runwayTime4 = [equalCopy runwayTime];
+        v38 = runwayTime3;
+        if (![runwayTime3 isEqual:?])
         {
           LOBYTE(v9) = 0;
-          v30 = v43;
+          v30 = runwayTime2;
           goto LABEL_38;
         }
       }
 
-      v31 = [(FUFlightStep *)self estimatedTime];
-      v39 = [v5 estimatedTime];
-      v40 = v31;
-      if (v31 != v39)
+      estimatedTime = [(FUFlightStep *)self estimatedTime];
+      estimatedTime2 = [equalCopy estimatedTime];
+      v40 = estimatedTime;
+      if (estimatedTime != estimatedTime2)
       {
-        v32 = [(FUFlightStep *)self estimatedTime];
-        v36 = [v5 estimatedTime];
-        if (![v32 isEqual:?])
+        estimatedTime3 = [(FUFlightStep *)self estimatedTime];
+        estimatedTime4 = [equalCopy estimatedTime];
+        if (![estimatedTime3 isEqual:?])
         {
           LOBYTE(v9) = 0;
           goto LABEL_37;
         }
 
-        v35 = v32;
+        v35 = estimatedTime3;
       }
 
-      v33 = [(FUFlightStep *)self departure];
-      v9 = v33 ^ [v5 departure] ^ 1;
-      if (v40 == v39)
+      departure = [(FUFlightStep *)self departure];
+      v9 = departure ^ [equalCopy departure] ^ 1;
+      if (v40 == estimatedTime2)
       {
 
-        v30 = v43;
-        v15 = v57;
-        if (v47 == v43)
+        v30 = runwayTime2;
+        terminal3 = v57;
+        if (v47 == runwayTime2)
         {
 LABEL_39:
 
-          v27 = v46;
-          if (v48 == v46)
+          v27 = scheduledTime2;
+          if (v48 == scheduledTime2)
           {
             goto LABEL_41;
           }
@@ -261,12 +261,12 @@ LABEL_38:
         goto LABEL_39;
       }
 
-      v15 = v57;
-      v32 = v35;
+      terminal3 = v57;
+      estimatedTime3 = v35;
 LABEL_37:
 
-      v30 = v43;
-      if (v47 == v43)
+      v30 = runwayTime2;
+      if (v47 == runwayTime2)
       {
         goto LABEL_39;
       }
@@ -275,14 +275,14 @@ LABEL_37:
     }
 
     LOBYTE(v9) = 0;
-    v15 = v57;
-    if (v14 == v62)
+    terminal3 = v57;
+    if (terminal == terminal2)
     {
 LABEL_47:
 
-      v13 = v59;
-      v12 = v60;
-      if (v10 == v11)
+      gate4 = v59;
+      gate3 = v60;
+      if (gate == gate2)
       {
         goto LABEL_49;
       }
@@ -301,41 +301,41 @@ LABEL_52:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setDeparture:{-[FUFlightStep departure](self, "departure")}];
-  v5 = [(FUFlightStep *)self airport];
-  v6 = [v5 copy];
+  airport = [(FUFlightStep *)self airport];
+  v6 = [airport copy];
   [v4 setAirport:v6];
 
-  v7 = [(FUFlightStep *)self gate];
-  v8 = [v7 copy];
+  gate = [(FUFlightStep *)self gate];
+  v8 = [gate copy];
   [v4 setGate:v8];
 
-  v9 = [(FUFlightStep *)self terminal];
-  v10 = [v9 copy];
+  terminal = [(FUFlightStep *)self terminal];
+  v10 = [terminal copy];
   [v4 setTerminal:v10];
 
   [v4 setLegStatus:{-[FUFlightStep legStatus](self, "legStatus")}];
-  v11 = [(FUFlightStep *)self actualTime];
-  v12 = [v11 copy];
+  actualTime = [(FUFlightStep *)self actualTime];
+  v12 = [actualTime copy];
   [v4 setActualTime:v12];
 
-  v13 = [(FUFlightStep *)self scheduledTime];
-  v14 = [v13 copy];
+  scheduledTime = [(FUFlightStep *)self scheduledTime];
+  v14 = [scheduledTime copy];
   [v4 setScheduledTime:v14];
 
-  v15 = [(FUFlightStep *)self plannedTime];
-  v16 = [v15 copy];
+  plannedTime = [(FUFlightStep *)self plannedTime];
+  v16 = [plannedTime copy];
   [v4 setPlannedTime:v16];
 
-  v17 = [(FUFlightStep *)self estimatedTime];
-  v18 = [v17 copy];
+  estimatedTime = [(FUFlightStep *)self estimatedTime];
+  v18 = [estimatedTime copy];
   [v4 setEstimatedTime:v18];
 
-  v19 = [(FUFlightStep *)self runwayTime];
-  v20 = [v19 copy];
+  runwayTime = [(FUFlightStep *)self runwayTime];
+  v20 = [runwayTime copy];
   [v4 setRunwayTime:v20];
 
   return v4;
@@ -383,8 +383,8 @@ LABEL_14:
     goto LABEL_3;
   }
 
-  v8 = [(FUStepTime *)estimatedTime date];
-  [v8 timeIntervalSinceNow];
+  date = [(FUStepTime *)estimatedTime date];
+  [date timeIntervalSinceNow];
   v10 = v9;
 
   if (v10 >= 0.0)
@@ -404,19 +404,19 @@ LABEL_3:
   }
 
   v11 = [FUStepTime alloc];
-  v12 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(FUStepTime *)v11 initWithType:3 date:v12];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v4 = [(FUStepTime *)v11 initWithType:3 date:date2];
 
 LABEL_4:
 
   return v4;
 }
 
-- (void)setDelayFromSchedule:(id)a3
+- (void)setDelayFromSchedule:(id)schedule
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4 && ([v4 doubleValue], v4 = v8, fabs(v5) < 900.0))
+  scheduleCopy = schedule;
+  v8 = scheduleCopy;
+  if (scheduleCopy && ([scheduleCopy doubleValue], scheduleCopy = v8, fabs(v5) < 900.0))
   {
     delayFromSchedule = self->_delayFromSchedule;
     self->_delayFromSchedule = &unk_285EAE5E8;
@@ -424,7 +424,7 @@ LABEL_4:
 
   else
   {
-    v7 = v4;
+    v7 = scheduleCopy;
     delayFromSchedule = self->_delayFromSchedule;
     self->_delayFromSchedule = v7;
   }
@@ -435,10 +435,10 @@ LABEL_4:
   if (self->_scheduledTime && !self->_delayFromSchedule && (self->_actualTime || self->_estimatedTime))
   {
     v3 = MEMORY[0x277CCABB0];
-    v4 = [(FUFlightStep *)self time];
-    v5 = [v4 date];
-    v6 = [(FUStepTime *)self->_scheduledTime date];
-    [v5 timeIntervalSinceDate:v6];
+    time = [(FUFlightStep *)self time];
+    date = [time date];
+    date2 = [(FUStepTime *)self->_scheduledTime date];
+    [date timeIntervalSinceDate:date2];
     v7 = [v3 numberWithDouble:?];
     [(FUFlightStep *)self setDelayFromSchedule:v7];
   }
@@ -450,18 +450,18 @@ LABEL_4:
 
 - (unint64_t)status
 {
-  v2 = [(FUFlightStep *)self delayFromSchedule];
-  v3 = v2;
-  if (v2)
+  delayFromSchedule = [(FUFlightStep *)self delayFromSchedule];
+  v3 = delayFromSchedule;
+  if (delayFromSchedule)
   {
-    v4 = [v2 integerValue];
+    integerValue = [delayFromSchedule integerValue];
     v5 = 3;
-    if (v4)
+    if (integerValue)
     {
       v5 = 4;
     }
 
-    if (v4 >= 0)
+    if (integerValue >= 0)
     {
       v6 = v5;
     }
@@ -483,138 +483,138 @@ LABEL_4:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(FUFlightStep *)self gate];
-  v5 = [(FUFlightStep *)self terminal];
-  v6 = [v3 stringWithFormat:@"FlightEvent: gate:%@, airportTerminal:%@", v4, v5];
+  gate = [(FUFlightStep *)self gate];
+  terminal = [(FUFlightStep *)self terminal];
+  v6 = [v3 stringWithFormat:@"FlightEvent: gate:%@, airportTerminal:%@", gate, terminal];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v22 = a3;
-  v4 = [(FUFlightStep *)self airport];
+  coderCopy = coder;
+  airport = [(FUFlightStep *)self airport];
 
-  if (v4)
+  if (airport)
   {
-    v5 = [(FUFlightStep *)self airport];
-    [v22 encodeObject:v5 forKey:@"airport"];
+    airport2 = [(FUFlightStep *)self airport];
+    [coderCopy encodeObject:airport2 forKey:@"airport"];
   }
 
-  v6 = [(FUFlightStep *)self gate];
+  gate = [(FUFlightStep *)self gate];
 
-  if (v6)
+  if (gate)
   {
-    v7 = [(FUFlightStep *)self gate];
-    [v22 encodeObject:v7 forKey:@"gate"];
+    gate2 = [(FUFlightStep *)self gate];
+    [coderCopy encodeObject:gate2 forKey:@"gate"];
   }
 
-  v8 = [(FUFlightStep *)self terminal];
+  terminal = [(FUFlightStep *)self terminal];
 
-  if (v8)
+  if (terminal)
   {
-    v9 = [(FUFlightStep *)self terminal];
-    [v22 encodeObject:v9 forKey:@"terminal"];
+    terminal2 = [(FUFlightStep *)self terminal];
+    [coderCopy encodeObject:terminal2 forKey:@"terminal"];
   }
 
-  [v22 encodeInteger:-[FUFlightStep legStatus](self forKey:{"legStatus"), @"legStatus"}];
-  v10 = [(FUFlightStep *)self delayFromSchedule];
+  [coderCopy encodeInteger:-[FUFlightStep legStatus](self forKey:{"legStatus"), @"legStatus"}];
+  delayFromSchedule = [(FUFlightStep *)self delayFromSchedule];
 
-  if (v10)
+  if (delayFromSchedule)
   {
-    v11 = [(FUFlightStep *)self delayFromSchedule];
-    [v22 encodeObject:v11 forKey:@"delayFromSchedule"];
+    delayFromSchedule2 = [(FUFlightStep *)self delayFromSchedule];
+    [coderCopy encodeObject:delayFromSchedule2 forKey:@"delayFromSchedule"];
   }
 
-  v12 = [(FUFlightStep *)self actualTime];
+  actualTime = [(FUFlightStep *)self actualTime];
 
-  if (v12)
+  if (actualTime)
   {
-    v13 = [(FUFlightStep *)self actualTime];
-    [v22 encodeObject:v13 forKey:@"actualTime"];
+    actualTime2 = [(FUFlightStep *)self actualTime];
+    [coderCopy encodeObject:actualTime2 forKey:@"actualTime"];
   }
 
-  v14 = [(FUFlightStep *)self scheduledTime];
+  scheduledTime = [(FUFlightStep *)self scheduledTime];
 
-  if (v14)
+  if (scheduledTime)
   {
-    v15 = [(FUFlightStep *)self scheduledTime];
-    [v22 encodeObject:v15 forKey:@"scheduledTime"];
+    scheduledTime2 = [(FUFlightStep *)self scheduledTime];
+    [coderCopy encodeObject:scheduledTime2 forKey:@"scheduledTime"];
   }
 
-  v16 = [(FUFlightStep *)self plannedTime];
+  plannedTime = [(FUFlightStep *)self plannedTime];
 
-  if (v16)
+  if (plannedTime)
   {
-    v17 = [(FUFlightStep *)self plannedTime];
-    [v22 encodeObject:v17 forKey:@"plannedTime"];
+    plannedTime2 = [(FUFlightStep *)self plannedTime];
+    [coderCopy encodeObject:plannedTime2 forKey:@"plannedTime"];
   }
 
-  v18 = [(FUFlightStep *)self estimatedTime];
+  estimatedTime = [(FUFlightStep *)self estimatedTime];
 
-  if (v18)
+  if (estimatedTime)
   {
-    v19 = [(FUFlightStep *)self estimatedTime];
-    [v22 encodeObject:v19 forKey:@"estimatedTime"];
+    estimatedTime2 = [(FUFlightStep *)self estimatedTime];
+    [coderCopy encodeObject:estimatedTime2 forKey:@"estimatedTime"];
   }
 
-  v20 = [(FUFlightStep *)self runwayTime];
+  runwayTime = [(FUFlightStep *)self runwayTime];
 
-  if (v20)
+  if (runwayTime)
   {
-    v21 = [(FUFlightStep *)self runwayTime];
-    [v22 encodeObject:v21 forKey:@"runwayTime"];
+    runwayTime2 = [(FUFlightStep *)self runwayTime];
+    [coderCopy encodeObject:runwayTime2 forKey:@"runwayTime"];
   }
 
-  [v22 encodeBool:-[FUFlightStep departure](self forKey:{"departure"), @"departure"}];
+  [coderCopy encodeBool:-[FUFlightStep departure](self forKey:{"departure"), @"departure"}];
 }
 
-- (FUFlightStep)initWithCoder:(id)a3
+- (FUFlightStep)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = FUFlightStep;
   v5 = [(FUFlightStep *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"airport"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"airport"];
     airport = v5->_airport;
     v5->_airport = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gate"];
     gate = v5->_gate;
     v5->_gate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"terminal"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"terminal"];
     terminal = v5->_terminal;
     v5->_terminal = v10;
 
-    v5->_legStatus = [v4 decodeIntegerForKey:@"legStatus"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"delayFromSchedule"];
+    v5->_legStatus = [coderCopy decodeIntegerForKey:@"legStatus"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"delayFromSchedule"];
     delayFromSchedule = v5->_delayFromSchedule;
     v5->_delayFromSchedule = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actualTime"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actualTime"];
     actualTime = v5->_actualTime;
     v5->_actualTime = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduledTime"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduledTime"];
     scheduledTime = v5->_scheduledTime;
     v5->_scheduledTime = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"plannedTime"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"plannedTime"];
     plannedTime = v5->_plannedTime;
     v5->_plannedTime = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"estimatedTime"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"estimatedTime"];
     estimatedTime = v5->_estimatedTime;
     v5->_estimatedTime = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"runwayTime"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"runwayTime"];
     runwayTime = v5->_runwayTime;
     v5->_runwayTime = v22;
 
-    v5->_departure = [v4 decodeBoolForKey:@"departure"];
+    v5->_departure = [coderCopy decodeBoolForKey:@"departure"];
     v24 = v5;
   }
 

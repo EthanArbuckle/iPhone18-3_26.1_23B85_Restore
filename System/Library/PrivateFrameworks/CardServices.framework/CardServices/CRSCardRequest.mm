@@ -1,25 +1,25 @@
 @interface CRSCardRequest
 + (void)initialize;
-+ (void)registerService:(id)a3;
-- (CRSCardRequest)initWithContent:(id)a3 format:(unint64_t)a4;
-- (void)_loadAndRegisterBundleServices:(id)a3;
-- (void)_tryRemainingCardServices:(id)a3 reply:(id)a4;
-- (void)startWithReply:(id)a3;
++ (void)registerService:(id)service;
+- (CRSCardRequest)initWithContent:(id)content format:(unint64_t)format;
+- (void)_loadAndRegisterBundleServices:(id)services;
+- (void)_tryRemainingCardServices:(id)services reply:(id)reply;
+- (void)startWithReply:(id)reply;
 @end
 
 @implementation CRSCardRequest
 
-- (CRSCardRequest)initWithContent:(id)a3 format:(unint64_t)a4
+- (CRSCardRequest)initWithContent:(id)content format:(unint64_t)format
 {
-  v7 = a3;
+  contentCopy = content;
   v14.receiver = self;
   v14.super_class = CRSCardRequest;
   v8 = [(CRSCardRequest *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_content, a3);
-    v9->_format = a4;
+    objc_storeStrong(&v8->_content, content);
+    v9->_format = format;
     v10 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v11 = dispatch_queue_create("com.apple.CardServices.CRSCardRequest.request-queue", v10);
     queue = v9->_queue;
@@ -31,10 +31,10 @@
   return v9;
 }
 
-- (void)startWithReply:(id)a3
+- (void)startWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     v5 = self->_queue;
     objc_initWeak(&location, self);
@@ -45,8 +45,8 @@
     v6 = v5;
     v14 = v6;
     objc_copyWeak(&v17, &location);
-    v7 = v4;
-    v15 = self;
+    v7 = replyCopy;
+    selfCopy = self;
     v16 = v7;
     v8 = MEMORY[0x245D2D910](v13);
     v9 = v8;
@@ -225,25 +225,25 @@ uint64_t __33__CRSCardRequest_startWithReply___block_invoke_56(uint64_t a1, uint
 
 + (void)initialize
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___CRSCardRequest;
   objc_msgSendSuper2(&v4, sel_initialize);
   CRLogInitIfNeeded();
   v3 = objc_alloc_init(_CRSPassthroughService);
-  [a1 registerService:v3];
+  [self registerService:v3];
 }
 
-- (void)_loadAndRegisterBundleServices:(id)a3
+- (void)_loadAndRegisterBundleServices:(id)services
 {
-  v4 = a3;
+  servicesCopy = services;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__CRSCardRequest__loadAndRegisterBundleServices___block_invoke;
   v7[3] = &unk_278DA5010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = servicesCopy;
+  v6 = servicesCopy;
   dispatch_async(queue, v7);
 }
 
@@ -328,11 +328,11 @@ LABEL_13:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tryRemainingCardServices:(id)a3 reply:(id)a4
+- (void)_tryRemainingCardServices:(id)services reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  servicesCopy = services;
+  replyCopy = reply;
+  if (replyCopy)
   {
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -341,9 +341,9 @@ LABEL_13:
     block[2] = __50__CRSCardRequest__tryRemainingCardServices_reply___block_invoke;
     block[3] = &unk_278DA50B0;
     objc_copyWeak(&v13, &location);
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = servicesCopy;
+    selfCopy = self;
+    v12 = replyCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v13);
@@ -544,11 +544,11 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)registerService:(id)a3
++ (void)registerService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[CRSIdentifiedServiceRegistry sharedInstance];
-  [v4 registerIdentifiedService:v3];
+  [v4 registerIdentifiedService:serviceCopy];
 }
 
 void __50__CRSCardRequest__tryRemainingCardServices_reply___block_invoke_2_cold_1(uint64_t a1, uint64_t *a2, os_log_t log)

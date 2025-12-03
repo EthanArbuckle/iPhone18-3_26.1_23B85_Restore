@@ -1,68 +1,68 @@
 @interface TSCH3DMaterialShaderVariables
-+ (TSCH3DMaterialShaderVariables)variablesWithTexture:(id)a3 intensity:(id)a4 factor:(id)a5 textureColor:(id)a6 color:(id)a7 modulation:(id)a8 texcoords:(id)a9 textureMatrix:(id)a10;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DMaterialShaderVariables)initWithTexture:(id)a3 intensity:(id)a4 factor:(id)a5 textureColor:(id)a6 color:(id)a7 modulation:(id)a8 texcoords:(id)a9 textureMatrix:(id)a10;
-- (id)copyWithZone:(_NSZone *)a3;
++ (TSCH3DMaterialShaderVariables)variablesWithTexture:(id)texture intensity:(id)intensity factor:(id)factor textureColor:(id)color color:(id)a7 modulation:(id)modulation texcoords:(id)texcoords textureMatrix:(id)self0;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DMaterialShaderVariables)initWithTexture:(id)texture intensity:(id)intensity factor:(id)factor textureColor:(id)color color:(id)a7 modulation:(id)modulation texcoords:(id)texcoords textureMatrix:(id)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation TSCH3DMaterialShaderVariables
 
-+ (TSCH3DMaterialShaderVariables)variablesWithTexture:(id)a3 intensity:(id)a4 factor:(id)a5 textureColor:(id)a6 color:(id)a7 modulation:(id)a8 texcoords:(id)a9 textureMatrix:(id)a10
++ (TSCH3DMaterialShaderVariables)variablesWithTexture:(id)texture intensity:(id)intensity factor:(id)factor textureColor:(id)color color:(id)a7 modulation:(id)modulation texcoords:(id)texcoords textureMatrix:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  textureCopy = texture;
+  intensityCopy = intensity;
+  factorCopy = factor;
+  colorCopy = color;
   v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = [a1 alloc];
-  v29 = objc_msgSend_initWithTexture_intensity_factor_textureColor_color_modulation_texcoords_textureMatrix_(v24, v25, v26, v27, v28, v16, v17, v18, v19, v20, v21, v22, v23);
+  modulationCopy = modulation;
+  texcoordsCopy = texcoords;
+  matrixCopy = matrix;
+  v24 = [self alloc];
+  v29 = objc_msgSend_initWithTexture_intensity_factor_textureColor_color_modulation_texcoords_textureMatrix_(v24, v25, v26, v27, v28, textureCopy, intensityCopy, factorCopy, colorCopy, v20, modulationCopy, texcoordsCopy, matrixCopy);
 
   return v29;
 }
 
-- (TSCH3DMaterialShaderVariables)initWithTexture:(id)a3 intensity:(id)a4 factor:(id)a5 textureColor:(id)a6 color:(id)a7 modulation:(id)a8 texcoords:(id)a9 textureMatrix:(id)a10
+- (TSCH3DMaterialShaderVariables)initWithTexture:(id)texture intensity:(id)intensity factor:(id)factor textureColor:(id)color color:(id)a7 modulation:(id)modulation texcoords:(id)texcoords textureMatrix:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
+  textureCopy = texture;
+  intensityCopy = intensity;
+  factorCopy = factor;
+  colorCopy = color;
   v23 = a7;
-  v22 = a8;
-  v21 = a9;
-  v17 = a10;
+  modulationCopy = modulation;
+  texcoordsCopy = texcoords;
+  matrixCopy = matrix;
   v28.receiver = self;
   v28.super_class = TSCH3DMaterialShaderVariables;
   v18 = [(TSCH3DMaterialShaderVariables *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_texture, a3);
-    objc_storeStrong(&v19->_intensity, a4);
-    objc_storeStrong(&v19->_factor, a5);
-    objc_storeStrong(&v19->_textureColor, a6);
+    objc_storeStrong(&v18->_texture, texture);
+    objc_storeStrong(&v19->_intensity, intensity);
+    objc_storeStrong(&v19->_factor, factor);
+    objc_storeStrong(&v19->_textureColor, color);
     objc_storeStrong(&v19->_color, a7);
-    objc_storeStrong(&v19->_modulation, a8);
-    objc_storeStrong(&v19->_texcoords, a9);
-    objc_storeStrong(&v19->_textureMatrix, a10);
+    objc_storeStrong(&v19->_modulation, modulation);
+    objc_storeStrong(&v19->_texcoords, texcoords);
+    objc_storeStrong(&v19->_textureMatrix, matrix);
   }
 
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   return objc_msgSend_initWithTexture_intensity_factor_textureColor_color_modulation_texcoords_textureMatrix_(v10, v11, v12, v13, v14, self->_texture, self->_intensity, self->_factor, self->_textureColor, self->_color, self->_modulation, self->_texcoords, self->_textureMatrix);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUSpecificCast();
   v10 = v5;

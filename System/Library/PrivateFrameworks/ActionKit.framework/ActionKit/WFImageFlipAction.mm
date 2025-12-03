@@ -1,12 +1,12 @@
 @interface WFImageFlipAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFImageFlipAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFImageFlipAction *)self parameterValueForKey:@"WFImageFlipDirection" ofClass:objc_opt_class()];
   v6 = [v5 isEqualToString:@"Horizontal"] ^ 1;
   v7 = objc_opt_class();
@@ -16,7 +16,7 @@
   v8[3] = &unk_278C1B8B0;
   v8[4] = self;
   v8[5] = v6;
-  [v4 generateCollectionByCoercingToItemClass:v7 completionHandler:v8];
+  [inputCopy generateCollectionByCoercingToItemClass:v7 completionHandler:v8];
 }
 
 void __48__WFImageFlipAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)

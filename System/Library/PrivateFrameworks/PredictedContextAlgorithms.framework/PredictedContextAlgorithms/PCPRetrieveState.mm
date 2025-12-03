@@ -1,11 +1,11 @@
 @interface PCPRetrieveState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPRetrieveState
@@ -16,26 +16,26 @@
   v8.receiver = self;
   v8.super_class = PCPRetrieveState;
   v4 = [(PCPRetrieveState *)&v8 description];
-  v5 = [(PCPRetrieveState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPRetrieveState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   outState = self->_outState;
   if (outState)
   {
-    v5 = [(PCPAlgorithmState *)outState dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"outState"];
+    dictionaryRepresentation = [(PCPAlgorithmState *)outState dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"outState"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_outState)
   {
@@ -43,32 +43,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   outState = self->_outState;
   if (outState)
   {
-    [a3 setOutState:outState];
+    [to setOutState:outState];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PCPAlgorithmState *)self->_outState copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PCPAlgorithmState *)self->_outState copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     outState = self->_outState;
-    if (outState | v4[1])
+    if (outState | equalCopy[1])
     {
       v6 = [(PCPAlgorithmState *)outState isEqual:?];
     }
@@ -87,11 +87,11 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   outState = self->_outState;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (outState)
   {
     if (v6)

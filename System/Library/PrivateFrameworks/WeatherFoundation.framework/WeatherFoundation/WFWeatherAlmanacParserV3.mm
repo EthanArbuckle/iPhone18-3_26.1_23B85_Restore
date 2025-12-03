@@ -1,24 +1,24 @@
 @interface WFWeatherAlmanacParserV3
-- (id)parseAlmanacForecastDataFromJson:(id)a3 location:(id)a4 date:(id)a5;
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9;
+- (id)parseAlmanacForecastDataFromJson:(id)json location:(id)location date:(id)date;
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules;
 @end
 
 @implementation WFWeatherAlmanacParserV3
 
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v14 = a5;
-  v15 = a7;
+  locationCopy = location;
+  dateCopy = date;
   v26 = 0;
-  v16 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v26];
+  v16 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v26];
   v17 = v26;
   v18 = objc_alloc_init(WFParsedForecastData);
-  if (a4 == 128)
+  if (types == 128)
   {
     if (v16)
     {
-      v19 = [(WFWeatherAlmanacParserV3 *)self parseAlmanacForecastDataFromJson:v16 location:v14 date:v15];
+      v19 = [(WFWeatherAlmanacParserV3 *)self parseAlmanacForecastDataFromJson:v16 location:locationCopy date:dateCopy];
       [(WFParsedForecastData *)v18 setCurrentConditions:v19];
 
       v20 = v18;
@@ -38,7 +38,7 @@
         v27 = *MEMORY[0x277CCA450];
         v28[0] = @"Failed to parse JSON forecast data";
         v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-        *a8 = [v23 wf_errorWithCode:1 encapsulatedError:v17 userInfo:v24];
+        *error = [v23 wf_errorWithCode:1 encapsulatedError:v17 userInfo:v24];
       }
 
       v20 = 0;
@@ -54,44 +54,44 @@
     }
 
     [MEMORY[0x277CCA9B8] wf_errorWithCode:6 userInfo:MEMORY[0x277CBEC10]];
-    *a8 = v20 = 0;
+    *error = v20 = 0;
   }
 
   return v20;
 }
 
-- (id)parseAlmanacForecastDataFromJson:(id)a3 location:(id)a4 date:(id)a5
+- (id)parseAlmanacForecastDataFromJson:(id)json location:(id)location date:(id)date
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  jsonCopy = json;
+  dateCopy = date;
+  locationCopy = location;
   v10 = objc_alloc_init(WFWeatherConditions);
-  [(WFWeatherConditions *)v10 setLocation:v9];
+  [(WFWeatherConditions *)v10 setLocation:locationCopy];
 
-  [(WFWeatherConditions *)v10 setObject:v8 forKeyedSubscript:@"WFWeatherForecastDateComponent"];
-  v11 = [v7 arrayForKey:@"precipitationAverage"];
+  [(WFWeatherConditions *)v10 setObject:dateCopy forKeyedSubscript:@"WFWeatherForecastDateComponent"];
+  v11 = [jsonCopy arrayForKey:@"precipitationAverage"];
   if ([v11 count])
   {
-    v12 = [v11 firstObject];
-    [(WFWeatherConditions *)v10 setObject:v12 forKeyedSubscript:@"WFWeatherPrecipitationAmountComponent"];
+    firstObject = [v11 firstObject];
+    [(WFWeatherConditions *)v10 setObject:firstObject forKeyedSubscript:@"WFWeatherPrecipitationAmountComponent"];
   }
 
-  v13 = [v7 arrayForKey:@"temperatureAverageMax"];
+  v13 = [jsonCopy arrayForKey:@"temperatureAverageMax"];
   if ([v13 count])
   {
     v14 = [WFTemperature alloc];
-    v15 = [v13 firstObject];
-    [v15 doubleValue];
+    firstObject2 = [v13 firstObject];
+    [firstObject2 doubleValue];
     v16 = [(WFTemperature *)v14 initWithTemperatureUnit:2 value:?];
     [(WFWeatherConditions *)v10 setObject:v16 forKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
   }
 
-  v17 = [v7 arrayForKey:@"temperatureAverageMin"];
+  v17 = [jsonCopy arrayForKey:@"temperatureAverageMin"];
   if ([v17 count])
   {
     v18 = [WFTemperature alloc];
-    v19 = [v17 firstObject];
-    [v19 doubleValue];
+    firstObject3 = [v17 firstObject];
+    [firstObject3 doubleValue];
     v20 = [(WFTemperature *)v18 initWithTemperatureUnit:2 value:?];
     [(WFWeatherConditions *)v10 setObject:v20 forKeyedSubscript:@"WFWeatherLowTemperatureComponent"];
   }

@@ -7,40 +7,40 @@
 - (CGSize)rawOriginalSize;
 - (NSString)fileDisplayName;
 - (NSString)fileType;
-- (TSDMediaInfo)initWithContext:(id)a3 geometry:(id)a4;
+- (TSDMediaInfo)initWithContext:(id)context geometry:(id)geometry;
 - (TSPData)fileDataForDragging;
 - (id)copyToInstantiateTemplatePlaceholder;
 - (id)defaultDescriptiveName;
-- (void)scaleDownSizeToFitWithinSize:(CGSize)a3;
-- (void)setAttribution:(id)a3;
-- (void)setFlagsWithPlaceholder:(BOOL)a3 wasMediaReplaced:(BOOL)a4;
-- (void)setGeometry:(id)a3;
-- (void)setOriginalSize:(CGSize)a3;
-- (void)takePropertiesFromReplacedMediaInfo:(id)a3;
-- (void)updateGeometryToReplaceMediaInfo:(id)a3;
+- (void)scaleDownSizeToFitWithinSize:(CGSize)size;
+- (void)setAttribution:(id)attribution;
+- (void)setFlagsWithPlaceholder:(BOOL)placeholder wasMediaReplaced:(BOOL)replaced;
+- (void)setGeometry:(id)geometry;
+- (void)setOriginalSize:(CGSize)size;
+- (void)takePropertiesFromReplacedMediaInfo:(id)info;
+- (void)updateGeometryToReplaceMediaInfo:(id)info;
 @end
 
 @implementation TSDMediaInfo
 
-- (void)setAttribution:(id)a3
+- (void)setAttribution:(id)attribution
 {
-  v4 = a3;
-  if (self->_attribution != v4)
+  attributionCopy = attribution;
+  if (self->_attribution != attributionCopy)
   {
-    v10 = v4;
+    v10 = attributionCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->_attribution, v9);
-    v4 = v9;
+    attributionCopy = v9;
   }
 }
 
-- (TSDMediaInfo)initWithContext:(id)a3 geometry:(id)a4
+- (TSDMediaInfo)initWithContext:(id)context geometry:(id)geometry
 {
   v10.receiver = self;
   v10.super_class = TSDMediaInfo;
-  v4 = [(TSDDrawableInfo *)&v10 initWithContext:a3 geometry:a4];
+  v4 = [(TSDDrawableInfo *)&v10 initWithContext:context geometry:geometry];
   v5 = v4;
   if (v4)
   {
@@ -59,17 +59,17 @@
 {
   v5.receiver = self;
   v5.super_class = TSDMediaInfo;
-  v2 = [(TSDDrawableInfo *)&v5 copyToInstantiateTemplatePlaceholder];
-  objc_msgSend_setWasMediaReplaced_(v2, v3, 0);
-  return v2;
+  copyToInstantiateTemplatePlaceholder = [(TSDDrawableInfo *)&v5 copyToInstantiateTemplatePlaceholder];
+  objc_msgSend_setWasMediaReplaced_(copyToInstantiateTemplatePlaceholder, v3, 0);
+  return copyToInstantiateTemplatePlaceholder;
 }
 
-- (void)setOriginalSize:(CGSize)a3
+- (void)setOriginalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   p_originalSize = &self->_originalSize;
-  if (self->_originalSize.width != a3.width || self->_originalSize.height != a3.height)
+  if (self->_originalSize.width != size.width || self->_originalSize.height != size.height)
   {
     objc_msgSend_willModify(self, a2, v3);
     p_originalSize->width = width;
@@ -91,12 +91,12 @@
   return result;
 }
 
-- (void)setFlagsWithPlaceholder:(BOOL)a3 wasMediaReplaced:(BOOL)a4
+- (void)setFlagsWithPlaceholder:(BOOL)placeholder wasMediaReplaced:(BOOL)replaced
 {
-  v4 = a4;
+  replacedCopy = replaced;
   objc_msgSend_willChangeProperty_(self, a2, 528);
   objc_msgSend_willModify(self, v7, v8);
-  if (v4)
+  if (replacedCopy)
   {
     v9 = 2;
   }
@@ -106,16 +106,16 @@
     v9 = 0;
   }
 
-  *&self->_flags = v9 | a3 | *&self->_flags & 0xFC;
+  *&self->_flags = v9 | placeholder | *&self->_flags & 0xFC;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v13.receiver = self;
   v13.super_class = TSDMediaInfo;
-  v4 = a3;
-  [(TSDDrawableInfo *)&v13 setGeometry:v4];
-  objc_msgSend_size(v4, v5, v6, v13.receiver, v13.super_class);
+  geometryCopy = geometry;
+  [(TSDDrawableInfo *)&v13 setGeometry:geometryCopy];
+  objc_msgSend_size(geometryCopy, v5, v6, v13.receiver, v13.super_class);
   v8 = v7;
   v10 = v9;
 
@@ -170,48 +170,48 @@
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    defaultDescriptiveName = v4;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = TSDMediaInfo;
-    v6 = [(TSDDrawableInfo *)&v9 defaultDescriptiveName];
+    defaultDescriptiveName = [(TSDDrawableInfo *)&v9 defaultDescriptiveName];
   }
 
-  v7 = v6;
+  v7 = defaultDescriptiveName;
 
   return v7;
 }
 
-- (void)takePropertiesFromReplacedMediaInfo:(id)a3
+- (void)takePropertiesFromReplacedMediaInfo:(id)info
 {
-  v4 = a3;
-  objc_msgSend_takePropertiesFromReplacedDrawableInfo_(self, v5, v4);
-  objc_msgSend_updateGeometryToReplaceMediaInfo_(self, v6, v4);
-  objc_msgSend_originalSize(v4, v7, v8);
+  infoCopy = info;
+  objc_msgSend_takePropertiesFromReplacedDrawableInfo_(self, v5, infoCopy);
+  objc_msgSend_updateGeometryToReplaceMediaInfo_(self, v6, infoCopy);
+  objc_msgSend_originalSize(infoCopy, v7, v8);
   objc_msgSend_setOriginalSize_(self, v9, v10);
-  isPlaceholder = objc_msgSend_isPlaceholder(v4, v11, v12);
+  isPlaceholder = objc_msgSend_isPlaceholder(infoCopy, v11, v12);
   objc_msgSend_setIsPlaceholder_(self, v14, isPlaceholder);
   objc_msgSend_setWasMediaReplaced_(self, v15, 1);
-  v19 = objc_msgSend_style(v4, v16, v17);
+  v19 = objc_msgSend_style(infoCopy, v16, v17);
 
   objc_msgSend_setStyle_(self, v18, v19);
 }
 
-- (void)updateGeometryToReplaceMediaInfo:(id)a3
+- (void)updateGeometryToReplaceMediaInfo:(id)info
 {
-  v4 = a3;
-  v7 = objc_msgSend_geometry(v4, v5, v6);
+  infoCopy = info;
+  v7 = objc_msgSend_geometry(infoCopy, v5, v6);
   v38 = objc_msgSend_mutableCopy(v7, v8, v9);
 
-  objc_msgSend_centerForReplacingWithNewMedia(v4, v10, v11);
+  objc_msgSend_centerForReplacingWithNewMedia(infoCopy, v10, v11);
   v13 = v12;
   v15 = v14;
   v18 = objc_msgSend_geometry(self, v16, v17);
   objc_msgSend_size(v18, v19, v20);
-  objc_msgSend_originalSize(v4, v21, v22);
+  objc_msgSend_originalSize(infoCopy, v21, v22);
 
   TSUFitOrFillSizeInSize();
   v24 = v23;
@@ -247,7 +247,7 @@
   return result;
 }
 
-- (void)scaleDownSizeToFitWithinSize:(CGSize)a3
+- (void)scaleDownSizeToFitWithinSize:(CGSize)size
 {
   if (objc_msgSend_tsp_isInDocument(self, a2, v3))
   {

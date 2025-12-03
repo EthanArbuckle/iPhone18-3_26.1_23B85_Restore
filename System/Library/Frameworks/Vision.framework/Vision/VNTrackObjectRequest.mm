@@ -1,39 +1,39 @@
 @interface VNTrackObjectRequest
-+ (id)trackerTypeForRequestRevision:(unint64_t)a3 error:(id *)a4;
-+ (unsigned)frameCVPixelBufferFormatForRequestRevision:(unint64_t)a3;
++ (id)trackerTypeForRequestRevision:(unint64_t)revision error:(id *)error;
++ (unsigned)frameCVPixelBufferFormatForRequestRevision:(unint64_t)revision;
 - (CGSize)trackingFrameSizeInPixels;
 - (VNTrackObjectRequest)initWithDetectedObjectObservation:(VNDetectedObjectObservation *)observation completionHandler:(VNRequestCompletionHandler)completionHandler;
 - (id)_trackingLevelOptionFromTrackingLevelEnum;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
-- (void)setTrackingFrameSizeInPixels:(CGSize)a3;
-- (void)setTrackingLevel:(unint64_t)a3;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
+- (void)setTrackingFrameSizeInPixels:(CGSize)pixels;
+- (void)setTrackingLevel:(unint64_t)level;
 @end
 
 @implementation VNTrackObjectRequest
 
-+ (unsigned)frameCVPixelBufferFormatForRequestRevision:(unint64_t)a3
++ (unsigned)frameCVPixelBufferFormatForRequestRevision:(unint64_t)revision
 {
-  if (a3 == 2)
+  if (revision == 2)
   {
     return 1111970369;
   }
 
   v7 = v3;
   v8 = v4;
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___VNTrackObjectRequest;
   return objc_msgSendSuper2(&v6, sel_frameCVPixelBufferFormatForRequestRevision_);
 }
 
-+ (id)trackerTypeForRequestRevision:(unint64_t)a3 error:(id *)a4
++ (id)trackerTypeForRequestRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 2)
+  if (revision == 2)
   {
     v4 = @"VNObjectTrackerRevision2Type";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNObjectTrackerRevision1Type";
 LABEL_5:
@@ -41,10 +41,10 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequestClass:" ofRequestClass:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else
@@ -70,7 +70,7 @@ LABEL_9:
 {
   if ([(VNRequest *)self revision]== 2)
   {
-    v3 = @"VNTrackingOption_TrackingLevelRPN";
+    _trackingLevelOptionFromTrackingLevelEnum = @"VNTrackingOption_TrackingLevelRPN";
     v4 = @"VNTrackingOption_TrackingLevelRPN";
   }
 
@@ -78,16 +78,16 @@ LABEL_9:
   {
     v6.receiver = self;
     v6.super_class = VNTrackObjectRequest;
-    v3 = [(VNTrackingRequest *)&v6 _trackingLevelOptionFromTrackingLevelEnum];
+    _trackingLevelOptionFromTrackingLevelEnum = [(VNTrackingRequest *)&v6 _trackingLevelOptionFromTrackingLevelEnum];
   }
 
-  return v3;
+  return _trackingLevelOptionFromTrackingLevelEnum;
 }
 
-- (void)setTrackingFrameSizeInPixels:(CGSize)a3
+- (void)setTrackingFrameSizeInPixels:(CGSize)pixels
 {
-  height = a3.height;
-  width = a3.width;
+  height = pixels.height;
+  width = pixels.width;
   if ([(VNRequest *)self revision]!= 1)
   {
     self->_trackingFrameSizeInPixels.width = width;
@@ -95,13 +95,13 @@ LABEL_9:
   }
 }
 
-- (void)setTrackingLevel:(unint64_t)a3
+- (void)setTrackingLevel:(unint64_t)level
 {
   if ([(VNRequest *)self revision]!= 2)
   {
     v5.receiver = self;
     v5.super_class = VNTrackObjectRequest;
-    [(VNTrackingRequest *)&v5 setTrackingLevel:a3];
+    [(VNTrackingRequest *)&v5 setTrackingLevel:level];
   }
 }
 
@@ -120,11 +120,11 @@ LABEL_9:
   return v5;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v12.receiver = self;
   v12.super_class = VNTrackObjectRequest;
-  v5 = [(VNTrackingRequest *)&v12 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v5 = [(VNTrackingRequest *)&v12 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   if ([(VNRequest *)self revision]== 2)
   {
     [(VNTrackObjectRequest *)self trackingFrameSizeInPixels];

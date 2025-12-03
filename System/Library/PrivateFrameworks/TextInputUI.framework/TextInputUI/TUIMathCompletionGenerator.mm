@@ -1,12 +1,12 @@
 @interface TUIMathCompletionGenerator
-- (BOOL)endsWithExpressionTriggerCharacter:(id)a3;
-- (BOOL)shouldGenerateCandidateForContext:(id)a3;
+- (BOOL)endsWithExpressionTriggerCharacter:(id)character;
+- (BOOL)shouldGenerateCandidateForContext:(id)context;
 - (TUIMathCompletionGenerator)init;
-- (id)expressionMatchForLocation:(int64_t)a3 inTextStorage:(id)a4;
-- (id)expressionMatches:(id)a3 range:(_NSRange)a4;
-- (id)normalizeExpressionString:(id)a3;
-- (void)generateCandidatesWithContext:(id)a3 completion:(id)a4;
-- (void)syncToKeyboardState:(id)a3;
+- (id)expressionMatchForLocation:(int64_t)location inTextStorage:(id)storage;
+- (id)expressionMatches:(id)matches range:(_NSRange)range;
+- (id)normalizeExpressionString:(id)string;
+- (void)generateCandidatesWithContext:(id)context completion:(id)completion;
+- (void)syncToKeyboardState:(id)state;
 @end
 
 @implementation TUIMathCompletionGenerator
@@ -18,51 +18,51 @@
   return [(TUIMathCompletionGenerator *)&v3 init];
 }
 
-- (id)expressionMatchForLocation:(int64_t)a3 inTextStorage:(id)a4
+- (id)expressionMatchForLocation:(int64_t)location inTextStorage:(id)storage
 {
-  v6 = a4;
-  [v6 getLineStart:0 end:0 contentsEnd:0 forRange:{0, 0}];
-  v7 = [(TUIMathCompletionGenerator *)self expressionMatches:v6 range:0, a3];
+  storageCopy = storage;
+  [storageCopy getLineStart:0 end:0 contentsEnd:0 forRange:{0, 0}];
+  location = [(TUIMathCompletionGenerator *)self expressionMatches:storageCopy range:0, location];
 
-  v8 = [v7 lastObject];
-  v9 = [v8 range];
+  lastObject = [location lastObject];
+  range = [lastObject range];
   v10 = 0;
-  if (v9 + v11 == a3)
+  if (range + v11 == location)
   {
-    v10 = v8;
+    v10 = lastObject;
   }
 
   return v10;
 }
 
-- (id)expressionMatches:(id)a3 range:(_NSRange)a4
+- (id)expressionMatches:(id)matches range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69922A0];
   v13 = *MEMORY[0x1E6992298];
   v7 = MEMORY[0x1E696B098];
-  v8 = a3;
+  matchesCopy = matches;
   v9 = [v7 valueWithRange:{location, length}];
   v14[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  v11 = [v6 scan:v8 options:v10];
+  v11 = [v6 scan:matchesCopy options:v10];
 
   return v11;
 }
 
-- (id)normalizeExpressionString:(id)a3
+- (id)normalizeExpressionString:(id)string
 {
-  v4 = a3;
-  if (-[TUIMathCompletionGenerator endsWithExpressionTriggerCharacter:](self, "endsWithExpressionTriggerCharacter:", v4) && [v4 length])
+  stringCopy = string;
+  if (-[TUIMathCompletionGenerator endsWithExpressionTriggerCharacter:](self, "endsWithExpressionTriggerCharacter:", stringCopy) && [stringCopy length])
   {
-    v5 = [v4 substringToIndex:{objc_msgSend(v4, "length") - 1}];
+    v5 = [stringCopy substringToIndex:{objc_msgSend(stringCopy, "length") - 1}];
   }
 
   else
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   v6 = v5;
@@ -70,10 +70,10 @@
   return v6;
 }
 
-- (BOOL)endsWithExpressionTriggerCharacter:(id)a3
+- (BOOL)endsWithExpressionTriggerCharacter:(id)character
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  characterCopy = character;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -92,7 +92,7 @@
           objc_enumerationMutation(&unk_1F03D9038);
         }
 
-        if ([v3 hasSuffix:*(*(&v10 + 1) + 8 * i)])
+        if ([characterCopy hasSuffix:*(*(&v10 + 1) + 8 * i)])
         {
           v8 = 1;
           goto LABEL_11;
@@ -115,53 +115,53 @@ LABEL_11:
   return v8;
 }
 
-- (void)syncToKeyboardState:(id)a3
+- (void)syncToKeyboardState:(id)state
 {
-  v12 = a3;
-  v4 = [v12 textInputTraits];
+  stateCopy = state;
+  textInputTraits = [stateCopy textInputTraits];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = v12;
+  v6 = stateCopy;
   if (v5)
   {
-    v7 = [v12 textInputTraits];
-    v8 = [v7 mathExpressionCompletionType];
+    textInputTraits2 = [stateCopy textInputTraits];
+    mathExpressionCompletionType = [textInputTraits2 mathExpressionCompletionType];
 
-    if (v8 == 1)
+    if (mathExpressionCompletionType == 1)
     {
-      v9 = 0;
+      bOOLValue = 0;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-      v11 = [v10 valueForPreferenceKey:*MEMORY[0x1E69D9870]];
-      v9 = [v11 BOOLValue];
+      mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+      v11 = [mEMORY[0x1E69D9680] valueForPreferenceKey:*MEMORY[0x1E69D9870]];
+      bOOLValue = [v11 BOOLValue];
     }
 
-    [(TUIMathCompletionGenerator *)self setEnabled:v9];
-    v6 = v12;
+    [(TUIMathCompletionGenerator *)self setEnabled:bOOLValue];
+    v6 = stateCopy;
   }
 }
 
-- (void)generateCandidatesWithContext:(id)a3 completion:(id)a4
+- (void)generateCandidatesWithContext:(id)context completion:(id)completion
 {
   v34[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 keyboardState];
-  v9 = [v8 documentState];
-  v10 = [v9 contextBeforeInput];
+  contextCopy = context;
+  completionCopy = completion;
+  keyboardState = [contextCopy keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
 
-  v11 = [v8 documentState];
-  v12 = [v11 contextAfterInput];
+  documentState2 = [keyboardState documentState];
+  contextAfterInput = [documentState2 contextAfterInput];
 
-  if (![(TUIMathCompletionGenerator *)self shouldGenerateCandidateForContext:v6]|| ![(TUIMathCompletionGenerator *)self endsWithExpressionTriggerCharacter:v10])
+  if (![(TUIMathCompletionGenerator *)self shouldGenerateCandidateForContext:contextCopy]|| ![(TUIMathCompletionGenerator *)self endsWithExpressionTriggerCharacter:contextBeforeInput])
   {
     goto LABEL_8;
   }
 
-  v13 = -[TUIMathCompletionGenerator expressionMatchForLocation:inTextStorage:](self, "expressionMatchForLocation:inTextStorage:", [v10 length], v10);
+  v13 = -[TUIMathCompletionGenerator expressionMatchForLocation:inTextStorage:](self, "expressionMatchForLocation:inTextStorage:", [contextBeforeInput length], contextBeforeInput);
   v14 = v13;
   if (!v13)
   {
@@ -169,12 +169,12 @@ LABEL_7:
 
 LABEL_8:
     v14 = [_TUIKeyboardCandidateContainer forSourceType:1];
-    v7[2](v7, v14);
+    completionCopy[2](completionCopy, v14);
     goto LABEL_9;
   }
 
-  v15 = [v13 range];
-  v17 = [v10 substringWithRange:{v15, v16}];
+  range = [v13 range];
+  v17 = [contextBeforeInput substringWithRange:{range, v16}];
   v18 = [(TUIMathCompletionGenerator *)self normalizeExpressionString:v17];
   if (![v18 length])
   {
@@ -197,12 +197,12 @@ LABEL_8:
   v26[1] = 3221225472;
   v26[2] = __71__TUIMathCompletionGenerator_generateCandidatesWithContext_completion___block_invoke;
   v26[3] = &unk_1E72D7CF8;
-  v32 = v7;
-  v27 = v12;
+  v32 = completionCopy;
+  v27 = contextAfterInput;
   v28 = v17;
-  v29 = self;
-  v30 = v8;
-  v31 = v6;
+  selfCopy = self;
+  v30 = keyboardState;
+  v31 = contextCopy;
   v20 = v17;
   v21 = [v24 evaluate:v18 options:v19 resultHandler:v26];
 
@@ -316,9 +316,9 @@ LABEL_13:
 LABEL_21:
 }
 
-- (BOOL)shouldGenerateCandidateForContext:(id)a3
+- (BOOL)shouldGenerateCandidateForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -333,7 +333,7 @@ LABEL_21:
     dispatch_once(&shouldGenerateCandidateForContext__onceToken, block);
   }
 
-  v5 = (![v4 usesCandidateSelection] || *(v9 + 24) == 1) && -[TUIMathCompletionGenerator enabled](self, "enabled");
+  v5 = (![contextCopy usesCandidateSelection] || *(v9 + 24) == 1) && -[TUIMathCompletionGenerator enabled](self, "enabled");
   _Block_object_dispose(&v8, 8);
 
   return v5;

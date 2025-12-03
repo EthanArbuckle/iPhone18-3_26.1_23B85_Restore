@@ -1,5 +1,5 @@
 @interface WBOfficeArtReaderState
-- (WBOfficeArtReaderState)initWithClient:(Class)a3;
+- (WBOfficeArtReaderState)initWithClient:(Class)client;
 - (WBReader)reader;
 - (id)xmlDrawingState;
 @end
@@ -13,11 +13,11 @@
   return WeakRetained;
 }
 
-- (WBOfficeArtReaderState)initWithClient:(Class)a3
+- (WBOfficeArtReaderState)initWithClient:(Class)client
 {
   v4.receiver = self;
   v4.super_class = WBOfficeArtReaderState;
-  result = [(OABReaderState *)&v4 initWithClient:a3];
+  result = [(OABReaderState *)&v4 initWithClient:client];
   if (result)
   {
     result->mCurrentTextType = -1;
@@ -32,15 +32,15 @@
   if (!mXmlDocumentState)
   {
     WeakRetained = objc_loadWeakRetained(&self->mReader);
-    v5 = [WeakRetained targetDocument];
+    targetDocument = [WeakRetained targetDocument];
 
     v6 = objc_alloc_init(WXReadState);
     v7 = self->mXmlDocumentState;
     self->mXmlDocumentState = v6;
 
-    v8 = [(WXReadState *)self->mXmlDocumentState drawingState];
-    v9 = [v5 colorMap];
-    [OABDrawable setUpXmlDrawingState:v8 withBinaryReaderState:self targetDocument:v5 colorMap:v9];
+    drawingState = [(WXReadState *)self->mXmlDocumentState drawingState];
+    colorMap = [targetDocument colorMap];
+    [OABDrawable setUpXmlDrawingState:drawingState withBinaryReaderState:self targetDocument:targetDocument colorMap:colorMap];
 
     mXmlDocumentState = self->mXmlDocumentState;
   }

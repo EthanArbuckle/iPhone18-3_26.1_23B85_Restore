@@ -1,16 +1,16 @@
 @interface WFJavascriptStripper
-+ (id)getJavascriptLines:(id)a3;
-+ (id)getStringsFromLine:(id)a3 withTokenCharacter:(id)a4;
-+ (id)javascriptStripLine:(id)a3;
-+ (id)stripJavascript:(id)a3;
++ (id)getJavascriptLines:(id)lines;
++ (id)getStringsFromLine:(id)line withTokenCharacter:(id)character;
++ (id)javascriptStripLine:(id)line;
++ (id)stripJavascript:(id)javascript;
 @end
 
 @implementation WFJavascriptStripper
 
-+ (id)getStringsFromLine:(id)a3 withTokenCharacter:(id)a4
++ (id)getStringsFromLine:(id)line withTokenCharacter:(id)character
 {
   v6 = objc_opt_new();
-  v7 = [a3 length];
+  v7 = [line length];
   if (v7)
   {
     v8 = v7;
@@ -18,7 +18,7 @@
     v10 = v7;
     do
     {
-      v11 = [a3 rangeOfString:a4 options:0 range:{v9, v10}];
+      v11 = [line rangeOfString:character options:0 range:{v9, v10}];
       if (v11 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -26,7 +26,7 @@
 
       v13 = v11;
       v14 = v11 + v12;
-      v15 = [a3 rangeOfString:a4 options:0 range:{v11 + v12, v8 - (v11 + v12)}];
+      v15 = [line rangeOfString:character options:0 range:{v11 + v12, v8 - (v11 + v12)}];
       if (v15 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -34,7 +34,7 @@
 
       v17 = v15;
       v18 = v16;
-      [v6 appendFormat:@"%@, ", objc_msgSend(a3, "substringWithRange:", v14, v15 - (v16 + v13))];
+      [v6 appendFormat:@"%@, ", objc_msgSend(line, "substringWithRange:", v14, v15 - (v16 + v13))];
       v9 = v17 + v18;
       v10 = v8 - (v17 + v18);
     }
@@ -45,17 +45,17 @@
   return v6;
 }
 
-+ (id)javascriptStripLine:(id)a3
++ (id)javascriptStripLine:(id)line
 {
-  v5 = [a1 getStringsFromLine:a3 withTokenCharacter:@""];
-  v6 = [a1 getStringsFromLine:a3 withTokenCharacter:@"'"];
+  v5 = [self getStringsFromLine:line withTokenCharacter:@""];
+  v6 = [self getStringsFromLine:line withTokenCharacter:@"'"];
   return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v5, v6];
 }
 
-+ (id)getJavascriptLines:(id)a3
++ (id)getJavascriptLines:(id)lines
 {
   v4 = objc_opt_new();
-  v5 = [a3 componentsSeparatedByString:@";"];
+  v5 = [lines componentsSeparatedByString:@";"];
   v6 = [v5 count];
   if (v6)
   {
@@ -69,16 +69,16 @@
   return v4;
 }
 
-+ (id)stripJavascript:(id)a3
++ (id)stripJavascript:(id)javascript
 {
   v5 = objc_opt_new();
-  v6 = [a1 getJavascriptLines:{+[WFPostprocessor lightweightStripHTMLTags:](WFPostprocessor, "lightweightStripHTMLTags:", a3)}];
+  v6 = [self getJavascriptLines:{+[WFPostprocessor lightweightStripHTMLTags:](WFPostprocessor, "lightweightStripHTMLTags:", javascript)}];
   if ([v6 count])
   {
     v7 = 0;
     do
     {
-      v8 = [a1 javascriptStripLine:{objc_msgSend(v6, "objectAtIndex:", v7)}];
+      v8 = [self javascriptStripLine:{objc_msgSend(v6, "objectAtIndex:", v7)}];
       if ([v8 length])
       {
         [v5 appendString:v8];

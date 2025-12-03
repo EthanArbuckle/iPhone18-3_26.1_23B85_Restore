@@ -1,18 +1,18 @@
 @interface HKProductVersions
-+ (id)productBuildVersionForDeviceType:(int64_t)a3;
++ (id)productBuildVersionForDeviceType:(int64_t)type;
 @end
 
 @implementation HKProductVersions
 
-+ (id)productBuildVersionForDeviceType:(int64_t)a3
++ (id)productBuildVersionForDeviceType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0:
       v7 = +[_HKBehavior sharedBehavior];
-      v8 = [v7 isAppleWatch];
+      isAppleWatch = [v7 isAppleWatch];
 
-      if (!v8)
+      if (!isAppleWatch)
       {
         goto LABEL_6;
       }
@@ -20,26 +20,26 @@
       goto LABEL_8;
     case 1:
       v4 = +[_HKBehavior sharedBehavior];
-      v5 = [v4 isAppleWatch];
+      isAppleWatch2 = [v4 isAppleWatch];
 
-      if (v5)
+      if (isAppleWatch2)
       {
 LABEL_6:
-        v6 = +[_HKBehavior currentOSBuild];
+        activePairedDeviceSystemBuildVersion = +[_HKBehavior currentOSBuild];
         goto LABEL_10;
       }
 
 LABEL_8:
-      v6 = [a1 activePairedDeviceSystemBuildVersion];
+      activePairedDeviceSystemBuildVersion = [self activePairedDeviceSystemBuildVersion];
       goto LABEL_10;
     case 2:
       goto LABEL_6;
   }
 
-  v6 = 0;
+  activePairedDeviceSystemBuildVersion = 0;
 LABEL_10:
 
-  return v6;
+  return activePairedDeviceSystemBuildVersion;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface CMSJSONWebSignature
-- (BOOL)_validateJWSProtectedHeader:(id)a3;
-- (CMSJSONWebSignature)initWithJWSCompactEncodedString:(id)a3 keyID:(id)a4 publicKey:(id)a5;
-- (__SecKey)_createPublicKeyFromPEM:(id)a3;
-- (id)_createASN1SignatureFromJWSSignature:(id)a3;
-- (void)_validateJWSSignature:(id)a3 ofHeader:(id)a4 andPayload:(id)a5 withPublicKey:(__SecKey *)a6;
+- (BOOL)_validateJWSProtectedHeader:(id)header;
+- (CMSJSONWebSignature)initWithJWSCompactEncodedString:(id)string keyID:(id)d publicKey:(id)key;
+- (__SecKey)_createPublicKeyFromPEM:(id)m;
+- (id)_createASN1SignatureFromJWSSignature:(id)signature;
+- (void)_validateJWSSignature:(id)signature ofHeader:(id)header andPayload:(id)payload withPublicKey:(__SecKey *)key;
 @end
 
 @implementation CMSJSONWebSignature
 
-- (CMSJSONWebSignature)initWithJWSCompactEncodedString:(id)a3 keyID:(id)a4 publicKey:(id)a5
+- (CMSJSONWebSignature)initWithJWSCompactEncodedString:(id)string keyID:(id)d publicKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  dCopy = d;
+  keyCopy = key;
   v33.receiver = self;
   v33.super_class = CMSJSONWebSignature;
   v11 = [(CMSJSONWebSignature *)&v33 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_keyID, a4);
+    objc_storeStrong(&v11->_keyID, d);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v8 componentsSeparatedByString:@"."];
+      v13 = [stringCopy componentsSeparatedByString:@"."];
       if ([v13 count] != 3)
       {
         v27 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.cloudextension.errors.jsonwebsignature" code:1 userInfo:0];
@@ -50,7 +50,7 @@ LABEL_15:
 
         if (v12->_payload && v21)
         {
-          v22 = [(CMSJSONWebSignature *)v12 _createPublicKeyFromPEM:v10];
+          v22 = [(CMSJSONWebSignature *)v12 _createPublicKeyFromPEM:keyCopy];
           if (v22)
           {
             v23 = v22;
@@ -95,11 +95,11 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)_validateJWSProtectedHeader:(id)a3
+- (BOOL)_validateJWSProtectedHeader:(id)header
 {
   v4 = MEMORY[0x277CBEA90];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithBase64URLEncodedString:v5];
+  headerCopy = header;
+  v6 = [[v4 alloc] initWithBase64URLEncodedString:headerCopy];
 
   if (v6)
   {
@@ -143,8 +143,8 @@ LABEL_20:
           if ([v18 isEqualToString:@"ES256"])
           {
             v19 = [(NSError *)verificationError objectForKeyedSubscript:@"kid"];
-            v20 = [(CMSJSONWebSignature *)self keyID];
-            v13 = [v20 isEqualToString:v19];
+            keyID = [(CMSJSONWebSignature *)self keyID];
+            v13 = [keyID isEqualToString:v19];
 
             if (v13)
             {
@@ -211,14 +211,14 @@ LABEL_21:
   return v13;
 }
 
-- (void)_validateJWSSignature:(id)a3 ofHeader:(id)a4 andPayload:(id)a5 withPublicKey:(__SecKey *)a6
+- (void)_validateJWSSignature:(id)signature ofHeader:(id)header andPayload:(id)payload withPublicKey:(__SecKey *)key
 {
   v10 = MEMORY[0x277CCACA8];
-  v11 = a3;
-  v12 = [v10 stringWithFormat:@"%@.%@", a4, a5];
-  v13 = [v12 dataUsingEncoding:4];
+  signatureCopy = signature;
+  payload = [v10 stringWithFormat:@"%@.%@", header, payload];
+  v13 = [payload dataUsingEncoding:4];
 
-  v14 = [(CMSJSONWebSignature *)self _createASN1SignatureFromJWSSignature:v11];
+  v14 = [(CMSJSONWebSignature *)self _createASN1SignatureFromJWSSignature:signatureCopy];
 
   if (!v14)
   {
@@ -228,7 +228,7 @@ LABEL_21:
   }
 
   error = 0;
-  if (SecKeyVerifySignature(a6, *MEMORY[0x277CDC300], v13, v14, &error))
+  if (SecKeyVerifySignature(key, *MEMORY[0x277CDC300], v13, v14, &error))
   {
     v15 = error == 0;
   }
@@ -249,14 +249,14 @@ LABEL_8:
   }
 }
 
-- (__SecKey)_createPublicKeyFromPEM:(id)a3
+- (__SecKey)_createPublicKeyFromPEM:(id)m
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  mCopy = m;
+  v4 = mCopy;
+  if (mCopy)
   {
-    v5 = v3;
+    v5 = mCopy;
     v6 = [v5 componentsSeparatedByString:@"-----BEGIN PUBLIC KEY-----"];
     if ([v6 count] < 2)
     {
@@ -280,8 +280,8 @@ LABEL_20:
 
     v10 = [v9 objectAtIndexedSubscript:0];
 
-    v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v12 = [v10 componentsSeparatedByCharactersInSet:v11];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v12 = [v10 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
     v8 = [v12 componentsJoinedByString:&stru_2856A7BB0];
 
     v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v8 options:0];
@@ -374,14 +374,14 @@ LABEL_22:
   return v7;
 }
 
-- (id)_createASN1SignatureFromJWSSignature:(id)a3
+- (id)_createASN1SignatureFromJWSSignature:(id)signature
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length] == 64)
+  signatureCopy = signature;
+  if ([signatureCopy length] == 64)
   {
-    v4 = [v3 subdataWithRange:{0, 32}];
-    v5 = [v3 subdataWithRange:{32, 32}];
+    v4 = [signatureCopy subdataWithRange:{0, 32}];
+    v5 = [signatureCopy subdataWithRange:{32, 32}];
     v6 = v5;
     v7 = 0;
     if (v4)

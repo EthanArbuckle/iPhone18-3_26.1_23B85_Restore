@@ -1,54 +1,54 @@
 @interface CPSDeveloperOverride
-- (id)valueForSpecifier:(id)a3;
-- (void)setValue:(id)a3 forSpecifier:(id)a4;
+- (id)valueForSpecifier:(id)specifier;
+- (void)setValue:(id)value forSpecifier:(id)specifier;
 @end
 
 @implementation CPSDeveloperOverride
 
-- (id)valueForSpecifier:(id)a3
+- (id)valueForSpecifier:(id)specifier
 {
-  v5 = [a3 identifier];
-  if ([v5 isEqualToString:@"URL_OVERRIDE"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"URL_OVERRIDE"])
   {
-    v6 = [(CPSDeveloperOverride *)self invocationURL];
+    invocationURL = [(CPSDeveloperOverride *)self invocationURL];
 LABEL_15:
-    v9 = v6;
+    v9 = invocationURL;
     goto LABEL_16;
   }
 
-  if ([v5 isEqualToString:@"URL_OVERRIDE_CLIP_BUNDLE_ID"])
+  if ([identifier isEqualToString:@"URL_OVERRIDE_CLIP_BUNDLE_ID"])
   {
-    v6 = [(CPSDeveloperOverride *)self clipBundleID];
+    invocationURL = [(CPSDeveloperOverride *)self clipBundleID];
     goto LABEL_15;
   }
 
-  if ([v5 isEqualToString:@"ABR_TITLE"])
+  if ([identifier isEqualToString:@"ABR_TITLE"])
   {
-    v6 = [(CPSDeveloperOverride *)self title];
+    invocationURL = [(CPSDeveloperOverride *)self title];
     goto LABEL_15;
   }
 
-  if ([v5 isEqualToString:@"ABR_SUBTITLE"])
+  if ([identifier isEqualToString:@"ABR_SUBTITLE"])
   {
-    v6 = [(CPSDeveloperOverride *)self subtitle];
+    invocationURL = [(CPSDeveloperOverride *)self subtitle];
     goto LABEL_15;
   }
 
-  if ([v5 isEqualToString:@"ABR_VERB"])
+  if ([identifier isEqualToString:@"ABR_VERB"])
   {
-    v7 = [(CPSDeveloperOverride *)self action];
+    action = [(CPSDeveloperOverride *)self action];
     v8 = @"open";
-    if (v7 == &dword_0 + 2)
+    if (action == &dword_0 + 2)
     {
       v8 = @"play";
     }
 
-    if (v7 == &dword_0 + 1)
+    if (action == &dword_0 + 1)
     {
       v8 = @"view";
     }
 
-    v6 = v8;
+    invocationURL = v8;
     goto LABEL_15;
   }
 
@@ -61,33 +61,33 @@ LABEL_16:
   return v9;
 }
 
-- (void)setValue:(id)a3 forSpecifier:(id)a4
+- (void)setValue:(id)value forSpecifier:(id)specifier
 {
-  v11 = a3;
-  v7 = [a4 identifier];
-  if ([v7 isEqualToString:@"URL_OVERRIDE"])
+  valueCopy = value;
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"URL_OVERRIDE"])
   {
-    [(CPSDeveloperOverride *)self setInvocationURL:v11];
+    [(CPSDeveloperOverride *)self setInvocationURL:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"URL_OVERRIDE_CLIP_BUNDLE_ID"])
+  else if ([identifier isEqualToString:@"URL_OVERRIDE_CLIP_BUNDLE_ID"])
   {
-    [(CPSDeveloperOverride *)self setClipBundleID:v11];
+    [(CPSDeveloperOverride *)self setClipBundleID:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"ABR_TITLE"])
+  else if ([identifier isEqualToString:@"ABR_TITLE"])
   {
-    [(CPSDeveloperOverride *)self setTitle:v11];
+    [(CPSDeveloperOverride *)self setTitle:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"ABR_SUBTITLE"])
+  else if ([identifier isEqualToString:@"ABR_SUBTITLE"])
   {
-    [(CPSDeveloperOverride *)self setSubtitle:v11];
+    [(CPSDeveloperOverride *)self setSubtitle:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"ABR_VERB"])
+  else if ([identifier isEqualToString:@"ABR_VERB"])
   {
-    v8 = v11;
+    v8 = valueCopy;
     if ([v8 isEqualToString:@"view"])
     {
       v9 = 1;

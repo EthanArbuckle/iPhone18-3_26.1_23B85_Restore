@@ -1,9 +1,9 @@
 @interface CRLFreehandDrawingLayout
-+ (BOOL)p_anyFreehandDrawingsVisibleInInteractiveCanvasController:(id)a3 findSelected:(BOOL)a4;
-+ (BOOL)p_layoutIsFreehandDrawing:(id)a3 andSelected:(BOOL)a4 icc:(id)a5;
-+ (id)freehandDrawingLayoutsToInteractWithFromLayouts:(id)a3;
++ (BOOL)p_anyFreehandDrawingsVisibleInInteractiveCanvasController:(id)controller findSelected:(BOOL)selected;
++ (BOOL)p_layoutIsFreehandDrawing:(id)drawing andSelected:(BOOL)selected icc:(id)icc;
++ (id)freehandDrawingLayoutsToInteractWithFromLayouts:(id)layouts;
 - (BOOL)isInteractable;
-- (BOOL)p_shouldSetupMathPaperRecognitionOnICC:(id)a3 forStrokes:(id)a4;
+- (BOOL)p_shouldSetupMathPaperRecognitionOnICC:(id)c forStrokes:(id)strokes;
 - (BOOL)shouldSnapWhileResizing;
 - (CGAffineTransform)pureTransformInRootWithoutMathResults;
 - (CGRect)boundsForMathResultViews;
@@ -13,49 +13,49 @@
 - (CGRect)frameAtMathViewAttachment;
 - (CGRect)frameForMiniFormatterPositioning;
 - (CGRect)p_boundsForMathResultViews;
-- (CGRect)p_boundsInNaturalSpaceForMathView:(id)a3;
+- (CGRect)p_boundsInNaturalSpaceForMathView:(id)view;
 - (CGRect)p_getUnRotatedFrameWithoutMathResults;
 - (CGSize)minimumSize;
 - (CRLCanvasLayoutGeometry)pureGeometryInRootWithoutMathResults;
 - (CRLCanvasLayoutGeometry)pureGeometryWithoutMathResults;
-- (CRLFreehandDrawingLayout)initWithInfo:(id)a3;
+- (CRLFreehandDrawingLayout)initWithInfo:(id)info;
 - (NSSet)subscribedFreehandDrawingIDs;
 - (_TtC8Freeform22CRLFreehandDrawingItem)freehandInfo;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)childInfosForChildLayouts;
 - (id)computeLayoutGeometry;
 - (id)computeWrapPath;
 - (id)pathForClippingConnectionLines;
 - (unint64_t)maxFilledShapeIndex;
-- (void)p_resetMathRecognitionHandlerIfRequestedAndEnabledOnICC:(id)a3;
-- (void)p_setUpDrawingShapeItemUUIDToStrokeDataUUIDBidirectionalMapFromDrawingProvider:(id)a3;
-- (void)p_setUpRecognitionIfNeededOnICC:(id)a3;
-- (void)p_setupMathRecognitionHandlerOnICC:(id)a3;
-- (void)p_tearDownRecognitionIfNeededOnICC:(id)a3;
-- (void)p_updateBoundsForMathResultSubviewsWillChangeWithDelay:(BOOL)a3;
+- (void)p_resetMathRecognitionHandlerIfRequestedAndEnabledOnICC:(id)c;
+- (void)p_setUpDrawingShapeItemUUIDToStrokeDataUUIDBidirectionalMapFromDrawingProvider:(id)provider;
+- (void)p_setUpRecognitionIfNeededOnICC:(id)c;
+- (void)p_setupMathRecognitionHandlerOnICC:(id)c;
+- (void)p_tearDownRecognitionIfNeededOnICC:(id)c;
+- (void)p_updateBoundsForMathResultSubviewsWillChangeWithDelay:(BOOL)delay;
 - (void)p_updateLayoutBoundsForMathResultView;
 - (void)parentDidChange;
-- (void)pkStrokesForFreehandItemsDidChange:(id)a3;
-- (void)processChangedProperty:(unint64_t)a3;
+- (void)pkStrokesForFreehandItemsDidChange:(id)change;
+- (void)processChangedProperty:(unint64_t)property;
 - (void)resetMathRecognitionHandlerIfRequestedAndEnabled;
-- (void)setBoundsForMathResultViews:(CGRect)a3;
-- (void)setCachedFrameForMiniFormatterPositioning:(CGRect)a3;
-- (void)setFrameAtMathViewAttachment:(CGRect)a3;
-- (void)showSubselectionAffordanceForSelectedInfos:(id)a3;
+- (void)setBoundsForMathResultViews:(CGRect)views;
+- (void)setCachedFrameForMiniFormatterPositioning:(CGRect)positioning;
+- (void)setFrameAtMathViewAttachment:(CGRect)attachment;
+- (void)showSubselectionAffordanceForSelectedInfos:(id)infos;
 - (void)transformLayoutDidBeginDynamicOperation;
 - (void)transformLayoutDidEndDynamicOperation;
-- (void)updateDrawingShapeItemUUIDToStrokeDataUUIDDict:(id)a3;
-- (void)willBeAddedToLayoutController:(id)a3;
-- (void)willBeRemovedFromLayoutController:(id)a3;
+- (void)updateDrawingShapeItemUUIDToStrokeDataUUIDDict:(id)dict;
+- (void)willBeAddedToLayoutController:(id)controller;
+- (void)willBeRemovedFromLayoutController:(id)controller;
 @end
 
 @implementation CRLFreehandDrawingLayout
 
-- (CRLFreehandDrawingLayout)initWithInfo:(id)a3
+- (CRLFreehandDrawingLayout)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = CRLFreehandDrawingLayout;
-  result = [(CRLCanvasLayout *)&v6 initWithInfo:a3];
+  result = [(CRLCanvasLayout *)&v6 initWithInfo:info];
   if (result)
   {
     origin = CGRectNull.origin;
@@ -74,8 +74,8 @@
 - (_TtC8Freeform22CRLFreehandDrawingItem)freehandInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }
@@ -114,24 +114,24 @@
 
   v7.receiver = self;
   v7.super_class = CRLFreehandDrawingLayout;
-  v4 = [(CRLGroupLayout *)&v7 childInfosForChildLayouts];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  childInfosForChildLayouts = [(CRLGroupLayout *)&v7 childInfosForChildLayouts];
+  v5 = [v3 arrayByAddingObjectsFromArray:childInfosForChildLayouts];
 
   return v5;
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v14.receiver = self;
   v14.super_class = CRLFreehandDrawingLayout;
-  v5 = [(CRLGroupLayout *)&v14 additionalDependenciesForChildLayout:v4];
-  v6 = [(CRLCanvasLayout *)self layoutController];
-  v7 = [v6 layoutForInfo:*(&self->_isTransformLayoutInDynamicOperation + 2)];
+  v5 = [(CRLGroupLayout *)&v14 additionalDependenciesForChildLayout:layoutCopy];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  v7 = [layoutController layoutForInfo:*(&self->_isTransformLayoutInDynamicOperation + 2)];
 
   if (v7)
   {
-    v8 = v7 == v4;
+    v8 = v7 == layoutCopy;
   }
 
   else
@@ -141,9 +141,9 @@
 
   if (!v8)
   {
-    v9 = [(CRLFreehandDrawingLayout *)self freehandInfo];
-    v10 = [v4 info];
-    v11 = [v9 isNonGroupedChild:v10];
+    freehandInfo = [(CRLFreehandDrawingLayout *)self freehandInfo];
+    info = [layoutCopy info];
+    v11 = [freehandInfo isNonGroupedChild:info];
 
     if ((v11 & 1) == 0)
     {
@@ -158,9 +158,9 @@
 
 - (BOOL)shouldSnapWhileResizing
 {
-  v3 = [(CRLFreehandDrawingLayout *)self freehandInfo];
-  v4 = [v3 childInfos];
-  v5 = [v4 count];
+  freehandInfo = [(CRLFreehandDrawingLayout *)self freehandInfo];
+  childInfos = [freehandInfo childInfos];
+  v5 = [childInfos count];
 
   if (v5 > 0xC8)
   {
@@ -174,8 +174,8 @@
 
 - (CGRect)boundsInRoot
 {
-  v2 = [(CRLCanvasLayout *)self pureGeometryInRoot];
-  [v2 frame];
+  pureGeometryInRoot = [(CRLCanvasLayout *)self pureGeometryInRoot];
+  [pureGeometryInRoot frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -192,29 +192,29 @@
   return result;
 }
 
-- (void)willBeAddedToLayoutController:(id)a3
+- (void)willBeAddedToLayoutController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = CRLFreehandDrawingLayout;
-  v4 = a3;
-  [(CRLCanvasLayout *)&v7 willBeAddedToLayoutController:v4];
-  v5 = [v4 canvas];
+  controllerCopy = controller;
+  [(CRLCanvasLayout *)&v7 willBeAddedToLayoutController:controllerCopy];
+  canvas = [controllerCopy canvas];
 
-  if ([v5 isCanvasInteractive])
+  if ([canvas isCanvasInteractive])
   {
-    v6 = [v5 canvasController];
-    [(CRLFreehandDrawingLayout *)self p_setUpRecognitionIfNeededOnICC:v6];
+    canvasController = [canvas canvasController];
+    [(CRLFreehandDrawingLayout *)self p_setUpRecognitionIfNeededOnICC:canvasController];
   }
 }
 
-- (void)willBeRemovedFromLayoutController:(id)a3
+- (void)willBeRemovedFromLayoutController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 canvas];
-  if ([v5 isCanvasInteractive])
+  controllerCopy = controller;
+  canvas = [controllerCopy canvas];
+  if ([canvas isCanvasInteractive])
   {
-    v6 = [v5 canvasController];
-    [(CRLFreehandDrawingLayout *)self p_tearDownRecognitionIfNeededOnICC:v6];
+    canvasController = [canvas canvasController];
+    [(CRLFreehandDrawingLayout *)self p_tearDownRecognitionIfNeededOnICC:canvasController];
 
     v7 = *(&self->_baseMathView + 2);
     *(&self->_baseMathView + 2) = 0;
@@ -230,19 +230,19 @@
 
   v10.receiver = self;
   v10.super_class = CRLFreehandDrawingLayout;
-  [(CRLCanvasLayout *)&v10 willBeRemovedFromLayoutController:v4];
+  [(CRLCanvasLayout *)&v10 willBeRemovedFromLayoutController:controllerCopy];
 }
 
-- (BOOL)p_shouldSetupMathPaperRecognitionOnICC:(id)a3 forStrokes:(id)a4
+- (BOOL)p_shouldSetupMathPaperRecognitionOnICC:(id)c forStrokes:(id)strokes
 {
-  v5 = a3;
-  v6 = a4;
+  cCopy = c;
+  strokesCopy = strokes;
   v7 = +[_TtC8Freeform19CRLFeatureFlagGroup isMathPaperEnabled];
-  v8 = [v5 mathCalculationController];
-  v9 = v8;
+  mathCalculationController = [cCopy mathCalculationController];
+  v9 = mathCalculationController;
   if (v7)
   {
-    v10 = v8 == 0;
+    v10 = mathCalculationController == 0;
   }
 
   else
@@ -255,7 +255,7 @@
     LOBYTE(v11) = 0;
   }
 
-  else if ([v8 mathHintsMode])
+  else if ([mathCalculationController mathHintsMode])
   {
     LOBYTE(v11) = [v9 mathHintsMode] != 3;
   }
@@ -266,7 +266,7 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v12 = v6;
+    v12 = strokesCopy;
     v11 = [v12 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
@@ -303,26 +303,26 @@ LABEL_19:
   return v11;
 }
 
-- (void)p_setUpRecognitionIfNeededOnICC:(id)a3
+- (void)p_setUpRecognitionIfNeededOnICC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   if (!*(&self->_baseMathViewController + 2))
   {
-    v5 = [(CRLFreehandDrawingLayout *)self freehandInfo];
-    if ([v5 prohibitsClustering])
+    freehandInfo = [(CRLFreehandDrawingLayout *)self freehandInfo];
+    if ([freehandInfo prohibitsClustering])
     {
 LABEL_17:
 
       goto LABEL_18;
     }
 
-    v6 = [v4 pkDrawingProvider];
-    if (v6)
+    pkDrawingProvider = [cCopy pkDrawingProvider];
+    if (pkDrawingProvider)
     {
-      v7 = [v5 id];
-      v8 = [v6 pkStrokesForFreehandDrawingItemUUID:v7];
+      v7 = [freehandInfo id];
+      v8 = [pkDrawingProvider pkStrokesForFreehandDrawingItemUUID:v7];
 
-      if (![(CRLFreehandDrawingLayout *)self p_shouldSetupMathPaperRecognitionOnICC:v4 forStrokes:v8])
+      if (![(CRLFreehandDrawingLayout *)self p_shouldSetupMathPaperRecognitionOnICC:cCopy forStrokes:v8])
       {
 LABEL_16:
 
@@ -330,19 +330,19 @@ LABEL_16:
       }
 
       v9 = objc_alloc_init(PKDrawing);
-      v10 = [v5 id];
+      v10 = [freehandInfo id];
       [v9 _setUUID:v10];
 
       v11 = [v9 undoableAddNewStrokes:v8];
       v12 = [PKRecognitionController alloc];
-      v13 = [v9 strokes];
-      v14 = [v12 initWithDrawing:v9 visibleOnscreenStrokes:v13 useSessionCache:1];
+      strokes = [v9 strokes];
+      v14 = [v12 initWithDrawing:v9 visibleOnscreenStrokes:strokes useSessionCache:1];
       v15 = *(&self->_baseMathViewController + 2);
       *(&self->_baseMathViewController + 2) = v14;
 
-      [(CRLFreehandDrawingLayout *)self p_setUpDrawingShapeItemUUIDToStrokeDataUUIDBidirectionalMapFromDrawingProvider:v6];
-      [v6 addPKDrawingsObserver:self];
-      [(CRLFreehandDrawingLayout *)self p_setupMathRecognitionHandlerOnICC:v4];
+      [(CRLFreehandDrawingLayout *)self p_setUpDrawingShapeItemUUIDToStrokeDataUUIDBidirectionalMapFromDrawingProvider:pkDrawingProvider];
+      [pkDrawingProvider addPKDrawingsObserver:self];
+      [(CRLFreehandDrawingLayout *)self p_setupMathRecognitionHandlerOnICC:cCopy];
     }
 
     else
@@ -380,9 +380,9 @@ LABEL_16:
 LABEL_18:
 }
 
-- (void)p_setUpDrawingShapeItemUUIDToStrokeDataUUIDBidirectionalMapFromDrawingProvider:(id)a3
+- (void)p_setUpDrawingShapeItemUUIDToStrokeDataUUIDBidirectionalMapFromDrawingProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if (*(&self->_previousAspectRatio + 2))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -420,10 +420,10 @@ LABEL_18:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [(CRLFreehandDrawingLayout *)self freehandInfo];
-  v11 = [v10 childItems];
+  freehandInfo = [(CRLFreehandDrawingLayout *)self freehandInfo];
+  childItems = [freehandInfo childItems];
 
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v12 = [childItems countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -434,12 +434,12 @@ LABEL_18:
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(childItems);
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
         v17 = [v16 id];
-        v18 = [v4 strokeDataUUIDForDrawingShapeItemUUID:v17];
+        v18 = [providerCopy strokeDataUUIDForDrawingShapeItemUUID:v17];
 
         if (v18)
         {
@@ -449,19 +449,19 @@ LABEL_18:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v13 = [childItems countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v13);
   }
 }
 
-- (void)p_tearDownRecognitionIfNeededOnICC:(id)a3
+- (void)p_tearDownRecognitionIfNeededOnICC:(id)c
 {
   if (*(&self->_baseMathViewController + 2))
   {
-    v4 = [a3 pkDrawingProvider];
-    [v4 removePKDrawingsObserver:self];
+    pkDrawingProvider = [c pkDrawingProvider];
+    [pkDrawingProvider removePKDrawingsObserver:self];
 
     v5 = *(&self->_previousAspectRatio + 2);
     *(&self->_previousAspectRatio + 2) = 0.0;
@@ -488,39 +488,39 @@ LABEL_18:
   v5.receiver = self;
   v5.super_class = CRLFreehandDrawingLayout;
   [(CRLCanvasLayout *)&v5 parentDidChange];
-  v3 = [(CRLCanvasLayout *)self layoutController];
-  v4 = [v3 canvas];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
 
-  if ([v4 isCanvasInteractive])
+  if ([canvas isCanvasInteractive])
   {
     [(CRLFreehandDrawingLayout *)self resetMathRecognitionHandlerIfRequestedAndEnabled];
   }
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v10.receiver = self;
   v10.super_class = CRLFreehandDrawingLayout;
   [(CRLGroupLayout *)&v10 processChangedProperty:?];
-  if (a3 == 28)
+  if (property == 28)
   {
-    v5 = [(CRLCanvasLayout *)self layoutController];
-    v6 = [v5 canvas];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
 
-    if ([v6 isCanvasInteractive])
+    if ([canvas isCanvasInteractive])
     {
-      v7 = [v6 canvasController];
-      v8 = [(CRLFreehandDrawingLayout *)self freehandInfo];
-      v9 = [v8 prohibitsClustering];
+      canvasController = [canvas canvasController];
+      freehandInfo = [(CRLFreehandDrawingLayout *)self freehandInfo];
+      prohibitsClustering = [freehandInfo prohibitsClustering];
 
-      if (v9)
+      if (prohibitsClustering)
       {
-        [(CRLFreehandDrawingLayout *)self p_tearDownRecognitionIfNeededOnICC:v7];
+        [(CRLFreehandDrawingLayout *)self p_tearDownRecognitionIfNeededOnICC:canvasController];
       }
 
       else
       {
-        [(CRLFreehandDrawingLayout *)self p_setUpRecognitionIfNeededOnICC:v7];
+        [(CRLFreehandDrawingLayout *)self p_setUpRecognitionIfNeededOnICC:canvasController];
       }
 
       [(CRLGroupLayout *)self invalidate];
@@ -575,7 +575,7 @@ LABEL_18:
 {
   v21.receiver = self;
   v21.super_class = CRLFreehandDrawingLayout;
-  v3 = [(CRLGroupLayout *)&v21 computeLayoutGeometry];
+  computeLayoutGeometry = [(CRLGroupLayout *)&v21 computeLayoutGeometry];
   if ([(CRLCanvasLayout *)self isSelectable])
   {
     [(CRLGroupLayout *)self boundsForStandardKnobs];
@@ -583,9 +583,9 @@ LABEL_18:
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    if (v3)
+    if (computeLayoutGeometry)
     {
-      [v3 transform];
+      [computeLayoutGeometry transform];
     }
 
     else
@@ -598,25 +598,25 @@ LABEL_18:
     v23.size.width = v9;
     v23.size.height = v11;
     *(&self->_transformInfo + 2) = CGRectApplyAffineTransform(v23, &v20);
-    v12 = [(CRLCanvasLayout *)self layoutController];
-    v13 = [v12 canvas];
-    v14 = [v13 canvasController];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
+    canvasController = [canvas canvasController];
 
-    if (v14)
+    if (canvasController)
     {
-      v15 = [(CRLCanvasLayout *)self info];
-      if ([v14 currentSelectionPathContainsInfo:v15])
+      info = [(CRLCanvasLayout *)self info];
+      if ([canvasController currentSelectionPathContainsInfo:info])
       {
-        v16 = [v14 layerHost];
-        v17 = [v16 miniFormatterPresenter];
+        layerHost = [canvasController layerHost];
+        miniFormatterPresenter = [layerHost miniFormatterPresenter];
 
-        v18 = [v17 asiOSPresenter];
-        [v18 forceMiniFormatterVCToReposition];
+        asiOSPresenter = [miniFormatterPresenter asiOSPresenter];
+        [asiOSPresenter forceMiniFormatterVCToReposition];
       }
     }
   }
 
-  return v3;
+  return computeLayoutGeometry;
 }
 
 - (CRLCanvasLayoutGeometry)pureGeometryWithoutMathResults
@@ -664,11 +664,11 @@ LABEL_18:
   v9 = v3[2];
   v10 = v3[3];
   memset(&v19, 0, sizeof(v19));
-  v11 = [(CRLCanvasAbstractLayout *)self geometry];
-  v12 = v11;
-  if (v11)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v12 = geometry;
+  if (geometry)
   {
-    [v11 transform];
+    [geometry transform];
   }
 
   else
@@ -689,8 +689,8 @@ LABEL_18:
 
 - (CRLCanvasLayoutGeometry)pureGeometryInRootWithoutMathResults
 {
-  v3 = [(CRLFreehandDrawingLayout *)self pureGeometryWithoutMathResults];
-  v4 = [(CRLCanvasAbstractLayout *)self geometryInRoot:v3];
+  pureGeometryWithoutMathResults = [(CRLFreehandDrawingLayout *)self pureGeometryWithoutMathResults];
+  v4 = [(CRLCanvasAbstractLayout *)self geometryInRoot:pureGeometryWithoutMathResults];
 
   return v4;
 }
@@ -700,11 +700,11 @@ LABEL_18:
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v5 = [(CRLFreehandDrawingLayout *)self pureGeometryWithoutMathResults];
-  v6 = v5;
-  if (v5)
+  pureGeometryWithoutMathResults = [(CRLFreehandDrawingLayout *)self pureGeometryWithoutMathResults];
+  v6 = pureGeometryWithoutMathResults;
+  if (pureGeometryWithoutMathResults)
   {
-    [v5 transform];
+    [pureGeometryWithoutMathResults transform];
   }
 
   else
@@ -720,15 +720,15 @@ LABEL_18:
     v8 = result;
     do
     {
-      v9 = [(CGAffineTransform *)v8 geometry];
-      v10 = v9;
-      if (v9)
+      geometry = [(CGAffineTransform *)v8 geometry];
+      v10 = geometry;
+      if (geometry)
       {
         v11 = *&retstr->c;
         v14[0] = *&retstr->a;
         v14[1] = v11;
         v14[2] = *&retstr->tx;
-        [v9 transformByConcatenatingTransformTo:v14];
+        [geometry transformByConcatenatingTransformTo:v14];
       }
 
       else
@@ -743,25 +743,25 @@ LABEL_18:
       *&retstr->c = v12;
       *&retstr->tx = v17;
 
-      v13 = [(CGAffineTransform *)v8 parent];
+      parent = [(CGAffineTransform *)v8 parent];
 
-      v8 = v13;
+      v8 = parent;
     }
 
-    while (v13);
+    while (parent);
   }
 
   return result;
 }
 
-- (void)p_setupMathRecognitionHandlerOnICC:(id)a3
+- (void)p_setupMathRecognitionHandlerOnICC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v5 = *(&self->_pkRecognitionController + 2);
   if (!v5 || ([v5 frame], CGRectIsEmpty(v27)))
   {
     [(CRLFreehandDrawingLayout *)self p_getUnRotatedFrameWithoutMathResults];
-    [v4 convertUnscaledToBoundsRect:?];
+    [cCopy convertUnscaledToBoundsRect:?];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -779,11 +779,11 @@ LABEL_18:
     *(&self->_frameAtMathViewAttachment.origin.x + 2) = v9;
     *(&self->_frameAtMathViewAttachment.origin.y + 2) = v11;
     *(&self->_frameAtMathViewAttachment.size.width + 2) = v13;
-    v18 = [(CRLCanvasLayout *)self pureGeometryInRoot];
-    v19 = v18;
-    if (v18)
+    pureGeometryInRoot = [(CRLCanvasLayout *)self pureGeometryInRoot];
+    v19 = pureGeometryInRoot;
+    if (pureGeometryInRoot)
     {
-      [v18 transform];
+      [pureGeometryInRoot transform];
     }
 
     else
@@ -801,28 +801,28 @@ LABEL_18:
     *(&self->_boundsForStandardKnobsWithoutMathResultsViews.size.height + 2) = v20;
 
     [*(&self->_boundsForStandardKnobsWithoutMathResultsViews.size.height + 2) setView:*(&self->_pkRecognitionController + 2)];
-    v22 = [v4 layerHost];
-    v23 = [v22 asiOSCVC];
+    layerHost = [cCopy layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    [v23 addChildViewController:*(&self->_boundsForStandardKnobsWithoutMathResultsViews.size.height + 2)];
+    [asiOSCVC addChildViewController:*(&self->_boundsForStandardKnobsWithoutMathResultsViews.size.height + 2)];
   }
 
-  [(CRLFreehandDrawingLayout *)self p_resetMathRecognitionHandlerIfRequestedAndEnabledOnICC:v4, v24, v25, v26];
+  [(CRLFreehandDrawingLayout *)self p_resetMathRecognitionHandlerIfRequestedAndEnabledOnICC:cCopy, v24, v25, v26];
 }
 
 - (void)resetMathRecognitionHandlerIfRequestedAndEnabled
 {
-  v3 = [(CRLCanvasLayout *)self layoutController];
-  v4 = [v3 canvas];
-  v5 = [v4 canvasController];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
 
-  [(CRLFreehandDrawingLayout *)self p_resetMathRecognitionHandlerIfRequestedAndEnabledOnICC:v5];
+  [(CRLFreehandDrawingLayout *)self p_resetMathRecognitionHandlerIfRequestedAndEnabledOnICC:canvasController];
 }
 
-- (void)p_resetMathRecognitionHandlerIfRequestedAndEnabledOnICC:(id)a3
+- (void)p_resetMathRecognitionHandlerIfRequestedAndEnabledOnICC:(id)c
 {
-  v4 = [a3 mathCalculationController];
-  if (!v4)
+  mathCalculationController = [c mathCalculationController];
+  if (!mathCalculationController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -851,13 +851,13 @@ LABEL_18:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:393 isFatal:0 description:"invalid nil value for '%{public}s'", "mathCalculationController"];
   }
 
-  if (([v4 isSolvingSuspended] & 1) == 0)
+  if (([mathCalculationController isSolvingSuspended] & 1) == 0)
   {
     [*(&self->_baseMathView + 2) willBeRemoved];
     v8 = *(&self->_baseMathView + 2);
     *(&self->_baseMathView + 2) = 0;
 
-    if ([v4 mathHintsMode] != 3)
+    if ([mathCalculationController mathHintsMode] != 3)
     {
       v9 = [[_TtC8Freeform30CRLMathRecognitionItemsHandler alloc] initWithLayout:self view:*(&self->_pkRecognitionController + 2) viewController:*(&self->_boundsForStandardKnobsWithoutMathResultsViews.size.height + 2)];
       v10 = *(&self->_baseMathView + 2);
@@ -870,22 +870,22 @@ LABEL_18:
 {
   if ([(CRLCanvasLayout *)self layoutState])
   {
-    v3 = [(CRLCanvasLayout *)self dynamicGeometry];
-    [v3 infoGeometry];
+    dynamicGeometry = [(CRLCanvasLayout *)self dynamicGeometry];
+    [dynamicGeometry infoGeometry];
   }
 
   else
   {
-    v3 = [(CRLCanvasLayout *)self info];
-    [v3 geometry];
+    dynamicGeometry = [(CRLCanvasLayout *)self info];
+    [dynamicGeometry geometry];
   }
   v4 = ;
   [v4 boundsBeforeRotation];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(CRLFreehandDrawingLayout *)self pureGeometryWithoutMathResults];
-  [v9 size];
+  pureGeometryWithoutMathResults = [(CRLFreehandDrawingLayout *)self pureGeometryWithoutMathResults];
+  [pureGeometryWithoutMathResults size];
   v11 = v10;
   v13 = v12;
 
@@ -912,19 +912,19 @@ LABEL_18:
   return CGRectApplyAffineTransform(v23, &t2);
 }
 
-- (void)p_updateBoundsForMathResultSubviewsWillChangeWithDelay:(BOOL)a3
+- (void)p_updateBoundsForMathResultSubviewsWillChangeWithDelay:(BOOL)delay
 {
-  v3 = a3;
-  v5 = [(CRLCanvasLayout *)self layoutController];
-  v6 = [v5 canvas];
-  v9 = [v6 canvasController];
+  delayCopy = delay;
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
 
-  v7 = [(CRLFreehandDrawingLayout *)self freehandInfo];
-  v8 = [v9 repForInfo:v7];
+  freehandInfo = [(CRLFreehandDrawingLayout *)self freehandInfo];
+  v8 = [canvasController repForInfo:freehandInfo];
 
   [v8 invalidateKnobs];
   [(CRLCanvasLayout *)self invalidateFrame];
-  if (v3)
+  if (delayCopy)
   {
     [(CRLFreehandDrawingLayout *)self performSelector:"p_updateLayoutBoundsForMathResultView" withObject:0 afterDelay:0.0];
   }
@@ -953,8 +953,8 @@ LABEL_18:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [*(&self->_pkRecognitionController + 2) subviews];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  subviews = [*(&self->_pkRecognitionController + 2) subviews];
+  v8 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -965,12 +965,12 @@ LABEL_18:
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 subviews];
-        if ([v13 count])
+        subviews2 = [v12 subviews];
+        if ([subviews2 count])
         {
           NSClassFromString(@"PKOverlayDrawingView");
           isKindOfClass = objc_opt_isKindOfClass();
@@ -999,7 +999,7 @@ LABEL_18:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v9);
@@ -1016,40 +1016,40 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)p_boundsInNaturalSpaceForMathView:(id)a3
+- (CGRect)p_boundsInNaturalSpaceForMathView:(id)view
 {
-  v4 = a3;
-  v5 = [(CRLCanvasLayout *)self layoutController];
-  v6 = [v5 canvas];
-  v7 = [v6 canvasController];
+  viewCopy = view;
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
 
-  [v4 bounds];
+  [viewCopy bounds];
   v9 = v8;
   v11 = v10;
-  [v4 bounds];
+  [viewCopy bounds];
   v16 = sub_1001204D4(v12, v13, v14, v15);
   v18 = v17;
-  [*(&self->_pkRecognitionController + 2) convertPoint:v4 fromView:{v9, v11}];
+  [*(&self->_pkRecognitionController + 2) convertPoint:viewCopy fromView:{v9, v11}];
   v20 = v19;
   v22 = v21;
-  [*(&self->_pkRecognitionController + 2) convertPoint:v4 fromView:{v16, v18}];
+  [*(&self->_pkRecognitionController + 2) convertPoint:viewCopy fromView:{v16, v18}];
   v24 = v23;
   v26 = v25;
 
-  v27 = [v7 canvasView];
-  [v27 convertPoint:*(&self->_pkRecognitionController + 2) fromView:{v20, v22}];
+  canvasView = [canvasController canvasView];
+  [canvasView convertPoint:*(&self->_pkRecognitionController + 2) fromView:{v20, v22}];
   v29 = v28;
   v31 = v30;
 
-  v32 = [v7 canvasView];
-  [v32 convertPoint:*(&self->_pkRecognitionController + 2) fromView:{v24, v26}];
+  canvasView2 = [canvasController canvasView];
+  [canvasView2 convertPoint:*(&self->_pkRecognitionController + 2) fromView:{v24, v26}];
   v34 = v33;
   v36 = v35;
 
-  [v7 convertBoundsToUnscaledPoint:{v29, v31}];
+  [canvasController convertBoundsToUnscaledPoint:{v29, v31}];
   v38 = v37;
   v40 = v39;
-  [v7 convertBoundsToUnscaledPoint:{v34, v36}];
+  [canvasController convertBoundsToUnscaledPoint:{v34, v36}];
   v42 = v41;
   v44 = v43;
   [(CRLCanvasLayout *)self convertNaturalPointFromUnscaledCanvas:v38, v40];
@@ -1074,16 +1074,16 @@ LABEL_18:
 
 - (NSSet)subscribedFreehandDrawingIDs
 {
-  v2 = [(CRLFreehandDrawingLayout *)self freehandInfo];
-  v3 = [v2 id];
+  freehandInfo = [(CRLFreehandDrawingLayout *)self freehandInfo];
+  v3 = [freehandInfo id];
   v4 = [NSSet setWithObject:v3];
 
   return v4;
 }
 
-- (void)pkStrokesForFreehandItemsDidChange:(id)a3
+- (void)pkStrokesForFreehandItemsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1114,23 +1114,23 @@ LABEL_18:
   }
 
   v8 = objc_opt_class();
-  v9 = [(CRLCanvasLayout *)self info];
-  v10 = sub_100014370(v8, v9);
+  info = [(CRLCanvasLayout *)self info];
+  v10 = sub_100014370(v8, info);
 
-  v11 = [v10 parentItem];
+  parentItem = [v10 parentItem];
 
-  if (v11)
+  if (parentItem)
   {
     v12 = [v10 id];
-    v13 = [v4 objectForKeyedSubscript:v12];
+    v13 = [changeCopy objectForKeyedSubscript:v12];
 
     if (v13)
     {
-      v14 = [(CRLCanvasLayout *)self layoutController];
-      v15 = [v14 canvas];
-      v16 = [v15 canvasController];
+      layoutController = [(CRLCanvasLayout *)self layoutController];
+      canvas = [layoutController canvas];
+      canvasController = [canvas canvasController];
 
-      if ([(CRLFreehandDrawingLayout *)self p_shouldSetupMathPaperRecognitionOnICC:v16 forStrokes:v13])
+      if ([(CRLFreehandDrawingLayout *)self p_shouldSetupMathPaperRecognitionOnICC:canvasController forStrokes:v13])
       {
         if (*(&self->_baseMathViewController + 2))
         {
@@ -1170,8 +1170,8 @@ LABEL_24:
           [v20 timeIntervalSince1970];
           [*(&self->_baseMathView + 2) setLastStrokeTimestamp:?];
 
-          v21 = [*(&self->_baseMathViewController + 2) drawing];
-          v22 = [v21 copy];
+          drawing = [*(&self->_baseMathViewController + 2) drawing];
+          v22 = [drawing copy];
 
           v23 = +[NSMutableArray array];
           [v22 _setAllStrokes:v23];
@@ -1179,8 +1179,8 @@ LABEL_24:
           [v22 invalidateVisibleStrokes];
           v24 = [v22 undoableAddNewStrokes:v13];
           v25 = *(&self->_baseMathViewController + 2);
-          v26 = [v22 strokes];
-          [v25 setDrawing:v22 withVisibleOnscreenStrokes:v26];
+          strokes = [v22 strokes];
+          [v25 setDrawing:v22 withVisibleOnscreenStrokes:strokes];
         }
       }
     }
@@ -1210,24 +1210,24 @@ LABEL_24:
       }
 
       v13 = [NSString stringWithUTF8String:"[CRLFreehandDrawingLayout pkStrokesForFreehandItemsDidChange:]"];
-      v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingLayout.m"];
-      [CRLAssertionHandler handleFailureInFunction:v13 file:v16 lineNumber:493 isFatal:0 description:"invalid nil value for '%{public}s'", "strokes"];
+      canvasController = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingLayout.m"];
+      [CRLAssertionHandler handleFailureInFunction:v13 file:canvasController lineNumber:493 isFatal:0 description:"invalid nil value for '%{public}s'", "strokes"];
     }
   }
 }
 
-- (void)updateDrawingShapeItemUUIDToStrokeDataUUIDDict:(id)a3
+- (void)updateDrawingShapeItemUUIDToStrokeDataUUIDDict:(id)dict
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictCopy = dict;
+  v5 = dictCopy;
+  if (dictCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v4 forwardKeys];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    forwardKeys = [dictCopy forwardKeys];
+    v7 = [forwardKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1238,7 +1238,7 @@ LABEL_24:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(forwardKeys);
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
@@ -1246,7 +1246,7 @@ LABEL_24:
           [*(&self->_previousAspectRatio + 2) setObject:v12 forKeyedSubscript:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [forwardKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -1257,14 +1257,14 @@ LABEL_24:
 - (id)computeWrapPath
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(CRLFreehandDrawingLayout *)self freehandInfo];
+  freehandInfo = [(CRLFreehandDrawingLayout *)self freehandInfo];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v25 = self;
-  v5 = [(CRLCanvasAbstractLayout *)self children];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  selfCopy = self;
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v6 = [children countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1275,7 +1275,7 @@ LABEL_24:
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
@@ -1283,8 +1283,8 @@ LABEL_24:
         v12 = sub_100014370(v11, v10);
         if (v12)
         {
-          v13 = [v10 info];
-          v14 = [v4 isNonGroupedChild:v13];
+          info = [v10 info];
+          v14 = [freehandInfo isNonGroupedChild:info];
 
           if ((v14 & 1) == 0)
           {
@@ -1293,7 +1293,7 @@ LABEL_24:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v7 = [children countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v7);
@@ -1301,10 +1301,10 @@ LABEL_24:
 
   if ([v3 count])
   {
-    v15 = [(CRLCanvasLayout *)v25 layoutController];
-    v16 = [v15 canvas];
+    layoutController = [(CRLCanvasLayout *)selfCopy layoutController];
+    canvas = [layoutController canvas];
 
-    if (!v16)
+    if (!canvas)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1333,19 +1333,19 @@ LABEL_24:
       [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:553 isFatal:0 description:"invalid nil value for '%{public}s'", "canvas"];
     }
 
-    [v16 viewScale];
+    [canvas viewScale];
     v21 = [CRLFreehandDrawingShapeTracingHelper unscaledOutlinePathFromFreehandDrawingShapeLayouts:v3 scaledOutset:0.0 viewScale:v20];
     v22 = v21;
     if (v21 && ([v21 isEmpty] & 1) == 0)
     {
-      [(CRLCanvasAbstractLayout *)v25 transformInRoot];
+      [(CRLCanvasAbstractLayout *)selfCopy transformInRoot];
       CGAffineTransformInvert(&v27, &v26);
       [v22 transformUsingAffineTransform:&v27];
     }
 
     else
     {
-      [(CRLGroupLayout *)v25 boundsForStandardKnobs];
+      [(CRLGroupLayout *)selfCopy boundsForStandardKnobs];
       v23 = [CRLBezierPath bezierPathWithRect:?];
 
       v22 = v23;
@@ -1354,7 +1354,7 @@ LABEL_24:
 
   else
   {
-    [(CRLGroupLayout *)v25 boundsForStandardKnobs];
+    [(CRLGroupLayout *)selfCopy boundsForStandardKnobs];
     v22 = [CRLBezierPath bezierPathWithRect:?];
   }
 
@@ -1363,23 +1363,23 @@ LABEL_24:
 
 - (id)pathForClippingConnectionLines
 {
-  v3 = [(CRLFreehandDrawingLayout *)self freehandInfo];
-  v4 = [v3 shouldBeTreatedAsBoxForConnectionLinesForPerf];
+  freehandInfo = [(CRLFreehandDrawingLayout *)self freehandInfo];
+  shouldBeTreatedAsBoxForConnectionLinesForPerf = [freehandInfo shouldBeTreatedAsBoxForConnectionLinesForPerf];
 
-  if (v4)
+  if (shouldBeTreatedAsBoxForConnectionLinesForPerf)
   {
     [(CRLGroupLayout *)self boundsForStandardKnobs];
-    v5 = [CRLBezierPath bezierPathWithRect:?];
+    pathForClippingConnectionLines = [CRLBezierPath bezierPathWithRect:?];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = CRLFreehandDrawingLayout;
-    v5 = [(CRLGroupLayout *)&v7 pathForClippingConnectionLines];
+    pathForClippingConnectionLines = [(CRLGroupLayout *)&v7 pathForClippingConnectionLines];
   }
 
-  return v5;
+  return pathForClippingConnectionLines;
 }
 
 - (CGRect)frameForMiniFormatterPositioning
@@ -1428,10 +1428,10 @@ LABEL_24:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [(CRLFreehandDrawingLayout *)self freehandInfo];
-  v3 = [v2 childInfos];
+  freehandInfo = [(CRLFreehandDrawingLayout *)self freehandInfo];
+  childInfos = [freehandInfo childInfos];
 
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [childInfos countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1446,7 +1446,7 @@ LABEL_24:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childInfos);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v8);
@@ -1466,7 +1466,7 @@ LABEL_24:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [childInfos countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v5)
       {
         continue;
@@ -1556,16 +1556,16 @@ LABEL_13:
 
 - (BOOL)isInteractable
 {
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    v4 = v2;
+    canvasController = selfCopy;
     while (1)
     {
       v5 = objc_opt_class();
-      v6 = [v4 info];
-      v7 = sub_100013F00(v5, v6);
+      info = [canvasController info];
+      v7 = sub_100013F00(v5, info);
 
       if ([v7 locked])
       {
@@ -1573,10 +1573,10 @@ LABEL_13:
       }
 
       v8 = objc_opt_class();
-      v9 = [v4 parent];
-      v10 = sub_100014370(v8, v9);
+      parent = [canvasController parent];
+      v10 = sub_100014370(v8, parent);
 
-      v4 = v10;
+      canvasController = v10;
       if (!v10)
       {
         goto LABEL_5;
@@ -1589,11 +1589,11 @@ LABEL_13:
   else
   {
 LABEL_5:
-    v11 = [(CRLCanvasLayout *)v3 layoutController];
-    v12 = [v11 canvas];
-    v4 = [v12 canvasController];
+    layoutController = [(CRLCanvasLayout *)v3 layoutController];
+    canvas = [layoutController canvas];
+    canvasController = [canvas canvasController];
 
-    if (!v4)
+    if (!canvasController)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1622,25 +1622,25 @@ LABEL_5:
       [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:655 isFatal:0 description:"invalid nil value for '%{public}s'", "icc"];
     }
 
-    v16 = [v4 canvasEditor];
-    v17 = [v16 isLayoutSelectable:v3];
+    canvasEditor = [canvasController canvasEditor];
+    v17 = [canvasEditor isLayoutSelectable:v3];
   }
 
   return v17;
 }
 
-- (void)showSubselectionAffordanceForSelectedInfos:(id)a3
+- (void)showSubselectionAffordanceForSelectedInfos:(id)infos
 {
-  v22 = a3;
-  v4 = [v22 count];
+  infosCopy = infos;
+  v4 = [infosCopy count];
   v5 = *(&self->_isTransformLayoutInDynamicOperation + 2);
   if (v4)
   {
     if (!v5)
     {
       v6 = [CRLFreehandDrawingTransformInfo alloc];
-      v7 = [(CRLFreehandDrawingLayout *)self freehandInfo];
-      v8 = [(CRLFreehandDrawingTransformInfo *)v6 initWithParentInfo:v7];
+      freehandInfo = [(CRLFreehandDrawingLayout *)self freehandInfo];
+      v8 = [(CRLFreehandDrawingTransformInfo *)v6 initWithParentInfo:freehandInfo];
       v9 = *(&self->_isTransformLayoutInDynamicOperation + 2);
       *(&self->_isTransformLayoutInDynamicOperation + 2) = v8;
 
@@ -1648,20 +1648,20 @@ LABEL_5:
     }
 
     v10 = objc_opt_class();
-    v11 = [(CRLCanvasLayout *)self layoutController];
-    v12 = [v11 layoutForInfo:*(&self->_isTransformLayoutInDynamicOperation + 2)];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    v12 = [layoutController layoutForInfo:*(&self->_isTransformLayoutInDynamicOperation + 2)];
     v13 = sub_100013F00(v10, v12);
 
     v14 = *(&self->_isTransformLayoutInDynamicOperation + 2);
-    v15 = [(CRLCanvasLayout *)self layoutController];
-    [v14 setRepresentedShapeInfos:v22 currentlyLaidOutOnLayoutController:v15];
+    layoutController2 = [(CRLCanvasLayout *)self layoutController];
+    [v14 setRepresentedShapeInfos:infosCopy currentlyLaidOutOnLayoutController:layoutController2];
 
     [v13 invalidateFrame];
     v16 = objc_opt_class();
-    v17 = [(CRLCanvasLayout *)self layoutController];
-    v18 = [v17 canvas];
-    v19 = [v18 canvasController];
-    v20 = [v19 repForInfo:*(&self->_isTransformLayoutInDynamicOperation + 2)];
+    layoutController3 = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController3 canvas];
+    canvasController = [canvas canvasController];
+    v20 = [canvasController repForInfo:*(&self->_isTransformLayoutInDynamicOperation + 2)];
     v21 = sub_100013F00(v16, v20);
 
     if (v21)
@@ -1679,18 +1679,18 @@ LABEL_5:
   }
 }
 
-+ (id)freehandDrawingLayoutsToInteractWithFromLayouts:(id)a3
++ (id)freehandDrawingLayoutsToInteractWithFromLayouts:(id)layouts
 {
-  v3 = a3;
+  layoutsCopy = layouts;
   v29 = +[NSMutableArray array];
-  if ([v3 count])
+  if ([layoutsCopy count])
   {
-    v4 = [v3 crl_anyObject];
-    v5 = [v4 layoutController];
-    v6 = [v5 canvas];
-    v7 = [v6 canvasController];
+    crl_anyObject = [layoutsCopy crl_anyObject];
+    layoutController = [crl_anyObject layoutController];
+    canvas = [layoutController canvas];
+    canvasController = [canvas canvasController];
 
-    if (!v7)
+    if (!canvasController)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1723,8 +1723,8 @@ LABEL_5:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v27 = v3;
-    v11 = v3;
+    v27 = layoutsCopy;
+    v11 = layoutsCopy;
     v12 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v12)
     {
@@ -1743,16 +1743,16 @@ LABEL_5:
           v17 = objc_opt_class();
           v18 = sub_100014370(v17, v16);
           v19 = objc_opt_class();
-          v20 = [v18 info];
-          v21 = sub_100013F00(v19, v20);
+          info = [v18 info];
+          v21 = sub_100013F00(v19, info);
 
           if (!v18 || ([v21 locked] & 1) == 0)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v22 = [v7 canvasEditor];
-              v23 = [v22 isLayoutSelectable:v16];
+              canvasEditor = [canvasController canvasEditor];
+              v23 = [canvasEditor isLayoutSelectable:v16];
 
               if (v23)
               {
@@ -1762,8 +1762,8 @@ LABEL_5:
 
             else if (v18)
             {
-              v24 = [v18 children];
-              v25 = [a1 freehandDrawingLayoutsToInteractWithFromLayouts:v24];
+              children = [v18 children];
+              v25 = [self freehandDrawingLayoutsToInteractWithFromLayouts:children];
               [v29 addObjectsFromArray:v25];
             }
           }
@@ -1775,19 +1775,19 @@ LABEL_5:
       while (v13);
     }
 
-    v3 = v27;
+    layoutsCopy = v27;
   }
 
   return v29;
 }
 
-+ (BOOL)p_anyFreehandDrawingsVisibleInInteractiveCanvasController:(id)a3 findSelected:(BOOL)a4
++ (BOOL)p_anyFreehandDrawingsVisibleInInteractiveCanvasController:(id)controller findSelected:(BOOL)selected
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 layoutController];
-  [v6 visibleUnscaledRect];
-  [v7 layoutsInRect:1 deep:?];
+  selectedCopy = selected;
+  controllerCopy = controller;
+  layoutController = [controllerCopy layoutController];
+  [controllerCopy visibleUnscaledRect];
+  [layoutController layoutsInRect:1 deep:?];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1806,7 +1806,7 @@ LABEL_5:
           objc_enumerationMutation(v8);
         }
 
-        if ([a1 p_layoutIsFreehandDrawing:*(*(&v15 + 1) + 8 * i) andSelected:v4 icc:{v6, v15}])
+        if ([self p_layoutIsFreehandDrawing:*(*(&v15 + 1) + 8 * i) andSelected:selectedCopy icc:{controllerCopy, v15}])
         {
           v13 = 1;
           goto LABEL_11;
@@ -1829,17 +1829,17 @@ LABEL_11:
   return v13;
 }
 
-+ (BOOL)p_layoutIsFreehandDrawing:(id)a3 andSelected:(BOOL)a4 icc:(id)a5
++ (BOOL)p_layoutIsFreehandDrawing:(id)drawing andSelected:(BOOL)selected icc:(id)icc
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  selectedCopy = selected;
+  drawingCopy = drawing;
+  iccCopy = icc;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if ((isKindOfClass & 1) != 0 && v6)
+  if ((isKindOfClass & 1) != 0 && selectedCopy)
   {
-    v10 = [v7 info];
-    isKindOfClass = [v8 currentSelectionPathContainsInfo:v10];
+    info = [drawingCopy info];
+    isKindOfClass = [iccCopy currentSelectionPathContainsInfo:info];
   }
 
   return isKindOfClass & 1;
@@ -1858,12 +1858,12 @@ LABEL_11:
   return result;
 }
 
-- (void)setBoundsForMathResultViews:(CGRect)a3
+- (void)setBoundsForMathResultViews:(CGRect)views
 {
-  *(&self->_drawingShapeItemUUIDToStrokeDataUUIDBidirectionalMap + 2) = *&a3.origin.x;
-  *(&self->_boundsForMathResultViews.origin.x + 2) = a3.origin.y;
-  *(&self->_boundsForMathResultViews.origin.y + 2) = a3.size.width;
-  *(&self->_boundsForMathResultViews.size.width + 2) = a3.size.height;
+  *(&self->_drawingShapeItemUUIDToStrokeDataUUIDBidirectionalMap + 2) = *&views.origin.x;
+  *(&self->_boundsForMathResultViews.origin.x + 2) = views.origin.y;
+  *(&self->_boundsForMathResultViews.origin.y + 2) = views.size.width;
+  *(&self->_boundsForMathResultViews.size.width + 2) = views.size.height;
 }
 
 - (CGRect)frameAtMathViewAttachment
@@ -1879,12 +1879,12 @@ LABEL_11:
   return result;
 }
 
-- (void)setFrameAtMathViewAttachment:(CGRect)a3
+- (void)setFrameAtMathViewAttachment:(CGRect)attachment
 {
-  *(&self->_boundsForMathResultViews.size.height + 2) = a3.origin.x;
-  *(&self->_frameAtMathViewAttachment.origin.x + 2) = a3.origin.y;
-  *(&self->_frameAtMathViewAttachment.origin.y + 2) = a3.size.width;
-  *(&self->_frameAtMathViewAttachment.size.width + 2) = a3.size.height;
+  *(&self->_boundsForMathResultViews.size.height + 2) = attachment.origin.x;
+  *(&self->_frameAtMathViewAttachment.origin.x + 2) = attachment.origin.y;
+  *(&self->_frameAtMathViewAttachment.origin.y + 2) = attachment.size.width;
+  *(&self->_frameAtMathViewAttachment.size.width + 2) = attachment.size.height;
 }
 
 - (CGRect)cachedFrameForMiniFormatterPositioning
@@ -1900,12 +1900,12 @@ LABEL_11:
   return result;
 }
 
-- (void)setCachedFrameForMiniFormatterPositioning:(CGRect)a3
+- (void)setCachedFrameForMiniFormatterPositioning:(CGRect)positioning
 {
-  *(&self->_frameAtMathViewAttachment.size.height + 2) = a3.origin.x;
-  *(&self->_cachedFrameForMiniFormatterPositioning.origin.x + 2) = a3.origin.y;
-  *(&self->_cachedFrameForMiniFormatterPositioning.origin.y + 2) = a3.size.width;
-  *(&self->_cachedFrameForMiniFormatterPositioning.size.width + 2) = a3.size.height;
+  *(&self->_frameAtMathViewAttachment.size.height + 2) = positioning.origin.x;
+  *(&self->_cachedFrameForMiniFormatterPositioning.origin.x + 2) = positioning.origin.y;
+  *(&self->_cachedFrameForMiniFormatterPositioning.origin.y + 2) = positioning.size.width;
+  *(&self->_cachedFrameForMiniFormatterPositioning.size.width + 2) = positioning.size.height;
 }
 
 @end

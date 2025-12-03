@@ -1,17 +1,17 @@
 @interface TSCEGroupByNodeMap
-- (BOOL)getCellRefs:(void *)a3 referringToGroupNodes:(const void *)a4 inGroupBy:(const TSKUIDStruct *)a5;
+- (BOOL)getCellRefs:(void *)refs referringToGroupNodes:(const void *)nodes inGroupBy:(const TSKUIDStruct *)by;
 - (id).cxx_construct;
 - (id)description;
-- (id)initFromArchive:(const void *)a3;
-- (void)addCellRef:(const TSCEInternalCellReference *)a3 usingCategoryRef:(id)a4;
-- (void)encodeToArchive:(void *)a3;
-- (void)getCellRefs:(void *)a3 forGroupRootInGroupBy:(const TSKUIDStruct *)a4;
-- (void)getCellRefs:(void *)a3 inGroupBy:(const TSKUIDStruct *)a4;
-- (void)getCellRefs:(void *)a3 inGroupBys:(const void *)a4;
-- (void)removeAllCellRefsInOwner:(unsigned __int16)a3;
-- (void)removeCellRef:(const TSCEInternalCellReference *)a3;
-- (void)removeCellRef:(const TSCEInternalCellReference *)a3 usingCategoryRef:(id)a4;
-- (void)upgradeGroupByUid:(const TSKUIDStruct *)a3 toUid:(const TSKUIDStruct *)a4;
+- (id)initFromArchive:(const void *)archive;
+- (void)addCellRef:(const TSCEInternalCellReference *)ref usingCategoryRef:(id)categoryRef;
+- (void)encodeToArchive:(void *)archive;
+- (void)getCellRefs:(void *)refs forGroupRootInGroupBy:(const TSKUIDStruct *)by;
+- (void)getCellRefs:(void *)refs inGroupBy:(const TSKUIDStruct *)by;
+- (void)getCellRefs:(void *)refs inGroupBys:(const void *)bys;
+- (void)removeAllCellRefsInOwner:(unsigned __int16)owner;
+- (void)removeCellRef:(const TSCEInternalCellReference *)ref;
+- (void)removeCellRef:(const TSCEInternalCellReference *)ref usingCategoryRef:(id)categoryRef;
+- (void)upgradeGroupByUid:(const TSKUIDStruct *)uid toUid:(const TSKUIDStruct *)toUid;
 @end
 
 @implementation TSCEGroupByNodeMap
@@ -23,23 +23,23 @@
   return objc_msgSend_stringWithFormat_(v3, v5, @"%@<%p>:\n", v6, v7, v4, self);
 }
 
-- (void)addCellRef:(const TSCEInternalCellReference *)a3 usingCategoryRef:(id)a4
+- (void)addCellRef:(const TSCEInternalCellReference *)ref usingCategoryRef:(id)categoryRef
 {
-  v6 = a4;
-  v27[0] = objc_msgSend_groupByUid(v6, v7, v8, v9, v10);
+  categoryRefCopy = categoryRef;
+  v27[0] = objc_msgSend_groupByUid(categoryRefCopy, v7, v8, v9, v10);
   v27[1] = v11;
   if (v27[0] | v11)
   {
     v25 = 0;
     v26 = 0;
-    if (objc_msgSend_isBadRef(v6, v11, v12, v13, v14))
+    if (objc_msgSend_isBadRef(categoryRefCopy, v11, v12, v13, v14))
     {
-      v19 = objc_msgSend_relativeGroupUid(v6, v15, v16, v17, v18);
+      v19 = objc_msgSend_relativeGroupUid(categoryRefCopy, v15, v16, v17, v18);
     }
 
     else
     {
-      v19 = objc_msgSend_absoluteGroupUid(v6, v15, v16, v17, v18);
+      v19 = objc_msgSend_absoluteGroupUid(categoryRefCopy, v15, v16, v17, v18);
     }
 
     v25 = v19;
@@ -47,33 +47,33 @@
     if (v19 | v20)
     {
       v21 = sub_22147D0A0(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, v27);
-      v22 = sub_22147D360(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, a3);
+      v22 = sub_22147D360(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, ref);
       v24 = &v25;
       v23 = sub_22141DC04(v21 + 4, &v25);
-      sub_2212DFCE8(v23 + 4, a3);
+      sub_2212DFCE8(v23 + 4, ref);
       TSKMakeUIDStructCoord();
       sub_22147D60C(v22 + 4, &v24);
     }
   }
 }
 
-- (void)removeCellRef:(const TSCEInternalCellReference *)a3 usingCategoryRef:(id)a4
+- (void)removeCellRef:(const TSCEInternalCellReference *)ref usingCategoryRef:(id)categoryRef
 {
-  v6 = a4;
-  v30[0] = objc_msgSend_groupByUid(v6, v7, v8, v9, v10);
+  categoryRefCopy = categoryRef;
+  v30[0] = objc_msgSend_groupByUid(categoryRefCopy, v7, v8, v9, v10);
   v30[1] = v11;
   if (v30[0] | v11 && sub_221119F90(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, v30))
   {
     v28 = 0;
     v29 = 0;
-    if (objc_msgSend_isBadRef(v6, v12, v13, v14, v15))
+    if (objc_msgSend_isBadRef(categoryRefCopy, v12, v13, v14, v15))
     {
-      v20 = objc_msgSend_relativeGroupUid(v6, v16, v17, v18, v19);
+      v20 = objc_msgSend_relativeGroupUid(categoryRefCopy, v16, v17, v18, v19);
     }
 
     else
     {
-      v20 = objc_msgSend_absoluteGroupUid(v6, v16, v17, v18, v19);
+      v20 = objc_msgSend_absoluteGroupUid(categoryRefCopy, v16, v17, v18, v19);
     }
 
     v22 = v20;
@@ -81,15 +81,15 @@
     v28 = v20;
     v29 = v21;
     v24 = sub_22147D0A0(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, v30);
-    v27 = a3;
-    v25 = sub_22147D360(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, a3);
+    refCopy = ref;
+    v25 = sub_22147D360(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, ref);
     if (v22 | v23)
     {
-      v27 = &v28;
+      refCopy = &v28;
       v26 = sub_22141DC04(v24 + 4, &v28);
-      sub_2212DFDD0(v26 + 4, a3);
+      sub_2212DFDD0(v26 + 4, ref);
       TSKMakeUIDStructCoord();
-      sub_22147D86C(v25 + 4, &v27);
+      sub_22147D86C(v25 + 4, &refCopy);
     }
 
     if (!v24[7])
@@ -99,14 +99,14 @@
 
     if (!v25[7])
     {
-      sub_22147D8F0(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, a3);
+      sub_22147D8F0(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, ref);
     }
   }
 }
 
-- (void)removeCellRef:(const TSCEInternalCellReference *)a3
+- (void)removeCellRef:(const TSCEInternalCellReference *)ref
 {
-  v5 = sub_221123474(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, a3);
+  v5 = sub_221123474(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, ref);
   if (v5)
   {
     for (i = v5[6]; i; i = *i)
@@ -118,28 +118,28 @@
       v8 = sub_22147D0A0(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, &v11);
       v12 = &v10;
       v9 = sub_22141DC04(v8 + 4, &v10);
-      sub_2212DFDD0(v9 + 4, a3);
+      sub_2212DFDD0(v9 + 4, ref);
     }
 
-    sub_22147D8F0(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, a3);
+    sub_22147D8F0(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, ref);
   }
 
-  sub_22147D8F0(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, a3);
+  sub_22147D8F0(&self->_groupNodesByCellRef.__table_.__bucket_list_.__ptr_, ref);
 }
 
-- (void)removeAllCellRefsInOwner:(unsigned __int16)a3
+- (void)removeAllCellRefsInOwner:(unsigned __int16)owner
 {
   memset(v9, 0, sizeof(v9));
   v10 = 1065353216;
   next = self->_groupNodesByCellRef.__table_.__first_node_.__next_;
   if (next)
   {
-    v5 = a3;
+    ownerCopy = owner;
     do
     {
       v7 = next[2];
       v8 = *(next + 6);
-      if (v5 == v8)
+      if (ownerCopy == v8)
       {
         sub_2212DFCE8(v9, &v7);
       }
@@ -159,14 +159,14 @@
   sub_221122744(v9);
 }
 
-- (BOOL)getCellRefs:(void *)a3 referringToGroupNodes:(const void *)a4 inGroupBy:(const TSKUIDStruct *)a5
+- (BOOL)getCellRefs:(void *)refs referringToGroupNodes:(const void *)nodes inGroupBy:(const TSKUIDStruct *)by
 {
-  v7 = sub_2210875C4(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, a5);
+  v7 = sub_2210875C4(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, by);
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  if (!v7 || (v8 = *a4, v9 = *(a4 + 1), v8 == v9))
+  if (!v7 || (v8 = *nodes, v9 = *(nodes + 1), v8 == v9))
   {
     v12 = 0;
   }
@@ -184,7 +184,7 @@
         v14[2] = sub_22147C7F0;
         v14[3] = &unk_278465940;
         v14[4] = &v15;
-        v14[5] = a3;
+        v14[5] = refs;
         sub_2212DFEC0((v11 + 4), v14);
       }
 
@@ -199,9 +199,9 @@
   return v12 & 1;
 }
 
-- (void)getCellRefs:(void *)a3 forGroupRootInGroupBy:(const TSKUIDStruct *)a4
+- (void)getCellRefs:(void *)refs forGroupRootInGroupBy:(const TSKUIDStruct *)by
 {
-  v5 = sub_2210875C4(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, a4);
+  v5 = sub_2210875C4(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, by);
   if (v5)
   {
     v10 = v5;
@@ -214,15 +214,15 @@
       v13[1] = 3221225472;
       v13[2] = sub_22147C8D8;
       v13[3] = &unk_27845F588;
-      v13[4] = a3;
+      v13[4] = refs;
       sub_2212DFEC0((v12 + 4), v13);
     }
   }
 }
 
-- (void)getCellRefs:(void *)a3 inGroupBy:(const TSKUIDStruct *)a4
+- (void)getCellRefs:(void *)refs inGroupBy:(const TSKUIDStruct *)by
 {
-  v5 = sub_2210875C4(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, a4);
+  v5 = sub_2210875C4(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, by);
   if (v5)
   {
     v6 = v5[6];
@@ -235,7 +235,7 @@
         v8[1] = 3221225472;
         v8[2] = sub_22147C99C;
         v8[3] = &unk_27845F588;
-        v8[4] = a3;
+        v8[4] = refs;
         sub_2212DFEC0((v6 + 4), v8);
         v6 = *v6;
       }
@@ -245,15 +245,15 @@
   }
 }
 
-- (void)getCellRefs:(void *)a3 inGroupBys:(const void *)a4
+- (void)getCellRefs:(void *)refs inGroupBys:(const void *)bys
 {
-  v5 = *a4;
-  v6 = *(a4 + 1);
-  if (*a4 != v6)
+  v5 = *bys;
+  v6 = *(bys + 1);
+  if (*bys != v6)
   {
     do
     {
-      objc_msgSend_getCellRefs_inGroupBy_(self, a2, a3, v5, v4);
+      objc_msgSend_getCellRefs_inGroupBy_(self, a2, refs, v5, v4);
       v5 += 16;
     }
 
@@ -261,12 +261,12 @@
   }
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
-  v6 = objc_msgSend_init(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_init(self, a2, archive, v3, v4);
   if (v6)
   {
-    v20 = *(a3 + 6);
+    v20 = *(archive + 6);
     if (v20 >= 1)
     {
       v7 = 0;
@@ -274,7 +274,7 @@
       do
       {
         v22 = v7;
-        v9 = *(*(a3 + 4) + 8 * v7 + 8);
+        v9 = *(*(archive + 4) + 8 * v7 + 8);
         v28 = 0uLL;
         if (*(v9 + 48))
         {
@@ -354,7 +354,7 @@
   return v6;
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
   for (i = self->_cellRefsByGroupNodeByGroupBy.__table_.__first_node_.__next_; i; i = i->_lower)
   {
@@ -364,34 +364,34 @@
       continue;
     }
 
-    v5 = *(a3 + 4);
+    v5 = *(archive + 4);
     if (!v5)
     {
       goto LABEL_8;
     }
 
-    v6 = *(a3 + 6);
+    v6 = *(archive + 6);
     v7 = *v5;
     if (v6 < *v5)
     {
-      *(a3 + 6) = v6 + 1;
+      *(archive + 6) = v6 + 1;
       v8 = *&v5[2 * v6 + 2];
       goto LABEL_10;
     }
 
-    if (v7 == *(a3 + 7))
+    if (v7 == *(archive + 7))
     {
 LABEL_8:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-      v5 = *(a3 + 4);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 16));
+      v5 = *(archive + 4);
       v7 = *v5;
     }
 
     *v5 = v7 + 1;
-    v8 = google::protobuf::Arena::CreateMaybeMessage<TSCE::GroupByNodeMapArchive_GroupNodesForGroupBy>(*(a3 + 2));
-    v9 = *(a3 + 6);
-    v10 = *(a3 + 4) + 8 * v9;
-    *(a3 + 6) = v9 + 1;
+    v8 = google::protobuf::Arena::CreateMaybeMessage<TSCE::GroupByNodeMapArchive_GroupNodesForGroupBy>(*(archive + 2));
+    v9 = *(archive + 6);
+    v10 = *(archive + 4) + 8 * v9;
+    *(archive + 6) = v9 + 1;
     *(v10 + 8) = v8;
 LABEL_10:
     *(v8 + 16) |= 1u;
@@ -496,17 +496,17 @@ LABEL_33:
   }
 }
 
-- (void)upgradeGroupByUid:(const TSKUIDStruct *)a3 toUid:(const TSKUIDStruct *)a4
+- (void)upgradeGroupByUid:(const TSKUIDStruct *)uid toUid:(const TSKUIDStruct *)toUid
 {
-  v7 = sub_2210875C4(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, a3);
+  v7 = sub_2210875C4(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, uid);
   if (v7)
   {
     v8 = v7;
     sub_22141E1BC(v15, (v7 + 4));
     sub_221087680(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, v8, v13);
     sub_22147D314(v13);
-    v13[0] = a4;
-    v9 = sub_22147D0A0(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, a4);
+    v13[0] = toUid;
+    v9 = sub_22147D0A0(&self->_cellRefsByGroupNodeByGroupBy.__table_.__bucket_list_.__ptr_, toUid);
     if (v9 + 4 != v15)
     {
       *(v9 + 16) = v17;
@@ -518,7 +518,7 @@ LABEL_33:
       sub_22147DB74(v13, (i + 4));
       for (j = v14; j; j = *j)
       {
-        if (j[2] == a3->_lower && j[3] == a3->_upper)
+        if (j[2] == uid->_lower && j[3] == uid->_upper)
         {
           memset(v12, 0, sizeof(v12));
           TSKMakeUIDStructCoord();

@@ -1,23 +1,23 @@
 @interface RPRemoteDisplayPerson
-- (RPRemoteDisplayPerson)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (id)initPersonWithDevice:(id)a3;
-- (void)addDevice:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeDevice:(id)a3;
+- (RPRemoteDisplayPerson)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
+- (id)initPersonWithDevice:(id)device;
+- (void)addDevice:(id)device;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeDevice:(id)device;
 @end
 
 @implementation RPRemoteDisplayPerson
 
-- (RPRemoteDisplayPerson)initWithCoder:(id)a3
+- (RPRemoteDisplayPerson)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RPRemoteDisplayPerson;
   v5 = [(RPRemoteDisplayPerson *)&v11 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -43,49 +43,49 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   accountAltDSID = self->_accountAltDSID;
-  v10 = v4;
+  v10 = coderCopy;
   if (accountAltDSID)
   {
-    [v4 encodeObject:accountAltDSID forKey:@"_altDSID"];
-    v4 = v10;
+    [coderCopy encodeObject:accountAltDSID forKey:@"_altDSID"];
+    coderCopy = v10;
   }
 
   accountID = self->_accountID;
   if (accountID)
   {
     [v10 encodeObject:accountID forKey:@"_aID"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   contactID = self->_contactID;
   if (contactID)
   {
     [v10 encodeObject:contactID forKey:@"_cnID"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   discoveredDevices = self->_discoveredDevices;
   if (discoveredDevices)
   {
     [v10 encodeObject:discoveredDevices forKey:@"_dv"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   flags = self->_flags;
   if (flags)
   {
     [v10 encodeInt64:flags forKey:@"_fl"];
-    v4 = v10;
+    coderCopy = v10;
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if (a3 <= 49)
+  if (level <= 49)
   {
     v4 = 100;
   }
@@ -141,39 +141,39 @@
   return v6;
 }
 
-- (id)initPersonWithDevice:(id)a3
+- (id)initPersonWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = RPRemoteDisplayPerson;
   v5 = [(RPRemoteDisplayPerson *)&v17 init];
   if (v5)
   {
-    v6 = [v4 accountAltDSID];
+    accountAltDSID = [deviceCopy accountAltDSID];
     accountAltDSID = v5->_accountAltDSID;
-    v5->_accountAltDSID = v6;
+    v5->_accountAltDSID = accountAltDSID;
 
-    v8 = [v4 accountID];
+    accountID = [deviceCopy accountID];
     accountID = v5->_accountID;
-    v5->_accountID = v8;
+    v5->_accountID = accountID;
 
-    v10 = [v4 contactID];
+    contactID = [deviceCopy contactID];
     contactID = v5->_contactID;
-    v5->_contactID = v10;
+    v5->_contactID = contactID;
 
     v12 = objc_opt_new();
     discoveredDevices = v5->_discoveredDevices;
     v5->_discoveredDevices = v12;
 
-    [(NSMutableArray *)v5->_discoveredDevices addObject:v4];
-    if (([v4 statusFlags] & 0x80000) != 0)
+    [(NSMutableArray *)v5->_discoveredDevices addObject:deviceCopy];
+    if (([deviceCopy statusFlags] & 0x80000) != 0)
     {
       v14 = 1;
     }
 
     else
     {
-      if (([v4 statusFlags] & 0x1000000000) == 0)
+      if (([deviceCopy statusFlags] & 0x1000000000) == 0)
       {
 LABEL_7:
         v15 = v5;
@@ -192,17 +192,17 @@ LABEL_8:
   return v5;
 }
 
-- (void)addDevice:(id)a3
+- (void)addDevice:(id)device
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  deviceCopy = device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v5->_discoveredDevices;
+  v6 = selfCopy->_discoveredDevices;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -217,7 +217,7 @@ LABEL_8:
           objc_enumerationMutation(v6);
         }
 
-        if ([*(*(&v14 + 1) + 8 * v9) isEqualToDevice:{v4, v14}])
+        if ([*(*(&v14 + 1) + 8 * v9) isEqualToDevice:{deviceCopy, v14}])
         {
 
           goto LABEL_13;
@@ -237,34 +237,34 @@ LABEL_8:
     }
   }
 
-  discoveredDevices = v5->_discoveredDevices;
+  discoveredDevices = selfCopy->_discoveredDevices;
   if (!discoveredDevices)
   {
     v11 = objc_opt_new();
-    v12 = v5->_discoveredDevices;
-    v5->_discoveredDevices = v11;
+    v12 = selfCopy->_discoveredDevices;
+    selfCopy->_discoveredDevices = v11;
 
-    discoveredDevices = v5->_discoveredDevices;
+    discoveredDevices = selfCopy->_discoveredDevices;
   }
 
-  [(NSMutableArray *)discoveredDevices addObject:v4, v14];
+  [(NSMutableArray *)discoveredDevices addObject:deviceCopy, v14];
 LABEL_13:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeDevice:(id)a3
+- (void)removeDevice:(id)device
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  deviceCopy = device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v5->_discoveredDevices;
+  v6 = selfCopy->_discoveredDevices;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -279,13 +279,13 @@ LABEL_13:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 isEqualToDevice:{v4, v13}])
+        if ([v10 isEqualToDevice:{deviceCopy, v13}])
         {
           v11 = v10;
 
           if (v11)
           {
-            [(NSMutableArray *)v5->_discoveredDevices removeObject:v11];
+            [(NSMutableArray *)selfCopy->_discoveredDevices removeObject:v11];
           }
 
           goto LABEL_12;
@@ -304,7 +304,7 @@ LABEL_13:
 
   v11 = 0;
 LABEL_12:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
 }

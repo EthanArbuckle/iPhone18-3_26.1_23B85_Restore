@@ -1,22 +1,22 @@
 @interface PillBadgeTextAttachment
-- (_TtC20HeadphoneProxService23PillBadgeTextAttachment)initWithCoder:(id)a3;
-- (_TtC20HeadphoneProxService23PillBadgeTextAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (_TtC20HeadphoneProxService23PillBadgeTextAttachment)initWithCoder:(id)coder;
+- (_TtC20HeadphoneProxService23PillBadgeTextAttachment)initWithData:(id)data ofType:(id)type;
 @end
 
 @implementation PillBadgeTextAttachment
 
-- (_TtC20HeadphoneProxService23PillBadgeTextAttachment)initWithCoder:(id)a3
+- (_TtC20HeadphoneProxService23PillBadgeTextAttachment)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (_TtC20HeadphoneProxService23PillBadgeTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC20HeadphoneProxService23PillBadgeTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     sub_100022640(v5, v6);
   }

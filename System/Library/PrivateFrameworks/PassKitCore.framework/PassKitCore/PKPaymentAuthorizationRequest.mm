@@ -1,19 +1,19 @@
 @interface PKPaymentAuthorizationRequest
-- (PKPaymentAuthorizationRequest)initWithPaymentRequest:(id)a3;
+- (PKPaymentAuthorizationRequest)initWithPaymentRequest:(id)request;
 @end
 
 @implementation PKPaymentAuthorizationRequest
 
-- (PKPaymentAuthorizationRequest)initWithPaymentRequest:(id)a3
+- (PKPaymentAuthorizationRequest)initWithPaymentRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = PKPaymentAuthorizationRequest;
   v6 = [(PKPaymentAuthorizationRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paymentRequest, a3);
+    objc_storeStrong(&v6->_paymentRequest, request);
   }
 
   return v7;

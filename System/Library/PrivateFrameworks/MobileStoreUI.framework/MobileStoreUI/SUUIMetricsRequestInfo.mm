@@ -1,19 +1,19 @@
 @interface SUUIMetricsRequestInfo
 - (NSDictionary)dictionaryRepresentation;
-- (SUUIMetricsRequestInfo)initWithReportRequestTimesMessagePayload:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUUIMetricsRequestInfo)initWithReportRequestTimesMessagePayload:(id)payload;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SUUIMetricsRequestInfo
 
-- (SUUIMetricsRequestInfo)initWithReportRequestTimesMessagePayload:(id)a3
+- (SUUIMetricsRequestInfo)initWithReportRequestTimesMessagePayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"requestStartTime"];
-  v6 = [v4 objectForKeyedSubscript:@"responseStartTime"];
-  v7 = [v4 objectForKeyedSubscript:@"responseEndTime"];
+  payloadCopy = payload;
+  v5 = [payloadCopy objectForKeyedSubscript:@"requestStartTime"];
+  v6 = [payloadCopy objectForKeyedSubscript:@"responseStartTime"];
+  v7 = [payloadCopy objectForKeyedSubscript:@"responseEndTime"];
   v8 = v7;
-  v9 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7)
   {
     v10 = [(SUUIMetricsRequestInfo *)self init];
@@ -25,23 +25,23 @@
       [(SUUIMetricsRequestInfo *)v10 setResponseStartTime:?];
       [SUUIMetricsUtilities timeIntervalFromJSTime:v8];
       [(SUUIMetricsRequestInfo *)v10 setResponseEndTime:?];
-      v11 = [v4 objectForKeyedSubscript:@"responseWasCached"];
+      v11 = [payloadCopy objectForKeyedSubscript:@"responseWasCached"];
 
       if (v11)
       {
-        v12 = [v4 objectForKeyedSubscript:@"responseWasCached"];
+        v12 = [payloadCopy objectForKeyedSubscript:@"responseWasCached"];
         -[SUUIMetricsRequestInfo setResponseWasCached:](v10, "setResponseWasCached:", [v12 BOOLValue]);
       }
     }
 
     self = v10;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(SUUIMetricsRequestInfo *)self requestStartTime];

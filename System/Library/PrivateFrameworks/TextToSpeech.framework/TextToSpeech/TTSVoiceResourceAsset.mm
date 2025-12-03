@@ -1,13 +1,13 @@
 @interface TTSVoiceResourceAsset
 + (id)legacyPlatforms;
-- (TTSVoiceResourceAsset)initWithCoder:(id)a3;
+- (TTSVoiceResourceAsset)initWithCoder:(id)coder;
 - (id)defaultFootprintString;
 - (id)defaultTypeString;
 - (id)defaultVoice;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)syncWithConfigData:(id)a3 voiceType:(int64_t)a4;
-- (void)syncWithConfigFile:(id)a3 voiceType:(int64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)syncWithConfigData:(id)data voiceType:(int64_t)type;
+- (void)syncWithConfigFile:(id)file voiceType:(int64_t)type;
 @end
 
 @implementation TTSVoiceResourceAsset
@@ -23,23 +23,23 @@
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = TTSVoiceResourceAsset;
-  v4 = a3;
-  [(TTSAssetBase *)&v9 encodeWithCoder:v4];
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->_languages, @"_languages", v6, v9.receiver, v9.super_class);
-  objc_msgSend_encodeObject_forKey_(v4, v7, self->_searchPathURL, @"_searchPathURL", v8);
+  coderCopy = coder;
+  [(TTSAssetBase *)&v9 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_languages, @"_languages", v6, v9.receiver, v9.super_class);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_searchPathURL, @"_searchPathURL", v8);
 }
 
-- (TTSVoiceResourceAsset)initWithCoder:(id)a3
+- (TTSVoiceResourceAsset)initWithCoder:(id)coder
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = TTSVoiceResourceAsset;
-  v5 = [(TTSAssetBase *)&v25 initWithCoder:v4];
+  v5 = [(TTSAssetBase *)&v25 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -47,12 +47,12 @@
     v26[1] = objc_opt_class();
     v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v7, v26, 2, v8);
     v13 = objc_msgSend_setWithArray_(v6, v10, v9, v11, v12);
-    v16 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v14, v13, @"_languages", v15);
+    v16 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v14, v13, @"_languages", v15);
     languages = v5->_languages;
     v5->_languages = v16;
 
     v18 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v19, v18, @"_searchPathURL", v20);
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v19, v18, @"_searchPathURL", v20);
     searchPathURL = v5->_searchPathURL;
     v5->_searchPathURL = v21;
   }
@@ -73,28 +73,28 @@
   return v3;
 }
 
-- (void)syncWithConfigFile:(id)a3 voiceType:(int64_t)a4
+- (void)syncWithConfigFile:(id)file voiceType:(int64_t)type
 {
-  v9 = objc_msgSend_dictionaryWithContentsOfURL_(MEMORY[0x1E695DF20], a2, a3, a4, v4);
-  objc_msgSend_syncWithConfigData_voiceType_(self, v7, v9, a4, v8);
+  v9 = objc_msgSend_dictionaryWithContentsOfURL_(MEMORY[0x1E695DF20], a2, file, type, v4);
+  objc_msgSend_syncWithConfigData_voiceType_(self, v7, v9, type, v8);
 }
 
-- (void)syncWithConfigData:(id)a3 voiceType:(int64_t)a4
+- (void)syncWithConfigData:(id)data voiceType:(int64_t)type
 {
   v77 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v11 = v6;
-  if (v6)
+  dataCopy = data;
+  v11 = dataCopy;
+  if (dataCopy)
   {
-    v12 = objc_msgSend_allKeys(v6, v7, v8, v9, v10);
+    v12 = objc_msgSend_allKeys(dataCopy, v7, v8, v9, v10);
     v16 = objc_msgSend_containsObject_(v12, v13, @"ax_resources", v14, v15);
 
-    v66 = self;
+    selfCopy = self;
     v67 = v11;
     if (v16)
     {
       v23 = objc_msgSend_objectForKeyedSubscript_(v11, v17, @"ax_resources", v18, v19);
-      if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 4)
+      if ((type & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
         objc_msgSend_objectForKeyedSubscript_(v11, v20, @"ax_gryphon_resource_order", v21, v22);
       }
@@ -162,9 +162,9 @@
       while (v48);
     }
 
-    objc_msgSend_setResourceList_(v66, v59, v32, v60, v61);
+    objc_msgSend_setResourceList_(selfCopy, v59, v32, v60, v61);
     v11 = v67;
-    objc_msgSend_setVoiceConfig_(v66, v62, v67, v63, v64);
+    objc_msgSend_setVoiceConfig_(selfCopy, v62, v67, v63, v64);
   }
 
   v65 = *MEMORY[0x1E69E9840];

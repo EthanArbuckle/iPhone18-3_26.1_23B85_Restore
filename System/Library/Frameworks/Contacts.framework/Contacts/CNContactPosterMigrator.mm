@@ -1,20 +1,20 @@
 @interface CNContactPosterMigrator
 + (id)log;
-- (BOOL)makeAvatarRecipeCurrentFor:(id)a3 avatarRecipeData:(id)a4;
-- (BOOL)makePosterCurrentWithUUID:(id)a3 contactIdentifier:(id)a4;
-- (BOOL)migrateRecipe:(__CFData *)a3 contactIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)migrateToContactPosterStore:(id)a3 posterMetadata:(id)a4 watchPosterImageData:(id)a5 contactIdentifier:(id)a6 externalUUID:(id)a7 error:(id *)a8;
+- (BOOL)makeAvatarRecipeCurrentFor:(id)for avatarRecipeData:(id)data;
+- (BOOL)makePosterCurrentWithUUID:(id)d contactIdentifier:(id)identifier;
+- (BOOL)migrateRecipe:(__CFData *)recipe contactIdentifier:(id)identifier error:(id *)error;
+- (BOOL)migrateToContactPosterStore:(id)store posterMetadata:(id)metadata watchPosterImageData:(id)data contactIdentifier:(id)identifier externalUUID:(id)d error:(id *)error;
 - (CNContactPosterMigrator)init;
-- (CNContactPosterMigrator)initWithAddressBook:(void *)a3 storeManager:(id)a4;
+- (CNContactPosterMigrator)initWithAddressBook:(void *)book storeManager:(id)manager;
 - (NSURL)tempUnarchivingURL;
 - (PRSPosterArchiver)posterArchiver;
-- (id)posterUUIDFromPosterArchiveData:(id)a3 error:(id *)a4;
+- (id)posterUUIDFromPosterArchiveData:(id)data error:(id *)error;
 - (void)dealloc;
 - (void)deleteExistingPostersFromContactPosterStore;
 - (void)migrateLinkIdentifiersToNonUnifiedContactIdentifiers;
 - (void)performMigration;
-- (void)performMigrationOfAvatarRecipesForRecordIDs:(__CFArray *)a3;
-- (void)performMigrationOfPosterDataForContactIdentifiers:(id)a3;
+- (void)performMigrationOfAvatarRecipesForRecordIDs:(__CFArray *)ds;
+- (void)performMigrationOfPosterDataForContactIdentifiers:(id)identifiers;
 - (void)resetStatistics;
 @end
 
@@ -51,17 +51,17 @@ uint64_t __30__CNContactPosterMigrator_log__block_invoke()
   return v6;
 }
 
-- (CNContactPosterMigrator)initWithAddressBook:(void *)a3 storeManager:(id)a4
+- (CNContactPosterMigrator)initWithAddressBook:(void *)book storeManager:(id)manager
 {
-  v7 = a4;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = CNContactPosterMigrator;
   v8 = [(CNContactPosterMigrator *)&v16 init];
   if (v8)
   {
-    if (a3)
+    if (book)
     {
-      v9 = CFRetain(a3);
+      v9 = CFRetain(book);
     }
 
     else
@@ -70,7 +70,7 @@ uint64_t __30__CNContactPosterMigrator_log__block_invoke()
     }
 
     v8->_addressBook = v9;
-    objc_storeStrong(&v8->_storeManager, a4);
+    objc_storeStrong(&v8->_storeManager, manager);
     v10 = [MEMORY[0x1E695DF00] now];
     lastUsedDate = v8->_lastUsedDate;
     v8->_lastUsedDate = v10;
@@ -141,7 +141,7 @@ uint64_t __30__CNContactPosterMigrator_log__block_invoke()
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1954A0000, a2, OS_LOG_TYPE_ERROR, "Failed to save updates to link identifiers, error: %@", &v2, 0xCu);
 }
 
@@ -321,15 +321,15 @@ void __79__CNContactPosterMigrator_migrateLinkIdentifiersToNonUnifiedContactIden
   }
 }
 
-- (void)performMigrationOfPosterDataForContactIdentifiers:(id)a3
+- (void)performMigrationOfPosterDataForContactIdentifiers:(id)identifiers
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  v5 = [identifiersCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v5)
   {
     v7 = v5;
@@ -342,7 +342,7 @@ void __79__CNContactPosterMigrator_migrateLinkIdentifiersToNonUnifiedContactIden
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
@@ -404,19 +404,19 @@ void __79__CNContactPosterMigrator_migrateLinkIdentifiersToNonUnifiedContactIden
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v7 = [identifiersCopy countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)performMigrationOfAvatarRecipesForRecordIDs:(__CFArray *)a3
+- (void)performMigrationOfAvatarRecipesForRecordIDs:(__CFArray *)ds
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (ds)
   {
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(ds);
     if (Count >= 1)
     {
       v7 = Count;
@@ -426,9 +426,9 @@ void __79__CNContactPosterMigrator_migrateLinkIdentifiersToNonUnifiedContactIden
       v24 = v6;
       do
       {
-        v10 = [(CNContactPosterMigrator *)self addressBook];
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, v8);
-        PersonWithRecordID = ABAddressBookGetPersonWithRecordID(v10, ValueAtIndex);
+        addressBook = [(CNContactPosterMigrator *)self addressBook];
+        ValueAtIndex = CFArrayGetValueAtIndex(ds, v8);
+        PersonWithRecordID = ABAddressBookGetPersonWithRecordID(addressBook, ValueAtIndex);
         if (!PersonWithRecordID)
         {
           v19 = [objc_opt_class() log];
@@ -508,10 +508,10 @@ LABEL_22:
   }
 }
 
-- (BOOL)migrateRecipe:(__CFData *)a3 contactIdentifier:(id)a4 error:(id *)a5
+- (BOOL)migrateRecipe:(__CFData *)recipe contactIdentifier:(id)identifier error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  identifierCopy = identifier;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -523,7 +523,7 @@ LABEL_22:
   v28 = __Block_byref_object_dispose__20;
   v29 = 0;
   v9 = objc_autoreleasePoolPush();
-  v10 = [(CNContactPosterMigrator *)self makeAvatarRecipeCurrentFor:v8 avatarRecipeData:a3];
+  v10 = [(CNContactPosterMigrator *)self makeAvatarRecipeCurrentFor:identifierCopy avatarRecipeData:recipe];
   v11 = v10;
   if (v10)
   {
@@ -531,7 +531,7 @@ LABEL_22:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v8;
+      v35 = identifierCopy;
       _os_log_impl(&dword_1954A0000, v12, OS_LOG_TYPE_DEFAULT, "Avatar recipe already exists for contactIdentifier %@, updated it to current", buf, 0xCu);
     }
 
@@ -540,19 +540,19 @@ LABEL_22:
 
   else
   {
-    v13 = [(CNContactPosterMigrator *)self storeManager];
+    storeManager = [(CNContactPosterMigrator *)self storeManager];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __65__CNContactPosterMigrator_migrateRecipe_contactIdentifier_error___block_invoke;
     v18[3] = &unk_1E7415960;
-    v23 = a3;
-    v19 = v8;
-    v20 = self;
+    recipeCopy = recipe;
+    v19 = identifierCopy;
+    selfCopy = self;
     v21 = &v30;
     v22 = &v24;
     v14 = (v25 + 5);
     obj = v25[5];
-    [v13 performWorkWithManagedObjectContext:v18 error:&obj];
+    [storeManager performWorkWithManagedObjectContext:v18 error:&obj];
     objc_storeStrong(v14, obj);
   }
 
@@ -565,10 +565,10 @@ LABEL_22:
   else
   {
     v15 = *(v31 + 24);
-    if (a5 && (v31[3] & 1) == 0)
+    if (error && (v31[3] & 1) == 0)
     {
       v15 = 0;
-      *a5 = v25[5];
+      *error = v25[5];
     }
   }
 
@@ -624,14 +624,14 @@ void __65__CNContactPosterMigrator_migrateRecipe_contactIdentifier_error___block
   }
 }
 
-- (BOOL)migrateToContactPosterStore:(id)a3 posterMetadata:(id)a4 watchPosterImageData:(id)a5 contactIdentifier:(id)a6 externalUUID:(id)a7 error:(id *)a8
+- (BOOL)migrateToContactPosterStore:(id)store posterMetadata:(id)metadata watchPosterImageData:(id)data contactIdentifier:(id)identifier externalUUID:(id)d error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v31 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  storeCopy = store;
+  metadataCopy = metadata;
+  dataCopy = data;
+  identifierCopy = identifier;
+  dCopy = d;
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
@@ -643,11 +643,11 @@ void __65__CNContactPosterMigrator_migrateRecipe_contactIdentifier_error___block
   v49 = __Block_byref_object_dispose__20;
   v50 = 0;
   context = objc_autoreleasePoolPush();
-  v17 = [[CNWallpaper alloc] initWithDataRepresentationForPersistence:v13];
-  v18 = [(CNWallpaper *)v17 posterArchiveData];
+  v17 = [[CNWallpaper alloc] initWithDataRepresentationForPersistence:storeCopy];
+  posterArchiveData = [(CNWallpaper *)v17 posterArchiveData];
   v19 = (v46 + 5);
   obj = v46[5];
-  v20 = [(CNContactPosterMigrator *)self posterUUIDFromPosterArchiveData:v18 error:&obj];
+  v20 = [(CNContactPosterMigrator *)self posterUUIDFromPosterArchiveData:posterArchiveData error:&obj];
   objc_storeStrong(v19, obj);
   if (!v20)
   {
@@ -662,27 +662,27 @@ void __65__CNContactPosterMigrator_migrateRecipe_contactIdentifier_error___block
     goto LABEL_9;
   }
 
-  if (![(CNContactPosterMigrator *)self makePosterCurrentWithUUID:v20 contactIdentifier:v15])
+  if (![(CNContactPosterMigrator *)self makePosterCurrentWithUUID:v20 contactIdentifier:identifierCopy])
   {
 LABEL_9:
-    v25 = [(CNContactPosterMigrator *)self storeManager];
+    storeManager = [(CNContactPosterMigrator *)self storeManager];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __128__CNContactPosterMigrator_migrateToContactPosterStore_posterMetadata_watchPosterImageData_contactIdentifier_externalUUID_error___block_invoke;
     v33[3] = &unk_1E7415988;
-    v34 = v18;
-    v35 = v31;
-    v36 = v14;
-    v37 = v15;
+    v34 = posterArchiveData;
+    v35 = metadataCopy;
+    v36 = dataCopy;
+    v37 = identifierCopy;
     v38 = v20;
     v39 = v17;
-    v40 = self;
-    v41 = v16;
+    selfCopy = self;
+    v41 = dCopy;
     v42 = &v51;
     v43 = &v45;
     v26 = (v46 + 5);
     v32 = v46[5];
-    [v25 performWorkWithManagedObjectContext:v33 error:&v32];
+    [storeManager performWorkWithManagedObjectContext:v33 error:&v32];
     objc_storeStrong(v26, v32);
 
     v23 = 1;
@@ -692,9 +692,9 @@ LABEL_9:
   v21 = [objc_opt_class() log];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v20 UUIDString];
+    uUIDString = [v20 UUIDString];
     *buf = 138412290;
-    v56 = v22;
+    v56 = uUIDString;
     _os_log_impl(&dword_1954A0000, v21, OS_LOG_TYPE_DEFAULT, "Poster UUID already exists %@, updated it to current", buf, 0xCu);
   }
 
@@ -706,10 +706,10 @@ LABEL_10:
   if (v23)
   {
     v27 = *(v52 + 24);
-    if (a8 && (v52[3] & 1) == 0)
+    if (error && (v52[3] & 1) == 0)
     {
       v27 = 0;
-      *a8 = v46[5];
+      *error = v46[5];
     }
   }
 
@@ -781,7 +781,7 @@ void __128__CNContactPosterMigrator_migrateToContactPosterStore_posterMetadata_w
   v11 = __Block_byref_object_copy__20;
   v12 = __Block_byref_object_dispose__20;
   v13 = 0;
-  v2 = [(CNContactPosterMigrator *)self storeManager];
+  storeManager = [(CNContactPosterMigrator *)self storeManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__CNContactPosterMigrator_deleteExistingPostersFromContactPosterStore__block_invoke;
@@ -790,7 +790,7 @@ void __128__CNContactPosterMigrator_migrateToContactPosterStore_posterMetadata_w
   v7[5] = &v14;
   v3 = (v9 + 5);
   obj = v9[5];
-  [v2 performWorkWithManagedObjectContext:v7 error:&obj];
+  [storeManager performWorkWithManagedObjectContext:v7 error:&obj];
   objc_storeStrong(v3, obj);
 
   if ((v15[3] & 1) == 0)
@@ -855,12 +855,12 @@ void __70__CNContactPosterMigrator_deleteExistingPostersFromContactPosterStore__
   }
 }
 
-- (BOOL)makePosterCurrentWithUUID:(id)a3 contactIdentifier:(id)a4
+- (BOOL)makePosterCurrentWithUUID:(id)d contactIdentifier:(id)identifier
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 UUIDString];
+  dCopy = d;
+  identifierCopy = identifier;
+  uUIDString = [dCopy UUIDString];
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -871,21 +871,21 @@ void __70__CNContactPosterMigrator_deleteExistingPostersFromContactPosterStore__
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v9 = [(CNContactPosterMigrator *)self storeManager];
+  storeManager = [(CNContactPosterMigrator *)self storeManager];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __71__CNContactPosterMigrator_makePosterCurrentWithUUID_contactIdentifier___block_invoke;
   v18[3] = &unk_1E74159D8;
-  v10 = v8;
+  v10 = uUIDString;
   v19 = v10;
   v22 = &v28;
-  v11 = v7;
+  v11 = identifierCopy;
   v20 = v11;
-  v21 = self;
+  selfCopy = self;
   v23 = &v24;
   v12 = (v29 + 5);
   obj = v29[5];
-  [v9 performWorkWithManagedObjectContext:v18 error:&obj];
+  [storeManager performWorkWithManagedObjectContext:v18 error:&obj];
   objc_storeStrong(v12, obj);
 
   if (v29[5])
@@ -965,11 +965,11 @@ void __71__CNContactPosterMigrator_makePosterCurrentWithUUID_contactIdentifier__
   }
 }
 
-- (BOOL)makeAvatarRecipeCurrentFor:(id)a3 avatarRecipeData:(id)a4
+- (BOOL)makeAvatarRecipeCurrentFor:(id)for avatarRecipeData:(id)data
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  dataCopy = data;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -980,20 +980,20 @@ void __71__CNContactPosterMigrator_makePosterCurrentWithUUID_contactIdentifier__
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v8 = [(CNContactPosterMigrator *)self storeManager];
+  storeManager = [(CNContactPosterMigrator *)self storeManager];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __71__CNContactPosterMigrator_makeAvatarRecipeCurrentFor_avatarRecipeData___block_invoke;
   v17[3] = &unk_1E7415A00;
-  v9 = v6;
+  v9 = forCopy;
   v18 = v9;
   v20 = &v26;
-  v10 = v7;
+  v10 = dataCopy;
   v19 = v10;
   v21 = &v22;
   v11 = (v27 + 5);
   obj = v27[5];
-  [v8 performWorkWithManagedObjectContext:v17 error:&obj];
+  [storeManager performWorkWithManagedObjectContext:v17 error:&obj];
   objc_storeStrong(v11, obj);
 
   if (v27[5])
@@ -1162,28 +1162,28 @@ id __45__CNContactPosterMigrator_tempUnarchivingURL__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)posterUUIDFromPosterArchiveData:(id)a3 error:(id *)a4
+- (id)posterUUIDFromPosterArchiveData:(id)data error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CNContactPosterMigrator *)self posterArchiver];
+  dataCopy = data;
+  posterArchiver = [(CNContactPosterMigrator *)self posterArchiver];
   v21 = 0;
-  v8 = [v7 unarchiveConfigurationFromData:v6 format:-1 error:&v21];
+  v8 = [posterArchiver unarchiveConfigurationFromData:dataCopy format:-1 error:&v21];
 
   v9 = v21;
   if (v8)
   {
-    v10 = [(CNContactPosterMigrator *)self tempUnarchivingURL];
-    v11 = [v8 serverUUID];
-    v12 = [v11 UUIDString];
-    v13 = [v10 URLByAppendingPathComponent:v12];
+    tempUnarchivingURL = [(CNContactPosterMigrator *)self tempUnarchivingURL];
+    serverUUID = [v8 serverUUID];
+    uUIDString = [serverUUID UUIDString];
+    v13 = [tempUnarchivingURL URLByAppendingPathComponent:uUIDString];
 
-    v14 = [(CNContactPosterMigrator *)self fileManager];
+    fileManager = [(CNContactPosterMigrator *)self fileManager];
     v20 = v9;
-    LOBYTE(v12) = [v14 removeItemAtURL:v13 error:&v20];
+    LOBYTE(uUIDString) = [fileManager removeItemAtURL:v13 error:&v20];
     v15 = v20;
 
-    if ((v12 & 1) == 0)
+    if ((uUIDString & 1) == 0)
     {
       v16 = [objc_opt_class() log];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1194,27 +1194,27 @@ id __45__CNContactPosterMigrator_tempUnarchivingURL__block_invoke(uint64_t a1)
       }
     }
 
-    v17 = [v8 serverUUID];
+    serverUUID2 = [v8 serverUUID];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v18 = v9;
-      v17 = 0;
-      *a4 = v9;
+      serverUUID2 = 0;
+      *error = v9;
     }
 
     else
     {
-      v17 = 0;
+      serverUUID2 = 0;
     }
 
     v15 = v9;
   }
 
-  return v17;
+  return serverUUID2;
 }
 
 @end

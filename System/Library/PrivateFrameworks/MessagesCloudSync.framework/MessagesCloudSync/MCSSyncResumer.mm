@@ -1,7 +1,7 @@
 @interface MCSSyncResumer
 - (MCSSyncResumer)init;
-- (MCSSyncResumer)initWithDelegate:(id)a3 syncStateManager:(id)a4;
-- (void)resumeSyncUsingKey:(id)a3;
+- (MCSSyncResumer)initWithDelegate:(id)delegate syncStateManager:(id)manager;
+- (void)resumeSyncUsingKey:(id)key;
 - (void)systemDidLeaveFirstDataProtectionLock;
 @end
 
@@ -9,22 +9,22 @@
 
 - (void)systemDidLeaveFirstDataProtectionLock
 {
-  v1 = a1;
+  selfCopy = self;
   sub_22B92C008();
 }
 
-- (MCSSyncResumer)initWithDelegate:(id)a3 syncStateManager:(id)a4
+- (MCSSyncResumer)initWithDelegate:(id)delegate syncStateManager:(id)manager
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return SyncResumer.init(delegate:syncStateManager:)(a3, a4);
+  return SyncResumer.init(delegate:syncStateManager:)(delegate, manager);
 }
 
-- (void)resumeSyncUsingKey:(id)a3
+- (void)resumeSyncUsingKey:(id)key
 {
   v4 = sub_22BA0FFFC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_22B9E03CC(v4, v6);
 }
 

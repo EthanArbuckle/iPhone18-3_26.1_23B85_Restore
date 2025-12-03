@@ -1,112 +1,112 @@
 @interface SGQuickResponsesReplies
-+ (id)normalizeReplyText:(id)a3;
-+ (id)repliesWithArray:(id)a3;
-- (SGQuickResponsesReplies)initWithArray:(id)a3;
++ (id)normalizeReplyText:(id)text;
++ (id)repliesWithArray:(id)array;
+- (SGQuickResponsesReplies)initWithArray:(id)array;
 - (id)normalizedReplyTextsSet;
-- (id)replyTextForIndex:(unint64_t)a3 position:(unint64_t)a4;
-- (id)replyTextForIndexAndPosition:(id)a3;
-- (id)replyTextsForIndex:(unint64_t)a3;
+- (id)replyTextForIndex:(unint64_t)index position:(unint64_t)position;
+- (id)replyTextForIndexAndPosition:(id)position;
+- (id)replyTextsForIndex:(unint64_t)index;
 - (unint64_t)maxDistinctReplies;
 - (unint64_t)modelCount;
 - (unint64_t)replyClassCount;
-- (unint64_t)replyCountForIndex:(unint64_t)a3;
+- (unint64_t)replyCountForIndex:(unint64_t)index;
 - (unint64_t)replyTextCount;
 @end
 
 @implementation SGQuickResponsesReplies
 
-- (SGQuickResponsesReplies)initWithArray:(id)a3
+- (SGQuickResponsesReplies)initWithArray:(id)array
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:488 description:{@"%@ must implement -initWithArray:", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:488 description:{@"%@ must implement -initWithArray:", objc_opt_class()}];
 
   return 0;
 }
 
 - (unint64_t)maxDistinctReplies
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:482 description:{@"%@ must implement -maxDistinctReplies:", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:482 description:{@"%@ must implement -maxDistinctReplies:", objc_opt_class()}];
 
   return 0;
 }
 
 - (unint64_t)modelCount
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:476 description:{@"%@ must implement -modelCount:", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:476 description:{@"%@ must implement -modelCount:", objc_opt_class()}];
 
   return 0;
 }
 
 - (unint64_t)replyClassCount
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:470 description:{@"%@ must implement -replyClassCount:", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:470 description:{@"%@ must implement -replyClassCount:", objc_opt_class()}];
 
   return 0;
 }
 
 - (unint64_t)replyTextCount
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:464 description:{@"%@ must implement -replyTextCount:", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:464 description:{@"%@ must implement -replyTextCount:", objc_opt_class()}];
 
   return 0;
 }
 
-- (unint64_t)replyCountForIndex:(unint64_t)a3
+- (unint64_t)replyCountForIndex:(unint64_t)index
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:458 description:{@"%@ must implement -replyTextCount:", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:458 description:{@"%@ must implement -replyTextCount:", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)replyTextsForIndex:(unint64_t)a3
+- (id)replyTextsForIndex:(unint64_t)index
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:452 description:{@"%@ must implement -replyTextsForIndex:", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:452 description:{@"%@ must implement -replyTextsForIndex:", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)replyTextForIndexAndPosition:(id)a3
+- (id)replyTextForIndexAndPosition:(id)position
 {
-  v4 = a3;
-  v5 = [v4 first];
-  v6 = [v5 unsignedIntegerValue];
-  v7 = [v4 second];
+  positionCopy = position;
+  first = [positionCopy first];
+  unsignedIntegerValue = [first unsignedIntegerValue];
+  second = [positionCopy second];
 
-  v8 = -[SGQuickResponsesReplies replyTextForIndex:position:](self, "replyTextForIndex:position:", v6, [v7 unsignedIntegerValue]);
+  v8 = -[SGQuickResponsesReplies replyTextForIndex:position:](self, "replyTextForIndex:position:", unsignedIntegerValue, [second unsignedIntegerValue]);
 
   return v8;
 }
 
-- (id)replyTextForIndex:(unint64_t)a3 position:(unint64_t)a4
+- (id)replyTextForIndex:(unint64_t)index position:(unint64_t)position
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:441 description:{@"%@ must implement -replyTextsForIndex:position:", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:441 description:{@"%@ must implement -replyTextsForIndex:position:", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)normalizedReplyTextsSet
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:435 description:{@"%@ must implement -normalizedReplyTextsSet:", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:435 description:{@"%@ must implement -normalizedReplyTextsSet:", objc_opt_class()}];
 
   return 0;
 }
 
-+ (id)repliesWithArray:(id)a3
++ (id)repliesWithArray:(id)array
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  arrayCopy = array;
+  v4 = arrayCopy;
+  if (arrayCopy)
   {
 
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -153,12 +153,12 @@ LABEL_12:
   return v7;
 }
 
-+ (id)normalizeReplyText:(id)a3
++ (id)normalizeReplyText:(id)text
 {
-  v3 = SGNormalizeEmojisInString(a3);
-  v4 = [v3 localizedLowercaseString];
+  v3 = SGNormalizeEmojisInString(text);
+  localizedLowercaseString = [v3 localizedLowercaseString];
 
-  return v4;
+  return localizedLowercaseString;
 }
 
 @end

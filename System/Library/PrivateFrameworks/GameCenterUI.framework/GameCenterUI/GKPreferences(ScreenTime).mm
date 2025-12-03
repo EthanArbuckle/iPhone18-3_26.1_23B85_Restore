@@ -10,39 +10,39 @@
 - (void)setScreenTimePinCallback:()ScreenTime
 {
   v4 = _Block_copy(aBlock);
-  objc_setAssociatedObject(a1, "_screenTimePinCallback", v4, 3);
+  objc_setAssociatedObject(self, "_screenTimePinCallback", v4, 3);
 }
 
 - (uint64_t)shouldShowScreenTimePINController
 {
-  v2 = [MEMORY[0x277D0C1D8] shared];
-  if ([v2 isAccountModificationRestricted])
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  if ([mEMORY[0x277D0C1D8] isAccountModificationRestricted])
   {
-    v3 = [a1 isScreenTimeRestrictionsPasscodeSet];
+    isScreenTimeRestrictionsPasscodeSet = [self isScreenTimeRestrictionsPasscodeSet];
   }
 
   else
   {
-    v4 = [MEMORY[0x277D0C1D8] shared];
-    if ([v4 isAddingFriendsRestricted])
+    mEMORY[0x277D0C1D8]2 = [MEMORY[0x277D0C1D8] shared];
+    if ([mEMORY[0x277D0C1D8]2 isAddingFriendsRestricted])
     {
-      v3 = [a1 isScreenTimeRestrictionsPasscodeSet];
+      isScreenTimeRestrictionsPasscodeSet = [self isScreenTimeRestrictionsPasscodeSet];
     }
 
     else
     {
-      v3 = 0;
+      isScreenTimeRestrictionsPasscodeSet = 0;
     }
   }
 
-  return v3;
+  return isScreenTimeRestrictionsPasscodeSet;
 }
 
 - (uint64_t)activeScreenTimeRemotePinUIWithHandler:()ScreenTime
 {
-  [a1 setScreenTimePinCallback:?];
-  v2 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v2 addObserver:a1 selector:sel_screenTimePINControllerDidFinish_ name:*MEMORY[0x277D4BDE8] object:0 suspensionBehavior:4];
+  [self setScreenTimePinCallback:?];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_screenTimePINControllerDidFinish_ name:*MEMORY[0x277D4BDE8] object:0 suspensionBehavior:4];
 
   v3 = MEMORY[0x277D4BDA8];
 
@@ -52,22 +52,22 @@
 - (void)screenTimePINControllerDidFinish:()ScreenTime
 {
   v10 = a3;
-  v4 = [a1 screenTimePinCallback];
+  screenTimePinCallback = [self screenTimePinCallback];
 
-  if (v4)
+  if (screenTimePinCallback)
   {
-    v5 = [v10 userInfo];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D4BDE0]];
-    v7 = [v6 BOOLValue];
+    userInfo = [v10 userInfo];
+    v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D4BDE0]];
+    bOOLValue = [v6 BOOLValue];
 
-    v8 = [a1 screenTimePinCallback];
-    v8[2](v8, v7);
+    screenTimePinCallback2 = [self screenTimePinCallback];
+    screenTimePinCallback2[2](screenTimePinCallback2, bOOLValue);
 
-    [a1 setScreenTimePinCallback:0];
+    [self setScreenTimePinCallback:0];
   }
 
-  v9 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v9 removeObserver:a1];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 @end

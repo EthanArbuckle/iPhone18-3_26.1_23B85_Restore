@@ -1,19 +1,19 @@
 @interface PKSelectActionGroupActionsHeader
 - (CGSize)_imageSize;
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKSelectActionGroupActionsHeader)initWithPass:(id)a3 title:(id)a4 subtitle:(id)a5;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKSelectActionGroupActionsHeader)initWithPass:(id)pass title:(id)title subtitle:(id)subtitle;
 - (void)layoutSubviews;
-- (void)setLoading:(BOOL)a3;
+- (void)setLoading:(BOOL)loading;
 @end
 
 @implementation PKSelectActionGroupActionsHeader
 
-- (PKSelectActionGroupActionsHeader)initWithPass:(id)a3 title:(id)a4 subtitle:(id)a5
+- (PKSelectActionGroupActionsHeader)initWithPass:(id)pass title:(id)title subtitle:(id)subtitle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passCopy = pass;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v34.receiver = self;
   v34.super_class = PKSelectActionGroupActionsHeader;
   v11 = [(PKSelectActionGroupActionsHeader *)&v34 init];
@@ -26,10 +26,10 @@
     v12->_titleLabel = v13;
 
     v15 = v12->_titleLabel;
-    v16 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v15 setTextColor:v16];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v15 setTextColor:labelColor];
 
-    [(UILabel *)v12->_titleLabel setText:v9];
+    [(UILabel *)v12->_titleLabel setText:titleCopy];
     v17 = v12->_titleLabel;
     v18 = *MEMORY[0x1E69DDC30];
     v19 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD58], *MEMORY[0x1E69DDC30], 2, 0);
@@ -46,10 +46,10 @@
     subtitleLabel = v12->_subtitleLabel;
     v12->_subtitleLabel = v20;
 
-    [(UILabel *)v12->_subtitleLabel setText:v10];
+    [(UILabel *)v12->_subtitleLabel setText:subtitleCopy];
     v22 = v12->_subtitleLabel;
-    v23 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v22 setTextColor:v23];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v22 setTextColor:labelColor2];
 
     v24 = v12->_subtitleLabel;
     v25 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], v18);
@@ -62,7 +62,7 @@
     [(UILabel *)v12->_subtitleLabel setTextAlignment:1];
     [(UILabel *)v12->_subtitleLabel setAlpha:1.0];
     [(PKSelectActionGroupActionsHeader *)v12 addSubview:v12->_subtitleLabel];
-    v26 = [[PKPassView alloc] initWithPass:v8 content:5];
+    v26 = [[PKPassView alloc] initWithPass:passCopy content:5];
     v27 = objc_alloc(MEMORY[0x1E69DCAE0]);
     [(PKSelectActionGroupActionsHeader *)v12 _imageSize];
     v28 = [(PKPassView *)v26 snapshotOfFrontFaceWithRequestedSize:?];
@@ -83,12 +83,12 @@
   return v12;
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  self->_loading = a3;
+  self->_loading = loading;
   spinner = self->_spinner;
   v4 = 0.0;
-  if (a3)
+  if (loading)
   {
     v4 = 1.0;
   }
@@ -112,10 +112,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKSelectActionGroupActionsHeader *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKSelectActionGroupActionsHeader *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
@@ -131,18 +131,18 @@
   [(PKSelectActionGroupActionsHeader *)self _layoutWithBounds:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v6 = a3.origin.x + 20.0;
-  v7 = a3.origin.y + 0.0;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v6 = bounds.origin.x + 20.0;
+  v7 = bounds.origin.y + 0.0;
   memset(&slice, 0, sizeof(slice));
-  remainder.origin.x = a3.origin.x + 20.0;
-  remainder.origin.y = a3.origin.y + 0.0;
-  v8 = a3.size.width + -40.0;
-  remainder.size.width = a3.size.width + -40.0;
-  remainder.size.height = a3.size.height;
+  remainder.origin.x = bounds.origin.x + 20.0;
+  remainder.origin.y = bounds.origin.y + 0.0;
+  v8 = bounds.size.width + -40.0;
+  remainder.size.width = bounds.size.width + -40.0;
+  remainder.size.height = bounds.size.height;
   [(PKSelectActionGroupActionsHeader *)self _imageSize];
   v10 = v9;
   v12 = v11;
